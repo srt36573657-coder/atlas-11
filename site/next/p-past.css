@@ -1,0 +1,70 @@
+/* 4단 지나온 길(p-past.js) — 새 아틀란스 말투 · 클래스는 모두 ppast- 로 시작(다른 쪽과 겹치지 않게 · 이 파일은 한 번 읽으면 계속 남음)
+   빨강 = 오름 · 파랑 = 내림 · 금빛 = 「?」 · 하루 30% 넘게 바뀐 날만 · 입체 · 그림자 없음 · 글 17px 넘게 · 누르는 자리 44px 넘게 · 320px 에서도 옆 넘침 없음 */
+.ppast { padding-bottom: 8px; }
+.ppast-lv { margin: 10px 16px 0; color: var(--sub); font-size: 17px; } /* 7단 중 4단 · 앎의 종류(기록) */
+
+/* 기간 단추 셋 */
+.ppast-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: 14px 16px 0; padding: 4px; border: 1px solid var(--hair2); border-radius: 14px; }
+.ppast-seg button { min-height: 44px; border-radius: 10px; color: var(--sub); font-size: 17px; font-weight: 600; line-height: 1.25; padding: 4px 6px; }
+.ppast-seg button[aria-pressed="true"] { background: var(--ink); color: #111; font-weight: 800; }
+
+/* 그림 — 위 한 줄(누르면 그날 값) · 선 · 오른쪽 눈금 칸 · 처음 · 끝 날 · 가장 높을 때 · 낮을 때 */
+.ppast-chart { margin: 0 16px; }
+.ppast-tip { margin: 12px 0 2px; min-height: 25.5px; font-size: 17px; line-height: 1.5; color: var(--mute); font-variant-numeric: tabular-nums; }
+.ppast-tip.on { color: var(--ink); font-weight: 700; }
+.ppast-tip.two { min-height: 51px; }
+.ppast-lc { position: relative; }
+.ppast-lc svg { display: block; width: 100%; overflow: visible; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
+.ppast-yr span { position: absolute; right: 0; font-size: 17px; line-height: 1; color: var(--mute); white-space: nowrap; pointer-events: none; font-variant-numeric: tabular-nums; }
+.ppast-ax { display: flex; justify-content: space-between; gap: 8px; margin-top: 6px; color: var(--mute); font-size: 17px; font-variant-numeric: tabular-nums; }
+.ppast-hl { margin: 8px 0 0; color: var(--sub); font-size: 17px; font-variant-numeric: tabular-nums; }
+.ppast-chart > .empty { margin: 24px 0; }
+
+/* 그림 이름 — 회사 선(위 빨강 · 아래 파랑) · 고른 곳 평균(회색 점선 — 그림 선과 같은 꼴) */
+.ppast-key { display: flex; flex-direction: column; gap: 6px; margin: 14px 16px 0; color: var(--sub); font-size: 17px; line-height: 1.45; }
+.ppast-key span { display: flex; align-items: center; gap: 10px; }
+.ppast-key i { flex: none; display: inline-block; width: 22px; }
+.ppast-k-co { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--up) 50%, var(--down) 50%); }
+.ppast-k-avg { height: 0; border-top: 3px dashed var(--mute); }
+
+/* 세 숫자 — 이름 왼쪽 · 숫자 오른쪽(긴 숫자는 다음 줄로 — 넘치지 않게) */
+.ppast-trio { margin: 18px 16px 0; border-top: 1px solid var(--hair); }
+.ppast-trio > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--hair); }
+.ppast-trio span { color: var(--sub); font-size: 19px; }
+.ppast-v { font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.ppast-won { margin: 12px 16px 0; color: var(--sub); font-size: 18px; line-height: 1.55; }
+.ppast-jump { margin: 14px 16px 0; padding: 10px 14px; border: 1px solid rgba(233, 185, 73, .5); border-radius: 12px; background: var(--gold-wash); color: var(--ink); font-size: 17px; line-height: 1.55; }
+
+/* 해마다 번 돈 — 해 · 막대 · 값(막대 길이는 같은 줄 안에서만 견줌 · 색은 오름 · 내림이 아니라 회색 — 번 돈이 빨강 · 파랑으로 읽히지 않게 · 손해는 빈 테) */
+.ppast-fin { margin: 0 16px; display: grid; grid-template-columns: auto minmax(16px, 1fr) auto; column-gap: 10px; } /* 해 · 막대 · 값 세 칸을 모든 줄이 함께 씀(막대 칸 길이가 줄마다 같게 — 값 글 길이에 흔들리지 않게) */
+.ppast-fin > * { grid-column: 1 / -1; }
+.ppast-fin h3 { font-size: 19px; margin: 16px 0 8px; }
+.ppast-fin ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; row-gap: 6px; }
+.ppast-fin li { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(16px, 1fr) auto; grid-template-columns: subgrid; column-gap: 10px; align-items: center; min-height: 32px; font-size: 18px; line-height: 1.3; }
+.ppast-y { color: var(--sub); min-width: 3.4em; font-variant-numeric: tabular-nums; }
+.ppast-ft { position: relative; height: 10px; border-radius: 4px; background: var(--card2); overflow: hidden; }
+.ppast-fb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--m4-neu, #6F7782); }
+.ppast-fb.neg { background: transparent; border: 1.5px solid var(--sub); }
+.ppast-fv { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.ppast-small { margin: 12px 0 0; color: var(--mute); font-size: 17px; line-height: 1.5; }
+.ppast-q { margin: 4px 0 0; font-size: 18px; }
+
+/* 몸값 — 접은 칸 */
+.ppast-more { margin: 20px 16px 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.ppast-more summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; cursor: pointer; font-size: 19px; list-style: none; }
+.ppast-more summary::-webkit-details-marker { display: none; }
+.ppast-more summary::after { content: "열기 ›"; flex: none; color: var(--mute); font-size: 17px; }
+.ppast-more[open] summary::after { content: "닫기"; }
+.ppast-chk { list-style: none; margin: 0 0 8px; padding: 0; }
+.ppast-chk li { display: grid; grid-template-columns: 1.3em minmax(0, 1fr); gap: 6px; padding: 10px 0; border-top: 1px solid var(--hair); font-size: 18px; line-height: 1.5; }
+.ppast-m { text-align: center; font-weight: 800; color: var(--mute); }
+.ppast-chk b { font-weight: 700; }
+.ppast-src { margin: 12px 16px 0; color: var(--mute); font-size: 17px; }
+
+/* 다음 챕터 미리 보기(사실만) · 출처 · 알림 */
+.ppast-nx { margin: 32px 16px 8px; font-size: 17px; line-height: 1.45; }
+.ppast-nx b { display: block; font-size: 19px; }
+.ppast-nx span { color: var(--sub); }
+.ppast a.chap-next { display: flex; align-items: center; justify-content: center; text-align: center; padding: 8px 14px; }
+.ppast-foot { margin: 28px 16px 0; padding-top: 14px; border-top: 1px solid var(--hair); color: var(--mute); font-size: 17px; line-height: 1.55; }
+.ppast-foot p { margin: 0 0 10px; }

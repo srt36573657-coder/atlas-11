@@ -45,6 +45,9 @@ const weird = l => { if (!Array.isArray(l) || l.length < 3) return true; for (co
 const OLD36 = JSON.parse((/export const OLD36_TEXT = (\[[^\]]*\]);/.exec(await fs.readFile(path.join(ROOT, 'scripts/atlas11/t365/inspect4.mjs'), 'utf8')) || [, '[]'])[1].replace(/'/g, '"'));
 if (!OLD36.length) { console.error('OLD36_TEXT 를 못 읽음'); process.exit(1); }
 const BANNED = ['추천', '매수', '매도', '팔라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', 'TOP', ...OLD36];
+// 새 화면으로 옮긴 쪽(app.js READY) — 옮긴 쪽은 새 주소(#/…), 아직이면 지금 아틀란스(/atlas/#/…)를 기대함(2026-10-17 04:23 「에이전트 총 동원해」)
+const READY = new Set(((/const READY = new Set\(\[([^\]]*)\]\);/.exec(await fs.readFile(path.join(ROOT, 'site/next/app.js'), 'utf8')) || [, ''])[1].match(/'([a-z]+)'/g) || []).map(x => x.slice(1, -1)));
+const oldOr = (k, h) => (READY.has(k) ? h : '/atlas/' + h);
 
 const exe = '/opt/pw-browsers/chromium', b = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {}); // 이 방은 미리 깔린 크로미움 · 깃허브 실행기는 playwright 가 깐 것
 async function page(width, height = 800) {
@@ -65,10 +68,16 @@ const scan = p => p.evaluate(() => {
     if (getComputedStyle(e).visibility === 'hidden' || e.closest('[hidden]')) continue;
     if (r.height < 43.5 || r.width < 43.5) small.push((e.textContent || e.getAttribute('aria-label') || e.className).trim().slice(0, 30) + ' ' + Math.round(r.width) + '×' + Math.round(r.height));
   }
-  return {sw: document.documentElement.scrollWidth, vw, text: view?.innerText ?? '', hrefs: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')), small: small.slice(0, 8), title: document.title};
+  const cl = view?.cloneNode(true); cl?.querySelectorAll('[data-proper], [lang="ko"]').forEach(e => e.remove()); // 이름 · 남의 글(원문)은 쓰지 않을 말 셈에서 뺌 — 「코스피 양매도 ETN」 같은 상품 이름
+  return {sw: document.documentElement.scrollWidth, vw, text: cl?.textContent ?? '', hrefs: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')), small: small.slice(0, 8), title: document.title};
 });
 const knownHref = h => {
-  if (h === '/' || h === '/letter.html' || h === '/hello.html') return true;
+  if (h === '/' || h === '/letter.html' || h === '/hello.html' || h === '/us/') return true; // /us/ = 미국 판(규칙 54 그대로)
+  if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
+  let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
+  if ((mm = /^#\/cal\/([0-9A-Z]{6})$/.exec(h))) return READY.has('cal') && !!CO[mm[1]];
+  if ((mm = /^#\/w\/([0-9A-Z]{6})\/(past|rivals|grow|range)$/.exec(h))) return READY.has(mm[2]) && !!CO[mm[1]];
+  if ((mm = /^#\/x\/(.+)$/.exec(h))) return READY.has('x');
   let m = /^#\/(?:f\/(rise|surge|lead|pick|group|ind|us)|shorts(?:\/\d+)?|sub|me|find(?:\/.*)?)?$/.exec(h); if (m) return true;
   if ((m = /^\/atlas\/(#\/.*)$/.exec(h))) h = '/' + m[1]; // 아직 지금 아틀란스에서 여는 쪽(/atlas/#/…) — 아래 같은 잣대로
   if ((m = /^#\/w\/(.+)$/.exec(h))) return m[1] === 'KOSPI' || m[1] === 'KOSDAQ' || !!CO[m[1]];
@@ -76,11 +85,13 @@ const knownHref = h => {
   if ((m = /^\/#\/g\/(.+)$/.exec(h))) return grp.has(decodeURIComponent(m[1]));
   if ((m = /^\/#\/i\/(.+)$/.exec(h))) return ind.has(decodeURIComponent(m[1]));
   if ((m = /^\/#\/c\/([0-9A-Z]{6})(\/(past|rivals|grow|range))?$/.exec(h))) return !!CO[m[1]];
-  return /^\/#\/(surge|cal|cond|talk|find|time|up)$/.test(h);
+  if ((m = /^\/#\/x\/([0-9A-Z]{6})$/.exec(h))) return true; // 밖 칸(펀드 · 우선주 …) — 지금 아틀란스
+  return /^\/#\/(surge|cal|cond|talk|find|time|up|info)$/.test(h);
 };
 function checkScan(where, s, p) {
   if (s.sw > s.vw) fail('가로 넘침', where + ' ' + s.sw + '>' + s.vw);
-  for (const w of BANNED) if (s.text.includes(w)) fail('쓰지 않을 말', where + ' 「' + w + '」');
+  const T = s.text.replace(/공매도/g, ''); // 「공매도」(빌려 판 주식 — 급등 쪽 「?」 줄의 사실 말)는 권하는 말이 아님
+  for (const w of BANNED) if (T.includes(w)) fail('쓰지 않을 말', where + ' 「' + w + '」');
   for (const x of s.small) fail('누르는 자리 44px 안 됨', where + ' ' + x);
   for (const hr of s.hrefs) { bump('고리'); if (!knownHref(hr)) fail('모르는 고리', where + ' ' + hr); }
   if (p._errs.length) { fail('화면 오류', where + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }
@@ -89,12 +100,25 @@ function checkScan(where, s, p) {
 /* ① 세 폭 */
 const firstCo = codes[0], g0 = core.groups[0].id, i0 = core.industries[0].name, g0id = () => g0;
 const ROUTES = ['#/', '#/f/rise', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/group', '#/f/ind', '#/f/us', '#/shorts', '#/sub', '#/me', '#/find', '#/find/삼성', '#/w/KOSPI', '#/w/KOSDAQ', '#/w/' + firstCo, '#/ch/g/' + g0, '#/ch/i/' + encodeURIComponent(i0)];
+const MODR = {surge: ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'], cal: ['#/cal'], cond: ['#/cond'], talk: ['#/talk'], up: ['#/up'], time: ['#/time'], info: ['#/info'], today: ['#/today'], x: ['#/x/005935'], past: ['#/w/005930/past', '#/w/' + firstCo + '/past'], rivals: ['#/w/005930/rivals'], grow: ['#/w/005930/grow', '#/w/' + firstCo + '/grow'], range: ['#/w/005930/range', '#/w/' + firstCo + '/range']};
+for (const [k, rs] of Object.entries(MODR)) if (READY.has(k)) ROUTES.push(...rs); // 옮긴 쪽도 세 폭 · 쓰지 않을 말 · 44px · 고리
 for (const w of [320, 360, 390]) {
   const p = await page(w); await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
   for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); checkScan(w + ' ' + r, await scan(p), p); bump('화면'); }
   await p.context().close();
 }
 
+/* ①-1 아주 큰 글씨(지금 아틀란스와 같은 세 칸 · 기억 atlas:font 2 · 화면 칸 zoom) — 320 폭에서 넘침 0 */
+{
+  const ctx = await b.newContext({viewport: {width: 320, height: 700}, deviceScaleFactor: 1, hasTouch: true});
+  await ctx.addInitScript(() => { try { localStorage.setItem('atlas:font', '2'); } catch { /* 없음 */ } });
+  const p = await ctx.newPage(); p._errs = []; p.on('pageerror', e => p._errs.push(e.message));
+  await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
+  if (!(await p.evaluate(() => document.documentElement.classList.contains('f3')))) fail('큰 글씨 기억', 'atlas:font 2 인데 html.f3 아님');
+  for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); const sc = await scan(p); if (sc.sw > sc.vw) fail('큰 글씨 넘침', '320 아주 크게 ' + r + ' ' + sc.sw + '>' + sc.vw); bump('큰 글씨 화면'); }
+  if (p._errs.length) fail('화면 오류', '큰 글씨 ' + p._errs.join(' | ').slice(0, 200));
+  await ctx.close();
+}
 /* ①-2 첫 화면 붙박이(지금 아틀란스 atlas.js 와 글자 그대로) · 옛 주소 */
 {
   const src = await fs.readFile(path.join(ROOT, 'site/atlas/atlas.js'), 'utf8');
@@ -112,9 +136,9 @@ for (const w of [320, 360, 390]) {
   if (g.promo !== PROMO) fail('상품권 줄', g.promo + ' ≠ ' + PROMO);
   if (g.act !== '친구에게 소개하기보드리 1분 영상 · 보내기') fail('친구 소개 줄', g.act);
   if (g.href !== '/hello.html') fail('편지 고리', String(g.href));
-  if (g.tk !== '/atlas/#/talk' || !g.first.includes('tk-entry')) fail('이야기 입구', g.tk + ' ' + g.first);
+  if (g.tk !== oldOr('talk', '#/talk') || !g.first.includes('tk-entry')) fail('이야기 입구', g.tk + ' ' + g.first);
   if (home?.idx?.KOSPI && g.today !== 2) fail('오늘 한 줄', String(g.today));
-  if (core.time?.opens?.[0]?.date && g.mr !== '/atlas/#/time') fail('봉인 줄', String(g.mr));
+  if (core.time?.opens?.[0]?.date && g.mr !== oldOr('time', '#/time')) fail('봉인 줄', String(g.mr));
   if (!g.seal) fail('보드리 약속', '');
   const wantAl = ['big', 'usual'].filter(w => (home?.alerts ?? []).some(a => a.kind === 'idx' && (a.why ?? 'usual') === w)).length;
   if (g.al.length !== wantAl) fail('큰 날 「!」', g.al.length + ' ≠ ' + wantAl);
@@ -123,7 +147,9 @@ for (const w of [320, 360, 390]) {
     await q.evaluate(hh => { location.hash = hh; }, from); await q.waitForTimeout(250);
     const got = await q.evaluate(() => location.hash); if (got !== want) fail('옛 주소', from + ' → ' + got + ' ≠ ' + want);
   }
-  await q.evaluate(() => { location.hash = '#/surge'; }); await q.waitForURL(/\/atlas\/#\/surge$/, {timeout: 15000}).catch(() => fail('옛 주소', '#/surge → /atlas/#/surge 아님 ' + q.url()));
+  if (READY.has('surge')) { await q.evaluate(() => { location.hash = '#/surge'; }); await q.waitForTimeout(400); if (!/\/next\/#\/surge$/.test(q.url())) fail('옮긴 쪽 주소', '#/surge → ' + q.url()); }
+  else { await q.evaluate(() => { location.hash = '#/surge'; }); await q.waitForURL(/\/atlas\/#\/surge$/, {timeout: 15000}).catch(() => fail('옛 주소', '#/surge → /atlas/#/surge 아님 ' + q.url())); }
+  for (const k of ['past', 'rivals', 'grow', 'range'].filter(k => READY.has(k))) { await q.goto(base + '/next/#/c/005930/' + k); await q.waitForTimeout(500); if (!q.url().endsWith('#/w/005930/' + k)) fail('옛 7단 주소', k + ' → ' + q.url()); }
   bump('첫 화면 붙박이');
   await q.context().close();
 }
@@ -142,7 +168,8 @@ for (const code of list) {
   if (!g.ws.includes('하루 ' + wantDay)) fail('하루 %', code + ' 「' + g.ws + '」 ≠ ' + wantDay);
   if (!g.ws.includes(MD(mkt.asOf) + ' 마감')) fail('마감 날', code);
   const I = ind.get(o.i), G = I ? grp.get(I.g) : null;
-  const wantCh = [G ? '#/ch/g/' + encodeURIComponent(G.id) : null, I ? '#/ch/i/' + encodeURIComponent(I.name) : null, '/atlas/#/c/' + code, '/atlas/#/c/' + code + '/past', '/atlas/#/c/' + code + '/rivals', '/atlas/#/c/' + code + '/grow', '/atlas/#/c/' + code + '/range'].filter(Boolean);
+  const sub = k => (READY.has(k) ? '#/w/' + code + '/' + k : '/atlas/#/c/' + code + '/' + k);
+  const wantCh = [G ? '#/ch/g/' + encodeURIComponent(G.id) : null, I ? '#/ch/i/' + encodeURIComponent(I.name) : null, READY.has('co') ? '#/w/' + code : '/atlas/#/c/' + code, sub('past'), sub('rivals'), sub('grow'), sub('range')].filter(Boolean);
   if (JSON.stringify(g.ch) !== JSON.stringify(wantCh) || g.ch.length + g.chq !== 7) fail('챕터 일곱', code + ' ' + JSON.stringify(g.ch));
   if (g.chan !== (o.i || '?') + ' 업종') fail('채널 줄', code + ' ' + g.chan);
   const mem = (I?.members || []).filter(m => m !== code && CO[m]).length;
@@ -242,10 +269,14 @@ for (const G of core.groups) {
   p.once('dialog', d => d.accept()); await p.click('#view .lst button'); await p.waitForTimeout(150);
   const cleared = await p.evaluate(() => [JSON.parse(localStorage.getItem('atlas:new:hist') || '[]').length, JSON.parse(localStorage.getItem('atlas:new:later') || '[]').length]);
   if (cleared[0] || cleared[1]) fail('지우기', JSON.stringify(cleared));
+  // 글씨 크기 단추 — 보통 → 크게 → 아주 크게 → 보통 · 기억 atlas:font
+  const fs3 = [];
+  for (let k = 0; k < 3; k++) { await p.click('#fontBtn'); await p.waitForTimeout(60); fs3.push(await p.evaluate(() => [document.documentElement.classList.contains('f2'), document.documentElement.classList.contains('f3'), localStorage.getItem('atlas:font')].join(','))); }
+  if (fs3.join(' ') !== 'true,false,1 false,true,2 false,false,0') fail('글씨 크기 단추', fs3.join(' '));
   bump('누르기');
 }
 await b.close();
-const res = {schema: 'atlas11-next-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, companies: codes.length, limit: LIMIT || null, full: !LIMIT, seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
+const res = {schema: 'atlas11-next-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, ready: [...READY], companies: codes.length, limit: LIMIT || null, full: !LIMIT, seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
 await fs.mkdir(path.dirname(out), {recursive: true});
 await fs.writeFile(out, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, counts, fails: fails.slice(0, 12)}, null, 0));

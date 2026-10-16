@@ -8,6 +8,7 @@ import {createRequire} from 'node:module';
 const require = createRequire(process.env.PW_DIR ? process.env.PW_DIR.replace(/\/?$/, '/') : import.meta.url);
 const {chromium} = require('playwright');
 const B = 'https://aaa7377.com', dir = 'reports/atlas11/probe/live-view'; await fs.mkdir(dir, {recursive: true});
+const NREADY = new Set(((/const READY = new Set\(\[([^\]]*)\]\);/.exec(await fs.readFile(new URL('../../../site/next/app.js', import.meta.url), 'utf8')) || [, ''])[1].match(/'([a-z]+)'/g) || []).map(x => x.slice(1, -1))); // 새 아틀란스로 옮긴 쪽(규칙 74)
 // 지운 옛 그림 판(git 블롭 번호 · 그림이 아니라 번호만)
 const OLD = new Set(`${(await fs.readFile('scripts/atlas11/probe/old-media-blobs.txt', 'utf8'))}`.split(/\s+/).filter(Boolean));
 const blobId = buf => crypto.createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${buf.length}\0`), buf])).digest('hex');
@@ -318,9 +319,24 @@ await step('새 아틀란스 첫 화면', async () => { // 사장님 2026-10-17 
   const shorts = await page.evaluate(() => document.querySelectorAll('#view .sh').length);
   out.next = {html: hr.status, robots, home: {...home, letter: home.letter.length}, watch, shorts,
     ok: hr.status === 200 && !/noindex/.test(robots) && body.includes('/next/app.js') && home.tabs.join(',') === '홈,쇼츠,편지,구독,나' && home.cards >= 5 && home.chips === 8 && home.q === 0 && home.sw <= home.cw
-      && JSON.stringify(home.letter) === JSON.stringify(MSG) && home.promo === PROMO && home.landed && home.tk === '/atlas/#/talk'
+      && JSON.stringify(home.letter) === JSON.stringify(MSG) && home.promo === PROMO && home.landed && home.tk === (NREADY.has('talk') ? '#/talk' : '/atlas/#/talk')
       && watch.h1 === '삼성전자' && /20거래일 동안 [+−]?\d/.test(watch.ws) && watch.ch === 7 && watch.nx >= 1 && shorts >= 8};
   if (!out.next.ok) out.errors.push('새 아틀란스 첫 화면: ' + JSON.stringify(out.next).slice(0, 400));
+});
+await step('새 아틀란스 모든 쪽', async () => { // 사장님 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 · 04:23 「에이전트 총 동원해」 — 옮긴 쪽(app.js READY)마다 실제 사이트에서 열어 봄(숫자 맞대기는 livenext 의 쪽 검사)
+  const done = () => page.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => {});
+  const R = [['co', '#/w/005930', '.co-d'], ['past', '#/w/005930/past', '.chaps .cp.now'], ['rivals', '#/w/005930/rivals', '.chaps .cp.now'], ['grow', '#/w/005930/grow', '.chaps .cp.now'], ['range', '#/w/005930/range', '.chaps .cp.now'],
+    ['chx', '#/ch/g/' + 'semi', '.chx-d'], ['surge', '#/surge', null], ['surge', '#/surge/20', null], ['cal', '#/cal', null], ['cond', '#/cond', null], ['talk', '#/talk', null], ['up', '#/up', null], ['time', '#/time', null], ['info', '#/info', null], ['today', '#/today', null]].filter(([k]) => NREADY.has(k));
+  const got = [];
+  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await done();
+  for (const [k, hash, sel] of R) {
+    await page.evaluate(hh => { location.hash = hh; }, hash); await done(); await page.waitForTimeout(700);
+    const g = await page.evaluate(sel => ({url: location.pathname + location.hash, n: document.querySelector('#view')?.childElementCount ?? 0, bad: [...document.querySelectorAll('#view .empty')].map(e => e.textContent).filter(t => /그리지 못했어요/.test(t)).length, sel: sel ? !!document.querySelector('#view ' + sel) : true, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, title: document.title}), sel);
+    g.ok = g.url.startsWith('/') && !g.url.includes('/atlas/') && g.n >= 2 && !g.bad && g.sel && g.sw <= g.cw; g.k = k; got.push(g);
+    if (got.length <= 6) await shot('p5' + got.length + '-next-' + k);
+  }
+  out.nextPages = {ready: [...NREADY], pages: got, ok: got.every(g => g.ok)};
+  if (!out.nextPages.ok) out.errors.push('새 아틀란스 모든 쪽: ' + JSON.stringify(got.filter(g => !g.ok)).slice(0, 400));
 });
 await b.close();
 out.ok = out.oldFound === 0 && out.errors.length === 0;

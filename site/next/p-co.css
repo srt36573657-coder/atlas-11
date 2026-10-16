@@ -1,0 +1,82 @@
+/* 3단 회사 자세히(p-co.js) — 보는 화면 #/w/<번호> 챕터 칩 밑 칸 · 클래스는 모두 pco- 로 시작(다른 쪽과 겹치지 않게)
+   색은 app.css 이름 그대로 — 빨강 오름 · 파랑 내림 · 금빛은 고른 곳 · 고른 날 · ? 에만 · 글 17px 넘게(주 글 18 ~ 21px) · 누르는 자리 44px 넘게 · 입체 · 바둑판 없음 */
+.pco { margin-top: 18px; padding-bottom: 6px; border-top: 1px solid var(--hair); }
+.pco .num { font-variant-numeric: tabular-nums; }
+.pco .pco-q { color: var(--gold); }
+.pco-kind { margin: -4px 16px 6px; color: var(--sub); font-size: 17px; }
+.pco-kind b { color: var(--ink); font-weight: 700; }
+.pco-meta { margin: 0 16px 6px; color: var(--sub); font-size: 17px; font-variant-numeric: tabular-nums; }
+.pco-chip { margin: 0 16px 4px; color: var(--sub); font-size: 17px; line-height: 1.5; }
+.pco-badge { color: var(--gold); font-weight: 700; white-space: nowrap; }
+.pco-badge::before { content: ''; display: inline-block; width: 8px; height: 8px; margin: 0 6px 0 0; border-radius: 50%; background: var(--gold); vertical-align: .14em; }
+.pco-tag { display: inline-block; margin-right: 4px; padding: 0 10px; border: 1px solid var(--hair2); border-radius: 12px; color: var(--ink); }
+
+/* 그림 — 눈금 글은 오른쪽 칸(52px) · 때 글은 그림 밑 · 「고른 날」은 금빛 세로선 왼쪽 위 띠 */
+.pco-lc { position: relative; margin: 14px 16px 4px; }
+.pco-lc svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.pco-lc > .pco-q { margin: 8px 0; font-size: 18px; }
+.pco-yr span { position: absolute; right: 0; color: var(--mute); font-size: 17px; line-height: 1; white-space: nowrap; pointer-events: none; }
+.pco-yl { position: absolute; top: 0; color: var(--gold); font-size: 17px; line-height: 1.2; white-space: nowrap; pointer-events: none; }
+.pco-ax { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; padding-right: 52px; color: var(--mute); font-size: 17px; font-variant-numeric: tabular-nums; }
+.pco-tip { position: absolute; top: 0; transform: translateX(-50%); padding: 2px 10px; border-radius: 8px; background: var(--ink); color: #0C0E12; font-size: 17px; font-weight: 700; white-space: nowrap; pointer-events: none; }
+.pco-key { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 10px 16px 0; color: var(--mute); font-size: 17px; line-height: 1.45; }
+.pco-key span { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.pco-key i { flex: none; display: inline-block; width: 22px; }
+.pco-key .k-co { height: 3px; background: linear-gradient(90deg, var(--up) 50%, var(--down) 50%); }
+.pco-key .k-avg { height: 0; border-top: 2px dashed var(--mute); }
+.pco-key .k-pick { width: 0; height: 18px; border-left: 2px solid var(--gold); }
+
+/* 세 숫자 — 한 줄에 이름 · 숫자(긴 숫자도 넘치지 않게 이름이 꺾임) */
+.pco-trio { margin: 20px 16px 6px; border-top: 1px solid var(--m4-line); }
+.pco-trio > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--m4-soft); }
+.pco-trio span { min-width: 0; color: var(--sub); font-size: 17px; line-height: 1.35; }
+.pco-trio b { flex: none; font-size: 30px; font-weight: 400; letter-spacing: -.03em; line-height: 1.1; }
+.pco-won { margin: 14px 16px 4px; color: var(--sub); font-size: 18px; line-height: 1.55; }
+.pco-won.pco-q { color: var(--gold); }
+.pco-nw { white-space: nowrap; }
+.pco-src { margin: 2px 16px 0; color: var(--mute); font-size: 17px; }
+
+/* 왜 들었나요? · 왜 밖인가요? */
+.pco-box { margin-top: 26px; }
+.pco-box > h2.sec { margin-top: 0; align-items: flex-start; line-height: 1.35; }
+.pco-p { margin: 0 16px 8px; font-size: 18px; line-height: 1.6; }
+.pco-lead { font-size: 19px; }
+.pco-hon { margin: 0 16px 12px; color: var(--ink); font-size: 18px; line-height: 1.6; }
+.pco-small { margin: 8px 16px 0; color: var(--sub); font-size: 17px; line-height: 1.55; }
+.pco-why { margin: 8px 16px 0; padding: 2px 0 2px 14px; border-left: 2px solid var(--sub); color: var(--ink); font-size: 18px; font-weight: 600; line-height: 1.6; }
+.pco-tm { margin: 0 16px 8px; padding-left: 1.2em; font-size: 18px; line-height: 1.6; }
+.pco-tm li { margin: 0 0 6px; }
+.pco-tm .num { white-space: nowrap; }
+.pco-tm2 { margin: 0; font-size: 17px; }
+details.pco-more { margin: 12px 16px 0; border-top: 1px solid var(--m4-line); border-bottom: 1px solid var(--m4-line); }
+details.pco-more > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 56px; cursor: pointer; list-style: none; font-size: 18px; font-weight: 700; }
+details.pco-more > summary::-webkit-details-marker { display: none; }
+details.pco-more > summary::after { content: '열기'; flex: none; color: var(--sub); font-weight: 600; white-space: nowrap; }
+details.pco-more[open] > summary::after { content: '닫기'; }
+.pco-in { padding: 0 0 14px; }
+
+/* 깔때기 — 줄마다 이름 · 수 위 · 온 넓이 막대 아래(멈춘 자리 = 흰 띠 · 금빛 아님) */
+.pco-fname { margin: 12px 0 8px; color: var(--sub); font-size: 17px; }
+.pco-fname b { font-weight: 600; }
+.pco-funnel { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--m4-line); }
+.pco-funnel li { position: relative; padding: 12px 0 28px 14px; border-bottom: 1px solid var(--m4-soft); font-size: 17px; line-height: 1.45; }
+.pco-funnel li::after { content: ''; position: absolute; left: 14px; right: 0; bottom: 12px; height: 6px; border-radius: 3px; background: var(--m4-soft); }
+.pco-funnel li .fill { position: absolute; left: 14px; bottom: 12px; z-index: 1; max-width: calc(100% - 14px); height: 6px; border-radius: 3px; background: var(--m4-neu); }
+.pco-funnel li > span { position: relative; display: grid; grid-template-columns: 5.2em minmax(0, 1fr); column-gap: 12px; }
+.pco-funnel li > span b { text-align: right; font-weight: 600; }
+.pco-funnel li.past > span { color: var(--sub); }
+.pco-funnel li.no > span { color: var(--mute); }
+.pco-funnel li.stop > span { color: var(--ink); }
+.pco-funnel li.stop::before { content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 2px; background: var(--ink); }
+.pco-funnel li.stop .fill { background: var(--ink); }
+
+/* 다음 챕터 · 자료 줄 */
+.pco-next { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 12px; min-height: 72px; margin: 26px 16px 0; padding: 12px 14px 12px 16px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair2); }
+.pco-next small { display: block; color: var(--sub); font-size: 17px; }
+.pco-next b { display: block; font-size: 20px; line-height: 1.35; }
+.pco-nd { display: block; color: var(--sub); font-size: 17px; line-height: 1.4; }
+.pco-chev { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: #0C0E12; font-style: normal; font-size: 24px; line-height: 1; }
+.pco-next:active { background: var(--card2); }
+.pco-foot { margin: 18px 16px 0; color: var(--mute); font-size: 17px; line-height: 1.55; }
+.pco-foot + .pco-foot { margin-top: 8px; }
+.pco-safe { margin-top: 18px; font-size: 17px; }

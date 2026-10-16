@@ -1,0 +1,97 @@
+/* 6단 앞으로 클까? — 새 아틀란스 말투(큰 제목 → 챕터 일곱 → 그림 한 장 → 해마다 칸 → 반대 근거 → 접은 칸 → 다음 챕터)
+   색은 app.css 먹빛 이름 그대로 · 매출 배수는 오름 · 내림이 아니라 빨강 · 파랑을 쓰지 않음 · 금빛은 「?」 「!」 표만 · 입체 · 바둑판 없음 · 글 17px 넘게 · 누르는 자리 44px 넘게 */
+.pgrow-t { overflow-wrap: anywhere; text-wrap: balance; }
+.pgrow-step { margin: 10px 16px 0; color: var(--sub); font-size: 17px; }
+.pgrow-step b { color: var(--ink); font-weight: 700; }
+
+/* ① 그림 한 장 — 보는 화면 큰 선 칸처럼 끝에서 끝까지 · 눈금 글은 오른쪽 칸 */
+.pgrow-art { margin: 14px 0 0; padding: 14px 16px 12px; background: #050608; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.pgrow-gc { position: relative; }
+.pgrow-gc svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.pgrow-yr { position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; } /* 그림과 같은 비율(aspect-ratio 는 그릴 때 넣음) — 눈금 글은 이 칸 안 % 자리 */
+.pgrow-yr span { position: absolute; right: 0; transform: translateY(-50%); color: var(--mute); font-size: 17px; line-height: 1; white-space: nowrap; }
+.pgrow-ax { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 10px; margin-top: 6px; padding-right: 3.05rem; color: var(--mute); font-size: 17px; line-height: 1.45; font-variant-numeric: tabular-nums; }
+.pgrow-tip { position: absolute; top: 0; left: 0; max-width: 100%; padding: 3px 12px; border-radius: 8px; background: var(--ink); color: #0C0E12; font-size: 17px; font-weight: 700; line-height: 1.4; pointer-events: none; }
+.pgrow-nochart { margin: 8px 0; font-size: 18px; }
+.pgrow-key { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 12px 0 0; color: var(--sub); font-size: 17px; line-height: 1.5; }
+.pgrow-key span { display: inline-flex; align-items: center; gap: 8px; }
+.pgrow-key i { display: inline-block; flex: none; width: 22px; box-sizing: border-box; }
+.pgrow-k-act { height: 10px; border-radius: 3px; background: var(--sub); }
+.pgrow-k-est { height: 10px; border-radius: 3px; border: 2px dashed var(--sub); }
+.pgrow-k-band { height: 10px; border-radius: 3px; background: rgba(242, 239, 232, .12); border: 1px solid var(--sub); }
+.pgrow-k-one { height: 0; border-top: 1px dashed var(--mute); }
+.pgrow-src { margin: 8px 0 0; color: var(--mute); font-size: 17px; line-height: 1.5; }
+
+/* 이야기가 없을 때 · 없는 주소 */
+.pgrow-none { margin: 16px 16px 0; padding: 12px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--hair); color: var(--ink); font-size: 18px; line-height: 1.6; }
+.pgrow-none.q { color: var(--gold); }
+
+/* ② 1 · 3 · 5 · 10년 칸 — 큰 숫자(가운데) · 범위 · 같은 자 작은 띠 · 말 등급 · 세 팀 물음 */
+h2.pgrow-sec { display: block; margin: 24px 16px 10px; line-height: 1.4; }
+ol.pgrow-yrs { list-style: none; margin: 0 16px; padding: 0; display: grid; gap: 10px; }
+@media (min-width: 560px) { ol.pgrow-yrs { grid-template-columns: 1fr 1fr; } }
+ol.pgrow-yrs li { min-width: 0; padding: 14px 14px 12px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); }
+ol.pgrow-yrs p { margin: 0; }
+.pgrow-yh { color: var(--sub); font-size: 17px; }
+.pgrow-yh b { color: var(--ink); font-weight: 700; font-size: 19px; }
+.pgrow-ym { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; margin-top: 2px; }
+.pgrow-ym b { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; color: var(--ink); }
+.pgrow-ym span { color: var(--sub); font-size: 18px; }
+.pgrow-ym span.q { color: var(--gold); font-size: 19px; }
+.pgrow-rb { position: relative; height: 16px; margin: 8px 0 2px; border-radius: 3px; background: var(--card2); }
+.pgrow-rb i { position: absolute; display: block; }
+.pgrow-rb-bd { top: 2px; bottom: 2px; border-radius: 3px; background: rgba(242, 239, 232, .12); border: 1px solid var(--sub); box-sizing: border-box; }
+.pgrow-rb-md { top: -3px; bottom: -3px; width: 3px; margin-left: -1.5px; background: var(--ink); }
+.pgrow-rb-one { top: 0; bottom: 0; width: 0; border-left: 1px dashed var(--mute); }
+.pgrow-yg { margin-top: 8px; color: var(--sub); font-size: 17px; line-height: 1.6; }
+ol.pgrow-yrs p.pgrow-yg { margin-top: 8px; }
+.pgrow-below { color: var(--ink); }
+.pgrow-chip { display: inline-block; padding: 0 10px; border-radius: 10px; font-weight: 700; line-height: 1.5; color: var(--ink); white-space: nowrap; }
+.pgrow-chip.g5 { background: var(--violet); color: #0C0E12; }
+.pgrow-chip.g4 { background: rgba(242, 239, 232, .18); }
+.pgrow-chip.g3 { background: var(--card3); }
+.pgrow-chip.g2 { border: 1px solid var(--hair2); }
+.pgrow-chip.g1 { border: 1px dashed var(--mute); }
+ol.pgrow-yrs p.pgrow-yt { margin-top: 8px; color: var(--ink); font-size: 18px; line-height: 1.55; }
+
+/* 다음 챕터 — 7단 이름 · 「여기부터 다시 주가」 두 줄 + 새 화면 고리 */
+.pgrow-next { margin: 22px 0 0; }
+.pgrow-nx { margin: 0 16px 8px; color: var(--sub); font-size: 17px; line-height: 1.5; }
+.pgrow-next a.chap-next { display: flex; align-items: center; justify-content: center; min-height: 52px; padding: 6px 14px; font-size: 18px; font-weight: 700; text-align: center; }
+.pgrow-nx b { display: block; color: var(--ink); font-size: 19px; font-weight: 700; }
+.pgrow-nx span { display: block; }
+
+/* ③ 이야기가 틀리게 될 때 · ⑤ 세 팀 한 줄 — 표(!·?·G·A·C) + 글 */
+.pgrow-box { margin: 8px 0 0; }
+ul.pgrow-chk { list-style: none; margin: 0 16px; padding: 0; display: grid; gap: 12px; }
+ul.pgrow-chk li { display: grid; grid-template-columns: 1.6em minmax(0, 1fr); gap: 8px; align-items: start; font-size: 18px; line-height: 1.55; min-width: 0; }
+.pgrow-box ul.pgrow-chk { padding: 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); }
+.pgrow-m { font-weight: 800; text-align: center; }
+.pgrow-m.q { color: var(--gold); }
+.pgrow-m.ok { color: var(--violet-ink); }
+ul.pgrow-chk b { color: var(--ink); font-weight: 700; }
+
+/* ④ 다르게 보면 */
+.pgrow-alt { margin: 18px 16px 0; padding: 12px 14px; border-left: 2px solid var(--m4-line); border-radius: 0 10px 10px 0; background: var(--card); color: var(--ink); font-size: 18px; line-height: 1.6; }
+.pgrow-alt b { font-weight: 700; }
+
+/* ⑤ 왜 이렇게 봤나요?(접음) */
+details.pgrow-more { margin: 18px 16px 0; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); }
+details.pgrow-more > summary { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px; cursor: pointer; list-style: none; font-size: 18px; font-weight: 700; line-height: 1.45; }
+details.pgrow-more > summary::-webkit-details-marker { display: none; }
+details.pgrow-more > summary::after { content: '열기'; flex: none; color: var(--violet-ink); font-weight: 600; white-space: nowrap; }
+details.pgrow-more[open] > summary::after { content: '닫기'; }
+.pgrow-in { padding: 4px 0 14px; font-size: 18px; line-height: 1.6; }
+.pgrow-in ul.pgrow-chk { margin: 0 14px; }
+.pgrow-in > p { margin: 14px 14px; color: var(--sub); }
+ol.pgrow-facts { margin: 0 14px 0 calc(14px + 1.3em); padding: 0; }
+ol.pgrow-facts li { margin: 0 0 12px; }
+ol.pgrow-facts a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; color: var(--violet-ink); text-decoration: underline; text-underline-offset: 4px; }
+.pgrow-w { color: var(--sub); }
+
+/* 맺음 — 세 팀 이야기 메모 · 따로 다시 확인 · 자료 줄 */
+.pgrow-notes { margin: 18px 16px 0; }
+.pgrow-notes p { margin: 0 0 10px; color: var(--sub); font-size: 17px; line-height: 1.6; }
+.pgrow-foot { margin: 22px 16px 0; color: var(--mute); font-size: 17px; line-height: 1.6; }
+.pgrow-foot p { margin: 0 0 8px; }
+.pgrow-safe { font-size: 17px; }

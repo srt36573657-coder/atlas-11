@@ -1,0 +1,79 @@
+/* 5단 누구와 다투나(p-rivals.js) — 새 아틀란스 말투 · 먹빛 색 이름(app.css :root) 그대로
+   주가를 보지 않는 화면이라 빨강 · 파랑 없음 · 금빛은 「?」 줄만 · 입체 · 그림자 · 바둑판 없음 · 글 17px 넘게 · 누르는 자리 44px 넘게 · 320px 가로 넘침 없음 */
+.privals-lv { margin: 10px 16px 0; color: var(--sub); font-size: 17px; line-height: 1.45; }
+.privals-q { margin: 4px 16px 12px; color: var(--gold); font-size: 18px; line-height: 1.55; }
+
+/* 그림 — 같은 업종 안 매출 막대 */
+.privals-box { margin: 18px 16px 0; padding: 16px; background: var(--card); border: 1px solid var(--hair); border-radius: 14px; min-width: 0; }
+.privals-h { margin: 0 0 12px; font-size: 19px; line-height: 1.5; font-weight: 600; color: var(--sub); text-wrap: pretty; }
+.privals-iname { color: var(--ink); }
+.privals-rank { color: var(--ink); font-size: 26px; font-weight: 900; white-space: nowrap; }
+.privals-peers { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
+.privals-peers li { border-bottom: 1px solid var(--hair); }
+.privals-pr { display: grid; grid-template-columns: minmax(0, 1fr) auto 16px; grid-template-areas: 'n v c' 'b b b'; align-items: baseline; column-gap: 10px; row-gap: 8px; min-height: 56px; padding: 10px 0 12px; }
+div.privals-pr { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'n v' 'b b'; }
+a.privals-pr:active { background: var(--card2); }
+.privals-pn { grid-area: n; min-width: 0; font-size: 18px; line-height: 1.35; color: var(--sub); overflow-wrap: anywhere; }
+li.privals-me .privals-pn { color: var(--ink); font-weight: 700; }
+.privals-pv { grid-area: v; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.privals-chev { grid-area: c; font-style: normal; font-size: 20px; line-height: 1; color: var(--mute); text-align: right; }
+.privals-pt { grid-area: b; position: relative; display: block; height: 10px; border-radius: 4px; background: var(--card2); overflow: hidden; }
+.privals-pb { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--m4-neu); }
+.privals-pb.privals-mebar { background: var(--ink); }
+.privals-note { margin: 12px 0 0; font-size: 17px; line-height: 1.6; color: var(--sub); }
+.privals-src, .privals-tap { margin: 8px 0 0; font-size: 17px; line-height: 1.5; color: var(--mute); }
+
+/* 판의 모양 네 가지 그림 — 이 회사의 판만 진하게 */
+.privals-shapes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 16px 12px; }
+.privals-shp { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 96px; padding: 10px 6px; border: 1px solid var(--hair); border-radius: 12px; background: var(--card); color: var(--mute); font-size: 17px; line-height: 1.3; text-align: center; }
+.privals-shp svg { width: 72px; height: 44px; overflow: visible; }
+.privals-shp circle { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.privals-shp.privals-on { border-color: var(--ink); background: var(--card2); color: var(--ink); font-weight: 700; }
+.privals-shp.privals-on circle { fill: currentColor; fill-opacity: .85; }
+.privals-shape { margin: 4px 16px 6px; font-size: 19px; line-height: 1.6; }
+.privals-shape b { font-weight: 800; }
+
+/* 경쟁 회사 카드 */
+.privals-h3 { margin: 18px 16px 10px; font-size: 19px; font-weight: 700; }
+.privals-rivals { list-style: none; margin: 0 16px; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.privals-rv { min-width: 0; padding: 14px 16px; background: var(--card); border: 1px solid var(--hair); border-radius: 14px; }
+.privals-rt { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.privals-rt b { min-width: 0; font-size: 20px; line-height: 1.35; overflow-wrap: anywhere; }
+.privals-rw { padding: 1px 10px; border-radius: 999px; background: var(--card2); color: var(--sub); font-size: 17px; white-space: nowrap; }
+.privals-rnote { margin: 8px 0 0; font-size: 18px; line-height: 1.6; color: var(--ink); }
+.privals-go { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; min-width: 44px; margin-top: 10px; padding: 0 16px; border-radius: 999px; background: var(--card2); color: var(--ink); font-size: 17px; }
+.privals-go::after { content: '↗'; color: var(--mute); }
+.privals-rw2 { margin: 10px 0 0; font-size: 17px; line-height: 1.5; color: var(--mute); }
+
+/* 접은 칸 — 무엇을 팔고, 누가 사나요? */
+.privals-more { margin: 16px 16px 0; border: 1px solid var(--hair); border-radius: 14px; background: var(--card); }
+.privals-more > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; padding: 8px 16px; font-size: 19px; font-weight: 600; line-height: 1.4; cursor: pointer; list-style: none; }
+.privals-more > summary::-webkit-details-marker { display: none; }
+.privals-more > summary::after { content: '›'; flex: none; font-size: 22px; color: var(--mute); transform: rotate(90deg); transition: transform .2s var(--ease); }
+.privals-more[open] > summary::after { transform: rotate(-90deg); }
+.privals-inner { padding: 0 16px 16px; border-top: 1px solid var(--hair); }
+.privals-inner p { margin: 14px 0 0; font-size: 18px; line-height: 1.7; }
+.privals-inner b { color: var(--ink); }
+
+/* 다음 챕터 앞 한 줄 · 맨 아래 */
+.privals-nx { margin: 28px 16px 8px; font-size: 17px; line-height: 1.5; color: var(--sub); }
+.privals-nx b { display: block; font-size: 19px; color: var(--ink); }
+.privals-lv b { color: var(--ink); font-weight: 700; }
+.privals-foot { margin: 20px 16px 0; font-size: 17px; line-height: 1.6; color: var(--mute); }
+.privals-qf { color: var(--gold); }
+
+/* 없는 주소 — 까닭 · 깔때기 두 갈래(멈춘 자리는 진한 테 — 금빛은 쓰지 않음) */
+.privals-say { margin: 6px 16px 10px; font-size: 18px; line-height: 1.6; color: var(--sub); }
+.privals-why { margin: 10px 16px; padding: 12px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--hair); font-size: 18px; line-height: 1.6; }
+.privals-funnels { margin: 0 16px 12px; }
+.privals-fname { margin: 16px 0 8px; font-size: 19px; }
+.privals-funnel { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.privals-funnel li { position: relative; padding: 8px 10px; border-radius: 8px; background: var(--card); border: 1px solid var(--hair); overflow: hidden; font-size: 17px; line-height: 1.45; }
+.privals-ff { position: absolute; left: 0; top: 0; bottom: 0; background: var(--card3); }
+.privals-funnel li > span { position: relative; }
+.privals-funnel li.privals-stop { border-color: var(--ink); }
+.privals-funnel li.privals-no { color: var(--sub); }
+.privals-ws { margin-bottom: 14px; }
+.privals-q0 { margin: 4px 0 0; color: var(--gold); font-size: 18px; }
+.privals-safe { font-size: 17px; }
+.privals-next .chap-next { display: flex; align-items: center; min-height: 52px; padding: 8px 16px; font-size: 18px; font-weight: 600; } /* 다음 챕터 고리 — 이 쪽 칸 안에서만 글을 가운데 줄로 */

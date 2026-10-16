@@ -3,6 +3,7 @@
    · 02:24 「가」(한 가지를 일곱 화면으로) · 02:38 「정교하게 만들어라」 · 규칙 74 · 설계 기록 docs/design/new-tube-2026-10-17.md
    자료 = 지금 아틀란스 파일 그대로(/atlas/data/*.json) · 7단은 지금 아틀란스 화면으로 이어 줌(/#/g · /#/i · /#/c/<번호>/…) · 앞날 말 없음 · 사고팔기 권하지 않음
    보는 기계 기억(구독 · 본 기록 · 나중에 볼 것)은 이 기기에만(localStorage · 서버에 안 감) · 글은 textContent 로만(보안 규칙 안 — 안에 쓴 스크립트 · 꾸밈 없음) */
+import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/atlas/i18n.js';
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -314,7 +315,7 @@ async function vHome(chip) {
   const s3 = D.home?.s365, picks = Array.isArray(s3?.list) ? s3.list.filter(([c]) => X.co[c]) : [];
   if (chip === 'all') {
     // 첫 화면 붙박이(지금 아틀란스 그대로): 이야기 입구 → 큰 날 금빛 「!」 → 사장님 편지(격언 · 열면 보드리 · 친구 소개 · 상품권) → 고르기 칩 → 시장(오늘 한 줄)
-    nodes.push(h('a', {class: 'tk-entry', href: '/atlas/#/talk'}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'})));
+    nodes.push(h('a', {class: 'tk-entry', href: oldOr('talk', '#/talk')}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'})));
     const H = D.home, top = H && (idxOk(H.idx?.KOSPI) || idxOk(H.idx?.KOSDAQ)) ? idxAlerts(H) : [];
     if (top.length) nodes.push(h('div', {class: 'm4-top'}, ...top));
     nodes.push(h('div', {class: 'lw'}, m4letter()), chipsBar(chip));
@@ -323,6 +324,8 @@ async function vHome(chip) {
       const w = whenOf(H, 'idx', (H.idx?.KOSPI ?? H.idx?.KOSDAQ)?.live);
       nodes.push(h('div', {class: 'today', 'aria-label': '오늘 한 줄'}, h('p', {class: 'tl'}, todayWords('코스피', idxOk(H.idx?.KOSPI), w).join(' ')), h('p', {class: 'tl'}, todayWords('코스닥', idxOk(H.idx?.KOSDAQ), w).join(' '))));
     }
+    // 오늘 시장(지금 아틀란스 첫 화면의 지수 3달 · 오른 곳과 내린 곳 · 사고팔기 · 미국 · 고른 곳 · 큰 갈래 — 쪽 모듈 today · 2026-10-17 「모두 바꿔」)
+    if (ready('today')) { try { const d = await page('today', 'home'); if (d?.nodes?.length) nodes.push(h('section', {class: 'today-d', 'aria-label': '오늘 시장'}, ...d.nodes)); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 오늘 시장을 그리지 못했어요.'})); } }
     if (rise[0]) add('i:' + rise[0].name, riseCard(rise[0]));
     for (const n of shelf(shortFacts())) nodes.push(n);
     if (sm[0]) add('c:' + sm[0].c, surgeCard(sm[0]));
@@ -335,13 +338,13 @@ async function vHome(chip) {
     add('idx2', idxCard('KOSDAQ'));
     if (groups.length > 1) add('g:' + groups[groups.length - 1].id, groupCard(groups[groups.length - 1]));
     const T = core.time;
-    if (T?.opens?.[0]?.date) nodes.push(h('a', {class: 'm4-mr', href: '/atlas/#/time'}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.opens[0].date)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
+    if (T?.opens?.[0]?.date) nodes.push(h('a', {class: 'm4-mr', href: oldOr('time', '#/time')}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.opens[0].date)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
     nodes.push(h('section', {class: 'm4-seal-box', 'aria-label': '보드리 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '보드리는 들은 것만 따라 말해요.'}), h('span', {text: '아틀란스도 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'})));
     nodes.push(h('p', {class: 'safe', text: '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
     return {title: '홈', nodes};
   }
   if (chip === 'rise') { nodes.push(h('p', {class: 'note', text: '1주 동안 오른 업종을 많이 오른 차례로 보여요(' + md(core.rise?.from) + ' → ' + md(core.rise?.to) + ').'})); if (!rise.length) nodes.push(h('p', {class: 'empty', text: '1주 동안 오른 업종이 없어요.'})); for (const r of rise) add('i:' + r.name, riseCard(r)); }
-  else if (chip === 'surge') { if (!D.surge) return {title: '급등', nodes: [chipsBar(chip), ...noData('급등 자료')]}; nodes.push(h('p', {class: 'note', text: '급등 칸 ' + sm.length + '곳 · 5일 동안 많이 오른 차례 · ' + md(D.surge.asOf) + '까지'})); for (const m of sm) add('c:' + m.c, surgeCard(m)); nodes.push(h('a', {class: 'more', href: '/atlas/#/surge', text: '급등 다섯 칸 자세히 ›'})); }
+  else if (chip === 'surge') { if (!D.surge) return {title: '급등', nodes: [chipsBar(chip), ...noData('급등 자료')]}; nodes.push(h('p', {class: 'note', text: '급등 칸 ' + sm.length + '곳 · 5일 동안 많이 오른 차례 · ' + md(D.surge.asOf) + '까지'})); for (const m of sm) add('c:' + m.c, surgeCard(m)); nodes.push(h('a', {class: 'more', href: oldOr('surge', '#/surge'), text: '급등 다섯 칸 자세히 ›'})); }
   else if (chip === 'lead') { if (!C) return {title: '대장주', nodes: [chipsBar(chip), ...noData('몸값 자료')]}; nodes.push(h('p', {class: 'note', text: '업종마다 몸값 1등 ' + leads.length + '곳 · 5일 동안 많이 오른 차례'})); for (const [c, o] of leads) add('c:' + c, leadCard(c, o)); }
   else if (chip === 'pick') { if (!picks.length) return {title: '고른 곳', nodes: [chipsBar(chip), ...noData('고른 곳 자료')]}; nodes.push(h('p', {class: 'note', text: '고른 곳 ' + s3.n + '곳 · ' + md(s3.date) + ' 하루 많이 오른 차례'})); for (const [c, x] of picks) add('c:' + c, coCard(c, '20일', md(s3.date) + ' 하루 ' + pct(x))); }
   else if (chip === 'ind') { const inds = [...(core.industries || [])].sort((p, q) => q.chg - p.chg); nodes.push(h('p', {class: 'note', text: '업종 ' + inds.length + '개 · 20거래일 한 회사 한 표로 많이 오른 차례'})); for (const i of inds) add('i:' + i.name, card('#/ch/i/' + enc(i.name), thumb(i.v, '20일', {x: i.chg}), i.name + ' 업종, 20거래일 ' + pct(i.chg), '회사 ' + num(i.n) + '곳 · 큰 회사는 크게 ' + pct(i.cwChg), first(i.name))); }
@@ -362,7 +365,7 @@ function player(vals, labelAt, defaultTip) {
   const replay = () => { const p = svg?.querySelector('path.draw'); if (!p) return; p.classList.remove('draw'); void p.getBoundingClientRect(); p.classList.add('draw'); };
   let down = null;
   const at = e => { const r = box.getBoundingClientRect(), fx = Math.max(0, Math.min(1, (e.clientX - r.left - r.width * 0.03) / (r.width * 0.94))), i = Math.round(fx * (n - 1)); return {i, x: r.width * (0.03 + 0.94 * i / (n - 1))}; };
-  const show = e => { const {i, x} = at(e); cur.style.setProperty('left', x + 'px'); bar.style.setProperty('width', ((i / (n - 1)) * 100).toFixed(1) + '%'); tip.textContent = labelAt(i); };
+  const show = e => { const {i} = at(e); cur.style.setProperty('left', ((0.03 + 0.94 * i / (n - 1)) * 100).toFixed(2) + '%'); /* 몫으로 — 큰 글씨(zoom)에서도 제자리 */ bar.style.setProperty('width', ((i / (n - 1)) * 100).toFixed(1) + '%'); tip.textContent = labelAt(i); };
   box.addEventListener('pointerdown', e => { down = {x: e.clientX, t: Date.now(), moved: false}; box.setPointerCapture?.(e.pointerId); box.classList.add('scrubbing'); show(e); });
   box.addEventListener('pointermove', e => { if (!down) return; if (Math.abs(e.clientX - down.x) > 6) down.moved = true; show(e); });
   const end = () => { if (!down) return; const tap = !down.moved && Date.now() - down.t < 250; down = null; box.classList.remove('scrubbing'); if (tap) { replay(); bar.style.setProperty('width', '100%'); tip.textContent = defaultTip; } };
@@ -371,6 +374,7 @@ function player(vals, labelAt, defaultTip) {
 }
 async function vWatch(a) {
   if (a === 'KOSPI' || a === 'KOSDAQ') return vIndex(a);
+  { const [code, sub] = String(a).split('/'); if (sub) { if (['past', 'rivals', 'grow', 'range'].includes(sub) && ready(sub)) return page(sub, code); location.replace('/atlas/#/c/' + code + '/' + sub); return {title: '…', nodes: []}; } }
   await Promise.all([need('core'), need('mkt'), need('cond')]);
   const X = ix(); if (!X) return {title: '보는 화면', nodes: noData()};
   const c = X.co[a];
@@ -390,9 +394,9 @@ async function vWatch(a) {
     h('div', {class: 'acts'}, laterB, h('button', {class: 'act', type: 'button', text: '보내기', onclick: () => share(c.n + ' · 새 아틀란스', absUrl('#/w/' + a))}), h('a', {class: 'act', href: '/letter.html', text: '편지 쓰기'})),
     h('h2', {class: 'sec', text: '챕터 일곱 · 7단'}),
   ];
-  const base = '/atlas/#/c/' + enc(a), ch = [['1', '갈래', g ? '#/ch/g/' + enc(g.id) : null], ['2', '업종', I ? '#/ch/i/' + enc(I.name) : null], ['3', '회사', base], ['4', '지나온 길', base + '/past'], ['5', '누구와 다투나', base + '/rivals'], ['6', '앞으로 클까?', base + '/grow'], ['7', '범위', base + '/range']];
-  nodes.push(h('div', {class: 'chaps'}, ch.map(([k, t, href]) => href ? h('a', {class: 'cp' + (k === '3' ? ' now' : ''), href}, h('i', {text: k}), h('span', {text: t})) : h('span', {class: 'cp'}, h('i', {text: k}), h('span', {text: t + ' ?'})))));
-  nodes.push(h('p', {class: 'note', text: '1 · 2단은 새 채널로, 3 ~ 7단은 지금 아틀란스의 그 단으로 가요.'}));
+  nodes.push(chaps(a, '3'));
+  nodes.push(h('p', {class: 'note', text: ready('past') ? '챕터를 누르면 그 단이 열려요.' : '1 · 2단은 새 채널로, 3 ~ 7단은 지금 아틀란스의 그 단으로 가요.'}));
+  if (ready('co')) { try { const d = await page('co', a); if (d?.nodes?.length) nodes.push(h('section', {class: 'co-d', id: 'd'}, ...d.nodes)); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 회사 자세히를 그리지 못했어요.'})); } }
   const mem = (I?.members || []).filter(m => m !== a && X.co[m]);
   if (mem.length) {
     const capOf = m => Cd?.get(m)?.cap ?? -1;
@@ -406,6 +410,20 @@ async function vWatch(a) {
     nodes.push(list, more);
   }
   return {title: c.n, nodes};
+}
+/* 챕터 일곱(7단) — 보는 화면 · 4 ~ 7단 쪽 모듈이 함께 씀(NX.chaps · NX.chapNext) · 지금 단은 금빛 테 */
+function chapList(a) {
+  const X = ix(), c = X?.co?.[a], I = c ? X.ind.get(c.i) : null, g = I ? X.grp.get(I.g) : null, base = '/atlas/#/c/' + enc(a), sub = k => (ready(k) ? '#/w/' + enc(a) + '/' + k : base + '/' + k);
+  return [['1', '갈래', g ? '#/ch/g/' + enc(g.id) : null], ['2', '업종', I ? '#/ch/i/' + enc(I.name) : null], ['3', '회사', ready('co') ? '#/w/' + enc(a) : base], ['4', '지나온 길', sub('past')], ['5', '누구와 다투나', sub('rivals')], ['6', '앞으로 클까?', sub('grow')], ['7', '범위', sub('range')]];
+}
+function chaps(a, now) {
+  const row = now !== '3'; // 4 ~ 7단 = 한 줄로 밀어 보기 · 보는 화면(3단) = 일곱 칸 모두
+  const el = h('div', {class: 'chaps' + (row ? ' row' : ''), role: row ? 'navigation' : null, 'aria-label': row ? '챕터 일곱' : null}, chapList(a).map(([k, t, href]) => href ? h('a', {class: 'cp' + (k === now ? ' now' : ''), href, 'aria-current': k === now ? 'page' : null}, h('i', {text: k}), h('span', {text: t})) : h('span', {class: 'cp'}, h('i', {text: k}), h('span', {text: t + ' ?'}))));
+  return el;
+}
+function chapNext(a, now) {
+  const L = chapList(a), i = L.findIndex(x => x[0] === now), nx = L[i + 1];
+  return nx?.[2] ? h('a', {class: 'more chap-next', href: nx[2], text: '다음 챕터 · ' + nx[0] + ' ' + nx[1] + ' ›'}) : h('a', {class: 'more chap-next', href: '#/w/' + enc(a), text: '회사로 돌아가기 ›'});
 }
 async function vIndex(code) {
   await Promise.all([need('core'), need('mkt'), need('home')]);
@@ -481,7 +499,8 @@ async function vChannel(a) {
     b.addEventListener('click', () => { for (const x of tabBar.children) x.setAttribute('aria-selected', String(x === b)); (t === 'co' ? showCo : showInd)(); });
     tabBar.append(b);
   }
-  nodes.push(tabBar, pane, h('a', {class: 'more', href: kind === 'g' ? '/atlas/#/g/' + enc(ch.id) : '/atlas/#/i/' + enc(ch.name), text: '지금 아틀란스 7단으로 보기 ›'}));
+  if (ready('chx')) { try { const d = await page('chx', a); if (d?.nodes?.length) nodes.push(h('section', {class: 'chx-d'}, ...d.nodes)); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 채널 자세히를 그리지 못했어요.'})); } }
+  nodes.push(tabBar, pane); if (!ready('chx')) nodes.push(h('a', {class: 'more', href: kind === 'g' ? '/atlas/#/g/' + enc(ch.id) : '/atlas/#/i/' + enc(ch.name), text: '지금 아틀란스 7단으로 보기 ›'}));
   showCo();
   return {title: name, nodes};
 }
@@ -526,12 +545,13 @@ async function vMe() {
   nodes.push(h('h2', {class: 'sec', text: '바로 가기'}), h('div', {class: 'lst'},
     h('a', {href: '#/sub'}, '구독한 채널', h('span', {text: ns + '개 ›'})),
     h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})),
-    h('a', {href: '/atlas/#/surge'}, '급등 다섯 칸', h('span', {text: '›'})),
-    h('a', {href: '/atlas/#/cal'}, '달력 · 지켜보는 곳', h('span', {text: '›'})),
-    h('a', {href: '/atlas/#/cond'}, '조건 찾기', h('span', {text: '›'})),
-    h('a', {href: '/atlas/#/talk'}, '이야기 칸', h('span', {text: '›'})),
-    h('a', {href: '/atlas/#/time'}, '봉인', h('span', {text: '›'})),
-    h('a', {href: '/atlas/#/up'}, '업데이트 기록', h('span', {text: '›'}))));
+    h('a', {href: oldOr('surge', '#/surge')}, '급등 다섯 칸', h('span', {text: '›'})),
+    h('a', {href: oldOr('cal', '#/cal')}, '달력 · 지켜보는 곳', h('span', {text: '›'})),
+    h('a', {href: oldOr('cond', '#/cond')}, '조건 찾기', h('span', {text: '›'})),
+    h('a', {href: oldOr('talk', '#/talk')}, '이야기 칸', h('span', {text: '›'})),
+    h('a', {href: oldOr('time', '#/time')}, '봉인', h('span', {text: '›'})),
+    h('a', {href: oldOr('up', '#/up')}, '업데이트 기록', h('span', {text: '›'})),
+    h('a', {href: oldOr('info', '#/info')}, '도움말 · 이 사이트는?', h('span', {text: '›'}))));
   if (hist.length || lat.length) {
     const clr = h('button', {type: 'button', text: '본 기록 · 담은 것 지우기'}, h('span', {text: '›'}));
     clr.addEventListener('click', () => { if (!confirm('본 기록과 담은 것을 이 기기에서 지울까요?')) return; store.set(K_HIST, []); store.set(K_LATER, []); toast('지웠어요.'); route(true); });
@@ -541,22 +561,55 @@ async function vMe() {
   return {title: '나', nodes};
 }
 
-/* 찾기 — 회사 2,557곳 · 업종 · 갈래 · 이름이나 번호 */
+/* 찾기 — 지금 아틀란스 찾기와 같은 잣대(한 글자 · 첫 글자 ㅅㅅㅈㅈ · 영어 글자 소리 · 종목 번호 · 영어로 볼 때는 영어 이름)
+   목록 = 코스피 · 코스닥 모두(names.json — 펀드 · 우선주까지) · 회사 주식은 보는 화면 · 그 밖은 밖 칸(#/x/) · 못 받으면 회사만 */
+const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+const LAT = {A: '에이', B: '비', C: '씨', D: '디', E: '이', F: '에프', G: '지', H: '에이치', I: '아이', J: '제이', K: '케이', L: '엘', M: '엠', N: '엔', O: '오', P: '피', Q: '큐', R: '알', S: '에스', T: '티', U: '유', V: '브이', W: '더블유', X: '엑스', Y: '와이', Z: '지'};
+const nrm = s => String(s).toLowerCase().replace(/[\s·.\-()&]/g, '');
+const cho = s => [...s].map(ch => { const k = ch.charCodeAt(0) - 0xAC00; return k >= 0 && k < 11172 ? CHO[Math.floor(k / 588)] : ch; }).join('');
+const sound = s => String(s).replace(/[A-Za-z]/g, ch => LAT[ch.toUpperCase()] || ch);
+let NAMES = null;
+async function needNames() {
+  if (NAMES) return NAMES;
+  const j = await getJson('names.json'); if (!Array.isArray(j?.rows)) return null;
+  for (const r of j.rows) { const x = nrm(r.n), y = nrm(sound(r.n)), e = EN ? nrm(nameEn(r.n) ?? '') : ''; r._k = e ? [x, y, e] : [x, y]; r._c = [cho(x), cho(y)]; }
+  return (NAMES = j);
+}
+function findHits(X, rows, q) {
+  const k = nrm(q); if (!k) return [];
+  const onlyCho = /^[ㄱ-ㅎ]+$/.test(k), digits = /^\d+$/.test(k), codeK = !digits && /^\d[0-9a-z]{0,5}$/.test(k);
+  const out = [];
+  for (const g of X.grp.values()) if (nrm(g.name).includes(k) || nrm(g.short || '').includes(k) || (EN && nrm(L(g.name)).includes(k))) out.push({kind: 'g', score: nrm(g.name).startsWith(k) ? 0 : 1, g});
+  for (const i of X.ind.values()) if (nrm(i.name).includes(k) || (onlyCho && cho(nrm(i.name)).includes(k)) || (EN && nrm(L(i.name)).includes(k))) out.push({kind: 'i', score: nrm(i.name).startsWith(k) ? 0 : 1, i});
+  rows.forEach((r, ix) => {
+    let sc = -1;
+    if (digits) { if (r.c.startsWith(k)) sc = 0; }
+    else if (codeK && r.c.toLowerCase().startsWith(k)) sc = 0;
+    else if (onlyCho) { if (r._c.some(x => x.startsWith(k))) sc = 1; else if (r._c.some(x => x.includes(k))) sc = 3; }
+    else if (r._k[0] === k) sc = -1.5; else if (r._k.some(x => x.startsWith(k))) sc = 0; else if (r._k.some(x => x.includes(k))) sc = 2;
+    if (sc !== -1 || r._k[0] === k) out.push({kind: X.co[r.c] ? 'c' : 'x', score: sc + (X.co[r.c] ? 0 : 0.5), ix, r});
+  });
+  return out.sort((p, q2) => p.score - q2.score || ((p.ix ?? -1) - (q2.ix ?? -1)));
+}
 async function vFind(a) {
   await Promise.all([need('core'), need('mkt')]);
   const X = ix(); if (!X) return {title: '찾기', nodes: noData()};
+  const N = await needNames();
+  const rows = N?.rows ?? Object.entries(X.co).map(([c, o]) => { const x = nrm(o.n), y = nrm(sound(o.n)); return {c, n: o.n, _k: [x, y], _c: [cho(x), cho(y)]}; });
   const inp = h('input', {type: 'search', placeholder: '회사 이름이나 번호, 업종', 'aria-label': '찾기', enterkeyhint: 'search', autocomplete: 'off', value: a || ''});
   const hits = h('div', {class: 'hits', role: 'list'});
-  const co = Object.entries(X.co);
   const run = () => {
-    const q = inp.value.trim(); hits.replaceChildren(); if (!q) { hits.append(h('p', {class: 'note', text: '회사 ' + num(co.length) + '곳 · 업종 ' + X.ind.size + '개 · 큰 갈래 ' + X.grp.size + '개에서 찾아요.'})); return; }
-    const Q = q.toUpperCase(), out = [];
-    for (const g of X.grp.values()) if (g.name.includes(q)) out.push(h('a', {href: '#/ch/g/' + enc(g.id), role: 'listitem'}, g.name + ' 갈래', h('small', {text: '큰 갈래 · 회사 ' + num(g.n) + '곳'})));
-    for (const i of X.ind.values()) if (i.name.includes(q)) out.push(h('a', {href: '#/ch/i/' + enc(i.name), role: 'listitem'}, i.name + ' 업종', h('small', {text: '업종 · 회사 ' + num(i.n) + '곳'})));
-    const cs = co.filter(([c, o]) => o.n.toUpperCase().includes(Q) || c.startsWith(Q)).sort((p, q2) => (p[1].n.toUpperCase().startsWith(Q) ? 0 : 1) - (q2[1].n.toUpperCase().startsWith(Q) ? 0 : 1) || p[1].n.length - q2[1].n.length);
-    for (const [c, o] of cs.slice(0, 30)) out.push(h('a', {href: '#/w/' + c, role: 'listitem'}, o.n, h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))})));
-    if (!out.length) out.push(h('p', {class: 'note', text: '찾는 것이 없어요. 펀드 · 우선주는 지금 아틀란스 찾기에서 찾아요.'}), h('a', {class: 'more', href: '/atlas/#/find', text: '지금 아틀란스 찾기 ›'}));
-    else if (cs.length > 30) out.push(h('p', {class: 'note', text: '회사가 ' + num(cs.length) + '곳이에요. 더 길게 써 보세요.'}));
+    const q = inp.value.trim(); hits.replaceChildren();
+    if (!q) { hits.append(h('p', {class: 'note', text: '회사 ' + num(Object.keys(X.co).length) + '곳 · 업종 ' + X.ind.size + '개 · 큰 갈래 ' + X.grp.size + '개에서 찾아요.'}), h('p', {class: 'note', text: '이름 한 글자부터 찾아요. 첫 글자(ㅅㅅㅈㅈ)와 종목 번호도 돼요.' + (N ? ' 펀드 · 우선주까지 ' + num(rows.length) + '개 목록이에요.' : '')})); return; }
+    const all = findHits(X, rows, q), top = all.slice(0, 40), out = [];
+    for (const x of top) {
+      if (x.kind === 'g') out.push(h('a', {href: '#/ch/g/' + enc(x.g.id), role: 'listitem'}, x.g.name + ' 갈래', h('small', {text: '큰 갈래 · 회사 ' + num(x.g.n) + '곳 · 20거래일 ' + pct(x.g.chg)})));
+      else if (x.kind === 'i') out.push(h('a', {href: '#/ch/i/' + enc(x.i.name), role: 'listitem'}, x.i.name + ' 업종', h('small', {text: '업종 · 회사 ' + num(x.i.n) + '곳 · 20거래일 ' + pct(x.i.chg)})));
+      else if (x.kind === 'c') { const o = X.co[x.r.c]; out.push(h('a', {href: '#/w/' + x.r.c, role: 'listitem'}, h('span', {class: 'nm', 'data-proper': '', text: o.n}), h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))}))); }
+      else out.push(h('a', {href: oldOr('x', '#/x/' + enc(x.r.c)), role: 'listitem', class: 'xo'}, h('span', {class: 'nm', 'data-proper': '', text: x.r.n}), h('small', {text: x.r.w || '회사 주식 밖'})));
+    }
+    if (!out.length) out.push(h('p', {class: 'note', text: '「' + q + '」 — 찾는 이름이 없어요. ' + (N ? '코스피 · 코스닥 목록 ' + num(N.funnel?.universe ?? rows.length) + '개' + (N.collected ? '(' + N.collected + ' 모음 · 펀드 · 우선주까지)' : '') + ' 안에 없는 이름이에요. ' : '') + '띄어쓰기를 빼거나 첫 글자로도 찾아보세요.'}));
+    else if (all.length > 40) out.push(h('p', {class: 'note', text: '찾은 것이 ' + num(all.length) + '개예요. 앞 40개만 보여요. 더 길게 써 보세요.'}));
     hits.append(...out);
   };
   inp.addEventListener('input', run); run();
@@ -564,15 +617,40 @@ async function vFind(a) {
   return {title: '찾기', nodes: [h('div', {class: 'find'}, inp), hits]};
 }
 
+/* 쪽 모듈 — 지금 아틀란스(/atlas/)의 쪽을 새 화면으로 옮긴 것(2026-10-17 04:23 「에이전트 총 동원해」)
+   /next/p-<이름>.js 는 render(arg) → {title, nodes} 를 내보냄 · 모양은 /next/p-<이름>.css · 도구는 globalThis.NX
+   READY 에 든 쪽만 새 화면으로 열고, 나머지는 지금 아틀란스로 넘김 · ?dev=1 이면 모든 모듈을 엶(옮기는 동안 시험) */
+const READY = new Set(['co', 'past', 'rivals', 'grow', 'range', 'chx', 'surge', 'cond', 'talk', 'up', 'time', 'info', 'x']); // 옮긴 쪽(2026-10-17 · 쪽마다 check_<이름>.mjs 실패 0)
+const DEV = (() => { try { return new URLSearchParams(location.search).get('dev') === '1'; } catch { return false; } })();
+const ready = k => DEV || READY.has(k);
+const oldOr = (k, hash) => (ready(k) ? hash : '/atlas/' + hash); // 새 화면이 있으면 새 화면 · 아니면 지금 아틀란스
+const JC = {};
+/** /atlas/data/ 아래 아무 파일 — 못 받으면 null(15초 뒤 다시) */
+function getJson(name) {
+  const c = JC[name]; if (c && (c.v !== null || Date.now() - c.t < 15000)) return c.p;
+  const p = fetch('/atlas/data/' + name, {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null).then(j => { JC[name].v = j; return j; });
+  JC[name] = {p, v: undefined, t: Date.now()}; return p;
+}
+const MODS = {};
+async function page(name, arg) {
+  if (!MODS[name]) {
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/p-' + name + '.css'; document.head.append(l);
+    MODS[name] = import('/next/p-' + name + '.js');
+  }
+  const m = await MODS[name];
+  return m.render(arg);
+}
+globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, dayOf, c20, enc, first, odd, need, D, ix, condOf, dateAt, lineSvg, thumb, numThumb, card, toast, share, absUrl,
+  subBtn, isSub, toggleSub, pushHist, laters, jo, hasB, a1, NB, kstNow, dayK, ampm, isDay, isTime, idxOk, gauge, getJson, RM, player, ready, page, chaps, chapNext, noData};
 /* 길 — 화면마다 새 칸 · 늦게 끝난 앞 화면은 버림 · 돌아오면 그 자리 */
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', sub: 'sub', me: 'me'};
-const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
+const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
 let seq = 0, curHash = null;
 const scrollMem = new Map();
 function parse(hash) {
   const m = /^#\/([a-z0-9]*)\/?(.*)$/.exec(hash || '#/'); if (!m) return {k: null};
-  let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null}; }
+  let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null, raw: m[2]}; }
   return {k: m[1], a};
 }
 async function route(force) {
@@ -580,14 +658,15 @@ async function route(force) {
   if (curHash != null && curHash !== hash) scrollMem.set(curHash, window.scrollY);
   if (hash === curHash && !force) return;
   curHash = hash;
-  const {k, a} = parse(hash);
+  const {k, a: a0} = parse(hash);
+  const a = a0 == null && OLD_KINDS.has(k) ? (k === 'x' ? '?' : '') : a0; // 깨진 주소(%E0 …) — 지금 아틀란스와 같게(급등 · 달력 · 조건은 처음 화면 · 밖 칸은 「?」)
   // 옛 주소(지금 아틀란스) — 새 화면이 있으면 그리로 · 아직 옮기지 않은 쪽은 /atlas/ 의 그 쪽으로(2026-10-17 04:04 「모두 바꿔」 — 단계마다 줄어듦)
-  if (k === 'c' && a != null) { const [code, sub] = a.split('/'); if (sub) location.replace('/atlas/' + hash); else location.replace('#/w/' + enc(code)); return; }
+  if (k === 'c' && a != null) { const [code, sub] = a.split('/'); if (sub) location.replace(['past', 'rivals', 'grow', 'range'].includes(sub) && ready(sub) ? '#/w/' + enc(code) + '/' + sub : '/atlas/' + hash); else location.replace('#/w/' + enc(code)); return; }
   if ((k === 'g' || k === 'i') && a != null) { location.replace('#/ch/' + k + '/' + enc(a)); return; }
   if (k === 'list') { location.replace('#/f/ind'); return; }
   if (k === '36') { location.replace('#/'); return; } // 지운 화면(규칙 55)
-  if (OLD_KINDS.has(k)) { location.replace('/atlas/' + hash); return; }
-  const view = VIEWS[k];
+  if (OLD_KINDS.has(k) && !ready(k)) { location.replace('/atlas/' + hash); return; }
+  const view = OLD_KINDS.has(k) ? (arg => page(k, arg)) : VIEWS[k];
   if (!view || a == null) { location.replace('#/'); return; }
   const my = ++seq, root = $('#view');
   for (const t of document.querySelectorAll('.tabs a')) t.removeAttribute('aria-current');
@@ -598,13 +677,25 @@ async function route(force) {
   catch (e) { console.error(e); out = {title: '?', nodes: [h('p', {class: 'empty', text: '? 화면을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})]}; }
   if (my !== seq) return; // 늦게 끝난 앞 화면
   root.replaceChildren(...out.nodes);
+  for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
   document.title = out.title + ' · 새 아틀란스';
   document.body.classList.toggle('noscroll', !!out.noScroll);
   window.scrollTo(0, out.noScroll ? 0 : scrollMem.get(hash) ?? 0);
 }
 window.addEventListener('hashchange', () => route());
 $('#findBtn')?.replaceChildren(icon('search'));
-/* 영어 — 새 화면 영어 사전이 차기 전까지 지금 아틀란스 영어 판으로(규칙 71 · 보는 기계 기억 atlas:lang 그대로) */
-const langWant = (() => { try { const q = new URLSearchParams(location.search).get('lang'); if (q === 'ko') { localStorage.setItem('atlas:lang', 'ko'); return 'ko'; } return q || localStorage.getItem('atlas:lang'); } catch { return null; } })();
-if (langWant === 'en') location.replace('/atlas/?lang=en' + (location.hash || '#/'));
-else route();
+/* 글씨 크기 — 지금 아틀란스와 같은 세 칸(보통 · 크게 · 아주 크게)과 같은 기억(atlas:font) · 화면 칸을 통째로 키움(app.css html.f2 · f3) */
+const FONTS = ['보통', '크게', '아주 크게'];
+let fontK = (() => { try { const k = +localStorage.getItem('atlas:font'); return k === 1 || k === 2 ? k : 0; } catch { return 0; } })();
+function setFont(k) { fontK = k; const r = document.documentElement; r.classList.toggle('f2', k === 1); r.classList.toggle('f3', k === 2); $('#fontBtn')?.setAttribute('aria-label', '글씨 크기 바꾸기 (지금 ' + FONTS[k] + ')'); try { localStorage.setItem('atlas:font', String(k)); } catch { /* 기억 못 함 */ } }
+setFont(fontK);
+$('#fontBtn')?.addEventListener('click', () => { setFont((fontK + 1) % 3); toast('글씨 ' + FONTS[fontK]); });
+/* 영어 — 지금 아틀란스 영어 엔진(/atlas/i18n.js · 규칙 71 · 그려진 한국어를 사전 틀로 바꿈 · 기억 atlas:lang 그대로)을 새 화면에도
+   EN_NEXT 가 false 인 동안(새 화면 글의 사전이 차기 전)은 지금 아틀란스 영어 판으로 넘김 · ?dev=1 이면 새 화면 영어를 시험으로 엶 */
+const EN_NEXT = false;
+if (EN_NEXT || DEV) $('#langBtn')?.addEventListener('click', e => { e.preventDefault(); switchLang(EN ? 'ko' : 'en'); });
+if (EN && !(EN_NEXT || DEV)) location.replace('/atlas/?lang=en' + (location.hash || '#/'));
+else {
+  if (EN) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/en.css'; document.head.append(l); await startI18n(); }
+  route();
+}

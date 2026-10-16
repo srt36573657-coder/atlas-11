@@ -1,0 +1,25 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-17T06:08+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-14 18:00(싱가포르) 모든 회사 7단(규칙 63) 올림",
+  "to": "2026-10-17 05:06(싱가포르) 찾음"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 46,
+   "when": "2026-10-14(싱가포르) 「7단 클릭구조 부활 시켜」 · 「전부다 나오게 해」로 고른 곳 밖 회사도 7단 범위를 보이게 한 뒤부터 — 지금 아틀란스 /atlas/#/c/<번호>/range",
+   "what": "고른 곳 밖 회사 2,501곳의 7단 범위 쪽이 「20일을 뽑아 n번」에 고른 곳의 뽑은 수(1,785,715번)를 그대로 보임 — 실제로 range_mc.py 는 밖 회사를 따로 39,985번 뽑음(range.json spec.others.paths) · 범위 숫자는 맞고 뽑은 수 글만 틀림 · 검사(site_check · range_verify)가 이 글의 숫자를 맞대지 않음",
+   "found_by": "Claude 일꾼 — 2026-10-17 「모두 바꿔」로 7단 범위 쪽을 새 아틀란스로 옮기며 맞대다 찾음(scripts/atlas11/next/check_range.mjs)",
+   "fixed": "새 아틀란스 7단(site/next/p-range.js)은 spec.others.paths 를 씀 · 지금 아틀란스(/atlas/) 쪽은 새 화면으로 넘어가며 첫 화면 · 고리에서 빠짐(옛 화면 코드는 고치지 않음)",
+   "evidence": [
+    "/home/claude/atlas-video/site/atlas/data/range.json",
+    "/home/claude/atlas-video/site/atlas/atlas.js",
+    "/home/claude/atlas-video/site/next/p-range.js"
+   ]
+  }
+ ]
+}

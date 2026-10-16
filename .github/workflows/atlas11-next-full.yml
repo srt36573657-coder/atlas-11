@@ -1,0 +1,80 @@
+name: atlas11-next-full
+# 새 아틀란스 모든 쪽 검사 — 실제 사이트(aaa7377.com)에서 쪽마다 따로 돌림(사장님 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 · 04:23 「정말 빠르면서도 정밀하게 … 에이전트 총 동원해」 · 규칙 74)
+#   쪽 검사 check_<이름>.mjs = 지금 아틀란스(/atlas/)의 그 쪽과 새 쪽(/next/?dev=1)을 같은 자료로 열어 숫자 · 글 · 고리를 맞댐(모든 회사 · 모든 칸)
+#   쪽마다 다른 실행기에서 함께 돌고, 결과는 마지막에 한 번에 reports/atlas11/probe/next-full/ 로 올림 · 사이트를 바꾸지 않음(읽기만)
+on:
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: '쪽 이름(쉼표) — 비우면 모두'
+        required: false
+        default: ''
+permissions:
+  contents: write
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.p.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        run: |
+          want="${{ inputs.pages }}"
+          all=$(ls scripts/atlas11/next/ | sed -n 's/^check_\([a-z0-9]*\)\.mjs$/\1/p' | tr '\n' ' ')
+          list=""
+          for n in next $all; do if [ -z "$want" ] || echo ",$want," | grep -q ",$n,"; then list="$list\"$n\","; fi; done
+          echo "list=[${list%,}]" >> "$GITHUB_OUTPUT"
+  page:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        name: ${{ fromJSON(needs.plan.outputs.list) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          mkdir -p /tmp/pw out
+          (cd /tmp/pw && npm i -s --no-audit --no-fund playwright@1.56.1 >/dev/null && npx -y playwright@1.56.1 install --with-deps chromium >/dev/null)
+          n="${{ matrix.name }}"; t0=$(date +%s)
+          if [ "$n" = "next" ]; then f=next_check.mjs; extra=""; else f="check_$n.mjs"; extra="--all"; fi
+          set +e
+          PW_DIR=/tmp/pw/ timeout 4200 node "scripts/atlas11/next/$f" --base https://aaa7377.com --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
+          code=$?
+          set -e
+          echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 ))}" > "out/$n.exit.json"
+          tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"
+          echo "끝 코드 $code"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: next-full-${{ matrix.name }}
+          path: out/
+  gather:
+    needs: page
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: art
+          pattern: next-full-*
+          merge-multiple: true
+      - run: |
+          mkdir -p reports/atlas11/probe/next-full
+          cp art/* reports/atlas11/probe/next-full/ 2>/dev/null || true
+          node -e '
+            const fs = require("fs"), d = "reports/atlas11/probe/next-full";
+            const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
+            const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: "https://aaa7377.com", pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
+            fs.writeFileSync(d + "/summary.json", JSON.stringify(sum, null, 1) + "\n"); console.log(JSON.stringify(sum));'
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add -f reports/atlas11/probe/next-full
+          git commit -m "atlas11 probe next-full [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase -q && git push && break; sleep 7; done || true
