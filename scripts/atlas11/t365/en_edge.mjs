@@ -76,6 +76,9 @@ function breadth() {
     kind === 'even' ? {up: Math.floor(n * 0.45), flat: n - 2 * Math.floor(n * 0.45), down: Math.floor(n * 0.45)} : kind === 'up' ? {up: Math.floor(n * (0.5 + rnd() * 0.45)), flat: 50, down: 0} : {up: 0, flat: 50, down: Math.floor(n * (0.5 + rnd() * 0.45))};
   if (kind === 'up') B.down = n - B.up - B.flat; if (kind === 'down') B.up = n - B.down - B.flat; B.n = B.up + B.flat + B.down; return B;
 }
+/** 강한 · 약한 업종 줄 — 네이버 업종 이름 모두에서 무작위(2026-10-16 올린 뒤 탐침: 저장된 자료에 없던 업종 이름 「건강관리기술」 · 「생명과학도구및서비스」가 영어로 안 바뀜) */
+const NAVER = Object.keys(core.secInd ?? {});
+const secRows = sg => Array.from({length: 3 + Math.floor(rnd() * 5)}, () => { const n = 5 + Math.floor(rnd() * 80), up = Math.floor(rnd() * n); return {name: pick(NAVER), chg: r2(sg * (0.3 + rnd() * 6)), up, down: n - up, flat: 0, n, in365: Math.floor(rnd() * 3)}; });
 function randHome() {
   const H = C(home), endK = pick([TODAY, YDAY, Y2]), endQ = rnd() < 0.85 ? endK : pick([TODAY, YDAY, Y2]);
   H.idx = {KOSPI: rnd() < 0.07 ? null : idxOf('코스피', rnd() < 0.12 ? 3 + Math.floor(rnd() * 18) : 61, endK, pick(SHAPES)()),
@@ -85,7 +88,7 @@ function randHome() {
   H.live = pick([true, false]);
   H.stale = {}; for (const k of PIECES) if (rnd() < 0.3) H.stale[k] = pick(TIMES());
   H.alerts = C(pick(ALERTS));
-  if (H.sectors) { H.sectors.breadth = rnd() < 0.1 ? null : breadth(); H.sectors.date = pick([TODAY, YDAY, undefined]); if (rnd() < 0.1) { H.sectors.strong = []; H.sectors.weak = []; } if (rnd() < 0.1) delete H.sectors.ranked; }
+  if (H.sectors) { H.sectors.strong = secRows(1); H.sectors.weak = secRows(-1); H.sectors.breadth = rnd() < 0.1 ? null : breadth(); H.sectors.date = pick([TODAY, YDAY, undefined]); if (rnd() < 0.1) { H.sectors.strong = []; H.sectors.weak = []; } if (rnd() < 0.1) delete H.sectors.ranked; }
   if (rnd() < 0.06) H.sectors = null;
   if (H.flows) { for (const m of ['KOSPI', 'KOSDAQ']) if (H.flows[m]) { H.flows[m].date = pick([TODAY, YDAY]); for (const w of ['personal', 'foreign', 'institutional']) H.flows[m][w] = rnd() < 0.08 ? null : rnd() < 0.08 ? 0 : Math.round((rnd() - 0.5) * 30000); } H.flows.live = pick([true, false, undefined]); if (rnd() < 0.12) delete H.flows.KOSDAQ; if (rnd() < 0.05) H.flows = null; }
   if (H.us && Array.isArray(H.us.rows)) { const keep = H.us.rows.filter(r => rnd() < 0.85 || r.key === 'INX'); for (const r of keep) r.chg = r2((rnd() - 0.5) * 4); H.us.rows = keep; H.us.date = pick([TODAY, YDAY, Y2, undefined]); if (rnd() < 0.05) H.us = null; }
@@ -111,6 +114,7 @@ const coPick = Object.keys(J('comp.json').companies ?? {})[0], coAll = Object.ke
 const ROUTES = ['#/', '#/list', '#/cond', '#/surge', '#/surge/10', '#/surge/40', '#/cal', '#/time', '#/info', '#/up', '#/g/' + core.groups[0].id, '#/i/' + encodeURIComponent(core.industries.find(i => i.n > 1).name),
   ...(coPick ? ['#/c/' + coPick, `#/c/${coPick}/past`, `#/c/${coPick}/range`] : []), ...(coOut ? ['#/c/' + coOut, `#/c/${coOut}/grow`] : []), ...(surgetr?.cases?.length ? ['#/cal/' + surgetr.cases[0][0]] : [])];
 { const K = C(core); K.provisional = true; for (const h of ROUTES) other.push({name: 'core 장 중', files: {'core.json': K}, hash: h, clock: CLOCKS.in}); }
+{ const K = C(core); K.sources = {...K.sources, price: String(K.sources?.price ?? '').replace(/ 모음\(/, ' 모음 + 날마다 이어 받음(')}; K.roll = {files: 3, added: 3, mismatch: 0}; for (const h of ROUTES) other.push({name: 'core 이어 받음', files: {'core.json': K}, hash: h}); } // site_build.py 「모음 + 날마다 이어 받음」(2026-10-16 탐침 — 사이트 자료에서만 보이는 꼴)
 if (cond) for (const p of [true, false]) { const X = C(cond); X.provisional = p; X.asOf = core.asOf; for (const h of ['#/cond', '#/cond/all-all-all', '#/cond/rise-top3-spike']) other.push({name: 'cond 장 중 ' + p, files: {'cond.json': X}, hash: h}); }
 if (cond) { const X = C(cond); X.asOf = '2026-01-02'; other.push({name: 'cond 날이 다름', files: {'cond.json': X}, hash: '#/cond'}); }
 const SVR = ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'];
