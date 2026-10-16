@@ -26,6 +26,7 @@ export const LANG = (() => {
 export const ON = LANG !== 'ko';
 export const LOCALE = ON ? 'en-US' : 'ko-KR';
 const HAN = /[가-힣ㄱ-ㅎㅏ-ㅣ]/, WORD = /[A-Za-z0-9가-힣]/, PARTICLE = /^[은는이가의을를도와과에로만]/;
+const COPULA = /^(?:이에요|예요)(?![가-힣])/; // 이름 + 「이에요 · 예요」도 이름으로(2026-10-16 올린 뒤 탐침: 「… 업종은 연예 기획사예요.」 · 「2차전지예요」가 이름으로 안 잡혀 업종마다 틀이 따로 필요했던 것)
 const WD = {월: 1, 화: 2, 수: 3, 목: 4, 금: 5, 토: 6, 일: 0};
 const WD_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MON_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -59,7 +60,7 @@ export function addEntities(map) {
 const okEdge = (s, i, len) => {
   const prev = s[i - 1] ?? '', next = s.slice(i + len);
   if (prev && WORD.test(prev)) return false;
-  return !next || !WORD.test(next[0]) || PARTICLE.test(next) && !WORD.test(next[1] ?? '');
+  return !next || !WORD.test(next[0]) || PARTICLE.test(next) && !WORD.test(next[1] ?? '') || COPULA.test(next);
 };
 /** 앞에서부터 가장 긴 이름 찾기(이름 4,300개 — 큰 정규식 대신) */
 function entScan(x, push, latin = false) {
