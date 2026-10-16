@@ -448,7 +448,7 @@ function m4letter() {
   const stars = h('span', {class: 'm4-stars', 'aria-hidden': 'true'}, ...[0, 1, 2, 3, 4, 5, 6].map(() => h('i')));
   const cut = HELLO_PROMO.indexOf('스타벅스'); // 「스타벅스 상품권 1만원!」은 한 줄에(규칙 62)
   const a = h('a', {class: 'hello m4-letter', href: '/hello.html'}, stars, msg,
-    h('span', {class: 'm4-act'}, h('span', {class: 'm4-ic'}, ICON.send()), h('span', {class: 'm4-aw'}, h('b', {text: '친구에게 소개하기'}), h('span', {}, '보드리 35초 ', h('span', {class: 'nb', text: '영상 · 보내기'}))), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})),
+    h('span', {class: 'm4-act'}, h('span', {class: 'm4-ic'}, ICON.send()), h('span', {class: 'm4-aw'}, h('b', {text: '친구에게 소개하기'}), h('span', {}, '보드리 1분 ', h('span', {class: 'nb', text: '영상 · 보내기'}))), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})),
     h('span', {class: 'm4-gift'}, ICON.gift(), h('span', {}, HELLO_PROMO.slice(0, cut), h('span', {class: 'nb', text: HELLO_PROMO.slice(cut)}))));
   if (!intro) return a;
   a.classList.add('intro');

@@ -1,10 +1,10 @@
 /* ATLAS · 소개 영상 한 장(hello.html)의 「친구에게 보내기」 — 2026-10-14(싱가포르) 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」(규칙 65)
-   · 보내는 글 = 앵무새 홍표 · 35초 영상(옛 /app/hello-share.js 는 옛 판 띠가 쓰고 그대로 — 옛 판 화면 코드는 고치지 않음: 옛 판 빠짐없는 검사가 지키는 곳이고, 오늘 자료로 옛 판 둘러보기 검사가 걸려 있음)
+   · 보내는 글 = 앵무새 보드리 · 1분 영상(2026-10-17 · 옛 홍표 35초)(옛 /app/hello-share.js 는 옛 판 띠가 쓰고 그대로 — 옛 판 화면 코드는 고치지 않음: 옛 판 빠짐없는 검사가 지키는 곳이고, 오늘 자료로 옛 판 둘러보기 검사가 걸려 있음)
    · 휴대폰 공유 창(카카오톡 · 문자)이 있으면 그것으로 · 없으면 링크 복사 · 복사도 막히면 주소 글을 그대로 보여 줌 */
 // 영어 팩(사장님 2026-10-15(싱가포르) 23:35 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」) — 이 기기에서 영어를 골랐으면 소개 쪽 글도 영어로(새 ATLAS 와 같은 사전 · 영상 속 말은 한국어 그대로)
 import {ON as EN, startI18n, t as L} from '/atlas/i18n.js';
 await startI18n();
-const HELLO_SHARE = {title: L('ATLAS를 소개합니다'), text: L('앵무새 보드리가 35초 동안 ATLAS를 소개해요. 앵무새는 들은 것만 말해요 — ATLAS도 지난 기록만 말해요!')};
+const HELLO_SHARE = {title: L('ATLAS를 소개합니다'), text: L('앵무새 보드리가 1분 동안 ATLAS를 소개해요. 앵무새는 들은 것만 말해요 — ATLAS도 지난 기록만 말해요!')};
 const helloUrl = () => new URL('/hello.html', location.origin).href;
 async function shareHello() {
   const url = helloUrl();

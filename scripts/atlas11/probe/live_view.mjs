@@ -177,7 +177,7 @@ await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 
   await shot('p26-hello-video');
   const all = [band, hv.label, hv.desc, hv.og, hv.alt, hv.body, hv.share].join(' '); // 옛 판(/old/) 띠는 그대로(옛 판 화면 코드 안 고침 — 규칙 65)
   out.hongpyo = {band, dur: hv.dur, label: hv.label, desc: hv.desc, alt: hv.alt, share: hv.share,
-    ok: /보드리 35초 영상/.test(band) && Math.abs((hv.dur ?? 0) - 35) < 0.6 && /보드리/.test(hv.label) && /보드리/.test(hv.desc) && /보드리/.test(hv.og) && /보드리/.test(hv.alt) && /보드리가 35초/.test(hv.share) && !/막비|24초|홍표/.test(all)}; // 2026-10-16 21:00 「홍표 → 보드리」
+    ok: /보드리 1분 영상/.test(band) && Math.abs((hv.dur ?? 0) - 60) < 0.6 && /보드리/.test(hv.label) && /보드리/.test(hv.desc) && /보드리/.test(hv.og) && /보드리/.test(hv.alt) && /보드리가 1분/.test(hv.share) && !/막비|24초|35초|홍표|10명/.test(all)}; // 2026-10-16 21:00 「홍표 → 보드리」 · 2026-10-17 1분 영상(옛 35초 · 10명 글이 다시 나오면 걸림)
   if (!out.hongpyo.ok) out.errors.push('홍표 영상: ' + JSON.stringify(out.hongpyo).slice(0, 300));
 });
 await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 04:10 「열면 홍표 니오게 해」 · 05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」(규칙 66 · 사진 p27 · p28) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 5초에 사장님 글

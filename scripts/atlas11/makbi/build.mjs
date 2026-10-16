@@ -5,7 +5,7 @@
 //     site/media/makbi-icon.svg   둥근 막비 얼굴(옛 판 띠 · 맨 위 1장이 못 열릴 때 띠)
 //     site/media/makbi-hello.svg  맨 위 1장 여는 홍표(240×300 · 바탕 없음 — 2026-10-15 「열면 홍표 니오게 해」 · 규칙 66)
 //     site/og-makbi.jpg           링크 미리보기(1200×630)
-//     site/media/makbi-poster.jpg · makbi-intro.mp4 · makbi-intro.webm  소개 영상 — video.mjs 가 만듦(2026-10-14 홍표 판: 720×1280 · 35초 · 소리 있음 · 자막)
+//     site/media/makbi-poster.jpg · makbi-intro.mp4 · makbi-intro.webm  소개 영상 — video.mjs 가 만듦(2026-10-17 보드리 1분 판: 720×1280 · 60초 · 소리 있음 · 자막 · 옛 홍표 35초 판 git d4b4bed3)
 //   2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」 — 보이는 이름은 홍표(파일 이름 makbi-* 은 그대로)
 //   위트 = 앵무새는 들은 말만 따라 한다 → ATLAS 도 지난 기록만 말한다(앞날 맞히기 없음 · 안전 문장과 같은 뜻)
 //   친구 소개 상품권(사장님 2026-10-14 14:56 「카톡으로 아틀란스 소개 10명 … 스타벅스 아메리카노 상품권 1장 … 그 앵무새 영상에도」 · 14:59 「너가 알아서 해 그냥 많이줘」)
@@ -66,13 +66,13 @@ if (!only || only === 'og') {
     <div class="mb"><svg viewBox="0 -6 240 330"><defs>${GEAR_DEFS}</defs>${hongpyo({id: 'o', tilt: -8, blink: 0, wingL: .15, wingR: .5, crestUp: .9, beakOpen: .5, visor: 0, vs: 1, flame: .55, glowWing: .6}, .3, {boot: 1, guard: 1})}</svg></div>
     <div class="bub">보드리! 보드리! 보드리!</div>
     <div class="tx"><h1>ATLAS를<br>소개합니다</h1><p class="who">안내 · 앵무새 보드리</p><p class="wit">앵무새는 들은 것만 말해요.<br>ATLAS도 지난 기록만 말해요.</p>
-    <div class="row"><span class="btn">▶ 35초 영상</span><span class="dom">aaa7377.com</span></div></div></body>`, {waitUntil: 'load'});
+    <div class="row"><span class="btn">▶ 1분 영상</span><span class="dom">aaa7377.com</span></div></div></body>`, {waitUntil: 'load'});
   await pg.evaluate(() => document.fonts.ready); await pg.waitForTimeout(200);
   await pg.screenshot({path: path.join(ROOT, 'site/og-makbi.jpg'), type: 'jpeg', quality: 88});
   await pg.close(); console.log('og 1');
 }
 
-if (!only || only === 'video') { // 소개 영상 — video.mjs(홍표 35초 · 소리 있음 · 2026-10-14)
+if (!only || only === 'video') { // 소개 영상 — video.mjs(보드리 1분 · 소리 있음 · 2026-10-17)
   execFileSync('node', [path.join(ROOT, 'scripts/atlas11/makbi/video.mjs')], {stdio: 'inherit', env: {...process.env, HP_OUT: MEDIA}});
 }
 await b.close();

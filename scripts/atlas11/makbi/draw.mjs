@@ -108,8 +108,8 @@ export function gearSvg(g, o) {
   }
   return s;
 }
-/** 홍표 한 마리(첨단 차림) — o: makbi 의 몸짓 + visor · vs(가리개 보임) · visorOff · flame · glowWing · g: gearSvg 의 g */
+/** 홍표(지금 보이는 이름 보드리) 한 마리(첨단 차림) — o: makbi 의 몸짓(glasses = 금테 안경 · 1분 영상 편지 · 신문 장면) + visor · vs(가리개 보임) · visorOff · flame · glowWing · g: gearSvg 의 g */
 export function hongpyo(o, t, g) {
-  return flameSvg(o.flame, t, g && g.boot > .5 ? 258 : 251) + makbi({id: o.id ?? 'hp', tilt: o.tilt, blink: o.blink, wingL: o.wingL, wingR: o.wingR, crestUp: o.crestUp, beakOpen: o.beakOpen}) + gearSvg(g, o) + wingGlow(o.glowWing, o.wingL, o.wingR)
+  return flameSvg(o.flame, t, g && g.boot > .5 ? 258 : 251) + makbi({id: o.id ?? 'hp', tilt: o.tilt, blink: o.blink, wingL: o.wingL, wingR: o.wingR, crestUp: o.crestUp, beakOpen: o.beakOpen, glasses: o.glasses}) + gearSvg(g, o) + wingGlow(o.glowWing, o.wingL, o.wingR)
     + (o.vs > .01 ? '<g opacity="' + _f2(o.vs) + '" transform="translate(0 ' + _f1(o.visorOff || 0) + ')">' + visorSvg(o.visor, t, o.tilt) + '</g>' : '');
 }
