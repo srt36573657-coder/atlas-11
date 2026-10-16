@@ -106,7 +106,8 @@ export async function addInvite(dist, rootDir = root) {
   const hp = path.join(dist, '_headers'); let head = await fs.readFile(hp, 'utf8');
   if (kakao) head = head.replace("script-src 'self';", "script-src 'self' https://t1.kakaocdn.net;");
   const quiet = '  X-Robots-Tag: noindex, nofollow, noarchive\n  Referrer-Policy: no-referrer\n  Cache-Control: no-cache\n';
-  await fs.writeFile(hp, head + '/i/*\n' + quiet + '/invite.html\n' + quiet + '/invite-config.json\n  Cache-Control: no-cache\n');
+  // 편지 여는 밤(2026-10-17 「그래 이제 만들어봐」) — 초대받은 분만 쓰는 시험판이라 초대장 쪽과 같이 검색 제외 · 주소 안 넘김 · 새로 받기
+  await fs.writeFile(hp, head + '/i/*\n' + quiet + '/invite.html\n' + quiet + '/letter.html\n' + quiet + '/letter.js\n  Cache-Control: no-cache\n/letter.css\n  Cache-Control: no-cache\n/invite-config.json\n  Cache-Control: no-cache\n');
   return {kakao: !!kakao};
 }
 

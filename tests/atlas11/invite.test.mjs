@@ -177,8 +177,8 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
   const server = new BlobsServer({directory: dir, token}); const {port} = await server.start();
   try {
     const s = await stageFunctions(root, stage);
-    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['invite']);
-    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'lib/atlas11/invite.mjs']);
+    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['invite', 'letter']); // 2026-10-17 편지 여는 밤 함수 더함
+    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'functions/atlas11/letter.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/letter.mjs']);
     assert.ok(s.packages.includes('@netlify/blobs') && s.packages.includes('@netlify/runtime-utils'), s.packages.join(','));
     assert.ok(!s.packages.includes('react') && !s.files.some(f => f.startsWith('netlify/')), '옛 함수 · 쓰지 않는 패키지는 옮기지 않음');
     const edge = `http://127.0.0.1:${port}`;
@@ -186,6 +186,9 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
     const fn = (await import(path.join(stage, 'functions/atlas11/invite.mjs'))).default; // 저장소 node_modules 가 아니라 옮긴 폴더의 것으로 풀림
     const made = await fn(new Request('https://aaa7377.com/api/invite', {method: 'POST', body: JSON.stringify({to: '하늘', from: '바다'}), headers: {'content-type': 'application/json'}}));
     assert.equal(made.status, 201);
+    const lf = (await import(path.join(stage, 'functions/atlas11/letter.mjs'))).default; // 편지 함수도 옮긴 폴더만으로 돈다
+    const st = await lf(new Request('https://aaa7377.com/api/letter', {method: 'GET'}));
+    assert.equal(st.status, 200); assert.equal((await st.json()).member, false);
     assert.equal((await stageFunctions(root, stage, 'functions/none')), null, '함수 폴더가 없으면 함수 없이 올림');
   } finally { delete process.env.NETLIFY_BLOBS_CONTEXT; await server.stop(); await fs.rm(stage, {recursive: true, force: true}); await fs.rm(dir, {recursive: true, force: true}); }
 });

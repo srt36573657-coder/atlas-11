@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ATLAS 11 · 선물형 초대장 시험 서버 — 넷리파이처럼 dist/ 를 내보내고 /i/<번호> → invite.html(그대로 200) · /api/invite → 함수 셈(lib/atlas11/invite.mjs)
+ * ATLAS 11 · 선물형 초대장 시험 서버 — 넷리파이처럼 dist/ 를 내보내고 /i/<번호> → invite.html(그대로 200) · /api/invite → 함수 셈(lib/atlas11/invite.mjs) · /api/letter → 편지 여는 밤(lib/atlas11/letter.mjs · 2026-10-17)
  *   저장소: 넷리파이 Blobs 로컬 서버(@netlify/blobs/server) — 실제 함수 파일(functions/atlas11/invite.mjs)을 그대로 부른다
  *   머리글: dist/_headers 의 「/*」 머리글(CSP 등)을 모든 응답에 붙여 실제 사이트와 같은 보안 규칙으로 시험
  *   쓰는 법: node scripts/atlas11/invite_dev.mjs --dir dist --port 8824 [--blobs <폴더>] [--seed-expired] [--owner-key <시험 열쇠>]
@@ -20,6 +20,9 @@ process.env.NETLIFY_BLOBS_CONTEXT = Buffer.from(JSON.stringify({edgeURL: `http:/
 const ownerKey = arg('--owner-key', null);
 if (ownerKey) process.env.ATLAS_INVITE_OWNER_SHA256 = (await import('node:crypto')).createHash('sha256').update(ownerKey).digest('hex');
 const fn = (await import('../../functions/atlas11/invite.mjs')).default;
+// 편지 여는 밤(2026-10-17) — 같은 시험 서버에서 /api/letter · 시계 옮기기 /__dev/skew?ms=(이 시험 서버에서만 · ATLAS_LETTER_DEV=1)
+process.env.ATLAS_LETTER_DEV = '1';
+const lfn = (await import('../../functions/atlas11/letter.mjs')).default;
 // --seed-expired: 시험용으로 181일 전에 만든 초대장 하나(기간이 지난 링크 안내를 보려고) — 번호를 첫 줄에 알림
 let seeded = null;
 if (process.argv.includes('--seed-expired')) {
@@ -37,9 +40,10 @@ try { // 「/*」 덩어리만(넷리파이 _headers 형식)
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   try {
-    if (url.pathname === '/api/invite') {
+    if (url.pathname === '/__dev/skew') { process.env.ATLAS_LETTER_SKEW_MS = String(Number(url.searchParams.get('ms') || 0)); res.writeHead(200, {'Content-Type': 'application/json'}); res.end(JSON.stringify({skew: Number(process.env.ATLAS_LETTER_SKEW_MS)})); return; }
+    if (url.pathname === '/api/invite' || url.pathname === '/api/letter') {
       const body = req.method === 'POST' ? await new Promise(r => { let b = ''; req.on('data', d => { b += d; }); req.on('end', () => r(b)); }) : undefined;
-      const r = await fn(new Request(url, {method: req.method, headers: req.headers, body}));
+      const r = await (url.pathname === '/api/letter' ? lfn : fn)(new Request(url, {method: req.method, headers: req.headers, body}));
       res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); return;
     }
     let p = decodeURIComponent(url.pathname);
