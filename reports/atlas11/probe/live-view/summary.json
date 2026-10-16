@@ -1,5 +1,5 @@
 {
- "made": "2026-10-16T18:08:46.193Z",
+ "made": "2026-10-16T19:12:52.896Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -148,7 +148,10 @@
   "reports/atlas11/probe/live-view/p36-cond.png",
   "reports/atlas11/probe/live-view/p37-en-home.png",
   "reports/atlas11/probe/live-view/p37-en-cond.png",
-  "reports/atlas11/probe/live-view/p40-letter.png"
+  "reports/atlas11/probe/live-view/p40-letter.png",
+  "reports/atlas11/probe/live-view/p41-next-home.png",
+  "reports/atlas11/probe/live-view/p42-next-watch.png",
+  "reports/atlas11/probe/live-view/p43-next-shorts.png"
  ],
  "texts": {
   "moon": "url(\"https://aaa7377.com/media/makbi-moon.svg\")",
@@ -355,7 +358,7 @@
     ],
     [
      "보드리!",
-     0.975326
+     0.97534
     ]
    ],
    "shown": false,
@@ -615,11 +618,37 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "6일 16시간 48분 23초",
+  "clock": "6일 15시간 44분 24초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
   "cw": 390,
+  "ok": true
+ },
+ "next": {
+  "html": 200,
+  "robots": "noindex, nofollow, noarchive",
+  "home": {
+   "tabs": [
+    "홈",
+    "쇼츠",
+    "편지",
+    "구독",
+    "나"
+   ],
+   "cards": 13,
+   "chips": 7,
+   "q": 0,
+   "sw": 390,
+   "cw": 390
+  },
+  "watch": {
+   "h1": "삼성전자",
+   "ws": "20거래일 동안 −12.7% · 하루 +4.6% · 10월 16일 마감",
+   "ch": 7,
+   "nx": 6
+  },
+  "shorts": 10,
   "ok": true
  },
  "ok": true
