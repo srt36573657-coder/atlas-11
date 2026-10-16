@@ -1,0 +1,31 @@
+{
+ "schema": "atlas11-next-cond-1",
+ "at": "2026-10-16T21:56:18.713Z",
+ "base": "https://aaa7377.com",
+ "asOf": "2026-10-16",
+ "combos": 100,
+ "from": 0,
+ "parts": [
+  "combos",
+  "picker",
+  "edges",
+  "widths"
+ ],
+ "full": true,
+ "seconds": 45,
+ "counts": {
+  "결과 줄": 25911,
+  "? 줄": 213,
+  "조건": 100,
+  "고르기": 3,
+  "닫기": 2,
+  "기억": 1,
+  "더 보기": 1,
+  "옛 쪽 화면 오류(참고)": 1,
+  "oldErr": "자료 못 받음 Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "둘레": 15,
+  "폭 화면": 27
+ },
+ "fails": [],
+ "ok": true
+}

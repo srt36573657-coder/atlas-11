@@ -1,5 +1,5 @@
 {
- "made": "2026-10-16T21:55:29.188Z",
+ "made": "2026-10-16T22:02:19.889Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -181,9 +181,7 @@
    "og": "https://aaa7377.com/og-makbi.jpg"
   }
  },
- "errors": [
-  "새 아틀란스 모든 쪽: [{\"url\":\"/#/w/005930/past\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":390,\"cw\":390,\"title\":\"삼성전자 — 지나온 길 · 새 아틀란스\",\"ok\":false,\"k\":\"past\"},{\"url\":\"/#/surge\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":390,\"cw\":390,\"title\":\"급등 30곳 · 새 아틀란스\",\"ok\":false,\"k\":\"surge\"},{\"url\":\"/#/surge/20\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":390,\"cw\":390,\"title\":\"20%대 10곳 · 새 아틀란스\",\"ok\":false,\"k\":\"surge\"},{\"url\":\"/#/cal\",\"n\":1,\"bad\":0,\"sel\":true,\"sw\":39"
- ],
+ "errors": [],
  "no36": {
   "hash": "#/",
   "tabs": [
@@ -366,7 +364,7 @@
     ],
     [
      "보드리!",
-     0.975351
+     0.975331
     ]
    ],
    "shown": false,
@@ -626,7 +624,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "6일 13시간 01분 48초",
+  "clock": "6일 12시간 54분 51초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -684,7 +682,7 @@
   "pages": [
    {
     "url": "/#/w/005930",
-    "n": 13,
+    "n": 1240,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -695,18 +693,18 @@
    },
    {
     "url": "/#/w/005930/past",
-    "n": 1,
+    "n": 981,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "삼성전자 — 지나온 길 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "past"
    },
    {
     "url": "/#/w/005930/rivals",
-    "n": 10,
+    "n": 850,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -717,7 +715,7 @@
    },
    {
     "url": "/#/w/005930/grow",
-    "n": 10,
+    "n": 626,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -728,7 +726,7 @@
    },
    {
     "url": "/#/w/005930/range",
-    "n": 17,
+    "n": 1512,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -739,7 +737,7 @@
    },
    {
     "url": "/#/ch/g/semi",
-    "n": 8,
+    "n": 1272,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -750,105 +748,105 @@
    },
    {
     "url": "/#/surge",
-    "n": 1,
+    "n": 4138,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "급등 30곳 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "surge"
    },
    {
     "url": "/#/surge/20",
-    "n": 1,
+    "n": 2988,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "20%대 10곳 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "surge"
    },
    {
     "url": "/#/cal",
-    "n": 1,
+    "n": 1043,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "달력 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "cal"
    },
    {
     "url": "/#/cond",
-    "n": 1,
+    "n": 570,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "조건 찾기 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "cond"
    },
    {
     "url": "/#/talk",
-    "n": 1,
+    "n": 2227,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "오늘의 이야기 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "talk"
    },
    {
     "url": "/#/up",
-    "n": 1,
+    "n": 3681,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "업데이트 기록 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "up"
    },
    {
     "url": "/#/time",
-    "n": 1,
+    "n": 1980,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "봉인 1호 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "time"
    },
    {
     "url": "/#/info",
-    "n": 1,
+    "n": 2576,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "ATLAS 는 어떻게 셌나요 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "info"
    },
    {
     "url": "/#/today",
-    "n": 1,
+    "n": 1452,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "오늘 시장 · 새 아틀란스",
-    "ok": false,
+    "ok": true,
     "k": "today"
    }
   ],
-  "ok": false
+  "ok": true
  },
- "ok": false
+ "ok": true
 }
