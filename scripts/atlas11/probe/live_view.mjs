@@ -162,7 +162,7 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   await shot('p23-hello-promo');
   out.promo = {secFirst: first?.name ?? null, want: w, got: got.slice(0, 6), after, s1, hp,
     ok: !!w && got[0] === w && !!after && after.hash === w && /아틀란스 주식 격언 열 가지/.test(s1.msg) && /10\. 기회는 찾아오는 거지, 만드는 게 아니다\./.test(s1.msg) && !/하규는|안상미/.test(s1.msg) && !/10명중에|못버는건/.test(s1.msg) && /스타벅스 상품권 1만원/.test(s1.promo) && !/커피 1잔|상품권 1장/.test(s1.promo)
-      && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스 상품권 1만원/.test(hp.bar) && /스타벅스 상품권 1만원/.test(hp.box) && !/1잔|상품권 1장|1장씩/.test(hp.box + hp.bar)}; // 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」
+      && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스 상품권 1만원/.test(hp.bar) && /스타벅스 상품권 1만원/.test(hp.box) && !/1잔|상품권 1장|1장씩/.test(hp.box + hp.bar) && /3명만 소개해도/.test(hp.bar) && /3명마다 1만원씩/.test(hp.box) && !/10명/.test(hp.box + hp.bar) && /3명만 소개해도/.test(s1.promo) /* 2026-10-16 21:35 「3명만 추천해도 1만원」 */}; // 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
 });
 await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」(규칙 65 · 사진 p26)
