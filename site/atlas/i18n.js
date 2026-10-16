@@ -77,8 +77,9 @@ export function templateOf(s, {noEnt = false} = {}) {
   const v = {d: [], m: [], t: [], e: [], n: [], q: []};
   let x = String(s).replace(/「([^」]*)」/g, (_, q) => { v.q.push(q); return '{q}'; });
   x = x.replace(/(?:(\d{4})년\s?)?(\d{1,2})월[\s\u00a0]?(\d{1,2})일(?:\s?\((월|화|수|목|금|토|일)\))?/g, (_, y, m, d, w) => { v.d.push([y ? +y : null, +m, +d, w ? WD[w] : null]); return '{d}'; });
-  x = x.replace(/(\d{4})년\s?(\d{1,2})월(?![\s\u00a0]?\d{1,2}일)/g, (_, y, m) => { v.m.push([+y, +m]); return '{m}'; }); // 「2025년 8월」 → Aug 2025
-  x = x.replace(/(?<![\d.,])(\d{1,2})월(?![\s\u00a0]?\d{1,2}일)/g, (_, m) => { if (+m < 1 || +m > 12) return _; v.m.push([null, +m]); return '{m}'; }); // 「8월부터」 → Aug
+  // 달 — 한 번에 앞에서부터(「2025년 8월」 → Aug 2025 · 「8월부터」 → Aug): 해 붙은 달과 해 없는 달을 두 번에 나눠 찾으면 값이 화면 차례와 어긋남
+  //   (2026-10-16 영어 미리보기: 「2026년 7월 … 8월에는 … 2025년 5월」이 「Jul 2026 … May 2025 … Aug」로 채워지던 것)
+  x = x.replace(/(?:(\d{4})년\s?)?(?<![\d.,])(\d{1,2})월(?![\s\u00a0]?\d{1,2}일)/g, (all, y, m) => { if (!y && (+m < 1 || +m > 12)) return all; v.m.push([y ? +y : null, +m]); return '{m}'; });
   x = x.replace(/\b\d{1,2}:\d{2}(?::\d{2})?\b/g, m => { v.t.push(m); return '{t}'; });
   if (!noEnt) x = entScan(x, e => v.e.push(e));
   x = x.replace(/[+−\-±]?\d[\d,]*(?:\.\d+)?/g, m => { v.n.push(m); return '{n}'; });

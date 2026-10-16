@@ -21,7 +21,8 @@ const NOTH = Number(arg('--others', 120)), step = Math.max(1, Math.floor(mkt.len
 const others = mkt.filter(c => !picked.includes(c)).filter((_, i) => i % step === 0).slice(0, NOTH);
 const sub = c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`];
 const nonCo = names.rows.filter(r => r.k).slice(0, 4).map(r => '#/x/' + r.c); // 회사 주식이 아닌 것(펀드 · 우선주 …)
-const routes = ['#/', '#/list', '#/up', '#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40', '#/cal', '#/time', '#/info', '#/zz', '#/c/999999', '#/g/zz', '#/i/zz',
+const CD = ['#/cond', '#/cond/rise-top3-spike', '#/cond/up-f3-loss', '#/cond/dn-pick-all', '#/cond/all-all-all', '#/cond/big-lead-nos']; // 조건 찾기 탭(2026-10-15 23:54 「가」 · 규칙 72)
+const routes = ['#/', '#/list', '#/up', ...CD, '#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40', '#/cal', '#/time', '#/info', '#/zz', '#/c/999999', '#/g/zz', '#/i/zz',
   ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)),
   ...picked.flatMap(sub), ...others.flatMap(sub), ...nonCo, ...(tr ? tr.cases.map(r => '#/cal/' + r[0]) : [])];
 const JOBS = Math.max(1, Number(arg('--jobs', 4)));

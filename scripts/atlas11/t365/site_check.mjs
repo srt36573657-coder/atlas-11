@@ -447,7 +447,9 @@ const probe = ({banned}) => {
       res.props = [...scope.querySelectorAll('[data-proper]')].map(e => e.textContent).filter(Boolean);
       const unprop = t => res.props.reduce((a, p) => a.split(p).join(' '), t);
       for (const w of banned) if (unprop(text).includes(w) || unprop(res.all).includes(w)) res.banned.push(w);
-      res.links = [...document.querySelectorAll('#view a[href^="#/"], .tabbar a[href^="#/"]')].map(a => a.getAttribute('href'));
+      // 길 지도 — 판(#/info 도움말 · 창 하나 덮음)이 열린 화면은 그 판 고리 + 아래 탭(밑 화면 고리는 판에 덮여 못 누름 · 2026-10-16 업데이트 기록 #/up 이 아래 탭에서 도움말 판 고리로 옮겨 감 — 판 고리를 안 모으면 1억 번 눌러 보기가 「못 가는 화면」으로 셈)
+      const openSheet = document.querySelector('.sheet:not([hidden])');
+      res.links = [...(openSheet ? openSheet.querySelectorAll('a[href^="#/"]') : document.querySelectorAll('#view a[href^="#/"]')), ...document.querySelectorAll('.tabbar a[href^="#/"]')].map(a => a.getAttribute('href'));
       res.head = document.querySelector('#view h1')?.textContent ?? '';
       res.count = document.querySelector('#view .count')?.textContent ?? '';
       res.pkN = document.querySelectorAll('#view .board .row.pk').length; res.pkHref = [...document.querySelectorAll('#view .board .row.pk')].map(a => a.getAttribute('href')); // 금빛 줄(2026-10-14 「나」)
