@@ -275,7 +275,7 @@ await step('조건 찾기 탭', async () => { // 사장님 2026-10-15(싱가포�
   await shot('p36-cond');
   const g = await page.evaluate(() => ({h1: document.querySelector('#view h1')?.textContent ?? '', tab: document.querySelector('#tabCond')?.getAttribute('aria-current'), tabs: [...document.querySelectorAll('nav.tabbar a')].map(a => a.getAttribute('href')),
     slots: document.querySelectorAll('#view button.cd-slot').length, big: document.querySelector('#view .cd-big b')?.textContent ?? null, rows: document.querySelectorAll('#view .cd-row, #view .cd-list li').length, flow: document.querySelector('#view .cd-flow')?.textContent ?? '',
-    hon: (document.querySelector('#view')?.innerText ?? '').includes('사고팔 곳을 고른 목록이 아니에요.'), q: !!document.querySelector('#view p.q'), sw: document.documentElement.scrollWidth, cw: innerWidth}));
+    hon: (document.querySelector('#view')?.innerText ?? '').includes('사고팔 곳을 고른 목록이 아니에요.'), q: [...document.querySelectorAll('#view p.q')].some(p => /조건 자료/.test(p.textContent)), /* 조건 자료를 못 받음 · 날이 다름만(맨 아래 「? 장 중 값」 줄은 장 중이면 늘 있음 — 2026-10-16 첫 탐침이 이것을 잘못 잡음) */ sw: document.documentElement.scrollWidth, cw: innerWidth}));
   await page.goto(B + '/?v=' + Date.now() + '#/info', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(900);
   const up = await page.evaluate(() => [...document.querySelectorAll('#infoSheet a[href="#/up"]')].length);
   const last = g.flow.split('→').map(x => x.trim()).filter(Boolean).at(-1);
