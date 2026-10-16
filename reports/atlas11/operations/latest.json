@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-10-16T10:02:23Z",
+  "at": "2026-10-16T12:03:30Z",
   "dayKST": "2026-10-16",
   "status": "partial",
   "exitCode": 2,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-10-16T10:02:23.466Z",
+      "startedAt": "2026-10-16T12:03:31.222Z",
       "status": "ok",
-      "durationMs": 18,
+      "durationMs": 85,
       "session": true,
       "afterClose": true,
       "day": "2026-10-16",
@@ -17,19 +17,19 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-10-16T10:02:23.484Z",
+      "startedAt": "2026-10-16T12:03:31.307Z",
       "status": "ok",
-      "durationMs": 9245,
+      "durationMs": 9654,
       "attempted": true,
       "observations": 0,
       "errors": 21,
-      "recordId": "collection-dc2a7be4a7ebe8fa"
+      "recordId": "collection-aecf2f5286aff93f"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-10-16T10:02:32.729Z",
+      "startedAt": "2026-10-16T12:03:40.961Z",
       "status": "ok",
-      "durationMs": 5686,
+      "durationMs": 4589,
       "changed": false,
       "confirmedToday": 359,
       "actualAsOf": "2026-10-01",
@@ -37,15 +37,15 @@
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-10-16T10:02:38.420Z",
+      "startedAt": "2026-10-16T12:03:45.600Z",
       "view": {
-        "boardId": "board-2026-10-16-702b7c47",
+        "boardId": "board-2026-10-16-6eb675ff",
         "asOf": "2026-10-16",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2934991,
+        "bytes": 2943359,
         "similar": [
           "안랩",
           "큐리옥스바이오시스템즈",
@@ -55,7 +55,7 @@
           "원익머트리얼즈",
           "한솔케미칼"
         ],
-        "moves": "2026-10-14 → 2026-10-15",
+        "moves": "2026-10-15 → 2026-10-16",
         "evening": null,
         "lead6": {
           "groups": 15,
@@ -78,7 +78,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1375
+      "durationMs": 1278
     }
   ],
   "runtime": {
@@ -87,10 +87,10 @@
     "event": "workflow_dispatch",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "38884275569",
+    "runId": "38897602217",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38884275569",
-    "commit": "e76da5d1e3cd2d2d025311f89f34e59e239922d0",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/38897602217",
+    "commit": "2d8400e4564b076dd5daa44382303a30d98ccff1",
     "serverInstalled": true,
     "scheduledRun": false
   },
@@ -256,12 +256,12 @@
       "finalizedToday": 0,
       "crossChecked": 5,
       "requests": 30,
-      "durationMs": 9231,
+      "durationMs": 9634,
       "corporateActionAdjusted": []
     },
-    "durationMs": 9231
+    "durationMs": 9634
   },
-  "collectionRecordId": "collection-dc2a7be4a7ebe8fa",
+  "collectionRecordId": "collection-aecf2f5286aff93f",
   "inputChanged": false,
   "actualAsOf": "2026-10-01",
   "freshStocks": 0,
@@ -638,5 +638,5 @@
   ],
   "expectedStocks": 365,
   "incompleteReason": "오늘(2026-10-16) 확정 종가 359/365 · 다음 시도에서 다시 받음",
-  "finishedAt": "2026-10-16T10:02:39.795Z"
+  "finishedAt": "2026-10-16T12:03:46.878Z"
 }
