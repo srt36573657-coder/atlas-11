@@ -1,0 +1,41 @@
+{
+ "schema": "atlas11-next-check-1",
+ "at": "2026-10-16T22:00:42.454Z",
+ "base": "https://aaa7377.com",
+ "asOf": "2026-10-16",
+ "ready": [
+  "co",
+  "past",
+  "rivals",
+  "grow",
+  "range",
+  "chx",
+  "surge",
+  "cond",
+  "talk",
+  "up",
+  "time",
+  "info",
+  "x",
+  "cal",
+  "today"
+ ],
+ "companies": 2557,
+ "limit": null,
+ "full": true,
+ "seconds": 304,
+ "counts": {
+  "고리": 8899,
+  "화면": 114,
+  "큰 글씨 화면": 38,
+  "첫 화면 붙박이": 1,
+  "회사": 2557,
+  "업종 채널": 77,
+  "갈래 채널": 10,
+  "쇼츠 사실": 9,
+  "찾기": 2557,
+  "누르기": 1
+ },
+ "fails": [],
+ "ok": true
+}

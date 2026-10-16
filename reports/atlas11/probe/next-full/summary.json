@@ -1,0 +1,73 @@
+{
+ "schema": "atlas11-next-full-1",
+ "at": "2026-10-16T22:34:42.161Z",
+ "base": "https://aaa7377.com",
+ "pages": [
+  {
+   "name": "cal",
+   "code": 0,
+   "seconds": 100
+  },
+  {
+   "name": "chx",
+   "code": 1,
+   "seconds": 170
+  },
+  {
+   "name": "co",
+   "code": 0,
+   "seconds": 400
+  },
+  {
+   "name": "cond",
+   "code": 0,
+   "seconds": 45
+  },
+  {
+   "name": "en",
+   "code": 1,
+   "seconds": 2309
+  },
+  {
+   "name": "grow",
+   "code": 1,
+   "seconds": 449
+  },
+  {
+   "name": "misc",
+   "code": 0,
+   "seconds": 64
+  },
+  {
+   "name": "next",
+   "code": 0,
+   "seconds": 305
+  },
+  {
+   "name": "past",
+   "code": 1,
+   "seconds": 637
+  },
+  {
+   "name": "range",
+   "code": 0,
+   "seconds": 497
+  },
+  {
+   "name": "rivals",
+   "code": 1,
+   "seconds": 171
+  },
+  {
+   "name": "surge",
+   "code": 0,
+   "seconds": 48
+  },
+  {
+   "name": "today",
+   "code": 0,
+   "seconds": 111
+  }
+ ],
+ "ok": false
+}

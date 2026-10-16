@@ -1,0 +1,1 @@
+{"ok":false,"routes":13404,"screens":13536,"missing":103,"fails":204,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":204,"missing":103,"leftover":101},"kinds":{"한글 남음(모듈 칸)":5,"한글 남음(모듈 칸 · 속성)":96,"사전에 없는 틀":103},"full":false,"seconds":2308}
