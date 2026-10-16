@@ -68,9 +68,9 @@ test('화면 길 지도(점검용) — atlas.js 링크 규칙과 같게 · 첫 �
   const nCal = S.tr && S.trc ? S.tr.cases.filter(r => S.trc.cases[r[0]]).length : 0;
   const {nodes, depth} = siteGraph(S), outN = S.mk ? Object.values(S.mk).filter(m => !m.p).length : 0, co7 = !!(S.core.co7 && S.mk);
   // 모든 회사 7단(사장님 2026-10-14 17:25(싱가포르) 「전부다 나오게 해」) — core.co7 이면 고른 곳 밖도 회사 다섯 단(3 ~ 7) · 밖 칸 없음 · 옛 자료면 밖 칸 하나씩
-  // 고정 화면 11 = 첫 화면 · 업종 탭 · 업데이트 · 봉인 · 도움말 · 급등 + 급등 네 칸(10% · 20% · 30% · 40% — 2026-10-15 16:28 「총 5개」) + 달력(19:36 · 규칙 70) · 종목 파일(달력에서 지켜보는 곳마다)
+  // 고정 화면 12 = 첫 화면 · 업종 탭 · 업데이트 · 봉인 · 도움말 · 급등 + 급등 네 칸(10% · 20% · 30% · 40% — 2026-10-15 16:28 「총 5개」) + 달력(19:36 · 규칙 70) + 조건(23:54 「가」 · 규칙 72) · 종목 파일(달력에서 지켜보는 곳마다)
   for (const r of S.tr?.cases ?? []) { assert.ok(depth.get('#/cal/' + r[0]) <= 2, `${r[1]} 종목 파일 2번 안`); }
-  assert.equal(nodes.size, 11 + nCal + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5 + (co7 ? outN * 5 : outN));
+  assert.equal(nodes.size, 12 + nCal + S.core.groups.length + S.core.industries.filter(i => i.n > 1).length + S.codes.length * 5 + (co7 ? outN * 5 : outN));
   if (co7) { assert.equal([...nodes.keys()].filter(r => r.startsWith('#/x/')).length, 0, '모든 회사 7단 — 밖 칸 길 없음'); assert.equal(S.core.co7, Object.keys(S.mk).length, 'core.co7 = 모든 회사'); }
   if (S.mk) for (const [c, m] of Object.entries(S.mk)) { assert.ok(depth.get((co7 || m.p ? '#/c/' : '#/x/') + c) <= 3, `${m.n} 3번 안`); // 모든 회사 — 3번이면 회사(모든 회사 7단이면 모두 3단 회사)
     if (co7) [['past', 4], ['rivals', 5], ['grow', 6], ['range', 7]].forEach(([sub, n]) => assert.ok(depth.get(`#/c/${c}/${sub}`) <= n, `${m.n} ${n}단 ${n}번 안`)); }

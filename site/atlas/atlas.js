@@ -22,7 +22,7 @@
 //   2026-10-14 17:21(싱가포르) 「그리고 7단 클릭구조 부활 시켜」 · 17:25 「전부다 나오게 해」(규칙 62) — core.co7 이면 모든 회사가 3 ~ 7단(회사 파일 co/<번호>.json 의 c · line · coEntry) ·
 //     고른 곳 밖 3단 = 「왜 … 밖인가요?」(이름표 까닭 · 깔때기) · 6단 이야기 = 「조사 전」(이야기는 고른 곳만 사람이 조사) · 7단 = range.json others · 밖 칸 #/x/ 는 회사 주식이 아닌 것(펀드 · 우선주 …)만 · 회사 주식의 옛 #/x/ 주소는 3단 회사로
 // 영어 팩(사장님 2026-10-15(싱가포르) 23:35 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」) — 그려진 한국어를 틀로 바꿈(site/atlas/i18n.js) · 화면 코드는 한국어 그대로
-import {ON as EN, startI18n, t as L, switchLang, nameEn} from './i18n.js';
+import {ON as EN, EN_READY, startI18n, t as L, switchLang, nameEn} from './i18n.js';
 const $ = (s, el = document) => el.querySelector(s);
 /** 바탕 회사 수 · 이름(멍거 · 린치 조건 N곳 — 수는 회차마다 자료에서) · 이름 밑 한 줄(갈래마다 수 · 쉬운 말) */
 const NP = (C = D.core) => C?.funnel?.picked ?? '?';
@@ -2001,10 +2001,11 @@ function trDay(x, byC, vis, star, reNote = false) {
       h('div', {class: 'cal-dhx'}, h('p', {class: 'cal-ds'}, h('b', {text: `선택 ${sel.length}`}), x.seed ? h('span', {class: 'cal-re', text: ' · 되짚음'}) : null), h('p', {class: 'cal-dc', text: tx(cnt)}))));
   const rows = h('div', {class: 'cal-rows'});
   if (!sel.length) rows.append(h('p', {class: 'cal-none', text: '이날 새로 뽑힌 곳은 없어요.'}));
-  sel.slice(0, 4).forEach(r => rows.append(trRowEl(r, star)));
+  const K = sel.length && sel.every(r => r.st === 'n') ? 2 : 4; // 새로 뽑혀 아직 등락이 없는 날은 두 줄만 펼침 — 그 앞 날의 빨강 · 파랑(뽑힌 날부터 %)이 첫 화면에 들게(3초 시험 2026-10-15: 「빨강 · 파랑 첫 줄은 한 화면 가까이 밀어야 나옴」)
+  sel.slice(0, K).forEach(r => rows.append(trRowEl(r, star)));
   sec.append(rows);
   if (reNote) sec.append(h('p', {class: 'cal-ren', text: '되짚음 = 업데이트 기록이 없던 날이라 그날 종가로 다시 센 날이에요.'}));
-  if (sel.length > 4) sec.append(h('details', {class: 'more cal-rest', 'data-k': 'rest-' + x.d}, h('summary', {text: `나머지 ${sel.length - 4}곳 보기`}), h('div', {class: 'in cal-rows'}, ...sel.slice(4).map(r => trRowEl(r, star))))); // 접은 칸(줄은 처음부터 있음 — 길 지도 · 3번이면 회사)
+  if (sel.length > K) sec.append(h('details', {class: 'more cal-rest', 'data-k': 'rest-' + x.d}, h('summary', {text: `나머지 ${sel.length - K}곳 보기`}), h('div', {class: 'in cal-rows'}, ...sel.slice(K).map(r => trRowEl(r, star))))); // 접은 칸(줄은 처음부터 있음 — 길 지도 · 3번이면 회사)
   const items = [...mv.map(([c, b]) => [c, `${trTo(b)} 이동`, 0]), ...out.map(c => [c, '탈락', 1]), ...re.map(([c, b]) => [c, `다시 선택 · ${TR_B[b] ?? '?'}`, 2])]
     .sort((a, b) => a[2] - b[2] || byC.get(a[0]).n.localeCompare(byC.get(b[0]).n, 'ko') || (a[0] < b[0] ? -1 : 1));
   if (items.length) sec.append(h('details', {class: 'more cal-ev', 'data-k': 'ev-' + x.d}, h('summary', {text: tx(`${re.length ? '이동 · 탈락 · 다시 선택' : '이동 · 탈락'} ${items.length}곳 보기`)}),
@@ -2162,11 +2163,11 @@ let cdP = null;
 const cdOk = X => !!(X && X.version === 'cd-v1' && isDay(X.asOf) && Array.isArray(X.ind) && X.co && Array.isArray(X.co.c) && X.co.c.length === X.n);
 function needCond() { if (!cdP) cdP = getJson('cond.json').then(x => { if (!cdOk(x)) throw Error('cond.json'); D.cond = x; }).catch(e => { cdP = null; throw e; }); return cdP; }
 const CD_SLOTS = [
-  {k: 'a', name: '업종', ops: [['rise', '요즘 오르는 업종', '지난 1주 오른 업종 — 첫 화면과 같은 목록'], ['up', '한 달 오른 업종', '20거래일 ▲ 오름 — 업종 탭과 같음'], ['dn', '한 달 내린 업종', '20거래일 ▼ 내림'], ['all', '업종 가리지 않음', '77개 업종 모두']]},
+  {k: 'a', name: '업종', ops: [['big', '큰 회사가 오른 업종', '지난 1주 · 몸값 큰 회사일수록 크게 셈'], ['rise', '요즘 오르는 업종', '지난 1주 · 회사마다 한 표 — 첫 화면 목록'], ['up', '한 달 오른 업종', '20거래일 ▲ 오름 — 업종 탭과 같음'], ['dn', '한 달 내린 업종', '20거래일 ▼ 내림'], ['all', '업종 가리지 않음', '77개 업종 모두']]},
   {k: 'b', name: '회사', ops: [['lead', '대장주', '업종 안 몸값 1등'], ['top3', '업종 몸값 3등까지', '업종마다 큰 회사 셋'], ['f3', '3년 모두 돈 번 곳', '확정 결산 3해 순이익이 모두 0보다 큼'], ['pick', '고른 곳', '멍거 · 린치 조건'], ['all', '회사 가리지 않음', '모든 회사']]},
   {k: 'c', name: '빼기', ops: [['nos', '5일 10% 넘게 오른 곳 빼기', '급등 탭에 드는 자격과 같은 자'], ['spike', '확 뛴 곳 모두 빼기', '5일 10% · 하루 15% · 한 달 30% 넘게 오른 곳'], ['loss', '지난해 손해 본 곳 빼기', '마지막 해 순이익이 0 밑'], ['all', '빼지 않음', '아무것도 빼지 않아요']]},
 ];
-const CD_DEF = {a: 'rise', b: 'lead', c: 'nos'}, CD_KEY = 'atlas:cond';
+const CD_DEF = {a: 'big', b: 'lead', c: 'nos'}, CD_KEY = 'atlas:cond'; // 결정표 v2 #4 — 기본 업종은 「큰 회사가 오른 업종」(반대 토론: 한 회사 한 표 목록이면 대장주 7곳 중 5곳이 같은 5일 내림)
 const cdValid = st => st && CD_SLOTS.every(S => S.ops.some(o => o[0] === st[S.k]));
 function cdLoad(arg) {
   const m = /^([a-z0-9]+)-([a-z0-9]+)-([a-z0-9]+)$/.exec(arg || ''); if (m) { const st = {a: m[1], b: m[2], c: m[3]}; if (cdValid(st)) return st; }
@@ -2178,7 +2179,7 @@ function cdSave(st) { try { localStorage.setItem(CD_KEY, JSON.stringify(st)); } 
 function cdTest(X, k, op, j) {
   const C = X.co, I = X.ind[C.i[j]];
   if (op === 'all') return true;
-  if (k === 'a') return op === 'rise' ? I.rise === 1 : op === 'up' ? I.up === 1 : op === 'dn' ? I.dn === 1 : null;
+  if (k === 'a') return op === 'big' ? (I.rc == null ? null : I.rc === 1) : op === 'rise' ? I.rise === 1 : op === 'up' ? I.up === 1 : op === 'dn' ? I.dn === 1 : null;
   if (k === 'b') { if (op === 'pick') return C.p[j] === 1; if (op === 'f3') return C.f3[j] == null ? null : C.f3[j] === 1; const rk = C.rk[j]; if (rk == null) return null; return op === 'lead' ? rk === 1 : op === 'top3' ? rk <= 3 : null; }
   if (k === 'c') {
     if (op === 'nos') return C.x5[j] == null ? null : C.x5[j] === 0;
@@ -2207,6 +2208,7 @@ async function viewCond(v, arg) {
   v.append(h('h1', {class: 'head', text: '조건 찾기'}));
   if (!ok) { v.append(h('p', {class: 'q', text: '? 조건 자료를 못 받았어요. 잠시 뒤 다시 열어 주세요.'}), h('p', {class: 'hon', text: '사고팔 곳을 고른 목록이 아니에요.'}), foot()); return; }
   const X = D.cond, C = X.co, st = cdLoad(arg);
+  if (X.asOf !== D.core.asOf) { v.append(h('p', {class: 'q', text: tx(`? 조건 자료(${md(X.asOf)})가 다른 자료(${md(D.core.asOf)})와 날이 달라요. 다음 업데이트에 맞춰져요.`)}), h('p', {class: 'hon', text: '사고팔 곳을 고른 목록이 아니에요.'}), foot()); return; } // 옛 날 값을 지금 것처럼 보이지 않음(CIA 팀)
   v.append(h('p', {class: 'count cd-time', text: tx(`${md(X.asOf)} ${X.provisional ? '장 중 값' : '장 마감 값'}이에요.`)}));
   if (X.provisional) v.append(h('p', {class: 'small', text: '장 중 값이에요. 저녁 8시까지 바뀌어요.'}));
   const box = h('div', {class: 'cd-box'}); v.append(box);
@@ -2228,7 +2230,7 @@ async function viewCond(v, arg) {
       box.append(h('p', {class: 'cd-none', text: '셋을 모두 넘은 곳이 없어요.'}));
       const alt = h('div', {class: 'cd-alt'}); box.append(alt);
       for (const S of CD_SLOTS) { if (st[S.k] === 'all') continue; const t = {...st, [S.k]: 'all'}, m = cdRun(X, t).res.length;
-        const b = h('button', {type: 'button', class: 'cd-btn', text: `${'①②③'[CD_SLOTS.indexOf(S)]} 풀면 ${m}곳`}); b.addEventListener('click', () => { st[S.k] = 'all'; cdSave(st); cdMore = 20; draw(); }); alt.append(b); }
+        const b = h('button', {type: 'button', class: 'cd-btn', text: `${'①②③'[CD_SLOTS.indexOf(S)]} 풀면 ${m.toLocaleString('ko-KR')}곳`}); b.addEventListener('click', () => { st[S.k] = 'all'; cdSave(st); cdMore = 20; draw(); }); alt.append(b); }
     }
     const list = h('div', {class: 'cd-rows'});
     for (const j of R.res.slice(0, cdMore)) {
@@ -2238,8 +2240,8 @@ async function viewCond(v, arg) {
         h('span', {class: 'cd-sub'}, tx(ind + (C.rk[j] ? ` · 몸값 ${C.rk[j]}등` : '')), C.p[j] === 1 ? h('span', {class: 'cd-pk', text: ' · 고른 곳'}) : null)));
     }
     box.append(list);
-    if (n > cdMore) { const mb = h('button', {type: 'button', class: 'cd-btn cd-more', text: `${Math.min(20, n - cdMore)}곳 더 보기 · 남은 ${n - cdMore}곳`}); mb.addEventListener('click', () => { cdMore += 20; draw(); }); box.append(mb); }
-    if (R.q.length) box.append(h('details', {class: 'more cd-q'}, h('summary', {text: `? 값을 몰라 넣지 않은 곳 ${R.q.length}곳`}), h('div', {class: 'in'}, ...R.q.map(([j, k]) => h('p', {class: 'cd-qr'}, h('a', {class: 'inl', href: cHref(C.c[j], C.p[j] === 1), text: D.mkt?.[C.c[j]]?.n ?? C.c[j]}), tx(` — ${'①②③'[CD_SLOTS.findIndex(S => S.k === k)]} ${CD_QWHY[k]}`))))));
+    if (n > cdMore) { const mb = h('button', {type: 'button', class: 'cd-btn cd-more', text: `${Math.min(20, n - cdMore)}곳 더 보기 · 남은 ${(n - cdMore).toLocaleString('ko-KR')}곳`}); mb.addEventListener('click', () => { cdMore += 20; draw(); }); box.append(mb); }
+    if (R.q.length) box.append(h('details', {class: 'more cd-q'}, h('summary', {text: `? 값을 몰라 넣지 않은 곳 ${R.q.length.toLocaleString('ko-KR')}곳`}), h('div', {class: 'in'}, ...R.q.map(([j, k]) => h('p', {class: 'cd-qr'}, h('a', {class: 'inl', href: cHref(C.c[j], C.p[j] === 1), text: D.mkt?.[C.c[j]]?.n ?? C.c[j]}), tx(` — ${'①②③'[CD_SLOTS.findIndex(S => S.k === k)]} ${CD_QWHY[k]}`))))));
     // 업데이트 뒤 — 같은 조건 · 다른 날이면 지난번과 견줌(보는 기계에만)
     try { const key = 'atlas:cond-seen', sig = CD_SLOTS.map(S => st[S.k]).join('-'), prev = JSON.parse(localStorage.getItem(key) || 'null'), now = R.res.map(j => C.c[j]);
       if (prev && prev.sig === sig && prev.asOf !== X.asOf && Array.isArray(prev.codes)) { const a = now.filter(c => !prev.codes.includes(c)).length, b = prev.codes.filter(c => !now.includes(c)).length; box.prepend(h('p', {class: 'note cd-diff', text: tx(`${md(prev.asOf)}보다 새로 ${a}곳 · 빠진 ${b}곳`)})); }
@@ -2250,12 +2252,14 @@ async function viewCond(v, arg) {
   draw();
   v.append(h('details', {class: 'more cd-howto'}, h('summary', {text: '어떻게 셌나요?'}), h('div', {class: 'in'}, ...[
     '조건 하나는 회사 하나의 성질이에요. 셋을 모두 넘은 곳만 남아요. 칸 차례를 바꿔도 끝은 같아요.',
-    '「요즘 오르는 업종」은 첫 화면과 같은 목록이에요. 업종 지수가 지난 5거래일 0.05% 넘게 오른 업종을 많이 오른 순으로 11개까지 셌어요.',
+    '「큰 회사가 오른 업종」은 몸값이 큰 회사일수록 크게 쳐서 센 업종 지수가 지난 5거래일 0.05% 넘게 오른 업종이에요. 많이 오른 순으로 11개까지 셌어요.',
+    '「요즘 오르는 업종」은 첫 화면과 같은 목록이에요. 회사마다 한 표로 센 업종 지수로 같은 셈을 했어요.',
     '「한 달 오른 업종」 · 「한 달 내린 업종」은 업종 탭의 ▲ · ▼ 와 같은 셈이에요.',
     '「대장주」는 업종 안에서 몸값이 가장 큰 회사예요. 몸값이 같으면 종목 번호가 작은 곳이에요. 다른 조건으로 빠져도 2등이 대장주가 되지 않아요.',
     '「5일 10% 넘게 오른 곳 빼기」는 마지막 종가가 5거래일 전 종가보다 10% 넘게 높은 곳을 빼요. 급등 탭에 드는 자격과 같은 자예요.',
     '「확 뛴 곳 모두 빼기」는 거기에 지난 20거래일 동안 하루 15% 넘게 오른 날이 있거나 20거래일 30% 넘게 오른 곳도 빼요.',
     '「3년 모두 돈 번 곳」 · 「지난해 손해 본 곳」은 확정 결산(예상치 아님)만 써요.',
+    '몸값은 자료를 모은 날 받은 값이라 종가 날과 하루쯤 다를 수 있어요.',
     '값을 모르는 곳은 넘음으로도 빠짐으로도 치지 않고 「?」로 따로 보여요.',
     '고른 조건은 이 기계에만 남아요.',
   ].map(t => h('p', {text: t})))));
@@ -2350,6 +2354,7 @@ async function boot() {
   for (const b of document.querySelectorAll('#langSheet button[data-lang]')) if ((b.dataset.lang === 'en') === EN) b.setAttribute('aria-current', 'true'); // 지금 말
   if (EN) for (const [s, l, sh] of TAB_EN) { const a = $(s); if (a) { a.textContent = ''; a.append(h('span', {class: 'tl', text: l}), h('span', {class: 'ts', text: sh})); } }
   await startI18n(); // 영어면 사전 · 이름을 먼저 읽고 그려지는 글을 모두 영어로(옛 판으로 넘기던 ?lang= 은 옛 판 영구 삭제로 여기서 엶)
+  if (EN_READY && $('#langBtn')) { $('#langBtn').hidden = false; document.documentElement.classList.add('has-lang'); } // 영어 판을 보일 때만 지구 단추(규칙 71 ③)
   $('#langBtn')?.addEventListener('click', () => { openSheet('langSheet'); $('#langSheet [aria-current]')?.focus(); });
   $('#langSheet')?.addEventListener('click', e => { const b = e.target.closest('button[data-lang]'); if (!b) return; if ((b.dataset.lang === 'en') === EN) { closeSheet('langSheet'); return; } switchLang(b.dataset.lang); });
   try { const k = +localStorage.getItem('atlas:font'); if (k === 1 || k === 2) setFont(k); } catch { /* 저장 못 함 */ }

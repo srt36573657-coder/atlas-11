@@ -15,7 +15,10 @@ const R = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 async function engine(lang) {
   globalThis.location = {search: '?lang=' + lang, href: 'http://x/?lang=' + lang, pathname: '/', hash: ''};
   globalThis.localStorage = {getItem: () => null, setItem: () => {}};
-  return import(path.join(ROOT, 'site/atlas/i18n.js') + '?' + lang + Math.random());
+  // 엔진은 EN_READY(영어 판을 보일까 — 규칙 71 ③)와 따로 잼: 사본에서만 true 로 켜 봄(사이트 파일은 그대로)
+  const src = R('site/atlas/i18n.js'), f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 't365-en-')), 'i18n.mjs');
+  fs.writeFileSync(f, src.replace(/export const EN_READY = (true|false);/, 'export const EN_READY = true;'));
+  return import(f + '?' + lang + Math.random());
 }
 
 test('① 엔진 — 틀 · 날짜 · 달 · 시각 · 큰 수 · 목록 · 이름', async () => {
@@ -48,9 +51,11 @@ test('② 사전 = 원본 + 회사 영어 이름 · 자리표 · 한글 없음',
 
 test('③ 화면 — 언어 단추 · 언어 판 · 옛 판 길 없음', () => {
   const html = R('site/atlas/index.html'), js = R('site/atlas/atlas.js');
-  assert.match(html, /<button class="ibtn lang" type="button" id="langBtn"/);
+  assert.match(html, /<button class="ibtn lang" type="button" id="langBtn" hidden /, '지구 단추는 처음엔 숨김 — EN_READY 일 때 보임(규칙 71 ③)');
+  assert.match(js, /if \(EN_READY && \$\('#langBtn'\)\) \{ \$\('#langBtn'\)\.hidden = false;/);
+  const i18 = R('site/atlas/i18n.js'); assert.match(i18, /export const EN_READY = (true|false);/); assert.match(i18, /if \(!EN_READY\) return 'ko';/, '영어 판을 보이기 전에는 ?lang=en 이어도 한국어');
   assert.match(html, /<div class="sheet" id="langSheet"[^>]*>[\s\S]*data-lang="ko"[\s\S]*data-lang="en"/);
-  assert.match(js, /^import \{ON as EN, startI18n, t as L, switchLang, nameEn\} from '\.\/i18n\.js';$/m);
+  assert.match(js, /^import \{ON as EN, EN_READY, startI18n, t as L, switchLang, nameEn\} from '\.\/i18n\.js';$/m);
   assert.match(js, /await startI18n\(\);/);
   assert.ok(!js.includes('/old/'), '옛 판(/old/)으로 가는 길 · 고리 없음(2026-10-15 23:35 영구 삭제)');
   assert.match(js, /const msg = h\('span', \{class: 'hmsg m4-msg', lang: 'ko'\}/, '사장님 글은 영어로 볼 때도 한국어 그대로(원문)');

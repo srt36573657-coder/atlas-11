@@ -46,6 +46,7 @@ const home = fs.existsSync(path.join(ROOT, 'site/atlas/data/home.json')) ? JSON.
 const surgecal = fs.existsSync(path.join(ROOT, 'site/atlas/data/surgecal.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surgecal.json'), 'utf8')) : null; // 급등 달력 · 따라가기(사장님 2026-10-15 16:34 · 16:40 · sk-v1)
 const surge = fs.existsSync(path.join(ROOT, 'site/atlas/data/surge.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surge.json'), 'utf8')) : null; // 급등 탭(사장님 2026-10-15 14:27 「탭을 하나 더 만들어라」 · 규칙 69)
 // 달력 탭(사장님 2026-10-15 19:28 · 20:04 「달력에 종목이름 등락률」 · 20:51 「추적하는 시스탬」 · 21:24 「가 로 해」 · 규칙 70) — 첫 화면 몫 · 종목 파일 몫
+const condX = fs.existsSync(path.join(ROOT, 'site/atlas/data/cond.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/cond.json'), 'utf8')) : null; // 조건 찾기 탭(사장님 2026-10-15(싱가포르) 23:53 · 23:54 「가」 · 규칙 72 · cd-v1)
 const trData = fs.existsSync(path.join(ROOT, 'site/atlas/data/surgetr.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surgetr.json'), 'utf8')) : null;
 const trCase = fs.existsSync(path.join(ROOT, 'site/atlas/data/surgetr-case.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/surgetr-case.json'), 'utf8')).cases : null;
 // 바탕 회사 이름 · 밑 한 줄(사장님 2026-10-14 00:03 「가 로 하자」 · mg-v1 멍거 조건 — 수는 자료에서) · 억 원 글(atlas.js eok 과 같은 셈을 따로 적음)
@@ -178,7 +179,7 @@ const CAL_SAMPLE = (() => { if (!trData || !trCase) return []; const R = trData.
   add(R.find(r => r[6] === 'n')); add([...R].sort((a, b) => trCase[b[0]].ev.length - trCase[a[0]].ev.length)[0]); add(R.find(r => r[7] || r[8])); add(R.find(r => trCase[r[0]].ev.some(e => e[1] === 'warn')));
   const vv = R.filter(r => r[5] != null).sort((a, b) => a[5] - b[5]); add(vv[0]); add(vv.at(-1)); add([...R].sort((a, b) => b[1].length - a[1].length)[0]); return [...out]; })();
 const CROUTES = trData && trCase && !arg('--only') ? trData.cases.filter(r => trCase[r[0]]).map(r => '#/cal/' + r[0]).filter(r => !CAL_SAMPLE.includes(r)) : [];
-const routes = ['#/', '#/list', ...(surge ? ['#/surge', ...SV_BANDS] : []), '#/up', ...(trData ? ['#/cal', ...CAL_SAMPLE] : []), ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
+const routes = ['#/', '#/list', ...(surge ? ['#/surge', ...SV_BANDS] : []), '#/up', ...(condX ? ['#/cond'] : []), ...(trData ? ['#/cal', ...CAL_SAMPLE] : []), ...(tdata ? ['#/time'] : []), ...core.groups.map(g => '#/g/' + g.id), ...core.industries.filter(i => i.n > 1).map(i => '#/i/' + encodeURIComponent(i.name)), ...Object.keys(comp).map(c => '#/c/' + c), ...Object.keys(comp).map(c => `#/c/${c}/past`), ...Object.keys(comp).map(c => `#/c/${c}/rivals`), ...Object.keys(comp).map(c => `#/c/${c}/grow`), ...Object.keys(comp).map(c => `#/c/${c}/range`), '#/info']; // 7단 — 5 누구와 다투나(rivals) · 6 앞으로 클까?(grow · 사장님 16:51 회사 성장 이야기) · 7 범위 · 확인(range)
 const OLIM = arg('--others-limit') != null ? +arg('--others-limit') : null; // 고치는 동안 빨리(앞 n곳만) — 결과 others.full = false · 문은 못 지남
 const OSEL = arg('--others-codes')?.split(','); // 고치는 동안 그 회사만(문은 못 지남)
 const OROUTES = (arg('--only') && OLIM == null && !OSEL) ? [] : (OSEL ?? OTH.slice(0, OLIM ?? OTH.length)).flatMap(c => ['#/c/' + c, `#/c/${c}/past`, `#/c/${c}/rivals`, `#/c/${c}/grow`, `#/c/${c}/range`]);
@@ -230,8 +231,9 @@ function calExpect(arg) {
     for (const x of T.days.slice(0, 5)) {
       why.push(`${+x.d.slice(5, 7)}월`, `선택 ${x.sel.length}`, `이동 ${x.mv.length} · 탈락 ${x.out.length}${x.re.length ? ` · 다시 선택 ${x.re.length}` : ''}`);
       if (x.seed) why.push(' · 되짚음');
-      for (const c of x.sel.slice(0, 4)) { const r = byC.get(c); why.push(r[1], r[6] === 'n' ? `5일간 ${pct(r[4])}` : pct(r[5])); if (r[7] || r[8]) why.push(r[7] ? '? 거래 멈춤' : r[8] === 2 ? '? 반 토막' : '! 반 토막'); }
-      if (x.sel.length > 4) why.push(`나머지 ${x.sel.length - 4}곳 보기`);
+      const K = x.sel.length && x.sel.every(c => byC.get(c)?.[6] === 'n') ? 2 : 4; // 새로 뽑혀 등락이 없는 날은 두 줄만 펼침(atlas.js trDay · 2026-10-16)
+      for (const c of x.sel.slice(0, K)) { const r = byC.get(c); why.push(r[1], r[6] === 'n' ? `5일간 ${pct(r[4])}` : pct(r[5])); if (r[7] || r[8]) why.push(r[7] ? '? 거래 멈춤' : r[8] === 2 ? '? 반 토막' : '! 반 토막'); }
+      if (x.sel.length > K) why.push(`나머지 ${x.sel.length - K}곳 보기`);
       const items = x.mv.length + x.out.length + x.re.length; if (items) why.push(`${x.re.length ? '이동 · 탈락 · 다시 선택' : '이동 · 탈락'} ${items}곳 보기`);
       if (!x.sel.length) why.push('이날 새로 뽑힌 곳은 없어요.'); }
     for (let i = 5; i < T.days.length; i += 5) { const ch = T.days.slice(i, i + 5); why.push(`${md(ch.at(-1).d)} ~ ${md(ch[0].d)} 보기`); }
@@ -351,6 +353,7 @@ function expect(route) {
         ...(down.length ? [`마지막 날 내린 곳 ${down.length}곳`, down.map(m => m.n).join(' · ')] : []), '조심할 것과 모르는 것', '더 확인할 곳', '어떻게 골랐나요?', '칸끼리 겹치지 않아요.', `칸마다 많이 오른 차례로 ${BS.cap}곳까지 실어요.`,
         ...svCalWhy(b), `${NAME} 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요.`],
       notWhy: SV_NOT, surge: {gold: M.filter(m => S.provisional && m.prov).length, tab: b}}; }
+  if (kind === 'cond') return {title: '조건 찾기'}; // 칸 · 줄 · 고르기 · 둘레는 아래 「조건 찾기 탭」 묶음에서 자료로 따로 잼
   if (kind === 'cal') return calExpect(arg);
   if (kind === 'info') { // 도움말 — 이름 밑 한 줄 · 멍거가 고른 목록 아님 · 깔때기 · 값 · 기다림 · 회차 시각(= universe.json slots · 틀림 장부 21번)
     return {why: [`${PN} — ${PLINE}`, core.rules.notMunger, `${PN}은 이렇게 골랐습니다`, ...core.funnel.groups.flatMap(g => [`${g.name} ${g.n}곳`, ...g.steps.map(x => x.n.toLocaleString('ko-KR') + '곳')]), core.rules.price, core.rules.wait, core.rules.notCounted,
@@ -808,7 +811,7 @@ if (trData && trCase) {
     const want4 = trData.cases.filter(r => r[3] === '2').length; if (s4.rows.length !== want4) fail('달력 칸 고르기', `20% 줄 ${s4.rows.length} ≠ ${want4}`); // 모든 날 줄(접은 칸 안도)
     await p.click('#view .cal-chips button[data-f="all"]'); await p.waitForTimeout(60);
     // ④ 나머지 n곳 보기
-    const big = D0.find(x => x.sel.length > 4);
+    const big = D0.find(x => x.sel.length > (x.sel.every(c => trData.cases.find(r => r[0] === c)?.[6] === 'n') ? 2 : 4));
     if (big) { await p.click(`#view section.cal-day[data-d="${big.d}"] details.cal-rest > summary`); await p.waitForTimeout(60);
       const n = await p.$$eval(`#view section.cal-day[data-d="${big.d}"] a.cal-row`, xs => xs.filter(x => x.getBoundingClientRect().height > 0).length); if (n !== big.sel.length) fail('달력 나머지 보기', `${big.d} 보이는 줄 ${n} ≠ ${big.sel.length}`); }
     // 지난 날 접은 칸 — 열면 그 다섯 날이 보임 · 종목 파일에서 돌아오면 연 칸 그대로
@@ -840,6 +843,89 @@ if (trData && trCase) {
     const t2 = await p.$eval('#view', x => x.innerText); if (!t2.includes('? 종목 파일을 못 받았어요.')) fail('달력 못 받음', '종목 파일 「?」 줄이 없음');
     if (errs.length) fail('달력 못 받음', '오류 ' + errs[0]); await ctx.close(); }
 }
+// 조건 찾기 탭(사장님 2026-10-15(싱가포르) 23:53 「엘셀처럼 찾는 조건을 3가지 걸수 하자 … 속은 정밀하나 사용은 정말 감편하게」 · 23:54 「가」 · 규칙 72) —
+//   cond.json 으로 결정표(docs/design/cond-2026-10-16 v1 · v2)대로 따로 센 기대와 화면을 맞댐:
+//   ① 처음(보는 기계에 기억 없음) = 큰 회사가 오른 업종 · 대장주 · 5일 10% 넘게 오른 곳 빼기 — 칸 셋 글 · 칸마다 남은 수 · 남은 곳 · ▲▼ · 깔때기 · 줄(이름 · 5일간 % · 업종 · 몸값 n등 · 고리)
+//   ② 칸마다 고르기 판 — 고르기 이름 · 「→ n곳」 ③ 고르면 바뀜 · 「처음대로」 ④ 기억(다시 열면 그대로) ⑤ 많을 때 20곳 · 「더 보기」 ⑥ 0곳 「풀면 n곳」 ⑦ ? 접은 칸
+//   ⑧ 자료 못 받음 · 날이 다름 → 「?」 한 줄 ⑨ 기억 못 하는 기계 ⑩ 320 폭 옆 넘침 0 · 쓰지 않을 말 0 · 오류 0
+if (condX) {
+  const OPS = {a: [['big', '큰 회사가 오른 업종'], ['rise', '요즘 오르는 업종'], ['up', '한 달 오른 업종'], ['dn', '한 달 내린 업종'], ['all', '업종 가리지 않음']], b: [['lead', '대장주'], ['top3', '업종 몸값 3등까지'], ['f3', '3년 모두 돈 번 곳'], ['pick', '고른 곳'], ['all', '회사 가리지 않음']], c: [['nos', '5일 10% 넘게 오른 곳 빼기'], ['spike', '확 뛴 곳 모두 빼기'], ['loss', '지난해 손해 본 곳 빼기'], ['all', '빼지 않음']]};
+  const X = condX, C = X.co;
+  const tst = (k, op, j) => { if (op === 'all') return true; const I = X.ind[C.i[j]];
+    if (k === 'a') return op === 'big' ? (I.rc == null ? null : I.rc === 1) : op === 'rise' ? I.rise === 1 : op === 'up' ? I.up === 1 : I.dn === 1;
+    if (k === 'b') return op === 'pick' ? C.p[j] === 1 : op === 'f3' ? (C.f3[j] == null ? null : C.f3[j] === 1) : C.rk[j] == null ? null : op === 'lead' ? C.rk[j] === 1 : C.rk[j] <= 3;
+    if (op === 'nos') return C.x5[j] == null ? null : C.x5[j] === 0;
+    if (op === 'spike') { const f = [C.x5[j], C.d15[j], C.m30[j]]; return f.includes(1) ? false : f.includes(null) ? null : true; }
+    return C.ls[j] == null ? null : C.ls[j] === 0; };
+  const cnt = st => { let cur = C.c.map((_, j) => j); const steps = [cur.length]; let q = 0; for (const k of ['a', 'b', 'c']) { const nx = []; for (const j of cur) { const v = tst(k, st[k], j); if (v === true) nx.push(j); else if (v == null) q++; } cur = nx; steps.push(cur.length); }
+    cur.sort((x, y) => (C.cap[y] ?? -1) - (C.cap[x] ?? -1) || (C.c[x] < C.c[y] ? -1 : 1)); return {steps, res: cur, q}; };
+  const nm = j => MKT?.[C.c[j]]?.n ?? C.c[j], loc = n => n.toLocaleString('ko-KR');
+  const rowsOf = R => R.res.slice(0, 20).map(j => [nm(j), C.r5[j] == null ? '?' : pct(C.r5[j]), `${X.ind[C.i[j]].n}${C.rk[j] ? ` · 몸값 ${C.rk[j]}등` : ''}`, (comp[C.c[j]] || C.p[j] === 1 ? '#/c/' : (MKT?.[C.c[j]] ? '#/c/' : '#/x/')) + C.c[j]]);
+  const DEF = {a: 'big', b: 'lead', c: 'nos'}, NOT = ['추천', '매수', '매도', '사라', '팔라', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', 'TOP', 'NaN', 'undefined', 'Invalid'];
+  const withCd = async (body, init, W = 390) => { const ctx = await b.newContext({viewport: {width: W, height: 844}, reducedMotion: 'reduce'}); if (init) await ctx.addInitScript(init);
+    if (body !== undefined) await ctx.route('**/atlas/data/cond.json', r => (body === 404 ? r.fulfill({status: 404, body: 'no'}) : r.fulfill({contentType: 'application/json', body: JSON.stringify(body)})));
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error' && !/404/.test(m.text())) errs.push(m.text()); }); return {ctx, p, errs}; };
+  const cdSt = p => p.evaluate(() => { const v = document.querySelector('#view'), N = x => (x == null ? x : String(x).replace(/\u2060/g, '').replace(/\u00a0/g, ' '));
+    return {slots: [...v.querySelectorAll('button.cd-slot')].map(x => [N(x.querySelector('.cd-o')?.textContent ?? ''), N(x.querySelector('.cd-c')?.textContent ?? ''), x.getBoundingClientRect().height, x.classList.contains('zero')]),
+      big: v.querySelector('.cd-big b')?.textContent ?? null, up: v.querySelector('.cd-big .up')?.textContent?.trim() ?? null, dn: v.querySelector('.cd-big .down')?.textContent?.trim() ?? null,
+      flow: N(v.querySelector('.cd-flow')?.textContent ?? null), how: N(v.querySelector('.cd-how')?.textContent ?? null), reset: !!v.querySelector('.cd-reset'), none: v.querySelector('.cd-none')?.textContent ?? null,
+      alt: [...v.querySelectorAll('.cd-alt button')].map(x => N(x.textContent)), more: N(v.querySelector('.cd-more')?.textContent ?? null), q: N(v.querySelector('details.cd-q summary')?.textContent ?? null),
+      rows: [...v.querySelectorAll('a.cd-row')].map(a => [N(a.querySelector('.nm')?.textContent ?? ''), N(a.querySelector('.cd-v b, .cd-v .num')?.textContent?.trim() ?? ''), N(a.querySelector('.cd-sub')?.textContent ?? '').replace(' · 고른 곳', ''), a.getAttribute('href')]),
+      gold: [...v.querySelectorAll('a.cd-row .nm.gold')].length, t: N(v.innerText), foot: N(v.querySelector('footer.foot')?.innerText ?? ''), sw: document.documentElement.scrollWidth, cw: innerWidth}; });
+  const want = (st, s, tag) => { const R = cnt(st); numbers += 12 + Math.min(20, R.res.length) * 3;
+    const wantSlots = ['a', 'b', 'c'].map((k, i) => [OPS[k].find(o => o[0] === st[k])[1], loc(R.steps[i + 1]) + '곳']);
+    if (JSON.stringify(s.slots.map(x => x.slice(0, 2))) !== JSON.stringify(wantSlots)) fail(tag, `칸 셋 ${JSON.stringify(s.slots.map(x => x.slice(0, 2)))} ≠ ${JSON.stringify(wantSlots)}`);
+    if (s.slots.some(x => x[2] < 44)) fail(tag, '칸 누르는 자리 44px 밑');
+    if (s.big !== loc(R.res.length)) fail(tag, `남은 곳 ${s.big} ≠ ${R.res.length}`);
+    if (R.res.length) { const up = R.res.filter(j => C.r5[j] != null && C.r5[j] > 0).length, dn = R.res.filter(j => C.r5[j] != null && C.r5[j] < 0).length; if (s.up !== `▲${up}` || s.dn !== `▼${dn}`) fail(tag, `▲▼ ${s.up} ${s.dn} ≠ ▲${up} ▼${dn}`); }
+    if (s.flow !== R.steps.map(loc).join(' → ')) fail(tag, `깔때기 ${s.flow} ≠ ${R.steps.map(loc).join(' → ')}`);
+    const isDef = st.a === DEF.a && st.b === DEF.b && st.c === DEF.c; if (s.how !== (isDef ? '예로 걸어 둔 조건 · 몸값 큰 차례' : '몸값 큰 차례')) fail(tag, `차례 글 ${s.how}`); if (s.reset === isDef) fail(tag, `「처음대로」 ${s.reset ? '있음(처음 조건인데)' : '없음(바꿨는데)'}`);
+    const wr = rowsOf(R); if (JSON.stringify(s.rows.slice(0, 20)) !== JSON.stringify(wr)) fail(tag, `줄 ${JSON.stringify(s.rows.slice(0, 2))} ≠ ${JSON.stringify(wr.slice(0, 2))}`);
+    if (s.gold !== R.res.slice(0, 20).filter(j => C.p[j] === 1).length) fail(tag, `금빛 이름 ${s.gold}`);
+    if (R.res.length > 20 && s.more !== `${Math.min(20, R.res.length - 20)}곳 더 보기 · 남은 ${loc(R.res.length - 20)}곳`) fail(tag, `더 보기 ${s.more}`); if (R.res.length <= 20 && s.more) fail(tag, '더 보기가 남음');
+    if (R.q && s.q !== `? 값을 몰라 넣지 않은 곳 ${loc(R.q)}곳`) fail(tag, `? 접은 칸 ${s.q} ≠ ${R.q}`); if (!R.q && s.q) fail(tag, '? 접은 칸이 남음');
+    if (!R.res.length) { if (s.none !== '셋을 모두 넘은 곳이 없어요.') fail(tag, '0곳 글 없음'); const alt = ['a', 'b', 'c'].filter(k => st[k] !== 'all').map((k, i) => `${'①②③'[['a', 'b', 'c'].indexOf(k)]} 풀면 ${loc(cnt({...st, [k]: 'all'}).res.length)}곳`); if (JSON.stringify(s.alt) !== JSON.stringify(alt)) fail(tag, `풀면 ${JSON.stringify(s.alt)} ≠ ${JSON.stringify(alt)}`); }
+    const body = s.t.split(s.foot).join(' ').split('급등 탭').join(' '); const bad = NOT.filter(x => body.includes(x)); if (bad.length) fail(tag, `쓰지 않을 말 「${bad.join(' · ')}」`); if (/급등/.test(body.replace(/급등 \d+/g, ''))) fail(tag, '「급등」 — 탭 이름 밖');
+    for (const l of ['사고팔 곳을 고른 목록이 아니에요.', '지난 값일 뿐 앞날을 말하지 않아요.', `${md(X.asOf)} ${X.provisional ? '장 중 값' : '장 마감 값'}이에요.`]) if (!s.t.includes(l)) fail(tag, `「${l}」 없음`);
+    if (s.sw > s.cw) fail(tag, `옆으로 넘침 ${s.sw} > ${s.cw}`); return R; };
+  // ① 처음 · ② 고르기 판 · ③ 바꾸기 · 처음대로 · ④ 기억
+  { const {ctx, p, errs} = await withCd(); await p.goto(base + '/atlas/#/cond', {waitUntil: 'networkidle'}); await p.waitForSelector('#view button.cd-slot'); await p.waitForTimeout(100);
+    screens++; want(DEF, await cdSt(p), '조건 처음');
+    for (const [k, i] of [['a', 0], ['b', 1], ['c', 2]]) { await p.click(`#view button.cd-slot[data-k="${k}"]`); await p.waitForSelector('#cdSheet:not([hidden]) button.cd-op'); await p.waitForTimeout(60);
+      const o = await p.evaluate(() => ({t: document.querySelector('#cdTitle').textContent, ops: [...document.querySelectorAll('#cdBody button.cd-op')].map(x => [x.querySelector('b')?.textContent, x.querySelector('.cd-oc')?.textContent, x.getAttribute('aria-current'), x.getBoundingClientRect().height]), sw: document.documentElement.scrollWidth, cw: innerWidth}));
+      screens++; numbers += o.ops.length * 2; const wo = OPS[k].map(([op, t]) => [t, `→ ${loc(cnt({...DEF, [k]: op}).res.length)}곳`, op === DEF[k] ? 'true' : null]);
+      if (o.t !== `${'①②③'[i]} ${['업종', '회사', '빼기'][i]} 고르기`) fail('조건 고르기 판', `제목 ${o.t}`);
+      if (JSON.stringify(o.ops.map(x => x.slice(0, 3))) !== JSON.stringify(wo)) fail('조건 고르기 판', `${'①②③'[i]} ${JSON.stringify(o.ops.map(x => x.slice(0, 2)))} ≠ ${JSON.stringify(wo.map(x => x.slice(0, 2)))}`);
+      if (o.ops.some(x => x[3] < 44)) fail('조건 고르기 판', '누르는 자리 44px 밑'); if (o.sw > o.cw) fail('조건 고르기 판', '옆으로 넘침');
+      await p.keyboard.press('Escape'); await p.waitForTimeout(80); }
+    await p.click('#view button.cd-slot[data-k="c"]'); await p.waitForSelector('#cdSheet:not([hidden]) button.cd-op'); await p.click('#cdBody button.cd-op[data-op="all"]'); await p.waitForTimeout(100);
+    screens++; want({...DEF, c: 'all'}, await cdSt(p), '조건 바꿈(③ 빼지 않음)');
+    await p.reload({waitUntil: 'networkidle'}); await p.waitForSelector('#view button.cd-slot'); await p.waitForTimeout(100);
+    screens++; want({...DEF, c: 'all'}, await cdSt(p), '조건 기억(다시 엶)');
+    await p.click('#view .cd-reset'); await p.waitForTimeout(100); screens++; want(DEF, await cdSt(p), '조건 처음대로');
+    if (errs.length) fail('조건 찾기', '오류 ' + errs[0]); await ctx.close(); }
+  // ⑤ 많을 때 · ⑥ 0곳 · ⑦ ? — 주소로 엶(#/cond/<①>-<②>-<③>)
+  { const all = [], keys = []; for (const [a] of OPS.a) for (const [bb] of OPS.b) for (const [c] of OPS.c) { const st = {a, b: bb, c}; all.push([st, cnt(st)]); keys.push(`${a}-${bb}-${c}`); }
+    const pickSt = f => { const i = all.findIndex(([, R]) => f(R)); return i < 0 ? null : [all[i][0], keys[i]]; };
+    const cases = [['많을 때', pickSt(R => R.res.length > 40)], ['0곳', pickSt(R => R.res.length === 0)], ['? 접은 칸', pickSt(R => R.q > 0 && R.res.length > 0)]];
+    for (const [nmC, x] of cases) { if (!x) { numbers++; continue; } // 그런 짝이 지금 자료에 없으면 건너뜀(0곳이 없는 날도 있음)
+      const {ctx, p, errs} = await withCd(); await p.goto(base + '/atlas/#/cond/' + x[1], {waitUntil: 'networkidle'}); await p.waitForSelector('#view .cd-big'); await p.waitForTimeout(100);
+      screens++; const R = want(x[0], await cdSt(p), `조건 ${nmC} ${x[1]}`);
+      if (nmC === '많을 때') { await p.click('#view .cd-more'); await p.waitForTimeout(100); const n2 = await p.$$eval('#view a.cd-row', a => a.length); numbers++; if (n2 !== Math.min(40, R.res.length)) fail(`조건 많을 때 ${x[1]}`, `더 보기 뒤 줄 ${n2}`); }
+      if (errs.length) fail('조건 ' + nmC, '오류 ' + errs[0]); await ctx.close(); } }
+  // ⑧ 자료 못 받음 · 날이 다름
+  for (const [nmE, body, line] of [['못 받음', 404, '? 조건 자료를 못 받았어요.'], ['날이 다름', {...X, asOf: '2026-01-02'}, `? 조건 자료(1월 2일)가 다른 자료(${md(core.asOf)})와 날이 달라요.`]]) {
+    const {ctx, p, errs} = await withCd(body); await p.goto(base + '/atlas/#/cond', {waitUntil: 'networkidle'}); await p.waitForSelector('#view h1'); await p.waitForTimeout(150);
+    const t = await p.$eval('#view', v => v.innerText.replace(/\u2060/g, '').replace(/\u00a0/g, ' ')); screens++; numbers++;
+    if (!t.includes(line)) fail('조건 ' + nmE, `「${line}」 없음`); if (await p.$('#view a.cd-row')) fail('조건 ' + nmE, '옛 줄이 보임');
+    if (errs.length) fail('조건 ' + nmE, '오류 ' + errs[0]); await ctx.close(); }
+  // ⑨ 기억 못 하는 기계 · ⑩ 320 폭
+  { const {ctx, p, errs} = await withCd(undefined, () => { Object.defineProperty(window, 'localStorage', {get() { throw new Error('no storage'); }}); }, 320); await p.goto(base + '/atlas/#/cond', {waitUntil: 'networkidle'}); await p.waitForSelector('#view button.cd-slot'); await p.waitForTimeout(100);
+    screens++; want(DEF, await cdSt(p), '조건 기억 못 하는 기계 · 320');
+    await p.click('#view button.cd-slot[data-k="a"]'); await p.waitForSelector('#cdSheet:not([hidden]) button.cd-op'); await p.click('#cdBody button.cd-op[data-op="all"]'); await p.waitForTimeout(100);
+    screens++; want({...DEF, a: 'all'}, await cdSt(p), '조건 기억 못 하는 기계 · 바꿈');
+    if (errs.length) fail('조건 기억 못 하는 기계', '오류 ' + errs[0]); await ctx.close(); }
+}
 // 36곳 없음(사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」) — 옛 주소 #/36 은 첫 화면으로 · 아래 탭 셋 · 「36곳 · 매수 검토」 글 0 · range.json 만 받음(pick36.json 안 받음)
 {
   const ctx = await b.newContext({viewport: {width: 390, height: 844}, reducedMotion: 'reduce'});
@@ -850,7 +936,7 @@ if (trData && trCase) {
   const r7 = await p.evaluate(() => document.body.innerText);
   screens += 2; numbers += 4;
   if (r.hash !== '#/' && r.hash !== '') fail('36곳 없음', `옛 주소 #/36 이 첫 화면으로 가지 않음(${r.hash})`);
-  if (!(r.tabs.length === 5 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '업데이트' && r.tabs[3] === (surge?.n != null ? '급등 ' + surge.n : '급등') && r.tabs[4] === '달력')) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · ')); // 탭 다섯(2026-10-15 14:27 급등 탭 · 규칙 69 · 19:36 「가 로 해라」 달력 탭 · 규칙 70 — 옛 「매수 검토 36곳」 탭은 그대로 없음)
+  if (!(r.tabs.length === 5 && r.tabs[0] === '한눈에' && /^업종 \d+$/.test(r.tabs[1]) && r.tabs[2] === '조건' && r.tabs[3] === (surge?.n != null ? '급등 ' + surge.n : '급등') && r.tabs[4] === '달력')) fail('36곳 없음', '아래 탭 ' + r.tabs.join(' · ')); // 탭 다섯(2026-10-15 14:27 급등 탭 · 규칙 69 · 19:36 「가 로 해라」 달력 탭 · 규칙 70 · 23:54 「가」 업데이트 자리에 조건 · 규칙 72 — 옛 「매수 검토 36곳」 탭은 그대로 없음)
   if (has36(r.all + r7)) fail('36곳 없음', '지운 36곳 화면 글이 보임'); // 「136곳」(07:4x) · 「36곳 내림」(14:2x) 같은 셈 글은 아님 — 옛 화면 글 목록으로 봄
   if (asked.some(u => /pick36/.test(u)) || !asked.some(u => /\/range\.json/.test(u))) fail('36곳 없음', '자료 받기 — pick36.json 을 받거나 range.json 을 안 받음');
   if (errs.length) fail('36곳 없음', '오류 ' + errs[0]);

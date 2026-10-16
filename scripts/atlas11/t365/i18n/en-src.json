@@ -110,5 +110,22 @@
   "한국거래소": "Korea Exchange",
   "넥스트레이드": "Nextrade"
  },
- "templates": {}
+ "templates": {
+  "가": "Aa",
+  "급등": "Surge",
+  "닫기": "Close",
+  "달력": "Calendar",
+  "사고팔 곳을 고른 목록이 아니에요.": "This is not a list of what to buy or sell.",
+  "언어 · Language": "Language",
+  "언어 고르기 · Language": "Choose language",
+  "업데이트 기록 보기 ›": "Update log ›",
+  "업종": "Sectors",
+  "이 자료는 지난 기록을 센 공부이며, 특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.": "This is a study that counts past records. It does not recommend buying, selling or holding any stock, or any market outlook.",
+  "저는 투자 상담사가 아닙니다": "I am not an investment adviser",
+  "조건": "Filter",
+  "지난 값일 뿐 앞날을 말하지 않아요.": "Past numbers only — they don't tell the future.",
+  "찾기": "Search",
+  "한눈에": "Home",
+  "한눈에 · ATLAS": "Home · ATLAS"
+ }
 }

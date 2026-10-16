@@ -1510,7 +1510,7 @@ html.f3 .vw .sv-board .board.wide .row { --roww: 5.6rem; }
 html.en body { word-break: normal; overflow-wrap: break-word; }
 /* 맨 위 막대 — 언어 단추가 들어와 「찾기」 글이 잘리던 것(2026-10-16 · 360 「찾.」 · 390 「찾…」): 431px 밑은 이름표 글자 사이를 좁히고 · 375px 밑과 영어는 찾기를 돋보기 단추 하나로(이름은 aria-label) */
 @media (max-width: 430px) { .band-in { gap: 6px; } .brand b { letter-spacing: .1em; margin-right: -.1em; } }
-@media (max-width: 374px) { .find { flex: 0 0 44px; padding: 0; justify-content: center; } .find span { display: none; } .brand { margin-right: auto; } }
+@media (max-width: 374px) { html.has-lang .find { flex: 0 0 44px; padding: 0; justify-content: center; } html.has-lang .find span { display: none; } html.has-lang .brand { margin-right: auto; } } /* 지구 단추가 있을 때만(규칙 71 ③) */
 @media (max-width: 430px) { html.en .find { flex: 0 0 44px; padding: 0; justify-content: center; } html.en .find span { display: none; } html.en .brand { margin-right: auto; } }
 /* 영어 탭(2026-10-16) — 긴 이름 · 짧은 이름 · 좁으면 수를 뺌(글씨는 21px 그대로) */
 html.en .tabbar .ts { display: none; }

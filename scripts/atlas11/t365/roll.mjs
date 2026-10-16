@@ -244,6 +244,17 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
         }
       }
     }
+    // 조건 찾기 탭(사장님 2026-10-15(싱가포르) 23:53 「엘셀처럼 찾는 조건을 3가지 걸수 하자」 · 23:54 「가」 · 규칙 72) — 이번 사이트 자료만으로 회사마다 조건 성질을 셈
+    //   셈 cond.py(cd-v1) → 따로 세기 cond_verify.mjs(노드 · 결정표만 보고 씀) 틀림 0 일 때만 · 멈추면 cond.json 을 빼고 올림(화면은 「?」 — 옛 날 값을 지금 것처럼 보이지 않게) · 사이트의 다른 자료는 계속
+    try {
+      const cs = run('조건 찾기 셈', 'python3', ['scripts/atlas11/t365/cond.py', out], env2);
+      const cv = run('조건 찾기 따로 세기', 'node', ['scripts/atlas11/t365/cond_verify.mjs', out, path.join(tmp, 'cv.json')], env2);
+      rep.verify.cond = tail(cv.stdout);
+      rep.cond = {version: 'cd-v1', ...JSON.parse(String(cs.stdout).trim().split('\n').at(-1))};
+    } catch (e) {
+      rep.cond = {kind: 'fail', why: String(e?.message ?? e).slice(0, 300)};
+      await fs.rm(path.join(out, 'cond.json'), {force: true});
+    }
     // 회차 기록 — 고른 날 · 기준일 · 365곳 · 들고 난 곳 · 층 · 1등 갈래
     const pro = JSON.parse(await fs.readFile(path.join(upd, 'proposal.json'), 'utf8'));
     const core = JSON.parse(await fs.readFile(path.join(out, 'core.json'), 'utf8'));

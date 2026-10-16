@@ -4,7 +4,7 @@
   재료 = 같은 자료 폴더의 사이트 자료만(site_build.py 가 만든 것 · 새로 받지 않음 · 앞날 값 없음):
     core.json(업종 77 · 1주 오른 업종 rise.list · 업종 방향 tr) · mkt.json(회사 · 업종 · 고른 곳 p) · comp.json(고른 곳 몸값) · co/<번호>.json(몸값 c.cap · 종가 close · 튐 jumps · 성적표 fin · key) · days.json(날짜)
   셈(결정표 docs/design/cond-2026-10-16/decision-v2.md — 바꾸면 새 판 이름):
-    업종: w1 = 한 회사 한 표 지수 v 의 5거래일 % · wc1 = 큰 회사는 크게 cw 의 5거래일 % · rise = 첫 화면 「요즘 오르는 업종」 목록에 듦 · up/dn = 20거래일 방향(tr.d)
+    업종: w1 = 한 회사 한 표 지수 v 의 5거래일 % · wc1 = 큰 회사는 크게 cw 의 5거래일 % · rise = 첫 화면 「요즘 오르는 업종」 목록에 듦 · rc = 큰 회사가 오른 업종(wc1 로 같은 자 · 결정표 v2) · up/dn = 20거래일 방향(tr.d)
     회사: cap 몸값(억 원) · rk 업종 안 몸값 차례(큰 순 · 같으면 번호 작은 곳 · 업종에 몸값 모르는 곳이 있으면 그 업종 모두 null)
           r5 = 5거래일 % · x5 = 마지막 종가 × 100 ≥ 5거래일 전 종가 × 110(정수 견줌) · q5 = ? 까닭(0 없음 · 1 그 5거래일 안 하루 ±30.5% 넘게 바뀐 날 · 2 종가 없음)
           d15 = 지난 20거래일 하루 +15% 넘게 오른 날(종가 × 100 ≥ 앞날 × 115) · m30 = 20거래일 +30% 넘게(종가 × 10 ≥ 20거래일 전 × 13) — ? 는 q20(0 · 1 튐 · 2 종가 빔)
@@ -38,11 +38,18 @@ IX = {n: k for k, n in enumerate(IND)}
 RISE = [x['name'] for x in core['rise']['list']]
 ind = []
 for i in core['industries']:
-    v, cw = i['v'], i.get('cw') or i['v']
+    v, cw = i['v'], i.get('cw')  # cw 가 없으면 「큰 회사가 오른 업종」은 모름(한 회사 한 표 선으로 바꿔 채우지 않음)
     w1 = r2((v[-1] / v[-6] - 1) * 100) if v[-1] is not None and v[-6] else None
-    wc1 = r2((cw[-1] / cw[-6] - 1) * 100) if cw[-1] is not None and cw[-6] else None
+    wc1 = r2((cw[-1] / cw[-6] - 1) * 100) if cw and len(cw) >= 6 and cw[-1] is not None and cw[-6] else None
     d = (i.get('tr') or {}).get('d')
     ind.append({'n': i['name'], 'w1': w1, 'wc1': wc1, 'rise': 1 if i['name'] in RISE else 0, 'up': 1 if d == 'up' else 0, 'dn': 1 if d == 'down' else 0, 'k': i['n']})
+# 큰 회사가 오른 업종(결정표 v2 #4 — 반대 토론: 「오르는 업종 대장주인데 왜 다 파래」 · 거래소 업종 지수처럼 몸값 무게) = 「요즘 오르는 업종」과 같은 자(5거래일 · +0.05% 이상 · 많이 오른 순 · 같으면 이름 차례 · 11개까지)를 큰 회사는 크게 선(cw)에 씀
+#   rc = 1 듦 · 0 안 듦 · None 모름(cw 값이 빔)
+RC_DAYS, RC_MAX, RC_MIN = 5, 11, 0.05
+_rc = sorted([(x['n'], x['wc1']) for x in ind if x['wc1'] is not None and x['wc1'] >= RC_MIN], key=lambda t: (-t[1], t[0]))[:RC_MAX]
+_rcn = {n for n, _ in _rc}
+for x in ind:
+    x['rc'] = None if x['wc1'] is None else (1 if x['n'] in _rcn else 0)
 
 codes = sorted(mkt['companies'])
 col = {k: [] for k in ('c', 'i', 'cap', 'rk', 'r5', 'x5', 'q5', 'd15', 'm30', 'q20', 'f3', 'ls', 'p', 'l5')}
@@ -98,5 +105,5 @@ for i, js in by.items():
 out = {'schema': 'atlas-new-cond-1', 'version': VERSION, 'asOf': asof, 'd5': DATES[-6], 'd20': DATES[-21], 'provisional': bool(core.get('provisional')), 'n': len(codes), 'ind': ind, 'co': col}
 with open(os.path.join(D, 'cond.json'), 'w', encoding='utf-8') as f:
     json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
-print(json.dumps({'n': len(codes), 'bytes': os.path.getsize(os.path.join(D, 'cond.json')), 'rise': sum(x['rise'] for x in ind), 'up': sum(x['up'] for x in ind),
+print(json.dumps({'n': len(codes), 'bytes': os.path.getsize(os.path.join(D, 'cond.json')), 'rise': sum(x['rise'] for x in ind), 'rc': sum(1 for x in ind if x['rc'] == 1), 'up': sum(x['up'] for x in ind),
                   'x5': sum(1 for x in col['x5'] if x == 1), 'q5': sum(1 for x in col['q5'] if x), 'f3': sum(1 for x in col['f3'] if x == 1), 'f3q': sum(1 for x in col['f3'] if x is None), 'noRank': sum(1 for x in col['rk'] if x is None)}, ensure_ascii=False))

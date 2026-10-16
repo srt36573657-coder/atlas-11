@@ -13,8 +13,11 @@
    · 영어 이름이 없는 회사 = 로마자(국어의 로마자 표기법 · 소리 바뀜은 생략) */
 export const LANG_LIST = Object.freeze([{code: 'ko', tag: 'ko', name: '한국어'}, {code: 'en', tag: 'en', name: 'English'}]);
 const STORE = 'atlas:lang';
+/** 영어 판을 보일까 — 2026-10-16 번역 일꾼이 사용 한도로 멈춰 남은 번역을 Claude 가 직접 하는 동안 false(지구 단추를 숨기고 늘 한국어 · 규칙 71 ③) · 번역이 다 차고 en_check 실패 0 이면 true */
+export const EN_READY = false;
 const norm = q => { const s = String(q ?? '').trim().toLowerCase(); return !s ? null : s === 'ko' ? 'ko' : 'en'; }; // 다른 말 = 영어
 export const LANG = (() => {
+  if (!EN_READY) return 'ko';
   let q = null; try { q = norm(new URLSearchParams(location.search).get('lang')); } catch { /* 주소 못 읽음 */ }
   if (q) { try { localStorage.setItem(STORE, q); } catch { /* 기억 못 함 */ } return q; }
   try { const v = localStorage.getItem(STORE); if (v === 'en' || v === 'ko') return v; } catch { /* 기억 못 함 */ }
