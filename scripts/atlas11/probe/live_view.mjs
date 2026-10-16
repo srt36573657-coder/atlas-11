@@ -263,8 +263,25 @@ await step('급등 다섯 칸', async () => { // 사장님 2026-10-15 16:28 「�
   out.surge5.ok = S.bands?.version === 'sb-v1' && K?.version === 'sk-v1' && main.chips.length === 5 && main.rows === 1 && main.cells >= 1 && main.track && Object.values(bands).every(x => x.ok) && !/CIA|씨아이에이|정보기관|중앙정보국/i.test(main.text);
   if (!out.surge5.ok) out.errors.push('급등 다섯 칸: ' + JSON.stringify(out.surge5).slice(0, 400));
 });
-await step('옛 판', async () => {
+await step('옛 판 지움', async () => { // 2026-10-15(싱가포르) 23:35 「알틀란스는 영구 삭제한다」 — /old/ 는 첫 화면(새 ATLAS)으로 · 맨 아래 「옛 ATLAS」 고리 없음
   await page.goto(B + '/old/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500); await shot('p6-old');
+  const g = await page.evaluate(() => ({path: location.pathname, newAtlas: !!document.querySelector('#tabCal'), oldLink: [...document.querySelectorAll('a[href]')].some(a => /\/old\//.test(a.getAttribute('href')))}));
+  out.oldGone = {...g, ok: g.path === '/' && g.newAtlas && !g.oldLink}; if (!out.oldGone.ok) out.errors.push('옛 판 지움: ' + JSON.stringify(g));
+});
+await step('조건 찾기 탭', async () => { // 사장님 2026-10-15(싱가포르) 23:53 「엘셀처럼 찾는 조건을 3가지 걸수 하자 … 업데이트 탭 빼고」 · 23:54 「가」 · 규칙 72 — 아래 탭 「조건」 · 칸 셋 · 남은 곳 · 정직 두 줄 · 업데이트 기록은 도움말(?)에서
+  const X = await (await fetch(B + '/atlas/data/cond.json?v=' + Date.now(), {signal: AbortSignal.timeout(60000)})).json().catch(() => null);
+  const core = await (await fetch(B + '/atlas/data/core.json?v=' + Date.now(), {signal: AbortSignal.timeout(60000)})).json().catch(() => null);
+  await page.goto(B + '/?v=' + Date.now() + '#/cond', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view h1', {timeout: 30000}); await page.waitForTimeout(900);
+  await shot('p36-cond');
+  const g = await page.evaluate(() => ({h1: document.querySelector('#view h1')?.textContent ?? '', tab: document.querySelector('#tabCond')?.getAttribute('aria-current'), tabs: [...document.querySelectorAll('nav.tabbar a')].map(a => a.getAttribute('href')),
+    slots: document.querySelectorAll('#view button.cd-slot').length, big: document.querySelector('#view .cd-big b')?.textContent ?? null, rows: document.querySelectorAll('#view .cd-row, #view .cd-list li').length, flow: document.querySelector('#view .cd-flow')?.textContent ?? '',
+    hon: (document.querySelector('#view')?.innerText ?? '').includes('사고팔 곳을 고른 목록이 아니에요.'), q: !!document.querySelector('#view p.q'), sw: document.documentElement.scrollWidth, cw: innerWidth}));
+  await page.goto(B + '/?v=' + Date.now() + '#/info', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(900);
+  const up = await page.evaluate(() => [...document.querySelectorAll('#infoSheet a[href="#/up"]')].length);
+  const last = g.flow.split('→').map(x => x.trim()).filter(Boolean).at(-1);
+  out.cond = {status: X ? 200 : null, version: X?.version ?? null, asOf: X?.asOf ?? null, coreAsOf: core?.asOf ?? null, ...g, upLink: up,
+    ok: X?.version === 'cd-v1' && X?.asOf === core?.asOf && g.h1 === '조건 찾기' && g.tab === 'page' && g.tabs.includes('#/cond') && !g.tabs.includes('#/up') && g.slots === 3 && g.big != null && last === g.big && g.hon && !g.q && up >= 1 && g.sw <= g.cw};
+  if (!out.cond.ok) out.errors.push('조건 찾기 탭: ' + JSON.stringify(out.cond).slice(0, 400));
 });
 await b.close();
 out.ok = out.oldFound === 0 && out.errors.length === 0;

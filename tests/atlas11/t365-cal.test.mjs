@@ -75,7 +75,7 @@ test('④ 화면 · 길 · 회차 — 아래 탭 다섯째 · #/cal · 종목 �
   const html = fs.readFileSync(path.join(ROOT, 'site/atlas/index.html'), 'utf8'), js = fs.readFileSync(path.join(ROOT, 'site/atlas/atlas.js'), 'utf8'), css = fs.readFileSync(path.join(ROOT, 'site/atlas/atlas.css'), 'utf8');
   assert.match(html, /<a href="#\/cal" id="tabCal">달력<\/a>/);
   assert.match(js, /else if \(kind === 'cal'\) \{ \$\('#tabCal'\)\.setAttribute\('aria-current', 'page'\); if \(!arg\) await viewCal\(v\); else if \(\/\^\[0-9A-Z\]\{6\}\$\/\.test\(arg\)\) await viewCalCase\(v, arg\); else viewMissing\(v\); \}/);
-  const a = js.indexOf('// ════ 달력 탭(사장님'), b = js.indexOf('// ── 소리 · 글씨 ──'); assert.ok(a > 0 && b > a); const cal = js.slice(a, b);
+  const a = js.indexOf('// ════ 달력 탭(사장님'), bc = js.indexOf('// ════ 조건 찾기 탭', a), b = bc > a ? bc : js.indexOf('// ── 소리 · 글씨 ──'); assert.ok(a > 0 && b > a); const cal = js.slice(a, b); // 달력 묶음만(뒤에 붙은 조건 찾기 묶음은 규칙 72 시험이 봄)
   const strs = [...cal.matchAll(/'([^'\n]*)'|`([^`]*)`/g)].map(m => m[1] ?? m[2]).join('\n');
   for (const w of ['급등', '더 오름', '덜 오름', '사라', '팔라', '추천', '예측', '확률', '매수', '매도']) assert.ok(!strs.includes(w), `달력 화면 글에 「${w}」`);
   assert.match(cal, /const TR_STAR = 'atlas:cal-star'/); assert.match(cal, /hideGet\(\)/, '관심 없음 = 급등 탭과 같은 목록(atlas:surge-hide)');
@@ -87,6 +87,6 @@ test('④ 화면 · 길 · 회차 — 아래 탭 다섯째 · #/cal · 종목 �
   assert.ok(R.indexOf("run('달력 셈', 'python3', ['scripts/atlas11/t365/surgetr.py'") > 0 && R.indexOf("run('달력 따로 세기', 'node', ['scripts/atlas11/t365/surgetr_verify.mjs'") > R.indexOf("run('달력 셈'"));
   assert.match(R, /rep\.cal = \{kind: 'fail'/);
   const I = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/inspect4.mjs'), 'utf8');
-  assert.match(I, /const TABS = \['#\/', '#\/list', '#\/surge', '#\/up', '#\/cal', '#\/info'\]/);
+  assert.match(I, /const TABS = \['#\/', '#\/list', '#\/surge', '#\/cond', '#\/cal', '#\/info'\]/); // 2026-10-15 23:54 「가」 — 업데이트 자리에 조건(규칙 72)
   const V = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/t365/surgetr_verify.mjs'), 'utf8'); assert.ok(!/surgetr\.py/.test(V.split('\n').filter(l => !l.trim().startsWith('//')).join('\n')), '따로 세기는 셈 파일을 열지 않음');
 });
