@@ -171,7 +171,7 @@ function m4Expect(H) {
   return {heads, leads, alerts, sec, movers, pickLabels, notes, qHeads, sayPk,
     rows: (RI?.list ?? []).map(r => [r.name, pct(r.chg)]), rowHref: (RI?.list ?? []).map(r => { const i = iOf(r.name); return i ? hrefI(i) : '#/list'; }), rowGold: (RI?.list ?? []).map(r => (core.mkt && iOf(r.name)?.pk ? `고른 ${iOf(r.name).pk}곳` : '')),
     groups: core.groups.slice().sort((a, b) => b.chg - a.chg).map(g => ['#/g/' + g.id, g.short, pct(g.chg)]), stale: notes.length > 0,
-    letter: ['친구에게 소개하기', '홍표 35초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!']};
+    letter: ['친구에게 소개하기', '보드리 35초 영상 · 보내기', '10명 소개하면 스타벅스 상품권 1만원!']};
 }
 const SV_BANDS = surge?.bands?.version === 'sb-v1' ? ['#/surge/10', '#/surge/20', '#/surge/30', '#/surge/40'] : []; // 급등 다섯 칸(16:28 「총 5개」 · 16:34 (가))
 // 달력 탭 — 첫 화면 + 종목 파일 몇 곳(오늘 새로 · 사건이 가장 많은 곳 · 금빛 · 조심 · 가장 오른 · 가장 내린 · 가장 긴 이름)은 모든 판 · 글씨에서, 나머지 종목 파일은 390 · 보통 글씨 한 판에서(길 지도 · 3번 누름도)
@@ -731,7 +731,7 @@ if (home) {
         inside: bs.every(x => { const q = x.getBoundingClientRect(); return q.left >= r.left - 1 && q.right <= r.right + 1 && q.top >= r.top - 1; }), shown: ls.some(x => getComputedStyle(x).visibility === 'visible'), mlo: Math.min(...ls.map(x => +getComputedStyle(x).opacity)),
         msg: ls.map(x => x.textContent), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}; });
     const i0 = await see();
-    chk(i0.intro && i0.pi && i0.img === '/media/makbi-hello.svg' && JSON.stringify(i0.bub) === JSON.stringify(['홍표!', '홍표!', '홍표!']), '열 때 홍표(그림 · 「홍표!」 세 번)가 없음: ' + JSON.stringify(i0).slice(0, 160));
+    chk(i0.intro && i0.pi && i0.img === '/media/makbi-hello.svg' && JSON.stringify(i0.bub) === JSON.stringify(['보드리!', '보드리!', '보드리!']), '열 때 홍표(그림 · 「홍표!」 세 번)가 없음: ' + JSON.stringify(i0).slice(0, 160));
     chk(!i0.shown, '여는 홍표 동안 사장님 글이 보임');
     await at(2700); const i1 = await see();
     chk(i1.ok && i1.op.length === 3 && i1.op.every(x => x > 0.9) && i1.inside && i1.sw <= i1.cw, '「홍표!」 세 번이 다 안 보이거나 편지 밖으로 넘침: ' + JSON.stringify(i1).slice(0, 160));
@@ -742,6 +742,18 @@ if (home) {
     await p.evaluate(() => { location.hash = '#/list'; }); await p.waitForTimeout(700); await p.evaluate(() => { location.hash = '#/'; }); await p.waitForSelector('#view .m4-letter'); await p.waitForTimeout(300);
     chk(await p.evaluate(() => !document.querySelector('#view .m4-letter .hpi')), '다시 첫 화면에 왔는데 여는 홍표를 다시 함(새로 열 때만)');
     screens++; if (errs.length) fail('여는 홍표', '오류 ' + errs[0]);
+    await ctx.close(); }
+  // ⑤-2 여는 보드리가 첫 화면 안(2026-10-16 틀림 장부 45 — 격언 열 가지로 편지가 길어져 그림이 아래로 밀렸던 일) — 작은 화면 · 큰 날 알림이 편지 위에 있는 날 · 없는 날
+  for (const [w, hh, al] of [[360, 640, true], [360, 640, false], [390, 844, true]]) {
+    const H2 = JSON.parse(JSON.stringify(home)); H2.alerts = al ? [{kind: 'idx', key: 'KOSDAQ', name: '코스닥', v: 3.1, why: 'usual'}] : (home.alerts ?? []).filter(a => a.kind !== 'idx');
+    const {ctx, p, errs} = await withHome(H2, {viewport: {width: w, height: hh}, reducedMotion: 'no-preference'});
+    await p.goto(base + '/atlas/', {waitUntil: 'commit'}); await p.waitForSelector('#view .m4-letter .hpi img.hpi-bird', {timeout: 30000}); await p.waitForTimeout(2700);
+    const r = await p.evaluate(() => { const pi = document.querySelector('#view .m4-letter .hpi'), img = pi?.querySelector('img.hpi-bird'), q = img?.getBoundingClientRect(), bs = [...(pi?.querySelectorAll('.hpi-b') ?? [])].map(x => x.getBoundingClientRect());
+      return {bird: q ? [Math.round(q.top), Math.round(q.bottom)] : null, bub: bs.map(x => [Math.round(x.top), Math.round(x.bottom)]), vh: innerHeight, al: document.querySelectorAll('#view .m4-top .m4-al').length}; });
+    screens++; numbers += 2;
+    if (!r.bird || r.bird[0] < 50 || r.bird[1] > r.vh - 50 || r.bub.length !== 3 || r.bub.some(([t, bt]) => t < 50 || bt > r.vh - 50)) fail('여는 보드리 자리', `${w}×${hh}${al ? ' · 큰 날 알림' : ''} — 그림 · 말풍선이 첫 화면 안에 다 안 보임: ${JSON.stringify(r)}`);
+    if (al && r.al !== 1) fail('여는 보드리 자리', `큰 날 알림이 편지 위에 없음: ${JSON.stringify(r)}`);
+    if (errs.length) fail('여는 보드리 자리', '오류 ' + errs[0]);
     await ctx.close(); }
   // ⑥ 움직임 줄이기 — 여는 홍표 없이 바로 사장님 글 · 그래프 · 막대는 끝 모양
   { const {ctx, p, errs} = await withHome(); await p.goto(base + '/atlas/', {waitUntil: 'networkidle'}); await p.waitForSelector('#view .m4-sec');

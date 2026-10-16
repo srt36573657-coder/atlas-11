@@ -4,7 +4,7 @@
 // 영어 팩(사장님 2026-10-15(싱가포르) 23:35 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」) — 이 기기에서 영어를 골랐으면 소개 쪽 글도 영어로(새 ATLAS 와 같은 사전 · 영상 속 말은 한국어 그대로)
 import {ON as EN, startI18n, t as L} from '/atlas/i18n.js';
 await startI18n();
-const HELLO_SHARE = {title: L('ATLAS를 소개합니다'), text: L('앵무새 홍표가 35초 동안 ATLAS를 소개해요. 앵무새는 들은 것만 말해요 — ATLAS도 지난 기록만 말해요!')};
+const HELLO_SHARE = {title: L('ATLAS를 소개합니다'), text: L('앵무새 보드리가 35초 동안 ATLAS를 소개해요. 앵무새는 들은 것만 말해요 — ATLAS도 지난 기록만 말해요!')};
 const helloUrl = () => new URL('/hello.html', location.origin).href;
 async function shareHello() {
   const url = helloUrl();

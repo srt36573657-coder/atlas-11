@@ -866,7 +866,7 @@ html.m4 a.hello.m4-letter img.m4-hp { position: absolute; z-index: 2; right: -2p
 @media (max-width: 355px) { html.m4 a.hello.m4-letter img.m4-hp { width: 72px; height: 90px; } .m4-msg .hml:nth-last-child(3), .m4-msg .hml:nth-last-child(4) { padding-right: 76px; } }
 /* 열 때 5초 — 달이 떠오르고 「홍표!」 세 번 → 큰 홍표 · 큰 달이 편지 끝 제자리로 날아가 앉음 → 붓으로 쓰듯 한 줄씩 */
 .m4-letter.intro .hml, .m4-letter.intro .m4-hp, .m4-letter.intro .m4-moon, .m4-letter.intro .m4-act, .m4-letter.intro .m4-gift { visibility: hidden; }
-.m4-letter .hpi { position: absolute; inset: 0; display: block; z-index: 3; pointer-events: none; }
+.m4-letter .hpi { position: absolute; inset: 0 0 auto 0; height: 460px; height: min(100%, 460px, calc(100vh - 230px)); height: min(100%, 460px, calc(100svh - 230px)); display: block; z-index: 3; pointer-events: none; } /* 여는 보드리 칸은 첫 화면 높이에 맞춤 — 편지가 길어져도(2026-10-16 격언 열 가지 · 틀림 장부 45) 그림 · 달 · 말풍선이 첫 화면 안 */
 .m4-letter .hpi .m4-bm { position: absolute; left: 50%; top: 15%; width: 250px; height: 250px; margin-left: -125px; border-radius: 50%; background: rgba(242, 239, 232, .07); border: 1px solid rgba(242, 239, 232, .12); outline: 1px solid rgba(242, 239, 232, .05); outline-offset: 22px; }
 html.m4 a.hello.m4-letter .hpi img.hpi-bird { position: absolute; left: 50%; bottom: 28px; width: auto; height: 66%; max-width: 80%; border-radius: 0; object-fit: contain; transform: translateX(-50%); }
 .m4-letter .hpi .hpi-b { position: absolute; padding: 4px 16px; border-radius: 18px; background: var(--ink); color: #0C0E12; border: 2px solid #7FFFE6; font-weight: 600; white-space: nowrap; line-height: 1.4; }
