@@ -96,6 +96,8 @@ a.pcal-back { display: inline-flex; align-items: center; min-height: 44px; min-w
 .pcal p.pcal-mk { margin: 10px 0 0; font-size: 18px; color: var(--sub); text-wrap: pretty; }
 .pcal p.pcal-prov { margin-top: 8px; }
 .pcal-h2 { margin: 26px 0 6px; font-size: 21px; font-weight: 800; line-height: 1.35; color: var(--ink); }
+.pcal .pcal-h2top { margin-top: 18px; }
+.pcal-g + p.pcal-lkey { margin-top: 2px; }
 .pcal-g { margin: 4px 0 0; }
 .pcal-lc { position: relative; margin: 8px 0 4px; }
 .pcal-lc svg { display: block; width: 100%; overflow: visible; touch-action: pan-y; }

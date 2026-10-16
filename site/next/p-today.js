@@ -213,7 +213,7 @@ function market(H, notes, page) {
       lf.style.setProperty('stroke-dashoffset', String(1 - f)); hd.setAttribute('cx', (X(j) + (X(j + 1) - X(j)) * u).toFixed(1)); hd.setAttribute('cy', (Y(PF[j]) + (Y(PF[j + 1]) - Y(PF[j])) * u).toFixed(1));
       big.textContent = numK(F.v[ix]); vt.textContent = F.d[ix]; hero.classList.add('ptoday-sc');
       if (t < 1) raf = requestAnimationFrame(fr);
-      else { busy = false; big.textContent = numK(DATA[M4.idx].close); vt.textContent = ''; lf.style.removeProperty('stroke-dasharray'); lf.style.removeProperty('stroke-dashoffset'); ch.classList.remove('ptoday-play'); hero.classList.remove('ptoday-sc'); }
+      else { busy = false; big.textContent = numK(DATA[M4.idx].close); vt.textContent = ''; lf.style.removeProperty('stroke-dasharray'); lf.style.removeProperty('stroke-dashoffset'); ch.classList.remove('ptoday-play'); hero.classList.remove('ptoday-sc'); if (ch.clientWidth && Math.max(120, ch.clientWidth) !== W) draw(); } // 그리는 동안 넓이가 바뀌었으면 다시
     };
     raf = requestAnimationFrame(fr);
   }
@@ -379,7 +379,7 @@ async function needComp() {
 }
 export async function render(arg) {
   const page = arg !== 'home';
-  await Promise.all([NX.need('core'), NX.need('mkt'), NX.need('home')]);
+  await Promise.all([NX.need('core'), NX.need('home')]);
   const C = NX.D.core, H = NX.D.home ?? null;
   const wrap = h('div', {class: 'ptoday ' + (page ? 'ptoday-page' : 'ptoday-home')});
   if (page) wrap.append(h('h1', {class: 'wt', text: '오늘 시장'}), h('p', {class: 'ws', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'}));

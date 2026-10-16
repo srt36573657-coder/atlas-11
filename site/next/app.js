@@ -40,7 +40,7 @@ const dayOf = v => (Array.isArray(v) && v.length > 1 && v[v.length - 2] > 0 && v
 const enc = encodeURIComponent;
 /** 회사 20거래일 % — 사이트가 낸 값(c · 줄이지 않은 선으로 셈) 먼저 · 없으면 선으로(지금 아틀란스와 같은 숫자) */
 const c20 = o => Number.isFinite(o?.c) ? o.c : chgOf(o?.l);
-const first = s => (String(s || '?').match(/[가-힣]/) || [Array.from(String(s || '?'))[0]])[0]; // 동그라미 글자 = 이름의 첫 한글(「K-소비재」 → 소)
+const first = s => (EN ? (String(L(String(s || '?'))).match(/[A-Za-z0-9]/) || ['?'])[0].toUpperCase() : (String(s || '?').match(/[가-힣]/) || [Array.from(String(s || '?'))[0]])[0]); // 동그라미 글자 = 이름의 첫 한글(「K-소비재」 → 소) · 영어면 영어 이름의 첫 글자(한글 한 글자를 사전이 낱말로 바꾸면 「금」 → Fri · 「소」 → cattle)
 /** 이름을 부르지 않는 곳(지금 아틀란스 이야기 칸과 같은 자) — 하루 30% 넘게 튐 · 빈 날 · 사흘 그대로 */
 function odd(l) {
   if (!Array.isArray(l) || l.length < 3 || l.some(v => !(v > 0))) return true;
@@ -391,7 +391,7 @@ async function vWatch(a) {
     h('h1', {class: 'wt', text: c.n}),
     h('p', {class: 'ws'}, '20거래일 동안 ', h('b', {class: cls(x20), text: pct(x20)}), ' · 하루 ', h('b', {class: cls(day), text: pct(day)}), ' · ' + md(X.mkt.asOf) + ' 마감'),
     h('div', {class: 'chan'}, h('a', {href: '#/ch/i/' + enc(c.i)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(c.i)}), h('div', {}, h('b', {text: (c.i || '?') + ' 업종'}), h('small', {text: '회사 ' + (I ? num(I.n) : '?') + '곳' + (g ? ' · ' + g.short + ' 갈래' : '')}))), I ? subBtn('i:' + c.i, c.i + ' 업종') : null),
-    h('div', {class: 'acts'}, laterB, h('button', {class: 'act', type: 'button', text: '보내기', onclick: () => share(c.n + ' · 새 아틀란스', absUrl('#/w/' + a))}), h('a', {class: 'act', href: '/letter.html', text: '편지 쓰기'})),
+    h('div', {class: 'acts'}, laterB, h('button', {class: 'act', type: 'button', text: '보내기', onclick: () => share(L(c.n + ' · 새 아틀란스'), absUrl('#/w/' + a))}), h('a', {class: 'act', href: '/letter.html', text: '편지 쓰기'})),
     h('h2', {class: 'sec', text: '챕터 일곱 · 7단'}),
   ];
   nodes.push(chaps(a, '3'));
@@ -447,11 +447,11 @@ async function vShorts(a) {
   const bar = h('div', {class: 'sbar', 'aria-hidden': 'true'}, fs.map(() => h('i', {})));
   const box = h('div', {class: 'shorts', tabindex: '0', 'aria-label': '쇼츠 · 위로 밀면 다음 사실'}, bar);
   fs.forEach((f, i) => {
-    const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, h('button', {type: 'button', text: '보내기', onclick: () => share(f.l1 + ' ' + f.big + ' · 새 아틀란스', absUrl('#/shorts/' + i))}));
+    const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, h('button', {type: 'button', text: '보내기', onclick: () => share(L(f.l1 + ' ' + f.big + ' · 새 아틀란스'), absUrl('#/shorts/' + i))}));
     const sec = h('section', {class: 'sh', 'data-i': String(i), 'aria-label': (i + 1) + ' / ' + fs.length},
       h('p', {class: 'k', text: f.k}), h('p', {class: 'l1', text: f.l1}), h('p', {class: 'bg ' + (f.bc || ''), text: f.big}), h('p', {class: 'l2', text: f.l2}),
       f.ratio ? [h('div', {class: 'ratio', 'aria-hidden': 'true'}, h('i', {css: {flex: String(f.ratio.up), background: COLOR.up}}), h('i', {css: {flex: String(f.ratio.fl), background: COLOR.fl}}), h('i', {css: {flex: String(f.ratio.dn), background: COLOR.dn}})),
-        h('p', {class: 'rl'}, h('span', {class: 'up', text: '오름 ' + num(f.ratio.up)}), h('span', {text: '그대로 ' + num(f.ratio.fl)}), h('span', {class: 'dn', text: '내림 ' + num(f.ratio.dn)}))] : null,
+        h('p', {class: 'rl'}, h('span', {class: 'up', text: '오름 ' + num(f.ratio.up)}), h('span', {}, '그대로', ' ' + num(f.ratio.fl)), h('span', {class: 'dn', text: '내림 ' + num(f.ratio.dn)}))] : null,
       f.mini ? (() => { const s = lineSvg(f.mini, {w: 300, ht: 100, stretch: true}); s?.classList.add('mini'); return s; })() : null,
       f.mini && f.ml ? h('p', {class: 'ml', text: f.ml}) : null, // 작은 선의 기간 — 큰 숫자(하루)와 선(여러 날)의 색이 달라도 헷갈리지 않게
       h('div', {class: 'bub'}, h('img', {alt: '', src: '/media/makbi-icon.svg'}), h('span', {text: '보드리는 지난 기록만 따라 말해요'})),
@@ -545,6 +545,7 @@ async function vMe() {
   nodes.push(h('h2', {class: 'sec', text: '바로 가기'}), h('div', {class: 'lst'},
     h('a', {href: '#/sub'}, '구독한 채널', h('span', {text: ns + '개 ›'})),
     h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})),
+    h('a', {href: oldOr('today', '#/today')}, '오늘 시장 · 지수 · 사고팔기 · 미국', h('span', {text: '›'})),
     h('a', {href: oldOr('surge', '#/surge')}, '급등 다섯 칸', h('span', {text: '›'})),
     h('a', {href: oldOr('cal', '#/cal')}, '달력 · 지켜보는 곳', h('span', {text: '›'})),
     h('a', {href: oldOr('cond', '#/cond')}, '조건 찾기', h('span', {text: '›'})),
@@ -554,7 +555,7 @@ async function vMe() {
     h('a', {href: oldOr('info', '#/info')}, '도움말 · 이 사이트는?', h('span', {text: '›'}))));
   if (hist.length || lat.length) {
     const clr = h('button', {type: 'button', text: '본 기록 · 담은 것 지우기'}, h('span', {text: '›'}));
-    clr.addEventListener('click', () => { if (!confirm('본 기록과 담은 것을 이 기기에서 지울까요?')) return; store.set(K_HIST, []); store.set(K_LATER, []); toast('지웠어요.'); route(true); });
+    clr.addEventListener('click', () => { if (!confirm(L('본 기록과 담은 것을 이 기기에서 지울까요?'))) return; store.set(K_HIST, []); store.set(K_LATER, []); toast('지웠어요.'); route(true); });
     nodes.push(h('div', {class: 'lst'}, clr));
   }
   nodes.push(h('p', {class: 'safe', text: '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
@@ -620,7 +621,7 @@ async function vFind(a) {
 /* 쪽 모듈 — 지금 아틀란스(/atlas/)의 쪽을 새 화면으로 옮긴 것(2026-10-17 04:23 「에이전트 총 동원해」)
    /next/p-<이름>.js 는 render(arg) → {title, nodes} 를 내보냄 · 모양은 /next/p-<이름>.css · 도구는 globalThis.NX
    READY 에 든 쪽만 새 화면으로 열고, 나머지는 지금 아틀란스로 넘김 · ?dev=1 이면 모든 모듈을 엶(옮기는 동안 시험) */
-const READY = new Set(['co', 'past', 'rivals', 'grow', 'range', 'chx', 'surge', 'cond', 'talk', 'up', 'time', 'info', 'x']); // 옮긴 쪽(2026-10-17 · 쪽마다 check_<이름>.mjs 실패 0)
+const READY = new Set(['co', 'past', 'rivals', 'grow', 'range', 'chx', 'surge', 'cond', 'talk', 'up', 'time', 'info', 'x', 'cal', 'today']); // 옮긴 쪽(2026-10-17 · 쪽마다 check_<이름>.mjs 실패 0)
 const DEV = (() => { try { return new URLSearchParams(location.search).get('dev') === '1'; } catch { return false; } })();
 const ready = k => DEV || READY.has(k);
 const oldOr = (k, hash) => (ready(k) ? hash : '/atlas/' + hash); // 새 화면이 있으면 새 화면 · 아니면 지금 아틀란스
@@ -678,7 +679,7 @@ async function route(force) {
   if (my !== seq) return; // 늦게 끝난 앞 화면
   root.replaceChildren(...out.nodes);
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
-  document.title = out.title + ' · 새 아틀란스';
+  document.title = L(out.title + ' · 새 아틀란스'); // 영어면 창 제목도(엔진은 body 만 봄)
   document.body.classList.toggle('noscroll', !!out.noScroll);
   window.scrollTo(0, out.noScroll ? 0 : scrollMem.get(hash) ?? 0);
 }
@@ -692,7 +693,7 @@ setFont(fontK);
 $('#fontBtn')?.addEventListener('click', () => { setFont((fontK + 1) % 3); toast('글씨 ' + FONTS[fontK]); });
 /* 영어 — 지금 아틀란스 영어 엔진(/atlas/i18n.js · 규칙 71 · 그려진 한국어를 사전 틀로 바꿈 · 기억 atlas:lang 그대로)을 새 화면에도
    EN_NEXT 가 false 인 동안(새 화면 글의 사전이 차기 전)은 지금 아틀란스 영어 판으로 넘김 · ?dev=1 이면 새 화면 영어를 시험으로 엶 */
-const EN_NEXT = false;
+const EN_NEXT = true; // 2026-10-17 새 화면 글 사전 다 참(next_en_check 실패 0) — 영어도 새 아틀란스로
 if (EN_NEXT || DEV) $('#langBtn')?.addEventListener('click', e => { e.preventDefault(); switchLang(EN ? 'ko' : 'en'); });
 if (EN && !(EN_NEXT || DEV)) location.replace('/atlas/?lang=en' + (location.hash || '#/'));
 else {

@@ -23,7 +23,7 @@ jobs:
           want="${{ inputs.pages }}"
           all=$(ls scripts/atlas11/next/ | sed -n 's/^check_\([a-z0-9]*\)\.mjs$/\1/p' | tr '\n' ' ')
           list=""
-          for n in next $all; do if [ -z "$want" ] || echo ",$want," | grep -q ",$n,"; then list="$list\"$n\","; fi; done
+          for n in next en $all; do if [ -z "$want" ] || echo ",$want," | grep -q ",$n,"; then list="$list\"$n\","; fi; done
           echo "list=[${list%,}]" >> "$GITHUB_OUTPUT"
   page:
     needs: plan
@@ -42,7 +42,7 @@ jobs:
           mkdir -p /tmp/pw out
           (cd /tmp/pw && npm i -s --no-audit --no-fund playwright@1.56.1 >/dev/null && npx -y playwright@1.56.1 install --with-deps chromium >/dev/null)
           n="${{ matrix.name }}"; t0=$(date +%s)
-          if [ "$n" = "next" ]; then f=next_check.mjs; extra=""; else f="check_$n.mjs"; extra="--all"; fi
+          if [ "$n" = "next" ]; then f=next_check.mjs; extra=""; elif [ "$n" = "en" ]; then f=next_en_check.mjs; extra="--modules --dev 0 --all"; else f="check_$n.mjs"; extra="--all"; fi
           set +e
           PW_DIR=/tmp/pw/ timeout 4200 node "scripts/atlas11/next/$f" --base https://aaa7377.com --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
           code=$?

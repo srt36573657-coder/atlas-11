@@ -124,7 +124,7 @@ function trDots(n10, label) {
 /** 답 한 줄 — 「뽑힌 날보다 올라 있는 곳」 지켜보는 곳 · 같은 기간 모든 회사(같은 단위 · 10곳 중 n곳꼴) — 이 화면의 그림 */
 function trAnswer(T, R) {
   const box = h('section', {class: 'pcal-ans', 'aria-label': '지켜보는 곳 지금'});
-  if (!T.N) { box.append(h('p', {class: 'pcal-big', text: T.k ? `${md(T.asOf)}에 처음 ${T.k}곳이 뽑혔어요.` : '아직 지켜보는 곳이 없어요.'}), T.k ? h('p', {class: 'pcal-small', text: '등락률은 다음 장날부터 쌓여요.'}) : null); return box; }
+  if (!T.N) { box.append(...[h('p', {class: 'pcal-big', text: T.k ? `${md(T.asOf)}에 처음 ${T.k}곳이 뽑혔어요.` : '아직 지켜보는 곳이 없어요.'}), T.k ? h('p', {class: 'pcal-small', text: '등락률은 다음 장날부터 쌓여요.'}) : null].filter(Boolean)); return box; } // 옛 쪽은 지켜보는 곳 · 처음 뽑힌 곳이 모두 없을 때 글 「null」이 붙었음(DOM append) — 새 쪽은 걸러 냄
   const z = R.filter(r => r.st === 'z').length, q = R.filter(r => r.st === 'q').length;
   box.append(h('p', {class: 'pcal-cap', text: '뽑힌 날보다 올라 있는 곳'}), h('div', {class: 'pcal-cmp'},
     h('p', {class: 'pcal-cl'}, h('span', {text: `지켜보는 ${T.N}곳`}), h('b', {class: 'num', text: `10곳 중 ${T.n10}곳꼴`})), trDots(T.n10, '지켜보는 곳'),
@@ -286,6 +286,9 @@ async function vCase(code) {
   const r = trRow(r0), i0 = T.dates.indexOf(r.d0), dates = T.dates.slice(i0, i0 + K.p.length);
   v.append(h('h1', {class: 'pcal-h1', 'data-proper': '1', text: r.n})); // 회사 이름(고유 이름 — 쓰지 않을 말 셈 밖)
   v.append(h('p', {class: 'pcal-lead', text: tx(`${mdw(r.d0)}에 ${trTo(r.b)} 뽑혔어요. 그때 5일간 ${pct(r.r5)}${r.re ? ' · 되짚음(그날 종가로 다시 셈)' : ''}`)}));
+  // 그림을 위로(새 화면 말투 — 제목 → 그림 → 숫자 · 설명): 뽑힌 날 종가 = 0 선 → 지금 상태 · 큰 % → 금빛 · 견줌 → 칸 길 → 지나온 일
+  const g1 = h('div', {class: 'pcal-g'}), g2 = h('div', {class: 'pcal-g'});
+  v.append(...[h('h2', {class: 'pcal-h2 pcal-h2top', text: '뽑힌 날부터 날마다'}), g1, K.z.length ? h('p', {class: 'pcal-lkey'}, h('span', {text: '빈 점 = 거래가 없던 날'})) : null].filter(Boolean)); // DOM append 는 null 을 글 「null」로 붙임 — 걸러 냄
   const now = h('div', {class: 'pcal-now'}, h('p', {class: 'pcal-w ' + (r.st === 'u' ? 'up' : r.st === 'd' ? 'dn' : r.st === 'q' ? 'q' : 'zero'), text: CAL_WORD[r.st] ?? '?'}));
   if (r.st === 'n') now.append(h('p', {class: 'pcal-small', text: '등락률은 다음 장날부터 쌓여요.'}));
   else now.append(h('p', {class: 'pcal-p'}, h('span', {text: '뽑힌 날부터 '}), r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)));
@@ -294,9 +297,8 @@ async function vCase(code) {
   if (r.f) v.append(h('p', {class: 'q pcal-qline', text: r.f === 2 ? '? 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요. 하루 35% 넘게 바뀐 날이 있어 값이 고쳐졌을 수 있어요.' : '! 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.'}));
   if (K.mk != null) v.append(h('p', {class: 'pcal-mk', text: tx(`같은 기간 모든 회사의 가운데 값은 ${pct(K.mk)}였어요.`)}));
   if (T.provisional && r.st !== 'n') v.append(h('p', {class: 'pcal-small pcal-prov', text: tx(`${md(T.asOf)} 값은 장 중 값이에요. 저녁 8시까지 바뀌어요.`)}));
-  const g1 = h('div', {class: 'pcal-g'}), g2 = h('div', {class: 'pcal-g'});
-  v.append(h('h2', {class: 'pcal-h2', text: '뽑힌 날부터 날마다'}), g1, h('h2', {class: 'pcal-h2', text: '그 회사 5일 오름이 든 칸'}), g2,
-    h('p', {class: 'pcal-lkey'}, h('span', {text: '● 선택'}), h('span', {text: '○ 탈락'}), h('span', {text: '◉ 다시 선택'}), K.z.length ? h('span', {text: '빈 점 = 거래가 없던 날'}) : null));
+  v.append(h('h2', {class: 'pcal-h2', text: '그 회사 5일 오름이 든 칸'}), g2,
+    h('p', {class: 'pcal-lkey'}, h('span', {text: '● 선택'}), h('span', {text: '○ 탈락'}), h('span', {text: '◉ 다시 선택'})));
   sized(g1, w => trLine(g1, K.p, dates, K.z, r.n, w));
   sized(g2, w => trLane(g2, K.q, K.p.length, K.ev, dates, w));
   // 지나온 일(택배 조회처럼 — 새 것이 위 · 넷 + 「더 보기」)

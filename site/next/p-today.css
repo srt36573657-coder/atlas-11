@@ -44,6 +44,7 @@ details.ptoday-how[open] summary::before { background: var(--mute); }
 .ptoday-ch { position: relative; height: 170px; margin: 18px 0 0; touch-action: pan-y; cursor: crosshair; -webkit-user-select: none; user-select: none; }
 .ptoday-ch svg { display: block; overflow: visible; }
 .ptoday-ch .ptoday-gl { stroke: var(--card2); stroke-width: 1; } .ptoday-ch .ptoday-g0 { stroke: var(--mute); stroke-width: 1; stroke-dasharray: 2 4; }
+.ptoday-yl { font-size: 17px; } /* 눈금 글 크기 = 오른쪽 눈금 칸 넓이의 잣대(p-today.js padR = 글 크기 × 3.05) */
 .ptoday-yl span { position: absolute; right: 0; color: var(--mute); font-size: 17px; line-height: 1; white-space: nowrap; pointer-events: none; }
 .ptoday-ch .ptoday-lf { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .ptoday-ch .ptoday-lg { fill: none; stroke: #7D8592; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }

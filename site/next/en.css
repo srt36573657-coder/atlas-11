@@ -1,14 +1,19 @@
-/* 새 아틀란스 영어 화면 꾸밈(html.en) — 영어 글은 한국어보다 길어 줄바꿈 · 넘침만 다듬음(규칙 71 · 2026-10-17) */
+/* 새 아틀란스 영어 화면 꾸밈(html.en) — 영어 글은 한국어보다 길어 줄바꿈 · 넘침만 다듬음(규칙 71 · 2026-10-17) — 검사 scripts/atlas11/next/next_en_check.mjs */
 html.en .wt, html.en .ws, html.en .note, html.en .sec { overflow-wrap: anywhere; }
-/* 낱말 단위 줄바꿈 — 한국어 판의 keep-all · anywhere 는 영어 낱말을 가운데서 끊음(아래 단추 「Subscrib/e」) · 지금 아틀란스 영어와 같음(atlas.css html.en body) */
-html.en body { word-break: normal; overflow-wrap: break-word; }
-/* 아래 단추 — 「Subscribe」(67px)가 320px 화면 단추 칸(64px)보다 넓어 아래 막대가 화면 밖으로 밀림 → 좁은 화면에서만 글자 사이를 조금 좁힘 */
+/* 긴 영어 낱말(Semiconductors 같은 것)이 좁은 칸에서 끊길 때 아무 데서나가 아니라 낱말 마디에서 붙임표로(지금 아틀란스 영어 html.en .vw 와 같음) */
+html.en .wt, html.en .chhead h1, html.en .cp span { -webkit-hyphens: auto; hyphens: auto; }
+/* 아래 단추 — 낱말 하나(「Subscribe」 67px)는 가운데서 끊지 않음 · 320px 화면 단추 칸(64px)에서는 글자 사이를 조금 좁혀 들어가게 */
+html.en .tabs a { overflow-wrap: normal; }
 @media (max-width: 340px) { html.en .tabs a { letter-spacing: -.03em; } }
+/* 챕터 일곱 — 큰 글씨(화면 칸을 1.14 · 1.29배로 키움)에서 영어 두 칸이 화면보다 넓어짐 → 영어 큰 글씨는 한 줄에 한 챕터 */
+html.en.f2 .chaps:not(.row), html.en.f3 .chaps:not(.row) { grid-template-columns: minmax(0, 1fr); }
 /* 쇼츠 선반 칸 — 「1,632 companies」의 「companies」가 칸(안쪽 88px)보다 넓어 낱말 가운데서 끊김 → 영어 판은 칸을 조금 넓히고 큰 글을 조금 작게(선반은 옆으로 밀림) */
 html.en .st { min-width: 132px; } html.en .st b { font-size: 19px; }
 /* 찾기 줄 — 영어 꼬리 글(업종 · 20거래일 %)이 길어 이름 옆 한 줄에 못 들어감(320 · 360 · 390 모두 화면 밖) → 이름 밑 둘째 줄로 */
 html.en .hits a { flex-wrap: wrap; justify-content: flex-start; align-content: center; row-gap: 2px; padding-top: 8px; padding-bottom: 8px; }
 html.en .hits small { flex-basis: 100%; white-space: normal; }
+/* 한국어에서 한 줄로 묶던 짧은 말이 영어로 길어지면 칸 밖으로 — 영어는 묶지 않음(지금 아틀란스 영어 html.en .m4-letter .nb 와 같음) */
+html.en .m4-letter .nb, html.en .pchx-nb { white-space: normal; }
 /* 접은 칸 「열기 · 닫기 · 펼치기 · 접기」 — 쪽 모듈 꼴(p-*.css)이 스타일로 넣은 글은 사전이 못 바꿈 → 영어 판에서 같은 말로(지금 아틀란스 atlas.css 「Open · Close」와 같음)
    모듈 꼴이 이 파일보다 뒤에 읽혀서 html.en 을 앞에 붙여 이김 */
 html.en details.pcal-more > summary::after, html.en details.pco-more > summary::after, html.en .pcond details > summary::after,

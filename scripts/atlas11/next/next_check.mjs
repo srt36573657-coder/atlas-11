@@ -75,7 +75,7 @@ const knownHref = h => {
   if (h === '/' || h === '/letter.html' || h === '/hello.html' || h === '/us/') return true; // /us/ = 미국 판(규칙 54 그대로)
   if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
-  if ((mm = /^#\/cal\/([0-9A-Z]{6})$/.exec(h))) return READY.has('cal') && !!CO[mm[1]];
+  if ((mm = /^#\/cal\/([0-9A-Z]{6})$/.exec(h))) return READY.has('cal'); // 종목 파일 — check_cal 이 자료와 맞대 봄
   if ((mm = /^#\/w\/([0-9A-Z]{6})\/(past|rivals|grow|range)$/.exec(h))) return READY.has(mm[2]) && !!CO[mm[1]];
   if ((mm = /^#\/x\/(.+)$/.exec(h))) return READY.has('x');
   let m = /^#\/(?:f\/(rise|surge|lead|pick|group|ind|us)|shorts(?:\/\d+)?|sub|me|find(?:\/.*)?)?$/.exec(h); if (m) return true;
@@ -86,7 +86,7 @@ const knownHref = h => {
   if ((m = /^\/#\/i\/(.+)$/.exec(h))) return ind.has(decodeURIComponent(m[1]));
   if ((m = /^\/#\/c\/([0-9A-Z]{6})(\/(past|rivals|grow|range))?$/.exec(h))) return !!CO[m[1]];
   if ((m = /^\/#\/x\/([0-9A-Z]{6})$/.exec(h))) return true; // 밖 칸(펀드 · 우선주 …) — 지금 아틀란스
-  return /^\/#\/(surge|cal|cond|talk|find|time|up|info)$/.test(h);
+  return /^\/#\/(surge|cal|cond|talk|find|time|up|info|today)$/.test(h);
 };
 function checkScan(where, s, p) {
   if (s.sw > s.vw) fail('가로 넘침', where + ' ' + s.sw + '>' + s.vw);
