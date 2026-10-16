@@ -1,12 +1,12 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-16T19:17:46.706Z",
+ "at": "2026-10-16T19:20:42.373Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-13",
  "companies": 2557,
  "limit": null,
  "full": true,
- "seconds": 69,
+ "seconds": 71,
  "counts": {
   "고리": 1120,
   "화면": 51,

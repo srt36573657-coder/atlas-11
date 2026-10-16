@@ -28,6 +28,8 @@ const K_SUB = 'atlas:new:sub', K_HIST = 'atlas:new:hist', K_LATER = 'atlas:new:l
 /* 숫자 — 지금 아틀란스와 같은 반올림(크기로 · −7.25 → −7.3 · 100% 넘으면 소수 없음) */
 const r1 = x => Math.sign(x) * Math.floor(Math.abs(x) * 10 + 0.5 + 1e-7) / 10;
 function pct(x) { if (x == null || !isFinite(x)) return '?'; const v = r1(x), a = Math.abs(v); return (v > 0 ? '+' : v < 0 ? '−' : '') + (a >= 100 ? Math.floor(a + 0.5 + 1e-7).toLocaleString('ko-KR') : a.toFixed(1)) + '%'; }
+/** 지수 · 미국 하루 — 자료가 둘째 자리까지라 둘째 자리 그대로(지금 아틀란스 p2 와 같음 · 한 자리로 다시 줄이면 2.05 → 2.1 처럼 두 번 반올림됨) */
+const p2 = v => (v == null || !isFinite(v) ? '?' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%');
 const cls = x => (x == null || !isFinite(x)) ? 'q' : r1(x) > 0 ? 'up' : r1(x) < 0 ? 'dn' : 'fl';
 const COLOR = {up: '#FF5A65', dn: '#5B96FF', fl: '#8E959F', q: '#E9B949'};
 const num = n => Number(n).toLocaleString('ko-KR');
@@ -149,8 +151,8 @@ function shortFacts() {
   if (!X) return out;
   const H = D.home, core = X.core, mkt = X.mkt;
   const kp = H?.idx?.KOSPI, kq = H?.idx?.KOSDAQ;
-  if (kp && Number.isFinite(kp.day)) out.push({id: 'idx', k: md(kp.date) + (kp.live ? ' 장 중' : ' 장 마감'), l1: '코스피는 하루', big: pct(kp.day), bc: cls(kp.day),
-    l2: kq && Number.isFinite(kq.day) ? '코스닥은 ' + pct(kq.day) + '이에요' : '코스닥은 ?', mini: (kp.rows || []).slice(-20).map(r => r[1]), go: '#/w/KOSPI', tile: ['코스피 ' + pct(kp.day), md(kp.date)]});
+  if (kp && Number.isFinite(kp.day)) out.push({id: 'idx', k: md(kp.date) + (kp.live ? ' 장 중' : ' 장 마감'), l1: '코스피는 하루', big: p2(kp.day), bc: cls(kp.day),
+    l2: kq && Number.isFinite(kq.day) ? '코스닥은 ' + p2(kq.day) + '이에요' : '코스닥은 ?', mini: (kp.rows || []).slice(-20).map(r => r[1]), go: '#/w/KOSPI', tile: ['코스피 ' + p2(kp.day), md(kp.date)]});
   let up = 0, dn = 0, fl = 0;
   for (const c of Object.values(X.co)) { const x = dayOf(c.l); if (x == null) continue; if (x > 0) up++; else if (x < 0) dn++; else fl++; }
   if (up + dn + fl) out.push({id: 'breadth', k: md(mkt.asOf) + ' 장 마감', l1: '모든 회사 ' + num(up + dn + fl) + '곳 가운데', big: num(Math.max(up, dn)) + '곳', bc: up >= dn ? 'up' : 'dn',
@@ -171,7 +173,7 @@ function shortFacts() {
   const s3 = H?.s365;
   if (s3 && Number.isFinite(s3.up) && Number.isFinite(s3.down)) out.push({id: 'pick', k: md(s3.date) + ' 하루', l1: '고른 곳 ' + s3.n + '곳 가운데', big: num(s3.up) + '곳', bc: 'up', l2: '올랐어요 · 내린 곳은 ' + num(s3.down) + '곳', ratio: {up: s3.up, fl: s3.flat || 0, dn: s3.down}, go: '#/f/pick'});
   const us = H?.us?.rows;
-  if (Array.isArray(us) && us[0] && Number.isFinite(us[0].chg)) out.push({id: 'us', k: '미국 · ' + md(H.us.date), l1: us[0].name, big: pct(us[0].chg), bc: cls(us[0].chg), l2: us.slice(1, 3).map(r => r.name + ' ' + pct(r.chg)).join(' · '), go: '#/f/us'});
+  if (Array.isArray(us) && us[0] && Number.isFinite(us[0].chg)) out.push({id: 'us', k: '미국 · ' + md(H.us.date), l1: us[0].name, big: p2(us[0].chg), bc: cls(us[0].chg), l2: us.slice(1, 3).map(r => r.name + ' ' + p2(r.chg)).join(' · '), go: '#/f/us'});
   const o = nextOpen();
   out.push({id: 'letter', k: '편지 여는 밤', l1: '다음 여는 밤은', big: md(o.d), bc: 'gd', l2: '금요일 밤 8시에 쓴 편지가 다 함께 열려요', go: '/letter.html', tile: ['금 8시', '편지 여는 밤']});
   return out;
@@ -185,7 +187,7 @@ function noData(t = '자료') { return [h('p', {class: 'empty', text: '? ' + t +
 function idxCard(code) {
   const x = D.home?.idx?.[code]; if (!x || !Array.isArray(x.rows) || x.rows.length < 2) return null;
   const other = D.home.idx[code === 'KOSPI' ? 'KOSDAQ' : 'KOSPI'];
-  return card('#/w/' + code, thumb(x.rows.map(r => r[1]), '3달', {play: true}), md(x.date) + ' ' + x.name + ' 하루 ' + pct(x.day) + (other ? ' · ' + other.name + ' ' + pct(other.day) : ''),
+  return card('#/w/' + code, thumb(x.rows.map(r => r[1]), '3달', {play: true}), md(x.date) + ' ' + x.name + ' 하루 ' + p2(x.day) + (other ? ' · ' + other.name + ' ' + p2(other.day) : ''),
     '시장 · ' + (x.live ? '장 중' : '장 마감') + ' · 큰 숫자는 3달 동안', '시');
 }
 function coCard(code, badge = '20일', extra = null) {
@@ -235,7 +237,7 @@ async function vHome(chip) {
   else if (chip === 'us') {
     const us = D.home?.us; if (!us?.rows?.length) return {title: '미국', nodes: [chipsBar(chip), ...noData('미국 자료')]};
     nodes.push(h('p', {class: 'note', text: '미국 마지막 장 · ' + md(us.date) + ' 마감'}));
-    for (const r of us.rows) nodes.push(h('div', {class: 'card'}, numThumb(pct(r.chg), r.chg, r.name + ' · ' + num(r.close)), h('div', {class: 'meta'}, h('span', {class: 'av', 'aria-hidden': 'true', text: '미'}), h('div', {}, h('b', {text: r.name + ' 하루 ' + pct(r.chg)}), h('small', {text: md(r.date) + ' 마감 · 3달 낮은 값 ' + num(r.lo) + ' · 높은 값 ' + num(r.hi)})))));
+    for (const r of us.rows) nodes.push(h('div', {class: 'card'}, numThumb(p2(r.chg), r.chg, r.name + ' · ' + num(r.close)), h('div', {class: 'meta'}, h('span', {class: 'av', 'aria-hidden': 'true', text: '미'}), h('div', {}, h('b', {text: r.name + ' 하루 ' + p2(r.chg)}), h('small', {text: md(r.date) + ' 마감 · 3달 낮은 값 ' + num(r.lo) + ' · 높은 값 ' + num(r.hi)})))));
   }
   return {title: CHIPS.find(c => c[0] === chip)[1], nodes};
 }
@@ -299,7 +301,7 @@ async function vIndex(code) {
   const vals = x.rows.map(r => r[1]), n = vals.length, x3 = chgOf(vals);
   const lab = i => md(x.rows[i][0]) + ' · ' + num(x.rows[i][1]) + ' · 첫날보다 ' + pct((vals[i] / vals[0] - 1) * 100);
   const nodes = [player(vals, lab, '3달 · ' + md(x.rows[0][0]) + ' → ' + md(x.rows[n - 1][0])), h('h1', {class: 'wt', text: x.name}),
-    h('p', {class: 'ws'}, md(x.date) + ' 하루 ', h('b', {class: cls(x.day), text: pct(x.day)}), ' · 3달 ', h('b', {class: cls(x3), text: pct(x3)}), x.live ? ' · 장 중' : ' · 장 마감'),
+    h('p', {class: 'ws'}, md(x.date) + ' 하루 ', h('b', {class: cls(x.day), text: p2(x.day)}), ' · 3달 ', h('b', {class: cls(x3), text: pct(x3)}), x.live ? ' · 장 중' : ' · 장 마감'),
     h('div', {class: 'stats'}, x.hi ? h('div', {}, h('small', {text: '3달 높은 값 · ' + md(x.hi.d)}), h('b', {text: num(x.hi.v)})) : null, x.lo ? h('div', {}, h('small', {text: '3달 낮은 값 · ' + md(x.lo.d)}), h('b', {text: num(x.lo.v)})) : null)];
   const X = ix(), other = code === 'KOSPI' ? 'KOSDAQ' : 'KOSPI';
   nodes.push(h('h2', {class: 'sec', text: '다음 볼 것'}));

@@ -29,6 +29,7 @@ function P(x) {
   if (r === 0) return '0.0%';
   return (x > 0 ? '+' : '−') + (r >= 100 ? Math.floor(r + 0.5 + 1e-7).toLocaleString('ko-KR') : r.toFixed(1)) + '%';
 }
+const P2 = v => (v == null || !Number.isFinite(v) ? '?' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%'); // 지수 · 미국 하루 = 둘째 자리 그대로(두 번 반올림 막기)
 const MD = d => (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일';
 const N = n => Number(n).toLocaleString('ko-KR');
 const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
@@ -144,7 +145,7 @@ for (const G of core.groups) {
   const got = await p.evaluate(() => [...document.querySelectorAll('#view .sh')].map(s => ({k: s.querySelector('.k')?.textContent, l1: s.querySelector('.l1')?.textContent, big: s.querySelector('.bg')?.textContent, l2: s.querySelector('.l2')?.textContent})));
   const exp = [];
   const kp = home?.idx?.KOSPI, kq = home?.idx?.KOSDAQ;
-  if (kp) exp.push({l1: '코스피는 하루', big: P(kp.day), l2: '코스닥은 ' + P(kq.day) + '이에요'});
+  if (kp) exp.push({l1: '코스피는 하루', big: P2(kp.day), l2: '코스닥은 ' + P2(kq.day) + '이에요'});
   let up = 0, dn = 0, fl = 0; for (const o of Object.values(CO)) { const d = lineDay(o.l); if (!Number.isFinite(d)) continue; if (d > 0) up++; else if (d < 0) dn++; else fl++; }
   exp.push({l1: '모든 회사 ' + N(up + dn + fl) + '곳 가운데', big: N(Math.max(up, dn)) + '곳'});
   const r0 = [...core.rise.list].sort((a, b) => b.chg - a.chg)[0]; if (r0) exp.push({l1: r0.name, big: P(r0.chg)});
@@ -153,7 +154,7 @@ for (const G of core.groups) {
   if (best) exp.push({l1: best.o.n, big: P(best.x)});
   if (surge?.members?.length) { const t = [...surge.members].sort((a, b) => b.r5 - a.r5)[0]; exp.push({l1: '급등 칸 ' + surge.members.length + '곳 가운데 1등', big: P(t.r5), l2: t.n + ' · ' + t.i}); }
   if (home?.s365) exp.push({l1: '고른 곳 ' + home.s365.n + '곳 가운데', big: N(home.s365.up) + '곳'});
-  if (home?.us?.rows?.[0]) exp.push({l1: home.us.rows[0].name, big: P(home.us.rows[0].chg)});
+  if (home?.us?.rows?.[0]) exp.push({l1: home.us.rows[0].name, big: P2(home.us.rows[0].chg), l2: home.us.rows.slice(1, 3).map(r => r.name + ' ' + P2(r.chg)).join(' · ')});
   for (const e of exp) {
     const hit = got.find(x => x.l1 === e.l1);
     if (!hit) { fail('쇼츠 사실 없음', e.l1); continue; }
