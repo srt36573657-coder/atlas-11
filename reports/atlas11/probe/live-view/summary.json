@@ -1,5 +1,5 @@
 {
- "made": "2026-10-16T04:22:55.769Z",
+ "made": "2026-10-16T04:27:35.789Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -169,9 +169,7 @@
    "og": "https://aaa7377.com/og-makbi.jpg"
   }
  },
- "errors": [
-  "조건 찾기 탭: {\"status\":200,\"version\":\"cd-v1\",\"asOf\":\"2026-10-16\",\"coreAsOf\":\"2026-10-16\",\"h1\":\"조건 찾기\",\"tab\":\"page\",\"tabs\":[\"#/\",\"#/list\",\"#/cond\",\"#/surge\",\"#/cal\"],\"slots\":3,\"big\":\"8\",\"rows\":8,\"flow\":\"2,557 → 278 → 11 → 8\",\"hon\":true,\"q\":true,\"sw\":390,\"cw\":390,\"upLink\":1,\"ok\":false}"
- ],
+ "errors": [],
  "no36": {
   "hash": "#/",
   "tabs": [
@@ -354,7 +352,7 @@
     ],
     [
      "홍표!",
-     0.975325
+     0.981373
     ]
    ],
    "shown": false,
@@ -504,11 +502,11 @@
   "rows": 8,
   "flow": "2,557 → 278 → 11 → 8",
   "hon": true,
-  "q": true,
+  "q": false,
   "sw": 390,
   "cw": 390,
   "upLink": 1,
-  "ok": false
+  "ok": true
  },
- "ok": false
+ "ok": true
 }
