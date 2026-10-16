@@ -152,24 +152,24 @@ function shortFacts() {
   const H = D.home, core = X.core, mkt = X.mkt;
   const kp = H?.idx?.KOSPI, kq = H?.idx?.KOSDAQ;
   if (kp && Number.isFinite(kp.day)) out.push({id: 'idx', k: md(kp.date) + (kp.live ? ' 장 중' : ' 장 마감'), l1: '코스피는 하루', big: p2(kp.day), bc: cls(kp.day),
-    l2: kq && Number.isFinite(kq.day) ? '코스닥은 ' + p2(kq.day) + '이에요' : '코스닥은 ?', mini: (kp.rows || []).slice(-20).map(r => r[1]), go: '#/w/KOSPI', tile: ['코스피 ' + p2(kp.day), md(kp.date)]});
+    l2: kq && Number.isFinite(kq.day) ? '코스닥은 ' + p2(kq.day) + '이에요' : '코스닥은 ?', mini: (kp.rows || []).slice(-21).map(r => r[1]), ml: '선은 코스피 20거래일이에요', go: '#/w/KOSPI', tile: ['코스피 ' + p2(kp.day), md(kp.date)]});
   let up = 0, dn = 0, fl = 0;
   for (const c of Object.values(X.co)) { const x = dayOf(c.l); if (x == null) continue; if (x > 0) up++; else if (x < 0) dn++; else fl++; }
   if (up + dn + fl) out.push({id: 'breadth', k: md(mkt.asOf) + ' 장 마감', l1: '모든 회사 ' + num(up + dn + fl) + '곳 가운데', big: num(Math.max(up, dn)) + '곳', bc: up >= dn ? 'up' : 'dn',
     l2: up >= dn ? '올랐어요' : '내렸어요', ratio: {up, fl, dn}, go: null, tile: [num(Math.max(up, dn)) + '곳', up >= dn ? '오른 곳' : '내린 곳']});
   const r0 = core.rise?.list?.[0];
-  if (r0) out.push({id: 'rise', k: '1주 동안 · ' + md(core.rise.from) + '부터', l1: r0.name, big: pct(r0.chg), bc: cls(r0.chg), l2: '1주 동안 오른 업종 ' + core.rise.list.length + '개 가운데 1등이에요', mini: r0.v, go: '#/ch/i/' + enc(r0.name), tile: [pct(r0.chg), r0.name]});
+  if (r0) out.push({id: 'rise', k: '1주 동안 · ' + md(core.rise.from) + '부터', l1: r0.name, big: pct(r0.chg), bc: cls(r0.chg), l2: '1주 동안 오른 업종 ' + core.rise.list.length + '개 가운데 1등이에요', mini: r0.v, ml: '선은 1주예요', go: '#/ch/i/' + enc(r0.name), tile: [pct(r0.chg), r0.name]});
   const gs = [...(core.groups || [])].filter(g => Number.isFinite(g.chg)).sort((a, b) => b.chg - a.chg);
   if (gs.length) {
     const g = gs[0], w = gs[gs.length - 1];
-    out.push({id: 'gtop', k: '20거래일 · ' + md(core.base) + '부터', l1: g.name + ' 갈래', big: pct(g.chg), bc: cls(g.chg), l2: '큰 갈래 ' + gs.length + '개 가운데 가장 많이 올랐어요', mini: g.v, go: '#/ch/g/' + enc(g.id), tile: [pct(g.chg), g.short || g.name]});
-    if (w !== g) out.push({id: 'glow', k: '20거래일 · ' + md(core.base) + '부터', l1: w.name + ' 갈래', big: pct(w.chg), bc: cls(w.chg), l2: '큰 갈래 가운데 가장 많이 내렸어요', mini: w.v, go: '#/ch/g/' + enc(w.id)});
+    out.push({id: 'gtop', k: '20거래일 · ' + md(core.base) + '부터', l1: g.name + ' 갈래', big: pct(g.chg), bc: cls(g.chg), l2: '큰 갈래 ' + gs.length + '개 가운데 가장 많이 올랐어요', mini: g.v, ml: '선은 20거래일이에요', go: '#/ch/g/' + enc(g.id), tile: [pct(g.chg), g.short || g.name]});
+    if (w !== g) out.push({id: 'glow', k: '20거래일 · ' + md(core.base) + '부터', l1: w.name + ' 갈래', big: pct(w.chg), bc: cls(w.chg), l2: '큰 갈래 가운데 가장 많이 내렸어요', mini: w.v, ml: '선은 20거래일이에요', go: '#/ch/g/' + enc(w.id)});
   }
   let best = null;
   for (const [code, c] of Object.entries(X.co)) { if (odd(c.l)) continue; const x = c20(c); if (x != null && (!best || x > best.x)) best = {code, c, x}; }
-  if (best) out.push({id: 'riser', k: '20거래일 · ' + md(core.base) + '부터', l1: best.c.n, big: pct(best.x), bc: cls(best.x), l2: (best.c.i || '?') + ' · 모든 회사 가운데 가장 많이 올랐어요', mini: best.c.l, go: '#/w/' + best.code});
+  if (best) out.push({id: 'riser', k: '20거래일 · ' + md(core.base) + '부터', l1: best.c.n, big: pct(best.x), bc: cls(best.x), l2: (best.c.i || '?') + ' · 모든 회사 가운데 가장 많이 올랐어요', mini: best.c.l, ml: '선은 20거래일이에요', go: '#/w/' + best.code});
   const S = D.surge, sm = Array.isArray(S?.members) ? [...S.members].filter(m => Number.isFinite(m.r5)).sort((a, b) => b.r5 - a.r5) : [];
-  if (sm.length) out.push({id: 'surge', k: '5일 동안 · ' + md(S.asOf) + '까지', l1: '급등 칸 ' + sm.length + '곳 가운데 1등', big: pct(sm[0].r5), bc: cls(sm[0].r5), l2: sm[0].n + ' · ' + (sm[0].i || '?'), mini: sm[0].v, go: '#/w/' + sm[0].c, tile: [pct(sm[0].r5), sm[0].n]});
+  if (sm.length) out.push({id: 'surge', k: '5일 동안 · ' + md(S.asOf) + '까지', l1: '급등 칸 ' + sm.length + '곳 가운데 1등', big: pct(sm[0].r5), bc: cls(sm[0].r5), l2: sm[0].n + ' · ' + (sm[0].i || '?'), mini: sm[0].v, ml: '선은 5일이에요', go: '#/w/' + sm[0].c, tile: [pct(sm[0].r5), sm[0].n]});
   const s3 = H?.s365;
   if (s3 && Number.isFinite(s3.up) && Number.isFinite(s3.down)) out.push({id: 'pick', k: md(s3.date) + ' 하루', l1: '고른 곳 ' + s3.n + '곳 가운데', big: num(s3.up) + '곳', bc: 'up', l2: '올랐어요 · 내린 곳은 ' + num(s3.down) + '곳', ratio: {up: s3.up, fl: s3.flat || 0, dn: s3.down}, go: '#/f/pick'});
   const us = H?.us?.rows;
@@ -323,6 +323,7 @@ async function vShorts(a) {
       f.ratio ? [h('div', {class: 'ratio', 'aria-hidden': 'true'}, h('i', {css: {flex: String(f.ratio.up), background: COLOR.up}}), h('i', {css: {flex: String(f.ratio.fl), background: COLOR.fl}}), h('i', {css: {flex: String(f.ratio.dn), background: COLOR.dn}})),
         h('p', {class: 'rl'}, h('span', {class: 'up', text: '오름 ' + num(f.ratio.up)}), h('span', {text: '그대로 ' + num(f.ratio.fl)}), h('span', {class: 'dn', text: '내림 ' + num(f.ratio.dn)}))] : null,
       f.mini ? (() => { const s = lineSvg(f.mini, {w: 300, ht: 100, stretch: true}); s?.classList.add('mini'); return s; })() : null,
+      f.mini && f.ml ? h('p', {class: 'ml', text: f.ml}) : null, // 작은 선의 기간 — 큰 숫자(하루)와 선(여러 날)의 색이 달라도 헷갈리지 않게
       h('div', {class: 'bub'}, h('img', {alt: '', src: '/media/makbi-icon.svg'}), h('span', {text: '보드리는 지난 기록만 따라 말해요'})),
       i === 0 ? h('p', {class: 'hint', text: '위로 밀면 다음 사실이에요'}) : null, side);
     box.append(sec);
