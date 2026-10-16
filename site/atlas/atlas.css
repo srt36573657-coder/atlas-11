@@ -203,8 +203,10 @@ details.more { margin: 16px 0 0; border-radius: 18px; background: var(--card); b
 details.more > summary { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 16px; cursor: pointer; font-weight: 700; list-style: none; border-radius: 18px; transition: background-color .15s ease; }
 details.more > summary:hover { background: var(--lift); }
 details.more > summary::-webkit-details-marker { display: none; }
-details.more > summary::after { content: '열기'; color: var(--violet-ink); font-weight: 600; }
+details.more > summary::after { content: '열기'; color: var(--violet-ink); font-weight: 600; flex: none; white-space: nowrap; } /* 「열/기」로 갈리지 않게(2026-10-16 영어 사진) */
 details.more[open] > summary::after { content: '닫기'; }
+html.en .vw { -webkit-hyphens: auto; hyphens: auto; } /* 영어 — 긴 회사 이름(MEGAELECTRONICS 같은 것)이 좁은 칸에서 아무 데서나 끊기지 않고 낱말 마디에서 붙임표로 */
+html.en details.more > summary::after { content: 'Open'; } html.en details.more[open] > summary::after { content: 'Close'; } /* 영어(2026-10-16) — 스타일로 넣은 글은 사전이 못 바꿈 · 화면 검사도 못 봄(글자가 아님) */
 details.more[open] > summary { border-radius: 18px 18px 0 0; }
 details.more .in { padding: 4px 16px 14px; line-height: 1.6; }
 details.more ol, details.more ul { margin: 0; padding-left: 1.2em; }
@@ -1530,6 +1532,9 @@ html.en .tabbar .ts { display: none; }
 .vw .cd-o { font-weight: 700; line-height: 1.25; overflow-wrap: anywhere; }
 .vw .cd-c { font-weight: 700; white-space: nowrap; }
 .vw .cd-chev { font-style: normal; color: var(--sub); }
+/* 영어(2026-10-16 · 규칙 71) — 영어 낱말이 길어 칸 이름이 낱말 가운데서 끊기던 것(「compa nies」): 칸 이름 한 줄 · 남은 수는 그 밑 줄 · 낱말 사이에서만 줄 바꿈 */
+html.en .vw button.cd-slot { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: 'n o chev' 'n c chev'; row-gap: 2px; }
+html.en .vw button.cd-slot .cd-n { grid-area: n; } html.en .vw button.cd-slot .cd-o { grid-area: o; overflow-wrap: break-word; } html.en .vw button.cd-slot .cd-c { grid-area: c; } html.en .vw button.cd-slot .cd-chev { grid-area: chev; }
 .vw .cd-flow { margin: 4px 0 0; color: var(--sub); }
 .vw .cd-ex { margin: 4px 0 0; }
 .vw .cd-btn { min-height: 44px; padding: 0 14px; margin: 8px 8px 0 0; border: 1px solid var(--m4-line); border-radius: 999px; background: none; color: var(--ink); font: inherit; cursor: pointer; }
@@ -1558,3 +1563,8 @@ html.en .tabbar .ts { display: none; }
 .cd-ops .cd-ot b { font-weight: 700; overflow-wrap: anywhere; }
 .cd-ops .cd-od { color: var(--sub); overflow-wrap: anywhere; }
 .cd-ops .cd-oc { white-space: nowrap; font-weight: 700; }
+/* 영어(2026-10-16) — 고르기 줄 글이 길어 줄 높이가 모자라 겹치던 것: 줄 높이는 글 크기대로 · 남은 수는 글 밑 줄 · 낱말 사이에서만 줄 바꿈 */
+html.en .cd-ops { grid-auto-rows: max-content; }
+html.en .cd-ops button.cd-op { grid-template-columns: minmax(0, 1fr); row-gap: 4px; }
+html.en .cd-ops .cd-ot b, html.en .cd-ops .cd-od { overflow-wrap: break-word; } html.en .cd-ops .cd-oc { justify-self: start; }
+html.en .m4-letter .nb, html.en .m4-sec .nb, html.en .m4-fr b { white-space: normal; } /* 영어(2026-10-16 큰 글씨 돌기) — 한국어 「영상 · 보내기」 · 「스타벅스 상품권 1만원!」을 한 줄에 묶던 것이 영어 긴 글에서 화면 밖으로(아주 크게 42px) */

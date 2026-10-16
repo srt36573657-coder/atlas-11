@@ -21,6 +21,14 @@ async function engine(lang) {
   return import(f + '?' + lang + Math.random());
 }
 
+test('①-2 엔진(2026-10-16) — 달 값은 화면 차례대로 · 로마자 이름 회사는 사전에 없는 줄에서만 이름 · 목록 나누기는 틀 길이로', async () => {
+  const m = await engine('en');
+  m.useDict({templates: {'{m} 뽑았고, {m}에는 들였다. {m} 팔았다.': '{m} hired, {m} added, {m} sold.', '{e} 매출 길': '{e} sales path', '{e} {n} 원': '{e} {n} won', '{e}({n}번째) {n} 원': '{e} (No. {n}) {n} won', 'SOOP {n} 원': 'SOOP {n} won (old key)'}, entities: {}}, {'삼성전자': 'Samsung Electronics', '현대차': 'Hyundai Motor'}, {KCC: 'KCC', SOOP: 'SOOP', 'SM Life Design': 'SM Life Design'});
+  assert.equal(m.t('2026년 7월 뽑았고, 8월에는 들였다. 2025년 5월 팔았다.'), 'Jul 2026 hired, Aug added, May 2025 sold.', '해 붙은 달과 해 없는 달이 섞여도 차례 그대로');
+  assert.equal(m.t('KCC 매출 길'), 'KCC sales path', '로마자 이름 회사 → {e} 틀');
+  assert.equal(m.t('SOOP 1000 원'), 'SOOP 1000 won (old key)', '사전에 그 이름 그대로의 틀이 있으면 그것을 먼저');
+  assert.equal(m.t('삼성전자 2300000000000 원, 현대차 1100000000000 원, SM Life Design(5번째) 302700000000 원'), 'Samsung Electronics 2.3 trillion won, Hyundai Motor 1.1 trillion won, SM Life Design (No. 5) 302.7 billion won', '큰 수 · 긴 이름이 든 목록도 나눔');
+});
 test('① 엔진 — 틀 · 날짜 · 달 · 시각 · 큰 수 · 목록 · 이름', async () => {
   const m = await engine('en');
   assert.equal(m.ON, true);

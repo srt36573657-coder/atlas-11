@@ -14,7 +14,7 @@
 export const LANG_LIST = Object.freeze([{code: 'ko', tag: 'ko', name: '한국어'}, {code: 'en', tag: 'en', name: 'English'}]);
 const STORE = 'atlas:lang';
 /** 영어 판을 보일까 — 2026-10-16 번역 일꾼이 사용 한도로 멈춰 남은 번역을 Claude 가 직접 하는 동안 false(지구 단추를 숨기고 늘 한국어 · 규칙 71 ③) · 번역이 다 차고 en_check 실패 0 이면 true */
-export const EN_READY = false;
+export const EN_READY = true;
 const norm = q => { const s = String(q ?? '').trim().toLowerCase(); return !s ? null : s === 'ko' ? 'ko' : 'en'; }; // 다른 말 = 영어
 export const LANG = (() => {
   if (!EN_READY) return 'ko';
@@ -30,6 +30,7 @@ const WD = {월: 1, 화: 2, 수: 3, 목: 4, 금: 5, 토: 6, 일: 0};
 const WD_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MON_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 let T = {}; const E = new Map(); let EMAX = 0;
+const EL = new Map(); let ELMAX = 0; // 로마자 이름 회사(KCC · SOOP · YG PLUS …) — 사전에 없는 줄에서만 이름으로 봄(2026-10-16 · 아래 tr)
 const cache = new Map(), misses = new Map(); // misses: 틀 → 처음 본 원문(검사 · 사전 만들기)
 
 const fmtDate = (y, m, d, w) => `${MON_EN[m - 1]} ${d}${y ? `, ${y}` : ''}${w != null ? ` (${WD_EN[w]})` : ''}`;
@@ -61,19 +62,19 @@ const okEdge = (s, i, len) => {
   return !next || !WORD.test(next[0]) || PARTICLE.test(next) && !WORD.test(next[1] ?? '');
 };
 /** 앞에서부터 가장 긴 이름 찾기(이름 4,300개 — 큰 정규식 대신) */
-function entScan(x, push) {
+function entScan(x, push, latin = false) {
   if (!E.size || !HAN.test(x)) return x;
   let out = '', i = 0;
   while (i < x.length) {
     let hit = 0;
-    if (!(i > 0 && WORD.test(x[i - 1]))) for (let L = Math.min(EMAX, x.length - i); L >= 2; L--) { const k = x.substr(i, L); if (E.has(k) && okEdge(x, i, L)) { hit = L; break; } }
+    if (!(i > 0 && WORD.test(x[i - 1]))) for (let L = Math.min(latin ? Math.max(EMAX, ELMAX) : EMAX, x.length - i); L >= 2; L--) { const k = x.substr(i, L); if ((E.has(k) || latin && EL.has(k)) && okEdge(x, i, L)) { hit = L; break; } }
     if (hit) { push(x.substr(i, hit)); out += '{e}'; i += hit; } else { out += x[i]; i++; }
   }
   return out;
 }
 
 /** 한국어 글 → 틀 + 값 */
-export function templateOf(s, {noEnt = false} = {}) {
+export function templateOf(s, {noEnt = false, latin = false} = {}) {
   const v = {d: [], m: [], t: [], e: [], n: [], q: []};
   let x = String(s).replace(/「([^」]*)」/g, (_, q) => { v.q.push(q); return '{q}'; });
   x = x.replace(/(?:(\d{4})년\s?)?(\d{1,2})월[\s\u00a0]?(\d{1,2})일(?:\s?\((월|화|수|목|금|토|일)\))?/g, (_, y, m, d, w) => { v.d.push([y ? +y : null, +m, +d, w ? WD[w] : null]); return '{d}'; });
@@ -81,7 +82,7 @@ export function templateOf(s, {noEnt = false} = {}) {
   //   (2026-10-16 영어 미리보기: 「2026년 7월 … 8월에는 … 2025년 5월」이 「Jul 2026 … May 2025 … Aug」로 채워지던 것)
   x = x.replace(/(?:(\d{4})년\s?)?(?<![\d.,])(\d{1,2})월(?![\s\u00a0]?\d{1,2}일)/g, (all, y, m) => { if (!y && (+m < 1 || +m > 12)) return all; v.m.push([y ? +y : null, +m]); return '{m}'; });
   x = x.replace(/\b\d{1,2}:\d{2}(?::\d{2})?\b/g, m => { v.t.push(m); return '{t}'; });
-  if (!noEnt) x = entScan(x, e => v.e.push(e));
+  if (!noEnt) x = entScan(x, e => v.e.push(e), latin);
   x = x.replace(/[+−\-±]?\d[\d,]*(?:\.\d+)?/g, m => { v.n.push(m); return '{n}'; });
   return {key: x, v};
 }
@@ -93,7 +94,7 @@ function fill(tr, v) {
     if (val == null) return '';
     if (k === 'd') return fmtDate(...val);
     if (k === 'm') return val[0] ? `${MON_EN[val[1] - 1]} ${val[0]}` : MON_EN[val[1] - 1];
-    if (k === 'e') return E.get(val) ?? romanize(val);
+    if (k === 'e') return E.get(val) ?? EL.get(val) ?? romanize(val);
     if (k === 'n') { lastN = val; return big(val); }
     if (k === 'q') return `“${t(val)}”`; // 「…」 안 글(화면 이름 · 단추 이름)도 영어로
     return val;
@@ -112,11 +113,12 @@ function splitTop(s, sep) {
 }
 const SEPS = [' · ', ' — ', ' → ', ': ', ' / ', ', '];
 /** 「, 」는 목록일 때만 나눔(날짜 목록 · 짧은 조각 셋 넘게) — 글 속 쉼표는 문장째로 찾음 */
-const listy = parts => parts.length >= 3 && parts.every(p => p.trim().length <= 30) || parts.every(p => /\{d\}/.test(templateOf(p).key));
+const listy = parts => parts.length >= 3 && parts.every(p => templateOf(p.trim()).key.length <= 30) || parts.every(p => /\{d\}/.test(templateOf(p).key)); // 길이는 틀로 잼(2026-10-16 — 「CJ CGV 2300000000000 원, …」처럼 큰 수 · 긴 이름이 든 막대 이름표 목록이 나뉘지 않던 것)
 function tr(core, depth = 0) {
   if (!HAN.test(core)) return core;
   const {key, v} = templateOf(core);
   if (T[key] != null) return fill(T[key], v);
+  if (EL.size) { const q = templateOf(core, {latin: true}); if (q.key !== key && T[q.key] != null) return fill(T[q.key], q.v); } // 로마자 이름 회사 줄(「KCC 매출 길」 → 「{e} 매출 길」)
   if (E.size) { const p = templateOf(core, {noEnt: true}); if (p.key !== key && T[p.key] != null) return fill(T[p.key], p.v); } // 이름 사전의 낱말(반도체 · 화학 …)이 보통 말로 쓰인 줄
   if (!HAN.test(key)) return fill(key, v); // 이름 · 날짜 · 숫자만 있는 글
   for (const sep of SEPS) {
@@ -159,8 +161,10 @@ export function translateTree(root) {
   for (let n = w.nextNode(); n; n = w.nextNode()) { if (n.nodeType === 3) doText(n); else doEl(n); }
 }
 /** 사전 넣기 — 화면은 startI18n 이, 시험은 바로 */
-export function useDict(j, names) {
-  T = j?.templates ?? {}; addEntities(j?.entities ?? {}); if (names) addEntities(names); cache.clear();
+export function useDict(j, names, latin) {
+  T = j?.templates ?? {}; addEntities(j?.entities ?? {}); if (names) addEntities(names);
+  if (latin) for (const [ko, x] of Object.entries(latin)) if (ko && x && ko.length >= 2 && !HAN.test(ko) && !HAN.test(x)) { EL.set(ko, x); if (ko.length > ELMAX) ELMAX = Math.min(40, ko.length); }
+  cache.clear();
 }
 let obs = null;
 /** 영어면: 사전 · 이름을 읽고 · 문서 말 · 창 제목을 바꾸고 · 이후 그려지는 것을 모두 바꾼다 */
@@ -169,7 +173,7 @@ export async function startI18n() {
   document.documentElement.lang = 'en'; document.documentElement.classList.add('en');
   const get = async f => { try { const r = await fetch(new URL(`./i18n/${f}`, import.meta.url), {cache: 'no-cache'}); return r.ok ? await r.json() : null; } catch { return null; } };
   const [dict, co] = await Promise.all([get('en.json'), get('en-names.json')]);
-  useDict(dict, co?.names ?? null);
+  useDict(dict, co?.names ?? null, co?.latin ?? null);
   document.title = t(document.title);
   translateTree(document.body);
   obs = new MutationObserver(list => {
