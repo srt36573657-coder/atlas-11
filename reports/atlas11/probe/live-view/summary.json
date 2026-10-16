@@ -1,5 +1,5 @@
 {
- "made": "2026-10-16T22:02:19.889Z",
+ "made": "2026-10-16T23:02:43.863Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -181,7 +181,9 @@
    "og": "https://aaa7377.com/og-makbi.jpg"
   }
  },
- "errors": [],
+ "errors": [
+  "여는 홍표: {\"i1\":{\"intro\":true,\"img\":true,\"bub\":[[\"보드리!\",1],[\"보드리!\",1],[\"보드리!\",1]],\"shown\":false,\"ml\":1,\"msg\":\"\",\"bird\":[364,668,844]},\"i4\":{\"intro\":true,\"shown\":false,\"bub\":3},\"i2\":{\"intro\":false,\"shown\":true,\"ml\":1},\"ok\":false}"
+ ],
  "no36": {
   "hash": "#/",
   "tabs": [
@@ -364,15 +366,15 @@
     ],
     [
      "보드리!",
-     0.975331
+     1
     ]
    ],
    "shown": false,
    "ml": 1,
    "msg": "",
    "bird": [
-    363,
-    667,
+    364,
+    668,
     844
    ]
   },
@@ -386,7 +388,7 @@
    "shown": true,
    "ml": 1
   },
-  "ok": true
+  "ok": false
  },
  "co7": {
   "code": "100030",
@@ -624,7 +626,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "6일 12시간 54분 51초",
+  "clock": "6일 11시간 54분 19초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -803,7 +805,7 @@
    },
    {
     "url": "/#/up",
-    "n": 3681,
+    "n": 3699,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -848,5 +850,5 @@
   ],
   "ok": true
  },
- "ok": true
+ "ok": false
 }
