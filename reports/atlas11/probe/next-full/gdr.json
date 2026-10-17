@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-next-gdr-1",
- "when": "2026-10-17T11:46:51.063Z",
+ "when": "2026-10-17T11:33:58.346Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
  "version": "gdr-v1",
  "asOf": "2026-10-13",
  "picks": 3,
- "sec": 13,
+ "sec": 14,
  "counts": {
   "fail": 1,
   "종가 날이 달라 안 맞댐": 3,
