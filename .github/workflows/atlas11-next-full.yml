@@ -34,6 +34,11 @@ on:
         default: '6'
 permissions:
   contents: write
+# 지금 사이트 검사(live)는 한 번에 하나 — 2026-10-17 11:44 두 실행이 aaa7377.com 을 함께 두드려 co 926초 · rivals · cond 시간 넘음이 남
+# 올리기 전 검사(local)는 가지마다 하나(사이트를 두드리지 않음 · 다른 가지끼리는 함께) · 기다리는 실행은 뒤에 온 것이 갈음(깃허브 동작)
+concurrency:
+  group: ${{ inputs.local && format('atlas11-next-full-local-{0}', github.ref_name) || 'atlas11-next-full-live' }}
+  cancel-in-progress: false
 jobs:
   plan:
     runs-on: ubuntu-latest
