@@ -1,5 +1,5 @@
 {
- "sec": 6,
+ "sec": 9,
  "gatesSrc": "real",
  "scenes": 12,
  "empty360": {

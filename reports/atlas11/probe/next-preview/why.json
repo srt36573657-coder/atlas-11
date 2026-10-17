@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-2",
- "when": "2026-10-17T14:52:18.483Z",
+ "when": "2026-10-17T15:01:14.136Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -14,11 +14,11 @@
   "coL": "0126Z0"
  },
  "timing": {
-  "flowMs": 995,
+  "flowMs": 1114,
   "taps": 25,
   "typed": 4
  },
- "sec": 34,
+ "sec": 39,
  "counts": {
   "찾기와 같은 차례": 7,
   "펀드 · 우선주 까닭 줄": 5,
