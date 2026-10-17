@@ -1,5 +1,5 @@
 {
- "made": "2026-10-17T12:28:57.940Z",
+ "made": "2026-10-17T12:47:26.375Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -182,9 +182,7 @@
    "og": "https://aaa7377.com/og-makbi.jpg"
   }
  },
- "errors": [
-  "여는 홍표: {\"i1\":{\"intro\":true,\"img\":true,\"bub\":[[\"고도리!\",1],[\"고도리!\",1],[\"고도리!\",1]],\"shown\":false,\"ml\":1,\"msg\":\"\",\"bird\":[179,483,844]},\"i4\":{\"intro\":true,\"shown\":false,\"bub\":3},\"i2\":{\"intro\":false,\"shown\":true,\"ml\":1},\"ok\":false}"
- ],
+ "errors": [],
  "helloName": {
   "title": "고도리를 소개합니다",
   "share": "고도리를 소개합니다 앵무새 고도리가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!",
@@ -373,7 +371,7 @@
     ],
     [
      "고도리!",
-     1
+     0.975322
     ]
    ],
    "shown": false,
@@ -381,7 +379,7 @@
    "msg": "",
    "bird": [
     179,
-    483,
+    482,
     844
    ]
   },
@@ -393,9 +391,11 @@
   "i2": {
    "intro": false,
    "shown": true,
-   "ml": 1
+   "ml": 1,
+   "first": "고도리 주식 격언 열 가지",
+   "last": true
   },
-  "ok": false
+  "ok": true
  },
  "co7": {
   "code": "100030",
@@ -633,7 +633,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "5일 22시간 28분 08초",
+  "clock": "5일 22시간 09분 44초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -916,5 +916,5 @@
   ],
   "ok": true
  },
- "ok": false
+ "ok": true
 }
