@@ -62,10 +62,10 @@ function oldNamesInSource(file, name = path.relative(ROOT, file)) {
 
 test('⑤ 옛 이름 없음 — 새 화면 글(따옴표 · 틀 글) · index.html · CSS 글 · 영어 사전 값에 아틀란스 · ATLAS · 아틀라스가 없음(풀이 글은 셈 밖)', () => {
   assert.deepEqual(renameSelfTest(), [], '바꾸는 말 표 · 옛 이름 찾기 · 글 뽑기 자체 시험');
-  const bad = [...js, 'index.html', ...css].flatMap(f => oldNamesInSource(path.join(NEXT, f), f));
-  const en = path.join(NEXT, 'i18n/en.json'); // 영어 화면 글 = 사전의 값(열쇠는 옛 한국어 틀이 남아도 됨 · 머리 schema · lang · note 는 셈 밖) · 옛 영어 이름은 「ATLAS」(회사 「Atlas Link」 같은 실제 이름은 셈 밖)
+  const bad = [...js.filter(f => f !== 'brand.js'), 'index.html', ...css].flatMap(f => oldNamesInSource(path.join(NEXT, f), f)); // brand.js = 이름 한 곳(옛 이름 목록 was 를 일부러 가짐 · 규칙 76)
+  const en = path.join(NEXT, 'i18n/en.json'); // 영어 화면 글 = 사전의 값(열쇠는 옛 한국어 틀이 남아도 됨 · 머리 schema · lang · note 는 셈 밖) · 옛 영어 이름은 「ATLAS」 · 「Bodri」(2026-10-17 17:34 「보드리를 고도리로」 · 회사 「Atlas Link」 같은 실제 이름은 셈 밖)
   if (fs.existsSync(en)) {
-    const walk = (x, p) => { if (typeof x === 'string') { if (/ATLAS|아틀란스/.test(x)) bad.push(`i18n/en.json ${p} 「${x.slice(0, 90)}」`); } else if (x && typeof x === 'object') for (const [k, v] of Object.entries(x)) walk(v, p + ' › ' + k.slice(0, 40)); };
+    const walk = (x, p) => { if (typeof x === 'string') { if (/ATLAS|아틀란스|보드리|\bBodri\b/.test(x)) bad.push(`i18n/en.json ${p} 「${x.slice(0, 90)}」`); } else if (x && typeof x === 'object') for (const [k, v] of Object.entries(x)) walk(v, p + ' › ' + k.slice(0, 40)); };
     for (const [k, v] of Object.entries(JSON.parse(fs.readFileSync(en, 'utf8')))) if (!['schema', 'lang', 'note'].includes(k)) walk(v, k);
   }
   assert.deepEqual(bad, [], '옛 이름 남음:\n' + bad.join('\n'));

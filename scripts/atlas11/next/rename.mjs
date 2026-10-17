@@ -5,11 +5,15 @@
 //   ② nameScan(화면 안에서 돎) + oldNamesIn — 새 쪽 보이는 글 · 창 제목 · aria-label · alt · title · 머리말에 아틀란스 · 아틀라스 · ATLAS 가 남았는지
 //      (남의 글 [data-proper] · 원문 [lang="ko"] · 자료의 회사 이름(아틀라스링크 같은 실제 회사)은 뺌) → 실패 이름 「옛 이름 남음」
 //   ③ jsStrings(소스) — 자바스크립트 소스의 따옴표 글 · 틀 글(` `)만 뽑음(풀이 글 · 정규식은 뺌) — 시험의 정적 검사가 씀
-export const NEW_NAME = '보드리';
-export const SAFE_LINE = '보드리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'; // 새 쪽 안전 문장(옛 「아틀란스는 …」)
-export const TITLE_TAIL = ' · 보드리'; // 창 제목 끝(옛 「 · 새 아틀란스」)
-export const LETTER_TITLE = '보드리 주식 격언 열 가지'; // 사장님 편지 첫 줄(옛 「아틀란스 주식 격언 열 가지」 · 나머지 열 줄 · 상품권 줄은 글자 그대로)
-export const OLD_NAME_RE = /아틀란스|아틀라스|ATLAS|Atlas/; // 옛 이름(소문자 atlas 는 주소 · 기억 열쇠 · 파일 이름 = 속 이름이라 셈 밖)
+// 2026-10-17 17:34 「보드리를 고도리로 변경하자」 · 17:57 「… 시스템에 세팅후 작업해」(규칙 76) — 이름은 site/next/brand.js 한 곳에서 읽음(여기 글자를 박지 않음)
+import {BRAND, josa} from '../../../site/next/brand.js';
+export const NEW_NAME = BRAND.ko;
+export const SAFE_LINE = josa(NEW_NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'; // 새 쪽 안전 문장(옛 「아틀란스는 …」 · 「보드리는 …」)
+export const TITLE_TAIL = ' · ' + NEW_NAME; // 창 제목 끝(옛 「 · 새 아틀란스」 · 「 · 보드리」)
+export const LETTER_TITLE = NEW_NAME + ' 주식 격언 열 가지'; // 사장님 편지 첫 줄(옛 「아틀란스 · 보드리 주식 격언 열 가지」 · 나머지 열 줄 · 상품권 줄은 글자 그대로)
+const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+export const OLD_NAMES = [...new Set([...BRAND.was.flatMap(w => [w.ko, w.en]), '아틀라스', 'Atlas'])].filter(x => x && x !== BRAND.ko && x !== BRAND.en); // 옛 이름(소문자 atlas 는 주소 · 기억 열쇠 · 파일 이름 = 속 이름이라 셈 밖)
+export const OLD_NAME_RE = new RegExp(OLD_NAMES.map(escRe).join('|'));
 export const OLD_NAME_FAIL = '옛 이름 남음';
 
 /* ① 바꾸는 말 표(안내 rename-brief 표와 같은 차례 — 긴 말 먼저) */
@@ -21,6 +25,7 @@ const RULES = [
   [/아틀란스/g, NEW_NAME], // 토씨는 그대로(아틀란스 · 보드리 둘 다 받침 없음)
   [/ATLAS ?(는|가|를|의|와|도|로|에서|에|만)(?![가-힣])/g, NEW_NAME + '$1'], // 「ATLAS 는 어떻게 셌나요」 → 「보드리는 어떻게 셌나요」(우리말 이름은 토씨를 붙여 씀)
   [/ATLAS/g, NEW_NAME], // 맨 위 글자 · 「ATLAS 셈」 · 「ATLAS 업종」 · 창 제목 「… · ATLAS」
+  ...BRAND.was.filter(w => !['아틀란스', 'ATLAS'].includes(w.ko)).flatMap(w => [[new RegExp(escRe(w.ko) + '(이에요|예요|으로|은|는|이|가|을|를|과|와|로|아|야)?', 'g'), (m, p) => (p ? josa(NEW_NAME, p) : NEW_NAME)], [new RegExp('\\b' + escRe(w.en) + '\\b', 'g'), BRAND.en]]), // 옛 쪽(/atlas/)의 앵무새 이름 보드리 · Bodri → 지금 이름(토씨 맞춤)
 ];
 const HOLD = '\u0000';
 /** 옛 쪽 글 → 새 이름 글 · keep = 바꾸지 않을 글(자료 원문 — 옛 쪽 · 새 쪽 모두 글자 그대로 보이는 것) */
@@ -81,15 +86,17 @@ export function selfTest() {
   eq('안전 문장', oldToNew('아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'), SAFE_LINE);
   eq('창 제목', oldToNew('삼성전자 · 새 아틀란스'), '삼성전자' + TITLE_TAIL);
   eq('옛 화면', oldToNew('지금 아틀란스 7단으로 보기 ›'), '옛 화면 7단으로 보기 ›');
-  eq('ATLAS 토씨', oldToNew('ATLAS 는 어떻게 셌나요'), '보드리는 어떻게 셌나요');
-  eq('ATLAS 셈', oldToNew('네이버 증권 · 10월 13일 종가 · ATLAS 셈'), '네이버 증권 · 10월 13일 종가 · 보드리 셈');
-  eq('ATLAS 업종', oldToNew('가장 많이 든 ATLAS 업종으로 가요.'), '가장 많이 든 보드리 업종으로 가요.');
-  eq('그대로 둘 글', oldToNew('새 ATLAS 첫 화면 올림 · ATLAS 셈', ['새 ATLAS 첫 화면 올림']), '새 ATLAS 첫 화면 올림 · 보드리 셈');
+  eq('ATLAS 토씨', oldToNew('ATLAS 는 어떻게 셌나요'), josa(NEW_NAME, '는') + ' 어떻게 셌나요');
+  eq('ATLAS 셈', oldToNew('네이버 증권 · 10월 13일 종가 · ATLAS 셈'), '네이버 증권 · 10월 13일 종가 · ' + NEW_NAME + ' 셈');
+  eq('ATLAS 업종', oldToNew('가장 많이 든 ATLAS 업종으로 가요.'), '가장 많이 든 ' + NEW_NAME + ' 업종으로 가요.');
+  eq('그대로 둘 글', oldToNew('새 ATLAS 첫 화면 올림 · ATLAS 셈', ['새 ATLAS 첫 화면 올림']), '새 ATLAS 첫 화면 올림 · ' + NEW_NAME + ' 셈');
+  eq('앵무새 옛 이름', oldToNew('보드리! 보드리는 들은 것만 따라 말해요.'), NEW_NAME + '! ' + josa(NEW_NAME, '는') + ' 들은 것만 따라 말해요.');
+  eq('영어 옛 이름', oldToNew('Meet Bodri'), 'Meet ' + BRAND.en);
   eq('회사 이름', oldToNew('아틀라스링크 −14.2%'), '아틀라스링크 −14.2%');
-  eq('숫자는 그대로', oldToNew('아틀란스 1,234곳 +5.6%'), '보드리 1,234곳 +5.6%');
-  const hits = oldNamesIn({title: '홈 · 새 아틀란스', text: '아틀라스링크 · ATLAS 셈', attrs: ['ATLAS 처음 화면', '보드리 홈'], meta: ['Atlas — 지난 기록']}, ['아틀라스링크']);
-  eq('옛 이름 찾기 수', hits.length, 4);
-  eq('회사 이름은 옛 이름 아님', oldNamesIn({title: '아틀라스링크 · 보드리', text: '아틀라스링크', attrs: [], meta: []}, ['아틀라스링크']).length, 0);
+  eq('숫자는 그대로', oldToNew('아틀란스 1,234곳 +5.6%'), NEW_NAME + ' 1,234곳 +5.6%');
+  const hits = oldNamesIn({title: '홈 · 새 아틀란스', text: '아틀라스링크 · ATLAS 셈 · 보드리 편지', attrs: ['ATLAS 처음 화면', NEW_NAME + ' 홈', 'Meet Bodri'], meta: ['Atlas — 지난 기록']}, ['아틀라스링크']);
+  eq('옛 이름 찾기 수', hits.length, 6);
+  eq('회사 이름은 옛 이름 아님', oldNamesIn({title: '아틀라스링크 · ' + NEW_NAME, text: '아틀라스링크', attrs: [], meta: []}, ['아틀라스링크']).length, 0);
   const st = jsStrings("const a = /'아틀란스/g, b = x / 2 / y; // 'ATLAS'\n/* \"아틀란스\" */ const c = 'ATLAS', d = `x${'y'}아틀란스${`z${1}`}`;").map(x => x.s);
   eq('소스 글 뽑기', JSON.stringify(st), JSON.stringify(['ATLAS', 'x', 'y', '아틀란스', 'z', '', '']));
   return bad;

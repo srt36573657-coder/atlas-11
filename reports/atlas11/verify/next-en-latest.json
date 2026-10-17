@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-17T08:29:37.817Z",
+ "at": "2026-10-17T10:17:47.238Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -34,7 +34,7 @@
  "only": null,
  "appFile": null,
  "full": false,
- "seconds": 86,
+ "seconds": 84,
  "counts": {
   "쇼츠 장": 10,
   "화면": 401,

@@ -339,7 +339,7 @@ for (const [w, big] of has('--no-wide') ? [] : [[320, false], [360, false], [390
     if (big && !(await p.evaluate(() => document.documentElement.classList.contains('f3')))) fail('아주 큰 글씨가 안 켜짐', where);
     for (const [ix, per] of [['코스피', '3달'], ['코스닥', '1주']]) {
       // 여는 보드리(첫 화면 · 약 5초)가 끝나고 → 그림이 화면에 들어와 한 번 그려지고 → 단추를 눌러 다시 그려진 뒤에 잼(움직이는 중이면 큰 숫자가 달림)
-      await p.waitForFunction(() => !document.querySelector('#view .m4-letter.intro'), null, {timeout: 15000}).catch(() => fail('여는 보드리가 안 끝남', where));
+      await p.waitForFunction(() => !document.querySelector('#view .m4-letter.intro'), null, {timeout: 15000}).catch(() => fail('여는 고도리가 안 끝남', where));
       await p.evaluate(() => document.querySelector('#view .ptoday-ch')?.scrollIntoView({block: 'center'})); await p.waitForTimeout(900);
       const still = () => p.waitForFunction(() => !document.querySelector('#view .ptoday-hero.ptoday-sc'), null, {timeout: 8000}).then(() => true, () => false);
       await still();

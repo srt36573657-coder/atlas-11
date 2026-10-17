@@ -5,7 +5,7 @@
 //   2026-10-17 이름 바꾸기(사장님 15:48 「아틀란스에서 보드리로 모두 변경해」 · 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」 · 규칙 75) — 엔진 · 사전은 지금 사이트 것(/next/i18n.js · 사전 원본 scripts/atlas11/next/i18n/en-src.json · 옛 /atlas/i18n.js 는 고치지 않는 옛 판)
 import {ON as EN, startI18n, t as L} from '/next/i18n.js';
 await startI18n();
-const HELLO_SHARE = {title: L('보드리를 소개합니다'), text: L('앵무새 보드리가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!')};
+const HELLO_SHARE = {title: L('고도리를 소개합니다'), text: L('앵무새 고도리가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!')};
 const helloUrl = () => new URL('/hello.html', location.origin).href;
 async function shareHello() {
   const url = helloUrl();

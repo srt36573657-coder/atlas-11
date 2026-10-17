@@ -203,7 +203,7 @@ function footOf(C) {
   return [h('footer', {class: 'pgrow-foot'},
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
     C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null),
-    h('p', {class: 'safe pgrow-safe', text: '보드리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})];
+    h('p', {class: 'safe pgrow-safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})];
 }
 function missing(C, code) {
   const ok = /^[0-9A-Z]{6}$/.test(code);

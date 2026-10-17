@@ -5,7 +5,8 @@
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import {createRequire} from 'node:module';
-import {nameScan, oldNamesIn, allowFromData, LETTER_TITLE, TITLE_TAIL} from '../next/rename.mjs'; // 새 화면(보드리)에 옛 이름이 남았나(2026-10-17 15:48 「아틀란스에서 보드리로 모두 변경해」)
+import {nameScan, oldNamesIn, allowFromData, LETTER_TITLE, TITLE_TAIL, NEW_NAME} from '../next/rename.mjs'; // 이름 = site/next/brand.js 한 곳(규칙 76 · 2026-10-17 17:34 「보드리를 고도리로」)
+import {josa} from '../../../site/next/brand.js'; // 새 화면(보드리)에 옛 이름이 남았나(2026-10-17 15:48 「아틀란스에서 보드리로 모두 변경해」)
 const require = createRequire(process.env.PW_DIR ? process.env.PW_DIR.replace(/\/?$/, '/') : import.meta.url);
 const {chromium} = require('playwright');
 const B = 'https://aaa7377.com', dir = 'reports/atlas11/probe/live-view'; await fs.mkdir(dir, {recursive: true});
@@ -63,7 +64,7 @@ await step('소개 한 장', async () => {
   // 이름 바꾸기(2026-10-17 15:48 「아틀란스에서 보드리로 모두 변경해」) — 소개 쪽 글 · 창 제목 · 이름표 · 머리말 · 보내기 글에 옛 이름(아틀란스 · ATLAS)이 없나
   const hs = await page.evaluate(nameScan), hshare = await page.evaluate(() => [window.__helloShare?.title ?? '', window.__helloShare?.text ?? ''].join(' '));
   const hold = [...oldNamesIn(hs), ...oldNamesIn({text: hshare})];
-  out.helloName = {title: hs.title, share: hshare, old: hold.slice(0, 8), ok: !hold.length && hs.title === '보드리를 소개합니다' && /^보드리를 소개합니다 /.test(hshare)};
+  out.helloName = {title: hs.title, share: hshare, old: hold.slice(0, 8), ok: !hold.length && hs.title === josa(NEW_NAME, '를') + ' 소개합니다' && hshare.startsWith(josa(NEW_NAME, '를') + ' 소개합니다 ')};
   if (!out.helloName.ok) out.errors.push('소개 쪽 이름: ' + JSON.stringify(out.helloName).slice(0, 300));
 });
 await step('36곳 없음', async () => { // 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 — 옛 주소 · 탭 · 글 · 자료 파일
@@ -176,8 +177,13 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
 });
 await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」(규칙 65 · 사진 p26)
-  await page.goto(B + '/atlas/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('#view .m4-sec', {timeout: 30000}); await page.waitForTimeout(600);
-  const band = await page.evaluate(() => document.querySelector('#view .m4-letter .m4-act')?.textContent ?? ''); // 먹빛 첫 화면 편지 칸 「친구에게 소개하기 · 홍표 35초 영상 · 보내기」
+  // 편지 칸 띠 「친구에게 소개하기 · 고도리 1분 영상 · 보내기」 = 지금 사이트(새 화면 /) — 첫 화면에 없으면 「나」 칸(2026-10-17 고도리 한 장 명령문 1 「첫 화면 편지를 「나」 칸으로 옮겨라」) · 옛 /atlas/ 는 손대지 않아 옛 이름 그대로라 보지 않음(규칙 75)
+  let band = '';
+  for (const hash of ['#/', '#/me']) {
+    await page.goto(B + '/?v=' + Date.now() + hash, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
+    band = await page.waitForSelector('#view .m4-letter .m4-act', {timeout: 8000}).then(() => page.evaluate(() => document.querySelector('#view .m4-letter .m4-act')?.textContent ?? '')).catch(() => '');
+    if (band) break;
+  }
   await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(600);
   const hv = await page.evaluate(async () => {
     const v = document.querySelector('video.hp-vid'), meta = n => document.querySelector(`meta[name="${n}"], meta[property="${n}"]`)?.getAttribute('content') ?? '';
@@ -187,7 +193,7 @@ await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 
   await shot('p26-hello-video');
   const all = [band, hv.label, hv.desc, hv.og, hv.alt, hv.body, hv.share].join(' '); // 옛 판(/old/) 띠는 그대로(옛 판 화면 코드 안 고침 — 규칙 65)
   out.hongpyo = {band, dur: hv.dur, label: hv.label, desc: hv.desc, alt: hv.alt, share: hv.share,
-    ok: /보드리 1분 영상/.test(band) && Math.abs((hv.dur ?? 0) - 60) < 0.6 && /보드리/.test(hv.label) && /보드리/.test(hv.desc) && /보드리/.test(hv.og) && /보드리/.test(hv.alt) && /보드리가 1분/.test(hv.share) && !/막비|24초|35초|홍표|10명/.test(all)}; // 2026-10-16 21:00 「홍표 → 보드리」 · 2026-10-17 1분 영상(옛 35초 · 10명 글이 다시 나오면 걸림)
+    ok: band.includes(NEW_NAME + ' 1분 영상') && Math.abs((hv.dur ?? 0) - 60) < 0.6 && [hv.label, hv.desc, hv.og, hv.alt].every(x => String(x ?? '').includes(NEW_NAME)) && String(hv.share ?? '').includes(josa(NEW_NAME, '가') + ' 1분') && !/막비|24초|35초|홍표|보드리|Bodri|10명/.test(all)}; // 2026-10-16 21:00 「홍표 → 보드리」 · 2026-10-17 1분 영상(옛 35초 · 10명 글이 다시 나오면 걸림)
   if (!out.hongpyo.ok) out.errors.push('홍표 영상: ' + JSON.stringify(out.hongpyo).slice(0, 300));
 });
 await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 04:10 「열면 홍표 니오게 해」 · 05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」(규칙 66 · 사진 p27 · p28) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 5초에 사장님 글
@@ -200,7 +206,7 @@ await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 
   await page.waitForTimeout(Math.max(0, 4000 - (Date.now() - t0))); const i4 = await look(); // 홍표 5초 — 4초에도 홍표 그대로 · 글은 아직(4.2초에 제자리로 날아감)
   await page.waitForTimeout(Math.max(0, 8200 - (Date.now() - t0))); const i2 = await look(); await shot('p28-hello-text'); // 5초에 글 쓰기 시작 · 7.4초쯤 다 씀
   out.helloIntro = {i1, i4: {intro: i4.intro, shown: i4.shown, bub: i4.bub.length}, i2: {intro: i2.intro, shown: i2.shown, ml: i2.ml},
-    ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === '보드리!' && o > 0.9) && !!i1.bird && i1.bird[0] >= 50 && i1.bird[1] <= i1.bird[2] - 50 && !i1.shown && i4.intro && !i4.shown && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
+    ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === NEW_NAME + '!' && o > 0.9) && !!i1.bird && i1.bird[0] >= 50 && i1.bird[1] <= i1.bird[2] - 50 && !i1.shown && i4.intro && !i4.shown && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
       && !i2.intro && i2.shown && i2.ml > 0.95 && /아틀란스 주식 격언 열 가지/.test(i2.msg) && /좋은 때를 기다립니다\./.test(i2.msg)};
   if (!out.helloIntro.ok) out.errors.push('여는 홍표: ' + JSON.stringify(out.helloIntro).slice(0, 300));
 });
@@ -314,7 +320,7 @@ await step('편지 여는 밤', async () => { // 사장님 2026-10-17 01:29 「�
   g.old = oldNamesIn(await page.evaluate(nameScan)).slice(0, 6); // 이름 바꾸기(2026-10-17) — 옛 이름(아틀란스 · ATLAS) 남음 0 · 창 제목 「편지 여는 밤 · 보드리」 · 머리 「보드리 편지」
   out.letter = {html: hr.status, robots, api: ar.status, week: A?.week ?? null, current: A?.current ?? null, opensAt: A?.opensAt ?? null, open: A?.open ?? null, count: A?.count ?? null, member: A?.member ?? null, owner: A?.owner ?? null, foreign: xr.status, ...g,
     ok: hr.status === 200 && /noindex/.test(robots) && ar.status === 200 && /^\d{4}-\d{2}-\d{2}$/.test(A?.week ?? '') && A?.week === A?.current && A?.open === false && A?.member === false && A?.owner === false && Number.isInteger(A?.count) && xr.status === 403
-      && g.h1.includes('편지가 열려요') && /\d+일 \d{2}시간/.test(g.clock) && g.guest === '초대받은 분만 쓸 수 있어요' && !g.write && g.sw <= g.cw && !g.old.length && g.title === '편지 여는 밤' + TITLE_TAIL && g.kick === '보드리 편지'};
+      && g.h1.includes('편지가 열려요') && /\d+일 \d{2}시간/.test(g.clock) && g.guest === '초대받은 분만 쓸 수 있어요' && !g.write && g.sw <= g.cw && !g.old.length && g.title === '편지 여는 밤' + TITLE_TAIL && g.kick === NEW_NAME + ' 편지'};
   if (!out.letter.ok) out.errors.push('편지 여는 밤: ' + JSON.stringify(out.letter).slice(0, 400));
 });
 await step('새 아틀란스 첫 화면', async () => { // 사장님 2026-10-17 02:22 · 02:24 「가」 · 02:38 「정교하게 만들어라」 · 규칙 74 — /next/ 홈 · 보는 화면 · 쇼츠 · 검색 제외 머리말(모든 회사 · 채널 맞대기는 탐침 livenext)

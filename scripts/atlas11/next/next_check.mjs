@@ -148,19 +148,19 @@ for (const w of [320, 360, 390]) {
   const q = await page(390, 844); await q.goto(base + '/next/#/');
   await q.waitForSelector('#view .m4-letter', {timeout: 20000});
   const g0 = await q.evaluate(() => ({intro: document.querySelector('#view .m4-letter')?.classList.contains('intro'), bub: [...document.querySelectorAll('#view .hpi-b')].map(b => b.textContent)}));
-  if (!g0.intro || g0.bub.join(',') !== '보드리!,보드리!,보드리!') fail('열면 보드리', JSON.stringify(g0));
-  await q.waitForFunction(() => document.querySelector('#view .m4-letter')?.classList.contains('landed'), null, {timeout: 9000}).catch(() => fail('보드리 내려앉음', '9초 안에 안 끝남'));
+  if (!g0.intro || g0.bub.join(',') !== '고도리!,고도리!,고도리!') fail('열면 고도리', JSON.stringify(g0));
+  await q.waitForFunction(() => document.querySelector('#view .m4-letter')?.classList.contains('landed'), null, {timeout: 9000}).catch(() => fail('고도리 내려앉음', '9초 안에 안 끝남'));
   const g = await q.evaluate(() => ({lines: [...document.querySelectorAll('#view .m4-msg .hml')].map(e => e.textContent), promo: document.querySelector('#view .m4-gift')?.textContent ?? '', act: document.querySelector('#view .m4-aw')?.textContent ?? '',
     href: document.querySelector('#view a.m4-letter')?.getAttribute('href'), tk: document.querySelector('#view a.tk-entry')?.getAttribute('href'), today: document.querySelectorAll('#view .today .tl').length,
     mr: document.querySelector('#view a.m4-mr')?.getAttribute('href') ?? null, seal: !!document.querySelector('#view .m4-seal-box'), al: [...document.querySelectorAll('#view .m4-al')].map(e => e.textContent), first: document.querySelector('#view > *')?.className ?? ''}));
   if (JSON.stringify(g.lines) !== JSON.stringify(MSG)) fail('사장님 편지 글자', JSON.stringify(g.lines).slice(0, 200));
   if (g.promo !== PROMO) fail('상품권 줄', g.promo + ' ≠ ' + PROMO);
-  if (g.act !== '친구에게 소개하기보드리 1분 영상 · 보내기') fail('친구 소개 줄', g.act);
+  if (g.act !== '친구에게 소개하기고도리 1분 영상 · 보내기') fail('친구 소개 줄', g.act);
   if (g.href !== '/hello.html') fail('편지 고리', String(g.href));
   if (g.tk !== oldOr('talk', '#/talk') || !g.first.includes('tk-entry')) fail('이야기 입구', g.tk + ' ' + g.first);
   if (home?.idx?.KOSPI && g.today !== 2) fail('오늘 한 줄', String(g.today));
   if (core.time?.opens?.[0]?.date && g.mr !== oldOr('time', '#/time')) fail('봉인 줄', String(g.mr));
-  if (!g.seal) fail('보드리 약속', '');
+  if (!g.seal) fail('고도리 약속', '');
   const wantAl = ['big', 'usual'].filter(w => (home?.alerts ?? []).some(a => a.kind === 'idx' && (a.why ?? 'usual') === w)).length;
   if (g.al.length !== wantAl) fail('큰 날 「!」', g.al.length + ' ≠ ' + wantAl);
   // 옛 주소 — 새 화면으로 · 아직 안 옮긴 쪽은 /atlas/

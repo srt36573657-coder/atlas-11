@@ -104,7 +104,7 @@ function hero() {
   const clock = h('b', {class: 'clk', text: '…'});
   const sub = S ? (S.subjects?.length ? '많이 쓴 곳 ' + S.subjects.slice(0, 3).map(x => x.name + ' ' + x.n).join(', ') : '아직 봉인된 편지가 없어요') : '';
   const box = h('section', {class: 'hero', 'aria-label': '편지 여는 밤'},
-    h('p', {class: 'kick', text: '보드리 편지'}), env(),
+    h('p', {class: 'kick', text: '고도리 편지'}), env(),
     h('h1', {class: 'hbig'}, '금요일 밤,', h('br'), '편지가 열려요'),
     h('p', {class: 'hsub', text: '월요일부터 쓰고, 금요일 밤 8시에 다 함께 열어요.'}),
     h('div', {class: 'clock'}, h('small', {text: (S ? md(S.opensAt) : '') + ' 여는 밤까지'}), clock),
@@ -129,7 +129,7 @@ function joinCard(code) {
     if (r.status === 201) { store.set(KEY, r.body.key); history.replaceState(null, '', location.pathname); sChime(); m.textContent = '어서 오세요, ' + r.body.nick + '님!'; setTimeout(load, 600); return; }
     go.disabled = false; m.textContent = why(r.body);
   }});
-  return h('section', {class: 'card join'}, h('p', {class: 'bodri', text: '보드리가 초대장을 가져왔어요!'}),
+  return h('section', {class: 'card join'}, h('p', {class: 'bodri', text: '고도리가 초대장을 가져왔어요!'}),
     h('p', {text: '편지함에서 쓸 별명을 정해 주세요.'}), h('p', {class: 'note', text: '이름과 전화번호는 받지 않아요.'}), nick, go, m);
 }
 
@@ -164,7 +164,7 @@ function writeCard() {
     sealB.disabled = false; m.textContent = why(r.body, 'seal');
   });
   return h('section', {class: 'card', id: 'write'}, h('h2', {text: '이번 주 편지 쓰기'}), h('p', {text: '무엇에 대해 쓸까요?'}), chips, q, found, ta, cnt, bod, sealB, m,
-    h('p', {class: 'note', text: '사고팔기 말, 소문, 연락처는 보드리가 막아요. 한 사람 한 주 한 통이에요.'}));
+    h('p', {class: 'note', text: '사고팔기 말, 소문, 연락처는 고도리가 막아요. 한 사람 한 주 한 통이에요.'}));
 }
 function sealShow(opensAt) {
   const ov = h('div', {class: 'seal-ov', role: 'status', 'aria-live': 'polite'}, env('big'), h('p', {class: 't1', text: '쾅! 봉인됐어요'}), h('p', {class: 't2', text: md(opensAt) + ' 금요일 밤 8시에 열려요'}));
@@ -176,10 +176,10 @@ function mineCard() {
   return h('section', {class: 'card mine'}, env('sm'), h('h2', {text: '이번 주 편지는 봉인됐어요'}),
     h('p', {class: 'note', text: S.mine.what.name + ' · ' + md(S.mine.at) + '에 봉인'}), h('p', {class: 'serif quiet', text: '「' + S.mine.text + '」'}),
     h('p', {class: 'note', text: '지금은 나만 보여요. ' + md(S.opensAt) + ' 금요일 밤 8시에 모두에게 열려요.'}),
-    h('button', {class: 'ghost', type: 'button', text: '봉인 소식 친구에게 보내기', onclick: () => share('보드리에 편지를 봉인했어요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html')}));
+    h('button', {class: 'ghost', type: 'button', text: '봉인 소식 친구에게 보내기', onclick: () => share('고도리에 편지를 봉인했어요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html')}));
 }
 async function share(text, url) {
-  try { if (navigator.share) { await navigator.share({title: '보드리 편지', text, url}); return; } await navigator.clipboard.writeText(text + ' ' + url); toast('글과 주소를 담았어요. 붙여 넣어 보내세요.'); } catch {}
+  try { if (navigator.share) { await navigator.share({title: '고도리 편지', text, url}); return; } await navigator.clipboard.writeText(text + ' ' + url); toast('글과 주소를 담았어요. 붙여 넣어 보내세요.'); } catch {}
 }
 function toast(t) { const e = h('p', {class: 'toast', role: 'status', text: t}); document.body.append(e); setTimeout(() => e.remove(), 2600); }
 
@@ -231,7 +231,7 @@ function invitesCard() {
   const inv = S?.me?.invites ?? [];
   return h('section', {class: 'card'}, h('h2', {text: '우리 셋 — 초대장'}), h('p', {text: '친구 셋에게 초대장을 보내 같이 열어요.'}),
     h('div', {class: 'tickets'}, ...inv.map((x, i) => x.used ? h('div', {class: 'tk used'}, h('b', {text: '초대장 ' + (i + 1)}), '친구가 들어왔어요')
-      : h('button', {class: 'tk', type: 'button', onclick: () => share('보드리 편지 여는 밤에 초대해요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html#join=' + x.code)}, h('b', {text: '초대장 ' + (i + 1)}), '보내기'))),
+      : h('button', {class: 'tk', type: 'button', onclick: () => share('고도리 편지 여는 밤에 초대해요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html#join=' + x.code)}, h('b', {text: '초대장 ' + (i + 1)}), '보내기'))),
     h('p', {class: 'note', text: '초대장 하나에 한 사람만 들어올 수 있어요.'}));
 }
 function ownerCard() {
@@ -239,7 +239,7 @@ function ownerCard() {
   const mk = h('button', {class: 'gold', type: 'button', text: '초대장 5장 만들기', onclick: async () => {
     mk.disabled = true; const r = await api('POST', {op: 'mint', n: 5}); mk.disabled = false;
     if (r.status !== 201) { m.textContent = why(r.body); return; }
-    for (const c of r.body.codes) out.append(h('button', {class: 'tk', type: 'button', onclick: () => share('보드리 편지 여는 밤에 초대해요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html#join=' + c)}, h('b', {text: '새 초대장'}), '보내기'));
+    for (const c of r.body.codes) out.append(h('button', {class: 'tk', type: 'button', onclick: () => share('고도리 편지 여는 밤에 초대해요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html#join=' + c)}, h('b', {text: '새 초대장'}), '보내기'));
     m.textContent = '초대장 ' + r.body.codes.length + '장을 만들었어요. 누르면 보내기가 열려요.';
   }});
   return h('section', {class: 'card own'}, h('h2', {text: '사장님 자리'}), h('p', {text: '이 기기는 사장님 열쇠가 있어요.'}), mk, out, m);
@@ -263,8 +263,8 @@ function render() {
   if (!S) kids.push(h('section', {class: 'card'}, h('p', {text: '지금은 편지함에 닿지 못했어요.'}), h('button', {class: 'ghost', type: 'button', text: '다시 열기', onclick: load})));
   else if (!S.member) {
     if (join) kids.push(joinCard(join));
-    else kids.push(h('section', {class: 'card'}, h('h2', {text: '초대받은 분만 쓸 수 있어요'}), h('p', {text: '보드리를 쓰는 친구에게 초대장을 받아 보세요.'}),
-      h('p', {class: 'note', text: '열린 편지도 지금은 회원만 읽어요.'}), h('a', {class: 'ghost link', href: '/hello.html', text: '보드리 소개 보기 ›'})));
+    else kids.push(h('section', {class: 'card'}, h('h2', {text: '초대받은 분만 쓸 수 있어요'}), h('p', {text: '고도리를 쓰는 친구에게 초대장을 받아 보세요.'}),
+      h('p', {class: 'note', text: '열린 편지도 지금은 회원만 읽어요.'}), h('a', {class: 'ghost link', href: '/hello.html', text: '고도리 소개 보기 ›'})));
   } else kids.push(S.mine ? mineCard() : writeCard());
   if (S && (S.member || S.owner)) {
     const sec = h('section', {class: 'open'}, h('h2', {text: md(S.prev + 'T11:00:00Z') + ' 여는 밤'}));
@@ -274,7 +274,7 @@ function render() {
   }
   if (S?.member) kids.push(stamps(), invitesCard(), keyCard());
   if (S?.owner) kids.push(ownerCard());
-  kids.push(h('p', {class: 'foot', text: '편지는 쓴 사람의 말이에요. 보드리는 사고팔기를 권하지 않아요.'}), h('p', {class: 'foot'}, h('a', {href: '/', text: '보드리로 돌아가기 ›'})));
+  kids.push(h('p', {class: 'foot', text: '편지는 쓴 사람의 말이에요. 고도리는 사고팔기를 권하지 않아요.'}), h('p', {class: 'foot'}, h('a', {href: '/', text: '고도리로 돌아가기 ›'})));
   root.replaceChildren(...kids);
 }
 
