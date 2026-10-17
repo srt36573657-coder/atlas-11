@@ -170,7 +170,7 @@ const READH = sel => {
     lines: [...c.querySelectorAll(':scope > .hd-line')].map(x => x.textContent), link: c.querySelector(':scope > .hd-link')?.getAttribute('href') ?? null,
     items: [...c.querySelectorAll('.hd-it')].map(it => ({c: cls(it, /\bhd-i([gyrqu])\b/), n: it.querySelector('.hd-in')?.textContent ?? '', dot: cls(it.querySelector('.hd-in .hd-dot'), /\bhd-c([gyrqu])\b/),
       lines: [...it.querySelectorAll('.hd-line')].map(x => x.textContent), gates: [...it.querySelectorAll('.hd-gates > li')].map(li => [li.querySelector('span:not(.hd-dot)')?.textContent ?? '', li.querySelector('b')?.textContent ?? '']),
-      mine: [...it.querySelectorAll('.hd-mine q[data-proper][lang="ko"]')].map(q => q.textContent), tog: it.querySelector('.hd-tog')?.getAttribute('aria-pressed') ?? null, link: it.querySelector('.hd-link')?.getAttribute('href') ?? null}))}));
+      mine: [...it.querySelectorAll('.hd-mine q[data-proper]')].map(q => q.textContent), langs: [...it.querySelectorAll('.hd-mine q[data-proper]')].map(q => q.getAttribute('lang')), tog: it.querySelector('.hd-tog')?.getAttribute('aria-pressed') ?? null, link: it.querySelector('.hd-link')?.getAttribute('href') ?? null}))}));
   const bars = [...s.querySelectorAll('.hd-pic .hd-bars')].map(b => [...b.querySelectorAll('.hd-bar')].map(r => [r.querySelector('.hd-bn')?.textContent ?? '', r.querySelector('b')?.textContent ?? '', !!r.querySelector('.hd-fill.over'), !!r.querySelector('.hd-third')]));
   const past = s.querySelector('details.hd-past');
   return {cards, bars, empty: [...s.querySelectorAll(':scope > .hd-note')].map(x => x.textContent), mem: s.querySelector('.hd-q-note')?.textContent ?? null, leg: !!s.querySelector('details.hd-leg'),
@@ -253,7 +253,7 @@ function checkDone(c, s, SH, tag, ansK) {
   if (nul.length ? !i2.lines.includes(`? 오늘 셀 수 없는 문: ${nul.join(' · ')}.`) : i2.lines.some(t => t.includes('셀 수 없는 문'))) fail('② 셀 수 없는 문 줄(값이 빈 문 = 「?」)', `${at} ${JSON.stringify(i2.lines)}`);
   if (s.line2 ? !i2.lines.includes(s.line2) : !i2.lines.some(t => t.startsWith('처음 적은 날'))) fail('② 처음 색과 견줌', `${at} ${JSON.stringify(i2.lines)} · 기대 「${s.line2 ?? '처음 적은 날 …'}」`);
   // ③ 망할 이유 — 내 글(data-proper · lang=ko) · 누름
-  if (s.rec?.why) { if (!eq(i3.mine, [s.rec.why]) || i3.tog !== String(!!o.doom)) fail('③ 망할 이유 글 · 누름', `${at} ${JSON.stringify(i3.mine)} ${i3.tog}`); }
+  if (s.rec?.why) { if (!eq(i3.mine, [s.rec.why]) || !eq(i3.langs, [/[가-힣]/.test(s.rec.why) ? 'ko' : null]) || i3.tog !== String(!!o.doom)) fail('③ 망할 이유 글(내가 쓴 글 · 한글이면 lang=ko) · 누름', `${at} ${JSON.stringify(i3.mine)} ${JSON.stringify(i3.langs)} ${i3.tog}`); }
   else if (i3.tog != null || !i3.lines.some(t => t.startsWith('?'))) fail('③ 망할 이유 없음 「?」', `${at} ${JSON.stringify(i3)}`);
   // ④ 팔 약속까지 — 내 약속과 견줌만
   const P = s.rec?.promise, own = !!P?.sell, sell = own ? P.sell : sellOf(o.buy), half = P?.half ?? halfOf(o.buy), who = own ? '네가 정한' : '기본';
@@ -263,7 +263,7 @@ function checkDone(c, s, SH, tag, ansK) {
   const want4h = p >= half ? `절반 팔 선(${won(half)})에 닿았어.` : `절반 팔 선(${won(half)})까지 ${one((half - p) / p * 100)}% 남았어.`;
   if (!i4.lines.some(t => t.endsWith(want4h))) fail('④ 절반 팔 선', `${at} ${JSON.stringify(i4.lines)} ∌ 「${want4h}」`);
   if (!own && !i4.lines.some(t => t.startsWith('아직 팔 약속을 안 적어서 기본 약속으로 셌어'))) fail('④ 기본 약속 밝힘', at);
-  if (own && P.text && !i4.mine.includes(P.text)) fail('④ 내가 적은 약속 글(data-proper · lang=ko)', `${at} ${JSON.stringify(i4.mine)}`);
+  if (own && P.text && !(eq(i4.mine, [P.text]) && eq(i4.langs, [null]))) fail('④ 내가 적은 약속 글(data-proper · lang 없음 — 영어 사전 틀로 바뀜)', `${at} ${JSON.stringify(i4.mine)} ${JSON.stringify(i4.langs)}`);
   if (i4.lines.some(t => /팔아|파세요|팔 때/.test(t))) fail('④ 권하는 말', `${at} ${JSON.stringify(i4.lines)}`);
   // ⑤ 몫
   const v = SH.by.get(X.code), vi = SH.ind.get(X.ind), big = isBig(v, SH.tot) || isBig(vi, SH.tot);
