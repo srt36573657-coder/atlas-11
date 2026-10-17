@@ -1,5 +1,5 @@
 {
- "made": "2026-10-17T08:49:03.255Z",
+ "made": "2026-10-17T11:35:11.514Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "variants": [
@@ -37,5 +37,5 @@
  },
  "fails": [],
  "warn": [],
- "sec": 97
+ "sec": 99
 }

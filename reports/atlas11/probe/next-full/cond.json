@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-10-17T08:48:22.101Z",
+ "at": "2026-10-17T11:34:22.987Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "combos": 100,
@@ -12,7 +12,7 @@
   "widths"
  ],
  "full": true,
- "seconds": 41,
+ "seconds": 47,
  "counts": {
   "결과 줄": 25911,
   "? 줄": 213,
