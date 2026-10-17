@@ -14,6 +14,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNew, oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -21,13 +22,14 @@ const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), outArg = arg('--out', null), SHOTS = arg('--shots', null);
 const LIMIT = process.argv.includes('--all') ? 0 : Number(arg('--limit', '0')) || 0, FROM = Number(arg('--from', '0')) || 0;
 const PARTS = new Set(String(arg('--parts', 'combos,picker,edges,widths')).split(',')), ALLPARTS = ['combos', 'picker', 'edges', 'widths'].every(x => PARTS.has(x));
-const fails = [], counts = {}, t0 = Date.now();
+const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
+const T = (p, fn) => tm[/\/atlas\//.test(p.url()) ? 'old' : 'new'](fn); // 여는 · 읽는 데 쓴 때 — 그 쪽(주소로 앎) 몫으로
 const fail = (k, x) => { if (fails.length < 400) fails.push([k, x]); counts.fail = (counts.fail || 0) + 1; };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const J = x => JSON.stringify(x);
 
 /* 자료 · 옛 쪽 고르기 글(atlas.js CD_SLOTS 를 읽어 그대로) */
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [core, mkt, cond] = await Promise.all(['core.json', 'mkt.json', 'cond.json'].map(f => getJ(f).catch(e => { console.error('자료를 못 받음', e.message); process.exit(1); })));
 const SRC = await fs.readFile(path.join(ROOT, 'site/atlas/atlas.js'), 'utf8');
 const SLOTS = (() => { const m = /const CD_SLOTS = (\[[\s\S]*?\n\]);/.exec(SRC); if (!m) { console.error('atlas.js 에서 CD_SLOTS 를 못 읽음'); process.exit(1); } return new Function('return ' + m[1])(); })();
@@ -78,8 +80,8 @@ const SEL = {
     sheet: '.pcond-sheet', title: '#pcondTitle', op: '.pcond-sheet button.pcond-op', ot: '.pcond-ot b', od: '.pcond-od', oc: '.pcond-oc', close: '.pcond-sheet .pcond-close'},
 };
 /** 화면 읽기(같은 꼴) — 옛 쪽 고리는 새 주소로 바꿔 맞댐(#/c/<번호> → #/w/<번호> · #/x/<번호> → /atlas/#/x/<번호>) · 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs) */
-const read = async (p, side) => (side === 'old' ? oldToNewDeep(await readRaw(p, side)) : readRaw(p, side));
-const readSheet = async (p, side) => (side === 'old' ? oldToNewDeep(await readSheetRaw(p, side)) : readSheetRaw(p, side));
+const read = (p, side) => T(p, async () => (side === 'old' ? oldToNewDeep(await readRaw(p, side)) : readRaw(p, side)));
+const readSheet = (p, side) => T(p, async () => (side === 'old' ? oldToNewDeep(await readSheetRaw(p, side)) : readSheetRaw(p, side)));
 const readRaw = (p, side) => p.evaluate(S => {
   const v = document.querySelector('#view'), T = e => (e ? e.textContent : null), A = s => [...v.querySelectorAll(s)];
   const map = hr => (hr ?? '').replace(/^#\/c\//, '#/w/').replace(/^#\/x\//, '/atlas/#/x/');
@@ -106,16 +108,17 @@ function same(where, o, n, keys) {
 }
 const HEAD = ['slots', 'reset', 'big', 'flow', 'how', 'none', 'alt', 'more', 'rows', 'qsum', 'q', 'diff', 'time', 'prov', 'howto', 'hon', 'err', 'src', 'provc'];
 /** 이 조건으로 다 그려질 때까지(옛 쪽 = 칸 셋의 고른 말 · 새 쪽 = data-st) */
-async function waitOld(p, key) {
+async function waitOld(p, key) { return tm.old(() => waitOld0(p, key)); }
+async function waitOld0(p, key) {
   const want = key.split('-').map((op, i) => OPNAME['abc'[i]][op]);
   await p.waitForFunction(w => { const s = [...document.querySelectorAll('#view button.cd-slot')]; return s.length === 3 && s.every((b, i) => b.querySelector('.cd-o')?.textContent === w[i]) && !!document.querySelector('#view .cd-big'); }, want, {timeout: 20000});
 }
-const waitNew = (p, key) => p.waitForFunction(k => !document.querySelector('#view .boot') && document.querySelector('#view .pcond')?.dataset.st === k && !!document.querySelector('#view .pcond-big'), key, {timeout: 20000});
-const goHash = (p, hh) => p.evaluate(x => { location.hash = x; }, hh);
-const expand = (p, side) => p.evaluate(sel => { let n = 0, b; while ((b = document.querySelector('#view ' + sel)) && n < 3000) { b.click(); n++; } return n; }, SEL[side].more);
+const waitNew = (p, key) => tm.new(() => p.waitForFunction(k => !document.querySelector('#view .boot') && document.querySelector('#view .pcond')?.dataset.st === k && !!document.querySelector('#view .pcond-big'), key, {timeout: 20000}));
+const goHash = (p, hh) => T(p, () => p.evaluate(x => { location.hash = x; }, hh));
+const expand = (p, side) => T(p, () => p.evaluate(sel => { let n = 0, b; while ((b = document.querySelector('#view ' + sel)) && n < 3000) { b.click(); n++; } return n; }, SEL[side].more));
 const norm = s => String(s ?? '').replace(/ /g, ' ').replace(/⁠/g, '');
 const toks = s => (norm(s).match(/[+−-]?\d[\d,]*(?:\.\d+)?\s?(?:거래일|%|곳|일|등|개|월|원|배|년|해)?/g) || []).map(t => t.replace(/\s/g, ''));
-const allText = p => p.evaluate(() => { for (const d of document.querySelectorAll('#view details')) d.open = true; return document.querySelector('#view').innerText; });
+const allText = p => T(p, () => p.evaluate(() => { for (const d of document.querySelectorAll('#view details')) d.open = true; return document.querySelector('#view').innerText; }));
 /** 옛 쪽 숫자 낱말 · 「?」 줄이 새 쪽에 빠짐없이(같은 수만큼) 있는지 */
 function wordsIn(where, ot0, nt) {
   const ot = oldToNew(ot0); // 옛 쪽 글 = 이름만 새 이름으로
@@ -339,7 +342,7 @@ for (const w of PARTS.has('widths') ? [320, 360, 390] : []) {
 }
 
 await B.close();
-const res = {schema: 'atlas11-next-cond-1', at: new Date().toISOString(), base, asOf: cond.asOf, combos: PARTS.has('combos') ? LIST.length : 0, from: FROM, parts: [...PARTS], full: !LIMIT && !FROM && ALLPARTS, seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
+const res = {schema: 'atlas11-next-cond-1', at: new Date().toISOString(), base, asOf: cond.asOf, combos: PARTS.has('combos') ? LIST.length : 0, from: FROM, parts: [...PARTS], full: !LIMIT && !FROM && ALLPARTS, seconds: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails, ok: !fails.length};
 if (outArg) { const out = path.resolve(ROOT, outArg); await fs.mkdir(path.dirname(out), {recursive: true}); await fs.writeFile(out, JSON.stringify(res, null, 1) + '\n'); }
-console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, combos: res.combos, counts, fails: fails.slice(0, 15)}, null, 0));
+console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, combos: res.combos, time: res.time, net: res.net, counts, fails: fails.slice(0, 15)}, null, 0));
 process.exit(res.ok ? 0 : 1);

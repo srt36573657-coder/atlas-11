@@ -18,13 +18,14 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {nameScan, oldNamesIn, allowFromData, selfTest as renameSelfTest, LETTER_TITLE, TITLE_TAIL, OLD_NAME_FAIL, OLD_NAME_RE, NEW_NAME} from './rename.mjs';
+import {fetchJSON, watch, settle, stylesReady, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 모양 파일 기다림(2026-10-17 고도리 명령문 [1] 8 — 지금 사이트 검사 #/info 누르는 자리 23px)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), out = path.resolve(ROOT, arg('--out', 'reports/atlas11/verify/next-check-latest.json'));
 const LIMIT = Number(arg('--limit', '0')) || 0;
-const fails = [], counts = {}, t0 = Date.now();
+const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
 const fail = (k, x) => { if (fails.length < 400) fails.push([k, x]); counts.fail = (counts.fail || 0) + 1; };
 const bump = k => { counts[k] = (counts[k] || 0) + 1; };
 
@@ -38,7 +39,7 @@ function P(x) {
 const P2 = v => (v == null || !Number.isFinite(v) ? '?' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%'); // 지수 · 미국 하루 = 둘째 자리 그대로(두 번 반올림 막기)
 const MD = d => (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일';
 const N = n => Number(n).toLocaleString('ko-KR');
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [core, mkt, home, surge, cond] = await Promise.all(['core.json', 'mkt.json', 'home.json', 'surge.json', 'cond.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt) { console.error('자료를 못 받음'); process.exit(1); }
 const CO = mkt.companies, codes = Object.keys(CO);
@@ -55,7 +56,7 @@ const BANNED = ['추천', '매수', '매도', '팔라', '사세요', '파세요'
 const READY = new Set(((/const READY = new Set\(\[([^\]]*)\]\);/.exec(await fs.readFile(path.join(ROOT, 'site/next/app.js'), 'utf8')) || [, ''])[1].match(/'([a-z]+)'/g) || []).map(x => x.slice(1, -1)));
 const oldOr = (k, h) => (READY.has(k) ? h : '/atlas/' + h);
 // 고도리 칸 자료(/next/data/gdr.json — 2026-10-17 17:54 「고도리 만들기 · 한 장 명령문」) — #/gdr/<번호> 고리 · 첫 화면 칸 수에 씀(못 받으면 첫 화면은 「?」 줄)
-const GDR = await fetch(base + '/next/data/gdr.json', {cache: 'no-store'}).then(r => (r.ok ? r.json() : null)).catch(() => null);
+const GDR = await fetchJSON(base + '/next/data/gdr.json', 'gdr.json').catch(() => null);
 if (READY.has('gdr') && !Array.isArray(GDR?.picks)) fail('자료', '/next/data/gdr.json 을 못 받음');
 // ⑧ 옛 이름 — 자료의 실제 이름(회사 「아틀라스링크」 등)은 옛 이름이 아님 · 검사 자체 시험(바꾸는 말 표 · 찾기가 틀림을 잡는지)
 const names = await getJ('names.json').catch(e => { fail('자료', e.message); return null; });
@@ -75,11 +76,24 @@ async function page(width, height = 800) {
   const ctx = await b.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true});
   const p = await ctx.newPage(); p._errs = [];
   p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text()); });
-  return p;
+  return watch(p, base);
 }
-async function go(p, hash, wait = s => true) {
-  await p.evaluate(h => { location.hash = h; }, hash);
-  await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('여는 중 남음', hash));
+/** 길 열기 — 망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle) ·
+ *  then(p) 가 있으면 그것까지(보는 화면 이름 등) 한 열기로 봄 · 다 그린 뒤 그 화면 모양 파일(쪽 모듈 .css)이 붙을 때까지 기다림 —
+ *  실제 사이트에서 p-info.css 가 늦게 와 「누르는 자리 44px 안 됨 · 친구에게 소개하기 133×23」을 잰 일(2026-10-17 11:56 지금 사이트 검사) · 못 붙으면 실패 「모양 파일 안 붙음」 */
+async function go(p, hash, then = null) {
+  const ok = await settle(p, async () => {
+    await p.evaluate(h => { location.hash = h; }, hash);
+    if (!await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).then(() => true, () => false)) return false;
+    return then ? then(p) : true;
+  }, {what: hash, fail});
+  if (ok === false && !then) fail('여는 중 남음', hash);
+  if (ok) { const miss = await stylesReady(p); if (miss.length) fail('모양 파일 안 붙음', hash + ' ' + miss.join(' ')); }
+  return ok;
+}
+/** 처음 열기(goto) — 망 탈이면 다시 */
+async function first(p, url, ready = () => !document.querySelector('#view .boot'), timeout = 20000) {
+  return settle(p, async () => { await p.goto(url); return p.waitForFunction(ready, null, {timeout}).then(() => true, () => false); }, {what: url.replace(base, ''), fail});
 }
 const scan = p => p.evaluate(() => {
   const vw = document.documentElement.clientWidth, view = document.querySelector('#view');
@@ -127,7 +141,7 @@ const MODR = {surge: ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/su
   why: ['#/why'], gdr: ['#/gdr', ...(GDR?.picks?.length ? ['#/gdr/' + GDR.picks[0].no] : [])]}; // 고도리 한 장 명령문 — 질문 · 고도리 칸 · 카드 하나 열린 길
 for (const [k, rs] of Object.entries(MODR)) if (READY.has(k)) ROUTES.push(...rs); // 옮긴 쪽도 세 폭 · 쓰지 않을 말 · 44px · 고리
 for (const w of [320, 360, 390]) {
-  const p = await page(w); await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
+  const p = await page(w); if (await first(p, base + '/next/#/') === false) fail('여는 중 남음', w + ' 처음 열기');
   for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); checkScan(w + ' ' + r, await scan(p), p); if (w === 390) await guard(p, r); bump('화면'); }
   if (w === 390) { // ⑧ 옛 이름 — 세 폭 길에 없는 쪽도(달력 종목 파일 · 조건 고른 주소 · 쇼츠 한 장 · 없는 주소)
     const tr = await getJ('surgetr.json').catch(() => null), c0 = tr?.cases?.[0]?.[0];
@@ -140,8 +154,8 @@ for (const w of [320, 360, 390]) {
 {
   const ctx = await b.newContext({viewport: {width: 320, height: 700}, deviceScaleFactor: 1, hasTouch: true});
   await ctx.addInitScript(() => { try { localStorage.setItem('atlas:font', '2'); } catch { /* 없음 */ } });
-  const p = await ctx.newPage(); p._errs = []; p.on('pageerror', e => p._errs.push(e.message));
-  await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
+  const p = watch(await ctx.newPage(), base); p._errs = []; p.on('pageerror', e => p._errs.push(e.message));
+  if (await first(p, base + '/next/#/') === false) fail('여는 중 남음', '큰 글씨 처음 열기');
   if (!(await p.evaluate(() => document.documentElement.classList.contains('f3')))) fail('큰 글씨 기억', 'atlas:font 2 인데 html.f3 아님');
   for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); const sc = await scan(p); if (sc.sw > sc.vw) fail('큰 글씨 넘침', '320 아주 크게 ' + r + ' ' + sc.sw + '>' + sc.vw); bump('큰 글씨 화면'); }
   if (p._errs.length) fail('화면 오류', '큰 글씨 ' + p._errs.join(' | ').slice(0, 200));
@@ -156,8 +170,8 @@ for (const w of [320, 360, 390]) {
   if (!Array.isArray(MSG) || MSG.length < 2 || !PROMO) fail('편지 글을 site/next/app.js 에서 못 읽음', '');
   if (MSG?.[0] !== LETTER_TITLE) fail('편지 첫 줄', `「${MSG?.[0]}」 ≠ 「${LETTER_TITLE}」`);
   for (const t of [...(MSG || []), PROMO]) if (OLD_NAME_RE.test(t ?? '')) fail(OLD_NAME_FAIL, '편지 · 상품권 줄 「' + t + '」');
-  const q = await page(390, 844); await q.goto(base + '/next/#/');
-  await q.waitForFunction(() => !!document.querySelector('#view section.wy') && !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('첫 화면 질문 칸', '20초 안에 안 나옴'));
+  const q = await page(390, 844);
+  if (await first(q, base + '/next/#/', () => !!document.querySelector('#view section.wy') && !document.querySelector('#view .boot')) === false) fail('첫 화면 질문 칸', '20초 안에 안 나옴');
   const g = await q.evaluate(() => {
     const kids = [...document.querySelectorAll('#view > *')], at = s => kids.findIndex(e => e.matches(s)), wy = document.querySelector('#view > section.wy'), gd = document.querySelector('#view > section.gdr');
     return {tk: document.querySelector('#view a.tk-entry')?.getAttribute('href'), today: document.querySelectorAll('#view .today .tl').length,
@@ -215,12 +229,11 @@ for (const w of [320, 360, 390]) {
 }
 /* ② 모든 회사 보는 화면 · ③ 채널 · ④ 쇼츠 · ⑤ 찾기 · ⑥ 누르기 — 390 폭 */
 const p = await page(390, 844);
-await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
+if (await first(p, base + '/next/#/') === false) fail('여는 중 남음', '390 처음 열기');
 const list = LIMIT ? codes.slice(0, LIMIT) : codes;
 for (const code of list) {
   const o = CO[code];
-  await go(p, '#/w/' + code);
-  await p.waitForFunction(n => document.querySelector('#view .wt')?.textContent === n, o.n, {timeout: 8000}).catch(() => fail('보는 화면 이름', code));
+  if (await go(p, '#/w/' + code, q => q.waitForFunction(n => document.querySelector('#view .wt')?.textContent === n, o.n, {timeout: 8000}).then(() => true, () => false)) === false) fail('보는 화면 이름', code);
   const g = await p.evaluate(() => ({ws: document.querySelector('#view .ws')?.textContent ?? '', ch: [...document.querySelectorAll('#view .chaps a.cp')].map(a => a.getAttribute('href')), chq: document.querySelectorAll('#view .chaps span.cp').length,
     nx: document.querySelectorAll('#view .nx').length, chan: document.querySelector('#view .chan b')?.textContent ?? '', sw: document.documentElement.scrollWidth, vw: document.documentElement.clientWidth, tip: document.querySelector('#view .player .tip')?.textContent ?? ''}));
   const want20 = P(c20(o)), wantDay = P(lineDay(o.l));
@@ -241,8 +254,7 @@ for (const code of list) {
   bump('회사');
 }
 for (const I of core.industries) {
-  await go(p, '#/ch/i/' + encodeURIComponent(I.name));
-  await p.waitForFunction(n => document.querySelector('#view .chhead h1')?.textContent === n, I.name + ' 업종', {timeout: 8000}).catch(() => fail('업종 채널 이름', I.name));
+  if (await go(p, '#/ch/i/' + encodeURIComponent(I.name), q => q.waitForFunction(n => document.querySelector('#view .chhead h1')?.textContent === n, I.name + ' 업종', {timeout: 8000}).then(() => true, () => false)) === false) fail('업종 채널 이름', I.name);
   const g = await p.evaluate(() => ({small: document.querySelector('#view .chhead small')?.textContent ?? '', st: [...document.querySelectorAll('#view .stats b')].map(b => b.textContent), tiles: document.querySelectorAll('#view .grid > a').length}));
   const n = I.members.filter(m => CO[m]).length;
   if (!g.small.startsWith('회사 ' + N(n) + '곳')) fail('업종 회사 수', I.name + ' ' + g.small);
@@ -252,8 +264,7 @@ for (const I of core.industries) {
   bump('업종 채널');
 }
 for (const G of core.groups) {
-  await go(p, '#/ch/g/' + encodeURIComponent(G.id));
-  await p.waitForFunction(n => document.querySelector('#view .chhead h1')?.textContent === n, G.name + ' 갈래', {timeout: 8000}).catch(() => fail('갈래 채널 이름', G.id));
+  if (await go(p, '#/ch/g/' + encodeURIComponent(G.id), q => q.waitForFunction(n => document.querySelector('#view .chhead h1')?.textContent === n, G.name + ' 갈래', {timeout: 8000}).then(() => true, () => false)) === false) fail('갈래 채널 이름', G.id);
   const g = await p.evaluate(() => ({small: document.querySelector('#view .chhead small')?.textContent ?? '', st: [...document.querySelectorAll('#view .stats b')].map(b => b.textContent)}));
   const n = (G.inds || []).reduce((a, nm) => a + (ind.get(nm)?.members || []).filter(m => CO[m]).length, 0);
   if (n !== G.n) fail('갈래 회사 수(자료)', G.id + ' ' + n + ' ≠ ' + G.n);
@@ -339,8 +350,8 @@ for (const G of core.groups) {
   bump('누르기');
 }
 await b.close();
-const res = {schema: 'atlas11-next-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, ready: [...READY], companies: codes.length, limit: LIMIT || null, full: !LIMIT, oldNameScreens: guarded.size, oldNameAllow: ALLOW, seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
+const res = {schema: 'atlas11-next-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, ready: [...READY], companies: codes.length, limit: LIMIT || null, full: !LIMIT, oldNameScreens: guarded.size, oldNameAllow: ALLOW, seconds: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails, ok: !fails.length};
 await fs.mkdir(path.dirname(out), {recursive: true});
 await fs.writeFile(out, JSON.stringify(res, null, 1) + '\n');
-console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, counts, fails: fails.slice(0, 12)}, null, 0));
+console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, time: res.time, net: res.net, counts, fails: fails.slice(0, 12)}, null, 0));
 process.exit(res.ok ? 0 : 1);

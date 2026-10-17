@@ -20,6 +20,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, timer, timePage, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
@@ -27,7 +28,7 @@ const require = createRequire(arg('--pw', process.env.PW_DIR || '/opt/node-tools
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1');
 const LIMIT = has('--all') ? 0 : Number(arg('--limit', '0')) || 0, OUT = arg('--out', null), DUMP = arg('--dump', null); // --dump 파일 = 첫 짝의 뽑은 글(옛 · 새 첫 화면 · 새 쪽)
-const fails = [], counts = {}, warn = [], t0 = Date.now(), dumps = [], dumped = new Set();
+const fails = [], counts = {}, warn = [], t0 = Date.now(), dumps = [], dumped = new Set(), tm = timer(t0);
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 500)]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const BANNED = ['추천', '매수', '매도', '팔라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', 'TOP', '매수 검토'];
@@ -35,7 +36,7 @@ const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const clone = x => JSON.parse(JSON.stringify(x));
 
 /* 자료(시험 서버에서) */
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [HOME, CORE, LINES] = await Promise.all([getJ('home.json'), getJ('core.json'), getJ('lines.json')]).catch(e => { console.error('자료를 못 받음', e.message); process.exit(1); });
 const IND = new Map(CORE.industries.map(i => [i.name, i]));
 const kstDay = () => new Date(Date.now() + 9 * 36e5).toISOString().slice(0, 10);
@@ -80,7 +81,7 @@ async function page(width, v, {height = 844, init = null, motion = 'reduce', fon
   }
   const p = await ctx.newPage(); p._errs = [];
   p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text()); });
-  return p;
+  return timePage(p, tm); // 화면 일에 쓴 때 — 옛 쪽(/atlas/) · 새 쪽 몫으로(net.mjs)
 }
 const frames = p => p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
 const W_OLD = () => !!document.querySelector('#view > .vw .m4-seal-box') && !document.querySelector('#view .boot');
@@ -366,7 +367,8 @@ for (const [w, big] of has('--no-wide') ? [] : [[320, false], [360, false], [390
 await b.close();
 
 const sec = Math.round((Date.now() - t0) / 1000);
-const res = {made: new Date().toISOString(), base, path: NEXT, variants: list.map(v => v[0]), counts, fails, warn: warn.slice(0, 50), sec};
+const res = {made: new Date().toISOString(), base, path: NEXT, variants: list.map(v => v[0]), counts, fails, warn: warn.slice(0, 50), sec, time: tm.get(), net: netSummary()};
+console.log(JSON.stringify({time: res.time, net: res.net})); // 옛 쪽 · 새 쪽 여는 데 쓴 초 · 다시 받은 수(명령문 [1] 9)
 if (OUT) await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(res, null, 1) + '\n');
 if (DUMP) await fs.writeFile(path.resolve(DUMP), JSON.stringify(dumps, null, 1)); // 판마다 첫 짝
 console.log(`오늘 시장 맞대기 — 자료 판 ${counts['자료 판'] || 0}개 · 짝 ${counts['짝'] || 0}(옛 첫 화면 ↔ 새 첫 화면 · 새 쪽) · 맞댄 칸 ${counts['맞댄 칸'] || 0} · 글 조각 ${counts['글 조각'] || 0} · 선 누르기 ${counts['선 누르기'] || 0} · 기억 ${counts['기억'] || 0} · 폭 화면 ${counts['폭 화면'] || 0} · ${sec}초`);

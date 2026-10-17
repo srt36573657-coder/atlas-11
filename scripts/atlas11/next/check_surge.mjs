@@ -16,19 +16,20 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), LIMIT = Number(arg('--limit', '0')) || 0, OUT = arg('--out', null), SHOTS = arg('--shots', null);
-const t0 = Date.now(), fails = [], counts = {};
+const t0 = Date.now(), fails = [], counts = {}, tm = timer(t0);
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 300) fails.push([k, String(x).slice(0, 400)]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const BOXES = [['', '급등'], ['10', '10%대'], ['20', '20%대'], ['30', '30%대'], ['40', '40% 이상']];
 const WIDTHS = [[320, 0], [360, 0], [390, 0], [320, 2], [360, 1]]; // [폭, 글씨 크기(새 앱 「가」 — 0 보통 · 1 크게 · 2 아주 크게 = #view 를 통째로 키움)]
 
 /* ── 자료 ── */
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [SITE_S, SITE_K, CORE] = await Promise.all(['surge.json', 'surgecal.json', 'core.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!SITE_S || !CORE) { console.error('자료를 못 받음'); process.exit(1); }
 const readJ = async p => { try { return JSON.parse(await fs.readFile(path.join(ROOT, p), 'utf8')); } catch { return null; } };
@@ -103,7 +104,8 @@ async function pageIn(ctx, sc) {
 }
 const OLD = h => base + '/atlas/' + h, NEW = h => base + '/next/?dev=1' + h;
 /** 화면 열기(처음은 주소로 · 다음은 # 만 바꿈 — 앞 화면 칸에 표를 달아 새로 그려진 칸을 기다림) */
-async function open(p, side, hash, first) {
+async function open(p, side, hash, first) { return tm[side === 'old' ? 'old' : 'new'](() => open0(p, side, hash, first)); } // 여는 데 쓴 때 — 그 쪽 몫으로
+async function open0(p, side, hash, first) {
   const root = side === 'old' ? '#view' : 'main#view';
   if (first) await p.goto(side === 'old' ? OLD(hash) : NEW(hash), {waitUntil: 'domcontentloaded'});
   else { await p.evaluate(r => { for (const e of document.querySelector(r).children) e.dataset.stale = '1'; }, root); await p.evaluate(h => { location.hash = h; }, hash); }
@@ -112,7 +114,8 @@ async function open(p, side, hash, first) {
   await p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
 }
 /** 글 모으기 — 접은 칸 열고 숨은 칸(다른 날 판 · 겹쳐 숨긴 그림 글) 보이게 한 뒤 innerText · 금빛 · 빨강 · 파랑 글 · 고리 */
-const grab = (p, root) => p.evaluate(r => {
+const grab = (p, root) => tm[root === '#view' ? 'old' : 'new'](() => grab0(p, root)); // 읽는 데 쓴 때 — 그 쪽 몫으로(옛 쪽 = #view · 새 쪽 = main#view)
+const grab0 = (p, root) => p.evaluate(r => {
   const v = document.querySelector(r);
   for (const d of v.querySelectorAll('details')) d.open = true;
   for (const e of v.querySelectorAll('[hidden]')) e.hidden = false;
@@ -334,7 +337,8 @@ for (const sc of NEW_ONLY) { // 자료 못 받음 — 새 쪽만(옛 쪽은 「�
 }
 await b.close();
 
-const res = {at: new Date().toISOString(), base, secs: Math.round((Date.now() - t0) / 1000), scenarios: RUN.map(s => s.id), counts, fail: counts.fail || 0, fails};
+const res = {at: new Date().toISOString(), base, secs: Math.round((Date.now() - t0) / 1000), scenarios: RUN.map(s => s.id), time: tm.get(), net: netSummary(), counts, fail: counts.fail || 0, fails};
+console.log(JSON.stringify({time: res.time, net: res.net})); // 옛 쪽 · 새 쪽 여는 데 쓴 초 · 다시 받은 수(명령문 [1] 9)
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1) + '\n'); }
 console.log(`급등 다섯 칸 맞대기 — 자료 판 ${RUN.length}개(${RUN.map(s => s.id).join(' · ')}) · ${res.secs}초`);
 console.log(Object.entries(counts).filter(([k]) => k !== 'fail').map(([k, v]) => `${k} ${v.toLocaleString('ko-KR')}`).join(' · '));
