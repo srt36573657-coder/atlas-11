@@ -44,6 +44,8 @@ jobs:
       data: ${{ steps.d.outputs.data }}
       asof: ${{ steps.d.outputs.asof }}
       built: ${{ steps.d.outputs.built }}
+      dsecs: ${{ steps.d.outputs.secs }}
+      dwhy: ${{ steps.d.outputs.why }}
     steps:
       - uses: actions/checkout@v4
         with: # 쪽 이름만 셈 — 검사 폴더만 받음(저장소 전체를 받으면 30초)
@@ -67,30 +69,57 @@ jobs:
           echo "list=[${list%,}]" >> "$GITHUB_OUTPUT"
           echo "shards=$NS" >> "$GITHUB_OUTPUT"
           echo "쪽 [${list%,}] · 영어 $NS 대 · local=${{ inputs.local }}"
+      - uses: actions/setup-node@v4
+        if: ${{ inputs.local && inputs.data != 'stored' }}
+        with:
+          node-version: 22
       - name: 지금 사이트 자료 받기(local — 한 번만 받아 모든 검사가 같은 판을 씀)
         id: d
         if: ${{ inputs.local && inputs.data != 'stored' }}
         run: |
           # 파일 목록 · sha256 = 지금 사이트의 dist-manifest.json(올릴 때 package.mjs 가 dist 모든 파일로 씀) — 파일마다 맞대 봄 · 받는 사이 올림이 끼면 처음부터 한 번 더
-          node --input-type=module - <<'EOF' || echo "data=stored" >> "$GITHUB_OUTPUT"
+          # 넷리파이를 세게 두드리지 않게 한 번에 8개 · 2분 30초 안에 못 받으면 저장소 자료로 돎(까닭 · 셈 = summary.json 의 data)
+          node --input-type=module - <<'EOF'
           import fs from 'node:fs'; import path from 'node:path'; import {createHash} from 'node:crypto';
-          const B = 'https://aaa7377.com/', OUT = 'live-data', sha = b => createHash('sha256').update(b).digest('hex');
-          const get = async (f, want = null) => { let last = ''; for (let i = 0; i < 5; i++) { try { const r = await fetch(B + f, {cache: 'no-store'}); if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); if (!want || sha(b) === want) return b; last = 'sha256 다름'; } else last = 'HTTP ' + r.status; } catch (e) { last = String(e.message); } await new Promise(r => setTimeout(r, 400 * (i + 1))); } throw Error(f + ' ' + last); };
-          let ok = false;
-          for (let round = 1; round <= 2 && !ok; round++) {
-            const man = JSON.parse(await get('dist-manifest.json')), files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/')).sort();
-            if (!files.includes('atlas/data/mkt.json') || !files.includes('atlas/data/core.json')) throw Error('dist-manifest.json 에 atlas/data 가 없음');
-            fs.rmSync(OUT, {recursive: true, force: true});
-            let i = 0, bytes = 0; const bad = [];
-            await Promise.all(Array.from({length: 24}, async () => { while (i < files.length) { const f = files[i++]; try { const b = await get(f, man.hashes[f]); fs.mkdirSync(path.dirname(path.join(OUT, f)), {recursive: true}); fs.writeFileSync(path.join(OUT, f), b); bytes += b.length; } catch (e) { bad.push(String(e.message)); } } }));
-            const again = JSON.parse(await get('dist-manifest.json'));
-            if (!bad.length && again.builtAt === man.builtAt) {
-              ok = true; const asOf = JSON.parse(fs.readFileSync(path.join(OUT, 'atlas/data/mkt.json'), 'utf8')).asOf;
-              fs.appendFileSync(process.env.GITHUB_OUTPUT, `data=live\nasof=${asOf}\nbuilt=${man.builtAt}\n`);
-              console.log(`지금 사이트 자료 ${files.length}개 · ${(bytes / 1e6).toFixed(1)}MB · sha256 모두 맞음 · 고른 날 ${asOf} · 묶은 때 ${man.builtAt}`);
-            } else console.log(`${round}번째 — 못 받은 것 ${bad.length}(${bad.slice(0, 3).join(' · ')}) · 받는 사이 올림 ${again.builtAt !== man.builtAt}`);
+          const B = 'https://aaa7377.com/', OUT = 'live-data', T0 = Date.now(), BUDGET = 150e3, C = 8;
+          const sha = b => createHash('sha256').update(b).digest('hex'), wait = ms => new Promise(r => setTimeout(r, ms)), sec = () => Math.round((Date.now() - T0) / 1000);
+          const st = {req: 0, http: {}, sha: 0, err: {}};
+          const put = kv => fs.appendFileSync(process.env.GITHUB_OUTPUT, Object.entries(kv).map(([k, v]) => `${k}=${String(v).replace(/[\r\n]+/g, ' ')}`).join('\n') + '\n');
+          async function get(f, want = null) {
+            let last = '';
+            for (let i = 0; i < 4; i++) {
+              if (Date.now() - T0 > BUDGET) throw Error('시간 넘음');
+              st.req++;
+              try {
+                const r = await fetch(B + f, {signal: AbortSignal.timeout(15000)});
+                if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); if (!want || sha(b) === want) return b; st.sha++; last = 'sha256 다름'; }
+                else { st.http[r.status] = (st.http[r.status] || 0) + 1; last = 'HTTP ' + r.status; if (r.status === 404) break; if (r.status === 429 || r.status === 503) await wait(Math.min(8, Number(r.headers.get('retry-after')) || 2) * 1000); }
+              } catch (e) { const k = String(e?.cause?.code || e?.name || e?.message || e).slice(0, 40); st.err[k] = (st.err[k] || 0) + 1; last = k; }
+              await wait(200 * (i + 1));
+            }
+            throw Error(f + ' ' + last);
           }
-          if (!ok) throw Error('지금 사이트 자료를 한 판으로 못 받음 — 저장소 자료로 돎');
+          try {
+            let ok = false, note = '';
+            for (let round = 1; round <= 2 && !ok; round++) {
+              const man = JSON.parse(await get('dist-manifest.json')), files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/')).sort();
+              if (!files.includes('atlas/data/mkt.json') || !files.includes('atlas/data/core.json')) throw Error('dist-manifest.json 에 atlas/data 가 없음');
+              fs.rmSync(OUT, {recursive: true, force: true});
+              let i = 0, bytes = 0; const bad = [];
+              await Promise.all(Array.from({length: C}, async () => { while (i < files.length && bad.length < 12) { const f = files[i++]; try { const b = await get(f, man.hashes[f]); fs.mkdirSync(path.dirname(path.join(OUT, f)), {recursive: true}); fs.writeFileSync(path.join(OUT, f), b); bytes += b.length; } catch (e) { bad.push(String(e.message)); } } }));
+              const again = bad.length ? null : JSON.parse(await get('dist-manifest.json'));
+              if (!bad.length && again.builtAt === man.builtAt) {
+                ok = true; const asOf = JSON.parse(fs.readFileSync(path.join(OUT, 'atlas/data/mkt.json'), 'utf8')).asOf;
+                put({data: 'live', asof: asOf, built: man.builtAt, secs: sec(), files: files.length});
+                console.log(`지금 사이트 자료 ${files.length}개 · ${(bytes / 1e6).toFixed(1)}MB · sha256 모두 맞음 · 고른 날 ${asOf} · 묶은 때 ${man.builtAt} · ${sec()}초 · ${JSON.stringify(st)}`);
+              } else { note = `${round}번째 ${i}/${files.length}에서 멈춤 — ` + (bad.length ? `못 받은 것 ${bad.length}(${bad.slice(0, 2).join(' · ')})` : '받는 사이 올림'); console.log(note); }
+            }
+            if (!ok) throw Error(note);
+          } catch (e) {
+            const why = String(e?.message ?? e).slice(0, 160) + ' · ' + JSON.stringify(st);
+            put({data: 'stored', why, secs: sec()});
+            console.log('지금 사이트 자료를 못 받음 — 저장소 자료로 돎 · ' + why);
+          }
           EOF
       - uses: actions/upload-artifact@v4
         if: ${{ steps.d.outputs.data == 'live' }}
@@ -188,6 +217,9 @@ jobs:
       DATA_SRC: ${{ needs.plan.outputs.data }}
       DATA_ASOF: ${{ needs.plan.outputs.asof }}
       DATA_BUILT: ${{ needs.plan.outputs.built }}
+      DATA_SECS: ${{ needs.plan.outputs.dsecs }}
+      DATA_WHY: ${{ needs.plan.outputs.dwhy }}
+      DATA_ASK: ${{ inputs.data }}
     steps:
       - uses: actions/checkout@v4
         with: # 합치는 셈(scripts/atlas11/next) · 이름 한 곳(site/next/brand.js) · 결과 폴더만 받음 — 저장소 전체(1.4GB)를 받으면 25초
@@ -254,7 +286,8 @@ jobs:
               const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).sort().map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
               const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: local ? "http://127.0.0.1:8826" : "https://aaa7377.com", mode: local ? "local" : "live",
                 ref: process.env.REF, sha: process.env.GITHUB_SHA, run: Number(process.env.GITHUB_RUN_ID), wallSeconds: t0 ? Math.round(Date.now() / 1000) - t0 : null,
-                ...(local ? {data: process.env.DATA_SRC === "live" ? {from: "live", asOf: process.env.DATA_ASOF, built: process.env.DATA_BUILT} : {from: "stored"}} : {}),
+                ...(local ? {data: process.env.DATA_SRC === "live" ? {from: "live", asOf: process.env.DATA_ASOF, built: process.env.DATA_BUILT, seconds: Number(process.env.DATA_SECS) || null}
+                  : {from: "stored", why: process.env.DATA_ASK === "stored" ? "-f data=stored" : process.env.DATA_WHY || "지금 사이트 자료를 못 받음", seconds: Number(process.env.DATA_SECS) || null}} : {}),
                 pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
               fs.writeFileSync(d + "/summary.json", JSON.stringify(sum, null, 1) + "\n"); console.log(JSON.stringify(sum));'
             git add -f "$dir"

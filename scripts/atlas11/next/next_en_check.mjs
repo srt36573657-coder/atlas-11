@@ -10,7 +10,10 @@
  *   여는 곳: /next/?dev=1&lang=en (app.js EN_NEXT 가 false 인 동안 새 화면 영어는 ?dev=1 로만 열림 · --dev 0 이면 ?lang=en 만)
  *   길: 홈 · 칩 일곱(#/f/rise|surge|lead|pick|group|ind|us) · 쇼츠(+ #/shorts/<n> 한 장씩) · 구독 · 나 · 찾기(+ #/find/<말>) · 지수 둘(#/w/KOSPI · KOSDAQ)
  *       · 보는 화면(회사 표본 — 지수 둘과 합쳐 --limit 60 · --all 이면 모든 회사) · 업종 채널 모두 · 갈래 채널 모두 · 없는 회사 · 없는 채널
- *       · --modules 면 옮긴 쪽(#/w/<번호>/past|rivals|grow|range · #/surge(+ /10 ~ /40) · #/cal(+ 종목 파일) · #/cond(+ 고르기) · #/talk · #/up · #/time · #/info · #/x/<번호>)
+ *       · --modules 면 옮긴 쪽(#/w/<번호>/past|rivals|grow|range · #/surge(+ /10 ~ /40) · #/cal(+ 종목 파일) · #/cond(+ 고르기) · #/talk · #/up · #/time · #/info · #/x/<번호>
+ *         · 고도리(규칙 77) #/why — 질문 열한 개의 답 단추를 모두 눌러 보고(고도리 한마디 · 격언) 다음 › 으로 결과까지 · #/gdr · #/gdr/1 — 내 돈을 바꾸고 칸 하나를 엶)
+ *         · 「나」 칸(#/me)에 들기 전 왜 사? 기록 둘을 심음(오늘 · 40일 전 — 한 달 뒤 결과까지) · 새 창 하나는 고도리 칸 자료(/next/data/gdr.json)도 못 받게 함
+ *         · --mods why,gdr = 그 쪽만(고치는 동안 빨리 — full 이 아님)
  *   화면마다 본다(영어 · 360 × 640): ① 사전에 없는 틀 0(엔진 __atlasI18n.missing) ② 보이는 한글 0(lang="ko" 원문 빼고 · 글 · aria-label · title · placeholder · alt · ::before/::after)
  *       ③ 창 제목 한글 0(사전에는 있는데 app.js 가 L() 로 안 감싼 것은 따로 셈) · html lang = en ④ 가로 넘침 0 — 세 폭(320 · 360 · 390)에서 쪽 넘침 · 화면 밖으로 나간 칸 · 칸 안에서 넘친 글
  *       ⑤ 화면 오류 0(쪽 모듈 파일 못 받음은 따로 셈) ⑥ 동그라미 글자(.av)는 로마자 한 글자 — 한글 한 글자를 사전이 낱말로 바꾸면(「금」 → Fri) 실패
@@ -103,8 +106,11 @@ add('watch', '#/w/999999');
 for (const i of core.industries) add('chan', '#/ch/i/' + enc(i.name));
 for (const g of core.groups) add('chan', '#/ch/g/' + enc(g.id));
 add('chan', '#/ch/i/' + enc('없는업종')); add('chan', '#/ch/g/zz');
-/* 옮긴 쪽(--modules) — 모듈 파일(/next/p-<이름>.js)이 없으면 「모듈 없음」 실패 */
-const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today'];
+/* 옮긴 쪽(--modules) — 모듈 파일(/next/p-<이름>.js)이 없으면 「모듈 없음」 실패
+   · 2026-10-17 고도리(규칙 77): why = 「친구야, 왜 사?」 질문 열한 개(#/why — 답 단추를 모두 눌러 보고 다음 › 으로 결과까지) · gdr = 고도리 칸(#/gdr · #/gdr/1 — 내 돈을 바꾸고 칸 하나를 엶)
+   · --mods why,gdr = 그 쪽만(고치는 동안 빨리 — full 이 아님) */
+const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today', 'why', 'gdr'];
+const MODS_ONLY = arg('--mods', null)?.split(',').map(s => s.trim()).filter(Boolean) ?? null;
 const modHave = {};
 if (MODULES || DEV) for (const m of MODS) { try { const r = await fetch(base + '/next/p-' + m + '.js', {method: 'HEAD'}); modHave[m] = r.ok; } catch { modHave[m] = false; } }
 if (MODULES && on('mod')) {
@@ -114,8 +120,9 @@ if (MODULES && on('mod')) {
     cal: ['#/cal', ...((surgetr?.cases ?? []).map(r => r[0]).slice(0, ALL ? Infinity : 20).map(c => '#/cal/' + c))],
     cond: ['#/cond', '#/cond/rise-top3-spike', '#/cond/up-f3-loss', '#/cond/dn-pick-all', '#/cond/all-all-all'],
     talk: ['#/talk'], up: ['#/up'], time: ['#/time'], info: ['#/info'],
-    x: (names?.rows ?? []).filter(r => r.k).slice(0, ALL ? 40 : 6).map(r => '#/x/' + r.c)};
-  for (const [m, rs] of Object.entries(R)) { if (!modHave[m]) { fail('모듈 없음', 'p-' + m + '.js', '옮긴 쪽 파일이 아직 없음 — 길 ' + rs.length + '개를 못 봄'); continue; } for (const r of rs) routes.push({kind: 'mod', r, mod: m}); }
+    x: (names?.rows ?? []).filter(r => r.k).slice(0, ALL ? 40 : 6).map(r => '#/x/' + r.c),
+    why: ['#/why'], gdr: ['#/gdr', '#/gdr/1']};
+  for (const [m, rs] of Object.entries(R)) { if (MODS_ONLY && !MODS_ONLY.includes(m)) continue; if (!modHave[m]) { fail('모듈 없음', 'p-' + m + '.js', '옮긴 쪽 파일이 아직 없음 — 길 ' + rs.length + '개를 못 봄'); continue; } for (const r of rs) routes.push({kind: 'mod', r, mod: m}); }
 }
 
 /* ── 일감 · 몫(--shard k/n) ── 한 번 다 돌 때와 같은 일감 · 같은 차례 — 몫마다 같은 목록을 세우고 같은 셈으로 가름(일감 하나 = 꼭 한 몫)
@@ -145,8 +152,8 @@ const OWN = SHARD ? planShards(units, SHARD.n) : null;
 const mine = SHARD ? units.filter((u, i) => OWN[i] === SHARD.k - 1) : units;
 const mineIds = new Set(mine.map(u => u.id));
 const RUN = mine.filter(u => u.r != null), TAIL_MINE = mineIds.has('@tail'), NEWWIN_MINE = mineIds.has('@newwin');
-if (LIST_ONLY) { // 나눔 확인 — 브라우저 없이
-  console.log(JSON.stringify({shard: SHARD?.s ?? null, total: units.length, hash: UHASH, mine: mine.length, w: UNIT_W, units: mine.map(u => u.id)}));
+if (LIST_ONLY) { // 나눔 확인 — 브라우저 없이 · 다 써진 뒤 끝냄(파이프로 받을 때 64KB 에서 잘리지 않게)
+  await new Promise(r => process.stdout.write(JSON.stringify({shard: SHARD?.s ?? null, total: units.length, hash: UHASH, mine: mine.length, w: UNIT_W, units: mine.map(u => u.id)}) + '\n', r));
   process.exit(0);
 }
 
@@ -160,7 +167,7 @@ async function newPage(block = []) {
   const p = await ctx.newPage(); p._errs = [];
   p.on('pageerror', e => p._errs.push('pageerror ' + e.message));
   p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text() + (m.location()?.url ? ' @' + m.location().url : '')); });
-  for (const f of block) await p.route('**/atlas/data/' + f, r => r.fulfill({status: 404, body: 'blocked'}));
+  for (const f of block) await p.route(f.startsWith('/') ? '**' + f : '**/atlas/data/' + f, r => r.fulfill({status: 404, body: 'blocked'})); // '/' 로 시작하면 그 길 그대로(고도리 칸 자료 /next/data/gdr.json)
   if (APP_FILE) await p.route('**/next/app.js', r => r.fulfill({path: APP_FILE, contentType: 'text/javascript; charset=utf-8'})); // 시험: 고칠 안(app.js 사본)을 미리 돌려 봄
   p._dicts = []; p.on('request', q => { const u = new URL(q.url()); if (/\/i18n(\.js|\/[^/]+\.json)$/.test(u.pathname)) p._dicts.push(u.pathname); }); // 받은 영어 엔진 · 사전(새 화면 것만이어야 함 · 옛 것은 errs 가 셈)
   await p.goto(PAGE + '#/');
@@ -181,7 +188,7 @@ async function go(q, hash) {
 function judgeText(OLD) {
   const HN = /[가-힣ㄱ-ㅎㅏ-ㅣ]/;
   const vis = el => { if (!el) return false; const s = getComputedStyle(el); if (s.visibility === 'hidden' || s.display === 'none') return false; if (!el.getClientRects().length) return false; if (el.closest('details:not([open]) > :not(summary)')) return false; return true; };
-  const MODH = /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/)/; // 쪽 모듈 길(p-*.js)
+  const MODH = /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/|why|gdr)/; // 쪽 모듈 길(p-*.js)
   const han = [], attrs = [], pseudo = [], key = s => { try { return window.__atlasI18n.templateOf(s).key; } catch { return s; } };
   // 옛 영어 이름(brand.js was — 지금 Bodri · ATLAS) — 대소문자 그대로 낱말만(회사 이름 Atlas Link 는 안 셈) · w = 남은 이름
   const AT = OLD.length ? new RegExp('\\b(?:' + OLD.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b') : /(?!)/, atlas = [], ow = s => (String(s).match(AT) || [''])[0];
@@ -189,11 +196,11 @@ function judgeText(OLD) {
   for (let n = w.nextNode(); n; n = w.nextNode()) {
     const el = n.parentElement; if (!el || el.closest('[lang="ko"], script, style, noscript, template, [hidden]')) continue;
     const t = n.nodeValue.trim();
-    if (t && AT.test(t) && vis(el)) atlas.push({ex: t.slice(0, 90), w: ow(t), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)});
+    if (t && AT.test(t) && vis(el)) atlas.push({ex: t.slice(0, 90), w: ow(t), mod: !!el.closest('.co-d, .chx-d, .today-d, .wy, .wy-me, .gdr') || MODH.test(location.hash)});
     if (!t || !HN.test(t) || !vis(el)) continue;
-    han.push({mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash), k: key(t), ex: t.slice(0, 90), av: el.matches('.av')});
+    han.push({mod: !!el.closest('.co-d, .chx-d, .today-d, .wy, .wy-me, .gdr') || MODH.test(location.hash), k: key(t), ex: t.slice(0, 90), av: el.matches('.av')});
   }
-  for (const a of ['aria-label', 'title', 'placeholder', 'alt']) for (const el of document.querySelectorAll('[' + a + ']')) { if (el.closest('[lang="ko"], [hidden], template')) continue; const v = el.getAttribute(a); if (HN.test(v)) attrs.push({k: '@' + a + ' ' + key(v), ex: v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); if (AT.test(v)) atlas.push({ex: '@' + a + ' ' + v.slice(0, 70), w: ow(v), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); }
+  for (const a of ['aria-label', 'title', 'placeholder', 'alt']) for (const el of document.querySelectorAll('[' + a + ']')) { if (el.closest('[lang="ko"], [hidden], template')) continue; const v = el.getAttribute(a); if (HN.test(v)) attrs.push({k: '@' + a + ' ' + key(v), ex: v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d, .wy, .wy-me, .gdr') || MODH.test(location.hash)}); if (AT.test(v)) atlas.push({ex: '@' + a + ' ' + v.slice(0, 70), w: ow(v), mod: !!el.closest('.co-d, .chx-d, .today-d, .wy, .wy-me, .gdr') || MODH.test(location.hash)}); }
   if (AT.test(document.title)) atlas.push({ex: '창 제목 ' + document.title.slice(0, 70), w: ow(document.title), mod: false});
   // 동그라미 글자(.av — 이름의 첫 글자) — 영어면 로마자 한 글자여야 함(한글 한 글자를 사전이 낱말로 바꾸면 「금」 → Fri · 「소」 → cattle 처럼 엉뚱한 말)
   const avBad = [...document.querySelectorAll('.av')].filter(e => vis(e) && !e.closest('[lang="ko"]')).map(e => e.textContent.trim()).filter(t => t && !/^[A-Za-z0-9?]$/.test(t) && !HN.test(t));
@@ -232,8 +239,8 @@ async function judge(p, where, {widths = true} = {}) {
   if (tx.lang !== 'en') fail('html lang', where, String(tx.lang));
   // 사전에 없는 틀 — 엔진이 처음 본 차례대로 쌓음 · 쪽 모듈 칸(.co-d · .chx-d · .today-d) 안의 글이면 「[모듈]」
   const ms = await p.evaluate(seen => (window.__atlasI18n?.missing() ?? []).filter(m => !seen.includes(m.key)).map(m => ({...m,
-    mod: [...document.querySelectorAll('.co-d, .chx-d, .today-d')].some(s => s.textContent.includes(m.ex) || [...s.querySelectorAll('[aria-label]')].some(e => e.getAttribute('aria-label').includes(m.ex)))})), [...miss.keys()]);
-  for (const m of ms) if (!miss.has(m.key)) miss.set(m.key, {ex: m.ex, at: (m.mod || /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/)/.test(where) ? '[모듈] ' : '') + where});
+    mod: [...document.querySelectorAll('.co-d, .chx-d, .today-d, .wy, .wy-me, .gdr')].some(s => s.textContent.includes(m.ex) || [...s.querySelectorAll('[aria-label]')].some(e => e.getAttribute('aria-label').includes(m.ex)))})), [...miss.keys()]);
+  for (const m of ms) if (!miss.has(m.key)) miss.set(m.key, {ex: m.ex, at: (m.mod || /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/|why|gdr)/.test(where) ? '[모듈] ' : '') + where});
   if (widths) {
     for (const w of WIDTHS) {
       if (w !== MAIN_W) { await p.setViewportSize({width: w, height: H}); await p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))); }
@@ -255,6 +262,55 @@ function errs(p, where) {
   if (p._dicts) p._dicts.length = 0;
 }
 
+/* ── 고도리(규칙 77) — 「나」 칸 기록 심기 · 왜 사? 끝까지 누르기 · 고도리 칸 내 돈 바꾸기 · 칸 열기 ──
+   누른 뒤 남는 기억(왜 사? 기록 · 내 돈)은 처음대로 돌려놓고, 「나」 칸은 들 때마다 같은 기록 둘로 덮어 씀 → 몫 · 차례와 상관없이 같은 화면(나눠 돌려도 같은 일감) */
+const WHY_KEY = 'atlas:godori-why', MONEY_KEY = 'atlas:godori-money';
+const settle = q => q.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+const keepKey = (q, k) => q.evaluate(K => { try { return localStorage.getItem(K); } catch { return null; } }, k);
+const putKey = (q, k, v) => q.evaluate(([K, V]) => { try { if (V == null) localStorage.removeItem(K); else localStorage.setItem(K, V); } catch { /* 기억 못 하는 기계 */ } }, [k, v]);
+/** 「나」 칸 기록 둘 — 오늘(반만 준비됐어) · 40일 전(좋아, 정해 둔 대로만 · 한 달 뒤 결과를 셈함) · 점수 · 판정은 화면의 셈(p-why.js judge) · 고른 곳 = 고도리 칸 자료 앞 셋 */
+async function seedWhy(q, where) {
+  if (!modHave.why) return;
+  const r = await q.evaluate(async K => {
+    try {
+      const W = await import('/next/p-why.js'), G = window.NX?.gdr ? await window.NX.gdr() : null;
+      const picks = (G?.picks ?? []).slice(0, 3).map(x => ({code: x.code, name: x.name, price: x.price, w: x.w}));
+      const mk = (days, answers) => { const J = W.judge(answers); return {at: new Date(Date.now() - days * 864e5).toISOString(), asOf: G?.asOf ?? null, answers, score: J.score, reds: J.reds, verdict: J.verdict, groups: J.groups, picks}; };
+      localStorage.setItem(K, JSON.stringify([mk(0, [2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0]), mk(40, [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])]));
+      return null;
+    } catch (e) { return String(e?.message ?? e); }
+  }, WHY_KEY);
+  if (r) fail('누르기', where, '「나」 칸 왜 사? 기록을 못 심음 — ' + r.slice(0, 120));
+}
+/** 왜 사? — 질문마다 답 단추를 모두 눌러 봄(답마다 고도리 한마디 · 격언) → 다음 › … → 결과(오늘은 쉬어 가자) */
+async function whyWalk(q, where) {
+  const keep = await keepKey(q, WHY_KEY);
+  try {
+    for (let i = 0; i < 11; i++) {
+      const opts = q.locator('#view .wy .wy-opt'), n = await opts.count();
+      if (!n) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 답 단추가 없음`); return; }
+      for (let k = 0; k < n; k++) { await opts.nth(k).click(); await settle(q); await judge(q, `${where} · ${i + 1}번 답 ${k + 1}`, {widths: i === 0 && k === n - 1}); }
+      const nx = q.locator('#view .wy .wy-next');
+      if (!(await nx.count())) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 다음 단추가 없음`); return; }
+      await nx.first().click(); await settle(q);
+    }
+    if (!(await q.locator('#view .wy .wy-res').count())) { fail('누르기', where, '왜 사? 열한 번째 뒤에 결과가 안 나옴'); return; }
+    await judge(q, where + ' · 결과', {widths: true}); bump('왜 사? 끝까지');
+  } finally { await putKey(q, WHY_KEY, keep); }
+}
+/** 고도리 칸 — 내 돈을 다른 금액으로(금액 · 「나라면」 글이 바뀜) → 닫힌 칸 하나를 엶 */
+async function gdrWalk(q, where) {
+  const keep = await keepKey(q, MONEY_KEY);
+  try {
+    const inp = q.locator('#view .gdr .gdr-in').first();
+    if (!(await inp.count())) { fail('누르기', where, '고도리 칸에 내 돈 칸(.gdr-in)이 없음'); return; }
+    await inp.fill('23,450,000'); await settle(q); await judge(q, where + ' · 내 돈 바꿈', {widths: false});
+    const cell = q.locator('#view .gdr .gdr-cell:not(.cash):not(.on)').first();
+    if (!(await cell.count())) { fail('누르기', where, '고도리 칸에 열 칸(.gdr-cell)이 없음'); return; }
+    await cell.click(); await settle(q); await judge(q, where + ' · 칸 엶', {widths: true}); bump('고도리 칸 누르기');
+  } finally { await putKey(q, MONEY_KEY, keep); }
+}
+
 /* ── ① 길 돌기 ── 이 몫의 길만(RUN · 한 번 다 돌 때와 같은 차례) · 창 p 는 길이나 @tail 을 맡은 몫만 엶 */
 let tS = Date.now();
 const p = RUN.length || TAIL_MINE ? await newPage() : null;
@@ -263,8 +319,14 @@ if (p) { errs(p, '처음 열기'); mark('open', tS); }
 if (on('shorts') && mineIds.has('#/shorts')) { await go(p, '#/shorts'); const n = await p.evaluate(() => document.querySelectorAll('#view .sh').length); bump('쇼츠 장', n); const at = RUN.findIndex(x => x.r === '#/shorts'); for (let i = 0; i < n; i++) RUN.splice(at + 1 + i, 0, {kind: 'shorts', r: '#/shorts/' + i}); await go(p, '#/me'); }
 tS = Date.now();
 for (const {kind, r} of RUN) { // 바로 앞과 같은 길은 일감을 세울 때 이미 뺌
-  try { await go(p, r); await p.waitForTimeout(r === '#/' ? 300 : 60); await judge(p, r); bump('길 · ' + kind); }
-  catch (e) { fail('멈춤', r, String(e.message || e).slice(0, 160)); }
+  try {
+    if (r === '#/me') await seedWhy(p, r); // 「나」 칸 = 사장님 편지 + 왜 사? 기록(오늘 · 40일 전)
+    await go(p, r); await p.waitForTimeout(r === '#/' ? 300 : 60);
+    if (r === '#/me' && modHave.why) await p.waitForSelector('#view .wy-me .wy-rec p.note b.num', {timeout: 6000}).catch(() => {}); // 40일 전 기록의 「한 달 뒤 결과」(회사 파일을 받아 셈) 까지
+    await judge(p, r); bump('길 · ' + kind);
+    if (r === '#/why') await whyWalk(p, r);
+    else if (r === '#/gdr' || r === '#/gdr/1') await gdrWalk(p, r);
+  } catch (e) { fail('멈춤', r, String(e.message || e).slice(0, 160)); }
 }
 if (RUN.length) mark('routes', tS);
 
@@ -308,6 +370,7 @@ if (TAIL_MINE && on('act')) {
     const subKeys = ['g:' + core.groups[0].id, 'g:' + core.groups[1].id, 'i:' + core.industries[0].name, 'i:' + core.industries[30].name];
     const hist = WATCH.slice(0, 14), later = WATCH.slice(2, 7);
     await p.evaluate(([s, hi, la]) => { localStorage.setItem('atlas:new:sub', JSON.stringify(s)); localStorage.setItem('atlas:new:hist', JSON.stringify(hi)); localStorage.setItem('atlas:new:later', JSON.stringify(la)); }, [subKeys, hist, later]);
+    await seedWhy(p, '누르기 · 나 칸'); // 「나」 칸 왜 사? 기록 — 길 돌기의 #/me 와 같은 둘
     await go(p, '#/sub'); await judge(p, '누르기 · 구독 칸(채널 넷)');
     await go(p, '#/me'); await judge(p, '누르기 · 나 칸(기록 · 담은 것)');
     let dlg = null; p.once('dialog', d => { dlg = d.message(); d.accept(); });
@@ -432,7 +495,7 @@ if (p) { // 창을 닫기 전에 엔진이 마지막 화면 뒤에 쌓은 틀까
 /* ── ⑤ 새 창 — 자료 파일을 못 받을 때(받은 것을 화면 안에서 바꿀 수 없는 칸: 몸값 · 급등 · 모든 자료) ── 일감 @newwin(맡은 몫만) */
 tS = Date.now();
 if (NEWWIN_MINE && EDGE && on('edge')) {
-  for (const [nm, block, hs] of [['몸값 · 급등 · 첫 화면 자료 못 받음', ['cond.json', 'surge.json', 'home.json'], ['#/', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/us', '#/shorts', '#/w/KOSPI', '#/w/005930']],
+  for (const [nm, block, hs] of [['몸값 · 급등 · 첫 화면 · 고도리 칸 자료 못 받음', ['cond.json', 'surge.json', 'home.json', '/next/data/gdr.json'], ['#/', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/us', '#/shorts', '#/w/KOSPI', '#/w/005930', ...(modHave.gdr ? ['#/gdr'] : []), ...(modHave.why ? ['#/why'] : [])]],
     ['모든 자료 못 받음', ['core.json', 'mkt.json'], ['#/', '#/f/rise', '#/f/ind', '#/shorts', '#/w/005930', '#/w/KOSPI', '#/ch/g/semi', '#/ch/i/' + enc('반도체'), '#/sub', '#/me', '#/find']]]) {
     let q = null;
     try {
@@ -453,7 +516,7 @@ let avMiss = 0;
 for (const [key, m] of miss) { if (avChars.has(key)) { avMiss++; continue; } fail('사전에 없는 틀', m.at, key + '  ← 「' + String(m.ex).slice(0, 80) + '」'); }
 const list = [...fails.values()];
 const kinds = list.reduce((a, f) => { a[f.kind] = (a[f.kind] || 0) + 1; return a; }, {});
-const fullRun = !ONLY && ALL && MODULES && EDGE && DEV && !APP_FILE, full = fullRun && !SHARD; // 몫 하나는 full 이 아님 — 몫을 모두 합친 결과(--merge)가 fullIfMerged 를 이어받음
+const fullRun = !ONLY && !MODS_ONLY && ALL && MODULES && EDGE && DEV && !APP_FILE, full = fullRun && !SHARD; // 몫 하나는 full 이 아님 — 몫을 모두 합친 결과(--merge)가 fullIfMerged 를 이어받음
 const own = list.filter(f => !isMod(f)), modF = list.filter(isMod);
 const res = {schema: 'atlas11-next-en-check-1', at: new Date().toISOString(), base, page: PAGE, lang: 'en', widths: WIDTHS, routes: RUN.length, companies: WATCH.length, allCompanies: ALL, modules: MODULES,
   modFiles: modHave, edge: EDGE, only: ONLY, appFile: APP_FILE, shard: SHARD?.s ?? null, ...(SHARD ? {fullIfMerged: fullRun} : {}), full,
