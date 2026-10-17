@@ -1,10 +1,20 @@
-{"job":"godori-2110 전체(하나로 묶은 명령문)","start":"2026-10-17T13:09:06.000Z","promise":"2026-10-17T18:00:00.000Z","note":"끝 시각 약속 02:00(싱가포르) — 끝나면 end 줄을 따로 더함"}
-{"job":"일꾼 A 탭 다섯 · 관심 · 시황 · 보유종목 잇기","start":"2026-10-17T13:11:08.000Z","end":"2026-10-17T13:30:14.000Z","seconds":1146,"files":["site/next/app.js","site/next/index.html","site/next/app.css"]}
-{"job":"일꾼 E 회사 모두 다섯 문 파일 · 틀린다면 이유","start":"2026-10-17T13:11:51.000Z","end":"2026-10-17T13:29:21.000Z","seconds":1050,"files":["scripts/atlas11/next/gdr/pick.mjs","site/next/data/gdr.json","site/next/data/gates.json"]}
-{"job":"일꾼 F 다섯 문 따로 세기(첫 판 · 61칸 다름)","start":"2026-10-17T13:11:55.000Z","end":"2026-10-17T13:40:59.000Z","seconds":1744,"files":["scripts/atlas11/next/gdr/verify.py"]}
-{"job":"일꾼 E 빈 값 61칸 ? 로","start":"2026-10-17T13:42:30.000Z","end":"2026-10-17T13:48:37.000Z","seconds":367}
-{"job":"일꾼 F 다시 셈(틀림 0)","start":"2026-10-17T13:48:37.000Z","end":"2026-10-17T13:49:43.000Z","seconds":66}
-{"job":"일꾼 B 매매일지","start":"2026-10-17T13:11:19.000Z","end":"2026-10-17T13:53:45.000Z","seconds":2546,"files":["site/next/p-why.js","site/next/p-why.css","scripts/atlas11/next/check_why.mjs"]}
-{"job":"일꾼 C 보내기 글상자 · 쓰지 않을 말 한 곳","start":"2026-10-17T13:11:34.000Z","end":"2026-10-17T13:56:23.000Z","seconds":2689,"files":["site/next/p-share.js","site/next/words.js","scripts/atlas11/next/check_share.mjs"]}
-{"job":"일꾼 D 보유종목 점검 · 고도리 칸 안전","start":"2026-10-17T13:11:45.000Z","end":"2026-10-17T13:53:46.000Z","seconds":2521,"files":["site/next/p-hold.js","site/next/p-gdr.js","scripts/atlas11/next/check_hold.mjs"]}
+{"job": "godori-2110 전체(하나로 묶은 명령문)", "start": "2026-10-17T13:09:06.000Z", "promise": "2026-10-17T18:00:00.000Z", "note": "끝 시각 약속 02:00(싱가포르) — 끝나면 end 줄을 따로 더함"}
+{"job": "일꾼 A 탭 다섯 · 관심 · 시황 · 보유종목 잇기", "start": "2026-10-17T13:11:08.000Z", "end": "2026-10-17T13:30:14.000Z", "seconds": 1146, "files": ["site/next/app.js", "site/next/index.html", "site/next/app.css"]}
+{"job": "일꾼 E 회사 모두 다섯 문 파일 · 틀린다면 이유", "start": "2026-10-17T13:11:51.000Z", "end": "2026-10-17T13:29:21.000Z", "seconds": 1050, "files": ["scripts/atlas11/next/gdr/pick.mjs", "site/next/data/gdr.json", "site/next/data/gates.json"]}
+{"job": "일꾼 F 다섯 문 따로 세기(첫 판 · 61칸 다름)", "start": "2026-10-17T13:11:55.000Z", "end": "2026-10-17T13:40:59.000Z", "seconds": 1744, "files": ["scripts/atlas11/next/gdr/verify.py"]}
+{"job": "일꾼 E 빈 값 61칸 ? 로", "start": "2026-10-17T13:42:30.000Z", "end": "2026-10-17T13:48:37.000Z", "seconds": 367}
+{"job": "일꾼 F 다시 셈(틀림 0)", "start": "2026-10-17T13:48:37.000Z", "end": "2026-10-17T13:49:43.000Z", "seconds": 66}
+{"job": "일꾼 B 매매일지", "start": "2026-10-17T13:11:19.000Z", "end": "2026-10-17T13:53:45.000Z", "seconds": 2546, "files": ["site/next/p-why.js", "site/next/p-why.css", "scripts/atlas11/next/check_why.mjs"]}
+{"job": "일꾼 C 보내기 글상자 · 쓰지 않을 말 한 곳", "start": "2026-10-17T13:11:34.000Z", "end": "2026-10-17T13:56:23.000Z", "seconds": 2689, "files": ["site/next/p-share.js", "site/next/words.js", "scripts/atlas11/next/check_share.mjs"]}
+{"job": "일꾼 D 보유종목 점검 · 고도리 칸 안전", "start": "2026-10-17T13:11:45.000Z", "end": "2026-10-17T13:53:46.000Z", "seconds": 2521, "files": ["site/next/p-hold.js", "site/next/p-gdr.js", "scripts/atlas11/next/check_hold.mjs"]}
 {"job": "합치기 · 시험 22개 · 가지 godori-2110 올림", "start": "2026-10-17T13:58:30.000Z", "end": "2026-10-17T14:01:14.000Z", "seconds": 164, "note": "끝은 가지를 올린 뒤 이 줄을 적은 때"}
+{"job": "check_changed", "start": "2026-10-17T14:36:25.430Z", "end": "2026-10-17T14:38:04.758Z", "seconds": 99.3, "files": 1, "checks": [{"k": "modules", "ok": true, "sec": 0.3}, {"k": "check_why", "ok": true, "sec": 44.2}, {"k": "next_check", "ok": true, "sec": 54.8}], "fails": 0}
+{"job": "일꾼 H 새 화면 영어 356줄", "start": "2026-10-17T13:38:06.000Z", "end": "2026-10-17T14:15:07.000Z", "seconds": 2221, "files": ["scripts/atlas11/next/i18n/en-src.json", "site/next/i18n/en.json"]}
+{"job": "일꾼 D 약속 글 영어 고침", "start": "2026-10-17T14:19:30.000Z", "end": "2026-10-17T14:20:29.000Z", "seconds": 59}
+{"job": "일꾼 C 보내기 영어 글 고침", "start": "2026-10-17T14:19:30.000Z", "end": "2026-10-17T14:33:55.000Z", "seconds": 865}
+{"job": "일꾼 I 실제 사이트 탐침 새 탭에 맞춤", "start": "2026-10-17T14:19:40.000Z", "end": "2026-10-17T14:32:18.000Z", "seconds": 758, "files": ["scripts/atlas11/probe/live_view.mjs"]}
+{"job": "깃허브 모든 쪽 미리 검사 · 일꾼 G 고침 1", "start": "2026-10-17T14:13:58.000Z", "end": "2026-10-17T14:23:06.000Z", "seconds": 548, "run": 39039859850, "pages": "15/15", "note": "벽시계 536초", "times": "gh run view(createdAt · updatedAt)"}
+{"job": "깃허브 모든 쪽 미리 검사 · 일꾼 G 고침 2 + 새 화면", "start": "2026-10-17T14:26:51.000Z", "end": "2026-10-17T14:35:45.000Z", "seconds": 534, "run": 39040786322, "pages": "18/18", "note": "벽시계 524초", "times": "gh run view(createdAt · updatedAt)"}
+{"job": "실제 사이트 검사 en · range · rivals(일꾼 G 고침 1)", "start": "2026-10-17T14:27:27.000Z", "end": "2026-10-17T14:43:39.000Z", "seconds": 972, "run": 39040828065, "note": "rivals 907초 실패 → 282초 통과 · range 593초 실패 → 292초 · en 여섯 몫 452 ~ 542초", "times": "gh run view(createdAt · updatedAt)"}
+{"job": "깃허브 모든 쪽 미리 검사 eb9adf258", "start": "2026-10-17T14:36:43.000Z", "end": "2026-10-17T14:46:12.000Z", "seconds": 569, "run": 39041488339, "pages": "17/18", "note": "en 칸 안 넘친 글 10건(#/sub 아주 크게) — 고침 7fa51fe4e", "times": "gh run view(createdAt · updatedAt)"}
+{"job": "관심 회사 줄 넘침 고침", "start": "2026-10-17T14:52:47.000Z", "end": "2026-10-17T14:55:25.000Z", "seconds": 158, "times": "시작 = G 알림 받은 때 · 끝 = 커밋 7fa51fe4e 시각"}
