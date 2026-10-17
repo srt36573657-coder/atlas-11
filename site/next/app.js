@@ -560,7 +560,7 @@ async function vSub() {
     for (const c of cos) {
       const o = X.co[c], x = c20(o);
       nodes.push(h('div', {class: 'chan wl'}, h('a', {href: '#/w/' + c}, h('span', {class: 'wl-th', 'aria-hidden': 'true'}, lineSvg(o.l, {w: 120, ht: 60, fill: false, sw: 3})),
-        h('div', {}, h('b', {text: o.n}), h('small', {}, (o.i || '?') + ' · ', h('span', {class: 'nb'}, '20거래일 ', h('span', {class: cls(x), text: pct(x)}))))), laterBtn(c, o.n, 'sub-btn')));
+        h('div', {}, h('b', {text: o.n}), h('small', {}, (o.i || '?') + ' · ', '20거래일 ', h('span', {class: cls(x) + ' wl-p', text: pct(x)})))), laterBtn(c, o.n, 'sub-btn')));
     }
   } else nodes.push(h('p', {class: 'note', text: '회사 화면에서 「관심 담기」를 누르면 여기 모여요.'}));
   // 관심 업종 · 갈래

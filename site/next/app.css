@@ -176,9 +176,11 @@ a.more { display: flex; align-items: center; justify-content: center; text-align
 .chan.wl b { font-size: 18px; line-height: 1.35; }
 .wl + .wl { border-top: 1px solid var(--hair); }
 .wl > a > div { min-width: 0; overflow-wrap: break-word; }
-/* 「20거래일 −69.7%」는 한 덩이로 두되 아주 큰 글씨 · 영어(20 trading days)에서는 줄을 넘김 — 320 · 360 칸 밖으로 7px 넘치던 것(일꾼 G 2026-10-17 22:29) */
-.wl .nb { white-space: normal; }
-.wl .nb > span { white-space: nowrap; }
+/* 「20거래일 」은 줄을 넘길 수 있고 % 숫자만 한 덩이(.wl-p) — 아주 큰 글씨 · 영어(20 trading days)에서 칸 안 넘침 0(일꾼 G 2026-10-17 22:29 · 22:53 — 엔진이 바꾼 글 마디까지 묶던 .nb > span 을 걷음) */
+.wl-p { white-space: nowrap; }
+/* 큰 글씨(크게 · 아주 크게)는 줄이 좁아 글 칸이 25 ~ 40px 로 눌림 — 「관심 담음」 단추를 글 아래 줄로(320 · 360 · 390 모두 칸 안 넘침 0) */
+html.f2 .chan.wl, html.f3 .chan.wl { flex-wrap: wrap; row-gap: 6px; }
+html.f2 .chan.wl > a, html.f3 .chan.wl > a { flex: 1 1 100%; }
 .avs { display: flex; gap: 12px; overflow-x: auto; padding: 12px 16px; scrollbar-width: none; }
 .avs::-webkit-scrollbar { display: none; }
 .avs a { flex: none; width: 70px; display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 44px; }
