@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-17T09:14:49.477Z",
+  "at": "2026-10-17T10:36:52.348Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-17T09:14:48.788Z",
+    "publishedAt": "2026-10-17T10:36:51.661Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -34,7 +34,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "<!doctype html> <html lang=\"ko\" class=\"m4\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\"> <meta name=\"theme-color\" content=\"#0C0E12\"> <meta name=\"description\" content=\"보드리 — 보고, 다음을 보고, 구독해요. 들은 것만 따라 말하는 앵무새처럼 지난 기록만 보여 줘요.\"> <t"
+      "bodyStart": "<!doctype html> <html lang=\"ko\" class=\"m4\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\"> <meta name=\"theme-color\" content=\"#0C0E12\"> <meta name=\"description\" content=\"고도리 — 보고, 다음을 보고, 구독해요. 들은 것만 따라 말하는 앵무새처럼 지난 기록만 보여 줘요.\"> <t"
     },
     {
       "url": "https://aaa7377.com/data/atlas11/view/manifest.json",
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-16-ad407d14\",\"generatedAt\":\"2026-10-17T09:01:44.455Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-16\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-16-9a994a5c\",\"generatedAt\":\"2026-10-17T10:25:16.170Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-16\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-17T09:05:04Z\",\"asOf\":\"2026-10-16\",\"base\":\"2026-09-14\",\"days\":20,\"pickAsOf\":\"2026-10-16\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":7666,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 14일 모음 + 날마다 이어 받음(10월 16일 종가까지)\",\"pick\":"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-17T10:28:42Z\",\"asOf\":\"2026-10-16\",\"base\":\"2026-09-14\",\"days\":20,\"pickAsOf\":\"2026-10-16\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":7666,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 14일 모음 + 날마다 이어 받음(10월 16일 종가까지)\",\"pick\":"
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
