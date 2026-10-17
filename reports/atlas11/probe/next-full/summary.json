@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-16T23:59:12.253Z",
+ "at": "2026-10-17T09:26:31.435Z",
  "base": "https://aaa7377.com",
  "pages": [
   {
@@ -11,62 +11,62 @@
   {
    "name": "chx",
    "code": 0,
-   "seconds": 179
+   "seconds": 185
   },
   {
    "name": "co",
    "code": 0,
-   "seconds": 400
+   "seconds": 366
   },
   {
    "name": "cond",
    "code": 0,
-   "seconds": 45
+   "seconds": 41
   },
   {
    "name": "en",
    "code": 0,
-   "seconds": 2317
+   "seconds": 2288
   },
   {
    "name": "grow",
    "code": 0,
-   "seconds": 308
+   "seconds": 476
   },
   {
    "name": "misc",
    "code": 0,
-   "seconds": 64
+   "seconds": 54
   },
   {
    "name": "next",
    "code": 0,
-   "seconds": 305
+   "seconds": 251
   },
   {
    "name": "past",
    "code": 0,
-   "seconds": 495
+   "seconds": 489
   },
   {
    "name": "range",
    "code": 0,
-   "seconds": 497
+   "seconds": 581
   },
   {
    "name": "rivals",
    "code": 0,
-   "seconds": 419
+   "seconds": 406
   },
   {
    "name": "surge",
    "code": 0,
-   "seconds": 48
+   "seconds": 47
   },
   {
    "name": "today",
    "code": 0,
-   "seconds": 111
+   "seconds": 98
   }
  ],
  "ok": true

@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-16T22:00:42.454Z",
+ "at": "2026-10-17T08:51:36.574Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "ready": [
@@ -23,10 +23,15 @@
  "companies": 2557,
  "limit": null,
  "full": true,
- "seconds": 304,
+ "oldNameScreens": 2687,
+ "oldNameAllow": [
+  "아틀라스링크"
+ ],
+ "seconds": 251,
  "counts": {
   "고리": 8899,
   "화면": 114,
+  "옛 이름 본 화면": 2689,
   "큰 글씨 화면": 38,
   "첫 화면 붙박이": 1,
   "회사": 2557,

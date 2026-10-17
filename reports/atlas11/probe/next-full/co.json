@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-16T22:02:10.186Z",
+ "at": "2026-10-17T08:53:16.242Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "companies": 2557,
  "all": true,
  "limit": null,
  "widths": 28,
- "seconds": 399,
+ "seconds": 366,
  "counts": {
   "줄": 114497,
   "숫자 낱말": 214154,
