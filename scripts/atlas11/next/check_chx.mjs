@@ -13,7 +13,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
-import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {fetchJSON, watch, settle, timer, netSummary, isRemote} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {oldSnap, fileSha} from './oldsnap.mjs'; // 옛 쪽 기준값(--old-snap 파일 · --old-refresh) — 옛 화면이 쓴 파일이 하나도 안 바뀌면 옛 쪽을 열지 않고 찍어 둔 값과 맞댐(명령문 [1] 9 · 옛 쪽 때 86%)
+import {fileURLToPath} from 'node:url';
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -25,7 +27,8 @@ const LIMIT = ALL ? 0 : Number(arg('--limit', '0')) || 0;
 const WLIMIT = has('--wlimit') ? Number(arg('--wlimit', '10')) : ALL ? 0 : Math.min(LIMIT || 10, 10);
 const OUT = arg('--out', null);
 const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
-const fail = (k, x) => { if (fails.length < 300) fails.push([k, x]); counts.fail = (counts.fail || 0) + 1; };
+let oldFails = 0; // 옛 쪽 실패 수 — 0 일 때만 기준값을 새로 씀
+const fail = (k, x) => { if (fails.length < 300) fails.push([k, x]); counts.fail = (counts.fail || 0) + 1; if (/^옛/.test(k) || /^옛/.test(String(x ?? ''))) oldFails++; };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const FAIL = fail, BUMP = bump;
 const norm = s => String(s ?? '').replace(/[\s ]+/g, ' ').trim();
@@ -49,9 +52,9 @@ const WLIST = WLIMIT ? [...LIST.filter(p => p.kind === 'g').slice(0, 2), ...LIST
 const oldHash = p => '#/' + p.kind + '/' + encodeURIComponent(p.id), newHash = p => '#/ch/' + p.kind + '/' + encodeURIComponent(p.id);
 
 const exe = '/opt/pw-browsers/chromium', B = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {});
-async function open(url, width, height = 844) {
+async function open(url, width, height = 844, pre = null) {
   const ctx = await B.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true});
-  const p = await ctx.newPage(); p._errs = [];
+  const p = await ctx.newPage(); p._errs = []; if (pre) pre(p); // pre = 처음 열기 전에 붙일 것(기준값이 옛 화면 파일을 적음)
   p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text()); });
   watch(p, base); // 망 탈 셈(net.mjs)
   await settle(p, async () => { await p.goto(url); return true; }, {what: url.replace(base, ''), fail}); return p;
@@ -173,8 +176,11 @@ function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math
 /* ①②③④ 맞대기 — 두 보기 */
 {
   // 새 화면은 첫 화면(#/)을 거치지 않고 찾기 화면(#/find)에서 엶 — 첫 화면은 ?dev=1 로 아직 없는 다른 쪽 모듈을 불러 그 오류가 이 검사에 섞임
-  const po = await open(base + '/atlas/#/', 390), pn = await open(base + '/next/?dev=1#/find', 390);
-  await po.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('옛 화면', '첫 화면 안 열림'));
+  // 옛 쪽 기준값(oldsnap.mjs) — 쓸 수 있으면 옛 쪽을 열지 않음(po = null) · 아니면 열고 읽은 값 · 받은 파일을 찍음
+  const SNAP = await tm.old(async () => oldSnap({file: arg('--old-snap', null), page: 'chx', base, remote: isRemote(base), refresh: has('--old-refresh'),
+    key: {checker: await fileSha(fileURLToPath(import.meta.url)), browser: B.version(), width: 390, list: LIST.map(oldHash)}}));
+  const po = SNAP.use ? null : await tm.old(() => open(base + '/atlas/#/', 390, 844, q => SNAP.watch(q))), pn = await open(base + '/next/?dev=1#/find', 390);
+  if (po) await po.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('옛 화면', '첫 화면 안 열림'));
   await pn.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('새 화면', '첫 화면 안 열림'));
   for (const pg of LIST) {
     const where = (pg.kind === 'g' ? '갈래 ' : '업종 ') + pg.id;
@@ -183,17 +189,21 @@ function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math
       if (!N || !N.text.includes('「1곳」 = 회사가 하나뿐인 업종')) fail('1곳 업종', where); errsOf(pn, where); bump('1곳 업종'); continue;
     }
     for (const mode of ['eq', 'cw']) {
-      if (mode === 'eq') { await waitOld(po, pg); await waitNew(pn, pg); }
-      else { await tm.old(() => setMode(po, '#view .seg button', 2)); await tm.new(() => setMode(pn, '#view .pchx-seg button', 2)); await tm.old(() => po.waitForTimeout(800)); } // 옛 경주판은 줄을 움직인 뒤 700ms 에 차례대로 다시 꽂음 — 그 전에 읽으면 옛 차례(실제 사이트 검사에서 걸린 것 · 2026-10-17)
-      const [O, N] = [oldToNewDeep(await tm.old(() => po.evaluate(readOld))), await tm.new(() => pn.evaluate(readNew))]; // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs)
+      if (mode === 'eq') { if (po) await waitOld(po, pg); await waitNew(pn, pg); }
+      else { if (po) await tm.old(() => setMode(po, '#view .seg button', 2)); await tm.new(() => setMode(pn, '#view .pchx-seg button', 2)); if (po) await tm.old(() => po.waitForTimeout(800)); } // 옛 경주판은 줄을 움직인 뒤 700ms 에 차례대로 다시 꽂음 — 그 전에 읽으면 옛 차례(실제 사이트 검사에서 걸린 것 · 2026-10-17)
+      const sk = oldHash(pg) + '|' + mode, O0 = po ? await tm.old(() => po.evaluate(readOld)) : SNAP.get(sk); // 옛 쪽 값 — 열어서 읽음 · 또는 기준값
+      if (po) SNAP.put(sk, O0);
+      if (!O0) { fail('옛 쪽 기준값 없음', sk); continue; }
+      const [O, N] = [oldToNewDeep(O0), await tm.new(() => pn.evaluate(readNew))]; // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs)
       compare(where + ' · ' + (mode === 'eq' ? '한 회사 한 표' : '큰 회사는 크게'), O, N, pg, mode);
       if (!selfTested && N && O.rows.length > 1) selfTest(O, N, pg, mode);
-      if (mode === 'cw') { await tm.old(() => setMode(po, '#view .seg button', 1)); await tm.new(() => setMode(pn, '#view .pchx-seg button', 1)); await tm.old(() => po.waitForTimeout(800)); }
+      if (mode === 'cw') { if (po) await tm.old(() => setMode(po, '#view .seg button', 1)); await tm.new(() => setMode(pn, '#view .pchx-seg button', 1)); if (po) await tm.old(() => po.waitForTimeout(800)); }
       bump('맞댄 화면');
     }
-    errsOf(po, '옛 ' + where); errsOf(pn, '새 ' + where);
+    if (po) errsOf(po, '옛 ' + where); errsOf(pn, '새 ' + where);
   }
-  await po.context().close(); await pn.context().close();
+  if (po) await po.context().close(); await pn.context().close();
+  counts.oldSnap = {...SNAP.info(), note: await SNAP.save(oldFails === 0)}; // 기준값 — 다시 씀 · 새로 씀 · 안 씀(까닭)
   if (!selfTested && LIST.length) fail('검사 자체 시험', '돌리지 못함(줄 둘 넘는 화면 없음)');
 }
 
