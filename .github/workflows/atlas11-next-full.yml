@@ -5,7 +5,9 @@ name: atlas11-next-full
 # 2026-10-17 고도리(규칙 76 「빠르고 정밀하게 — 무거운 화면 검사는 깃허브 여러 대」 · 자세히 docs/design/godori-2026-10-17/ci.md):
 #   · 영어 검사(en — 혼자 38분)를 en1 ~ en6 여섯 대로 나눠 함께 돌림: next_en_check.mjs --shard k/6 = 한 번 다 돌 때와 같은 일감을 겹침 · 빠짐 없이 가름
 #     gather 가 몫을 하나로 합침(--merge — 몫이 모두 · 같은 일감 목록인지도 맞댐) → summary.json 에는 en 한 줄(몫이 모두 0 일 때만 0 · seconds = 가장 긴 몫)
-#   · local = 올리기 전 검사: 이 가지(--ref)를 실행기 안에서 묶어(package.mjs · 저장소 자료 그대로) 시험 서버(invite_dev.mjs · 127.0.0.1:8826)로 띄우고 같은 검사를 돌림
+#   · local = 올리기 전 검사: 이 가지(--ref)를 실행기 안에서 묶어(package.mjs) 시험 서버(invite_dev.mjs · 127.0.0.1:8826)로 띄우고 같은 검사를 돌림
+#     자료(/atlas/data)는 지금 사이트 것을 한 번만 받아(plan · dist-manifest.json 의 sha256 로 한 판인지 맞대 봄) 모든 검사가 같은 것을 씀 — 올린 뒤와 같은 자료
+#     (저장소의 site/atlas/data 는 손으로 커밋할 때만 바뀌어 며칠 묵음 — 묵은 자료로 돌면 없는 실패가 남 · 2026-10-17 첫 시험) · data=stored 면 저장소 자료 · 못 받으면 저장소 자료로 돌고 적음
 #     결과는 reports/atlas11/probe/next-preview/ (next-full 은 건드리지 않음 · 커밋 글에 preview · 가지 · 커밋 번호) · 사이트에는 아무것도 올리지 않음
 #   · 쓰는 법: gh workflow run atlas11-next-full.yml -R srt36573657-coder/atlas-11 --ref <가지> -f local=true
 on:
@@ -20,6 +22,12 @@ on:
         type: boolean
         required: false
         default: false
+      data:
+        description: 'local 일 때 자료 — live = 지금 사이트 자료(올린 뒤와 같음) · stored = 저장소 site/atlas/data'
+        type: choice
+        options: [live, stored]
+        required: false
+        default: live
       en_shards:
         description: '영어 검사를 몇 대로 나눌지(1 ~ 12)'
         required: false
@@ -33,6 +41,9 @@ jobs:
       list: ${{ steps.p.outputs.list }}
       shards: ${{ steps.p.outputs.shards }}
       t0: ${{ steps.p.outputs.t0 }}
+      data: ${{ steps.d.outputs.data }}
+      asof: ${{ steps.d.outputs.asof }}
+      built: ${{ steps.d.outputs.built }}
     steps:
       - uses: actions/checkout@v4
         with: # 쪽 이름만 셈 — 검사 폴더만 받음(저장소 전체를 받으면 30초)
@@ -56,6 +67,38 @@ jobs:
           echo "list=[${list%,}]" >> "$GITHUB_OUTPUT"
           echo "shards=$NS" >> "$GITHUB_OUTPUT"
           echo "쪽 [${list%,}] · 영어 $NS 대 · local=${{ inputs.local }}"
+      - name: 지금 사이트 자료 받기(local — 한 번만 받아 모든 검사가 같은 판을 씀)
+        id: d
+        if: ${{ inputs.local && inputs.data != 'stored' }}
+        run: |
+          # 파일 목록 · sha256 = 지금 사이트의 dist-manifest.json(올릴 때 package.mjs 가 dist 모든 파일로 씀) — 파일마다 맞대 봄 · 받는 사이 올림이 끼면 처음부터 한 번 더
+          node --input-type=module - <<'EOF' || echo "data=stored" >> "$GITHUB_OUTPUT"
+          import fs from 'node:fs'; import path from 'node:path'; import {createHash} from 'node:crypto';
+          const B = 'https://aaa7377.com/', OUT = 'live-data', sha = b => createHash('sha256').update(b).digest('hex');
+          const get = async (f, want = null) => { let last = ''; for (let i = 0; i < 5; i++) { try { const r = await fetch(B + f, {cache: 'no-store'}); if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); if (!want || sha(b) === want) return b; last = 'sha256 다름'; } else last = 'HTTP ' + r.status; } catch (e) { last = String(e.message); } await new Promise(r => setTimeout(r, 400 * (i + 1))); } throw Error(f + ' ' + last); };
+          let ok = false;
+          for (let round = 1; round <= 2 && !ok; round++) {
+            const man = JSON.parse(await get('dist-manifest.json')), files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/')).sort();
+            if (!files.includes('atlas/data/mkt.json') || !files.includes('atlas/data/core.json')) throw Error('dist-manifest.json 에 atlas/data 가 없음');
+            fs.rmSync(OUT, {recursive: true, force: true});
+            let i = 0, bytes = 0; const bad = [];
+            await Promise.all(Array.from({length: 24}, async () => { while (i < files.length) { const f = files[i++]; try { const b = await get(f, man.hashes[f]); fs.mkdirSync(path.dirname(path.join(OUT, f)), {recursive: true}); fs.writeFileSync(path.join(OUT, f), b); bytes += b.length; } catch (e) { bad.push(String(e.message)); } } }));
+            const again = JSON.parse(await get('dist-manifest.json'));
+            if (!bad.length && again.builtAt === man.builtAt) {
+              ok = true; const asOf = JSON.parse(fs.readFileSync(path.join(OUT, 'atlas/data/mkt.json'), 'utf8')).asOf;
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, `data=live\nasof=${asOf}\nbuilt=${man.builtAt}\n`);
+              console.log(`지금 사이트 자료 ${files.length}개 · ${(bytes / 1e6).toFixed(1)}MB · sha256 모두 맞음 · 고른 날 ${asOf} · 묶은 때 ${man.builtAt}`);
+            } else console.log(`${round}번째 — 못 받은 것 ${bad.length}(${bad.slice(0, 3).join(' · ')}) · 받는 사이 올림 ${again.builtAt !== man.builtAt}`);
+          }
+          if (!ok) throw Error('지금 사이트 자료를 한 판으로 못 받음 — 저장소 자료로 돎');
+          EOF
+      - uses: actions/upload-artifact@v4
+        if: ${{ steps.d.outputs.data == 'live' }}
+        with:
+          name: live-data
+          path: live-data/
+          retention-days: 1
+          if-no-files-found: error
   page:
     needs: plan
     runs-on: ubuntu-latest
@@ -77,6 +120,12 @@ jobs:
         run: |
           mkdir -p /tmp/pw out
           (cd /tmp/pw && npm i -s --no-audit --no-fund playwright@1.56.1 >/dev/null && npx -y playwright@1.56.1 install --with-deps chromium >/dev/null)
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.local && needs.plan.outputs.data == 'live' }}
+        continue-on-error: true # 못 받으면 아래가 저장소 자료로 돌고 exit.json 의 data 에 적음
+        with:
+          name: live-data
+          path: live-data
       - name: 올리기 전 — 이 가지를 묶어 시험 서버로 띄움
         if: ${{ inputs.local }}
         run: |
@@ -85,6 +134,9 @@ jobs:
           # 묶기(dist/) — 실행기에서도 종가를 새로 받지 않음(GITHUB_ACTIONS=false · 저장소 자료 그대로) · 네 눈 점검은 짧게(사이트 올리기 때는 눈마다 1,000만 번 그대로)
           GITHUB_ACTIONS=false ATLAS_INSPECT_N=20000 node scripts/atlas11/package.mjs --no-full --out ../out >/tmp/pack.log 2>&1 || { tail -c 3000 /tmp/pack.log; exit 1; }
           tail -n 2 /tmp/pack.log | cut -c1-400
+          # 자료 — plan 이 받은 지금 사이트 판(sha256 맞댄 것)으로 dist/atlas/data 를 통째로 바꿈 · 없으면 저장소 자료 그대로
+          if [ -f live-data/atlas/data/mkt.json ]; then rm -rf dist/atlas/data && mkdir -p dist/atlas/data && cp -r live-data/atlas/data/. dist/atlas/data/ && src=live; else src=stored; fi
+          echo "DATA=$src $(node -p 'require("./dist/atlas/data/mkt.json").asOf' 2>/dev/null || echo '?')" >> "$GITHUB_ENV"
           # 시험 서버 — 넷리파이처럼 dist/ 를 내보냄(보안 머리말 · /api/letter · /api/invite 포함) · 열쇠는 이 실행기에서만 쓰는 시험 열쇠(진짜 열쇠 아님)
           key=$(node -e 'process.stdout.write(require("crypto").randomBytes(24).toString("base64url"))')
           nohup node scripts/atlas11/invite_dev.mjs --dir dist --port 8826 --owner-key "$key" >/tmp/dev.log 2>&1 &
@@ -115,7 +167,7 @@ jobs:
             code=$?
             set -e
           fi
-          echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 )),\"mode\":\"$mode\",\"sha\":\"$GITHUB_SHA\"${BUILD_S:+,\"build\":$BUILD_S}}" > "out/$n.exit.json"
+          echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 )),\"mode\":\"$mode\",\"sha\":\"$GITHUB_SHA\"${BUILD_S:+,\"build\":$BUILD_S}${DATA:+,\"data\":\"$DATA\"}}" > "out/$n.exit.json"
           tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"
           echo "끝 코드 $code · $(cat "out/$n.exit.json")"
       - uses: actions/upload-artifact@v4
@@ -133,8 +185,17 @@ jobs:
       PLAN: ${{ needs.plan.outputs.list }}
       T0: ${{ needs.plan.outputs.t0 }}
       REF: ${{ github.ref_name }}
+      DATA_SRC: ${{ needs.plan.outputs.data }}
+      DATA_ASOF: ${{ needs.plan.outputs.asof }}
+      DATA_BUILT: ${{ needs.plan.outputs.built }}
     steps:
       - uses: actions/checkout@v4
+        with: # 합치는 셈(scripts/atlas11/next) · 이름 한 곳(site/next/brand.js) · 결과 폴더만 받음 — 저장소 전체(1.4GB)를 받으면 25초
+          sparse-checkout: |
+            scripts/atlas11/next
+            site/next
+            reports/atlas11/probe
+          filter: blob:none
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -162,6 +223,7 @@ jobs:
               const b = ex.map(x => x.build).filter(v => v != null);
               const out = {name: "en", code: mc === 0 && ex.every(x => x.code === 0) ? 0 : 1, seconds: Math.max(0, ...ex.map(x => x.seconds || 0)), shards: n, codes: ex.map(x => x.code), shardSeconds: ex.map(x => x.seconds || 0)};
               if (ex[0] && ex[0].mode) { out.mode = ex[0].mode; out.sha = ex[0].sha; }
+              const ds = [...new Set(ex.map(x => x.data).filter(Boolean))]; if (ds.length) out.data = ds.join(" | ");
               if (b.length) out.build = Math.max(...b);
               fs.writeFileSync("art/en.exit.json", JSON.stringify(out) + "\n");
               fs.writeFileSync("art/en.tail.txt", "합침: " + merged.slice(-1500) + "\n" + tails.join("\n") + "\n");
@@ -192,6 +254,7 @@ jobs:
               const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).sort().map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
               const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: local ? "http://127.0.0.1:8826" : "https://aaa7377.com", mode: local ? "local" : "live",
                 ref: process.env.REF, sha: process.env.GITHUB_SHA, run: Number(process.env.GITHUB_RUN_ID), wallSeconds: t0 ? Math.round(Date.now() / 1000) - t0 : null,
+                ...(local ? {data: process.env.DATA_SRC === "live" ? {from: "live", asOf: process.env.DATA_ASOF, built: process.env.DATA_BUILT} : {from: "stored"}} : {}),
                 pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
               fs.writeFileSync(d + "/summary.json", JSON.stringify(sum, null, 1) + "\n"); console.log(JSON.stringify(sum));'
             git add -f "$dir"
