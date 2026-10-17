@@ -207,8 +207,10 @@ await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 
       bird: img ? (q => [Math.round(q.top), Math.round(q.bottom), innerHeight])(img.getBoundingClientRect()) : null}; }); // 그림이 첫 화면 안(틀림 장부 45)
   await page.waitForTimeout(Math.max(0, 2700 - (Date.now() - t0))); const i1 = await look(); await shot('p27-hello-intro');
   await page.waitForTimeout(Math.max(0, 4000 - (Date.now() - t0))); const i4 = await look(); // 홍표 5초 — 4초에도 홍표 그대로 · 글은 아직(4.2초에 제자리로 날아감)
-  await page.waitForTimeout(Math.max(0, 8200 - (Date.now() - t0))); const i2 = await look(); await shot('p28-hello-text'); // 5초에 글 쓰기 시작 · 7.4초쯤 다 씀
-  out.helloIntro = {i1, i4: {intro: i4.intro, shown: i4.shown, bub: i4.bub.length}, i2: {intro: i2.intro, shown: i2.shown, ml: i2.ml},
+  await page.waitForTimeout(Math.max(0, 8200 - (Date.now() - t0))); // 5초에 글 쓰기 시작 · 7.4초쯤 다 씀
+  await page.waitForFunction(() => { const a = document.querySelector('#view a.m4-letter'), ls = [...(a?.querySelectorAll('.hml') ?? [])]; return !!a && !a.classList.contains('intro') && ls.length > 0 && ls.every(x => getComputedStyle(x).visibility === 'visible' && +getComputedStyle(x).opacity > 0.95); }, null, {timeout: 15000}).catch(() => {}); // 실행기가 느린 날 — 글이 다 써질 때까지 15초 안(2026-10-17 20:3x 끝 줄이 아직 숨어 걸린 일 · 숨은 줄은 innerText 에 안 잡힘)
+  const i2 = await look(); await shot('p28-hello-text');
+  out.helloIntro = {i1, i4: {intro: i4.intro, shown: i4.shown, bub: i4.bub.length}, i2: {intro: i2.intro, shown: i2.shown, ml: i2.ml, first: i2.msg.split('\n')[0], last: i2.msg.includes(LAST)},
     ok: i1.intro && i1.img && i1.bub.length === 3 && i1.bub.every(([t, o]) => t === NEW_NAME + '!' && o > 0.9) && !!i1.bird && i1.bird[0] >= 50 && i1.bird[1] <= i1.bird[2] - 50 && !i1.shown && i4.intro && !i4.shown && i4.bub.length === 3 && i4.bub.every(([, o]) => o > 0.9)
       && !i2.intro && i2.shown && i2.ml > 0.95 && i2.msg.split('\n')[0] === LETTER_TITLE && i2.msg.includes(LAST)};
   if (!out.helloIntro.ok) out.errors.push('여는 홍표: ' + JSON.stringify(out.helloIntro).slice(0, 300));
