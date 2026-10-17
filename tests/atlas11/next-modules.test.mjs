@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {OLD_NAME_RE, jsStrings, selfTest as renameSelfTest} from '../../scripts/atlas11/next/rename.mjs';
+import {BRAND} from '../../site/next/brand.js';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const NEXT = path.join(ROOT, 'site/next'), CHK = path.join(ROOT, 'scripts/atlas11/next');
 const app = fs.readFileSync(path.join(NEXT, 'app.js'), 'utf8');
@@ -21,13 +22,29 @@ const js = fs.readdirSync(NEXT).filter(f => f.endsWith('.js')), css = fs.readdir
 const src = f => fs.readFileSync(path.join(NEXT, f), 'utf8');
 const code = s => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/[^\n]*/g, '$1'); // 풀이 글은 빼고 셈
 
+/** 쪽 → 맞대는 검사 파일 — 다섯 쪽(up · time · info · x · talk)은 한 파일 check_misc · 고도리 한 장 명령문(2026-10-17 17:54)의 why · gdr 은 제 파일 · 나머지는 check_<이름> */
+const CHECK_OF = {up: 'check_misc.mjs', time: 'check_misc.mjs', info: 'check_misc.mjs', x: 'check_misc.mjs', talk: 'check_misc.mjs', why: 'check_why.mjs', gdr: 'check_gdr.mjs'};
+const checkOf = k => CHECK_OF[k] ?? `check_${k}.mjs`;
 test('① READY 쪽마다 모듈 · 모양 · 맞대는 검사', () => {
   for (const k of READY) {
     assert.ok(fs.existsSync(path.join(NEXT, `p-${k}.js`)), `p-${k}.js 없음`);
     assert.ok(fs.existsSync(path.join(NEXT, `p-${k}.css`)), `p-${k}.css 없음`);
     assert.match(src(`p-${k}.js`), /export (async )?function render\s*\(/, `p-${k}.js 가 render 를 내보내지 않음`);
-    const chk = ['up', 'time', 'info', 'x', 'talk'].includes(k) ? 'check_misc.mjs' : `check_${k}.mjs`;
-    assert.ok(fs.existsSync(path.join(CHK, chk)), `${k} 맞대는 검사 ${chk} 없음`);
+    assert.ok(fs.existsSync(path.join(CHK, checkOf(k))), `${k} 맞대는 검사 ${checkOf(k)} 없음`);
+  }
+  // 질문 열한 개(why) · 고도리 칸(gdr) — 제 검사 파일이 그 길을 열고(첫 화면 #/ 도) · 다른 쪽 검사와 같은 꼴(--base · --pw · --out · --all · 실패면 끝 코드 1) ·
+  // 이름은 rename.mjs(brand.js 한 곳)에서 읽고 따옴표 글에 이름을 박지 않음(규칙 76) · 질문 · 격언 기준은 사장님 원문(brief.md)
+  for (const [k, route] of [['why', '#/why'], ['gdr', '#/gdr']]) {
+    assert.ok(READY.includes(k), `READY 에 ${k} 없음`);
+    assert.equal(checkOf(k), `check_${k}.mjs`, `${k} 는 제 검사 파일`);
+    const f = path.join(CHK, checkOf(k)), s = fs.readFileSync(f, 'utf8'), strs = jsStrings(s).map(x => x.s);
+    for (const h of [route, '#/']) assert.ok(strs.includes(h), `${checkOf(k)} 가 ${h} 를 열지 않음`);
+    for (const o of ['--base', '--pw', '--out', '--all']) assert.ok(strs.includes(o), `${checkOf(k)} 에 ${o} 없음`);
+    assert.match(s, /process\.exit\(1\)/, `${checkOf(k)} 실패 끝 코드 1 없음`);
+    assert.match(s, /import \{[^}]*\bNEW_NAME\b[^}]*\} from '\.\/rename\.mjs'/, `${checkOf(k)} 가 이름을 rename.mjs 에서 읽지 않음`);
+    assert.ok(strs.some(x => x.includes('docs/design/godori-2026-10-17/brief.md')), `${checkOf(k)} 가 결정표(brief.md)를 읽지 않음`);
+    const named = jsStrings(s).filter(x => [BRAND.ko, BRAND.en, ...BRAND.was.flatMap(w => [w.ko, w.en])].some(n => x.s.includes(n)));
+    assert.deepEqual(named.map(x => `${x.line} 「${x.s.slice(0, 60)}」`), [], `${checkOf(k)} 따옴표 글에 이름을 박음(rename.mjs NEW_NAME 을 쓸 것)`);
   }
 });
 

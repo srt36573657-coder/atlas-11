@@ -1,0 +1,46 @@
+/* 고도리 — 친구야, 왜 사?(질문 열한 개 · p-why.js) · 색 🟢 0점 🟡 1점 🔴 2점(사장님 명령 색 — 값 오름 · 내림 색과 다른 칸에서만 씀) */
+.wy { margin: 12px 16px 18px; padding: 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--hair2, #272B34); }
+.wy.page { margin-top: 16px; }
+.wy-head { display: flex; gap: 12px; align-items: center; }
+.wy-head img { flex: none; width: 40px; height: 40px; }
+.wy-h { margin: 0; font-size: 25px; line-height: 1.25; }
+.wy-sub { margin: 2px 0 0; font-size: 17px; color: var(--sub); }
+.wy-step { margin: 14px 0 0; font-size: 17px; color: var(--mute); }
+.wy-q { margin: 4px 0 12px; font-size: 24px; line-height: 1.3; }
+.wy-opts { display: grid; gap: 10px; }
+.wy-opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 19px; text-align: left; cursor: pointer; }
+.wy-opt.on { border-color: var(--ink); background: var(--card3); }
+.wy-opt:focus-visible, .wy-next:focus-visible, .wy-back:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.wy-dot { flex: none; width: 18px; height: 18px; border-radius: 50%; }
+.wy-g { background: #34C759; } .wy-y { background: #FFCC00; } .wy-r { background: #FF3B30; }
+.wy-one { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 0; padding: 12px; border-radius: 14px; background: var(--card2); font-size: 18px; line-height: 1.45; }
+.wy-one img { flex: none; width: 28px; height: 28px; }
+.wy-say { margin: 10px 2px 0; font-size: 17px; color: var(--sub); }
+.wy-say q { quotes: '「' '」'; }
+.wy-sayk { color: var(--mute); }
+.wy-nav { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.wy-next, .wy-back { min-height: 48px; padding: 0 18px; border-radius: 999px; border: 0; font: inherit; font-size: 18px; cursor: pointer; }
+.wy-next { background: var(--ink); color: var(--bg); font-weight: 700; }
+.wy-back { background: var(--card2); color: var(--ink); }
+.wy-link { display: inline-flex; align-items: center; min-height: 48px; padding: 0 6px; font-size: 17px; color: var(--sub); }
+.wy-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.wy-res { margin-top: 12px; }
+.wy-score { margin: 0; font-size: 20px; }
+.wy-score b { font-size: 40px; line-height: 1; }
+.wy-reds { color: var(--sub); font-size: 17px; }
+.wy-verdict { display: flex; gap: 10px; align-items: center; margin: 10px 0 12px; font-size: 22px; }
+.wy-verdict img { flex: none; width: 32px; height: 32px; }
+.wy-vg b { color: #34C759; } .wy-vy b { color: #FFCC00; } .wy-vr b { color: #FF6B60; }
+span.wy-vg { color: #34C759; } span.wy-vy { color: #FFCC00; } span.wy-vr { color: #FF6B60; }
+.wy-bars { display: grid; gap: 8px; }
+.wy-bar { display: grid; grid-template-columns: 3.2em 1fr auto; gap: 10px; align-items: center; font-size: 17px; }
+.wy-track { height: 12px; border-radius: 999px; background: var(--card3); overflow: hidden; }
+.wy-fill { display: block; height: 100%; border-radius: 999px; }
+.wy-fill.wy-g { background: #34C759; } .wy-fill.wy-y { background: #FFCC00; } .wy-fill.wy-r { background: #FF3B30; }
+.wy-bars.sm .wy-track { height: 8px; }
+.wy-note { margin: 10px 0 0; font-size: 17px; color: var(--sub); }
+.wy-me { margin: 8px 0 16px; }
+.wy-rec { margin: 8px 16px; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair2, #272B34); }
+.wy-rh { margin: 0 0 8px; font-size: 17px; }
+.wy.page ~ .safe { font-size: 17px; }
+html.en .wy-say q { quotes: '“' '”'; }
