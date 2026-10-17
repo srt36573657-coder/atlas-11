@@ -4,3 +4,7 @@
 {"job":"일꾼 F 다섯 문 따로 세기(첫 판 · 61칸 다름)","start":"2026-10-17T13:11:55.000Z","end":"2026-10-17T13:40:59.000Z","seconds":1744,"files":["scripts/atlas11/next/gdr/verify.py"]}
 {"job":"일꾼 E 빈 값 61칸 ? 로","start":"2026-10-17T13:42:30.000Z","end":"2026-10-17T13:48:37.000Z","seconds":367}
 {"job":"일꾼 F 다시 셈(틀림 0)","start":"2026-10-17T13:48:37.000Z","end":"2026-10-17T13:49:43.000Z","seconds":66}
+{"job":"일꾼 B 매매일지","start":"2026-10-17T13:11:19.000Z","end":"2026-10-17T13:53:45.000Z","seconds":2546,"files":["site/next/p-why.js","site/next/p-why.css","scripts/atlas11/next/check_why.mjs"]}
+{"job":"일꾼 C 보내기 글상자 · 쓰지 않을 말 한 곳","start":"2026-10-17T13:11:34.000Z","end":"2026-10-17T13:56:23.000Z","seconds":2689,"files":["site/next/p-share.js","site/next/words.js","scripts/atlas11/next/check_share.mjs"]}
+{"job":"일꾼 D 보유종목 점검 · 고도리 칸 안전","start":"2026-10-17T13:11:45.000Z","end":"2026-10-17T13:53:46.000Z","seconds":2521,"files":["site/next/p-hold.js","site/next/p-gdr.js","scripts/atlas11/next/check_hold.mjs"]}
+{"job": "합치기 · 시험 22개 · 가지 godori-2110 올림", "start": "2026-10-17T13:58:30.000Z", "end": "2026-10-17T14:01:14.000Z", "seconds": 164, "note": "끝은 가지를 올린 뒤 이 줄을 적은 때"}
