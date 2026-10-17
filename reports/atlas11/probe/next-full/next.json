@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-17T11:41:05.032Z",
+ "at": "2026-10-17T12:26:46.635Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "ready": [
@@ -29,7 +29,7 @@
  "oldNameAllow": [
   "아틀라스링크"
  ],
- "seconds": 452,
+ "seconds": 137,
  "counts": {
   "고리": 8953,
   "화면": 123,

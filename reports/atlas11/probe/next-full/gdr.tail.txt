@@ -1,5 +1,5 @@
 {
- "sec": 14,
+ "sec": 12,
  "picks": 3,
  "counts": {
   "fail": 1,
