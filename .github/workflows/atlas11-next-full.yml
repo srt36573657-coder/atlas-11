@@ -60,15 +60,21 @@ jobs:
           case "$NS" in ''|*[!0-9]*) NS=6 ;; esac
           if [ "$NS" -lt 1 ] || [ "$NS" -gt 12 ]; then NS=6; fi
           all=$(ls scripts/atlas11/next/ | sed -n 's/^check_\([a-z0-9]*\)\.mjs$/\1/p' | tr '\n' ' ')
-          list=""
+          # 짧은 쪽(2026-10-17 실측 각 1분 안팎)은 한 실행기에서 차례로 — 깃허브 동시 작업 20개 한도에 여유(쪽마다 따로면 20대가 꽉 차 둘이 줄 섬)
+          SMALL=" cond gdr misc surge why "
+          list=""; small=""
           for n in next en $all; do
             if [ -z "$WANT" ] || echo ",$WANT," | grep -q ",$n,"; then
-              if [ "$n" = en ]; then for k in $(seq 1 "$NS"); do list="$list\"en$k\","; done; else list="$list\"$n\","; fi
+              if [ "$n" = en ]; then for k in $(seq 1 "$NS"); do list="$list{\"job\":\"en$k\",\"pages\":\"en$k\"},"; done
+              elif [ "${SMALL#* $n }" != "$SMALL" ]; then small="$small $n"
+              else list="$list{\"job\":\"$n\",\"pages\":\"$n\"},"; fi
             fi
           done
+          small="${small# }"
+          if [ -n "$small" ]; then if [ "$small" = "${small% *}" ]; then list="$list{\"job\":\"$small\",\"pages\":\"$small\"},"; else list="$list{\"job\":\"small\",\"pages\":\"$small\"},"; fi; fi
           echo "list=[${list%,}]" >> "$GITHUB_OUTPUT"
           echo "shards=$NS" >> "$GITHUB_OUTPUT"
-          echo "쪽 [${list%,}] · 영어 $NS 대 · local=${{ inputs.local }}"
+          echo "일 [${list%,}] · 영어 $NS 대 · local=${{ inputs.local }}"
       - uses: actions/setup-node@v4
         if: ${{ inputs.local && inputs.data != 'stored' }}
         with:
@@ -129,16 +135,18 @@ jobs:
           retention-days: 1
           if-no-files-found: error
   page:
+    name: page (${{ matrix.job }})
     needs: plan
     runs-on: ubuntu-latest
     timeout-minutes: 75
     strategy:
       fail-fast: false
       matrix:
-        name: ${{ fromJSON(needs.plan.outputs.list) }}
+        include: ${{ fromJSON(needs.plan.outputs.list) }}
     env:
       LOCAL: ${{ inputs.local && '1' || '0' }}
       SHARDS: ${{ needs.plan.outputs.shards }}
+      PAGES: ${{ matrix.pages }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -180,29 +188,31 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           mkdir -p out
-          n="${{ matrix.name }}"; t0=$(date +%s)
           base=https://aaa7377.com; mode=live
           if [ "$LOCAL" = 1 ]; then base=http://127.0.0.1:8826; mode=local; fi
-          case "$n" in
-            next) f=next_check.mjs; extra="" ;;
-            en[0-9]*) f=next_en_check.mjs; extra="--modules --dev 0 --all --shard ${n#en}/$SHARDS" ;;
-            *) f="check_$n.mjs"; extra="--all" ;;
-          esac
-          if [ "$LOCAL" = 1 ] && ! curl -fs -o /dev/null "$base/next/"; then
-            code=98; { echo "시험 서버가 안 떴음 — 묶기 · 띄우기 실패"; tail -c 2500 /tmp/pack.log 2>/dev/null; tail -c 1200 /tmp/dev.log 2>/dev/null; } > "out/$n.log"
-          else
-            set +e
-            PW_DIR=/tmp/pw/ timeout 4200 node "scripts/atlas11/next/$f" --base "$base" --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
-            code=$?
-            set -e
-          fi
-          echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 )),\"mode\":\"$mode\",\"sha\":\"$GITHUB_SHA\"${BUILD_S:+,\"build\":$BUILD_S}${DATA:+,\"data\":\"$DATA\"}}" > "out/$n.exit.json"
-          tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"
-          echo "끝 코드 $code · $(cat "out/$n.exit.json")"
+          for n in $PAGES; do # 쪽 하나씩(짧은 쪽 묶음은 차례로) · 쪽마다 결과 셋(json · exit.json · tail.txt)
+            t0=$(date +%s)
+            case "$n" in
+              next) f=next_check.mjs; extra="" ;;
+              en[0-9]*) f=next_en_check.mjs; extra="--modules --dev 0 --all --shard ${n#en}/$SHARDS" ;;
+              *) f="check_$n.mjs"; extra="--all" ;;
+            esac
+            if [ "$LOCAL" = 1 ] && ! curl -fs -o /dev/null "$base/next/"; then
+              code=98; { echo "시험 서버가 안 떴음 — 묶기 · 띄우기 실패"; tail -c 2500 /tmp/pack.log 2>/dev/null; tail -c 1200 /tmp/dev.log 2>/dev/null; } > "out/$n.log"
+            else
+              set +e
+              PW_DIR=/tmp/pw/ timeout 4200 node "scripts/atlas11/next/$f" --base "$base" --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
+              code=$?
+              set -e
+            fi
+            echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 )),\"mode\":\"$mode\",\"sha\":\"$GITHUB_SHA\"${BUILD_S:+,\"build\":$BUILD_S}${DATA:+,\"data\":\"$DATA\"}}" > "out/$n.exit.json"
+            tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"
+            echo "끝 코드 $code · $(cat "out/$n.exit.json")"
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: next-full-${{ matrix.name }}
+          name: next-full-${{ matrix.job }}
           path: out/
   gather:
     needs: [plan, page]
@@ -264,7 +274,7 @@ jobs:
           fi
           # 계획했는데 결과가 없는 쪽(작업이 끝나지 못함)은 끝 코드 99 로 적음 — 요약에서 조용히 빠지지 않게
           node -e '
-            const fs = require("fs"), plan = JSON.parse(process.env.PLAN || "[]");
+            const fs = require("fs"), plan = JSON.parse(process.env.PLAN || "[]").flatMap(x => String(x.pages ?? x).split(" ").filter(Boolean));
             for (const nm of new Set(plan.map(x => (/^en\d+$/.test(x) ? "en" : x)))) {
               const f = `art/${nm}.exit.json`;
               if (!fs.existsSync(f)) { fs.writeFileSync(f, JSON.stringify({name: nm, code: 99, seconds: 0, why: "결과 없음 — 작업이 끝나지 못함"}) + "\n"); console.log("결과 없음 " + nm); }

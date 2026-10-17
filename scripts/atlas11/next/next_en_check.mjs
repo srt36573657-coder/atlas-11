@@ -130,7 +130,7 @@ if (MODULES && on('mod')) {
    · @newwin = 새 창 둘(자료 못 받음) · #/shorts 를 맡은 몫이 쇼츠 장 수를 세어 #/shorts/<n> 을 바로 뒤에 덧붙임(장 수는 화면을 열어야 앎)
    가름: 무거운 묶음을 끝 몫부터 먼저 두고(@tail → n 번 · @newwin → n−1 번), 길은 몫마다 남은 무게에 비례해 처음부터 끝까지 고르게 섞어 나눔
    (부드러운 가중 돌림 · 정수 셈 · 같으면 앞 몫 — 어느 기계에서나 같은 가름) · 무게 = 길 하나 1 · 묶음은 아래 UNIT_W(깃허브 실측 secs 로 맞춤) */
-const UNIT_W = {'@tail': 300, '@newwin': 80};
+const UNIT_W = {'@tail': 80, '@newwin': 15}; // 2026-10-17 깃허브 실측(실행기 안 시험 서버): 길 하나 0.17초 · @tail 12초(누르기 7.2 · 바꿔치기 4.9) · @newwin 2초
 const units = [];
 { let lastR = null; for (const x of routes) { if (x.r === lastR) continue; lastR = x.r; units.push({id: x.r, ...x}); } }
 if (on('act') || (EDGE && on('edge')) || on('grammar')) units.push({id: '@tail'});
