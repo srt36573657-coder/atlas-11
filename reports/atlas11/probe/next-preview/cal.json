@@ -5,13 +5,13 @@
  "wide": "all",
  "took_s": 94,
  "time": {
-  "old": 19.6,
-  "new": 65.5,
+  "old": 19.7,
+  "new": 65.7,
   "wall": 93.7,
   "opensOld": 938,
   "opensNew": 2287,
-  "oldPct": 20.9,
-  "oldShare": 23
+  "oldPct": 21.1,
+  "oldShare": 23.1
  },
  "net": {
   "req": 4,

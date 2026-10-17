@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-range-check-1",
- "at": "2026-10-17T14:18:10.275Z",
+ "at": "2026-10-17T14:31:05.006Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-16",
  "rangeAsOf": "2026-10-16",
@@ -47,13 +47,13 @@
  },
  "seconds": 137,
  "time": {
-  "old": 62.6,
-  "new": 72.3,
-  "wall": 137.3,
+  "old": 60,
+  "new": 74.9,
+  "wall": 137.2,
   "opensOld": 5130,
   "opensNew": 7846,
-  "oldPct": 45.6,
-  "oldShare": 46.4
+  "oldPct": 43.7,
+  "oldShare": 44.5
  },
  "net": {
   "req": 8,
