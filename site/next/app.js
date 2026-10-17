@@ -303,10 +303,17 @@ function shelf(fs) {
   return tiles.length ? [h('h2', {class: 'sec', text: '쇼츠 · 30초 시장'}), h('div', {class: 'shelf'}, tiles)] : [];
 }
 
+/** 첫 화면 가운데 — 「친구야, 왜 사?」 질문 열한 개(p-why) + 고도리 칸(p-gdr) · 모듈을 못 받으면 그 칸만 「?」 */
+async function godoriHome() {
+  try {
+    const [W, P, G] = await Promise.all([mod('why'), mod('gdr'), gdr()]);
+    return [W.whyCard(G), P.gdrSection(G)];
+  } catch (e) { console.error(e); return [h('p', {class: 'empty', text: '? 질문 칸을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})]; }
+}
 async function vHome(chip) {
   if (!CHIPS.some(c => c[0] === chip)) chip = 'all';
   await Promise.all([need('core'), need('mkt'), need('home'), (chip === 'all' || chip === 'surge') ? need('surge') : null, (chip === 'all' || chip === 'lead') ? need('cond') : null]);
-  const X = ix(); if (!X) return {title: '홈', nodes: [chip === 'all' ? h('div', {class: 'lw'}, m4letter()) : null, chipsBar(chip), ...noData()].filter(Boolean)};
+  const X = ix(); if (!X) return {title: '홈', nodes: [...(chip === 'all' ? await godoriHome() : []), chipsBar(chip), ...noData()]};
   const core = X.core, nodes = chip === 'all' ? [] : [chipsBar(chip)], seen = new Set();
   const add = (key, el) => { if (!el || seen.has(key)) return; seen.add(key); nodes.push(el); };
   const rise = core.rise?.list || [], groups = [...(core.groups || [])].sort((a, b) => b.chg - a.chg);
@@ -318,7 +325,7 @@ async function vHome(chip) {
     nodes.push(h('a', {class: 'tk-entry', href: oldOr('talk', '#/talk')}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'})));
     const H = D.home, top = H && (idxOk(H.idx?.KOSPI) || idxOk(H.idx?.KOSDAQ)) ? idxAlerts(H) : [];
     if (top.length) nodes.push(h('div', {class: 'm4-top'}, ...top));
-    nodes.push(h('div', {class: 'lw'}, m4letter()), chipsBar(chip));
+    nodes.push(...await godoriHome(), chipsBar(chip)); // 첫 화면 가운데 = 질문 열한 개 + 고도리 칸(2026-10-17 17:54 명령 1 · 2 — 사장님 편지는 「나」 칸으로)
     add('idx', idxCard('KOSPI'));
     if (H && (H.idx?.KOSPI || H.idx?.KOSDAQ)) {
       const w = whenOf(H, 'idx', (H.idx?.KOSPI ?? H.idx?.KOSDAQ)?.live);
@@ -535,7 +542,9 @@ async function vSub() {
 async function vMe() {
   await Promise.all([need('core'), need('mkt')]);
   const X = ix(), hist = store.get(K_HIST, []).filter(c => X?.co?.[c]), lat = laters().filter(c => X?.co?.[c]), ns = subs().length;
-  const nodes = [h('div', {class: 'me'}, h('img', {alt: '', src: '/media/makbi-icon.svg'}), h('div', {}, h('b', {text: '내 기록'}), h('small', {text: '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.'})))];
+  const nodes = [h('div', {class: 'lw'}, m4letter()), // 사장님 편지(격언 열 가지 · 친구 소개 · 상품권) — 2026-10-17 17:54 명령 1 「첫 화면 편지를 「나」 칸으로 옮겨라」
+    h('div', {class: 'me'}, h('img', {alt: '', src: '/media/makbi-icon.svg'}), h('div', {}, h('b', {text: '내 기록'}), h('small', {text: '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.'})))];
+  try { const W = await mod('why'); nodes.push(W.meRecords()); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 왜 사? 기록을 그리지 못했어요.'})); } // 명령 13 — 날짜와 함께 쌓고 한 달 뒤 결과 · 지우지 않음
   nodes.push(h('h2', {class: 'sec', text: '본 기록'}));
   if (hist.length) nodes.push(h('div', {class: 'row'}, hist.slice(0, 12).map(c => h('a', {href: '#/w/' + c}, thumb(X.co[c].l, '20일', {x: c20(X.co[c])}), h('b', {text: X.co[c].n})))));
   else nodes.push(h('p', {class: 'note', text: '아직 본 회사가 없어요. 홈에서 카드를 눌러 보세요.'}));
@@ -544,6 +553,8 @@ async function vMe() {
   else nodes.push(h('p', {class: 'note', text: '보는 화면에서 「나중에 볼 것 담기」를 누르면 여기 모여요.'}));
   nodes.push(h('h2', {class: 'sec', text: '바로 가기'}), h('div', {class: 'lst'},
     h('a', {href: '#/sub'}, '구독한 채널', h('span', {text: ns + '개 ›'})),
+    h('a', {href: '#/why'}, '왜 사? 열한 질문', h('span', {text: '›'})),
+    h('a', {href: '#/gdr'}, '고도리 칸 · 어떻게 골랐나', h('span', {text: '›'})),
     h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})),
     h('a', {href: oldOr('today', '#/today')}, '오늘 시장 · 지수 · 사고팔기 · 미국', h('span', {text: '›'})),
     h('a', {href: oldOr('surge', '#/surge')}, '급등 다섯 칸', h('span', {text: '›'})),
@@ -621,7 +632,7 @@ async function vFind(a) {
 /* 쪽 모듈 — 지금 아틀란스(/atlas/)의 쪽을 새 화면으로 옮긴 것(2026-10-17 04:23 「에이전트 총 동원해」)
    /next/p-<이름>.js 는 render(arg) → {title, nodes} 를 내보냄 · 모양은 /next/p-<이름>.css · 도구는 globalThis.NX
    READY 에 든 쪽만 새 화면으로 열고, 나머지는 지금 아틀란스로 넘김 · ?dev=1 이면 모든 모듈을 엶(옮기는 동안 시험) */
-const READY = new Set(['co', 'past', 'rivals', 'grow', 'range', 'chx', 'surge', 'cond', 'talk', 'up', 'time', 'info', 'x', 'cal', 'today']); // 옮긴 쪽(2026-10-17 · 쪽마다 check_<이름>.mjs 실패 0)
+const READY = new Set(['co', 'past', 'rivals', 'grow', 'range', 'chx', 'surge', 'cond', 'talk', 'up', 'time', 'info', 'x', 'cal', 'today', 'why', 'gdr']); // why · gdr = 고도리 한 장 명령문(2026-10-17 17:54) // 옮긴 쪽(2026-10-17 · 쪽마다 check_<이름>.mjs 실패 0)
 const DEV = (() => { try { return new URLSearchParams(location.search).get('dev') === '1'; } catch { return false; } })();
 const ready = k => DEV || READY.has(k);
 const oldOr = (k, hash) => (ready(k) ? hash : '/atlas/' + hash); // 새 화면이 있으면 새 화면 · 아니면 지금 아틀란스
@@ -633,20 +644,29 @@ function getJson(name) {
   JC[name] = {p, v: undefined, t: Date.now()}; return p;
 }
 const MODS = {};
-async function page(name, arg) {
+/** 쪽 모듈 하나(모양 .css 와 함께 한 번만 받음) */
+function mod(name) {
   if (!MODS[name]) {
     const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/p-' + name + '.css'; document.head.append(l);
     MODS[name] = import('/next/p-' + name + '.js');
   }
-  const m = await MODS[name];
-  return m.render(arg);
+  return MODS[name];
+}
+async function page(name, arg) { const m = await mod(name); return m.render(arg); }
+/** 고도리 칸 자료(/next/data/gdr.json · gdr-v1 · 사장님 2026-10-17 17:54 「고도리 만들기 · 한 장 명령문」) — 못 받으면 null(15초 뒤 다시) */
+let GDR = null, gdrFail = 0, gdrP = null;
+function gdr() {
+  if (GDR) return Promise.resolve(GDR);
+  if (gdrFail && Date.now() - gdrFail < 15000) return Promise.resolve(null);
+  if (!gdrP) gdrP = fetch('/next/data/gdr.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null).then(j => { gdrP = null; if (j && Array.isArray(j.picks)) GDR = j; else gdrFail = Date.now(); return GDR; });
+  return gdrP;
 }
 globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, dayOf, c20, enc, first, odd, need, D, ix, condOf, dateAt, lineSvg, thumb, numThumb, card, toast, share, absUrl,
-  subBtn, isSub, toggleSub, pushHist, laters, jo, hasB, a1, NB, kstNow, dayK, ampm, isDay, isTime, idxOk, gauge, getJson, RM, player, ready, page, chaps, chapNext, noData};
+  subBtn, isSub, toggleSub, pushHist, laters, jo, hasB, a1, NB, kstNow, dayK, ampm, isDay, isTime, idxOk, gauge, getJson, RM, player, ready, page, chaps, chapNext, noData, gdr, mod};
 /* 길 — 화면마다 새 칸 · 늦게 끝난 앞 화면은 버림 · 돌아오면 그 자리 */
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', sub: 'sub', me: 'me'};
-const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
+const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today', 'why', 'gdr']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
 let seq = 0, curHash = null;
 const scrollMem = new Map();
 function parse(hash) {

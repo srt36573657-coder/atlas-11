@@ -1,0 +1,409 @@
+{
+ "schema": "godori-verify-1",
+ "at": "2026-10-17T11:00:18Z",
+ "asOf": "2026-10-13",
+ "version": "gdr-v1",
+ "ok": true,
+ "mismatches": [],
+ "invariants": {
+  "sumW_plus_cash_eq_100": {
+   "ok": true,
+   "detail": {
+    "sumW": 9.0,
+    "cash": 91.0
+   }
+  },
+  "industry_sum_le_9": {
+   "ok": true,
+   "detail": {
+    "2차전지 장비": 3,
+    "디스플레이 장비": 6
+   }
+  },
+  "inds_eq_sum_of_picks": {
+   "ok": true
+  },
+  "per_industry_le_3": {
+   "ok": true,
+   "detail": {
+    "2차전지 장비": 1,
+    "디스플레이 장비": 2
+   }
+  },
+  "picks_le_36": {
+   "ok": true,
+   "detail": 3
+  },
+  "no_duplicate_codes": {
+   "ok": true
+  },
+  "picked_eq_len": {
+   "ok": true,
+   "detail": {
+    "picked": 3,
+    "len": 3
+   }
+  },
+  "self_consistent_no_w_sell_half_saying": {
+   "ok": true
+  },
+  "picks_pass_all_gates_in_my_recount": {
+   "ok": true
+  },
+  "no_unexplained_skip": {
+   "ok": true
+  },
+  "counts_add_up": {
+   "ok": true,
+   "detail": {
+    "companies": 2557,
+    "sum": 2557
+   }
+  },
+  "passAll_ge_picked": {
+   "ok": true,
+   "detail": {
+    "passAll": 3,
+    "picked": 3
+   }
+  }
+ },
+ "invariantsMine": {
+  "sumW_plus_cash_eq_100": {
+   "ok": true,
+   "detail": {
+    "sumW": 9.0,
+    "cash": 91.0
+   }
+  },
+  "industry_sum_le_9": {
+   "ok": true,
+   "detail": {
+    "2차전지 장비": 3,
+    "디스플레이 장비": 6
+   }
+  },
+  "inds_eq_sum_of_picks": {
+   "ok": true
+  },
+  "per_industry_le_3": {
+   "ok": true,
+   "detail": {
+    "2차전지 장비": 1,
+    "디스플레이 장비": 2
+   }
+  },
+  "picks_le_36": {
+   "ok": true,
+   "detail": 3
+  },
+  "no_duplicate_codes": {
+   "ok": true
+  },
+  "picked_eq_len": {
+   "ok": true,
+   "detail": {
+    "picked": 3,
+    "len": 3
+   }
+  },
+  "self_consistent_no_w_sell_half_saying": {
+   "ok": true
+  },
+  "picks_pass_all_gates_in_my_recount": {
+   "ok": true
+  },
+  "no_unexplained_skip": {
+   "ok": true
+  },
+  "counts_add_up": {
+   "ok": true,
+   "detail": {
+    "companies": 2557,
+    "sum": 2557
+   }
+  },
+  "passAll_ge_picked": {
+   "ok": true,
+   "detail": {
+    "passAll": 3,
+    "picked": 3
+   }
+  }
+ },
+ "counts_mine": {
+  "listed": 4307,
+  "companies": 2557,
+  "outThin": 1650,
+  "outThinQ": 6,
+  "outHalt": 1,
+  "managed": null,
+  "afterOut": 906,
+  "g1": 431,
+  "g2": 741,
+  "g3": 105,
+  "g4": 676,
+  "g5": 86,
+  "passAll": 3,
+  "picked": 3,
+  "cash": 91
+ },
+ "counts_theirs": {
+  "listed": 4307,
+  "companies": 2557,
+  "outThin": 1650,
+  "outThinQ": 6,
+  "outHalt": 1,
+  "managed": null,
+  "afterOut": 906,
+  "g1": 431,
+  "g2": 741,
+  "g3": 105,
+  "g4": 676,
+  "g5": 86,
+  "passAll": 3,
+  "picked": 3,
+  "cash": 91
+ },
+ "picks_mine": [
+  {
+   "no": 1,
+   "code": "259630",
+   "name": "엠플러스",
+   "ind": "2차전지 장비",
+   "w": 3,
+   "amt": 300000,
+   "price": 10190,
+   "sell": 9171,
+   "half": 12228,
+   "saying": 0,
+   "reason": "영업이익 101억 → 246억 · 석 달 +5.6% · 업종 돈 2.6배",
+   "g": {
+    "opPrev": 101,
+    "opLast": 246,
+    "opGrow": 1.4356,
+    "r60": 5.6,
+    "maxJump": 11.92,
+    "keep": 0.9541,
+    "low250x": 1.3251,
+    "indX": 2.6233,
+    "ind20": 2.56,
+    "tv20": 1105491364,
+    "r5": 0.49,
+    "quiet": 0.2685
+   }
+  },
+  {
+   "no": 2,
+   "code": "083500",
+   "name": "에프엔에스테크",
+   "ind": "디스플레이 장비",
+   "w": 3,
+   "amt": 300000,
+   "price": 15130,
+   "sell": 13617,
+   "half": 18156,
+   "saying": 1,
+   "reason": "영업이익 88억 → 104억 · 석 달 +10.4% · 업종 돈 1.3배",
+   "g": {
+    "opPrev": 88,
+    "opLast": 104,
+    "opGrow": 0.1818,
+    "r60": 10.36,
+    "maxJump": 14.29,
+    "keep": 0.8969,
+    "low250x": 1.5439,
+    "indX": 1.3188,
+    "ind20": 1.55,
+    "tv20": 1553654796,
+    "r5": 3.07,
+    "quiet": 0.4916
+   }
+  },
+  {
+   "no": 3,
+   "code": "078150",
+   "name": "HB테크놀러지",
+   "ind": "디스플레이 장비",
+   "w": 3,
+   "amt": 300000,
+   "price": 2240,
+   "sell": 2016,
+   "half": 2688,
+   "saying": 2,
+   "reason": "영업이익 -165억 → 62억 · 석 달 +16.2% · 업종 돈 1.3배",
+   "g": {
+    "opPrev": -165,
+    "opLast": 62,
+    "opGrow": null,
+    "r60": 16.24,
+    "maxJump": 14.55,
+    "keep": 0.9106,
+    "low250x": 1.3991,
+    "indX": 1.3188,
+    "ind20": 1.55,
+    "tv20": 4087593726,
+    "r5": -3.24,
+    "quiet": 0.2993
+   }
+  }
+ ],
+ "picks_theirs": [
+  "259630",
+  "083500",
+  "078150"
+ ],
+ "passAll_mine": [
+  {
+   "code": "259630",
+   "name": "엠플러스",
+   "ind": "2차전지 장비",
+   "opPrev": 101,
+   "opLast": 246,
+   "r60": 5.6
+  },
+  {
+   "code": "083500",
+   "name": "에프엔에스테크",
+   "ind": "디스플레이 장비",
+   "opPrev": 88,
+   "opLast": 104,
+   "r60": 10.36
+  },
+  {
+   "code": "078150",
+   "name": "HB테크놀러지",
+   "ind": "디스플레이 장비",
+   "opPrev": -165,
+   "opLast": 62,
+   "r60": 16.24
+  }
+ ],
+ "inputs": {
+  "mkt": {
+   "path": "site/atlas/data/mkt.json",
+   "asOf": "2026-10-13",
+   "sha256": "2e517e2ecd4429bf46ddca2d6c0ba837038e873739ffdbc9a2d256a8c3bddcd6"
+  },
+  "bundle": {
+   "path": "reports/atlas11/universe/2026-10-14-1209-to1013/bundle.json.gz",
+   "lastDate": "20261013",
+   "sha256": "0cf61ebde872cd380f4b5dacdf112b5f2193440446173f959ab5b6536389d061",
+   "tried": []
+  },
+  "co": "site/atlas/data/co",
+  "gdr": {
+   "path": "site/next/data/gdr.json",
+   "made": "2026-10-17T11:00:08.269Z",
+   "sha256": "727af48d4d9e5aae73ee68b4bd65eb615e03fea1f7f52a582f70d3c9f498c0a1",
+   "error": null
+  }
+ },
+ "calendar": {
+  "source": "모음 회사 일봉 날짜 모두(D 까지)",
+  "len": 1515,
+  "last250": [
+   "20250929",
+   "20261013"
+  ],
+  "daysJsonLast250EqMine": true,
+  "daysJsonAsOf": "2026-10-13"
+ },
+ "readings": [
+  "날: t = 거래일 달력에서 자료 날짜 D 의 자리 · 「n거래일 전」 = T[t − n] · 「최근 N거래일」 = T[t − N + 1 .. t] (gdr-data §2)",
+  "G2 그 앞 120거래일 = T[t − 139 .. t − 20] · G5 그 앞 60거래일 = T[t − 79 .. t − 20] (gdr-data §2)",
+  "n거래일 오름 = 종가[t] ÷ 종가[t − n] − 1 · G3 그 60거래일 = T[t − 59 .. t] 의 하루 오름 60개 · 가장 높은 종가는 그 60날 안 (gdr-data §2)",
+  "거래대금(날) = 그날 일봉 줄의 종가 × 거래량 · 줄이 없으면 「없음」 (gdr-data §1 · §3)",
+  "X1 최근 20날에 「없음」이 하나라도 있으면 「?」 → outThin 에 넣고 outThinQ 에도 셈 (gdr-data §3)",
+  "X2 최근 5날에 거래량 0 이거나 줄이 없는 날 · 또는 D 종가 없음 → 뺌 (gdr-data §3)",
+  "뺄 때 차례 X1 → X2 → X3 · 한 회사는 처음 걸린 하나에만 셈 (gdr-data §3)",
+  "G1 ~ G5 는 쓰는 값이 하나라도 없으면 그 문 탈락(창 안 종가 · 앞 120날 거래대금 · 업종 없음) (gdr-data §3)",
+  "G5 업종 하루 거래대금 = 그날 업종 회사들 거래대금 합(줄 없는 회사는 0) · 앞 60날 합 0 이면 탈락 · ind20 = 종가[t] · 종가[t − 20] 이 다 있는 회사들의 가운데 값(짝수면 가운데 둘 평균) (gdr-data §3)",
+  "앞 해 영업이익 ≤ 0 이면 opGrow = null · 차례는 비율 있는 곳 모두 뒤(그 안에서 r60 작은 → 번호) (gdr-data §4 · 표에 없는 곳)",
+  "g 숫자 꼴: 퍼센트(r60 · maxJump · ind20 · r5) 소수 둘째 · 비(opGrow · keep · low250x · indX · quiet) 소수 넷째 · tv20 원 정수 · 이유 줄 소수 한 자리는 반올림 전 값으로 (gdr-data §4)"
+ ],
+ "diag": {
+  "listedFromLists": 4307,
+  "listedFromStocks": 4307,
+  "notInBundle": [],
+  "rowsAfterAsOfDropped": 0,
+  "passAllWithOpPrevLE0": [
+   "078150"
+  ],
+  "opGrowReadingChangesPicks": false,
+  "opGrowLiteralPicks": null,
+  "outThinQ_codes": [
+   "0010S0",
+   "0035S0",
+   "0161M0",
+   "266690",
+   "468670",
+   "486510"
+  ],
+  "outHalt_codes": [
+   "215790"
+  ],
+  "industriesPassG5": [
+   "2차전지 장비",
+   "디스플레이 장비",
+   "반도체 검사·측정",
+   "반도체 부품",
+   "반도체 소재",
+   "통신장비",
+   "헬스케어 기술"
+  ]
+ },
+ "compareMode": {
+  "counts": "모든 칸 값 그대로(정수)",
+  "picks": "고른 곳 번호 차례 그대로 · 칸마다(no · w · price · sell · half · ind · saying · name · reason)",
+  "g": "opPrev · opLast 정수 그대로 · tv20 은 정수면 내 값을 정수로 반올림한 값과 그대로 · 나머지는 gdr-data §4 자리(퍼센트 둘째 · 비 넷째)로 반올림한 내 값(짝수 쪽 · 위쪽 · 소수 곱 꼴) 또는 반올림 안 한 내 값과 1e-6 상대 차 안",
+  "reason": "표 꼴 그대로 · 소수 한 자리는 정확한 값 짝수 쪽 반올림 또는 소수(float) format"
+ },
+ "stress": {
+  "ran": true,
+  "ok": true,
+  "companies": 91,
+  "counts_mine": {
+   "listed": 94,
+   "companies": 91,
+   "outThin": 9,
+   "outThinQ": 3,
+   "outHalt": 1,
+   "managed": null,
+   "afterOut": 81,
+   "g1": 77,
+   "g2": 77,
+   "g3": 69,
+   "g4": 79,
+   "g5": 76,
+   "passAll": 61,
+   "picked": 36,
+   "cash": 10
+  },
+  "counts_theirs": {
+   "listed": 94,
+   "companies": 91,
+   "outThin": 9,
+   "outThinQ": 3,
+   "outHalt": 1,
+   "managed": null,
+   "afterOut": 81,
+   "g1": 77,
+   "g2": 77,
+   "g3": 69,
+   "g4": 79,
+   "g5": 76,
+   "passAll": 61,
+   "picked": 36,
+   "cash": 10
+  },
+  "designCheck": {
+   "ok": true,
+   "bad": []
+  },
+  "mismatches": [],
+  "invariants": {},
+  "theirExtraPicks": {},
+  "dir": null
+ }
+}

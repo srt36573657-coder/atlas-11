@@ -29,7 +29,7 @@ export const FILES = [
 ].filter(f => fs.existsSync(path.join(ROOT, f)));
 
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const PART = ['이에요', '예요', '으로', '은', '는', '이', '가', '을', '를', '과', '와', '로', '아', '야'];
+const PART = ['이에요', '예요', '이라면', '라면', '이랑', '랑', '으로', '은', '는', '이', '가', '을', '를', '과', '와', '로', '아', '야']; // 긴 토씨 먼저
 const KO_RE = new RegExp(esc(FROM) + '(' + PART.join('|') + ')?', 'g');
 const EN_RE = FROM_EN ? new RegExp('\\b' + esc(FROM_EN) + '\\b', 'g') : null;
 /** 글 한 조각 바꾸기 — 돌려줌 [새 글, 바꾼 수] */
