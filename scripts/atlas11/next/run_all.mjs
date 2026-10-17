@@ -14,7 +14,7 @@ const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? proces
 const base = arg('--base', 'http://127.0.0.1:8826'), pw = arg('--pw', null), quick = process.argv.includes('--quick');
 const out = path.resolve(ROOT, arg('--out', 'reports/atlas11/verify/next-all-latest.json'));
 const dir = path.join(ROOT, 'scripts/atlas11/next');
-const files = (await fs.readdir(dir)).filter(f => /^check_[a-z0-9]+\.mjs$/.test(f)).sort();
+const files = (await fs.readdir(dir)).filter(f => /^check_[a-z0-9]+\.mjs$/.test(f) && f !== 'check_changed.mjs').sort(); // check_changed.mjs = 바뀐 쪽만 고르는 도구(쪽 검사 아님 — 여기서 부르면 검사를 두 번 돎)
 const jobs = [['modules', ['--test', path.join(ROOT, 'tests/atlas11/next-modules.test.mjs')]], ['next_check', ['next_check.mjs', '--base', base, ...(pw ? ['--pw', pw] : []), '--out', path.join(path.dirname(out), 'next-check-latest.json'), ...(quick ? ['--limit', '40'] : [])]],
   ...files.map(f => [f.slice(6, -4), [f, '--base', base, ...(pw ? ['--pw', pw] : []), ...(quick ? ['--limit', '40'] : ['--all'])]])];
 const run = (name, a) => new Promise(res => {

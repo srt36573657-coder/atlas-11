@@ -16,13 +16,16 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 import {fetchJSON, pool, isRemote, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {oldSnap, fileSha} from './oldsnap.mjs'; // 옛 쪽 기준값(--old-snap · --old-refresh — 옛 화면이 쓴 파일이 하나도 안 바뀌면 옛 쪽을 열지 않음 · 명령문 [1] 9 · 옛 쪽 때 79%)
+import {createHash} from 'node:crypto';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv, has = k => argv.includes(k), arg = (k, d) => { const i = argv.indexOf(k); return i > 0 && argv[i + 1] != null ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), OUT = arg('--out', null), ALL = has('--all'), LIMIT = Number(arg('--limit', '0')) || 0, NW = Number(arg('--widths', '10'));
 const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0), REMOTE = isRemote(base);
-const fail = (k, x) => { if (fails.length < 400) fails.push([k, String(x).slice(0, 300)]); counts.fail = (counts.fail || 0) + 1; };
+let oldFails = 0; // 옛 쪽 실패 수 — 0 일 때만 기준값을 새로 씀
+const fail = (k, x) => { if (fails.length < 400) fails.push([k, String(x).slice(0, 300)]); counts.fail = (counts.fail || 0) + 1; if (/^옛/.test(k) || /^옛/.test(String(x ?? ''))) oldFails++; };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 
 /* 자료 — 앱 코드를 쓰지 않고 따로 셈(같은 규칙: 반올림은 크기로 · 억 원 · 조 원) */
@@ -128,22 +131,29 @@ const strip = t => { let s = norm(t); for (let k = 0; k < 3; k++) s = s.replace(
 const NUM = /[−+]?\d[\d,]*(?:\.\d+)?(?:\s?(?:%|조 원|억 원|만 원|원|곳|배|번째|위|년|월|일|분기|인치|개|명|거래일|단))?/g;
 
 /* ①② 회사마다 — 390 폭 */
-const po = watch(await page(390), base), pn = watch(await page(390), base);
+const SNAP = await tm.old(async () => oldSnap({file: arg('--old-snap', null), page: 'rivals', base, remote: REMOTE, refresh: has('--old-refresh'),
+  key: {checker: await fileSha(fileURLToPath(import.meta.url)), browser: b.version(), width: 390, list: createHash('sha256').update([...list, ...MISSING].join(',')).digest('hex')}}));
+const po = SNAP.use ? null : watch(await page(390), base), pn = watch(await page(390), base); // 기준값을 쓰면 옛 쪽을 열지 않음(po = null)
+if (po) SNAP.watch(po);
 // 새 쪽은 찾기 화면에서 시작 — 새 쪽 첫 화면(홈)은 다른 쪽 모듈을 부르므로(옮기는 중 404) 이 검사와 섞이지 않게 · 같은 주소로 다시 가면 길이 안 바뀌므로 5단 주소로는 시작하지 않음
-await tm.old(() => settle(po, async () => { await po.goto(base + '/atlas/#/'); return po.waitForFunction(() => document.querySelector('#view .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '옛 쪽 첫 화면', fail})).then(ok => { if (ok === false) fail('옛 쪽 첫 화면', '안 열림'); });
+if (po) await tm.old(() => settle(po, async () => { await po.goto(base + '/atlas/#/'); return po.waitForFunction(() => document.querySelector('#view .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '옛 쪽 첫 화면', fail})).then(ok => { if (ok === false) fail('옛 쪽 첫 화면', '안 열림'); });
 await tm.new(() => settle(pn, async () => { await pn.goto(base + '/next/?dev=1#/find'); return pn.waitForFunction(() => document.querySelector('#view .find input'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '새 쪽 찾기 화면', fail})).then(ok => { if (ok === false) fail('새 쪽 찾기 화면', '안 열림'); });
 await pn.waitForTimeout(150);
-po._errs.length = 0; pn._errs.length = 0;
+if (po) po._errs.length = 0; pn._errs.length = 0;
 const fundCode = new Set(MISSING);
 const LIST = [...list, ...MISSING];
 for (const [ix, code] of LIST.entries()) {
   const miss = fundCode.has(code), tag = (miss ? '없는 번호 ' : '') + code;
   if (!miss) { coOf(code); if (LIST[ix + 1] && !fundCode.has(LIST[ix + 1])) coOf(LIST[ix + 1]); } // 회사 파일은 그 회사 · 다음 회사 것만 미리(한꺼번에 두드리지 않음 — 받기는 화면을 여는 동안)
   // 옛 쪽 · 새 쪽을 함께 엶(따로 된 두 칸 — 기다리는 때를 겹쳐 빠르게) · 여는 데 쓴 때를 쪽마다 셈(tm)
-  const [okO, okN] = await Promise.all([tm.old(() => open(po, '#/c/' + code + '/rivals', OLD_DONE, '옛 쪽').then(async ok => { if (ok && miss && NAMES.has(code)) await po.waitForFunction(() => document.querySelector('#view .funnels'), null, {timeout: 8000}).catch(() => fail('옛 쪽 까닭', tag)); return ok; })), // 옛 쪽은 이름표를 받은 뒤 까닭 · 깔때기를 붙임
+  const [okO, okN] = await Promise.all([!po ? true : tm.old(() => open(po, '#/c/' + code + '/rivals', OLD_DONE, '옛 쪽').then(async ok => { if (ok && miss && NAMES.has(code)) await po.waitForFunction(() => document.querySelector('#view .funnels'), null, {timeout: 8000}).catch(() => fail('옛 쪽 까닭', tag)); return ok; })), // 옛 쪽은 이름표를 받은 뒤 까닭 · 깔때기를 붙임
     tm.new(() => open(pn, '#/w/' + code + '/rivals', NEW_DONE, '새 쪽'))]);
   if (!okO || !okN) continue;
-  const O = oldToNewDeep(await tm.old(() => po.evaluate(oldRead))); // 옛 쪽 글은 이름만 새 이름으로(「ATLAS 업종으로 셈」 → 「보드리 업종으로 셈」 · rename.mjs)
+  // 옛 쪽 값 — 열어서 읽음(그 회사의 옛 쪽 화면 오류 수와 함께 찍음) · 또는 기준값
+  const sk = 'c|' + code, O0 = po ? {o: await tm.old(() => po.evaluate(oldRead)), oe: po._errs.length} : SNAP.get(sk);
+  if (po) SNAP.put(sk, O0);
+  if (!O0?.o) { fail('옛 쪽 기준값 없음', tag); continue; }
+  const O = oldToNewDeep(O0.o); // 옛 쪽 글은 이름만 새 이름으로(「ATLAS 업종으로 셈」 → 「보드리 업종으로 셈」 · rename.mjs)
   if (O.err) { fail('옛 쪽 못 엶', tag); continue; }
   const N = await tm.new(() => pn.evaluate(newRead)), ALLN = norm(N.all);
   // ① 옛 쪽 글 마디가 새 쪽에 빠짐없이
@@ -218,9 +228,10 @@ for (const [ix, code] of LIST.entries()) {
     bump('회사');
   }
   if (pn._errs.length) { fail('화면 오류', '새 쪽 ' + tag + ' ' + pn._errs.join(' | ').slice(0, 200)); pn._errs.length = 0; }
-  if (po._errs.length) { bump('옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)'); po._errs.length = 0; } // 옛 쪽 오류는 이 검사의 실패가 아님(옛 쪽은 고치지 않음)
+  if (O0.oe) bump('옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)'); if (po) po._errs.length = 0; // 옛 쪽 오류는 이 검사의 실패가 아님(옛 쪽은 고치지 않음)
 }
-await po.context().close(); await pn.context().close();
+if (po) await po.context().close(); await pn.context().close();
+counts.oldSnap = {...SNAP.info(), note: await SNAP.save(oldFails === 0)}; // 기준값 — 다시 씀 · 새로 씀 · 안 씀(까닭)
 counts.sec.compare = Math.round((Date.now() - t0) / 1000) - counts.sec.pick;
 
 /* ③ 세 폭 — 까다로운 곳부터 N곳(긴 이름 · 경쟁 회사 많음 · 순이익 · 막대 없음) + 없는 번호 하나 · 접은 칸을 연 채로 */

@@ -72,7 +72,7 @@ jobs:
           node -e '
             const fs = require("fs"), want = (process.env.WANT || "").split(",").map(s => s.trim()).filter(Boolean);
             const ns = Math.min(12, Math.max(1, parseInt(process.env.NS, 10) || 6));
-            const all = fs.readdirSync("scripts/atlas11/next").map(f => (/^check_([a-z0-9]+)\.mjs$/.exec(f) || [])[1]).filter(Boolean).sort();
+            const all = fs.readdirSync("scripts/atlas11/next").map(f => (/^check_([a-z0-9]+)\.mjs$/.exec(f) || [])[1]).filter(n => n && n !== "changed").sort(); // check_changed.mjs = 바뀐 쪽만 고르는 도구(쪽 검사 아님)
             const SMALL = ["cond", "gdr", "misc", "surge", "why", "hold", "share"], ORDER = ["co", "rivals", "past", "grow", "en", "range", "next", "small", "chx", "cal", "today"];
             const jobs = [], small = [];
             for (const n of ["next", "en", ...all].filter(n => !want.length || want.includes(n))) {
@@ -219,7 +219,7 @@ jobs:
             case "$n" in
               next) f=next_check.mjs; extra="" ;;
               en[0-9]*) f=next_en_check.mjs; extra="--modules --dev 0 --all --shard ${n#en}/$SHARDS" ;;
-              chx) f="check_$n.mjs"; extra="--all --old-snap oldsnap/$n.json"; if [ "$OLD_REFRESH" = 1 ]; then extra="$extra --old-refresh"; fi ;; # 옛 쪽 기준값을 쓰는 검사(옛 쪽 때 86%)
+              chx|grow|rivals) f="check_$n.mjs"; extra="--all --old-snap oldsnap/$n.json"; if [ "$OLD_REFRESH" = 1 ]; then extra="$extra --old-refresh"; fi ;; # 옛 쪽 기준값을 쓰는 검사(옛 쪽 때 chx 86% · grow 90% · rivals 79% — 2026-10-17 39039859850)
               *) f="check_$n.mjs"; extra="--all" ;;
             esac
             if [ "$LOCAL" = 1 ] && ! curl -fs -o /dev/null "$base/next/"; then

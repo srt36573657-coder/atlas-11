@@ -15,14 +15,17 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
-import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {fetchJSON, watch, settle, timer, netSummary, isRemote} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {oldSnap, fileSha} from './oldsnap.mjs'; // 옛 쪽 기준값(--old-snap · --old-refresh — 옛 화면이 쓴 파일이 하나도 안 바뀌면 옛 쪽을 열지 않음 · 명령문 [1] 9 · 옛 쪽 때 90%)
+import {createHash} from 'node:crypto';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), has = k => argv.includes(k), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')); // run_all.mjs 는 PW_DIR 로 넘김
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), ALL = has('--all'), LIMIT = Number(arg('--limit', '0')) || 0, WIDE = Number(arg('--wide', '10')) || 0, OUT = arg('--out', '');
 const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
-const fail = (k, x) => { if (fails.length < 500) fails.push([k, String(x).slice(0, 300)]); counts.fail = (counts.fail || 0) + 1; };
+let oldFails = 0; // 옛 쪽 실패 수 — 0 일 때만 기준값을 새로 씀
+const fail = (k, x) => { if (fails.length < 500) fails.push([k, String(x).slice(0, 300)]); counts.fail = (counts.fail || 0) + 1; if (/^옛/.test(k) || /^옛/.test(String(x ?? ''))) oldFails++; };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 
 /* 따로 셈 — 앱 코드를 쓰지 않음 */
@@ -180,7 +183,10 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
 
 /* ①~⑥ 회사마다 — 390 폭 */
 {
-  const cO = await ctxOf(390), cN = await ctxOf(390), po = watch(await mkPage(cO), base), pn = watch(await mkPage(cN), base); // 옛 쪽 · 새 쪽은 창을 따로(한 창 두 탭이면 뒤 탭의 그림 때(rAF)가 늦춰짐) · 망 탈 셈(net.mjs)
+  const SNAP = await tm.old(async () => oldSnap({file: arg('--old-snap', null), page: 'grow', base, remote: isRemote(base), refresh: has('--old-refresh'),
+    key: {checker: await fileSha(fileURLToPath(import.meta.url)), browser: b.version(), width: 390, list: createHash('sha256').update(list.join(',')).digest('hex')}}));
+  const cO = SNAP.use ? null : await ctxOf(390), cN = await ctxOf(390), po = cO ? watch(await mkPage(cO), base) : null, pn = watch(await mkPage(cN), base); // 기준값을 쓰면 옛 쪽을 열지 않음(po = null)
+  if (po) SNAP.watch(po); // 옛 쪽 · 새 쪽은 창을 따로(한 창 두 탭이면 뒤 탭의 그림 때(rAF)가 늦춰짐) · 망 탈 셈(net.mjs)
   let firstO = true, firstN = true; // 첫 번째만 주소로 엶 · 그다음은 # 만 바꿈(빠르게)
   for (const code of list) {
     const d = await loadData(code); if (!d.co) { fail('회사 파일', code); continue; }
@@ -191,21 +197,26 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
       bump('없는 주소'); continue;
     }
     const title = d.name + ' — 앞으로 클까?';
-    const [ok1, ok2] = await Promise.all([openOld(po, code, title, firstO), openNew(pn, code, title, firstN)]); firstO = firstN = false;
+    const [ok1, ok2] = await Promise.all([po ? openOld(po, code, title, firstO) : true, openNew(pn, code, title, firstN)]); firstO = firstN = false;
     if (!ok1) { fail('옛 쪽 안 열림', code); continue; }
     if (!ok2) { fail('새 쪽 안 열림', code + ' ' + await pn.evaluate(() => document.querySelector('main#view')?.textContent?.slice(0, 80))); continue; }
-    const [o, n] = await Promise.all([tm.old(() => po.evaluate(OLD_X).then(x => oldToNewDeep(x))), tm.new(() => pn.evaluate(NEW_X))]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
+    // 옛 쪽 값 — 열어서 읽음(글 낱낱 · 손가락 이름표 · 옛 쪽 화면 오류 수를 함께 찍음) · 또는 기준값
+    const ns = nSlots(d.G), sk = 'c|' + code;
+    const [O0, n] = await Promise.all([po ? tm.old(async () => ({o: await po.evaluate(OLD_X), to: ns ? await po.evaluate(TIPS, ['#view .gc svg[role=img]', '.tip', ns]) : null, oe: po._errs.length})) : SNAP.get(sk), tm.new(() => pn.evaluate(NEW_X))]);
+    if (po) SNAP.put(sk, O0);
+    if (!O0?.o) { fail('옛 쪽 기준값 없음', code); continue; }
+    const o = oldToNewDeep(O0.o); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
     compare('390 ' + code, code, o, n, d);
-    const ns = nSlots(d.G);
     if (ns) {
-      const [to, tn] = await Promise.all([tm.old(() => po.evaluate(TIPS, ['#view .gc svg[role=img]', '.tip', ns])), tm.new(() => pn.evaluate(TIPS, ['main#view .pgrow-gc svg[role=img]', '.pgrow-tip', ns]))]);
+      const [to, tn] = [O0.to, await tm.new(() => pn.evaluate(TIPS, ['main#view .pgrow-gc svg[role=img]', '.pgrow-tip', ns]))];
       if (JSON.stringify(to) !== JSON.stringify(tn)) fail('손가락 이름표', `${code} 옛 ${JSON.stringify(to).slice(0, 100)} · 새 ${JSON.stringify(tn).slice(0, 100)}`);
       bump('손가락 이름표', ns);
     }
-    await errsOf(pn, code, '새'); await errsOf(po, code, '옛');
+    await errsOf(pn, code, '새'); if (po) po._errs.length = 0; if (O0.oe) bump('옛 쪽 오류(참고)');
     bump('회사');
   }
-  await cO.close(); await cN.close();
+  if (cO) await cO.close(); await cN.close();
+  counts.oldSnap = {...SNAP.info(), note: await SNAP.save(oldFails === 0)}; // 기준값 — 다시 씀 · 새로 씀 · 안 씀(까닭)
 }
 
 /* ⑥ 세 폭 — 넘침 · 누르는 자리 44px · 접은 칸 펼침 · 손가락 이름표가 화면 안 */
