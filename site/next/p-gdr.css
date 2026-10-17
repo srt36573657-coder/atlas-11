@@ -19,7 +19,7 @@
 .gdr-cell.cash .gdr-no { grid-row: auto; color: var(--ink); }
 .gdr-card { margin-top: 10px; padding: 14px; border-radius: 14px; background: var(--card2); border: 1px solid var(--ink); }
 .gdr-ch { margin: 0 0 6px; font-size: 20px; }
-.gdr-name { display: inline-flex; align-items: center; min-height: 44px; vertical-align: middle; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.gdr-name { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; vertical-align: middle; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 .gdr-ind { color: var(--sub); font-size: 17px; }
 .gdr-why { margin: 0 0 10px; font-size: 17px; color: var(--sub); }
 .gdr-dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 10px; }
@@ -44,3 +44,18 @@
 .gdr.page ~ .safe { font-size: 17px; }
 html.en .gdr-say q { quotes: '“' '”'; }
 .gdr-stale { margin: 8px 0 0; font-size: 17px; color: var(--sub); }
+/* 2026-10-17 21:10 [6] 고도리 칸 안전 — 잠금(열한 질문 전) · 틀린다면 이유 · 고른 날 뒤 성적(같은 때 코스피와) */
+.gdr.lock .gdr-note { margin-top: 12px; }
+.gdr-go { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 12px; border-radius: 999px; background: var(--ink); color: var(--bg); font-size: 18px; font-weight: 700; text-decoration: none; }
+.gdr-go:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.gdr-wrong { margin: 0 0 8px; padding: 8px 10px; border-radius: 10px; background: var(--card); font-size: 17px; line-height: 1.45; overflow-wrap: anywhere; }
+.gdr-wk { color: var(--sub); }
+.gdr-perf { margin: 0 0 10px; font-size: 17px; color: var(--sub); line-height: 1.5; overflow-wrap: anywhere; }
+.gdr-perf b { font-size: 18px; }
+.gdr-pf { margin: 12px 0 0; padding: 12px; border-radius: 12px; background: var(--card2); }
+.gdr-ph { margin: 0 0 6px; font-size: 19px; }
+.gdr-pl { margin: 4px 0 0; font-size: 17px; color: var(--sub); line-height: 1.45; overflow-wrap: anywhere; }
+.gdr-pd { color: var(--ink); }
+.gdr-pr { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 6px 0 0; font-size: 17px; }
+.gdr-pr b { font-size: 20px; }
+.gdr-pn { margin-top: 8px; }

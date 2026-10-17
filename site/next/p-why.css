@@ -1,6 +1,7 @@
-/* 고도리 — 친구야, 왜 사?(질문 열한 개 · p-why.js) · 색 🟢 0점 🟡 1점 🔴 2점(사장님 명령 색 — 값 오름 · 내림 색과 다른 칸에서만 씀) */
+/* 고도리 — 매매일지 「친구야, 왜 사?」(종목 고르기 → 질문 열한 개 → 두 줄 → 결과 · p-why.js) · 색 🟢 0점 🟡 1점 🔴 2점(사장님 명령 색 — 값 오름 · 내림 색과 다른 칸에서만 씀)
+   누르는 자리 44px 넘게 · 글 17px 넘게 · 360 × 640 에서 옆으로 넘침 없게(글 칸은 줄을 바꿈) */
 .wy { margin: 12px 16px 18px; padding: 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--hair2, #272B34); }
-.wy.page { margin-top: 16px; }
+.wy.page { margin-top: 12px; }
 .wy-head { display: flex; gap: 12px; align-items: center; }
 .wy-head img { flex: none; width: 40px; height: 40px; }
 .wy-h { margin: 0; font-size: 25px; line-height: 1.25; }
@@ -10,7 +11,7 @@
 .wy-opts { display: grid; gap: 10px; }
 .wy-opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 19px; text-align: left; cursor: pointer; }
 .wy-opt.on { border-color: var(--ink); background: var(--card3); }
-.wy-opt:focus-visible, .wy-next:focus-visible, .wy-back:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.wy-opt:focus-visible, .wy-next:focus-visible, .wy-back:focus-visible, .wy-hit:focus-visible, .wy-chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .wy-dot { flex: none; width: 18px; height: 18px; border-radius: 50%; }
 .wy-g { background: #34C759; } .wy-y { background: #FFCC00; } .wy-r { background: #FF3B30; }
 .wy-one { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 0; padding: 12px; border-radius: 14px; background: var(--card2); font-size: 18px; line-height: 1.45; }
@@ -21,9 +22,40 @@
 .wy-nav { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 .wy-next, .wy-back { min-height: 48px; padding: 0 18px; border-radius: 999px; border: 0; font: inherit; font-size: 18px; cursor: pointer; }
 .wy-next { background: var(--ink); color: var(--bg); font-weight: 700; }
+.wy-next[disabled] { opacity: .6; cursor: progress; }
 .wy-back { background: var(--card2); color: var(--ink); }
 .wy-link { display: inline-flex; align-items: center; min-height: 48px; padding: 0 6px; font-size: 17px; color: var(--sub); }
 .wy-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.wy-err { margin: 10px 0 0; font-size: 17px; color: var(--gold); }
+.wy-qm { color: var(--gold); }
+/* 고른 종목 한 줄 — 이름 · 그날 값 · 그 날짜 */
+.wy-stk { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin: 12px 0 0; padding: 8px 12px; border-radius: 12px; background: var(--card2); font-size: 17px; }
+.wy-stn { font-size: 19px; font-weight: 800; }
+.wy-stv { color: var(--sub); }
+.wy-stv b { color: var(--ink); font-weight: 700; }
+/* ① 종목 고르기 — 찾기와 같은 잣대 · 맨 위 여섯 */
+.wy-find, .wy-why { display: block; width: 100%; min-height: 52px; padding: 0 14px; border-radius: 14px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 20px; }
+.wy-hits { display: grid; gap: 8px; margin-top: 10px; }
+.wy-hit { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 2px 10px; width: 100%; min-height: 56px; padding: 8px 14px; border-radius: 14px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 19px; text-align: left; cursor: pointer; }
+.wy-hit .nm { font-weight: 700; overflow-wrap: anywhere; }
+.wy-hit small { color: var(--sub); font-size: 17px; }
+.wy-xrow { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; padding: 8px 14px; border-radius: 14px; border: 1px dashed var(--hair2, #272B34); color: var(--sub); font-size: 18px; } /* 펀드 · 우선주 … — 누르지 않음 · 까닭 한 줄 */
+.wy-xrow .nm { color: var(--ink); overflow-wrap: anywhere; }
+.wy-xrow small { font-size: 17px; }
+.wy-hits .wy-note { margin: 0; }
+.wy-xw { margin-top: 4px; }
+/* ② 3번 「클 일이 있다」 — 그 일이 있는 날짜 */
+.wy-dl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0 0; font-size: 18px; }
+.wy-date { min-height: 48px; min-width: 0; max-width: 100%; padding: 0 12px; border-radius: 12px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 19px; color-scheme: dark; }
+/* ③ 두 줄 — 1년 뒤 반토막 났다면 왜? · 팔 약속 */
+.wy-quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 6px; }
+.wy-chip { min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 17px; cursor: pointer; }
+.wy-pr { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 8px 0 0; font-size: 19px; }
+.wy-prn { display: inline-flex; flex-wrap: nowrap; align-items: center; gap: 8px; min-width: 0; max-width: 100%; } /* 「만약 [숫자]원」은 한 덩이 — 나머지 말만 다음 줄로 · 좁으면 숫자 칸이 줄어듦 */
+.wy-prn > span { flex: none; white-space: nowrap; }
+.wy-num { flex: 0 1 6.5em; width: 6.5em; min-width: 5em; max-width: 100%; min-height: 48px; padding: 0 10px; border-radius: 12px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 20px; text-align: right; }
+.wy-why:focus-visible, .wy-num:focus-visible, .wy-find:focus-visible, .wy-date:focus-visible { outline: 3px solid var(--ink); outline-offset: 1px; }
+/* ④ 결과 */
 .wy-res { margin-top: 12px; }
 .wy-score { margin: 0; font-size: 20px; }
 .wy-score b { font-size: 40px; line-height: 1; }
@@ -39,8 +71,17 @@ span.wy-vg { color: #34C759; } span.wy-vy { color: #FFCC00; } span.wy-vr { color
 .wy-fill.wy-g { background: #34C759; } .wy-fill.wy-y { background: #FFCC00; } .wy-fill.wy-r { background: #FF3B30; }
 .wy-bars.sm .wy-track { height: 8px; }
 .wy-note { margin: 10px 0 0; font-size: 17px; color: var(--sub); }
+.wy-lines { margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--card2); }
+.wy-lines p { margin: 0; font-size: 17px; line-height: 1.5; }
+.wy-lines p + p { margin-top: 4px; }
+.wy-lk { color: var(--sub); }
+.wy-mine { quotes: '「' '」'; }
+/* 쌓인 기록 — 매매일지 화면 아래(지우는 단추 없음) */
 .wy-me { margin: 8px 0 16px; }
 .wy-rec { margin: 8px 16px; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair2, #272B34); }
 .wy-rh { margin: 0 0 8px; font-size: 17px; }
+.wy-rs { margin: 0 0 8px; font-size: 17px; color: var(--sub); }
+.wy-rs .wy-stn { color: var(--ink); font-size: 18px; }
+.wy-rec .wy-lines { margin-top: 10px; padding: 8px 10px; }
 .wy.page ~ .safe { font-size: 17px; }
-html.en .wy-say q { quotes: '“' '”'; }
+html.en .wy-say q, html.en .wy-mine { quotes: '“' '”'; }

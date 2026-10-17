@@ -1,6 +1,6 @@
 {
- "schema": "godori-verify-1",
- "at": "2026-10-17T11:00:18Z",
+ "schema": "godori-verify-2",
+ "at": "2026-10-17T13:59:37Z",
  "asOf": "2026-10-13",
  "version": "gdr-v1",
  "ok": true,
@@ -129,6 +129,12 @@
     "passAll": 3,
     "picked": 3
    }
+  },
+  "gates_reading1_counts_eq_mine": {
+   "ok": true
+  },
+  "gates_reading2_counts_eq_mine": {
+   "ok": true
   }
  },
  "counts_mine": {
@@ -165,6 +171,7 @@
   "picked": 3,
   "cash": 91
  },
+ "uncheckedCountKeys": [],
  "picks_mine": [
   {
    "no": 1,
@@ -178,6 +185,8 @@
    "half": 12228,
    "saying": 0,
    "reason": "영업이익 101억 → 246억 · 석 달 +5.6% · 업종 돈 2.6배",
+   "wrong": "시장 전체가 내리면 같이 내릴 수 있어.",
+   "wrongNo": 5,
    "g": {
     "opPrev": 101,
     "opLast": 246,
@@ -205,6 +214,8 @@
    "half": 18156,
    "saying": 1,
    "reason": "영업이익 88억 → 104억 · 석 달 +10.4% · 업종 돈 1.3배",
+   "wrong": "이익이 다시 줄면 고른 까닭이 사라져.",
+   "wrongNo": 4,
    "g": {
     "opPrev": 88,
     "opLast": 104,
@@ -232,6 +243,8 @@
    "half": 2688,
    "saying": 2,
    "reason": "영업이익 -165억 → 62억 · 석 달 +16.2% · 업종 돈 1.3배",
+   "wrong": "이익이 다시 줄면 고른 까닭이 사라져.",
+   "wrongNo": 4,
    "g": {
     "opPrev": -165,
     "opLast": 62,
@@ -253,6 +266,220 @@
   "083500",
   "078150"
  ],
+ "wrong": [
+  {
+   "no": 1,
+   "code": "259630",
+   "line": 5,
+   "why": "1 ~ 4 모두 아님",
+   "mine": "시장 전체가 내리면 같이 내릴 수 있어.",
+   "accepted": [
+    "시장 전체가 내리면 같이 내릴 수 있어."
+   ],
+   "theirs": "시장 전체가 내리면 같이 내릴 수 있어.",
+   "ok": true,
+   "nearTie": false
+  },
+  {
+   "no": 2,
+   "code": "083500",
+   "line": 4,
+   "why": "opGrow = 0.1818181818 < 0.2",
+   "mine": "이익이 다시 줄면 고른 까닭이 사라져.",
+   "accepted": [
+    "이익이 다시 줄면 고른 까닭이 사라져."
+   ],
+   "theirs": "이익이 다시 줄면 고른 까닭이 사라져.",
+   "ok": true,
+   "nearTie": false
+  },
+  {
+   "no": 3,
+   "code": "078150",
+   "line": 4,
+   "why": "opGrow 없음(앞 해 ≤ 0)",
+   "mine": "이익이 다시 줄면 고른 까닭이 사라져.",
+   "accepted": [
+    "이익이 다시 줄면 고른 까닭이 사라져."
+   ],
+   "theirs": "이익이 다시 줄면 고른 까닭이 사라져.",
+   "ok": true,
+   "nearTie": false
+  }
+ ],
+ "gates": {
+  "present": true,
+  "missingMode": "null",
+  "cells": {
+   "theirs": {
+    "g1": {
+     "1": 431,
+     "0": 471,
+     "null": 4
+    },
+    "g2": {
+     "1": 741,
+     "0": 148,
+     "null": 17
+    },
+    "g3": {
+     "1": 105,
+     "0": 801,
+     "null": 0
+    },
+    "g4": {
+     "1": 676,
+     "0": 190,
+     "null": 40
+    },
+    "g5": {
+     "1": 86,
+     "0": 820,
+     "null": 0
+    }
+   },
+   "mineNullWhenMissing": {
+    "g1": {
+     "1": 431,
+     "0": 468,
+     "null": 7
+    },
+    "g2": {
+     "1": 741,
+     "0": 145,
+     "null": 20
+    },
+    "g3": {
+     "1": 105,
+     "0": 794,
+     "null": 7
+    },
+    "g4": {
+     "1": 676,
+     "0": 187,
+     "null": 43
+    },
+    "g5": {
+     "1": 86,
+     "0": 820,
+     "null": 0
+    }
+   },
+   "mineZeroWhenAlreadyFailed": {
+    "g1": {
+     "1": 431,
+     "0": 471,
+     "null": 4
+    },
+    "g2": {
+     "1": 741,
+     "0": 148,
+     "null": 17
+    },
+    "g3": {
+     "1": 105,
+     "0": 801,
+     "null": 0
+    },
+    "g4": {
+     "1": 676,
+     "0": 190,
+     "null": 40
+    },
+    "g5": {
+     "1": 86,
+     "0": 820,
+     "null": 0
+    }
+   }
+  },
+  "n": 2557,
+  "counts": {
+   "companies": 2557,
+   "outThin": 1650,
+   "outHalt": 1,
+   "afterOut": 906,
+   "g1": 431,
+   "g2": 741,
+   "g3": 105,
+   "g4": 676,
+   "g5": 86,
+   "passAll": 3
+  },
+  "countsEqGdr": true,
+  "countsEqMine": true,
+  "missingN": 0,
+  "extraN": 0,
+  "shapeBadN": 0,
+  "mismatchN": 0,
+  "nullOrZeroReading": {
+   "g1": {
+    "null": 0,
+    "zero": 3
+   },
+   "g2": {
+    "null": 0,
+    "zero": 3
+   },
+   "g3": {
+    "null": 0,
+    "zero": 7
+   },
+   "g4": {
+    "null": 0,
+    "zero": 3
+   },
+   "g5": {
+    "null": 0,
+    "zero": 0
+   }
+  },
+  "nullOrZeroCodes": {
+   "g1": {
+    "null": [],
+    "zero": [
+     "0126Z0",
+     "0155E0",
+     "950260"
+    ]
+   },
+   "g2": {
+    "null": [],
+    "zero": [
+     "0010F0",
+     "0017J0",
+     "0220W0"
+    ]
+   },
+   "g3": {
+    "null": [],
+    "zero": [
+     "0155E0",
+     "0220W0",
+     "386380",
+     "417030",
+     "483350",
+     "487400",
+     "950260"
+    ]
+   },
+   "g4": {
+    "null": [],
+    "zero": [
+     "0015N0",
+     "387690",
+     "950250"
+    ]
+   }
+  },
+  "xCounts": {
+   "0": 906,
+   "1": 1650,
+   "2": 1
+  },
+  "path": "site/next/data/gates.json",
+  "checked": true
+ },
  "passAll_mine": [
   {
    "code": "259630",
@@ -294,10 +521,18 @@
   "co": "site/atlas/data/co",
   "gdr": {
    "path": "site/next/data/gdr.json",
-   "made": "2026-10-17T11:00:08.269Z",
-   "sha256": "727af48d4d9e5aae73ee68b4bd65eb615e03fea1f7f52a582f70d3c9f498c0a1",
+   "made": "2026-10-17T13:48:37.435Z",
+   "sha256": "29d6f79e864d40991596952de61ec43df839a3c137ff1779a947e7005155a949",
    "error": null
-  }
+  },
+  "gates": {
+   "path": "site/next/data/gates.json",
+   "sha256": "d534c037a0cda619d6117e0f2ab45595e2d23a9829882d583533c4d41492e715",
+   "error": null,
+   "waitNew": false,
+   "notReady": null
+  },
+  "pickSha256": "3a2d398d5caf0926a5fabd0dc2570bcca4bb7f041ee550d88bb7ab40bf654fac"
  },
  "calendar": {
   "source": "모음 회사 일봉 날짜 모두(D 까지)",
@@ -320,7 +555,10 @@
   "G1 ~ G5 는 쓰는 값이 하나라도 없으면 그 문 탈락(창 안 종가 · 앞 120날 거래대금 · 업종 없음) (gdr-data §3)",
   "G5 업종 하루 거래대금 = 그날 업종 회사들 거래대금 합(줄 없는 회사는 0) · 앞 60날 합 0 이면 탈락 · ind20 = 종가[t] · 종가[t − 20] 이 다 있는 회사들의 가운데 값(짝수면 가운데 둘 평균) (gdr-data §3)",
   "앞 해 영업이익 ≤ 0 이면 opGrow = null · 차례는 비율 있는 곳 모두 뒤(그 안에서 r60 작은 → 번호) (gdr-data §4 · 표에 없는 곳)",
-  "g 숫자 꼴: 퍼센트(r60 · maxJump · ind20 · r5) 소수 둘째 · 비(opGrow · keep · low250x · indX · quiet) 소수 넷째 · tv20 원 정수 · 이유 줄 소수 한 자리는 반올림 전 값으로 (gdr-data §4)"
+  "g 숫자 꼴: 퍼센트(r60 · maxJump · ind20 · r5) 소수 둘째 · 비(opGrow · keep · low250x · indX · quiet) 소수 넷째 · tv20 원 정수 · 이유 줄 소수 한 자리는 반올림 전 값으로 (gdr-data §4)",
+  "gates.json x: X1(「?」 포함) → 1 · X2 → 2 · 안 뺌 → 0 · 뺀 곳 g1 ~ g5 = null · 관리 종목(X3)은 표시 칸이 없어 거르지 않음(managed = null) (brief2 · gdr-data §3)",
+  "gates.json gN(x = 0): 문에 쓰는 값이 다 있으면 1 · 0 · 하나라도 없으면 null(셀 수 없음 — gdr-data §3 「값이 없을 때」: G1 fin.op 마지막 둘 · G2 앞 120날 거래대금 · c[t] · c[t − 5] · G3 c[t − 60 .. t] · G4 c[t − 249 .. t] · G5 업종 없음 · 업종 앞 60날 합 0 · 업종 20거래일 오름 셀 회사 없음). 값이 빠졌는데 있는 값만으로 이미 못 지남이 정해진 곳(G1 마지막 해 ≤ 0 · G2 5일 오름 ≥ +10% · G3 있는 값으로 (a) · (b) · (c) 가운데 하나가 이미 어긋남 · G4 지금 종가 ≥ 있는 값 가운데 가장 낮은 종가 × 2 · G5 업종 비 < 1.1 또는 가운데 값 ≤ 0)은 표가 null · 0 을 정하지 않아 둘 다 받음 — 한 문 안에서는 한 가지 읽기로만(섞이면 틀림) · 값이 빠진 곳이 1 이면 틀림(「없으면 탈락」) (brief2 「null 셀 수 없음」 · gdr-data §3)",
+  "wrong-v1 숫자: r60(%) · low250x 는 반올림 전 정확한 값 · 경계는 정확한 곱셈(100·c0 ≥ 130·c60 · 10·c0 ≥ 17·바닥 · 30·s20 < 13·s60 · 5·끝 해 < 6·앞 해) · 글의 숫자는 정확한 값을 딱 반이면 짝수 쪽(파이썬 format) — 정확한 값이 딱 반(1e-12 안)이면 소수 셈 길에 따라 갈려 두 이웃을 다 받고 diag.wrongNearTie 에 적음 (brief2)"
  ],
  "diag": {
   "listedFromLists": 4307,
@@ -351,59 +589,65 @@
    "반도체 소재",
    "통신장비",
    "헬스케어 기술"
-  ]
+  ],
+  "gateNullAfterOut": {
+   "G1": 7,
+   "G2": 20,
+   "G3": 7,
+   "G4": 43,
+   "G5": 0
+  },
+  "gateNullOrZero": {
+   "G1": {
+    "n": 3,
+    "codes": [
+     "0126Z0",
+     "0155E0",
+     "950260"
+    ]
+   },
+   "G2": {
+    "n": 3,
+    "codes": [
+     "0010F0",
+     "0017J0",
+     "0220W0"
+    ]
+   },
+   "G3": {
+    "n": 7,
+    "codes": [
+     "0155E0",
+     "0220W0",
+     "386380",
+     "417030",
+     "483350",
+     "487400",
+     "950260"
+    ]
+   },
+   "G4": {
+    "n": 3,
+    "codes": [
+     "0015N0",
+     "387690",
+     "950250"
+    ]
+   },
+   "G5": {
+    "n": 0,
+    "codes": []
+   }
+  },
+  "wrongNearTie": []
  },
  "compareMode": {
-  "counts": "모든 칸 값 그대로(정수)",
-  "picks": "고른 곳 번호 차례 그대로 · 칸마다(no · w · price · sell · half · ind · saying · name · reason)",
+  "counts": "표 칸 · gdr-data 에 적은 칸 모두 값 그대로(정수) · 그 밖에 더 있는 칸은 uncheckedCountKeys 에만",
+  "picks": "고른 곳 번호 차례 그대로 · 칸마다(no · w · price · sell · half · ind · saying · name · reason · wrong)",
   "g": "opPrev · opLast 정수 그대로 · tv20 은 정수면 내 값을 정수로 반올림한 값과 그대로 · 나머지는 gdr-data §4 자리(퍼센트 둘째 · 비 넷째)로 반올림한 내 값(짝수 쪽 · 위쪽 · 소수 곱 꼴) 또는 반올림 안 한 내 값과 1e-6 상대 차 안",
-  "reason": "표 꼴 그대로 · 소수 한 자리는 정확한 값 짝수 쪽 반올림 또는 소수(float) format"
+  "reason": "표 꼴 그대로 · 소수 한 자리는 정확한 값 짝수 쪽 반올림 또는 소수(float) format",
+  "wrong": "wrong-v1 글 그대로 · 줄 고르기는 정확한 값(경계 정확히) · 숫자는 정확한 값 짝수 쪽(= 파이썬 format) 또는 format(float(정확한 값)) · 딱 반(1e-12 안)이면 두 이웃",
+  "gates": "schema · version · asOf · keys · rules(있으면) 그대로 · 회사 주식 모두 · 줄마다 [x, g1 … g5] 를 정수 · null 그대로 · 값이 빠진 칸은 --gate-missing(처음 null · 이미 못 지남이 정해진 칸은 null 또는 0 · 한 문 안에서 한 가지) · gates.json 으로 센 수 = gdr.json counts · 고른 곳 = [0,1,1,1,1,1]"
  },
- "stress": {
-  "ran": true,
-  "ok": true,
-  "companies": 91,
-  "counts_mine": {
-   "listed": 94,
-   "companies": 91,
-   "outThin": 9,
-   "outThinQ": 3,
-   "outHalt": 1,
-   "managed": null,
-   "afterOut": 81,
-   "g1": 77,
-   "g2": 77,
-   "g3": 69,
-   "g4": 79,
-   "g5": 76,
-   "passAll": 61,
-   "picked": 36,
-   "cash": 10
-  },
-  "counts_theirs": {
-   "listed": 94,
-   "companies": 91,
-   "outThin": 9,
-   "outThinQ": 3,
-   "outHalt": 1,
-   "managed": null,
-   "afterOut": 81,
-   "g1": 77,
-   "g2": 77,
-   "g3": 69,
-   "g4": 79,
-   "g5": 76,
-   "passAll": 61,
-   "picked": 36,
-   "cash": 10
-  },
-  "designCheck": {
-   "ok": true,
-   "bad": []
-  },
-  "mismatches": [],
-  "invariants": {},
-  "theirExtraPicks": {},
-  "dir": null
- }
+ "stress": null
 }

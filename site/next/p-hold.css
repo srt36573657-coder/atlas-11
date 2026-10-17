@@ -1,0 +1,97 @@
+/* 보유종목 점검(p-hold.js) — 「보유종목」 탭 맨 위 칸 · 누르는 자리 44px 넘게 · 글 17px 넘게 · 입체 · 그림자 없음 · 색 점은 매매일지(p-why.css)와 같은 세 색 */
+.hd { margin: 12px 16px 18px; padding: 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--hair2, #272B34); }
+.hd-head { display: flex; gap: 12px; align-items: center; }
+.hd-head img { flex: none; width: 40px; height: 40px; }
+.hd-h { margin: 0; font-size: 24px; line-height: 1.25; }
+.hd-sub { margin: 2px 0 0; font-size: 17px; color: var(--sub); }
+.hd-note, .hd-q-note { margin: 10px 0 0; font-size: 17px; color: var(--sub); line-height: 1.45; }
+
+/* 몫 그림 — 막대 · 점선 = 셋에 하나 */
+.hd-pic { margin: 14px 0 4px; padding: 12px; border-radius: 14px; background: var(--card2); }
+.hd-cap { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+.hd-pk { margin: 8px 0 4px; font-size: 17px; color: var(--sub); }
+.hd-bars { display: grid; gap: 6px; }
+.hd-bar { display: grid; grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr) auto; align-items: center; gap: 8px; min-height: 28px; font-size: 17px; }
+.hd-bn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hd-track { position: relative; height: 12px; border-radius: 6px; background: var(--card3); }
+.hd-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 6px; background: var(--ink); opacity: .75; }
+.hd-fill.over { background: var(--gold); opacity: 1; }
+.hd-third { position: absolute; top: -5px; bottom: -5px; left: 33.333%; width: 0; border-left: 2px dashed var(--ink); } /* 막대 위아래로 삐져나와 금빛 막대 위에서도 보임 */
+.hd-bar b { min-width: 3.4em; text-align: right; }
+
+/* 카드 하나 */
+.hd-card { margin-top: 12px; padding: 14px; border-radius: 14px; background: var(--card2); border: 1px solid var(--hair2, #272B34); }
+.hd-ch { margin: 0; font-size: 19px; line-height: 1.4; overflow-wrap: anywhere; }
+.hd-name { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; vertical-align: middle; font-weight: 800; } /* 두 글자 이름(「DL」)도 누르는 자리 44px */
+a.hd-name { text-decoration: underline; text-underline-offset: 3px; }
+.hd-meta { color: var(--sub); font-size: 17px; }
+.hd-px { margin: 2px 0 0; font-size: 17px; color: var(--sub); }
+.hd-px b { color: var(--ink); font-size: 19px; }
+.hd-ask { margin-top: 12px; padding: 12px; border-radius: 12px; background: var(--card); }
+.hd-qh { margin: 0; font-size: 21px; line-height: 1.3; }
+.hd-qh:focus { outline: none; }
+.hd-qn { margin: 6px 0 10px; font-size: 17px; color: var(--sub); }
+.hd-opts { display: grid; gap: 8px; }
+.hd-opt { width: 100%; min-height: 52px; padding: 0 14px; border-radius: 14px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 19px; text-align: left; cursor: pointer; }
+.hd-opt:focus-visible, .hd-again:focus-visible, .hd-tog:focus-visible, .hd-sold:focus-visible, .hd-wrong:focus-visible, .hd-go:focus-visible, .hd-no:focus-visible, .hd-add-b:focus-visible, .hd-hit:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.hd-ans { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 10px 0 0; font-size: 17px; color: var(--sub); }
+.hd-ans:focus { outline: none; }
+.hd-ans b { color: var(--ink); font-size: 18px; }
+.hd-again { min-height: 44px; padding: 0 12px; margin-left: auto; border-radius: 999px; border: 1px solid var(--hair2, #272B34); background: transparent; color: var(--sub); font: inherit; font-size: 17px; cursor: pointer; }
+.hd-badge { margin: 10px 0 0; padding: 8px 12px; border-radius: 12px; font-size: 18px; font-weight: 700; background: var(--card); border: 1px solid var(--hair2, #272B34); overflow-wrap: anywhere; }
+.hd-badge.hd-cr { border-color: #FF3B30; }
+.hd-badge.hd-cy { border-color: #FFCC00; }
+.hd-badge.hd-cg { border-color: #34C759; }
+.hd-badge.hd-cq { border-color: var(--gold); color: var(--gold); }
+.hd-endure { margin: 6px 0 0; font-size: 17px; color: var(--sub); }
+.hd-endure b { color: var(--ink); }
+.hd-ret { margin: 10px 0 0; font-size: 17px; color: var(--sub); line-height: 1.5; overflow-wrap: anywhere; }
+.hd-ret b { font-size: 20px; }
+.hd-it { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: var(--card); }
+.hd-in { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 18px; }
+.hd-dot { flex: none; width: 16px; height: 16px; border-radius: 50%; }
+.hd-cg { background: #34C759; } .hd-cy { background: #FFCC00; } .hd-cr { background: #FF3B30; }
+.hd-dot.hd-cq { background: transparent; border: 2px solid var(--gold); }
+.hd-dot.hd-cu { background: transparent; border: 3px solid #FFCC00; } /* 셀 수 없음 — 🟡 이지만 속이 빈 점(흔들림과 다름) */
+.hd-badge.hd-cg, .hd-badge.hd-cy, .hd-badge.hd-cr { background: var(--card); }
+.hd-line { margin: 4px 0 0; font-size: 17px; line-height: 1.45; overflow-wrap: anywhere; }
+.hd-mine { margin: 4px 0 0; font-size: 17px; color: var(--sub); overflow-wrap: anywhere; }
+.hd-mine q { color: var(--ink); quotes: '「' '」'; }
+.hd-gates { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; }
+.hd-g { display: flex; align-items: center; gap: 8px; min-height: 28px; font-size: 17px; }
+.hd-g span:not(.hd-dot) { flex: 1; min-width: 0; }
+.hd-g b { font-weight: 700; }
+.hd-gq b { color: var(--gold); }
+.hd-tog { margin-top: 8px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 17px; cursor: pointer; }
+.hd-tog[aria-pressed="true"] { border-color: #FFCC00; background: var(--card3); }
+.hd-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; font-size: 17px; text-decoration: underline; text-underline-offset: 3px; }
+.hd-act { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.hd-sold, .hd-wrong { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--hair2, #272B34); background: var(--card); color: var(--ink); font: inherit; font-size: 17px; cursor: pointer; }
+.hd-wrong { color: var(--sub); }
+
+/* 적기 · 판 것 적기 */
+.hd-add-b { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 14px; border-radius: 12px; border: 1px dashed var(--hair2, #272B34); background: transparent; color: var(--ink); font: inherit; font-size: 18px; cursor: pointer; }
+.hd-form { margin-top: 10px; padding: 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--hair2, #272B34); }
+.hd-fh { margin: 0 0 8px; font-size: 20px; }
+.hd-lab { display: grid; gap: 4px; margin: 8px 0 0; font-size: 17px; color: var(--sub); }
+.hd-in-s, .hd-in-n, .hd-in-d { width: 100%; min-width: 0; min-height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 19px; box-sizing: border-box; }
+.hd-in-n { text-align: right; }
+.hd-in-d { color-scheme: dark; }
+.hd-hits { display: grid; gap: 6px; margin-top: 6px; }
+.hd-hit { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; width: 100%; min-height: 48px; padding: 6px 12px; border-radius: 12px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 18px; text-align: left; cursor: pointer; }
+.hd-hit small { color: var(--sub); font-size: 17px; }
+.hd-chosen { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 8px 0 0; font-size: 18px; }
+.hd-chosen:empty { display: none; }
+.hd-chosen span { color: var(--sub); font-size: 17px; }
+.hd-err { margin: 8px 0 0; font-size: 17px; color: var(--gold); }
+.hd-err:empty { display: none; }
+.hd-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.hd-go, .hd-no { min-height: 48px; padding: 0 18px; border-radius: 999px; border: 0; font: inherit; font-size: 18px; cursor: pointer; }
+.hd-go { background: var(--ink); color: var(--bg); font-weight: 700; }
+.hd-no { background: var(--card2); color: var(--ink); }
+
+/* 지난 보유 · 색 풀이(접힌 칸) */
+.hd-past, .hd-leg { margin-top: 14px; border-top: 1px solid var(--hair); }
+.hd-past summary, .hd-leg summary { display: flex; align-items: center; gap: 6px; min-height: 48px; font-size: 18px; cursor: pointer; }
+.hd-prow { padding: 10px 0; border-bottom: 1px solid var(--hair); }
+.hd-prow .hd-ret { margin-top: 4px; }

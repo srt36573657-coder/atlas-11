@@ -42,13 +42,12 @@ test('막는 말 — 갈래마다 · 띄어쓰기를 빼고 · 보통 글은 지
   assert.deepEqual(badWord('지금 사라'), ['사고팔기 말', '사라']);
 });
 
-test('화면 letter.js 의 막는 말 목록 = 서버 목록', () => {
+test('막는 말 한 곳 — 서버 · 화면 letter.js · 보내기 글상자 모두 site/next/words.js', async () => { // 2026-10-17 21:10 [4] 4
+  const W = await import('../../site/next/words.js');
+  assert.equal(BAD, W.BLOCK); assert.equal(OKW, W.OKW); assert.equal(badWord, W.badWord);
   const src = fs.readFileSync(new URL('../../site/letter.js', import.meta.url), 'utf8');
-  const m = /const BAD = (\[[\s\S]*?\]\]\]);/.exec(src);
-  assert.ok(m, 'letter.js 에 BAD 목록');
-  assert.deepEqual(JSON.parse(m[1].replace(/'/g, '"')), BAD.map(([k, ws]) => [k, ws]));
-  const o = /const OKW = (\[[^\]]*\]);/.exec(src);
-  assert.ok(o, 'letter.js 에 OKW 목록'); assert.deepEqual(JSON.parse(o[1].replace(/'/g, '"')), OKW);
+  assert.match(src, /import \{[^}]*\bbadWord\b[^}]*\} from '\/next\/words\.js'/, 'letter.js 가 /next/words.js 를 부름');
+  assert.doesNotMatch(src, /const (BAD|OKW) = \[/, 'letter.js 에 제 목록이 남음');
 });
 
 test('초대장 → 들어오기 → 봉인 → 여는 밤 → 배웠어요 · 답 · 신고 · 돌아보기', async () => {

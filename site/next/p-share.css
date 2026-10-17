@@ -1,0 +1,100 @@
+/* 고도리 보내기 글상자 · 친구가 연 주소(#/s/…) — 사장님 2026-10-17 21:10 「고도리 · 하나로 묶은 명령문」 [4]
+   앱(/next/) · 소개 쪽(/hello.html) · 편지 쪽(/letter.html)이 같이 씀 — 앱의 색 이름이 없는 쪽에서도 같은 먹빛(뒤 값)
+   글 17px 넘게 · 누르는 자리 44px 넘게 · 360 · 390 폭에서 옆 넘침 없음 · 입체 · 그림자 필터 없음 */
+.ps-dlg {
+  --ps-bg: var(--card, #13161C); --ps-bg2: var(--card2, #1C1F26); --ps-hair: var(--hair2, rgba(242, 239, 232, .22));
+  --ps-ink: var(--ink, #F2EFE8); --ps-sub: var(--sub, #B0B5BD); --ps-gold: var(--gold, #E9B949);
+  --ps-up: var(--up, #FF5A65); --ps-dn: var(--down, #5B96FF);
+  box-sizing: border-box; width: min(480px, calc(100vw - 24px)); max-width: calc(100vw - 24px); max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px);
+  margin: auto; padding: 0; border: 1px solid var(--ps-hair); border-radius: 18px; background: var(--ps-bg); color: var(--ps-ink);
+  font: 19px/1.5 var(--sans, 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", sans-serif);
+  word-break: keep-all; overflow-wrap: anywhere; overflow-y: auto; overscroll-behavior: contain;
+}
+.ps-dlg *, .ps-dlg *::before, .ps-dlg *::after { box-sizing: border-box; }
+.ps-dlg [hidden], .ps-after [hidden] { display: none !important; } /* 칸 꼴(display)이 hidden 을 덮지 않게 */
+.ps-dlg::backdrop { background: rgba(5, 6, 9, .72); }
+.ps-dlg.ps-fb { position: fixed; inset: 0; z-index: 100; outline: 100vmax solid rgba(5, 6, 9, .72); } /* 대화창을 못 쓰는 기계 — 뒤를 어둡게(굵은 테두리 · 그림자 아님) */
+html.ps-open { overflow: hidden; }
+html.f2 .ps-dlg { font-size: 21.7px; } html.f3 .ps-dlg { font-size: 24.4px; } /* 앱 글씨 크기 세 칸(atlas:font)과 같은 몫 */
+.ps-in { padding: 18px 16px 10px; display: flex; flex-direction: column; gap: 10px; }
+.ps-h { margin: 0; font-size: 1.16em; line-height: 1.35; font-weight: 800; }
+.ps-d { margin: 0; color: var(--ps-sub); font-size: max(17px, .9em); }
+.ps-d b { color: var(--ps-ink); }
+.ps-q { display: flex; flex-wrap: wrap; gap: 8px; }
+.ps-qb { min-height: 44px; min-width: 44px; padding: 8px 14px; border: 1px solid var(--ps-hair); border-radius: 999px; background: var(--ps-bg2); color: var(--ps-ink); font: inherit; font-size: max(17px, .9em); cursor: pointer; }
+.ps-qb:active { border-color: var(--ps-gold); }
+.ps-lrow { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: -4px; }
+.ps-lab { font-size: max(17px, .9em); color: var(--ps-sub); }
+.ps-t { display: block; width: 100%; min-height: 76px; padding: 10px 12px; border: 1px solid var(--ps-hair); border-radius: 12px; background: var(--ps-bg2); color: var(--ps-ink); font: inherit; font-size: max(17px, 1em); resize: vertical; }
+.ps-t:focus { outline: none; border-color: var(--ps-gold); }
+.ps-t.ps-show { min-height: 120px; }
+.ps-c { font-size: 17px; color: var(--ps-sub); font-variant-numeric: tabular-nums; }
+.ps-m { margin: 0; min-height: 0; font-size: max(17px, .9em); }
+.ps-m:empty { display: none; }
+.ps-m.no { color: var(--ps-gold); font-weight: 700; } /* 걸린 말 = 조심(금빛) — 빨강 · 파랑은 오름 · 내림에만 */
+.ps-m.ok { color: var(--ps-ink); }
+.ps-n, .ps-lead, .ps-pv { margin: 0; font-size: 17px; color: var(--ps-sub); }
+.ps-pk { color: var(--ps-sub); }
+.ps-pv { display: flex; align-items: baseline; gap: 4px; min-width: 0; } /* 긴 주소는 한 줄(끝은 …) — 옆 넘침 없음 */
+.ps-pv .ps-pk { flex: none; }
+.ps-url { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ps-ink); }
+.ps-acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.ps-go, .ps-x { min-height: 48px; min-width: 44px; padding: 10px 18px; border-radius: 14px; font: inherit; font-size: max(17px, 1em); font-weight: 800; cursor: pointer; }
+.ps-go { flex: 1 1 160px; border: 0; background: var(--ps-gold, #E9B949); color: #15120A; }
+.ps-go[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.ps-dlg .ps-stick { position: sticky; bottom: 0; z-index: 1; margin: 0; padding: 10px 16px 14px; background: var(--ps-bg); border-top: 1px solid var(--ps-hair); } /* 보내기 · 닫기는 늘 보임 */
+.ps-x { flex: 0 1 auto; border: 1px solid var(--ps-hair); background: transparent; color: var(--ps-ink); }
+.ps-dlg :focus-visible, .ps-land :focus-visible, .ps-after :focus-visible { outline: 3px solid var(--ps-gold, #E9B949); outline-offset: 2px; }
+.ps-toast { position: fixed; left: 50%; bottom: calc(var(--tabs, 0px) + 24px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 120; margin: 0; max-width: calc(100vw - 32px);
+  background: var(--ink, #F2EFE8); color: #111; padding: 10px 16px; border-radius: 12px; font-size: 17px; line-height: 1.45; }
+
+/* 친구가 연 주소 #/s/… */
+.ps-land, .ps-step, .ps-after { --ps-gold: var(--gold, #E9B949); --ps-sub: var(--sub, #B0B5BD); --ps-hair: var(--hair, rgba(242, 239, 232, .12)); margin: 0 16px; }
+.ps-land { padding-top: 14px; }
+.ps-kick { margin: 0; color: var(--ps-gold); font-size: 17px; font-weight: 700; }
+.ps-name { margin: 2px 0 8px; font-size: 26px; line-height: 1.3; }
+.ps-code { font-size: 17px; font-weight: 400; color: var(--ps-sub); }
+.ps-fig { margin: 0; }
+.ps-art { display: block; width: 100%; height: auto; max-height: 180px; }
+.ps-ax { stroke: var(--ps-hair); stroke-width: 1; }
+.ps-ln { fill: none; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke: var(--flat, #8E959F); }
+.ps-ln.up { stroke: var(--up, #FF5A65); } .ps-ln.dn { stroke: var(--down, #5B96FF); }
+.ps-end { fill: var(--flat, #8E959F); } .ps-end.up { fill: var(--up, #FF5A65); } .ps-end.dn { fill: var(--down, #5B96FF); }
+.ps-sent { fill: var(--ps-gold); stroke: var(--bg, #0C0E12); stroke-width: 3; }
+.ps-cap { margin: 4px 0 0; font-size: 17px; color: var(--ps-sub); }
+.ps-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--ps-gold); vertical-align: -1px; }
+.ps-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 6px; }
+.ps-v { display: flex; flex-direction: column; gap: 2px; padding: 12px; border: 1px solid var(--ps-hair); border-radius: 14px; background: var(--card, #13161C); min-width: 0; }
+.ps-vk { font-size: 17px; color: var(--ps-sub); }
+.ps-vn { font-size: 24px; line-height: 1.25; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ps-vn.up { color: var(--up, #FF5A65); } .ps-vn.dn { color: var(--down, #5B96FF); } .ps-vn.q { color: var(--ps-gold); }
+.ps-vd { font-size: 17px; color: var(--ps-sub); }
+.ps-v .ps-q { display: block; font-size: 17px; color: var(--ps-gold); }
+.ps-cmp { margin: 6px 0 0; font-size: 19px; font-weight: 700; }
+.ps-cmp.up { color: var(--up, #FF5A65); } .ps-cmp.dn { color: var(--down, #5B96FF); } .ps-cmp.q { color: var(--ps-gold); }
+.ps-step { margin-top: 22px; }
+.ps-h2 { margin: 0 0 6px; font-size: 21px; line-height: 1.35; }
+.ps-askq { color: var(--ps-gold); }
+.ps-p { margin: 0 0 10px; color: var(--ps-sub); font-size: 17px; }
+.ps-why { margin: 0 -16px; }
+.ps-after { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+.ps-after .ps-t { display: block; width: 100%; min-height: 72px; padding: 10px 12px; border: 1px solid var(--hair2, rgba(242, 239, 232, .22)); border-radius: 12px; background: var(--card2, #1C1F26); color: var(--ink, #F2EFE8); font: inherit; font-size: 19px; resize: vertical; }
+.ps-after .ps-t[readonly] { opacity: .8; }
+.ps-after .ps-qb { min-height: 44px; padding: 8px 14px; border: 1px solid var(--hair2, rgba(242, 239, 232, .22)); border-radius: 999px; background: var(--card2, #1C1F26); color: var(--ink, #F2EFE8); font: inherit; font-size: 17px; }
+.ps-after .ps-lab { font-size: 17px; color: var(--ps-sub); }
+.ps-after .ps-m { font-size: 17px; margin: 0; }
+.ps-after .ps-m.no { color: var(--ps-gold); font-weight: 700; }
+.ps-after .ps-go { min-height: 48px; padding: 10px 18px; border: 0; border-radius: 14px; background: var(--ps-gold); color: #15120A; font: inherit; font-size: 19px; font-weight: 800; flex: 1 1 160px; }
+.ps-lock { margin: 0; padding: 14px; border: 1px dashed var(--hair2, rgba(242, 239, 232, .22)); border-radius: 14px; color: var(--ps-sub); font-size: 17px; text-align: center; }
+.ps-said { margin: 0; padding: 14px 16px; border-left: 3px solid var(--ps-gold); background: var(--card, #13161C); border-radius: 0 14px 14px 0; font-size: 21px; line-height: 1.45; }
+.ps-rest { display: flex; flex-direction: column; gap: 10px; }
+.ps-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; color: var(--ink, #F2EFE8); text-decoration: underline; text-underline-offset: 3px; font-size: 17px; }
+.ps-safe { color: var(--ps-sub, #B0B5BD); font-size: 17px; text-align: center; margin: 28px 16px 8px; }
+@media (prefers-reduced-motion: no-preference) { .ps-said { animation: ps-in .35s var(--ease, ease-out) both; } }
+@keyframes ps-in { from { opacity: 0; } to { opacity: 1; } }
+.ps-askline { margin: 0 0 12px; padding: 12px 14px; border: 1px solid var(--ps-gold); border-radius: 14px; font-size: 19px; line-height: 1.5; }
+.ps-askline b { color: var(--ps-gold); }
+.ps-askline .ps-p { margin: 0; }
+.ps-mine { margin: 0; font-size: 19px; }
+.ps-after .ps-acts, .ps-rest .ps-acts { flex-direction: column; align-items: stretch; } /* 친구 화면 — 큰 단추 한 줄 · 고리는 그 밑 */
+.ps-after .ps-link { align-self: center; }
