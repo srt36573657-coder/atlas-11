@@ -68,7 +68,7 @@ jobs:
             const fs = require("fs"), want = (process.env.WANT || "").split(",").map(s => s.trim()).filter(Boolean);
             const ns = Math.min(12, Math.max(1, parseInt(process.env.NS, 10) || 6));
             const all = fs.readdirSync("scripts/atlas11/next").map(f => (/^check_([a-z0-9]+)\.mjs$/.exec(f) || [])[1]).filter(Boolean).sort();
-            const SMALL = ["cond", "gdr", "misc", "surge", "why"], ORDER = ["co", "rivals", "past", "grow", "en", "range", "next", "small", "chx", "cal", "today"];
+            const SMALL = ["cond", "gdr", "misc", "surge", "why", "hold", "share"], ORDER = ["co", "rivals", "past", "grow", "en", "range", "next", "small", "chx", "cal", "today"];
             const jobs = [], small = [];
             for (const n of ["next", "en", ...all].filter(n => !want.length || want.includes(n))) {
               if (n === "en") for (let k = 1; k <= ns; k++) jobs.push({job: "en" + k, pages: "en" + k, rank: "en"});
