@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-17T10:50:45.776Z",
+ "at": "2026-10-17T11:16:19.777Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-13",
  "companies": 2557,
@@ -8,7 +8,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "seconds": 139,
+ "seconds": 141,
  "counts": {
   "맞댄 글 낱낱": 43387,
   "맞댄 숫자 낱말": 82630,

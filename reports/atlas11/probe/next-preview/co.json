@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-17T10:51:15.306Z",
+ "at": "2026-10-17T11:16:16.877Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-13",
  "companies": 2557,
  "all": true,
  "limit": null,
  "widths": 28,
- "seconds": 138,
+ "seconds": 139,
  "counts": {
   "줄": 114497,
   "숫자 낱말": 214189,

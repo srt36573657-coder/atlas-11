@@ -1,17 +1,17 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-17T10:50:44.462Z",
+ "at": "2026-10-17T11:15:17.632Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-13",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 48,
+ "seconds": 65,
  "counts": {
   "sec": {
    "pick": 1,
-   "compare": 45
+   "compare": 61
   },
   "글 마디": 51562,
   "숫자 낱말": 51368,
