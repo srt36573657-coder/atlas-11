@@ -4,8 +4,9 @@
  *   · 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 — 새 화면도 영어 사전으로 영어가 되는지 봄
  *   · 2026-10-17 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」 — 새 화면은 제 엔진 · 사전만 씀: 엔진 /next/i18n.js · 사전 /next/i18n/en.json · en-names.json
  *     (원본 scripts/atlas11/next/i18n/en-src.json → 빌드 scripts/atlas11/next/i18n_build.mjs) — 옛 사전(/atlas/i18n/)을 받으면 실패 「옛 영어 사전」
- *   · 2026-10-17 15:48 「이름을 변경하자 아틀란스에서 보드리로 모두 변경해」 — 영어 이름은 Bodri: 화면에 옛 이름 ATLAS(대문자 낱말)가 보이면 실패 「옛 이름 ATLAS 남음」
- *     (회사 이름 Atlas Link 같은 보통 글자는 안 셈 · lang="ko" 원문 빼고 · 글 · 속성 · 창 제목 · 꾸밈 글)
+ *   · 2026-10-17 15:48 「이름을 변경하자 아틀란스에서 보드리로 모두 변경해」 · 17:34 「보드리를 고도리로 변경하자」 — 영어 이름은 site/next/brand.js 한 곳(지금 Godori):
+ *     화면에 옛 영어 이름(brand.js was — 지금 Bodri · ATLAS · 대소문자 그대로 낱말)이 보이면 실패 「옛 이름 <그 이름> 남음」
+ *     (회사 이름 Atlas Link 같은 보통 글자는 안 셈 · lang="ko" 원문 빼고 · 글 · 속성 · 창 제목 · 꾸밈 글 · 확인 창)
  *   여는 곳: /next/?dev=1&lang=en (app.js EN_NEXT 가 false 인 동안 새 화면 영어는 ?dev=1 로만 열림 · --dev 0 이면 ?lang=en 만)
  *   길: 홈 · 칩 일곱(#/f/rise|surge|lead|pick|group|ind|us) · 쇼츠(+ #/shorts/<n> 한 장씩) · 구독 · 나 · 찾기(+ #/find/<말>) · 지수 둘(#/w/KOSPI · KOSDAQ)
  *       · 보는 화면(회사 표본 — 지수 둘과 합쳐 --limit 60 · --all 이면 모든 회사) · 업종 채널 모두 · 갈래 채널 모두 · 없는 회사 · 없는 채널
@@ -23,26 +24,42 @@
  *   쓰는 법: node scripts/atlas11/next/next_en_check.mjs --base http://127.0.0.1:8826 [--all | --limit 60] [--modules] [--no-edge] [--only home,chips,shorts,sub,me,find,watch,chan,act,edge,grammar,mod]
  *            [--dev 1] [--pw /opt/node-tools/] [--out reports/atlas11/verify/next-en-latest.json] [--dump 사전에-없는-틀.json] [--app-file 고친-app.js(시험 · 서버의 /next/app.js 대신)]
  *   틀린 것이 하나라도 있으면 끝 코드 1(--only · --limit 은 「full: false」 — 마지막엔 --all --modules 로 전부)
+ *   나눠 돌리기(2026-10-17 고도리 · 규칙 76 「무거운 화면 검사는 깃허브 여러 대」 — atlas11-next-full 이 en1 ~ en6 로 함께 돌리고 gather 가 합침):
+ *     --shard k/n  한 번 다 돌 때의 일감(길 하나씩 · @tail = 누르기 → 바꿔치기 → 오늘 한 줄 문장 · @newwin = 새 창)을 같은 차례로 세워 n 몫으로 가르고 k 번째 몫만 돎
+ *                  (몫마다 같은 목록 · 같은 셈 → 일감 하나는 꼭 한 몫 · 결과 꼴은 그대로 + shard · units{total · mine · hash} · secs · counts · fails 는 제 몫만)
+ *     --list-only  브라우저 없이 이 몫의 일감 목록만 찍음(나눔 확인 — 몫 n 개를 모으면 --shard 없이 찍은 목록과 같아야 함)
+ *     --merge 몫1.json 몫2.json … [--shards n] --out 합친.json  몫 결과를 하나로(빠진 몫 · 겹친 몫 · 몫마다 다른 일감 목록이면 problems · ok: false · seconds = 가장 긴 몫)
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {BRAND} from '../../../site/next/brand.js'; // 이름 한 곳(규칙 76) — 옛 영어 이름(was)이 화면에 남았는지 봄
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const ARGV = process.argv.slice(2);
 const arg = (k, d) => { const i = ARGV.indexOf(k); return i >= 0 && ARGV[i + 1] != null && !ARGV[i + 1].startsWith('--') ? ARGV[i + 1] : d; };
 const flag = k => ARGV.includes(k);
-const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, '');
 const OUT = path.resolve(ROOT, arg('--out', 'reports/atlas11/verify/next-en-latest.json')), DUMP = arg('--dump', null);
+const isMod = f => /^\[모듈\]/.test(f.at[0]) || /모듈/.test(f.kind); // 쪽 모듈 칸 · 길에서 난 실패(결과 mod) — 나머지는 새 화면 자기 쪽(own)
+if (flag('--merge')) process.exit(await mergeShards()); // 몫 결과 합치기 — 브라우저 · 자료 없이(맨 아래 mergeShards)
+const SHARD = (() => {
+  const s = arg('--shard', null); if (s == null) return null;
+  const m = /^(\d+)\/(\d+)$/.exec(s); if (!m || +m[1] < 1 || +m[1] > +m[2]) { console.error('--shard 는 k/n 꼴(1 ≤ k ≤ n) — 받은 값 ' + s); process.exit(2); }
+  return {k: +m[1], n: +m[2], s: m[1] + '/' + m[2]};
+})();
+const LIST_ONLY = flag('--list-only');
+const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, '');
 const ALL = flag('--all'), LIMIT = Math.max(2, Number(arg('--limit', 60)) || 60), MODULES = flag('--modules'), EDGE = !flag('--no-edge');
 const APP_FILE = arg('--app-file', null) ? path.resolve(arg('--app-file')) : null; // 시험 전용 — 결과 파일에 적히고 full 이 아님
 const DEV = arg('--dev', '1') !== '0', ONLY = arg('--only', null)?.split(',').map(s => s.trim()).filter(Boolean) ?? null;
 const on = k => !ONLY || ONLY.includes(k);
 const WIDTHS = [320, 360, 390], MAIN_W = 360, H = 640;
-const require = createRequire(arg('--pw', '/opt/node-tools/'));
-const {chromium} = require('playwright');
+const OLD_EN = BRAND.was.map(w => w.en).filter(Boolean); // 옛 영어 이름(지금 Bodri · ATLAS) — 화면 안 재기에 넘김
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const OLD_RE = OLD_EN.length ? new RegExp('\\b(?:' + OLD_EN.map(reEsc).join('|') + ')\\b') : /(?!)/;
 const PAGE = base + '/next/?' + (DEV ? 'dev=1&' : '') + 'lang=en';
-const t0 = Date.now();
+const t0 = Date.now(), secs = {}, mark = (k, s) => { secs[k] = Math.round((Date.now() - s) / 100) / 10; }; // 묶음마다 걸린 초(몫 무게를 맞추는 데 씀)
 
 /* ── 자료(시험 서버에서 · 앱과 같은 파일) ── */
 const getJ = async f => { try { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); return r.ok ? await r.json() : null; } catch { return null; } };
@@ -101,9 +118,43 @@ if (MODULES && on('mod')) {
   for (const [m, rs] of Object.entries(R)) { if (!modHave[m]) { fail('모듈 없음', 'p-' + m + '.js', '옮긴 쪽 파일이 아직 없음 — 길 ' + rs.length + '개를 못 봄'); continue; } for (const r of rs) routes.push({kind: 'mod', r, mod: m}); }
 }
 
-/* ── 브라우저 ── 하나만 · 다 쓰면 닫음(기계가 작음) */
+/* ── 일감 · 몫(--shard k/n) ── 한 번 다 돌 때와 같은 일감 · 같은 차례 — 몫마다 같은 목록을 세우고 같은 셈으로 가름(일감 하나 = 꼭 한 몫)
+   일감 = 길 하나(바로 앞과 같은 길은 한 번 — 다 돌 때도 건너뛰던 것) · @tail = 누르기 → 바꿔치기 → 오늘 한 줄 문장(같은 창 · 이 차례 — 바꿔치기는 누르기가 남긴 구독 · 기록 위에서 돎)
+   · @newwin = 새 창 둘(자료 못 받음) · #/shorts 를 맡은 몫이 쇼츠 장 수를 세어 #/shorts/<n> 을 바로 뒤에 덧붙임(장 수는 화면을 열어야 앎)
+   가름: 무거운 묶음을 끝 몫부터 먼저 두고(@tail → n 번 · @newwin → n−1 번), 길은 몫마다 남은 무게에 비례해 처음부터 끝까지 고르게 섞어 나눔
+   (부드러운 가중 돌림 · 정수 셈 · 같으면 앞 몫 — 어느 기계에서나 같은 가름) · 무게 = 길 하나 1 · 묶음은 아래 UNIT_W(깃허브 실측 secs 로 맞춤) */
+const UNIT_W = {'@tail': 300, '@newwin': 80};
+const units = [];
+{ let lastR = null; for (const x of routes) { if (x.r === lastR) continue; lastR = x.r; units.push({id: x.r, ...x}); } }
+if (on('act') || (EDGE && on('edge')) || on('grammar')) units.push({id: '@tail'});
+if (EDGE && on('edge')) units.push({id: '@newwin'});
+const UHASH = createHash('sha1').update(units.map(u => u.id).join('\n')).digest('hex').slice(0, 16);
+/** 몫 가르기 — list 의 일감마다 몫 번호(0 부터) */
+function planShards(list, n) {
+  const own = list.map(() => -1), pre = new Array(n).fill(0);
+  let j = 0;
+  list.forEach((u, i) => { const w = UNIT_W[u.id]; if (!w) return; const k = Math.max(0, n - 1 - j++); own[i] = k; pre[k] += w; });
+  const R = own.filter(k => k < 0).length, tot = R + pre.reduce((a, b) => a + b, 0);
+  const q = pre.map(p => Math.max(0, tot - n * p)); // 몫마다 길 무게(n 배 한 정수) — 묶음을 맡은 몫은 그만큼 길을 덜 맡음
+  if (!q.some(Boolean)) q.fill(1);
+  const sq = q.reduce((a, b) => a + b, 0), cur = new Array(n).fill(0);
+  list.forEach((u, i) => { if (own[i] >= 0) return; let b = 0; for (let k = 0; k < n; k++) { cur[k] += q[k]; if (cur[k] > cur[b]) b = k; } own[i] = b; cur[b] -= sq; });
+  return own;
+}
+const OWN = SHARD ? planShards(units, SHARD.n) : null;
+const mine = SHARD ? units.filter((u, i) => OWN[i] === SHARD.k - 1) : units;
+const mineIds = new Set(mine.map(u => u.id));
+const RUN = mine.filter(u => u.r != null), TAIL_MINE = mineIds.has('@tail'), NEWWIN_MINE = mineIds.has('@newwin');
+if (LIST_ONLY) { // 나눔 확인 — 브라우저 없이
+  console.log(JSON.stringify({shard: SHARD?.s ?? null, total: units.length, hash: UHASH, mine: mine.length, w: UNIT_W, units: mine.map(u => u.id)}));
+  process.exit(0);
+}
+
+/* ── 브라우저 ── 하나만 · 다 쓰면 닫음(기계가 작음) · 이 몫에 일감이 없으면 열지 않음 */
+const require = createRequire(arg('--pw', '/opt/node-tools/'));
+const {chromium} = require('playwright');
 const exe = '/opt/pw-browsers/chromium';
-const b = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {});
+const b = mine.length ? await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {}) : null;
 async function newPage(block = []) {
   const ctx = await b.newContext({viewport: {width: MAIN_W, height: H}, deviceScaleFactor: 1, hasTouch: true});
   const p = await ctx.newPage(); p._errs = [];
@@ -127,29 +178,30 @@ async function go(q, hash) {
 }
 
 /* 화면 안에서 재기 — 글(한글) · 꼴 */
-function judgeText() {
+function judgeText(OLD) {
   const HN = /[가-힣ㄱ-ㅎㅏ-ㅣ]/;
   const vis = el => { if (!el) return false; const s = getComputedStyle(el); if (s.visibility === 'hidden' || s.display === 'none') return false; if (!el.getClientRects().length) return false; if (el.closest('details:not([open]) > :not(summary)')) return false; return true; };
   const MODH = /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/)/; // 쪽 모듈 길(p-*.js)
   const han = [], attrs = [], pseudo = [], key = s => { try { return window.__atlasI18n.templateOf(s).key; } catch { return s; } };
-  const AT = /\bATLAS\b/, atlas = []; // 옛 영어 이름(2026-10-17 보드리로 바꿈) — 대문자 낱말만(회사 이름 Atlas Link 는 안 셈)
+  // 옛 영어 이름(brand.js was — 지금 Bodri · ATLAS) — 대소문자 그대로 낱말만(회사 이름 Atlas Link 는 안 셈) · w = 남은 이름
+  const AT = OLD.length ? new RegExp('\\b(?:' + OLD.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b') : /(?!)/, atlas = [], ow = s => (String(s).match(AT) || [''])[0];
   const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   for (let n = w.nextNode(); n; n = w.nextNode()) {
     const el = n.parentElement; if (!el || el.closest('[lang="ko"], script, style, noscript, template, [hidden]')) continue;
     const t = n.nodeValue.trim();
-    if (t && AT.test(t) && vis(el)) atlas.push({ex: t.slice(0, 90), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)});
+    if (t && AT.test(t) && vis(el)) atlas.push({ex: t.slice(0, 90), w: ow(t), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)});
     if (!t || !HN.test(t) || !vis(el)) continue;
     han.push({mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash), k: key(t), ex: t.slice(0, 90), av: el.matches('.av')});
   }
-  for (const a of ['aria-label', 'title', 'placeholder', 'alt']) for (const el of document.querySelectorAll('[' + a + ']')) { if (el.closest('[lang="ko"], [hidden], template')) continue; const v = el.getAttribute(a); if (HN.test(v)) attrs.push({k: '@' + a + ' ' + key(v), ex: v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); if (AT.test(v)) atlas.push({ex: '@' + a + ' ' + v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); }
-  if (AT.test(document.title)) atlas.push({ex: '창 제목 ' + document.title.slice(0, 70), mod: false});
+  for (const a of ['aria-label', 'title', 'placeholder', 'alt']) for (const el of document.querySelectorAll('[' + a + ']')) { if (el.closest('[lang="ko"], [hidden], template')) continue; const v = el.getAttribute(a); if (HN.test(v)) attrs.push({k: '@' + a + ' ' + key(v), ex: v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); if (AT.test(v)) atlas.push({ex: '@' + a + ' ' + v.slice(0, 70), w: ow(v), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); }
+  if (AT.test(document.title)) atlas.push({ex: '창 제목 ' + document.title.slice(0, 70), w: ow(document.title), mod: false});
   // 동그라미 글자(.av — 이름의 첫 글자) — 영어면 로마자 한 글자여야 함(한글 한 글자를 사전이 낱말로 바꾸면 「금」 → Fri · 「소」 → cattle 처럼 엉뚱한 말)
   const avBad = [...document.querySelectorAll('.av')].filter(e => vis(e) && !e.closest('[lang="ko"]')).map(e => e.textContent.trim()).filter(t => t && !/^[A-Za-z0-9?]$/.test(t) && !HN.test(t));
   // 꾸밈 글(::before · ::after content) — 글자 마디가 아니라 위 검사가 못 봄
   const sels = [], walk = rules => { for (const ru of rules) { if (ru.cssRules) walk(ru.cssRules); if (ru.selectorText && /::?(before|after)/.test(ru.selectorText) && (HN.test(ru.style?.content ?? '') || AT.test(ru.style?.content ?? ''))) sels.push(ru.selectorText); } };
   for (const sh of document.styleSheets) { try { walk(sh.cssRules); } catch { /* 다른 곳 글꼴표 */ } }
   for (const sel of sels) for (const part of sel.split(',')) { const m = /^(.*?)::?(before|after)\s*$/.exec(part.trim()); if (!m) continue; let els = []; try { els = document.querySelectorAll(m[1] || '*'); } catch { continue; }
-    for (const el of els) { if (el.closest('[lang="ko"]') || !vis(el)) continue; const c = getComputedStyle(el, '::' + m[2]).content; if (c && HN.test(c)) pseudo.push('::' + m[2] + ' ' + c.slice(0, 40)); if (c && AT.test(c)) atlas.push({ex: '::' + m[2] + ' ' + c.slice(0, 40), mod: false}); } }
+    for (const el of els) { if (el.closest('[lang="ko"]') || !vis(el)) continue; const c = getComputedStyle(el, '::' + m[2]).content; if (c && HN.test(c)) pseudo.push('::' + m[2] + ' ' + c.slice(0, 40)); if (c && AT.test(c)) atlas.push({ex: '::' + m[2] + ' ' + c.slice(0, 40), w: ow(c), mod: false}); } }
   let titleEn = document.title; try { titleEn = window.__atlasI18n.t(document.title); } catch { /* 엔진 없음 */ }
   return {han, attrs, pseudo, avBad, atlas, title: document.title, titleKey: key(document.title), titleEn, lang: document.documentElement.lang, toast: [...document.querySelectorAll('.toast')].map(e => e.textContent)};
 }
@@ -169,12 +221,12 @@ function judgeBox() {
   return {over: de.scrollWidth - W, out: out.slice(0, 6), box: box.slice(0, 6)};
 }
 async function judge(p, where, {widths = true} = {}) {
-  const tx = await p.evaluate(judgeText);
+  const tx = await p.evaluate(judgeText, OLD_EN);
   for (const t of tx.han) { if (t.av) avChars.add(t.ex); fail(t.mod ? '한글 남음(모듈 칸)' : t.av ? '한글 남음(동그라미 글자 — app.js first() 가 영어 이름 첫 글자를 써야 함)' : '한글 남음', where, t.k, t.ex); }
   for (const t of tx.attrs) fail(t.mod ? '한글 남음(모듈 칸 · 속성)' : '한글 남음(속성)', where, t.k, t.ex);
   for (const t of tx.pseudo) fail('한글 남음(꾸밈 글)', where, t);
   for (const t of tx.avBad) fail('동그라미 글자가 낱말로 바뀜', where, t);
-  for (const t of tx.atlas) fail(t.mod ? '옛 이름 ATLAS 남음(모듈 칸)' : '옛 이름 ATLAS 남음', where, t.ex);
+  for (const t of tx.atlas) fail('옛 이름 ' + (t.w || OLD_EN.join('/')) + ' 남음' + (t.mod ? '(모듈 칸)' : ''), where, t.ex);
   // 창 제목 — app.js 가 그린 뒤에 document.title 을 바꿈(엔진은 body 만 봄) → 사전에 틀이 있어도 app.js 가 L() 로 감싸야 영어
   if (HAN.test(tx.title)) fail(HAN.test(tx.titleEn) ? '창 제목 한글(사전에도 없음)' : '창 제목 한글(app.js 가 L() 로 안 감쌈 — 사전에는 있음)', where, tx.titleKey, tx.title);
   if (tx.lang !== 'en') fail('html lang', where, String(tx.lang));
@@ -203,21 +255,23 @@ function errs(p, where) {
   if (p._dicts) p._dicts.length = 0;
 }
 
-/* ── ① 길 돌기 ── */
-const p = await newPage();
-errs(p, '처음 열기');
-// 쇼츠 장 수 → 한 장씩
-if (on('shorts')) { await go(p, '#/shorts'); const n = await p.evaluate(() => document.querySelectorAll('#view .sh').length); bump('쇼츠 장', n); for (let i = 0; i < n; i++) routes.splice(routes.findIndex(x => x.r === '#/shorts') + 1 + i, 0, {kind: 'shorts', r: '#/shorts/' + i}); await go(p, '#/me'); }
-let last = null;
-for (const {kind, r} of routes) {
-  if (r === last) continue; last = r;
+/* ── ① 길 돌기 ── 이 몫의 길만(RUN · 한 번 다 돌 때와 같은 차례) · 창 p 는 길이나 @tail 을 맡은 몫만 엶 */
+let tS = Date.now();
+const p = RUN.length || TAIL_MINE ? await newPage() : null;
+if (p) { errs(p, '처음 열기'); mark('open', tS); }
+// 쇼츠 장 수 → 한 장씩(#/shorts 를 맡은 몫만)
+if (on('shorts') && mineIds.has('#/shorts')) { await go(p, '#/shorts'); const n = await p.evaluate(() => document.querySelectorAll('#view .sh').length); bump('쇼츠 장', n); const at = RUN.findIndex(x => x.r === '#/shorts'); for (let i = 0; i < n; i++) RUN.splice(at + 1 + i, 0, {kind: 'shorts', r: '#/shorts/' + i}); await go(p, '#/me'); }
+tS = Date.now();
+for (const {kind, r} of RUN) { // 바로 앞과 같은 길은 일감을 세울 때 이미 뺌
   try { await go(p, r); await p.waitForTimeout(r === '#/' ? 300 : 60); await judge(p, r); bump('길 · ' + kind); }
   catch (e) { fail('멈춤', r, String(e.message || e).slice(0, 160)); }
 }
+if (RUN.length) mark('routes', tS);
 
-/* ── ② 누르기 ── */
+/* ── ② 누르기 ── (② ③ ④ = 일감 @tail — 맡은 몫만 · 같은 창에서 이 차례) */
 async function toastOf(q) { return q.evaluate(() => [...document.querySelectorAll('.toast')].map(e => e.textContent).join(' | ')); }
-if (on('act')) {
+tS = Date.now();
+if (TAIL_MINE && on('act')) {
   const W0 = '005930', o = CO[W0];
   try {
     await p.evaluate(() => { for (const k of ['atlas:new:sub', 'atlas:new:hist', 'atlas:new:later']) localStorage.removeItem(k); });
@@ -260,7 +314,7 @@ if (on('act')) {
     await p.click('#view .lst button'); await p.waitForTimeout(150);
     if (dlg == null) fail('누르기', '나 칸 지우기', '확인 창이 안 뜸');
     else if (HAN.test(dlg)) { const en = await p.evaluate(s => window.__atlasI18n.t(s), dlg); fail(HAN.test(en) ? '한글 남음(확인 창 · 사전에도 없음)' : '한글 남음(확인 창 · app.js 가 L() 로 안 감쌈 — 사전에는 있음)', '나 칸 지우기', dlg); }
-    if (dlg != null && /\bATLAS\b/.test(dlg)) fail('옛 이름 ATLAS 남음', '나 칸 지우기', '확인 창 ' + dlg.slice(0, 70));
+    if (dlg != null && OLD_RE.test(dlg)) fail('옛 이름 ' + dlg.match(OLD_RE)[0] + ' 남음', '나 칸 지우기', '확인 창 ' + dlg.slice(0, 70));
     await judge(p, '누르기 · 지우기', {widths: false});
     // 쇼츠 보내기
     await go(p, '#/shorts'); const sb = p.locator('#view .sh .side button').first();
@@ -308,7 +362,9 @@ const ALERTS = [[{kind: 'idx', key: 'KOSPI', name: '코스피', v: -3.1, why: 'u
   [{kind: 'idx', key: 'KOSPI', name: '코스피', v: 5.2, why: 'big'}], [{kind: 'idx', key: 'KOSDAQ', name: '코스닥', v: -2.6, why: 'usual'}]];
 async function swap(q, patch) { await q.evaluate(pt => { const D = window.NX.D; for (const [k, v] of Object.entries(pt)) D[k] = v; }, patch); }
 async function redraw(q, hh, where, opt) { await go(q, hh === '#/me' ? '#/sub' : '#/me'); await go(q, hh); await judge(q, where, opt); }
-if (EDGE && on('edge')) {
+if (TAIL_MINE) mark('act', tS);
+tS = Date.now();
+if (TAIL_MINE && EDGE && on('edge')) {
   try {
     const H0 = C(home), core0 = C(core);
     let si = 0;
@@ -340,7 +396,9 @@ if (EDGE && on('edge')) {
 
 /* ── ④ 오늘 한 줄 문장 모두 — 때 일곱 꼴 × 코스피(는) · 코스닥(은) × 오름 · 내림 × 평소 견줌 × 이후 가장 크게 × 잇달아 — 엔진에 바로 넣어 봄
    (app.js todayWords · idxAlerts 와 같은 말 차례 · 숫자는 아무 값 — 틀은 숫자를 {n} 으로 바꿈) */
-if (on('grammar')) {
+if (TAIL_MINE) mark('edge', tS);
+tS = Date.now();
+if (TAIL_MINE && on('grammar')) {
   const out = await p.evaluate(() => {
     const NB = ' ', T = window.__atlasI18n.t, bad = [];
     const whens = ['10월 9일', '오늘', '10월 9일 오전 10:20까지', '10월 9일 오후 2:59까지', '오늘 오전 9:40까지', '오늘 오후 1:05까지'];
@@ -365,10 +423,15 @@ if (on('grammar')) {
   for (const s of out.bad) fail('오늘 한 줄 문장(사전에 없음)', 'grammar', s);
   const ms = await p.evaluate(() => window.__atlasI18n?.missing() ?? []); for (const m of ms) if (!miss.has(m.key)) miss.set(m.key, {ex: m.ex, at: 'grammar'});
 }
-await p.context().close();
+if (TAIL_MINE) mark('grammar', tS);
+if (p) { // 창을 닫기 전에 엔진이 마지막 화면 뒤에 쌓은 틀까지(나눠 돌 때 @tail 이 없는 몫도 같은 것을 봄 — 다 돌 때는 grammar 가 하던 것)
+  try { const ms = await p.evaluate(() => window.__atlasI18n?.missing() ?? []); for (const m of ms) if (!miss.has(m.key)) miss.set(m.key, {ex: m.ex, at: TAIL_MINE ? 'grammar' : '길 돌기 끝'}); } catch { /* 창이 멈춤 — 위에서 셈 */ }
+  await p.context().close();
+}
 
-/* ── ⑤ 새 창 — 자료 파일을 못 받을 때(받은 것을 화면 안에서 바꿀 수 없는 칸: 몸값 · 급등 · 모든 자료) ── */
-if (EDGE && on('edge')) {
+/* ── ⑤ 새 창 — 자료 파일을 못 받을 때(받은 것을 화면 안에서 바꿀 수 없는 칸: 몸값 · 급등 · 모든 자료) ── 일감 @newwin(맡은 몫만) */
+tS = Date.now();
+if (NEWWIN_MINE && EDGE && on('edge')) {
   for (const [nm, block, hs] of [['몸값 · 급등 · 첫 화면 자료 못 받음', ['cond.json', 'surge.json', 'home.json'], ['#/', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/us', '#/shorts', '#/w/KOSPI', '#/w/005930']],
     ['모든 자료 못 받음', ['core.json', 'mkt.json'], ['#/', '#/f/rise', '#/f/ind', '#/shorts', '#/w/005930', '#/w/KOSPI', '#/ch/g/semi', '#/ch/i/' + enc('반도체'), '#/sub', '#/me', '#/find']]]) {
     let q = null;
@@ -381,24 +444,85 @@ if (EDGE && on('edge')) {
     } catch (e) { fail('멈춤', '새 창 · ' + nm, String(e.message || e).slice(0, 200)); }
     await q?.context().close();
   }
+  mark('newwin', tS);
 }
-await b.close();
+await b?.close();
 
 /* ── 결과 ── */
 let avMiss = 0;
 for (const [key, m] of miss) { if (avChars.has(key)) { avMiss++; continue; } fail('사전에 없는 틀', m.at, key + '  ← 「' + String(m.ex).slice(0, 80) + '」'); }
 const list = [...fails.values()];
 const kinds = list.reduce((a, f) => { a[f.kind] = (a[f.kind] || 0) + 1; return a; }, {});
-const full = !ONLY && ALL && MODULES && EDGE && DEV && !APP_FILE;
-const isMod = f => /^\[모듈\]/.test(f.at[0]) || /모듈/.test(f.kind);
+const fullRun = !ONLY && ALL && MODULES && EDGE && DEV && !APP_FILE, full = fullRun && !SHARD; // 몫 하나는 full 이 아님 — 몫을 모두 합친 결과(--merge)가 fullIfMerged 를 이어받음
 const own = list.filter(f => !isMod(f)), modF = list.filter(isMod);
-const res = {schema: 'atlas11-next-en-check-1', at: new Date().toISOString(), base, page: PAGE, lang: 'en', widths: WIDTHS, routes: routes.length, companies: WATCH.length, allCompanies: ALL, modules: MODULES,
-  modFiles: modHave, edge: EDGE, only: ONLY, appFile: APP_FILE, full, seconds: Math.round((Date.now() - t0) / 1000), counts, missing: miss.size - avMiss, avatarLetters: avMiss, kinds, fails: list.length,
+const res = {schema: 'atlas11-next-en-check-1', at: new Date().toISOString(), base, page: PAGE, lang: 'en', widths: WIDTHS, routes: RUN.length, companies: WATCH.length, allCompanies: ALL, modules: MODULES,
+  modFiles: modHave, edge: EDGE, only: ONLY, appFile: APP_FILE, shard: SHARD?.s ?? null, ...(SHARD ? {fullIfMerged: fullRun} : {}), full,
+  units: {total: units.length, mine: mine.length, hash: UHASH, w: UNIT_W}, seconds: Math.round((Date.now() - t0) / 1000), secs, counts, missing: miss.size - avMiss, avatarLetters: avMiss, kinds, fails: list.length,
   own: {fails: own.length, missing: own.filter(f => f.kind === '사전에 없는 틀').length, leftover: own.filter(f => f.kind.startsWith('한글 남음')).length},
   mod: {fails: modF.length, missing: modF.filter(f => f.kind === '사전에 없는 틀').length, leftover: modF.filter(f => f.kind.startsWith('한글 남음')).length},
-  missingList: [...miss].filter(([key]) => !avChars.has(key)).map(([key, m]) => ({key, ex: m.ex, at: m.at})), all: list.slice(0, 800), ok: list.length === 0};
+  missingList: [...miss].filter(([key]) => !avChars.has(key)).map(([key, m]) => ({key, ex: m.ex, at: m.at})),
+  avChars: [...avChars], avatarList: [...miss.keys()].filter(key => avChars.has(key)), // 합칠 때 동그라미 글자 틀을 몫 사이에서도 빼려고(보통 빈 목록)
+  all: list.slice(0, 800), ok: list.length === 0};
 await fs.mkdir(path.dirname(OUT), {recursive: true});
 await fs.writeFile(OUT, JSON.stringify(res, null, 1) + '\n');
 if (DUMP) await fs.writeFile(path.resolve(DUMP), JSON.stringify(res.missingList, null, 1) + '\n');
-console.log(JSON.stringify({ok: res.ok, routes: res.routes, screens: counts['화면'] || 0, missing: res.missing, fails: res.fails, own: res.own, mod: res.mod, kinds, full, seconds: res.seconds}));
+console.log(JSON.stringify({ok: res.ok, shard: res.shard, routes: res.routes, screens: counts['화면'] || 0, missing: res.missing, fails: res.fails, own: res.own, mod: res.mod, kinds, full, seconds: res.seconds, secs}));
 process.exit(res.ok ? 0 : 1);
+
+/** 몫 결과 합치기(--merge) — node scripts/atlas11/next/next_en_check.mjs --merge out/en1.json … [--shards n] --out out/en.json · 끝 코드 0 = 몫이 모두 · 같은 목록 · 실패 0
+ *   맞대 봄: 몫 1 ~ n 이 한 번씩 · 같은 일감 목록(units.hash · total) · 몫 일감 수 합 = 전체 · 같은 곳 · 같은 다짐(--all · --modules …) — 아니면 problems · ok: false
+ *   합침: counts 더함 · 같은 실패 글은 하나(번 수 더함 · 본 곳 다섯까지) · 사전에 없는 틀은 틀마다 하나(먼저 몫 것) · 동그라미 글자 틀은 몫 사이에서도 뺌
+ *         seconds = 가장 긴 몫(함께 도니까 걸린 때) · secondsSum = 모두 더한 것 · shards = 몫마다 한 줄 */
+async function mergeShards() {
+  const files = []; for (let i = ARGV.indexOf('--merge') + 1; i < ARGV.length && !ARGV[i].startsWith('--'); i++) files.push(ARGV[i]);
+  const want = Number(arg('--shards', 0)) || null, problems = [], P = [];
+  for (const f of files) {
+    let j = null; try { j = JSON.parse(await fs.readFile(f, 'utf8')); } catch (e) { problems.push(`${path.basename(f)} 못 읽음 — ${String(e.message).slice(0, 120)}`); continue; }
+    const m = /^(\d+)\/(\d+)$/.exec(j?.shard ?? '');
+    if (j?.schema !== 'atlas11-next-en-check-1' || !m) { problems.push(`${path.basename(f)} 은 몫 결과가 아님(shard 없음)`); continue; }
+    P.push({k: +m[1], n: +m[2], j, f: path.basename(f)});
+  }
+  P.sort((a, b) => a.k - b.k);
+  const n = want ?? P[0]?.n ?? 0;
+  if (!P.length) problems.push('몫 결과가 하나도 없음');
+  for (const x of P) if (x.n !== n) problems.push(`${x.f} 몫 수 ${x.n} ≠ ${n}`);
+  for (let k = 1; k <= n; k++) { const c = P.filter(x => x.k === k).length; if (c !== 1) problems.push(c ? `${k}/${n} 몫이 ${c}번` : `${k}/${n} 몫 결과 없음`); }
+  const lists = new Set(P.map(x => `${x.j.units?.hash}·${x.j.units?.total}`));
+  if (lists.size > 1) problems.push('몫마다 일감 목록이 다름(도는 사이 자료가 바뀜?) ' + [...lists].join(' | '));
+  const total = P[0]?.j.units?.total ?? 0, sumMine = P.reduce((a, x) => a + (x.j.units?.mine ?? 0), 0);
+  if (P.length && lists.size === 1 && sumMine !== total) problems.push(`몫 일감 합 ${sumMine} ≠ 전체 ${total}`);
+  for (const key of ['base', 'page', 'allCompanies', 'modules', 'edge', 'only', 'appFile', 'companies', 'fullIfMerged']) if (new Set(P.map(x => JSON.stringify(x.j[key] ?? null))).size > 1) problems.push(`몫마다 ${key} 가 다름`);
+  const counts = {}, failsM = new Map(), avAll = new Set(), keysAll = new Set(), missingList = [], seenK = new Set();
+  let truncated = false;
+  for (const {j} of P) for (const c of j.avChars ?? []) avAll.add(c);
+  for (const {j} of P) {
+    for (const [k, v] of Object.entries(j.counts ?? {})) counts[k] = (counts[k] || 0) + v;
+    for (const k of j.avatarList ?? []) keysAll.add(k);
+    for (const m of j.missingList ?? []) { keysAll.add(m.key); if (!avAll.has(m.key) && !seenK.has(m.key)) { seenK.add(m.key); missingList.push(m); } }
+    if ((j.all?.length ?? 0) < (j.fails ?? 0)) truncated = true;
+    for (const f of j.all ?? []) {
+      const tk = f.kind === '사전에 없는 틀' ? String(f.what).split('  ← ')[0] : null; // 사전에 없는 틀은 틀(key)마다 하나 — 보기 글(ex)은 몫마다 다를 수 있음
+      if (tk != null && avAll.has(tk)) continue;
+      const key = f.kind + '|' + (tk ?? f.what), g = failsM.get(key);
+      if (!g) failsM.set(key, {...f, at: [...(f.at ?? [])]});
+      else if (tk == null) { g.n += f.n ?? 1; for (const a of f.at ?? []) if (g.at.length < 5) g.at.push(a); }
+    }
+  }
+  const list = [...failsM.values()], own = list.filter(f => !isMod(f)), modF = list.filter(isMod);
+  const kinds = list.reduce((a, f) => { a[f.kind] = (a[f.kind] || 0) + 1; return a; }, {});
+  const J0 = P[0]?.j ?? {}, sec = P.map(x => x.j.seconds ?? 0);
+  const ok = !problems.length && !truncated && list.length === 0;
+  const res = {schema: 'atlas11-next-en-check-1', at: new Date().toISOString(), base: J0.base ?? null, page: J0.page ?? null, lang: 'en', widths: J0.widths ?? null,
+    routes: P.reduce((a, x) => a + (x.j.routes ?? 0), 0), companies: J0.companies ?? null, allCompanies: J0.allCompanies ?? null, modules: J0.modules ?? null, modFiles: J0.modFiles ?? null,
+    edge: J0.edge ?? null, only: J0.only ?? null, appFile: J0.appFile ?? null, shard: `all/${n}`, full: !problems.length && J0.fullIfMerged === true,
+    units: {total, hash: J0.units?.hash ?? null, w: J0.units?.w ?? null}, seconds: Math.max(0, ...sec), secondsSum: sec.reduce((a, b) => a + b, 0),
+    shards: P.map(x => ({shard: x.j.shard, ok: x.j.ok, fails: x.j.fails, routes: x.j.routes, screens: x.j.counts?.['화면'] ?? 0, mine: x.j.units?.mine ?? null, seconds: x.j.seconds, secs: x.j.secs ?? null})),
+    counts, missing: missingList.length, avatarLetters: [...keysAll].filter(k => avAll.has(k)).length, kinds, fails: list.length,
+    own: {fails: own.length, missing: own.filter(f => f.kind === '사전에 없는 틀').length, leftover: own.filter(f => f.kind.startsWith('한글 남음')).length},
+    mod: {fails: modF.length, missing: modF.filter(f => f.kind === '사전에 없는 틀').length, leftover: modF.filter(f => f.kind.startsWith('한글 남음')).length},
+    missingList, all: list.slice(0, 800), truncated, problems, ok};
+  await fs.mkdir(path.dirname(OUT), {recursive: true});
+  await fs.writeFile(OUT, JSON.stringify(res, null, 1) + '\n');
+  console.log(JSON.stringify({ok, shards: n, got: P.length, routes: res.routes, screens: counts['화면'] || 0, missing: res.missing, fails: res.fails, own: res.own, mod: res.mod, kinds, full: res.full, seconds: res.seconds, secondsSum: res.secondsSum, problems}));
+  return ok ? 0 : 1;
+}

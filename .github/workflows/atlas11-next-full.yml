@@ -2,6 +2,12 @@ name: atlas11-next-full
 # 새 아틀란스 모든 쪽 검사 — 실제 사이트(aaa7377.com)에서 쪽마다 따로 돌림(사장님 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 · 04:23 「정말 빠르면서도 정밀하게 … 에이전트 총 동원해」 · 규칙 74)
 #   쪽 검사 check_<이름>.mjs = 지금 아틀란스(/atlas/)의 그 쪽과 새 쪽(/next/?dev=1)을 같은 자료로 열어 숫자 · 글 · 고리를 맞댐(모든 회사 · 모든 칸)
 #   쪽마다 다른 실행기에서 함께 돌고, 결과는 마지막에 한 번에 reports/atlas11/probe/next-full/ 로 올림 · 사이트를 바꾸지 않음(읽기만)
+# 2026-10-17 고도리(규칙 76 「빠르고 정밀하게 — 무거운 화면 검사는 깃허브 여러 대」 · 자세히 docs/design/godori-2026-10-17/ci.md):
+#   · 영어 검사(en — 혼자 38분)를 en1 ~ en6 여섯 대로 나눠 함께 돌림: next_en_check.mjs --shard k/6 = 한 번 다 돌 때와 같은 일감을 겹침 · 빠짐 없이 가름
+#     gather 가 몫을 하나로 합침(--merge — 몫이 모두 · 같은 일감 목록인지도 맞댐) → summary.json 에는 en 한 줄(몫이 모두 0 일 때만 0 · seconds = 가장 긴 몫)
+#   · local = 올리기 전 검사: 이 가지(--ref)를 실행기 안에서 묶어(package.mjs · 저장소 자료 그대로) 시험 서버(invite_dev.mjs · 127.0.0.1:8826)로 띄우고 같은 검사를 돌림
+#     결과는 reports/atlas11/probe/next-preview/ (next-full 은 건드리지 않음 · 커밋 글에 preview · 가지 · 커밋 번호) · 사이트에는 아무것도 올리지 않음
+#   · 쓰는 법: gh workflow run atlas11-next-full.yml -R srt36573657-coder/atlas-11 --ref <가지> -f local=true
 on:
   workflow_dispatch:
     inputs:
@@ -9,6 +15,15 @@ on:
         description: '쪽 이름(쉼표) — 비우면 모두'
         required: false
         default: ''
+      local:
+        description: '올리기 전 검사 — 이 가지를 실행기 안에서 묶어 띄우고 검사(결과 next-preview)'
+        type: boolean
+        required: false
+        default: false
+      en_shards:
+        description: '영어 검사를 몇 대로 나눌지(1 ~ 12)'
+        required: false
+        default: '6'
 permissions:
   contents: write
 jobs:
@@ -16,15 +31,31 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       list: ${{ steps.p.outputs.list }}
+      shards: ${{ steps.p.outputs.shards }}
+      t0: ${{ steps.p.outputs.t0 }}
     steps:
       - uses: actions/checkout@v4
+        with: # 쪽 이름만 셈 — 검사 폴더만 받음(저장소 전체를 받으면 30초)
+          sparse-checkout: scripts/atlas11/next
+          filter: blob:none
       - id: p
+        env:
+          WANT: ${{ inputs.pages }}
+          NS: ${{ inputs.en_shards }}
         run: |
-          want="${{ inputs.pages }}"
+          echo "t0=$(date +%s)" >> "$GITHUB_OUTPUT"
+          case "$NS" in ''|*[!0-9]*) NS=6 ;; esac
+          if [ "$NS" -lt 1 ] || [ "$NS" -gt 12 ]; then NS=6; fi
           all=$(ls scripts/atlas11/next/ | sed -n 's/^check_\([a-z0-9]*\)\.mjs$/\1/p' | tr '\n' ' ')
           list=""
-          for n in next en $all; do if [ -z "$want" ] || echo ",$want," | grep -q ",$n,"; then list="$list\"$n\","; fi; done
+          for n in next en $all; do
+            if [ -z "$WANT" ] || echo ",$WANT," | grep -q ",$n,"; then
+              if [ "$n" = en ]; then for k in $(seq 1 "$NS"); do list="$list\"en$k\","; done; else list="$list\"$n\","; fi
+            fi
+          done
           echo "list=[${list%,}]" >> "$GITHUB_OUTPUT"
+          echo "shards=$NS" >> "$GITHUB_OUTPUT"
+          echo "쪽 [${list%,}] · 영어 $NS 대 · local=${{ inputs.local }}"
   page:
     needs: plan
     runs-on: ubuntu-latest
@@ -33,54 +64,138 @@ jobs:
       fail-fast: false
       matrix:
         name: ${{ fromJSON(needs.plan.outputs.list) }}
+    env:
+      LOCAL: ${{ inputs.local && '1' || '0' }}
+      SHARDS: ${{ needs.plan.outputs.shards }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: |
+          cache: ${{ inputs.local && 'npm' || '' }}
+      - name: 브라우저 준비
+        run: |
           mkdir -p /tmp/pw out
           (cd /tmp/pw && npm i -s --no-audit --no-fund playwright@1.56.1 >/dev/null && npx -y playwright@1.56.1 install --with-deps chromium >/dev/null)
+      - name: 올리기 전 — 이 가지를 묶어 시험 서버로 띄움
+        if: ${{ inputs.local }}
+        run: |
+          t0=$(date +%s)
+          npm ci --omit=dev --no-audit --no-fund >/tmp/npm.log 2>&1 || { tail -c 2000 /tmp/npm.log; exit 1; }
+          # 묶기(dist/) — 실행기에서도 종가를 새로 받지 않음(GITHUB_ACTIONS=false · 저장소 자료 그대로) · 네 눈 점검은 짧게(사이트 올리기 때는 눈마다 1,000만 번 그대로)
+          GITHUB_ACTIONS=false ATLAS_INSPECT_N=20000 node scripts/atlas11/package.mjs --no-full --out ../out >/tmp/pack.log 2>&1 || { tail -c 3000 /tmp/pack.log; exit 1; }
+          tail -n 2 /tmp/pack.log | cut -c1-400
+          # 시험 서버 — 넷리파이처럼 dist/ 를 내보냄(보안 머리말 · /api/letter · /api/invite 포함) · 열쇠는 이 실행기에서만 쓰는 시험 열쇠(진짜 열쇠 아님)
+          key=$(node -e 'process.stdout.write(require("crypto").randomBytes(24).toString("base64url"))')
+          nohup node scripts/atlas11/invite_dev.mjs --dir dist --port 8826 --owner-key "$key" >/tmp/dev.log 2>&1 &
+          for i in $(seq 1 90); do
+            if curl -fs -o /dev/null http://127.0.0.1:8826/next/ 2>/dev/null && curl -fs -o /dev/null http://127.0.0.1:8826/atlas/data/core.json 2>/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS -o /dev/null http://127.0.0.1:8826/next/ || { cat /tmp/dev.log; exit 1; }
+          echo "BUILD_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+          echo "묶고 띄움 $(( $(date +%s) - t0 ))초 · $(head -c 300 /tmp/dev.log)"
+      - name: 검사
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p out
           n="${{ matrix.name }}"; t0=$(date +%s)
-          if [ "$n" = "next" ]; then f=next_check.mjs; extra=""; elif [ "$n" = "en" ]; then f=next_en_check.mjs; extra="--modules --dev 0 --all"; else f="check_$n.mjs"; extra="--all"; fi
-          set +e
-          PW_DIR=/tmp/pw/ timeout 4200 node "scripts/atlas11/next/$f" --base https://aaa7377.com --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
-          code=$?
-          set -e
-          echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 ))}" > "out/$n.exit.json"
+          base=https://aaa7377.com; mode=live
+          if [ "$LOCAL" = 1 ]; then base=http://127.0.0.1:8826; mode=local; fi
+          case "$n" in
+            next) f=next_check.mjs; extra="" ;;
+            en[0-9]*) f=next_en_check.mjs; extra="--modules --dev 0 --all --shard ${n#en}/$SHARDS" ;;
+            *) f="check_$n.mjs"; extra="--all" ;;
+          esac
+          if [ "$LOCAL" = 1 ] && ! curl -fs -o /dev/null "$base/next/"; then
+            code=98; { echo "시험 서버가 안 떴음 — 묶기 · 띄우기 실패"; tail -c 2500 /tmp/pack.log 2>/dev/null; tail -c 1200 /tmp/dev.log 2>/dev/null; } > "out/$n.log"
+          else
+            set +e
+            PW_DIR=/tmp/pw/ timeout 4200 node "scripts/atlas11/next/$f" --base "$base" --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
+            code=$?
+            set -e
+          fi
+          echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 )),\"mode\":\"$mode\",\"sha\":\"$GITHUB_SHA\"${BUILD_S:+,\"build\":$BUILD_S}}" > "out/$n.exit.json"
           tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"
-          echo "끝 코드 $code"
+          echo "끝 코드 $code · $(cat "out/$n.exit.json")"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: next-full-${{ matrix.name }}
           path: out/
   gather:
-    needs: page
-    if: always()
+    needs: [plan, page]
+    if: ${{ always() && needs.plan.result == 'success' }}
     runs-on: ubuntu-latest
+    env:
+      LOCAL: ${{ inputs.local && '1' || '0' }}
+      SHARDS: ${{ needs.plan.outputs.shards }}
+      PLAN: ${{ needs.plan.outputs.list }}
+      T0: ${{ needs.plan.outputs.t0 }}
+      REF: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - uses: actions/download-artifact@v4
+        continue-on-error: true # 받을 것이 하나도 없어도 아래가 「결과 없음」으로 적음
         with:
           path: art
           pattern: next-full-*
           merge-multiple: true
-      - run: |
+      - name: 영어 몫 합치기 · 빠진 결과 적기
+        run: |
+          mkdir -p art
+          # 영어 몫(en1 ~ enN) → en 하나 — 이 실행의 가지에 든 셈(next_en_check.mjs --merge)으로, 아래에서 main 으로 되돌리기 전에
+          if echo "$PLAN" | grep -q '"en1"'; then
+            files=""; for k in $(seq 1 "$SHARDS"); do if [ -f "art/en$k.json" ]; then files="$files art/en$k.json"; fi; done
+            set +e
+            node scripts/atlas11/next/next_en_check.mjs --merge $files --shards "$SHARDS" --out art/en.json > art/en.merge.txt 2>&1
+            mc=$?
+            set -e
+            node -e '
+              const fs = require("fs"), n = Number(process.argv[1]), mc = Number(process.argv[2]);
+              const ex = []; for (let k = 1; k <= n; k++) { try { ex.push(JSON.parse(fs.readFileSync(`art/en${k}.exit.json`, "utf8"))); } catch { ex.push({name: "en" + k, code: 99, seconds: 0}); } }
+              let merged = ""; try { merged = fs.readFileSync("art/en.merge.txt", "utf8").trim(); } catch {}
+              const tails = []; for (let k = 1; k <= n; k++) { let t = "결과 없음"; try { t = fs.readFileSync(`art/en${k}.tail.txt`, "utf8").trim(); } catch {} tails.push(`── en${k}/${n} ──\n` + t); }
+              const b = ex.map(x => x.build).filter(v => v != null);
+              const out = {name: "en", code: mc === 0 && ex.every(x => x.code === 0) ? 0 : 1, seconds: Math.max(0, ...ex.map(x => x.seconds || 0)), shards: n, codes: ex.map(x => x.code), shardSeconds: ex.map(x => x.seconds || 0)};
+              if (ex[0] && ex[0].mode) { out.mode = ex[0].mode; out.sha = ex[0].sha; }
+              if (b.length) out.build = Math.max(...b);
+              fs.writeFileSync("art/en.exit.json", JSON.stringify(out) + "\n");
+              fs.writeFileSync("art/en.tail.txt", "합침: " + merged.slice(-1500) + "\n" + tails.join("\n") + "\n");
+              console.log(JSON.stringify(out));' "$SHARDS" "$mc"
+            rm -f art/en[0-9]*.json art/en[0-9]*.tail.txt art/en.merge.txt
+          fi
+          # 계획했는데 결과가 없는 쪽(작업이 끝나지 못함)은 끝 코드 99 로 적음 — 요약에서 조용히 빠지지 않게
+          node -e '
+            const fs = require("fs"), plan = JSON.parse(process.env.PLAN || "[]");
+            for (const nm of new Set(plan.map(x => (/^en\d+$/.test(x) ? "en" : x)))) {
+              const f = `art/${nm}.exit.json`;
+              if (!fs.existsSync(f)) { fs.writeFileSync(f, JSON.stringify({name: nm, code: 99, seconds: 0, why: "결과 없음 — 작업이 끝나지 못함"}) + "\n"); console.log("결과 없음 " + nm); }
+            }'
+          ls art
+      - name: 결과 올리기
+        run: |
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
+          if [ "$LOCAL" = 1 ]; then dir=reports/atlas11/probe/next-preview; msg="atlas11 probe next-preview $REF ${GITHUB_SHA::7} [skip ci]"; else dir=reports/atlas11/probe/next-full; msg="atlas11 probe next-full [skip ci]"; fi
           # 결과 올리기 — 다른 실행이 먼저 올려도 섞이지 않게: 맨 새 줄기 위에서 다시 만들어 올림(2026-10-17 · 두 실행이 summary.json 을 함께 고쳐 rebase 가 막히고 결과가 안 올라간 일)
           for i in 1 2 3 4 5 6; do
             git fetch -q origin main && git reset -q --hard origin/main
-            mkdir -p reports/atlas11/probe/next-full
-            cp art/* reports/atlas11/probe/next-full/ 2>/dev/null || true
-            node -e '
-              const fs = require("fs"), d = "reports/atlas11/probe/next-full";
-              const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
-              const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: "https://aaa7377.com", pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
+            if [ "$LOCAL" = 1 ]; then rm -rf "$dir"; fi # 미리 보기는 한 번에 한 판(가지 · 커밋)만 — 앞 판 결과와 섞이지 않게
+            mkdir -p "$dir"
+            cp art/* "$dir"/ 2>/dev/null || true
+            DIR="$dir" node -e '
+              const fs = require("fs"), d = process.env.DIR, local = process.env.LOCAL === "1", t0 = Number(process.env.T0) || 0;
+              const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).sort().map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
+              const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: local ? "http://127.0.0.1:8826" : "https://aaa7377.com", mode: local ? "local" : "live",
+                ref: process.env.REF, sha: process.env.GITHUB_SHA, run: Number(process.env.GITHUB_RUN_ID), wallSeconds: t0 ? Math.round(Date.now() / 1000) - t0 : null,
+                pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
               fs.writeFileSync(d + "/summary.json", JSON.stringify(sum, null, 1) + "\n"); console.log(JSON.stringify(sum));'
-            git add -f reports/atlas11/probe/next-full
-            git commit -q -m "atlas11 probe next-full [skip ci]" || break
+            git add -f "$dir"
+            git commit -q -m "$msg" || break
             git push -q origin HEAD:main && break
             sleep 7
           done
