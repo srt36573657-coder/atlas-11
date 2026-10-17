@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-10-17T10:40:20.588Z",
+ "at": "2026-10-17T11:46:38.069Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "combos": 100,
@@ -12,7 +12,7 @@
   "widths"
  ],
  "full": true,
- "seconds": 75,
+ "seconds": 73,
  "counts": {
   "결과 줄": 25911,
   "? 줄": 213,
@@ -29,7 +29,7 @@
  },
  "fails": [
   [
-   "둘레 틀린 주소 #/cond/big-lead",
+   "둘레 틀린 주소 #/cond/",
    "page.goto: Timeout 30000ms exceeded."
   ]
  ],
