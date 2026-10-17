@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-10-17T11:46:38.069Z",
+ "at": "2026-10-17T12:25:04.885Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "combos": 100,
@@ -12,7 +12,7 @@
   "widths"
  ],
  "full": true,
- "seconds": 73,
+ "seconds": 40,
  "counts": {
   "결과 줄": 25911,
   "? 줄": 213,
@@ -23,15 +23,9 @@
   "더 보기": 1,
   "옛 쪽 화면 오류(참고)": 1,
   "oldErr": "자료 못 받음 Failed to load resource: the server responded with a status of 404 (Not Found)",
-  "둘레": 14,
-  "fail": 1,
+  "둘레": 15,
   "폭 화면": 27
  },
- "fails": [
-  [
-   "둘레 틀린 주소 #/cond/",
-   "page.goto: Timeout 30000ms exceeded."
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }

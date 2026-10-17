@@ -43,3 +43,4 @@
 .gdr-ul li { padding: 10px 12px; border-radius: 12px; background: var(--card); font-size: 17px; color: var(--sub); }
 .gdr.page ~ .safe { font-size: 17px; }
 html.en .gdr-say q { quotes: '“' '”'; }
+.gdr-stale { margin: 8px 0 0; font-size: 17px; color: var(--sub); }
