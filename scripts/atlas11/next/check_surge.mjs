@@ -15,6 +15,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNewDeep, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -128,7 +129,7 @@ const bag = (xs) => { const m = new Map(); for (const x of xs) m.set(x, (m.get(x
 const countIn = (hay, needle) => { let n = 0, i = 0; if (!needle) return 0; while ((i = hay.indexOf(needle, i)) >= 0) { n++; i += needle.length; } return n; };
 // 옛 쪽에만 있고 새 쪽은 일부러 바꾼 줄(맨 아래 고리 둘 · 투자 상담 글 → 새 안전 문장 · 옛 「자료를 못 읽었습니다」 꼴)
 const SKIP = [/^친구에게 소개하기$/, /^미국 판$/, /^저는 투자 상담사가 아닙니다/];
-const ALWAYS = ['아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.', '자료: ']; // 새 쪽 안전 문장(옛 「투자 상담사 …」 줄 자리) · 자료 줄은 늘
+const ALWAYS = [SAFE_LINE, '자료: ']; // 새 쪽 안전 문장(옛 「투자 상담사 …」 줄 자리 · 보드리는 지난 기록만 …) · 자료 줄은 늘
 const MUST = ['사고팔 곳을 고른 목록이 아니에요.', '? 오른 까닭은 몰라요.', '지난 값일 뿐 앞날을 말하지 않아요.', '센 것일 뿐 다음 날을 말하지 않아요.', ...ALWAYS];
 function namesOf(S, K) {
   const s = new Set(), add = x => { if (x?.n) s.add(x.n); };
@@ -202,7 +203,7 @@ for (const sc of RUN) {
     for (const [i, [box]] of BOXES.entries()) {
       const hash = BOX_HASH(box);
       await open(po, 'old', hash, i === 0); await open(pn, 'new', hash, i === 0);
-      const [o, n] = [await grab(po, '#view'), await grab(pn, 'main#view')];
+      const [o, n] = [oldToNewDeep(await grab(po, '#view')), await grab(pn, 'main#view')]; // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
       compare(sc, box, o, n, names);
     }
     for (const p of [po, pn]) for (const e of p._errs) fail('화면 오류', `${sc.id} ${p === po ? '옛' : '새'} — ${e}`);
@@ -309,7 +310,7 @@ if (hideSc) {
   try {
     for (const bad of ['#/surge/abc', '#/surge/50', '#/surge/10/x']) {
       await open(po, 'old', bad, true); await open(pn, 'new', bad, true);
-      const [o, n] = [await grab(po, '#view'), await grab(pn, 'main#view')];
+      const [o, n] = [oldToNewDeep(await grab(po, '#view')), await grab(pn, 'main#view')];
       for (const L of ['없는 주소입니다', '주소가 바뀌었거나 잘못 들어왔습니다.', '처음 화면으로']) { if (!o.text.includes(L)) fail('옛 쪽 없는 주소 글', `${bad} — ${L}`); if (!norm(n.text).includes(L)) fail('없는 주소 글', `${bad} — ${L}`); }
       bump('없는 주소');
     }

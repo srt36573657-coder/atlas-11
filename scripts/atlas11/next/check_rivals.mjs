@@ -14,6 +14,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv, has = k => argv.includes(k), arg = (k, d) => { const i = argv.indexOf(k); return i > 0 && argv[i + 1] != null ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -140,7 +141,7 @@ for (const code of [...list, ...MISSING]) {
   const [okO, okN] = await Promise.all([open(po, '#/c/' + code + '/rivals', OLD_DONE, '옛 쪽').then(async ok => { if (ok && miss && NAMES.has(code)) await po.waitForFunction(() => document.querySelector('#view .funnels'), null, {timeout: 8000}).catch(() => fail('옛 쪽 까닭', tag)); return ok; }), // 옛 쪽은 이름표를 받은 뒤 까닭 · 깔때기를 붙임
     open(pn, '#/w/' + code + '/rivals', NEW_DONE, '새 쪽')]);
   if (!okO || !okN) continue;
-  const O = await po.evaluate(oldRead);
+  const O = oldToNewDeep(await po.evaluate(oldRead)); // 옛 쪽 글은 이름만 새 이름으로(「ATLAS 업종으로 셈」 → 「보드리 업종으로 셈」 · rename.mjs)
   if (O.err) { fail('옛 쪽 못 엶', tag); continue; }
   const N = await pn.evaluate(newRead), ALLN = norm(N.all);
   // ① 옛 쪽 글 마디가 새 쪽에 빠짐없이

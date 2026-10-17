@@ -2,6 +2,8 @@
 //   쓰는 법: node scripts/atlas11/next/run_all.mjs --base http://127.0.0.1:8826 [--pw /tmp/pw/] [--out reports/atlas11/verify/next-all-latest.json] [--quick]
 //   ① next_check.mjs(첫 화면 · 보는 화면 · 쇼츠 · 채널 · 구독 · 나 · 찾기 · 세 폭 · 큰 글씨 · 모든 회사)
 //   ② 쪽 검사 check_<이름>.mjs — 지금 아틀란스(/atlas/)의 그 쪽과 새 쪽(/next/)을 같은 자료로 열어 숫자 · 글 · 고리를 맞댐(모든 회사 · 모든 칸)
+//      옛 쪽 글은 이름만 새 이름으로 고쳐 맞댐(아틀란스 · ATLAS → 보드리 · rename.mjs — 2026-10-17 15:48 「아틀란스에서 보드리로 모두 변경해」)
+//   ⓪ 먼저 소스 시험 tests/atlas11/next-modules.test.mjs(모듈 · 보안 · 입체 없음 · 옛 이름 없음 — 브라우저 없이 1초)
 //   하나라도 실패(끝 코드 ≠ 0)면 끝 코드 1 · 결과 파일에 쪽마다 끝 코드 · 걸린 시간 · 마지막 줄
 import {spawn} from 'node:child_process';
 import fs from 'node:fs/promises';
@@ -13,7 +15,7 @@ const base = arg('--base', 'http://127.0.0.1:8826'), pw = arg('--pw', null), qui
 const out = path.resolve(ROOT, arg('--out', 'reports/atlas11/verify/next-all-latest.json'));
 const dir = path.join(ROOT, 'scripts/atlas11/next');
 const files = (await fs.readdir(dir)).filter(f => /^check_[a-z0-9]+\.mjs$/.test(f)).sort();
-const jobs = [['next_check', ['next_check.mjs', '--base', base, ...(pw ? ['--pw', pw] : []), '--out', path.join(path.dirname(out), 'next-check-latest.json'), ...(quick ? ['--limit', '40'] : [])]],
+const jobs = [['modules', ['--test', path.join(ROOT, 'tests/atlas11/next-modules.test.mjs')]], ['next_check', ['next_check.mjs', '--base', base, ...(pw ? ['--pw', pw] : []), '--out', path.join(path.dirname(out), 'next-check-latest.json'), ...(quick ? ['--limit', '40'] : [])]],
   ...files.map(f => [f.slice(6, -4), [f, '--base', base, ...(pw ? ['--pw', pw] : []), ...(quick ? ['--limit', '40'] : ['--all'])]])];
 const run = (name, a) => new Promise(res => {
   const t0 = Date.now(), env = {...process.env, ...(pw ? {PW_DIR: pw} : {})};

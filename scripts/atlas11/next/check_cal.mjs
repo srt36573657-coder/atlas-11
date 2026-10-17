@@ -17,6 +17,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNewDeep, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리) — 옛 쪽 글을 새 이름으로 고쳐 맞댐
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
@@ -43,7 +44,7 @@ async function pin(ctx, over = {}) {
 const CO = MKT.companies, K0 = TRC.cases, CODES = TR.cases.map(c => c[0]), CASE = new Map(TR.cases.map(c => [c[0], c]));
 const OLD36 = JSON.parse((/export const OLD36_TEXT = (\[[^\]]*\]);/.exec(await fs.readFile(path.join(ROOT, 'scripts/atlas11/t365/inspect4.mjs'), 'utf8')) || [, '[]'])[1].replace(/'/g, '"'));
 const BANNED = ['추천', '매수', '매도', '팔라', '사라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', 'TOP', ...OLD36];
-const SAFE = '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.';
+const SAFE = SAFE_LINE; // 새 쪽 안전 문장(보드리는 지난 기록만 보여 줘요 …)
 
 /* 글 맞대기 도구 — 붙임표(U+2060) 빼고 · 붙임 띄어쓰기(U+00A0)는 띄어쓰기로 */
 const norm = s => String(s ?? '').replace(/\u2060/g, '').replace(/\u00a0/g, ' ').replace(/[ \t\r\f\v]+/g, ' ').trim();
@@ -93,8 +94,9 @@ const EXTRACT = ({root, old, expand}) => {
 };
 const grab = (p, expand = true) => p.evaluate(EXTRACT, {root: SIDE[p._side].root, old: p._side === 'old', expand});
 
-/** 옛 쪽 O 와 새 쪽 N 맞대기 */
-function compare(tag, O, N) {
+/** 옛 쪽 O 와 새 쪽 N 맞대기 — 옛 쪽 글은 이름만 새 이름으로(아틀란스 → 보드리 · rename.mjs) 고친 뒤 맞댐 */
+function compare(tag, O0, N) {
+  const O = oldToNewDeep(O0);
   bump('맞댄 화면');
   if (!norm(O.text)) { fail(tag, '옛 쪽 글이 비었음'); return; }
   const NL = lines(N.text), NS = new Set(NL); // 같은 줄은 바로 · 아니면 새 줄 안에 든 것(새 쪽이 두 조각을 한 줄로 이은 곳)

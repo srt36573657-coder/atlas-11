@@ -11,6 +11,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
+import {oldToNewDeep, NEW_NAME} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -130,7 +131,7 @@ for (const code of list) {
   let E; try { E = await lineOf(code); } catch (e) { fail('자료(회사 파일)', code + ' ' + e.message); continue; }
   const c = E.c, line = E.line, pk = isPk(code);
   if (!c || !Array.isArray(line)) { fail('자료(회사 파일)', code + ' c · line 없음'); continue; }
-  const old = await oldGrab(po, code); if (!old) { fail('옛 쪽 안 열림', code); continue; }
+  const old = oldToNewDeep(await oldGrab(po, code)); if (!old) { fail('옛 쪽 안 열림', code); continue; } // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
   if (old.missing) { fail('옛 쪽이 없는 주소', code); continue; }
   const nw = await newGrab(pn, code); if (!nw) { fail('새 쪽 안 열림', code); continue; }
   if (nw.none) { fail('새 쪽 .pco 없음', code + ' ' + norm(nw.text).slice(-80)); continue; }
@@ -154,7 +155,7 @@ for (const code of list) {
   nw.trio.forEach((x, k) => { const v = [c.chg, c.r1y, c.mdd][k], cl = v == null || !Number.isFinite(v) ? 'q' : R1(v) > 0 ? 'up' : R1(v) < 0 ? 'dn' : 'fl'; if (!x[2].split(' ').includes(cl)) fail('세 숫자 색', where + ' ' + x[0] + ' ' + x[2] + ' ≠ ' + cl); });
   const lv = line.filter(x => x != null).map(x => x / 100), low = lv.length ? Math.min(...lv) : null, last = lv.length ? lv[lv.length - 1] : null, MAN = x => N(Math.round(x)) + '만 원';
   want('100만 원 줄', nw.won, low == null ? '? 값을 못 읽었습니다' : low < 100 ? `${MD(core.base)}에 100만 원어치였다면 가장 낮을 때 ${MAN(low)} · 끝 ${MAN(last)}` : `${MD(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${MAN(last)}`);
-  want('출처 줄', nw.src, `네이버 증권 · ${MD(c.priceDate || core.asOf)} 종가 · ATLAS 셈`);
+  want('출처 줄', nw.src, `네이버 증권 · ${MD(c.priceDate || core.asOf)} 종가 · ${NEW_NAME} 셈`);
   const multi = (I?.n ?? 1) > 1, pickLine = pk && core.kPick != null;
   want('범례', JSON.stringify(nw.key), JSON.stringify([`${c.name} — ${MD(core.base)}보다 위 빨강 · 아래 파랑`, ...(multi ? [I.name + ' 평균'] : []), ...(pickLine ? [`고른 날 ${MD(core.pickAsOf)}`] : [])]));
   if (low == null) want('값 없는 그림', nw.lcq, `? 이 회사 ${core.days}거래일 값을 못 읽었습니다`);

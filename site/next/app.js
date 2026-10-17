@@ -3,7 +3,7 @@
    · 02:24 「가」(한 가지를 일곱 화면으로) · 02:38 「정교하게 만들어라」 · 규칙 74 · 설계 기록 docs/design/new-tube-2026-10-17.md
    자료 = 지금 아틀란스 파일 그대로(/atlas/data/*.json) · 7단은 지금 아틀란스 화면으로 이어 줌(/#/g · /#/i · /#/c/<번호>/…) · 앞날 말 없음 · 사고팔기 권하지 않음
    보는 기계 기억(구독 · 본 기록 · 나중에 볼 것)은 이 기기에만(localStorage · 서버에 안 감) · 글은 textContent 로만(보안 규칙 안 — 안에 쓴 스크립트 · 꾸밈 없음) */
-import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/atlas/i18n.js';
+import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; // 새 화면 제 영어 엔진 · 사전(/next/i18n/ — 2026-10-17 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」로 /atlas/ 와 떼어 냄)
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -151,7 +151,7 @@ function premCard() {
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
 const NB = ' ';
 const HELLO_PROMO = '3명만 소개해도 스타벅스 상품권 1만원!';
-const HELLO_MSG = ['아틀란스 주식 격언 열 가지', '1. 쉬는 것도 투자다. 안 사는 날이 더 많아야 합니다.', '2. 잃지 않는 게 버는 거다. 돈을 불리기 전에 먼저 지킵니다.', '3. 사기 전에 팔 곳부터 정해라. 떨어지면 어디서 팔지 미리 정합니다.', '4. 모두가 웃을 때 나는 늦었다. 다들 좋다고 떠들면 이미 비싼 겁니다.', '5. 헷갈리면 안 사는 게 답이다. 애매하면 그냥 넘깁니다.', '6. 자신 없으면 조금만. 확신이 없으면 내 돈의 열에 하나까지만.', '7. 시장이 흔들리면 나는 멈춘다. 크게 출렁이는 날은 쉽니다.', '8. 손해는 짧게, 이익은 길게. 떨어지면 빨리 팔고, 오르면 오래 들고 갑니다.', '9. 돈이 가는 길을 따라가라. 돈이 몰리는 업종에서만 고릅니다.', '10. 기회는 찾아오는 거지, 만드는 게 아니다. 억지로 사지 말고 좋은 때를 기다립니다.'];
+const HELLO_MSG = ['보드리 주식 격언 열 가지','1. 쉬는 것도 투자다. 안 사는 날이 더 많아야 합니다.', '2. 잃지 않는 게 버는 거다. 돈을 불리기 전에 먼저 지킵니다.', '3. 사기 전에 팔 곳부터 정해라. 떨어지면 어디서 팔지 미리 정합니다.', '4. 모두가 웃을 때 나는 늦었다. 다들 좋다고 떠들면 이미 비싼 겁니다.', '5. 헷갈리면 안 사는 게 답이다. 애매하면 그냥 넘깁니다.', '6. 자신 없으면 조금만. 확신이 없으면 내 돈의 열에 하나까지만.', '7. 시장이 흔들리면 나는 멈춘다. 크게 출렁이는 날은 쉽니다.', '8. 손해는 짧게, 이익은 길게. 떨어지면 빨리 팔고, 오르면 오래 들고 갑니다.', '9. 돈이 가는 길을 따라가라. 돈이 몰리는 업종에서만 고릅니다.', '10. 기회는 찾아오는 거지, 만드는 게 아니다. 억지로 사지 말고 좋은 때를 기다립니다.'];
 const INTRO_FLY = 4200, INTRO_LAND = 800; // 날기 시작 · 나는 때(합 5초 = 보드리 5초 · 규칙 66)
 let helloIntro = true;
 const ICON2 = {
@@ -339,8 +339,8 @@ async function vHome(chip) {
     if (groups.length > 1) add('g:' + groups[groups.length - 1].id, groupCard(groups[groups.length - 1]));
     const T = core.time;
     if (T?.opens?.[0]?.date) nodes.push(h('a', {class: 'm4-mr', href: oldOr('time', '#/time')}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.opens[0].date)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
-    nodes.push(h('section', {class: 'm4-seal-box', 'aria-label': '보드리 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '보드리는 들은 것만 따라 말해요.'}), h('span', {text: '아틀란스도 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'})));
-    nodes.push(h('p', {class: 'safe', text: '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+    nodes.push(h('section', {class: 'm4-seal-box', 'aria-label': '보드리 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '보드리는 들은 것만 따라 말해요.'}), h('span', {text: '그래서 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'})));
+    nodes.push(h('p', {class: 'safe', text: '보드리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
     return {title: '홈', nodes};
   }
   if (chip === 'rise') { nodes.push(h('p', {class: 'note', text: '1주 동안 오른 업종을 많이 오른 차례로 보여요(' + md(core.rise?.from) + ' → ' + md(core.rise?.to) + ').'})); if (!rise.length) nodes.push(h('p', {class: 'empty', text: '1주 동안 오른 업종이 없어요.'})); for (const r of rise) add('i:' + r.name, riseCard(r)); }
@@ -391,11 +391,11 @@ async function vWatch(a) {
     h('h1', {class: 'wt', text: c.n}),
     h('p', {class: 'ws'}, '20거래일 동안 ', h('b', {class: cls(x20), text: pct(x20)}), ' · 하루 ', h('b', {class: cls(day), text: pct(day)}), ' · ' + md(X.mkt.asOf) + ' 마감'),
     h('div', {class: 'chan'}, h('a', {href: '#/ch/i/' + enc(c.i)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(c.i)}), h('div', {}, h('b', {text: (c.i || '?') + ' 업종'}), h('small', {text: '회사 ' + (I ? num(I.n) : '?') + '곳' + (g ? ' · ' + g.short + ' 갈래' : '')}))), I ? subBtn('i:' + c.i, c.i + ' 업종') : null),
-    h('div', {class: 'acts'}, laterB, h('button', {class: 'act', type: 'button', text: '보내기', onclick: () => share(L(c.n + ' · 새 아틀란스'), absUrl('#/w/' + a))}), h('a', {class: 'act', href: '/letter.html', text: '편지 쓰기'})),
+    h('div', {class: 'acts'}, laterB, h('button', {class: 'act', type: 'button', text: '보내기', onclick: () => share(L(c.n + ' · 보드리'), absUrl('#/w/' + a))}), h('a', {class: 'act', href: '/letter.html', text: '편지 쓰기'})),
     h('h2', {class: 'sec', text: '챕터 일곱 · 7단'}),
   ];
   nodes.push(chaps(a, '3'));
-  nodes.push(h('p', {class: 'note', text: ready('past') ? '챕터를 누르면 그 단이 열려요.' : '1 · 2단은 새 채널로, 3 ~ 7단은 지금 아틀란스의 그 단으로 가요.'}));
+  nodes.push(h('p', {class: 'note', text: ready('past') ? '챕터를 누르면 그 단이 열려요.' : '1 · 2단은 새 채널로, 3 ~ 7단은 옛 화면의 그 단으로 가요.'}));
   if (ready('co')) { try { const d = await page('co', a); if (d?.nodes?.length) nodes.push(h('section', {class: 'co-d', id: 'd'}, ...d.nodes)); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 회사 자세히를 그리지 못했어요.'})); } }
   const mem = (I?.members || []).filter(m => m !== a && X.co[m]);
   if (mem.length) {
@@ -447,7 +447,7 @@ async function vShorts(a) {
   const bar = h('div', {class: 'sbar', 'aria-hidden': 'true'}, fs.map(() => h('i', {})));
   const box = h('div', {class: 'shorts', tabindex: '0', 'aria-label': '쇼츠 · 위로 밀면 다음 사실'}, bar);
   fs.forEach((f, i) => {
-    const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, h('button', {type: 'button', text: '보내기', onclick: () => share(L(f.l1 + ' ' + f.big + ' · 새 아틀란스'), absUrl('#/shorts/' + i))}));
+    const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, h('button', {type: 'button', text: '보내기', onclick: () => share(L(f.l1 + ' ' + f.big + ' · 보드리'), absUrl('#/shorts/' + i))}));
     const sec = h('section', {class: 'sh', 'data-i': String(i), 'aria-label': (i + 1) + ' / ' + fs.length},
       h('p', {class: 'k', text: f.k}), h('p', {class: 'l1', text: f.l1}), h('p', {class: 'bg ' + (f.bc || ''), text: f.big}), h('p', {class: 'l2', text: f.l2}),
       f.ratio ? [h('div', {class: 'ratio', 'aria-hidden': 'true'}, h('i', {css: {flex: String(f.ratio.up), background: COLOR.up}}), h('i', {css: {flex: String(f.ratio.fl), background: COLOR.fl}}), h('i', {css: {flex: String(f.ratio.dn), background: COLOR.dn}})),
@@ -500,7 +500,7 @@ async function vChannel(a) {
     tabBar.append(b);
   }
   if (ready('chx')) { try { const d = await page('chx', a); if (d?.nodes?.length) nodes.push(h('section', {class: 'chx-d'}, ...d.nodes)); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 채널 자세히를 그리지 못했어요.'})); } }
-  nodes.push(tabBar, pane); if (!ready('chx')) nodes.push(h('a', {class: 'more', href: kind === 'g' ? '/atlas/#/g/' + enc(ch.id) : '/atlas/#/i/' + enc(ch.name), text: '지금 아틀란스 7단으로 보기 ›'}));
+  nodes.push(tabBar, pane); if (!ready('chx')) nodes.push(h('a', {class: 'more', href: kind === 'g' ? '/atlas/#/g/' + enc(ch.id) : '/atlas/#/i/' + enc(ch.name), text: '옛 화면 7단으로 보기 ›'}));
   showCo();
   return {title: name, nodes};
 }
@@ -558,7 +558,7 @@ async function vMe() {
     clr.addEventListener('click', () => { if (!confirm(L('본 기록과 담은 것을 이 기기에서 지울까요?'))) return; store.set(K_HIST, []); store.set(K_LATER, []); toast('지웠어요.'); route(true); });
     nodes.push(h('div', {class: 'lst'}, clr));
   }
-  nodes.push(h('p', {class: 'safe', text: '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+  nodes.push(h('p', {class: 'safe', text: '보드리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
   return {title: '나', nodes};
 }
 
@@ -679,7 +679,7 @@ async function route(force) {
   if (my !== seq) return; // 늦게 끝난 앞 화면
   root.replaceChildren(...out.nodes);
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
-  document.title = L(out.title + ' · 새 아틀란스'); // 영어면 창 제목도(엔진은 body 만 봄)
+  document.title = L(out.title + ' · 보드리'); // 영어면 창 제목도(엔진은 body 만 봄)
   document.body.classList.toggle('noscroll', !!out.noScroll);
   window.scrollTo(0, out.noScroll ? 0 : scrollMem.get(hash) ?? 0);
 }

@@ -14,6 +14,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
@@ -198,7 +199,7 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
       const [ca, cb] = await Promise.all([clickPer(po, '#view .seg.seg3 button', name), clickPer(pn, '#view .ppast-seg button', name)]);
       if (!ca || !cb) { fail('기간 단추', code + ' ' + name + ' ' + ca + ' ' + cb); continue; }
       await frames(pn);
-      const [o, n] = await Promise.all([po.evaluate(OLD_X), pn.evaluate(NEW_X)]);
+      const [o, n] = await Promise.all([po.evaluate(OLD_X).then(x => oldToNewDeep(x)), pn.evaluate(NEW_X)]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
       compare(code, name, o, n);
       const [to, tn] = await Promise.all([po.evaluate(TIPS, ['#view > .vw .lc svg', '#view > .vw .lc .tip']), pn.evaluate(TIPS, ['#view > .ppast .ppast-lc svg', '#view > .ppast .ppast-tip'])]);
       bump('선 누르기');

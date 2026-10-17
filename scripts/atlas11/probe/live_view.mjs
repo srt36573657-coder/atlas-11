@@ -5,6 +5,7 @@
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import {createRequire} from 'node:module';
+import {nameScan, oldNamesIn, allowFromData, LETTER_TITLE, TITLE_TAIL} from '../next/rename.mjs'; // 새 화면(보드리)에 옛 이름이 남았나(2026-10-17 15:48 「아틀란스에서 보드리로 모두 변경해」)
 const require = createRequire(process.env.PW_DIR ? process.env.PW_DIR.replace(/\/?$/, '/') : import.meta.url);
 const {chromium} = require('playwright');
 const B = 'https://aaa7377.com', dir = 'reports/atlas11/probe/live-view'; await fs.mkdir(dir, {recursive: true});
@@ -30,6 +31,9 @@ const ctx = await b.newContext({viewport: {width: 390, height: 844}, deviceScale
 const page = await ctx.newPage();
 const shot = async (name, opts = {}) => { const f = `${dir}/${name}.png`; await page.screenshot({path: f, ...opts}); out.shots.push(f); };
 const step = async (name, fn) => { try { await fn(); } catch (e) { out.errors.push(`${name}: ${String(e.message).slice(0, 120)}`); } };
+let allowP = null; // 새 화면 옛 이름 검사 — 자료의 실제 이름(회사 「아틀라스링크」 등)은 옛 이름이 아님(올라간 자료에서 한 번 받음)
+const nameAllow = () => (allowP ??= (async () => { const J = async f => { try { return await (await fetch(B + '/atlas/data/' + f + '?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(60000)})).json(); } catch { return null; } };
+  const [mkt, names, core] = await Promise.all([J('mkt.json'), J('names.json'), J('core.json')]); return allowFromData({mkt, names, extra: [...(core?.industries ?? []).map(i => i.name), ...(core?.groups ?? []).map(g => g.name)]}); })());
 await step('첫 화면', async () => {
   await page.goto(B + '/atlas/?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000});
   await page.waitForSelector('#view .m4-sec', {timeout: 30000}); await page.waitForTimeout(9000); // 여는 홍표(5초) · 사장님 글이 다 써질 때까지
@@ -56,6 +60,11 @@ await step('소개 한 장', async () => {
   await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(800);
   out.texts.hello = await page.evaluate(() => ({poster: document.querySelector('video')?.getAttribute('poster') ?? null, src: [...document.querySelectorAll('video source')].map(s => s.getAttribute('src')), og: document.querySelector('meta[property="og:image"]')?.content ?? null}));
   await shot('p5-hello');
+  // 이름 바꾸기(2026-10-17 15:48 「아틀란스에서 보드리로 모두 변경해」) — 소개 쪽 글 · 창 제목 · 이름표 · 머리말 · 보내기 글에 옛 이름(아틀란스 · ATLAS)이 없나
+  const hs = await page.evaluate(nameScan), hshare = await page.evaluate(() => [window.__helloShare?.title ?? '', window.__helloShare?.text ?? ''].join(' '));
+  const hold = [...oldNamesIn(hs), ...oldNamesIn({text: hshare})];
+  out.helloName = {title: hs.title, share: hshare, old: hold.slice(0, 8), ok: !hold.length && hs.title === '보드리를 소개합니다' && /^보드리를 소개합니다 /.test(hshare)};
+  if (!out.helloName.ok) out.errors.push('소개 쪽 이름: ' + JSON.stringify(out.helloName).slice(0, 300));
 });
 await step('36곳 없음', async () => { // 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」 — 옛 주소 · 탭 · 글 · 자료 파일
   await page.goto(B + '/atlas/?v=' + Date.now() + '#/36', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
@@ -300,39 +309,48 @@ await step('편지 여는 밤', async () => { // 사장님 2026-10-17 01:29 「�
   const ar = await fetch(B + '/api/letter', {headers: NC, signal: AbortSignal.timeout(30000)}), A = ar.ok ? await ar.json().catch(() => null) : null;
   const xr = await fetch(B + '/api/letter', {method: 'POST', headers: {'content-type': 'application/json', origin: 'https://probe.invalid'}, body: JSON.stringify({op: 'join', code: 'x'.repeat(16), nick: '탐침'}), signal: AbortSignal.timeout(30000)});
   await page.goto(B + '/letter.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForSelector('.hero .clk', {timeout: 30000}).catch(() => {}); await page.waitForTimeout(1500); await shot('p40-letter');
-  const g = await page.evaluate(() => ({h1: document.querySelector('.hero h1')?.textContent ?? '', clock: document.querySelector('.hero .clk')?.textContent ?? '', guest: document.querySelector('.card h2')?.textContent ?? '', write: !!document.querySelector('#write'), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth}));
+  const g = await page.evaluate(() => ({h1: document.querySelector('.hero h1')?.textContent ?? '', clock: document.querySelector('.hero .clk')?.textContent ?? '', guest: document.querySelector('.card h2')?.textContent ?? '', write: !!document.querySelector('#write'), sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth,
+    title: document.title, kick: document.querySelector('.hero .kick')?.textContent ?? ''}));
+  g.old = oldNamesIn(await page.evaluate(nameScan)).slice(0, 6); // 이름 바꾸기(2026-10-17) — 옛 이름(아틀란스 · ATLAS) 남음 0 · 창 제목 「편지 여는 밤 · 보드리」 · 머리 「보드리 편지」
   out.letter = {html: hr.status, robots, api: ar.status, week: A?.week ?? null, current: A?.current ?? null, opensAt: A?.opensAt ?? null, open: A?.open ?? null, count: A?.count ?? null, member: A?.member ?? null, owner: A?.owner ?? null, foreign: xr.status, ...g,
     ok: hr.status === 200 && /noindex/.test(robots) && ar.status === 200 && /^\d{4}-\d{2}-\d{2}$/.test(A?.week ?? '') && A?.week === A?.current && A?.open === false && A?.member === false && A?.owner === false && Number.isInteger(A?.count) && xr.status === 403
-      && g.h1.includes('편지가 열려요') && /\d+일 \d{2}시간/.test(g.clock) && g.guest === '초대받은 분만 쓸 수 있어요' && !g.write && g.sw <= g.cw};
+      && g.h1.includes('편지가 열려요') && /\d+일 \d{2}시간/.test(g.clock) && g.guest === '초대받은 분만 쓸 수 있어요' && !g.write && g.sw <= g.cw && !g.old.length && g.title === '편지 여는 밤' + TITLE_TAIL && g.kick === '보드리 편지'};
   if (!out.letter.ok) out.errors.push('편지 여는 밤: ' + JSON.stringify(out.letter).slice(0, 400));
 });
 await step('새 아틀란스 첫 화면', async () => { // 사장님 2026-10-17 02:22 · 02:24 「가」 · 02:38 「정교하게 만들어라」 · 규칙 74 — /next/ 홈 · 보는 화면 · 쇼츠 · 검색 제외 머리말(모든 회사 · 채널 맞대기는 탐침 livenext)
   const hr = await fetch(B + '/?v=' + Date.now(), {headers: {'Cache-Control': 'no-cache'}, signal: AbortSignal.timeout(30000)}), robots = hr.headers.get('x-robots-tag') ?? '', body = await hr.text(); // 첫 화면(/) = 새 아틀란스(2026-10-17 04:04 「모두 바꿔」)
   const done = () => page.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => {});
+  const allow = await nameAllow(), old = []; // 옛 이름(아틀란스 · ATLAS · 아틀라스)이 보이는 글 · 창 제목 · 이름표에 남았나 — 회사 이름(아틀라스링크 등)은 뺌
+  const look = async where => { const s = await page.evaluate(nameScan); for (const x of oldNamesIn(s, allow).slice(0, 3)) old.push(where + ' ' + x); if (!s.title.endsWith(TITLE_TAIL)) old.push(where + ' 창 제목 「' + s.title + '」'); };
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await done(); await page.waitForTimeout(6500); await shot('p41-next-home');
   const home = await page.evaluate(() => ({tabs: [...document.querySelectorAll('.tabs a')].map(a => a.textContent.trim()), cards: document.querySelectorAll('#view .card').length, chips: document.querySelectorAll('#view .chip').length, q: document.querySelectorAll('#view .empty').length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth,
     letter: [...document.querySelectorAll('#view .m4-msg .hml')].map(e => e.textContent), promo: document.querySelector('#view .m4-gift')?.textContent ?? '', landed: !!document.querySelector('#view .m4-letter.landed'), tk: document.querySelector('#view a.tk-entry')?.getAttribute('href') ?? ''}));
-  const SRC = await fs.readFile(new URL('../../../site/atlas/atlas.js', import.meta.url), 'utf8'), MSG = JSON.parse((/const HELLO_MSG = (\[[^\]]*\]);/.exec(SRC) || [, '[]'])[1].replace(/'/g, '"')), PROMO = (/const HELLO_PROMO = '([^']*)';/.exec(SRC) || [])[1];
+  await look('#/');
+  // 사장님 편지 · 상품권 줄 = 지금 화면(site/next/app.js)의 HELLO_MSG · HELLO_PROMO 글자 그대로(옛 atlas.js 는 더 이상 기준이 아님 — 2026-10-17 15:54 「현재 것만」) · 첫 줄 「보드리 주식 격언 열 가지」
+  const SRC = await fs.readFile(new URL('../../../site/next/app.js', import.meta.url), 'utf8'), MSG = JSON.parse((/const HELLO_MSG = (\[[^\]]*\]);/.exec(SRC) || [, '[]'])[1].replace(/'/g, '"')), PROMO = (/const HELLO_PROMO = '([^']*)';/.exec(SRC) || [])[1];
   await page.evaluate(() => { location.hash = '#/w/005930'; }); await done(); await page.waitForTimeout(500); await shot('p42-next-watch');
   const watch = await page.evaluate(() => ({h1: document.querySelector('#view .wt')?.textContent ?? '', ws: document.querySelector('#view .ws')?.textContent ?? '', ch: document.querySelectorAll('#view .chaps a.cp').length, nx: document.querySelectorAll('#view .nx').length}));
+  await look('#/w/005930');
   await page.evaluate(() => { location.hash = '#/shorts'; }); await done(); await page.waitForTimeout(500); await shot('p43-next-shorts');
   const shorts = await page.evaluate(() => document.querySelectorAll('#view .sh').length);
-  out.next = {html: hr.status, robots, home: {...home, letter: home.letter.length}, watch, shorts,
+  await look('#/shorts');
+  out.next = {html: hr.status, robots, home: {...home, letter: home.letter.length, first: home.letter[0] ?? null}, watch, shorts, old: old.slice(0, 8),
     ok: hr.status === 200 && !/noindex/.test(robots) && body.includes('/next/app.js') && home.tabs.join(',') === '홈,쇼츠,편지,구독,나' && home.cards >= 5 && home.chips === 8 && home.q === 0 && home.sw <= home.cw
-      && JSON.stringify(home.letter) === JSON.stringify(MSG) && home.promo === PROMO && home.landed && home.tk === (NREADY.has('talk') ? '#/talk' : '/atlas/#/talk')
-      && watch.h1 === '삼성전자' && /20거래일 동안 [+−]?\d/.test(watch.ws) && watch.ch === 7 && watch.nx >= 1 && shorts >= 8};
+      && MSG[0] === LETTER_TITLE && JSON.stringify(home.letter) === JSON.stringify(MSG) && home.promo === PROMO && home.landed && home.tk === (NREADY.has('talk') ? '#/talk' : '/atlas/#/talk')
+      && watch.h1 === '삼성전자' && /20거래일 동안 [+−]?\d/.test(watch.ws) && watch.ch === 7 && watch.nx >= 1 && shorts >= 8 && !old.length};
   if (!out.next.ok) out.errors.push('새 아틀란스 첫 화면: ' + JSON.stringify(out.next).slice(0, 400));
 });
 await step('새 아틀란스 모든 쪽', async () => { // 사장님 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 · 04:23 「에이전트 총 동원해」 — 옮긴 쪽(app.js READY)마다 실제 사이트에서 열어 봄(숫자 맞대기는 livenext 의 쪽 검사)
   const done = () => page.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => {});
   const R = [['co', '#/w/005930', '.co-d'], ['past', '#/w/005930/past', '.chaps .cp.now'], ['rivals', '#/w/005930/rivals', '.chaps .cp.now'], ['grow', '#/w/005930/grow', '.chaps .cp.now'], ['range', '#/w/005930/range', '.chaps .cp.now'],
     ['chx', '#/ch/g/' + 'semi', '.chx-d'], ['surge', '#/surge', null], ['surge', '#/surge/20', null], ['cal', '#/cal', null], ['cond', '#/cond', null], ['talk', '#/talk', null], ['up', '#/up', null], ['time', '#/time', null], ['info', '#/info', null], ['today', '#/today', null]].filter(([k]) => NREADY.has(k));
-  const got = [];
+  const got = [], allow = await nameAllow();
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await done();
   for (const [k, hash, sel] of R) {
     await page.evaluate(hh => { location.hash = hh; }, hash); await done(); await page.waitForTimeout(700);
     const g = await page.evaluate(sel => ({url: location.pathname + location.hash, n: (document.querySelector('#view')?.innerText ?? '').trim().length /* 쪽 모듈은 한 칸(div)에 담겨 칸 수가 1 — 글 길이로 봄 */, bad: [...document.querySelectorAll('#view .empty')].map(e => e.textContent).filter(t => /그리지 못했어요/.test(t)).length, sel: sel ? !!document.querySelector('#view ' + sel) : true, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, title: document.title}), sel);
-    g.ok = g.url.startsWith('/') && !g.url.includes('/atlas/') && g.n >= 150 && !g.bad && g.sel && g.sw <= g.cw; g.k = k; got.push(g);
+    g.old = oldNamesIn(await page.evaluate(nameScan), allow).slice(0, 3); // 옛 이름(아틀란스 · ATLAS · 아틀라스) 남음 — 회사 이름은 뺌
+    g.ok = g.url.startsWith('/') && !g.url.includes('/atlas/') && g.n >= 150 && !g.bad && g.sel && g.sw <= g.cw && !g.old.length && g.title.endsWith(TITLE_TAIL); g.k = k; got.push(g);
     if (got.length <= 6) await shot('p5' + got.length + '-next-' + k);
   }
   out.nextPages = {ready: [...NREADY], pages: got, ok: got.every(g => g.ok)};

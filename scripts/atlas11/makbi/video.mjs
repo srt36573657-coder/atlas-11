@@ -2,12 +2,15 @@
 //   1분짜리 영상을 만든다 더 파타스틱하게 아주 재밌게 만든다」 · 21:00 「맞아 아주 효과적이면서 정확하개 빠르게 만든다」 · 21:35 「친구에게 보내는 거 있잖아 그거 영상 1분 짜리 만들라고 한거야
 //   … 재밌는 영상 만들고 3명만 추천해도 1만원 스타벅스 준다고 대수정을 해」 · 21:39 「가」
 //   옛 35초 판(홍표 · 친구 10명)은 git d4b4bed3 · 장면 열셋: 별똥별 착지 → 「보드리!」 셋 → 따라쟁이 · 「기록 없음」 → 선이 「오늘」에서 멈춤 → 격언 편지 → 다섯 탭(한눈에 · 업종 · 조건 · 급등 · 달력)
-//         → 회사 모두(별비 숫자) → 일곱 계단 → 영어 → 친구 3명 → 상품권 · 앵무새는 커피 금지 · 네 거! → 받는 법 → 「아 · 틀 · 란 · 스」
+//         → 회사 모두(별비 숫자) → 일곱 계단 → 영어 → 친구 3명 → 상품권 · 앵무새는 커피 금지 · 네 거! → 받는 법 → 「보 · 드 · 리」
+//   2026-10-17 15:48 「이름을 변경하자 아틀란스에서 보드리로 모두 변경해」 · 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라 현재 것만 하라」
+//     = 보이는 사이트 이름은 보드리(영어 Bodri) — 편지 제목 · 휴대폰 맨 위 글자 · 영어로 뒤집는 이름 · 끝 이름 글자 셋(소리도 셋) · 「그래서<br>지난 기록만」
+//     · 편지 · 상품권 줄은 지금 화면 site/next/app.js 에서 읽음(옛 site/atlas/atlas.js 는 손대지 않음 · 계단 · 급등 · 조건 · 탭 이름만 읽기)
 //   node scripts/atlas11/makbi/video.mjs        → site/media/makbi-intro.mp4 · makbi-intro.webm · makbi-poster.jpg (파일 이름은 그대로 — 사이트 고리를 안 바꿈)
 //   HP_T=1.2,2.4 HP_OUT=폴더 → 그 때의 그림만 PNG 로(확인용) · HP_NEWS=1 → 7단이 「뉴스 · 공시」일 때 그림 미리 보기(확인용만)
-//   숫자 · 이름은 사이트 파일에서 읽음(박지 않음): 계단 이름 atlas.js LV · 탭 이름 index.html · 급등 칸 SV_TABS · 조건 칸 CD_SLOTS · 편지 제목 · 첫 격언 HELLO_MSG · 친구 수 HELLO_PROMO
+//   숫자 · 이름은 사이트 파일에서 읽음(박지 않음): 계단 이름 atlas.js LV · 탭 이름 index.html · 급등 칸 SV_TABS · 조건 칸 CD_SLOTS · 편지 제목 · 첫 격언 HELLO_MSG · 친구 수 HELLO_PROMO(next/app.js)
 //     · 회사 수 · 기준일 · 업종 수 core.json · 지수 선 home.json · 문자 번호 hello.html
-//   스스로 막는 문: 위 값이 없거나 꼴이 다르면 멈춤 · 그린 글에 옛 이름(홍표 · 막비) · 옛 상품권 글 · 옛 친구 수가 나오면 멈춤 · 다 만든 뒤 길이 60초(±0.05)가 아니면 멈춤
+//   스스로 막는 문: 위 값이 없거나 꼴이 다르면 멈춤 · 그린 글에 옛 이름(홍표 · 막비 · 아틀란스 · ATLAS) · 옛 상품권 글 · 옛 친구 수가 나오면 멈춤 · 다 만든 뒤 길이 60초(±0.05)가 아니면 멈춤
 //   남의 캐릭터 모양 없음 · 사람 얼굴 없음 · 가게 표시 없음 · 내일 맞히기 없음 · 회사 이름 없음 · 소리는 sound.py 가 계산으로 만듦(남의 음악 · 목소리 없음)
 //   그림 조각은 draw.mjs 한 벌(makbi · hongpyo — 함수 이름은 속 이름 · 화면에 안 보임) — 이 화면에는 draw.mjs 글을 그대로 넣음
 import fs from 'node:fs/promises';
@@ -30,20 +33,22 @@ await fs.mkdir(OUT, {recursive: true});
 const stop = m => { console.error('멈춤: ' + m); process.exit(1); };
 const rd = p => fs.readFile(path.join(ROOT, p), 'utf8');
 const AJS = await rd('site/atlas/atlas.js'), IDXH = await rd('site/atlas/index.html'), HELLO = await rd('site/hello.html');
-const lit = (re, what) => { const m = AJS.match(re); if (!m) stop(what + ' 못 찾음'); return JSON.parse(m[1].replace(/'/g, '"')); };
+const NJS = await rd('site/next/app.js'); // 지금 화면(보드리) — 편지 · 상품권 줄
+const NAME = '보드리', NAME_EN = 'Bodri'; // 보이는 사이트 이름(2026-10-17 「아틀란스에서 보드리로」) — 편지 제목과 맞대 봄
+const lit = (re, what, src = AJS) => { const m = src.match(re); if (!m) stop(what + ' 못 찾음'); return JSON.parse(m[1].replace(/'/g, '"')); };
 const LV = lit(/const LV = (\[[^\]]*\]);/, '계단 이름 LV');
 if (LV.length !== 7) stop('계단이 일곱이 아님');
 const NEWS = process.env.HP_NEWS === '1' ? (ONLY ? true : stop('HP_NEWS 는 미리 보기만')) : /뉴스/.test(LV[6]);
 if (process.env.HP_NEWS === '1') LV[6] = '뉴스 · 공시';
-const MSG = lit(/const HELLO_MSG = (\[.*?\]);/s, '편지 HELLO_MSG');
-if (MSG[0] !== '아틀란스 주식 격언 열 가지' || MSG.length !== 11) stop('편지 제목 · 줄 수가 다름');
+const MSG = lit(/const HELLO_MSG = (\[.*?\]);/s, '편지 HELLO_MSG(next/app.js)', NJS);
+if (MSG[0] !== NAME + ' 주식 격언 열 가지' || MSG.length !== 11) stop('편지 제목 · 줄 수가 다름: ' + MSG[0] + ' · ' + MSG.length + '줄');
 const MAX1 = MSG[1].replace(/^1\.\s*/, '').match(/^[^.]*\./)?.[0];
 if (!MAX1) stop('첫 격언 꼴이 다름');
 const MAXW = MSG.slice(1).map(s => s.replace(/^\d+\.\s*/, '').length);
 const SV = lit(/const SV_TABS = (\[.*?\]);/, '급등 칸 SV_TABS').map(x => x[1]);
 const CD = [...AJS.matchAll(/\{k: '[abc]', name: '([^']+)'/g)].map(m => m[1]);
 if (CD.length !== 3) stop('조건 칸이 셋이 아님');
-const PROMO = AJS.match(/const HELLO_PROMO = '([^']+)'/)?.[1] ?? stop('HELLO_PROMO 못 찾음');
+const PROMO = NJS.match(/const HELLO_PROMO = '([^']+)'/)?.[1] ?? stop('HELLO_PROMO(next/app.js) 못 찾음');
 const FR = Number(PROMO.match(/(\d+)명만/)?.[1] ?? stop('친구 수 못 찾음'));
 if (!(FR >= 1 && FR <= 5)) stop('친구 수 ' + FR + ' — 하나 둘 셋 셈 그림은 다섯까지');
 const PHONE = HELLO.match(/문자 보내기 (010-\d{4}-\d{4})/)?.[1] ?? stop('문자 번호 못 찾음');
@@ -57,8 +62,9 @@ const closes = k => (home.idx?.[k]?.rows ?? []).map(r => Array.isArray(r) ? r[1]
 const K1 = closes('KOSPI'), K2 = closes('KOSDAQ');
 if (K1.length < 40 || K2.length < 40) stop('home.json 지수 선이 짧음');
 const COUNT = ['하나', '둘', '셋', '넷', '다섯'].slice(0, FR).join(' ');
-const D = {TABS, LV, NEWS, MAX1, MAXW, SV, CD, FR, PHONE, NCO, IND, ASOF, K1: K1.slice(-60), K2: K2.slice(-60), KM: K1.slice(-21), COUNT};
-console.log('사실', JSON.stringify({LV7: LV[6], NEWS, MAX1, SV, CD, FR, NCO, IND, ASOF, k1: K1.length}));
+const NM = [...NAME]; // 끝 이름 글자(하나씩 쾅 — 소리도 같은 수 · sound.py HP_NM)
+const D = {TABS, LV, NEWS, MAX1, MAXW, SV, CD, FR, PHONE, NCO, IND, ASOF, K1: K1.slice(-60), K2: K2.slice(-60), KM: K1.slice(-21), COUNT, TITLE: MSG[0], NAME, NAME_EN, NM};
+console.log('사실', JSON.stringify({LV7: LV[6], NEWS, MAX1, SV, CD, FR, NCO, IND, ASOF, k1: K1.length, TITLE: MSG[0], NM}));
 
 const page = `<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="file://${ROOT}/site/atlas/fonts.css"><style>
 *{box-sizing:border-box;margin:0}
@@ -177,7 +183,7 @@ function bd(t){const o={tilt:-7,blink:0,wingL:0,wingR:0,crestUp:.35,beakOpen:0,v
   else{const g=ease(win(t,56.8,57.35));X=216;Y=lerp(-520,530,g);S=1.2;o.flame=t<57.45?1:.4+.1*Math.sin(t*9);o.glowWing=.8;o.wingL=.25;o.wingR=t>57.5?.6+.3*Math.sin((t-57.5)*7):.25;o.crestUp=.8;o.tilt=-9;
    o.beakOpen=Math.max(pulse(t,57.3,.25),pulse(t,57.65,.25))*.6;const q=pulse(t,57.35,.35);sy=1-.1*q;sx=1+.08*q;}}
  return {o,X,Y,S,sx,sy,show};}
-const CAP=[[1.7,3.0,'쾅! 누구지?'],[3.2,6.0,'안녕! 나는<br>보드리야'],[6.2,9.0,'들은 말만<br>따라 해'],[9.2,12.0,'아틀란스도<br>지난 기록만'],
+const CAP=[[1.7,3.0,'쾅! 누구지?'],[3.2,6.0,'안녕! 나는<br>보드리야'],[6.2,9.0,'들은 말만<br>따라 해'],[9.2,12.0,'그래서<br>지난 기록만'],
  [12.2,16.0,'첫 화면엔<br>격언 열 가지'],[16.2,18.5,'한눈에 보는<br>오늘 시장'],[18.7,21.0,'업종 '+D.IND+'개<br>줄 세우기'],[21.2,23.5,'조건 세 개로<br>거르기'],
  [23.7,26.0,'5일 동안<br>많이 오른 곳'],[26.2,28.5,'날마다<br>달력에 기록'],[28.7,31.5,'코스피 코스닥<br>회사 모두'],[31.7,34.9,'누를수록 자세히<br>일곱 계단'],
  [35.0,38.0,D.NEWS?'끝 계단엔<br>뉴스와 공시':'회사 '+D.NCO.toLocaleString('ko-KR')+'곳<br>모두 일곱 계단'],[38.2,41.0,'영어로도<br>봐요'],[41.1,43.1,'친구 '+D.FR+'명만<br>소개하면'],[43.2,44.5,D.COUNT+'<br>벌써 끝!'],
@@ -220,14 +226,14 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
    o+=T(130+sl,182,34,'지난 한 달','hud l',pa)+T(470+sl,560,30,'오늘','',pa,'color:'+INK)+T(569+sl,460,30,'내일','',pa*.7,'color:'+MUTE);
    o+=T(569+sl,345,120,'?','',pa*(t<11.05?.25:.55+.45*Math.sin(t*7)),'color:'+GOLD+';font-weight:900;text-shadow:0 0 18px rgba(233,185,73,.6)');}
   tp+=brush(t,12);}
- // ── 5장면 편지 — 「아틀란스 주식 격언 열 가지」 ──
+ // ── 5장면 편지 — 「보드리 주식 격언 열 가지」(D.TITLE = next/app.js HELLO_MSG 첫 줄) ──
  else if(t<16){tp+=brush(t,12);const ei=ease(win(t,12.05,12.55)),ex=lerp(820,440,ei),ey=lerp(940,500,ei),er=lerp(28,0,ei),op2=1-win(t,12.75,13.05);
   if(op2>0&&t>=12.05)s+='<g opacity="'+f2(op2)+'" transform="translate('+f1(ex)+' '+f1(ey)+') rotate('+f1(er)+')"><rect x="-150" y="-95" width="300" height="190" rx="14" fill="'+INK+'"/><path d="M-150 -95 L0 '+f1(lerp(15,-170,win(t,12.65,12.85)))+' L150 -95" fill="#D9D4C9" stroke="#BDB7AA" stroke-width="2"/>'
    +'<g transform="translate(0 0) scale('+f2(t<12.6?0:back(win(t,12.6,12.8)))+')"><circle r="30" fill="url(#gold)"/><path d="M8 -16 a18 18 0 1 0 0 32 a14 14 0 1 1 0 -32" fill="#0C0E12" opacity=".75"/></g></g>';
   s+=ring(440,500,12.6,t,.45,20,160,GOLD,5);
   const lp=ease(win(t,12.75,13.1));if(lp>0){const x=lerp(290,190,lp),y=lerp(405,110,lp),w=lerp(300,500,lp),hh=lerp(190,790,lp);
    s+='<rect x="'+f1(x)+'" y="'+f1(y)+'" width="'+f1(w)+'" height="'+f1(hh)+'" rx="18" fill="'+INK+'"/><rect x="'+f1(x+10)+'" y="'+f1(y+10)+'" width="'+f1(w-20)+'" height="'+f1(hh-20)+'" rx="12" fill="none" stroke="'+GOLD+'" stroke-width="2" opacity=".7"/>';
-   if(lp>=1){o+=T(440,170,34,'아틀란스 주식 격언 열 가지','',fade(t,13.0,16.2,.2,.1),'color:#0C0E12;font-weight:900');
+   if(lp>=1){o+=T(440,170,34,D.TITLE,'',fade(t,13.0,16.2,.2,.1),'color:#0C0E12;font-weight:900');
     for(let i=0;i<10;i++){const t0=13.2+i*.25,y2=250+i*62,u=ease(win(t,t0,t0+.22)),w2=Math.min(370,D.MAXW[i]*11.5)*u;
      s+='<circle cx="235" cy="'+y2+'" r="'+f1(20*(t<t0?.0:back(win(t,t0,t0+.2))))+'" fill="'+GOLD+'"/><rect x="270" y="'+(y2-9)+'" width="'+f1(w2)+'" height="18" rx="9" fill="#0C0E12" opacity=".22"/>';
      if(t>=t0)o+=T(235,y2,24,String(i+1),'',1,'color:#0C0E12;font-weight:900');}}}
@@ -240,7 +246,7 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
   g+='<circle cx="122" cy="105" r="21" fill="none" stroke="'+INK+'" stroke-width="3"/><path d="M109 112 l8 -8 l7 5 l10 -12" fill="none" stroke="'+INK+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="594" cy="101" r="13" fill="none" stroke="'+INK+'" stroke-width="3.5"/><path d="M603 111 l11 11" stroke="'+INK+'" stroke-width="3.5" stroke-linecap="round"/>';
   let k=0;for(let i=0;i<4;i++)if(t>=TAB_SW[i])k=i+1;
   g+='<rect x="'+(tabX(k)-44)+'" y="880" width="88" height="5" rx="2.5" fill="'+INK+'"/>';
-  s+=g;let oo='';oo+=T(158,105,32,'ATLAS','l',1,'color:'+INK+';font-weight:900;letter-spacing:2px');
+  s+=g;let oo='';oo+=T(158,105,32,D.NAME,'l',1,'color:'+INK+';font-weight:900;letter-spacing:2px');
   D.TABS.forEach((nm,i)=>{oo+=T(tabX(i),850,30,nm,'',1,'color:'+(i===k?INK:MUTE)+';font-weight:'+(i===k?900:700));});
   const box=(x,y,w,h)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="16" fill="'+CARD+'" stroke="rgba(242,239,232,.14)" stroke-width="2"/>';
   const cf=(a,b)=>fade(t,a,b,.15,.15);
@@ -297,7 +303,7 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
  if(t>=38&&t<41.2){const a=fade(t,38.05,41.0,.2,.25),gs=back(win(t,38.1,38.4)),ph=(t-38)*4.2;
   s+='<g opacity="'+f2(a)+'" transform="translate(360 330) scale('+f2(gs)+')" fill="none" stroke="'+INK+'" stroke-width="5"><circle r="120"/><path d="M-120 0 H120 M-104 -60 H104 M-104 60 H104" stroke-width="4"/>';
   for(let k=0;k<3;k++){const rx=Math.abs(Math.cos(ph+k*Math.PI/3))*120;s+='<ellipse rx="'+f1(Math.max(2,rx))+'" ry="120" stroke-width="4"/>';}s+='</g>'+ring(360,330,38.1,t,.5,40,200,INK,5);
-  const fu=win(t,38.9,39.25),fs=Math.abs(Math.cos(Math.PI*fu));o+=T(360,560,78,fu<.5?'아틀란스':'ATLAS','',a,'color:'+INK+';font-weight:900;letter-spacing:'+(fu<.5?2:8)+'px;transform:translate(-50%,-50%) scaleY('+f2(Math.max(.02,fs))+')');
+  const fu=win(t,38.9,39.25),fs=Math.abs(Math.cos(Math.PI*fu));o+=T(360,560,78,fu<.5?D.NAME:D.NAME_EN,'',a,'color:'+INK+';font-weight:900;letter-spacing:'+(fu<.5?2:4)+'px;transform:translate(-50%,-50%) scaleY('+f2(Math.max(.02,fs))+')');
   const ha=fade(t,39.4,40.95,.12,.25);o+=BUB(215,700,'Hello!',ha,1,44)+T(110,770,30,'— 들린 말','hud l',ha)+BUB(560,615,'Hello!',fade(t,40.0,40.95,.1,.25),0,44,.7+.3*back(win(t,40.0,40.25)));}
  // ── 10장면 친구 셋 ──
  if(t>=40.5&&t<44.55){tp+=brush(t,41);if(t>=41){const a=fade(t,41.0,44.55,.25,.25);let n=0;
@@ -329,10 +335,10 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
    o+=T(134,y,28,String(i+1),'',a,'color:#0C0E12;font-weight:900')+T(170,y,34,txt,'l',pa,'color:'+INK)+T(596,y,38,'✓','',a*ease(win(t,t0,t0+.2)),'color:'+CY+';text-shadow:0 0 12px rgba(80,240,210,.9)');
    if(lit)s+=ring(134,y,t0,t,.5,10,70,'#FFE3A0',5);});
   o+=T(360,562,44,'문자 '+D.PHONE,'',fade(t,52.0,54.3,.2,.3),GLOW)+T(360,612,34,D.FR+'명마다 1만원씩!','',fade(t,52.4,54.3,.2,.3),'color:'+INK);s+=ring(360,562,52.0,t,.6,20,260,GOLD,6,.35);}
- // ── 13장면 「아 · 틀 · 란 · 스」 ──
+ // ── 13장면 「보 · 드 · 리」(D.NM · 첫 글자 54.8초 · 끝 글자 56.15초 = 끝 화음 — 글자 수가 달라도 같은 자리 · 소리는 sound.py 같은 셈) ──
  if(t>=54){if(t<54.7){for(let i=0;i<14;i++){const x=150+((i*67)%420),y=((t*3200+i*190)%1400)-200;s+='<rect x="'+x+'" y="'+f1(1180-y)+'" width="3" height="'+(90+(i%4)*40)+'" fill="#BFFFF4" opacity=".38"/>';}}
   fl=Math.max(fl,pulse(t,54.58,.38)*.7);cam=cam||shake(t,54.6,.4,12);
-  ['아','틀','란','스'].forEach((ch,i)=>{const t0=54.8+i*.45,u=win(t,t0,t0+.22);if(t<t0)return;const sc=lerp(2.3,1,back(u)),x=360+(i-1.5)*150;
+  const nN=D.NM.length,nS=nN>1?1.35/(nN-1):0;D.NM.forEach((ch,i)=>{const t0=54.8+i*nS,u=win(t,t0,t0+.22);if(t<t0)return;const sc=lerp(2.3,1,back(u)),x=360+(i-(nN-1)/2)*150;
    o+=T(x,282,142,ch,'',cl(u*3),'font-weight:900;color:transparent;background:linear-gradient(100deg,#B9E9DC 0%,#FFFFFF 38%,#7FFFE6 50%,#FFFFFF 62%,#B9E9DC 100%);background-size:300% 100%;background-position:'+f1(100-win(t,56.35+i*.06,57.6+i*.06)*100)+'% 0;-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 14px rgba(127,255,230,.85)) drop-shadow(0 0 36px rgba(47,184,159,.6));transform:translate(-50%,-50%) scale('+f2(sc)+')');
    s+=ring(x,282,t0,t,.45,20,140,'#BFFFF4',7)+burst(x,282,t0,t,.5,12,'#FFE3A0',150);if(t<t0+.2)cam=shake(t,t0,.2,9);});
   s+=sparkle(96,170,18,'#FFE3A0',fade(t,56.3,60,.3,.1)*(.5+.5*Math.sin(t*5)))+sparkle(628,380,14,'#fff',fade(t,56.4,60,.3,.1)*(.5+.5*Math.cos(t*6)))+sparkle(600,150,10,'#FFE3A0',fade(t,56.5,60,.3,.1)*(.5+.5*Math.sin(t*7+2)));
@@ -350,7 +356,7 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
 </script></body>`;
 
 // 그린 글 맞대기 — 옛 이름 · 옛 상품권 글 · 옛 친구 수가 나오면 멈춤
-const BAD = [/홍표/, /막비/, /커피 1잔/, /상품권 1장/, /10명/];
+const BAD = [/홍표/, /막비/, /커피 1잔/, /상품권 1장/, /10명/, /아틀란스/, /ATLAS/i, /아\s*틀\s*란\s*스/];
 const seen = new Set();
 const b = await chromium.launch({executablePath: exe});
 const pg = await b.newPage({viewport: {width: W, height: H}});
@@ -360,7 +366,7 @@ const look = txt => { for (const l of String(txt).split('\n')) if (l.trim()) see
 const judge = () => {
   const all = [...seen].join('\n');
   for (const re of BAD) if (re.test(all)) stop('그린 글에 ' + re + ' 이(가) 나옴');
-  for (const need of ['보드리!', '스타벅스 상품권 1만원', PHONE, `${FR}명마다 1만원씩!`, '아틀란스 주식 격언 열 가지', '사고팔기를 권하지 않아요'])
+  for (const need of ['보드리!', '스타벅스 상품권 1만원', PHONE, `${FR}명마다 1만원씩!`, D.TITLE, NAME, NAME_EN, '사고팔기를 권하지 않아요'])
     if (!all.includes(need)) stop('그린 글에 「' + need + '」 이(가) 없음');
 };
 if (ONLY) {
@@ -374,7 +380,7 @@ if (ONLY) {
   const PT = Number(process.env.HP_POSTER ?? 58.5);
   await pg.evaluate(x => window.render(x), PT); await pg.screenshot({path: path.join(OUT, 'makbi-poster.jpg'), type: 'jpeg', quality: 86});
   const wav = path.join(TMP, 'sound.wav');
-  execFileSync('python3', [path.join(HERE, 'sound.py'), wav], {stdio: 'inherit', env: {...process.env, HP_NEWS: NEWS ? '1' : '0', HP_FR: String(FR)}});
+  execFileSync('python3', [path.join(HERE, 'sound.py'), wav], {stdio: 'inherit', env: {...process.env, HP_NEWS: NEWS ? '1' : '0', HP_FR: String(FR), HP_NM: String(NM.length)}});
   const ff = (...a) => execFileSync('ffmpeg', ['-v', 'error', '-y', ...a], {stdio: 'inherit'});
   ff('-framerate', String(FPS), '-i', path.join(fdir, 'f%04d.jpg'), '-i', wav, '-c:v', 'libx264', '-preset', 'slow', '-crf', '22', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-shortest', '-movflags', '+faststart', path.join(OUT, 'makbi-intro.mp4'));
   ff('-i', path.join(OUT, 'makbi-intro.mp4'), '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '34', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '4', '-c:a', 'libopus', '-b:a', '96k', path.join(OUT, 'makbi-intro.webm'));

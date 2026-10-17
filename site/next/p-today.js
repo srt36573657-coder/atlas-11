@@ -274,7 +274,7 @@ function breadth(H, C, notes) {
     SW.length ? h('div', {}, h('p', {class: 'ptoday-sl', text: '약한 업종'}), ...SW.map(row)) : null) : null;
   add(b, two, notes.sectors,
     how('오른 곳과 내린 곳', `${jo(`네이버 증권 업종 회사${B?.n ? ` ${B.n.toLocaleString('ko-KR')}곳` : ''}`, '을', '를')} 그 앞 거래일 종가와 견줬어요. 「10곳 중 n곳」은 오른 곳 · 그대로 · 내린 곳을 모두 넣고 셌어요.`,
-      `업종은 회사 5곳 이상인 ${S.ranked ?? '?'}개만 줄 세웠어요. 업종마다 오른 비율은 네이버 증권이 셈한 값이에요. 줄을 누르면 그 회사들이 가장 많이 든 ATLAS 업종으로 가요.`,
+      `업종은 회사 5곳 이상인 ${S.ranked ?? '?'}개만 줄 세웠어요. 업종마다 오른 비율은 네이버 증권이 셈한 값이에요. 줄을 누르면 그 회사들이 가장 많이 든 보드리 업종으로 가요.`,
       '이날 강한 업종이 다음 날도 강하다는 뜻은 아니에요.'));
   return X.el;
 }
@@ -403,7 +403,7 @@ export async function render(arg) {
   safe('큰 갈래', () => wrap.append(groups(C, page)));
   if (page) {
     if (!H) wrap.append(h('a', {class: 'more', href: '#/f/rise', text: '요즘 오르는 업종 보기 ›'}));
-    wrap.append(h('p', {class: 'safe', text: '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+    wrap.append(h('p', {class: 'safe', text: '보드리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
   }
   return {title: '오늘 시장', nodes: [wrap]};
 }

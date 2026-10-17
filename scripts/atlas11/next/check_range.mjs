@@ -14,6 +14,7 @@ import fss from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNewDeep, TITLE_TAIL} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -184,7 +185,8 @@ const bag = s => { const m = new Map(); for (const t of s.match(TOK) || []) m.se
 const UPDN = ['rgb(255, 90, 101)', 'rgb(91, 150, 255)'];
 
 /** 맞대기 하나 — o = 옛 쪽 · n = 새 쪽 · where = 실패 글 앞머리 · chart = 그림 · 챕터 · 다음 챕터까지 볼지(회사 화면) */
-function compare(c, o, n, where, chart) {
+function compare(c, o0, n, where, chart) {
+  const o = oldToNewDeep(o0); // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs — 「ATLAS 는 아직 …」 → 「보드리는 아직 …」)
   const pk = !!PK[c], fix = s => [...SAME_BUT, ...pathsFix(pk)].reduce((a, [x, y]) => a.split(x).join(y), s);
   if (SHOW.includes(c)) console.log(JSON.stringify({code: c, where, segs: o.segs.map(s => [n.text.includes(fix(s)) ? 'O' : 'X', fix(s)]), aria: [o.aria, n.aria], bw: [o.bw, n.bw], mk: [o.mk, n.mk], marks: [o.marks, n.marks], chaps: n.chaps, next: n.next}, null, 1));
   // ① 옛 글 마디 모두 새 쪽에
@@ -211,7 +213,7 @@ function compare(c, o, n, where, chart) {
     if (!n.hasPic || !n.modelFirst) fail('정직 표지가 그림 위', where);
     if (!n.text.includes('7단 중 7단 · 범위 · 확인 · 셈')) fail('앎의 종류 줄', where);
     for (const x of n.bars) if (UPDN.some(u => x.includes(u))) { fail('모형 막대에 오름 · 내림 색', where + ' ' + x.slice(0, 120)); break; }
-    if (n.title !== nameOf(c) + ' — 범위 · 확인 · 새 아틀란스') fail('창 제목', where + ' ' + n.title);
+    if (n.title !== nameOf(c) + ' — 범위 · 확인' + TITLE_TAIL) fail('창 제목', where + ' ' + n.title);
   }
   for (const h of n.hrefs) { bump('고리'); if (!knownHref(h, c)) fail('모르는 고리', where + ' ' + h); }
   for (const w of BANNED) if (n.plain.includes(w)) fail('쓰지 않을 말', where + ' 「' + w + '」');

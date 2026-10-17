@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 /**
  * 새 아틀란스(/next/ · 규칙 74) 영어 돌기 — 사장님 2026-10-15(싱가포르) 23:35 「언어팩을 선태기하면 아틀란스가 영어로 나오게 하라」(규칙 71)
- *   · 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 — 새 화면도 영어 사전(scripts/atlas11/t365/i18n/en-src.json)으로 영어가 되는지 봄
+ *   · 2026-10-17 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 — 새 화면도 영어 사전으로 영어가 되는지 봄
+ *   · 2026-10-17 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」 — 새 화면은 제 엔진 · 사전만 씀: 엔진 /next/i18n.js · 사전 /next/i18n/en.json · en-names.json
+ *     (원본 scripts/atlas11/next/i18n/en-src.json → 빌드 scripts/atlas11/next/i18n_build.mjs) — 옛 사전(/atlas/i18n/)을 받으면 실패 「옛 영어 사전」
+ *   · 2026-10-17 15:48 「이름을 변경하자 아틀란스에서 보드리로 모두 변경해」 — 영어 이름은 Bodri: 화면에 옛 이름 ATLAS(대문자 낱말)가 보이면 실패 「옛 이름 ATLAS 남음」
+ *     (회사 이름 Atlas Link 같은 보통 글자는 안 셈 · lang="ko" 원문 빼고 · 글 · 속성 · 창 제목 · 꾸밈 글)
  *   여는 곳: /next/?dev=1&lang=en (app.js EN_NEXT 가 false 인 동안 새 화면 영어는 ?dev=1 로만 열림 · --dev 0 이면 ?lang=en 만)
  *   길: 홈 · 칩 일곱(#/f/rise|surge|lead|pick|group|ind|us) · 쇼츠(+ #/shorts/<n> 한 장씩) · 구독 · 나 · 찾기(+ #/find/<말>) · 지수 둘(#/w/KOSPI · KOSDAQ)
  *       · 보는 화면(회사 표본 — 지수 둘과 합쳐 --limit 60 · --all 이면 모든 회사) · 업종 채널 모두 · 갈래 채널 모두 · 없는 회사 · 없는 채널
@@ -107,8 +111,10 @@ async function newPage(block = []) {
   p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text() + (m.location()?.url ? ' @' + m.location().url : '')); });
   for (const f of block) await p.route('**/atlas/data/' + f, r => r.fulfill({status: 404, body: 'blocked'}));
   if (APP_FILE) await p.route('**/next/app.js', r => r.fulfill({path: APP_FILE, contentType: 'text/javascript; charset=utf-8'})); // 시험: 고칠 안(app.js 사본)을 미리 돌려 봄
+  p._dicts = []; p.on('request', q => { const u = new URL(q.url()); if (/\/i18n(\.js|\/[^/]+\.json)$/.test(u.pathname)) p._dicts.push(u.pathname); }); // 받은 영어 엔진 · 사전(새 화면 것만이어야 함 · 옛 것은 errs 가 셈)
   await p.goto(PAGE + '#/');
   await p.waitForFunction(() => window.__atlasI18n && window.NX && !document.querySelector('#view .boot'), null, {timeout: 40000});
+  if (!p._dicts.includes('/next/i18n/en.json')) fail('옛 영어 사전', '처음 열기', '새 화면 사전 /next/i18n/en.json 을 안 받음');
   return p;
 }
 /** 길 바꾸기 — 앞 화면이 새 칸으로 바뀌고(「여는 중」도 사라지고) 두 장 그린 뒤까지 기다림 · 같은 길이면 다른 길을 거쳐 다시 그림 */
@@ -126,22 +132,26 @@ function judgeText() {
   const vis = el => { if (!el) return false; const s = getComputedStyle(el); if (s.visibility === 'hidden' || s.display === 'none') return false; if (!el.getClientRects().length) return false; if (el.closest('details:not([open]) > :not(summary)')) return false; return true; };
   const MODH = /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/)/; // 쪽 모듈 길(p-*.js)
   const han = [], attrs = [], pseudo = [], key = s => { try { return window.__atlasI18n.templateOf(s).key; } catch { return s; } };
+  const AT = /\bATLAS\b/, atlas = []; // 옛 영어 이름(2026-10-17 보드리로 바꿈) — 대문자 낱말만(회사 이름 Atlas Link 는 안 셈)
   const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   for (let n = w.nextNode(); n; n = w.nextNode()) {
     const el = n.parentElement; if (!el || el.closest('[lang="ko"], script, style, noscript, template, [hidden]')) continue;
-    const t = n.nodeValue.trim(); if (!t || !HN.test(t) || !vis(el)) continue;
+    const t = n.nodeValue.trim();
+    if (t && AT.test(t) && vis(el)) atlas.push({ex: t.slice(0, 90), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)});
+    if (!t || !HN.test(t) || !vis(el)) continue;
     han.push({mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash), k: key(t), ex: t.slice(0, 90), av: el.matches('.av')});
   }
-  for (const a of ['aria-label', 'title', 'placeholder', 'alt']) for (const el of document.querySelectorAll('[' + a + ']')) { if (el.closest('[lang="ko"], [hidden], template')) continue; const v = el.getAttribute(a); if (HN.test(v)) attrs.push({k: '@' + a + ' ' + key(v), ex: v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); }
+  for (const a of ['aria-label', 'title', 'placeholder', 'alt']) for (const el of document.querySelectorAll('[' + a + ']')) { if (el.closest('[lang="ko"], [hidden], template')) continue; const v = el.getAttribute(a); if (HN.test(v)) attrs.push({k: '@' + a + ' ' + key(v), ex: v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); if (AT.test(v)) atlas.push({ex: '@' + a + ' ' + v.slice(0, 70), mod: !!el.closest('.co-d, .chx-d, .today-d') || MODH.test(location.hash)}); }
+  if (AT.test(document.title)) atlas.push({ex: '창 제목 ' + document.title.slice(0, 70), mod: false});
   // 동그라미 글자(.av — 이름의 첫 글자) — 영어면 로마자 한 글자여야 함(한글 한 글자를 사전이 낱말로 바꾸면 「금」 → Fri · 「소」 → cattle 처럼 엉뚱한 말)
   const avBad = [...document.querySelectorAll('.av')].filter(e => vis(e) && !e.closest('[lang="ko"]')).map(e => e.textContent.trim()).filter(t => t && !/^[A-Za-z0-9?]$/.test(t) && !HN.test(t));
   // 꾸밈 글(::before · ::after content) — 글자 마디가 아니라 위 검사가 못 봄
-  const sels = [], walk = rules => { for (const ru of rules) { if (ru.cssRules) walk(ru.cssRules); if (ru.selectorText && /::?(before|after)/.test(ru.selectorText) && HN.test(ru.style?.content ?? '')) sels.push(ru.selectorText); } };
+  const sels = [], walk = rules => { for (const ru of rules) { if (ru.cssRules) walk(ru.cssRules); if (ru.selectorText && /::?(before|after)/.test(ru.selectorText) && (HN.test(ru.style?.content ?? '') || AT.test(ru.style?.content ?? ''))) sels.push(ru.selectorText); } };
   for (const sh of document.styleSheets) { try { walk(sh.cssRules); } catch { /* 다른 곳 글꼴표 */ } }
   for (const sel of sels) for (const part of sel.split(',')) { const m = /^(.*?)::?(before|after)\s*$/.exec(part.trim()); if (!m) continue; let els = []; try { els = document.querySelectorAll(m[1] || '*'); } catch { continue; }
-    for (const el of els) { if (el.closest('[lang="ko"]') || !vis(el)) continue; const c = getComputedStyle(el, '::' + m[2]).content; if (c && HN.test(c)) pseudo.push('::' + m[2] + ' ' + c.slice(0, 40)); } }
+    for (const el of els) { if (el.closest('[lang="ko"]') || !vis(el)) continue; const c = getComputedStyle(el, '::' + m[2]).content; if (c && HN.test(c)) pseudo.push('::' + m[2] + ' ' + c.slice(0, 40)); if (c && AT.test(c)) atlas.push({ex: '::' + m[2] + ' ' + c.slice(0, 40), mod: false}); } }
   let titleEn = document.title; try { titleEn = window.__atlasI18n.t(document.title); } catch { /* 엔진 없음 */ }
-  return {han, attrs, pseudo, avBad, title: document.title, titleKey: key(document.title), titleEn, lang: document.documentElement.lang, toast: [...document.querySelectorAll('.toast')].map(e => e.textContent)};
+  return {han, attrs, pseudo, avBad, atlas, title: document.title, titleKey: key(document.title), titleEn, lang: document.documentElement.lang, toast: [...document.querySelectorAll('.toast')].map(e => e.textContent)};
 }
 function judgeBox() {
   const de = document.documentElement, W = de.clientWidth, out = [], box = [];
@@ -164,6 +174,7 @@ async function judge(p, where, {widths = true} = {}) {
   for (const t of tx.attrs) fail(t.mod ? '한글 남음(모듈 칸 · 속성)' : '한글 남음(속성)', where, t.k, t.ex);
   for (const t of tx.pseudo) fail('한글 남음(꾸밈 글)', where, t);
   for (const t of tx.avBad) fail('동그라미 글자가 낱말로 바뀜', where, t);
+  for (const t of tx.atlas) fail(t.mod ? '옛 이름 ATLAS 남음(모듈 칸)' : '옛 이름 ATLAS 남음', where, t.ex);
   // 창 제목 — app.js 가 그린 뒤에 document.title 을 바꿈(엔진은 body 만 봄) → 사전에 틀이 있어도 app.js 가 L() 로 감싸야 영어
   if (HAN.test(tx.title)) fail(HAN.test(tx.titleEn) ? '창 제목 한글(사전에도 없음)' : '창 제목 한글(app.js 가 L() 로 안 감쌈 — 사전에는 있음)', where, tx.titleKey, tx.title);
   if (tx.lang !== 'en') fail('html lang', where, String(tx.lang));
@@ -188,6 +199,8 @@ async function judge(p, where, {widths = true} = {}) {
 function errs(p, where) {
   for (const e of p._errs) { const mod = /\/next\/p-[a-z]+\.(js|css)|dynamically imported module/.test(e); fail(mod ? '모듈 파일 못 받음' : '화면 오류', where, e.slice(0, 180)); }
   p._errs.length = 0;
+  for (const d of p._dicts ?? []) if (!d.startsWith('/next/')) fail('옛 영어 사전', where, '새 화면이 옛 엔진 · 사전을 받음 ' + d + ' — /next/i18n.js · /next/i18n/ 만 써야 함');
+  if (p._dicts) p._dicts.length = 0;
 }
 
 /* ── ① 길 돌기 ── */
@@ -247,6 +260,7 @@ if (on('act')) {
     await p.click('#view .lst button'); await p.waitForTimeout(150);
     if (dlg == null) fail('누르기', '나 칸 지우기', '확인 창이 안 뜸');
     else if (HAN.test(dlg)) { const en = await p.evaluate(s => window.__atlasI18n.t(s), dlg); fail(HAN.test(en) ? '한글 남음(확인 창 · 사전에도 없음)' : '한글 남음(확인 창 · app.js 가 L() 로 안 감쌈 — 사전에는 있음)', '나 칸 지우기', dlg); }
+    if (dlg != null && /\bATLAS\b/.test(dlg)) fail('옛 이름 ATLAS 남음', '나 칸 지우기', '확인 창 ' + dlg.slice(0, 70));
     await judge(p, '누르기 · 지우기', {widths: false});
     // 쇼츠 보내기
     await go(p, '#/shorts'); const sb = p.locator('#view .sh .side button').first();

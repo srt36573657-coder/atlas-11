@@ -7,11 +7,14 @@
 //   ⑤ 찾기 — 모든 회사 이름이 첫 줄에 나옴 · 번호 찾기 · 없는 말
 //   ⑥ 누르기 — 구독 → 구독 칸 · 담기 → 나 칸 · 선 끌기 → 그날 값 · 짧게 누르면 처음으로 · 지우기
 //   ⑦ 고리 — 모든 화면의 href 가 아는 길(#/… · /#/g · /#/i · /#/c/<번호>/… · /letter.html · /)이고 가리키는 것이 자료에 있음
+//   ⑧ 옛 이름 없음(2026-10-17 15:48 「아틀란스에서 보드리로 모두 변경해」) — 모든 길(세 폭 길 · 모든 회사 · 업종 · 갈래 · 달력 종목 · 쇼츠 · 구독 · 나)의 보이는 글 · 창 제목 ·
+//      aria-label · alt · title 에 아틀란스 · ATLAS · 아틀라스 가 없음(남의 글 [data-proper] · 원문 [lang="ko"] · 자료의 회사 이름 빼고) → 「옛 이름 남음」 · 창 제목 끝 「 · 보드리」
 //   실패가 하나라도 있으면 끝 코드 1 · 결과 파일에 실패 목록
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {nameScan, oldNamesIn, allowFromData, selfTest as renameSelfTest, LETTER_TITLE, TITLE_TAIL, OLD_NAME_FAIL, OLD_NAME_RE} from './rename.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -48,6 +51,18 @@ const BANNED = ['추천', '매수', '매도', '팔라', '사세요', '파세요'
 // 새 화면으로 옮긴 쪽(app.js READY) — 옮긴 쪽은 새 주소(#/…), 아직이면 지금 아틀란스(/atlas/#/…)를 기대함(2026-10-17 04:23 「에이전트 총 동원해」)
 const READY = new Set(((/const READY = new Set\(\[([^\]]*)\]\);/.exec(await fs.readFile(path.join(ROOT, 'site/next/app.js'), 'utf8')) || [, ''])[1].match(/'([a-z]+)'/g) || []).map(x => x.slice(1, -1)));
 const oldOr = (k, h) => (READY.has(k) ? h : '/atlas/' + h);
+// ⑧ 옛 이름 — 자료의 실제 이름(회사 「아틀라스링크」 등)은 옛 이름이 아님 · 검사 자체 시험(바꾸는 말 표 · 찾기가 틀림을 잡는지)
+const names = await getJ('names.json').catch(e => { fail('자료', e.message); return null; });
+const ALLOW = allowFromData({mkt, names, extra: [...(core.industries || []).map(i => i.name), ...(core.groups || []).map(g => g.name), ...(home?.us?.rows || []).map(r => r.name)]});
+for (const x of renameSelfTest()) fail('검사 자체 시험(옛 이름)', x);
+const guarded = new Set();
+/** 지금 화면에 옛 이름이 남았나 · 창 제목 끝 = 「 · 보드리」(쪽마다 한 번) */
+async function guard(p, where) {
+  const s = await p.evaluate(nameScan);
+  for (const x of oldNamesIn(s, ALLOW).slice(0, 6)) fail(OLD_NAME_FAIL, where + ' ' + x);
+  if (!s.title.endsWith(TITLE_TAIL)) fail('창 제목 끝', where + ' 「' + s.title + '」');
+  guarded.add(where); bump('옛 이름 본 화면');
+}
 
 const exe = '/opt/pw-browsers/chromium', b = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {}); // 이 방은 미리 깔린 크로미움 · 깃허브 실행기는 playwright 가 깐 것
 async function page(width, height = 800) {
@@ -104,7 +119,11 @@ const MODR = {surge: ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/su
 for (const [k, rs] of Object.entries(MODR)) if (READY.has(k)) ROUTES.push(...rs); // 옮긴 쪽도 세 폭 · 쓰지 않을 말 · 44px · 고리
 for (const w of [320, 360, 390]) {
   const p = await page(w); await p.goto(base + '/next/#/'); await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000});
-  for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); checkScan(w + ' ' + r, await scan(p), p); bump('화면'); }
+  for (const r of ROUTES) { await go(p, r); await p.waitForTimeout(80); checkScan(w + ' ' + r, await scan(p), p); if (w === 390) await guard(p, r); bump('화면'); }
+  if (w === 390) { // ⑧ 옛 이름 — 세 폭 길에 없는 쪽도(달력 종목 파일 · 조건 고른 주소 · 쇼츠 한 장 · 없는 주소)
+    const tr = await getJ('surgetr.json').catch(() => null), c0 = tr?.cases?.[0]?.[0];
+    for (const r of [...(READY.has('cal') && c0 ? ['#/cal/' + c0] : []), ...(READY.has('cond') ? ['#/cond/all-all-all'] : []), '#/shorts/1', '#/w/ZZZZZZ', '#/ch/i/' + encodeURIComponent('없는 업종')]) { await go(p, r); await p.waitForTimeout(80); await guard(p, r); }
+  }
   await p.context().close();
 }
 
@@ -119,11 +138,13 @@ for (const w of [320, 360, 390]) {
   if (p._errs.length) fail('화면 오류', '큰 글씨 ' + p._errs.join(' | ').slice(0, 200));
   await ctx.close();
 }
-/* ①-2 첫 화면 붙박이(지금 아틀란스 atlas.js 와 글자 그대로) · 옛 주소 */
+/* ①-2 첫 화면 붙박이(지금 화면 site/next/app.js 의 HELLO_MSG · HELLO_PROMO 와 글자 그대로 — 2026-10-17 15:54 「예전 아트란스는 … 현재 것만」: 옛 atlas.js 는 더 이상 기준이 아님) · 옛 주소 */
 {
-  const src = await fs.readFile(path.join(ROOT, 'site/atlas/atlas.js'), 'utf8');
+  const src = await fs.readFile(path.join(ROOT, 'site/next/app.js'), 'utf8');
   const MSG = JSON.parse((/const HELLO_MSG = (\[[^\]]*\]);/.exec(src) || [, 'null'])[1].replace(/'/g, '"')), PROMO = (/const HELLO_PROMO = '([^']*)';/.exec(src) || [])[1];
-  if (!Array.isArray(MSG) || MSG.length < 2 || !PROMO) fail('편지 글을 atlas.js 에서 못 읽음', '');
+  if (!Array.isArray(MSG) || MSG.length < 2 || !PROMO) fail('편지 글을 site/next/app.js 에서 못 읽음', '');
+  if (MSG?.[0] !== LETTER_TITLE) fail('편지 첫 줄', `「${MSG?.[0]}」 ≠ 「${LETTER_TITLE}」`);
+  for (const t of [...(MSG || []), PROMO]) if (OLD_NAME_RE.test(t ?? '')) fail(OLD_NAME_FAIL, '편지 · 상품권 줄 「' + t + '」');
   const q = await page(390, 844); await q.goto(base + '/next/#/');
   await q.waitForSelector('#view .m4-letter', {timeout: 20000});
   const g0 = await q.evaluate(() => ({intro: document.querySelector('#view .m4-letter')?.classList.contains('intro'), bub: [...document.querySelectorAll('#view .hpi-b')].map(b => b.textContent)}));
@@ -177,6 +198,7 @@ for (const code of list) {
   if (g.sw > g.vw) fail('가로 넘침', 'w ' + code);
   if (!/^20거래일 · \d+월 \d+일 → \d+월 \d+일$/.test(g.tip)) fail('선 이름표', code + ' ' + g.tip);
   if (p._errs.length) { fail('화면 오류', code + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }
+  await guard(p, '#/w/' + code);
   bump('회사');
 }
 for (const I of core.industries) {
@@ -187,6 +209,7 @@ for (const I of core.industries) {
   if (!g.small.startsWith('회사 ' + N(n) + '곳')) fail('업종 회사 수', I.name + ' ' + g.small);
   if (g.st[0] !== P(I.chg) || g.st[1] !== P(I.cwChg)) fail('업종 두 숫자', I.name + ' ' + g.st.join(','));
   if (g.tiles !== Math.min(20, n)) fail('업종 칸 수', I.name + ' ' + g.tiles);
+  await guard(p, '#/ch/i/' + I.name);
   bump('업종 채널');
 }
 for (const G of core.groups) {
@@ -197,6 +220,7 @@ for (const G of core.groups) {
   if (n !== G.n) fail('갈래 회사 수(자료)', G.id + ' ' + n + ' ≠ ' + G.n);
   if (!g.small.startsWith('회사 ' + N(n) + '곳') || !g.small.includes('업종 ' + (G.inds || []).length + '개')) fail('갈래 회사 수', G.id + ' ' + g.small);
   if (g.st[0] !== P(G.chg) || g.st[1] !== P(G.cwChg)) fail('갈래 두 숫자', G.id + ' ' + g.st.join(','));
+  await guard(p, '#/ch/g/' + G.id);
   bump('갈래 채널');
 }
 /* ④ 쇼츠 */
@@ -262,10 +286,10 @@ for (const G of core.groups) {
   const t3 = await p.textContent('#view .player .tip'); if (!t3.startsWith('20거래일 · ')) fail('짧게 누름', t3);
   await go(p, '#/sub'); const s = await p.evaluate(() => [...document.querySelectorAll('#view .avs small')].map(x => x.textContent));
   if (!s.includes(o.i)) fail('구독 칸', JSON.stringify(s));
-  checkScan('390 #/sub(구독 있음)', await scan(p), p);
+  checkScan('390 #/sub(구독 있음)', await scan(p), p); await guard(p, '#/sub(구독 있음)');
   await go(p, '#/me'); const m = await p.evaluate(() => ({hist: document.querySelectorAll('#view .row a').length, later: [...document.querySelectorAll('#view .lst a[href^="#/w/"]')].map(a => a.getAttribute('href'))}));
   if (m.hist < 1 || !m.later.includes('#/w/' + code)) fail('나 칸', JSON.stringify(m));
-  checkScan('390 #/me(기록 있음)', await scan(p), p);
+  checkScan('390 #/me(기록 있음)', await scan(p), p); await guard(p, '#/me(기록 있음)');
   p.once('dialog', d => d.accept()); await p.click('#view .lst button'); await p.waitForTimeout(150);
   const cleared = await p.evaluate(() => [JSON.parse(localStorage.getItem('atlas:new:hist') || '[]').length, JSON.parse(localStorage.getItem('atlas:new:later') || '[]').length]);
   if (cleared[0] || cleared[1]) fail('지우기', JSON.stringify(cleared));
@@ -276,7 +300,7 @@ for (const G of core.groups) {
   bump('누르기');
 }
 await b.close();
-const res = {schema: 'atlas11-next-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, ready: [...READY], companies: codes.length, limit: LIMIT || null, full: !LIMIT, seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
+const res = {schema: 'atlas11-next-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, ready: [...READY], companies: codes.length, limit: LIMIT || null, full: !LIMIT, oldNameScreens: guarded.size, oldNameAllow: ALLOW, seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
 await fs.mkdir(path.dirname(out), {recursive: true});
 await fs.writeFile(out, JSON.stringify(res, null, 1) + '\n');
 console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, counts, fails: fails.slice(0, 12)}, null, 0));

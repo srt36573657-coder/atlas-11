@@ -19,6 +19,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
@@ -238,8 +239,8 @@ for (const v of list) {
     await open(pp, base + NEXT + '#/today', W_PAGE);
   } catch (e) { fail('열림', name + ' ' + e.message.slice(0, 120)); for (const p of [po, ph, pp]) await p.context().close(); continue; }
   const run = async (tag) => {
-    const [o, nh, np] = [await po.evaluate(EXTRACT, ['old', 'home']), await ph.evaluate(EXTRACT, ['new', 'home']), await pp.evaluate(EXTRACT, ['new', 'page'])];
-    const o2 = await po.evaluate(EXTRACT, ['old', 'page']);
+    const [o, nh, np] = [oldToNewDeep(await po.evaluate(EXTRACT, ['old', 'home'])), await ph.evaluate(EXTRACT, ['new', 'home']), await pp.evaluate(EXTRACT, ['new', 'page'])]; // 옛 쪽 글은 이름만 새 이름으로(「ATLAS 업종으로 가요」 → 「보드리 업종으로 가요」 · rename.mjs)
+    const o2 = oldToNewDeep(await po.evaluate(EXTRACT, ['old', 'page']));
     if (DUMP && !dumped.has(name)) { dumped.add(name); dumps.push({name, tag, old: o, oldPage: o2, home: nh, page: np}); }
     compare(name + ' · 새 첫 화면 · ' + tag, o, nh, 'home', C);
     compare(name + ' · 새 쪽 · ' + tag, o2, np, 'page', C);

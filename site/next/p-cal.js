@@ -98,7 +98,7 @@ function foot(C, src = null) {
     f.append(h('p', {text: src ? `자료: ${price} · ${src}.` : `자료: ${price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}));
     if (C.provisional) f.append(h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}));
   } else f.append(h('p', {class: 'q', text: '? 자료 줄을 받지 못했어요.'}));
-  f.append(h('p', {class: 'pcal-safe', text: '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+  f.append(h('p', {class: 'pcal-safe', text: '보드리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
   return f;
 }
 const hon = () => [h('p', {class: 'pcal-hon', text: '사고팔 곳을 고른 목록이 아니에요.'}), h('p', {class: 'pcal-small', text: '지난 값일 뿐 앞날을 말하지 않아요.'})];

@@ -11,6 +11,7 @@
 //   친구 소개 상품권(사장님 2026-10-14 14:56 「카톡으로 아틀란스 소개 10명 … 스타벅스 아메리카노 상품권 1장 … 그 앵무새 영상에도」 · 14:59 「너가 알아서 해 그냥 많이줘」)
 //     2026-10-14 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」 — 띠 · 끝 상자 글 = 「스타벅스 상품권 1만원」
 //     = 영상 아래 금빛 띠(0.8 ~ 19.4초) + 마지막 장면 맨 아래 상자(안전 문장 줄은 로고 밑으로 옮김) · 길이는 24초 그대로(옛 판 띠 · 소개 쪽 글이 「24초」)
+//   2026-10-17 15:48 「이름을 변경하자 아틀란스에서 보드리로 모두 변경해」 — 링크 미리보기 글 「보드리를 소개합니다」 · 「그래서 지난 기록만 말해요.」(앵무새 이름과 겹쳐서)
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
@@ -65,7 +66,7 @@ if (!only || only === 'og') {
     <body><svg class="st" viewBox="0 0 1200 630">${stars(1200, 630, 70, 630)}</svg>
     <div class="mb"><svg viewBox="0 -6 240 330"><defs>${GEAR_DEFS}</defs>${hongpyo({id: 'o', tilt: -8, blink: 0, wingL: .15, wingR: .5, crestUp: .9, beakOpen: .5, visor: 0, vs: 1, flame: .55, glowWing: .6}, .3, {boot: 1, guard: 1})}</svg></div>
     <div class="bub">보드리! 보드리! 보드리!</div>
-    <div class="tx"><h1>ATLAS를<br>소개합니다</h1><p class="who">안내 · 앵무새 보드리</p><p class="wit">앵무새는 들은 것만 말해요.<br>ATLAS도 지난 기록만 말해요.</p>
+    <div class="tx"><h1>보드리를<br>소개합니다</h1><p class="who">안내 · 앵무새 보드리</p><p class="wit">앵무새는 들은 것만 말해요.<br>그래서 지난 기록만 말해요.</p>
     <div class="row"><span class="btn">▶ 1분 영상</span><span class="dom">aaa7377.com</span></div></div></body>`, {waitUntil: 'load'});
   await pg.evaluate(() => document.fonts.ready); await pg.waitForTimeout(200);
   await pg.screenshot({path: path.join(ROOT, 'site/og-makbi.jpg'), type: 'jpeg', quality: 88});

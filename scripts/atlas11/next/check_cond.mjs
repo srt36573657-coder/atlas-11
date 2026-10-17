@@ -13,6 +13,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNew, oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -76,8 +77,10 @@ const SEL = {
     howto: 'details.pcond-howto .pcond-in p', hon: '.pcond-hon', err: '.pcond-err', src: '.pcond-foot p', provc: '.pcond-foot .pcond-provc',
     sheet: '.pcond-sheet', title: '#pcondTitle', op: '.pcond-sheet button.pcond-op', ot: '.pcond-ot b', od: '.pcond-od', oc: '.pcond-oc', close: '.pcond-sheet .pcond-close'},
 };
-/** 화면 읽기(같은 꼴) — 옛 쪽 고리는 새 주소로 바꿔 맞댐(#/c/<번호> → #/w/<번호> · #/x/<번호> → /atlas/#/x/<번호>) */
-const read = (p, side) => p.evaluate(S => {
+/** 화면 읽기(같은 꼴) — 옛 쪽 고리는 새 주소로 바꿔 맞댐(#/c/<번호> → #/w/<번호> · #/x/<번호> → /atlas/#/x/<번호>) · 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs) */
+const read = async (p, side) => (side === 'old' ? oldToNewDeep(await readRaw(p, side)) : readRaw(p, side));
+const readSheet = async (p, side) => (side === 'old' ? oldToNewDeep(await readSheetRaw(p, side)) : readSheetRaw(p, side));
+const readRaw = (p, side) => p.evaluate(S => {
   const v = document.querySelector('#view'), T = e => (e ? e.textContent : null), A = s => [...v.querySelectorAll(s)];
   const map = hr => (hr ?? '').replace(/^#\/c\//, '#/w/').replace(/^#\/x\//, '/atlas/#/x/');
   const src = A(S.src).map(T).find(t => t.startsWith('자료: ')) ?? null;
@@ -89,7 +92,7 @@ const read = (p, side) => p.evaluate(S => {
     diff: T(v.querySelector(S.diff)), time: T(v.querySelector(S.time)), prov: T(v.querySelector(S.prov)), howto: A(S.howto).map(T), hon: T(v.querySelector(S.hon)), err: T(v.querySelector(S.err)), src, provc: T(v.querySelector(S.provc)),
   };
 }, SEL[side]);
-const readSheet = (p, side) => p.evaluate(S => { const s = document.querySelector(S.sheet); if (!s) return null;
+const readSheetRaw = (p, side) => p.evaluate(S => { const s = document.querySelector(S.sheet); if (!s) return null;
   return {title: s.querySelector(S.title)?.textContent ?? document.querySelector(S.title)?.textContent, ops: [...document.querySelectorAll(S.op)].map(b => [b.dataset.op, b.getAttribute('aria-current'), b.querySelector(S.ot)?.textContent, b.querySelector(S.od)?.textContent, b.querySelector(S.oc)?.textContent]),
     focus: document.activeElement?.dataset?.op ?? null}; }, SEL[side]);
 /** 옛 쪽 · 새 쪽 같은 값인지(마당 하나씩) */
@@ -114,7 +117,8 @@ const norm = s => String(s ?? '').replace(/ /g, ' ').replace(/⁠/g, '');
 const toks = s => (norm(s).match(/[+−-]?\d[\d,]*(?:\.\d+)?\s?(?:거래일|%|곳|일|등|개|월|원|배|년|해)?/g) || []).map(t => t.replace(/\s/g, ''));
 const allText = p => p.evaluate(() => { for (const d of document.querySelectorAll('#view details')) d.open = true; return document.querySelector('#view').innerText; });
 /** 옛 쪽 숫자 낱말 · 「?」 줄이 새 쪽에 빠짐없이(같은 수만큼) 있는지 */
-function wordsIn(where, ot, nt) {
+function wordsIn(where, ot0, nt) {
+  const ot = oldToNew(ot0); // 옛 쪽 글 = 이름만 새 이름으로
   const cnt = a => a.reduce((m, t) => m.set(t, (m.get(t) || 0) + 1), new Map()), O = cnt(toks(ot)), N = cnt(toks(nt));
   for (const [t, c] of O) if ((N.get(t) || 0) < c) { fail('옛 쪽 숫자 낱말이 새 쪽에 없음', where + ' 「' + t + '」 옛 ' + c + ' · 새 ' + (N.get(t) || 0)); return; }
   const nl = norm(nt);

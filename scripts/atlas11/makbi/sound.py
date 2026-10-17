@@ -1,6 +1,6 @@
 # 보드리 소개 영상 소리(1분) — 배경 음악(120박 · 한 마디 2초) + 효과음 · 화면 때(video.mjs)와 같은 때에 맞춤(곧은 시계 하나)
 #   모두 계산으로 만듦(녹음 · 남의 음악 · 목소리 없음) · 60초 · 44.1kHz 두 귀 · 끝 −1dB 아래로 맞춤 · 옛 35초 판은 git d4b4bed3
-#   HP_NEWS=1 → 7단 「뉴스 · 공시」 소리(신문 펄럭 · 도장) · HP_FR = 친구 수(셈 소리 수)
+#   HP_NEWS=1 → 7단 「뉴스 · 공시」 소리(신문 펄럭 · 도장) · HP_FR = 친구 수(셈 소리 수) · HP_NM = 끝 이름 글자 수(2026-10-17 「아틀란스에서 보드리로」 = 3 · 쾅 소리 수)
 import os, sys, wave
 import numpy as np
 from scipy.signal import butter, lfilter
@@ -13,6 +13,7 @@ Rr = np.zeros(N)
 rng = np.random.default_rng(20261016)
 NEWS = os.environ.get('HP_NEWS') == '1'
 FR = int(os.environ.get('HP_FR', '3'))
+NM = int(os.environ.get('HP_NM', '3'))
 
 
 def mf(m):
@@ -353,13 +354,13 @@ add(chime([mf(69), mf(74), mf(78)], 1.0), 48.4, 0.24)
 # 12 받는 법
 for j in range(3): add(chime([mf(81 + j * 2), mf(86 + j * 2)], 0.5), 50.0 + j * 0.7, 0.2)
 add(chime([1568, 2093], 0.8), 52.0, 0.18)
-# 13 「아 · 틀 · 란 · 스」
+# 13 「보 · 드 · 리」 — 글자마다 쾅(video.mjs 와 같은 셈: 첫 글자 54.8초 · 끝 글자 56.15초 = 끝 화음)
 add(riser(0.6, 200, 2500), 54.0, 0.35); add(rumble(0.6), 54.0, 0.35)
 add(boom(1.4), 54.58, 0.8)
-for i in range(4):
-    t0 = 54.8 + i * 0.45
+for i in range(NM):
+    t0 = 54.8 + i * (1.35 / (NM - 1) if NM > 1 else 0)
     add(K, t0, 0.7); add(S_, t0, 0.35); add(boom(0.5) * 0.6, t0, 0.35)
-    add(syl(1500 + i * 150, 2100 + i * 200, 1800 + i * 150, 0.2, shift=i), t0 + 0.01, 0.3, (-0.3, 0.1, -0.1, 0.3)[i])
+    add(syl(1500 + i * 150, 2100 + i * 200, 1800 + i * 150, 0.2, shift=i), t0 + 0.01, 0.3, -0.3 + 0.6 * i / max(1, NM - 1))
 add(hp(rng.standard_normal(int(2.5 * SR)), 4500) * np.exp(-np.arange(int(2.5 * SR)) / SR / 0.9), 56.15, 0.14)
 nf = int(3.85 * SR); tf = np.arange(nf) / SR
 fin = np.zeros(nf)

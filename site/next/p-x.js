@@ -26,7 +26,7 @@ function funnel(C, r) {
   }
   return wrap;
 }
-const tail = () => [h('a', {class: 'more px-find', href: '#/find', text: '회사 찾기 ›'}), h('p', {class: 'safe', text: '아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})];
+const tail = () => [h('a', {class: 'more px-find', href: '#/find', text: '회사 찾기 ›'}), h('p', {class: 'safe', text: '보드리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})];
 
 export async function render(arg) {
   const code = String(arg ?? '');

@@ -13,6 +13,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNew, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -42,7 +43,9 @@ const BANNED = ['추천', '매수', '매도', '사라', '팔라', '사세요', '
 const norm = s => String(s ?? '').replace(/[  ]/g, ' ').replace(/[⁠​­]/g, '').replace(/\s+/g, ' ').trim();
 const SKIP = new Set(['닫기']); // 옛 판(시트)의 닫기 단추 — 새 화면은 보통 쪽(뒤로 가기)
 const DISCLAIMER = /^저는 투자 상담사가 아닙니다/; // 옛 맨 아래 글 — 「매수 · 매도」가 쓰지 않을 말이라 새 안전 문장으로 바꿈
-const SAFE_NEW = ['아틀란스는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.', '투자 상담이 아니에요. 지난 기록을 센 공부예요.'];
+const SAFE_NEW = [SAFE_LINE, '투자 상담이 아니에요. 지난 기록을 센 공부예요.']; // SAFE_LINE = 「보드리는 지난 기록만 보여 줘요. …」(rename.mjs)
+// 옛 쪽 글은 이름만 새 이름으로 고쳐 맞댐(아틀란스 · ATLAS → 보드리 · 「ATLAS 는 어떻게 셌나요」 → 「보드리는 어떻게 셌나요」) — 원문 기록(업데이트 까닭 · 남의 글)은 두 쪽 모두 글자 그대로라 바꾸지 않음
+const KEEP = [...(updates?.records ?? []).map(r => r.reason), ...(updates?.records ?? []).map(r => r.why)].filter(Boolean);
 const mapHref = h => { // 옛 주소 → 새 주소(안내 「새 주소로 바꿀 것」)
   let m;
   if ((m = /^#\/c\/([^/]+)(\/(?:past|rivals|grow|range))?$/.exec(h))) return '#/w/' + m[1] + (m[2] || '');
@@ -51,8 +54,9 @@ const mapHref = h => { // 옛 주소 → 새 주소(안내 「새 주소로 바�
   if (h === '#/list') return '#/f/ind';
   return h;
 };
-function compare(tag, O, N) {
-  if (!O || !N) { fail('맞댈 화면 없음', tag); return; }
+function compare(tag, O0, N) {
+  if (!O0 || !N) { fail('맞댈 화면 없음', tag); return; }
+  const O = {...O0, text: oldToNew(O0.text, [...KEEP, ...O0.proper])}; // 고리 · 남의 글(data-proper)은 그대로 맞댐
   bump('맞댄 화면');
   const nt = norm(N.text);
   let lines = 0;

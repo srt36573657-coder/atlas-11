@@ -14,6 +14,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), has = k => argv.includes(k), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')); // run_all.mjs 는 PW_DIR 로 넘김
@@ -187,7 +188,7 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
     const [ok1, ok2] = await Promise.all([openOld(po, code, title, firstO), openNew(pn, code, title, firstN)]); firstO = firstN = false;
     if (!ok1) { fail('옛 쪽 안 열림', code); continue; }
     if (!ok2) { fail('새 쪽 안 열림', code + ' ' + await pn.evaluate(() => document.querySelector('main#view')?.textContent?.slice(0, 80))); continue; }
-    const [o, n] = await Promise.all([po.evaluate(OLD_X), pn.evaluate(NEW_X)]);
+    const [o, n] = await Promise.all([po.evaluate(OLD_X).then(x => oldToNewDeep(x)), pn.evaluate(NEW_X)]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
     compare('390 ' + code, code, o, n, d);
     const ns = nSlots(d.G);
     if (ns) {
@@ -277,7 +278,7 @@ if (WIDE) {
     const title = d.name + ' — 앞으로 클까?';
     const [ok1, ok2] = await Promise.all([openOld(po, sc, title, true), openNew(pn, sc, title, true)]);
     if (!ok1 || !ok2) { fail('둘레 안 열림', name + ' ' + ok1 + ' ' + ok2); await cO.close(); await cN.close(); continue; }
-    const [o, n] = await Promise.all([po.evaluate(OLD_X), pn.evaluate(NEW_X)]);
+    const [o, n] = await Promise.all([po.evaluate(OLD_X).then(x => oldToNewDeep(x)), pn.evaluate(NEW_X)]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
     compare('둘레 「' + name + '」 ' + sc, sc, o, n, d);
     const ns = nSlots(d.G), [to, tn] = await Promise.all([po.evaluate(TIPS, ['#view .gc svg[role=img]', '.tip', ns]), pn.evaluate(TIPS, ['main#view .pgrow-gc svg[role=img]', '.pgrow-tip', ns])]);
     if (JSON.stringify(to) !== JSON.stringify(tn)) fail('손가락 이름표(둘레)', `${name} 옛 ${JSON.stringify(to).slice(0, 100)} · 새 ${JSON.stringify(tn).slice(0, 100)}`);
