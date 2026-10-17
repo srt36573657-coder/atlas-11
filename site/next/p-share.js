@@ -11,6 +11,7 @@
    이름은 brand.js 한 곳 · 거르는 말은 words.js 한 곳 */
 import {sendHits} from './words.js';
 import {NAME, josa, hasBatchim} from './brand.js';
+import {t as L} from './i18n.js'; // 보내는 글 속 붙박이 말(기본 말 · 「반토막 난다면」)은 지금 말로 — 화면 글은 엔진이 그려진 뒤 바꿈 · 한국어면 그대로
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const nx = () => globalThis.NX ?? null;
@@ -29,6 +30,8 @@ function sv(tag, a = {}) { const e = document.createElementNS(SVGNS, tag); for (
 const num = n => Number(n).toLocaleString('ko-KR');
 const md = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일` : '?');
 const ira = w => (hasBatchim(w) ? '이라' : '라');
+/** 쓴 사람의 글(남의 글) — 한글이 있으면 lang="ko"(엔진이 바꾸지 않음 · p-why mine() 과 같음) */
+const own = (cls, txt) => h('span', {class: cls, 'data-proper': '', lang: /[가-힣]/.test(txt) ? 'ko' : null, text: txt});
 
 /** 빠른 말 셋(명령문 [4] 2) · 같이 따져 줘 물음([4] 8) · 글상자 칸 */
 export const QUICK = Object.freeze(['이거 어때?', '같이 공부하자', '나는 이렇게 봤어']);
@@ -133,7 +136,7 @@ async function deliver({title, text, url}) {
 
 /** 걸린 말 → 고칠 글 한 줄(걸린 낱말은 쓴 사람의 글이라 data-proper — 화면 쓰지 않을 말 셈 밖) · 글상자에서 그 낱말 자리 */
 function badSay(x) {
-  const w = x.word, q = h('span', {'data-proper': '', text: `「${w}」`});
+  const w = x.word, q = own(null, `「${w}」`);
   if (x.kind === '수익 자랑') return [q, ' 같은 수익 숫자는 보내지 않아요. 왜 그렇게 봤는지만 적어 줘.'];
   return [q, `${hasBatchim(w) ? '은' : '는'} ${x.kind}${ira(x.kind)} 못 보내요. 고쳐 줄래?`];
 }
@@ -165,7 +168,7 @@ export async function open(o = {}) {
   const urlEl = h('span', {class: 'ps-url', text: urlFor('')});
   const go = h('button', {class: 'ps-go', type: 'button', text: '보내기'});
   const x = h('button', {class: 'ps-x', type: 'button', text: '닫기'});
-  const quick = h('div', {class: 'ps-q', role: 'group', 'aria-label': '빠른 말'}, ...QUICK.map(q => h('button', {class: 'ps-qb', type: 'button', text: q, onclick: () => { ta.value = q; judge(); ta.focus(); }})));
+  const quick = h('div', {class: 'ps-q', role: 'group', 'aria-label': '빠른 말'}, ...QUICK.map(q => h('button', {class: 'ps-qb', type: 'button', text: q, onclick: ev => { ta.value = ev.currentTarget.textContent || L(q); judge(); ta.focus(); }}))); // 보이는 글 그대로(영어면 바뀐 글)
   const what = asStock
     ? (kind === 'ask'
       ? [h('b', {text: name ?? code}), `${josa(name ?? code, '을').slice(String(name ?? code).length)} 친구와 같이 따져 봐요. 친구에게 「${ASK_Q}」를 물어요.`]
@@ -195,14 +198,14 @@ export async function open(o = {}) {
     go.setAttribute('aria-disabled', String(bad.length > 0));
     say.className = 'ps-m' + (bad.length ? ' no' : '');
     say.replaceChildren(...(bad.length ? badSay(bad[0]) : []));
-    if (asStock) urlEl.textContent = urlFor(bad.length ? '' : cleanMsg(v) || DEF[kind]); // 보낼 때와 같은 주소(비면 기본 말)
+    if (asStock) urlEl.textContent = urlFor(bad.length ? '' : cleanMsg(v) || L(DEF[kind])); // 보낼 때와 같은 주소(비면 기본 말 · 지금 말로)
     return bad;
   }
   ta.addEventListener('input', judge);
   let busy = false; // 공유 창이 열려 있는 동안 다시 누름은 버림
   go.addEventListener('click', () => {
     if (busy) return;
-    const msg = cleanMsg(ta.value) || DEF[kind], bad = judge().length ? hitsNow() : sendHits(msg);
+    const msg = cleanMsg(ta.value) || L(DEF[kind]), bad = judge().length ? hitsNow() : sendHits(msg);
     if (bad.length) { say.className = 'ps-m no'; say.replaceChildren(...badSay(bad[0])); go.setAttribute('aria-disabled', 'true'); const r = findIn(ta.value, bad[0].word); ta.focus(); if (r) ta.setSelectionRange(r[0], r[1]); return; }
     const url = urlFor(msg), text = [msg, lead].filter(Boolean).join('\n');
     sent = {text, url};
@@ -331,7 +334,7 @@ function senderMsg(S) {
   if (S.msg == null) return h('p', {class: 'ps-p', text: '? 보낸 말이 깨져서 보여 줄 수 없어요.'});
   if (!S.msg) return h('p', {class: 'ps-p', text: '친구가 따로 남긴 말은 없어요.'});
   if (sendHits(S.msg).length) return h('p', {class: 'ps-p', text: '? 보낸 말에 거르는 말이 있어서 보여 주지 않아요.'});
-  return h('blockquote', {class: 'ps-said'}, h('span', {'data-proper': '', text: '「' + S.msg + '」'}));
+  return h('blockquote', {class: 'ps-said'}, own(null, '「' + S.msg + '」'));
 }
 /** 이 종목을 내가 다시 보내기 — 오늘 값이 있으면 오늘 값 · 날로(없으면 보낸 날 것) · prefill = 글상자에 미리 넣을 말 */
 function againBtn(S, name, now, nowDay, later, label, prefill) {
@@ -348,13 +351,13 @@ function msgPart(S, name, now, nowDay, later) {
     mine 이 없으면(질문 칸이 기록을 안 넘김) 여기서 한 줄 받음 — 답은 이 화면에만(어디에도 남기지 않음) */
 function askPart(S, name, now, nowDay, later, mine) {
   if (mine) return [h('h2', {class: 'ps-h2 ps-askq', text: ASK_Q}),
-    h('p', {class: 'ps-mine'}, h('span', {class: 'ps-pk', text: '내 생각 '}), h('span', {'data-proper': '', text: '「' + mine + '」'})),
+    h('p', {class: 'ps-mine'}, h('span', {class: 'ps-pk', text: '내 생각 '}), own(null, '「' + mine + '」')),
     h('h2', {class: 'ps-h2', text: '친구가 보낸 말'}), senderMsg(S),
-    h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, '친구에게 내 생각 보내기', '반토막 난다면 ' + mine), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'}))];
+    h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, '친구에게 내 생각 보내기', L('반토막 난다면') + ' ' + mine), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'}))];
   const ta = h('textarea', {id: 'ps-ask', class: 'ps-t', rows: 2, maxlength: MAX, placeholder: '예) 파는 물건이 덜 팔리면', 'aria-describedby': 'ps-askm'});
   const m = h('p', {id: 'ps-askm', class: 'ps-m', role: 'status', 'aria-live': 'polite'}), rest = h('div', {class: 'ps-rest'});
   const okB = h('button', {class: 'ps-go', type: 'button', text: '다 적었어'});
-  const idk = h('button', {class: 'ps-qb', type: 'button', text: '잘 모르겠어', onclick: () => { ta.value = '잘 모르겠어'; ta.focus(); }});
+  const idk = h('button', {class: 'ps-qb', type: 'button', text: '잘 모르겠어', onclick: ev => { ta.value = ev.currentTarget.textContent || L('잘 모르겠어'); ta.focus(); }});
   okB.addEventListener('click', () => {
     const t = cleanMsg(ta.value), bad = sendHits(t);
     if (Array.from(t).length < 2) { m.className = 'ps-m no'; m.textContent = '한 줄만 적어 봐. 「잘 모르겠어」도 괜찮아.'; ta.focus(); return; }
@@ -362,7 +365,7 @@ function askPart(S, name, now, nowDay, later, mine) {
     m.className = 'ps-m'; m.textContent = '';
     okB.remove(); idk.remove(); ta.readOnly = true;
     rest.replaceChildren(h('h2', {class: 'ps-h2', text: '친구가 보낸 말'}), senderMsg(S),
-      h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, '친구에게 내 생각 보내기', '반토막 난다면 ' + t), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'})));
+      h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, '친구에게 내 생각 보내기', L('반토막 난다면') + ' ' + t), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'})));
   });
   return [h('h2', {class: 'ps-h2 ps-askq', text: ASK_Q}),
     h('p', {class: 'ps-p', text: '친구가 같이 따져 달래. 1년 뒤 반토막 났다면 왜일지 한 줄로 적어 봐.'}),

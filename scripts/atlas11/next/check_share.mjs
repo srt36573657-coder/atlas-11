@@ -11,8 +11,9 @@
 //   ⑤ 공유 창 없음 → 글 + 주소 함께 복사 · 알림 · 복사도 막힘 → 글을 보여 줌 · 대화창(dialog)을 못 쓰는 옛 기계 → 칸으로 열림(갇힌 차례 · Esc · 보내기)
 //   ⑥ 친구 주소: 보낸 날 값 · 오늘 값(자료와 맞댐) · 그림(선 · 보낸 날 금빛 점) · 질문이 먼저 · 다 답하기 전엔 보낸 말이 화면에 없음 → 다 답한 뒤 보낸 말 ·
 //      같이 따져 줘 = 「반토막 난다면 왜일까?」 + 내 생각 · 기록과 다른 값 「?」 · 깨진 말 · 거르는 말이 든 주소 · 이상한 주소
+//   ⑧ 영어로 본 사람 — 빠른 말 · 기본 말 = 보이는 글(바뀐 글) · 쓴 사람 글(걸린 낱말 · 보낸 말 · 내 생각)은 한글이면 lang="ko"(엔진이 안 바꿈)
 //   ⑦ 모양 — 옆 넘침 0 · 칸 밖 0 · 누르는 자리 44px · 글 17px · 쓰지 않을 말 0(남의 글 data-proper 밖) · 캔버스 0 · 화면 오류 0
-//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text — 받은 p-share.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
+//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text · no-lang — 받은 p-share.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -33,6 +34,7 @@ const MUTS = {
   'no-gain': [[["import {sendHits} from './words.js';", "import {hits as sendHits} from './words.js';"]], ['거르는 말 알림']],
   'msg-early': [[['after.append(lock);', 'after.append(lock, senderMsg(S));']], ['다 답하기 전에 보낸 말이 화면에 보임']],
   'no-text': [[['await navigator.share({title, text, url});', 'await navigator.share({title, url});']], ['공유 창에 글이 없음']],
+  'no-lang': [[["lang: /[가-힣]/.test(txt) ? 'ko' : null", 'lang: null']], ['보낸 말(쓴 사람 글)에 lang="ko" 없음', '걸린 낱말(쓴 사람 글)에 lang="ko" 없음 — 엔진이 바꿈']],
 };
 const MUT = arg('--mutate', null);
 if (MUT && !MUTS[MUT]) { console.error('모르는 --mutate', MUT, Object.keys(MUTS).join(' · ')); process.exit(1); }
@@ -178,11 +180,15 @@ async function openBox(p, click, tag) {
 }
 /** 빠른 말을 누르고 보냄 → 가짜 공유 창 / 복사 / 보여 줌 결과 */
 async function sendQuick(p, k, tag) {
+  const shown = await p.locator(DLG + ' .ps-q button').nth(k).textContent();
   await p.locator(DLG + ' .ps-q button').nth(k).click();
   const ta = await p.evaluate(() => document.querySelector('.ps-dlg textarea.ps-t')?.value);
-  if (ta !== QUICK[k]) fail('빠른 말이 글상자에 안 들어감', `${tag} 「${ta}」`);
+  if (ta !== shown) fail('빠른 말 — 글상자 = 단추에 보이는 글(영어면 바뀐 글)', `${tag} 「${ta}」 ≠ 「${shown}」`);
+  if (!EN_PAGE.has(p) && ta !== QUICK[k]) fail('빠른 말이 글상자에 안 들어감', `${tag} 「${ta}」`);
   await p.locator(DLG + ' .ps-go').click();
+  return shown;
 }
+const EN_PAGE = new WeakSet(); // 영어(?lang=en)로 연 쪽 — 빠른 말 · 기본 말은 보이는 글(바뀐 글)과 맞댐
 const shared = p => p.evaluate(() => window.__shared), copied = p => p.evaluate(() => window.__copied);
 async function waitShared(p, n, tag) { try { await p.waitForFunction(k => window.__shared.length >= k, n, {timeout: 8000}); return (await shared(p))[n - 1]; } catch { fail('공유 창이 안 열림', tag); return null; } }
 
@@ -211,7 +217,11 @@ async function companyBox(W_, H_, deep) {
       await ta.fill(txt); s = await p.evaluate(READD);
       if (!s.sayNo || !s.say.includes(word)) fail('거르는 말 알림', `${tag} 「${txt}」 → 「${s.say}」`);
       if (s.dis !== 'true') fail('걸렸는데 보내기가 안 막힘', `${tag} 「${txt}」`);
-      if (txt === '지금 사세요') await layout(p, DLG, tag + ' 걸린 말 알림'); // 알림 속 걸린 낱말은 쓴 사람 글(data-proper) — 화면 쓰지 않을 말 셈 밖이어야 함
+      if (txt === '지금 사세요') {
+        await layout(p, DLG, tag + ' 걸린 말 알림'); // 알림 속 걸린 낱말은 쓴 사람 글(data-proper) — 화면 쓰지 않을 말 셈 밖이어야 함
+        const lg = await p.evaluate(() => document.querySelector('.ps-dlg .ps-m [data-proper]')?.getAttribute('lang') ?? null);
+        if (lg !== 'ko') fail('걸린 낱말(쓴 사람 글)에 lang="ko" 없음 — 엔진이 바꿈', `${tag} ${lg}`);
+      }
       await p.locator(DLG + ' .ps-go').click({force: true}); await p.waitForTimeout(250); // aria-disabled 단추도 누름 — 막는 것은 화면 셈이어야 함
       if ((await shared(p)).length) fail('걸렸는데 공유 창이 열림', `${tag} 「${txt}」`);
       const sel = await p.evaluate(() => { const t = document.querySelector('.ps-dlg textarea.ps-t'); return t ? t.value.slice(t.selectionStart, t.selectionEnd) : ''; });
@@ -273,6 +283,31 @@ async function fallbacks(W_, H_) {
         await layout(p, DLG, tag);
       }
       bump('보낸 것');
+      errsOf(p, tag);
+    } finally { await done(p); }
+  }
+}
+/** 영어로 본 사람 — 빠른 말 · 기본 말이 보이는 글(바뀐 글)로 감(한국어 글자를 박아 보내지 않음) · 소개 쪽(앱 없음)과 회사 화면(앱) */
+async function englishBox(W_, H_) {
+  for (const [where, url, click] of [['소개 쪽', '/hello.html?lang=en', p => p.locator('#hp-send').click()], ['회사 화면', NEXT + '&lang=en#/w/' + CODE, p => p.locator('#view .acts button').nth(1).click()]]) {
+    const tag = `${W_}×${H_} 영어 ${where}`, p = await newPage(W_, H_); EN_PAGE.add(p);
+    try {
+      await p.goto(base + url, {waitUntil: 'domcontentloaded'});
+      await p.waitForFunction(() => document.documentElement.lang === 'en' && (!!document.querySelector('#hp-send') || document.querySelectorAll('#view .acts button').length >= 2), null, {timeout: 30000});
+      await p.waitForTimeout(300); // 엔진이 그려진 글을 바꾸는 사이
+      await click(p);
+      try { await p.waitForSelector(DLG, {state: 'visible', timeout: 10000}); } catch { fail('글상자가 안 열림', tag); continue; }
+      await p.waitForTimeout(200);
+      const first = await sendQuick(p, 0, tag);
+      const d = await waitShared(p, 1, tag);
+      if (d && String(d.text ?? '').split('\n')[0] !== first) fail('보낸 첫 줄 = 단추에 보이는 글', `${tag} 「${d.text}」 ≠ 「${first}」`);
+      // 빈 글상자로 보내면 기본 말 = 첫 빠른 말(보이는 글)
+      await click(p); await p.waitForSelector(DLG, {state: 'visible', timeout: 10000}); await p.waitForTimeout(200);
+      const shown0 = await p.locator(DLG + ' .ps-q button').first().textContent();
+      await p.locator(DLG + ' .ps-go').click();
+      const e = await waitShared(p, 2, tag + ' 기본 말');
+      if (e && String(e.text ?? '').split('\n')[0] !== shown0) fail('기본 말 = 지금 말의 첫 빠른 말', `${tag} 「${e.text}」 ≠ 「${shown0}」`);
+      bump('보낸 것', 2);
       errsOf(p, tag);
     } finally { await done(p); }
   }
@@ -366,7 +401,8 @@ const READL = () => {
   return {land: true, kick: land.querySelector('.ps-kick')?.textContent ?? '', name: land.querySelector('.ps-name')?.textContent ?? '', vs, cmp: land.querySelector('.ps-cmp')?.textContent ?? '',
     line: !!land.querySelector('svg .ps-ln'), dot: !!land.querySelector('svg .ps-sent'), why: !!why, whyFirst: !!(why && after && (why.compareDocumentPosition(after) & Node.DOCUMENT_POSITION_FOLLOWING)),
     lock: !!v.querySelector('.ps-lock'), said: v.querySelector('.ps-said')?.textContent ?? null, askq: v.querySelector('.ps-askq')?.textContent ?? null, mine: v.querySelector('.ps-mine')?.textContent ?? null,
-    askline: v.querySelector('.ps-askline')?.textContent ?? null, afterText: after?.textContent ?? '', safe: v.querySelector('.ps-safe')?.textContent ?? null, body: document.body.innerText};
+    askline: v.querySelector('.ps-askline')?.textContent ?? null, afterText: after?.textContent ?? '', safe: v.querySelector('.ps-safe')?.textContent ?? null, body: document.body.innerText,
+    saidLang: v.querySelector('.ps-said [data-proper]')?.getAttribute('lang') ?? null, mineLang: v.querySelector('.ps-mine [data-proper]')?.getAttribute('lang') ?? null};
 };
 /** 왜 사? 칸을 끝까지(첫 답 · 다음 · 두 줄 · 결과 보기) — 모양은 그 칸 검사(check_why)가 봄 */
 async function finishWhy(p, why, tag) {
@@ -418,11 +454,12 @@ async function landing(W_, H_, cases) {
       await layout(p, '#view', tag + ' 처음');
       if (!(await finishWhy(p, C.why ?? '이익이 줄어서', tag))) continue;
       s = await p.evaluate(READL);
-      if (C.text != null && !C.hide) { if (s.said !== '「' + C.text + '」') fail('다 답한 뒤 보낸 말', `${tag} 「${s.said}」 ≠ 「${C.text}」`); }
+      if (C.text != null && !C.hide) { if (s.said !== '「' + C.text + '」') fail('다 답한 뒤 보낸 말', `${tag} 「${s.said}」 ≠ 「${C.text}」`); if (/[가-힣]/.test(C.text) && s.saidLang !== 'ko') fail('보낸 말(쓴 사람 글)에 lang="ko" 없음', `${tag} ${s.saidLang}`); }
       if (C.hide) { if (s.said != null || (C.text && s.body.includes(C.text))) fail('거르는 말 · 깨진 말을 보여 줌', `${tag} 「${s.said}」`); if (!new RegExp(C.hide).test(s.afterText)) fail('못 보여 주는 까닭', `${tag} 「${s.afterText.slice(0, 80)}」`); }
       if (C.kind === 'a') {
         if (s.askq !== ASK_Q) fail('같이 따져 줘 「반토막 난다면 왜일까?」', `${tag} 「${s.askq}」`);
         if (!(s.mine ?? '').includes(C.why ?? '이익이 줄어서')) fail('같이 따져 줘 — 내 생각(두 줄 ① 답)', `${tag} 「${s.mine}」`);
+        if (s.mineLang !== 'ko') fail('내 생각(쓴 사람 글)에 lang="ko" 없음', `${tag} ${s.mineLang}`);
       }
       await layout(p, '#view', tag + ' 다 답한 뒤');
       bump('친구 주소');
@@ -445,7 +482,7 @@ const step = async (tag, f) => { try { await f(); } catch (e) { fail('검사 길
 for (const [w, h] of SIZES) {
   const full = ALL || w === 360;
   await step(`${w}×${h} 회사 글상자`, () => companyBox(w, h, full));
-  if (full) { await step(`${w}×${h} 복사 · 보여 줌`, () => fallbacks(w, h)); await step(`${w}×${h} 대화창 없는 기계`, () => noDialogBox(w, h)); await step(`${w}×${h} 다른 입구`, () => otherEntries(w, h)); }
+  if (full) { await step(`${w}×${h} 복사 · 보여 줌`, () => fallbacks(w, h)); await step(`${w}×${h} 대화창 없는 기계`, () => noDialogBox(w, h)); await step(`${w}×${h} 영어`, () => englishBox(w, h)); await step(`${w}×${h} 다른 입구`, () => otherEntries(w, h)); }
   await step(`${w}×${h} 친구 주소`, () => landing(w, h, full ? CASES : CASES.slice(0, 1)));
 }
 await browser.close();

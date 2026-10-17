@@ -221,14 +221,14 @@ function itemEl(x, o, S, redraw) {
     GATES.forEach((n, i) => { const v = x.gates[i]; ul.append(h('li', {class: 'hd-g hd-g' + (v === 1 ? 'g' : v === 0 ? 'r' : 'q')}, dot(v === 1 ? 'g' : v === 0 ? 'r' : 'q'), h('span', {text: n}), h('b', {text: v === 1 ? '지남' : v === 0 ? '못 지남' : '?'}))); });
     el.append(ul);
   }
-  if (x.why != null) el.append(h('p', {class: 'hd-mine'}, h('span', {class: 'hd-mk', text: '네가 적은 「1년 뒤 반토막 났다면 왜?」 '}), h('q', {'data-proper': '', lang: 'ko', text: x.why})));
+  if (x.why != null) el.append(h('p', {class: 'hd-mine'}, h('span', {class: 'hd-mk', text: '네가 적은 「1년 뒤 반토막 났다면 왜?」 '}), h('q', {'data-proper': '', lang: /[가-힣]/.test(x.why) ? 'ko' : null, text: x.why})));
   for (const t of x.lines) el.append(h('p', {class: 'hd-line', text: t}));
   if (x.why != null) {
     const b = h('button', {class: 'hd-tog', type: 'button', 'aria-pressed': String(!!o.doom), text: o.doom ? '나타났어 · 다시 누르면 풀림' : '나타났어'});
     b.addEventListener('click', () => { o.doom = o.doom ? null : {at: new Date().toISOString()}; save(S); redraw(); });
     el.append(b);
   }
-  if (x.promise) el.append(h('p', {class: 'hd-mine'}, h('span', {class: 'hd-mk', text: '네가 적은 약속 '}), h('q', {'data-proper': '', lang: 'ko', text: x.promise})));
+  if (x.promise) el.append(h('p', {class: 'hd-mine'}, h('span', {class: 'hd-mk', text: '네가 적은 약속 '}), h('q', {'data-proper': '', text: x.promise})));
   if (x.link) el.append(h('a', {class: 'hd-link', href: x.link[0], text: x.link[1]}));
   return el;
 }
