@@ -15,12 +15,13 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), has = k => argv.includes(k), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')); // run_all.mjs 는 PW_DIR 로 넘김
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), ALL = has('--all'), LIMIT = Number(arg('--limit', '0')) || 0, WIDE = Number(arg('--wide', '10')) || 0, OUT = arg('--out', '');
-const fails = [], counts = {}, t0 = Date.now();
+const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
 const fail = (k, x) => { if (fails.length < 500) fails.push([k, String(x).slice(0, 300)]); counts.fail = (counts.fail || 0) + 1; };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 
@@ -28,7 +29,7 @@ const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const XM = m => (m == null ? '?' : (Math.round(m * 10 + 1e-9) / 10).toFixed(1) + '배');
 const HZ = [['1', 2027], ['3', 2029], ['5', 2031], ['10', 2036]];
 const NORM = s => String(s ?? '').replace(/[\s ]+/g, ' ').trim();
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [core, mkt, comp] = await Promise.all(['core.json', 'mkt.json', 'comp.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt || !comp) { console.error('자료를 못 받음'); process.exit(1); }
 const CO = mkt.companies, PK = comp.companies;
@@ -59,17 +60,22 @@ const exe = '/opt/pw-browsers/chromium', b = await chromium.launch((await fs.sta
 async function mkPage(ctx) { const p = await ctx.newPage(); p._errs = []; p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text()); }); return p; }
 const ctxOf = (width, height = 844) => b.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true});
 const raf2 = p => p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+//   망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle) — 망 탈 없이 못 그리면 앞과 같음 · 여는 데 쓴 때를 쪽마다 셈(tm)
 async function openOld(p, code, title, first) {
-  if (first) await p.goto(base + '/atlas/#/c/' + code + '/grow'); else await p.evaluate(h => { location.hash = h; }, '#/c/' + code + '/grow');
-  const ok = await p.waitForFunction(t => { const v = document.querySelector('#view'); return v && !v.querySelector('.boot') && v.querySelector('h1')?.textContent === t; }, title, {timeout: 15000}).then(() => true).catch(() => false);
-  if (ok) await raf2(p);
-  return ok;
+  const ok = await tm.old(() => settle(p, async () => {
+    if (first || !p.url().startsWith(base + '/atlas/')) await p.goto(base + '/atlas/#/c/' + code + '/grow'); else await p.evaluate(h => { location.hash = h; }, '#/c/' + code + '/grow');
+    return p.waitForFunction(t => { const v = document.querySelector('#view'); return v && !v.querySelector('.boot') && v.querySelector('h1')?.textContent === t; }, title, {timeout: 15000}).then(() => true).catch(() => false);
+  }, {what: '옛 쪽 ' + code, fail}));
+  if (ok) await tm.old(() => raf2(p));
+  return !!ok;
 }
 async function openNew(p, code, title, first) {
-  if (first) await p.goto(base + '/next/?dev=1#/w/' + code + '/grow'); else await p.evaluate(h => { location.hash = h; }, '#/w/' + code + '/grow');
-  const ok = await p.waitForFunction(t => { const v = document.querySelector('main#view'); return v && !v.querySelector('.boot') && v.querySelector('h1')?.textContent === t; }, title, {timeout: 15000}).then(() => true).catch(() => false);
-  if (ok) await raf2(p);
-  return ok;
+  const ok = await tm.new(() => settle(p, async () => {
+    if (first || !p.url().startsWith(base + '/next/')) await p.goto(base + '/next/?dev=1#/w/' + code + '/grow'); else await p.evaluate(h => { location.hash = h; }, '#/w/' + code + '/grow');
+    return p.waitForFunction(t => { const v = document.querySelector('main#view'); return v && !v.querySelector('.boot') && v.querySelector('h1')?.textContent === t; }, title, {timeout: 15000}).then(() => true).catch(() => false);
+  }, {what: '새 쪽 ' + code, fail}));
+  if (ok) await tm.new(() => raf2(p));
+  return !!ok;
 }
 /* 옛 쪽 — 글 낱낱 · 숫자 · 그림 · 고리(옛 7단 줄 · 맨 아래 고리 줄 · 투자 상담 글(새 쪽은 안전 문장) · 꾸밈 그림은 뺌) */
 const OLD_X = () => {
@@ -174,7 +180,7 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
 
 /* ①~⑥ 회사마다 — 390 폭 */
 {
-  const cO = await ctxOf(390), cN = await ctxOf(390), po = await mkPage(cO), pn = await mkPage(cN); // 옛 쪽 · 새 쪽은 창을 따로(한 창 두 탭이면 뒤 탭의 그림 때(rAF)가 늦춰짐)
+  const cO = await ctxOf(390), cN = await ctxOf(390), po = watch(await mkPage(cO), base), pn = watch(await mkPage(cN), base); // 옛 쪽 · 새 쪽은 창을 따로(한 창 두 탭이면 뒤 탭의 그림 때(rAF)가 늦춰짐) · 망 탈 셈(net.mjs)
   let firstO = true, firstN = true; // 첫 번째만 주소로 엶 · 그다음은 # 만 바꿈(빠르게)
   for (const code of list) {
     const d = await loadData(code); if (!d.co) { fail('회사 파일', code); continue; }
@@ -188,11 +194,11 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
     const [ok1, ok2] = await Promise.all([openOld(po, code, title, firstO), openNew(pn, code, title, firstN)]); firstO = firstN = false;
     if (!ok1) { fail('옛 쪽 안 열림', code); continue; }
     if (!ok2) { fail('새 쪽 안 열림', code + ' ' + await pn.evaluate(() => document.querySelector('main#view')?.textContent?.slice(0, 80))); continue; }
-    const [o, n] = await Promise.all([po.evaluate(OLD_X).then(x => oldToNewDeep(x)), pn.evaluate(NEW_X)]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
+    const [o, n] = await Promise.all([tm.old(() => po.evaluate(OLD_X).then(x => oldToNewDeep(x))), tm.new(() => pn.evaluate(NEW_X))]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
     compare('390 ' + code, code, o, n, d);
     const ns = nSlots(d.G);
     if (ns) {
-      const [to, tn] = await Promise.all([po.evaluate(TIPS, ['#view .gc svg[role=img]', '.tip', ns]), pn.evaluate(TIPS, ['main#view .pgrow-gc svg[role=img]', '.pgrow-tip', ns])]);
+      const [to, tn] = await Promise.all([tm.old(() => po.evaluate(TIPS, ['#view .gc svg[role=img]', '.tip', ns])), tm.new(() => pn.evaluate(TIPS, ['main#view .pgrow-gc svg[role=img]', '.pgrow-tip', ns]))]);
       if (JSON.stringify(to) !== JSON.stringify(tn)) fail('손가락 이름표', `${code} 옛 ${JSON.stringify(to).slice(0, 100)} · 새 ${JSON.stringify(tn).slice(0, 100)}`);
       bump('손가락 이름표', ns);
     }
@@ -309,7 +315,7 @@ if (WIDE) {
 }
 await b.close();
 const res = {schema: 'atlas11-next-grow-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, companies: list.length, of: Object.keys(CO).length, all: ALL, limit: LIMIT || null, wide: WIDE,
-  seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
+  seconds: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails, ok: !fails.length};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1) + '\n'); }
-console.log(JSON.stringify({ok: res.ok, companies: res.companies, seconds: res.seconds, counts, fails: fails.slice(0, 15)}, null, 0));
+console.log(JSON.stringify({ok: res.ok, companies: res.companies, seconds: res.seconds, time: res.time, net: res.net, counts, fails: fails.slice(0, 15)}, null, 0));
 process.exit(res.ok ? 0 : 1);

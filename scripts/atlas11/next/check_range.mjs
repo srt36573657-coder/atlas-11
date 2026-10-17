@@ -15,6 +15,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep, TITLE_TAIL} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9 — 지금 사이트 검사 「자료 · fetch failed」)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -25,12 +26,12 @@ const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, '');
 const ALL = has('--all'), LIMIT = ALL ? 0 : Math.max(1, Number(arg('--limit', '50')) || 50);
 const WIDE = Math.max(0, Number(arg('--wide', ALL ? '40' : '10')) || 0);
 const OUT = arg('--out', null), SHOTS = arg('--shots', null), SHOW = String(arg('--show', '')).split(',').filter(Boolean); // --show 번호,번호 = 그 회사의 옛 글 마디 · 맞댐 결과를 찍음(살펴보기)
-const t0 = Date.now(), fails = [], counts = {};
+const t0 = Date.now(), fails = [], counts = {}, tm = timer(t0);
 const fail = (k, x) => { if (fails.length < 400) fails.push([k, String(x).slice(0, 400)]); counts.fail = (counts.fail || 0) + 1; };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 
 /* 자료 — 서버에서(옛 쪽 · 새 쪽이 읽는 것과 같은 파일) */
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [core, mkt, comp, range, names, upd, time, days] = await Promise.all(['core.json', 'mkt.json', 'comp.json', 'range.json', 'names.json', 'updates.json', 'time.json', 'days.json']
   .map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt || !comp || !range) { console.error(JSON.stringify({ok: false, fails})); process.exit(1); }
@@ -110,24 +111,29 @@ async function tab(width, height = 640) {
 const oldUrl = c => base + '/atlas/#/c/' + c + '/range', newUrl = c => base + '/next/?dev=1#/w/' + c + '/range';
 const nameOf = c => (PK[c]?.name ?? CO[c]?.n ?? null);
 const missHead = c => { const r = (names?.rows || []).find(x => x.c === c); return r ? `${r.n} — 지금 ${pickName} 밖` : '없는 주소입니다'; };
+// 여는 둘 — 망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle · 망 탈 없이 못 그리면 앞과 같은 실패) · 여는 데 쓴 때를 쪽마다 셈(tm)
 async function openOld(p, c) {
   const want = nameOf(c) ? nameOf(c) + ' — 범위 · 확인' : missHead(c), url = oldUrl(c);
-  if (!p.url().startsWith(base + '/atlas/')) await p.goto(url); else await p.evaluate(h => { location.hash = h; }, '#/c/' + c + '/range');
-  // 없는 주소: 이름표에 있으면 이름을 받은 뒤에야 제목이 바뀜(want = 바뀐 제목) · 없으면 받아도 글이 그대로
-  const ok = await p.waitForFunction(([w, slots]) => {
-    const v = document.querySelector('#view'); if (!v || v.querySelector('.boot')) return false;
-    if ((v.querySelector('h1')?.textContent || '') !== w) return false;
-    const t = v.textContent; return !t.includes('여는 중') && !(slots && t.includes('다음 회차 ?'));
-  }, [want, hasSlots], {timeout: 20000}).then(() => true, () => false);
-  if (!ok) fail('옛 쪽 덜 열림', c + ' ' + want);
-  return ok;
+  const ok = await tm.old(() => settle(p, async () => {
+    if (!p.url().startsWith(base + '/atlas/')) await p.goto(url); else await p.evaluate(h => { location.hash = h; }, '#/c/' + c + '/range');
+    // 없는 주소: 이름표에 있으면 이름을 받은 뒤에야 제목이 바뀜(want = 바뀐 제목) · 없으면 받아도 글이 그대로
+    return p.waitForFunction(([w, slots]) => {
+      const v = document.querySelector('#view'); if (!v || v.querySelector('.boot')) return false;
+      if ((v.querySelector('h1')?.textContent || '') !== w) return false;
+      const t = v.textContent; return !t.includes('여는 중') && !(slots && t.includes('다음 회차 ?'));
+    }, [want, hasSlots], {timeout: 20000}).then(() => true, () => false);
+  }, {what: '옛 쪽 ' + c, fail}));
+  if (ok === false) fail('옛 쪽 덜 열림', c + ' ' + want);
+  return !!ok;
 }
 async function openNew(p, c) {
   const want = nameOf(c) ? nameOf(c) + ' — 범위 · 확인' : missHead(c), url = newUrl(c);
-  if (!p.url().startsWith(base + '/next/')) await p.goto(url); else await p.evaluate(h => { location.hash = h; }, '#/w/' + c + '/range');
-  const ok = await p.waitForFunction(w => { const v = document.querySelector('main#view'); return !!v && !v.querySelector('.boot') && (v.querySelector('h1')?.textContent || '') === w; }, want, {timeout: 20000}).then(() => true, () => false);
-  if (!ok) fail('새 쪽 덜 열림', c + ' ' + want + ' · 지금 「' + (await p.evaluate(() => document.querySelector('main#view h1')?.textContent ?? document.querySelector('main#view')?.textContent?.slice(0, 80) ?? '')) + '」');
-  return ok;
+  const ok = await tm.new(() => settle(p, async () => {
+    if (!p.url().startsWith(base + '/next/')) await p.goto(url); else await p.evaluate(h => { location.hash = h; }, '#/w/' + c + '/range');
+    return p.waitForFunction(w => { const v = document.querySelector('main#view'); return !!v && !v.querySelector('.boot') && (v.querySelector('h1')?.textContent || '') === w; }, want, {timeout: 20000}).then(() => true, () => false);
+  }, {what: '새 쪽 ' + c, fail}));
+  if (ok === false) fail('새 쪽 덜 열림', c + ' ' + want + ' · 지금 「' + (await p.evaluate(() => document.querySelector('main#view h1')?.textContent ?? document.querySelector('main#view')?.textContent?.slice(0, 80) ?? '')) + '」');
+  return !!ok;
 }
 /** 옛 쪽 — 글 마디 · 숫자 · 막대 · 표지(옮기지 않은 조각은 뺌: 단 숫자 줄 · 3단 회사로 줄 · 꽃밭 · 친구 소개 · 미국 판 고리) */
 const readOld = p => p.evaluate(() => {
@@ -219,13 +225,13 @@ function compare(c, o0, n, where, chart) {
   for (const w of BANNED) if (n.plain.includes(w)) fail('쓰지 않을 말', where + ' 「' + w + '」');
 }
 
-const po = await tab(390), pn = await tab(360);
+const po = watch(await tab(390), base), pn = watch(await tab(360), base);
 for (const c of [...list, ...missingCodes]) {
   const miss = !nameOf(c), pk = !!PK[c];
   const okO = await openOld(po, c), okN = await openNew(pn, c);
   if (!okO || !okN) continue;
-  compare(c, await readOld(po), await readNew(pn), c, !miss);
-  for (const x of await layout(pn)) fail('모양 360', c + ' ' + x);
+  compare(c, await tm.old(() => readOld(po)), await tm.new(() => readNew(pn)), c, !miss);
+  for (const x of await tm.new(() => layout(pn))) fail('모양 360', c + ' ' + x);
   if (pn._errs.length) { fail('화면 오류', c + ' ' + pn._errs.join(' | ').slice(0, 200)); pn._errs.length = 0; }
   po._errs.length = 0;
   bump(miss ? '없는 주소' : pk ? '고른 곳' : '고른 곳 밖');
@@ -251,8 +257,7 @@ await po.context().close(); await pn.context().close();
     const block = async p => { for (const f of s.f) await p.route('**/atlas/data/' + f, r => r.fulfill({status: 404, contentType: 'text/plain', body: 'no'})); };
     const pn2 = await tab(360); await block(pn2);
     const head = s.head ?? (nameOf(s.c) ? nameOf(s.c) + ' — 범위 · 확인' : missHead(s.c));
-    await pn2.goto(newUrl(s.c));
-    const ok = await pn2.waitForFunction(w => { const v = document.querySelector('main#view'); return !!v && !v.querySelector('.boot') && (v.querySelector('h1')?.textContent || '') === w; }, head, {timeout: 20000}).then(() => true, () => false);
+    const ok = await tm.new(async () => { await pn2.goto(newUrl(s.c)); return pn2.waitForFunction(w => { const v = document.querySelector('main#view'); return !!v && !v.querySelector('.boot') && (v.querySelector('h1')?.textContent || '') === w; }, head, {timeout: 20000}).then(() => true, () => false); });
     if (!ok) { fail('빈 날 길 새 쪽 덜 열림', s.k + ' ' + s.c + ' 「' + (await pn2.evaluate(() => document.querySelector('main#view')?.textContent?.slice(0, 80) ?? '')) + '」'); await pn2.context().close(); continue; }
     const n = await readNew(pn2);
     if (!s.want(n)) fail('빈 날 길 「?」', s.k + ' ' + s.c);
@@ -261,11 +266,10 @@ await po.context().close(); await pn.context().close();
     if (errs.length) fail('빈 날 길 화면 오류', s.k + ' ' + errs.join(' | ').slice(0, 200));
     if (s.same) {
       const po2 = await tab(390); await block(po2);
-      await po2.goto(oldUrl(s.c));
       const want = s.head ?? head;
-      const okO = await po2.waitForFunction(([w, slots]) => { const v = document.querySelector('#view'); if (!v || v.querySelector('.boot')) return false; if ((v.querySelector('h1')?.textContent || '') !== w) return false; const t = v.textContent; return !t.includes('여는 중') && !(slots && t.includes('다음 회차 ?')); }, [want, s.slots ?? hasSlots], {timeout: 20000}).then(() => true, () => false);
+      const okO = await tm.old(async () => { await po2.goto(oldUrl(s.c)); return po2.waitForFunction(([w, slots]) => { const v = document.querySelector('#view'); if (!v || v.querySelector('.boot')) return false; if ((v.querySelector('h1')?.textContent || '') !== w) return false; const t = v.textContent; return !t.includes('여는 중') && !(slots && t.includes('다음 회차 ?')); }, [want, s.slots ?? hasSlots], {timeout: 20000}).then(() => true, () => false); });
       if (!okO) fail('빈 날 길 옛 쪽 덜 열림', s.k + ' ' + s.c);
-      else compare(s.c, await readOld(po2), n, '빈 날 길 ' + s.k + ' ' + s.c, !!nameOf(s.c) && s.k !== '모든 회사 못 받음');
+      else compare(s.c, await tm.old(() => readOld(po2)), n, '빈 날 길 ' + s.k + ' ' + s.c, !!nameOf(s.c) && s.k !== '모든 회사 못 받음');
       await po2.context().close();
     }
     await pn2.context().close();
@@ -277,10 +281,10 @@ await po.context().close(); await pn.context().close();
 if (SHOTS) await fs.mkdir(SHOTS, {recursive: true});
 for (const w of [320, 360, 390]) {
   if (w === 360 && !SHOTS) continue;
-  const p = await tab(w);
+  const p = watch(await tab(w), base);
   for (const c of wideSet) {
     if (!(await openNew(p, c))) continue;
-    if (w !== 360) for (const x of await layout(p)) fail('모양 ' + w, c + ' ' + x);
+    if (w !== 360) for (const x of await tm.new(() => layout(p))) fail('모양 ' + w, c + ' ' + x);
     if (p._errs.length) { fail('화면 오류', w + ' ' + c + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }
     if (SHOTS) await p.screenshot({path: path.join(SHOTS, `range-${c}-${w}.png`), fullPage: true});
     bump('세 폭 화면');
@@ -289,7 +293,7 @@ for (const w of [320, 360, 390]) {
 }
 await b.close();
 const res = {schema: 'atlas11-next-range-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, rangeAsOf: range.asOf, companies: codes.length, checked: list.length, missing: missingCodes, full: ALL, wide: wideSet.length,
-  edges: Object.fromEntries([...edge.entries()].filter(([c]) => list.includes(c)).map(([c, w]) => [c, w])), seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
+  edges: Object.fromEntries([...edge.entries()].filter(([c]) => list.includes(c)).map(([c, w]) => [c, w])), seconds: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails, ok: !fails.length};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1) + '\n'); }
-console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, checked: res.checked, wide: res.wide, counts, fails: fails.slice(0, 15)}, null, 0));
+console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, checked: res.checked, wide: res.wide, time: res.time, net: res.net, counts, fails: fails.slice(0, 15)}, null, 0));
 process.exit(res.ok ? 0 : 1);

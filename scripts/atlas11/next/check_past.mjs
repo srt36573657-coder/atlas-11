@@ -15,6 +15,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
@@ -22,13 +23,13 @@ const require = createRequire(arg('--pw', process.env.PW_DIR || '/opt/node-tools
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1');
 const ALL = has('--all'), LIMIT = Number(arg('--limit', '0')) || 0, WIDE = Number(arg('--wide', '10')), OUT = arg('--out', null);
-const fails = [], counts = {}, warn = [], t0 = Date.now();
+const fails = [], counts = {}, warn = [], t0 = Date.now(), tm = timer(t0);
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 400)]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const BANNED = ['추천', '매수', '매도', '팔라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', 'TOP', '매수 검토'];
 
 /* 자료(시험 서버에서) — 회사 목록 · 이름 · 고른 곳 */
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [mkt, comp] = await Promise.all([getJ('mkt.json'), getJ('comp.json')]).catch(e => { console.error('자료를 못 받음', e.message); process.exit(1); });
 const CO = mkt.companies, codes = Object.keys(CO).sort(), picked = Object.keys(comp.companies || {}).sort();
 
@@ -71,17 +72,24 @@ async function page(width, height = 844, init = null) {
   if (init) await ctx.addInitScript(init);
   const p = await ctx.newPage(); p._errs = [];
   p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text()); });
-  return p;
+  return watch(p, base); // 망 탈 셈(net.mjs)
 }
 const frames = p => p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
 /** 길 바꾸기 — 앞 화면 칸에 표시를 달고 주소를 바꾼 뒤, 표시 없는 새 칸에 그 회사 제목이 뜰 때까지 기다림(앞 회사 글을 읽지 않게) */
+//   망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle) — 망 탈 없이 못 그리면 앞과 같은 실패(던짐) · 여는 데 쓴 때를 쪽마다 셈(tm)
 async function goOld(p, code) {
-  await p.evaluate(h => { if (location.hash === h) return; document.querySelector('#view > .vw')?.setAttribute('data-stale', '1'); location.hash = h; }, '#/c/' + code + '/past');
-  await p.waitForFunction(t => { const v = document.querySelector('#view > .vw:not([data-stale])'); return v && !v.querySelector('.boot') && v.querySelector('.co-head h1')?.textContent === t; }, CO[code].n + ' — 지나온 길', {timeout: 20000});
+  const ok = await tm.old(() => settle(p, async () => {
+    await p.evaluate(h => { if (location.hash === h) return; document.querySelector('#view > .vw')?.setAttribute('data-stale', '1'); location.hash = h; }, '#/c/' + code + '/past');
+    return p.waitForFunction(t => { const v = document.querySelector('#view > .vw:not([data-stale])'); return v && !v.querySelector('.boot') && v.querySelector('.co-head h1')?.textContent === t; }, CO[code].n + ' — 지나온 길', {timeout: 20000}).then(() => true, () => false);
+  }, {what: '옛 쪽 ' + code, fail}));
+  if (!ok) throw Error(ok === null ? '망 막힘' : '20초 안에 안 그려짐');
 }
 async function goNew(p, code) {
-  await p.evaluate(h => { if (location.hash === h) return; document.querySelector('#view > .ppast')?.setAttribute('data-stale', '1'); location.hash = h; }, '#/w/' + code + '/past');
-  await p.waitForFunction(t => { const v = document.querySelector('#view > .ppast:not([data-stale])'); return v && v.querySelector('h1.wt')?.textContent === t; }, CO[code].n + ' — 지나온 길', {timeout: 20000});
+  const ok = await tm.new(() => settle(p, async () => {
+    await p.evaluate(h => { if (location.hash === h) return; document.querySelector('#view > .ppast')?.setAttribute('data-stale', '1'); location.hash = h; }, '#/w/' + code + '/past');
+    return p.waitForFunction(t => { const v = document.querySelector('#view > .ppast:not([data-stale])'); return v && v.querySelector('h1.wt')?.textContent === t; }, CO[code].n + ' — 지나온 길', {timeout: 20000}).then(() => true, () => false);
+  }, {what: '새 쪽 ' + code, fail}));
+  if (!ok) throw Error(ok === null ? '망 막힘' : '20초 안에 안 그려짐');
   await frames(p);
 }
 const clickPer = (p, sel, name) => p.evaluate(([s, n]) => { const btn = [...document.querySelectorAll(s)].find(x => x.textContent.trim() === n); if (!btn) return false; btn.click(); return btn.getAttribute('aria-pressed') === 'true'; }, [sel, name]);
@@ -184,7 +192,8 @@ function compare(code, perName, o, n) {
 const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
 {
   const po = await page(390), pn = await page(390), c0 = list.find(c => CO[c]) ?? codes[0]; // 처음부터 그 쪽으로 엶(첫 화면의 다른 쪽 모듈 오류가 섞이지 않게)
-  await Promise.all([po.goto(base + '/atlas/#/c/' + c0 + '/past'), pn.goto(base + NEXT + '#/w/' + c0 + '/past')]);
+  await Promise.all([tm.old(() => settle(po, async () => { await po.goto(base + '/atlas/#/c/' + c0 + '/past'); return po.waitForFunction(() => !!document.querySelector('#view > .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '옛 쪽 첫 열림', fail})),
+    tm.new(() => settle(pn, async () => { await pn.goto(base + NEXT + '#/w/' + c0 + '/past'); return pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '새 쪽 첫 열림', fail}))]);
   await Promise.all([po.waitForFunction(() => !!document.querySelector('#view > .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => fail('옛 쪽 첫 열림', c0)), pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).catch(() => fail('새 쪽 첫 열림', c0))]);
   let first = true;
   for (const code of list) {
@@ -196,12 +205,12 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
       if (a !== '1년' || z !== '1년') fail('처음 기간', a + ' · ' + z); first = false;
     }
     for (const [, name] of P) {
-      const [ca, cb] = await Promise.all([clickPer(po, '#view .seg.seg3 button', name), clickPer(pn, '#view .ppast-seg button', name)]);
+      const [ca, cb] = await Promise.all([tm.old(() => clickPer(po, '#view .seg.seg3 button', name)), tm.new(() => clickPer(pn, '#view .ppast-seg button', name))]);
       if (!ca || !cb) { fail('기간 단추', code + ' ' + name + ' ' + ca + ' ' + cb); continue; }
-      await frames(pn);
-      const [o, n] = await Promise.all([po.evaluate(OLD_X).then(x => oldToNewDeep(x)), pn.evaluate(NEW_X)]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
+      await tm.new(() => frames(pn));
+      const [o, n] = await Promise.all([tm.old(() => po.evaluate(OLD_X).then(x => oldToNewDeep(x))), tm.new(() => pn.evaluate(NEW_X))]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
       compare(code, name, o, n);
-      const [to, tn] = await Promise.all([po.evaluate(TIPS, ['#view > .vw .lc svg', '#view > .vw .lc .tip']), pn.evaluate(TIPS, ['#view > .ppast .ppast-lc svg', '#view > .ppast .ppast-tip'])]);
+      const [to, tn] = await Promise.all([tm.old(() => po.evaluate(TIPS, ['#view > .vw .lc svg', '#view > .vw .lc .tip'])), tm.new(() => pn.evaluate(TIPS, ['#view > .ppast .ppast-lc svg', '#view > .ppast .ppast-tip']))]);
       bump('선 누르기');
       if (!to || !tn || !eq(to, tn)) fail('선을 누른 날 값', code + ' ' + name + ' 옛 ' + JSON.stringify(to).slice(0, 200) + ' · 새 ' + JSON.stringify(tn).slice(0, 200));
       const t0v = await pn.evaluate(() => document.querySelector('#view .ppast-tip')?.textContent);
@@ -277,7 +286,8 @@ for (const [w, big] of wide.length ? [[320, false], [360, false], [390, false], 
 await b.close();
 
 const sec = Math.round((Date.now() - t0) / 1000);
-const res = {made: new Date().toISOString(), base, path: NEXT, mode: ALL ? 'all' : LIMIT ? 'limit ' + LIMIT : 'sample', companies: list.length, wide, counts, fails, warn: warn.slice(0, 50), sec};
+const res = {made: new Date().toISOString(), base, path: NEXT, mode: ALL ? 'all' : LIMIT ? 'limit ' + LIMIT : 'sample', companies: list.length, wide, counts, fails, warn: warn.slice(0, 50), sec, time: tm.get(), net: netSummary()};
+console.log(JSON.stringify({time: res.time, net: res.net})); // 옛 쪽 · 새 쪽 여는 데 쓴 초 · 다시 받은 수(명령문 [1] 9)
 if (OUT) await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(res, null, 1) + '\n');
 console.log(`4단 지나온 길 맞대기 — 회사 ${counts['회사'] || 0}곳 · 기간 화면 ${counts['화면(기간)'] || 0} · 맞댄 칸 ${counts['맞댄 칸'] || 0} · 숫자 낱말 ${counts['숫자 낱말'] || 0} · 선 누르기 ${counts['선 누르기'] || 0} · 폭 화면 ${counts['폭 화면'] || 0}(세 폭 + 아주 큰 글씨 × ${wide.length}곳) · ${sec}초`);
 if (warn.length) console.log('알림(옛 쪽):', warn.length, warn.slice(0, 3).join(' / '));

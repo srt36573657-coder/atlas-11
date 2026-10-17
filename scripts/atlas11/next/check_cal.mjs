@@ -18,6 +18,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리) — 옛 쪽 글을 새 이름으로 고쳐 맞댐
+import {fetchJSON, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9 — 자료 넷은 처음 한 번 받아 두 쪽에 같은 것을 줌(pin))
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
@@ -28,13 +29,14 @@ const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, '');
 const LIMIT = ALL ? 0 : Number(arg('--limit', '0')) || 0; // 0 = 모두
 const WIDE = ALL ? 0 : Number(arg('--wide', '10')) || 10;
 const OUT = arg('--out', null);
-const t0 = Date.now(), fails = [], counts = {};
+const t0 = Date.now(), fails = [], counts = {}, tm = timer(t0);
+const T = (p, fn) => tm[p._side === 'old' ? 'old' : 'new'](fn); // 여는 데 쓴 때 — 그 쪽 몫으로
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 300) fails.push([k, String(x).slice(0, 300)]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const lap = k => { if (process.env.CAL_LAP) console.error('…', k, Math.round((Date.now() - t0) / 1000) + 's'); };
 
 /* 자료 — 검사가 따로 받음(바꿔치기 바탕 · 고를 종목) */
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [TR, TRC, CORE, MKT] = await Promise.all(['surgetr.json', 'surgetr-case.json', 'core.json', 'mkt.json'].map(f => getJ(f).catch(e => { console.error('자료를 못 받음', e.message); process.exit(1); })));
 const SNAP = {'surgetr.json': JSON.stringify(TR), 'surgetr-case.json': JSON.stringify(TRC), 'core.json': JSON.stringify(CORE), 'mkt.json': JSON.stringify(MKT)};
 /** 옛 쪽 · 새 쪽이 같은 자료를 보게 — 검사 처음에 받은 그대로(실제 사이트에서 돌 때 업데이트가 사이에 끼어도 흔들리지 않게) · over = 바꿔치기({파일: 자료 | 404}) */
@@ -63,8 +65,7 @@ async function open(ctx, side, hash, {allow404 = false} = {}) {
   const p = await ctx.newPage(); p._side = side; p._errs = [];
   p.on('pageerror', e => p._errs.push('pageerror: ' + e.message));
   p.on('console', m => { if (m.type() === 'error' && !(allow404 && /Failed to load resource/.test(m.text()))) p._errs.push(m.text()); });
-  await p.goto(SIDE[side].url(hash));
-  await settle(p, hash);
+  await T(p, async () => { await p.goto(SIDE[side].url(hash)); await settle(p, hash); });
   return p;
 }
 async function settle(p, what) {
@@ -75,10 +76,10 @@ async function settle(p, what) {
 const mark = p => p.evaluate(sel => { const f = document.querySelector(sel)?.firstElementChild; if (f) f.dataset.chkStale = '1'; }, SIDE[p._side].root);
 async function nav(p, hash) {
   if (await p.evaluate(h => (location.hash || '#/') === h, hash)) return; // 같은 주소면 다시 그리지 않음
-  await mark(p); await p.evaluate(h => { location.hash = h; }, hash); await settle(p, hash);
+  await T(p, async () => { await mark(p); await p.evaluate(h => { location.hash = h; }, hash); await settle(p, hash); });
 }
-async function clickNav(p, sel, what) { await mark(p); await p.click(sel); await settle(p, what || sel); }
-async function back(p) { await mark(p); await p.evaluate(() => history.back()); await settle(p, '뒤로'); }
+async function clickNav(p, sel, what) { await T(p, async () => { await mark(p); await p.click(sel); await settle(p, what || sel); }); }
+async function back(p) { await T(p, async () => { await mark(p); await p.evaluate(() => history.back()); await settle(p, '뒤로'); }); }
 const errsOf = (p, where) => { if (p._side === 'new' && p._errs.length) fail('화면 오류', where + ' ' + p._errs.join(' | ')); else if (p._errs.length) bump('옛 쪽 오류(참고)'); p._errs.length = 0; };
 
 /** 쪽 글 뽑기 — 접은 칸 · 「더 보기」 펼침 · 옛 쪽 맨 아래 친구 그림 · 소개 고리 · 「상담사가 아닙니다」 줄은 뺌(새 쪽은 그 자리에 안전 문장) */
@@ -92,7 +93,7 @@ const EXTRACT = ({root, old, expand}) => {
     aria: [...R.querySelectorAll('[aria-label]')].filter(e => !e.closest('footer')).map(e => e.getAttribute('aria-label')),
     links: [...R.querySelectorAll('a[href]')].map(a => [a.getAttribute('href'), a.innerText])};
 };
-const grab = (p, expand = true) => p.evaluate(EXTRACT, {root: SIDE[p._side].root, old: p._side === 'old', expand});
+const grab = (p, expand = true) => T(p, () => p.evaluate(EXTRACT, {root: SIDE[p._side].root, old: p._side === 'old', expand}));
 
 /** 옛 쪽 O 와 새 쪽 N 맞대기 — 옛 쪽 글은 이름만 새 이름으로(아틀란스 → 보드리 · rename.mjs) 고친 뒤 맞댐 */
 function compare(tag, O0, N) {
@@ -352,8 +353,8 @@ lap('④-8 끝');
 await browser.close();
 
 const ok = !counts.fail;
-const res = {ok, base, limit: LIMIT || 'all', wide: WIDE || 'all', took_s: Math.round((Date.now() - t0) / 1000), counts, fails};
+const res = {ok, base, limit: LIMIT || 'all', wide: WIDE || 'all', took_s: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true}); await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(res, null, 1)); }
-console.log(JSON.stringify({ok, took_s: res.took_s, limit: res.limit, wide: res.wide, counts}, null, 0));
+console.log(JSON.stringify({ok, took_s: res.took_s, limit: res.limit, wide: res.wide, time: res.time, net: res.net, counts}, null, 0));
 for (const [k, x] of fails.slice(0, 60)) console.log('✗', k, '—', x);
 process.exit(ok ? 0 : 1);

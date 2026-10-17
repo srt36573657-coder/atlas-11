@@ -39,6 +39,7 @@ import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {BRAND} from '../../../site/next/brand.js'; // 이름 한 곳(규칙 76) — 옛 영어 이름(was)이 화면에 남았는지 봄
+import {fetchJSON, watch, settle as reopen, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 화면 다시 열기(2026-10-17 고도리 명령문 [1] 8 — 지금 사이트 검사 en3 · en4 「자료를 못 받음」)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const ARGV = process.argv.slice(2);
 const arg = (k, d) => { const i = ARGV.indexOf(k); return i >= 0 && ARGV[i + 1] != null && !ARGV[i + 1].startsWith('--') ? ARGV[i + 1] : d; };
@@ -66,8 +67,9 @@ const t0 = Date.now(), secs = {}, mark = (k, s) => { secs[k] = Math.round((Date.
 
 /* ── 자료(시험 서버에서 · 앱과 같은 파일) ── */
 // 받기 — 잠깐 막힘(연결 끊김 · 시간 넘음 · 5xx)은 기다렸다 다시(나눠 돌리면 몫마다 따로 받으므로 한 번 막힘에 한 몫이 통째로 빠지지 않게 · 2026-10-17 12:24 en3 · en4 가 처음 받기에서 멈춤) · 없는 파일(4xx)은 바로 null
-const fetchRetry = async (url, opt = {}) => { for (let i = 0; ; i++) { try { const r = await fetch(url, {...opt, signal: AbortSignal.timeout(20000)}); if (r.status < 500 || i >= 5) return r; } catch (e) { if (i >= 5) throw e; } await new Promise(res => setTimeout(res, 1500 * (i + 1))); } };
-const getJ = async f => { try { const r = await fetchRetry(base + '/atlas/data/' + f, {cache: 'no-store'}); return r.ok ? await r.json() : null; } catch { return null; } };
+//   net.mjs fetchJSON = 끊김 · 시간 넘음 · 몸 끊김 · 429 · 5xx 를 1 · 2 · 4 · 8 · 16 · 30초(흔들기 · Retry-After) 뒤 다시 · 2분 30초 안 — 앞 판은 429 · 몸 끊김을 다시 받지 않았음
+const fetchRetry = (url, opt = {}) => fetchJSON(url, url, {as: 'response', init: opt}).catch(e => { if (e.http) return {ok: false, status: e.http}; throw e; });
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f).catch(() => null);
 const [core, mkt, home, surge, cond, surgetr, names] = await Promise.all(['core.json', 'mkt.json', 'home.json', 'surge.json', 'cond.json', 'surgetr.json', 'names.json'].map(getJ));
 if (!core || !mkt || !home) { console.error('자료(core · mkt · home)를 못 받음 — 시험 서버 ' + base); process.exit(1); }
 const CO = mkt.companies, codes = Object.keys(CO).sort();
@@ -111,7 +113,7 @@ add('chan', '#/ch/i/' + enc('없는업종')); add('chan', '#/ch/g/zz');
 /* 옮긴 쪽(--modules) — 모듈 파일(/next/p-<이름>.js)이 없으면 「모듈 없음」 실패
    · 2026-10-17 고도리(규칙 77): why = 「친구야, 왜 사?」 질문 열한 개(#/why — 답 단추를 모두 눌러 보고 다음 › 으로 결과까지) · gdr = 고도리 칸(#/gdr · #/gdr/1 — 내 돈을 바꾸고 칸 하나를 엶)
    · --mods why,gdr = 그 쪽만(고치는 동안 빨리 — full 이 아님) */
-const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today', 'why', 'gdr'];
+const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today', 'why', 'gdr', 'share', 'hold']; // share = 친구가 연 보내기(#/s/…) · hold = 보유종목 점검(#/me 맨 위) — 2026-10-17 21:10 [4] · [5]
 const MODS_ONLY = arg('--mods', null)?.split(',').map(s => s.trim()).filter(Boolean) ?? null;
 const modHave = {};
 if (MODULES || DEV) await Promise.all(MODS.map(async m => { try { const r = await fetchRetry(base + '/next/p-' + m + '.js', {method: 'HEAD'}); modHave[m] = r.ok; } catch { modHave[m] = false; } })); // 잠깐 막힘에 「모듈 없음」이 되면 몫마다 일감 목록이 달라짐 — 다시 받기
@@ -123,7 +125,8 @@ if (MODULES && on('mod')) {
     cond: ['#/cond', '#/cond/rise-top3-spike', '#/cond/up-f3-loss', '#/cond/dn-pick-all', '#/cond/all-all-all'],
     talk: ['#/talk'], up: ['#/up'], time: ['#/time'], info: ['#/info'],
     x: (names?.rows ?? []).filter(r => r.k).slice(0, ALL ? 40 : 6).map(r => '#/x/' + r.c),
-    why: ['#/why'], gdr: ['#/gdr', '#/gdr/1']};
+    why: ['#/why', '#/why/005930'], gdr: ['#/gdr', '#/gdr/1'], // 매매일지(처음 = 종목 고르기 · 회사 화면 「이 회사로 왜 사?」 = 그 종목으로 시작 — [3] 1 · 2)
+    share: ['#/s/005930/' + mkt.base + '/70000/s', '#/s/005930/' + mkt.base + '/70000/a', '#/s/ZZZZZZ/2026-13-40/0/s']}; // 친구가 연 보내기 · 같이 따져 줘 · 깨진 주소([4] 6 ~ 8)
   for (const [m, rs] of Object.entries(R)) { if (MODS_ONLY && !MODS_ONLY.includes(m)) continue; if (!modHave[m]) { fail('모듈 없음', 'p-' + m + '.js', '옮긴 쪽 파일이 아직 없음 — 길 ' + rs.length + '개를 못 봄'); continue; } for (const r of rs) routes.push({kind: 'mod', r, mod: m}); }
 }
 
@@ -169,20 +172,25 @@ async function newPage(block = []) {
   const p = await ctx.newPage(); p._errs = [];
   p.on('pageerror', e => p._errs.push('pageerror ' + e.message));
   p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text() + (m.location()?.url ? ' @' + m.location().url : '')); });
+  watch(p, base); // 망 탈(끊김 · 429 · 5xx · 답 없음)을 셈 — 일부러 못 받게 한 파일(404)은 셈 밖
   for (const f of block) await p.route(f.startsWith('/') ? '**' + f : '**/atlas/data/' + f, r => r.fulfill({status: 404, body: 'blocked'})); // '/' 로 시작하면 그 길 그대로(고도리 칸 자료 /next/data/gdr.json)
   if (APP_FILE) await p.route('**/next/app.js', r => r.fulfill({path: APP_FILE, contentType: 'text/javascript; charset=utf-8'})); // 시험: 고칠 안(app.js 사본)을 미리 돌려 봄
   p._dicts = []; p.on('request', q => { const u = new URL(q.url()); if (/\/i18n(\.js|\/[^/]+\.json)$/.test(u.pathname)) p._dicts.push(u.pathname); }); // 받은 영어 엔진 · 사전(새 화면 것만이어야 함 · 옛 것은 errs 가 셈)
-  await p.goto(PAGE + '#/');
-  await p.waitForFunction(() => window.__atlasI18n && window.NX && !document.querySelector('#view .boot'), null, {timeout: 40000});
+  const up = await reopen(p, async () => { await p.goto(PAGE + '#/'); return p.waitForFunction(() => window.__atlasI18n && window.NX && !document.querySelector('#view .boot'), null, {timeout: 40000}).then(() => true, () => false); }, {what: '처음 열기', fail: (k, x) => fail(k, '처음 열기', x)});
+  if (up === false) fail('여는 중 남음', '처음 열기', '40초 안에 안 그려짐');
   if (!p._dicts.includes('/next/i18n/en.json')) fail('옛 영어 사전', '처음 열기', '새 화면 사전 /next/i18n/en.json 을 안 받음');
   return p;
 }
 /** 길 바꾸기 — 앞 화면이 새 칸으로 바뀌고(「여는 중」도 사라지고) 두 장 그린 뒤까지 기다림 · 같은 길이면 다른 길을 거쳐 다시 그림 */
+//   망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle = reopen — 그 열기의 「Failed to load resource」 줄은 지움) · 망 탈 없이 못 그리면 앞과 같은 실패
 async function go(q, hash) {
-  if (await q.evaluate(() => location.hash || '#/') === hash) await go(q, hash === '#/me' ? '#/sub' : '#/me');
-  await q.evaluate(h => { window.__nxenTok = document.querySelector('#view')?.firstElementChild ?? null; location.hash = h; }, hash);
-  await q.waitForFunction(() => { const v = document.querySelector('#view'); return !!v && v.firstElementChild !== window.__nxenTok && !v.querySelector('.boot'); }, null, {timeout: 25000})
-    .catch(() => fail('여는 중 남음', hash, '25초 안에 안 그려짐'));
+  const once = async () => {
+    if (await q.evaluate(() => location.hash || '#/') === hash) await go(q, hash === '#/me' ? '#/sub' : '#/me');
+    await q.evaluate(h => { window.__nxenTok = document.querySelector('#view')?.firstElementChild ?? null; location.hash = h; }, hash);
+    return q.waitForFunction(() => { const v = document.querySelector('#view'); return !!v && v.firstElementChild !== window.__nxenTok && !v.querySelector('.boot'); }, null, {timeout: 25000}).then(() => true, () => false);
+  };
+  const ok = await reopen(q, once, {what: hash, fail: (k, x) => fail(k, hash, x)});
+  if (ok === false) fail('여는 중 남음', hash, '25초 안에 안 그려짐');
   await q.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
 }
 
@@ -284,21 +292,51 @@ async function seedWhy(q, where) {
   }, WHY_KEY);
   if (r) fail('누르기', where, '「나」 칸 왜 사? 기록을 못 심음 — ' + r.slice(0, 120));
 }
-/** 왜 사? — 질문마다 답 단추를 모두 눌러 봄(답마다 고도리 한마디 · 격언) → 다음 › … → 결과(오늘은 쉬어 가자) */
+/** 매매일지(왜 사?) — ① 종목 고르기(#/why 만 — 없는 말 · 회사 이름 · 엔터) → 질문마다 답 단추를 모두 눌러 봄(답마다 고도리 한마디 · 격언 · 「클 일이 있다」면 날짜) → 다음 › …
+ *  → ③ 마지막 두 줄(빈 칸 알림 · 빠른 말 · 팔 선 두 숫자) → 결과 — 2026-10-17 21:10 [3] 1 · 3 · 4 · #/why/<번호> 는 그 종목으로 바로 1번 */
 async function whyWalk(q, where) {
   const keep = await keepKey(q, WHY_KEY);
   try {
+    const inp = q.locator('#view .wy .wy-find');
+    if (where === '#/why') {
+      if (!(await inp.count())) { fail('누르기', where, '매매일지 첫 칸에 종목 찾기(.wy-find)가 없음'); return; }
+      await inp.fill('zzqqxx'); // 영어 판에서 사람이 칠 만한 없는 말(한글을 치면 그 말이 알림에 그대로 나옴) await q.waitForTimeout(150); await judge(q, where + ' · 종목 찾기 없는 말', {widths: false});
+      await inp.fill(CO['005930']?.n ?? '005930'); await q.waitForTimeout(150); await judge(q, where + ' · 종목 찾기', {widths: true});
+      await inp.press('Enter');
+    }
+    await q.waitForSelector('#view .wy .wy-opt', {timeout: 8000}).catch(() => {});
+    const later = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10);
     for (let i = 0; i < 11; i++) {
       const opts = q.locator('#view .wy .wy-opt'), n = await opts.count();
       if (!n) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 답 단추가 없음`); return; }
       for (let k = 0; k < n; k++) { await opts.nth(k).click(); await settle(q); await judge(q, `${where} · ${i + 1}번 답 ${k + 1}`, {widths: i === 0 && k === n - 1}); }
+      const d = q.locator('#view .wy .wy-date'); if (await d.count()) { await d.fill(later); await settle(q); } // 「클 일이 있다」 = 그 날짜([3] 3)
       const nx = q.locator('#view .wy .wy-next');
       if (!(await nx.count())) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 다음 단추가 없음`); return; }
       await nx.first().click(); await settle(q);
     }
-    if (!(await q.locator('#view .wy .wy-res').count())) { fail('누르기', where, '왜 사? 열한 번째 뒤에 결과가 안 나옴'); return; }
+    if (!(await q.locator('#view .wy .wy-why').count())) { fail('누르기', where, '왜 사? 열한 번째 뒤에 마지막 두 줄이 안 나옴'); return; }
+    await judge(q, where + ' · 마지막 두 줄', {widths: true});
+    await q.locator('#view .wy .wy-next').first().click(); await settle(q); await judge(q, where + ' · 두 줄 빈 칸 알림', {widths: false});
+    await q.locator('#view .wy .wy-chip').first().click(); await settle(q);
+    for (const [sel, v] of [['.wy-sell', '60000'], ['.wy-half', '90000']]) { const x = q.locator('#view .wy ' + sel); if (await x.count() && !(await x.inputValue())) await x.fill(v); }
+    await q.locator('#view .wy .wy-next').first().click(); await settle(q);
+    if (!(await q.locator('#view .wy .wy-res').count())) { fail('누르기', where, '왜 사? 두 줄 뒤에 결과가 안 나옴'); return; }
     await judge(q, where + ' · 결과', {widths: true}); bump('왜 사? 끝까지');
   } finally { await putKey(q, WHY_KEY, keep); }
+}
+/** 고도리 칸 잠김(질문 전 · [6] 1) — 새 창(기록 없음 · 이 창에서 질문을 끝낸 적 없음 — p-why 는 끝낸 것을 창이 닫힐 때까지 기억)에서 그 길을 엶 → 잠긴 칸 글 · #/why 고리 · 칸 없음
+ *  → 원래 창 q 에는 기록을 심음(열린 꼴은 다음 go) */
+async function gdrLocked(q, r) {
+  if (!modHave.gdr) return;
+  const z = await newPage();
+  try {
+    await go(z, r);
+    const x = await z.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock'), go: document.querySelector('#view section.gdr.lock a.gdr-go')?.getAttribute('href') ?? null, cells: document.querySelectorAll('#view .gdr-cell').length}));
+    if (!x.lock || x.go !== '#/why' || x.cells) fail('누르기', r + ' · 잠김', '질문 전인데 고도리 칸이 잠기지 않음 ' + JSON.stringify(x));
+    await judge(z, r + ' · 잠김', {widths: r === '#/gdr'}); bump('고도리 칸 잠김');
+  } finally { await z.context().close(); }
+  await seedWhy(q, r);
 }
 /** 고도리 칸 — 내 돈을 다른 금액으로(금액 · 「나라면」 글이 바뀜) → 닫힌 칸 하나를 엶 */
 async function gdrWalk(q, where) {
@@ -322,11 +360,12 @@ if (on('shorts') && mineIds.has('#/shorts')) { await go(p, '#/shorts'); const n 
 tS = Date.now();
 for (const {kind, r} of RUN) { // 바로 앞과 같은 길은 일감을 세울 때 이미 뺌
   try {
-    if (r === '#/me') await seedWhy(p, r); // 「나」 칸 = 사장님 편지 + 왜 사? 기록(오늘 · 40일 전)
+    if (r === '#/me' || r === '#/why') await seedWhy(p, r); // 매매일지 기록(오늘 · 40일 전) — 매매일지 화면 아래 줄([3] 7) · 보유종목 점검이 맞대 봄([5] 6)
+    if (r === '#/gdr' || r === '#/gdr/1') await gdrLocked(p, r); // [6] 1 — 질문 전(잠김) 꼴을 먼저 · 그 뒤 기록을 심고 열린 꼴
     await go(p, r); await p.waitForTimeout(r === '#/' ? 300 : 60);
-    if (r === '#/me' && modHave.why) await p.waitForSelector('#view .wy-me .wy-rec p.note b.num', {timeout: 6000}).catch(() => {}); // 40일 전 기록의 「한 달 뒤 결과」(회사 파일을 받아 셈) 까지
+    if (r === '#/why' && modHave.why) await p.waitForSelector('#view .wy-rec p.note b.num', {timeout: 6000}).catch(() => {}); // 40일 전 기록의 「한 달 뒤 결과」(회사 파일을 받아 셈) 까지
     await judge(p, r); bump('길 · ' + kind);
-    if (r === '#/why') await whyWalk(p, r);
+    if (r === '#/why' || r === '#/why/005930') await whyWalk(p, r);
     else if (r === '#/gdr' || r === '#/gdr/1') await gdrWalk(p, r);
   } catch (e) { fail('멈춤', r, String(e.message || e).slice(0, 160)); }
 }
@@ -334,6 +373,20 @@ if (RUN.length) mark('routes', tS);
 
 /* ── ② 누르기 ── (② ③ ④ = 일감 @tail — 맡은 몫만 · 같은 창에서 이 차례) */
 async function toastOf(q) { return q.evaluate(() => [...document.querySelectorAll('.toast')].map(e => e.textContent).join(' | ')); }
+/** 보내기 글상자(p-share open — dialog.ps-dlg) — 연 꼴을 잼 · 빠른 말 · (full 이면) 거르는 말 알림 · 보내기 뒤 글 · 닫기(「닫기」) 뒤 글상자가 남지 않음 */
+async function shareDlg(q, where, full) {
+  const D = q.locator('dialog.ps-dlg[open], .ps-dlg.ps-fb');
+  if (!(await D.first().waitFor({state: 'visible', timeout: 8000}).then(() => true, () => false))) { fail('누르기', where, '보내기 글상자(dialog.ps-dlg)가 안 뜸'); return; }
+  await settle(q); await judge(q, where + ' · 글상자', {widths: full}); bump('보내기 글상자');
+  const qb = q.locator('.ps-dlg .ps-qb'); if (await qb.count()) { await qb.first().click(); await settle(q); await judge(q, where + ' · 빠른 말', {widths: false}); }
+  if (full) {
+    await q.locator('.ps-dlg textarea.ps-t').first().fill('top pick, up 30%'); await settle(q); await judge(q, where + ' · 거르는 말', {widths: false}); // 쓰지 않을 말(top) · 수익 숫자 알림 글 — 영어 판에서 칠 만한 말(한글 말은 알림에 그대로 나옴)
+    await q.locator('.ps-dlg textarea.ps-t').first().fill(''); await q.locator('.ps-dlg .ps-go').first().click(); await q.waitForTimeout(300); await judge(q, where + ' · 보내기 뒤', {widths: false});
+  }
+  if (await D.count()) { const x = q.locator('.ps-dlg .ps-x'); if (await x.count()) await x.first().click(); else await q.keyboard.press('Escape'); }
+  if (!(await D.first().waitFor({state: 'detached', timeout: 5000}).then(() => true, () => false))) { fail('누르기', where, '닫기 뒤에도 글상자가 남음'); await q.keyboard.press('Escape').catch(() => {}); }
+  await settle(q);
+}
 tS = Date.now();
 if (TAIL_MINE && on('act')) {
   const W0 = '005930', o = CO[W0];
@@ -342,12 +395,15 @@ if (TAIL_MINE && on('act')) {
     await go(p, '#/w/' + W0); await p.waitForSelector('#view .chan .sub-btn');
     await p.click('#view .chan .sub-btn'); await judge(p, '누르기 · 구독', {widths: false});
     await p.click('#view .chan .sub-btn'); await judge(p, '누르기 · 구독 풀기', {widths: false});
-    await p.click('#view .acts .act'); await judge(p, '누르기 · 나중에 볼 것 담기', {widths: true});
-    await p.click('#view .acts .act'); await judge(p, '누르기 · 빼기', {widths: false});
-    const share = p.locator('#view .acts button.act').nth(1);
-    await share.click(); await p.waitForTimeout(60); await judge(p, '누르기 · 보내기(못 엶)', {widths: false});
+    await p.click('#view .acts .act'); await judge(p, '누르기 · 관심 담기', {widths: true});
+    await p.click('#view .acts .act'); await judge(p, '누르기 · 관심 빼기', {widths: false});
+    // 보내기 · 같이 따져 줘 = 「친구에게 무슨 말을 할래?」 글상자([4] 1 ~ 8 · p-share — 모든 보내기 단추가 NX.shareBox) — 연 꼴 · 빠른 말 · 거르는 말 · 보내기 뒤 · 닫기
     await p.context().grantPermissions(['clipboard-read', 'clipboard-write'], {origin: base}).catch(() => {});
-    await share.click(); await p.waitForTimeout(60); await judge(p, '누르기 · 보내기(주소 담음)', {widths: false});
+    for (const [nm, btn] of [['보내기', p.locator('#view .acts button.act').nth(1)], ['같이 따져 줘', p.locator('#view .acts button.act').nth(2)]]) { // .acts = [관심 담기] [보내기] [같이 따져 줘]
+      if (!(await btn.count())) { fail('누르기', nm, '회사 화면에 「' + nm + '」 단추가 없음'); continue; }
+      await btn.first().click(); await shareDlg(p, '누르기 · ' + nm, true);
+    }
+    { const wg = p.locator('#view a.why-go'); if (!(await wg.count())) fail('누르기', '#/w/' + W0, '「이 회사로 왜 사?」(a.why-go)가 없음([3] 2)'); else if ((await wg.first().getAttribute('href')) !== '#/why/' + W0) fail('누르기', '#/w/' + W0, 'a.why-go 고리 ' + (await wg.first().getAttribute('href'))); }
     const more = p.locator('#view button.more').first();
     if (await more.isVisible().catch(() => false)) { await more.click(); await judge(p, '누르기 · 다음 볼 것 더 보기'); }
     // 선 끌기 — 회사 · 지수
@@ -373,17 +429,17 @@ if (TAIL_MINE && on('act')) {
     const hist = WATCH.slice(0, 14), later = WATCH.slice(2, 7);
     await p.evaluate(([s, hi, la]) => { localStorage.setItem('atlas:new:sub', JSON.stringify(s)); localStorage.setItem('atlas:new:hist', JSON.stringify(hi)); localStorage.setItem('atlas:new:later', JSON.stringify(la)); }, [subKeys, hist, later]);
     await seedWhy(p, '누르기 · 나 칸'); // 「나」 칸 왜 사? 기록 — 길 돌기의 #/me 와 같은 둘
-    await go(p, '#/sub'); await judge(p, '누르기 · 구독 칸(채널 넷)');
-    await go(p, '#/me'); await judge(p, '누르기 · 나 칸(기록 · 담은 것)');
+    await go(p, '#/sub'); await judge(p, '누르기 · 관심 칸(채널 넷 · 담은 회사)'); // 「나중에 볼 것」 → 관심([2] 8)
+    await go(p, '#/me'); await judge(p, '누르기 · 보유종목(본 기록)');
     let dlg = null; p.once('dialog', d => { dlg = d.message(); d.accept(); });
     await p.click('#view .lst button'); await p.waitForTimeout(150);
-    if (dlg == null) fail('누르기', '나 칸 지우기', '확인 창이 안 뜸');
-    else if (HAN.test(dlg)) { const en = await p.evaluate(s => window.__atlasI18n.t(s), dlg); fail(HAN.test(en) ? '한글 남음(확인 창 · 사전에도 없음)' : '한글 남음(확인 창 · app.js 가 L() 로 안 감쌈 — 사전에는 있음)', '나 칸 지우기', dlg); }
-    if (dlg != null && OLD_RE.test(dlg)) fail('옛 이름 ' + dlg.match(OLD_RE)[0] + ' 남음', '나 칸 지우기', '확인 창 ' + dlg.slice(0, 70));
+    if (dlg == null) fail('누르기', '본 기록 지우기', '확인 창이 안 뜸');
+    else if (HAN.test(dlg)) { const en = await p.evaluate(s => window.__atlasI18n.t(s), dlg); fail(HAN.test(en) ? '한글 남음(확인 창 · 사전에도 없음)' : '한글 남음(확인 창 · app.js 가 L() 로 안 감쌈 — 사전에는 있음)', '본 기록 지우기', dlg); }
+    if (dlg != null && OLD_RE.test(dlg)) fail('옛 이름 ' + dlg.match(OLD_RE)[0] + ' 남음', '본 기록 지우기', '확인 창 ' + dlg.slice(0, 70));
     await judge(p, '누르기 · 지우기', {widths: false});
     // 쇼츠 보내기
     await go(p, '#/shorts'); const sb = p.locator('#view .sh .side button').first();
-    if (await sb.count()) { await sb.click(); await p.waitForTimeout(60); await judge(p, '누르기 · 쇼츠 보내기', {widths: false}); }
+    if (await sb.count()) { await sb.click(); await shareDlg(p, '누르기 · 시황 보내기', false); }
     // 글씨 크기 단추(보통 → 크게 → 아주 크게 → 보통 · 알림 글 · 단추 이름) + 아주 크게로 주요 화면 넘침(영어 글이 가장 길어지는 때)
     if (await p.locator('#fontBtn').count()) {
       for (let k = 0; k < 3; k++) { await p.click('#fontBtn'); await p.waitForTimeout(60); await judge(p, '누르기 · 글씨 크기 ' + (k + 1), {widths: false}); }
@@ -522,7 +578,7 @@ const fullRun = !ONLY && !MODS_ONLY && ALL && MODULES && EDGE && DEV && !APP_FIL
 const own = list.filter(f => !isMod(f)), modF = list.filter(isMod);
 const res = {schema: 'atlas11-next-en-check-1', at: new Date().toISOString(), base, page: PAGE, lang: 'en', widths: WIDTHS, routes: RUN.length, companies: WATCH.length, allCompanies: ALL, modules: MODULES,
   modFiles: modHave, edge: EDGE, only: ONLY, appFile: APP_FILE, shard: SHARD?.s ?? null, ...(SHARD ? {fullIfMerged: fullRun} : {}), full,
-  units: {total: units.length, mine: mine.length, hash: UHASH, w: UNIT_W}, seconds: Math.round((Date.now() - t0) / 1000), secs, counts, missing: miss.size - avMiss, avatarLetters: avMiss, kinds, fails: list.length,
+  units: {total: units.length, mine: mine.length, hash: UHASH, w: UNIT_W}, seconds: Math.round((Date.now() - t0) / 1000), secs, net: netSummary(), counts, missing: miss.size - avMiss, avatarLetters: avMiss, kinds, fails: list.length,
   own: {fails: own.length, missing: own.filter(f => f.kind === '사전에 없는 틀').length, leftover: own.filter(f => f.kind.startsWith('한글 남음')).length},
   mod: {fails: modF.length, missing: modF.filter(f => f.kind === '사전에 없는 틀').length, leftover: modF.filter(f => f.kind.startsWith('한글 남음')).length},
   missingList: [...miss].filter(([key]) => !avChars.has(key)).map(([key, m]) => ({key, ex: m.ex, at: m.at})),
@@ -531,7 +587,7 @@ const res = {schema: 'atlas11-next-en-check-1', at: new Date().toISOString(), ba
 await fs.mkdir(path.dirname(OUT), {recursive: true});
 await fs.writeFile(OUT, JSON.stringify(res, null, 1) + '\n');
 if (DUMP) await fs.writeFile(path.resolve(DUMP), JSON.stringify(res.missingList, null, 1) + '\n');
-console.log(JSON.stringify({ok: res.ok, shard: res.shard, routes: res.routes, screens: counts['화면'] || 0, missing: res.missing, fails: res.fails, own: res.own, mod: res.mod, kinds, full, seconds: res.seconds, secs}));
+console.log(JSON.stringify({ok: res.ok, shard: res.shard, routes: res.routes, screens: counts['화면'] || 0, missing: res.missing, fails: res.fails, own: res.own, mod: res.mod, kinds, full, seconds: res.seconds, secs, net: res.net}));
 process.exit(res.ok ? 0 : 1);
 
 /** 몫 결과 합치기(--merge) — node scripts/atlas11/next/next_en_check.mjs --merge out/en1.json … [--shards n] --out out/en.json · 끝 코드 0 = 몫이 모두 · 같은 목록 · 실패 0

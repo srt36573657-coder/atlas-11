@@ -32,6 +32,11 @@ on:
         description: '영어 검사를 몇 대로 나눌지(1 ~ 12)'
         required: false
         default: '6'
+      old_refresh:
+        description: '옛 쪽 기준값을 있어도 새로 찍기(--old-refresh — 보통은 옛 화면이 쓴 파일이 바뀌면 저절로 새로 찍음)'
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: write
 # 지금 사이트 검사(live)는 한 번에 하나 — 2026-10-17 11:44 두 실행이 aaa7377.com 을 함께 두드려 co 926초 · rivals · cond 시간 넘음이 남
@@ -68,7 +73,7 @@ jobs:
             const fs = require("fs"), want = (process.env.WANT || "").split(",").map(s => s.trim()).filter(Boolean);
             const ns = Math.min(12, Math.max(1, parseInt(process.env.NS, 10) || 6));
             const all = fs.readdirSync("scripts/atlas11/next").map(f => (/^check_([a-z0-9]+)\.mjs$/.exec(f) || [])[1]).filter(Boolean).sort();
-            const SMALL = ["cond", "gdr", "misc", "surge", "why"], ORDER = ["co", "rivals", "past", "grow", "en", "range", "next", "small", "chx", "cal", "today"];
+            const SMALL = ["cond", "gdr", "misc", "surge", "why", "hold", "share"], ORDER = ["co", "rivals", "past", "grow", "en", "range", "next", "small", "chx", "cal", "today"];
             const jobs = [], small = [];
             for (const n of ["next", "en", ...all].filter(n => !want.length || want.includes(n))) {
               if (n === "en") for (let k = 1; k <= ns; k++) jobs.push({job: "en" + k, pages: "en" + k, rank: "en"});
@@ -193,10 +198,20 @@ jobs:
           curl -fsS -o /dev/null http://127.0.0.1:8826/next/ || { cat /tmp/dev.log; exit 1; }
           echo "BUILD_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
           echo "묶고 띄움 $(( $(date +%s) - t0 ))초 · $(head -c 300 /tmp/dev.log)"
+      # 옛 쪽 기준값(scripts/atlas11/next/oldsnap.mjs · 명령문 [1] 9) — 앞 실행이 찍은 것을 받아 둠 · 검사가 옛 화면이 쓴 파일 sha256 을 모두 맞대 보고 같을 때만 씀(다르면 새로 찍음)
+      - uses: actions/cache/restore@v4
+        if: ${{ !cancelled() }}
+        with:
+          path: oldsnap
+          key: oldsnap-v1-${{ matrix.job }}-${{ github.run_id }}
+          restore-keys: oldsnap-v1-${{ matrix.job }}-
       - name: 검사
         if: ${{ !cancelled() }}
+        env:
+          OLD_REFRESH: ${{ inputs.old_refresh && '1' || '0' }}
         run: |
-          mkdir -p out
+          mkdir -p out oldsnap
+          snap0=$(cat oldsnap/*.json 2>/dev/null | sha256sum | cut -c1-16)
           base=https://aaa7377.com; mode=live
           if [ "$LOCAL" = 1 ]; then base=http://127.0.0.1:8826; mode=local; fi
           for n in $PAGES; do # 쪽 하나씩(짧은 쪽 묶음은 차례로) · 쪽마다 결과 셋(json · exit.json · tail.txt)
@@ -204,6 +219,7 @@ jobs:
             case "$n" in
               next) f=next_check.mjs; extra="" ;;
               en[0-9]*) f=next_en_check.mjs; extra="--modules --dev 0 --all --shard ${n#en}/$SHARDS" ;;
+              chx) f="check_$n.mjs"; extra="--all --old-snap oldsnap/$n.json"; if [ "$OLD_REFRESH" = 1 ]; then extra="$extra --old-refresh"; fi ;; # 옛 쪽 기준값을 쓰는 검사(옛 쪽 때 86%)
               *) f="check_$n.mjs"; extra="--all" ;;
             esac
             if [ "$LOCAL" = 1 ] && ! curl -fs -o /dev/null "$base/next/"; then
@@ -218,6 +234,13 @@ jobs:
             tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"
             echo "끝 코드 $code · $(cat "out/$n.exit.json")"
           done
+          snap1=$(cat oldsnap/*.json 2>/dev/null | sha256sum | cut -c1-16)
+          if [ -n "$(ls oldsnap 2>/dev/null)" ] && [ "$snap0" != "$snap1" ]; then echo "SNAP_NEW=1" >> "$GITHUB_ENV"; echo "옛 쪽 기준값을 새로 찍음 — 저장"; fi
+      - uses: actions/cache/save@v4
+        if: ${{ !cancelled() && env.SNAP_NEW == '1' }}
+        with:
+          path: oldsnap
+          key: oldsnap-v1-${{ matrix.job }}-${{ github.run_id }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -14,6 +14,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNew, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, stylesReady, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 모양 파일 기다림 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -23,12 +24,12 @@ const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, '');
 const ALL = argv.includes('--all'), LIMIT = Number(arg('--limit', '0')) || 0, OUT = arg('--out', null);
 const ONLY = new Set(String(arg('--only', 'talk,up,time,info,x')).split(',')); // 고치는 동안 빨리(예: --only time,x) — 마지막엔 모두
 const on = pg => ONLY.has(pg);
-const fails = [], counts = {}, t0 = Date.now();
+const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, x]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 
 /* 자료 — 시험 서버에서 그대로(바꿔치기 길의 바탕) */
-const getJ = async f => { const r = await fetch(base + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [core, mkt, names, updates, time, home, surge, talk] = await Promise.all(['/atlas/data/core.json', '/atlas/data/mkt.json', '/atlas/data/names.json', '/atlas/data/updates.json', '/atlas/data/time.json', '/atlas/data/home.json', '/atlas/data/surge.json', '/atlas/talk.json']
   .map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt || !names || !updates || !time || !talk) { console.error('자료를 못 받음', fails); process.exit(1); }
@@ -104,7 +105,8 @@ const GRAB = sel => {
 };
 const SHEET = h => h.startsWith('#/info') || h.startsWith('#/x/');
 /** 옛 쪽 — 쪽(#view 맨 아래 footer 까지) · 판(#infoSheet — 도움말 · 밖 칸) */
-async function openOld(p, hash, {nav = false} = {}) {
+async function openOld(p, hash, opt = {}) { return tm.old(() => openOld0(p, hash, opt)); } // 여는 데 쓴 때(옛 쪽)
+async function openOld0(p, hash, {nav = false} = {}) {
   if (nav) {
     await p.evaluate(h => { const b = document.querySelector('#infoBody'); if (b) b.textContent = ''; location.hash = h; }, hash);
   } else await p.goto(base + '/atlas/' + hash, {waitUntil: 'domcontentloaded'});
@@ -117,10 +119,12 @@ async function settleNew(p, pg, a = null) {
   await p.waitForFunction(([pg, a]) => { const v = document.querySelector('#view'); if (!v || v.querySelector('.boot')) return false; const r = v.querySelector(`[data-page="${pg}"]`); if (r && a != null && r.getAttribute('data-arg') !== a) return false; return !!r || !!v.querySelector('.empty'); }, [pg, a], {timeout: 20000});
   await p.waitForFunction(() => [...document.querySelectorAll('#view .pup-chart, #view .ptime-chart')].every(e => e.querySelector('svg')), null, {timeout: 6000}).catch(() => fail('그림 안 그려짐', pg + (a ? ' ' + a : '')));
 }
-async function openNew(p, hash, pg, a = null, {nav = false} = {}) {
+async function openNew(p, hash, pg, a = null, opt = {}) { return tm.new(() => openNew0(p, hash, pg, a, opt)); } // 여는 데 쓴 때(새 쪽)
+async function openNew0(p, hash, pg, a = null, {nav = false} = {}) {
   if (nav) await p.evaluate(h => { location.hash = h; }, hash);
   else await p.goto(base + '/next/?dev=1' + hash, {waitUntil: 'domcontentloaded'});
   await settleNew(p, pg, a);
+  { const miss = await stylesReady(p); if (miss.length) fail('모양 파일 안 붙음', hash + ' ' + miss.join(' ')); } // 쪽 모듈 .css 가 붙은 뒤에 잼(실제 사이트 #/info 누르는 자리 23px 일 · 2026-10-17)
   return p.evaluate(GRAB, '#view');
 }
 const realErrs = p => p._errs.filter(e => !/Failed to load resource/.test(e));
@@ -285,8 +289,8 @@ for (const [w, font] of [[320, 0], [360, 0], [390, 0], [320, 2]]) {
 }
 
 await browser.close();
-const res = {when: new Date().toISOString(), base, sec: Math.round((Date.now() - t0) / 1000), xCodes: xCodes.length, all: ALL, counts, fails};
+const res = {when: new Date().toISOString(), base, sec: Math.round((Date.now() - t0) / 1000), xCodes: xCodes.length, all: ALL, time: tm.get(), net: netSummary(), counts, fails};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1)); }
-console.log(JSON.stringify({sec: res.sec, xCodes: res.xCodes, counts}, null, 1));
+console.log(JSON.stringify({sec: res.sec, xCodes: res.xCodes, time: res.time, net: res.net, counts}, null, 1));
 if (fails.length) { console.log('실패 ' + (counts.fail || 0) + '건:'); for (const [k, x] of fails.slice(0, 60)) console.log(' -', k, '·', x); process.exit(1); }
 console.log('실패 0');

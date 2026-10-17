@@ -13,6 +13,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fetchJSON, watch, settle, timer, netSummary, isRemote} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {oldSnap, fileSha} from './oldsnap.mjs'; // 옛 쪽 기준값(--old-snap 파일 · --old-refresh) — 옛 화면이 쓴 파일이 하나도 안 바뀌면 옛 쪽을 열지 않고 찍어 둔 값과 맞댐(명령문 [1] 9 · 옛 쪽 때 86%)
+import {fileURLToPath} from 'node:url';
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -23,13 +26,14 @@ const ALL = has('--all') || (!has('--limit') && !SKIP);
 const LIMIT = ALL ? 0 : Number(arg('--limit', '0')) || 0;
 const WLIMIT = has('--wlimit') ? Number(arg('--wlimit', '10')) : ALL ? 0 : Math.min(LIMIT || 10, 10);
 const OUT = arg('--out', null);
-const fails = [], counts = {}, t0 = Date.now();
-const fail = (k, x) => { if (fails.length < 300) fails.push([k, x]); counts.fail = (counts.fail || 0) + 1; };
+const fails = [], counts = {}, t0 = Date.now(), tm = timer(t0);
+let oldFails = 0; // 옛 쪽 실패 수 — 0 일 때만 기준값을 새로 씀
+const fail = (k, x) => { if (fails.length < 300) fails.push([k, x]); counts.fail = (counts.fail || 0) + 1; if (/^옛/.test(k) || /^옛/.test(String(x ?? ''))) oldFails++; };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const FAIL = fail, BUMP = bump;
 const norm = s => String(s ?? '').replace(/[\s ]+/g, ' ').trim();
 
-const getJ = async f => { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [core, mkt] = await Promise.all(['core.json', 'mkt.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt) { console.error(JSON.stringify({ok: false, fails})); process.exit(1); }
 const CO = mkt.companies, IND = new Map(core.industries.map(i => [i.name, i])), GRP = new Map(core.groups.map(g => [g.id, g]));
@@ -48,11 +52,12 @@ const WLIST = WLIMIT ? [...LIST.filter(p => p.kind === 'g').slice(0, 2), ...LIST
 const oldHash = p => '#/' + p.kind + '/' + encodeURIComponent(p.id), newHash = p => '#/ch/' + p.kind + '/' + encodeURIComponent(p.id);
 
 const exe = '/opt/pw-browsers/chromium', B = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {});
-async function open(url, width, height = 844) {
+async function open(url, width, height = 844, pre = null) {
   const ctx = await B.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true});
-  const p = await ctx.newPage(); p._errs = [];
+  const p = await ctx.newPage(); p._errs = []; if (pre) pre(p); // pre = 처음 열기 전에 붙일 것(기준값이 옛 화면 파일을 적음)
   p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text()); });
-  await p.goto(url); return p;
+  watch(p, base); // 망 탈 셈(net.mjs)
+  await settle(p, async () => { await p.goto(url); return true; }, {what: url.replace(base, ''), fail}); return p;
 }
 const errsOf = (p, where) => { if (p._errs.length) { fail('화면 오류', where + ' ' + p._errs.join(' | ').slice(0, 240)); p._errs.length = 0; } };
 
@@ -90,16 +95,23 @@ const knownHref = h => {
 const mapHref = h => { let m; if ((m = /^#\/i\/(.+)$/.exec(h))) return '#/ch/i/' + m[1]; if ((m = /^#\/c\/([0-9A-Z]{6})$/.exec(h))) return '#/w/' + m[1]; if ((m = /^#\/x\/(.+)$/.exec(h))) return '/atlas/#/x/' + m[1]; if ((m = /^#\/g\/(.+)$/.exec(h))) return '#/ch/g/' + m[1]; return '?' + h; };
 
 // 화면 옮기기 — 앞 화면 칸에 표를 달고 바꿈 → 표 없는 새 칸이 그려질 때까지(같은 이름의 갈래 · 업종 — 「반도체」 — 을 앞 화면으로 잘못 읽지 않게)
+//   망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle — 새로 고친 뒤 같은 주소면 #/~ 를 거쳐 다시 그림) · 망 탈 없이 못 그리면 앞과 같은 실패 · 여는 데 쓴 때를 쪽마다 셈(tm)
 async function waitOld(p, pg) {
-  await p.evaluate(h => { document.querySelectorAll('#view > *').forEach(e => e.setAttribute('data-stale', '1')); location.hash = h; }, oldHash(pg));
   const want = pg.name + ' ' + core.days + '거래일';
-  await p.waitForFunction(w => { const v = document.querySelector('#view > .vw:not([data-stale])'); return !!v && !v.querySelector('.boot') && (v.querySelector('h1.head')?.textContent ?? '').startsWith(w) && !!v.querySelector('.board .row'); }, want, {timeout: 15000}).catch(() => fail('옛 화면 안 열림', oldHash(pg)));
-  await p.waitForTimeout(30);
+  const ok = await tm.old(() => settle(p, async () => {
+    await p.evaluate(h => { document.querySelectorAll('#view > *').forEach(e => e.setAttribute('data-stale', '1')); if (location.hash === h) history.replaceState(null, '', '#/~'); location.hash = h; }, oldHash(pg));
+    return p.waitForFunction(w => { const v = document.querySelector('#view > .vw:not([data-stale])'); return !!v && !v.querySelector('.boot') && (v.querySelector('h1.head')?.textContent ?? '').startsWith(w) && !!v.querySelector('.board .row'); }, want, {timeout: 15000}).then(() => true, () => false);
+  }, {what: '옛 화면 ' + oldHash(pg), fail}));
+  if (ok === false) fail('옛 화면 안 열림', oldHash(pg));
+  await tm.old(() => p.waitForTimeout(30));
 }
 async function waitNew(p, pg) {
-  await p.evaluate(h => { document.querySelectorAll('#view > *').forEach(e => e.setAttribute('data-stale', '1')); location.hash = h; }, newHash(pg));
   const want = pg.name + ' ' + core.days + '거래일';
-  await p.waitForFunction(w => !document.querySelector('#view .boot') && (document.querySelector('#view > section.chx-d:not([data-stale]) .pchx-head')?.textContent ?? '').startsWith(w), want, {timeout: 15000}).catch(() => fail('새 화면 안 열림', newHash(pg)));
+  const ok = await tm.new(() => settle(p, async () => {
+    await p.evaluate(h => { document.querySelectorAll('#view > *').forEach(e => e.setAttribute('data-stale', '1')); if (location.hash === h) history.replaceState(null, '', '#/~'); location.hash = h; }, newHash(pg));
+    return p.waitForFunction(w => !document.querySelector('#view .boot') && (document.querySelector('#view > section.chx-d:not([data-stale]) .pchx-head')?.textContent ?? '').startsWith(w), want, {timeout: 15000}).then(() => true, () => false);
+  }, {what: '새 화면 ' + newHash(pg), fail}));
+  if (ok === false) fail('새 화면 안 열림', newHash(pg));
 }
 async function setMode(p, sel, k) { await p.click(sel + ':nth-child(' + k + ')'); await p.waitForTimeout(40); }
 
@@ -164,8 +176,11 @@ function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math
 /* ①②③④ 맞대기 — 두 보기 */
 {
   // 새 화면은 첫 화면(#/)을 거치지 않고 찾기 화면(#/find)에서 엶 — 첫 화면은 ?dev=1 로 아직 없는 다른 쪽 모듈을 불러 그 오류가 이 검사에 섞임
-  const po = await open(base + '/atlas/#/', 390), pn = await open(base + '/next/?dev=1#/find', 390);
-  await po.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('옛 화면', '첫 화면 안 열림'));
+  // 옛 쪽 기준값(oldsnap.mjs) — 쓸 수 있으면 옛 쪽을 열지 않음(po = null) · 아니면 열고 읽은 값 · 받은 파일을 찍음
+  const SNAP = await tm.old(async () => oldSnap({file: arg('--old-snap', null), page: 'chx', base, remote: isRemote(base), refresh: has('--old-refresh'),
+    key: {checker: await fileSha(fileURLToPath(import.meta.url)), browser: B.version(), width: 390, list: LIST.map(oldHash)}}));
+  const po = SNAP.use ? null : await tm.old(() => open(base + '/atlas/#/', 390, 844, q => SNAP.watch(q))), pn = await open(base + '/next/?dev=1#/find', 390);
+  if (po) await po.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('옛 화면', '첫 화면 안 열림'));
   await pn.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('새 화면', '첫 화면 안 열림'));
   for (const pg of LIST) {
     const where = (pg.kind === 'g' ? '갈래 ' : '업종 ') + pg.id;
@@ -174,17 +189,21 @@ function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math
       if (!N || !N.text.includes('「1곳」 = 회사가 하나뿐인 업종')) fail('1곳 업종', where); errsOf(pn, where); bump('1곳 업종'); continue;
     }
     for (const mode of ['eq', 'cw']) {
-      if (mode === 'eq') { await waitOld(po, pg); await waitNew(pn, pg); }
-      else { await setMode(po, '#view .seg button', 2); await setMode(pn, '#view .pchx-seg button', 2); await po.waitForTimeout(800); } // 옛 경주판은 줄을 움직인 뒤 700ms 에 차례대로 다시 꽂음 — 그 전에 읽으면 옛 차례(실제 사이트 검사에서 걸린 것 · 2026-10-17)
-      const [O, N] = [oldToNewDeep(await po.evaluate(readOld)), await pn.evaluate(readNew)]; // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs)
+      if (mode === 'eq') { if (po) await waitOld(po, pg); await waitNew(pn, pg); }
+      else { if (po) await tm.old(() => setMode(po, '#view .seg button', 2)); await tm.new(() => setMode(pn, '#view .pchx-seg button', 2)); if (po) await tm.old(() => po.waitForTimeout(800)); } // 옛 경주판은 줄을 움직인 뒤 700ms 에 차례대로 다시 꽂음 — 그 전에 읽으면 옛 차례(실제 사이트 검사에서 걸린 것 · 2026-10-17)
+      const sk = oldHash(pg) + '|' + mode, O0 = po ? await tm.old(() => po.evaluate(readOld)) : SNAP.get(sk); // 옛 쪽 값 — 열어서 읽음 · 또는 기준값
+      if (po) SNAP.put(sk, O0);
+      if (!O0) { fail('옛 쪽 기준값 없음', sk); continue; }
+      const [O, N] = [oldToNewDeep(O0), await tm.new(() => pn.evaluate(readNew))]; // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs)
       compare(where + ' · ' + (mode === 'eq' ? '한 회사 한 표' : '큰 회사는 크게'), O, N, pg, mode);
       if (!selfTested && N && O.rows.length > 1) selfTest(O, N, pg, mode);
-      if (mode === 'cw') { await setMode(po, '#view .seg button', 1); await setMode(pn, '#view .pchx-seg button', 1); await po.waitForTimeout(800); }
+      if (mode === 'cw') { if (po) await tm.old(() => setMode(po, '#view .seg button', 1)); await tm.new(() => setMode(pn, '#view .pchx-seg button', 1)); if (po) await tm.old(() => po.waitForTimeout(800)); }
       bump('맞댄 화면');
     }
-    errsOf(po, '옛 ' + where); errsOf(pn, '새 ' + where);
+    if (po) errsOf(po, '옛 ' + where); errsOf(pn, '새 ' + where);
   }
-  await po.context().close(); await pn.context().close();
+  if (po) await po.context().close(); await pn.context().close();
+  counts.oldSnap = {...SNAP.info(), note: await SNAP.save(oldFails === 0)}; // 기준값 — 다시 씀 · 새로 씀 · 안 씀(까닭)
   if (!selfTested && LIST.length) fail('검사 자체 시험', '돌리지 못함(줄 둘 넘는 화면 없음)');
 }
 
@@ -201,9 +220,9 @@ const scan = () => {
 for (const [w, font] of [[320, 0], [360, 0], [390, 0], [320, 2]]) { // 끝 = 320 폭 · 글씨 「아주 크게」(app.css html.f3 — 화면 칸을 1.29배) 앞 네 화면
   const ctx = await B.newContext({viewport: {width: w, height: 640}, deviceScaleFactor: 1, hasTouch: true});
   await ctx.addInitScript(k => { try { localStorage.setItem('atlas:font', String(k)); } catch { /* 기억 못 함 */ } }, font);
-  const p = await ctx.newPage(); p._errs = [];
+  const p = watch(await ctx.newPage(), base); p._errs = [];
   p.on('pageerror', e => p._errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text()); });
-  await p.goto(base + '/next/?dev=1#/find');
+  await settle(p, async () => { await p.goto(base + '/next/?dev=1#/find'); return true; }, {what: w + ' 찾기 화면', fail});
   await p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => fail('새 화면', w + ' 첫 화면 안 열림'));
   for (const pg of font ? WLIST.slice(0, 4) : WLIST) {
     const where = w + (font ? ' 아주 크게' : '') + ' ' + newHash(pg);
@@ -246,7 +265,7 @@ for (const [w, font] of [[320, 0], [360, 0], [390, 0], [320, 2]]) { // 끝 = 320
   await p.context().close();
 }
 await B.close();
-const res = {schema: 'atlas11-next-chx-1', at: new Date().toISOString(), base, asOf: mkt.asOf, pages: LIST.length, of: PAGES.length, widthPages: WLIST.length, full: !LIMIT && !WLIMIT && !SKIP, seconds: Math.round((Date.now() - t0) / 1000), counts, fails, ok: !fails.length};
+const res = {schema: 'atlas11-next-chx-1', at: new Date().toISOString(), base, asOf: mkt.asOf, pages: LIST.length, of: PAGES.length, widthPages: WLIST.length, full: !LIMIT && !WLIMIT && !SKIP, seconds: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails, ok: !fails.length};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1) + '\n'); }
-console.log(JSON.stringify({ok: res.ok, pages: res.pages + '/' + res.of, widthPages: res.widthPages, seconds: res.seconds, counts, fails: fails.slice(0, 15)}, null, 0));
+console.log(JSON.stringify({ok: res.ok, pages: res.pages + '/' + res.of, widthPages: res.widthPages, seconds: res.seconds, time: res.time, net: res.net, counts, fails: fails.slice(0, 15)}, null, 0));
 process.exit(res.ok ? 0 : 1);
