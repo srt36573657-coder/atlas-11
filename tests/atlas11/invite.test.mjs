@@ -178,7 +178,7 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
   try {
     const s = await stageFunctions(root, stage);
     assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['invite', 'letter']); // 2026-10-17 편지 여는 밤 함수 더함
-    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'functions/atlas11/letter.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/letter.mjs']);
+    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'functions/atlas11/letter.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/letter.mjs', 'site/next/words.js']); // 2026-10-17 21:10 [4] 4 쓰지 않을 말 한 곳(words.js)을 편지 함수도 부름
     assert.ok(s.packages.includes('@netlify/blobs') && s.packages.includes('@netlify/runtime-utils'), s.packages.join(','));
     assert.ok(!s.packages.includes('react') && !s.files.some(f => f.startsWith('netlify/')), '옛 함수 · 쓰지 않는 패키지는 옮기지 않음');
     const edge = `http://127.0.0.1:${port}`;

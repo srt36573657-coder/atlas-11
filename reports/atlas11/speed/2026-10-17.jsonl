@@ -1,0 +1,6 @@
+{"job":"godori-2110 전체(하나로 묶은 명령문)","start":"2026-10-17T13:09:06.000Z","promise":"2026-10-17T18:00:00.000Z","note":"끝 시각 약속 02:00(싱가포르) — 끝나면 end 줄을 따로 더함"}
+{"job":"일꾼 A 탭 다섯 · 관심 · 시황 · 보유종목 잇기","start":"2026-10-17T13:11:08.000Z","end":"2026-10-17T13:30:14.000Z","seconds":1146,"files":["site/next/app.js","site/next/index.html","site/next/app.css"]}
+{"job":"일꾼 E 회사 모두 다섯 문 파일 · 틀린다면 이유","start":"2026-10-17T13:11:51.000Z","end":"2026-10-17T13:29:21.000Z","seconds":1050,"files":["scripts/atlas11/next/gdr/pick.mjs","site/next/data/gdr.json","site/next/data/gates.json"]}
+{"job":"일꾼 F 다섯 문 따로 세기(첫 판 · 61칸 다름)","start":"2026-10-17T13:11:55.000Z","end":"2026-10-17T13:40:59.000Z","seconds":1744,"files":["scripts/atlas11/next/gdr/verify.py"]}
+{"job":"일꾼 E 빈 값 61칸 ? 로","start":"2026-10-17T13:42:30.000Z","end":"2026-10-17T13:48:37.000Z","seconds":367}
+{"job":"일꾼 F 다시 셈(틀림 0)","start":"2026-10-17T13:48:37.000Z","end":"2026-10-17T13:49:43.000Z","seconds":66}

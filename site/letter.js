@@ -2,15 +2,11 @@
  *   서버 /api/letter(lib/atlas11/letter.mjs) · 회원 열쇠는 이 기기에만(localStorage atlas11:letter:key) · 사장님 열쇠는 초대장 쪽과 같은 자리(atlas11:invite:owner)
  *   그 주의 실제 기록 = 사이트 자료(/atlas/data/home.json 지수 · mkt.json 회사)로 그림 · 못 받으면 「?」
  *   보안 규칙(script-src 'self' · style-src 'self') — 글 속 스타일 · 스크립트 없음 · 받은 글은 글자로만(textContent) */
+// 거르는 말 = 한 곳 /next/words.js(사장님 2026-10-17 21:10 「letter.js 거르는 말과 next_check 쓰지 않을 말을 words.js 한 곳에 모아 같이 써라」 — 서버 lib/atlas11/letter.mjs 도 같은 파일)
+// 보내기 = /next/p-share.js 글상자(「친구에게 무슨 말을 할래?」 · 걸리면 고치게 · 글 + 주소 함께)
+import {badWord} from '/next/words.js';
+import {open as shareBox} from '/next/p-share.js';
 const API = '/api/letter', KEY = 'atlas11:letter:key', OWNER = 'atlas11:invite:owner';
-const BAD = [['사고팔기 말', ['사라', '사요', '사세요', '사자', '매수', '매도', '팔아', '팔라', '팔자', '손절', '익절', '풀매수', '몰빵', '물타', '줍줍', '존버']],
-  ['부추기는 말', ['가즈아', '상한가', '하한가', '떡상', '떡락', '폭등', '폭락', '대박', '텐배거', '목표가', '목표주가', '세력', '작전', '매집', '설거지']],
-  ['리딩방 말', ['리딩', '무료방', '추천주', '종목추천', '수익인증', '오픈채팅', '오픈톡', '카톡', '텔레그램', '단톡', '밴드']],
-  ['소문 말', ['지라시', '찌라시', '카더라', '인수설', '합병설', '상폐']],
-  ['연락처', ['http', 'www', '.com', '.kr', '@', '010']],
-  ['거친 말', ['시발', '씨발', 'ㅅㅂ', '병신', '개새', '좆', '지랄']]];
-const OKW = ['사라지', '사라졌', '사라진', '사라질', '사자성어', '사요나라'];
-const badWord = s => { let t = String(s ?? '').toLowerCase().replace(/\s+/g, ''); for (const w of OKW) t = t.split(w).join(''); for (const [k, ws] of BAD) for (const w of ws) if (t.includes(w)) return [k, w]; return null; };
 const josa = w => { const c = w.charCodeAt(w.length - 1) - 0xAC00; return c >= 0 && c < 11172 && c % 28 ? '은' : '는'; };
 const store = {get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); return true; } catch { return false; } }};
 const $ = (q, r = document) => r.querySelector(q);
@@ -178,9 +174,8 @@ function mineCard() {
     h('p', {class: 'note', text: '지금은 나만 보여요. ' + md(S.opensAt) + ' 금요일 밤 8시에 모두에게 열려요.'}),
     h('button', {class: 'ghost', type: 'button', text: '봉인 소식 친구에게 보내기', onclick: () => share('고도리에 편지를 봉인했어요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html')}));
 }
-async function share(text, url) {
-  try { if (navigator.share) { await navigator.share({title: '고도리 편지', text, url}); return; } await navigator.clipboard.writeText(text + ' ' + url); toast('글과 주소를 담았어요. 붙여 넣어 보내세요.'); } catch {}
-}
+/** 보내기 — 글상자부터(text = 같이 가는 편지 쪽 소개 한 줄 · 사람이 쓰는 말은 글상자) */
+function share(text, url) { return shareBox({kind: 'share', title: '고도리 편지', text, url}); }
 function toast(t) { const e = h('p', {class: 'toast', role: 'status', text: t}); document.body.append(e); setTimeout(() => e.remove(), 2600); }
 
 function letterCard(L, week) {

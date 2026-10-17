@@ -4,6 +4,7 @@
    자료 = 지금 아틀란스 파일 그대로(/atlas/data/*.json) · 7단은 지금 아틀란스 화면으로 이어 줌(/#/g · /#/i · /#/c/<번호>/…) · 앞날 말 없음 · 사고팔기 권하지 않음
    보는 기계 기억(구독 · 본 기록 · 나중에 볼 것)은 이 기기에만(localStorage · 서버에 안 감) · 글은 textContent 로만(보안 규칙 안 — 안에 쓴 스크립트 · 꾸밈 없음) */
 import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; // 새 화면 제 영어 엔진 · 사전(/next/i18n/ — 2026-10-17 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」로 /atlas/ 와 떼어 냄)
+import {NAME} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -108,9 +109,18 @@ function card(href, th, title, meta, av) {
   return h('a', {class: 'card', href}, th, h('div', {class: 'meta'}, h('span', {class: 'av', 'aria-hidden': 'true', text: av}), h('div', {}, h('b', {text: title}), h('small', {text: meta}))));
 }
 function toast(t) { const e = h('p', {class: 'toast', role: 'status', text: t}); document.body.append(e); setTimeout(() => e.remove(), 2400); }
+/** 옛 보내기(제목 · 주소만) — 보내기 글상자(p-share)를 못 받았을 때만 씀 */
 async function share(title, url) {
   try { if (navigator.share) { await navigator.share({title, url}); return; } await navigator.clipboard.writeText(url); toast('주소를 담았어요. 붙여 넣어 보내세요.'); }
   catch (e) { if (e?.name !== 'AbortError') toast('보내기를 열지 못했어요.'); }
+}
+/** 보내기 글상자(사장님 2026-10-17 21:10 [4] — 「친구에게 무슨 말을 할래?」부터 · 수익률 글 없음) — 일꾼 C 의 p-share open(o) 을 부름
+    o = {kind: 'share' | 'ask', title, url, code?, price?, day?} · 모듈을 못 받으면 옛 보내기(제목 · 주소) */
+async function shareBox(o = {}) {
+  let m = null;
+  try { m = await mod('share'); } catch (e) { console.error(e); }
+  if (typeof m?.open === 'function') { try { return await m.open(o); } catch (e) { console.error(e); } }
+  return share(o.title, o.url);
 }
 const absUrl = hash => location.origin + '/' + hash;
 
@@ -118,13 +128,24 @@ const absUrl = hash => location.origin + '/' + hash;
 const subs = () => store.get(K_SUB, []).filter(x => typeof x === 'string');
 const isSub = key => subs().includes(key);
 function toggleSub(key) { const s = subs(), on = s.includes(key); const nx = on ? s.filter(x => x !== key) : [key, ...s].slice(0, 60); store.set(K_SUB, nx); return !on; }
+/* 관심 담기 단추(사장님 2026-10-17 21:10 [2] 8 — 옛 「구독」 · 「나중에 볼 것 담기」를 한 이름으로) · 기억 열쇠는 옛 이름 그대로(atlas:new:sub · atlas:new:later — 바꾸면 담아 둔 것이 사라짐) */
+const KEEP_ON = '관심 담음', KEEP_OFF = '관심 담기';
+const keepMsg = (name, on) => (on ? name + ' 관심에 담았어요. 관심 칸에 모여요.' : name + ' 관심에서 뺐어요.');
 function subBtn(key, name) {
-  const b = h('button', {class: 'sub-btn', type: 'button', 'aria-pressed': String(isSub(key)), text: isSub(key) ? '구독함' : '구독'});
-  b.addEventListener('click', e => { e.preventDefault(); const on = toggleSub(key); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? '구독함' : '구독'; toast(on ? name + ' 구독했어요. 구독 칸에 모여요.' : name + ' 구독을 풀었어요.'); });
+  const b = h('button', {class: 'sub-btn', type: 'button', 'aria-pressed': String(isSub(key)), text: isSub(key) ? KEEP_ON : KEEP_OFF});
+  b.addEventListener('click', e => { e.preventDefault(); const on = toggleSub(key); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? KEEP_ON : KEEP_OFF; toast(keepMsg(name, on)); });
   return b;
 }
 function pushHist(code) { const s = store.get(K_HIST, []).filter(x => x !== code); store.set(K_HIST, [code, ...s].slice(0, 30)); }
 const laters = () => store.get(K_LATER, []).filter(x => typeof x === 'string');
+const isLater = code => laters().includes(code);
+function toggleLater(code) { const s = laters(), on = !s.includes(code); store.set(K_LATER, on ? [code, ...s].slice(0, 60) : s.filter(x => x !== code)); return on; }
+/** 회사 관심 담기 단추 — 보는 화면 · 관심 칸이 함께 씀(cls = 꼴 이름) */
+function laterBtn(code, name, cls = 'act') {
+  const b = h('button', {class: cls, type: 'button', 'aria-pressed': String(isLater(code)), text: isLater(code) ? KEEP_ON : KEEP_OFF});
+  b.addEventListener('click', e => { e.preventDefault(); const on = toggleLater(code); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? KEEP_ON : KEEP_OFF; toast(keepMsg(name, on)); });
+  return b;
+}
 function chanName(key) {
   const X = ix(); if (!X) return key;
   if (key.startsWith('g:')) { const g = X.grp.get(key.slice(2)); return g ? g.name + ' 갈래' : '?'; }
@@ -152,7 +173,7 @@ const RM = matchMedia('(prefers-reduced-motion: reduce)');
 const NB = ' ';
 const HELLO_PROMO = '3명만 소개해도 스타벅스 상품권 1만원!';
 const HELLO_MSG = ['고도리 주식 격언 열 가지','1. 쉬는 것도 투자다. 안 사는 날이 더 많아야 합니다.', '2. 잃지 않는 게 버는 거다. 돈을 불리기 전에 먼저 지킵니다.', '3. 사기 전에 팔 곳부터 정해라. 떨어지면 어디서 팔지 미리 정합니다.', '4. 모두가 웃을 때 나는 늦었다. 다들 좋다고 떠들면 이미 비싼 겁니다.', '5. 헷갈리면 안 사는 게 답이다. 애매하면 그냥 넘깁니다.', '6. 자신 없으면 조금만. 확신이 없으면 내 돈의 열에 하나까지만.', '7. 시장이 흔들리면 나는 멈춘다. 크게 출렁이는 날은 쉽니다.', '8. 손해는 짧게, 이익은 길게. 떨어지면 빨리 팔고, 오르면 오래 들고 갑니다.', '9. 돈이 가는 길을 따라가라. 돈이 몰리는 업종에서만 고릅니다.', '10. 기회는 찾아오는 거지, 만드는 게 아니다. 억지로 사지 말고 좋은 때를 기다립니다.'];
-const INTRO_FLY = 4200, INTRO_LAND = 800; // 날기 시작 · 나는 때(합 5초 = 보드리 5초 · 규칙 66)
+const INTRO_FLY = 4200, INTRO_LAND = 800; // 날기 시작 · 나는 때(합 5초 = 여는 고도리 5초 · 규칙 66)
 let helloIntro = true;
 const ICON2 = {
   send: () => { const s = sv('svg', {width: 22, height: 22, viewBox: '0 0 24 24', 'aria-hidden': 'true'}); s.append(sv('path', {d: 'M3 11.5 21 4l-7.5 18-2.5-7.5z', fill: 'none', stroke: 'currentColor', 'stroke-width': 1.6, 'stroke-linejoin': 'round'}), sv('path', {d: 'm11 14.5 4-4', stroke: 'currentColor', 'stroke-width': 1.6, 'stroke-linecap': 'round'})); return s; },
@@ -245,37 +266,36 @@ function idxAlerts(H) {
 function dday(d) { const k = new Date(Date.now() + 9 * 36e5), t = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate()); const [y, m, x] = d.split('-').map(Number); return Math.round((Date.UTC(y, m - 1, x) - t) / 864e5); }
 const ddayText = d => { const n = dday(d); return n > 0 ? 'D-' + n.toLocaleString('ko-KR') : n === 0 ? '오늘 엶' : '엶 날 지남 — 다시 셀 차례'; };
 
-/* 쇼츠 사실 — 사이트 자료로만 셈 · 날짜를 함께 · 이름은 이상한 선이면 부르지 않음 */
+/* 시황 사실(옛 쇼츠) — 「왜 움직였나」만(사장님 2026-10-17 21:10 [2] 10 「급등 목록은 넣지 마라. 몰려 사기를 부추긴다.」)
+   지수 하루 → 오른 곳 · 내린 곳 수 → 업종 · 갈래가 어디로 갔나 → 미국 · 사이트 자료로만 셈 · 날짜를 함께
+   뺀 것: 급등 칸 1등 · 모든 회사 가운데 가장 많이 오른 곳(급등 목록과 같은 몰림) · 고른 곳 오름 수(시장이 왜 움직였나가 아님) · 편지 여는 밤(보유종목 바로 가기에 남음)
+   st = 보내기 제목(숫자 · 수익률 없음 — [4] 5 「수익률은 보내지 마라」) */
 function shortFacts() {
   const X = ix(), out = [];
   if (!X) return out;
   const H = D.home, core = X.core, mkt = X.mkt;
   const kp = H?.idx?.KOSPI, kq = H?.idx?.KOSDAQ;
   if (kp && Number.isFinite(kp.day)) out.push({id: 'idx', k: md(kp.date) + (kp.live ? ' 장 중' : ' 장 마감'), l1: '코스피는 하루', big: p2(kp.day), bc: cls(kp.day),
-    l2: kq && Number.isFinite(kq.day) ? '코스닥은 ' + p2(kq.day) + '이에요' : '코스닥은 ?', mini: (kp.rows || []).slice(-21).map(r => r[1]), ml: '선은 코스피 20거래일이에요', go: '#/w/KOSPI', tile: ['코스피 ' + p2(kp.day), md(kp.date)]});
+    l2: kq && Number.isFinite(kq.day) ? '코스닥은 ' + p2(kq.day) + '이에요' : '코스닥은 ?', mini: (kp.rows || []).slice(-21).map(r => r[1]), ml: '선은 코스피 20거래일이에요', go: '#/w/KOSPI', tile: ['코스피 ' + p2(kp.day), md(kp.date)],
+    st: md(kp.date) + ' 코스피 · 코스닥 시황'});
   let up = 0, dn = 0, fl = 0;
   for (const c of Object.values(X.co)) { const x = dayOf(c.l); if (x == null) continue; if (x > 0) up++; else if (x < 0) dn++; else fl++; }
   if (up + dn + fl) out.push({id: 'breadth', k: md(mkt.asOf) + ' 장 마감', l1: '모든 회사 ' + num(up + dn + fl) + '곳 가운데', big: num(Math.max(up, dn)) + '곳', bc: up >= dn ? 'up' : 'dn',
-    l2: up >= dn ? '올랐어요' : '내렸어요', ratio: {up, fl, dn}, go: null, tile: [num(Math.max(up, dn)) + '곳', up >= dn ? '오른 곳' : '내린 곳']});
+    l2: up >= dn ? '올랐어요' : '내렸어요', ratio: {up, fl, dn}, go: null, tile: [num(Math.max(up, dn)) + '곳', up >= dn ? '오른 곳' : '내린 곳'], st: md(mkt.asOf) + ' 오른 곳과 내린 곳'});
   const r0 = core.rise?.list?.[0];
-  if (r0) out.push({id: 'rise', k: '1주 동안 · ' + md(core.rise.from) + '부터', l1: r0.name, big: pct(r0.chg), bc: cls(r0.chg), l2: '1주 동안 오른 업종 ' + core.rise.list.length + '개 가운데 1등이에요', mini: r0.v, ml: '선은 1주예요', go: '#/ch/i/' + enc(r0.name), tile: [pct(r0.chg), r0.name]});
+  if (r0) out.push({id: 'rise', k: '1주 동안 · ' + md(core.rise.from) + '부터', l1: r0.name, big: pct(r0.chg), bc: cls(r0.chg), l2: '1주 동안 오른 업종 ' + core.rise.list.length + '개 가운데 1등이에요', mini: r0.v, ml: '선은 1주예요', go: '#/ch/i/' + enc(r0.name), tile: [pct(r0.chg), r0.name],
+    st: r0.name + ' 업종 1주 시황'});
   const gs = [...(core.groups || [])].filter(g => Number.isFinite(g.chg)).sort((a, b) => b.chg - a.chg);
   if (gs.length) {
     const g = gs[0], w = gs[gs.length - 1];
-    out.push({id: 'gtop', k: '20거래일 · ' + md(core.base) + '부터', l1: g.name + ' 갈래', big: pct(g.chg), bc: cls(g.chg), l2: '큰 갈래 ' + gs.length + '개 가운데 가장 많이 올랐어요', mini: g.v, ml: '선은 20거래일이에요', go: '#/ch/g/' + enc(g.id), tile: [pct(g.chg), g.short || g.name]});
-    if (w !== g) out.push({id: 'glow', k: '20거래일 · ' + md(core.base) + '부터', l1: w.name + ' 갈래', big: pct(w.chg), bc: cls(w.chg), l2: '큰 갈래 가운데 가장 많이 내렸어요', mini: w.v, ml: '선은 20거래일이에요', go: '#/ch/g/' + enc(w.id)});
+    out.push({id: 'gtop', k: '20거래일 · ' + md(core.base) + '부터', l1: g.name + ' 갈래', big: pct(g.chg), bc: cls(g.chg), l2: '큰 갈래 ' + gs.length + '개 가운데 가장 많이 올랐어요', mini: g.v, ml: '선은 20거래일이에요', go: '#/ch/g/' + enc(g.id), tile: [pct(g.chg), g.short || g.name],
+      st: g.name + ' 갈래 20거래일 시황'});
+    if (w !== g) out.push({id: 'glow', k: '20거래일 · ' + md(core.base) + '부터', l1: w.name + ' 갈래', big: pct(w.chg), bc: cls(w.chg), l2: '큰 갈래 가운데 가장 많이 내렸어요', mini: w.v, ml: '선은 20거래일이에요', go: '#/ch/g/' + enc(w.id),
+      st: w.name + ' 갈래 20거래일 시황'});
   }
-  let best = null;
-  for (const [code, c] of Object.entries(X.co)) { if (odd(c.l)) continue; const x = c20(c); if (x != null && (!best || x > best.x)) best = {code, c, x}; }
-  if (best) out.push({id: 'riser', k: '20거래일 · ' + md(core.base) + '부터', l1: best.c.n, big: pct(best.x), bc: cls(best.x), l2: (best.c.i || '?') + ' · 모든 회사 가운데 가장 많이 올랐어요', mini: best.c.l, ml: '선은 20거래일이에요', go: '#/w/' + best.code});
-  const S = D.surge, sm = Array.isArray(S?.members) ? [...S.members].filter(m => Number.isFinite(m.r5)).sort((a, b) => b.r5 - a.r5) : [];
-  if (sm.length) out.push({id: 'surge', k: '5일 동안 · ' + md(S.asOf) + '까지', l1: '급등 칸 ' + sm.length + '곳 가운데 1등', big: pct(sm[0].r5), bc: cls(sm[0].r5), l2: sm[0].n + ' · ' + (sm[0].i || '?'), mini: sm[0].v, ml: '선은 5일이에요', go: '#/w/' + sm[0].c, tile: [pct(sm[0].r5), sm[0].n]});
-  const s3 = H?.s365;
-  if (s3 && Number.isFinite(s3.up) && Number.isFinite(s3.down)) out.push({id: 'pick', k: md(s3.date) + ' 하루', l1: '고른 곳 ' + s3.n + '곳 가운데', big: num(s3.up) + '곳', bc: 'up', l2: '올랐어요 · 내린 곳은 ' + num(s3.down) + '곳', ratio: {up: s3.up, fl: s3.flat || 0, dn: s3.down}, go: '#/f/pick'});
   const us = H?.us?.rows;
-  if (Array.isArray(us) && us[0] && Number.isFinite(us[0].chg)) out.push({id: 'us', k: '미국 · ' + md(H.us.date), l1: us[0].name, big: p2(us[0].chg), bc: cls(us[0].chg), l2: us.slice(1, 3).map(r => r.name + ' ' + p2(r.chg)).join(' · '), go: '#/f/us'});
-  const o = nextOpen();
-  out.push({id: 'letter', k: '편지 여는 밤', l1: '다음 여는 밤은', big: md(o.d), bc: 'gd', l2: '금요일 밤 8시에 쓴 편지가 다 함께 열려요', go: '/letter.html', tile: ['금 8시', '편지 여는 밤']});
+  if (Array.isArray(us) && us[0] && Number.isFinite(us[0].chg)) out.push({id: 'us', k: '미국 · ' + md(H.us.date), l1: us[0].name, big: p2(us[0].chg), bc: cls(us[0].chg), l2: us.slice(1, 3).map(r => r.name + ' ' + p2(r.chg)).join(' · '), go: '#/f/us',
+    st: '미국 ' + md(H.us.date) + ' 마감 시황'});
   return out;
 }
 
@@ -299,8 +319,8 @@ function groupCard(g) { return card('#/ch/g/' + enc(g.id), thumb(g.v, '20일', {
 function surgeCard(m) { return card('#/w/' + m.c, thumb(m.v, '5일', {x: m.r5}), m.n + ', 5일 동안 ' + pct(m.r5), (m.i || '?') + ' · 급등 칸 · ' + md(D.surge?.asOf) + '까지', first(m.i)); }
 function leadCard(code, o) { const c = ix().co[code]; return card('#/w/' + code, thumb(o.l5, '5일', {x: o.r5}), c.n + ', ' + (o.i || c.i) + ' 대장주 · 5일 ' + pct(o.r5), '업종 안 몸값 1등 · ' + md(D.cond.d5) + ' → ' + md(D.cond.asOf), first(o.i || c.i)); }
 function shelf(fs) {
-  const tiles = fs.map((f, i) => f.tile ? h('a', {class: 'st', href: '#/shorts/' + i, 'aria-label': '쇼츠 ' + f.l1}, h('b', {class: f.bc, text: f.tile[0]}), h('small', {text: f.tile[1]})) : null).filter(Boolean).slice(0, 4);
-  return tiles.length ? [h('h2', {class: 'sec', text: '쇼츠 · 30초 시장'}), h('div', {class: 'shelf'}, tiles)] : [];
+  const tiles = fs.map((f, i) => f.tile ? h('a', {class: 'st', href: '#/shorts/' + i, 'aria-label': '시황 ' + f.l1}, h('b', {class: f.bc, text: f.tile[0]}), h('small', {text: f.tile[1]})) : null).filter(Boolean).slice(0, 4);
+  return tiles.length ? [h('h2', {class: 'sec', text: '시황 · 왜 움직였나'}), h('div', {class: 'shelf'}, tiles)] : [];
 }
 
 /** 첫 화면 가운데 — 「친구야, 왜 사?」 질문 열한 개(p-why) + 고도리 칸(p-gdr) · 모듈을 못 받으면 그 칸만 「?」 */
@@ -313,7 +333,7 @@ async function godoriHome() {
 async function vHome(chip) {
   if (!CHIPS.some(c => c[0] === chip)) chip = 'all';
   await Promise.all([need('core'), need('mkt'), need('home'), (chip === 'all' || chip === 'surge') ? need('surge') : null, (chip === 'all' || chip === 'lead') ? need('cond') : null]);
-  const X = ix(); if (!X) return {title: '홈', nodes: [...(chip === 'all' ? await godoriHome() : []), chipsBar(chip), ...noData()]};
+  const X = ix(); if (!X) return {title: chip === 'all' ? '오늘 장' : CHIPS.find(c => c[0] === chip)[1], nodes: [...(chip === 'all' ? await godoriHome() : []), chipsBar(chip), ...noData()]};
   const core = X.core, nodes = chip === 'all' ? [] : [chipsBar(chip)], seen = new Set();
   const add = (key, el) => { if (!el || seen.has(key)) return; seen.add(key); nodes.push(el); };
   const rise = core.rise?.list || [], groups = [...(core.groups || [])].sort((a, b) => b.chg - a.chg);
@@ -348,7 +368,7 @@ async function vHome(chip) {
     if (T?.opens?.[0]?.date) nodes.push(h('a', {class: 'm4-mr', href: oldOr('time', '#/time')}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.opens[0].date)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
     nodes.push(h('section', {class: 'm4-seal-box', 'aria-label': '고도리 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '고도리는 들은 것만 따라 말해요.'}), h('span', {text: '그래서 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'})));
     nodes.push(h('p', {class: 'safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
-    return {title: '홈', nodes};
+    return {title: '오늘 장', nodes};
   }
   if (chip === 'rise') { nodes.push(h('p', {class: 'note', text: '1주 동안 오른 업종을 많이 오른 차례로 보여요(' + md(core.rise?.from) + ' → ' + md(core.rise?.to) + ').'})); if (!rise.length) nodes.push(h('p', {class: 'empty', text: '1주 동안 오른 업종이 없어요.'})); for (const r of rise) add('i:' + r.name, riseCard(r)); }
   else if (chip === 'surge') { if (!D.surge) return {title: '급등', nodes: [chipsBar(chip), ...noData('급등 자료')]}; nodes.push(h('p', {class: 'note', text: '급등 칸 ' + sm.length + '곳 · 5일 동안 많이 오른 차례 · ' + md(D.surge.asOf) + '까지'})); for (const m of sm) add('c:' + m.c, surgeCard(m)); nodes.push(h('a', {class: 'more', href: oldOr('surge', '#/surge'), text: '급등 다섯 칸 자세히 ›'})); }
@@ -390,15 +410,23 @@ async function vWatch(a) {
   const l = c.l, n = l.length, x20 = c20(c), day = dayOf(l), I = X.ind.get(c.i), g = I ? X.grp.get(I.g) : null, Cd = condOf();
   const lab = i => { const d = dateAt(n, i); return (d ? md(d) : (i + 1) + '번째 날') + ' · 첫날보다 ' + pct((l[i] / l[0] - 1) * 100) + (i > 0 ? ' · 그날 ' + pct((l[i] / l[i - 1] - 1) * 100) : ''); };
   const d0 = dateAt(n, 0), d1 = dateAt(n, n - 1), tip0 = '20거래일 · ' + (d0 ? md(d0) : '?') + ' → ' + (d1 ? md(d1) : '?');
-  const later = laters().includes(a);
-  const laterB = h('button', {class: 'act', type: 'button', 'aria-pressed': String(later), text: later ? '담았어요' : '나중에 볼 것 담기'});
-  laterB.addEventListener('click', () => { const s = laters(), on = !s.includes(a); store.set(K_LATER, on ? [a, ...s].slice(0, 60) : s.filter(x => x !== a)); laterB.setAttribute('aria-pressed', String(on)); laterB.textContent = on ? '담았어요' : '나중에 볼 것 담기'; toast(on ? '나 칸에 담았어요.' : '뺐어요.'); });
+  const coP = getJson('co/' + enc(a) + '.json'); // 보내기에 담을 그날 값(회사 파일 c.price · c.priceDate — 3단 자세히와 같은 파일이라 한 번만 받음)
+  /** 보내기 · 같이 따져 줘(2026-10-17 21:10 [4] 1 · 6 · 8) — 글상자(p-share)를 부름 · 그날 값과 날을 함께(친구가 열면 보낸 날 값 · 오늘 값) · 수익률 글 없음 */
+  const sendBtn = (kind, text) => {
+    const b = h('button', {class: 'act', type: 'button', text});
+    b.addEventListener('pointerdown', () => { mod('share').catch(() => {}); }, {once: true}); // 누르기 시작할 때 글상자를 미리 받음
+    b.addEventListener('click', async () => { const j = await coP, p = j?.c?.price, pd = j?.c?.priceDate, ok = Number.isFinite(p) && p > 0;
+      shareBox({kind, title: L(c.n + ' · ' + NAME), url: absUrl('#/w/' + a), code: a, name: c.n, price: ok ? p : null, day: ok && isDay(pd) ? String(pd).slice(0, 10) : null}); });
+    return b;
+  };
   const nodes = [
     player(l, lab, tip0),
     h('h1', {class: 'wt', text: c.n}),
     h('p', {class: 'ws'}, '20거래일 동안 ', h('b', {class: cls(x20), text: pct(x20)}), ' · 하루 ', h('b', {class: cls(day), text: pct(day)}), ' · ' + md(X.mkt.asOf) + ' 마감'),
     h('div', {class: 'chan'}, h('a', {href: '#/ch/i/' + enc(c.i)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(c.i)}), h('div', {}, h('b', {text: (c.i || '?') + ' 업종'}), h('small', {text: '회사 ' + (I ? num(I.n) : '?') + '곳' + (g ? ' · ' + g.short + ' 갈래' : '')}))), I ? subBtn('i:' + c.i, c.i + ' 업종') : null),
-    h('div', {class: 'acts'}, laterB, h('button', {class: 'act', type: 'button', text: '보내기', onclick: () => share(L(c.n + ' · 고도리'), absUrl('#/w/' + a))}), h('a', {class: 'act', href: '/letter.html', text: '편지 쓰기'})),
+    // 관심 담기(첫 단추 — 검사가 .acts 첫 .act 를 누름) · 보내기 · 매매일지로(2026-10-17 21:10 [3] 2 · 규칙 1 「하나 넣으면 하나 뺀다」 — 넣은 「이 회사로 왜 사?」 자리에서 「편지 쓰기」를 뺌 · 편지 여는 밤은 보유종목 바로 가기에)
+    h('div', {class: 'acts'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),
+    h('a', {class: 'why-go', href: '#/why/' + enc(a)}, h('b', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'})),
     h('h2', {class: 'sec', text: '챕터 일곱 · 7단'}),
   ];
   nodes.push(chaps(a, '3'));
@@ -447,14 +475,17 @@ async function vIndex(code) {
   return {title: x.name, nodes};
 }
 
-/* 쇼츠 — 위로 밀면 다음 사실 · 한 화면에 사실 하나 */
+/* 시황(옛 쇼츠) — 「왜 움직였나」만 · 위로 밀면 다음 사실 · 한 화면에 사실 하나 */
 async function vShorts(a) {
-  await Promise.all([need('core'), need('mkt'), need('home'), need('surge')]);
-  const fs = shortFacts(); if (!fs.length) return {title: '쇼츠', nodes: noData()};
+  await Promise.all([need('core'), need('mkt'), need('home')]);
+  const fs = shortFacts(); if (!fs.length) return {title: '시황', nodes: noData()};
   const bar = h('div', {class: 'sbar', 'aria-hidden': 'true'}, fs.map(() => h('i', {})));
-  const box = h('div', {class: 'shorts', tabindex: '0', 'aria-label': '쇼츠 · 위로 밀면 다음 사실'}, bar);
+  const box = h('div', {class: 'shorts', tabindex: '0', 'aria-label': '시황 · 위로 밀면 다음 사실'}, bar);
   fs.forEach((f, i) => {
-    const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, h('button', {type: 'button', text: '보내기', onclick: () => share(L(f.l1 + ' ' + f.big + ' · 고도리'), absUrl('#/shorts/' + i))}));
+    const sb = h('button', {type: 'button', text: '보내기'});
+    sb.addEventListener('pointerdown', () => { mod('share').catch(() => {}); }, {once: true});
+    sb.addEventListener('click', () => shareBox({kind: 'share', title: L(f.st + ' · ' + NAME), url: absUrl('#/shorts/' + i)})); // 제목에 숫자 · 수익률 없음([4] 5)
+    const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, sb);
     const sec = h('section', {class: 'sh', 'data-i': String(i), 'aria-label': (i + 1) + ' / ' + fs.length},
       h('p', {class: 'k', text: f.k}), h('p', {class: 'l1', text: f.l1}), h('p', {class: 'bg ' + (f.bc || ''), text: f.big}), h('p', {class: 'l2', text: f.l2}),
       f.ratio ? [h('div', {class: 'ratio', 'aria-hidden': 'true'}, h('i', {css: {flex: String(f.ratio.up), background: COLOR.up}}), h('i', {css: {flex: String(f.ratio.fl), background: COLOR.fl}}), h('i', {css: {flex: String(f.ratio.dn), background: COLOR.dn}})),
@@ -470,7 +501,7 @@ async function vShorts(a) {
   if (io) box.querySelectorAll('.sh').forEach(s => io.observe(s)); else mark(0);
   const start = Math.max(0, Math.min(fs.length - 1, parseInt(a, 10) || 0));
   requestAnimationFrame(() => { const t = box.querySelector('.sh[data-i="' + start + '"]'); if (t) box.scrollTop = t.offsetTop; mark(start); });
-  return {title: '쇼츠', nodes: [box], noScroll: true};
+  return {title: '시황', nodes: [box], noScroll: true};
 }
 
 /* 채널 — 업종(#/ch/i/<이름>) · 갈래(#/ch/g/<번호>) */
@@ -512,20 +543,34 @@ async function vChannel(a) {
   return {title: name, nodes};
 }
 
-/* 구독 — 구독한 채널의 새 소식(오늘 가장 많이 움직인 곳) · 편지 여는 밤 */
+/* 관심(옛 구독 · 사장님 2026-10-17 21:10 [2] 4 · 8) — 담은 업종 · 갈래와 담은 회사(옛 「나중에 볼 것」)를 한 화면에
+   차례: 담은 업종 · 갈래 동그라미 줄 → 관심 회사(줄마다 관심 담음 단추) → 업종 · 갈래 새 소식(오늘 가장 많이 움직인 곳)
+   기억 열쇠는 그대로(atlas:new:sub · atlas:new:later) · 이 기기에만 */
 async function vSub() {
   await Promise.all([need('core'), need('mkt')]);
-  const X = ix(); if (!X) return {title: '구독', nodes: noData()};
+  const X = ix(); if (!X) return {title: '관심', nodes: noData()};
   const ks = subs().filter(k => (k.startsWith('g:') && X.grp.has(k.slice(2))) || (k.startsWith('i:') && X.ind.has(k.slice(2))));
-  const nodes = [h('h1', {class: 'h', text: '구독'})];
+  const cos = laters().filter(c => X.co[c]);
+  const nodes = [h('h1', {class: 'h', text: '관심'}), h('p', {class: 'note', text: '회사 ' + num(cos.length) + '곳 · 업종 · 갈래 ' + num(ks.length) + '개 · 이 기기에만 남아요.'})];
+  if (ks.length) nodes.push(h('div', {class: 'avs'}, ks.map(k => { const nm = chanName(k); return h('a', {href: chanHref(k)}, h('span', {class: 'av lg on', 'aria-hidden': 'true', text: first(nm)}), h('small', {text: nm.replace(/ (갈래|업종)$/, '')})); })));
+  // 관심 회사 — 줄 = 작은 선(20거래일) · 이름 · 업종 · 20거래일 % · 관심 담음(누르면 빼고 · 다시 누르면 담음)
+  nodes.push(h('h2', {class: 'sec', text: '관심 회사'}));
+  if (cos.length) {
+    nodes.push(h('p', {class: 'note', text: md(X.mkt.asOf) + ' 장 마감 · 담은 차례예요.'}));
+    for (const c of cos) {
+      const o = X.co[c], x = c20(o);
+      nodes.push(h('div', {class: 'chan wl'}, h('a', {href: '#/w/' + c}, h('span', {class: 'wl-th', 'aria-hidden': 'true'}, lineSvg(o.l, {w: 120, ht: 60, fill: false, sw: 3})),
+        h('div', {}, h('b', {text: o.n}), h('small', {}, (o.i || '?') + ' · ', h('span', {class: 'nb'}, '20거래일 ', h('span', {class: cls(x), text: pct(x)}))))), laterBtn(c, o.n, 'sub-btn')));
+    }
+  } else nodes.push(h('p', {class: 'note', text: '회사 화면에서 「관심 담기」를 누르면 여기 모여요.'}));
+  // 관심 업종 · 갈래
+  nodes.push(h('h2', {class: 'sec', text: '관심 업종 · 갈래'}));
   if (!ks.length) {
-    nodes.push(h('p', {class: 'note', text: '아직 구독한 채널이 없어요. 큰 갈래부터 구독해 보세요.'}));
+    nodes.push(h('p', {class: 'note', text: '아직 담은 업종 · 갈래가 없어요. 큰 갈래부터 담아 보세요.'}));
     for (const g of [...X.core.groups].sort((a, b) => b.chg - a.chg)) nodes.push(h('div', {class: 'chan'}, h('a', {href: '#/ch/g/' + enc(g.id)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(g.short || g.name)}), h('div', {}, h('b', {text: g.name + ' 갈래'}), h('small', {text: '20거래일 한 회사 한 표 ' + pct(g.chg)}))), subBtn('g:' + g.id, g.name + ' 갈래')));
-    nodes.push(premCard());
-    return {title: '구독', nodes};
+    return {title: '관심', nodes};
   }
-  nodes.push(h('div', {class: 'avs'}, ks.map(k => { const nm = chanName(k); return h('a', {href: chanHref(k)}, h('span', {class: 'av lg on', 'aria-hidden': 'true', text: first(nm)}), h('small', {text: nm.replace(/ (갈래|업종)$/, '')})); })));
-  nodes.push(h('p', {class: 'note', text: md(X.mkt.asOf) + ' 장 마감 · 구독한 채널 ' + ks.length + '개'}));
+  nodes.push(h('p', {class: 'note', text: md(X.mkt.asOf) + ' 장 마감 · 담은 업종 · 갈래 ' + ks.length + '개'}));
   for (const k of ks) {
     const ch = k.startsWith('g:') ? X.grp.get(k.slice(2)) : X.ind.get(k.slice(2));
     const mem = k.startsWith('g:') ? (ch.inds || []).flatMap(n => X.ind.get(n)?.members || []) : ch.members || [];
@@ -534,28 +579,26 @@ async function vSub() {
     nodes.push(card(chanHref(k), thumb(ch.v, '20일', {x: ch.chg}), chanName(k) + ', 20거래일 한 회사 한 표 ' + pct(ch.chg), '큰 회사는 크게 ' + pct(ch.cwChg), first(chanName(k))));
     if (top) nodes.push(h('a', {class: 'nx', href: '#/w/' + top.m}, thumb(top.o.l, '20일', {x: c20(top.o)}), h('div', {}, h('small', {text: '오늘 가장 많이 움직인 곳'}), h('b', {text: top.o.n}), h('small', {}, '하루 ', h('b', {class: cls(top.d), text: pct(top.d)})))));
   }
-  nodes.push(premCard());
-  return {title: '구독', nodes};
+  return {title: '관심', nodes};
 }
 
-/* 나 — 본 기록 · 나중에 볼 것 · 지금 아틀란스 바로 가기 */
+/** 쪽 모듈이 낸 것을 노드 목록으로 — {title, nodes} · 노드 하나 · 노드 목록 모두 받음 */
+const asNodes = d => (d == null ? [] : d instanceof Node ? [d] : Array.isArray(d) ? d.filter(x => x instanceof Node) : Array.isArray(d.nodes) ? d.nodes.filter(x => x instanceof Node) : []);
+/* 보유종목(옛 「나」 · 사장님 2026-10-17 21:10 [2] 5 · 9 · [3] 7 · 8 · [5])
+   차례: 보유종목 점검(일꾼 D 의 p-hold render) → 사장님 편지(격언 열 가지 · 열면 고도리 · 친구 소개 · 상품권 — 그대로) → 바로 가기 → 본 기록
+   옮긴 것: 왜 사? 기록 → 매매일지 화면 아래(p-why) · 「나중에 볼 것」 → 관심 칸 · 뺀 줄: 「왜 사? 열한 질문」(가운데 단추와 겹침 · 규칙 1) · 「구독한 채널」(아래 관심 단추와 겹침 · 규칙 1) */
 async function vMe() {
   await Promise.all([need('core'), need('mkt')]);
-  const X = ix(), hist = store.get(K_HIST, []).filter(c => X?.co?.[c]), lat = laters().filter(c => X?.co?.[c]), ns = subs().length;
-  const nodes = [h('div', {class: 'lw'}, m4letter()), // 사장님 편지(격언 열 가지 · 친구 소개 · 상품권) — 2026-10-17 17:54 명령 1 「첫 화면 편지를 「나」 칸으로 옮겨라」
-    h('div', {class: 'me'}, h('img', {alt: '', src: '/media/makbi-icon.svg'}), h('div', {}, h('b', {text: '내 기록'}), h('small', {text: '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.'})))];
-  try { const W = await mod('why'); nodes.push(W.meRecords()); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 왜 사? 기록을 그리지 못했어요.'})); } // 명령 13 — 날짜와 함께 쌓고 한 달 뒤 결과 · 지우지 않음
-  nodes.push(h('h2', {class: 'sec', text: '본 기록'}));
-  if (hist.length) nodes.push(h('div', {class: 'row'}, hist.slice(0, 12).map(c => h('a', {href: '#/w/' + c}, thumb(X.co[c].l, '20일', {x: c20(X.co[c])}), h('b', {text: X.co[c].n})))));
-  else nodes.push(h('p', {class: 'note', text: '아직 본 회사가 없어요. 홈에서 카드를 눌러 보세요.'}));
-  nodes.push(h('h2', {class: 'sec', text: '나중에 볼 것'}));
-  if (lat.length) nodes.push(h('div', {class: 'lst'}, lat.map(c => h('a', {href: '#/w/' + c}, X.co[c].n, h('span', {class: cls(c20(X.co[c])), text: '20거래일 ' + pct(c20(X.co[c])) + ' ›'})))));
-  else nodes.push(h('p', {class: 'note', text: '보는 화면에서 「나중에 볼 것 담기」를 누르면 여기 모여요.'}));
+  const X = ix(), hist = store.get(K_HIST, []).filter(c => X?.co?.[c]), nodes = [];
+  let hold = [];
+  try { const Hm = await mod('hold'); hold = asNodes(await Hm.render()); } catch (e) { console.error(e); }
+  if (!hold.some(n => n.matches?.('h1') || n.querySelector?.('h1'))) nodes.push(h('h1', {class: 'h', text: '보유종목'})); // 제목 = 탭 이름(규칙 2) — 모듈이 제목을 그리면 그것만
+  if (hold.length) nodes.push(...hold);
+  else nodes.push(h('p', {class: 'note', text: '? 보유종목 칸을 아직 열지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
+  nodes.push(h('div', {class: 'lw'}, m4letter())); // 사장님 편지(격언 열 가지 · 친구 소개 · 상품권) — 2026-10-17 17:54 명령 1 · 21:10 [2] 5 그대로
   nodes.push(h('h2', {class: 'sec', text: '바로 가기'}), h('div', {class: 'lst'},
-    h('a', {href: '#/sub'}, '구독한 채널', h('span', {text: ns + '개 ›'})),
-    h('a', {href: '#/why'}, '왜 사? 열한 질문', h('span', {text: '›'})),
     h('a', {href: '#/gdr'}, '고도리 칸 · 어떻게 골랐나', h('span', {text: '›'})),
-    h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})),
+    h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})), // [2] 9 「편지 여는 밤은 보유종목의 바로 가기에 남겨라」
     h('a', {href: oldOr('today', '#/today')}, '오늘 시장 · 지수 · 사고팔기 · 미국', h('span', {text: '›'})),
     h('a', {href: oldOr('surge', '#/surge')}, '급등 다섯 칸', h('span', {text: '›'})),
     h('a', {href: oldOr('cal', '#/cal')}, '달력 · 지켜보는 곳', h('span', {text: '›'})),
@@ -564,13 +607,16 @@ async function vMe() {
     h('a', {href: oldOr('time', '#/time')}, '봉인', h('span', {text: '›'})),
     h('a', {href: oldOr('up', '#/up')}, '업데이트 기록', h('span', {text: '›'})),
     h('a', {href: oldOr('info', '#/info')}, '도움말 · 이 사이트는?', h('span', {text: '›'}))));
-  if (hist.length || lat.length) {
-    const clr = h('button', {type: 'button', text: '본 기록 · 담은 것 지우기'}, h('span', {text: '›'}));
-    clr.addEventListener('click', () => { if (!confirm(L('본 기록과 담은 것을 이 기기에서 지울까요?'))) return; store.set(K_HIST, []); store.set(K_LATER, []); toast('지웠어요.'); route(true); });
+  // 본 기록(본 회사 열둘 · 이 기기에만) — 지우기는 본 기록만(관심 회사는 관심 칸에서 하나씩 뺌)
+  nodes.push(h('h2', {class: 'sec', text: '본 기록'}), h('p', {class: 'note', text: '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.'}));
+  if (hist.length) {
+    nodes.push(h('div', {class: 'row'}, hist.slice(0, 12).map(c => h('a', {href: '#/w/' + c}, thumb(X.co[c].l, '20일', {x: c20(X.co[c])}), h('b', {text: X.co[c].n})))));
+    const clr = h('button', {type: 'button', text: '본 기록 지우기'}, h('span', {text: '›'}));
+    clr.addEventListener('click', () => { if (!confirm(L('본 기록을 이 기기에서 지울까요?'))) return; store.set(K_HIST, []); toast('지웠어요.'); route(true); });
     nodes.push(h('div', {class: 'lst'}, clr));
-  }
+  } else nodes.push(h('p', {class: 'note', text: '아직 본 회사가 없어요. 오늘 장에서 카드를 눌러 보세요.'}));
   nodes.push(h('p', {class: 'safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
-  return {title: '나', nodes};
+  return {title: '보유종목', nodes};
 }
 
 /* 찾기 — 지금 아틀란스 찾기와 같은 잣대(한 글자 · 첫 글자 ㅅㅅㅈㅈ · 영어 글자 소리 · 종목 번호 · 영어로 볼 때는 영어 이름)
@@ -587,6 +633,23 @@ async function needNames() {
   for (const r of j.rows) { const x = nrm(r.n), y = nrm(sound(r.n)), e = EN ? nrm(nameEn(r.n) ?? '') : ''; r._k = e ? [x, y, e] : [x, y]; r._c = [cho(x), cho(y)]; }
   return (NAMES = j);
 }
+let CO_ROWS = null;
+/** 목록(names.json)을 못 받았을 때의 줄 — 회사 주식만(찾기와 같은 꼴 · 같은 자료면 한 번만 셈) */
+function coRows(X) {
+  if (CO_ROWS?.X !== X) CO_ROWS = {X, rows: Object.entries(X.co).map(([c, o]) => { const x = nrm(o.n), y = nrm(sound(o.n)); return {c, n: o.n, _k: [x, y], _c: [cho(x), cho(y)]}; })};
+  return CO_ROWS.rows;
+}
+/** 찾기 잣대 하나(찾기 화면 · 매매일지 종목 고르기가 함께 씀 · 사장님 2026-10-17 21:10 [3] 1 「찾기와 같은 잣대를 써라」)
+    → [{c, n, k, w?}] 찾기 화면과 같은 차례 · k = 'c' 회사 주식(보는 화면 #/w/<c>) · 'x' 그 밖(펀드 · 우선주 … · w = 까닭) · 'i' 업종(c = 업종 이름) · 'g' 큰 갈래(c = 갈래 번호)
+    자료(core · mkt · names)를 아직 못 받았으면 받기를 시작하고 [] 또는 회사만 — 먼저 await NX.findReady() 하면 찾기 화면과 똑같음 */
+function findMatch(q) {
+  const X = ix();
+  if (!X || !NAMES) findReady(); // 받기 시작(이미 받는 중이면 그대로)
+  if (!X) return [];
+  return findHits(X, NAMES?.rows ?? coRows(X), String(q ?? '')).map(x => (x.kind === 'g' ? {c: x.g.id, n: x.g.name, k: 'g'} : x.kind === 'i' ? {c: x.i.name, n: x.i.name, k: 'i'} : x.r.w ? {c: x.r.c, n: x.r.n, k: x.kind, w: x.r.w} : {c: x.r.c, n: x.r.n, k: x.kind}));
+}
+/** 찾기 자료가 다 왔나 — true = 찾기 화면과 같은 목록(펀드 · 우선주까지) · false = 회사만이거나 자료 없음 */
+async function findReady() { await Promise.all([need('core'), need('mkt')]); await needNames(); return !!(ix() && NAMES); }
 function findHits(X, rows, q) {
   const k = nrm(q); if (!k) return [];
   const onlyCho = /^[ㄱ-ㅎ]+$/.test(k), digits = /^\d+$/.test(k), codeK = !digits && /^\d[0-9a-z]{0,5}$/.test(k);
@@ -607,18 +670,18 @@ async function vFind(a) {
   await Promise.all([need('core'), need('mkt')]);
   const X = ix(); if (!X) return {title: '찾기', nodes: noData()};
   const N = await needNames();
-  const rows = N?.rows ?? Object.entries(X.co).map(([c, o]) => { const x = nrm(o.n), y = nrm(sound(o.n)); return {c, n: o.n, _k: [x, y], _c: [cho(x), cho(y)]}; });
+  const rows = N?.rows ?? coRows(X);
   const inp = h('input', {type: 'search', placeholder: '회사 이름이나 번호, 업종', 'aria-label': '찾기', enterkeyhint: 'search', autocomplete: 'off', value: a || ''});
   const hits = h('div', {class: 'hits', role: 'list'});
   const run = () => {
     const q = inp.value.trim(); hits.replaceChildren();
     if (!q) { hits.append(h('p', {class: 'note', text: '회사 ' + num(Object.keys(X.co).length) + '곳 · 업종 ' + X.ind.size + '개 · 큰 갈래 ' + X.grp.size + '개에서 찾아요.'}), h('p', {class: 'note', text: '이름 한 글자부터 찾아요. 첫 글자(ㅅㅅㅈㅈ)와 종목 번호도 돼요.' + (N ? ' 펀드 · 우선주까지 ' + num(rows.length) + '개 목록이에요.' : '')})); return; }
-    const all = findHits(X, rows, q), top = all.slice(0, 40), out = [];
+    const all = findMatch(q), top = all.slice(0, 40), out = []; // 매매일지 종목 고르기와 같은 잣대(NX.findMatch)
     for (const x of top) {
-      if (x.kind === 'g') out.push(h('a', {href: '#/ch/g/' + enc(x.g.id), role: 'listitem'}, x.g.name + ' 갈래', h('small', {text: '큰 갈래 · 회사 ' + num(x.g.n) + '곳 · 20거래일 ' + pct(x.g.chg)})));
-      else if (x.kind === 'i') out.push(h('a', {href: '#/ch/i/' + enc(x.i.name), role: 'listitem'}, x.i.name + ' 업종', h('small', {text: '업종 · 회사 ' + num(x.i.n) + '곳 · 20거래일 ' + pct(x.i.chg)})));
-      else if (x.kind === 'c') { const o = X.co[x.r.c]; out.push(h('a', {href: '#/w/' + x.r.c, role: 'listitem'}, h('span', {class: 'nm', 'data-proper': '', text: o.n}), h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))}))); }
-      else out.push(h('a', {href: oldOr('x', '#/x/' + enc(x.r.c)), role: 'listitem', class: 'xo'}, h('span', {class: 'nm', 'data-proper': '', text: x.r.n}), h('small', {text: x.r.w || '회사 주식 밖'})));
+      if (x.k === 'g') { const g = X.grp.get(x.c); out.push(h('a', {href: '#/ch/g/' + enc(g.id), role: 'listitem'}, g.name + ' 갈래', h('small', {text: '큰 갈래 · 회사 ' + num(g.n) + '곳 · 20거래일 ' + pct(g.chg)}))); }
+      else if (x.k === 'i') { const i = X.ind.get(x.c); out.push(h('a', {href: '#/ch/i/' + enc(i.name), role: 'listitem'}, i.name + ' 업종', h('small', {text: '업종 · 회사 ' + num(i.n) + '곳 · 20거래일 ' + pct(i.chg)}))); }
+      else if (x.k === 'c') { const o = X.co[x.c]; out.push(h('a', {href: '#/w/' + x.c, role: 'listitem'}, h('span', {class: 'nm', 'data-proper': '', text: o.n}), h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))}))); }
+      else out.push(h('a', {href: oldOr('x', '#/x/' + enc(x.c)), role: 'listitem', class: 'xo'}, h('span', {class: 'nm', 'data-proper': '', text: x.n}), h('small', {text: x.w || '회사 주식 밖'})));
     }
     if (!out.length) out.push(h('p', {class: 'note', text: '「' + q + '」 — 찾는 이름이 없어요. ' + (N ? '코스피 · 코스닥 목록 ' + num(N.funnel?.universe ?? rows.length) + '개' + (N.collected ? '(' + N.collected + ' 모음 · 펀드 · 우선주까지)' : '') + ' 안에 없는 이름이에요. ' : '') + '띄어쓰기를 빼거나 첫 글자로도 찾아보세요.'}));
     else if (all.length > 40) out.push(h('p', {class: 'note', text: '찾은 것이 ' + num(all.length) + '개예요. 앞 40개만 보여요. 더 길게 써 보세요.'}));
@@ -644,11 +707,12 @@ function getJson(name) {
   JC[name] = {p, v: undefined, t: Date.now()}; return p;
 }
 const MODS = {};
-/** 쪽 모듈 하나(모양 .css 와 함께 한 번만 받음) */
+/** 쪽 모듈 하나(모양 .css 와 함께 한 번만 받음) · 못 받으면 다음에 다시 받아 봄(모양 고리는 한 번만 붙임) */
 function mod(name) {
   if (!MODS[name]) {
-    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/p-' + name + '.css'; document.head.append(l);
-    MODS[name] = import('/next/p-' + name + '.js');
+    const href = '/next/p-' + name + '.css';
+    if (![...document.querySelectorAll('link[rel="stylesheet"]')].some(x => x.getAttribute('href') === href)) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; document.head.append(l); }
+    MODS[name] = import('/next/p-' + name + '.js').catch(e => { delete MODS[name]; throw e; });
   }
   return MODS[name];
 }
@@ -662,24 +726,27 @@ function gdr() {
   return gdrP;
 }
 globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, dayOf, c20, enc, first, odd, need, D, ix, condOf, dateAt, lineSvg, thumb, numThumb, card, toast, share, absUrl,
-  subBtn, isSub, toggleSub, pushHist, laters, jo, hasB, a1, NB, kstNow, dayK, ampm, isDay, isTime, idxOk, gauge, getJson, RM, player, ready, page, chaps, chapNext, noData, gdr, mod};
+  subBtn, isSub, toggleSub, pushHist, laters, jo, hasB, a1, NB, kstNow, dayK, ampm, isDay, isTime, idxOk, gauge, getJson, RM, player, ready, page, chaps, chapNext, noData, gdr, mod,
+  findMatch, findReady, shareBox, laterBtn, isLater, toggleLater}; // findMatch · findReady = 찾기 잣대(매매일지 종목 고르기) · shareBox = 보내기 글상자(옛 share 대신) · laterBtn = 회사 관심 담기 단추
 /* 길 — 화면마다 새 칸 · 늦게 끝난 앞 화면은 버림 · 돌아오면 그 자리 */
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
-const TABS = {'': 'home', f: 'home', shorts: 'shorts', sub: 'sub', me: 'me'};
+/* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
+const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
+const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};
 const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today', 'why', 'gdr']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
 let seq = 0, curHash = null;
 const scrollMem = new Map();
 function parse(hash) {
   const m = /^#\/([a-z0-9]*)\/?(.*)$/.exec(hash || '#/'); if (!m) return {k: null};
-  let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null, raw: m[2]}; }
-  return {k: m[1], a};
+  let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null, raw: m[2] ?? ''}; }
+  return {k: m[1], a, raw: m[2] ?? ''};
 }
 async function route(force) {
   const hash = location.hash || '#/';
   if (curHash != null && curHash !== hash) scrollMem.set(curHash, window.scrollY);
   if (hash === curHash && !force) return;
   curHash = hash;
-  const {k, a: a0} = parse(hash);
+  const {k, a: a0, raw} = parse(hash);
   const a = a0 == null && OLD_KINDS.has(k) ? (k === 'x' ? '?' : '') : a0; // 깨진 주소(%E0 …) — 지금 아틀란스와 같게(급등 · 달력 · 조건은 처음 화면 · 밖 칸은 「?」)
   // 옛 주소(지금 아틀란스) — 새 화면이 있으면 그리로 · 아직 옮기지 않은 쪽은 /atlas/ 의 그 쪽으로(2026-10-17 04:04 「모두 바꿔」 — 단계마다 줄어듦)
   if (k === 'c' && a != null) { const [code, sub] = a.split('/'); if (sub) location.replace(['past', 'rivals', 'grow', 'range'].includes(sub) && ready(sub) ? '#/w/' + enc(code) + '/' + sub : '/atlas/' + hash); else location.replace('#/w/' + enc(code)); return; }
@@ -687,8 +754,9 @@ async function route(force) {
   if (k === 'list') { location.replace('#/f/ind'); return; }
   if (k === '36') { location.replace('#/'); return; } // 지운 화면(규칙 55)
   if (OLD_KINDS.has(k) && !ready(k)) { location.replace('/atlas/' + hash); return; }
-  const view = OLD_KINDS.has(k) ? (arg => page(k, arg)) : VIEWS[k];
-  if (!view || a == null) { location.replace('#/'); return; }
+  // #/s/<보낸 것> = 친구가 받은 보내기(일꾼 C 의 p-share render) — #/s/ 뒤 글을 풀지 않은 그대로 한 덩이로 넘김(조각마다 풀기는 p-share · 글 속 % · / 도 그대로 닿게)
+  const view = k === 's' ? (() => page('share', raw)) : OLD_KINDS.has(k) ? (arg => page(k, arg)) : VIEWS[k];
+  if (!view || (a == null && k !== 's')) { location.replace('#/'); return; }
   const my = ++seq, root = $('#view');
   for (const t of document.querySelectorAll('.tabs a')) t.removeAttribute('aria-current');
   if (TABS[k]) $('.tabs a[data-tab="' + TABS[k] + '"]')?.setAttribute('aria-current', 'page');
@@ -699,7 +767,8 @@ async function route(force) {
   if (my !== seq) return; // 늦게 끝난 앞 화면
   root.replaceChildren(...out.nodes);
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
-  document.title = L(out.title + ' · 고도리'); // 영어면 창 제목도(엔진은 body 만 봄)
+  const tabName = k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름
+  document.title = L((tabName ?? out.title) + ' · ' + NAME); // 영어면 창 제목도(엔진은 body 만 봄)
   document.body.classList.toggle('noscroll', !!out.noScroll);
   window.scrollTo(0, out.noScroll ? 0 : scrollMem.get(hash) ?? 0);
 }
