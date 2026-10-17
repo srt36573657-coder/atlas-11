@@ -1,12 +1,7 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-17T12:35:07.733Z",
+ "at": "2026-10-17T12:45:04.229Z",
  "base": "https://aaa7377.com",
- "mode": "live",
- "ref": "worker-a-ci",
- "sha": "002b7f9152082e5ddef603a848849bcecf9a6487",
- "run": 39032323090,
- "wallSeconds": 698,
  "pages": [
   {
    "name": "cal",
@@ -25,9 +20,7 @@
   {
    "name": "co",
    "code": 0,
-   "seconds": 391,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "seconds": 796
   },
   {
    "name": "cond",
@@ -62,31 +55,23 @@
   },
   {
    "name": "gdr",
-   "code": 1,
-   "seconds": 13,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "code": 0,
+   "seconds": 13
   },
   {
    "name": "grow",
    "code": 0,
-   "seconds": 507,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "seconds": 607
   },
   {
    "name": "misc",
-   "code": 1,
-   "seconds": 47,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "code": 0,
+   "seconds": 57
   },
   {
    "name": "next",
    "code": 0,
-   "seconds": 137,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "seconds": 207
   },
   {
    "name": "past",
@@ -97,17 +82,13 @@
   },
   {
    "name": "range",
-   "code": 0,
-   "seconds": 356,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "code": 1,
+   "seconds": 593
   },
   {
    "name": "rivals",
    "code": 1,
-   "seconds": 560,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "seconds": 907
   },
   {
    "name": "surge",
@@ -126,9 +107,7 @@
   {
    "name": "why",
    "code": 0,
-   "seconds": 45,
-   "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "seconds": 48
   }
  ],
  "ok": false
