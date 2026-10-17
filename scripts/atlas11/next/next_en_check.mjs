@@ -65,7 +65,9 @@ const PAGE = base + '/next/?' + (DEV ? 'dev=1&' : '') + 'lang=en';
 const t0 = Date.now(), secs = {}, mark = (k, s) => { secs[k] = Math.round((Date.now() - s) / 100) / 10; }; // 묶음마다 걸린 초(몫 무게를 맞추는 데 씀)
 
 /* ── 자료(시험 서버에서 · 앱과 같은 파일) ── */
-const getJ = async f => { try { const r = await fetch(base + '/atlas/data/' + f, {cache: 'no-store'}); return r.ok ? await r.json() : null; } catch { return null; } };
+// 받기 — 잠깐 막힘(연결 끊김 · 시간 넘음 · 5xx)은 기다렸다 다시(나눠 돌리면 몫마다 따로 받으므로 한 번 막힘에 한 몫이 통째로 빠지지 않게 · 2026-10-17 12:24 en3 · en4 가 처음 받기에서 멈춤) · 없는 파일(4xx)은 바로 null
+const fetchRetry = async (url, opt = {}) => { for (let i = 0; ; i++) { try { const r = await fetch(url, {...opt, signal: AbortSignal.timeout(20000)}); if (r.status < 500 || i >= 5) return r; } catch (e) { if (i >= 5) throw e; } await new Promise(res => setTimeout(res, 1500 * (i + 1))); } };
+const getJ = async f => { try { const r = await fetchRetry(base + '/atlas/data/' + f, {cache: 'no-store'}); return r.ok ? await r.json() : null; } catch { return null; } };
 const [core, mkt, home, surge, cond, surgetr, names] = await Promise.all(['core.json', 'mkt.json', 'home.json', 'surge.json', 'cond.json', 'surgetr.json', 'names.json'].map(getJ));
 if (!core || !mkt || !home) { console.error('자료(core · mkt · home)를 못 받음 — 시험 서버 ' + base); process.exit(1); }
 const CO = mkt.companies, codes = Object.keys(CO).sort();
@@ -112,7 +114,7 @@ add('chan', '#/ch/i/' + enc('없는업종')); add('chan', '#/ch/g/zz');
 const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today', 'why', 'gdr'];
 const MODS_ONLY = arg('--mods', null)?.split(',').map(s => s.trim()).filter(Boolean) ?? null;
 const modHave = {};
-if (MODULES || DEV) for (const m of MODS) { try { const r = await fetch(base + '/next/p-' + m + '.js', {method: 'HEAD'}); modHave[m] = r.ok; } catch { modHave[m] = false; } }
+if (MODULES || DEV) await Promise.all(MODS.map(async m => { try { const r = await fetchRetry(base + '/next/p-' + m + '.js', {method: 'HEAD'}); modHave[m] = r.ok; } catch { modHave[m] = false; } })); // 잠깐 막힘에 「모듈 없음」이 되면 몫마다 일감 목록이 달라짐 — 다시 받기
 if (MODULES && on('mod')) {
   const mc = ALL ? codes : [...new Set(['005930', ...WATCH])].slice(0, 12);
   const R = {past: mc.map(c => `#/w/${c}/past`), rivals: mc.map(c => `#/w/${c}/rivals`), grow: mc.map(c => `#/w/${c}/grow`), range: mc.map(c => `#/w/${c}/range`),
