@@ -1,0 +1,134 @@
+{
+ "schema": "atlas11-next-full-1",
+ "at": "2026-10-17T10:57:25.320Z",
+ "base": "http://127.0.0.1:8826",
+ "mode": "local",
+ "ref": "worker-a-ci",
+ "sha": "a9391358976e69062cb8a223d556326181ebd998",
+ "run": 39026217286,
+ "wallSeconds": 608,
+ "pages": [
+  {
+   "name": "cal",
+   "code": 0,
+   "seconds": 91,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 15
+  },
+  {
+   "name": "chx",
+   "code": 0,
+   "seconds": 186,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 16
+  },
+  {
+   "name": "co",
+   "code": 0,
+   "seconds": 139,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 13
+  },
+  {
+   "name": "cond",
+   "code": 0,
+   "seconds": 28,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 11
+  },
+  {
+   "name": "en",
+   "code": 0,
+   "seconds": 391,
+   "shards": 6,
+   "codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "shardSeconds": [
+    388,
+    391,
+    386,
+    381,
+    382,
+    354
+   ],
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 15
+  },
+  {
+   "name": "grow",
+   "code": 0,
+   "seconds": 139,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 11
+  },
+  {
+   "name": "misc",
+   "code": 0,
+   "seconds": 41,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 16
+  },
+  {
+   "name": "next",
+   "code": 0,
+   "seconds": 83,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 16
+  },
+  {
+   "name": "past",
+   "code": 1,
+   "seconds": 398,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 15
+  },
+  {
+   "name": "range",
+   "code": 0,
+   "seconds": 137,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 15
+  },
+  {
+   "name": "rivals",
+   "code": 0,
+   "seconds": 48,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 11
+  },
+  {
+   "name": "surge",
+   "code": 0,
+   "seconds": 28,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 13
+  },
+  {
+   "name": "today",
+   "code": 0,
+   "seconds": 104,
+   "mode": "local",
+   "sha": "a9391358976e69062cb8a223d556326181ebd998",
+   "build": 15
+  }
+ ],
+ "ok": false
+}
