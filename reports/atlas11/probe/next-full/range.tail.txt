@@ -1,1 +1,1 @@
-{"ok":false,"seconds":592,"checked":2557,"wide":40,"counts":{"fail":1,"글 마디":84236,"숫자 낱말":212636,"고리":30745,"고른 곳 밖":2501,"고른 곳":56,"없는 주소":1,"빈 날 길":9,"세 폭 화면":80},"fails":[["자료","fetch failed"]]}
+{"ok":true,"seconds":292,"checked":2557,"wide":40,"time":{"old":138.8,"new":150.6,"wall":291.9,"opensOld":5130,"opensNew":7846,"oldPct":47.5,"oldShare":48},"net":{"req":8,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"글 마디":84254,"숫자 낱말":212677,"고리":30747,"고른 곳 밖":2501,"고른 곳":56,"없는 주소":2,"빈 날 길":9,"세 폭 화면":80},"fails":[]}

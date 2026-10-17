@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-10-17T12:53:25.372Z",
+ "at": "2026-10-17T15:00:17.684Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-16",
  "pages": 87,
@@ -8,6 +8,27 @@
  "widthPages": 87,
  "full": true,
  "seconds": 184,
+ "time": {
+  "old": 160.1,
+  "new": 19,
+  "wall": 184.2,
+  "opensOld": 698,
+  "opensNew": 703,
+  "oldPct": 86.9,
+  "oldShare": 89.4
+ },
+ "net": {
+  "req": 2,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "줄": 5256,
   "글": 2384,
@@ -16,6 +37,14 @@
   "고리": 5646,
   "자체 시험": 8,
   "맞댄 화면": 174,
+  "oldSnap": {
+   "use": false,
+   "why": "기준값 파일 없음",
+   "made": null,
+   "inputs": 11,
+   "reads": 174,
+   "note": "기준값 새로 씀(파일 11개 · 값 174개)"
+  },
   "세 폭 화면": 265,
   "누르기": 1
  },

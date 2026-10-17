@@ -1,7 +1,12 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-17T12:45:04.229Z",
+ "at": "2026-10-17T14:43:35.764Z",
  "base": "https://aaa7377.com",
+ "mode": "live",
+ "ref": "worker-g-live",
+ "sha": "7285314de98cb66a241273cc415bb8b9fed0ab6a",
+ "run": 39040828065,
+ "wallSeconds": 961,
  "pages": [
   {
    "name": "cal",
@@ -31,27 +36,27 @@
   },
   {
    "name": "en",
-   "code": 1,
-   "seconds": 587,
+   "code": 0,
+   "seconds": 542,
    "shards": 6,
    "codes": [
     0,
     0,
-    1,
-    1,
+    0,
+    0,
     0,
     0
    ],
    "shardSeconds": [
-    536,
-    587,
-    1,
-    1,
-    439,
-    479
+    479,
+    538,
+    542,
+    454,
+    542,
+    452
    ],
    "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "sha": "7285314de98cb66a241273cc415bb8b9fed0ab6a"
   },
   {
    "name": "gdr",
@@ -82,13 +87,17 @@
   },
   {
    "name": "range",
-   "code": 1,
-   "seconds": 593
+   "code": 0,
+   "seconds": 292,
+   "mode": "live",
+   "sha": "7285314de98cb66a241273cc415bb8b9fed0ab6a"
   },
   {
    "name": "rivals",
-   "code": 1,
-   "seconds": 907
+   "code": 0,
+   "seconds": 282,
+   "mode": "live",
+   "sha": "7285314de98cb66a241273cc415bb8b9fed0ab6a"
   },
   {
    "name": "surge",
@@ -110,5 +119,5 @@
    "seconds": 48
   }
  ],
- "ok": false
+ "ok": true
 }
