@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-17T11:55:12.868Z",
+ "at": "2026-10-17T12:39:21.050Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "companies": 2557,
@@ -8,7 +8,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "seconds": 601,
+ "seconds": 606,
  "counts": {
   "맞댄 글 낱낱": 43387,
   "맞댄 숫자 낱말": 82630,

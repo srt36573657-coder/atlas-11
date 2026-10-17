@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-17T12:13:03.757Z",
+ "at": "2026-10-17T12:35:06.049Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -9,7 +9,7 @@
   360,
   390
  ],
- "routes": 13404,
+ "routes": 8901,
  "companies": 2557,
  "allCompanies": true,
  "modules": true,
@@ -28,29 +28,98 @@
   "x": true,
   "co": true,
   "chx": true,
-  "today": true
+  "today": true,
+  "why": true,
+  "gdr": true
  },
  "edge": true,
  "only": null,
  "appFile": null,
+ "shard": "all/6",
  "full": false,
- "seconds": 2361,
+ "units": {
+  "total": 13399,
+  "hash": "46d3be8061f647fc",
+  "w": {
+   "@tail": 80,
+   "@newwin": 15
+  }
+ },
+ "seconds": 586,
+ "secondsSum": 2039,
+ "shards": [
+  {
+   "shard": "1/6",
+   "ok": true,
+   "fails": 0,
+   "routes": 2249,
+   "screens": 2251,
+   "mine": 2249,
+   "seconds": 535,
+   "secs": {
+    "open": 0.9,
+    "routes": 531.8
+   }
+  },
+  {
+   "shard": "2/6",
+   "ok": true,
+   "fails": 0,
+   "routes": 2249,
+   "screens": 2251,
+   "mine": 2249,
+   "seconds": 586,
+   "secs": {
+    "open": 1.4,
+    "routes": 581.5
+   }
+  },
+  {
+   "shard": "5/6",
+   "ok": true,
+   "fails": 0,
+   "routes": 2234,
+   "screens": 2289,
+   "mine": 2235,
+   "seconds": 439,
+   "secs": {
+    "open": 0.7,
+    "routes": 434.2,
+    "newwin": 2.7
+   }
+  },
+  {
+   "shard": "6/6",
+   "ok": true,
+   "fails": 0,
+   "routes": 2169,
+   "screens": 2282,
+   "mine": 2170,
+   "seconds": 479,
+   "secs": {
+    "open": 0.5,
+    "routes": 463.4,
+    "act": 7.6,
+    "edge": 5.2,
+    "grammar": 0
+   }
+  }
+ ],
  "counts": {
-  "쇼츠 장": 10,
-  "화면": 13536,
+  "화면": 9073,
   "길 · home": 1,
-  "길 · chips": 7,
-  "길 · shorts": 11,
-  "길 · sub": 1,
+  "길 · chips": 5,
+  "길 · find": 7,
+  "길 · watch": 1700,
+  "길 · chan": 59,
+  "길 · mod": 7128,
+  "고도리 칸 누르기": 2,
   "길 · me": 1,
-  "길 · find": 9,
-  "길 · watch": 2560,
-  "길 · chan": 89,
-  "길 · mod": 10725,
+  "왜 사? 끝까지": 1,
+  "새 창": 2,
   "누르기": 1,
   "바꿔치기": 1,
-  "오늘 한 줄 문장": 412,
-  "새 창": 2
+  "오늘 한 줄 문장": 412
  },
  "missing": 0,
  "avatarLetters": 0,
@@ -68,5 +137,11 @@
  },
  "missingList": [],
  "all": [],
- "ok": true
+ "truncated": false,
+ "problems": [
+  "3/6 몫 결과 없음",
+  "4/6 몫 결과 없음",
+  "몫 일감 합 8903 ≠ 전체 13399"
+ ],
+ "ok": false
 }
