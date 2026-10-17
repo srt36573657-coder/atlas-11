@@ -1,5 +1,5 @@
 {
- "made": "2026-10-17T10:38:18.317Z",
+ "made": "2026-10-17T11:33:00.676Z",
  "base": "https://aaa7377.com",
  "media": [
   {
@@ -150,6 +150,7 @@
   "reports/atlas11/probe/live-view/p37-en-cond.png",
   "reports/atlas11/probe/live-view/p40-letter.png",
   "reports/atlas11/probe/live-view/p41-next-home.png",
+  "reports/atlas11/probe/live-view/p44-next-me.png",
   "reports/atlas11/probe/live-view/p42-next-watch.png",
   "reports/atlas11/probe/live-view/p43-next-shorts.png",
   "reports/atlas11/probe/live-view/p51-next-co.png",
@@ -181,9 +182,7 @@
    "og": "https://aaa7377.com/og-makbi.jpg"
   }
  },
- "errors": [
-  "여는 홍표: {\"i1\":{\"intro\":true,\"img\":true,\"bub\":[[\"보드리!\",1],[\"보드리!\",1],[\"보드리!\",0.99785]],\"shown\":false,\"ml\":1,\"msg\":\"\",\"bird\":[363,667,844]},\"i4\":{\"intro\":true,\"shown\":false,\"bub\":3},\"i2\":{\"intro\":false,\"shown\":true,\"ml\":1},\"ok\":false}"
- ],
+ "errors": [],
  "helloName": {
   "title": "고도리를 소개합니다",
   "share": "고도리를 소개합니다 앵무새 고도리가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!",
@@ -363,24 +362,24 @@
    "img": true,
    "bub": [
     [
-     "보드리!",
+     "고도리!",
      1
     ],
     [
-     "보드리!",
+     "고도리!",
      1
     ],
     [
-     "보드리!",
-     0.99785
+     "고도리!",
+     0.97534
     ]
    ],
    "shown": false,
    "ml": 1,
    "msg": "",
    "bird": [
-    363,
-    667,
+    179,
+    482,
     844
    ]
   },
@@ -394,7 +393,7 @@
    "shown": true,
    "ml": 1
   },
-  "ok": false
+  "ok": true
  },
  "co7": {
   "code": "100030",
@@ -632,7 +631,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "6일 00시간 18분 57초",
+  "clock": "5일 23시간 24분 15초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -658,10 +657,23 @@
    "q": 0,
    "sw": 390,
    "cw": 390,
+   "tk": "#/talk",
+   "letterOnHome": 0,
+   "wy": {
+    "opts": 3,
+    "q": "1. 왜 사?"
+   },
+   "gdr": {
+    "cells": 4,
+    "sum": "비중 합 100% · 담는 돈 900,000원 · 쉬는 돈 9,100,000원"
+   },
+   "order": "wy,gdr,chips"
+  },
+  "me": {
    "letter": 11,
    "promo": "3명만 소개해도 스타벅스 상품권 1만원!",
    "landed": true,
-   "tk": "#/talk",
+   "rec": true,
    "first": "고도리 주식 격언 열 가지"
   },
   "watch": {
@@ -690,7 +702,9 @@
    "info",
    "x",
    "cal",
-   "today"
+   "today",
+   "why",
+   "gdr"
   ],
   "pages": [
    {
@@ -827,7 +841,7 @@
    },
    {
     "url": "/#/up",
-    "n": 3755,
+    "n": 3809,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -872,9 +886,33 @@
     "old": [],
     "ok": true,
     "k": "today"
+   },
+   {
+    "url": "/#/why",
+    "n": 101,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "왜 사? 열한 질문 · 고도리",
+    "old": [],
+    "ok": true,
+    "k": "why"
+   },
+   {
+    "url": "/#/gdr",
+    "n": 1069,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "고도리라면 이렇게 · 고도리",
+    "old": [],
+    "ok": true,
+    "k": "gdr"
    }
   ],
   "ok": true
  },
- "ok": false
+ "ok": true
 }
