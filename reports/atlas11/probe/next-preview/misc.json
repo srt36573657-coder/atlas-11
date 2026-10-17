@@ -1,9 +1,30 @@
 {
- "when": "2026-10-17T12:51:43.856Z",
+ "when": "2026-10-17T14:17:10.265Z",
  "base": "http://127.0.0.1:8826",
- "sec": 43,
+ "sec": 32,
  "xCodes": 1750,
  "all": true,
+ "time": {
+  "old": 11,
+  "new": 17.8,
+  "wall": 31.5,
+  "opensOld": 1771,
+  "opensNew": 1834,
+  "oldPct": 35,
+  "oldShare": 38.3
+ },
+ "net": {
+  "req": 8,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "맞댄 화면": 1771,
   "맞댄 줄": 48162,

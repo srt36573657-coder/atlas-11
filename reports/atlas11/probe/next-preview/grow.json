@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-17T12:52:45.269Z",
+ "at": "2026-10-17T14:18:35.521Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-16",
  "companies": 2557,
@@ -8,7 +8,28 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "seconds": 143,
+ "seconds": 142,
+ "time": {
+  "old": 127.2,
+  "new": 127,
+  "wall": 141.8,
+  "opensOld": 10226,
+  "opensNew": 10286,
+  "oldPct": 89.7,
+  "oldShare": 50
+ },
+ "net": {
+  "req": 2560,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "맞댄 글 낱낱": 43387,
   "맞댄 숫자 낱말": 82630,

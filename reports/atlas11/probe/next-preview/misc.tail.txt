@@ -1,6 +1,27 @@
 {
- "sec": 43,
+ "sec": 32,
  "xCodes": 1750,
+ "time": {
+  "old": 11,
+  "new": 17.8,
+  "wall": 31.5,
+  "opensOld": 1771,
+  "opensNew": 1834,
+  "oldPct": 35,
+  "oldShare": 38.3
+ },
+ "net": {
+  "req": 8,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "맞댄 화면": 1771,
   "맞댄 줄": 48162,

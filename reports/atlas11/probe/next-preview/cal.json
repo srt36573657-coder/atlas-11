@@ -4,6 +4,27 @@
  "limit": "all",
  "wide": "all",
  "took_s": 94,
+ "time": {
+  "old": 19.6,
+  "new": 65.5,
+  "wall": 93.7,
+  "opensOld": 938,
+  "opensNew": 2287,
+  "oldPct": 20.9,
+  "oldShare": 23
+ },
+ "net": {
+  "req": 4,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "맞댄 화면": 472,
   "맞댄 줄": 78401,

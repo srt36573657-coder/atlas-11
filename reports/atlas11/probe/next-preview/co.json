@@ -1,13 +1,34 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-17T12:52:26.115Z",
+ "at": "2026-10-17T14:18:22.463Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-16",
  "companies": 2557,
  "all": true,
  "limit": null,
  "widths": 28,
- "seconds": 137,
+ "seconds": 142,
+ "time": {
+  "old": 48.4,
+  "new": 87.3,
+  "wall": 141.7,
+  "opensOld": 2557,
+  "opensNew": 2646,
+  "oldPct": 34.2,
+  "oldShare": 35.7
+ },
+ "net": {
+  "req": 2506,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "줄": 114497,
   "숫자 낱말": 214154,
