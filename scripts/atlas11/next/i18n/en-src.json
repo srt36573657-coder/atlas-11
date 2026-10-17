@@ -7725,6 +7725,20 @@
   "가장 좋은 곳 {n}번": "Best: No. {n}",
   "시장이 오르면 아무 회사나 올라요. 그래서 같은 때 {e}와 같이 봐요. 날이 적을수록 우연이 커요.": "When the market rises, almost any company rises. That's why we look at {e} over the same time. The fewer the days, the bigger the luck.",
   "{n}곳은 지금 값을 못 받아 묶음에서 뺐어요.": "Left out {n} with no current price.",
-  "? 다시 고르기": "? Re-picking"
+  "? 다시 고르기": "? Re-picking",
+  "{q} — ? {d} 자료로 문 {n}(이익 늘었나)을 셀 수 없어.": "{q} — ? Can't count gate {n} (Profit growing?) with the {d} data.",
+  "? {d} 자료로 문 {n}(이익 늘었나)을 셀 수 없어.": "? Can't count gate {n} (Profit growing?) with the {d} data.",
+  "{q} — ? 문 {n}(이익 늘었나)을 셀 수 없어.": "{q} — ? Can't count gate {n} (Profit growing?).",
+  "? 문 {n}(이익 늘었나)을 셀 수 없어.": "? Can't count gate {n} (Profit growing?).",
+  "{q} — {d} 자료로도 문 {n}(이익 늘었나)을 지나.": "{q} — Still passes gate {n} (Profit growing?) with the {d} data.",
+  "{d} 자료로도 문 {n}(이익 늘었나)을 지나.": "Still passes gate {n} (Profit growing?) with the {d} data.",
+  "{q} — {d} 자료로 문 {n}(이익 늘었나)을 못 지나. 산 이유가 없어졌어.": "{q} — Fails gate {n} (Profit growing?) with the {d} data. Your reason for buying is gone.",
+  "{d} 자료로 문 {n}(이익 늘었나)을 못 지나. 산 이유가 없어졌어.": "Fails gate {n} (Profit growing?) with the {d} data. Your reason for buying is gone.",
+  "{d} 종가로 센 색이에요.": "Colors counted from {d} closing prices.",
+  "사이트 자료는 {d}까지라 지금 색과 다를 수 있어요.": "Site data runs to {d}, so today's colors may differ.",
+  "? {d} 자료에 이 회사 문 색이 없어.": "? The {d} data has no gate colors for this company.",
+  "거래가 너무 적어 문을 안 셌어.": "Too little trading, so the gates weren't counted.",
+  "거래가 멈춘 것 같아 문을 안 셌어.": "Trading seems halted, so the gates weren't counted.",
+  "? {d} 자료로 셀 수 없는 문": "? Gates that can't be counted with the {d} data"
  }
 }

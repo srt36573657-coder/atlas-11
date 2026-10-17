@@ -129,7 +129,7 @@ function assess(o, S, mkt, G) {
   const code = o.code, M = mkt?.companies?.[code], px = M ? S.px.get(code) : null, p = px?.p ?? null, buy = Number(o.buy), qty = Number(o.qty);
   const A = {co: !!M, name: M?.n ?? o.name ?? code, ind: M?.i ?? null, p, pd: px?.d ?? null, ret: p ? (p / buy - 1) * 100 : null, amt: p ? (p - buy) * qty : null, items: [], color: 'q', sure: false};
   if (!M) { A.kind = kindOf(code, S.names); return A; }
-  const rec = recOf(code, S.recs), gv = gateRow(G, code), day = S.day;
+  const rec = recOf(code, S.recs), gv = gateRow(G, code), day = S.day, gd = md(G?.asOf); // gd = 다섯 문을 센 날(gates.json asOf — 사이트 값 날보다 앞설 수 있음)
   // ① 산 이유가 살아 있나
   const r1 = {n: '① 산 이유가 살아 있나', k: '산 이유', c: 'u', lines: [], link: null, gatesNeeded: false}; // u = 셀 수 없음(🟡 · 흔들림이라 부르지 않음)
   if (!rec) { r1.lines.push('? 이 회사로 적은 매매일지가 없어. 산 이유를 적어 두면 여기서 맞대 볼게.'); r1.link = ['#/why/' + NX.enc(code), '이 회사로 왜 사? 적기 ›']; }
@@ -138,9 +138,9 @@ function assess(o, S, mkt, G) {
     if (from) r1.lines.push(`${md(from)} 매매일지에서 읽었어.`);
     if (c === 'g') {
       r1.gatesNeeded = true;
-      if (!gv || gv[0] !== 0 || gv[1] == null) { r1.lines.push(`「${Q3.g}」 — ? 오늘 문 1(이익 늘었나)을 셀 수 없어.`); }
-      else if (gv[1] === 1) { r1.c = 'g'; r1.lines.push(`「${Q3.g}」 — 오늘도 문 1(이익 늘었나)을 지나.`); }
-      else { r1.c = 'r'; r1.gone = true; r1.lines.push(`「${Q3.g}」 — 오늘 문 1(이익 늘었나)을 못 지나. 산 이유가 없어졌어.`); }
+      if (!gv || gv[0] !== 0 || gv[1] == null) r1.lines.push(G?.asOf ? `「${Q3.g}」 — ? ${gd} 자료로 문 1(이익 늘었나)을 셀 수 없어.` : `「${Q3.g}」 — ? 문 1(이익 늘었나)을 셀 수 없어.`);
+      else if (gv[1] === 1) { r1.c = 'g'; r1.lines.push(`「${Q3.g}」 — ${gd} 자료로도 문 1(이익 늘었나)을 지나.`); }
+      else { r1.c = 'r'; r1.gone = true; r1.lines.push(`「${Q3.g}」 — ${gd} 자료로 문 1(이익 늘었나)을 못 지나. 산 이유가 없어졌어.`); }
     } else if (c === 'y') {
       const bd = dayOf(rec.bigDay);
       if (!bd) r1.lines.push(`「${Q3.y}」 — ? 그 일이 언제인지 날짜를 안 적었어.`);
@@ -152,14 +152,18 @@ function assess(o, S, mkt, G) {
   }
   // ② 다섯 문 오늘 색 — 처음 적은 날 색(o.g0)과 견줌
   const r2 = {n: '② 다섯 문의 오늘 색', k: '문 색', c: 'u', lines: [], gates: gv ? gv.slice(1, 6) : null, x: gv ? gv[0] : null};
-  if (!gv) r2.lines.push(G ? '? 오늘 이 회사 문 색이 자료에 없어.' : '? 오늘 문 색을 아직 못 받았어.');
+  if (G?.asOf) {
+    r2.lines.push(`${gd} 종가로 센 색이에요.`);
+    if (NX.D?.mkt?.asOf && G.asOf < NX.D.mkt.asOf) r2.lines.push({q: `사이트 자료는 ${md(NX.D.mkt.asOf)}까지라 지금 색과 다를 수 있어요.`}); // p-gdr .gdr-stale 와 같은 잣대
+  }
+  if (!gv) r2.lines.push(G ? `? ${gd} 자료에 이 회사 문 색이 없어.` : '? 오늘 문 색을 아직 못 받았어.');
   else {
-    if (gv[0] === 1) r2.lines.push('거래가 너무 적어 오늘 문을 안 셌어.');
-    else if (gv[0] === 2) r2.lines.push('거래가 멈춘 것 같아 오늘 문을 안 셌어.');
+    if (gv[0] === 1) r2.lines.push('거래가 너무 적어 문을 안 셌어.');
+    else if (gv[0] === 2) r2.lines.push('거래가 멈춘 것 같아 문을 안 셌어.');
     const b = o.g0 && Array.isArray(o.g0.v) && o.g0.ver === (G?.version ?? null) ? o.g0 : null;
     const shut = b ? GATES.filter((_, i) => b.v[i + 1] === 1 && gv[i + 1] === 0) : [];
     const outNow = b ? b.v[0] === 0 && gv[0] > 0 : false, nul = gv[0] === 0 ? GATES.filter((_, i) => gv[i + 1] == null) : [];
-    if (nul.length) r2.lines.push(`? 오늘 셀 수 없는 문: ${nul.join(' · ')}.`); // 그 문에 쓸 값이 없음 — 「?」(빨강 아님 · 흔들림 아님)
+    if (nul.length) r2.lines.push(`? ${gd} 자료로 셀 수 없는 문: ${nul.join(' · ')}.`); // 그 문에 쓸 값이 없음 — 「?」(빨강 아님 · 흔들림 아님)
     if (b && b.d !== G?.asOf && (shut.length || outNow)) { r2.c = 'y'; r2.lines.push(`처음 적은 날(${md(b.d)})보다 닫힌 문: ${[...shut, ...(outNow ? ['거래'] : [])].join(' · ')}.`); }
     else { r2.c = gv[0] !== 0 || nul.length ? 'u' : 'g'; r2.lines.push(!b || b.d === G?.asOf ? '처음 적은 날 색이에요. 다음 자료부터 견줘 볼게.' : `처음 적은 날(${md(b.d)})보다 닫힌 문이 없어.`); }
   }
@@ -222,7 +226,7 @@ function itemEl(x, o, S, redraw) {
     el.append(ul);
   }
   if (x.why != null) el.append(h('p', {class: 'hd-mine'}, h('span', {class: 'hd-mk', text: '네가 적은 「1년 뒤 반토막 났다면 왜?」 '}), h('q', {'data-proper': '', lang: /[가-힣]/.test(x.why) ? 'ko' : null, text: x.why})));
-  for (const t of x.lines) el.append(h('p', {class: 'hd-line', text: t}));
+  for (const t of x.lines) el.append(typeof t === 'string' ? h('p', {class: 'hd-line', text: t}) : h('p', {class: 'hd-line'}, h('b', {class: 'gd', text: '? '}), h('span', {text: t.q})));
   if (x.why != null) {
     const b = h('button', {class: 'hd-tog', type: 'button', 'aria-pressed': String(!!o.doom), text: o.doom ? '나타났어 · 다시 누르면 풀림' : '나타났어'});
     b.addEventListener('click', () => { o.doom = o.doom ? null : {at: new Date().toISOString()}; save(S); redraw(); });

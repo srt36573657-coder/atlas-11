@@ -240,7 +240,7 @@ function checkDone(c, s, SH, tag, ansK) {
   if (s.rec === null) { if (i1.link !== '#/why/' + encodeURIComponent(X.code)) fail('① 매매일지 없음 → 이 회사로 왜 사? 고리', `${at} ${i1.link}`); }
   else {
     const cq = s.rec.answers[2];
-    if (cq === 0) { const want1 = X.gv[0] !== 0 || X.gv[1] == null ? `「${Q3[0]}」 — ? 오늘 문 1(이익 늘었나)을 셀 수 없어.` : X.gv[1] === 1 ? `「${Q3[0]}」 — 오늘도 문 1(이익 늘었나)을 지나.` : `「${Q3[0]}」 — 오늘 문 1(이익 늘었나)을 못 지나. 산 이유가 없어졌어.`; if (!i1.lines.includes(want1)) fail('① 돈을 잘 번다 → 오늘 문 1', `${at} ${JSON.stringify(i1.lines)} ∌ 「${want1}」`); }
+    if (cq === 0) { const GD = md(GATE.asOf), want1 = X.gv[0] !== 0 || X.gv[1] == null ? `「${Q3[0]}」 — ? ${GD} 자료로 문 1(이익 늘었나)을 셀 수 없어.` : X.gv[1] === 1 ? `「${Q3[0]}」 — ${GD} 자료로도 문 1(이익 늘었나)을 지나.` : `「${Q3[0]}」 — ${GD} 자료로 문 1(이익 늘었나)을 못 지나. 산 이유가 없어졌어.`; /* 문 1 = gates.json 날짜의 자료(「오늘」 아님) */ if (!i1.lines.includes(want1)) fail('① 돈을 잘 번다 → 오늘 문 1', `${at} ${JSON.stringify(i1.lines)} ∌ 「${want1}」`); }
     if (s.line1 && !i1.lines.some(t => t.startsWith(s.line1))) fail('① 줄 글', `${at} ${JSON.stringify(i1.lines)} ∌ 「${s.line1}」`);
     const wd = md(new Date(Date.parse(s.rec.at) + 9 * 36e5).toISOString().slice(0, 10)); // 매매일지를 쓴 날(서울)
     if (!i1.lines.includes(`${wd} 매매일지에서 읽었어.`)) fail('① 매매일지 날짜(쓴 날)', `${at} ${JSON.stringify(i1.lines)}`);
@@ -248,9 +248,11 @@ function checkDone(c, s, SH, tag, ansK) {
   // ② 다섯 문 오늘 색 — 이름(결정표) · 지남 글 · 처음 색과 견줌
   const wantG = GATES.map((n, i) => [n, X.gv[i + 1] === 1 ? '지남' : X.gv[i + 1] === 0 ? '못 지남' : '?']);
   if (!eq(i2.gates, wantG)) fail('② 다섯 문 이름 · 지남(gates.json)', `${at} ${JSON.stringify(i2.gates)} ≠ ${JSON.stringify(wantG)}`);
+  const STALE_G = GATE.asOf < MKT.asOf, want2 = [`${md(GATE.asOf)} 종가로 센 색이에요.`, ...(STALE_G ? [`? 사이트 자료는 ${md(MKT.asOf)}까지라 지금 색과 다를 수 있어요.`] : [])]; // ② 첫 줄 = 센 날 · 사이트 자료가 더 새면 금빛 「?」 줄
+  if (!eq(i2.lines.slice(0, want2.length), want2) || (!STALE_G && i2.lines.some(t => t.includes('사이트 자료는')))) fail('② 센 날 줄 · 사이트 자료 날 「?」 줄', `${at} ${JSON.stringify(i2.lines)} · 기대 ${JSON.stringify(want2)}`);
   if (s.xline && !i2.lines.some(t => t.startsWith(s.xline))) fail('② 먼저 뺀 까닭', `${at} ${JSON.stringify(i2.lines)}`);
   const nul = X.gv[0] === 0 ? GATES.filter((_, i) => X.gv[i + 1] == null) : [];
-  if (nul.length ? !i2.lines.includes(`? 오늘 셀 수 없는 문: ${nul.join(' · ')}.`) : i2.lines.some(t => t.includes('셀 수 없는 문'))) fail('② 셀 수 없는 문 줄(값이 빈 문 = 「?」)', `${at} ${JSON.stringify(i2.lines)}`);
+  if (nul.length ? !i2.lines.includes(`? ${md(GATE.asOf)} 자료로 셀 수 없는 문: ${nul.join(' · ')}.`) : i2.lines.some(t => t.includes('셀 수 없는 문'))) fail('② 셀 수 없는 문 줄(값이 빈 문 = 「?」)', `${at} ${JSON.stringify(i2.lines)}`);
   if (s.line2 ? !i2.lines.includes(s.line2) : !i2.lines.some(t => t.startsWith('처음 적은 날'))) fail('② 처음 색과 견줌', `${at} ${JSON.stringify(i2.lines)} · 기대 「${s.line2 ?? '처음 적은 날 …'}」`);
   // ③ 망할 이유 — 내 글(data-proper · lang=ko) · 누름
   if (s.rec?.why) { if (!eq(i3.mine, [s.rec.why]) || !eq(i3.langs, [/[가-힣]/.test(s.rec.why) ? 'ko' : null]) || i3.tog !== String(!!o.doom)) fail('③ 망할 이유 글(내가 쓴 글 · 한글이면 lang=ko) · 누름', `${at} ${JSON.stringify(i3.mine)} ${JSON.stringify(i3.langs)} ${i3.tog}`); }
@@ -416,6 +418,25 @@ for (const [nm, qty, wantBig] of [['80 : 20', [80, 20], [true, false]], ['셋이
   }
 }
 
+/* 문 센 날이 사이트 자료보다 앞섬 — gates.json asOf 를 사흘 앞당겨 넣음 → ② 첫 줄 「{센 날} 종가로 센 색이에요.」 · 금빛 「? 사이트 자료는 …」 · ① 「{센 날} 자료로도」 */
+{
+  const X = SC.find(x => x.key === '문1지남')?.X, tag = '문 센 날이 앞섬 360×640', OLD = addD(GATE.asOf, -3);
+  if (!X) fail('문 센 날 판을 꾸미지 못함', tag);
+  else {
+    const hold = {id: 'hd-앞섬', code: X.code, name: X.name, buy: Math.round(X.p * 0.95), qty: 1, day: addD(TODAY, -20), at: new Date().toISOString(), ask: {d: TODAY, a: 0}};
+    const p = await newPage(360, 640, {holds: [hold], recs: [recOf(X, 0)], routes: [['**/next/data/gates.json', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify({...GATE, asOf: OLD})})]]});
+    try {
+      await open(p);
+      const c = cardOf(await p.evaluate(READH, SEL), hold.id), gold = await p.evaluate(([sel, id]) => [...document.querySelectorAll(`${sel} article.hd-card[data-id="${id}"] .hd-it .hd-line`)].filter(l => l.textContent.startsWith('? 사이트 자료는')).map(l => !!l.querySelector('b.gd')), [SEL, hold.id]);
+      const want = [`${md(OLD)} 종가로 센 색이에요.`, `? 사이트 자료는 ${md(MKT.asOf)}까지라 지금 색과 다를 수 있어요.`];
+      if (!eq(c?.items?.[1]?.lines?.slice(0, 2), want) || !eq(gold, [true])) fail('② 센 날 줄 · 금빛 「?」 사이트 자료 줄(문 센 날이 앞설 때)', `${tag} ${JSON.stringify(c?.items?.[1]?.lines)} ${JSON.stringify(gold)}`);
+      if (!c?.items?.[0]?.lines?.includes(`「${Q3[0]}」 — ${md(OLD)} 자료로도 문 1(이익 늘었나)을 지나.`)) fail('① 문 1 날짜(문 센 날)', `${tag} ${JSON.stringify(c?.items?.[0]?.lines)}`);
+      await layout(p, tag); errsOf(p, tag); bump('자료 바꾼 길');
+    } catch (e) { fail('바꾼 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+}
+
 /* ⑦ 자료를 바꾼 길 — gates.json 못 받음 · co 파일 하나 못 받음(참은 날은 그대로 둠) */
 if (SC.length >= 2) {
   const [sa, sb] = [SC[0], SC[1]], tag = '문 · 값 못 받음 360×640';
@@ -431,7 +452,8 @@ if (SC.length >= 2) {
       if (c?.items?.[1]?.c !== 'u' || !c.items[1].lines.includes('? 오늘 문 색을 아직 못 받았어.') || c.items[1].gates.length) fail('gates 못 받음 → ② 「?」', `${tag} ${JSON.stringify(c?.items?.[1])}`);
       const want = ['u', 'u', 'g', c4, isBig(SHm.by.get(s.X.code), SHm.tot) || isBig(SHm.ind.get(s.X.ind), SHm.tot) ? 'y' : 'g'];
       if (c?.badge?.c === 'r' || c?.badge?.t !== badgeOf(want, s) || !eq(c?.items?.map(x => x.c), want)) fail('셀 수 없는 것 = 🟡 셀 수 없음(빨강 · 흔들림 아님)', `${tag} ${JSON.stringify(c?.badge)} ${JSON.stringify(c?.items?.map(x => x.c))} ≠ 「${badgeOf(want, s)}」 ${want}`);
-      if (c?.items?.[0]?.c !== 'u' || !c.items[0].lines.includes(`「${Q3[0]}」 — ? 오늘 문 1(이익 늘었나)을 셀 수 없어.`)) fail('gates 못 받음 → ① 🟡', `${tag} ${JSON.stringify(c?.items?.[0])}`);
+      if (c?.items?.[0]?.c !== 'u' || !c.items[0].lines.includes(`「${Q3[0]}」 — ? 문 1(이익 늘었나)을 셀 수 없어.`)) fail('gates 못 받음 → ① 🟡', `${tag} ${JSON.stringify(c?.items?.[0])}`);
+      if (c?.items?.[1]?.lines?.some(t => t.includes('종가로 센 색'))) fail('gates 못 받음 → 센 날 줄 없음', `${tag} ${JSON.stringify(c?.items?.[1])}`);
     }
     const st = await store(p);
     if (st.find(x => x.id === sa.hold.id)?.red?.from !== addD(TODAY, -2)) fail('값 · 문을 못 받은 날은 참은 날을 풀지 않음', `${tag} ${JSON.stringify(st.find(x => x.id === sa.hold.id)?.red)}`);
