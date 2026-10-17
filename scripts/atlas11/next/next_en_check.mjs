@@ -300,7 +300,7 @@ async function whyWalk(q, where) {
     const inp = q.locator('#view .wy .wy-find');
     if (where === '#/why') {
       if (!(await inp.count())) { fail('누르기', where, '매매일지 첫 칸에 종목 찾기(.wy-find)가 없음'); return; }
-      await inp.fill('zzqq없는말'); await q.waitForTimeout(150); await judge(q, where + ' · 종목 찾기 없는 말', {widths: false});
+      await inp.fill('zzqqxx'); // 영어 판에서 사람이 칠 만한 없는 말(한글을 치면 그 말이 알림에 그대로 나옴) await q.waitForTimeout(150); await judge(q, where + ' · 종목 찾기 없는 말', {widths: false});
       await inp.fill(CO['005930']?.n ?? '005930'); await q.waitForTimeout(150); await judge(q, where + ' · 종목 찾기', {widths: true});
       await inp.press('Enter');
     }
@@ -380,7 +380,7 @@ async function shareDlg(q, where, full) {
   await settle(q); await judge(q, where + ' · 글상자', {widths: full}); bump('보내기 글상자');
   const qb = q.locator('.ps-dlg .ps-qb'); if (await qb.count()) { await qb.first().click(); await settle(q); await judge(q, where + ' · 빠른 말', {widths: false}); }
   if (full) {
-    await q.locator('.ps-dlg textarea.ps-t').first().fill('지금 사라 30% 올랐어'); await settle(q); await judge(q, where + ' · 거르는 말', {widths: false}); // 쓰지 않을 말 · 수익 숫자 알림 글
+    await q.locator('.ps-dlg textarea.ps-t').first().fill('top pick, up 30%'); await settle(q); await judge(q, where + ' · 거르는 말', {widths: false}); // 쓰지 않을 말(top) · 수익 숫자 알림 글 — 영어 판에서 칠 만한 말(한글 말은 알림에 그대로 나옴)
     await q.locator('.ps-dlg textarea.ps-t').first().fill(''); await q.locator('.ps-dlg .ps-go').first().click(); await q.waitForTimeout(300); await judge(q, where + ' · 보내기 뒤', {widths: false});
   }
   if (await D.count()) { const x = q.locator('.ps-dlg .ps-x'); if (await x.count()) await x.first().click(); else await q.keyboard.press('Escape'); }
