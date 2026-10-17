@@ -62,24 +62,25 @@ jobs:
           NS: ${{ inputs.en_shards }}
         run: |
           echo "t0=$(date +%s)" >> "$GITHUB_OUTPUT"
-          case "$NS" in ''|*[!0-9]*) NS=6 ;; esac
-          if [ "$NS" -lt 1 ] || [ "$NS" -gt 12 ]; then NS=6; fi
-          all=$(ls scripts/atlas11/next/ | sed -n 's/^check_\([a-z0-9]*\)\.mjs$/\1/p' | tr '\n' ' ')
-          # 짧은 쪽(2026-10-17 실측 각 1분 안팎)은 한 실행기에서 차례로 — 깃허브 동시 작업 20개 한도에 여유(쪽마다 따로면 20대가 꽉 차 둘이 줄 섬)
-          SMALL=" cond gdr misc surge why "
-          list=""; small=""
-          for n in next en $all; do
-            if [ -z "$WANT" ] || echo ",$WANT," | grep -q ",$n,"; then
-              if [ "$n" = en ]; then for k in $(seq 1 "$NS"); do list="$list{\"job\":\"en$k\",\"pages\":\"en$k\"},"; done
-              elif [ "${SMALL#* $n }" != "$SMALL" ]; then small="$small $n"
-              else list="$list{\"job\":\"$n\",\"pages\":\"$n\"},"; fi
-            fi
-          done
-          small="${small# }"
-          if [ -n "$small" ]; then if [ "$small" = "${small% *}" ]; then list="$list{\"job\":\"$small\",\"pages\":\"$small\"},"; else list="$list{\"job\":\"small\",\"pages\":\"$small\"},"; fi; fi
-          echo "list=[${list%,}]" >> "$GITHUB_OUTPUT"
-          echo "shards=$NS" >> "$GITHUB_OUTPUT"
-          echo "일 [${list%,}] · 영어 $NS 대 · local=${{ inputs.local }}"
+          # 일 목록 — 짧은 쪽(2026-10-17 실측 각 1분 안팎)은 한 실행기에서 차례로(「small」 · 깃허브 동시 작업 20개 한도에 여유)
+          #   차례 = 지금 사이트(live)에서 오래 걸리는 것부터(한 번에 6대일 때 긴 일이 늦게 시작하지 않게) · 모르는 새 검사는 맨 앞
+          node -e '
+            const fs = require("fs"), want = (process.env.WANT || "").split(",").map(s => s.trim()).filter(Boolean);
+            const ns = Math.min(12, Math.max(1, parseInt(process.env.NS, 10) || 6));
+            const all = fs.readdirSync("scripts/atlas11/next").map(f => (/^check_([a-z0-9]+)\.mjs$/.exec(f) || [])[1]).filter(Boolean).sort();
+            const SMALL = ["cond", "gdr", "misc", "surge", "why"], ORDER = ["co", "rivals", "past", "grow", "en", "range", "next", "small", "chx", "cal", "today"];
+            const jobs = [], small = [];
+            for (const n of ["next", "en", ...all].filter(n => !want.length || want.includes(n))) {
+              if (n === "en") for (let k = 1; k <= ns; k++) jobs.push({job: "en" + k, pages: "en" + k, rank: "en"});
+              else if (SMALL.includes(n)) small.push(n);
+              else jobs.push({job: n, pages: n, rank: n});
+            }
+            if (small.length) jobs.push({job: small.length > 1 ? "small" : small[0], pages: small.join(" "), rank: "small"});
+            jobs.sort((a, b) => ORDER.indexOf(a.rank) - ORDER.indexOf(b.rank));
+            const list = jobs.map(({job, pages}) => ({job, pages}));
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, "list=" + JSON.stringify(list) + "\nshards=" + ns + "\n");
+            console.log("일 " + list.length + "개 · " + list.map(x => x.job).join(" ") + " · 영어 " + ns + " 대");'
+          echo "local=${{ inputs.local }}"
       - uses: actions/setup-node@v4
         if: ${{ inputs.local && inputs.data != 'stored' }}
         with:
@@ -146,6 +147,9 @@ jobs:
     timeout-minutes: 75
     strategy:
       fail-fast: false
+      # 지금 사이트(live)는 한 번에 6대 — 넷리파이가 한꺼번에 몰리는 것을 막아 「자료를 못 받음」 · 시간 넘음이 남(2026-10-17 12:24 · 16대 + 다른 검사)
+      # 올리기 전(local)은 실행기마다 제 시험 서버라 모두 한꺼번에
+      max-parallel: ${{ inputs.local && 20 || 6 }}
       matrix:
         include: ${{ fromJSON(needs.plan.outputs.list) }}
     env:
