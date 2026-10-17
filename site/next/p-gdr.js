@@ -59,6 +59,7 @@ export function gdrSection(G, {page = false, open = null} = {}) {
     h('label', {class: 'gdr-money'}, h('span', {text: '내 돈'}), input, h('span', {text: '원'})),
     cells, slot, sumP,
     h('p', {class: 'gdr-note', text: `${NAME} 생각일 뿐이에요. 지난 기록으로 나눠 본 거고, 정하는 건 친구야.`}),
+    ...(NX.D?.mkt?.asOf && G.asOf < NX.D.mkt.asOf ? [h('p', {class: 'gdr-stale'}, h('b', {class: 'gdr-qm', text: '? '}), h('span', {text: `고른 날은 ${md(G.asOf)} 종가예요. 사이트 자료는 ${md(NX.D.mkt.asOf)}까지라 지금 값과 다를 수 있어요.`}))] : []), // 거래량이 있는 모음 날로 고름 — 사이트 자료가 더 새면 밝힘
     ...(G.counts?.managed == null ? [h('p', {class: 'gdr-q'}, h('b', {class: 'gdr-qm', text: '? '}), h('span', {text: '관리 종목 · 투자 경고는 아직 못 걸렀어요. 사기 전에 꼭 확인해.'}))] : []),
     ...(G.picks.length < 36 ? [h('p', {class: 'gdr-note', text: `다섯 문을 다 지난 곳이 ${G.picks.length}곳뿐이라 모자란 대로 담았어요. 남는 몫은 쉬는 돈이에요.`})] : []),
     ...(page ? [] : [h('a', {class: 'more', href: '#/gdr', text: '어떻게 골랐나 보기 ›'})]));
@@ -102,7 +103,7 @@ function funnel(G) {
 }
 
 export async function render(arg) {
-  const G = NX.gdr ? await NX.gdr() : null, no = /^\d+$/.test(String(arg ?? '')) ? +arg : null;
+  const [G] = await Promise.all([NX.gdr ? NX.gdr() : null, NX.need ? NX.need('mkt') : null]), no = /^\d+$/.test(String(arg ?? '')) ? +arg : null; // mkt = 사이트 자료 날짜(고른 날과 견줌)
   const nodes = [gdrSection(G, {page: true, open: no})];
   if (G) nodes.push(funnel(G));
   nodes.push(h('p', {class: 'safe', text: `${josa(NAME, '는')} 지난 기록만 보여 줘요. 나눠 담는 칸도 ${NAME} 생각이에요.`}));

@@ -55,6 +55,7 @@ const amt = (money, w) => Number(BigInt(money) * BigInt(w10(w)) / 1000n); // flo
 const nTxt = x => (x == null ? '?' : comma(x));
 const mdTxt = d => { const p = String(d ?? '').split('-'); return p.length === 3 ? `${+p[1]}월 ${+p[2]}일` : '?'; };
 
+const STALE = G.asOf < MKT.asOf; // 고른 날(거래량이 있는 모음 날)이 사이트 자료 날보다 앞섬 — 화면이 밝혀야 함(checkHead)
 /* ① 자료 — 결정표대로인지(만든 일꾼과 따로) */
 {
   const P = G.picks, C = G.counts ?? {};
@@ -63,7 +64,7 @@ const mdTxt = d => { const p = String(d ?? '').split('-'); return p.length === 3
   const keySorted = o => (o && typeof o === 'object' && !Array.isArray(o) ? Object.fromEntries(Object.entries(o).sort(([a], [b]) => (a < b ? -1 : 1))) : o);
   if (!eq(keySorted(G.rules), keySorted(RULES))) fail('기준 숫자(rules ≠ 결정표)', JSON.stringify(G.rules));
   if (!eq(G.sayings, SAYINGS)) fail('격언 열한 개(원문 차례 · 글자)', JSON.stringify(G.sayings).slice(0, 200));
-  if (G.asOf !== MKT.asOf && !(G.dates?.calc === G.asOf && G.dates?.site === MKT.asOf)) fail('자료 날짜', `gdr ${G.asOf} · 사이트 ${MKT.asOf}`);
+  if (G.asOf > MKT.asOf) fail('자료 날짜', `gdr ${G.asOf} 가 사이트 ${MKT.asOf} 보다 새것`); // 고른 날이 사이트 자료보다 앞서면(거래량이 있는 모음 날로 고름) 화면이 「? 고른 날은 … 종가예요」로 밝혀야 함 — 아래 STALE
   if (P.length > 36) fail('고른 곳 36 넘음', P.length);
   if (C.picked !== P.length) fail('고른 곳 수', `${C.picked} ≠ ${P.length}`);
   if (!(C.picked <= C.passAll && C.passAll <= Math.min(C.g1, C.g2, C.g3, C.g4, C.g5))) fail('다섯 문 수', JSON.stringify(C));
@@ -140,7 +141,7 @@ const READG = sel => {
     card: card ? {id: card.id, ch: card.querySelector('.gdr-ch')?.textContent ?? '', name: card.querySelector('a.gdr-name')?.textContent ?? '', href: card.querySelector('a.gdr-name')?.getAttribute('href') ?? '', proper: !!card.querySelector('a.gdr-name[data-proper]'),
       why: card.querySelector('.gdr-why')?.textContent ?? '', dl: [...card.querySelectorAll('.gdr-dl > div')].map(d => [d.querySelector('dt')?.textContent ?? '', d.querySelector('dd')?.textContent ?? '', inside(d, d.querySelector('dd') ?? d)]),
       me: card.querySelector('.gdr-me')?.textContent ?? '', say: card.querySelector('.gdr-say q[data-proper]')?.textContent ?? null, top: cr.top, bottom: cr.bottom, vh: innerHeight} : null,
-    q: s.querySelector('.gdr-q')?.textContent ?? null, notes: [...s.querySelectorAll('.gdr-note, p.note')].map(x => x.textContent), more: s.querySelector('a.more')?.getAttribute('href') ?? null};
+    q: s.querySelector('.gdr-q')?.textContent ?? null, stale: s.querySelector('.gdr-stale')?.textContent ?? null, notes: [...s.querySelectorAll('.gdr-note, p.note')].map(x => x.textContent), more: s.querySelector('a.more')?.getAttribute('href') ?? null};
 };
 const READF = () => {
   const f = document.querySelector('#view section.gdr-fun'); if (!f) return null;
@@ -250,6 +251,7 @@ function checkFunnel(f, D, tag) {
 function checkHead(g, D, money, tag, onHome) {
   if (!g) { fail(NEW_NAME + ' 칸 없음', tag); return; }
   if (!g.sub.startsWith(mdTxt(D.asOf) + ' 종가')) fail('칸 머리 날짜', `${tag} 「${g.sub}」`);
+  if (STALE !== !!g.stale || (STALE && !(g.stale.startsWith('?') && g.stale.includes(mdTxt(D.asOf) + ' 종가') && g.stale.includes(mdTxt(MKT.asOf) + '까지')))) fail('고른 날 · 사이트 날 밝힘(고른 날이 앞설 때만)', `${tag} 「${g.stale}」 · 고른 ${D.asOf} · 사이트 ${MKT.asOf}`);
   if (g.input !== comma(money)) fail('돈 칸 글', `${tag} 「${g.input}」 ≠ ${comma(money)}`);
   const managedQ = D.counts?.managed == null;
   if (managedQ !== !!g.q?.startsWith('?')) fail('관리 종목 「?」 줄(managed null 일 때만)', `${tag} 「${g.q}」`);
