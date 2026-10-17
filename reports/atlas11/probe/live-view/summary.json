@@ -1,6 +1,7 @@
 {
- "made": "2026-10-17T12:47:26.375Z",
+ "made": "2026-10-17T15:20:40.201Z",
  "base": "https://aaa7377.com",
+ "live": true,
  "media": [
   {
    "path": "/media/makbi-moon.svg",
@@ -150,9 +151,15 @@
   "reports/atlas11/probe/live-view/p37-en-cond.png",
   "reports/atlas11/probe/live-view/p40-letter.png",
   "reports/atlas11/probe/live-view/p41-next-home.png",
-  "reports/atlas11/probe/live-view/p44-next-me.png",
+  "reports/atlas11/probe/live-view/p47-next-gdr-lock.png",
   "reports/atlas11/probe/live-view/p42-next-watch.png",
+  "reports/atlas11/probe/live-view/p45-next-share.png",
+  "reports/atlas11/probe/live-view/p44-next-me.png",
   "reports/atlas11/probe/live-view/p43-next-shorts.png",
+  "reports/atlas11/probe/live-view/p46-next-why.png",
+  "reports/atlas11/probe/live-view/p48-next-home-open.png",
+  "reports/atlas11/probe/live-view/p50-next-gdr-card.png",
+  "reports/atlas11/probe/live-view/p49-next-en-tabs.png",
   "reports/atlas11/probe/live-view/p51-next-co.png",
   "reports/atlas11/probe/live-view/p52-next-past.png",
   "reports/atlas11/probe/live-view/p53-next-rivals.png",
@@ -183,6 +190,7 @@
   }
  },
  "errors": [],
+ "skipped": [],
  "helloName": {
   "title": "고도리를 소개합니다",
   "share": "고도리를 소개합니다 앵무새 고도리가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!",
@@ -357,6 +365,7 @@
   "ok": true
  },
  "helloIntro": {
+  "scrolled": true,
   "i1": {
    "intro": true,
    "img": true,
@@ -371,22 +380,29 @@
     ],
     [
      "고도리!",
-     0.975322
+     0.975334
     ]
    ],
    "shown": false,
    "ml": 1,
    "msg": "",
    "bird": [
-    179,
-    482,
+    185,
+    488,
     844
-   ]
+   ],
+   "at": 2702
   },
   "i4": {
    "intro": true,
    "shown": false,
-   "bub": 3
+   "bub": 3,
+   "op": [
+    1,
+    1,
+    1
+   ],
+   "at": 4003
   },
   "i2": {
    "intro": false,
@@ -633,7 +649,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "5일 22시간 09분 44초",
+  "clock": "5일 19시간 36분 28초",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -648,11 +664,31 @@
   "robots": "",
   "home": {
    "tabs": [
-    "홈",
-    "쇼츠",
-    "편지",
-    "구독",
-    "나"
+    [
+     "home",
+     "#/",
+     "오늘 장"
+    ],
+    [
+     "shorts",
+     "#/shorts",
+     "시황"
+    ],
+    [
+     "why",
+     "#/why",
+     "매매일지"
+    ],
+    [
+     "sub",
+     "#/sub",
+     "관심"
+    ],
+    [
+     "me",
+     "#/me",
+     "보유종목"
+    ]
    ],
    "cards": 13,
    "chips": 8,
@@ -662,30 +698,188 @@
    "tk": "#/talk",
    "letterOnHome": 0,
    "wy": {
-    "opts": 3,
-    "q": "1. 왜 사?"
+    "find": true,
+    "q": "어떤 종목이야?",
+    "opts": 0
    },
    "gdr": {
-    "cells": 4,
-    "sum": "비중 합 100% · 담는 돈 900,000원 · 쉬는 돈 9,100,000원"
+    "lock": true,
+    "go": "#/why",
+    "cells": 0
    },
    "order": "wy,gdr,chips"
   },
-  "me": {
-   "letter": 11,
-   "promo": "3명만 소개해도 스타벅스 상품권 1만원!",
-   "landed": true,
-   "rec": true,
-   "first": "고도리 주식 격언 열 가지"
+  "titles": [],
+  "gLock": {
+   "lock": true,
+   "go": "#/why",
+   "fun": false,
+   "cells": 0
   },
   "watch": {
    "h1": "삼성전자",
    "ws": "20거래일 동안 −12.7% · 하루 +4.6% · 10월 16일 마감",
    "ch": 7,
-   "nx": 6
+   "nx": 6,
+   "acts": [
+    "관심 담기",
+    "보내기",
+    "같이 따져 줘"
+   ],
+   "whyGo": [
+    "#/why/005930",
+    "이 회사로 왜 사?›"
+   ]
   },
-  "shorts": 10,
+  "dlg": {
+   "h": "친구에게 무슨 말을 할래?",
+   "open": true,
+   "ta": true,
+   "go": true,
+   "x": true,
+   "stock": "삼성전자",
+   "closed": true
+  },
+  "me": {
+   "order": [
+    "h1",
+    "hold",
+    "letter",
+    "h2:바로 가기",
+    "h2:본 기록"
+   ],
+   "h1": "보유종목",
+   "holdH": 214,
+   "letter": 11,
+   "promo": "3명만 소개해도 스타벅스 상품권 1만원!",
+   "landed": true,
+   "rec": false,
+   "clear": true,
+   "first": "고도리 주식 격언 열 가지"
+  },
+  "shorts": {
+   "n": 6,
+   "surge": false,
+   "want": [
+    "idx",
+    "breadth",
+    "rise",
+    "gtop",
+    "glow",
+    "us"
+   ]
+  },
+  "why": {
+   "h1": "매매일지",
+   "find": true,
+   "q": "어떤 종목이야?",
+   "opts": 0,
+   "recAfter": true,
+   "recH": "왜 사? 기록 0번"
+  },
+  "whyCo": {
+   "q": "1. 왜 사?",
+   "opts": 3,
+   "stock": "삼성전자",
+   "find": false
+  },
+  "gdr": {
+   "picks": 3,
+   "homeOpen": {
+    "lock": false,
+    "cells": 4,
+    "sum": "비중 합 100% · 담는 돈 900,000원 · 쉬는 돈 9,100,000원"
+   },
+   "gOpen": {
+    "lock": false,
+    "fun": true,
+    "cells": 4
+   },
+   "wrong": [
+    {
+     "no": 1,
+     "got": "틀린다면 이유 시장 전체가 내리면 같이 내릴 수 있어.",
+     "ok": true
+    },
+    {
+     "no": 3,
+     "got": "틀린다면 이유 이익이 다시 줄면 고른 까닭이 사라져.",
+     "ok": true
+    }
+   ],
+   "whyRec": "왜 사? 기록 1번"
+  },
   "old": [],
+  "bad": [],
+  "part": {
+   "tabs": true,
+   "home": true,
+   "watch": true,
+   "me": true,
+   "shorts": true,
+   "why": true,
+   "open": true,
+   "names": true,
+   "words": true
+  },
+  "ok": true
+ },
+ "nextEn": {
+  "tabs": [
+   [
+    "home",
+    "Today"
+   ],
+   [
+    "shorts",
+    "Recap"
+   ],
+   [
+    "why",
+    "Journal"
+   ],
+   [
+    "sub",
+    "Watch"
+   ],
+   [
+    "me",
+    "Holdings"
+   ]
+  ],
+  "titles": [
+   {
+    "tab": "home",
+    "got": "Today · Godori",
+    "want": "Today · Godori"
+   },
+   {
+    "tab": "shorts",
+    "got": "Recap · Godori",
+    "want": "Recap · Godori"
+   },
+   {
+    "tab": "why",
+    "got": "Journal · Godori",
+    "want": "Journal · Godori"
+   },
+   {
+    "tab": "sub",
+    "got": "Watch · Godori",
+    "want": "Watch · Godori"
+   },
+   {
+    "tab": "me",
+    "got": "Holdings · Godori",
+    "want": "Holdings · Godori"
+   }
+  ],
+  "back": {
+   "lang": "ko",
+   "en": false,
+   "tab": "오늘 장",
+   "title": "오늘 장 · 고도리"
+  },
   "ok": true
  },
  "nextPages": {
@@ -711,13 +905,14 @@
   "pages": [
    {
     "url": "/#/w/005930",
-    "n": 1237,
+    "n": 1250,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "삼성전자 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "co"
    },
@@ -730,6 +925,7 @@
     "cw": 390,
     "title": "삼성전자 — 지나온 길 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "past"
    },
@@ -742,6 +938,7 @@
     "cw": 390,
     "title": "삼성전자 · 누구와 다투나 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "rivals"
    },
@@ -754,30 +951,33 @@
     "cw": 390,
     "title": "삼성전자 — 앞으로 클까? · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "grow"
    },
    {
     "url": "/#/w/005930/range",
-    "n": 1517,
+    "n": 1512,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "삼성전자 — 범위 · 확인 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "range"
    },
    {
     "url": "/#/ch/g/semi",
-    "n": 1272,
+    "n": 1275,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "반도체 갈래 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "chx"
    },
@@ -790,6 +990,7 @@
     "cw": 390,
     "title": "급등 32곳 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "surge"
    },
@@ -802,6 +1003,7 @@
     "cw": 390,
     "title": "20%대 10곳 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "surge"
    },
@@ -814,6 +1016,7 @@
     "cw": 390,
     "title": "달력 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "cal"
    },
@@ -826,6 +1029,7 @@
     "cw": 390,
     "title": "조건 찾기 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "cond"
    },
@@ -838,18 +1042,20 @@
     "cw": 390,
     "title": "오늘의 이야기 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "talk"
    },
    {
     "url": "/#/up",
-    "n": 3821,
+    "n": 3853,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "업데이트 기록 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "up"
    },
@@ -862,6 +1068,7 @@
     "cw": 390,
     "title": "봉인 1호 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "time"
    },
@@ -874,6 +1081,7 @@
     "cw": 390,
     "title": "고도리는 어떻게 셌나요 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "info"
    },
@@ -886,30 +1094,46 @@
     "cw": 390,
     "title": "오늘 시장 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "today"
    },
    {
     "url": "/#/why",
-    "n": 101,
+    "n": 169,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
-    "title": "왜 사? 열한 질문 · 고도리",
+    "title": "매매일지 · 고도리",
     "old": [],
+    "words": [],
+    "ok": true,
+    "k": "why"
+   },
+   {
+    "url": "/#/why/005930",
+    "n": 190,
+    "bad": 0,
+    "sel": true,
+    "sw": 390,
+    "cw": 390,
+    "title": "매매일지 · 고도리",
+    "old": [],
+    "words": [],
     "ok": true,
     "k": "why"
    },
    {
     "url": "/#/gdr",
-    "n": 1127,
+    "n": 124,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
     "title": "고도리라면 이렇게 · 고도리",
     "old": [],
+    "words": [],
     "ok": true,
     "k": "gdr"
    }
