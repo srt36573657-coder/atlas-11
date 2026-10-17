@@ -1,9 +1,1 @@
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-
-page.evaluate: Target page, context or browser has been closed
-    at open (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_rivals.mjs:90:11)
-    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_rivals.mjs:141:41
-
-Node.js v22.23.3
+{"ok":true,"seconds":282,"companies":2557,"missing":7,"time":{"old":240.9,"new":191,"wall":282.2,"opensOld":5129,"opensNew":5195,"oldPct":85.3,"oldShare":55.8},"net":{"req":2561,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"sec":{"pick":1,"compare":271},"글 마디":51562,"숫자 낱말":51368,"막대 줄":14892,"회사":2557,"경쟁 회사":163,"없는 번호":7,"옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)":7,"세 폭 화면":30,"못 받은 파일 길":6},"fails":[]}
