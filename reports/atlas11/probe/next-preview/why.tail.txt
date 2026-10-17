@@ -1,7 +1,7 @@
 {
  "sec": 39,
  "timing": {
-  "flowMs": 1097,
+  "flowMs": 1136,
   "taps": 25,
   "typed": 4
  },

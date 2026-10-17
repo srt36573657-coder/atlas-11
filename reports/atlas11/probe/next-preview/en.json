@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-17T14:35:40.522Z",
+ "at": "2026-10-17T14:46:07.719Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,12 +14,12 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "rivals": true,
   "past": true,
+  "rivals": true,
+  "grow": true,
   "range": true,
   "surge": true,
   "cal": true,
-  "grow": true,
   "cond": true,
   "talk": true,
   "up": true,
@@ -47,8 +47,8 @@
    "@newwin": 15
   }
  },
- "seconds": 396,
- "secondsSum": 2350,
+ "seconds": 397,
+ "secondsSum": 2318,
  "shards": [
   {
    "shard": "1/6",
@@ -57,10 +57,10 @@
    "routes": 2250,
    "screens": 2286,
    "mine": 2250,
-   "seconds": 395,
+   "seconds": 392,
    "secs": {
-    "open": 0.4,
-    "routes": 393.6
+    "open": 0.3,
+    "routes": 391
    }
   },
   {
@@ -70,10 +70,10 @@
    "routes": 2249,
    "screens": 2252,
    "mine": 2249,
-   "seconds": 390,
+   "seconds": 397,
    "secs": {
     "open": 0.3,
-    "routes": 389.1
+    "routes": 396
    }
   },
   {
@@ -83,10 +83,10 @@
    "routes": 2255,
    "screens": 2258,
    "mine": 2249,
-   "seconds": 396,
+   "seconds": 390,
    "secs": {
-    "open": 0.3,
-    "routes": 394.5
+    "open": 0.4,
+    "routes": 387.9
    }
   },
   {
@@ -96,10 +96,10 @@
    "routes": 2249,
    "screens": 2249,
    "mine": 2249,
-   "seconds": 396,
+   "seconds": 379,
    "secs": {
-    "open": 0.3,
-    "routes": 394.2
+    "open": 0.6,
+    "routes": 377.2
    }
   },
   {
@@ -109,26 +109,26 @@
    "routes": 2234,
    "screens": 2292,
    "mine": 2235,
-   "seconds": 380,
+   "seconds": 394,
    "secs": {
-    "open": 0.2,
-    "routes": 376.7,
-    "newwin": 1.7
+    "open": 0.4,
+    "routes": 390.7,
+    "newwin": 2.1
    }
   },
   {
    "shard": "6/6",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 10,
    "routes": 2170,
    "screens": 2290,
    "mine": 2171,
-   "seconds": 393,
+   "seconds": 366,
    "secs": {
-    "open": 0.3,
-    "routes": 378.5,
-    "act": 7.7,
-    "edge": 5.2,
+    "open": 0.2,
+    "routes": 354,
+    "act": 6.9,
+    "edge": 4.8,
     "grammar": 0
    }
   }
@@ -156,10 +156,12 @@
  },
  "missing": 0,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "칸 안에서 넘친 글": 10
+ },
+ "fails": 10,
  "own": {
-  "fails": 0,
+  "fails": 10,
   "missing": 0,
   "leftover": 0
  },
@@ -169,8 +171,99 @@
   "leftover": 0
  },
  "missingList": [],
- "all": [],
+ "all": [
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Apparel & Fashion · 20 tradi」 @320",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Chemicals · 20 trading days 」 @320",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Beverages · 20 trading days 」 @320",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Pharmaceuticals · 20 trading」 @320",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Logistics & Transport · 20 t」 @320",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Apparel & Fashion · 20 tradi」 @360",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Chemicals · 20 trading days 」 @360",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Beverages · 20 trading days 」 @360",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Pharmaceuticals · 20 trading」 @360",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": "small 「Logistics & Transport · 20 t」 @360",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/sub @360"
+   ],
+   "n": 1
+  }
+ ],
  "truncated": false,
  "problems": [],
- "ok": true
+ "ok": false
 }

@@ -1,4 +1,0 @@
-fatal: ambiguous argument 'origin/main': unknown revision or path not in the working tree.
-Use '--' to separate paths from revisions, like this:
-'git <command> [<revision>...] -- [<file>...]'
-바뀐 파일 1개 → 짝 검사 0개: 없음
