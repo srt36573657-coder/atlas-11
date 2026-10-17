@@ -88,42 +88,42 @@ jobs:
         id: d
         if: ${{ inputs.local && inputs.data != 'stored' }}
         run: |
-          # 파일 목록 · sha256 = 지금 사이트의 dist-manifest.json(올릴 때 package.mjs 가 dist 모든 파일로 씀) — 파일마다 맞대 봄 · 받는 사이 올림이 끼면 처음부터 한 번 더
-          # 넷리파이를 세게 두드리지 않게 한 번에 8개 · 2분 30초 안에 못 받으면 저장소 자료로 돎(까닭 · 셈 = summary.json 의 data)
+          # 파일 목록 · sha256 = 지금 사이트의 dist-manifest.json(올릴 때 package.mjs 가 dist 모든 파일로 씀) — 파일마다 그 판의 sha256 과 맞아야 받음
+          #   → 받은 것은 모두 한 판(받는 사이 올림이 끼면 바뀐 파일이 sha256 다름으로 걸려 새 목록으로 처음부터 · 세 번까지)
+          # 넷리파이를 세게 두드리지 않게 한 번에 8개(24개는 막혀 8분 넘게 걸림) · 3분 안에 못 받으면 저장소 자료로 돎(까닭 · 셈 = summary.json 의 data)
           node --input-type=module - <<'EOF'
           import fs from 'node:fs'; import path from 'node:path'; import {createHash} from 'node:crypto';
-          const B = 'https://aaa7377.com/', OUT = 'live-data', T0 = Date.now(), BUDGET = 150e3, C = 8;
+          const B = 'https://aaa7377.com/', OUT = 'live-data', T0 = Date.now(), BUDGET = 180e3, C = 8;
           const sha = b => createHash('sha256').update(b).digest('hex'), wait = ms => new Promise(r => setTimeout(r, ms)), sec = () => Math.round((Date.now() - T0) / 1000);
           const st = {req: 0, http: {}, sha: 0, err: {}};
           const put = kv => fs.appendFileSync(process.env.GITHUB_OUTPUT, Object.entries(kv).map(([k, v]) => `${k}=${String(v).replace(/[\r\n]+/g, ' ')}`).join('\n') + '\n');
-          async function get(f, want = null) {
-            let last = '';
-            for (let i = 0; i < 4; i++) {
-              if (Date.now() - T0 > BUDGET) throw Error('시간 넘음');
+          async function get(f, want = null, tries = 6) {
+            let last = '', shaBad = 0;
+            for (let i = 0; i < tries; i++) {
+              if (Date.now() - T0 > BUDGET) throw Error('시간 넘음 ' + f);
               st.req++;
               try {
-                const r = await fetch(B + f, {signal: AbortSignal.timeout(15000)});
-                if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); if (!want || sha(b) === want) return b; st.sha++; last = 'sha256 다름'; }
-                else { st.http[r.status] = (st.http[r.status] || 0) + 1; last = 'HTTP ' + r.status; if (r.status === 404) break; if (r.status === 429 || r.status === 503) await wait(Math.min(8, Number(r.headers.get('retry-after')) || 2) * 1000); }
+                const r = await fetch(B + f, {signal: AbortSignal.timeout(20000)});
+                if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); if (!want || sha(b) === want) return b; st.sha++; last = 'sha256 다름'; if (++shaBad >= 2) break; } // 두 번 다르면 올림이 낀 것 — 새 목록으로
+                else { st.http[r.status] = (st.http[r.status] || 0) + 1; last = 'HTTP ' + r.status; if (r.status === 404) break; if (r.status === 429 || r.status === 503) await wait(Math.min(10, Number(r.headers.get('retry-after')) || 3) * 1000); }
               } catch (e) { const k = String(e?.cause?.code || e?.name || e?.message || e).slice(0, 40); st.err[k] = (st.err[k] || 0) + 1; last = k; }
-              await wait(200 * (i + 1));
+              await wait(400 * (i + 1));
             }
             throw Error(f + ' ' + last);
           }
           try {
             let ok = false, note = '';
-            for (let round = 1; round <= 2 && !ok; round++) {
-              const man = JSON.parse(await get('dist-manifest.json')), files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/')).sort();
+            for (let round = 1; round <= 3 && !ok; round++) {
+              const man = JSON.parse(await get('dist-manifest.json', null, 8)), files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/')).sort();
               if (!files.includes('atlas/data/mkt.json') || !files.includes('atlas/data/core.json')) throw Error('dist-manifest.json 에 atlas/data 가 없음');
               fs.rmSync(OUT, {recursive: true, force: true});
               let i = 0, bytes = 0; const bad = [];
               await Promise.all(Array.from({length: C}, async () => { while (i < files.length && bad.length < 12) { const f = files[i++]; try { const b = await get(f, man.hashes[f]); fs.mkdirSync(path.dirname(path.join(OUT, f)), {recursive: true}); fs.writeFileSync(path.join(OUT, f), b); bytes += b.length; } catch (e) { bad.push(String(e.message)); } } }));
-              const again = bad.length ? null : JSON.parse(await get('dist-manifest.json'));
-              if (!bad.length && again.builtAt === man.builtAt) {
+              if (!bad.length) {
                 ok = true; const asOf = JSON.parse(fs.readFileSync(path.join(OUT, 'atlas/data/mkt.json'), 'utf8')).asOf;
                 put({data: 'live', asof: asOf, built: man.builtAt, secs: sec(), files: files.length});
-                console.log(`지금 사이트 자료 ${files.length}개 · ${(bytes / 1e6).toFixed(1)}MB · sha256 모두 맞음 · 고른 날 ${asOf} · 묶은 때 ${man.builtAt} · ${sec()}초 · ${JSON.stringify(st)}`);
-              } else { note = `${round}번째 ${i}/${files.length}에서 멈춤 — ` + (bad.length ? `못 받은 것 ${bad.length}(${bad.slice(0, 2).join(' · ')})` : '받는 사이 올림'); console.log(note); }
+                console.log(`지금 사이트 자료 ${files.length}개 · ${(bytes / 1e6).toFixed(1)}MB · sha256 모두 맞음(한 판) · 고른 날 ${asOf} · 묶은 때 ${man.builtAt} · ${sec()}초 · ${JSON.stringify(st)}`);
+              } else { note = `${round}번째 ${i}/${files.length}에서 멈춤 — 못 받은 것 ${bad.length}(${bad.slice(0, 2).join(' · ')})`; console.log(note); }
             }
             if (!ok) throw Error(note);
           } catch (e) {
