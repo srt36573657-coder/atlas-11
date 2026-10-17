@@ -1,13 +1,13 @@
-합침: {"ok":true,"shards":6,"got":6,"routes":13373,"screens":13505,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":395,"secondsSum":2277,"problems":[]}
+합침: {"ok":true,"shards":6,"got":6,"routes":13407,"screens":13579,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":397,"secondsSum":2297,"problems":[]}
 ── en1/6 ──
-{"ok":true,"shard":"1/6","routes":2291,"screens":2291,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":393,"secs":{"open":0.3,"routes":392.3}}
+{"ok":true,"shard":"1/6","routes":2297,"screens":2299,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":383,"secs":{"open":0.2,"routes":382.7}}
 ── en2/6 ──
-{"ok":true,"shard":"2/6","routes":2290,"screens":2290,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":376,"secs":{"open":0.2,"routes":375.5}}
+{"ok":true,"shard":"2/6","routes":2296,"screens":2296,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":397,"secs":{"open":0.3,"routes":396.4}}
 ── en3/6 ──
-{"ok":true,"shard":"3/6","routes":2300,"screens":2300,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":395,"secs":{"open":0.3,"routes":392.8}}
+{"ok":true,"shard":"3/6","routes":2306,"screens":2340,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":384,"secs":{"open":0.2,"routes":383.3}}
 ── en4/6 ──
-{"ok":true,"shard":"4/6","routes":2290,"screens":2290,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":391,"secs":{"open":0.3,"routes":389.8}}
+{"ok":true,"shard":"4/6","routes":2296,"screens":2298,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":389,"secs":{"open":0.2,"routes":388.4}}
 ── en5/6 ──
-{"ok":true,"shard":"5/6","routes":2211,"screens":2230,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":379,"secs":{"open":0.3,"routes":375.8,"newwin":1.9}}
+{"ok":true,"shard":"5/6","routes":2216,"screens":2237,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":394,"secs":{"open":0.3,"routes":390.7,"newwin":2}}
 ── en6/6 ──
-{"ok":true,"shard":"6/6","routes":1991,"screens":2104,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":343,"secs":{"open":0.2,"routes":331,"act":6.8,"edge":4.8,"grammar":0}}
+{"ok":true,"shard":"6/6","routes":1996,"screens":2109,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":350,"secs":{"open":0.3,"routes":336.6,"act":7.2,"edge":4.9,"grammar":0}}
