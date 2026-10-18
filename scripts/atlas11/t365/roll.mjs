@@ -12,7 +12,7 @@
 //   ⑤ 회차 기록: reports/atlas11/t365/updates/<받은 때 UTC>.json(새 파일 · 지우지 않음) + 화면 「업데이트」 탭 자료 dist/atlas/data/updates.json(마지막 60회차)
 //   ⑤-2 첫 화면 종합 정보(2026-10-12 14:54 · market_fetch.mjs → home_build.mjs → 자료 home.json)
 //   ⑥ 시장 판독(2026-10-12 12:41 「시장을 판독해서」 · market_read.mjs — 지난 사실만 · 판독 규칙 mr-v1) · 네 눈 점검(같은 날 「업데이트 할때마다 아틀란스 점검을
-//      애플 구글 클로드 cia방식으로 각각 1000만번씩」 · inspect4.mjs — 새 자료 + 화면 코드를 눈마다 ATLAS_INSPECT_N 번(기본 1,000만) · 하나라도 걸리면 ④처럼 새 자료를 올리지 않음)
+//      애플 구글 클로드 cia방식으로 각각 1000만번씩」 · inspect4.mjs — 새 자료 + 화면 코드를 눈마다 ATLAS_INSPECT_N 번(기본 111) · 하나라도 걸리면 ④처럼 새 자료를 올리지 않음)
 //      기록: 회차 기록의 market · inspect(짧은 꼴) + 깃허브 실행기면 reports/atlas11/t365/inspect/<받은 때>.json(전부 · 새 파일)
 //   결과는 통과로 꾸미지 않음 — 「바꿈」 · 「그대로」(새 값 없음) · 「실패」(까닭) 가운데 하나
 import fs from 'node:fs/promises';
@@ -126,7 +126,7 @@ export async function rollAtlas({root, dist, log = console.log, closesDir = null
   const sRecs = readSurge(surgeDir), sLast = sRecs.at(-1) ?? null;
   let surgeOut = null, surgeCal = null; // 이번에 고른 급등 판(올라가면 기록 파일로) · 그 달력 글
   const surgeCalLatest = recDir ? path.join(path.dirname(recDir), 'surgecal-latest.json') : path.join(root, SURGECAL_LATEST);
-  const N4 = Math.max(1, +(process.env.ATLAS_INSPECT_N || 1e7)); // 네 눈 점검 — 눈마다 번 수(사장님 「각각 1000만번씩」 · 시험만 줄임)
+  const N4 = Math.max(1, +(process.env.ATLAS_INSPECT_N || 111)); // 네 눈 점검 — 눈마다 번 수(사장님 2026-10-18 23시(서울) 「111번으로 바꿔라」 · 옛 1000만번에서 줄임)
   let inspectFull = null;
   /** 네 눈 점검 — dataDir 자료 + dist 화면 코드 · 끝나지 못하면 throw · 걸린 것이 있으면 결과를 남기고 false */
   const inspectRun = (dataDir, market) => {
