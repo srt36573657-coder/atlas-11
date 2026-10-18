@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-18T10:13:19.031Z",
+ "when": "2026-10-18T10:50:38.855Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -75,7 +75,7 @@
   },
   {
    "tag": "#/me 보유 둘 · 답함(접힘) 360×640",
-   "px": 4697,
+   "px": 4812,
    "sizes": [
     17,
     19,
@@ -88,7 +88,7 @@
    "lefts": {
     "16": 11,
     "32": 4,
-    "48": 59
+    "48": 61
    },
    "ex": {
     "16": "h1.h 「보유종목」",
@@ -138,7 +138,7 @@
    },
    "ex": {
     "16": "h1.h 「관심」",
-    "33": "b.big 「+17.4%」",
+    "33": "b.big 「+8.8%」",
     "72": "b. 「반도체 큰 업종, 한 」"
    },
    "spacingOff": 0,
@@ -146,10 +146,9 @@
   }
  ],
  "only": [],
- "sec": 68,
+ "sec": 72,
  "counts": {
   "꾸민 보유": 14,
-  "fail": 61,
   "질문 먼저 맞댄 카드": 17,
   "우리가 만든 팔 선 없음 맞댄 글 ko": 55,
   "모양 잰 화면": 34,
@@ -163,8 +162,8 @@
   "자료 바꾼 길": 4,
   "빈 칸 판": 1,
   "적기 길": 1,
-  "소식 날짜 차례 맞댄 줄": 1054,
-  "소식 줄 글 맞댐": 1054,
+  "소식 날짜 차례 맞댄 줄": 1080,
+  "소식 줄 글 맞댐": 1080,
   "소식 판": 5,
   "소식 영어 판": 1,
   "접힌 칸 안 여는 그림 맞댐": 3,
@@ -186,251 +185,6 @@
   "⑮ 네가 적은 팔 선 줄 en": 3,
   "⑮ 팔 선 없음 판 en": 1
  },
- "fails": [
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-문1지남 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-문1못지남 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-문못셈 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-클일앞 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-클일지남 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-그냥 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-매매일지없음 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-팔선2 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-팔선딱3 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-팔선지남 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-망할이유 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-닫힌문 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-약속없음 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "판A 360×640 hd-절반없음 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 문1지남 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 문1못지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 문못셈 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 클일앞 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 클일지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 그냥 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 매매일지없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 팔선2 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 팔선딱3 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 팔선지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 망할이유 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 닫힌문 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 약속없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 절반없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 문1지남 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 문1못지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 문못셈 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 클일앞 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 클일지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 그냥 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 매매일지없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 팔선2 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 팔선딱3 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 팔선지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 망할이유 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 닫힌문 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 약속없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 360×640 다시 엶 절반없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 문1지남 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 문1못지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 문못셈 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 클일앞 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 클일지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 그냥 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 매매일지없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 팔선2 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 팔선딱3 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 팔선지남 hd-kr,hd-px,hd-ans,hd-badge,hd-endure,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 망할이유 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 닫힌문 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 약속없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "판A 390×844 절반없음 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답한 뒤 차례(답 → 색 → 참은 날 → 수익률 → ① ~ ⑤)",
-   "값이 빈 문 390×844 값이빈문 hd-kr,hd-px,hd-ans,hd-badge,hd-ret,hd-it,hd-it,hd-it,hd-it,hd-it,hd-act"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "적기 · 팔기 390×844 새로 적은 것 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "답하기 전 차례(이름 · 오늘 값 · 질문)",
-   "기억 못 하는 기계 360×640 이 화면에만 적힘 hd-kr,hd-px,hd-ask"
-  ],
-  [
-   "처음 네 줄 · 「나머지 n줄 보기」(접힘 · n = 따로 센 수)",
-   "소식 큰 업종 + 업종 360×640 보임 0 · 「나머지 520줄 보기」 · 따로 셈 524"
-  ],
-  [
-   "처음 네 줄 · 「나머지 n줄 보기」(접힘 · n = 따로 센 수)",
-   "소식 큰 업종 + 업종 390×844 보임 0 · 「나머지 520줄 보기」 · 따로 셈 524"
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }
