@@ -1,203 +1,72 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-18T02:55:22.954Z",
+ "at": "2026-10-18T03:01:46.604Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "ref": "wip-l01",
- "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
- "run": 39090983115,
- "wallSeconds": 834,
+ "sha": "13867d569f8f521b970c5559a008b74d4cb7d81b",
+ "run": 39091891146,
+ "wallSeconds": 271,
  "data": {
   "from": "live",
   "asOf": "2026-10-16",
   "built": "2026-10-17T15:17:26.974Z",
-  "seconds": 49
+  "seconds": 52
  },
  "pages": [
   {
-   "name": "cal",
-   "code": 0,
-   "seconds": 89,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 12,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "chx",
-   "code": 0,
-   "seconds": 186,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 16,
-   "data": "live 2026-10-16"
-  },
-  {
    "name": "co",
-   "code": 1,
-   "seconds": 134,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 16,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "cond",
    "code": 0,
-   "seconds": 39,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 17,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "en",
-   "code": 1,
-   "seconds": 207,
-   "shards": 12,
+   "seconds": 144,
+   "shards": 2,
    "codes": [
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1
+    0,
+    0
    ],
    "shardSeconds": [
-    198,
-    200,
-    200,
-    204,
-    200,
-    201,
-    200,
-    202,
-    200,
-    196,
-    207,
-    188
+    144,
+    108
    ],
    "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
+   "sha": "13867d569f8f521b970c5559a008b74d4cb7d81b",
    "data": "live 2026-10-16",
-   "build": 20
-  },
-  {
-   "name": "gdr",
-   "code": 1,
-   "seconds": 27,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 16,
-   "data": "live 2026-10-16"
+   "build": 18
   },
   {
    "name": "grow",
-   "code": 0,
-   "seconds": 140,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 15,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "hold",
    "code": 1,
-   "seconds": 6,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 16,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "misc",
-   "code": 1,
-   "seconds": 23,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 16,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "next",
-   "code": 1,
-   "seconds": 1,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 12,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "past",
-   "code": 1,
-   "seconds": 201,
+   "seconds": 73,
    "shards": 2,
    "codes": [
     1,
     1
    ],
    "shardSeconds": [
-    201,
-    199
+    71,
+    73
    ],
    "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
+   "sha": "13867d569f8f521b970c5559a008b74d4cb7d81b",
    "data": "live 2026-10-16",
-   "build": 16
+   "build": 17
   },
   {
    "name": "range",
    "code": 1,
-   "seconds": 141,
+   "seconds": 94,
+   "shards": 2,
+   "codes": [
+    1,
+    0
+   ],
+   "shardSeconds": [
+    94,
+    71
+   ],
    "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 17,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "rivals",
-   "code": 0,
-   "seconds": 49,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 15,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "share",
-   "code": 0,
-   "seconds": 33,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 17,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "surge",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
-  },
-  {
-   "name": "today",
-   "code": 1,
-   "seconds": 644,
-   "mode": "local",
-   "sha": "1f8e7f06030eae82ec0f8b43c7ddbe35eb881238",
-   "build": 17,
-   "data": "live 2026-10-16"
-  },
-  {
-   "name": "why",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "sha": "13867d569f8f521b970c5559a008b74d4cb7d81b",
+   "data": "live 2026-10-16",
+   "build": 17
   }
  ],
  "ok": false
