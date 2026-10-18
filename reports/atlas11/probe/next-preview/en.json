@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-18T11:12:26.714Z",
+ "at": "2026-10-18T11:32:23.080Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,25 +14,25 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
+  "past": true,
   "rivals": true,
   "grow": true,
   "range": true,
-  "past": true,
   "surge": true,
   "cal": true,
   "cond": true,
   "talk": true,
   "up": true,
-  "time": true,
   "info": true,
+  "time": true,
   "x": true,
-  "chx": true,
   "co": true,
+  "chx": true,
   "today": true,
   "gdr": true,
-  "why": true,
+  "hold": true,
   "share": true,
-  "hold": true
+  "why": true
  },
  "edge": true,
  "only": null,
@@ -48,7 +48,7 @@
   }
  },
  "seconds": 271,
- "secondsSum": 2332,
+ "secondsSum": 2341,
  "shards": [
   {
    "shard": "1/9",
@@ -57,10 +57,10 @@
    "routes": 1500,
    "screens": 1500,
    "mine": 1500,
-   "seconds": 260,
+   "seconds": 265,
    "secs": {
     "open": 0.3,
-    "routes": 259
+    "routes": 264
    }
   },
   {
@@ -70,10 +70,10 @@
    "routes": 1500,
    "screens": 1500,
    "mine": 1500,
-   "seconds": 252,
+   "seconds": 256,
    "secs": {
     "open": 0.2,
-    "routes": 251.6
+    "routes": 254.6
    }
   },
   {
@@ -83,10 +83,10 @@
    "routes": 1500,
    "screens": 1500,
    "mine": 1500,
-   "seconds": 263,
+   "seconds": 257,
    "secs": {
-    "open": 0.3,
-    "routes": 261.8
+    "open": 0.2,
+    "routes": 255.8
    }
   },
   {
@@ -98,8 +98,8 @@
    "mine": 1499,
    "seconds": 254,
    "secs": {
-    "open": 0.3,
-    "routes": 252.6
+    "open": 0.2,
+    "routes": 253.3
    }
   },
   {
@@ -109,36 +109,36 @@
    "routes": 1499,
    "screens": 1499,
    "mine": 1499,
-   "seconds": 257,
+   "seconds": 255,
    "secs": {
-    "open": 0.3,
-    "routes": 256.3
+    "open": 0.4,
+    "routes": 254.4
    }
   },
   {
    "shard": "6/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1499,
    "screens": 1538,
    "mine": 1499,
-   "seconds": 271,
+   "seconds": 269,
    "secs": {
-    "open": 0.7,
-    "routes": 269.1
+    "open": 0.3,
+    "routes": 268.4
    }
   },
   {
    "shard": "7/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1499,
    "screens": 1537,
    "mine": 1499,
-   "seconds": 261,
+   "seconds": 271,
    "secs": {
-    "open": 0.3,
-    "routes": 260
+    "open": 0.4,
+    "routes": 270
    }
   },
   {
@@ -148,10 +148,10 @@
    "routes": 1485,
    "screens": 1507,
    "mine": 1486,
-   "seconds": 261,
+   "seconds": 263,
    "secs": {
     "open": 0.3,
-    "routes": 257.6,
+    "routes": 260.3,
     "newwin": 1.9
    }
   },
@@ -162,10 +162,10 @@
    "routes": 1426,
    "screens": 1547,
    "mine": 1421,
-   "seconds": 253,
+   "seconds": 251,
    "secs": {
-    "open": 0.2,
-    "routes": 240.3,
+    "open": 0.3,
+    "routes": 239,
     "act": 6.7,
     "edge": 4.7,
     "grammar": 0
@@ -192,23 +192,52 @@
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412
  },
- "missing": 0,
+ "missing": 1,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "한글 남음(모듈 칸)": 1,
+  "사전에 없는 틀": 1
+ },
+ "fails": 2,
  "own": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
  "mod": {
-  "fails": 0,
-  "missing": 0,
-  "leftover": 0
+  "fails": 2,
+  "missing": 1,
+  "leftover": 1
  },
- "missingList": [],
- "all": [],
+ "missingList": [
+  {
+   "key": "한 달 뒤 이 기록을 열어 {q}에 답해 봐요.",
+   "ex": "한 달 뒤 이 기록을 열어 「정한 대로 했어?」에 답해 봐요.",
+   "at": "[모듈] #/why · 결과"
+  }
+ ],
+ "all": [
+  {
+   "kind": "한글 남음(모듈 칸)",
+   "what": "한 달 뒤 이 기록을 열어 {q}에 답해 봐요.",
+   "ex": "한 달 뒤 이 기록을 열어 「정한 대로 했어?」에 답해 봐요.",
+   "at": [
+    "#/why · 결과",
+    "#/why/005930 · 결과"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "한 달 뒤 이 기록을 열어 {q}에 답해 봐요.  ← 「한 달 뒤 이 기록을 열어 「정한 대로 했어?」에 답해 봐요.」",
+   "ex": null,
+   "at": [
+    "[모듈] #/why · 결과"
+   ],
+   "n": 1
+  }
+ ],
  "truncated": false,
  "problems": [],
- "ok": true
+ "ok": false
 }
