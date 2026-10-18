@@ -395,7 +395,7 @@ function recBox(here) {
   const list = records().filter(r => r && typeof r === 'object'), box = h('section', {class: 'wy-me', 'aria-label': '왜 사? 기록'}); // 깨진 줄은 그리기에서만 건너뜀(지우지 않음)
   box.append(h('h2', {class: 'sec', text: `왜 사? 기록 ${list.length}번`}));
   if (!list.length) { box.append(h('p', {class: 'note', text: here ? '아직 기록이 없어요. 위 질문에 답하면 날짜와 함께 여기 쌓여요.' : '아직 기록이 없어요. 매매일지에서 「친구야, 왜 사?」에 답하면 날짜와 함께 여기 쌓여요.'})); return box; }
-  box.append(h('p', {class: 'note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.'}));
+  box.append(h('p', {class: 'note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요. 「안 했어」도 그대로 남아요.'}));
   for (const r of list.slice(0, 30)) {
     const rd = readyOf(r);
     const row = h('div', {class: 'wy-rec'},
