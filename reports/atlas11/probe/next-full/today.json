@@ -1,5 +1,5 @@
 {
- "made": "2026-10-18T07:43:31.251Z",
+ "made": "2026-10-18T08:24:22.465Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "variants": [
@@ -42,7 +42,7 @@
   "큰 숫자 크기": 8,
   "폭 화면": 8,
   "큰 숫자 읽음": 9,
-  "프레임 기록": 459,
+  "프레임 기록": 458,
   "첫 화면 맞댐": 1,
   "css 글씨 선언": 40,
   "css 간격 선언": 78,
@@ -358,10 +358,10 @@
   "hero": {
    "w": 360,
    "want": "+2.05%",
-   "frames": 459,
-   "playFrames": 371,
+   "frames": 458,
+   "playFrames": 370,
    "bigKinds": 1,
-   "lvKinds": 57,
+   "lvKinds": 56,
    "reads": [
     [
      [
@@ -444,15 +444,15 @@
  },
  "fails": [],
  "warn": [],
- "sec": 75,
+ "sec": 65,
  "time": {
-  "old": 20.2,
-  "new": 55.3,
-  "wall": 74.8,
+  "old": 16.8,
+  "new": 48.9,
+  "wall": 65,
   "opensOld": 607,
   "opensNew": 804,
-  "oldPct": 27,
-  "oldShare": 26.7
+  "oldPct": 25.8,
+  "oldShare": 25.6
  },
  "net": {
   "req": 3,

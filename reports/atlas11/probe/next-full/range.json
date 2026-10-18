@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-range-check-1",
- "at": "2026-10-18T07:48:16.588Z",
+ "at": "2026-10-18T08:20:10.242Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "rangeAsOf": "2026-10-16",
@@ -69,23 +69,21 @@
   "045390": "회사 글에 쓰지 않을 말",
   "080160": "회사 글에 쓰지 않을 말"
  },
- "seconds": 622,
+ "seconds": 302,
  "time": {
-  "old": 253.2,
-  "new": 340.8,
-  "wall": 621.6,
+  "old": 116.3,
+  "new": 180.5,
+  "wall": 301.9,
   "opensOld": 5130,
   "opensNew": 10405,
-  "oldPct": 40.7,
-  "oldShare": 42.6
+  "oldPct": 38.5,
+  "oldShare": 39.2
  },
  "net": {
-  "req": 12,
-  "retry": 1,
-  "waitSec": 1,
-  "why": {
-   "TimeoutError": 1
-  },
+  "req": 11,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
   "page": {
    "retry": 0,
    "waitSec": 0,

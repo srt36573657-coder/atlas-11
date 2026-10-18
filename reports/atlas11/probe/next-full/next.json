@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-18T07:43:17.993Z",
+ "at": "2026-10-18T08:22:03.334Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "ready": [
@@ -29,11 +29,11 @@
  "oldNameAllow": [
   "아틀라스링크"
  ],
- "seconds": 270,
+ "seconds": 239,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 270,
+  "wall": 239,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
