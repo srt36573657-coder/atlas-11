@@ -56,7 +56,7 @@ const MEASURE = () => {
   const out = {bodyLum: lum(bgOf(document.body)), chars: 0, blocks: {}, tabsTop: tabs ? tabs.getBoundingClientRect().top : innerHeight, lowContrast: [], uiContrast: [], tiny: [], small: [], ruin: [], says: [], numQ: [], tabs: [], jh: !!document.querySelector('#jhBtn'), whyTab: !!document.querySelector('.tabs a[href="#/why"]'), ess: [1, 2, 3].map(i => !!document.querySelector(`[data-ess="${i}"]`))};
   for (const k of ['ess', 'find', 'today', 'gdr', 'all']) { const e = document.querySelector(`[data-w="${k}"]`); out.blocks[k] = e && vis(e) ? Math.round(e.getBoundingClientRect().bottom) : null; }
   out.tabs = tabs ? [...tabs.querySelectorAll('a')].map(a => a.textContent.trim()) : [];
-  for (const el of root.querySelectorAll('*')) if (vis(el)) out.chars += ownText(el).replace(/\s/g, '').length;
+  for (const el of root.querySelectorAll('*')) if (vis(el)) out.chars += (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈)
   for (const el of all) {
     if (!vis(el)) continue;
     const cs = getComputedStyle(el), r = el.getBoundingClientRect(), t = ownText(el), tag = el.tagName.toLowerCase(), name = `${tag}.${String(el.className?.baseVal ?? el.className).split(' ')[0]}`;

@@ -27,3 +27,13 @@ ol.px-funnel li.no > span { color: var(--mute); }
 ol.px-funnel li.stop::before { content: ""; position: absolute; left: 0; top: var(--sp-2); bottom: var(--sp-3); width: 3px; border-radius: 2px; background: var(--ink); }
 ol.px-funnel li.stop > span, ol.px-funnel li.stop > span b { color: var(--ink); font-weight: 700; }
 ol.px-funnel li.stop .fill { background: var(--ink); }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 흰 판은 그림자를 모두 걷으므로 왼쪽 줄(안쪽 그림자) → 같은 두께 border-left(글 자리 그대로)
+   먹빛 --card2 · --card3 로 그린 줄 · 막대 바탕은 흰 판에서 사라짐 → 줄 --hair · 막대 바탕 --hair-soft */
+html.white .px-why { padding-left: calc(var(--sp-2) - 2px); border-left: 2px solid var(--sub); }
+html.white ol.px-funnel { border-top-color: var(--hair); }
+html.white ol.px-funnel li { border-bottom-color: var(--hair); }
+html.white ol.px-funnel li::after { background: var(--hair-soft); }
+html.white ol.px-funnel li .fill { background: var(--mute); }
+html.white ol.px-funnel li.stop .fill { background: var(--ink); }

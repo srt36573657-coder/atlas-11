@@ -101,3 +101,10 @@ button.pcond-op[aria-current="true"] { border-color: var(--ink); background: var
 .pcond-kr > a.pcond-row { border-bottom: 0; }
 .pcond-in > .pcond-kr { border-top: 1px solid var(--hair); border-bottom: 0; }
 .pcond-in > .pcond-kr > a.pcond-qr { border-top: 0; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 먹빛 --card2 · --card3 로 칠한 막대 바탕 · 단추는 흰 판에서 흰색이 되어 사라짐 → 막대 바탕 --hair-soft · 단추 테 --hair2 · 누른 자리 --press */
+html.white .pcond-bar { background: var(--hair-soft); }
+html.white .pcond-more { background: #FFFFFF; border: 1px solid var(--hair2); }
+html.white :is(button.pcond-slot, .pcond-btn, a.pcond-row, button.pcond-op):active { background: var(--press); }
+html.white button.pcond-op[aria-current="true"] { outline: 1px solid var(--ink); outline-offset: -2px; }

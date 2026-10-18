@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-18T19:12:04.431Z",
+ "at": "2026-10-18T19:50:24.886Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?dev=1&lang=en",
  "lang": "en",
@@ -25,14 +25,14 @@
   "up": true,
   "time": true,
   "info": true,
-  "x": true,
   "co": true,
+  "chx": true,
+  "x": true,
   "today": true,
   "why": true,
-  "chx": true,
+  "gdr": true,
   "share": true,
-  "hold": true,
-  "gdr": true
+  "hold": true
  },
  "edge": true,
  "only": null,
@@ -48,14 +48,14 @@
    "@newwin": 15
   }
  },
- "seconds": 59,
+ "seconds": 58,
  "secs": {
-  "open": 0.4,
-  "routes": 39.5,
-  "act": 8.2,
-  "edge": 6.6,
+  "open": 0.3,
+  "routes": 39.8,
+  "act": 8.3,
+  "edge": 6.4,
   "grammar": 0,
-  "newwin": 3
+  "newwin": 2.6
  },
  "net": {
   "req": 26,
@@ -86,23 +86,66 @@
   "오늘 한 줄 문장": 412,
   "새 창": 2
  },
- "missing": 0,
+ "missing": 1,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "한글 남음(속성)": 2,
+  "사전에 없는 틀": 1
+ },
+ "fails": 3,
  "own": {
-  "fails": 0,
-  "missing": 0,
-  "leftover": 0
+  "fails": 3,
+  "missing": 1,
+  "leftover": 2
  },
  "mod": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
- "missingList": [],
+ "missingList": [
+  {
+   "key": "{e}가 하루 {n}% 넘게 내렸어요. ! {e}이 평소의 {n}배 넘게 올랐어요.",
+   "ex": "코스피가 하루 5% 넘게 내렸어요. ! 코스닥이 평소의 2.5배 넘게 올랐어요.",
+   "at": "바꿔치기 · 오늘 한 줄 오늘 · 마감 0"
+  }
+ ],
  "avChars": [],
  "avatarList": [],
- "all": [],
- "ok": true
+ "all": [
+  {
+   "kind": "한글 남음(속성)",
+   "what": "@aria-label ! {e}가 하루 {n}% 넘게 내렸어요. ! {e}이 평소의 {n}배 넘게 올랐어요.",
+   "ex": "! 코스피가 하루 5% 넘게 내렸어요. ! 코스닥이 평소의 2.5배 넘게 올랐어요.",
+   "at": [
+    "바꿔치기 · 오늘 한 줄 오늘 · 마감 0",
+    "바꿔치기 · 오늘 한 줄 날짜 오후까지 0",
+    "바꿔치기 · 오늘 한 줄 오늘 오후까지 0",
+    "바꿔치기 · 큰 날 5"
+   ],
+   "n": 4
+  },
+  {
+   "kind": "한글 남음(속성)",
+   "what": "@title ! {e}가 하루 {n}% 넘게 내렸어요. ! {e}이 평소의 {n}배 넘게 올랐어요.",
+   "ex": "! 코스피가 하루 5% 넘게 내렸어요. ! 코스닥이 평소의 2.5배 넘게 올랐어요.",
+   "at": [
+    "바꿔치기 · 오늘 한 줄 오늘 · 마감 0",
+    "바꿔치기 · 오늘 한 줄 날짜 오후까지 0",
+    "바꿔치기 · 오늘 한 줄 오늘 오후까지 0",
+    "바꿔치기 · 큰 날 5"
+   ],
+   "n": 4
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "{e}가 하루 {n}% 넘게 내렸어요. ! {e}이 평소의 {n}배 넘게 올랐어요.  ← 「코스피가 하루 5% 넘게 내렸어요. ! 코스닥이 평소의 2.5배 넘게 올랐어요.」",
+   "ex": null,
+   "at": [
+    "바꿔치기 · 오늘 한 줄 오늘 · 마감 0"
+   ],
+   "n": 1
+  }
+ ],
+ "ok": false
 }

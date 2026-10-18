@@ -175,3 +175,20 @@ a.psurge-btn { display: flex; align-items: center; justify-content: center; min-
 .psurge-inn > .psurge-kr:last-child { border-bottom: 0; }
 .psurge-kr > a.psurge-row { border-bottom: 0; }
 .psurge-g[data-kkrow] > a.psurge-inl { flex: 1 1 auto; min-width: 0; justify-content: flex-start; text-align: left; } /* 숨긴 곳 줄 — 이름 · 되돌리기 · 카톡 단추(오른쪽 끝) 차례 */
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 칸 고르기 · 단추는 흰 바탕 + 테(--hair2) · 고른 칸은 먹 바탕 흰 글
+   작은 빨간 점 없음 — 그림 「5일 오름 자」의 점과 범례 점은 먹 테 빈 점 · 이번에 새로 든 곳은 먹으로 찬 점(빨강은 오름 숫자에만) */
+html.white .psurge-chip { background: #FFFFFF; border: 1px solid var(--hair2); color: var(--ink); }
+html.white .psurge-chip[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: #FFFFFF; }
+html.white .psurge-go, html.white a.psurge-btn { background: #FFFFFF; border: 1px solid var(--hair2); }
+html.white .psurge-lkey .psurge-ldot { background: #FFFFFF; border: 2px solid var(--ink); }
+html.white .psurge-lkey .psurge-ldot.psurge-new { background: var(--ink); border-color: var(--ink); }
+html.white .psurge-lkey .psurge-lmt { background: var(--press); }
+html.white .psurge-svr svg circle { fill: #FFFFFF; stroke: var(--ink); stroke-width: 1.5px; }
+html.white .psurge-svr svg circle[stroke-width="2"] { fill: var(--ink); }
+html.white button.psurge-cell[aria-pressed="true"] { outline: 1px solid var(--ink); outline-offset: -2px; }
+html.white .psurge-board .psurge-badge.psurge-gold { background: #FFFFFF; }
+html.white svg.psurge-spk .psurge-b0 { stroke: var(--mute); }
+html.white .psurge-key .psurge-kb0 { border-top-color: var(--mute); }
+@media (hover: hover) { html.white a.psurge-br:hover, html.white a.psurge-row:hover { background: var(--press); } }

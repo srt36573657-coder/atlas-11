@@ -150,3 +150,26 @@ a.ptoday-sr:active, a.ptoday-mv:active, a.ptoday-g:active, a.ptoday-mr:active { 
 /* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 고른 곳 줄 오른쪽 끝(고리와 형제 · 줄은 회사 · 단추는 보내기) · 줄 밑 금은 줄 전체 */
 .ptoday-kr { border-bottom: 1px solid var(--card2); }
 .ptoday-kr > a.ptoday-mv { border-bottom: 0; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 붙지 않으면(먹빛) 위 그대로 · 색은 app.css 흰 판 토큰만 · 줄은 --hair(흰 바탕 위 3.0) · 칸 안 꾸밈(눈금 · 막대 바탕)만 --hair-soft
+   먹빛에서 --card2 · --card3 로 그린 줄 · 바탕은 흰 판에서 흰색이 되어 사라짐 → 줄 · 테로 다시 그림 · 먹 바탕 단추 글은 흰색 · 그림자 · 그러데이션 없음 */
+html.white .ptoday-seg { background: #FFFFFF; }
+html.white .ptoday-seg button[aria-pressed="true"] { color: #FFFFFF; }
+html.white .ptoday-per button { background: #FFFFFF; border-color: var(--hair); }
+html.white .ptoday-per button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #FFFFFF; }
+html.white .ptoday-in { background: var(--press); }
+html.white details.nw.ptoday-al { outline-color: var(--gold); }
+html.white .ptoday-ch .ptoday-gl { stroke: var(--hair-soft); }
+html.white .ptoday-ch .ptoday-lg { stroke: var(--mute); }
+html.white .ptoday-ch .ptoday-ag2 { fill: rgba(22, 24, 29, .04); }
+html.white .ptoday-lgd i.ptoday-gi { border-top-color: var(--mute); }
+html.white .ptoday-bar i + i { border-left-color: #FFFFFF; }
+html.white .ptoday-bar .ptoday-bf { background: var(--mute); }
+html.white .ptoday-bl > span + span { border-left-color: var(--hair); }
+html.white .ptoday-bl > span, html.white .ptoday-us > div { border-top-color: var(--hair); }
+html.white .ptoday-us > div + div { border-left-color: var(--hair); }
+html.white :is(.ptoday-rows, .ptoday-fl, .ptoday-us, .ptoday-mvs, .ptoday-gs, .ptoday-mr) { border-top-color: var(--hair); }
+html.white :is(.ptoday-sr, .ptoday-fr, .ptoday-us, .ptoday-mv, .ptoday-g, .ptoday-kr, details.ptoday-more > summary) { border-bottom-color: var(--hair); }
+html.white .ptoday-fr .ptoday-fb { background: var(--hair-soft); }
+html.white a.ptoday-sr:active, html.white a.ptoday-mv:active, html.white a.ptoday-g:active, html.white a.ptoday-mr:active { background: var(--press); }

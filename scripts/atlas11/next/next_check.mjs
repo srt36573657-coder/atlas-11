@@ -242,7 +242,8 @@ for (const w of [320, 360, 390]) {
   if (g.dates.length !== 1) fail('보이는 날짜는 띠에 한 번([6] 2)', JSON.stringify(g.dates));
   if (g.moreOpen) fail('「전부 보기」는 처음 닫힘([화면] 7 — 오르는 것은 한 번 더 눌러야)', '');
   const wantAl = ['big', 'usual'].filter(w => (home?.alerts ?? []).some(a => a.kind === 'idx' && (a.why ?? 'usual') === w)).length;
-  if (g.al.length !== wantAl || g.al.some(a => !a.inBand) || g.top) fail('큰 날 「!」 = 띠 안([6] 1)', JSON.stringify({n: g.al.length, want: wantAl, out: g.al.filter(a => !a.inBand).length, top: g.top}));
+  // 흰 첫 화면은 큰 날 줄을 하나로 줄여 「! 크게 움직인 날」(읽어 주기 · 자세한 글은 #/today) — 있으면 한 줄 · 없으면 0
+  if (g.al.length !== Math.min(wantAl, 1) || g.al.some(a => !a.inBand || !a.t.startsWith('!')) || g.top) fail('큰 날 「!」 = 띠 안([6] 1)', JSON.stringify({n: g.al.length, want: wantAl, out: g.al.filter(a => !a.inBand).length, top: g.top}));
   // 바로 가기 넷(옛 칩 「달력」 「조건 찾기」 자리 · [6] 7) — 골똘이 칸(질문 전 #/why) · 달력 · 조건 찾기 · 대장주
   if (JSON.stringify(g.go4) !== JSON.stringify(['#/why', oldOr('cal', '#/cal'), oldOr('cond', '#/cond'), '#/f/lead'])) fail('바로 가기 넷(질문 전 = #/why · 달력 · 조건 찾기 · 대장주)', g.go4.join(' '));
   // 「전부 보기」 열기 — 한 줄에 하나(오르는 업종 · 급등 · … · 이야기) + 옛 「더 보기」 그대로: 세 줄 · 큰 숫자 하나 + 까닭 한 줄 · #/today 고리 · 띠 숫자 되풀이 없음 · 봉인 줄 · 약속 · 자료 요청(mkt · cond 0 — 요약이 새것일 때)

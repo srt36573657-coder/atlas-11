@@ -101,3 +101,18 @@ details.pchx-gold[open] > summary::after { transform: rotate(-90deg); }
 /* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 2단 업종 회사 줄 오른쪽 끝(고리와 형제 · 줄은 회사 · 단추는 보내기) · 줄 밑 금은 줄 전체 */
 .pchx-kr { border-bottom: 1px solid var(--hair); }
 .pchx-kr > .pchx-row { border-bottom: 0; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 먹 바탕(지금 단 · 고른 보기) 위 글은 흰색 · 지난 단은 흰 바탕 + 먹 테
+   흐름 말(▲ 오름 · ▼ 내림)은 먹 글(빨강은 오름 숫자에만 — 화살표가 방향을 말함) · 흰 바탕에서 사라지는 밝은 줄 · 칠 → --mute · --press */
+html.white .pchx-st li.past { background: #FFFFFF; border-color: var(--ink); }
+html.white .pchx-st li.now { color: #FFFFFF; }
+html.white .pchx-up { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .pchx-seg { background: #FFFFFF; }
+html.white .pchx-seg button[aria-pressed="true"] { color: #FFFFFF; }
+html.white :is(.pchx-tr, .pchx-trd):is(.up, .dn) { color: var(--ink); }
+html.white .pchx-chip, html.white :is(.pchx-bd.gold, .pchx-bd.q) { background: #FFFFFF; }
+html.white .pchx-chip:active, html.white .pchx-ib:active, html.white .pchx-row:active { background: var(--press); }
+html.white .pchx-key .k-avg { border-top-color: var(--mute); }
+html.white .pchx-key .k-b0 { border-top-color: var(--mute); }
+html.white .pchx-b0 { stroke: var(--mute); }

@@ -114,3 +114,17 @@ ol.prange-fl > li.prange-stop::before { content: ""; position: absolute; left: 0
 /* 영어 — 접은 칸 단추 글(::after 는 사전이 못 바꿈 · en.css 의 prange-more 와 같은 말) */
 html.en details.prange-pro > summary::after { content: 'Show'; }
 html.en details.prange-pro[open] > summary::after { content: 'Hide'; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 모형 막대의 빗금(그러데이션)은 흰 판에 없음 → 연한 칠 + 점선 테(점선 = 모형 가정 아래 추정)
+   먹빛 --card2 · --card3 칠과 밝은 반투명 줄은 흰 판에서 사라짐 → 막대 바탕 --press · 막대 바탕 줄 --mute · 금빛 테는 --gold · 단추는 흰 바탕 + 테(--hair2) */
+html.white .prange-model { background: var(--press); }
+html.white .prange-qline { outline-color: var(--gold); }
+html.white .prange-tr { background: var(--press); }
+html.white .prange-tr::before { background: var(--mute); }
+html.white :is(.prange-b, .prange-sw).prange-pos { background: var(--hair-soft); border: 1px dashed var(--ink); }
+html.white :is(.prange-b, .prange-sw).prange-neg { background: rgba(138, 101, 22, .22); border: 1px dashed var(--gold); }
+html.white .prange-ok .prange-mk { background: var(--press); }
+html.white :is(.prange-no, .prange-q) .prange-mk { outline-color: var(--gold); }
+html.white ol.prange-fl > li::after { background: var(--hair-soft); }
+html.white .prange-go a { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }

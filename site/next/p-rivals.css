@@ -95,3 +95,14 @@ li.privals-me .privals-pn { color: var(--ink); font-weight: 700; }
 
 /* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 다른 회사 줄 오른쪽 끝(고리와 형제) · 단추가 없는 줄(이 회사 · 모르는 회사)도 같은 넓이 → 막대 자(트랙)가 줄마다 같음 */
 .privals-kk > li > div.privals-pr { width: calc(100% - 52px); }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 흰 판은 그림자를 모두 걷으므로 안쪽 그림자 테 → outline(자리를 안 차지함)
+   먹빛 --card2 · --card3 칠은 흰 판에서 흰색이 되어 사라짐 → 막대 바탕 --hair-soft · 깔때기 몫 칠 --press · 알약 · 단추는 흰 바탕 + 테 */
+html.white :is(.privals-box, .privals-shp, .privals-rv, .privals-more, .privals-why, .privals-funnel li) { outline: 1px solid var(--hair); outline-offset: -1px; }
+html.white .privals-shp.privals-on, html.white .privals-funnel li.privals-stop { outline: 2px solid var(--ink); outline-offset: -2px; }
+html.white .privals-pt { background: var(--hair-soft); }
+html.white .privals-ff { background: var(--press); }
+html.white .privals-rw { background: #FFFFFF; outline: 1px solid var(--hair); outline-offset: -1px; }
+html.white .privals-go { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white a.privals-pr:active { background: var(--press); }

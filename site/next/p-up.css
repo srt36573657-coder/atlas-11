@@ -71,3 +71,10 @@ details.pup-older > ol.pup-list { margin-top: var(--sp-1); }
 .pup-links a:last-child { text-align: right; }
 .pup-foot .safe { margin: var(--sp-2) 0 0; color: var(--sub); font-size: var(--fs-1); }
 .pup-foot .pup-safe2 { margin-top: 0; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 흰 판은 그림자를 모두 걷으므로 안쪽 그림자 테 → outline · 먹빛 --card2 · --card3 칠 · 줄은 흰 판에서 사라짐 → 칸 테 --hair · 세로 줄 --hair · 알약 칠 --press */
+html.white .pup-mread, html.white .pup-nx { outline: 1px solid var(--hair); outline-offset: -1px; }
+html.white ol.pup-list::before { border-left-color: var(--hair); }
+html.white li.r-ch .pup-res { background: var(--press); }
+html.white details.pup-older > summary { outline: 1px solid var(--hair2); outline-offset: -1px; }

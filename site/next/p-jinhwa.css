@@ -81,3 +81,12 @@ details.jh-g .jh-m, details.jh-ref .jh-m { margin: var(--sp-1) 0 0; }
 .jh-few { color: var(--gold); }
 details.jh-ref { margin: var(--sp-1) var(--sp-2) 0; }
 details.jh-ref .jh-m { color: var(--sub); }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 먹 · 금빛 바탕 단추 글은 흰색 · 되돌리기 · 접은 칸은 흰 바탕 + 테(--hair2) · 그림 칸 테는 --hair2(흰 바탕 위 4.9) */
+html.white .jh-nav:active { background: var(--press); }
+html.white .jh-pic { border-color: var(--hair2); }
+html.white .jh-ok, html.white .jh-rv { color: #FFFFFF; }
+html.white .jh-rv { background: #FFFFFF; color: var(--ink); }
+html.white .jh-ok.on, html.white .jh-rv.on { background: #FFFFFF; color: var(--gold); }
+html.white :is(details.jh-more, details.jh-g, details.jh-ref) > summary { outline: 1px solid var(--hair2); outline-offset: -1px; }

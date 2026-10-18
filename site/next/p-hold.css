@@ -157,3 +157,23 @@ html.m4 .hd-fold[data-open="false"] a.hello.m4-letter .hpi img.hpi-bird { bottom
 .hd-kr > .hd-ch { flex: 1 1 auto; min-width: 0; }
 .sb-kr { border-bottom: 1px solid var(--hair); }
 .sb-kr > .sb-n { border-bottom: 0; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 신호 색 이름(hd-cg · cy · cr) · 셈은 그대로 — 흰 바탕에서 보이는 짙기만(초록 #1B7A3A · 짙은 호박 #9A6700 · 빨강 #D0202E · 흰 바탕 위 3 넘게) · 점은 18px(작은 점 아님)
+   먹빛 --card2 · --card3 칠은 흰색이 되어 사라짐 → 칸 테 · 막대 바탕 --hair-soft · 먹 바탕 단추 글은 흰색 · 편지 접힌 끝의 그러데이션 걷음 · 관심 소식 말(뽑힘)은 먹 글(빨강은 오름 숫자에만) */
+html.white .hd-pic { outline: 1px solid var(--hair); outline-offset: -1px; }
+html.white .hd-track { background: var(--hair-soft); }
+html.white .hd-badge.hd-cr { outline-color: #D0202E; }
+html.white .hd-badge.hd-cy { outline-color: #9A6700; }
+html.white .hd-badge.hd-cg { outline-color: #1B7A3A; }
+html.white .hd-cg { background: #1B7A3A; } html.white .hd-cy { background: #9A6700; } html.white .hd-cr { background: #D0202E; }
+html.white .hd-badge:is(.hd-cg, .hd-cy, .hd-cr) { background: #FFFFFF; }
+html.white .hd-dot { width: 18px; height: 18px; }
+html.white .hd-dot .hd-sr { color: #FFFFFF; } /* 점 안 읽어 주는 글(눈에는 안 보임) — 색 점 위 대비 */
+html.white .hd-dot.hd-cu { border-color: #9A6700; }
+html.white .hd-tog[aria-pressed="true"] { outline-color: #9A6700; }
+html.white .hd-go { color: #FFFFFF; }
+html.white .hd-no { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .hd-in-d { color-scheme: light; }
+html.white .hd-fold[data-open="false"] a.hello.m4-letter::after { background: none; border-bottom: 1px solid var(--hair); }
+html.white .sb-sel, html.white .sb-re { color: var(--ink); }

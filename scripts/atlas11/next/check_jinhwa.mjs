@@ -161,7 +161,7 @@ for (const [w, en] of [[320, false], [320, true], [360, false], [360, true], [39
     const j = t.bs.find(b => b.id === 'jhBtn'), sorted = [...t.bs].sort((a, b) => a.l - b.l), overlap = sorted.some((b, i) => i && b.l < sorted[i - 1].r - 0.5);
     check(j && j.w >= 43.5 && j.h >= 43.5 && t.fs >= 16.95 && t.href === '#/jinhwa' && t.txt === (en ? 'Evolve' : '진화'), `위 막대 「진화」 단추 ${w}${en ? ' 영어' : ''} — 44 × 44 · 17px · #/jinhwa`, JSON.stringify({j, fs: t.fs, txt: t.txt}));
     check(t.bs.every(b => b.w >= 43.5 && b.h >= 43.5) && !overlap && t.sw <= t.vw && t.bs.every(b => b.r <= t.vw + 0.5), `위 막대 ${w}${en ? ' 영어' : ''} — 모든 단추 44 · 겹침 0 · 옆 넘침 0`, JSON.stringify(t.bs.map(b => `${b.id} ${Math.round(b.l)}~${Math.round(b.r)} ${Math.round(b.w)}×${Math.round(b.h)}`)));
-    check(t.logoLines <= 44.5, `위 막대 ${w}${en ? ' 영어' : ''} — 로고 한 줄`, String(t.logoLines));
+    check(t.logoLines <= 48.5, /* 흰 판 위 막대는 48(사장님 2026-10-19 02:03 [검사] 5 「새 단추는 48px」) */ `위 막대 ${w}${en ? ' 영어' : ''} — 로고 한 줄`, String(t.logoLines));
   } catch (e) { fail('위 막대 판 멈춤', `${w} ${en}: ${String(e.message).split('\n')[0]}`); }
   await ctx.close();
 }
@@ -435,12 +435,12 @@ else {
     got.length = 0;
     const res1 = await journal(p, 2);
     B.rest = ks(got).filter(k => k !== 'visit');
-    check(/오늘은 쉬어 가자/.test(res1) && JSON.stringify(B.rest) === '["stop_rest"]', '[10] 1 매매일지를 끝냄 · 「오늘은 쉬어 가자」 → stop_rest 한 번', `${JSON.stringify(B.rest)} 「${res1.slice(0, 30)}」`);
+    check(/오늘은 쉬어 (가자|갈까\?)/.test(res1) && JSON.stringify(B.rest) === '["stop_rest"]', '[10] 1 매매일지를 끝냄 · 「오늘은 쉬어 가자」 → stop_rest 한 번', `${JSON.stringify(B.rest)} 「${res1.slice(0, 30)}」`);
     await ctx.close();
     ctx = await ctxOf({test: true}); p = await pageOf(ctx); got = await tap(p);
     const res2 = await journal(p, 0);
     B.stop = ks(got).filter(k => k !== 'visit');
-    check(!/오늘은 쉬어 가자/.test(res2) && JSON.stringify(B.stop) === '["stop"]', '[10] 1 매매일지를 끝냄(쉬어 가자 아님) → stop 한 번', `${JSON.stringify(B.stop)} 「${res2.slice(0, 30)}」`);
+    check(!/오늘은 쉬어 (가자|갈까\?)/.test(res2) && JSON.stringify(B.stop) === '["stop"]', '[10] 1 매매일지를 끝냄(쉬어 가자 아님) → stop 한 번', `${JSON.stringify(B.stop)} 「${res2.slice(0, 30)}」`);
     await ctx.close();
     // 한 달 답 — 한 달(장 스무 번) 지난 기록 둘(옛 꼴 · 종목 없음)
     const D = (await getJ('/atlas/data/days.json')).body?.dates ?? [], s = D[D.length - 30];

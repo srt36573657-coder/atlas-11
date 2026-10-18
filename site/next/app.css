@@ -542,3 +542,5 @@ html.white details.hm-more { border-top-color: var(--hair); }
 /* 좁은 폭 로고 — 먹빛 판은 글자를 0px 로 숨기지만 흰 판은 17px 아래 글이 없어야 함 → 48 × 48 칸에 둥근 그림만 보이게 글자는 칸 밖으로 밀어 잘라 둠(읽는 이름은 aria-label) */
 @media (max-width: 349px) { html.white .top .logo { font-size: var(--fs-1); width: 48px; min-width: 48px; overflow: hidden; justify-content: flex-start; gap: 24px; padding-left: 9px; } }
 @media (max-width: 429px) { html.white.en .top .logo { font-size: var(--fs-1); width: 48px; min-width: 48px; overflow: hidden; justify-content: flex-start; gap: 24px; padding-left: 9px; } }
+/* 흰 판 좁은 폭 위 막대 — 단추가 48 이라 320 · 360 영어에서 1px 넘쳤음(모든 쪽 검사 2026-10-19 03:40) → 둘레 · 사이를 줄임 */
+@media (max-width: 379px) { html.white .top { padding: 0 var(--sp-1); gap: 4px; } }

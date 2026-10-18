@@ -49,3 +49,11 @@ a.pinfo-go span span { color: var(--sub); }
 .pinfo-links a:last-child { text-align: right; }
 .pinfo-foot .safe { margin: var(--sp-2) 0 0; color: var(--sub); font-size: var(--fs-1); }
 .pinfo-foot .pinfo-safe2 { margin-top: 0; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 먹빛 --card2 · --card3 로 그린 줄 · 막대 바탕 · 칸은 흰 판에서 흰색이 되어 사라짐 → 줄 --hair · 막대 바탕 --hair-soft · 칸 테 --hair2(outline) */
+html.white ol.pinfo-funnel { border-top-color: var(--hair); }
+html.white ol.pinfo-funnel li { border-bottom-color: var(--hair); }
+html.white ol.pinfo-funnel li::after { background: var(--hair-soft); }
+html.white ol.pinfo-funnel li .fill { background: var(--mute); }
+html.white details.pinfo-more > summary, html.white a.pinfo-go { outline: 1px solid var(--hair2); outline-offset: -1px; }

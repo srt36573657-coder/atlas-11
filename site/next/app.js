@@ -327,7 +327,9 @@ function homeBand(H, short = false) { // short = 흰 첫 화면 한 줄(날짜 �
   const when = short ? (w.now ? `${mdN(d)} 장 중` : mdN(d)) : w.now ? `${mdN(d)} ${ampm(w.t)} 장 중` : w.intra && isTime(w.t) ? `${mdN(w.t.slice(0, 10))} ${ampm(w.t)}까지` : `${mdN(d)} 마감`;
   const ixs = [[K, '코스피'], [Q, '코스닥']].filter(([x]) => x).flatMap(([x, nm], i) => [i ? (short ? ' ' : ' · ') : null, h('span', {class: 'hm-ix'}, h('span', {text: nm}), ' ', h('b', {class: 'num ' + cls(x.day), text: p2(x.day)}))]);
   a.append(h('span', {class: 'hm-row'}, w.stale ? [h('b', {class: 'hm-q', 'aria-hidden': 'true', text: '?'}), ' '] : null, h('span', {class: 'hm-bd', text: when}), chev), h('span', {class: 'hm-ixs'}, ...ixs)); // 날짜 줄 · 숫자 줄(늘 같은 두 줄 · 글 흐름 — 읽어 주기도 「코스피 −3.28% · 코스닥 −4.36%」)
-  if (idxOk(K) || idxOk(Q)) a.append(...idxAlerts(H)); // 큰 날 금빛 「!」 = 띠 안(명령문 [6] 1)
+  if (idxOk(K) || idxOk(Q)) { const al = idxAlerts(H); // 큰 날 금빛 「!」 = 띠 안(명령문 [6] 1)
+    if (short && al.length) { const full = al.map(x => x.textContent).join(' '); a.append(h('p', {class: 'm4-al', 'aria-label': full, title: full, text: '! 크게 움직인 날'})); } // 흰 첫 화면 = 짧은 꼴(글자 수 잣대 · 자세한 글은 누르면 #/today · 읽어 주기는 전체 글)
+    else a.append(...al); }
   return {el: a, day: d};
 }
 /** 오늘 시장 세 줄 — 묶음마다 큰 숫자 하나(마지막 날 하루 값) + 까닭 한 줄(자료로만) · 띠 숫자(코스피 · 코스닥 하루 %)는 되풀이하지 않음 */
@@ -1034,10 +1036,13 @@ function whiteFor(k) {
 whiteFor(parse(location.hash || '#/').k);
 /** 글꼴 표 — 첫 화면을 그린 다음 그림 때에 한 번 붙임(그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap) */
 let fontsOn = false;
+const fontsAdd = () => { if (document.querySelector('link[href="/atlas/fonts.css"]')) return; const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/atlas/fonts.css'; document.head.append(l); };
 function fontsLater() {
   if (fontsOn) return; fontsOn = true;
-  requestAnimationFrame(() => setTimeout(() => { if (document.querySelector('link[href="/atlas/fonts.css"]')) return; const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/atlas/fonts.css'; document.head.append(l); }, 0));
+  requestAnimationFrame(() => setTimeout(fontsAdd, 0));
 }
+// 첫 화면이 아닌 쪽으로 바로 열면 글꼴 표를 곧바로 붙임(옛 꼴 그대로 — 그린 뒤 글꼴이 바뀌어 보던 자리가 밀리지 않게 · 모든 쪽 검사 2026-10-19 03:40 보내기 검사)
+if (parse(location.hash || '#/').k !== '') { fontsOn = true; fontsAdd(); }
 let seq = 0, curHash = null;
 const scrollMem = new Map();
 function parse(hash) {

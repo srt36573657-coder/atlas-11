@@ -78,3 +78,10 @@ details.ptime-more[open] > summary::after { transform: rotate(-90deg); }
 .ptime-links a:last-child { text-align: right; }
 .ptime-foot .safe { margin: var(--sp-2) 0 0; color: var(--sub); font-size: var(--fs-1); }
 .ptime-foot .ptime-safe2 { margin-top: 0; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 봉인 번호 금빛 테는 그림자 대신 outline(자리를 안 차지함) · 막대 바탕 --hair-soft · 접은 칸 단추는 흰 바탕 + 테 */
+html.white .ptime-key .k-pool { border-top-color: var(--mute); }
+html.white .ptime-gt { background: var(--hair-soft); }
+html.white details.ptime-more > summary { outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .ptime-seal { outline: 1px solid var(--gold); outline-offset: -1px; }

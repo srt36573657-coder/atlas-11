@@ -121,3 +121,10 @@ html.f3 .ps-dlg { --fs-1: 21.9px; --fs-2: 24.4px; --fs-3: 27px; --fs-4: 30.9px; 
 .ps-offer { --ps-gold: var(--gold, #E9B949); --ps-sub: var(--sub, #B0B5BD); display: flex; flex-direction: column; gap: var(--sp-1, 8px); margin: var(--sp-2, 16px); padding: var(--sp-2, 16px); border: 1px solid var(--hair2, rgba(242, 239, 232, .22)); border-radius: 18px; background: var(--card, #13161C); color: var(--ink, #F2EFE8); }
 .ps-offer .ps-h2, .ps-offer .ps-p { margin: 0; }
 .ps-offer .ps-go { flex: none; width: 100%; }
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만(소개 쪽 · 편지 쪽 · 앱 먹빛은 위 그대로) · 뒤 값(먹빛 #B0B5BD 등)으로 떨어지던 흐린 글은 흰 판 토큰으로 · 금빛 · 먹 바탕 위 글은 흰색 */
+html.white .ps-safe { color: var(--sub); }
+html.white .ps-go, html.white .ps-after .ps-go { color: #FFFFFF; }
+html.white .ps-toast { color: #FFFFFF; }
+html.white :is(.ps-qb, .ps-x, .ps-go) { min-height: 48px; min-width: 48px; } /* 글상자는 화면 칸(#view) 밖이라 app.css 흰 판 48 줄이 안 닿음 — 여기서 */

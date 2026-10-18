@@ -137,3 +137,12 @@ button.pcal-more-steps { margin-top: var(--sp-1); }
 .pcal-kr:last-child { border-bottom: 0; }
 .pcal-kr > a.pcal-row, .pcal-kr > a.pcal-erow { border-bottom: 0; }
 p.pcal-grow[data-kkrow] > a.pcal-link { flex: 1 1 auto; min-width: 0; } /* 숨긴 곳 줄 — 이름 · 되돌리기 · 카톡 단추(오른쪽 끝) 차례 */
+
+/* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
+   html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 칸 고르기 · 단추는 흰 바탕 + 테(--hair2) · 고른 칸은 먹 바탕 흰 글 · 누른 자리는 --press */
+html.white .pcal-chip { background: #FFFFFF; border: 1px solid var(--hair2); color: var(--ink); }
+html.white .pcal-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #FFFFFF; }
+html.white .pcal-btn { background: #FFFFFF; border-color: var(--hair2); }
+html.white .pcal-btn[aria-pressed="true"] { border-color: var(--ink); }
+html.white .pcal-show { border-color: var(--hair2); }
+html.white a.pcal-row:active, html.white a.pcal-erow:active { background: var(--press); }
