@@ -1,11 +1,12 @@
 {
  "schema": "atlas11-next-why-3",
- "when": "2026-10-18T03:10:48.050Z",
+ "when": "2026-10-18T03:19:30.518Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
  "quick": false,
  "gdrAsOf": "2026-10-13",
+ "gdrVersion": "gdr-v2",
  "picks": 0,
  "stocks": {
   "co1": "005930",
@@ -70,14 +71,15 @@
   "fontSizesPerScreenMax": 5
  },
  "timing": {
-  "flowMs": 567,
+  "flowMs": 617,
   "taps": 14,
   "qTaps": 11,
   "qTapsBefore": 22,
   "typed": 4
  },
- "sec": 29,
+ "sec": 26,
  "counts": {
+  "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "찾기와 같은 차례": 7,
   "펀드 · 우선주 까닭 줄": 5,
   "모양 잰 화면": 107,

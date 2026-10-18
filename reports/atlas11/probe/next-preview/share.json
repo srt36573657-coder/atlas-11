@@ -1,11 +1,11 @@
 {
  "schema": "godori-check-share-1",
- "at": "2026-10-18T03:08:30.784Z",
+ "at": "2026-10-18T03:21:14.093Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
  "code": "005930",
- "secs": 78,
+ "secs": 76,
  "counts": {
   "거르기 맞댐": 33,
   "모양 파일 글씨 크기 줄": 37,
@@ -18,6 +18,7 @@
   "보낸 글 수익 숫자 0": 20,
   "보낸 것": 28,
   "화면 오류 · 카카오 요청 맞댐": 56,
+  "fail": 4,
   "친구 주소 차례 맞댐": 10,
   "친구 주소": 12,
   "기록 파일 맞댐": 2,
@@ -27,8 +28,25 @@
   "조용한 로그인 맞댐": 6,
   "글씨 크기 가짓수(쪽 전체 · 질문 칸 포함 · 알림용)": "{\".ps-dlg\":3,\"#view\":5,\".ps-offer\":3}"
  },
- "fails": [],
- "ok": true,
+ "fails": [
+  [
+   "화면 오류",
+   "360×640 편지 /letter.html · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "카카오 요청이 꺼짐 상태에서 나감([12] 2 — 요청 0 이어야 함)",
+   "360×640 편지 /letter.html · GET /api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "390×844 편지 /letter.html · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "카카오 요청이 꺼짐 상태에서 나감([12] 2 — 요청 0 이어야 함)",
+   "390×844 편지 /letter.html · GET /api/kakao/me"
+  ]
+ ],
+ "ok": false,
  "entries": [
   "회사 보내기",
   "회사 같이 따져 줘",

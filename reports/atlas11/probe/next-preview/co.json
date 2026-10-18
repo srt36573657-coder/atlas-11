@@ -6,7 +6,7 @@
  "all": true,
  "limit": null,
  "widths": 28,
- "at": "2026-10-18T03:11:53.371Z",
+ "at": "2026-10-18T03:21:25.189Z",
  "shard": "all/2",
  "units": {
   "total": 2566,
@@ -31,17 +31,17 @@
    }
   }
  },
- "seconds": 141,
+ "seconds": 140,
  "secondsSum": 244,
  "time": {
-  "old": 43.1,
-  "new": 89,
-  "wall": 140.6,
-  "wallSum": 243.4,
+  "old": 43.6,
+  "new": 88.2,
+  "wall": 139.8,
+  "wallSum": 244,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 17.7,
-  "oldShare": 32.6
+  "oldPct": 17.9,
+  "oldShare": 33.1
  },
  "net": {
   "req": 2515,
@@ -76,7 +76,7 @@
    "shard": "1/2",
    "ok": true,
    "fails": 0,
-   "seconds": 141,
+   "seconds": 140,
    "mine": 1283,
    "kinds": {
     "c": 1279,
@@ -89,7 +89,7 @@
    "shard": "2/2",
    "ok": true,
    "fails": 0,
-   "seconds": 103,
+   "seconds": 104,
    "mine": 1283,
    "kinds": {
     "c": 1278,
