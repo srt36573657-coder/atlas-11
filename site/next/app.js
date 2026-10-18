@@ -925,7 +925,10 @@ globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, day
   findMatch, findReady, shareBox, laterBtn, isLater, toggleLater}; // findMatch · findReady = 찾기 잣대(매매일지 종목 고르기) · shareBox = 보내기 글상자(옛 share 대신) · laterBtn = 회사 관심 담기 단추
 /* 길 — 화면마다 새 칸 · 늦게 끝난 앞 화면은 버림 · 돌아오면 그 자리 */
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
-VIEWS.jinhwa = a => { let k = null; try { k = localStorage.getItem('atlas11:invite:owner'); } catch { /* 기억 못 하는 기계 */ } return k && k.length >= 16 && k.length <= 128 ? page('jinhwa', a) : new Promise(res => { addEventListener('hashchange', () => res({title: '', nodes: []}), {once: true}); location.replace('#/'); }); }; import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 일꾼 KD(2026-10-18 16:39 [9] 1 · [10] 2) — 진화 칸 길: 사장님 열쇠가 없는 기기는 모듈도 받지 않고 흔적 없이 #/ 로(주소 기록도 바꿔 씀) · 열쇠가 있으면 p-jinhwa 가 서버에 물어 아니면 같은 길 · 합계 칸 참고 「연 수」 쪽마다 한 번
+VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 진화 쪽 길(사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」 · 일꾼 KM) — 모든 기기가 엶 · 단추는 p-jinhwa 가 사장님 열쇠 기기에서만 그림 · 합계 칸 참고 「연 수」 쪽마다 한 번(일꾼 KD)
+/* 위 막대 「진화」 단추(일꾼 KM · 2026-10-18 22:45) — 모든 사람 · 44px · 찾기 단추 앞 · 그 쪽이면 aria-current */
+const jhBtn = h('a', {class: 'tbtn', id: 'jhBtn', href: '#/jinhwa', text: '진화'});
+$('.top #langBtn')?.before(jhBtn);
 /* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
 const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};
@@ -954,7 +957,8 @@ async function route(force) {
   const view = k === 's' ? (() => page('share', raw)) : OLD_KINDS.has(k) ? (arg => page(k, arg)) : VIEWS[k];
   if (!view || (a == null && k !== 's')) { location.replace('#/'); return; }
   const my = ++seq, root = $('#view');
-  for (const t of document.querySelectorAll('.tabs a')) t.removeAttribute('aria-current');
+  for (const t of document.querySelectorAll('.tabs a, #jhBtn')) t.removeAttribute('aria-current');
+  if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (TABS[k]) $('.tabs a[data-tab="' + TABS[k] + '"]')?.setAttribute('aria-current', 'page');
   root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'}));
   let out;
