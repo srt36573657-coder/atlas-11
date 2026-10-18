@@ -1,66 +1,73 @@
-/* 업데이트 기록(#/up) — 새 아틀란스 모양(app.css 색 이름 그대로) · 글 17px 넘게 · 누르는 자리 44px 넘게 · 입체 · 바둑판 없음 */
-.pup { padding-bottom: 8px; }
-.pup .wt { margin-bottom: 4px; }
+/* 업데이트 기록(#/up) — 새 아틀란스 모양(app.css 색 이름 그대로) · 누르는 자리 44px 넘게 · 입체 · 바둑판 없음
+   글씨 · 간격(사장님 2026-10-18 [10] 5 ~ 10): 글씨는 var(--fs-1 ~ 6)만(17px 아래 없음) · 간격은 var(--sp-1 ~ 3)(8 · 16 · 24)와 0 만 · 음수 margin 없음
+   글 시작 왼쪽 줄은 셋: 16(바탕) · 32(칸 안 · 접는 줄) · 56(범례 · 회차 기록 · 칸 안 목록) — 회차 기록의 점은 왼쪽 24px 칸 안에(칸 짜임 grid) 두어 음수 자리 없이 맞춤
+   칸의 가는 테는 border 대신 안쪽 테 그림자(box-shadow inset)로 그려 글 자리가 1px 밀리지 않게 · 오른쪽 맞춤 글(그림 아래 오른쪽 날짜 · 맨 아래 둘째 고리)은 text-align:right */
+.pup { padding-bottom: var(--sp-1); }
+.pup .wt { font-size: var(--fs-4); margin: var(--sp-2) var(--sp-2) var(--sp-1); } /* 큰 제목 — 공용 .wt(23px · 12 16 2)를 이 쪽 안에서만 토큰으로 */
 .pup .q { color: var(--gold); }
 .pup .num { font-variant-numeric: tabular-nums; }
-.pup-tell { margin-bottom: 2px; }
-.pup-count { margin: 0 16px 6px; font-size: 18px; color: var(--ink); line-height: 1.5; }
+.pup-tell { margin-bottom: 0; }
+.pup-count { margin: 0 var(--sp-2) var(--sp-1); font-size: var(--fs-2); color: var(--ink); line-height: 1.5; }
 
 /* 그림 — 회차마다 들고 난 수 */
-.pup-chart { position: relative; margin: 10px 16px 0; min-height: 132px; }
+.pup-chart { position: relative; margin: var(--sp-1) var(--sp-2) 0; min-height: 132px; }
 .pup-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
-.pup-ax { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; color: var(--mute); font-size: 17px; font-variant-numeric: tabular-nums; }
-.pup-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 16px 0; color: var(--sub); font-size: 17px; line-height: 1.5; }
-.pup-key span { display: inline-flex; align-items: center; gap: 6px; }
-.pup-key i { flex: none; display: inline-block; width: 22px; height: 10px; border-radius: 2px; }
+.pup-ax { display: flex; justify-content: space-between; gap: var(--sp-1); margin-top: var(--sp-1); color: var(--mute); font-size: var(--fs-1); font-variant-numeric: tabular-nums; }
+.pup-ax span:last-child { text-align: right; }
+.pup-key { display: grid; gap: var(--sp-1); margin: var(--sp-1) var(--sp-2) 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.5; } /* 범례는 한 줄에 하나 — 글 시작 줄이 하나(56) */
+.pup-key span { display: flex; align-items: center; gap: var(--sp-1); }
+.pup-key i { flex: none; display: block; width: 32px; height: 10px; border-radius: 2px; }
 .pup-key .k-in { background: var(--ink); }
 .pup-key .k-out { border: 1.5px solid var(--sub); }
 .pup-key .k-turn { border: 1.5px dashed var(--sub); }
 
 /* 시장 판독 · 네 눈 · 다음 회차 */
-.pup-mread { margin: 18px 16px 0; padding: 14px 16px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); line-height: 1.6; font-size: 18px; }
+.pup-mread { margin: var(--sp-2) var(--sp-2) 0; padding: var(--sp-2); border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--hair); line-height: 1.6; font-size: var(--fs-2); }
 .pup-mread p { margin: 0; }
 .pup-mread b { font-weight: 800; }
-.pup-mread ul { margin: 6px 0 0; padding-left: 20px; }
-.pup-mread li { margin: 4px 0; }
-.pup-line { margin: 12px 16px 0; font-size: 17px; color: var(--sub); line-height: 1.5; }
+.pup-mread ul { margin: var(--sp-1) 0 0; padding-left: var(--sp-3); }
+.pup-mread li { margin: var(--sp-1) 0; }
+.pup-line { margin: var(--sp-2) var(--sp-2) 0; font-size: var(--fs-1); color: var(--sub); line-height: 1.5; }
 .pup-line.q { color: var(--gold); }
-.pup-nx { display: flex; align-items: center; gap: 12px; margin: 12px 16px 0; padding: 10px 12px; border-radius: 14px; background: var(--card2); font-size: 17px; line-height: 1.5; color: var(--sub); }
-.pup-nx img { flex: none; width: 40px; height: 40px; }
+.pup-nx { display: flex; align-items: center; gap: var(--sp-1); margin: var(--sp-2) var(--sp-2) 0; padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-1); border-radius: 14px; background: var(--card2); font-size: var(--fs-1); line-height: 1.5; color: var(--sub); } /* 작은 동그라미 24 + 사이 8 → 글은 56 */
+.pup-nx img { flex: none; width: 24px; height: 24px; }
 .pup-nx b { color: var(--ink); }
-.pup-how { margin-top: 12px; line-height: 1.6; }
+.pup-how { margin-top: var(--sp-2); line-height: 1.6; }
 
-/* 회차 기록 — 세로 줄 위 점 하나 = 회차 하나(꽉 찬 점 = 바꿈 · 금빛 테 = 실패) */
-ol.pup-list { list-style: none; margin: 0 16px; padding: 0 0 0 26px; position: relative; border-top: 1px solid var(--hair); }
-ol.pup-list::before { content: ""; position: absolute; left: 6px; top: 24px; bottom: 0; border-left: 1px solid var(--card3); }
-li.pup-r { position: relative; padding: 16px 0 10px; border-bottom: 1px solid var(--hair); font-size: 18px; line-height: 1.55; }
-li.pup-r::before { content: ""; position: absolute; left: -25px; top: 24px; width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--mute); background: var(--bg); }
+/* 회차 기록 — 세로 줄 위 점 하나 = 회차 하나(꽉 찬 점 = 바꿈 · 금빛 테 = 실패) · 점은 왼쪽 24px 칸 · 글은 56에서 시작 */
+ol.pup-list { list-style: none; margin: 0 var(--sp-2); padding: 0; position: relative; border-top: 1px solid var(--hair); }
+ol.pup-list::before { content: ""; position: absolute; left: 11px; top: var(--sp-3); bottom: 0; border-left: 1px solid var(--card3); }
+li.pup-r { display: grid; grid-template-columns: var(--sp-3) minmax(0, 1fr); column-gap: var(--sp-2); padding: var(--sp-2) 0 var(--sp-1); border-bottom: 1px solid var(--hair); font-size: var(--fs-2); line-height: 1.55; }
+li.pup-r > * { grid-column: 2; min-width: 0; }
+li.pup-r::before { content: ""; grid-column: 1; grid-row: 1; justify-self: center; align-self: start; position: relative; z-index: 1; margin-top: var(--sp-1); width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--mute); background: var(--bg); }
 li.pup-r.r-ch::before { border-color: var(--ink); background: var(--ink); }
 li.pup-r.r-fail::before { border-color: var(--gold); }
-li.pup-r p { margin: 0 0 6px; overflow-wrap: anywhere; }
-.pup-uh { font-size: 19px; }
+li.pup-r p { margin: 0 0 var(--sp-1); overflow-wrap: anywhere; }
+.pup-uh { font-size: var(--fs-2); }
 .pup-uh b { font-weight: 800; }
-.pup-res { display: inline-block; margin-left: 2px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--hair2); font-size: 17px; font-weight: 600; white-space: nowrap; }
+.pup-res { display: inline; padding: 0 var(--sp-1); border-radius: 999px; border: 1px solid var(--hair2); font-size: var(--fs-1); font-weight: 600; white-space: nowrap; } /* 줄 속 알약 — 줄 가운데서 시작하는 칸이 되지 않게 inline */
 li.r-ch .pup-res { background: var(--card2); }
 li.r-fail .pup-res { border-color: var(--gold); color: var(--gold); }
-.pup-small { color: var(--sub); font-size: 17px; }
+.pup-small { color: var(--sub); font-size: var(--fs-1); }
 .pup-turn { font-weight: 700; }
-.pup-stay b { font-size: 24px; font-weight: 300; letter-spacing: -.02em; }
+.pup-stay b { font-size: var(--fs-4); font-weight: 300; letter-spacing: -.02em; }
 .pup-ni { font-weight: 700; } .pup-no { font-weight: 700; color: var(--sub); }
-details.pup-more { margin: 4px 0 8px; }
-details.pup-more > summary, details.pup-older > summary { display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 12px; background: var(--card2); font-size: 17px; cursor: pointer; list-style: none; }
+details.pup-more { margin: 0 0 var(--sp-1); }
+details.pup-more > summary { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0; color: var(--violet-ink); font-size: var(--fs-1); cursor: pointer; list-style: none; } /* 회차 안 「모두 보기」 — 알약 없이 글 줄(글 시작 줄 56 그대로) */
+details.pup-older > summary { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 var(--sp-2); border-radius: 12px; background: var(--card2); font-size: var(--fs-1); cursor: pointer; list-style: none; }
 details.pup-more > summary::-webkit-details-marker, details.pup-older > summary::-webkit-details-marker { display: none; }
-details.pup-more > summary::after, details.pup-older > summary::after { content: "›"; margin-left: auto; color: var(--sub); transform: rotate(90deg); }
+details.pup-more > summary::after, details.pup-older > summary::after { content: "›"; flex: none; width: 24px; height: 24px; line-height: 24px; text-align: center; color: var(--sub); transform: rotate(90deg); } /* 정사각 칸 — 돌려도 옆으로 삐져나가지 않음(알약 없는 줄에서 10px 넘치던 일) */
 details.pup-more[open] > summary::after, details.pup-older[open] > summary::after { transform: rotate(-90deg); }
-.pup-in { padding: 8px 2px 0; color: var(--sub); font-size: 17px; }
-details.pup-older { margin: 12px 0 0; }
-details.pup-older > summary { margin: 0 16px; }
-details.pup-older > ol.pup-list { margin-top: 8px; }
+.pup-in { padding: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-1); }
+details.pup-older { margin: var(--sp-2) 0 0; }
+details.pup-older > summary { margin: 0 var(--sp-2); }
+details.pup-older > ol.pup-list { margin-top: var(--sp-1); }
 
 /* 맨 아래 — 자료 · 때 · 안전 문장 */
-.pup-foot { margin: 32px 16px 0; padding-top: 14px; border-top: 1px solid var(--hair); color: var(--mute); font-size: 17px; line-height: 1.6; }
-.pup-foot p { margin: 0 0 8px; }
-.pup-links { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.pup-foot { margin: var(--sp-3) var(--sp-2) 0; padding-top: var(--sp-2); border-top: 1px solid var(--hair); color: var(--mute); font-size: var(--fs-1); line-height: 1.6; }
+.pup-foot p { margin: 0 0 var(--sp-1); }
+.pup-links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 var(--sp-2); }
 .pup-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sub); text-decoration: underline; text-underline-offset: 4px; }
-.pup-foot .safe { margin: 16px 0 0; color: var(--sub); font-size: 17px; }
-.pup-foot .pup-safe2 { margin-top: 2px; }
+.pup-links a:last-child { text-align: right; }
+.pup-foot .safe { margin: var(--sp-2) 0 0; color: var(--sub); font-size: var(--fs-1); }
+.pup-foot .pup-safe2 { margin-top: 0; }

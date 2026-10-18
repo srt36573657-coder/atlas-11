@@ -1,44 +1,51 @@
-/* 도움말(#/info) — 새 아틀란스 모양(app.css 색 이름 그대로) · 글 17px 넘게 · 누르는 자리 44px 넘게 · 입체 · 바둑판 없음 */
-.pinfo { padding-bottom: 8px; }
+/* 도움말(#/info) — 새 아틀란스 모양(app.css 색 이름 그대로) · 누르는 자리 44px 넘게 · 입체 · 바둑판 없음
+   2026-10-18 [10] 5 ~ 10 — 글씨는 var(--fs-1 ~ 4) 만(17px 아래 없음) · 간격은 var(--sp-1 ~ 3) 와 0 만(음수 없음) · 글 시작 왼쪽 줄은 16 · 32 · 40 셋
+   (16 = 글 · 32 = 칸 안 글(안쪽 16) · 40 = 목록 글(들여쓰기 24) · 가운데 · 오른쪽 맞춤 글은 줄 수에 안 셈) — 깔때기 줄은 이름이 왼쪽(16) · 곳 수는 오른쪽 */
+.pinfo { padding-bottom: var(--sp-1); }
+.pinfo .wt { margin: var(--sp-2) var(--sp-2) var(--sp-1); font-size: var(--fs-4); }
 .pinfo .q { color: var(--gold); }
 .pinfo .num { font-variant-numeric: tabular-nums; }
-.pinfo-lead { margin: 4px 16px 10px; font-size: 20px; line-height: 1.55; }
+.pinfo-lead { margin: var(--sp-1) var(--sp-2); font-size: var(--fs-3); line-height: 1.55; }
 .pinfo-lead b { font-weight: 800; }
-.pinfo-p { margin: 0 16px 12px; font-size: 18px; line-height: 1.65; }
+.pinfo-p { margin: 0 var(--sp-2) var(--sp-2); font-size: var(--fs-2); line-height: 1.65; }
 .pinfo-p b { font-weight: 800; }
 
 /* 깔때기 — 줄마다 남은 곳 수 · 아래 가는 막대 = 목록 모두 가운데 남은 몫 */
-.pinfo-funnels { margin: 0 16px 14px; }
-.pinfo-fname { margin: 16px 0 6px; color: var(--sub); font-size: 18px; }
+.pinfo-funnels { margin: 0 var(--sp-2) var(--sp-2); }
+.pinfo-fname { margin: var(--sp-2) 0 var(--sp-1); color: var(--sub); font-size: var(--fs-2); }
 .pinfo-fname b { font-weight: 700; }
 ol.pinfo-funnel { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--card3); }
-ol.pinfo-funnel li { position: relative; padding: 12px 0 26px 0; border-bottom: 1px solid var(--card2); }
-ol.pinfo-funnel li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 11px; height: 6px; border-radius: 3px; background: var(--card2); }
-ol.pinfo-funnel li .fill { position: absolute; left: 0; bottom: 11px; height: 6px; max-width: 100%; border-radius: 3px; background: #6F7782; z-index: 1; }
-ol.pinfo-funnel li > span { display: grid; grid-template-columns: 5.4em minmax(0, 1fr); column-gap: 12px; font-size: 18px; line-height: 1.45; }
-ol.pinfo-funnel li > span b { text-align: right; font-weight: 600; }
+ol.pinfo-funnel li { position: relative; padding: var(--sp-2) 0 var(--sp-3); border-bottom: 1px solid var(--card2); }
+ol.pinfo-funnel li::after { content: ""; position: absolute; left: 0; right: 0; bottom: var(--sp-1); height: 6px; border-radius: 3px; background: var(--card2); }
+ol.pinfo-funnel li .fill { position: absolute; left: 0; bottom: var(--sp-1); height: 6px; max-width: 100%; border-radius: 3px; background: #6F7782; z-index: 1; }
+ol.pinfo-funnel li > span { display: flex; flex-wrap: wrap; column-gap: var(--sp-2); font-size: var(--fs-2); line-height: 1.45; } /* 이름은 왼쪽 · 곳 수는 오른쪽 — 곳 수가 길면(영어 · 큰 글씨) 이름 밑 줄로 내려감 */
+ol.pinfo-funnel li > span > span { flex: 1 1 60%; min-width: 0; }
+ol.pinfo-funnel li > span b { order: 2; flex: none; margin-left: auto; text-align: right; font-weight: 600; }
 
 /* 목록 · 접은 칸 · 업데이트 기록 고리 */
-ul.pinfo-ul { margin: 0 16px 12px; padding-left: 22px; color: var(--sub); font-size: 18px; line-height: 1.6; }
-ul.pinfo-ul li { margin: 0 0 8px; }
-ul.pinfo-ul li.q { color: var(--gold); }
+ul.pinfo-ul { margin: 0 var(--sp-2) var(--sp-2); padding-left: var(--sp-3); color: var(--sub); font-size: var(--fs-2); line-height: 1.6; }
+ul.pinfo-ul li { margin: 0 0 var(--sp-1); }
 ul.pinfo-qs { list-style: none; padding-left: 0; }
 ul.pinfo-qs li { color: var(--gold); }
-details.pinfo-more { margin: 0 16px 12px; }
-details.pinfo-more > summary { display: flex; align-items: center; min-height: 48px; padding: 0 14px; border-radius: 12px; background: var(--card2); font-size: 17px; cursor: pointer; list-style: none; }
+/* 노란 경고(warn) 안의 목록 — 글씨 · 줄 높이는 경고 칸을 따르고(17px) 바깥 여백은 경고 칸이 가짐 */
+details.nw .pinfo-ul { margin: 0; font-size: inherit; line-height: inherit; }
+details.nw .pinfo-ul li:last-child { margin-bottom: 0; }
+details.pinfo-more { margin: 0 var(--sp-2) var(--sp-2); }
+details.pinfo-more > summary { display: flex; align-items: center; min-height: 48px; padding: 0 var(--sp-2); border-radius: 12px; background: var(--card2); font-size: var(--fs-1); cursor: pointer; list-style: none; }
 details.pinfo-more > summary::-webkit-details-marker { display: none; }
 details.pinfo-more > summary::after { content: "›"; margin-left: auto; color: var(--sub); transform: rotate(90deg); }
 details.pinfo-more[open] > summary::after { transform: rotate(-90deg); }
-.pinfo-in { padding-top: 8px; }
+.pinfo-in { padding-top: var(--sp-1); }
 .pinfo-in ul.pinfo-ul { margin: 0; }
-a.pinfo-go { display: block; margin: 18px 16px 4px; min-height: 48px; padding: 12px 14px; border-radius: 12px; background: var(--card2); font-size: 18px; line-height: 1.5; }
+a.pinfo-go { display: block; margin: var(--sp-2) var(--sp-2) var(--sp-1); min-height: 48px; padding: var(--sp-2); border-radius: 12px; background: var(--card2); font-size: var(--fs-2); line-height: 1.5; }
 a.pinfo-go b { font-weight: 700; }
 a.pinfo-go span span { color: var(--sub); }
 
-/* 맨 아래 — 자료 · 때 · 안전 문장 */
-.pinfo-foot { margin: 32px 16px 0; padding-top: 14px; border-top: 1px solid var(--hair); color: var(--mute); font-size: 17px; line-height: 1.6; }
-.pinfo-foot p { margin: 0 0 8px; }
-.pinfo-links { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+/* 맨 아래 — 자료 · 때 · 안전 문장(고리 둘은 양 끝 · 오른쪽 것은 오른쪽 맞춤) */
+.pinfo-foot { margin: var(--sp-3) var(--sp-2) 0; padding-top: var(--sp-2); border-top: 1px solid var(--hair); color: var(--mute); font-size: var(--fs-1); line-height: 1.6; }
+.pinfo-foot p { margin: 0 0 var(--sp-1); }
+.pinfo-links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 var(--sp-2); }
 .pinfo-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sub); text-decoration: underline; text-underline-offset: 4px; }
-.pinfo-foot .safe { margin: 16px 0 0; color: var(--sub); font-size: 17px; }
-.pinfo-foot .pinfo-safe2 { margin-top: 2px; }
+.pinfo-links a:last-child { text-align: right; }
+.pinfo-foot .safe { margin: var(--sp-2) 0 0; color: var(--sub); font-size: var(--fs-1); }
+.pinfo-foot .pinfo-safe2 { margin-top: 0; }

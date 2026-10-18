@@ -1,0 +1,1554 @@
+{
+ "schema": "atlas11-next-measure-1",
+ "label": "after",
+ "at": "2026-10-18T04:30:38.824Z",
+ "base": "http://127.0.0.1:8826/next/?dev=1",
+ "root": "http://127.0.0.1:8826",
+ "viewport": {
+  "ko": [
+   360,
+   640
+  ],
+  "en": [
+   390,
+   640
+  ]
+ },
+ "screens": {
+  "#/": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/",
+   "title": "오늘 장 · 고도리",
+   "px": 927,
+   "docPx": 927,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.4,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 21,
+    "19": 5,
+    "24": 2
+   },
+   "fontsPage": {
+    "17": 29,
+    "19": 5,
+    "21": 2,
+    "24": 2
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "32": 4,
+    "33": 5
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 38,
+   "home": {
+    "numsFirstScreen": 2,
+    "nums": [
+     {
+      "t": "−3.28%",
+      "y": 215
+     },
+     {
+      "t": "−4.36%",
+      "y": 215
+     }
+    ],
+    "numsWholePage": 2,
+    "blocks": [
+     {
+      "k": "div.chips",
+      "label": "고르기",
+      "h": 60,
+      "y": 58,
+      "bottom": 118
+     },
+     {
+      "k": "a.tk-entry",
+      "label": "",
+      "h": 48,
+      "y": 126,
+      "bottom": 174
+     },
+     {
+      "k": "a.hm-band",
+      "label": "",
+      "h": 66,
+      "y": 182,
+      "bottom": 248
+     },
+     {
+      "k": "section.wy",
+      "label": "친구야, 왜 사?",
+      "h": 299,
+      "y": 264,
+      "bottom": 563
+     },
+     {
+      "k": "section.gdr.lock1",
+      "label": "고도리 칸",
+      "h": 48,
+      "y": 579,
+      "bottom": 627
+     },
+     {
+      "k": "details.hm-more",
+      "label": "",
+      "h": 49,
+      "y": 643,
+      "bottom": 692
+     },
+     {
+      "k": "p.safe.hm-safe",
+      "label": "",
+      "h": 51,
+      "y": 708,
+      "bottom": 759
+     }
+    ],
+    "cards": {
+     "all": null,
+     "kinds": {},
+     "list": []
+    },
+    "surgeCards": 0,
+    "surgeTitles": [],
+    "todayBlockPx": null
+   },
+   "ms": 1398,
+   "errs": []
+  },
+  "#/f/rise": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/f/rise",
+   "title": "오르는 업종 · 고도리",
+   "px": 1030,
+   "docPx": 1030,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.6,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 16,
+    "19": 15,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 24,
+    "19": 15,
+    "21": 2,
+    "24": 1
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 8,
+    "33": 1,
+    "72": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 42,
+   "ms": 1160,
+   "errs": []
+  },
+  "#/f/surge": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/f/surge",
+   "title": "급등 · 고도리",
+   "px": 1445,
+   "docPx": 1445,
+   "innerPx": null,
+   "inner": null,
+   "screens": 2.3,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 21,
+    "19": 21,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 29,
+    "19": 21,
+    "21": 2,
+    "24": 1
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 13,
+    "33": 1,
+    "72": 3
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 53,
+   "ms": 1138,
+   "errs": []
+  },
+  "#/f/lead": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/f/lead",
+   "title": "대장주 · 고도리",
+   "px": 1278,
+   "docPx": 1278,
+   "innerPx": null,
+   "inner": null,
+   "screens": 2,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 17,
+    "19": 21,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 25,
+    "19": 21,
+    "21": 2,
+    "24": 1
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 11,
+    "33": 1,
+    "72": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 49,
+   "ms": 1582,
+   "errs": []
+  },
+  "#/f/pick": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/f/pick",
+   "title": "고른 곳 · 고도리",
+   "px": 1227,
+   "docPx": 1227,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.9,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 17,
+    "19": 21,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 25,
+    "19": 21,
+    "21": 2,
+    "24": 1
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 11,
+    "33": 1,
+    "72": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 49,
+   "ms": 1151,
+   "errs": []
+  },
+  "#/f/group": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/f/group",
+   "title": "큰 업종 · 고도리",
+   "px": 1118,
+   "docPx": 1118,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.7,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 16,
+    "19": 19,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 24,
+    "19": 19,
+    "21": 2,
+    "24": 1
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 10,
+    "33": 1,
+    "72": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 46,
+   "ms": 1144,
+   "errs": []
+  },
+  "#/f/ind": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/f/ind",
+   "title": "업종 · 고도리",
+   "px": 1227,
+   "docPx": 1227,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.9,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 17,
+    "19": 21,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 25,
+    "19": 21,
+    "21": 2,
+    "24": 1
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 11,
+    "33": 1,
+    "72": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 49,
+   "ms": 1199,
+   "errs": []
+  },
+  "#/f/us": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/f/us",
+   "title": "미국 · 고도리",
+   "px": 859,
+   "docPx": 859,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.3,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 14,
+    "19": 9,
+    "48": 1
+   },
+   "fontsPage": {
+    "17": 22,
+    "19": 9,
+    "21": 2,
+    "48": 1
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 5,
+    "72": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 34,
+   "ms": 907,
+   "errs": []
+  },
+  "#/today": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/today",
+   "title": "오늘 시장 · 고도리",
+   "px": 4540,
+   "docPx": 4540,
+   "innerPx": null,
+   "inner": null,
+   "screens": 7.1,
+   "overflowX": false,
+   "fontKinds": 5,
+   "fontKindsPage": 5,
+   "fonts": {
+    "17": 58,
+    "19": 50,
+    "21": 39,
+    "24": 1,
+    "48": 1
+   },
+   "fontsPage": {
+    "17": 66,
+    "19": 50,
+    "21": 41,
+    "24": 1,
+    "48": 1
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 8,
+    "32": 62
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 159,
+   "ms": 1279,
+   "errs": []
+  },
+  "#/shorts": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/shorts",
+   "title": "시황 · 고도리",
+   "px": 3162,
+   "docPx": 784,
+   "innerPx": 3162,
+   "inner": "div.shorts",
+   "screens": 4.9,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 3,
+   "fonts": {
+    "17": 38,
+    "21": 12,
+    "48": 6
+   },
+   "fontsPage": {
+    "17": 46,
+    "21": 14,
+    "48": 6
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 32,
+    "32": 6,
+    "284": 3
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 66,
+   "shorts": {
+    "inkGaps": [
+     {
+      "gap": 48,
+      "y": 1054,
+      "after": "보내기",
+      "next": "1주 동안 · 10월 2일부터"
+     },
+     {
+      "gap": 48,
+      "y": 1578,
+      "after": "보기",
+      "next": "한 달 · 9월 9일부터"
+     },
+     {
+      "gap": 58,
+      "y": 2082,
+      "after": "보기",
+      "next": "한 달 · 9월 9일부터"
+     }
+    ],
+    "blockGaps": [],
+    "blocks": [
+     {
+      "k": "div.shorts",
+      "label": "시황 · 위로 밀면 다음 사실",
+      "h": 514,
+      "y": 58,
+      "bottom": 572
+     }
+    ]
+   },
+   "ms": 1133,
+   "errs": []
+  },
+  "#/why": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/why",
+   "title": "매매일지 · 고도리",
+   "px": 800,
+   "docPx": 800,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.3,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 3,
+   "fonts": {
+    "17": 5,
+    "21": 1,
+    "24": 3
+   },
+   "fontsPage": {
+    "17": 13,
+    "21": 3,
+    "24": 3
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 3,
+    "33": 5
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 19,
+   "ms": 1180,
+   "errs": []
+  },
+  "#/why/005930": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/why/005930",
+   "title": "매매일지 · 고도리",
+   "px": 994,
+   "docPx": 994,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.6,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 7,
+    "19": 4,
+    "21": 1,
+    "24": 3
+   },
+   "fontsPage": {
+    "17": 15,
+    "19": 4,
+    "21": 3,
+    "24": 3
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 3,
+    "33": 4,
+    "49": 4
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 25,
+   "ms": 1129,
+   "errs": []
+  },
+  "#/sub": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/sub",
+   "title": "관심 · 고도리",
+   "px": 1596,
+   "docPx": 1596,
+   "innerPx": null,
+   "inner": null,
+   "screens": 2.5,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 33,
+    "19": 10,
+    "21": 2,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 41,
+    "19": 10,
+    "21": 4,
+    "24": 1
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 6,
+    "72": 20
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 56,
+   "ms": 1214,
+   "errs": []
+  },
+  "#/me": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/me",
+   "title": "보유종목 · 고도리",
+   "px": 1203,
+   "docPx": 1203,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.9,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 6,
+    "19": 6,
+    "21": 13,
+    "24": 2
+   },
+   "fontsPage": {
+    "17": 14,
+    "19": 6,
+    "21": 15,
+    "24": 2
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 20,
+    "32": 3
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 37,
+   "me": {
+    "letterPx": 165,
+    "letterBlockPx": 213,
+    "letterBlock": "div.hd-fold",
+    "introLeft": false
+   },
+   "ms": 8528,
+   "errs": []
+  },
+  "#/gdr": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/gdr",
+   "title": "고도리 칸 · 고도리",
+   "px": 800,
+   "docPx": 800,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.3,
+   "overflowX": false,
+   "fontKinds": 1,
+   "fontKindsPage": 2,
+   "fonts": {
+    "17": 2
+   },
+   "fontsPage": {
+    "17": 10,
+    "21": 2
+   },
+   "leftLines": 1,
+   "leftShared": 0,
+   "lefts": {
+    "32": 1
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 12,
+   "ms": 1707,
+   "errs": []
+  },
+  "#/w/005930": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930",
+   "title": "삼성전자 · 고도리",
+   "px": 3471,
+   "docPx": 3471,
+   "innerPx": null,
+   "inner": null,
+   "screens": 5.4,
+   "overflowX": false,
+   "fontKinds": 5,
+   "fontKindsPage": 5,
+   "fonts": {
+    "17": 62,
+    "19": 14,
+    "21": 5,
+    "24": 2,
+    "30": 5
+   },
+   "fontsPage": {
+    "17": 70,
+    "19": 14,
+    "21": 7,
+    "24": 2,
+    "30": 5
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 36,
+    "32": 4,
+    "48": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 98,
+   "ms": 2104,
+   "errs": []
+  },
+  "#/w/005930/past": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/past",
+   "title": "삼성전자 — 지나온 길 · 고도리",
+   "px": 2471,
+   "docPx": 2471,
+   "innerPx": null,
+   "inner": null,
+   "screens": 3.9,
+   "overflowX": false,
+   "fontKinds": 5,
+   "fontKindsPage": 5,
+   "fonts": {
+    "17": 48,
+    "19": 17,
+    "21": 1,
+    "24": 1,
+    "30": 3
+   },
+   "fontsPage": {
+    "17": 56,
+    "19": 17,
+    "21": 3,
+    "24": 1,
+    "30": 3
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 31,
+    "40": 2
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 80,
+   "ms": 1171,
+   "errs": []
+  },
+  "#/w/005930/rivals": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/rivals",
+   "title": "삼성전자 · 누구와 다투나 · 고도리",
+   "px": 1716,
+   "docPx": 1716,
+   "innerPx": null,
+   "inner": null,
+   "screens": 2.7,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 25,
+    "19": 14,
+    "21": 5,
+    "24": 2
+   },
+   "fontsPage": {
+    "17": 33,
+    "19": 14,
+    "21": 7,
+    "24": 2
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 8,
+    "32": 9
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 56,
+   "ms": 1308,
+   "errs": []
+  },
+  "#/w/005930/grow": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/grow",
+   "title": "삼성전자 — 앞으로 클까? · 고도리",
+   "px": 1531,
+   "docPx": 1531,
+   "innerPx": null,
+   "inner": null,
+   "screens": 2.4,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 30,
+    "19": 4,
+    "24": 1
+   },
+   "fontsPage": {
+    "17": 38,
+    "19": 4,
+    "21": 2,
+    "24": 1
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 9,
+    "32": 1,
+    "56": 3
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 45,
+   "ms": 1113,
+   "errs": []
+  },
+  "#/w/005930/range": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/range",
+   "title": "삼성전자 — 범위 · 확인 · 고도리",
+   "px": 3751,
+   "docPx": 3751,
+   "innerPx": null,
+   "inner": null,
+   "screens": 5.9,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 36,
+    "19": 45,
+    "21": 11,
+    "24": 3
+   },
+   "fontsPage": {
+    "17": 44,
+    "19": 45,
+    "21": 13,
+    "24": 3
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 9,
+    "32": 22,
+    "48": 13
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 105,
+   "ms": 1070,
+   "errs": []
+  },
+  "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4%20%EA%B2%80%EC%82%AC%C2%B7%EC%B8%A1%EC%A0%95": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4%20%EA%B2%80%EC%82%AC%C2%B7%EC%B8%A1%EC%A0%95",
+   "title": "반도체 검사·측정 업종 · 고도리",
+   "px": 3513,
+   "docPx": 3513,
+   "innerPx": null,
+   "inner": null,
+   "screens": 5.5,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 85,
+    "19": 32,
+    "21": 5,
+    "24": 4
+   },
+   "fontsPage": {
+    "17": 93,
+    "19": 32,
+    "21": 7,
+    "24": 4
+   },
+   "leftLines": 3,
+   "leftShared": 2,
+   "lefts": {
+    "16": 11,
+    "32": 17,
+    "48": 1
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 136,
+   "ms": 1108,
+   "errs": []
+  },
+  "#/ch/g/semi": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/ch/g/semi",
+   "title": "반도체 큰 업종 · 고도리",
+   "px": 3975,
+   "docPx": 3975,
+   "innerPx": null,
+   "inner": null,
+   "screens": 6.2,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 135,
+    "19": 18,
+    "21": 4,
+    "24": 4
+   },
+   "fontsPage": {
+    "17": 143,
+    "19": 18,
+    "21": 6,
+    "24": 4
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 12,
+    "32": 17
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 171,
+   "ms": 1220,
+   "errs": []
+  },
+  "#/surge": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/surge",
+   "title": "급등 36곳 · 고도리",
+   "px": 7497,
+   "docPx": 7497,
+   "innerPx": null,
+   "inner": null,
+   "screens": 11.7,
+   "overflowX": false,
+   "fontKinds": 5,
+   "fontKindsPage": 5,
+   "fonts": {
+    "17": 39,
+    "19": 137,
+    "21": 43,
+    "24": 3,
+    "30": 1
+   },
+   "fontsPage": {
+    "17": 47,
+    "19": 137,
+    "21": 45,
+    "24": 3,
+    "30": 1
+   },
+   "leftLines": 2,
+   "leftShared": 2,
+   "lefts": {
+    "16": 66,
+    "40": 15
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 233,
+   "ms": 1249,
+   "errs": []
+  },
+  "#/cal": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/cal",
+   "title": "달력 · 고도리",
+   "px": 3495,
+   "docPx": 3495,
+   "innerPx": null,
+   "inner": null,
+   "screens": 5.5,
+   "overflowX": false,
+   "fontKinds": 5,
+   "fontKindsPage": 5,
+   "fonts": {
+    "17": 29,
+    "19": 45,
+    "21": 18,
+    "24": 1,
+    "30": 5
+   },
+   "fontsPage": {
+    "17": 37,
+    "19": 45,
+    "21": 20,
+    "24": 1,
+    "30": 5
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 25,
+    "33": 17,
+    "80": 10
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 108,
+   "ms": 1398,
+   "errs": []
+  },
+  "#/cond": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/cond",
+   "title": "조건 찾기 · 고도리",
+   "px": 1741,
+   "docPx": 1741,
+   "innerPx": null,
+   "inner": null,
+   "screens": 2.7,
+   "overflowX": false,
+   "fontKinds": 5,
+   "fontKindsPage": 5,
+   "fonts": {
+    "17": 20,
+    "19": 24,
+    "21": 7,
+    "24": 4,
+    "48": 1
+   },
+   "fontsPage": {
+    "17": 28,
+    "19": 24,
+    "21": 9,
+    "24": 4,
+    "48": 1
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 22,
+    "33": 2,
+    "73": 3
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 66,
+   "ms": 1109,
+   "errs": []
+  },
+  "#/talk": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/talk",
+   "title": "오늘의 이야기 · 고도리",
+   "px": 4908,
+   "docPx": 4908,
+   "innerPx": null,
+   "inner": null,
+   "screens": 7.7,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 23,
+    "19": 42,
+    "21": 41,
+    "24": 2
+   },
+   "fontsPage": {
+    "17": 31,
+    "19": 42,
+    "21": 43,
+    "24": 2
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 28,
+    "32": 5,
+    "64": 32
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 118,
+   "ms": 1203,
+   "errs": []
+  },
+  "#/s/005930/2026-10-13/234000/s/7J206rGwIOyWtOuVjD8": {
+   "url": "http://127.0.0.1:8826/next/?dev=1#/s/005930/2026-10-13/234000/s/7J206rGwIOyWtOuVjD8",
+   "title": "삼성전자 · 친구가 보냄 · 고도리",
+   "px": 1352,
+   "docPx": 1352,
+   "innerPx": null,
+   "inner": null,
+   "screens": 2.1,
+   "overflowX": false,
+   "fontKinds": 3,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 14,
+    "19": 6,
+    "24": 4
+   },
+   "fontsPage": {
+    "17": 22,
+    "19": 6,
+    "21": 2,
+    "24": 4
+   },
+   "leftLines": 3,
+   "leftShared": 3,
+   "lefts": {
+    "16": 2,
+    "33": 4,
+    "49": 4
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 34,
+   "ms": 1078,
+   "errs": []
+  },
+  "/letter.html": {
+   "url": "http://127.0.0.1:8826/letter.html",
+   "title": "편지 여는 밤 · 고도리",
+   "px": 1140,
+   "docPx": 1140,
+   "innerPx": null,
+   "inner": null,
+   "screens": 1.8,
+   "overflowX": false,
+   "fontKinds": 4,
+   "fontKindsPage": 4,
+   "fonts": {
+    "17": 6,
+    "21": 10,
+    "24": 3,
+    "30": 1
+   },
+   "fontsPage": {
+    "17": 6,
+    "21": 10,
+    "24": 3,
+    "30": 1
+   },
+   "leftLines": 1,
+   "leftShared": 1,
+   "lefts": {
+    "32": 3
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 20,
+   "letter": {
+    "tabBar": true,
+    "tabBarSel": [
+     "nav.tabs",
+     "nav.tabs"
+    ],
+    "back": {
+     "text": "고도리로 돌아가기 ›",
+     "href": "/",
+     "h": 48,
+     "w": 199
+    },
+    "backs": [
+     {
+      "text": "고도리로 돌아가기 ›",
+      "href": "/",
+      "h": 48,
+      "w": 199
+     }
+    ]
+   },
+   "ms": 983,
+   "errs": []
+  },
+  "/hello.html": {
+   "url": "http://127.0.0.1:8826/hello.html",
+   "title": "고도리를 소개합니다",
+   "px": 2170,
+   "docPx": 2170,
+   "innerPx": null,
+   "inner": null,
+   "screens": 3.4,
+   "overflowX": false,
+   "fontKinds": 5,
+   "fontKindsPage": 5,
+   "fonts": {
+    "17": 25,
+    "19": 2,
+    "21": 1,
+    "24": 1,
+    "30": 1
+   },
+   "fontsPage": {
+    "17": 25,
+    "19": 2,
+    "21": 1,
+    "24": 1,
+    "30": 1
+   },
+   "leftLines": 1,
+   "leftShared": 1,
+   "lefts": {
+    "33": 8
+   },
+   "under17": 0,
+   "under17View": 0,
+   "under17Sizes": {},
+   "textEls": 30,
+   "ms": 5841,
+   "errs": []
+  }
+ },
+ "en": {
+  "#/": {
+   "px": 943,
+   "screens": 1.5,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1038
+  },
+  "#/f/rise": {
+   "px": 1046,
+   "screens": 1.6,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1145
+  },
+  "#/f/surge": {
+   "px": 1539,
+   "screens": 2.4,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1016
+  },
+  "#/f/lead": {
+   "px": 1322,
+   "screens": 2.1,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1009
+  },
+  "#/f/pick": {
+   "px": 1244,
+   "screens": 1.9,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 955
+  },
+  "#/f/group": {
+   "px": 1186,
+   "screens": 1.9,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1001
+  },
+  "#/f/ind": {
+   "px": 1295,
+   "screens": 2,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1503
+  },
+  "#/f/us": {
+   "px": 875,
+   "screens": 1.4,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1384
+  },
+  "#/today": {
+   "px": 4722,
+   "screens": 7.4,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1157
+  },
+  "#/shorts": {
+   "px": 3162,
+   "screens": 4.9,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1026
+  },
+  "#/why": {
+   "px": 800,
+   "screens": 1.3,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1438
+  },
+  "#/why/005930": {
+   "px": 994,
+   "screens": 1.6,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1137
+  },
+  "#/sub": {
+   "px": 2247,
+   "screens": 3.5,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1155
+  },
+  "#/me": {
+   "px": 1228,
+   "screens": 1.9,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 8471
+  },
+  "#/gdr": {
+   "px": 800,
+   "screens": 1.3,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1042
+  },
+  "#/w/005930": {
+   "px": 3863,
+   "screens": 6,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 2107
+  },
+  "#/w/005930/past": {
+   "px": 2608,
+   "screens": 4.1,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 984
+  },
+  "#/w/005930/rivals": {
+   "px": 1968,
+   "screens": 3.1,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1236
+  },
+  "#/w/005930/grow": {
+   "px": 1755,
+   "screens": 2.7,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1094
+  },
+  "#/w/005930/range": {
+   "px": 4273,
+   "screens": 6.7,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1132
+  },
+  "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4%20%EA%B2%80%EC%82%AC%C2%B7%EC%B8%A1%EC%A0%95": {
+   "px": 3842,
+   "screens": 6,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1068
+  },
+  "#/ch/g/semi": {
+   "px": 4379,
+   "screens": 6.8,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 988
+  },
+  "#/surge": {
+   "px": 8088,
+   "screens": 12.6,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 999
+  },
+  "#/cal": {
+   "px": 3649,
+   "screens": 5.7,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1077
+  },
+  "#/cond": {
+   "px": 2069,
+   "screens": 3.2,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1083
+  },
+  "#/talk": {
+   "px": 4916,
+   "screens": 7.7,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1075
+  },
+  "#/s/005930/2026-10-13/234000/s/7J206rGwIOyWtOuVjD8": {
+   "px": 1445,
+   "screens": 2.3,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 1078
+  },
+  "/letter.html": {
+   "px": 1140,
+   "screens": 1.8,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 853
+  },
+  "/hello.html": {
+   "px": 2225,
+   "screens": 3.5,
+   "under17": 0,
+   "under17Sizes": {},
+   "overflowX": false,
+   "ms": 5526
+  }
+ },
+ "extras": {
+  "whyTaps": {
+   "taps": 14,
+   "typed": 1,
+   "result": true,
+   "err": null,
+   "steps": [
+    "엔터(찾기)",
+    "누름(첫 답 · 1 / 11)",
+    "누름(첫 답 · 2 / 11)",
+    "누름(첫 답 · 3 / 11)",
+    "누름(첫 답 · 4 / 11)",
+    "누름(첫 답 · 5 / 11)",
+    "누름(첫 답 · 6 / 11)",
+    "누름(첫 답 · 7 / 11)",
+    "누름(첫 답 · 8 / 11)",
+    "누름(첫 답 · 9 / 11)",
+    "누름(첫 답 · 10 / 11)",
+    "누름(첫 답 · 11 / 11)",
+    "누름(보기 말)",
+    "누름(결과 보기 › · 마지막 두 줄)"
+   ]
+  }
+ },
+ "seconds": 112.3,
+ "owner": [
+  {
+   "what": "첫 화면 길이 px",
+   "owner": 9572,
+   "now": 927
+  },
+  {
+   "what": "첫 화면 화면 수",
+   "owner": 12,
+   "now": 1.4
+  },
+  {
+   "what": "오늘 시장 칸(첫 화면 section.today-d) px",
+   "owner": 3768,
+   "now": null
+  },
+  {
+   "what": "급등 카드(+110%) 첫 화면에 있음",
+   "owner": "있음",
+   "now": "없음"
+  },
+  {
+   "what": "매매일지 누름 수",
+   "owner": 22,
+   "now": 14
+  },
+  {
+   "what": "편지 칸(.m4-letter) px",
+   "owner": 1108,
+   "now": 165
+  },
+  {
+   "what": "편지 쪽 아래 단추",
+   "owner": "없음",
+   "now": "있음"
+  },
+  {
+   "what": "편지 쪽 돌아가기 단추 높이 px",
+   "owner": 25,
+   "now": 48
+  },
+  {
+   "what": "15px 글이 있는 화면 수",
+   "owner": 8,
+   "now": 0
+  },
+  {
+   "what": "14px 글(시황)",
+   "owner": "있음",
+   "now": "없음"
+  },
+  {
+   "what": "13px 글(소개 쪽)",
+   "owner": "있음",
+   "now": "없음"
+  },
+  {
+   "what": "첫 화면 글씨 가짓수(#view · 문서 모두)",
+   "owner": 11,
+   "now": "3 · 4"
+  },
+  {
+   "what": "왼쪽 줄 첫 화면(모두 · 함께 쓰는)",
+   "owner": 12,
+   "now": "2 · 2"
+  },
+  {
+   "what": "왼쪽 줄 회사 #/w/005930",
+   "owner": 10,
+   "now": "3 · 3"
+  },
+  {
+   "what": "왼쪽 줄 채널 #/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4%20%EA%B2%80%EC%82%AC%C2%B7%EC%B8%A1%EC%A0%95",
+   "owner": 10,
+   "now": "3 · 2"
+  },
+  {
+   "what": "왼쪽 줄 달력 #/cal",
+   "owner": 12,
+   "now": "3 · 3"
+  },
+  {
+   "what": "첫 화면 카드 높이 px",
+   "owner": "286–313",
+   "now": "?"
+  },
+  {
+   "what": "시황 빈 곳 px(48 넘는 잉크 빈 곳)",
+   "owner": "115 · 277 · 231",
+   "now": "48 · 48 · 58"
+  }
+ ]
+}

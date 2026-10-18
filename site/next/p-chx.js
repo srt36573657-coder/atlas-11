@@ -84,7 +84,7 @@ function rowEl(r, n, mode) {
   spk.append(S('line', {class: 'pchx-b0', x1: 0, x2: SPW, y1: y0, y2: y0}), ...(r.pa ? [r.pa] : []), r.ln);
   const t = it.tr ? (mode === 'cw' && it.trc ? it.trc : it.tr) : null;
   return h('a', {class: 'pchx-row' + (it.pk ? ' pk' : '') + (t ? ' two' : ''), href: it.href},
-    h('span', {class: 'pchx-nm'}, h('span', {class: 'pchx-nt', text: it.name}), it.badge ? h('span', {class: 'pchx-bd' + (it.badge === '?' ? ' q' : ''), text: it.badge}) : null, it.gold ? h('span', {class: 'pchx-bd gold', text: it.gold}) : null),
+    h('span', {class: 'pchx-nm'}, h('span', {class: 'pchx-nt', ...(it.proper ? {'data-proper': ''} : {}), text: it.name}), it.badge ? h('span', {class: 'pchx-bd' + (it.badge === '?' ? ' q' : ''), text: it.badge}) : null, it.gold ? h('span', {class: 'pchx-bd gold', text: it.gold}) : null),
     h('b', {class: 'pchx-val ' + (d == null ? 'q' : NX.cls(d)), text: NX.pct(d)}),
     spk, t ? trFill(h('span', {class: 'pchx-trd'}), t) : null,
     h('i', {class: 'pchx-chev', 'aria-hidden': 'true', text: '›'}));
@@ -149,10 +149,10 @@ function screen(X, spec) {
   sayB.addEventListener('click', () => { const top = rows.slice(0, 3).map(r => { const t = r.it.tr ? (MODE === 'cw' && r.it.trc ? r.it.trc : r.it.tr) : null; return r.it.name + ' ' + sayPct(NX.pct(r.d)) + (t ? ', ' + trText(t).replace(/[▲▼▶] /, '') : ''); });
     speak([sayPct(head.textContent), sayPct(count.textContent), ...top]); });
   words(MODE); drawList(MODE);
-  const legend = h('p', {class: 'pchx-key'}, h('span', {}, h('i', {class: 'k-up'}), '오름'), h('span', {}, h('i', {class: 'k-dn'}), '내림'), h('span', {}, h('i', {class: 'k-avg'}), spec.legendName + ' 평균'), h('span', {}, h('i', {class: 'k-b0'}), '기준일(' + md(C.base) + ') 값'),
-    spec.gold ? h('span', {}, h('i', {class: 'k-pk'}), '금빛 = 고른 곳') : null);
+  const legend = h('p', {class: 'pchx-key'}, h('span', {}, '오름', h('i', {class: 'k-up'})), h('span', {}, '내림', h('i', {class: 'k-dn'})), h('span', {}, spec.legendName + ' 평균', h('i', {class: 'k-avg'})), h('span', {}, '기준일(' + md(C.base) + ') 값', h('i', {class: 'k-b0'})),
+    spec.gold ? h('span', {}, '금빛 = 고른 곳', h('i', {class: 'k-pk'})) : null); // 글 다음에 줄 표(글 시작 줄 하나 · 2026-10-18 [10] 7)
   // 고른 곳 이름(금빛 알약 · 누르면 3단 회사) — 넷까지는 펼친 채 · 더 많으면 접은 칸(채널 아래 회사 칸에는 금빛 표시가 없어 여기서 이름을 보여 줌)
-  const gc = spec.goldCodes || [], chips = () => h('div', {class: 'pchx-chips'}, gc.map(c => h('a', {class: 'pchx-chip', href: cHref(C, c, true), text: X.co[c]?.n ?? c})));
+  const gc = spec.goldCodes || [], chips = () => h('div', {class: 'pchx-chips'}, gc.map(c => h('a', {class: 'pchx-chip', 'data-proper': '', href: cHref(C, c, true), text: X.co[c]?.n ?? c})));
   const goldLine = !gc.length ? null : gc.length <= 4 ? h('div', {class: 'pchx-gold'}, h('p', {class: 'pchx-gl', text: `고른 곳 ${gc.length}곳`}), chips())
     : h('details', {class: 'pchx-gold'}, h('summary', {}, h('span', {class: 'pchx-gl', text: `고른 곳 ${gc.length}곳`}), h('small', {text: '이름 보기'})), chips());
   const card = h('div', {class: 'pchx-card'}, seg, head, tr, count, spec.sayLine ? h('p', {class: 'pchx-say'}, spec.sayLine) : null, goldLine, alt);
@@ -199,7 +199,7 @@ function industry(X, name) {
   const row = c => X.co[c];
   const href = c => cHref(C, c, row(c)?.p), noLine = c => !(Array.isArray(row(c)?.l) && row(c).l.some(x => x != null));
   const members = i.members || [], shown = members.filter(c => !noLine(c)), none = members.filter(noLine);
-  const items = shown.map(c => { const m = row(c); return {key: c, name: m.n, href: href(c), v: m.l.map(x => (x == null ? null : x / 100)), cw: null, gold: mk && m.p ? '고른 곳' : null, pk: !!(mk && m.p), badge: m.j ? '?' : null}; });
+  const items = shown.map(c => { const m = row(c); return {key: c, name: m.n, proper: true, href: href(c), v: m.l.map(x => (x == null ? null : x / 100)), cw: null, gold: mk && m.p ? '고른 곳' : null, pk: !!(mk && m.p), badge: m.j ? '?' : null}; });
   return screen(X, {now: 2, up: g ? {href: '#/ch/g/' + NX.enc(g.id), text: `1단 ${g.short} 갈래로`} : null, node: i, title: i.name, items, legendName: i.name, gold: mk && !!i.pk, unit: '곳', cap: CAP,
     listTitle: `회사 ${shown.length}곳`,
     listLabel: `${i.name} 회사 ${shown.length}곳 — ${C.days}거래일 많이 오른 순: ` + shown.map(c => row(c).n + ' ' + NX.pct(row(c).c)).join(', '),
@@ -213,7 +213,7 @@ function industry(X, name) {
       const out = [];
       if (i.n === 1) out.push(h('p', {class: 'pchx-note', text: '「1곳」 = 회사가 하나뿐인 업종 — 업종 평균이 아니라 그 회사 하나의 값입니다.'}));
       if (items.some(x => x.badge === '?')) out.push(h('p', {class: 'pchx-note'}, h('span', {class: 'q', text: '? '}), '= 하루에 30% 넘게 바뀐 날이 있는 회사 — 주식 수가 바뀌었을 수 있습니다(확인 못 함).'));
-      if (none.length) out.push(h('p', {class: 'pchx-note pchx-noline'}, h('span', {class: 'q', text: '? '}), `기준일(${md(C.base)}) 종가가 없어 선을 못 그린 회사 ${none.length}곳 — `, ...none.flatMap((c, k) => [k ? ' · ' : '', h('a', {class: 'pchx-inl', href: href(c), text: row(c)?.n ?? c})])));
+      if (none.length) out.push(h('p', {class: 'pchx-note pchx-noline'}, h('span', {class: 'q', text: '? '}), `기준일(${md(C.base)}) 종가가 없어 선을 못 그린 회사 ${none.length}곳 — `, ...none.flatMap((c, k) => [k ? h('span', {class: 'pchx-sep', text: ' · '}) : '', h('a', {class: 'pchx-inl', 'data-proper': '', href: href(c), text: row(c)?.n ?? c})])));
       if (mk) out.push(h('p', {class: 'pchx-note', text: `금빛이 아닌 회사는 ${pickName(C)} 밖입니다 — ${C.co7 ? '눌러도 7단까지 볼 수 있고, 3단에 왜 밖인지 나옵니다' : '누르면 이름 · 까닭이 나옵니다'}.`}));
       out.push(h('p', {class: 'pchx-note', text: '회사 줄은 그 회사 주가 그대로라 두 보기에서 같습니다 — 바뀌는 것은 점선(업종 평균)과 맨 위 숫자입니다.'}));
       return out;

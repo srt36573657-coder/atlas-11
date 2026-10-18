@@ -1,0 +1,3470 @@
+{
+ "label": "after",
+ "at": "2026-10-18T03:01:31.753Z",
+ "base": "http://127.0.0.1:8826",
+ "vw": 360,
+ "vh": 640,
+ "routes": {
+  "#/": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/",
+    "title": "오늘 장 · 고도리",
+    "px": 927,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "32": 4,
+     "33": 3,
+     "89": 2
+    },
+    "leftEx": {
+     "32": "b 「오늘의 이야기」",
+     "33": "p.wy-step 「종목 고르기」",
+     "89": "h2.wy-h 「친구야, 왜 사?」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1186
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/",
+    "title": "Today · Godori",
+    "px": 943,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "32": 4,
+     "33": 3,
+     "89": 2
+    },
+    "leftEx": {
+     "32": "b 「Today's talk」",
+     "33": "p.wy-step 「Pick a stock」",
+     "89": "h2.wy-h 「Hey friend, wh」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2340
+   }
+  },
+  "#/f/rise": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/f/rise",
+    "title": "오르는 업종 · 고도리",
+    "px": 1030,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 8,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「1주 동안 오른 업종을 많」",
+     "33": "b.big.up 「+4.7%」",
+     "72": "b 「반도체 검사·측정, 1주 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 903
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/f/rise",
+    "title": "Rising sectors · Godori",
+    "px": 1056,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 8,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「Sectors that r」",
+     "33": "b.big.up 「+4.7%」",
+     "72": "b 「Chip Testing &」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1934
+   }
+  },
+  "#/f/surge": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/f/surge",
+    "title": "급등 · 고도리",
+    "px": 1445,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 13,
+     "33": 1,
+     "72": 3
+    },
+    "leftEx": {
+     "16": "p.note 「급등 칸 36곳 · 5일 」",
+     "33": "b.big.up 「+110%」",
+     "72": "b 「형지I&C, 5일 동안 +」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 926
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/f/surge",
+    "title": "Surge · Godori",
+    "px": 1522,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 13,
+     "33": 1,
+     "72": 3
+    },
+    "leftEx": {
+     "16": "p.note 「36 in the surg」",
+     "33": "b.big.up 「+110%」",
+     "72": "b 「HYUNGJI INNOVA」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1983
+   }
+  },
+  "#/f/lead": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/f/lead",
+    "title": "대장주 · 고도리",
+    "px": 1305,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「업종마다 가장 큰 회사 7」",
+     "33": "b.big.up 「+14.8%」",
+     "72": "b 「펌텍코리아, 종이·포장재 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 996
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/f/lead",
+    "title": "Sector leader · Godori",
+    "px": 1331,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「77 largest com」",
+     "33": "b.big.up 「+14.8%」",
+     "72": "b 「Pum-Tech Korea」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1508
+   }
+  },
+  "#/f/pick": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/f/pick",
+    "title": "고른 곳 · 고도리",
+    "px": 1227,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「고른 곳 56곳 · 10월」",
+     "33": "b.big.up 「+41.9%」",
+     "72": "b 「코렌텍, 한 달 동안 +4」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 928
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/f/pick",
+    "title": "Picks · Godori",
+    "px": 1279,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「56 picks · big」",
+     "33": "b.big.up 「+41.9%」",
+     "72": "b 「Corentec: +41.」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1292
+   }
+  },
+  "#/f/group": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/f/group",
+    "title": "큰 업종 · 고도리",
+    "px": 1118,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 10,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「큰 업종 10개 · 한 달」",
+     "33": "b.big.up 「+17.4%」",
+     "72": "b 「반도체 큰 업종, 한 달 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1164
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/f/group",
+    "title": "Major sectors · Godori",
+    "px": 1196,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 10,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「10 major secto」",
+     "33": "b.big.up 「+17.4%」",
+     "72": "b 「Semiconductors」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1060
+   }
+  },
+  "#/f/ind": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/f/ind",
+    "title": "업종 · 고도리",
+    "px": 1254,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「업종 77개 · 한 달 평」",
+     "33": "b.big.up 「+29.3%」",
+     "72": "b 「반도체 검사·측정 업종, 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1138
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/f/ind",
+    "title": "Sectors · Godori",
+    "px": 1331,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "33": 1,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「77 sectors · B」",
+     "33": "b.big.up 「+29.3%」",
+     "72": "b 「Chip Testing &」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1142
+   }
+  },
+  "#/f/us": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/f/us",
+    "title": "미국 · 고도리",
+    "px": 859,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 5,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「미국 마지막 장 · 10월」",
+     "72": "b 「S&P 500 하루 +0.」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1114
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/f/us",
+    "title": "US · Godori",
+    "px": 859,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 5,
+     "72": 2
+    },
+    "leftEx": {
+     "16": "p.note 「Last US sessio」",
+     "72": "b 「S&P 500 +0.59%」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1091
+   }
+  },
+  "#/today": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/today",
+    "title": "오늘 시장 · 고도리",
+    "px": 4540,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 8,
+     "32": 62
+    },
+    "leftEx": {
+     "16": "h1.wt 「오늘 시장」",
+     "32": "p.ptoday-lead 「10월 12일 오후 2:5」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1283
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/today",
+    "title": "Today's market · Godori",
+    "px": 4801,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 8,
+     "32": 62
+    },
+    "leftEx": {
+     "16": "h1.wt 「Today's market」",
+     "32": "p.ptoday-lead 「As of 2:59 PM 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1324
+   }
+  },
+  "#/shorts": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/shorts",
+    "title": "시황 · 고도리",
+    "px": 784,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 3,
+    "sizes": [
+     17,
+     21,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 32,
+     "32": 6,
+     "284": 3
+    },
+    "leftEx": {
+     "16": "p.k 「10월 12일 장 중」",
+     "32": "span 「고도리는 지난 기록만 따라」",
+     "284": "span.up 「+0.59%」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "shorts": {
+     "n": 6,
+     "maxGap": 28,
+     "hSpread": 0,
+     "per": [
+      {
+       "h": 514,
+       "top": 11,
+       "bottom": 6,
+       "inner": 28
+      },
+      {
+       "h": 514,
+       "top": 26,
+       "bottom": 17,
+       "inner": 28
+      },
+      {
+       "h": 514,
+       "top": 16,
+       "bottom": 7,
+       "inner": 28
+      },
+      {
+       "h": 514,
+       "top": 26,
+       "bottom": 17,
+       "inner": 28
+      },
+      {
+       "h": 514,
+       "top": 26,
+       "bottom": 17,
+       "inner": 28
+      },
+      {
+       "h": 514,
+       "top": 10,
+       "bottom": 1,
+       "inner": 24
+      }
+     ]
+    },
+    "ms": 1191
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/shorts",
+    "title": "Recap · Godori",
+    "px": 784,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 3,
+    "sizes": [
+     17,
+     21,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 32,
+     "32": 6,
+     "284": 3
+    },
+    "leftEx": {
+     "16": "p.k 「Oct 12, during」",
+     "32": "span 「Godori only re」",
+     "284": "span.up 「+0.59%」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "shorts": {
+     "n": 6,
+     "maxGap": 30,
+     "hSpread": 0,
+     "per": [
+      {
+       "h": 514,
+       "top": 6,
+       "bottom": 0,
+       "inner": 30
+      },
+      {
+       "h": 514,
+       "top": 26,
+       "bottom": 17,
+       "inner": 30
+      },
+      {
+       "h": 514,
+       "top": 11,
+       "bottom": 2,
+       "inner": 30
+      },
+      {
+       "h": 514,
+       "top": 26,
+       "bottom": 17,
+       "inner": 30
+      },
+      {
+       "h": 514,
+       "top": 26,
+       "bottom": 17,
+       "inner": 30
+      },
+      {
+       "h": 514,
+       "top": 4,
+       "bottom": -5,
+       "inner": 28
+      }
+     ]
+    },
+    "ms": 1656
+   }
+  },
+  "#/why": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/why",
+    "title": "매매일지 · 고도리",
+    "px": 800,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 3,
+    "sizes": [
+     17,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 3,
+     "33": 3,
+     "89": 2
+    },
+    "leftEx": {
+     "16": "h1.h 「매매일지」",
+     "33": "p.wy-step 「종목 고르기」",
+     "89": "h2.wy-h 「친구야, 왜 사?」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1208
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/why",
+    "title": "Journal · Godori",
+    "px": 804,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 3,
+    "sizes": [
+     17,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 3,
+     "33": 3,
+     "89": 2
+    },
+    "leftEx": {
+     "16": "h1.h 「Journal」",
+     "33": "p.wy-step 「Pick a stock」",
+     "89": "h2.wy-h 「Hey friend, wh」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1626
+   }
+  },
+  "#/why/005930": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/why/005930",
+    "title": "매매일지 · 고도리",
+    "px": 994,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 5,
+    "lefts": {
+     "16": 3,
+     "33": 2,
+     "49": 2,
+     "84": 3,
+     "89": 2
+    },
+    "leftEx": {
+     "16": "h1.h 「매매일지」",
+     "33": "p.wy-step.num 「1 / 11」",
+     "49": "span.wy-stn 「삼성전자」",
+     "84": "span.wy-ot 「친구 말」",
+     "89": "h2.wy-h 「친구야, 왜 사?」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1268
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/why/005930",
+    "title": "Journal · Godori",
+    "px": 1019,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 5,
+    "lefts": {
+     "16": 3,
+     "33": 2,
+     "49": 2,
+     "84": 3,
+     "89": 2
+    },
+    "leftEx": {
+     "16": "h1.h 「Journal」",
+     "33": "p.wy-step.num 「1 / 11」",
+     "49": "span.wy-stn 「Samsung Electr」",
+     "84": "span.wy-ot 「A friend's tip」",
+     "89": "h2.wy-h 「Hey friend, wh」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1791
+   }
+  },
+  "#/sub": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/sub",
+    "title": "관심 · 고도리",
+    "px": 1596,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 6,
+     "72": 20
+    },
+    "leftEx": {
+     "16": "h1.h 「관심」",
+     "72": "b 「반도체 큰 업종」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1654
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/sub",
+    "title": "Watch · Godori",
+    "px": 2876,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 6,
+     "72": 20
+    },
+    "leftEx": {
+     "16": "h1.h 「Watch」",
+     "72": "b 「Semiconductors」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 1365
+   }
+  },
+  "#/me": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/me",
+    "title": "보유종목 · 고도리",
+    "px": 1203,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     22,
+     24
+    ],
+    "nt": [
+     22
+    ],
+    "ntEx": {
+     "22": "span.hml 「고도리 주식 격언 열 가지」"
+    },
+    "left": 2,
+    "lefts": {
+     "16": 20,
+     "32": 3
+    },
+    "leftEx": {
+     "16": "h1.h 「보유종목」",
+     "32": "h2.hd-h 「보유종목 점검」"
+    },
+    "sp": 4,
+    "neg": 2,
+    "negEx": [
+     "a.hello.m4-letter margin-right -16",
+     "a.hello.m4-letter margin-left -16"
+    ],
+    "spEx": [
+     "span.hml padding 96 ×2",
+     "a.hello.m4-letter padding 28 ×1",
+     "span.m4-act padding 12 ×1"
+    ],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 8439
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/me",
+    "title": "Holdings · Godori",
+    "px": 1228,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     22,
+     24
+    ],
+    "nt": [
+     22
+    ],
+    "ntEx": {
+     "22": "span.hml 「고도리 주식 격언 열 가지」"
+    },
+    "left": 2,
+    "lefts": {
+     "16": 20,
+     "32": 3
+    },
+    "leftEx": {
+     "16": "h1.h 「Holdings」",
+     "32": "h2.hd-h 「Holdings check」"
+    },
+    "sp": 4,
+    "neg": 2,
+    "negEx": [
+     "a.hello.m4-letter margin-right -16",
+     "a.hello.m4-letter margin-left -16"
+    ],
+    "spEx": [
+     "span.hml padding 96 ×2",
+     "a.hello.m4-letter padding 28 ×1",
+     "span.m4-act padding 12 ×1"
+    ],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 8427
+   }
+  },
+  "#/find": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/find",
+    "title": "찾기 · 고도리",
+    "px": 784,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 2,
+    "sizes": [
+     17,
+     21
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 1,
+    "lefts": {
+     "16": 2
+    },
+    "leftEx": {
+     "16": "p.note 「회사 2,557곳 · 업종」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1386
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/find",
+    "title": "Search · Godori",
+    "px": 784,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 2,
+    "sizes": [
+     17,
+     21
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 1,
+    "lefts": {
+     "16": 2
+    },
+    "leftEx": {
+     "16": "p.note 「Search 2,557 c」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2042
+   }
+  },
+  "#/find/삼성": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/find/%EC%82%BC%EC%84%B1",
+    "title": "찾기 · 고도리",
+    "px": 3456,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 3,
+    "sizes": [
+     17,
+     19,
+     21
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 1,
+    "lefts": {
+     "16": 41
+    },
+    "leftEx": {
+     "16": "span.nm 「삼성전자」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1225
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/find/%EC%82%BC%EC%84%B1",
+    "title": "Search · Godori",
+    "px": 3961,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 3,
+    "sizes": [
+     17,
+     19,
+     21
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 1,
+    "lefts": {
+     "16": 41
+    },
+    "leftEx": {
+     "16": "span.nm 「Samsung Electr」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2235
+   }
+  },
+  "#/gdr": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/gdr",
+    "title": "고도리 칸 · 고도리",
+    "px": 800,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 2,
+    "sizes": [
+     17,
+     21
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 1,
+    "lefts": {
+     "32": 1
+    },
+    "leftEx": {
+     "32": "a.gdr-l1 「고도리 칸은 열한 질문 뒤」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1113
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/gdr",
+    "title": "Godori list · Godori",
+    "px": 800,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 2,
+    "sizes": [
+     17,
+     21
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 1,
+    "lefts": {
+     "32": 1
+    },
+    "leftEx": {
+     "32": "a.gdr-l1 「The Godori lis」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2245
+   }
+  },
+  "#/w/KOSPI": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/w/KOSPI",
+    "title": "코스피 · 고도리",
+    "px": 3857,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 4,
+     "33": 11,
+     "72": 22
+    },
+    "leftEx": {
+     "16": "span.tip 「3달 · 7월 13일 → 」",
+     "33": "b.big.up 「+6.8%」",
+     "72": "b 「10월 12일 코스닥 하루」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 2556
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/w/KOSPI",
+    "title": "KOSPI · Godori",
+    "px": 4402,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 4,
+     "33": 11,
+     "72": 22
+    },
+    "leftEx": {
+     "16": "span.tip 「3 months · Jul」",
+     "33": "b.big.up 「+6.8%」",
+     "72": "b 「KOSDAQ −4.36% 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2788
+   }
+  },
+  "#/w/005930": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930",
+    "title": "삼성전자 · 고도리",
+    "px": 3419,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 36,
+     "32": 4,
+     "48": 2
+    },
+    "leftEx": {
+     "16": "span.tip 「한 달 · 9월 9일 → 」",
+     "32": "div.pco-why 「멍거 — 2023년 자기 」",
+     "48": "span 「삼성전자 — 9월 9일보다」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 2648
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/w/005930",
+    "title": "Samsung Electronics · Godori",
+    "px": 3890,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 36,
+     "32": 4,
+     "48": 2
+    },
+    "leftEx": {
+     "16": "span.tip 「Past month · S」",
+     "32": "div.pco-why 「Munger — 2023:」",
+     "48": "span 「Samsung Electr」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 3183
+   }
+  },
+  "#/w/005930/past": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/past",
+    "title": "삼성전자 — 지나온 길 · 고도리",
+    "px": 2471,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 31,
+     "40": 2
+    },
+    "leftEx": {
+     "16": "h1.wt 「삼성전자 — 지나온 길」",
+     "40": "span 「삼성전자 — 2025년 9」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1897
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/w/005930/past",
+    "title": "Samsung Electronics — Past path · Godori",
+    "px": 2672,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 31,
+     "40": 2
+    },
+    "leftEx": {
+     "16": "h1.wt 「Samsung Electr」",
+     "40": "span 「Samsung Electr」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2896
+   }
+  },
+  "#/w/005930/rivals": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/rivals",
+    "title": "삼성전자 · 누구와 다투나 · 고도리",
+    "px": 1716,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 8,
+     "32": 9
+    },
+    "leftEx": {
+     "16": "h1.wt 「삼성전자 — 누구와 다투나」",
+     "32": "h2.privals-h 「우리나라 상장 회사 2,5」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1333
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/w/005930/rivals",
+    "title": "Samsung Electronics · Rivals · Godori",
+    "px": 2023,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 8,
+     "32": 9
+    },
+    "leftEx": {
+     "16": "h1.wt 「Samsung Electr」",
+     "32": "h2.privals-h 「Of 2,557 liste」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 3564
+   }
+  },
+  "#/w/005930/grow": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/grow",
+    "title": "삼성전자 — 앞으로 클까? · 고도리",
+    "px": 1531,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 9,
+     "32": 1,
+     "56": 3
+    },
+    "leftEx": {
+     "16": "h1.wt.pgrow-t 「삼성전자 — 앞으로 클까?」",
+     "32": "p.pgrow-none 「?」",
+     "56": "span 「지난 매출(기록)」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1867
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/w/005930/grow",
+    "title": "Samsung Electronics — Will it grow? · Godori",
+    "px": 1811,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 9,
+     "32": 1,
+     "56": 3
+    },
+    "leftEx": {
+     "16": "h1.wt.pgrow-t 「Samsung Electr」",
+     "32": "p.pgrow-none 「?」",
+     "56": "span 「Past sales (re」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2619
+   }
+  },
+  "#/w/005930/range": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/w/005930/range",
+    "title": "삼성전자 — 범위 · 확인 · 고도리",
+    "px": 3722,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 4,
+    "lefts": {
+     "16": 9,
+     "32": 22,
+     "48": 12,
+     "139": 1
+    },
+    "leftEx": {
+     "16": "h1.wt.prange-wt 「삼성전자 — 범위 · 확인」",
+     "32": "p.prange-model 「모형 가정 아래 추정 · 」",
+     "48": "p.prange-legend 「기록」",
+     "139": "a.prange-inl 「봉인 보기」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 2878
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/w/005930/range",
+    "title": "Samsung Electronics — Range · Check · Godori",
+    "px": 4356,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 4,
+    "lefts": {
+     "16": 9,
+     "32": 22,
+     "48": 12,
+     "189": 1
+    },
+    "leftEx": {
+     "16": "h1.wt.prange-wt 「Samsung Electr」",
+     "32": "p.prange-model 「Estimate under」",
+     "48": "p.prange-legend 「Record」",
+     "189": "a.prange-inl 「See time capsu」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 2,
+    "oldEnWords": {
+     "market cap": 1,
+     "group": 1
+    },
+    "ms": 3636
+   }
+  },
+  "#/ch/g/semi": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/ch/g/semi",
+    "title": "반도체 큰 업종 · 고도리",
+    "px": 3975,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 12,
+     "32": 17,
+     "136": 2
+    },
+    "leftEx": {
+     "16": "h1 「반도체 큰 업종」",
+     "32": "span.ws 「한 달 · 9월 9일부터」",
+     "136": "span.pchx-bd.gold 「고른 2곳」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 2420
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/ch/g/semi",
+    "title": "Semiconductors sector group · Godori",
+    "px": 4454,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 12,
+     "32": 17,
+     "49": 2
+    },
+    "leftEx": {
+     "16": "h1 「Semiconductors」",
+     "32": "span.ws 「one month · fr」",
+     "49": "span.pchx-bd.gold 「2 picks」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 3767
+   }
+  },
+  "#/ch/i/%ED%95%B4%EC%9A%B4": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/ch/i/%ED%95%B4%EC%9A%B4",
+    "title": "해운 업종 · 고도리",
+    "px": 3275,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "32": 16,
+     "48": 1
+    },
+    "leftEx": {
+     "16": "h1 「해운 업종」",
+     "32": "span.ws 「한 달 · 9월 9일부터」",
+     "48": "span 「1단 지주·유통 큰 업종으」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 2099
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/ch/i/%ED%95%B4%EC%9A%B4",
+    "title": "Shipping sector · Godori",
+    "px": 3502,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 11,
+     "32": 16,
+     "48": 1
+    },
+    "leftEx": {
+     "16": "h1 「Shipping secto」",
+     "32": "span.ws 「one month · fr」",
+     "48": "span 「Go to Step 1: 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2459
+   }
+  },
+  "#/surge": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/surge",
+    "title": "급등 36곳 · 고도리",
+    "px": 8086,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 66,
+     "40": 15
+    },
+    "leftEx": {
+     "16": "h1.psurge-h 「급등 36곳」",
+     "40": "p.psurge-alt 「36곳 가운데 31곳은 1」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1739
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/surge",
+    "title": "Surge: 36 stocks · Godori",
+    "px": 8350,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 66,
+     "40": 15
+    },
+    "leftEx": {
+     "16": "h1.psurge-h 「Surge: 36 stoc」",
+     "40": "p.psurge-alt 「31 of the 36 h」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2790
+   }
+  },
+  "#/surge/10": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/surge/10",
+    "title": "10%대 33곳 · 고도리",
+    "px": 6347,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 60,
+     "40": 8
+    },
+    "leftEx": {
+     "16": "h1.psurge-h 「10%⁠대 33곳」",
+     "40": "span 「마지막 날 내린 곳 12곳」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1241
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/surge/10",
+    "title": "10% band: 33 stocks · Godori",
+    "px": 7047,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 60,
+     "40": 8
+    },
+    "leftEx": {
+     "16": "h1.psurge-h 「10% band: 33 s」",
+     "40": "span 「Down on the la」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 3015
+   }
+  },
+  "#/cal": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/cal",
+    "title": "달력 · 고도리",
+    "px": 3495,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 25,
+     "33": 17,
+     "80": 10
+    },
+    "leftEx": {
+     "16": "h1.pcal-h1 「달력」",
+     "33": "p.pcal-cap 「뽑힌 날보다 올라 있는 곳」",
+     "80": "p.pcal-ds 「선택 8」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 3434
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/cal",
+    "title": "Calendar · Godori",
+    "px": 3713,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 25,
+     "33": 17,
+     "80": 10
+    },
+    "leftEx": {
+     "16": "h1.pcal-h1 「Calendar」",
+     "33": "p.pcal-cap 「Up since picke」",
+     "80": "p.pcal-ds 「Picked 8」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 4403
+   }
+  },
+  "#/cond": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/cond",
+    "title": "조건 찾기 · 고도리",
+    "px": 1867,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 22,
+     "33": 2,
+     "73": 3
+    },
+    "leftEx": {
+     "16": "h1.wt.pcond-h 「조건 찾기」",
+     "33": "span.pcond-at 「모든 회사」",
+     "73": "b.pcond-o 「큰 회사가 오른 업종」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1224
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/cond",
+    "title": "Filter · Godori",
+    "px": 2243,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     48
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 22,
+     "33": 2,
+     "73": 3
+    },
+    "leftEx": {
+     "16": "h1.wt.pcond-h 「Filter」",
+     "33": "span.pcond-at 「All companies」",
+     "73": "b.pcond-o 「Sectors where 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 3287
+   }
+  },
+  "#/talk": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/talk",
+    "title": "오늘의 이야기 · 고도리",
+    "px": 4908,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 28,
+     "32": 5,
+     "64": 32
+    },
+    "leftEx": {
+     "16": "h1.wt 「오늘의 이야기」",
+     "32": "b.big.up 「+54.2%」",
+     "64": "b 「안랩, 한 달 동안 +54」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 2353
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/talk",
+    "title": "Today's talk · Godori",
+    "px": 5255,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 28,
+     "32": 5,
+     "64": 32
+    },
+    "leftEx": {
+     "16": "h1.wt 「Today's talk」",
+     "32": "b.big.up 「+54.2%」",
+     "64": "b 「AhnLab, +54.2%」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 5862
+   }
+  },
+  "#/up": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/up",
+    "title": "업데이트 기록 · 고도리",
+    "px": 7243,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 10,
+     "32": 2,
+     "56": 83
+    },
+    "leftEx": {
+     "16": "h1.wt 「업데이트 기록 — 하루 4」",
+     "32": "p 「지금 시장 판독」",
+     "56": "span 「새로 든 곳」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 2467
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/up",
+    "title": "Update log · Godori",
+    "px": 8613,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 10,
+     "32": 2,
+     "56": 83
+    },
+    "leftEx": {
+     "16": "h1.wt 「Update log — 4」",
+     "32": "p 「Current market」",
+     "56": "span 「Added」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 5638
+   }
+  },
+  "#/time": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/time",
+    "title": "봉인 1호 · 고도리",
+    "px": 3771,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 32,
+     "32": 4
+    },
+    "leftEx": {
+     "16": "h1.wt 「봉인 1호 — 10월 8일」",
+     "32": "summary 「그날 이렇게 셉니다 — 봉」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1644
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/time",
+    "title": "Time Capsule No. 1 · Godori",
+    "px": 4333,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     19,
+     21,
+     24,
+     30
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 32,
+     "32": 4
+    },
+    "leftEx": {
+     "16": "h1.wt 「Time Capsule N」",
+     "32": "summary 「How that day w」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 4400
+   }
+  },
+  "#/info": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/info",
+    "title": "고도리는 어떻게 셌나요 · 고도리",
+    "px": 4383,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 26,
+     "32": 2,
+     "40": 10
+    },
+    "leftEx": {
+     "16": "h1.wt 「고도리는 어떻게 셌나요」",
+     "32": "summary 「두 사람의 말 · 원문」",
+     "40": "li 「멍거 조건은 값으로 빼지 」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 3351
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/info",
+    "title": "How Godori counts · Godori",
+    "px": 5674,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 3,
+    "lefts": {
+     "16": 26,
+     "32": 2,
+     "40": 10
+    },
+    "leftEx": {
+     "16": "h1.wt 「How Godori cou」",
+     "32": "summary 「What the two s」",
+     "40": "li 「Munger criteri」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 2,
+    "oldEnWords": {
+     "equal weight": 1,
+     "market cap": 1
+    },
+    "ms": 3992
+   }
+  },
+  "#/x/005935": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/next/?dev=1#/x/005935",
+    "title": "삼성전자우 — 멍거 · 린치 조건 56곳 밖 · 고도리",
+    "px": 1756,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 5,
+     "32": 11
+    },
+    "leftEx": {
+     "16": "h1.wt 「삼성전자우 — 멍거 · 린」",
+     "32": "div.px-why 「우선주 — 회사 주식이 아」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1740
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/next/?dev=1&lang=en#/x/005935",
+    "title": "Samsung Electronics — Munger · Lynch criteria: outside the 56 · Godori",
+    "px": 2152,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 4,
+    "sizes": [
+     17,
+     19,
+     21,
+     24
+    ],
+    "nt": [],
+    "ntEx": {},
+    "left": 2,
+    "lefts": {
+     "16": 5,
+     "32": 11
+    },
+    "leftEx": {
+     "16": "h1.wt 「Samsung Electr」",
+     "32": "div.px-why 「Preferred shar」"
+    },
+    "sp": 0,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2877
+   }
+  },
+  "/letter.html": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/letter.html",
+    "title": "편지 여는 밤 · 고도리",
+    "px": 1167,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     21,
+     23,
+     25,
+     34
+    ],
+    "nt": [
+     23,
+     25,
+     34
+    ],
+    "ntEx": {
+     "23": "b.clk 「여는 밤까지 5일 07시간 5」",
+     "25": "small 「지금은 초대받은 분만」",
+     "34": "h1.hbig 「금요일 밤,」"
+    },
+    "left": 7,
+    "lefts": {
+     "12": 1,
+     "33": 3,
+     "53": 1,
+     "93": 1,
+     "151": 1,
+     "237": 1,
+     "295": 1
+    },
+    "leftEx": {
+     "12": "a 「오늘 장」",
+     "33": "h2 「초대받은 분만 쓸 수 있어」",
+     "53": "a.ghost.link 「고도리 소개 보기 ›」",
+     "93": "a 「시황」",
+     "151": "a.plus 「매매일지」",
+     "237": "a 「관심」",
+     "295": "a 「보유종목」"
+    },
+    "sp": 15,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [
+     "a gap 2 ×8",
+     "div.clock.guest padding 10 ×2",
+     "div.clock.guest padding 22 ×2",
+     "p margin 4 ×2",
+     "p.note margin 4 ×2",
+     "a.ghost.link margin 10 ×2",
+     "a.ghost.link padding 18 ×2",
+     "a.plus gap 2 ×2",
+     "h1.hbig margin 4 ×1",
+     "p.live margin 14 ×1",
+     "p.live.sm margin 4 ×1",
+     "h2 margin 10 ×1",
+     "footer.pv padding 92 ×1"
+    ],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 1696
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/letter.html?lang=en",
+    "title": "편지 여는 밤 · 고도리",
+    "px": 1167,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     21,
+     23,
+     25,
+     34
+    ],
+    "nt": [
+     23,
+     25,
+     34
+    ],
+    "ntEx": {
+     "23": "b.clk 「여는 밤까지 5일 07시간 5」",
+     "25": "small 「지금은 초대받은 분만」",
+     "34": "h1.hbig 「금요일 밤,」"
+    },
+    "left": 7,
+    "lefts": {
+     "12": 1,
+     "33": 3,
+     "53": 1,
+     "93": 1,
+     "151": 1,
+     "237": 1,
+     "295": 1
+    },
+    "leftEx": {
+     "12": "a 「오늘 장」",
+     "33": "h2 「초대받은 분만 쓸 수 있어」",
+     "53": "a.ghost.link 「고도리 소개 보기 ›」",
+     "93": "a 「시황」",
+     "151": "a.plus 「매매일지」",
+     "237": "a 「관심」",
+     "295": "a 「보유종목」"
+    },
+    "sp": 15,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [
+     "a gap 2 ×8",
+     "div.clock.guest padding 10 ×2",
+     "div.clock.guest padding 22 ×2",
+     "p margin 4 ×2",
+     "p.note margin 4 ×2",
+     "a.ghost.link margin 10 ×2",
+     "a.ghost.link padding 18 ×2",
+     "a.plus gap 2 ×2",
+     "h1.hbig margin 4 ×1",
+     "p.live margin 14 ×1",
+     "p.live.sm margin 4 ×1",
+     "h2 margin 10 ×1",
+     "footer.pv padding 92 ×1"
+    ],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 24,
+    "hanEx": [
+     "고도리 편지",
+     "금요일 밤,",
+     "편지가 열려요",
+     "월요일부터 쓰고, 금요일 밤 8시에 다 함께 열어요.",
+     "지금은 초대받은 분만",
+     "여는 밤까지 5일 07시간 55분 남았어요",
+     "이번 주 봉인된 편지",
+     "0통"
+    ],
+    "miss": null,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 2569
+   }
+  },
+  "/hello.html": {
+   "ko": {
+    "url": "http://127.0.0.1:8826/hello.html",
+    "title": "고도리를 소개합니다",
+    "px": 2010,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     18,
+     20,
+     22,
+     26
+    ],
+    "nt": [
+     18,
+     20,
+     22,
+     26
+    ],
+    "ntEx": {
+     "18": "a.hp-sms 「문자 보내기 010-9011-」",
+     "20": "h2.hp-dt 「내 정보는 이렇게 다뤄요」",
+     "22": "h2.hp-pt 「친구 3명에게만 소개해도」",
+     "26": "h1.hp-h 「고도리를 소개합니다」"
+    },
+    "left": 11,
+    "lefts": {
+     "12": 1,
+     "33": 8,
+     "43": 1,
+     "62": 3,
+     "70": 1,
+     "71": 1,
+     "93": 1,
+     "151": 1,
+     "164": 1,
+     "237": 1,
+     "295": 1
+    },
+    "leftEx": {
+     "12": "a 「오늘 장」",
+     "33": "b 「모으는 것」",
+     "43": "a.hp-go 「고도리 보러 가기」",
+     "62": "li 「카톡으로 친구」",
+     "70": "a.hp-sms 「문자 보내기 010-901」",
+     "71": "a.hp-talk 「고도리 오늘의 이야기 보러」",
+     "93": "a 「시황」",
+     "151": "a.plus 「매매일지」",
+     "164": "a.hp-call 「전화」",
+     "237": "a 「관심」",
+     "295": "a 「보유종목」"
+    },
+    "sp": 21,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [
+     "a gap 2 ×8",
+     "li margin 4 ×6",
+     "main.hp-main gap 14 ×2",
+     "a.hp-pbar padding 6 ×2",
+     "a.hp-pbar padding 14 ×2",
+     "a.hp-talk padding 14 ×2",
+     "div.hp-row gap 12 ×2",
+     "button.hp-send padding 22 ×2",
+     "section.hp-promo padding 18 ×2",
+     "div.hp-tel gap 10 ×2",
+     "a.hp-sms padding 20 ×2",
+     "a.hp-call padding 20 ×2",
+     "a.plus gap 2 ×2",
+     "main.hp-main padding 18 ×1"
+    ],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "ms": 5639
+   },
+   "en": {
+    "url": "http://127.0.0.1:8826/hello.html?lang=en",
+    "title": "Meet Godori",
+    "px": 2384,
+    "overflowX": false,
+    "u17": 0,
+    "u17Sizes": {},
+    "fs": 5,
+    "sizes": [
+     17,
+     18,
+     20,
+     22,
+     26
+    ],
+    "nt": [
+     18,
+     20,
+     22,
+     26
+    ],
+    "ntEx": {
+     "18": "a.hp-sms 「Text 010-9011-73」",
+     "20": "h2.hp-dt 「How we handle yo」",
+     "22": "h2.hp-pt 「Introduce Godori」",
+     "26": "h1.hp-h 「Meet Godori」"
+    },
+    "left": 11,
+    "lefts": {
+     "13": 1,
+     "33": 8,
+     "62": 3,
+     "73": 1,
+     "84": 1,
+     "92": 1,
+     "130": 1,
+     "152": 1,
+     "163": 1,
+     "228": 1,
+     "291": 1
+    },
+    "leftEx": {
+     "13": "a 「Today」",
+     "33": "b 「What we collec」",
+     "62": "li 「On KakaoTalk, 」",
+     "73": "a.hp-talk 「See today's ta」",
+     "84": "a 「Recap」",
+     "92": "a.hp-sms 「Text 010-9011-」",
+     "130": "a.hp-go 「Go to Godori」",
+     "152": "a.plus 「Journal」",
+     "163": "a.hp-call 「Call」",
+     "228": "a 「Watch」",
+     "291": "a 「Holdings」"
+    },
+    "sp": 21,
+    "neg": 0,
+    "negEx": [],
+    "spEx": [
+     "a gap 2 ×8",
+     "li margin 4 ×6",
+     "main.hp-main gap 14 ×2",
+     "a.hp-pbar padding 6 ×2",
+     "a.hp-pbar padding 14 ×2",
+     "a.hp-talk padding 14 ×2",
+     "div.hp-row gap 12 ×2",
+     "button.hp-send padding 22 ×2",
+     "section.hp-promo padding 18 ×2",
+     "div.hp-tel gap 10 ×2",
+     "a.hp-sms padding 20 ×2",
+     "a.hp-call padding 20 ×2",
+     "a.plus gap 2 ×2",
+     "main.hp-main padding 18 ×1"
+    ],
+    "card": 0,
+    "cardEx": [],
+    "gold": 0,
+    "goldEx": [],
+    "word": 0,
+    "words": {},
+    "wordEx": [],
+    "chap": 0,
+    "han": 0,
+    "hanEx": [],
+    "miss": 0,
+    "missEx": [],
+    "oldEn": 0,
+    "oldEnWords": {},
+    "ms": 5956
+   }
+  }
+ }
+}

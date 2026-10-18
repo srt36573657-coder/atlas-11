@@ -28,7 +28,7 @@ export function summaryLines({dep, st, man, since, deployOutcome, token}) {
     out.push('', '휴대폰에서 aaa7377.com 을 새로 고침하면 바로 보입니다.');
     return out;
   }
-  const why = fresh ? (dep.error ?? `넷리파이 상태 「${dep.state}」`) : '올리기 단계가 끝나지 못했습니다(아래 「aaa7377.com 에 올리기」 단계를 눌러 보면 까닭이 있습니다)';
+  const why = deployOutcome === 'gate' ? '올리기 전 검사에서 막혔습니다(위 「올리기 전 검사」 줄에 까닭 — 검사 실패 · 코드 다름 · 결과 없음)' : fresh ? (dep.error ?? `넷리파이 상태 「${dep.state}」`) : '올리기 단계가 끝나지 못했습니다(아래 「aaa7377.com 에 올리기」 단계를 눌러 보면 까닭이 있습니다)';
   return ['## 못 올렸습니다', '', `- 까닭: ${why}`, '- 화면은 그대로입니다(aaa7377.com 은 앞에 올린 것)', '- 다시 하려면: 앞 화면에서 「Run workflow」를 한 번 더 누릅니다'];
 }
 

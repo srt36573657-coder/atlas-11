@@ -4,17 +4,17 @@
    첫 질문 「오늘 처음 봤다면 살 거야?」 — 답한 뒤에만 산 값 · 수익률 · 색 · 다섯 가지(본전 생각을 끊으려고 · [5] 3) · 서울 날짜가 바뀌면 다시 물음
    다섯 가지(중요한 차례 · [5] 5 · 6): ① 산 이유가 살아 있나 — 매매일지(atlas:godori-why)에서 그 회사 마지막 기록의 3번 답: 「돈을 잘 번다」→ 오늘 문 1 · 「클 일이 있다」→ 적은 날 지났나 · 「그냥」→ 🟡
      ② 다섯 문 오늘 색(/next/data/gates.json · 처음 적은 날 색과 견줘 닫힌 문이 생기면 🟡) ③ 망할 이유(매매일지 ① 줄 · 나타났는지 스스로 고름)
-     ④ 팔 약속까지 남은 거리(내 약속과 견줌만 — 개인별 관리는 정식 투자자문업자만 · [5] 8) ⑤ 한 종목 · 한 업종 몫(셋에 하나 넘음 — 질문 11 「세 곳 이상」)
+     ④ 팔 약속까지 남은 거리(내 약속과 견줌만 — 개인별 관리는 정식 투자자문업자만 · [5] 8 · 2026-10-18 우리가 만든 기본 팔 선(산 값 × 0.9 · × 1.2)은 셈도 그림도 없앰 —
+        변호사 서면 의견 전까지 · 약속을 안 적었으면 「?」 한 줄) ⑤ 한 종목 · 한 업종 몫(셋에 하나 넘음 — 질문 11 「세 곳 이상」)
    색([5] 7): 🔴 팔 선 3% 안 · 지남 · 산 이유 없어짐 > 🟡 하나라도 흔들림 > 🟢 그대로 · 🔴 동안 넘긴 날 = 참은 날([5] 10 · 이 기기에서 본 날로 셈)
    펀드 · 우선주 등은 점검 못 하는 까닭(#/x 와 같은 까닭 — 회사 주식이 아님 · [5] 9) · 이름은 brand.js 한 곳(규칙 76) · 글은 textContent 로만(보안 규칙) */
-import {NAME, josa} from './brand.js';
+import {NAME, NAME_EN, josa} from './brand.js';
 import * as WHY from './p-why.js'; // 매매일지(일꾼 B) — records() · QS 가 없거나 못 읽어도 이 칸은 돎(기록을 직접 읽음)
 const NX = globalThis.NX;
 const {h} = NX;
 const KEY = 'atlas:godori-hold', WHY_KEY = 'atlas:godori-why';
 const NEAR = 3; // 팔 선까지 3% 안이면 🔴 — 사장님 예 「네가 정한 팔 선까지 3% 남았어」의 3(정한 숫자)
 const SHARE3 = 3; // 한 종목 · 한 업종 몫이 셋에 하나를 넘으면 🟡 — 질문 11 「나눠 넣어? 🟢 세 곳 이상」
-const sellOf = b => Math.floor(b * 9 / 10), halfOf = b => Math.floor(b * 12 / 10); // 팔 약속을 안 적었을 때 기본 약속 = 산 값 × 0.9 · × 1.2(원 아래 버림 · 매매일지 · gdr.json 과 같은 셈 · [3] 5)
 const GATES = ['이익 늘었나', '아직 조용한가', '석 달 천천히 올랐나', '두 배 넘게 안 올랐나', '돈 들어오는 업종인가']; // 다섯 문(한 장 명령문 명령 7 원문)
 const Q3 = {g: '돈을 잘 번다', y: '클 일이 있다', r: '그냥 오를 것 같다'}; // 질문 3 「뭐가 좋아?」 답(원문)
 const ASK = ['살 거야', '잘 모르겠어', '안 살 거야'];
@@ -105,7 +105,7 @@ function kindOf(code, names) {
   if (!r) return {label: '?', text: '? 이 종목을 이름표에서 못 찾았어요.'};
   if (!r.k) return {label: '회사 주식', text: '사이트 자료에 아직 없는 회사여서 다섯 가지를 셀 수 없어요.'};
   const label = String(r.w ?? '').split(' — ')[0] || '회사 주식 밖';
-  return {label, text: `${label} — 회사 주식이 아니라 다섯 문을 셀 수 없어요.`};
+  return {label, text: `${label} — 회사 주식이 아니라 조건 다섯을 셀 수 없어요.`};
 }
 
 /** 몫 — 지금 값(없으면 산 값) × 수량 · 종목은 번호로 묶고 업종은 mkt.json 업종(회사 주식 밖은 종류) */
@@ -151,7 +151,7 @@ function assess(o, S, mkt, G) {
     else r1.lines.push('? 매매일지 답을 읽지 못했어.');
   }
   // ② 다섯 문 오늘 색 — 처음 적은 날 색(o.g0)과 견줌
-  const r2 = {n: '② 다섯 문의 오늘 색', k: '문 색', c: 'u', lines: [], gates: gv ? gv.slice(1, 6) : null, x: gv ? gv[0] : null};
+  const r2 = {n: '② 조건 다섯의 오늘 색', k: '문 색', c: 'u', lines: [], gates: gv ? gv.slice(1, 6) : null, x: gv ? gv[0] : null};
   if (G?.asOf) {
     r2.lines.push(`${gd} 종가로 센 색이에요.`);
     if (NX.D?.mkt?.asOf && G.asOf < NX.D.mkt.asOf) r2.lines.push({q: `사이트 자료는 ${md(NX.D.mkt.asOf)}까지라 지금 색과 다를 수 있어요.`}); // p-gdr .gdr-stale 와 같은 잣대
@@ -173,16 +173,16 @@ function assess(o, S, mkt, G) {
   if (!why) r3.lines.push('? 매매일지에 「1년 뒤 반토막 났다면 왜?」를 안 적었어.');
   else if (o.doom) { r3.c = 'y'; r3.lines.push('네가 적은 망할 이유가 나타났다고 골랐어.'); }
   else { r3.c = 'g'; r3.lines.push('아직 안 나타났다고 봤어. 나타나면 눌러 줘.'); }
-  // ④ 팔 약속까지 — 내 약속(매매일지) · 없으면 기본 약속(산 값 × 0.9 · × 1.2)
-  const own = !!P?.sell, sell = own ? P.sell : sellOf(buy), half = P?.half ?? halfOf(buy), who = own ? '네가 정한' : '기본', whoH = P?.half ? '네가 정한' : '기본';
-  const r4 = {n: '④ 팔 약속까지 남은 거리', k: '팔 약속', c: 'q', lines: [], promise: P?.text ?? null};
-  if (!own) r4.lines.push(`아직 팔 약속을 안 적어서 기본 약속으로 셌어: 산 값의 90%는 ${won(sell)}, 120%는 ${won(half)}.`);
-  else if (!P?.half) r4.lines.push(`절반 팔 선은 안 적어서 기본 약속으로 셌어: 산 값의 120%는 ${won(half)}.`);
-  if (!p) { r4.c = 'u'; r4.lines.push('? 오늘 값을 못 받아 거리를 못 셌어.'); }
+  // ④ 팔 약속까지 — 네가 매매일지에 적은 약속과 견줌만. 우리가 만든 팔 선(산 값 × 0.9 · × 1.2 기본 약속)은 셈도 그림도 없음 —
+  //   자본시장법 변호사의 서면 의견을 받기 전까지(2026-10-18 총괄 결정 · 고도리 칸 [9] 1 · 규칙 77 「내 약속과 대조만」과 같게). 약속을 안 적었으면 「?」 한 줄과 적으러 가는 고리만.
+  const own = !!P?.sell, sell = own ? P.sell : null, half = own ? P.half : null; // 두 숫자 모두 네가 적은 것만(안 적은 절반 팔 선을 우리가 채우지 않음)
+  const r4 = {n: '④ 팔 약속까지 남은 거리', k: '팔 약속', c: 'q', lines: [], promise: P?.text ?? null, link: null};
+  if (!own) { r4.c = 'u'; r4.lines.push('? 팔 약속을 안 적어서 거리를 못 셌어. 매매일지에 적어 두면 네가 적은 숫자와 맞대 볼게.'); if (rec) r4.link = ['#/why/' + NX.enc(code), '이 회사로 왜 사? 적기 ›']; } // 매매일지가 아예 없으면 ①의 같은 고리가 이미 있음
+  else if (!p) { r4.c = 'u'; r4.lines.push('? 오늘 값을 못 받아 거리를 못 셌어.'); }
   else {
-    if (p <= sell) { r4.c = 'r'; r4.past = true; r4.lines.push(p === sell ? `${who} 팔 선(${won(sell)})에 닿았어.` : `${who} 팔 선(${won(sell)})을 지났어. 오늘 값이 팔 선보다 ${one((sell - p) / sell * 100)}% 아래야.`); }
-    else { const d = (p - sell) / p * 100; r4.c = d <= NEAR + 1e-9 ? 'r' : 'g'; r4.lines.push(`${who} 팔 선까지 ${one(d)}% 남았어. 한 주에 ${won(p - sell)}이야.`); }
-    if (half > 0) r4.lines.push(p >= half ? `${whoH} 절반 팔 선(${won(half)})에 닿았어.` : `${whoH} 절반 팔 선(${won(half)})까지 ${one((half - p) / p * 100)}% 남았어.`);
+    if (p <= sell) { r4.c = 'r'; r4.past = true; r4.lines.push(p === sell ? `네가 정한 팔 선(${won(sell)})에 닿았어.` : `네가 정한 팔 선(${won(sell)})을 지났어. 오늘 값이 팔 선보다 ${one((sell - p) / sell * 100)}% 아래야.`); }
+    else { const d = (p - sell) / p * 100; r4.c = d <= NEAR + 1e-9 ? 'r' : 'g'; r4.lines.push(`네가 정한 팔 선까지 ${one(d)}% 남았어. 한 주에 ${won(p - sell)}이야.`); }
+    if (half > 0) r4.lines.push(p >= half ? `네가 정한 절반 팔 선(${won(half)})에 닿았어.` : `네가 정한 절반 팔 선(${won(half)})까지 ${one((half - p) / p * 100)}% 남았어.`);
   }
   // ⑤ 한 곳에 몰렸나
   const SH = S.shares, me = SH.by.get(code), mi = SH.ind.get(A.ind ?? '?') ?? 0;
@@ -217,9 +217,12 @@ function track(S, mkt, G) {
 }
 
 /* 그리기 */
-const dot = c => h('span', {class: 'hd-dot hd-c' + c, 'aria-hidden': 'true'});
+/** 색 점을 읽어 주는 글([9] 8 · 매매일지 TONE 과 같은 말 — 좋음 · 주의 · 위험 · 셀 수 없음 · 모름) */
+const STATE_SAY = {g: '좋음', y: '주의', r: '위험', u: '셀 수 없음', q: '모름'};
+/** 색 점 — say 면 점이 읽어 주는 글을 가짐(다섯 가지 줄 머리) · 아니면 곁 글이 말해 주니 읽지 않음(다섯 문 줄 「지남 · 못 지남」) */
+const dot = (c, say = false) => (say && STATE_SAY[c] ? h('span', {class: 'hd-dot hd-c' + c}, h('span', {class: 'hd-sr', text: STATE_SAY[c]})) : h('span', {class: 'hd-dot hd-c' + c, 'aria-hidden': 'true'}));
 function itemEl(x, o, S, redraw) {
-  const el = h('div', {class: 'hd-it hd-i' + x.c}, h('h4', {class: 'hd-in'}, dot(x.c), h('span', {text: x.n})));
+  const el = h('div', {class: 'hd-it hd-i' + x.c}, h('h4', {class: 'hd-in'}, h('span', {text: x.n}), dot(x.c, true))); // 글 뒤에 점(화면 차례와 읽는 차례가 같게 — 점은 줄 끝)
   if (x.gates) {
     const ul = h('ul', {class: 'hd-gates'});
     GATES.forEach((n, i) => { const v = x.gates[i]; ul.append(h('li', {class: 'hd-g hd-g' + (v === 1 ? 'g' : v === 0 ? 'r' : 'q')}, dot(v === 1 ? 'g' : v === 0 ? 'r' : 'q'), h('span', {text: n}), h('b', {text: v === 1 ? '지남' : v === 0 ? '못 지남' : '?'}))); });
@@ -272,7 +275,7 @@ function cardOf(o, S, mkt, G, redraw) {
   const A = assess(o, S, mkt, G), code = o.code;
   const card = h('article', {class: 'hd-card', 'data-code': code, 'data-id': o.id ?? ''});
   const nm = A.co ? h('a', {class: 'hd-name', href: '#/w/' + NX.enc(code), 'data-proper': '', text: A.name}) : h('b', {class: 'hd-name', 'data-proper': '', text: A.name});
-  card.append(h('p', {class: 'hd-ch'}, nm, h('span', {class: 'hd-meta', text: ` · ${A.co ? (A.ind ?? '?') : A.kind.label} · ${md(dayOf(o.day))}에 산 ${qtyTxt(Number(o.qty))}`})));
+  card.append(h('p', {class: 'hd-ch'}, nm, h('span', {class: 'hd-meta', text: `${A.co ? (A.ind ?? '?') : A.kind.label} · ${md(dayOf(o.day))}에 산 ${qtyTxt(Number(o.qty))}`})));
   card.append(h('p', {class: 'hd-px'}, ...(A.p ? [h('span', {text: '오늘 값 '}), h('b', {class: 'num', text: won(A.p)}), h('span', {text: ` · ${md(A.pd)} 종가`})] : [h('span', {text: A.co ? '? 오늘 값을 못 받았어.' : '? 오늘 값을 몰라.'})])));
   const ans = o.ask && o.ask.d === S.day && [0, 1, 2].includes(o.ask.a) ? o.ask.a : null;
   if (ans == null) {
@@ -361,7 +364,7 @@ function addForm(S, mkt, redraw) {
     if (bd > S.day) { err.textContent = '산 날은 오늘이나 그 전이어야 해.'; return; }
     const o = {id: newId(), code: S.pick.c, name: S.pick.n, buy: bp, qty: bq, day: bd, at: new Date().toISOString()};
     S.all.unshift(o); S.add = false; S.pick = null; S.focus = o.id;
-    save(S); NX.toast?.(S.mem ? '이 기기는 기억을 못 해서 이 화면에만 적었어요.' : '적었어요. 이 기기에만 남아요.');
+    save(S); NX.toast?.(S.mem ? '이 기기는 기억을 못 해서 이 화면에만 적었어요.' : memberNow() ? '적었어요. 카카오로 지켜요.' : '적었어요. 이 기기에만 남아요.');
     redraw(true);
   });
   setTimeout(() => { showPick(); if (!S.pick) qi.focus({preventScroll: true}); }, 0);
@@ -376,9 +379,9 @@ function pastEl(S, mkt) {
   return h('details', {class: 'hd-past'}, h('summary', {}, h('span', {text: '지난 보유 '}), h('b', {class: 'num', text: list.length + '곳'})),
     ...list.map(o => {
       const nm = mkt?.companies?.[o.code]?.n ?? o.name ?? o.code;
-      if (o.wrong) return h('div', {class: 'hd-prow'}, h('p', {class: 'hd-ch'}, h('b', {'data-proper': '', text: nm}), h('span', {class: 'hd-meta', text: ` · 잘못 적어 뺐어 · ${md(dayOf(o.wrong.at))}`})));
+      if (o.wrong) return h('div', {class: 'hd-prow'}, h('p', {class: 'hd-ch'}, h('b', {'data-proper': '', text: nm}), h('span', {class: 'hd-meta', text: `잘못 적어 뺐어 · ${md(dayOf(o.wrong.at))}`})));
       const r = (Number(o.sold.price) / Number(o.buy) - 1) * 100;
-      return h('div', {class: 'hd-prow'}, h('p', {class: 'hd-ch'}, h('b', {'data-proper': '', text: nm}), h('span', {class: 'hd-meta', text: ` · ${md(dayOf(o.day))}에 산 ${qtyTxt(Number(o.qty))} · ${md(o.sold.day)}에 팖`})),
+      return h('div', {class: 'hd-prow'}, h('p', {class: 'hd-ch'}, h('b', {'data-proper': '', text: nm}), h('span', {class: 'hd-meta', text: `${md(dayOf(o.day))}에 산 ${qtyTxt(Number(o.qty))} · ${md(o.sold.day)}에 팖`})),
         h('p', {class: 'hd-ret'}, h('span', {text: `산 값 ${won(Number(o.buy))} → 판 값 ${won(Number(o.sold.price))} `}), h('b', {class: 'num ' + NX.cls(r), text: NX.pct(r)})));
     }));
 }
@@ -390,7 +393,7 @@ const legend = () => h('details', {class: 'hd-leg'}, h('summary', {text: '색은
   h('p', {class: 'hd-line', text: '🟡 셀 수 없음: 매매일지나 그날 자료가 없어 확인하지 못한 것이 있어요. 「?」로 보여요.'}),
   h('p', {class: 'hd-line', text: `🔴 조심: 팔 선까지 ${NEAR}% 안으로 가깝거나 팔 선을 지났거나, 산 이유가 없어졌어요.`}),
   h('p', {class: 'hd-line', text: '참은 날: 🔴로 처음 본 날부터 센 날이에요. 이 기기에서 연 날로 셌어요.'}),
-  h('p', {class: 'hd-line', text: '팔 약속을 안 적었으면 기본 약속으로 셌어요. 산 값의 90%에서 팔고, 120%에서 절반 판다는 약속이에요.'}));
+  h('p', {class: 'hd-line', text: '팔 약속은 네가 매매일지에 적은 숫자와만 맞대 봐요. 안 적었으면 「?」로 보여요.'}));
 
 export async function holdSection() {
   const [mkt, G] = await Promise.all([NX.need('mkt'), gatesJson()]);
@@ -408,7 +411,7 @@ export async function holdSection() {
     const add = h('button', {class: 'hd-add-b', type: 'button', 'aria-expanded': String(S.add), text: S.add ? '보유종목 적기 닫기' : '+ 보유종목 적기', onclick: () => { S.add = !S.add; S.pick = null; draw(); }});
     box.replaceChildren(
       h('div', {class: 'hd-head'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 40, height: 40}),
-        h('div', {}, h('h2', {class: 'hd-h', text: '보유종목 점검'}), h('p', {class: 'hd-sub', text: '이 기기에만 남아요. 판 것도 지우지 않아요.'}))),
+        h('div', {}, h('h2', {class: 'hd-h', text: '보유종목 점검'}), subNote())),
       ...(S.mem ? [h('p', {class: 'hd-q-note'}, h('b', {class: 'gd', text: '? '}), h('span', {text: '이 기기는 기억을 못 해요. 적은 것은 이 화면을 떠나면 없어져요.'}))] : []),
       ...(act.length ? [sharePic(S)].filter(Boolean) : [h('p', {class: 'hd-note', text: '아직 적은 보유종목이 없어요.'})]), // 빈 칸은 짧게(제목 · 한 줄 · 적기) — 아래 사장님 편지가 첫 화면 가까이 오게
       ...act.map(o => cardOf(o, S, mkt, G, () => draw())),
@@ -423,4 +426,146 @@ export async function holdSection() {
 
 export async function render() {
   return {title: '보유종목', nodes: [await holdSection()]};
+}
+
+/* ═══ 보유종목 쪽 아래쪽 · 관심 소식 — 사장님 2026-10-18(싱가포르) 「72개와 카톡 두 번 가입」 [7] 7 ~ 9 · [4] 4 · 5 · 9 (일 나누기 docs/design/godori-2026-10-18/brief5.md · 일꾼 S5h · 잣대 accept/S5h.md)
+   foldLetter(lw) = 편지 칸을 첫 화면 ⅓ 높이로 접고 「펼치기」(눌러야 다 보임) · shortcuts() = 바로 가기 내 것만(편지 여는 밤 · 기록 파일로 받기 · 가입한 사람만 탈퇴 두 번) · keepNote() = 지킴 글 한 줄
+   news(X, keys) = 관심 소식 줄(담은 업종 · 큰 업종의 뽑힘 · 옮김 · 빠짐 · 오늘 가장 많이 움직인 곳 — 날짜 새 것 먼저 · 자료 surgetr.json 그대로)
+   카카오는 늘 NX.kakao?.… 로만 부름 — 없거나 on === false 면 가입 안 한 꼴 · 기록 파일(exportFile)은 늘 됨 · 글은 textContent 로만 */
+const KAKAO_KEEP = '카카오로 지켜요.', DEVICE_ONLY = '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.', IPHONE_LINE = '아이폰은 7일 동안 안 열면 기록이 지워질 수 있어요.';
+const KEYS4 = ['atlas:godori-why', 'atlas:new:sub', 'atlas:new:later', 'atlas:godori-hold']; // 이 기기 기록 넷(카카오 서버 맞추기와 같은 넷 · 내 돈 칸 atlas:godori-money 는 넣지 않음 — [9] 4)
+const kakao = () => { try { return globalThis.NX?.kakao ?? null; } catch { return null; } };
+const say = m => { try { globalThis.NX?.toast?.(m); } catch { /* 알림 못 띄움 */ } };
+/** 가입한 사람인가 — NX.kakao 가 없거나 꺼졌으면(on === false) 아니다 */
+export function memberNow() { try { const K = kakao(); return !!(K && K.on !== false && typeof K.member === 'function' && K.member()); } catch { return false; } }
+
+/* 가입 여부가 바뀌면 다시 쓰는 글(지킴 글 · 바로 가기) — 쪽을 떠난 것은 저절로 버림 */
+const live = new Set();
+function watch(node, paint) { const w = {node, paint, seen: false}; live.add(w); if (live.size > 40) for (const x of live) if (!x.seen && x !== w) { live.delete(x); break; } paint(); return node; }
+function repaint() { for (const w of [...live]) { if (w.node.isConnected) w.seen = true; else if (w.seen) { live.delete(w); continue; } try { w.paint(); } catch { live.delete(w); } } }
+try { addEventListener('nx:kakao', repaint); } catch { /* 창 아님 */ }
+/** 점검 칸 머리 글 — 가입 안 함 「이 기기에만 …」 · 가입함 「카카오로 지켜요. …」([4] 4) */
+function subNote() { const p = h('p', {class: 'hd-sub'}); return watch(p, () => { p.textContent = memberNow() ? KAKAO_KEEP + ' 판 것도 지우지 않아요.' : '이 기기에만 남아요. 판 것도 지우지 않아요.'; }); }
+/** 관심 쪽 머리 글 한 줄 — 끝 말만 가입 여부를 따라감(가입 안 함 「이 기기에만 남아요.」 · 가입함 「카카오로 지켜요.」 · 나중에 가입해도 다시 그림) */
+export function liveNote(p, build) { return watch(p, () => { p.textContent = build(memberNow() ? KAKAO_KEEP : '이 기기에만 남아요.'); }); }
+/** 본 기록 아래 지킴 글 한 줄([4] 4) — 가입 안 함 = 옛 문장 그대로 · 가입함 = 「카카오로 지켜요.」 */
+export function keepNote() { const p = h('p', {class: 'note hd-keep'}); return watch(p, () => { p.textContent = memberNow() ? KAKAO_KEEP : DEVICE_ONLY; }); }
+
+/* [7] 8 편지 접기 — 편지 칸(1,100px 넘음)을 첫 화면 ⅓ 높이로 접고 「펼치기」를 누르면 다 보임 · 편지 글은 손대지 않음(감싸기만) · 접힌 동안 편지를 누르면 펼침(바로 소개 쪽으로 튀지 않음) */
+let foldN = 0;
+export function foldLetter(lw) {
+  if (!lw?.matches) return lw;
+  if (!lw.id) lw.id = 'hd-letter-' + ++foldN;
+  lw.classList.add('hd-lw'); // 편지 간격 고침(p-hold.css 「이 화면의 편지 간격」) — 접힘 · 펼침 모두 · 감싸기를 풀어도 따라감
+  const lab = h('span', {text: '펼치기'}), btn = h('button', {class: 'hd-fold-b', type: 'button', 'aria-expanded': 'false', 'aria-controls': lw.id}, lab, h('i', {class: 'hd-fold-c', 'aria-hidden': 'true'}));
+  const wrap = h('div', {class: 'hd-fold', 'data-open': 'false'}, lw, btn);
+  const set = on => { wrap.setAttribute('data-open', String(on)); btn.setAttribute('aria-expanded', String(on)); lab.textContent = on ? '접기' : '펼치기'; };
+  btn.addEventListener('click', () => { const on = wrap.getAttribute('data-open') !== 'true'; set(on); if (!on) { const r = wrap.getBoundingClientRect(); if (r.top < 0) wrap.scrollIntoView({block: 'start'}); } });
+  wrap.addEventListener('click', e => { if (wrap.getAttribute('data-open') === 'true') return; if (e.target?.closest?.('a.m4-letter')) { e.preventDefault(); set(true); } });
+  return wrap;
+}
+
+/* [4] 5 기록 파일 — 이 기기 기록 넷을 파일 하나로(망 요청 0 · 지우지 않음) · 카카오 쪽 exportFile 이 있으면 그것 · 없거나 못 하면 여기서 만듦 */
+function exportLocal() {
+  const keys = {}; let blocked = false;
+  for (const k of KEYS4) { try { const raw = localStorage.getItem(k); if (raw == null) continue; try { keys[k] = JSON.parse(raw); } catch { keys[k] = raw; } } catch { blocked = true; } }
+  const now = new Date(), file = {schema: 'godori-device-records-1', exportedAt: now.toISOString(), keys}; // 꼴 · 파일 이름은 kakao.js exportFile 과 같음(어느 쪽이 만들어도 한 꼴)
+  const url = URL.createObjectURL(new Blob([JSON.stringify(file, null, 1)], {type: 'application/json'}));
+  const a = document.createElement('a'); a.href = url; a.download = `${NAME_EN.toLowerCase()}-records-${now.toISOString().slice(0, 10)}.json`; a.rel = 'noopener'; a.hidden = true; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  return {blocked, n: Object.keys(keys).length};
+}
+async function saveRecords() {
+  const K = kakao();
+  try {
+    if (K && typeof K.exportFile === 'function') { const r = await K.exportFile(); if (r === false) throw new Error('exportFile 이 false'); say('기록 파일을 받았어요.'); return; }
+  } catch { /* 아래에서 여기서 만듦 */ }
+  try { const r = exportLocal(); say(r.blocked ? '이 기기는 기억을 못 해서 받을 기록이 없어요.' : '기록 파일을 받았어요.'); } catch { say('기록 파일을 만들지 못했어요. 잠시 뒤 다시 눌러 주세요.'); }
+}
+
+/* [7] 9 바로 가기 내 것만 · [4] 5 · [4] 9 — 편지 여는 밤 · 기록 파일로 받기 · (가입한 사람만) 탈퇴(누름 → 묻기 → 누름 = 두 번) */
+export function shortcuts() {
+  const box = h('div', {class: 'lst hd-sc'});
+  let asking = false, busy = false, err = '';
+  const draw = (focus = null) => {
+    const dl = h('button', {class: 'hd-sc-dl', type: 'button'}, '기록 파일로 받기', h('span', {'aria-hidden': 'true', text: '↓'}));
+    dl.addEventListener('click', () => { saveRecords(); });
+    const rows = [h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})), h('p', {class: 'hd-sc-n', text: IPHONE_LINE}), dl];
+    let wd = null, q = null;
+    if (memberNow()) {
+      wd = h('button', {class: 'hd-sc-wd', type: 'button', 'aria-expanded': String(asking)}, '탈퇴', h('span', {text: '›'}));
+      wd.addEventListener('click', () => { if (busy) return; asking = !asking; err = ''; draw(asking ? 'q' : 'wd'); });
+      rows.push(wd);
+      if (asking) {
+        q = h('p', {class: 'hd-wd-q', tabindex: '-1', text: '탈퇴하면 서버에 둔 내 기록 사본을 지우고 카카오 연결을 끊어요. 이 기기의 기록은 그대로 남아요.'});
+        const go = h('button', {class: 'hd-go', type: 'button', text: '탈퇴하기'}), no = h('button', {class: 'hd-no', type: 'button', text: '그만두기'});
+        no.addEventListener('click', () => { if (busy) return; asking = false; err = ''; draw('wd'); });
+        go.addEventListener('click', async () => {
+          if (busy) return; busy = true; go.disabled = true; no.disabled = true;
+          let ok = false; const K = kakao();
+          if (K && typeof K.withdraw === 'function') { try { ok = (await K.withdraw()) !== false; } catch { ok = false; } }
+          busy = false;
+          if (ok) { asking = false; err = ''; say('탈퇴했어요. 서버 사본을 지웠어요.'); repaint(); draw(); }
+          else { err = '탈퇴를 마치지 못했어요. 잠시 뒤 다시 눌러 주세요.'; draw('q'); }
+        });
+        rows.push(h('div', {class: 'hd-wd', role: 'group', 'aria-label': '탈퇴 확인'}, q, ...(err ? [h('p', {class: 'hd-err', role: 'alert', text: err})] : []), h('div', {class: 'hd-btns'}, go, no)));
+      }
+    }
+    box.replaceChildren(...rows);
+    if (focus === 'q') q?.focus({preventScroll: true}); else if (focus === 'wd') wd?.focus({preventScroll: true});
+  };
+  watch(box, () => draw());
+  return [h('h2', {class: 'sec', text: '바로 가기'}), box];
+}
+
+/* [7] 7 관심 소식 줄 — 담은 업종 · 큰 업종마다: 급등 달력(surgetr.json · tr-v1)의 뽑힘 · 다시 뽑힘 · 옮김 · 빠짐 한 곳 한 줄 + 오늘 가장 많이 움직인 곳 한 줄 · 날짜 새 것 먼저
+   같은 곳이 담은 곳 둘에 들면 줄은 한 번(먼저 담은 곳 이름) · 오늘 가장 많이 움직인 곳은 담은 곳마다 한 줄 · 자료를 못 받으면 「?」 한 줄(오늘 줄은 그대로) */
+const NEWS_SHOW = 4; // 처음 보이는 줄(나머지는 「나머지 n줄 보기」 안)
+const TR_BOX = {'1': '10%대로', '2': '20%대로', '3': '30%대로', '4': '40% 이상으로'};
+const KIND = {mov: ['오늘 가장 많이 움직인 곳', 0], sel: ['뽑힘', 1], re: ['다시 뽑힘', 2], mv: ['옮김', 3], out: ['빠짐', 4]};
+const trOk = T => !!(T && T.version === 'tr-v1' && dayOf(T.asOf) && Array.isArray(T.days) && Array.isArray(T.cases) && T.days.every(x => x && dayOf(x.d)));
+export async function news(X, ks) {
+  if (!X || !Array.isArray(ks) || !ks.length) return null;
+  const chans = [];
+  for (const k of ks) {
+    const g = k.startsWith('g:'), ch = g ? X.grp?.get(k.slice(2)) : X.ind?.get(k.slice(2)); if (!ch) continue;
+    const mem = g ? (ch.inds || []).flatMap(n => X.ind?.get(n)?.members || []) : ch.members || [];
+    chans.push({k, label: g ? '큰 업종 ' + ch.name : ch.name + ' 업종', set: new Set(mem.filter(c => X.co?.[c])), at: chans.length});
+  }
+  if (!chans.length) return null;
+  const T0 = await NX.getJson('surgetr.json'), T = trOk(T0) ? T0 : null;
+  const owner = new Map(); for (const c of chans) for (const code of c.set) if (!owner.has(code)) owner.set(code, c);
+  const first = new Map(); if (T) for (const r of T.cases) if (Array.isArray(r)) first.set(r[0] + '|' + r[2], r[3]); // 뽑힌 날 칸 = 처음 뽑힌 날과 같을 때만
+  const ev = [];
+  if (T) for (const day of T.days) {
+    const d = dayOf(day.d), push = (code, kind, box) => { const c = owner.get(code); if (c) ev.push({d, code, kind, box: TR_BOX[box] ? box : null, ch: c}); };
+    for (const code of day.sel ?? []) push(code, 'sel', first.get(code + '|' + d));
+    for (const e of day.re ?? []) push(e?.[0], 're', e?.[1]);
+    for (const e of day.mv ?? []) push(e?.[0], 'mv', e?.[1]);
+    for (const code of day.out ?? []) push(code, 'out', null);
+  }
+  const seen = new Set(), uniq = ev.filter(e => { const key = e.d + '|' + e.code + '|' + e.kind; if (seen.has(key)) return false; seen.add(key); return true; });
+  for (const c of chans) { // 오늘 가장 많이 움직인 곳(담은 곳마다 한 줄 · 값이 이상한 회사는 뺌)
+    let top = null;
+    for (const code of c.set) { const o = X.co[code]; if (!o || NX.odd(o.l)) continue; const v = NX.dayOf(o.l); if (v != null && (!top || Math.abs(v) > Math.abs(top.v))) top = {code, v}; }
+    if (top && dayOf(X.mkt?.asOf)) uniq.push({d: dayOf(X.mkt.asOf), code: top.code, kind: 'mov', pct: top.v, ch: c});
+  }
+  uniq.sort((a, b) => (a.d < b.d ? 1 : a.d > b.d ? -1 : 0) || KIND[a.kind][1] - KIND[b.kind][1] || a.ch.at - b.ch.at || String(X.co[a.code].n).localeCompare(String(X.co[b.code].n), 'ko') || (a.code < b.code ? -1 : 1));
+  const rowEl = e => {
+    const o = X.co[e.code];
+    const head = [h('b', {class: 'sb-nm', text: o.n}), e.kind === 'mov' ? h('b', {class: 'num sb-p ' + NX.cls(e.pct), text: NX.pct(e.pct)}) : h('span', {class: 'sb-k sb-' + e.kind, text: KIND[e.kind][0]})];
+    const sub = [md(e.d), e.ch.label, ...(e.kind === 'mov' ? [KIND.mov[0]] : []), ...(e.box ? [TR_BOX[e.box]] : [])];
+    return h('a', {class: 'sb-n', href: '#/w/' + NX.enc(e.code), 'data-kind': e.kind, 'data-d': e.d}, h('span', {class: 'sb-h'}, ...head), h('small', {class: 'sb-s', text: sub.join(' · ')}));
+  };
+  const sec = h('section', {class: 'sb', 'aria-labelledby': 'sb-h'}, h('h2', {class: 'sec', id: 'sb-h', text: '소식'}));
+  sec.append(h('p', {class: 'note', text: T ? `급등 달력의 뽑힘 · 옮김 · 빠짐이에요. ${md(dayOf(T.asOf))} 기록까지 셌어요.` : '? 소식 자료를 못 받았어요. 오늘 많이 움직인 곳만 보여요.'}));
+  if (!uniq.length) { sec.append(h('p', {class: 'note', text: '담은 곳에는 아직 뽑힘 · 옮김 · 빠짐 소식이 없어요.'})); return sec; }
+  const list = h('div', {class: 'sb-list'}, ...uniq.slice(0, NEWS_SHOW).map(rowEl));
+  sec.append(list);
+  if (uniq.length > NEWS_SHOW) { // 나머지는 처음 펼칠 때 그림(큰 업종은 수백 줄이라 열기 전에는 만들지 않음)
+    const rest = h('div', {class: 'sb-list'}), det = h('details', {class: 'sb-rest'}, h('summary', {text: `나머지 ${uniq.length - NEWS_SHOW}줄 보기`}), rest);
+    det.addEventListener('toggle', () => { if (det.open && !rest.firstChild) rest.append(...uniq.slice(NEWS_SHOW).map(rowEl)); });
+    sec.append(det);
+  }
+  return sec;
 }

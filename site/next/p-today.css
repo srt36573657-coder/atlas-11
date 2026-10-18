@@ -1,51 +1,60 @@
-/* 오늘 시장(#/today · 새 첫 화면 「오늘 한 줄」 밑 칸) — 새 아틀란스 모양(app.css 색 이름 그대로) · 지금 아틀란스 먹빛 첫 화면 칸(atlas.css 「먹빛 첫 화면」)을 카드로
-   빨강 = 오름 · 파랑 = 내림 · 금빛 = 「?」 · 「!」 · 고른 곳만 · 사고팔기 막대는 한 색(돈의 방향) · 글 17px 넘게 · 누르는 자리 44px 넘게 · 입체 · 그림자 · 바둑판 없음 · 움직임 줄이기면 움직임 없음 */
-.ptoday { padding-bottom: 6px; }
-.ptoday-home { margin-top: -4px; }
+/* 오늘 시장(#/today · 쪽 모듈 p-today.js) — 새 모양(app.css 색 이름 그대로) · 지금 먹빛 첫 화면 여섯 칸을 카드로
+   빨강 = 오름 · 파랑 = 내림 · 금빛 = 「?」 · 「!」 · 고른 곳만 · 사고팔기 막대는 한 색(돈의 방향) · 입체 · 그림자 · 바둑판 없음 · 움직임 줄이기면 움직임 없음
+   2026-10-18 명령문 [10] 5 ~ 10 · [6] 8(일꾼 S2t) —
+     글씨 = var(--fs-1 ~ 6)만(17px 아래 없음 · 이 쪽은 17 · 19 · 21 · 24 · 48 다섯 가지) · 간격 = 0 · auto · var(--sp-1 ~ 3)만(8 · 16 · 24 · 음수 없음)
+     왼쪽 줄 셋 = 16(칸 머리) · 32(카드 글) · 48(접은 칸 풀이 · 카드 속 금빛 상자) — 카드 · 상자 테두리는 테두리 대신 outline(자리를 안 차지함)이라 글 자리가 16의 배수로 떨어짐
+     숫자 칸(오름 · 그대로 · 내림 · 미국 세 지수)은 가운데 맞춤 · 오른쪽 숫자는 오른쪽 맞춤 · 같은 줄은 grid-auto-rows 로 같은 높이 · 금빛 경고는 두 줄까지(길면 「?」 한 줄로 접힘 — warn.js · app.css details.nw) */
+.ptoday { padding-bottom: var(--sp-1); }
 .ptoday .num { font-variant-numeric: tabular-nums; }
 .ptoday .nb { white-space: nowrap; }
+.ptoday-page > h1.wt { margin: var(--sp-2) var(--sp-2) 0; font-size: var(--fs-4); line-height: 1.35; }
+.ptoday-page > p.ws { margin: 0 var(--sp-2); font-size: var(--fs-1); }
 .ptoday-sec { margin: 0; }
-.ptoday-sh { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; row-gap: 2px; margin: 22px 16px 10px; }
-.ptoday-sh h2.sec { margin: 0; min-width: 0; }
-.ptoday-meta { margin-left: auto; min-width: 0; color: var(--mute); font-size: 17px; text-align: right; line-height: 1.4; } /* 좁은 화면 · 큰 글씨는 두 줄로 */
+.ptoday-sh { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--sp-2); row-gap: 0; margin: var(--sp-3) var(--sp-2) var(--sp-1); }
+.ptoday-sh h2.sec { margin: 0; min-width: 0; font-size: var(--fs-3); }
+.ptoday-meta { margin-left: auto; min-width: 0; color: var(--mute); font-size: var(--fs-1); text-align: right; line-height: 1.4; } /* 좁은 화면 · 큰 글씨는 두 줄로 */
 .ptoday-mq { color: var(--gold); font-weight: 700; } /* 못 받은 값 칸 — 머리 때 앞 금빛 「?」 */
-.ptoday-card { margin: 0 16px; padding: 14px 14px 4px; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); }
-.ptoday-lead { margin: 0 0 12px; font-size: 19px; line-height: 1.55; text-wrap: pretty; }
-.ptoday-cap { margin: 10px 0 0; color: var(--mute); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
-.ptoday-vh { margin: 10px 0 0; color: var(--sub); font-size: 17px; line-height: 1.5; text-wrap: pretty; } .ptoday-vh b { font-weight: 600; }
-.ptoday-hint { margin: 6px 0 0; color: var(--mute); font-size: 17px; line-height: 1.5; }
-.ptoday-q { margin: 10px 0 0; color: var(--gold); font-weight: 600; font-size: 17px; line-height: 1.5; text-wrap: pretty; }
-.ptoday-card > .ptoday-q:first-child { margin-top: 0; padding-bottom: 10px; }
-.ptoday-say { margin: 0 0 10px; color: var(--sub); font-size: 17px; line-height: 1.5; text-wrap: balance; }
-.ptoday-sl { margin: 14px 0 2px; color: var(--sub); font-weight: 600; font-size: 17px; line-height: 1.45; text-wrap: balance; }
-.ptoday-al { margin: 0 0 12px; padding: 10px 14px; border: 1px solid rgba(233, 185, 73, .6); border-radius: 10px; background: var(--gold-wash); color: var(--gold); font-weight: 600; font-size: 18px; line-height: 1.5; text-wrap: pretty; }
-.ptoday-alerts { margin: 12px 16px 0; } .ptoday-alerts .ptoday-al:last-child { margin-bottom: 0; }
-.ptoday-chev { font-style: normal; font-size: 22px; color: var(--mute); text-align: right; }
-/* 「어떻게 셌나요?」 — 접은 칸 */
-details.ptoday-how { margin: 6px 0 0; }
-details.ptoday-how summary { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--sub); font-size: 17px; cursor: pointer; list-style: none; }
-details.ptoday-how summary::-webkit-details-marker { display: none; }
-details.ptoday-how summary::before { content: ''; width: 18px; height: 18px; border: 1.5px solid var(--mute); border-radius: 50%; box-sizing: border-box; }
-details.ptoday-how[open] summary::before { background: var(--mute); }
-.ptoday-in { margin: 2px 0 10px; padding: 10px 12px; border-left: 2px solid var(--card3); background: var(--card2); border-radius: 0 8px 8px 0; }
-.ptoday-in p { margin: 0; color: var(--sub); font-size: 17px; line-height: 1.55; text-wrap: pretty; } .ptoday-in p + p { margin-top: 8px; }
+.ptoday-card { margin: 0 var(--sp-2); padding: var(--sp-2) var(--sp-2) var(--sp-1); border-radius: 14px; background: var(--card); outline: 1px solid var(--hair); outline-offset: -1px; }
+.ptoday-card > :last-child:not(details) { margin-bottom: var(--sp-1); }
+.ptoday-lead { margin: 0 0 var(--sp-2); font-size: var(--fs-2); line-height: 1.55; text-wrap: pretty; }
+.ptoday-cap { margin: var(--sp-1) 0 0; color: var(--mute); font-size: var(--fs-1); line-height: 1.5; text-wrap: pretty; }
+.ptoday-vh { margin: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.5; text-wrap: pretty; } .ptoday-vh b { font-weight: 600; }
+.ptoday-hint { margin: var(--sp-1) 0 0; color: var(--mute); font-size: var(--fs-1); line-height: 1.5; }
+.ptoday-say { margin: 0 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); line-height: 1.5; text-wrap: balance; }
+.ptoday-sl { margin: var(--sp-2) 0 var(--sp-1); color: var(--sub); font-weight: 600; font-size: var(--fs-1); line-height: 1.45; text-wrap: balance; }
+/* 금빛 「!」 상자(큰 날 · 외국인 큰 매매) — warn.js 의 details.nw 에 상자 모양만 얹음(두 줄 넘으면 「?」 한 줄로 접힘 · 글은 17px · 접힌 줄 누르는 자리 44px)
+   위쪽 상자는 칸 밖(옆 여백 16 + 안 여백 16 = 글 시작 32) · 카드 속 상자는 카드 글 줄(32)에서 안 여백 16 만큼 들어가 48 */
+details.nw.ptoday-al { margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border-radius: 10px; background: var(--gold-wash); outline: 1px solid rgba(233, 185, 73, .6); outline-offset: -1px; font-weight: 600; }
+.ptoday-alerts { margin: var(--sp-2) var(--sp-2) 0; } .ptoday-alerts details.nw.ptoday-al { margin: 0 0 var(--sp-1); } .ptoday-alerts details.nw.ptoday-al:last-child { margin-bottom: 0; }
+.ptoday-chev { font-style: normal; font-size: var(--fs-3); color: var(--mute); text-align: right; }
 
-/* ① 시장 — 지수 고르기 · 큰 숫자 · 두 산줄기 · 기간 */
-.ptoday-seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--card2); }
-.ptoday-seg button { min-width: 88px; min-height: 44px; padding: 0 16px; border-radius: 999px; color: var(--sub); font-size: 18px; }
+/* 접은 칸 — 「어떻게 셌나요?」 · 「나머지 n곳 보기」 · 오른쪽 끝 + / −(금빛 경고 접힘은 app.css details.nw) */
+.ptoday :is(details.ptoday-how, details.ptoday-more) > summary { display: flex; align-items: center; justify-content: space-between; column-gap: var(--sp-1); min-height: 44px; list-style: none; cursor: pointer; }
+.ptoday :is(details.ptoday-how, details.ptoday-more) > summary::-webkit-details-marker { display: none; }
+.ptoday :is(details.ptoday-how, details.ptoday-more) > summary::after { content: '+'; flex: none; color: var(--mute); font-size: var(--fs-3); }
+.ptoday :is(details.ptoday-how, details.ptoday-more)[open] > summary::after { content: '−'; }
+details.ptoday-how { margin: var(--sp-1) 0 0; }
+details.ptoday-how > summary { color: var(--sub); font-size: var(--fs-1); }
+.ptoday-in { margin: 0 0 var(--sp-1); padding: var(--sp-2); border-radius: 8px; background: var(--card2); }
+.ptoday-in p { margin: 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.55; text-wrap: pretty; } .ptoday-in p + p { margin-top: var(--sp-1); }
+
+/* ① 시장 — 지수 고르기 · 큰 숫자(마지막 날 하루 %) · 작은 지수 값과 기간 % · 두 산줄기 · 기간 */
+.ptoday-seg { display: inline-flex; border-radius: 999px; background: var(--card2); outline: 1px solid var(--hair2); outline-offset: -1px; }
+.ptoday-seg button { min-width: 88px; min-height: 44px; padding: 0 var(--sp-2); border-radius: 999px; color: var(--sub); font-size: var(--fs-2); }
 .ptoday-seg button[aria-pressed="true"] { background: var(--ink); color: #111; font-weight: 700; }
 .ptoday-seg button:disabled { color: var(--mute); cursor: default; }
-.ptoday-hero { margin: 12px 0 0; }
-.ptoday-hv { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 12px; }
-.ptoday-v { font-size: 38px; font-weight: 300; letter-spacing: -.03em; line-height: 1.1; }
-.ptoday-vt { color: var(--sub); font-size: 18px; opacity: 0; } .ptoday-hero.ptoday-sc .ptoday-vt { opacity: 1; }
-.ptoday-cg { display: flex; flex-wrap: wrap; column-gap: 16px; margin-top: 4px; color: var(--mute); font-size: 18px; } .ptoday-hero.ptoday-sc .ptoday-cg { opacity: .3; }
-.ptoday-cg b { margin-left: 8px; font-weight: 600; }
-.ptoday-ch { position: relative; height: 170px; margin: 18px 0 0; touch-action: pan-y; cursor: crosshair; -webkit-user-select: none; user-select: none; }
+.ptoday-hero { margin: var(--sp-2) 0 0; }
+.ptoday-hl { margin: 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.5; } /* 「하루」 — 큰 숫자 이름표 */
+.ptoday-hv { margin: 0; line-height: 1.1; }
+.ptoday-v { font-size: var(--fs-6); font-weight: 300; letter-spacing: -.03em; } /* 큰 숫자 — 늘 마지막 날 하루 % · 선이 그려지는 동안 · 선을 눌러도 그대로 */
+.ptoday-cg { margin: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-2); line-height: 1.5; } /* 작은 줄 — 지수 값(선을 따라 움직임) · 그날 · 기간 % */
+.ptoday-vt { margin-left: var(--sp-1); font-size: var(--fs-1); opacity: 0; } .ptoday-vt:empty { display: none; } .ptoday-hero.ptoday-sc .ptoday-vt { opacity: 1; }
+.ptoday-pw { margin-left: var(--sp-2); color: var(--mute); white-space: nowrap; } .ptoday-pw b { margin-left: var(--sp-1); font-weight: 600; } .ptoday-hero.ptoday-sc .ptoday-pw { opacity: .3; }
+.ptoday-ch { position: relative; height: 170px; margin: var(--sp-2) 0 0; touch-action: pan-y; cursor: crosshair; -webkit-user-select: none; user-select: none; }
 .ptoday-ch svg { display: block; overflow: visible; }
 .ptoday-ch .ptoday-gl { stroke: var(--card2); stroke-width: 1; } .ptoday-ch .ptoday-g0 { stroke: var(--mute); stroke-width: 1; stroke-dasharray: 2 4; }
-.ptoday-yl { font-size: 17px; } /* 눈금 글 크기 = 오른쪽 눈금 칸 넓이의 잣대(p-today.js padR = 글 크기 × 3.05) */
-.ptoday-yl span { position: absolute; right: 0; color: var(--mute); font-size: 17px; line-height: 1; white-space: nowrap; pointer-events: none; }
+.ptoday-yl { font-size: var(--fs-1); } /* 눈금 글 크기 = 오른쪽 눈금 칸 넓이의 잣대(p-today.js padR = 글 크기 × 3.05) */
+.ptoday-yl span { position: absolute; right: 0; color: var(--mute); font-size: var(--fs-1); line-height: 1; white-space: nowrap; text-align: right; pointer-events: none; }
 .ptoday-ch .ptoday-lf { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .ptoday-ch .ptoday-lg { fill: none; stroke: #7D8592; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .ptoday-ch .ptoday-ag2 { fill: rgba(242, 239, 232, .045); }
@@ -53,69 +62,76 @@ details.ptoday-how[open] summary::before { background: var(--mute); }
 .ptoday-ch .ptoday-cur { stroke: var(--sub); stroke-width: 1; opacity: 0; } .ptoday-ch .ptoday-cd { fill: var(--ink); opacity: 0; }
 .ptoday-ch.ptoday-on .ptoday-cur, .ptoday-ch.ptoday-on .ptoday-cd { opacity: 1; }
 .ptoday-ch.ptoday-play .ptoday-af, .ptoday-ch.ptoday-play .ptoday-ag2, .ptoday-ch.ptoday-play .ptoday-lg, .ptoday-ch.ptoday-play .ptoday-now { opacity: 0; }
-.ptoday-axl { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: 12px; margin-top: 6px; padding-right: 52px; color: var(--mute); font-size: 17px; }
-.ptoday-axl span { white-space: nowrap; } .ptoday-axl span:last-child { margin-left: auto; } /* 날짜는 낱말 가운데서 안 끊김 — 좁으면 끝 날이 다음 줄 오른쪽으로 */
-.ptoday-per { display: flex; gap: 4px; margin: 14px 0 0; padding: 4px; border-radius: 12px; background: var(--card2); }
-.ptoday-per button { flex: 1; min-height: 44px; border: 1px solid transparent; border-radius: 9px; color: var(--sub); font-size: 18px; }
+.ptoday-axl { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: var(--sp-2); margin: var(--sp-1) 0 0; color: var(--mute); font-size: var(--fs-1); } /* 넓이는 p-today.js 가 그림 줄 끝에 맞춤 */
+.ptoday-axl span { white-space: nowrap; } .ptoday-axl span:last-child { margin-left: auto; text-align: right; } /* 날짜는 낱말 가운데서 안 끊김 — 좁으면 끝 날이 다음 줄 오른쪽으로 */
+.ptoday-per { display: flex; gap: var(--sp-1); margin: var(--sp-2) 0 0; }
+.ptoday-per button { flex: 1; min-height: 44px; border: 1px solid transparent; border-radius: 12px; background: var(--card2); color: var(--sub); font-size: var(--fs-2); }
 .ptoday-per button[aria-pressed="true"] { background: var(--card3); color: var(--ink); font-weight: 700; border-color: var(--hair2); }
-.ptoday-lgd { display: flex; flex-wrap: wrap; align-items: center; column-gap: 16px; row-gap: 4px; margin: 12px 0 0; color: var(--sub); font-size: 17px; }
-.ptoday-lgd span { display: inline-flex; align-items: center; gap: 8px; } .ptoday-lgd i { display: inline-block; width: 22px; height: 0; border-top: 2px solid var(--ink); } .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #7D8592; }
+.ptoday-lgd { margin: var(--sp-2) 0 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.6; }
+.ptoday-lgd span { margin-right: var(--sp-2); white-space: nowrap; } .ptoday-lgd i { display: inline-block; width: 24px; height: 0; margin-left: var(--sp-1); border-top: 2px solid var(--ink); vertical-align: middle; } .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #7D8592; } /* 이름 먼저 · 선 표본은 뒤 — 글 시작 줄이 카드 글 줄(32) 하나로 */
 .ptoday-lgd b { font-weight: 600; } .ptoday-lgd .ptoday-z { color: var(--mute); } .ptoday-lgd.ptoday-one .ptoday-g2 { display: none; }
-.ptoday-pc { margin-top: 8px; }
+.ptoday-pc { margin-top: var(--sp-1); }
 
 /* ② 오른 곳 · 내린 곳 */
-.ptoday-bar { display: flex; gap: 3px; height: 14px; }
-.ptoday-bar i { display: block; height: 100%; border-radius: 4px; transform-origin: left center; }
+.ptoday-bar { display: flex; height: 16px; }
+.ptoday-bar i { display: block; height: 100%; transform-origin: left center; } .ptoday-bar i + i { border-left: 2px solid var(--card); }
+.ptoday-bar i:first-child { border-radius: 4px 0 0 4px; } .ptoday-bar i:last-child { border-radius: 0 4px 4px 0; }
 .ptoday-bar .ptoday-bu { background: var(--up); } .ptoday-bar .ptoday-bf { background: #6F7782; } .ptoday-bar .ptoday-bd { background: var(--down); }
-.ptoday-bl { display: flex; flex-wrap: wrap; row-gap: 8px; margin-top: 10px; } /* 세 칸 · 좁으면 숫자를 끊지 않고 다음 줄로 */
-.ptoday-bl > span { flex: 1 1 0; min-width: max-content; }
-.ptoday-bl > span { color: var(--sub); font-size: 17px; } .ptoday-bl b { display: block; margin-top: 2px; font-size: 22px; font-weight: 600; letter-spacing: -.02em; white-space: nowrap; }
-.ptoday-bl > span + span { padding-left: 14px; border-left: 1px solid var(--card2); }
+.ptoday-bl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--sp-2) 0 0; } /* 세 칸(가운데 맞춤) · 좁은 휴대폰 · 큰 글씨는 한 줄씩(아래) */
+.ptoday-bl > span { min-width: 0; padding: 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); text-align: center; white-space: nowrap; }
+.ptoday-bl > span + span { border-left: 1px solid var(--card3); }
+.ptoday-bl b { display: block; font-size: var(--fs-3); font-weight: 600; letter-spacing: -.02em; white-space: nowrap; }
+@media (max-width: 359px) {
+  .ptoday-bl { grid-template-columns: minmax(0, 1fr); grid-auto-rows: 1fr; }
+  .ptoday-bl > span, .ptoday-bl > span + span { display: flex; justify-content: space-between; align-items: baseline; column-gap: var(--sp-2); padding: var(--sp-1) 0; text-align: left; border-left: 0; border-top: 1px solid var(--card3); }
+  .ptoday-bl > span:first-child { border-top: 0; } .ptoday-bl b { text-align: right; }
+}
+html.f2 .ptoday-bl, html.f3 .ptoday-bl { grid-template-columns: minmax(0, 1fr); grid-auto-rows: 1fr; }
+html.f2 .ptoday-bl > span, html.f3 .ptoday-bl > span, html.f2 .ptoday-bl > span + span, html.f3 .ptoday-bl > span + span { display: flex; justify-content: space-between; align-items: baseline; column-gap: var(--sp-2); padding: var(--sp-1) 0; text-align: left; border-left: 0; border-top: 1px solid var(--card3); }
+html.f2 .ptoday-bl > span:first-child, html.f3 .ptoday-bl > span:first-child { border-top: 0; } html.f2 .ptoday-bl b, html.f3 .ptoday-bl b { text-align: right; }
 .ptoday-two { display: grid; grid-template-columns: minmax(0, 1fr); }
-.ptoday-sr { display: grid; grid-template-columns: minmax(0, 1fr) 14px; align-items: center; column-gap: 8px; min-height: 52px; border-bottom: 1px solid var(--card2); font-size: 19px; }
-.ptoday-top { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; min-width: 0; padding: 6px 0; } /* 이름이 길면 %가 다음 줄 오른쪽으로 */
-.ptoday-top b { margin-left: auto; font-weight: 600; }
+.ptoday-rows { display: grid; grid-auto-rows: 1fr; border-top: 1px solid var(--card3); } /* 같은 줄은 같은 높이 */
+.ptoday-sr { display: grid; grid-template-columns: minmax(0, 1fr) 16px; align-items: center; column-gap: var(--sp-1); min-height: 44px; border-bottom: 1px solid var(--card2); font-size: var(--fs-2); }
+.ptoday-top { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--sp-2); min-width: 0; padding: var(--sp-1) 0; } /* 이름이 길면 %가 다음 줄 오른쪽으로 */
+.ptoday-top b { margin-left: auto; font-weight: 600; line-height: 1.35; text-align: right; }
 .ptoday-nm { min-width: 0; overflow-wrap: break-word; line-height: 1.35; }
 
-/* ③ 사고팔기 — 막대는 한 색(돈의 방향) · 세 줄이 같은 자 */
-.ptoday-fl { border-top: 1px solid var(--card3); }
-.ptoday-fr { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'n v' 'b b'; align-items: baseline; column-gap: 12px; row-gap: 8px; padding: 12px 0 14px; border-bottom: 1px solid var(--card2); font-size: 19px; }
+/* ③ 사고팔기 — 막대는 한 색(돈의 방향) · 세 줄이 같은 자 · 같은 높이 */
+.ptoday-fl { display: grid; grid-auto-rows: 1fr; border-top: 1px solid var(--card3); }
+.ptoday-fr { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'n v' 'b b'; align-items: baseline; column-gap: var(--sp-2); row-gap: var(--sp-1); padding: var(--sp-2) 0; border-bottom: 1px solid var(--card2); font-size: var(--fs-2); }
 .ptoday-fr .ptoday-fn { grid-area: n; } .ptoday-fr b { grid-area: v; font-weight: 600; letter-spacing: -.02em; text-align: right; }
-.ptoday-fr .ptoday-fb { grid-area: b; position: relative; height: 10px; border-radius: 4px; background: var(--card2); }
+.ptoday-fr .ptoday-fb { grid-area: b; align-self: center; position: relative; height: 10px; border-radius: 4px; background: var(--card2); }
 .ptoday-fr .ptoday-fb i { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; background: var(--sub); transform-origin: left center; }
 
-/* ④ 미국 */
+/* ④ 미국 — 세 칸(가운데 맞춤) · 좁은 휴대폰 · 큰 글씨는 한 줄씩(이름 왼쪽 · 숫자 오른쪽) */
 .ptoday-us { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--card3); border-bottom: 1px solid var(--card2); }
-.ptoday-us > div { min-width: 0; padding: 12px 0 12px 12px; border-left: 1px solid var(--card2); } .ptoday-us > div:first-child { padding-left: 0; border-left: 0; }
-.ptoday-us span { display: block; color: var(--sub); font-size: 17px; white-space: nowrap; } .ptoday-us b { display: block; margin-top: 2px; font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
-@media (max-width: 359px) { /* 좁은 휴대폰 — 미국 세 칸은 한 줄씩(숫자끼리 겹치지 않게) */
-  .ptoday-us { grid-template-columns: minmax(0, 1fr); }
-  .ptoday-us > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-left: 0; border-top: 1px solid var(--card2); }
-  .ptoday-us > div:first-child { border-top: 0; } .ptoday-us b { margin-top: 0; }
+.ptoday-us > div { min-width: 0; padding: var(--sp-2) var(--sp-1); text-align: center; } .ptoday-us > div + div { border-left: 1px solid var(--card2); }
+.ptoday-us span { display: block; color: var(--sub); font-size: var(--fs-1); white-space: nowrap; } .ptoday-us b { display: block; font-size: var(--fs-3); font-weight: 600; letter-spacing: -.02em; }
+@media (max-width: 359px) {
+  .ptoday-us { grid-template-columns: minmax(0, 1fr); grid-auto-rows: 1fr; }
+  .ptoday-us > div, .ptoday-us > div + div { display: flex; justify-content: space-between; align-items: baseline; column-gap: var(--sp-2); padding: var(--sp-1) 0; text-align: left; border-left: 0; border-top: 1px solid var(--card2); }
+  .ptoday-us > div:first-child { border-top: 0; } .ptoday-us b { text-align: right; }
 }
-html.f2 .ptoday-us, html.f3 .ptoday-us { grid-template-columns: minmax(0, 1fr); } /* 큰 글씨 — 한 줄씩 */
-html.f2 .ptoday-us > div, html.f3 .ptoday-us > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-left: 0; border-top: 1px solid var(--card2); }
-html.f2 .ptoday-us > div:first-child, html.f3 .ptoday-us > div:first-child { border-top: 0; } html.f2 .ptoday-us b, html.f3 .ptoday-us b { margin-top: 0; }
+html.f2 .ptoday-us, html.f3 .ptoday-us { grid-template-columns: minmax(0, 1fr); grid-auto-rows: 1fr; }
+html.f2 .ptoday-us > div, html.f3 .ptoday-us > div, html.f2 .ptoday-us > div + div, html.f3 .ptoday-us > div + div { display: flex; justify-content: space-between; align-items: baseline; column-gap: var(--sp-2); padding: var(--sp-1) 0; text-align: left; border-left: 0; border-top: 1px solid var(--card2); }
+html.f2 .ptoday-us > div:first-child, html.f3 .ptoday-us > div:first-child { border-top: 0; } html.f2 .ptoday-us b, html.f3 .ptoday-us b { text-align: right; }
 
 /* ⑤ 고른 곳 */
-.ptoday-mvs { border-top: 1px solid var(--card3); }
-.ptoday-mv { display: grid; grid-template-columns: minmax(0, 1fr) 14px; grid-template-rows: auto auto; align-items: center; column-gap: 10px; row-gap: 0; padding: 8px 0; min-height: 52px; border-bottom: 1px solid var(--card2); }
-.ptoday-mv .ptoday-top { grid-column: 1; grid-row: 1; padding: 0; font-size: 19px; }
-.ptoday-mv .ptoday-nm { font-weight: 600; } .ptoday-mv .ptoday-top b { font-size: 20px; }
-.ptoday-mv .ptoday-tg { grid-column: 1; grid-row: 2; min-width: 0; color: var(--mute); font-size: 17px; line-height: 1.45; } .ptoday-mv .ptoday-tg:empty { display: none; }
+.ptoday-mvs { display: grid; grid-auto-rows: 1fr; border-top: 1px solid var(--card3); }
+.ptoday-mv { display: grid; grid-template-columns: minmax(0, 1fr) 16px; grid-template-rows: auto auto; align-items: center; column-gap: var(--sp-1); row-gap: 0; padding: var(--sp-1) 0; min-height: 56px; border-bottom: 1px solid var(--card2); }
+.ptoday-mv .ptoday-top { grid-column: 1; grid-row: 1; padding: 0; font-size: var(--fs-2); }
+.ptoday-mv .ptoday-nm { font-weight: 600; } .ptoday-mv .ptoday-top b { font-size: var(--fs-3); }
+.ptoday-mv .ptoday-tg { grid-column: 1; grid-row: 2; min-width: 0; color: var(--mute); font-size: var(--fs-1); line-height: 1.45; } .ptoday-mv .ptoday-tg:empty { display: none; }
 .ptoday-mv .ptoday-chev { grid-column: 2; grid-row: 1 / 3; align-self: center; }
-details.ptoday-more > summary { display: flex; align-items: center; gap: 12px; min-height: 52px; color: var(--sub); font-size: 18px; cursor: pointer; list-style: none; border-bottom: 1px solid var(--card2); }
-details.ptoday-more > summary::-webkit-details-marker { display: none; }
-details.ptoday-more > summary::after { content: '+'; margin-left: auto; padding-right: 2px; color: var(--mute); font-size: 22px; }
-details.ptoday-more[open] > summary::after { content: '−'; }
+details.ptoday-more > summary { min-height: 48px; color: var(--sub); font-size: var(--fs-2); border-bottom: 1px solid var(--card2); }
 details.ptoday-more .ptoday-mvs { border-top: 0; }
 
-/* ⑥ 큰 갈래 · 봉인 */
-.ptoday-gs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; border-top: 1px solid var(--card3); }
-.ptoday-g { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-width: 0; min-height: 52px; padding: 10px 0; border-bottom: 1px solid var(--card2); }
-.ptoday-g .ptoday-nm { color: var(--sub); font-size: 17px; } .ptoday-g b { font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
-.ptoday-mr { display: grid; grid-template-columns: minmax(0, 1fr) 14px; align-items: center; column-gap: 10px; row-gap: 2px; margin-top: 12px; padding: 12px 0; min-height: 52px; border-top: 1px solid var(--card3); font-size: 18px; }
-.ptoday-mr .ptoday-ml { grid-column: 1; color: var(--mute); font-size: 17px; } .ptoday-mr .ptoday-mk { grid-column: 1; font-weight: 600; } .ptoday-mr .ptoday-chev { grid-column: 2; grid-row: 1 / 3; }
+/* ⑥ 큰 업종 · 봉인 */
+.ptoday-gs { display: grid; grid-auto-rows: 1fr; border-top: 1px solid var(--card3); }
+.ptoday-g { display: flex; align-items: center; justify-content: space-between; column-gap: var(--sp-2); min-width: 0; min-height: 44px; padding: var(--sp-1) 0; border-bottom: 1px solid var(--card2); }
+.ptoday-g .ptoday-nm { color: var(--ink); font-size: var(--fs-2); } .ptoday-g b { font-size: var(--fs-3); font-weight: 600; line-height: 1.35; letter-spacing: -.02em; text-align: right; }
+.ptoday-mr { display: grid; grid-template-columns: minmax(0, 1fr) 16px; align-items: center; column-gap: var(--sp-1); row-gap: 0; margin: var(--sp-2) 0 0; padding: var(--sp-1) 0; min-height: 56px; border-top: 1px solid var(--card3); font-size: var(--fs-2); }
+.ptoday-mr .ptoday-ml { grid-column: 1; color: var(--mute); font-size: var(--fs-1); } .ptoday-mr .ptoday-mk { grid-column: 1; font-weight: 600; } .ptoday-mr .ptoday-chev { grid-column: 2; grid-row: 1 / 3; }
 
 /* 손끝 — 누르면 바탕이 살짝 밝아짐 */
 a.ptoday-sr:active, a.ptoday-mv:active, a.ptoday-g:active, a.ptoday-mr:active { background: var(--card2); }
@@ -123,9 +139,10 @@ a.ptoday-sr:active, a.ptoday-mv:active, a.ptoday-g:active, a.ptoday-mr:active { 
 @media (prefers-reduced-motion: no-preference) {
   .ptoday-seg button, .ptoday-per button { transition: background-color .2s, transform .12s var(--ease); }
   .ptoday-seg button:active, .ptoday-per button:active { transform: scale(.97); }
-  .ptoday-vt, .ptoday-cg { transition: opacity .2s; } .ptoday-ch .ptoday-af, .ptoday-ch .ptoday-ag2, .ptoday-ch .ptoday-lg { transition: opacity .9s; }
+  .ptoday-vt, .ptoday-pw { transition: opacity .2s; } .ptoday-ch .ptoday-af, .ptoday-ch .ptoday-ag2, .ptoday-ch .ptoday-lg { transition: opacity .9s; }
   .ptoday-io .ptoday-bar i, .ptoday-io .ptoday-fb i { transform: scaleX(0); transition: transform 1.1s var(--ease); }
   .ptoday-io.ptoday-in-v .ptoday-bar i, .ptoday-io.ptoday-in-v .ptoday-fb i { transform: none; }
   .ptoday-io.ptoday-in-v .ptoday-bar .ptoday-bf { transition-delay: .15s; } .ptoday-io.ptoday-in-v .ptoday-bar .ptoday-bd { transition-delay: .3s; }
 }
-.ptoday-page .safe { font-size: 17px; } /* 맨 아래 알림 — 글 17px 넘게 */
+.ptoday-page .safe { margin: var(--sp-3) var(--sp-2) var(--sp-1); font-size: var(--fs-1); } /* 맨 아래 알림 — 글 17px 넘게 */
+.ptoday-page a.more { margin: var(--sp-2) var(--sp-2) 0; padding: var(--sp-1) var(--sp-2); font-size: var(--fs-1); }

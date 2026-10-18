@@ -22,7 +22,7 @@ if (!FROM || FROM === TO) { console.log('바꿀 옛 이름 없음 — brand.js w
 /** 지금 사이트 글이 든 파일(사람이 보는 글 · 영어 사전 원본 · 영상 · 그림 만들기 · 검사의 기대 글) — 예전 아틀란스 파일은 넣지 않음 */
 export const FILES = [
   ...fs.readdirSync(path.join(ROOT, 'site/next')).filter(f => /\.(js|css|html)$/.test(f) && !['brand.js', 'i18n.js'].includes(f)).map(f => 'site/next/' + f),
-  'site/hello.html', 'site/hello-send.js', 'site/letter.html', 'site/letter.js', 'site/invite.html',
+  'site/hello.html', 'site/hello-send.js', 'site/letter.html', 'site/letter.js', 'site/invite.html', 'site/privacy.html',
   'scripts/atlas11/next/i18n/en-src.json',
   'scripts/atlas11/makbi/build.mjs', 'scripts/atlas11/makbi/video.mjs',
   ...fs.readdirSync(path.join(ROOT, 'scripts/atlas11/next')).filter(f => /^(check_.*|next_check|next_en_check|run_all)\.mjs$/.test(f)).map(f => 'scripts/atlas11/next/' + f),

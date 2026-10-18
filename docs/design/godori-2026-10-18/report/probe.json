@@ -1,0 +1,92 @@
+{
+  "kakao": {
+    "tests": 20,
+    "pass": 20,
+    "fail": 0,
+    "secs": 10,
+    "at": "2026-10-18T04:19:55.913Z",
+    "file": "tests/atlas11/kakao.test.mjs"
+  },
+  "invite": {
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "secs": 6,
+    "at": "2026-10-18T04:20:01.718Z",
+    "file": "tests/atlas11/invite.test.mjs"
+  },
+  "letter": {
+    "tests": 9,
+    "pass": 9,
+    "fail": 0,
+    "secs": 1,
+    "at": "2026-10-18T04:20:03.019Z",
+    "file": "tests/atlas11/letter.test.mjs"
+  },
+  "kakao-store": {
+    "tests": 16,
+    "pass": 16,
+    "fail": 0,
+    "secs": 4,
+    "at": "2026-10-18T04:20:06.693Z",
+    "file": "tests/atlas11/kakao-store.test.mjs"
+  },
+  "words": {
+    "tests": 20,
+    "pass": 20,
+    "fail": 0,
+    "secs": 1,
+    "at": "2026-10-18T04:20:07.859Z",
+    "file": "tests/atlas11/words.test.mjs"
+  },
+  "next-modules": {
+    "tests": 6,
+    "pass": 6,
+    "fail": 0,
+    "secs": 2,
+    "at": "2026-10-18T04:20:09.509Z",
+    "file": "tests/atlas11/next-modules.test.mjs"
+  },
+  "vkown": {
+    "tests": 18,
+    "pass": 12,
+    "fail": 0,
+    "todo": 6,
+    "byTest": {
+      "VK1": "ok",
+      "VK2": "ok",
+      "VK3": "ok",
+      "VK4": "ok",
+      "VK5": "ok",
+      "VK6": "ok",
+      "VK7": "ok",
+      "VK8": "ok",
+      "VK9": "ok",
+      "VK10": "not ok",
+      "VK11": "ok",
+      "VK12": "not ok",
+      "VK13": "ok",
+      "VK14": "ok",
+      "VK15": "ok",
+      "VK16": "ok",
+      "VK17": "ok",
+      "VK18": "ok"
+    },
+    "todoMarked": [
+      "VK2",
+      "VK6",
+      "VK10",
+      "VK11",
+      "VK12",
+      "VK17"
+    ],
+    "red": [
+      "VK10",
+      "VK12"
+    ],
+    "secs": 8,
+    "at": "2026-10-18T04:20:17.180Z",
+    "file": "tests/atlas11/verify-kakao/vk.test.mjs",
+    "fileMtime": "2026-10-18T03:10:26.742Z"
+  }
+}

@@ -1,0 +1,12 @@
+# 일꾼 G4x — 따로 세기 verify2.py (G4 를 이어받음 · [8] 10 · 결정표 `gdr-v2.md`(상태: 완성)와 날 자료만 · pick2.mjs · v2/** · backtest.mjs 는 열지 않음)
+
+파일: 새 `scripts/atlas11/next/gdr/verify2.py`(파이썬 표준 라이브러리만 · `python3 -I`) → `reports/atlas11/godori/verify2-latest.json`(schema `godori-verify2-1`).
+자료(읽기만): 모음 `reports/atlas11/universe/2026-10-14-1209-to1013/bundle.json.gz` · `site/atlas/data/mkt.json` · `site/atlas/data/core.json` · 목록 · 분기(옵션 · 없으면 gdr.json src 를 따름 · null = 「?」) · 맞댈 것 `site/next/data/gdr.json` · `gates.json` · `gdr-back.json` · (있으면) `--private` 파일.
+
+| 번호 | 됐다고 아는 잣대(잴 수 있게) | 어떻게 재나 | 결과 |
+|---|---|---|---|
+| [8] 10-a 따로 세기 | `verify2.py` 가 결정표만 보고 다시 센 값(뺀 곳 · 문마다 회사 · 고른 곳 · 비중 · 위 끝 · 「세 곳이 함께 내린 날」 · 흔들어 본 표 · 가까스로 넘음 · 팔 선 · 닿은 수 · 카드 칸 · 몬테카를로 · 채점)을 `gdr.json`(gdr-v2) · `gates.json` 과 칸마다 맞대 틀림 0 · 맞댄 칸 수 n | `python3 -I scripts/atlas11/next/gdr/verify2.py` 끝 코드 0 · 결과 파일 compared · diffs | 통과 — 사이트 파일(12:13 판) 맞댄 칸 2,702 · 틀림 0 · 불변식 어긋남 0(gates 2,557줄 · counts 21칸 · 흔들기 14 × 3 · score 다시 셈 2곳 몬테카를로). 처음 틀림 2(r60lo · r60hi 화면 글 — 표가 두 줄을 합쳐 적음)는 G1c 가 표 §5 를 고쳐 0 |
+| [8] 10-b 지난 성적 표본 | 고른 날 20개(고르게 띄움) + 고른 곳이 있던 날 표본마다 그날 알 수 있던 값만으로 고른 곳 · 비중 · 현금 · 까닭 · 20 · 60거래일 뒤 오름(고도리 칸 · 규칙 비중 · 모든 회사 평균 · 가운데값 · 코스피)을 다시 세어 `gdr-back.json` 과 틀림 0 | 같은 실행 `--back` · 결과 파일 back 칸 | 통과 — 46날(고르게 20 + 고른 곳 있던 날 26) · 맞댄 칸 676(모음 줄 m1 · m3 다시 셈 12칸 포함) · 틀림 0 |
+| [8] 10-c 틀림 보고 꼴 | 틀림마다 결정표 줄 · 내 값 · 저쪽 값 · 결정표를 따르는 쪽 · 두 뜻으로 읽히는 곳은 「내 읽기」(readings) | 결과 파일 diffs · readings | 통과 — diffs 마다 where · mine · theirs · table · follows · readings 13줄(G1c 답 6 + 표 고침 3 반영) · 표 §5 숫자 · 글을 실행마다 다시 읽어 상수와 맞댐(rulesCheck 15줄 · 다름 0) |
+| [8] 10-d 일부러 만든 자료(`--stress`) | 경계 값 · 같은 값 · 빈 값 · 업종에 한 곳 · 위 끝이 걸림 · 4월 1일 바로 앞 날 등 n가지 — pick2.mjs 를 검은 상자로(node --permission · 임시 폴더만 씀 · 코드는 안 엶) 돌려 내 셈과 틀림 0 | `python3 -I scripts/atlas11/next/gdr/verify2.py --stress` 끝 코드 0 · 가지 수 | 통과 — 10가지 · 맞댄 칸 27,975 · 틀림 0 + 작은 도구 손셈 25 · 틀림 0. 가짜 모음 하나에서 고른 곳 28(업종 뺌 16 · 큰 업종 뺌 9 · 목록 뺌 2 · 비중 3 · 2.5 · 2 · 함께 내린 날 5 · 경계 값 회사 10 · 쌍둥이 차례) · 4/1 · 3/31(years) · 목록 하나 못 받음 · DART 꺼짐(lists) · 분기 없음(quarters) · --prev(kept). 못 한 것: 36곳 위 끝은 닿지 못함(가장 많이 28) · 「업종에 한 곳」은 가장 작은 업종이 6곳이라 못 만듦 · 상관 딱 0.5 는 못 만듦 |
+| [8] 10-e 다시 돌림 | 저쪽 결과 파일이 바뀌면 다시 돌려 틀림 0 · 결과 파일에 맞댄 파일 해시 | 파일 해시 바뀜 → 다시 실행 | 통과 — 결과 파일 inputs 에 결정표 · 모음 · mkt · core · gdr · gates · private 해시 · G3x 실행기(godori-pick)가 업데이트마다 부르고 끝 코드 0 일 때만 올림(G3x 시험: 10-14 흉내 날 2,714칸 · 틀림 0) |

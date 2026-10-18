@@ -15,8 +15,10 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {gloss} from '../../../site/next/glossary.js'; // 낱말표(2026-10-18 [10] 1) — 화면은 우리 이야기 글도 낱말표로 그림(갈래가 넓은 쪽 → 범위가 넓은 쪽) · 자료 글도 같은 표로 맞댐
 import {fetchJSON, watch, settle, timer, netSummary, isRemote} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 import {oldSnap, fileSha} from './oldsnap.mjs'; // 옛 쪽 기준값(--old-snap · --old-refresh — 옛 화면이 쓴 파일이 하나도 안 바뀌면 옛 쪽을 열지 않음 · 명령문 [1] 9 · 옛 쪽 때 90%)
+import {shardOf} from './shard/part.mjs'; // --shard k/n = 한 번 다 돌 때의 일감(회사 · 세 폭 · 둘레)을 n 몫으로 가른 k 번째만(깃허브 여러 대 · 합치기 shard/merge.mjs · 2026-10-18 고도리 길 1)
 import {createHash} from 'node:crypto';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), has = k => argv.includes(k), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : d; };
@@ -57,6 +59,7 @@ const order = [...picked, ...noBase.sort(), ...others.filter(c => !noBase.includ
 let list = ALL ? order : order.slice(0, 220);
 if (LIMIT) list = list.slice(0, LIMIT);
 if (arg('--codes', '')) list = arg('--codes', '').split(',').map(s => s.trim()).filter(Boolean); // 고칠 때 몇 곳만(예: --codes 005930,278470)
+const SH = shardOf(), own = SH.part('c', list); // 몫(--shard k/n · 없으면 own = list) — 옛 쪽 기준값도 제 몫 목록으로(몫마다 제 파일)
 
 /* 브라우저 */
 const exe = '/opt/pw-browsers/chromium', b = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {});
@@ -151,7 +154,7 @@ function compare(tag, code, o, n, data) {
     let below = 0;
     for (const [k, y] of HZ) { const x = S.h[k];
       const want = [`${k}년 뒤 · ${y}년`, x && x.mid != null ? `${XM(x.mid)}쯤 (${XM(x.lo)} ~ ${XM(x.hi)})` : '? 자료 모자람', x?.g ? `${BY}년보다 커져 있을까요? ${x.g}` : null, x?.t ? NORM(x.t) : null].filter(Boolean);
-      for (const w of want) if (!n.all.includes(w)) fail('해마다 칸(자료)', `${tag} ${k}년 「${w.slice(0, 60)}」`);
+      for (const w of want) if (!n.all.includes(gloss(w))) fail('해마다 칸(자료)', `${tag} ${k}년 「${w.slice(0, 60)}」`);
       if (x && x.mid != null && er != null && x.mid < er) { below++; if (!n.all.includes(`올해 증권사 평균치(${XM(er)} · 남의 짐작)보다 작게 봄`)) fail('작게 봄 글(자료)', `${tag} ${k}년`); }
     }
     if (n.below !== below) fail('「작게 봄」 수(자료)', `${tag} 새 ${n.below} · 자료 ${below}`);
@@ -160,7 +163,7 @@ function compare(tag, code, o, n, data) {
     if (!n.all.includes('범위는 「100번 중 80번쯤 이 안」으로 잡은 세 팀의 따짐이며, 맞힘이 아닙니다.')) fail('맞힘 아님 글', tag);
     bump('이야기 있는 회사');
   } else if (G) {
-    if (!n.all.includes(NORM(storyNone(pk)))) fail('「조사 전」 · 「아직 없음」 글(자료)', tag);
+    if (!n.all.includes(gloss(NORM(storyNone(pk))))) fail('「조사 전」 · 「아직 없음」 글(자료)', tag);
     if (G.baseRev && !n.aria) fail('그림 없음', tag);
     if (!G.baseRev && !n.all.includes('? 마지막 결산 매출이 없어 그림을 못 그립니다')) fail('매출 없음 「?」', tag);
   }
@@ -184,11 +187,11 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
 /* ①~⑥ 회사마다 — 390 폭 */
 {
   const SNAP = await tm.old(async () => oldSnap({file: arg('--old-snap', null), page: 'grow', base, remote: isRemote(base), refresh: has('--old-refresh'),
-    key: {checker: await fileSha(fileURLToPath(import.meta.url)), browser: b.version(), width: 390, list: createHash('sha256').update(list.join(',')).digest('hex')}}));
+    key: {checker: await fileSha(fileURLToPath(import.meta.url)), browser: b.version(), width: 390, list: createHash('sha256').update(own.join(',')).digest('hex')}}));
   const cO = SNAP.use ? null : await ctxOf(390), cN = await ctxOf(390), po = cO ? watch(await mkPage(cO), base) : null, pn = watch(await mkPage(cN), base); // 기준값을 쓰면 옛 쪽을 열지 않음(po = null)
   if (po) SNAP.watch(po); // 옛 쪽 · 새 쪽은 창을 따로(한 창 두 탭이면 뒤 탭의 그림 때(rAF)가 늦춰짐) · 망 탈 셈(net.mjs)
   let firstO = true, firstN = true; // 첫 번째만 주소로 엶 · 그다음은 # 만 바꿈(빠르게)
-  for (const code of list) {
+  for (const code of own) {
     const d = await loadData(code); if (!d.co) { fail('회사 파일', code); continue; }
     if (!d.pk && !(d.co.c && d.co.line)) { // 회사 파일에 c · line 이 없으면 지금 아틀란스도 「없는 주소」(coEntry) — 새 쪽도 같은 글
       const okM = await openNew(pn, code, '없는 주소입니다', firstN); firstN = false;
@@ -243,7 +246,7 @@ if (WIDE) {
   const L = []; for (const c of picked) L.push([c, await lenOf(c)]); L.sort((a, b) => b[1] - a[1]);
   const longName = Object.keys(CO).sort((a, b) => CO[b].n.length - CO[a].n.length)[0];
   const wide = [...new Set([L[0]?.[0], longName, noBase[0], '005930', ...L.slice(1).map(x => x[0])].filter(Boolean))].slice(0, WIDE);
-  for (const w of [320, 360, 390]) {
+  for (const w of SH.part('w', [320, 360, 390], 6 * wide.length)) {
     const ctx = await ctxOf(w, 640), p = await mkPage(ctx); let first = true;
     for (const code of wide) {
       const d = await loadData(code), tag = w + ' ' + code;
@@ -277,6 +280,7 @@ if (WIDE) {
 
 /* ⑦ 둘레 — 자료를 바꿔치기해 옛 쪽 · 새 쪽을 같이 엶(드문 갈래 · 받는 중 값) · 새 쪽만 못 받은 파일 · 없는 주소 */
 {
+  if (SH.n > 1) for (const c of picked) if (list.includes(c)) await needCo(c); // 몫으로 돌 때도 둘레 회사(sc)를 다 돌 때와 같게(다 돌면 목록의 고른 곳 파일을 모두 받아 둔 뒤 고름)
   const sc = picked.find(c => (coFile.get(c) ?? null)?.grow?.story) ?? picked[0], base0 = await needCo(sc);
   const variants = [
     ['근거가 오래됨', j => { for (const f of j.grow.story.facts) f.date = '2024-03-02'; }],
@@ -285,7 +289,7 @@ if (WIDE) {
     ['올해 짐작 없음', j => { const ek = j.grow.years.findIndex(y => y.endsWith('E')); if (ek >= 0) j.grow.rev[ek] = null; }],
   ];
   const coreProv = JSON.stringify({...core, provisional: true});
-  for (const [name, fx] of [...variants, ['받는 중 값(provisional)', null]]) {
+  for (const [name, fx] of SH.part('v', [...variants, ['받는 중 값(provisional)', null]], 60, x => x[0])) {
     const cO = await ctxOf(390), cN = await ctxOf(390);
     for (const ctx of [cO, cN]) {
       if (fx) { const j = structuredClone(base0); fx(j); const body = JSON.stringify(j); await ctx.route('**/atlas/data/co/' + sc + '.json', r => r.fulfill({status: 200, contentType: 'application/json', body})); }
@@ -309,7 +313,7 @@ if (WIDE) {
   // 새 쪽만 — 있는 회사의 파일을 못 받음 · comp.json 을 못 받음 · 없는 주소
   const edge = [['회사 파일 못 받음', '005930', '**/atlas/data/co/005930.json', '? 회사 자료를 받지 못했어요'], ['comp.json 못 받음', sc, '**/atlas/data/comp.json', '? 회사 자료를 받지 못했어요'],
     ['없는 주소(번호 꼴)', 'ZZZZZZ', null, `「ZZZZZZ」는 지금 ${pickName}에 없습니다. 찾기로 이름을 쳐 보세요.`], ['없는 주소(회사 아닌 종목)', Object.keys(CO).includes('005935') ? '0000A0' : '005935', null, '에 없습니다. 찾기로 이름을 쳐 보세요.']];
-  for (const [name, code, pat, want] of edge) {
+  for (const [name, code, pat, want] of SH.part('e', edge, 30, x => x[0])) {
     const ctx = await ctxOf(360, 640); if (pat) await ctx.route(pat, r => r.fulfill({status: 404, body: 'no'}));
     const p = await mkPage(ctx); await p.goto(base + '/next/?dev=1#/w/' + code + '/grow');
     await p.waitForFunction(() => { const v = document.querySelector('main#view'); return v && !v.querySelector('.boot'); }, null, {timeout: 15000}).catch(() => {});
@@ -325,7 +329,7 @@ if (WIDE) {
   }
 }
 await b.close();
-const res = {schema: 'atlas11-next-grow-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, companies: list.length, of: Object.keys(CO).length, all: ALL, limit: LIMIT || null, wide: WIDE,
+const res = {schema: 'atlas11-next-grow-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, companies: list.length, of: Object.keys(CO).length, all: ALL, limit: LIMIT || null, wide: WIDE, ...SH.info(),
   seconds: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails, ok: !fails.length};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1) + '\n'); }
 console.log(JSON.stringify({ok: res.ok, companies: res.companies, seconds: res.seconds, time: res.time, net: res.net, counts, fails: fails.slice(0, 15)}, null, 0));

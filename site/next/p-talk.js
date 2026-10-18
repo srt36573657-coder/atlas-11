@@ -2,6 +2,7 @@
    사장님 2026-10-16(싱가포르) 21:44 · 22:25 「작업해」 — 남의 글은 옮기지 않음(네이버 인기 토론은 고리 하나) · 이야깃거리는 사이트 자료로 화면에서 셈 ·
    격언 · 유튜브는 /atlas/talk.json(출처 확인한 것만 · 남의 말은 data-proper — 금지 말 셈 밖)
    셈 · 글은 옛 쪽 그대로(scripts/atlas11/next/check_misc.mjs 가 옛 쪽과 맞대 봄) · 모양만 새 아틀란스(제목 → 그림 → 이야깃거리 → 접은 칸) */
+import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접힘(사장님 2026-10-18 [10] 10 · warn.js)
 const NX = globalThis.NX;
 const {h} = NX;
 const NB = ' ';
@@ -20,7 +21,7 @@ function foot(C) {
   return h('footer', {class: 'ptalk-foot'},
     h('p', {class: 'ptalk-links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/us/', text: '미국 판'})),
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
-    C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
+    C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`, {cls: 'in'}) : null,
     h('p', {class: 'safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
     h('p', {class: 'safe ptalk-safe2', text: '투자 상담이 아니에요. 지난 기록을 센 공부예요.'}));
 }

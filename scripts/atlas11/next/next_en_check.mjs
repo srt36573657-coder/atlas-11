@@ -292,8 +292,10 @@ async function seedWhy(q, where) {
   }, WHY_KEY);
   if (r) fail('누르기', where, '「나」 칸 왜 사? 기록을 못 심음 — ' + r.slice(0, 120));
 }
-/** 매매일지(왜 사?) — ① 종목 고르기(#/why 만 — 없는 말 · 회사 이름 · 엔터) → 질문마다 답 단추를 모두 눌러 봄(답마다 고도리 한마디 · 격언 · 「클 일이 있다」면 날짜) → 다음 › …
- *  → ③ 마지막 두 줄(빈 칸 알림 · 빠른 말 · 팔 선 두 숫자) → 결과 — 2026-10-17 21:10 [3] 1 · 3 · 4 · #/why/<번호> 는 그 종목으로 바로 1번 */
+/** 매매일지(왜 사?) — ① 종목 고르기(#/why 만 — 없는 말 · 회사 이름 · 엔터) → 질문마다 답 단추를 모두 눌러 봄 …
+ *  → ③ 마지막 두 줄(빈 칸 알림 · 빠른 말 · 팔 선 두 숫자) → 결과 — 2026-10-17 21:10 [3] 1 · 3 · 4 · #/why/<번호> 는 그 종목으로 바로 1번
+ *  2026-10-18 0015 [5] 3(일꾼 S1c): 답 한 번 = 다음 질문(「다음 ›」 없음 — 3번 「클 일이 있다」 날짜 칸만 「다음 ›」) · 앞 답 한마디 + 격언은 다음 장 맨 위
+ *    → 답마다: 누름 → (「클 일」이면 그 장 · 날짜 · 다음 ›) → 다음 장(앞 답 한마디)을 봄 → 「‹ 앞 질문」으로 돌아와 다음 답 · 마지막 답은 그대로 넘어감 */
 async function whyWalk(q, where) {
   const keep = await keepKey(q, WHY_KEY);
   try {
@@ -306,14 +308,30 @@ async function whyWalk(q, where) {
     }
     await q.waitForSelector('#view .wy .wy-opt', {timeout: 8000}).catch(() => {});
     const later = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10);
+    const step = () => q.locator('#view .wy .wy-step').first().textContent().catch(() => null);
     for (let i = 0; i < 11; i++) {
       const opts = q.locator('#view .wy .wy-opt'), n = await opts.count();
       if (!n) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 답 단추가 없음`); return; }
-      for (let k = 0; k < n; k++) { await opts.nth(k).click(); await settle(q); await judge(q, `${where} · ${i + 1}번 답 ${k + 1}`, {widths: i === 0 && k === n - 1}); }
-      const d = q.locator('#view .wy .wy-date'); if (await d.count()) { await d.fill(later); await settle(q); } // 「클 일이 있다」 = 그 날짜([3] 3)
-      const nx = q.locator('#view .wy .wy-next');
-      if (!(await nx.count())) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 다음 단추가 없음`); return; }
-      await nx.first().click(); await settle(q);
+      const here = await step(); // 이 질문의 차례 글(「i / 11」 — 숫자라 영어로도 같음)
+      if (i === 0) await judge(q, `${where} · 1번 고르기 전`, {widths: false});
+      for (let k = 0; k < n; k++) {
+        await q.locator('#view .wy .wy-opt').nth(k).click(); await settle(q);
+        const d = q.locator('#view .wy .wy-date');
+        if (await d.count()) { // 「클 일이 있다」 = 그 장에 남아 날짜를 받음([3] 3) → 다음 ›
+          await judge(q, `${where} · ${i + 1}번 답 ${k + 1}(날짜 칸)`, {widths: false});
+          await d.fill(later); await settle(q);
+          const nx = q.locator('#view .wy .wy-next');
+          if (!(await nx.count())) { fail('누르기', where, `왜 사? ${i + 1}번째 질문 「클 일이 있다」 날짜 칸에 다음 단추가 없음`); return; }
+          await nx.first().click(); await settle(q);
+        }
+        if ((await step()) === here) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에서 답을 눌러도 다음 장으로 안 넘어감([5] 3)`); return; }
+        await judge(q, `${where} · ${i + 1}번 답 ${k + 1}`, {widths: i === 0 && k === n - 1}); // 다음 장 맨 위 = 이 답의 한마디
+        if (k === n - 1) break; // 마지막 답은 그대로 넘어감
+        const back = q.locator('#view .wy .wy-back');
+        if (!(await back.count())) { fail('누르기', where, `왜 사? ${i + 2}번째 장에 「‹ 앞 질문」 단추가 없음`); return; }
+        await back.first().click(); await settle(q);
+        if ((await step()) !== here) { fail('누르기', where, `왜 사? 「‹ 앞 질문」으로 ${i + 1}번째 질문에 안 돌아감`); return; }
+      }
     }
     if (!(await q.locator('#view .wy .wy-why').count())) { fail('누르기', where, '왜 사? 열한 번째 뒤에 마지막 두 줄이 안 나옴'); return; }
     await judge(q, where + ' · 마지막 두 줄', {widths: true});
@@ -332,21 +350,19 @@ async function gdrLocked(q, r) {
   const z = await newPage();
   try {
     await go(z, r);
-    const x = await z.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock'), go: document.querySelector('#view section.gdr.lock a.gdr-go')?.getAttribute('href') ?? null, cells: document.querySelectorAll('#view .gdr-cell').length}));
+    const x = await z.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock1'), go: document.querySelector('#view section.gdr.lock1 a.gdr-l1')?.getAttribute('href') ?? null, cells: document.querySelectorAll('#view .gdr-cell').length})); // 잠금 한 줄 = section.gdr.lock1 · a.gdr-l1([6] 10 · p-gdr lockBox)
     if (!x.lock || x.go !== '#/why' || x.cells) fail('누르기', r + ' · 잠김', '질문 전인데 고도리 칸이 잠기지 않음 ' + JSON.stringify(x));
     await judge(z, r + ' · 잠김', {widths: r === '#/gdr'}); bump('고도리 칸 잠김');
   } finally { await z.context().close(); }
   await seedWhy(q, r);
 }
-/** 고도리 칸 — 내 돈을 다른 금액으로(금액 · 「나라면」 글이 바뀜) → 닫힌 칸 하나를 엶 */
+/** 고도리 칸 — [9] 4 내 돈 칸(.gdr-in) 없음(2026-10-18 S9c · 옛 「내 돈을 바꿈」 걷기는 뺌) → 닫힌 칸 하나를 엶. 고른 곳 0(칸이 현금으로 둠 하나뿐)이면 열 칸이 없는 게 맞음 — 칸 맞대기는 check_gdr.mjs */
 async function gdrWalk(q, where) {
   const keep = await keepKey(q, MONEY_KEY);
   try {
-    const inp = q.locator('#view .gdr .gdr-in').first();
-    if (!(await inp.count())) { fail('누르기', where, '고도리 칸에 내 돈 칸(.gdr-in)이 없음'); return; }
-    await inp.fill('23,450,000'); await settle(q); await judge(q, where + ' · 내 돈 바꿈', {widths: false});
+    if (await q.locator('#view .gdr .gdr-in').count()) { fail('누르기', where, '고도리 칸에 내 돈 칸(.gdr-in)이 있음 — [9] 4 는 입력 칸 0'); return; }
     const cell = q.locator('#view .gdr .gdr-cell:not(.cash):not(.on)').first();
-    if (!(await cell.count())) { fail('누르기', where, '고도리 칸에 열 칸(.gdr-cell)이 없음'); return; }
+    if (!(await cell.count())) return; // 고른 곳 0
     await cell.click(); await settle(q); await judge(q, where + ' · 칸 엶', {widths: true}); bump('고도리 칸 누르기');
   } finally { await putKey(q, MONEY_KEY, keep); }
 }
@@ -363,7 +379,7 @@ for (const {kind, r} of RUN) { // 바로 앞과 같은 길은 일감을 세울 �
     if (r === '#/me' || r === '#/why') await seedWhy(p, r); // 매매일지 기록(오늘 · 40일 전) — 매매일지 화면 아래 줄([3] 7) · 보유종목 점검이 맞대 봄([5] 6)
     if (r === '#/gdr' || r === '#/gdr/1') await gdrLocked(p, r); // [6] 1 — 질문 전(잠김) 꼴을 먼저 · 그 뒤 기록을 심고 열린 꼴
     await go(p, r); await p.waitForTimeout(r === '#/' ? 300 : 60);
-    if (r === '#/why' && modHave.why) await p.waitForSelector('#view .wy-rec p.note b.num', {timeout: 6000}).catch(() => {}); // 40일 전 기록의 「한 달 뒤 결과」(회사 파일을 받아 셈) 까지
+    if (r === '#/why' && modHave.why) await p.waitForFunction(() => !!document.querySelector('#view .wy-rec .wy-later') && !document.querySelector('#view .wy-later[aria-busy="true"]'), null, {timeout: 6000}).catch(() => {}); // 기록마다 「한 달 칸」을 다 셈할 때까지(2026-10-18 [5] 8 · 9 — 셈하는 동안 aria-busy)
     await judge(p, r); bump('길 · ' + kind);
     if (r === '#/why' || r === '#/why/005930') await whyWalk(p, r);
     else if (r === '#/gdr' || r === '#/gdr/1') await gdrWalk(p, r);
@@ -432,7 +448,7 @@ if (TAIL_MINE && on('act')) {
     await go(p, '#/sub'); await judge(p, '누르기 · 관심 칸(채널 넷 · 담은 회사)'); // 「나중에 볼 것」 → 관심([2] 8)
     await go(p, '#/me'); await judge(p, '누르기 · 보유종목(본 기록)');
     let dlg = null; p.once('dialog', d => { dlg = d.message(); d.accept(); });
-    await p.click('#view .lst button'); await p.waitForTimeout(150);
+    await p.click('#view .lst:not(.hd-sc) button'); await p.waitForTimeout(150); // 바로 가기 줄(.lst.hd-sc)의 「기록 파일로 받기」 · 「탈퇴」 단추가 앞에 있어 본 기록 지우기 단추만 집음(2026-10-18 S5h)
     if (dlg == null) fail('누르기', '본 기록 지우기', '확인 창이 안 뜸');
     else if (HAN.test(dlg)) { const en = await p.evaluate(s => window.__atlasI18n.t(s), dlg); fail(HAN.test(en) ? '한글 남음(확인 창 · 사전에도 없음)' : '한글 남음(확인 창 · app.js 가 L() 로 안 감쌈 — 사전에는 있음)', '본 기록 지우기', dlg); }
     if (dlg != null && OLD_RE.test(dlg)) fail('옛 이름 ' + dlg.match(OLD_RE)[0] + ' 남음', '본 기록 지우기', '확인 창 ' + dlg.slice(0, 70));
