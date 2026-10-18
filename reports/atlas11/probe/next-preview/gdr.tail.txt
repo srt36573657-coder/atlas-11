@@ -1,0 +1,18 @@
+404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 오늘 오늘 두 번 — 앞 좋아 · 뒤 쉬어 가자 360×640 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 오늘 쉬어 가자 #/gdr 390×844 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 오늘 쉬어 가자 #/gdr/1 360×640 #/gdr/1 · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 오늘 기록이 바뀜 360×640 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 잠금 기록 없음 390×844 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 잠금 기록 없음 360×640 #/gdr/1 · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 잠금 덜 끝낸 기록 390×844 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 잠금 기억 못 하는 기계 360×640 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 못 돌린 날 앞 거래일 360×640 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 못 돌린 날 앞 거래일 · 회사 파일 하나 없음 390×844 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 회사 값 빠짐 360×640 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 성적 고른 날 앞당김 360×640 · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 성적 코스피 그날 값 없음 390×844 · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 성적 co 하나 못 받음 360×640 · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+ - 화면 오류 · 성적 회사마다 날짜 다름 390×844 · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json
+
+자료 판별 결과: live 실패 0 · v1sample 실패 있음(끝 코드 1) · v2sample 실패 있음(끝 코드 1)
