@@ -35,6 +35,7 @@ const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] 
 const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')).replace(/\/?$/, '/'));
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1'), OUT = arg('--out', null), ALL = argv.includes('--all');
+const LIVE_SITE = !/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(base); // 실제 사이트 — 카톡 켜짐 길을 흉내 낼 수 없음(아래 on)
 const ONLY = new Set(String(arg('--only', '')).split(',').map(x => x.trim()).filter(Boolean)), want = k => !ONLY.size || ONLY.has(k);
 const fails = [], counts = {}, t0 = Date.now();
 // 검사 자체 시험(--mutate <이름>) — 화면 모듈을 일부러 망가뜨려(받을 때만 바꿈 · 시험 서버 파일은 그대로) 이 검사가 잡는지 봄 · 기대한 실패가 다 나오면 끝 코드 0
@@ -965,7 +966,10 @@ for (const [w, h] of SIZES) {
   if (want('land')) await step(`${w}×${h} 친구 쪽 첫 화면`, () => firstView(w, h, {only: full ? 0 : 1}));
   if (want('land') && w === 360) await step('320×568 친구 쪽 첫 화면', () => firstView(320, 568, {min: 2, only: 1}));
   if (want('off')) await step(`${w}×${h} 카톡 꺼짐`, () => kakaoOff(w, h, full));
-  const on = k => want('on') || want(k);
+  // 켜짐 길은 시험 서버(127.0.0.1 · localhost)에서만 — kakao.js 는 실제 사이트에서 시험 표시(__GODORI_KAKAO_TEST__)를 보지 않고 스위치만 봄(카톡 꺼짐 · 보안)
+  //   그래서 실제 사이트(https://aaa7377.com)에서는 켤 수 없어 늘 걸렸음(2026-10-18 실제 사이트 검사) → 건너뛰고 수만 적음 · 올리기 전 검사(local)는 그대로 모두 봄
+  const on = k => !LIVE_SITE && (want('on') || want(k));
+  if (LIVE_SITE) bump('켜짐 길 건너뜀(실제 사이트 — 시험 서버에서만 켤 수 있음)');
   if (on('card')) await step(`${w}×${h} 카톡 켜짐 · 카드`, () => kakaoCard(w, h, full));
   if (on('offer')) await step(`${w}×${h} 카톡 켜짐 · 권유`, () => kakaoOffer(w, h));
   if (full && on('ret')) await step(`${w}×${h} 카톡 켜짐 · 돌아옴 · 조용한 로그인`, () => kakaoReturn(w, h));

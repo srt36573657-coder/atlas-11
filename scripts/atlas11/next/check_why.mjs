@@ -236,6 +236,7 @@ async function newPage(width, height, {store = 'ok', gdr404 = false, home = null
   for (const f of block) await ctx.route('**' + f, r => r.fulfill({status: 404, contentType: 'text/plain', body: 'no'})); // 일부러 못 받게 한 파일(allow 에도 넣음)
   if (home) await ctx.route('**/atlas/data/home.json', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(home)}));
   const p = await ctx.newPage(); p._errs = []; p._home = home ?? HOME; p._kakao = kakao; p._block = block;
+  p._pend = new Map(); p.on('request', r => p._pend.set(r.url(), Date.now())); p.on('requestfinished', r => p._pend.delete(r.url())); p.on('requestfailed', r => p._pend.delete(r.url())); // 멈춘 때 안 끝난 요청(open 실패 글)
   const allowed = u => allow.some(a => String(u || '').includes(a));
   p.on('pageerror', e => p._errs.push('pageerror ' + e.message));
   p.on('console', m => { if (m.type() !== 'error') return; const u = m.location()?.url; if (/Failed to load resource/.test(m.text()) && allowed(u)) return; p._errs.push(m.text() + (u ? ' @ ' + u : '')); });
@@ -255,7 +256,13 @@ const kakaoStub = p => (p._kakao ? p.evaluate(mode => {
 }, p._kakao) : null); // 카톡 모듈이 늦게 와 NX.kakao 를 새로 써도 끝내기 바로 전에 다시 붙임
 const offers = p => p.evaluate(() => window.__offer ?? null);
 async function open(p, hash, sel) { // 같은 주소면 다시 불러옴(같은 # 로 가면 화면이 안 바뀜 — 기억에 넣은 기록을 다시 읽게)
-  if (p.url() === base + NEXT + hash) await p.reload({waitUntil: 'domcontentloaded'}); else await p.goto(base + NEXT + hash, {waitUntil: 'domcontentloaded'});
+  const was = p.url(), how = was === base + NEXT + hash ? 'reload' : 'goto';
+  try { if (how === 'reload') await p.reload({waitUntil: 'domcontentloaded'}); else await p.goto(base + NEXT + hash, {waitUntil: 'domcontentloaded'}); }
+  catch (e) { // 실제 사이트에서만 멈춘 까닭 찾기(2026-10-18) — 멈춘 때 주소 · 문서 상태 · 안 끝난 요청을 실패 글에 붙임(검사 판정은 그대로)
+    const st = await Promise.race([p.evaluate(() => [document.readyState, location.href, !!document.querySelector('#view .boot'), document.querySelectorAll('dialog[open]').length]).catch(x => 'eval ' + String(x.message).slice(0, 60)), new Promise(r => setTimeout(() => r('eval 3초 넘음'), 3000))]);
+    const pend = [...(p._pend ?? new Map()).entries()].map(([u, t]) => u.replace(base, '') + ' ' + Math.round((Date.now() - t) / 1000) + '초').slice(0, 5);
+    throw new Error(`${e.message.split('\n')[0]} · ${how} 앞 ${was.replace(base, '')} → ${hash} · 뒤 ${p.url().replace(base, '')} · 문서 ${JSON.stringify(st)} · 안 끝난 요청 ${JSON.stringify(pend)}`);
+  }
   await p.waitForFunction(s => !!document.querySelector(s) && !document.querySelector('#view .boot'), sel, {timeout: 30000});
   await kakaoStub(p);
 }
