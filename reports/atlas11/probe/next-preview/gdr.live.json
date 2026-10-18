@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-gdr-2",
- "when": "2026-10-18T15:45:45.272Z",
+ "when": "2026-10-18T16:16:50.517Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
