@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-18T07:46:15.144Z",
+ "when": "2026-10-18T08:26:12.638Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
@@ -146,7 +146,7 @@
   }
  ],
  "only": [],
- "sec": 93,
+ "sec": 86,
  "counts": {
   "꾸민 보유": 14,
   "질문 먼저 맞댄 카드": 17,
