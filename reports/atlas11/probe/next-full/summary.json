@@ -1,48 +1,47 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-17T15:40:16.923Z",
+ "at": "2026-10-18T05:28:54.826Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "ref": "main",
- "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e",
- "run": 39044543448,
- "wallSeconds": 1234,
+ "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea",
+ "run": 39099710521,
+ "wallSeconds": 1027,
  "pages": [
   {
    "name": "cal",
    "code": 0,
-   "seconds": 100,
+   "seconds": 105,
    "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "chx",
    "code": 0,
-   "seconds": 182,
+   "seconds": 189,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "co",
    "code": 0,
-   "seconds": 638,
+   "seconds": 654,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "cond",
    "code": 0,
-   "seconds": 39,
+   "seconds": 47,
    "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "en",
    "code": 0,
-   "seconds": 614,
-   "shards": 6,
+   "seconds": 569,
+   "shards": 5,
    "codes": [
-    0,
     0,
     0,
     0,
@@ -50,96 +49,99 @@
     0
    ],
    "shardSeconds": [
-    533,
-    614,
-    459,
-    518,
-    606,
-    487
+    510,
+    504,
+    569,
+    539,
+    550
    ],
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "gdr",
    "code": 0,
-   "seconds": 26,
+   "seconds": 135,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "grow",
    "code": 0,
-   "seconds": 607
+   "seconds": 409,
+   "mode": "live",
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "hold",
    "code": 0,
-   "seconds": 15,
+   "seconds": 92,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "misc",
    "code": 0,
-   "seconds": 57
+   "seconds": 51,
+   "mode": "live",
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "next",
-   "code": 0,
-   "seconds": 321,
+   "code": 1,
+   "seconds": 285,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "past",
    "code": 0,
-   "seconds": 629,
+   "seconds": 542,
    "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "range",
    "code": 0,
-   "seconds": 509,
+   "seconds": 656,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "rivals",
    "code": 0,
-   "seconds": 292,
+   "seconds": 270,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "share",
-   "code": 0,
-   "seconds": 56,
+   "code": 1,
+   "seconds": 281,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "surge",
    "code": 0,
-   "seconds": 40,
+   "seconds": 58,
    "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "today",
    "code": 0,
-   "seconds": 93,
+   "seconds": 66,
    "mode": "live",
-   "sha": "002b7f9152082e5ddef603a848849bcecf9a6487"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   },
   {
    "name": "why",
-   "code": 0,
-   "seconds": 46,
+   "code": 1,
+   "seconds": 379,
    "mode": "live",
-   "sha": "2b9df56291af1a7fbda47aa2a75777c1ee6f134e"
+   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
   }
  ],
- "ok": true
+ "ok": false
 }

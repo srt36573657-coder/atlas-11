@@ -1,13 +1,11 @@
-합침: {"ok":true,"shards":6,"got":6,"routes":13407,"screens":13627,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":614,"secondsSum":3217,"problems":[]}
-── en1/6 ──
-{"ok":true,"shard":"1/6","routes":2250,"screens":2286,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":533,"secs":{"open":1.4,"routes":530.4},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en2/6 ──
-{"ok":true,"shard":"2/6","routes":2249,"screens":2252,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":614,"secs":{"open":0.8,"routes":612.4},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en3/6 ──
-{"ok":true,"shard":"3/6","routes":2255,"screens":2258,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":459,"secs":{"open":0.7,"routes":456.1},"net":{"req":27,"retry":1,"waitSec":1,"why":{"ECONNRESET":1},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en4/6 ──
-{"ok":true,"shard":"4/6","routes":2249,"screens":2249,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":518,"secs":{"open":1.2,"routes":515.5},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en5/6 ──
-{"ok":true,"shard":"5/6","routes":2234,"screens":2292,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":606,"secs":{"open":1.1,"routes":600.4,"newwin":3.3},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en6/6 ──
-{"ok":true,"shard":"6/6","routes":2170,"screens":2290,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":487,"secs":{"open":0.9,"routes":452.4,"act":7,"edge":4.8,"grammar":0},"net":{"req":27,"retry":1,"waitSec":1,"why":{"TimeoutError":1},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+합침: {"ok":true,"shards":5,"got":5,"routes":13407,"screens":13629,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":569,"secondsSum":2673,"problems":[]}
+── en1/5 ──
+{"ok":true,"shard":"1/5","routes":2700,"screens":2702,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":510,"secs":{"open":0.6,"routes":508.5},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en2/5 ──
+{"ok":true,"shard":"2/5","routes":2699,"screens":2699,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":504,"secs":{"open":0.6,"routes":502.5},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en3/5 ──
+{"ok":true,"shard":"3/5","routes":2699,"screens":2738,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":569,"secs":{"open":1,"routes":555.3},"net":{"req":28,"retry":2,"waitSec":2,"why":{"UND_ERR_CONNECT_TIMEOUT":2},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en4/5 ──
+{"ok":true,"shard":"4/5","routes":2690,"screens":2713,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":539,"secs":{"open":0.7,"routes":523,"newwin":2.8},"net":{"req":27,"retry":1,"waitSec":1,"why":{"UND_ERR_CONNECT_TIMEOUT":1},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en5/5 ──
+{"ok":true,"shard":"5/5","routes":2619,"screens":2777,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":551,"secs":{"open":1.6,"routes":536.2,"act":6.9,"edge":4.7,"grammar":0},"net":{"req":26,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}

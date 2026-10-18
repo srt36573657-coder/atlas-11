@@ -3,11 +3,32 @@
  "base": "https://aaa7377.com",
  "limit": "all",
  "wide": "all",
- "took_s": 99,
+ "took_s": 104,
+ "time": {
+  "old": 23.1,
+  "new": 70.4,
+  "wall": 104.3,
+  "opensOld": 938,
+  "opensNew": 2287,
+  "oldPct": 22.2,
+  "oldShare": 24.7
+ },
+ "net": {
+  "req": 4,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "맞댄 화면": 472,
   "맞댄 줄": 78401,
-  "맞댄 숫자 낱말": 53487,
+  "맞댄 숫자 낱말": 53477,
   "맞댄 고리": 20470,
   "맞댄 그림 이름": 1212,
   "종목 파일": 442,

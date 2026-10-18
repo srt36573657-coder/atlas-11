@@ -1,21 +1,21 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-10-17T15:35:19.615Z",
+ "at": "2026-10-18T05:26:30.487Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "pages": 87,
  "of": 87,
  "widthPages": 87,
  "full": true,
- "seconds": 182,
+ "seconds": 189,
  "time": {
-  "old": 159.4,
-  "new": 15.1,
-  "wall": 181.7,
+  "old": 160.1,
+  "new": 18.9,
+  "wall": 188.9,
   "opensOld": 698,
   "opensNew": 703,
-  "oldPct": 87.7,
-  "oldShare": 91.4
+  "oldPct": 84.8,
+  "oldShare": 89.5
  },
  "net": {
   "req": 2,
@@ -32,7 +32,7 @@
  "counts": {
   "줄": 5256,
   "글": 2384,
-  "숫자 낱말": 9186,
+  "숫자 낱말": 8838,
   "? 줄": 218,
   "고리": 5646,
   "자체 시험": 8,

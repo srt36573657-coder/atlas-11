@@ -1,5 +1,5 @@
 {
- "made": "2026-10-17T12:34:54.288Z",
+ "made": "2026-10-18T05:21:32.901Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -16,9 +16,29 @@
   "323280",
   "000040"
  ],
+ "shard": null,
+ "units": {
+  "total": 2562,
+  "mine": 2562,
+  "hash": "1876294baef63f85",
+  "kinds": {
+   "c": {
+    "total": 2557,
+    "mine": 2557
+   },
+   "x": {
+    "total": 1,
+    "mine": 1
+   },
+   "w": {
+    "total": 4,
+    "mine": 4
+   }
+  }
+ },
  "counts": {
   "맞댄 칸": 191775,
-  "숫자 낱말": 414471,
+  "숫자 낱말": 406800,
   "선 누르기": 7671,
   "화면(기간)": 7671,
   "회사": 2557,
@@ -27,5 +47,26 @@
  },
  "fails": [],
  "warn": [],
- "sec": 628
+ "sec": 542,
+ "time": {
+  "old": 198.3,
+  "new": 425.7,
+  "wall": 542.5,
+  "opensOld": 25571,
+  "opensNew": 33282,
+  "oldPct": 36.6,
+  "oldShare": 31.8
+ },
+ "net": {
+  "req": 2,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ }
 }

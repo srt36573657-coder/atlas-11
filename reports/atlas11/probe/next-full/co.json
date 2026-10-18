@@ -1,27 +1,53 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-17T15:31:21.279Z",
+ "at": "2026-10-18T05:23:18.168Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "companies": 2557,
  "all": true,
  "limit": null,
  "widths": 28,
- "seconds": 638,
+ "shard": null,
+ "units": {
+  "total": 2566,
+  "mine": 2566,
+  "hash": "bf664c6a7a11ebf1",
+  "kinds": {
+   "c": {
+    "total": 2557,
+    "mine": 2557
+   },
+   "e": {
+    "total": 5,
+    "mine": 5
+   },
+   "w": {
+    "total": 3,
+    "mine": 3
+   },
+   "b": {
+    "total": 1,
+    "mine": 1
+   }
+  }
+ },
+ "seconds": 654,
  "time": {
-  "old": 209.6,
-  "new": 269.4,
-  "wall": 638,
+  "old": 180.8,
+  "new": 193.6,
+  "wall": 653.9,
   "opensOld": 2557,
-  "opensNew": 2646,
-  "oldPct": 32.9,
-  "oldShare": 43.8
+  "opensNew": 2648,
+  "oldPct": 27.6,
+  "oldShare": 48.3
  },
  "net": {
-  "req": 2506,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
+  "req": 2510,
+  "retry": 1,
+  "waitSec": 1,
+  "why": {
+   "ECONNRESET": 1
+  },
   "page": {
    "retry": 0,
    "waitSec": 0,
@@ -31,15 +57,18 @@
  },
  "counts": {
   "줄": 114497,
-  "숫자 낱말": 214154,
-  "따로 셈": 38747,
+  "숫자 낱말": 206477,
+  "따로 셈": 41248,
+  "머리 셈": 38355,
   "고리": 2557,
   "회사": 2557,
   "고른 곳 밖": 2501,
   "그림": 2551,
   "고른 곳": 56,
   "빈 날 길": 5,
-  "세 폭 화면": 84
+  "한 화면 재기": 84,
+  "세 폭 화면": 84,
+  "큰 글씨 화면": 2
  },
  "fails": [],
  "ok": true
