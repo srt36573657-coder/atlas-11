@@ -122,6 +122,7 @@ const scan = p => p.evaluate(() => {
 });
 const knownHref = h => {
   if (h === '/' || h === '/letter.html' || h === '/hello.html' || h === '/us/') return true; // /us/ = 미국 판(규칙 54 그대로)
+  if (h === '/hello.html#hp-vid') return VIDEO.ready; // 첫 화면 세 줄 칸 밑 「골똘이의 고민 1분 보기 ›」 = 소개 쪽 영상 칸(새 영상이 오른 뒤에만 · [5] 5)
   if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)

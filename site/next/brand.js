@@ -15,8 +15,9 @@ export const BRAND = Object.freeze({
 });
 export const NAME = BRAND.ko, NAME_EN = BRAND.en;
 /** 소개 영상(사장님 2026-10-18 16:39 [3] 9 「새 영상이 늦어지면 옛 영상 단추를 잠시 숨겨라. 옛 이름이 나오지 않게.」 · [4] 9 「표지 그림과 영상 단추 글은 「꼴똘이의 고민 1분」으로 하라.」)
- *  ready = 새 영상이 site/media/makbi-intro.* 에 올라갔나(둘째 올리기에서 true) — false 동안 첫 화면 편지 띠 · 소개 쪽 영상 칸 · 「…1분 보기 ›」 줄을 숨김 */
-export const VIDEO = Object.freeze({ready: false, title: BRAND.ko + '의 고민 1분', title_en: BRAND.en + "'s Dilemma · 1 min"});
+ *  ready = 새 영상이 site/media/makbi-intro.* 에 올라갔나(둘째 올리기에서 true) — false 동안 첫 화면 편지 띠 · 소개 쪽 영상 칸 · 「…1분 보기 ›」 줄을 숨김
+ *  2026-10-18 저녁 둘째 올리기(②)에서 true — 새 영상 60초 · 장면 열(「골똘이의 고민」 · accept/KF.md) */
+export const VIDEO = Object.freeze({ready: true, title: BRAND.ko + '의 고민 1분', title_en: BRAND.en + "'s Dilemma · 1 min"});
 
 /** 받침 있나(한글 마지막 글자) */
 export const hasBatchim = w => { const c = String(w).charCodeAt(String(w).length - 1) - 0xac00; return c >= 0 && c <= 11171 && c % 28 !== 0; };

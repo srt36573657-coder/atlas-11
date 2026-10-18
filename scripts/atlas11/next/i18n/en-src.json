@@ -8375,6 +8375,19 @@
   "아직 {n}거래일 — {d}이 봉인 날이자 마지막 종가 날입니다. 다음 거래일부터 회차마다(하루 {n}번) 한 칸씩 채웁니다.": "{n} trading days so far — {d} is both the seal day and the last closing day. From the next trading day, one cell is filled at each update ({n} times a day).",
   "정해진 업데이트 · {t} · {t} · {t} · {t}(서울)": "Scheduled updates · {t} · {t} · {t} · {t} (Seoul)",
   "정해진 업데이트({t} · {t} · {t} · {t} · 서울) 때만 넣고 빼요. 다른 때 올리면 그때 고른 그대로예요.": "Stocks are added and removed only at the scheduled updates ({t} · {t} · {t} · {t} · Seoul). Posts at other times keep the picks as they were.",
-  "? 다시 고르기 — 정해진 업데이트 때({t} · {t} · {t} · {t} 서울) 값과 그림만 새로 · 고른 곳은 새 {n}년 성적표가 들어와야 바뀜.": "? Re-picking — only prices and charts refresh at the scheduled updates ({t} · {t} · {t} · {t} Seoul) · picks change only when a new {n}-year report card comes in."
+  "? 다시 고르기 — 정해진 업데이트 때({t} · {t} · {t} · {t} 서울) 값과 그림만 새로 · 고른 곳은 새 {n}년 성적표가 들어와야 바뀜.": "? Re-picking — only prices and charts refresh at the scheduled updates ({t} · {t} · {t} · {t} Seoul) · picks change only when a new {n}-year report card comes in.",
+  "{e}의 고민 {n}분": "{e}'s Dilemma · {n} min",
+  "영상 · 보내기": "video · send",
+  "첫 화면 맨 위에 골똘이 세 줄이 생겼어요": "Three Golttori lines now sit at the top of the home screen",
+  "사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요": "Before buying, check your own reason first with the eleven \"Why buy?\" questions",
+  "앞날을 맞히지 않고, 지난 기록만 보여 줘요": "It doesn't guess the future; it only shows past records",
+  "숫자를 받은 곳과 마지막으로 받은 때를 함께 적어요": "It notes where the numbers come from and when they were last received",
+  "종목 줄마다 카톡 단추가 생겼어요": "Every stock row now has a KakaoTalk button",
+  "줄을 누르면 회사로, 노란 단추를 누르면 보내기로 가요": "Tap the row to open the company; tap the yellow button to send it",
+  "친구가 연 쪽은 질문에 다 답한 뒤에 「나도 보내기」가 보여요": "On the page a friend opens, \"Send one too\" appears only after every question is answered",
+  "개인정보 처리방침에 합계 칸을 적었어요": "The privacy policy now describes the daily totals",
+  "날마다 합계만 세요. 이름, 기기 번호, 쿠키는 쓰지 않아요": "Only daily totals are counted. No names, device IDs or cookies are used",
+  "편지 쪽에서 주마다 도장을 주던 칸을 걷었어요": "The weekly stamp box on the letter page is gone",
+  "자주 오라고 주는 상은 두지 않아요": "There are no rewards for coming back often"
  }
 }
