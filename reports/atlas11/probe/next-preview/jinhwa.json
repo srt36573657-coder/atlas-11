@@ -1,140 +1,117 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-10-18T14:33:14.546Z",
+ "at": "2026-10-18T15:18:34.846Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "all": true,
- "offDeviceOpens": 0,
+ "offDeviceButtons": 0,
+ "publicOpens": "9/9",
  "off": [
   {
    "name": "열쇠 없음",
-   "opens": 0,
-   "drawn": 0,
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 2,
-   "mod": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
    "api": 0
   },
   {
    "name": "깊은 주소 #/jinhwa/x",
-   "opens": 0,
-   "drawn": 0,
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 2,
-   "mod": 0,
+   "hash": "#/jinhwa/x",
+   "mod": 1,
    "api": 0
   },
   {
    "name": "짧은 열쇠",
-   "opens": 0,
-   "drawn": 0,
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 2,
-   "mod": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
    "api": 0
   },
   {
    "name": "틀린 열쇠",
-   "opens": 0,
-   "drawn": 0,
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 2,
+   "hash": "#/jinhwa",
    "mod": 1,
    "api": 1
   },
   {
    "name": "서버가 아님(403)",
-   "opens": 0,
-   "drawn": 0,
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 2,
+   "hash": "#/jinhwa",
    "mod": 1,
    "api": 1
   },
   {
    "name": "서버에 길 없음(404)",
-   "opens": 0,
-   "drawn": 0,
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 2,
+   "hash": "#/jinhwa",
    "mod": 1,
    "api": 1
   },
   {
    "name": "서버 못 닿음",
-   "opens": 0,
-   "drawn": 0,
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 2,
+   "hash": "#/jinhwa",
    "mod": 1,
    "api": 1
   },
   {
    "name": "보유종목 바로 가기 · 열쇠 없음",
-   "opens": 0,
-   "drawn": 0,
+   "view": false,
+   "btns": 0,
    "row": 0,
-   "title": 0,
    "hash": "#/me",
-   "hist": 2,
    "mod": 0,
    "api": 0
   },
   {
    "name": "보유종목 바로 가기 · 틀린 열쇠",
-   "opens": 0,
-   "drawn": 0,
+   "view": false,
+   "btns": 0,
    "row": 0,
-   "title": 0,
    "hash": "#/me",
-   "hist": 2,
    "mod": 1,
    "api": 1
   },
   {
    "name": "보유종목 바로 가기 · 서버 못 닿음",
-   "opens": 0,
-   "drawn": 0,
+   "view": false,
+   "btns": 0,
    "row": 0,
-   "title": 0,
    "hash": "#/me",
-   "hist": 2,
    "mod": 1,
    "api": 1
   },
   {
-   "name": "앱 안에서 #/jinhwa 로 감 · 열쇠 없음",
-   "opens": 0,
-   "drawn": 0,
+   "name": "위 막대 「진화」 단추를 누름 · 열쇠 없음",
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 3,
-   "mod": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
    "api": 0
   },
   {
-   "name": "앱 안에서 #/jinhwa 로 감 · 틀린 열쇠",
-   "opens": 0,
-   "drawn": 0,
+   "name": "위 막대 「진화」 단추를 누름 · 틀린 열쇠",
+   "view": true,
+   "btns": 0,
    "row": 0,
-   "title": 0,
-   "hash": "#/",
-   "hist": 3,
+   "hash": "#/jinhwa",
    "mod": 1,
    "api": 1
   }
@@ -143,10 +120,11 @@
   "fold": {
    "tabs": 572,
    "ess": 156.1875,
-   "n": 181.6875,
-   "name": 332.875,
-   "pics": 486.375,
-   "ok": 542.375
+   "n": 190.9375,
+   "nav": 200.1875,
+   "tag": 233.6875,
+   "name": 260.28125,
+   "pics": 493.78125
   }
  },
  "server": {
@@ -179,14 +157,26 @@
   "bot": 0
  },
  "en": {
-  "left": 0
+  "public": 0,
+  "owner": 0
  },
  "counts": {
-  "pass": 124,
+  "pass": 162,
   "fail": 0
  },
  "fails": [],
  "warn": [],
- "seconds": 29.4,
+ "public": {
+  "fold": {
+   "tabs": 572,
+   "ess": 156.1875,
+   "n": 190.9375,
+   "nav": 200.1875,
+   "tag": 233.6875,
+   "name": 260.28125,
+   "pics": 493.78125
+  }
+ },
+ "seconds": 30.4,
  "ok": true
 }
