@@ -1,12 +1,12 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-18T06:25:24.439Z",
+ "at": "2026-10-18T06:28:43.218Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "ref": "main",
- "sha": "79691a6d8ff2b1ef404d8a48835a3866a81132ad",
- "run": 39103522220,
- "wallSeconds": 462,
+ "sha": "1ab6a7a9317d7a4a7eb85858f2ad877ff0ef902f",
+ "run": 39104040645,
+ "wallSeconds": 127,
  "pages": [
   {
    "name": "cal",
@@ -137,11 +137,11 @@
   },
   {
    "name": "why",
-   "code": 1,
-   "seconds": 413,
+   "code": 0,
+   "seconds": 77,
    "mode": "live",
-   "sha": "79691a6d8ff2b1ef404d8a48835a3866a81132ad"
+   "sha": "1ab6a7a9317d7a4a7eb85858f2ad877ff0ef902f"
   }
  ],
- "ok": false
+ "ok": true
 }
