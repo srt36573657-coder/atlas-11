@@ -35,12 +35,24 @@
 .jh-arrow { color: var(--sub); font-size: var(--fs-2); }
 .jh-fig { display: flex; flex-direction: column; min-width: 0; margin: 0; }
 .jh-pic { display: flex; align-items: center; justify-content: center; height: 200px; min-height: 44px; overflow: hidden; border: 1px solid var(--hair); border-radius: 8px; background: var(--card2); }
-.jh-img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+.jh-frame { position: relative; display: block; height: 100%; aspect-ratio: 360 / 640; max-width: 100%; }
+.jh-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+/* 바뀐 곳 네모(사장님 2026-10-19 「어디를 고쳤는지 … 표기가 없어서」) — 후 = 금빛 굵은 테 · 전 = 금빛 점선(여기가 바뀌어요) · 자리는 p-jinhwa.js 가 % 로 */
+.jh-box { position: absolute; box-sizing: border-box; min-width: 8px; min-height: 6px; border: 3px solid var(--gold); border-radius: 4px; pointer-events: none; }
+.jh-box.before { border-style: dashed; border-width: 2px; }
+/* 바뀐 곳 크게 — 고친 뒤 그림의 네모만 오려 카드 폭으로 · 금빛 테 */
+.jh-zoom { margin: 0 0 var(--sp-1); }
+.jh-zk { margin: 0 0 var(--sp-1); color: var(--gold); font-size: var(--fs-1); line-height: 1.5; }
+.jh-zk b { font-weight: 700; }
+.jh-zpic { display: block; min-height: 44px; border: 2px solid var(--gold); border-radius: 8px; overflow: hidden; background: var(--card2); }
+.jh-crop { position: relative; display: block; width: 100%; max-height: 320px; overflow: hidden; }
+.jh-zimg { position: absolute; display: block; height: auto; max-width: none; }
 .jh-noimg { padding: 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); text-align: center; }
 .jh-fig figcaption { color: var(--sub); font-size: var(--fs-1); line-height: 1.5; text-align: center; }
 
 /* 단추(사장님 열쇠 기기만) — 확인 · 되돌리기(누르면 금빛 테 · 글 = 언제 들어가는지) */
-.jh-ok, .jh-rv { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin: var(--sp-1) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid transparent; border-radius: 12px; background: var(--ink); color: #111; font-size: var(--fs-2); font-weight: 700; line-height: 1.35; text-align: center; }
+.jh-ok, .jh-rv { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin: var(--sp-1) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid transparent; border-radius: 12px; background: var(--ink); color: #111; font-size: var(--fs-2); font-weight: 700; line-height: 1.35; text-align: center; }
+.jh-ok { background: var(--gold); color: #111; font-size: var(--fs-3); } /* 확인 = 금빛 큰 단추 · 이름 바로 밑(사장님 2026-10-19 「승인 버튼을 못찾겠어 잘 보이개 해야 해」) */
 .jh-rv { background: var(--card2); color: var(--ink); border-color: var(--hair2); }
 .jh-ok.on, .jh-rv.on { background: var(--gold-wash); color: var(--gold); border-color: var(--gold-line); font-size: var(--fs-1); }
 .jh-ok:disabled, .jh-rv:disabled { cursor: default; opacity: .7; }

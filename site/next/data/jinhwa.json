@@ -36,6 +36,67 @@
    "checks": {
     "changed": 0,
     "preview": 0
+   },
+   "mark": {
+    "box": {
+     "x": 27,
+     "y": 186,
+     "w": 306,
+     "h": 114
+    },
+    "text": "틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.",
+    "route": "#/why",
+    "steps": [
+     {
+      "fill": ".wy-find",
+      "text": "삼성전자"
+     },
+     {
+      "wait": 600
+     },
+     {
+      "click": ".wy-hit"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-quick button"
+     },
+     {
+      "click": ".wy-nav .wy-next"
+     }
+    ]
    }
   },
   {
@@ -69,6 +130,67 @@
    "checks": {
     "changed": 0,
     "preview": 0
+   },
+   "mark": {
+    "box": {
+     "x": 27,
+     "y": 186,
+     "w": 306,
+     "h": 38
+    },
+    "text": "급한 마음이 가장 비싼 값을 치른다",
+    "route": "#/why",
+    "steps": [
+     {
+      "fill": ".wy-find",
+      "text": "삼성전자"
+     },
+     {
+      "wait": 600
+     },
+     {
+      "click": ".wy-hit"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-quick button"
+     },
+     {
+      "click": ".wy-nav .wy-next"
+     }
+    ]
    }
   },
   {
@@ -102,6 +224,61 @@
    "checks": {
     "changed": 0,
     "preview": 0
+   },
+   "mark": {
+    "box": {
+     "x": 27,
+     "y": 186,
+     "w": 306,
+     "h": 114
+    },
+    "text": "틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.",
+    "route": "#/why",
+    "steps": [
+     {
+      "fill": ".wy-find",
+      "text": "삼성전자"
+     },
+     {
+      "wait": 600
+     },
+     {
+      "click": ".wy-hit"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     }
+    ]
    }
   }
  ],

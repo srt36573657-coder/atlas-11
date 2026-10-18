@@ -8416,6 +8416,9 @@
   "{n}거래일 어림": "{n}-trading-day estimate",
   "판단 못 함 {n}": "Can't tell {n}",
   "아직 {n}": "Not yet {n}",
-  "{n}거래일 어림 · 맞음 {n} · 틀림 {n} · 판단 못 함 {n} · 아직 {n}": "{n}-trading-day estimate · right {n} · wrong {n} · can't tell {n} · not yet {n}"
+  "{n}거래일 어림 · 맞음 {n} · 틀림 {n} · 판단 못 함 {n} · 아직 {n}": "{n}-trading-day estimate · right {n} · wrong {n} · can't tell {n} · not yet {n}",
+  "바뀐 곳": "What changed",
+  "확인 단추는 사장님 휴대폰에만 보여요.": "Only the owner's phone shows the confirm button.",
+  "고친 뒤 화면에서 바뀐 곳": "The changed spot on the new screen"
  }
 }

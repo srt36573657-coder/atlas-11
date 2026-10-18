@@ -10,7 +10,7 @@
 //   revert --id <번호>                   되돌리기 요청 하나 — 들어간 커밋을 git revert · 같은 검사 · main
 //   fix-start / fix --kind <갈래> --what <글>   고장 고침 하나(깨진 길 · 날짜 「?」 · 오타 — 3파일 · 20줄 · 줄마다 작게 · css · 새 파일 0) — 넣거나 되돌린 회차에는 안 함
 //   alt-start --n <1|2|3>                대안 일 폴더(main 그대로 · 가지 jinhwa/<회차>-<n>) — 그 폴더에서 고치고 커밋
-//   alt --n <1|2|3> --route '#/…' [--seed k=v …]   대안 검사 — 다섯 · 지킴 · 잣대 신호 · 본질 문 · 큰 것 · 화면 글 낱말 · 지문 · 바뀐 쪽 검사 · 전후 그림 · 미리 검사 시작
+//   alt --n <1|2|3> --route '#/…' [--seed k=v …] [--steps '<JSON>'|@파일]   대안 검사(전후 그림이 같으면 떨어짐 — 바뀐 곳이 나오게 누르기 차례를 줌) — 다섯 · 지킴 · 잣대 신호 · 본질 문 · 큰 것 · 화면 글 낱말 · 지문 · 바뀐 쪽 검사 · 전후 그림 · 미리 검사 시작
 //   cards --debate <파일>                토론 결과 → 카드(서로 다른 셋 · 1번 = 세 사람이 함께 고른 것 · 세 눈 · 섬기는 본질 줄 · 잣대 셋 · 낱말)
 //   retest                               기다리는 대안을 지금 main 위에서 다시 시험(새로 안 만듦 · 지문 같음 · 빠른 검사 · 새 그림 · 미리 검사는 코드가 같으면 그대로)
 //   finish [--wait <분>]                 미리 검사 결과 — 통과한 것만 기다리는 진화로 · 못 기다린 것은 다음 회차
@@ -368,7 +368,8 @@ export async function cmdAltStart(a, D) {
   return {id, dir, branch: L.branchOf(id), base: st.main0.slice(0, 7), max: L.MAX_FILES};
 }
 export async function cmdAlt(a, D) {
-  const st = load(D), n = Number(a.n), route = String(a.route ?? '#/');
+  const st = load(D), n = Number(a.n), route = String(a.route ?? '#/'), steps = stepsArg(a.steps);
+  if (!steps) stop('--steps 는 JSON 목록(누르기 차례)', 2);
   if (st.plan?.next !== 'make') stop('이번 회차는 새 대안을 만들지 않음', 2);
   const id = altId(st, n), dir = st.wt['alt' + n];
   if (!dir || !fs.existsSync(dir)) stop('alt-start 를 먼저', 2);
@@ -377,7 +378,7 @@ export async function cmdAlt(a, D) {
   st.made = st.made.filter(m => m.n !== n);
   const W = await loadWords(D.root);
   const head = G.revParse(dir, 'HEAD');
-  const made = {n, id, ok: false, route, seed: a.seed ?? {}, commit: head, base: st.main0, why: []};
+  const made = {n, id, ok: false, route, seed: a.seed ?? {}, steps, commit: head, base: st.main0, why: []};
   const done = () => { st.made.push(made); save(D, st); if (!made.ok) stop(made.why.join(' · ')); return made; };
   if (!head || head === st.main0 || !G.isAncestor(D.root, st.main0, head)) { made.why.push('고친 커밋이 없음(alt-start 폴더에서 커밋)'); return done(); }
   const d = G.diffInfo(D.root, st.main0, head);
@@ -398,8 +399,9 @@ export async function cmdAlt(a, D) {
   made.changed = {fails: cc.fails, tail: cc.ok ? '' : cc.tail};
   if (cc.fails) { made.why.push(`바뀐 쪽 검사 실패 ${cc.fails}`); return done(); }
   const live = await liveOnce(D, st);
-  const sh = await D.shoot({id, route, before: st.wt.main, after: dir, out: path.join(D.run, 'img'), seed: a.seed ?? {}, live});
+  const sh = await D.shoot({id, route, before: st.wt.main, after: dir, out: path.join(D.run, 'img'), seed: a.seed ?? {}, steps, live});
   if (!sh.ok) { made.why.push('전후 그림을 못 찍음 — ' + (sh.why ?? '')); return done(); }
+  if (sh.box) made.mark = {box: sh.box, text: String(sh.text ?? '').slice(0, 120), route, steps}; // 바뀐 곳 표시(카드 그림 위 네모 · 「새로 생긴 글」)
   const ps = D.previewStart({sha: head, branch: L.branchOf(id), expect: ''});
   if (!ps.ok) { made.why.push('모든 쪽 미리 검사를 못 시작함 — ' + ps.why); return done(); }
   made.preview = {state: 'running', run: ps.run ?? null, sha: head, at: L.isoKst(D.now())};
@@ -492,6 +494,7 @@ export async function cmdCards(a, D) {
     const x = alts.find(y => y.n === n), m = st.made.find(y => y.n === n);
     const c = L.cardFrom(x, {id: m.id, pick: n === pc.order[0], files: m.files, units, metrics, big: m.big ?? [], words: wordsOpt(W)});
     if (!c.ok) why.push(`대안 ${n}: ${c.why.join(' · ')}`);
+    if (c.card && m.mark && L.markOk(m.mark)) c.card.mark = m.mark;
     cards.push({n, id: m.id, ok: c.ok, rule: c.rule, card: c.card});
   }
   const people = debate.people && typeof debate.people === 'object' ? Object.fromEntries(L.PEOPLE.map(p => [p, String(debate.people[p] ?? '').slice(0, 400)])) : null;
@@ -567,10 +570,11 @@ export async function cmdRetest(a, D) {
     r.quick = {fails: qc.fails};
     if (qc.fails) { drop(`새 자료로 빠른 검사 실패 ${qc.fails}`); st.retested.push(r); out.push(r); continue; }
     const live = await liveOnce(D, st);
-    const route = L.readRecords(path.join(st.wt.main, L.REC_DIR)).flatMap(x => x.made ?? []).find(m => m.id === id)?.route ?? '#/';
-    const seed = L.readRecords(path.join(st.wt.main, L.REC_DIR)).flatMap(x => x.made ?? []).find(m => m.id === id)?.seed ?? {};
-    const sh = await D.shoot({id, route, before: st.wt.main, after: dir, out: path.join(D.run, 'img'), seed, live});
+    const rec = L.readRecords(path.join(st.wt.main, L.REC_DIR)).flatMap(x => x.made ?? []).find(m => m.id === id);
+    const route = w?.mark?.route ?? rec?.route ?? '#/', seed = rec?.seed ?? {}, steps = Array.isArray(w?.mark?.steps) ? w.mark.steps : Array.isArray(rec?.steps) ? rec.steps : []; // 카드의 표시 칸이 찍은 길을 먼저(옛 기록은 누르기 차례가 없음)
+    const sh = await D.shoot({id, route, before: st.wt.main, after: dir, out: path.join(D.run, 'img'), seed, steps, live});
     r.images = !!sh.ok;
+    const mark = sh.ok && sh.box ? {box: sh.box, text: String(sh.text ?? '').slice(0, 120), route, steps} : null;
     if (!sh.ok) notDone(st, `다시 시험 ${id} — 새 그림을 못 찍음(옛 그림 그대로)`);
     let pv = null;
     for (const sha of [...g.checked].reverse()) { const x = await D.previewResult({sha, head: ap.sha, maxMin: 0}); if (x.state === 'pass') { pv = {state: 'pass', reuse: sha}; break; } }
@@ -580,7 +584,7 @@ export async function cmdRetest(a, D) {
       if (!ps.ok) notDone(st, `다시 시험 ${id} — 모든 쪽 미리 검사를 못 시작함`);
     }
     r.preview = pv; r.ok = pv.state !== 'fail';
-    if (r.ok) st.retestedCards[id] = {checks: {changed: 0, preview: 0}};
+    if (r.ok) st.retestedCards[id] = {checks: {changed: 0, preview: 0}, ...(mark ? {mark} : {})};
     st.retested.push(r); out.push(r);
   }
   save(D, st);
@@ -724,6 +728,11 @@ export async function cmdEmpty(a, D) {
 export const COMMANDS = {begin: cmdBegin, apply: cmdApply, revert: cmdRevert, 'fix-start': cmdFixStart, fix: cmdFix, 'alt-start': cmdAltStart, alt: cmdAlt, cards: cmdCards,
   finish: cmdFinish, retest: cmdRetest, score: cmdScore, record: cmdRecord, end: cmdEnd, status: cmdStatus, validate: cmdValidate, empty: cmdEmpty};
 
+/** 누르기 차례 — --steps '<JSON>' 또는 @파일 · 없으면 [] · 틀린 꼴이면 null */
+export function stepsArg(v) {
+  if (v == null || v === true) return [];
+  try { const x = JSON.parse(String(v).startsWith('@') ? fs.readFileSync(String(v).slice(1), 'utf8') : String(v)); return Array.isArray(x) ? x : null; } catch { return null; }
+}
 /** 옵션 읽기 — --k v · --flag · --seed k=v(여럿) */
 export function parseArgs(argv) {
   const a = {_: [], seed: {}};

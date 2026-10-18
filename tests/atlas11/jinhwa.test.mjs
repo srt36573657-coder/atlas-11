@@ -244,3 +244,24 @@ test('카드 차례 · 숫자로 보기 — 들어간 것(새 날짜부터) → 
   assert.equal(cardsOf(null), null); assert.equal(numbersOf({}), null);
   assert.deepEqual(cardsOf({waiting: [{}, {id: 3}], applied: []}), [], '번호 없는 줄은 버림');
 });
+
+test('바뀐 곳 표시 — 카드 네모 꼴 · 쪽 이름 · 누르기 차례 꼴(사장님 2026-10-19 「어디를 고쳤는지 … 표기가 없어서」 · 「승인 버튼을 못찾겠어」)', async () => {
+  const {markOf, pageOf} = await import('../../site/next/p-jinhwa.js');
+  const {markOk} = await import('../../scripts/atlas11/jinhwa/lib.mjs');
+  const {stepsOk} = await import('../../scripts/atlas11/jinhwa/shots.mjs');
+  const m = {box: {x: 27, y: 186, w: 306, h: 38}, text: '급한 마음이 가장 비싼 값을 치른다', route: '#/why', steps: [{click: '.wy-opt'}]};
+  assert.ok(markOk(m));
+  assert.equal(markOk({...m, box: {x: 300, y: 0, w: 100, h: 10}}), false, '그림(360) 밖 네모');
+  assert.equal(markOk({...m, extra: 1}), false, '모르는 칸');
+  assert.deepEqual(markOf({mark: m}), {x: 27, y: 186, w: 306, h: 38, text: m.text, route: '#/why'});
+  assert.equal(markOf({}), null);
+  assert.equal(pageOf('#/why'), '매매일지'); assert.equal(pageOf('#/'), '오늘 장'); assert.equal(pageOf('#/zz'), null);
+  assert.deepEqual(stepsOk([{fill: '.a', text: '삼성'}, {click: '.b', nth: 1}, {press: '.c', key: 'Enter'}, {wait: 300}]).length, 4);
+  assert.equal(stepsOk([{eval: 'x'}]), null, '모르는 누르기');
+  assert.equal(stepsOk(new Array(21).fill({wait: 1})), null, '20개 넘음');
+  const J = JSON.parse(fs.readFileSync(new URL('../../site/next/data/jinhwa.json', import.meta.url)));
+  for (const w of J.waiting) if (w.mark) assert.ok(markOk(w.mark), w.id);
+  const src = fs.readFileSync(new URL('../../site/next/p-jinhwa.js', import.meta.url), 'utf8');
+  const card = src.slice(src.indexOf('function oneCard'), src.indexOf('function carousel'));
+  assert.ok(card.indexOf("stateBtn(x, 'confirm', C)") < card.indexOf('pics(x)'), '확인 단추는 그림보다 위(이름 바로 밑)');
+});

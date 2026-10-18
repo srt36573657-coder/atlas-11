@@ -93,16 +93,47 @@ const whyOf = r => WHY[r.body?.error] ?? '? 적지 못했어요. 잠시 뒤 다�
 const IMG_RE = /^(?:\/next\/)?data\/jinhwa\/[A-Za-z0-9._-]+\.(png|jpe?g|webp|svg)$/;
 /** 그림 길 — 회차가 준 길(그림 폴더 안 · /next/ 기준 상대 길도) 또는 /next/data/jinhwa/<번호>-before.png · -after.png */
 export const picSrc = (x, side) => { const v = x?.[side]; return typeof v === 'string' && IMG_RE.test(v) ? (v.startsWith('/') ? v : '/next/' + v) : `/next/data/jinhwa/${encodeURIComponent(String(x?.id ?? ''))}-${side}.png`; };
-/** 전과 후 그림 — 휴대폰 화면 그림(세로)이라 두 장을 나란히(전 → 후) · 못 받으면 차분한 「그림 없음」 칸 · 누르면 크게(새 칸) */
+/** 바뀐 곳 표시(사장님 2026-10-19 00:5x 「어디를 고쳤는지 글은 있는데 표기가 없어서 한참 찾아야 해」) — 회차(shots.mjs)가 찾은 네모 {x, y, w, h}(360 × 640 그림 안 · 점) · 꼴이 틀리면 null */
+const PW = 360, PH = 640;
+export function markOf(x) {
+  const b = x?.mark?.box, n = v => Number.isFinite(v) && v >= 0;
+  if (!b || ![b.x, b.y, b.w, b.h].every(n) || b.w < 1 || b.h < 1 || b.x + b.w > PW || b.y + b.h > PH) return null;
+  return {x: b.x, y: b.y, w: b.w, h: b.h, text: typeof x.mark.text === 'string' ? x.mark.text.trim() : '', route: typeof x.mark.route === 'string' ? x.mark.route : ''};
+}
+/** 찍은 쪽 이름(아래 단추 이름 · 진화) — 모르면 null */
+const PAGE = {'': '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목', jinhwa: '진화'};
+export const pageOf = route => { const m = /^#\/([a-z]*)/.exec(String(route ?? '')); return m && m[1] in PAGE ? PAGE[m[1]] : null; };
+const pct = (v, of) => `${(v / of * 100).toFixed(3)}%`;
+/** 그림 위 네모 — 전 = 점선(여기가 바뀌어요) · 후 = 금빛 굵은 테 · 자리는 스타일 속성이 아니라 CSSOM 으로(보안 규칙 style-src 'self') */
+function boxOn(M, side) {
+  const b = h('span', {class: 'jh-box ' + side, 'aria-hidden': 'true'});
+  b.style.left = pct(M.x, PW); b.style.top = pct(M.y, PH); b.style.width = pct(M.w, PW); b.style.height = pct(M.h, PH);
+  return b;
+}
+/** 전과 후 그림 — 휴대폰 화면 그림(세로)이라 두 장을 나란히(전 → 후) · 바뀐 곳 네모 · 못 받으면 차분한 「그림 없음」 칸 · 누르면 크게(새 칸) */
 function pics(x) {
+  const M = markOf(x);
   const one = side => {
     const src = picSrc(x, side), cap = side === 'before' ? '전' : '후';
     const img = h('img', {class: 'jh-img', src, alt: side === 'before' ? '고치기 전 화면' : '고친 뒤 화면', loading: 'lazy', decoding: 'async'});
-    const box = h('a', {class: 'jh-pic', href: src, target: '_blank', rel: 'noopener'}, img);
+    const frame = h('span', {class: 'jh-frame'}, img, M ? boxOn(M, side) : null);
+    const box = h('a', {class: 'jh-pic', href: src, target: '_blank', rel: 'noopener'}, frame);
     img.addEventListener('error', () => box.replaceWith(h('span', {class: 'jh-pic jh-noimg', text: '그림 없음'})), {once: true});
     return h('figure', {class: 'jh-fig'}, box, h('figcaption', {text: cap}));
   };
   return h('div', {class: 'jh-pics'}, one('before'), h('span', {class: 'jh-arrow', 'aria-hidden': 'true', text: '→'}), one('after'));
+}
+/** 바뀐 곳 크게 — 고친 뒤 그림에서 네모만 오려 제 크기로(카드 폭에 맞춤) · 위에 「바뀐 곳 · 쪽 이름」 · 표시가 없으면 안 그림 */
+function zoom(x) {
+  const M = markOf(x); if (!M) return null;
+  const src = picSrc(x, 'after'), pg = pageOf(M.route);
+  const img = h('img', {class: 'jh-zimg', src, alt: '고친 뒤 화면에서 바뀐 곳', loading: 'lazy', decoding: 'async'});
+  img.style.width = pct(PW, M.w); img.style.left = `-${pct(M.x, M.w)}`; img.style.top = `-${pct(M.y, M.h)}`;
+  const crop = h('span', {class: 'jh-crop'}, img);
+  crop.style.aspectRatio = `${M.w} / ${M.h}`;
+  const fig = h('figure', {class: 'jh-zoom'}, h('figcaption', {class: 'jh-zk'}, h('b', {text: '바뀐 곳'}), pg ? h('span', {text: ` · ${pg}`}) : null), h('a', {class: 'jh-zpic', href: src, target: '_blank', rel: 'noopener'}, crop));
+  img.addEventListener('error', () => fig.remove(), {once: true});
+  return fig;
 }
 /** 이름표 + 회차가 쓴 글 한 줄(없으면 안 그림) */
 const line = (k, v, cls = '') => (typeof v === 'string' && v.trim() ? h('p', {class: 'jh-line ' + cls}, h('span', {class: 'jh-k', text: k + ' '}), h('span', {lang: 'ko', text: v.trim()})) : null);
@@ -177,8 +208,10 @@ function oneCard({kind, x}, i, n, C) {
   return h('article', {class: 'jh-card ' + kind, 'data-id': x.id, 'data-kind': kind, role: 'group', 'aria-label': `${i + 1} / ${n}`},
     h('p', {class: 'jh-top'}, tag, kind === 'waiting' && x.pick ? h('span', {class: 'jh-badge', text: '세 사람이 고른 것'}) : null, C.owner && x.big ? h('span', {class: 'jh-bigt', text: '큰 것'}) : null),
     h('h3', {class: 'jh-name', lang: 'ko', text: txt(x.title) ?? '?'}),
+    C.owner && kind === 'waiting' ? stateBtn(x, 'confirm', C) : C.owner && kind === 'applied' ? stateBtn(x, 'revert', C) : null, // 단추는 이름 바로 밑(사장님 2026-10-19 「승인 버튼을 못찾겠어 잘 보이개 해야 해」)
     pics(x),
-    C.owner && kind === 'waiting' ? stateBtn(x, 'confirm', C) : C.owner && kind === 'applied' ? stateBtn(x, 'revert', C) : null,
+    zoom(x),
+    !C.owner && kind === 'waiting' ? h('p', {class: 'jh-line jh-k jh-who-ok', text: '확인 단추는 사장님 휴대폰에만 보여요.'}) : null,
     line('섬기는 본질', x.serves),
     has3 ? h('ul', {class: 'jh-voices', 'aria-label': '세 사람 한마디'}, ...[['카너먼', v.kahneman], ['멍거', v.munger], ['포퍼', v.popper]].map(([who, say]) => h('li', {}, h('span', {class: 'jh-who', text: who}), h('span', {lang: 'ko', text: txt(say) ?? '?'})))) : null,
     line('어림', p.text),

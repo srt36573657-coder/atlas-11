@@ -464,8 +464,20 @@ export function textHits(text, {screenHits = null, ruinHits = null, gainHits = n
 export const TOP_KEYS = Object.freeze(['schema', 'made', 'essence', 'n', 'next', 'waiting', 'applied', 'fixed', 'facts']);
 export const WAIT_KEYS = Object.freeze(['id', 'title', 'pick', 'serves', 'before', 'after', 'voices', 'predict', 'revert', 'premortem', 'big', 'risks', 'branch', 'files', 'checks']);
 export const APPLIED_KEYS = Object.freeze(['id', 'title', 'at', 'before', 'after', 'predict', 'score']);
-export const APPLIED_OPT = Object.freeze(['revertedAt']); // 되돌린 진화 — 서울 시각(KD 서버 · 화면이 이 이름으로 읽음 · split.md 에 더한 칸)
+export const WAIT_OPT = Object.freeze(['mark']); // 바뀐 곳 표시(사장님 2026-10-19 00:5x 「어디를 고쳤는지 … 표기가 없어서 한참 찾아야 해」) — shots.mjs 가 찾은 네모 · 새로 생긴 글 · 찍은 길
+export const APPLIED_OPT = Object.freeze(['revertedAt', 'mark']); // 되돌린 진화 — 서울 시각(KD 서버 · 화면이 이 이름으로 읽음 · split.md 에 더한 칸)
 export const LIM = Object.freeze({title: 40, serves: 80, voice: 120, text: 120, what: 120, measure: 90});
+/** 바뀐 곳 표시 꼴 — {box: {x, y, w, h}(360 × 640 그림 안 · 점), text(새로 생긴 글 · 120자까지 · 빈 글 됨), route(#/…), steps(누르기 차례 · shots.mjs stepsOk)} */
+export function markOk(m) {
+  if (!m || typeof m !== 'object' || Array.isArray(m)) return false;
+  const ks = Object.keys(m).sort().join(',');
+  if (ks !== 'box,route,steps,text') return false;
+  const b = m.box, n = v => Number.isInteger(v) && v >= 0;
+  if (!b || Object.keys(b).sort().join(',') !== 'h,w,x,y' || ![b.x, b.y, b.w, b.h].every(n) || b.w < 1 || b.h < 1 || b.x + b.w > 360 || b.y + b.h > 640) return false;
+  if (typeof m.text !== 'string' || m.text.length > 120) return false;
+  if (typeof m.route !== 'string' || !/^#\/[\w\-/.%?=&]*$/.test(m.route)) return false;
+  return Array.isArray(m.steps) && m.steps.length <= 20;
+}
 export const imgOf = (id, which) => `${IMG_WEB}/${id}-${which}.png`;
 export const imgFileOf = (id, which) => `${IMG_DIR}/${id}-${which}.png`;
 export const SCORE_WAIT_TEXT = `채점 전 — 들어간 뒤 ${SCORE_DAYS}거래일이 지나면 매겨요`;
@@ -503,7 +515,7 @@ export function validateJinhwa(d, {measures = null, units = null, exists = null,
   };
   for (const [i, w] of d.waiting.entries()) {
     const at = `waiting[${i}]`;
-    if (!exactKeys(w, WAIT_KEYS)) { E(`${at} 칸이 다름 — ${Object.keys(w ?? {}).join(',')}`); continue; }
+    if (!exactKeys(w, WAIT_KEYS, WAIT_OPT)) { E(`${at} 칸이 다름 — ${Object.keys(w ?? {}).join(',')}`); continue; }
     if (!ID_RE.test(w.id) || ids.has(w.id)) E(`${at} id`); ids.add(w.id);
     if (typeof w.pick !== 'boolean') E(`${at} pick 은 참 거짓`);
     if (!isStr(w.title, LIM.title)) E(`${at} title`);
@@ -516,6 +528,7 @@ export function validateJinhwa(d, {measures = null, units = null, exists = null,
     if (typeof w.big !== 'boolean') E(`${at} big`);
     if (!Array.isArray(w.risks) || (w.big ? w.risks.length !== 2 : w.risks.length !== 0) || !w.risks.every(r => isStr(r, LIM.text))) E(`${at} 큰 것이면 위험 두 줄 · 아니면 빈 목록`);
     if (w.branch !== branchOf(w.id)) E(`${at} branch`);
+    if ('mark' in w && !markOk(w.mark)) E(`${at} mark(바뀐 곳 표시) 꼴`);
     if (!Array.isArray(w.files) || !w.files.length || w.files.length > MAX_FILES || !w.files.every(f => typeof f === 'string')) E(`${at} files`);
     else if (protectedHits(w.files).length) E(`${at} 못 고치는 파일`);
     if (!exactKeys(w.checks, ['changed', 'preview']) || w.checks.changed !== 0 || w.checks.preview !== 0) E(`${at} 검사 실패 0 이 아님`);
@@ -533,6 +546,7 @@ export function validateJinhwa(d, {measures = null, units = null, exists = null,
     if (!exactKeys(a.score, ['at', 'ok', 'text']) || !(a.score.at === null || ISO_RE.test(a.score.at)) || ![true, false, null].includes(a.score.ok) || !isStr(a.score.text, LIM.text)) E(`${at} score`);
     else txt.push(a.score.text);
     if ('revertedAt' in a && !ISO_RE.test(a.revertedAt ?? '')) E(`${at} revertedAt`);
+    if ('mark' in a && !markOk(a.mark)) E(`${at} mark(바뀐 곳 표시) 꼴`);
     txt.push(a.title);
     if (exists) for (const k of ['before', 'after']) if (!exists(imgFileOf(a.id, k))) E(`${at} ${k} 그림 파일이 없음`);
     if (i > 0 && String(a.at) < String(d.applied[i - 1].at)) E(`${at} 날짜 차례가 아님`);
@@ -619,7 +633,7 @@ export function nextJinhwa(data, r) {
   // 넣은 것(이번 회차 + 지난 기록 · 커밋 표시로 맞춘 것 — 기록을 못 밀었던 회차가 있어도 다음 회차가 바로잡음)
   for (const ap of [...(r.applies ?? []), ...(r.apply?.id ? [r.apply] : [])]) {
     const w = d.waiting.find(x => x.id === ap.id);
-    if (w && !d.applied.some(a => a.id === w.id)) d.applied.push({id: w.id, title: w.title, at: ap.at, before: w.before, after: w.after, predict: w.predict, score: {at: null, ok: null, text: SCORE_WAIT_TEXT}});
+    if (w && !d.applied.some(a => a.id === w.id)) d.applied.push({id: w.id, title: w.title, at: ap.at, before: w.before, after: w.after, predict: w.predict, score: {at: null, ok: null, text: SCORE_WAIT_TEXT}, ...(w.mark ? {mark: w.mark} : {})});
     drop.add(ap.id);
   }
   for (const rv of [...(r.reverts ?? []), ...(r.revert?.id ? [r.revert] : [])]) for (const a of d.applied) if (a.id === rv.id && !a.revertedAt) a.revertedAt = rv.at;
