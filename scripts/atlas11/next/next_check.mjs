@@ -320,7 +320,9 @@ for (const w of [320, 360, 390]) {
   });
   if (JSON.stringify(m.lines) !== JSON.stringify(MSG)) fail('사장님 편지 글자(「나」 칸)', JSON.stringify(m.lines).slice(0, 200));
   if (m.promo !== PROMO) fail('상품권 줄', m.promo + ' ≠ ' + PROMO);
-  if (m.act !== '친구에게 소개하기' + NEW_NAME + ' 1분 영상 · 보내기') fail('친구 소개 줄', m.act);
+  // 편지 띠 글 = brand.js VIDEO.ready 에 따라 둘 중 하나(app.js m4-aw · 명령문 [3] 9 「새 영상이 늦어지면 옛 영상 단추를 잠시 숨겨라」 · 일꾼 KI) — 새 영상 전 「(이름) 소개 · 보내기」 · 뒤 「(이름)의 고민 1분 영상 · 보내기」
+  const ACT = '친구에게 소개하기' + (VIDEO.ready ? VIDEO.title + ' 영상 · 보내기' : NEW_NAME + ' 소개 · 보내기');
+  if (m.act !== ACT) fail('친구 소개 줄', m.act + ' ≠ ' + ACT);
   if (m.href !== '/hello.html') fail('편지 고리', String(m.href));
   if (!(m.iH >= 0 && m.iL > m.iH)) fail('보유종목 차례(점검 → 편지)', JSON.stringify({iH: m.iH, iL: m.iL}));
   if (m.rec) fail('보유종목에 왜 사? 기록이 남음([3] 7 — 매매일지 화면 아래로)', String(m.rec));
@@ -466,7 +468,7 @@ for (const code of list) {
 }
 for (const I of core.industries) {
   if (await go(p, '#/ch/i/' + encodeURIComponent(I.name), q => q.waitForFunction(n => document.querySelector('#view .chhead h1')?.textContent === n, I.name + ' 업종', {timeout: 8000}).then(() => true, () => false)) === false) fail('업종 채널 이름', I.name);
-  const g = await p.evaluate(() => ({small: document.querySelector('#view .chhead small')?.textContent ?? '', st: [...document.querySelectorAll('#view .stats b')].map(b => b.textContent), tiles: document.querySelectorAll('#view .grid > a').length}));
+  const g = await p.evaluate(() => ({small: document.querySelector('#view .chhead small')?.textContent ?? '', st: [...document.querySelectorAll('#view .stats b')].map(b => b.textContent), tiles: document.querySelectorAll('#view .grid > a, #view .grid > [data-kkrow] > a').length})); // 칸 = 고리 · 카톡 단추와 함께 감싼 줄(app.js kkWrap · data-kkrow) 안의 고리도 셈(단추는 button · 줄 구조 그대로 · 일꾼 KI)
   const n = I.members.filter(m => CO[m]).length;
   if (!g.small.startsWith('회사 ' + N(n) + '곳')) fail('업종 회사 수', I.name + ' ' + g.small);
   if (g.st[0] !== P(I.chg) || g.st[1] !== P(I.cwChg)) fail('업종 두 숫자', I.name + ' ' + g.st.join(','));

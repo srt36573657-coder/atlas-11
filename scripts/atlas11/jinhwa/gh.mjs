@@ -197,7 +197,8 @@ export function essenceDiff(root, base, head) {
   const f = path.join(root, 'scripts/atlas11/next/essence_check.mjs');
   if (!fs.existsSync(f)) return {ok: false, why: '본질 문(essence_check.mjs)이 없음 — 넣지 않음'};
   const r = run('node', [f, '--diff', `${base}..${head}`], {cwd: root, timeout: 120e3});
-  return {ok: r.ok, why: r.ok ? '' : '본질 문이 막음 — ' + short(r.out.split('\n').slice(-3).join(' ') || r.err, 200)};
+  const said = short([r.err, r.out].filter(Boolean).join(' '), 200);
+  return {ok: r.ok, why: r.ok ? '' : said.startsWith('본질 문이 막음') ? said : '본질 문이 막음 — ' + said};
 }
 
 /** 본질 문 일곱 가지(정적 · 브라우저 없이 · 약 3초) — 회차를 연 저장소(main)의 문으로 그 사이트 폴더를 봄

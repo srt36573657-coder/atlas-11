@@ -22,7 +22,7 @@
 2. 확인된 대안 넣기 · 되돌리기 — plan.change 가 있을 때만 · 한 번에 하나([8] 2)
    plan.change.kind 가 apply 면: node scripts/atlas11/jinhwa/round.mjs apply --id <plan.change.id>
    revert 면: node scripts/atlas11/jinhwa/round.mjs revert --id <plan.change.id>
-   round.mjs 가 하는 것: 넣기 직전 · 밀기 직전 상태를 다시 봄(그새 거두셨으면 안 넣음) · 대안 가지가 만든 그대로인지(지문) · 바뀐 파일 다섯 안 · 지킴 파일 0 · 본질 문(essence_check --diff) · 바뀐 쪽 검사 0 · 모든 쪽 미리 검사 0(atlas11-next-full.yml -f local=true — 같은 코드로 이미 통과한 결과가 있으면 그것) · 다른 올리기(atlas11-site · daily · evening)가 돌면 끝날 때까지 기다림 · main 에 앞으로만 밂(강제 없음).
+   round.mjs 가 하는 것: 넣기 직전 · 밀기 직전 상태를 다시 봄(그새 거두셨으면 안 넣음) · 대안 가지가 만든 그대로인지(지문) · 바뀐 파일 다섯 안 · 지킴 파일 0 · 본질 문(essence_check --diff 지킴 파일 · 일곱 가지 정적 검사에서 지금 main 보다 새로 걸리는 곳 0) · 바뀐 쪽 검사 0 · 모든 쪽 미리 검사 0(atlas11-next-full.yml -f local=true — 같은 코드로 이미 통과한 결과가 있으면 그것) · 다른 올리기(atlas11-site · daily · evening)가 돌면 끝날 때까지 기다림 · main 에 앞으로만 밂(강제 없음).
    끝 코드 3 = 올리기가 아직 돎 · 검사 결과를 못 기다림 → 다음 회차가 다시 한다. 1 = 넣지 않음(까닭을 보고). 확인 없이 넣는 길은 없다.
    넣거나 되돌린 회차에는 새 대안을 만들지 않는다. 곧바로 5 · 6 으로 — 업데이트 4분 전(:56)까지 기록이 main 에 들어가야 진화 칸의 「들어감」이 같은 업데이트에 실린다.
 3. plan.next 에 따라 하나만
@@ -38,12 +38,13 @@
    4-4 대안은 작아야 한다([8] 7): 바뀌는 파일 다섯 개 안 · 한 번에 되돌릴 수 있게 · 파일을 지우지 않음. 기계는 본질 파일 · 망치는 길 목록(site/next/words.js) · 잣대 · 명령문 · 진화 회차 도구 · 진화 칸 · 합계 칸 · 검사 · 예약 작업 · 옛 화면 · 이름(brand.js)을 못 고친다([8] 10 · round.mjs 가 막음). 합계 칸 신호(tally)를 더하거나 빼는 줄도 막힌다(잣대를 비틀 수 있음).
        새 한국어 화면 글을 넣으면 영어도 같은 가지에: node scripts/atlas11/next/i18n/add.mjs "<한국어>" "<영어>" → node scripts/atlas11/next/i18n_build.mjs (두 파일도 다섯에 듦).
        대안마다: node scripts/atlas11/jinhwa/round.mjs alt-start --n <1|2|3> → 받은 dir 에서 고치고 git -C <dir> commit -am "<이름>" → node scripts/atlas11/jinhwa/round.mjs alt --n <n> --route '#/<보일 쪽>' [--seed <localStorage 열쇠>=<값>]
-       alt 가 보는 것: 다섯 · 지킴 · 잣대 신호 · 본질 문 · 「큰 것」 까닭 · 더한 화면 글의 쓰지 않을 말(words.js screenHits · 망치는 길 ruinHits · 수익 자랑 · 옛 이름 · 퍼센트) · 다른 대안과 같은 고침 · 바뀐 쪽 검사 0 · 전과 후 그림(360 × 640 · 같은 자료) · 모든 쪽 미리 검사 시작. 막히면 까닭대로 한 번 고쳐 다시. 그래도 막히면 그 번호는 뺀다(셋이 안 되면 지나간 것만 · 1번이 없으면 올리지 않음).
+       alt 가 보는 것: 다섯 · 지킴 · 잣대 신호 · 본질 문(지킴 파일 · 일곱 가지에 새로 걸림 0) · 「큰 것」 까닭 · 더한 화면 글의 쓰지 않을 말(words.js screenHits · 망치는 길 ruinHits · 수익 자랑 · 옛 이름 · 퍼센트) · 다른 대안과 같은 고침 · 바뀐 쪽 검사 0 · 전과 후 그림(360 × 640 · 같은 자료) · 모든 쪽 미리 검사 시작. 막히면 까닭대로 한 번 고쳐 다시. 그래도 막히면 그 번호는 뺀다(셋이 안 되면 지나간 것만 · 1번이 없으면 올리지 않음).
    4-5 카드 글을 debate.json 으로 쓴다(꼴 아래) → node scripts/atlas11/jinhwa/round.mjs cards --debate debate.json
        카드마다([8] 5): 이름 한 줄 · 섬기는 본질 줄(본질 파일 글자 그대로 — 번호 줄이나 ①②③ 마디 · 「…다.」 문장 하나) · 세 사람 한마디 · 어림 글과 잴 규칙(잣대 셋 가운데 하나만) · 되돌릴 조건 · 사전 부검 한 줄(1년 뒤 이 고침이 실패했다면 왜?) · 「큰 것」이면 위험 두 줄.
        본질 · 돈 · 법 · 개인정보 · 카카오 · 보안 규칙 · 예약 작업 · 새 기능에 닿으면 「큰 것」 꼬리표와 위험 두 줄([8] 8 — 기계가 찾은 까닭이 있으면 big 이 저절로 참).
        글에 쓰지 않는 말: 추천 · 매수 · 매도 · 예측 · 확률 · 유망 · 기회 · 신호 · 저평가 · 1위 · TOP · 사라 · 팔아라 · 퍼센트(%) · 옛 이름 · 망치는 길 낱말(대박 · 폭죽 · 랭킹 · 원금 보장 · 목표가 …). 「예측」 대신 「어림」. cards 가 걸린 말을 알려 주면 그 말만 바꿔 다시.
-   4-6 미리 검사 결과: node scripts/atlas11/jinhwa/round.mjs finish --wait 25 — 한 회차에 만든 대안이 모두 끝나야 함께 오른다. 못 기다린 것은 다음 회차가 이어서 본다.
+   4-6 미리 검사 결과: node scripts/atlas11/jinhwa/round.mjs finish --wait 25 — 한 회차에 만든 대안이 모두 끝나야 함께 오른다. 못 기다린 것은 다음 회차가 이어서 본다(그림은 기록 단계가 main 에 먼저 둠).
+       만든 대안은 기록이 main 에 들어간 뒤의 업데이트에 실려 진화 칸에 보인다(업데이트 4분 전을 넘기면 그다음 업데이트).
 5. 채점: node scripts/atlas11/jinhwa/round.mjs score — 들어간 진화의 어림을 10거래일 뒤 잣대로 매긴다(열쇠 없는 https://aaa7377.com/api/tally/sum · 표본이 30 안 되면 판단하지 않고 모음 · 같은 길이로 늘려 60거래일까지 · 앞뒤 차이가 소음 안이면 「판단 못 함」 · [10] 5 · 6).
 6. 기록: node scripts/atlas11/jinhwa/round.mjs record — 진화 칸 자료 · 그림 · 기록 reports/atlas11/jinhwa/<회차>.json(회차마다 새 파일 · 지우지 않음)을 main 에 앞으로만 밂 → 다음 업데이트가 사이트에 싣는다. 결과의 owner = 사장님께 세 줄 · notice = 알림 한 줄.
    notice 가 비어 있지 않으면(새 대안이 진화 칸에 오름) PushNotification 도구로 그 한 줄을 사장님 휴대폰에 보낸다([9] 9 · 카카오톡 알림은 카카오 열쇠가 생긴 뒤에 바꾼다).

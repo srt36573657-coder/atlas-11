@@ -6,6 +6,7 @@
    「관심 없음」 = 이 기기에만(localStorage atlas:surge-hide — 옛 쪽과 같은 열쇠 · 같은 꼴) · 회사 고리 = #/w/<번호>
    그림 「5일 오름 자」(svg · 점은 svg 안 — 바둑판 아님) · 줄 선(svg) · 입체 없음 · 글은 textContent 로만 · 자리 · 길이는 CSSOM 으로만(보안 규칙) · 모양 = p-surge.css(psurge-) */
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(KB1) — 급등 줄(일꾼 KB2)
+import {fourText} from '/next/essence.js'; // 「하루 4번」 글은 지난 7일 기록이 맞을 때만(사장님 2026-10-18 16:39 [5] 4 · 요약 fourADay · 일꾼 KI) — 「어떻게 골랐나요?」 규칙 글(surge.json)
 const NX = globalThis.NX;
 const {h, sv, pct, r1, enc} = NX;
 const RM = NX.RM || matchMedia('(prefers-reduced-motion: reduce)');
@@ -394,7 +395,7 @@ function svMain(v, S, ok, K, C, back) {
   // ⑤ 더 확인할 곳 → 며칠 뒤 어떻게 됐나
   svSee(v, S);
   svTrack(v, 'sv', ok, K, back);
-  v.append(more('어떻게 골랐나요?', (S.rules?.lines ?? []).map(t => h('p', {text: t})), 'psurge-how'));
+  v.append(more('어떻게 골랐나요?', (S.rules?.lines ?? []).map(t => h('p', {text: fourText(t, NX.D.sum)})), 'psurge-how'));
   v.append(foot(C, isDay(S.window?.[0]) && isDay(S.asOf) ? `급등 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요` : null));
   return `급등 ${n}곳`;
 }

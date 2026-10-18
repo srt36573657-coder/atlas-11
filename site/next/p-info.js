@@ -3,6 +3,7 @@
    글 · 숫자는 옛 쪽 그대로(scripts/atlas11/next/check_misc.mjs 가 맞대 봄) · 모양만 새 아틀란스(제목 → 그림(깔때기) → 글 → 접은 칸)
    2026-10-18 [10] 10 — 금빛 경고 글(모르는 것 ? · 장 중 값 · 맨 아래 확정 전 값)은 warn() 으로: 두 줄 안이면 그대로 · 넘으면 「?」 한 줄로 접고 누르면 펼침(글은 그대로) */
 import {warn} from '/next/warn.js';
+import {fourText} from '/next/essence.js'; // 「하루 4번」 글은 지난 7일 기록이 맞을 때만(사장님 2026-10-18 16:39 [5] 4 · 요약 fourADay · 일꾼 KI) — 「다시 고르기」(core.json rules.next)
 const NX = globalThis.NX;
 const {h} = NX;
 const md = d => { const p = String(d).split('-'); return (+p[1]) + '월 ' + (+p[2]) + '일'; }; // 옛 쪽 md 그대로(붙임 띄어쓰기)
@@ -61,7 +62,7 @@ export async function render() {
     h('li', {text: C.sincePick ? `? 고른 뒤 기록 — ${md(C.pickAsOf)} 뒤 ${C.sincePick}거래일뿐이라 아직 짧습니다.` : `? 고른 뒤 기록 — ${md(C.pickAsOf)} 종가로 골라 고른 뒤 기록은 아직 없습니다. 지금 보이는 선은 모두 고른 기간 안입니다.`}),
     h('li', {text: '? 증권사 짐작 — 자주 바뀝니다. 6단 그림의 올해 매출 한 칸(점선 · 「남의 짐작」)에 쓰고, 세 팀 이야기 글 속에 증권사 짐작을 옮긴 곳도 있습니다 — 그대로 믿을 값이 아닙니다. 고를 때는 쓰지 않습니다.'}),
     C.funnel?.q ? h('li', {text: `? 두 조건 모두 셀 자료가 없는 ${C.funnel.q}곳은 넣지 않았습니다.`}) : null,
-    h('li', {text: `? 다시 고르기 — ${RU.next}.`})), {short: '? 아직 모르는 것 — 누르면 펼쳐요'}));
+    h('li', {text: fourText(`? 다시 고르기 — ${RU.next}.`, NX.D.sum)})), {short: '? 아직 모르는 것 — 누르면 펼쳐요'}));
   root.append(foot(C));
   return {title: '골똘이는 어떻게 셌나요', nodes: [root]};
 }

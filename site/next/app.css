@@ -30,6 +30,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .ibtn { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; }
 .ibtn:active { background: var(--card2); }
 .fbtn { font-size: var(--fs-3); font-weight: 700; color: inherit; background: none; border: 0; font-family: inherit; }
+/* 위 막대 단추 셋은 늘 44 × 44 · 로고는 한 줄(일꾼 KI · 2026-10-18 — 영어 이름 Golttori(8자)로 로고가 넓어져 320 폭에서 단추가 43.4px 로 줄고 로고가 「Golttor / i」 두 줄로 꺾임 · 옛 이름 Godori · Bodri 글자로 바꿔 재면 44) */
+.top .ibtn { flex: none; }
+.top .logo { white-space: nowrap; }
+html.en .top .logo { letter-spacing: .02em; }
 /* 글씨 크기(지금 아틀란스 html.f2 24px · f3 27px 와 같은 몫) — 화면 칸을 통째로 키움 */
 html.f2 #view { zoom: 1.143; } html.f3 #view { zoom: 1.286; }
 .ic { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }

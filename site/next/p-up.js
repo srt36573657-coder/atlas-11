@@ -3,6 +3,7 @@
    자료 = /atlas/data/updates.json(회차마다 한 줄 · 지우지 않음) · 글 · 숫자는 옛 쪽 그대로(scripts/atlas11/next/check_misc.mjs 가 맞대 봄)
    모양만 새 아틀란스: 제목 → 그림(회차마다 들고 난 수) → 시장 판독 · 네 눈 점검 → 회차 기록(최근 10번 · 앞 회차는 접은 칸) → 맨 아래 */
 import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접힘(사장님 2026-10-18 [10] 10 · warn.js)
+import {fourText} from '/next/essence.js'; // 「하루 4번」 글은 지난 7일 기록이 맞을 때만(사장님 2026-10-18 16:39 [5] 4 · 요약 fourADay · 일꾼 KI) — 제목 · 밑 줄
 const NX = globalThis.NX;
 const {h, sv} = NX;
 const NB = ' ';
@@ -90,12 +91,12 @@ function recLi(r, C) {
 
 const SHOW = 10; // 처음 보이는 회차 수 — 앞 회차는 접은 칸(긴 목록은 접음 · 규칙 53)
 export async function render() {
-  const [C, U] = await Promise.all([NX.need('core'), NX.getJson('updates.json')]);
+  const [C, U] = await Promise.all([NX.need('core'), NX.getJson('updates.json'), NX.need('sum')]); // sum = 첫 화면 요약(fourADay — 못 받으면 참인 말)
   if (!C || !U || !Array.isArray(U.records) || !Array.isArray(U.slots)) return {title: '업데이트 기록', nodes: NX.noData('업데이트 기록')};
   const R = U.records, last = R[0];
   const root = h('div', {class: 'pup', 'data-page': 'up'});
-  root.append(h('h1', {class: 'wt', text: `업데이트 기록 — 하루 ${U.slots.length}번`}),
-    h('p', {class: 'ws pup-tell', text: `하루 ${U.slots.length}번 · ${U.slots.join(' · ')}(서울)`}),
+  root.append(h('h1', {class: 'wt', text: fourText(`업데이트 기록 — 하루 ${U.slots.length}번`, NX.D.sum)}),
+    h('p', {class: 'ws pup-tell', text: fourText(`하루 ${U.slots.length}번 · ${U.slots.join(' · ')}(서울)`, NX.D.sum)}),
     h('p', {class: 'pup-count', text: last ? `마지막 ${kstLabel(last.kst)} · ${RES_WORD[last.result] ?? last.result}` + (last.asOf ? ` · 고른 날 ${md(last.asOf)}` : '') : '아직 기록이 없습니다.'}));
   // 그림 한 장 — 최근 28회차(오른쪽이 최근)
   const rows = R.slice(0, 28).reverse(), host = h('div', {class: 'pup-chart'});
