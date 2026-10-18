@@ -72,6 +72,10 @@ else for (const t of ['1. 고르기 전에는 답 색을 숨겨라. 고른 뒤�
 const PTS = {g: 0, y: 1, r: 2}, MAX = QS.length * 2;
 const GROUPS = [['이유', [1, 2, 3]], ['돈', [4, 9, 11]], ['때', [5, 6]], ['마음', [7, 8, 10]]];
 const V_OK = '좋아, 정해 둔 대로만', V_HALF = '반만 준비됐어', V_REST = '오늘은 쉬어 가자', V_CODE = {[V_OK]: 'go', [V_HALF]: 'wait', [V_REST]: 'rest'};
+/** 보이는 판정 글(사장님 2026-10-19 02:03 [화면] 4 「골똘이 말(… 판정 글)은 물음으로 끝내라 · 보기 「오늘은 쉬어 갈까?」」 · [하는 법 ②] 3 「판정 글은 보이는 글만 바꿔라. 기록 속 판정 값, V_CODE, VTONE 은 그대로」)
+ *  기록 값(V_OK · V_HALF · V_REST) · V_CODE · todayResult · stop_rest 셈은 위 그대로 맞댐 — 화면 글만 이 표로 맞댐(검사 쪽 따로 적음 · p-why.js VSHOW 를 읽지 않음) */
+const V_SHOW = {[V_OK]: '좋아, 정해 둔 대로만 할까?', [V_HALF]: '반만 준비됐을까?', [V_REST]: '오늘은 쉬어 갈까?'};
+for (const v of Object.values(V_SHOW)) if (!v.endsWith('?')) { console.error('보이는 판정 글은 물음으로 끝나야 함', v); process.exit(1); }
 const TONE = {g: '좋음', y: '주의', r: '위험'}; // [9] 8 색 점의 읽어 주는 글(사장님 예 「위험」 · 잣대 accept/S1c.md)
 const BIG_Q = 2, BIG_A = QS[BIG_Q].a.findIndex(a => a[1] === '클 일이 있다');
 if (BIG_A < 0) { console.error('3번 답에 「클 일이 있다」가 없음(brief.md)'); process.exit(1); }
@@ -581,8 +585,8 @@ async function runPath(p, sel, P, tag, o = {}) {
   const J = judge(ks), r = await p.evaluate(READR, sel);
   if (!r) { fail('결과 칸 없음', T); return null; }
   if (r.q) fail('결과 화면에 질문 · 칸이 남음', T);
-  if (r.verdict !== `「${J.verdict}」`) fail('판정', `${T} 「${r.verdict}」 ≠ 「${J.verdict}」 (점수 ${J.score} · 빨강 ${J.reds} · 쉬어 가는 답 ${J.stop})`);
-  if (J.stop && J.score < 12 && J.reds < 4) { if (r.verdict === `「${V_REST}」`) bump('[5] 6 쉬어 가자(점수와 상관없이)'); }
+  if (r.verdict !== `「${V_SHOW[J.verdict]}」`) fail('판정(보이는 글 = 물음 · 2026-10-19)', `${T} 「${r.verdict}」 ≠ 「${V_SHOW[J.verdict]}」 (기록 값 ${J.verdict} · 점수 ${J.score} · 빨강 ${J.reds} · 쉬어 가는 답 ${J.stop})`);
+  if (J.stop && J.score < 12 && J.reds < 4) { if (r.verdict === `「${V_SHOW[V_REST]}」`) bump('[5] 6 쉬어 가자(점수와 상관없이)'); }
   if (!!r.stop !== J.stop || (J.stop && !/빌린 돈|곧 쓸 돈/.test(r.stop ?? ''))) fail('[5] 6 쉬어 가는 까닭 한 줄(4번 · 9번 답일 때만)', `${T} 「${r.stop}」 · ${J.stop}`);
   // [5] 2 판정 글이 가장 큼 — 칸 안 · 화면 안 다른 글 모두보다 큼 · 준비는 판정 밑 · 더 작음
   if (!(r.vfs > (r.bigCard?.fs ?? 0) && r.vfs > (r.bigView?.fs ?? 0))) fail('[5] 2 판정 글이 가장 큰 글씨', `${T} 판정 ${r.vfs}px · 칸 안 ${JSON.stringify(r.bigCard)} · 화면 ${JSON.stringify(r.bigView)}`);
@@ -605,7 +609,7 @@ async function runPath(p, sel, P, tag, o = {}) {
   checkStk(r.stk, st.name, st, T + ' 결과');
   if (r.mine !== whyT || !r.lines.some(t => t === '팔 약속 ' + promiseTxt(sell, half)) || (bigWant ? !r.lines.includes('클 일 ' + ymdTxt(bigWant)) : r.lines.some(t => /^클 일/.test(t)))) fail('결과의 두 줄 요약', `${T} ${JSON.stringify(r.lines)} · 「${r.mine}」`);
   if (page ? r.link != null : r.link !== '#/why') fail('매매일지 고리', `${T} ${r.link}`);
-  if (!r.live.includes(`준비 ${J.ready} / ${MAX}`) || !r.live.includes(J.verdict)) fail('읽어 주는 칸(aria-live)에 판정 · 준비 없음', `${T} 「${r.live}」`);
+  if (!r.live.includes(`준비 ${J.ready} / ${MAX}`) || !r.live.includes(V_SHOW[J.verdict])) fail('읽어 주는 칸(aria-live)에 판정(보이는 글) · 준비 없음', `${T} 「${r.live}」`);
   const saved = store === 'ok';
   const savedNote = page ? '오늘 답을 아래 매매일지에 날짜와 함께 쌓았어요.' : '오늘 답을 매매일지에 날짜와 함께 쌓았어요.';
   if (saved ? !r.notes.includes(savedNote) : !r.notes.some(t => /남길 수 없/.test(t)) || r.notes.some(t => /쌓았/.test(t))) fail('기록 알림 글', `${T} ${JSON.stringify(r.notes)}`);
@@ -673,7 +677,7 @@ async function checkList(p, tag, {expectN = null, home = p._home, blocked = p._b
     const x = recs[i]; if (!x) continue;
     const at = Date.parse(x.at), J = Array.isArray(x.answers) && x.answers.length === QS.length ? judge(x.answers) : null, T = `${tag} ${i + 1}줄`;
     if (row.day !== dayTxt(at)) fail('목록 날짜', `${T} 「${row.day}」 ≠ 「${dayTxt(at)}」`);
-    if (!row.rest.includes(Number.isFinite(x.score) ? `준비 ${MAX - x.score} / ${MAX}` : '준비 ?') || !row.rest.includes(x.verdict) || /점수 \d/.test(row.rest)) fail('[5] 5 목록 준비 · 판정(옛 기록도 보일 때 바꿈)', `${T} 「${row.rest}」 · 점수 ${x.score}`);
+    if (!row.rest.includes(Number.isFinite(x.score) ? `준비 ${MAX - x.score} / ${MAX}` : '준비 ?') || !row.rest.includes(V_SHOW[x.verdict] ?? x.verdict) || /점수 \d/.test(row.rest)) fail('[5] 5 목록 준비 · 판정(옛 기록도 보일 때 바꿈)', `${T} 「${row.rest}」 · 점수 ${x.score}`);
     if (J && J.score !== x.score) fail('쌓인 기록의 점수(답으로 다시 셈)', `${T} ${x.score}`);
     if (!eq(row.bars, GROUPS.map(([nm, qs]) => `${qs.length * 2 - (x.groups?.[nm] ?? 0)} / ${qs.length * 2}`))) fail('[5] 5 목록 막대 준비 숫자', `${T} ${JSON.stringify(row.bars)}`);
     if (x.code || x.name) { // 새 꼴 — 종목 · 그날 값 · 날짜 · 두 줄

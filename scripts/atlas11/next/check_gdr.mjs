@@ -322,8 +322,39 @@ const errsOf = (p, tag) => { if (p._errs.length) { fail('화면 오류', tag + '
 const SEL = '#view section.gdr';
 /** 다 그려질 때까지 — 칸이 있고 · 「여는 중」 없고 · 성적 · 회사 값을 받는 중이 아님 · aria-busy 가 빠짐(고른 곳 0 은 받는 중 글이 없어 이 표시로 「고른 날 · 사이트 날」 줄까지 기다림 — 2026-10-18 올리기 검사에서 느린 망이면 그 줄보다 먼저 읽어 걸림) (잠금 · 쉬어 가는 날은 바로) */
 const settle = p => p.waitForFunction(s => { const b = document.querySelector(s); if (!b || document.querySelector('#view .boot')) return false; if (/\block1\b|\brest1\b/.test(b.className)) return true; if (b.getAttribute('aria-busy') === 'true') return false; return !/셈하는 중|받는 중/.test(b.textContent); }, SEL, {timeout: 30000});
-async function open(p, hash) { await p.goto(base + NEXT + hash, {waitUntil: 'domcontentloaded'}); await settle(p); }
+/* 흰 첫 화면(사장님 2026-10-19 02:03 「구글과 잡스 판」 · 일꾼 C 다시 겨눔) — 첫 화면(#/)에는 큰 칸(section.gdr)이 없고 바로 가기 넷 [data-w="gdr"] 의 첫 고리만 있음
+   열한 질문을 끝낸 기기 = #/gdr · 그 전 = #/why(본질 문 ④ · 잠금) · 첫 화면 어디에도 칸 번호 길(#/gdr/n) · 큰 칸 없음 → 칸 검사는 그 고리를 따라 #/gdr 에서 그대로 함
+   길 목록의 '#/' 판은 이 문을 지난 뒤 #/gdr 에서 옛 검사를 모두 돎(지키던 것은 하나도 빼지 않음 · 첫 화면 몫은 이 문이 맡음) */
+async function homeGate(p, tag = '#/') {
+  await p.waitForFunction(() => !!document.querySelector('#view [data-w="gdr"] a[href]') && !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => {});
+  const r = await p.evaluate(K => {
+    let done = false; // 따로 셈 — p-gdr opened() 의 기록 셈(열한 답이 모두 0 · 1 · 2)과 같은 뜻 · 기억 못 하는 기계면 끝내지 않은 것
+    try { const x = JSON.parse(localStorage.getItem(K) || '[]'); done = Array.isArray(x) && x.some(r => Array.isArray(r?.answers) && r.answers.length === 11 && r.answers.every(k => k === 0 || k === 1 || k === 2)); } catch { done = false; }
+    const a = document.querySelector('#view [data-w="gdr"] a[href]'), hrefs = [...document.querySelectorAll('#view a[href]')].map(x => x.getAttribute('href'));
+    return {done, first: a?.getAttribute('href') ?? null, h: a?.getBoundingClientRect().height ?? 0, w: a?.getBoundingClientRect().width ?? 0, box: !!document.querySelector('#view section.gdr'), cells: document.querySelectorAll('#view .gdr-cell, #view .gdr-card').length, nos: hrefs.filter(x => /^#\/gdr\/./.test(x ?? '')), gdr: hrefs.filter(x => x === '#/gdr').length};
+  }, WHY_KEY);
+  if (!r.first) { fail('첫 화면 바로 가기 [data-w="gdr"] 가 없음(흰 첫 화면)', tag); return r; }
+  if (r.first !== (r.done ? '#/gdr' : '#/why')) fail(`첫 화면 ${NEW_NAME} 칸 바로 가기 — 열한 질문 뒤에만 #/gdr · 그 전은 #/why(본질 문 ④)`, `${tag} ${r.first} · 끝낸 기록 ${r.done}`);
+  if (!r.done && r.gdr) fail('열한 질문 전인데 첫 화면에 #/gdr 고리가 있음(본질 문 ④)', `${tag} ${r.gdr}개`);
+  if (r.box || r.cells) fail(`첫 화면에 큰 ${NEW_NAME} 칸이 남음(흰 첫 화면은 바로 가기만)`, `${tag} 칸 ${r.box} · 칸 조각 ${r.cells}`);
+  if (r.nos.length) fail('첫 화면에 칸 번호 길(#/gdr/n)이 보임', `${tag} ${r.nos.slice(0, 3).join(' · ')}`);
+  if (r.h < 47.5 || r.w < 47.5) fail('바로 가기 누르는 자리 48 × 48', `${tag} ${Math.round(r.w)}×${Math.round(r.h)}`);
+  bump('첫 화면 바로 가기');
+  return r;
+}
+/** '#/' = 첫 화면을 열어 바로 가기를 재고 → 끝낸 기기는 그 고리를 눌러, 아닌 기기는 주소로 #/gdr(잠금 칸)에 감 */
+async function viaHome(p, tag) {
+  const r = await homeGate(p, tag);
+  if (r.done && r.first === '#/gdr') await p.locator('#view [data-w="gdr"] a[href="#/gdr"]').first().click({timeout: 8000}).catch(() => fail('바로 가기를 누를 수 없음', tag));
+  else await p.evaluate(() => { location.hash = '#/gdr'; });
+  await p.waitForFunction(s => location.hash === '#/gdr' && !!document.querySelector(s), SEL, {timeout: 30000}).catch(() => fail('첫 화면 → #/gdr 칸이 안 열림', tag));
+}
+async function open(p, hash) {
+  if (hash === '#/') { await p.goto(base + NEXT + '#/', {waitUntil: 'domcontentloaded'}); await viaHome(p, '#/ 처음'); await settle(p); return; }
+  await p.goto(base + NEXT + hash, {waitUntil: 'domcontentloaded'}); await settle(p);
+}
 async function go(p, hash) {
+  if (hash === '#/') { await p.evaluate(() => { location.hash = '#/'; }); await p.waitForFunction(() => location.hash === '#/' && !!document.querySelector('#view [data-w]'), null, {timeout: 30000}); await viaHome(p, '#/ 다시'); await settle(p); return; }
   await p.evaluate(h => { const s = document.querySelector('#view section.gdr'); if (s) s.__old = true; location.hash = h; }, hash);
   await p.waitForFunction(([h, s]) => { const e = document.querySelector(s); return location.hash === h && !!e && !e.__old && !document.querySelector('#view .boot'); }, [hash, SEL], {timeout: 30000});
   await settle(p);
@@ -453,7 +484,7 @@ async function layout(p, sel, tag) {
 }
 
 /* ⑪ 법과 안전 — 화면 글(scope = 첫 화면은 고도리 칸 안 · #/gdr 는 화면 전체) */
-const SCOPE_TXT = (sel, hash) => (hash === '#/' ? sel : '#view');
+const SCOPE_TXT = () => '#view'; // 흰 첫 화면 — '#/' 판도 #/gdr 쪽 전체를 봄(옛: 첫 화면이면 칸만)
 async function safety(p, hash, tag, {money = p._money, D = G} = {}) {
   const sel = SCOPE_TXT(SEL, hash), t = await p.evaluate(s => { const e = document.querySelector(s); if (!e) return null; const c = e.cloneNode(true); const attrs = []; for (const x of [e, ...e.querySelectorAll('*')]) for (const a of ['aria-label', 'title', 'alt', 'placeholder']) { const v = x.getAttribute?.(a); if (v) attrs.push(v); } return {vis: e.innerText, all: e.textContent + '\n' + attrs.join('\n'), inputs: e.querySelectorAll('input, textarea, select, [contenteditable]').length, gin: e.querySelectorAll('input.gdr-in').length}; }, sel);
   if (!t) { fail('글 없음', tag); return; }
@@ -729,7 +760,7 @@ if (want('main')) {
   const COMBOS = [[360, 640, '#/'], [390, 844, '#/gdr'], [360, 640, '#/gdr'], [390, 844, '#/']], X0 = await mkX(G, PE);
   let ci = 0;
   for (const [w, h, hash] of COMBOS) {
-    const tag = `${w}×${h} ${hash}`, full = ALL || ci < 2, p = await newPage(w, h), D = G, n = D.picks.length, home = hash === '#/';
+    const tag = `${w}×${h} ${hash}`, full = ALL || ci < 2, p = await newPage(w, h), D = G, n = D.picks.length, home = false /* 흰 첫 화면 — '#/' 판도 open() 이 #/gdr 로 옮김 */;
     try {
       await open(p, hash);
       let g = await p.evaluate(READG, SEL);
@@ -785,11 +816,11 @@ if (want('today')) {
     ['오늘 두 번 — 앞 좋아 · 뒤 쉬어 가자', 360, 640, '#/gdr', [todayRec('go22', 120), todayRec('rest', 30)]]];
   for (const hash of ['#/', '#/gdr', '#/gdr/1']) CASES.push([`쉬어 가자 ${hash}`, hash === '#/gdr' ? 390 : 360, hash === '#/gdr' ? 844 : 640, hash, [DONE(), todayRec('rest')]]);
   for (const [nm, w, h, hash, recs] of CASES) {
-    const T = `오늘 ${nm} ${w}×${h} ${hash}`, p = await newPage(w, h, {why: recs, money: nm.includes('20(') ? null : MONEY}), home = hash === '#/', E = expToday(recs);
+    const T = `오늘 ${nm} ${w}×${h} ${hash}`, p = await newPage(w, h, {why: recs, money: nm.includes('20(') ? null : MONEY}), home = false /* 흰 첫 화면 — '#/' 판도 open() 이 #/gdr 로 옮김 */, E = expToday(recs);
     try {
       await open(p, hash); const g = await p.evaluate(READG, SEL);
-      if (E?.verdict === 'rest') { await checkRest(p, T); await safety(p, hash, T); await layout(p, home ? SEL : '#view', T); if (hash !== '#/' && await p.evaluate(() => !!document.querySelector('#view section.gdr-fun'))) fail('쉬어 가는 날 #/gdr 에 깔때기가 있음', T); }
-      else if (home && E) { await checkTodayOne(p, g, recs, T); await safety(p, hash, T); await layout(p, SEL, T); } // 첫 화면 = 오늘 기록이 끝난 날 한 줄만
+      if (E?.verdict === 'rest') { await checkRest(p, T); await safety(p, hash, T); await layout(p, home ? SEL : '#view', T); if (await p.evaluate(() => !!document.querySelector('#view section.gdr-fun'))) fail('쉬어 가는 날 #/gdr 에 깔때기가 있음', T); }
+      else if (home && E) { await checkTodayOne(p, g, recs, T); await safety(p, hash, T); await layout(p, SEL, T); } // (옛 첫 화면 한 줄 — 흰 첫 화면에서는 home 이 늘 false · 함수는 남겨 둠)
       else {
         checkHead(g, G, T, home); checkCells(g, G, T, hash === '#/gdr/1' ? 1 : null); await checkToday(p, g, recs, T);
         if (hash === '#/gdr/1' && G.picks[0]) checkCard(g, G, G.picks[0], T, X0);
@@ -814,17 +845,18 @@ if (want('today')) {
     } catch (e) { fail('오늘 판정 길 멈춤', `${T}: ${e.message.split('\n')[0]}`); }
     await p.context().close();
   }
-  { // 첫 화면도 같은 자리에서 — 어제 기록뿐(열린 칸) → 오늘 좋아(한 줄) → 오늘 쉬어 가자(쉬어 가는 한 줄) → 오늘 좋아가 더 새로(한 줄)
+  { // 첫 화면에서 들어가 같은 자리에서 — 흰 첫 화면(2026-10-19)에는 칸이 없어 바로 가기로 #/gdr 에 들어간 뒤 기록이 바뀌면 그 자리에서(옛: 첫 화면 한 줄) · 끝에 첫 화면 바로 가기를 다시 잼
     const T = '오늘 기록이 바뀜 360×640 #/', p = await newPage(360, 640);
     try {
-      await open(p, '#/'); let g = await p.evaluate(READG, SEL); if (g.state !== 'open' || g.today || g.one) fail('어제 기록뿐인데 첫 화면이 열린 칸이 아님', `${T} ${g.state}`);
+      await open(p, '#/'); let g = await p.evaluate(READG, SEL); if (g.state !== 'open' || g.today) fail('어제 기록뿐인데 첫 화면에서 들어간 칸이 열린 칸이 아님', `${T} ${g.state}`);
       const put = recs => p.evaluate(([k, v]) => window.__raw.set(k, v), [WHY_KEY, JSON.stringify(recs)]);
-      const steps = [[[DONE(), todayRec('go20', 20)], 'one'], [[DONE(), todayRec('go20', 20), todayRec('rest', 10)], 'rest'], [[DONE(), todayRec('go20', 20), todayRec('rest', 10), todayRec('wait16', 1)], 'one']];
+      const steps = [[[DONE(), todayRec('go20', 20)], 'open'], [[DONE(), todayRec('go20', 20), todayRec('rest', 10)], 'rest'], [[DONE(), todayRec('go20', 20), todayRec('rest', 10), todayRec('wait16', 1)], 'open']];
       for (const [recs, st] of steps) {
         await put(recs); p._why = JSON.stringify(recs);
-        await p.waitForFunction(([s, k]) => { const b = document.querySelector(s); return !!b && b.classList.contains(k === 'rest' ? 'rest1' : 'today1'); }, [SEL, st], {timeout: 8000}).catch(() => fail('첫 화면 — 기록이 바뀌면 그 자리에서 바뀜', `${T} → ${st} ${recs.length}번째 기록`));
-        await settle(p); g = await p.evaluate(READG, SEL); if (st === 'rest') await checkRest(p, T + ' 바뀐 뒤'); else await checkTodayOne(p, g, recs, T + ' 바뀐 뒤');
+        await p.waitForFunction(([s, ready]) => { const b = document.querySelector(s); if (!b) return false; const rest = /\brest1\b/.test(b.className); const t = b.querySelector('a.gdr-today')?.textContent ?? ''; return ready === 'rest' ? rest : !rest && !/\block1\b/.test(b.className) && t.includes(ready); }, [SEL, st === 'rest' ? 'rest' : '준비 ' + expToday(recs).ready + ' /'], {timeout: 8000}).catch(() => fail('첫 화면에서 들어간 칸 — 기록이 바뀌면 그 자리에서 바뀜', `${T} → ${st} ${recs.length}번째 기록`));
+        await settle(p); g = await p.evaluate(READG, SEL); if (st === 'rest') await checkRest(p, T + ' 바뀐 뒤'); else await checkToday(p, g, recs, T + ' 바뀐 뒤');
       }
+      await p.evaluate(() => { location.hash = '#/'; }); await homeGate(p, T + ' 다시 첫 화면');
       await finalize(p, T, {writesOk: true}); bump('기록이 바뀐 길 첫 화면');
     } catch (e) { fail('오늘 판정 길 멈춤', `${T}: ${e.message.split('\n')[0]}`); }
     await p.context().close();
@@ -864,7 +896,7 @@ if (want('stale')) {
   if (!D0) { /* 고른 곳 0 — 카드가 없어 못 돌린 날 줄을 맞댈 데가 없음(고른 곳이 있는 판에서 맞댐) */ }
   else if (dates.length < 8) fail('못 돌린 날 판을 꾸미지 못함', `days.json 날짜 ${dates.length}`);
   else for (const [nm, w, h, hash, D, miss] of cases) {
-    const T = `못 돌린 날 ${nm} ${w}×${h} ${hash}`, home = hash === '#/', code = D.picks[0]?.code;
+    const T = `못 돌린 날 ${nm} ${w}×${h} ${hash}`, home = false /* 흰 첫 화면 — '#/' 판도 open() 이 #/gdr 로 옮김 */, code = D.picks[0]?.code;
     const routes = miss ? [[`**/atlas/data/co/${code}.json`, r => r.fulfill({status: 404, contentType: 'text/plain', body: 'no'})]] : [], p = await newPage(w, h, {gdr: D, routes, allow: miss ? [`/atlas/data/co/${code}.json`] : []});
     try {
       const cosD = new Map(COF), per = perfExp(D, HOME, new Map([...COS].filter(([k]) => !(miss && k === code)))); if (miss) cosD.set(code, null);
@@ -885,7 +917,7 @@ if (want('val') && G.picks.length) {
   for (const [code, fn] of edits) { if (!code) continue; const j = clone(await coGet(code) ?? {}); fn(j); mods.set(code, j); routes.push([`**/atlas/data/co/${code}.json`, r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(j)})]); }
   const missCode = G.picks[3]?.code; if (missCode) routes.push([`**/atlas/data/co/${missCode}.json`, r => r.fulfill({status: 404, contentType: 'text/plain', body: 'no'})]);
   for (const [w, h, hash] of [[360, 640, '#/gdr'], [390, 844, '#/']]) {
-    const T = `회사 값 빠짐 ${w}×${h} ${hash}`, p = await newPage(w, h, {routes, allow: missCode ? [`/atlas/data/co/${missCode}.json`] : []}), home = hash === '#/';
+    const T = `회사 값 빠짐 ${w}×${h} ${hash}`, p = await newPage(w, h, {routes, allow: missCode ? [`/atlas/data/co/${missCode}.json`] : []}), home = false /* 흰 첫 화면 — '#/' 판도 open() 이 #/gdr 로 옮김 */;
     try {
       const cosV = new Map(COF); for (const [k, v] of mods) cosV.set(k, v); if (missCode) cosV.set(missCode, null);
       const per = perfExp(G, HOME, new Map([...COS].filter(([k]) => k !== missCode && !mods.has(k))));
@@ -917,7 +949,7 @@ if (want('data') && (DATA_ARG === 'v1sample' || ONLY)) { // 자료를 바꾼 길
   await Promise.all(S36.picks.map(x => coGet(x.code)));
   const perS = perfExp(S36, HOME, new Map(S36.picks.map(x => [x.code, COF.get(x.code)?.c]).filter(([, c]) => c)));
   for (const [tag, w, h, hash, o, D] of [['서른여섯 곳', 360, 640, '#/', {gdr: S36}, S36], ['서른여섯 곳', 390, 844, '#/gdr', {gdr: S36}, S36]]) {
-    const T = `${tag} ${w}×${h} ${hash}`, p = await newPage(w, h, o), home = hash === '#/';
+    const T = `${tag} ${w}×${h} ${hash}`, p = await newPage(w, h, o), home = false /* 흰 첫 화면 — '#/' 판도 open() 이 #/gdr 로 옮김 */;
     try {
       const X = await mkX(D, perS);
       await open(p, hash);
@@ -961,7 +993,7 @@ if (want('data') && (DATA_ARG === 'v1sample' || ONLY)) { // 자료를 바꾼 길
     // 고른 날 셋 — ① 샘플 날짜 그대로(올리기 검사처럼 사이트 날이 더 새면 앞섬 · 같으면 같은 날) ② 사이트 마지막 날의 앞 거래일(늘 앞섬 → 「고른 날 · 사이트 날」 줄이 있어야 함) ③ 사이트 마지막 날(같은 날 → 줄 없음)
     const variants = [['', D0], ['고른 날이 앞섬', {...D0, asOf: dates[dates.length - 2]}], ['사이트와 같은 날', {...D0, asOf: MKT.asOf}]];
     for (const [vn, Dv] of variants) for (const [w, h, hash] of [[360, 640, '#/'], [390, 844, '#/gdr']]) {
-      const T = `고른 곳 0${vn ? ' · ' + vn : ''} ${w}×${h} ${hash}`, p = await newPage(w, h, {gdr: Dv}), home = hash === '#/';
+      const T = `고른 곳 0${vn ? ' · ' + vn : ''} ${w}×${h} ${hash}`, p = await newPage(w, h, {gdr: Dv}), home = false /* 흰 첫 화면 — '#/' 판도 open() 이 #/gdr 로 옮김 */;
       try {
         await open(p, hash); const g = await p.evaluate(READG, SEL); checkHead(g, Dv, T, home); checkCells(g, Dv, T); checkSum(g, Dv, T);
         if (!g.none || g.qq || (g.q && g.q.sum !== g.none.sum)) fail('고른 곳 0 — 「? … 아직 안 와서」 까닭 한 줄이 두 줄(관리 종목 · 분기 숫자 「?」)을 대신함', `${T} ${JSON.stringify([g.none?.sum, g.q?.sum, g.qq?.sum])}`); // g.q 는 같은 접는 칸(class gdr-q)

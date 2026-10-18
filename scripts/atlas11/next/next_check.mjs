@@ -188,28 +188,35 @@ for (const w of [320, 360, 390]) {
   if (MSG?.[0] !== LETTER_TITLE) fail('편지 첫 줄', `「${MSG?.[0]}」 ≠ 「${LETTER_TITLE}」`);
   for (const t of [...(MSG || []), PROMO]) if (OLD_NAME_RE.test(t ?? '')) fail(OLD_NAME_FAIL, '편지 · 상품권 줄 「' + t + '」');
   const q = await page(390, 844), qReq = []; q.on('request', r => qReq.push(r.url()));
-  if (await first(q, base + '/next/#/', () => !!document.querySelector('#view section.wy') && !document.querySelector('#view .boot')) === false) fail('첫 화면 질문 칸', '20초 안에 안 나옴');
+  if (await first(q, base + '/next/#/', () => !!document.querySelector('#view [data-w="find"]') && !document.querySelector('#view .boot')) === false) fail('첫 화면 찾기 칸', '20초 안에 안 나옴');
   /* 첫 화면 한 화면(2026-10-18 명령문 0015 [6] 1 ~ 5 · 9 · [9] 7 · 일꾼 S2x) — 고르기 칩 → 이야기 입구 → 한 줄 띠(#/today · 날짜 한 번 · 코스피 · 코스닥 하루 · 큰 날 「!」 띠 안) → 질문 칸 → 고도리 칸 → 「더 보기」(닫힘) → 안전 한 줄
      닫은 채 보이는 날짜 하나(띠) · 「오늘 한 줄」 · 오늘 시장 칸(.today-d · .ptoday) · 급등 카드 0 · 「더 보기」 안 = 세 줄(큰 숫자 하나 + 까닭 한 줄) + #/today 고리 · 띠 숫자를 되풀이하지 않음 · mkt · cond 를 받지 않음(요약이 새것일 때) */
   const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null), sumFresh = !!(SUMJ?.schema === 'godori-home-summary-1' && home && SUMJ.src?.home === home.kst);
-  const HOME_ORDER = ['div.chips', 'section.ess', 'a.tk-entry', 'a.hm-band', 'section.wy', 'section.gdr', 'details.hm-more', 'p.safe']; // section.ess = 본질 세 줄(2026-10-18 16:39 [5] 1 · 이야기 입구 위)
+  /* 흰 첫 화면(사장님 2026-10-19 02:03 「골똘이 대공사 · 구글과 잡스 판」 · 고른 시안 w3-b · 일꾼 C 다시 겨눔 — 옛 2026-10-18 [6] 세 덩이 잣대를 새 차례로 옮김 · 지키던 것은 하나도 빼지 않음)
+     본질 카드([data-w=ess] · section.ess) → (한 달 된 기록이 있을 때만 금빛 a.w-month) → 앵무새 물음(div.w-say) → 「친구야, 왜 사?」 찾기 칸(form.w-find) → 오늘 장 한 줄(a.hm-band → #/today)
+     → 바로 가기 넷(nav.w-go4 · 골똘이 칸은 열한 질문 뒤에만 #/gdr · 그 전 #/why) → 「전부 보기」(details.w-all · 처음 닫힘 · 한 줄에 하나 · 안에 옛 「더 보기」 세 줄 · 봉인 · 약속) → 시황 사실(section.w-news) → 안전 한 줄
+     옛 잣대 → 새 자리: 칩 줄 「달력」 「조건 찾기」 → 바로 가기 · 이야기 입구 → 전부 보기 줄 · 질문 칸(section.wy) → 찾기 칸(회사를 치면 #/why/<번호>) · 칸 자리(section.gdr) → 바로 가기 + #/gdr · 칩 줄 끝 흐림(마스크) → 칩 줄이 없어 뺌 */
+  const HOME_ORDER = ['section.ess', 'a.w-month', 'div.w-say', 'form.w-find', 'a.hm-band', 'nav.w-go4', 'details.w-all', 'section.w-news', 'p.safe'];
+  const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk')]; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
   const g = await q.evaluate(ord => {
-    const kids = [...document.querySelectorAll('#view > *')], at = s => kids.findIndex(e => e.matches(s)), wy = document.querySelector('#view > section.wy'), gd = document.querySelector('#view > section.gdr');
-    const band = document.querySelector('#view > a.hm-band'), more = document.querySelector('#view > details.hm-more'), chips = document.querySelector('#view > .chips'), cs = chips ? getComputedStyle(chips) : null;
-    return {tk: document.querySelector('#view a.tk-entry')?.getAttribute('href'), order: kids.map(e => ord.find(s => e.matches(s)) ?? e.tagName.toLowerCase() + '.' + e.className),
+    const kids = [...document.querySelectorAll('#view > *')], gd = document.querySelector('#view section.gdr');
+    const band = document.querySelector('#view > a.hm-band'), more = document.querySelector('#view > details.w-all'), go4 = document.querySelector('#view > nav.w-go4'), fi = document.querySelector('#view form.w-find input');
+    return {order: kids.map(e => ord.find(s => e.matches(s)) ?? e.tagName.toLowerCase() + '.' + e.className), blocks: [...document.querySelectorAll('#view [data-w]')].map(e => e.getAttribute('data-w')),
       today: document.querySelectorAll('#view .today, #view .today-d, #view .ptoday, #view .ptoday-home').length, surgeCards: [...document.querySelectorAll('#view a.card')].filter(a => /급등/.test(a.textContent)).length,
       al: [...document.querySelectorAll('#view .m4-al')].map(e => ({t: e.textContent, inBand: !!e.closest('a.hm-band')})), top: document.querySelectorAll('#view .m4-top').length,
-      band: band ? {href: band.getAttribute('href'), t: band.innerText.replace(/\u00a0/g, ' ')} : null, moreOpen: !!more?.open,
-      dates: ([...document.querySelectorAll('#view > *')].filter(e => !e.matches('section.ess')).map(e => e.innerText).join('\n').replace(/\u00a0/g, ' ').match(/\d{1,2}월 \d{1,2}일/g) || []), // 닫힌 「더 보기」 안 글은 innerText 에 없음 · 본질 세 줄 칸(받은 때)은 따로 셈([5] 8)
+      band: band ? {href: band.getAttribute('href'), t: band.innerText.replace(/ /g, ' ')} : null, moreOpen: !!more?.open,
+      dates: ([...document.querySelectorAll('#view > *')].filter(e => !e.matches('section.ess')).map(e => e.innerText).join('\n').replace(/ /g, ' ').match(/\d{1,2}월 \d{1,2}일/g) || []), // 닫힌 「전부 보기」 안 글은 innerText 에 없음 · 본질 세 줄 칸(받은 때)은 따로 셈([5] 8)
       ess: (() => { const s = document.querySelector('#view > section.ess'), d = s?.querySelector('details'); return s ? {open: !!d?.open, lines: [...s.querySelectorAll('[data-ess]')].map(e => e.textContent), shown: [...s.querySelectorAll('[data-ess]')].map(e => e.checkVisibility()),
-        dates: s.innerText.match(/\d{1,2}월\s\d{1,2}일/g) || [], v: s.querySelector('a.ess-v')?.textContent ?? null} : null; })(), // 본질 세 줄(2026-10-18 16:39 [5] · 일꾼 KC)
-      chipHrefs: chips ? [...chips.querySelectorAll('a')].map(a => a.getAttribute('href')) : [], mask: cs ? (cs.maskImage || cs.webkitMaskImage || 'none') : 'none',
-      letter: document.querySelectorAll('#view .m4-letter, #view .hpi').length, iWy: at('section.wy'),
-      wyTop: wy ? Math.round(wy.getBoundingClientRect().top + scrollY) : null, vh: innerHeight, wyQ: wy?.querySelector('.wy-q')?.textContent ?? '', wyOpts: wy?.querySelectorAll('.wy-opt').length ?? 0, wyFind: !!wy?.querySelector('input.wy-find'),
-      gdrCells: gd?.querySelectorAll('.gdr-cell').length ?? -1, gdrSum: gd?.querySelector('.gdr-sum')?.textContent ?? '', gdrLock: !!(gd?.classList.contains('lock') || gd?.classList.contains('lock1')), gdrGo: gd?.querySelector('a.gdr-go, a.gdr-l1')?.getAttribute('href') ?? null /* 잠금 한 줄 lock1 · a.gdr-l1([6] 10 · p-gdr lockBox) */};
+        dates: (d?.innerText ?? s.innerText).match(/\d{1,2}월\s\d{1,2}일/g) || [], v: s.querySelector('a.ess-v')?.textContent ?? null} : null; })(), // 본질 세 줄(2026-10-18 16:39 [5] · 일꾼 KC)
+      go4: go4 ? [...go4.querySelectorAll('a')].map(a => a.getAttribute('href')) : [], letter: document.querySelectorAll('#view .m4-letter, #view .hpi').length,
+      findTop: fi ? Math.round(fi.getBoundingClientRect().top + scrollY) : null, findPh: fi?.getAttribute('placeholder') ?? null, vh: innerHeight, wy: document.querySelectorAll('#view section.wy').length,
+      gdrBox: !!gd, gdrLinks: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')).filter(x => /^#\/gdr(\/|$)/.test(x ?? '')),
+      tk: document.querySelectorAll('#view > a.tk-entry, #view > .chips').length};
   }, HOME_ORDER);
-  if (g.tk !== oldOr('talk', '#/talk')) fail('이야기 입구', String(g.tk));
-  if (g.order.join(' → ') !== HOME_ORDER.join(' → ')) fail('첫 화면 차례([6] 3 · 16:39 [5] 1 — 칩 → 본질 세 줄 → 이야기 입구 → 띠 → 질문 칸 → ' + NEW_NAME + ' 칸 → 더 보기 → 안전 한 줄)', g.order.join(' → '));
+  const ordWant = HOME_ORDER.filter(s => s !== 'a.w-month' || g.order.includes('a.w-month'));
+  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(흰 첫 화면 — 본질 카드 → 앵무새 물음 → 찾기 칸 → 오늘 장 → 바로 가기 넷 → 전부 보기 → 시황 사실 → 안전 한 줄)', g.order.join(' → '));
+  for (const k of ['ess', 'find', 'today', 'gdr', 'all', 'news']) if (!g.blocks.includes(k)) fail('첫 화면 칸 [data-w="' + k + '"]', g.blocks.join(' · '));
+  if (g.tk) fail('첫 화면에 칩 줄 · 이야기 입구 띠가 남음(흰 첫 화면 — 전부 보기 안으로)', String(g.tk));
   /* 본질 세 줄(사장님 2026-10-18 16:39 [5] 1 ~ 3 · 5 · 8 · 일꾼 KC) — 처음 온 기기(새 칸 q)는 펼침 · 글 = essence.js 셈(요약이 새것일 때만 숫자 · 아니면 「?」) · 칸 안 날짜는 받은 때 하나까지(띠 날짜와 따로 셈)
      · 「… 1분 보기 ›」는 VIDEO.ready 일 때만 · 다시 온 기기(atlas:essence-seen)는 한 줄로 접힘 */
   { const want = essenceLines(essenceData({summary: sumFresh ? SUMJ : null, now: Date.now()}));
@@ -218,7 +225,7 @@ for (const w of [320, 360, 390]) {
       if (!g.ess.open || g.ess.shown.some(x => !x)) fail('본질 세 줄 — 처음 온 기기는 펼침([5] 1)', JSON.stringify({open: g.ess.open, shown: g.ess.shown}));
       if (g.ess.lines.join('\n') !== want.join('\n')) fail('본질 세 줄 글 ≠ essence.js 셈([5] 2 · 3)', JSON.stringify({got: g.ess.lines, want}));
       if (g.ess.dates.length > 1) fail('본질 세 줄 칸 날짜는 받은 때 하나([5] 8)', JSON.stringify(g.ess.dates));
-      if (!!g.ess.v !== VIDEO.ready || (g.ess.v && g.ess.v !== VIDEO.title + ' 보기 ›')) fail('「' + VIDEO.title + ' 보기 ›」는 새 영상이 오른 뒤에만([5] 5)', String(g.ess.v));
+      if (g.ess.v) fail('흰 첫 화면 — 「' + VIDEO.title + ' 보기」는 본질 카드 밖(전부 보기 한 줄)으로', String(g.ess.v)); // 새 영상 여부는 아래 「전부 보기」 줄에서 맞댐([5] 5)
     }
     const z = await page(390, 844); await z.context().addInitScript(() => { try { localStorage.setItem('atlas:essence-seen', 'true'); } catch { /* 기억 못 함 */ } });
     if (await first(z, base + '/next/#/', () => !!document.querySelector('#view section.ess') && !document.querySelector('#view .boot')) === false) fail('본질 세 줄 — 다시 온 기기', '20초 안에 안 나옴');
@@ -233,23 +240,34 @@ for (const w of [320, 360, 390]) {
   const bandDay = home?.stale?.idx && /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(home.stale.idx) ? home.stale.idx.slice(0, 10) : (home?.idx?.KOSPI ?? home?.idx?.KOSDAQ)?.date;
   if (g.band && bandDay && !g.band.t.includes(MD(bandDay))) fail('한 줄 띠 날짜', MD(bandDay) + ' 없음');
   if (g.dates.length !== 1) fail('보이는 날짜는 띠에 한 번([6] 2)', JSON.stringify(g.dates));
-  if (g.moreOpen) fail('「더 보기」는 처음 닫힘([6] 3)', '');
+  if (g.moreOpen) fail('「전부 보기」는 처음 닫힘([화면] 7 — 오르는 것은 한 번 더 눌러야)', '');
   const wantAl = ['big', 'usual'].filter(w => (home?.alerts ?? []).some(a => a.kind === 'idx' && (a.why ?? 'usual') === w)).length;
   if (g.al.length !== wantAl || g.al.some(a => !a.inBand) || g.top) fail('큰 날 「!」 = 띠 안([6] 1)', JSON.stringify({n: g.al.length, want: wantAl, out: g.al.filter(a => !a.inBand).length, top: g.top}));
-  if (!g.chipHrefs.includes(oldOr('cal', '#/cal')) || !g.chipHrefs.includes(oldOr('cond', '#/cond'))) fail('칩 「달력」 · 「조건 찾기」([6] 7)', g.chipHrefs.join(' '));
-  if (!/gradient/.test(g.mask)) fail('칩 줄 오른쪽 끝 흐림([6] 7)', g.mask);
-  // 「더 보기」 열기 — 세 줄 · 큰 숫자 하나 + 까닭 한 줄 · #/today 고리 · 띠 숫자 되풀이 없음 · 봉인 줄 · 약속 · 자료 요청(mkt · cond 0 — 요약이 새것일 때)
-  await q.click('#view summary.hm-ms').catch(e => fail('「더 보기」 누름', e.message));
-  await q.waitForFunction(() => !!document.querySelector('#view .hm-in .m4-seal-box, #view .hm-in .empty'), null, {timeout: 15000}).catch(() => fail('「더 보기」 안', '15초 안에 안 그려짐'));
-  const hmo = await q.evaluate(() => { const r = document.querySelector('#view details.hm-more'); return {li: [...r.querySelectorAll('.hm-sum > li')].map(x => ({k: x.dataset.k, big: x.querySelectorAll('.hm-big').length, why: x.querySelectorAll('.hm-why').length, tag: x.querySelector('.hm-tag')?.textContent ?? ''})),
-    today: !!r.querySelector('a[href="#/today"]'), t: r.innerText.replace(/\u00a0/g, ' '), mr: r.querySelector('a.m4-mr')?.getAttribute('href') ?? null, seal: !!r.querySelector('.m4-seal-box'), cards: r.querySelectorAll('a.card').length}; });
-  if (hmo.li.length !== 3 || hmo.li.some(x => x.big !== 1 || x.why !== 1)) fail('오늘 시장 세 줄 = 큰 숫자 하나 + 까닭 한 줄([6] 4 · 9)', JSON.stringify(hmo.li));
-  if (!hmo.today) fail('「더 보기」 안 #/today 고리([6] 4)', '');
-  for (const [k, nm] of hix) if (hmo.t.includes(P2(home.idx[k].day))) fail('띠 숫자가 「더 보기」에 또 나옴([6] 3)', nm + ' ' + P2(home.idx[k].day));
-  if (home?.us?.date && bandDay && home.us.date !== bandDay && !hmo.li.find(x => x.k === 'us')?.tag) fail('띠 날과 다른 날 꼬리표([6] 2)', '미국 ' + home.us.date + ' ≠ ' + bandDay);
-  if (hmo.cards) fail('「더 보기」 안 큰 카드(한 줄 목록으로)', String(hmo.cards));
-  if (core.time?.opens?.[0]?.date && hmo.mr !== oldOr('time', '#/time')) fail('봉인 줄', String(hmo.mr));
-  if (!hmo.seal) fail(NEW_NAME + ' 약속', '');
+  // 바로 가기 넷(옛 칩 「달력」 「조건 찾기」 자리 · [6] 7) — 골똘이 칸(질문 전 #/why) · 달력 · 조건 찾기 · 대장주
+  if (JSON.stringify(g.go4) !== JSON.stringify(['#/why', oldOr('cal', '#/cal'), oldOr('cond', '#/cond'), '#/f/lead'])) fail('바로 가기 넷(질문 전 = #/why · 달력 · 조건 찾기 · 대장주)', g.go4.join(' '));
+  // 「전부 보기」 열기 — 한 줄에 하나(오르는 업종 · 급등 · … · 이야기) + 옛 「더 보기」 그대로: 세 줄 · 큰 숫자 하나 + 까닭 한 줄 · #/today 고리 · 띠 숫자 되풀이 없음 · 봉인 줄 · 약속 · 자료 요청(mkt · cond 0 — 요약이 새것일 때)
+  await q.click('#view summary[data-w="all"]').catch(e => fail('「전부 보기」 누름', e.message));
+  await q.waitForFunction(() => !!document.querySelector('#view .w-allin .m4-seal-box, #view .w-allin .empty'), null, {timeout: 15000}).catch(() => fail('「전부 보기」 안', '15초 안에 안 그려짐'));
+  const hmo = await q.evaluate(() => { const r = document.querySelector('#view details.w-all'); if (!r) return null; const W0 = r.getBoundingClientRect().width;
+    return {li: [...r.querySelectorAll('.hm-sum > li')].map(x => ({k: x.dataset.k, big: x.querySelectorAll('.hm-big').length, why: x.querySelectorAll('.hm-why').length, tag: x.querySelector('.hm-tag')?.textContent ?? ''})),
+      rows: [...r.querySelectorAll('ul.w-rows > li > a')].map(a => ({href: a.getAttribute('href'), w: a.getBoundingClientRect().width, h: a.getBoundingClientRect().height})), W0,
+      today: !!r.querySelector('a[href="#/today"]'), t: r.innerText.replace(/ /g, ' '), mr: r.querySelector('a.m4-mr')?.getAttribute('href') ?? null, seal: !!r.querySelector('.m4-seal-box'), cards: r.querySelectorAll('a.card').length}; });
+  if (!hmo) fail('「전부 보기」 칸 없음', 'details.w-all');
+  else {
+    const rh = hmo.rows.map(x => x.href).filter(x => !/^\/hello\.html/.test(x));
+    const vid = hmo.rows.filter(x => /^\/hello\.html/.test(x.href));
+    if (vid.length !== (VIDEO.ready ? 1 : 0) || (vid[0] && vid[0].href !== '/hello.html#hp-vid')) fail('「' + VIDEO.title + ' 보기」 줄은 새 영상이 오른 뒤에만([5] 5 · 흰 첫 화면 = 전부 보기 안)', JSON.stringify(vid));
+    if (VIDEO.ready && !hmo.t.includes(VIDEO.title + ' 보기')) fail('「' + VIDEO.title + ' 보기」 글', '전부 보기 안에 없음');
+    if (JSON.stringify(rh) !== JSON.stringify(ALL_WANT)) fail('「전부 보기」 줄(오르는 업종 · 급등 · 큰 업종 · 업종 · 미국 · 고른 곳 · 오늘의 이야기)', rh.join(' '));
+    if (hmo.rows.some(x => x.w < 0.85 * hmo.W0 || x.h < 43.5)) fail('「전부 보기」 한 줄에 하나(네모 칸 0 · 44px)', JSON.stringify(hmo.rows.map(x => [Math.round(x.w), Math.round(x.h)])));
+    if (hmo.li.length !== 3 || hmo.li.some(x => x.big !== 1 || x.why !== 1)) fail('오늘 시장 세 줄 = 큰 숫자 하나 + 까닭 한 줄([6] 4 · 9)', JSON.stringify(hmo.li));
+    if (!hmo.today) fail('「전부 보기」 안 #/today 고리([6] 4)', '');
+    for (const [k, nm] of hix) if (hmo.t.includes(P2(home.idx[k].day))) fail('띠 숫자가 「전부 보기」에 또 나옴([6] 3)', nm + ' ' + P2(home.idx[k].day));
+    if (home?.us?.date && bandDay && home.us.date !== bandDay && !hmo.li.find(x => x.k === 'us')?.tag) fail('띠 날과 다른 날 꼬리표([6] 2)', '미국 ' + home.us.date + ' ≠ ' + bandDay);
+    if (hmo.cards) fail('「전부 보기」 안 큰 카드(한 줄 목록으로)', String(hmo.cards));
+    if (core.time?.opens?.[0]?.date && hmo.mr !== oldOr('time', '#/time')) fail('봉인 줄', String(hmo.mr));
+    if (!hmo.seal) fail(NEW_NAME + ' 약속', '');
+  }
   const heavy = qReq.filter(u => /\/atlas\/data\/(mkt|cond)\.json/.test(u) || /\/atlas\/data\/co\//.test(u));
   if (sumFresh && heavy.length) fail('첫 화면이 mkt · cond 를 받음([9] 7)', heavy.map(u => u.replace(base, '')).join(' '));
   if (!SUMJ) fail('첫 화면 요약 파일 없음([9] 7)', '/next/data/home-summary.json');
@@ -257,51 +275,61 @@ for (const w of [320, 360, 390]) {
   // 요약을 못 받으면 옛 길(home.json) — 빈 첫 화면 없음 · 세 줄 그대로
   { const z = await page(390, 844); await z.route('**/next/data/home-summary.json', r => r.fulfill({status: 404, body: ''}));
     if (await first(z, base + '/next/?nosum=1#/', () => !!document.querySelector('#view a.hm-band') && !document.querySelector('#view .boot')) === false) fail('요약 없이 첫 화면([9] 7)', '20초 안에 안 나옴');
-    await z.click('#view summary.hm-ms').catch(() => {}); await z.waitForFunction(() => !!document.querySelector('#view .hm-in .m4-seal-box, #view .hm-in .empty'), null, {timeout: 15000}).catch(() => {});
+    await z.click('#view summary[data-w="all"]').catch(() => {}); await z.waitForFunction(() => !!document.querySelector('#view .w-allin .m4-seal-box, #view .w-allin .empty'), null, {timeout: 15000}).catch(() => {});
     const zz = await z.evaluate(() => ({li: document.querySelectorAll('#view .hm-sum > li').length, band: !!document.querySelector('#view a.hm-band b')}));
     if (zz.li !== 3 || !zz.band) fail('요약 없이 첫 화면([9] 7 — 옛 길)', JSON.stringify(zz)); z._errs.length = 0; await z.context().close(); }
-  // 아주 큰 글씨(atlas:font 2 · html.f3) 320 폭 · 「더 보기」 연 꼴 — 세 줄 묶음 글이 칸 · 화면 밖으로 안 나감(2026-10-18 깃허브 영어 검사 39095363687 · 영어는 next_en_check)
+  // 아주 큰 글씨(atlas:font 2 · html.f3) 320 폭 · 「전부 보기」 연 꼴 — 세 줄 묶음 글이 칸 · 화면 밖으로 안 나감(2026-10-18 깃허브 영어 검사 39095363687 · 영어는 next_en_check)
   { const ctx = await b.newContext({viewport: {width: 320, height: 700}, deviceScaleFactor: 1, hasTouch: true}); await ctx.addInitScript(() => { try { localStorage.setItem('atlas:font', '2'); } catch { /* 없음 */ } });
     const z = watch(await ctx.newPage(), base); z._errs = [];
-    if (await first(z, base + '/next/?big=1#/', () => !!document.querySelector('#view summary.hm-ms') && !document.querySelector('#view .boot')) === false) fail('아주 큰 글씨 첫 화면', '20초 안에 안 나옴');
-    await z.click('#view summary.hm-ms').catch(() => {}); await z.waitForFunction(() => !!document.querySelector('#view .hm-in .m4-seal-box, #view .hm-in .empty'), null, {timeout: 15000}).catch(() => {});
-    const zb = await z.evaluate(() => ({sw: document.documentElement.scrollWidth, vw: document.documentElement.clientWidth, box: [...document.querySelectorAll('#view .hm-it, #view .hm-it *')].filter(e => e.clientWidth > 0 && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflowX === 'visible').map(e => e.className + ' ' + e.scrollWidth + '>' + e.clientWidth)}));
-    if (zb.sw > zb.vw || zb.box.length) fail('아주 큰 글씨 320 「더 보기」 세 줄 넘침', JSON.stringify(zb).slice(0, 300)); await ctx.close(); }
+    if (await first(z, base + '/next/?big=1#/', () => !!document.querySelector('#view summary[data-w="all"]') && !document.querySelector('#view .boot')) === false) fail('아주 큰 글씨 첫 화면', '20초 안에 안 나옴');
+    await z.click('#view summary[data-w="all"]').catch(() => {}); await z.waitForFunction(() => !!document.querySelector('#view .w-allin .m4-seal-box, #view .w-allin .empty'), null, {timeout: 15000}).catch(() => {});
+    const zb = await z.evaluate(() => ({sw: document.documentElement.scrollWidth, vw: document.documentElement.clientWidth, box: [...document.querySelectorAll('#view .hm-it, #view .hm-it *, #view .w-rows a, #view .w-rows a *')].filter(e => e.clientWidth > 0 && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflowX === 'visible').map(e => e.className + ' ' + e.scrollWidth + '>' + e.clientWidth)}));
+    if (zb.sw > zb.vw || zb.box.length) fail('아주 큰 글씨 320 「전부 보기」 넘침', JSON.stringify(zb).slice(0, 300)); await ctx.close(); }
   bump('첫 화면 한 화면');
-  // ⑨ 첫 화면 앞쪽 — 질문 칸 머리가 첫 화면(390×844) 안 · 편지 · 열면 고도리 없음
+  // ⑨ 첫 화면 앞쪽 — 찾기 칸이 첫 화면(390×844) 안 · 편지 없음 · 회사를 치면 열한 질문(#/why/<번호>)
   if (g.letter) fail('첫 화면에 편지가 남음(명령 1 — 「나」 칸으로)', String(g.letter));
-  if (g.wyTop == null || g.wyTop >= g.vh) fail('질문 칸이 첫 화면 밖', `${g.wyTop} ≥ ${g.vh}`);
-  // 2026-10-17 21:10 [3] 1 — 매매일지 칸은 종목 고르기부터(「어떤 종목이야?」 · 찾기 칸) · [6] 1 — 열한 질문을 한 번 끝내기 전(새 기계)에는 고도리 칸이 잠김(#/why 로 가는 고리 · 칸 없음)
-  if (g.wyQ !== '어떤 종목이야?' || !g.wyFind || g.wyOpts !== 0) fail('매매일지 칸 처음 = 종목 고르기', `「${g.wyQ}」 찾기 칸 ${g.wyFind} 답 ${g.wyOpts}`);
-  if (READY.has('gdr') && (!g.gdrLock || g.gdrGo !== '#/why' || g.gdrCells !== 0)) fail(NEW_NAME + ' 칸 잠김(질문 전)', JSON.stringify({lock: g.gdrLock, go: g.gdrGo, cells: g.gdrCells}));
-  // 질문을 끝낸 기록 하나(답 열한 개 · 매매일지 기록 꼴)를 이 기기에 두고 다시 열면 — 고도리 칸이 열림(칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)
+  if (g.findTop == null || g.findTop >= g.vh) fail('찾기 칸이 첫 화면 밖', `${g.findTop} ≥ ${g.vh}`);
+  if (g.findPh !== '친구야, 왜 사? 회사 이름') fail('찾기 칸 자리 글 「친구야, 왜 사? 회사 이름」', String(g.findPh));
+  if (g.wy) fail('첫 화면에 큰 질문 칸(section.wy)이 남음(흰 첫 화면 — 찾기 칸 하나)', String(g.wy));
+  { await q.fill('#view form.w-find input', '삼성전자').catch(e => fail('찾기 칸 치기', e.message));
+    const hit = await q.waitForFunction(() => document.querySelector('#view form.w-find a[data-path~="q1"]')?.getAttribute('href') ?? false, null, {timeout: 15000}).then(x => x.jsonValue()).catch(() => null);
+    if (hit !== '#/why/005930') fail('찾기 칸 「삼성전자」 → 첫 줄 #/why/005930(열한 질문 1번)', String(hit));
+    await q.fill('#view form.w-find input', '').catch(() => {}); }
+  // [6] 1 · 본질 문 ④ — 열한 질문을 한 번 끝내기 전(새 기계)에는 골똘이 칸이 잠김: 첫 화면 바로 가기 = #/why · #/gdr 고리 · 큰 칸 0 → #/gdr 은 잠금(#/why 로 가는 고리 · 칸 없음)
+  if (READY.has('gdr') && (g.gdrBox || g.gdrLinks.length || g.go4[0] !== '#/why')) fail(NEW_NAME + ' 칸 잠김(질문 전 — 첫 화면 바로 가기 #/why · 큰 칸 · #/gdr 고리 0)', JSON.stringify({box: g.gdrBox, links: g.gdrLinks, go: g.go4[0]}));
+  const gdrRead = pg => pg.evaluate(() => { const gd = document.querySelector('#view section.gdr'); return {lock: !!(gd?.classList.contains('lock') || gd?.classList.contains('lock1')), one: !!gd?.classList.contains('today1'), rest: !!gd?.classList.contains('rest1'), cells: gd?.querySelectorAll('.gdr-cell').length ?? -1, sum: gd?.querySelector('.gdr-sum')?.textContent ?? '', links: [...(gd?.querySelectorAll('a[href]') ?? [])].map(a => a.getAttribute('href')), text: (gd?.innerText ?? '').replace(/\s+/g, ' ').trim(), h: gd?.getBoundingClientRect().height ?? 0, today: gd?.querySelector('a.gdr-today')?.getAttribute('href') ?? null}; });
+  if (READY.has('gdr')) {
+    await q.evaluate(() => { location.hash = '#/gdr'; }); await q.waitForFunction(() => !!document.querySelector('#view section.gdr'), null, {timeout: 8000}).catch(() => {}); await q.waitForTimeout(300);
+    const g1 = await gdrRead(q); if (!g1.lock || g1.cells !== 0 || !g1.links.includes('#/why')) fail(NEW_NAME + ' 칸 잠김(질문 전 #/gdr — #/why 고리 · 칸 0)', JSON.stringify(g1));
+  }
+  // 질문을 끝낸 기록 하나(답 열한 개 · 매매일지 기록 꼴)를 이 기기에 두고 다시 열면 — 첫 화면 바로 가기 = #/gdr · 그것을 누르면 열린 칸(칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)
   await q.evaluate(([k, r]) => localStorage.setItem(k, JSON.stringify([r])), [WHY_KEY, whyRec(0)]);
-  if (await first(q, base + '/next/?seed=1#/', () => !!document.querySelector('#view section.gdr') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 칸(질문 뒤)', '20초 안에 안 나옴'); // 다른 주소로 새로 엶(같은 주소 goto 는 # 만 같아 새로 열리지 않음)
-  // 2026-10-18 [6] 10 — 첫 화면의 칸 자리: 오늘 판정이 든 기록이 있으면 한 줄만(「오늘 점수 준비 n / 22」→ #/gdr · 「다시 하기」→ #/why) · 쉬어 가는 날은 「오늘은 담는 칸을 닫아 둘게」 한 줄 · 끝낸 적은 있으나 오늘 판정이 없으면(어제만 · 판정 글이 없는 옛 꼴) 열린 칸(칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)
-  //   아래 seed(whyRec(0) · verdict 0)는 판정 글이 없는 옛 꼴 → 열린 칸 · 진짜 기록(판정 글이 든 것)은 바로 밑에서 칸마다 새 기계로 — 한 줄 · 닫는 줄 · 어제만(2026-10-18 13:25 이 검사 seed 가 실제 기록 꼴이 아니라 틀렸던 것 — 화면이 맞음)
-  const gdrRead = pg => pg.evaluate(() => { const gd = document.querySelector('#view section.gdr'); return {lock: !!(gd?.classList.contains('lock') || gd?.classList.contains('lock1')), one: !!gd?.classList.contains('today1'), rest: !!gd?.classList.contains('rest1'), cells: gd?.querySelectorAll('.gdr-cell').length ?? -1, sum: gd?.querySelector('.gdr-sum')?.textContent ?? '', links: [...(gd?.querySelectorAll('a[href]') ?? [])].map(a => a.getAttribute('href')), text: (gd?.innerText ?? '').replace(/\s+/g, ' ').trim(), h: gd?.getBoundingClientRect().height ?? 0}; });
+  if (await first(q, base + '/next/?seed=1#/', () => !!document.querySelector('#view nav.w-go4') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 바로 가기(질문 뒤)', '20초 안에 안 나옴'); // 다른 주소로 새로 엶(같은 주소 goto 는 # 만 같아 새로 열리지 않음)
   const openBox = r => Array.isArray(GDR?.picks) ? !(r.lock || r.one || r.rest) && r.cells === GDR.picks.length + 1 && r.sum.startsWith('비중 합 100%') : true;
-  const g2 = await gdrRead(q);
-  if (!openBox(g2)) fail(NEW_NAME + ' 칸(질문 뒤 · 오늘 판정이 없는 기록 = 열린 칸 · 칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)', JSON.stringify(g2));
-  await q.evaluate(() => { location.hash = '#/gdr'; }); await q.waitForFunction(() => !!document.querySelector('#view section.gdr.page'), null, {timeout: 8000}).catch(() => {}); await q.waitForTimeout(300);
-  const g3 = await gdrRead(q);
-  if (!openBox(g3)) fail(NEW_NAME + ' 칸(질문 뒤 #/gdr · 칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)', `${g3.lock ? '잠김 · ' : ''}${g3.rest ? '쉬어 가는 날 · ' : ''}${g3.cells} · 「${g3.sum}」`);
+  const go2 = await q.evaluate(() => document.querySelector('#view nav.w-go4 a')?.getAttribute('href') ?? null);
+  if (READY.has('gdr') && go2 !== '#/gdr') fail(NEW_NAME + ' 바로 가기(질문 뒤 = #/gdr)', String(go2));
+  if (READY.has('gdr')) {
+    await q.click('#view nav.w-go4 a[href="#/gdr"]').catch(() => q.evaluate(() => { location.hash = '#/gdr'; }));
+    await q.waitForFunction(() => location.hash === '#/gdr' && !!document.querySelector('#view section.gdr.page'), null, {timeout: 8000}).catch(() => {}); await q.waitForTimeout(300);
+    const g3 = await gdrRead(q);
+    if (!openBox(g3)) fail(NEW_NAME + ' 칸(질문 뒤 바로 가기 → #/gdr · 칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)', `${g3.lock ? '잠김 · ' : ''}${g3.rest ? '쉬어 가는 날 · ' : ''}${g3.cells} · 「${g3.sum}」`);
+  }
   await q.evaluate(() => { location.hash = '#/'; }); await q.waitForTimeout(300);
+  // 오늘 판정이 든 기록마다 새 기계 — 첫 화면 바로 가기 = #/gdr · #/gdr 칸: 오늘 끝냄 = 열린 칸 맨 위 「오늘 점수」 줄(→ #/why) · 쉬어 가는 날 = 닫는 한 줄 · 어제만 = 열린 칸(옛: 첫 화면 칸 자리 한 줄 — 흰 첫 화면에는 칸 자리가 없음)
   for (const [nm, rec, want] of [['오늘 끝냄', whyRec(0, '005930', '좋아, 정해 둔 대로만'), 'one'], ['오늘 쉬어 가자', whyRec(0, '005930', '오늘은 쉬어 가자'), 'rest'], ['어제만 끝냄', whyRec(1, '005930', '반만 준비됐어'), 'open']]) {
     const ctx = await b.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, hasTouch: true});
     await ctx.addInitScript(([k, r]) => { try { localStorage.setItem(k, JSON.stringify([r])); } catch { /* 기억 못 함 */ } }, [WHY_KEY, rec]);
     const z = watch(await ctx.newPage(), base); z._errs = [];
     z.on('pageerror', e => z._errs.push(e.message)); z.on('console', m => { if (m.type() === 'error') z._errs.push(m.text()); });
-    if (await first(z, base + '/next/#/', () => !!document.querySelector('#view section.gdr') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 칸(질문 뒤 · ' + nm + ')', '20초 안에 안 나옴');
-    const r = await gdrRead(z);
-    const ok = want === 'one' ? r.one && r.links.join() === '#/gdr,#/why' && /^오늘 점수 준비 (\d+|\?) \/ 22 · 다시 하기 ›$/.test(r.text) && r.cells === 0 && !r.lock && !r.rest && r.h <= 64.5
-      : want === 'rest' ? r.rest && r.text === '오늘은 담는 칸을 닫아 둘게' && r.cells === 0 && !r.lock && !r.one && r.h <= 64.5 : openBox(r);
-    if (!ok) fail(NEW_NAME + ' 칸(질문 뒤 · ' + nm + ' — 첫 화면 칸 자리: ' + (want === 'one' ? '오늘 점수 한 줄' : want === 'rest' ? '닫는 한 줄' : '열린 칸') + ')', JSON.stringify(r));
-    if (want === 'one') { // 열린 칸은 #/gdr 에서 · 보유종목까지 한 번 더 돌며 콘솔 오류(404 포함) 0
-      for (const hh of ['#/gdr', '#/me']) { await z.evaluate(x => { location.hash = x; }, hh); await z.waitForTimeout(700); }
+    if (await first(z, base + '/next/#/', () => !!document.querySelector('#view nav.w-go4') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 바로 가기(질문 뒤 · ' + nm + ')', '20초 안에 안 나옴');
+    const zg = await z.evaluate(() => ({go: document.querySelector('#view nav.w-go4 a')?.getAttribute('href') ?? null, box: !!document.querySelector('#view section.gdr')}));
+    if (READY.has('gdr') && (zg.go !== '#/gdr' || zg.box)) fail(NEW_NAME + ' 바로 가기(질문 뒤 · ' + nm + ' — #/gdr · 첫 화면 큰 칸 0)', JSON.stringify(zg));
+    if (READY.has('gdr')) {
+      for (const hh of ['#/gdr', '#/me']) { await z.evaluate(x => { location.hash = x; }, hh); await z.waitForTimeout(700); } // 보유종목까지 한 번 더 돌며 콘솔 오류(404 포함) 0
       await z.evaluate(() => { location.hash = '#/gdr'; }); await z.waitForFunction(() => !!document.querySelector('#view section.gdr.page'), null, {timeout: 8000}).catch(() => {}); await z.waitForTimeout(300);
-      const r3 = await gdrRead(z);
-      if (!openBox(r3)) fail(NEW_NAME + ' 칸(질문 뒤 · 오늘 끝냄 → #/gdr 은 열린 칸 · 칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)', JSON.stringify(r3));
+      const r = await gdrRead(z);
+      const ok = want === 'one' ? openBox({...r, one: false}) && r.today === '#/why' : want === 'rest' ? r.rest && r.cells === 0 && !r.lock : openBox(r);
+      if (!ok) fail(NEW_NAME + ' 칸(질문 뒤 · ' + nm + ' — #/gdr: ' + (want === 'one' ? '열린 칸 + 오늘 점수 줄 → #/why' : want === 'rest' ? '닫는 줄' : '열린 칸') + ')', JSON.stringify(r));
     }
     if (z._errs.length) fail('화면 오류', '질문 뒤 ' + nm + ' ' + z._errs.join(' | ').slice(0, 200));
     await ctx.close(); bump('첫 화면 칸 자리 길');
@@ -332,7 +360,7 @@ for (const w of [320, 360, 390]) {
   if (!m.fold || !m.fold.wrapsLetter || m.fold.open !== 'false' || m.fold.h > m.fold.third + 1 || m.fold.btn < 44 || m.fold.label !== '펼치기') fail('보유종목 편지 접기([7] 8 — 첫 화면 ⅓ 안 · 「펼치기」 44px)', JSON.stringify(m.fold));
   if (m.links.includes('#/why')) fail('보유종목 바로 가기에 「왜 사? 열한 질문」이 남음([3] 8 — 가운데 단추와 겹침)', '#/why');
   // 열면 고도리는 한 번만 — 첫 화면에 갔다가 「나」 칸에 다시 와도 바로 글
-  await q.evaluate(() => { location.hash = '#/'; }); await q.waitForFunction(() => !!document.querySelector('#view section.wy') && !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => {});
+  await q.evaluate(() => { location.hash = '#/'; }); await q.waitForFunction(() => !!document.querySelector('#view [data-w="find"]') && !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => {});
   await q.evaluate(() => { location.hash = '#/me'; }); await q.waitForSelector('#view .m4-letter', {timeout: 20000}).catch(() => {});
   if (await q.evaluate(() => document.querySelector('#view .m4-letter')?.classList.contains('intro') !== false)) fail('열면 ' + NEW_NAME + ' 두 번 나옴', '「나」 칸을 다시 열어도 처음 그림');
   bump('「나」 칸 편지');
