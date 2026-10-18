@@ -111,6 +111,9 @@ const ring = () => h('span', {class: 'wy-dot wy-n', 'aria-hidden': 'true'});
 /** 내가 쓴 글 — 남의 글(쓰지 않을 말 셈 밖 · 영어로 바꾸지 않음) */
 const mine = t => h('q', {class: 'wy-mine', 'data-proper': '', lang: /[가-힣]/.test(t) ? 'ko' : null, text: t});
 const VTONE = {'좋아, 정해 둔 대로만': 'g', '반만 준비됐어': 'y', '오늘은 쉬어 가자': 'r'};
+/** 보이는 판정 글(사장님 2026-10-19 02:03 [화면] 4 「골똘이 말(… 판정 글)은 물음으로 끝내라」) — 기록에 적는 값 · V_CODE · VTONE · 신호(tally) 셈은 위 그대로 · 화면에만 이 글 */
+const VSHOW = {'좋아, 정해 둔 대로만': '좋아, 정해 둔 대로만 할까?', '반만 준비됐어': '반만 준비됐을까?', '오늘은 쉬어 가자': '오늘은 쉬어 갈까?'};
+const vShow = v => VSHOW[v] ?? String(v ?? '?');
 /** 묶음 막대 넷 — 묶음 준비 ÷ 묶음 최대([5] 5 · 준비된 만큼 참 · 색은 그 묶음 점수로) */
 function bars(groups, small) {
   return h('div', {class: 'wy-bars' + (small ? ' sm' : '')}, ...GROUPS.map(([n, qs]) => {
@@ -349,10 +352,10 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
   };
   const resView = () => {
     const J = last, ready = readyOf(J), tone = VTONE[J.verdict];
-    live.textContent = `${J.verdict} · 준비 ${ready} / ${MAX}`;
+    live.textContent = `${vShow(J.verdict)} · 준비 ${ready} / ${MAX}`;
     const tt = h('i', {class: 'wy-fill wy-' + tone}); tt.style.setProperty('width', Math.round(ready / MAX * 100) + '%');
     return h('div', {class: 'wy-res'}, // [5] 2 — 판정 글이 가장 큼 · 준비는 그 밑에 작게
-      h('p', {class: 'wy-verdict wy-v' + tone}, icon(32), h('b', {text: `「${J.verdict}」`})),
+      h('p', {class: 'wy-verdict wy-v' + tone}, icon(32), h('b', {text: `「${vShow(J.verdict)}」`})),
       ...(stopOf(J.answers) ? [h('p', {class: 'wy-stop', text: '빌린 돈이나 곧 쓸 돈이면 점수와 상관없이 쉬어 가요.'})] : []),
       h('p', {class: 'wy-score'}, h('span', {text: '준비 '}), h('b', {class: 'num', text: String(ready)}), h('span', {class: 'num', text: ` / ${MAX}`}),
         h('span', {class: 'wy-reds'}, h('span', {text: ' · '}), dot('r'), h('span', {class: 'num', text: ` ${J.reds}개`}))),
@@ -399,7 +402,7 @@ function recBox(here) {
   for (const r of list.slice(0, 30)) {
     const rd = readyOf(r);
     const row = h('div', {class: 'wy-rec'},
-      h('p', {class: 'wy-rh'}, h('b', {text: fmtDay(r.at)}), h('span', {text: ' · '}), h('span', {class: 'num', text: rd == null ? '준비 ?' : `준비 ${rd} / ${MAX}`}), h('span', {class: 'wy-v' + (VTONE[r.verdict] ?? 'y'), text: ` · ${r.verdict}`})));
+      h('p', {class: 'wy-rh'}, h('b', {text: fmtDay(r.at)}), h('span', {text: ' · '}), h('span', {class: 'num', text: rd == null ? '준비 ?' : `준비 ${rd} / ${MAX}`}), h('span', {class: 'wy-v' + (VTONE[r.verdict] ?? 'y'), text: ` · ${vShow(r.verdict)}`})));
     const rs = r.code || r.name ? h('p', {class: 'wy-rs'}, h('span', {class: 'wy-stn', 'data-proper': '', text: String(r.name || r.code)}),
       h('span', {text: r.price > 0 ? ` · 그날 값 ${won(r.price)}` + (r.day ? ` · ${NX.md(r.day)} 종가` : '') : ' · 그날 값 ?'})) : null;
     // 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 3 · 일꾼 KB2) — 회사 주식 기록만 · 종목 줄 오른쪽 끝 · 값은 글상자가 오늘 값으로 채움([6] 3 「오늘 값」 — 그날 값 · 답 · 준비 점수는 담지 않음)
@@ -463,13 +466,26 @@ function keep(r, yes) {
     all[k] = {...all[k], kept: v}; localStorage.setItem(KEY, JSON.stringify(all)); return true;
   } catch { return false; }
 }
+/** 한 달(장 스무 번) 지났나 — 날짜 줄(days.json)로 셈 · 날짜 줄을 못 받으면 달력 28일 · {due, W} */
+async function dueOf(r) {
+  let W = null; try { W = await windowOf(r); } catch (e) { console.error(e); }
+  const calOld = Number.isFinite(Date.parse(r.at)) && (Date.now() - Date.parse(r.at)) / 864e5 >= 28;
+  return {due: W ? !!W.e : calOld, W};
+}
+/** 첫 화면 금빛 한 줄 「그날 정한 대로 했어?」(사장님 2026-10-19 02:03 [화면] 3) — 한 달 지났는데 아직 답하지 않은 기록이 하나라도 있나 · 셈은 매매일지 한 달 칸(laterBox)과 같음 */
+export async function monthDue() {
+  for (const r of records()) {
+    if (!fullRec(r) || r.kept?.a === 'yes' || r.kept?.a === 'no') continue;
+    if ((await dueOf(r)).due) return true;
+  }
+  return false;
+}
 /** 한 달 칸 — 아직이면 한 줄 · 지났으면 「그날 정한 대로 했어?」([5] 8) → 답한 뒤 값([5] 9) */
 async function laterBox(r, out) {
   const busy = on => (on ? out.setAttribute('aria-busy', 'true') : out.removeAttribute('aria-busy')); // 셈하는 동안만 aria-busy(읽기 프로그램 · 검사가 끝난 때를 앎)
   busy(true); out.replaceChildren(h('p', {class: 'note', text: '한 달 뒤 결과를 셈하는 중…'}));
-  let W = null; try { W = await windowOf(r); } catch (e) { console.error(e); }
-  const calOld = Number.isFinite(Date.parse(r.at)) && (Date.now() - Date.parse(r.at)) / 864e5 >= 28;
-  if (!W ? !calOld : !W.e) { out.replaceChildren(h('p', {class: 'note', text: '한 달 뒤에 그날 정한 대로 했는지 물어요.'})); busy(false); return; }
+  const {due, W} = await dueOf(r);
+  if (!due) { out.replaceChildren(h('p', {class: 'note', text: '한 달 뒤에 그날 정한 대로 했는지 물어요.'})); busy(false); return; }
   const showVals = async focus => {
     busy(true);
     const kd = h('p', {class: 'wy-kd', tabindex: '-1', text: r.kept?.a === 'yes' ? '그날 정한 대로 했어요.' : '그날 정한 대로 하지 않았어요.'});
