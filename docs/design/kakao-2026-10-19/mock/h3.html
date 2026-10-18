@@ -27,28 +27,28 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 
 /* 날짜 알약 — 가운데 · 누르지 않는 머리표 */
 .pill{display:flex;justify-content:center;margin:4px 0 12px}
-.pill span{background:#1C1C1C;border-radius:20px;padding:6px 18px;font-size:17px;color:#FFFFFF}
-.q{color:#FEE500;font-weight:700}
+.pill>span{background:#1C1C1C;border-radius:20px;padding:6px 18px;font-size:17px;color:#FFFFFF}
+.q{color:#FEE500;font-weight:700;margin-right:6px}
 .up{color:#FF5A65}.dn{color:#49A8F8}
 
 /* 선반 — 칸마다 위에 가는 선 하나 · 왼쪽 끝은 모두 같은 자리 */
-.shelf{border-top:1px solid #2C2C2C;padding:14px 0 14px}
-.talk{border-bottom:1px solid #2C2C2C}
+.shelf{border-top:1px solid #2C2C2C;padding:10px 0}
+.talk{border-bottom:1px solid #2C2C2C;padding-bottom:0}
 .lab{display:flex;align-items:center;justify-content:space-between;font-size:17px;color:#A8A8A8;letter-spacing:0.02em;min-height:24px}
 .num{font-family:"Gowun Batang",serif;font-weight:400;letter-spacing:-0.02em;line-height:1}
 
 /* 선반 1 · 오늘 장 — 큰 숫자 두 개를 나란히 */
 .today{display:block}
-.today .row{display:flex;margin-top:10px}
+.today .row{display:flex;margin-top:6px}
 .today .col{flex:1 1 0;min-width:0}
 .today .col+.col{border-left:1px solid #2C2C2C;padding-left:16px}
-.today .k{display:block;font-size:17px;color:#FFFFFF;margin-bottom:6px}
+.today .k{display:block;font-size:17px;color:#FFFFFF;margin-bottom:4px}
 .today .num{font-size:34px}
 
 /* 선반 2 · 본질 — 앵무새 도장은 이름표 오른쪽 끝에 작게 한 번 */
 .mark{display:inline-flex;align-items:center;gap:8px;color:#A8A8A8}
 .mark img{width:28px;height:28px;display:block}
-.ess p[data-ess="1"]{font-size:22px;line-height:1.42;margin-top:8px;word-break:keep-all}
+.ess p[data-ess="1"]{font-size:22px;line-height:1.4;margin-top:4px;word-break:keep-all}
 .ess details summary{list-style:none;min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#49A8F8;cursor:pointer}
 .ess details summary::-webkit-details-marker{display:none}
 .ess details p{font-size:17px;color:#D6D6D6;margin-bottom:10px;word-break:keep-all}
@@ -56,15 +56,16 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .kk-btn{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:flex-end;gap:6px;font-size:17px;color:#FFFFFF}
 
 /* 선반 3 · 내 기록 — 노랑은 「내 것」에만: 큰 노란 숫자 */
-.mine{display:flex;align-items:center;min-height:64px}
+.mine{display:flex;align-items:center;min-height:52px}
 .mine .lab{flex:0 0 auto;margin-right:auto}
 .mine .v{display:flex;align-items:baseline;gap:6px;color:#FEE500;font-size:17px}
 .mine .v+.v{margin-left:24px}
 .mine .num{font-size:40px;color:#FEE500}
 
 /* 선반 4 · 골똘이 — 말풍선 하나 + 칸 넷을 한 줄 · 세로 가는 선 */
-.say{display:inline-block;background:#282828;border-radius:22px;padding:10px 18px;font-size:20px;margin-top:8px}
-.gdr{display:flex;margin-top:12px;border-top:1px solid #2C2C2C}
+.saywrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.say{display:inline-block;background:#282828;border-radius:22px;padding:10px 18px;font-size:20px}
+.gdr{display:flex;margin-top:10px;border-top:1px solid #2C2C2C}
 .gdr a{flex:1 1 0;min-height:52px;display:flex;align-items:center;font-size:17px;color:#FFFFFF;padding-left:12px}
 .gdr a:first-child{padding-left:0}
 .gdr a+a{border-left:1px solid #2C2C2C}
@@ -152,8 +153,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   </a></div>
 
   <section class="shelf talk">
-    <div class="lab"><span>골똘이</span><button class="kk-btn" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button></div>
-    <p class="say serif" data-say>오늘은 쉬어 갈까?</p>
+    <div class="saywrap"><p class="say serif" data-say>오늘은 쉬어 갈까?</p><button class="kk-btn" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button></div>
     <nav class="gdr" data-w="gdr" aria-label="골똘이 칸">
       <a href="#/why">골똘이</a>
       <a href="#/cal">달력</a>

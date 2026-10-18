@@ -25,19 +25,20 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 #view{padding:0 20px}
 
 /* 날짜 알약 — 숫자만 고운바탕 */
-.pill{display:flex;justify-content:center;margin:12px 0 28px}
-.pill a{background:#1C1C1C;border-radius:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;column-gap:10px;min-height:48px;padding:11px 20px 9px;font-size:17px;color:#FFFFFF}
+.pill{display:flex;justify-content:center;margin:8px 0 20px}
+.pill .in{background:#1C1C1C;border-radius:24px;display:flex}
+.pill a{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:baseline;justify-content:center;column-gap:8px;min-height:48px;padding:11px 16px 9px;font-size:17px;color:#FFFFFF}
 .pill .q{font-weight:700}
-.pill .n{font-family:"Gowun Batang",serif;font-size:19px}
+.pill .n{font-family:"Gowun Batang",serif;font-size:17px}
 .up{color:#FF5A65}.dn{color:#49A8F8}
 
 /* 본질 = 새긴 이름판 — 회색 판 속 머리카락 테 · 가운데 맞춤 · 넓은 숨 */
 .plate{background:#282828;border-radius:28px;padding:8px}
-.plate .frame{border:1px solid #4E4E4E;border-radius:21px;padding:28px 20px 0;text-align:center}
+.plate .frame{border:1px solid #4E4E4E;border-radius:21px;padding:24px 20px 0;text-align:center}
 .plate .big{display:block;font-size:56px;line-height:1;color:#FFFFFF;letter-spacing:.04em}
-.plate .rule{display:block;width:40px;height:1px;background:#8A8A8A;margin:22px auto 20px}
+.plate .rule{display:block;width:40px;height:1px;background:#8A8A8A;margin:18px auto 16px}
 .plate p[data-ess="1"]{font-size:20px;line-height:1.6;color:#FFFFFF;word-break:keep-all;max-width:15.5em;margin:0 auto}
-.plate .foot{display:flex;align-items:center;justify-content:space-between;margin-top:20px;border-top:1px solid #3A3A3A;padding:4px 0}
+.plate .foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;border-top:1px solid #3A3A3A;padding:4px 0}
 .plate details{flex:1;text-align:left}
 .plate summary{list-style:none;min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#49A8F8;cursor:pointer;padding-left:4px}
 .plate summary::-webkit-details-marker{display:none}
@@ -45,7 +46,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .kk-btn{width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A !important;display:flex;align-items:center;justify-content:center}
 
 /* 내 말 = 노랑 · 숫자는 크게 새기고 단위는 작게 */
-.mine{display:flex;justify-content:flex-end;align-items:flex-end;gap:10px;margin-top:20px}
+.mine{display:flex;justify-content:flex-end;align-items:flex-end;gap:10px;margin-top:16px}
 .mine .t{font-size:17px;color:#BDBDBD;padding-bottom:4px}
 .mine a{display:flex;align-items:baseline;background:#FEE500;color:#111111;border-radius:24px;padding:8px 22px 10px;min-height:56px}
 .mine .cell{display:flex;align-items:baseline;gap:4px}
@@ -54,7 +55,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .mine span{font-size:17px;color:#111111}
 
 /* 받은 말 = 골똘이 */
-.from{margin-top:20px;display:flex;gap:12px;align-items:flex-start}
+.from{margin-top:12px;display:flex;gap:12px;align-items:flex-start}
 .from .av{flex:0 0 48px;width:48px;height:48px;border-radius:24px;background:#1B1B1B;display:flex;align-items:center;justify-content:center}
 .from .av img{width:40px;height:40px}
 .from .who{font-size:17px;color:#BDBDBD;margin-bottom:4px}
@@ -62,11 +63,11 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 
 /* 골똘이 칸 — 상자 없이 머리카락 선 사이 글자 넷 */
 .gdr{margin:12px 0 0 60px;display:flex;align-items:center;border-top:1px solid #3A3A3A;border-bottom:1px solid #3A3A3A}
-.gdr a{flex:1;min-height:52px;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:19px;color:#FFFFFF}
+.gdr a{flex:1;min-height:50px;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:19px;color:#FFFFFF}
 .gdr i{flex:0 0 1px;height:20px;background:#3A3A3A}
 
 /* 전부 보기 — 양 옆 머리카락 선 */
-.all{margin-top:8px}
+.all{margin-top:4px}
 .all summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:16px;font-size:17px;color:#BDBDBD;cursor:pointer;white-space:nowrap}
 .all summary::-webkit-details-marker{display:none}
 .all summary::before,.all summary::after{content:"";flex:1;height:1px;background:#3A3A3A}
@@ -102,7 +103,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   .ttl{font-size:20px;letter-spacing:.18em;text-indent:.18em}
   #view{padding:0 14px}
   .pill{margin:8px 0 14px}
-  .pill a{padding:8px 14px 6px;column-gap:8px}
+  .pill a{flex-wrap:wrap;white-space:normal;padding:8px 14px 6px;column-gap:8px}
   .plate .frame{padding:18px 12px 0}
   .plate .big{font-size:42px}
   .plate .rule{margin:14px auto 12px}
@@ -124,7 +125,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   </span>
 </header>
 <main id="view">
-  <div class="pill" data-w="today"><a data-num href="#/f/day"><span class="q">?</span><span>10월 <span class="n">12</span>일</span><span class="dn">코스피 <span class="n">−3.28</span>%</span><span class="dn">코스닥 <span class="n">−4.36</span>%</span></a></div>
+  <div class="pill" data-w="today"><span class="in"><a data-num href="#/f/day"><span class="q">?</span><span>10월 <span class="n">12</span>일</span><span class="dn">코스피 <span class="n">−3.28</span>%</span><span class="dn">코스닥 <span class="n">−4.36</span>%</span></a></span></div>
 
   <section class="plate" data-w="ess">
     <div class="frame">
