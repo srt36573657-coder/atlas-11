@@ -14,8 +14,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
-import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {oldToNewDeep} from './rename.mjs';
+import {gloss} from '../../../site/next/glossary.js'; // 낱말표(2026-10-18 [10] 1) — 새 쪽 기간 단추 글(20거래일 → 한 달) // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {shardOf} from './shard/part.mjs'; // --shard k/n = 한 번 다 돌 때의 일감(회사 · 없는 번호 · 세 폭)을 n 몫으로 가른 k 번째만(깃허브 여러 대 · 합치기 shard/merge.mjs · 2026-10-18 고도리 길 1)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
@@ -62,6 +64,7 @@ const order = [];
 for (const x of [...special, ...picked]) if (!order.includes(x)) order.push(x);
 { const rest = codes.filter(c => !order.includes(c)), step = Math.max(1, Math.floor(rest.length / Math.max(1, 200 - order.length))); for (let i = 0; i < rest.length && order.length < 200; i += step) order.push(rest[i]); }
 const list = ALL ? [...order, ...codes.filter(c => !order.includes(c))] : LIMIT ? order.slice(0, LIMIT) : order;
+const SH = shardOf(); // 몫(--shard k/n · 없으면 모두 내 몫)
 for (const x of codes.filter(c => !wideSet.includes(c))) { if (wideSet.length >= 12) break; wideSet.push(x); }
 const wide = wideSet.slice(0, WIDE);
 
@@ -128,7 +131,7 @@ const NEW_X = () => {
     aria: svg?.getAttribute('aria-label') ?? null, q: T(v.querySelector('.ppast-chart > p.empty')), yr: [...v.querySelectorAll('.ppast-yr span')].map(T), ax: [...v.querySelectorAll('.ppast-ax span')].map(T), hl: T(v.querySelector('.ppast-hl')),
     key: [...v.querySelectorAll('.ppast-key > span')].map(T),
     trio: [...v.querySelectorAll('.ppast-trio > div')].map(d => { const x = d.querySelector('b'); return [T(d.querySelector('span')), T(x), (x?.className.match(/\b(up|dn|fl|q)\b/) || [])[1] ?? '']; }),
-    won: [...v.querySelectorAll('p.ppast-won')].map(T), jump: [...v.querySelectorAll('p.ppast-jump')].map(T),
+    won: [...v.querySelectorAll('p.ppast-won')].map(T), jump: [...v.querySelectorAll('p.ppast-jump, .ppast-jump > .nw-t')].map(T),
     jc: svg ? svg.querySelectorAll('circle.ppast-jmp').length : 0, xc: svg ? svg.querySelectorAll('circle.ppast-ext').length : 0,
     finH: T([...v.querySelectorAll('h2.sec')].find(x => x.nextElementSibling === fin)),
     fin: fin ? [...fin.querySelectorAll('h3')].map(h3 => ({n: T(h3), rows: [...(h3.nextElementSibling?.querySelectorAll('li') ?? [])].map(li => { const f = li.querySelector('.ppast-fb'); return [T(li.querySelector('.ppast-y')), T(li.querySelector('.ppast-fv')), f?.style.width || '', f?.classList.contains('neg') ? 'neg' : 'pos']; })})) : [],
@@ -175,7 +178,7 @@ function compare(code, perName, o, n) {
   same('몸값 접은 칸 이름', o.sum, n.sum); same('몸값', o.chk, n.chk); same('출처 줄', o.src, n.src);
   same('다음 챕터 미리 보기', o.nx.length ? [...new Set(o.nx)] : [], n.nx[1] ? [n.nx[1]] : []);
   if (n.nx[0] !== '5 누구와 다투나') fail('다음 챕터 이름', at + ' ' + n.nx[0]);
-  if (n.next[0] !== '다음 챕터 · 5 누구와 다투나 ›' || !/^(#\/w\/[0-9A-Z]{6}\/rivals|\/atlas\/#\/c\/[0-9A-Z]{6}\/rivals)$/.test(n.next[1]) || !n.next[1].includes(code)) fail('다음 챕터 고리', at + ' ' + JSON.stringify(n.next));
+  if (n.next[0] !== '다음 단 · 5 누구와 다투나 ›' || !/^(#\/w\/[0-9A-Z]{6}\/rivals|\/atlas\/#\/c\/[0-9A-Z]{6}\/rivals)$/.test(n.next[1]) || !n.next[1].includes(code)) fail('다음 챕터 고리', at + ' ' + JSON.stringify(n.next));
   const ch = n.chaps; if (ch.length !== 7 || ch.filter(x => x[1]).length !== 1 || !ch[3][1] || !ch[3][0].startsWith('4') || ch.slice(3).some(x => !x[2].includes(code))) fail('챕터 일곱', at + ' ' + JSON.stringify(ch).slice(0, 300));
   // 맨 아래 — 자료 줄 · 「?」 알림은 그대로 · 알림 글은 쓰지 않을 말 둘만 바꿈
   const oF = o.foot.map(t => (t === OLD_SAFE ? NEW_SAFE : t));
@@ -196,7 +199,7 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
     tm.new(() => settle(pn, async () => { await pn.goto(base + NEXT + '#/w/' + c0 + '/past'); return pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '새 쪽 첫 열림', fail}))]);
   await Promise.all([po.waitForFunction(() => !!document.querySelector('#view > .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => fail('옛 쪽 첫 열림', c0)), pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).catch(() => fail('새 쪽 첫 열림', c0))]);
   let first = true;
-  for (const code of list) {
+  for (const code of SH.part('c', list)) {
     if (!CO[code]) { fail('목록에 없는 번호', code); continue; }
     const ok = await Promise.all([goOld(po, code).then(() => true, e => { fail('옛 쪽 열림', code + ' ' + e.message.slice(0, 80)); return false; }), goNew(pn, code).then(() => true, e => { fail('새 쪽 열림', code + ' ' + e.message.slice(0, 80)); return false; })]);
     if (!ok[0] || !ok[1]) continue;
@@ -205,7 +208,7 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
       if (a !== '1년' || z !== '1년') fail('처음 기간', a + ' · ' + z); first = false;
     }
     for (const [, name] of P) {
-      const [ca, cb] = await Promise.all([tm.old(() => clickPer(po, '#view .seg.seg3 button', name)), tm.new(() => clickPer(pn, '#view .ppast-seg button', name))]);
+      const [ca, cb] = await Promise.all([tm.old(() => clickPer(po, '#view .seg.seg3 button', name)), tm.new(() => clickPer(pn, '#view .ppast-seg button', gloss(name)))]);
       if (!ca || !cb) { fail('기간 단추', code + ' ' + name + ' ' + ca + ' ' + cb); continue; }
       await tm.new(() => frames(pn));
       const [o, n] = await Promise.all([tm.old(() => po.evaluate(OLD_X).then(x => oldToNewDeep(x))), tm.new(() => pn.evaluate(NEW_X))]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
@@ -223,12 +226,14 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
     if (counts['회사'] % 100 === 0) console.log(`… ${counts['회사']}곳 · 실패 ${counts.fail || 0} · ${Math.round((Date.now() - t0) / 1000)}초`);
   }
   // 없는 번호 · 깨진 주소 — 새 쪽은 「?」 줄과 찾기 고리(옛 쪽은 「없는 주소」)
+  for (const _ of SH.part('x', ['없는 번호'], 20)) { // 몫 하나에서만(--shard)
   await pn.evaluate(() => { document.querySelector('#view > .ppast')?.setAttribute('data-stale', '1'); location.hash = '#/w/ZZZZZZ/past'; });
   await pn.waitForFunction(() => !document.querySelector('#view .boot') && !document.querySelector('#view > .ppast'), null, {timeout: 20000}).catch(() => {});
   const miss = await pn.evaluate(() => ({t: document.querySelector('#view .empty')?.textContent ?? '', a: document.querySelector('#view a.more')?.getAttribute('href') ?? ''}));
   if (miss.t !== '? 이 번호의 회사를 찾지 못했어요.' || miss.a !== '#/find') fail('없는 번호', JSON.stringify(miss));
   if (pn._errs.length) { fail('새 쪽 화면 오류', '없는 번호 ' + pn._errs.join(' | ').slice(0, 200)); pn._errs.length = 0; }
   bump('없는 번호');
+  } // 없는 번호 몫 끝
   await po.context().close(); await pn.context().close();
 }
 
@@ -258,7 +263,7 @@ const LAYOUT = () => {
   }
   return out;
 };
-for (const [w, big] of wide.length ? [[320, false], [360, false], [390, false], [320, true]] : []) {
+for (const [w, big] of SH.part('w', wide.length ? [[320, false], [360, false], [390, false], [320, true]] : [], 4 * wide.length, x => x.join(''))) {
   const p = await page(w, 640, big ? () => { try { localStorage.setItem('atlas:font', '2'); } catch { /* 기억 못 함 */ } } : null);
   await p.goto(base + NEXT + '#/w/' + wide[0] + '/past'); await p.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).catch(() => fail('새 쪽 열림(폭)', w + ' ' + wide[0]));
   for (const code of wide) {
@@ -266,7 +271,7 @@ for (const [w, big] of wide.length ? [[320, false], [360, false], [390, false], 
     try { await goNew(p, code); } catch (e) { fail('새 쪽 열림(폭)', where + ' ' + e.message.slice(0, 80)); continue; }
     if (big && !(await p.evaluate(() => document.documentElement.classList.contains('f3')))) fail('아주 큰 글씨가 안 켜짐', where);
     for (const [, name] of P) {
-      if (!(await clickPer(p, '#view .ppast-seg button', name))) { fail('기간 단추', where + ' ' + name); continue; }
+      if (!(await clickPer(p, '#view .ppast-seg button', gloss(name)))) { fail('기간 단추', where + ' ' + name); continue; }
       await frames(p); await p.waitForTimeout(30); await frames(p);
       await p.evaluate(TIPS, ['#view > .ppast .ppast-lc svg', '#view > .ppast .ppast-tip']); // 긴 날 값 글도 한 번 띄워 봄
       const L = await p.evaluate(LAYOUT); const at = where + ' ' + name;
@@ -286,7 +291,7 @@ for (const [w, big] of wide.length ? [[320, false], [360, false], [390, false], 
 await b.close();
 
 const sec = Math.round((Date.now() - t0) / 1000);
-const res = {made: new Date().toISOString(), base, path: NEXT, mode: ALL ? 'all' : LIMIT ? 'limit ' + LIMIT : 'sample', companies: list.length, wide, counts, fails, warn: warn.slice(0, 50), sec, time: tm.get(), net: netSummary()};
+const res = {made: new Date().toISOString(), base, path: NEXT, mode: ALL ? 'all' : LIMIT ? 'limit ' + LIMIT : 'sample', companies: list.length, wide, ...SH.info(), counts, fails, warn: warn.slice(0, 50), sec, time: tm.get(), net: netSummary()};
 console.log(JSON.stringify({time: res.time, net: res.net})); // 옛 쪽 · 새 쪽 여는 데 쓴 초 · 다시 받은 수(명령문 [1] 9)
 if (OUT) await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(res, null, 1) + '\n');
 console.log(`4단 지나온 길 맞대기 — 회사 ${counts['회사'] || 0}곳 · 기간 화면 ${counts['화면(기간)'] || 0} · 맞댄 칸 ${counts['맞댄 칸'] || 0} · 숫자 낱말 ${counts['숫자 낱말'] || 0} · 선 누르기 ${counts['선 누르기'] || 0} · 폭 화면 ${counts['폭 화면'] || 0}(세 폭 + 아주 큰 글씨 × ${wide.length}곳) · ${sec}초`);

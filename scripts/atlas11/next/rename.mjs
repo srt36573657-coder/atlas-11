@@ -7,6 +7,8 @@
 //   ③ jsStrings(소스) — 자바스크립트 소스의 따옴표 글 · 틀 글(` `)만 뽑음(풀이 글 · 정규식은 뺌) — 시험의 정적 검사가 씀
 // 2026-10-17 17:34 「보드리를 고도리로 변경하자」 · 17:57 「… 시스템에 세팅후 작업해」(규칙 76) — 이름은 site/next/brand.js 한 곳에서 읽음(여기 글자를 박지 않음)
 import {BRAND, josa} from '../../../site/next/brand.js';
+import {gloss} from '../../../site/next/glossary.js'; // 낱말표(2026-10-18 [10] 1) — 새 쪽은 그려진 글을 낱말표로 바꾸므로 옛 쪽 글도 같은 표로 맞춰 맞댐
+const GLOSS_RE = /갈래|몸값|한 회사 한 표|큰 회사는 크게|거래일|다섯 문|쉬는 돈|챕터/;
 export const NEW_NAME = BRAND.ko;
 export const SAFE_LINE = josa(NEW_NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'; // 새 쪽 안전 문장(옛 「아틀란스는 …」 · 「보드리는 …」)
 export const TITLE_TAIL = ' · ' + NEW_NAME; // 창 제목 끝(옛 「 · 새 아틀란스」 · 「 · 보드리」)
@@ -32,10 +34,12 @@ const HOLD = '\u0000';
 export function oldToNew(s, keep = []) {
   if (s == null) return s;
   let t = String(s);
-  if (!OLD_NAME_RE.test(t)) return t;
+  const nm = OLD_NAME_RE.test(t), gl = GLOSS_RE.test(t);
+  if (!nm && !gl) return t;
   const held = [];
-  for (const k of [...new Set(keep)].filter(x => x && OLD_NAME_RE.test(x)).sort((a, b) => b.length - a.length)) if (t.includes(k)) { t = t.split(k).join(HOLD + held.length + HOLD); held.push(k); }
-  for (const [re, to] of RULES) t = t.replace(re, to);
+  for (const k of [...new Set(keep)].filter(x => x && (OLD_NAME_RE.test(x) || GLOSS_RE.test(x))).sort((a, b) => b.length - a.length)) if (t.includes(k)) { t = t.split(k).join(HOLD + held.length + HOLD); held.push(k); }
+  if (nm) for (const [re, to] of RULES) t = t.replace(re, to);
+  if (gl) t = gloss(t); // 옛 쪽의 옛 낱말(갈래 · 20거래일 …) → 새 쪽과 같은 말 · 원문(keep)은 그대로
   return held.length ? t.replace(/\u0000(\d+)\u0000/g, (_, i) => held[+i]) : t;
 }
 /** 뽑은 것(글 · 줄 · 칸 묶음) 속 모든 글을 oldToNew 로 — 숫자 · 참 거짓 · 빈 값은 그대로 */

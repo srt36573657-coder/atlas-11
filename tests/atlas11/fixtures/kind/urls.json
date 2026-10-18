@@ -1,0 +1,7 @@
+{
+ "_note": "형식 견본(format sample) — kind.mjs --fixture 로 돌릴 때 주소 → 파일 · 투자경고 · 위험 KIND 주소는 날짜가 들어가 여기 없음(→ 네이버 쪽 없음 = 「?」)",
+ "https://kind.krx.co.kr/investwarn/adminissue.do?method=searchAdminIssueSub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=1&forward=adminissue_down": "adminissue-euckr.html",
+ "https://kind.krx.co.kr/investwarn/tradinghaltissue.do?method=searchTradingHaltIssueSub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=1&forward=tradinghaltissue_down": "tradinghalt-utf8.html",
+ "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13": "corplist-euckr.html",
+ "https://finance.naver.com/sise/trading_halt.naver": "naver-trading-halt-euckr.html"
+}

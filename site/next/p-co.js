@@ -1,11 +1,13 @@
-/* 3단 회사 자세히 — 새 아틀란스(/next/) 보는 화면 #/w/<번호> 의 챕터 칩 밑 칸(app.js vWatch 가 page('co', 번호) 로 부름)
+/* 3단 회사 자세히 — 고도리(/next/) 보는 화면 #/w/<번호> 의 머리(길 표시 · 이름 · 오늘 값 · 탭 넷 · 꼬리표) 밑 칸(app.js vWatch 가 page('co', 번호) 로 부름)
    사장님 2026-10-17(싱가포르) 04:04 「첫화면 부터 마지막 페이지 까지 모두 바꿔」 · 04:23 「정말 빠르면서도 정밀하게 · 에이전트 총 동원해」
-   지금 아틀란스(site/atlas/atlas.js) viewCompany · coEntry · lineChart · whyBox · outBox · funnel · stopSay · viewMissing 의 셈과 글을 그대로 옮김
-   보는 화면이 이미 그린 것(큰 선 · 이름 · 20거래일 · 하루 · 업종 채널 · 챕터 일곱 · 같은 업종 다음 볼 것)은 다시 그리지 않음 — 여기는 그 밖의 것만:
-     7단 중 3단 · 시장 · 번호 · 1주 값 · 고른 곳 줄 → 업종 평균과 견준 20거래일 그림(기준일 = 100 · 고른 날 금빛 세로선) → 세 숫자 · 100만 원 줄 · 출처
-     → 왜 들었나요?(넘은 갈래마다 해마다 값) / 왜 밖인가요?(멈춘 자리 · 까닭 · 깔때기 두 갈래) → 다음 챕터 → 자료 줄 · 안전 문장
+   옛 판(site/atlas/atlas.js) viewCompany · coEntry · lineChart · whyBox · outBox · funnel · stopSay · viewMissing 의 셈과 글을 그대로 옮김(사장님 2026-10-18 [10] 1 · 2 로 낱말만 바꿈:
+   20거래일 → 한 달 · 멍거 갈래 · 린치 갈래 → 멍거 조건 · 린치 조건(큰 업종이 아님) · 깔때기 두 갈래 → 깔때기 두 가지 · 몸값 → 회사 크기 — 낱말표 site/next/glossary.js 와 같은 말 · 검사가 옛 글과 맞댈 때 같은 표로 바꿔 견줌)
+   보는 화면이 이미 그린 것(큰 선 · 길 표시 · 이름 · 오늘 값 · 하루 · 한 달 · 꼬리표 · 탭 넷 · 업종 채널 · 같은 업종 다음 볼 것)은 다시 그리지 않음 — 여기는 그 밖의 것만:
+     7단 중 3단 · 시장 · 번호 · 1주 값 · 고른 곳 줄 → 업종 평균과 견준 한 달 그림(기준일 = 100 · 고른 날 금빛 세로선) → 세 숫자 · 100만 원 줄 · 출처
+     → 왜 들었나요?(넘은 조건마다 해마다 값) / 왜 밖인가요?(멈춘 자리 · 까닭 · 깔때기 두 가지) → 다음 단 → 자료 줄 · 안전 문장
    옛 맺음 글의 「매수 · 매도」는 새 화면 금지 말이라 같은 뜻의 안전 문장으로 바꿈 · 사이트 맨 아래 고리(친구에게 소개하기 · 미국 판)는 새 화면 틀이 맡음
-   보안 규칙(CSP) — 글은 textContent · 꾸밈은 p-co.css 와 CSSOM(setProperty)만 · 입체 · 바둑판 없음 · 검사 scripts/atlas11/next/check_co.mjs */
+   보안 규칙(CSP) — 글은 textContent · 꾸밈은 p-co.css 와 CSSOM(setProperty)만 · 입체 · 바둑판 없음 · 검사 scripts/atlas11/next/check_co.mjs
+   글씨 --fs-1 ~ --fs-5 · 간격 --sp-1 ~ --sp-3 · 글 시작 왼쪽 줄 16 · 32 · 48px 셋(p-co.css 머리말) */
 const NX = globalThis.NX;
 const {h, sv} = NX;
 
@@ -18,9 +20,10 @@ function josa(w, a, b) { const ch = String(w).trim().slice(-1), k = ch.charCodeA
 const won = v => (v == null ? '?' : Math.round(v).toLocaleString('ko-KR') + '원');
 const pctEl = (x, tag = 'b') => h(tag, {class: 'num ' + NX.cls(x), text: pct(x)});
 const NP = C => C?.funnel?.picked ?? '?';
+const SPAN = C => (C?.days === 20 ? '한 달' : `${C?.days ?? '?'}거래일`); // 사장님 [10] 1 「20거래일 → 한 달」(자료가 20일이 아니면 옛 말 그대로)
 const pickName = C => `${C?.rules?.name ?? '고른'} ${NP(C)}곳`;
 const lyDay = C => (C?.rules?.lyDay ? md(C.rules.lyDay) : '모음 날');
-const pickHow = C => `멍거 갈래는 3년 성적표만, 린치 갈래는 3년 성적표와 ${lyDay(C)} 값으로 골랐습니다`;
+const pickHow = C => `멍거 조건은 3년 성적표만, 린치 조건은 3년 성적표와 ${lyDay(C)} 값으로 골랐습니다`; // 옛 「멍거 갈래 · 린치 갈래」 — 큰 업종이 아니라 두 사람의 고르는 조건이라 「조건」(낱말표 glossary.js 와 같은 말)
 const stopSay = (C, r) => (C.funnel?.groups ?? []).map(g => `${g.name}은 「${g.stopName?.[g.k === 'mg' ? r.sm : r.sl] ?? '고르기'}」에서`).join(', ') + ' 멈췄습니다';
 
 /* ── 자료 — 고른 곳 = comp.json · lines.json / 고른 곳 밖 = co/<번호>.json 의 c · line(atlas.js coEntry 그대로 · 모든 회사 7단 core.co7) ── */
@@ -45,7 +48,7 @@ const TOK0 = {up: '#FF5A65', down: '#5B96FF', gold: '#E9B949', ink: '#F2EFE8', n
 function tok() { const s = getComputedStyle(document.documentElement), o = {}; for (const k of Object.keys(TOK0)) o[k] = s.getPropertyValue('--' + k).trim() || TOK0[k]; return o; }
 const TSTEP = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 25, 50, 100, 200, 500, 1000, 2000, 5000, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6];
 function niceTicks(lo, hi, max = 4) { let s = TSTEP.at(-1); for (const x of TSTEP) if ((hi - lo) / x <= max) { s = x; break; } const t = []; for (let a = Math.ceil(lo / s - 1e-9) * s; a <= hi + 1e-9; a += s) t.push(Math.round(a * 1000) / 1000); return t; }
-const AXW = 52, LBL = 17; // 눈금 칸 넓이 · 눈금 글 크기(p-co.css .pco-yr span 과 같음) · 겹치는 눈금 글 빼기는 옛 그림과 같은 24px(같은 눈금 수)
+const AXW = 48, LBL = 17; // 눈금 칸 넓이(p-co.css .pco-ax 셋째 칸과 같음) · 눈금 글 크기(--fs-1 = 17px) · 겹치는 눈금 글 빼기는 옛 그림과 같은 24px(같은 눈금 수)
 function gutterAxis(svg, wrap, {ticks, Y, x0, x1, base, fmt}) {
   const T = tok(), lab = h('div', {class: 'pco-yr', 'aria-hidden': 'true'}), seen = new Set();
   const one = (t, b) => { const y = Y(t); svg.append(sv('line', {x1: x0, x2: x1 + 6, y1: y.toFixed(1), y2: y.toFixed(1), stroke: b ? T.mute : T['m4-soft'], 'stroke-width': 1, 'stroke-dasharray': b ? '2 4' : null}));
@@ -61,11 +64,11 @@ function fadeDefs(defs, id, T, P, H, by) { // 기준선 위 빨강 · 아래 파
   defs.append(gu, gd);
 }
 let lcN = 0;
-/** 20거래일 선 한 장 — 기준일 위 빨강 · 아래 파랑 · 회색 점선 = 업종 평균 · 금빛 세로선 = 고른 날(고른 곳만) · 끌면 그날 값 */
+/** 한 달(20거래일) 선 한 장 — 기준일 위 빨강 · 아래 파랑 · 회색 점선 = 업종 평균 · 금빛 세로선 = 고른 날(고른 곳만) · 끌면 그날 값 */
 function drawChart(wrap, {C, v, avg, label, kPick}) {
   wrap.replaceChildren();
   const n = C.dates.length, W = Math.max(260, Math.round(wrap.getBoundingClientRect().width || 320)), H = 222, P = 10, PT = kPick != null ? 34 : 12, padR = AXW; // 위 띠(PT) = 「고른 날」 글 자리
-  if (!v.some(x => x != null)) { wrap.append(h('p', {class: 'pco-q', text: `? 이 회사 ${C.days}거래일 값을 못 읽었습니다`})); return; }
+  if (!v.some(x => x != null)) { wrap.append(h('p', {class: 'pco-q', text: `? 이 회사 ${SPAN(C)} 값을 못 읽었습니다`})); return; }
   const vals = [...v, ...(avg || []), 100].filter(x => x != null);
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 2; lo -= pad; hi += pad;
   const X = i => 4 + i * (W - 4 - padR) / (n - 1), Y = y => PT + (hi - y) * (H - PT - P) / (hi - lo);
@@ -125,7 +128,7 @@ function funnel(C, r) {
   return wrap;
 }
 function more(summary, ...kids) { return h('details', {class: 'pco-more'}, h('summary', {text: summary}), h('div', {class: 'pco-in'}, ...kids)); }
-/** 고른 곳 — 넘은 갈래마다 해마다 값(멍거 = 세 조건 · 린치 = 두 조건) · 두 사람 말 · 값 · 한계는 접은 칸 */
+/** 고른 곳 — 넘은 조건마다 해마다 값(멍거 = 세 조건 · 린치 = 두 조건) · 두 사람 말 · 값 · 한계는 접은 칸 */
 function whyBox(C, c) {
   const p = c.pick, R = C.rules;
   const box = h('div', {class: 'pco-box'}, h('h2', {class: 'sec', text: `왜 ${pickName(C)}에 들었나요?`}), R?.notMunger ? h('p', {class: 'pco-hon', text: `${R.notMunger} 좋은 회사 순서가 아닙니다.`}) : null);
@@ -147,7 +150,7 @@ function whyBox(C, c) {
     h('li', {text: `네이버 업종 「${p.sector}」 · ${C.sources?.pick ?? '?'}`}))));
   return box;
 }
-/** 고른 곳 밖 — 멈춘 자리 · 까닭(이름표) · 깔때기 두 갈래(접은 칸) · 이름표는 늦게 받아 채움(받는 동안 「까닭을 받는 중…」) */
+/** 고른 곳 밖 — 멈춘 자리 · 까닭(이름표) · 깔때기 두 가지(접은 칸) · 이름표는 늦게 받아 채움(받는 동안 「까닭을 받는 중…」) */
 function outBox(C, code) {
   const box = h('div', {class: 'pco-box'}, h('h2', {class: 'sec', text: `왜 ${pickName(C)} 밖인가요?`}));
   const wait = h('p', {class: 'pco-q pco-p', text: '까닭을 받는 중…'}); box.append(wait);
@@ -155,19 +158,19 @@ function outBox(C, code) {
   nameRow(code).then(r => {
     wait.remove(); if (!r) { no(); return; }
     box.append(h('p', {class: 'pco-p pco-lead', text: `${josa(r.n, '은', '는')} ${stopSay(C, r)}.`}), h('div', {class: 'pco-why', text: r.w ?? '?'}),
-      more('깔때기 두 갈래 — 어디서 멈췄나 보기', funnel(C, r)), h('p', {class: 'pco-small', text: `${pickHow(C)} — 새 1년 성적표가 나오면 다시 셉니다.`}));
+      more('깔때기 두 가지 — 어디서 멈췄나 보기', funnel(C, r)), h('p', {class: 'pco-small', text: `${pickHow(C)} — 새 1년 성적표가 나오면 다시 셉니다.`}));
   }).catch(no);
   return box;
 }
 
-/* ── 끝 — 다음 챕터 · 자료 줄 · 안전 문장 ── */
+/* ── 끝 — 다음 단 · 자료 줄 · 안전 문장 ── */
 function nextChap(code) {
-  const href = NX.chapNext(code, '3')?.getAttribute('href') ?? '#/w/' + NX.enc(code) + '/past'; // 4단이 새 화면에 있으면 #/w/<번호>/past · 아니면 지금 아틀란스(app.js chapList 와 같은 길)
-  return h('a', {class: 'pco-next', href}, h('span', {}, h('small', {text: '다음 챕터'}), h('b', {text: '4단 지나온 길'}), h('span', {class: 'pco-nd', text: '1년 · 3년 주가 · 해마다 번 돈 · 몸값'})), h('i', {class: 'pco-chev', 'aria-hidden': 'true', text: '›'}));
+  const href = NX.chapNext(code, '3')?.getAttribute('href') ?? '#/w/' + NX.enc(code) + '/past'; // 4단이 새 화면에 있으면 #/w/<번호>/past · 아니면 옛 판(app.js chapList 와 같은 길)
+  return h('a', {class: 'pco-next', href}, h('span', {}, h('small', {text: '다음'}), h('b', {text: '4단 지나온 길'}), h('span', {class: 'pco-nd', text: '1년 · 3년 주가 · 해마다 번 돈 · 회사 크기'})), h('i', {class: 'pco-chev', 'aria-hidden': 'true', text: '›'}));
 }
 function foot(C) {
-  return [h('p', {class: 'pco-foot', text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
-    C.provisional ? h('p', {class: 'pco-foot pco-q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
+  return [h('p', {class: 'pco-foot', text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${SPAN(C)} 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
+    C.provisional ? h('details', {class: 'pco-foot pco-warn'}, h('summary', {text: '? 아직 바뀔 수 있는 값이에요 ›'}), h('p', {text: `${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`})) : null, // 긴 경고는 「?」 한 줄 + 누르면 펼침([10] 10)
     h('p', {class: 'safe pco-safe', text: '저는 투자 상담사가 아니에요. 고도리는 지난 기록만 보여 줘요. 사고팔기나 들고 있기를 권하지 않고, 시장 앞날도 말하지 않아요.'})];
 }
 
@@ -178,7 +181,7 @@ export async function render(arg) {
   const X = NX.ix(); if (!X) return {title: '회사', nodes: NX.noData()};
   const C = X.core, M = X.co[code];
   if (!M) return {title: '없는 회사', nodes: [h('p', {class: 'empty', text: '? 이 번호의 회사를 찾지 못했어요.'})]};
-  const root = h('div', {class: 'pco'}, h('h2', {class: 'sec', text: '회사 자세히'}), h('p', {class: 'pco-kind'}, h('b', {text: '7단 중 3단'}), ' · 회사 ', h('span', {text: '· 기록'})));
+  const root = h('div', {class: 'pco'}, h('h2', {class: 'sec', text: '이 회사 자세히'}), h('p', {class: 'pco-kind'}, h('b', {text: '7단 중 3단'}), ' · 회사 ', h('span', {text: '· 기록'})));
   const E = await coEntry(code, X);
   if (!E) { // 회사 파일을 못 받음(옛 viewMissing 자리) — 「?」 · 밖이면 이름표 까닭은 따로 받아 봄
     root.append(...NX.noData('회사 자료'));
@@ -192,13 +195,13 @@ export async function render(arg) {
   root.append(E.pk ? h('p', {class: 'pco-chip pk'}, h('span', {class: 'pco-badge', text: '고른 곳'}), ` ${pickName(C)}에 든 회사입니다 — 두 사람이 고른 목록은 아닙니다`)
     : h('p', {class: 'pco-chip'}, h('span', {class: 'pco-tag', text: `${pickName(C)} 밖`}), ' 이 회사도 7단까지 볼 수 있습니다'));
   // 그림 → 범례 → 세 숫자 → 100만 원 줄 → 출처(옛 3단 차례 그대로)
-  root.append(chartBox({C, v: line, avg: multi ? I.v : null, kPick, label: `${c.name} ${C.days}거래일 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`}));
+  root.append(chartBox({C, v: line, avg: multi ? I.v : null, kPick, label: `${c.name} ${SPAN(C)} 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`}));
   root.append(h('p', {class: 'pco-key'}, h('span', {}, h('i', {class: 'k-co', 'aria-hidden': 'true'}), `${c.name} — ${md(C.base)}보다 위 빨강 · 아래 파랑`), multi ? h('span', {}, h('i', {class: 'k-avg', 'aria-hidden': 'true'}), I.name + ' 평균') : null,
     kPick != null ? h('span', {}, h('i', {class: 'k-pick', 'aria-hidden': 'true'}), `고른 날 ${md(C.pickAsOf)}`) : null));
   root.append(h('div', {class: 'pco-trio'},
-    h('div', {}, h('span', {text: `${C.days}거래일`}), pctEl(c.chg)),
+    h('div', {}, h('span', {text: SPAN(C)}), pctEl(c.chg)),
     h('div', {}, h('span', {text: '1년'}), pctEl(c.r1y)),
-    h('div', {}, h('span', {text: `가장 깊이 빠짐(${C.days}거래일)`}), pctEl(c.mdd))));
+    h('div', {}, h('span', {text: `가장 깊이 빠짐(${SPAN(C)})`}), pctEl(c.mdd))));
   // 100만 원 줄 — 4단과 같은 뜻(산 날 = 기준일)
   const lv = line.filter(x => x != null), low = lv.length ? Math.min(...lv) : null, last = lv.length ? lv.at(-1) : null, man = x => h('span', {class: 'pco-nw', text: Math.round(x).toLocaleString('ko-KR') + '만 원'}); // 「81만 / 원」으로 갈리지 않게
   root.append(low == null ? h('p', {class: 'pco-won pco-q', text: '? 값을 못 읽었습니다'})

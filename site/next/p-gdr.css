@@ -1,61 +1,85 @@
-/* 고도리 칸 — 나눠 담는 곳(p-gdr.js) · 작은 칸은 높이 48px 이상 · 글이 든 줄(규칙 51 바둑판 아님) */
-.gdr { margin: 12px 16px 18px; padding: 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--hair2, #272B34); }
-.gdr.page { margin-top: 16px; }
-.gdr-head { display: flex; gap: 12px; align-items: center; }
+/* 고도리 칸 — 나눠 두는 곳(p-gdr.js) · 작은 칸은 높이 48px 이상 · 글이 든 줄(규칙 51 바둑판 아님)
+   2026-10-18 [10] 5 ~ 10(일꾼 S9c): 글씨는 var(--fs-n)(app.css :root · 17px 아래 없음 · 한 화면 여섯 가지 안) · 간격은 var(--sp-n)(8 · 16 · 24)과 0 만 · 음수 간격 없음
+   글 시작 왼쪽 줄 셋: 16(바깥 글 · 제목) · 32(칸 · 카드 · 성적 · 깔때기 줄 안) · 오른쪽 칸 안(2칸 짜임) — 테두리는 outline(자리를 안 차지함)이라 안쪽 글 자리가 안 흔들림
+   같은 칸은 같은 높이(이름 한 줄 + 번호 · 비중 한 줄) · 확인 못 한 것(?)은 두 줄까지 — 길면 「?」 한 줄 + 누르면 펼침(<details>) */
+.gdr { display: grid; gap: var(--sp-2); margin: var(--sp-2); padding: 0; }
+.gdr > * { min-width: 0; margin: 0; }
+.gdr.page { margin-top: var(--sp-2); }
+.gdr[hidden], .gdr > [hidden] { display: none; }
+.gdr-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
 .gdr-head img { flex: none; width: 40px; height: 40px; }
-.gdr-h { margin: 0; font-size: 24px; line-height: 1.25; }
-.gdr-sub { margin: 2px 0 0; font-size: 17px; color: var(--sub); }
-.gdr-money { display: flex; align-items: center; gap: 8px; margin: 14px 0 10px; font-size: 18px; }
-.gdr-in { flex: 1; min-width: 0; min-height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 20px; text-align: right; }
-.gdr-cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.gdr-ht { min-width: 0; }
+.gdr-h { margin: 0; font-size: var(--fs-3); line-height: 1.3; }
+.gdr-sub { margin: 0; font-size: var(--fs-1); color: var(--sub); }
+.gdr-cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-1); }
 @media (min-width: 560px) { .gdr-cells { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.gdr-cell { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 8px; align-items: center; min-height: 56px; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: 17px; text-align: left; cursor: pointer; }
-.gdr-cell.on { border-color: var(--ink); background: var(--card3); }
+.gdr-li { display: flex; min-width: 0; margin: 0; }
+.gdr-li > .gdr-cell { flex: 1; min-width: 0; }
+.gdr-cell { display: block; min-height: 64px; padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--card2); outline: 1px solid var(--hair2); outline-offset: -1px; color: var(--ink); font: inherit; font-size: var(--fs-1); line-height: 1.5; text-align: left; cursor: pointer; }
+.gdr-cell.on { background: var(--card3); outline-color: var(--ink); }
 .gdr-cell:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
-.gdr-no { grid-row: 1 / 3; color: var(--sub); font-size: 17px; }
-.gdr-cn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
-.gdr-cw { color: var(--sub); font-size: 17px; }
-.gdr-cell.cash { cursor: default; background: transparent; border-style: dashed; }
-.gdr-cell.cash .gdr-no { grid-row: auto; color: var(--ink); }
-.gdr-card { margin-top: 10px; padding: 14px; border-radius: 14px; background: var(--card2); border: 1px solid var(--ink); }
-.gdr-ch { margin: 0 0 6px; font-size: 20px; }
-.gdr-name { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; vertical-align: middle; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
-.gdr-ind { color: var(--sub); font-size: 17px; }
-.gdr-why { margin: 0 0 10px; font-size: 17px; color: var(--sub); }
-.gdr-dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 10px; }
-.gdr-dl div { padding: 8px 10px; border-radius: 10px; background: var(--card); }
-.gdr-dl dt { font-size: 17px; color: var(--sub); }
-.gdr-dl dd { margin: 2px 0 0; font-size: 20px; font-weight: 700; }
-.gdr-me { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 8px; font-size: 18px; line-height: 1.45; }
-.gdr-me img { flex: none; width: 28px; height: 28px; }
-.gdr-say { margin: 0; font-size: 17px; color: var(--sub); }
+.gdr-cn { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-2); font-weight: 700; }
+.gdr-m { display: block; color: var(--sub); white-space: nowrap; }
+.gdr-no, .gdr-cw, .gdr-vs { color: var(--sub); font-size: var(--fs-1); }
+.gdr-cell.cash { cursor: default; background: transparent; outline-style: dashed; }
+.gdr-cell.cash > span { display: block; }
+.gdr-cell.cash .gdr-no { color: var(--ink); font-size: var(--fs-2); font-weight: 700; }
+.gdr-slot { display: grid; gap: var(--sp-1); }
+.gdr-slot:empty { display: none; }
+.gdr-card { display: grid; gap: var(--sp-1); padding: var(--sp-2); border-radius: 14px; background: var(--card2); outline: 1px solid var(--ink); outline-offset: -1px; }
+.gdr-card > * { margin: 0; min-width: 0; }
+.gdr-card > p { font-size: var(--fs-1); line-height: 1.5; overflow-wrap: anywhere; }
+.gdr-name { display: flex; align-items: center; min-height: 44px; font-size: var(--fs-3); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.gdr-ind, .gdr-why { color: var(--sub); }
+.gdr-wk { color: var(--sub); }
+.gdr-w b { font-size: var(--fs-2); }
+.gdr-perf b { font-size: var(--fs-2); }
+.gdr-stl, .gdr-val { color: var(--ink); }
+.gdr-val { color: var(--sub); }
+.gdr-vs { color: var(--mute); }
+.gdr-say { color: var(--sub); }
 .gdr-say q { quotes: '「' '」'; }
 .gdr-sayk { color: var(--mute); }
-.gdr-sum { margin: 12px 0 0; font-size: 17px; color: var(--sub); }
+.gdr-sum { font-size: var(--fs-1); color: var(--sub); }
 .gdr-sum b { color: var(--ink); }
-.gdr-note { margin: 8px 0 0; font-size: 17px; color: var(--sub); }
-.gdr-q { margin: 8px 0 0; font-size: 17px; color: var(--sub); }
+.gdr-note { font-size: var(--fs-1); color: var(--sub); }
 .gdr-qm { color: var(--gold); }
-.gdr .more { margin: 12px 0 0; width: 100%; display: flex; align-items: center; justify-content: center; }
-.gdr-fun { margin: 0 0 16px; }
-.gdr-ol, .gdr-ul { margin: 0 16px 12px; padding: 0; list-style: none; display: grid; gap: 6px; }
-.gdr-ol li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 12px; background: var(--card); font-size: 17px; }
-.gdr-ul li { padding: 10px 12px; border-radius: 12px; background: var(--card); font-size: 17px; color: var(--sub); }
-.gdr.page ~ .safe { font-size: 17px; }
-html.en .gdr-say q { quotes: '“' '”'; }
-.gdr-stale { margin: 8px 0 0; font-size: 17px; color: var(--sub); }
-/* 2026-10-17 21:10 [6] 고도리 칸 안전 — 잠금(열한 질문 전) · 틀린다면 이유 · 고른 날 뒤 성적(같은 때 코스피와) */
-.gdr.lock .gdr-note { margin-top: 12px; }
-.gdr-go { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 12px; border-radius: 999px; background: var(--ink); color: var(--bg); font-size: 18px; font-weight: 700; text-decoration: none; }
-.gdr-go:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-.gdr-wrong { margin: 0 0 8px; padding: 8px 10px; border-radius: 10px; background: var(--card); font-size: 17px; line-height: 1.45; overflow-wrap: anywhere; }
-.gdr-wk { color: var(--sub); }
-.gdr-perf { margin: 0 0 10px; font-size: 17px; color: var(--sub); line-height: 1.5; overflow-wrap: anywhere; }
-.gdr-perf b { font-size: 18px; }
-.gdr-pf { margin: 12px 0 0; padding: 12px; border-radius: 12px; background: var(--card2); }
-.gdr-ph { margin: 0 0 6px; font-size: 19px; }
-.gdr-pl { margin: 4px 0 0; font-size: 17px; color: var(--sub); line-height: 1.45; overflow-wrap: anywhere; }
+.gdr .more { display: flex; align-items: center; justify-content: center; width: auto; min-height: 48px; margin: 0; border-radius: 12px; background: var(--card2); font-size: var(--fs-1); text-align: center; }
+/* 확인 못 한 것(?) — 두 줄 안이면 한 문단 · 길면 「?」 한 줄 + 누르면 펼침 */
+.gdr-wd { color: var(--sub); font-size: var(--fs-1); }
+.gdr-wq { display: block; min-height: 44px; padding: var(--sp-1) 0; list-style: none; cursor: pointer; line-height: 1.5; }
+.gdr-wq::-webkit-details-marker { display: none; }
+.gdr-wq:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.gdr-wq::after { content: ' ▾'; color: var(--mute); }
+.gdr-wd[open] .gdr-wq::after { content: ' ▴'; }
+.gdr-wb { margin: 0; font-size: var(--fs-1); line-height: 1.5; overflow-wrap: anywhere; }
+/* 고른 날 뒤 성적 */
+.gdr-pf { display: grid; gap: var(--sp-1); padding: var(--sp-2); border-radius: 12px; background: var(--card2); }
+.gdr-pf > * { margin: 0; min-width: 0; }
+.gdr-ph { font-size: var(--fs-2); }
+.gdr-pl { font-size: var(--fs-1); color: var(--sub); line-height: 1.5; overflow-wrap: anywhere; }
 .gdr-pd { color: var(--ink); }
-.gdr-pr { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 6px 0 0; font-size: 17px; }
-.gdr-pr b { font-size: 20px; }
-.gdr-pn { margin-top: 8px; }
+.gdr-pr { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-2); font-size: var(--fs-1); }
+.gdr-pr b { font-size: var(--fs-2); text-align: right; }
+.gdr-pn { margin-top: var(--sp-1); }
+/* 잠금 한 줄 [6] 10 · 오늘 점수 한 줄 · 쉬어 가는 날 한 줄 [5] 7 */
+.gdr.lock1, .gdr.rest1 { display: block; }
+.gdr-l1, .gdr-today, .gdr-rest { display: flex; align-items: center; min-height: 48px; margin: 0; padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--card); outline: 1px solid var(--hair2); outline-offset: -1px; color: var(--ink); font-size: var(--fs-1); font-weight: 700; line-height: 1.4; text-decoration: none; }
+.gdr-today { background: var(--card2); }
+.gdr-l1:focus-visible, .gdr-today:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+/* 어떻게 골랐나 */
+.gdr-fun { display: grid; gap: var(--sp-1); margin: var(--sp-3) var(--sp-2) var(--sp-2); }
+.gdr-fun > * { margin: 0; min-width: 0; }
+.gdr-fun h2.sec { margin: var(--sp-2) 0 0; font-size: var(--fs-3); }
+.gdr-ol, .gdr-ul { display: grid; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
+.gdr-ol li { display: flex; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--card); font-size: var(--fs-1); }
+.gdr-ol li b { text-align: right; }
+.gdr-ul li { padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--card); font-size: var(--fs-1); color: var(--sub); }
+.gdr-rn, .gdr-rw { display: block; }
+.gdr-rn { color: var(--ink); }
+.gdr-rw { color: var(--sub); }
+.gdr-back { font-size: var(--fs-1); line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }
+.gdr-near, .gdr-mc { color: var(--sub); }
+.gdr.page ~ .safe, .gdr-fun ~ .safe { margin: var(--sp-3) var(--sp-2) var(--sp-1); font-size: var(--fs-1); }
+html.en .gdr-say q { quotes: '“' '”'; }
+.gdr-score { font-size: var(--fs-1); line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }

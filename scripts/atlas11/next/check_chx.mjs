@@ -8,6 +8,8 @@
 //   ④ 새 화면만 — 고른 곳 줄 = 자료의 고른 곳 · 위 단 고리 · 알림 글(옛 글의 「매수 · 매도」를 같은 뜻 쉬운 말로) · 쓰지 않을 말 0 · 고리는 아는 길 · 화면 오류 0
 //   ⑤ 세 폭(320 · 360 · 390) — 접은 칸을 펴고 가로 넘침 0 · 칸 밖으로 나간 것 0 · 누르는 자리 44px 넘게
 //   ⑥ 누르기 — 보기 바꾸기 · 다시 보기(그리는 중 누르면 끝으로) · 소리 단추 · 접은 칸이 보기를 바꿔도 펴진 채
+//   ⑦ 2026-10-18 고도리 명령문 72개 [7] 6 · [10] 1 · 5 ~ 8 (일꾼 S4r) — 새 화면은 낱말표(site/next/glossary.js)를 거친 글이라 옛 화면 글도 같은 표로 바꿔 맞댐(glossO) ·
+//      옛 낱말(갈래 · 몸값 · 한 회사 한 표 · 큰 회사는 크게 · 20거래일 …)이 화면에 0 · 모양 규칙(page_rules.mjs · 360 폭 닫은 채로): 음수 바깥 여백 0 · 겹친 형제 칸 0 · 글씨 6가지 이하 · 글 시작 왼쪽 줄 3줄 이하 · css 글 규칙
 //   실패가 하나라도 있으면 끝 코드 1
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -16,6 +18,8 @@ import {oldToNewDeep} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀
 import {fetchJSON, watch, settle, timer, netSummary, isRemote} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 import {oldSnap, fileSha} from './oldsnap.mjs'; // 옛 쪽 기준값(--old-snap 파일 · --old-refresh) — 옛 화면이 쓴 파일이 하나도 안 바뀌면 옛 쪽을 열지 않고 찍어 둔 값과 맞댐(명령문 [1] 9 · 옛 쪽 때 86%)
 import {fileURLToPath} from 'node:url';
+import {pageRules, cssRules} from './page_rules.mjs'; // 모양 규칙(음수 여백 · 겹침 · 글씨 6가지 · 왼쪽 줄 3줄 · css 글 규칙 — 범위 검사와 같이 씀 · 2026-10-18 명령문 [7] 6 · [10] 5 ~ 8)
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const has = k => process.argv.includes(k);
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -32,6 +36,12 @@ const fail = (k, x) => { if (fails.length < 300) fails.push([k, x]); counts.fail
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const FAIL = fail, BUMP = bump;
 const norm = s => String(s ?? '').replace(/[\s ]+/g, ' ').trim();
+/* 낱말표(site/next/glossary.js · 2026-10-18 명령문 [10] 1 — 갈래 → 큰 업종 · 한 회사 한 표 → 평균 · 큰 회사는 크게 → 큰 회사 기준 · 20거래일 → 한 달 · 몸값 → 회사 크기)
+   새 화면은 이 표를 거친 글이라 옛 화면 글도 같은 표로 바꿔 맞댐(표 파일을 그대로 읽어 씀 — 한 곳) */
+const {gloss} = await import('data:text/javascript;base64,' + Buffer.from(await fs.readFile(path.join(ROOT, 'site/next/glossary.js'))).toString('base64'));
+const G = s => (s == null ? s : gloss(String(s)));
+const glossO = O => ({...O, head: O.head.map(G), blocks: O.blocks.map(G), key: O.key.map(G), foot: O.foot.map(G), text: G(O.text), crumbs: O.crumbs.map(G), rows: O.rows.map(r => ({...r, name: G(r.name), trd: G(r.trd), badges: r.badges.map(G)}))});
+const OLD_WORDS = /갈래|몸값|한 회사 한 표|큰 회사는 크게|(?<![\d.,])20\s?거래일|다섯 문|쉬는 돈|챕터/; // 화면에 새로 나오면 안 되는 옛 낱말(낱말표가 모두 바꿔야 함)
 
 const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [core, mkt] = await Promise.all(['core.json', 'mkt.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
@@ -106,7 +116,7 @@ async function waitOld(p, pg) {
   await tm.old(() => p.waitForTimeout(30));
 }
 async function waitNew(p, pg) {
-  const want = pg.name + ' ' + core.days + '거래일';
+  const want = G(pg.name + ' ' + core.days + '거래일'); // 새 화면 머리는 낱말표를 거침(20거래일 → 한 달)
   const ok = await tm.new(() => settle(p, async () => {
     await p.evaluate(h => { document.querySelectorAll('#view > *').forEach(e => e.setAttribute('data-stale', '1')); if (location.hash === h) history.replaceState(null, '', '#/~'); location.hash = h; }, newHash(pg));
     return p.waitForFunction(w => !document.querySelector('#view .boot') && (document.querySelector('#view > section.chx-d:not([data-stale]) .pchx-head')?.textContent ?? '').startsWith(w), want, {timeout: 15000}).then(() => true, () => false);
@@ -142,7 +152,7 @@ function compare(where, O, N, pg, mode, fail = FAIL, bump = BUMP) { // fail · b
   for (const line of O.text.split('\n').map(norm).filter(l => l.includes('?') && l !== '?')) { if (!NT.includes(line)) fail('? 줄', `${where} 「${line.slice(0, 90)}」`); else bump('? 줄'); }
   for (const c of O.crumbs.map(norm).filter(x => x && x !== '한눈에')) if (!NT.includes(c)) fail('이름', `${where} 「${c}」`);
   // ④ 새 화면만 — 머리 숫자 · 고른 곳 · 위 단 고리 · 쓰지 않을 말 · 고리
-  const node = pg.node, want = norm(pg.name + ' ' + core.days + '거래일 ' + P(mode === 'cw' ? node.cwChg : node.chg));
+  const node = pg.node, want = norm(G(pg.name + ' ' + core.days + '거래일 ' + P(mode === 'cw' ? node.cwChg : node.chg)));
   if (norm(N.head) !== want) fail('머리 숫자', `${where} 「${N.head}」 ≠ 「${want}」`);
   const mem = pg.kind === 'g' ? (node.inds || []).flatMap(n => IND.get(n)?.members || []) : node.members || [];
   const gold = mem.filter(c => CO[c]?.p).map(c => '#/w/' + c);
@@ -150,6 +160,7 @@ function compare(where, O, N, pg, mode, fail = FAIL, bump = BUMP) { // fail · b
   if ((node.pk || 0) !== gold.length) fail('고른 곳 수(자료)', `${where} pk ${node.pk} ≠ ${gold.length}`);
   if (pg.kind === 'i') { const g = GRP.get(node.g), w = g ? '#/ch/g/' + encodeURIComponent(g.id) : null; if (N.up !== w) fail('위 단 고리', `${where} ${N.up} ≠ ${w}`); if (O.stepLinks.length && mapHref(O.stepLinks[0]) !== N.up) fail('위 단 고리(옛)', `${where} ${O.stepLinks[0]}`); }
   for (const w of BANNED) if (N.sec.includes(w)) fail('쓰지 않을 말', `${where} 「${w}」`);
+  { const m = OLD_WORDS.exec(NT); if (m) fail('옛 낱말이 화면에 나옴(낱말표 밖)', `${where} 「${m[0]}」 …${NT.slice(Math.max(0, m.index - 20), m.index + 20)}…`); } // 사장님 [10] 1
   for (const hr of N.hrefs) { bump('고리'); if (!knownHref(hr)) fail('모르는 고리', `${where} ${hr}`); }
 }
 /* ⓪ 검사 자체 시험 — 새 화면에서 읽은 것을 일부러 틀리게 바꿔 맞대면 그 틀림을 모두 잡아야 함(못 잡으면 이 검사가 실패) */
@@ -157,7 +168,7 @@ let selfTested = false;
 function selfTest(O, N, pg, mode) {
   selfTested = true;
   const got = new Set(), F = k => got.add(k), Bn = () => {}, M = () => JSON.parse(JSON.stringify(N));
-  const alt = O.blocks.map(norm).find(b => b.startsWith('다르게 보면') || b.startsWith('한 회사 한 표로 세면')) ?? '';
+  const alt = O.blocks.map(norm).find(b => b.startsWith('다르게 보면') || b.startsWith('평균으로 세면') || b.startsWith('한 회사 한 표로 세면')) ?? '';
   const cases = [
     ['줄 숫자', x => { x.rows[0].val = x.rows[0].val === '+99.9%' ? '+98.9%' : '+99.9%'; }],
     ['줄 차례 · 이름', x => { [x.rows[0], x.rows[1]] = [x.rows[1], x.rows[0]]; }],
@@ -172,6 +183,8 @@ function selfTest(O, N, pg, mode) {
 }
 /* 따로 셈 — 반올림은 크기로(지금 아틀란스 r1) · 100% 넘으면 소수 없음 */
 function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math.floor(Math.abs(x) * 10 + 0.5 + 1e-7) / 10; if (r === 0) return '0.0%'; return (x > 0 ? '+' : '−') + (r >= 100 ? Math.floor(r + 0.5 + 1e-7).toLocaleString('ko-KR') : r.toFixed(1)) + '%'; }
+
+for (const x of cssRules('site/next/p-chx.css')) fail('글 규칙(css)', x);
 
 /* ①②③④ 맞대기 — 두 보기 */
 {
@@ -194,7 +207,7 @@ function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math
       const sk = oldHash(pg) + '|' + mode, O0 = po ? await tm.old(() => po.evaluate(readOld)) : SNAP.get(sk); // 옛 쪽 값 — 열어서 읽음 · 또는 기준값
       if (po) SNAP.put(sk, O0);
       if (!O0) { fail('옛 쪽 기준값 없음', sk); continue; }
-      const [O, N] = [oldToNewDeep(O0), await tm.new(() => pn.evaluate(readNew))]; // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs)
+      const [O, N] = [glossO(oldToNewDeep(O0)), await tm.new(() => pn.evaluate(readNew))]; // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs) · 낱말은 낱말표로(glossO)
       compare(where + ' · ' + (mode === 'eq' ? '한 회사 한 표' : '큰 회사는 크게'), O, N, pg, mode);
       if (!selfTested && N && O.rows.length > 1) selfTest(O, N, pg, mode);
       if (mode === 'cw') { if (po) await tm.old(() => setMode(po, '#view .seg button', 1)); await tm.new(() => setMode(pn, '#view .pchx-seg button', 1)); if (po) await tm.old(() => po.waitForTimeout(800)); }
@@ -227,6 +240,7 @@ for (const [w, font] of [[320, 0], [360, 0], [390, 0], [320, 2]]) { // 끝 = 320
   for (const pg of font ? WLIST.slice(0, 4) : WLIST) {
     const where = w + (font ? ' 아주 크게' : '') + ' ' + newHash(pg);
     await waitNew(p, pg);
+    if (w === 360 && !font) for (const x of await pageRules(p)) fail('모양 규칙', `${where} ${x}`); // 닫은 채로(scan 이 접은 칸을 펴기 전에)
     const s = await p.evaluate(scan);
     if (!s.has) fail('자세히 칸 없음', where);
     if (s.sw > s.vw) fail('가로 넘침', `${where} ${s.sw}>${s.vw}`);

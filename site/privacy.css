@@ -1,0 +1,56 @@
+/* 개인정보 처리방침 쪽(/privacy.html · 사장님 2026-10-18 00:15 [4] 3) — 색 · 글씨 · 간격은 /next/app.css :root 와 같은 값
+   글씨 넷(17 · 19 · 21 · 24px — [10] 5 · 6) · 간격 8 · 16 · 24 만 · 음수 없음([10] 8) · 누르는 자리 44px 이상 · 360 폭 옆 넘침 없음 */
+:root{color-scheme:dark;--bg:#0C0E12;--card:#13161C;--hair:rgba(242,239,232,.12);--ink:#F2EFE8;--sub:#B0B5BD;--mute:#8E959F;--gold:#E9B949;
+  --sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",system-ui,"Noto Sans KR",sans-serif;
+  --fs-1:17px;--fs-2:19px;--fs-3:21px;--fs-4:24px;--sp-1:8px;--sp-2:16px;--sp-3:24px;--tabs:68px}
+*{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-padding-top:var(--sp-2)}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs-2)/1.5 var(--sans);word-break:keep-all;overflow-wrap:anywhere}
+a{color:var(--ink)}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:8px}
+
+/* 맨 위 — 돌아가기 · 영어 */
+.pv-top{max-width:680px;margin:0 auto;padding:var(--sp-1) var(--sp-2) 0;display:flex;justify-content:space-between;align-items:center;gap:var(--sp-2)}
+.pv-back,.pv-lang{display:inline-flex;align-items:center;min-height:44px;min-width:44px;padding:0;font-size:var(--fs-2);font-weight:700;text-decoration:none}
+.pv-lang{padding:0 0 0 var(--sp-1)}
+.pv-lang{color:var(--sub);text-decoration:underline;text-underline-offset:4px}
+
+.pv-main{max-width:680px;margin:0 auto;padding:var(--sp-1) var(--sp-2) calc(var(--tabs) + var(--sp-3) + env(safe-area-inset-bottom))}
+.pv-h1{margin:var(--sp-2) 0 var(--sp-1);font-size:var(--fs-4);line-height:1.3;font-weight:800}
+.pv-date{margin:0 0 var(--sp-3);color:var(--sub);font-size:var(--fs-1)}
+h2{margin:0 0 var(--sp-2);font-size:var(--fs-3);line-height:1.35;font-weight:800}
+h3{margin:var(--sp-3) 0 var(--sp-1);font-size:var(--fs-2);line-height:1.4;font-weight:700;color:var(--ink)}
+p{margin:0 0 var(--sp-1);color:var(--sub)}
+
+/* 한눈에 — 카드 하나 */
+/* 테두리는 안쪽 그림자(1px) — 글 시작 왼쪽 줄을 16 · 32 두 줄로 맞춤([10] 7) */
+.pv-sum{background:var(--card);box-shadow:inset 0 0 0 1px var(--hair);border-radius:16px;padding:var(--sp-2);margin:0 0 var(--sp-3)}
+.pv-sum li{color:var(--ink)}
+.pv-list{list-style:none;margin:0 0 var(--sp-1);padding:0}
+.pv-list li{position:relative;padding:0 0 0 var(--sp-2);margin:0 0 var(--sp-1);color:var(--sub)}
+.pv-list li::before{content:"·";position:absolute;left:0;top:0;color:var(--gold);font-weight:800}
+
+/* 칸 — 가는 선으로 나눔 */
+.pv-sec{border-top:1px solid var(--hair);padding:var(--sp-3) 0 var(--sp-2)}
+
+/* 전문가용 접은 칸 */
+.pv-more{margin:var(--sp-2) 0 0;box-shadow:inset 0 0 0 1px var(--hair);border-radius:12px;padding:0 var(--sp-2)}
+.pv-more summary{display:flex;align-items:center;min-height:44px;cursor:pointer;list-style:none;color:var(--sub);font-size:var(--fs-1);font-weight:700}
+.pv-more summary::-webkit-details-marker{display:none}
+.pv-more summary::before{content:"▸";display:inline-block;width:var(--sp-3);color:var(--gold)}
+.pv-more[open] summary::before{content:"▾"}
+.pv-more p{font-size:var(--fs-1)}
+.pv-more[open]{padding-bottom:var(--sp-1)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:var(--fs-1);color:var(--ink);overflow-wrap:anywhere;word-break:break-all}
+
+/* 영어 칸 */
+.pv-en p{word-break:normal}
+
+/* 아래 단추 다섯 — /next/app.css · /letter.css 의 .tabs 와 같은 꼴(글 17px) */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;height:calc(var(--tabs) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);display:flex;background:rgba(12,14,18,.97);border-top:1px solid var(--hair)}
+.tabs a{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:var(--mute);font-size:var(--fs-1);line-height:1.4;min-height:44px;white-space:nowrap;text-decoration:none}
+.tabs a:focus-visible{outline:3px solid var(--gold);outline-offset:-3px;border-radius:8px}
+.tabs .ic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs a.plus .ic{width:38px;height:38px;color:var(--gold)}
+@media (max-width:340px){.tabs a{letter-spacing:-.03em}}
+@media print{.tabs,.pv-top{display:none}.pv-main{padding-bottom:0}}

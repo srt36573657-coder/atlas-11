@@ -8,6 +8,7 @@
    종목 파일에서 달력으로 돌아오면 칸 고르기 · 펼친 칸 그대로(옛 calLeave · calBack — 자리는 새 화면 길이 기억) · 다른 곳에서 오면 처음 꼴
    모양만 새 아틀란스 말투(큰 제목 → 그림 → 숫자 · 설명 → 접은 칸 · 칩) · 회사 고리는 새 보는 화면 #/w/<번호> · 종목 파일 고리는 #/cal/<번호> 그대로
    보안 규칙: 글은 textContent · 자리는 CSSOM · 그림은 svg(캔버스 · 입체 · 그림자 없음 · 점은 svg 안 — 바둑판 셈 밖 · 규칙 50 · 51) */
+import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접고 누르면 펼침(사장님 2026-10-18 [10] 10)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 
@@ -293,8 +294,8 @@ async function vCase(code) {
   if (r.st === 'n') now.append(h('p', {class: 'pcal-small', text: '등락률은 다음 장날부터 쌓여요.'}));
   else now.append(h('p', {class: 'pcal-p'}, h('span', {text: '뽑힌 날부터 '}), r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)));
   v.append(now);
-  if (r.h) v.append(h('p', {class: 'q pcal-qline', text: '? 거래 멈춤 — 마지막 장날에 거래가 없었어요. 거래정지일 수 있어요.'}));
-  if (r.f) v.append(h('p', {class: 'q pcal-qline', text: r.f === 2 ? '? 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요. 하루 35% 넘게 바뀐 날이 있어 값이 고쳐졌을 수 있어요.' : '! 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.'}));
+  if (r.h) v.append(warn('? 거래 멈춤 — 마지막 장날에 거래가 없었어요. 거래정지일 수 있어요.', {cls: 'pcal-qline'}));
+  if (r.f) v.append(warn(r.f === 2 ? '? 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요. 하루 35% 넘게 바뀐 날이 있어 값이 고쳐졌을 수 있어요.' : '! 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.', {cls: 'pcal-qline'}));
   if (K.mk != null) v.append(h('p', {class: 'pcal-mk', text: tx(`같은 기간 모든 회사의 가운데 값은 ${pct(K.mk)}였어요.`)}));
   if (T.provisional && r.st !== 'n') v.append(h('p', {class: 'pcal-small pcal-prov', text: tx(`${md(T.asOf)} 값은 장 중 값이에요. 저녁 8시까지 바뀌어요.`)}));
   v.append(h('h2', {class: 'pcal-h2', text: '그 회사 5일 오름이 든 칸'}), g2,

@@ -332,21 +332,19 @@ async function gdrLocked(q, r) {
   const z = await newPage();
   try {
     await go(z, r);
-    const x = await z.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock'), go: document.querySelector('#view section.gdr.lock a.gdr-go')?.getAttribute('href') ?? null, cells: document.querySelectorAll('#view .gdr-cell').length}));
+    const x = await z.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock1'), go: document.querySelector('#view section.gdr.lock1 a.gdr-l1')?.getAttribute('href') ?? null, cells: document.querySelectorAll('#view .gdr-cell').length})); // 잠금 한 줄 = section.gdr.lock1 · a.gdr-l1([6] 10 · p-gdr lockBox)
     if (!x.lock || x.go !== '#/why' || x.cells) fail('누르기', r + ' · 잠김', '질문 전인데 고도리 칸이 잠기지 않음 ' + JSON.stringify(x));
     await judge(z, r + ' · 잠김', {widths: r === '#/gdr'}); bump('고도리 칸 잠김');
   } finally { await z.context().close(); }
   await seedWhy(q, r);
 }
-/** 고도리 칸 — 내 돈을 다른 금액으로(금액 · 「나라면」 글이 바뀜) → 닫힌 칸 하나를 엶 */
+/** 고도리 칸 — [9] 4 내 돈 칸(.gdr-in) 없음(2026-10-18 S9c · 옛 「내 돈을 바꿈」 걷기는 뺌) → 닫힌 칸 하나를 엶. 고른 곳 0(칸이 현금으로 둠 하나뿐)이면 열 칸이 없는 게 맞음 — 칸 맞대기는 check_gdr.mjs */
 async function gdrWalk(q, where) {
   const keep = await keepKey(q, MONEY_KEY);
   try {
-    const inp = q.locator('#view .gdr .gdr-in').first();
-    if (!(await inp.count())) { fail('누르기', where, '고도리 칸에 내 돈 칸(.gdr-in)이 없음'); return; }
-    await inp.fill('23,450,000'); await settle(q); await judge(q, where + ' · 내 돈 바꿈', {widths: false});
+    if (await q.locator('#view .gdr .gdr-in').count()) { fail('누르기', where, '고도리 칸에 내 돈 칸(.gdr-in)이 있음 — [9] 4 는 입력 칸 0'); return; }
     const cell = q.locator('#view .gdr .gdr-cell:not(.cash):not(.on)').first();
-    if (!(await cell.count())) { fail('누르기', where, '고도리 칸에 열 칸(.gdr-cell)이 없음'); return; }
+    if (!(await cell.count())) return; // 고른 곳 0
     await cell.click(); await settle(q); await judge(q, where + ' · 칸 엶', {widths: true}); bump('고도리 칸 누르기');
   } finally { await putKey(q, MONEY_KEY, keep); }
 }

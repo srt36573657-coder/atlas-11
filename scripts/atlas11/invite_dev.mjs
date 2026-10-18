@@ -5,6 +5,8 @@
  *   머리글: dist/_headers 의 「/*」 머리글(CSP 등)을 모든 응답에 붙여 실제 사이트와 같은 보안 규칙으로 시험
  *   쓰는 법: node scripts/atlas11/invite_dev.mjs --dir dist --port 8824 [--blobs <폴더>] [--seed-expired] [--owner-key <시험 열쇠>]
  *   --owner-key: 사진 초대장 시험용 열쇠(진짜 열쇠가 아님) — 그 SHA-256 을 ATLAS_INVITE_OWNER_SHA256 으로 함수에 넘김(시험 서버에서만)
+ *   --fake-kakao: 카톡 가입(2026-10-18 · /api/kakao/* · lib/atlas11/kakao.mjs)을 가짜 열쇠 · 가짜 카카오(tests/atlas11/fake-kakao/fake.mjs · /__fake-kakao/*)로 켬 — 진짜 카카오로 가는 요청 0
+ *     없으면 /api/kakao/* 는 모두 404(스위치가 꺼진 사이트와 같음) · 가짜 동의 화면에는 「가짜 카카오 · 시험용」이 늘 보임
  */
 import http from 'node:http';
 import fs from 'node:fs/promises';
@@ -23,6 +25,20 @@ const fn = (await import('../../functions/atlas11/invite.mjs')).default;
 // 편지 여는 밤(2026-10-17) — 같은 시험 서버에서 /api/letter · 시계 옮기기 /__dev/skew?ms=(이 시험 서버에서만 · ATLAS_LETTER_DEV=1)
 process.env.ATLAS_LETTER_DEV = '1';
 const lfn = (await import('../../functions/atlas11/letter.mjs')).default;
+// 카톡 가입(2026-10-18 · K1c) — --fake-kakao 일 때만 켬: 가짜 열쇠(이 시험 서버에만) · 카카오 대신 가짜 카카오(같은 서버 /__fake-kakao/*) · 저장소는 위 Blobs 로컬 서버
+const kakao = process.argv.includes('--fake-kakao') ? await (async () => {
+  const [{handleKakao}, {KAKAO_STORE}, {createFakeKakao}, {getStore}, {detachKakao, LETTER_STORE}] = await Promise.all([import('../../lib/atlas11/kakao.mjs'), import('../../lib/atlas11/kakao-store.mjs'), import('../../tests/atlas11/fake-kakao/fake.mjs'), import('@netlify/blobs'), import('../../lib/atlas11/letter.mjs')]);
+  const env = {ATLAS_KAKAO_REST_KEY: 'fake-rest-key', ATLAS_KAKAO_CLIENT_SECRET: 'fake-client-secret', ATLAS_KAKAO_ADMIN_KEY: 'fake-admin-key', ATLAS_KAKAO_HASH_SECRET: 'fake-hash-secret-for-this-dev-server-only-000'};
+  Object.assign(process.env, env); // 같은 시험 서버의 편지 함수([4] 8 · kakaoMemberOf)도 같은 가짜 열쇠를 봄 — 이 시험 서버 안에서만
+  const fake = createFakeKakao({restKey: env.ATLAS_KAKAO_REST_KEY, clientSecret: env.ATLAS_KAKAO_CLIENT_SECRET, adminKey: env.ATLAS_KAKAO_ADMIN_KEY, prefix: '/__fake-kakao'});
+  const call = (req, origin) => handleKakao(req, env, {config: {on: true}, dev: true, store: () => getStore({name: KAKAO_STORE, consistency: 'strong'}), kakao: {auth: origin + '/__fake-kakao', api: origin + '/__fake-kakao'},
+    fetch: (u, init) => (String(u).startsWith(origin + '/__fake-kakao/') ? fake.fetch(u, init) : Promise.reject(Error('dev: only fake kakao'))), ownerHash: process.env.ATLAS_INVITE_OWNER_SHA256,
+    onGone: mh => detachKakao(getStore({name: LETTER_STORE, consistency: 'strong'}), mh)});
+  return {fake, call};
+})() : null;
+/** 함수 응답(Fetch Response) → node 응답 · Set-Cookie 여럿을 그대로(하나로 합치지 않음) */
+const sendFetch = async (res, r) => { const h = {}; for (const [k, v] of r.headers) if (k !== 'set-cookie') h[k] = v; const sc = r.headers.getSetCookie?.() ?? []; if (sc.length) h['set-cookie'] = sc; res.writeHead(r.status, h); res.end(Buffer.from(await r.arrayBuffer())); };
+const bodyOf = req => (req.method === 'POST' || req.method === 'PUT' ? new Promise(r => { let b = ''; req.on('data', d => { b += d; }); req.on('end', () => r(b)); }) : Promise.resolve(undefined));
 // --seed-expired: 시험용으로 181일 전에 만든 초대장 하나(기간이 지난 링크 안내를 보려고) — 번호를 첫 줄에 알림
 let seeded = null;
 if (process.argv.includes('--seed-expired')) {
@@ -46,6 +62,11 @@ const server = http.createServer(async (req, res) => {
       const r = await (url.pathname === '/api/letter' ? lfn : fn)(new Request(url, {method: req.method, headers: req.headers, body}));
       res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); return;
     }
+    if (url.pathname === '/api/kakao' || url.pathname.startsWith('/api/kakao/')) { // 카톡 가입 — --fake-kakao 가 없으면 꺼진 사이트처럼 404
+      if (!kakao) { res.writeHead(404, {'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store'}); res.end('{"error":"not_found"}'); return; }
+      await sendFetch(res, await kakao.call(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}), url.origin)); return;
+    }
+    if (kakao && url.pathname.startsWith('/__fake-kakao/')) { await sendFetch(res, await kakao.fake.handle(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
     let p = decodeURIComponent(url.pathname);
     if (/^\/i\/[^/]*\/?$/.test(p)) p = '/invite.html'; // _redirects: /i/*  /invite.html  200
     if (p.endsWith('/')) p += 'index.html';
@@ -55,6 +76,6 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, {...globalHeaders, 'Content-Type': TYPES[path.extname(file)] ?? 'application/octet-stream', 'Cache-Control': 'no-cache'}); res.end(data);
   } catch (e) { res.writeHead(e.code === 'ENOENT' ? 404 : 500, {'Content-Type': 'text/plain; charset=utf-8'}); res.end(e.code === 'ENOENT' ? 'not found' : 'error'); }
 });
-server.listen(port, '127.0.0.1', () => console.log(`invite dev http://127.0.0.1:${port} · dist ${dir} · blobs ${blobsDir}${seeded ? ` · expired ${seeded}` : ''}`));
+server.listen(port, '127.0.0.1', () => console.log(`invite dev http://127.0.0.1:${port} · dist ${dir} · blobs ${blobsDir}${seeded ? ` · expired ${seeded}` : ''}${kakao ? ' · kakao: fake' : ''}`));
 const stop = async () => { server.close(); await blobs.stop(); process.exit(0); };
 process.on('SIGTERM', stop); process.on('SIGINT', stop);

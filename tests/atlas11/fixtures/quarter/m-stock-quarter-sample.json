@@ -1,0 +1,158 @@
+{
+ "_sample": "형식 견본(format sample) · 실제 네이버 응답이 아님 · 숫자는 꾸민 값 - tests/atlas11/gdr-quarter.test.mjs",
+ "itemCode": "900001",
+ "financePeriodType": "quarter",
+ "financeInfo": {
+  "itemCode": "900001",
+  "trTitleList": [
+   {
+    "isConsensus": "N",
+    "title": "2025.06.",
+    "key": "202506"
+   },
+   {
+    "isConsensus": "N",
+    "title": "2025.09.",
+    "key": "202509"
+   },
+   {
+    "isConsensus": "N",
+    "title": "2025.12.",
+    "key": "202512"
+   },
+   {
+    "isConsensus": "N",
+    "title": "2026.03.",
+    "key": "202603"
+   },
+   {
+    "isConsensus": "N",
+    "title": "2026.06.",
+    "key": "202606"
+   },
+   {
+    "isConsensus": "Y",
+    "title": "2026.09.",
+    "key": "202609"
+   }
+  ],
+  "rowList": [
+   {
+    "title": "매출액",
+    "columns": {
+     "202506": {
+      "value": "1,000",
+      "cx": null
+     },
+     "202509": {
+      "value": "1,100",
+      "cx": null
+     },
+     "202512": {
+      "value": "1,250",
+      "cx": null
+     },
+     "202603": {
+      "value": "1,180",
+      "cx": null
+     },
+     "202606": {
+      "value": "1,300",
+      "cx": null
+     },
+     "202609": {
+      "value": "1,400",
+      "cx": null
+     }
+    }
+   },
+   {
+    "title": "영업이익",
+    "columns": {
+     "202506": {
+      "value": "100",
+      "cx": null
+     },
+     "202509": {
+      "value": "-20",
+      "cx": null
+     },
+     "202512": {
+      "value": "130",
+      "cx": null
+     },
+     "202603": {
+      "value": "125",
+      "cx": null
+     },
+     "202606": {
+      "value": "-",
+      "cx": null
+     },
+     "202609": {
+      "value": "160",
+      "cx": null
+     }
+    }
+   },
+   {
+    "title": "당기순이익",
+    "columns": {
+     "202506": {
+      "value": "80",
+      "cx": null
+     },
+     "202509": {
+      "value": "-35",
+      "cx": null
+     },
+     "202512": {
+      "value": "101",
+      "cx": null
+     },
+     "202603": {
+      "value": "99",
+      "cx": null
+     },
+     "202606": {
+      "value": "120",
+      "cx": null
+     },
+     "202609": {
+      "value": "130",
+      "cx": null
+     }
+    }
+   },
+   {
+    "title": "영업이익률",
+    "columns": {
+     "202506": {
+      "value": "10.00",
+      "cx": null
+     },
+     "202509": {
+      "value": "-1.82",
+      "cx": null
+     },
+     "202512": {
+      "value": "10.40",
+      "cx": null
+     },
+     "202603": {
+      "value": "10.59",
+      "cx": null
+     },
+     "202606": {
+      "value": "-",
+      "cx": null
+     },
+     "202609": {
+      "value": "11.43",
+      "cx": null
+     }
+    }
+   }
+  ]
+ }
+}

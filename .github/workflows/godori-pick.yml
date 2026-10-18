@@ -1,0 +1,185 @@
+name: godori-pick
+run-name: 고도리 칸 다시 고르기 · ${{ github.event_name }}
+# 사장님 2026-10-18 00:15 「72개와 카톡 두 번 가입」 [8] 1 「업데이트 때마다 pick.mjs를 다시 돌려 고른 날을 사이트 자료 날에 맞춰라」 · [8] 2 목록 · [8] 7 분기 결산
+# 결정표 docs/design/godori-2026-10-18/gdr-v2.md · 일꾼 G3x(이 파일 · kind.mjs · quarter.mjs) · G1c(pick2.mjs) · G4x(verify2.py)
+# 하는 일 — 장이 끝난 뒤(서울 평일 20:23 · 예비 21:47 · 손 시작):
+#   ① 일봉 이어 받기: 있는 수집기 scripts/atlas11/t365/closes_fetch.mjs(사이트 올리기와 같은 네이버 주소 · 같은 쉼) → 임시 폴더
+#   ② 임시 모음 = 지금 모음(scripts/atlas11/t365/universe.json 의 bundle) + 이어 받은 [날, -, -, -, 종가, 거래량] 줄
+#      끝나지 않은 날(서울 평일 08:00 ~ 20:00 의 오늘) 줄은 뺌 · 겹친 날 종가가 다르면(수정주가로 지난 값이 바뀜) 그 회사는 안 붙임 · 겹친 날이 없으면 안 붙임
+#   ③ 거래소 KIND 목록(kind.mjs → reports/atlas11/godori/kind-latest.json · 못 받은 목록 null = 「?」) ④ 분기 결산(quarter.mjs · 받은 지 6일 넘은 회사만)
+#   ⑤ pick2.mjs --asof <임시 모음 달력의 마지막 날> → site/next/data/gdr.json · gates.json(공개 안 하는 파일은 임시 폴더에만 · 넣지도 올리지도 않음)
+#   ⑥ 따로 세기 verify2.py(결정표만 보고 셈) — 없거나 끝 코드 ≠ 0 이면 아무것도 넣지 않음(닫힌 쪽으로 실패)
+#   ⑦ 결과가 앞 판과 다를 때만 main 에 gdr.json · gates.json · kind-latest.json · quarter-latest.json · verify2-latest.json 만 넣음(밀기 다시 다섯 번)
+# 하지 않는 일: 사이트 올리기(통합이 올림) · 예약 작업 파일(atlas11-daily · atlas11-evening) 고치기(규칙 7) · DART(열쇠 없음 → 목록 dart null = 모든 회사 「?」)
+# 비밀: GITHUB_TOKEN 만 · 동시 묶음은 따로(godori-pick — atlas11-daily 묶음의 기다리는 실행을 밀어내지 않게)
+# 주의: GitHub 예약은 cron 줄을 마지막으로 고친 계정 이름으로 돈다(atlas11-daily.yml 머리 주석 · 2026-09-29 · 30 실제로 0회)
+#       봇 · Claude 커밋으로 넣은 이 예약이 안 오면 저장소 주인이 GitHub 화면에서 이 파일 cron 줄을 한 번 다시 저장한다 — 손 시작은 늘 됨
+on:
+  schedule:
+    - cron: '23 11 * * 1-5'   # 서울 20:23(저녁 장 20:00 끝난 뒤) — 다른 예약(16:01 · 16:07 · 16:37 · 19:00)과 안 겹침
+    - cron: '47 12 * * 1-5'   # 서울 21:47 예비 — 오늘 20:00 뒤에 고른 판이 이미 있으면 아무것도 안 함
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: 'main 에 결과 넣기(끄면 받기 · 셈 · 따로 세기만 하고 산출물로만 남김)'
+        type: boolean
+        default: true
+      quarters_all:
+        description: '분기 결산을 모든 회사 다시 받기(기본 = 받은 지 6일 넘은 회사만)'
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: godori-pick
+  cancel-in-progress: false
+jobs:
+  pick:
+    name: 고도리 칸 다시 고르기
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - name: 저장소 받기
+        uses: actions/checkout@v4
+      - name: 노드 준비
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 오늘 이미 골랐나(예약만)
+        id: gate
+        shell: bash
+        run: |
+          echo "W=$RUNNER_TEMP/gdr" >> "$GITHUB_ENV"; mkdir -p "$RUNNER_TEMP/gdr"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            node -e 'let g=null;try{g=JSON.parse(require("fs").readFileSync("site/next/data/gdr.json","utf8"))}catch{}
+              const day=new Date(Date.now()+9*36e5).toISOString().slice(0,10);
+              const made=g&&g.version==="gdr-v2"&&g.made?new Date(Date.parse(g.made)+9*36e5).toISOString().slice(0,16).replace("T"," "):"";
+              console.log("skip="+(made>=day+" 20:00"?"true":"false"))' >> "$GITHUB_OUTPUT"
+          else echo "skip=false" >> "$GITHUB_OUTPUT"; fi
+          cat "$GITHUB_OUTPUT"
+      - name: 일봉 이어 받기(있는 수집기)
+        if: steps.gate.outputs.skip != 'true'
+        run: node scripts/atlas11/t365/closes_fetch.mjs --out "$W/closes" --budget-s 900 || echo "::warning::일봉을 한 곳도 못 받음 — 지금 모음 날로 고름"
+      - name: 일봉 이어 붙인 임시 모음
+        id: merge
+        if: steps.gate.outputs.skip != 'true'
+        shell: bash
+        run: |
+          cat > "$W/merge.mjs" <<'EOF'
+          // godori-pick 임시 모음 — argv: <closes 폴더> <쓸 모음 .json.gz> · cwd = 저장소 · GDR_NOW(ISO)로 지금을 바꿀 수 있음(시험)
+          import fs from 'node:fs'; import path from 'node:path'; import zlib from 'node:zlib';
+          const [closesDir, outFile] = process.argv.slice(2);
+          const uni = JSON.parse(fs.readFileSync('scripts/atlas11/t365/universe.json', 'utf8'));
+          const B = JSON.parse(zlib.gunzipSync(fs.readFileSync(uni.bundle)));
+          const mkt = JSON.parse(fs.readFileSync('site/atlas/data/mkt.json', 'utf8'));
+          const k = new Date(Date.parse(process.env.GDR_NOW || new Date().toISOString()) + 9 * 36e5), today = k.toISOString().slice(0, 10).replace(/-/g, '');
+          const wd = k.getUTCDay(), hm = k.getUTCHours() * 100 + k.getUTCMinutes(), open = wd >= 1 && wd <= 5 && hm >= 800 && hm < 2000;
+          const files = fs.existsSync(closesDir) ? fs.readdirSync(closesDir).filter(f => f.endsWith('.json.gz')).sort() : [];
+          const C = files.length ? JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(closesDir, files.at(-1))))) : null;
+          const rep = {bundle: uni.bundle, closes: files.at(-1) ?? null, closesOk: C?.ok ?? 0, codes: 0, added: 0, adjusted: [], noOverlap: [], cutToday: open};
+          for (const [code, rows] of Object.entries(C?.rows ?? {})) {
+            const old = B.stocks?.[code]?.fchart?.rows; if (!Array.isArray(old) || !old.length || !Array.isArray(rows)) continue;
+            const have = new Map(old.map(r => [String(r[0]), Number(r[4])])), last = String(old.at(-1)[0]);
+            let overlap = 0, diff = false;
+            for (const [d, c] of rows) { const o = have.get(String(d)); if (o !== undefined) { overlap++; if (o !== Number(c)) diff = true; } }
+            if (diff) { rep.adjusted.push(code); continue; }
+            if (!overlap) { rep.noOverlap.push(code); continue; }
+            const fresh = rows.filter(([d, c, v]) => String(d) > last && String(d) <= today && !(open && String(d) === today) && Number(c) > 0 && Number(v) >= 0);
+            for (const [d, c, v] of fresh) old.push([String(d), null, null, null, Number(c), Number(v)]);
+            if (fresh.length) { rep.codes++; rep.added += fresh.length; }
+          }
+          const codes = Object.keys(mkt.companies), cnt = new Map();
+          for (const c of codes) for (const r of B.stocks?.[c]?.fchart?.rows ?? []) cnt.set(String(r[0]), (cnt.get(String(r[0])) ?? 0) + 1);
+          const days = [...cnt].filter(([, m]) => 2 * m > codes.length).map(([d]) => d).sort(), last = days.at(-1);
+          rep.asof = last ? `${last.slice(0, 4)}-${last.slice(4, 6)}-${last.slice(6, 8)}` : null;
+          fs.writeFileSync(outFile, zlib.gzipSync(JSON.stringify(B), {level: 1}));
+          fs.writeFileSync(path.join(path.dirname(outFile), 'merge.json'), JSON.stringify(rep, null, 1));
+          console.log('asof=' + (rep.asof ?? ''));
+          EOF
+          node "$W/merge.mjs" "$W/closes" "$W/bundle.json.gz" >> "$GITHUB_OUTPUT"
+          node -e 'const r=require(process.argv[1]);console.log(JSON.stringify({...r,adjusted:r.adjusted.length,noOverlap:r.noOverlap.length}))' "$W/merge.json"
+      - name: 거래소 KIND 목록
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          rm -f reports/atlas11/godori/kind-latest.json   # 못 쓰면 어제 목록이 남아 쓰이지 않게
+          node scripts/atlas11/next/gdr/kind.mjs --raw "$W/raw"
+      - name: 분기 결산
+        if: steps.gate.outputs.skip != 'true'
+        run: node scripts/atlas11/next/gdr/quarter.mjs --budget-s 1500 ${{ inputs.quarters_all && '--all' || '' }} || echo "::warning::분기 결산을 쓰지 못함 — 이익 문은 「?」"
+      - name: 고르기(pick2)
+        id: pick
+        if: steps.gate.outputs.skip != 'true'
+        shell: bash
+        run: |
+          [ -n "${{ steps.merge.outputs.asof }}" ] || { echo "::error::임시 모음 달력이 비었음"; exit 1; }
+          before=$(sha256sum site/next/data/gdr.json 2>/dev/null | cut -c1-64 || true)
+          prev=()
+          if [ -f site/next/data/gdr.json ] && node -e 'process.exit(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).version==="gdr-v2"?0:1)' site/next/data/gdr.json; then
+            cp site/next/data/gdr.json "$W/prev-gdr.json"; prev=(--prev "$W/prev-gdr.json"); fi
+          node scripts/atlas11/next/gdr/pick2.mjs --bundle "$W/bundle.json.gz" --asof "${{ steps.merge.outputs.asof }}" \
+            --quarters reports/atlas11/godori/quarter-latest.json --lists reports/atlas11/godori/kind-latest.json \
+            --out site/next/data/gdr.json --gates site/next/data/gates.json --private "$W/private.json" "${prev[@]}"
+          after=$(sha256sum site/next/data/gdr.json 2>/dev/null | cut -c1-64 || true)
+          if [ -n "$after" ] && [ "$before" != "$after" ]; then echo "made=true" >> "$GITHUB_OUTPUT"; else echo "made=false" >> "$GITHUB_OUTPUT"; echo "고른 판을 새로 쓰지 않음(그날이 달력에 없음 등)"; fi
+      - name: 따로 세기(verify2)
+        id: verify
+        if: steps.gate.outputs.skip != 'true' && steps.pick.outputs.made == 'true'
+        shell: bash
+        run: |
+          if [ ! -f scripts/atlas11/next/gdr/verify2.py ]; then echo "::error::verify2.py 없음 — 따로 세기 없이는 넣지 않음"; exit 1; fi
+          prev=(); if [ -f "$W/prev-gdr.json" ]; then prev=(--prev "$W/prev-gdr.json"); fi
+          python3 -I scripts/atlas11/next/gdr/verify2.py --bundle "$W/bundle.json.gz" --site site/atlas/data --asof "${{ steps.merge.outputs.asof }}" \
+            --quarters reports/atlas11/godori/quarter-latest.json --lists reports/atlas11/godori/kind-latest.json \
+            --gdr site/next/data/gdr.json --gates site/next/data/gates.json --private "$W/private.json" "${prev[@]}"
+      - name: 결과 한눈에
+        if: always() && steps.gate.outputs.skip != 'true'
+        continue-on-error: true
+        shell: bash
+        run: |
+          node -e 'const fs=require("fs"),j=f=>{try{return JSON.parse(fs.readFileSync(f,"utf8"))}catch{return null}};
+            const m=j(process.env.W+"/merge.json"),k=j("reports/atlas11/godori/kind-latest.json"),g=j("site/next/data/gdr.json"),v=j("reports/atlas11/godori/verify2-latest.json");
+            const L=[`고른 날 ${m?.asof??"?"} · 일봉 이어 붙인 회사 ${m?.codes??0} · 수정주가로 안 붙인 회사 ${m?.adjusted?.length??0}`,
+              `목록 ${k?Object.entries(k.lists).map(([n,v])=>n+" "+(v?v.length:"? "+(k.why?.[n]??""))).join(" · "):"없음"} · DART ${k?.dart?.why??"?"}`,
+              `고른 곳 ${g?.picks?.length??"?"} · 까닭 ${g?.counts?.why??"-"} · 따로 세기 ${v?JSON.stringify(v.ok??v.result??v.diffs?.length??"?"):"없음"}`];
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,L.map(x=>"- "+x).join("\n")+"\n");console.log(L.join("\n"))'
+      - name: 받은 원문 · 이어 붙인 기록(산출물 · 7일)
+        if: always() && steps.gate.outputs.skip != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: godori-pick-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/gdr/raw
+            ${{ runner.temp }}/gdr/merge.json
+            reports/atlas11/godori/kind-latest.json
+            reports/atlas11/godori/quarter-latest.json
+            reports/atlas11/godori/verify2-latest.json
+            site/next/data/gdr.json
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: main 에 넣기(결과가 바뀌었을 때만)
+        if: steps.gate.outputs.skip != 'true' && steps.pick.outputs.made == 'true' && steps.verify.outcome == 'success' && (github.event_name == 'schedule' || inputs.commit)
+        shell: bash
+        run: |
+          same=$(node -e 'const fs=require("fs"),cp=require("child_process");
+            const head=f=>{try{return cp.execFileSync("git",["show","HEAD:"+f],{encoding:"utf8",maxBuffer:1<<28})}catch{return null}};
+            const cut=t=>{if(t==null)return null;const o=JSON.parse(t);delete o.made;return JSON.stringify(o)};
+            const a=cut(head("site/next/data/gdr.json")),b=cut(fs.readFileSync("site/next/data/gdr.json","utf8"));
+            console.log(a===b&&head("site/next/data/gates.json")===fs.readFileSync("site/next/data/gates.json","utf8")?"yes":"no")')
+          if [ "$same" = "yes" ]; then echo "고른 판이 앞 판과 같음(만든 때만 다름) — 넣지 않음"; exit 0; fi
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add site/next/data/gdr.json site/next/data/gates.json reports/atlas11/godori/kind-latest.json
+          for f in reports/atlas11/godori/quarter-latest.json reports/atlas11/godori/verify2-latest.json; do [ -f "$f" ] && git add "$f"; done
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "godori pick ${{ steps.merge.outputs.asof }} [skip ci]"
+          # 같은 때 다른 기록이 먼저 들어가면 밀기가 막힘 — 받아 붙이고 다시 밀기(atlas11-site.yml 과 같은 방법 · 겹친 곳은 이번 판으로)
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --autostash -q && git push; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            if git pull --rebase -X theirs --autostash -q && git push; then echo "겹친 곳은 이번 판으로 — $i"; exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            echo "밀기 다시 $i"; sleep $((i * 7))
+          done
+          exit 1
