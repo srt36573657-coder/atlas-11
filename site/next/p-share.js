@@ -17,6 +17,7 @@ import {sendHits} from './words.js';
 import {shareButtons, kakaoButton} from './share-btn.js'; // 보내기 단추 한 곳(사장님 2026-10-18 16:39 [6] 2) — 옛 부르는 곳을 위해 아래에서 다시 내보냄
 import {NAME, josa, hasBatchim} from './brand.js';
 import {t as L} from './i18n.js'; // 보내는 글 속 붙박이 말(기본 말 · 「반토막 난다면」)은 지금 말로 — 화면 글은 엔진이 그려진 뒤 바꿈 · 한국어면 그대로
+import {tally} from './tally.js'; // 합계 칸 참고 신호(사장님 2026-10-18 16:39 [10] · 일꾼 KD tally.js) — 보내기를 마친 때 한 번 · 몸은 {k} 하나 · 보내고 잊음(일꾼 KI)
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const nx = () => globalThis.NX ?? null;
@@ -268,6 +269,7 @@ export async function open(o = {}) {
     say.className = 'ps-m'; say.textContent = '여는 중이에요…'; busy = true;
     deliver({title, text, url, card}).then(r => {
       busy = false; last = r;
+      if (r === 'kakao' || r === 'share' || r === 'copy') tally('share'); // 보내기 마침 = 카톡 친구 고르기를 엶 · 공유 창을 마침 · 글과 주소를 담음(닫음 · 담기 막힘은 셈 밖)
       // 보낸 뒤 = 보던 자리 그대로(글상자만 닫고 연 단추로 돌아감 · 쪽 이동 · 폭죽 없음 [6] 7)
       if (r === 'share' || r === 'kakao') { close(r); toast(r === 'kakao' ? '카톡 친구 고르기를 열었어요.' : asStock ? '보냈어요. 친구가 열면 질문부터 봐요.' : '보냈어요.'); return; }
       if (r === 'cancel') { say.textContent = '보내기 창을 닫았어요. 다시 누르면 돼.'; return; }

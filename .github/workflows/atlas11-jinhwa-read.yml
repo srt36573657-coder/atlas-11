@@ -1,0 +1,37 @@
+name: atlas11-jinhwa-read
+# 골똘이 진화 회차 — 열쇠 없는 읽기(사장님 2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」 [9] 8 「진화 회차는 열쇠 없는 읽기 주소로 대안 번호와 상태만 읽는다. 깃허브 열쇠는 사이트에 두지 마라.」)
+#   Claude 예약 작업 방의 바깥 길은 aaa7377.com 을 막음(2026-10-18 connect_rejected 확인) → 진화 회차(scripts/atlas11/jinhwa/round.mjs)가 바로 못 읽으면 이 작업을 불러 읽음
+#   하는 일: scripts/atlas11/jinhwa/read.mjs 가 GET /api/jinhwa/status · GET /api/tally/sum?days=N 둘만 읽어(열쇠 · 쿠키 없이) 묶음 jinhwa-read 로 돌려줌(3일 뒤 지움)
+#   하지 않는 일: 저장소에 쓰기 · 사이트에 보내기 · 비밀 값 쓰기 — 권한은 읽기만
+#   쓰는 법: gh workflow run atlas11-jinhwa-read.yml -R srt36573657-coder/atlas-11 --ref main -f days=200 → gh run download <번호> -n jinhwa-read
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: '합계 칸 날 수(1 ~ 200)'
+        required: false
+        default: '200'
+permissions:
+  contents: read
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: # 읽기 파일 하나만 받음
+          sparse-checkout: scripts/atlas11/jinhwa
+          filter: blob:none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 열쇠 없는 읽기 둘(상태 · 합계)
+        env:
+          DAYS: ${{ inputs.days }}
+        run: node scripts/atlas11/jinhwa/read.mjs --days "$DAYS" --out jinhwa-read.json || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jinhwa-read
+          path: jinhwa-read.json
+          retention-days: 3
+          if-no-files-found: error

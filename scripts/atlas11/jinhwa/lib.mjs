@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {PROTECTED as GATE_PROTECTED, protectedTouched} from '../next/essence_check.mjs'; // 지킴 목록 한 곳 = 본질 문(KA) — 회차는 그 위에 더 막을 곳만 더함(ROUND_EXTRA)
+import {judge as tallyJudge} from '../../../lib/atlas11/tally.mjs';                     // 판단 한 곳 = 합계 칸(KD) — 표본 30 · |z| < 1.96 = 보류(잣대 파일 judge 그대로)
 export {GATE_PROTECTED};
 
 export const REPO = 'srt36573657-coder/atlas-11';
@@ -45,7 +46,7 @@ export const branchOf = id => 'jinhwa/' + id;           // 대안 가지 — 만
 export const tryBranchOf = id => 'jinhwa-try/' + id;    // 다시 얹은 판의 미리 검사 가지(그 번호가 기다림에서 나가면 지움)
 export const fixBranchOf = id => 'jinhwa-fix/' + id;
 export const MIN_SAMPLE = 30;                          // [10] 5 — 잣대 파일 judge.minSample 이 있으면 그 값
-export const SCORE_DAYS = 10, SCORE_MAX_DAYS = 60, Z_NOISE = 1.96; // [10] 6 10거래일 뒤 채점 · 표본이 작으면 같은 길이로 늘려 60거래일까지 모음 · |z| < 1.96 = 소음
+export const SCORE_DAYS = 10, SCORE_MAX_DAYS = 60;    // [10] 6 10거래일 뒤 채점 · 표본이 작으면 같은 길이로 늘려 60거래일까지 모음(판단 문턱은 lib/atlas11/tally.mjs judge 한 곳)
 
 // ───────────────────────── 때(서울 · 서머타임 없음) ─────────────────────────
 const p2 = n => String(n).padStart(2, '0');
@@ -664,10 +665,8 @@ export function mergeTally(...parts) {
   for (const p of parts) if (p?.ok) for (const [d, v] of Object.entries(p.days)) days[d] = v;
   return {ok: parts.some(p => p?.ok), days};
 }
-const zShare = (xa, na, xb, nb) => { const p = (xa + xb) / (na + nb), se = Math.sqrt(p * (1 - p) * (1 / na + 1 / nb)); return se > 0 ? (xa / na - xb / nb) / se : 0; };
-const zRate = (ca, ta, cb, tb) => { const se = Math.sqrt(ca / (ta * ta) + cb / (tb * tb)); return se > 0 ? (ca / ta - cb / tb) / se : 0; }; // 같은 길이면 (뒤 − 앞) ÷ √(앞 + 뒤)
 /** 들어간 대안 하나 채점 — {done, ok, text, n(쓴 거래일)} · done false = 아직(10거래일 안 됨 · 표본 모으는 중)
- *  잣대 파일 judge 그대로: 들어간 날 = 뒤 칸 첫날 · 앞 칸 = 그 앞 N거래일이 걸친 서울 날짜 · 몫은 밑수가 · 수는 그 수가 양쪽 모두 minSample 이상일 때만 · |z| < 1.96 = 소음 → 판단 못 함
+ *  잣대 파일 judge 그대로(셈은 KD lib/atlas11/tally.mjs judge 한 곳): 들어간 날 = 뒤 칸 첫날 · 앞 칸 = 그 앞 N거래일이 걸친 서울 날짜 · 몫은 밑수가 · 수는 그 수가 양쪽 모두 minSample 이상일 때만 · |z| < 1.96 = 소음 → 판단 못 함
  *  표본이 작으면 같은 길이(10 · 20 · … 60거래일)로 늘려 모음([10] 5) · 사실은 표본 문턱 없음 — 뒤 칸 동안 한 번이라도 0 이 아니면 틀림 */
 export function scoreApplied({rule, at, today, cal, tally, rounds = [], minSample = MIN_SAMPLE}) {
   const d0 = kst(at).date;
@@ -692,14 +691,12 @@ export function scoreApplied({rule, at, today, cal, tally, rounds = [], minSampl
     if (before.length < N) return {done: true, ok: null, text: '들어가기 전 기록이 모자라 판단 못 해요 · ?', n: N};
     const A = span(d0, after[N - 1]), B = span(before[before.length - N], addDays(d0, -1));
     if ([...A, ...B].some(d => !(d in tally.days))) return {done: false, ok: null, text: '합계 기록이 비는 날이 있어 채점을 미뤄요 · ?', n: N};
-    const sum = (W, k) => W.reduce((s, d) => s + (Number(tally.days[d]?.[k]) || 0), 0);
-    const na = rule.den ? sum(A, rule.den) : sum(A, rule.num), nb = rule.den ? sum(B, rule.den) : sum(B, rule.num);
-    if (na < minSample || nb < minSample) { if (N === SCORE_MAX_DAYS) return {done: true, ok: null, text: `${SCORE_MAX_DAYS}거래일 동안 표본이 작아 판단 못 했어요`, n: N}; continue; }
-    const z = rule.den ? zShare(sum(A, rule.num), na, sum(B, rule.num), nb) : zRate(na, A.length, nb, B.length);
+    const j = tallyJudge({rule: {num: rule.num, ...(rule.den ? {den: rule.den} : {}), dir: rule.dir}, before: B.map(d => tally.days[d]), after: A.map(d => tally.days[d]), minSample});
     const wide = N > SCORE_DAYS ? ` · 표본이 작아 ${N}거래일씩 견줌` : '';
-    if (Math.abs(z) < Z_NOISE) return {done: true, ok: null, text: `판단 못 했어요 — 앞뒤 차이가 소음 안이에요${wide}`, n: N};
-    const ok = rule.dir === 'up' ? z > 0 : z < 0;
-    return {done: true, ok, text: (ok ? '맞았어요 — 들어가기 전보다 ' : '틀렸어요 — 들어가기 전보다 ') + (z > 0 ? '늘었어요' : '줄었어요') + wide, n: N};
+    if (j.why === 'small') { if (N === SCORE_MAX_DAYS) return {done: true, ok: null, text: `${SCORE_MAX_DAYS}거래일 동안 표본이 작아 판단 못 했어요`, n: N}; continue; }
+    if (j.why === 'rule') return {done: true, ok: null, text: '잴 규칙이 없어 채점 못 해요 · ?', n: N};
+    if (j.why === 'noise' || j.ok == null) return {done: true, ok: null, text: `판단 못 했어요 — 앞뒤 차이가 소음 안이에요${wide}`, n: N, z: j.z};
+    return {done: true, ok: j.ok, text: (j.ok ? '맞았어요 — 들어가기 전보다 ' : '틀렸어요 — 들어가기 전보다 ') + (j.z > 0 ? '늘었어요' : '줄었어요') + wide, n: N, z: j.z};
   }
   return {done: true, ok: null, text: `${SCORE_MAX_DAYS}거래일 동안 표본이 작아 판단 못 했어요`, n: SCORE_MAX_DAYS};
 }

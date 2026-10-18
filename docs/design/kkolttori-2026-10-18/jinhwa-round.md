@@ -7,12 +7,13 @@
 - 저장소 srt36573657-coder/atlas-11 · 시각은 한국 시각: TZ=Asia/Seoul date '+%Y-%m-%d %H:%M'
 - 회차 도구: node scripts/atlas11/jinhwa/round.mjs <명령> — 결과는 표준 출력에 JSON 한 줄(ok · why …) · 끝 코드 0 했음 · 1 막음 · 2 차례가 아님 · 3 바쁨(다음 회차)
 - 확인 상태는 열쇠 없는 읽기 주소 https://aaa7377.com/api/jinhwa/status 로 번호 · 상태만 읽는다(round.mjs 가 읽음). 사장님 열쇠 · 깃허브 열쇠를 사이트나 파일에 두지 않는다([9] 8).
+  이 방의 바깥 길이 aaa7377.com 을 막으면(2026-10-18 막힘 확인) round.mjs 가 깃허브 작업 atlas11-jinhwa-read.yml 을 불러 깃허브 실행기에서 같은 두 주소를 열쇠 없이 읽어 온다(1분쯤). 둘 다 못 읽으면 「확인 상태를 못 읽음」 — 아무것도 넣지 않는다.
 - 진화 칸 = 사장님 열쇠 기기에서만 열리는 쪽 #/jinhwa · 자료 site/next/data/jinhwa.json(이 회차가 씀) · 그림 site/next/data/jinhwa/<번호>-before.png · -after.png
 - 잣대 셋(config/atlas11/jinhwa-metrics.v1.json): ① 멈춤(매매일지를 끝낸 수 · 그중 「쉬어 가자」) ② 약속(한 달 뒤 「정한 대로 했어?」에 답한 수 · 그중 「했어」) ③ 사실(화면 숫자가 자료와 다른 곳 0). 방문 수 · 가입 수 · 보내기 수는 잣대가 아니다.
 
 할 일(차례대로 · 막히면 그 자리에서 7 「끝」으로 가고 보고)
 0. 작업 폴더
-   cd ~ && if [ -d atlas-11-jinhwa/.git ]; then git -C atlas-11-jinhwa fetch -q --no-tags origin main && git -C atlas-11-jinhwa checkout -q -B main origin/main; else gh repo clone srt36573657-coder/atlas-11 atlas-11-jinhwa -- --depth 300 --no-tags --single-branch --branch main; fi
+   cd ~ && if [ -d atlas-11-jinhwa/.git ]; then git -C atlas-11-jinhwa fetch -q --no-tags origin main && git -C atlas-11-jinhwa checkout -q -B main origin/main; else gh repo clone srt36573657-coder/atlas-11 atlas-11-jinhwa -- --filter=blob:none --no-tags --single-branch --branch main; fi
    cd ~/atlas-11-jinhwa && git config core.hooksPath scripts/atlas11/hooks && ( [ -d node_modules ] || npm ci --no-audit --no-fund --loglevel=error )
    node scripts/atlas11/jinhwa/round.mjs --selftest — 실패가 하나라도 있으면 아무것도 넣지 않고 7 로(보고 첫 줄 「실패」).
 1. 시작: node scripts/atlas11/jinhwa/round.mjs begin

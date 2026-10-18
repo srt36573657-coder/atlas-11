@@ -44,8 +44,9 @@ export function realDeps({root = ROOT, run = process.env.JINHWA_RUN || path.join
   return {
     root, run, now: () => new Date(), sleep: G.sleep, every: 30, waitDeploysMin: 20, previewMaxMin: 22,
     say: s => process.stderr.write(String(s) + '\n'),
-    fetchStatus: async () => { const r = await G.fetchJson(L.STATUS_URL); return r.ok ? r.json : null; },
-    fetchTally: async days => { const r = await G.fetchJson(`${L.TALLY_URL}?days=${days}`); return r.ok ? r.json : null; },
+    // 읽기 주소 — 늘 열쇠 없는 GET 둘뿐([9] 8) · 바로(curl) 못 닿으면 깃허브 작업 atlas11-jinhwa-read.yml 로 · JINHWA_SITE = 시험 서버로 바꿔 볼 때만(예 http://127.0.0.1:8826)
+    fetchStatus: async () => (await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'status', say: s => process.stderr.write(s + '\n')})).status,
+    fetchTally: async days => (await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'tally', days, say: s => process.stderr.write(s + '\n')})).tally,
     ghRunner: G.gh,
     essenceDiff: (base, head) => G.essenceDiff(root, base, head),
     essenceStatic: siteDir => G.essenceStatic(root, siteDir),
@@ -265,6 +266,7 @@ export async function cmdRevert(a, D) {
   if (!wd.clear) fail('다른 올리기가 아직 돎 — 다음 회차', 3);
   if (!G.fetchMain(D.root).ok) fail('main 을 못 받음');
   const base = G.revParse(D.root, 'origin/main');
+  if (!G.git(D.root, ['cat-file', '-e', g.merge + '^{commit}']).ok) G.git(D.root, ['fetch', '-q', '--no-tags', 'origin', g.merge]); // 얕은 사본이면 그 커밋만 받음
   if (!G.isAncestor(D.root, g.merge, base)) fail('들어간 커밋이 main 에 없음');
   st.wt.revert = path.join(D.run, 'wt', 'revert');
   const wa = G.worktreeAdd(D.root, st.wt.revert, base); if (!wa.ok) fail(wa.why);
@@ -525,8 +527,8 @@ export async function cmdScore(a, D) {
   const st = load(D);
   const recs = recordsOf(st), mem = L.memoryOf(recs);
   const cal = readJson(path.join(st.wt.main, L.CAL_FILE));
-  const fresh = L.normalizeTally(await D.fetchTally(62));
-  st.tally = fresh.ok ? fresh.days : null;
+  const fresh = L.normalizeTally(await D.fetchTally(200)); // 합계 칸 읽기는 200일까지(KD) — 앞 칸 · 뒤 칸 60거래일씩도 한 번에
+  st.tally = fresh.ok ? Object.fromEntries(Object.entries(fresh.days).sort().slice(-14)) : null; // 기록에는 지난 14일만(앞날은 앞 기록에 · 읽기 창 200일 밖을 이어 붙일 때만 씀)
   if (!fresh.ok) notDone(st, `합계 칸을 못 읽음(${fresh.why}) — 채점 미룸`);
   const tally = L.mergeTally(...recs.map(r => (r.tally ? {ok: true, days: r.tally} : null)), fresh);
   const rounds = [...recs.map(r => ({date: r.facts?.at ? L.kst(r.facts.at).date : null, mismatch: r.facts?.mismatch})), {date: st.facts?.at ? L.kst(st.facts.at).date : null, mismatch: st.facts?.mismatch}].filter(x => x.date);

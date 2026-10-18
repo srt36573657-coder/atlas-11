@@ -8263,8 +8263,8 @@
   "나도 보내기": "Send it to a friend too",
   "카톡 친구 고르기를 열었어요.": "Opened the KakaoTalk friend picker.",
   "{n}곳 중 {n}곳이 {n}년 안에 반값 아래로 떨어진 적 있어요": "{n2} of {n1} have fallen below half price within {n3} {pl:year|years}",
-  "{d}부터 {d}까지 {n}일 동안 가장 많이 오른 {n}곳을 모았어요. 그 뒤 {d}까지 {n}년 동안 종가가 그날 종가의 반보다 낮았던 날이 하루라도 있는 곳을 셌어요. 지금 시장에 남아 있는 회사만 셌어요. 그사이 시장에서 빠진 회사는 자료에 없어서 실제보다 적게 셌을 수 있어요.": "We took the {n2} companies that rose the most in the {n1} trading days from {d1} to {d2}. Then we counted those that closed below half of that day's close at least once in the following year, up to {d3}. Only companies still on the market today are counted. Companies that left the market in between are not in the data, so the real number may be higher.",
-  "{d}부터 {d}까지 {n}일 동안 가장 많이 오른 {n}곳을 모았어요. 그 뒤 {d}까지 {n}년 동안 종가가 그날 종가의 반보다 낮았던 날이 하루라도 있는 곳을 셌어요. 지금 시장에 남아 있는 회사만 셌어요. 그사이 시장에서 빠진 회사는 자료에 없어서 실제보다 적게 셌을 수 있어요. ? {n}곳은 값이 빈 날이나 하루에 {n}% 넘게 바뀐 날이 있어 못 셌어요.": "We took the {n2} companies that rose the most in the {n1} trading days from {d1} to {d2}. Then we counted those that closed below half of that day's close at least once in the following year, up to {d3}. Only companies still on the market today are counted. Companies that left the market in between are not in the data, so the real number may be higher. ? {n4} {pl:company|companies} could not be counted because a price was missing or moved more than {n5}% in one day.",
+  "{d}부터 {d}까지 {n}일 동안 가장 많이 오른 {n}곳을 모았어요. 그 뒤 {d}까지 {n}년 동안 종가가 그날 종가의 반보다 낮았던 날이 하루라도 있는 곳을 셌어요. 지금 시장에 남아 있는 회사만 셌어요. 그사이 시장에서 빠진 회사는 자료에 없어서 실제보다 적게 셌을 수 있어요.": "From {d} to {d}, over {n} trading days, we gathered the {n} companies that rose the most. Then we counted those whose close fell below half of that day's close at least once by {d} ({n} {pl:year|years} later). Only companies still on the market today are counted. Companies that left the market in between are not in the data, so the real number may be higher.",
+  "{d}부터 {d}까지 {n}일 동안 가장 많이 오른 {n}곳을 모았어요. 그 뒤 {d}까지 {n}년 동안 종가가 그날 종가의 반보다 낮았던 날이 하루라도 있는 곳을 셌어요. 지금 시장에 남아 있는 회사만 셌어요. 그사이 시장에서 빠진 회사는 자료에 없어서 실제보다 적게 셌을 수 있어요. ? {n}곳은 값이 빈 날이나 하루에 {n}% 넘게 바뀐 날이 있어 못 셌어요.": "From {d} to {d}, over {n} trading days, we gathered the {n} companies that rose the most. Then we counted those whose close fell below half of that day's close at least once by {d} ({n} {pl:year|years} later). Only companies still on the market today are counted. Companies that left the market in between are not in the data, so the real number may be higher. ? {n} {pl:company|companies} could not be counted because a price was missing or moved more than {n}% in one day.",
   "{n}년 전 날아오른 {n}곳 중 {n}곳이 그 뒤 {n}년 안에 반값 아래로 떨어진 적 있어요": "{n3} of the {n2} stocks that shot up {n1} {pl:year|years} ago later fell below half price within {n4} {pl:year|years}",
   "진화 칸": "Evolution",
   "확인함 · 다음 업데이트 {n}시에 들어가요": "Confirmed · goes in at the next update, {n}:00",
@@ -8362,6 +8362,14 @@
   "정해진 업데이트 때 적어요. 날짜를 누르면 그날 {n}%대 칸에 들어온 곳과 나간 곳이 나와요.": "Logged at the scheduled updates. Tap a date to see what entered and left the {n}% band that day.",
   "정해진 업데이트 때 적어요. 날짜를 누르면 그날 급등 칸에 들어온 곳과 나간 곳이 나와요.": "Logged at the scheduled updates. Tap a date to see what entered and left the Surge list that day.",
   "정해진 업데이트 때 다시 세요. 다른 칸으로 간 곳은 {q}으로 적어요. 다른 셈으로 한 번 더 세어 같을 때만 올려요.": "Recounted at the scheduled updates. Stocks that moved to another band are marked {q}. We post only when a second, separate count matches.",
-  "{e} 소개": "About {e}"
+  "{e} 소개": "About {e}",
+  "{e} 초대장": "{e} invitation",
+  "{e} 둘러보기": "Explore {e}",
+  "{e}는 주식을 사기 전에 한 번 멈추게 하는 곳이에요. 지난 기록만 보여 주고, 사고팔기를 권하지 않아요.": "{e} is a place that makes you stop once before you buy a stock. It shows only past records and does not recommend buying or selling.",
+  "미리 보기에서는 이동하지 않습니다 — 받는 사람은 이 단추로 {e}를 엽니다": "The preview does not open it — the person who receives it opens {e} with this button",
+  "{e} 초대장 보내기": "Send a {e} invitation",
+  "소중한 사람에게 {e}를 작은 선물처럼 보냅니다.": "Send {e} to someone dear, like a small gift.",
+  "{e}로 돌아가기": "Back to {e}",
+  "{e} 초대장이 도착했습니다": "A {e} invitation has arrived"
  }
 }

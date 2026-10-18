@@ -142,7 +142,7 @@ test('⑬ 지시문 첫 줄 = 본질 먼저 · 꼭 있을 말 · 회차 도구�
   ok(first.startsWith(`먼저 ${L.essenceFileOf(ROOT)}를 읽는다`), '첫 줄: ' + first.slice(0, 60));
   for (const w of ['gh api', '/api/jinhwa/status', 'round.mjs begin', 'round.mjs apply', 'round.mjs record', '한 번에 하나', '카너먼', '멍거', '포퍼', 'PushNotification', '세 줄', '확인 없이', '고친 고장', '사전 부검', '큰 것', '10거래일', '없으면 없다고'])
     ok(doc.includes(w), '지시문에 「' + w + '」');
-  for (const f of ['round.mjs', 'gh.mjs', 'lib.mjs', 'shots.mjs', 'selftest.mjs'].map(f => path.join(ROOT, 'scripts/atlas11/jinhwa', f)).concat(path.join(ROOT, L.ROUND_DOC))) {
+  for (const f of ['round.mjs', 'gh.mjs', 'lib.mjs', 'shots.mjs', 'selftest.mjs', 'read.mjs'].map(f => path.join(ROOT, 'scripts/atlas11/jinhwa', f)).concat(path.join(ROOT, L.ROUND_DOC), path.join(ROOT, '.github/workflows/atlas11-jinhwa-read.yml')).filter(f => fs.existsSync(f))) {
     const t = fs.readFileSync(f, 'utf8');
     ok(!/(ghp_|github_pat_|gho_|nfp_|sk-ant-)[A-Za-z0-9_]{16,}/.test(t), '비밀 값 ' + f);
     if (!/selftest|ROUND_DOC|jinhwa-round/.test(path.basename(f))) ok(!/x-atlas-owner/i.test(t), '사장님 열쇠 머리글 ' + f);
@@ -206,6 +206,30 @@ test('⑱ 때 — 회차 때 · 실리는 업데이트 · 확인하면 들어가
   eq(L.isoKst(L.carrySlot(new Date('2026-10-19T00:57:00Z'))), '2026-10-19T12:00:00+09:00', '4분 안이면 다음 업데이트');
   eq(L.isoKst(L.nextSlot(new Date('2026-10-18T10:00:00Z'))), '2026-10-19T12:00:00+09:00', '일요일 저녁 판 → 월요일 12시');
   eq(L.roundId(new Date('2026-10-19T00:30:00Z')), '20261019-0930');
+});
+
+test('⑲ 열쇠 없는 읽기 — GET 둘뿐(상태 · 합계) · 바로 읽기 · 닿지 못하면 상태 없음(시험 서버 · 따로 뜬 프로세스)', async () => {
+  const {spawn} = await import('node:child_process');
+  // curl 은 spawnSync 로 돌아 이 프로세스를 멈춤 → 시험 서버는 따로 띄움(받은 요청을 줄마다 찍음)
+  const code = `const http=require('http');const s=http.createServer((q,r)=>{console.log('REQ '+q.method+' '+q.url+(q.headers['x-atlas-owner']?' 열쇠':''));r.setHeader('content-type','application/json');
+    r.end(q.url.startsWith('/api/jinhwa/status')?JSON.stringify({items:[{id:'${ID(1)}',state:'confirmed',at:'2026-10-19T00:10:00.000Z'}]}):JSON.stringify({days:[{day:'2026-10-19',stop:3,stop_rest:1,promise:0,promise_yes:0}]}))});
+    s.listen(0,'127.0.0.1',()=>console.log('PORT '+s.address().port));setTimeout(()=>process.exit(0),60000);`;
+  const p = spawn(process.execPath, ['-e', code], {stdio: ['ignore', 'pipe', 'inherit']});
+  let outText = '';
+  const port = await new Promise((res, rej) => { p.stdout.on('data', b => { outText += b; const m = /PORT (\d+)/.exec(outText); if (m) res(Number(m[1])); }); setTimeout(() => rej(Error('시험 서버가 안 뜸')), 5000); });
+  const base = `http://127.0.0.1:${port}`;
+  try {
+    const {readBoth} = await import('./read.mjs');
+    const r = await readBoth({base, days: 5});
+    ok(r.status.ok && r.tally.ok, JSON.stringify(r));
+    eq(L.normalizeStatus(r.status.json).items[0].state, 'confirmed'); eq(L.normalizeTally(r.tally.json).days['2026-10-19'].stop_rest, 1);
+    const k = await G.readKeyless(ROOT, {site: base, want: 'status'}); eq(k.via, 'direct'); ok(Array.isArray(k.status?.items), JSON.stringify(k));
+    const t = await G.readKeyless(ROOT, {site: base, want: 'tally', days: 7}); ok(Array.isArray(t.tally?.days), JSON.stringify(t));
+    const dead = await G.readKeyless(ROOT, {site: 'http://127.0.0.1:9', want: 'status'}); eq(dead.status, null, '닿지 못하면 상태 없음(넣지 않음)');
+    await new Promise(r => setTimeout(r, 100));
+    const reqs = outText.split('\n').filter(l => l.startsWith('REQ ')).map(l => l.slice(4));
+    ok(reqs.length >= 4 && reqs.every(x => /^GET \/api\/(jinhwa\/status|tally\/sum\?days=\d+)$/.test(x)), '읽기는 열쇠 없는 GET 둘뿐 — ' + reqs.join(' | '));
+  } finally { p.kill(); }
 });
 
 // ───────────── 끝까지(임시 git 원격) ─────────────
