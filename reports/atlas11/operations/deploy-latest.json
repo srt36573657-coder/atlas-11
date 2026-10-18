@@ -1,22 +1,24 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-10-18T08:04:28.025Z",
+  "at": "2026-10-18T11:17:11.143Z",
   "state": "ready",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "url": "https://aaa7377.com",
-  "deployUrl": "https://6ad47db08865c5183c63f702--mulgil.netlify.app",
-  "deployId": "6ad47db08865c5183c63f702",
+  "deployUrl": "https://6ad4aadb00061f003b2c488f--mulgil.netlify.app",
+  "deployId": "6ad4aadb00061f003b2c488f",
   "noindex": false,
-  "files": 6951,
+  "files": 6967,
   "exitCode": 0,
   "error": null,
   "functions": {
     "state": "deployed",
     "names": [
       "invite",
-      "letter"
+      "jinhwa",
+      "letter",
+      "tally"
     ],
     "packages": [
       "@envelop/instrumentation",
