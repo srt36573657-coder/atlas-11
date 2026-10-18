@@ -24,6 +24,12 @@ div.privals-pr { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas
 a.privals-pr:active { background: var(--card2); }
 .privals-pn { grid-area: n; min-width: 0; font-size: var(--fs-2); line-height: 1.35; color: var(--sub); overflow-wrap: anywhere; }
 li.privals-me .privals-pn { color: var(--ink); font-weight: 700; }
+/* 영어 · 휴대폰 폭 — 값 글이 길어(「186.3 trillion won」 158px) 카톡 단추가 든 줄에서 이름 칸이 14px 로 눌려 「Hyundai Motor Company」가 칸을 넘음(2026-10-18 모든 쪽 검사 · 320 · 360) → 값을 이름 밑 줄로 */
+@media (max-width: 419px) {
+  html.en .privals-pr { grid-template-columns: minmax(0, 1fr) 16px; grid-template-areas: 'n c' 'v .' 'b b'; }
+  html.en div.privals-pr { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'n' 'v' 'b'; }
+  html.en .privals-pv { text-align: left; }
+}
 .privals-pv { grid-area: v; font-size: var(--fs-2); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
 .privals-chev { grid-area: c; font-style: normal; font-size: var(--fs-3); line-height: 1; color: var(--mute); text-align: right; }
 .privals-pt { grid-area: b; position: relative; display: block; height: 10px; border-radius: 4px; background: var(--card2); overflow: hidden; }

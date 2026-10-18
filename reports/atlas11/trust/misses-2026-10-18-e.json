@@ -1,0 +1,25 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-18T19:20+08:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-18 18:3x(싱가포르) 끝 답 「미리 돌린 모든 쪽 검사는 지금까지 걸린 곳이 없어요」",
+  "to": "2026-10-18 19:58(싱가포르) 올리기 문이 ① 올리기를 막음"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 52,
+   "when": "2026-10-18 18:3x(싱가포르) — 골똘이 명령문 합치기 전 진행 보고",
+   "what": "미리 돌린 모든 쪽 검사(run 39118096186 · 판 ef9997d)를 깃허브 일 23개가 「성공」으로 끝난 것만 보고 「걸린 곳이 없어요」라고 사장님께 보고함. 이 일들은 검사 결과와 상관없이 「성공」으로 끝나는 꼴이고, 실제 결과 기록(reports/atlas11/probe/next-preview/summary.json)에는 영어 · 보유종목 · 첫 화면 · 지난 결과 · 매매일지 다섯 쪽이 걸려 있었음(ok false). 숫자 보고는 기록을 열어 세고 낸다는 약속(믿음 장치 ③)을 어김",
+   "found_by": "올리기 문(scripts/atlas11/next/wait_preview.mjs)이 19:58(싱가포르) ① 올리기(run 39120518201)를 막음 → 결과 기록을 열어 봄 — 이번 판(db6a50a)도 영어 · 카톡 두 쪽이 걸림",
+   "fixed": "① 은 올라가지 않아 지금 사이트 그대로 · 걸린 둘을 고침(영어 320 · 360 경쟁 회사 이름 칸 넘침 → 값을 이름 밑 줄로 · 급등 「며칠 뒤」 줄 카톡 단추가 혼자 밑 줄 왼쪽으로 → 관심 없음과 한 덩이로) · 앞으로 모든 쪽 검사는 깃허브 일의 성공이 아니라 결과 기록의 쪽마다 code 와 ok 로만 셈",
+   "evidence": [
+    "/home/claude/atlas-video/reports/atlas11/probe/next-preview/summary.json",
+    "/home/claude/atlas-video/site/next/p-surge.css",
+    "/home/claude/atlas-video/site/next/p-rivals.css"
+   ]
+  }
+ ]
+}

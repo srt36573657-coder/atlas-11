@@ -152,6 +152,9 @@ ul.psurge-see .psurge-m { color: var(--mute); }
 .psurge-tr .psurge-v .psurge-dd { color: var(--sub); }
 button.psurge-hide, button.psurge-show, button.psurge-undo { min-height: 44px; min-width: 44px; padding: 0 var(--sp-2); border-radius: 999px; border: 1px solid var(--m4-line); background: none; color: var(--sub); font-size: var(--fs-1); text-align: center; white-space: nowrap; }
 button.psurge-hide { margin-left: auto; align-self: start; }
+/* 관심 없음 + 카톡 = 한 덩이(사장님 2026-10-18 16:39 [6] 1 「줄 오른쪽 끝」) — 이름이 길어 첫 줄이 꺾일 때 카톡 단추만 밑 줄 왼쪽으로 가던 일(모든 쪽 검사 · #/surge · 320 ~ 390 · 실제 자료 10월 16일) → 둘이 함께 밑 줄 오른쪽 끝으로 */
+.psurge-trt > .psurge-tra { display: flex; align-items: center; gap: var(--sp-1); margin-left: auto; align-self: start; }
+.psurge-trt > .psurge-tra > button.psurge-hide { margin-left: 0; }
 button.psurge-undo { border-color: var(--sub); color: var(--ink); }
 .psurge-ph { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-2) 0; border-bottom: 1px solid var(--m4-soft); color: var(--sub); box-sizing: border-box; }
 .psurge-g { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-1) 0; border-bottom: 1px solid var(--m4-soft); }

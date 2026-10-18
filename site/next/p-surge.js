@@ -250,7 +250,7 @@ function svTrRow(t) {
   const nowT = (t.now ?? []).map(x => SV_NAME[x]).filter(Boolean);
   const kb = shareButtons({code: t.c, name: t.n, kind: 'surge'}, {kakao: true}); // 카톡 단추 = 첫 줄(이름 · 관심 없음) 오른쪽 끝(KB2 · [6] 1 · 8)
   return h('div', {class: 'psurge-tr', 'data-c': t.c, 'data-kkrow': kb ? 'surge.track' : null},
-    h('div', {class: 'psurge-trt'}, h('a', {class: 'psurge-nm', href: cHref(t.c), text: t.n}), h('button', {type: 'button', class: 'psurge-hide', 'data-c': t.c, text: '관심 없음'}), kb), // 이름이 길면 단추가 밑 줄로(이름은 가르지 않음)
+    h('div', {class: 'psurge-trt'}, h('a', {class: 'psurge-nm', href: cHref(t.c), text: t.n}), h('span', {class: 'psurge-tra'}, h('button', {type: 'button', class: 'psurge-hide', 'data-c': t.c, text: '관심 없음'}), kb)), // 이름이 길면 단추 둘이 한 덩이로 밑 줄 오른쪽 끝에(이름은 가르지 않음 · 카톡이 혼자 밑 줄 왼쪽으로 가지 않게 — 2026-10-18 모든 쪽 검사)
     h('p', {class: 'psurge-trsub'}, h('span', {text: `처음 찾은 칸: ${SV_NAME[t.t] ?? '?'}`}), h('span', {text: nowT.length ? `지금 든 칸: ${nowT.join(', ')}` : '지금은 다섯 칸 밖'})),
     svSpark(t, Pp),
     h('span', {class: 'psurge-v'}, li >= 0 ? h('span', {class: 'psurge-dd', text: `${li + 1}일 뒤 `}) : null, li >= 0 ? pctEl(Pp[li][1]) : qEl()));
