@@ -1,13 +1,13 @@
-# 일 나누기 한 장 — 꼴똘이 · 진화가 본질인 명령문(사장님 2026-10-18 16:39 싱가포르)
+# 일 나누기 한 장 — 골똘이 · 진화가 본질인 명령문(사장님 2026-10-18 16:39 싱가포르)
 
-원문 `order-1639.txt` · 본질 `docs/꼴똘이_본질.md` · 잠금 `config/atlas11/essence.lock.json` · 일꾼 규칙 `worker-rules.md`(먼저 읽음)
+원문 `order-1639.txt` · 본질 `docs/골똘이_본질.md` · 잠금 `config/atlas11/essence.lock.json` · 일꾼 규칙 `worker-rules.md`(먼저 읽음)
 약속한 끝: ① 영상 빼고 모두 올리기 = 23:30 · ② 영상 올리기 = 다음 날 01:30 · 끝 보고 02:00(싱가포르) — 사장님께 16:5x 에 알림
 차례(명령문 [11] 2): [3] 이름(끝남 · 커밋 32bf5bba5) → [2] 본질 문 → [5] 첫 화면 → [6][7] 카톡 → [9] 진화 칸 → [8] 진화 회차 → [4] 영상. 합치는 차례가 이것이고, 만드는 것은 함께 시작한다(영상은 둘째 올리기라 처음부터 따로 만듦).
 반값 숫자 n(명령문 [4] 2 ⑦ · [6] 8): 사장님께 (가)/(나) 여쭘 → 17:01 「가장 논리적인 것을 선탹해」 → (가)(문장 뜻이 「날아오른 뒤 1년」) = 「1년 전 이맘때 5거래일 오름 상위 36곳이 그 뒤 1년 안에 그날 값의 반 아래로 간 적이 있는 수」.
 
 | 일꾼 | 명령문 | 맡은 파일(남은 손대지 않음) | 남에게 주는 것 |
 |---|---|---|---|
-| 리드(나) | [3] · [2] 7 ~ 10 · [11] 9 · 합치기 · 검사 · 올리기 · 예약 작업 | brand.js · 예약 작업 넷(지시문 · 이름 · 실패 알림) · 새 예약 「꼴똘이 진화 회차」 · `.claude/settings.json` SessionStart · CLAUDE.md · `docs/ATLAS_원칙.md` 규칙 80 · `docs/고도리_지도.md` · speed · 바뀐 것 기록 | — |
+| 리드(나) | [3] · [2] 7 ~ 10 · [11] 9 · 합치기 · 검사 · 올리기 · 예약 작업 | brand.js · 예약 작업 넷(지시문 · 이름 · 실패 알림) · 새 예약 「골똘이 진화 회차」 · `.claude/settings.json` SessionStart · CLAUDE.md · `docs/ATLAS_원칙.md` 규칙 80 · `docs/고도리_지도.md` · speed · 바뀐 것 기록 | — |
 | KA 본질 문 | [2] 4 ~ 6 · [11] 6 | 새 `scripts/atlas11/next/essence_check.mjs` · 새 `tests/atlas11/essence-gate.test.mjs`(틀린 판 일곱) · `site/next/words.js`(망치는 길 낱말 `RUIN` 더하기) · `scripts/atlas11/deploy_netlify.mjs`(art_gate 바로 뒤 한 줄) | `protectedTouched(files)` · `checkDist(dir)` · `checkEssenceFile()` |
 | KB1 카톡 속 | [6] 2 ~ 5 · 7 · 9 · [7] 전부 | 새 `site/next/share-btn.js`(shareButtons 를 여기로 · p-share.js 는 다시 내보냄) · `site/next/p-share.js` · `p-share.css` · `site/next/kakao.js` · `config/atlas11/kakao.json` · `lib/atlas11/kakao.mjs`(스위치 둘) · `scripts/atlas11/site_headers.mjs`(열쇠 뒤에만 카카오 주소) · `check_share.mjs` · `tests/atlas11/kakao-client.test.mjs` · `docs/design/godori-2026-10-18/kakao-signup.md` 맨 위 다섯 줄 | `shareButtons(o, {kakao: true})` = 노란 말풍선 44px 단추 하나(줄 오른쪽 끝) · o = {code, name, price, day, kind: 'share'|'surge', half: {n, of}} |
 | KB2 카톡 줄 | [6] 1 · 6 · 8 | 종목 줄 · 카드가 있는 15곳의 줄 그리는 함수만: `app.js`(vHome · vSub · vFind · vChannel · vShorts 의 줄) · `p-cal` `p-chx` `p-co` `p-cond` `p-gdr` `p-grow` `p-hold`(줄) `p-past` `p-range` `p-rivals` `p-surge` `p-talk` `p-time` `p-today` `p-why`(줄) `p-x` — 줄 꼴 css 는 각 p-*.css · 새 `scripts/atlas11/next/check_kakao_rows.mjs`(종목 고리 수 = 카톡 단추 수) | 곳 수 표 |
