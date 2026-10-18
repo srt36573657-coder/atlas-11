@@ -18,7 +18,7 @@
   "before": 1146
  },
  "css": {
-  "holdDecls": 489,
+  "holdDecls": 512,
   "appMine": 85,
   "fontNotToken": 0,
   "spacingNotToken": 0,

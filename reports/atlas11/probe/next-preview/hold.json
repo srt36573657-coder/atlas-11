@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-18T19:33:05.774Z",
+ "when": "2026-10-18T19:55:38.568Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -39,7 +39,7 @@
   "before": 1146
  },
  "css": {
-  "holdDecls": 489,
+  "holdDecls": 512,
   "appMine": 85,
   "fontNotToken": 0,
   "spacingNotToken": 0,
