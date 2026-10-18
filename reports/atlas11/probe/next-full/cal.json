@@ -3,15 +3,15 @@
  "base": "https://aaa7377.com",
  "limit": "all",
  "wide": "all",
- "took_s": 98,
+ "took_s": 103,
  "time": {
-  "old": 21,
-  "new": 69,
-  "wall": 98.1,
+  "old": 23.1,
+  "new": 70.3,
+  "wall": 103.1,
   "opensOld": 938,
   "opensNew": 2287,
-  "oldPct": 21.4,
-  "oldShare": 23.4
+  "oldPct": 22.3,
+  "oldShare": 24.7
  },
  "net": {
   "req": 4,
