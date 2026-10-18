@@ -1,5 +1,5 @@
 {
- "at": "2026-10-18T22:41:38.247Z",
+ "at": "2026-10-18T22:47:18.847Z",
  "base": "http://127.0.0.1:8826",
  "secs": 36,
  "scenarios": [
@@ -18,12 +18,12 @@
  ],
  "time": {
   "old": 8.5,
-  "new": 23.3,
-  "wall": 35.6,
+  "new": 23.8,
+  "wall": 36.2,
   "opensOld": 127,
   "opensNew": 254,
-  "oldPct": 24,
-  "oldShare": 26.8
+  "oldPct": 23.6,
+  "oldShare": 26.4
  },
  "net": {
   "req": 4,
