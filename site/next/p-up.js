@@ -111,7 +111,7 @@ export async function render() {
     if (nx) root.append(h('p', {class: 'pup-nx'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 40, height: 40, 'aria-hidden': 'true'}), h('span', {}, '다음 회차 ', h('b', {class: 'num', text: nx}),
       `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 값과 봉인 뒤 값을 그때 다시 셉니다.`))); } // 보드리가 다음 회차를 알림
   const h0 = [...R].reverse().find(r => r.version === C.rules?.version); // 이 규칙으로 처음 고른 회차(지난 기록에서 셈 · 날짜를 박지 않음)
-  root.append(h('p', {class: 'note pup-how', text: `회차마다 값과 그림을 새로 셉니다 — ${pickName(C)}은 새 1년 성적표가 들어와야 바뀝니다(${h0 ? md(h0.kst.slice(0, 10)) + '부터' : '이번 회차부터'} 이 규칙 · 그 전 기록은 옛 규칙). 기준일은 늘 마지막 종가 날의 20거래일 전입니다. 회차마다 시장을 읽어 적고, 애플 · 구글 · 클로드 · CIA 네 눈으로 각각 1,000만 번 점검합니다 — 하나라도 걸리면 새 자료를 올리지 않습니다. 기록은 지우지 않습니다.`}));
+  root.append(h('p', {class: 'note pup-how', text: `회차마다 값과 그림을 새로 셉니다 — ${pickName(C)}은 새 1년 성적표가 들어와야 바뀝니다(${h0 ? md(h0.kst.slice(0, 10)) + '부터' : '이번 회차부터'} 이 규칙 · 그 전 기록은 옛 규칙). 기준일은 늘 마지막 종가 날의 20거래일 전입니다. 회차마다 시장을 읽어 적고, 애플 · 구글 · 클로드 · CIA 네 눈으로 각각 111 번 점검합니다 — 하나라도 걸리면 새 자료를 올리지 않습니다. 기록은 지우지 않습니다.`})); // 네 눈 번 수 = 111(사장님 2026-10-18 「111번으로 바꿔라」 · roll.mjs b73b572e · 옛 1,000만 번)
   // 회차 기록 — 최근 10번은 펼침 · 앞 회차는 접은 칸(한 번 누르면 모두)
   root.append(h('h2', {class: 'sec', text: `회차 ${U.n}번 가운데 최근 ${R.length}번`}));
   root.append(h('ol', {class: 'pup-list'}, ...R.slice(0, SHOW).map(r => recLi(r, C))));

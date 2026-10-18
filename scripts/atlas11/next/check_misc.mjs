@@ -14,7 +14,8 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNew, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
-import {fourDeep} from '../../../site/next/essence.js'; // 「하루 4번」 글 → 참인 말(사장님 2026-10-18 16:39 [5] 4 · 일꾼 KC — 새 쪽은 요약의 fourADay 일 때만 「하루 4번」 · 옛 쪽 글을 같은 표로 맞춰 맞댐)
+import {fourDeep} from '../../../site/next/essence.js';
+const n111 = x => typeof x === 'string' ? x.split('각각 1,000만 번 점검').join('각각 111 번 점검') : Array.isArray(x) ? x.map(n111) : x && typeof x === 'object' ? Object.fromEntries(Object.entries(x).map(([k, v]) => [k, n111(v)])) : x; // 「하루 4번」 글 → 참인 말(사장님 2026-10-18 16:39 [5] 4 · 일꾼 KC — 새 쪽은 요약의 fourADay 일 때만 「하루 4번」 · 옛 쪽 글을 같은 표로 맞춰 맞댐)
 import {fetchJSON, stylesReady, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 모양 파일 기다림 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
@@ -59,7 +60,7 @@ const mapHref = h => { // 옛 주소 → 새 주소(안내 「새 주소로 바�
 };
 function compare(tag, O0, N) {
   if (!O0 || !N) { fail('맞댈 화면 없음', tag); return; }
-  const O = {...O0, text: fourDeep(oldToNew(O0.text, [...KEEP, ...O0.proper]), SUMJ)}; // 고리 · 남의 글(data-proper)은 그대로 맞댐 · 「하루 4번」 글은 새 쪽과 같은 표로(fourDeep · 일꾼 KC)
+  const O = {...O0, text: n111(fourDeep(oldToNew(O0.text, [...KEEP, ...O0.proper]), SUMJ))}; // 네 눈 번 수 = 111(사장님 2026-10-18 「111번으로 바꿔라」 · roll.mjs) — 옛 쪽(/atlas/ · 규칙 75로 안 고침)의 「1,000만 번」을 새 번 수로 바꿔 맞댐 // 고리 · 남의 글(data-proper)은 그대로 맞댐 · 「하루 4번」 글은 새 쪽과 같은 표로(fourDeep · 일꾼 KC)
   bump('맞댄 화면');
   const nt = norm(N.text);
   let lines = 0;
