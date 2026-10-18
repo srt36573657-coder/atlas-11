@@ -1,0 +1,420 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261018-2204",
+ "start": "2026-10-18T22:04:12+09:00",
+ "end": "2026-10-18T22:28:40+09:00",
+ "essence": {
+  "file": "docs/골똘이_본질.md",
+  "sha256": "a71d3864c200f586491e1d60108b231ef4d95e1b3cfc5b07150bd9d06caec50a",
+  "first": "골똘이의 본질: 주식을 사기 전에 한 번 멈추게 하는 곳이다."
+ },
+ "main": "dcdb255ceb22f835e7e1ba47e1ff69d53e9fdc59",
+ "cutoff": "2026-10-18T22:04:12+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "make",
+  "retest": [],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [
+  {
+   "n": 1,
+   "id": "20261018-2204-1",
+   "ok": true,
+   "route": "#/why",
+   "commit": "083230931bf650b32bcd423c12ffe8d3fc2a1d98",
+   "base": "dcdb255ceb22f835e7e1ba47e1ff69d53e9fdc59",
+   "why": [],
+   "files": [
+    "site/next/p-why.js"
+   ],
+   "changeHash": "a483f40b0825d990",
+   "big": [
+    "본질(열한 질문 · 골똘이 칸 · 본질 세 줄 · 한 달 뒤 돌아보기)"
+   ],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "preview": {
+    "state": "pass",
+    "run": 39130238381,
+    "sha": "083230931bf650b32bcd423c12ffe8d3fc2a1d98",
+    "at": "2026-10-18T22:08:34+09:00"
+   },
+   "seed": {}
+  },
+  {
+   "n": 2,
+   "id": "20261018-2204-2",
+   "ok": true,
+   "route": "#/why",
+   "commit": "4e0b13f9a0b321c3c15f3279ea4bb67a6c8315f3",
+   "base": "dcdb255ceb22f835e7e1ba47e1ff69d53e9fdc59",
+   "why": [],
+   "files": [
+    "site/next/p-why.js"
+   ],
+   "changeHash": "25730d39a7bf3a06",
+   "big": [
+    "본질(열한 질문 · 골똘이 칸 · 본질 세 줄 · 한 달 뒤 돌아보기)"
+   ],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "preview": {
+    "state": "pass",
+    "run": 39130408349,
+    "sha": "4e0b13f9a0b321c3c15f3279ea4bb67a6c8315f3",
+    "at": "2026-10-18T22:10:57+09:00"
+   },
+   "seed": {}
+  },
+  {
+   "n": 3,
+   "id": "20261018-2204-3",
+   "ok": true,
+   "route": "#/why",
+   "commit": "3e19ea04ebde7031a5fbd7a389547dca220477e4",
+   "base": "dcdb255ceb22f835e7e1ba47e1ff69d53e9fdc59",
+   "why": [],
+   "files": [
+    "site/next/p-why.js"
+   ],
+   "changeHash": "68ef27a3dc9b6ac2",
+   "big": [
+    "본질(열한 질문 · 골똘이 칸 · 본질 세 줄 · 한 달 뒤 돌아보기)"
+   ],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "preview": {
+    "state": "pass",
+    "run": 39130580585,
+    "sha": "3e19ea04ebde7031a5fbd7a389547dca220477e4",
+    "at": "2026-10-18T22:13:18+09:00"
+   },
+   "seed": {}
+  }
+ ],
+ "debate": {
+  "mode": "subagents",
+  "top": {
+   "kahneman": 1,
+   "munger": 2,
+   "popper": 1
+  },
+  "order": [
+   1,
+   2,
+   3
+  ],
+  "people": {
+   "kahneman": "결과 화면이 끝처럼 느껴지면 바로 사러 가기 쉽다. 새 글 없이, 이미 있는 한 달 뒤 돌아보기 문장과 급한 마음의 격언을 마음이 달아오르는 자리에 다시 놓아 한 박자 늦춘다.",
+   "munger": "영어 번역 없이 새 글을 넣으면 화면이 깨진다. 그래서 사장님 글과 이미 번역된 문장만 쓴다. 부추기는 말이 없고 손실을 숨기지 않는 쪽이라 망치는 길의 반대 방향이다.",
+   "popper": "세 고침 모두 글 한 줄이고 한 번에 되돌릴 수 있다. 한 달 뒤 답한 수와 「했어」 몫, 또는 「쉬어 가자」 몫으로 틀렸는지 잴 수 있다. 서로 읽고 고쳐 쓰는 일은 대표 일꾼이 세 초안을 맞대어 했다."
+  },
+  "at": "2026-10-18T22:14:28+09:00",
+  "ok": true,
+  "why": []
+ },
+ "cards": [
+  {
+   "n": 1,
+   "id": "20261018-2204-1",
+   "ok": true,
+   "rule": {
+    "measure": "promise",
+    "num": "promise_yes",
+    "den": "promise",
+    "dir": "up"
+   },
+   "card": {
+    "id": "20261018-2204-1",
+    "title": "결과 화면에도 한 달 뒤 돌아보기 안내를 놓기",
+    "pick": true,
+    "serves": "③ 한 달 뒤 「그날 정한 대로 했어?」로 돌아보게 한다.",
+    "before": "/next/data/jinhwa/20261018-2204-1-before.png",
+    "after": "/next/data/jinhwa/20261018-2204-1-after.png",
+    "voices": {
+     "kahneman": "마음이 가장 달아오른 결과 화면에서 한 달 뒤의 나를 먼저 떠올리게 해요.",
+     "munger": "이미 번역된 같은 문장이라 영어 화면도 안 깨지고, 부추김이 없어요.",
+     "popper": "답한 수와 「했어」 몫으로 맞는지 틀린지 바로 잴 수 있어요."
+    },
+    "predict": {
+     "text": "안내를 본 사람이 한 달 뒤 물음에 답하는 일이 늘고, 답한 가운데 「했어」 몫이 들어가기 전 10거래일보다 늘 것으로 어림한다.",
+     "measure": "② 약속 · 답한 수 가운데 「했어」 몫이 들어가기 전 10거래일보다 늘면 맞아요",
+     "days": 10
+    },
+    "revert": "한 달 뒤 답한 수가 지금보다 줄면 이 줄을 뺀다.",
+    "premortem": "36번째 이유: 사기 전에 한 번 멈추게 하는 곳이라서 — 1년 뒤 실패했다면 같은 문장이 두 곳에 있어 지루한 반복으로 읽혀 무시되었기 때문이다.",
+    "big": true,
+    "risks": [
+     "한 달 뒤 돌아보기(본질 ③)에 닿는 글이라 사장님 확인이 꼭 필요함",
+     "같은 문장이 결과 화면과 기록 쪽 두 곳에 보임"
+    ],
+    "branch": "jinhwa/20261018-2204-1",
+    "files": [
+     "site/next/p-why.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    }
+   }
+  },
+  {
+   "n": 2,
+   "id": "20261018-2204-2",
+   "ok": true,
+   "rule": {
+    "measure": "stop",
+    "num": "stop_rest",
+    "den": "stop",
+    "dir": "up"
+   },
+   "card": {
+    "id": "20261018-2204-2",
+    "title": "「좋아」가 나온 날에 급한 마음의 격언 한 줄 보여 주기",
+    "pick": false,
+    "serves": "골똘이의 본질: 주식을 사기 전에 한 번 멈추게 하는 곳이다.",
+    "before": "/next/data/jinhwa/20261018-2204-2-before.png",
+    "after": "/next/data/jinhwa/20261018-2204-2-after.png",
+    "voices": {
+     "kahneman": "좋다는 말이 허락처럼 읽히지 않게 숨 한 번 쉬게 해요.",
+     "munger": "사장님 격언을 그대로 쓰니 뜻이 바뀌지 않고 영어도 따라가요.",
+     "popper": "「쉬어 가자」 몫으로 잴 수 있고 틀리면 한 줄만 빼면 돼요."
+    },
+    "predict": {
+     "text": "「좋아」 아래 격언을 본 사람이 다시 끝낸 일지에서 「오늘은 쉬어 가자」 몫이 들어가기 전보다 늘 것으로 어림한다.",
+     "measure": "① 멈춤 · 끝낸 수 가운데 「오늘은 쉬어 가자」 몫이 들어가기 전 10거래일보다 늘면 맞아요",
+     "days": 10
+    },
+    "revert": "끝낸 일지 수가 줄거나 「쉬어 가자」 몫이 늘지 않으면 이 줄을 뺀다.",
+    "premortem": "36번째 이유: 사기 전에 한 번 멈추게 하는 곳이라서 — 1년 뒤 실패했다면 훈계처럼 읽혀 사람이 일지를 끝내기 전에 떠났기 때문이다.",
+    "big": true,
+    "risks": [
+     "판정 화면(본질 ①)에 닿아 사장님 확인이 꼭 필요함",
+     "좋은 판정 아래 글이 안 사는 쪽으로만 몰아 가는 말로 읽힐 수 있음"
+    ],
+    "branch": "jinhwa/20261018-2204-2",
+    "files": [
+     "site/next/p-why.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    }
+   }
+  },
+  {
+   "n": 3,
+   "id": "20261018-2204-3",
+   "ok": true,
+   "rule": {
+    "measure": "promise",
+    "num": "promise_yes",
+    "den": "promise",
+    "dir": "up"
+   },
+   "card": {
+    "id": "20261018-2204-3",
+    "title": "팔 약속 쓰는 쪽에서 「틀린 것도 지우지 않아요」 보여 주기",
+    "pick": false,
+    "serves": "③ 한 달 뒤 「그날 정한 대로 했어?」로 돌아보게 한다.",
+    "before": "/next/data/jinhwa/20261018-2204-3-before.png",
+    "after": "/next/data/jinhwa/20261018-2204-3-after.png",
+    "voices": {
+     "kahneman": "약속을 쓰는 바로 그때 한 달 뒤를 알면 숫자를 한 번 더 봐요.",
+     "munger": "필수 입력이나 단추를 더하지 않고 알리기만 해서 강요가 없어요.",
+     "popper": "약속을 쓴 사람의 한 달 뒤 답과 「했어」 몫으로 잴 수 있어요."
+    },
+    "predict": {
+     "text": "약속을 쓰는 자리에서 안내를 본 사람이 한 달 뒤 물음에 더 답하고, 「했어」 몫이 들어가기 전 10거래일보다 늘 것으로 어림한다.",
+     "measure": "② 약속 · 답한 수 가운데 「했어」 몫이 들어가기 전 10거래일보다 늘면 맞아요",
+     "days": 10
+    },
+    "revert": "한 달 뒤 답한 수가 지금보다 줄거나 끝낸 일지가 줄면 이 문장을 뺀다.",
+    "premortem": "36번째 이유: 사기 전에 한 번 멈추게 하는 곳이라서 — 1년 뒤 실패했다면 약속을 쓰는 중에 긴 글이 흐름을 끊어 사람이 중간에 그만두었기 때문이다.",
+    "big": true,
+    "risks": [
+     "한 달 뒤 돌아보기(본질 ③)에 닿는 글이라 사장님 확인이 꼭 필요함",
+     "약속 쓰는 화면이 길어져 중간에 그만둘 수 있음"
+    ],
+    "branch": "jinhwa/20261018-2204-3",
+    "files": [
+     "site/next/p-why.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    }
+   }
+  }
+ ],
+ "retested": [],
+ "finished": [
+  {
+   "id": "20261018-2204-1",
+   "kind": "made",
+   "state": "pass",
+   "sha": "083230931bf650b32bcd423c12ffe8d3fc2a1d98",
+   "round": "20261018-2204",
+   "why": ""
+  },
+  {
+   "id": "20261018-2204-2",
+   "kind": "made",
+   "state": "pass",
+   "sha": "4e0b13f9a0b321c3c15f3279ea4bb67a6c8315f3",
+   "round": "20261018-2204",
+   "why": ""
+  },
+  {
+   "id": "20261018-2204-3",
+   "kind": "made",
+   "state": "pass",
+   "sha": "3e19ea04ebde7031a5fbd7a389547dca220477e4",
+   "round": "20261018-2204",
+   "why": ""
+  }
+ ],
+ "dropped": [],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": 0,
+  "at": "2026-10-18T17:26:25+09:00"
+ },
+ "factsNote": "끝 코드만 실패이고 걸린 곳 0 인 쪽: gdr",
+ "tally": {
+  "2026-10-05": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-06": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-07": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-08": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-09": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-10": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-11": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-12": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-13": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-14": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-15": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-16": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-17": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-18": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  }
+ },
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 0,
+  "waiting": [
+   "20261018-2204-1",
+   "20261018-2204-2",
+   "20261018-2204-3"
+  ],
+  "errors": []
+ },
+ "owner": [
+  "새 진화 대안 3개를 만들었어요.",
+  "진화 칸에서 대안 3개가 확인을 기다려요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 1가지예요."
+ ],
+ "notice": "골똘이 진화 칸에 새 대안 3개가 올라가요. 10시 업데이트부터 보여요.",
+ "notDone": [
+  "전후 그림에 지금 사이트 자료를 못 씀(못 받음 dist-manifest.json) — 저장소 자료로 찍음"
+ ],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-10-18T22:05:19+09:00 시작 · 본질 a71d3864 · main dcdb255 · 할 일 넣기 없음 → make",
+  "2026-10-18T22:08:34+09:00 대안 1 검사 지남 · 미리 검사 시작 39130238381",
+  "2026-10-18T22:10:57+09:00 대안 2 검사 지남 · 미리 검사 시작 39130408349",
+  "2026-10-18T22:13:18+09:00 대안 3 검사 지남 · 미리 검사 시작 39130580585"
+ ]
+}
