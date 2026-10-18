@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-18T21:07:25.367Z",
+  "at": "2026-10-18T21:40:58.970Z",
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "source": "env",
   "name": "mulgil",
@@ -9,7 +9,7 @@
     "state": "current",
     "customDomain": "aaa7377.com",
     "published": "ready",
-    "publishedAt": "2026-10-18T21:07:23.664Z",
+    "publishedAt": "2026-10-18T21:40:57.948Z",
     "ssl": true,
     "passwordSet": false,
     "hasPassword": false,
@@ -34,7 +34,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "<!doctype html> <html lang=\"ko\" class=\"m4 white\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\"> <meta name=\"theme-color\" content=\"#FFFFFF\"> <!-- 창 설명 글 · 링크 미리보기 설명(aaa7377.com/ = 이 쪽 · package.mjs _redirects) = 첫 화면 본질 세 줄(사장님 2"
+      "bodyStart": "<!doctype html> <html lang=\"ko\" class=\"m4 white home\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\"> <meta name=\"theme-color\" content=\"#FFFFFF\"> <!-- 창 설명 글 · 링크 미리보기 설명(aaa7377.com/ = 이 쪽 · package.mjs _redirects) = 첫 화면 본질 세 줄("
     },
     {
       "url": "https://aaa7377.com/data/atlas11/view/manifest.json",
@@ -43,7 +43,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-16-289ac34a\",\"generatedAt\":\"2026-10-18T21:01:23.214Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-16\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
+      "bodyStart": "{\"schema\":\"atlas11-board-manifest-1\",\"boardId\":\"board-2026-10-16-2e52bf04\",\"generatedAt\":\"2026-10-18T21:32:47.932Z\",\"prediction\":\"off\",\"orderFile\":\"config/atlas11/no-prediction.json\",\"asOf\":\"2026-10-16\",\"companies\":365,\"late\":[{\"code\":\"207940\",\"name\":\"삼성바이오로직스\",\"date\":\"2026-10-01\"},{\"code\":\"066410\","
     },
     {
       "url": "https://aaa7377.com/atlas/",
@@ -61,7 +61,7 @@
       "robots": null,
       "server": "Netlify",
       "location": null,
-      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-18T21:04:30Z\",\"asOf\":\"2026-10-16\",\"base\":\"2026-09-14\",\"days\":20,\"pickAsOf\":\"2026-10-16\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":7666,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 14일 모음 + 날마다 이어 받음(10월 16일 종가까지)\",\"pick\":"
+      "bodyStart": "{\"schema\":\"atlas-new-core-1\",\"made\":\"2026-10-18T21:35:48Z\",\"asOf\":\"2026-10-16\",\"base\":\"2026-09-14\",\"days\":20,\"pickAsOf\":\"2026-10-16\",\"kPick\":20,\"sincePick\":0,\"provisional\":false,\"roll\":{\"files\":1,\"added\":7666,\"mismatch\":1},\"sources\":{\"price\":\"네이버 증권 일봉 · 10월 14일 모음 + 날마다 이어 받음(10월 16일 종가까지)\",\"pick\":"
     },
     {
       "url": "https://aaa7377.com/atlas/data/days.json",
