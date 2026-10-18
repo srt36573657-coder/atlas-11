@@ -1,17 +1,17 @@
 {
  "schema": "atlas11-next-co-check-1",
+ "at": "2026-10-18T10:14:30.183Z",
  "base": "http://127.0.0.1:8826",
- "asOf": "2026-10-16",
+ "asOf": "2026-10-13",
  "companies": 2557,
  "all": true,
  "limit": null,
  "widths": 28,
- "at": "2026-10-18T08:01:33.086Z",
- "shard": "all/2",
+ "shard": null,
  "units": {
   "total": 2566,
   "mine": 2566,
-  "hash": "bf664c6a7a11ebf1",
+  "hash": "b24bbfdf133bb956",
   "kinds": {
    "c": {
     "total": 2557,
@@ -31,20 +31,18 @@
    }
   }
  },
- "seconds": 139,
- "secondsSum": 248,
+ "seconds": 240,
  "time": {
-  "old": 46.7,
-  "new": 89.1,
-  "wall": 139.5,
-  "wallSum": 249,
+  "old": 42.6,
+  "new": 87.2,
+  "wall": 240.5,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 18.8,
-  "oldShare": 34.4
+  "oldPct": 17.7,
+  "oldShare": 32.8
  },
  "net": {
-  "req": 2517,
+  "req": 2509,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -57,7 +55,7 @@
  },
  "counts": {
   "줄": 114497,
-  "숫자 낱말": 206477,
+  "숫자 낱말": 206512,
   "따로 셈": 41248,
   "머리 셈": 38355,
   "고리": 2557,
@@ -71,34 +69,5 @@
   "큰 글씨 화면": 2
  },
  "fails": [],
- "shards": [
-  {
-   "shard": "1/2",
-   "ok": true,
-   "fails": 0,
-   "seconds": 139,
-   "mine": 1283,
-   "kinds": {
-    "c": 1279,
-    "e": 2,
-    "w": 2,
-    "b": 0
-   }
-  },
-  {
-   "shard": "2/2",
-   "ok": true,
-   "fails": 0,
-   "seconds": 109,
-   "mine": 1283,
-   "kinds": {
-    "c": 1278,
-    "e": 3,
-    "w": 1,
-    "b": 1
-   }
-  }
- ],
- "problems": [],
  "ok": true
 }
