@@ -1,8 +1,8 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-18T11:35:47.710Z",
+ "at": "2026-10-18T11:41:20.329Z",
  "base": "http://127.0.0.1:8826",
- "asOf": "2026-10-16",
+ "asOf": "2026-10-13",
  "companies": 2557,
  "all": true,
  "limit": null,
@@ -11,7 +11,7 @@
  "units": {
   "total": 2566,
   "mine": 2566,
-  "hash": "bf664c6a7a11ebf1",
+  "hash": "b24bbfdf133bb956",
   "kinds": {
    "c": {
     "total": 2557,
@@ -31,15 +31,15 @@
    }
   }
  },
- "seconds": 252,
+ "seconds": 242,
  "time": {
-  "old": 49.3,
-  "new": 89.9,
-  "wall": 251.6,
+  "old": 44.6,
+  "new": 87.1,
+  "wall": 241.9,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 19.6,
-  "oldShare": 35.4
+  "oldPct": 18.4,
+  "oldShare": 33.8
  },
  "net": {
   "req": 2509,
@@ -55,7 +55,7 @@
  },
  "counts": {
   "줄": 114497,
-  "숫자 낱말": 206477,
+  "숫자 낱말": 206512,
   "따로 셈": 41248,
   "머리 셈": 38355,
   "고리": 2557,
