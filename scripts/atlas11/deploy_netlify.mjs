@@ -163,6 +163,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const {essenceGate} = await import('./next/essence_check.mjs'), eg = await essenceGate({dist: path.resolve(arg('--dir') ?? 'dist')});
   if (!eg.ok) { console.error('본질 문이 막음 — 지금 사이트 그대로:\n' + eg.lines.map(x => ' · ' + x).join('\n')); console.log(JSON.stringify({state: 'blocked', essence: eg.lines})); process.exit(3); }
   console.log('본질 문 통과 — ' + eg.lines.at(-1));
+  // 흰 첫 화면 문(사장님 2026-10-19 02:03 「구글과 잡스 판」 [하는 법 ②] 6 · 일꾼 C) — 본질 문 곁 · 올리는 폴더를 정적으로 봄 · 막으면 올리지 않고 지금 사이트 그대로
+  //   스위치: 저장소에 site/next/home.css(새 첫 화면)가 있을 때만 막음 — 그 전에는 「꺼짐」 한 줄(지금 사이트는 새 첫 화면 전이라 걸릴 수밖에 없음) · 위 두 문은 그대로
+  const {whiteGate} = await import('./next/white_gate.mjs'), wg = whiteGate({dist: path.resolve(arg('--dir') ?? 'dist'), root});
+  if (!wg.ok) { console.error('흰 첫 화면 문이 막음 — 지금 사이트 그대로:\n' + wg.lines.map(x => ' · ' + x).join('\n')); console.log(JSON.stringify({state: 'blocked', white: wg.lines})); process.exit(3); }
+  console.log(wg.lines.at(-1));
   const out = await deploy({distDir: path.resolve(arg('--dir') ?? 'dist'), message: arg('--message')});
   console.log(JSON.stringify({...out, error: out.error ? out.error.slice(0, 300) : null}));
   process.exitCode = out.state === 'failed' ? 2 : 0;

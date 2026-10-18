@@ -19,11 +19,13 @@
 //        빠르기(느린 4G 150ms · 1.6Mbps · 처리 4배 느림): 가장 큰 그림 2.5초 안 · 누른 뒤 그려짐 0.2초 안 · 밀림 0.1 아래
 //     ④ 망치는 길 그림 0: 그림자 · 광택(그러데이션) · 입체 · 작은 빨간 점 · 얼굴 그림(허락한 그림 밖 <img>) · 숫자 아닌 빨간 글
 //        골똘이 말은 「?」로 끝남 · 숫자 줄 「?」는 맨 앞뿐 · 그대로 둘 것: 아래 단추 다섯 · 본질 세 줄 · 진화 단추 · 잠금 #/why
-//   실패가 하나라도 있으면 끝 코드 1
+//   실패가 하나라도 있으면 끝 코드 1 — 단 저장소에 site/next/home.css(새 첫 화면)가 생기기 전에는 알림만(끝 코드 0 · enforced false · 스위치 한 곳 white_gate.mjs whiteOn)
+//   올리기 직전 정적 문 = white_gate.mjs(deploy_netlify.mjs 본질 문 곁) · 잣대 한 장 = docs/골똘이_화면잣대.md
 import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {whiteOn, HOME_CSS} from './white_gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
@@ -117,7 +119,8 @@ function keep(m, tag) {
   check(m.ess.every(Boolean), `${tag} 그대로 · 본질 세 줄`, m.ess.join());
 }
 
-const browser = await chromium.launch({executablePath: process.env.PW_CHROMIUM || '/opt/pw-browsers/chromium', args: ['--disable-dev-shm-usage']});
+const EXE = process.env.PW_CHROMIUM || '/opt/pw-browsers/chromium'; // 이 방은 미리 깔린 크로미움 · 깃허브 실행기(모든 쪽 검사)는 playwright 가 깐 것
+const browser = await chromium.launch({...(fs.existsSync(EXE) ? {executablePath: EXE} : {}), args: ['--disable-dev-shm-usage']});
 const ctxOf = async (first, extra = {}) => {
   const ctx = await browser.newContext({viewport: {width: W, height: H}, deviceScaleFactor: 1, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce', ...extra});
   await ctx.addInitScript(f => { try { if (sessionStorage.getItem('cw-seed')) return; sessionStorage.setItem('cw-seed', '1'); localStorage.clear(); if (!f) { localStorage.setItem('atlas:essence-seen', 'true'); localStorage.setItem('atlas:white-seen', 'true'); } } catch { /* 기억 못 하는 기계 */ } }, first);
@@ -218,6 +221,10 @@ try {
 } catch (e) { fail('검사 돌리기', String(e?.message ?? e).split('\n')[0].slice(0, 200)); }
 finally { await browser.close().catch(() => {}); }
 R.ok = R.counts.fail === 0;
+// 켜는 스위치(2026-10-19 03시 짓기 일꾼 C · 한 곳 = white_gate.mjs whiteOn) — 저장소에 site/next/home.css(새 첫 화면)가 있을 때만 걸리면 끝 코드 1
+//   그 전에는 지금 사이트가 걸릴 수밖에 없어(38곳) 모든 쪽 검사 · 올리기 전 검사 기다리기를 막지 않게 알림만(실패 수는 그대로 찍고 결과 파일 enforced false)
+//   시안(--mock) · --enforce 는 늘 켜짐
+R.enforced = !!MOCK || argv.includes('--enforce') || whiteOn(ROOT);
 if (OUT) { fs.mkdirSync(path.dirname(path.resolve(OUT)), {recursive: true}); fs.writeFileSync(OUT, JSON.stringify(R, null, 1) + '\n'); }
-console.log(`흰 첫 화면 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
-process.exit(R.ok ? 0 : 1);
+console.log(`흰 첫 화면 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}${R.enforced ? '' : ` · 아직 막지 않음(${HOME_CSS} 가 저장소에 없음 — 새 첫 화면이 들어오면 저절로 막음)`}`);
+process.exit(R.ok || !R.enforced ? 0 : 1);

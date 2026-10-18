@@ -181,6 +181,7 @@ export const measureTexts = metrics => measureRules(metrics).map(r => r.text);
 //   진화 칸 · 합계 칸 서버 · 예약 작업 파일) — protectedTouched 로 맞댐. 아래 ROUND_EXTRA 는 그 목록 밖에서 회차가 더 막는 곳(대안 = 화면 쪽 · 모양 · 글을 작게)
 //   끝이 / 면 폴더 · 정규식이면 꼴 · 나머지는 파일 하나
 export const ROUND_EXTRA = Object.freeze([
+  ['docs/골똘이_화면잣대.md', '화면 잣대(사장님 말씀으로만 · 2026-10-19 02:03 [맞았는지] 7)'],
   [/^docs\/[^/]*_본질\.md$/, '본질 파일'], [/^docs\/design\/[^/]+\/order-[^/]*\.txt$/, '사장님 명령문'], ['docs/', '규칙 · 설계 · 지시문(사장님 말씀으로만)'],
   ['config/', '설정 · 잣대 · 채점 규칙'], ['site/next/tally.js', '잣대 세기(화면 신호)'], ['site/next/p-jinhwa.js', '진화 칸(확인 단추)'], ['site/next/p-jinhwa.css', '진화 칸(확인 단추)'],
   ['lib/atlas11/invite.mjs', '사장님 열쇠'], ['functions/atlas11/invite.mjs', '사장님 열쇠'],
@@ -188,6 +189,7 @@ export const ROUND_EXTRA = Object.freeze([
   ['scripts/atlas11/art_gate.mjs', '올리기 문'], ['scripts/atlas11/trust_gate.mjs', '장부 문'], ['scripts/atlas11/face_gate.mjs', '얼굴 문'], ['scripts/atlas11/changelog_commit_gate.mjs', '커밋 번호 문'],
   ['scripts/atlas11/hooks/', '밀어 넣기 문'], ['scripts/atlas11/package.mjs', '묶기'], ['scripts/atlas11/site_headers.mjs', '보안 머리말'],
   [/^scripts\/atlas11\/next\/(check_[a-z0-9]+|next_check|next_en_check|quick|wait_preview|wip_preview|page_rules|run_all|net|half36|measure[a-z_]*)\.mjs$/, '검사 · 반값 셈'],
+  ['scripts/atlas11/next/white_gate.mjs', '흰 첫 화면 문(올리기 직전 · 사장님 2026-10-19 02:03)'],
   ['scripts/atlas11/next/shard/', '검사 나누기'], ['scripts/atlas11/next/verify/', '따로 세기'], ['scripts/atlas11/next/fixtures/', '검사 자료'], ['scripts/atlas11/next/gdr/', '골똘이 칸 셈'],
   ['scripts/atlas11/invite_dev.mjs', '시험 서버'], ['tests/', '시험'], ['.github/', '깃허브 작업(예약 · 검사)'], ['.claude/', 'Claude 방 설정'],
   ['CLAUDE.md', '규칙'], ['site/next/brand.js', '이름(사장님 말씀으로만)'], ['site/media/', '영상 · 그림(사장님 말씀으로만)'],
