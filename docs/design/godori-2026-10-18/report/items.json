@@ -1,22 +1,22 @@
 {
   "schema": "godori-0015-report-items-1",
-  "builtAt": "2026-10-18T04:20:17.831Z",
-  "builtAtSGT": "2026-10-18 12:20:17 SGT",
+  "builtAt": "2026-10-18T04:51:03.923Z",
+  "builtAtSGT": "2026-10-18 12:51:03 SGT",
   "by": "R1 (report data) — build.mjs",
   "note": "읽기만 하고 만든 자료. 줄 뜻: 상태는 done / partial / not done / owner-action / not applicable / unknown. 검토자의 막는 찾은 것(열림 · 고침 주장만)이 있으면 done 을 partial 로 내림.",
   "orderLineCount": 110,
   "reportLineCount": 15,
   "counts": {
-    "done": 74,
-    "partial": 31,
+    "done": 78,
+    "partial": 27,
     "not done": 2,
     "unknown": 0,
     "owner-action": 2,
     "not applicable": 1
   },
   "counts72subset": {
-    "done": 44,
-    "partial": 24,
+    "done": 48,
+    "partial": 20,
     "not done": 2,
     "unknown": 0,
     "owner-action": 2,
@@ -24,8 +24,8 @@
   },
   "countsBySection": {
     "1": {
-      "done": 3,
-      "partial": 4,
+      "done": 4,
+      "partial": 3,
       "not done": 1,
       "unknown": 0,
       "owner-action": 0,
@@ -88,24 +88,24 @@
       "not applicable": 0
     },
     "9": {
-      "done": 4,
-      "partial": 3,
+      "done": 5,
+      "partial": 2,
       "not done": 0,
       "unknown": 0,
       "owner-action": 1,
       "not applicable": 0
     },
     "10": {
-      "done": 8,
-      "partial": 2,
+      "done": 9,
+      "partial": 1,
       "not done": 0,
       "unknown": 0,
       "owner-action": 0,
       "not applicable": 0
     },
     "11": {
-      "done": 3,
-      "partial": 1,
+      "done": 4,
+      "partial": 0,
       "not done": 1,
       "unknown": 0,
       "owner-action": 1,
@@ -124,6 +124,7 @@
     "done": [
       "[1] 1",
       "[1] 2",
+      "[1] 4",
       "[1] 6",
       "[2] 1",
       "[2] 2",
@@ -177,6 +178,7 @@
       "[9] 2",
       "[9] 4",
       "[9] 5",
+      "[9] 6",
       "[9] 7",
       "[10] 1",
       "[10] 2",
@@ -184,8 +186,10 @@
       "[10] 4",
       "[10] 5",
       "[10] 6",
+      "[10] 7",
       "[10] 9",
       "[10] 10",
+      "[11] 1",
       "[11] 2",
       "[11] 4",
       "[11] 5",
@@ -199,7 +203,6 @@
     ],
     "partial": [
       "[1] 3",
-      "[1] 4",
       "[1] 7",
       "[1] 8",
       "[3] 1",
@@ -222,11 +225,8 @@
       "[8] 7",
       "[8] 8",
       "[9] 1",
-      "[9] 6",
       "[9] 8",
-      "[10] 7",
       "[10] 8",
-      "[11] 1",
       "[12] 5",
       "[12] 9"
     ],
@@ -244,7 +244,9 @@
     ]
   },
   "warnings": [
-    "말씀 「72개」 ≠ 번호 줄 110개: 72 = [1]+[5]~[11] (8+10+10+10+10+8+10+6) · 카톡 [2]~[4] = 28 · 늘 지킬 것 [12] = 10"
+    "말씀 「72개」 ≠ 번호 줄 110개: 72 = [1]+[5]~[11] (8+10+10+10+10+8+10+6) · 카톡 [2]~[4] = 28 · 늘 지킬 것 [12] = 10",
+    "R1 이 아직 지도에 못 옮긴 새 검토 글 1개: review/VEN.md — 아래 「새 검토 글」 참고(상태에는 아직 반영 안 됨)",
+    "R1 이 읽은 뒤(12:20) 바뀐 글 9개: accept/K1c.md 8795→9384B(12:38), accept/K2s.md 18570→18845B(12:25), accept/S3.md 2366→2552B(12:26), accept/S3p.md 10451→12778B(12:27), accept/S5h.md 11361→16412B(12:37), accept/S7l.md 16706→20534B(12:38), accept/S9.md 6767→7202B(12:21), accept/S9t.md 14400→21811B(12:50), review/VK.md 8483→15728B(12:32) — 지도(map.mjs)의 손글이 낡았을 수 있음(accept 줄로 거는 상태는 자동 반영)"
   ],
   "nextSteps": [
     {
@@ -322,7 +324,7 @@
         },
         {
           "id": "[9] 6",
-          "status": "partial"
+          "status": "done"
         },
         {
           "id": "[9] 8",
@@ -370,7 +372,7 @@
       "items": [
         {
           "id": "[1] 4",
-          "status": "partial"
+          "status": "done"
         },
         {
           "id": "[1] 5",
@@ -378,11 +380,11 @@
         },
         {
           "id": "[10] 7",
-          "status": "partial"
+          "status": "done"
         },
         {
           "id": "[11] 1",
-          "status": "partial"
+          "status": "done"
         },
         {
           "id": "[11] 5",
@@ -522,7 +524,7 @@
       "sec": 1,
       "n": 4,
       "words": "고치기 전에 [11] 1의 숫자부터 재라. 고친 뒤 같은 자로 다시 재라.",
-      "status": "partial",
+      "status": "done",
       "proof": "고치기 전 표 있음: 29화면(한국어 360×640 + 영어 390×640) 193.2초 — #/ 9,492px(14.8화면) · 매매일지 누름 25 · 17px 아래 글 있는 화면 27. 글씨 · 간격 앞뒤 표 type-before/type-after(36쪽 · 11:01 싱가포르)",
       "evidence": [
         "reports/atlas11/measure/before-2026-10-18.md",
@@ -537,8 +539,8 @@
         {
           "kind": "chk",
           "file": "afterMeasure",
-          "ok": false,
-          "text": "reports/atlas11/measure/after-2026-10-18.md 아직 없음(main 의 뒤 재기가 만듦)"
+          "ok": true,
+          "text": "after-2026-10-18.md 있음"
         }
       ],
       "accept": [
@@ -2689,13 +2691,13 @@
           "file": "accept/S3.md",
           "line": 6,
           "class": "pass",
-          "text": "됨 — 한 줄 · 높이 60px · 폭 66 ~ 84px · 큰 글씨는 둘씩 두 줄(화면 안)"
+          "text": "됨 — 한 줄 · 높이 60px · 폭 66 ~ 84px · 큰 글씨는 둘씩 두 줄(화면 안) · 12:25 탭 줄을 꼬리표 위로 — 탭 아래 끝 ≤ 572px(한국어 496 · 영어 최대 557)"
         },
         {
           "file": "accept/S3p.md",
           "line": 13,
           "class": "info",
-          "text": "한 줄(top 같음) · 높이 60px · 폭 66 ~ 84px · 가장 큰 글씨(f3)는 둘씩 두 줄(화면 안) · 실패 0"
+          "text": "한 줄(top 같음) · 높이 60px · 폭 66 ~ 84px · 가장 큰 글씨(f3)는 둘씩 두 줄(화면 안) · 실패 0 · **12:25 고침**: 탭 줄을 꼬리표 줄 위로 올림(차례 = 길 → 이름 → 값 → 날 줄 → 탭 넷 → 꼬리표) — 꼬리표가 몇 개든 탭 줄 자리가 안…"
         }
       ]
     },
@@ -2733,13 +2735,13 @@
           "file": "accept/S3.md",
           "line": 7,
           "class": "pass",
-          "text": "됨 — 꼬리표 있는 117곳 포함 203곳 틀림 0(gdr.json · surge.json · mkt p 로 따로 셈)"
+          "text": "됨 — 꼬리표 있는 117곳 포함 203곳 틀림 0(gdr.json · surge.json · mkt p 로 따로 셈) · 12:25 대장주 꼬리표(`#/f/lead`)도 더함(77곳 · 271곳 맞댐 틀림 0)"
         },
         {
           "file": "accept/S3p.md",
           "line": 14,
           "class": "info",
-          "text": "꼬리표 있는 117곳 포함 203곳 맞댐 틀림 0 · 영어 「Godori slot #1」 · 「Surge list」 · 「Surge 40%+ band」"
+          "text": "꼬리표 있는 117곳 포함 203곳 맞댐 틀림 0 · 영어 「Godori slot #1」 · 「Surge list」 · 「Surge 40%+ band」 · **12:25 고침**: 대장주 꼬리표 더함(`#/f/lead` · 업종 안 회사 크기 1등 · 칩과 같은 자료 `cond.json…"
         }
       ]
     },
@@ -3777,7 +3779,7 @@
       "sec": 9,
       "n": 6,
       "words": "거르는 말 빈틈을 막아라. 점과 줄표를 지운 뒤 거르고, 넓은 숫자와 「공일공」 같은 한글 숫자는 보통 숫자로 바꿔 걸러라. 「사야, 담아, 추천, 무조건, 확실…",
-      "status": "partial",
+      "status": "done",
       "proof": "거르는 말 빈틈: words.test 20 · letter 9 · invite · next-modules · i18n 다섯 파일 128 통과 0 실패(S7l 11:20) · R1 다시 돌림 words 20/20 통과(12:20) · invite 11/11 통과(12:20) · next-modules 6/6 통과(12:20) · VL 따로: 명령문에 적힌 낱말 아홉 다 있음 · 띄어쓰기 · 점 · 줄표 · 밑줄 · 가운뎃점 · 넓은 숫자 · 동그라미 숫자 · 공일공 · 영일영 걸림 · 거짓 걸림 0",
       "evidence": [
         "docs/design/godori-2026-10-18/accept/S7l.md",
@@ -3791,15 +3793,15 @@
           "id": "VL-2",
           "file": "review/VL.md",
           "severity": "block",
-          "state": "open",
-          "blocks": true,
+          "state": "confirmed-r1",
+          "blocks": false,
           "finding": "명령문에 적힌 것(낱말 아홉 · 점 · 줄표 · 넓은 숫자 · 공일공)은 통과인데 다른 피하는 꼴 45가지 중 22가지가 빠져나감: 빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · (82)10 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao",
-          "fix": "R1 12:20 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 19가지 빠져나감 · 1가지는 words.js 가 오류(TypeError: dot com)",
-          "r1": "R1 12:20 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 19가지 빠져나감 · 1가지는 words.js 가 오류(TypeError: dot com)"
+          "fix": "R1 12:51 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감",
+          "r1": "R1 12:51 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감"
         }
       ],
       "flags": [
-        "verifier-open"
+        "confirmed-by-R1-rerun"
       ],
       "conds": [
         {
@@ -3957,7 +3959,7 @@
           "state": "closed",
           "blocks": false,
           "finding": "영어 화면 #/ · #/gdr 에 한국어 「오늘은 담는 칸을 닫아 둘게」 그대로였음: en.json 이 en-src.json 보다 낡음(61틀 빠짐)",
-          "fix": "서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,127개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림)"
+          "fix": "서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,142개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림)"
         }
       ],
       "flags": [],
@@ -3966,7 +3968,7 @@
           "kind": "chk",
           "file": "enFresh",
           "ok": true,
-          "text": "en.json 2026-10-18 12:13:32 SGT · en-src.json 2026-10-18 12:13:32 SGT"
+          "text": "en.json 2026-10-18 12:48:34 SGT · en-src.json 2026-10-18 12:48:18 SGT"
         }
       ],
       "accept": [
@@ -4437,7 +4439,7 @@
       "sec": 10,
       "n": 7,
       "words": "글 시작 왼쪽 줄은 한 화면에 셋까지. 지금 첫 화면 12, 회사 10, 채널 10, 달력 12.",
-      "status": "partial",
+      "status": "done",
       "proof": "왼쪽 줄 ≤ 3: 첫 화면 37 → 3 · 회사 25 → 3 · 채널 · 범위 25/29 → 3 · #/why/005930 5 → 3 · 편지 7 → 1 · 소개 11 → 1",
       "evidence": [
         "docs/design/godori-2026-10-18/accept/S12x.md",
@@ -4454,8 +4456,8 @@
         {
           "kind": "chk",
           "file": "afterMeasure",
-          "ok": false,
-          "text": "reports/atlas11/measure/after-2026-10-18.md 아직 없음(main 의 뒤 재기가 만듦)"
+          "ok": true,
+          "text": "after-2026-10-18.md 있음"
         }
       ],
       "accept": [
@@ -4849,7 +4851,7 @@
       "sec": 11,
       "n": 1,
       "words": "고치기 전과 뒤를 같은 자로 재서 표로 내라. 화면마다 길이(화면 수), 첫 화면 안 시장 숫자 수, 매매일지 누름 수, 글씨 가짓수, 왼쪽 줄 수, 17px 아…",
-      "status": "partial",
+      "status": "done",
       "proof": "고치기 전 표(29화면) 있음 · 글씨 · 간격 앞뒤(36쪽) 있음 — 같은 자로 다시 재는 뒤 표는 main 몫",
       "evidence": [
         "reports/atlas11/measure/before-2026-10-18.md",
@@ -4864,8 +4866,8 @@
         {
           "kind": "chk",
           "file": "afterMeasure",
-          "ok": false,
-          "text": "reports/atlas11/measure/after-2026-10-18.md 아직 없음(main 의 뒤 재기가 만듦)"
+          "ok": true,
+          "text": "after-2026-10-18.md 있음"
         }
       ],
       "accept": [
@@ -5005,7 +5007,7 @@
       "n": 5,
       "words": "60초 시연 영상을 만들어 보고에 붙여라. 친구 카드 → 두 번 → 친구가 보낸 쪽 → 매매일지 11번 → 첫 화면. 가짜 카카오로 찍었다고 화면에 적어라. 말과…",
       "status": "done",
-      "proof": "60초 시연 영상: 영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (42.8초 · 780×1688 · 1.8MB · 파일 12:02 싱가포르) · D1 메모(notes.md): 장면 친구 카드와 가입(누름 2) → 매매일지(질문 11 + 마지막 두 줄 2) → 첫 화면(누름 1) · 누름 합 16 · 화면 맨 위 「시험용 가짜 카카오로 찍었어요」가 처음부터 끝까지 떠 있음 · 진짜 카카오로 간 요청 0 · 화면 오류 0",
+      "proof": "60초 시연 영상: 영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (43.6초 · 780×1688 · 1.9MB · 파일 12:37 싱가포르) · D1 메모(notes.md): 장면 친구 카드와 가입(누름 2) → 매매일지(질문 11 + 마지막 두 줄 2) → 첫 화면(누름 1) · 누름 합 16 · 화면 맨 위 「시험용 가짜 카카오로 찍었어요」가 처음부터 끝까지 떠 있음 · 진짜 카카오로 간 요청 0 · 화면 오류 0",
       "evidence": [
         "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4",
         "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/notes.md",
@@ -5020,7 +5022,7 @@
           "kind": "chk",
           "file": "demoVideo",
           "ok": true,
-          "text": "영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (42.8초 · 780×1688 · 1.8MB · 파일 12:02 싱가포르)"
+          "text": "영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (43.6초 · 780×1688 · 1.9MB · 파일 12:37 싱가포르)"
         }
       ],
       "accept": []
@@ -5032,7 +5034,7 @@
       "n": 6,
       "words": "걸린 초를 지난 9,206초와 견줘라.",
       "status": "not done",
-      "proof": "걸린 초를 지난 9,206초와 견줌 — 끝난 뒤 채움. 지금까지(R1 셈): 10397초 = 9,206초의 1.13배(멈춘 시간 9시간 12분 뺀 값)",
+      "proof": "걸린 초를 지난 9,206초와 견줌 — 끝난 뒤 채움. 지금까지(R1 셈): 12244초 = 9,206초의 1.33배(멈춘 시간 9시간 12분 뺀 값)",
       "evidence": [
         "reports/atlas11/speed/2026-10-18.jsonl"
       ],
@@ -5279,7 +5281,7 @@
       "n": 7,
       "words": "영어는 en-src.json을 고치고 i18n_build.mjs로 다시 만들어라.",
       "status": "done",
-      "proof": "영어는 en-src.json 에 add.mjs 로 더하고(S2t 13 · S5h 34 · K2s 8 · S7l 9 · S9t 59 줄) i18n_build.mjs 로 다시 만듦: en-src.json 2026-10-18 12:13:32 SGT · en.json 2026-10-18 12:13:32 SGT(틀 8,127개) · VJ 다시 재기에서 영어 판 한국어 0",
+      "proof": "영어는 en-src.json 에 add.mjs 로 더하고(S2t 13 · S5h 34 · K2s 8 · S7l 9 · S9t 59 줄) i18n_build.mjs 로 다시 만듦: en-src.json 2026-10-18 12:48:18 SGT · en.json 2026-10-18 12:48:34 SGT(틀 8,142개) · VJ 다시 재기에서 영어 판 한국어 0",
       "evidence": [
         "scripts/atlas11/next/i18n/en-src.json",
         "site/next/i18n/en.json",
@@ -5296,7 +5298,7 @@
           "state": "closed",
           "blocks": false,
           "finding": "영어 화면 #/ · #/gdr 에 한국어 「오늘은 담는 칸을 닫아 둘게」 그대로였음: en.json 이 en-src.json 보다 낡음(61틀 빠짐)",
-          "fix": "서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,127개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림)"
+          "fix": "서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,142개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림)"
         }
       ],
       "flags": [],
@@ -5305,7 +5307,7 @@
           "kind": "chk",
           "file": "enFresh",
           "ok": true,
-          "text": "en.json 2026-10-18 12:13:32 SGT · en-src.json 2026-10-18 12:13:32 SGT"
+          "text": "en.json 2026-10-18 12:48:34 SGT · en-src.json 2026-10-18 12:48:18 SGT"
         }
       ],
       "accept": []
@@ -5407,16 +5409,16 @@
     {
       "n": 1,
       "words": "약속한 끝 시각과 실제 끝 시각, 걸린 초, 지난 9,206초의 몇 배",
-      "value": "약속: ① 화면 14:00 · ② 카톡 가입 16:00(싱가포르, 속도 기록 줄 4) · 실제 끝 시각 ? · 지금까지 걸린 초 10397초(멈춘 시간 9시간 12분 뺌) = 지난 9,206초의 1.13배(아직 안 끝남)",
+      "value": "약속: ① 화면 14:00 · ② 카톡 가입 16:00(싱가포르, 속도 기록 줄 4) · 실제 끝 시각 ? · 지금까지 걸린 초 12244초(멈춘 시간 9시간 12분 뺌) = 지난 9,206초의 1.33배(아직 안 끝남)",
       "toFill": "올린 뒤(배포 뒤) main 이 끝 시각 · 총 초를 채움",
       "hasUnknown": true
     },
     {
       "n": 2,
       "words": "고치기 전과 뒤 표([11] 1)",
-      "value": "앞 표 있음: reports/atlas11/measure/before-2026-10-18.md(29화면) · 글씨 · 간격 앞뒤 type-before / type-after(36쪽, 11:01) · 뒤 표 아직 없음 ?",
+      "value": "앞 표 있음: reports/atlas11/measure/before-2026-10-18.md(29화면) · 글씨 · 간격 앞뒤 type-before / type-after(36쪽, 11:01) · 뒤 표 있음(reports/atlas11/measure/after-2026-10-18.md)",
       "toFill": "전체를 같은 자로 다시 재는 단계(main 의 measure) — reports/atlas11/measure/after-2026-10-18.md",
-      "hasUnknown": true
+      "hasUnknown": false
     },
     {
       "n": 3,
@@ -5620,7 +5622,7 @@
     },
     {
       "what": "이 명령문 전체",
-      "value": "지난 9,206초 → 지금까지 10397초",
+      "value": "지난 9,206초 → 지금까지 12244초",
       "worker": "main",
       "note": "멈춘 시간 9시간 12분 뺀 값 · 끝나면 채움",
       "evidence": [
@@ -5836,7 +5838,7 @@
         "12.7"
       ],
       "finding": "영어 화면 #/ · #/gdr 에 한국어 「오늘은 담는 칸을 닫아 둘게」 그대로였음: en.json 이 en-src.json 보다 낡음(61틀 빠짐)",
-      "fix": "서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,127개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림)"
+      "fix": "서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,142개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림)"
     },
     {
       "id": "VJ-3",
@@ -5950,13 +5952,13 @@
       "id": "VL-2",
       "file": "review/VL.md",
       "severity": "block",
-      "state": "open",
-      "blocks": true,
+      "state": "confirmed-r1",
+      "blocks": false,
       "items": [
         "9.6"
       ],
       "finding": "명령문에 적힌 것(낱말 아홉 · 점 · 줄표 · 넓은 숫자 · 공일공)은 통과인데 다른 피하는 꼴 45가지 중 22가지가 빠져나감: 빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · (82)10 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao",
-      "fix": "R1 12:20 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 19가지 빠져나감 · 1가지는 words.js 가 오류(TypeError: dot com)"
+      "fix": "R1 12:51 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감"
     },
     {
       "id": "VL-3",
@@ -6043,7 +6045,15 @@
       "fix": "모든 쪽 맨 아래 footer.foot 에 「도움말」 #/info · 「업데이트 기록」 #/up 두 고리를 더하면 어느 쪽에서나 1번(V7 제안 · V7 이 고친 것 아님 · 첫 화면 높이엔 영향 없음)"
     }
   ],
-  "newReviewFiles": [],
+  "newReviewFiles": [
+    {
+      "file": "review/VEN.md",
+      "firstLine": "# VEN — 영어 화면 따로 보기(2026-10-18 12:00 ~ 12:25 싱가포르 · 물결 B · 만든 사람 아님)",
+      "heuristicHits": [
+        "2. **엔진 허술한 곳**: 이름에 「 · 」가 든 큰 업종 8개(전자·부품 등)는 그 줄 키가 없으면 엔진이 「 · 」에서 잘라 반만 번역함. 오늘은 줄마다 통짜 키를 더해 막음. 뿌리 고침 = `i18n.js` 가 자르기 전에 사전 이름 구간을 지키기(내 몫 아님)."
+      ]
+    }
+  ],
   "sources": {
     "accept": [
       {
@@ -6137,9 +6147,9 @@
       {
         "file": "accept/K1c.md",
         "name": "K1c",
-        "bytes": 8795,
-        "mtime": "2026-10-18 11:28:58 SGT",
-        "rows": 26,
+        "bytes": 9384,
+        "mtime": "2026-10-18 12:38:02 SGT",
+        "rows": 28,
         "rowsWithItemRefs": 16,
         "blankResultRows": 0,
         "superseded": null,
@@ -6181,8 +6191,8 @@
       {
         "file": "accept/K2s.md",
         "name": "K2s",
-        "bytes": 18570,
-        "mtime": "2026-10-18 12:19:37 SGT",
+        "bytes": 18845,
+        "mtime": "2026-10-18 12:25:34 SGT",
         "rows": 25,
         "rowsWithItemRefs": 19,
         "blankResultRows": 0,
@@ -6357,8 +6367,8 @@
       {
         "file": "accept/S3.md",
         "name": "S3",
-        "bytes": 2366,
-        "mtime": "2026-10-18 11:11:20 SGT",
+        "bytes": 2552,
+        "mtime": "2026-10-18 12:26:43 SGT",
         "rows": 7,
         "rowsWithItemRefs": 5,
         "blankResultRows": 0,
@@ -6368,8 +6378,8 @@
       {
         "file": "accept/S3p.md",
         "name": "S3p",
-        "bytes": 10451,
-        "mtime": "2026-10-18 11:25:44 SGT",
+        "bytes": 12778,
+        "mtime": "2026-10-18 12:27:39 SGT",
         "rows": 17,
         "rowsWithItemRefs": 13,
         "blankResultRows": 0,
@@ -6412,9 +6422,9 @@
       {
         "file": "accept/S5h.md",
         "name": "S5h",
-        "bytes": 11361,
-        "mtime": "2026-10-18 12:13:43 SGT",
-        "rows": 15,
+        "bytes": 16412,
+        "mtime": "2026-10-18 12:37:12 SGT",
+        "rows": 20,
         "rowsWithItemRefs": 10,
         "blankResultRows": 0,
         "superseded": null,
@@ -6434,9 +6444,9 @@
       {
         "file": "accept/S7l.md",
         "name": "S7l",
-        "bytes": 16706,
-        "mtime": "2026-10-18 11:30:48 SGT",
-        "rows": 14,
+        "bytes": 20534,
+        "mtime": "2026-10-18 12:38:37 SGT",
+        "rows": 21,
         "rowsWithItemRefs": 10,
         "blankResultRows": 0,
         "superseded": null,
@@ -6445,8 +6455,8 @@
       {
         "file": "accept/S9.md",
         "name": "S9",
-        "bytes": 6767,
-        "mtime": "2026-10-18 11:38:30 SGT",
+        "bytes": 7202,
+        "mtime": "2026-10-18 12:21:05 SGT",
         "rows": 14,
         "rowsWithItemRefs": 14,
         "blankResultRows": 0,
@@ -6456,9 +6466,9 @@
       {
         "file": "accept/S9t.md",
         "name": "S9t",
-        "bytes": 14400,
-        "mtime": "2026-10-18 11:58:06 SGT",
-        "rows": 23,
+        "bytes": 21811,
+        "mtime": "2026-10-18 12:50:08 SGT",
+        "rows": 28,
         "rowsWithItemRefs": 14,
         "blankResultRows": 0,
         "superseded": null,
@@ -6479,6 +6489,12 @@
         "known": true
       },
       {
+        "file": "review/VEN.md",
+        "bytes": 6815,
+        "mtime": "2026-10-18 12:24:28 SGT",
+        "known": false
+      },
+      {
         "file": "review/VH.md",
         "bytes": 20067,
         "mtime": "2026-10-18 11:42:49 SGT",
@@ -6492,8 +6508,8 @@
       },
       {
         "file": "review/VK.md",
-        "bytes": 8483,
-        "mtime": "2026-10-18 11:16:08 SGT",
+        "bytes": 15728,
+        "mtime": "2026-10-18 12:32:51 SGT",
         "known": true
       },
       {
@@ -6507,8 +6523,11 @@
       "speed/package-profile.md"
     ],
     "measure": [
+      "reports/atlas11/measure/after-2026-10-18.json",
+      "reports/atlas11/measure/after-2026-10-18.md",
       "reports/atlas11/measure/before-2026-10-18.json",
       "reports/atlas11/measure/before-2026-10-18.md",
+      "reports/atlas11/measure/compare-2026-10-18.md",
       "reports/atlas11/measure/type-after-2026-10-18.json",
       "reports/atlas11/measure/type-after-2026-10-18.md",
       "reports/atlas11/measure/type-before-2026-10-18.json",
@@ -6690,13 +6709,13 @@
     "speedLines": 7,
     "speedWorkerLines": 0,
     "stopSec": 33120,
-    "elapsedSec": 10397,
-    "elapsedRatio": "1.13",
+    "elapsedSec": 12244,
+    "elapsedRatio": "1.33",
     "startAt": "2026-10-17T16:15:00.000Z",
-    "enSrcTime": "2026-10-18 12:13:32 SGT",
-    "enTime": "2026-10-18 12:13:32 SGT",
+    "enSrcTime": "2026-10-18 12:48:18 SGT",
+    "enTime": "2026-10-18 12:48:34 SGT",
     "enStale": false,
-    "enFrames": "8,127",
+    "enFrames": "8,142",
     "oldChanges": "0줄",
     "oldChangesN": 0,
     "reservedChanges": "0줄",
@@ -6704,21 +6723,19 @@
     "confettiHits": 0,
     "rule79Line": 132,
     "kakaoSendCalls": 0,
-    "afterExists": false,
-    "afterMeasureText": "아직 없음 ?",
+    "afterExists": true,
+    "afterMeasureText": "있음(reports/atlas11/measure/after-2026-10-18.md)",
     "demoVideos": [
-      "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4",
-      "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/exp1/c473570da4ce3891802a9489e7b4ad2f.webm",
-      "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/raw/78a2854c0d6ddc52a01a8939eed677d0.webm"
+      "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4"
     ],
-    "demoDur": 42.811995,
+    "demoDur": 43.636009,
     "demoFile": "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4",
-    "demoInfo": "영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (42.8초 · 780×1688 · 1.8MB · 파일 12:02 싱가포르)",
+    "demoInfo": "영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (43.6초 · 780×1688 · 1.9MB · 파일 12:37 싱가포르)",
     "vlWordsTotal": 45,
-    "vlWordsSlip": 19,
-    "vlWordsSlipNames": "82)10 · 빗금 낱말 · 빗금 t/me · 빗금 수익 · 비슷한 글자 O1O · 비슷한 글자 0l0 · 비슷한 글자 키릴 t.mе · 비슷한 글자 키릴 http · 비슷한 글자 키릴 www · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · 011 번호 · 070 번호",
-    "vlWordsThrow": 1,
-    "vlWordsThrowNames": "dot com",
+    "vlWordsSlip": 0,
+    "vlWordsSlipNames": "",
+    "vlWordsThrow": 0,
+    "vlWordsThrowNames": "",
     "probe_kakao": "20/20 통과(12:19)",
     "probe_invite": "11/11 통과(12:20)",
     "probe_letter": "9/9 통과(12:20)",

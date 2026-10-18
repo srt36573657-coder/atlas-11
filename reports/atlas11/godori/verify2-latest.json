@@ -1,0 +1,1127 @@
+{
+ "schema": "godori-verify2-1",
+ "at": "2026-10-18T03:32:03Z",
+ "version": "gdr-v2",
+ "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
+ "readings": [
+  "날 k: --asof 가 있으면 그 날 · 없으면 §2 규칙 · gdr.json asOf 가 사이트 날보다 늦은 달력 날이면 그 날(G3x: 장 끝난 뒤 실행은 pick2 --asof 로 부르고 mkt.json 은 그대로)",
+  "달력: 회사(mkt.json 번호 모두)마다 그 날짜 일봉 줄이 있으면 1 로 셈(값이 비어도) · 달력 밖 날짜 줄은 버림 · 모음 마지막 날 = 회사 줄 날짜 중 가장 늦은 날",
+  "적자 해 없음: 쓸 수 있는 해가 3해 미만이면 적자가 있어도 null(G1c 답 2)",
+  "4분기 합: 쓸 수 있는 분기 마지막 다섯을 먼저 잡고 이어짐 · op · sales 있음 요구(G1c 답 3) · 결산 달 분기 = 해마다 결산 마지막 열(key 가장 큰 N 열)의 달 · 없으면 12 → M + 4",
+  "EPS · BPS: 요약 값이 수이고 기준 달 + 3 달째 1일 ≤ 그날이면 요약 · 아니면 쓸 수 있는 마지막 해마다 열의 값(「-」면 null · 앞 해로 안 감 · G1c 답 4)",
+  "score 모음 lo · hi = counted 줄만 합 · 그중 null 이 있거나 counted 0 이면 null(G1c 답 5 · 표 §9 12:2x 고침)",
+  "--private ratio · sigma = floor(값 × 10⁴ · 10⁵ + 0.5) ÷ 10⁴ · 10⁵(표 §12 12:2x 고침) · 팔 선 · 닿은 수는 반올림 전 값",
+  "why: lists(목록 「?」 x0 회사 있음) · years(2 × loss3 < x0 수) · quarters(사이트 파일 · x0 회사 모두 4분기 합 못 셈 · x0 > 0) → 하나도 없으면 passAll > 0 → cut · 0 → none(G1c 답 6)",
+  "loss3 = x 0 인 회사 중 적자 해 없음 작은 조건이 null 이 아닌 곳(0 또는 1)",
+  "상관: 분산 0 이면 셀 수 없음 = 뺌(표에 없는 곳)",
+  "picks[].name = mkt.json companies[번호].n",
+  "몬테카를로 하루 로그 오름 = ln(c_d ÷ c_{d−1}) · 합은 앞에서부터 차례로 더함(compensated sum 안 씀)",
+  "부동소수 경계 1e−9 안(상관 0.5 · s 0 · 닿음 · 호가)은 두 답 모두 맞음(표 §13)"
+ ],
+ "table": {
+  "path": "docs/design/godori-2026-10-18/gdr-v2.md",
+  "sha256": "4911275b5ab454e7d3b7d0e33bd25b2a2c49b9dd892fe71e564d60c64e43c2e5",
+  "status": "상태: 완성",
+  "rulesCheck": {
+   "rows": 15,
+   "diffs": []
+  }
+ },
+ "inputs": {
+  "bundle": {
+   "path": "reports/atlas11/universe/2026-10-14-1209-to1013/bundle.json.gz",
+   "sha256": "0cf61ebde872cd380f4b5dacdf112b5f2193440446173f959ab5b6536389d061",
+   "last": "2026-10-13"
+  },
+  "mkt": {
+   "path": "site/atlas/data/mkt.json",
+   "asOf": "2026-10-13",
+   "sha256": "2e517e2ecd4429bf46ddca2d6c0ba837038e873739ffdbc9a2d256a8c3bddcd6"
+  },
+  "core": {
+   "path": "site/atlas/data/core.json",
+   "sha256": "3b7d61ae7ac6fdd5c5bff6912083ebcb724b489e743f352fa38af7b57c694e95"
+  },
+  "quarters": {
+   "path": null,
+   "from": "gdr.src null",
+   "present": false
+  },
+  "lists": {
+   "path": null,
+   "from": "gdr.src null",
+   "present": false,
+   "complete": false
+  },
+  "calendar": {
+   "n": 839,
+   "first": "2023-04-28",
+   "last": "2026-10-13",
+   "k250": "2024-05-09"
+  },
+  "gdr": {
+   "path": "site/next/data/gdr.json",
+   "error": null,
+   "sha256": "61548bc2e9cbb3a9dea863cd6795d33fd8845725b7c6b6ede105b9ee84108275"
+  },
+  "gates": {
+   "path": "site/next/data/gates.json",
+   "error": null,
+   "sha256": "a058a8f23eb2c7715f40589100c021a88690281de7418ac57100384393625082"
+  },
+  "private": {
+   "path": null,
+   "error": null,
+   "sha256": null
+  }
+ },
+ "k": {
+  "k": 838,
+  "day": "2026-10-13",
+  "src": "§2 규칙"
+ },
+ "mine": {
+  "counts": {
+   "listed": 4307,
+   "companies": 2557,
+   "outThin": 1650,
+   "outThinQ": 6,
+   "outHalt": 1,
+   "outList": 0,
+   "listQ": 906,
+   "afterOut": 906,
+   "g1": 0,
+   "g2": 668,
+   "g3": 79,
+   "g4": 676,
+   "g5": 86,
+   "passAll": 0,
+   "cutInd": 0,
+   "cutBig": 0,
+   "picked": 0,
+   "cash": 100.0,
+   "loss3": 893,
+   "why": "lists,quarters"
+  },
+  "loss3Years": 893,
+  "status": {
+   "lists": "missing",
+   "quarters": "missing"
+  },
+  "sens": {
+   "thin": [
+    [
+     1100000000.0,
+     0
+    ],
+    [
+     1000000000.0,
+     0
+    ],
+    [
+     900000000.0,
+     0
+    ]
+   ],
+   "opGrow": [
+    [
+     5.0,
+     0
+    ],
+    [
+     0.0,
+     0
+    ],
+    [
+     -5.0,
+     0
+    ]
+   ],
+   "salesGrow": [
+    [
+     5.0,
+     0
+    ],
+    [
+     0.0,
+     0
+    ],
+    [
+     -5.0,
+     0
+    ]
+   ],
+   "quietX": [
+    [
+     1.8,
+     0
+    ],
+    [
+     2.0,
+     0
+    ],
+    [
+     2.2,
+     0
+    ]
+   ],
+   "hot5": [
+    [
+     9.0,
+     0
+    ],
+    [
+     10.0,
+     0
+    ],
+    [
+     11.0,
+     0
+    ]
+   ],
+   "r20": [
+    [
+     22.5,
+     0
+    ],
+    [
+     25.0,
+     0
+    ],
+    [
+     27.5,
+     0
+    ]
+   ],
+   "r60lo": [
+    [
+     5.5,
+     0
+    ],
+    [
+     5.0,
+     0
+    ],
+    [
+     4.5,
+     0
+    ]
+   ],
+   "r60hi": [
+    [
+     36.0,
+     0
+    ],
+    [
+     40.0,
+     0
+    ],
+    [
+     44.0,
+     0
+    ]
+   ],
+   "jump": [
+    [
+     13.5,
+     0
+    ],
+    [
+     15.0,
+     0
+    ],
+    [
+     16.5,
+     0
+    ]
+   ],
+   "mdd60": [
+    [
+     18.0,
+     0
+    ],
+    [
+     20.0,
+     0
+    ],
+    [
+     22.0,
+     2
+    ]
+   ],
+   "dd0": [
+    [
+     13.5,
+     0
+    ],
+    [
+     15.0,
+     0
+    ],
+    [
+     16.5,
+     0
+    ]
+   ],
+   "low2x": [
+    [
+     1.8,
+     0
+    ],
+    [
+     2.0,
+     0
+    ],
+    [
+     2.2,
+     0
+    ]
+   ],
+   "indX": [
+    [
+     1.21,
+     0
+    ],
+    [
+     1.1,
+     0
+    ],
+    [
+     0.99,
+     1
+    ]
+   ],
+   "indMed": [
+    [
+     1.0,
+     0
+    ],
+    [
+     0.0,
+     0
+    ],
+    [
+     -1.0,
+     3
+    ]
+   ]
+  },
+  "picks": [],
+  "fall3": {
+   "n": null,
+   "days": 250,
+   "of": 0,
+   "dates": []
+  },
+  "inds": {},
+  "bigs": {},
+  "score": {
+   "src": "recomputed",
+   "from": "2026-09-09",
+   "to": "2026-10-13",
+   "n": 2,
+   "counted": 2,
+   "up": 0,
+   "lo": 9,
+   "hi": 13,
+   "rows": [
+    {
+     "code": "004690",
+     "name": "삼천리",
+     "lo": 5,
+     "hi": 7,
+     "from": 134500,
+     "to": 124500,
+     "up": 0,
+     "mcCounts": [
+      1037,
+      1029,
+      1229,
+      1003
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "code": "004370",
+     "name": "농심",
+     "lo": 4,
+     "hi": 6,
+     "from": 413500,
+     "to": 399000,
+     "up": 0,
+     "mcCounts": [
+      929,
+      930,
+      1119,
+      952
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "order": [],
+  "edges": []
+ },
+ "invariants": {
+  "sumW_plus_cash_eq_100": {
+   "ok": true,
+   "detail": {
+    "sumW": 0.0,
+    "cash": 100
+   }
+  },
+  "big_sum_le_9": {
+   "ok": true,
+   "detail": {}
+  },
+  "per_industry_le_2": {
+   "ok": true,
+   "detail": {}
+  },
+  "picks_le_36": {
+   "ok": true,
+   "detail": 0
+  },
+  "picked_eq_len": {
+   "ok": true
+  },
+  "no_duplicate_codes": {
+   "ok": true
+  },
+  "gates_companies": {
+   "ok": true,
+   "detail": [
+    2557,
+    2557
+   ]
+  },
+  "picks_pass_all_in_gates": {
+   "ok": true
+  },
+  "x_nonzero_g_null": {
+   "ok": true
+  },
+  "l_rule": {
+   "ok": true
+  },
+  "counts_add_up": {
+   "ok": true,
+   "detail": [
+    1650,
+    1,
+    0,
+    906,
+    2557
+   ]
+  },
+  "passAll_ge_picked": {
+   "ok": true
+  },
+  "why_null_iff_picks": {
+   "ok": true
+  }
+ },
+ "counts_theirs": {
+  "listed": 4307,
+  "companies": 2557,
+  "outThin": 1650,
+  "outThinQ": 6,
+  "outHalt": 1,
+  "outList": 0,
+  "listQ": 906,
+  "afterOut": 906,
+  "g1": 0,
+  "g2": 668,
+  "g3": 79,
+  "g4": 676,
+  "g5": 86,
+  "passAll": 0,
+  "cutInd": 0,
+  "cutBig": 0,
+  "picked": 0,
+  "cash": 100,
+  "loss3": 893,
+  "why": "lists,quarters"
+ },
+ "back": {
+  "days": [
+   {
+    "k": 250,
+    "date": "2024-05-09",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 280,
+    "date": "2024-06-24",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 310,
+    "date": "2024-08-05",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 340,
+    "date": "2024-09-20",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 370,
+    "date": "2024-11-06",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 399,
+    "date": "2024-12-17",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 429,
+    "date": "2025-02-06",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 459,
+    "date": "2025-03-21",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 489,
+    "date": "2025-05-07",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 519,
+    "date": "2025-06-20",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 549,
+    "date": "2025-08-01",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 579,
+    "date": "2025-09-15",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 609,
+    "date": "2025-11-03",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 639,
+    "date": "2025-12-15",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 669,
+    "date": "2026-01-29",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 698,
+    "date": "2026-03-17",
+    "picks": 0,
+    "why": "years"
+   },
+   {
+    "k": 709,
+    "date": "2026-04-01",
+    "picks": 5,
+    "why": null
+   },
+   {
+    "k": 711,
+    "date": "2026-04-03",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 714,
+    "date": "2026-04-08",
+    "picks": 2,
+    "why": null
+   },
+   {
+    "k": 716,
+    "date": "2026-04-10",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 718,
+    "date": "2026-04-14",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 720,
+    "date": "2026-04-16",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 722,
+    "date": "2026-04-20",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 724,
+    "date": "2026-04-22",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 726,
+    "date": "2026-04-24",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 728,
+    "date": "2026-04-28",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 730,
+    "date": "2026-04-30",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 732,
+    "date": "2026-05-06",
+    "picks": 4,
+    "why": null
+   },
+   {
+    "k": 734,
+    "date": "2026-05-08",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 740,
+    "date": "2026-05-18",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 744,
+    "date": "2026-05-22",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 758,
+    "date": "2026-06-15",
+    "picks": 0,
+    "why": "none"
+   },
+   {
+    "k": 772,
+    "date": "2026-07-03",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 774,
+    "date": "2026-07-07",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 788,
+    "date": "2026-07-28",
+    "picks": 0,
+    "why": "none"
+   },
+   {
+    "k": 796,
+    "date": "2026-08-07",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 800,
+    "date": "2026-08-13",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 802,
+    "date": "2026-08-18",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 804,
+    "date": "2026-08-20",
+    "picks": 2,
+    "why": null
+   },
+   {
+    "k": 806,
+    "date": "2026-08-24",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 808,
+    "date": "2026-08-26",
+    "picks": 3,
+    "why": null
+   },
+   {
+    "k": 810,
+    "date": "2026-08-28",
+    "picks": 2,
+    "why": null
+   },
+   {
+    "k": 812,
+    "date": "2026-09-01",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 814,
+    "date": "2026-09-03",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 816,
+    "date": "2026-09-07",
+    "picks": 1,
+    "why": null
+   },
+   {
+    "k": 818,
+    "date": "2026-09-09",
+    "picks": 2,
+    "why": null
+   }
+  ],
+  "compared": 676,
+  "diffs": 0,
+  "sample": [
+   250,
+   280,
+   310,
+   340,
+   370,
+   399,
+   429,
+   459,
+   489,
+   519,
+   549,
+   579,
+   609,
+   639,
+   669,
+   698,
+   709,
+   711,
+   714,
+   716,
+   718,
+   720,
+   722,
+   724,
+   726,
+   728,
+   730,
+   732,
+   734,
+   740,
+   744,
+   758,
+   772,
+   774,
+   788,
+   796,
+   800,
+   802,
+   804,
+   806,
+   808,
+   810,
+   812,
+   814,
+   816,
+   818
+  ]
+ },
+ "stress": {
+  "dir": "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/g4x/final-stress",
+  "node": "--permission",
+  "cases": [
+   {
+    "case": "A_today_full",
+    "asof": null,
+    "quarters": "a",
+    "lists": "full",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 906,
+    "ok": true,
+    "compared": 2700,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 838,
+    "day": "2026-10-13",
+    "picked": 0,
+    "passAll": 0,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": "none",
+    "outList": 3,
+    "near": 0,
+    "scoreSrc": "recomputed",
+    "secs": 8.3
+   },
+   {
+    "case": "B_0401_alt",
+    "asof": "2026-04-01",
+    "quarters": "a",
+    "lists": "alt",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 3,
+    "ok": true,
+    "compared": 2755,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 709,
+    "day": "2026-04-01",
+    "picked": 2,
+    "passAll": 2,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": null,
+    "outList": 1,
+    "near": 5,
+    "scoreSrc": "recomputed",
+    "secs": 21.2
+   },
+   {
+    "case": "C_0331_full",
+    "asof": "2026-03-31",
+    "quarters": "a",
+    "lists": "full",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 1239,
+    "ok": true,
+    "compared": 2693,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 708,
+    "day": "2026-03-31",
+    "picked": 0,
+    "passAll": 0,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": "years",
+    "outList": 3,
+    "near": 0,
+    "scoreSrc": "recomputed",
+    "secs": 15.7
+   },
+   {
+    "case": "D_0909_full_b",
+    "asof": "2026-09-09",
+    "quarters": "b",
+    "lists": "full",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 2,
+    "ok": true,
+    "compared": 2724,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 818,
+    "day": "2026-09-09",
+    "picked": 1,
+    "passAll": 1,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": null,
+    "outList": 1,
+    "near": 2,
+    "scoreSrc": "recomputed",
+    "secs": 21.5
+   },
+   {
+    "case": "E_today_partial",
+    "asof": null,
+    "quarters": "a",
+    "lists": "partial",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 906,
+    "ok": true,
+    "compared": 2700,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 838,
+    "day": "2026-10-13",
+    "picked": 0,
+    "passAll": 0,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": "lists",
+    "outList": 1,
+    "near": 0,
+    "scoreSrc": "recomputed",
+    "secs": 20.0
+   },
+   {
+    "case": "F_today_dartoff",
+    "asof": null,
+    "quarters": "a",
+    "lists": "dartoff",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 906,
+    "ok": true,
+    "compared": 2700,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 838,
+    "day": "2026-10-13",
+    "picked": 0,
+    "passAll": 0,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": "lists",
+    "outList": 0,
+    "near": 0,
+    "scoreSrc": "recomputed",
+    "secs": 19.0
+   },
+   {
+    "case": "G_0715_noq",
+    "asof": "2026-07-15",
+    "quarters": null,
+    "lists": "full",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 917,
+    "ok": true,
+    "compared": 2693,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 780,
+    "day": "2026-07-15",
+    "picked": 0,
+    "passAll": 0,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": "quarters",
+    "outList": 3,
+    "near": 0,
+    "scoreSrc": "recomputed",
+    "secs": 15.8
+   },
+   {
+    "case": "H_today_prev",
+    "asof": null,
+    "quarters": "b",
+    "lists": "full",
+    "prev": "D_0909_full_b",
+    "exit": 0,
+    "listedCandidates": 906,
+    "ok": true,
+    "compared": 2700,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 838,
+    "day": "2026-10-13",
+    "picked": 0,
+    "passAll": 0,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": "none",
+    "outList": 3,
+    "near": 0,
+    "scoreSrc": "kept",
+    "secs": 19.4
+   },
+   {
+    "case": "I_0602_full_b",
+    "asof": "2026-06-02",
+    "quarters": "b",
+    "lists": "full",
+    "prev": null,
+    "exit": 0,
+    "listedCandidates": 1329,
+    "ok": true,
+    "compared": 2735,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 750,
+    "day": "2026-06-02",
+    "picked": 0,
+    "passAll": 0,
+    "cutInd": 0,
+    "cutBig": 0,
+    "why": "none",
+    "outList": 3,
+    "near": 0,
+    "scoreSrc": "recomputed",
+    "secs": 38.9
+   },
+   {
+    "case": "S_synth_bundle",
+    "exit": 0,
+    "meta": {
+     "industries": [
+      "연예 기획사",
+      "출판",
+      "방송",
+      "부동산",
+      "은행·카드",
+      "보험",
+      "헬스케어 기술",
+      "의료용품",
+      "병원·헬스 서비스",
+      "반도체 검사·측정",
+      "반도체 소재",
+      "반도체 부품",
+      "자동차",
+      "정밀화학",
+      "시멘트",
+      "통신",
+      "인터넷 플랫폼",
+      "IT 시스템 통합",
+      "전력기기",
+      "정유·가스",
+      "2차전지 장비",
+      "디스플레이 장비",
+      "조선 기자재",
+      "항공·우주",
+      "조선",
+      "항공",
+      "해운",
+      "복합기업"
+     ],
+     "candidates": 84,
+     "specials": {
+      "016880": "quiet",
+      "033830": "thin",
+      "006220": "r60lo",
+      "000370": "r60hi",
+      "028300": "mdd60",
+      "043710": "dd0",
+      "005290": "hot5",
+      "007660": "hot5x",
+      "002840": "jumpx",
+      "000910": "low2x"
+     },
+     "twin": [
+      "036000",
+      "000400"
+     ],
+     "crashDays": [
+      "2025-10-31",
+      "2026-01-14",
+      "2026-03-31",
+      "2026-05-29",
+      "2026-08-11"
+     ]
+    },
+    "ok": true,
+    "compared": 3575,
+    "diffN": 0,
+    "diffs": [],
+    "invariantsBad": [],
+    "k": 838,
+    "day": "2026-10-13",
+    "picked": 28,
+    "passAll": 53,
+    "cutInd": 16,
+    "cutBig": 9,
+    "outList": 2,
+    "why": null,
+    "fall3": 5,
+    "nearKeys": {
+     "salesGrow": 19,
+     "thin": 1,
+     "indMed": 2,
+     "jump": 1,
+     "mdd60": 1,
+     "indX": 1,
+     "opGrow": 10
+    },
+    "weights": {
+     "3.0": 12,
+     "2.5": 12,
+     "2.0": 4
+    },
+    "edges": [],
+    "secs": 75.1
+   }
+  ],
+  "ok": true,
+  "unit": {
+   "n": 25,
+   "bad": []
+  },
+  "n": 9
+ },
+ "compared": 3378,
+ "diffN": 0,
+ "diffs": [],
+ "invariantsBad": [],
+ "ok": true,
+ "exit": 0,
+ "secs": {
+  "readBundle": 3.8,
+  "build": 3.3,
+  "recount": 1.1,
+  "back": 12.7,
+  "stress": 255.0,
+  "total": 276.0
+ }
+}

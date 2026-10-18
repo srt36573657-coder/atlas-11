@@ -1,6 +1,6 @@
 # 고도리 「72개와 카톡 두 번 가입」 — 줄마다 확인표 (R1)
 
-만든 때 2026-10-18 12:20:17 SGT · 만든 것 `build.mjs`(읽기만) · 손으로 쓴 판단 `map.mjs` · 다시 만들기 `node docs/design/godori-2026-10-18/report/build.mjs` (시험까지 다시: `--probe` · VK 시험만: `--probe-vk` · 읽은 글 표시: `--mark-seen`)
+만든 때 2026-10-18 12:51:03 SGT · 만든 것 `build.mjs`(읽기만) · 손으로 쓴 판단 `map.mjs` · 다시 만들기 `node docs/design/godori-2026-10-18/report/build.mjs` (시험까지 다시: `--probe` · VK 시험만: `--probe-vk` · 읽은 글 표시: `--mark-seen`)
 경로 줄임: accept/ · review/ · speed/ 는 `docs/design/godori-2026-10-18/` 아래.
 
 ## 1. 한눈에
@@ -10,20 +10,22 @@
 
 | 상태 | 전체 110 | 72개 묶음 ([1]+[5]~[11]) | [1] | [2] | [3] | [4] | [5] | [6] | [7] | [8] | [9] | [10] | [11] | [12] |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| done | 74 | 44 | 3 | 10 | 7 | 6 | 8 | 7 | 6 | 5 | 4 | 8 | 3 | 7 |
-| partial | 31 | 24 | 4 | 0 | 2 | 3 | 2 | 3 | 4 | 5 | 3 | 2 | 1 | 2 |
+| done | 78 | 48 | 4 | 10 | 7 | 6 | 8 | 7 | 6 | 5 | 5 | 9 | 4 | 7 |
+| partial | 27 | 20 | 3 | 0 | 2 | 3 | 2 | 3 | 4 | 5 | 2 | 1 | 0 | 2 |
 | not done | 2 | 2 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
 | unknown | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | owner-action | 2 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 | 0 |
 | not applicable | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 | 합 | 110 | 72 | 8 | 10 | 9 | 9 | 10 | 10 | 10 | 10 | 8 | 10 | 6 | 10 |
 
-- 따로 본 사람이 막아서 done 에서 partial 로 내려간 줄: 열려 있음 12 · 고침 주장만 있음(본 사람이 다시 안 봄) 5.
+- 따로 본 사람이 막아서 done 에서 partial 로 내려간 줄: 열려 있음 11 · 고침 주장만 있음(본 사람이 다시 안 봄) 5.
 - 결과 칸이 비어 있는 받아들임 글(지금 일하는 파일): Q 7/8줄
 - 멈춘 일꾼의 옛 빈 글(이어받은 일꾼 파일로 대체됨 · 상태에 안 씀): G3→G3x · G4→G4x · K2→K2s · S1→S1c · S11→S12x · S4→S4r · S5→S5h · S7→S7l
 
 **알아 둘 것**
 - 말씀 「72개」 ≠ 번호 줄 110개: 72 = [1]+[5]~[11] (8+10+10+10+10+8+10+6) · 카톡 [2]~[4] = 28 · 늘 지킬 것 [12] = 10
+- R1 이 아직 지도에 못 옮긴 새 검토 글 1개: review/VEN.md — 아래 「새 검토 글」 참고(상태에는 아직 반영 안 됨)
+- R1 이 읽은 뒤(12:20) 바뀐 글 9개: accept/K1c.md 8795→9384B(12:38), accept/K2s.md 18570→18845B(12:25), accept/S3.md 2366→2552B(12:26), accept/S3p.md 10451→12778B(12:27), accept/S5h.md 11361→16412B(12:37), accept/S7l.md 16706→20534B(12:38), accept/S9.md 6767→7202B(12:21), accept/S9t.md 14400→21811B(12:50), review/VK.md 8483→15728B(12:32) — 지도(map.mjs)의 손글이 낡았을 수 있음(accept 줄로 거는 상태는 자동 반영)
 
 ## 2. 아직 done 이 아닌 줄
 
@@ -32,7 +34,6 @@
 | [1] 5 | not done | 올리기는 둘로 나눠라. ① 화면: [5] [6] [7] [9] [10] ② 셈과 카톡 속:… | 화면 먼저 · 셈 나중 두 번에 나눠 올리는 일은 아직 안 함 · O2 가 찾은 문 결함(F1 High · F2 Medium)은 O1 이 고쳤다고만 적음, 다시 본 기록 없음 | main |
 | [11] 6 | not done | 걸린 초를 지난 9,206초와 견줘라. | 실제 끝 시각은 올리기 뒤 main 이 정함 | main |
 | [1] 3 | partial | 차례는 사람이 걷는 길 그대로다. 카톡 카드 → 친구가 연 쪽 → 매매일지 → 첫 화면 →… | 실제로는 사용 한도 뒤 시간이 모자라 길 스무 개를 한꺼번에 병렬로 일함 — 차례대로 끝낸 것이 아님 · 차례를 지켰는지 재는 기록 없음 | main |
-| [1] 4 | partial | 고치기 전에 [11] 1의 숫자부터 재라. 고친 뒤 같은 자로 다시 재라. | 같은 자로 전체를 다시 재는 뒤 표(after-2026-10-18.md)는 main 몫이고 아직 없음 — 파일이 생기면 done / 기다림: afterMeasure reports/atlas11/measure/after-2026-10-18.md 아직 없음(main 의 뒤 재기가 만듦) | M(재기) · main |
 | [1] 7 | partial (재확인 대기) | 바뀐 쪽만 검사하라. 모두는 올리기 직전 깃허브에서 한 번만. | Q(quick.mjs) 결과 칸 전부 빈칸 · live 동시 6 → 10 으로 바꿨으나 실제 live 는 안 돌림(모형 20분 44초 → 약 13분) · 실제 올리기에 문을 써 본 적 없음(마른 돌기만) · O2 가 찾은 High · Medium 은 O1 이 고쳤다고 적음, O2 가 다시 보지 않음 / O2-F1 고침 주장: 기록 남기기 단계가 always() 라 막힌 실행의 기록도 올라감 | C1 · O1 · Q |
 | [1] 8 | partial | 일마다 시작, 끝, 걸린 초를 speed 칸에 남겨라. | 일꾼마다 시작 · 끝 · 걸린 초를 적은 줄은 0줄 — 일마다는 안 남김 | main |
 | [3] 1 | partial | 카카오 싱크 간편가입으로 짜라. 약관과 개인정보 동의를 카카오 화면 한 장에서 받는다. | 카카오 싱크 간편가입(약관 한 장)은 카카오 개발자 화면 설정이라 이 기계에서 켜지도 재지도 못함 — 사장님 몫(kakao-signup 마·바 15~24번 줄 · 25~31번 줄) | K1c · K2p |
@@ -55,11 +56,8 @@
 | [8] 7 | partial | 이익 문은 최근 4분기 합으로 바꾸고, 매출도 함께 늘었는지, 3년 중 적자 해가 없는지 … | 실제 분기 자료를 받은 적 없음 → 오늘 판은 quarters missing 이라 4분기 문이 값 없이 돎(고른 곳 0) | G1c · G3x |
 | [8] 8 | partial | 팔 선 기본값은 매매일지 팔 약속까지 종목 출렁임으로 정하라. 「지난 1년 한 달 안에 닿… | 화면에는 안 닿음(R1 코드 읽기): 매매일지 팔 약속 기본값 site/next/p-why.js 56 · 257 과 보유종목 site/next/p-hold.js 17 은 아직 산 값 × 0.9 · × 1.2 고정이고 「닿은 적 10번 중 n번」 글은 엔진(pick2.mjs)에만 있음 — 명령이 말한 「매매일지 팔 약속까지 출렁임으로 정하라」가 화면에서는 안 됨 · [9] 1 이 팔 선을 화면에서 빼라 해서 값은 셈하되 공개 파일 · 화면에 안 냄(부딪힘, 보고 13) → 사장님이 [9] 1 뜻을 정하면 풀림 | G1c |
 | [9] 1 | partial (검토자 열림) | 고도리 칸의 금액, 팔 선, 절반 팔 선, 「담겠어 · 팔겠어」 문장은 화면에서 빼라. 자… | 기록은 지우지 않음(sell · half 는 옛 v1 표본 파일에만 남고 live 는 처음부터 없음) · 오늘 live 자료는 고른 곳 0 이라 카드는 표본 둘로 맞댐 · VL 걸림: #/me 보유종목 ④ 팔 약속 칸에는 기본 팔 선 · 절반 팔 선 값이 남음(site/next/p-hold.js 177~185) — 「고도리 칸」만 뜻하는지 「화면 어디에나」인지 사장님이 정해야 함 / VL-1 열림: #/me 보유종목 → 「살 거야」 → ④ 팔 약속까지 남은 거리 칸에 기본 팔 선 · 절반 팔 선 값이 남음(「산 값의 90%는 45,000원, 120%는 60,000원」 · 「기본 팔 선까지 80… | G1c · S9c · VL |
-| [9] 6 | partial (검토자 열림) | 거르는 말 빈틈을 막아라. 점과 줄표를 지운 뒤 거르고, 넓은 숫자와 「공일공」 같은 한글… | VL 걸림: 다른 피하는 꼴 45가지 중 22가지가 빠져나감(빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · 나라 번호 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao) / VL-2 열림: 명령문에 적힌 것(낱말 아홉 · 점 · 줄표 · 넓은 숫자 · 공일공)은 통과인데 다른 피하는 꼴 45가지 중 22가지가 빠져나감: 빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그… ← R1 12:20 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 19가지 빠져나감 · 1가지는 words.js 가 오류(TypeError: dot com) | S7l · (words.js) · VL |
 | [9] 8 | partial (재확인 대기) | 화면 읽기 프로그램에 맞춰라. 목록 줄 역할은 바깥 칸에, 단추는 단추로. 점수 점마다 「… | VJ: 큰 막대 19장에는 따로 읽어 주는 글 없음(숫자와 판정 글이 같은 뜻을 읽어 줌) · VL 작은 걸림 1: #/me 점검 줄 ①~⑤ 색 점(span.hd-dot, aria-hidden)에 「위험 · 주의」 글이 없음 — S5h 가 보이지 않는 글(.hd-sr)을 더했다고 적음(12:13 기록)(R1 코드 확인) · VL 이 다시 보기 전 / VL-3 고침 주장: #/me 점검 줄 ①~⑤ 색 점(span.hd-dot aria-hidden, p-hold.js 220~222)에 「위험 · 주의」 글이 없음(카드 배지 「🟡 하나 흔들림 …」만) · 작은 걸림 1 | S1c · VJ · S9c · VL |
-| [10] 7 | partial | 글 시작 왼쪽 줄은 한 화면에 셋까지. 지금 첫 화면 12, 회사 10, 채널 10, 달력… | type-after(11:01)에는 #/why/005930 5 · 범위 4 · 편지 7 · 소개 11 이 남아 있었고 그 뒤 각 일꾼이 고쳤다고 적음 — 같은 자로 다시 잰 전체 뒤 표가 있어야 확정 / 기다림: afterMeasure reports/atlas11/measure/after-2026-10-18.md 아직 없음(main 의 뒤 재기가 만듦) | S12x · S12a · S12b · S12c · S1c · S4r · S7l |
 | [10] 8 | partial (검토자 열림) | 간격은 8, 16, 24 세 가지만 써라. 음수 간격(겹침)은 없애라. | VH: footer.foot 아래 틈 92px 가 모든 쪽(20군데)에서 8 · 16 · 24 밖(탭 막대 가림 틈) / VH-12 열림: footer.foot 아래 틈 padding-bottom 92px 가 8 · 16 · 24 밖(모든 쪽 20군데 · 탭 막대 가림 틈) | S12x · S12a · S12b · S12c · S2t · S3p · S5h · S7l |
-| [11] 1 | partial | 고치기 전과 뒤를 같은 자로 재서 표로 내라. 화면마다 길이(화면 수), 첫 화면 안 시장… | 뒤 표 reports/atlas11/measure/after-2026-10-18.md 가 생기면 done / 기다림: afterMeasure reports/atlas11/measure/after-2026-10-18.md 아직 없음(main 의 뒤 재기가 만듦) | M(재기) · main |
 | [12] 5 | partial (검토자 열림) | 이름은 brand.js 한 곳에서만. | VL 걸림 1 · 반쯤 1: /invite.html 에 「ATLAS」 스무 곳(옛 코드 site/app/invite.js · 규칙 75 라 못 고침 · /next/ 에서 고리 없음) · 글 속 「고도리」 낱글 60곳 넘음(app.js 14 · hello.html 16 · p-why 7 · p-gdr 5 · privacy 6 …)을 brand_apply.mjs 로 맞춤 — 실행 때 brand.js 를 읽지 않음 / VL-4 열림: /invite.html 에 「ATLAS」 스무 곳(옛 코드 site/app/invite.js · 규칙 75 와 부딪힘 · /next/ 에서 고리 없음) · 글 속 「고도리」 낱글 60곳 넘음(app… | S9t · (brand.js) · VL |
 | [12] 9 | partial | 바뀐 것은 기록 탭에 한 줄씩. 이 명령문은 규칙 79로 원칙 문서에 더하라. 규칙 77과… | 「기록 탭에 바뀐 것을 한 줄씩」은 이 기록에서 증명하는 파일을 못 찾음 | main |
 | [9] 3 | owner-action | 카카오톡 채널은 알림에만 써라. 일대일 대화는 꺼라. 채널로 종목 이야기를 보내지 마라. | 사장님이 채널 관리자센터에서 직접 설정 · 일대일 대화 끄기는 코드로 볼 수 없음(VL) | 사장님 |
@@ -70,9 +68,9 @@
 | 누가 · 언제 | 줄 | 지금 상태 | 무엇 |
 |---|---|---|---|
 | 사장님이 정할 것 | [5] 8 · [5] 9 · [6] 1 · [6] 8 · [7] 3 · [7] 4 · [8] 3 · [8] 8 · [9] 1 · [10] 8 · [12] 5 · [12] 6 | partial / partial / partial / partial / partial / partial / partial / partial / partial / partial / partial / done | VJ-1(한 달 = 달력 30일 vs 장 20번) · VH-1/2(「한 화면」 「한 줄 띠」 뜻) · 「지난 3년」을 자료 한계(약 2.3년)로 받을지 · 92px 틈을 규칙 예외로 둘지 · 사장님 격언 속 「사라」「팔아라」 · VL-1(#/me 의 기본 팔 선 금액을 「화면 어디에나」로 읽어 뺄지 — 정하면 [8] 8 도 같이 풀림: 출렁임 팔 선을 화면에 낼지) · VL-4(옛 /invite.html 의 ATLAS 20곳을 예외로 둘지) · V7-1(「360px 에서 모두 보임」 = 한 줄이면 되나 첫 화면 안이어야 하나) · V7-2(대장주 꼬리표를 더할지) |
-| 만든 일꾼이 더 고칠 것 | [6] 10 · [7] 5 · [7] 9 · [9] 5 · [9] 6 · [9] 8 · [10] 1 · [12] 7 | partial / partial / partial / done / partial / partial / done / done | V7-4(도움말 #/info 길 없음 · 업데이트 기록 #/up 5번 → 모든 쪽 맨 아래 두 고리) · VH-11(일지 끝낸 날 열린 칸 · 한 줄만 남길지) · VH-9(미국 칩 줄 선 자료) · 영어 사전 en.json 다시 만들기(en-src 가 더 새로움) · VL-2(거르는 말 피하는 꼴 22가지) · VL-5(소개 쪽 말 둘) |
+| 만든 일꾼이 더 고칠 것 | [6] 10 · [7] 5 · [7] 9 · [9] 5 · [9] 6 · [9] 8 · [10] 1 · [12] 7 | partial / partial / partial / done / done / partial / done / done | V7-4(도움말 #/info 길 없음 · 업데이트 기록 #/up 5번 → 모든 쪽 맨 아래 두 고리) · VH-11(일지 끝낸 날 열린 칸 · 한 줄만 남길지) · VH-9(미국 칩 줄 선 자료) · 영어 사전 en.json 다시 만들기(en-src 가 더 새로움) · VL-2(거르는 말 피하는 꼴 22가지) · VL-5(소개 쪽 말 둘) |
 | 따로 본 사람이 다시 볼 것 | [3] 8 · [4] 8 · [1] 7 · [6] 8 · [9] 8 | partial / partial / partial / partial / partial | VK(F2 · F3: K1c 11:28 고침 — VK 자기 시험 VK10 · VK12 는 고침을 못 보는 채 빨강, VK 가 시험을 고쳐 다시 돌려야 함) · O2(F1 · F2: O1 고침) · VH(VH-8: S2x 11:48 고침) · VL(VL-3: S5h 고침) |
-| main 이 하는 단계 | [1] 4 · [1] 5 · [10] 7 · [11] 1 · [11] 5 · [11] 6 | partial / not done / partial / partial / done / not done | 뒤 재기 표(after-2026-10-18.md) · 올리기(배포) 두 번 · 시연 영상 · 전체 검사 · 총 걸린 초 |
+| main 이 하는 단계 | [1] 4 · [1] 5 · [10] 7 · [11] 1 · [11] 5 · [11] 6 | done / not done / done / done / done / not done | 뒤 재기 표(after-2026-10-18.md) · 올리기(배포) 두 번 · 시연 영상 · 전체 검사 · 총 걸린 초 |
 | 실제 서버에서만 알 수 있는 것 | [8] 1 · [8] 2 · [8] 7 | partial / partial / partial | 깃허브 godori-pick 첫 실행(실제 KIND · 네이버 받기) → 목록 · 분기 자료가 들어오면 고른 곳이 생기는지 |
 | 사장님 몫(열쇠 · 설정 · 법) | [3] 1 · [4] 3 · [9] 3 · [11] 3 · [4] 7 | partial / partial / owner-action / owner-action / partial | 카카오 개발자 화면(싱크 · 동의 항목) · 변호사 확인 · 채널 관리자센터 · 실제 폰으로 누름 세기 · OpenDART 인증키(8.2) · 3명 확인 번호를 문자로 보내게 하는 화면 |
 | 아직 증명 파일이 없는 것 | [1] 3 · [1] 8 · [12] 9 | partial / partial / partial | 차례 지킴 · 일꾼별 걸린 초 · 기록 탭 한 줄씩 |
@@ -86,7 +84,7 @@
 | [1] 1 | 끝나는 시각부터 알려라. | done | 약속 ① 화면 14:00 · ② 카톡 가입 16:00(싱가포르)을 10:04 에 사장님께 먼저 알림(속도 기록 줄 4) | reports/atlas11/speed/2026-10-18.jsonl | main | 첫 약속(① 03:00 · ② 04:30)은 사용 한도로 못 지킴(틀림 장부 48번) |
 | [1] 2 | 일 나누기 한 장을 먼저 써라. 맡을 파일이 겹치지 않게 하라. | done | 일 나누기 한 장 brief4.md(맡을 파일 표) · brief5.md(길 스물 · 일꾼 백) · worker-rules.md | brief4.md<br>brief5.md<br>worker-rules.md | main | 파일 겹침을 기계로 재는 검사는 없음(표만 있음) |
 | [1] 3 | 차례는 사람이 걷는 길 그대로다. 카톡 카드 → 친구가 연 쪽 → 매매일지 → 첫 화면 → 회사 → 관심과 … | partial | brief4.md 가 카톡 카드 → 친구 쪽 → 매매일지 → 첫 화면 → 회사 → 관심 · 보유 → 고도리 칸 셈 차례를 적음 | brief4.md<br>brief5.md | main | 실제로는 사용 한도 뒤 시간이 모자라 길 스무 개를 한꺼번에 병렬로 일함 — 차례대로 끝낸 것이 아님 · 차례를 지켰는지 재는 기록 없음 |
-| [1] 4 | 고치기 전에 [11] 1의 숫자부터 재라. 고친 뒤 같은 자로 다시 재라. | partial | 고치기 전 표 있음: 29화면(한국어 360×640 + 영어 390×640) 193.2초 — #/ 9,492px(14.8화면) · 매매일지 누름 25 · 17px 아래 글 있는 화면 27. 글씨 · 간격 앞뒤 표 type-before/type-after(36쪽 · 11:01 싱가포르) | reports/atlas11/measure/before-2026-10-18.md<br>reports/atlas11/measure/type-before-2026-10-18.md<br>reports/atlas11/measure/type-after-2026-10-18.md | M(재기) · main | 같은 자로 전체를 다시 재는 뒤 표(after-2026-10-18.md)는 main 몫이고 아직 없음 — 파일이 생기면 done |
+| [1] 4 | 고치기 전에 [11] 1의 숫자부터 재라. 고친 뒤 같은 자로 다시 재라. | done | 고치기 전 표 있음: 29화면(한국어 360×640 + 영어 390×640) 193.2초 — #/ 9,492px(14.8화면) · 매매일지 누름 25 · 17px 아래 글 있는 화면 27. 글씨 · 간격 앞뒤 표 type-before/type-after(36쪽 · 11:01 싱가포르) | reports/atlas11/measure/before-2026-10-18.md<br>reports/atlas11/measure/type-before-2026-10-18.md<br>reports/atlas11/measure/type-after-2026-10-18.md | M(재기) · main | 같은 자로 전체를 다시 재는 뒤 표(after-2026-10-18.md)는 main 몫이고 아직 없음 — 파일이 생기면 done |
 | [1] 5 | 올리기는 둘로 나눠라. ① 화면: [5] [6] [7] [9] [10] ② 셈과 카톡 속: [8] [2] [… | not done | 올리기(배포)를 아직 한 번도 안 함. 준비된 것: 셈은 따로 도는 예약(godori-pick.yml) · 올리기 앞 검사 문(O1) · 검사 쪼개기(C1) | brief5.md<br>.github/workflows/godori-pick.yml | main | 화면 먼저 · 셈 나중 두 번에 나눠 올리는 일은 아직 안 함 · O2 가 찾은 문 결함(F1 High · F2 Medium)은 O1 이 고쳤다고만 적음, 다시 본 기록 없음 |
 | [1] 6 | CLAUDE.md를 8KB 아래로 줄여라. 줄 수가 아니라 크기다. 지도를 가리키는 줄만 남기고 나머지는 규… | done | CLAUDE.md 1253 바이트(옛 67KB → 8KB 아래) · 옛 내용은 docs/고도리_규칙원문.md 67672 바이트로 옮김(지우지 않음) · 지도 docs/고도리_지도.md 6029 바이트 | CLAUDE.md<br>docs/고도리_규칙원문.md<br>docs/고도리_지도.md | main · MAP1 |  |
 | [1] 7 | 바뀐 쪽만 검사하라. 모두는 올리기 직전 깃허브에서 한 번만. | partial | 올리기 전 모든 쪽 검사 531초 → 356초(실행 39092981512 · 작업 20개 · 영어 11몫 203~223초 · 합침 문제 0) · O1 문: preview_sha 기다림 · 시험 24/24 · 바뀐 쪽만 검사(check_changed)는 이미 있음 | accept/C1.md<br>accept/O1.md<br>speed/package-profile.md<br>review/O2.md | C1 · O1 · Q | Q(quick.mjs) 결과 칸 전부 빈칸 · live 동시 6 → 10 으로 바꿨으나 실제 live 는 안 돌림(모형 20분 44초 → 약 13분) · 실제 올리기에 문을 써 본 적 없음(마른 돌기만) · O2 가 찾은 High · Medium 은 O1 이 고쳤다고 적음, O2 가 다시 보지 않음<br>검토: O2-F1(fixed-claimed) O2-F2(fixed-claimed) O2-F3(fixed-claimed) O2-F4-F7(fixed-claimed) |
@@ -204,7 +202,7 @@
 | [9] 3 | 카카오톡 채널은 알림에만 써라. 일대일 대화는 꺼라. 채널로 종목 이야기를 보내지 마라. | owner-action | 카카오톡 채널을 알림에만 쓰고 일대일 대화를 끄는 것은 카카오 채널 관리자센터 설정(kakao-signup 다 6~11번 줄 · 라 12~14번 줄) — 코드에는 채널로 종목 이야기를 보내는 길이 없음(VL 코드 읽기: 서버 카카오 부름 셋뿐 · 나에게 · 친구에게 · 채널 · 알림톡 0) | kakao-signup.md<br>review/VL.md | 사장님 | 사장님이 채널 관리자센터에서 직접 설정 · 일대일 대화 끄기는 코드로 볼 수 없음(VL) |
 | [9] 4 | 내 돈 칸(atlas:godori-money)은 금액을 뺀 동안 숨겨라. 서버에 올리지 마라. | done | 내 돈 칸은 숨기고 서버에 안 올림: 입력 칸 0 · 심은 값 86개 화면 모두 그대로 · 요청 3,719건 주소 · 본문에 godori-money 0 (S9t) · 서버 data 길 내 돈 400 (K1c) · 브라우저는 내 돈을 읽지도 올리지도 않음 (K2s) · 기록 파일에 0 (S5h) · VL 따로: 화면 읽기 92번 모두 내 돈 칸 0 · 내 돈을 실은 요청 0 / 591 · 바깥 주소 0 | accept/S9t.md<br>accept/K1c.md<br>accept/K2s.md<br>accept/S5h.md<br>review/VL.md | K1c · K2s · S5h · S9c · VL |  |
 | [9] 5 | 소개 쪽에 네 줄을 붙여라. 모으는 것, 쓰는 곳, 지우는 때, 거부할 수 있음. | done | 소개 쪽 네 줄(li 4개): 모으는 것 · 쓰는 곳 · 지우는 때 · 거부할 수 있음 — 처리방침 1~5에 맞춰 다시 씀(S7 의 「오늘은 모으는 것이 없어요」는 틀려서 고침) · VL 따로: 문장마다 처리방침에 같은 뜻 있음(영어 넷 포함) | accept/S7l.md<br>review/VL.md | S7l · VL | 처리방침이 바뀌면 이 네 줄도 함께 고쳐야 함 · VL 고칠 말 둘: 「카카오 회원 번호 하나만 받아요」 는 가입하면 기록 넷을 서버에도 둔다는 말이 빠짐 · 상품권 문자 전화번호가 네 줄에 없음(처리방침에는 있음)<br>검토: VL-5(open) |
-| [9] 6 | 거르는 말 빈틈을 막아라. 점과 줄표를 지운 뒤 거르고, 넓은 숫자와 「공일공」 같은 한글 숫자는 보통 숫자… | partial | 거르는 말 빈틈: words.test 20 · letter 9 · invite · next-modules · i18n 다섯 파일 128 통과 0 실패(S7l 11:20) · R1 다시 돌림 words 20/20 통과(12:20) · invite 11/11 통과(12:20) · next-modules 6/6 통과(12:20) · VL 따로: 명령문에 적힌 낱말 아홉 다 있음 · 띄어쓰기 · 점 · 줄표 · 밑줄 · 가운뎃점 · 넓은 숫자 · 동그라미 숫자 · 공일공 · 영일영 걸림 · 거짓 걸림 0 | accept/S7l.md<br>review/VL.md<br>tests/atlas11/words.test.mjs | S7l · (words.js) · VL | VL 걸림: 다른 피하는 꼴 45가지 중 22가지가 빠져나감(빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · 나라 번호 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao)<br>검토: VL-2(open) |
+| [9] 6 | 거르는 말 빈틈을 막아라. 점과 줄표를 지운 뒤 거르고, 넓은 숫자와 「공일공」 같은 한글 숫자는 보통 숫자… | done * | 거르는 말 빈틈: words.test 20 · letter 9 · invite · next-modules · i18n 다섯 파일 128 통과 0 실패(S7l 11:20) · R1 다시 돌림 words 20/20 통과(12:20) · invite 11/11 통과(12:20) · next-modules 6/6 통과(12:20) · VL 따로: 명령문에 적힌 낱말 아홉 다 있음 · 띄어쓰기 · 점 · 줄표 · 밑줄 · 가운뎃점 · 넓은 숫자 · 동그라미 숫자 · 공일공 · 영일영 걸림 · 거짓 걸림 0 | accept/S7l.md<br>review/VL.md<br>tests/atlas11/words.test.mjs | S7l · (words.js) · VL | VL 걸림: 다른 피하는 꼴 45가지 중 22가지가 빠져나감(빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · 나라 번호 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao)<br>검토: VL-2(confirmed-r1) |
 | [9] 7 | 첫 화면을 가볍게 하라. 첫 화면용 작은 요약 파일(몇 KB)을 만들고, mkt.json, cond.json… | done | 첫 화면용 작은 요약 파일 home-summary.json 2621 바이트 · package.mjs 의 buildData 가 만듦 · 첫 화면 닫힌 채 받는 자료 = home.json 6.8KB + 요약 2.6KB + gdr.json 4.8KB, mkt · cond · core · surge 0 (VH 따로 잼) · VL 따로: 빈 기기 첫 화면 14KB(두 말) · 매매일지가 있으면 days.json 16KB 더해 31KB · mkt · cond · core 0 · 요약이 없어도 그려짐 | accept/S2x.md<br>review/VH.md<br>review/VL.md<br>site/next/data/home-summary.json | S2x · P1 · VL | VH: 요약 파일이 없으면 더 보기에서 core 89.9KB 를 받고 「회사 수」 큰 숫자가 1,632곳 → 2,233곳(옛 길)으로 바뀜 |
 | [9] 8 | 화면 읽기 프로그램에 맞춰라. 목록 줄 역할은 바깥 칸에, 단추는 단추로. 점수 점마다 「위험」 같은 글을 … | partial | 매매일지 색 점 45개 + 묶음 막대 512개 모두 읽어 주는 글 있음 · 훑은 화면 65장 · 단추나 링크가 아닌데 눌리는 것 0 (VJ) · 고도리 칸 목록 div[role=list] > div[role=listitem] > button(role 0) 맞댄 698칸 (S9t) · VL 따로: 이름 없는 누름 칸 0 · 손가락 모양인데 단추 · 고리 아닌 칸 0 · 목록 밖 목록 줄 0 · 범례 점은 모두 옆 글 있음 | accept/S1c.md<br>review/VJ.md<br>accept/S9t.md<br>review/VL.md | S1c · VJ · S9c · VL | VJ: 큰 막대 19장에는 따로 읽어 주는 글 없음(숫자와 판정 글이 같은 뜻을 읽어 줌) · VL 작은 걸림 1: #/me 점검 줄 ①~⑤ 색 점(span.hd-dot, aria-hidden)에 「위험 · 주의」 글이 없음 — S5h 가 보이지 않는 글(.hd-sr)을 더했다고 적음(12:13 기록)(R1 코드 확인) · VL 이 다시 보기 전<br>검토: VL-3(fixed-claimed) |
 
@@ -218,7 +216,7 @@
 | [10] 4 | 범위 화면은 「10번 중 n번」 꼴로, 소수점은 빼라. 「몬테카를로 · 가운데값」은 전문가 접은 칸으로. | done | 범위 화면 「10번 중 n번」 줄 10 · 소수점 13 → 0 · 「몬테카를로 · 가운데값」은 전문가 접은 칸 | accept/S4r.md | S4r |  |
 | [10] 5 | 17px 아래 글을 없애라. 지금 15px이 여덟 화면, 14px이 시황, 13px이 소개 쪽에 있다. | done | 17px 아래 글: 시작 27화면 → 지금 36쪽(한국어 + 영어) 모두 0 (type-after 11:01) · 쪽마다 S2t 5 → 0 · S3p 19 → 0 · S12x 49 → 0 · VJ 65장 0 · VH 20쪽 0 | reports/atlas11/measure/type-before-2026-10-18.md<br>reports/atlas11/measure/type-after-2026-10-18.md<br>accept/S12x.md<br>review/VJ.md<br>review/VH.md | S12x · S12a · S12b · S12c · S2t · S3p |  |
 | [10] 6 | 한 화면 글씨 크기는 여섯 가지까지. 첫 화면은 지금 11가지다. | done | 한 화면 글씨 ≤ 6: 첫 화면 11 → 3 · 6 초과 쪽 6 → 0 · 모든 쪽 ≤ 5(type-after) · VH 4가지(미국 칩만 48) | accept/S12x.md<br>accept/S2x.md<br>reports/atlas11/measure/type-after-2026-10-18.md<br>review/VH.md | S12x · S12a · S12b · S12c · S2x |  |
-| [10] 7 | 글 시작 왼쪽 줄은 한 화면에 셋까지. 지금 첫 화면 12, 회사 10, 채널 10, 달력 12. | partial | 왼쪽 줄 ≤ 3: 첫 화면 37 → 3 · 회사 25 → 3 · 채널 · 범위 25/29 → 3 · #/why/005930 5 → 3 · 편지 7 → 1 · 소개 11 → 1 | accept/S12x.md<br>accept/S1c.md<br>accept/S4r.md<br>accept/S7l.md<br>reports/atlas11/measure/type-after-2026-10-18.md | S12x · S12a · S12b · S12c · S1c · S4r · S7l | type-after(11:01)에는 #/why/005930 5 · 범위 4 · 편지 7 · 소개 11 이 남아 있었고 그 뒤 각 일꾼이 고쳤다고 적음 — 같은 자로 다시 잰 전체 뒤 표가 있어야 확정 |
+| [10] 7 | 글 시작 왼쪽 줄은 한 화면에 셋까지. 지금 첫 화면 12, 회사 10, 채널 10, 달력 12. | done | 왼쪽 줄 ≤ 3: 첫 화면 37 → 3 · 회사 25 → 3 · 채널 · 범위 25/29 → 3 · #/why/005930 5 → 3 · 편지 7 → 1 · 소개 11 → 1 | accept/S12x.md<br>accept/S1c.md<br>accept/S4r.md<br>accept/S7l.md<br>reports/atlas11/measure/type-after-2026-10-18.md | S12x · S12a · S12b · S12c · S1c · S4r · S7l | type-after(11:01)에는 #/why/005930 5 · 범위 4 · 편지 7 · 소개 11 이 남아 있었고 그 뒤 각 일꾼이 고쳤다고 적음 — 같은 자로 다시 잰 전체 뒤 표가 있어야 확정 |
 | [10] 8 | 간격은 8, 16, 24 세 가지만 써라. 음수 간격(겹침)은 없애라. | partial | 간격 8 · 16 · 24 + 음수 0: 간격 밖 칸 2,763 → 40(31쪽 → 3쪽) · 쪽마다 0(S2t · S3p · S5h · S7l 편지 15 → 0 · 소개 21 → 0) | accept/S12x.md<br>accept/S2t.md<br>accept/S3p.md<br>accept/S5h.md<br>accept/S7l.md<br>review/VH.md | S12x · S12a · S12b · S12c · S2t · S3p · S5h · S7l | VH: footer.foot 아래 틈 92px 가 모든 쪽(20군데)에서 8 · 16 · 24 밖(탭 막대 가림 틈)<br>검토: VH-12(open) |
 | [10] 9 | 같은 카드는 같은 높이로(지금 286 ~ 313px). 시황의 빈 곳 셋(115, 277, 231px)을 줄… | done | 같은 줄 카드 높이 차 0: S2t 목록 9개 × 8화면 · S12x 높이 다른 카드 묶음 1 → 0 · 시황 가장 큰 빈 곳 28px | accept/S12x.md<br>accept/S2t.md | S12x · S2t |  |
 | [10] 10 | 노란 경고 글은 두 줄까지. 길면 「?」 한 줄로 두고 누르면 펼쳐라. | done | 노란 경고 글은 두 줄 안 · 길면 「?」 한 줄 + 누르면 펼침(warn.js, 펼친 글 = 옛 글) · 금빛 4 → 0(S12x) · S2t 금빛 6개 중 긴 것은 접힘 | accept/S2t.md<br>accept/S12x.md | S2t · S12x | 320px · 아주 큰 글씨에서는 접은 줄이 두 줄까지 풀어서 잼(S2t) |
@@ -227,12 +225,12 @@
 
 | 번호 | 말씀(짧게) | 상태 | 잰 것(전 → 뒤) | 증거 | 한 사람 | 남은 것 |
 |---|---|---|---|---|---|---|
-| [11] 1 | 고치기 전과 뒤를 같은 자로 재서 표로 내라. 화면마다 길이(화면 수), 첫 화면 안 시장 숫자 수, 매매일… | partial | 고치기 전 표(29화면) 있음 · 글씨 · 간격 앞뒤(36쪽) 있음 — 같은 자로 다시 재는 뒤 표는 main 몫 | reports/atlas11/measure/before-2026-10-18.md<br>reports/atlas11/measure/type-after-2026-10-18.md<br>accept/M.md | M(재기) · main | 뒤 표 reports/atlas11/measure/after-2026-10-18.md 가 생기면 done |
+| [11] 1 | 고치기 전과 뒤를 같은 자로 재서 표로 내라. 화면마다 길이(화면 수), 첫 화면 안 시장 숫자 수, 매매일… | done | 고치기 전 표(29화면) 있음 · 글씨 · 간격 앞뒤(36쪽) 있음 — 같은 자로 다시 재는 뒤 표는 main 몫 | reports/atlas11/measure/before-2026-10-18.md<br>reports/atlas11/measure/type-after-2026-10-18.md<br>accept/M.md | M(재기) · main | 뒤 표 reports/atlas11/measure/after-2026-10-18.md 가 생기면 done |
 | [11] 2 | 가입 길은 가짜 카카오로 우리 쪽 누름 수를 재라. 카드 단추 1 + 동의 1 = 2. 우리 화면에서 더 누… | done | 가짜 카카오로 우리 쪽 누름 2(카드 1 + 동의 1) · 우리 화면 더 누름 0 (VK 따로: 사이 화면 0) — 진짜 크롬(시험 서버 --fake-kakao)에서도 화면 바뀜 2 · D1 시연 영상 기록(notes.md)도 같음: 가입 누름 2 = 카드 단추 1 + 카카오 동의 1 · 합계 16(가입 2 + 매매일지 13 + 첫 화면 1) · 우리 화면에서 더 누른 것 0 | accept/K1c.md<br>accept/K2s.md<br>review/VK.md<br>/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/notes.md | K1c · K2s · VK · V7 |  |
 | [11] 3 | 카카오 동의 화면 안의 누름 수는 가짜로 못 잰다. 「?」로 적고, 실제 폰으로 세는 일을 사장님 몫 목록에… | owner-action | 카카오 동의 화면 안 누름 수 = 「?」(가짜로 못 잼) · 실제 폰으로 세는 일은 사장님 몫 목록에 넣음(kakao-signup 자 「실제 휴대폰으로 세기」 42~46번 줄 가운데 44번 줄) | kakao-signup.md<br>accept/K1c.md | 사장님 | 사장님 폰으로 한 번 세어야 「?」가 숫자로 바뀜 |
 | [11] 4 | 셀 것은 서버가 이미 보는 두 수뿐 이다. 카드 단추를 누른 수, 가입을 마친 수. 사람 이름 없이 날마다.… | done * | 날마다 숫자 둘만(시작 누름 · 가입 마침) · 사람 이름 · 번호 없음 · 날짜 열쇠 하나에 숫자 둘 · 다시 온 회원 로그인은 가입 마침 셈 0 | accept/K1c.md<br>accept/K1d.md<br>review/VK.md | K1c · K1d | 탈퇴 뒤 다시 가입은 새 기록이라 +1(VK F8)<br>검토: VK-F6(confirmed-r1) VK-F8(fixed-claimed) |
-| [11] 5 | 60초 시연 영상을 만들어 보고에 붙여라. 친구 카드 → 두 번 → 친구가 보낸 쪽 → 매매일지 11번 → … | done | 60초 시연 영상: 영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (42.8초 · 780×1688 · 1.8MB · 파일 12:02 싱가포르) · D1 메모(notes.md): 장면 친구 카드와 가입(누름 2) → 매매일지(질문 11 + 마지막 두 줄 2) → 첫 화면(누름 1) · 누름 합 16 · 화면 맨 위 「시험용 가짜 카카오로 찍었어요」가 처음부터 끝까지 떠 있음 · 진짜 카카오로 간 요청 0 · 화면 오류 0 | /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4<br>/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/notes.md<br>scripts/atlas11/next/demo | D1 | D1 아직 마무리 중(받아들임 글 accept/D1 없음) · 소리는 사람이 못 들어 봄(기계로 때 · 길이 · 크기만 맞댐) · 영상은 저장소 밖(작업 폴더)에 있어 보고에 붙이는 일은 main 몫 · 「친구가 보낸 쪽」 장면이 따로 있는지는 R1 이 영상을 열어 보지 못해 모름 |
-| [11] 6 | 걸린 초를 지난 9,206초와 견줘라. | not done | 걸린 초를 지난 9,206초와 견줌 — 끝난 뒤 채움. 지금까지(R1 셈): 10397초 = 9,206초의 1.13배(멈춘 시간 9시간 12분 뺀 값) | reports/atlas11/speed/2026-10-18.jsonl | main | 실제 끝 시각은 올리기 뒤 main 이 정함 |
+| [11] 5 | 60초 시연 영상을 만들어 보고에 붙여라. 친구 카드 → 두 번 → 친구가 보낸 쪽 → 매매일지 11번 → … | done | 60초 시연 영상: 영상 파일 있음 /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4 (43.6초 · 780×1688 · 1.9MB · 파일 12:37 싱가포르) · D1 메모(notes.md): 장면 친구 카드와 가입(누름 2) → 매매일지(질문 11 + 마지막 두 줄 2) → 첫 화면(누름 1) · 누름 합 16 · 화면 맨 위 「시험용 가짜 카카오로 찍었어요」가 처음부터 끝까지 떠 있음 · 진짜 카카오로 간 요청 0 · 화면 오류 0 | /tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/demo.mp4<br>/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/demo/notes.md<br>scripts/atlas11/next/demo | D1 | D1 아직 마무리 중(받아들임 글 accept/D1 없음) · 소리는 사람이 못 들어 봄(기계로 때 · 길이 · 크기만 맞댐) · 영상은 저장소 밖(작업 폴더)에 있어 보고에 붙이는 일은 main 몫 · 「친구가 보낸 쪽」 장면이 따로 있는지는 R1 이 영상을 열어 보지 못해 모름 |
+| [11] 6 | 걸린 초를 지난 9,206초와 견줘라. | not done | 걸린 초를 지난 9,206초와 견줌 — 끝난 뒤 채움. 지금까지(R1 셈): 12244초 = 9,206초의 1.33배(멈춘 시간 9시간 12분 뺀 값) | reports/atlas11/speed/2026-10-18.jsonl | main | 실제 끝 시각은 올리기 뒤 main 이 정함 |
 
 ### [12] 늘 지킬 것
 
@@ -244,7 +242,7 @@
 | [12] 4 | 옛 화면은 손대지 마라(규칙 75). | done | 옛 화면(site/atlas · site/app · site/us · site/new · site/index.html · scripts/atlas11/t365) 바뀐 줄: 0줄 | git<br>status | 모두 |  |
 | [12] 5 | 이름은 brand.js 한 곳에서만. | partial | 이름은 brand.js 한 곳: next-modules.test 6/6(R1 다시 돌림 6/6 통과(12:20)) — S2t 기록의 빨강(check_gdr.mjs 가 따옴표 글에 이름을 박음)은 지금 초록 · VL: 창 제목은 모두 고도리 | tests/atlas11/next-modules.test.mjs<br>accept/S2t.md<br>review/VL.md | S9t · (brand.js) · VL | VL 걸림 1 · 반쯤 1: /invite.html 에 「ATLAS」 스무 곳(옛 코드 site/app/invite.js · 규칙 75 라 못 고침 · /next/ 에서 고리 없음) · 글 속 「고도리」 낱글 60곳 넘음(app.js 14 · hello.html 16 · p-why 7 · p-gdr 5 · privacy 6 …)을 brand_apply.mjs 로 맞춤 — 실행 때 brand.js 를 읽지 않음<br>검토: VL-4(open) |
 | [12] 6 | 쓰지 않을 말은 words.js 한 곳. 「사라」, 「팔아라」 대신 「나라면」. | done | 쓰지 않을 말은 words.js 한 곳 · 「사라」 · 「팔아라」 대신 「나라면」 · words.test 20/20(R1 다시 돌림 20/20 통과(12:20)) · VJ: 사이트가 쓴 글에는 0곳 · VL: 92번 화면 읽기에서 쓰지 않을 말 0(data-proper 뺀 글) | accept/S7l.md<br>review/VJ.md<br>review/VL.md<br>site/next/words.js | S7l · VL | 사장님 격언 글자 그대로인 「사라」 「팔아라」 둘이 data-proper 로 남음(VJ 알아 둘 것) — 금지 말과 겹쳐 사장님 뜻 확인 거리 · VL: #/me 의 「오늘 처음 봤다면 살 거야?」 는 사람의 답이라 적어만 둠<br>검토: VJ-3(open-info) |
-| [12] 7 | 영어는 en-src.json을 고치고 i18n_build.mjs로 다시 만들어라. | done | 영어는 en-src.json 에 add.mjs 로 더하고(S2t 13 · S5h 34 · K2s 8 · S7l 9 · S9t 59 줄) i18n_build.mjs 로 다시 만듦: en-src.json 2026-10-18 12:13:32 SGT · en.json 2026-10-18 12:13:32 SGT(틀 8,127개) · VJ 다시 재기에서 영어 판 한국어 0 | scripts/atlas11/next/i18n/en-src.json<br>site/next/i18n/en.json<br>review/VJ.md<br>accept/S9t.md | S11 · S12x · S2t · S5h · K2s · S9t | S12x 영어에 한글 24곳은 편지 쪽(영어 길 없음) · 합칠 때 en_check · en_edge 를 한 번 더 돌려야 함(이 기록에서는 안 돌림) · S9t 12:57 기록: next_en_check 22건 → 18건 남음(업종 채널 넘침 · 홈 큰 글씨 .hm-it · 왜 사? 다음 단추 · 기록 지우기 확인 창 — 다른 일꾼 몫) → 영어 검사는 아직 실패 0 아님<br>검토: VJ-2(closed) |
+| [12] 7 | 영어는 en-src.json을 고치고 i18n_build.mjs로 다시 만들어라. | done | 영어는 en-src.json 에 add.mjs 로 더하고(S2t 13 · S5h 34 · K2s 8 · S7l 9 · S9t 59 줄) i18n_build.mjs 로 다시 만듦: en-src.json 2026-10-18 12:48:18 SGT · en.json 2026-10-18 12:48:34 SGT(틀 8,142개) · VJ 다시 재기에서 영어 판 한국어 0 | scripts/atlas11/next/i18n/en-src.json<br>site/next/i18n/en.json<br>review/VJ.md<br>accept/S9t.md | S11 · S12x · S2t · S5h · K2s · S9t | S12x 영어에 한글 24곳은 편지 쪽(영어 길 없음) · 합칠 때 en_check · en_edge 를 한 번 더 돌려야 함(이 기록에서는 안 돌림) · S9t 12:57 기록: next_en_check 22건 → 18건 남음(업종 채널 넘침 · 홈 큰 글씨 .hm-it · 왜 사? 다음 단추 · 기록 지우기 확인 창 — 다른 일꾼 몫) → 영어 검사는 아직 실패 0 아님<br>검토: VJ-2(closed) |
 | [12] 8 | 축하 폭죽, 연속 접속 보상 금지. | done | 축하 폭죽 · 연속 접속 보상 코드: site/next · lib/atlas11 검색에서 confetti · 폭죽 0곳 · VL 따로: 폭죽 · 캔버스 · 연속 접속 보상 0 · 코드의 streak 은 시장이 연속 오른 날 | site/next<br>lib/atlas11<br>review/VL.md | R1 · VL |  |
 | [12] 9 | 바뀐 것은 기록 탭에 한 줄씩. 이 명령문은 규칙 79로 원칙 문서에 더하라. 규칙 77과 다르게 바꾼 것 … | partial | 규칙 79 로 docs/ATLAS_원칙.md 132줄에 더함 — [5] 5 · [5] 6 · [9] 1 · [12] 3 을 적음 | docs/ATLAS_원칙.md | main | 「기록 탭에 바뀐 것을 한 줄씩」은 이 기록에서 증명하는 파일을 못 찾음 |
 | [12] 10 | 예약 작업 파일(daily, evening)은 고치지 마라(규칙 7). | done | 예약 작업 파일(atlas11-daily.yml · atlas11-evening.yml) 바뀐 줄: 0줄 | git<br>status<br>.github/workflows | 모두 |  |
@@ -255,8 +253,8 @@
 
 | 번호 | 사장님 말씀(짧게) | 지금 있는 값 | 빈칸(?)을 채울 단계 |
 |---|---|---|---|
-| 1 | 약속한 끝 시각과 실제 끝 시각, 걸린 초, 지난 9,206초의 몇 배 | 약속: ① 화면 14:00 · ② 카톡 가입 16:00(싱가포르, 속도 기록 줄 4) · 실제 끝 시각 ? · 지금까지 걸린 초 10397초(멈춘 시간 9시간 12분 뺌) = 지난 9,206초의 1.13배(아직 안 끝남) | 올린 뒤(배포 뒤) main 이 끝 시각 · 총 초를 채움 |
-| 2 | 고치기 전과 뒤 표([11] 1) | 앞 표 있음: reports/atlas11/measure/before-2026-10-18.md(29화면) · 글씨 · 간격 앞뒤 type-before / type-after(36쪽, 11:01) · 뒤 표 아직 없음 ? | 전체를 같은 자로 다시 재는 단계(main 의 measure) — reports/atlas11/measure/after-2026-10-18.md |
+| 1 | 약속한 끝 시각과 실제 끝 시각, 걸린 초, 지난 9,206초의 몇 배 | 약속: ① 화면 14:00 · ② 카톡 가입 16:00(싱가포르, 속도 기록 줄 4) · 실제 끝 시각 ? · 지금까지 걸린 초 12244초(멈춘 시간 9시간 12분 뺌) = 지난 9,206초의 1.33배(아직 안 끝남) | 올린 뒤(배포 뒤) main 이 끝 시각 · 총 초를 채움 |
+| 2 | 고치기 전과 뒤 표([11] 1) | 앞 표 있음: reports/atlas11/measure/before-2026-10-18.md(29화면) · 글씨 · 간격 앞뒤 type-before / type-after(36쪽, 11:01) · 뒤 표 있음(reports/atlas11/measure/after-2026-10-18.md) | 전체를 같은 자로 다시 재는 단계(main 의 measure) — reports/atlas11/measure/after-2026-10-18.md |
 | 3 | 매매일지 누름 수(22 → ?) | 매매일지 누름 22 → 11(질문) · 종목부터 결과까지 25 → 14 · 3번 「클 일이 있다」 길만 12 (S1c · VJ 따로 잼 같음) | — |
 | 4 | 첫 화면 길이(9,572px → ?)와 첫 화면 안 시장 숫자 수 | 9,572px → 944px(390×800, 1.18화면) · 360×640 9,492 → 927px(14.8 → 1.4화면) · 첫 640px 안 시장 숫자 0 → 2 (S2x · VH 가 944 · 927 같음) · 공식 뒤 표 ? | 전체 다시 재기 + 올린 사이트에서 확인(live) |
 | 5 | 17px 아래 글이 남은 화면 수(0) | 17px 아래 글이 남은 쪽 0 / 36쪽(한국어 + 영어, type-after 11:01) · VH 20쪽 0 · VJ 65장 0 (앞: 29화면 중 27) | 전체 다시 재기(뒤 표)에서 한 번 더 확정 |
@@ -311,7 +309,7 @@
 | O2-F3 | review/O2.md | should | fixed-claimed | 1.7 | 결과 올리기 여섯 번 다 실패해도 성공으로 끝남 | C1 고침(이제 실패로 끝남) |
 | O2-F4-F7 | review/O2.md | info | fixed-claimed | 1.7 | gather 커밋만 믿기 · 쪽 셈 이름 그대로 · 검사 작업 파일도 코드 · 요약 칸 말 | O1 시험 24/24 |
 | VJ-1 | review/VJ.md | fail | open | 5.8, 5.9 | 삼성전자 2026-09-10 기록(오늘 10-18, 달력으로 38일)에 「그날 정한 대로 했어?」가 안 뜸: 장 20번째 날 10-14 가 사이트 자료 끝 10-13 보다 늦음 | 사장님 뜻 확인 필요: (가) 달력으로 한 달이 지나면 묻고 값은 「?」 (나) 지금처럼 장 20번 기준 |
-| VJ-2 | review/VJ.md | fail | closed | 10.1, 12.7 | 영어 화면 #/ · #/gdr 에 한국어 「오늘은 담는 칸을 닫아 둘게」 그대로였음: en.json 이 en-src.json 보다 낡음(61틀 빠짐) | 서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,127개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림) |
+| VJ-2 | review/VJ.md | fail | closed | 10.1, 12.7 | 영어 화면 #/ · #/gdr 에 한국어 「오늘은 담는 칸을 닫아 둘게」 그대로였음: en.json 이 en-src.json 보다 낡음(61틀 빠짐) | 서울 12:34 에 en.json 다시 만들어짐(그때 VJ 가 본 판) · 지금 en.json 틀 8,142개 · VJ 다섯째 재기에서 영어 판 한국어 0 으로 통과 = 닫힘 (en-src 가 en.json 보다 새로워지면 다시 열림) |
 | VJ-3 | review/VJ.md | info | open-info | 12.6 | 「사라」「팔아라」가 사장님 격언 글자 그대로 둘(data-proper) — 금지 말과 겹침, 사장님 뜻 확인 거리 |  |
 | VJ-4 | review/VJ.md | info | fixed-claimed | 5.10 | 친구 쪽 첫 화면(360×640)에서 아래 탭이 둘째 · 셋째 답을 가림(스크롤해야 눌림) | K2s 12:04 고침(옛 머리글 한 줄을 지우고 이름표 · 이름 · 번호를 한 줄로 → 첫 질문 답 셋이 355~539px, 탭 572px 위 여유 33px · 390×844 도) — 320×568 은 답 둘까지 · VJ 가 다시 보기 전 |
 | VH-1 | review/VH.md | partial | open | 6.1 | 첫 화면 390×800 944px = 1.18화면(144px 는 개인정보 고리 + 탭 막대 자리) · 360×640 927px 에서는 고도리 칸 · 더 보기가 탭 막대 밖 · 큰 날 「!」 둘 1,001px · 일지 끝낸 날 1,312px | 정하는 분이 「한 화면」 뜻을 고름(스크롤 0 인지, 덩이가 탭 막대 위에 들어오면 되는지) |
@@ -321,7 +319,7 @@
 | VH-11 | review/VH.md | partial | open | 6.10 | 일지 끝낸 날: 맨 위 「오늘 점수 준비 18 / 22 · 다시 하기 ›」 한 줄은 있으나 그 밑 고도리 칸이 그대로 열림(458px · 고른 곳이 3 · 8곳이면 876 · 1,110px) | 끝낸 날도 한 줄만 남기려면 나머지를 #/gdr 로 보냄 |
 | VH-12 | review/VH.md | partial | open | 10.8 | footer.foot 아래 틈 padding-bottom 92px 가 8 · 16 · 24 밖(모든 쪽 20군데 · 탭 막대 가림 틈) | 92px 를 토큰으로 바꾸거나 규칙에서 예외로 정함 |
 | VL-1 | review/VL.md | block | open | 9.1 | #/me 보유종목 → 「살 거야」 → ④ 팔 약속까지 남은 거리 칸에 기본 팔 선 · 절반 팔 선 값이 남음(「산 값의 90%는 45,000원, 120%는 60,000원」 · 「기본 팔 선까지 80.8% 남았어. 한 주에 189,000원이야.」 · 「기본 절반 팔 선(60,000원)에 닿았어.」 — site/next/p-hold.js 177~185, R1 이 코드로 같은 줄을 확인) — 고도… | 사장님/정하는 분이 뜻을 고름: (가) 「고도리 칸」만이면 지금 그대로 통과 (나) 「화면 어디에나」면 p-hold.js 의 기본 팔 선 값을 화면에서 뺌 · [8] 8(팔 선 기본값)과 부딪힘 |
-| VL-2 | review/VL.md | block | open | 9.6 | 명령문에 적힌 것(낱말 아홉 · 점 · 줄표 · 넓은 숫자 · 공일공)은 통과인데 다른 피하는 꼴 45가지 중 22가지가 빠져나감: 빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · (82)10 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao | R1 12:20 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 19가지 빠져나감 · 1가지는 words.js 가 오류(TypeError: dot com) |
+| VL-2 | review/VL.md | block | confirmed-r1 | 9.6 | 명령문에 적힌 것(낱말 아홉 · 점 · 줄표 · 넓은 숫자 · 공일공)은 통과인데 다른 피하는 꼴 45가지 중 22가지가 빠져나감: 빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · (82)10 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao | R1 12:51 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감 |
 | VL-3 | review/VL.md | partial | fixed-claimed | 9.8 | #/me 점검 줄 ①~⑤ 색 점(span.hd-dot aria-hidden, p-hold.js 220~222)에 「위험 · 주의」 글이 없음(카드 배지 「🟡 하나 흔들림 …」만) · 작은 걸림 1 | S5h 기록(파일 12:13)에 고침(p-hold.js 점 안에 보이지 않는 글 .hd-sr: 좋음 · 주의 · 위험 · 셀 수 없음 · 모름 — R1 이 코드에서 hd-sr 확인 · S5h 기록: check_hold 카드 37장 × 5줄 = 185줄 읽어 주는 글 실패 0) — VL … |
 | VL-4 | review/VL.md | partial | open | 12.5 | /invite.html 에 「ATLAS」 스무 곳(옛 코드 site/app/invite.js · 규칙 75 와 부딪힘 · /next/ 에서 고리 없음) · 글 속 「고도리」 낱글 60곳 넘음(app.js 14 · hello.html 16 · p-why 7 · p-gdr 5 · privacy 6 …)은 brand_apply.mjs 로 맞춤 — 실행 때 brand.js 를 읽지 않음(반쯤) |  |
 | VL-5 | review/VL.md | should | open | 9.5 | 소개 쪽 네 줄은 통과인데 말 둘 고칠 것: 「카카오 회원 번호 하나만 받아요」 — 가입하면 기록 넷을 서버에도 둠 · 상품권 문자 전화번호는 네 줄에 없음(처리방침에는 있음) |  |
@@ -329,6 +327,11 @@
 | V7-2 | review/V7.md | partial | open | 7.4 | 대장주(칩 #/f/lead 77곳)에 든 삼성전자 · 클래시스에 「대장주」 꼬리표가 없음 — 화면 꼬리표는 고도리 칸 n번 · 급등 칸 · 급등 10~40% 칸 · 고른 곳 다섯 가지뿐 · 예시 둘과 이웃 다섯이면 통과, 든 모든 칩 목록이면 일부 | 대장주 꼬리표를 더할지 정함(더하면 위 7.3 밀림이 더 잦아짐) |
 | V7-3 | review/V7.md | partial | open | 7.5 | 미국 칩 #/f/us 한 줄 4개 모두 작은 선 0 · 줄을 누를 수 없음(VH-9 와 같은 지적) · 업종 칩 단추 「나머지 66개 보기」는 말씀의 「n곳」과 한 글자 다름 | 미국 줄 자료에 선 값을 더하거나 미국만 선 없이 두겠다고 정함 |
 | V7-4 | review/V7.md | fail | open | 7.9 | 보유종목 바로 가기를 줄인 뒤 모든 화면 3번 안에 닿기(main 이 따로 맡긴 길 재기): 도움말 #/info 는 앱 안에 닿는 길이 아예 없고 업데이트 기록 #/up 은 5번(첫 화면 › 칩 › 회사 › 범위 탭 › 접힌 칸 열기 › 고리) — 나머지 화면은 모두 3번 안 · [7] 열 가지 판정은 통과 7 · 일부 3 · 실패 0 | 모든 쪽 맨 아래 footer.foot 에 「도움말」 #/info · 「업데이트 기록」 #/up 두 고리를 더하면 어느 쪽에서나 1번(V7 제안 · V7 이 고친 것 아님 · 첫 화면 높이엔 영향 없음) |
+
+**새 검토 글(R1 이 아직 지도에 못 옮김 — 어림으로만 훑음)**
+
+- review/VEN.md: # VEN — 영어 화면 따로 보기(2026-10-18 12:00 ~ 12:25 싱가포르 · 물결 B · 만든 사람 아님)
+  - 2. **엔진 허술한 곳**: 이름에 「 · 」가 든 큰 업종 8개(전자·부품 등)는 그 줄 키가 없으면 엔진이 「 · 」에서 잘라 반만 번역함. 오늘은 줄마다 통짜 키를 더해 막음. 뿌리 고침 = `i18n.js` 가 자르기 전에 사전 이름 구간을 지키기(내 몫 아님).
 
 ## 7. 빠르기 숫자
 
@@ -339,7 +342,7 @@
 | 올리기 묶음 | 688초 = 네 눈 점검 392.2 + 일봉 받기 164.5 + 7단 범위 71.6 + 자료 ~42 + 만들기 ~15 | P1 | 673초는 옛 t365 갱신 — 규칙 75 라 손대지 않음(부딪힘 보고 13) · 길은 검사와 겹치기뿐 |
 | 검사와 올리기 겹치기 | 약 11.5분 줄(모형) | O1 | 실제 올리기에 쓴 적 없음 · 마른 돌기 코드 0/1/1/2 · wait-preview 시험 24/24 |
 | 바뀐 쪽만 빨리 검사(quick.mjs) | ? | Q | accept/Q.md 결과 칸이 전부 빈칸 |
-| 이 명령문 전체 | 지난 9,206초 → 지금까지 10397초 | main | 멈춘 시간 9시간 12분 뺀 값 · 끝나면 채움 |
+| 이 명령문 전체 | 지난 9,206초 → 지금까지 12244초 | main | 멈춘 시간 9시간 12분 뺀 값 · 끝나면 채움 |
 
 ## 8. 근거 파일
 
@@ -353,11 +356,11 @@
 | accept/G3x.md | 5372 | 2026-10-18 11:17:32 SGT | 7 | 6 | 0 |  |
 | accept/G4.md | 1651 | 2026-10-18 00:41:41 SGT | 6 | 5 | 5 | G4x |
 | accept/G4x.md | 3931 | 2026-10-18 11:37:37 SGT | 6 | 5 | 0 |  |
-| accept/K1c.md | 8795 | 2026-10-18 11:28:58 SGT | 26 | 16 | 0 |  |
+| accept/K1c.md | 9384 | 2026-10-18 12:38:02 SGT | 28 | 16 | 0 |  |
 | accept/K1d.md | 4680 | 2026-10-18 10:40:23 SGT | 11 | 9 | 0 |  |
 | accept/K2.md | 3150 | 2026-10-18 00:46:53 SGT | 18 | 17 | 17 | K2s |
 | accept/K2p.md | 5830 | 2026-10-18 10:44:19 SGT | 20 | 15 | 0 |  |
-| accept/K2s.md | 18570 | 2026-10-18 12:19:37 SGT | 25 | 19 | 0 |  |
+| accept/K2s.md | 18845 | 2026-10-18 12:25:34 SGT | 25 | 19 | 0 |  |
 | accept/M.md | 1143 | 2026-10-18 00:42:29 SGT | 4 | 3 | 0 |  |
 | accept/O1.md | 3420 | 2026-10-18 11:27:26 SGT | 13 | 0 | 0 |  |
 | accept/Q.md | 1630 | 2026-10-18 00:40:43 SGT | 8 | 0 | 7 |  |
@@ -373,24 +376,25 @@
 | accept/S2c.md | 5222 | 2026-10-18 10:50:57 SGT | 6 | 5 | 0 |  |
 | accept/S2t.md | 7245 | 2026-10-18 11:17:14 SGT | 15 | 12 | 0 |  |
 | accept/S2x.md | 2264 | 2026-10-18 11:52:01 SGT | 9 | 7 | 0 |  |
-| accept/S3.md | 2366 | 2026-10-18 11:11:20 SGT | 7 | 5 | 0 | S3p |
-| accept/S3p.md | 10451 | 2026-10-18 11:25:44 SGT | 17 | 13 | 0 |  |
+| accept/S3.md | 2552 | 2026-10-18 12:26:43 SGT | 7 | 5 | 0 | S3p |
+| accept/S3p.md | 12778 | 2026-10-18 12:27:39 SGT | 17 | 13 | 0 |  |
 | accept/S4.md | 1572 | 2026-10-18 00:45:46 SGT | 8 | 6 | 7 | S4r |
 | accept/S4r.md | 10740 | 2026-10-18 12:12:20 SGT | 9 | 7 | 0 |  |
 | accept/S5.md | 1932 | 2026-10-18 00:41:34 SGT | 8 | 6 | 7 | S5h |
-| accept/S5h.md | 11361 | 2026-10-18 12:13:43 SGT | 15 | 10 | 0 |  |
+| accept/S5h.md | 16412 | 2026-10-18 12:37:12 SGT | 20 | 10 | 0 |  |
 | accept/S7.md | 2000 | 2026-10-18 00:45:03 SGT | 8 | 7 | 7 | S7l |
-| accept/S7l.md | 16706 | 2026-10-18 11:30:48 SGT | 14 | 10 | 0 |  |
-| accept/S9.md | 6767 | 2026-10-18 11:38:30 SGT | 14 | 14 | 0 | S9t |
-| accept/S9t.md | 14400 | 2026-10-18 11:58:06 SGT | 23 | 14 | 0 |  |
+| accept/S7l.md | 20534 | 2026-10-18 12:38:37 SGT | 21 | 10 | 0 |  |
+| accept/S9.md | 7202 | 2026-10-18 12:21:05 SGT | 14 | 14 | 0 | S9t |
+| accept/S9t.md | 21811 | 2026-10-18 12:50:08 SGT | 28 | 14 | 0 |  |
 | review/O2.md | 10297 | 2026-10-18 11:16:44 SGT | — | — | — | |
 | review/V7.md | 18202 | 2026-10-18 12:09:12 SGT | — | — | — | |
+| review/VEN.md | 6815 | 2026-10-18 12:24:28 SGT | — | — | — | |
 | review/VH.md | 20067 | 2026-10-18 11:42:49 SGT | — | — | — | |
 | review/VJ.md | 13802 | 2026-10-18 11:40:08 SGT | — | — | — | |
-| review/VK.md | 8483 | 2026-10-18 11:16:08 SGT | — | — | — | |
+| review/VK.md | 15728 | 2026-10-18 12:32:51 SGT | — | — | — | |
 | review/VL.md | 6002 | 2026-10-18 11:56:52 SGT | — | — | — | |
 
-speed: speed/package-profile.md · measure: reports/atlas11/measure/before-2026-10-18.json, reports/atlas11/measure/before-2026-10-18.md, reports/atlas11/measure/type-after-2026-10-18.json, reports/atlas11/measure/type-after-2026-10-18.md, reports/atlas11/measure/type-before-2026-10-18.json, reports/atlas11/measure/type-before-2026-10-18.md · 그 밖: docs/design/godori-2026-10-18/kakao-signup.md · docs/design/godori-2026-10-18/gdr-v2.md · reports/atlas11/godori/verify2-latest.json · reports/atlas11/speed/2026-10-18.jsonl
+speed: speed/package-profile.md · measure: reports/atlas11/measure/after-2026-10-18.json, reports/atlas11/measure/after-2026-10-18.md, reports/atlas11/measure/before-2026-10-18.json, reports/atlas11/measure/before-2026-10-18.md, reports/atlas11/measure/compare-2026-10-18.md, reports/atlas11/measure/type-after-2026-10-18.json, reports/atlas11/measure/type-after-2026-10-18.md, reports/atlas11/measure/type-before-2026-10-18.json, reports/atlas11/measure/type-before-2026-10-18.md · 그 밖: docs/design/godori-2026-10-18/kakao-signup.md · docs/design/godori-2026-10-18/gdr-v2.md · reports/atlas11/godori/verify2-latest.json · reports/atlas11/speed/2026-10-18.jsonl
 
 R1 가벼운 시험(`--probe`): kakao 20/20 · invite 11/11 · letter 9/9 · kakao-store 16/16 · words 20/20 · next-modules 6/6 (2026-10-18 12:19:55 SGT)
 

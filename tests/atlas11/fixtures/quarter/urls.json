@@ -1,0 +1,5 @@
+{
+ "_note": "형식 견본(format sample) — quarter.mjs --fixture 로 돌릴 때 주소 → 파일 · 실제 네이버 응답이 아님",
+ "https://m.stock.naver.com/api/stock/900001/finance/quarter": "m-stock-quarter-sample.json",
+ "https://finance.naver.com/item/main.naver?code=900002": "main-cop-analysis-euckr.html"
+}
