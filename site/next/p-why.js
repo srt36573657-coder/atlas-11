@@ -354,6 +354,7 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     return h('div', {class: 'wy-res'}, // [5] 2 — 판정 글이 가장 큼 · 준비는 그 밑에 작게
       h('p', {class: 'wy-verdict wy-v' + tone}, icon(32), h('b', {text: `「${J.verdict}」`})),
       ...(stopOf(J.answers) ? [h('p', {class: 'wy-stop', text: '빌린 돈이나 곧 쓸 돈이면 점수와 상관없이 쉬어 가요.'})] : []),
+      ...(V_CODE[J.verdict] === 'go' ? [h('p', {class: 'wy-stop', text: '좋다고 나와도 오늘 바로 안 해도 돼요. 하룻밤 자고 한 번 더 답해 봐요.'})] : []),
       h('p', {class: 'wy-score'}, h('span', {text: '준비 '}), h('b', {class: 'num', text: String(ready)}), h('span', {class: 'num', text: ` / ${MAX}`}),
         h('span', {class: 'wy-reds'}, h('span', {text: ' · '}), dot('r'), h('span', {class: 'num', text: ` ${J.reds}개`}))),
       h('span', {class: 'wy-track wy-tt', 'aria-hidden': 'true'}, tt),
