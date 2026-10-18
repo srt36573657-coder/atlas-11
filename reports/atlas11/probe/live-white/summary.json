@@ -1,0 +1,46 @@
+{
+ "at": "2026-10-18T20:18:02.356Z",
+ "base": "https://aaa7377.com",
+ "shots": [
+  "reports/atlas11/probe/live-white/home-first.png",
+  "reports/atlas11/probe/live-white/home-back.png",
+  "reports/atlas11/probe/live-white/home-back-320.png"
+ ],
+ "first": {
+  "white": true,
+  "bg": "rgb(255, 255, 255)",
+  "blocks": [
+   "ess",
+   "find",
+   "today",
+   "gdr",
+   "all",
+   "news"
+  ]
+ },
+ "back": {
+  "white": true,
+  "bg": "rgb(255, 255, 255)",
+  "blocks": [
+   "ess",
+   "find",
+   "today",
+   "gdr",
+   "all",
+   "news"
+  ]
+ },
+ "back-320": {
+  "white": true,
+  "bg": "rgb(255, 255, 255)",
+  "blocks": [
+   "ess",
+   "find",
+   "today",
+   "gdr",
+   "all",
+   "news"
+  ]
+ },
+ "check": "ok"
+}
