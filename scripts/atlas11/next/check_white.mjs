@@ -8,7 +8,7 @@
 //     [data-w="ess"] 본질 칸 · [data-w="find"] 찾기 칸 · [data-w="today"] 오늘 장 · [data-w="gdr"] 골똘이 칸 · [data-w="all"] 전부 보기
 //     [data-w="find"] 안에 글 칸(input) 하나 = 「친구야, 왜 사?」 찾기 칸 · [data-w="news"] 시황 사실 · [data-fact] 사실 한 줄
 //     [data-say] 골똘이 말(인사 · 말풍선 · 안내 · 판정) — 「?」로 끝남
-//     [data-path~="q1"] 첫 질문 길(누를 것) · [data-num] 숫자 줄(「?」는 맨 앞 모름 · 오래됨 표시뿐)
+//     [data-path~="q1"] 첫 질문 길(누를 것 — 찾기 칸에 「삼성전자」를 친 뒤 뜬 회사 줄에도 붙임) · [data-num] 숫자 줄(「?」는 맨 앞 모름 · 오래됨 표시뿐)
 //   잣대
 //     ① 390 × 844 · 처음 온 기기와 다시 온 기기 모두: 바탕 #FFFFFF · 다섯 칸이 아래 단추 위 한 화면 안 · 320 × 568 은 본질 카드와 찾기 칸까지
 //        첫 화면 원칙: 오르는 것(급등 · 오르는 업종)은 처음 화면에 안 보이고 누름 2번에 닿음 · 「전부 보기」는 한 줄에 하나씩(네모 칸 깔기 · 바둑판 0)
@@ -187,6 +187,8 @@ try {
     {
       const ctx = await ctxOf(true), seen = async p => p.evaluate(() => /(^|\s)1\s*\/\s*11(\s|$)/.test(document.querySelector('#view')?.innerText || ''));
       let {p} = await open(ctx, HOME), n = 0;
+      const fi = p.locator('#view [data-w="find"] input').first(); // 찾기 칸에 회사 이름을 침(치는 것은 누름이 아님) → 뜬 회사를 누름
+      if (await fi.count()) { await fi.fill('삼성전자'); await p.waitForTimeout(1500); }
       while (n < 2 && !(await seen(p))) { const t = p.locator('#view [data-path~="q1"]:visible').first(); if (!(await t.count())) break; await t.click({timeout: 5000}); n++; await settle(p); }
       const q1 = await seen(p); R.m.taps = {...(R.m.taps || {}), q1: q1 ? n : null};
       check(q1 && n <= 2, '③ 첫 질문까지 누름 2번 안', q1 ? `${n}번` : `${n}번 눌러도 「1 / 11」이 안 보임`);
