@@ -1,0 +1,216 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261018-2231",
+ "start": "2026-10-18T22:31:42+09:00",
+ "end": "2026-10-18T22:47:32+09:00",
+ "essence": {
+  "file": "docs/골똘이_본질.md",
+  "sha256": "a71d3864c200f586491e1d60108b231ef4d95e1b3cfc5b07150bd9d06caec50a",
+  "first": "골똘이의 본질: 주식을 사기 전에 한 번 멈추게 하는 곳이다."
+ },
+ "main": "74ab6770b17638f8555fa2faaee74070761c79b0",
+ "cutoff": "2026-10-18T22:30:00+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "retest",
+  "retest": [
+   "20261018-2204-1",
+   "20261018-2204-2",
+   "20261018-2204-3"
+  ],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [],
+ "debate": null,
+ "cards": [],
+ "retested": [
+  {
+   "id": "20261018-2204-1",
+   "ok": true,
+   "why": [],
+   "sha": "592f96883f2cd075f2b978fdfb0b52f8f2ca4962",
+   "quick": {
+    "fails": 0
+   },
+   "images": true,
+   "preview": {
+    "state": "pass",
+    "run": 39132030951
+   }
+  },
+  {
+   "id": "20261018-2204-2",
+   "ok": true,
+   "why": [],
+   "sha": "d774bf4c952fbc07151627810b6b5cd3c3f74339",
+   "quick": {
+    "fails": 0
+   },
+   "images": true,
+   "preview": {
+    "state": "running",
+    "run": 39132059797
+   }
+  },
+  {
+   "id": "20261018-2204-3",
+   "ok": true,
+   "why": [],
+   "sha": "01629b0f685eaf830f927091d797aa7fc5dbcc3a",
+   "quick": {
+    "fails": 0
+   },
+   "images": true,
+   "preview": {
+    "state": "running",
+    "run": 39132083868
+   }
+  }
+ ],
+ "finished": [
+  {
+   "id": "20261018-2204-1",
+   "kind": "retest",
+   "state": "pass",
+   "sha": "592f96883f2cd075f2b978fdfb0b52f8f2ca4962",
+   "round": "20261018-2231",
+   "why": ""
+  }
+ ],
+ "dropped": [],
+ "pending": [
+  "20261018-2204-2",
+  "20261018-2204-3"
+ ],
+ "scores": {},
+ "facts": {
+  "mismatch": 0,
+  "at": "2026-10-18T17:26:25+09:00"
+ },
+ "factsNote": "끝 코드만 실패이고 걸린 곳 0 인 쪽: gdr",
+ "tally": {
+  "2026-10-05": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-06": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-07": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-08": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-09": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-10": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-11": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-12": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-13": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-14": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-15": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-16": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-17": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-18": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  }
+ },
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 0,
+  "waiting": [
+   "20261018-2204-1",
+   "20261018-2204-2",
+   "20261018-2204-3"
+  ],
+  "errors": []
+ },
+ "owner": [
+  "기다리는 대안 3개를 새 자료로 다시 시험했어요.",
+  "진화 칸에서 대안 3개가 확인을 기다려요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 1가지예요."
+ ],
+ "notice": "",
+ "notDone": [
+  "전후 그림에 지금 사이트 자료를 못 씀(못 받음 dist-manifest.json) — 저장소 자료로 찍음"
+ ],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-10-18T22:32:20+09:00 시작 · 본질 a71d3864 · main 74ab677 · 할 일 넣기 없음 → retest"
+ ]
+}
