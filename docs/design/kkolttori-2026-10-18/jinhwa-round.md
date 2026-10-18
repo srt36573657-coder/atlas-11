@@ -36,7 +36,7 @@
    4-2 세 사람을 따로 띄운 일꾼(Task · Agent 도구)으로 — 카너먼 · 멍거 · 포퍼가 저마다 작은 고칠 거리 초안을 쓴다 → 서로의 초안을 한 번 본 뒤 고쳐 쓴다 → 함께 서로 다른 셋을 고른다. 1번은 세 사람이 함께 고른 것(셋 모두 받아들이고 둘 이상이 맨 먼저 꼽음). 도구가 없으면 한 일꾼이 세 사람을 차례로 따로 맡고 debate.json 의 mode 를 "single" 로 적는다.
    4-3 세 눈을 모두 지나야 대안이다([8] 6): 카너먼 눈 — 더 빨리 사게 하나?(아니어야 함) · 멍거 눈 — 망치는 길에 닿나, 잣대를 비트나?(아니어야 함) · 포퍼 눈 — 어림과 되돌릴 조건이 있나, 작은가?(있어야 · 작아야 함)
    4-4 대안은 작아야 한다([8] 7): 바뀌는 파일 다섯 개 안 · 한 번에 되돌릴 수 있게 · 파일을 지우지 않음. 기계는 본질 파일 · 망치는 길 목록(site/next/words.js) · 잣대 · 명령문 · 진화 회차 도구 · 진화 칸 · 합계 칸 · 검사 · 예약 작업 · 옛 화면 · 이름(brand.js)을 못 고친다([8] 10 · round.mjs 가 막음). 합계 칸 신호(tally)를 더하거나 빼는 줄도 막힌다(잣대를 비틀 수 있음).
-       새 한국어 화면 글을 넣으면 영어도 같은 가지에: node scripts/atlas11/next/i18n/add.mjs "<한국어>" "<영어>" → node scripts/atlas11/next/i18n_build.mjs (두 파일도 다섯에 듦).
+       새 한국어 화면 글을 넣으면 커밋하기 전에 반드시 같은 가지에서 node scripts/atlas11/next/i18n/add.mjs "<한국어 틀>" "<영어>" → node scripts/atlas11/next/i18n_build.mjs 를 돌려 en-src.json · site/next/i18n/en.json 도 함께 커밋한다(두 파일도 다섯에 듦 · 영어가 없으면 alt 가 미리 검사 전에 막고 「영어 사전에 없는 화면 글」과 넣을 틀을 알려 준다 — 그 틀 그대로 넣고 다시 alt · 2026-10-18 20:20 첫 회차 대안 셋이 이것으로 모두 떨어짐).
        대안마다: node scripts/atlas11/jinhwa/round.mjs alt-start --n <1|2|3> → 받은 dir 에서 고치고 git -C <dir> commit -am "<이름>" → node scripts/atlas11/jinhwa/round.mjs alt --n <n> --route '#/<보일 쪽>' [--seed <localStorage 열쇠>=<값>]
        alt 가 보는 것: 다섯 · 지킴 · 잣대 신호 · 본질 문(지킴 파일 · 일곱 가지에 새로 걸림 0) · 「큰 것」 까닭 · 더한 화면 글의 쓰지 않을 말(words.js screenHits · 망치는 길 ruinHits · 수익 자랑 · 옛 이름 · 퍼센트) · 다른 대안과 같은 고침 · 바뀐 쪽 검사 0 · 전과 후 그림(360 × 640 · 같은 자료) · 모든 쪽 미리 검사 시작. 막히면 까닭대로 한 번 고쳐 다시. 그래도 막히면 그 번호는 뺀다(셋이 안 되면 지나간 것만 · 1번이 없으면 올리지 않음).
    4-5 카드 글을 debate.json 으로 쓴다(꼴 아래) → node scripts/atlas11/jinhwa/round.mjs cards --debate debate.json

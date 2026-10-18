@@ -11,7 +11,8 @@ import {spawnSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import * as L from './lib.mjs';
 import * as G from './gh.mjs';
-import {runCommand, ROOT, loadWords} from './round.mjs';
+import {runCommand, ROOT, loadWords, enGaps} from './round.mjs';
+import * as RD from './read.mjs';
 
 const T = [];
 const test = (name, fn) => T.push({name, fn});
@@ -244,6 +245,7 @@ function png(w = 360, h = 640, rgb = [240, 238, 230]) {
 const sh = (cwd, cmd, args, input) => { const r = spawnSync(cmd, args, {cwd, encoding: 'utf8', input, env: {...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t'}}); if (r.status !== 0) throw Error(`${cmd} ${args.join(' ')} — ${r.stderr}`); return r.stdout.trim(); };
 const write = (root, f, t) => { fs.mkdirSync(path.dirname(path.join(root, f)), {recursive: true}); fs.writeFileSync(path.join(root, f), t); };
 
+const EN_T = {'why 칸': 'Why tab', 'today 칸': 'Today tab', 'past 칸': 'Past tab', 'cal 칸': 'Calendar tab', '한 번 더 멈춰요': 'Pause once more', '받은 때': 'Received at', '한 번 더': 'Once more', '{n}곳을 봤어요': 'Saw {n} places'};
 /** 임시 저장소 — 본질 · 잠금 · 명령문 · 잣대 · 낱말 · 이름 · 달력 · 모든 쪽 검사 결과(진짜 사본) + 화면 파일 몇 개(가짜) */
 function makeRepo(tmp) {
   const origin = path.join(tmp, 'origin.git'), work = path.join(tmp, 'work');
@@ -256,6 +258,11 @@ function makeRepo(tmp) {
   write(work, `${L.LIVE_DIR}/next.json`, JSON.stringify({fails: []})); write(work, `${L.LIVE_DIR}/why.json`, JSON.stringify({fails: 0}));
   for (const p of ['why', 'today', 'past', 'cal', 'co', 'time']) write(work, `site/next/p-${p}.js`, `// ${p}\nexport const T = '${p} 칸';\nexport function render() { return T; }\n`);
   write(work, 'site/next/p-past.css', '.past { color: #333; }\n');
+  // 영어 사전(작은 가짜) + 진짜 엔진 — alt 의 「영어 사전에 없는 화면 글」(enGaps)이 봄
+  write(work, 'site/next/i18n.js', fs.readFileSync(path.join(ROOT, 'site/next/i18n.js')));
+  write(work, 'site/next/i18n/en.json', JSON.stringify({schema: 'atlas-new-i18n-1', lang: 'en', entities: {}, templates: EN_T}));
+  write(work, 'site/next/i18n/en-names.json', JSON.stringify({schema: 'atlas-new-i18n-names-1', lang: 'en', names: {}, latin: {}}));
+  write(work, 'scripts/atlas11/next/i18n/en-src.json', JSON.stringify({schema: 'atlas-new-i18n-src-1', lang: 'en', entities: {}, templates: EN_T}, null, 1) + '\n');
   write(work, 'reports/atlas11/jinhwa/.keep', '');
   sh(work, 'git', ['add', '-A']); sh(work, 'git', ['commit', '-q', '-m', '시험 바탕']); sh(work, 'git', ['push', '-q', 'origin', 'main']);
   sh(work, 'git', ['fetch', '-q', 'origin']); sh(work, 'git', ['branch', '-q', '-u', 'origin/main']);
@@ -283,6 +290,70 @@ const R = async (D, ...argv) => runCommand(argv, D);
 const mainFile = (work, f) => { sh(work, 'git', ['fetch', '-q', 'origin']); try { return sh(work, 'git', ['show', `origin/main:${f}`]); } catch { return null; } };
 const commitIn = (dir, f, from, to, msg = '대안') => { const t = fs.readFileSync(path.join(dir, f), 'utf8'); if (!t.includes(from)) throw Error('바꿀 글 없음 ' + f); fs.writeFileSync(path.join(dir, f), t.replace(from, to)); sh(dir, 'git', ['add', '-A']); sh(dir, 'git', ['commit', '-q', '-m', msg]); };
 
+test('⑳ 읽기 작업 알림 줄 — 조각 · 다시 맞춤 · 하나라도 어긋나면 닫힌 쪽 · gh api 두 번(작업 → 알림)', async () => {
+  const obj = {schema: RD.READ_SCHEMA, at: '2026-10-19T00:29:00.000Z', base: 'https://aaa7377.com', days: 200,
+    status: {ok: true, http: 200, json: {items: [{id: ID(1), state: 'confirmed', at: '2026-10-19T00:10:00.000Z'}]}},
+    tally: {ok: true, http: 200, json: {days: Array.from({length: 200}, (_, i) => ({d: L.addDays('2026-04-01', i), stop: (i * 7) % 23, stop_rest: i % 5, promise: (i * 3) % 11, promise_yes: i % 4}))}}};
+  const lines = RD.toAnnotations(obj, {chunk: 900});
+  ok(lines.length >= 3 && lines.length <= 10 && lines.every(l => /^::notice title=jinhwa-read-(head|\d+)::[A-Za-z0-9+/= ]+$/.test(l)), '알림 줄 꼴 ' + lines.length);
+  // 깃허브 REST 꼴(GET /repos/…/check-runs/<번호>/annotations) — 차례가 섞여 와도 됨 · 다른 알림이 끼어도 됨
+  const api = lines.map(l => { const m = /^::notice title=([^:]+)::(.*)$/.exec(l); return {path: '.github', blob_href: 'https://github.com/x/blob/0/.github', start_line: 1, start_column: null, end_line: 1, end_column: null, annotation_level: 'notice', title: m[1], message: m[2], raw_details: null}; });
+  const fixture = [{path: '.github', annotation_level: 'warning', title: '', message: 'Node.js 20 actions are deprecated.'}, ...api.slice().reverse()];
+  const back = RD.fromAnnotations(fixture); ok(back.ok, back.why); eq(back.json, obj, '다시 맞춘 것 = 보낸 것');
+  const bad = (what, list) => { const r = RD.fromAnnotations(list); ok(!r.ok, what + ' — 막혀야 함'); return r.why; };
+  bad('조각 하나 빠짐', fixture.filter(a => a.title !== 'jinhwa-read-1'));
+  bad('머리 줄 없음', fixture.filter(a => a.title !== 'jinhwa-read-head'));
+  bad('글 한 자 바뀜', fixture.map(a => a.title === 'jinhwa-read-0' ? {...a, message: (a.message[0] === 'A' ? 'B' : 'A') + a.message.slice(1)} : a));
+  bad('같은 번호 다른 글', [...fixture, {...api[1], message: api[2].message}]);
+  bad('목록이 아님', null);
+  ok(/큼/.test((() => { try { RD.toAnnotations(obj, {chunk: 50}); return ''; } catch (e) { return e.message; } })()), '너무 크면 만들지 않음');
+  // gh api 두 번 — 작업 목록(check_run_url) → 알림 줄 · 다른 길(묶음 · 작업 기록)은 부르지 않음
+  const calls = [];
+  const runner = (cwd, args) => { calls.push(args.join(' '));
+    if (/actions\/runs\/123\/jobs$/.test(args[1])) return {ok: true, out: JSON.stringify({total_count: 1, jobs: [{id: 555, run_id: 123, name: 'read', status: 'completed', conclusion: 'success', check_run_url: `https://api.github.com/repos/${L.REPO}/check-runs/555`}]})};
+    if (/check-runs\/555\/annotations/.test(args[1])) return {ok: true, out: JSON.stringify(fixture)};
+    return {ok: false, err: 'no'}; };
+  const g = await G.readAnnotations(ROOT, 123, {runner}); ok(g.ok, g.why); eq(g.json.status.json.items[0].state, 'confirmed');
+  ok(calls.length === 2 && calls.every(c => c.startsWith('api repos/')), calls.join(' | '));
+  const g2 = await G.readAnnotations(ROOT, 123, {runner: (c, a) => (/annotations/.test(a[1]) ? {ok: true, out: JSON.stringify(fixture.slice(0, 2))} : runner(c, a))}); ok(!g2.ok, '조각이 모자라면 닫힌 쪽');
+  const g3 = await G.readAnnotations(ROOT, 123, {runner: () => ({ok: false, err: 'HTTP 403'})}); ok(!g3.ok && /작업 목록/.test(g3.why), g3.why);
+});
+test('㉑ 영어 사전에 없는 화면 글(enGaps) — 진짜 엔진 · 틀({n} · ${…}) · 원문 줄 · 빌드한 사전은 뺌', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'jh-en-'));
+  try {
+    write(dir, 'site/next/i18n.js', fs.readFileSync(path.join(ROOT, 'site/next/i18n.js')));
+    write(dir, 'site/next/i18n/en.json', JSON.stringify({templates: EN_T, entities: {}})); write(dir, 'site/next/i18n/en-names.json', JSON.stringify({names: {}, latin: {}}));
+    write(dir, 'scripts/atlas11/next/i18n/en-src.json', JSON.stringify({templates: {...EN_T, '새 줄이에요': 'A new line'}, entities: {}}));
+    const P = (f, ...adds) => `diff --git a/${f} b/${f}\n--- a/${f}\n+++ b/${f}\n@@ -1 +1,${adds.length} @@\n` + adds.map(a => '+' + a).join('\n');
+    let g = await enGaps(dir, dir, P('site/next/p-why.js', "h('p', {text: '받은 때 · 한 번 더'})", 'const s = `${n}곳을 봤어요`;', "box.title = '<b>why 칸</b>';"));
+    ok(g.ok, g.why + JSON.stringify(g.gaps));
+    g = await enGaps(dir, dir, P('site/next/p-why.js', "h('p', {text: '한 달 뒤 이 기록을 열어 「정한 대로 했어?」에 답해 봐요.'})"));
+    ok(!g.ok && g.gaps.length === 1 && /add\.mjs/.test(g.why), g.why); ok(g.gaps[0].keys.length >= 1, JSON.stringify(g.gaps));
+    g = await enGaps(dir, dir, P('site/next/p-why.js', "text: '새 줄이에요'")); ok(!g.ok && g.stale.length === 1 && /i18n_build/.test(g.why), '원본에만 있음 ' + g.why);
+    g = await enGaps(dir, dir, P('site/next/p-why.js', "h('blockquote', {lang: 'ko', text: '사장님 원문 그대로'})")); ok(g.ok, '원문 줄은 뺌 ' + g.why);
+    g = await enGaps(dir, dir, P('site/next/i18n/en.json', '{"templates":{"아무 말":"x"}}') + '\n' + P('scripts/atlas11/jinhwa/x.mjs', "const a = '기계 글';")); ok(g.ok, '사전 · 화면 밖 파일은 뺌 ' + g.why);
+    fs.rmSync(path.join(dir, 'site/next/i18n/en.json'));
+    g = await enGaps(dir, dir, P('site/next/p-why.js', "text: '받은 때'")); ok(!g.ok && /못 읽음/.test(g.why), '사전을 못 읽으면 닫힌 쪽');
+    ok(globalThis.location === undefined, '엔진을 켠 뒤 location 을 되돌림');
+  } finally { fs.rmSync(dir, {recursive: true, force: true}); }
+});
+test('㉒ 회차 잠금 — 지우기를 안 받는 원격(Claude 예약 방 git 길)에서도 풀림 · 다음 회차가 바로 잡음 · 강제 밀기 없이', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'jh-lk-'));
+  try {
+    const origin = path.join(tmp, 'o.git'), a = path.join(tmp, 'a'), b = path.join(tmp, 'b');
+    sh(tmp, 'git', ['init', '-q', '--bare', origin]); sh(origin, 'git', ['config', 'receive.denyDeletes', 'true']); sh(origin, 'git', ['config', 'receive.denyNonFastForwards', 'true']);
+    for (const w of [a, b]) { sh(tmp, 'git', ['init', '-q', w]); sh(w, 'git', ['remote', 'add', 'origin', origin]); }
+    const t1 = G.lockTake(a, {by: 'r1', now: new Date('2026-10-18T11:20:50Z')}); ok(t1.ok, JSON.stringify(t1));
+    const busy = G.lockTake(b, {by: 'r2', now: new Date('2026-10-18T11:40:00Z')}); ok(!busy.ok && busy.busy, '돌고 있으면 바쁨');
+    const rel = G.lockRelease(a, {sha: t1.sha, now: new Date('2026-10-18T11:44:00Z')}); ok(rel.ok && rel.how === 'released', JSON.stringify(rel));
+    const t2 = G.lockTake(b, {by: 'r2', now: new Date('2026-10-18T11:45:00Z')}); ok(t2.ok && t2.after, '풀린 잠금은 바로 잡음 ' + JSON.stringify(t2));
+    const bad = G.lockRelease(a, {sha: t1.sha}); ok(!bad.ok, '남의 잠금은 풀지 않음');
+    const t3 = G.lockTake(a, {by: 'r3', now: new Date('2026-10-18T14:00:00Z')}); ok(t3.ok && t3.stolen === t2.sha, '묵은 잠금(100분)은 앞으로만 밀어 가져옴 ' + JSON.stringify(t3));
+    sh(origin, 'git', ['config', 'receive.denyDeletes', 'false']);
+    const del = G.lockRelease(a, {sha: t3.sha}); ok(del.ok && del.how === 'deleted', '지우기를 받으면 지움');
+  } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
+});
+
 test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · 본질 문 없음은 막힘) → 카드 → 미리 검사 → 기록(진화 칸 자료 · 그림 · 새 기록 파일)', async ctx => {
   const {work} = ctx.repo, run = path.join(ctx.tmp, 'run');
   const D = fakeDeps({work, run, now: '2026-10-19T00:30:00Z', status: {items: []}});
@@ -299,6 +370,13 @@ test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · �
   sh(starts[1], 'git', ['reset', '-q', '--hard', b.out.main]);
   commitIn(starts[1], 'site/next/p-why.js', 'return T;', "tally('stop_rest'); return T;");
   r = await R(D, 'alt', '--n', '1', '--route', '#/why'); eq(r.code, 1); ok(/잣대 신호/.test(r.out.why), r.out.why);
+  sh(starts[1], 'git', ['reset', '-q', '--hard', b.out.main]);
+  // 영어 없는 새 화면 글 → 미리 검사 전에 막힘(2026-10-18 20:20 첫 회차 대안 셋이 en 에서 떨어진 일) · 원본에만 넣고 빌드 안 함 → 「i18n_build」
+  commitIn(starts[1], 'site/next/p-why.js', "'why 칸'", "'why 칸 · 정한 대로 했는지 봐요'");
+  let pc = 0; const Dp = {...D, previewStart: o => { pc++; return D.previewStart(o); }};
+  r = await R(Dp, 'alt', '--n', '1', '--route', '#/why'); eq(r.code, 1); ok(/영어 사전에 없는 화면 글 1개/.test(r.out.why) && /i18n\/add\.mjs/.test(r.out.why) && /i18n_build\.mjs/.test(r.out.why), r.out.why); eq(pc, 0, '미리 검사를 시작하지 않음');
+  { const f = path.join(starts[1], 'scripts/atlas11/next/i18n/en-src.json'), j = JSON.parse(fs.readFileSync(f, 'utf8')); j.templates['정한 대로 했는지 봐요'] = 'See if you did as planned'; fs.writeFileSync(f, JSON.stringify(j, null, 1) + '\n'); sh(starts[1], 'git', ['commit', '-qam', '영어 원본만']); }
+  r = await R(Dp, 'alt', '--n', '1', '--route', '#/why'); eq(r.code, 1); ok(/사이트 사전.*없는 글 1개/.test(r.out.why) && !/영어 사전에 없는 화면 글/.test(r.out.why), r.out.why); eq(pc, 0);
   sh(starts[1], 'git', ['reset', '-q', '--hard', b.out.main]);
   commitIn(starts[1], 'site/next/p-why.js', "'why 칸'", "'why 칸 · 한 번 더 멈춰요'");
   const Dg = {...D, essenceDiff: (base, head) => G.essenceDiff(work, base, head)}; // 이 시험 저장소에는 본질 문 파일이 없음 → 닫힌 쪽
