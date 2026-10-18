@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-18T17:40:27.237Z",
+ "when": "2026-10-18T19:55:38.568Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -39,7 +39,7 @@
   "before": 1146
  },
  "css": {
-  "holdDecls": 489,
+  "holdDecls": 512,
   "appMine": 85,
   "fontNotToken": 0,
   "spacingNotToken": 0,
@@ -146,7 +146,7 @@
   }
  ],
  "only": [],
- "sec": 67,
+ "sec": 68,
  "counts": {
   "꾸민 보유": 14,
   "질문 먼저 맞댄 카드": 17,
