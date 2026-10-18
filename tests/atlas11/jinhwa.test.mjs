@@ -212,19 +212,35 @@ test('화면 글 — 쓰지 않을 말 0(「예측」 대신 「어림」) · �
   assert.deepEqual(ruinHits(sec.replace(/<[^>]+>/g, ' ')), []);
 });
 
-test('길 · 문 — 열쇠 없는 기기는 모듈도 안 받음 · 보유종목 줄은 열쇠 기기만 · 서버가 맞다고 할 때만', () => {
-  const app = read('site/next/app.js'), hold = read('site/next/p-hold.js'), pj = read('site/next/p-jinhwa.js');
+test('길 · 문 — 모든 사람이 엶(사장님 2026-10-18 22:46 「모든 사람들」) · 위 막대 「진화」 단추 · 단추 · 잣대 셋은 열쇠 기기에서 서버가 맞다고 할 때만', () => {
+  const app = read('site/next/app.js'), hold = read('site/next/p-hold.js'), pj = read('site/next/p-jinhwa.js'), css = read('site/next/app.css');
   const line = app.split('\n').find(l => l.startsWith('VIEWS.jinhwa = '));
   assert.ok(line, 'app.js 길 한 줄');
-  assert.match(line, /localStorage\.getItem\('atlas11:invite:owner'\)/);
-  assert.match(line, /return k && k\.length >= 16 && k\.length <= 128 \? page\('jinhwa', a\) : new Promise\(res => \{ addEventListener\('hashchange', [^]*location\.replace\('#\/'\)/, '열쇠가 없으면(길이도 p-jinhwa ownerKey 와 같은 잣대) 모듈 없이 #/ 로(기록 바꿔 씀)');
+  assert.match(line, /^VIEWS\.jinhwa = a => page\('jinhwa', a\);/, '열쇠 없이도 진화 쪽을 엶(첫 화면으로 돌리지 않음)');
+  assert.doesNotMatch(line, /location\.replace/);
+  assert.match(app, /const jhBtn = h\('a', \{class: 'tbtn', id: 'jhBtn', href: '#\/jinhwa', text: '진화'\}\);\n\$\('\.top #langBtn'\)\?\.before\(jhBtn\);/, '위 막대 「진화」 단추 — 모든 사람');
+  assert.match(app, /if \(k === 'jinhwa'\) jhBtn\.setAttribute\('aria-current', 'page'\);/);
+  assert.match(css, /\.tbtn \{[^}]*min-width: 44px; height: 44px;[^}]*font-size: var\(--fs-1\)/, '단추 44 · 17px');
   assert.match(pj, /k\.length >= 16 && k\.length <= 128/, 'p-jinhwa 열쇠 길이 잣대');
   const sc = hold.slice(hold.indexOf('export function shortcuts()'), hold.indexOf('export async function news'));
   assert.match(sc, /if \(localStorage\.getItem\('atlas11:invite:owner'\)\) import\('\.\/p-jinhwa\.js'\)\.then\(m => m\.ownerRow\(box\)\)/);
   assert.equal((hold.match(/p-jinhwa/g) ?? []).length, 1, 'p-hold 은 그 한 줄만');
-  assert.match(pj, /if \(!\(await ownerOk\(\)\)\) return away\(\);/, '그리기 전에 서버에 물음');
+  assert.match(pj, /const owner = await ownerOk\(\);/, '그리기 전에 열쇠 기기인지 물음(열쇠 없으면 서버에 안 물음)');
+  assert.match(pj, /if \(!k\) return Promise\.resolve\(false\);/);
+  assert.match(pj, /owner \? getJson\('\/api\/jinhwa\/status'\) : null, owner \? getJson\('\/api\/tally\/sum/, '상태 · 합계는 열쇠 기기만');
+  assert.match(pj, /C\.owner && kind === 'waiting' \? stateBtn\(x, 'confirm', C\) : C\.owner && kind === 'applied' \? stateBtn\(x, 'revert', C\) : null/, '단추는 열쇠 기기만');
+  assert.match(pj, /if \(owner\) root\.append\(measures\(T, J\)\);/, '잣대 셋은 열쇠 기기만');
   assert.match(pj, /fetch\('\/api\/jinhwa\/me', \{headers: \{'x-atlas-owner': k\}/);
-  assert.match(pj, /if \(!ok \|\| !box \|\| box\.querySelector\('a\.jh-row'\)\) return;/, '줄도 서버가 맞다고 한 뒤에만');
-  assert.match(pj, /location\.replace\('#\/'\)/);
-  assert.doesNotMatch(pj, /location\.(href|hash)\s*=|history\.pushState/, '문 밖 길은 주소 기록을 남기지 않음');
+  assert.match(pj, /if \(!ok \|\| !box \|\| box\.querySelector\('a\.jh-row'\)\) return;/, '보유종목 줄도 서버가 맞다고 한 뒤에만');
+  assert.doesNotMatch(pj, /location\.(href|hash|replace)|history\.pushState/, '진화 쪽은 주소를 바꾸지 않음');
+  assert.deepEqual(jsStrings(pj).map(x => x.s).filter(x => /스스로|저절로/.test(x)), [], '화면 글에 저절로 넣었다는 글 없음(아직 사장님 확인 길 · 2026-10-18 리드 말씀)');
+});
+
+test('카드 차례 · 숫자로 보기 — 들어간 것(새 날짜부터) → 확인을 기다리는 것 · 수만', async () => {
+  const {cardsOf, numbersOf} = await import('../../site/next/p-jinhwa.js');
+  const D = {...DATA, applied: [...DATA.applied, {id: '20261017-0930-1', at: '2026-10-17T10:00:00+09:00', score: {at: '2026-10-31T09:30:00+09:00', ok: false}}, {id: '20261014-0930-1', at: '2026-10-14T10:00:00+09:00', score: {at: '2026-10-28T09:30:00+09:00', ok: true}}]};
+  assert.deepEqual(cardsOf(D).map(c => [c.x.id, c.kind]), [['20261017-0930-1', 'applied'], [A1, 'applied'], [AR, 'reverted'], ['20261014-0930-1', 'applied'], [W1, 'waiting'], [W2, 'waiting'], [W3, 'waiting']]);
+  assert.deepEqual(numbersOf(D), {applied: 4, waiting: 3, reverted: 1, right: 1, wrong: 1, unsure: 0, notYet: 2});
+  assert.equal(cardsOf(null), null); assert.equal(numbersOf({}), null);
+  assert.deepEqual(cardsOf({waiting: [{}, {id: 3}], applied: []}), [], '번호 없는 줄은 버림');
 });

@@ -1,13 +1,14 @@
-/* 진화 칸(#/jinhwa) — 사장님 2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」(이름은 17:18 골똘이) [9] 1 ~ 10 · [10] 1 ~ 6 · 일꾼 KD · 잣대 docs/design/kkolttori-2026-10-18/accept/KD.md
-   사장님 열쇠 기기에서만 열림([9] 1): 이 기기에 사장님 열쇠(localStorage atlas11:invite:owner — 편지 여는 밤 · 초대장 쪽과 같은 자리)가 있고 서버(GET /api/jinhwa/me)가 맞다고 할 때만.
-     아니면 아무것도 그리지 않고 첫 화면(#/)으로 바꿔 씀(주소 기록에도 안 남음) · 열쇠가 아예 없는 기기는 app.js 길이 이 모듈도 받지 않음 · 보유종목 바로 가기 「진화 칸」 줄(ownerRow — p-hold shortcuts 가 부름)도 같은 문
-   차례: ① 맨 위 = 본질 한 줄 + 「진화 n번째」([9] 2) ② 기다리는 진화 — 대안 카드(옆으로 넘김 · 이름 · 전과 후 그림 · 「확인」 → 섬기는 본질 · 세 사람 한마디 · 어림 · 되돌릴 조건 · 사전 부검 · 큰 것 위험)([9] 3 · 4 · 5)
-         ③ 진화한 것(새 날짜부터 · 무엇이 바뀌었나 · 전과 후 그림 · 10거래일 뒤 채점 · 「되돌리기」)([9] 6) ④ 고친 고장([9] 7) ⑤ 잣대 셋(합계 칸 · [10] — 참고 숫자는 접음)
-   「예측」([9] 3 · 6 사장님 말)은 화면에서 「어림」 — site/next/words.js SCREEN 이 화면 글 「예측」을 막음(주식 앞날 맞히기 금지 말) · 진화 회차(KE)도 같은 말 · 뜻 = 고친 뒤 잣대가 어떻게 될지 미리 적은 것(포퍼)
-   자료: /next/data/jinhwa.json(진화 회차 KE · kkolttori-jinhwa-1) · 그림 = 자료의 before · after 길(data/jinhwa/<번호>-before.png — /next/ 기준) 또는 /next/data/jinhwa/<번호>-before.png · 상태 GET /api/jinhwa/status · 합계 GET /api/tally/sum?days=14
-   단추: 「확인」 → POST /api/jinhwa/confirm · 들어가기 전 다시 누름 → withdraw([9] 5) · 「되돌리기」 → revert · 다시 누름 → withdraw(되돌리기를 거둠) — 모두 사장님 열쇠 머리글(x-atlas-owner)
-   「○시」 = 진화 회차(업데이트 30분 전 · 평일 09:30 · 11:30 · 13:30 · 17:30 서울 · [8] 1)가 회차마다 하나만 넣는 차례(되돌리기 먼저 · 그다음 확인 · 이른 때부터 — scripts/atlas11/jinhwa/lib.mjs planRound)를 그대로 흉내 내 셈 — slotPlan
-   회차가 쓴 글(이름 · 섬기는 본질 · 세 사람 · 어림 · 고장 · 채점 까닭)은 한국어 그대로(lang="ko") · 글은 textContent 로만(보안 규칙) · 노드에서도 불러 시험(맨 위에서 NX 를 안 읽음) */
+/* 진화(#/jinhwa) — 사장님 2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」 [9] · [10] · 일꾼 KD · 22:45 「진화 탭을 상단에 만들어 구글과 잡스라면 어떻게 만들까?」 · 22:46 「모든 사람들」 · 일꾼 KM(accept/KM.md)
+   모든 사람이 봄(읽기만): 위 막대 「진화」 단추(app.js) → 이 쪽 · 자료 /next/data/jinhwa.json 한 곳
+   잡스 = 겉: 맨 위 「골똘이 진화」 + 본질 첫 줄 + 「진화 n번째」 → 카드 한 장씩(옆으로 밀거나 「‹」 「›」) — 들어간 것(새 날짜부터) → 확인을 기다리는 것
+     카드 = 상태 한 줄(「n월 n일 들어감」 · 「확인을 기다려요」 · 「되돌렸어요」) · 이름 · 전과 후 그림(세로 화면 그림이라 나란히 · 없으면 「그림 없음」) · 섬기는 본질 · 세 사람 한마디 · 어림 · 10거래일 채점 · 접은 「자세히」
+   구글 = 맨 아래 접은 「숫자로 보기」(진화한 수 · 들어간 것 · 되돌린 것 · 확인을 기다리는 것 · 10거래일 어림 맞음 · 틀림 — 수만 · 몫 · 순위 없음) · 고친 고장 줄
+   단추(확인 · 다시 눌러 거두기 · 되돌리기)와 잣대 셋 · 위험 · 검사 줄은 사장님 열쇠 기기(localStorage atlas11:invite:owner + 서버 GET /api/jinhwa/me 가 맞다고 함)에서만 — 다른 기기는 단추 0 · 서버 물음 0
+     (2026-10-18 리드 말씀: 저절로 넣기는 아직 만들지 않음 — 사장님 확인 길 그대로)
+   「예측」(사장님 말)은 화면에서 「어림」 — site/next/words.js SCREEN 이 화면 글 「예측」을 막음
+   「○시」 = 진화 회차(업데이트 30분 전)가 회차마다 하나만 넣는 차례(되돌리기 먼저 · 그다음 확인 · 이른 때부터 — scripts/atlas11/jinhwa/lib.mjs planRound)를 흉내 낸 셈 — slotPlan
+   회차가 쓴 글(이름 · 섬기는 본질 · 세 사람 · 어림 · 고장 · 채점 까닭)은 한국어 그대로(lang="ko") · 글은 textContent 로만(보안 규칙) · 노드에서도 불러 시험(맨 위에서 NX 를 안 읽음) · 이름은 brand.js 한 곳 */
+import {NAME} from './brand.js';
 const OWNER = 'atlas11:invite:owner', DAYS = 14, MIN_SAMPLE = 30; // MIN_SAMPLE = config/atlas11/jinhwa-metrics.v1.json judge.minSample
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -36,15 +37,6 @@ export function ownerRow(box) {
     box.append(h('a', {class: 'jh-row', href: '#/jinhwa'}, '진화 칸', h('span', {text: '›'})));
   }).catch(() => {});
 }
-/** 문 밖 — 아무것도 그리지 않고 첫 화면으로(주소 기록을 바꿔 씀) · 길(route)이 새 화면을 그리면 이 결과는 버려짐 */
-function away() {
-  return new Promise(res => {
-    const done = () => res({title: '', nodes: []});
-    addEventListener('hashchange', done, {once: true}); setTimeout(done, 3000);
-    location.replace('#/');
-  });
-}
-
 /* ── 업데이트 때(「○시」) — 매시 정각(서울 · 주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 진화 회차는 30분 전 ── */
 export const SLOTS = Object.freeze(Array.from({length: 24}, (_, h) => h)), LEAD_MIN = 30;
 /** t(ms) 뒤 첫 업데이트 — lead = 회차가 그 업데이트 30분 전에 돌아 그때까지 들어온 확인만 봄(true) · false 면 그냥 다음 업데이트 */
@@ -93,30 +85,56 @@ async function post(op, id) {
     return {status: r.status, body: j ?? {}};
   } catch { return {status: 0, body: {}}; }
 }
-const WHY = {owner_only: '? 사장님 열쇠가 맞지 않아요.', applied: '이미 들어간 진화예요. 되돌리기는 「진화한 것」에서 해요.', reverted: '이미 되돌린 진화예요.', unknown_id: '? 이 대안을 찾지 못했어요. 쪽을 다시 열어 주세요.', no_data: '? 진화 자료를 받지 못했어요. 잠시 뒤 다시 눌러 주세요.'};
+const WHY = {owner_only: '? 사장님 열쇠가 맞지 않아요.', applied: '이미 들어간 진화예요. 되돌리기는 그 카드에서 해요.', reverted: '이미 되돌린 진화예요.', unknown_id: '? 이 대안을 찾지 못했어요. 쪽을 다시 열어 주세요.', no_data: '? 진화 자료를 받지 못했어요. 잠시 뒤 다시 눌러 주세요.'};
 const whyOf = r => WHY[r.body?.error] ?? '? 적지 못했어요. 잠시 뒤 다시 눌러 주세요.';
 
+
 /* ── 그리기 조각 ── */
-const IMG_RE = /^(?:\/next\/)?data\/jinhwa\/[A-Za-z0-9._-]+\.(png|jpe?g|webp|svg)$/, PATHY = /\.(png|jpe?g|webp|svg)$/i;
+const IMG_RE = /^(?:\/next\/)?data\/jinhwa\/[A-Za-z0-9._-]+\.(png|jpe?g|webp|svg)$/;
 /** 그림 길 — 회차가 준 길(그림 폴더 안 · /next/ 기준 상대 길도) 또는 /next/data/jinhwa/<번호>-before.png · -after.png */
 export const picSrc = (x, side) => { const v = x?.[side]; return typeof v === 'string' && IMG_RE.test(v) ? (v.startsWith('/') ? v : '/next/' + v) : `/next/data/jinhwa/${encodeURIComponent(String(x?.id ?? ''))}-${side}.png`; };
-/** 전과 후 그림 한 장씩 · 못 받으면 「? 그림 없음」 · 누르면 크게(새 칸) · before · after 가 그림 길이 아닌 글이면 그림 밑에 한 줄씩 */
-function pics(x, small = false) {
+/** 전과 후 그림 — 휴대폰 화면 그림(세로)이라 두 장을 나란히(전 → 후) · 못 받으면 차분한 「그림 없음」 칸 · 누르면 크게(새 칸) */
+function pics(x) {
   const one = side => {
-    const src = picSrc(x, side);
-    const img = h('img', {class: 'jh-img', src, alt: side === 'before' ? '고치기 전' : '고친 뒤', loading: 'lazy', decoding: 'async'});
+    const src = picSrc(x, side), cap = side === 'before' ? '전' : '후';
+    const img = h('img', {class: 'jh-img', src, alt: side === 'before' ? '고치기 전 화면' : '고친 뒤 화면', loading: 'lazy', decoding: 'async'});
     const box = h('a', {class: 'jh-pic', href: src, target: '_blank', rel: 'noopener'}, img);
-    img.addEventListener('error', () => box.replaceWith(h('span', {class: 'jh-pic jh-noimg', text: '? 그림 없음'})), {once: true});
-    return h('figure', {class: 'jh-fig'}, box, h('figcaption', {text: side === 'before' ? '전' : '후'}));
+    img.addEventListener('error', () => box.replaceWith(h('span', {class: 'jh-pic jh-noimg', text: '그림 없음'})), {once: true});
+    return h('figure', {class: 'jh-fig'}, box, h('figcaption', {text: cap}));
   };
-  const words = ['before', 'after'].map(s => (typeof x[s] === 'string' && x[s].trim() && !PATHY.test(x[s].trim()) ? h('p', {class: 'jh-line'}, h('span', {class: 'jh-k', text: s === 'before' ? '전 ' : '후 '}), h('span', {lang: 'ko', text: x[s].trim()})) : null));
-  return [h('div', {class: 'jh-pics' + (small ? ' sm' : '')}, one('before'), one('after')), ...words];
+  return h('div', {class: 'jh-pics'}, one('before'), h('span', {class: 'jh-arrow', 'aria-hidden': 'true', text: '→'}), one('after'));
 }
 /** 이름표 + 회차가 쓴 글 한 줄(없으면 안 그림) */
 const line = (k, v, cls = '') => (typeof v === 'string' && v.trim() ? h('p', {class: 'jh-line ' + cls}, h('span', {class: 'jh-k', text: k + ' '}), h('span', {lang: 'ko', text: v.trim()})) : null);
 const failN = v => (Number.isInteger(v) ? v : Number.isInteger(v?.fail) ? v.fail : Number.isInteger(v?.fails) ? v.fails : null);
+const txt = v => (typeof v === 'string' && v.trim() ? v.trim() : null);
 
-/** 상태 단추 — kind = confirm(기다리는 진화) · revert(진화한 것) · 누를 때마다 서버에 적고 모든 단추 글을 다시 셈 */
+/** 되돌린 때 — 진화 회차 꼴 reverted {at} · 옛 꼴 revertedAt · reverted 글(때) — 되돌리지 않았으면 null */
+export const revertedAt = a => (a?.reverted && typeof a.reverted === 'object' ? a.reverted.at ?? '' : typeof a?.reverted === 'string' ? a.reverted : a?.reverted === true ? '' : a?.revertedAt ?? null);
+/** 채점 글([9] 6 · [10] 6) — score.at 이 없으면 아직(회차가 쓴 까닭이 있으면 그 글) · 있으면 맞았어요 · 틀렸어요 · 판단 못 했어요 + 까닭 */
+export function scoreLine(a) {
+  const sc = a?.score, days = Number.isInteger(a?.predict?.days) ? a.predict.days : 10, why = typeof sc?.text === 'string' ? sc.text.trim() : '';
+  if (!sc || !sc.at) return {cls: '', head: why ? null : `${days}거래일 뒤 채점 전이에요`, why};
+  return {cls: sc.ok === true ? ' ok' : sc.ok === false ? ' no' : '', head: `${days}거래일 뒤 · ${sc.ok === true ? '맞았어요' : sc.ok === false ? '틀렸어요' : '판단 못 했어요'}`, why};
+}
+
+/** 카드 차례(모든 사람 같은 셈) — 들어간 것(새 날짜부터 · 되돌린 것도 그 자리) → 확인을 기다리는 것(자료 차례) · 번호 없는 줄은 버림 */
+export function cardsOf(J) {
+  if (!J || !Array.isArray(J.waiting) || !Array.isArray(J.applied)) return null;
+  const tOf = x => { const t = Date.parse(x?.at); return Number.isFinite(t) ? t : 0; };
+  const A = J.applied.filter(a => typeof a?.id === 'string').sort((a, b) => tOf(b) - tOf(a)).map(x => ({kind: revertedAt(x) != null ? 'reverted' : 'applied', x}));
+  const W = J.waiting.filter(w => typeof w?.id === 'string').map(x => ({kind: 'waiting', x}));
+  return [...A, ...W];
+}
+/** 숫자로 보기(접은 칸) — 들어간 수 · 확인을 기다리는 수 · 되돌린 수 · 10거래일 어림(맞음 · 틀림 · 판단 못 함 · 아직) — 몫(%)은 셈하지 않음 */
+export function numbersOf(J) {
+  const C = cardsOf(J); if (!C) return null;
+  const ap = C.filter(c => c.kind !== 'waiting'), sc = ap.map(c => c.x.score).filter(s => s && s.at);
+  return {applied: ap.length, waiting: C.length - ap.length, reverted: C.filter(c => c.kind === 'reverted').length,
+    right: sc.filter(s => s.ok === true).length, wrong: sc.filter(s => s.ok === false).length, unsure: sc.filter(s => s.ok !== true && s.ok !== false).length, notYet: ap.length - sc.length};
+}
+
+/** 상태 단추(사장님 열쇠 기기만) — kind = confirm(확인을 기다리는 카드) · revert(들어간 카드) · 누를 때마다 서버에 적고 모든 단추 글을 다시 셈 */
 function stateBtn(x, kind, C) {
   const onState = kind === 'revert' ? 'revert' : 'confirmed';
   const b = h('button', {class: kind === 'revert' ? 'jh-rv' : 'jh-ok', type: 'button', 'data-id': x.id});
@@ -142,45 +160,51 @@ function stateBtn(x, kind, C) {
   return b;
 }
 
-/** 기다리는 진화 카드 하나([9] 3 · 4) — 첫 화면에 이름 · 그림 · 단추가 들게 차례를 둠 */
-function waitCard(w, i, n, C) {
-  const v = w.voices ?? {}, p = w.predict ?? {}, ch = w.checks ?? {}, cf = failN(ch.changed), pf = failN(ch.preview);
-  return h('article', {class: 'jh-card' + (w.pick ? ' jh-pick' : ''), 'data-id': w.id, 'aria-label': `기다리는 진화 ${i + 1} / ${n}`},
-    h('p', {class: 'jh-top'}, h('span', {class: 'num', text: `${i + 1} / ${n}`}), w.pick ? h('b', {class: 'jh-badge', text: '세 사람이 고른 것'}) : null, w.big ? h('b', {class: 'jh-bigt', text: '큰 것'}) : null),
-    h('h3', {class: 'jh-name', lang: 'ko', text: typeof w.title === 'string' && w.title.trim() ? w.title.trim() : '?'}),
-    ...pics(w),
-    stateBtn(w, 'confirm', C),
-    line('섬기는 본질', w.serves),
-    h('p', {class: 'jh-line jh-k jh-vh', text: '세 사람 한마디'}),
-    h('ul', {class: 'jh-voices'}, ...[['카너먼', v.kahneman], ['멍거', v.munger], ['포퍼', v.popper]].map(([who, say]) => h('li', {}, h('span', {class: 'jh-k', text: who + ' '}), h('span', {lang: 'ko', text: typeof say === 'string' && say.trim() ? say.trim() : '?'})))),
-    line('어림', p.text), line('재는 법', p.measure),
-    h('p', {class: 'jh-line jh-k', text: `${Number.isInteger(p.days) ? p.days : 10}거래일 뒤 채점`}),
-    line('되돌릴 조건', w.revert), line('사전 부검', w.premortem),
-    ...(w.big ? (Array.isArray(w.risks) ? w.risks : []).slice(0, 2).map(r => line('위험', r, 'jh-risk')) : []),
-    cf != null || pf != null ? h('p', {class: 'jh-line jh-k', text: `바뀐 쪽 검사 실패 ${cf ?? '?'} · 전체 미리 검사 실패 ${pf ?? '?'}`}) : null);
+/** 카드 한 장 — 위 = 상태 한 줄 · 이름 · 전과 후 그림 / 아래 = 섬기는 본질 · 세 사람 한마디 · 어림 · 10거래일 · 접은 「자세히」 */
+function oneCard({kind, x}, i, n, C) {
+  const v = x.voices ?? {}, p = x.predict ?? {}, rt = kind === 'reverted' ? revertedAt(x) : null;
+  const tag = kind === 'waiting' ? h('b', {class: 'jh-tag wait', text: '확인을 기다려요'})
+    : kind === 'reverted' ? h('b', {class: 'jh-tag', text: `되돌렸어요 · ${rt ? mdOf(rt) : '?'}`})
+    : h('b', {class: 'jh-tag', text: `${mdOf(x.at)} 들어감`});
+  const S = kind === 'waiting' ? null : scoreLine(x);
+  const has3 = ['kahneman', 'munger', 'popper'].some(k => txt(v[k]));
+  const more = [line('재는 법', p.measure), line('되돌릴 조건', x.revert), line('사전 부검', x.premortem)].filter(Boolean);
+  const own = C.owner ? (() => {
+    const ch = x.checks ?? {}, cf = failN(ch.changed), pf = failN(ch.preview);
+    return [...(x.big ? (Array.isArray(x.risks) ? x.risks : []).slice(0, 2).map(r => line('위험', r, 'jh-risk')) : []),
+      cf != null || pf != null ? h('p', {class: 'jh-line jh-k', text: `바뀐 쪽 검사 실패 ${cf ?? '?'} · 전체 미리 검사 실패 ${pf ?? '?'}`}) : null];
+  })() : [];
+  return h('article', {class: 'jh-card ' + kind, 'data-id': x.id, 'data-kind': kind, role: 'group', 'aria-label': `${i + 1} / ${n}`},
+    h('p', {class: 'jh-top'}, tag, kind === 'waiting' && x.pick ? h('span', {class: 'jh-badge', text: '세 사람이 고른 것'}) : null, C.owner && x.big ? h('span', {class: 'jh-bigt', text: '큰 것'}) : null),
+    h('h3', {class: 'jh-name', lang: 'ko', text: txt(x.title) ?? '?'}),
+    pics(x),
+    C.owner && kind === 'waiting' ? stateBtn(x, 'confirm', C) : C.owner && kind === 'applied' ? stateBtn(x, 'revert', C) : null,
+    line('섬기는 본질', x.serves),
+    has3 ? h('ul', {class: 'jh-voices', 'aria-label': '세 사람 한마디'}, ...[['카너먼', v.kahneman], ['멍거', v.munger], ['포퍼', v.popper]].map(([who, say]) => h('li', {}, h('span', {class: 'jh-who', text: who}), h('span', {lang: 'ko', text: txt(say) ?? '?'})))) : null,
+    line('어림', p.text),
+    S ? h('p', {class: 'jh-line jh-score' + S.cls}, S.head ? h('span', {text: S.head}) : null, S.why ? h('span', {lang: 'ko', text: (S.head ? ' — ' : '') + S.why}) : null)
+      : h('p', {class: 'jh-line jh-k', text: `들어가면 ${Number.isInteger(p.days) ? p.days : 10}거래일 뒤 채점해요`}),
+    more.length ? h('details', {class: 'jh-more'}, h('summary', {text: '자세히'}), ...more) : null,
+    ...own);
 }
 
-/** 되돌린 때 — 진화 회차 꼴 reverted {at} · 옛 꼴 revertedAt · reverted 글(때) — 되돌리지 않았으면 null */
-export const revertedAt = a => (a?.reverted && typeof a.reverted === 'object' ? a.reverted.at ?? '' : typeof a?.reverted === 'string' ? a.reverted : a?.reverted === true ? '' : a?.revertedAt ?? null);
-/** 채점 글([9] 6 · [10] 6) — score.at 이 없으면 아직(회차가 쓴 까닭이 있으면 그 글) · 있으면 맞았어요 · 틀렸어요 · 판단 못 했어요 + 까닭 */
-export function scoreLine(a) {
-  const sc = a?.score, days = Number.isInteger(a?.predict?.days) ? a.predict.days : 10, why = typeof sc?.text === 'string' ? sc.text.trim() : '';
-  if (!sc || !sc.at) return {cls: '', head: why ? null : `${days}거래일 뒤 채점 전이에요`, why};
-  return {cls: sc.ok === true ? ' ok' : sc.ok === false ? ' no' : '', head: `${days}거래일 뒤 · ${sc.ok === true ? '맞았어요' : sc.ok === false ? '틀렸어요' : '판단 못 했어요'}`, why};
-}
-/** 진화한 것 한 줄([9] 6) — 날짜 · 무엇이 바뀌었나 · 전과 후 그림 · 10거래일 뒤 채점 · 되돌리기 */
-function doneRow(a, C) {
-  const rt = revertedAt(a), S = scoreLine(a);
-  return h('article', {class: 'jh-done', 'data-id': a.id},
-    h('p', {class: 'jh-dd'}, h('span', {text: `${mdOf(a.at)} 들어감`})),
-    h('h3', {class: 'jh-name', lang: 'ko', text: typeof a.title === 'string' && a.title.trim() ? a.title.trim() : '?'}),
-    ...pics(a, true),
-    line('어림', a.predict?.text),
-    h('p', {class: 'jh-line jh-score' + S.cls}, S.head ? h('span', {text: S.head}) : null, S.why ? h('span', {lang: 'ko', text: (S.head ? ' — ' : '') + S.why}) : null),
-    rt != null ? h('p', {class: 'jh-line jh-k', text: `되돌렸어요 · ${rt ? mdOf(rt) : '?'}`}) : stateBtn(a, 'revert', C));
+/** 카드 넘기기 — 손가락으로 밀거나 「‹ 앞」 「다음 ›」 · 지금 몇 번째인지 한 줄 */
+function carousel(cards, C, start = 0) {
+  const n = cards.length, rail = h('div', {class: 'jh-rail', tabindex: '0', 'aria-label': '진화 카드'}, ...cards.map((c, i) => oneCard(c, i, n, C)));
+  const cnt = h('span', {class: 'jh-cnt num', 'aria-live': 'polite'});
+  const prev = h('button', {class: 'jh-nav', type: 'button', 'aria-label': '앞 카드', text: '‹'}), next = h('button', {class: 'jh-nav', type: 'button', 'aria-label': '다음 카드', text: '›'});
+  const at = () => { const w = rail.clientWidth || 1; return Math.max(0, Math.min(n - 1, Math.round(rail.scrollLeft / w))); };
+  const paint = (i = at()) => { cnt.textContent = `${i + 1} / ${n}`; prev.disabled = i <= 0; next.disabled = i >= n - 1; };
+  const go = i => { const smooth = !(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches); rail.scrollTo({left: i * rail.clientWidth, behavior: smooth ? 'smooth' : 'auto'}); paint(i); };
+  prev.addEventListener('click', () => go(at() - 1)); next.addEventListener('click', () => go(at() + 1));
+  let raf = 0; rail.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => paint()); }, {passive: true});
+  rail.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(at() + 1); } else if (e.key === 'ArrowLeft') { e.preventDefault(); go(at() - 1); } });
+  paint(start);
+  if (start > 0) requestAnimationFrame(() => { rail.scrollLeft = start * rail.clientWidth; paint(start); });
+  return {rail, nav: h('div', {class: 'jh-navs'}, prev, cnt, next)};
 }
 
-/** 잣대 셋([10] 1 · 2 · 5) — 지난 14일 합계 · 30번 안이면 「모으는 중」 · 참고 숫자는 접음 */
+/** 잣대 셋([10] 1 · 2 · 5 · 사장님 열쇠 기기만) — 지난 14일 합계 · 30번 안이면 「모으는 중」 · 참고 숫자는 접음 */
 function measures(T, J) {
   const sec = h('section', {class: 'jh-ms', 'aria-label': '잣대 셋'}, h('h2', {class: 'sec', text: '잣대 셋'}));
   sec.append(h('p', {class: 'note', text: `지난 ${DAYS}일 합계예요. ${MIN_SAMPLE}번이 안 되면 판단하지 않고 모아요. 하루 숫자는 소음이에요.`}));
@@ -196,41 +220,46 @@ function measures(T, J) {
   if (r) sec.append(h('details', {class: 'jh-ref'}, h('summary', {text: '참고 숫자 · 잣대가 아니에요'}), h('p', {class: 'jh-m', text: `사이트를 연 수 ${r.visit} · 보낸 수 ${r.share} · 가입을 마친 수 ${r.signup}`})));
   return sec;
 }
+/** 숫자로 보기(맨 아래 접은 칸) — 수만 · 몫 · 순위 없음 */
+function numbers(J) {
+  const N = numbersOf(J), q = v => (N ? v : '?');
+  return h('details', {class: 'jh-g'}, h('summary', {text: '숫자로 보기'}),
+    h('p', {class: 'jh-m', text: `진화한 수 ${J && Number.isInteger(J.n) ? J.n : '?'}`}),
+    h('p', {class: 'jh-m', text: `들어간 것 ${q(N?.applied)} · 그중 되돌린 것 ${q(N?.reverted)}`}),
+    h('p', {class: 'jh-m', text: `확인을 기다리는 것 ${q(N?.waiting)}`}),
+    h('p', {class: 'jh-m', text: `10거래일 어림 · 맞음 ${q(N?.right)} · 틀림 ${q(N?.wrong)} · 판단 못 함 ${q(N?.unsure)} · 아직 ${q(N?.notYet)}`}));
+}
 
-export async function render() {
-  if (!(await ownerOk())) return away(); // [9] 1 — 열쇠 기기가 아니면 아무것도 그리지 않음
-  const [J, S, T] = await Promise.all([getData(), getJson('/api/jinhwa/status'), getJson('/api/tally/sum?days=' + DAYS, {headers: {'x-atlas-owner': ownerKey() ?? ''}})]);
+/** #/jinhwa — 모든 사람이 봄(사장님 2026-10-18 22:46 「모든 사람들」) · 단추(확인 · 거두기 · 되돌리기)는 사장님 열쇠 기기에서 서버가 맞다고 할 때만 · arg = 카드 번호면 그 카드부터 */
+export async function render(arg) {
+  const owner = await ownerOk(); // 열쇠가 없는 기기는 서버에 묻지 않음(false)
+  const [J, S, T] = await Promise.all([getData(), owner ? getJson('/api/jinhwa/status') : null, owner ? getJson('/api/tally/sum?days=' + DAYS, {headers: {'x-atlas-owner': ownerKey() ?? ''}}) : null]);
   const items = Array.isArray(S?.items) ? S.items.filter(x => typeof x?.id === 'string' && typeof x.state === 'string') : [];
-  const tOf = x => { const t = Date.parse(x?.at); return Number.isFinite(t) ? t : 0; };
-  const n = Number.isInteger(J?.n) ? J.n : null, W = J ? J.waiting.filter(w => typeof w?.id === 'string') : null;
-  const A = J ? J.applied.filter(a => typeof a?.id === 'string').sort((a, b) => tOf(b) - tOf(a)) : null; // 진화한 것 — 새 날짜부터
-  const sets = {waiting: new Set((W ?? []).map(w => w.id)), applied: new Set((A ?? []).filter(a => revertedAt(a) == null).map(a => a.id))}; // 「○시」 셈 — 회차가 실제로 다룰 번호만
-  const C = {st: new Map(items.map(x => [x.id, x])), stOk: Array.isArray(S?.items), plan: new Map(), painters: []};
+  const cards = cardsOf(J), n = Number.isInteger(J?.n) ? J.n : null;
+  const sets = {waiting: new Set((cards ?? []).filter(c => c.kind === 'waiting').map(c => c.x.id)), applied: new Set((cards ?? []).filter(c => c.kind === 'applied').map(c => c.x.id))}; // 「○시」 셈 — 회차가 실제로 다룰 번호만
+  const C = {owner, st: new Map(items.map(x => [x.id, x])), stOk: Array.isArray(S?.items), plan: new Map(), painters: []};
   C.replan = () => { C.plan = slotPlan([...C.st.values()], Date.now(), sets); for (const p of C.painters) p(); };
   C.plan = slotPlan(items, Date.now(), sets);
   const root = h('div', {class: 'jh', 'data-page': 'jinhwa'});
-  root.append(h('h1', {class: 'jh-h1', text: '진화 칸'}),
-    h('p', {class: 'jh-ess', lang: 'ko', text: typeof J?.essence === 'string' && J.essence.trim() ? J.essence.trim() : '?'}),
-    h('p', {class: 'jh-n', text: `진화 ${n ?? '?'}번째`}));
-  // ② 기다리는 진화
-  root.append(h('h2', {class: 'sec', text: `기다리는 진화 ${W ? W.length : '?'}`}));
+  const ess = typeof J?.essence === 'string' && J.essence.trim() ? J.essence.trim() : '?';
+  root.append(h('h1', {class: 'jh-h1', text: `${NAME} 진화`}), h('p', {class: 'jh-ess', lang: 'ko', text: ess}));
+  const head = h('div', {class: 'jh-head'}, h('p', {class: 'jh-n', text: `진화 ${n ?? '?'}번째`}));
+  root.append(head);
   if (!J) root.append(h('p', {class: 'note jh-q', text: '? 진화 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
-  else if (!W.length) root.append(h('p', {class: 'note', text: '기다리는 진화가 없어요. 다음 진화 회차가 대안 셋을 올려요.'}));
+  else if (!cards.length) root.append(h('p', {class: 'note jh-empty', text: '아직 진화한 것이 없어요. 위 한 줄을 잣대로 천천히 고쳐 가요.'}));
   else {
-    root.append(h('div', {class: 'jh-rail', role: 'group', 'aria-label': '기다리는 진화'}, ...W.map((w, i) => waitCard(w, i, W.length, C))));
-    root.append(h('p', {class: 'note', text: '확인 전에는 아무것도 바뀌지 않아요. 들어가기 전까지는 다시 눌러 확인을 거둘 수 있어요.'}));
+    const i0 = Math.max(0, cards.findIndex(c => c.x.id === arg));
+    const {rail, nav} = carousel(cards, C, i0);
+    head.append(nav); root.append(rail);
+    if (owner && !C.stOk) root.append(h('p', {class: 'note jh-q', text: '? 확인 상태를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
   }
-  if (!C.stOk) root.append(h('p', {class: 'note jh-q', text: '? 확인 상태를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
-  // ③ 진화한 것(새 날짜부터)
-  root.append(h('h2', {class: 'sec', text: `진화한 것 ${A ? A.length : '?'}`}));
-  if (A && !A.length) root.append(h('p', {class: 'note', text: '아직 들어간 진화가 없어요.'}));
-  if (A) for (const a of A) root.append(doneRow(a, C));
-  // ④ 고친 고장(새 날짜부터)
+  // 고친 고장(새 날짜부터)
+  const tOf = x => { const t = Date.parse(x?.at); return Number.isFinite(t) ? t : 0; };
   const F = J && Array.isArray(J.fixed) ? J.fixed.filter(f => typeof f?.what === 'string' && f.what.trim()).sort((a, b) => tOf(b) - tOf(a)) : null;
   root.append(h('h2', {class: 'sec', text: `고친 고장 ${F ? F.length : '?'}`}));
   if (F && !F.length) root.append(h('p', {class: 'note', text: '고친 고장이 없어요.'}));
   if (F?.length) root.append(h('ul', {class: 'jh-fix'}, ...F.map(f => h('li', {}, h('span', {class: 'jh-k', text: mdOf(f.at) + ' '}), h('span', {lang: 'ko', text: f.what.trim()})))));
-  // ⑤ 잣대 셋
-  root.append(measures(T, J));
-  return {title: '진화 칸', nodes: [root]};
+  root.append(numbers(J));
+  if (owner) root.append(measures(T, J));
+  return {title: '진화', nodes: [root]};
 }

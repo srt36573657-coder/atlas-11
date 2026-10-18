@@ -34,6 +34,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .top .ibtn { flex: none; }
 .top .logo { white-space: nowrap; }
 html.en .top .logo { letter-spacing: .02em; }
+/* 위 막대 「진화」 단추(일꾼 KM · 사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」) — 글 단추 · 높이 44 · 폭 44 이상 · 그 쪽이면 금빛 테
+   단추가 넷이 되어 좁은 폭(한국어 349px 아래 · 영어 389px 아래)에서는 로고 글자를 숨기고 둥근 그림만 둠(로고는 그대로 첫 화면 고리 · 읽는 이름은 aria-label) — 단추는 늘 44 × 44 */
+.tbtn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 var(--sp-1); box-sizing: border-box; border: 1px solid var(--hair2); border-radius: 22px; font-size: var(--fs-1); font-weight: 700; line-height: 1; white-space: nowrap; }
+.tbtn:active { background: var(--card2); }
+.tbtn[aria-current="page"] { border-color: var(--gold-line); color: var(--gold); }
+@media (max-width: 349px) { .top .logo { font-size: 0; gap: 0; min-width: 44px; justify-content: center; } }
+@media (max-width: 389px) { html.en .top .logo { font-size: 0; gap: 0; min-width: 44px; justify-content: center; } }
 /* 글씨 크기(지금 아틀란스 html.f2 24px · f3 27px 와 같은 몫) — 화면 칸을 통째로 키움 */
 html.f2 #view { zoom: 1.143; } html.f3 #view { zoom: 1.286; }
 .ic { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
