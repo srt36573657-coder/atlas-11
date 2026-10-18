@@ -422,7 +422,7 @@ function browserMain() {
   };
   // 표지 「(이름)의 고민 1분」(VIDEO.title)
   window.poster = () => {
-    const t = 4.8, c = {s: 1.12, tx: 440 - 440 * 1.12, ty: 760 - 691 * 1.12}, p = pose(t); p.o.lookY = -.5; p.o.lookX = .4; p.o.blink = 0; p.o.beakOpen = 0;
+    const t = 4.8, c = {s: 1.15, tx: 360 - X1 * 1.15, ty: 800 - 691 * 1.15}, p = pose(t); p.o.lookY = -.5; p.o.lookX = .4; p.o.blink = 0; p.o.beakOpen = 0;
     let s = DEFS + sky(t, c) + `<g transform="${layer(c, 1)}">${tree(t)}</g>`;
     const bp = scr(c, p.A[0], p.A[1] - 150);
     s += `<path d="M300 0 L420 0 L${f1(bp[0] + 230)} ${f1(bp[1] + 260)} L${f1(bp[0] - 230)} ${f1(bp[1] + 260)} Z" fill="url(#beam)"/><ellipse cx="${f1(bp[0])}" cy="${f1(bp[1] + 60)}" rx="300" ry="280" fill="url(#spot)"/>`;
@@ -452,7 +452,7 @@ body{width:${W}px;height:${H}px;overflow:hidden;background:#070914;font-family:'
 .card{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transform-origin:50% 50%;background:#FBF7EC;border:3px solid #E9B949;border-radius:26px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .card .cn{font-size:34px;font-weight:800;color:#8A6B1F;letter-spacing:1px}.card .cq{font-size:76px;font-weight:900;color:#1A1420;letter-spacing:-1px;white-space:nowrap}
 .nm{font-family:'Gowun Batang','Noto Serif CJK KR',serif;font-weight:700;color:transparent;background:linear-gradient(100deg,#E9B949 0%,#FFF6DA 45%,#FFE3A0 55%,#C4952F 100%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 18px rgba(233,185,73,.55));letter-spacing:6px}
-.ptitle{position:absolute;left:24px;right:24px;top:96px;text-align:center;font-family:'Gowun Batang','Noto Serif CJK KR',serif;font-weight:700;font-size:66px;line-height:1.2;color:#FFE3A0;text-shadow:0 0 22px rgba(233,185,73,.55),0 3px 0 #07080B}
+.ptitle{position:absolute;left:24px;right:24px;top:296px;text-align:center;font-family:'Gowun Batang','Noto Serif CJK KR',serif;font-weight:700;font-size:66px;line-height:1.2;color:#FFE3A0;text-shadow:0 0 22px rgba(233,185,73,.55),0 3px 0 #07080B}
 #cap{position:absolute;left:22px;right:22px;top:976px;height:212px;display:flex;align-items:center;justify-content:center;padding:6px 18px;border-radius:28px;background:rgba(9,10,22,.82);border:2px solid rgba(233,185,73,.55);opacity:0}
 #capin{width:100%;max-height:200px;text-align:center;font-weight:800;line-height:1.24;letter-spacing:-.5px;color:#fff;word-break:keep-all;text-wrap:balance}
 #cap .ks{color:#FFFFFF}#cap .ku{color:#B4B9C8}#cap .kc{color:#FFD98A;text-shadow:0 0 14px rgba(233,185,73,.8)}

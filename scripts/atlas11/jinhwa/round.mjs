@@ -545,16 +545,18 @@ export async function cmdRecord(a, D) {
   const wt = path.join(D.run, 'wt', 'rec'); st.wt.rec = wt;
   if (!G.worktreeAdd(D.root, wt, base).ok) stop('일 폴더를 못 만듦');
   const live = readJson(path.join(wt, L.DATA_FILE));
-  if (live && JSON.stringify(live) !== JSON.stringify(readJson(path.join(st.wt.main, L.DATA_FILE)))) stop('진화 칸 자료가 회차 동안 main 에서 바뀜 — 덮어쓰지 않음(다음 회차)');
+  const moved = JSON.stringify(live) !== JSON.stringify(readJson(path.join(st.wt.main, L.DATA_FILE)));
+  if (moved) notDone(st, '진화 칸 자료가 회차 동안 main 에서 바뀜 — 덮어쓰지 않고 기록만 남김(다음 회차가 맞춤)');
   const imgDir = path.join(wt, L.IMG_DIR); fs.mkdirSync(imgDir, {recursive: true});
   const shot = new Set([...st.newCards.map(c => c.id), ...st.retested.filter(r => r.ok && r.images).map(r => r.id)]);
   for (const id of shot) for (const k of ['before', 'after']) { const src = path.join(D.run, 'img', `${id}-${k}.png`); if (fs.existsSync(src)) fs.copyFileSync(src, path.join(wt, L.imgFileOf(id, k))); }
-  const v = L.validateJinhwa(next, {measures: metrics ? L.measureTexts(metrics) : null, units: L.essenceUnits(ess.lines), words: wordsOpt(W), exists: f => fs.existsSync(path.join(wt, f))});
+  const v0 = L.validateJinhwa(next, {measures: metrics ? L.measureTexts(metrics) : null, units: L.essenceUnits(ess.lines), words: wordsOpt(W), exists: f => fs.existsSync(path.join(wt, f))});
+  const v = moved ? {ok: false, errors: ['회차 동안 main 에서 바뀜']} : v0;
   const dataChanged = JSON.stringify(next) !== JSON.stringify(st.data0);
-  if (!v.ok) notDone(st, '진화 칸 자료가 꼴 검사에 걸려 그대로 둠 — ' + v.errors.slice(0, 2).join(' · '));
+  if (!v0.ok) notDone(st, '진화 칸 자료가 꼴 검사에 걸려 그대로 둠 — ' + v0.errors.slice(0, 2).join(' · '));
   else fs.writeFileSync(path.join(wt, L.DATA_FILE), JSON.stringify(next, null, 1) + '\n');
   // 아무 데서도 안 쓰는 그림만 치움(지금 남는 판 기준 — 꼴 검사에 걸려 옛 판이 남으면 옛 판 그림을 지킴)
-  const kept = v.ok ? next : st.data0;
+  const kept = v.ok ? next : (live ?? st.data0);
   const keep = new Set([...kept.waiting, ...kept.applied].flatMap(x => [L.imgFileOf(x.id, 'before'), L.imgFileOf(x.id, 'after')]));
   for (const n of fs.readdirSync(imgDir)) { const rel = `${L.IMG_DIR}/${n}`; if (/\.png$/.test(n) && !keep.has(rel)) fs.rmSync(path.join(wt, rel), {force: true}); }
   const carry = L.carrySlot(now);

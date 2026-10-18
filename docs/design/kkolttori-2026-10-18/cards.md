@@ -57,3 +57,11 @@
 ## KG2 반값 셈 따로 세기
 - `docs/design/kkolttori-2026-10-18/half36.md`(결정표)만 읽고 `scripts/atlas11/next/verify/half36_verify.py` 를 따로 씀 — `scripts/atlas11/next/half36.mjs` 와 그 결과 파일 속 셈 방식은 보지 않음. 꼴: `python3 scripts/atlas11/next/verify/half36_verify.py --site <dir> --json <file>` · 끝 코드 0 맞음 / 1 다름 / 2 못 셈(결정표 §11).
 - `node scripts/atlas11/next/half36.mjs --site site` 를 검사기와 함께 돌려(검사기가 0 이어야 파일을 씀) 지금 `site/next/data/half36.json` 의 `check` 를 채움. 다르면 어느 칸이 왜 다른지 보고(고치지 말고).
+
+## KI 합치기 고침(18:10 · 다른 일꾼 보고에서 나온 것)
+- `scripts/atlas11/next/next_check.mjs`: ① 「업종 칸 수」 — KB2 가 줄을 카톡 단추와 함께 감싸(app.js kkWrap · `data-kkrow`) 채널 칸 수가 0 으로 셈 → 셈 고르개가 감싼 줄 안의 칸을 세게(줄 · 단추 구조는 그대로) ② 「친구 소개 줄」 — 새 영상 전(brand.js VIDEO.ready false)에는 편지 띠 글이 「골똘이 소개 · 보내기」 — ready 에 따라 둘 다 받아들이게.
+- `tests/atlas11/invite.test.mjs` 11번 · `tests/atlas11/kakao.test.mjs` ② — 함수 목록에 KD 의 jinhwa · tally 가 더해짐 → 기대 목록에 더함(함수 파일은 손대지 않음).
+- 영어 320폭 위 막대 단추 셋이 43×44 — 이름이 Golttori(8자)로 길어진 탓인지 확인 → `site/next/app.css` 위 막대 칸만 최소 44px(다른 칸 손대지 않음 · quick '#/' '#/me' --en --w 320,360,390).
+- 「하루 4번」 표 밖 글 넷: p-time 0거래일 줄 · p-up 제목 · surge.json 규칙 글 · core.json rules.next — 화면에 나오는 것만, `site/next/essence.js` 의 fourText(fourADay false → 참인 말)로 그리는 쪽에서 바꿈(t365 자료 · site/atlas 는 손대지 않음) · 옛 쪽과 맞대는 검사가 있으면 같은 표로 바꿔 맞댐(KC 가 check_misc · check_surge · check_cal 에 한 꼴 참고).
+- 영어 사전 `i18n_build.mjs` 의 bad 2(KG 반값 note 두 줄 — 자리표 {n1}{n2} 꼴) → 엔진 꼴({n} 차례)로 add.mjs --force 고침 · bad 0 확인.
+- 다른 일꾼(KA 본질 문 · KD 진화 칸 · KE 진화 회차 · KF 영상)이 아직 일함 — 그 파일은 손대지 않음. 끝에 check_changed 를 고친 파일 범위로 한 번.

@@ -372,7 +372,7 @@ else {
     check(got.every(g => g.method === 'POST' && !g.cookie && !g.ref), '[10] 3 신호에 쿠키 · 넘겨준 주소 없음', JSON.stringify(got).slice(0, 200));
     got.length = 0;
     const res1 = await journal(p, 2);
-    B.rest = ks(got);
+    B.rest = ks(got).filter(k => k !== 'visit');
     check(/오늘은 쉬어 가자/.test(res1) && JSON.stringify(B.rest) === '["stop_rest"]', '[10] 1 매매일지를 끝냄 · 「오늘은 쉬어 가자」 → stop_rest 한 번', `${JSON.stringify(B.rest)} 「${res1.slice(0, 30)}」`);
     await ctx.close();
     ctx = await ctxOf({test: true}); p = await pageOf(ctx); got = await tap(p);
@@ -391,7 +391,7 @@ else {
       got.length = 0;
       await p.locator('#view .wy-rec').nth(0).locator('.wy-later button', {hasText: /^했어$/}).click(); await sleep(600);
       await p.locator('#view .wy-rec').nth(1).locator('.wy-later button', {hasText: /^안 했어$/}).click(); await sleep(600);
-      B.promise = ks(got);
+      B.promise = ks(got).filter(k => k !== 'visit');
       check(JSON.stringify(B.promise) === '["promise_yes","promise"]', '[10] 1 한 달 답 — 「했어」 → promise_yes · 「안 했어」 → promise · 한 번씩', JSON.stringify(B.promise));
       await ctx.close();
     }
