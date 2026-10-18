@@ -15,7 +15,7 @@
   "323280",
   "000040"
  ],
- "made": "2026-10-18T15:35:22.207Z",
+ "made": "2026-10-18T15:43:32.306Z",
  "shard": "all/2",
  "units": {
   "total": 2562,
@@ -36,17 +36,17 @@
    }
   }
  },
- "sec": 201,
- "secondsSum": 401,
+ "sec": 206,
+ "secondsSum": 407,
  "time": {
-  "old": 104.7,
-  "new": 292.5,
-  "wall": 200.9,
-  "wallSum": 401,
+  "old": 111.9,
+  "new": 298.7,
+  "wall": 206.4,
+  "wallSum": 407,
   "opensOld": 25572,
   "opensNew": 33283,
-  "oldPct": 26.1,
-  "oldShare": 26.4
+  "oldPct": 27.5,
+  "oldShare": 27.3
  },
  "net": {
   "req": 4,
@@ -88,7 +88,7 @@
    "shard": "2/2",
    "ok": true,
    "fails": 0,
-   "seconds": 200,
+   "seconds": 206,
    "mine": 1281,
    "kinds": {
     "c": 1278,
