@@ -301,7 +301,8 @@ export const addedText = patchU0 => String(patchU0).split('\n').filter(l => l.st
 /** 더한 줄 가운데 한글이 든 글(따옴표 안) — 화면에 나갈 글만 낱말 검사(코드 이름 · css 값은 뺌) */
 export function addedKoreanStrings(patchU0) {
   const out = [];
-  for (const line of addedText(patchU0).split('\n')) {
+  for (const raw of addedText(patchU0).split('\n')) {
+    const line = raw.replace(/\/\*.*?\*\//g, ' ').replace(/<!--.*?-->/g, ' ').replace(/(^|\s)\/\/.*$/, ''); // 주석은 화면 글이 아님
     for (const m of line.matchAll(/(['"`])((?:\\.|(?!\1).)*?[가-힣](?:\\.|(?!\1).)*?)\1/g)) out.push(m[2]);
     if (!/['"`]/.test(line) && /[가-힣]/.test(line) && !/^\s*(\/\/|\/\*|\*)/.test(line)) out.push(line.trim()); // html 글 · 따옴표 없는 줄
   }
@@ -601,16 +602,18 @@ export function cardFrom(draft, {id, pick, files, units, metrics, big: bigWhy = 
 }
 
 // ───────────────────────── 진화 칸 자료 다음 판 ─────────────────────────
-/** 지금 판 + 이번 회차 → 다음 판(꼴 검사 전) — r = {now, essence, facts, apply: {id, at}, revert: {id, at}, dropped: [id], newCards: [card], retestedCards: {id: card}, fixed: [{at, what}], scores: {id: score}} */
+/** 지금 판 + 이번 회차 → 다음 판(꼴 검사 전) — r = {now, essence, facts, apply: {id, at}, revert: {id, at}, applies · reverts: [{id, at}](지난 회차 맞춤),
+ *  dropped: [id], newCards: [card], retestedCards: {id: card}, fixed: [{at, what}], scores: {id: score}} */
 export function nextJinhwa(data, r) {
   const d = data && data.schema === SCHEMA ? JSON.parse(JSON.stringify(data)) : emptyJinhwa({essence: r.essence, now: r.now});
   const drop = new Set(r.dropped ?? []);
-  if (r.apply?.id) {
-    const w = d.waiting.find(x => x.id === r.apply.id);
-    if (w && !d.applied.some(a => a.id === w.id)) d.applied.push({id: w.id, title: w.title, at: r.apply.at, before: w.before, after: w.after, predict: w.predict, score: {at: null, ok: null, text: SCORE_WAIT_TEXT}});
-    drop.add(r.apply.id);
+  // 넣은 것(이번 회차 + 지난 기록 · 커밋 표시로 맞춘 것 — 기록을 못 밀었던 회차가 있어도 다음 회차가 바로잡음)
+  for (const ap of [...(r.applies ?? []), ...(r.apply?.id ? [r.apply] : [])]) {
+    const w = d.waiting.find(x => x.id === ap.id);
+    if (w && !d.applied.some(a => a.id === w.id)) d.applied.push({id: w.id, title: w.title, at: ap.at, before: w.before, after: w.after, predict: w.predict, score: {at: null, ok: null, text: SCORE_WAIT_TEXT}});
+    drop.add(ap.id);
   }
-  if (r.revert?.id) for (const a of d.applied) if (a.id === r.revert.id && !a.revertedAt) a.revertedAt = r.revert.at;
+  for (const rv of [...(r.reverts ?? []), ...(r.revert?.id ? [r.revert] : [])]) for (const a of d.applied) if (a.id === rv.id && !a.revertedAt) a.revertedAt = rv.at;
   d.waiting = d.waiting.filter(w => !drop.has(w.id)).map(w => (r.retestedCards?.[w.id] ? {...w, ...r.retestedCards[w.id], pick: w.pick} : w));
   if (r.newCards?.length) d.waiting = r.newCards.slice(0, 3);
   // 1번(세 사람이 고른 것)이 들어가거나 내려가도 「세 사람이 고른 것」 꼬리표를 남은 것에 옮겨 달지 않음(지어내지 않음) — 남은 것은 pick 거짓 그대로 기다리고 다시 시험됨([8] 3)

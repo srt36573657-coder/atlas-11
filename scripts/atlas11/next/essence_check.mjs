@@ -20,7 +20,7 @@
         받은 때 = 저장소 업데이트 기록(reports/atlas11/t365/updates · 네이버 일봉을 받아 굴린 회차)에서 at 이 그 자료 home.json made 와 같은 것을 따로 찾음
         (없으면 「?」) → essence.js 가 첫 화면과 같은 길(요약 파일 · sumOk)로 만든 세 줄과 맞댐 · app.js 가 essenceBox 를 첫 화면(vHomeAll)에서
         이야기 입구 위에 그림 · 소개 쪽 · 창 설명에 박힌 회사 수도 자료와 같음                                                                       정적 + 화면
-     ③ 망치는 길 낱말 0 — next/*.js 글(rename.mjs jsStrings) · next/*.html · /hello.html · /letter.html · /invite.html(+ 그 쪽 스크립트 글) ·
+     ③ 망치는 길 낱말 0 — next/*.js 글(rename.mjs jsStrings) · next/*.html · /hello.html · /letter.html · /invite.html · /privacy.html(+ 그 쪽 스크립트 글) ·
         next/data/*.json 글 · next/i18n/en.json 값 — words.js RUIN(갈래 = 본질 파일의 망치는 길 여덟과 같아야 함) · words.js 자신은 셈 밖           정적
      ④ 칸(#/gdr)은 열한 질문 뒤에만 — p-gdr gdrSection 첫 문 = opened() · opened = 열한 답 기록 · 질문은 열하나(p-why QS) ·
         다른 화면이 칸 번호(칸 n번 · #/gdr/n · 고른 곳)를 보이면 그 함수 또는 부르는 줄에 열한 질문 문이 있어야 함                                  정적 + 화면
@@ -166,7 +166,7 @@ export function siteStrings(dir) {
   try { names = fs.readdirSync(nd); } catch { problems.push('next/ 폴더가 없음'); return {out, problems}; }
   const jsFile = (rel, abs) => { const t = readText(abs); if (t == null) { problems.push(rel + ' 없음'); return; } try { for (const x of jsStrings(t)) add(rel, x.s); } catch (e) { problems.push(rel + ' 글 뽑기 실패 — ' + e.message); } };
   for (const f of names.filter(f => f.endsWith('.js')).sort()) if (f !== 'words.js') jsFile('next/' + f, path.join(nd, f)); // words.js = 낱말 목록 자신(화면 글 아님)
-  const pages = names.filter(f => f.endsWith('.html')).map(f => 'next/' + f).concat(['hello.html', 'letter.html', 'invite.html']);
+  const pages = names.filter(f => f.endsWith('.html')).map(f => 'next/' + f).concat(['hello.html', 'letter.html', 'invite.html', 'privacy.html']);
   const seenJs = new Set();
   for (const rel of pages) {
     const t = readText(path.join(dir, rel)); if (t == null) { if (!rel.startsWith('next/')) problems.push(rel + ' 없음'); continue; }
@@ -344,7 +344,7 @@ export function checkGdrSource(dir) {
   if (rd && /\bfunnel\w*\s*\(/.test(gc.slice(rd.start, rd.end)) && !/opened\s*\(\s*\)/.test(gc.slice(rd.start, rd.end))) bad(c, 'p-gdr.js render 가 열한 질문 문 없이 「어떻게 골랐나」를 그림');
   // 칸 번호 · 고른 곳을 다른 화면이 보이나(칸 n번 · #/gdr/n · GDR.picks) — 그 함수 또는 그 함수를 부르는 줄마다 열한 질문 문이 있어야 함
   //   문 = 부르는 코드(풀이 글 · 따옴표 글 밖) doneOnce( · opened( · gdrOpened( · whyDone( 또는 기록 열쇠 글 'atlas:godori-why' 를 읽음
-  const gated = (s, from, to) => { const code = codeOnly(s.slice(from, to)); return /\b(?:doneOnce|opened|gdrOpened|whyDone)\s*\(/.test(code) || jsStrings(s.slice(from, to)).some(x => x.s === 'atlas:godori-why'); };
+  const gated = (s, from, to) => { const code = codeOnly(s.slice(from, to)); return /\b(?:doneOnce|opened|gdrOpened|whyDone)\s*(?:\?\.)?\s*\(/.test(code) || jsStrings(s.slice(from, to)).some(x => x.s === 'atlas:godori-why'); };
   let files = []; try { files = fs.readdirSync(path.join(dir, 'next')).filter(f => f.endsWith('.js') && !['p-gdr.js', 'p-why.js', 'words.js'].includes(f)); } catch { /* 위에서 셈 */ }
   let leaks = 0, looked = 0;
   for (const f of files) {
@@ -821,7 +821,7 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
             if (E.shown.some(x => !x)) bad(c, `처음 온 기기인데 세 줄이 다 보이지 않음(보이는 줄 ${E.shown.filter(Boolean).length}/3) — [5] 1 「처음 온 사람에게는 펼치고」`);
             look(E, '처음 연');
             c.counts.first = E.text.replace(/\s+/g, ' ').trim().slice(0, 200);
-            await go(p, '#/'); const E2 = await essenceText(p);
+            await p.reload({waitUntil: 'domcontentloaded'}); await settle(p); const E2 = await essenceText(p); // 다시 온 기기 = 새로 엶(기억 atlas:essence-seen 이 남은 채)
             if (!E2) bad(c, '다시 연 첫 화면에 세 줄 칸(접힌 한 줄)이 없음');
             else { look(E2, '다시 연'); c.counts.againOpen = E2.open; }
           }
@@ -942,7 +942,7 @@ export async function checkDist(dir, {root = ROOT, render = false, pw = null, no
     const srv = await serveDir(dir);
     try { const r = await renderChecks({base: srv.base, pw, log, now}); list.push(...r.checks); renderInfo = {ran: r.ran, seconds: r.seconds}; }
     finally { await srv.close(); }
-  } else renderInfo.why = render === false ? '--no-render' : 'playwright 없음 — 정적 · 자료 검사만';
+  } else renderInfo.why = render === false ? '정적 · 자료 셈만 — 화면 층은 --render 또는 check_essence.mjs' : 'playwright 없음 — 정적 · 자료 셈만';
   const checks = mergeChecks(list), code = codeOf(checks);
   return {schema: 'kkolttori-essence-check-1', at: new Date().toISOString(), dir, ok: code === 0, code, checks, render: renderInfo, seconds: Math.round((Date.now() - t0) / 100) / 10};
 }

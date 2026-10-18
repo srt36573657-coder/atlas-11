@@ -27,7 +27,7 @@
 //      보낸 뒤 쪽 위치 · 주소 그대로 · 폭죽 0 · 급등(kind surge) = 반값 한 줄(파일 있음 · 없음 · 깨짐) · 친구 쪽 「나도 보내기」는 다 답한 뒤에만 하나
 //      env = 네 곳 흉내(카톡 안 · 아이폰 · 안드로이드 · 컴퓨터 — 사용자 에이전트 · 화면 · 누름 · 공유 창 있음/없음) × 열쇠 있음/없음 → 간 길(kakao · share · copy)과 누름 수를 결과 envs 에 적음 ·
 //      실제 폰 · 실제 카카오는 잴 수 없어 결과에 「?」(가짜 도구는 sendDefault 가 불렸는지만 앎)
-//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text · no-lang · card-rate · card-start-skip · vals-first · neg-margin · offer-twice · switch-on · probe-early · silent-anyone · inline-style · intro-first · name-big · kk-nav · quick-wait · again-early · half-made — 받은 p-share.js · p-share.css · kakao.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
+//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text · no-lang · card-rate · card-start-skip · vals-first · neg-margin · offer-twice · switch-on · probe-early · silent-anyone · inline-style · intro-first · name-big · kk-nav · quick-wait · again-early · half-made · pick-noval — 받은 p-share.js · p-share.css · kakao.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
 //   --only co,fb,nd,en,ent,land,off,on(= card,offer,ret,enk),kk,env — 보고 싶은 묶음만(기본 모두 · 검사 자체 시험은 알맞은 묶음만 돎) · --w 360 = 한 폭만(고치는 동안 — 마지막엔 두 폭 모두)
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
@@ -70,6 +70,7 @@ const MUTS = {
   'quick-wait': [[['ta.value = ev.currentTarget.textContent || L(q); send(); }', 'ta.value = ev.currentTarget.textContent || L(q); }']], ['빠른 말을 눌러도 바로 안 감([6] 4)'], 'p-share.js', 'kk'],
   'again-early': [[['after.append(lock);', 'after.append(lock, againBtn(S, name, null, null, false));']], ['「나도 보내기」가 다 답하기 전에 보임([6] 9)'], 'p-share.js', 'land'],
   'half-made': [[['export const halfLine = j => (j && ', 'export const halfLine = j => ((j = j ?? {n: 3, of: 36}), j && ']], ['반값 파일이 없는데 그 줄이 나감(짓지 않음 [6] 8)'], 'p-share.js', 'kk'],
+  'pick-noval': [[["const c = j?.c ?? (await getJson('comp.json'))?.companies?.[code] ?? null", 'const c = j?.c ?? null']], ['고른 곳 — 글상자에 이름 · 오늘 값이 저절로 안 들어감([6] 3 · comp.json)'], 'p-share.js', 'kk'],
 };
 const MUT = arg('--mutate', null);
 if (MUT && !MUTS[MUT]) { console.error('모르는 --mutate', MUT, Object.keys(MUTS).join(' · ')); process.exit(1); }
@@ -1011,7 +1012,7 @@ async function kkRow(p, o, id) {
     const m = await import('/next/share-btn.js');
     const b = m.shareButtons(o, {kakao: true}); if (!b) return null;
     const ul = document.createElement('ul'), li = document.createElement('li'), a = document.createElement('a'), nm = document.createElement('b');
-    ul.className = 'clist'; ul.id = id; a.className = 'crow'; a.href = nav; nm.className = 'cn'; nm.textContent = o.name;
+    ul.className = 'clist'; ul.id = id; a.className = 'crow'; a.href = nav; nm.className = 'cn'; nm.textContent = o.name ?? o.code;
     a.append(nm, b); li.append(a); ul.append(li); document.querySelector('#view').append(ul);
     b.scrollIntoView({block: 'center'});
     const r = b.getBoundingClientRect(), path = b.querySelector('svg.kk-ic .kk-b');
@@ -1104,6 +1105,30 @@ async function kkButton(W_, H_) {
       bump('급등 반값 맞댐');
     }
     p._errs = p._errs.filter(e => !/half36\.json/.test(e)); // 일부러 404 로 바꿔치기한 반값 파일 한 줄만 봐줌
+    // 고른 곳(회사 파일에 c 가 없고 값이 comp.json 에만 있는 곳 — #/f/pick · #/today 첫 줄들 · 일꾼 KB2 알림) — 번호만 넘겨도 글상자에 이름 · 오늘 값이 저절로([6] 3) · 친구가 연 쪽 오늘 값도
+    const CP = await getJ('/atlas/data/comp.json').catch(() => null);
+    const pick = Object.entries(CP?.companies ?? {}).find(([k, v]) => /^[0-9A-Z]{6}$/.test(k) && Number(v?.price) > 0 && /^\d{4}-\d{2}-\d{2}/.test(String(v?.priceDate ?? '')) && v?.name);
+    if (!pick) fail('검사 준비 — 고른 곳 파일(comp.json)에서 값이 있는 곳을 못 찾음', tag);
+    else {
+      const [pc, pv] = pick, pDay = String(pv.priceDate).slice(0, 10), t3 = `${tag} · 고른 곳 ${pc}`;
+      const noC = await getJ('/atlas/data/co/' + pc + '.json').then(j => !j?.c).catch(() => true);
+      if (!(await kkRow(p, {code: pc, kind: 'share'}, 'kk-p'))) fail('고른 곳 카톡 단추를 못 만듦', t3); // 이름 · 값 · 날 없이 번호만(가장 적게 넘기는 줄)
+      else {
+        await p.locator('#kk-p .kk-btn').tap();
+        let s3 = null;
+        try { await p.waitForSelector(DLG, {state: 'visible', timeout: 10000}); s3 = await p.evaluate(READD); } catch { fail('고른 곳 — 카톡 단추를 눌러도 글상자가 안 열림', t3); }
+        if (s3 && (!s3.desc.includes(pv.name) || !s3.desc.includes(num(pv.price) + '원') || !s3.desc.includes(md(pDay)))) fail('고른 곳 — 글상자에 이름 · 오늘 값이 저절로 안 들어감([6] 3 · comp.json)', `${t3} 「${s3.desc}」`);
+        if (s3) { await p.keyboard.press('Escape'); await p.waitForSelector(DLG, {state: 'detached', timeout: 4000}).catch(() => fail('Esc 로 안 닫힘(고른 곳)', t3)); }
+        // 친구가 연 쪽 — 오늘 값이 「?」가 아니고 comp.json 값(보낸 날 = 그날이면 「보낸 날과 같아요」)
+        await p.goto(base + NEXT + `#/s/${pc}/${pDay}/${Math.round(pv.price)}/s/` + b64(QUICK[0]), {waitUntil: 'domcontentloaded'});
+        let L3 = null;
+        try { await p.waitForFunction(() => !!document.querySelector('#view .ps-vals') && !document.querySelector('#view .boot'), null, {timeout: 30000}); L3 = await p.evaluate(READL); } catch { fail('고른 곳 — 친구가 연 쪽이 안 열림', t3); }
+        const nowV = L3?.vs?.find(x => x.k === NOW_LBL);
+        if (L3 && (!nowV || nowV.n !== num(pv.price) + '원' || !String(L3.name).includes(pv.name))) fail('고른 곳 — 친구가 연 쪽 이름 · 오늘 값(comp.json)', `${t3} ${JSON.stringify({name: L3.name, now: nowV})}`);
+        KK_OUT.pick = {code: pc, noC, box: s3?.desc ?? null, now: nowV?.n ?? null};
+        bump('고른 곳 맞댐');
+      }
+    }
     errsOf(p, tag);
   } finally { await done(p); }
 }

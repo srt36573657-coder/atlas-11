@@ -129,9 +129,10 @@ const MEASURE = ({home, shorts, me, letter}) => {
     .map(c => { const r = c.getBoundingClientRect(); return {k: sel(c), label: c.getAttribute('aria-label') || '', h: Math.round(r.height), y: Math.round(r.top + scrollY), bottom: Math.round(r.bottom + scrollY)}; });
   if (home) {
     const RE = /[+\-−]?\d[\d,]*(?:\.\d+)?\s?%|[+\-−]?\d[\d,]*(?:\.\d+)?\s?원|[+\-−]?\d{1,3}(?:,\d{3})+(?:\.\d+)?|[+\-−]?\d+\.\d+/g;
-    const toks = []; let all = 0;
+    const toks = []; let all = 0, essNums = 0;
     for (const t of texts) {
       if (!t.inView) continue;
+      if (t.el.closest('section.ess')) { essNums += (t.n.nodeValue.match(RE) || []).length; continue; } // 본질 세 줄 칸(이야기 입구 위)은 따로 셈(사장님 2026-10-18 16:39 [5] 8 · 일꾼 KC) — 옛 잼과 견줄 수 있게 첫 화면 숫자에 넣지 않음
       const s = t.n.nodeValue; RE.lastIndex = 0;
       for (let m; (m = RE.exec(s));) {
         const before = s.slice(Math.max(0, m.index - 1), m.index), after = s.slice(m.index + m[0].length, m.index + m[0].length + 2);
@@ -143,7 +144,7 @@ const MEASURE = ({home, shorts, me, letter}) => {
         toks.push({t: m[0].trim(), y: Math.round(q.top)});
       }
     }
-    out.home = {numsFirstScreen: toks.length, nums: toks, numsWholePage: all, blocks: kidsOf()};
+    out.home = {numsFirstScreen: toks.length, nums: toks, numsWholePage: all, essNums, blocks: kidsOf()};
     const cards = [...view.querySelectorAll('a.card, a.prem')].map(a => {
       const href = a.getAttribute('href') || '', tx = a.textContent || '', r = a.getBoundingClientRect();
       const kind = a.matches('.prem') ? 'prem' : /^#\/ch\/i\//.test(href) ? 'industry' : /^#\/ch\/g\//.test(href) ? 'group' : /^#\/w\//.test(href) ? (/급등/.test(tx) ? 'surge' : /대장주/.test(tx) ? 'lead' : /고른 곳/.test(tx) ? 'pick' : 'company') : href.replace(/^(#\/[a-z]+).*$/, '$1') || 'other';

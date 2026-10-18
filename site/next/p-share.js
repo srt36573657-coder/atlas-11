@@ -92,7 +92,13 @@ function getJson(name) {
   const N = nx(); if (N?.getJson) return N.getJson(name);
   return fetch('/atlas/data/' + name, {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null);
 }
-async function coInfo(code) { const j = await getJson('co/' + code + '.json'); const c = j?.c; return c ? {price: Number(c.price) > 0 ? Number(c.price) : null, day: DAY_RE.test(c.priceDate ?? '') ? c.priceDate : null, name: c.name ?? null, j} : {j}; }
+/** 회사 값(이름 · 오늘 값 · 그날) — 회사 파일 co/<번호>.json 의 c · 없으면 고른 곳 파일 comp.json companies[번호]
+    (고른 곳 56곳은 회사 파일에 c 가 없고 값이 comp.json 에만 있음 — app.js vWatch 와 같은 셈 · 일꾼 KB2 알림 2026-10-18: #/f/pick · #/today 첫 줄들 · 친구가 연 쪽 오늘 값도) · j = 회사 파일(마감 기록) */
+async function coInfo(code) {
+  const j = await getJson('co/' + code + '.json');
+  const c = j?.c ?? (await getJson('comp.json'))?.companies?.[code] ?? null, pd = String(c?.priceDate ?? '').slice(0, 10);
+  return c ? {price: Number(c.price) > 0 ? Number(c.price) : null, day: DAY_RE.test(pd) ? pd : null, name: c.name ?? null, j} : {j};
+}
 
 /* 모양 — 앱은 NX.mod 가 붙임 · 소개 · 편지 쪽은 여기서 한 번(다 받을 때까지 기다림 · 1.5초까지) */
 let cssP = null;

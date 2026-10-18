@@ -158,22 +158,23 @@ function browserMain() {
   SYL.sort((a, b) => a.t - b.t);
   const beakAt = t => { let b = 0; for (const s of SYL) { if (s.t > t + .01) break; b = Math.max(b, pulse(t, s.t - .01, s.d * 1.2)); } return b; };
   const L = CU.lines, LI = {s2: 0, shout: 1, s3: 2, s4: 3, s5: 4, s6: 5, s7: 17};
+  const X1 = 520, XH = 505, BS = 1.4; // 가지 끝 가까이 선 자리(①~④) · 매달린 뒤 선 자리(⑤ 끝~⑩) · 골똘이 크기
   const phr = li => { const x = L[li], p = [x.syl[0].t]; x.syl.forEach((s, j) => { if (j && /[,.?!…]/.test(x.syl[j - 1].end)) p.push(s.t); }); return p; };
   const P2 = phr(LI.s2), P3 = phr(LI.s3), P4 = phr(LI.s4), P5 = phr(LI.s5);
   const sylTime = (li, ch) => { const x = L[li], idx = [...x.text].indexOf(ch); const s = x.syl.find(y => y.i === idx); return s ? s.t : x.t0; };
 
   // 별 · 새 떼 자리(고정 씨앗)
   const STARS = Array.from({length: 150}, () => [R() * 920 - 100, R() * 1500 - 520, .6 + R() * 1.8, R() * 6.28]);
-  const FLOCK = Array.from({length: CU.flock}, (_, i) => ({i, x0: 70 + R() * 580, y0: 1180 + R() * 260, dx: (R() - .5) * 260, ti: R() * .65, ph: R() * 6.28,
-    tx: 92 + (i % 6) * 70 + (R() - .5) * 18, ty: 150 + Math.floor(i / 6) * 58 + (R() - .5) * 14, c: [['#AFB6D6', '#7F87AB', '#DCDFEE'], ['#B9C3CF', '#8592A3', '#E3E8EE'], ['#C7B9D6', '#9584AB', '#E8E0F0']][i % 3]}));
+  const FLOCK = Array.from({length: CU.flock}, (_, i) => ({i, x0: 60 + R() * 600, y0: 1000 + R() * 220, dx: (R() - .5) * 260, ti: R() * .5, ph: R() * 6.28,
+    tx: 84 + (i % 6) * 94 + (R() - .5) * 22, ty: 132 + Math.floor(i / 6) * 60 + (R() - .5) * 16, c: [['#A9C4FF', '#6F8FE0', '#E3ECFF'], ['#B8E3F2', '#73AFC6', '#E6F6FB'], ['#C9B8FF', '#8E76E0', '#EEE8FF']][i % 3]}));
   const MESSY = new Set(CU.messy);
 
   // 카메라 — 가지 위 점 (fx, fy) 를 화면 (sx, sy) 에 · 크기 s(때마다 이음)
-  const CAM = [[0, 1, 440, 691, 440, 691], [1.8, 1, 440, 691, 440, 691], [6.0, 1.10, 440, 691, 432, 736], [6.4, 1.16, 440, 691, 430, 752], [13.8, 1.20, 440, 691, 430, 762],
-    [14.35, 1, 440, 691, 440, 700], [16.3, 1, 440, 691, 440, 700], [16.8, 1.12, 440, 691, 432, 745], [21.9, 1.14, 440, 691, 432, 750],
-    [22.3, 1.06, 440, 691, 436, 720], [24.95, 1.08, 440, 691, 420, 640], [25.6, 1, 470, 698, 450, 420], [31.5, 1, 470, 698, 450, 420],
-    [32.0, .9, 470, 691, 500, 800], [47.8, .9, 470, 691, 500, 800], [48.3, 1, 470, 691, 470, 800], [53.95, 1, 470, 691, 470, 800],
-    [54.3, 1, 470, 691, 545, 810], [56.95, 1, 470, 691, 545, 810], [57.25, 1, 470, 691, 470, 845], [60, 1, 470, 691, 470, 845]];
+  const CAM = [[0, 1, X1, 691, 430, 700], [1.8, 1, X1, 691, 430, 700], [6.0, 1.12, X1, 691, 410, 735], [6.4, 1.18, X1, 691, 400, 752], [13.8, 1.22, X1, 691, 395, 760],
+    [14.35, 1, X1, 691, 430, 700], [16.3, 1, X1, 691, 430, 700], [16.8, 1.15, X1, 691, 405, 745], [21.9, 1.17, X1, 691, 400, 750],
+    [22.3, 1.08, X1, 691, 420, 720], [24.95, 1.1, X1, 691, 400, 640], [25.6, 1, XH, 697, 410, 420], [31.5, 1, XH, 697, 410, 420],
+    [32.0, .9, XH, 691, 500, 800], [47.8, .9, XH, 691, 500, 800], [48.3, 1, XH, 691, 470, 800], [53.95, 1, XH, 691, 470, 800],
+    [54.3, 1, XH, 691, 560, 810], [56.95, 1, XH, 691, 560, 810], [57.25, 1, XH, 691, 470, 845], [60, 1, XH, 691, 470, 845]];
   function cam(t) {
     let i = 0; while (i < CAM.length - 2 && t >= CAM[i + 1][0]) i++;
     const a = CAM[i], b = CAM[i + 1], u = eio(win(t, a[0], b[0])), k = j => lerp(a[j], b[j], u);
@@ -237,8 +238,8 @@ function browserMain() {
   // 골똘이 자세 — A(세상 자리) · P(새 그림 속 받침점) · rot · S · sx · sy · o(makbi 몸짓)
   function pose(t) {
     const o = {ruff: 1, chest: 0, messy: 0, tail: 0, hook: 0, tilt: -7, blink: 0, wingL: 0, wingR: 0, crestUp: .35, beakOpen: 0, lookX: 0, lookY: 0, wince: 0};
-    let A = [440, 691], P = [120, 252], rot = 0, S = 1.25, sx = 1, sy = 1;
-    o.blink = Math.max(...[5.2, 9.0, 12.85, 19.3, 27.3, 35.1, 39.4, 45.2, 50.9, 53.4, 59.3].map(b => pulse(t, b, .2)));
+    let A = [X1, 691], P = [120, 252], rot = 0, S = BS, sx = 1, sy = 1;
+    o.blink = Math.max(...[5.2, 9.0, 12.85, 19.3, 27.3, 35.1, 39.4, 45.2, 50.9, 53.0, 58.95].map(b => pulse(t, b, .2)));
     o.beakOpen = .85 * beakAt(t);
     if (t < 6) { // ① 깃 · 날개를 가슴에 · 달을 봄
       o.ruff = t < 2.3 ? 0 : back(win(t, 2.3, 2.55)); o.chest = eio(win(t, 2.95, 3.3)); o.crestUp = .35 + .55 * pulse(t, 2.3, .7);
@@ -258,21 +259,21 @@ function browserMain() {
       for (const a of evs('tip').filter(x => x >= 14 && x < 22)) { const h = pulse(t, a, .34); A = [A[0], A[1] - 16 * h]; sy *= 1 + .07 * h; }
     } else if (t < 25) { // ④ 몸을 내밀고 · 무서워 움찔 · 다시 내밂 · 발끝
       o.messy = .45 - .15 * win(t, 22, 25); const a1 = ev('lean'), a2 = P4[1];
-      if (t < a2) { const g = eio(win(t, a1, a1 + .7)); rot = 14 * g; o.lookY = g; if (t > a2 - .55) { o.wince = 1; rot = lerp(14, 6, eio(win(t, a2 - .55, a2 - .2))); } }
-      else { const g = eio(win(t, a2, a2 + .8)); rot = lerp(6, 24, g); o.lookY = .6; o.wingL = o.wingR = .3 * g; o.crestUp = .5 + .5 * g; A = [A[0], A[1] - 7 * g]; sy = 1 + .05 * g; }
+      if (t < a2) { const g = eio(win(t, a1, a1 + .7)); rot = -14 * g; o.lookY = g; if (t > a2 - .55) { o.wince = 1; rot = lerp(-14, -6, eio(win(t, a2 - .55, a2 - .2))); } }
+      else { const g = eio(win(t, a2, a2 + .8)); rot = lerp(-6, -24, g); o.lookY = .6; o.wingL = o.wingR = .3 * g; o.crestUp = .5 + .5 * g; A = [A[0], A[1] - 7 * g]; sy = 1 + .05 * g; }
       if (t >= 24.75) rot += 3.2 * Math.sin((t - 24.75) * 55);
     } else if (t < 31.55) { // ④ 미끄러짐 → 꼬리로 매달림 · ⑤ 「잠깐」
       o.messy = .3 - .2 * win(t, 25, 31); o.tail = ease(win(t, 25.0, 25.3)); o.hook = ease(win(t, 25.25, 25.42));
-      const H = [470, by(470)];
-      if (t < 25.42) { const u = win(t, 25.0, 25.42), e = easeIn(u); A = [lerp(440 + 30 * ease(win(t, 25, 25.12)), H[0], e), lerp(691, H[1], e) - 40 * Math.sin(Math.PI * u)]; P = [120, lerp(252, 322, e)]; rot = lerp(27, 180, eio(u)); o.wince = 1; o.wingL = o.wingR = .5 + .4 * Math.sin(t * 40); }
-      else { A = H; P = [120, 322]; const dt = t - 25.42; let th = 26 * Math.exp(-dt / 1.4) * Math.sin(2 * Math.PI * dt / 1.05); const fz = ev('freeze'); if (t >= fz) th *= 1 - win(t, fz, fz + .12); rot = 180 + th;
+      const H = [XH, by(XH)];
+      if (t < 25.42) { const u = win(t, 25.0, 25.42), e = easeIn(u); A = [lerp(X1 - 24 * ease(win(t, 25, 25.12)), H[0], e), lerp(691, H[1], e) - 40 * Math.sin(Math.PI * u)]; P = [120, lerp(252, 322, e)]; rot = lerp(-27, -180, eio(u)); o.wince = 1; o.wingL = o.wingR = .5 + .4 * Math.sin(t * 40); }
+      else { A = H; P = [120, 322]; const dt = t - 25.42; let th = 26 * Math.exp(-dt / 1.4) * Math.sin(2 * Math.PI * dt / 1.05); const fz = ev('freeze'); if (t >= fz) th *= 1 - win(t, fz, fz + .12); rot = -180 + th;
         o.wince = dt < .35 ? 1 : 0; o.lookX = t < fz ? Math.sin(dt * 6) * .6 : 0; o.crestUp = .6;
         if (t >= fz) { o.wingR = .7 * (1 - win(t, fz + .7, fz + 1)); const ya = sylTime(LI.s5, '앵'), yb = sylTime(LI.s5, '새'); o.chest = eio(win(t, ya - .1, ya + .1)) * (1 - eio(win(t, yb + .25, yb + .45))); if (t >= P5[2]) { o.lookX = .9; o.tilt = -12; } } }
     } else if (t < 32) { // ⑤ 끝 — 거꾸로에서 한 바퀴 돌아 가지 위로
-      const u = win(t, 31.55, 31.95), e = eio(u), H = [470, by(470)]; A = [470, lerp(H[1], 691, e) - 130 * Math.sin(Math.PI * u)]; P = [120, lerp(322, 252, e)]; rot = lerp(180, 360, e);
+      const u = win(t, 31.55, 31.95), e = eio(u), H = [XH, by(XH)]; A = [XH, lerp(H[1], 691, e) - 130 * Math.sin(Math.PI * u)]; P = [120, lerp(322, 252, e)]; rot = lerp(-180, -360, e);
       o.tail = 1 - win(t, 31.75, 31.95); o.hook = 1 - win(t, 31.55, 31.7); o.wingL = o.wingR = .6 * Math.sin(Math.PI * u); o.crestUp = .9;
-    } else { // ⑥ ~ ⑩ 가지 위(470)
-      A = [470, 691]; const ld = ev('land'); { const q = pulse(t, ld, .3); sy = 1 - .1 * q; sx = 1 + .07 * q; }
+    } else { // ⑥ ~ ⑩ 가지 위(XH)
+      A = [XH, 691]; const ld = ev('land'); { const q = pulse(t, ld, .3); sy = 1 - .1 * q; sx = 1 + .07 * q; }
       if (t < 42) { o.lookY = -.55; o.lookX = -.35; o.wingR = .5 * pulse(t, 32.1, 1.1); let nod = 0; for (const a of evs('card')) nod = Math.max(nod, pulse(t, a, .32)); o.tilt = -7 + 9 * nod; }
       else if (t < 48) { o.wingL = .38; if (t < 43.5) { o.lookY = .55; o.lookX = -.5; o.tilt = -11; } else { o.lookY = -.6; o.lookX = -.7; o.tilt = -4; o.crestUp = .55; } }
       else if (t < 54) { o.chest = eio(win(t, 48.0, 48.35)); o.lookY = -.4; let nod = 0; for (const a of evs('vow')) nod = Math.max(nod, pulse(t, a + .05, .45)); o.tilt = -7 + 9 * nod; o.crestUp = .45; }
@@ -289,7 +290,7 @@ function browserMain() {
   // ③ ⑦ 새 떼(화면 자리)
   function flockUp(t) {
     let s = ''; const a = ev('flock_up');
-    for (const b of FLOCK) { const u = win(t, a + b.ti, a + b.ti + 1.55); if (u <= 0 || u >= 1) continue; const e = easeIn(u * .8 + .2 * u * u);
+    for (const b of FLOCK) { const u = win(t, a + b.ti, a + b.ti + 1.3); if (u <= 0 || u >= 1) continue; const e = easeIn(u * .8 + .2 * u * u);
       const x = b.x0 + b.dx * e + 18 * Math.sin(t * 7 + b.ph), y = lerp(b.y0, -260, e), fl = .5 + .5 * Math.sin(t * 38 + b.ph);
       s += `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(-58 + 10 * Math.sin(b.ph))}) scale(1.05)">${sparrow({flap: fl, c: b.c})}</g>`; }
     return s;
@@ -299,15 +300,15 @@ function browserMain() {
     if (out <= 0) return '';
     for (const b of FLOCK) { const t0 = a + b.i * .034, u = ease(win(t, t0, t0 + 1.15)); if (u <= 0) continue; const m = MESSY.has(b.i);
       const x = lerp(b.tx - 320, b.tx, u) + (m ? 6 * Math.sin(t * 5 + b.ph) : 0), y = lerp(b.ty - 520, b.ty, u) + 5 * Math.sin(t * 3 + b.ph) + (m ? 9 * win(t, t0 + 1.1, t0 + 2.4) : 0);
-      const fl = m ? .35 + .35 * Math.sin(t * 11 + b.ph) : .5 + .5 * Math.sin(t * 24 + b.ph), c = m ? ['#9AA0B6', '#6D7390', '#C9CCDA'] : b.c;
-      s += `<g opacity="${f2(out)}" transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(m ? 14 + 6 * Math.sin(t * 4 + b.ph) : -4)}) scale(.92)">${sparrow({flap: fl, messy: m ? .95 : 0, c})}</g>`;
+      const fl = m ? .3 + .3 * Math.sin(t * 9 + b.ph) : .5 + .5 * Math.sin(t * 24 + b.ph), c = m ? ['#8E93A6', '#61667D', '#BFC2CF'] : b.c;
+      s += `<g opacity="${f2(out)}" transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(m ? 16 + 7 * Math.sin(t * 4 + b.ph) : -6)}) scale(1.2)">${sparrow({flap: fl, messy: m ? 1 : 0, c})}</g>`;
       if (m) { const fu = win(t, t0 + .9 + (b.ph % 1), t0 + 3.2 + (b.ph % 1)); if (fu > 0 && fu < 1) s += `<g opacity="${f2(out * (1 - fu * .6))}" transform="translate(${f1(x + 22 * Math.sin(fu * 7 + b.ph))} ${f1(y + 20 + 210 * fu)}) rotate(${f1(fu * 260 + b.ph * 40)}) scale(.75)">${feather('#9AA0B6', '#E3E6EE')}</g>`; } }
     return s;
   }
   // ⑦ 기록장 · 깃펜(마디마다 한 획)
   function book(t, c) {
     const a = ev('book'), op = fade(t, a, 47.9, .25, .3); if (op <= 0) return '';
-    const [bx, by0] = scr(c, 318, 598), sc = .95 * c.s * (.85 + .15 * back(win(t, a, a + .3)));
+    const [bx, by0] = scr(c, XH - 150, 598), sc = .95 * c.s * (.85 + .15 * back(win(t, a, a + .3)));
     let s = `<g opacity="${f2(op)}" transform="translate(${f1(bx)} ${f1(by0)}) scale(${f2(sc)}) rotate(-6)"><path d="M-100 -62 Q-50 -74 0 -60 Q50 -74 100 -62 L100 62 Q50 50 0 64 Q-50 50 -100 62 Z" fill="#E8DFC8"/>`
       + `<path d="M-94 -56 Q-48 -66 -4 -54 L-4 56 Q-48 46 -94 56 Z" fill="${CREAM}"/><path d="M4 -54 Q48 -66 94 -56 L94 56 Q48 46 4 56 Z" fill="${CREAM}"/><path d="M0 -60 V64" stroke="#C9BC9C" stroke-width="2"/>`;
     for (let r = 0; r < 4; r++) s += `<path d="M-84 ${-30 + r * 24} H-16 M14 ${-30 + r * 24} H84" stroke="#D9CFB5" stroke-width="1.5"/>`;
@@ -321,28 +322,23 @@ function browserMain() {
       s += `<g opacity="${f2(qa)}" transform="translate(${f1(tip[0])} ${f1(tip[1] + bob)}) rotate(-38)"><path d="M0 0 L4 -8 C10 -40 22 -86 34 -110 C30 -78 22 -40 8 -6 Z" fill="#F4F1E8"/><path d="M2 -4 L30 -104" stroke="#BDB3A0" stroke-width="1.5"/><path d="M0 0 L3 -9" stroke="#2B2350" stroke-width="3"/></g>`; }
     return s + '</g>';
   }
-  // ⑥ 질문 카드 열한 장(화면 자리 · 한 장씩 넘어감)
+  // ⑥ 질문 카드 열한 장(화면 자리 · 한 장씩 넘어감) — 카드 판과 글이 한 덩이(HTML)라 넘어가는 카드가 다음 카드 글을 가림
   function cards(t, o) {
     const a = ev('card', 0), z = 42.0; if (t < a - .35 || t >= z) return '';
     let s = '', k = -1; for (let i = 0; i < D.QS.length; i++) if (t >= ev('card', i)) k = i;
     const op = fade(t, a - .35, z, .3, .25), cx = 360, cy = 318, w = 560, h = 300, rest = D.QS.length - Math.max(k, 0) - 1;
     for (let j = Math.min(rest, 6); j >= 1; j--) s += `<rect x="${cx - w / 2 + j * 7}" y="${cy - h / 2 + j * 7}" width="${w}" height="${h}" rx="26" fill="${j % 2 ? '#E9E2D0' : '#F1EBDC'}" stroke="#C9BC9C" stroke-width="2" opacity="${f2(op)}"/>`;
-    const top = Math.max(k, 0), u = k < 0 ? ease(win(t, a - .35, a)) : 1;
-    s += `<g opacity="${f2(op)}" transform="translate(0 ${f1((1 - u) * 60)})"><rect x="${cx - w / 2}" y="${cy - h / 2}" width="${w}" height="${h}" rx="26" fill="${CREAM}" stroke="${GOLD}" stroke-width="3"/></g>`;
-    let html = '';
-    const qtxt = i => `<div class="card" style="left:${cx - w / 2}px;top:${cy - h / 2}px;width:${w}px;height:${h}px;opacity:OP;transform:TR"><span class="cn">${i + 1} / ${D.QS.length}</span><span class="cq">${esc(D.QS[i])}</span></div>`;
-    if (k >= 0) html += qtxt(top).replace('OP', f2(op)).replace('TR', 'none');
-    if (k >= 1) { const fu = win(t, ev('card', k), ev('card', k) + .26); if (fu < 1) { const e = easeIn(fu), tr = `translate(${f1(-760 * e)}px,${f1(-90 * e)}px) rotate(${f1(-22 * e)}deg)`;
-      s += `<g opacity="${f2(op)}" transform="translate(${f1(-760 * e)} ${f1(-90 * e)}) rotate(${f1(-22 * e)} ${cx} ${cy})"><rect x="${cx - w / 2}" y="${cy - h / 2}" width="${w}" height="${h}" rx="26" fill="${CREAM}" stroke="${GOLD}" stroke-width="3"/></g>`;
-      html += qtxt(k - 1).replace('OP', f2(op)).replace('TR', tr); } }
-    o.push(html); return s;
+    const card = (i, tr, fly) => `<div class="card${fly ? ' fly' : ''}" style="left:${cx - w / 2}px;top:${cy - h / 2}px;width:${w}px;height:${h}px;opacity:${f2(op)};transform:${tr}"><span class="cn">${i + 1} / ${D.QS.length}</span><span class="cq">${esc(D.QS[i])}</span></div>`;
+    o.push(card(Math.max(k, 0), k < 0 ? `translateY(${f1((1 - ease(win(t, a - .35, a))) * 60)}px)` : 'none'));
+    if (k >= 1) { const fu = win(t, ev('card', k), ev('card', k) + .26); if (fu < 1) { const e = ease(fu); o.push(card(k - 1, `translate(${f1(-780 * e)}px,${f1(-70 * e)}px) rotate(${f1(-24 * e)}deg)`, true)); } }
+    return s;
   }
   // ⑧ 본질 세 줄 그림표(글 없음 — 글은 글상자)
   function vows(t) {
     const out = fade(t, 48.0, 54.0, .2, .25); if (out <= 0) return ''; let s = '';
     for (let i = 0; i < 3; i++) { const a = ev('vow', i); if (t < a) continue; const x = 170 + i * 190, y = 300, pop = back(win(t, a, a + .32)), cur = i === 2 ? true : t < ev('vow', i + 1), op = out * (cur ? 1 : .5);
       s += `<g opacity="${f2(op)}" transform="translate(${x} ${y}) scale(${f2(pop)})"><circle r="80" fill="#151A33" stroke="${cur ? GOLD : '#5B5F80'}" stroke-width="${cur ? 5 : 3}"${cur ? ' filter="url(#gl)"' : ''}/>`;
-      if (i === 0) s += `<ellipse cx="0" cy="44" rx="40" ry="10" fill="#6E5A3C"/><path d="M-30 44 L-22 30 H22 L30 44 Z" fill="#8C744D"/><circle cx="0" cy="-6" r="38" fill="url(#ball)"/><path d="M-30 -36 L30 24 M30 -36 L-30 24" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>`;
+      if (i === 0) s += `<ellipse cx="0" cy="44" rx="40" ry="10" fill="#6E5A3C"/><path d="M-30 44 L-22 30 H22 L30 44 Z" fill="#8C744D"/><circle cx="0" cy="-6" r="38" fill="url(#ball)"/><path d="M-30 -36 L30 24 M30 -36 L-30 24" stroke="#151A33" stroke-width="17" stroke-linecap="round"/><path d="M-30 -36 L30 24 M30 -36 L-30 24" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>`;
       if (i === 1) s += `<rect x="-46" y="-40" width="92" height="80" rx="8" fill="${CREAM}"/><path d="M-36 20 L-22 4 L-10 12 L4 -16 L12 -6" stroke="#5B96FF" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 -34 V34" stroke="#6C6278" stroke-width="3" stroke-dasharray="6 6"/><circle cx="12" cy="-6" r="5" fill="#5B96FF"/>`;
       if (i === 2) s += `<path d="M-46 -34 H46 Q54 -34 54 -26 V18 Q54 26 46 26 H-6 L-26 44 L-22 26 H-46 Q-54 26 -54 18 V-26 Q-54 -34 -46 -34 Z" fill="${CREAM}"/><path d="M-12 -14 Q-12 -26 0 -26 Q12 -26 12 -14 Q12 -6 2 -2 Q0 0 0 6" stroke="${DARK}" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="0" cy="16" r="5" fill="${DARK}"/>`;
       s += '</g>'; if (t < a + .5) s += `<circle cx="${x}" cy="${y}" r="${f1(80 + 60 * ease(win(t, a, a + .5)))}" fill="none" stroke="${GOLD}" stroke-width="${f1(5 * (1 - win(t, a, a + .5)))}" opacity="${f2(1 - win(t, a, a + .5))}"/>`; }
@@ -371,7 +367,7 @@ function browserMain() {
   const FIT = {};
   function capHTML(c, t) {
     if (c.kind === 'mono') { const ln = L[c.line], ch = [...ln.text], cur = ln.syl.find(s => t >= s.t && t < s.t + Math.max(s.d, .1)); let k = -1; ln.syl.forEach(s => { if (t >= s.t) k = s.i; });
-      return ch.map((x, i) => x === ' ' ? ' ' : `<span class="${cur && cur.i === i ? 'kc' : i <= k ? 'ks' : 'ku'}">${esc(x)}</span>`).join(''); }
+      let q = false; return ch.map((x, i) => { if (x === '"') q = !q; return x === ' ' ? (q ? '&nbsp;' : ' ') : `<span class="${cur && cur.i === i ? 'kc' : i <= k ? 'ks' : 'ku'}">${esc(x)}</span>`; }).join(''); }
     if (c.kind === 'fact') { let h = esc(c.text); for (const w of c.hi) h = h.replace(w, `<b>${esc(w)}</b>`); return h; }
     return esc(c.text);
   }
@@ -399,9 +395,9 @@ function browserMain() {
     // ③ 새 떼 외침(말 주머니 · 날카로운 테)
     const sh = fade(t, 14.4, 16.15, .12, .2);
     if (sh > 0) { const sc = .7 + .3 * back(win(t, 14.4, 14.65)), jx = Math.sin(t * 60) * 3;
-      let pts = ''; for (let i = 0; i < 28; i++) { const a = i / 28 * 6.283, r = i % 2 ? 1 : 1.13; pts += (i ? ' L' : 'M') + f1(360 + Math.cos(a) * 270 * r) + ' ' + f1(430 + Math.sin(a) * 86 * r); }
-      s += `<g opacity="${f2(sh)}" transform="translate(${f1(360 + jx)} 430) scale(${f2(sc)}) translate(-360 -430)"><path d="${pts} Z" fill="#fff" stroke="${DARK}" stroke-width="4"/></g>`;
-      o.push(T(360 + jx, 430, 40, esc(D.SHOUT), '', sh, `color:${DARK};font-weight:900;transform:translate(-50%,-50%) scale(${f2(sc)})`)); }
+      let pts = ''; for (let i = 0; i < 28; i++) { const a = i / 28 * 6.283, r = i % 2 ? 1 : 1.13; pts += (i ? ' L' : 'M') + f1(330 + Math.cos(a) * 270 * r) + ' ' + f1(850 + Math.sin(a) * 86 * r); }
+      s += `<g opacity="${f2(sh)}" transform="translate(${f1(330 + jx)} 850) scale(${f2(sc)}) translate(-330 -850)"><path d="${pts} Z" fill="#fff" stroke="${DARK}" stroke-width="4"/></g>`;
+      o.push(T(330 + jx, 850, 42, esc(D.SHOUT), '', sh, `color:${DARK};font-weight:900;transform:translate(-50%,-50%) scale(${f2(sc)})`)); }
     // ③ 바람 줄
     if (t >= 14.6 && t < 15.6) { const u = win(t, 14.6, 15.6); for (let i = 0; i < 6; i++) { const y = 380 + i * 60, x = lerp(-200, 900, u) - i * 60; s += `<path d="M${f1(x)} ${y} q60 -16 120 0 t120 0" stroke="#DCE3F5" stroke-width="3" fill="none" opacity="${f2(.35 * Math.sin(Math.PI * u))}"/>`; } }
     // ④ 미끄러짐 김 · 매달린 줄
@@ -439,7 +435,8 @@ function browserMain() {
   // 넘침 검사 — 보이는 글이 화면 밖 · 글상자 넘침 · 글상자 48px 아래
   window.fitCheck = () => {
     const bad = [];
-    for (const el of document.querySelectorAll('#ov .t, #ov .bub, #ov .card, #ov .ptitle')) { if (+getComputedStyle(el).opacity < .05) continue; const r = el.getBoundingClientRect(); if (r.left < 2 || r.right > 718 || r.top < 0 || r.bottom > 1280) bad.push('밖: ' + el.innerText.slice(0, 20) + ` [${Math.round(r.left)},${Math.round(r.right)}]`); }
+    // 넘어가며 날아가는 카드(.fly)는 일부러 화면 밖으로 감
+    for (const el of document.querySelectorAll('#ov .t, #ov .bub, #ov .card:not(.fly), #ov .ptitle')) { if (+getComputedStyle(el).opacity < .05) continue; const r = el.getBoundingClientRect(); if (r.left < 2 || r.right > 718 || r.top < 0 || r.bottom > 1280) bad.push('밖: ' + el.innerText.slice(0, 20) + ` [${Math.round(r.left)},${Math.round(r.right)}]`); }
     if (+capEl.style.opacity > .05 && capIn.innerText.trim()) { const z = parseFloat(capIn.style.fontSize); if (z < 48) bad.push('글상자 ' + z + 'px'); if (capIn.scrollHeight > 200 || capIn.scrollWidth > capIn.clientWidth + 1) bad.push('글상자 넘침: ' + capIn.innerText.slice(0, 20)); }
     return bad;
   };
@@ -452,13 +449,13 @@ body{width:${W}px;height:${H}px;overflow:hidden;background:#070914;font-family:'
 #cam{position:absolute;inset:0}#st{position:absolute;inset:0;width:${W}px;height:${H}px}#ov{position:absolute;inset:0}
 .t{position:absolute;white-space:nowrap;font-weight:800;text-align:center;transform:translate(-50%,-50%);line-height:1.15}
 .bub{position:absolute;background:#fff;color:#1A1420;font-weight:900;padding:12px 30px;border-radius:34px;white-space:nowrap;border:4px solid #E9B949;box-shadow:0 0 24px rgba(233,185,73,.45)}
-.card{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transform-origin:50% 50%}
+.card{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transform-origin:50% 50%;background:#FBF7EC;border:3px solid #E9B949;border-radius:26px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .card .cn{font-size:34px;font-weight:800;color:#8A6B1F;letter-spacing:1px}.card .cq{font-size:76px;font-weight:900;color:#1A1420;letter-spacing:-1px;white-space:nowrap}
 .nm{font-family:'Gowun Batang','Noto Serif CJK KR',serif;font-weight:700;color:transparent;background:linear-gradient(100deg,#E9B949 0%,#FFF6DA 45%,#FFE3A0 55%,#C4952F 100%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 18px rgba(233,185,73,.55));letter-spacing:6px}
 .ptitle{position:absolute;left:24px;right:24px;top:96px;text-align:center;font-family:'Gowun Batang','Noto Serif CJK KR',serif;font-weight:700;font-size:66px;line-height:1.2;color:#FFE3A0;text-shadow:0 0 22px rgba(233,185,73,.55),0 3px 0 #07080B}
 #cap{position:absolute;left:22px;right:22px;top:976px;height:212px;display:flex;align-items:center;justify-content:center;padding:6px 18px;border-radius:28px;background:rgba(9,10,22,.82);border:2px solid rgba(233,185,73,.55);opacity:0}
 #capin{width:100%;max-height:200px;text-align:center;font-weight:800;line-height:1.24;letter-spacing:-.5px;color:#fff;word-break:keep-all;text-wrap:balance}
-#cap .ks{color:#FFFFFF}#cap .ku{color:#D5D8E2}#cap .kc{color:#FFD98A;text-shadow:0 0 14px rgba(233,185,73,.8)}
+#cap .ks{color:#FFFFFF}#cap .ku{color:#B4B9C8}#cap .kc{color:#FFD98A;text-shadow:0 0 14px rgba(233,185,73,.8)}
 #cap.k-title{background:rgba(9,10,22,.7);border-color:#E9B949}#cap.k-title #capin{font-family:'Gowun Batang','Noto Serif CJK KR',serif;font-weight:700;color:#FFE3A0;text-shadow:0 0 20px rgba(233,185,73,.6)}
 #cap.k-fact{border:3px solid #E9B949;background:rgba(14,12,26,.9)}#cap.k-fact b{color:#FFD98A;font-weight:900}
 #cap.k-promo{background:linear-gradient(100deg,#E9B949 0%,#FFE3A0 50%,#E9B949 100%);border-color:#FFF2C8}#cap.k-promo #capin{color:#1A1420;font-weight:900}
@@ -473,7 +470,7 @@ window.__D=${JSON.stringify(D)};
 const BAD = [...new Set([...BRAND.was.flatMap(w => [w.ko, w.en]).filter(Boolean)])].map(w => new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'));
 BAD.push(/홍표/, /막비/, /커피 1잔/, /상품권 1장/);
 const seen = new Set(), probs = new Set();
-const look = txt => { for (const l of String(txt).split('\n')) if (l.trim()) seen.add(l.trim()); };
+const look = txt => { for (const l of String(txt).replace(/\u00a0/g, ' ').split('\n')) if (l.trim()) seen.add(l.trim()); };
 const NEED = [TITLE, ...LINES.filter(l => l.who === 'gt' || l.who === 'flock').map(l => l.text), FACT, PROMO, D.MSG, NAME + '!', NAME, SITE, ...QS, `1 / ${QS.length}`, `${QS.length} / ${QS.length}`];
 const judge = () => {
   const all = [...seen].join('\n');
