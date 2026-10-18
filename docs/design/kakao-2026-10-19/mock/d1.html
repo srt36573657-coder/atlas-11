@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 시안 d1 — 설중화</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* d1 · 「설중화」 — f3 새긴 글자 · 둥근 결 그대로 · 밤에 눈 속 제주 수선화 한 송이(흰 꽃덮이 여섯 + 금빛 잔)가 「왜 사?」 곁에 · 금빛은 꽃 잔과 내 것에만 · 초록은 가는 선에만 */
+:root{--bg:#080808;--pill:#1B1B1B;--date:#1C1C1C;--card:#282828;--bar:#141414;--mine:#F6C744;--ink:#FFFFFF;--soft:#BDBDBD;--hair:#3A3A3A;--frame:#4E4E4E;--edge:#8A8A8A;--up:#FF5A65;--dn:#49A8F8;--petal:#F7F3E8;--gold:#F6C744;--leaf:#6E9B5A;--leafline:#3C4A34}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:176px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.serif{font-family:"Gowun Batang",serif;font-weight:400;letter-spacing:0}
+
+/* 위 줄 — 카톡 그대로 · 이름만 글자 간격을 벌려 새김 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:6px}
+.ttl::after{content:"";width:5px;height:5px;border-radius:50%;background:#F6C744;margin-left:-.32em}
+
+#view{padding:0 22px}
+
+/* 날짜 알약 — 숫자만 고운바탕 */
+.pill{display:flex;justify-content:center;margin:4px 0 22px}
+.pill .in{background:#1C1C1C;border-radius:999px;display:flex}
+.pill a{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:baseline;justify-content:center;column-gap:8px;min-height:48px;padding:11px 16px 9px;font-size:17px;color:#FFFFFF}
+.pill .q{font-weight:700}
+.pill .n{font-family:"Gowun Batang",serif;font-size:17px}
+.up{color:#FF5A65}.dn{color:#49A8F8}
+
+/* 본질 = 새긴 이름판 — 회색 판 속 머리카락 테 · 가운데 맞춤 · 넓은 숨 */
+.plate{background:#282828;border-radius:40px;padding:10px}
+.plate .frame{border:1px solid #4E4E4E;border-radius:31px;padding:24px 22px 0;text-align:center}
+.plate .big{display:block;font-size:56px;line-height:1;color:#FFFFFF;letter-spacing:.04em}
+.plate .head{position:relative}
+.plate .flower{position:absolute;right:-12px;bottom:1px;width:84px;height:100px;overflow:visible}
+.plate .rule{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px auto 14px}
+.plate .rule::before,.plate .rule::after{content:"";flex:1;height:1px;background:#4A473F}
+.plate .rule i{width:5px;height:5px;border-radius:50%;background:#F6C744}
+.plate p[data-ess="1"]{font-size:20px;line-height:1.7;color:#FFFFFF;word-break:keep-all;max-width:15.5em;margin:0 auto}
+.plate .foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;border-top:1px solid #3A3A3A;padding:4px 0 6px}
+.plate details{flex:1;text-align:left}
+.plate summary{list-style:none;min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#49A8F8;cursor:pointer;padding-left:4px}
+.plate summary::-webkit-details-marker{display:none}
+.plate details p{font-size:17px;color:#D6D6D6;text-align:left;margin:4px 4px 12px;line-height:1.55}
+.kk-btn{width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A !important;display:flex;align-items:center;justify-content:center}
+
+/* 내 말 = 노랑 · 숫자는 크게 새기고 단위는 작게 */
+.mine{display:flex;justify-content:flex-end;align-items:flex-end;gap:10px;margin-top:18px}
+.mine .t{font-size:17px;color:#BDBDBD;padding-bottom:4px}
+.mine a{display:flex;align-items:baseline;background:#F6C744;color:#111111;border-radius:30px 30px 10px 30px;padding:9px 24px 11px;min-height:56px}
+.mine .cell{display:flex;align-items:baseline;gap:4px}
+.mine .cell+.cell{margin-left:16px;padding-left:16px;border-left:1px solid #9A7A1E}
+.mine b{font-family:"Gowun Batang",serif;font-weight:700;font-size:34px;line-height:1}
+.mine span{font-size:17px;color:#111111}
+
+/* 받은 말 = 꽃돌이 */
+.from{margin-top:14px;display:flex;gap:12px;align-items:flex-start}
+.from .av{flex:0 0 48px;width:48px;height:48px;border-radius:24px;background:#1B1B1B;border:1px solid #3C4A34;display:flex;align-items:center;justify-content:center}
+.from .av img{width:40px;height:40px}
+.from .who{font-size:17px;color:#F6C744;margin-bottom:6px;letter-spacing:.06em}
+.say{display:inline-block;background:#282828;border-radius:10px 30px 30px 30px;padding:11px 24px;font-size:22px}
+
+/* 꽃돌이 칸 — 상자 없이 머리카락 선 사이 글자 넷 */
+.gdr{margin:12px 0 0 60px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+.gdr a{flex:1 1 0;min-width:0;min-height:50px;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:18px;color:#FFFFFF;border:1px solid #8A8A8A;border-radius:999px;white-space:nowrap}
+.gdr i{display:none}
+
+/* 전부 보기 — 양 옆 머리카락 선 */
+.all{margin-top:6px}
+.all summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:16px;font-size:17px;color:#BDBDBD;cursor:pointer;white-space:nowrap}
+.all summary::-webkit-details-marker{display:none}
+.all summary::before,.all summary::after{content:"";flex:1;height:1px;background:#3A3A3A}
+.all ul{list-style:none}
+.all li a{display:flex;min-height:52px;align-items:center;padding:0 4px;width:100%;font-size:17px}
+.all li{border-bottom:1px solid #3A3A3A}
+
+/* 시황 — 둘째 날짜 알약 + 숫자를 새긴 장부 두 줄 */
+.news{margin-top:72px}
+.news h2{font-weight:400;font-size:17px;display:flex;justify-content:center;margin-bottom:20px}
+.news h2 span{background:#1C1C1C;border-radius:999px;padding:12px 22px}
+.news ul{list-style:none;margin-left:60px;border-top:1px solid #3A3A3A}
+.news li{border-bottom:1px solid #3A3A3A;padding:10px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.news li>span[data-num]{display:flex;align-items:baseline;gap:6px}
+.news .lb{font-size:17px;color:#BDBDBD}
+.news .v{font-family:"Gowun Batang",serif;font-size:30px;line-height:1}
+.news button{min-height:48px;padding:0 18px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF}
+.news .qs{display:none;width:100%;font-size:17px;color:#D6D6D6}
+.news li.open .qs{display:block}
+
+/* 아래 입력 줄 = 찾기(내 것) */
+.find{position:fixed;left:0;right:0;bottom:64px;padding:8px 14px 10px;background:#080808}
+.find .bar{height:64px;background:#141414;border:1px solid #2A2A2A;border-radius:32px;display:flex;align-items:center;padding:0 8px 0 22px;gap:8px}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-family:"Gowun Batang",serif}
+.find input::placeholder{color:#A6A6A6}
+.find button{flex:0 0 auto;min-width:64px;height:48px;border-radius:999px;background:#F6C744;color:#111111;font-family:"Gowun Batang",serif;font-weight:700;font-size:20px;padding:0 16px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700;flex-direction:column;gap:3px}
+.tabs a[aria-current]::after{content:"";width:4px;height:4px;border-radius:50%;background:#F6C744}
+
+@media (max-width:359px){
+  .top{padding:0 8px}
+  .ttl{font-size:20px;letter-spacing:.18em;text-indent:.18em}
+  #view{padding:0 14px}
+  .pill{margin:8px 0 14px}
+  .pill a{flex-wrap:wrap;white-space:normal;padding:8px 14px 6px;column-gap:8px}
+  .plate .frame{padding:18px 12px 0}
+  .plate .big{font-size:42px}
+  .plate .rule{margin:14px auto 12px}
+  .plate .flower{width:66px;height:79px;right:-6px;bottom:1px}
+  .plate p[data-ess="1"]{font-size:18px;line-height:1.5}
+  .plate .foot{margin-top:12px}
+  .gdr,.news ul{margin-left:0}
+  .gdr a{font-size:17px}
+  .ttl::after{margin-left:-.18em}
+  .tabs a{letter-spacing:-0.07em}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+  <div class="pill" data-w="today"><span class="in"><a data-num href="#/f/day"><span class="q">?</span><span>10월 <span class="n">12</span>일</span><span class="dn">코스피 <span class="n">−3.28</span>%</span><span class="dn">코스닥 <span class="n">−4.36</span>%</span></a></span></div>
+
+  <section class="plate" data-w="ess">
+    <div class="frame">
+      <div class="head">
+        <span class="big serif">왜 사?</span>
+        <svg class="flower" viewBox="0 0 84 100" aria-hidden="true">
+          <g stroke-linecap="round" stroke-linejoin="round">
+            <path d="M47 100 C 46 86 50 72 62 60 C 60 72 54 86 50 100 Z" fill="#1F2A1B" stroke="#6E9B5A" stroke-width="1"/>
+            <path d="M44 100 C 40 88 30 80 18 76 C 30 84 38 90 47 100 Z" fill="#1F2A1B" stroke="#6E9B5A" stroke-width="1"/>
+            <path d="M50 100 C 54 90 64 84 78 82 C 66 88 58 92 53 100 Z" fill="#1F2A1B" stroke="#6E9B5A" stroke-width="1"/>
+            <path d="M48 100 C 48 84 46 66 45 54" fill="none" stroke="#6E9B5A" stroke-width="1.8"/>
+            <path d="M45 54 C 42 46 38 40 34 34" fill="none" stroke="#6E9B5A" stroke-width="1.2"/>
+            <path d="M45 54 C 50 46 56 40 62 38" fill="none" stroke="#6E9B5A" stroke-width="1.1"/>
+            <path d="M45.6 63 C 44.2 58 44 54 44.6 50.5 C 46 53 46.8 57 45.6 63 Z" fill="#3A372F" stroke="#A9A18C" stroke-width=".5"/>
+          </g>
+          <g transform="translate(61 39) rotate(58)">
+            <path d="M0 0 C 3.6 -2 4.2 -8 0 -15 C -4.2 -8 -3.6 -2 0 0 Z" fill="#F7F3E8" stroke="#C9C1AC" stroke-width=".55"/>
+            <path d="M0 -1 L0 -13" stroke="#DCD3BF" stroke-width=".5"/>
+            <path d="M0 0 C 1.4 -.8 1.6 -2.6 0 -4 C -1.6 -2.6 -1.4 -.8 0 0 Z" fill="#6E9B5A"/>
+          </g>
+          <g transform="translate(32 27) rotate(-18) scale(1 .94)"><path d="M0 -2.5 C 7.3 -3.6 11.7 -11.2 7.3 -18.4 Q 2.9 -21.8 0 -22.5 Q -2.9 -21.8 -7.3 -18.4 C -11.7 -11.2 -7.3 -3.6 0 -2.5 Z" transform="rotate(0)" fill="#F7F3E8" stroke="#C9C1AC" stroke-width=".55"/><path d="M0 -6 Q .6 -11.2 0 -18.0" transform="rotate(0)" stroke="#DCD3BF" stroke-width=".5" fill="none"/><path d="M0 -2.5 C 7.3 -3.6 11.7 -11.2 7.3 -18.4 Q 2.9 -21.8 0 -22.5 Q -2.9 -21.8 -7.3 -18.4 C -11.7 -11.2 -7.3 -3.6 0 -2.5 Z" transform="rotate(120)" fill="#F7F3E8" stroke="#C9C1AC" stroke-width=".55"/><path d="M0 -6 Q .6 -11.2 0 -18.0" transform="rotate(120)" stroke="#DCD3BF" stroke-width=".5" fill="none"/><path d="M0 -2.5 C 7.3 -3.6 11.7 -11.2 7.3 -18.4 Q 2.9 -21.8 0 -22.5 Q -2.9 -21.8 -7.3 -18.4 C -11.7 -11.2 -7.3 -3.6 0 -2.5 Z" transform="rotate(240)" fill="#F7F3E8" stroke="#C9C1AC" stroke-width=".55"/><path d="M0 -6 Q .6 -11.2 0 -18.0" transform="rotate(240)" stroke="#DCD3BF" stroke-width=".5" fill="none"/><path d="M0 -2.5 C 6.1 -3.2 9.9 -10.1 6.1 -16.6 Q 2.5 -19.6 0 -20.2 Q -2.5 -19.6 -6.1 -16.6 C -9.9 -10.1 -6.1 -3.2 0 -2.5 Z" transform="rotate(60)" fill="#F7F3E8" stroke="#C9C1AC" stroke-width=".55"/><path d="M0 -6 Q .6 -10.1 0 -16.2" transform="rotate(60)" stroke="#DCD3BF" stroke-width=".5" fill="none"/><path d="M0 -2.5 C 6.1 -3.2 9.9 -10.1 6.1 -16.6 Q 2.5 -19.6 0 -20.2 Q -2.5 -19.6 -6.1 -16.6 C -9.9 -10.1 -6.1 -3.2 0 -2.5 Z" transform="rotate(180)" fill="#F7F3E8" stroke="#C9C1AC" stroke-width=".55"/><path d="M0 -6 Q .6 -10.1 0 -16.2" transform="rotate(180)" stroke="#DCD3BF" stroke-width=".5" fill="none"/><path d="M0 -2.5 C 6.1 -3.2 9.9 -10.1 6.1 -16.6 Q 2.5 -19.6 0 -20.2 Q -2.5 -19.6 -6.1 -16.6 C -9.9 -10.1 -6.1 -3.2 0 -2.5 Z" transform="rotate(300)" fill="#F7F3E8" stroke="#C9C1AC" stroke-width=".55"/><path d="M0 -6 Q .6 -10.1 0 -16.2" transform="rotate(300)" stroke="#DCD3BF" stroke-width=".5" fill="none"/><path d="M7.61 0.76 L6.16 2.71 L5.71 5.09 L3.39 5.81 L1.63 7.48 L-0.67 6.70 L-3.08 7.00 L-4.48 5.02 L-6.61 3.86 L-6.58 1.43 L-7.61 -0.76 L-6.16 -2.71 L-5.71 -5.09 L-3.39 -5.81 L-1.63 -7.48 L0.67 -6.70 L3.08 -7.00 L4.48 -5.02 L6.61 -3.86 L6.58 -1.43Z" fill="#F6C744" stroke="#D99A1C" stroke-width=".5"/><circle r="4.44" fill="#D99A1C"/><circle cx="-.9" cy="-.5" r=".8" fill="#FBE7A6"/><circle cx="1" cy="-.4" r=".8" fill="#FBE7A6"/><circle cx="0" cy="1" r=".8" fill="#FBE7A6"/></g>
+          <path d="M30 100 Q 40 95.5 48 96 Q 58 95.5 68 100" fill="none" stroke="#F7F3E8" stroke-width=".9" opacity=".7"/>
+          <g fill="#F7F3E8"><circle cx="8" cy="66" r="1.1" opacity=".5"/><circle cx="76" cy="16" r="1" opacity=".45"/><circle cx="70" cy="64" r=".9" opacity=".4"/><circle cx="62" cy="6" r="1.2" opacity=".5"/></g>
+        </svg>
+        <span class="rule"><i></i></span>
+      </div>
+      <p data-ess="1" class="serif">주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.</p>
+      <div class="foot">
+        <details>
+          <summary>더 보기</summary>
+          <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
+          <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
+        </details>
+        <button class="kk-btn" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="mine">
+    <span class="t">내 기록</span>
+    <a href="#/why" data-num><span class="cell"><b>0</b><span>번 멈춤</span></span><span class="cell"><b>0</b><span>번 약속</span></span></a>
+  </div>
+
+  <div class="from">
+    <span class="av"><img src="../../../../site/media/makbi-icon.svg" alt=""></span>
+    <div>
+      <div class="who">꽃돌이</div>
+      <p class="say serif" data-say>오늘은 쉬어 갈까?</p>
+    </div>
+  </div>
+  <nav class="gdr" data-w="gdr" aria-label="꽃돌이 칸">
+    <a href="#/why">꽃돌이</a><i></i>
+    <a href="#/cal">달력</a><i></i>
+    <a href="#/cond">조건</a><i></i>
+    <a href="#/lead">대장주</a>
+  </nav>
+
+  <details class="all">
+    <summary data-w="all">전부 보기 ⌄</summary>
+    <ul>
+      <li><a href="#/watch">관심</a></li>
+      <li><a href="#/hold">보유</a></li>
+      <li><a href="#/f/rise">오르는 업종 · 반도체 검사·측정 +4.73%</a></li>
+      <li><a href="#/surge">급등</a></li>
+    </ul>
+  </details>
+
+  <section class="news" data-w="news">
+    <h2><span>시황 · 10월 13일</span></h2>
+    <ul>
+      <li data-fact><span class="up" data-num><span class="lb">오른 곳</span><span class="v">766</span></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></li>
+      <li data-fact><span class="dn" data-num><span class="lb">내린 곳</span><span class="v">1,632</span></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></li>
+    </ul>
+  </section>
+
+  <form class="find" data-w="find" onsubmit="return false"><div class="bar">
+    <input type="search" placeholder="친구야, 왜 사? 회사 이름" aria-label="친구야, 왜 사? 회사 이름">
+    <button type="submit" data-path="q1" aria-label="열한 질문 시작">왜?</button>
+  </div></form>
+</main>
+<nav class="tabs">
+  <a href="#/" aria-current="page">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why">매매일지</a>
+  <a href="#/watch">관심</a>
+  <a href="#/hold">보유종목</a>
+</nav>
+<script>
+document.querySelectorAll('[data-fact] button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('open')));
+</script>
+</body>
+</html>
