@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-18T16:16:20.688Z",
- "kst": "2026-10-19 01:16",
+ "at": "2026-10-18T17:01:38.997Z",
+ "kst": "2026-10-19 02:01",
  "slot": null,
- "reason": "진화 칸 바뀐 곳 표시 · 확인 단추 크게",
+ "reason": "02:00 회차",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-0pddGl/closes/20261018T161620Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-qGfKtq/closes/20261018T170139Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261016",
-  "sec": 160,
+  "sec": 166,
   "firstErrors": []
  },
  "asOf": "2026-10-16",
@@ -126,7 +126,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 623,
+  "ms": 590,
   "lenses": [
    {
     "key": "apple",
@@ -164,7 +164,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-19 01:20",
+  "kst": "2026-10-19 02:06",
   "live": false,
   "idx": true,
   "flows": true,
@@ -210,17 +210,17 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 160.1
+   "sec": 166.1
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 3.9
+   "sec": 4.1
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 6.1
+   "sec": 6.2
   },
   {
    "name": "업종 정리",
@@ -230,32 +230,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 2.1
+   "sec": 2.4
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 13.9
+   "sec": 14.2
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 4
+   "sec": 4.4
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 32.9
+   "sec": 45.3
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 39.1
+   "sec": 45.2
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 3
+   "sec": 2.9
   },
   {
    "name": "첫 화면 자료",
@@ -265,12 +265,12 @@
   {
    "name": "달력 셈",
    "code": 0,
-   "sec": 6.8
+   "sec": 6.9
   },
   {
    "name": "달력 따로 세기",
    "code": 0,
-   "sec": 3.2
+   "sec": 3.5
   },
   {
    "name": "조건 찾기 셈",
@@ -285,7 +285,7 @@
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 0.7
+   "sec": 0.6
   }
  ],
  "cond": {
