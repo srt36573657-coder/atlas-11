@@ -1,12 +1,12 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-18T05:48:47.023Z",
+ "at": "2026-10-18T06:15:49.561Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "ref": "main",
- "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae",
- "run": 39100608028,
- "wallSeconds": 1184,
+ "sha": "413c510288f03d7affe5a9f46386b2813d52a2da",
+ "run": 39103016628,
+ "wallSeconds": 401,
  "pages": [
   {
    "name": "cal",
@@ -88,10 +88,10 @@
   },
   {
    "name": "next",
-   "code": 1,
-   "seconds": 335,
+   "code": 0,
+   "seconds": 448,
    "mode": "live",
-   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
+   "sha": "8aa54cba296af364a1f0a9eeec968313976ab643"
   },
   {
    "name": "past",
@@ -117,9 +117,9 @@
   {
    "name": "share",
    "code": 1,
-   "seconds": 391,
+   "seconds": 269,
    "mode": "live",
-   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
+   "sha": "8aa54cba296af364a1f0a9eeec968313976ab643"
   },
   {
    "name": "surge",
@@ -138,9 +138,9 @@
   {
    "name": "why",
    "code": 1,
-   "seconds": 378,
+   "seconds": 346,
    "mode": "live",
-   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
+   "sha": "413c510288f03d7affe5a9f46386b2813d52a2da"
   }
  ],
  "ok": false
