@@ -78,7 +78,9 @@ const DONE = (daysAgo = 1, answers = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) => ({at:
 const VERD = {go: '좋아, 정해 둔 대로만', wait: '반만 준비됐어', rest: '오늘은 쉬어 가자'};
 const ANS = {go22: [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], go20: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], wait16: [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0], rest: [2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]}; // p-why.js judge() 와 맞는 답(점수 0 · 2 · 6 · 2(쉬어 가는 답))
 const SCORE = {go22: 0, go20: 2, wait16: 6, rest: 2};
-const todayRec = (kind, minAgo = 5) => { const v = kind.startsWith('go') ? 'go' : kind.startsWith('wait') ? 'wait' : 'rest'; return {at: new Date(Date.now() - minAgo * 6e4).toISOString(), answers: ANS[kind], score: SCORE[kind], reds: 0, verdict: VERD[v], groups: {}, picks: []}; };
+// 오늘(서울) 기록의 때 — 서울 자정 바로 뒤(예: 00:10)에 「20분 전」이 어제로 넘어가 검사가 멈추던 일(2026-10-19 00:20 서울 모든 쪽 검사 · gdr 셋) → 자정 뒤 지난 시간 안으로 줄여 순서는 그대로
+const backMs = minAgo => { const now = Date.now(), lim = (now + 9 * 36e5) % 864e5 - 1000; return minAgo * 6e4 * Math.min(1, Math.max(0, lim) / (121 * 6e4)); }; // 가장 긴 「120분 전」이 자정 뒤에 들어가게 모두 같은 비로 줄임
+const todayRec = (kind, minAgo = 5) => { const v = kind.startsWith('go') ? 'go' : kind.startsWith('wait') ? 'wait' : 'rest'; return {at: new Date(Date.now() - backMs(minAgo)).toISOString(), answers: ANS[kind], score: SCORE[kind], reds: 0, verdict: VERD[v], groups: {}, picks: []}; };
 const seoulDay = ms => new Date(ms + 9 * 36e5).toISOString().slice(0, 10);
 /** 오늘 판정 — 이 파일이 따로 셈(p-why.js 를 열지 않음): 오늘(서울) 끝낸 가장 새 기록 · 열한 답이 모두 있어야 · 준비 = 22 − 점수 */
 function expToday(recs) {
