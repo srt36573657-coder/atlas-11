@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-18T10:48:47.924Z",
+ "at": "2026-10-18T11:09:19.801Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -22,14 +22,14 @@
    }
   }
  },
- "seconds": 117,
+ "seconds": 116,
  "counts": {
   "routes": 251,
   "rows": 7695,
   "btns": 7695,
   "links": 8753,
   "clicks": 479,
-  "fail": 6,
+  "fail": 0,
   "places": {
    "chip.card": {
     "rows": 3,
@@ -231,7 +231,7 @@
     "btns": 70,
     "links": 112,
     "clicked": "surge.board",
-    "fail": 2
+    "fail": 0
    },
    {
     "route": "#/surge/10",
@@ -239,7 +239,7 @@
     "btns": 51,
     "links": 138,
     "clicked": "surge.board",
-    "fail": 2
+    "fail": 0
    },
    {
     "route": "#/surge/20",
@@ -247,7 +247,7 @@
     "btns": 26,
     "links": 62,
     "clicked": "surge.board",
-    "fail": 2
+    "fail": 0
    },
    {
     "route": "#/surge/30",
@@ -2211,44 +2211,7 @@
    }
   ]
  },
- "fails": [
-  {
-   "route": "#/surge",
-   "w": 360,
-   "k": "단추가 줄 오른쪽 끝이 아님",
-   "x": "surge.track 0220W0 단추 60 · 줄 344"
-  },
-  {
-   "route": "#/surge",
-   "w": 390,
-   "k": "단추가 줄 오른쪽 끝이 아님",
-   "x": "surge.track 0220W0 단추 60 · 줄 374"
-  },
-  {
-   "route": "#/surge/10",
-   "w": 320,
-   "k": "단추가 줄 오른쪽 끝이 아님",
-   "x": "surge.track 419050 단추 60 · 줄 304"
-  },
-  {
-   "route": "#/surge/10",
-   "w": 320,
-   "k": "단추가 줄 오른쪽 끝이 아님",
-   "x": "surge.track 457190 단추 60 · 줄 304"
-  },
-  {
-   "route": "#/surge/20",
-   "w": 360,
-   "k": "단추가 줄 오른쪽 끝이 아님",
-   "x": "surge.track 0220W0 단추 60 · 줄 344"
-  },
-  {
-   "route": "#/surge/20",
-   "w": 390,
-   "k": "단추가 줄 오른쪽 끝이 아님",
-   "x": "surge.track 0220W0 단추 60 · 줄 374"
-  }
- ],
+ "fails": [],
  "warn": [],
- "ok": false
+ "ok": true
 }

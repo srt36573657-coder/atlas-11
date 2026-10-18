@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-18T10:52:25.601Z",
+ "at": "2026-10-18T11:12:26.714Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,25 +14,25 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "past": true,
   "rivals": true,
   "grow": true,
   "range": true,
-  "cal": true,
+  "past": true,
   "surge": true,
+  "cal": true,
+  "cond": true,
   "talk": true,
   "up": true,
   "time": true,
-  "cond": true,
   "info": true,
   "x": true,
-  "co": true,
   "chx": true,
+  "co": true,
   "today": true,
   "gdr": true,
+  "why": true,
   "share": true,
-  "hold": true,
-  "why": true
+  "hold": true
  },
  "edge": true,
  "only": null,
@@ -47,8 +47,8 @@
    "@newwin": 15
   }
  },
- "seconds": 267,
- "secondsSum": 2364,
+ "seconds": 271,
+ "secondsSum": 2332,
  "shards": [
   {
    "shard": "1/9",
@@ -57,10 +57,10 @@
    "routes": 1500,
    "screens": 1500,
    "mine": 1500,
-   "seconds": 267,
+   "seconds": 260,
    "secs": {
-    "open": 0.4,
-    "routes": 265
+    "open": 0.3,
+    "routes": 259
    }
   },
   {
@@ -70,10 +70,10 @@
    "routes": 1500,
    "screens": 1500,
    "mine": 1500,
-   "seconds": 262,
+   "seconds": 252,
    "secs": {
-    "open": 0.3,
-    "routes": 260.8
+    "open": 0.2,
+    "routes": 251.6
    }
   },
   {
@@ -85,34 +85,34 @@
    "mine": 1500,
    "seconds": 263,
    "secs": {
-    "open": 0.4,
-    "routes": 261.5
+    "open": 0.3,
+    "routes": 261.8
    }
   },
   {
    "shard": "4/9",
-   "ok": false,
-   "fails": 2,
+   "ok": true,
+   "fails": 0,
    "routes": 1499,
    "screens": 1499,
    "mine": 1499,
-   "seconds": 264,
+   "seconds": 254,
    "secs": {
-    "open": 0.4,
-    "routes": 262.7
+    "open": 0.3,
+    "routes": 252.6
    }
   },
   {
    "shard": "5/9",
-   "ok": false,
-   "fails": 2,
+   "ok": true,
+   "fails": 0,
    "routes": 1499,
    "screens": 1499,
    "mine": 1499,
-   "seconds": 262,
+   "seconds": 257,
    "secs": {
     "open": 0.3,
-    "routes": 260.9
+    "routes": 256.3
    }
   },
   {
@@ -122,23 +122,23 @@
    "routes": 1499,
    "screens": 1538,
    "mine": 1499,
-   "seconds": 266,
+   "seconds": 271,
    "secs": {
-    "open": 0.3,
-    "routes": 264
+    "open": 0.7,
+    "routes": 269.1
    }
   },
   {
    "shard": "7/9",
-   "ok": false,
-   "fails": 2,
+   "ok": true,
+   "fails": 0,
    "routes": 1499,
    "screens": 1537,
    "mine": 1499,
-   "seconds": 259,
+   "seconds": 261,
    "secs": {
     "open": 0.3,
-    "routes": 258
+    "routes": 260
    }
   },
   {
@@ -151,23 +151,23 @@
    "seconds": 261,
    "secs": {
     "open": 0.3,
-    "routes": 257.9,
+    "routes": 257.6,
     "newwin": 1.9
    }
   },
   {
    "shard": "9/9",
-   "ok": false,
-   "fails": 2,
+   "ok": true,
+   "fails": 0,
    "routes": 1426,
    "screens": 1547,
    "mine": 1421,
-   "seconds": 260,
+   "seconds": 253,
    "secs": {
-    "open": 0.3,
-    "routes": 246.5,
-    "act": 7.3,
-    "edge": 4.9,
+    "open": 0.2,
+    "routes": 240.3,
+    "act": 6.7,
+    "edge": 4.7,
     "grammar": 0
    }
   }
@@ -194,12 +194,10 @@
  },
  "missing": 0,
  "avatarLetters": 0,
- "kinds": {
-  "칸 안에서 넘친 글": 2
- },
- "fails": 2,
+ "kinds": {},
+ "fails": 0,
  "own": {
-  "fails": 2,
+  "fails": 0,
   "missing": 0,
   "leftover": 0
  },
@@ -209,35 +207,8 @@
   "leftover": 0
  },
  "missingList": [],
- "all": [
-  {
-   "kind": "칸 안에서 넘친 글",
-   "what": ".privals-pn 「Hyundai Motor Company」 @320",
-   "ex": null,
-   "at": [
-    "#/w/003620/rivals @320",
-    "#/w/381970/rivals @320",
-    "#/w/000270/rivals @320",
-    "#/w/067990/rivals @320",
-    "#/w/151860/rivals @320"
-   ],
-   "n": 7
-  },
-  {
-   "kind": "칸 안에서 넘친 글",
-   "what": ".privals-pn 「Hyundai Motor Company」 @360",
-   "ex": null,
-   "at": [
-    "#/w/003620/rivals @360",
-    "#/w/381970/rivals @360",
-    "#/w/000270/rivals @360",
-    "#/w/067990/rivals @360",
-    "#/w/151860/rivals @360"
-   ],
-   "n": 7
-  }
- ],
+ "all": [],
  "truncated": false,
  "problems": [],
- "ok": false
+ "ok": true
 }
