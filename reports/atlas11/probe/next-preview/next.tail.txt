@@ -1,1 +1,16 @@
-{"ok":true,"seconds":82,"time":{"old":0,"new":0,"wall":82.1,"opensOld":0,"opensNew":0,"oldPct":0,"oldShare":0},"net":{"req":8,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"고리":9175,"화면":138,"옛 이름 본 화면":2697,"큰 글씨 화면":46,"첫 화면 앞쪽":1,"「나」 칸 편지":1,"첫 화면 붙박이":1,"아래 단추 길":7,"질문 뒤 화면":15,"회사":2557,"업종 채널":77,"갈래 채널":10,"쇼츠 사실":6,"찾기":2557,"누르기":1},"fails":[]}
+file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/next_check.mjs:257
+  const m = await q.evaluate(() => {
+        ^
+
+SyntaxError: Identifier 'm' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:346:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:110:18)
+    at #translate (node:internal/modules/esm/loader:559:20)
+    at afterLoad (node:internal/modules/esm/loader:612:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:617:12)
+    at #createModuleJob (node:internal/modules/esm/loader:640:36)
+    at #getJobFromResolveResult (node:internal/modules/esm/loader:353:34)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:321:41)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:680:25)
+
+Node.js v22.23.3

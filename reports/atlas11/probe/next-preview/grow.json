@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-17T14:59:32.432Z",
+ "at": "2026-10-18T02:45:42.355Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-16",
  "companies": 2557,
@@ -8,14 +8,38 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "seconds": 138,
+ "shard": null,
+ "units": {
+  "total": 2569,
+  "mine": 2569,
+  "hash": "93be7759dc916b0a",
+  "kinds": {
+   "c": {
+    "total": 2557,
+    "mine": 2557
+   },
+   "w": {
+    "total": 3,
+    "mine": 3
+   },
+   "v": {
+    "total": 5,
+    "mine": 5
+   },
+   "e": {
+    "total": 4,
+    "mine": 4
+   }
+  }
+ },
+ "seconds": 139,
  "time": {
-  "old": 124.1,
-  "new": 124.1,
-  "wall": 137.9,
+  "old": 124.7,
+  "new": 124.7,
+  "wall": 139.4,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 90,
+  "oldPct": 89.4,
   "oldShare": 50
  },
  "net": {
