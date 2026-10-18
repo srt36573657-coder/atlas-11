@@ -125,6 +125,7 @@ const KEY = 'atlas:godori-why', REC_KEYS = ['answers', 'asOf', 'at', 'bigDay', '
 
 /* 자료(시험 서버에서) — 고도리 칸 · 종목 셋의 그날 값 · 지수 줄 · 날짜 줄 */
 const getJ = async f => { const r = await fetch(base + f, {cache: 'no-store'}); if (!r.ok) throw Error(f + ' ' + r.status); return r.json(); };
+const LIVE_SITE = !/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(base); // 실제 사이트 — 한꺼번에 많이 받지 않음(allCo)
 const G = await getJ('/next/data/gdr.json').catch(e => { bump(NEW_NAME + ' 칸 자료 못 받음(기록 기대 = 빈 목록)'); console.error(e.message); return null; });
 const pickRec = g => (Array.isArray(g?.picks) ? g.picks.map(p => ({code: p.code, name: p.name, price: p.price, w: p.w})) : []);
 const recAsOf = g => (Array.isArray(g?.picks) ? g.asOf ?? null : null);
@@ -179,7 +180,9 @@ async function allCo() {
   if (ALLCO) return ALLCO;
   const mkt = await getJ('/atlas/data/mkt.json').catch(() => null), codes = Object.keys(mkt?.companies ?? {}).filter(c => /^[0-9][0-9A-Z]{5}$/.test(c)).sort();
   const out = []; let i = 0, miss = 0;
-  await Promise.all(Array.from({length: 24}, async () => { while (i < codes.length) { const c = codes[i++], j = await getJ('/atlas/data/co/' + c + '.json').catch(() => null); if (Array.isArray(j?.close)) out.push({close: j.close, k0: Number.isInteger(j.k0) ? j.k0 : 0}); else miss++; } }));
+  // 실제 사이트에서는 4개씩 · 못 받으면 쉬었다 두 번 더(2026-10-18 — 24개씩 2,557개를 한꺼번에 받으면 실제 사이트가 이 기계를 한동안 막아 뒤 판의 쪽 열기가 33초 넘게 멈추고 · 못 받은 회사 때문에 가운데 값이 다르게 셈됨)
+  const CONC = LIVE_SITE ? 4 : 24, getCo = async c => { for (let t = 0; t < 3; t++) { const j = await getJ('/atlas/data/co/' + c + '.json').catch(() => null); if (j) return j; await new Promise(r => setTimeout(r, 800 * (t + 1))); } return null; };
+  await Promise.all(Array.from({length: CONC}, async () => { while (i < codes.length) { const c = codes[i++], j = await getCo(c); if (Array.isArray(j?.close)) out.push({close: j.close, k0: Number.isInteger(j.k0) ? j.k0 : 0}); else miss++; } }));
   ALLCO = {series: out.filter(s => s.k0 >= 0 && s.k0 + s.close.length <= DD.length), codes: codes.length, miss}; return ALLCO;
 }
 function medianAt(k, series) {
@@ -205,7 +208,7 @@ async function medVerify(k) {
   if (MEDV.has(k)) return; MEDV.add(k);
   const A = await allCo(), mine = medianAt(k, A.series), row = MEDF.byS.get(DD[k]);
   if (!mine) { if (row) fail('[5] 9 가운데 값 파일에 줄이 있는데 따로 셈은 값 없음', DD[k]); return; }
-  if (!row || row[1] !== DD[k + LATER] || Math.abs(row[2] - mine.m) > 0.0051 || row[3] !== mine.n) fail('[5] 9 가운데 값 파일이 따로 셈과 다름(median20.mjs)', `${DD[k]} → ${DD[k + LATER]} 파일 ${JSON.stringify(row)} · 따로 셈 ${mine.m.toFixed(3)} · ${mine.n}곳`);
+  if (!row || row[1] !== DD[k + LATER] || Math.abs(row[2] - mine.m) > 0.0051 || row[3] !== mine.n) fail('[5] 9 가운데 값 파일이 따로 셈과 다름(median20.mjs)', `${DD[k]} → ${DD[k + LATER]} 파일 ${JSON.stringify(row)} · 따로 셈 ${mine.m.toFixed(3)} · ${mine.n}곳 · 못 받은 회사 파일 ${A.miss}개`);
   else { bump('[5] 9 가운데 값 따로 셈 맞댄 줄'); accept.median = {coFiles: A.codes, coMissing: A.miss, rowsChecked: MEDV.size, fileRows: MEDF.M.rows.length}; }
 }
 /** 기록 하나 → 한 달 칸 기대(없으면 null = 아직) · home = 그 화면이 받는 지수 줄 · medOk = 가운데 값 파일을 받는 판 · coOk = 회사 파일을 받는 판(막은 파일 빼고) */
