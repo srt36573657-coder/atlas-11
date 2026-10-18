@@ -1,18 +1,18 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-17T11:19:09.823Z",
+ "at": "2026-10-18T19:12:04.431Z",
  "base": "http://127.0.0.1:8826",
- "page": "http://127.0.0.1:8826/next/?lang=en",
+ "page": "http://127.0.0.1:8826/next/?dev=1&lang=en",
  "lang": "en",
  "widths": [
   320,
   360,
   390
  ],
- "routes": 269,
+ "routes": 176,
  "companies": 58,
  "allCompanies": false,
- "modules": true,
+ "modules": false,
  "modFiles": {
   "past": true,
   "rivals": true,
@@ -27,26 +27,60 @@
   "info": true,
   "x": true,
   "co": true,
+  "today": true,
+  "why": true,
   "chx": true,
-  "today": true
+  "share": true,
+  "hold": true,
+  "gdr": true
  },
  "edge": true,
  "only": null,
  "appFile": null,
+ "shard": null,
  "full": false,
- "seconds": 89,
+ "units": {
+  "total": 172,
+  "mine": 172,
+  "hash": "520aaf99b131e8e5",
+  "w": {
+   "@tail": 80,
+   "@newwin": 15
+  }
+ },
+ "seconds": 59,
+ "secs": {
+  "open": 0.4,
+  "routes": 39.5,
+  "act": 8.2,
+  "edge": 6.6,
+  "grammar": 0,
+  "newwin": 3
+ },
+ "net": {
+  "req": 26,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
-  "쇼츠 장": 10,
-  "화면": 401,
+  "쇼츠 장": 6,
+  "화면": 317,
   "길 · home": 1,
   "길 · chips": 7,
-  "길 · shorts": 11,
+  "길 · shorts": 7,
   "길 · sub": 1,
   "길 · me": 1,
   "길 · find": 9,
   "길 · watch": 61,
   "길 · chan": 89,
-  "길 · mod": 89,
+  "보내기 글상자": 3,
   "누르기": 1,
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412,
@@ -67,6 +101,8 @@
   "leftover": 0
  },
  "missingList": [],
+ "avChars": [],
+ "avatarList": [],
  "all": [],
  "ok": true
 }
