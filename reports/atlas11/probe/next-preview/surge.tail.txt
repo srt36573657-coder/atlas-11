@@ -1,4 +1,58 @@
-{"time":{"old":5.3,"new":15.3,"wall":23.2,"opensOld":127,"opensNew":254,"oldPct":22.8,"oldShare":25.7},"net":{"req":4,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-급등 다섯 칸 맞대기 — 자료 판 12개(site · rec-20261015T110206Z · rec-20261016T030127Z · rec-20261016T050036Z · rec-20261016T090115Z · rec-20261017T090146Z · edge-carry · edge-late · edge-empty · edge-nobands · edge-nocal · edge-badcal) · 23초
-줄 13,926 · 숫자 낱말 9,549 · 이름 1,572 · 색 글 2,370 · 맞댄 칸 60 · 폭 화면 100 · 금빛 ? 줄(옛 쪽은 회색에 덮임) 20 · 관심 없음 칸 4 · 관심 없음 검사 1 · 돌아오기 검사 1 · 없는 주소 3 · 자료 못 받음 10
-실패 0
+ — site #/surge — down|−4.7% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+12.4% 옛 2 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+72.0% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+71.9% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+56.7% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+53.5% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+50.9% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+39.1% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+38.8% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+35.8% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+34.1% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+29.0% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+26.0% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+25.6% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+25.1% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+24.4% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+24.0% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+23.0% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+22.8% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+22.6% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+20.3% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+19.8% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+18.9% 옛 2 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+18.7% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+18.3% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+18.0% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+17.7% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+17.3% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+16.0% 옛 2 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+15.7% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+15.6% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+15.1% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — gold|! 옛 5 · 새 0
+ ✗ 색 글 다름 — site #/surge — gold|? 옛 4 · 새 0
+ ✗ 색 글 다름 — site #/surge — gold|? 거래가 없었던 날이 있음(거래정지일 수 있음) 옛 2 · 새 0
+ ✗ 색 글 다름 — site #/surge — gold|? 석 달 안에 거래가 오래 멈췄던 곳(다시 열리며 값이 크게 다시 매겨질 수 있음) 옛 2 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+2.2% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−13.3% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+29.8% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−0.9% 옛 2 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−4.9% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−2.9% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+3.5% 옛 2 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−15.0% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−0.4% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+22.2% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−6.2% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−0.2% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−1.2% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+12.9% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+5.3% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+0.9% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+1.6% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−4.3% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−2.7% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+0.4% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — down|−18.3% 옛 1 · 새 0
+ ✗ 색 글 다름 — site #/surge — up|+2.1% 옛 1 · 새 0
