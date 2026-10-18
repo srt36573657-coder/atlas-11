@@ -1,0 +1,171 @@
+#!/usr/bin/env node
+// 흰 첫 화면 검사 — 사장님 2026-10-19 01:16(싱가포르) 「[골똘이 대공사 · 한 장 · 왜? 그럴까?]」 [차례] 1 · [검사 잣대] 1 ~ 4
+//   원문 docs/design/white-2026-10-19/order-0116.txt · 잣대는 하나 「사기 전에 한 번 더 멈추게 하는가?」
+//   쓰는 법: node scripts/atlas11/next/check_white.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--path /next/?dev=1] [--out 결과.json]
+//            [--baseline] = 지금 첫 화면 글자 수를 config/atlas11/white-baseline.json 에 적음(한 번만 · 공사 전 main 에서)
+//            [--mock 파일.html] = 올리지 않는 시안 한 장(정적 html)을 같은 잣대로 잼(누름 · 빠르기 · 그대로 둘 것은 빼고 · 모양 잣대만)
+//   첫 화면이 지킬 표시(시안 · 실제 화면 모두):
+//     [data-w="ess"] 본질 칸 · [data-w="find"] 찾기 칸 · [data-w="today"] 오늘 장 · [data-w="gdr"] 골똘이 칸 · [data-w="all"] 전부 보기
+//     [data-say] 골똘이 말(인사 · 말풍선 · 안내 · 판정) — 「?」로 끝남
+//     [data-path~="q1"] 첫 질문 길(누를 것) · [data-num] 숫자 줄(「?」는 맨 앞 모름 · 오래됨 표시뿐)
+//   잣대
+//     ① 390 × 844 · 처음 온 기기와 다시 온 기기 모두: 바탕이 흰색(밝기 0.85 이상) · 다섯 칸이 아래 단추 위 한 화면 안
+//     ② 글자 수 = 다시 온 기기 지금의 60% 이하 · 처음 온 기기 지금의 90% 이하(기준 = white-baseline.json)
+//        대비: 글 4.5 이상(큰 글 24px · 굵은 19px 이상은 3) · 단추 · 칸 테두리나 바탕은 둘레와 3 이상 · 누르는 것 48 × 48 이상
+//     ③ 누름(처음 온 기기): 첫 질문(「1 / 11」) 2번 안 · 기록(#/why) 1번 · 진화(#jhBtn) 1번 · 카톡 보내기 2번 안
+//        빠르기(느린 4G 150ms · 1.6Mbps · 처리 4배 느림): 가장 큰 그림 2.5초 안 · 누른 뒤 그려짐 0.2초 안 · 밀림 0.1 아래
+//     ④ 망치는 길 그림 0: 그림자 · 광택(그러데이션) · 입체 · 작은 빨간 점 · 얼굴 그림(허락한 그림 밖 <img>) · 숫자 아닌 빨간 글
+//        골똘이 말은 「?」로 끝남 · 숫자 줄 「?」는 맨 앞뿐 · 그대로 둘 것: 아래 단추 다섯 · 본질 세 줄 · 진화 단추 · 잠금 #/why
+//   실패가 하나라도 있으면 끝 코드 1
+import fs from 'node:fs';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+import {fileURLToPath} from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const argv = process.argv.slice(2);
+const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
+const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')).replace(/\/?$/, '/'));
+const {chromium} = require('playwright');
+const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1'), OUT = arg('--out', null), MOCK = arg('--mock', null);
+const BASEFILE = path.join(ROOT, 'config/atlas11/white-baseline.json');
+const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'];
+const TABS = ['오늘 장', '시황', '매매일지', '관심', '보유종목'];
+const R = {schema: 'golttori-check-white-1', at: new Date().toISOString(), base: MOCK ? null : base, mock: MOCK, counts: {pass: 0, fail: 0}, fails: [], m: {}};
+const fail = (what, why) => { R.counts.fail++; R.fails.push(`${what} — ${why}`); console.log('실패 ' + what + ' — ' + why); };
+const check = (ok, what, why = '') => (ok ? R.counts.pass++ : fail(what, why));
+
+/* 쪽 안에서 재는 셈 하나(노드에서 문자열로 넘김) — 글자 수 · 칸 자리 · 대비 · 누르는 크기 · 망치는 길 · 물음표 */
+const MEASURE = () => {
+  const rgb = s => { const m = /rgba?\(([^)]+)\)/.exec(s || ''); if (!m) return null; const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return {r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1}; };
+  const lin = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  const lum = c => 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const mix = (top, under) => ({r: top.r * top.a + under.r * (1 - top.a), g: top.g * top.a + under.g * (1 - top.a), b: top.b * top.a + under.b * (1 - top.a), a: 1});
+  const bgOf = el => { const st = []; for (let e = el; e; e = e.parentElement) { const c = rgb(getComputedStyle(e).backgroundColor); if (c && c.a > 0) { st.push(c); if (c.a >= 1) break; } } let c = {r: 255, g: 255, b: 255, a: 1}; for (const x of st.reverse()) c = mix(x, c); return c; };
+  const vis = el => { const cs = getComputedStyle(el); if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity === 0) return false; const r = el.getBoundingClientRect(); if (!r.width || !r.height) return false; for (let e = el; e; e = e.parentElement) if (e.tagName === 'DETAILS' && !e.open && !(el.closest('summary') && el.closest('details') === e)) return false; return true; };
+  const ownText = el => [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.nodeValue).join('').replace(/\s+/g, ' ').trim();
+  const root = document.querySelector('#view') || document.body, tabs = document.querySelector('.tabs'), top = document.querySelector('.top');
+  const scope = [root, top, tabs].filter(Boolean);
+  const all = scope.flatMap(s => [s, ...s.querySelectorAll('*')]);
+  const out = {bodyLum: lum(bgOf(document.body)), chars: 0, blocks: {}, tabsTop: tabs ? tabs.getBoundingClientRect().top : innerHeight, lowContrast: [], uiContrast: [], small: [], ruin: [], says: [], numQ: [], tabs: [], jh: !!document.querySelector('#jhBtn'), whyTab: !!document.querySelector('.tabs a[href="#/why"]'), ess: [1, 2, 3].map(i => !!document.querySelector(`[data-ess="${i}"]`))};
+  for (const k of ['ess', 'find', 'today', 'gdr', 'all']) { const e = document.querySelector(`[data-w="${k}"]`); out.blocks[k] = e && vis(e) ? Math.round(e.getBoundingClientRect().bottom) : null; }
+  out.tabs = tabs ? [...tabs.querySelectorAll('a')].map(a => a.textContent.trim()) : [];
+  for (const el of root.querySelectorAll('*')) if (vis(el)) out.chars += ownText(el).replace(/\s/g, '').length;
+  for (const el of all) {
+    if (!vis(el)) continue;
+    const cs = getComputedStyle(el), r = el.getBoundingClientRect(), t = ownText(el), tag = el.tagName.toLowerCase(), name = `${tag}.${String(el.className?.baseVal ?? el.className).split(' ')[0]}`;
+    if (t && !el.closest('svg')) {
+      const fg = rgb(cs.color), bg = bgOf(el); const fs = parseFloat(cs.fontSize), bold = +cs.fontWeight >= 600, big = fs >= 24 || (bold && fs >= 18.66);
+      if (fg) { const c = ratio(mix(fg, bg), bg); if (c < (big ? 3 : 4.5)) out.lowContrast.push(`${name} ${c.toFixed(2)} 「${t.slice(0, 16)}」`); }
+      // 빨강(오름)은 숫자에만
+      if (fg && fg.r > 150 && fg.g < 110 && fg.b < 110 && !/\d/.test(t)) out.ruin.push(`숫자 아닌 빨간 글 ${name} 「${t.slice(0, 12)}」`);
+    }
+    if (el.matches('a[href], button, summary, input, select, textarea, [role="button"]')) {
+      if (r.height < 47.5 || r.width < 47.5) out.small.push(`${name} ${Math.round(r.width)}×${Math.round(r.height)} 「${el.textContent.trim().slice(0, 14)}」`);
+      const own = rgb(cs.backgroundColor), bd = parseFloat(cs.borderTopWidth) > 0 ? rgb(cs.borderTopColor) : null, around = bgOf(el.parentElement || document.body);
+      const edges = [own && own.a > 0 ? ratio(mix(own, around), around) : 0, bd && bd.a > 0 ? ratio(mix(bd, around), around) : 0];
+      if ((own && own.a > 0 && ratio(mix(own, around), around) > 1.05) || (bd && bd.a > 0)) { if (Math.max(...edges) < 3) out.uiContrast.push(`${name} ${Math.max(...edges).toFixed(2)} 「${el.textContent.trim().slice(0, 14)}」`); }
+    }
+    if (cs.boxShadow !== 'none') out.ruin.push(`그림자 ${name}`);
+    if (cs.textShadow !== 'none') out.ruin.push(`글 그림자 ${name}`);
+    if (/gradient/.test(cs.backgroundImage)) out.ruin.push(`광택(그러데이션) ${name}`);
+    if (/drop-shadow|blur/.test(cs.filter)) out.ruin.push(`그림자 거름 ${name}`);
+    if (cs.perspective !== 'none' || cs.transformStyle === 'preserve-3d' || /matrix3d|rotate[XY]|perspective/.test(cs.transform)) out.ruin.push(`입체 ${name}`);
+    const red = rgb(cs.backgroundColor); if (red && red.a > 0.5 && red.r > 180 && red.g < 90 && red.b < 90 && r.width <= 16 && r.height <= 16) out.ruin.push(`작은 빨간 점 ${name}`);
+    if (tag === 'img' && !/\/media\/makbi-|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`);
+  }
+  for (const el of root.querySelectorAll('[data-say]')) if (vis(el)) { const t = el.textContent.replace(/\s+/g, ' ').trim(); out.says.push(t); }
+  for (const el of root.querySelectorAll('[data-num]')) if (vis(el)) { const t = el.textContent.replace(/\s+/g, ' ').trim(); if (t.includes('?') && !/^\?/.test(t.replace(/^[^\w가-힣?]+/, ''))) out.numQ.push(t.slice(0, 30)); }
+  return out;
+};
+
+function judge(m, tag, B) {
+  check(m.bodyLum >= 0.85, `${tag} ① 흰 바탕`, `바탕 밝기 ${m.bodyLum.toFixed(2)}`);
+  for (const k of BLOCKS) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
+  if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'})`); }
+  check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
+  check(!m.uiContrast.length, `${tag} ② 단추 테두리 대비 3`, `${m.uiContrast.length}곳 · ${m.uiContrast.slice(0, 3).join(' · ')}`);
+  check(!m.small.length, `${tag} ② 누르는 크기 48`, `${m.small.length}곳 · ${m.small.slice(0, 3).join(' · ')}`);
+  check(!m.ruin.length, `${tag} ④ 망치는 길 그림 0`, `${m.ruin.length}곳 · ${[...new Set(m.ruin)].slice(0, 4).join(' · ')}`);
+  const badSay = m.says.filter(t => !/\?$/.test(t));
+  check(m.says.length > 0 && !badSay.length, `${tag} ④ 골똘이 말은 「?」로 끝남`, m.says.length ? badSay.slice(0, 3).join(' | ') : '골똘이 말([data-say])이 없음');
+  check(!m.numQ.length, `${tag} ④ 숫자 줄 「?」는 맨 앞뿐`, m.numQ.slice(0, 3).join(' | '));
+}
+function keep(m, tag) {
+  check(JSON.stringify(m.tabs) === JSON.stringify(TABS), `${tag} 그대로 · 아래 단추 다섯`, m.tabs.join(' · '));
+  check(m.whyTab, `${tag} 그대로 · 잠금 #/why`, '');
+  check(m.jh, `${tag} 그대로 · 진화 단추`, '');
+  check(m.ess.every(Boolean), `${tag} 그대로 · 본질 세 줄`, m.ess.join());
+}
+
+const browser = await chromium.launch({executablePath: process.env.PW_CHROMIUM || '/opt/pw-browsers/chromium', args: ['--disable-dev-shm-usage']});
+const ctxOf = async (first, extra = {}) => {
+  const ctx = await browser.newContext({viewport: {width: W, height: H}, deviceScaleFactor: 1, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce', ...extra});
+  await ctx.addInitScript(f => { try { if (sessionStorage.getItem('cw-seed')) return; sessionStorage.setItem('cw-seed', '1'); localStorage.clear(); if (!f) { localStorage.setItem('atlas:essence-seen', 'true'); localStorage.setItem('atlas:white-seen', 'true'); } } catch { /* 기억 못 하는 기계 */ } }, first);
+  await ctx.addInitScript(() => { window.__kk = []; const S = {sendDefault: o => window.__kk.push('kakao')}; window.Kakao = {init() {}, isInitialized: () => true, Share: S}; try { navigator.share = async () => { window.__kk.push('navshare'); }; } catch { /* 없음 */ } });
+  return ctx;
+};
+const settle = async p => { await p.waitForFunction(() => !document.querySelector('#view .boot') && document.fonts?.status === 'loaded', null, {timeout: 20000}).catch(() => {}); await p.waitForTimeout(400); };
+const open = async (ctx, url) => { const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(String(e.message).slice(0, 120))); await p.goto(url, {waitUntil: 'load', timeout: 30000}); await settle(p); return {p, errs}; };
+
+try {
+  if (MOCK) {
+    const ctx = await ctxOf(true), url = 'file://' + path.resolve(MOCK);
+    const {p} = await open(ctx, url); const m = await p.evaluate(MEASURE);
+    const B = fs.existsSync(BASEFILE) ? JSON.parse(fs.readFileSync(BASEFILE, 'utf8')) : null;
+    R.m.mock = m; judge(m, '시안 처음 온 기기', B); await ctx.close();
+  } else {
+    const HOME = base + NEXT + '#/';
+    if (argv.includes('--baseline')) {
+      const res = {};
+      for (const first of [true, false]) { const ctx = await ctxOf(first); const {p} = await open(ctx, HOME); res[first ? 'first' : 'back'] = (await p.evaluate(MEASURE)).chars; await ctx.close(); }
+      fs.mkdirSync(path.dirname(BASEFILE), {recursive: true});
+      fs.writeFileSync(BASEFILE, JSON.stringify({schema: 'golttori-white-baseline-1', at: new Date().toISOString(), why: '사장님 2026-10-19 01:16 [검사 잣대] 2 「글자 지금의 60%(처음 온 기기 90%) 아래」 — 공사 전 첫 화면 글자 수(띄어쓰기 빼고 · 보이는 글만 · 390 × 844)', base, ...res}, null, 1) + '\n');
+      console.log('기준 적음', JSON.stringify(res)); await browser.close(); process.exit(0);
+    }
+    const B = fs.existsSync(BASEFILE) ? JSON.parse(fs.readFileSync(BASEFILE, 'utf8')) : null;
+    check(!!B, '② 글자 수 기준 파일', 'config/atlas11/white-baseline.json 이 없음(--baseline 으로 공사 전에 적음)');
+    // ① ② ④ 처음 온 기기 · 다시 온 기기
+    for (const first of [true, false]) {
+      const tag = first ? '처음 온 기기' : '다시 온 기기', ctx = await ctxOf(first), {p, errs} = await open(ctx, HOME);
+      const m = await p.evaluate(MEASURE); R.m[first ? 'first' : 'back'] = {...m, errs};
+      judge(m, tag, B); keep(m, tag); check(!errs.length, `${tag} 쪽 오류 0`, errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
+    // ③ 누름(처음 온 기기)
+    {
+      const ctx = await ctxOf(true), seen = async p => p.evaluate(() => /(^|\s)1\s*\/\s*11(\s|$)/.test(document.querySelector('#view')?.innerText || ''));
+      let {p} = await open(ctx, HOME), n = 0;
+      while (n < 2 && !(await seen(p))) { const t = p.locator('#view [data-path~="q1"]:visible').first(); if (!(await t.count())) break; await t.click({timeout: 5000}); n++; await settle(p); }
+      const q1 = await seen(p); R.m.taps = {q1: q1 ? n : null};
+      check(q1 && n <= 2, '③ 첫 질문까지 누름 2번 안', q1 ? `${n}번` : `${n}번 눌러도 「1 / 11」이 안 보임`);
+      await p.goto(HOME); await settle(p);
+      const rec = await p.locator('a[href="#/why"]:visible').count(); check(rec > 0, '③ 기록까지 누름 1번', '보이는 #/why 고리 없음'); R.m.taps.record = rec > 0 ? 1 : null;
+      const jh = await p.locator('#jhBtn:visible').count(); check(jh > 0, '③ 진화까지 누름 1번', '보이는 진화 단추 없음'); R.m.taps.jinhwa = jh > 0 ? 1 : null;
+      let kk = null; const b = p.locator('#view .kk-btn:visible').first();
+      if (await b.count()) { await b.click(); await p.waitForTimeout(800); let sent = await p.evaluate(() => window.__kk.length);
+        if (!sent) { const k2 = p.locator('button:visible, a:visible').filter({hasText: /카톡/}).first(); if (await k2.count()) { await k2.click().catch(() => {}); await p.waitForTimeout(800); sent = await p.evaluate(() => window.__kk.length); kk = sent ? 2 : null; } } else kk = 1; }
+      R.m.taps.kakao = kk; check(kk != null && kk <= 2, '③ 카톡 보내기 누름 2번 안', kk == null ? '첫 화면에서 2번 안에 카톡 보내기가 안 됨' : '');
+      await ctx.close();
+    }
+    // ③ 빠르기 — 느린 4G · 처리 4배 느림 · 다시 온 기기(첫 화면 그림 몫)
+    {
+      const ctx = await ctxOf(false), p = await ctx.newPage(), cdp = await ctx.newCDPSession(p);
+      await cdp.send('Network.enable'); await cdp.send('Network.emulateNetworkConditions', {offline: false, latency: 150, downloadThroughput: 1.6 * 1024 * 1024 / 8, uploadThroughput: 750 * 1024 / 8}); await cdp.send('Emulation.setCPUThrottlingRate', {rate: 4});
+      await p.addInitScript(() => { window.__v = {lcp: 0, cls: 0, inp: 0}; new PerformanceObserver(l => { for (const e of l.getEntries()) window.__v.lcp = e.startTime; }).observe({type: 'largest-contentful-paint', buffered: true}); new PerformanceObserver(l => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__v.cls += e.value; }).observe({type: 'layout-shift', buffered: true}); new PerformanceObserver(l => { for (const e of l.getEntries()) window.__v.inp = Math.max(window.__v.inp, e.duration); }).observe({type: 'event', buffered: true, durationThreshold: 16}); });
+      await p.goto(HOME, {waitUntil: 'load', timeout: 60000}); await settle(p); await p.waitForTimeout(1500);
+      const all = p.locator('#view [data-w="all"]:visible').first(); if (await all.count()) { await all.click().catch(() => {}); await p.waitForTimeout(1200); }
+      const v = await p.evaluate(() => window.__v); R.m.speed = {lcp: Math.round(v.lcp), inp: Math.round(v.inp), cls: +v.cls.toFixed(3)};
+      check(v.lcp > 0 && v.lcp <= 2500, '③ 가장 큰 그림 2.5초 안(느린 4G)', `${Math.round(v.lcp)}ms`);
+      check(v.inp <= 200, '③ 누른 뒤 그려짐 0.2초 안', `${Math.round(v.inp)}ms`);
+      check(v.cls < 0.1, '③ 밀림 0.1 아래', v.cls.toFixed(3));
+      await ctx.close();
+    }
+  }
+} catch (e) { fail('검사 돌리기', String(e?.message ?? e).split('\n')[0].slice(0, 200)); }
+finally { await browser.close().catch(() => {}); }
+R.ok = R.counts.fail === 0;
+if (OUT) { fs.mkdirSync(path.dirname(path.resolve(OUT)), {recursive: true}); fs.writeFileSync(OUT, JSON.stringify(R, null, 1) + '\n'); }
+console.log(`흰 첫 화면 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
+process.exit(R.ok ? 0 : 1);
