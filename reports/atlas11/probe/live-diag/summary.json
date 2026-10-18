@@ -1,0 +1,993 @@
+{
+ "made": "2026-10-18T05:55:28.195Z",
+ "base": "https://aaa7377.com",
+ "today": [
+  {
+   "w": 320,
+   "how": "direct",
+   "at": [
+    {
+     "ms": 0,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       false
+      ],
+      [
+       "/next/app.css",
+       false
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 80,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ]
+     ],
+     "fonts": "loading",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 300,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       false
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 1000,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loading",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 3000,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 6000,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    }
+   ],
+   "errs": []
+  },
+  {
+   "w": 320,
+   "how": "hash",
+   "at": [
+    {
+     "ms": 0,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       false
+      ]
+     ],
+     "fonts": "loading",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 80,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       false
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 300,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loading",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 1000,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 3000,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 6000,
+     "vw": 320,
+     "sw": 320,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    }
+   ],
+   "errs": []
+  },
+  {
+   "w": 360,
+   "how": "direct",
+   "at": [
+    {
+     "ms": 0,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       false
+      ],
+      [
+       "/next/app.css",
+       false
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 80,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ]
+     ],
+     "fonts": "loading",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 300,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 1000,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loading",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 3000,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 6000,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    }
+   ],
+   "errs": []
+  },
+  {
+   "w": 360,
+   "how": "hash",
+   "at": [
+    {
+     "ms": 0,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       false
+      ]
+     ],
+     "fonts": "loading",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 80,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": true,
+     "hash": "#/today"
+    },
+    {
+     "ms": 300,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loading",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 1000,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 3000,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    },
+    {
+     "ms": 6000,
+     "vw": 360,
+     "sw": 360,
+     "wide": [],
+     "css": [
+      [
+       "/atlas/fonts.css",
+       true
+      ],
+      [
+       "/next/app.css",
+       true
+      ],
+      [
+       "/next/p-why.css",
+       true
+      ],
+      [
+       "/next/p-gdr.css",
+       true
+      ],
+      [
+       "/next/p-today.css",
+       true
+      ]
+     ],
+     "fonts": "loaded",
+     "boot": false,
+     "hash": "#/today"
+    }
+   ],
+   "errs": []
+  }
+ ],
+ "open": [
+  {
+   "k": "why",
+   "path": "/next/?dev=1#/why",
+   "loadMs": 1761,
+   "err": null,
+   "dcl": {
+    "dcl": 1715,
+    "load": 1758
+   },
+   "stuck": [
+    {
+     "url": "/next/p-why.js",
+     "type": "script",
+     "ms": 49
+    }
+   ],
+   "failed": [],
+   "errs": [],
+   "slowest": [
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.91.woff2",
+     "d": 99,
+     "t": "css"
+    },
+    {
+     "u": "/atlas/fonts.css",
+     "d": 88,
+     "t": "link"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.90.woff2",
+     "d": 88,
+     "t": "css"
+    },
+    {
+     "u": "/next/app.css",
+     "d": 86,
+     "t": "link"
+    },
+    {
+     "u": "/next/kakao.js",
+     "d": 85,
+     "t": "script"
+    },
+    {
+     "u": "/next/app.js",
+     "d": 70,
+     "t": "script"
+    }
+   ]
+  },
+  {
+   "k": "why-plain",
+   "path": "/next/#/why",
+   "loadMs": 978,
+   "err": null,
+   "dcl": {
+    "dcl": 926,
+    "load": 975
+   },
+   "stuck": [
+    {
+     "url": "/atlas/data/core.json",
+     "type": "fetch",
+     "ms": 1
+    },
+    {
+     "url": "/atlas/data/mkt.json",
+     "type": "fetch",
+     "ms": 1
+    }
+   ],
+   "failed": [],
+   "errs": [],
+   "slowest": [
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.91.woff2",
+     "d": 102,
+     "t": "css"
+    },
+    {
+     "u": "/atlas/fonts.css",
+     "d": 84,
+     "t": "link"
+    },
+    {
+     "u": "/next/app.css",
+     "d": 83,
+     "t": "link"
+    },
+    {
+     "u": "/next/kakao.js",
+     "d": 80,
+     "t": "script"
+    },
+    {
+     "u": "/next/app.js",
+     "d": 80,
+     "t": "script"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.90.woff2",
+     "d": 70,
+     "t": "css"
+    }
+   ]
+  },
+  {
+   "k": "home",
+   "path": "/next/#/",
+   "loadMs": 314,
+   "err": null,
+   "dcl": {
+    "dcl": 312,
+    "load": 313
+   },
+   "stuck": [
+    {
+     "url": "/atlas/data/home.json",
+     "type": "fetch",
+     "ms": 16
+    },
+    {
+     "url": "/next/data/home-summary.json",
+     "type": "fetch",
+     "ms": 16
+    }
+   ],
+   "failed": [],
+   "errs": [],
+   "slowest": [
+    {
+     "u": "/next/app.js",
+     "d": 95,
+     "t": "script"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.90.woff2",
+     "d": 95,
+     "t": "css"
+    },
+    {
+     "u": "/next/kakao.js",
+     "d": 93,
+     "t": "script"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.91.woff2",
+     "d": 86,
+     "t": "css"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.89.woff2",
+     "d": 75,
+     "t": "css"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.87.woff2",
+     "d": 75,
+     "t": "css"
+    }
+   ]
+  },
+  {
+   "k": "friend",
+   "path": "/next/#/s/005930/2026-10-16/70000/s",
+   "loadMs": 336,
+   "err": null,
+   "dcl": {
+    "dcl": 286,
+    "load": 334
+   },
+   "stuck": [
+    {
+     "url": "/next/words.js",
+     "type": "script",
+     "ms": 2
+    }
+   ],
+   "failed": [],
+   "errs": [],
+   "slowest": [
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.90.woff2",
+     "d": 93,
+     "t": "css"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.91.woff2",
+     "d": 86,
+     "t": "css"
+    },
+    {
+     "u": "/next/kakao.js",
+     "d": 81,
+     "t": "script"
+    },
+    {
+     "u": "/next/app.css",
+     "d": 80,
+     "t": "link"
+    },
+    {
+     "u": "/next/app.js",
+     "d": 79,
+     "t": "script"
+    },
+    {
+     "u": "/atlas/fonts.css",
+     "d": 63,
+     "t": "link"
+    }
+   ]
+  },
+  {
+   "k": "hello-en",
+   "path": "/hello.html?lang=en",
+   "loadMs": 684,
+   "err": null,
+   "dcl": {
+    "dcl": 679,
+    "load": 681
+   },
+   "stuck": [
+    {
+     "url": "/next/i18n/en.json",
+     "type": "fetch",
+     "ms": 9
+    },
+    {
+     "url": "/next/i18n/en-names.json",
+     "type": "fetch",
+     "ms": 9
+    }
+   ],
+   "failed": [
+    "net::ERR_ABORTED /media/makbi-intro.mp4",
+    "net::ERR_ABORTED /media/makbi-intro.webm"
+   ],
+   "errs": [],
+   "slowest": [
+    {
+     "u": "/media/makbi-poster.jpg",
+     "d": 260,
+     "t": "video"
+    },
+    {
+     "u": "/app/fonts.css",
+     "d": 240,
+     "t": "link"
+    },
+    {
+     "u": "/hello-promo.css",
+     "d": 228,
+     "t": "link"
+    },
+    {
+     "u": "/media/makbi-intro.webm",
+     "d": 203,
+     "t": "video"
+    },
+    {
+     "u": "/media/makbi-intro.mp4",
+     "d": 195,
+     "t": "video"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.91.woff2",
+     "d": 171,
+     "t": "css"
+    }
+   ]
+  },
+  {
+   "k": "me",
+   "path": "/next/#/me",
+   "loadMs": 311,
+   "err": null,
+   "dcl": {
+    "dcl": 255,
+    "load": 306
+   },
+   "stuck": [
+    {
+     "url": "/atlas/data/mkt.json",
+     "type": "fetch",
+     "ms": 57
+    }
+   ],
+   "failed": [],
+   "errs": [],
+   "slowest": [
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.90.woff2",
+     "d": 89,
+     "t": "css"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.91.woff2",
+     "d": 87,
+     "t": "css"
+    },
+    {
+     "u": "/atlas/fonts.css",
+     "d": 81,
+     "t": "link"
+    },
+    {
+     "u": "/next/app.css",
+     "d": 80,
+     "t": "link"
+    },
+    {
+     "u": "/next/kakao.js",
+     "d": 78,
+     "t": "script"
+    },
+    {
+     "u": "/fonts/pretendard/PretendardVariable.subset.86.woff2",
+     "d": 76,
+     "t": "css"
+    }
+   ]
+  }
+ ],
+ "errors": []
+}
