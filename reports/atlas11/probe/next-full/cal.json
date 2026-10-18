@@ -4,10 +4,31 @@
  "limit": "all",
  "wide": "all",
  "took_s": 99,
+ "time": {
+  "old": 21.1,
+  "new": 67.7,
+  "wall": 98.8,
+  "opensOld": 938,
+  "opensNew": 2287,
+  "oldPct": 21.4,
+  "oldShare": 23.8
+ },
+ "net": {
+  "req": 4,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
  "counts": {
   "맞댄 화면": 472,
   "맞댄 줄": 78401,
-  "맞댄 숫자 낱말": 53487,
+  "맞댄 숫자 낱말": 53477,
   "맞댄 고리": 20470,
   "맞댄 그림 이름": 1212,
   "종목 파일": 442,
