@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-10-18T16:19:45.831Z",
+ "at": "2026-10-18T16:36:55.303Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-16",
  "pages": 87,
@@ -10,12 +10,12 @@
  "seconds": 190,
  "time": {
   "old": 160.5,
-  "new": 21.1,
-  "wall": 190.1,
+  "new": 21.7,
+  "wall": 190.4,
   "opensOld": 698,
   "opensNew": 703,
-  "oldPct": 84.4,
-  "oldShare": 88.4
+  "oldPct": 84.3,
+  "oldShare": 88.1
  },
  "net": {
   "req": 13,
