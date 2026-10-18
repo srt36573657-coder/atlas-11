@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-18T13:10:08.451Z",
+ "at": "2026-10-18T13:15:23.138Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-16",
  "companies": 2557,
@@ -31,15 +31,15 @@
    }
   }
  },
- "seconds": 246,
+ "seconds": 245,
  "time": {
-  "old": 45.3,
-  "new": 88.2,
-  "wall": 245.7,
+  "old": 45.2,
+  "new": 88.5,
+  "wall": 244.7,
   "opensOld": 2557,
   "opensNew": 2648,
   "oldPct": 18.5,
-  "oldShare": 34
+  "oldShare": 33.8
  },
  "net": {
   "req": 2509,
