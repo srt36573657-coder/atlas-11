@@ -1,0 +1,62 @@
+{
+ "schema": "golttori-check-white-1",
+ "at": "2026-10-18T18:10:23.212Z",
+ "base": null,
+ "mock": "docs/design/white-2026-10-19/mock/w5-a.html",
+ "counts": {
+  "pass": 24,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "mock": {
+   "bodyLum": 1,
+   "chars": 126,
+   "blocks": {
+    "ess": 304,
+    "find": 424,
+    "today": 500,
+    "gdr": 654,
+    "all": 704
+   },
+   "tabsTop": 780,
+   "lowContrast": [],
+   "uiContrast": [],
+   "tiny": [],
+   "small": [],
+   "ruin": [],
+   "says": [
+    "왜? 그럴까?",
+    "그날 정한 대로 했어?"
+   ],
+   "numQ": [],
+   "tabs": [
+    "오늘 장",
+    "시황",
+    "매매일지",
+    "관심",
+    "보유종목"
+   ],
+   "jh": true,
+   "whyTab": true,
+   "ess": [
+    true,
+    true,
+    true
+   ],
+   "bodyHex": "#FFFFFF",
+   "inkHex": "#16181D",
+   "findInput": true,
+   "riseShown": [],
+   "grid": [],
+   "news": {
+    "up": true,
+    "dn": true,
+    "facts": 1,
+    "why": 1
+   },
+   "monthLine": true
+  }
+ },
+ "ok": true
+}

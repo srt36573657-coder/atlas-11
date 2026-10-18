@@ -133,6 +133,10 @@ try {
     const {p} = await open(ctx, url); const m = await p.evaluate(MEASURE);
     const B = fs.existsSync(BASEFILE) ? JSON.parse(fs.readFileSync(BASEFILE, 'utf8')) : null;
     R.m.mock = m; judge(m, '시안(다시 온 기기 꼴)', B); await ctx.close();
+    const c2 = await ctxOf(true, {viewport: {width: 320, height: 568}}), o2 = await open(c2, url), m2 = await o2.p.evaluate(MEASURE);
+    for (const k of ['ess', 'find']) check(m2.blocks[k] != null && m2.blocks[k] <= m2.tabsTop + 0.5, `시안 320 × 568 한 화면 칸 ${k}`, m2.blocks[k] == null ? '칸이 없음' : `아래 ${m2.blocks[k]} > 아래 단추 ${Math.round(m2.tabsTop)}`);
+    check(await o2.p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1), '시안 320 × 568 옆 넘침 0', '');
+    check(!m2.tiny.length && !m2.small.length, '시안 320 × 568 글씨 17 · 누름 48', [...m2.tiny, ...m2.small].slice(0, 3).join(' · ')); await c2.close();
   } else {
     const HOME = base + NEXT + '#/';
     if (argv.includes('--baseline')) {
