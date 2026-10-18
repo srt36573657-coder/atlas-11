@@ -4,6 +4,8 @@
 //   ② 첫 화면(먹빛 판 · 2026-10-15 09:41 · 규칙 67) 시장 칸 · 고른 곳 칸 · ③ 업데이트 탭의 10월 12일 21:11 줄 · ④ 소개 한 장(hello.html) · ⑤ 옛 판 첫 화면 띠 — 그림으로 남김
 //   ⑥ 고도리(/ · 2026-10-17 21:10 「하나로 묶은 명령문」) — 아래 단추 다섯 · 창 제목 = 탭 이름(한국어 · 영어) · 질문 칸은 종목 고르기부터 · 고도리 칸 잠금 → 기록을 넣으면 열림 · 「틀린다면 이유」 ·
 //      보유종목(점검 → 편지 → 바로 가기 → 본 기록) · 회사 화면 단추 셋 + 「이 회사로 왜 사?」 · 보내기 글상자 · 시황 사실 수 = 자료 · 쓰지 않을 말(words.js screenHits)
+//   2026-10-18 첫 번째 묶음에 맞춤 — 고도리 칸: 잠금 = section.gdr.lock1 a.gdr-l1(→ #/why) · 오늘 끝낸 날 첫 화면 = section.gdr.today1(a.gdr-t1a → #/gdr · a.gdr-t1b → #/why) · 쉬어 가는 날 = rest1 한 줄 · 어제만 끝냈으면 열린 칸 · 첫 화면 = 일곱 덩이(칩 → 이야기 입구 → 띠 → 질문 칸 → 고도리 칸 → 더 보기 → 안전 줄 · 카드 없음) ·
+//      회사 화면 = 탭 넷(nav.wtabs · 4 ~ 7단 · 옛 일곱 칸 없음) · 「한 달 동안 ±n%」 · 보유종목 편지는 접는 칸(.hd-fold) 안 · 칩 열 개
 //   시험: LIVE_BASE=http://127.0.0.1:<포트>(고도리 앱이 / 에) · LIVE_OUT=<폴더> · LIVE_STEPS=<단계 이름,…>(시험에서만) · PW_DIR · PW_EXE=<브라우저 파일> — 올라간 사이트(기본)는 늘 모든 단계
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
@@ -202,9 +204,9 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
 await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」(규칙 65 · 사진 p26)
   // 편지 칸 띠 「친구에게 소개하기 · 고도리 1분 영상 · 보내기」 = 지금 사이트(새 화면 /) — 첫 화면에 없으면 「나」 칸(2026-10-17 고도리 한 장 명령문 1 「첫 화면 편지를 「나」 칸으로 옮겨라」) · 옛 /atlas/ 는 손대지 않아 옛 이름 그대로라 보지 않음(규칙 75)
   let band = '';
-  for (const hash of ['#/me', '#/']) { // 편지 띠는 이제 「나」 칸(2026-10-17 17:54 명령 1) — 먼저 봄
+  for (const hash of ['#/me', '#/']) { // 편지 띠는 이제 「나」 칸(2026-10-17 17:54 명령 1) — 먼저 봄 · 2026-10-18 첫 번째 묶음부터 편지는 접는 칸(.hd-fold) 안이라 띠가 처음엔 visibility:hidden — 글자만 읽으면 되므로 붙기만 기다림(state: attached)
     await page.goto(B + '/?v=' + Date.now() + hash, {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1200);
-    band = await page.waitForSelector('#view .m4-letter .m4-act', {timeout: 8000}).then(() => page.evaluate(() => document.querySelector('#view .m4-letter .m4-act')?.textContent ?? '')).catch(() => '');
+    band = await page.waitForSelector('#view .m4-letter .m4-act', {state: 'attached', timeout: 8000}).then(() => page.evaluate(() => document.querySelector('#view .m4-letter .m4-act')?.textContent ?? '')).catch(() => '');
     if (band) break;
   }
   await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(600);
@@ -364,19 +366,19 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await viewDone();
   if (await page.evaluate(k => { const had = localStorage.getItem(k) != null; localStorage.removeItem(k); return had; }, WHY_KEY)) { await page.reload({waitUntil: 'networkidle', timeout: 60000}); await viewDone(); }
   await page.waitForTimeout(1500); await shot('p41-next-home');
-  const home = await page.evaluate(() => ({tabs: [...document.querySelectorAll('.tabs a')].map(a => [a.dataset.tab ?? '', a.getAttribute('href') ?? '', a.textContent.trim()]), cards: document.querySelectorAll('#view .card').length, chips: document.querySelectorAll('#view .chip').length, q: document.querySelectorAll('#view .empty').length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth,
+  const home = await page.evaluate(() => ({tabs: [...document.querySelectorAll('.tabs a')].map(a => [a.dataset.tab ?? '', a.getAttribute('href') ?? '', a.textContent.trim()]), blocks: [...document.querySelectorAll('#view > *')].map(e => e.tagName.toLowerCase() + (e.classList[0] ? '.' + e.classList[0] : '')).join(','), chips: document.querySelectorAll('#view .chip').length, q: document.querySelectorAll('#view .empty').length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth,
     tk: document.querySelector('#view a.tk-entry')?.getAttribute('href') ?? '', letterOnHome: document.querySelectorAll('#view .m4-letter').length, // 편지는 「보유종목」 칸(2026-10-17 17:54 명령 1 · 21:10 [2] 5)
     wy: (s => (s ? {find: !!s.querySelector('input.wy-find'), q: s.querySelector('.wy-q')?.textContent ?? '', opts: s.querySelectorAll('.wy-opt').length} : null))(document.querySelector('#view > section.wy')), // 「친구야, 왜 사?」는 종목 고르기부터(21:10 [3])
-    gdr: (s => (s ? {lock: s.classList.contains('lock'), go: s.querySelector('a.gdr-go')?.getAttribute('href') ?? null, cells: s.querySelectorAll('.gdr-cell').length} : null))(document.querySelector('#view > section.gdr')), // 열한 질문을 한 번 끝내기 전엔 잠금([6] 1)
+    gdr: (s => (s ? {lock: s.classList.contains('lock1'), go: s.querySelector('a.gdr-l1')?.getAttribute('href') ?? null, cells: s.querySelectorAll('.gdr-cell').length} : null))(document.querySelector('#view > section.gdr')), // 열한 질문을 한 번 끝내기 전엔 잠금([6] 1) — 잠금 칸 = section.gdr.lock1 · 고리 a.gdr-l1(2026-10-18 첫 번째 묶음 · 옛 lock · a.gdr-go)
     order: [...document.querySelectorAll('#view > *')].map(e => e.matches('section.wy') ? 'wy' : e.matches('section.gdr') ? 'gdr' : e.matches('.chips') ? 'chips' : '').filter(Boolean).slice(0, 3).join(',')}));
   await look('#/');
   // ② 고도리 칸 화면(잠금) — 잠금 칸 · 열한 질문 고리만(「어떻게 골랐나」 없음)
   await goHash('#/gdr'); await page.waitForTimeout(400); await shot('p47-next-gdr-lock');
-  const gLock = await page.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock'), go: document.querySelector('#view section.gdr.lock a.gdr-go')?.getAttribute('href') ?? null, fun: !!document.querySelector('#view section.gdr-fun'), cells: document.querySelectorAll('#view .gdr-cell').length}));
+  const gLock = await page.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock1'), go: document.querySelector('#view section.gdr.lock1 a.gdr-l1')?.getAttribute('href') ?? null, fun: !!document.querySelector('#view section.gdr-fun'), cells: document.querySelectorAll('#view .gdr-cell').length}));
   await look('#/gdr');
   // ③ 회사 화면 — 관심 담기 · 보내기 · 같이 따져 줘 + 「이 회사로 왜 사?」 · 보내기 = 「친구에게 무슨 말을 할래?」 글상자(p-share · 알림 한 줄이 아님)
   await goHash('#/w/005930'); await page.waitForTimeout(500); await shot('p42-next-watch');
-  const watch = await page.evaluate(() => ({h1: document.querySelector('#view .wt')?.textContent ?? '', ws: document.querySelector('#view .ws')?.textContent ?? '', ch: document.querySelectorAll('#view .chaps a.cp').length, nx: document.querySelectorAll('#view .nx').length,
+  const watch = await page.evaluate(() => ({h1: document.querySelector('#view .wt')?.textContent ?? '', ws: document.querySelector('#view .ws')?.textContent ?? '', tabs: [...document.querySelectorAll('#view nav.wtabs a')].map(a => a.getAttribute('href')), chapsOld: document.querySelectorAll('#view .chaps').length, nx: document.querySelectorAll('#view .nx').length,
     acts: [...document.querySelectorAll('#view .acts > *')].map(e => e.textContent.trim()), whyGo: (a => (a ? [a.getAttribute('href'), a.textContent.trim()] : null))(document.querySelector('#view a.why-go'))}));
   await look('#/w/005930');
   let dlg = null; const sendB = page.locator('#view .acts button', {hasText: '보내기'}).first();
@@ -391,7 +393,7 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   await goHash('#/me');
   await page.waitForFunction(() => document.querySelector('#view .m4-letter')?.classList.contains('landed'), null, {timeout: 15000}).catch(() => {}); await page.waitForTimeout(800); await shot('p44-next-me');
   const me = await page.evaluate(() => { const v = document.querySelector('#view'), clr = [...(v?.querySelectorAll('button') ?? [])].find(b => /본 기록 지우기/.test(b.textContent));
-    const kind = e => (e.matches('h1') ? 'h1' : e.matches('section.hd') ? 'hold' : e.matches('.lw') && e.querySelector('a.m4-letter') ? 'letter' : e.matches('h2') ? 'h2:' + e.textContent.trim() : null);
+    const kind = e => (e.matches('h1') ? 'h1' : e.matches('section.hd') ? 'hold' : e.matches('.lw, .hd-fold') && e.querySelector('a.m4-letter') ? 'letter' : e.matches('h2') ? 'h2:' + e.textContent.trim() : null);
     return {order: [...(v?.children ?? [])].map(kind).filter(Boolean), h1: v?.querySelector('h1')?.textContent ?? '', holdH: Math.round(v?.querySelector('section.hd')?.getBoundingClientRect().height ?? 0), letter: [...(v?.querySelectorAll('.m4-msg .hml') ?? [])].map(e => e.textContent),
       promo: v?.querySelector('.m4-gift')?.textContent ?? '', landed: !!v?.querySelector('.m4-letter.landed'), rec: !!v?.querySelector('section.wy-me'), clear: !!clr}; });
   await look('#/me');
@@ -413,14 +415,24 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   const whyCo = await page.evaluate(() => { const s = document.querySelector('#view section.wy'); return {q: s?.querySelector('.wy-q')?.textContent ?? '', opts: s?.querySelectorAll('.wy-opt').length ?? 0, stock: s?.querySelector('.wy-stn')?.textContent ?? '', find: !!s?.querySelector('input.wy-find')}; });
   await look('#/why/005930');
   // ⑧ 열한 질문을 끝낸 기계 — 끝낸 기록 한 줄(p-why.js 기록 꼴 · 답 열한 개 0 ~ 2)을 넣고 다시 엶 → 고도리 칸 열림 · 「어떻게 골랐나」 · 카드마다 「틀린다면 이유」(gdr.json wrong) · 끝에 기록을 지워 처음 기계로 되돌림
+  //    2026-10-18 첫 번째 묶음 — 첫 화면 칸 자리: 오늘 끝낸 기록이면 한 줄(section.gdr.today1 · 「오늘 점수 준비 n / 22」→ #/gdr · 「다시 하기 ›」→ #/why) · 오늘 쉬어 가자면 닫는 한 줄(rest1) · 어제만 끝냈으면 옛 그대로 열린 칸(칸 수 = 고른 곳 + 쉬는 돈) · 열린 칸은 #/gdr 에서도
   const rec = {at: new Date().toISOString(), asOf: G?.asOf ?? null, code: '005930', name: watch.h1 || '삼성전자', price: null, day: null, answers: [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], score: 0, reds: 0, verdict: '좋아, 정해 둔 대로만', groups: {이유: 0, 돈: 0, 때: 0, 마음: 0}, bigDay: null, why: '', promise: null, picks: []};
-  await page.evaluate(([k, r]) => localStorage.setItem(k, JSON.stringify([r])), [WHY_KEY, rec]);
-  await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await viewDone(); await page.waitForTimeout(1200);
-  const homeOpen = await page.evaluate(() => (s => (s ? {lock: s.classList.contains('lock'), cells: s.querySelectorAll('.gdr-cell').length, sum: s.querySelector('.gdr-sum')?.textContent ?? ''} : null))(document.querySelector('#view > section.gdr')));
-  await page.evaluate(() => { const e = document.querySelector('#view > section.gdr'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(400); await shot('p48-next-home-open');
+  const gdrRead = () => page.evaluate(() => (s => (s ? {lock: s.classList.contains('lock1'), one: s.classList.contains('today1'), rest: s.classList.contains('rest1'), cells: s.querySelectorAll('.gdr-cell').length, sum: s.querySelector('.gdr-sum')?.textContent ?? '', links: [...s.querySelectorAll('a[href]')].map(a => a.getAttribute('href')), text: (s.innerText ?? '').replace(/\s+/g, ' ').trim()} : null))(document.querySelector('#view > section.gdr')));
+  const homeAs = async r => { await page.evaluate(([k, x]) => localStorage.setItem(k, JSON.stringify([x])), [WHY_KEY, r]); await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await viewDone(); await page.waitForTimeout(1200); };
+  const toGdr = async name => { await page.evaluate(() => { const e = document.querySelector('#view > section.gdr'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(400); await shot(name); };
+  await homeAs(rec); // 오늘 끝냄 → 한 줄
+  const homeOne = await gdrRead();
+  await toGdr('p48-next-home-open');
+  await look('#/ 오늘 끝냄');
+  await homeAs({...rec, verdict: '오늘은 쉬어 가자'}); // 오늘 쉬어 가자 → 닫는 한 줄
+  const homeRest = await gdrRead();
+  await look('#/ 쉬어 가는 날');
+  await homeAs({...rec, at: new Date(Date.now() - 864e5).toISOString()}); // 어제만 끝냄 → 열린 칸(옛 그대로)
+  const homeOpen = await gdrRead();
+  await toGdr('p48b-next-home-open-yesterday');
   await look('#/ 열림');
   await goHash('#/gdr'); await page.waitForTimeout(400);
-  const gOpen = await page.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock'), fun: !!document.querySelector('#view section.gdr-fun'), cells: document.querySelectorAll('#view .gdr-cell').length}));
+  const gOpen = await page.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock1'), fun: !!document.querySelector('#view section.gdr-fun'), cells: document.querySelectorAll('#view .gdr-cell').length}));
   await look('#/gdr 열림');
   const wrong = [];
   for (const p of [G?.picks?.[0], G?.picks?.at(-1)].filter((p, i, a) => p && a.indexOf(p) === i)) {
@@ -434,17 +446,19 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   await goHash('#/why'); await page.waitForTimeout(300);
   const whyRec = await page.evaluate(() => document.querySelector('#view section.wy-me h2')?.textContent ?? '');
   await page.evaluate(k => localStorage.removeItem(k), WHY_KEY);
-  out.next = {html: hr.status, robots, home, titles: titles.filter(t => t.title !== t.want || t.cur !== t.tab), gLock, watch, dlg, me: {...me, letter: me.letter.length, first: me.letter[0] ?? null}, shorts: {...shorts, want}, why, whyCo, gdr: {picks: G?.picks?.length ?? null, homeOpen, gOpen, wrong, whyRec}, old: old.slice(0, 8), bad: bad.slice(0, 8)};
+  out.next = {html: hr.status, robots, home, titles: titles.filter(t => t.title !== t.want || t.cur !== t.tab), gLock, watch, dlg, me: {...me, letter: me.letter.length, first: me.letter[0] ?? null}, shorts: {...shorts, want}, why, whyCo, gdr: {picks: G?.picks?.length ?? null, homeOne, homeRest, homeOpen, gOpen, wrong, whyRec}, old: old.slice(0, 8), bad: bad.slice(0, 8)};
   const okTabs = JSON.stringify(home.tabs) === JSON.stringify(TABS5.map(([t, hh, n]) => [t, hh, n])) && titles.length === 7 && titles.every(t => t.title === t.want && t.cur === t.tab);
-  const okHome = home.cards >= 5 && home.chips === 8 && home.q === 0 && home.sw <= home.cw && !home.letterOnHome && home.tk === (NREADY.has('talk') ? '#/talk' : '/atlas/#/talk')
-    && home.wy?.find === true && home.wy.q === '어떤 종목이야?' && home.wy.opts === 0 && home.gdr?.lock === true && home.gdr.go === '#/why' && home.gdr.cells === 0 && home.order === 'wy,gdr,chips' && gLock.lock && gLock.go === '#/why' && !gLock.fun && gLock.cells === 0;
-  const okWatch = watch.h1 === '삼성전자' && /20거래일 동안 [+−]?\d/.test(watch.ws) && watch.ch === 7 && watch.nx >= 1 && watch.acts.length === 3 && /^관심 담[기음]$/.test(watch.acts[0]) && watch.acts[1] === '보내기' && watch.acts[2] === '같이 따져 줘'
+  const okHome = home.blocks === 'div.chips,a.tk-entry,a.hm-band,section.wy,section.gdr,details.hm-more,p.safe' && home.chips === 10 && home.q === 0 && home.sw <= home.cw && !home.letterOnHome && home.tk === (NREADY.has('talk') ? '#/talk' : '/atlas/#/talk')
+    && home.wy?.find === true && home.wy.q === '어떤 종목이야?' && home.wy.opts === 0 && home.gdr?.lock === true && home.gdr.go === '#/why' && home.gdr.cells === 0 && home.order === 'chips,wy,gdr' && gLock.lock && gLock.go === '#/why' && !gLock.fun && gLock.cells === 0;
+  const okWatch = watch.h1 === '삼성전자' && /한 달 동안 [+−]?\d/.test(watch.ws) && JSON.stringify(watch.tabs) === JSON.stringify(['past', 'rivals', 'grow', 'range'].map(k => '#/w/005930/' + k)) && watch.chapsOld === 0 && watch.nx >= 1 && watch.acts.length === 3 && /^관심 담[기음]$/.test(watch.acts[0]) && watch.acts[1] === '보내기' && watch.acts[2] === '같이 따져 줘'
     && watch.whyGo?.[0] === '#/why/005930' && /이 회사로 왜 사\?/.test(watch.whyGo[1]) && dlg?.h === '친구에게 무슨 말을 할래?' && dlg.open && dlg.ta && dlg.go && dlg.x && dlg.stock === watch.h1 && dlg.closed === true;
   const okMe = me.h1 === '보유종목' && me.order.slice(0, 3).join(',') === 'h1,hold,letter' && me.order.indexOf('h2:바로 가기') > 2 && me.order.indexOf('h2:본 기록') > me.order.indexOf('h2:바로 가기') && !me.rec && me.clear && me.landed
     && MSG[0] === LETTER_TITLE && JSON.stringify(me.letter) === JSON.stringify(MSG) && me.promo === PROMO;
   const okShorts = want.length >= 1 && shorts.n === want.length && !shorts.surge;
   const okWhy = why.h1 === '매매일지' && why.find && why.q === '어떤 종목이야?' && why.opts === 0 && why.recAfter && why.recH === '왜 사? 기록 0번' && /^1\. /.test(whyCo.q) && whyCo.opts === 3 && whyCo.stock === watch.h1 && !whyCo.find;
-  const okOpen = !!G && homeOpen?.lock === false && homeOpen.cells === G.picks.length + 1 && homeOpen.sum.startsWith('비중 합 100%') && !gOpen.lock && gOpen.fun && gOpen.cells === G.picks.length + 1 && wrong.length >= 1 && wrong.every(x => x.ok) && whyRec === '왜 사? 기록 1번';
+  const okOpen = !!G && homeOne?.one === true && homeOne.links.join() === '#/gdr,#/why' && /^오늘 점수 준비 (\d+|\?) \/ 22 · 다시 하기 ›$/.test(homeOne.text) && homeOne.cells === 0 && !homeOne.lock && !homeOne.rest
+    && homeRest?.rest === true && homeRest.text === '오늘은 담는 칸을 닫아 둘게' && homeRest.cells === 0 && !homeRest.lock && !homeRest.one
+    && homeOpen?.lock === false && !homeOpen.one && !homeOpen.rest && homeOpen.cells === G.picks.length + 1 && homeOpen.sum.startsWith('비중 합 100%') && !gOpen.lock && gOpen.fun && gOpen.cells === G.picks.length + 1 && wrong.length >= Math.min(1, G.picks.length) && wrong.every(x => x.ok) && whyRec === '왜 사? 기록 1번'; // 카드(틀린다면 이유)는 고른 곳이 있을 때만 — 고른 곳 0 이면 칸 하나(현금으로 둠)뿐
   out.next.part = {tabs: okTabs, home: okHome, watch: okWatch, me: okMe, shorts: okShorts, why: okWhy, open: okOpen, names: !old.length, words: !bad.length};
   out.next.ok = hr.status === 200 && !/noindex/.test(robots) && body.includes('/next/app.js') && Object.values(out.next.part).every(Boolean);
   if (!out.next.ok) out.errors.push('새 아틀란스 첫 화면: ' + JSON.stringify({part: out.next.part, titles: out.next.titles, old: out.next.old, bad: out.next.bad}).slice(0, 500));
@@ -464,7 +478,7 @@ await step('새 아틀란스 모든 쪽', async () => { // 사장님 2026-10-17 
   const done = () => page.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => {});
   const R = [['co', '#/w/005930', '.co-d'], ['past', '#/w/005930/past', '.chaps .cp.now'], ['rivals', '#/w/005930/rivals', '.chaps .cp.now'], ['grow', '#/w/005930/grow', '.chaps .cp.now'], ['range', '#/w/005930/range', '.chaps .cp.now'],
     ['chx', '#/ch/g/' + 'semi', '.chx-d'], ['surge', '#/surge', null], ['surge', '#/surge/20', null], ['cal', '#/cal', null], ['cond', '#/cond', null], ['talk', '#/talk', null], ['up', '#/up', null], ['time', '#/time', null], ['info', '#/info', null], ['today', '#/today', null],
-    ['why', '#/why', 'section.wy input.wy-find', 60], ['why', '#/why/005930', 'section.wy .wy-opt', 60], ['gdr', '#/gdr', 'section.gdr.lock a.gdr-go[href="#/why"]', 60]].filter(([k]) => NREADY.has(k)); // why · gdr = 고도리 한 장 명령문(2026-10-17 17:54) · 매매일지는 종목 고르기부터(#/why/<번호> 는 1번 질문) · 처음 기계의 고도리 칸은 잠금(21:10 [6] 1) · 넷째 = 글 길이 하한
+    ['why', '#/why', 'section.wy input.wy-find', 60], ['why', '#/why/005930', 'section.wy .wy-opt', 60], ['gdr', '#/gdr', 'section.gdr.lock1 a.gdr-l1[href="#/why"]', 60]].filter(([k]) => NREADY.has(k)); // why · gdr = 고도리 한 장 명령문(2026-10-17 17:54) · 매매일지는 종목 고르기부터(#/why/<번호> 는 1번 질문) · 처음 기계의 고도리 칸은 잠금(21:10 [6] 1) · 넷째 = 글 길이 하한
   const got = [], allow = await nameAllow();
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await done();
   await page.evaluate(k => localStorage.removeItem(k), WHY_KEY); // 처음 기계(매매일지 기록 없음) — 고도리 칸 잠금을 봄(열린 칸은 「새 아틀란스 첫 화면」 ⑧)
