@@ -1,42 +1,38 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-18T05:21:39.237Z",
+ "at": "2026-10-18T05:39:52.394Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-16",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 270,
+ "seconds": 278,
  "time": {
-  "old": 237.5,
-  "new": 176.7,
-  "wall": 269.5,
+  "old": 172.7,
+  "new": 261.3,
+  "wall": 278.4,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 88.1,
-  "oldShare": 57.3
+  "oldPct": 62,
+  "oldShare": 39.8
  },
  "net": {
-  "req": 2562,
-  "retry": 1,
-  "waitSec": 1,
-  "why": {
-   "TimeoutError": 1
-  },
+  "req": 2561,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
   "page": {
-   "retry": 2,
-   "waitSec": 4,
+   "retry": 0,
+   "waitSec": 0,
    "blocked": 0,
-   "why": {
-    "답 없는 요청": 2
-   }
+   "why": {}
   }
  },
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 261
+   "compare": 270
   },
   "글 마디": 51562,
   "숫자 낱말": 48804,
@@ -49,9 +45,9 @@
    "use": false,
    "why": "기준값 파일 없음",
    "made": null,
-   "inputs": 2566,
+   "inputs": 2568,
    "reads": 2564,
-   "note": "옛 화면 파일 몸을 다 못 읽어 기준값을 쓰지 않음"
+   "note": "기준값 새로 씀(파일 2568개 · 값 2564개)"
   },
   "세 폭 화면": 30,
   "못 받은 파일 길": 6

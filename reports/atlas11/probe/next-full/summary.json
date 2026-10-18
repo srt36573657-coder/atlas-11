@@ -1,45 +1,45 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-18T05:28:54.826Z",
+ "at": "2026-10-18T05:48:47.023Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "ref": "main",
- "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea",
- "run": 39099710521,
- "wallSeconds": 1027,
+ "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae",
+ "run": 39100608028,
+ "wallSeconds": 1184,
  "pages": [
   {
    "name": "cal",
    "code": 0,
-   "seconds": 105,
+   "seconds": 100,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "chx",
    "code": 0,
    "seconds": 189,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "co",
    "code": 0,
-   "seconds": 654,
+   "seconds": 706,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "cond",
    "code": 0,
-   "seconds": 47,
+   "seconds": 45,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "en",
    "code": 0,
-   "seconds": 569,
+   "seconds": 572,
    "shards": 5,
    "codes": [
     0,
@@ -49,98 +49,98 @@
     0
    ],
    "shardSeconds": [
-    510,
-    504,
-    569,
-    539,
-    550
+    544,
+    532,
+    572,
+    515,
+    545
    ],
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "gdr",
    "code": 0,
-   "seconds": 135,
+   "seconds": 102,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "grow",
    "code": 0,
-   "seconds": 409,
+   "seconds": 575,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "hold",
    "code": 0,
-   "seconds": 92,
+   "seconds": 86,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "misc",
    "code": 0,
-   "seconds": 51,
+   "seconds": 41,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "next",
    "code": 1,
-   "seconds": 285,
+   "seconds": 335,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "past",
    "code": 0,
-   "seconds": 542,
+   "seconds": 561,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "range",
    "code": 0,
-   "seconds": 656,
+   "seconds": 590,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "rivals",
    "code": 0,
-   "seconds": 270,
+   "seconds": 279,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "share",
    "code": 1,
-   "seconds": 281,
+   "seconds": 391,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "surge",
    "code": 0,
-   "seconds": 58,
+   "seconds": 50,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "today",
    "code": 0,
-   "seconds": 66,
+   "seconds": 65,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   },
   {
    "name": "why",
    "code": 1,
-   "seconds": 379,
+   "seconds": 378,
    "mode": "live",
-   "sha": "969d7ec89ef849001c16c69335da12a704c5c8ea"
+   "sha": "927b756ff8e64556f7fa92bff660f655e46b4fae"
   }
  ],
  "ok": false
