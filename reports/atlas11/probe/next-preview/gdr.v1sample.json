@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-gdr-2",
- "when": "2026-10-18T04:54:06.802Z",
+ "when": "2026-10-18T05:03:23.850Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -8,7 +8,7 @@
  "version": "gdr-v1",
  "asOf": "2026-10-13",
  "picks": 3,
- "sec": 35,
+ "sec": 30,
  "counts": {
   "종가 날이 달라 안 맞댐": 3,
   "맞댄 틀린다면 이유": 3,
@@ -35,7 +35,7 @@
   "없는 번호": 8,
   "저장소 기록 본 화면": 42,
   "내돈읽기": 0,
-  "본 요청": 1678,
+  "본 요청": 1674,
   "맞댄 첫 화면 오늘 한 줄": 4,
   "맞댄 오늘 점수 줄": 4,
   "맞댄 쉬어 가는 날": 6,
@@ -49,7 +49,6 @@
   "맞댄 v2 카드 줄": 6,
   "맞댄 채점 줄": 4,
   "맞댄 v2 깔때기": 4,
-  "fail": 5,
   "새 자료꼴 길": 1,
   "맞댄 고른 곳 0 까닭 줄": 6,
   "고른 곳 0 길": 6,
@@ -57,27 +56,6 @@
   "맞댄 성적 카드": 12,
   "성적 판": 4
  },
- "fails": [
-  [
-   "화면 오류",
-   "새 자료꼴 360×640 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json"
-  ],
-  [
-   "화면 오류",
-   "고른 곳 0 390×844 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json"
-  ],
-  [
-   "화면 오류",
-   "고른 곳 0 · 고른 날이 앞섬 390×844 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json"
-  ],
-  [
-   "화면 오류",
-   "고른 곳 0 · 사이트와 같은 날 390×844 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json"
-  ],
-  [
-   "화면 오류",
-   "담은 곳 둘 360×640 #/gdr · 404 http://127.0.0.1:8826/next/data/gdr-back.json | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/next/data/gdr-back.json"
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }
