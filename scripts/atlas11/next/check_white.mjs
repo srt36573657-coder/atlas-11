@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 흰 첫 화면 검사 — 사장님 2026-10-19 01:16(싱가포르) 「[골똘이 대공사 · 한 장 · 왜? 그럴까?]」 [차례] 1 · [검사 잣대] 1 ~ 4
-//   원문 docs/design/white-2026-10-19/order-0116.txt → 01:24 종합판 order-0124.txt([첫 화면 원칙] 1 ~ 4 · [검사 잣대] 1 ~ 5) · 잣대는 하나 「사기 전에 한 번 더 멈추게 하는가?」
+//   원문 docs/design/white-2026-10-19/order-0116.txt → 01:24 종합판 order-0124.txt → 02:03 구글과 잡스 판 order-0203.txt([검사] 1 ~ 9)([첫 화면 원칙] 1 ~ 4 · [검사 잣대] 1 ~ 5) · 잣대는 하나 「사기 전에 한 번 더 멈추게 하는가?」
 //   쓰는 법: node scripts/atlas11/next/check_white.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--path /next/?dev=1] [--out 결과.json]
 //            [--baseline] = 지금 첫 화면 글자 수를 config/atlas11/white-baseline.json 에 적음(한 번만 · 공사 전 main 에서)
 //            [--mock 파일.html] = 올리지 않는 시안 한 장(정적 html)을 같은 잣대로 잼(누름 · 빠르기 · 그대로 둘 것은 빼고 · 모양 잣대만)
@@ -79,6 +79,7 @@ const MEASURE = () => {
     if (tag === 'img' && !/\/media\/makbi-|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`);
   }
   out.bodyHex = (() => { const c = rgb(getComputedStyle(document.body).backgroundColor); return c ? '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase() + (c.a < 1 ? '~' : '') : '?'; })();
+  out.inkHex = (() => { const c = rgb(getComputedStyle(document.body).color); return c ? '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase() : '?'; })();
   out.findInput = !!document.querySelector('[data-w="find"] input');
   out.riseShown = [...root.querySelectorAll('*')].filter(e => vis(e) && (/급등|오르는 업종/.test(ownText(e)) || /#\/(f\/rise|f\/surge|surge)(\b|$)/.test(e.getAttribute?.('href') || ''))).map(e => (ownText(e) || e.getAttribute('href')).slice(0, 16));
   out.grid = []; for (const el of root.querySelectorAll('*')) { if (!vis(el)) continue; const kids = [...el.children].filter(vis); if (kids.length < 20) continue; const sq = kids.filter(k => { const r = k.getBoundingClientRect(); return r.width <= 44 && r.height <= 44; }); if (sq.length >= 20) out.grid.push(String(el.className).split(' ')[0] || el.tagName); }
@@ -91,6 +92,7 @@ const MEASURE = () => {
 
 function judge(m, tag, B) {
   check(m.bodyHex === '#FFFFFF', `${tag} ① 흰 바탕 #FFFFFF`, `바탕 ${m.bodyHex}`);
+  check(m.inkHex === '#16181D', `${tag} 글 #16181D`, `글 ${m.inkHex}`);
   check(m.findInput, `${tag} 「친구야, 왜 사?」 찾기 칸`, '[data-w="find"] 안에 글 칸이 없음');
   check(!m.riseShown.length, `${tag} 첫 화면 원칙 1 · 오르는 것은 한 번 더 눌러야`, m.riseShown.slice(0, 3).join(' | '));
   check(!m.grid.length, `${tag} 바둑판 0`, m.grid.slice(0, 3).join(' | '));
