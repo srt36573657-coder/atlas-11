@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 // 흰 첫 화면 검사 — 사장님 2026-10-19 01:16(싱가포르) 「[골똘이 대공사 · 한 장 · 왜? 그럴까?]」 [차례] 1 · [검사 잣대] 1 ~ 4
-//   원문 docs/design/white-2026-10-19/order-0116.txt · 잣대는 하나 「사기 전에 한 번 더 멈추게 하는가?」
+//   원문 docs/design/white-2026-10-19/order-0116.txt → 01:24 종합판 order-0124.txt([첫 화면 원칙] 1 ~ 4 · [검사 잣대] 1 ~ 5) · 잣대는 하나 「사기 전에 한 번 더 멈추게 하는가?」
 //   쓰는 법: node scripts/atlas11/next/check_white.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--path /next/?dev=1] [--out 결과.json]
 //            [--baseline] = 지금 첫 화면 글자 수를 config/atlas11/white-baseline.json 에 적음(한 번만 · 공사 전 main 에서)
 //            [--mock 파일.html] = 올리지 않는 시안 한 장(정적 html)을 같은 잣대로 잼(누름 · 빠르기 · 그대로 둘 것은 빼고 · 모양 잣대만)
 //   첫 화면이 지킬 표시(시안 · 실제 화면 모두):
 //     [data-w="ess"] 본질 칸 · [data-w="find"] 찾기 칸 · [data-w="today"] 오늘 장 · [data-w="gdr"] 골똘이 칸 · [data-w="all"] 전부 보기
+//     [data-w="find"] 안에 글 칸(input) 하나 = 「친구야, 왜 사?」 찾기 칸 · [data-w="news"] 시황 사실 · [data-fact] 사실 한 줄
 //     [data-say] 골똘이 말(인사 · 말풍선 · 안내 · 판정) — 「?」로 끝남
 //     [data-path~="q1"] 첫 질문 길(누를 것) · [data-num] 숫자 줄(「?」는 맨 앞 모름 · 오래됨 표시뿐)
 //   잣대
-//     ① 390 × 844 · 처음 온 기기와 다시 온 기기 모두: 바탕이 흰색(밝기 0.85 이상) · 다섯 칸이 아래 단추 위 한 화면 안
+//     ① 390 × 844 · 처음 온 기기와 다시 온 기기 모두: 바탕 #FFFFFF · 다섯 칸이 아래 단추 위 한 화면 안 · 320 × 568 은 본질 카드와 찾기 칸까지
+//        첫 화면 원칙: 오르는 것(급등 · 오르는 업종)은 처음 화면에 안 보이고 누름 2번에 닿음 · 「전부 보기」는 한 줄에 하나씩(네모 칸 깔기 · 바둑판 0)
+//        시황 [data-w="news"] = 오른 곳(.up)과 내린 곳(.dn)을 함께 · 사실마다([data-fact]) 「왜 그럴까?」 단추 · 한 달 된 기록이 있으면 「그날 정한 대로 했어?」 한 줄
 //     ② 글자 수 = 다시 온 기기 지금의 60% 이하 · 처음 온 기기 지금의 90% 이하(기준 = white-baseline.json)
 //        대비: 글 4.5 이상(큰 글 24px · 굵은 19px 이상은 3) · 단추 · 칸 테두리나 바탕은 둘레와 3 이상 · 누르는 것 48 × 48 이상
-//     ③ 누름(처음 온 기기): 첫 질문(「1 / 11」) 2번 안 · 기록(#/why) 1번 · 진화(#jhBtn) 1번 · 카톡 보내기 2번 안
+//     ③ 누름(처음 온 기기): 첫 질문(「1 / 11」) 2번 안 · 기록(#/why) 1번 · 진화(#jhBtn) 1번 · 오르는 것 2번 · 카톡 보내기 2번 안
 //        빠르기(느린 4G 150ms · 1.6Mbps · 처리 4배 느림): 가장 큰 그림 2.5초 안 · 누른 뒤 그려짐 0.2초 안 · 밀림 0.1 아래
 //     ④ 망치는 길 그림 0: 그림자 · 광택(그러데이션) · 입체 · 작은 빨간 점 · 얼굴 그림(허락한 그림 밖 <img>) · 숫자 아닌 빨간 글
 //        골똘이 말은 「?」로 끝남 · 숫자 줄 「?」는 맨 앞뿐 · 그대로 둘 것: 아래 단추 다섯 · 본질 세 줄 · 진화 단추 · 잠금 #/why
@@ -75,13 +78,24 @@ const MEASURE = () => {
     const red = rgb(cs.backgroundColor); if (red && red.a > 0.5 && red.r > 180 && red.g < 90 && red.b < 90 && r.width <= 16 && r.height <= 16) out.ruin.push(`작은 빨간 점 ${name}`);
     if (tag === 'img' && !/\/media\/makbi-|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`);
   }
+  out.bodyHex = (() => { const c = rgb(getComputedStyle(document.body).backgroundColor); return c ? '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase() + (c.a < 1 ? '~' : '') : '?'; })();
+  out.findInput = !!document.querySelector('[data-w="find"] input');
+  out.riseShown = [...root.querySelectorAll('*')].filter(e => vis(e) && (/급등|오르는 업종/.test(ownText(e)) || /#\/(f\/rise|f\/surge|surge)(\b|$)/.test(e.getAttribute?.('href') || ''))).map(e => (ownText(e) || e.getAttribute('href')).slice(0, 16));
+  out.grid = []; for (const el of root.querySelectorAll('*')) { if (!vis(el)) continue; const kids = [...el.children].filter(vis); if (kids.length < 20) continue; const sq = kids.filter(k => { const r = k.getBoundingClientRect(); return r.width <= 44 && r.height <= 44; }); if (sq.length >= 20) out.grid.push(String(el.className).split(' ')[0] || el.tagName); }
+  const nw = document.querySelector('[data-w="news"]'); out.news = nw ? {up: !!nw.querySelector('.up'), dn: !!nw.querySelector('.dn'), facts: [...nw.querySelectorAll('[data-fact]')].length, why: [...nw.querySelectorAll('[data-fact]')].filter(f => [...f.querySelectorAll('button')].some(b => /왜 그럴까\?/.test(b.textContent))).length} : null;
+  out.monthLine = /그날 정한 대로 했어\?/.test(root.innerText || '');
   for (const el of root.querySelectorAll('[data-say]')) if (vis(el)) { const t = el.textContent.replace(/\s+/g, ' ').trim(); out.says.push(t); }
   for (const el of root.querySelectorAll('[data-num]')) if (vis(el)) { const t = el.textContent.replace(/\s+/g, ' ').trim(); if (t.includes('?') && !/^\?/.test(t.replace(/^[^\w가-힣?]+/, ''))) out.numQ.push(t.slice(0, 30)); }
   return out;
 };
 
 function judge(m, tag, B) {
-  check(m.bodyLum >= 0.85, `${tag} ① 흰 바탕`, `바탕 밝기 ${m.bodyLum.toFixed(2)}`);
+  check(m.bodyHex === '#FFFFFF', `${tag} ① 흰 바탕 #FFFFFF`, `바탕 ${m.bodyHex}`);
+  check(m.findInput, `${tag} 「친구야, 왜 사?」 찾기 칸`, '[data-w="find"] 안에 글 칸이 없음');
+  check(!m.riseShown.length, `${tag} 첫 화면 원칙 1 · 오르는 것은 한 번 더 눌러야`, m.riseShown.slice(0, 3).join(' | '));
+  check(!m.grid.length, `${tag} 바둑판 0`, m.grid.slice(0, 3).join(' | '));
+  check(!!m.news && m.news.up && m.news.dn, `${tag} 시황 = 오른 곳과 내린 곳 함께`, m.news ? `오름 ${m.news.up} · 내림 ${m.news.dn}` : '[data-w="news"] 가 없음');
+  check(!!m.news && m.news.facts > 0 && m.news.why === m.news.facts, `${tag} 시황 사실마다 「왜 그럴까?」 단추`, m.news ? `사실 ${m.news.facts} · 단추 ${m.news.why}` : '');
   for (const k of BLOCKS) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
   if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'})`); }
   check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
@@ -114,7 +128,7 @@ try {
     const ctx = await ctxOf(true), url = 'file://' + path.resolve(MOCK);
     const {p} = await open(ctx, url); const m = await p.evaluate(MEASURE);
     const B = fs.existsSync(BASEFILE) ? JSON.parse(fs.readFileSync(BASEFILE, 'utf8')) : null;
-    R.m.mock = m; judge(m, '시안 처음 온 기기', B); await ctx.close();
+    R.m.mock = m; judge(m, '시안(다시 온 기기 꼴)', B); await ctx.close();
   } else {
     const HOME = base + NEXT + '#/';
     if (argv.includes('--baseline')) {
@@ -133,12 +147,40 @@ try {
       judge(m, tag, B); keep(m, tag); check(!errs.length, `${tag} 쪽 오류 0`, errs.slice(0, 2).join(' | '));
       await ctx.close();
     }
+    // ① 320 × 568 — 본질 카드와 찾기 칸까지 한 화면
+    {
+      const ctx = await ctxOf(false, {viewport: {width: 320, height: 568}}), {p} = await open(ctx, HOME), m = await p.evaluate(MEASURE);
+      for (const k of ['ess', 'find']) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `320 × 568 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
+      check(!m.small.length, '320 × 568 누르는 크기 48', m.small.slice(0, 3).join(' · '));
+      check(await p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1), '320 × 568 옆 넘침 0', '');
+      await ctx.close();
+    }
+    // 한 달 된 기록 → 카드 밑 「그날 정한 대로 했어?」
+    {
+      const ctx = await ctxOf(false), old = new Date(Date.now() - 40 * 864e5);
+      await ctx.addInitScript(at => { try { if (localStorage.getItem('atlas:godori-why')) return; localStorage.setItem('atlas:godori-why', JSON.stringify([{at, asOf: at.slice(0, 10), code: '005930', name: '삼성전자', price: 70000, day: at.slice(0, 10), answers: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], score: 20, reds: 0, verdict: '좋아', groups: [], bigDay: null, why: '이익이 늘어서', promise: {sell: 63000, half: 84000, text: '만약 63,000원 아래로 가면 다 판다. 만약 84,000원 위로 가면 절반 판다.'}, picks: []}])); } catch { /* 없음 */ } }, old.toISOString());
+      const {p} = await open(ctx, HOME); await p.waitForTimeout(800); const m = await p.evaluate(MEASURE);
+      check(m.monthLine, '한 달 된 기록 · 「그날 정한 대로 했어?」 한 줄', '첫 화면에 그 줄이 없음'); await ctx.close();
+    }
+    // 「전부 보기」 — 한 줄에 하나씩 · 오르는 것은 누름 2번
+    {
+      const ctx = await ctxOf(false), {p} = await open(ctx, HOME), all = p.locator('#view [data-w="all"]:visible').first();
+      if (await all.count()) {
+        await all.click(); await p.waitForTimeout(1200);
+        const L = await p.evaluate(() => { const box = document.querySelector('[data-w="all"]'); const host = box?.closest('details') || box?.parentElement; const W0 = host?.getBoundingClientRect().width || 1;
+          const rows = [...(host?.querySelectorAll('a[href], li') || [])].filter(e => e.getBoundingClientRect().height > 0 && !e.closest('summary'));
+          return {narrow: rows.filter(e => e.getBoundingClientRect().width < 0.85 * W0).map(e => e.textContent.trim().slice(0, 14)), rise: rows.some(e => /#\/(f\/rise|f\/surge|surge)(\b|$)/.test(e.getAttribute?.('href') || '') || /#\/(f\/rise|f\/surge|surge)(\b|$)/.test(e.querySelector?.('a')?.getAttribute('href') || ''))}; });
+        check(!L.narrow.length, '「전부 보기」 한 줄에 하나씩(네모 칸 0)', L.narrow.slice(0, 3).join(' | '));
+        check(L.rise, '③ 오르는 것까지 누름 2번(전부 보기 → 오르는 것)', '전부 보기 안에 오르는 업종 · 급등 고리가 없음'); R.m.taps = {...(R.m.taps || {}), rise: L.rise ? 2 : null};
+      } else fail('「전부 보기」', '[data-w="all"] 가 없음');
+      await ctx.close();
+    }
     // ③ 누름(처음 온 기기)
     {
       const ctx = await ctxOf(true), seen = async p => p.evaluate(() => /(^|\s)1\s*\/\s*11(\s|$)/.test(document.querySelector('#view')?.innerText || ''));
       let {p} = await open(ctx, HOME), n = 0;
       while (n < 2 && !(await seen(p))) { const t = p.locator('#view [data-path~="q1"]:visible').first(); if (!(await t.count())) break; await t.click({timeout: 5000}); n++; await settle(p); }
-      const q1 = await seen(p); R.m.taps = {q1: q1 ? n : null};
+      const q1 = await seen(p); R.m.taps = {...(R.m.taps || {}), q1: q1 ? n : null};
       check(q1 && n <= 2, '③ 첫 질문까지 누름 2번 안', q1 ? `${n}번` : `${n}번 눌러도 「1 / 11」이 안 보임`);
       await p.goto(HOME); await settle(p);
       const rec = await p.locator('a[href="#/why"]:visible').count(); check(rec > 0, '③ 기록까지 누름 1번', '보이는 #/why 고리 없음'); R.m.taps.record = rec > 0 ? 1 : null;
