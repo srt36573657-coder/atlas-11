@@ -497,14 +497,14 @@ html.white .ctabs button, html.white .avs a, html.white .chan > a, html.white a.
 html.white .ctabs button[aria-selected="true"] { border-bottom-color: var(--ink); }
 html.white .find input { min-height: 52px; background: #FFFFFF; border: 2px solid var(--ink); color: var(--ink); }
 html.white .find input::placeholder { color: var(--mute); opacity: 1; }
-html.white .kk-btn { width: 48px; height: 48px; min-width: 48px; }
+html.white .kk-btn { width: 48px; height: 48px; min-width: 48px; border: 1px solid var(--hair2); } /* 흰 바탕에 그림만 있는 단추도 테두리(일꾼 E 점검) */
 html.white .kk-btn.kk-wide { width: auto; min-height: 48px; background: #FFFFFF; border: 1px solid var(--hair2); }
 html.white .kkc > .card .meta { width: calc(100% - 56px); }
 html.white .kkg > a > b, html.white .kkg > a > small { width: calc(100% - 56px); }
 
 /* 그림 카드 · 보는 화면 · 시황 칸 · 채널 — 어두운 면 · 그러데이션을 흰 면 + 테두리로 */
 html.white .th { background: #FFFFFF; border-color: var(--hair2); }
-html.white .th .big { background: #FFFFFF; color: var(--ink); }
+html.white .th .big { background: #FFFFFF; color: var(--ink); border: 1px solid var(--hair2); }
 html.white .th .dur { background: #FFFFFF; color: var(--ink); border: 1px solid var(--hair2); } /* 먹 바탕이면 안의 빨강 · 파랑 숫자가 3.3 으로 흐려짐 */
 html.white .play { background: var(--ink); border-color: #FFFFFF; }
 html.white .av { background: #FFFFFF; border: 1px solid var(--gold); color: var(--gold); }

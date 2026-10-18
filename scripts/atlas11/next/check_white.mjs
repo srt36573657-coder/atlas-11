@@ -204,6 +204,29 @@ try {
       R.m.taps.kakao = kk; check(kk != null && kk <= 2, '③ 카톡 보내기 누름 2번 안', kk == null ? '첫 화면에서 2번 안에 카톡 보내기가 안 됨' : '');
       await ctx.close();
     }
+    // ⑤ 다른 쪽도 흰 판(둘째 올림 · 실패할 길 1 「옛 쪽 글이 흰 바탕에 안 보임」을 막는 줄) — 쪽마다 흰 바탕 · 글 대비 · 단추 테두리 · 누름 48 · 망치는 길 0 · 옆 넘침 0(390 · 320)
+    //   바둑판 셈은 첫 화면만(급등 36점 · 업데이트 막대는 자료 그림 <svg> — 칸 깔기가 아님)
+    if (!argv.includes('--home-only')) {
+      const PAGES = ['#/today', '#/shorts', '#/why', '#/why/005930', '#/sub', '#/me', '#/find/삼성', '#/surge', '#/surge/10', '#/cal', '#/cond', '#/talk', '#/up', '#/time', '#/info', '#/jinhwa', '#/gdr', '#/w/005930', '#/w/005930/past', '#/w/005930/rivals', '#/w/005930/grow', '#/w/005930/range', '#/f/rise', '#/f/lead', '#/x/005935'];
+      R.m.pages = {};
+      for (const vw of [390, 320]) {
+        const ctx = await ctxOf(false, vw === 320 ? {viewport: {width: 320, height: 568}} : {});
+        for (const hs of PAGES) {
+          const {p, errs} = await open(ctx, base + NEXT + hs); const m = await p.evaluate(MEASURE), wide = await p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1);
+          const tag = `다른 쪽 ${hs} ${vw}`, ruin = [...new Set(m.ruin)];
+          R.m.pages[`${hs} ${vw}`] = {low: m.lowContrast.length, ui: m.uiContrast.length, small: m.small.length, ruin: ruin.length};
+          check(m.bodyHex === '#FFFFFF', `${tag} 흰 바탕`, `바탕 ${m.bodyHex}`);
+          check(!m.lowContrast.length, `${tag} 글 대비`, m.lowContrast.slice(0, 3).join(' · '));
+          check(!m.uiContrast.length, `${tag} 단추 테두리 대비 3`, m.uiContrast.slice(0, 3).join(' · '));
+          check(!m.small.length, `${tag} 누르는 크기 48`, m.small.slice(0, 3).join(' · '));
+          check(!ruin.length, `${tag} 망치는 길 그림 0`, ruin.slice(0, 3).join(' · '));
+          check(wide, `${tag} 옆 넘침 0`, '');
+          check(!errs.length, `${tag} 쪽 오류 0`, errs.slice(0, 2).join(' | '));
+          await p.close();
+        }
+        await ctx.close();
+      }
+    }
     // ③ 빠르기 — 느린 4G · 처리 4배 느림 · 다시 온 기기(첫 화면 그림 몫)
     {
       const ctx = await ctxOf(false), p = await ctx.newPage(), cdp = await ctx.newCDPSession(p);

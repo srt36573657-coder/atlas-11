@@ -1043,7 +1043,8 @@ async function kkButton(W_, H_) {
     if (sw.share !== true || sw.on !== false) fail('시험 준비 — 공유만 켜진 상태가 아님([7] 1 스위치 둘)', `${tag} ${JSON.stringify(sw)}`);
     const m = await kkRow(p, kkOf('share'), 'kk-a');
     if (!m) { fail('카톡 단추를 못 만듦(shareButtons → null)', tag); return; }
-    if (Math.round(m.w) !== 44 || Math.round(m.h) !== 44) fail('카톡 단추 44 × 44 아님([6] 1)', `${tag} ${m.w}×${m.h}`);
+    const kkSide = await p.evaluate(() => document.documentElement.classList.contains('white')) ? 48 : 44; // 흰 판은 새 단추 48(사장님 2026-10-19 02:03 [검사] 5 「새 단추는 48px」 — [6] 1 의 44 보다 뒤 말씀)
+    if (Math.round(m.w) !== kkSide || Math.round(m.h) !== kkSide) fail(`카톡 단추 ${kkSide} × ${kkSide} 아님([6] 1 · 흰 판 48)`, `${tag} ${m.w}×${m.h}`);
     if (m.fill !== 'rgb(254, 229, 0)') fail('노란 말풍선 아님([6] 1)', `${tag} ${m.fill}`);
     if (m.label !== CO.c.name + ' 카톡으로 보내기' || m.kk !== CODE || m.kind !== 'share' || m.text || m.tag !== 'BUTTON' || m.type !== 'button' || !m.inLink) fail('카톡 단추 꼴(이름표 · 번호 · 글 없음 · button · 고리 안에 둠)', `${tag} ${JSON.stringify(m)}`);
     const at0 = await p.evaluate(AT);

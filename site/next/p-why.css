@@ -135,3 +135,4 @@ html.white :is(.wy-prev, .wy-one, .wy-stk, .wy-lines) { outline: 1px solid var(-
 html.white .wy-prev .wy-one { outline: 0; }
 html.white .wy-back { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white .wy-date { color-scheme: light; }
+html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-10-19 둘째 올림 — 흰 판 48 줄(app.css #view)이 고르기 칸 56 을 덮지 않게 */

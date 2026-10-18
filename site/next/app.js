@@ -1029,8 +1029,9 @@ const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'i
 /* 흰 판(사장님 2026-10-19 02:03 · 올리기 ① 「색과 첫 화면」) — html.white 는 첫 화면(#/ · 칩 없는 '' 길)에서만 · 다른 길은 뗌 · 창 위 띠 색(theme-color)도 같이
    index.html 이 white 로 시작(첫 그림이 늦지 않게) → 여기서 곧바로 길에 맞춤 → 화면을 바꿀 때마다 새 화면과 같은 순간에 바꿈 */
 function whiteFor(k) {
-  const on = k === '';
+  const on = true; // 2026-10-19 둘째 올림 — 다른 쪽도 흰 판(사장님 02:03 「둘로 올려라 … ② 다른 쪽」)
   document.documentElement.classList.toggle('white', on);
+  document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
   $('meta[name="theme-color"]')?.setAttribute('content', on ? '#FFFFFF' : '#0C0E12');
 }
 whiteFor(parse(location.hash || '#/').k);
