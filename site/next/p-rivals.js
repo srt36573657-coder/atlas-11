@@ -5,6 +5,7 @@
    주가는 보지 않음(빨강 · 파랑 없음) · 막대 줄을 누르면 그 회사의 5단(#/w/<번호>/rivals)
    남의 글(세 팀 이야기 · 회사 이름)은 data-proper — 지금 아틀란스 site_check 와 같은 뜻(금지 말 셈 밖 · 남이 쓴 사실 「국내 1위」 같은 것)
    보안 규칙: 글은 textContent 로만 · 꾸밈은 p-rivals.css 와 CSSOM(style.setProperty) 으로만 */
+import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접힘(사장님 2026-10-18 [10] 10 · warn.js)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 const NB = '\u00a0'; // 붙임 띄어쓰기 — 「10월 / 13일」로 갈라지지 않게(지금 아틀란스 md 와 같음)
@@ -29,7 +30,7 @@ const SAFE = '저는 투자 상담사가 아니에요. 고도리는 지난 기�
 /** 맨 아래 — 자료 줄(지금 아틀란스 foot 의 출처 · 기준일 · 바탕 회사 줄 그대로) · 아직 바뀔 수 있는 값 「?」 · 안전 문장 */
 function foot(C) {
   return [h('p', {class: 'privals-foot', text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
-    C.provisional ? h('p', {class: 'privals-foot privals-qf', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
+    C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`) : null,
     h('p', {class: 'safe privals-safe', text: SAFE})].filter(Boolean);
 }
 
@@ -149,7 +150,7 @@ export async function render(arg) {
     nodes.push(h('p', {class: 'privals-shape'}, h('b', {text: S.shape}), ' — ', SHAPE_SAY[S.shape] || ''));
     if (S.rivals?.length) nodes.push(h('h3', {class: 'privals-h3', text: `경쟁 회사 ${S.rivals.length}곳`}), h('ul', {class: 'privals-rivals'}, ...S.rivals.map(rivalCard)));
     else nodes.push(h('p', {class: 'privals-q', text: '? 이름을 댈 만한 경쟁 회사를 못 찾았습니다'}));
-  } else nodes.push(h('p', {class: 'privals-q', text: storyNone(pk, C)}));
+  } else nodes.push(warn(storyNone(pk, C), {short: '? 세 팀 이야기가 아직 없어요 — 누르면 펼쳐요'}));
   if (S && (S.sells || S.why)) { // 무엇을 팔고 누가 사나 — 긴 글(그 시장 · 최근 큰 일)은 접음(지금 아틀란스 그대로)
     nodes.push(h('details', {class: 'privals-more'}, h('summary', {text: '무엇을 팔고, 누가 사나요? — 눌러서 보기'}), h('div', {class: 'privals-inner'},
       S.sells ? h('p', {'data-proper': true, text: S.sells}) : null,

@@ -11,12 +11,18 @@
 //   ⑥ 펀드 · 우선주 — 점검 못 하는 까닭(이름표 글의 종류 · #/x 고리) · 수익률 없음
 //   ⑦ 자료를 바꾼 길 — gates.json 못 받음 · co 파일 못 받음 · 기억 못 하는 기계(이 화면에서만 적힘)
 //   ⑧ 모양 — 두 폭(360×640 · 390×844) 옆 넘침 0 · 칸 밖 0 · 누르는 자리 44px · 글 17px · 캔버스 0 · 쓰지 않을 말 0(내 글 · 남의 글 data-proper · lang="ko" 밖) · 화면 오류 0
+//   ⑪ 관심 소식(2026-10-18 · 일꾼 S5h) — 담은 업종 · 큰 업종의 뽑힘 · 옮김 · 빠짐 + 오늘 가장 움직인 곳 · 날짜 새 것 먼저 · 줄 수 = 자료에서 따로 센 수 · 자료 못 받음 「?」 · 담은 곳 없음 소식 0 · 두 폭
+//   ⑫ 편지 접기 — 한 덩이 ≤ 214px(360×640) · 「펼치기」 ≥ 44px · 펼치면 본디 높이 · 편지 글 = HELLO_MSG · 여는 그림이 접힌 칸 안에서 처음 한 번(세 폭)
+//   ⑬ 바로 가기 · 카카오 · 기록 파일 · 탈퇴 — 가짜 NX.kakao 넷(없음 · 꺼짐 · 켜짐 가입 안 함 · 켜짐 가입함) · 고리 하나 · 지킴 글 두 꼴 · 내려받기 잡기 · 망 요청 0 · withdraw 정확히 1번
+//   ⑭ 글씨 · 간격 · 왼쪽 줄 · 낱말 — css 글(p-hold.css 전부 + app.css 내 블록) var(--fs-n) · 0 · 8 · 16 · 24 · 음수 0 · 쪽 재기(17px · 6가지 · 글 시작 왼쪽 줄 ≤ 3 · 그려진 모든 칸의 margin · padding · gap 이 0 · 8 · 16 · 24 · 음수 0 — 편지 칸 포함) · 옛 낱말 0
+//   --only 11,12,13,14 = 새 칸만(고치는 동안 빨리) · 옛 ① ~ ⑧ 은 --only 1 · 빼면 모두
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {NEW_NAME} from './rename.mjs'; // 이름 = site/next/brand.js 한 곳(규칙 76) — 글자를 박지 않음
+import {NAME_EN} from '../../../site/next/brand.js';
 import {screenHits} from '../../../site/next/words.js'; // 쓰지 않을 말 한 곳(명령문 [4] 4 · 일꾼 C) — 「사라져」 같은 보통 말은 빼고 셈
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
@@ -24,7 +30,10 @@ const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] 
 const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')).replace(/\/?$/, '/'));
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1'), OUT = arg('--out', null), ALL = argv.includes('--all'), LIMIT = Math.max(0, +arg('--limit', 0) || 0);
+const ONLY = String(arg('--only', '') || '').split(',').map(x => x.trim()).filter(Boolean); // 고르면 그 칸만(1 = 옛 ① ~ ⑧ · 11 ~ 14 = 새 칸)
+const RUN = k => !ONLY.length || ONLY.includes(String(k));
 const fails = [], counts = {}, t0 = Date.now();
+let COUNTS_FOLD = null, COUNTS_CSS = null, COUNTS_WORDS = null, COUNTS_MEASURE = null;
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 400)]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -34,7 +43,7 @@ const ORDER = await fs.readFile(path.join(ROOT, 'docs/design/godori-2026-10-17/o
 const BRIEF = await fs.readFile(path.join(ROOT, 'docs/design/godori-2026-10-17/brief.md'), 'utf8').catch(() => '');
 const SEC5 = (ORDER.split('[5 · 보유종목 점검]')[1] ?? '').split('[6 ·')[0];
 const QTEXT = (/첫 질문: 「([^」]+)」/.exec(SEC5) || [])[1];
-const ITEMS = [...SEC5.matchAll(/^\s*([①②③④⑤]) (.+?)\s*$/gm)].map(m => m[1] + ' ' + m[2].replace(/\(숫자\)$/, ''));
+const ITEMS = [...SEC5.matchAll(/^\s*([①②③④⑤]) (.+?)\s*$/gm)].map(m => m[1] + ' ' + m[2].replace(/\(숫자\)$/, '').replace(/다섯 문/g, '조건 다섯')); // 2026-10-18 [10] 1 — 옛 낱말 「다섯 문」은 화면에서 「조건 다섯」
 const GATES = ((/다섯 문으로 걸러라: ([^\n]+?)\n/.exec(BRIEF) || [])[1] ?? '').split(' · ').map(s => s.trim()).filter(Boolean);
 const Q3 = (/^3 뭐가 좋아\? 🟢(.+?) 🟡(.+?) 🔴(.+?) -/m.exec(BRIEF) || []).slice(1);
 if (!QTEXT || ITEMS.length !== 5 || GATES.length !== 5 || Q3.length !== 3) { console.error('명령문(order-2110.txt [5]) · 결정표(brief.md)에서 질문 · 다섯 가지 · 다섯 문 · 질문 3 답을 못 읽음', QTEXT, ITEMS, GATES, Q3); process.exit(1); }
@@ -64,6 +73,18 @@ if (!GATE?.co) { // 아직 없으면 가짜(번호로 정한 값 · 결과에 �
   gatesSrc = 'fake';
   const co = {}; for (const c of Object.keys(MKT.companies)) { let x = 7; for (const ch of c) x = (x * 31 + ch.charCodeAt(0)) >>> 0; co[c] = x % 7 === 0 ? [1, null, null, null, null, null] : [0, ...[0, 1, 2, 3, 4].map(i => (x >> (i + 3)) & 1)]; }
   GATE = {schema: 'godori-gates-1', version: 'fake', asOf: MKT.asOf, keys: ['x', 'g1', 'g2', 'g3', 'g4', 'g5'], co};
+}
+/* 문 1 을 지난 곳이 하나도 없는 자료(gdr-v2 · 2026-10-18 — 다섯 문을 다 센 432곳이 모두 문 1 못 지남) — 이 검사는 화면이 「주어진」 문 색을 제대로 읽는지 보는 것이라
+   다섯 문을 다 센 곳을 차례대로 세어 짝수 번째의 문 1 만 「지남」으로 바꾼 사본을 쓰고, 같은 사본을 꾸민 판의 화면에도 넘김(결과 gatesSrc 에 밝힘 · 다른 칸 ⑪ ~ ⑭ 는 진짜 자료 그대로) */
+let GATE_BODY = null;
+{
+  const fullRow = gv => Array.isArray(gv) && gv[0] === 0 && gv.slice(1, 6).every(v => v === 0 || v === 1);
+  const cs = Object.keys(GATE.co).sort();
+  if (!cs.some(c => fullRow(GATE.co[c]) && GATE.co[c][1] === 1)) {
+    const co = {...GATE.co}; let k = 0, n = 0;
+    for (const c of cs) if (fullRow(co[c]) && k++ % 2 === 0) { co[c] = co[c].slice(); co[c][1] = 1; n++; }
+    if (n) { GATE = {...GATE, co}; GATE_BODY = JSON.stringify(GATE); gatesSrc += ` + 문 1 지남 ${n}곳 바꿈(진짜 자료엔 문 1 지난 곳 0)`; }
+  }
 }
 const coCache = new Map();
 const priceOf = async c => { if (!coCache.has(c)) coCache.set(c, await getJ('/atlas/data/co/' + c + '.json').then(j => (j?.c?.price > 0 ? {p: j.c.price, d: j.c.priceDate} : null)).catch(() => null)); return coCache.get(c); };
@@ -139,6 +160,7 @@ async function newPage(width, height, {holds = null, recs = null, store = 'ok', 
   const ctx = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
   if (store === 'throw') await ctx.addInitScript(() => { Object.defineProperty(window, 'localStorage', {configurable: true, get() { throw new DOMException('막힘', 'SecurityError'); }}); });
   else if (holds || recs) await ctx.addInitScript(([k1, v1, k2, v2]) => { if (sessionStorage.getItem('hd-seeded')) return; if (v1) localStorage.setItem(k1, v1); if (v2) localStorage.setItem(k2, v2); sessionStorage.setItem('hd-seeded', '1'); }, [KEY, holds ? JSON.stringify(holds) : null, WHY_KEY, recs ? JSON.stringify(recs) : null]);
+  if (GATE_BODY) await ctx.route('**/next/data/gates.json', r => r.fulfill({status: 200, contentType: 'application/json', body: GATE_BODY})); // 바꾼 사본(아래 routes 가 나중에 걸려 먼저 받음)
   for (const [pat, fn] of routes) await ctx.route(pat, fn);
   const p = await ctx.newPage(); p._errs = [];
   const allowed = u => allow.some(a => String(u || '').includes(a));
@@ -274,6 +296,8 @@ function checkDone(c, s, SH, tag, ansK) {
   bump('답한 뒤 맞댄 카드');
 }
 
+let EMPTY = null;
+if (RUN(1)) { // ═══ 옛 ① ~ ⑧(일꾼 D · E) ═══
 /* ① ~ ③ 판 A — 열 곳 넘게(값 = 시험 서버) · 360×640 */
 const HOLDS = [...SC.map(s => s.hold), ...(XH ? [XH] : []), ...PAST], RECS = SC.filter(s => s.rec).map(s => s.rec);
 const SH_A = sharesOf(HOLDS);
@@ -311,7 +335,7 @@ for (const s of SC) { const v = SH_A.by.get(s.X.code); if (isBig(v, SH_A.tot)) s
       await p.locator(`${SEL} article.hd-card[data-id="${XH.id}"] button.hd-opt`).nth(1).click({timeout: 8000});
       await p.waitForFunction(([sel, id]) => !!document.querySelector(`${sel} article.hd-card[data-id="${id}"] .hd-ans`), [SEL, XH.id], {timeout: 10000});
       const c = cardOf(await p.evaluate(READH, SEL), XH.id);
-      if (c?.badge?.c !== 'q' || c.badge.t !== '? 점검 못 함' || c.items.length || !c.lines.includes(`${XLABEL} — 회사 주식이 아니라 다섯 문을 셀 수 없어요.`) || c.link !== '#/x/' + encodeURIComponent(XH.code) || /[+−]\d+(\.\d)?%/.test(c.ret ?? c.text)) fail('회사 주식 밖 — 점검 못 하는 까닭([5] 9)', `${tag} ${JSON.stringify(c).slice(0, 300)}`);
+      if (c?.badge?.c !== 'q' || c.badge.t !== '? 점검 못 함' || c.items.length || !c.lines.includes(`${XLABEL} — 회사 주식이 아니라 조건 다섯을 셀 수 없어요.`) || c.link !== '#/x/' + encodeURIComponent(XH.code) || /[+−]\d+(\.\d)?%/.test(c.ret ?? c.text)) fail('회사 주식 밖 — 점검 못 하는 까닭([5] 9)', `${tag} ${JSON.stringify(c).slice(0, 300)}`);
       else bump('회사 주식 밖 맞댐');
     }
     await layout(p, tag + ' 모두 답함');
@@ -463,7 +487,6 @@ if (SC.length >= 2) {
 }
 
 /* 빈 칸 높이 — 보유종목이 없을 때 짧게(제목 · 한 줄 · 적기 단추) · 아래 사장님 편지가 첫 화면 가까이(360×640 · 결과에 남김) */
-let EMPTY = null;
 {
   const tag = '빈 칸 360×640', p = await newPage(360, 640, {holds: [], recs: []});
   try {
@@ -568,10 +591,498 @@ const errText = p => p.locator(`${SEL} .hd-err`).first().textContent().catch(() 
   await p.context().close();
 }
 
+} // ═══ 옛 ① ~ ⑧ 끝 ═══
+
+/* ═══ 2026-10-18 일꾼 S5h(줄 13 · 잣대 accept/S5h.md) — ⑪ 관심 소식 · ⑫ 편지 접기 · ⑬ 바로 가기 · 카카오 · 기록 파일 · 탈퇴 · ⑭ 글씨 · 간격 · 왼쪽 줄 · 낱말 ═══
+   기대 값은 사이트 화면 코드를 읽지 않고 자료(surgetr.json · core.json · mkt.json)와 명령문에서 따로 셈 · 카카오는 쪽을 열기 전에 가짜 NX.kakao 를 끼워 넣음(없음 · 꺼짐 · 켜짐 가입 안 함 · 켜짐 가입함) */
+const APP_SRC = await fs.readFile(path.join(ROOT, 'site/next/app.js'), 'utf8');
+const HELLO = JSON.parse((/const HELLO_MSG = (\[[^\]]*\]);/.exec(APP_SRC) || [, 'null'])[1].replace(/'/g, '"')); // 편지 글 = app.js HELLO_MSG(글자 그대로)
+const NEWS_KIND = {mov: ['오늘 가장 많이 움직인 곳', 0], sel: ['뽑힘', 1], re: ['다시 뽑힘', 2], mv: ['옮김', 3], out: ['빠짐', 4]};
+const NEWS_BOX = {'1': '10%대로', '2': '20%대로', '3': '30%대로', '4': '40% 이상으로'};
+const OLD_WORDS = /다섯 문|갈래|몸값|20거래일|한 회사 한 표|큰 회사는 크게|쉬는 돈/;
+const SEEDS = {
+  sub: JSON.stringify(['g:semi', 'i:반도체']),
+  one: JSON.stringify(['i:반도체']),
+};
+const NEW_RUN = [11, 12, 13, 14].some(RUN);
+let TRJ = null, CORE = null;
+if (NEW_RUN) { [TRJ, CORE] = await Promise.all(['/atlas/data/surgetr.json', '/atlas/data/core.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; }))); }
+const oddLine = l => { if (!Array.isArray(l) || l.length < 3 || l.some(v => !(v > 0))) return true; for (let i = 1; i < l.length; i++) if (Math.abs(l[i] / l[i - 1] - 1) >= 0.3) return true; const n = l.length; return l[n - 1] === l[n - 2] && l[n - 2] === l[n - 3]; };
+const dayPct = l => (Array.isArray(l) && l.length > 1 && l[l.length - 2] > 0 && l[l.length - 1] > 0 ? (l[l.length - 1] / l[l.length - 2] - 1) * 100 : null);
+const clsOf = x => (x == null ? 'q' : r1(x) > 0 ? 'up' : r1(x) < 0 ? 'dn' : 'fl');
+/** 관심 소식 기대 줄 — 자료에서 따로 셈(keys = 담은 곳 차례 · tr = surgetr.json 또는 null) */
+function newsExpect(keys, tr) {
+  const chans = [];
+  for (const k of keys) {
+    const id = k.slice(2); let label, mem;
+    if (k[0] === 'g') { const g = CORE.groups.find(x => x.id === id); if (!g) continue; label = '큰 업종 ' + g.name; mem = g.inds.flatMap(n => CORE.industries.find(x => x.name === n)?.members ?? []); }
+    else { const i = CORE.industries.find(x => x.name === id); if (!i) continue; label = i.name + ' 업종'; mem = i.members ?? []; }
+    chans.push({label, mem: mem.filter(c => MKT.companies[c]), at: chans.length});
+  }
+  const owner = new Map(); for (const c of chans) for (const code of c.mem) if (!owner.has(code)) owner.set(code, c);
+  const rows = [], seen = new Set();
+  const add = (d, code, kind, box, ch) => { const key = d + '|' + code + '|' + kind; if (seen.has(key)) return; seen.add(key); rows.push({d, code, kind, box: box in NEWS_BOX ? box : null, label: ch.label, at: ch.at, pct: null}); };
+  if (tr) {
+    const d0 = new Map(); for (const r of tr.cases) d0.set(r[0] + '|' + r[2], r[3]);
+    for (const day of tr.days) {
+      for (const code of day.sel ?? []) { const c = owner.get(code); if (c) add(day.d, code, 'sel', d0.get(code + '|' + day.d), c); }
+      for (const e of day.re ?? []) { const c = owner.get(e[0]); if (c) add(day.d, e[0], 're', e[1], c); }
+      for (const e of day.mv ?? []) { const c = owner.get(e[0]); if (c) add(day.d, e[0], 'mv', e[1], c); }
+      for (const code of day.out ?? []) { const c = owner.get(code); if (c) add(day.d, code, 'out', null, c); }
+    }
+  }
+  for (const c of chans) { // 오늘 가장 많이 움직인 곳 — 담은 곳마다 한 줄(값이 이상한 회사는 뺌 · 같으면 앞 회사)
+    const cand = c.mem.map(code => ({code, v: oddLine(MKT.companies[code].l) ? null : dayPct(MKT.companies[code].l)})).filter(x => x.v != null);
+    let top = null; for (const x of cand) if (!top || Math.abs(x.v) > Math.abs(top.v)) top = x;
+    if (top) rows.push({d: MKT.asOf, code: top.code, kind: 'mov', box: null, label: c.label, at: c.at, pct: top.v});
+  }
+  rows.sort((a, b) => (a.d < b.d ? 1 : a.d > b.d ? -1 : 0) || NEWS_KIND[a.kind][1] - NEWS_KIND[b.kind][1] || a.at - b.at || MKT.companies[a.code].n.localeCompare(MKT.companies[b.code].n, 'ko') || (a.code < b.code ? -1 : 1));
+  return rows;
+}
+const rowKey = r => [r.d, r.code, r.kind, r.box ?? '', r.label].join('|');
+const rowSub = r => [md(r.d), r.label, ...(r.kind === 'mov' ? [NEWS_KIND.mov[0]] : []), ...(r.box ? [NEWS_BOX[r.box]] : [])].join(' · ');
+/** 가짜 카카오를 끼운 새 칸(쪽을 열기 전) — kk = null(없음) · {on, member, wdFail, exportFalse} */
+async function newPage2(width, height, {seed = {}, kk = null, routes = [], allow = []} = {}) {
+  const ctx = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', acceptDownloads: true});
+  await ctx.addInitScript(([sd, mode]) => {
+    try { if (!sessionStorage.getItem('s5h-seeded')) { for (const [k, v] of Object.entries(sd)) localStorage.setItem(k, v); sessionStorage.setItem('s5h-seeded', '1'); } } catch { /* 막힘 */ }
+    const st = {member: !!mode?.member, calls: {withdraw: 0, exportFile: 0}}; window.__fk = st;
+    if (!mode) return;
+    const k = {on: mode.on !== false, member: () => st.member, async withdraw() { st.calls.withdraw++; await new Promise(r => setTimeout(r, 40)); if (mode.wdFail) return false; st.member = false; dispatchEvent(new CustomEvent('nx:kakao', {detail: {on: k.on, member: false}})); return true; }, exportFile() { st.calls.exportFile++; return mode.exportFalse ? false : {ok: true, name: 'x.json', bytes: 1, keys: 4}; }};
+    let nx; Object.defineProperty(window, 'NX', {configurable: true, get: () => nx, set(v) { nx = v; try { Object.defineProperty(v, 'kakao', {configurable: true, get: () => k, set() { /* 앱이 진짜를 붙여도 가짜 그대로 */ }}); } catch { /* 못 붙임 */ } }});
+  }, [seed, kk]);
+  for (const [pat, fn] of routes) await ctx.route(pat, fn);
+  const p = await ctx.newPage(); p._errs = [];
+  const allowed = u => allow.some(a => String(u || '').includes(a));
+  p.on('pageerror', e => p._errs.push('pageerror ' + e.message));
+  p.on('console', m => { if (m.type() !== 'error') return; const u = m.location()?.url; if (/Failed to load resource/.test(m.text()) && allowed(u)) return; p._errs.push(m.text() + (u ? ' @ ' + u : '')); });
+  p.on('response', r => { if (r.status() >= 400 && r.url().startsWith(base) && !allowed(r.url())) p._errs.push(r.status() + ' ' + r.url()); });
+  return p;
+}
+async function openHash(p, hash, sel) {
+  await p.goto(base + NEXT + hash, {waitUntil: 'domcontentloaded'});
+  await p.waitForFunction(q => !document.querySelector('#view .boot') && !!document.querySelector(q), sel, {timeout: 30000});
+  await p.waitForTimeout(150);
+}
+/** 영어 칸 — ?lang=en · 사전 = en-src.json 그대로(통합 전에도 add.mjs 로 넣은 줄이 보임 · quick.mjs 와 같음) */
+const EN_BODY = await (async () => { try { const S = JSON.parse(await fs.readFile(path.join(ROOT, 'scripts/atlas11/next/i18n/en-src.json'), 'utf8')); return JSON.stringify({schema: 'atlas-new-i18n-1', lang: 'en', note: 'check_hold — en-src.json 그대로', entities: S.entities, templates: S.templates}); } catch { return null; } })();
+const EN_ROUTE = [[/\/next\/i18n\/en\.json(\?|$)/, r => r.fulfill({status: 200, contentType: 'application/json; charset=utf-8', body: EN_BODY})]];
+const NEXT_EN = NEXT + (NEXT.includes('?') ? '&' : '?') + 'lang=en';
+async function openEn(p, hash, sel) {
+  await p.goto(base + NEXT_EN + hash, {waitUntil: 'domcontentloaded'});
+  await p.waitForFunction(q => !document.querySelector('#view .boot') && !!document.querySelector(q), sel, {timeout: 30000});
+  await p.waitForTimeout(500);
+}
+const HAN = /[가-힣]/;
+const missingEn = p => p.evaluate(() => { try { return window.__atlasI18n?.missing?.() ?? null; } catch { return null; } });
+/** 모양(내 화면용) — LAYOUT 과 같은 잣대 · 편지(S7l 몫)는 칸 밖 · 글 크기에서 뺌 */
+const LAYOUT2 = sel => {
+  const vw = document.documentElement.clientWidth, root = document.querySelector(sel);
+  const out = {sw: document.documentElement.scrollWidth, vw, wide: [], small: [], tiny: [], canvas: 0, text: '', attrs: [], missing: !root};
+  if (!root) return out;
+  const desc = e => e.tagName.toLowerCase() + (typeof e.className === 'string' && e.className.trim() ? '.' + e.className.trim().split(/\s+/).join('.') : '') + ' 「' + (e.textContent || '').trim().slice(0, 24) + '」';
+  for (const e of [root, ...root.querySelectorAll('*')]) {
+    if (e.ownerSVGElement || e.closest('details:not([open]) > :not(summary)')) continue;
+    const r = e.getBoundingClientRect(); if (r.width < 2 && r.height < 2) continue;
+    const inLetter = !!e.closest('a.m4-letter') && !e.matches('a.m4-letter');
+    if (!inLetter && (r.right > vw + 1 || r.left < -1)) out.wide.push(desc(e) + ' ' + Math.round(r.left) + '~' + Math.round(r.right));
+    const cs = getComputedStyle(e);
+    if (cs.visibility !== 'hidden' && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(cs.fontSize) < 16.95) out.tiny.push(desc(e) + ' ' + cs.fontSize);
+  }
+  for (const e of root.querySelectorAll('a[href], button, input, select, textarea, summary, [role="button"]')) { const r = e.getBoundingClientRect(); if (!r.width || !r.height || getComputedStyle(e).visibility === 'hidden') continue; if (r.height < 43.5 || r.width < 43.5) out.small.push(desc(e) + ' ' + Math.round(r.width) + '×' + Math.round(r.height)); }
+  out.canvas = root.querySelectorAll('canvas').length;
+  const c = root.cloneNode(true); c.querySelectorAll('[data-proper], [lang="ko"]').forEach(x => x.remove()); out.text = c.textContent;
+  for (const e of [c, ...c.querySelectorAll('*')]) for (const a of ['aria-label', 'title', 'alt', 'placeholder']) { const v = e.getAttribute?.(a); if (v) out.attrs.push(v); }
+  return out;
+};
+async function layout2(p, tag, sel = '#view') {
+  const s = await p.evaluate(LAYOUT2, sel); bump('모양 잰 화면');
+  if (s.missing) { fail('칸 없음', tag); return s; }
+  if (s.sw > s.vw) fail('옆으로 넘침', `${tag}: ${s.sw} > ${s.vw}`);
+  for (const x of s.wide.slice(0, 3)) fail('칸 밖으로 나감', `${tag}: ${x}`);
+  for (const x of s.small.slice(0, 3)) fail('누르는 자리 44px 밑', `${tag}: ${x}`);
+  for (const x of s.tiny.slice(0, 3)) fail('글 17px 밑', `${tag}: ${x}`);
+  if (s.canvas) fail('캔버스(입체 없음 규칙 50)', tag);
+  for (const b of screenHits(s.text + '\n' + s.attrs.join('\n'))) fail('쓰지 않을 말(words.js screenHits)', `${tag} 「${b}」`);
+  return s;
+}
+
+/* ⑪ 관심 소식 — 두 폭 · 큰 업종 + 업종(수백 줄) · 작은 업종 · 자료 못 받음 · 담은 곳 없음 */
+if (RUN(11)) {
+  const READN = () => {
+    const s = document.querySelector('#view section.sb'); if (!s) return null;
+    const row = a => ({href: a.getAttribute('href'), kind: a.getAttribute('data-kind'), d: a.getAttribute('data-d'), name: a.querySelector('.sb-nm')?.textContent ?? '', right: a.querySelector('.sb-k, .sb-p')?.textContent ?? '', rcls: a.querySelector('.sb-p')?.className ?? '', sub: a.querySelector('.sb-s')?.textContent ?? ''});
+    const det = s.querySelector('details.sb-rest');
+    return {head: s.querySelector('h2')?.textContent ?? '', notes: [...s.querySelectorAll(':scope > p.note')].map(x => x.textContent), rows: [...s.querySelectorAll('a.sb-n')].map(row), shown: [...s.querySelectorAll(':scope > .sb-list > a.sb-n')].length, rest: det?.querySelector('summary')?.textContent ?? null, restOpen: !!det?.open, h2s: [...document.querySelectorAll('#view h2.sec')].map(x => x.textContent), labelled: s.getAttribute('aria-labelledby')};
+  };
+  const run = async (tag, w, h, keys, {tr = true, routes = [], allow = []} = {}) => {
+    const p = await newPage2(w, h, {seed: {'atlas:new:sub': JSON.stringify(keys)}, routes, allow});
+    try {
+      await openHash(p, '#/sub', '#view h1.h'); await p.waitForTimeout(250);
+      const exp = newsExpect(keys, tr ? TRJ : null), g = await p.evaluate(READN);
+      if (!g) { fail('소식 칸 없음', tag); await p.context().close(); return; }
+      const SHOW = 4;
+      if (g.head !== '소식' || g.labelled !== 'sb-h') fail('소식 칸 제목', `${tag} 「${g.head}」 ${g.labelled}`);
+      const noteWant = tr ? `급등 달력의 뽑힘 · 옮김 · 빠짐이에요. ${md(TRJ.asOf)} 기록까지 셌어요.` : '? 소식 자료를 못 받았어요. 오늘 많이 움직인 곳만 보여요.';
+      if (!g.notes.includes(noteWant)) fail('소식 안내 글(자료 있음 · 없음)', `${tag} ${JSON.stringify(g.notes)} ∌ 「${noteWant}」`);
+      if (!tr && exp.some(r => r.kind !== 'mov')) fail('(검사 틀림) 자료 없는 판 기대에 뽑힘 줄', tag);
+      if (exp.length > SHOW) {
+        if (g.shown !== SHOW || g.rows.length !== SHOW || g.rest !== `나머지 ${exp.length - SHOW}줄 보기` || g.restOpen) fail('처음 네 줄 · 「나머지 n줄 보기」(접힘 · n = 따로 센 수)', `${tag} 보임 ${g.shown} · 「${g.rest}」 · 따로 셈 ${exp.length}`);
+        await p.locator('#view section.sb details.sb-rest > summary').click();
+        await p.waitForFunction(n => document.querySelectorAll('#view section.sb a.sb-n').length === n, exp.length, {timeout: 8000}).catch(() => {});
+      } else if (g.rest != null || g.rows.length !== exp.length) fail('줄이 네 줄 이하면 접는 칸 없음', `${tag} ${g.rows.length} · ${g.rest} · 따로 셈 ${exp.length}`);
+      const all = await p.evaluate(READN);
+      if (all.rows.length !== exp.length) fail('줄 수 = 자료에서 따로 센 수', `${tag} 화면 ${all.rows.length} ≠ 따로 셈 ${exp.length}`);
+      // 날짜 차례 — 새 것 먼저 · 같은 날은 오늘 가장 많이 움직인 곳 → 뽑힘 → 다시 뽑힘 → 옮김 → 빠짐
+      let bad = 0, badK = 0; for (let i = 1; i < all.rows.length; i++) { const a = all.rows[i - 1], b = all.rows[i]; if (b.d > a.d) bad++; else if (b.d === a.d && NEWS_KIND[b.kind][1] < NEWS_KIND[a.kind][1]) badK++; }
+      if (bad) fail('날짜 차례 어긋남(새 것 먼저)', `${tag} ${bad}곳`); if (badK) fail('같은 날 종류 차례 어긋남', `${tag} ${badK}곳`);
+      bump('소식 날짜 차례 맞댄 줄', all.rows.length);
+      // 줄 하나하나 = 따로 센 줄(날 · 회사 · 종류 · 칸 · 담은 곳) — 같은 묶음 · 같은 차례
+      const gotKeys = all.rows.map(r => [r.d, r.href.replace('#/w/', ''), r.kind, ...(/\d+%/.test(r.sub) ? [Object.entries(NEWS_BOX).find(([, t]) => r.sub.endsWith(t))?.[0] ?? ''] : ['']), (r.sub.split(' · ')[1] ?? '')].join('|'));
+      const wantKeys = exp.map(r => [r.d, r.code, r.kind, r.box ?? '', r.label].join('|'));
+      const cnt = a => { const m = new Map(); for (const x of a) m.set(x, (m.get(x) ?? 0) + 1); return m; }, cg = cnt(gotKeys), cw = cnt(wantKeys);
+      let diff = 0, ex = []; for (const [k, v] of cw) if (cg.get(k) !== v) { diff++; if (ex.length < 3) ex.push('없음/다름 ' + k); } for (const [k, v] of cg) if (cw.get(k) !== v) { diff++; if (ex.length < 6) ex.push('남음 ' + k); }
+      if (diff) fail('줄 내용(날 · 회사 · 종류 · 칸 · 담은 곳)이 따로 센 것과 다름', `${tag} ${diff}건 ${ex.join(' / ')}`);
+      // 종류 · 숫자 · 글 · 색 · 고리 — 줄마다(앞 40줄 + 마지막 20줄 + 종류마다 처음 줄)
+      const byKey = new Map(exp.map(r => [rowKey(r), r])); let nTxt = 0;
+      for (const r of all.rows) {
+        const e = byKey.get([r.d, r.href.replace('#/w/', ''), r.kind, /\d+%/.test(r.sub) ? (Object.entries(NEWS_BOX).find(([, t]) => r.sub.endsWith(t))?.[0] ?? '') : '', r.sub.split(' · ')[1] ?? ''].join('|')); if (!e) continue;
+        const want = e.kind === 'mov' ? pct(e.pct) : NEWS_KIND[e.kind][0], name = MKT.companies[e.code].n;
+        if (r.name !== name || r.right !== want || r.sub !== rowSub(e) || r.href !== '#/w/' + encodeURIComponent(e.code)) { fail('소식 줄 글(이름 · 종류나 하루 % · 날 · 담은 곳 · 칸)', `${tag} ${JSON.stringify(r)} ≠ ${name} ${want} 「${rowSub(e)}」`); break; }
+        if (e.kind === 'mov' && !(r.rcls.split(/\s+/).includes(clsOf(e.pct)))) { fail('하루 % 색(빨강 오름 · 파랑 내림)', `${tag} ${r.name} ${r.right} 「${r.rcls}」`); break; }
+        nTxt++;
+      }
+      bump('소식 줄 글 맞댐', nTxt);
+      if (g.h2s.filter(t => t === '소식').length !== 1) fail('소식 칸이 하나가 아님', `${tag} ${JSON.stringify(g.h2s)}`);
+      await layout2(p, tag); errsOf(p, tag);
+    } catch (e) { fail('소식 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close(); bump('소식 판');
+  };
+  await run('소식 큰 업종 + 업종 360×640', 360, 640, ['g:semi', 'i:반도체']);
+  await run('소식 큰 업종 + 업종 390×844', 390, 844, ['g:semi', 'i:반도체']);
+  // 작은 업종(줄이 네 줄 이하면 접는 칸 없음) — 자료에서 따로 골라 봄
+  const small = [...CORE.industries].filter(i => (i.members ?? []).some(c => MKT.companies[c])).map(i => ({name: i.name, n: newsExpect(['i:' + i.name], TRJ).length})).filter(x => x.n >= 1 && x.n <= 4).sort((a, b) => b.n - a.n)[0];
+  if (small) await run(`소식 작은 업종(${small.name}) 360×640`, 360, 640, ['i:' + small.name]); else bump('작은 업종 판 없음(자료)');
+  await run('소식 자료 못 받음 360×640', 360, 640, ['g:semi', 'i:반도체'], {tr: false, allow: ['surgetr.json'], routes: [['**/atlas/data/surgetr.json', r => r.fulfill({status: 404, contentType: 'text/plain', body: 'no'})]]});
+  { // 영어 — 큰 업종 + 업종 · 나머지 줄까지 펼쳐 한국어 0 · 사전에 없는 틀 0(회사 이름은 엔진이 바꾸는 이름이라 뺌)
+    const tag = '소식 영어 360×640', p = await newPage2(360, 640, {seed: {'atlas:new:sub': SEEDS.sub}, routes: EN_ROUTE});
+    try {
+      await openEn(p, '#/sub', '#view section.sb'); await p.locator('#view section.sb details.sb-rest > summary').click(); await p.waitForTimeout(600);
+      const t = await p.evaluate(() => { const s = document.querySelector('#view section.sb'); const c = s.cloneNode(true); c.querySelectorAll('.sb-nm, [data-proper]').forEach(x => x.remove()); return {text: c.textContent, n: s.querySelectorAll('a.sb-n').length, rest: s.querySelector('details.sb-rest summary')?.textContent ?? '', note: s.querySelector(':scope > p.note')?.textContent ?? ''}; });
+      if (HAN.test(t.text)) fail('영어 소식 칸에 한국어가 남음', `${tag} 「${t.text.match(/.{0,12}[가-힣]+.{0,12}/)?.[0]}」`);
+      if (!/^Show \d+ more lines?$/.test(t.rest)) fail('영어 「나머지 n줄 보기」', `${tag} 「${t.rest}」`);
+      const miss = await missingEn(p); if (miss == null || miss.length) fail('영어 사전에 없는 틀(소식)', `${tag} ${JSON.stringify(miss)?.slice(0, 200)}`);
+      errsOf(p, tag); bump('소식 영어 판');
+    } catch (e) { fail('소식 영어 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+  { // 담은 곳 없음 — 소식 칸 0
+    const tag = '담은 곳 없음 360×640', p = await newPage2(360, 640, {});
+    try { await openHash(p, '#/sub', '#view h1.h'); await p.waitForTimeout(250); const n = await p.evaluate(() => document.querySelectorAll('#view section.sb, #view a.sb-n').length); if (n) fail('담은 곳 없으면 소식 칸 0', `${tag} ${n}`); await layout2(p, tag); errsOf(p, tag); bump('소식 판'); } catch (e) { fail('소식 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+}
+
+/* ⑫ 편지 접기 — 360×640 · 390×844 · 320×568 */
+if (RUN(12)) {
+  const FOLD = () => {
+    const w = document.querySelector('#view .hd-fold'), a = w?.querySelector('a.m4-letter'), b = w?.querySelector('.hd-fold-b'); if (!w || !a || !b) return null;
+    const R = e => { if (!e) return null; const r = e.getBoundingClientRect(); return {l: r.left, t: r.top + scrollY, r: r.right, b: r.bottom + scrollY, w: r.width, h: r.height}; };
+    const cs = getComputedStyle(a);
+    return {fold: R(w), a: R(a), btn: R(b), open: w.getAttribute('data-open'), exp: b.getAttribute('aria-expanded'), ctl: b.getAttribute('aria-controls'), ctlOk: !!document.getElementById(b.getAttribute('aria-controls') || '~'), label: b.querySelector('span')?.textContent ?? '', intro: a.classList.contains('intro'),
+      lines: [...a.querySelectorAll('.m4-msg .hml')].map(x => x.textContent), href: a.getAttribute('href'), clipped: a.scrollHeight > a.clientHeight + 1, ov: cs.overflow,
+      hpi: document.querySelectorAll('#view .hpi').length, bird: R(a.querySelector('.hpi-bird')), moon: R(a.querySelector('.hpi .m4-bm')), bubbles: [...a.querySelectorAll('.hpi-b')].map(x => ({r: R(x), t: x.textContent, op: +getComputedStyle(x).opacity})), small: R(a.querySelector('.m4-hp')), vh: innerHeight};
+  };
+  const inside = (r, A, tol = 1.5) => !r || (r.l >= A.l - tol && r.r <= A.r + tol && r.t >= A.t - tol && r.b <= A.b + tol);
+  for (const [w, h] of [[360, 640], [390, 844], [320, 568]]) {
+    const tag = `편지 접기 ${w}×${h}`, p = await newPage2(w, h, {});
+    try {
+      await p.goto(base + NEXT + '#/me', {waitUntil: 'domcontentloaded'});
+      await p.waitForFunction(() => !!document.querySelector('#view .hd-fold a.m4-letter') && !document.querySelector('#view .boot'), null, {timeout: 30000});
+      // 접힌 칸 — 처음 열 때 여는 그림이 칸 안에서 돎(0.4 · 1.4 · 2.6 · 3.6초 — 보드리 · 말풍선 셋 · 달이 모두 칸 안)
+      const t0 = Date.now(); let seenB = 0, seenIntro = false;
+      for (const at of [400, 1400, 2600, 3600]) {
+        await p.waitForTimeout(Math.max(0, at - (Date.now() - t0)));
+        const f = await p.evaluate(FOLD); if (!f) { fail('접는 칸 없음', tag); break; }
+        if (f.intro) { seenIntro = true; if (f.hpi !== 1) fail('여는 그림은 한 번(.hpi 하나)', `${tag} ${f.hpi}`); if (f.bubbles.length !== 3 || f.bubbles.some(x => x.t !== NEW_NAME + '!')) fail(`말풍선 「${NEW_NAME}!」 셋`, `${tag} ${JSON.stringify(f.bubbles.map(x => x.t))}`);
+          for (const [nm, r] of [['새', f.bird], ['말풍선', ...f.bubbles.filter(x => x.op > 0.05).map(x => x.r)]]) if (r && !inside(r, f.a)) fail('여는 그림이 접힌 칸 밖(새 · 말풍선)', `${tag} ${at}ms ${nm} ${JSON.stringify(r)} ⊄ ${JSON.stringify(f.a)}`);
+          for (const x of f.bubbles) if (x.op > 0.05 && !inside(x.r, f.a)) fail('여는 그림이 접힌 칸 밖(말풍선)', `${tag} ${at}ms ${JSON.stringify(x.r)} ⊄ ${JSON.stringify(f.a)}`);
+          if (f.moon && !(f.moon.l + f.moon.w / 2 >= f.a.l && f.moon.l + f.moon.w / 2 <= f.a.r && f.moon.t + f.moon.h / 2 >= f.a.t && f.moon.t + f.moon.h / 2 <= f.a.b)) fail('여는 달 가운데가 접힌 칸 밖', `${tag} ${at}ms`);
+          seenB += f.bubbles.filter(x => x.op > 0.5).length; }
+        if (f.fold.h > f.vh / 3 + 0.6) fail('접은 편지 한 덩이(편지 + 펼치기)가 첫 화면 ⅓ 넘음', `${tag} ${at}ms ${f.fold.h.toFixed(1)} > ${(f.vh / 3).toFixed(1)}`);
+        if (w === 360 && h === 640 && f.fold.h > 214) fail('접은 편지 한 덩이 ≤ 214px(360×640)', `${tag} ${f.fold.h.toFixed(1)}`);
+      }
+      if (!seenIntro) fail('처음 열 때 여는 그림이 안 보임', tag); else if (!seenB) fail('말풍선이 한 번도 안 보임', tag); else bump('접힌 칸 안 여는 그림 맞댐');
+      await p.waitForFunction(() => !document.querySelector('#view a.m4-letter.intro'), null, {timeout: 14000});
+      await p.waitForTimeout(400);
+      let f = await p.evaluate(FOLD), fh0 = f.fold.h;
+      if (f.open !== 'false' || f.exp !== 'false' || f.label !== '펼치기' || !f.ctlOk) fail('접힘 상태(data-open · aria-expanded · 「펼치기」 · 칸 이름표)', `${tag} ${JSON.stringify({o: f.open, e: f.exp, l: f.label, c: f.ctl, ok: f.ctlOk})}`);
+      if (f.btn.h < 44) fail('「펼치기」 높이 44px 밑', `${tag} ${f.btn.h}`);
+      if (!f.clipped || f.ov === 'visible') fail('접힌 편지가 잘려 있지 않음', `${tag} ${f.ov} ${f.clipped}`);
+      if (!eq(f.lines, HELLO)) fail('편지 글자 = HELLO_MSG 그대로(접어도 글은 그대로)', `${tag} ${JSON.stringify(f.lines).slice(0, 160)}`);
+      if (!inside(f.small, f.a)) fail('접힌 칸의 작은 보드리가 칸 밖', `${tag} ${JSON.stringify(f.small)} ⊄ ${JSON.stringify(f.a)}`);
+      if (f.hpi) fail('여는 그림이 내려앉은 뒤에도 남음', `${tag} ${f.hpi}`);
+      // 접힌 편지를 누르면 펼침(바로 소개 쪽으로 튀지 않음)
+      const url0 = p.url(); await p.mouse.click(Math.round((f.a.l + f.a.r) / 2), Math.round(f.a.t + 40)); await p.waitForTimeout(250);
+      let g = await p.evaluate(FOLD); if (g.open !== 'true' || p.url() !== url0) fail('접힌 편지를 누르면 펼쳐지고 쪽을 떠나지 않음', `${tag} ${g.open} ${p.url()}`);
+      if (g.href !== '/hello.html') fail('펼친 편지 고리', `${tag} ${g.href}`);
+      // 펼침 — 높이 = 본디 높이(같은 편지를 감싸개 밖에 꺼내 잰 값) · 단추 이름 「접기」
+      const natural = await p.evaluate(() => { const wr = document.querySelector('#view .hd-fold'), lw = wr.firstElementChild, a = lw.querySelector('a.m4-letter'); wr.before(lw); const h = a.getBoundingClientRect().height; wr.prepend(lw); return h; });
+      g = await p.evaluate(FOLD);
+      if (g.open !== 'true' || g.exp !== 'true' || g.label !== '접기') fail('펼친 상태(data-open · aria-expanded · 「접기」)', `${tag} ${JSON.stringify({o: g.open, e: g.exp, l: g.label})}`);
+      if (Math.abs(g.a.h - natural) > 1) fail('펼치면 편지 높이 = 접기 전 본디 높이', `${tag} 펼침 ${g.a.h.toFixed(1)} · 본디 ${natural.toFixed(1)}`);
+      if (g.a.h < fh0 * 3) fail('펼친 높이가 접은 높이의 세 배 안 됨(편지가 안 펼쳐짐)', `${tag} ${g.a.h} · ${fh0}`);
+      if (!eq(g.lines, HELLO)) fail('펼친 편지 글자 = HELLO_MSG', tag);
+      if (w === 360 && h === 640) { COUNTS_FOLD = {folded: +fh0.toFixed(1), unit: +fh0.toFixed(1), btn: +f.btn.h.toFixed(1), open: +g.a.h.toFixed(1), natural: +natural.toFixed(1), before: 1146}; }
+      await layout2(p, tag + ' 펼침');
+      // 접기 — 다시 접힘
+      await p.locator('#view .hd-fold-b').click(); await p.waitForTimeout(250);
+      g = await p.evaluate(FOLD); if (g.open !== 'false' || Math.abs(g.fold.h - fh0) > 1) fail('「접기」를 누르면 다시 접힘', `${tag} ${g.open} ${g.fold.h} ≠ ${fh0}`);
+      await layout2(p, tag + ' 접음');
+      // 두 번째 열면 그림 0 — 앱 안에서 처음으로 갔다가 다시
+      await p.evaluate(() => { location.hash = '#/'; }); await p.waitForTimeout(700);
+      await p.evaluate(() => { location.hash = '#/me'; });
+      await p.waitForFunction(() => !!document.querySelector('#view .hd-fold a.m4-letter'), null, {timeout: 20000}); await p.waitForTimeout(600);
+      const again = await p.evaluate(() => ({hpi: document.querySelectorAll('.hpi').length, intro: !!document.querySelector('a.m4-letter.intro')}));
+      if (again.hpi || again.intro) fail('두 번째 열면 여는 그림 0', `${tag} ${JSON.stringify(again)}`);
+      errsOf(p, tag); bump('편지 접기 판');
+    } catch (e) { fail('편지 접기 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+}
+
+/* ⑬ 바로 가기 · 카카오 · 기록 파일 · 탈퇴 — 가짜 NX.kakao 넷(없음 · 꺼짐(member 참인데 on false) · 켜짐 가입 안 함 · 켜짐 가입함) */
+if (RUN(13)) {
+  const DEVICE = '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.', MEMBER = '카카오로 지켜요.', IPHONE = '아이폰은 7일 동안 안 열면 기록이 지워질 수 있어요.';
+  const FOUR = {'atlas:godori-why': JSON.stringify([{at: '2026-10-17T01:00:00.000Z', code: '005930', name: '삼성전자'}]), 'atlas:new:sub': JSON.stringify(['g:semi']), 'atlas:new:later': JSON.stringify(['005930']), 'atlas:godori-hold': JSON.stringify([{id: 'hd-x', code: '005930', name: '삼성전자', buy: 1000, qty: 1, day: TODAY, at: new Date().toISOString()}])};
+  const MONEY = {'atlas:godori-money': JSON.stringify({secret: 'S5H-SECRET-DO-NOT-EXPORT'})};
+  const SC13 = () => {
+    const box = document.querySelector('#view .hd-sc'); if (!box) return null;
+    const items = [...box.querySelectorAll('a[href], button')].map(e => ({tag: e.tagName.toLowerCase(), text: e.textContent.trim(), href: e.getAttribute('href'), h: e.getBoundingClientRect().height, cls: e.className}));
+    const secs = [...document.querySelectorAll('#view h2.sec')].map(e => e.textContent), h2 = box.previousElementSibling?.textContent ?? '';
+    const note = document.querySelector('#view p.hd-keep')?.textContent ?? null, sub = document.querySelector('#view .hd-sub')?.textContent ?? null;
+    return {items, h2, secs, note, sub, text: box.textContent, iphone: [...box.querySelectorAll('.hd-sc-n')].map(e => e.textContent), asking: !!box.querySelector('.hd-wd'), q: box.querySelector('.hd-wd-q')?.textContent ?? null, wdBtns: [...box.querySelectorAll('.hd-wd button')].map(e => e.textContent), wdExp: box.querySelector('.hd-sc-wd')?.getAttribute('aria-expanded') ?? null, err: box.querySelector('.hd-err')?.textContent ?? null, page: document.querySelector('#view').textContent, dl: box.querySelector('.hd-sc-dl')?.getBoundingClientRect().height ?? 0, calls: {...window.__fk.calls}, member: window.__fk.member};
+  };
+  const FORMS = [['없음', null, false], ['꺼짐(on false · member 참)', {on: false, member: true}, false], ['켜짐 · 가입 안 함', {on: true, member: false}, false], ['켜짐 · 가입함', {on: true, member: true}, true]];
+  for (const [nm, kk, isMember] of FORMS) {
+    const tag = `바로 가기 · 카카오 ${nm} 360×640`, p = await newPage2(360, 640, {seed: {...FOUR, ...MONEY}, kk});
+    try {
+      await openHash(p, '#/me', '#view .hd-sc'); await p.waitForTimeout(300);
+      const s = await p.evaluate(SC13);
+      if (s.h2 !== '바로 가기') fail('바로 가기 제목', `${tag} 「${s.h2}」`);
+      const want = ['편지 여는 밤›', '기록 파일로 받기↓', ...(isMember ? ['탈퇴›'] : [])];
+      if (!eq(s.items.map(x => x.text), want)) fail('바로 가기 줄 = 편지 여는 밤 · 기록 파일로 받기 · (가입한 사람만) 탈퇴', `${tag} ${JSON.stringify(s.items.map(x => x.text))} ≠ ${JSON.stringify(want)}`);
+      const links = s.items.filter(x => x.tag === 'a'); if (links.length !== 1 || links[0].href !== '/letter.html') fail('바로 가기 고리는 편지 여는 밤 하나(그 밖 고리 0 · 오늘 시장 · 급등 · 달력 0)', `${tag} ${JSON.stringify(links)}`);
+      if (/#\/(today|surge|cal|cond|talk|up|time|info|gdr)/.test(s.items.map(x => x.href ?? '').join(' '))) fail('바로 가기에 옛 고리가 남음', tag);
+      for (const x of s.items) if (x.h < 43.5) fail('바로 가기 누르는 자리 44px 밑', `${tag} ${x.text} ${x.h}`);
+      if (!eq(s.iphone, [IPHONE])) fail('아이폰 7일 한 줄', `${tag} ${JSON.stringify(s.iphone)}`);
+      if (s.items.some(x => /지우|삭제|delete|remove/i.test(x.text))) fail('지우는 단추 0', `${tag} ${JSON.stringify(s.items.map(x => x.text))}`);
+      // [4] 4 지킴 글 — 가입 안 함 = 옛 문장 그대로 · 가입함 = 「카카오로 지켜요.」 · 옛 문장 0
+      if (isMember) { if (s.note !== MEMBER || s.page.includes('이름도 열쇠도 받지 않아요') || !String(s.sub).startsWith(MEMBER)) fail('가입함 → 「카카오로 지켜요.」 · 옛 문장 0', `${tag} 「${s.note}」 「${s.sub}」 옛문장 ${s.page.includes('이름도 열쇠도')}`); }
+      else if (s.note !== DEVICE || String(s.sub) !== '이 기기에만 남아요. 판 것도 지우지 않아요.' || s.page.includes('카카오로 지켜요')) fail('가입 안 함 → 「이 기기에만 남아요. 이름도 열쇠도 받지 않아요.」 그대로 · 「카카오로 지켜요.」 0', `${tag} 「${s.note}」 「${s.sub}」`);
+      // [4] 5 기록 파일 — 누르면 파일 하나 · 열쇠 넷 · 내 돈 칸 0 · 망 요청 0
+      const reqs = []; p.on('request', r => { if (/^https?:/.test(r.url())) reqs.push(r.url()); });
+      const before = await p.evaluate(() => Object.keys(localStorage).sort().map(k => k + '=' + localStorage.getItem(k)).join('\n'));
+      const KEYSNAP = await p.evaluate(() => Object.fromEntries(['atlas:godori-why', 'atlas:new:sub', 'atlas:new:later', 'atlas:godori-hold'].map(k => [k, localStorage.getItem(k)]))); // 누르기 바로 전 이 기기 기록(쪽이 g0 같은 줄을 더 적을 수 있어 심은 값이 아니라 이 값과 맞댐)
+      const useFake = !!kk && !kk.exportFalse; // 카카오 쪽 exportFile 이 있으면(꺼져 있어도 — 기록 파일은 늘 됨) 그것 · 없거나 false 면 여기서 만듦
+      let dl = null; const dp = p.waitForEvent('download', {timeout: 6000}).then(d => { dl = d; }).catch(() => {});
+      const nReq0 = reqs.length; await p.locator('#view .hd-sc-dl').click();
+      await Promise.race([dp, p.waitForTimeout(1500)]); await p.waitForTimeout(500);
+      const calls = (await p.evaluate(SC13)).calls;
+      if (useFake) { if (calls.exportFile !== 1 || dl) fail('카카오 쪽 exportFile 이 있으면 그것 한 번(여기서 또 만들지 않음)', `${tag} 부름 ${calls.exportFile} · 내려받기 ${!!dl}`); else bump('기록 파일 카카오 쪽 한 번'); }
+      else {
+        if (!dl) fail('기록 파일 내려받기가 안 일어남(여기서 만듦)', `${tag} 부름 ${calls.exportFile}`);
+        else {
+          const fp = await dl.path(), txt = await fs.readFile(fp, 'utf8'), name = dl.suggestedFilename();
+          let J = null; try { J = JSON.parse(txt); } catch { /* 아래서 */ }
+          const want = Object.keys(FOUR).sort();
+          if (!J || !eq(Object.keys(J.keys ?? {}).sort(), want)) fail('기록 파일 = JSON 하나 · 열쇠 넷 그대로', `${tag} ${J ? JSON.stringify(Object.keys(J.keys ?? {})) : '못 읽음'}`);
+          else for (const k of want) if (!eq(J.keys[k], JSON.parse(KEYSNAP[k]))) fail('기록 파일 값이 이 기기 기록과 다름', `${tag} ${k}`);
+          if (txt.includes('atlas:godori-money') || txt.includes('S5H-SECRET')) fail('기록 파일에 내 돈 칸이 들어감', tag);
+          if (!new RegExp('^' + NAME_EN.toLowerCase() + '-records-\\d{4}-\\d{2}-\\d{2}\\.json$').test(name)) fail('기록 파일 이름', `${tag} ${name}`);
+          bump('기록 파일 맞댐');
+        }
+        if (calls.exportFile && kk?.exportFalse) bump('exportFile false → 여기서 만듦');
+      }
+      if (reqs.length !== nReq0) fail('기록 파일 누를 때 망 요청 0', `${tag} ${reqs.slice(nReq0).join(' ')}`);
+      const afterKeys = await p.evaluate(() => Object.keys(localStorage).sort().map(k => k + '=' + localStorage.getItem(k)).join('\n'));
+      if (afterKeys !== before) fail('기록 파일을 받아도 이 기기 기록은 그대로', tag);
+      // [4] 9 탈퇴 — 가입 안 함이면 줄 0
+      if (!isMember && (s.asking || s.items.some(x => /탈퇴/.test(x.text)) || /탈퇴/.test(s.text))) fail('가입 안 함이면 탈퇴 줄 0', tag);
+      if (isMember) {
+        const W = '#view .hd-sc-wd';
+        let a = await p.evaluate(SC13); if (a.asking || a.calls.withdraw !== 0) fail('탈퇴 — 처음엔 묻지도 부르지도 않음', `${tag} ${JSON.stringify(a.calls)}`);
+        if (a.items.at(-1).text !== '탈퇴›') fail('탈퇴 줄은 바로 가기 맨 아래', `${tag} ${JSON.stringify(a.items.map(x => x.text))}`);
+        await p.locator(W).click(); await p.waitForTimeout(150); a = await p.evaluate(SC13);       // 누름 1
+        if (!a.asking || !a.q || a.wdBtns.join('/') !== '탈퇴하기/그만두기' || a.calls.withdraw !== 0 || a.wdExp !== 'true') fail('첫 누름은 묻기만(withdraw 0번)', `${tag} ${JSON.stringify({ask: a.asking, b: a.wdBtns, c: a.calls, e: a.wdExp})}`);
+        await layout2(p, tag + ' 묻는 중');
+        await p.locator('#view .hd-wd .hd-no').click(); await p.waitForTimeout(150); a = await p.evaluate(SC13); // 그만두기
+        if (a.asking || a.calls.withdraw !== 0) fail('「그만두기」는 부르지 않고 닫기만', `${tag} ${JSON.stringify(a.calls)}`);
+        await p.locator(W).click(); await p.waitForTimeout(150);
+        const keysBefore = await p.evaluate(() => ['atlas:godori-why', 'atlas:new:sub', 'atlas:new:later', 'atlas:godori-hold'].map(k => localStorage.getItem(k)));
+        await p.locator('#view .hd-wd .hd-go').click();                                          // 누름 2
+        await p.waitForFunction(() => window.__fk.calls.withdraw >= 1 && !document.querySelector('#view .hd-sc-wd'), null, {timeout: 6000}).catch(() => {});
+        await p.waitForTimeout(250); a = await p.evaluate(SC13);
+        if (a.calls.withdraw !== 1) fail('두 번째 누름 → NX.kakao.withdraw() 정확히 1번', `${tag} ${a.calls.withdraw}`);
+        if (a.items.some(x => /탈퇴/.test(x.text)) || a.note !== DEVICE || String(a.sub) !== '이 기기에만 남아요. 판 것도 지우지 않아요.') fail('탈퇴 뒤 줄 · 글이 가입 안 함 꼴로(nx:kakao 로 다시 그림)', `${tag} ${JSON.stringify({items: a.items.map(x => x.text), note: a.note, sub: a.sub})}`);
+        const keysAfter = await p.evaluate(() => ['atlas:godori-why', 'atlas:new:sub', 'atlas:new:later', 'atlas:godori-hold'].map(k => localStorage.getItem(k))); if (!eq(keysAfter, keysBefore)) fail('탈퇴 뒤에도 이 기기 기록 그대로', tag);
+        if (!(await p.evaluate(() => document.body.textContent.includes('탈퇴했어요.')))) bump('탈퇴 알림 글 못 봄(알림은 잠깐)');
+        bump('탈퇴 두 번 맞댐');
+      }
+      await layout2(p, tag); errsOf(p, tag); bump('바로 가기 판');
+    } catch (e) { fail('바로 가기 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+  { // 가입함 + 탈퇴 실패(서버 오류) → 줄 그대로 · 알림 글 · 1번 불렀음 / 가입함 + exportFile false → 여기서 만듦
+    const tag = '탈퇴 실패 360×640', p = await newPage2(360, 640, {seed: FOUR, kk: {on: true, member: true, wdFail: true, exportFalse: true}});
+    try {
+      await openHash(p, '#/me', '#view .hd-sc-wd'); await p.waitForTimeout(200);
+      await p.locator('#view .hd-sc-wd').click(); await p.locator('#view .hd-wd .hd-go').click();
+      await p.waitForFunction(() => window.__fk.calls.withdraw >= 1 && !!document.querySelector('#view .hd-wd .hd-err'), null, {timeout: 6000}).catch(() => {}); await p.waitForTimeout(200);
+      const a = await p.evaluate(SC13);
+      if (a.calls.withdraw !== 1 || !a.asking || a.err !== '탈퇴를 마치지 못했어요. 잠시 뒤 다시 눌러 주세요.' || !a.items.some(x => x.text === '탈퇴›') || a.note !== MEMBER) fail('탈퇴 실패 → 줄 그대로 · 「마치지 못했어요」 · 가입 표시 그대로', `${tag} ${JSON.stringify({c: a.calls, ask: a.asking, e: a.err, n: a.note})}`);
+      let dl = null; const dp = p.waitForEvent('download', {timeout: 6000}).then(d => { dl = d; }).catch(() => {});
+      await p.locator('#view .hd-sc-dl').click(); await Promise.race([dp, p.waitForTimeout(1500)]);
+      if (!dl) fail('카카오 쪽 exportFile 이 false 면 여기서 파일을 만듦', tag); else bump('기록 파일 대신 만듦');
+      errsOf(p, tag); bump('바로 가기 판');
+    } catch (e) { fail('탈퇴 실패 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+  { // 영어 — 가입함 꼴 · 접기 · 탈퇴 묻는 중 · 가입 안 함 꼴 모두 한국어 0 · 사전에 없는 틀 0
+    for (const [nm, kk] of [['가입함', {on: true, member: true}], ['가입 안 함', null]]) {
+      const tag = `바로 가기 영어(${nm}) 360×640`, p = await newPage2(360, 640, {seed: FOUR, kk, routes: EN_ROUTE});
+      try {
+        await openEn(p, '#/me', '#view .hd-sc');
+        const grab = () => p.evaluate(() => { const pick = s => document.querySelector(s)?.textContent ?? ''; return {sc: pick('#view .hd-sc'), keep: pick('#view p.hd-keep'), sub: pick('#view .hd-sub'), fold: pick('#view .hd-fold-b'), h2: [...document.querySelectorAll('#view h2.sec')].map(x => x.textContent).join('|')}; });
+        let g = await grab();
+        for (const k of ['sc', 'keep', 'sub', 'fold', 'h2']) if (HAN.test(g[k])) fail('영어 화면에 한국어가 남음', `${tag} ${k} 「${g[k].slice(0, 80)}」`);
+        if (g.fold !== 'Show all') fail('영어 「펼치기」', `${tag} 「${g.fold}」`);
+        if (nm === '가입함') { if (g.keep !== 'Kept safe with Kakao.') fail('영어 가입함 지킴 글', `${tag} 「${g.keep}」`); await p.locator('#view .hd-sc-wd').click(); await p.waitForTimeout(250); g = await grab(); if (HAN.test(g.sc)) fail('영어 탈퇴 묻기에 한국어가 남음', `${tag} 「${g.sc.slice(0, 120)}」`); }
+        else if (g.keep !== 'Saved only on this device. No name or password needed.') fail('영어 가입 안 함 지킴 글(옛 문장 그대로)', `${tag} 「${g.keep}」`);
+        await p.locator('#view .hd-fold-b').click(); await p.waitForTimeout(200); if ((await grab()).fold !== 'Show less') fail('영어 「접기」', tag);
+        const miss = await missingEn(p); if (miss == null || miss.length) fail('영어 사전에 없는 틀(바로 가기 · 접기)', `${tag} ${JSON.stringify(miss)?.slice(0, 240)}`);
+        errsOf(p, tag); bump('바로 가기 영어 판');
+      } catch (e) { fail('바로 가기 영어 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+      await p.context().close();
+    }
+  }
+  { // 처음엔 가입 안 함 → 나중에 가입함(nx:kakao) → 쪽 글 · 바로 가기가 다시 그려짐
+    const tag = '가입 뒤 다시 그림 360×640', p = await newPage2(360, 640, {seed: FOUR, kk: {on: true, member: false}});
+    try {
+      await openHash(p, '#/me', '#view .hd-sc'); await p.waitForTimeout(200);
+      await p.evaluate(() => { window.__fk.member = true; dispatchEvent(new CustomEvent('nx:kakao', {detail: {on: true, member: true}})); }); await p.waitForTimeout(250);
+      const a = await p.evaluate(SC13);
+      if (a.note !== MEMBER || !a.items.some(x => x.text === '탈퇴›') || !String(a.sub).startsWith(MEMBER)) fail('나중에 가입하면 쪽 글 · 탈퇴 줄이 다시 그려짐', `${tag} ${JSON.stringify({n: a.note, s: a.sub, i: a.items.map(x => x.text)})}`);
+      errsOf(p, tag); bump('바로 가기 판');
+    } catch (e) { fail('가입 뒤 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+  for (const [nm, kk, want, not] of [['가입함', {on: true, member: true}, '카카오로 지켜요.', '이 기기에만'], ['가입 안 함', {on: true, member: false}, '이 기기에만 남아요.', '카카오로']]) { // 관심 머리 글 끝 말도 가입 여부를 따라감
+    const tag = `관심 머리 글 ${nm} 360×640`, p = await newPage2(360, 640, {seed: {'atlas:new:sub': SEEDS.one}, kk});
+    try {
+      await openHash(p, '#/sub', '#view h1.h'); await p.waitForTimeout(200);
+      const t = await p.evaluate(() => document.querySelector('#view h1.h + p.note')?.textContent ?? '');
+      if (!/^회사 \d+곳 · /.test(t) || !t.endsWith(' · ' + want) || t.includes(not)) fail('관심 머리 글 끝 말(가입 안 함 「이 기기에만 남아요.」 · 가입함 「카카오로 지켜요.」)', `${tag} 「${t}」`);
+      if (nm === '가입함') { await p.evaluate(() => { window.__fk.member = false; dispatchEvent(new CustomEvent('nx:kakao', {detail: {on: true, member: false}})); }); await p.waitForTimeout(200); const t2 = await p.evaluate(() => document.querySelector('#view h1.h + p.note')?.textContent ?? ''); if (!t2.endsWith(' · 이 기기에만 남아요.')) fail('가입이 풀리면 관심 머리 글이 다시 그려짐', `${tag} 「${t2}」`); }
+      errsOf(p, tag); bump('관심 머리 글 판');
+    } catch (e) { fail('관심 머리 글 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await p.context().close();
+  }
+}
+
+/* ⑭ 글씨 · 간격 · 왼쪽 줄 · 낱말 — css 글(내 파일 · 내 블록) + 쪽 재기(#/me 비었을 때 · 보유 둘 · #/sub 소식) */
+if (RUN(14)) {
+  const stripC = s => s.replace(/\/\*[\s\S]*?\*\//g, '');
+  const decls = src => { const out = []; for (const m of stripC(src).matchAll(/([^{}]+)\{([^{}]*)\}/g)) { const sel = m[1].trim().replace(/\s+/g, ' '); if (/^@/.test(sel)) continue; for (const d of m[2].split(';')) { const i = d.indexOf(':'); if (i < 0) continue; out.push({sel, prop: d.slice(0, i).trim().toLowerCase(), val: d.slice(i + 1).trim()}); } } return out; };
+  const SPROP = /^(margin|padding)(-(top|right|bottom|left|inline|block)(-(start|end))?)?$|^(row-|column-)?gap$/;
+  const splitVal = v => { const t = []; let cur = '', depth = 0; for (const ch of v) { if (ch === '(') depth++; if (ch === ')') depth--; if (/\s/.test(ch) && !depth) { if (cur) t.push(cur); cur = ''; } else cur += ch; } if (cur) t.push(cur); return t; };
+  const OKSP = new Set(['0', 'auto', 'inherit', 'initial', 'unset', 'normal', 'var(--sp-1)', 'var(--sp-2)', 'var(--sp-3)']);
+  const audit = (decl, label) => {
+    let nf = 0, ns = 0, nn = 0;
+    for (const {sel, prop, val} of decl) {
+      if (prop === 'font-size' && !/^var\(--fs-[1-6]\)$/.test(val) && !/^(inherit|initial)$/.test(val)) { nf++; fail('글씨 크기가 var(--fs-n) 아님([10] 6)', `${label} ${sel} {font-size: ${val}}`); }
+      if (SPROP.test(prop)) for (const t of splitVal(val.replace(/\s*!important$/, ''))) { if (/^-|calc\(\s*-/.test(t)) { nn++; fail('음수 간격([10] 8)', `${label} ${sel} {${prop}: ${val}}`); } else if (!OKSP.has(t)) { ns++; fail('간격이 0 · 8 · 16 · 24 토큰이 아님([10] 8)', `${label} ${sel} {${prop}: ${val}}`); } }
+    }
+    return {nf, ns, nn};
+  };
+  const holdCss = decls(await fs.readFile(path.join(ROOT, 'site/next/p-hold.css'), 'utf8'));
+  const appCss = decls(await fs.readFile(path.join(ROOT, 'site/next/app.css'), 'utf8'));
+  const MINE = new Set(['.chan', '.chan > a', '.chan b', '.chan small', '.sub-btn', '.sub-btn[aria-pressed="true"]', '.wl > a', '.wl-th', '.wl-th .ln', '.chan.wl b', '.wl + .wl', '.wl > a > div', '.wl-p', 'html.f2 .chan.wl, html.f3 .chan.wl', 'html.f2 .chan.wl > a, html.f3 .chan.wl > a', '.avs', '.avs::-webkit-scrollbar', '.avs a', '.avs small', '.row', '.row::-webkit-scrollbar', '.row a', '.row b', '.lst', '.lst a, .lst button', '.lst span', '.lw']);
+  const aH = audit(holdCss, 'p-hold.css'), aA = audit(appCss.filter(d => MINE.has(d.sel)), 'app.css(관심 · 보유종목 블록)');
+  COUNTS_CSS = {holdDecls: holdCss.length, appMine: appCss.filter(d => MINE.has(d.sel)).length, fontNotToken: aH.nf + aA.nf, spacingNotToken: aH.ns + aA.ns, negative: aH.nn + aA.nn};
+  // 낱말 — p-hold.js 글(주석 뺌)
+  const js = await fs.readFile(path.join(ROOT, 'site/next/p-hold.js'), 'utf8');
+  const lits = []; { let i = 0, n = js.length; const take = (q, st) => { let s = ''; while (i < n && js[i] !== q) { if (js[i] === '\\') { s += js[i + 1] ?? ''; i += 2; continue; } s += js[i++]; } i++; lits.push(s); }; while (i < n) { const c = js[i]; if (c === '/' && js[i + 1] === '/') { while (i < n && js[i] !== '\n') i++; } else if (c === '/' && js[i + 1] === '*') { i += 2; while (i < n && !(js[i] === '*' && js[i + 1] === '/')) i++; i += 2; } else if (c === "'" || c === '"' || c === '`') { i++; take(c); } else i++; } }
+  const badLit = lits.filter(t => OLD_WORDS.test(t)); for (const t of badLit.slice(0, 4)) fail('내 글(p-hold.js)에 옛 낱말([10] 1)', `「${t.slice(0, 50)}」`);
+  COUNTS_WORDS = {literals: lits.length, oldWords: badLit.length};
+  const EDGES = () => {
+    const view = document.querySelector('#view'), vw = document.documentElement.clientWidth, R = document.createRange(), SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'TITLE']);
+    const vis = (el, q) => { let l = q.left, t = q.top, r = q.right, b = q.bottom; for (let a = el; a && a !== document.documentElement; a = a.parentElement) { const cs = getComputedStyle(a); if (cs.overflowX !== 'visible' || cs.overflowY !== 'visible') { const x = a.getBoundingClientRect(); l = Math.max(l, x.left); t = Math.max(t, x.top); r = Math.min(r, x.right); b = Math.min(b, x.bottom); } } return r - l >= 1 && b - t >= 1; };
+    const blockOf = el => { for (let a = el; a; a = a.parentElement) { const d = getComputedStyle(a).display; if (d !== 'inline' && d !== 'contents') return a; } return document.body; };
+    const blocks = new Map(), sizes = new Map(), own = new Map(), letterSizes = new Map(); const tw = document.createTreeWalker(view, NodeFilter.SHOW_TEXT);
+    for (let n; (n = tw.nextNode());) {
+      if (!n.nodeValue.trim()) continue; const el = n.parentElement; if (!el || SKIP.has(el.tagName)) continue;
+      R.selectNodeContents(n); const rs = [...R.getClientRects()].filter(q => q.width >= 1 && q.height >= 1); if (!rs.length) continue;
+      if (el.checkVisibility && !el.checkVisibility({checkOpacity: true, checkVisibilityCSS: true})) continue;
+      if (!vis(el, rs[0])) continue;
+      const f = Math.round(parseFloat(getComputedStyle(el).fontSize) * 2) / 2, inL = !!el.closest('a.m4-letter');
+      (inL ? letterSizes : sizes).set(f, (sizes.get(f) || 0) + 1); if (!own.has(el)) own.set(el, f);
+      const b = blockOf(el); if (!blocks.has(b)) blocks.set(b, {n, q: rs[0]});
+    }
+    const xs = new Map(), ex = {};
+    for (const [b, t] of blocks) { if (/center|right|end/.test(getComputedStyle(b).textAlign)) continue; const x = Math.round(t.q.left); if (x < 0 || x >= vw) continue; xs.set(x, (xs.get(x) || 0) + 1); if (!ex[x]) ex[x] = b.tagName.toLowerCase() + '.' + String(b.className).split(' ')[0] + ' 「' + t.n.nodeValue.trim().slice(0, 12) + '」'; }
+    // 간격([10] 8) — #view 안 그려진 칸(가려지거나 잘린 것도)의 margin · padding · gap 이 0 · 8 · 16 · 24 인지, 음수는 없는지(measure_type.mjs 와 같은 잣대 — auto · % 는 뺌)
+    const PROPS = ['margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left', 'row-gap', 'column-gap'], SPV = [0, 8, 16, 24];
+    const nm = el => el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className.trim() ? '.' + el.className.trim().split(/\s+/)[0] : '');
+    const spBad = new Map(); let spN = 0, neg = 0; const negEx = [];
+    for (const el of view.querySelectorAll('*')) {
+      if (el.closest('svg') && el.tagName.toLowerCase() !== 'svg') continue;
+      if (!el.getClientRects().length) continue;
+      const map = el.computedStyleMap ? el.computedStyleMap() : null, cs = getComputedStyle(el);
+      for (const pr of PROPS) {
+        if (pr.endsWith('gap') && !/flex|grid/.test(cs.display)) continue;
+        let v = null; const sv = map?.get(pr);
+        if (sv && sv.constructor?.name === 'CSSKeywordValue') continue;
+        if (sv && sv.constructor?.name === 'CSSUnitValue') { if (sv.unit === 'percent') continue; v = sv.unit === 'px' ? sv.value : parseFloat(cs.getPropertyValue(pr)); } else v = parseFloat(cs.getPropertyValue(pr));
+        if (!Number.isFinite(v)) continue;
+        if (v < -0.5) { neg++; if (negEx.length < 6) negEx.push(nm(el) + ' ' + pr + ' ' + Math.round(v)); continue; }
+        if (SPV.some(s => Math.abs(s - v) < 0.6)) continue;
+        spN++; const k = nm(el) + ' ' + pr.replace(/-(top|right|bottom|left)$/, '') + ' ' + Math.round(v * 10) / 10; spBad.set(k, (spBad.get(k) || 0) + 1);
+      }
+    }
+    return {lefts: Object.fromEntries([...xs].sort((a, b) => a[0] - b[0])), ex, sizes: [...new Set([...sizes.keys()])].sort((a, b) => a - b), letter: [...letterSizes.keys()].sort((a, b) => a - b), px: Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), spN, neg, negEx, spEx: [...spBad].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, n]) => k + ' ×' + n)};
+  };
+  const HX = SC.slice(0, 2).map(s => ({...s.hold, ask: {d: TODAY, a: 0}}));
+  const measure = async (tag, w, h, hash, seed, readyFn, {open = false, maxEdges = 3} = {}) => {
+    const p = await newPage2(w, h, {seed});
+    try {
+      await openHash(p, hash, readyFn); await p.waitForFunction(() => !document.querySelector('#view a.m4-letter.intro'), null, {timeout: 14000}).catch(() => {}); await p.waitForTimeout(500);
+      if (open) { await p.locator('#view .hd-fold-b').click(); await p.waitForTimeout(250); }
+      const m = await p.evaluate(EDGES), nEdge = Object.keys(m.lefts).length;
+      const bad = m.sizes.filter(f => f < 16.95); if (bad.length) fail('17px 아래 글([10] 5)', `${tag} ${bad}`);
+      if (m.sizes.length > 6) fail('글씨 크기 6가지 넘음([10] 6)', `${tag} ${m.sizes}`);
+      const nt = m.sizes.filter(f => ![17, 19, 21, 24, 30, 48].includes(f)); if (nt.length) fail('글씨 크기가 토큰(17 · 19 · 21 · 24 · 30 · 48) 밖([10] 6)', `${tag} ${nt}`);
+      if (nEdge > maxEdges) fail(`글 시작 왼쪽 줄 ${maxEdges} 넘음([10] 7)`, `${tag} ${JSON.stringify(m.lefts)} ${JSON.stringify(m.ex)}`);
+      if (m.neg) fail('음수 간격이 그려진 칸에 있음([10] 8)', `${tag} ${m.neg}곳 ${m.negEx.join(' | ')}`);
+      if (m.spN) fail('간격이 0 · 8 · 16 · 24 아닌 칸이 그려져 있음([10] 8)', `${tag} ${m.spN}곳 ${m.spEx.join(' | ')}`);
+      const lay = await layout2(p, tag); if (OLD_WORDS.test(lay.text) && /#\/me/.test(hash)) fail('쪽 글에 옛 낱말([10] 1)', `${tag} ${lay.text.match(OLD_WORDS)?.[0]}`);
+      errsOf(p, tag); bump('글씨 · 간격 재기 판');
+      return {tag, ...m, nEdge};
+    } catch (e) { fail('재기 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); return null; }
+    finally { await p.context().close(); }
+  };
+  const M = [];
+  M.push(await measure('#/me 비었을 때(접힘) 360×640', 360, 640, '#/me', {}, '#view .hd-fold'));
+  M.push(await measure('#/me 보유 둘 · 답함(접힘) 360×640', 360, 640, '#/me', {'atlas:godori-hold': JSON.stringify(HX), 'atlas:godori-why': JSON.stringify(SC.slice(0, 2).map(s => s.rec).filter(Boolean))}, '#view .hd-card .hd-badge'));
+  M.push(await measure('#/me 펼침(편지 포함 · 안내만) 360×640', 360, 640, '#/me', {}, '#view .hd-fold', {open: true, maxEdges: 99}));
+  M.push(await measure('#/sub 소식 360×640', 360, 640, '#/sub', {'atlas:new:sub': SEEDS.sub}, '#view section.sb', {maxEdges: 99}));
+  COUNTS_MEASURE = M.filter(Boolean).map(m => ({tag: m.tag, px: m.px, sizes: m.sizes, letter: m.letter, lefts: m.lefts, ex: m.ex, spacingOff: m.spN, negative: m.neg}));
+}
+
 await browser.close();
 const sec = Math.round((Date.now() - t0) / 1000);
-const res = {schema: 'atlas11-next-hold-1', when: new Date().toISOString(), base, path: NEXT, all: ALL, gatesSrc, gatesAsOf: GATE.asOf ?? null, scenes: SC.map(s => s.key), empty360: EMPTY, sec, counts, fails, ok: !fails.length};
+const res = {schema: 'atlas11-next-hold-1', when: new Date().toISOString(), base, path: NEXT, all: ALL, gatesSrc, gatesAsOf: GATE.asOf ?? null, scenes: SC.map(s => s.key), empty360: EMPTY, fold360: COUNTS_FOLD, css: COUNTS_CSS, words: COUNTS_WORDS, measure: COUNTS_MEASURE, only: ONLY, sec, counts, fails, ok: !fails.length};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1) + '\n'); }
-console.log(JSON.stringify({sec, gatesSrc, scenes: res.scenes.length, empty360: EMPTY, counts}, null, 1));
+console.log(JSON.stringify({sec, gatesSrc, scenes: res.scenes.length, empty360: EMPTY, fold360: COUNTS_FOLD, css: COUNTS_CSS, words: COUNTS_WORDS, measure: COUNTS_MEASURE, counts}, null, 1));
 if (fails.length) { console.log('실패 ' + (counts.fail || 0) + '건:'); for (const [k, x] of fails.slice(0, 60)) console.log(' -', k, '·', x); process.exit(1); }
 console.log('실패 0');

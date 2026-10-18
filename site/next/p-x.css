@@ -1,27 +1,29 @@
-/* 밖 칸(#/x/<번호>) — 새 아틀란스 모양(app.css 색 이름 그대로) · 밖인 까닭은 금빛 아님(먹빛 예술 · 규칙 68) · 글 17px 넘게 · 누르는 자리 44px 넘게 */
-.px { padding-bottom: 8px; }
+/* 밖 칸(#/x/<번호>) — 새 아틀란스 모양(app.css 색 이름 그대로) · 밖인 까닭은 금빛 아님(먹빛 예술 · 규칙 68) · 누르는 자리 44px 넘게
+   2026-10-18 [10] 5 ~ 10 — 글씨는 var(--fs-1 ~ 4) 만(17px 아래 없음) · 간격은 var(--sp-1 ~ 3) 와 0 만(음수 없음) · 글 시작 왼쪽 줄은 16 · 32 둘
+   (16 = 글 · 32 = 까닭 칸과 깔때기 줄(안쪽 16) · 곳 수는 줄 오른쪽에 오른쪽 맞춤) */
+.px { padding-bottom: var(--sp-1); }
 .px .q { color: var(--gold); }
 .px .num { font-variant-numeric: tabular-nums; }
-.px .wt { margin-bottom: 8px; }
-.px-p { margin: 0 16px 10px; font-size: 19px; line-height: 1.6; }
-.px-why { margin: 0 16px 12px; padding: 2px 0 2px 14px; border-left: 2px solid var(--sub); font-size: 19px; font-weight: 600; line-height: 1.6; color: var(--ink); }
+.px .wt { margin: var(--sp-2) var(--sp-2) var(--sp-1); font-size: var(--fs-4); }
+.px-p { margin: 0 var(--sp-2) var(--sp-1); font-size: var(--fs-2); line-height: 1.6; }
+.px-why { margin: 0 var(--sp-2) var(--sp-2); padding: 0 0 0 var(--sp-2); box-shadow: inset 2px 0 0 var(--sub); font-size: var(--fs-2); font-weight: 600; line-height: 1.6; color: var(--ink); } /* 왼쪽 줄은 안쪽 그림자 — 줄 두께가 글 자리를 밀지 않아 글 시작이 32 */
 a.px-inl { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
-.px-note { margin-top: 14px; line-height: 1.6; }
-.px-find { margin-top: 18px; }
-.px .safe { margin-top: 22px; font-size: 17px; }
+.px .px-note { margin-top: var(--sp-2); line-height: 1.6; }
+.px a.more.px-find { margin-top: var(--sp-2); }
 
 /* 깔때기 — 멈춘 줄은 왼쪽 진주 표시 · 지난 줄은 보조 회색 · 닿지 못한 줄은 흐린 회색 */
-.px-funnels { margin: 0 16px 6px; }
-.px-fname { margin: 16px 0 6px; color: var(--sub); font-size: 18px; }
+.px-funnels { margin: 0 var(--sp-2) var(--sp-1); }
+.px-fname { margin: var(--sp-2) 0 var(--sp-1); color: var(--sub); font-size: var(--fs-2); }
 .px-fname b { font-weight: 700; }
 ol.px-funnel { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--card3); }
-ol.px-funnel li { position: relative; padding: 12px 0 26px 14px; border-bottom: 1px solid var(--card2); }
-ol.px-funnel li::after { content: ""; position: absolute; left: 14px; right: 0; bottom: 11px; height: 6px; border-radius: 3px; background: var(--card2); }
-ol.px-funnel li .fill { position: absolute; left: 14px; bottom: 11px; height: 6px; max-width: calc(100% - 14px); border-radius: 3px; background: #6F7782; z-index: 1; }
-ol.px-funnel li > span { display: grid; grid-template-columns: 5.4em minmax(0, 1fr); column-gap: 12px; font-size: 18px; line-height: 1.45; }
-ol.px-funnel li > span b { text-align: right; font-weight: 600; }
+ol.px-funnel li { position: relative; padding: var(--sp-2) 0 var(--sp-3) var(--sp-2); border-bottom: 1px solid var(--card2); }
+ol.px-funnel li::after { content: ""; position: absolute; left: var(--sp-2); right: 0; bottom: var(--sp-1); height: 6px; border-radius: 3px; background: var(--card2); }
+ol.px-funnel li .fill { position: absolute; left: var(--sp-2); bottom: var(--sp-1); height: 6px; max-width: calc(100% - var(--sp-2)); border-radius: 3px; background: #6F7782; z-index: 1; }
+ol.px-funnel li > span { display: flex; flex-wrap: wrap; column-gap: var(--sp-2); font-size: var(--fs-2); line-height: 1.45; } /* 이름은 왼쪽 · 곳 수는 오른쪽 — 곳 수가 길면(영어 · 큰 글씨) 이름 밑 줄로 내려가 이름 칸이 좁아지지 않음 */
+ol.px-funnel li > span > span { flex: 1 1 60%; min-width: 0; }
+ol.px-funnel li > span b { order: 2; flex: none; margin-left: auto; text-align: right; font-weight: 600; }
 ol.px-funnel li.past > span { color: var(--sub); }
 ol.px-funnel li.no > span { color: var(--mute); }
-ol.px-funnel li.stop::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 2px; background: var(--ink); }
+ol.px-funnel li.stop::before { content: ""; position: absolute; left: 0; top: var(--sp-2); bottom: var(--sp-3); width: 3px; border-radius: 2px; background: var(--ink); }
 ol.px-funnel li.stop > span, ol.px-funnel li.stop > span b { color: var(--ink); font-weight: 700; }
 ol.px-funnel li.stop .fill { background: var(--ink); }

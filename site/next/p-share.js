@@ -6,8 +6,10 @@
      차례: 글상자 + 빠른 말 셋 → words.js 로 거름(걸리면 그 낱말을 골라 보여 주고 고칠 때까지 못 보냄 · 수익 숫자도) →
            휴대폰 공유 창에 글 + 주소 함께 → 공유 창이 없으면 글 + 주소를 함께 복사 → 복사도 막히면 글을 보여 주고 골라 둠
    주소(회사 주식): <곳>#/s/<번호>/<보낸 날>/<그날 값>/<s|a>[/<말>] — s = 보내기 · a = 같이 따져 줘 · 말 = UTF-8 → base64url(150바이트까지 · 200자 안)
-   render(arg) — 친구가 연 주소: 보낸 날 값 · 오늘 값(그림 한 장) → 왜 사? 질문부터 → 다 답한 뒤에 보낸 사람 말 · 같이 따져 줘면 「반토막 난다면 왜일까?」
-   보안 규칙 안: innerHTML · 글 속 style 없음 · 다른 주소 스크립트 없음(카카오 공식 카드는 꺼 둔 채 준비만 — docs/design/godori-2026-10-17/kakao.md)
+   render(arg) — 친구가 연 주소: 종목 이름(맨 위 한 줄) → 왜 사? 질문부터 → 다 답한 뒤에 보낸 사람 말 · 같이 따져 줘면 「반토막 난다면 왜일까?」 → 맨 밑에 보낸 날 값 · 오늘 값(그림 한 장 · 사장님 2026-10-18 [5] 10 「질문을 맨 위로 · 값 칸은 질문 뒤로」)
+   보안 규칙 안: innerHTML · 글 속 style 없음 · 다른 주소 스크립트 없음 — 이 파일은 카카오 도구도 카카오 주소도 받지 않음
+   카톡(사장님 2026-10-18 [2] 2 ~ 7 · 일꾼 K2c): 서버가 켜져 있고 카카오 도구가 켜졌을 때만(NX.kakao.sdkReady) — 보내기 = 카카오 그림 카드 하나(단추 둘: 「카카오로 시작하기」 · 「그냥 보기」) · 글상자에 그 카드 미리보기 ·
+     offerBox() = 매매일지를 끝낸 뒤 한 번 뜨는 「이 기록 지키기」 칸(kakao.js 가 부름). 꺼져 있으면(NX.kakao 없음 · on false · 도구 없음) 한 줄도 안 돌고 휴대폰 공유 창(글 + 주소)으로 감
    이름은 brand.js 한 곳 · 거르는 말은 words.js 한 곳 */
 import {sendHits} from './words.js';
 import {NAME, josa, hasBatchim} from './brand.js';
@@ -101,31 +103,37 @@ function css() {
 }
 function toast(t) { const e = h('p', {class: 'ps-toast', role: 'status', text: t}); document.body.append(e); setTimeout(() => e.remove(), 2800); }
 
-/* 카카오 공식 카드 — 꺼 둠(명령문 [4] 9 「카카오 앱 열쇠와 보안 규칙 허락이 있어야 켠다」)
-   켜는 법 docs/design/godori-2026-10-17/kakao.md — 앱 열쇠(key) · 보안 규칙 script-src 허락 · 도구를 부르는 곳을 함께 바꿔야 켜짐 · 지금은 이 길을 지나지 않음 */
-const KAKAO = Object.freeze({on: false, key: '', sdk: '', integrity: ''}); // 켤 때 채움(sdk = 카카오 도구 주소 · integrity = 그 판의 SRI 값) — 지금은 비어 있어 아무것도 받지 않음
-let kakaoP = null;
-/** 카카오 도구 받기 — KAKAO.on 일 때만(지금은 늘 false) · 보안 규칙 script-src 에 그 주소가 허락돼 있어야 함 */
-function kakaoLoad() {
-  if (!KAKAO.on || !KAKAO.key || !KAKAO.sdk || !KAKAO.integrity) return Promise.resolve(false);
-  if (!kakaoP) kakaoP = new Promise(res => {
-    const s = h('script', {src: KAKAO.sdk, integrity: KAKAO.integrity, crossorigin: 'anonymous'});
-    s.addEventListener('load', () => { try { if (!globalThis.Kakao.isInitialized()) globalThis.Kakao.init(KAKAO.key); res(true); } catch { res(false); } }, {once: true});
-    s.addEventListener('error', () => res(false), {once: true});
-    document.head.append(s);
-  });
-  return kakaoP;
+/* ───── 카톡 그림 카드 · 가입 권유(사장님 2026-10-18 [2] 2 ~ 8) ─────
+   카카오 도구 · 서버 길은 NX.kakao(site/next/kakao.js)가 맡음 — 여기서는 카드에 무엇을 담을지 · 어떻게 보일지만 정함
+   NX.kakao 가 없거나(소개 · 편지 쪽) 꺼졌으면(on !== true) kk() 가 null → 아래 길은 한 줄도 안 돎 */
+const kk = () => { try { const K = nx()?.kakao; return K && K.on === true ? K : null; } catch { return null; } };
+export const CARD_BTN = Object.freeze(['카카오로 시작하기', '그냥 보기']); // 카드 단추는 둘까지 · 이 차례(1 = 가입 길 · 2 = 가입 없이 보기)
+const CARD_IMG = '/og-makbi.jpg'; // 카드 그림(우리 사이트 것)
+/** 카드에 담는 것([2] 3) — 종목 이름 · 보낸 사람 글 · 보낸 날 값(수익률 없음) · 단추 1 = 우리 주소 → 곧바로 카카오 동의 화면(사이에 우리 화면 없음 · 보낸 사람 표가 있으면 함께) · 단추 2 = 보낸 주소 그대로(가입 없음)
+    K = null 이면 단추 1 주소가 없음(미리보기용) */
+export function cardOf({name, msg = '', lead = '', price, day, see}, K = kk(), origin = typeof location !== 'undefined' ? location.origin : '') {
+  const value = L(`${md(day)} 값 ${num(price)}원`), said = [msg, lead].filter(Boolean);
+  const start = K ? origin + K.startUrl(see, {ref: K.ref()}) : null;
+  return {title: L(String(name)), value, said, description: [...said, value].join('\n'), imageUrl: origin + CARD_IMG, url: see,
+    buttons: [{title: L(CARD_BTN[0]), url: start}, {title: L(CARD_BTN[1]), url: see}]};
 }
-function kakaoSend({text, url}) {
-  const K = globalThis.Kakao;
-  if (!KAKAO.on || !KAKAO.key || !K?.isInitialized?.() || !K.Share?.sendDefault) return false;
-  try { K.Share.sendDefault({objectType: 'text', text, link: {mobileWebUrl: url, webUrl: url}, buttonTitle: '열어 보기'}); return true; } catch { return false; }
+/** 가입 권유 칸([2] 7) — 글 「이 기록 지키기」 + 단추 하나 「카카오로 시작하기」 · 입력칸 · 닫기 없음 · 누르면 start() 한 번(kakao.js 가 매매일지를 끝낸 순간 한 번만 그림) */
+const OFFER_H = '이 기록 지키기', OFFER_P = '폰을 바꿔도 이 기록이 남아요. 받는 것은 카카오 회원 번호 하나뿐이에요.';
+export function offerBox({start} = {}) {
+  const go = h('button', {class: 'ps-go ps-offer-go', type: 'button', text: CARD_BTN[0]});
+  let used = false;
+  go.addEventListener('click', () => {
+    if (used) return; used = true; go.setAttribute('aria-disabled', 'true');
+    try { start?.(); } catch (e) { console.error(e); }
+    setTimeout(() => { used = false; go.removeAttribute('aria-disabled'); }, 4000); // 이동이 안 됐으면 다시 누를 수 있게
+  });
+  return h('section', {class: 'ps-offer', 'aria-labelledby': 'ps-offer-h'}, h('h2', {id: 'ps-offer-h', class: 'ps-h2', text: OFFER_H}), h('p', {class: 'ps-p', text: OFFER_P}), go);
 }
 
-/** 보내기 — 공유 창(글 + 주소) → 없거나 막히면 글 + 주소 복사 → 그것도 막히면 'show' · 누른 손길 안에서 바로 부름(사이에 기다림 없음) */
-async function deliver({title, text, url}) {
+/** 보내기 — 카톡 그림 카드(켜짐 + 카드 있음) → 공유 창(글 + 주소) → 없거나 막히면 글 + 주소 복사 → 그것도 막히면 'show' · 누른 손길 안에서 바로 부름(사이에 기다림 없음) */
+async function deliver({title, text, url, card = null}) {
   const full = text + '\n' + url;
-  if (kakaoSend({text, url})) return 'kakao';
+  if (card) { try { if (kk()?.sendCard(card)) return 'kakao'; } catch { /* 카드가 안 가면 아래 공유 창으로 */ } }
   if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
     try { await navigator.share({title, text, url}); return 'share'; }
     catch (e) { if (e?.name === 'AbortError') return 'cancel'; } // 닫음 — 다른 까닭이면 복사로
@@ -177,12 +185,14 @@ export async function open(o = {}) {
   const note = asStock ? '수익 숫자는 보내지 않아요. 친구는 질문에 다 답한 뒤에 네 말을 봐요.' : '수익 숫자는 보내지 않아요. 자랑이 퍼지면 남이 따라 하거든.';
   const leadEl = lead ? h('p', {class: 'ps-lead'}, h('span', {class: 'ps-pk', text: '같이 가는 글 '}), lead) : null;
   const shown = h('textarea', {class: 'ps-t ps-show', rows: 4, readonly: true, 'aria-label': '보낼 글과 주소', hidden: true});
+  const kkEl = h('div', {class: 'ps-kk', hidden: true}); // 카톡 카드 미리보기 — 서버가 켜졌고 카카오 도구가 켜졌을 때만 보임(그 전엔 숨김) · 회사 주식 보내기만
+  let kkOn = false;
   const box = h('div', {class: 'ps-in'},
     h('h2', {id: 'ps-h', class: 'ps-h', text: '친구에게 무슨 말을 할래?'}),
     h('p', {id: 'ps-d', class: 'ps-d'}, ...what),
     quick,
     h('div', {class: 'ps-lrow'}, h('label', {class: 'ps-lab', for: 'ps-t', text: '보낼 말'}), cnt), ta, say,
-    h('p', {class: 'ps-n', text: note}), leadEl,
+    h('p', {class: 'ps-n', text: note}), leadEl, kkEl,
     h('p', {class: 'ps-pv'}, h('span', {class: 'ps-pk', text: '같이 가는 주소 '}), urlEl), shown);
   const acts = h('div', {class: 'ps-acts ps-stick'}, go, x); // 보내기 · 닫기는 늘 보이게(칸 밑에 붙음)
   const native = typeof HTMLDialogElement === 'function' && typeof HTMLDialogElement.prototype.showModal === 'function';
@@ -199,8 +209,22 @@ export async function open(o = {}) {
     say.className = 'ps-m' + (bad.length ? ' no' : '');
     say.replaceChildren(...(bad.length ? badSay(bad[0]) : []));
     if (asStock) urlEl.textContent = urlFor(bad.length ? '' : cleanMsg(v) || L(DEF[kind])); // 보낼 때와 같은 주소(비면 기본 말 · 지금 말로)
+    if (kkOn) kkPaint(bad.length ? '' : cleanMsg(v) || L(DEF[kind]));
     return bad;
   }
+  /** 카톡 카드 미리보기 — 보낼 카드(cardOf)와 같은 글: 종목 이름 · 보낸 사람 글 · 보낸 날 값 · 단추 둘 */
+  function kkPaint(msgNow) {
+    const c = cardOf({name: name ?? code, msg: msgNow, lead, price, day, see: urlEl.textContent}, null), nm = String(c.title);
+    kkEl.replaceChildren(
+      h('p', {class: 'ps-pk', text: '카톡 그림 카드로 가요'}),
+      h('div', {class: 'ps-card', role: 'group', 'aria-label': '카드 미리보기'},
+        h('b', {class: 'ps-card-t', text: nm}), // 이름은 지금 말로(영어면 영어 이름 · 엔진이 같은 이름표로 바꿈)
+        ...c.said.map(s => own('ps-card-d', s)),
+        h('p', {class: 'ps-card-v', text: c.value}),
+        h('p', {class: 'ps-card-b'}, h('span', {text: CARD_BTN[0]}), h('span', {text: CARD_BTN[1]}))),
+      h('p', {class: 'ps-n', text: '가입은 친구가 직접 「카카오로 시작하기」를 눌러야 돼요. 보내기만으로는 가입되지 않아요.'}));
+  }
+  function kkShow() { if (kkOn || closed || !asStock) return; kkOn = true; kkEl.hidden = false; judge(); }
   ta.addEventListener('input', judge);
   let busy = false; // 공유 창이 열려 있는 동안 다시 누름은 버림
   go.addEventListener('click', () => {
@@ -208,9 +232,10 @@ export async function open(o = {}) {
     const msg = cleanMsg(ta.value) || L(DEF[kind]), bad = judge().length ? hitsNow() : sendHits(msg);
     if (bad.length) { say.className = 'ps-m no'; say.replaceChildren(...badSay(bad[0])); go.setAttribute('aria-disabled', 'true'); const r = findIn(ta.value, bad[0].word); ta.focus(); if (r) ta.setSelectionRange(r[0], r[1]); return; }
     const url = urlFor(msg), text = [msg, lead].filter(Boolean).join('\n');
+    const K = kk(), card = asStock && kkOn && K?.canSend?.() ? cardOf({name: name ?? code, msg, lead, price, day, see: url}, K) : null; // 카드는 누른 손길 안에서 만들어 바로 보냄
     sent = {text, url};
     say.className = 'ps-m'; say.textContent = '여는 중이에요…'; busy = true;
-    deliver({title, text, url}).then(r => {
+    deliver({title, text, url, card}).then(r => {
       busy = false; last = r;
       if (r === 'share' || r === 'kakao') { close(r); toast(asStock ? '보냈어요. 친구가 열면 질문부터 봐요.' : '보냈어요.'); return; }
       if (r === 'cancel') { say.textContent = '보내기 창을 닫았어요. 다시 누르면 돼.'; return; }
@@ -242,8 +267,9 @@ export async function open(o = {}) {
   }
   document.body.append(D); document.documentElement.classList.add('ps-open');
   if (native) D.showModal();
-  kakaoLoad(); // 꺼 둠 — KAKAO.on 이 false 라 아무것도 받지 않음(켜면 글상자를 열 때 미리 받아 보내기 누름 안에서 바로 부름)
   CUR = {D, close};
+  // 서버가 켜졌고 카카오 도구가 켜졌으면 카드 미리보기를 그림(꺼져 있으면 아무 일도 없음 · 글상자는 기다리지 않고 먼저 열림)
+  if (asStock) { try { nx()?.kakao?.sdkReady?.().then(ok => { if (ok && my === SEQ) kkShow(); }).catch(() => {}); } catch { /* 카카오 없음 */ } }
   if (o.prefill) ta.value = cleanMsg(o.prefill);
   judge();
   quick.querySelector('button')?.focus();
@@ -293,9 +319,11 @@ export async function render(arg) {
     const from = sentIdx >= 0 ? Math.max(0, sentIdx - 5) : Math.max(0, close.length - 20);
     vals = close.slice(from).map(Number); at = sentIdx >= 0 ? sentIdx - from : null;
   }
-  const head = h('section', {class: 'ps-land', 'aria-label': S.kind === 'ask' ? '친구가 같이 따져 달래요' : '친구가 보낸 종목'},
-    h('p', {class: 'ps-kick', text: S.kind === 'ask' ? '친구가 같이 따져 달래요' : '친구가 보낸 종목'}),
-    h('h1', {class: 'ps-name'}, h('span', {'data-proper': '', text: name}), h('small', {class: 'ps-code', text: ' ' + S.code})),
+  // 맨 위는 종목 이름 한 줄뿐 — 질문이 그 바로 밑(사장님 2026-10-18 [5] 10 「친구가 연 쪽에서는 질문을 맨 위로 · 값 칸(422px)은 질문 뒤로」) · 값 칸(그림 · 두 값 · 견줌)은 질문 · 친구 말 칸 뒤
+  const kickText = S.kind === 'ask' ? '친구가 같이 따져 달래요' : '친구가 보낸 종목';
+  const top = h('section', {class: 'ps-land ps-top', 'aria-label': kickText},
+    h('h1', {class: 'ps-name'}, h('span', {class: 'ps-kick', text: kickText}), ' ', h('span', {'data-proper': '', text: name}), h('small', {class: 'ps-code', text: ' ' + S.code}))); // 이름표 + 이름 + 번호가 한 줄(들어가면) — 질문이 위로 올라 답 셋이 아래 탭 위에 다 보이게 · 글 시작 왼쪽 줄 한 줄
+  const valsBox = h('section', {class: 'ps-land ps-vals'},
     h('figure', {class: 'ps-fig'}, priceArt(vals, at, dir === 'q' ? 'fl' : dir),
       h('figcaption', {class: 'ps-cap'}, at != null ? [h('span', {class: 'ps-dot', 'aria-hidden': 'true'}), ' 보낸 날 · 끝 점 = 오늘 값'] : (vals.length ? '보낸 날은 그림보다 앞이에요 · 끝 점 = 오늘 값' : '? 값 기록을 못 받았어요'))),
     h('div', {class: 'ps-two'},
@@ -325,9 +353,11 @@ export async function render(arg) {
     console.error(e); slot.append(h('p', {class: 'ps-p', text: '? 질문을 열지 못했어요. 친구 말을 바로 보여 줄게.'})); reveal(null);
   }
   const askLine = S.kind === 'ask' ? h('p', {class: 'ps-askline'}, h('span', {text: '친구 물음 '}), h('b', {text: '「' + ASK_Q + '」'}), h('br'), h('span', {class: 'ps-p', text: '질문 끝에 그 까닭을 적는 칸이 있어.'})) : null;
-  return {title: name + ' · 친구가 보냄', nodes: [head,
-    h('section', {class: 'ps-step'}, h('h2', {class: 'ps-h2', text: '먼저 네 생각부터'}), h('p', {class: 'ps-p', text: '친구 말을 보기 전에 왜 사는지 먼저 확인해 봐.'}), askLine, slot),
-    after, SAFE()]};
+  // 질문 카드는 이름 한 줄 바로 밑 — 옛 머리글 「먼저 네 생각부터」 · 설명 한 줄은 지움(카드 머리 「친구야, 왜 사?」 · 「사기 전에 …」와 밑의 「질문에 다 답하면 …」 잠금 글이 같은 말) ·
+  // 같이 따져 줘 물음 칸은 카드 밑으로(독립 점검 VJ 2026-10-18: 360×640 에서 답 셋이 아래 탭(572px~) 밑에 가려졌음 → 카드가 위로 올라 답 셋이 탭 위에 다 보임)
+  return {title: name + ' · 친구가 보냄', nodes: [top,
+    h('section', {class: 'ps-step'}, slot, askLine),
+    after, valsBox, SAFE()]};
 }
 /** 보낸 사람 말(남의 글 data-proper) · 깨졌거나 거르는 말이 든 주소는 말을 보이지 않음 */
 function senderMsg(S) {

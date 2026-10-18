@@ -10,6 +10,8 @@
  * 함수(2026-10-09 선물형 초대장 · /api/invite): functions/atlas11 만 함께 올린다 — 저장소 밖 임시 폴더에 그 함수 · 함수가 부르는 저장소 파일 · 쓰는 패키지만 옮겨
  *   넷리파이 도구가 거기서 묶게 한다(저장소의 옛 netlify/functions · netlify.toml 은 끼지 않음). 함수를 넣어 올리다 실패하면 함수 없이 한 번 더 올린다(자료 올리기는 멈추지 않음).
  *   함수는 올릴 때마다 같이 올라가야 남는다(넷리파이는 올릴 때마다 통째로 바꿈) — 손 · 평일 16:00 · 19:00 자동 올리기 모두 이 길.
+ *   카톡 가입 함수(2026-10-18 · /api/kakao/* · functions/atlas11/kakao.mjs)는 스위치 파일 config/atlas11/kakao.json "on" 이 true 일 때만 올린다(SWITCHED_FUNCTIONS) —
+ *   꺼져 있으면 함수 목록이 그 전과 같다(초대장 · 편지 둘) · 함수가 스위치 JSON 을 읽지 않으므로 넷리파이 묶기에 JSON 불러오기가 끼지 않는다.
  */
 import fs from 'node:fs/promises';
 import os from 'node:os';
@@ -70,14 +72,32 @@ export async function stageDir(distDir, {noindex = true, into = null} = {}) {
 
 /** 함수 준비: rootDir/functions/atlas11 의 .mjs · .js 와 그것이 부르는 저장소 파일(상대 경로) · 패키지(+ 그 의존성)를 stageRoot 에 같은 자리로 옮긴다
  *  반환: null(함수 없음) 또는 {rel, dir, functions, files, packages} — 넷리파이 도구가 stageRoot 에서 돌면 묶을 때 저장소 밖 파일을 빠뜨리지 않는다(2026-10-09 직접 확인) */
+/** 스위치로 켜는 함수 — 함수 파일 이름 → 스위치 파일(그 안 "on" 이 true 일 때만 올림 · 파일이 없거나 못 읽으면 안 올림) · 사장님 2026-10-18 order-0015 [4] 2 「켜는 스위치는 하나로 둬라」 */
+export const SWITCHED_FUNCTIONS = Object.freeze({'kakao.mjs': 'config/atlas11/kakao.json'});
+export async function functionSwitchedOn(rootDir, file) {
+  const cfg = SWITCHED_FUNCTIONS[file];
+  if (!cfg) return true;
+  try { return JSON.parse(await fs.readFile(path.join(rootDir, cfg), 'utf8'))?.on === true; } catch { return false; }
+}
+/** 스위치에 매인 셈 파일 — 다른 함수(편지 · [4] 8)가 불러도 스위치가 꺼져 있으면 진짜 파일 대신 막대 파일을 그 자리에 씀(따라가지 않음 · files 에 안 들어감 · stubs 에 적음)
+ *  막대 = 「카카오 회원 아님」(편지 함수는 오늘 길 그대로) · 2026-10-18 VK F1 */
+export const SWITCHED_MODULES = Object.freeze({'lib/atlas11/kakao.mjs': 'kakao.mjs', 'lib/atlas11/kakao-store.mjs': 'kakao.mjs'});
+export const SWITCH_STUB = "// 카톡 스위치(config/atlas11/kakao.json \"on\")가 꺼져 있어 올리기 준비가 넣은 막대 파일 — 진짜 셈은 저장소의 이 자리 파일 · 언제나 「카카오 회원 아님」\nexport const kakaoMemberOf = async () => null;\nexport const KAKAO_STORE = 'atlas11-kakao-v1';\n";
 export async function stageFunctions(rootDir, stageRoot, fnRel = FUNCTIONS_DIR) {
   let names = [];
   try { names = (await fs.readdir(path.join(rootDir, fnRel))).filter(f => /\.m?js$/.test(f)).sort(); } catch (e) { if (e.code === 'ENOENT') return null; throw e; }
+  names = (await Promise.all(names.map(async n => ((await functionSwitchedOn(rootDir, n)) ? n : null)))).filter(Boolean);
   if (!names.length) return null;
-  const copied = new Set(), pkgs = new Set(), queue = names.map(n => path.join(fnRel, n)), builtin = new Set(builtinModules);
+  const copied = new Set(), stubs = new Set(), pkgs = new Set(), queue = names.map(n => path.join(fnRel, n)), builtin = new Set(builtinModules);
   while (queue.length) {
-    const rel = path.normalize(queue.shift()); if (copied.has(rel)) continue;
+    const rel = path.normalize(queue.shift()); if (copied.has(rel) || stubs.has(rel)) continue;
     if (rel.startsWith('..') || path.isAbsolute(rel)) throw Error('함수가 저장소 밖 파일을 부름: ' + rel);
+    const gate = SWITCHED_MODULES[rel.split(path.sep).join('/')];
+    if (gate && !(await functionSwitchedOn(rootDir, gate))) {
+      stubs.add(rel);
+      await fs.mkdir(path.dirname(path.join(stageRoot, rel)), {recursive: true}); await fs.writeFile(path.join(stageRoot, rel), SWITCH_STUB);
+      continue;
+    }
     copied.add(rel);
     const text = await fs.readFile(path.join(rootDir, rel), 'utf8');
     await fs.mkdir(path.dirname(path.join(stageRoot, rel)), {recursive: true}); await fs.copyFile(path.join(rootDir, rel), path.join(stageRoot, rel));
@@ -97,7 +117,7 @@ export async function stageFunctions(rootDir, stageRoot, fnRel = FUNCTIONS_DIR) 
     const pj = JSON.parse(await fs.readFile(path.join(from, 'package.json'), 'utf8'));
     for (const d of Object.keys(pj.dependencies ?? {})) pq.push(d);
   }
-  return {rel: fnRel, dir: path.join(stageRoot, fnRel), functions: names.map(n => n.replace(/\.m?js$/, '')), files: [...copied].sort(), packages: [...seen].sort()};
+  return {rel: fnRel, dir: path.join(stageRoot, fnRel), functions: names.map(n => n.replace(/\.m?js$/, '')), files: [...copied].sort(), stubs: [...stubs].sort(), packages: [...seen].sort()};
 }
 
 function run(cmd, args, env, cwd) {

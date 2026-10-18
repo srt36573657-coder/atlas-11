@@ -1,18 +1,47 @@
 /* 소개 한 장(hello.html) — 친구 소개 상품권 상자(사장님 2026-10-14 14:56 「01090117377 내 번호 올리고 카톡으로 아틀란스 소개 10명 시켜 주면 스타벅스 아메리카노 상품권 1장 준다고 올려 … 그 앵무새 영상에도」 · 14:59 「너가 알아서 해 그냥 많이줘」)
    · 쪽의 보안 규칙(style-src 'self')이 글 안 꾸밈을 막아 따로 둔 파일 · /app/ 아래 파일은 고치지 않음(옛 판 모든 화면 검사가 지키는 곳) */
-.hp-promo { width: 100%; box-sizing: border-box; margin: 0; padding: 16px 18px 14px; border: 2px solid #E9C46A; border-radius: 18px;
+.hp-promo { width: 100%; box-sizing: border-box; margin: 0; padding: 16px; border: 2px solid #E9C46A; border-radius: 18px;
   background: linear-gradient(180deg, rgba(233, 196, 106, .16), rgba(233, 196, 106, .06)); color: #F4EEFA; }
-.hp-pt { margin: 0 0 10px; font-size: 1.375rem; line-height: 1.3; font-weight: 800; color: #FFD98A; text-align: center; letter-spacing: -.01em; }
-.hp-steps { margin: 0 0 12px; padding-left: 1.5em; font-size: 1.0625rem; line-height: 1.55; }
-.hp-steps li { margin: 4px 0; }
+.hp-pt { margin: 0 0 8px; font-size: 1.5rem; line-height: 1.3; font-weight: 800; color: #FFD98A; text-align: center; letter-spacing: -.01em; }
+.hp-steps { margin: 0 0 16px; padding: 0; list-style-position: inside; text-align: center; font-size: 1.0625rem; line-height: 1.55; }
+.hp-steps li { margin: 8px 0; }
 .hp-steps b { color: #FFD98A; }
-.hp-tel { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 0 0 10px; }
-.hp-sms, .hp-call { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 999px; font-size: 1.125rem; font-weight: 800; text-decoration: none; }
+.hp-tel { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 16px; }
+.hp-sms, .hp-call { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 48px; padding: 0 16px; border-radius: 999px; font-size: 1.1875rem; font-weight: 800; text-align: center; text-decoration: none; }
 .hp-sms { background: #FFD98A; color: #2A173A; }
 .hp-call { border: 2px solid #FFD98A; color: #FFD98A; }
 .hp-sms:focus-visible, .hp-call:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
 .hp-pn { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: #E8DDF2; text-align: center; }
-.hp-pbar { display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 100%; min-height: 44px; padding: 6px 14px; border-radius: 999px;
-  background: #FFD98A; color: #2A173A; font-size: 1.0625rem; font-weight: 800; text-align: center; text-decoration: none; }
+.hp-pbar { display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 100%; min-height: 44px; padding: 8px 16px; border-radius: 999px;
+  background: #FFD98A; color: #2A173A; font-size: 1.0625rem; font-weight: 800; text-align: center; text-wrap: balance; text-decoration: none; }
 .hp-pbar:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
-.hp-talk { display: flex; align-items: center; min-height: 44px; margin: 8px 0 0; padding: 8px 14px; border: 1px solid rgba(242, 239, 232, .18); border-radius: 10px; color: inherit; text-decoration: none; font-weight: 600; } /* 이야기 칸 입구(2026-10-16) */
+.hp-talk { display: flex; align-items: center; min-height: 44px; margin: 0; padding: 8px 16px; border: 1px solid rgba(242, 239, 232, .18); border-radius: 10px; color: inherit; text-align: center; text-decoration: none; font-weight: 600; } /* 이야기 칸 입구(2026-10-16) */
+
+/* 2026-10-18 고도리 · 72개와 카톡 두 번 가입 — 소개 쪽(사장님 [10] 5 「17px 아래 글을 없애라 … 13px이 소개 쪽에 있다」 · [9] 5 네 줄 · [4] 3 맨 아래 고리 · [7] 10 아래 단추 다섯)
+   /app/hello.css 는 옛 판 첫 화면 띠도 쓰는 파일이라 고치지 않고 여기서 덮음(이 파일이 나중에 읽힘) */
+/* [10] 6 ~ 8 — 글씨는 17 · 19 · 21 · 24 · 30 만(1.0625 · 1.1875 · 1.3125 · 1.5 · 1.875rem) · 간격은 0 · 8 · 16 · 24 만 · 가운데 글은 text-align:center · 왼쪽 줄은 「내 정보」 칸 하나 */
+.hp { box-sizing: border-box; padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); font-size: 1.0625rem; } /* 아래 단추(68px)가 덮는 키만큼 비움 — 단추 높이 그대로라 간격 자(8 · 16 · 24)의 값이 아님 */
+.hp-talk, .hp-msg, .hp-foot { font-size: 1.0625rem; }
+.hp-main { gap: 16px; padding: max(16px, env(safe-area-inset-top, 0px)) 16px 24px; }
+.hp-h { margin: 0; font-size: 1.875rem; }
+.hp-row { gap: 8px 16px; }
+.hp-go { text-align: center; }
+.hp-send { padding: 0 24px; }
+.hp-foot { margin: 0; }
+.hp-data { width: 100%; box-sizing: border-box; margin: 0; padding: 16px; border: 1px solid rgba(244, 238, 250, .28); border-radius: 18px; background: rgba(255, 255, 255, .05); color: #F4EEFA; }
+.hp-dt { margin: 0 0 8px; font-size: 1.3125rem; line-height: 1.3; font-weight: 800; text-align: center; }
+.hp-dl { margin: 0; padding: 0; list-style: none; }
+.hp-dl li { margin: 0; padding: 8px 0; border-top: 1px solid rgba(244, 238, 250, .16); line-height: 1.5; }
+.hp-dl li:first-child { border-top: 0; }
+.hp-dl b { display: block; color: #FFD98A; font-weight: 800; }
+.hp-priv { margin: 0; text-align: center; }
+.hp-priv a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; color: #D9CFE8; font-size: 1.0625rem; text-decoration: underline; }
+.hp-priv a:focus-visible { outline: 3px solid #FFD98A; outline-offset: 3px; }
+/* 아래 단추 다섯 — /next/app.css 의 .tabs 와 같은 꼴(글은 17px) */
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; height: calc(68px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); display: flex; background: rgba(12, 14, 18, .97); border-top: 1px solid rgba(242, 239, 232, .12); }
+.tabs a { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; color: #8E959F; font-size: 1.0625rem; line-height: 1.4; min-height: 44px; text-align: center; white-space: nowrap; text-decoration: none; }
+.tabs a:focus-visible { outline: 3px solid #FFD98A; outline-offset: -3px; border-radius: 8px; }
+.tabs .ic { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tabs a.plus .ic { width: 38px; height: 38px; color: #E9B949; }
+@media (max-width: 340px) { .tabs a { letter-spacing: -.06em; } }
+@media (min-width: 720px) { .tabs { left: 50%; transform: translateX(-50%); max-width: 720px; } }

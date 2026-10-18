@@ -12,8 +12,15 @@
 //   ⑥ 친구 주소: 보낸 날 값 · 오늘 값(자료와 맞댐) · 그림(선 · 보낸 날 금빛 점) · 질문이 먼저 · 다 답하기 전엔 보낸 말이 화면에 없음 → 다 답한 뒤 보낸 말 ·
 //      같이 따져 줘 = 「반토막 난다면 왜일까?」 + 내 생각 · 기록과 다른 값 「?」 · 깨진 말 · 거르는 말이 든 주소 · 이상한 주소
 //   ⑧ 영어로 본 사람 — 빠른 말 · 기본 말 = 보이는 글(바뀐 글) · 쓴 사람 글(걸린 낱말 · 보낸 말 · 내 생각)은 한글이면 lang="ko"(엔진이 안 바꿈)
-//   ⑦ 모양 — 옆 넘침 0 · 칸 밖 0 · 누르는 자리 44px · 글 17px · 쓰지 않을 말 0(남의 글 data-proper 밖) · 캔버스 0 · 화면 오류 0
-//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text · no-lang — 받은 p-share.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
+//   ⑦ 모양 — 옆 넘침 0 · 칸 밖 0 · 누르는 자리 44px · 글 17px · 쓰지 않을 말 0(남의 글 data-proper 밖) · 캔버스 0 · 화면 오류 0 ·
+//      글씨 크기는 이름표(--fs-1 ~ 6) 안 · 한 칸 가짓수 6 이하 · 간격은 0 · 8 · 16 · 24 만 · 음수 간격 0(사장님 2026-10-18 [10] 5 · 6 · 8)
+//   ⑥-2 친구 주소 차례([5] 10): 종목 이름 한 줄 → 질문 → 친구 말 칸 → 값 칸(그림 · 두 값) → 안전 문장 — 질문이 값 칸보다 위(두 폭)
+//   ⑨ 카톡 꺼짐(사장님 2026-10-18 [2] · [12] 2): NX.kakao 없음 · 있어도 on false 둘 다 — 글상자 · 친구 주소 · 매매일지 끝에 「카카오」 글 0 · 카카오 요청 0 · 카카오 도구(script) 0 · 공유 창(글 + 주소) 그대로 · 기록 파일은 요청 0
+//   ⑩ 카톡 켜짐(가짜 서버 · 가짜 도구): 글상자에 카드 미리보기 · 보내기 = 카드 한 장(feed · 단추 정확히 둘 「카카오로 시작하기」 · 「그냥 보기」 · 종목 이름 · 보낸 사람 글 · 보낸 날 값 · 수익률 0) ·
+//      단추 1 = 우리 주소 → /api/kakao/start?to=<보낸 쪽>(&ref=) · 단추 2 = 보낸 주소 · 보내기만으로는 가입 요청 0 · 「그냥 보기」 쪽 요청 0 · 매매일지 끝에서 권유 칸 한 번(「이 기록 지키기」 + 단추 하나) ·
+//      카카오 도구가 없거나 던지면 공유 창으로 · 시황 같은 종목 아닌 보내기는 카드 아님 · 동의 화면에서 돌아옴(?kakao=ok|none) · 조용한 로그인(카톡 안 + 앞서 가입한 기기만) · 영어
+//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text · no-lang · card-rate · card-start-skip · vals-first · neg-margin · offer-twice · switch-on · probe-early · silent-anyone · inline-style — 받은 p-share.js · p-share.css · kakao.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
+//   --only co,fb,nd,en,ent,land,off,on(= card,offer,ret,enk) — 보고 싶은 묶음만(기본 모두 · 검사 자체 시험은 알맞은 묶음만 돎) · --w 360 = 한 폭만(고치는 동안 — 마지막엔 두 폭 모두)
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -26,18 +33,30 @@ const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] 
 const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')).replace(/\/?$/, '/'));
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1'), OUT = arg('--out', null), ALL = argv.includes('--all');
+const ONLY = new Set(String(arg('--only', '')).split(',').map(x => x.trim()).filter(Boolean)), want = k => !ONLY.size || ONLY.has(k);
 const fails = [], counts = {}, t0 = Date.now();
 // 검사 자체 시험(--mutate <이름>) — 화면 모듈을 일부러 망가뜨려(받을 때만 바꿈 · 시험 서버 파일은 그대로) 이 검사가 잡는지 봄 · 기대한 실패가 다 나오면 끝 코드 0
 const MUTS = {
-  'dup-name': [[['.slice(String(name ?? code).length)', '']], ['글상자에 이름이 두 번(이름 + 토씨만 써야 함)']],
-  'no-filter': [[["import {sendHits} from './words.js';", 'const sendHits = () => [];']], ['거르는 말 알림', '걸렸는데 공유 창이 열림']],
-  'no-gain': [[["import {sendHits} from './words.js';", "import {hits as sendHits} from './words.js';"]], ['거르는 말 알림']],
-  'msg-early': [[['after.append(lock);', 'after.append(lock, senderMsg(S));']], ['다 답하기 전에 보낸 말이 화면에 보임']],
-  'no-text': [[['await navigator.share({title, text, url});', 'await navigator.share({title, url});']], ['공유 창에 글이 없음']],
-  'no-lang': [[["lang: /[가-힣]/.test(txt) ? 'ko' : null", 'lang: null']], ['보낸 말(쓴 사람 글)에 lang="ko" 없음', '걸린 낱말(쓴 사람 글)에 lang="ko" 없음 — 엔진이 바꿈']],
+  'dup-name': [[['.slice(String(name ?? code).length)', '']], ['글상자에 이름이 두 번(이름 + 토씨만 써야 함)'], 'p-share.js', 'co'],
+  'no-filter': [[["import {sendHits} from './words.js';", 'const sendHits = () => [];']], ['거르는 말 알림', '걸렸는데 공유 창이 열림'], 'p-share.js', 'co'],
+  'no-gain': [[["import {sendHits} from './words.js';", "import {hits as sendHits} from './words.js';"]], ['거르는 말 알림'], 'p-share.js', 'co'],
+  'msg-early': [[['after.append(lock);', 'after.append(lock, senderMsg(S));']], ['다 답하기 전에 보낸 말이 화면에 보임'], 'p-share.js', 'land'],
+  'no-text': [[['await navigator.share({title, text, url});', 'await navigator.share({title, url});']], ['공유 창에 글이 없음'], 'p-share.js', 'co'],
+  'no-lang': [[["lang: /[가-힣]/.test(txt) ? 'ko' : null", 'lang: null']], ['보낸 말(쓴 사람 글)에 lang="ko" 없음', '걸린 낱말(쓴 사람 글)에 lang="ko" 없음 — 엔진이 바꿈'], 'p-share.js', 'co,land'],
+  // 카톡(켜짐) — 보낸 카드에 수익 숫자 · 단추 1 이 가입 길이 아님 · 값 칸이 질문보다 위 · 음수 간격 · 권유가 여러 번  ·  [[고칠 자리, 바꿀 글]], [기대하는 실패], 파일(기본 p-share.js), 묶음
+  'card-rate': [[["description: [...said, value].join('\\n')", "description: [...said, value, '+12% 올랐어'].join('\\n')"]], ['카드에 수익 숫자 · 퍼센트 · 1등 · 급등'], 'p-share.js', 'card'],
+  'card-start-skip': [[['const start = K ? origin + K.startUrl(see, {ref: K.ref()}) : null;', 'const start = K ? see : null;']], ['카드 단추 1 주소(가입 길)'], 'p-share.js', 'card'],
+  'vals-first': [[['nodes: [top,\n', 'nodes: [top, valsBox,\n'], ['after, valsBox, SAFE()]', 'after, SAFE()]']], ['질문이 값 칸보다 아래([5] 10 — 질문이 맨 위 · 값 칸은 질문 뒤)'], 'p-share.js', 'land'],
+  'neg-margin': [[['.ps-why { margin: 0; }', '.ps-why { margin: 0 -16px; }']], ['음수 간격(겹침)([10] 8 · 음수 간격 0)'], 'p-share.css', 'land'],
+  'offer-twice': [[["if (E.ls.get(FLAG_OFFERED) === '1' && !flagged()) return false;", '']], ['권유 칸이 한 번이 아님'], 'kakao.js', 'offer'],
+  'inline-style': [[["h('p', {class: 'ps-kick', text: kickText})", "h('p', {class: 'ps-kick', style: 'color:red', text: kickText})"]], ['화면 오류'], 'p-share.js', 'land'],
+  'switch-on': [[['export const SWITCH = false;', 'export const SWITCH = true;']], ['카카오 요청이 꺼짐 상태에서 나감([12] 2 — 요청 0 이어야 함)'], 'kakao.js', 'off'],
+  'probe-early': [[['if (flagged() || back) ready().catch(() => {});', 'ready().catch(() => {});']], ['처음 온 사람인데 서버 확인이 나감([2] 10)'], 'kakao.js', 'ret'],
+  'silent-anyone': [[['if (flagged() && inKakaoTalk())', 'if (inKakaoTalk())'], ['if (flagged() || back) ready().catch(() => {});', 'ready().catch(() => {});']], ['건드리면 안 되는 사람에게 로그인 길이 열림([2] 10)'], 'kakao.js', 'ret'],
 };
 const MUT = arg('--mutate', null);
 if (MUT && !MUTS[MUT]) { console.error('모르는 --mutate', MUT, Object.keys(MUTS).join(' · ')); process.exit(1); }
+if (MUT && MUTS[MUT][3] && !ONLY.size) for (const g of MUTS[MUT][3].split(',')) ONLY.add(g); // 알맞은 묶음만 돎
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 400)]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 
@@ -71,6 +90,49 @@ const GAIN = ['+30% 벌었어', '30퍼 먹었다', '2배 올랐어', '두 배 �
 for (const s of GAIN) { if (!W.sendHits(s).length) fail('수익 숫자가 지남', `「${s}」`); bump('거르기 맞댐'); }
 for (const [s, want] of [['사라져요 공매도 STOP', []], ['TOP 10 · 1위', ['1위', 'TOP']], ['사라지는 것', []], ['지금 사라', ['사라']]]) { const got = W.screenHits(s); if (JSON.stringify(got) !== JSON.stringify(want)) fail('화면 셈 틀림', `「${s}」 ${JSON.stringify(got)}`); bump('거르기 맞댐'); }
 
+/* ⓪-2 사장님 2026-10-18 원문([2] 카톡 · [10] 낱말 · 숫자 · 자리) 맞대기 — 모양 파일 · 화면 코드 글(브라우저 없이) */
+const O15 = (await fs.readFile(path.join(ROOT, 'docs/design/godori-2026-10-18/order-0015.txt'), 'utf8').catch(() => '')).replace(/\s+/g, ' ');
+const SEC2 = ((O15.split('[2 · 카톡 두 번')[1] ?? '').split('[3 ·')[0] ?? '');
+const CARD_B = /단추는 둘이다\. 「([^」]+)」, 「([^」]+)」/.exec(SEC2), OFFER_T = /글은 「([^」]+)」, 단추는 「([^」]+)」 하나/.exec(SEC2);
+if (!CARD_B || !OFFER_T) { console.error('사장님 원문 [2] 를 order-0015.txt 에서 못 읽음', {CARD_B, OFFER_T}); process.exit(1); }
+const [BTN_START, BTN_SEE] = [CARD_B[1], CARD_B[2]], [OFFER_H, OFFER_BTN] = [OFFER_T[1], OFFER_T[2]];
+if (BTN_START !== OFFER_BTN) fail('원문 — 카드 단추 1 과 권유 단추가 같은 글이어야 함', `${BTN_START} ≠ ${OFFER_BTN}`);
+const NOASK = /회원\s*가입|비밀번호|별명|닉네임|사진|전화|생일|광고|채널\s*추가|password|nickname|birthday|phone number|advertis|add channel/i; // 가입 길 글에 없어야 하는 말([2] 8 · 9)
+const KK_RE = /\/api\/kakao|kakao\.com|kakaocdn|daumcdn|developers\.kakao/i; // 카카오 길 · 도구 주소
+if (want('static')) {
+  const cssRaw = await fs.readFile(path.join(ROOT, 'site/next/p-share.css'), 'utf8'), css = cssRaw.replace(/\/\*[\s\S]*?\*\//g, '');
+  const FSX = {1: 17, 2: 19, 3: 21, 4: 24, 5: 30, 6: 48}, SPX = {1: 8, 2: 16, 3: 24}, used = new Set();
+  for (const m of css.matchAll(/(?:^|[;{\s])font-size\s*:\s*([^;}]+)/g)) {
+    const v = m[1].trim(), t = /^var\(--fs-([1-6]),\s*(\d+)px\)$/.exec(v);
+    if (!t || FSX[t[1]] !== +t[2]) fail('p-share.css 글씨 크기는 var(--fs-n, 뒤 값)만([10] 6)', 'font-size: ' + v); else used.add(t[1]);
+    bump('모양 파일 글씨 크기 줄');
+  }
+  for (const m of css.matchAll(/(?:^|[;{\s])font\s*:\s*([^;}]+)/g)) { const v = m[1].trim(); if (v !== 'inherit' && !/^var\(--fs-[1-6],\s*\d+px\)\/1\.5 /.test(v)) fail('p-share.css font 줄 — 크기가 이름표가 아님', v.slice(0, 60)); }
+  if (used.size > 6) fail('p-share.css 글씨 크기 6가지 넘음([10] 6)', [...used].join(' '));
+  for (const m of css.matchAll(/(?:^|[;{\s])((?:margin|padding)(?:-(?:top|right|bottom|left|inline|block)[a-z-]*)?|gap|row-gap|column-gap)\s*:\s*([^;}]+)/g)) {
+    let v = m[2].trim(), ok = true;
+    v = v.replace(/var\(--sp-([1-3]),\s*(\d+)px\)/g, (_, n, px) => { if (SPX[n] !== +px) ok = false; return '8px'; });
+    for (const tok of v.split(/\s+/)) if (!(tok === '0' || tok === 'auto' || /^(8|16|24)px$/.test(tok))) ok = false;
+    if (!ok) fail('p-share.css 간격이 0 · 8 · 16 · 24 가 아니거나 음수([10] 8)', m[1] + ': ' + m[2].trim());
+    bump('모양 파일 간격 줄');
+  }
+  if (/@import|url\(\s*['"]?https?:/i.test(css)) fail('p-share.css 바깥 주소', '');
+  const PJ = await fs.readFile(path.join(ROOT, 'site/next/p-share.js'), 'utf8');
+  const pj = PJ.replace(/\/\*[\s\S]*?\*\//g, '').split('\n').map(l => l.replace(/(^|[^:'"`])\/\/.*$/, '$1')).join('\n');
+  if (/createElement\(\s*['"]script['"]|h\(\s*['"]script['"]|document\.write|innerHTML|insertAdjacentHTML|\beval\(/.test(pj)) fail('p-share.js 가 바깥 스크립트를 받거나 글을 그대로 끼움([12] 2)', '');
+  if (/kakao\.com|kakaocdn|daumcdn|developers\.kakao|sdk\.js/i.test(pj)) fail('p-share.js 에 카카오 도구 주소([12] 2)', '');
+  if (NOASK.test(pj.replace(/'[^'\n]*(?:사진|전화)[^'\n]*'/g, m => (/lang|data-proper|주소 /.test(m) ? '' : m)).replace(/\/\*[\s\S]*?\*\//g, ''))) fail('p-share.js 에 가입 길에 없어야 할 말([2] 8 · 9)', (NOASK.exec(pj) ?? [])[0]);
+  const CB = /CARD_BTN = Object\.freeze\(\['([^']+)', '([^']+)'\]\)/.exec(PJ);
+  if (!CB || CB[1] !== BTN_START || CB[2] !== BTN_SEE) fail('카드 단추 이름 · 차례(원문 [2] 2)', `${CB?.slice(1, 3)} ≠ ${BTN_START} · ${BTN_SEE}`);
+  const OH = /OFFER_H = '([^']+)'/.exec(PJ)?.[1];
+  if (OH !== OFFER_H) fail('권유 글(원문 [2] 7)', `「${OH}」 ≠ 「${OFFER_H}」`);
+  bump('모양 · 화면 코드 글 맞댐');
+}
+
+/* 실제 사이트와 같은 보안 규칙(CSP)으로 시험 — 쪽 문서마다 올리는 묶음의 머리말(scripts/atlas11/site_headers.mjs 한 곳)을 붙임 → 속 스타일 · 바깥 스크립트 · 바깥 연결이 있으면 콘솔 오류로 걸림 */
+const CSP = /Content-Security-Policy:\s*([^\n]+)/.exec((await import(path.join(ROOT, 'scripts/atlas11/site_headers.mjs')).catch(() => ({}))).HEADER_TOP ?? '')?.[1]?.trim() ?? null;
+if (!CSP) fail('보안 머리말(CSP)을 site_headers.mjs 에서 못 읽음', 'HEADER_TOP');
+
 /* 주소 · 말 조각 — 이 검사가 따로 만들고 풂(UTF-8 base64url) */
 const b64 = s => Buffer.from(s, 'utf8').toString('base64url'), unb64 = s => Buffer.from(s, 'base64url').toString('utf8');
 const URL_RE = new RegExp('^' + (base + NEXT).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '#/s/([0-9A-Z]{6})/(\\d{4}-\\d{2}-\\d{2})/([1-9]\\d*)/([sa])(?:/([A-Za-z0-9_-]+))?$');
@@ -92,8 +154,33 @@ if (!(SENT_PRICE > 0)) { console.error('보낸 날 값을 자료에서 못 셈',
 /* 브라우저 — 한 번에 하나 · 길마다 새 칸 */
 const exe = '/opt/pw-browsers/chromium', browser = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {});
 /** mode: 'share'(가짜 공유 창) · 'copy'(공유 창 없음 · 복사 됨) · 'show'(둘 다 막힘) · letter = 편지 서버 가짜(회원 · 봉인 · 초대장 · 사장님) */
-async function newPage(width, height, {mode = 'share', letter = false, noDialog = false} = {}) {
-  const ctx = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+/** kakao: 'none'(그대로 — 앱이 NX.kakao 를 붙였으면 있고 아니면 없음) · 'off'(카카오 코드를 불러 둠 · 스위치는 저장소 그대로 = 꺼짐) · 'on'(가짜 서버 + 가짜 카카오 도구 — 시험 표시를 심음) ·
+ *  kk = {member, ref, sdk(기본 있음), throws, flag(앞서 가입한 기기), meStatus} · ua = 사용자 에이전트 · en = 영어 사전을 원본(en-src.json)에서 바로(통합 전에도 새 틀이 보임) */
+async function newPage(width, height, {mode = 'share', letter = false, noDialog = false, kakao = 'none', kk = {}, ua = null, en = false} = {}) {
+  const ctx = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', ...(ua ? {userAgent: ua} : {})});
+  if (CSP) await ctx.route('**/*', async r => { // 가장 먼저 걸어 둠(맨 나중에 불림) — 쪽 문서에만 머리말을 붙임
+    if (r.request().resourceType() !== 'document') return r.fallback();
+    try { const res = await r.fetch(); await r.fulfill({response: res, headers: {...res.headers(), 'content-security-policy': CSP}}); } catch { await r.fallback(); }
+  });
+  if (en) {
+    const SRC = JSON.parse(await fs.readFile(path.join(ROOT, 'scripts/atlas11/next/i18n/en-src.json'), 'utf8'));
+    await ctx.route('**/next/i18n/en.json', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify({schema: 'atlas-new-i18n-1', lang: 'en', note: 'check_share', entities: SRC.entities, templates: SRC.templates})}));
+  }
+  if (kakao === 'on') {
+    await ctx.addInitScript(o => {
+      globalThis.__GODORI_KAKAO_TEST__ = true; window.__kcards = [];
+      if (o.sdk) globalThis.Kakao = {isInitialized: () => true, init() {}, Share: {sendDefault(c) { if (o.throws) throw new Error('막힘'); window.__kcards.push(JSON.parse(JSON.stringify(c))); }}};
+      if (o.flag) { try { localStorage.setItem('atlas:kakao:member', '1'); } catch {} }
+    }, {sdk: kk.sdk !== false, throws: !!kk.throws, flag: !!kk.flag});
+    await ctx.route('**/api/kakao/**', async r => {
+      const u = new URL(r.request().url()), m = r.request().method(), j = o => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(o)});
+      if (u.pathname === '/api/kakao/me') return kk.meStatus && kk.meStatus !== 200 ? r.fulfill({status: kk.meStatus, body: ''}) : j(kk.member ? {on: true, member: true, ref: kk.ref ?? 'ABCDEFGHIJKL', friends: 1, next: 3, code: null} : {on: true, member: false});
+      if (u.pathname === '/api/kakao/data') return m === 'PUT' ? j({ok: true, data: JSON.parse(r.request().postData() || '{}').data ?? {}}) : j({data: {}});
+      if (u.pathname === '/api/kakao/withdraw') return j({ok: true});
+      if (u.pathname === '/api/kakao/start') return r.fulfill({status: 200, contentType: 'text/html', body: '<!doctype html><meta charset="utf-8"><title>가짜 카카오 동의 화면</title><p>가짜 카카오 동의 화면</p>'});
+      return r.fulfill({status: 404, body: ''});
+    });
+  }
   if (noDialog) await ctx.addInitScript(() => { delete HTMLDialogElement.prototype.showModal; }); // 대화창(dialog)을 못 쓰는 옛 기계
   await ctx.addInitScript(m => {
     window.__shared = []; window.__copied = [];
@@ -106,37 +193,58 @@ async function newPage(width, height, {mode = 'share', letter = false, noDialog 
     await ctx.route('**/api/letter**', r => {
       const u = new URL(r.request().url()), post = r.request().method() === 'POST';
       if (post) return r.fulfill({status: 201, contentType: 'application/json', body: JSON.stringify({codes: ['NewCode000000001', 'NewCode000000002']})});
-      const body = u.searchParams.get('week') ? {letters: [], me} : {now: new Date(now).toISOString(), opensAt: opens, count: 3, subjects: [], member: true, owner: true, prev: '2026-10-16', me,
+      const body = u.searchParams.get('week') ? {letters: [], me} : {now: new Date(now).toISOString(), opensAt: opens, count: 3, subjects: [], member: true, owner: letter !== 'plain', prev: '2026-10-16', me,
         mine: {what: {kind: 'idx', code: 'KOSPI', name: '코스피'}, at: new Date(now - 864e5).toISOString(), text: '이번 주는 뉴스를 덜 보기로 했어요'}};
       return r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(body)});
     });
   }
-  if (MUT) await ctx.route('**/next/p-share.js', async r => {
+  if (MUT) await ctx.route('**/next/' + (MUTS[MUT][2] ?? 'p-share.js'), async r => {
     const res = await r.fetch(); let body = await res.text();
     for (const [x, y] of MUTS[MUT][0]) { if (!body.includes(x)) { console.error('망가뜨릴 자리를 못 찾음(검사 자체 시험을 고칠 것)', x); process.exit(1); } body = body.replace(x, y); }
     await r.fulfill({response: res, body});
   });
-  const p = await ctx.newPage(); p._errs = [];
+  const p = await ctx.newPage(); p._errs = []; p._kk = []; p._kkOk = kakao === 'on'; p._reqs = 0;
+  p._ownerMe = letter === true; // 편지 쪽 사장님 열쇠 기기 — letter.js 가 카카오가 켜졌나 /api/kakao/me 를 한 번 물음(꺼짐이면 404 한 줄) · 다른 사람 기기(letter: 'plain')는 0
+  p._kkExt = [];
+  p.on('request', r => { const url = r.url(); if (/^https?:/.test(url)) p._reqs++; if (KK_RE.test(url)) { const u = new URL(url); if (u.origin !== base) p._kkExt.push(url); else p._kk.push(r.method() + ' ' + u.pathname + u.search); } });
   p.on('pageerror', e => p._errs.push('pageerror ' + e.message));
   p.on('console', m => { if (m.type() === 'error') p._errs.push(m.text() + (m.location()?.url ? ' @ ' + m.location().url : '')); });
   p.on('response', r => { if (r.status() >= 400 && r.url().startsWith(base)) p._errs.push(r.status() + ' ' + r.url()); });
   return p;
 }
-const errsOf = (p, tag) => { if (p._errs.length) { fail('화면 오류', tag + ' · ' + p._errs.slice(0, 3).join(' | ')); p._errs.length = 0; } };
+const errsOf = (p, tag) => {
+  if (p._ownerMe) { p._errs = p._errs.filter(e => !/\/api\/kakao\/me\b/.test(e)); p._kk = p._kk.filter(x => x !== 'GET /api/kakao/me'); } // 사장님 기기만의 한 줄(위) — 이것만 봐줌
+  if (p._errs.length) { fail('화면 오류', tag + ' · ' + p._errs.slice(0, 3).join(' | ')); p._errs.length = 0; }
+  if (p._kkExt.length) { fail('카카오 쪽 바깥 주소로 요청이 나감([12] 2 — 카카오 도구 · 주소는 열쇠가 들어온 뒤에만)', tag + ' · ' + p._kkExt.slice(0, 3).join(' | ')); p._kkExt.length = 0; }
+  if (!p._kkOk && p._kk.length) { fail('카카오 요청이 꺼짐 상태에서 나감([12] 2 — 요청 0 이어야 함)', tag + ' · ' + p._kk.slice(0, 3).join(' | ')); p._kk.length = 0; }
+  bump('화면 오류 · 카카오 요청 맞댐');
+};
 const done = async p => { try { await p.context().close(); } catch {} };
 
 /** 모양 — 옆 넘침 · 칸 밖 · 누르는 자리 · 글 크기 · 캔버스 · 쓰지 않을 말(남의 글 data-proper 밖 · 이름표 글 포함) */
-const LAYOUT = sel => {
+const LAYOUT = arg => {
+  const sel = typeof arg === 'string' ? arg : arg.sel, skip = typeof arg === 'string' ? null : arg.skip; // skip = 다른 일꾼 칸(질문 칸 .wy)은 글씨 · 간격 이름표 셈에서 뺌
   const vw = document.documentElement.clientWidth, root = document.querySelector(sel);
-  const out = {sw: document.documentElement.scrollWidth, vw, wide: [], small: [], tiny: [], canvas: 0, text: '', attrs: [], missing: !root};
+  const out = {sw: document.documentElement.scrollWidth, vw, wide: [], small: [], tiny: [], canvas: 0, text: '', attrs: [], missing: !root, fs: {}, fsAll: {}, neg: [], sp: []};
   if (!root) return out;
   const desc = e => e.tagName.toLowerCase() + (typeof e.className === 'string' && e.className.trim() ? '.' + e.className.trim().split(/\s+/).join('.') : '') + ' 「' + (e.textContent || '').trim().slice(0, 24) + '」';
   for (const e of [root, ...root.querySelectorAll('*')]) {
     if (e.ownerSVGElement || e.closest('[hidden]')) continue;
     const r = e.getBoundingClientRect(); if (r.width < 2 && r.height < 2) continue;
     if (r.right > vw + 1 || r.left < -1) out.wide.push(desc(e) + ' ' + Math.round(r.left) + '~' + Math.round(r.right));
-    const cs = getComputedStyle(e);
-    if (cs.visibility !== 'hidden' && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(cs.fontSize) < 16.95) out.tiny.push(desc(e) + ' ' + cs.fontSize);
+    const cs = getComputedStyle(e), hasText = cs.visibility !== 'hidden' && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+    if (hasText && parseFloat(cs.fontSize) < 16.95) out.tiny.push(desc(e) + ' ' + cs.fontSize);
+    if (hasText) { const f = String(Math.round(parseFloat(cs.fontSize) * 10) / 10); out.fsAll[f] = (out.fsAll[f] || 0) + 1; if (!(skip && e.closest(skip))) out.fs[f] = (out.fs[f] || 0) + 1; }
+    if (skip && e.closest(skip)) continue;
+    for (const k of ['marginTop', 'marginRight', 'marginBottom', 'marginLeft']) if (parseFloat(cs[k]) < -0.5) out.neg.push(desc(e) + ' ' + k + ' ' + cs[k]);
+    const cn = typeof e.className === 'string' ? e.className : '';
+    if (/(^|\s)ps-/.test(cn) && !e.classList.contains('ps-toast')) {
+      for (const k of ['marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'rowGap', 'columnGap']) {
+        if (k.startsWith('margin') && e.classList.contains('ps-dlg')) continue; // 가운데 놓기(auto)
+        const v = cs[k]; if (v === 'normal' || v === 'auto') continue;
+        const n = parseFloat(v); if (![0, 8, 16, 24].some(x => Math.abs(x - n) < 0.6)) out.sp.push(desc(e) + ' ' + k + ' ' + v);
+      }
+    }
   }
   for (const e of root.querySelectorAll('a[href], button, input, select, textarea, summary, [role="button"]')) { if (e.closest('[hidden]')) continue; const r = e.getBoundingClientRect(); if (!r.width || !r.height) continue; if (r.height < 43.5 || r.width < 43.5) out.small.push(desc(e) + ' ' + Math.round(r.width) + '×' + Math.round(r.height)); }
   out.canvas = root.querySelectorAll('canvas').length;
@@ -144,8 +252,10 @@ const LAYOUT = sel => {
   for (const e of [c, ...c.querySelectorAll('*')]) for (const a of ['aria-label', 'title', 'alt', 'placeholder']) { const v = e.getAttribute?.(a); if (v) out.attrs.push(v); }
   return out;
 };
-async function layout(p, sel, tag) {
-  const s = await p.evaluate(LAYOUT, sel); bump('모양 잰 화면');
+const FS_TOKENS = [17, 19, 21, 24, 30, 48]; // app.css --fs-1 ~ 6(글씨 크기 보통 칸)
+const FS_SEEN = new Map(); // 쪽 전체 글씨 크기 가짓수(질문 칸 포함 · 알림용)
+async function layout(p, sel, tag, skip = null) {
+  const s = await p.evaluate(LAYOUT, {sel, skip}); bump('모양 잰 화면');
   if (s.missing) { fail('칸 없음', tag + ' ' + sel); return; }
   if (s.sw > s.vw) fail('옆으로 넘침', `${tag}: ${s.sw} > ${s.vw}`);
   for (const x of s.wide.slice(0, 3)) fail('칸 밖으로 나감', `${tag}: ${x}`);
@@ -153,6 +263,12 @@ async function layout(p, sel, tag) {
   for (const x of s.tiny.slice(0, 3)) fail('글 17px 밑', `${tag}: ${x}`);
   if (s.canvas) fail('캔버스(입체 없음 규칙 50)', tag);
   for (const w of W.screenHits(s.text + '\n' + s.attrs.join('\n'))) fail('쓰지 않을 말', `${tag} 「${w}」`);
+  const sizes = Object.keys(s.fs).map(Number).sort((a, b) => a - b);
+  for (const f of sizes) if (!FS_TOKENS.some(t => Math.abs(t - f) < 0.2)) fail('글씨 크기가 이름표(--fs-1 ~ 6)에 없음([10] 6)', `${tag}: ${f}px`);
+  if (sizes.length > 6) fail('한 칸 글씨 크기 6가지 넘음([10] 6)', `${tag}: ${sizes.join(' · ')}`);
+  for (const x of s.neg.slice(0, 3)) fail('음수 간격(겹침)([10] 8 · 음수 간격 0)', `${tag}: ${x}`);
+  for (const x of s.sp.slice(0, 3)) fail('간격이 0 · 8 · 16 · 24 가 아님([10] 8)', `${tag}: ${x}`);
+  const all = Object.keys(s.fsAll).length; FS_SEEN.set(sel, Math.max(FS_SEEN.get(sel) ?? 0, all));
 }
 
 /* 글상자 */
@@ -391,15 +507,25 @@ async function otherEntries(W_, H_) {
     }
     errsOf(p, tag);
   } finally { await done(p); }
+  // 편지 쪽 — 사장님 열쇠가 없는 사람 기기: 카카오 길을 한 번도 안 부름(요청 0)
+  tag = `${W_}×${H_} 편지 /letter.html (사장님 열쇠 없는 기기)`; p = await newPage(W_, H_, {letter: 'plain'});
+  try {
+    await p.goto(base + '/letter.html', {waitUntil: 'domcontentloaded'});
+    await p.locator('button', {hasText: '봉인 소식'}).first().waitFor({timeout: 15000}).catch(() => fail('편지 쪽 보내기 단추 없음', tag));
+    await p.waitForTimeout(700);
+    errsOf(p, tag);
+  } finally { await done(p); }
 }
 
 /* ⑥ 친구가 연 주소 */
 const READL = () => {
-  const v = document.querySelector('#view'), land = v?.querySelector('.ps-land'); if (!land) return {land: false, head: v?.querySelector('h1')?.textContent ?? null};
-  const vs = [...land.querySelectorAll('.ps-v')].map(x => ({k: x.querySelector('.ps-vk')?.textContent ?? '', n: x.querySelector('.ps-vn')?.textContent ?? '', q: x.querySelector('.ps-q')?.textContent ?? null, cls: x.querySelector('.ps-vn')?.className ?? ''}));
+  const v = document.querySelector('#view'), land = v?.querySelector('.ps-top'), vals = v?.querySelector('.ps-vals'); if (!land) return {land: false, head: v?.querySelector('h1')?.textContent ?? null};
+  const vs = [...(vals?.querySelectorAll('.ps-v') ?? [])].map(x => ({k: x.querySelector('.ps-vk')?.textContent ?? '', n: x.querySelector('.ps-vn')?.textContent ?? '', q: x.querySelector('.ps-q')?.textContent ?? null, cls: x.querySelector('.ps-vn')?.className ?? ''}));
   const why = v.querySelector('.ps-why .wy'), after = v.querySelector('.ps-after');
-  return {land: true, kick: land.querySelector('.ps-kick')?.textContent ?? '', name: land.querySelector('.ps-name')?.textContent ?? '', vs, cmp: land.querySelector('.ps-cmp')?.textContent ?? '',
-    line: !!land.querySelector('svg .ps-ln'), dot: !!land.querySelector('svg .ps-sent'), why: !!why, whyFirst: !!(why && after && (why.compareDocumentPosition(after) & Node.DOCUMENT_POSITION_FOLLOWING)),
+  const y = e => (e ? Math.round(e.getBoundingClientRect().top + scrollY) : null);
+  return {land: true, kick: land.querySelector('.ps-kick')?.textContent ?? '', name: land.querySelector('.ps-name')?.textContent ?? '', vs, cmp: vals?.querySelector('.ps-cmp')?.textContent ?? '',
+    pos: {top: y(land), step: y(v.querySelector('.ps-step')), why: y(why), after: y(after), lock: y(v.querySelector('.ps-lock')), vals: y(vals), safe: y(v.querySelector('.ps-safe')), valsH: vals ? Math.round(vals.getBoundingClientRect().height) : null},
+    line: !!vals?.querySelector('svg .ps-ln'), dot: !!vals?.querySelector('svg .ps-sent'), why: !!why, whyFirst: !!(why && after && (why.compareDocumentPosition(after) & Node.DOCUMENT_POSITION_FOLLOWING)),
     lock: !!v.querySelector('.ps-lock'), said: v.querySelector('.ps-said')?.textContent ?? null, askq: v.querySelector('.ps-askq')?.textContent ?? null, mine: v.querySelector('.ps-mine')?.textContent ?? null,
     askline: v.querySelector('.ps-askline')?.textContent ?? null, afterText: after?.textContent ?? '', safe: v.querySelector('.ps-safe')?.textContent ?? null, body: document.body.innerText,
     saidLang: v.querySelector('.ps-said [data-proper]')?.getAttribute('lang') ?? null, mineLang: v.querySelector('.ps-mine [data-proper]')?.getAttribute('lang') ?? null};
@@ -448,12 +574,18 @@ async function landing(W_, H_, cases) {
       if ((C.price !== Math.round(closeAt(C.day))) !== !!sent?.q) fail('기록과 다른 값 「?」', `${tag} ${sent?.q}`);
       if (!s.line || !s.dot) fail('그림(선 · 보낸 날 금빛 점)', `${tag} 선 ${s.line} 점 ${s.dot}`);
       if (!s.why || !s.whyFirst || !s.lock) fail('질문이 먼저가 아님', `${tag} 질문 ${s.why} 먼저 ${s.whyFirst} 잠김 ${s.lock}`);
+      // [5] 10 — 종목 이름 한 줄 → 질문 → 친구 말 칸 → 값 칸 → 안전 문장(위에서 아래)
+      const P = s.pos;
+      if (!(P.top < P.why && P.why < P.lock && P.lock < P.vals && P.vals < P.safe)) fail('질문이 값 칸보다 아래([5] 10 — 질문이 맨 위 · 값 칸은 질문 뒤)', `${tag} ${JSON.stringify(P)}`);
+      if (P.step - P.top > 140) fail('질문 앞에 이름 한 줄 말고 다른 칸이 있음([5] 10)', `${tag} 이름 ${P.top} → 질문 ${P.step}`);
+      bump('친구 주소 차례 맞댐');
       if (s.safe !== SAFE_LINE) fail('안전 문장', `${tag} 「${s.safe}」`);
       if (C.kind === 'a' && !(s.askline ?? '').includes(ASK_Q)) fail('같이 따져 줘 물음이 처음에 없음', `${tag} 「${s.askline}」`);
       if (C.text && s.body.includes(C.text)) fail('다 답하기 전에 보낸 말이 화면에 보임', tag);
-      await layout(p, '#view', tag + ' 처음');
+      await layout(p, '#view', tag + ' 처음', '.wy');
       if (!(await finishWhy(p, C.why ?? '이익이 줄어서', tag))) continue;
       s = await p.evaluate(READL);
+      if (!(s.pos.why < s.pos.after && s.pos.after < s.pos.vals && s.pos.vals < s.pos.safe)) fail('다 답한 뒤에도 값 칸이 질문 · 친구 말보다 아래여야 함([5] 10)', `${tag} ${JSON.stringify(s.pos)}`);
       if (C.text != null && !C.hide) { if (s.said !== '「' + C.text + '」') fail('다 답한 뒤 보낸 말', `${tag} 「${s.said}」 ≠ 「${C.text}」`); if (/[가-힣]/.test(C.text) && s.saidLang !== 'ko') fail('보낸 말(쓴 사람 글)에 lang="ko" 없음', `${tag} ${s.saidLang}`); }
       if (C.hide) { if (s.said != null || (C.text && s.body.includes(C.text))) fail('거르는 말 · 깨진 말을 보여 줌', `${tag} 「${s.said}」`); if (!new RegExp(C.hide).test(s.afterText)) fail('못 보여 주는 까닭', `${tag} 「${s.afterText.slice(0, 80)}」`); }
       if (C.kind === 'a') {
@@ -461,11 +593,319 @@ async function landing(W_, H_, cases) {
         if (!(s.mine ?? '').includes(C.why ?? '이익이 줄어서')) fail('같이 따져 줘 — 내 생각(두 줄 ① 답)', `${tag} 「${s.mine}」`);
         if (s.mineLang !== 'ko') fail('내 생각(쓴 사람 글)에 lang="ko" 없음', `${tag} ${s.mineLang}`);
       }
-      await layout(p, '#view', tag + ' 다 답한 뒤');
+      await layout(p, '#view', tag + ' 다 답한 뒤', '.wy');
       bump('친구 주소');
       errsOf(p, tag);
     } finally { await done(p); }
   }
+}
+
+
+/* ⑨ ⑩ 카톡 — 꺼짐(NX.kakao 없음 · 있어도 on false)은 카카오 글 · 요청 · 도구 0 / 켜짐(가짜 서버 · 가짜 도구)은 카드 한 장 · 단추 둘 · 가입은 친구가 직접(사장님 2026-10-18 [2] · [12] 2) */
+/** 기다림이 시간을 넘기면 그때 쪽 모습(주소 · 보이는 글)을 함께 알림 — 어디서 멈췄는지 바로 보이게 */
+async function waitUp(p, fn, tag, what, arg = null, timeout = 30000) {
+  try { await p.waitForFunction(fn, arg, {timeout}); return true; }
+  catch { const st = await p.evaluate(() => ({url: location.href, top: !!document.querySelector('#view .ps-top'), boot: !!document.querySelector('#view .boot'), nx: typeof globalThis.NX, view: (document.querySelector('#view')?.innerText ?? '').replace(/\s+/g, ' ').slice(0, 100)})).catch(() => null); fail(what + ' — 시간 안에 안 뜸', `${tag} ${JSON.stringify(st)}`); return false; }
+}
+const kkLoad = async p => { await p.waitForFunction(() => !!globalThis.NX && typeof globalThis.NX.shareBox === 'function', null, {timeout: 30000}); await p.evaluate(() => import('/next/kakao.js')); }; // 앱이 kakao.js 를 안 불렀어도(index.html 에 줄이 없어도) 같은 모듈을 불러 붙임
+const KKUI = () => ({kk: !!document.querySelector('.ps-kk:not([hidden])'), offer: !!document.querySelector('.ps-offer'), link: !!document.querySelector('a[href*="/api/kakao"]'),
+  btn: [...document.querySelectorAll('button, a, .ps-card-b span')].some(e => /^(카카오로 시작하기|그냥 보기|Start with Kakao|Just look)$/.test((e.textContent || '').trim())), scripts: document.scripts.length});
+const READK = () => {
+  const k = document.querySelector('.ps-dlg .ps-kk'); if (!k || k.hidden) return null;
+  const q = x => k.querySelector(x);
+  return {head: q('.ps-pk')?.textContent ?? '', title: q('.ps-card-t')?.textContent ?? '', said: [...k.querySelectorAll('.ps-card-d')].map(e => e.textContent), value: q('.ps-card-v')?.textContent ?? '',
+    btns: [...k.querySelectorAll('.ps-card-b span')].map(e => e.textContent), note: [...k.querySelectorAll('.ps-n')].map(e => e.textContent).join(' '), inter: k.querySelectorAll('button, a, input, textarea, select, [tabindex]').length, text: k.textContent};
+};
+const READO = () => {
+  const e = document.querySelector('.ps-offer'); if (!e) return null;
+  return {n: document.querySelectorAll('.ps-offer').length, h: e.querySelector('h2')?.textContent ?? '', btns: [...e.querySelectorAll('button')].map(b => b.textContent), inputs: e.querySelectorAll('input, textarea, select').length, links: e.querySelectorAll('a').length,
+    afterJournal: !!e.previousElementSibling?.classList.contains('wy'), text: e.textContent, calls: (window.__offerCalls ?? []).slice()};
+};
+const spyOffer = p => p.evaluate(() => { window.__offerCalls = []; const K = NX.kakao, o = K.offer.bind(K); K.offer = (...a) => { window.__offerCalls.push(a[0]); return o(...a); }; });
+/** 글상자를 열고 켜짐이면 카드 미리보기가 나올 때까지 기다림 */
+async function openKk(p, click, tag) {
+  const s = await openBox(p, click, tag); if (!s) return null;
+  try { await p.waitForSelector('.ps-dlg .ps-kk:not([hidden])', {timeout: 8000}); } catch { fail('켜짐인데 카드 미리보기가 안 나옴', tag); return null; }
+  return s;
+}
+/** 보낸 카드 하나(window.__kcards[n]) 맞대기 — {msg: 보낸 말 · kind: 's'|'a' · ref: 보낸 사람 표 | null} */
+async function checkCard(p, n, {msg, kind = 's', ref = null}, tag) {
+  try { await p.waitForFunction(k => window.__kcards.length >= k, n + 1, {timeout: 8000}); } catch { fail('카드가 안 나감(카카오 도구에 안 불림)', tag); return null; }
+  const c = (await p.evaluate(() => window.__kcards))[n], blob = JSON.stringify(c);
+  if (c.objectType !== 'feed') fail('카드 꼴(feed)', `${tag} ${c.objectType}`);
+  const see = c.content?.link?.webUrl, m = URL_RE.exec(see ?? '');
+  if (!m) fail('카드 누르기 주소 꼴(#/s/…)', `${tag} 「${see}」`);
+  else {
+    if (m[1] !== CODE || m[2] !== CO.c.priceDate || +m[3] !== Math.round(CO.c.price) || m[4] !== kind) fail('카드 주소의 종목 · 날 · 값 · 갈래', `${tag} ${m.slice(1, 5).join(' ')}`);
+    if (!m[5] || unb64(m[5]) !== msg) fail('카드 주소의 말 조각', `${tag} 「${m[5] ? unb64(m[5]) : ''}」 ≠ 「${msg}」`);
+  }
+  if (c.content?.link?.mobileWebUrl !== see) fail('카드 누르기 주소(웹 · 모바일)가 다름', tag);
+  if (c.content?.title !== CO.c.name) fail('카드 제목 = 종목 이름', `${tag} 「${c.content?.title}」 ≠ 「${CO.c.name}」`);
+  const wantDesc = msg + '\n' + md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원';
+  if (c.content?.description !== wantDesc) fail('카드 글 = 보낸 사람 글 + 보낸 날 값', `${tag} 「${c.content?.description}」 ≠ 「${wantDesc}」`);
+  if (/[%％]|퍼센트|프로|1등|1위|급등/.test(blob.replace(/%2F|%3F|%23|%3D|%26|%[0-9A-F]{2}/g, '')) || W.gainHits(c.content?.title + '\n' + c.content?.description).length) fail('카드에 수익 숫자 · 퍼센트 · 1등 · 급등', `${tag} 「${c.content?.description}」`);
+  if (!String(c.content?.imageUrl ?? '').startsWith(base + '/')) fail('카드 그림 주소(우리 사이트 것)', `${tag} 「${c.content?.imageUrl}」`);
+  else { const r = await fetch(c.content.imageUrl).catch(() => null); if (!r?.ok) fail('카드 그림 파일을 못 받음', `${tag} ${c.content.imageUrl}`); }
+  const bs = c.buttons ?? [];
+  if (bs.length !== 2) fail('카드 단추는 정확히 둘', `${tag} ${bs.length}개`);
+  if (JSON.stringify(bs.map(b => b.title)) !== JSON.stringify([BTN_START, BTN_SEE])) fail('카드 단추 이름 · 차례(원문 [2] 2)', `${tag} ${JSON.stringify(bs.map(b => b.title))}`);
+  const w0 = bs[0]?.link?.webUrl ?? '', u0 = (() => { try { return new URL(w0); } catch { return null; } })();
+  if (!u0 || u0.origin + u0.pathname !== base + '/api/kakao/start' || bs[0].link.mobileWebUrl !== w0) fail('카드 단추 1 주소(가입 길)', `${tag} 「${w0}」`);
+  else {
+    const seeU = see ? new URL(see) : null, want = seeU ? seeU.pathname + seeU.search + seeU.hash : null;
+    if (u0.searchParams.get('to') !== want) fail('단추 1 이 동의 뒤 돌아올 쪽 = 보낸 쪽(#/s/…)이 아님', `${tag} 「${u0.searchParams.get('to')}」 ≠ 「${want}」`);
+    if (u0.searchParams.get('ref') !== ref) fail('단추 1 의 보낸 사람 표', `${tag} 「${u0.searchParams.get('ref')}」 ≠ 「${ref}」`);
+    if ([...u0.searchParams.keys()].some(k => !['to', 'ref'].includes(k))) fail('단추 1 주소에 다른 물음이 끼어 있음', `${tag} ${u0.search}`);
+  }
+  if (bs[1]?.link?.webUrl !== see || bs[1]?.link?.mobileWebUrl !== see || /\/api\//.test(bs[1]?.link?.webUrl ?? '')) fail('카드 단추 2 주소 = 보낸 주소 그대로(가입 길 아님)', `${tag} 「${bs[1]?.link?.webUrl}」`);
+  noGainPayload({title: c.content?.title, text: c.content?.description}, tag);
+  bump('보낸 카드');
+  return c;
+}
+/** 켜짐 — 카드 미리보기 · 카드 한 장 · 단추 둘 · 보내기만으로는 가입 요청 0 */
+async function kakaoCard(W_, H_, deep) {
+  // ① 처음 온 사람(회원 아님) — 보내기 · 같이 따져 줘
+  let tag = `${W_}×${H_} 켜짐 · 카드 보내기`, p = await newPage(W_, H_, {kakao: 'on'});
+  try {
+    await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
+    const shareB = p.locator('#view .acts button', {hasText: /^보내기$/}), askB = p.locator('#view .acts button', {hasText: new RegExp('^' + ASK_BTN + '$')});
+    await shareB.first().waitFor({timeout: 30000}); await kkLoad(p); await p.waitForTimeout(400);
+    if (p._kk.length) fail('처음 온 사람인데 쪽을 열자마자 카카오 요청이 나감([2] 10 — 건드리지 않음)', `${tag} ${p._kk.join(' | ')}`);
+    const s = await openKk(p, () => shareB.first().click(), tag);
+    if (s) {
+      let k = await p.evaluate(READK);
+      if (k.title !== CO.c.name || k.said[0] !== '이거 어때?' || k.value !== md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원') fail('카드 미리보기 = 보낼 카드(이름 · 글 · 보낸 날 값)', `${tag} ${JSON.stringify([k.title, k.said, k.value])}`);
+      if (JSON.stringify(k.btns) !== JSON.stringify([BTN_START, BTN_SEE])) fail('카드 미리보기 단추 이름 · 차례', `${tag} ${JSON.stringify(k.btns)}`);
+      if (k.inter) fail('카드 미리보기에 누르는 것이 있음(눌러 가입하는 길은 친구 쪽 카드뿐)', `${tag} ${k.inter}개`);
+      if (!k.note.includes(BTN_START) || !/직접/.test(k.note)) fail('가입은 친구가 직접 누른다는 안내', `${tag} 「${k.note}」`);
+      if (NOASK.test(k.text)) fail('카드 안내에 가입 길에 없어야 할 말([2] 8 · 9)', `${tag} 「${(NOASK.exec(k.text) ?? [])[0]}」`);
+      await layout(p, DLG, tag + ' 글상자(카드 미리보기)');
+      await p.locator(DLG + ' textarea.ps-t').first().fill('나는 이렇게 봤어');
+      k = await p.evaluate(READK); if (k.said[0] !== '나는 이렇게 봤어') fail('카드 미리보기가 쓴 말을 따라가지 않음', `${tag} ${JSON.stringify(k.said)}`);
+      await p.locator(DLG + ' textarea.ps-t').first().fill('지금 사세요'); await p.locator(DLG + ' .ps-go').click({force: true}); await p.waitForTimeout(300);
+      if ((await p.evaluate(() => window.__kcards.length)) || (await shared(p)).length) fail('걸렸는데 카드가 나감', tag);
+      await sendQuick(p, 2, tag);
+      const c = await checkCard(p, 0, {msg: QUICK[2]}, tag);
+      if ((await shared(p)).length) fail('카드를 보냈는데 휴대폰 공유 창도 열림', tag);
+      const extra = p._kk.filter(x => x !== 'GET /api/kakao/me');
+      if (extra.length) fail('보내기만으로 가입 길 요청이 나감([2] 1 — 보내기만으로는 가입 0)', `${tag} ${extra.join(' | ')}`);
+      if (p._kk.filter(x => x === 'GET /api/kakao/me').length > 1) fail('서버 확인(/me)이 한 번보다 많음', `${tag} ${p._kk.join(' | ')}`);
+      try { await p.waitForSelector(DLG, {state: 'detached', timeout: 4000}); } catch { fail('카드를 보낸 뒤 글상자가 안 닫힘', tag); }
+      if (c) bump('카드 맞댐');
+    }
+    if (deep && (await askB.count())) {
+      const s2 = await openKk(p, () => askB.first().click(), tag + ' 같이 따져 줘');
+      if (s2) { await p.locator(DLG + ' .ps-go').click(); await checkCard(p, 1, {msg: '같이 따져 줘. ' + ASK_Q, kind: 'a'}, tag + ' 같이 따져 줘'); }
+    }
+    errsOf(p, tag);
+  } finally { await done(p); }
+  // ② 보낸 사람이 회원 — 단추 1 에 보낸 사람 표(ref)
+  if (deep) {
+    tag = `${W_}×${H_} 켜짐 · 회원이 보냄(ref)`; p = await newPage(W_, H_, {kakao: 'on', kk: {member: true}});
+    try {
+      await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
+      const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
+      if (await openKk(p, () => b.first().click(), tag)) { await sendQuick(p, 0, tag); await checkCard(p, 0, {msg: QUICK[0], ref: 'ABCDEFGHIJKL'}, tag); }
+      const bad = p._kk.filter(x => !/^(GET|PUT) \/api\/kakao\/(me|data)$/.test(x));
+      if (bad.length) fail('회원이 보내는데 기록 맞추기 밖의 가입 길 요청이 나감', `${tag} ${bad.join(' | ')}`);
+      errsOf(p, tag);
+    } finally { await done(p); }
+    // ③ 카카오 도구가 없음 · 카드가 던짐 → 휴대폰 공유 창 · 종목 아닌 보내기는 카드 아님
+    for (const [nm, kk] of [['도구 없음', {sdk: false}], ['카드가 막힘', {throws: true}]]) {
+      tag = `${W_}×${H_} 켜짐 · ${nm} → 공유 창`; p = await newPage(W_, H_, {kakao: 'on', kk});
+      try {
+        await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
+        const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
+        if (!(await openBox(p, () => b.first().click(), tag))) continue;
+        await p.waitForTimeout(900);
+        if (kk.sdk === false && (await p.evaluate(KKUI)).kk) fail('카카오 도구가 없는데 카드 미리보기가 보임', tag);
+        await sendQuick(p, 0, tag);
+        const d = await waitShared(p, 1, tag);
+        if (d && (!URL_RE.test(d.url ?? '') || !String(d.text ?? '').startsWith(QUICK[0]))) fail('카드가 안 가면 공유 창으로(글 + 주소)', `${tag} 「${d.text}」 「${d.url}」`);
+        errsOf(p, tag);
+      } finally { await done(p); }
+    }
+    tag = `${W_}×${H_} 켜짐 · 종목 아닌 보내기(시황)는 카드 아님`; p = await newPage(W_, H_, {kakao: 'on'});
+    try {
+      await p.goto(base + NEXT + '#/shorts', {waitUntil: 'domcontentloaded'});
+      const b = p.locator('#view button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
+      if (await openBox(p, () => b.first().click(), tag)) {
+        await p.waitForTimeout(700);
+        if ((await p.evaluate(KKUI)).kk) fail('종목이 아닌데 카드 미리보기가 보임', tag);
+        await sendQuick(p, 0, tag); await waitShared(p, 1, tag);
+        if (await p.evaluate(() => window.__kcards.length)) fail('종목이 아닌 보내기가 카드로 나감', tag);
+        if (p._kk.length) fail('종목이 아닌 보내기에서 카카오 요청이 나감', `${tag} ${p._kk.join(' | ')}`);
+      }
+      errsOf(p, tag);
+    } finally { await done(p); }
+  }
+}
+const CASE0 = () => { const C = CASES[0]; return '#/s/' + C.code + '/' + C.day + '/' + C.price + '/' + C.kind + '/' + C.msg; };
+/** 켜짐 — 친구가 「그냥 보기」로 연 쪽 · 매매일지를 끝낸 순간 한 번 뜨는 「이 기록 지키기」 */
+async function kakaoOffer(W_, H_, {en = false} = {}) {
+  const tag = `${W_}×${H_} 켜짐 · ${en ? '영어 ' : ''}친구 주소 → 매매일지 끝 → 권유`, p = await newPage(W_, H_, {kakao: 'on', en});
+  try {
+    await p.goto(base + NEXT + (en ? '&lang=en' : '') + CASE0(), {waitUntil: 'domcontentloaded'});
+    await p.waitForFunction(() => !!document.querySelector('#view .ps-top') && !document.querySelector('#view .boot'), null, {timeout: 30000});
+    await kkLoad(p); await spyOffer(p); await p.waitForTimeout(600);
+    if (p._kk.length) fail('「그냥 보기」로 연 쪽에서 카카오 요청이 나감(요청 0이어야 함)', `${tag} ${p._kk.join(' | ')}`);
+    const pre = await p.evaluate(() => ({links: document.querySelectorAll('a[href*="/api/kakao"]').length, offer: document.querySelectorAll('.ps-offer').length, signup: [...document.querySelectorAll('button')].filter(b => /카카오로 시작하기|Start with Kakao/.test(b.textContent)).length, calls: window.__offerCalls.length}));
+    if (pre.links || pre.offer || pre.signup) fail('「그냥 보기」 쪽에 가입 고리 · 단추 · 권유 칸이 있음([2] 6)', `${tag} ${JSON.stringify(pre)}`);
+    if (pre.calls) fail('매매일지를 끝내기 전에 offer 가 불림([2] 7)', tag);
+    if (!(await finishWhy(p, '이익이 줄어서', tag))) return;
+    try { await p.waitForSelector('.ps-offer', {timeout: 8000}); } catch { fail('매매일지를 끝냈는데 권유 칸이 안 뜸([2] 7)', tag); return; }
+    const o = await p.evaluate(READO);
+    if (o.n !== 1) fail('권유 칸이 한 장이 아님', `${tag} ${o.n}`);
+    if (o.h !== (en ? 'Keep this record safe' : OFFER_H)) fail('권유 글(원문 「이 기록 지키기」)', `${tag} 「${o.h}」`);
+    if (JSON.stringify(o.btns) !== JSON.stringify([en ? 'Start with Kakao' : OFFER_BTN])) fail('권유 단추는 「카카오로 시작하기」 하나', `${tag} ${JSON.stringify(o.btns)}`);
+    if (o.inputs || o.links) fail('권유 칸에 입력칸 · 고리가 있음([2] 8)', `${tag} 입력 ${o.inputs} 고리 ${o.links}`);
+    if (!o.afterJournal) fail('권유 칸이 매매일지 결과 바로 밑이 아님', tag);
+    if (JSON.stringify(o.calls) !== JSON.stringify(['journal'])) fail('offer(\'journal\') 는 끝낸 뒤 정확히 한 번', `${tag} ${JSON.stringify(o.calls)}`);
+    if (NOASK.test(o.text)) fail('권유 칸에 가입 길에 없어야 할 말([2] 8 · 9)', `${tag} 「${(NOASK.exec(o.text) ?? [])[0]}」`);
+    if (en && /[가-힣]/.test(o.text)) fail('영어 권유 칸에 한글이 남음', `${tag} 「${o.text}」`);
+    await layout(p, '.ps-offer', tag + ' 권유 칸');
+    if (en) { const miss = await p.evaluate(() => window.__atlasI18n?.missing?.() ?? []); if (miss.length) fail('영어 사전에 없는 틀', `${tag} ${JSON.stringify(miss).slice(0, 200)}`); }
+    // 한 번만 — 칸을 치우고 다시 불러도 안 뜸
+    const again = await p.evaluate(async () => { document.querySelector('.ps-offer')?.remove(); const r = await NX.kakao.offer('journal'); return {r, n: document.querySelectorAll('.ps-offer').length, flag: localStorage.getItem('atlas:kakao:offered')}; });
+    if (again.r !== false || again.n !== 0 || again.flag !== '1') fail('권유 칸이 한 번이 아님', `${tag} ${JSON.stringify(again)}`);
+    const mes = p._kk.filter(x => x === 'GET /api/kakao/me').length, others = p._kk.filter(x => x !== 'GET /api/kakao/me');
+    if (mes !== 1 || others.length) fail('권유를 띄우는 동안 서버 요청은 확인(/me) 한 번뿐이어야 함', `${tag} ${p._kk.join(' | ')}`);
+    // 단추 → 우리 주소 한 번 → (가짜) 카카오 동의 화면. 돌아올 쪽 = 지금 쪽
+    const box = await p.evaluate(async () => { const m = await import('/next/p-share.js'); document.querySelector('#view').append(m.offerBox({start: () => NX.kakao.start(null)})); return true; }); // 앱이 그리는 것과 같은 꼴(kakao.js 의 browserOffer)
+    const here = await p.evaluate(() => location.pathname + location.search + location.hash);
+    const [req] = await Promise.all([p.waitForRequest(r => /\/api\/kakao\/start/.test(r.url()), {timeout: 8000}), p.locator('.ps-offer button').last().click()]);
+    const u = new URL(req.url());
+    if (u.pathname !== '/api/kakao/start' || u.searchParams.get('to') !== here || u.searchParams.has('prompt') || u.searchParams.has('ref')) fail('권유 단추 주소(가입 길 · 돌아올 쪽 = 지금 쪽)', `${tag} 「${req.url()}」 ≠ to=${here}`);
+    if (!box) fail('권유 칸을 못 만듦', tag);
+    bump('권유 맞댐');
+    errsOf(p, tag);
+  } finally { await done(p); }
+}
+/** 켜짐 — 동의 화면에서 돌아옴(?kakao=ok|none) · 조용한 로그인(카톡 안 + 앞서 가입한 기기만) */
+async function kakaoReturn(W_, H_) {
+  for (const back of ['ok', 'none']) {
+    const tag = `${W_}×${H_} 켜짐 · 동의 화면에서 돌아옴(kakao=${back})`, p = await newPage(W_, H_, {kakao: 'on', kk: {member: back === 'ok'}});
+    try {
+      await p.goto(base + NEXT + '&kakao=' + back + CASE0(), {waitUntil: 'domcontentloaded'});
+      if (!(await waitUp(p, () => !!document.querySelector('#view .ps-top') && !document.querySelector('#view .boot'), tag, '돌아온 친구 쪽'))) continue;
+      await kkLoad(p);
+      try { await p.waitForFunction(() => !/[?&]kakao=/.test(location.search), null, {timeout: 6000}); } catch { fail('돌아온 뒤 주소에 kakao 표가 남음', `${tag} ${await p.evaluate(() => location.href)}`); }
+      await p.waitForTimeout(600);
+      const href = await p.evaluate(() => location.pathname + location.search + location.hash);
+      if (href !== NEXT + CASE0()) fail('돌아온 쪽 = 보낸 쪽(#/s/…) 그대로', `${tag} ${href} ≠ ${NEXT + CASE0()}`);
+      const mes = p._kk.filter(x => x === 'GET /api/kakao/me').length, starts = p._kk.filter(x => /\/start/.test(x));
+      if (mes !== 1) fail('돌아온 쪽에서 서버 확인(/me)이 한 번이 아님', `${tag} ${p._kk.join(' | ')}`);
+      if (starts.length) fail('돌아온 쪽에서 다시 가입 길로 감(되풀이)', `${tag} ${starts.join(' | ')}`);
+      if (back === 'ok') { const m = await p.evaluate(() => NX.kakao.member()); if (!m) fail('동의하고 돌아왔는데 회원으로 안 보임', tag); }
+      errsOf(p, tag);
+    } finally { await done(p); }
+  }
+  const KUA = 'Mozilla/5.0 (Linux; Android 13; SM-S918N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36 KAKAOTALK 10.4.1';
+  for (const [nm, ua, kk, wantStart] of [['카톡 안 · 앞서 가입한 기기 → 조용한 로그인 한 번', KUA, {flag: true}, 1], ['카톡 안 · 처음 온 사람 → 건드리지 않음', KUA, {}, 0], ['카톡 밖 · 앞서 가입한 기기 → 안 함', null, {flag: true}, 0]]) {
+    const tag = `${W_}×${H_} 켜짐 · ${nm}`, p = await newPage(W_, H_, {kakao: 'on', kk: {...kk, member: false}, ua});
+    try {
+      const nav = p.waitForRequest(r => /\/api\/kakao\/start/.test(r.url()), {timeout: 30000}).then(r => r, () => null);
+      await p.goto(base + NEXT + CASE0(), {waitUntil: 'domcontentloaded'});
+      // 앱이 떠서 kakao.js 가 붙을 때까지 — 또는 가입 길로 떠날 때까지(떠나는 쪽은 열자마자 떠나므로 앱을 기다리지 않음 · kakao.js 는 index.html 에서 앱 바로 다음에 불림 · 없으면 여기서 불러 붙임)
+      const app = (async () => { try { await p.waitForFunction(() => !!globalThis.NX && typeof globalThis.NX.shareBox === 'function', null, {timeout: 30000}); await p.evaluate(() => import('/next/kakao.js')); await p.waitForFunction(() => !!globalThis.NX?.kakao, null, {timeout: 10000}); return 'app'; } catch { return null; } })();
+      await Promise.race([nav, app]);
+      if (wantStart) {
+        const req = await nav;
+        if (!req) fail('조용한 로그인이 안 감', tag);
+        else { const u = new URL(req.url()); if (u.searchParams.get('prompt') !== 'none' || u.searchParams.get('to') !== NEXT + CASE0()) fail('조용한 로그인 주소(prompt=none · 돌아올 쪽)', `${tag} 「${req.url()}」`); }
+      } else {
+        await p.waitForTimeout(1500);
+        const st = p._kk.filter(x => /\/start/.test(x));
+        if (st.length) fail('건드리면 안 되는 사람에게 로그인 길이 열림([2] 10)', `${tag} ${st.join(' | ')}`);
+        if (nm.includes('처음') && p._kk.length) fail('처음 온 사람인데 서버 확인이 나감([2] 10)', `${tag} ${p._kk.join(' | ')}`);
+      }
+      bump('조용한 로그인 맞댐');
+    } finally { await done(p); }
+  }
+}
+/** 켜짐 — 영어(?lang=en) · 글상자 카드 미리보기와 카드 글 */
+async function kakaoEnglish(W_, H_) {
+  const tag = `${W_}×${H_} 켜짐 · 영어 카드`, p = await newPage(W_, H_, {kakao: 'on', en: true}); EN_PAGE.add(p);
+  try {
+    await p.goto(base + NEXT + '&lang=en#/w/' + CODE, {waitUntil: 'domcontentloaded'});
+    await p.waitForFunction(() => document.documentElement.lang === 'en' && document.querySelectorAll('#view .acts button').length >= 2, null, {timeout: 30000});
+    await kkLoad(p); await p.waitForTimeout(300);
+    await p.locator('#view .acts button').nth(1).click();
+    try { await p.waitForSelector(DLG, {state: 'visible', timeout: 10000}); await p.waitForSelector('.ps-dlg .ps-kk:not([hidden])', {timeout: 8000}); } catch { fail('영어로 켜짐인데 글상자 · 카드 미리보기가 안 나옴', tag); return; }
+    await p.waitForTimeout(300); // 엔진이 그려진 글을 바꾸는 사이
+    const k = await p.evaluate(READK);
+    if (/[가-힣]/.test(k.text)) fail('영어 카드 미리보기에 한글이 남음', `${tag} 「${k.text.replace(/\s+/g, ' ').slice(0, 120)}」`);
+    if (JSON.stringify(k.btns) !== JSON.stringify(['Start with Kakao', 'Just look'])) fail('영어 카드 단추 이름', `${tag} ${JSON.stringify(k.btns)}`);
+    const miss = await p.evaluate(() => window.__atlasI18n?.missing?.() ?? []); if (miss.length) fail('영어 사전에 없는 틀', `${tag} ${JSON.stringify(miss).slice(0, 200)}`);
+    await layout(p, DLG, tag);
+    await p.locator(DLG + ' .ps-go').click();
+    await p.waitForFunction(() => window.__kcards.length >= 1, null, {timeout: 8000}).catch(() => fail('카드가 안 나감', tag));
+    const c = (await p.evaluate(() => window.__kcards))[0];
+    if (c) {
+      if (JSON.stringify(c.buttons.map(b => b.title)) !== JSON.stringify(['Start with Kakao', 'Just look'])) fail('영어 카드 단추 글', `${tag} ${JSON.stringify(c.buttons.map(b => b.title))}`);
+      const first = String(c.content.description).split('\n')[0];
+      if (/[가-힣]/.test(first)) fail('영어 카드 글(첫 줄)에 한글', `${tag} 「${first}」`);
+      if (!/Price on/.test(c.content.description)) fail('영어 카드 글에 보낸 날 값', `${tag} 「${c.content.description}」`);
+      if (/[가-힣]/.test(c.content.title) && !/^[가-힣]/.test(c.content.title)) fail('영어 카드 제목', `${tag} 「${c.content.title}」`);
+      bump('보낸 카드');
+    }
+    errsOf(p, tag);
+  } finally { await done(p); }
+}
+/** 꺼짐 — NX.kakao 그대로 · 카카오 코드를 불러 둠(스위치 꺼짐) 둘 다: 카카오 글 0 · 요청 0 · script 0 · 공유 창 · 기록 파일 */
+async function kakaoOff(W_, H_, deep) {
+  for (const variant of ['none', 'off']) {
+    const tag = `${W_}×${H_} 카톡 꺼짐(${variant === 'none' ? 'NX.kakao 그대로' : '카카오 코드를 불러 둠'})`, p = await newPage(W_, H_, {kakao: variant === 'off' ? 'off' : 'none'});
+    try {
+      await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
+      const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000});
+      if (variant === 'off') {
+        await kkLoad(p);
+        const st = await p.evaluate(async () => { const K = NX.kakao; await K.ready(); return {on: K.on, member: K.member(), can: K.canSend(), sdk: await K.sdkReady(), start: K.start('#/s/x'), offer: await K.offer('journal'), wd: await K.withdraw()}; });
+        if (st.on || st.member || st.can || st.sdk || st.start || st.offer || st.wd) fail('꺼져 있어야 하는데 켜짐', `${tag} ${JSON.stringify(st)}`);
+      }
+      const scripts0 = await p.evaluate(() => document.scripts.length), ui0 = await p.evaluate(KKUI);
+      if (ui0.kk || ui0.offer || ui0.link || ui0.btn) fail('꺼짐인데 화면에 카카오 칸 · 단추 · 고리', `${tag} ${JSON.stringify(ui0)}`);
+      if (!(await openBox(p, () => b.first().click(), tag))) continue;
+      await p.waitForTimeout(900); // 켜졌다면 카드 미리보기가 나올 만한 시간
+      const ui = await p.evaluate(KKUI);
+      if (ui.kk || ui.offer || ui.link || ui.btn) fail('꺼짐인데 글상자에 카카오 칸 · 단추 · 고리', `${tag} ${JSON.stringify(ui)}`);
+      if (ui.scripts !== scripts0) fail('꺼짐인데 script 가 늘어남([12] 2 — 카카오 도구 0)', `${tag} ${scripts0} → ${ui.scripts}`);
+      if (await p.evaluate(() => typeof globalThis.Kakao !== 'undefined')) fail('꺼짐인데 카카오 도구가 올라와 있음', tag);
+      await sendQuick(p, 0, tag);
+      const d = await waitShared(p, 1, tag);
+      if (d && (!URL_RE.test(d.url ?? '') || !String(d.text ?? '').startsWith(QUICK[0]))) fail('꺼짐 — 공유 창에 글 + 주소', `${tag} 「${d.text}」 「${d.url}」`);
+      if (variant === 'off' && deep) {
+        // 기록 파일 — 요청 0 · 넷만 · 내 돈 칸 없음
+        await p.evaluate(() => { localStorage.setItem('atlas:godori-money', JSON.stringify({total: 987654321, mark: 'MONEYMARK'})); localStorage.setItem('atlas:new:sub', JSON.stringify(['005930'])); localStorage.setItem('atlas:new:hist', JSON.stringify(['HISTMARK'])); localStorage.setItem('atlas:godori-why', JSON.stringify([{at: '2026-10-01T00:00:00.000Z', code: '005930', name: '가'}])); });
+        const r0 = p._reqs;
+        const [dl, r] = await Promise.all([p.waitForEvent('download', {timeout: 8000}).catch(() => null), p.evaluate(() => NX.kakao.exportFile())]);
+        if (!dl || !r?.ok) fail('기록 파일이 안 받아짐(꺼져 있어도 늘 됨)', `${tag} ${JSON.stringify(r)}`);
+        else {
+          const txt = await fs.readFile(await dl.path(), 'utf8'); let j = null; try { j = JSON.parse(txt); } catch {}
+          if (!/^[a-z]+-records-\d{4}-\d{2}-\d{2}\.json$/.test(dl.suggestedFilename())) fail('기록 파일 이름', `${tag} ${dl.suggestedFilename()}`);
+          if (!j || j.schema !== 'godori-device-records-1' || JSON.stringify(Object.keys(j.keys).sort()) !== JSON.stringify(['atlas:godori-why', 'atlas:new:sub'])) fail('기록 파일 속 열쇠(넷 가운데 있는 것만)', `${tag} ${j ? Object.keys(j.keys) : txt.slice(0, 80)}`);
+          if (/MONEYMARK|HISTMARK|godori-money|new:hist/.test(txt)) fail('기록 파일에 내 돈 칸 · 본 기록이 들어감([9])', tag);
+        }
+        if (p._reqs !== r0) fail('기록 파일을 받는데 망 요청이 나감(요청 0)', `${tag} ${r0} → ${p._reqs}`);
+        bump('기록 파일 맞댐');
+      }
+      errsOf(p, tag);
+    } finally { await done(p); }
+  }
+  // 친구 주소 + 매매일지 끝 — 꺼짐이면 권유 칸 없음 · 요청 0
+  const tag = `${W_}×${H_} 카톡 꺼짐 · 친구 주소 → 매매일지 끝`, p = await newPage(W_, H_, {kakao: 'off'});
+  try {
+    await p.goto(base + NEXT + CASE0(), {waitUntil: 'domcontentloaded'});
+    await p.waitForFunction(() => !!document.querySelector('#view .ps-top') && !document.querySelector('#view .boot'), null, {timeout: 30000});
+    await kkLoad(p); await spyOffer(p);
+    if (!(await finishWhy(p, '이익이 줄어서', tag))) return;
+    await p.waitForTimeout(900);
+    const ui = await p.evaluate(KKUI), calls = await p.evaluate(() => window.__offerCalls);
+    if (ui.kk || ui.offer || ui.link || ui.btn) fail('꺼짐인데 매매일지 끝에 카카오 칸', `${tag} ${JSON.stringify(ui)}`);
+    if (JSON.stringify(calls) !== JSON.stringify(['journal'])) fail('offer(\'journal\') 는 끝낸 뒤 정확히 한 번(꺼져도 부름 · 아무 일 없음)', `${tag} ${JSON.stringify(calls)}`);
+    errsOf(p, tag);
+  } finally { await done(p); }
 }
 
 const MSG = '이거 어때? 같이 보자';
@@ -477,14 +917,26 @@ const CASES = [
   {name: '깨진 말', code: CODE, day: SENT_DAY, price: SENT_PRICE, kind: 's', msg: 'A', hide: '깨져서'},
   {name: '이상한 주소', code: 'ABC', day: SENT_DAY, price: SENT_PRICE, bad: true},
 ];
-const SIZES = [[360, 640], [390, 844]];
+const SIZES = [[360, 640], [390, 844]].filter(([w]) => !arg('--w', null) || String(w) === String(arg('--w', null))); // --w 360 = 한 폭만(고치는 동안)
 const step = async (tag, f) => { try { await f(); } catch (e) { fail('검사 길이 멈춤', tag + ' · ' + String(e?.message ?? e).split('\n')[0]); } };
 for (const [w, h] of SIZES) {
   const full = ALL || w === 360;
-  await step(`${w}×${h} 회사 글상자`, () => companyBox(w, h, full));
-  if (full) { await step(`${w}×${h} 복사 · 보여 줌`, () => fallbacks(w, h)); await step(`${w}×${h} 대화창 없는 기계`, () => noDialogBox(w, h)); await step(`${w}×${h} 영어`, () => englishBox(w, h)); await step(`${w}×${h} 다른 입구`, () => otherEntries(w, h)); }
-  await step(`${w}×${h} 친구 주소`, () => landing(w, h, full ? CASES : CASES.slice(0, 1)));
+  if (want('co')) await step(`${w}×${h} 회사 글상자`, () => companyBox(w, h, full));
+  if (full) {
+    if (want('fb')) await step(`${w}×${h} 복사 · 보여 줌`, () => fallbacks(w, h));
+    if (want('nd')) await step(`${w}×${h} 대화창 없는 기계`, () => noDialogBox(w, h));
+    if (want('en')) await step(`${w}×${h} 영어`, () => englishBox(w, h));
+    if (want('ent')) await step(`${w}×${h} 다른 입구`, () => otherEntries(w, h));
+  }
+  if (want('land')) await step(`${w}×${h} 친구 주소`, () => landing(w, h, full ? CASES : CASES.slice(0, 1)));
+  if (want('off')) await step(`${w}×${h} 카톡 꺼짐`, () => kakaoOff(w, h, full));
+  const on = k => want('on') || want(k);
+  if (on('card')) await step(`${w}×${h} 카톡 켜짐 · 카드`, () => kakaoCard(w, h, full));
+  if (on('offer')) await step(`${w}×${h} 카톡 켜짐 · 권유`, () => kakaoOffer(w, h));
+  if (full && on('ret')) await step(`${w}×${h} 카톡 켜짐 · 돌아옴 · 조용한 로그인`, () => kakaoReturn(w, h));
+  if (full && on('enk')) await step(`${w}×${h} 카톡 켜짐 · 영어`, async () => { await kakaoEnglish(w, h); await kakaoOffer(w, h, {en: true}); });
 }
+counts['글씨 크기 가짓수(쪽 전체 · 질문 칸 포함 · 알림용)'] = JSON.stringify(Object.fromEntries(FS_SEEN));
 await browser.close();
 const secs = Math.round((Date.now() - t0) / 1000);
 const out = {schema: 'godori-check-share-1', at: new Date().toISOString(), base, path: NEXT, all: ALL, code: CODE, secs, counts, fails, ok: !fails.length,

@@ -185,7 +185,7 @@ if (PARTS.has('picker')) {
     if (!so || !sn) { fail('고르는 판 안 열림', S.k + ' 옛 ' + !!so + ' · 새 ' + !!sn); continue; }
     same('판 ' + S.k, so, sn, ['title', 'ops', 'focus']);
     const st = key.split('-'), i = 'abc'.indexOf(S.k);
-    const want = S.ops.map(o => { const k2 = [...st]; k2[i] = o[0]; return [o[0], o[0] === st[i] ? 'true' : null, o[1], o[2], '→ ' + L(run(cond, k2.join('-')).codes.length) + '곳']; });
+    const want = S.ops.map(o => { const k2 = [...st]; k2[i] = o[0]; return [o[0], o[0] === st[i] ? 'true' : null, oldToNew(o[1]), oldToNew(o[2]), '→ ' + L(run(cond, k2.join('-')).codes.length) + '곳']; });
     if (J(sn.ops) !== J(want)) fail('판 고르기 ≠ 따로 셈', S.k + ' ' + J(sn.ops).slice(0, 200));
     if (sn.title !== '①②③'[i] + ' ' + S.name + ' 고르기') fail('판 제목', sn.title);
     // 누르면 닫히고 바뀜

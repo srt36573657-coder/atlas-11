@@ -1,121 +1,133 @@
 /* 새 아틀란스 「달력」(#/cal · 종목 파일 #/cal/<번호>) — 지금 아틀란스 atlas.css 「달력 탭」 묶음(.vw .cal-*)을 새 화면 말투로 옮김 · 클래스 앞 pcal-
-   색 이름은 app.css :root(먹빛) 그대로 · 빨강 = 오름 · 파랑 = 내림 · 금빛 = ? · ! · 조심만 · 글 17px 넘게 · 누르는 자리 44px 넘게 · 입체 · 그림자 없음 */
-.pcal { padding: 4px 16px 8px; }
+   색 이름은 app.css :root(먹빛) 그대로 · 빨강 = 오름 · 파랑 = 내림 · 금빛 = ? · ! · 조심만 · 글 17px 넘게 · 누르는 자리 44px 넘게 · 입체 · 그림자 없음
+   2026-10-18 [10] 5 ~ 10 — 글씨는 var(--fs-1 ~ 6)만 · 간격은 0 · var(--sp-1 ~ 3)만 · 음수 간격 없음 · 박스 카드(칩 · 날짜 칸 · 접은 칸)는 같은 높이 · 가는 선 줄 목록은 글이 줄바꿈하는 대로(맞추면 한 줄 때문에 수백 줄이 함께 늘어남)
+   글 시작 왼쪽 줄 = 16(쪽 가장자리) · 33(칸 테 1 + 안쪽 여백 16) · 날 머리 글 80(날짜 칸 48 + 간격 16 · 종목 파일에서는 지나온 일 글 121 = 33 + 날짜 칸 88)
+   가운데 · 오른쪽 맞춘 글(날짜 칸 · 숫자 · 눈금 · 단추 · 그림 이름)은 제자리에 둔 채 text-align 으로 왼쪽 줄 세기에서 빠짐 */
+.pcal { padding: var(--sp-1) var(--sp-2) var(--sp-1); }
 .pcal p { margin: 0; }
 .pcal .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; white-space: nowrap; }
 .pcal .up { color: var(--up); } .pcal .dn { color: var(--down); } .pcal .fl { color: var(--sub); } .pcal .q { color: var(--gold); }
-.pcal-h1 { margin: 12px 0 6px; font-size: 26px; line-height: 1.3; font-weight: 800; letter-spacing: -.02em; color: var(--ink); overflow-wrap: anywhere; word-break: keep-all; }
-.pcal-lead { color: var(--sub); font-size: 18px; line-height: 1.5; text-wrap: pretty; }
-.pcal p.pcal-note { margin: 8px 0 0; color: var(--sub); font-size: 18px; line-height: 1.55; text-wrap: pretty; }
-.pcal p.pcal-qline { margin: 10px 0 0; font-size: 18px; font-weight: 700; line-height: 1.5; text-wrap: pretty; }
-.pcal-small { color: var(--sub); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
+.pcal-h1 { margin: var(--sp-2) 0 var(--sp-1); font-size: var(--fs-4); line-height: 1.3; font-weight: 800; letter-spacing: -.02em; color: var(--ink); overflow-wrap: anywhere; word-break: keep-all; }
+.pcal-lead { color: var(--sub); font-size: var(--fs-2); line-height: 1.5; text-wrap: pretty; }
+.pcal p.pcal-note { margin: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-2); line-height: 1.55; text-wrap: pretty; }
+.pcal p.pcal-qline { margin: var(--sp-1) 0 0; font-size: var(--fs-2); font-weight: 700; line-height: 1.5; text-wrap: pretty; }
+.pcal details.nw.pcal-qline { margin: var(--sp-1) 0 0; font-size: var(--fs-2); font-weight: 700; line-height: 1.5; } /* 종목 파일의 금빛 한 줄(거래 멈춤 · 반 토막) — warn.js: 두 줄 안이면 그대로 · 넘으면(영어 · 아주 큰 글씨) 「?」 한 줄로 접고 누르면 펼침 */
+.pcal-small { color: var(--sub); font-size: var(--fs-1); line-height: 1.5; text-wrap: pretty; }
 .pcal-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* 답 — 점 열 개 두 줄(이 화면의 그림) */
-.pcal-ans { margin: 14px 0 0; padding: 14px 14px 12px; background: var(--card); border: 1px solid var(--hair); border-radius: 14px; }
-.pcal-cap { font-size: 19px; font-weight: 800; color: var(--ink); }
-.pcal p.pcal-big { font-size: 20px; line-height: 1.45; color: var(--ink); text-wrap: pretty; }
-.pcal-ans .pcal-small { margin-top: 6px; }
-.pcal p.pcal-cl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 10px; margin: 12px 0 6px; color: var(--sub); font-size: 17px; line-height: 1.35; }
-.pcal-cl b { font-size: 20px; font-weight: 800; color: var(--ink); }
+.pcal-ans { margin: var(--sp-2) 0 0; padding: var(--sp-2); background: var(--card); border: 1px solid var(--hair); border-radius: 14px; }
+.pcal-cap { font-size: var(--fs-2); font-weight: 800; color: var(--ink); }
+.pcal p.pcal-big { font-size: var(--fs-3); line-height: 1.45; color: var(--ink); text-wrap: pretty; }
+.pcal-ans .pcal-small { margin-top: var(--sp-1); }
+.pcal p.pcal-cl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 var(--sp-1); margin: var(--sp-2) 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); line-height: 1.35; }
+.pcal-cl b { font-size: var(--fs-3); font-weight: 800; color: var(--ink); text-align: right; }
 svg.pcal-dots { display: block; width: 100%; max-width: 400px; height: auto; }
-.pcal p.pcal-qn { margin: 10px 0 0; font-size: 17px; font-weight: 700; }
+.pcal p.pcal-qn { margin: var(--sp-1) 0 0; font-size: var(--fs-1); font-weight: 700; }
 
 /* 칸 고르기 — 다섯 칸 한 줄(320 폭에서도 다 보임) */
-.pcal-chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin: 18px 0 0; }
-.pcal-chip { min-width: 44px; min-height: 44px; padding: 0 2px; border-radius: 999px; background: var(--card2); color: var(--sub); font-size: 17px; white-space: nowrap; }
+.pcal-chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sp-1); margin: var(--sp-2) 0 0; }
+.pcal-chip { min-width: 44px; min-height: 44px; padding: 0; border-radius: 999px; background: var(--card2); color: var(--sub); font-size: var(--fs-1); text-align: center; white-space: nowrap; }
 .pcal-chip[aria-pressed="true"] { background: var(--ink); color: #111; font-weight: 700; }
 
 /* 날 하나 — 달력 날 판 + 줄 */
-.pcal-day { margin: 16px 0 0; padding-top: 12px; border-top: 1px solid var(--m4-line); }
-.pcal-dh { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; }
-h2.pcal-tile { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; width: 60px; min-height: 66px; margin: 0; padding: 2px 0; border: 1px solid var(--m4-line); border-radius: 12px; background: var(--card); font-size: 17px; font-weight: 400; line-height: 1.15; color: var(--mute); }
-h2.pcal-tile .pcal-dd { font-size: 27px; font-weight: 800; color: var(--ink); line-height: 1; }
+.pcal-day { margin: var(--sp-2) 0 0; padding-top: var(--sp-2); border-top: 1px solid var(--m4-line); }
+.pcal-dh { display: flex; align-items: center; gap: var(--sp-2); margin: 0 0 var(--sp-1); }
+h2.pcal-tile { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; width: 48px; min-height: 72px; margin: 0; padding: 0; border: 1px solid var(--m4-line); border-radius: 12px; background: var(--card); font-size: var(--fs-1); font-weight: 400; line-height: 1.15; color: var(--mute); text-align: center; }
+h2.pcal-tile .pcal-dd { font-size: var(--fs-5); font-weight: 800; color: var(--ink); line-height: 1; }
 .pcal-day.re h2.pcal-tile { border-style: dashed; }
 .pcal-dhx { min-width: 0; }
-.pcal-ds { font-size: 19px; color: var(--ink); }
+.pcal-ds { font-size: var(--fs-2); color: var(--ink); }
 .pcal-ds b { font-weight: 800; }
 .pcal-re { color: var(--mute); }
-.pcal-dc { font-size: 17px; color: var(--sub); text-wrap: pretty; }
-.pcal p.pcal-ren { margin: 8px 0 0; font-size: 17px; color: var(--mute); text-wrap: pretty; }
-.pcal-sh { margin: 0 0 4px; font-size: 19px; font-weight: 800; color: var(--ink); }
+.pcal-dc { font-size: var(--fs-1); color: var(--sub); text-wrap: pretty; }
+.pcal p.pcal-ren { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--mute); text-wrap: pretty; }
+.pcal-sh { margin: 0 0 var(--sp-1); font-size: var(--fs-2); font-weight: 800; color: var(--ink); }
 .pcal-rows { display: grid; }
-.pcal p.pcal-none { margin: 6px 0 0; font-size: 17px; color: var(--mute); }
-a.pcal-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'nm v' 'fl fl'; align-items: center; column-gap: 12px; min-height: 52px; padding: 6px 0; border-bottom: 1px solid var(--m4-soft); color: var(--ink); }
+.pcal p.pcal-none { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--mute); }
+a.pcal-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'nm v' 'fl fl'; align-items: center; align-content: center; column-gap: var(--sp-2); min-height: 52px; padding: var(--sp-1) 0; border-bottom: 1px solid var(--m4-soft); color: var(--ink); }
 a.pcal-row:last-child { border-bottom: 0; }
-a.pcal-row .nm { grid-area: nm; font-size: 19px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; word-break: keep-all; }
-a.pcal-row > b.num { grid-area: v; font-size: 21px; font-weight: 800; text-align: right; }
+a.pcal-row .nm { grid-area: nm; font-size: var(--fs-2); font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; word-break: keep-all; }
+a.pcal-row > b.num { grid-area: v; font-size: var(--fs-3); font-weight: 800; text-align: right; }
 a.pcal-row > .pcal-nw { grid-area: v; text-align: right; }
-a.pcal-row .pcal-fl { grid-area: fl; font-size: 17px; font-weight: 800; color: var(--gold); }
+a.pcal-row .pcal-fl { grid-area: fl; font-size: var(--fs-1); font-weight: 800; color: var(--gold); }
 a.pcal-row:active, a.pcal-erow:active { background: var(--card); }
 .pcal-st { color: var(--ink); }
-.pcal-nw { font-size: 17px; color: var(--sub); }
+.pcal-nw { font-size: var(--fs-1); color: var(--sub); }
 
 /* 접은 칸 */
-details.pcal-more { margin: 12px 0 0; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); }
-details.pcal-more > summary { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 14px; cursor: pointer; font-size: 18px; font-weight: 700; line-height: 1.35; list-style: none; }
+details.pcal-more { margin: var(--sp-2) 0 0; border-radius: 14px; background: var(--card); border: 1px solid var(--hair); }
+details.pcal-more > summary { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); padding: var(--sp-1) var(--sp-2); cursor: pointer; font-size: var(--fs-2); font-weight: 700; line-height: 1.35; list-style: none; }
 details.pcal-more > summary::-webkit-details-marker { display: none; }
-details.pcal-more > summary::after { content: '열기'; flex: none; font-size: 17px; font-weight: 600; color: var(--sub); white-space: nowrap; }
+details.pcal-more > summary::after { content: '열기'; flex: none; font-size: var(--fs-1); font-weight: 600; color: var(--sub); white-space: nowrap; }
 details.pcal-more[open] > summary::after { content: '닫기'; }
-details.pcal-more > .pcal-in { padding: 0 14px 10px; }
-details.pcal-older > .pcal-in { padding: 0 14px 14px; }
-details.pcal-older .pcal-day:first-child { border-top: 0; margin-top: 4px; }
+details.pcal-more > .pcal-in { padding: 0 var(--sp-2) var(--sp-1); }
+/* 지난 날 묶음 — 칸 모양은 윗줄(summary)이 가지고 안의 날들은 쪽 가장자리 16 에서 시작(위 날들과 같은 줄) */
+details.pcal-older { border: 0; background: none; }
+details.pcal-older > summary { border: 1px solid var(--hair); border-radius: 14px; background: var(--card); }
+details.pcal-older > .pcal-in { padding: 0; }
+details.pcal-older .pcal-day:first-child { border-top: 0; margin-top: var(--sp-1); }
 details.pcal-al { border-color: var(--gold-line); }
 details.pcal-al > summary { color: var(--gold); font-weight: 800; }
-details.pcal-al .pcal-small { margin: 0 0 4px; }
-details.pcal-how .pcal-in p { margin: 0 0 10px; font-size: 18px; line-height: 1.55; color: var(--ink); text-wrap: pretty; }
-a.pcal-erow { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'nm v' 'et v'; align-items: center; column-gap: 12px; min-height: 52px; padding: 6px 0; border-bottom: 1px solid var(--m4-soft); color: var(--ink); }
+details.pcal-al .pcal-small { margin: 0 0 var(--sp-1); }
+details.pcal-how .pcal-in p { margin: 0 0 var(--sp-1); font-size: var(--fs-2); line-height: 1.55; color: var(--ink); text-wrap: pretty; }
+a.pcal-erow { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'nm v' 'et v'; align-items: center; align-content: center; column-gap: var(--sp-2); min-height: 52px; padding: var(--sp-1) 0; border-bottom: 1px solid var(--m4-soft); color: var(--ink); }
 a.pcal-erow:last-child { border-bottom: 0; }
-a.pcal-erow .nm { grid-area: nm; font-size: 19px; line-height: 1.3; overflow-wrap: anywhere; word-break: keep-all; }
-a.pcal-erow .pcal-et { grid-area: et; font-size: 17px; color: var(--sub); }
+a.pcal-erow .nm { grid-area: nm; font-size: var(--fs-2); line-height: 1.3; overflow-wrap: anywhere; word-break: keep-all; }
+a.pcal-erow .pcal-et { grid-area: et; font-size: var(--fs-1); color: var(--sub); }
 a.pcal-erow .pcal-et.q { color: var(--gold); font-weight: 700; }
 a.pcal-erow > b, a.pcal-erow > .pcal-nw { grid-area: v; text-align: right; }
-a.pcal-erow > b { font-size: 20px; font-weight: 800; }
-p.pcal-grow { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--m4-soft); }
+a.pcal-erow > b { font-size: var(--fs-3); font-weight: 800; }
+p.pcal-grow { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); border-bottom: 1px solid var(--m4-soft); }
 p.pcal-grow:last-child { border-bottom: 0; }
-a.pcal-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 19px; color: var(--ink); text-decoration: underline; text-decoration-color: var(--mute); text-underline-offset: 5px; overflow-wrap: anywhere; }
-.pcal-show { flex: none; min-width: 44px; min-height: 44px; padding: 0 14px; border: 1px solid var(--m4-line); border-radius: 999px; color: var(--sub); font-size: 17px; white-space: nowrap; }
-.pcal p.pcal-since { margin: 14px 0 0; }
+a.pcal-link { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--fs-2); color: var(--ink); text-decoration: underline; text-decoration-color: var(--mute); text-underline-offset: 5px; overflow-wrap: anywhere; }
+.pcal-show { flex: none; min-width: 44px; min-height: 44px; padding: 0 var(--sp-2); border: 1px solid var(--m4-line); border-radius: 999px; color: var(--sub); font-size: var(--fs-1); text-align: center; white-space: nowrap; }
+.pcal p.pcal-since { margin: var(--sp-2) 0 0; }
 
 /* 정직 · 자료 줄 */
-.pcal p.pcal-hon { margin: 26px 0 4px; font-size: 19px; color: var(--ink); }
-.pcal-foot { margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); color: var(--mute); font-size: 17px; line-height: 1.6; }
-.pcal-foot p + p { margin-top: 8px; }
+.pcal p.pcal-hon { margin: var(--sp-3) 0 var(--sp-1); font-size: var(--fs-2); color: var(--ink); }
+.pcal-foot { margin: var(--sp-3) 0 0; padding-top: var(--sp-2); border-top: 1px solid var(--hair); color: var(--mute); font-size: var(--fs-1); line-height: 1.6; }
+.pcal-foot p + p { margin-top: var(--sp-1); }
 .pcal-foot .q { font-weight: 700; }
-.pcal-foot p.pcal-safe { margin-top: 14px; color: var(--sub); text-align: center; }
+.pcal-foot p.pcal-safe { margin-top: var(--sp-2); color: var(--sub); text-align: center; }
 
 /* 종목 파일 */
-.pcal p.pcal-backp { margin: 4px 0 0; }
-a.pcal-back { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding-right: 14px; font-size: 18px; color: var(--sub); text-decoration: underline; text-decoration-color: var(--mute); text-underline-offset: 5px; }
-.pcal-now { margin: 14px 0 0; }
-.pcal-w { font-size: 21px; font-weight: 800; }
+.pcal p.pcal-backp { margin: var(--sp-1) 0 0; }
+a.pcal-back { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding-right: var(--sp-2); font-size: var(--fs-2); color: var(--sub); text-decoration: underline; text-decoration-color: var(--mute); text-underline-offset: 5px; }
+.pcal-now { margin: var(--sp-2) 0 0; }
+.pcal-w { font-size: var(--fs-3); font-weight: 800; }
 .pcal-w.zero { color: var(--ink); }
-.pcal p.pcal-p { margin: 2px 0 0; font-size: 18px; color: var(--sub); }
-.pcal-p b { font-size: 36px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
-.pcal-now .pcal-small { margin-top: 4px; }
-.pcal p.pcal-mk { margin: 10px 0 0; font-size: 18px; color: var(--sub); text-wrap: pretty; }
-.pcal p.pcal-prov { margin-top: 8px; }
-.pcal-h2 { margin: 26px 0 6px; font-size: 21px; font-weight: 800; line-height: 1.35; color: var(--ink); }
-.pcal .pcal-h2top { margin-top: 18px; }
-.pcal-g + p.pcal-lkey { margin-top: 2px; }
-.pcal-g { margin: 4px 0 0; }
-.pcal-lc { position: relative; margin: 8px 0 4px; }
+.pcal p.pcal-p { margin: 0; font-size: var(--fs-2); color: var(--sub); }
+.pcal-p b { font-size: var(--fs-5); font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
+.pcal-now .pcal-small { margin-top: var(--sp-1); }
+.pcal p.pcal-mk { margin: var(--sp-1) 0 0; font-size: var(--fs-2); color: var(--sub); text-wrap: pretty; }
+.pcal p.pcal-prov { margin-top: var(--sp-1); }
+.pcal-h2 { margin: var(--sp-3) 0 var(--sp-1); font-size: var(--fs-3); font-weight: 800; line-height: 1.35; color: var(--ink); }
+.pcal .pcal-h2top { margin-top: var(--sp-2); }
+.pcal-g + p.pcal-lkey { margin-top: 0; }
+.pcal-g { margin: var(--sp-1) 0 0; }
+.pcal-lc { position: relative; margin: var(--sp-1) 0; }
 .pcal-lc svg { display: block; width: 100%; overflow: visible; touch-action: pan-y; }
-.pcal-yr span { position: absolute; right: 0; transform: translateY(-50%); font-size: 17px; line-height: 1; color: var(--mute); white-space: nowrap; pointer-events: none; }
-.pcal-ax { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; padding-right: 3.05rem; font-size: 17px; color: var(--mute); font-variant-numeric: tabular-nums; }
-.pcal-lane { margin-top: 8px; }
-.pcal p.pcal-lkey { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 8px 0 0; font-size: 17px; color: var(--sub); }
-ol.pcal-steps { list-style: none; position: relative; margin: 6px 0 0; padding: 0 0 0 26px; }
-ol.pcal-steps::before { content: ''; position: absolute; left: 7px; top: 20px; bottom: 20px; border-left: 1px solid var(--m4-line); }
-ol.pcal-steps li { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--m4-soft); font-size: 18px; line-height: 1.4; }
-ol.pcal-steps li::before { content: ''; position: absolute; left: -24px; top: 18px; width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--mute); background: var(--bg); }
+.pcal-yr span { position: absolute; right: 0; transform: translateY(-50%); font-size: var(--fs-1); line-height: 1; color: var(--mute); text-align: right; white-space: nowrap; pointer-events: none; }
+/* 그림 밑 날짜 줄 — 오른쪽 눈금 칸(JS AXR = 3.05rem)만큼 비워 그림 끝에 맞춤: 빈 칸 하나(::after) = 3.05rem − 사이 간격 8 */
+.pcal-ax { display: flex; gap: var(--sp-1); margin-top: var(--sp-1); font-size: var(--fs-1); color: var(--mute); font-variant-numeric: tabular-nums; }
+.pcal-ax span:last-child { margin-left: auto; text-align: right; }
+.pcal-ax::after { content: ''; flex: 0 0 calc(3.05rem - var(--sp-1)); }
+.pcal-lane { margin-top: var(--sp-1); }
+.pcal p.pcal-lkey { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-2); margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--sub); }
+.pcal p.pcal-lkey span { text-align: center; }
+/* 지나온 일 — 왼쪽 줄(점 · 세로선)은 투명한 테 1 + 여백 16 안쪽에 두어 글이 33 에서 시작(칸 안 글과 같은 줄) · 날짜 칸 88 → 일 글은 121 */
+ol.pcal-steps { list-style: none; position: relative; margin: var(--sp-1) 0 0; padding: 0 0 0 var(--sp-2); border-left: 1px solid transparent; }
+ol.pcal-steps::before { content: ''; position: absolute; left: 6px; top: 20px; bottom: 20px; border-left: 1px solid var(--m4-line); }
+ol.pcal-steps li { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); column-gap: 0; align-content: start; padding: var(--sp-1) 0; border-bottom: 1px solid var(--m4-soft); font-size: var(--fs-2); line-height: 1.4; }
+ol.pcal-steps li::before { content: ''; position: absolute; left: -15px; top: 18px; width: 11px; height: 11px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--mute); background: var(--bg); }
 ol.pcal-steps li.now::before { border-color: var(--ink); background: var(--ink); }
-ol.pcal-steps li .d { grid-row: 1 / 3; font-size: 17px; color: var(--mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
+ol.pcal-steps li .d { grid-row: 1 / 3; font-size: var(--fs-1); color: var(--mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
 ol.pcal-steps li b { font-weight: 700; color: var(--ink); }
 ol.pcal-steps li.g b { color: var(--gold); }
-ol.pcal-steps li .s { grid-column: 2; font-size: 17px; color: var(--sub); }
+ol.pcal-steps li .s { grid-column: 2; font-size: var(--fs-1); color: var(--sub); }
 ol.pcal-steps li .s.q { color: var(--gold); }
-.pcal-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0 16px; border: 1px solid var(--card2); border-radius: 999px; background: var(--card2); color: var(--ink); font-size: 18px; white-space: nowrap; }
+.pcal-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0 var(--sp-2); border: 1px solid var(--card2); border-radius: 999px; background: var(--card2); color: var(--ink); font-size: var(--fs-1); text-align: center; white-space: nowrap; }
 .pcal-btn[aria-pressed="true"] { border-color: var(--ink); background: var(--card); }
-button.pcal-more-steps { margin-top: 10px; }
-.pcal .pcal-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; }
+button.pcal-more-steps { margin-top: var(--sp-1); }
+.pcal .pcal-acts { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin: var(--sp-3) 0 0; }

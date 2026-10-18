@@ -5,6 +5,7 @@
    셈 · 글은 옛 쪽과 똑같이(xMul · 말 등급 · 「올해 증권사 평균치보다 작게 봄」 · 근거가 오래됨 · 다르게 보면 · 따로 다시 확인) — scripts/atlas11/next/check_grow.mjs 가 옛 쪽과 맞대 봄
    모양만 새 아틀란스 말투: 큰 제목 → 챕터 일곱 → 그림 한 장(매출 길) → 1 · 3 · 5 · 10년 칸 → 이야기가 틀리게 될 때 → 다르게 보면 → 접은 칸(왜 이렇게 봤나요?) → 다음 챕터
    남의 글(세 팀 이야기 · 기사 글)은 data-proper — 쓰지 않을 말 셈 밖(지금 아틀란스 site_check 와 같은 뜻) · 글은 textContent 로만 · 꾸밈은 p-grow.css 와 CSSOM 으로만 */
+import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접힘(사장님 2026-10-18 [10] 10 · warn.js)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 
@@ -202,7 +203,7 @@ export async function render(arg) {
 function footOf(C) {
   return [h('footer', {class: 'pgrow-foot'},
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
-    C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null),
+    C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`, {cls: 'in'}) : null),
     h('p', {class: 'safe pgrow-safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})];
 }
 function missing(C, code) {

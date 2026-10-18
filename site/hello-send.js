@@ -12,7 +12,7 @@ const helloUrl = () => new URL('/hello.html', location.origin).href;
 /** 글상자를 열고 닫힐 때 결과 — {how: 'share' | 'copy' | 'show' | 'cancel' | 'close', text, url} */
 const shareHello = () => shareBox({kind: 'share', title: HELLO_SHARE.title, text: HELLO_SHARE.text, url: helloUrl()});
 const shareSay = r => L(r?.how === 'copy' ? '글과 주소를 함께 복사했어요 · 카카오톡 대화창에 붙여 넣으세요' : r?.how === 'show' ? `이 주소를 보내 주세요: ${r.url}` : '');
-if (EN) { const go = document.querySelector('.hp-go'); if (go) go.setAttribute('href', '/?lang=en'); } // 영어로 보던 사람은 영어 화면으로
+if (EN) { const go = document.querySelector('.hp-go'); if (go) go.setAttribute('href', '/?lang=en'); for (const a of document.querySelectorAll('nav.tabs a')) a.setAttribute('href', a.getAttribute('href').replace('/#/', '/?lang=en#/')); } // 영어로 보던 사람은 영어 화면으로(아래 단추 다섯도 — 2026-10-18)
 const msg = document.getElementById('hp-msg');
 document.getElementById('hp-send')?.addEventListener('click', async () => { msg.textContent = shareSay(await shareHello()); });
 window.__helloShare = HELLO_SHARE; // 확인용(탐침이 보내는 글을 읽음)

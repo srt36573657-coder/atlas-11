@@ -5,6 +5,7 @@
    · 모양은 새 아틀란스 — 큰 제목 → 챕터 일곱 → 기간 → 그림 → 숫자 → 해마다 번 돈 → 접은 몸값 → 다음 챕터
    · 꾸밈은 p-past.css(클래스 ppast-) 와 CSSOM 으로만 · 글은 textContent 로만(보안 규칙) · 입체 · 캔버스 없음 · 빨강 = 오름 · 파랑 = 내림 · 금빛 = 「?」 · 하루 30% 넘게 바뀐 날만
    · 옛 쪽과 맞대는 검사 scripts/atlas11/next/check_past.mjs */
+import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접고 누르면 펼침(사장님 2026-10-18 [10] 10)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 
@@ -136,7 +137,7 @@ export async function render(arg) {
     priceChart(chartBox, {dates, close: cl, avg, jumps, width: drawnW, label: `${c.name} ${name} 1주 값 — ${won(base)}에서 ${won(last)}(${pct((last / base - 1) * 100)})`});
     key.replaceChildren(h('span', {}, h('i', {class: 'ppast-k-co', 'aria-hidden': 'true'}), `${c.name} — ${ymd(dates[0])}보다 위 빨강 · 아래 파랑`), h('span', {}, h('i', {class: 'ppast-k-avg', 'aria-hidden': 'true'}), `${NP(C)}곳 평균(같은 날 같은 값에서 출발)`));
     const js = jumps.filter(j => j[0] >= dates[0]);
-    jumpNote.replaceChildren(...(js.length ? [h('p', {class: 'ppast-jump'}, h('span', {class: 'q', text: '? '}), `하루에 30% 넘게 바뀐 날 ${js.map(j => ymd(j[0]) + ' ' + pct(j[1])).join(' · ')} — 한국 주식은 하루 30%까지만 움직이므로 주식 수가 바뀐 날(쪼개기 · 증자)일 수 있습니다. 확인 못 함.`)] : []));
+    jumpNote.replaceChildren(...(js.length ? [warn([h('span', {class: 'q', text: '? '}), `하루에 30% 넘게 바뀐 날 ${js.map(j => ymd(j[0]) + ' ' + pct(j[1])).join(' · ')} — 한국 주식은 하루 30%까지만 움직이므로 주식 수가 바뀐 날(쪼개기 · 증자)일 수 있습니다. 확인 못 함.`], {cls: 'ppast-jump'})] : []));
   }
   draw();
   nodes.push(seg, chartBox, key, trio, wonLine, money, jumpNote);

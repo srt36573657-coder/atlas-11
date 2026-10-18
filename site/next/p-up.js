@@ -2,6 +2,7 @@
    사장님 2026-10-11 12:41 「업데이트는 하루에 4번 … 업데이트 탭 만들어서 기록해놓아라」 · 2026-10-12 12:41 「시장을 판독해서 … 애플 구글 클로드 cia방식으로 각각 1000만번씩」
    자료 = /atlas/data/updates.json(회차마다 한 줄 · 지우지 않음) · 글 · 숫자는 옛 쪽 그대로(scripts/atlas11/next/check_misc.mjs 가 맞대 봄)
    모양만 새 아틀란스: 제목 → 그림(회차마다 들고 난 수) → 시장 판독 · 네 눈 점검 → 회차 기록(최근 10번 · 앞 회차는 접은 칸) → 맨 아래 */
+import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접힘(사장님 2026-10-18 [10] 10 · warn.js)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 const NB = ' ';
@@ -25,7 +26,7 @@ function foot(C) {
   return h('footer', {class: 'pup-foot'},
     h('p', {class: 'pup-links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/us/', text: '미국 판'})),
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
-    C.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
+    C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`, {cls: 'in'}) : null,
     h('p', {class: 'safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
     h('p', {class: 'safe pup-safe2', text: '투자 상담이 아니에요. 지난 기록을 센 공부예요.'}));
 }
@@ -71,7 +72,7 @@ function recLi(r, C) {
   const li = h('li', {class: 'pup-r r-' + ({'바꿈': 'ch', '그대로': 'same', '실패': 'fail'}[r.result] ?? 'same')});
   li.append(h('p', {class: 'pup-uh'}, h('b', {text: kstLabel(r.kst)}), ` · ${r.slot ? r.slot + ' 회차' : '그 밖 올림'} `, h('span', {class: 'pup-res', text: RES_WORD[r.result] ?? r.result})));
   if (!r.slot && r.reason) li.append(h('p', {class: 'pup-small', lang: 'ko', text: r.reason})); // 올린 까닭 = 원문 기록(사장님 말씀 · 그때 적은 글)
-  if (r.ruleChanged) li.append(h('p', {class: 'q pup-turn', text: RULE_TURN(r, C)}));
+  if (r.ruleChanged) li.append(warn(RULE_TURN(r, C), {cls: 'in pup-turn'}));
   if (r.asOf) li.append(h('p', {text: `고른 날 ${md(r.asOf)}${r.provisional ? '(그날 저녁 8시 전 값 — 아직 바뀜)' : ''} · 기준일 ${md(r.base)}` + (OLD_RULE(r.version) ? ` · ${OLD_RULE(r.version)}` : '')}));
   if (r.stay != null && (r.in?.length || r.out?.length)) li.append(h('p', {class: 'pup-stay'}, h('b', {class: 'num', text: `그대로 ${r.stay}`})));
   if (r.in?.length || r.out?.length) {
@@ -81,9 +82,9 @@ function recLi(r, C) {
   } else if (r.result !== '실패') li.append(h('p', {text: '고른 곳은 앞 회차와 같습니다.'}));
   if (r.top?.short) li.append(h('p', {}, `${r.top.scope === 'mkt' ? '모든 회사 1등 갈래' : '1등 갈래'} ${r.top.short} `, pctEl(r.top.chg, 'span'), ' · 고른 곳 전체 ', pctEl(r.all?.chg, 'span'), ` · 20거래일` + (r.in?.length ? '(고른 곳이 바뀐 것도 섞임)' : '')));
   if (r.market?.day) li.append(h('p', {class: 'pup-small', text: `시장 판독 — 하루 ${r.market.day.up}곳 오름 · ${r.market.day.down}곳 내림(${r.market.day.word}) · ${r.market.size}`}));
-  if (r.surge && r.surge.kind !== 'carry') li.append(h('p', {class: r.surge.kind === 'fail' || r.surge.published === false ? 'q' : 'pup-small', text: surgeRecLine(r.surge)})); // 업데이트 때 넣고 뺀 것 · 그 밖 올림은 앞 판 그대로라 적지 않음
-  if (r.inspect) li.append(h('p', {class: r.inspect.fail ? 'q' : 'pup-small', text: (r.inspect.fail ? '? ' : '') + inspectLine(r.inspect, false)}));
-  if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(h('p', {class: r.result === '실패' ? 'q' : 'pup-small', lang: 'ko', text: (r.result === '실패' ? '? ' : '') + (r.why ?? '')})); // 까닭 글 = 그때 적은 원문
+  if (r.surge && r.surge.kind !== 'carry') li.append(r.surge.kind === 'fail' || r.surge.published === false ? warn(surgeRecLine(r.surge), {cls: 'in'}) : h('p', {class: 'pup-small', text: surgeRecLine(r.surge)})); // 업데이트 때 넣고 뺀 것 · 그 밖 올림은 앞 판 그대로라 적지 않음
+  if (r.inspect) li.append(r.inspect.fail ? warn('? ' + inspectLine(r.inspect, false), {cls: 'in'}) : h('p', {class: 'pup-small', text: inspectLine(r.inspect, false)}));
+  if (r.result === '실패' || (r.result === '그대로' && !r.asOf)) li.append(r.result === '실패' ? warn(h('span', {lang: 'ko', text: '? ' + (r.why ?? '')}), {cls: 'in'}) : h('p', {class: 'pup-small', lang: 'ko', text: r.why ?? ''})); // 까닭 글 = 그때 적은 원문
   return li;
 }
 
@@ -104,7 +105,7 @@ export async function render() {
     turnIn ? h('span', {}, h('i', {class: 'k-turn'}), `점선 = 고르는 기준이 바뀐 회차(새로 든 곳 ${turnIn.in?.length ?? '?'} · 자에서 뺌)`) : null, h('span', {text: '막대 하나 = 회차 하나 · 오른쪽이 최근'})));
   // 시장 판독(사장님 2026-10-12 12:41 「시장을 판독해서」) — 마지막 회차가 올린 자료로 · 지난 사실만(규칙 49)
   if (last?.market?.lines?.length) root.append(h('div', {class: 'pup-mread'}, h('p', {}, h('b', {text: '지금 시장 판독'}), ' — 지난 값만 · 앞날 맞히기 아님'), h('ul', {}, ...last.market.lines.map(t => h('li', {text: t})))));
-  if (last?.inspect) root.append(h('p', {class: last.inspect.fail ? 'q pup-line' : 'pup-line'}, (last.inspect.fail ? '? ' : '') + inspectLine(last.inspect, true)));
+  if (last?.inspect) root.append(last.inspect.fail ? warn('? ' + inspectLine(last.inspect, true)) : h('p', {class: 'pup-line'}, inspectLine(last.inspect, true)));
   { const k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), nx = U.slots.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m) ?? U.slots[0];
     if (nx) root.append(h('p', {class: 'pup-nx'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 40, height: 40, 'aria-hidden': 'true'}), h('span', {}, '다음 회차 ', h('b', {class: 'num', text: nx}),
       `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 값과 봉인 뒤 값을 그때 다시 셉니다.`))); } // 보드리가 다음 회차를 알림

@@ -42,7 +42,8 @@ const CMD = {
   en: () => ['node', ['scripts/atlas11/next/next_en_check.mjs', '--base', BASE, '--modules', '--dev', '0', '--out', path.join(TMP, 'en.json')]],
   modules: () => ['node', ['--test', 'tests/atlas11/next-modules.test.mjs']],
   'letter-tests': () => ['node', ['--test', 'tests/atlas11/letter.test.mjs', 'tests/atlas11/invite.test.mjs']],
-  verify: () => ['python3', ['scripts/atlas11/next/gdr/verify.py', '--no-wait']],
+  // 고도리 칸 셈 v2 따로 세기(2026-10-18 · G4x) — 끝 코드 4 = 이 기계에 없는 입력으로 만든 파일이라 셀 수 없음 → 건너뜀(실패 아님)
+  verify: () => ['python3', ['-I', 'scripts/atlas11/next/gdr/verify2.py', '--quiet', '--out', path.join(TMP, 'verify2.json')]],
 };
 const TMP = fs.mkdtempSync(path.join(process.env.TMPDIR || '/tmp', 'check-changed-'));
 const cmdOf = k => (CMD[k] ? CMD[k]() : ['node', ['scripts/atlas11/next/' + k + '.mjs', '--base', BASE, '--out', path.join(TMP, k + '.json')]]);
@@ -57,9 +58,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   for (const k of order) {
     const [bin, args] = cmdOf(k), s = Date.now();
     const r = spawnSync(bin, args, {cwd: ROOT, encoding: 'utf8', timeout: 20 * 60e3, maxBuffer: 64 << 20});
-    const sec = Math.round((Date.now() - s) / 100) / 10, ok = r.status === 0;
+    const sec = Math.round((Date.now() - s) / 100) / 10, skip = k === 'verify' && r.status === 4, ok = r.status === 0 || skip;
     rows.push({k, ok, sec});
-    console.log(`${ok ? '통과' : '실패'} ${k} · ${sec}초${ok ? '' : '\n' + String(r.stdout || '').slice(-1200) + String(r.stderr || '').slice(-600)}`);
+    console.log(`${skip ? '건너뜀(셀 입력 없음)' : ok ? '통과' : '실패'} ${k} · ${sec}초${ok ? '' : '\n' + String(r.stdout || '').slice(-1200) + String(r.stderr || '').slice(-600)}`);
   }
   const sec = Math.round((Date.now() - t0) / 100) / 10, fails = rows.filter(r => !r.ok).length;
   const day = new Date(Date.now() + 8 * 36e5).toISOString().slice(0, 10), dir = path.join(ROOT, 'reports/atlas11/speed');

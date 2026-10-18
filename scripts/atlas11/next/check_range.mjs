@@ -9,6 +9,11 @@
 //      쓰지 않을 말 0(회사 글 data-proper 빼고) · 화면 오류 0 · 가로 넘침 0 · 누르는 자리 44px · 글 17px 넘게(접은 칸 연 채로도)
 //   ③ 세 폭(320 · 360 · 390) — 없는 주소 · 긴 이름 · 긴 「파는 것」 · 셈 못 함 · 튄 날 줄 등 --wide 곳
 //   일부러 다른 곳(p-range.js 머리 글 ①~⑤)은 아래 SAME_BUT 로 바꿔 맞댐 — 그 밖에 옛 쪽 글이 하나라도 빠지면 실패 · 끝 코드 1
+//   ④ 2026-10-18 고도리 명령문 72개 [7] 6 · [8] 10 · [10] 4 ~ 8 (일꾼 S4r) — 옛 글은 새 낱말 · 소수점 없는 숫자(WORDS · roundDec)로 바꿔 맞댐 · 새 쪽만:
+//      · 맨 위 요약 두 줄 「10번 중 n~m번」 · 막대 글 8개 「10번 중 n번」 · 「셈에 넣은 것」 한 줄 · 채점 칸 1개 — range.json 값에서 따로 셈(tenChecks)
+//      · 접은 칸 밖 소수점 숫자 · 「몬테카를로」 · 「가운데값」 0 · 접은 칸(전문가용) 안 정확한 값 = 옛 글 그대로 · 옛 낱말(갈래 · 몸값 · 20거래일 …) 0
+//      · 모양 규칙(page_rules.mjs): 음수 바깥 여백 0 · 겹친 형제 칸 0 · 글씨 6가지 이하 · 글 시작 왼쪽 줄 3줄 이하 · css 글 규칙
+//      · 채점 지난 날 길(⑤): core.mcEnd · range.json asOf 를 거래일 안 날로 바꿔 열고 값(그날 실제 % · 번 길 · 크게 잃는 길 · 들었나)을 회사 파일에서 따로 셈
 import fs from 'node:fs/promises';
 import fss from 'node:fs';
 import path from 'node:path';
@@ -16,6 +21,8 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep, TITLE_TAIL} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9 — 지금 사이트 검사 「자료 · fetch failed」)
+import {shardOf} from './shard/part.mjs'; // --shard k/n = 한 번 다 돌 때의 일감(회사 · 없는 주소 · 빈 날 길 · 세 폭)을 n 몫으로 가른 k 번째만(깃허브 여러 대 · 합치기 shard/merge.mjs · 2026-10-18 고도리 길 1)
+import {pageRules, cssRules} from './page_rules.mjs'; // 모양 규칙(음수 여백 · 겹침 · 글씨 6가지 · 왼쪽 줄 3줄 · css 글 규칙 — 채널 검사와 같이 씀 · 2026-10-18 명령문 [7] 6 · [10] 5 ~ 8)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -52,6 +59,45 @@ const SAME_BUT = [
   ['「업데이트 기록」(도움말 ?)에 남습니다.', '「업데이트 기록」에 남습니다.'], // ② 새 화면에는 도움말 ? 단추가 없음 — 고리로
 ];
 const pathsFix = pk => (pk || range.spec?.others?.paths == null ? [] : [[`20일을 뽑아 ${N(range.spec.paths)}번`, `20일을 뽑아 ${N(range.spec.others.paths)}번`]]); // ① 고른 곳 밖은 따로 뽑은 수
+
+/* 2026-10-18 고도리 명령문 72개 [10] 1 · 4 · [8] 10 (일꾼 S4r) — 옛 글을 새 말 · 소수점 없는 숫자 · 새 표지(::before 글자)로 바꿔 맞댐
+   · 낱말: 20거래일 → 한 달 · 갈래 → 큰 업종 · 몸값 → 회사 크기(낱말표 glossary.js — rename.mjs oldToNewDeep 이 옛 글에 같이 적용) · 가운데값 → 중간 회사 · 「몬테카를로」는 접은 칸 밖 제목에서 뺌
+   · 확인표 줄(기록 · 조심 · 모름)의 소수점 % · 배 · 조 원 은 정수로(같은 반올림: 크기로 반올림 · 100조 넘으면 정수 조 · 그 밑은 「32조 7,000억 원」)
+   · 접은 칸(전문가용) 안의 정확한 값(방향 줄 · 범례 · 방향마다 … 뽑아 n번)은 옛 글 그대로
+   · 옛 「한 달 범위 맞대 볼 날」 줄은 채점 칸으로 옮겨 빠짐(아래 tenChecks 가 채점 칸을 따로 봄) */
+const WORDS = [
+  ['20거래일(약 한 달)', '한 달'],
+  ['몬테카를로 4방향', '4방향'],
+  ['같은 갈래 ', '같은 큰 업종 '],
+  ['? 갈래 자료 없음', '? 큰 업종 자료 없음'],
+  ['· 기록 ! 조심 ? 모름', '기록 조심 모름'], // 범례: 동그라미 안 글자(· ! ?)는 꾸밈 글(::before)이라 글 마디가 아님
+];
+const rdi = a => Math.floor(Math.abs(a) + 0.5 + 1e-7), numOf = s => Number(String(s).replace(/,/g, '')); // 옛 한 자리 값 → 정수(크기로 반올림)
+const roundDec = s => String(s)
+  .replace(/(−?)(\d[\d,]*(?:\.\d)?)조 원/g, (_, sg, num) => { const t = numOf(num); if (t >= 100) return sg + N(rdi(t)) + '조 원'; const k = Math.round(t * 10), a = Math.floor(k / 10), r = k % 10; return sg + a + '조' + (r ? ' ' + N(r * 1000) + '억' : '') + ' 원'; })
+  .replace(/\((\d+)곳 가운데값 (\d[\d,]*(?:\.\d)?)배\)/g, (_, n, x) => `(${n}곳 중간 회사는 ${N(rdi(numOf(x)))}배)`)
+  .replace(/(\d[\d,]*)\.(\d)배/g, (_, a, b) => N(rdi(numOf(a + '.' + b))) + '배')
+  .replace(/([+−]?)(\d[\d,]*)\.(\d)%/g, (_, sg, a, b) => { const v = rdi(numOf(a + '.' + b)); return v === 0 ? '0%' : sg + N(v) + '%'; });
+const isChkSeg = s => /^(기록|조심|모름): /.test(s); // 확인표 한 줄
+/** 옛 글 마디 하나 → 새 쪽에 있어야 할 글(빈 글 = 옮기지 않은 줄) */
+const fixSeg = (s0, pk) => {
+  let s = String(s0).replace(/^[·!?](?=\S)/, ''); // 줄 앞 표지 글자
+  if (/^한 달 범위 맞대 볼 날 /.test(s)) return '';
+  s = [...SAME_BUT, ...WORDS, ...pathsFix(pk)].reduce((a, [x, y]) => a.split(x).join(y), s).replace(/\d+거래일 (선이|전\()/g, '한 달 $1');
+  if (isChkSeg(s)) s = roundDec(s).replace(/^(기록|조심|모름): 몸값 /, '$1: 회사 크기 ');
+  return s;
+};
+/** 옛 쪽 전체(글 마디 · 흐르는 글)를 한꺼번에 — 흐르는 글은 마디마다 바뀐 글로 갈아 끼움(숫자 낱말 맞대기용) */
+const fixAll = (o, pk) => {
+  let text = o.text; const segs = [];
+  for (const s of o.segs) { const t = fixSeg(s, pk); if (t !== s) { const i = text.indexOf(s); if (i >= 0) text = text.slice(0, i) + t + text.slice(i + s.length); } if (t) segs.push(t); }
+  return {segs, text};
+};
+const T10 = v => Math.floor(v / 10 + 0.5 + 1e-7); // 퍼센트 → 10번 중 몇 번(5% 밑 = 0번) — 화면 p-range.js T10 과 따로 쓴 같은 뜻
+const tenRng = a => { const lo = Math.min(...a), hi = Math.max(...a); return lo === hi ? `10번 중 ${lo}번` : `10번 중 ${lo}~${hi}번`; };
+const ymdK = d => { const [y, m, x] = String(d).split('-').map(Number); return `${y}년 ${m}월 ${x}일`; };
+const ddayK = d => { const k = new Date(Date.now() + 9 * 36e5), t = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate()), [y, m, x] = String(d).split('-').map(Number); return Math.round((Date.UTC(y, m - 1, x) - t) / 864e5); };
+const EXACT = [/^[가-힣 ]+장번 길 [\d,.]+%크게 잃는 길 [\d,.]+%$/, /^번 길크게 잃는 길흰 눈금 = /, /^방향마다 지난 날들에서 /]; // 접은 칸(전문가용) 안에 옛 글 그대로 있어야 하는 마디
 
 /* 볼 회사 — 가장자리 먼저(셈 못 함 · 기록 없음 · 튄 날 · 봉인 안팎 · 긴 이름 · 회사 글에 쓰지 않을 말 …) */
 const missingCodes = ['000000']; // 이름표에도 없는 번호
@@ -98,6 +144,7 @@ else {
   list = [...new Set([...edge.keys(), ...mix])].slice(0, LIMIT);
 }
 list = [...new Set([...SHOW.filter(c => CO[c] || PK[c]), ...list])];
+const SH = shardOf(); // 몫(--shard k/n · 없으면 모두 내 몫)
 const wideSet = [...new Set([...missingCodes, ...[...edge.entries()].filter(([, w]) => /긴|셈 못 함|튄 날 여러|범위 없음|쓰지 않을 말/.test(w)).map(([c]) => c), ...list])].slice(0, WIDE);
 
 /* 브라우저 하나 · 칸 둘(옛 · 새) */
@@ -145,17 +192,22 @@ const readOld = p => p.evaluate(() => {
     aria: [...v.querySelectorAll('ul.dirbars [role="img"]')].map(e => norm(e.getAttribute('aria-label'))),
     bw: [...v.querySelectorAll('ul.dirbars .db')].map(e => e.style.width), mk: [...v.querySelectorAll('ul.dirbars .dm')].map(e => e.style.left),
     marks: [...v.querySelectorAll('ul.chk > li')].map(li => { const m = li.querySelector('.m'); return (m.classList.contains('no') ? 'no' : m.classList.contains('q') ? 'q' : 'ok') + m.textContent; }),
+    markTx: [...v.querySelectorAll('ul.chk > li')].map(li => norm(li.textContent)), // 줄 글(채점 칸으로 옮긴 「한 달 범위 맞대 볼 날」 줄의 표지를 빼려고)
     tone: [...v.querySelectorAll('ul.chk span.num:is(.up, .down, .flat)')].map(e => (e.classList.contains('up') ? 'up' : e.classList.contains('down') ? 'dn' : e.textContent === '?' ? 'q' : 'fl') + ' ' + e.textContent)}; // 지나온 1년 % 색(옛 「?」 = 회색 → 새 화면 금빛 ? — 뜻 같음)
 });
 const readNew = p => p.evaluate(() => {
   const v = document.querySelector('main#view'), norm = s => String(s).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
   const cl = v.cloneNode(true); cl.querySelectorAll('[data-proper]').forEach(e => e.remove());
-  const model = v.querySelector('.prange-model'), pic = v.querySelector('.prange-chart, .prange-qline');
+  const model = v.querySelector('.prange-model'), pic = v.querySelector('.prange-sum, .prange-chart, .prange-qline'); // 정직 표지는 맨 위 요약 · 그림보다 앞
   const bars = [...v.querySelectorAll('.prange-b')].map(e => getComputedStyle(e).backgroundImage + ' ' + getComputedStyle(e).backgroundColor + ' ' + getComputedStyle(e).borderTopColor);
-  return {text: norm(v.textContent), plain: norm(cl.textContent),
+  const one = sel => { const e = v.querySelector(sel); return e ? norm(e.textContent) : null; };
+  const out = v.cloneNode(true); out.querySelectorAll('[data-proper], details, h1, .chaps').forEach(e => e.remove()); // 접은 칸 · 회사 글 · 이름 · 챕터 줄 밖
+  return {text: norm(v.textContent), plain: norm(cl.textContent), outside: norm(out.textContent), fold: one('details.prange-pro'),
+    sums: [...v.querySelectorAll('.prange-sum > p.prange-s')].map(e => norm(e.textContent)), labels: [...v.querySelectorAll('.prange-chart .prange-lb b')].map(e => norm(e.textContent)),
+    inp: one('.prange-inp'), score: one('.prange-score'), nSum: v.querySelectorAll('.prange-sum').length, nChart: v.querySelectorAll('.prange-chart').length, nInp: v.querySelectorAll('.prange-inp').length, nScore: v.querySelectorAll('.prange-score').length,
     aria: [...v.querySelectorAll('.prange-tr[role="img"]')].map(e => norm(e.getAttribute('aria-label'))),
-    bw: [...v.querySelectorAll('.prange-b')].map(e => e.style.width), mk: [...v.querySelectorAll('.prange-m')].map(e => e.style.left),
-    marks: [...v.querySelectorAll('ul.prange-chk > li')].map(li => (li.classList.contains('prange-no') ? 'no' : li.classList.contains('prange-q') ? 'q' : 'ok') + li.querySelector('.prange-mk').textContent),
+    bw: [...v.querySelectorAll('.prange-chart .prange-b')].map(e => e.style.width), xbw: [...v.querySelectorAll('.prange-xchart .prange-b')].map(e => e.style.width), mk: [...v.querySelectorAll('.prange-m')].map(e => e.style.left),
+    marks: [...v.querySelectorAll('ul.prange-chk > li')].map(li => (li.classList.contains('prange-no') ? 'no' : li.classList.contains('prange-q') ? 'q' : 'ok') + li.querySelector('.prange-mk').getAttribute('data-m')), // 표지 글자는 꾸밈 글(::before data-m)
     tone: [...v.querySelectorAll('ul.prange-chk span.prange-n:is(.up, .dn, .fl, .q)')].map(e => [...e.classList].find(x => ['up', 'dn', 'fl', 'q'].includes(x)) + ' ' + e.textContent),
     chaps: [...v.querySelectorAll('.chaps .cp')].map(e => ({a: e.tagName === 'A', href: e.getAttribute('href'), now: e.classList.contains('now'), t: norm(e.textContent)})),
     next: [...v.querySelectorAll('.chap-next')].map(a => [a.getAttribute('href'), norm(a.textContent)]),
@@ -167,7 +219,8 @@ const layout = p => p.evaluate(async () => {
   const out = [], v = document.querySelector('main#view'), vw = document.documentElement.clientWidth;
   const one = tag => {
     if (document.documentElement.scrollWidth > vw) out.push(tag + ' 가로 넘침 ' + document.documentElement.scrollWidth + '>' + vw);
-    for (const e of v.querySelectorAll('*')) { const r = e.getBoundingClientRect(); if (r.width && r.right > vw + 0.5 && getComputedStyle(e).position !== 'absolute') { out.push(tag + ' 칸 밖 ' + (e.className || e.tagName) + ' ' + Math.round(r.right)); break; } }
+    const inScroll = e => { for (let x = e.parentElement; x && x !== v; x = x.parentElement) { const o = getComputedStyle(x).overflowX; if (o === 'auto' || o === 'scroll') return true; } return false; }; // 옆으로 미는 줄(챕터 칩 줄) 안은 칸 밖이 아님
+    for (const e of v.querySelectorAll('*')) { const r = e.getBoundingClientRect(); if (r.width && r.right > vw + 0.5 && getComputedStyle(e).position !== 'absolute' && !inScroll(e)) { out.push(tag + ' 칸 밖 ' + (e.className || e.tagName) + ' ' + Math.round(r.right)); break; } }
     for (const e of v.querySelectorAll('a, button, summary')) { const r = e.getBoundingClientRect(); if (!r.width || !r.height) continue; if (r.height < 43.5 || r.width < 43.5) out.push(tag + ' 누르는 자리 ' + (e.textContent || '').trim().slice(0, 20) + ' ' + Math.round(r.width) + '×' + Math.round(r.height)); }
     const w = document.createTreeWalker(v, NodeFilter.SHOW_TEXT);
     for (let n = w.nextNode(); n; n = w.nextNode()) {
@@ -193,22 +246,27 @@ const UPDN = ['rgb(255, 90, 101)', 'rgb(91, 150, 255)'];
 /** 맞대기 하나 — o = 옛 쪽 · n = 새 쪽 · where = 실패 글 앞머리 · chart = 그림 · 챕터 · 다음 챕터까지 볼지(회사 화면) */
 function compare(c, o0, n, where, chart) {
   const o = oldToNewDeep(o0); // 옛 쪽 글은 이름만 새 이름으로(아틀란스 · ATLAS → 보드리 · rename.mjs — 「ATLAS 는 아직 …」 → 「보드리는 아직 …」)
-  const pk = !!PK[c], fix = s => [...SAME_BUT, ...pathsFix(pk)].reduce((a, [x, y]) => a.split(x).join(y), s);
-  if (SHOW.includes(c)) console.log(JSON.stringify({code: c, where, segs: o.segs.map(s => [n.text.includes(fix(s)) ? 'O' : 'X', fix(s)]), aria: [o.aria, n.aria], bw: [o.bw, n.bw], mk: [o.mk, n.mk], marks: [o.marks, n.marks], chaps: n.chaps, next: n.next}, null, 1));
+  const pk = !!PK[c], F = fixAll(o, pk), fix = s => fixSeg(s, pk); // F = 새 말로 바꾼 옛 글(2026-10-18 S4r)
+  if (SHOW.includes(c)) console.log(JSON.stringify({code: c, where, segs: o.segs.map(s => [n.text.includes(fix(s)) ? 'O' : 'X', fix(s)]), aria: [o.aria, n.aria], bw: [o.bw, n.bw, n.xbw], mk: [o.mk, n.mk], marks: [o.marks, n.marks], chaps: n.chaps, next: n.next}, null, 1));
   // ① 옛 글 마디 모두 새 쪽에
   let lost = 0;
-  for (const s of o.segs) { const t = fix(s); if (!n.text.includes(t)) { lost++; if (lost <= 3) fail('옛 글 빠짐', where + ' 「' + t.slice(0, 160) + '」'); } }
-  bump('글 마디', o.segs.length);
+  for (const t of F.segs) { if (!n.text.includes(t)) { lost++; if (lost <= 3) fail('옛 글 빠짐', where + ' 「' + t.slice(0, 160) + '」'); } }
+  bump('글 마디', F.segs.length);
+  // 접은 칸(전문가용) 안의 정확한 값 = 옛 글 그대로(방향 줄 · 범례 · 방향마다 … 뽑아 n번)
+  if (chart) for (const t of F.segs) if (EXACT.some(r => r.test(t)) && !(n.fold ?? '').includes(t)) { fail('정확한 값이 접은 칸 안에 없음', where + ' 「' + t.slice(0, 80) + '」'); break; }
   // 숫자 낱말
-  const ob = bag(fix(o.text)), nb = bag(n.text);
+  const ob = bag(F.text), nb = bag(n.text);
   for (const [t, k] of ob) if ((nb.get(t) || 0) < k) fail('숫자 빠짐', `${where} 「${t}」 옛 ${k} · 새 ${nb.get(t) || 0}`);
   bump('숫자 낱말', [...ob.values()].reduce((a, x) => a + x, 0));
   if (chart) {
     if (JSON.stringify(o.aria) !== JSON.stringify(n.aria)) fail('막대 이름표(가운데값)', where + ' ' + JSON.stringify(n.aria).slice(0, 160) + ' ≠ ' + JSON.stringify(o.aria).slice(0, 160));
     if (JSON.stringify(o.bw) !== JSON.stringify(n.bw)) fail('막대 길이', where + ' ' + n.bw.join(',') + ' ≠ ' + o.bw.join(','));
+    if (JSON.stringify(o.bw) !== JSON.stringify(n.xbw)) fail('막대 길이(접은 칸)', where + ' ' + n.xbw.join(',') + ' ≠ ' + o.bw.join(','));
     if (JSON.stringify(o.mk) !== JSON.stringify(n.mk)) fail('흰 눈금 자리', where + ' ' + n.mk.join(',') + ' ≠ ' + o.mk.join(','));
-    if (JSON.stringify(o.marks) !== JSON.stringify(n.marks)) fail('기록 · 조심 · 모름 표지', where + ' ' + n.marks.join(' ') + ' ≠ ' + o.marks.join(' '));
-    if (JSON.stringify(o.tone) !== JSON.stringify(n.tone)) fail('오름 · 내림 색', where + ' ' + n.tone.join(',') + ' ≠ ' + o.tone.join(','));
+    const omarks = o.marks.filter((_, i) => !/^[·!?]?한 달 범위 맞대 볼 날 /.test(o.markTx?.[i] ?? '')); // 옮긴 줄의 표지는 뺌
+    if (JSON.stringify(omarks) !== JSON.stringify(n.marks)) fail('기록 · 조심 · 모름 표지', where + ' ' + n.marks.join(' ') + ' ≠ ' + omarks.join(' '));
+    if (JSON.stringify(o.tone.map(roundDec)) !== JSON.stringify(n.tone)) fail('오름 · 내림 색', where + ' ' + n.tone.join(',') + ' ≠ ' + o.tone.map(roundDec).join(','));
+    tenChecks(c, n, where);
     // ② 새 쪽만 — 챕터 일곱 · 다음 챕터 · 정직 표지 · 모형 막대 색
     const I = (core.industries || []).find(i => i.name === CO[c]?.i), G = I ? (core.groups || []).find(g => g.id === I.g) : null, e = enc(c);
     const want = [G ? '#/ch/g/' + enc(G.id) : null, I ? '#/ch/i/' + enc(I.name) : null, '#/w/' + e, '#/w/' + e + '/past', '#/w/' + e + '/rivals', '#/w/' + e + '/grow', '#/w/' + e + '/range'];
@@ -225,13 +283,54 @@ function compare(c, o0, n, where, chart) {
   for (const w of BANNED) if (n.plain.includes(w)) fail('쓰지 않을 말', where + ' 「' + w + '」');
 }
 
+/** 새 쪽만(2026-10-18 고도리 명령문 [8] 10 · [10] 4 · 일꾼 S4r) — range.json 값에서 따로 셈해 맞댐
+ *   · 맨 위 요약 두 줄 「10번 중 n~m번」(번 길 · 크게 잃는 길 = 방향 넷의 가장 작은 값 ~ 가장 큰 값) · 막대 글 8개 「10번 중 n번」
+ *   · 「셈에 넣은 것」 한 줄(window · dirs · paths) · 채점 칸 하나(정한 날 · 안 지났으면 「?」 + D-n)
+ *   · 접은 칸 밖: 소수점 숫자 · 「몬테카를로」 · 「가운데값」 · 「흰 눈금」 0 */
+function tenChecks(c, n, where) {
+  const pk = !!PK[c], k = pk ? range.companies?.[c] : range.others?.[c], S = range.spec, W = range.window;
+  const dec = /\d\.\d/.exec(n.outside);
+  if (dec) fail('접은 칸 밖 소수점', where + ' …' + n.outside.slice(Math.max(0, dec.index - 24), dec.index + 12) + '…');
+  for (const w of ['몬테카를로', '가운데값', '흰 눈금']) if (n.outside.includes(w)) fail('접은 칸 밖 전문 낱말', where + ' 「' + w + '」');
+  { const m = /갈래|몸값|한 회사 한 표|큰 회사는 크게|(?<![\d.,])20\s?거래일|다섯 문|쉬는 돈|챕터/.exec(n.plain); if (m) fail('옛 낱말이 화면에 나옴(사장님 [10] 1)', where + ' 「' + m[0] + '」 …' + n.plain.slice(Math.max(0, m.index - 20), m.index + 20) + '…'); }
+  if (!(k && k.ok)) { if (n.nSum || n.nChart || n.nInp || n.nScore) fail('셈 못 함인데 숫자 칸이 보임', where + ` 요약 ${n.nSum} 그림 ${n.nChart} 셈에 넣은 것 ${n.nInp} 채점 ${n.nScore}`); return; }
+  if (n.nSum !== 1 || n.nChart !== 1 || n.nInp !== 1 || n.nScore !== 1) fail('칸 개수(요약 · 그림 · 셈에 넣은 것 · 채점 각 1)', where + ` ${n.nSum} · ${n.nChart} · ${n.nInp} · ${n.nScore}`);
+  if (!n.fold?.includes('몬테카를로')) fail('접은 칸(전문가용)에 몬테카를로 글이 없음', where);
+  // ① 요약 두 줄
+  const wantSums = ['번 길' + tenRng(k.win.map(T10)), '크게 잃는 길' + tenRng(k.big.map(T10))];
+  if (JSON.stringify(n.sums) !== JSON.stringify(wantSums)) fail('요약 두 줄(10번 중 n~m번)', where + ' ' + JSON.stringify(n.sums) + ' ≠ ' + JSON.stringify(wantSums));
+  // ② 막대 글 = 방향 넷 × (번 길 · 크게 잃는 길)
+  const wantLb = k.win.flatMap((w, j) => [`10번 중 ${T10(w)}번`, `10번 중 ${T10(k.big[j])}번`]);
+  if (JSON.stringify(n.labels) !== JSON.stringify(wantLb)) fail('막대 글(10번 중 n번)', where + ' ' + n.labels.join(',') + ' ≠ ' + wantLb.join(','));
+  const tens = (n.outside.match(/10번 중/g) || []).length;
+  if (tens < 2 * range.dirs.length) fail('「10번 중」 줄 수(방향 × 두 막대 이상)', where + ' ' + tens);
+  bump('10번 중 줄', tens);
+  // ③ 셈에 넣은 것 — range.json window · dirs · paths 그대로
+  const paths = pk ? S.paths : (S.others?.paths ?? S.paths), inp = n.inp ?? '';
+  const wantInp = ['셈에 넣은 것', `지난 ${N(W.days)}거래일(${ymdK(W.from)} ~ ${ymdK(W.to)})`, ...range.dirs.map(d => `${d.name} ${d.days}일`), `${S.horizon}일 길을 ${N(paths)}번 뽑았어요`];
+  for (const w of wantInp) if (!inp.includes(w)) { fail('셈에 넣은 것', where + ' 「' + w + '」 없음 · ' + inp.slice(0, 120)); break; }
+  // ④ 채점 칸 — 정한 날(core.mcEnd) · 안 지났으면 「?」 + D-n(지났으면 아래 채점 지난 날 길이 값을 따로 맞댐)
+  const d = core.mcEnd, sc = n.score ?? '';
+  if (!sc.startsWith('채점')) fail('채점 칸 머리', where + ' ' + sc.slice(0, 40));
+  if (!d) { if (!sc.includes('? 정한 날이 아직 없어요')) fail('채점 칸(정한 날 없음)', where + ' ' + sc.slice(0, 80)); return; }
+  if (!sc.includes('정한 날 ' + ymdK(d))) fail('채점 칸 정한 날', where + ' 「' + ymdK(d) + '」 ' + sc.slice(0, 80));
+  const nd = ddayK(d);
+  if (nd > 0) {
+    if (!sc.includes('? 아직 안 지났어요 · D-' + N(nd))) fail('채점 칸 안 지난 날(? + D-n)', where + ' D-' + nd + ' · ' + sc.slice(0, 100));
+    if (/그날 실제|번 길 (예|아니오)/.test(sc)) fail('채점 칸이 안 지난 날인데 값을 보임', where + ' ' + sc.slice(0, 100));
+  } else if (!/그날 실제|\? 채점 못 함/.test(sc)) fail('채점 칸 지난 날(값 또는 ? 못 함)', where + ' ' + sc.slice(0, 100));
+  bump('채점 칸');
+}
+
 const po = watch(await tab(390), base), pn = watch(await tab(360), base);
-for (const c of [...list, ...missingCodes]) {
+for (const x of cssRules('site/next/p-range.css')) fail('글 규칙(css)', x);
+for (const c of SH.part('c', [...list, ...missingCodes])) {
   const miss = !nameOf(c), pk = !!PK[c];
   const okO = await openOld(po, c), okN = await openNew(pn, c);
   if (!okO || !okN) continue;
   compare(c, await tm.old(() => readOld(po)), await tm.new(() => readNew(pn)), c, !miss);
   for (const x of await tm.new(() => layout(pn))) fail('모양 360', c + ' ' + x);
+  for (const x of await tm.new(() => pageRules(pn))) fail('모양 규칙', c + ' ' + x);
   if (pn._errs.length) { fail('화면 오류', c + ' ' + pn._errs.join(' | ').slice(0, 200)); pn._errs.length = 0; }
   po._errs.length = 0;
   bump(miss ? '없는 주소' : pk ? '고른 곳' : '고른 곳 밖');
@@ -252,7 +351,7 @@ await po.context().close(); await pn.context().close();
     {k: '고른 곳 자료 못 받음', f: ['comp.json'], c: oth, same: false, head: '범위 · 확인', want: n => n.text.includes('? 자료를 받지 못했어요')},
     {k: '밖 회사 파일 못 받음', f: ['co/' + oth + '.json'], c: oth, same: false, want: n => n.text.includes('? 회사 자료를 받지 못했어요') && n.chaps.length === 7 && n.next.length === 1},
   ];
-  for (const s of SC) {
+  for (const s of SH.part('e', SC, 60, s => s.k)) {
     if (!s.c) continue;
     const block = async p => { for (const f of s.f) await p.route('**/atlas/data/' + f, r => r.fulfill({status: 404, contentType: 'text/plain', body: 'no'})); };
     const pn2 = await tab(360); await block(pn2);
@@ -277,9 +376,57 @@ await po.context().close(); await pn.context().close();
   }
 }
 
+/* ⑤ 채점 칸 — 정한 날이 지난 날 길(2026-10-18 고도리 명령문 [8] 10 · 일꾼 S4r)
+   서버 자료 둘을 일부러 바꿔 열어 봄: core.json 의 정한 날(mcEnd) · range.json 의 기준일(asOf)을 거래일 파일 안의 날로 → 채점 칸의 값(그날 실제 % · 번 길 · 크게 잃는 길 · 들었나)을
+   회사 파일(close) · 거래일 파일(dates)에서 따로 셈해 맞댐 · 종가가 없는 날 → 「? 채점 못 함」 · 정한 날이 없음 → 「? 정한 날이 아직 없어요」 */
+{
+  const dts = days?.dates, lastD = dts?.[dts.length - 1];
+  const nextD = lastD ? (() => { const t = new Date(lastD + 'T00:00:00Z'); t.setUTCDate(t.getUTCDate() + 1); return t.toISOString().slice(0, 10); })() : null;
+  const pkC = Object.keys(PK).find(c => range.companies?.[c]?.ok), othC = codes.find(c => !PK[c] && range.others?.[c]?.ok);
+  const SCN = [
+    {k: '채점 지난 날 · 고른 곳', c: pkC, mc: dts?.[dts.length - 6], as: dts?.[dts.length - 26], vals: true},
+    {k: '채점 지난 날 · 고른 곳 밖', c: othC, mc: dts?.[dts.length - 6], as: dts?.[dts.length - 26], vals: true},
+    {k: '채점 지난 날 · 종가 없음', c: pkC, mc: nextD && ddayK(nextD) <= 0 ? nextD : null, as: lastD, none: true},
+    {k: '채점 정한 날 없음', c: pkC, mc: null, as: null, noDate: true},
+  ];
+  for (const s of SH.part('s', SCN, 30, s => s.k)) {
+    if (!s.c || (s.vals && !(s.mc && s.as)) || (s.none && !s.mc)) { bump('채점 길 건너뜀'); continue; }
+    const p = await tab(360);
+    await p.route('**/atlas/data/core.json', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify({...core, mcEnd: s.mc})}));
+    if (s.as) await p.route('**/atlas/data/range.json', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify({...range, asOf: s.as})}));
+    const head = nameOf(s.c) + ' — 범위 · 확인';
+    await p.goto(newUrl(s.c));
+    const ok = await p.waitForFunction(w => { const v = document.querySelector('main#view'); return !!v && !v.querySelector('.boot') && (v.querySelector('h1')?.textContent || '') === w; }, head, {timeout: 20000}).then(() => true, () => false);
+    if (!ok) { fail('채점 길 덜 열림', s.k + ' ' + s.c); await p.context().close(); continue; }
+    const n = await readNew(p), sc = n.score ?? '', w = s.k + ' ' + s.c;
+    if (n.nScore !== 1) fail('채점 칸 개수', w + ' ' + n.nScore);
+    else if (s.noDate) { if (!sc.includes('? 정한 날이 아직 없어요') || /정한 날 \d|그날 실제/.test(sc)) fail('채점 칸(정한 날 없음)', w + ' ' + sc.slice(0, 100)); }
+    else {
+      if (!sc.includes('정한 날 ' + ymdK(s.mc))) fail('채점 칸 정한 날', w + ' 「' + ymdK(s.mc) + '」 ' + sc.slice(0, 80));
+      const co = await getJ('co/' + s.c + '.json').catch(() => null), k = PK[s.c] ? range.companies[s.c] : range.others[s.c];
+      const at = d => { const i = dts.indexOf(d) - (Number.isInteger(co?.k0) ? co.k0 : 0); return i >= 0 && Array.isArray(co?.close) ? co.close[i] : null; };
+      const a = at(s.as), b = at(s.mc);
+      if (!(a > 0 && b > 0)) { if (!sc.includes('? 채점 못 함 — 그날 종가를 못 받았어요') || /그날 실제/.test(sc)) fail('채점 칸(종가 없음 → ?)', w + ' ' + sc.slice(0, 100)); }
+      else {
+        const r = (b / a - 1) * 100, win = r > range.spec.profit * 100, big = r < range.spec.bigLoss * 100, wn = k.win.map(T10), bn = k.big.map(T10);
+        const held = (win ? Math.max(...wn) >= 1 : Math.min(...wn) <= 9) && (big ? Math.max(...bn) >= 1 : Math.min(...bn) <= 9);
+        const m = /그날 실제 ?([+−]?)([\d,]+)%/.exec(sc), shown = m ? (m[1] === '−' ? -1 : 1) * numOf(m[2]) : null;
+        if (shown == null || Math.abs(shown - r) > 0.56) fail('채점 칸 그날 실제 %', `${w} 화면 ${shown} · 셈 ${r.toFixed(2)}`);
+        if (!sc.includes(`번 길 ${win ? '예' : '아니오'} · 크게 잃는 길 ${big ? '예' : '아니오'}`)) fail('채점 칸 번 길 · 크게 잃는 길', `${w} 셈 ${win ? '예' : '아니오'} · ${big ? '예' : '아니오'} · ${sc.slice(0, 140)}`);
+        if (!sc.includes(held ? '(들었음)' : '(안 들었음)') || (held && sc.includes('(안 들었음)'))) fail('채점 칸 들었나', `${w} 셈 ${held ? '들었음' : '안 들었음'} · ${sc.slice(0, 160)}`);
+        if (!sc.includes('한 번의 결과라 모형이 맞다는 증거는 아니에요')) fail('채점 칸 조심 글', w);
+      }
+    }
+    for (const x of await layout(p)) fail('채점 길 모양', w + ' ' + x);
+    const errs = p._errs.filter(e => !/Failed to load resource/.test(e));
+    if (errs.length) fail('채점 길 화면 오류', w + ' ' + errs.join(' | ').slice(0, 200));
+    await p.context().close(); bump('채점 길');
+  }
+}
+
 /* ③ 세 폭 — 320 · 390(360 은 위에서 모든 곳) */
 if (SHOTS) await fs.mkdir(SHOTS, {recursive: true});
-for (const w of [320, 360, 390]) {
+for (const w of SH.part('w', [320, 360, 390].filter(w => w !== 360 || SHOTS), 4 * wideSet.length)) {
   if (w === 360 && !SHOTS) continue;
   const p = watch(await tab(w), base);
   for (const c of wideSet) {
@@ -292,7 +439,7 @@ for (const w of [320, 360, 390]) {
   await p.context().close();
 }
 await b.close();
-const res = {schema: 'atlas11-next-range-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, rangeAsOf: range.asOf, companies: codes.length, checked: list.length, missing: missingCodes, full: ALL, wide: wideSet.length,
+const res = {schema: 'atlas11-next-range-check-1', at: new Date().toISOString(), base, asOf: mkt.asOf, rangeAsOf: range.asOf, companies: codes.length, checked: list.length, missing: missingCodes, full: ALL, wide: wideSet.length, ...SH.info(),
   edges: Object.fromEntries([...edge.entries()].filter(([c]) => list.includes(c)).map(([c, w]) => [c, w])), seconds: Math.round((Date.now() - t0) / 1000), time: tm.get(), net: netSummary(), counts, fails, ok: !fails.length};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(OUT)), {recursive: true}); await fs.writeFile(path.resolve(OUT), JSON.stringify(res, null, 1) + '\n'); }
 console.log(JSON.stringify({ok: res.ok, seconds: res.seconds, checked: res.checked, wide: res.wide, time: res.time, net: res.net, counts, fails: fails.slice(0, 15)}, null, 0));

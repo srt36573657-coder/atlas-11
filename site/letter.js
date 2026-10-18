@@ -2,6 +2,8 @@
  *   서버 /api/letter(lib/atlas11/letter.mjs) · 회원 열쇠는 이 기기에만(localStorage atlas11:letter:key) · 사장님 열쇠는 초대장 쪽과 같은 자리(atlas11:invite:owner)
  *   그 주의 실제 기록 = 사이트 자료(/atlas/data/home.json 지수 · mkt.json 회사)로 그림 · 못 받으면 「?」
  *   보안 규칙(script-src 'self' · style-src 'self') — 글 속 스타일 · 스크립트 없음 · 받은 글은 글자로만(textContent) */
+// 2026-10-18 고도리 · 72개와 카톡 두 번 가입 [7] 10 — 맨 아래 단추 다섯(letter.html) · 돌아가기 단추 높이 48px(render 맨 끝) · 초대 못 받은 기기(열쇠도 초대 주소도 없음)에는 첫 장에 「지금은 초대받은 분만」 + 「여는 밤까지 n일 n시간 n분 남았어요」(hero · 서버 시계로 셈)
+// 2026-10-18 [4] 7 — 사장님 열쇠 기기(S.owner)에만 「친구 3명 확인 번호」 칸(kakaoCard): 번호 + 「확인」 → GET /api/kakao/verify?code= (사장님 열쇠 머리글) → 처음 확인 · 이미 확인한 번호 · 없는 번호 · 카카오 가입이 꺼져 있으면(/api/kakao/* 404) 칸 자체를 안 그림
 // 거르는 말 = 한 곳 /next/words.js(사장님 2026-10-17 21:10 「letter.js 거르는 말과 next_check 쓰지 않을 말을 words.js 한 곳에 모아 같이 써라」 — 서버 lib/atlas11/letter.mjs 도 같은 파일)
 // 보내기 = /next/p-share.js 글상자(「친구에게 무슨 말을 할래?」 · 걸리면 고치게 · 글 + 주소 함께)
 import {badWord} from '/next/words.js';
@@ -20,6 +22,7 @@ function h(tag, a = {}, ...kids) {
   return e;
 }
 const svgE = (tag, a = {}) => { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); return e; };
+const joinCode = () => /(?:^#|&)join=([A-Za-z0-9_-]{16})(?:&|$)/.exec(location.hash)?.[1]; // 초대 주소의 초대장 번호(없으면 undefined)
 const kst = iso => new Date(Date.parse(iso) + 9 * 3600e3);
 const md = iso => { const d = kst(iso); return (d.getUTCMonth() + 1) + '월 ' + d.getUTCDate() + '일'; };
 const pct = x => (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(Math.round(x * 10) / 10).toFixed(1) + '%';
@@ -93,22 +96,24 @@ function spark(w, sealedDay) {
 
 /* 그리기 */
 const root = $('#lt');
-let S = null, P = null, tickT = null, pick = null;
+let S = null, P = null, tickT = null, pick = null, KK = false; // KK = 카카오 가입이 켜져 있나(사장님 열쇠 기기에서만 물음)
 const OPENED = new Set(); // 여는 밤 다시 읽기는 한 번만
 function env(cls = '') { return h('div', {class: 'env ' + cls, 'aria-hidden': 'true'}, h('div', {class: 'bd'}), h('div', {class: 'fl'}), h('div', {class: 'wax'}, h('img', {alt: '', src: '/media/makbi-icon.svg'}))); }
 function hero() {
+  const guest = !!S && !S.member && !S.owner && !joinCode(); // 초대 못 받은 기기 = 열쇠도 초대 주소도 없음(사장님 2026-10-18 [7] 10 「초대 못 받은 사람에게는 「지금은 초대받은 분만」과 여는 밤까지 남은 때를 보여라」)
   const clock = h('b', {class: 'clk', text: '…'});
   const sub = S ? (S.subjects?.length ? '많이 쓴 곳 ' + S.subjects.slice(0, 3).map(x => x.name + ' ' + x.n).join(', ') : '아직 봉인된 편지가 없어요') : '';
   const box = h('section', {class: 'hero', 'aria-label': '편지 여는 밤'},
     h('p', {class: 'kick', text: '고도리 편지'}), env(),
     h('h1', {class: 'hbig'}, '금요일 밤,', h('br'), '편지가 열려요'),
     h('p', {class: 'hsub', text: '월요일부터 쓰고, 금요일 밤 8시에 다 함께 열어요.'}),
-    h('div', {class: 'clock'}, h('small', {text: (S ? md(S.opensAt) : '') + ' 여는 밤까지'}), clock),
+    h('div', {class: 'clock' + (guest ? ' guest' : '')}, h('small', {text: guest ? '지금은 초대받은 분만' : (S ? md(S.opensAt) : '') + ' 여는 밤까지'}), clock),
     S ? h('p', {class: 'live'}, '이번 주 봉인된 편지 ', h('b', {text: S.count.toLocaleString('ko-KR') + '통'})) : null,
     S ? h('p', {class: 'live sm', text: sub}) : null);
   clearInterval(tickT);
   const tick = () => { if (!S) return; const s = Math.max(0, Date.parse(S.opensAt) - (Date.now() + (S.off ?? 0))) / 1000; // 서버 시계로 셈(기기 시계가 틀려도)
-    clock.textContent = Math.floor(s / 86400) + '일 ' + String(Math.floor(s % 86400 / 3600)).padStart(2, '0') + '시간 ' + String(Math.floor(s % 3600 / 60)).padStart(2, '0') + '분 ' + String(Math.floor(s % 60)).padStart(2, '0') + '초';
+    const d = Math.floor(s / 86400), hh = String(Math.floor(s % 86400 / 3600)).padStart(2, '0'), mm = String(Math.floor(s % 3600 / 60)).padStart(2, '0');
+    clock.textContent = guest ? '여는 밤까지 ' + d + '일 ' + hh + '시간 ' + mm + '분 남았어요' : d + '일 ' + hh + '시간 ' + mm + '분 ' + String(Math.floor(s % 60)).padStart(2, '0') + '초';
     if (s <= 0) { clearInterval(tickT); if (!OPENED.has(S.opensAt)) { OPENED.add(S.opensAt); sChime(); setTimeout(load, 1500); } } };
   tick(); tickT = setInterval(tick, 1000);
   return box;
@@ -239,6 +244,32 @@ function ownerCard() {
   }});
   return h('section', {class: 'card own'}, h('h2', {text: '사장님 자리'}), h('p', {text: '이 기기는 사장님 열쇠가 있어요.'}), mk, out, m);
 }
+/** 카카오 가입이 켜져 있나 — /api/kakao/me 가 200 이면 켜짐 · 404(스위치 꺼짐) · 못 닿음이면 꺼진 것으로 봄(확인 번호 칸을 아예 안 그림) */
+async function kakaoOn() { try { const r = await fetch('/api/kakao/me', {cache: 'no-store'}); await r.arrayBuffer().catch(() => {}); return r.status === 200; } catch { return false; } } // 몸을 끝까지 읽어 닫음(안 읽으면 요청이 끝나지 않은 것으로 남음)
+/** 사장님 자리 · 친구 3명 확인 번호(사장님 2026-10-18 order-0015 [4] 7 「사장님 열쇠 기기에서 그 번호를 맞대 볼 수 있게 하라」) — 사장님 열쇠 기기 + 카카오 켜짐일 때만 그려짐
+ *  서버가 처음 맞댈 때 「확인함」으로 적으므로(두 번째부터 「이미 확인한 번호」) 누르는 동안은 단추를 잠가 한 번만 감 */
+function kakaoCard() {
+  const m = h('p', {class: 'msg kkr', role: 'status', 'aria-live': 'polite'});
+  const inp = h('input', {class: 'in', type: 'text', maxlength: 24, placeholder: 'XXXX-XXXX-XXXX', 'aria-label': '친구 3명 확인 번호', autocomplete: 'off', autocapitalize: 'characters', spellcheck: 'false'});
+  const when = iso => { const t = Date.parse(iso); if (!Number.isFinite(t)) return ''; const d = kst(iso); return md(iso) + ' ' + d.getUTCHours() + '시 ' + String(d.getUTCMinutes()).padStart(2, '0') + '분'; };
+  const say = (tone, head, sub) => { m.className = 'msg kkr' + (tone ? ' ' + tone : ''); m.replaceChildren(...[head ? h('b', {text: head}) : null, sub ? h('span', {text: sub}) : null].filter(Boolean)); };
+  const go = h('button', {class: 'gold', type: 'button', text: '확인', onclick: async () => {
+    const code = inp.value.trim();
+    if (!code) { say('', '번호를 넣어 주세요.'); inp.focus(); return; }
+    go.disabled = true; say('', '맞대는 중이에요…');
+    let st = 0, j = {};
+    try { const x = await fetch('/api/kakao/verify?code=' + encodeURIComponent(code), {headers: {'x-atlas-owner': ownerKey() ?? ''}, cache: 'no-store'}); st = x.status; try { j = (await x.json()) ?? {}; } catch { j = {}; } } catch { st = 0; }
+    go.disabled = false;
+    if (st === 404) { KK = false; render(); return; } // 카카오 가입이 꺼짐 — 칸을 지움
+    if (st === 200 && j.ok === true && j.used === false) say('ok', '처음 확인', when(j.at) ? when(j.at) + '에 만든 번호예요.' : '');
+    else if (st === 200 && j.ok === true) say('', '이미 확인한 번호', when(j.usedAt) ? when(j.usedAt) + '에 확인했어요.' : '');
+    else if (st === 200) say('', '없는 번호', '번호를 다시 봐 주세요.');
+    else if (st === 403) say('', why({error: 'owner_only'}));
+    else say('', '지금은 확인하지 못했어요. 잠시 뒤 다시 해 보세요.');
+  }});
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); go.click(); } });
+  return h('section', {class: 'card kk'}, h('h2', {text: '친구 3명 확인 번호'}), h('p', {text: '친구 소개로 받은 번호를 넣고 맞대 보세요.'}), h('p', {class: 'note', text: '처음 확인하면 서버에 「확인함」으로 적혀요.'}), inp, go, m);
+}
 function keyCard() {
   return h('details', {class: 'card keyd'}, h('summary', {text: '다른 기기에서도 쓰려면'}),
     h('p', {text: '열쇠 주소를 보관해 두세요. 그 주소를 열면 같은 편지함이 열려요.'}),
@@ -250,10 +281,11 @@ async function load() {
   if (S) S.off = Date.parse(S.now) - Date.now();
   P = null;
   if (S && (S.member || S.owner)) { const p = await api('GET', null, S.prev); P = p.status === 200 ? p.body : null; if (P?.letters?.length) await siteData(); }
+  KK = S?.owner ? await kakaoOn() : false; // 사장님 열쇠 기기에서만 물음(다른 사람 기기는 카카오 길을 안 부름)
   render();
 }
 function render() {
-  const join = /(?:^#|&)join=([A-Za-z0-9_-]{16})(?:&|$)/.exec(location.hash)?.[1];
+  const join = joinCode();
   const kids = [hero()];
   if (!S) kids.push(h('section', {class: 'card'}, h('p', {text: '지금은 편지함에 닿지 못했어요.'}), h('button', {class: 'ghost', type: 'button', text: '다시 열기', onclick: load})));
   else if (!S.member) {
@@ -268,8 +300,8 @@ function render() {
     kids.push(sec);
   }
   if (S?.member) kids.push(stamps(), invitesCard(), keyCard());
-  if (S?.owner) kids.push(ownerCard());
-  kids.push(h('p', {class: 'foot', text: '편지는 쓴 사람의 말이에요. 고도리는 사고팔기를 권하지 않아요.'}), h('p', {class: 'foot'}, h('a', {href: '/', text: '고도리로 돌아가기 ›'})));
+  if (S?.owner) { kids.push(ownerCard()); if (KK) kids.push(kakaoCard()); }
+  kids.push(h('p', {class: 'foot', text: '편지는 쓴 사람의 말이에요. 고도리는 사고팔기를 권하지 않아요.'}), h('p', {class: 'foot'}, h('a', {class: 'ghost link back', href: '/', text: '고도리로 돌아가기 ›'}))); // 돌아가기 = 단추 꼴 · 높이 48px(사장님 2026-10-18 [7] 10 「돌아가기 단추는 44px 이상」 — 잰 값 25px)
   root.replaceChildren(...kids);
 }
 

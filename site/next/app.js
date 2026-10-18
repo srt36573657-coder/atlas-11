@@ -5,6 +5,7 @@
    보는 기계 기억(구독 · 본 기록 · 나중에 볼 것)은 이 기기에만(localStorage · 서버에 안 감) · 글은 textContent 로만(보안 규칙 안 — 안에 쓴 스크립트 · 꾸밈 없음) */
 import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; // 새 화면 제 영어 엔진 · 사전(/next/i18n/ — 2026-10-17 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」로 /atlas/ 와 떼어 냄)
 import {NAME} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
+import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026-10-18 [10] 1 · 2 — 갈래 → 큰 업종 …) · 그리는 곳 한 줄(route)
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -50,12 +51,12 @@ function odd(l) {
 }
 
 /* 자료 — 못 받으면 null(화면은 「?」) · 15초 뒤 다시 받아 봄 */
-const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json'};
+const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json'}; // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
 const D = {}, failAt = {}, inflight = {};
 function need(k) {
   if (D[k] != null) return Promise.resolve(D[k]);
   if (failAt[k] && Date.now() - failAt[k] < 15000) return Promise.resolve(null);
-  if (!inflight[k]) inflight[k] = fetch('/atlas/data/' + FILES[k], {cache: 'no-cache'}).then(r => r.ok ? r.json() : null).catch(() => null)
+  if (!inflight[k]) inflight[k] = fetch((FILES[k][0] === '/' ? '' : '/atlas/data/') + FILES[k], {cache: 'no-cache'}).then(r => r.ok ? r.json() : null).catch(() => null)
     .then(j => { delete inflight[k]; if (j) D[k] = j; else failAt[k] = Date.now(); return j; });
   return inflight[k];
 }
@@ -299,10 +300,134 @@ function shortFacts() {
   return out;
 }
 
+/* ── 첫 화면 한 화면(2026-10-18 명령문 0015 [6] 1 ~ 4 · 8 · 9 · [9] 7 · 일꾼 S2 → S2x) ──
+   고르기 칩 → 이야기 입구 → 한 줄 띠(날짜는 여기 한 번 · 코스피 · 코스닥 하루 % · 큰 날 금빛 「!」 · 누르면 #/today) → 「친구야, 왜 사?」 → 고도리 칸 → 「더 보기」(닫힘) → 안전 한 줄
+   「더 보기」 안 = 오늘 시장 세 줄(묶음마다 큰 숫자 하나 + 까닭 한 줄 · 자료로만 셈 · 띠 날과 다른 날이면 「사흘 지난 값」) + 오른 업종 · 큰 업종 한 줄 목록 · 편지 여는 밤 · 봉인 줄 · 약속
+   뺀 것: 지수 카드 둘 · 「오늘 한 줄」 · 시황 선반(띠 숫자와 같은 숫자) · 오늘 시장 여섯 칸(→ #/today) · 급등 카드([6] 5) · 대장주 · 고른 곳 카드(→ 그 칩)
+   자료: home.json(7KB — 띠 · 사고팔기 · 미국) + 요약 /next/data/home-summary.json(3KB — 모든 회사 하루 · 「더 보기」 목록) · mkt · cond 는 받지 않음 · 요약이 없거나 옛것(src.home ≠ home.json kst)이면 home.json + core 로 그림 */
+const homeSrc = () => D.home ?? null;
+const AGO = ['', '하루', '이틀', '사흘', '나흘', '닷새'];
+/** 띠 날과 다른 날의 꼬리표 — 지수 선의 거래일로 셈(없으면 달력 날) · 같은 날이면 '' */
+function agoTag(d, band, rows) {
+  if (!isDay(d) || !isDay(band)) return '';
+  const a = String(d).slice(0, 10), b = String(band).slice(0, 10); if (a === b) return '';
+  const ds = Array.isArray(rows) ? rows.map(r => r?.[0]) : [], ia = ds.indexOf(a), ib = ds.indexOf(b);
+  const n = ia >= 0 && ib >= 0 ? ib - ia : Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
+  return n < 0 ? '더 새 값' : !n ? '' : n < AGO.length ? AGO[n] + ' 지난 값' : n + '일 지난 값';
+}
+const eokH = v => { const a = Math.abs(Math.round(v)), j = Math.floor(a / 10000), r = a % 10000; return (j ? j.toLocaleString('ko-KR') + '조' + (r ? ' ' : '') : '') + (r || !j ? r.toLocaleString('ko-KR') + '억' : '') + ' 원'; };
+/** 한 줄 띠 — 날짜(한 번) · 코스피 · 코스닥 하루 % · 큰 날 금빛 「!」(home-v3 문턱 그대로) · 못 받은 값이면 금빛 「?」 */
+function homeBand(H) {
+  const SB = sumOk()?.band, fromSum = (x, k) => (x && Number.isFinite(SB?.[k]?.day) ? {...x, day: SB[k].day, date: SB[k].date ?? x.date} : x); // 요약이 새것이면 띠 숫자는 요약에서(같은 home.json 으로 만든 값)
+  const K = fromSum(H?.idx?.KOSPI, 'KOSPI'), Q = fromSum(H?.idx?.KOSDAQ, 'KOSDAQ'), X0 = K ?? Q, a = h('a', {class: 'hm-band', href: '#/today'}), chev = h('i', {class: 'hm-chev', 'aria-hidden': 'true', text: '›'});
+  if (!X0 || !isDay(X0.date)) { a.append(h('span', {class: 'hm-row'}, h('span', {class: 'hm-bd', text: '? 오늘 시장 값을 못 받았어요'}), chev)); return {el: a, day: null}; }
+  const w = whenOf(H, 'idx', X0.live), d = String(X0.date).slice(0, 10);
+  const when = w.now ? `${mdN(d)} ${ampm(w.t)} 장 중` : w.intra && isTime(w.t) ? `${mdN(w.t.slice(0, 10))} ${ampm(w.t)}까지` : `${mdN(d)} 마감`;
+  const ixs = [[K, '코스피'], [Q, '코스닥']].filter(([x]) => x).flatMap(([x, nm], i) => [i ? ' · ' : null, h('span', {class: 'hm-ix'}, h('span', {text: nm}), ' ', h('b', {class: 'num ' + cls(x.day), text: p2(x.day)}))]);
+  a.append(h('span', {class: 'hm-row'}, w.stale ? [h('b', {class: 'hm-q', 'aria-hidden': 'true', text: '?'}), ' '] : null, h('span', {class: 'hm-bd', text: when}), chev), h('span', {class: 'hm-ixs'}, ...ixs)); // 날짜 줄 · 숫자 줄(늘 같은 두 줄 · 글 흐름 — 읽어 주기도 「코스피 −3.28% · 코스닥 −4.36%」)
+  if (idxOk(K) || idxOk(Q)) a.append(...idxAlerts(H)); // 큰 날 금빛 「!」 = 띠 안(명령문 [6] 1)
+  return {el: a, day: d};
+}
+/** 오늘 시장 세 줄 — 묶음마다 큰 숫자 하나(마지막 날 하루 값) + 까닭 한 줄(자료로만) · 띠 숫자(코스피 · 코스닥 하루 %)는 되풀이하지 않음 */
+function homeSum(H, band) {
+  const rows = (H?.idx?.KOSPI ?? H?.idx?.KOSDAQ)?.rows, out = [];
+  const item = (k, label, big, bc, why, d) => { const tg = agoTag(d, band, rows);
+    return h('li', {class: 'hm-it', 'data-k': k}, h('span', {class: 'hm-lb'}, ...label.map(t => h('span', {text: t})), tg ? h('small', {class: 'hm-tag', text: tg}) : null), h('b', {class: 'hm-big num ' + bc, text: big}), h('span', {class: 'hm-why', text: why})); };
+  // ① 회사 수 — 요약 파일(새것일 때만 · sumOk)의 모든 회사 마지막 날 하루: 큰 숫자 = 오른 · 내린 회사 수 · 까닭 = 작은 회사 수와 큰 회사(회사 크기 위 100곳) 평균이 어느 쪽인가
+  //   요약이 없거나 옛것이면 home.json 네이버 업종 회사 수 · 까닭 = 큰 회사 기준 코스피가 같은 쪽으로 갔나
+  const Y = sumOk()?.day, S = H?.sectors, B = S?.breadth, k = H?.idx?.KOSPI?.day;
+  if (Y && Y.n > 0 && Y.small?.n > 0 && Number.isFinite(Y.big?.eq)) {
+    const dn = Y.dn > Y.up, sDn = Y.small.dn > Y.small.up, n = num(sDn ? Y.small.dn : Y.small.up), bk = Math.abs(Y.big.eq) < 0.05 ? 0 : Math.sign(Y.big.eq), sv0 = sDn ? '내렸고' : '올랐고';
+    const why = bk === 0 ? `작은 회사 ${n}곳은 ${sv0}, 큰 회사는 거의 그대로였어요` : (bk < 0) !== sDn ? `작은 회사 ${n}곳은 ${sv0}, 큰 회사는 ${bk < 0 ? '내렸어요' : '올랐어요'}` : `작은 회사 ${n}곳이 ${sv0}, 큰 회사도 ${bk < 0 ? '내렸어요' : '올랐어요'}`;
+    out.push(item('br', [dn ? '내린 회사' : '오른 회사'], num(dn ? Y.dn : Y.up) + '곳', dn ? 'dn' : 'up', why, Y.date));
+  } else if (B && B.up + B.down + B.flat > 0) {
+    const dn = B.down > B.up, kk = Number.isFinite(k) ? (Math.abs(k) < 0.005 ? 0 : Math.sign(k)) : null;
+    const why = kk == null ? '? 코스피 값이 없어 큰 회사와 견주지 못했어요' : kk === 0 ? '큰 회사 기준 코스피는 거의 그대로였어요' : (kk < 0) === dn ? `큰 회사 기준 코스피도 함께 ${dn ? '내렸어요' : '올랐어요'}` : `${dn ? '내린' : '오른'} 회사가 많았지만, 큰 회사 기준 코스피는 ${kk < 0 ? '내렸어요' : '올랐어요'}`;
+    out.push(item('br', [dn ? '내린 회사' : '오른 회사'], num(dn ? B.down : B.up) + '곳', dn ? 'dn' : 'up', why, S.date));
+  } else out.push(item('br', ['오른 회사'], '?', 'q', '? 이번에 오른 곳 · 내린 곳 수를 못 받았어요', null));
+  // ② 사고팔기 — 가장 크게 움직인 쪽의 돈 · 까닭 = 누가 판 것을 누가 샀나
+  const F = H?.flows, fm = F?.KOSPI ? 'KOSPI' : F?.KOSDAQ ? 'KOSDAQ' : null, x0 = fm ? F[fm] : null;
+  const who = x0 ? [['personal', '개인'], ['foreign', '외국인'], ['institutional', '기관']].map(([q, nm]) => [nm, x0[q]]).filter(x => Number.isFinite(x[1])) : [];
+  if (who.length) {
+    const by = f => [...who].sort(f)[0], big = by((p, q) => Math.abs(q[1]) - Math.abs(p[1])), sell = by((p, q) => p[1] - q[1]), buy = by((p, q) => q[1] - p[1]);
+    const why = sell[1] < 0 && buy[1] > 0 ? `${jo(sell[0], '이', '가')} 판 것을 ${jo(buy[0], '이', '가')} 샀어요` : `셋 모두 더 ${buy[1] > 0 ? '샀어요' : '팔았어요'}`;
+    out.push(item('fl', [fm === 'KOSPI' ? '코스피' : '코스닥', `${jo(big[0], '이', '가')} 더 ${big[1] < 0 ? '판 돈' : '산 돈'}`], eokH(big[1]), '', why, x0.date));
+  } else out.push(item('fl', ['사고팔기'], '?', 'q', '? 이번에 사고판 돈을 못 받았어요', null));
+  // ③ 미국 — S&P 500 하루 · 까닭 = 세 지수가 같은 쪽인가
+  const U = H?.us, by3 = Object.fromEntries((Array.isArray(U?.rows) ? U.rows : []).filter(r => r?.key && Number.isFinite(r.chg)).map(r => [r.key, r])), three = ['INX', 'IXIC', 'DJI'].map(q => by3[q]).filter(Boolean);
+  if (three.length) {
+    const up = three.filter(r => r.chg > 0).length, why = three.length < 3 ? `${three.length}개 지수 가운데 ${up}개가 올랐어요` : up === 3 ? '세 지수 모두 올랐어요' : up === 0 ? '세 지수 모두 내렸어요' : `세 지수 가운데 ${up}개가 올랐어요`;
+    out.push(item('us', ['미국', three[0].name], p2(three[0].chg), cls(three[0].chg), why, U.date));
+  } else out.push(item('us', ['미국'], '?', 'q', '? 이번에 미국 값을 못 받았어요', null));
+  return h('section', {class: 'hm-mkt', 'aria-label': '오늘 시장'}, h('h2', {class: 'sec', text: '오늘 시장'}), h('ul', {class: 'hm-sum'}, ...out), h('a', {class: 'more', href: '#/today', text: '오늘 시장 자세히 ›'}));
+}
+/** 「더 보기」를 처음 열 때 — 1주 오른 업종 · 큰 업종(한 달 가장 센 곳 · 약한 곳) 한 줄 목록 · 편지 여는 밤 · 봉인 줄 · 약속
+    요약 파일로 그림(mkt · cond 를 안 받음 [9] 7) · 요약이 없거나 옛것이면 core 하나만 받음 · 급등 · 지수 · 대장주 · 고른 곳은 그 칩에서 */
+async function homeRest() {
+  const S = sumOk(), fromSum = !!(S?.rise?.list && S.groups), core = fromSum ? null : await need('core'), out = [];
+  let rise = [], gs = [], T = null;
+  if (fromSum) { rise = S.rise.list; gs = [S.groups.top, S.groups.low].filter(Boolean); T = S.time; }
+  else if (core) {
+    rise = (core.rise?.list || []).slice(0, 4);
+    const x = [...(core.groups || [])].filter(o => Number.isFinite(o.chg)).sort((p, q) => q.chg - p.chg); gs = x.length > 1 ? [x[0], x[x.length - 1]] : x;
+    T = core.time?.opens?.[0]?.date ? {id: core.time.id, open: core.time.opens[0].date} : null;
+  } else out.push(...noData());
+  if (rise.length) out.push(h('h2', {class: 'sec', text: '1주 동안 오른 업종'}), crows(rise, r => ({href: '#/ch/i/' + enc(r.name), name: r.name, x: r.chg, v: r.v})));
+  if (gs.length) out.push(h('h2', {class: 'sec', text: '큰 업종 · 한 달'}), crows(gs, g => ({href: '#/ch/g/' + enc(g.id), name: g.name, x: g.chg, v: g.v})));
+  out.push(premCard());
+  if (T?.open) out.push(h('a', {class: 'm4-mr', href: oldOr('time', '#/time')}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.open)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
+  out.push(h('section', {class: 'm4-seal-box', 'aria-label': '고도리 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '고도리는 들은 것만 따라 말해요.'}), h('span', {text: '그래서 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'})));
+  return out.filter(Boolean);
+}
+async function vHomeAll() {
+  const H = homeSrc(), band = homeBand(H);
+  const nodes = [chipsBar('all'), h('a', {class: 'tk-entry', href: oldOr('talk', '#/talk')}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'})), band.el];
+  nodes.push(...await godoriHome()); // 이야기 입구 밑 세 덩이 = 띠 · 「친구야, 왜 사?」 · 고도리 칸(명령문 [6] 3)
+  const body = h('div', {class: 'hm-in'}, homeSum(H, band.day)), more = h('details', {class: 'hm-more'}, h('summary', {class: 'hm-ms', text: '더 보기'}), body);
+  let filled = false;
+  more.addEventListener('toggle', () => { if (!more.open || filled) return; filled = true; homeRest().then(xs => body.append(...xs), e => { console.error(e); body.append(h('p', {class: 'empty', text: '? 나머지 칸을 그리지 못했어요.'})); }); });
+  nodes.push(more, h('p', {class: 'safe hm-safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+  return {title: '오늘 장', nodes};
+}
+
 /* ── 화면 ── 하나마다 { title, nodes } 를 돌려줌 · 늦게 끝난 앞 화면은 버림 */
-const CHIPS = [['all', '전체'], ['rise', '오르는 업종'], ['surge', '급등'], ['lead', '대장주'], ['pick', '고른 곳'], ['group', '큰 갈래'], ['ind', '업종'], ['us', '미국']];
-function chipsBar(on) { const ni = D.core?.industries?.length; return h('div', {class: 'chips', role: 'tablist', 'aria-label': '고르기'}, CHIPS.map(([id, t]) => h('a', {class: 'chip', href: id === 'all' ? '#/' : '#/f/' + id, 'aria-current': id === on ? 'page' : null, text: id === 'ind' && ni ? t + ' ' + ni : t}))); }
+/* 칩(S2c · 2026-10-18 [6] 5 ~ 7 · [7] 5 · [9] 7) — 셋째 칸이 있으면 칩 쪽(#/f/…)이 아니라 그 화면으로 가는 고리(달력 · 조건 찾기) */
+const CHIPS = [['all', '전체'], ['rise', '오르는 업종'], ['surge', '급등'], ['lead', '대장주'], ['pick', '고른 곳'], ['group', '큰 업종'], ['ind', '업종'], ['us', '미국'], ['cal', '달력', '#/cal'], ['cond', '조건 찾기', '#/cond']];
+const chipPage = id => CHIPS.some(c => c[0] === id && !c[2]);
+function chipsBar(on) { const ni = D.core?.industries?.length ?? D.sum?.chips?.ind?.n; return fadeEnd(h('div', {class: 'chips', role: 'tablist', 'aria-label': '고르기'}, CHIPS.map(([id, t, go]) => h('a', {class: 'chip', href: go ? oldOr(id, go) : id === 'all' ? '#/' : '#/f/' + id, 'aria-current': id === on ? 'page' : null, text: id === 'ind' && ni ? t + ' ' + ni : t})))); }
+/** 오른쪽 끝 흐림([6] 7 · app.css .chips · .shelf mask) — 끝까지 밀었거나 넘치지 않으면 .end(흐림 걷음 — 마지막 칩이 흐린 채 남지 않게) */
+function fadeEnd(el) {
+  let n = 0; const f = () => { if (!el.isConnected) { if (n++ < 60) requestAnimationFrame(f); return; } el.classList.toggle('end', el.scrollLeft + el.clientWidth >= el.scrollWidth - 2); };
+  el.addEventListener('scroll', f, {passive: true}); requestAnimationFrame(f); return el;
+}
 function noData(t = '자료') { return [h('p', {class: 'empty', text: '? ' + t + '를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})]; }
+/** 첫 화면 요약(/next/data/home-summary.json · 만듦 scripts/atlas11/next/build/home_summary.mjs) — home.json 의 kst 와 같을 때만 새것 · 아니면 null(옛 길) */
+const SUM_SCHEMA = 'godori-home-summary-1';
+function sumOk() { const S = D.sum; return S && S.schema === SUM_SCHEMA && D.home && S.src?.home === D.home.kst ? S : null; }
+/** 급등 칸 반값 셈([6] 6) — 요약의 회사마다 표(지난 250거래일 안 반값 아래 = 1) · 요약이 옛것이고 모르는 회사가 있으면 null(「?」) */
+function surgeHalf(ms) {
+  const S = D.sum?.schema === SUM_SCHEMA ? D.sum.chips?.surge : null, f = S?.flags; if (!f || !ms.length) return null;
+  const k = ms.filter(m => Object.hasOwn(f, m.c));
+  if (D.sum.src?.surge !== D.surge?.kst && k.length < ms.length) return null;
+  return {n: ms.length, half: k.reduce((a, m) => a + (f[m.c] ? 1 : 0), 0), known: k.length};
+}
+const halfLine = x => num(x.n) + '곳 중 ' + num(x.half) + '곳이 지난 1년 안에 반값 아래로 떨어진 적 있어요';
+const ROWS = 10;
+/** 칩 목록([7] 5) — 맨 앞 하나만 큰 카드 · 그다음 한 줄 목록(이름 · % · 작은 선) 10줄 · 나머지는 「나머지 n곳 보기」를 누르면 펼침 */
+function chipList(items, big, row, unit = '곳') {
+  if (!items.length) return [];
+  const out = [big(items[0])].filter(Boolean), li = items.slice(1).map(row).filter(Boolean).map((r, k) => crowLi(r, k >= ROWS));
+  if (li.length) out.push(h('ul', {class: 'clist'}, li));
+  const rest = li.length - ROWS;
+  if (rest > 0) { const b = h('button', {class: 'more', type: 'button', 'aria-expanded': 'false', text: '나머지 ' + num(rest) + unit + ' 보기'}); b.addEventListener('click', () => { for (const e of li) e.hidden = false; b.remove(); }); out.push(b); }
+  return out;
+}
+/** 한 줄(이름 · % · 작은 선) — r = {href(null 이면 누르지 않는 줄), name, x, pt?, v} · 칩 목록 · 첫 화면 「더 보기」가 함께 씀 */
+function crowLi(r, hide = false) {
+  return h('li', {hidden: hide}, h(r.href ? 'a' : 'div', {class: 'crow', href: r.href || null}, h('b', {class: 'cn', text: r.name}), h('span', {class: 'cp ' + cls(r.x), text: r.pt ?? pct(r.x)}),
+    lineSvg(r.v, {w: 96, ht: 36, fill: false, dot: false, sw: 2}) || h('i', {class: 'ln0', 'aria-hidden': 'true'})));
+}
+function crows(items, row) { const li = items.map(row).filter(Boolean).map(r => crowLi(r)); return li.length ? h('ul', {class: 'clist'}, li) : null; }
 
 function idxCard(code) {
   const x = D.home?.idx?.[code]; if (!x || !Array.isArray(x.rows) || x.rows.length < 2) return null;
@@ -310,14 +435,28 @@ function idxCard(code) {
   return card('#/w/' + code, thumb(x.rows.map(r => r[1]), '3달', {play: true}), md(x.date) + ' ' + x.name + ' 하루 ' + p2(x.day) + (other ? ' · ' + other.name + ' ' + p2(other.day) : ''),
     '시장 · ' + (x.live ? '장 중' : '장 마감') + ' · 큰 숫자는 3달 동안', '시');
 }
-function coCard(code, badge = '20일', extra = null) {
-  const c = ix()?.co?.[code]; if (!c) return null;
-  return card('#/w/' + code, thumb(c.l, badge, {x: c20(c)}), c.n + ', 20거래일 동안 ' + pct(c20(c)), (c.i || '?') + ' 업종' + (extra ? ' · ' + extra : ''), first(c.i));
+const coOf = code => (ix()?.co ?? D.mkt?.companies)?.[code] ?? null; // 칩은 core 없이 mkt 만 받을 수 있음
+/* 카드 넷 — bare = 첫 화면 「더 보기」용(S2 · [6] 2 · 3): 날짜 없음 · 그림 큰 숫자를 제목에 되풀이하지 않음 */
+/** 큰 카드 그림([6] 8 「큰 숫자는 늘 마지막 날 하루 값이다. 기간 숫자는 작게 둬라.」 · 2026-10-18 검토 VH) — 큰 숫자 = 마지막 날 하루 %(앞에 작은 「하루」) ·
+    아래 오른쪽 작은 칸 = 기간 이름 + 기간 %(예 「5일 +110%」) · 선 = 기간 · day 가 없으면 선의 마지막 두 값으로 셈 · 제목에는 숫자를 되풀이하지 않음 */
+function dayThumb(vals, per, perX, day = null) {
+  const d = Number.isFinite(day) ? day : dayOf(vals);
+  return h('div', {class: 'th'}, lineSvg(vals), h('b', {class: 'big ' + cls(d)}, h('small', {class: 'bk', text: '하루'}), ' ', h('span', {text: pct(d)})),
+    h('span', {class: 'dur'}, h('span', {text: per}), ' ', h('b', {class: cls(perX), text: pct(perX)})));
 }
-function riseCard(r) { const core = ix().core; return card('#/ch/i/' + enc(r.name), thumb(r.v, '1주', {x: r.chg}), r.name + ', 1주 동안 ' + pct(r.chg), '업종 채널 · ' + md(core.rise.from) + ' → ' + md(core.rise.to), first(r.name)); }
-function groupCard(g) { return card('#/ch/g/' + enc(g.id), thumb(g.v, '20일', {x: g.chg}), g.name + ' 갈래, 20거래일 한 회사 한 표 ' + pct(g.chg), '회사 ' + num(g.n) + '곳 · 큰 회사는 크게 ' + pct(g.cwChg), first(g.short || g.name)); }
-function surgeCard(m) { return card('#/w/' + m.c, thumb(m.v, '5일', {x: m.r5}), m.n + ', 5일 동안 ' + pct(m.r5), (m.i || '?') + ' · 급등 칸 · ' + md(D.surge?.asOf) + '까지', first(m.i)); }
-function leadCard(code, o) { const c = ix().co[code]; return card('#/w/' + code, thumb(o.l5, '5일', {x: o.r5}), c.n + ', ' + (o.i || c.i) + ' 대장주 · 5일 ' + pct(o.r5), '업종 안 몸값 1등 · ' + md(D.cond.d5) + ' → ' + md(D.cond.asOf), first(o.i || c.i)); }
+function coCard(code, badge = '한 달', extra = null, bare = false, day = null) {
+  const c = coOf(code); if (!c) return null;
+  return card('#/w/' + code, dayThumb(c.l, badge, c20(c), day), c.n, (c.i || '?') + ' 업종' + (extra ? ' · ' + extra : ''), first(c.i));
+}
+function riseCard(r, bare = false) { const core = ix()?.core ?? D.core; return card('#/ch/i/' + enc(r.name), dayThumb(r.v, '1주', r.chg), r.name, bare ? '1주 동안 오른 업종' : '업종 채널 · ' + md(core?.rise?.from) + ' → ' + md(core?.rise?.to), first(r.name)); }
+function groupCard(g, bare = false) { return card('#/ch/g/' + enc(g.id), dayThumb(g.v, '한 달', g.chg), g.name + ' 큰 업종', '회사 ' + num(g.n) + '곳 · 큰 회사 기준 ' + pct(g.cwChg), first(g.short || g.name)); }
+/** 급등 카드 — 급등 칩 안에만(첫 화면에 두지 않음 · 보내기 없음 · 「1등」 말 없음 [6] 5) · hf = surgeHalf() 면 숫자 옆에 반값 한 줄([6] 6) · 큰 숫자 = 마지막 날 하루(d1) */
+function surgeCard(m, hf = null) {
+  const e = card('#/w/' + m.c, dayThumb(m.v, '5일', m.r5, m.d1), m.n, (m.i || '?') + ' · 급등 칸 · ' + md(D.surge?.asOf) + '까지', first(m.i));
+  if (hf) e.querySelector('.meta b')?.after(h('span', {class: 'half', text: halfLine(hf)}));
+  return e;
+}
+function leadCard(code, o, bare = false) { const c = coOf(code); if (!c) return null; return card('#/w/' + code, dayThumb(o.l5, '5일', o.r5, dayOf(c.l) ?? dayOf(o.l5)), c.n + ', ' + (o.i || c.i) + ' 대장주', bare ? (o.i || c.i) + ' 대장주 · 업종에서 가장 큰 회사' : '업종에서 가장 큰 회사 · ' + md(D.cond?.d5) + ' → ' + md(D.cond?.asOf), first(o.i || c.i)); } // 「1등」 말 없음([6] 5 · [10] 1 흔한 말)
 function shelf(fs) {
   const tiles = fs.map((f, i) => f.tile ? h('a', {class: 'st', href: '#/shorts/' + i, 'aria-label': '시황 ' + f.l1}, h('b', {class: f.bc, text: f.tile[0]}), h('small', {text: f.tile[1]})) : null).filter(Boolean).slice(0, 4);
   return tiles.length ? [h('h2', {class: 'sec', text: '시황 · 왜 움직였나'}), h('div', {class: 'shelf'}, tiles)] : [];
@@ -331,60 +470,63 @@ async function godoriHome() {
   } catch (e) { console.error(e); return [h('p', {class: 'empty', text: '? 질문 칸을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})]; }
 }
 async function vHome(chip) {
-  if (!CHIPS.some(c => c[0] === chip)) chip = 'all';
-  await Promise.all([need('core'), need('mkt'), need('home'), (chip === 'all' || chip === 'surge') ? need('surge') : null, (chip === 'all' || chip === 'lead') ? need('cond') : null]);
-  const X = ix(); if (!X) return {title: chip === 'all' ? '오늘 장' : CHIPS.find(c => c[0] === chip)[1], nodes: [...(chip === 'all' ? await godoriHome() : []), chipsBar(chip), ...noData()]};
-  const core = X.core, nodes = chip === 'all' ? [] : [chipsBar(chip)], seen = new Set();
-  const add = (key, el) => { if (!el || seen.has(key)) return; seen.add(key); nodes.push(el); };
-  const rise = core.rise?.list || [], groups = [...(core.groups || [])].sort((a, b) => b.chg - a.chg);
-  const sm = Array.isArray(D.surge?.members) ? [...D.surge.members].filter(m => X.co[m.c] && Number.isFinite(m.r5)).sort((a, b) => b.r5 - a.r5) : [];
-  const C = condOf(), leads = C ? [...C.entries()].filter(([c, o]) => o.rk === 1 && X.co[c] && Array.isArray(o.l5) && Number.isFinite(o.r5)).sort((a, b) => b[1].r5 - a[1].r5 || a[0].localeCompare(b[0])) : [];
-  const s3 = D.home?.s365, picks = Array.isArray(s3?.list) ? s3.list.filter(([c]) => X.co[c]) : [];
-  if (chip === 'all') {
-    // 첫 화면 붙박이(지금 아틀란스 그대로): 이야기 입구 → 큰 날 금빛 「!」 → 사장님 편지(격언 · 열면 보드리 · 친구 소개 · 상품권) → 고르기 칩 → 시장(오늘 한 줄)
-    nodes.push(h('a', {class: 'tk-entry', href: oldOr('talk', '#/talk')}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'})));
-    const H = D.home, top = H && (idxOk(H.idx?.KOSPI) || idxOk(H.idx?.KOSDAQ)) ? idxAlerts(H) : [];
-    if (top.length) nodes.push(h('div', {class: 'm4-top'}, ...top));
-    nodes.push(...await godoriHome(), chipsBar(chip)); // 첫 화면 가운데 = 질문 열한 개 + 고도리 칸(2026-10-17 17:54 명령 1 · 2 — 사장님 편지는 「나」 칸으로)
-    add('idx', idxCard('KOSPI'));
-    if (H && (H.idx?.KOSPI || H.idx?.KOSDAQ)) {
-      const w = whenOf(H, 'idx', (H.idx?.KOSPI ?? H.idx?.KOSDAQ)?.live);
-      nodes.push(h('div', {class: 'today', 'aria-label': '오늘 한 줄'}, h('p', {class: 'tl'}, todayWords('코스피', idxOk(H.idx?.KOSPI), w).join(' ')), h('p', {class: 'tl'}, todayWords('코스닥', idxOk(H.idx?.KOSDAQ), w).join(' '))));
-    }
-    // 오늘 시장(지금 아틀란스 첫 화면의 지수 3달 · 오른 곳과 내린 곳 · 사고팔기 · 미국 · 고른 곳 · 큰 갈래 — 쪽 모듈 today · 2026-10-17 「모두 바꿔」)
-    if (ready('today')) { try { const d = await page('today', 'home'); if (d?.nodes?.length) nodes.push(h('section', {class: 'today-d', 'aria-label': '오늘 시장'}, ...d.nodes)); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 오늘 시장을 그리지 못했어요.'})); } }
-    if (rise[0]) add('i:' + rise[0].name, riseCard(rise[0]));
-    for (const n of shelf(shortFacts())) nodes.push(n);
-    if (sm[0]) add('c:' + sm[0].c, surgeCard(sm[0]));
-    if (leads[0]) add('c:' + leads[0][0], leadCard(leads[0][0], leads[0][1]));
-    if (picks[0]) add('c:' + picks[0][0], coCard(picks[0][0], '20일', '고른 곳 · ' + md(s3.date) + ' 하루 ' + pct(picks[0][1])));
-    if (groups[0]) add('g:' + groups[0].id, groupCard(groups[0]));
-    nodes.push(premCard());
-    for (const r of rise.slice(1, 4)) add('i:' + r.name, riseCard(r));
-    for (const m of sm.slice(1, 3)) add('c:' + m.c, surgeCard(m));
-    add('idx2', idxCard('KOSDAQ'));
-    if (groups.length > 1) add('g:' + groups[groups.length - 1].id, groupCard(groups[groups.length - 1]));
-    const T = core.time;
-    if (T?.opens?.[0]?.date) nodes.push(h('a', {class: 'm4-mr', href: oldOr('time', '#/time')}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.opens[0].date)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
-    nodes.push(h('section', {class: 'm4-seal-box', 'aria-label': '고도리 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '고도리는 들은 것만 따라 말해요.'}), h('span', {text: '그래서 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'})));
-    nodes.push(h('p', {class: 'safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
-    return {title: '오늘 장', nodes};
+  if (!chipPage(chip)) chip = 'all';
+  // 첫 줄 자료([9] 7): 첫 화면 = home.json(7KB) + 요약(home-summary.json · 3KB)만 · 「더 보기」도 요약으로(옛것이면 core 하나) · mkt · cond 는 대장주 · 고른 곳 칩(vChip) · 그 화면을 열 때만 · 요약이 없거나 옛것이어도 첫 화면은 home.json 으로 그림
+  if (chip === 'all') { await Promise.all([need('home'), need('sum')]); return vHomeAll(); } // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll)
+  return vChip(chip);
+}
+/** 칩 쪽(#/f/…) — 칩마다 제 자료만 받음 · 맨 앞 하나만 큰 카드 + 한 줄 목록 10줄 + 「나머지 n곳 보기」([7] 5) · 급등은 반값 한 줄([6] 6) · 「1등」 말 · 보내기 없음([6] 5) */
+const CHIP_NEED = {rise: ['core'], group: ['core'], ind: ['core'], us: ['home'], surge: ['surge', 'sum'], lead: ['cond', 'mkt'], pick: ['home', 'mkt']};
+async function vChip(chip) {
+  await Promise.all(CHIP_NEED[chip].map(need));
+  const T = CHIPS.find(c => c[0] === chip)[1], nodes = [chipsBar(chip)], none = t => ({title: T, nodes: [chipsBar(chip), ...noData(t)]});
+  const note = t => nodes.push(h('p', {class: 'note', text: t})), core = D.core;
+  if (chip === 'rise') {
+    if (!core) return none();
+    const rise = core.rise?.list || [];
+    note('1주 동안 오른 업종을 많이 오른 차례로 보여요(' + md(core.rise?.from) + ' → ' + md(core.rise?.to) + ').');
+    if (!rise.length) nodes.push(h('p', {class: 'empty', text: '1주 동안 오른 업종이 없어요.'}));
+    nodes.push(...chipList(rise, riseCard, r => ({href: '#/ch/i/' + enc(r.name), name: r.name, x: r.chg, v: r.v}), '개'));
+  } else if (chip === 'group') {
+    if (!core) return none();
+    const gs = [...(core.groups || [])].sort((a, b) => b.chg - a.chg);
+    note('큰 업종 ' + gs.length + '개 · 한 달 평균으로 많이 오른 차례');
+    nodes.push(...chipList(gs, groupCard, g => ({href: '#/ch/g/' + enc(g.id), name: g.name, x: g.chg, v: g.v}), '개'));
+  } else if (chip === 'ind') {
+    if (!core) return none();
+    const inds = [...(core.industries || [])].sort((p, q) => q.chg - p.chg);
+    note('업종 ' + inds.length + '개 · 한 달 평균으로 많이 오른 차례');
+    nodes.push(...chipList(inds, i => card('#/ch/i/' + enc(i.name), dayThumb(i.v, '한 달', i.chg), i.name + ' 업종', '회사 ' + num(i.n) + '곳 · 큰 회사 기준 ' + pct(i.cwChg), first(i.name)),
+      i => ({href: '#/ch/i/' + enc(i.name), name: i.name, x: i.chg, v: i.v}), '개'));
+  } else if (chip === 'surge') {
+    if (!D.surge) return none('급등 자료');
+    const miss = new Set(D.sum?.schema === SUM_SCHEMA ? D.sum.chips?.surge?.miss || [] : []);
+    const sm = Array.isArray(D.surge.members) ? D.surge.members.filter(m => m && !miss.has(m.c) && Number.isFinite(m.r5)).sort((a, b) => b.r5 - a.r5) : [], hf = surgeHalf(sm);
+    note('급등 칸 ' + sm.length + '곳 · 5일 동안 많이 오른 차례 · ' + md(D.surge.asOf) + '까지');
+    nodes.push(h('p', {class: 'note half', text: hf ? halfLine(hf) : '? 1년 안에 반값 아래로 떨어진 적 있는 곳을 아직 못 셌어요'}));
+    if (hf && hf.known < hf.n) note('? ' + num(hf.n - hf.known) + '곳은 1년 값이 모자라 못 셌어요');
+    nodes.push(...chipList(sm, m => surgeCard(m, hf), m => ({href: '#/w/' + m.c, name: m.n, x: m.r5, v: m.v})));
+    nodes.push(h('a', {class: 'more', href: oldOr('surge', '#/surge'), text: '급등 다섯 칸 자세히 ›'}));
+  } else if (chip === 'lead') {
+    const C = condOf(), co = D.mkt?.companies; if (!C || !co) return none('회사 크기 자료');
+    const leads = [...C.entries()].filter(([c, o]) => o.rk === 1 && co[c] && Array.isArray(o.l5) && Number.isFinite(o.r5)).sort((a, b) => b[1].r5 - a[1].r5 || a[0].localeCompare(b[0]));
+    note('업종마다 가장 큰 회사 ' + leads.length + '곳 · 5일 동안 많이 오른 차례');
+    nodes.push(...chipList(leads, ([c, o]) => leadCard(c, o), ([c, o]) => ({href: '#/w/' + c, name: co[c].n, x: o.r5, v: o.l5})));
+  } else if (chip === 'pick') {
+    const s3 = D.home?.s365, co = D.mkt?.companies || {}, picks = Array.isArray(s3?.list) ? s3.list.filter(([c]) => co[c]) : [];
+    if (!picks.length) return none('고른 곳 자료');
+    note('고른 곳 ' + s3.n + '곳 · ' + md(s3.date) + ' 하루 많이 오른 차례');
+    nodes.push(...chipList(picks, ([c, x]) => coCard(c, '한 달', md(s3.date) + ' 마감', false, x),([c, x]) => ({href: '#/w/' + c, name: co[c].n, x, v: co[c].l})));
+  } else if (chip === 'us') {
+    const us = D.home?.us; if (!us?.rows?.length) return none('미국 자료');
+    note('미국 마지막 장 · ' + md(us.date) + ' 마감');
+    nodes.push(...chipList(us.rows, r => h('div', {class: 'card'}, numThumb(p2(r.chg), r.chg, r.name + ' · ' + num(r.close)), h('div', {class: 'meta'}, h('span', {class: 'av', 'aria-hidden': 'true', text: '미'}), h('div', {}, h('b', {text: r.name + ' 하루 ' + p2(r.chg)}), h('small', {text: md(r.date) + ' 마감 · 3달 낮은 값 ' + num(r.lo) + ' · 높은 값 ' + num(r.hi)})))),
+      r => ({href: null, name: r.name, x: r.chg, pt: p2(r.chg), v: null})));
   }
-  if (chip === 'rise') { nodes.push(h('p', {class: 'note', text: '1주 동안 오른 업종을 많이 오른 차례로 보여요(' + md(core.rise?.from) + ' → ' + md(core.rise?.to) + ').'})); if (!rise.length) nodes.push(h('p', {class: 'empty', text: '1주 동안 오른 업종이 없어요.'})); for (const r of rise) add('i:' + r.name, riseCard(r)); }
-  else if (chip === 'surge') { if (!D.surge) return {title: '급등', nodes: [chipsBar(chip), ...noData('급등 자료')]}; nodes.push(h('p', {class: 'note', text: '급등 칸 ' + sm.length + '곳 · 5일 동안 많이 오른 차례 · ' + md(D.surge.asOf) + '까지'})); for (const m of sm) add('c:' + m.c, surgeCard(m)); nodes.push(h('a', {class: 'more', href: oldOr('surge', '#/surge'), text: '급등 다섯 칸 자세히 ›'})); }
-  else if (chip === 'lead') { if (!C) return {title: '대장주', nodes: [chipsBar(chip), ...noData('몸값 자료')]}; nodes.push(h('p', {class: 'note', text: '업종마다 몸값 1등 ' + leads.length + '곳 · 5일 동안 많이 오른 차례'})); for (const [c, o] of leads) add('c:' + c, leadCard(c, o)); }
-  else if (chip === 'pick') { if (!picks.length) return {title: '고른 곳', nodes: [chipsBar(chip), ...noData('고른 곳 자료')]}; nodes.push(h('p', {class: 'note', text: '고른 곳 ' + s3.n + '곳 · ' + md(s3.date) + ' 하루 많이 오른 차례'})); for (const [c, x] of picks) add('c:' + c, coCard(c, '20일', md(s3.date) + ' 하루 ' + pct(x))); }
-  else if (chip === 'ind') { const inds = [...(core.industries || [])].sort((p, q) => q.chg - p.chg); nodes.push(h('p', {class: 'note', text: '업종 ' + inds.length + '개 · 20거래일 한 회사 한 표로 많이 오른 차례'})); for (const i of inds) add('i:' + i.name, card('#/ch/i/' + enc(i.name), thumb(i.v, '20일', {x: i.chg}), i.name + ' 업종, 20거래일 ' + pct(i.chg), '회사 ' + num(i.n) + '곳 · 큰 회사는 크게 ' + pct(i.cwChg), first(i.name))); }
-  else if (chip === 'group') { nodes.push(h('p', {class: 'note', text: '큰 갈래 ' + groups.length + '개 · 20거래일 한 회사 한 표로 많이 오른 차례'})); for (const g of groups) add('g:' + g.id, groupCard(g)); }
-  else if (chip === 'us') {
-    const us = D.home?.us; if (!us?.rows?.length) return {title: '미국', nodes: [chipsBar(chip), ...noData('미국 자료')]};
-    nodes.push(h('p', {class: 'note', text: '미국 마지막 장 · ' + md(us.date) + ' 마감'}));
-    for (const r of us.rows) nodes.push(h('div', {class: 'card'}, numThumb(p2(r.chg), r.chg, r.name + ' · ' + num(r.close)), h('div', {class: 'meta'}, h('span', {class: 'av', 'aria-hidden': 'true', text: '미'}), h('div', {}, h('b', {text: r.name + ' 하루 ' + p2(r.chg)}), h('small', {text: md(r.date) + ' 마감 · 3달 낮은 값 ' + num(r.lo) + ' · 높은 값 ' + num(r.hi)})))));
-  }
-  return {title: CHIPS.find(c => c[0] === chip)[1], nodes};
+  return {title: T, nodes};
 }
 
-/* 보는 화면 — 큰 선(그려지며 열림 · 손가락으로 끌면 그날 값) · 채널 · 챕터 일곱 = 7단 · 다음 볼 것 */
+/* 보는 화면 — 큰 선(그려지며 열림 · 손가락으로 끌면 그날 값) · 길 표시 · 탭 넷(4 ~ 7단) · 채널 · 다음 볼 것 */
 function player(vals, labelAt, defaultTip) {
   const n = vals.length, svg = lineSvg(vals, {w: 320, ht: 130, draw: true});
   const cur = h('i', {class: 'cur', 'aria-hidden': 'true'}), tip = h('span', {class: 'tip', role: 'status', 'aria-live': 'polite', text: defaultTip}), bar = h('b', {}), scrub = h('div', {class: 'scrub', 'aria-hidden': 'true'}, bar);
@@ -399,46 +541,72 @@ function player(vals, labelAt, defaultTip) {
   box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
   return box;
 }
+/* 회사 머리(3단 · 사장님 2026-10-18 [7] 1 ~ 4 · [10] 2 · 일꾼 S3) — 큰 선(▶ 표시 없음) → 이름 위 길 표시(7단 1 · 2단 「반도체 › 반도체 업종」) → 이름 → 오늘 값 · 하루 등락(크게 · 360×640 첫 화면 안)
+   → 마감 날 · 한 달 → 든 목록 꼬리표(고도리 칸 n번 · 급등 칸 · 급등 n%대 칸 · 고른 곳 = 멍거 · 린치 조건만 · 누르면 그 목록) → 4 ~ 7단 탭 넷(7단 이름 그대로 · 한 줄 · 넷 모두 보임) · 모양 p-co.css(.wpath · .wnow · .wtags · .wtabs) */
+const W_BANDS = [['b10', '10%대'], ['b20', '20%대'], ['b30', '30%대'], ['b40', '40% 이상']]; // 급등 네 칸(p-surge SV_NAME 과 같은 이름 · surge.json bands)
+function wPath(I, g) {
+  return h('nav', {class: 'wpath', 'aria-label': '7단 길'},
+    g ? h('a', {href: '#/ch/g/' + enc(g.id), text: g.short || g.name}) : h('span', {text: '큰 업종 ?'}),
+    h('span', {class: 'wsep', 'aria-hidden': 'true', text: '›'}),
+    I ? h('a', {href: '#/ch/i/' + enc(I.name), text: I.name + ' 업종'}) : h('span', {text: '업종 ?'}));
+}
+function wTags(a, X) {
+  const t = [], S = D.surge;
+  for (const p of GDR?.picks ?? []) if (p.code === a) t.push([NAME + ' 칸 ' + p.no + '번', '#/gdr/' + p.no]);
+  if (S?.members?.some(m => m.c === a)) t.push(['급등 칸', '#/surge']);
+  for (const [k, nm] of W_BANDS) if (S?.bands?.[k]?.members?.some(m => m.c === a)) t.push(['급등 ' + nm + ' 칸', '#/surge/' + k.slice(1)]);
+  if (X.co[a]?.p) t.push(['고른 곳', '#/f/pick']);
+  return t.length ? h('div', {class: 'wtags'}, ...t.map(([text, href]) => h('a', {class: 'wtag' + (href === '#/f/pick' ? ' pk' : ''), href, text}))) : null;
+}
+function wTabs(a) { return h('nav', {class: 'wtabs', 'aria-label': '7단 중 4 ~ 7단'}, ...chapList(a).slice(3).map(([k, t, href]) => h('a', {class: 'wtab', href, 'data-step': k, text: t}))); }
+/** 모양 파일이 붙을 때까지(늦으면 3초 뒤 그냥 그림) — 회사 머리 모양이 p-co.css 에 있음 */
+function sheetReady(href) { const l = [...document.querySelectorAll('link[rel="stylesheet"]')].find(x => x.getAttribute('href') === href); return !l || l.sheet ? Promise.resolve() : new Promise(r => { l.addEventListener('load', r, {once: true}); l.addEventListener('error', r, {once: true}); setTimeout(r, 3000); }); }
 async function vWatch(a) {
   if (a === 'KOSPI' || a === 'KOSDAQ') return vIndex(a);
   { const [code, sub] = String(a).split('/'); if (sub) { if (['past', 'rivals', 'grow', 'range'].includes(sub) && ready(sub)) return page(sub, code); location.replace('/atlas/#/c/' + code + '/' + sub); return {title: '…', nodes: []}; } }
-  await Promise.all([need('core'), need('mkt'), need('cond')]);
+  const css = ready('co') ? mod('co').then(() => sheetReady('/next/p-co.css'), () => {}) : null; // 회사 머리 모양이 붙은 뒤에 그림(첫 화면 숫자 자리가 흔들리지 않게)
+  const rest = Promise.all([need('cond'), need('surge'), gdr(), css]); rest.catch(() => {}); // 먼저 시작 — 아래에서 회사 목록(core · mkt)을 기다리는 동안 함께 받음
+  await Promise.all([need('core'), need('mkt')]);
+  const known = !!ix()?.co?.[a]; // 모르는 번호는 회사 파일 · 고른 곳 파일을 받지 않음(없는 파일 404 가 화면 오류로 읽히지 않게)
+  const coP = known ? getJson('co/' + enc(a) + '.json') : null, cmP = known ? getJson('comp.json') : null; // 오늘 값(이름 밑 첫 줄) · 보내기에 담을 그날 값 — 고른 곳 밖 = 회사 파일 c.price · c.priceDate / 고른 곳 = comp.json 의 그 회사(회사 파일에 c 가 없음) · 3단 자세히(p-co)가 같은 파일을 써서 한 번만 받음
+  await rest;
   const X = ix(); if (!X) return {title: '보는 화면', nodes: noData()};
   const c = X.co[a];
   if (!c) return {title: '없는 회사', nodes: [h('p', {class: 'empty', text: '? 이 번호의 회사를 찾지 못했어요.'}), h('a', {class: 'more', href: '#/find', text: '회사 찾기 ›'})]};
   pushHist(a);
   const l = c.l, n = l.length, x20 = c20(c), day = dayOf(l), I = X.ind.get(c.i), g = I ? X.grp.get(I.g) : null, Cd = condOf();
   const lab = i => { const d = dateAt(n, i); return (d ? md(d) : (i + 1) + '번째 날') + ' · 첫날보다 ' + pct((l[i] / l[0] - 1) * 100) + (i > 0 ? ' · 그날 ' + pct((l[i] / l[i - 1] - 1) * 100) : ''); };
-  const d0 = dateAt(n, 0), d1 = dateAt(n, n - 1), tip0 = '20거래일 · ' + (d0 ? md(d0) : '?') + ' → ' + (d1 ? md(d1) : '?');
-  const coP = getJson('co/' + enc(a) + '.json'); // 보내기에 담을 그날 값(회사 파일 c.price · c.priceDate — 3단 자세히와 같은 파일이라 한 번만 받음)
+  const d0 = dateAt(n, 0), d1 = dateAt(n, n - 1), tip0 = '한 달 · ' + (d0 ? md(d0) : '?') + ' → ' + (d1 ? md(d1) : '?');
+  const cj = await coP, cm = await cmP, cc = cj?.c ?? cm?.companies?.[a], pr = cc?.price, pd = cc?.priceDate, okP = Number.isFinite(pr) && pr > 0, pDay = okP && isDay(pd) ? String(pd).slice(0, 10) : null;
   /** 보내기 · 같이 따져 줘(2026-10-17 21:10 [4] 1 · 6 · 8) — 글상자(p-share)를 부름 · 그날 값과 날을 함께(친구가 열면 보낸 날 값 · 오늘 값) · 수익률 글 없음 */
   const sendBtn = (kind, text) => {
     const b = h('button', {class: 'act', type: 'button', text});
     b.addEventListener('pointerdown', () => { mod('share').catch(() => {}); }, {once: true}); // 누르기 시작할 때 글상자를 미리 받음
-    b.addEventListener('click', async () => { const j = await coP, p = j?.c?.price, pd = j?.c?.priceDate, ok = Number.isFinite(p) && p > 0;
-      shareBox({kind, title: L(c.n + ' · ' + NAME), url: absUrl('#/w/' + a), code: a, name: c.n, price: ok ? p : null, day: ok && isDay(pd) ? String(pd).slice(0, 10) : null}); });
+    b.addEventListener('click', () => { shareBox({kind, title: L(c.n + ' · ' + NAME), url: absUrl('#/w/' + a), code: a, name: c.n, price: okP ? pr : null, day: pDay}); });
     return b;
   };
+  const pl = player(l, lab, tip0); pl.querySelector('.play')?.remove(); pl.classList.add('cw'); // ▶ 표시 뺌([7] 1) · cw = 회사 화면 꾸밈(p-co.css — 이름표 글 시작 줄)
   const nodes = [
-    player(l, lab, tip0),
+    pl,
+    wPath(I, g),
     h('h1', {class: 'wt', text: c.n}),
-    h('p', {class: 'ws'}, '20거래일 동안 ', h('b', {class: cls(x20), text: pct(x20)}), ' · 하루 ', h('b', {class: cls(day), text: pct(day)}), ' · ' + md(X.mkt.asOf) + ' 마감'),
-    h('div', {class: 'chan'}, h('a', {href: '#/ch/i/' + enc(c.i)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(c.i)}), h('div', {}, h('b', {text: (c.i || '?') + ' 업종'}), h('small', {text: '회사 ' + (I ? num(I.n) : '?') + '곳' + (g ? ' · ' + g.short + ' 갈래' : '')}))), I ? subBtn('i:' + c.i, c.i + ' 업종') : null),
+    h('p', {class: 'wnow'}, h('b', {class: 'wn-p num', text: okP ? num(pr) + '원' : '?'}), h('span', {class: 'wn-k', text: '하루'}), h('b', {class: 'wn-d num ' + cls(day), text: pct(day)})),
+    h('p', {class: 'ws'}, h('span', {text: md(X.mkt.asOf) + ' 마감'}), ' · ', h('span', {text: '한 달 동안'}), ' ', h('b', {class: cls(x20), text: pct(x20)}), ...(pDay && pDay !== X.mkt.asOf ? [' · ', h('span', {text: '값은 ' + md(pDay) + ' 종가'})] : [])),
+    wTags(a, X),
+    wTabs(a),
     // 관심 담기(첫 단추 — 검사가 .acts 첫 .act 를 누름) · 보내기 · 매매일지로(2026-10-17 21:10 [3] 2 · 규칙 1 「하나 넣으면 하나 뺀다」 — 넣은 「이 회사로 왜 사?」 자리에서 「편지 쓰기」를 뺌 · 편지 여는 밤은 보유종목 바로 가기에)
-    h('div', {class: 'acts'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),
-    h('a', {class: 'why-go', href: '#/why/' + enc(a)}, h('b', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'})),
-    h('h2', {class: 'sec', text: '챕터 일곱 · 7단'}),
-  ];
-  nodes.push(chaps(a, '3'));
-  nodes.push(h('p', {class: 'note', text: ready('past') ? '챕터를 누르면 그 단이 열려요.' : '1 · 2단은 새 채널로, 3 ~ 7단은 옛 화면의 그 단으로 가요.'}));
+    h('div', {class: 'acts cw'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),
+    h('a', {class: 'why-go cw', href: '#/why/' + enc(a)}, h('b', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'})),
+    h('div', {class: 'chan cw'}, h('a', {href: '#/ch/i/' + enc(c.i)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(c.i)}), h('div', {}, h('b', {text: (c.i || '?') + ' 업종'}), h('small', {text: '회사 ' + (I ? num(I.n) : '?') + '곳' + (g ? ' · 큰 업종 ' + g.short : '')}))), I ? subBtn('i:' + c.i, c.i + ' 업종') : null),
+  ].filter(Boolean);
   if (ready('co')) { try { const d = await page('co', a); if (d?.nodes?.length) nodes.push(h('section', {class: 'co-d', id: 'd'}, ...d.nodes)); } catch (e) { console.error(e); nodes.push(h('p', {class: 'empty', text: '? 회사 자세히를 그리지 못했어요.'})); } }
   const mem = (I?.members || []).filter(m => m !== a && X.co[m]);
   if (mem.length) {
     const capOf = m => Cd?.get(m)?.cap ?? -1;
     mem.sort((p, q) => capOf(q) - capOf(p) || p.localeCompare(q));
-    nodes.push(h('h2', {class: 'sec', text: '다음 볼 것 · 같은 업종'}), h('p', {class: 'note', text: Cd ? '몸값 큰 차례예요.' : '번호 차례예요.'}));
+    nodes.push(h('h2', {class: 'sec', text: '다음 볼 것 · 같은 업종'}), h('p', {class: 'note', text: Cd ? '큰 회사부터 보여 줘요.' : '번호 차례예요.'}));
     const list = h('div', {});
-    const row = m => { const o = X.co[m]; return h('a', {class: 'nx', href: '#/w/' + m}, thumb(o.l, '20일', {x: c20(o)}), h('div', {}, h('b', {text: o.n}), h('small', {text: '하루 ' + pct(dayOf(o.l))}))); };
+    const row = m => { const o = X.co[m]; return h('a', {class: 'nx cw', href: '#/w/' + m}, h('div', {}, h('b', {text: o.n}), h('small', {text: '하루 ' + pct(dayOf(o.l))})), thumb(o.l, '한 달', {x: c20(o)})); }; // 글이 왼쪽 · 작은 선이 오른쪽(글 시작 왼쪽 줄 하나 · [7] 5 한 줄 목록 꼴)
     let shown = 0; const step = 6, more = h('button', {class: 'more', type: 'button'});
     const fill = () => { for (const m of mem.slice(shown, shown + step)) list.append(row(m)); shown = Math.min(mem.length, shown + step); more.textContent = '더 보기 · ' + (mem.length - shown) + '곳'; more.hidden = shown >= mem.length; };
     more.addEventListener('click', fill); fill();
@@ -446,19 +614,19 @@ async function vWatch(a) {
   }
   return {title: c.n, nodes};
 }
-/* 챕터 일곱(7단) — 보는 화면 · 4 ~ 7단 쪽 모듈이 함께 씀(NX.chaps · NX.chapNext) · 지금 단은 금빛 테 */
+/* 7단 길(1 큰 업종 · 2 업종 · 3 회사 · 4 지나온 길 · 5 누구와 다투나 · 6 앞으로 클까? · 7 범위) — 보는 화면 머리(길 표시 · 탭 넷) · 4 ~ 7단 쪽 모듈이 함께 씀(NX.chaps · NX.chapNext) · 지금 단은 금빛 테 */
 function chapList(a) {
   const X = ix(), c = X?.co?.[a], I = c ? X.ind.get(c.i) : null, g = I ? X.grp.get(I.g) : null, base = '/atlas/#/c/' + enc(a), sub = k => (ready(k) ? '#/w/' + enc(a) + '/' + k : base + '/' + k);
   return [['1', '갈래', g ? '#/ch/g/' + enc(g.id) : null], ['2', '업종', I ? '#/ch/i/' + enc(I.name) : null], ['3', '회사', ready('co') ? '#/w/' + enc(a) : base], ['4', '지나온 길', sub('past')], ['5', '누구와 다투나', sub('rivals')], ['6', '앞으로 클까?', sub('grow')], ['7', '범위', sub('range')]];
 }
 function chaps(a, now) {
   const row = now !== '3'; // 4 ~ 7단 = 한 줄로 밀어 보기 · 보는 화면(3단) = 일곱 칸 모두
-  const el = h('div', {class: 'chaps' + (row ? ' row' : ''), role: row ? 'navigation' : null, 'aria-label': row ? '챕터 일곱' : null}, chapList(a).map(([k, t, href]) => href ? h('a', {class: 'cp' + (k === now ? ' now' : ''), href, 'aria-current': k === now ? 'page' : null}, h('i', {text: k}), h('span', {text: t})) : h('span', {class: 'cp'}, h('i', {text: k}), h('span', {text: t + ' ?'}))));
+  const el = h('div', {class: 'chaps' + (row ? ' row' : ''), role: row ? 'navigation' : null, 'aria-label': row ? '7단 길' : null}, chapList(a).map(([k, t, href]) => href ? h('a', {class: 'cp' + (k === now ? ' now' : ''), href, 'aria-current': k === now ? 'page' : null}, h('i', {text: k}), h('span', {text: t})) : h('span', {class: 'cp'}, h('i', {text: k}), h('span', {text: t + ' ?'}))));
   return el;
 }
 function chapNext(a, now) {
   const L = chapList(a), i = L.findIndex(x => x[0] === now), nx = L[i + 1];
-  return nx?.[2] ? h('a', {class: 'more chap-next', href: nx[2], text: '다음 챕터 · ' + nx[0] + ' ' + nx[1] + ' ›'}) : h('a', {class: 'more chap-next', href: '#/w/' + enc(a), text: '회사로 돌아가기 ›'});
+  return nx?.[2] ? h('a', {class: 'more chap-next', href: nx[2], text: '다음 단 · ' + nx[0] + ' ' + nx[1] + ' ›'}) : h('a', {class: 'more chap-next', href: '#/w/' + enc(a), text: '회사로 돌아가기 ›'});
 }
 async function vIndex(code) {
   await Promise.all([need('core'), need('mkt'), need('home')]);
@@ -488,12 +656,15 @@ async function vShorts(a) {
     const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, sb);
     const sec = h('section', {class: 'sh', 'data-i': String(i), 'aria-label': (i + 1) + ' / ' + fs.length},
       h('p', {class: 'k', text: f.k}), h('p', {class: 'l1', text: f.l1}), h('p', {class: 'bg ' + (f.bc || ''), text: f.big}), h('p', {class: 'l2', text: f.l2}),
-      f.ratio ? [h('div', {class: 'ratio', 'aria-hidden': 'true'}, h('i', {css: {flex: String(f.ratio.up), background: COLOR.up}}), h('i', {css: {flex: String(f.ratio.fl), background: COLOR.fl}}), h('i', {css: {flex: String(f.ratio.dn), background: COLOR.dn}})),
-        h('p', {class: 'rl'}, h('span', {class: 'up', text: '오름 ' + num(f.ratio.up)}), h('span', {}, '그대로', ' ' + num(f.ratio.fl)), h('span', {class: 'dn', text: '내림 ' + num(f.ratio.dn)}))] : null,
-      f.mini ? (() => { const s = lineSvg(f.mini, {w: 300, ht: 100, stretch: true}); s?.classList.add('mini'); return s; })() : null,
+      f.ratio ? [(() => { const t = f.ratio.up + f.ratio.fl + f.ratio.dn || 1, s = sv('svg', {class: 'ratio', viewBox: '0 0 100 10', preserveAspectRatio: 'none', 'aria-hidden': 'true'}); let x = 0; // 비율 막대 = 그림(svg) — 남는 높이를 채워도 빈 곳으로 안 셈([10] 9)
+          for (const [v, c] of [[f.ratio.up, COLOR.up], [f.ratio.fl, COLOR.fl], [f.ratio.dn, COLOR.dn]]) { const w = v / t * 100; if (w > 0) s.append(sv('rect', {x: x.toFixed(3), y: 0, width: w.toFixed(3), height: 10, fill: c})); x += w; } return s; })(),
+        h('p', {class: 'rl'}, h('span', {class: 'up', text: '오름 ' + num(f.ratio.up)}), ' · ', h('span', {}, '그대로', ' ' + num(f.ratio.fl)), ' · ', h('span', {class: 'dn', text: '내림 ' + num(f.ratio.dn)}))] : null, // 한 줄 · 왼쪽 줄 하나([10] 7)
+      f.mini ? (() => { const s = lineSvg(f.mini, {w: 300, ht: 100, stretch: true}); s?.classList.add('mini'); return s; })() : null, // 선이 남는 높이를 채움 — 빈 곳 줄임([10] 9)
       f.mini && f.ml ? h('p', {class: 'ml', text: f.ml}) : null, // 작은 선의 기간 — 큰 숫자(하루)와 선(여러 날)의 색이 달라도 헷갈리지 않게
-      h('div', {class: 'bub'}, h('img', {alt: '', src: '/media/makbi-icon.svg'}), h('span', {text: '고도리는 지난 기록만 따라 말해요'})),
-      i === 0 ? h('p', {class: 'hint', text: '위로 밀면 다음 사실이에요'}) : null, side);
+      f.id === 'us' ? (() => { const rs = (D.home?.us?.rows || []).slice(0, 3).filter(r => Number.isFinite(r?.chg)), mx = Math.max(...rs.map(r => Math.abs(r.chg)), 0.01); // 미국 장 — 세 지수 하루 막대(빈 곳 줄임 [10] 9 · 글은 위 두 줄과 같은 값)
+        return rs.length ? h('div', {class: 'bars'}, rs.map(r => [h('p', {class: 'br'}, h('span', {text: r.name}), h('span', {class: cls(r.chg), text: p2(r.chg)})), (() => { const b = sv('svg', {class: 'bt', viewBox: '0 0 100 10', preserveAspectRatio: 'none', 'aria-hidden': 'true'}); b.append(sv('rect', {x: 0, y: 0, width: 100, height: 10, fill: '#1C1F26'}), sv('rect', {x: 0, y: 0, width: Math.max(2, Math.abs(r.chg) / mx * 100).toFixed(1), height: 10, fill: COLOR[cls(r.chg)]})); return b; })()])) : null; })() : null,
+      h('div', {class: 'bub'}, h('span', {text: '고도리는 지난 기록만 따라 말해요'}), h('img', {alt: '', src: '/media/makbi-icon.svg'})), // 글이 먼저 — 글 시작이 위 글과 같은 줄([10] 7)
+      side, i === 0 ? h('p', {class: 'hint', text: '위로 밀면 다음 사실이에요'}) : null); // 보기 · 보내기 = 글 아래 한 줄(옆 76px 자리 · 14px 글 없앰 [10] 5 · 8)
     box.append(sec);
   });
   const mark = i => bar.querySelectorAll('i').forEach((e, k) => e.classList.toggle('on', k <= i));
@@ -518,10 +689,11 @@ async function vChannel(a) {
   members.sort((p, q) => capOf(q) - capOf(p) || p.localeCompare(q));
   const banner = h('div', {class: 'banner', 'aria-hidden': 'true'}, lineSvg(ch.v, {w: 360, ht: 100, stretch: true}));
   const nodes = [banner,
-    h('div', {class: 'chhead'}, h('span', {class: 'av lg', 'aria-hidden': 'true', text: first(kind === 'g' ? ch.short || ch.name : ch.name)}), h('div', {}, h('h1', {text: name}),
-      h('small', {text: '회사 ' + num(members.length) + '곳' + (kind === 'i' && g ? ' · ' + g.short + ' 갈래' : '') + (kind === 'g' ? ' · 업종 ' + inds.length + '개' : '')}))),
+    h('div', {class: 'chhead'}, h('div', {}, h('h1', {text: name}), // 글이 먼저 · 동그라미는 오른쪽 끝 — 글 시작이 아래 줄들과 같은 왼쪽 줄(2026-10-18 [10] 7)
+      h('small', {text: '회사 ' + num(members.length) + '곳' + (kind === 'i' && g ? ' · ' + g.short + ' 갈래' : '') + (kind === 'g' ? ' · 업종 ' + inds.length + '개' : '')})),
+      h('span', {class: 'av lg', 'aria-hidden': 'true', text: first(kind === 'g' ? ch.short || ch.name : ch.name)})),
     h('div', {class: 'chan'}, h('span', {class: 'ws', text: '20거래일 · ' + md(X.core.base) + '부터'}), subBtn(key, name)),
-    h('div', {class: 'stats'}, h('div', {}, h('small', {text: '한 회사 한 표'}), h('b', {class: cls(ch.chg), text: pct(ch.chg)})), h('div', {}, h('small', {text: '큰 회사는 크게'}), h('b', {class: cls(ch.cwChg), text: pct(ch.cwChg)})))];
+    h('div', {class: 'stats chs'}, h('div', {}, h('small', {text: '한 회사 한 표'}), h('b', {class: cls(ch.chg), text: pct(ch.chg)})), h('div', {}, h('small', {text: '큰 회사는 크게'}), h('b', {class: cls(ch.cwChg), text: pct(ch.cwChg)})))]; // 두 숫자 = 한 칸 두 줄(이름 왼쪽 · 숫자 오른쪽 끝)
   if (kind === 'g' && ch.say) nodes.push(h('p', {class: 'note', text: ch.say}));
   const tabs = kind === 'g' ? [['co', '회사'], ['ind', '업종']] : [['co', '회사']];
   const pane = h('div', {}), tabBar = h('div', {class: 'ctabs', role: 'tablist'});
@@ -551,8 +723,12 @@ async function vSub() {
   const X = ix(); if (!X) return {title: '관심', nodes: noData()};
   const ks = subs().filter(k => (k.startsWith('g:') && X.grp.has(k.slice(2))) || (k.startsWith('i:') && X.ind.has(k.slice(2))));
   const cos = laters().filter(c => X.co[c]);
-  const nodes = [h('h1', {class: 'h', text: '관심'}), h('p', {class: 'note', text: '회사 ' + num(cos.length) + '곳 · 업종 · 갈래 ' + num(ks.length) + '개 · 이 기기에만 남아요.'})];
+  let Hm = null; try { Hm = await mod('hold'); } catch (e) { console.error(e); } // 가입 여부 · 소식 줄(p-hold — 2026-10-18 [4] 4 · [7] 7)
+  const lead = h('p', {class: 'note'}), leadText = k => '회사 ' + num(cos.length) + '곳 · 업종 · 갈래 ' + num(ks.length) + '개 · ' + k;
+  if (typeof Hm?.liveNote === 'function') Hm.liveNote(lead, leadText); else lead.textContent = leadText('이 기기에만 남아요.'); // 끝 말 = 가입 여부(가입 안 함 「이 기기에만 남아요.」 · 가입함 「카카오로 지켜요.」)
+  const nodes = [h('h1', {class: 'h', text: '관심'}), lead];
   if (ks.length) nodes.push(h('div', {class: 'avs'}, ks.map(k => { const nm = chanName(k); return h('a', {href: chanHref(k)}, h('span', {class: 'av lg on', 'aria-hidden': 'true', text: first(nm)}), h('small', {text: nm.replace(/ (갈래|업종)$/, '')})); })));
+  if (ks.length && typeof Hm?.news === 'function') { try { const sb = await Hm.news(X, ks); if (sb) nodes.push(sb); } catch (e) { console.error(e); } } // [7] 7 소식 줄 — 담은 곳의 뽑힘 · 옮김 · 빠짐 · 오늘 가장 많이 움직인 곳을 날짜 새 것 먼저(오늘 가장 많이 움직인 곳 카드는 이 줄로 합침)
   // 관심 회사 — 줄 = 작은 선(20거래일) · 이름 · 업종 · 20거래일 % · 관심 담음(누르면 빼고 · 다시 누르면 담음)
   nodes.push(h('h2', {class: 'sec', text: '관심 회사'}));
   if (cos.length) {
@@ -573,11 +749,7 @@ async function vSub() {
   nodes.push(h('p', {class: 'note', text: md(X.mkt.asOf) + ' 장 마감 · 담은 업종 · 갈래 ' + ks.length + '개'}));
   for (const k of ks) {
     const ch = k.startsWith('g:') ? X.grp.get(k.slice(2)) : X.ind.get(k.slice(2));
-    const mem = k.startsWith('g:') ? (ch.inds || []).flatMap(n => X.ind.get(n)?.members || []) : ch.members || [];
-    let top = null;
-    for (const m of mem) { const o = X.co[m]; if (!o || odd(o.l)) continue; const d = dayOf(o.l); if (d != null && (!top || Math.abs(d) > Math.abs(top.d))) top = {m, o, d}; }
     nodes.push(card(chanHref(k), thumb(ch.v, '20일', {x: ch.chg}), chanName(k) + ', 20거래일 한 회사 한 표 ' + pct(ch.chg), '큰 회사는 크게 ' + pct(ch.cwChg), first(chanName(k))));
-    if (top) nodes.push(h('a', {class: 'nx', href: '#/w/' + top.m}, thumb(top.o.l, '20일', {x: c20(top.o)}), h('div', {}, h('small', {text: '오늘 가장 많이 움직인 곳'}), h('b', {text: top.o.n}), h('small', {}, '하루 ', h('b', {class: cls(top.d), text: pct(top.d)})))));
   }
   return {title: '관심', nodes};
 }
@@ -590,25 +762,18 @@ const asNodes = d => (d == null ? [] : d instanceof Node ? [d] : Array.isArray(d
 async function vMe() {
   await Promise.all([need('core'), need('mkt')]);
   const X = ix(), hist = store.get(K_HIST, []).filter(c => X?.co?.[c]), nodes = [];
-  let hold = [];
-  try { const Hm = await mod('hold'); hold = asNodes(await Hm.render()); } catch (e) { console.error(e); }
+  let hold = [], Hm = null;
+  try { Hm = await mod('hold'); hold = asNodes(await Hm.render()); } catch (e) { console.error(e); }
   if (!hold.some(n => n.matches?.('h1') || n.querySelector?.('h1'))) nodes.push(h('h1', {class: 'h', text: '보유종목'})); // 제목 = 탭 이름(규칙 2) — 모듈이 제목을 그리면 그것만
   if (hold.length) nodes.push(...hold);
   else nodes.push(h('p', {class: 'note', text: '? 보유종목 칸을 아직 열지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
-  nodes.push(h('div', {class: 'lw'}, m4letter())); // 사장님 편지(격언 열 가지 · 친구 소개 · 상품권) — 2026-10-17 17:54 명령 1 · 21:10 [2] 5 그대로
-  nodes.push(h('h2', {class: 'sec', text: '바로 가기'}), h('div', {class: 'lst'},
-    h('a', {href: '#/gdr'}, '고도리 칸 · 어떻게 골랐나', h('span', {text: '›'})),
-    h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})), // [2] 9 「편지 여는 밤은 보유종목의 바로 가기에 남겨라」
-    h('a', {href: oldOr('today', '#/today')}, '오늘 시장 · 지수 · 사고팔기 · 미국', h('span', {text: '›'})),
-    h('a', {href: oldOr('surge', '#/surge')}, '급등 다섯 칸', h('span', {text: '›'})),
-    h('a', {href: oldOr('cal', '#/cal')}, '달력 · 지켜보는 곳', h('span', {text: '›'})),
-    h('a', {href: oldOr('cond', '#/cond')}, '조건 찾기', h('span', {text: '›'})),
-    h('a', {href: oldOr('talk', '#/talk')}, '이야기 칸', h('span', {text: '›'})),
-    h('a', {href: oldOr('time', '#/time')}, '봉인', h('span', {text: '›'})),
-    h('a', {href: oldOr('up', '#/up')}, '업데이트 기록', h('span', {text: '›'})),
-    h('a', {href: oldOr('info', '#/info')}, '도움말 · 이 사이트는?', h('span', {text: '›'}))));
+  const lw = h('div', {class: 'lw'}, m4letter()); // 사장님 편지(격언 열 가지 · 친구 소개 · 상품권) — 2026-10-17 17:54 명령 1 · 21:10 [2] 5 그대로(글은 손대지 않음)
+  nodes.push(typeof Hm?.foldLetter === 'function' ? Hm.foldLetter(lw) : lw); // 첫 화면 ⅓ 높이로 접고 「펼치기」(2026-10-18 [7] 8 · p-hold foldLetter)
+  // 바로 가기 = 내 것만(2026-10-18 [7] 9 · [4] 5 · 9 — 편지 여는 밤 · 기록 파일로 받기 · 가입한 사람만 탈퇴 · p-hold shortcuts) — 오늘 시장 · 급등 · 달력 · 조건 · 이야기 · 봉인 · 업데이트 · 도움말 고리는 뺌(첫 화면 칩 · 도움말 쪽으로)
+  if (typeof Hm?.shortcuts === 'function') nodes.push(...Hm.shortcuts());
+  else nodes.push(h('h2', {class: 'sec', text: '바로 가기'}), h('div', {class: 'lst'}, h('a', {href: '/letter.html'}, '편지 여는 밤', h('span', {text: '›'})))); // [2] 9 「편지 여는 밤은 보유종목의 바로 가기에 남겨라」
   // 본 기록(본 회사 열둘 · 이 기기에만) — 지우기는 본 기록만(관심 회사는 관심 칸에서 하나씩 뺌)
-  nodes.push(h('h2', {class: 'sec', text: '본 기록'}), h('p', {class: 'note', text: '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.'}));
+  nodes.push(h('h2', {class: 'sec', text: '본 기록'}), typeof Hm?.keepNote === 'function' ? Hm.keepNote() : h('p', {class: 'note', text: '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.'})); // 가입한 사람에게만 「카카오로 지켜요.」(2026-10-18 [4] 4)
   if (hist.length) {
     nodes.push(h('div', {class: 'row'}, hist.slice(0, 12).map(c => h('a', {href: '#/w/' + c}, thumb(X.co[c].l, '20일', {x: c20(X.co[c])}), h('b', {text: X.co[c].n})))));
     const clr = h('button', {type: 'button', text: '본 기록 지우기'}, h('span', {text: '›'}));
@@ -769,6 +934,7 @@ async function route(force) {
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
   const tabName = k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름
   document.title = L((tabName ?? out.title) + ' · ' + NAME); // 영어면 창 제목도(엔진은 body 만 봄)
+  glossView(root); // 낱말표(site/next/glossary.js) — 한국어면 이 화면 · 창 제목 · 뒤에 그려지는 칸의 옛 낱말을 바꿈 · 영어면 영어 엔진 뒤에 「20 trading days」만
   document.body.classList.toggle('noscroll', !!out.noScroll);
   window.scrollTo(0, out.noScroll ? 0 : scrollMem.get(hash) ?? 0);
 }
