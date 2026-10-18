@@ -8,8 +8,10 @@
    주소(회사 주식): <곳>#/s/<번호>/<보낸 날>/<그날 값>/<s|a>[/<말>] — s = 보내기 · a = 같이 따져 줘 · 말 = UTF-8 → base64url(150바이트까지 · 200자 안)
    render(arg) — 친구가 연 주소: 종목 이름(맨 위 한 줄) → 왜 사? 질문부터 → 다 답한 뒤에 보낸 사람 말 · 같이 따져 줘면 「반토막 난다면 왜일까?」 → 맨 밑에 보낸 날 값 · 오늘 값(그림 한 장 · 사장님 2026-10-18 [5] 10 「질문을 맨 위로 · 값 칸은 질문 뒤로」)
    보안 규칙 안: innerHTML · 글 속 style 없음 · 다른 주소 스크립트 없음 — 이 파일은 카카오 도구도 카카오 주소도 받지 않음
-   카톡(사장님 2026-10-18 [2] 2 ~ 7 · 일꾼 K2c): 서버가 켜져 있고 카카오 도구가 켜졌을 때만(NX.kakao.sdkReady) — 보내기 = 카카오 그림 카드 하나(단추 둘: 「카카오로 시작하기」 · 「그냥 보기」) · 글상자에 그 카드 미리보기 ·
-     offerBox() = 매매일지를 끝낸 뒤 한 번 뜨는 「이 기록 지키기」 칸(kakao.js 가 부름). 꺼져 있으면(NX.kakao 없음 · on false · 도구 없음) 한 줄도 안 돌고 휴대폰 공유 창(글 + 주소)으로 감
+   카톡(사장님 2026-10-18 [2] 2 ~ 7 · 일꾼 K2c → 2026-10-18 16:39 「진화가 본질인 명령문」 [6] · [7] · 일꾼 KB1): 공유 스위치가 켜졌고 카카오 도구가 켜졌을 때만(NX.kakao.share · sdkReady) —
+     보내기 = 카카오 그림 카드 하나(종목 이름 · 보낸 사람 말 · 보낸 날 값 · 단추: 가입이 꺼짐 = 「열어 보기」 하나 / 가입이 켜짐 = 「카카오로 시작하기」 · 「그냥 보기」) · 글상자에 그 카드 미리보기 ·
+     빠른 말 셋은 누르는 즉시 보냄(카톡 단추 1 + 빠른 말 1 = 누름 두 번에 카톡 친구 고르기) · 보내는 글 첫 줄 = 종목 이름 · 그날 값(저절로 · 칠 것 0) · 급등 줄은 반값 한 줄(halfLine)
+     offerBox() = 매매일지를 끝낸 뒤 한 번 뜨는 「이 기록 지키기」 칸(kakao.js 가 부름). 꺼져 있으면(NX.kakao 없음 · 공유 꺼짐 · 도구 없음) 카드 길은 한 줄도 안 돌고 휴대폰 공유 창(글 + 주소) → 글 + 주소 복사로 감
    이름은 brand.js 한 곳 · 거르는 말은 words.js 한 곳 */
 import {sendHits} from './words.js';
 import {shareButtons, kakaoButton} from './share-btn.js'; // 보내기 단추 한 곳(사장님 2026-10-18 16:39 [6] 2) — 옛 부르는 곳을 위해 아래에서 다시 내보냄
@@ -106,7 +108,7 @@ function toast(t) { const e = h('p', {class: 'ps-toast', role: 'status', text: t
 
 /* ───── 카톡 그림 카드 · 가입 권유(사장님 2026-10-18 [2] 2 ~ 8) ─────
    카카오 도구 · 서버 길은 NX.kakao(site/next/kakao.js)가 맡음 — 여기서는 카드에 무엇을 담을지 · 어떻게 보일지만 정함
-   NX.kakao 가 없거나(소개 · 편지 쪽) 꺼졌으면(on !== true) kk() 가 null → 아래 길은 한 줄도 안 돎 */
+   NX.kakao 가 없거나(소개 · 편지 쪽) 가입 · 공유가 다 꺼졌으면 kk() 가 null → 아래 길은 한 줄도 안 돎 */
 const kk = () => { try { const K = nx()?.kakao; return K && (K.on === true || K.share === true) ? K : null; } catch { return null; } }; // 가입(서버) 또는 공유 스위치가 켜짐(사장님 2026-10-18 16:39 [7] 1 · 스위치 둘)
 export const CARD_BTN = Object.freeze(['카카오로 시작하기', '그냥 보기']); // 가입이 켜졌을 때 카드 단추 둘 · 이 차례(1 = 가입 길 · 2 = 가입 없이 보기)
 export const CARD_OPEN = '열어 보기'; // 가입이 꺼졌을 때 카드 단추 하나([7] 5)
@@ -121,8 +123,10 @@ export function cardOf({name, msg = '', lead = '', half = '', price, day, see, s
   return {title: L(String(name)), value, said, half: half || null, description: [...said, half, value].filter(Boolean).join('\n'), imageUrl: origin + CARD_IMG, url: see,
     buttons: join ? [{title: L(CARD_BTN[0]), url: start}, {title: L(CARD_BTN[1]), url: see}] : [{title: L(CARD_OPEN), url: see}]};
 }
-/** 급등 카드 한 줄([6] 8) — 「36곳 중 n곳이 1년 안에 반값 아래로 떨어진 적 있어요」 · n · 36 = /next/data/half36.json {n, of}(일꾼 KG) · 없거나 깨지면 '' (짓지 않음) */
-export const halfLine = j => (j && Number.isInteger(j.n) && Number.isInteger(j.of) && j.of > 0 && j.n >= 0 && j.n <= j.of ? `${j.of}곳 중 ${j.n}곳이 1년 안에 반값 아래로 떨어진 적 있어요` : '');
+/** 급등 카드 한 줄([6] 8 · 글은 리드가 정함 2026-10-18 17:27 · 사장님 17:25 「현명하게 해」) — 「1년 전 날아오른 36곳 중 n곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요」
+    n · 36 = /next/data/half36.json {n, of}(일꾼 KG · 1년 전 이맘때 5거래일 오름 상위 36곳) · 파일이 없거나 깨졌거나 못 센 곳(unknown)이 있으면 '' — 줄을 뺌(짓지 않음)
+    「1년 전 날아오른 · 그 뒤」를 붙인 까닭: 급등 칩의 옛 줄 「36곳 중 31곳이 지난 1년 안에 …」(지금 36곳의 지난 1년)과 셈이 달라 숫자가 헷갈리지 않게 */
+export const halfLine = j => (j && Number.isInteger(j.n) && Number.isInteger(j.of) && j.of > 0 && j.n >= 0 && j.n <= j.of && !(Number(j.unknown) > 0) ? `1년 전 날아오른 ${j.of}곳 중 ${j.n}곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요` : '');
 let halfP = null;
 function halfOf(given) {
   if (given && halfLine(given)) return Promise.resolve(halfLine(given));

@@ -7,8 +7,8 @@
      · code  = 종목 번호 6자리(대문자 · 숫자) — 없거나 틀리면 단추를 만들지 않고 null 을 돌려줌
      · name  = 화면에 보이는 종목 이름 그대로(수익 숫자 넣지 않음)
      · price = 오늘 값(원 · 양수) · day = 그 값의 날 'YYYY-MM-DD' — 모르면 null(글상자가 자료 co/<번호>.json 에서 채움 · 사람이 칠 것 0)
-     · kind  = 'share'(보통) | 'surge'(급등 줄 — 받는 카드에 「36곳 중 n곳이 1년 안에 반값 아래로 떨어진 적 있어요」 한 줄이 붙음 ·
-               n 은 글상자가 /next/data/half36.json {n, of} 에서 읽음 · 없거나 깨지면 그 줄을 뺌 · 짓지 않음)
+     · kind  = 'share'(보통) | 'surge'(급등 줄 — 받는 카드 · 보내는 글에 「1년 전 날아오른 36곳 중 n곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요」 한 줄이 붙음 ·
+               n 은 글상자가 /next/data/half36.json {n, of} 에서 읽음 · 없거나 깨지면 그 줄을 뺌 · 짓지 않음 · 글은 p-share.js halfLine 한 곳)
      · half  = {n, of}(넘기면 그 값 · 안 넘기면 파일) · 수익률 · 오른 폭은 받지 않음(넣어도 보내지 않음)
    단추 꼴(모양 = site/next/app.css 「카톡 단추」 묶음 — 앱의 모든 쪽에 늘 붙어 있음 · 글 속 style 없음):
      <button type="button" class="kk-btn" data-kk="<번호>" data-kind="share|surge" aria-label="<이름> 카톡으로 보내기">

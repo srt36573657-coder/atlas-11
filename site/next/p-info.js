@@ -34,7 +34,7 @@ function funnel(C) {
 const ul = (...xs) => h('ul', {class: 'pinfo-ul'}, ...xs.filter(Boolean).map(t => (t instanceof Node ? t : h('li', {text: t}))));
 
 export async function render() {
-  const C = await NX.need('core');
+  const [C] = await Promise.all([NX.need('core'), NX.need('sum')]); // sum = 첫 화면 요약 — 「하루 4번」 글을 첫 화면과 같게(fourADay · 일꾼 KC)
   if (!C) return {title: '골똘이는 어떻게 셌나요', nodes: NX.noData()};
   const F = C.facts ?? {}, RU = C.rules ?? {}, root = h('div', {class: 'pinfo', 'data-page': 'info'});
   root.append(h('h1', {class: 'wt', text: '골똘이는 어떻게 셌나요'}),

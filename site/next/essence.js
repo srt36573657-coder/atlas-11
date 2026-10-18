@@ -9,6 +9,7 @@
      essenceLines(d)                                // [줄1, 줄2, 줄3] = 첫 화면 #view > section.ess 의 [data-ess="1"] · [data-ess="2"] · [data-ess="3"] 글(textContent) 그대로
      essenceProblems({mkt, summary})                // 요약의 회사 수 · 받은 때 꼴이 자료와 맞나(빈 줄 = 맞음)
      fourADay(summary)                              // 「하루 4번」 글을 써도 되나([5] 4 — 요약의 fourADay 가 true 일 때만)
+     fourText(s, summary) · fourDeep(x, summary)    // 「하루 4번 …」 글을 참인 말로(FOUR_ALT · 옛 쪽과 맞대는 검사가 씀)
 
    셈(바꾸면 화면 · 요약 · 본질 문이 함께 바뀜)
      n  = /atlas/data/mkt.json 의 companies 칸 수 — 코스피 · 코스닥 보통주(규칙 61 · 우선주 · 스팩 · 리츠 · 펀드 뺌) · 회사마다 쪽(co/<번호>.json)과 지난 종가가 있음
@@ -73,3 +74,19 @@ export function essenceProblems({mkt = null, summary = null} = {}) {
 }
 /** 「하루 4번」 글을 써도 되나([5] 4) — 요약이 없거나 false 면 아니오(참인 말 「업데이트 때마다」를 씀) */
 export const fourADay = summary => summary?.fourADay === true;
+/** 「하루 4번」 글과 그 자리의 참인 말([5] 4) — 화면(app.js 약속 칸 · p-today · p-info · p-surge · p-cal)이 fourADay 가 아닐 때 쓰는 말과 같은 표
+ *  옛 쪽(/atlas/ · 손대지 않음 · 늘 「하루 4번」)과 맞대는 검사(check_misc · check_surge · check_cal)가 옛 글을 이 표로 바꿔 맞댐(fourDeep) — 화면 글을 바꾸면 여기도 같이
+ *  (봉인 쪽 「회차마다(하루 4번)」 · 업데이트 기록 쪽 제목 「하루 4번」 · 자료 글(surge.json 「하루 4번 업데이트(10:00 · …) 때만 넣고 빼요」 · core.json rules.next)은
+ *   정해진 때를 말하는 글이라 표 밖 — 옛 쪽 · 새 쪽 같은 글 그대로 · 그래서 표는 화면 글 다섯 마디를 통째로 씀) */
+export const FOUR_ALT = Object.freeze([['하루 4번 새로 받아요', '업데이트 때마다 새로 받아요'], ['하루 4번 다시 센 기록', '업데이트 때마다 다시 센 기록'],
+  ['하루 4번 업데이트 때 정해요', '정해진 업데이트 때 정해요'], ['하루 4번 업데이트 때 적어요', '정해진 업데이트 때 적어요'], ['하루 4번 업데이트 때 다시 세요', '정해진 업데이트 때 다시 세요']]);
+/** 글 속 「하루 4번 …」 — 요약이 맞다고 할 때(fourADay)는 그대로 · 아니면 FOUR_ALT 의 참인 말로 */
+export const fourText = (s, summary) => (fourADay(summary) || typeof s !== 'string' ? s : FOUR_ALT.reduce((t, [a, b]) => t.split(a).join(b), s));
+/** 뽑은 것(글 · 줄 · 칸 묶음) 속 모든 글에 fourText — 검사가 옛 쪽 글에 씀(숫자 · 참 거짓 · 빈 값은 그대로) */
+export function fourDeep(x, summary) {
+  if (fourADay(summary)) return x;
+  if (typeof x === 'string') return fourText(x, summary);
+  if (Array.isArray(x)) return x.map(v => fourDeep(v, summary));
+  if (x && typeof x === 'object') return Object.fromEntries(Object.entries(x).map(([k, v]) => [k, fourDeep(v, summary)]));
+  return x;
+}

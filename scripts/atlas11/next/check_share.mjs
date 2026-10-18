@@ -143,11 +143,21 @@ if (want('static')) {
   if (!CB || CB[1] !== BTN_START || CB[2] !== BTN_SEE) fail('카드 단추 이름 · 차례(원문 [2] 2)', `${CB?.slice(1, 3)} ≠ ${BTN_START} · ${BTN_SEE}`);
   const OH = /OFFER_H = '([^']+)'/.exec(PJ)?.[1];
   if (OH !== OFFER_H) fail('권유 글(원문 [2] 7)', `「${OH}」 ≠ 「${OFFER_H}」`);
+  // 사장님 2026-10-18 16:39 원문([6] 9 「나도 보내기」 · [7] 5 「열어 보기」) — 화면 코드 글과 맞댐(일꾼 KB1)
+  const O16 = (await fs.readFile(path.join(ROOT, 'docs/design/kkolttori-2026-10-18/order-1639.txt'), 'utf8').catch(() => '')).replace(/\s+/g, ' ');
+  const S6 = (O16.split('[6 ·')[1] ?? '').split('[7 ·')[0] ?? '', S7 = (O16.split('[7 ·')[1] ?? '').split('[8 ·')[0] ?? '';
+  const AG_W = /「(나도 보내기)」/.exec(S6)?.[1], OPEN_W = /단추 「([^」]+)」\. 가입이 켜지면/.exec(S7)?.[1];
+  if (!AG_W || !OPEN_W) fail('사장님 원문 [6] 9 · [7] 5 를 order-1639.txt 에서 못 읽음', `${AG_W} · ${OPEN_W}`);
+  else {
+    if (/export const AGAIN = '([^']+)'/.exec(PJ)?.[1] !== AG_W) fail('친구 쪽 단추 글(원문 [6] 9 「나도 보내기」)', /export const AGAIN = '([^']+)'/.exec(PJ)?.[1]);
+    if (/export const CARD_OPEN = '([^']+)'/.exec(PJ)?.[1] !== OPEN_W) fail('가입이 꺼졌을 때 카드 단추 글(원문 [7] 5 「열어 보기」)', /export const CARD_OPEN = '([^']+)'/.exec(PJ)?.[1]);
+  }
   bump('모양 · 화면 코드 글 맞댐');
 }
 
 /* 실제 사이트와 같은 보안 규칙(CSP)으로 시험 — 쪽 문서마다 올리는 묶음의 머리말(scripts/atlas11/site_headers.mjs 한 곳)을 붙임 → 속 스타일 · 바깥 스크립트 · 바깥 연결이 있으면 콘솔 오류로 걸림 */
-const CSP = /Content-Security-Policy:\s*([^\n]+)/.exec((await import(path.join(ROOT, 'scripts/atlas11/site_headers.mjs')).catch(() => ({}))).HEADER_TOP ?? '')?.[1]?.trim() ?? null;
+const SH = await import(path.join(ROOT, 'scripts/atlas11/site_headers.mjs')).catch(() => ({})); // 올라가는 머리말 = SHARE_TOP(공유 열쇠가 들어오면 카카오 도구 주소 하나 · 오늘은 HEADER_TOP 과 같음)
+const CSP = /Content-Security-Policy:\s*([^\n]+)/.exec(SH.SHARE_TOP ?? SH.HEADER_TOP ?? '')?.[1]?.trim() ?? null;
 if (!CSP) fail('보안 머리말(CSP)을 site_headers.mjs 에서 못 읽음', 'HEADER_TOP');
 
 /* 주소 · 말 조각 — 이 검사가 따로 만들고 풂(UTF-8 base64url) */
@@ -171,10 +181,11 @@ if (!(SENT_PRICE > 0)) { console.error('보낸 날 값을 자료에서 못 셈',
 /* 브라우저 — 한 번에 하나 · 길마다 새 칸 */
 const exe = '/opt/pw-browsers/chromium', browser = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {});
 /** mode: 'share'(가짜 공유 창) · 'copy'(공유 창 없음 · 복사 됨) · 'show'(둘 다 막힘) · letter = 편지 서버 가짜(회원 · 봉인 · 초대장 · 사장님) */
-/** kakao: 'none'(그대로 — 앱이 NX.kakao 를 붙였으면 있고 아니면 없음) · 'off'(카카오 코드를 불러 둠 · 스위치는 저장소 그대로 = 꺼짐) · 'on'(가짜 서버 + 가짜 카카오 도구 — 시험 표시를 심음) ·
- *  kk = {member, ref, sdk(기본 있음), throws, flag(앞서 가입한 기기), meStatus} · ua = 사용자 에이전트 · en = 영어 사전을 원본(en-src.json)에서 바로(통합 전에도 새 틀이 보임) */
-async function newPage(width, height, {mode = 'share', letter = false, noDialog = false, kakao = 'none', kk = {}, ua = null, en = false} = {}) {
-  const ctx = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', ...(ua ? {userAgent: ua} : {})});
+/** kakao: 'none'(그대로 — 앱이 NX.kakao 를 붙였으면 있고 아니면 없음) · 'off'(카카오 코드를 불러 둠 · 스위치는 저장소 그대로 = 꺼짐) · 'on'(가입 · 공유 둘 다 켬 — 가짜 서버 + 가짜 카카오 도구 · 시험 표시를 심음) ·
+ *  'share'(공유 스위치만 켬 — 가짜 카카오 도구 · 가입 서버 없음 = 카카오 길 요청이 하나라도 나가면 걸림 · 사장님 2026-10-18 16:39 [7] 1 스위치 둘)
+ *  kk = {member, ref, sdk(기본 있음), throws, flag(앞서 가입한 기기), meStatus} · ua = 사용자 에이전트 · en = 영어 사전을 원본(en-src.json)에서 바로(통합 전에도 새 틀이 보임) · touch · mobile = 손가락 · 휴대폰 화면 흉내(네 곳 시험) */
+async function newPage(width, height, {mode = 'share', letter = false, noDialog = false, kakao = 'none', kk = {}, ua = null, en = false, touch = true, mobile = false} = {}) {
+  const ctx = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 1, hasTouch: touch, isMobile: mobile, locale: 'ko-KR', timezoneId: 'Asia/Seoul', ...(ua ? {userAgent: ua} : {})});
   if (CSP) await ctx.route('**/*', async r => { // 가장 먼저 걸어 둠(맨 나중에 불림) — 쪽 문서에만 머리말을 붙임
     if (r.request().resourceType() !== 'document') return r.fallback();
     try { const res = await r.fetch(); await r.fulfill({response: res, headers: {...res.headers(), 'content-security-policy': CSP}}); } catch { await r.fallback(); }

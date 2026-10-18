@@ -171,3 +171,4 @@ a.psurge-btn { display: flex; align-items: center; justify-content: center; min-
 .psurge-inn > .psurge-kr { border-bottom: 1px solid var(--m4-soft); }
 .psurge-inn > .psurge-kr:last-child { border-bottom: 0; }
 .psurge-kr > a.psurge-row { border-bottom: 0; }
+.psurge-g[data-kkrow] > a.psurge-inl { flex: 1 1 auto; min-width: 0; justify-content: flex-start; text-align: left; } /* 숨긴 곳 줄 — 이름 · 되돌리기 · 카톡 단추(오른쪽 끝) 차례 */

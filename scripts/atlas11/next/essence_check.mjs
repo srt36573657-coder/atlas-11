@@ -1,30 +1,36 @@
 #!/usr/bin/env node
-/* 본질 문 — 올리기 직전에 늘 도는 문(사장님 2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」 [2] 3 ~ 6 · [11] 6 · 일꾼 KA)
+/* 본질 문 — 올리기 직전에 늘 도는 문(사장님 2026-10-18(싱가포르) 16:39 「진화가 본질인 명령문」 [2] 3 ~ 6 · [11] 6 · 일꾼 KA)
    「essence_check.mjs를 올리기 직전 문(art_gate 등)에서 늘 돌려라. 걸리면 새 판을 올리지 않고 지금 사이트를 그대로 둔다.」
-   잣대 = docs/꼴똘이_본질.md(사장님 말씀으로만 고침) · 잠금 = config/atlas11/essence.lock.json · 낱말 = site/next/words.js RUIN(한 곳)
+   잣대 = docs/<이름>_본질.md(이름 = site/next/brand.js NAME · 사장님 말씀으로만 고침) · 잠금 = config/atlas11/essence.lock.json · 낱말 = site/next/words.js RUIN(한 곳)
 
    쓰는 법
-     node scripts/atlas11/next/essence_check.mjs --dist <폴더>        묶은 사이트(package.mjs → dist) 또는 site 같은 소스 폴더를 봄
-         [--render | --no-render]  브라우저 층(②④⑤⑥⑦을 실제 화면으로 · 기본 = playwright 가 있으면 돎 · 없으면 정적 · 자료 검사만)
-         [--pw <playwright 폴더>] [--json] [--out <결과.json>]
+     node scripts/atlas11/next/essence_check.mjs                       인자 없음 = 이 저장소의 site 폴더(소스)를 정적으로 봄(진화 회차 gh.mjs essenceFull 이 부름)
+     node scripts/atlas11/next/essence_check.mjs --dist <폴더>        묶은 사이트(package.mjs → dist) 또는 site 같은 소스 폴더를 봄 — 기본 정적(브라우저 없이 · 자료 셈)
+         [--render]  브라우저 층도(②④⑤⑦ 을 실제 화면으로 · 그 폴더를 잠깐 띄움) · [--pw <playwright 폴더>] [--now <ISO>] [--json] [--out <결과.json>]
      node scripts/atlas11/next/essence_check.mjs --files a,b,c          진화 가지 지킴: 지킴 파일을 건드렸으면 막음
      node scripts/atlas11/next/essence_check.mjs --diff <기준>..<끝>    (git diff --no-renames — 옮기기도 지우기 + 새 파일로 보임)
      import {checkDist, checkEssenceFile, protectedTouched, PROTECTED, essenceGate} from './essence_check.mjs'
+     올리기(scripts/atlas11/deploy_netlify.mjs art_gate 바로 뒤) = essenceGate({dist, render: false}) — 걸리면 「본질 문이 막음 — 지금 사이트 그대로」 · 올리지 않음
      브라우저 화면 검사만(깃허브 모든 쪽 검사 · 주소로): scripts/atlas11/next/check_essence.mjs --base <주소> --pw <폴더> --all [--shard k/n] --out <파일>
    끝 코드: 0 = 지나감 · 1 = 막음(까닭마다 ① ~ ⑦ 번호) · 2 = 보지 못함(올리기에서는 막음과 같음)
 
-   보는 것 일곱(명령문 [2] 5) — 정적(브라우저 없이) / 화면(브라우저 층)
+   보는 것 일곱(명령문 [2] 5) — 정적(브라우저 없이 · 올리기 문) / 화면(브라우저 층 · 모든 쪽 검사)
      ① 본질 파일 · 명령문 파일 sha256 = 잠금 파일의 마지막 줄 · 잠금 줄마다 at(날짜) · words(사장님 원문) · sha256 이 있음                         정적
-     ② 첫 화면 본질 세 줄 — 회사 수 n(atlas/data/mkt.json 회사 수를 따로 셈) · 받은 때(아래)를 essence.js essenceLines 가 만든 글과 맞댐 ·
-        app.js 가 essenceBox 를 첫 화면(vHomeAll)에서 이야기 입구 위에 그림 · 소개 쪽 · 창 설명의 회사 수도 자료와 같음                            정적 + 화면
+     ② 첫 화면 본질 세 줄 — 글 틀은 명령문 파일 [5] 2 ① ② ③ 에서 읽음(잠긴 사장님 글) · 회사 수 n = atlas/data/mkt.json 회사 칸을 따로 셈 ·
+        받은 때 = 저장소 업데이트 기록(reports/atlas11/t365/updates · 네이버 일봉을 받아 굴린 회차)에서 at 이 그 자료 home.json made 와 같은 것을 따로 찾음
+        (없으면 「?」) → essence.js 가 첫 화면과 같은 길(요약 파일 · sumOk)로 만든 세 줄과 맞댐 · app.js 가 essenceBox 를 첫 화면(vHomeAll)에서
+        이야기 입구 위에 그림 · 소개 쪽 · 창 설명에 박힌 회사 수도 자료와 같음                                                                       정적 + 화면
      ③ 망치는 길 낱말 0 — next/*.js 글(rename.mjs jsStrings) · next/*.html · /hello.html · /letter.html · /invite.html(+ 그 쪽 스크립트 글) ·
         next/data/*.json 글 · next/i18n/en.json 값 — words.js RUIN(갈래 = 본질 파일의 망치는 길 여덟과 같아야 함) · words.js 자신은 셈 밖           정적
-     ④ 꼴똘이 칸은 열한 질문 뒤에만 — p-gdr gdrSection 첫 문 = opened() · opened = 열한 답 기록 · 질문은 열하나(p-why QS) ·
-        다른 화면이 칸 번호(꼴똘이 칸 n번 · #/gdr/n)를 보이면 그 함수에 열한 질문 문이 있어야 함                                                    정적 + 화면
-     ⑤ 친구가 연 쪽(#/s/…)은 질문부터 — p-share render: 이름 → 질문 → 친구 말 · 친구 말 · 「나도 보내기」는 다 답한 뒤에만(reveal)                  정적 + 화면
-     ⑥ 보내는 글에 수익률 0 — p-share open(진짜 셈 · 브라우저 없는 가짜 쪽에서)을 오른 종목 · 급등 · 수익 숫자를 넣은 제목으로 불러
-        보내는 제목 · 글 · 주소 · 카톡 카드에 수익률 · 수익 숫자(words.js gainHits) 0 · 거르는 말이 수익 숫자를 아직 막는지                           정적(가짜 쪽) + 화면
-     ⑦ 오래된 날짜에 「?」 — essenceLines 에 오래된 받은 때를 넣으면 「?」 · 새것이면 「?」 없음 · 실제 자료로 낸 줄도 따로 센 나이와 맞음          정적 + 화면
+     ④ 칸(#/gdr)은 열한 질문 뒤에만 — p-gdr gdrSection 첫 문 = opened() · opened = 열한 답 기록 · 질문은 열하나(p-why QS) ·
+        다른 화면이 칸 번호(칸 n번 · #/gdr/n · 고른 곳)를 보이면 그 함수 또는 부르는 줄에 열한 질문 문이 있어야 함                                  정적 + 화면
+     ⑤ 친구가 연 쪽(#/s/…)은 질문부터 — p-share render: 이름 → 질문 → 친구 말 · 친구 말 · 「나도 보내기」는 다 답한 뒤에만(reveal) ·
+        질문 모듈을 못 받은 오류 길(catch)에서 여는 것은 막지 않고 적어 둠                                                                            정적 + 화면
+     ⑥ 보내는 글에 수익률 0 — 줄의 카톡 단추(share-btn.js shareButtons → pack)와 글상자(p-share.js open)를 브라우저 없는 가짜 쪽에서 진짜로 돌려
+        오른 종목(제목에 「+31.2%」) · 급등(반값 한 줄) · 같이 따져 줘 · 시황 쪽을 보냄 → 보낸 제목 · 글 · 주소(풀어서) · 주소 속 말 · 카톡 카드에
+        수익률 · 수익 숫자(words.js gainHits) 0 · 거르는 말(sendHits)이 수익 숫자를 아직 막는지                                                    정적(가짜 쪽)
+     ⑦ 오래된 날짜에 「?」 — essence.js OLD_HOURS 가 12 ~ 120시간 · 30일 전 받은 때를 넣으면 「?」 · 10분 전이면 「?」 없음 · 모르면 「?」 ·
+        실제 자료로 낸 줄도 따로 센 나이와 맞음                                                                                                       정적 + 화면
    보지 않는 것: 영상 · 예약 작업 · 진화 칸(사장님 기기) — 다른 일꾼의 검사 */
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
@@ -36,20 +42,28 @@ import {createRequire} from 'node:module';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {jsStrings} from './rename.mjs';
 import {RUIN, ruinHits, gainHits} from '../../../site/next/words.js';
+import {BRAND, NAME} from '../../../site/next/brand.js';
 
 const SELF = fileURLToPath(import.meta.url);
 export const ROOT = path.resolve(path.dirname(SELF), '../../..');
-export const ESSENCE_FILE = 'docs/꼴똘이_본질.md', LOCK_FILE = 'config/atlas11/essence.lock.json', ORDER_FILE = 'docs/design/kkolttori-2026-10-18/order-1639.txt';
+/** 본질 파일 = docs/<이름>_본질.md(이름은 brand.js 한 곳 — 이름이 바뀌고 파일 · 잠금이 안 따라오면 ① 이 막음) */
+export const ESSENCE_FILE = `docs/${NAME}_본질.md`, LOCK_FILE = 'config/atlas11/essence.lock.json', ORDER_FILE = 'docs/design/kkolttori-2026-10-18/order-1639.txt';
+/** 옛 이름의 본질 파일 길(brand.js was · 17:15 「꼴동이」 — 세 분 동안 쓴 이름이라 was 에 없음) — 진화 가지가 옛 길로 본질 파일을 되살리지 못하게 지킴 목록에 */
+export const ESSENCE_OLD = Object.freeze([...new Set([...BRAND.was.map(w => `docs/${w.ko}_본질.md`), 'docs/꼴동이_본질.md'])].filter(f => f !== ESSENCE_FILE));
 export const LOCK_SCHEMA = 'kkolttori-essence-lock-1';
 export const MARK = ['', '①', '②', '③', '④', '⑤', '⑥', '⑦'];
-export const CHECK_NAMES = Object.freeze({1: '본질 파일 해시', 2: '첫 화면 세 줄과 숫자', 3: '망치는 길 낱말 0', 4: '꼴똘이 칸은 열한 질문 뒤에만', 5: '친구가 연 쪽은 질문부터', 6: '보내는 글에 수익률 0', 7: '오래된 날짜에 「?」'});
-/** 오래됨 잣대(⑦ 따로 셈) — 받은 때가 지금보다 이만큼 넘게 앞이면 「?」가 붙어야 함 · essence.js 가 STALE_H 를 내보내면 그 값(그 값이 이 범위 밖이면 ②⑦ 실패) */
-export const STALE_H_DEFAULT = 72, STALE_H_RANGE = [12, 120];
+export const CHECK_NAMES = Object.freeze({1: '본질 파일 해시', 2: '첫 화면 세 줄과 숫자', 3: '망치는 길 낱말 0', 4: `${NAME} 칸은 열한 질문 뒤에만`, 5: '친구가 연 쪽은 질문부터', 6: '보내는 글에 수익률 0', 7: '오래된 날짜에 「?」'});
+/** 오래됨 잣대(⑦) — essence.js OLD_HOURS 가 이 범위 밖이면 막음(늘 「?」 이거나 한 달 지나도 「?」 없음을 막으려고) */
+export const STALE_H_RANGE = [12, 120];
+/** 업데이트 기록(② 받은 때 따로 셈) — 저장소 뿌리 기준 */
+export const UPDATES_DIR = 'reports/atlas11/t365/updates';
 
-/* ───────────── 지킴 파일(진화 가지 · [8] 10 「기계는 본질 파일, 망치는 길 목록, 잣대, 이 명령문을 스스로 고치지 못한다」) ───────────── */
-export const PROTECTED = Object.freeze([ESSENCE_FILE, LOCK_FILE, ORDER_FILE, 'config/atlas11/jinhwa-metrics.v1.json', 'site/next/words.js',
-  'scripts/atlas11/next/essence_check.mjs', 'tests/atlas11/essence-gate.test.mjs', 'scripts/atlas11/jinhwa/', 'lib/atlas11/jinhwa.mjs', 'lib/atlas11/tally.mjs',
-  'functions/atlas11/jinhwa.mjs', 'functions/atlas11/tally.mjs', '.github/workflows/atlas11-daily.yml', '.github/workflows/atlas11-evening.yml']);
+/* ───────────── 지킴 파일(진화 가지 · [8] 10 「기계는 본질 파일, 망치는 길 목록, 잣대, 이 명령문을 스스로 고치지 못한다」) ─────────────
+   카드(KA) 목록 + 문 자신의 두 끝(올리기 deploy_netlify.mjs 의 본질 문 줄 · 모든 쪽 화면 검사 껍데기 check_essence.mjs) — 진화 가지가 문을 빼거나 무르게 못 하게 */
+export const PROTECTED = Object.freeze([ESSENCE_FILE, ...ESSENCE_OLD, LOCK_FILE, ORDER_FILE, 'config/atlas11/jinhwa-metrics.v1.json', 'site/next/words.js',
+  'scripts/atlas11/next/essence_check.mjs', 'scripts/atlas11/next/check_essence.mjs', 'scripts/atlas11/deploy_netlify.mjs', 'tests/atlas11/essence-gate.test.mjs',
+  'scripts/atlas11/jinhwa/', 'lib/atlas11/jinhwa.mjs', 'lib/atlas11/tally.mjs', 'functions/atlas11/jinhwa.mjs', 'functions/atlas11/tally.mjs',
+  '.github/workflows/atlas11-daily.yml', '.github/workflows/atlas11-evening.yml']);
 /** git 이 감싼 이름(「"docs/\352\274\264…"」 · 옮김 「a -> b」 · 「./a」 · 윈도 빗금 · 맥 NFD 한글)을 저장소 기준 이름으로 */
 export function normRel(f) {
   let s = String(f ?? '').trim();
@@ -215,19 +229,36 @@ function bodyAt(code, at) {
   let d = 0; for (let k = o; k < code.length; k++) { if (code[k] === '{') d++; else if (code[k] === '}' && --d === 0) return {start: o, end: k + 1}; }
   return null;
 }
-/** 이름 붙은 함수(function x( · const x = (…) => · const x = async …) 몸통 */
-function fnBody(code, name) {
-  const re = new RegExp(`(?:^|[\\s;])(?:export\\s+)?(?:async\\s+)?function\\s+${name}\\s*\\(|(?:const|let|var)\\s+${name}\\s*=\\s*(?:async\\s*)?(?:\\([^)]*\\)|\\w+)\\s*=>`, 'm');
-  const m = re.exec(code); if (!m) return null;
-  const b = bodyAt(code, m.index + m[0].length - 1); return b ? {...b, head: m.index} : null;
+/** 여는 ( 의 짝 ) 다음 자리 — 기본값 「opt = {}」 · 「({a, b}) =>」 의 { } 를 몸통으로 읽지 않게 */
+function afterParens(code, open) {
+  let d = 0; for (let k = open; k < code.length; k++) { if (code[k] === '(') d++; else if (code[k] === ')' && --d === 0) return k + 1; }
+  return -1;
 }
-/** 자리 at 를 품은 맨 바깥 함수의 이름 · 몸통(맨 위 단 function / const = …) */
+/** 이름 붙은 함수(function x( · const x = (…) => · const x = async …) 몸통 — 화살 함수가 { 없이 값 하나면 그 줄 끝까지 */
+function fnBody(code, name) {
+  const re = new RegExp(`(?:^|[\\s;])(?:export\\s+)?(?:async\\s+)?function\\s*\\*?\\s*${name}\\s*\\(|(?:const|let|var)\\s+${name}\\s*=\\s*(?:async\\s*)?(\\(|[\\w$]+\\s*=>)`, 'm');
+  const m = re.exec(code); if (!m) return null;
+  let at = m.index + m[0].length;
+  if (m[0].endsWith('(')) { at = afterParens(code, at - 1); if (at < 0) return null; }
+  const arrow = /^\s*=>\s*/.exec(code.slice(at, at + 40));
+  if (arrow) at += arrow[0].length;
+  if (code[at] !== '{' && !/^\s*\{/.test(code.slice(at, at + 40))) { const e = code.indexOf('\n', at); return {start: at, end: e < 0 ? code.length : e, head: m.index}; }
+  const b = bodyAt(code, at); return b ? {...b, head: m.index} : null;
+}
+/** 자리 at 를 품은 맨 바깥 선언(맨 위 단 function / const · let = …)의 이름 · 몸통 — 함수면 그 몸통 · 아니면 다음 맨 위 선언 앞까지 */
 function enclosingTop(code, at) {
-  const re = /^(?:export\s+)?(?:async\s+)?function\s*\*?\s*([\w$]+)\s*\(|^(?:export\s+)?(?:const|let)\s+([\w$]+)\s*=/gm;
-  let best = null, m;
-  while ((m = re.exec(code)) && m.index <= at) best = {name: m[1] ?? m[2], head: m.index};
+  const re = /^(?:export\s+)?(?:async\s+)?function\s*\*?\s*([\w$]+)\s*\(|^(?:export\s+)?(?:const|let|var)\s+([\w$]+)\s*=/gm;
+  let best = null, next = code.length, m;
+  while ((m = re.exec(code))) { if (m.index <= at) best = {name: m[1] ?? m[2], head: m.index, fn: m[1] != null, eq: m.index + m[0].length}; else { next = m.index; break; } }
   if (!best) return null;
-  const b = bodyAt(code, best.head); return b && b.start <= at + 1 && at < b.end ? {...best, ...b} : {...best, start: best.head, end: code.length};
+  let b = null;
+  if (best.fn) { const p = afterParens(code, best.eq - 1); if (p > 0) b = bodyAt(code, p); }
+  else {
+    const rest = code.slice(best.eq, best.eq + 200), a = /^\s*(?:async\s*)?(?:function\b[^(]*|(?=\())/.exec(rest);
+    if (a && code[best.eq + a[0].length] === '(') { const p = afterParens(code, best.eq + a[0].length); const ar = p > 0 ? /^\s*(=>)?\s*\{/.exec(code.slice(p, p + 40)) : null; if (ar) b = bodyAt(code, p); }
+    else if (/^\s*(?:async\s*)?[\w$]+\s*=>\s*\{/.test(rest)) b = bodyAt(code, best.eq);
+  }
+  return b && b.start <= at + 1 && at < b.end ? {...best, ...b} : {...best, start: best.head, end: next};
 }
 
 /* ───────────── ② 첫 화면 세 줄 · ⑦ 오래된 날짜 — 자료로 따로 셈 ───────────── */
@@ -243,23 +274,45 @@ export function kstMs(t) {
 }
 /** 받은 때 「○월 ○일 ○시」(서울) — 따로 셈 */
 export const whenWords = ms => { const d = new Date(ms + 9 * 36e5); return `${d.getUTCMonth() + 1}월 ${d.getUTCDate()}일 ${d.getUTCHours()}시`; };
-/** 사이트 자료로 따로 센 것 — n(회사 수) · 받은 때(네이버 증권에서 마지막으로 받은 때 = home.json made/kst 와 요약 fetchedAt 이 같은 받기를 가리키는지) */
-export function recount(dir) {
-  const r = {n: null, fetchedMs: NaN, src: {}, problems: []};
+const comma = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+/** 명령문 파일 [5] 2 ① ② ③ — 사장님 글 그대로(잠긴 파일 · 줄 바꿈은 띄어쓰기 하나로) · 못 읽으면 null */
+export function orderLines(root = ROOT) {
+  const t = readText(path.join(root, ORDER_FILE)); if (t == null) return null;
+  const sec = /\n\[5 ·[^\n]*\]\n([\s\S]*?)\n\[6 ·/.exec(t)?.[1]; if (!sec) return null;
+  const two = /(?:^|\n)2\.([\s\S]*?)\n3\./.exec(sec)?.[1]; if (!two) return null;
+  const parts = two.split(/[①②③]/).slice(1).map(s => s.replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim());
+  return parts.length === 3 && parts.every(Boolean) ? parts : null;
+}
+/** 기록 하나가 「네이버 증권에서 받아 굴린 업데이트」인가 — 새로 굴린 자료를 올림(rolled) · 일봉을 받음(fetch.ok > 0) · 실패 아님 · 때가 읽힘 */
+const gotFresh = r => r && r.served === 'rolled' && Number(r.fetch?.ok) > 0 && r.result !== '실패' && typeof r.at === 'string' && Number.isFinite(Date.parse(r.at));
+/** 사이트 자료로 따로 센 것(②) — n = mkt.json 회사 칸(6자리 번호) 수 · 받은 때 = 저장소 업데이트 기록 가운데 at 이 그 자료 home.json made 와 같은 받은 기록 */
+export function recount(dir, {root = ROOT} = {}) {
+  const r = {n: null, fetchedMs: NaN, fetchedFile: null, src: {}, problems: [], notes: []};
   const M = readJson(path.join(dir, 'atlas/data/mkt.json'));
-  if (M.v?.companies && typeof M.v.companies === 'object') {
-    const keys = Object.keys(M.v.companies).filter(k => /^[0-9A-Z]{6}$/.test(k));
+  if (M.v?.companies && typeof M.v.companies === 'object' && !Array.isArray(M.v.companies)) {
+    const all = Object.keys(M.v.companies), keys = all.filter(k => /^[0-9A-Z]{6}$/.test(k));
     r.n = keys.length; r.src.n = 'atlas/data/mkt.json companies';
-    if (Number.isFinite(M.v.n) && M.v.n !== r.n) r.problems.push(`mkt.json n(${M.v.n}) ≠ 회사 수(${r.n})`);
+    if (keys.length !== all.length) r.problems.push(`mkt.json 회사 칸 ${all.length}개 가운데 6자리 번호가 아닌 칸 ${all.length - keys.length}개`);
+    if (M.v.n != null && M.v.n !== r.n) r.problems.push(`mkt.json n(${M.v.n}) ≠ 회사 칸 수(${r.n})`);
   } else r.problems.push('atlas/data/mkt.json 회사 목록을 못 읽음');
   const H = readJson(path.join(dir, 'atlas/data/home.json')), S = readJson(path.join(dir, 'next/data/home-summary.json'));
-  r.home = H.v ?? null; r.sum = S.v ?? null; r.mkt = M.v ?? null;
-  const cands = [];
-  if (H.v) { const a = kstMs(H.v.kst), b = Date.parse(H.v.made ?? ''); if (Number.isFinite(a)) cands.push(['atlas/data/home.json kst', a]); else if (Number.isFinite(b)) cands.push(['atlas/data/home.json made', b]); }
-  r.cands = cands;
-  if (cands.length) { r.fetchedMs = cands[0][1]; r.src.fetched = cands[0][0]; } else r.problems.push('받은 때를 셀 자료(home.json kst · made)가 없음');
+  r.home = H.v ?? null; r.sum = S.v ?? null;
+  if (!H.v) r.problems.push('atlas/data/home.json 을 못 읽음');
+  const made = typeof H.v?.made === 'string' ? H.v.made : null;
+  // 기록 파일 이름 = 받은 때(UTC) · 같은 날 앞뒤 하루 안 파일만 열어 봄(빠르게) — 못 찾으면 받은 때 모름(첫 화면 「?」가 맞음)
+  const ud = path.join(root, UPDATES_DIR);
+  let names = []; try { names = fs.readdirSync(ud).filter(f => /^\d{8}T\d{6}Z\.json$/.test(f)); } catch { r.notes.push(`업데이트 기록 폴더가 없음(${UPDATES_DIR}) — 받은 때는 「?」여야 함`); }
+  if (made && Number.isFinite(Date.parse(made))) {
+    const ms = Date.parse(made), near = new Set([-1, 0, 1].map(k => new Date(ms + k * 864e5).toISOString().slice(0, 10).replace(/-/g, '')));
+    const hit = names.filter(f => near.has(f.slice(0, 8))).sort().reverse().map(f => [f, readJson(path.join(ud, f)).v]).find(([, v]) => gotFresh(v) && v.at === made);
+    if (hit) { r.fetchedMs = Date.parse(hit[1].at); r.fetchedFile = UPDATES_DIR + '/' + hit[0]; r.src.fetched = r.fetchedFile; }
+    else r.notes.push(`home.json made ${made} 와 같은 받은 기록이 없음 — 받은 때는 「?」여야 함`);
+  } else if (H.v) r.notes.push('home.json made 가 없음 — 받은 때는 「?」여야 함');
   return r;
 }
+/** 첫 화면이 요약 파일을 쓰나(app.js sumOk 와 같은 셈 — 요약 꼴 · src.home = home.json kst) */
+export const SUM_SCHEMA = 'godori-home-summary-1';
+export const sumUsable = (S, H) => !!(S && S.schema === SUM_SCHEMA && H && S.src?.home === H.kst);
 
 /* ───────────── 정적 ④ ⑤ ② (소스) ───────────── */
 export function checkGdrSource(dir) {
@@ -290,21 +343,25 @@ export function checkGdrSource(dir) {
   }
   const rd = fnBody(gc, 'render');
   if (rd && /\bfunnel\w*\s*\(/.test(gc.slice(rd.start, rd.end)) && !/opened\s*\(\s*\)/.test(gc.slice(rd.start, rd.end))) bad(c, 'p-gdr.js render 가 열한 질문 문 없이 「어떻게 골랐나」를 그림');
-  // 칸 번호를 다른 화면이 보이나(꼴똘이 칸 n번 · #/gdr/n) — 그 함수 또는 그 함수를 부르는 줄에 열한 질문 문(doneOnce · opened · atlas:godori-why)이 있어야 함
-  const GATE_RE = /doneOnce|opened\s*\(|atlas:godori-why|gdrOpen/;
+  // 칸 번호 · 고른 곳을 다른 화면이 보이나(칸 n번 · #/gdr/n · GDR.picks) — 그 함수 또는 그 함수를 부르는 줄마다 열한 질문 문이 있어야 함
+  //   문 = 부르는 코드(풀이 글 · 따옴표 글 밖) doneOnce( · opened( · gdrOpened( · whyDone( 또는 기록 열쇠 글 'atlas:godori-why' 를 읽음
+  const gated = (s, from, to) => { const code = codeOnly(s.slice(from, to)); return /\b(?:doneOnce|opened|gdrOpened|whyDone)\s*\(/.test(code) || jsStrings(s.slice(from, to)).some(x => x.s === 'atlas:godori-why'); };
   let files = []; try { files = fs.readdirSync(path.join(dir, 'next')).filter(f => f.endsWith('.js') && !['p-gdr.js', 'p-why.js', 'words.js'].includes(f)); } catch { /* 위에서 셈 */ }
   let leaks = 0, looked = 0;
   for (const f of files) {
     const src = readText(path.join(dir, 'next', f)) ?? '', code = codeOnly(src);
     const spots = [...code.matchAll(/\bGDR\b\s*\??\.\s*picks|\bgdr\s*\(\s*\)[^;\n]*\.picks/g)].map(m => m.index);
-    for (const x of jsStrings(src)) if (/#\/gdr\/$/.test(x.s)) spots.push(x.start);
-    for (const at of spots) {
+    try { for (const x of jsStrings(src)) if (/#\/gdr\/$/.test(x.s)) spots.push(x.start); } catch { /* 글 뽑기 실패 — 위 코드 자리만 */ }
+    const seen = new Set();
+    for (const at of spots.sort((a, b) => a - b)) {
       looked++;
-      const fn = enclosingTop(code, at); if (!fn) continue;
-      const own = GATE_RE.test(src.slice(fn.start, fn.end));
+      const fn = enclosingTop(code, at); if (!fn || seen.has(fn.name)) continue;
+      seen.add(fn.name);
+      if (fn.name === 'gdr' || /^(?:GDR|gdrP|gdrFail)$/.test(fn.name)) continue; // 자료 받기(gdr.json 을 받아 둠) — 보이는 곳 아님
+      const own = gated(src, fn.start, fn.end);
       const calls = [...code.matchAll(new RegExp('\\b' + fn.name.replace(/\$/g, '\\$') + '\\s*\\(', 'g'))].map(m => m.index).filter(i => i < fn.head || i > fn.end);
-      const callerGated = calls.length > 0 && calls.every(i => { const ls = src.lastIndexOf('\n', i) + 1, le = src.indexOf('\n', i); return GATE_RE.test(src.slice(ls, le < 0 ? src.length : le)); });
-      if (!own && !callerGated) { leaks++; bad(c, `next/${f} ${fn.name}() 가 꼴똘이 칸 번호(고른 곳)를 열한 질문 문 없이 보임 — ${src.slice(0, at).split('\n').length}번째 줄`); }
+      const callerGated = calls.length > 0 && calls.every(i => { const ls = src.lastIndexOf('\n', i) + 1, le = src.indexOf('\n', i); return gated(src, ls, le < 0 ? src.length : le); });
+      if (!own && !callerGated) { leaks++; bad(c, `next/${f} ${fn.name}() 가 ${NAME} 칸 번호 · 고른 곳을 열한 질문 문 없이 보임 — ${src.slice(0, at).split('\n').length}번째 줄`); }
     }
   }
   c.counts.picksUsesOutside = looked; c.counts.leaks = leaks;
@@ -333,10 +390,14 @@ export function checkShareSource(dir) {
   if (!rv) bad(c, 'p-share.js render 에 「다 답한 뒤 엶(reveal)」이 없음');
   else {
     for (const w of ['msgPart', 'askPart']) for (const m of body.matchAll(new RegExp('\\b' + w + '\\s*\\(', 'g'))) if (m.index < rv.start || m.index > rv.end) bad(c, `p-share.js ${w}(친구 말)를 다 답하기 전에도 부름`);
+    // 부르는 자리마다: 질문 끝(onDone · 결과 칸 .wy-res 를 기다리는 줄)이면 지나감 · catch { } 안(질문 모듈을 못 받은 오류 길)이면 적어 둠 · 그 밖이면 막음
+    const catches = [...body.matchAll(/\bcatch\s*(?:\([^)]*\))?\s*\{/g)].map(m => bodyAt(body, m.index + m[0].length - 1)).filter(Boolean);
     for (const m of body.matchAll(/\breveal\s*\(/g)) {
       if (m.index >= rv.head && m.index <= rv.start) continue;
       const ls = body.lastIndexOf('\n', m.index) + 1, le = body.indexOf('\n', m.index), line = S.slice(rd.start + ls, rd.start + (le < 0 ? body.length : le));
-      if (!/onDone|wy-res|catch/.test(line)) bad(c, `p-share.js reveal 를 질문 끝(onDone · .wy-res) 밖에서 부름 — 「${line.trim().slice(0, 70)}」`);
+      if (/onDone|wy-res/.test(line)) continue;
+      if (catches.some(b => m.index > b.start && m.index < b.end)) { note(c, `p-share.js 질문 모듈을 못 받으면(오류 길 · catch) 친구 말을 바로 엶 — 「${line.trim().slice(0, 60)}」`); continue; }
+      bad(c, `p-share.js reveal 를 질문 끝(onDone · .wy-res) 밖에서 부름 — 「${line.trim().slice(0, 70)}」`);
     }
   }
   const after = /const\s+after\s*=\s*h\(\s*'section'/.test(S) || /\bafter\b/.test(body);

@@ -19,6 +19,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리) — 옛 쪽 글을 새 이름으로 고쳐 맞댐
 import {fetchJSON, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9 — 자료 넷은 처음 한 번 받아 두 쪽에 같은 것을 줌(pin))
+import {fourDeep} from '../../../site/next/essence.js'; // 「하루 4번」 글 → 참인 말(사장님 2026-10-18 16:39 [5] 4 · 일꾼 KC — 새 쪽은 요약의 fourADay 일 때만 「하루 4번」 · 옛 쪽 글을 같은 표로 맞춰 맞댐)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
@@ -39,6 +40,7 @@ const lap = k => { if (process.env.CAL_LAP) console.error('…', k, Math.round((
 const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [TR, TRC, CORE, MKT] = await Promise.all(['surgetr.json', 'surgetr-case.json', 'core.json', 'mkt.json'].map(f => getJ(f).catch(e => { console.error('자료를 못 받음', e.message); process.exit(1); })));
 const SNAP = {'surgetr.json': JSON.stringify(TR), 'surgetr-case.json': JSON.stringify(TRC), 'core.json': JSON.stringify(CORE), 'mkt.json': JSON.stringify(MKT)};
+const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null); // 첫 화면 요약(fourADay — 못 받으면 새 쪽도 참인 말 · 일꾼 KC)
 /** 옛 쪽 · 새 쪽이 같은 자료를 보게 — 검사 처음에 받은 그대로(실제 사이트에서 돌 때 업데이트가 사이에 끼어도 흔들리지 않게) · over = 바꿔치기({파일: 자료 | 404}) */
 async function pin(ctx, over = {}) {
   for (const f of Object.keys(SNAP)) await ctx.route(`**/atlas/data/${f}`, r => { const o = over[f]; if (o === 404) return r.fulfill({status: 404, contentType: 'text/plain', body: 'no'}); return r.fulfill({status: 200, contentType: 'application/json', body: o === undefined ? SNAP[f] : JSON.stringify(o)}); });
@@ -97,7 +99,7 @@ const grab = (p, expand = true) => T(p, () => p.evaluate(EXTRACT, {root: SIDE[p.
 
 /** 옛 쪽 O 와 새 쪽 N 맞대기 — 옛 쪽 글은 이름만 새 이름으로(아틀란스 → 보드리 · rename.mjs) 고친 뒤 맞댐 */
 function compare(tag, O0, N) {
-  const O = oldToNewDeep(O0);
+  const O = fourDeep(oldToNewDeep(O0), SUMJ); // 「하루 4번」 글은 새 쪽과 같은 표로(fourDeep · 일꾼 KC)
   bump('맞댄 화면');
   if (!norm(O.text)) { fail(tag, '옛 쪽 글이 비었음'); return; }
   const NL = lines(N.text), NS = new Set(NL); // 같은 줄은 바로 · 아니면 새 줄 안에 든 것(새 쪽이 두 조각을 한 줄로 이은 곳)

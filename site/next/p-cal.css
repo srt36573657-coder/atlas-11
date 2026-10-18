@@ -136,3 +136,4 @@ button.pcal-more-steps { margin-top: var(--sp-1); }
 .pcal-kr { border-bottom: 1px solid var(--m4-soft); }
 .pcal-kr:last-child { border-bottom: 0; }
 .pcal-kr > a.pcal-row, .pcal-kr > a.pcal-erow { border-bottom: 0; }
+p.pcal-grow[data-kkrow] > a.pcal-link { flex: 1 1 auto; min-width: 0; } /* 숨긴 곳 줄 — 이름 · 되돌리기 · 카톡 단추(오른쪽 끝) 차례 */

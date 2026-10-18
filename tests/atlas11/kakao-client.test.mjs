@@ -336,7 +336,7 @@ test('⑮ 시험 서버(127.0.0.1) — 스위치가 꺼져 있으면 시험 표�
   const prod = mk({switchOn: false, routes: ME_ON, test: true}); await prod.K.ready(); assert.equal(prod.log.length, 0, '실제 사이트에서는 시험 표시가 있어도 스위치만 봄');
 });
 
-test('⑯ 스위치 한 곳 — SWITCH 는 저장소의 config/atlas11/kakao.json on 과 같음(파일이 없으면 false)', () => {
+test('⑯ 스위치 한 곳 — SWITCH 는 저장소의 config/atlas11/kakao.json on 과 같음(파일이 없으면 false)', async () => {
   const f = path.join(ROOT, 'config/atlas11/kakao.json');
   const on = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')).on === true : false;
   assert.equal(SWITCH, on, '켤 때는 두 곳을 함께 바꿈');
@@ -354,12 +354,20 @@ test('⑯ 스위치 한 곳 — SWITCH 는 저장소의 config/atlas11/kakao.jso
   if (want) assert.deepEqual({...SDK}, {...want}, 'site/next/kakao.js SDK 가 config/atlas11/invite.json kakao 와 다름');
   else assert.deepEqual({...SDK}, {src: '', integrity: '', key: ''}, 'invite.json 에 열쇠 · 무결성이 없으면 화면 SDK 도 비어 있어야 함');
   assert.equal(SHARE, !!want, '공유 스위치 = 원본 세 칸이 다 참');
-  assert.equal(want, null, '오늘(2026-10-18)은 열쇠 · 무결성이 비어 공유 꺼짐');
   const full = {key: '0123456789abcdef0123456789abcdef', version: '2.8.3', integrity: 'sha384-' + 'Ab12'.repeat(16)};
   assert.deepEqual({...sdkOf(full)}, {src: SDK_HOST + '/kakao_js_sdk/2.8.3/kakao.min.js', integrity: full.integrity, key: full.key}, '세 칸이 다 차면 켜짐 · 도구 주소는 판에서');
   for (const half of [{...full, key: ''}, {...full, integrity: ''}, {...full, version: ''}, {...full, version: '2.8'}, {...full, integrity: 'md5-x'}, {...full, key: 'a b'}, null, 'x'])
     assert.equal(sdkOf(half), null, '반쯤 찬 것 · 꼴이 틀린 것은 꺼짐 ' + JSON.stringify(half));
-  assert.equal(sdkFilled(sdkOf(full)), true); assert.equal(sdkFilled(SDK), false);
+  assert.equal(sdkFilled(sdkOf(full)), true); assert.equal(sdkFilled({...SDK}), !!want);
+  // 세 곳이 같은 칸을 봄 — 서버(lib/atlas11/kakao.mjs signupOn · shareOn · SHARE_FIELDS) · 보안 머리말(site_headers.mjs shareKeyIn = package.mjs addInvite 셈) · 화면(kakao.js sdkOf)
+  const Lk = await import('../../lib/atlas11/kakao.mjs'), H = await import('../../scripts/atlas11/site_headers.mjs');
+  assert.deepEqual([...Lk.SHARE_FIELDS], cfg.share.fields, '서버가 아는 공유 칸 = config share.fields');
+  assert.equal(Lk.signupOn(cfg), SWITCH, '서버 가입 스위치 = config on = SWITCH(옛 "on" 을 가입 스위치로 이어 읽음)');
+  for (const x of [{on: 'true'}, {on: 1}, {}, null, {share: {on: true}}]) assert.equal(Lk.signupOn(x), false, '가입은 on === true 일 때만 · 공유 칸이 가입을 켜지 않음 ' + JSON.stringify(x));
+  assert.equal(Lk.shareOn(inv), SHARE); assert.equal(H.shareKeyIn(inv), SHARE); assert.equal(H.SHARE_KEY, SHARE, '서버 · 머리말 · 화면이 같은 공유 상태');
+  for (const c of [{kakao: full}, {kakao: {...full, key: ''}}, {kakao: {...full, integrity: ''}}, {kakao: {...full, version: ''}}, {kakao: null}, {}, null]) assert.equal(Lk.shareOn(c), H.shareKeyIn(c), '서버 shareOn = 머리말 shareKeyIn ' + JSON.stringify(c));
+  // 원본이 「찬 것처럼」 보이는데 꼴이 틀리면(머리말 · 서버는 켜짐으로 보는데 화면은 꺼짐) 여기서 막힘 — 켤 때 값을 잘못 넣은 것
+  if (H.shareKeyIn(inv)) assert.ok(want, 'config/atlas11/invite.json kakao 세 칸의 꼴이 틀림(열쇠 16 ~ 64자 · 판 x.y.z · 무결성 sha256|384|512-…)');
 });
 
 test('⑰ 소스 지킴 — 바깥 주소 · innerHTML · 쿠키 읽기 · 평가 0 · p-share 는 도구를 받지 않음', () => {
@@ -413,9 +421,12 @@ test('⑱ 카드 — p-share cardOf 가 만든 카드를 kakao.js sendCard 가 �
   assert.equal(so.K.sendCard(c1), true); assert.equal(s1.length, 1); assert.deepEqual(s1[0].buttons.map(b => b.title), [CARD_OPEN]); assert.equal(s1[0].buttons[0].link.webUrl, see);
   assert.equal(s1[0].content.title, '삼성전자'); assert.equal(s1[0].content.description, '이거 어때?\n10월 13일 값 234,000원', '종목 이름 · 보낸 사람 말 · 보낸 날 값');
   assert.equal(so.log.filter(x => /\/api\/kakao\/(start|data|withdraw)/.test(x.url)).length, 0);
-  // 급등([6] 8) — 반값 한 줄은 값 바로 앞 · 값은 늘 마지막 줄 · halfLine 은 n · of 가 바른 수일 때만
-  const hl = halfLine({n: 4, of: 36}); assert.equal(hl, '36곳 중 4곳이 1년 안에 반값 아래로 떨어진 적 있어요');
-  for (const bad of [null, {}, {n: 40, of: 36}, {n: -1, of: 36}, {n: 1.5, of: 36}, {n: '4', of: 36}, {n: 4, of: 0}]) assert.equal(halfLine(bad), '', JSON.stringify(bad));
+  // 급등([6] 8 · 글은 리드가 정함 2026-10-18 17:27) — 반값 한 줄은 값 바로 앞 · 값은 늘 마지막 줄 · halfLine 은 n · of 가 바른 수이고 못 센 곳이 없을 때만
+  const hl = halfLine({n: 4, of: 36}); assert.equal(hl, '1년 전 날아오른 36곳 중 4곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요');
+  assert.equal(halfLine({schema: 'kkolttori-half36-1', n: 18, of: 36, unknown: 0}), '1년 전 날아오른 36곳 중 18곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요', 'half36.json 꼴 그대로');
+  for (const bad of [null, {}, {n: 40, of: 36}, {n: -1, of: 36}, {n: 1.5, of: 36}, {n: '4', of: 36}, {n: 4, of: 0}, {n: 4, of: 36, unknown: 2}]) assert.equal(halfLine(bad), '', '짓지 않음 ' + JSON.stringify(bad));
+  let real = null; try { real = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/next/data/half36.json'), 'utf8')); } catch { real = null; } // 없거나 깨졌으면 아래 맞댐을 건너뜀(그때 화면은 줄을 뺌 — check_share kk 가 봄)
+  if (real) assert.equal(halfLine(real), Number.isInteger(real.n) && Number.isInteger(real.of) && !(real.unknown > 0) ? `1년 전 날아오른 ${real.of}곳 중 ${real.n}곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요` : '', '저장소 half36.json 의 n · of 를 그대로(지어내지 않음)');
   const ch = card(so.K, {half: hl}); assert.equal(ch.description, '이거 어때?\n' + hl + '\n10월 13일 값 234,000원');
   assert.ok(!/[%％]|퍼센트|1등|1위|급등/.test(ch.description), '반값 한 줄에도 수익 숫자 · 급등 낱말 0');
   // 보낸 말 + 같이 가는 글이 있으면 두 줄 · 값은 늘 마지막 줄
@@ -450,9 +461,21 @@ test('⑳ 보안 머리말 두 상태([7] 6) — 공유 열쇠 없음 = 오늘�
   const H = await import('../../scripts/atlas11/site_headers.mjs');
   const TODAY = "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n";
   const inv = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/atlas11/invite.json'), 'utf8'));
-  assert.equal(H.shareKeyIn(inv), false, '오늘 저장소에는 공유 열쇠 없음');
-  assert.equal(Buffer.compare(Buffer.from(H.HEADER_TOP), Buffer.from(TODAY)), 0, '오늘 머리말 = 한 바이트도 같음');
-  assert.equal(H.BASE_TOP, TODAY); assert.equal(H.SHARE_KEY, false);
+  // HEADER_TOP(옛 새 ATLAS 네 눈 점검 · 올리기 묶음 바탕)은 열쇠와 상관없이 늘 한 바이트도 같음 — 네 눈 점검이 「script-src 'self';」를 찾으므로 여기에는 더하지 않음
+  assert.equal(Buffer.compare(Buffer.from(H.HEADER_TOP), Buffer.from(TODAY)), 0, '바탕 머리말 = 한 바이트도 같음');
+  assert.equal(H.BASE_TOP, TODAY);
+  assert.equal(H.SHARE_KEY, H.shareKeyIn(inv));
+  // 올라가는 머리말(SHARE_TOP) — 열쇠가 없으면 오늘과 한 바이트도 같음 · 있으면 headerTopFor 그대로
+  assert.equal(Buffer.compare(Buffer.from(H.SHARE_TOP), Buffer.from(H.SHARE_KEY ? H.headerTopFor(inv) : TODAY)), 0, '올라가는 머리말 = 열쇠 상태 그대로(없으면 오늘과 같음)');
+  if (!H.SHARE_KEY) assert.equal(H.SHARE_TOP, TODAY, '오늘(열쇠 없음) = 한 바이트도 안 다름');
+  // 올리는 _headers 에서 더하는 곳(package.mjs addInvite)이 이 파일과 같은 셈인지 — 같은 세 칸 · 같은 줄 바꿈(소스를 맞댐 · 그 파일은 무거워 부르지 않음)
+  const pk = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/package.mjs'), 'utf8');
+  assert.match(pk, /kakao = k\?\.key && k\?\.version && k\?\.integrity \?/, 'package.mjs addInvite 의 켜는 셈 = 세 칸이 다 참(shareKeyIn 과 같음)');
+  const rep = /if \(kakao\) head = head\.replace\("([^"]+)", "([^"]+)"\);/.exec(pk);
+  assert.ok(rep, 'package.mjs addInvite 의 머리말 바꿈 줄');
+  const keyed = {kakao: {key: '0123456789abcdef0123456789abcdef', version: '2.8.3', integrity: 'sha384-abc'}};
+  assert.equal(TODAY.replace(rep[1], rep[2]), H.headerTopFor(keyed), 'package.mjs 가 올리는 머리말 = site_headers headerTopFor(열쇠 있음)');
+  assert.equal(H.headerTopFor(keyed).replace(rep[1], rep[2]), H.headerTopFor(keyed), '두 번 더하지 않음(이미 더한 머리말에 package.mjs 셈을 또 해도 같음)');
   for (const c of [null, {}, {kakao: null}, {kakao: {key: '', version: '2.8.3', integrity: ''}}, {kakao: {key: 'k', version: '2.8.3', integrity: ''}}, {kakao: {key: '', version: '2.8.3', integrity: 'sha384-x'}}])
     assert.equal(H.headerTopFor(c), TODAY, '열쇠 없음 · 반쯤 참 ' + JSON.stringify(c));
   const on = H.headerTopFor({kakao: {key: '0123456789abcdef0123456789abcdef', version: '2.8.3', integrity: 'sha384-abc'}});

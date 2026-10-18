@@ -394,7 +394,7 @@ async function needComp() {
 }
 export async function render(arg) {
   if (arg === 'home') return {title: '오늘 시장', nodes: []}; // [6] 4 — 첫 화면에는 그리지 않음(세 줄 요약 + #/today 고리는 첫 화면 몫)
-  await Promise.all([NX.need('core'), NX.need('home')]);
+  await Promise.all([NX.need('core'), NX.need('home'), NX.need('sum')]); // sum = 첫 화면 요약(몇 KB) — 「하루 4번」 글을 첫 화면과 같게(fourADay · 일꾼 KC)
   const C = NX.D.core, H = NX.D.home ?? null;
   const wrap = h('div', {class: 'ptoday ptoday-page'});
   wrap.append(h('h1', {class: 'wt', text: '오늘 시장'}), h('p', {class: 'ws', text: NX.D.sum?.fourADay === true ? '숫자는 네이버 증권에서 하루 4번 새로 받아요.' : '숫자는 네이버 증권에서 업데이트 때마다 새로 받아요.'})); // 「하루 4번」은 요약의 fourADay(지난 7일 업데이트 기록과 맞음)일 때만 — essence.js fourADay 와 같은 셈([5] 4 · 일꾼 KC)

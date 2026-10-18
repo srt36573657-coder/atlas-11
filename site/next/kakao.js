@@ -246,8 +246,9 @@ export function createKakao(env = {}) {
     ready, sync, startUrl, state: () => ({...st}),
     /** 카카오톡 카드를 지금 보낼 수 있나(공유 스위치 + 카카오 도구가 켜짐) — 동기 · 가입 스위치와 따로 */
     canSend() { if (!sharing()) return false; const K = E.kakao(); return !!(K?.Share && typeof K.Share.sendDefault === 'function' && (typeof K.isInitialized !== 'function' || K.isInitialized())); },
-    /** 가입 서버 답(가입 스위치가 꺼져 있으면 묻지 않음)을 받고 카카오 도구까지 켠 뒤 canSend() 를 풀어 줌(실패해도 false 로 풀림 · 던지지 않음) */
-    async sdkReady() { try { await ready(); if (!sharing()) return false; await loadSdk(); } catch { return false; } return api.canSend(); },
+    /** 가입 서버 답(가입 스위치가 꺼져 있으면 묻지 않음)과 카카오 도구를 함께 기다린 뒤 canSend() 를 풀어 줌(실패해도 false 로 풀림 · 던지지 않음)
+        도구는 서버 답을 기다리지 않고 바로 받기 시작함([6] 4 — 카톡 단추를 누르기 시작할 때 받기 시작해 두 번째 누름에 카톡 친구 고르기가 바로 뜨게) */
+    async sdkReady() { try { if (!sharing()) { await ready(); return false; } await Promise.all([ready().catch(() => api), loadSdk()]); } catch { return false; } return api.canSend(); },
     /** 「카카오로 시작하기」 — 카카오 동의 화면으로 바로 보냄(주소 하나) · 꺼져 있거나 이미 회원이면 false · fromPath 가 없으면 지금 쪽 */
     start(fromPath, opt = {}) {
       if (!api.on || api.member()) return false;

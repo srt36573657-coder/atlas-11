@@ -143,6 +143,8 @@ const boardKey = S => h('p', {class: 'psurge-key'}, h('span', {}, h('i', {class:
 const svRow = (o, showPct) => kkRow(h('a', {class: 'psurge-row', href: cHref(o.c)}, h('span', {class: 'psurge-rt'}, h('span', {class: 'psurge-nm', text: o.n}), showPct ? (o.r5 == null ? qEl() : pctEl(o.r5)) : null), h('span', {class: 'psurge-why' + (/^\?/.test(o.why) ? ' q' : ''), text: o.why}), h('span', {class: 'psurge-chev', 'aria-hidden': 'true', text: '›'})), o.c, o.n, 'surge.row');
 /** 카톡 줄(사장님 2026-10-18 16:39 [6] 1 · 6 · 8 · 일꾼 KB2) — 줄 고리와 카톡 단추(share-btn.js 하나)를 형제로 · 급등 종목이라 kind 'surge'(받는 카드에 반값 한 줄) · 단추를 못 만들면 줄 그대로 */
 function kkRow(a, c, name, place) { const kb = shareButtons({code: c, name, kind: 'surge'}, {kakao: true}); return kb ? h('div', {class: 'kkr psurge-kr', 'data-kkrow': place}, a, kb) : a; }
+/** 숨긴 곳 줄(고리 · 되돌리기는 그대로) — 같은 카톡 단추를 줄 끝에 더함(고리와 형제 · 누름은 되돌리기로 새지 않음) */
+function kkIn(row, c, name, place) { const kb = shareButtons({code: c, name, kind: 'surge'}, {kakao: true}); if (kb) { row.setAttribute('data-kkrow', place); row.append(kb); } return row; }
 const svLi = (mark, b, t, names, mo = null) => h('li', {}, h('span', {class: 'psurge-m' + (mark === '?' ? ' q' : ' psurge-w'), text: mark}), h('span', {}, h('b', {text: b + ' '}), t, names?.length ? h('span', {class: 'psurge-nms', text: names.join(' · ')}) : null, mo ? h('span', {class: 'psurge-nms', text: `${mo[0]}: ${mo[1].join(' · ')}`}) : null));
 /** 이름 고리 — 옮긴 곳(어디서 · 어디로)은 한 줄에 한 곳 · 나머지는 「 · 」로 잇고 15곳 넘으면 12곳 + 접은 칸 · xs = [{c, n, t}] */
 function svNames(lab, xs) {
@@ -265,7 +267,7 @@ function svTrack(v, tab, ok, K, back) {
   const trk = h('div', {class: 'psurge-trk'}), box = h('div', {class: 'psurge-trs'}), live = h('p', {class: 'psurge-sr', role: 'status', 'aria-live': 'polite'});
   const R = back ? MEM.get(tab) : null;
   const goneEl = () => { const hid = hideGet(), gone = went.filter(t => hid.has(t.c)).sort(byName); if (!gone.length) return null;
-    return more(`숨긴 곳 ${gone.length}곳 보기`, gone.map(t => h('p', {class: 'psurge-g'}, h('a', {class: 'psurge-inl', href: cHref(t.c), text: t.n}), h('button', {type: 'button', class: 'psurge-show', 'data-c': t.c, text: '되돌리기'}))), 'psurge-gone'); };
+    return more(`숨긴 곳 ${gone.length}곳 보기`, gone.map(t => kkIn(h('p', {class: 'psurge-g'}, h('a', {class: 'psurge-inl', href: cHref(t.c), text: t.n}), h('button', {type: 'button', class: 'psurge-show', 'data-c': t.c, text: '되돌리기'})), t.c, t.n, 'surge.gone')), 'psurge-gone'); }; // 숨긴 곳 줄도 종목 줄 — 카톡 단추(KB2)
   const tail = h('div', {class: 'psurge-tail'});
   let goneOpen0 = !!R?.gone;
   const drawTail = () => { const g0 = tail.querySelector('details.psurge-gone'), open = g0 ? g0.open : goneOpen0; goneOpen0 = false; tail.textContent = '';
@@ -456,7 +458,7 @@ export async function render(arg) {
     v.append(h('h1', {class: 'psurge-h', text: '없는 주소입니다'}), h('p', {class: 'psurge-when', text: '주소가 바뀌었거나 잘못 들어왔습니다.'}), h('p', {}, h('a', {class: 'psurge-btn', href: '#/', text: '처음 화면으로'})), foot(C));
     return {title: '없는 주소', nodes: [v]};
   }
-  const [S, C, K] = await Promise.all([NX.need('surge'), NX.need('core'), NX.getJson('surgecal.json')]); // 달력 · 따라가기는 못 받아도 목록은 보임(그 칸만 「?」)
+  const [S, C, K] = await Promise.all([NX.need('surge'), NX.need('core'), NX.getJson('surgecal.json'), NX.need('sum')]); // 달력 · 따라가기는 못 받아도 목록은 보임(그 칸만 「?」) · sum = 「하루 4번」 글을 첫 화면과 같게(fourADay · 일꾼 KC)
   v.append(svChips(tab));
   if (!S) { v.append(...NX.noData('급등 자료')); return {title: '급등', nodes: [v]}; }
   const back = /^#\/(w|c)\//.test(cameFrom() || ''); // 회사를 보고 돌아온 길

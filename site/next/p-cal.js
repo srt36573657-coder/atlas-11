@@ -144,6 +144,8 @@ function trRowEl(r, star) {
 }
 /** 카톡 줄(사장님 2026-10-18 16:39 [6] 1 · 6 · 8 · 일꾼 KB2) — 줄 고리(종목 파일)와 카톡 단추(share-btn.js 하나)를 형제로 · 달력은 급등 기록이라 kind 'surge'(받는 카드에 반값 한 줄) · 단추를 못 만들면 줄 그대로 */
 function kkRow(a, r, place) { const kb = shareButtons({code: r.c, name: r.n, kind: 'surge'}, {kakao: true}); return kb ? h('div', {class: 'kkr pcal-kr', 'data-kkrow': place}, a, kb) : a; }
+/** 숨긴 곳 줄(고리 · 되돌리기는 그대로) — 같은 카톡 단추를 줄 끝에 더함(고리와 형제 · 누름은 되돌리기로 새지 않음) */
+function kkIn(row, r, place) { const kb = shareButtons({code: r.c, name: r.n, kind: 'surge'}, {kakao: true}); if (kb) { row.setAttribute('data-kkrow', place); row.append(kb); } return row; }
 /** 날 하나 — 달력 날 판(달 · 날 · 요일) + 「선택 k · 이동 m · 탈락 x」 + 그날 뽑힌 줄 넷 + 「나머지 n곳 보기」 + 「이날 이동 · 탈락 보기」 */
 function trDay(x, byC, vis, star, reNote = false) {
   const ok = c => { const r = byC.get(c); return r && vis(r); };
@@ -168,7 +170,7 @@ function trDay(x, byC, vis, star, reNote = false) {
 }
 async function vCal() {
   if (!/^#\/cal\//.test(fromNow())) { trF = 'all'; openK = new Set(); } // 다른 곳에서 오면 처음 꼴
-  const [T, C] = await Promise.all([getTr(), NX.need('core')]);
+  const [T, C] = await Promise.all([getTr(), NX.need('core'), NX.need('sum')]); // sum = 「하루 4번」 글을 첫 화면과 같게(fourADay · 일꾼 KC)
   const v = h('div', {class: 'pcal'}, h('h1', {class: 'pcal-h1', text: '달력'}));
   if (!T) { v.append(h('p', {class: 'q pcal-qline', text: '? 달력 자료를 못 받았어요. 잠시 뒤 다시 열어 주세요.'}), foot(C)); return {title: '달력', nodes: [v]}; }
   overview = v;
@@ -200,7 +202,7 @@ async function vCal() {
     list.append(h('p', {class: 'pcal-small pcal-since', text: tx(`${md(T.days.at(-1)?.d ?? T.asOf)}부터 적었어요.`)}));
     const gone = R.filter(r => hid.has(r.c)).sort((a, b) => a.n.localeCompare(b.n, 'ko'));
     if (gone.length) list.append(det('pcal-gone', null, `숨긴 곳 ${gone.length}곳 보기`,
-      h('div', {class: 'pcal-in'}, ...gone.map(r => h('p', {class: 'pcal-grow'}, h('a', {class: 'pcal-link', href: '#/cal/' + r.c, 'data-proper': '1', text: r.n}), h('button', {type: 'button', class: 'pcal-show', 'data-c': r.c, text: '되돌리기'}))))));
+      h('div', {class: 'pcal-in'}, ...gone.map(r => kkIn(h('p', {class: 'pcal-grow'}, h('a', {class: 'pcal-link', href: '#/cal/' + r.c, 'data-proper': '1', text: r.n}), h('button', {type: 'button', class: 'pcal-show', 'data-c': r.c, text: '되돌리기'})), r, 'cal.gone'))))); // 숨긴 곳 줄도 종목 줄 — 카톡 단추(KB2)
   };
   chips.addEventListener('click', e => { const b = e.target.closest('button[data-f]'); if (!b) return; trF = b.dataset.f; for (const x of chips.children) x.setAttribute('aria-pressed', String(x.dataset.f === trF)); draw(); live.textContent = trF === 'all' ? '모든 칸을 보여요.' : `${TR_B[trF]}로 뽑힌 곳만 보여요.`; });
   list.addEventListener('click', e => { const b = e.target.closest('button.pcal-show'); if (!b) return; const hid = hideGet(); hid.delete(b.dataset.c); hidePut(hid); draw(); live.textContent = `${byC.get(b.dataset.c)?.n ?? ''} 다시 보여요.`; });
