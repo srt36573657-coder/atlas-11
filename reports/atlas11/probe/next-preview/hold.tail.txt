@@ -13,12 +13,12 @@
   "folded": 213.3,
   "unit": 213.3,
   "btn": 48,
-  "open": 1130,
-  "natural": 1130,
+  "open": 1050.1,
+  "natural": 1050.1,
   "before": 1146
  },
  "css": {
-  "holdDecls": 469,
+  "holdDecls": 472,
   "appMine": 85,
   "fontNotToken": 0,
   "spacingNotToken": 0,
@@ -39,7 +39,7 @@
     24
    ],
    "letter": [
-    22
+    21
    ],
    "lefts": {
     "16": 11,
@@ -62,7 +62,7 @@
     24
    ],
    "letter": [
-    22
+    21
    ],
    "lefts": {
     "16": 11,
@@ -79,7 +79,7 @@
   },
   {
    "tag": "#/me 펼침(편지 포함 · 안내만) 360×640",
-   "px": 2168,
+   "px": 2088,
    "sizes": [
     17,
     19,
@@ -87,7 +87,7 @@
     24
    ],
    "letter": [
-    22
+    21
    ],
    "lefts": {
     "16": 20,

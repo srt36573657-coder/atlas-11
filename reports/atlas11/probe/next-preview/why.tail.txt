@@ -1,5 +1,5 @@
 {
- "sec": 26,
+ "sec": 27,
  "quick": false,
  "accept": {
   "css": {
@@ -44,10 +44,12 @@
    "before": 25,
    "after": 14
   },
-  "fontSizesPerScreenMax": 5
+  "fontSizesPerScreenMax": 5,
+  "leftEdgesPerScreenMax": 3,
+  "leftScreens": 94
  },
  "timing": {
-  "flowMs": 617,
+  "flowMs": 635,
   "taps": 14,
   "qTaps": 11,
   "qTapsBefore": 22,
