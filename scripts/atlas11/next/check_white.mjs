@@ -51,7 +51,7 @@ const MEASURE = () => {
   const root = document.querySelector('#view') || document.body, tabs = document.querySelector('.tabs'), top = document.querySelector('.top');
   const scope = [root, top, tabs].filter(Boolean);
   const all = scope.flatMap(s => [s, ...s.querySelectorAll('*')]);
-  const out = {bodyLum: lum(bgOf(document.body)), chars: 0, blocks: {}, tabsTop: tabs ? tabs.getBoundingClientRect().top : innerHeight, lowContrast: [], uiContrast: [], small: [], ruin: [], says: [], numQ: [], tabs: [], jh: !!document.querySelector('#jhBtn'), whyTab: !!document.querySelector('.tabs a[href="#/why"]'), ess: [1, 2, 3].map(i => !!document.querySelector(`[data-ess="${i}"]`))};
+  const out = {bodyLum: lum(bgOf(document.body)), chars: 0, blocks: {}, tabsTop: tabs ? tabs.getBoundingClientRect().top : innerHeight, lowContrast: [], uiContrast: [], tiny: [], small: [], ruin: [], says: [], numQ: [], tabs: [], jh: !!document.querySelector('#jhBtn'), whyTab: !!document.querySelector('.tabs a[href="#/why"]'), ess: [1, 2, 3].map(i => !!document.querySelector(`[data-ess="${i}"]`))};
   for (const k of ['ess', 'find', 'today', 'gdr', 'all']) { const e = document.querySelector(`[data-w="${k}"]`); out.blocks[k] = e && vis(e) ? Math.round(e.getBoundingClientRect().bottom) : null; }
   out.tabs = tabs ? [...tabs.querySelectorAll('a')].map(a => a.textContent.trim()) : [];
   for (const el of root.querySelectorAll('*')) if (vis(el)) out.chars += ownText(el).replace(/\s/g, '').length;
@@ -60,6 +60,7 @@ const MEASURE = () => {
     const cs = getComputedStyle(el), r = el.getBoundingClientRect(), t = ownText(el), tag = el.tagName.toLowerCase(), name = `${tag}.${String(el.className?.baseVal ?? el.className).split(' ')[0]}`;
     if (t && !el.closest('svg')) {
       const fg = rgb(cs.color), bg = bgOf(el); const fs = parseFloat(cs.fontSize), bold = +cs.fontWeight >= 600, big = fs >= 24 || (bold && fs >= 18.66);
+      if (fs < 16.95) out.tiny.push(`${name} ${fs}px 「${t.slice(0, 12)}」`);
       if (fg) { const c = ratio(mix(fg, bg), bg); if (c < (big ? 3 : 4.5)) out.lowContrast.push(`${name} ${c.toFixed(2)} 「${t.slice(0, 16)}」`); }
       // 빨강(오름)은 숫자에만
       if (fg && fg.r > 150 && fg.g < 110 && fg.b < 110 && !/\d/.test(t)) out.ruin.push(`숫자 아닌 빨간 글 ${name} 「${t.slice(0, 12)}」`);
@@ -102,6 +103,7 @@ function judge(m, tag, B) {
   if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'})`); }
   check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
   check(!m.uiContrast.length, `${tag} ② 단추 테두리 대비 3`, `${m.uiContrast.length}곳 · ${m.uiContrast.slice(0, 3).join(' · ')}`);
+  check(!m.tiny.length, `${tag} ② 글씨 17px 아래 0`, `${m.tiny.length}곳 · ${m.tiny.slice(0, 3).join(' · ')}`);
   check(!m.small.length, `${tag} ② 누르는 크기 48`, `${m.small.length}곳 · ${m.small.slice(0, 3).join(' · ')}`);
   check(!m.ruin.length, `${tag} ④ 망치는 길 그림 0`, `${m.ruin.length}곳 · ${[...new Set(m.ruin)].slice(0, 4).join(' · ')}`);
   const badSay = m.says.filter(t => !/\?$/.test(t));
