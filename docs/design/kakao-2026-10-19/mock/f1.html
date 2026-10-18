@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>골똘이 시안 f1 — 나의 이유 일기</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* f1 · 「나의 이유 일기」 — h1 새긴 글자 말투 그대로 · 내 기록이 주인공인 일기장 한 쪽 · 골똘이는 내 말을 따라 묻는 친구 */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:176px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.serif{font-family:"Gowun Batang",serif;font-weight:400;letter-spacing:0}
+
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:28px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap}
+
+#view{padding:0 20px;display:flex;flex-direction:column}
+
+.pill{display:flex;justify-content:center;margin:6px 0 18px}
+.pill .in{background:#1C1C1C;border-radius:24px;display:flex}
+.pill a{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:baseline;justify-content:center;column-gap:8px;min-height:48px;padding:11px 16px 9px;font-size:17px;color:#FFFFFF}
+.pill .q{font-weight:700}
+.pill .n{font-family:"Gowun Batang",serif}
+.up{color:#FF5A65}.dn{color:#49A8F8}
+
+/* 골똘이 = 받은 말 · 내 말을 따라 묻는다 */
+.from{display:flex;gap:12px;align-items:flex-start}
+.from .av{flex:0 0 48px;width:48px;height:48px;border-radius:24px;background:#1B1B1B;display:flex;align-items:center;justify-content:center}
+.from .av img{width:40px;height:40px}
+.from .who{font-size:17px;color:#BDBDBD;margin-bottom:4px}
+.say{display:inline-block;background:#282828;border-radius:6px 24px 24px 24px;padding:10px 20px;font-size:21px;line-height:1.4}
+
+/* 일기장 한 쪽 = 내 것 · 왼쪽 노란 여백 줄 · 글은 줄 위에 쓰듯 */
+.diary{margin-top:14px;background:#1B1B1B;border-radius:28px;padding:20px 20px 4px 34px;position:relative}
+.diary::before{content:"";position:absolute;left:20px;top:22px;bottom:22px;width:2px;border-radius:1px;background:#FEE500}
+.diary .hd{font-size:19px;color:#FEE500;letter-spacing:.12em;line-height:1.3}
+.diary p[data-ess="1"]{margin-top:10px;font-size:20px;line-height:1.85;color:#FFFFFF;word-break:keep-all;text-decoration:underline;text-decoration-color:#3A3A3A;text-decoration-thickness:1px;text-underline-offset:9px}
+.rec{display:flex;align-items:stretch;margin-top:16px;background:#FEE500;color:#111111;border-radius:22px;min-height:76px}
+.rec .cell{flex:1;display:flex;align-items:baseline;justify-content:center;gap:6px;padding:14px 8px 12px}
+.rec .cell+.cell{border-left:1px solid #8C7F00}
+.rec b{font-family:"Gowun Batang",serif;font-weight:700;font-size:44px;line-height:1}
+.rec span{font-size:17px;color:#111111}
+.diary .foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.diary details{flex:1}
+.diary summary{list-style:none;min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#49A8F8;cursor:pointer}
+.diary summary::-webkit-details-marker{display:none}
+.diary details p{font-size:17px;color:#D6D6D6;margin:4px 0 12px;line-height:1.55}
+.kk-btn{width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A !important;display:flex;align-items:center;justify-content:center}
+
+.gdr{margin-top:10px;display:flex;align-items:center;border-top:1px solid #3A3A3A;border-bottom:1px solid #3A3A3A}
+.gdr a{flex:1;min-height:50px;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:19px;color:#FFFFFF}
+.gdr i{flex:0 0 1px;height:20px;background:#3A3A3A}
+
+.all{margin-top:2px}
+.all summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:16px;font-size:17px;color:#BDBDBD;cursor:pointer;white-space:nowrap}
+.all summary::-webkit-details-marker{display:none}
+.all summary::before,.all summary::after{content:"";flex:1;height:1px;background:#3A3A3A}
+.all ul{list-style:none}
+.all li a{display:flex;min-height:52px;align-items:center;padding:0 4px;width:100%;font-size:17px}
+.all li{border-bottom:1px solid #3A3A3A}
+
+.news{margin-top:72px}
+.news h2{font-weight:400;font-size:17px;display:flex;justify-content:center;margin-bottom:20px}
+.news h2 span{background:#1C1C1C;border-radius:24px;padding:12px 20px}
+.news ul{list-style:none;margin-left:60px;border-top:1px solid #3A3A3A}
+.news li{border-bottom:1px solid #3A3A3A;padding:10px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.news li>span[data-num]{display:flex;align-items:baseline;gap:6px}
+.news .lb{font-size:17px;color:#BDBDBD}
+.news .v{font-family:"Gowun Batang",serif;font-size:30px;line-height:1}
+.news button{min-height:48px;padding:0 18px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF}
+.news .qs{display:none;width:100%;font-size:17px;color:#D6D6D6}
+.news li.open .qs{display:block}
+
+.find{position:fixed;left:0;right:0;bottom:64px;padding:8px 12px;background:#080808}
+.find .bar{height:64px;background:#141414;border:1px solid #2A2A2A;border-radius:32px;display:flex;align-items:center;padding:0 8px 0 22px;gap:8px}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-family:"Gowun Batang",serif}
+.find input::placeholder{color:#A6A6A6}
+.find button{flex:0 0 auto;min-width:64px;height:48px;border-radius:24px;background:#FEE500;color:#111111;font-family:"Gowun Batang",serif;font-weight:700;font-size:20px;padding:0 16px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+
+@media (max-width:359px){
+  .top{padding:0 8px}
+  .ttl{font-size:20px;letter-spacing:.18em;text-indent:.18em}
+  #view{padding:0 12px}
+  .pill{margin:6px 0 10px}
+  .pill a{flex-wrap:wrap;white-space:normal;padding:8px 14px 6px}
+  .from{order:2;margin-top:14px}
+  .diary{order:1;margin-top:0;padding:14px 14px 2px 28px}
+  .diary::before{left:14px;top:16px;bottom:16px}
+  .diary p[data-ess="1"]{font-size:18px;line-height:1.75;margin-top:6px}
+  .rec{margin-top:10px;min-height:60px}
+  .rec .cell{padding:10px 4px 8px}
+  .rec b{font-size:34px}
+  .diary .foot{margin-top:0}
+  .gdr{order:3}.all{order:4}.news{order:5}
+  .news ul{margin-left:0}
+  .tabs a{letter-spacing:-0.07em}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">골똘이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+  <div class="pill" data-w="today"><span class="in"><a data-num href="#/f/day"><span class="q">?</span><span>10월 <span class="n">12</span>일</span><span class="dn">코스피 <span class="n">−3.28</span>%</span><span class="dn">코스닥 <span class="n">−4.36</span>%</span></a></span></div>
+
+  <div class="from">
+    <span class="av"><img src="../../../../site/media/makbi-icon.svg" alt=""></span>
+    <div>
+      <div class="who">골똘이</div>
+      <p class="say serif" data-say>오늘 나는 왜 사려 했지?</p>
+    </div>
+  </div>
+
+  <section class="diary" data-w="ess">
+    <div class="hd serif">나의 이유 일기</div>
+    <p data-ess="1" class="serif">주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.</p>
+    <a class="rec" href="#/why" data-num><span class="cell"><b>0</b><span>번 멈춤</span></span><span class="cell"><b>0</b><span>번 약속</span></span></a>
+    <div class="foot">
+      <details>
+        <summary>더 보기</summary>
+        <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
+        <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
+      </details>
+      <button class="kk-btn" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button>
+    </div>
+  </section>
+
+  <nav class="gdr" data-w="gdr" aria-label="골똘이 칸">
+    <a href="#/why">골똘이</a><i></i>
+    <a href="#/cal">달력</a><i></i>
+    <a href="#/cond">조건</a><i></i>
+    <a href="#/lead">대장주</a>
+  </nav>
+
+  <details class="all">
+    <summary data-w="all">전부 보기 ⌄</summary>
+    <ul>
+      <li><a href="#/watch">관심</a></li>
+      <li><a href="#/hold">보유</a></li>
+      <li><a href="#/f/rise">오르는 업종 · 반도체 검사·측정 +4.73%</a></li>
+      <li><a href="#/surge">급등</a></li>
+    </ul>
+  </details>
+
+  <section class="news" data-w="news">
+    <h2><span>시황 · 10월 13일</span></h2>
+    <ul>
+      <li data-fact><span class="up" data-num><span class="lb">오른 곳</span><span class="v">766</span></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></li>
+      <li data-fact><span class="dn" data-num><span class="lb">내린 곳</span><span class="v">1,632</span></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></li>
+    </ul>
+  </section>
+
+  <form class="find" data-w="find" onsubmit="return false"><div class="bar">
+    <input type="search" placeholder="친구야, 왜 사? 회사 이름" aria-label="친구야, 왜 사? 회사 이름">
+    <button type="submit" data-path="q1" aria-label="열한 질문 시작">왜?</button>
+  </div></form>
+</main>
+<nav class="tabs">
+  <a href="#/" aria-current="page">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why">매매일지</a>
+  <a href="#/watch">관심</a>
+  <a href="#/hold">보유종목</a>
+</nav>
+<script>
+document.querySelectorAll('[data-fact] button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('open')));
+</script>
+</body>
+</html>
