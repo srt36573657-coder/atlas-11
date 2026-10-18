@@ -8253,6 +8253,8 @@
   "카카오로 시작하기 · 준비만 하고 꺼 둠": "Start with Kakao · ready but switched off",
   "카드에서 두 번 누르면 가입하는 길을 만들었어요 · 열쇠가 들어오면 켜요": "Signing up takes two taps from the card · it turns on once the keys arrive",
   "받는 것은 카카오 회원 번호 하나예요 · 별명 · 사진 · 전화번호는 받지 않아요": "Only the Kakao member number is received · no nickname, photo or phone number",
-  "지금은 꺼져 있어 카카오로 가는 요청이 0이에요": "It is off for now, so there are 0 requests to Kakao"
+  "지금은 꺼져 있어 카카오로 가는 요청이 0이에요": "It is off for now, so there are 0 requests to Kakao",
+  "오늘 시장 그림 · 좁은 폰에서도 화면 안에": "Today's market chart · stays on screen on narrow phones",
+  "모양 파일이 늦게 와도 오늘 시장 그림이 옆으로 넘치지 않아요": "The Today's market chart no longer spills sideways even when its style file arrives late"
  }
 }

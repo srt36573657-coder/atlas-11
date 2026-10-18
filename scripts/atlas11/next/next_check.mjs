@@ -115,7 +115,8 @@ const scan = p => p.evaluate(() => {
     if (r.height < 43.5 || r.width < 43.5) small.push((e.textContent || e.getAttribute('aria-label') || e.className).trim().slice(0, 30) + ' ' + Math.round(r.width) + '×' + Math.round(r.height));
   }
   const cl = view?.cloneNode(true); cl?.querySelectorAll('[data-proper], [lang="ko"]').forEach(e => e.remove()); // 이름 · 남의 글(원문)은 쓰지 않을 말 셈에서 뺌 — 「코스피 양매도 ETN」 같은 상품 이름
-  return {sw: document.documentElement.scrollWidth, vw, text: cl?.textContent ?? '', hrefs: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')), small: small.slice(0, 8), title: document.title};
+  const sw0 = document.documentElement.scrollWidth, wide = sw0 > vw ? [...document.querySelectorAll('#view *')].filter(e => e.getBoundingClientRect().right > vw + 0.5).slice(0, 3).map(e => e.tagName.toLowerCase() + '.' + String(typeof e.className === 'string' ? e.className : e.className?.baseVal ?? '').split(' ')[0] + ' ' + Math.round(e.getBoundingClientRect().right)) : []; // 넘친 칸 이름(실제 사이트에서만 흔들린 #/today 까닭 찾기 · 2026-10-18)
+  return {wide, sw: document.documentElement.scrollWidth, vw, text: cl?.textContent ?? '', hrefs: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')), small: small.slice(0, 8), title: document.title};
 });
 const knownHref = h => {
   if (h === '/' || h === '/letter.html' || h === '/hello.html' || h === '/us/') return true; // /us/ = 미국 판(규칙 54 그대로)
@@ -138,7 +139,7 @@ const knownHref = h => {
   return /^\/#\/(surge|cal|cond|talk|find|time|up|info|today)$/.test(h);
 };
 function checkScan(where, s, p) {
-  if (s.sw > s.vw) fail('가로 넘침', where + ' ' + s.sw + '>' + s.vw);
+  if (s.sw > s.vw) fail('가로 넘침', where + ' ' + s.sw + '>' + s.vw + (s.wide?.length ? ' · ' + s.wide.join(' · ') : ''));
   for (const w of banned(s.text)) fail('쓰지 않을 말', where + ' 「' + w + '」'); // 「공매도」(빌려 판 주식 — 사실 말) · 「사라져」는 words.js 가 셈 밖으로
   for (const x of s.small) fail('누르는 자리 44px 안 됨', where + ' ' + x);
   for (const hr of s.hrefs) { bump('고리'); if (!knownHref(hr)) fail('모르는 고리', where + ' ' + hr); }

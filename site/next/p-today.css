@@ -51,7 +51,7 @@ details.ptoday-how > summary { color: var(--sub); font-size: var(--fs-1); }
 .ptoday-vt { margin-left: var(--sp-1); font-size: var(--fs-1); opacity: 0; } .ptoday-vt:empty { display: none; } .ptoday-hero.ptoday-sc .ptoday-vt { opacity: 1; }
 .ptoday-pw { margin-left: var(--sp-2); color: var(--mute); white-space: nowrap; } .ptoday-pw b { margin-left: var(--sp-1); font-weight: 600; } .ptoday-hero.ptoday-sc .ptoday-pw { opacity: .3; }
 .ptoday-ch { position: relative; height: 170px; margin: var(--sp-2) 0 0; touch-action: pan-y; cursor: crosshair; -webkit-user-select: none; user-select: none; }
-.ptoday-ch svg { display: block; overflow: visible; }
+.ptoday-ch svg { display: block; overflow: visible; max-width: 100%; } /* 그리는 때 넓이를 잰 뒤 모양 파일이 늦게 붙어 칸이 좁아져도 옆으로 넘치지 않게(2026-10-18 실제 사이트 검사 · 다 그린 뒤 다시 그림) */
 .ptoday-ch .ptoday-gl { stroke: var(--card2); stroke-width: 1; } .ptoday-ch .ptoday-g0 { stroke: var(--mute); stroke-width: 1; stroke-dasharray: 2 4; }
 .ptoday-yl { font-size: var(--fs-1); } /* 눈금 글 크기 = 오른쪽 눈금 칸 넓이의 잣대(p-today.js padR = 글 크기 × 3.05) */
 .ptoday-yl span { position: absolute; right: 0; color: var(--mute); font-size: var(--fs-1); line-height: 1; white-space: nowrap; text-align: right; pointer-events: none; }
@@ -62,7 +62,7 @@ details.ptoday-how > summary { color: var(--sub); font-size: var(--fs-1); }
 .ptoday-ch .ptoday-cur { stroke: var(--sub); stroke-width: 1; opacity: 0; } .ptoday-ch .ptoday-cd { fill: var(--ink); opacity: 0; }
 .ptoday-ch.ptoday-on .ptoday-cur, .ptoday-ch.ptoday-on .ptoday-cd { opacity: 1; }
 .ptoday-ch.ptoday-play .ptoday-af, .ptoday-ch.ptoday-play .ptoday-ag2, .ptoday-ch.ptoday-play .ptoday-lg, .ptoday-ch.ptoday-play .ptoday-now { opacity: 0; }
-.ptoday-axl { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: var(--sp-2); margin: var(--sp-1) 0 0; color: var(--mute); font-size: var(--fs-1); } /* 넓이는 p-today.js 가 그림 줄 끝에 맞춤 */
+.ptoday-axl { max-width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: var(--sp-2); margin: var(--sp-1) 0 0; color: var(--mute); font-size: var(--fs-1); } /* 넓이는 p-today.js 가 그림 줄 끝에 맞춤 */
 .ptoday-axl span { white-space: nowrap; } .ptoday-axl span:last-child { margin-left: auto; text-align: right; } /* 날짜는 낱말 가운데서 안 끊김 — 좁으면 끝 날이 다음 줄 오른쪽으로 */
 .ptoday-per { display: flex; gap: var(--sp-1); margin: var(--sp-2) 0 0; }
 .ptoday-per button { flex: 1; min-height: 44px; border: 1px solid transparent; border-radius: 12px; background: var(--card2); color: var(--sub); font-size: var(--fs-2); }
