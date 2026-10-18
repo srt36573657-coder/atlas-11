@@ -1,17 +1,17 @@
 {
- "when": "2026-10-18T16:48:54.458Z",
+ "when": "2026-10-18T16:47:50.577Z",
  "base": "http://127.0.0.1:8826",
- "sec": 42,
+ "sec": 25,
  "xCodes": 1750,
  "all": true,
  "time": {
-  "old": 14.9,
-  "new": 24.2,
-  "wall": 42.4,
+  "old": 8.6,
+  "new": 14.3,
+  "wall": 25.1,
   "opensOld": 1771,
   "opensNew": 1834,
-  "oldPct": 35.1,
-  "oldShare": 38.1
+  "oldPct": 34.1,
+  "oldShare": 37.4
  },
  "net": {
   "req": 9,
