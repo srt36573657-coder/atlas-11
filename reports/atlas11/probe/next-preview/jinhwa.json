@@ -1,0 +1,192 @@
+{
+ "schema": "kkolttori-check-jinhwa-1",
+ "at": "2026-10-18T10:10:01.646Z",
+ "base": "http://127.0.0.1:8826",
+ "mode": "local",
+ "all": true,
+ "offDeviceOpens": 0,
+ "off": [
+  {
+   "name": "열쇠 없음",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 2,
+   "mod": 0,
+   "api": 0
+  },
+  {
+   "name": "깊은 주소 #/jinhwa/x",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 2,
+   "mod": 0,
+   "api": 0
+  },
+  {
+   "name": "짧은 열쇠",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 2,
+   "mod": 0,
+   "api": 0
+  },
+  {
+   "name": "틀린 열쇠",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 2,
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "서버가 아님(403)",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 2,
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "서버에 길 없음(404)",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 2,
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "서버 못 닿음",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 2,
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "보유종목 바로 가기 · 열쇠 없음",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/me",
+   "hist": 2,
+   "mod": 0,
+   "api": 0
+  },
+  {
+   "name": "보유종목 바로 가기 · 틀린 열쇠",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/me",
+   "hist": 2,
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "보유종목 바로 가기 · 서버 못 닿음",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/me",
+   "hist": 2,
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "앱 안에서 #/jinhwa 로 감 · 열쇠 없음",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 3,
+   "mod": 0,
+   "api": 0
+  },
+  {
+   "name": "앱 안에서 #/jinhwa 로 감 · 틀린 열쇠",
+   "opens": 0,
+   "drawn": 0,
+   "row": 0,
+   "title": 0,
+   "hash": "#/",
+   "hist": 3,
+   "mod": 1,
+   "api": 1
+  }
+ ],
+ "key": {
+  "fold": {
+   "tabs": 572,
+   "ess": 156.1875,
+   "n": 181.6875,
+   "name": 332.875,
+   "pics": 486.375,
+   "ok": 542.375
+  }
+ },
+ "server": {
+  "noKey": 403,
+  "wrongKey": 403,
+  "unknown": 404,
+  "appliedConfirm": "applied",
+  "revertedRevert": "reverted",
+  "withdrawNever": "not_confirmed",
+  "statusKeys": [
+   "id,state,at"
+  ],
+  "tallyOk": 204,
+  "tallyBad": 400
+ },
+ "beacon": {
+  "visit": [
+   "visit"
+  ],
+  "rest": [
+   "stop_rest"
+  ],
+  "stop": [
+   "stop"
+  ],
+  "promise": [
+   "promise_yes",
+   "promise"
+  ],
+  "bot": 0
+ },
+ "en": {
+  "left": 0
+ },
+ "counts": {
+  "pass": 124,
+  "fail": 0
+ },
+ "fails": [],
+ "warn": [],
+ "seconds": 31.2,
+ "ok": true
+}
