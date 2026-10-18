@@ -575,9 +575,9 @@ function wPath(I, g) {
     h('span', {class: 'wsep', 'aria-hidden': 'true', text: '›'}),
     I ? h('a', {href: '#/ch/i/' + enc(I.name), text: I.name + ' 업종'}) : h('span', {text: '업종 ?'}));
 }
-function wTags(a, X) {
+function wTags(a, X, open = false) { // open = 열한 질문을 끝낸 기기(p-gdr opened() — 부르는 줄이 넘김) · 아니면 칸 번호 꼬리표를 뺌(본질 「골똘이 칸은 열한 질문 뒤에만」 · 본질 문 ④ · 일꾼 KI)
   const t = [], S = D.surge;
-  for (const p of GDR?.picks ?? []) if (p.code === a) t.push([NAME + ' 칸 ' + p.no + '번', '#/gdr/' + p.no]);
+  if (open) for (const p of GDR?.picks ?? []) if (p.code === a) t.push([NAME + ' 칸 ' + p.no + '번', '#/gdr/' + p.no]);
   if (S?.members?.some(m => m.c === a)) t.push(['급등 칸', '#/surge']);
   for (const [k, nm] of W_BANDS) if (S?.bands?.[k]?.members?.some(m => m.c === a)) t.push(['급등 ' + nm + ' 칸', '#/surge/' + k.slice(1)]);
   const o = condOf()?.get(a); // 대장주 = 업종 안 회사 크기 1등 — #/f/lead 칩과 같은 자료 · 같은 걸름(차례 1 · 5일 선 · 5일 오름이 숫자)
@@ -593,6 +593,7 @@ async function vWatch(a) {
   { const [code, sub] = String(a).split('/'); if (sub) { if (['past', 'rivals', 'grow', 'range'].includes(sub) && ready(sub)) return page(sub, code); location.replace('/atlas/#/c/' + code + '/' + sub); return {title: '…', nodes: []}; } }
   const css = ready('co') ? mod('co').then(() => sheetReady('/next/p-co.css'), () => {}) : null; // 회사 머리 모양이 붙은 뒤에 그림(첫 화면 숫자 자리가 흔들리지 않게)
   const rest = Promise.all([need('cond'), need('surge'), gdr(), css]); rest.catch(() => {}); // 먼저 시작 — 아래에서 회사 목록(core · mkt)을 기다리는 동안 함께 받음
+  const gdrM = mod('gdr').catch(() => null); // 칸 번호 꼬리표 문(p-gdr opened — 못 받으면 꼬리표를 뺌 · 일꾼 KI)
   await Promise.all([need('core'), need('mkt')]);
   const known = !!ix()?.co?.[a]; // 모르는 번호는 회사 파일 · 고른 곳 파일을 받지 않음(없는 파일 404 가 화면 오류로 읽히지 않게)
   const coP = known ? getJson('co/' + enc(a) + '.json') : null, cmP = known ? getJson('comp.json') : null; // 오늘 값(이름 밑 첫 줄) · 보내기에 담을 그날 값 — 고른 곳 밖 = 회사 파일 c.price · c.priceDate / 고른 곳 = comp.json 의 그 회사(회사 파일에 c 가 없음) · 3단 자세히(p-co)가 같은 파일을 써서 한 번만 받음
@@ -605,6 +606,7 @@ async function vWatch(a) {
   const lab = i => { const d = dateAt(n, i); return (d ? md(d) : (i + 1) + '번째 날') + ' · 첫날보다 ' + pct((l[i] / l[0] - 1) * 100) + (i > 0 ? ' · 그날 ' + pct((l[i] / l[i - 1] - 1) * 100) : ''); };
   const d0 = dateAt(n, 0), d1 = dateAt(n, n - 1), tip0 = '한 달 · ' + (d0 ? md(d0) : '?') + ' → ' + (d1 ? md(d1) : '?');
   const cj = await coP, cm = await cmP, cc = cj?.c ?? cm?.companies?.[a], pr = cc?.price, pd = cc?.priceDate, okP = Number.isFinite(pr) && pr > 0, pDay = okP && isDay(pd) ? String(pd).slice(0, 10) : null;
+  const GM = await gdrM;
   /** 보내기 · 같이 따져 줘(2026-10-17 21:10 [4] 1 · 6 · 8) — 글상자(p-share)를 부름 · 그날 값과 날을 함께(친구가 열면 보낸 날 값 · 오늘 값) · 수익률 글 없음 */
   const sendBtn = (kind, text) => {
     const b = h('button', {class: 'act', type: 'button', text});
@@ -620,7 +622,7 @@ async function vWatch(a) {
     h('p', {class: 'wnow'}, h('b', {class: 'wn-p num', text: okP ? num(pr) + '원' : '?'}), h('span', {class: 'wn-k', text: '하루'}), h('b', {class: 'wn-d num ' + cls(day), text: pct(day)})),
     h('p', {class: 'ws'}, h('span', {text: md(X.mkt.asOf) + ' 마감'}), ' · ', h('span', {text: '한 달 동안'}), ' ', h('b', {class: cls(x20), text: pct(x20)}), ...(pDay && pDay !== X.mkt.asOf ? [' · ', h('span', {text: '값은 ' + md(pDay) + ' 종가'})] : [])),
     wTabs(a), // 탭 넷이 먼저 — 꼬리표가 늘어 둘째 줄이 생겨도 탭 줄이 첫 화면(아래 막대 위 572px) 안에 머물게
-    wTags(a, X),
+    wTags(a, X, GM?.opened?.() === true), // 칸 번호 꼬리표는 열한 질문 뒤에만(opened)
     // 관심 담기(첫 단추 — 검사가 .acts 첫 .act 를 누름) · 보내기 · 매매일지로(2026-10-17 21:10 [3] 2 · 규칙 1 「하나 넣으면 하나 뺀다」 — 넣은 「이 회사로 왜 사?」 자리에서 「편지 쓰기」를 뺌 · 편지 여는 밤은 보유종목 바로 가기에)
     h('div', {class: 'acts cw'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),
     h('a', {class: 'why-go cw', href: '#/why/' + enc(a)}, h('b', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'})),

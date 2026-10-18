@@ -409,8 +409,9 @@ for (const w of [320, 360, 390]) {
     const z = watch(await ctx.newPage(), base); z._errs = [];
     z.on('pageerror', e => z._errs.push(e.message)); z.on('console', m => { if (m.type() === 'error') z._errs.push(m.text()); });
     if (await first(z, base + '/next/#/') === false) fail('여는 중 남음', w + ' 질문 뒤 처음 열기');
-    for (const r of ['#/', '#/gdr', ...(GDR?.picks?.length ? ['#/gdr/' + GDR.picks[0].no] : []), '#/why', '#/me']) {
+    for (const r of ['#/', '#/gdr', ...(GDR?.picks?.length ? ['#/gdr/' + GDR.picks[0].no] : []), '#/why', '#/me', ...(GDR?.picks?.length ? ['#/w/' + GDR.picks[0].code] : [])]) {
       await go(z, r); await z.waitForTimeout(80);
+      if (r.startsWith('#/w/')) { const tg = await z.evaluate(() => [...document.querySelectorAll('#view .wtags > a')].map(a => a.getAttribute('href'))); if (!tg.includes('#/gdr/' + GDR.picks[0].no)) fail(NEW_NAME + ' 칸 꼬리표(질문 뒤 회사 쪽 · 본질 문 ④)', w + ' ' + r + ' ' + JSON.stringify(tg)); } // 끝낸 기기만 칸 번호 꼬리표(app.js wTags open · 일꾼 KI)
       if (r === '#/' || r.startsWith('#/gdr')) { const lock = await z.evaluate(() => !!document.querySelector('#view section.gdr.lock1, #view section.gdr.lock')); if (lock) fail(NEW_NAME + ' 칸이 질문 뒤에도 잠김', w + ' ' + r); }
       checkScan(w + ' 질문 뒤 ' + r, await scan(z), z); bump('질문 뒤 화면');
     }
@@ -419,6 +420,7 @@ for (const w of [320, 360, 390]) {
 }
 /* ② 모든 회사 보는 화면 · ③ 채널 · ④ 쇼츠 · ⑤ 찾기 · ⑥ 누르기 — 390 폭 */
 const p = await page(390, 844);
+const WHY_DONE_HERE = false; // 이 쪽(새 칸)은 매매일지 기록이 없음 = 열한 질문 전 기기 — 회사 쪽 칸 번호 꼬리표 0 을 기대(일꾼 KI)
 if (await first(p, base + '/next/#/') === false) fail('여는 중 남음', '390 처음 열기');
 const list = LIMIT ? codes.slice(0, LIMIT) : codes;
 for (const code of list) {
@@ -442,7 +444,8 @@ for (const code of list) {
   const wantTabs = [sub('past'), sub('rivals'), sub('grow'), sub('range')];
   if (JSON.stringify(g.tabs.map(t => t[1])) !== JSON.stringify(wantTabs) || new Set(g.tabs.map(t => t[2])).size !== 1) fail('탭 넷', code + ' ' + JSON.stringify(g.tabs));
   const wantTags = [];
-  for (const q of GDR?.picks ?? []) if (q.code === code) wantTags.push([NEW_NAME + ' 칸 ' + q.no + '번', '#/gdr/' + q.no]);
+  // 칸 번호 꼬리표는 열한 질문을 끝낸 기기에서만(본질 문 ④ · app.js wTags open · 일꾼 KI) — 이 390 쪽은 매매일지 기록이 없어 늘 뺌 · 끝낸 기기의 꼬리표는 위 「질문 뒤」 쪽에서 봄
+  if (WHY_DONE_HERE) for (const q of GDR?.picks ?? []) if (q.code === code) wantTags.push([NEW_NAME + ' 칸 ' + q.no + '번', '#/gdr/' + q.no]);
   if (surge?.members?.some(m => m.c === code)) wantTags.push(['급등 칸', '#/surge']);
   for (const [k, nm] of [['b10', '10%대'], ['b20', '20%대'], ['b30', '30%대'], ['b40', '40% 이상']]) if (surge?.bands?.[k]?.members?.some(m => m.c === code)) wantTags.push(['급등 ' + nm + ' 칸', '#/surge/' + k.slice(1)]);
   // 대장주 = 업종 안 회사 크기 1등 · 5일 선이 있고 5일 오름이 숫자 · cond 가 시장과 같은 날(#/f/lead 칩과 같은 걸름 — cond.json 칸 줄을 직접 읽음)

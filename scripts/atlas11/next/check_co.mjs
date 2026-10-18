@@ -169,10 +169,12 @@ const c20 = o => (Number.isFinite(o.c) ? o.c : lineChg(o.l));
 const clsOf = v => (v == null || !Number.isFinite(v) ? 'q' : R1(v) > 0 ? 'up' : R1(v) < 0 ? 'dn' : 'fl');
 const deepNorm = x => (typeof x === 'string' ? norm(x) : Array.isArray(x) ? x.map(deepNorm) : x);
 const BANDS = [['b10', '10%대', '10'], ['b20', '20%대', '20'], ['b30', '30%대', '30'], ['b40', '40% 이상', '40']];
+const WHY_DONE_HERE = false; // 이 검사는 매매일지 기록(atlas:godori-why)을 넣지 않음 = 열한 질문 전 기기
 /** 든 목록 꼬리표 — 이 검사가 자료에서 따로 센 것(차례: 고도리 칸 → 급등 칸 → 급등 n%대 칸 → 대장주 → 고른 곳) */
 function wantTags(code, o) {
   const t = [];
-  for (const p of GDR?.picks ?? []) if (p.code === code) t.push([NEW_NAME + ' 칸 ' + p.no + '번', '#/gdr/' + p.no, false]);
+  // 칸 번호 꼬리표는 열한 질문을 끝낸 기기에서만(본질 문 ④ · app.js wTags open · 일꾼 KI) — 이 검사의 칸들은 매매일지 기록이 없어 늘 뺌(끝낸 기기는 next_check 「질문 뒤」가 봄)
+  if (WHY_DONE_HERE) for (const p of GDR?.picks ?? []) if (p.code === code) t.push([NEW_NAME + ' 칸 ' + p.no + '번', '#/gdr/' + p.no, false]);
   if (surge?.members?.some(m => m.c === code)) t.push(['급등 칸', '#/surge', false]);
   for (const [k, nm, n] of BANDS) if (surge?.bands?.[k]?.members?.some(m => m.c === code)) t.push(['급등 ' + nm + ' 칸', '#/surge/' + n, false]);
   if (LEAD.has(code)) t.push(['대장주', '#/f/lead', false]);

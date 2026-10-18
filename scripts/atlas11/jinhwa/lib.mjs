@@ -9,6 +9,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import {PROTECTED as GATE_PROTECTED, protectedTouched} from '../next/essence_check.mjs'; // 지킴 목록 한 곳 = 본질 문(KA) — 회차는 그 위에 더 막을 곳만 더함(ROUND_EXTRA)
+export {GATE_PROTECTED};
 
 export const REPO = 'srt36573657-coder/atlas-11';
 export const SITE = 'https://aaa7377.com';
@@ -176,18 +178,16 @@ export const measureTexts = metrics => measureRules(metrics).map(r => r.text);
 
 // ───────────────────────── 못 고치는 파일 · 큰 것 ─────────────────────────
 // [8] 10 「기계는 본질 파일, 망치는 길 목록, 잣대, 이 명령문을 스스로 고치지 못한다.」 + evolution.v1 「제 설정과 채점 규칙」 + 규칙 75(옛 화면) · 규칙 7(예약 파일)
-//   끝이 / 면 폴더 · 정규식이면 꼴 · 나머지는 파일 하나. KA 의 essence_check --diff(PROTECTED)와 함께 봄(둘 중 하나라도 걸리면 막힘)
-export const JINHWA_PROTECTED = Object.freeze([
-  [ESSENCE_FILE, '본질 파일'], ...OLD_ESSENCE_FILES.map(f => [f, '본질 파일(옛 이름)']), [/^docs\/[^/]*_본질\.md$/, '본질 파일'],
-  [LOCK_FILE, '본질 잠금'], [/^docs\/design\/[^/]+\/order-[^/]*\.txt$/, '사장님 명령문'], ['docs/', '규칙 · 설계 · 지시문(사장님 말씀으로만)'],
-  ['site/next/words.js', '망치는 길 · 쓰지 않을 말 목록'], [METRICS_FILE, '잣대 셋'], ['config/', '설정 · 잣대 · 채점 규칙'],
-  ['site/next/tally.js', '잣대 세기(화면 신호)'], ['lib/atlas11/tally.mjs', '잣대 세기'], ['functions/atlas11/tally.mjs', '잣대 세기'],
-  ['site/next/p-jinhwa.js', '진화 칸(확인 단추)'], ['site/next/p-jinhwa.css', '진화 칸(확인 단추)'],
-  ['lib/atlas11/jinhwa.mjs', '확인 상태'], ['functions/atlas11/jinhwa.mjs', '확인 상태'], ['lib/atlas11/invite.mjs', '사장님 열쇠'], ['functions/atlas11/invite.mjs', '사장님 열쇠'],
-  ['scripts/atlas11/jinhwa/', '진화 회차 도구'], ['reports/', '기록 · 장부 · 검사 결과(기록 단계만 · 새 파일만)'], ['site/next/data/', '자료(셈으로만 · 진화 칸 자료는 기록 단계만)'],
-  ['scripts/atlas11/next/essence_check.mjs', '본질 문'], ['scripts/atlas11/art_gate.mjs', '올리기 문'], ['scripts/atlas11/trust_gate.mjs', '장부 문'],
-  ['scripts/atlas11/face_gate.mjs', '얼굴 문'], ['scripts/atlas11/changelog_commit_gate.mjs', '커밋 번호 문'], ['scripts/atlas11/hooks/', '밀어 넣기 문'],
-  ['scripts/atlas11/deploy_netlify.mjs', '올리기'], ['scripts/atlas11/package.mjs', '묶기'], ['scripts/atlas11/site_headers.mjs', '보안 머리말'],
+//   지킴 목록은 한 곳 = 본질 문 scripts/atlas11/next/essence_check.mjs PROTECTED(본질 · 옛 이름 본질 · 잠금 · 명령문 · 잣대 · words.js · 본질 문 · 올리기 · 진화 회차 도구 ·
+//   진화 칸 · 합계 칸 서버 · 예약 작업 파일) — protectedTouched 로 맞댐. 아래 ROUND_EXTRA 는 그 목록 밖에서 회차가 더 막는 곳(대안 = 화면 쪽 · 모양 · 글을 작게)
+//   끝이 / 면 폴더 · 정규식이면 꼴 · 나머지는 파일 하나
+export const ROUND_EXTRA = Object.freeze([
+  [/^docs\/[^/]*_본질\.md$/, '본질 파일'], [/^docs\/design\/[^/]+\/order-[^/]*\.txt$/, '사장님 명령문'], ['docs/', '규칙 · 설계 · 지시문(사장님 말씀으로만)'],
+  ['config/', '설정 · 잣대 · 채점 규칙'], ['site/next/tally.js', '잣대 세기(화면 신호)'], ['site/next/p-jinhwa.js', '진화 칸(확인 단추)'], ['site/next/p-jinhwa.css', '진화 칸(확인 단추)'],
+  ['lib/atlas11/invite.mjs', '사장님 열쇠'], ['functions/atlas11/invite.mjs', '사장님 열쇠'],
+  ['reports/', '기록 · 장부 · 검사 결과(기록 단계만 · 새 파일만)'], ['site/next/data/', '자료(셈으로만 · 진화 칸 자료는 기록 단계만)'],
+  ['scripts/atlas11/art_gate.mjs', '올리기 문'], ['scripts/atlas11/trust_gate.mjs', '장부 문'], ['scripts/atlas11/face_gate.mjs', '얼굴 문'], ['scripts/atlas11/changelog_commit_gate.mjs', '커밋 번호 문'],
+  ['scripts/atlas11/hooks/', '밀어 넣기 문'], ['scripts/atlas11/package.mjs', '묶기'], ['scripts/atlas11/site_headers.mjs', '보안 머리말'],
   [/^scripts\/atlas11\/next\/(check_[a-z0-9]+|next_check|next_en_check|quick|wait_preview|wip_preview|page_rules|run_all|net|half36|measure[a-z_]*)\.mjs$/, '검사 · 반값 셈'],
   ['scripts/atlas11/next/shard/', '검사 나누기'], ['scripts/atlas11/next/verify/', '따로 세기'], ['scripts/atlas11/next/fixtures/', '검사 자료'], ['scripts/atlas11/next/gdr/', '골똘이 칸 셈'],
   ['scripts/atlas11/invite_dev.mjs', '시험 서버'], ['tests/', '시험'], ['.github/', '깃허브 작업(예약 · 검사)'], ['.claude/', 'Claude 방 설정'],
@@ -196,9 +196,19 @@ export const JINHWA_PROTECTED = Object.freeze([
   ['site/index.html', '옛 화면(규칙 75)'], ['scripts/atlas11/t365/', '옛 화면(규칙 75)'],
   ['public/', '받은 자료'], ['package.json', '패키지'], ['package-lock.json', '패키지'], ['netlify.toml', '넷리파이 설정'], ['.gitignore', '저장소 설정'],
 ]);
+/** 보기용 한 줄 목록(지시문 · 보고) — 본질 문 목록 + 회차가 더 막는 곳 */
+export const JINHWA_PROTECTED = Object.freeze([...GATE_PROTECTED.map(p => [p, '본질 문 지킴 목록']), ...ROUND_EXTRA]);
 const matchP = (p, f) => (p instanceof RegExp ? p.test(f) : p.endsWith('/') ? f.startsWith(p) : f === p);
-/** 못 고치는 파일에 닿은 것 — [{file, why}] */
-export const protectedHits = files => files.flatMap(f => { const h = JINHWA_PROTECTED.find(([p]) => matchP(p, f)); return h ? [{file: f, why: h[1]}] : []; });
+/** 못 고치는 파일에 닿은 것 — [{file, why}] · 먼저 본질 문 목록(protectedTouched — 한 곳) · 그다음 회차가 더 막는 곳 */
+export function protectedHits(files) {
+  const gate = new Set(protectedTouched(files));
+  return files.flatMap(f => {
+    const n = String(f).normalize('NFC');
+    if (gate.has(n)) return [{file: f, why: '본질 문 지킴 목록(essence_check PROTECTED)'}];
+    const h = ROUND_EXTRA.find(([p]) => matchP(p, n));
+    return h ? [{file: f, why: h[1]}] : [];
+  });
+}
 /** 잣대 신호를 건드린 줄(더하거나 뺀 줄에 tally( · /api/tally · /api/jinhwa) — 멍거 눈 「잣대를 비트나」를 기계로도 막음 */
 export function yardstickLines(patchU0) {
   const out = [];

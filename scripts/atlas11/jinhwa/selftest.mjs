@@ -238,7 +238,7 @@ function makeRepo(tmp) {
   return {origin, work};
 }
 /** 가짜 손발 — 상태 · 올리기 목록 · 검사 · 그림 · 미리 검사(가지는 진짜로 밂) */
-function fakeDeps({work, run, now, status, deploys = () => [], changed = () => 0, preview = () => 'pass', gate = null, onChanged = null}) {
+function fakeDeps({work, run, now, status, deploys = () => [], changed = () => 0, preview = () => 'pass', gate = null, onChanged = null, staticFails = null}) {
   let sc = 0;
   return {
     root: work, run, now: () => new Date(now), sleep: async () => {}, every: 0.001, waitDeploysMin: 0.0005, previewMaxMin: 0.0005, say: () => {},
@@ -246,6 +246,7 @@ function fakeDeps({work, run, now, status, deploys = () => [], changed = () => 0
     fetchTally: async () => ({schema: 'kkolttori-tally-1', days: [{d: '2026-10-19', stop: 3, stop_rest: 1, promise: 0, promise_yes: 0}]}),
     ghRunner: () => ({ok: true, out: JSON.stringify(deploys())}),
     essenceDiff: gate ?? (() => ({ok: true, why: ''})),
+    essenceStatic: dir => (staticFails ? staticFails(dir) : {ran: true, code: 0, fails: []}),
     changedCheck: async (dir, files) => { if (onChanged) onChanged(dir, files); const f = changed(files); return {ok: !f, fails: f, tail: ''}; },
     quickCheck: async () => ({ok: true, fails: 0}),
     previewStart: o => { const p = G.pushBranch(work, o.sha, o.branch, {expect: o.expect}); return p.ok ? {ok: true, run: 7, branch: o.branch, sha: o.sha} : {ok: false, why: p.why}; },
@@ -260,7 +261,7 @@ const commitIn = (dir, f, from, to, msg = '대안') => { const t = fs.readFileSy
 
 test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · 본질 문 없음은 막힘) → 카드 → 미리 검사 → 기록(진화 칸 자료 · 그림 · 새 기록 파일)', async ctx => {
   const {work} = ctx.repo, run = path.join(ctx.tmp, 'run');
-  const D = fakeDeps({work, run, now: '2026-10-19T00:31:00Z', status: {items: []}});
+  const D = fakeDeps({work, run, now: '2026-10-19T00:30:00Z', status: {items: []}});
   ctx.D1 = D;
   const b = await R(D, 'begin'); eq(b.code, 0, JSON.stringify(b.out)); eq(b.out.plan.next, 'make'); eq(b.out.essence.first, ESS.first);
   const starts = {};
@@ -278,6 +279,9 @@ test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · �
   commitIn(starts[1], 'site/next/p-why.js', "'why 칸'", "'why 칸 · 한 번 더 멈춰요'");
   const Dg = {...D, essenceDiff: (base, head) => G.essenceDiff(work, base, head)}; // 이 시험 저장소에는 본질 문 파일이 없음 → 닫힌 쪽
   r = await R(Dg, 'alt', '--n', '1', '--route', '#/why'); eq(r.code, 1); ok(/본질 문/.test(r.out.why), r.out.why);
+  const Ds = {...D, essenceStatic: dir => ({ran: true, code: 1, fails: dir.includes(`${path.sep}wt${path.sep}main${path.sep}`) ? ['4:fail:옛 까닭'] : ['4:fail:옛 까닭', '3:fail:망치는 길 낱말 새로']})};
+  r = await R(Ds, 'alt', '--n', '1', '--route', '#/why'); eq(r.code, 1); ok(/일곱 가지에 새로 걸림 1곳/.test(r.out.why), r.out.why);
+  const st0 = JSON.parse(fs.readFileSync(path.join(run, 'state.json'), 'utf8')); delete st0.gateBase; fs.writeFileSync(path.join(run, 'state.json'), JSON.stringify(st0)); // 바탕 결과를 다시 셈
   // 지나는 대안 셋
   r = await R(D, 'alt', '--n', '1', '--route', '#/why'); eq(r.code, 0, JSON.stringify(r.out));
   commitIn(starts[2], 'site/next/p-today.js', "'today 칸'", "'today 칸 · 받은 때'");
@@ -392,7 +396,7 @@ test('E7 고장 고침 — 작은 오타는 바로 main · 「고친 고장」 �
 });
 test('E8 본질 파일이 잠금과 다르면 회차를 멈춤 · 기록 이름이 겹치면 쓰지 않음', async ctx => {
   const {work} = ctx.repo;
-  const D = fakeDeps({work, run: path.join(ctx.tmp, 'run8'), now: '2026-10-19T00:31:00Z', status: {items: []}}); // 첫 회차와 같은 때 → 같은 기록 이름
+  const D = fakeDeps({work, run: path.join(ctx.tmp, 'run8'), now: '2026-10-19T00:30:30Z', status: {items: []}}); // 첫 회차와 같은 분 → 같은 기록 이름
   let r = await R(D, 'begin'); eq(r.code, 0);
   r = await R(D, 'record'); eq(r.code, 1); ok(/같은 이름의 기록/.test(r.out.why), r.out.why);
   r = await R(D, 'end'); eq(r.code, 0);

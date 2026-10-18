@@ -48,12 +48,13 @@ export function realDeps({root = ROOT, run = process.env.JINHWA_RUN || path.join
     fetchTally: async days => { const r = await G.fetchJson(`${L.TALLY_URL}?days=${days}`); return r.ok ? r.json : null; },
     ghRunner: G.gh,
     essenceDiff: (base, head) => G.essenceDiff(root, base, head),
+    essenceStatic: siteDir => G.essenceStatic(root, siteDir),
     changedCheck: async (dir, files) => { const dev = await G.startDev(dir, {port: 8826}); if (!dev.ok) return {ok: false, fails: 1, tail: dev.why}; try { return G.changedCheck(dir, {files, base: dev.base, ownerKey: dev.ownerKey}); } finally { dev.stop(); } },
     quickCheck: async (dir, files) => { const dev = await G.startDev(dir, {port: 8827}); if (!dev.ok) return {ok: false, fails: 1, tail: dev.why}; try { return G.quickCheck(dir, {files, base: dev.base}); } finally { dev.stop(); } },
     previewStart: o => G.previewStart(root, o),
     previewResult: o => G.previewResult(root, {...o, codePaths: CODE_PATHS}),
     shoot: async o => (await import('./shots.mjs')).shoot(o),
-    liveData: dir => G.liveData(dir),
+    liveData: dir => G.liveData(dir, {top: true}),
   };
 }
 
@@ -158,6 +159,16 @@ function gate(D, {base, head, cwd, expectHash = null, allowDelete = false, max =
   if (!why.length) { const e = D.essenceDiff(base, head); if (!e.ok) why.push(e.why); }
   return {ok: !why.length, why, files: d.files.map(f => f.path), d, changeHash: ch};
 }
+/** 본질 문 일곱 가지(정적) — 대안을 얹은 사이트가 지금 main 사이트보다 새로 걸리는 곳이 없어야 함(새로 걸리면 업데이트 올리기가 통째로 막힘 · KA 문)
+ *  바탕(main) 결과는 회차에 한 번만 셈 · 문을 못 돌리면 막음(닫힌 쪽) */
+function staticGate(D, st, dir) {
+  if (!st.gateBase) { st.gateBase = D.essenceStatic(path.join(st.wt.main, 'site')); save(D, st); }
+  if (!st.gateBase.ran) return {ok: false, why: '본질 문 일곱 가지를 못 돌림 — ' + st.gateBase.why};
+  const a = D.essenceStatic(path.join(dir, 'site'));
+  if (!a.ran) return {ok: false, why: '본질 문 일곱 가지를 못 돌림 — ' + a.why};
+  const old = new Set(st.gateBase.fails), added = a.fails.filter(x => !old.has(x));
+  return added.length ? {ok: false, why: `본질 문 일곱 가지에 새로 걸림 ${added.length}곳 — ${added.slice(0, 2).join(' · ')}`} : {ok: true, why: ''};
+}
 /** 미리 검사 — 검사한 판(checked) 가운데 코드가 같은 것이 있으면 그 결과 · 없으면 새로(try 가지) 돌리고 기다림 */
 async function previewFor(D, {head, checked = [], branch, maxMin}) {
   for (const sha of [...checked].reverse()) {
@@ -219,6 +230,8 @@ export async function cmdApply(a, D) {
   if (!ap.ok) fail(ap.why);
   const gt = gate(D, {base, head: ap.sha, cwd: st.wt.apply, expectHash: g.changeHash});
   if (!gt.ok) fail(gt.why.join(' · '));
+  const sg = staticGate(D, st, st.wt.apply);
+  if (!sg.ok) fail(sg.why);
   D.say(`넣기 — 바뀐 쪽 검사(${gt.files.join(', ')})`);
   const cc = await D.changedCheck(st.wt.apply, gt.files);
   if (cc.fails) fail(`바뀐 쪽 검사 실패 ${cc.fails}`);
@@ -264,6 +277,8 @@ export async function cmdRevert(a, D) {
   const head = G.revParse(st.wt.revert, 'HEAD');
   const gt = gate(D, {base, head, cwd: st.wt.revert, allowDelete: true, onlyFiles: g.files ?? []});
   if (!gt.ok) fail(gt.why.join(' · '));
+  const sg = staticGate(D, st, st.wt.revert);
+  if (!sg.ok) fail(sg.why);
   const cc = await D.changedCheck(st.wt.revert, gt.files.filter(f => fs.existsSync(path.join(st.wt.revert, f))));
   if (cc.fails) fail(`바뀐 쪽 검사 실패 ${cc.fails}`);
   const pv = await previewFor(D, {head, checked: [], branch: L.tryBranchOf(id), maxMin: D.previewMaxMin});
@@ -307,6 +322,7 @@ export async function cmdFix(a, D) {
   for (const h of L.textHits(what, wordsOpt(W))) why.push('고친 것 글 — ' + h);
   for (const t of L.addedKoreanStrings(d.patch)) for (const h of L.textHits(t, wordsOpt(W))) why.push(`더한 글 「${t.slice(0, 20)}」 — ${h}`);
   if (!why.length) { const e = D.essenceDiff(st.main0, head); if (!e.ok) why.push(e.why); }
+  if (!why.length) { const sg = staticGate(D, st, dir); if (!sg.ok) why.push(sg.why); }
   if (why.length) fail(why.join(' · '));
   const files = d.files.map(f => f.path);
   const cc = await D.changedCheck(dir, files);
@@ -364,6 +380,7 @@ export async function cmdAlt(a, D) {
   for (const t of L.addedKoreanStrings(d.patch)) for (const h of L.textHits(t, wordsOpt(W))) made.why.push(`더한 글 「${t.slice(0, 20)}」 — ${h}`);
   for (const o of st.made) if (o.ok && o.changeHash === made.changeHash) made.why.push(`대안 ${o.n} 과 같은 고침 — 서로 달라야 함`);
   if (!made.why.length) { const e = D.essenceDiff(st.main0, head); if (!e.ok) made.why.push(e.why); }
+  if (!made.why.length) { const sg = staticGate(D, st, dir); if (!sg.ok) made.why.push(sg.why); }
   if (made.why.length) return done();
   D.say(`대안 ${n} — 바뀐 쪽 검사(${made.files.join(', ')})`);
   const cc = await D.changedCheck(dir, made.files);
@@ -476,6 +493,8 @@ export async function cmdRetest(a, D) {
     if (!ap.ok) { drop(ap.why); st.retested.push(r); out.push(r); continue; }
     const gt = gate(D, {base: st.main0, head: ap.sha, cwd: D.root, expectHash: g.changeHash});
     if (!gt.ok) { drop(gt.why.join(' · ')); st.retested.push(r); out.push(r); continue; }
+    const sg = staticGate(D, st, dir);
+    if (!sg.ok) { drop(sg.why); st.retested.push(r); out.push(r); continue; }
     r.sha = ap.sha;
     const qc = await D.quickCheck(dir, gt.files);
     r.quick = {fails: qc.fails};
@@ -650,14 +669,16 @@ export async function runCommand(argv, D) {
   catch (e) { if (e instanceof Stop) return {code: e.code, out: {ok: false, cmd: name, why: e.message, ...e.extra}}; return {code: 1, out: {ok: false, cmd: name, why: '오류 ' + G.short(e?.stack ?? e, 400)}}; }
 }
 
+// 맨 위 await 를 쓰지 않음 — 자기 시험(selftest.mjs)이 이 파일을 다시 불러 쓰므로 이 파일이 먼저 다 읽혀야 함
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const argv = process.argv.slice(2);
-  if (argv.includes('--selftest')) {
-    const {selftest} = await import('./selftest.mjs');
-    const r = await selftest({verbose: argv.includes('--verbose')});
-    process.exit(r.fail ? 1 : 0);
-  }
-  const {code, out} = await runCommand(argv, realDeps());
-  process.stdout.write(JSON.stringify(out) + '\n');
-  process.exit(code);
+  (async () => {
+    const argv = process.argv.slice(2);
+    if (argv.includes('--selftest')) {
+      const {selftest} = await import('./selftest.mjs');
+      const r = await selftest({verbose: argv.includes('--verbose')});
+      process.exit(r.fail ? 1 : 0);
+    }
+    const {code, out} = await runCommand(argv, realDeps());
+    process.stdout.write(JSON.stringify(out) + '\n', () => process.exit(code));
+  })().catch(e => { process.stderr.write('오류 ' + String(e?.stack ?? e).slice(0, 400) + '\n'); process.exit(1); });
 }

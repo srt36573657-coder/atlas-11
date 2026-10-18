@@ -8361,6 +8361,7 @@
   "정해진 업데이트 때 적어요. 날짜를 누르면 그날 {n}% 이상 칸에 들어온 곳과 나간 곳이 나와요.": "Logged at the scheduled updates. Tap a date to see what entered and left the {n}%+ band that day.",
   "정해진 업데이트 때 적어요. 날짜를 누르면 그날 {n}%대 칸에 들어온 곳과 나간 곳이 나와요.": "Logged at the scheduled updates. Tap a date to see what entered and left the {n}% band that day.",
   "정해진 업데이트 때 적어요. 날짜를 누르면 그날 급등 칸에 들어온 곳과 나간 곳이 나와요.": "Logged at the scheduled updates. Tap a date to see what entered and left the Surge list that day.",
-  "정해진 업데이트 때 다시 세요. 다른 칸으로 간 곳은 {q}으로 적어요. 다른 셈으로 한 번 더 세어 같을 때만 올려요.": "Recounted at the scheduled updates. Stocks that moved to another band are marked {q}. We post only when a second, separate count matches."
+  "정해진 업데이트 때 다시 세요. 다른 칸으로 간 곳은 {q}으로 적어요. 다른 셈으로 한 번 더 세어 같을 때만 올려요.": "Recounted at the scheduled updates. Stocks that moved to another band are marked {q}. We post only when a second, separate count matches.",
+  "{e} 소개": "About {e}"
  }
 }

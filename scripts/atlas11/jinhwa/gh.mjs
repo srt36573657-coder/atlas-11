@@ -27,11 +27,13 @@ export const DATA_EXCLUDES = Object.freeze([`:(exclude)${DATA_FILE}`, `:(exclude
 // ───────────── 잠금(회차 하나씩) — 원격 가지 jinhwa-lock · 없을 때만 만들어짐(--force-with-lease=…:) ─────────────
 export function lockTake(cwd, {by = 'jinhwa', now = new Date(), staleMin = LOCK_STALE_MIN, remote = 'origin'} = {}) {
   const tree = git(cwd, ['hash-object', '-t', 'tree', '-w', '--stdin'], {input: ''}).out;
-  const c = git(cwd, ['commit-tree', tree, '-m', JSON.stringify({at: now.toISOString(), by})]);
+  // 잠금 커밋마다 다른 값(nonce) — 같은 초 · 같은 글이면 같은 커밋이 되어 둘째 밀기가 「이미 같음」으로 지나가 버림(자기 시험 E2 가 잡음)
+  const c = git(cwd, ['commit-tree', tree, '-m', JSON.stringify({at: now.toISOString(), by, nonce: crypto.randomBytes(8).toString('hex'), pid: process.pid})]);
   if (!c.ok) return {ok: false, why: '잠금 커밋을 못 만듦 ' + short(c.err)};
   const sha = c.out.trim();
+  const mine = () => git(cwd, ['ls-remote', remote, `refs/heads/${LOCK_BRANCH}`]).out.split(/\s+/)[0] === sha; // 밀린 뒤 원격이 내 잠금인지 다시 읽어 봄
   let r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
-  if (r.ok) return {ok: true, sha};
+  if (r.ok && mine()) return {ok: true, sha};
   const old = git(cwd, ['ls-remote', remote, `refs/heads/${LOCK_BRANCH}`]).out.split(/\s+/)[0];
   if (!/^[0-9a-f]{40}$/.test(old || '')) return {ok: false, why: '잠금을 못 밂 ' + short(r.err)};
   git(cwd, ['fetch', '-q', '--no-tags', remote, `refs/heads/${LOCK_BRANCH}`]);
@@ -39,7 +41,7 @@ export function lockTake(cwd, {by = 'jinhwa', now = new Date(), staleMin = LOCK_
   const age = at ? (now - new Date(at)) / 60e3 : Infinity;
   if (age < staleMin) return {ok: false, busy: true, why: `다른 진화 회차가 돌고 있음 — ${Math.round(age)}분 전에 시작`};
   r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${old}`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
-  return r.ok ? {ok: true, sha, stolen: old} : {ok: false, why: '묵은 잠금을 못 가져옴 ' + short(r.err)};
+  return r.ok && mine() ? {ok: true, sha, stolen: old} : {ok: false, busy: true, why: '묵은 잠금을 못 가져옴 ' + short(r.err)};
 }
 export function lockRelease(cwd, {sha, remote = 'origin'}) {
   const r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${sha}`, remote, `:refs/heads/${LOCK_BRANCH}`]);
@@ -155,8 +157,22 @@ export function essenceDiff(root, base, head) {
   return {ok: r.ok, why: r.ok ? '' : '본질 문이 막음 — ' + short(r.out.split('\n').slice(-3).join(' ') || r.err, 200)};
 }
 
+/** 본질 문 일곱 가지(정적 · 브라우저 없이 · 약 3초) — 회차를 연 저장소(main)의 문으로 그 사이트 폴더를 봄
+ *  돌려줌 {ran, code, fails: ['번호:상태:까닭'](줄 번호는 지움 — 위 줄이 늘어도 같은 까닭은 같게)} · 못 돌면 ran false(닫힌 쪽) */
+export function essenceStatic(root, siteDir) {
+  const f = path.join(root, 'scripts/atlas11/next/essence_check.mjs');
+  if (!fs.existsSync(f)) return {ran: false, why: '본질 문(essence_check.mjs)이 없음'};
+  const r = run('node', [f, '--dist', siteDir, '--json'], {cwd: root, timeout: 300e3});
+  let j = null; try { j = JSON.parse(r.out.slice(r.out.indexOf('{'))); } catch { /* 아래 */ }
+  if (!j || !Array.isArray(j.checks)) return {ran: false, why: '본질 문 결과를 못 읽음 ' + short(r.err || r.out, 120)};
+  const fails = [];
+  for (const c of j.checks) if (c.status !== 'pass') for (const why of (c.reasons?.length ? c.reasons : ['(까닭 없음)'])) fails.push(`${c.no}:${c.status}:${String(why).replace(/\d+번째 줄/g, 'n번째 줄')}`);
+  return {ran: true, code: j.code ?? r.code, fails};
+}
+
 // ───────────── 지금 사이트 자료(atlas/data) — 깃허브 검사와 같은 판(dist-manifest sha256) ─────────────
-export async function liveData(siteDir, {base = SITE, budgetMs = 180e3, conc = 8} = {}) {
+/** top = 맨 위 자료 파일만(약 16개 · 회사 파일 2,500여 개는 저장소 것) — 전후 그림용(빠르게) */
+export async function liveData(siteDir, {base = SITE, budgetMs = 180e3, conc = 8, top = false} = {}) {
   const T0 = Date.now(), sha = b => crypto.createHash('sha256').update(b).digest('hex');
   const get = async (f, want) => {
     for (let i = 0; i < 5; i++) {
@@ -168,7 +184,7 @@ export async function liveData(siteDir, {base = SITE, budgetMs = 180e3, conc = 8
   };
   try {
     const man = JSON.parse((await get('dist-manifest.json')).toString('utf8'));
-    const files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/')).sort();
+    const files = Object.keys(man.hashes ?? {}).filter(f => (top ? /^atlas\/data\/[^/]+$/.test(f) : f.startsWith('atlas/data/'))).sort();
     if (!files.includes('atlas/data/mkt.json')) throw Error('dist-manifest 에 atlas/data 가 없음');
     let i = 0;
     await Promise.all(Array.from({length: conc}, async () => { while (i < files.length) { const f = files[i++]; const b = await get(f, man.hashes[f]); const to = path.join(siteDir, f); fs.mkdirSync(path.dirname(to), {recursive: true}); fs.writeFileSync(to, b); } }));
