@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>골똘이 · 시안 w2-a</title>
+<style>
+:root{--ink:#16181D;--soft:#5A606B;--line:#8E949E;--hair:#E3E5E8;--gold:#8A6516;--up:#D0202E;--dn:#1E5BD8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#FFFFFF}
+body{color:#16181D;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;font-size:19px;line-height:1.45;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:#FFFFFF;border:0;cursor:pointer}
+.top{position:fixed;top:0;left:0;right:0;height:56px;background:#FFFFFF;display:flex;align-items:center;padding:0 4px 0 16px;border-bottom:1px solid var(--hair);z-index:5}
+.logo{font-size:21px;font-weight:700;letter-spacing:-.02em;display:flex;align-items:center;gap:6px;min-height:48px;margin-right:auto}
+.top button,.top a.ib{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px}
+#jhBtn{font-size:17px;padding:0 6px}
+#view{padding:56px 16px 80px}
+.hero{padding-top:48px;text-align:center}
+.bird{display:block;margin:0 auto 6px}
+.say{display:inline-block;font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:14px}
+form.find{display:flex;align-items:center;height:64px;border:2px solid #16181D;border-radius:32px;padding:0 6px 0 22px;background:#FFFFFF}
+form.find input{flex:1;min-width:0;height:48px;border:0;outline:0;font:inherit;font-size:20px;color:#16181D;background:#FFFFFF}
+form.find input::placeholder{color:#5A606B}
+form.find button{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center}
+.ess{margin-top:28px;border-top:1px solid var(--hair);padding-top:14px}
+.ess p{font-size:19px}
+.ess .meta{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.ess .cnt{font-size:17px;color:var(--soft)}
+.ess details>summary{list-style:none;min-height:48px;min-width:48px;display:inline-flex;align-items:center;font-size:17px;color:var(--soft);padding-left:8px}
+.ess details>summary::-webkit-details-marker{display:none}
+.ess details[open]{display:block}
+.ess details p{font-size:17px;color:var(--soft);margin-top:6px}
+.row{display:flex;align-items:center;min-height:56px;border-top:1px solid var(--hair);gap:10px}
+.row .k{font-size:17px;color:var(--soft);min-width:58px}
+.row .v{font-size:18px;word-spacing:2px;white-space:nowrap}
+.q{color:var(--gold);font-weight:700}
+.up{color:#D0202E}.dn{color:#1E5BD8}
+.links{display:flex;flex:1;justify-content:space-between}
+.links a{min-height:48px;min-width:48px;display:inline-flex;align-items:center;font-size:19px;padding:0 4px}
+.news .fact span{white-space:nowrap;font-size:17px}.news button{white-space:nowrap}
+.news .fact{display:flex;flex:1;align-items:center;justify-content:space-between;gap:8px}
+.news button{min-height:48px;min-width:48px;font-size:17px;color:var(--ink);border:1px solid #8E949E;border-radius:24px;padding:0 10px}
+details.all{border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+details.all>summary{list-style:none;min-height:56px;display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--soft)}
+details.all>summary::-webkit-details-marker{display:none}
+details.all ul{list-style:none}
+details.all li a{display:flex;min-height:56px;align-items:center;border-top:1px solid var(--hair);padding:0 4px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;background:#FFFFFF;border-top:1px solid var(--line);display:flex}
+nav.tabs a{flex:1;display:flex;align-items:center;justify-content:center;font-size:17px;min-height:48px;color:var(--soft)}
+nav.tabs a.on{color:var(--ink);font-weight:700}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="#/">골똘이</a>
+  <button id="jhBtn" type="button">진화</button>
+  <button type="button" aria-label="언어 바꾸기">EN</button>
+  <button type="button" aria-label="글씨 크기">가</button>
+  <a class="ib" href="#find" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16181D" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></a>
+</header>
+
+<main id="view">
+  <section class="hero">
+    <svg class="bird" width="56" height="56" viewBox="0 0 56 56" aria-hidden="true">
+      <circle cx="28" cy="30" r="20" fill="#E8F2EC"/>
+      <path d="M17 34c0-10 6-17 14-17 7 0 11 5 11 11 0 9-7 15-16 15-5 0-9-3-9-9z" fill="#2E8B57"/>
+      <path d="M38 22c5 0 8 3 8 6-3 0-5-1-8-2z" fill="#E0A21B"/>
+      <circle cx="33" cy="25" r="2.4" fill="#16181D"/>
+      <path d="M22 38c4 4 10 5 15 2" stroke="#1F6B42" stroke-width="2" fill="none"/>
+      <path d="M27 18c-1-5 2-9 6-10-1 4 0 6 1 9z" fill="#2E8B57"/>
+      <path d="M19 42l-7 9 10-5z" fill="#1F6B42"/>
+    </svg>
+    <p class="say" data-say>사기 전에, 왜 사?</p>
+    <form class="find" data-w="find" id="find" onsubmit="return false">
+      <input type="search" placeholder="친구야, 왜 사? 회사 이름" aria-label="친구야, 왜 사? 회사 이름">
+      <button type="submit" data-path="q1" aria-label="열한 질문 시작"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16181D" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button>
+    </form>
+  </section>
+
+  <section class="ess" data-w="ess">
+    <p data-ess="1">주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.</p>
+    <div class="meta">
+      <span class="cnt" data-num>멈춘 수 0번 · 지킨 약속 0번</span>
+      <details>
+        <summary>더 보기</summary>
+        <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
+        <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
+      </details>
+    </div>
+  </section>
+
+  <section style="margin-top:20px">
+    <div class="row" data-w="today">
+      <span class="v" data-num><span class="q">?</span> 10월 12일 코스피 <span class="dn">−3.28%</span> 코스닥 <span class="dn">−4.36%</span></span>
+    </div>
+    <div class="row" data-w="gdr">
+      <span class="links"><a href="#/why">골똘이</a><a href="#/cal">달력</a><a href="#/cond">조건 찾기</a><a href="#/lead">대장주</a></span>
+    </div>
+    <div class="row">
+      <span class="links" style="justify-content:flex-start;gap:24px"><a href="#/star">관심</a><a href="#/own">보유</a></span>
+    </div>
+    <div class="row news" data-w="news">
+      <div class="fact" data-fact><span data-num>10월 13일 오름 <span class="up">766</span> · 내림 <span class="dn">1,632</span></span>
+      <button type="button" aria-label="왜 그럴까? 누가 팔았을까? 다른 날에도 그랬을까? 내 이유와 상관있을까?">왜 그럴까?</button></div>
+    </div>
+    <details class="all">
+      <summary data-w="all">전부 보기</summary>
+      <ul>
+        <li><a href="#/f/rise">오르는 업종</a></li>
+        <li><a href="#/surge">급등</a></li>
+        <li><a href="#/news">시황 전부</a></li>
+        <li><a href="#/up">업데이트 기록</a></li>
+      </ul>
+    </details>
+  </section>
+</main>
+
+<nav class="tabs">
+  <a class="on" href="#/">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why">매매일지</a>
+  <a href="#/star">관심</a>
+  <a href="#/own">보유종목</a>
+</nav>
+</body>
+</html>
