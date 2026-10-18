@@ -13,7 +13,7 @@ name: atlas11-next-full
 # 2026-10-18 고도리 길 1(C1 · 사장님 10:09 「속도를 지금보다 10배 빠르게」) — 일 나누기를 걸린 초로(scripts/atlas11/next/shard/plan.mjs):
 #   · en · co · range · past · grow 는 --shard k/n 몫으로 가름(몫 하나 = 작업 하나 · 일감 하나는 꼭 한 몫 — shard/part.mjs) · 나머지 쪽은 목표 초 안에서 한 작업에 묶음 · 작업 20개까지
 #   · 몫 수는 셈으로(동시 P 대에서 끝나는 때 어림이 가장 이른 것) · 손으로: -f en_shards=12 · -f split=co=2,past=3(1 이면 안 나눔)
-#   · 동시: local 20 · live 10(2026-10-18 · 6 → 10 — rivals 는 모든 회사를 미리 받지 않고 받을 때도 4개씩 · 옛 쪽 기준값 다시 받기도 4개씩)
+#   · 동시: local 20 · live 6(2026-10-18 오후 10 → 6 되돌림 · 오전 6 → 10 — rivals 는 모든 회사를 미리 받지 않고 받을 때도 4개씩 · 옛 쪽 기준값 다시 받기도 4개씩)
 #   · gather 가 몫을 쪽 하나로 합침(en = next_en_check --merge · 나머지 = shard/merge.mjs — 몫 1 ~ n 한 번씩 · 같은 일감 목록 · 몫 합 = 전체)
 #     → summary.json 은 그대로 쪽마다 한 줄(몫이 모두 0 일 때만 0 · seconds = 가장 긴 몫 · shards · codes · shardSeconds) · ok 는 모든 쪽이 0 일 때만
 #   · 브라우저 받기는 작업 맨 처음에 뒤에서(저장소 받기 · 묶기와 겹침) — 검사 앞에서 끝나기를 기다림 · 못 받으면 그 작업은 실패(결과 없음 → 99)
@@ -75,7 +75,7 @@ jobs:
           NS: ${{ inputs.en_shards }}
           SPLIT: ${{ inputs.split }}
           LOCAL: ${{ inputs.local }}
-          PAR: ${{ inputs.local && 20 || 10 }} # 아래 page 의 max-parallel 과 같은 수(두 곳 같게)
+          PAR: ${{ inputs.local && 20 || 6 }} # 아래 page 의 max-parallel 과 같은 수(두 곳 같게)
         run: |
           echo "t0=$(date +%s)" >> "$GITHUB_OUTPUT"
           # 일 목록 — 쪽마다 걸린 초(깃허브 실측)로 몫 수 · 묶음을 정함: list = [{job, pages, base, shard}] (몫 작업 = base · shard k/n) · split = {쪽: 몫 수}
@@ -157,9 +157,9 @@ jobs:
     timeout-minutes: 75
     strategy:
       fail-fast: false
-      # 지금 사이트(live)는 한 번에 10대(2026-10-18 · 6 → 10) — 넷리파이가 한꺼번에 몰리는 것을 막아 「자료를 못 받음」 · 시간 넘음이 남(2026-10-17 12:24 · 16대 + 다른 검사 · 그때 rivals 는 2,557개를 24개씩)
+      # 지금 사이트(live)는 한 번에 6대(2026-10-18 오후 10 → 6 되돌림 — 10대로 돈 실제 사이트 검사 네 번 모두 쪽 열기 · 누르기가 멈춤(문서 받기 33초) · 쪽 하나씩 다시 돌리면 0 · 어제 6대 실패 0)(2026-10-18 오전 · 6 → 10) — 넷리파이가 한꺼번에 몰리는 것을 막아 「자료를 못 받음」 · 시간 넘음이 남(2026-10-17 12:24 · 16대 + 다른 검사 · 그때 rivals 는 2,557개를 24개씩)
       # 올리기 전(local)은 실행기마다 제 시험 서버라 모두 한꺼번에 · 이 수를 바꾸면 plan 의 PAR 도 같게
-      max-parallel: ${{ inputs.local && 20 || 10 }}
+      max-parallel: ${{ inputs.local && 20 || 6 }}
       matrix:
         include: ${{ fromJSON(needs.plan.outputs.list) }}
     env:
