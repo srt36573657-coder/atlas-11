@@ -7,11 +7,11 @@
  "time": {
   "old": 20.3,
   "new": 69.4,
-  "wall": 99.9,
+  "wall": 100,
   "opensOld": 938,
   "opensNew": 2287,
   "oldPct": 20.3,
-  "oldShare": 22.6
+  "oldShare": 22.7
  },
  "net": {
   "req": 5,
