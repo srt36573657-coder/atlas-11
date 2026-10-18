@@ -884,7 +884,7 @@ function mod(name) {
   }
   return MODS[name];
 }
-async function page(name, arg) { const m = await mod(name); return m.render(arg); }
+async function page(name, arg) { const m = await mod(name); await sheetReady('/next/p-' + name + '.css'); return m.render(arg); } // 모양 파일이 붙은 뒤 그림(늦어도 3초) — 느린 망에서 모양 없는 칸 · 좁아지기 전 넓이로 그린 그림이 한순간 넘치지 않게(2026-10-18 실제 사이트 검사 #/today 32px · #/ch 누르는 자리)
 /** 고도리 칸 자료(/next/data/gdr.json · gdr-v1 · 사장님 2026-10-17 17:54 「고도리 만들기 · 한 장 명령문」) — 못 받으면 null(15초 뒤 다시) */
 let GDR = null, gdrFail = 0, gdrP = null;
 function gdr() {

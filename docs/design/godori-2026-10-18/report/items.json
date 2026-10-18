@@ -1,7 +1,7 @@
 {
   "schema": "godori-0015-report-items-1",
-  "builtAt": "2026-10-18T04:51:03.923Z",
-  "builtAtSGT": "2026-10-18 12:51:03 SGT",
+  "builtAt": "2026-10-18T05:27:44.813Z",
+  "builtAtSGT": "2026-10-18 13:27:44 SGT",
   "by": "R1 (report data) — build.mjs",
   "note": "읽기만 하고 만든 자료. 줄 뜻: 상태는 done / partial / not done / owner-action / not applicable / unknown. 검토자의 막는 찾은 것(열림 · 고침 주장만)이 있으면 done 을 partial 로 내림.",
   "orderLineCount": 110,
@@ -245,8 +245,8 @@
   },
   "warnings": [
     "말씀 「72개」 ≠ 번호 줄 110개: 72 = [1]+[5]~[11] (8+10+10+10+10+8+10+6) · 카톡 [2]~[4] = 28 · 늘 지킬 것 [12] = 10",
-    "R1 이 아직 지도에 못 옮긴 새 검토 글 1개: review/VEN.md — 아래 「새 검토 글」 참고(상태에는 아직 반영 안 됨)",
-    "R1 이 읽은 뒤(12:20) 바뀐 글 9개: accept/K1c.md 8795→9384B(12:38), accept/K2s.md 18570→18845B(12:25), accept/S3.md 2366→2552B(12:26), accept/S3p.md 10451→12778B(12:27), accept/S5h.md 11361→16412B(12:37), accept/S7l.md 16706→20534B(12:38), accept/S9.md 6767→7202B(12:21), accept/S9t.md 14400→21811B(12:50), review/VK.md 8483→15728B(12:32) — 지도(map.mjs)의 손글이 낡았을 수 있음(accept 줄로 거는 상태는 자동 반영)"
+    "R1 이 아직 지도에 못 옮긴 새 검토 글 2개: review/VEN.md, review/VR.md — 아래 「새 검토 글」 참고(상태에는 아직 반영 안 됨)",
+    "R1 이 읽은 뒤(12:20) 바뀐 글 9개: accept/K1c.md 8795→9384B(12:38), accept/K2s.md 18570→18845B(12:25), accept/S3.md 2366→2552B(12:26), accept/S3p.md 10451→12778B(12:27), accept/S5h.md 11361→16412B(12:37), accept/S7l.md 16706→20534B(12:38), accept/S9.md 6767→7202B(12:21), accept/S9t.md 14400→21812B(12:52), review/VK.md 8483→15728B(12:32) — 지도(map.mjs)의 손글이 낡았을 수 있음(accept 줄로 거는 상태는 자동 반영)"
   ],
   "nextSteps": [
     {
@@ -671,7 +671,7 @@
       "n": 8,
       "words": "일마다 시작, 끝, 걸린 초를 speed 칸에 남겨라.",
       "status": "partial",
-      "proof": "speed 칸 reports/atlas11/speed/2026-10-18.jsonl 에 전체 단계 7줄(시작 · 약속 · 한도 멈춤 · 다시 시작 · 일 나누기 v5 · 물결 A)",
+      "proof": "speed 칸 reports/atlas11/speed/2026-10-18.jsonl 에 전체 단계 9줄(시작 · 약속 · 한도 멈춤 · 다시 시작 · 일 나누기 v5 · 물결 A)",
       "evidence": [
         "reports/atlas11/speed/2026-10-18.jsonl"
       ],
@@ -3796,8 +3796,8 @@
           "state": "confirmed-r1",
           "blocks": false,
           "finding": "명령문에 적힌 것(낱말 아홉 · 점 · 줄표 · 넓은 숫자 · 공일공)은 통과인데 다른 피하는 꼴 45가지 중 22가지가 빠져나감: 빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · (82)10 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao",
-          "fix": "R1 12:51 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감",
-          "r1": "R1 12:51 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감"
+          "fix": "R1 13:27 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감",
+          "r1": "R1 13:27 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감"
         }
       ],
       "flags": [
@@ -3968,7 +3968,7 @@
           "kind": "chk",
           "file": "enFresh",
           "ok": true,
-          "text": "en.json 2026-10-18 12:48:34 SGT · en-src.json 2026-10-18 12:48:18 SGT"
+          "text": "en.json 2026-10-18 13:09:10 SGT · en-src.json 2026-10-18 13:08:05 SGT"
         }
       ],
       "accept": [
@@ -5034,7 +5034,7 @@
       "n": 6,
       "words": "걸린 초를 지난 9,206초와 견줘라.",
       "status": "not done",
-      "proof": "걸린 초를 지난 9,206초와 견줌 — 끝난 뒤 채움. 지금까지(R1 셈): 12244초 = 9,206초의 1.33배(멈춘 시간 9시간 12분 뺀 값)",
+      "proof": "걸린 초를 지난 9,206초와 견줌 — 끝난 뒤 채움. 지금까지(R1 셈): 14445초 = 9,206초의 1.57배(멈춘 시간 9시간 12분 뺀 값)",
       "evidence": [
         "reports/atlas11/speed/2026-10-18.jsonl"
       ],
@@ -5281,7 +5281,7 @@
       "n": 7,
       "words": "영어는 en-src.json을 고치고 i18n_build.mjs로 다시 만들어라.",
       "status": "done",
-      "proof": "영어는 en-src.json 에 add.mjs 로 더하고(S2t 13 · S5h 34 · K2s 8 · S7l 9 · S9t 59 줄) i18n_build.mjs 로 다시 만듦: en-src.json 2026-10-18 12:48:18 SGT · en.json 2026-10-18 12:48:34 SGT(틀 8,142개) · VJ 다시 재기에서 영어 판 한국어 0",
+      "proof": "영어는 en-src.json 에 add.mjs 로 더하고(S2t 13 · S5h 34 · K2s 8 · S7l 9 · S9t 59 줄) i18n_build.mjs 로 다시 만듦: en-src.json 2026-10-18 13:08:05 SGT · en.json 2026-10-18 13:09:10 SGT(틀 8,142개) · VJ 다시 재기에서 영어 판 한국어 0",
       "evidence": [
         "scripts/atlas11/next/i18n/en-src.json",
         "site/next/i18n/en.json",
@@ -5307,7 +5307,7 @@
           "kind": "chk",
           "file": "enFresh",
           "ok": true,
-          "text": "en.json 2026-10-18 12:48:34 SGT · en-src.json 2026-10-18 12:48:18 SGT"
+          "text": "en.json 2026-10-18 13:09:10 SGT · en-src.json 2026-10-18 13:08:05 SGT"
         }
       ],
       "accept": []
@@ -5409,7 +5409,7 @@
     {
       "n": 1,
       "words": "약속한 끝 시각과 실제 끝 시각, 걸린 초, 지난 9,206초의 몇 배",
-      "value": "약속: ① 화면 14:00 · ② 카톡 가입 16:00(싱가포르, 속도 기록 줄 4) · 실제 끝 시각 ? · 지금까지 걸린 초 12244초(멈춘 시간 9시간 12분 뺌) = 지난 9,206초의 1.33배(아직 안 끝남)",
+      "value": "약속: ① 화면 14:00 · ② 카톡 가입 16:00(싱가포르, 속도 기록 줄 4) · 실제 끝 시각 ? · 지금까지 걸린 초 14445초(멈춘 시간 9시간 12분 뺌) = 지난 9,206초의 1.57배(아직 안 끝남)",
       "toFill": "올린 뒤(배포 뒤) main 이 끝 시각 · 총 초를 채움",
       "hasUnknown": true
     },
@@ -5622,7 +5622,7 @@
     },
     {
       "what": "이 명령문 전체",
-      "value": "지난 9,206초 → 지금까지 12244초",
+      "value": "지난 9,206초 → 지금까지 14445초",
       "worker": "main",
       "note": "멈춘 시간 9시간 12분 뺀 값 · 끝나면 채움",
       "evidence": [
@@ -5958,7 +5958,7 @@
         "9.6"
       ],
       "finding": "명령문에 적힌 것(낱말 아홉 · 점 · 줄표 · 넓은 숫자 · 공일공)은 통과인데 다른 피하는 꼴 45가지 중 22가지가 빠져나감: 빗금 · 비슷한 글자 · 낱자모 · 쉼표 · 물결 · 별표 · 그림 글자 · 괄호 · 더하기 · 따옴표 · (82)10 꼴 · 011/070 번호 · 닷컴 · dot com · open kakao",
-      "fix": "R1 12:51 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감"
+      "fix": "R1 13:27 싱가포르에 words.js 로 VL 의 45가지를 다시 잼: 0가지 빠져나감"
     },
     {
       "id": "VL-3",
@@ -6051,6 +6051,13 @@
       "firstLine": "# VEN — 영어 화면 따로 보기(2026-10-18 12:00 ~ 12:25 싱가포르 · 물결 B · 만든 사람 아님)",
       "heuristicHits": [
         "2. **엔진 허술한 곳**: 이름에 「 · 」가 든 큰 업종 8개(전자·부품 등)는 그 줄 키가 없으면 엔진이 「 · 」에서 잘라 반만 번역함. 오늘은 줄마다 통짜 키를 더해 막음. 뿌리 고침 = `i18n.js` 가 자르기 전에 사전 이름 구간을 지키기(내 몫 아님)."
+      ]
+    },
+    {
+      "file": "review/VR.md",
+      "firstLine": "# VR — 「검토자 열림」 열 가지 다시 재기(2026-10-18 · 만든 일꾼 아님)",
+      "heuristicHits": [
+        "| 9b · [9] 6 거짓 걸림 | **사장님 뜻 필요** | 내가 쓴 보통 문장 10개 중 5개가 걸림 — 띄어쓰기 · 가운뎃점을 지우고 거르기 때문: 「고추 천 원어치 샀다」 · 「배추 천 포기」(추천) · 「시추·천연가스」(추천 — 쉼표면 안 걸림) · 「연수 익히기」(수익) · 「회사 야간 근무」(사야). (가) 띄어 쓴 빠져나감(「추 천」)까지 …"
       ]
     }
   ],
@@ -6466,8 +6473,8 @@
       {
         "file": "accept/S9t.md",
         "name": "S9t",
-        "bytes": 21811,
-        "mtime": "2026-10-18 12:50:08 SGT",
+        "bytes": 21812,
+        "mtime": "2026-10-18 12:52:02 SGT",
         "rows": 28,
         "rowsWithItemRefs": 14,
         "blankResultRows": 0,
@@ -6517,6 +6524,12 @@
         "bytes": 6002,
         "mtime": "2026-10-18 11:56:52 SGT",
         "known": true
+      },
+      {
+        "file": "review/VR.md",
+        "bytes": 10766,
+        "mtime": "2026-10-18 13:05:49 SGT",
+        "known": false
       }
     ],
     "speed": [
@@ -6706,14 +6719,14 @@
     "v2_stress": 10,
     "v2_unit": "25개 중 틀림 0",
     "v2_secs": 276,
-    "speedLines": 7,
+    "speedLines": 9,
     "speedWorkerLines": 0,
     "stopSec": 33120,
-    "elapsedSec": 12244,
-    "elapsedRatio": "1.33",
+    "elapsedSec": 14445,
+    "elapsedRatio": "1.57",
     "startAt": "2026-10-17T16:15:00.000Z",
-    "enSrcTime": "2026-10-18 12:48:18 SGT",
-    "enTime": "2026-10-18 12:48:34 SGT",
+    "enSrcTime": "2026-10-18 13:08:05 SGT",
+    "enTime": "2026-10-18 13:09:10 SGT",
     "enStale": false,
     "enFrames": "8,142",
     "oldChanges": "0줄",
