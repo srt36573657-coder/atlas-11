@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-18T05:48:45.299Z",
+ "at": "2026-10-18T06:46:52.414Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -15,24 +15,24 @@
  "modules": true,
  "modFiles": {
   "past": true,
-  "range": true,
-  "grow": true,
-  "surge": true,
-  "hold": true,
-  "co": true,
-  "chx": true,
-  "x": true,
-  "gdr": true,
-  "cal": true,
   "rivals": true,
-  "talk": true,
-  "up": true,
-  "why": true,
-  "share": true,
-  "today": true,
-  "time": true,
+  "surge": true,
+  "range": true,
+  "cond": true,
+  "grow": true,
+  "cal": true,
+  "chx": true,
   "info": true,
-  "cond": true
+  "up": true,
+  "share": true,
+  "why": true,
+  "hold": true,
+  "talk": true,
+  "gdr": true,
+  "x": true,
+  "today": true,
+  "co": true,
+  "time": true
  },
  "edge": true,
  "only": null,
@@ -47,8 +47,8 @@
    "@newwin": 15
   }
  },
- "seconds": 572,
- "secondsSum": 2708,
+ "seconds": 579,
+ "secondsSum": 2706,
  "shards": [
   {
    "shard": "1/5",
@@ -57,10 +57,10 @@
    "routes": 2700,
    "screens": 2701,
    "mine": 2700,
-   "seconds": 544,
+   "seconds": 529,
    "secs": {
-    "open": 1.2,
-    "routes": 540.8
+    "open": 0.8,
+    "routes": 526.5
    }
   },
   {
@@ -70,10 +70,10 @@
    "routes": 2699,
    "screens": 2699,
    "mine": 2699,
-   "seconds": 532,
+   "seconds": 544,
    "secs": {
-    "open": 0.8,
-    "routes": 529.8
+    "open": 0.7,
+    "routes": 542.3
    }
   },
   {
@@ -83,10 +83,10 @@
    "routes": 2699,
    "screens": 2738,
    "mine": 2699,
-   "seconds": 572,
+   "seconds": 520,
    "secs": {
-    "open": 1.2,
-    "routes": 568.6
+    "open": 0.6,
+    "routes": 517.7
    }
   },
   {
@@ -96,11 +96,11 @@
    "routes": 2690,
    "screens": 2712,
    "mine": 2685,
-   "seconds": 515,
+   "seconds": 534,
    "secs": {
-    "open": 0.6,
-    "routes": 511.2,
-    "newwin": 2.2
+    "open": 0.4,
+    "routes": 529.2,
+    "newwin": 2.5
    }
   },
   {
@@ -110,11 +110,11 @@
    "routes": 2619,
    "screens": 2777,
    "mine": 2620,
-   "seconds": 545,
+   "seconds": 579,
    "secs": {
-    "open": 0.6,
-    "routes": 531.4,
-    "act": 7.3,
+    "open": 1.8,
+    "routes": 564.8,
+    "act": 6.9,
     "edge": 4.7,
     "grammar": 0
    }
