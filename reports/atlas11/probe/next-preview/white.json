@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-18T20:02:21.082Z",
+ "at": "2026-10-18T20:35:07.228Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -113,9 +113,9 @@
    "kakao": 1
   },
   "speed": {
-   "lcp": 1932,
+   "lcp": 1788,
    "inp": 16,
-   "cls": 0.077
+   "cls": 0.081
   }
  },
  "ok": true,

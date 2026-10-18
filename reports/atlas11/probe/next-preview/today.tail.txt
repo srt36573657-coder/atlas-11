@@ -18,6 +18,6 @@
 … 18/20 모두 내린 큰 업종 · 고른 곳 모두 반값 · 고른 기준 이름 없음 · 실패 0 · 23초
 … 19/20 선 날짜 다름(평소의 몇 배 없음) · 실패 0 · 24초
 … 20/20 home.json 못 받음 · 실패 0 · 25초
-{"time":{"old":13.6,"new":43.3,"wall":56.1,"opensOld":607,"opensNew":804,"oldPct":24.2,"oldShare":23.9},"net":{"req":3,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+{"time":{"old":13.7,"new":43.4,"wall":56.3,"opensOld":607,"opensNew":804,"oldPct":24.3,"oldShare":24},"net":{"req":3,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 오늘 시장 맞대기 — 자료 판 20개 · 짝 125(옛 첫 화면 ↔ 새 쪽) · 맞댄 칸 6706 · 글 조각 27283 · 큰 숫자 맞댐 131 · 선 누르기 123 · 금빛 줄 78(접힘 0) · 기억 5 · 폭 화면 8 · 56초
 실패 0

@@ -1,5 +1,5 @@
 {
- "made": "2026-10-18T20:05:53.244Z",
+ "made": "2026-10-18T20:40:10.183Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "variants": [
@@ -446,13 +446,13 @@
  "warn": [],
  "sec": 56,
  "time": {
-  "old": 13.6,
-  "new": 43.3,
-  "wall": 56.1,
+  "old": 13.7,
+  "new": 43.4,
+  "wall": 56.3,
   "opensOld": 607,
   "opensNew": 804,
-  "oldPct": 24.2,
-  "oldShare": 23.9
+  "oldPct": 24.3,
+  "oldShare": 24
  },
  "net": {
   "req": 3,
