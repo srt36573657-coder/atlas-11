@@ -6,7 +6,7 @@
  "all": true,
  "limit": null,
  "widths": 28,
- "at": "2026-10-18T07:19:10.724Z",
+ "at": "2026-10-18T08:01:33.086Z",
  "shard": "all/2",
  "units": {
   "total": 2566,
@@ -31,17 +31,17 @@
    }
   }
  },
- "seconds": 142,
- "secondsSum": 251,
+ "seconds": 139,
+ "secondsSum": 248,
  "time": {
-  "old": 47.9,
-  "new": 90.5,
-  "wall": 141.9,
-  "wallSum": 250.8,
+  "old": 46.7,
+  "new": 89.1,
+  "wall": 139.5,
+  "wallSum": 249,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 19.1,
-  "oldShare": 34.6
+  "oldPct": 18.8,
+  "oldShare": 34.4
  },
  "net": {
   "req": 2517,
@@ -76,7 +76,7 @@
    "shard": "1/2",
    "ok": true,
    "fails": 0,
-   "seconds": 142,
+   "seconds": 139,
    "mine": 1283,
    "kinds": {
     "c": 1279,
