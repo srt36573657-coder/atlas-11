@@ -7,6 +7,8 @@
  *   --owner-key: 사진 초대장 시험용 열쇠(진짜 열쇠가 아님) — 그 SHA-256 을 ATLAS_INVITE_OWNER_SHA256 으로 함수에 넘김(시험 서버에서만)
  *   --fake-kakao: 카톡 가입(2026-10-18 · /api/kakao/* · lib/atlas11/kakao.mjs)을 가짜 열쇠 · 가짜 카카오(tests/atlas11/fake-kakao/fake.mjs · /__fake-kakao/*)로 켬 — 진짜 카카오로 가는 요청 0
  *     없으면 /api/kakao/* 는 모두 404(스위치가 꺼진 사이트와 같음) · 가짜 동의 화면에는 「가짜 카카오 · 시험용」이 늘 보임
+ *   진화 칸 · 합계 칸(2026-10-18 16:39 [9] 8 · [10] 3 · 일꾼 KD): /api/jinhwa/* · /api/tally · /api/tally/sum — 셈은 넷리파이 함수와 같은 lib/atlas11/jinhwa.mjs · tally.mjs · 저장소는 위 Blobs 로컬 서버(같은 이름)
+ *     진화 자료는 이 서버가 내보내는 /next/data/jinhwa.json · 진화 칸 검사(check_jinhwa)만 /__dev/jinhwa-data 로 잠시 바꿔 넣음(POST 글 = 자료 · DELETE = 원래대로 · 이 시험 서버에서만)
  */
 import http from 'node:http';
 import fs from 'node:fs/promises';
@@ -36,6 +38,15 @@ const kakao = process.argv.includes('--fake-kakao') ? await (async () => {
     onGone: mh => detachKakao(getStore({name: LETTER_STORE, consistency: 'strong'}), mh)});
   return {fake, call};
 })() : null;
+// 진화 칸 · 합계 칸(KD) — 함수 파일(functions/atlas11/jinhwa.mjs · tally.mjs)과 같은 셈 · 같은 열쇠 해시 · 같은 저장소 이름 · 진화 자료만 시험용으로 바꿔 넣을 수 있음
+const jt = await (async () => {
+  const [{handleJinhwa, siteData, JINHWA_STORE}, {handleTally, TALLY_STORE}, {getStore}, {OWNER_KEY_SHA256}] = await Promise.all([import('../../lib/atlas11/jinhwa.mjs'), import('../../lib/atlas11/tally.mjs'), import('@netlify/blobs'), import('../../lib/atlas11/invite.mjs')]);
+  const hash = () => process.env.ATLAS_INVITE_OWNER_SHA256 || OWNER_KEY_SHA256;
+  const S = {data: null};
+  return {S,
+    jinhwa: req => handleJinhwa(req, {store: getStore({name: JINHWA_STORE, consistency: 'strong'}), ownerHash: hash(), dataOf: r => (S.data ? Promise.resolve(S.data) : siteData(r))}),
+    tally: req => handleTally(req, {store: getStore({name: TALLY_STORE, consistency: 'strong'}), ownerHash: hash()})};
+})();
 /** 함수 응답(Fetch Response) → node 응답 · Set-Cookie 여럿을 그대로(하나로 합치지 않음) */
 const sendFetch = async (res, r) => { const h = {}; for (const [k, v] of r.headers) if (k !== 'set-cookie') h[k] = v; const sc = r.headers.getSetCookie?.() ?? []; if (sc.length) h['set-cookie'] = sc; res.writeHead(r.status, h); res.end(Buffer.from(await r.arrayBuffer())); };
 const bodyOf = req => (req.method === 'POST' || req.method === 'PUT' ? new Promise(r => { let b = ''; req.on('data', d => { b += d; }); req.on('end', () => r(b)); }) : Promise.resolve(undefined));
@@ -67,6 +78,13 @@ const server = http.createServer(async (req, res) => {
       await sendFetch(res, await kakao.call(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}), url.origin)); return;
     }
     if (kakao && url.pathname.startsWith('/__fake-kakao/')) { await sendFetch(res, await kakao.fake.handle(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
+    if (url.pathname === '/api/jinhwa' || url.pathname.startsWith('/api/jinhwa/')) { await sendFetch(res, await jt.jinhwa(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
+    if (url.pathname === '/api/tally' || url.pathname === '/api/tally/sum') { await sendFetch(res, await jt.tally(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
+    if (url.pathname === '/__dev/jinhwa-data') { // 진화 칸 검사용 — 이 시험 서버에서만(올리는 사이트에는 없음)
+      if (req.method === 'POST') { let d = null; try { d = JSON.parse(await bodyOf(req)); } catch { d = null; } jt.S.data = d && typeof d === 'object' && !Array.isArray(d) ? d : null; }
+      else if (req.method === 'DELETE') jt.S.data = null;
+      res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store'}); res.end(JSON.stringify({override: !!jt.S.data})); return;
+    }
     let p = decodeURIComponent(url.pathname);
     if (/^\/i\/[^/]*\/?$/.test(p)) p = '/invite.html'; // _redirects: /i/*  /invite.html  200
     if (p.endsWith('/')) p += 'index.html';

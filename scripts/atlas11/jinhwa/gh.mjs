@@ -1,13 +1,14 @@
 // 진화 회차 손발 — git · gh(깃허브 REST) · 망 · 시험 서버 · 바뀐 쪽 검사(사장님 2026-10-18(싱가포르) 16:39 [8] 2 · 7 · [9] 8)
-//   셈은 lib.mjs · 순서는 round.mjs. 여기 것은 모두 「닫힌 쪽으로 실패」 — 못 읽으면 바쁨 · 실패로 돌려줌(넣지 않음)
+//   셈은 lib.mjs · 차례는 round.mjs. 여기 것은 모두 「닫힌 쪽으로 실패」 — 못 읽으면 바쁨 · 실패로 돌려줌(넣지 않음)
 //   깃허브 GraphQL 은 Claude 방에서 막힘 → gh run list · gh workflow run · gh api(REST)만 씀 · 사이트에 깃허브 열쇠 없음(상태는 열쇠 없는 읽기 주소)
+//   밀어 넣기: main 은 앞으로만(강제 없음 · 밀어 넣기 문 hooks 그대로) · 회차가 쓰는 가지(jinhwa/ · jinhwa-try/ · jinhwa-fix/ · jinhwa-lock)는 --no-verify(문은 main 을 지킴)
 import {spawn, spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {pathToFileURL} from 'node:url';
-import {REPO, SITE, LOCK_BRANCH, LOCK_STALE_MIN, DEPLOY_WORKFLOWS} from './lib.mjs';
+import {REPO, SITE, LOCK_BRANCH, LOCK_STALE_MIN, DEPLOY_WORKFLOWS, DATA_FILE, IMG_DIR} from './lib.mjs';
 
 export const sleepSync = ms => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, Math.max(0, ms));
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -16,9 +17,12 @@ export function run(cmd, args, {cwd, timeout = 180e3, input, env} = {}) {
   const r = spawnSync(cmd, args, {cwd, encoding: 'utf8', timeout, input, maxBuffer: 256 << 20, env: {...process.env, GIT_TERMINAL_PROMPT: '0', ...env}});
   return {ok: r.status === 0, code: r.status ?? -1, out: String(r.stdout ?? '').replace(/\s+$/, ''), err: String(r.stderr ?? r.error?.message ?? '').trim()};
 }
-export const git = (cwd, args, o = {}) => run('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', '-c', 'core.quotepath=false', ...args], {cwd, ...o});
+const ID_ENV = {GIT_AUTHOR_NAME: 'Claude', GIT_AUTHOR_EMAIL: 'noreply@anthropic.com', GIT_COMMITTER_NAME: 'Claude', GIT_COMMITTER_EMAIL: 'noreply@anthropic.com'};
+export const git = (cwd, args, o = {}) => run('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', '-c', 'core.quotepath=false', ...args], {cwd, ...o, env: {...ID_ENV, ...(o.env ?? {})}});
 export const gh = (cwd, args, o = {}) => run('gh', args, {cwd, ...o});
-const short = (s, n = 160) => String(s ?? '').replace(/https?:\/\/\S+/g, '<주소>').replace(/\s+/g, ' ').slice(0, n);
+export const short = (s, n = 160) => String(s ?? '').replace(/https?:\/\/\S+/g, '<주소>').replace(/\s+/g, ' ').slice(0, n);
+/** 진화 칸 자료는 코드 맞대기에서 뺌(기록 단계가 씀 · 코드가 아님) — wait_preview CODE_PATHS 와 함께 씀 */
+export const DATA_EXCLUDES = Object.freeze([`:(exclude)${DATA_FILE}`, `:(exclude)${IMG_DIR}`]);
 
 // ───────────── 잠금(회차 하나씩) — 원격 가지 jinhwa-lock · 없을 때만 만들어짐(--force-with-lease=…:) ─────────────
 export function lockTake(cwd, {by = 'jinhwa', now = new Date(), staleMin = LOCK_STALE_MIN, remote = 'origin'} = {}) {
@@ -26,7 +30,7 @@ export function lockTake(cwd, {by = 'jinhwa', now = new Date(), staleMin = LOCK_
   const c = git(cwd, ['commit-tree', tree, '-m', JSON.stringify({at: now.toISOString(), by})]);
   if (!c.ok) return {ok: false, why: '잠금 커밋을 못 만듦 ' + short(c.err)};
   const sha = c.out.trim();
-  let r = git(cwd, ['push', '-q', `--force-with-lease=refs/heads/${LOCK_BRANCH}:`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
+  let r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
   if (r.ok) return {ok: true, sha};
   const old = git(cwd, ['ls-remote', remote, `refs/heads/${LOCK_BRANCH}`]).out.split(/\s+/)[0];
   if (!/^[0-9a-f]{40}$/.test(old || '')) return {ok: false, why: '잠금을 못 밂 ' + short(r.err)};
@@ -34,22 +38,23 @@ export function lockTake(cwd, {by = 'jinhwa', now = new Date(), staleMin = LOCK_
   let at = null; try { at = JSON.parse(git(cwd, ['log', '-1', '--format=%B', old]).out).at; } catch { /* 꼴 모름 = 묵은 것으로 봄 */ }
   const age = at ? (now - new Date(at)) / 60e3 : Infinity;
   if (age < staleMin) return {ok: false, busy: true, why: `다른 진화 회차가 돌고 있음 — ${Math.round(age)}분 전에 시작`};
-  r = git(cwd, ['push', '-q', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${old}`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
+  r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${old}`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
   return r.ok ? {ok: true, sha, stolen: old} : {ok: false, why: '묵은 잠금을 못 가져옴 ' + short(r.err)};
 }
 export function lockRelease(cwd, {sha, remote = 'origin'}) {
-  const r = git(cwd, ['push', '-q', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${sha}`, remote, `:refs/heads/${LOCK_BRANCH}`]);
+  const r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${sha}`, remote, `:refs/heads/${LOCK_BRANCH}`]);
   return {ok: r.ok, why: r.ok ? '' : short(r.err)};
 }
 
 // ───────────── 다른 올리기가 도나([8] 2 「다른 올리기가 돌고 있으면 끝날 때까지 기다려라」) ─────────────
-/** 올리기 작업(atlas11-site · daily · evening — 같은 줄 atlas11-daily)의 끝나지 않은 실행 — 못 읽으면 ok false(바쁜 것으로 침) */
+/** 올리기 작업(atlas11-site · daily · evening)의 끝나지 않은 실행 — 못 읽으면 ok false(바쁜 것으로 침) */
 export function deploysRunning(cwd, {runner = gh} = {}) {
   const running = [];
   for (const wf of DEPLOY_WORKFLOWS) {
     const r = runner(cwd, ['run', 'list', '-R', REPO, '--workflow', wf, '--limit', '10', '--json', 'databaseId,status,createdAt']);
     if (!r.ok) return {ok: false, why: `${wf} 실행 목록을 못 읽음`, running};
     let rows; try { rows = JSON.parse(r.out || '[]'); } catch { return {ok: false, why: `${wf} 실행 목록 꼴`, running}; }
+    if (!Array.isArray(rows)) return {ok: false, why: `${wf} 실행 목록 꼴`, running};
     for (const x of rows) if (x.status !== 'completed') running.push({wf, id: x.databaseId, status: x.status, created: x.createdAt});
   }
   return {ok: true, running};
@@ -80,16 +85,18 @@ export async function fetchJson(url, {timeoutMs = 15000, tries = 3} = {}) {
   return {ok: false, why: last};
 }
 
-// ───────────── 일 폴더(git worktree) · 바뀐 것 ─────────────
+// ───────────── 일 폴더(git worktree) · 바뀐 것 · 얹기 · 밀어 넣기 ─────────────
 export function fetchMain(cwd) { return git(cwd, ['fetch', '-q', '--no-tags', 'origin', '+refs/heads/main:refs/remotes/origin/main'], {timeout: 300e3}); }
 export function fetchBranch(cwd, b) { return git(cwd, ['fetch', '-q', '--no-tags', 'origin', `+refs/heads/${b}:refs/remotes/origin/${b}`], {timeout: 300e3}); }
 export const revParse = (cwd, ref) => { const r = git(cwd, ['rev-parse', '--verify', '--quiet', ref + '^{commit}']); return r.ok ? r.out.trim() : null; };
+export const isAncestor = (cwd, a, b) => git(cwd, ['merge-base', '--is-ancestor', a, b]).ok;
 export function worktreeAdd(cwd, dir, ref, {branch} = {}) {
   git(cwd, ['worktree', 'remove', '--force', dir]); fs.rmSync(dir, {recursive: true, force: true}); git(cwd, ['worktree', 'prune']);
+  fs.mkdirSync(path.dirname(dir), {recursive: true});
   const r = git(cwd, ['worktree', 'add', '-q', ...(branch ? ['-B', branch] : ['--detach']), dir, ref], {timeout: 600e3});
   if (!r.ok) return {ok: false, why: '일 폴더를 못 만듦 ' + short(r.err)};
   const nm = path.join(cwd, 'node_modules'), to = path.join(dir, 'node_modules');
-  if (fs.existsSync(nm) && !fs.existsSync(to)) { try { fs.symlinkSync(nm, to, 'dir'); } catch { /* 없어도 git 셈은 됨 */ } }
+  if (fs.existsSync(nm) && !fs.existsSync(to)) { try { fs.symlinkSync(fs.realpathSync(nm), to, 'dir'); } catch { /* 없어도 git 셈은 됨 */ } }
   return {ok: true};
 }
 export function worktreeRemove(cwd, dir) { git(cwd, ['worktree', 'remove', '--force', dir]); fs.rmSync(dir, {recursive: true, force: true}); git(cwd, ['worktree', 'prune']); }
@@ -100,21 +107,52 @@ export function diffInfo(cwd, base, head) {
   const patch = git(cwd, ['diff', '--no-renames', '--no-color', '--no-ext-diff', '--binary', '-U0', base, head]).out;
   return {files, numstat, patch};
 }
+/** 가지(ref)가 그 바탕(merge-base)에서 바꾼 것을 지금 일 폴더(wt — 바탕 커밋에 있음)에 얹고 한 커밋으로 — {ok, sha, why} · 부딪히면 그대로 멈춤(고치지 않음) */
+export function applyOnto(wt, ref, onto, message) {
+  const mb = git(wt, ['merge-base', onto, ref]).out.trim();
+  if (!/^[0-9a-f]{40}$/.test(mb)) return {ok: false, why: '가지와 main 의 바탕을 못 찾음'};
+  const patch = git(wt, ['diff', '--no-renames', '--binary', '--full-index', mb, ref]);
+  if (!patch.ok || !patch.out.trim()) return {ok: false, why: '가지에 바뀐 것이 없음'};
+  const a = git(wt, ['apply', '--3way', '--index', '--whitespace=nowarn'], {input: patch.out + '\n'});
+  if (!a.ok) { git(wt, ['reset', '-q', '--hard', onto]); return {ok: false, why: '지금 main 위에 얹으면 부딪힘 ' + short(a.err, 120)}; }
+  if (git(wt, ['diff', '--cached', '--name-only', '--diff-filter=U']).out.trim()) { git(wt, ['reset', '-q', '--hard', onto]); return {ok: false, why: '지금 main 위에 얹으면 부딪힘'}; }
+  const c = git(wt, ['commit', '-q', '--no-verify', '-m', message]);
+  if (!c.ok) return {ok: false, why: '커밋을 못 만듦 ' + short(c.err)};
+  return {ok: true, sha: revParse(wt, 'HEAD'), base: mb};
+}
+/** 커밋 하나를 다른 바탕 위로(main 이 기록만 바뀌어 앞서 갔을 때) — {ok, sha} */
+export function replayOnto(wt, commit, onto, message) {
+  git(wt, ['reset', '-q', '--hard', onto]);
+  const p = git(wt, ['cherry-pick', '--no-commit', commit]);
+  if (!p.ok) { git(wt, ['cherry-pick', '--abort']); git(wt, ['reset', '-q', '--hard', onto]); return {ok: false, why: '새 main 위에 다시 얹으면 부딪힘'}; }
+  const c = git(wt, ['commit', '-q', '--no-verify', '-m', message]);
+  return c.ok ? {ok: true, sha: revParse(wt, 'HEAD')} : {ok: false, why: '커밋을 못 만듦 ' + short(c.err)};
+}
+/** 코드가 같은가(화면 · 묶기 · 함수 · 설정 · 패키지 · 검사 작업 — 진화 칸 자료는 뺌) — wait_preview 의 코드 맞대기와 같은 곳 */
+export function codeSame(cwd, a, b, codePaths) {
+  const d = git(cwd, ['diff', '--quiet', '--no-ext-diff', '--no-textconv', '--no-renames', a, b, '--', ...codePaths, ...DATA_EXCLUDES]);
+  return d.code === 0;
+}
+/** 회차 가지 밀기 — 강제는 lease 로만(앞 값 = expect · '' = 없을 때만) · 밀어 넣기 문 없이(문은 main 을 지킴) */
+export function pushBranch(cwd, sha, branch, {expect = null} = {}) {
+  const lease = expect === null ? '--force' : `--force-with-lease=refs/heads/${branch}:${expect}`;
+  const r = git(cwd, ['push', '-q', '--no-verify', lease, 'origin', `${sha}:refs/heads/${branch}`], {timeout: 300e3});
+  return {ok: r.ok, why: r.ok ? '' : '가지를 못 밂 ' + short(r.err)};
+}
+/** main 에 앞으로만 밀기(강제 없음 · 밀어 넣기 문 그대로) — 앞서 갔으면 rejected */
+export function pushMain(cwd, sha) {
+  const r = git(cwd, ['push', '-q', 'origin', `${sha}:refs/heads/main`], {timeout: 300e3});
+  return {ok: r.ok, rejected: /rejected|non-fast-forward|fetch first|stale info/i.test(r.err), why: r.ok ? '' : short(r.err, 200)};
+}
+export function deleteRemoteBranch(cwd, b) { return git(cwd, ['push', '-q', '--no-verify', 'origin', '--delete', b]); }
 
 // ───────────── 본질 문(KA · scripts/atlas11/next/essence_check.mjs) — 없으면 실패(닫힌 쪽) ─────────────
-/** 지킬 파일 맞대기 — essence_check.mjs --files a,b(KA protectedTouched) · 끝 코드 0 = 지남 */
-export function essenceFiles(dir, files) {
-  const f = path.join(dir, 'scripts/atlas11/next/essence_check.mjs');
+/** 진화 가지 지킴 — 회차를 연 저장소(main) 의 문으로 base..head 를 봄(가지 쪽 문을 쓰지 않음) · 끝 코드 0 = 지남 */
+export function essenceDiff(root, base, head) {
+  const f = path.join(root, 'scripts/atlas11/next/essence_check.mjs');
   if (!fs.existsSync(f)) return {ok: false, why: '본질 문(essence_check.mjs)이 없음 — 넣지 않음'};
-  const r = run('node', [f, '--files', files.join(',')], {cwd: dir, timeout: 120e3});
+  const r = run('node', [f, '--diff', `${base}..${head}`], {cwd: root, timeout: 120e3});
   return {ok: r.ok, why: r.ok ? '' : '본질 문이 막음 — ' + short(r.out.split('\n').slice(-3).join(' ') || r.err, 200)};
-}
-/** 본질 문 일곱 가지(그 폴더 그대로) — 끝 코드 0 = 지남 */
-export function essenceFull(dir) {
-  const f = path.join(dir, 'scripts/atlas11/next/essence_check.mjs');
-  if (!fs.existsSync(f)) return {ok: false, why: '본질 문(essence_check.mjs)이 없음 — 넣지 않음'};
-  const r = run('node', [f], {cwd: dir, timeout: 300e3});
-  return {ok: r.ok, why: r.ok ? '' : '본질 문이 막음 — ' + short(r.out.split('\n').slice(-4).join(' ') || r.err, 240)};
 }
 
 // ───────────── 지금 사이트 자료(atlas/data) — 깃허브 검사와 같은 판(dist-manifest sha256) ─────────────
@@ -138,34 +176,39 @@ export async function liveData(siteDir, {base = SITE, budgetMs = 180e3, conc = 8
   } catch (e) { return {ok: false, why: short(e?.message ?? e, 100)}; }
 }
 
-// ───────────── 시험 서버(invite_dev) · 바뀐 쪽 검사(check_changed) ─────────────
+// ───────────── 시험 서버(invite_dev) · 바뀐 쪽 검사(check_changed) · 빠른 검사(quick) ─────────────
 export async function startDev(dir, {port = 8826, key} = {}) {
   const ownerKey = key || crypto.randomBytes(24).toString('base64url');
   const log = fs.openSync(path.join(os.tmpdir(), `jinhwa-dev-${port}.log`), 'w');
   const p = spawn('node', ['scripts/atlas11/invite_dev.mjs', '--dir', 'site', '--port', String(port), '--owner-key', ownerKey], {cwd: dir, stdio: ['ignore', log, log], detached: true});
   const base = `http://127.0.0.1:${port}`;
+  const stop = () => { try { process.kill(-p.pid); } catch { try { p.kill(); } catch { /* 이미 끝남 */ } } };
   for (let i = 0; i < 90; i++) {
-    try { const a = await fetch(base + '/next/', {signal: AbortSignal.timeout(3000)}); const b = await fetch(base + '/atlas/data/core.json', {signal: AbortSignal.timeout(3000)}); if (a.ok && b.ok) return {ok: true, base, ownerKey, stop: () => { try { process.kill(-p.pid); } catch { try { p.kill(); } catch { /* 이미 끝남 */ } } }}; } catch { /* 아직 */ }
+    try { const a = await fetch(base + '/next/', {signal: AbortSignal.timeout(3000)}); const b = await fetch(base + '/atlas/data/core.json', {signal: AbortSignal.timeout(3000)}); if (a.ok && b.ok) return {ok: true, base, ownerKey, stop}; } catch { /* 아직 */ }
     if (p.exitCode != null) break;
     await sleep(1000);
   }
-  try { process.kill(-p.pid); } catch { /* 이미 끝남 */ }
+  stop();
   return {ok: false, why: '시험 서버가 안 뜸(90초)'};
 }
 /** 바뀐 쪽 검사 — {ok, fails, tail} · 끝 코드 0 만 지남 */
-export function changedCheck(dir, {since, files, base, ownerKey}) {
-  const r = run('node', ['scripts/atlas11/next/check_changed.mjs', '--since', since, '--files', files.join(','), '--base', base], {cwd: dir, timeout: 40 * 60e3, env: {ATLAS_DEV_OWNER_KEY: ownerKey}});
+export function changedCheck(dir, {files, base, ownerKey}) {
+  const r = run('node', ['scripts/atlas11/next/check_changed.mjs', '--since', 'HEAD', '--files', files.join(','), '--base', base], {cwd: dir, timeout: 40 * 60e3, env: {ATLAS_DEV_OWNER_KEY: ownerKey}});
   const m = /실패\s*(\d+)\s*$/m.exec(r.out);
   const fails = r.ok ? 0 : (m ? Number(m[1]) || 1 : 1);
   return {ok: r.ok, fails, tail: short(r.out.split('\n').slice(-6).join(' / ') + ' ' + r.err, 600)};
 }
+/** 빠른 검사(quick.mjs --for 파일) — 다시 시험에서 씀 · {ok, fails, tail} */
+export function quickCheck(dir, {files, base}) {
+  const r = run('node', ['scripts/atlas11/next/quick.mjs', '--for', files.join(','), '--base', base, '--json'], {cwd: dir, timeout: 10 * 60e3, env: {QUICK_STATE: path.join(os.tmpdir(), 'jinhwa-quick')}});
+  return {ok: r.ok, fails: r.ok ? 0 : 1, tail: short(r.out.split('\n').slice(-4).join(' / ') + ' ' + r.err, 400)};
+}
 
 // ───────────── 모든 쪽 미리 검사(깃허브 atlas11-next-full.yml -f local=true) ─────────────
-/** 가지를 밀고 검사를 시작 — {ok, run, branch, sha} · lease = 그 가지의 앞 커밋(없으면 새로 만듦만 · null 이면 강제) */
-export function previewStart(cwd, {sha, branch, lease = undefined}) {
-  const leaseArg = lease === undefined ? '--force' : `--force-with-lease=refs/heads/${branch}:${lease ?? ''}`;
-  const p = git(cwd, ['push', '-q', leaseArg, 'origin', `${sha}:refs/heads/${branch}`], {timeout: 300e3});
-  if (!p.ok) return {ok: false, why: '가지를 못 밂 ' + short(p.err)};
+/** 가지를 밀고 검사를 시작 — {ok, run, branch, sha} · expect = 그 가지의 앞 커밋(''= 새 가지만 · null = 강제) */
+export function previewStart(cwd, {sha, branch, expect = ''}) {
+  const p = pushBranch(cwd, sha, branch, {expect});
+  if (!p.ok) return {ok: false, why: p.why};
   const t0 = Date.now() - 10e3;
   const w = gh(cwd, ['workflow', 'run', 'atlas11-next-full.yml', '-R', REPO, '--ref', branch, '-f', 'local=true']);
   if (!w.ok) return {ok: false, why: '모든 쪽 검사를 못 시작함 ' + short(w.err)};
@@ -177,12 +220,15 @@ export function previewStart(cwd, {sha, branch, lease = undefined}) {
   }
   return {ok: true, run: runId, branch, sha, at: new Date().toISOString()};
 }
-export function previewCancel(cwd, runId) { if (runId) gh(cwd, ['run', 'cancel', String(runId), '-R', REPO]); }
-/** 결과 기다리기 — wait_preview.mjs(올리기 문과 같은 판정 · 코드 같음 + 모든 쪽 실패 0) · 진화 칸 자료(jinhwa.json · 그림)는 코드에서 뺌 */
-export async function previewWait(cwd, {sha, head, maxMin = 8, every = 30, say = () => {}}) {
-  const W = await import(pathToFileURL(path.join(cwd, 'scripts/atlas11/next/wait_preview.mjs')).href);
-  const paths = [...W.CODE_PATHS, ':(exclude)site/next/data/jinhwa.json', ':(exclude)site/next/data/jinhwa'];
-  try { return await W.waitPreview({sha, head, cwd, say, maxMin, every, depth: 80, remote: 'origin', branch: 'main', file: W.SUMMARY_FILE, paths, dry: false}); }
-  catch (e) { return {code: 1, why: '기다리기 오류 ' + short(e?.message ?? e)}; }
+/** 결과 보기 — wait_preview.mjs(올리기 문과 같은 판정: 코드 같음 + 모든 쪽 실패 0) · sha = 검사한 커밋 · head = 넣을 커밋 · maxMin 0 이면 한 번만 봄
+ *  돌려줌 {state: 'pass' | 'fail' | 'running', why} */
+export async function previewResult(cwd, {sha, head, maxMin = 0, every = 30, say = () => {}, codePaths = null}) {
+  let W;
+  try { W = await import(pathToFileURL(path.join(cwd, 'scripts/atlas11/next/wait_preview.mjs')).href); } catch (e) { return {state: 'fail', why: '기다리기 도구를 못 읽음 ' + short(e?.message ?? e)}; }
+  const paths = [...(codePaths ?? W.CODE_PATHS), ...DATA_EXCLUDES];
+  try {
+    const r = await W.waitPreview({sha, head: head ?? sha, cwd, say, maxMin: Math.max(maxMin, 0.05), every, depth: 80, remote: 'origin', branch: 'main', file: W.SUMMARY_FILE, paths, dry: !(maxMin > 0)});
+    return r.code === 0 ? {state: 'pass', why: r.why} : r.code === 2 ? {state: 'running', why: r.why} : {state: 'fail', why: r.why};
+  } catch (e) { return {state: 'fail', why: '기다리기 오류 ' + short(e?.message ?? e)}; }
 }
-export function deleteRemoteBranch(cwd, b) { return git(cwd, ['push', '-q', 'origin', '--delete', b]); }
+export function previewCancel(cwd, runId) { if (runId) gh(cwd, ['run', 'cancel', String(runId), '-R', REPO]); }

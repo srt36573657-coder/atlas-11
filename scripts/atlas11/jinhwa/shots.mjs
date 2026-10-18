@@ -2,8 +2,9 @@
 // 진화 대안 전후 그림 — 사장님 2026-10-18(싱가포르) 16:39 [8] 5 「바뀌는 것(전과 후 그림 한 장씩)」 · [9] 3 「카드마다 … 전과 후 그림」
 //   전 = 지금 main 의 사이트 폴더 · 후 = 대안 가지의 사이트 폴더 — 같은 자료 · 같은 길 · 같은 폭(360 × 640 · 휴대폰 세로)으로 한 장씩
 //   서버 = 이 파일 안의 작은 정적 서버(폴더 둘을 따로 띄움 · 포트는 빈 것) — 시험 서버(8826)와 안 부딪힘 · 함수(/api/*)는 없음(둘 다 같은 조건)
+//   --live <폴더> = 지금 사이트 자료(그 폴더의 atlas/data/* — gh.mjs liveData 가 받음)를 두 쪽 모두 /atlas/data/ 로 덮어 보임(저장소 자료는 며칠 묵음 · 일 폴더는 안 고침)
 //   쓰는 법: node scripts/atlas11/jinhwa/shots.mjs --id 20261019-0930-1 --route '#/why' --before <폴더> --after <폴더> [--out site/next/data/jinhwa]
-//            [--w 360] [--h 640] [--seed key=json …] [--motion] [--base-before http://… --base-after http://…] [--only before|after]
+//            [--w 360] [--h 640] [--seed key=json …] [--live <폴더>] [--motion] [--base-before http://… --base-after http://…] [--only before|after]
 //   끝 코드: 0 = 두 장 다 찍음(360 × 640 PNG) · 1 = 못 찍음 · 2 = 잘못 넣음
 //   브라우저: createRequire('/opt/node-tools/')('playwright') · executablePath /opt/pw-browsers/chromium (한 번에 하나 · 다 쓰면 닫음)
 import fs from 'node:fs';
@@ -16,13 +17,14 @@ const MIME = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; char
   '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp',
   '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.mp4': 'video/mp4', '.webm': 'video/webm', '.txt': 'text/plain; charset=utf-8', '.ico': 'image/x-icon'};
 
-/** 정적 서버 — root(사이트 폴더) · {base, close} */
-export function serve(root) {
-  const R = path.resolve(root);
+/** 정적 서버 — root(사이트 폴더) · live(지금 사이트 자료 폴더 — 있으면 /atlas/data/ 를 거기서) · {base, close} */
+export function serve(root, {live = null} = {}) {
+  const R = path.resolve(root), L = live ? path.resolve(live) : null;
   const srv = http.createServer((req, res) => {
     let p; try { p = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { res.writeHead(400).end(); return; }
     let f = path.resolve(R, '.' + p);
     if (f !== R && !f.startsWith(R + path.sep)) { res.writeHead(403).end(); return; }
+    if (L && p.startsWith('/atlas/data/')) { const g = path.resolve(L, '.' + p); if (g.startsWith(L + path.sep) && fs.existsSync(g)) f = g; }
     try { if (fs.statSync(f).isDirectory()) f = path.join(f, 'index.html'); } catch { /* 아래에서 404 */ }
     fs.readFile(f, (err, b) => {
       if (err) { res.writeHead(404, {'content-type': 'text/plain'}).end('없음'); return; }
@@ -82,7 +84,7 @@ export async function shoot(o) {
         const dir = side === 'before' ? o.before : o.after;
         const site = path.join(dir || '', 'site');
         if (!dir || !fs.existsSync(path.join(site, 'next'))) return {ok: false, why: `${side} 폴더에 site/next 가 없음`};
-        const s = await serve(site); servers.push(s); base = s.base;
+        const s = await serve(site, {live: o.live || null}); servers.push(s); base = s.base;
       }
       const ctx = await browser.newContext({viewport: {width: w, height: h}, deviceScaleFactor: 1, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: o.motion ? 'no-preference' : 'reduce'});
       const seed = o.seed || {};
@@ -108,7 +110,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const seed = {};
   a.forEach((x, i) => { if (x === '--seed' && a[i + 1]) { const s = a[i + 1], j = s.indexOf('='); if (j > 0) { const v = s.slice(j + 1); seed[s.slice(0, j)] = v.startsWith('@') ? fs.readFileSync(v.slice(1), 'utf8') : v; } } });
   const o = {id: arg('--id'), route: arg('--route', '#/'), before: arg('--before'), after: arg('--after'), baseBefore: arg('--base-before'), baseAfter: arg('--base-after'),
-    out: arg('--out', 'site/next/data/jinhwa'), w: arg('--w', '360'), h: arg('--h', '640'), seed, motion: a.includes('--motion'), only: arg('--only'), dev: !a.includes('--no-dev')};
+    out: arg('--out', 'site/next/data/jinhwa'), w: arg('--w', '360'), h: arg('--h', '640'), seed, live: arg('--live'), motion: a.includes('--motion'), only: arg('--only'), dev: !a.includes('--no-dev')};
   if (!o.id) { console.error('쓰는 법: shots.mjs --id <번호> --route "#/…" --before <폴더> --after <폴더> [--out 폴더]'); process.exit(2); }
   const r = await shoot(o);
   console.log(JSON.stringify(r));

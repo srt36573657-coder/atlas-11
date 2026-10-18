@@ -42,7 +42,7 @@ const SURGE_PLACES = new Set(['surge.board', 'surge.row', 'surge.track', 'surge.
 const NOLINK = new Set(['why.rec']); // 고리 없이 이름 글만 있는 줄(기록 줄 — 누르면 회사로 가지 않음)
 /* 뺀 꼴 — 종목 고리지만 줄 · 카드가 아님(까닭) · 차례대로 맞춤 */
 const SKIP = [
-  ['.chaps a, nav.wpath a, a.chap-next, nav.wtabs a', '7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)'],
+  ['.chaps a, nav.wpath a, a.chap-next, nav.wtabs a, a.pco-next', '7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)'],
   ['a.pcal-btn, a.pcal-back', '종목 파일 쪽의 길 단추 「회사 보기 ›」(쪽 자체가 그 종목)'],
   ['a.pchx-chip', '고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사)'],
   ['a.pchx-inl', '글 속 이름(선을 못 그린 회사 — 문장 안)'],
@@ -142,7 +142,8 @@ function scan({skip, nolink}) {
     const tag = `${r.dataset.kkrow} ${b.dataset.kk}`;
     if (br.width < 43.5 || br.height < 43.5) out.fails.push(['단추가 44px 아래', `${tag} ${br.width.toFixed(1)}×${br.height.toFixed(1)}`]);
     if (br.right < rr.right - 24.5) out.fails.push(['단추가 줄 오른쪽 끝이 아님', `${tag} 단추 ${br.right.toFixed(0)} · 줄 ${rr.right.toFixed(0)}`]);
-    if (br.right > W + 0.5 || br.left < -0.5) out.fails.push(['단추가 화면 밖', `${tag} ${br.left.toFixed(0)}~${br.right.toFixed(0)}`]);
+    const scroller = (() => { for (let e = r.parentElement; e && e !== V; e = e.parentElement) { const o = getComputedStyle(e).overflowX; if ((o === 'auto' || o === 'scroll') && e.scrollWidth > e.clientWidth + 1) return true; } return false; })(); // 옆으로 미는 칸(본 기록) 안 = 밀면 보임
+    if (!scroller && (br.right > W + 0.5 || br.left < -0.5)) out.fails.push(['단추가 화면 밖', `${tag} ${br.left.toFixed(0)}~${br.right.toFixed(0)}`]);
     for (const e of r.querySelectorAll('*')) {
       if (e === b || b.contains(e) || e.contains(b)) continue;
       const er = vis(e); if (!er || er.width < 1) continue;
@@ -166,7 +167,7 @@ const frames = () => p.evaluate(() => new Promise(r => requestAnimationFrame(() 
 /** 길 열기 — 앱 안이면 주소 # 만 바꿈(빠름) · 다 그릴 때까지(「여는 중」 없음 · 새 칸 · 바쁨 표시 없음 · 망 조용) */
 async function go(route) {
   if (!p.url().startsWith(BASE + PATH.split('?')[0])) { await p.goto(BASE + PATH + route, {waitUntil: 'commit', timeout: 20000}); }
-  else await p.evaluate(hh => { window.__kkTok = document.querySelector('#view')?.firstElementChild ?? null; if (location.hash === hh) window.dispatchEvent(new HashChangeEvent('hashchange')); else location.hash = hh; }, route);
+  else await p.evaluate(hh => { if ((location.hash || '#/') === hh) { window.__kkTok = null; return; } window.__kkTok = document.querySelector('#view')?.firstElementChild ?? null; location.hash = hh; }, route); // 이미 그 길(줄 고리를 눌러 온 곳)이면 그린 그대로
   const ok = await p.waitForFunction(() => { const v = document.querySelector('#view'); if (!v || !v.firstElementChild || v.querySelector('.boot')) return false; return !(window.__kkTok && v.firstElementChild === window.__kkTok); }, null, {timeout: 20000, polling: 100}).then(() => true, () => false);
   await netQuiet();
   await p.waitForFunction(() => !document.querySelector('#view [aria-busy="true"]'), null, {timeout: 4000, polling: 100}).catch(() => {});
@@ -228,7 +229,7 @@ for (const route of mine) {
       const box = await p.waitForFunction(() => { const d = document.querySelector('.ps-dlg'); return !!d && (d.tagName !== 'DIALOG' || d.open); }, null, {timeout: 8000, polling: 100}).then(() => true, () => false);
       const mid = await p.evaluate(() => ({hash: location.hash, d: document.querySelector('.ps-dlg #ps-d')?.textContent ?? ''}));
       if (!box) fail(route, WIDTHS[0], '카톡 단추를 눌러도 글상자가 안 열림', `${pickBtn.place} ${pickBtn.code}`);
-      else if (pickBtn.name && !mid.d.includes(pickBtn.name)) fail(route, WIDTHS[0], '글상자에 종목 이름 없음', `${pickBtn.place} ${pickBtn.name} · 「${mid.d.slice(0, 40)}」`);
+      else if (pickBtn.name && !(mid.d.includes(pickBtn.name) && /값 [\d,]+원/.test(mid.d))) fail(route, WIDTHS[0], '글상자에 종목 이름 · 오늘 값이 저절로 안 들어감([6] 3)', `${pickBtn.place} ${pickBtn.code} ${pickBtn.name} · 「${mid.d.slice(0, 40)}」`);
       if (mid.hash !== before.hash) fail(route, WIDTHS[0], '카톡 단추가 쪽을 바꿈', `${pickBtn.place} ${before.hash} → ${mid.hash}`);
       if (box) {
         await p.click('.ps-dlg .ps-x', {timeout: 3000}).catch(() => p.keyboard.press('Escape'));

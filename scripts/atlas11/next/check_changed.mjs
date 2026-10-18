@@ -27,13 +27,13 @@ const MISC = new Set(['up', 'time', 'info', 'x', 'talk']);
 export function checksFor(f) {
   const out = [], page = n => out.push(MISC.has(n) ? 'check_misc' : 'check_' + n);
   let m;
-  if ((m = /^site\/next\/p-([a-z]+)\.(js|css)$/.exec(f))) { page(m[1]); out.push('next_check', 'modules'); }
-  else if (/^site\/next\/(app\.js|app\.css|index\.html|brand\.js|words\.js)$/.test(f)) out.push('next_check', 'modules', 'check_why', 'check_gdr', 'check_hold', 'check_share');
+  if ((m = /^site\/next\/p-([a-z]+)\.(js|css)$/.exec(f))) { page(m[1]); out.push('next_check', 'modules', 'check_kakao'); } // 카톡 줄(사장님 2026-10-18 16:39 [6] 1 — 종목 줄마다 같은 단추 · 일꾼 KB2)
+  else if (/^site\/next\/(app\.js|app\.css|index\.html|brand\.js|words\.js)$/.test(f)) out.push('next_check', 'modules', 'check_why', 'check_gdr', 'check_hold', 'check_share', 'check_kakao');
   else if (/^site\/next\/(i18n\.js|i18n\/|en\.css)/.test(f) || /^scripts\/atlas11\/next\/(i18n\/|i18n_build\.mjs)/.test(f)) out.push('en');
   else if (/^site\/next\/data\/|^scripts\/atlas11\/next\/gdr\//.test(f)) out.push('verify', 'check_gdr', 'check_hold');
   else if (/^site\/(letter|invite)\.|^lib\/atlas11\/(letter|invite)\.mjs$|^functions\/atlas11\//.test(f)) out.push('letter-tests');
   else if (/^site\/hello/.test(f)) out.push('check_share', 'letter-tests');
-  else if (/^site\/next\/kakao\.js$|^tests\/atlas11\/kakao-client\.test\.mjs$/.test(f)) out.push('kakao-client', 'check_share', 'modules'); // 카톡 화면 쪽(K2c 알림 · 2026-10-18)
+  else if (/^site\/next\/(kakao|share-btn)\.js$|^tests\/atlas11\/kakao-client\.test\.mjs$/.test(f)) out.push('kakao-client', 'check_share', 'check_kakao', 'modules'); // 카톡 화면 쪽(K2c 알림 · 2026-10-18)
   else if (/^site\/next\/(glossary|warn)\.js$/.test(f)) out.push('next_check', 'modules', 'en'); // 낱말 바꾸기 · 금빛 두 줄 — 모든 쪽에 걸림
   else if ((m = /^scripts\/atlas11\/next\/(check_[a-z]+|next_check|next_en_check)\.mjs$/.exec(f)) && m[1] !== 'check_changed') out.push(m[1] === 'next_en_check' ? 'en' : m[1]);
   else if (/^scripts\/atlas11\/next\/(rename|brand_apply)\.mjs$|^tests\/atlas11\/next-modules/.test(f)) out.push('modules');

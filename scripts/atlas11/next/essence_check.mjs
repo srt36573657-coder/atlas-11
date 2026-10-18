@@ -312,7 +312,6 @@ export function recount(dir, {root = ROOT} = {}) {
 }
 /** 첫 화면이 요약 파일을 쓰나(app.js sumOk 와 같은 셈 — 요약 꼴 · src.home = home.json kst) */
 export const SUM_SCHEMA = 'godori-home-summary-1';
-export const sumUsable = (S, H) => !!(S && S.schema === SUM_SCHEMA && H && S.src?.home === H.kst);
 
 /* ───────────── 정적 ④ ⑤ ② (소스) ───────────── */
 export function checkGdrSource(dir) {
@@ -429,53 +428,104 @@ export function checkAppSource(dir) {
 }
 
 /* ───────────── 가짜 쪽 시험(②⑥⑦ — 사이트 모듈을 노드에서 진짜로 부름 · 따로 떨어진 작은 일로) ───────────── */
-function probe(dir, timeoutMs = 30000) {
+const PROBE_MARK = '\u0001ESSENCE-PROBE ';
+function probe(dir, {now = Date.now(), timeoutMs = 45000} = {}) {
   return new Promise(res => {
-    const p = spawn(process.execPath, [SELF, '--probe', dir], {stdio: ['ignore', 'pipe', 'pipe']});
+    const p = spawn(process.execPath, [SELF, '--probe', dir, '--now', String(now)], {stdio: ['ignore', 'pipe', 'pipe']});
     let out = '', err = ''; const t = setTimeout(() => p.kill('SIGKILL'), timeoutMs);
     p.stdout.on('data', d => { out += d; }); p.stderr.on('data', d => { err += d; });
-    p.on('close', code => { clearTimeout(t); try { res(JSON.parse(out.slice(out.indexOf('{')))); } catch { res({error: `가짜 쪽 시험이 끝나지 못함(끝 코드 ${code}) ${err.slice(-300)}`}); } });
+    p.on('close', code => {
+      clearTimeout(t);
+      const i = out.lastIndexOf(PROBE_MARK);
+      try { if (i < 0) throw Error('표시 없음'); res(JSON.parse(out.slice(i + PROBE_MARK.length))); }
+      catch { res({error: `가짜 쪽 시험이 끝나지 못함(끝 코드 ${code}) ${(err || out).trim().split('\n').slice(-4).join(' / ').slice(0, 300)}`}); }
+    });
   });
 }
 
-/** 가짜 문서(브라우저 없는 노드에서 p-share open 을 진짜로 돌림) — 모르는 것은 아무것도 안 하는 함수 */
-function installFakeDom(captured) {
-  const ELP = Symbol('el');
-  const text = s => ({nodeType: 3, textContent: String(s), parent: null, remove() {}});
-  const mkEl = (tag) => {
-    const t = {[ELP]: true, nodeType: 1, tagName: String(tag).toUpperCase(), children: [], attrs: {}, listeners: {}, hidden: false, value: '', className: '', _text: '', parent: null, open: false, readOnly: false,
-      style: {}, dataset: {}, sheet: {},
-      classList: {_s: new Set(), add(...a) { a.forEach(x => this._s.add(x)); }, remove(...a) { a.forEach(x => this._s.delete(x)); }, toggle(x, on) { if (on ?? !this._s.has(x)) this._s.add(x); else this._s.delete(x); }, contains(x) { return this._s.has(x); }},
-      setAttribute(k, v) { this.attrs[k] = String(v); if (k === 'hidden') this.hidden = true; if (k === 'class') this.className = String(v); },
-      getAttribute(k) { return k === 'class' ? this.className : this.attrs[k] ?? null; }, hasAttribute(k) { return k in this.attrs; }, removeAttribute(k) { delete this.attrs[k]; if (k === 'hidden') this.hidden = false; },
-      addEventListener(ty, f) { (this.listeners[ty] ??= []).push(f); }, removeEventListener() {}, dispatchEvent() { return true; },
-      append(...ks) { for (const k of ks.flat(Infinity)) { if (k == null || k === false) continue; const c = typeof k === 'object' ? k : text(k); c.parent = P; this.children.push(c); } },
-      prepend(...ks) { const old = this.children; this.children = []; this.append(...ks); this.children.push(...old); },
-      replaceChildren(...ks) { this.children = []; this._text = ''; this.append(...ks); },
-      remove() { if (this.parent) this.parent.children = this.parent.children.filter(x => x !== P); this.parent = null; },
-      get textContent() { return this.children.length ? this.children.map(c => c.textContent ?? '').join('') : this._text; },
-      set textContent(v) { this.children = []; this._text = String(v ?? ''); },
-      get innerText() { return this.textContent; },
-      get isConnected() { return true; },
-      all() { const o = []; const w = e => { for (const c of e.children ?? []) if (c[ELP]) { o.push(c); w(c); } }; w(this); return o; },
-      matches(sel) { return String(sel).split(',').some(s1 => { const s = s1.trim(); const m = /^([a-z]*)((?:\.[\w-]+)*)$/i.exec(s); if (!m) return false; if (m[1] && m[1].toUpperCase() !== this.tagName) return false; return (m[2].match(/\.[\w-]+/g) ?? []).every(c => this.className.split(/\s+/).includes(c.slice(1))); }); },
-      querySelector(sel) { return this.all().find(e => e.matches(sel)) ?? null; }, querySelectorAll(sel) { return this.all().filter(e => e.matches(sel)); },
-      focus() {}, blur() {}, select() {}, setSelectionRange() {}, showModal() { this.open = true; }, show() { this.open = true; }, close() { this.open = false; }, scrollIntoView() {}, scrollBy() {},
-      getBoundingClientRect() { return {top: 0, left: 0, bottom: 0, right: 0, width: 0, height: 0, x: 0, y: 0}; }, getClientRects() { return []; }, contains() { return false; }, closest() { return null; },
-      click() { for (const f of this.listeners.click ?? []) f({type: 'click', currentTarget: P, target: P, preventDefault() {}, stopPropagation() {}}); },
-    };
-    const P = new Proxy(t, {get(o, k) { if (k in o) return o[k]; if (typeof k === 'string' && /^on[a-z]/.test(k)) return null; return typeof k === 'string' && /^[a-z]/.test(k) ? () => undefined : undefined; }, set(o, k, v) { o[k] = v; return true; }});
-    return P;
+/** 가짜 문서 — 브라우저 없는 노드에서 줄의 카톡 단추 · 글상자를 진짜로 돌림(instanceof Node · 고르기 · 누름 · 글 · 숨김) · 자료는 그 사이트 폴더에서 읽음 */
+function installFakeDom(dir, captured) {
+  class FNode {}
+  const flat = ks => ks.flat(Infinity).filter(k => k != null);
+  class FText extends FNode {
+    constructor(s) { super(); this.nodeType = 3; this.data = String(s); this.parentNode = null; }
+    get textContent() { return this.data; }
+    set textContent(v) { this.data = String(v ?? ''); }
+    remove() { this.parentNode?._drop(this); }
+  }
+  const matchOne = (el, s) => {
+    const m = /^([a-z0-9]*)((?:\.[\w-]+)*)((?:\[[^\]]+\])*)$/i.exec(s); if (!m || !s) return false;
+    if (m[1] && m[1].toUpperCase() !== el.tagName) return false;
+    const cls = el.className.split(/\s+/);
+    if (!(m[2].match(/\.[\w-]+/g) ?? []).every(c => cls.includes(c.slice(1)))) return false;
+    for (const a of m[3].match(/\[[^\]]+\]/g) ?? []) {
+      const q = /^\[([\w-]+)(?:([$^*]?=)"([^"]*)")?\]$/.exec(a); if (!q) return false;
+      const v = el.getAttribute(q[1]); if (v == null) return false;
+      if ((q[2] === '=' && v !== q[3]) || (q[2] === '$=' && !v.endsWith(q[3])) || (q[2] === '^=' && !v.startsWith(q[3])) || (q[2] === '*=' && !v.includes(q[3]))) return false;
+    }
+    return true;
   };
-  const doc = {createElement: mkEl, createElementNS: (ns, tag) => mkEl(tag), createTextNode: text, activeElement: null,
-    querySelector: sel => (/stylesheet/.test(sel) ? mkEl('link') : null), querySelectorAll: () => [], addEventListener() {}, removeEventListener() {}, getElementById: () => null, contains: () => false};
-  doc.body = mkEl('body'); doc.head = mkEl('head'); doc.documentElement = mkEl('html');
-  globalThis.document = doc; globalThis.window = globalThis;
-  globalThis.requestAnimationFrame = f => setTimeout(f, 0); globalThis.matchMedia = () => ({matches: false, addEventListener() {}});
+  let doc = null;
+  class FEl extends FNode {
+    constructor(tag) { super(); Object.assign(this, {nodeType: 1, tagName: String(tag).toUpperCase(), children: [], attrs: {}, listeners: {}, parentNode: null, className: '', value: '', hidden: false, style: {}, dataset: {}, sheet: {}, open: false, readOnly: false, disabled: false}); }
+    get classList() {
+      const el = this, set = () => new Set(el.className.split(/\s+/).filter(Boolean)), put = s => { el.className = [...s].join(' '); };
+      return {add: (...a) => { const s = set(); a.forEach(x => s.add(x)); put(s); }, remove: (...a) => { const s = set(); a.forEach(x => s.delete(x)); put(s); },
+        toggle: (x, on) => { const s = set(), w = on ?? !s.has(x); if (w) s.add(x); else s.delete(x); put(s); return w; }, contains: x => set().has(x)};
+    }
+    setAttribute(k, v) { v = String(v); if (k === 'class') this.className = v; else if (k === 'hidden') this.hidden = true; else this.attrs[k] = v; }
+    getAttribute(k) { return k === 'class' ? this.className : k === 'hidden' ? (this.hidden ? '' : null) : this.attrs[k] ?? null; }
+    hasAttribute(k) { return k === 'hidden' ? this.hidden : k in this.attrs; }
+    removeAttribute(k) { if (k === 'hidden') this.hidden = false; else if (k === 'class') this.className = ''; else delete this.attrs[k]; }
+    get id() { return this.attrs.id ?? ''; }
+    addEventListener(t, f) { (this.listeners[t] ??= []).push(f); }
+    removeEventListener(t, f) { this.listeners[t] = (this.listeners[t] ?? []).filter(x => x !== f); }
+    dispatchEvent() { return true; }
+    _drop(c) { this.children = this.children.filter(x => x !== c); c.parentNode = null; }
+    _add(k, front = false) { const c = k instanceof FNode ? k : new FText(k); c.parentNode?._drop(c); c.parentNode = this; if (front) this.children.unshift(c); else this.children.push(c); }
+    append(...ks) { for (const k of flat(ks)) this._add(k); }
+    prepend(...ks) { for (const k of flat(ks).reverse()) this._add(k, true); }
+    replaceChildren(...ks) { for (const c of [...this.children]) this._drop(c); this.append(...ks); }
+    after(...ks) { const p = this.parentNode; if (!p) return; const i = p.children.indexOf(this); const add = flat(ks).map(k => (k instanceof FNode ? k : new FText(k))); add.forEach(c => { c.parentNode?._drop(c); c.parentNode = p; }); p.children.splice(i + 1, 0, ...add); }
+    before(...ks) { const p = this.parentNode; if (!p) return; const i = p.children.indexOf(this); const add = flat(ks).map(k => (k instanceof FNode ? k : new FText(k))); add.forEach(c => { c.parentNode?._drop(c); c.parentNode = p; }); p.children.splice(i, 0, ...add); }
+    remove() { this.parentNode?._drop(this); }
+    get firstElementChild() { return this.children.find(c => c instanceof FEl) ?? null; }
+    get textContent() { return this.children.map(c => c.textContent ?? '').join(''); }
+    set textContent(v) { for (const c of [...this.children]) this._drop(c); if (v != null && v !== '') this._add(String(v)); }
+    get innerText() { return this.textContent; }
+    get isConnected() { let e = this; while (e.parentNode) e = e.parentNode; return e === doc?.documentElement; }
+    _all() { const o = [], w = e => { for (const c of e.children) if (c instanceof FEl) { o.push(c); w(c); } }; w(this); return o; }
+    matches(sel) { return String(sel).split(',').some(x => matchOne(this, x.trim())); }
+    querySelector(sel) { return this._all().find(e => e.matches(sel)) ?? null; }
+    querySelectorAll(sel) { return this._all().filter(e => e.matches(sel)); }
+    closest(sel) { let e = this; while (e) { if (e instanceof FEl && e.matches(sel)) return e; e = e.parentNode; } return null; }
+    contains(x) { while (x) { if (x === this) return true; x = x.parentNode; } return false; }
+    focus() { if (doc) doc.activeElement = this; } blur() {} select() {} setSelectionRange() {}
+    showModal() { this.open = true; } show() { this.open = true; } close() { this.open = false; }
+    scrollIntoView() {} scrollBy() {} scrollTo() {} getClientRects() { return []; }
+    getBoundingClientRect() { return {top: 0, left: 0, bottom: 0, right: 0, width: 0, height: 0, x: 0, y: 0}; }
+    click() { const ev = {type: 'click', currentTarget: this, target: this, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; }, stopPropagation() {}}; for (const f of [...(this.listeners.click ?? [])]) f.call(this, ev); }
+  }
+  const link = new FEl('link'); // 모양 파일은 붙은 것으로(p-share css() 가 기다리지 않게)
+  doc = {createElement: t => new FEl(t), createElementNS: (ns, t) => new FEl(t), createTextNode: s => new FText(s), activeElement: null,
+    addEventListener() {}, removeEventListener() {}, getElementById: id => doc.documentElement._all().find(e => e.attrs.id === id) ?? null,
+    querySelector: sel => (/stylesheet/.test(sel) ? link : doc.documentElement.querySelector(sel)), querySelectorAll: sel => doc.documentElement.querySelectorAll(sel),
+    contains: x => doc.documentElement.contains(x)};
+  doc.documentElement = new FEl('html'); doc.head = new FEl('head'); doc.body = new FEl('body'); doc.documentElement.append(doc.head, doc.body);
+  const G = globalThis;
+  Object.assign(G, {document: doc, window: G, Node: FNode, Element: FEl, HTMLElement: FEl, Text: FText, innerWidth: 360, innerHeight: 640,
+    requestAnimationFrame: f => setTimeout(f, 0), cancelAnimationFrame: t => clearTimeout(t), matchMedia: () => ({matches: false, addEventListener() {}, removeEventListener() {}}),
+    getComputedStyle: () => ({getPropertyValue: () => ''}), addEventListener() {}, removeEventListener() {}, scrollTo() {}});
   const nav = {userAgent: 'essence-check', language: 'ko-KR', share: async d => { captured.push({how: 'share', title: d?.title ?? '', text: d?.text ?? '', url: d?.url ?? ''}); }, clipboard: {writeText: async t => { captured.push({how: 'copy', text: String(t)}); }}};
-  try { Object.defineProperty(globalThis, 'navigator', {value: nav, configurable: true, writable: true}); } catch { /* 그대로 */ }
-  try { Object.defineProperty(globalThis, 'localStorage', {value: {_m: new Map(), getItem(k) { return this._m.get(k) ?? null; }, setItem(k, v) { this._m.set(k, String(v)); }, removeItem(k) { this._m.delete(k); }}, configurable: true, writable: true}); } catch { /* 그대로 */ }
-  globalThis.fetch = async () => ({ok: false, status: 404, json: async () => null, text: async () => ''}); // 가짜 쪽은 망을 쓰지 않음(빈 날 길)
+  const store = () => ({_m: new Map(), getItem(k) { return this._m.has(k) ? this._m.get(k) : null; }, setItem(k, v) { this._m.set(k, String(v)); }, removeItem(k) { this._m.delete(k); }, clear() { this._m.clear(); }});
+  for (const [k, v] of [['navigator', nav], ['localStorage', store()], ['sessionStorage', store()]]) { try { Object.defineProperty(G, k, {value: v, configurable: true, writable: true}); } catch { /* 그대로 */ } }
+  // 망 = 그 사이트 폴더의 파일(첫 화면과 같은 자료 · 없는 파일은 404)
+  G.fetch = async u => {
+    const rel = String(u?.url ?? u).replace(/^https?:\/\/[^/]+/, '').replace(/[?#].*$/, '');
+    const f = path.resolve(dir, '.' + (rel.startsWith('/') ? rel : '/' + rel));
+    const buf = f.startsWith(path.resolve(dir) + path.sep) ? (() => { try { return fs.readFileSync(f, 'utf8'); } catch { return null; } })() : null;
+    return buf == null ? {ok: false, status: 404, json: async () => null, text: async () => ''} : {ok: true, status: 200, json: async () => JSON.parse(buf), text: async () => buf};
+  };
   return doc;
 }
 /** 절대 주소 /next/… 를 그 사이트 폴더로(노드 모듈 고리) */
@@ -483,132 +533,171 @@ const HOOK = `export async function resolve(s, c, n) {
   if (s.startsWith('/next/') && c.parentURL && c.parentURL.startsWith('file:')) { const p = new URL(c.parentURL).pathname, i = p.lastIndexOf('/next/'); if (i >= 0) return n(new URL('file://' + p.slice(0, i) + s).href, c); }
   return n(s, c);
 }`;
-async function runProbe(dir) {
+const sleep = ms => new Promise(z => setTimeout(z, ms));
+async function until(f, ms = 3000) { const t0 = Date.now(); while (Date.now() - t0 < ms) { const v = f(); if (v) return v; await sleep(15); } return null; }
+
+async function runProbe(dir, {now = Date.now()} = {}) {
   const {register} = await import('node:module');
   register('data:text/javascript,' + encodeURIComponent(HOOK));
   const captured = [], out = {share: {}, essence: {}};
-  installFakeDom(captured);
+  const doc = installFakeDom(dir, captured);
   const imp = rel => import(pathToFileURL(path.join(dir, rel)).href);
-  // ⑥ 보내는 글
+  const dlg = () => doc.body.children.find(e => /\bps-dlg\b/.test(e.className ?? ''));
+  // ⑥ 보내는 글 — 오른 종목(자료에서 한 달 오름이 가장 큰 회사 · 회사 파일이 있는 것)
   try {
-    const S = await imp('next/p-share.js');
-    const cases = [
-      {id: 'rise', o: {kind: 'share', code: '005930', name: '삼성전자', price: 91200, day: '2026-10-13', title: '삼성전자 · 꼴똘이'}},
-      {id: 'surge', o: {kind: 'surge', code: '005930', name: '삼성전자', price: 91200, day: '2026-10-13', half: {n: 7, of: 36}, title: '삼성전자 · 5일 +31.2%'}},
-      {id: 'gains', o: {kind: 'share', code: '005930', name: '삼성전자', price: 91200, day: '2026-10-13', title: '삼성전자 수익률 +27.4% · 1주 +12.3%', text: '5일 +31.2% 올랐어요 · 수익률 25% · 두 배 올랐어'}},
-      {id: 'ask', o: {kind: 'ask', code: '005930', name: '삼성전자', price: 91200, day: '2026-10-13', title: '삼성전자 · 꼴똘이'}},
-      {id: 'page', o: {kind: 'share', title: '시황 · 코스피 +3.2% · 꼴똘이', url: 'https://aaa7377.com/#/shorts/0'}},
-    ];
-    out.share.cases = [];
-    for (const C of cases) {
+    const M = readJson(path.join(dir, 'atlas/data/mkt.json')).v ?? {};
+    const ups = Object.entries(M.companies ?? {}).filter(([k, o]) => /^[0-9A-Z]{6}$/.test(k) && Number.isFinite(o?.c)).sort((a, b) => b[1].c - a[1].c);
+    let UP = null;
+    for (const [code, o] of ups.slice(0, 60)) { const co = readJson(path.join(dir, 'atlas/data/co', code + '.json')).v; if (co?.c?.price > 0 && /^\d{4}-\d{2}-\d{2}$/.test(co.c.priceDate ?? '')) { UP = {code, name: String(o.n ?? co.c.name ?? code), c: o.c, price: Math.round(co.c.price), day: co.c.priceDate}; break; } }
+    if (!UP) throw Error('오른 회사(회사 파일 있음)를 자료에서 못 찾음');
+    out.share.up = UP;
+    const gainTitle = `${UP.name} · 5일 +31.2% · 한 달 +${UP.c}%`;
+    const B = await imp('next/share-btn.js'), S = await imp('next/p-share.js');
+    const runCase = async (id, start, {typed = null, nx = null} = {}) => {
       captured.length = 0;
-      const r = {id: C.id, sent: [], err: null};
+      const r = {id, sent: [], err: null};
       try {
-        const pr = S.open({...C.o});
-        await new Promise(z => setTimeout(z, 20));
-        const D = document.body.children.find(e => /ps-dlg/.test(e.className ?? ''));
-        if (!D) throw Error('글상자가 안 열림');
-        const qb = D.querySelector('.ps-qb'); if (qb) qb.click(); // 빠른 말 하나
-        const go = D.querySelector('.ps-go'); if (!go) throw Error('보내기 단추 없음'); go.click();
-        const done = await Promise.race([pr, new Promise(z => setTimeout(() => z({how: 'timeout'}), 4000))]);
-        r.how = done?.how ?? null; r.result = {text: done?.text ?? null, url: done?.url ?? null};
-        r.sent = captured.map(x => ({...x}));
-        if (/^https?:/.test(r.result.url ?? '')) { const m = /#\/s\/([^/]+)\/([^/]+)\/([^/]+)\/([sa])(?:\/([A-Za-z0-9_-]+))?/.exec(r.result.url); if (m && m[5] && S.decMsg) r.urlMsg = S.decMsg(m[5]); }
+        dlg()?.querySelector('.ps-x')?.click();
+        if (nx) globalThis.NX = nx; else delete globalThis.NX;
+        await start();
+        const D = await until(dlg, 4000); if (!D) throw Error('글상자가 안 열림');
+        if (typed != null) {
+          const ta = D.querySelector('textarea.ps-t'); if (!ta) throw Error('글칸 없음');
+          ta.value = typed; for (const f of ta.listeners.input ?? []) f({type: 'input', target: ta, currentTarget: ta});
+          D.querySelector('.ps-go')?.click(); await sleep(80);
+          r.typed = typed; r.blocked = captured.length === 0; r.say = D.querySelector('.ps-m')?.textContent ?? '';
+          D.querySelector('.ps-x')?.click();
+        } else {
+          const b = D.querySelector('.ps-qb') ?? D.querySelector('.ps-go'); if (!b) throw Error('보내기 단추 없음');
+          b.click(); await until(() => captured.length > 0, 3000);
+        }
+        r.sent = captured.map(x => JSON.parse(JSON.stringify(x)));
+        for (const x of r.sent) { const m = /#\/s\/[^/]+\/[^/]+\/[^/]+\/[sa]\/([A-Za-z0-9_-]+)\s*$/.exec(x.url || x.card?.url || x.text || ''); if (m && typeof S.decMsg === 'function') x.msg = S.decMsg(m[1]); }
       } catch (e) { r.err = String(e?.message ?? e).slice(0, 200); }
-      out.share.cases.push(r);
-    }
-    if (typeof S.cardOf === 'function') {
-      try { out.share.card = S.cardOf({name: '삼성전자', msg: '이거 어때?', lead: '', half: '36곳 중 7곳이 1년 안에 반값 아래로 떨어진 적 있어요', price: 91200, day: '2026-10-13', see: 'https://aaa7377.com/#/s/005930/2026-10-13/91200/s'}, null, 'https://aaa7377.com'); }
-      catch (e) { out.share.cardErr = String(e.message).slice(0, 160); }
-    }
+      delete globalThis.NX;
+      return r;
+    };
+    const clickBtn = b => { const x = Array.isArray(b) ? b : [b]; if (!x[0]) throw Error('단추가 안 만들어짐'); x[0].click(); };
+    const fakeK = {on: false, share: true, canSend: () => true, sendCard: card => { captured.push({how: 'kakao', card}); return true; }, sdkReady: async () => false, startUrl: () => '', ref: () => null};
+    out.share.cases = [
+      // 줄의 카톡 단추(KB2 줄이 부르는 꼴) — 쓰는 곳이 실수로 오른 폭 · 수익률을 넘겨도
+      await runCase('row', () => clickBtn(B.shareButtons({code: UP.code, name: UP.name, price: UP.price, day: UP.day, kind: 'share', title: gainTitle, chg: 31.2, rate: '+31.2%', text: '5일 +31.2% 올랐어요'}, {kakao: true}))),
+      // 급등 줄 — 값 · 날 없이(글상자가 회사 파일에서 채움) · 반값 한 줄은 자료(half36.json)
+      await runCase('surge', () => clickBtn(B.shareButtons({code: UP.code, name: UP.name, kind: 'surge', title: gainTitle}, {kakao: true}))),
+      // 카톡 그림 카드 길(공유 스위치가 켜졌을 때 — 받는 카드에 담기는 글)
+      await runCase('kakao', () => clickBtn(B.shareButtons({code: UP.code, name: UP.name, price: UP.price, day: UP.day, kind: 'surge', title: gainTitle}, {kakao: true})), {nx: {kakao: fakeK}}),
+      // 옛 단추 둘의 「같이 따져 줘」
+      await runCase('ask', () => clickBtn(B.shareButtons({code: UP.code, name: UP.name, price: UP.price, day: UP.day, title: gainTitle})?.[1])),
+      // 회사가 아닌 쪽(시황 · 소개) — 제목 · 같이 가는 글에 지수 오름
+      await runCase('page', () => { S.open({kind: 'share', title: `시황 · 코스피 +3.2% · ${NAME}`, text: '오늘 코스피 +3.2% 올랐어요', url: 'https://aaa7377.com/#/shorts/0'}); }),
+      // 사람이 친 말 — 수익 숫자는 보내지 않음(막혀야 함)
+      await runCase('typed', () => { S.open({kind: 'share', code: UP.code, name: UP.name, price: UP.price, day: UP.day}); }, {typed: '이거 한 달에 30% 먹었어'}),
+    ];
     try { const W = await imp('next/words.js'); out.share.filter = ['수익률 30% 났어', '+30% 올랐다', '두 배 먹었어'].map(t => [t, W.sendHits(t).length]); } catch (e) { out.share.filterErr = String(e.message).slice(0, 160); }
   } catch (e) { out.share.error = String(e?.message ?? e).slice(0, 240); }
-  // ②⑦ 세 줄
+  // ②⑦ 세 줄 — 첫 화면과 같은 부름(essenceData({summary, now}) → essenceLines)
   try {
     const E = await imp('next/essence.js');
-    out.essence.exports = Object.keys(E);
-    out.essence.staleH = Number.isFinite(E.STALE_H) ? E.STALE_H : null;
-    const load = rel => { const j = readJson(path.join(dir, rel)); return j.v ?? null; };
-    const mkt = load('atlas/data/mkt.json'), sum = load('next/data/home-summary.json'), home = load('atlas/data/home.json');
-    const call = async (fn, ...a) => { const v = await fn(...a); return v; };
-    const textOf = x => (x == null ? '' : typeof x === 'string' ? x : Array.isArray(x) ? x.map(textOf).join('\n') : typeof x === 'object' ? (x.textContent ?? Object.values(x).map(textOf).join(' ')) : String(x));
-    const linesOf = v => (Array.isArray(v) ? v.map(textOf) : Array.isArray(v?.lines) ? v.lines.map(textOf) : null);
-    if (typeof E.essenceData === 'function' && typeof E.essenceLines === 'function') {
-      const now = Date.now();
-      const d = await call(E.essenceData, {mkt, sum, home, now});
-      out.essence.data = d && typeof d === 'object' ? JSON.parse(JSON.stringify(d)) : d;
-      out.essence.lines = linesOf(await call(E.essenceLines, d, {now}));
-      // ⑦ 오래된 받은 때 · 새 받은 때 — 같은 자료에서 받은 때만 바꿈
-      const ageCase = async ms => { const d2 = await call(E.essenceData, {mkt, sum: sum ? {...sum, fetchedAt: new Date(ms).toISOString()} : sum, home: home ? {...home, kst: new Date(ms + 9 * 36e5).toISOString().slice(0, 16).replace('T', ' '), made: new Date(ms).toISOString()} : home, now}); return linesOf(await call(E.essenceLines, d2, {now})); };
-      out.essence.old = await ageCase(now - 30 * 864e5);
-      out.essence.fresh = await ageCase(now - 10 * 6e4);
-      out.essence.now = now;
-    } else out.essence.error = 'essence.js 에 essenceData · essenceLines 가 없음';
-  } catch (e) { out.essence.error = 'essence.js 를 부르지 못함 — ' + String(e?.message ?? e).slice(0, 200); }
+    const sum = readJson(path.join(dir, 'next/data/home-summary.json')).v ?? null;
+    const L = s => { const d = E.essenceData({summary: s, now}); return {d: JSON.parse(JSON.stringify(d ?? null)), lines: E.essenceLines(d)}; };
+    const base = sum ?? {coN: 1};
+    const at = ms => ({...base, fetchedAt: new Date(ms).toISOString()});
+    const H = Number.isFinite(E.OLD_HOURS) ? E.OLD_HOURS : null;
+    out.essence = {exports: Object.keys(E), oldHours: H, withSum: L(sum), noSum: L(null),
+      old: L(at(now - 30 * 864e5)).lines, fresh: L(at(now - 10 * 6e4)).lines, unknown: L({...base, fetchedAt: null}).lines,
+      edgeOld: H ? L(at(now - (H + 1) * 36e5)).lines : null, edgeNew: H ? L(at(now - Math.max(0, H - 1) * 36e5)).lines : null};
+  } catch (e) { out.essence = {error: 'essence.js 를 부르지 못함 — ' + String(e?.message ?? e).slice(0, 200)}; }
   return out;
 }
 
 /* ───────────── ⑥ 판정 · ②⑦ 판정 ───────────── */
 const GAIN_WORD = /수익률|수익금|수익\s*인증/;
-function sentProblems(label, s) {
-  const out = [], t = String(s ?? '');
-  if (!t) return out;
+const decUrl = s => { try { return decodeURIComponent(String(s ?? '')); } catch { return String(s ?? ''); } };
+/** 보낸 글 하나의 수익 말 · 숫자(이름 글자는 빼고 봄 — 회사 이름의 「…프로」 같은 글자가 수익 숫자로 읽히지 않게) */
+function sentProblems(label, s, names = []) {
+  const out = []; let t = String(s ?? '');
+  for (const n of names) if (n) t = t.split(n).join(' ○ ');
+  if (!t.trim()) return out;
   if (GAIN_WORD.test(t)) out.push(`${label}에 「${GAIN_WORD.exec(t)[0]}」`);
-  for (const g of gainHits(t)) out.push(`${label}에 수익 숫자 「${g.word}」`);
+  for (const g of gainHits(t)) if (!out.some(x => x.includes(g.word))) out.push(`${label}에 수익 숫자 「${g.word}」`);
   return out;
 }
 export function judgeShare(P) {
   const c = mk(6, 'static');
   if (!P || P.error) return cant(c, P?.error ?? '가짜 쪽 시험 결과 없음');
   const S = P.share ?? {};
-  if (S.error) return cant(c, 'p-share.js 를 부르지 못함 — ' + S.error);
-  let sent = 0;
+  if (S.error) return cant(c, '보내기를 돌리지 못함 — ' + S.error);
+  const names = [S.up?.name].filter(Boolean);
+  let sent = 0, kakao = 0;
   for (const r of S.cases ?? []) {
     if (r.err) { cant(c, `보내기 시험 「${r.id}」 — ${r.err}`); continue; }
-    if (!r.sent.length) { cant(c, `보내기 시험 「${r.id}」 — 보낸 것이 없음(${r.how})`); continue; }
-    for (const x of r.sent) { sent++; for (const p of [...sentProblems('보낸 제목', x.title), ...sentProblems('보낸 글', x.text), ...sentProblems('보낸 주소', x.url)]) bad(c, `「${r.id}」 ${p}`); }
-    for (const p of sentProblems('주소 속 말', r.urlMsg)) bad(c, `「${r.id}」 ${p}`);
-    if (r.id === 'surge' && !r.sent.some(x => /반값/.test(x.text ?? ''))) note(c, '급등 보내기 글에 반값 한 줄이 없음(half 를 넘겼는데)');
+    if (r.id === 'typed') { if (!r.blocked) bad(c, `손으로 친 수익 말 「${r.typed}」이 막히지 않고 보내짐`); continue; }
+    if (!r.sent.length) { cant(c, `보내기 시험 「${r.id}」 — 보낸 것이 없음`); continue; }
+    for (const x of r.sent) {
+      sent++;
+      const parts = x.how === 'kakao' ? deepStrings(x.card ?? {}).map((s, i) => [`카톡 카드 ${i + 1}`, decUrl(s)]) : [['보낸 제목', x.title], ['보낸 글', decUrl(x.text)], ['보낸 주소', decUrl(x.url)], ['주소 속 말', x.msg]];
+      if (x.how === 'kakao') kakao++;
+      for (const [label, s] of parts) for (const p of sentProblems(label, s, names)) bad(c, `「${r.id}」 ${p}`);
+    }
+    if (r.id === 'kakao' && !r.sent.some(x => x.how === 'kakao')) note(c, '카톡 카드 길이 안 탐(카드 대신 공유 창 글만 봄) — p-share 카드 길이 바뀌었을 수 있음');
+    if (r.id === 'surge' && !r.sent.some(x => /반값/.test(x.text ?? '') || /반값/.test(JSON.stringify(x.card ?? '')))) note(c, '급등 보내기 글에 반값 한 줄이 없음(half36.json 이 없거나 깨졌을 수 있음)');
   }
-  if (S.card) { for (const [k, v] of Object.entries(S.card)) for (const s of deepStrings(v)) for (const p of sentProblems(`카톡 카드 ${k}`, s)) bad(c, p); }
-  else if (S.cardErr) cant(c, '카톡 카드(cardOf)를 만들지 못함 — ' + S.cardErr);
   for (const [t, n] of S.filter ?? []) if (!n) bad(c, `거르는 말이 수익 숫자를 못 막음(words.js sendHits 「${t}」 = 0)`);
   if (S.filterErr) cant(c, 'words.js sendHits 를 부르지 못함 — ' + S.filterErr);
-  c.counts.sent = sent; c.counts.cases = (S.cases ?? []).length;
+  c.counts = {cases: (S.cases ?? []).length, sent, kakao, up: S.up ? `${S.up.name} 한 달 ${S.up.c > 0 ? '+' : ''}${S.up.c}%` : null};
   return c;
 }
-export function judgeEssence(P, R, {now = Date.now()} = {}) {
+/** 첫 화면이 쓰는 요약 꼴 — 그 사이트의 app.js 에서 읽음(SUM_SCHEMA) · 못 읽으면 이 문의 값 */
+export function appSumSchema(dir) { return /\bconst\s+SUM_SCHEMA\s*=\s*'([^']+)'/.exec(readText(path.join(dir, 'next/app.js')) ?? '')?.[1] ?? SUM_SCHEMA; }
+/** 셋째 줄의 받은 때 자리 — 틀 앞뒤를 떼고 남은 것 · 틀과 안 맞으면 null */
+const atPart = (line, tpl3) => { const [pre, post] = tpl3.split('○월 ○일 ○시'); return post != null && line.startsWith(pre) && line.endsWith(post) ? line.slice(pre.length, line.length - post.length).trim() : null; };
+export function judgeEssence(P, R, {root = ROOT, now = Date.now(), schema = SUM_SCHEMA} = {}) {
   const c2 = mk(2, 'static'), c7 = mk(7, 'static');
-  const E = P?.essence ?? {};
   if (!P || P.error) { cant(c2, P?.error ?? '가짜 쪽 시험 결과 없음'); cant(c7, P?.error ?? '가짜 쪽 시험 결과 없음'); return [c2, c7]; }
+  const E = P.essence ?? {};
   if (E.error) { bad(c2, E.error); bad(c7, E.error); return [c2, c7]; }
   for (const p of R.problems) bad(c2, '자료 — ' + p);
-  const L = E.lines;
-  if (!Array.isArray(L) || L.length !== 3) { bad(c2, `essenceLines 가 세 줄이 아님(${Array.isArray(L) ? L.length + '줄' : '없음'})`); }
+  for (const n of R.notes) note(c2, n);
+  const T = orderLines(root);
+  if (!T) { bad(c2, `명령문 파일(${ORDER_FILE})에서 [5] 2 세 줄을 못 읽음`); return [c2, c7]; }
+  // 첫 화면이 요약 파일을 쓰나(아니면 숫자 둘이 「?」로 나옴 — 자료와 다름)
+  const usable = !!(R.sum && R.sum.schema === schema && R.home && R.sum.src?.home === R.home.kst);
+  if (!usable) bad(c2, `첫 화면이 요약 파일을 안 씀(${!R.sum ? '요약 파일 없음' : R.sum.schema !== schema ? '꼴 ' + R.sum.schema + ' ≠ ' + schema : 'src.home ' + R.sum.src?.home + ' ≠ home.json kst ' + R.home?.kst}) — 세 줄 숫자가 「?」로 나옴`);
+  const L = (usable ? E.withSum : E.noSum)?.lines;
+  if (!Array.isArray(L) || L.length !== 3 || !L.every(s => typeof s === 'string')) { bad(c2, `essenceLines 가 세 줄 글이 아님(${JSON.stringify(L)?.slice(0, 80)})`); return [c2, c7]; }
+  if (L[0] !== T[0]) bad(c2, `첫째 줄이 명령문 [5] 2 ① 과 다름 「${L[0]}」`);
+  const [p2, s2] = T[1].split(' n곳');
+  if (s2 == null) bad(c2, '명령문 [5] 2 ② 에서 「n곳」 자리를 못 찾음');
+  else if (R.n == null) cant(c2, '회사 수를 자료로 셀 수 없음');
+  else if (L[1] !== `${p2} ${comma(R.n)}곳${s2}`) bad(c2, `둘째 줄 「${L[1]}」 ≠ 자료로 센 「${p2} ${comma(R.n)}곳${s2}」(${R.src.n})`);
+  const ap = atPart(L[2], T[2]), H = E.oldHours;
+  if (ap == null) bad(c2, `셋째 줄이 명령문 [5] 2 ③ 틀과 다름 「${L[2]}」`);
   else {
-    const want1 = /주식을 사기 전에 「왜 사\?」 열한 질문으로 내 이유부터 확인해요/, want2 = /앞날을 맞히지 않아요\. 코스피와 코스닥 회사 ([\d,]+)곳의 지난 기록만 보여 줘요/, want3 = /사고팔기를 권하지 않아요\. 숫자는 네이버 증권에서 받아요\. 마지막으로 받은 때: (\??)\s*(\d{1,2})월 (\d{1,2})일 (\d{1,2})시/;
-    if (!want1.test(L[0])) bad(c2, `첫째 줄이 명령문 [5] 2 ① 과 다름 「${L[0]}」`);
-    const m2 = want2.exec(L[1]); if (!m2) bad(c2, `둘째 줄이 명령문 [5] 2 ② 꼴과 다름 「${L[1]}」`);
-    else if (R.n != null && m2[1] !== num(R.n)) bad(c2, `둘째 줄 회사 수 ${m2[1]}곳 ≠ 자료 ${num(R.n)}곳(${R.src.n})`);
-    const m3 = want3.exec(L[2]);
-    if (!m3) bad(c2, `셋째 줄이 명령문 [5] 2 ③ 꼴과 다름 「${L[2]}」`);
-    else if (Number.isFinite(R.fetchedMs)) {
-      const w = `${+m3[2]}월 ${+m3[3]}일 ${+m3[4]}시`, ex = whenWords(R.fetchedMs);
-      if (w !== ex) bad(c2, `받은 때 ${w} ≠ 자료 ${ex}(${R.src.fetched})`);
-      const H = E.staleH ?? STALE_H_DEFAULT, old = now - R.fetchedMs > H * 36e5, q = m3[1] === '?';
-      if (E.staleH != null && (E.staleH < STALE_H_RANGE[0] || E.staleH > STALE_H_RANGE[1])) bad(c7, `오래됨 잣대 ${E.staleH}시간이 ${STALE_H_RANGE[0]} ~ ${STALE_H_RANGE[1]}시간 밖`);
-      if (old && !q) bad(c7, `받은 때가 ${Math.round((now - R.fetchedMs) / 36e5)}시간 전(잣대 ${H}시간)인데 「?」가 없음 「${L[2]}」`);
-      if (!old && q) bad(c7, `받은 때가 ${Math.round((now - R.fetchedMs) / 36e5)}시간 전(잣대 ${H}시간 안)인데 「?」가 붙음`);
-      c7.counts.ageH = Math.round((now - R.fetchedMs) / 36e5); c7.counts.staleH = H;
-    } else bad(c2, '받은 때를 자료로 셀 수 없음 — ' + R.problems.join(' · '));
-    c2.counts.n = R.n; c2.counts.fetched = Number.isFinite(R.fetchedMs) ? whenWords(R.fetchedMs) : null;
+    const m = /^(\?)?\s*(\d{1,2})월 (\d{1,2})일 (\d{1,2})시$/.exec(ap), q = ap === '?' || !!m?.[1];
+    if (Number.isFinite(R.fetchedMs)) {
+      const ex = whenWords(R.fetchedMs), shown = m ? `${+m[2]}월 ${+m[3]}일 ${+m[4]}시` : null, age = (now - R.fetchedMs) / 36e5;
+      if (shown !== ex) bad(c2, `받은 때 「${ap}」 ≠ 자료로 찾은 ${ex}(${R.fetchedFile})`);
+      if (H != null) { if (age > H && !q) bad(c7, `받은 때가 ${Math.round(age)}시간 전(잣대 ${H}시간)인데 「?」가 없음 「${L[2]}」`); if (age <= H && q) bad(c7, `받은 때가 ${Math.round(age)}시간 전(잣대 ${H}시간 안)인데 「?」가 붙음`); }
+      c7.counts.ageH = Math.round(age);
+    } else if (ap !== '?') bad(c2, `받은 기록이 없는데(${R.notes.join(' · ') || '받은 때 모름'}) 받은 때 「${ap}」를 보임 — 「?」여야 함`);
+    c2.counts.fetched = Number.isFinite(R.fetchedMs) ? whenWords(R.fetchedMs) : '?';
   }
-  const O = E.old, F = E.fresh;
-  if (!Array.isArray(O) || !Array.isArray(F)) cant(c7, '오래된 받은 때를 넣어 세 줄을 다시 만들지 못함');
+  c2.counts.n = R.n; c2.counts.lines = L;
+  // ⑦ 잣대 · 넣어 본 받은 때
+  if (H == null) bad(c7, 'essence.js 에 OLD_HOURS(오래됨 잣대)가 없음');
+  else if (H < STALE_H_RANGE[0] || H > STALE_H_RANGE[1]) bad(c7, `오래됨 잣대 ${H}시간이 ${STALE_H_RANGE[0]} ~ ${STALE_H_RANGE[1]}시간 밖`);
+  const at3 = x => (Array.isArray(x) && typeof x[2] === 'string' ? atPart(x[2], T[2]) : null);
+  const qOf = s => s === '?' || /^\?\s*\d{1,2}월/.test(s ?? '');
+  const o = at3(E.old), f = at3(E.fresh), u = at3(E.unknown), eo = at3(E.edgeOld), en = at3(E.edgeNew);
+  if (o == null || f == null || u == null) cant(c7, '받은 때를 바꿔 넣어 세 줄을 다시 만들지 못함');
   else {
-    if (!/\?/.test(O.join('\n'))) bad(c7, '30일 전에 받은 자료로 만든 세 줄에 「?」가 없음');
-    if (/\?\s*\d{1,2}월/.test(F[2] ?? '')) bad(c7, '10분 전에 받은 자료로 만든 셋째 줄에 「?」가 붙음(늘 「?」면 뜻이 없음)');
+    if (!qOf(o)) bad(c7, `30일 전에 받은 자료로 만든 셋째 줄에 「?」가 없음 「${o}」`);
+    if (qOf(f)) bad(c7, `10분 전에 받은 자료로 만든 셋째 줄에 「?」가 붙음(늘 「?」면 뜻이 없음) 「${f}」`);
+    if (u !== '?') bad(c7, `받은 때를 모르는데 「?」가 아님 「${u}」`);
+    if (eo != null && !qOf(eo)) bad(c7, `잣대보다 한 시간 더 지난 받은 때에 「?」가 없음 「${eo}」`);
+    if (en != null && qOf(en)) bad(c7, `잣대보다 한 시간 덜 지난 받은 때에 「?」가 붙음 「${en}」`);
   }
+  c7.counts.staleH = H;
   return [c2, c7];
 }
 /** 소개 쪽 · 창 설명 글의 회사 수가 자료와 같은가(손으로 박은 수가 틀어졌으면 막음) */
@@ -627,9 +716,9 @@ export async function checkStatic(dir, {root = ROOT, now = Date.now()} = {}) {
   const list = [];
   list.push(await checkEssenceFile({root}));
   if (!exists(path.join(dir, 'next'))) { for (const no of [2, 3, 4, 5, 6, 7]) list.push(cant(mk(no, 'static'), `사이트 폴더에 next/ 가 없음(${dir})`)); return list; }
-  const R = recount(dir);
-  const P = await probe(dir);
-  list.push(checkAppSource(dir), checkPagesNumbers(dir, R), ...judgeEssence(P, R, {now}));
+  const R = recount(dir, {root});
+  const P = await probe(dir, {now});
+  list.push(checkAppSource(dir), checkPagesNumbers(dir, R), ...judgeEssence(P, R, {root, now, schema: appSumSchema(dir)}));
   list.push(checkWords(dir, {root}), checkGdrSource(dir), checkShareSource(dir), judgeShare(P));
   return list;
 }
@@ -654,7 +743,9 @@ export function serveDir(dir) {
 }
 const isLocal = base => /^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:\d+)?/i.test(base);
 /** 일감 목록(몫으로 가를 수 있게 이름만) */
-export const RENDER_UNITS = Object.freeze(['r2-home', 'r4-gdr', 'r4-home', 'r4-company', 'r4-open', 'r5-friend', 'r6-share', 'r7-old']);
+export const RENDER_UNITS = Object.freeze(['r2-home', 'r4-gdr', 'r4-home', 'r4-company', 'r4-open', 'r5-friend', 'r7-old']);
+/** 더 돌 수 있는 일감(기본 밖) — r6-share = 오른 회사 화면의 실제 단추 → 빠른 말 → 공유 창(카톡 카드가 켜지면 가로챌 수 없어 「보지 못함」) */
+export const RENDER_EXTRA = Object.freeze(['r6-share']);
 
 /**
  * 실제 화면 검사 — base = 사이트 주소 · units = 돌 일감(기본 모두) · 돌려줌 {checks: [mk …], ran: [일감], seconds}
@@ -669,8 +760,19 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
   const get = async rel => { try { const r = await fetch(base + rel, {cache: 'no-store', signal: AbortSignal.timeout(20000)}); return r.ok ? await r.json() : null; } catch { return null; } };
   const [mkt, home, sum, G, days] = await Promise.all([get('/atlas/data/mkt.json'), get('/atlas/data/home.json'), get('/next/data/home-summary.json'), get('/next/data/gdr.json'), get('/atlas/data/days.json')]);
   const n = mkt?.companies ? Object.keys(mkt.companies).filter(k => /^[0-9A-Z]{6}$/.test(k)).length : null;
-  const fetchedMs = home ? (Number.isFinite(kstMs(home.kst)) ? kstMs(home.kst) : Date.parse(home.made ?? '')) : NaN;
-  const picks = Array.isArray(G?.picks) ? G.picks : [];
+  // 화면 층은 「올린 자료와 화면이 같은가」 — 받은 때 = 요약 fetchedAt(요약을 첫 화면이 쓸 때 · 자료가 기록과 같은지는 정적 층 ②)
+  const sumOn = !!(sum && home && sum.src?.home === home.kst), fetchedMs = sumOn && typeof sum.fetchedAt === 'string' ? Date.parse(sum.fetchedAt) : NaN;
+  // 고른 곳이 0 인 날(오늘처럼)은 ④ 를 볼 수 없어 — 그날 gdr.json 꼴 그대로 고른 곳 셋을 채운 판을 이 검사 브라우저 안에서만 줌(사이트 · 파일은 그대로)
+  let picks = Array.isArray(G?.picks) ? G.picks : [], gdrStub = null;
+  if (!picks.length && G && mkt?.companies) {
+    const st = [];
+    for (const [code, o] of Object.entries(mkt.companies).filter(([k]) => /^[0-9A-Z]{6}$/.test(k)).slice(0, 40)) {
+      const co = await get('/atlas/data/co/' + code + '.json'); const pr = Math.round(Number(co?.c?.price));
+      if (pr > 0) st.push({no: st.length + 1, code, name: String(o.n ?? code), ind: String(o.i ?? '?'), w: 3, price: pr, sell: Math.round(pr * 0.9), half: Math.round(pr * 1.2), reason: '본질 문 시험', saying: 0, wrong: '본질 문 시험', g: {}});
+      if (st.length === 3) break;
+    }
+    if (st.length) { gdrStub = JSON.stringify({...G, picks: st, counts: {...(G.counts ?? {}), picked: st.length, cash: 91}}); picks = st; }
+  }
   let browser;
   const exe = '/opt/pw-browsers/chromium';
   try { browser = await PWm.chromium.launch(exists(exe) ? {executablePath: exe} : {}); } catch (e) { return allCant('브라우저를 못 띄움 — ' + String(e.message).slice(0, 120)); }
@@ -687,40 +789,50 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
   const go = async (p, hash) => { await p.goto(base + PATH + hash, {waitUntil: 'domcontentloaded'}); await settle(p); };
   const WHY_SEED = {'atlas:godori-why': JSON.stringify([{at: '2026-01-05T01:00:00.000Z', code: picks[0]?.code ?? '005930', name: picks[0]?.name ?? '?', answers: new Array(11).fill(0), score: 0, verdict: '좋아, 정해 둔 대로만'}])};
   const pickNames = picks.map(x => String(x.name ?? '')).filter(s => s.length >= 2);
-  const essenceText = p => p.evaluate(() => {
-    const cands = [...document.querySelectorAll('#view [class*="ess"], #view [data-essence]')].filter(e => /열한 질문/.test(e.textContent || ''));
-    const box = cands.sort((a, b) => (a.textContent || '').length - (b.textContent || '').length).pop() ?? [...document.querySelectorAll('#view section, #view div, #view details')].find(e => /열한 질문으로 내 이유부터/.test(e.textContent || '') && /마지막으로 받은 때/.test(e.textContent || ''));
+  const gdrRoute = () => (gdrStub ? [['**/next/data/gdr.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: gdrStub})]] : null);
+  const essenceText = p => p.evaluate(() => { // 세 줄 칸 = #view section.ess(줄마다 [data-ess="1|2|3"] · KC) — 없으면 세 줄 글이 다 든 가장 작은 칸
+    const box = document.querySelector('#view section.ess') ?? [...document.querySelectorAll('#view section, #view details, #view div')].filter(e => /열한 질문으로 내 이유부터/.test(e.textContent || '') && /마지막으로 받은 때/.test(e.textContent || '')).sort((a, b) => (a.textContent || '').length - (b.textContent || '').length)[0];
     if (!box) return null;
-    const tk = document.querySelector('#view .tk-entry');
-    return {text: box.textContent || '', above: !tk || !!(box.compareDocumentPosition(tk) & Node.DOCUMENT_POSITION_FOLLOWING)};
+    const tk = document.querySelector('#view .tk-entry'), d = box.querySelector('details');
+    const seen = el => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+    return {text: box.textContent || '', lines: [1, 2, 3].map(k => box.querySelector(`[data-ess="${k}"]`)?.textContent ?? null), open: d ? d.open : null,
+      shown: [1, 2, 3].map(k => seen(box.querySelector(`[data-ess="${k}"]`))), above: !tk || !!(box.compareDocumentPosition(tk) & Node.DOCUMENT_POSITION_FOLLOWING)};
   });
   try {
     for (const u of units) {
       ran.push(u); log('· ' + u);
-      if (u === 'r2-home') { // ② 첫 화면 세 줄 — 처음 온 사람(펼침) · 다시 온 사람(접힘에도 숫자 같음)
+      if (u === 'r2-home') { // ② 첫 화면 세 줄 — 처음 온 기기(세 줄이 펼쳐 보임) · 다시 온 기기(접혀도 숫자 같음) · 숫자 = 올린 자료
         const c = checks[2], {p, ctx, errs} = await page();
+        const at3 = Number.isFinite(fetchedMs) ? whenWords(fetchedMs) : null;
+        const look = (E, label) => {
+          const m = /회사 ([\d,?]+)곳/.exec(E.text);
+          if (n != null) { if (!m) bad(c, `${label} 세 줄에 회사 수가 없음`); else if (m[1] !== num(n)) bad(c, `${label} 화면 회사 ${m[1]}곳 ≠ 자료 ${num(n)}곳${sumOn ? '' : '(요약 파일이 옛것 — src.home ≠ home.json kst)'}`); }
+          const w = /마지막으로 받은 때:\s*(\?)?\s*(?:(\d{1,2})월 (\d{1,2})일 (\d{1,2})시)?/.exec(E.text);
+          if (!w) bad(c, `${label} 세 줄에 「마지막으로 받은 때:」가 없음`);
+          else if (at3 && (w[2] == null || `${+w[2]}월 ${+w[3]}일 ${+w[4]}시` !== at3)) bad(c, `${label} 화면 받은 때 「${w[0].replace(/^.*:\s*/, '')}」 ≠ 자료 ${at3}`);
+          else if (!at3 && w[2] != null) bad(c, `${label} 자료에 받은 때가 없는데 화면이 ${+w[2]}월 ${+w[3]}일 ${+w[4]}시를 보임`);
+        };
         try {
           await go(p, '#/'); const E = await essenceText(p);
           if (!E) bad(c, '첫 화면에 본질 세 줄 칸이 없음');
           else {
             if (!E.above) bad(c, '세 줄 칸이 이야기 입구(tk-entry) 아래에 있음');
-            const m = /회사 ([\d,]+)곳/.exec(E.text); if (n != null) { if (!m) bad(c, '세 줄에 회사 수가 없음'); else if (m[1] !== num(n)) bad(c, `화면 회사 ${m[1]}곳 ≠ 자료 ${num(n)}곳`); }
-            const w = /마지막으로 받은 때:\s*\??\s*(\d{1,2})월 (\d{1,2})일 (\d{1,2})시/.exec(E.text);
-            if (!w) bad(c, '세 줄에 「마지막으로 받은 때: ○월 ○일 ○시」가 없음');
-            else if (Number.isFinite(fetchedMs) && `${+w[1]}월 ${+w[2]}일 ${+w[3]}시` !== whenWords(fetchedMs)) bad(c, `화면 받은 때 ${+w[1]}월 ${+w[2]}일 ${+w[3]}시 ≠ 자료 ${whenWords(fetchedMs)}`);
             if (!/주식을 사기 전에/.test(E.text) || !/앞날을 맞히지 않아요/.test(E.text) || !/사고팔기를 권하지 않아요/.test(E.text)) bad(c, '세 줄 글이 명령문 [5] 2 와 다름');
-            c.counts.first = E.text.replace(/\s+/g, ' ').trim().slice(0, 160);
+            if (E.shown.some(x => !x)) bad(c, `처음 온 기기인데 세 줄이 다 보이지 않음(보이는 줄 ${E.shown.filter(Boolean).length}/3) — [5] 1 「처음 온 사람에게는 펼치고」`);
+            look(E, '처음 연');
+            c.counts.first = E.text.replace(/\s+/g, ' ').trim().slice(0, 200);
             await go(p, '#/'); const E2 = await essenceText(p);
             if (!E2) bad(c, '다시 연 첫 화면에 세 줄 칸(접힌 한 줄)이 없음');
-            else { const m2 = /회사 ([\d,]+)곳/.exec(E2.text); if (m2 && n != null && m2[1] !== num(n)) bad(c, `다시 연 화면 회사 ${m2[1]}곳 ≠ 자료 ${num(n)}곳`); }
+            else { look(E2, '다시 연'); c.counts.againOpen = E2.open; }
           }
           if (errs.length) note(c, '화면 오류 ' + errs.slice(0, 2).join(' · '));
         } finally { await ctx.close(); }
       }
       if (u === 'r4-gdr' || u === 'r4-home' || u === 'r4-company') { // ④ 열한 질문 전 — 칸 · 첫 화면 · 고른 회사 화면에 고른 곳이 안 보임
-        const c = checks[4], {p, ctx} = await page();
+        const c = checks[4], {p, ctx} = await page({routes: gdrRoute()});
         try {
           const hash = u === 'r4-gdr' ? '#/gdr' : u === 'r4-home' ? '#/' : picks[0] ? '#/w/' + picks[0].code : null;
+          if (gdrStub) c.counts.stub = picks.length;
           if (!hash) { note(c, '고른 곳이 0 이라 회사 화면은 안 봄'); continue; }
           await go(p, hash);
           const s = await p.evaluate(names => {
@@ -739,7 +851,7 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
       if (u === 'r4-open') { // ④ 열한 답 기록을 넣으면 칸이 열림(문이 늘 닫혀 있는 것도 아님)
         const c = checks[4];
         if (!picks.length) { note(c, '고른 곳이 0 이라 열린 칸은 안 봄'); continue; }
-        const {p, ctx} = await page({seed: WHY_SEED});
+        const {p, ctx} = await page({seed: WHY_SEED, routes: gdrRoute()});
         try { await go(p, '#/gdr'); const k = await p.evaluate(() => document.querySelectorAll('#view .gdr-cell:not(.cash)').length); c.counts.openCells = k; if (k !== picks.length) bad(c, `열한 답 기록이 있는데 칸이 ${k}칸(고른 곳 ${picks.length}곳) — 문이 안 열림`); }
         finally { await ctx.close(); }
       }
@@ -799,17 +911,16 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
           c.counts.code = up; c.counts.sent = sent.length;
         } finally { await ctx.close(); }
       }
-      if (u === 'r7-old') { // ⑦ 받은 때를 30일 전으로 바꾼 자료 — 세 줄에 「?」
+      if (u === 'r7-old') { // ⑦ 받은 때를 30일 전으로 바꾼 요약(첫 화면이 쓰는 그대로 · src.home 은 home.json kst) — 세 줄에 「?」
         const c = checks[7];
-        if (!home) { cant(c, 'home.json 을 못 받음'); continue; }
-        const oldMs = now - 30 * 864e5, oldKst = new Date(oldMs + 9 * 36e5).toISOString().slice(0, 16).replace('T', ' ');
-        const H2 = {...home, kst: oldKst, made: new Date(oldMs).toISOString()}, S2 = sum ? {...sum, fetchedAt: new Date(oldMs).toISOString(), src: {...(sum.src ?? {}), home: oldKst}} : null;
-        const routes = [['**/atlas/data/home.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(H2)})], ...(S2 ? [['**/next/data/home-summary.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(S2)})]] : [])];
-        const {p, ctx} = await page({routes});
+        if (!home || !sum) { cant(c, 'home.json · 요약 파일을 못 받음'); continue; }
+        const S2 = {...sum, fetchedAt: new Date(now - 30 * 864e5).toISOString(), src: {...(sum.src ?? {}), home: home.kst}};
+        const {p, ctx} = await page({routes: [['**/next/data/home-summary.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(S2)})]]});
         try {
           await go(p, '#/'); const E = await essenceText(p);
           if (!E) bad(c, '첫 화면에 본질 세 줄 칸이 없음');
-          else if (!/마지막으로 받은 때:\s*\?/.test(E.text) && !/\?\s*\d{1,2}월 \d{1,2}일 \d{1,2}시/.test(E.text)) bad(c, `30일 전에 받은 자료인데 받은 때에 「?」가 없음 「${E.text.replace(/\s+/g, ' ').slice(-60)}」`);
+          else if (!/마지막으로 받은 때:\s*\?/.test(E.text)) bad(c, `30일 전에 받은 자료인데 받은 때에 「?」가 없음 「${E.text.replace(/\s+/g, ' ').slice(-60)}」`);
+          else c.counts.old = (E.lines?.[2] ?? '').slice(-24);
         } finally { await ctx.close(); }
       }
     }
@@ -820,8 +931,8 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
 }
 
 /* ───────────── 문 하나(--dist) ───────────── */
-/** 사이트 폴더 하나를 봄 — render: true(꼭) · false(안 함) · 'auto'(playwright 가 있으면) · 돌려줌 {ok, code, checks, rendered, staticOnly, seconds} */
-export async function checkDist(dir, {root = ROOT, render = 'auto', pw = null, now = Date.now(), log = () => {}} = {}) {
+/** 사이트 폴더 하나를 봄 — render: false(기본 · 정적 · 자료 셈) · true(브라우저 층도 · 그 폴더를 잠깐 띄움) · 'auto'(playwright 가 있으면) · 돌려줌 {ok, code, checks, render, seconds} */
+export async function checkDist(dir, {root = ROOT, render = false, pw = null, now = Date.now(), log = () => {}} = {}) {
   const t0 = Date.now();
   dir = path.resolve(dir);
   const list = await checkStatic(dir, {root, now});
@@ -838,20 +949,22 @@ export async function checkDist(dir, {root = ROOT, render = 'auto', pw = null, n
 /** 사람이 읽는 줄(번호 · 까닭) */
 export function report(r) {
   const lines = [];
-  for (const c of r.checks) lines.push(`${MARK[c.no]} ${c.name} [${c.mode}] — ${c.ok ? '지나감' : c.could === false && c.reasons.every(x => x.startsWith('보지 못함')) ? '보지 못함' : '막음'}${c.ok ? '' : ''}`, ...c.reasons.slice(0, 12).map(x => `   ${MARK[c.no]} ${x}`), ...(c.reasons.length > 12 ? [`   ${MARK[c.no]} … 그 밖 ${c.reasons.length - 12}가지`] : []));
+  for (const c of r.checks) lines.push(`${MARK[c.no]} ${c.name} [${c.mode}] — ${c.status === 'pass' ? '지나감' : c.status === 'cant' ? '보지 못함' : '막음'}`,
+    ...c.reasons.slice(0, 12).map(x => `   ${MARK[c.no]} ${x}`), ...(c.reasons.length > 12 ? [`   ${MARK[c.no]} … 그 밖 ${c.reasons.length - 12}가지`] : []),
+    ...c.notes.slice(0, 3).map(x => `   ${MARK[c.no]} (적어 둠) ${x}`));
   lines.push(`끝 코드 ${r.code} · ${r.seconds}초 · 화면 층 ${r.render?.ran?.length ? r.render.ran.join(' · ') : '안 돎(' + (r.render?.why ?? '?') + ')'}`);
   return lines;
 }
-/** 올리기 문(deploy_netlify.mjs) — {ok, code, lines} */
-export async function essenceGate({dist, root = ROOT, render = 'auto', pw = null} = {}) {
-  try { const r = await checkDist(dist, {root, render, pw}); return {ok: r.code === 0, code: r.code, lines: report(r), result: r}; }
+/** 올리기 문(deploy_netlify.mjs art_gate 바로 뒤 · 정적) — {ok, code, lines, result} · 못 보면 ok false(막음) */
+export async function essenceGate({dist, root = ROOT, render = false, pw = null, now = Date.now()} = {}) {
+  try { const r = await checkDist(dist, {root, render, pw, now}); return {ok: r.code === 0, code: r.code, lines: report(r), result: r}; }
   catch (e) { return {ok: false, code: 2, lines: ['보지 못함 — ' + String(e?.stack ?? e).slice(0, 400)], result: null}; }
 }
 
 /* ───────────── 명령 ───────────── */
 if (process.argv[1] && path.resolve(process.argv[1]) === SELF) {
   const argv = process.argv.slice(2), arg = (k, d = null) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : d; };
-  if (argv[0] === '--probe') { process.stdout.write(JSON.stringify(await runProbe(path.resolve(argv[1])).catch(e => ({error: String(e?.stack ?? e).slice(0, 400)})))); process.exit(0); }
+  if (argv[0] === '--probe') { const r = await runProbe(path.resolve(argv[1]), {now: Number(arg('--now')) || Date.now()}).catch(e => ({error: String(e?.stack ?? e).slice(0, 400)})); process.stdout.write('\n' + PROBE_MARK + JSON.stringify(r) + '\n', () => process.exit(0)); await new Promise(() => {}); }
   if (argv.includes('--files') || argv.includes('--diff')) {
     let files;
     try { files = argv.includes('--files') ? String(arg('--files', '')).split(',').map(s => s.trim()).filter(Boolean) : diffFiles(arg('--diff')); }
@@ -860,9 +973,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === SELF) {
     if (hit.length) { console.error(`본질 문이 막음 — 지킴 파일 ${hit.length}개를 건드림(진화 가지는 본질 · 잣대 · 문을 못 고침):\n` + hit.map(f => ' · ' + f).join('\n')); process.exit(1); }
     console.log(`지킴 파일 0 · 본 파일 ${files.length}개`); process.exit(0);
   }
-  const dist = arg('--dist');
-  if (!dist) { console.error('쓰는 법: --dist <폴더> [--render|--no-render] [--pw <폴더>] [--json] [--out <파일>] · --files a,b · --diff 기준..끝'); process.exit(2); }
-  const r = await essenceGate({dist, render: argv.includes('--render') ? true : argv.includes('--no-render') ? false : 'auto', pw: arg('--pw')});
+  if (argv.includes('--help')) { console.log('쓰는 법: [--dist <폴더>(기본 site)] [--render] [--pw <폴더>] [--now <ISO>] [--json] [--out <파일>] · --files a,b · --diff 기준..끝'); process.exit(0); }
+  const dist = arg('--dist') ?? path.join(ROOT, 'site'); // 인자 없음 = 이 저장소의 소스 폴더(진화 회차 gh.mjs essenceFull)
+  const nowArg = arg('--now'), now = nowArg ? Date.parse(nowArg) : Date.now();
+  if (!Number.isFinite(now)) { console.error('보지 못함 — --now 를 못 읽음 「' + nowArg + '」'); process.exit(2); }
+  const r = await essenceGate({dist, render: argv.includes('--render') ? true : false, pw: arg('--pw'), now});
   if (arg('--out') && r.result) { await fsp.mkdir(path.dirname(path.resolve(arg('--out'))), {recursive: true}); await fsp.writeFile(path.resolve(arg('--out')), JSON.stringify(r.result, null, 1) + '\n'); }
   if (argv.includes('--json')) console.log(JSON.stringify(r.result ?? {code: r.code, lines: r.lines}, null, 1)); else console.log(r.lines.join('\n'));
   process.exit(r.code);

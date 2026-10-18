@@ -199,7 +199,9 @@ for (const w of [320, 360, 390]) {
       today: document.querySelectorAll('#view .today, #view .today-d, #view .ptoday, #view .ptoday-home').length, surgeCards: [...document.querySelectorAll('#view a.card')].filter(a => /급등/.test(a.textContent)).length,
       al: [...document.querySelectorAll('#view .m4-al')].map(e => ({t: e.textContent, inBand: !!e.closest('a.hm-band')})), top: document.querySelectorAll('#view .m4-top').length,
       band: band ? {href: band.getAttribute('href'), t: band.innerText.replace(/\u00a0/g, ' ')} : null, moreOpen: !!more?.open,
-      dates: (document.querySelector('#view').innerText.replace(/\u00a0/g, ' ').match(/\d{1,2}월 \d{1,2}일/g) || []), // 닫힌 「더 보기」 안 글은 innerText 에 없음
+      dates: ([...document.querySelectorAll('#view > *')].filter(e => !e.matches('section.ess')).map(e => e.innerText).join('\n').replace(/\u00a0/g, ' ').match(/\d{1,2}월 \d{1,2}일/g) || []), // 닫힌 「더 보기」 안 글은 innerText 에 없음 · 본질 세 줄 칸(받은 때)은 따로 셈([5] 8)
+      ess: (() => { const s = document.querySelector('#view > section.ess'), d = s?.querySelector('details'); return s ? {open: !!d?.open, lines: [...s.querySelectorAll('[data-ess]')].map(e => e.textContent), shown: [...s.querySelectorAll('[data-ess]')].map(e => e.checkVisibility()),
+        dates: s.innerText.match(/\d{1,2}월\s\d{1,2}일/g) || [], v: s.querySelector('a.ess-v')?.textContent ?? null} : null; })(), // 본질 세 줄(2026-10-18 16:39 [5] · 일꾼 KC)
       chipHrefs: chips ? [...chips.querySelectorAll('a')].map(a => a.getAttribute('href')) : [], mask: cs ? (cs.maskImage || cs.webkitMaskImage || 'none') : 'none',
       letter: document.querySelectorAll('#view .m4-letter, #view .hpi').length, iWy: at('section.wy'),
       wyTop: wy ? Math.round(wy.getBoundingClientRect().top + scrollY) : null, vh: innerHeight, wyQ: wy?.querySelector('.wy-q')?.textContent ?? '', wyOpts: wy?.querySelectorAll('.wy-opt').length ?? 0, wyFind: !!wy?.querySelector('input.wy-find'),

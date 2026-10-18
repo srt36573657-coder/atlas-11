@@ -169,7 +169,7 @@ export function screenHits(text) {
 }
 
 /* ── 망치는 길 낱말(사장님 2026-10-18(싱가포르) 16:39 「진화가 본질인 명령문」 [2] 2 · 5 ③ · [11] 6 「쓰지 않을 말은 words.js 한 곳」 · 일꾼 KA) ──
-   docs/꼴똘이_본질.md 「망치는 길」 여덟 갈래마다 낱말 목록 하나 — 본질 문(scripts/atlas11/next/essence_check.mjs ③)이 올리기 직전 사이트의 보이는 글
+   본질 파일 docs/<이름>_본질.md(이름 = brand.js NAME) 「망치는 길」 여덟 갈래마다 낱말 목록 하나 — 본질 문(scripts/atlas11/next/essence_check.mjs ③)이 올리기 직전 사이트의 보이는 글
    (next/*.js 글 · next/*.html · 소개 · 편지 · 초대장 쪽 · next/data/*.json 글 · 영어 사전 값)에서 0 인지 봄 · 하나라도 걸리면 새 판을 올리지 않음
    · ko = 한국어(글자 그대로 · 띄어쓰기를 지운 꼴로도 봄) · en = 영어 화면(작은 글자로 · 낱말 경계) · 그림 글자는 ko 에
    · 고른 잣대: 오늘(10월 18일) 사이트 글 약 24,000줄에 돌려 진짜 어긴 곳만 걸리게 — 회사 설명 · 사실 말(「내리 오른 날」 · 「몇 배」 · 「visitors」 · 「too late」)과
@@ -178,7 +178,8 @@ export function screenHits(text) {
    · 기계(진화 회차)는 이 목록을 못 고친다(이 파일은 지킴 파일 — essence_check.mjs PROTECTED) */
 export const RUIN = Object.freeze([
   {key: 'push', name: '사라고 부추기기',
-    ko: ['놓치지 마세요', '놓치면 후회', '서두르세요', '마지막 기회', '지금이 기회', '매수 기회', '매수 타이밍', '강력 매수', '적극 매수', '풀매수', '몰빵', '줍줍', '가즈아', '지금 담으세요', '담아 두세요', '사 두세요', '사 두면 좋', '물 들어올 때'],
+    // 「매수 검토」 = 사려고 살펴볼 곳을 골라 줌(옛 「매수 검토 후보 · 우선순위」) — 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」(규칙 55)
+    ko: ['놓치지 마세요', '놓치면 후회', '서두르세요', '마지막 기회', '지금이 기회', '매수 기회', '매수 타이밍', '매수 검토', '강력 매수', '적극 매수', '풀매수', '몰빵', '줍줍', '가즈아', '지금 담으세요', '담아 두세요', '사 두세요', '사 두면 좋', '물 들어올 때'],
     en: ['buy now', "don't miss out", 'strong buy', 'buying opportunity', 'must-buy', 'act now', 'last chance', 'hurry up', 'get in now', "before it's too late"]},
   {key: 'brag', name: '급등 자랑',
     ko: ['대박', '떡상', '폭등', '불기둥', '수익 인증', '수익인증', '인증샷', '자랑해', '자랑하세요', '자랑하기', '배 먹었', '텐배거', '🚀', '🔥', '💰', '🤑'],
@@ -207,7 +208,8 @@ export const RUIN = Object.freeze([
 export const RUIN_OK = Object.freeze([...RUIN.map(p => p.name),
   '폭죽은 없', '폭죽 없', // [6] 7 「축하 폭죽은 없다」를 밝히는 글
   '자동 가입되지 않', '자동으로 가입되지 않', '자동으로 가입시키지 않', '동의 없이 가입되지 않', '동의 없이 가입시키지 않', '동의 없이 모으지 않', '동의 없이 수집하지 않', '동의 없이 저장하지 않', '몰래 모으지 않', // [11] 7 「받는 사람 동의 없이 가입시키지 마라」를 밝히는 글
-  'never without your consent', 'not without your consent', 'never without consent']);
+  'never without your consent', 'not without your consent', 'never without consent',
+  '예상 수익률 순위 아님', '수익률 순위 아님']); // 순위가 아니라고 밝히는 글(옛 초대장 쪽 「(예상 수익률 순위 아님)」 — 앞의 「매수 검토」는 따로 걸림)
 const RUIN_ESC = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const RUIN_SQ = s => s.replace(/\s+/g, '');
 const RUIN_OK_RE = RUIN_OK.map(w => new RegExp(RUIN_ESC(w), 'gi'));

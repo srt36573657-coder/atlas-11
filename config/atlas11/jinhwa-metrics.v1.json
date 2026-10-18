@@ -44,7 +44,7 @@
   },
   "server": {
     "add": "POST /api/tally {k} — k = stop · stop_rest · promise · promise_yes · visit · share · signup",
-    "read": "GET /api/tally/sum?days=N(1 ~ 62 · 기본 14) — 열쇠 없이 잣대 칸 넷 · 사장님 열쇠면 참고 칸 셋도",
+    "read": "GET /api/tally/sum?days=N(1 ~ 200 · 기본 14) — 열쇠 없이 잣대 칸 넷(days: [{day, stop, stop_rest, promise, promise_yes}] · total) · 사장님 열쇠면 참고 칸 셋도(ref · refTotal)",
     "store": "넷리파이 Blobs atlas11-tally-v1 · m/<서울 날짜> = {stop, stop_rest, promise, promise_yes} · r/<서울 날짜> = {visit, share, signup} · 숫자만",
     "notStored": ["사람 이름", "기기 번호", "쿠키", "인터넷 주소", "화면 주소", "받은 때(초)", "고른 종목 · 답"],
     "notCounted": "자동으로 움직이는 브라우저(navigator.webdriver — 검사 · 봇)는 보내지 않음"
@@ -54,9 +54,12 @@
     "dailyIsNoise": true,
     "minSample": 30,
     "minSampleWhy": "[가정] 우리가 정한 문턱(사장님 말씀의 숫자가 아님) — 몫(rest_share · yes_share)은 밑수(stop · promise)가, 수(stop · promise)는 그 수가 앞 칸 · 뒤 칸 모두 30 이상일 때만 판단한다. 아래면 「모으는 중」으로 적고 맞음 · 틀림을 적지 않는다",
-    "noise": "[가정] 앞 칸과 뒤 칸의 차이가 소음 안이면 판단하지 않는다 — 몫은 두 몫 차이 z(합친 몫 표준 오차), 수는 (뒤 − 앞) ÷ √(앞 + 뒤) · |z| < 1.96 이면 「차이가 소음 안 · 판단 못 함」",
+    "noise": "[가정] 앞 칸과 뒤 칸의 차이가 소음 안이면 판단하지 않는다 — 몫은 두 몫 차이 z(합친 몫 표준 오차), 수는 하루 평균 차이 z(두 칸 길이가 같으면 (뒤 − 앞) ÷ √(앞 + 뒤)) · |z| < 1.96 이면 「차이가 소음 안 · 판단 못 함」",
     "scoreAfterTradingDays": 10,
-    "how": "대안이 들어간 날(applied.at 의 서울 날짜)을 뒤 칸의 첫날로 · 그 앞 10거래일 = 앞 칸 · 뒤 10거래일이 다 지난 뒤 처음 회차가 채점해 applied[].score {at, ok, text} 에 적는다(ok = true 맞음 · false 틀림 · null 판단 못 함 — text 에 까닭)",
+    "maxTradingDays": 60,
+    "maxWhy": "[가정] 진화 회차(scripts/atlas11/jinhwa/lib.mjs SCORE_MAX_DAYS)와 같은 값 — 10거래일이 지나도 표본이 30 아래면 칸을 늘려 모으고, 60거래일이 되어도 모자라면 「판단 못 함」으로 적는다([10] 5 「표본이 작으면 판단하지 말고 모아라」)",
+    "how": "대안이 들어간 날(applied.at 의 서울 날짜) 다음 날부터 = 뒤 칸 · 그 앞 같은 수의 거래일 = 앞 칸 · 뒤 칸이 10거래일을 채운 뒤 처음 회차가 채점해 applied[].score {at, ok, text} 에 적는다(at = null 이면 아직 · ok = true 맞음 · false 틀림 · null 판단 못 함 — text 에 까닭)",
+    "code": "lib/atlas11/tally.mjs judge({rule: {num, den?, dir}, before, after}) — 이 표본 문턱과 소음 셈을 한 곳에서 함(합계 칸 days 꼴 그대로 받음)",
     "fact": "사실은 표본 문턱 없음 — 뒤 칸 동안 facts.mismatch 가 한 번이라도 0 이 아니면 틀림"
   }
 }

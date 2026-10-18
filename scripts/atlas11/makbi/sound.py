@@ -1,7 +1,10 @@
-# 보드리 소개 영상 소리(1분) — 배경 음악(120박 · 한 마디 2초) + 효과음 · 화면 때(video.mjs)와 같은 때에 맞춤(곧은 시계 하나)
-#   모두 계산으로 만듦(녹음 · 남의 음악 · 목소리 없음) · 60초 · 44.1kHz 두 귀 · 끝 −1dB 아래로 맞춤 · 옛 35초 판은 git d4b4bed3
-#   HP_NEWS=1 → 7단 「뉴스 · 공시」 소리(신문 펄럭 · 도장) · HP_FR = 친구 수(셈 소리 수) · HP_NM = 끝 이름 글자 수(2026-10-17 「아틀란스에서 보드리로」 = 3 · 쾅 소리 수)
-import os, sys, wave
+# 소개 영상 「(이름)의 고민」 소리(60초) — 사장님 2026-10-18(싱가포르) 16:39 「진화가 본질인 명령문」 [4] 4 · 5
+#   [4] 4 「글상자와 움직임과 소리를 같은 순간에 맞춰라. 독백 한 줄이 나오는 동안 앵무새 마디 소리를 그 줄 길이만큼 낸다.」
+#   [4] 5 「사람 목소리는 넣지 마라. 앵무새 마디 소리, 효과음, 배경 음악으로 한다.」
+#   때는 모두 video.mjs 가 만든 때 표(cues.json) 하나에서 읽음 — 독백 글자 하나 = 앵무새 마디 하나(같은 때 · 같은 길이) · 효과음 = 때 표의 사건 · 음악 = 장면 때
+#   모두 계산으로 만듦(녹음 · 남의 음악 · 목소리 없음) · 60초 · 44.1kHz 두 귀 · 끝을 부드럽게 눌러 −1dB 아래
+#   python3 sound.py out.wav cues.json  (옛 1분 판 소리는 git f8cfcb1ed 의 이 파일)
+import json, sys, wave
 import numpy as np
 from scipy.signal import butter, lfilter
 
@@ -10,10 +13,24 @@ DUR = 60.0
 N = int(SR * DUR)
 L = np.zeros(N)
 Rr = np.zeros(N)
-rng = np.random.default_rng(20261016)
-NEWS = os.environ.get('HP_NEWS') == '1'
-FR = int(os.environ.get('HP_FR', '3'))
-NM = int(os.environ.get('HP_NM', '3'))
+rng = np.random.default_rng(20261018)
+OUT = sys.argv[1] if len(sys.argv) > 1 else 'sound.wav'
+CU = json.load(open(sys.argv[2]))
+EV = CU['ev']
+SC = {s['n']: (s['a'], s['b']) for s in CU['scenes']}
+if len(SC) != 10 or SC[10][1] != 60:
+    sys.exit('멈춤: 때 표 장면이 열 · 60초가 아님')
+
+
+def ev(k, i=None):
+    for e in EV:
+        if e['k'] == k and (i is None or e.get('i') == i):
+            return e['t']
+    sys.exit('멈춤: 때 표에 사건 ' + k + ' 없음')
+
+
+def evs(k):
+    return [e['t'] for e in EV if e['k'] == k]
 
 
 def mf(m):
@@ -25,8 +42,8 @@ def tt(d):
 
 
 def add(sig, t0, gain=1.0, pan=0.0):
-    i = int(t0 * SR)
-    if i >= N:
+    i = int(round(t0 * SR))
+    if i >= N or i < 0:
         return
     sig = sig[: N - i]
     gl, gr = gain * np.sqrt((1 - pan) / 2), gain * np.sqrt((1 + pan) / 2)
@@ -49,46 +66,61 @@ def bp(x, f1, f2, o=2):
     return lfilter(b, a, x)
 
 
-def env(n, a=0.005, r=0.2, sus=None):
-    t = np.arange(n) / SR
-    e = np.minimum(1, t / max(a, 1e-4))
-    if sus is None:
-        e *= np.exp(-np.maximum(0, t - a) / max(r, 1e-4))
-    else:
-        rel = np.clip((t - (n / SR - r)) / r, 0, 1)
-        e *= (1 - rel)
-    return e
-
-
 def saw(f, t, det=0.0):
     ph = (f * (1 + det)) * t
     return 2 * (ph - np.floor(ph + 0.5))
 
 
-def sq(f, t):
-    return np.sign(np.sin(2 * np.pi * f * t))
-
-
-def sweep(f0, f1, d, kind='sin'):
+def sweep(f0, f1, d, vib=0.0):
     t = tt(d)
-    f = f0 * (f1 / f0) ** (t / d)
-    ph = 2 * np.pi * np.cumsum(f) / SR
-    return np.sin(ph) if kind == 'sin' else np.sign(np.sin(ph))
+    f = f0 * (f1 / f0) ** (t / d) * (1 + vib * np.sin(2 * np.pi * 7 * t))
+    return np.sin(2 * np.pi * np.cumsum(f) / SR)
 
 
-# ── 효과음 조각 ──
+# ── 악기 · 효과음 조각(계산) ──
+def pluck(f, d=1.2, br=1.0, decay=1.0):  # 뜯는 줄(하프시코드 · 류트 비슷)
+    n = int(d * SR); t = np.arange(n) / SR
+    s = np.zeros(n)
+    for h in range(1, 10):
+        if f * h > 9000:
+            break
+        s += (1 / h ** 1.1) * np.sin(2 * np.pi * f * h * t + h) * np.exp(-t * (1.0 + 1.5 * h / br) / decay)
+    s += lp(rng.standard_normal(n), 3500) * np.exp(-t / 0.004) * 0.25
+    return s * np.minimum(1, t / 0.002) * 0.6
+
+
+def pizz(f):
+    return pluck(f, 0.45, 0.8, 0.28)
+
+
+def pad(ms, d, fc=1600, trem=0.0, att=0.25):
+    t = tt(d); s = np.zeros_like(t)
+    for m in ms:
+        for det in (-0.006, 0.0, 0.007):
+            s += saw(mf(m), t, det)
+    s = lp(s, fc) / (3 * len(ms))
+    e = np.minimum(1, t / att) * np.minimum(1, (d - t) / 0.3 + 1e-4)
+    if trem:
+        e = e * (0.7 + 0.3 * np.sin(2 * np.pi * trem * t))
+    return s * e
+
+
+def timp(f=73.4, d=0.9):
+    n = int(d * SR); t = np.arange(n) / SR
+    fr = f * (1 + 0.25 * np.exp(-t / 0.03))
+    s = np.sin(2 * np.pi * np.cumsum(fr) / SR) * np.exp(-t / 0.45) + 0.5 * np.sin(2 * np.pi * np.cumsum(fr * 1.5) / SR) * np.exp(-t / 0.25)
+    return s + lp(rng.standard_normal(n), 600) * np.exp(-t / 0.05) * 0.5
+
+
 def boom(d=1.4):
     n = int(d * SR); t = np.arange(n) / SR
     f = 34 + 80 * np.exp(-t / 0.12)
-    s = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.5)
-    s += lp(rng.standard_normal(n), 900) * np.exp(-t / 0.18) * 0.6
-    return s
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.5) + lp(rng.standard_normal(n), 900) * np.exp(-t / 0.18) * 0.6
 
 
 def whoosh(d=0.6, f0=300, f1=3000, up=True):
     n = int(d * SR); t = np.arange(n) / SR
-    x = rng.standard_normal(n)
-    u = np.arange(n) / n
+    x = rng.standard_normal(n); u = np.arange(n) / n
     fc = f0 * (f1 / f0) ** (u if up else 1 - u)
     al = 1 - np.exp(-2 * np.pi * fc / SR)
     y = np.empty(n); z = 0.0
@@ -98,10 +130,9 @@ def whoosh(d=0.6, f0=300, f1=3000, up=True):
     return y / (np.max(np.abs(y)) + 1e-9) * np.sin(np.pi * np.minimum(1, t / d)) ** 1.5
 
 
-def blip(f, d=0.08, kind='sin'):
+def swish(d=0.6):  # 막 천 스치는 소리
     n = int(d * SR); t = np.arange(n) / SR
-    o = np.sin(2 * np.pi * f * t) if kind == 'sin' else lp(sq(f, t), 4000)
-    return o * env(n, 0.002, d / 3)
+    return bp(rng.standard_normal(n), 400, 5000) * np.sin(np.pi * t / d) ** 2 * (0.7 + 0.3 * np.sin(2 * np.pi * 23 * t))
 
 
 def chime(fs, d=1.2):
@@ -112,31 +143,66 @@ def chime(fs, d=1.2):
     return s / len(fs)
 
 
-def chirp():  # 짹 — 새소리
-    out = []
-    for f0, f1, d in ((2600, 4200, 0.05), (4200, 2800, 0.06), (3000, 4600, 0.05)):
-        out.append(sweep(f0, f1, d) * np.hanning(int(d * SR)))
-        out.append(np.zeros(int(0.015 * SR)))
-    return np.concatenate(out)
+def puff():
+    n = int(.22 * SR); t = np.arange(n) / SR
+    return lp(rng.standard_normal(n), 1400) * np.exp(-t / .05)
 
 
-def riser(d, f0=200, f1=1800):
+def thump(f=110):
+    n = int(.3 * SR); t = np.arange(n) / SR
+    return np.sin(2 * np.pi * f * t) * np.exp(-t / .07) + lp(rng.standard_normal(n), 500) * np.exp(-t / .02) * .4
+
+
+def slide_whistle(f0, f1, d):
+    s = sweep(f0, f1, d, vib=0.012)
+    t = tt(d)
+    return s * np.minimum(1, t / 0.03) * np.minimum(1, (d - t) / 0.05 + 1e-4)
+
+
+def boing():  # 용수철(꼬리로 매달림)
+    d = 0.8; t = tt(d)
+    f = 240 + 170 * np.sin(2 * np.pi * 11 * t) * np.exp(-t / 0.35) + 60 * t
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.4)
+
+
+def creak(d=0.55):  # 가지 삐걱
     n = int(d * SR); t = np.arange(n) / SR
-    tone = sweep(f0, f1, d) * 0.4
-    nz = hp(rng.standard_normal(n), 2000) * (t / d) ** 2 * 0.6
-    return (tone + nz) * (t / d) ** 1.5
+    imp = (np.sin(2 * np.pi * (38 + 20 * t / d) * t) > 0.92).astype(float)
+    return bp(imp + 0.05 * rng.standard_normal(n), 300, 1800) * np.sin(np.pi * t / d)
 
 
-def rumble(d):
+def wood(f=1900):
+    n = int(.08 * SR); t = np.arange(n) / SR
+    return (np.sin(2 * np.pi * f * t) + .5 * np.sin(2 * np.pi * f * 1.6 * t)) * np.exp(-t / .018)
+
+
+def flip(d=0.22):  # 종이 넘김
     n = int(d * SR); t = np.arange(n) / SR
-    return lp(rng.standard_normal(n), 300) * (0.6 + 0.4 * np.sin(2 * np.pi * 9 * t))
+    return bp(rng.standard_normal(n), 900, 6000) * np.sin(np.pi * t / d) ** 2 * (1 + np.sin(2 * np.pi * 14 * t)) / 2
 
 
-def clank():  # 철컥
-    n = int(.35 * SR); t = np.arange(n) / SR
-    s = sum(np.sin(2 * np.pi * f * t) * np.exp(-t / d) for f, d in ((1850, .09), (2960, .06), (4410, .04), (620, .12)))
-    s += hp(rng.standard_normal(n), 3000) * np.exp(-t / .02) * 1.2
-    return s / 3
+def rustle(d=0.3):
+    n = int(d * SR); t = np.arange(n) / SR
+    return bp(rng.standard_normal(n), 2500, 9000) * (0.5 + 0.5 * np.abs(np.sin(2 * np.pi * 37 * t))) * np.hanning(n)
+
+
+def scratch(d=0.12):  # 깃펜 긁기
+    n = int(d * SR); t = np.arange(n) / SR
+    return bp(rng.standard_normal(n), 2500, 7000) * (0.6 + 0.4 * rng.random(n) ** 3) * np.sin(np.pi * t / d) ** .5 * .5
+
+
+def flutter(d, rate=18.0):  # 날갯짓
+    n = int(d * SR); t = np.arange(n) / SR
+    return bp(rng.standard_normal(n), 250, 2600) * (0.5 + 0.5 * np.sin(2 * np.pi * rate * t)) ** 2 * np.sin(np.pi * t / d)
+
+
+def chirp(f0=2600, f1=4200, d=0.06):  # 작은 새 짹
+    return sweep(f0, f1, d) * np.hanning(int(d * SR))
+
+
+def snare():
+    n = int(0.2 * SR); t = np.arange(n) / SR
+    return (hp(rng.standard_normal(n), 1200) * 0.6 + np.sin(2 * np.pi * 190 * t) * 0.4) * np.exp(-t / 0.06)
 
 
 def syl(f0, f1, f2, d, shift=0):  # 앵무새 소리 한 마디(사람 목소리 아님)
@@ -145,241 +211,173 @@ def syl(f0, f1, f2, d, shift=0):  # 앵무새 소리 한 마디(사람 목소리
     ph = 2 * np.pi * np.cumsum(f) / SR
     x = np.sin(ph) + .45 * np.sin(2 * ph) + .25 * np.sin(3 * ph)
     x *= 1 + .35 * np.sin(2 * np.pi * 38 * t)
-    x += .25 * bp(rng.standard_normal(n), 1500, 5000)
+    x += .22 * bp(rng.standard_normal(n), 1500, 5000)
     return x * np.hanning(n)
 
 
-def squawk(n=2, shift=0):  # 「보-드-리!」 = 세 마디 · 따라 하기 = 두 마디
-    shapes = [(1300, 1700, 1500, .12), (1700, 2200, 1900, .12), (2000, 2700, 1800, .18), (2200, 2900, 2000, .2)]
-    out = []
-    for i in range(n):
-        out.append(syl(*shapes[min(i, 3)], shift=shift + i * 1.5)); out.append(np.zeros(int(.025 * SR)))
-    return np.concatenate(out)
+# ── 앵무새 마디 — 때 표의 글자마다 하나(같은 때 · 같은 길이) ──
+nsyl = 0
+for li, ln in enumerate(CU['lines']):
+    who = ln['who']
+    for s in ln['syl']:
+        t0, d, j, end = s['t'], max(0.06, s['d']), s['j'], s['end']
+        if who == 'flock':  # 새 떼 외침 = 작은 새 여럿이 짹(앵무새 아님)
+            for k in range(3):
+                f0 = 2400 + 900 * rng.random(); add(chirp(f0, f0 * (1.35 + .3 * rng.random()), 0.05 + 0.03 * rng.random()), t0 + 0.02 * k, 0.16, rng.uniform(-.8, .8))
+            continue
+        base = [1250, 1420, 1330, 1520][(j * 3 + li) % 4]
+        if who == 'card':
+            base *= 1.08
+        if who == 'name':
+            base = [1500, 1750, 2050][j % 3]
+        f0, f1, f2 = base, base * 1.18, base * 1.02
+        if end == '?':
+            f0, f1, f2 = base * .95, base * 1.25, base * 1.55
+        elif end == '!':
+            f0, f1, f2 = base * 1.1, base * 1.45, base * 1.3
+        elif end in '.…':
+            f0, f1, f2 = base * 1.05, base * .98, base * .78
+        g = 0.34 if who != 'name' else 0.42
+        add(syl(f0, f1, f2, d * 0.95), t0, g, -0.1 if who == 'card' else 0.08)
+        nsyl += 1
+        if ln.get('write'):
+            add(scratch(min(0.14, d)), t0 + 0.01, 0.16, -0.3)
+
+# ── 배경 음악 · 효과음 — 장면 때 ──
+D_MIN, G_MIN, A_MAJ, F_MAJ, C_MAJ, B_FLAT = [50, 53, 57], [43, 50, 55, 58], [45, 52, 57, 61], [41, 53, 57, 60], [48, 52, 55, 60], [46, 50, 53, 58]
 
 
-def rustle(d=0.14):  # 종이 사각
-    n = int(d * SR); t = np.arange(n) / SR
-    return bp(rng.standard_normal(n), 2500, 9000) * (0.5 + 0.5 * np.abs(np.sin(2 * np.pi * 37 * t))) * np.hanning(n)
+def arp(ms, a, b, step=0.25, g=0.10, oct_=12, pan=0.35):
+    j = 0; t = a
+    seq = [ms[0], ms[1 % len(ms)], ms[2 % len(ms)], ms[1 % len(ms)]]
+    while t < b - 0.05:
+        add(pluck(mf(seq[j % 4] + oct_), 0.9, 1.1, 0.7), t, g, pan if j % 2 else -pan)
+        t += step; j += 1
 
 
-def flip(d=0.28):  # 종이 넘김
-    n = int(d * SR); t = np.arange(n) / SR
-    return bp(rng.standard_normal(n), 900, 6000) * np.sin(np.pi * t / d) ** 2 * (1 + np.sin(2 * np.pi * 14 * t)) / 2
-
-
-def stamp():  # 도장 쾅
-    n = int(.4 * SR); t = np.arange(n) / SR
-    return (np.sin(2 * np.pi * 85 * t) * np.exp(-t / .08) + lp(rng.standard_normal(n), 2500) * np.exp(-t / .025) * .8)
-
-
-def scratch(d=0.6):  # 펜 긋기
-    n = int(d * SR); t = np.arange(n) / SR
-    return bp(rng.standard_normal(n), 2500, 7000) * (0.6 + 0.4 * rng.random(n) ** 3) * np.sin(np.pi * t / d) ** .5 * .5
-
-
-def puff():  # 발 불꽃 퍽
-    n = int(.22 * SR); t = np.arange(n) / SR
-    return lp(rng.standard_normal(n), 1400) * np.exp(-t / .05)
-
-
-def kick():
-    n = int(0.35 * SR); t = np.arange(n) / SR
-    f = 52 + 120 * np.exp(-t / 0.045)
-    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.16)
-
-
-def snare():
-    n = int(0.25 * SR); t = np.arange(n) / SR
-    return (hp(rng.standard_normal(n), 1200) * 0.6 + np.sin(2 * np.pi * 190 * t) * 0.5) * np.exp(-t / 0.07)
-
-
-def hat():
-    n = int(0.06 * SR); t = np.arange(n) / SR
-    return hp(rng.standard_normal(n), 7000) * np.exp(-t / 0.018)
-
-
-# ── 배경 음악 — Dm · B♭ · F · C 를 두 초마다(옛 판과 같은 줄기) · 끝 화음 F ──
-PROG = [[50, 53, 57], [46, 50, 53], [53, 57, 60], [48, 52, 55]]
-
-
-def dyn(t):  # 장면마다 세기
-    if t < 1.6: return 0.25 + 0.35 * t / 1.6
-    if 12 <= t < 16: return 0.55
-    if 16 <= t < 28.5: return 1.1
-    if 38 <= t < 41: return 0.45
-    return 0.9
-
-
-def section(t):  # 북 · 낮은 소리 · 반짝이가 있는 곳
-    if t < 3.0 or t >= 54.0: return 'none'
-    if 12 <= t < 16: return 'calm'
-    if 38 <= t < 41: return 'breath'
-    return 'full'
-
-
-bar = 0.0
-k = 0
-while bar < 54.0:
-    a, b = bar, min(bar + 2.0, 54.0)
-    notes = PROG[k % 4]
-    d = b - a; t = tt(d)
-    pad = np.zeros_like(t)
-    for m in notes:
-        for det in (-0.006, 0.0, 0.007):
-            pad += saw(mf(m + 12), t, det)
-    pad = lp(pad, 1700 if a < 16 else 2300) / (3 * len(notes))
-    pe = np.minimum(1, t / 0.25) * np.minimum(1, (d - t) / 0.12 + 0.0001)
-    g = 0.15 * dyn(a + 0.1)
-    add(pad * pe, a, g, -0.25); add(pad * pe, a + 0.012, g, 0.25)
-    sec = section(a + 0.01)
-    root = mf(notes[0] - 12)
-    if sec in ('full', 'calm'):  # 낮은 소리(8분 박)
-        step = 0.25 if sec == 'full' else 0.5
-        for j in range(int(round(d / step))):
-            st = a + j * step; n = int(0.22 * SR); tb = np.arange(n) / SR
-            add(lp(saw(root, tb) * 0.7 + sq(root, tb) * 0.3, 600) * env(n, 0.003, 0.09), st, 0.27 * dyn(st), 0)
-    if (16 <= a < 28.5) or (41 <= a < 54):  # 반짝 아르페지오(16분)
-        seq = [notes[0] + 24, notes[1] + 24, notes[2] + 24, notes[1] + 24]
-        for j in range(int(round(d / 0.125))):
-            st = a + j * 0.125; n = int(0.11 * SR); tb = np.arange(n) / SR
-            add(lp(sq(mf(seq[j % 4]), tb), 3500) * env(n, 0.002, 0.045), st, 0.055, 0.45 if j % 2 else -0.45)
-    if 12 <= a < 16:  # 오르골(8분 · 높게)
-        seq = [notes[0] + 36, notes[2] + 24, notes[1] + 36, notes[2] + 24]
-        for j in range(int(round(d / 0.25))):
-            st = a + j * 0.25; n = int(0.5 * SR); tb = np.arange(n) / SR
-            add((np.sin(2 * np.pi * mf(seq[j % 4]) * tb) + .3 * np.sin(4 * np.pi * mf(seq[j % 4]) * tb)) * np.exp(-tb / .18), st, 0.05, -0.3 if j % 2 else 0.3)
-    bar = round(bar + 2.0, 6); k += 1
-
-K, S_, HH = kick(), snare(), hat()
-bt = 3.0
-while bt < 54.0:
-    sec = section(bt); rel = bt - 3.0
-    on_bar = abs(rel % 2.0) < 1e-6
-    if sec == 'full' or (sec == 'calm' and on_bar):
-        add(K, bt, 0.55 if sec == 'full' else 0.4)
-    if sec == 'full' and bt >= 6.0 and abs((rel % 1.0) - 0.5) < 1e-6:
-        add(S_, bt, 0.3)
-    if sec != 'none':
-        for h8 in (0, 0.25):
-            add(HH, bt + h8, 0.065 if sec != 'breath' else 0.05, 0.3)
-    bt = round(bt + 0.5, 6)
-for j in range(10):  # 계단 앞 작은북 몰아치기
-    add(S_, 31.0 + j * 0.05, 0.1 + 0.025 * j)
-
-# ── 효과음 — 장면 때 ──
-# 1 별똥별 · 쾅
-add(riser(0.9, 300, 2400), 0.05, 0.16)
-add(whoosh(0.7, 600, 5000), 0.12, 0.28, 0.7); add(whoosh(0.5, 4000, 900, up=False), 0.55, 0.22, -0.7)
-add(sweep(500, 2600, 0.55) * env(int(0.55 * SR), 0.05, 0.1, sus=True), 0.9, 0.16)
-add(whoosh(0.55, 300, 4500), 0.92, 0.3)
-add(boom(1.6), 1.45, 1.0); add(rumble(0.9), 1.45, 0.4)
-add(hp(rng.standard_normal(int(1.2 * SR)), 4500) * np.exp(-np.arange(int(1.2 * SR)) / SR / 0.4), 1.45, 0.12)
-for j in range(6): add(blip(2093 + 120 * j, 0.05, 'sq'), 1.75 + j * 0.17, 0.06, -0.5 + 0.2 * j)
-# 2 반짝 점검 · 「보드리!」 셋
-add(hp(rng.standard_normal(int(.08 * SR)), 3000) * np.exp(-np.arange(int(.08 * SR)) / SR / .02), 3.0, 0.3)
-add(sweep(600, 1500, 0.3) * env(int(0.3 * SR), 0.01, 0.12), 3.02, 0.12)
-add(chime([2637, 3136], 0.6), 3.2, 0.12); add(puff(), 3.4, 0.25)
-for i, a5 in enumerate((3.5, 4.0, 4.5)):
-    add(blip(988 + 200 * i, 0.08), a5, 0.1)
-    add(squawk(3, i * 2), a5 + 0.02, 0.34, (-0.4, 0.4, 0.0)[i])
-# 3 따라쟁이 · 「기록 없음」
-for j in range(3): add(blip(1800 + 200 * j, 0.05, 'sq'), 6.15 + j * 0.06, 0.07, -0.3)
-add(squawk(2, 0), 6.88, 0.3, 0.3); add(squawk(2, 1), 7.3, 0.26, 0.3)
-add(stamp(), 8.1, 0.55); add(blip(1760, 0.06, 'sq'), 8.25, 0.08); add(blip(2093, 0.06, 'sq'), 8.33, 0.08)
-# 4 지난 한 달 — 선 · 「오늘」에 딩 · 붓
-for j in range(2): add(blip(1600 + 300 * j, 0.05, 'sq'), 9.0 + j * 0.07, 0.07, 0.4)
-add(chirp(), 9.62, 0.24, -0.2)
-nn = int(1.2 * SR); tl = np.arange(nn) / SR
-add(np.sin(2 * np.pi * np.cumsum(420 + 600 * tl / 1.2 + 25 * np.sin(2 * np.pi * 7 * tl)) / SR) * env(nn, 0.05, 0.1, sus=True), 9.8, 0.06)
-add(chime([1568, 2349], 1.0), 11.0, 0.22)
-add(whoosh(0.8, 3500, 300, up=False), 11.58, 0.3)
-# 5 편지
-add(whoosh(0.5, 500, 3000), 12.05, 0.18, 0.5)
-add(chime([mf(81), mf(88)], 0.9), 12.6, 0.22)
-for j in range(3): add(rustle(), 12.72 + j * 0.13, 0.22, -0.2 + 0.2 * j)
-for i in range(10): add(blip(mf(72 + [0, 2, 4, 5, 7, 9, 11, 12, 14, 16][i]), 0.12), 13.2 + i * 0.25, 0.1, -0.4 + 0.08 * i)
-add(squawk(3, 3), 15.02, 0.28, 0.2)
-# 6 다섯 탭
-add(whoosh(0.5, 300, 2500), 16.0, 0.22)
-add(scratch(0.9), 16.4, 0.12, -0.3); add(scratch(0.9), 16.6, 0.1, 0.3)
-for sw in (18.5, 21.0, 23.5, 26.0):
-    add(puff(), sw - 0.45, 0.2); add(blip(1318, 0.06), sw - 0.02, 0.14)
-add(whoosh(0.4, 600, 3000), 18.6, 0.15)
-for j in range(5): add(blip(2400, 0.03, 'sq'), 19.6 + j * 0.15, 0.08)
-nr = int(1.15 * SR); tr = np.arange(nr) / SR
-add(lp(sq(28 + 16 * tr, tr), 3000) * 0.3 * env(nr, 0.01, 0.1, sus=True), 21.05, 0.12)
-for j in range(3): add(clank(), 21.6 + j * 0.3, 0.3, -0.5 + 0.5 * j)
-for j in range(12): add(blip(2600 - j * 120, 0.04), 22.3 + j * 0.06, 0.06)
-add(chime([2093, 2637], 0.6), 23.0, 0.14)
-for j in range(5): add(blip(1047 + 150 * j, 0.06, 'sq'), 23.6 + j * 0.2, 0.07, -0.5 + 0.25 * j)
-add(sweep(400, 1600, 1.2) * env(int(1.2 * SR), 0.05, 0.2, sus=True), 24.0, 0.07)
-for j in range(4): add(chime([mf(84 + j * 2)], 0.5), 24.35 + j * 0.25, 0.14)
-for j in range(3):
-    add(flip(), 26.1 + j * 0.35, 0.2, -0.3 + 0.3 * j); add(blip(1760, 0.05), 26.5 + j * 0.35, 0.1)
-# 7 회사 모두 — 빨라지는 틱 · 딩동
-tk = 28.6
-while tk < 30.45:
-    add(blip(3000, 0.02, 'sq'), tk, 0.05); tk += max(0.035, 0.16 * (1 - (tk - 28.6) / 1.9))
-add(whoosh(0.4, 3000, 600, up=False), 28.5, 0.15)
-add(chime([mf(76), mf(81), mf(84)], 1.4), 30.5, 0.3); add(chime([mf(72), mf(76), mf(81)], 1.2), 30.75, 0.2)
-# 8 일곱 계단
-add(whoosh(0.4, 400, 2500), 31.5, 0.18)
-steps = [62, 64, 66, 67, 69, 71, 74]
-for j in range(7):
-    add(blip(mf(steps[j] + 12), 0.16), 31.9 + j * 0.45, 0.17, -0.6 + 0.2 * j); add(puff(), 31.9 + j * 0.45 - 0.42, 0.14)
-add(chime([1568, 1976, 2349, 3136], 1.2), 34.6, 0.28)
-for j in range(7): add(blip(1200 + 90 * j, 0.04), 35.1 + j * 0.18, 0.06)
-if NEWS:
-    add(flip(0.4), 36.4, 0.3, 0.5); add(stamp(), 37.0, 0.5); add(chirp(), 37.4, 0.2)
-else:
-    add(chime([mf(79), mf(83), mf(86)], 1.0), 36.6, 0.2); add(chirp(), 36.7, 0.22, 0.3)
-# 9 영어로도
-add(whoosh(0.45, 500, 3500), 38.1, 0.2); add(sweep(700, 1500, 0.3) * env(int(0.3 * SR), 0.01, 0.1), 38.9, 0.12)
-for j in range(2): add(blip(1500 + 300 * j, 0.06, 'sq'), 39.4 + j * 0.08, 0.08, -0.4)
-add(squawk(2, 4), 40.02, 0.3, 0.4)
-# 10 친구 셋 — 벌써 끝?
-add(whoosh(0.8, 3500, 300, up=False), 40.58, 0.3)
-for i in range(FR): add(blip(mf(72 + [0, 4, 7, 12, 16][min(i, 4)]), 0.14), 41.5 + i * 0.6, 0.2, -0.4 + 0.4 * i)
-add(sweep(400, 1300, 0.22) * env(int(0.22 * SR), 0.005, 0.07), 43.1, 0.22)
-add(chime([mf(74), mf(78), mf(81), mf(86)], 1.3), 43.35, 0.3)
-add(hp(rng.standard_normal(int(1.2 * SR)), 5000) * np.exp(-np.arange(int(1.2 * SR)) / SR / 0.45), 43.35, 0.1)
-# 11 상품권 · 커피 · 네 거
-add(riser(0.45, 800, 3000), 44.45, 0.15)
-add(chime([2093, 2637, 3136], 1.2), 44.85, 0.28); add(blip(4186, 0.25), 45.1, 0.07)
-add(whoosh(0.35, 600, 2000), 46.25, 0.12, 0.5)
-for j in range(6): add(blip(880 if j % 2 == 0 else 660, 0.12, 'sq'), 46.6 + j * 0.25, 0.08)
-add(sweep(300, 1000, 0.2) * env(int(0.2 * SR), 0.005, 0.07), 46.68, 0.18)
-add(whoosh(0.5, 300, 2500), 48.25, 0.2)
-add(chime([mf(69), mf(74), mf(78)], 1.0), 48.4, 0.24)
-# 12 받는 법
-for j in range(3): add(chime([mf(81 + j * 2), mf(86 + j * 2)], 0.5), 50.0 + j * 0.7, 0.2)
-add(chime([1568, 2093], 0.8), 52.0, 0.18)
-# 13 「보 · 드 · 리」 — 글자마다 쾅(video.mjs 와 같은 셈: 첫 글자 54.8초 · 끝 글자 56.15초 = 끝 화음)
-add(riser(0.6, 200, 2500), 54.0, 0.35); add(rumble(0.6), 54.0, 0.35)
-add(boom(1.4), 54.58, 0.8)
-for i in range(NM):
-    t0 = 54.8 + i * (1.35 / (NM - 1) if NM > 1 else 0)
-    add(K, t0, 0.7); add(S_, t0, 0.35); add(boom(0.5) * 0.6, t0, 0.35)
-    add(syl(1500 + i * 150, 2100 + i * 200, 1800 + i * 150, 0.2, shift=i), t0 + 0.01, 0.3, -0.3 + 0.6 * i / max(1, NM - 1))
-add(hp(rng.standard_normal(int(2.5 * SR)), 4500) * np.exp(-np.arange(int(2.5 * SR)) / SR / 0.9), 56.15, 0.14)
-nf = int(3.85 * SR); tf = np.arange(nf) / SR
+# ① 막 열림 · 제목 쾅 · 깃 · 날개를 가슴에
+ACT, ROLL, CHEST = evs('act'), evs('roll'), evs('chest')
+if len(ACT) != 3 or len(ROLL) != 2 or len(CHEST) != 2:
+    sys.exit('멈춤: 때 표 막 · 북 · 가슴 사건 수가 다름')
+for k in range(32):
+    add(timp(73.4, 0.3), ROLL[0] + k * 0.05, 0.05 + 0.25 * (k / 32) ** 2)
+add(swish(1.6), ev('curtain'), 0.32)
+h = ev('hit')
+add(timp(73.4, 1.4), h, 0.7); add(boom(1.2), h, 0.35); add(pad([38, 50, 53, 57], 3.6, 1400, att=0.02), h, 0.22)
+for m in (50, 53, 57, 62):
+    add(pluck(mf(m), 1.6), h + 0.01, 0.12)
+arp(D_MIN, 2.0, SC[1][1], 0.25, 0.07)
+add(puff(), ev('ruff'), 0.3); add(chime([mf(86), mf(93)], 0.5), ev('ruff') + 0.02, 0.08); add(thump(130), CHEST[0], 0.3)
+# ② 날 것이냐 — 느린 류트 · 날개 펄럭 · 발끝 들썩
+a2, b2 = SC[2]
+for k, ch in enumerate([D_MIN, G_MIN, A_MAJ, D_MIN]):
+    s0 = a2 + 2 * k
+    add(pad([m + 12 for m in ch[-3:]], 2.0, 1300), s0, 0.07)
+    arp(ch, s0, s0 + 2.0, 0.5, 0.09, 12)
+add(flutter(0.35, 22), ev('wing'), 0.25); add(flutter(0.3, 22), ev('wing2'), 0.2); add(thump(120), CHEST[1], 0.3)
+for i, tp in enumerate([x for x in evs('tip') if x < SC[3][0]]):
+    add(pizz(mf(81 + 3 * i)), tp, 0.22); add(pizz(mf(86 + 3 * i)), tp + 0.12, 0.14)
+# ③ 새 떼 · 바람 · 독백(떨림 현)
+a3, b3 = SC[3]
+add(swish(0.6), ACT[0] - 0.3, 0.3); add(timp(73.4, 0.6), ACT[0], 0.3)
+fu = ev('flock_up')
+for k in range(9):
+    add(flutter(1.4, 16 + k), fu + 0.12 * k, 0.12, -0.8 + 0.2 * k)
+add(whoosh(0.9, 300, 4500), ev('gust'), 0.4); add(whoosh(0.7, 4000, 600, up=False), ev('gust') + 0.5, 0.2)
+t = a3
+while t < 16.3:
+    add(pizz(mf(50 if int((t - a3) * 4) % 4 else 62)), t, 0.16, -0.2); t += 0.125
+for k, ch in enumerate([D_MIN, B_FLAT, G_MIN, A_MAJ]):
+    s0 = 16.3 + 1.4 * k
+    add(pad([m + 12 for m in ch[-3:]], 1.45, 1500, trem=11), s0, 0.09)
+    add(pizz(mf(ch[0])), s0, 0.2)
+for tp in [x for x in evs('tip') if a3 <= x < b3]:
+    add(pizz(mf(86)), tp, 0.2)
+# ④ 내밀기(오르는 뜯음) · 미끄러짐(미끄럼 피리) · 꼬리 매달림(용수철) · 삐걱
+a4, b4 = SC[4]
+for k in range(12):
+    add(pizz(mf(62 + k)), a4 + 0.15 + k * 0.235, 0.1 + 0.012 * k)
+for x in evs('lean'):
+    add(creak(0.45), x, 0.2)
+sl = ev('slip')
+add(slide_whistle(1900, 320, ev('catch') - sl), sl, 0.3); add(whoosh(0.45, 2500, 500, up=False), sl, 0.22)
+add(boing(), ev('catch'), 0.4); add(thump(90), ev('catch'), 0.35)
+for x in evs('creak'):
+    add(creak(0.6), x, 0.28)
+add(pad([45, 52, 55, 61], 2.5, 1100, trem=3), ev('catch') + 0.1, 0.07)
+# ⑤ 잠깐(음악 멈춤) · 번쩍 · 한 바퀴 돌아 착지
+a5, b5 = SC[5]
+add(chime([mf(88), mf(93)], 0.9), ev('idea'), 0.18)
+t = ev('idea') + 0.5
+while t < ev('flipup') - 0.1:
+    add(pizz(mf([65, 69, 72, 69][int((t - a5) * 4) % 4] + 12)), t, 0.07, 0.3); t += 0.25
+add(whoosh(0.4, 400, 3000), ev('flipup'), 0.3); add(thump(140), ev('land'), 0.32)
+# ⑥ 열한 번 묻자 — 똑딱 · 카드 넘김 · 오르는 음
+a6, b6 = SC[6]
+add(swish(0.6), ACT[1] - 0.3, 0.3)
+t = a6; k = 0
+while t < b6 - 0.05:
+    add(wood(1900 if k % 2 == 0 else 1500), t, 0.07, 0.4 if k % 2 else -0.4); t += 0.5; k += 1
+for k, ch in enumerate([F_MAJ, C_MAJ, D_MIN, B_FLAT]):
+    add(pad([m + 12 for m in ch[-3:]], 2.5, 1300), a6 + 2.5 * k, 0.06)
+scale = [65, 67, 69, 70, 72, 74, 76, 77, 79, 81, 82]
+for i, x in enumerate(evs('card')):
+    add(flip(), x - 0.04, 0.3, -0.2); add(pluck(mf(scale[i % len(scale)] + 12), 0.5, 1.2, 0.4), x, 0.12, 0.2)
+# ⑦ 기록장 · 깃펜 · 새 떼가 지쳐 돌아옴
+a7, b7 = SC[7]
+add(rustle(0.35), ev('book'), 0.3)
+for k, ch in enumerate([D_MIN, B_FLAT, F_MAJ]):
+    add(pad([m + 12 for m in ch[-3:]], 2.0, 1200), a7 + 2 * k, 0.07)
+fb = ev('flock_back')
+for k in range(6):
+    add(flutter(1.6, 9 + k), fb + 0.2 * k, 0.1, -0.7 + 0.25 * k)
+for k in range(10):
+    f0 = 2600 - 60 * k; add(chirp(f0, f0 * 0.62, 0.11), fb + 0.6 + 0.17 * k, 0.09, rng.uniform(-.6, .6))
+dr = ev('droop')
+for i, m in enumerate((67, 66, 65, 61)):
+    n = int(0.42 * SR); tb = np.arange(n) / SR
+    tone = lp(saw(mf(m), tb) * (1 - 0.25 * np.cos(2 * np.pi * 5 * tb)), 1100) * np.minimum(1, tb / 0.03) * np.exp(-tb / 0.5)
+    add(tone, dr + 0.42 * i, 0.08)
+# ⑧ 본질 세 줄 — 따뜻한 화음 · 줄마다 오르골
+a8, b8 = SC[8]
+add(swish(0.6), ACT[2] - 0.3, 0.26); add(timp(73.4, 0.6), ACT[2], 0.22)
+for k, ch in enumerate([F_MAJ, C_MAJ, D_MIN, B_FLAT]):
+    s0 = a8 + 1.5 * k
+    add(pad([m + 12 for m in ch[-3:]], 1.6, 1500), s0, 0.08)
+    arp(ch, s0, s0 + 1.5, 0.25, 0.05, 24, 0.5)
+for i, x in enumerate(evs('vow')):
+    add(chime([mf(81 + 2 * i), mf(88 + 2 * i)], 1.0), x, 0.16)
+# ⑨ 노란 카드 날아감 · 띵동 · 상품권 줄
+a9, b9 = SC[9]
+add(whoosh(0.5, 500, 3500), ev('send'), 0.3)
+add(chime([mf(88)], 0.5), ev('msg'), 0.22); add(chime([mf(84)], 0.7), ev('msg') + 0.18, 0.22)
+add(chime([mf(77), mf(81), mf(84), mf(89)], 1.0), ev('promo'), 0.14)
+arp(F_MAJ, a9 + 0.1, b9, 0.125, 0.045, 24, 0.5)
+add(pad([65, 69, 72], 3.0, 1600), a9, 0.06)
+# ⑩ 이름 셋 · 북 · 이름 쾅 · 끝 화음(F)
+a10, b10 = SC[10]
+for k in range(12):
+    add(snare(), ROLL[1] + k * 0.03, 0.06 + 0.02 * k)
+s = ev('slam')
+add(boom(1.4), s, 0.6); add(timp(87.3, 1.4), s, 0.5)
+nf = int((DUR - s) * SR); tf = np.arange(nf) / SR
 fin = np.zeros(nf)
 for m in (53, 57, 60, 65):
     for det in (-0.006, 0.0, 0.007):
         fin += saw(mf(m + 12), tf, det)
-fin = lp(fin, 2600) / 12 * np.minimum(1, tf / 0.05) * np.exp(-tf / 2.4)
-add(fin, 56.15, 0.3, -0.2); add(fin, 56.162, 0.3, 0.2)
-add(chime([mf(65), mf(69), mf(72), mf(77)], 2.4), 56.2, 0.26)
-add(chirp(), 57.3, 0.24, -0.2); add(chirp(), 57.65, 0.18, 0.2)
+fin = lp(fin, 2400) / 12 * np.minimum(1, tf / 0.04) * np.exp(-tf / 2.6)
+add(fin, s, 0.3, -0.2); add(fin, s + 0.012, 0.3, 0.2)
+for m in (53, 60, 65, 69, 72):
+    add(pluck(mf(m), 1.7), s + 0.02, 0.1)
+add(chime([mf(77), mf(81), mf(84)], 1.6), ev('site'), 0.12)
 
 # 끝 — 서서히 줄임 · 부드럽게 눌러 −1dB 아래
-fo = np.ones(N); k0 = int(58.3 * SR); fo[k0:] = np.linspace(1, 0, N - k0) ** 1.5
+fo = np.ones(N); k0 = int(59.2 * SR); fo[k0:] = np.linspace(1, 0, N - k0) ** 1.4
 L *= fo; Rr *= fo
 mix = np.stack([L, Rr], 1)
-mix = np.tanh(mix * 1.6) / np.tanh(1.6)
+mix = np.tanh(mix * 1.5) / np.tanh(1.5)
 mix *= 0.89 / np.max(np.abs(mix))
-out = sys.argv[1] if len(sys.argv) > 1 else 'bodri.wav'
-with wave.open(out, 'wb') as w:
+with wave.open(OUT, 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes((mix * 32767).astype('<i2').tobytes())
-print('wav', out, round(DUR, 1), 's', 'peak', round(float(np.max(np.abs(mix))), 3))
+print('wav', OUT, round(DUR, 1), 's · 앵무새 마디', nsyl, '· peak', round(float(np.max(np.abs(mix))), 3))
