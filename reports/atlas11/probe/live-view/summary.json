@@ -1,5 +1,5 @@
 {
- "made": "2026-10-17T15:20:40.201Z",
+ "made": "2026-10-18T05:28:27.049Z",
  "base": "https://aaa7377.com",
  "live": true,
  "media": [
@@ -158,7 +158,7 @@
   "reports/atlas11/probe/live-view/p43-next-shorts.png",
   "reports/atlas11/probe/live-view/p46-next-why.png",
   "reports/atlas11/probe/live-view/p48-next-home-open.png",
-  "reports/atlas11/probe/live-view/p50-next-gdr-card.png",
+  "reports/atlas11/probe/live-view/p48b-next-home-open-yesterday.png",
   "reports/atlas11/probe/live-view/p49-next-en-tabs.png",
   "reports/atlas11/probe/live-view/p51-next-co.png",
   "reports/atlas11/probe/live-view/p52-next-past.png",
@@ -365,7 +365,7 @@
   "ok": true
  },
  "helloIntro": {
-  "scrolled": true,
+  "scrolled": false,
   "i1": {
    "intro": true,
    "img": true,
@@ -380,18 +380,18 @@
     ],
     [
      "고도리!",
-     0.975334
+     0.975319
     ]
    ],
    "shown": false,
    "ml": 1,
    "msg": "",
    "bird": [
-    185,
-    488,
+    420,
+    564,
     844
    ],
-   "at": 2702
+   "at": 2704
   },
   "i4": {
    "intro": true,
@@ -402,7 +402,7 @@
     1,
     1
    ],
-   "at": 4003
+   "at": 4001
   },
   "i2": {
    "intro": false,
@@ -649,7 +649,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "5일 19시간 36분 28초",
+  "clock": "여는 밤까지 5일 05시간 28분 남았어요",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -690,8 +690,8 @@
      "보유종목"
     ]
    ],
-   "cards": 13,
-   "chips": 8,
+   "blocks": "div.chips,a.tk-entry,a.hm-band,section.wy,section.gdr,details.hm-more,p.safe",
+   "chips": 10,
    "q": 0,
    "sw": 390,
    "cw": 390,
@@ -707,7 +707,7 @@
     "go": "#/why",
     "cells": 0
    },
-   "order": "wy,gdr,chips"
+   "order": "chips,wy,gdr"
   },
   "titles": [],
   "gLock": {
@@ -718,8 +718,14 @@
   },
   "watch": {
    "h1": "삼성전자",
-   "ws": "20거래일 동안 −12.7% · 하루 +4.6% · 10월 16일 마감",
-   "ch": 7,
+   "ws": "10월 16일 마감 · 한 달 동안 −12.7%",
+   "tabs": [
+    "#/w/005930/past",
+    "#/w/005930/rivals",
+    "#/w/005930/grow",
+    "#/w/005930/range"
+   ],
+   "chapsOld": 0,
    "nx": 6,
    "acts": [
     "관심 담기",
@@ -749,7 +755,7 @@
     "h2:본 기록"
    ],
    "h1": "보유종목",
-   "holdH": 214,
+   "holdH": 210,
    "letter": 11,
    "promo": "3명만 소개해도 스타벅스 상품권 1만원!",
    "landed": true,
@@ -784,29 +790,45 @@
    "find": false
   },
   "gdr": {
-   "picks": 3,
+   "picks": 0,
+   "homeOne": {
+    "lock": false,
+    "one": true,
+    "rest": false,
+    "cells": 0,
+    "sum": "",
+    "links": [
+     "#/gdr",
+     "#/why"
+    ],
+    "text": "오늘 점수 준비 22 / 22 · 다시 하기 ›"
+   },
+   "homeRest": {
+    "lock": false,
+    "one": false,
+    "rest": true,
+    "cells": 0,
+    "sum": "",
+    "links": [],
+    "text": "오늘은 담는 칸을 닫아 둘게"
+   },
    "homeOpen": {
     "lock": false,
-    "cells": 4,
-    "sum": "비중 합 100% · 담는 돈 900,000원 · 쉬는 돈 9,100,000원"
+    "one": false,
+    "rest": false,
+    "cells": 1,
+    "sum": "비중 합 100%",
+    "links": [
+     "#/gdr"
+    ],
+    "text": "고도리 칸 0곳 10월 13일 종가 · 곳마다 비중과 이유 현금으로 둠 100% 비중 합 100% 고도리 생각일 뿐이에요. 지난 기록으로 나눠 본 거고, 정하는 건 친구야. ? 고른 날은 10월 13일 종가예요 ? 목록과 분기 숫자가 아직 안 와서 지금은 담을 곳이 없어요 어떻게 골랐나 보기 ›"
    },
    "gOpen": {
     "lock": false,
     "fun": true,
-    "cells": 4
+    "cells": 1
    },
-   "wrong": [
-    {
-     "no": 1,
-     "got": "틀린다면 이유 시장 전체가 내리면 같이 내릴 수 있어.",
-     "ok": true
-    },
-    {
-     "no": 3,
-     "got": "틀린다면 이유 이익이 다시 줄면 고른 까닭이 사라져.",
-     "ok": true
-    }
-   ],
+   "wrong": [],
    "whyRec": "왜 사? 기록 1번"
   },
   "old": [],
@@ -905,7 +927,7 @@
   "pages": [
    {
     "url": "/#/w/005930",
-    "n": 1250,
+    "n": 1212,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -931,7 +953,7 @@
    },
    {
     "url": "/#/w/005930/rivals",
-    "n": 847,
+    "n": 802,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -944,7 +966,7 @@
    },
    {
     "url": "/#/w/005930/grow",
-    "n": 625,
+    "n": 624,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -957,7 +979,7 @@
    },
    {
     "url": "/#/w/005930/range",
-    "n": 1512,
+    "n": 1615,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -970,12 +992,12 @@
    },
    {
     "url": "/#/ch/g/semi",
-    "n": 1275,
+    "n": 1269,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
-    "title": "반도체 갈래 · 고도리",
+    "title": "반도체 큰 업종 · 고도리",
     "old": [],
     "words": [],
     "ok": true,
@@ -1022,7 +1044,7 @@
    },
    {
     "url": "/#/cond",
-    "n": 569,
+    "n": 600,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -1035,7 +1057,7 @@
    },
    {
     "url": "/#/talk",
-    "n": 2225,
+    "n": 2219,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -1048,7 +1070,7 @@
    },
    {
     "url": "/#/up",
-    "n": 3853,
+    "n": 3825,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -1061,7 +1083,7 @@
    },
    {
     "url": "/#/time",
-    "n": 1979,
+    "n": 1977,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -1074,7 +1096,7 @@
    },
    {
     "url": "/#/info",
-    "n": 2572,
+    "n": 2228,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -1087,7 +1109,7 @@
    },
    {
     "url": "/#/today",
-    "n": 1452,
+    "n": 1458,
     "bad": 0,
     "sel": true,
     "sw": 390,
@@ -1126,12 +1148,12 @@
    },
    {
     "url": "/#/gdr",
-    "n": 124,
+    "n": 61,
     "bad": 0,
     "sel": true,
     "sw": 390,
     "cw": 390,
-    "title": "고도리라면 이렇게 · 고도리",
+    "title": "고도리 칸 · 고도리",
     "old": [],
     "words": [],
     "ok": true,
