@@ -8375,7 +8375,6 @@
   "아직 {n}거래일 — {d}이 봉인 날이자 마지막 종가 날입니다. 다음 거래일부터 회차마다(하루 {n}번) 한 칸씩 채웁니다.": "{n} trading days so far — {d} is both the seal day and the last closing day. From the next trading day, one cell is filled at each update ({n} times a day).",
   "정해진 업데이트 · {t} · {t} · {t} · {t}(서울)": "Scheduled updates · {t} · {t} · {t} · {t} (Seoul)",
   "정해진 업데이트({t} · {t} · {t} · {t} · 서울) 때만 넣고 빼요. 다른 때 올리면 그때 고른 그대로예요.": "Stocks are added and removed only at the scheduled updates ({t} · {t} · {t} · {t} · Seoul). Posts at other times keep the picks as they were.",
-  "? 다시 고르기 — 정해진 업데이트 때({t} · {t} · {t} · {t} 서울) 값과 그림만 새로 · 고른 곳은 새 {n}년 성적표가 들어와야 바뀜.": "? Re-picking — only prices and charts refresh at the scheduled updates ({t} · {t} · {t} · {t} Seoul) · picks change only when a new {n}-year report card comes in.",
-  "한 달 뒤 이 기록을 열어 「정한 대로 했어?」에 답해 봐요.": "A month from now, open this record and answer 'Did you do what you set?'"
+  "? 다시 고르기 — 정해진 업데이트 때({t} · {t} · {t} · {t} 서울) 값과 그림만 새로 · 고른 곳은 새 {n}년 성적표가 들어와야 바뀜.": "? Re-picking — only prices and charts refresh at the scheduled updates ({t} · {t} · {t} · {t} Seoul) · picks change only when a new {n}-year report card comes in."
  }
 }
