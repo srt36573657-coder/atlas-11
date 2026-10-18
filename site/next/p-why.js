@@ -328,6 +328,7 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
       h('h3', {class: 'wy-q', text: '② 팔 약속'}),
       h('p', {class: 'wy-pr'}, h('span', {class: 'wy-prn'}, h('span', {text: '만약'}), num('wy-sell', 'sell', '팔 선(원)'), h('span', {text: '원'})), h('span', {text: '아래로 가면 다 판다.'})),
       h('p', {class: 'wy-pr'}, h('span', {class: 'wy-prn'}, h('span', {text: '만약'}), num('wy-half', 'half', '절반 팔 선(원)'), h('span', {text: '원'})), h('span', {text: '위로 가면 절반 판다.'})),
+      h('p', {class: 'wy-note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.'}),
       h('p', {class: 'wy-note', text: S.price ? `그날 값 ${won(S.price)}에서 열에 하나 내린 값과 열에 둘 오른 값이에요. 고쳐도 돼.` : '? 그날 값이 없어요. 두 숫자를 직접 적어 줘.'}),
       ...(err ? [h('p', {class: 'wy-err', role: 'alert', text: err})] : []),
       h('div', {class: 'wy-nav'}, btn('wy-back', BACK, goBack), btn('wy-next', '결과 보기 ›', submit))];
