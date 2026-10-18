@@ -125,7 +125,7 @@ test('스위치 파일 config/atlas11/kakao.json — 저장소에는 on=false ·
   const off = await fs.mkdtemp(path.join(os.tmpdir(), 'kakao-stage-off-'));
   try {
     const s = await stageFunctions(ROOT, off);
-    assert.deepEqual(s.functions, ['invite', 'letter'], '꺼져 있으면 함수 목록이 그 전과 같음');
+    assert.deepEqual(s.functions, ['invite', 'jinhwa', 'letter', 'tally'], '꺼져 있으면 함수 목록이 그 전과 같음(카톡 빼고 · 진화 칸 · 합계 칸 함수는 2026-10-18 일꾼 KD)');
     assert.ok(!s.files.some(f => f.includes('kakao')), '꺼져 있으면 카톡 셈 파일 0(편지 함수가 불러도)');
     // VK F1 — 편지 함수가 부르는 카톡 셈 두 파일 자리에는 막대 파일(「카카오 회원 아님」) · 편지는 오늘 길 그대로
     assert.deepEqual(s.stubs, ['lib/atlas11/kakao-store.mjs', 'lib/atlas11/kakao.mjs']);
@@ -141,7 +141,7 @@ test('스위치 파일 config/atlas11/kakao.json — 저장소에는 on=false ·
     await fs.mkdir(path.join(fake, 'config/atlas11'), {recursive: true});
     await fs.writeFile(path.join(fake, 'config/atlas11/kakao.json'), JSON.stringify({...cfg, on: true}));
     const s = await stageFunctions(fake, on);
-    assert.deepEqual(s.functions, ['invite', 'kakao', 'letter']);
+    assert.deepEqual(s.functions, ['invite', 'jinhwa', 'kakao', 'letter', 'tally']);
     for (const f of ['functions/atlas11/kakao.mjs', 'lib/atlas11/kakao.mjs', 'lib/atlas11/kakao-store.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/letter.mjs']) assert.ok(s.files.includes(f), f);
     assert.deepEqual(s.stubs, [], '켜면 막대 파일 0(진짜 셈)');
     assert.ok(!s.files.some(f => f.endsWith('.json')), '함수는 JSON 을 부르지 않음');

@@ -74,6 +74,49 @@ export async function waitDeploys(cwd, {maxMin = 8, every = 30, say = () => {}, 
 }
 
 // ───────────── 열쇠 없는 읽기(상태 · 합계) ─────────────
+/** curl 로 JSON 하나(길잡이 proxy 를 따름 — 노드 fetch 는 HTTPS_PROXY 를 안 봄) — {ok, http, json, why, blocked(닿지 못함)} */
+export function curlJson(url, {timeoutS = 20} = {}) {
+  const r = run('curl', ['-sS', '-m', String(timeoutS), '--retry', '2', '--retry-delay', '2', '-H', 'accept: application/json', '-w', '\n%{http_code}', url], {timeout: (timeoutS * 3 + 10) * 1000});
+  const lines = r.out.split('\n'), http = Number(lines.pop()) || 0, body = lines.join('\n');
+  if (http === 200) { try { return {ok: true, http, json: JSON.parse(body)}; } catch { return {ok: false, http, why: '글이 JSON 이 아님'}; } }
+  return {ok: false, http, blocked: http === 0, why: http ? 'HTTP ' + http : short(r.err || '닿지 못함', 80)};
+}
+export const READ_WORKFLOW = 'atlas11-jinhwa-read.yml';
+/** 깃허브 작업으로 읽기(이 방의 바깥 길이 aaa7377.com 을 막을 때) — 작업이 main 에 있어야 함 · {ok, status, tally, run, why} */
+export async function readViaActions(cwd, {days = 200, maxMin = 5, say = () => {}} = {}) {
+  if (!git(cwd, ['cat-file', '-e', `origin/main:.github/workflows/${READ_WORKFLOW}`]).ok) return {ok: false, why: `읽기 작업(${READ_WORKFLOW})이 main 에 없음`};
+  const t0 = Date.now() - 15e3;
+  const w = gh(cwd, ['workflow', 'run', READ_WORKFLOW, '-R', REPO, '--ref', 'main', '-f', `days=${days}`]);
+  if (!w.ok) return {ok: false, why: '읽기 작업을 못 시작함 ' + short(w.err)};
+  say('열쇠 없는 읽기 — 깃허브 작업으로');
+  let id = null;
+  for (let i = 0; i < 24 && !id; i++) {
+    await sleep(5000);
+    const l = gh(cwd, ['run', 'list', '-R', REPO, '--workflow', READ_WORKFLOW, '--limit', '5', '--json', 'databaseId,createdAt']);
+    try { id = JSON.parse(l.out || '[]').filter(x => Date.parse(x.createdAt) >= t0).sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))[0]?.databaseId ?? null; } catch { /* 다시 */ }
+  }
+  if (!id) return {ok: false, why: '읽기 작업 실행을 못 찾음'};
+  const wch = gh(cwd, ['run', 'watch', String(id), '-R', REPO, '--exit-status', '--interval', '10'], {timeout: maxMin * 60e3});
+  if (!wch.ok) return {ok: false, run: id, why: '읽기 작업이 끝나지 못함'};
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'jinhwa-read-'));
+  try {
+    const dl = gh(cwd, ['run', 'download', String(id), '-R', REPO, '-n', 'jinhwa-read', '-D', dir]);
+    if (!dl.ok) return {ok: false, run: id, why: '읽은 것을 못 받음 ' + short(dl.err)};
+    const j = JSON.parse(fs.readFileSync(path.join(dir, 'jinhwa-read.json'), 'utf8'));
+    if (j?.schema !== 'kkolttori-jinhwa-read-1' || !(Date.parse(j.at) >= t0)) return {ok: false, run: id, why: '읽은 것 꼴 · 때가 맞지 않음'};
+    return {ok: true, via: 'actions', run: id, status: j.status?.ok ? j.status.json : null, tally: j.tally?.ok ? j.tally.json : null, why: [j.status?.ok ? '' : '상태 ' + j.status?.why, j.tally?.ok ? '' : '합계 ' + j.tally?.why].filter(Boolean).join(' · ')};
+  } catch (e) { return {ok: false, run: id, why: '읽은 것을 못 읽음 ' + short(e?.message ?? e)}; }
+  finally { fs.rmSync(dir, {recursive: true, force: true}); }
+}
+/** 열쇠 없는 읽기 — 먼저 바로(curl) · 닿지 못하면(바깥 길이 막힘) 깃허브 작업으로 · {status, tally, via, why} · 꼴은 lib normalizeStatus · normalizeTally 가 봄 */
+export async function readKeyless(cwd, {site = SITE, days = 200, want = 'status', say = () => {}} = {}) {
+  const url = want === 'tally' ? `${site}/api/tally/sum?days=${days}` : `${site}/api/jinhwa/status`;
+  const d = curlJson(url);
+  if (d.ok) return {[want]: d.json, via: 'direct', why: ''};
+  if (!d.blocked || /^http:\/\/127\./.test(site)) return {[want]: null, via: 'direct', why: d.why};
+  const a = await readViaActions(cwd, {days, say});
+  return a.ok ? {[want]: a[want], via: 'actions', run: a.run, why: a.why} : {[want]: null, via: 'actions', why: `바로 못 닿음(${d.why}) · ${a.why}`};
+}
 export async function fetchJson(url, {timeoutMs = 15000, tries = 3} = {}) {
   let last = '';
   for (let i = 0; i < tries; i++) {
@@ -177,7 +220,9 @@ export async function liveData(siteDir, {base = SITE, budgetMs = 180e3, conc = 8
   const get = async (f, want) => {
     for (let i = 0; i < 5; i++) {
       if (Date.now() - T0 > budgetMs) throw Error('시간 넘음');
-      try { const r = await fetch(`${base}/${f}`, {signal: AbortSignal.timeout(20000)}); if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); if (!want || sha(b) === want) return b; } } catch { /* 다시 */ }
+      const r = spawnSync('curl', ['-sS', '-m', '20', '--fail', `${base}/${f}`], {maxBuffer: 256 << 20, timeout: 30000}); // curl = 길잡이 proxy 를 따름
+      if (r.status === 0 && r.stdout?.length) { const b = Buffer.from(r.stdout); if (!want || sha(b) === want) return b; }
+      if (r.status === 7 || r.status === 56) throw Error('닿지 못함(바깥 길이 막힘)');
       await sleep(400 * (i + 1));
     }
     throw Error('못 받음 ' + f);

@@ -19,6 +19,7 @@
      카드 단추: 가입이 꺼짐 = 「열어 보기」 하나 · 가입이 켜짐(서버가 켜짐) = 「카카오로 시작하기」 · 「그냥 보기」(p-share.js cardOf)
      공유가 켜졌어도 도구는 보내려는 뜻이 보일 때만 받음(카톡 단추를 누르기 시작할 때 · 글상자를 열 때 — sdkReady) · 첫 화면에서 미리 받지 않음 */
 import {NAME_EN} from './brand.js';
+import {tally} from './tally.js'; // 합계 칸 참고 신호(사장님 2026-10-18 16:39 [10] · 일꾼 KD) — 카카오 가입을 마친 때 한 번 tally('signup') · 몸은 {k} 하나(일꾼 KI)
 
 export const SWITCH = false; // 가입 스위치 — 열쇠가 생겨 사장님이 켜라고 하실 때만 true (config/atlas11/kakao.json "on" 과 늘 같아야 함)
 export const KEYS = Object.freeze(['atlas:godori-why', 'atlas:new:sub', 'atlas:new:later', 'atlas:godori-hold']);
@@ -109,6 +110,7 @@ export function createKakao(env = {}) {
     switchOn: env.switchOn ?? SWITCH,
     shareOn: env.shareOn, // 시험만 — 공유 스위치를 바꿔 끼움(없으면 SDK 세 칸으로 정함)
     test: () => (env.test !== undefined ? !!env.test : g.__GODORI_KAKAO_TEST__ === true),
+    tally: env.tally ?? tally, // 시험은 바꿔 끼움
   };
   const st = {on: false, member: false, ref: null, friends: null, next: null, code: null};
   let probeP = null, probeAt = 0, probeFail = false, lastSnap = null, sdkP = null, syncP = null, timer = null, failAt = 0, told = 'off:0';
@@ -303,13 +305,14 @@ export function createKakao(env = {}) {
   /** 쪽을 열 때 한 번 — 카카오 동의 화면에서 돌아온 표(?kakao=ok|none)를 읽고 주소에서 지움 · 앞서 가입한 기기 또는 막 돌아온 쪽만 서버를 물음. 나머지는 가만히 있음 */
   api.boot = () => {
     const q = query(), back = q.get('kakao');
+    const fresh = back === 'ok' && !flagged(); // 동의 화면에서 막 돌아옴 + 이 기기에 회원 표시가 아직 없음 = 「카카오로 시작하기」를 눌러 마침(조용한 로그인은 표시가 있는 기기만)
     if (back) {
       E.ss.del(SS_STATUS); // 막 동의를 마치고 돌아옴 — 앞서 적어 둔 서버 답(회원 아님)을 버림
       if (back === 'none') E.ss.set(SS_SILENT, String(E.now())); // 조용한 로그인이 안 됐음 — 이 탭에서는 다시 안 함
       q.delete('kakao'); const rest = q.toString();
       E.replaceUrl((E.loc.pathname || '/') + (rest ? '?' + rest : '') + (E.loc.hash || ''));
     }
-    if (flagged() || back) ready().catch(() => {});
+    if (flagged() || back) ready().then(() => { if (fresh && api.member()) E.tally('signup'); }).catch(() => {}); // 서버가 회원이라고 답한 뒤에만 「가입 마침」 한 번
     return api;
   };
   return api;

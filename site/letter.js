@@ -227,12 +227,7 @@ function letterCard(L, week) {
     h('div', {class: 'acts'}, learn, report, h('span', {class: 'note', text: L.nick + '님 편지 ' + L.letters + '통'})), reps, replyForm, m, owner);
 }
 
-function stamps() {
-  const n = P?.me?.weeks?.length ?? S?.me?.weeks?.length ?? 0, steps = [1, 2, 3, 4, 8, 12];
-  return h('section', {class: 'card'}, h('h2', {text: '도장 모으기'}), h('p', {text: '쓴 주마다 도장이 하나씩 쌓여요.'}), h('p', {class: 'note', text: '넷째 주는 은빛, 열두째 주는 달빛이에요.'}),
-    h('div', {class: 'seals', 'aria-label': '모은 도장 ' + n + '개'}, ...steps.map(k => h('div', {class: 'sl' + (n >= k ? (k >= 12 ? ' m' : k >= 4 ? ' s' : ' g') : ''), text: k + '주'}))),
-    h('p', {class: 'note', text: '수익 순위는 없어요. 꾸준히 쓴 기록만 빛나요.'}));
-}
+// 쓴 주마다 쌓이던 도장 칸(넷째 주 은빛 · 열두째 주 달빛)은 지움 — 연속 접속 보상(본질 파일 「망치는 길」 · 사장님 2026-10-18 16:39 명령문 · 본질 문 ③ · 일꾼 KI) · 다른 보상은 넣지 않음
 function invitesCard() {
   const inv = S?.me?.invites ?? [];
   return h('section', {class: 'card'}, h('h2', {text: '우리 셋 — 초대장'}), h('p', {text: '친구 셋에게 초대장을 보내 같이 열어요.'}),
@@ -306,7 +301,7 @@ function render() {
     else sec.append(h('p', {class: 'note', text: '지난주엔 열린 편지가 없어요. 이번 주가 첫 여는 밤이에요.'}));
     kids.push(sec);
   }
-  if (S?.member) kids.push(stamps(), invitesCard(), keyCard());
+  if (S?.member) kids.push(invitesCard(), keyCard());
   if (S?.owner) { kids.push(ownerCard()); if (KK) kids.push(kakaoCard()); }
   kids.push(h('p', {class: 'foot', text: '편지는 쓴 사람의 말이에요. 골똘이는 사고팔기를 권하지 않아요.'}), h('p', {class: 'foot'}, h('a', {class: 'ghost link back', href: '/', text: '골똘이로 돌아가기 ›'}))); // 돌아가기 = 단추 꼴 · 높이 48px(사장님 2026-10-18 [7] 10 「돌아가기 단추는 44px 이상」 — 잰 값 25px)
   root.replaceChildren(...kids);

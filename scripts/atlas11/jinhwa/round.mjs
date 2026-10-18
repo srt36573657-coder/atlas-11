@@ -44,8 +44,9 @@ export function realDeps({root = ROOT, run = process.env.JINHWA_RUN || path.join
   return {
     root, run, now: () => new Date(), sleep: G.sleep, every: 30, waitDeploysMin: 20, previewMaxMin: 22,
     say: s => process.stderr.write(String(s) + '\n'),
-    fetchStatus: async () => { const r = await G.fetchJson(L.STATUS_URL); return r.ok ? r.json : null; },
-    fetchTally: async days => { const r = await G.fetchJson(`${L.TALLY_URL}?days=${days}`); return r.ok ? r.json : null; },
+    // 읽기 주소 — 늘 열쇠 없는 GET 둘뿐([9] 8) · 바로(curl) 못 닿으면 깃허브 작업 atlas11-jinhwa-read.yml 로 · JINHWA_SITE = 시험 서버로 바꿔 볼 때만(예 http://127.0.0.1:8826)
+    fetchStatus: async () => (await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'status', say: s => process.stderr.write(s + '\n')})).status,
+    fetchTally: async days => (await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'tally', days, say: s => process.stderr.write(s + '\n')})).tally,
     ghRunner: G.gh,
     essenceDiff: (base, head) => G.essenceDiff(root, base, head),
     essenceStatic: siteDir => G.essenceStatic(root, siteDir),
@@ -119,10 +120,12 @@ export async function cmdBegin(a, D) {
     const t = G.lockTake(D.root, {by: id, now});
     if (!t.ok) { st.ended = true; save(D, st); stop(t.why, t.busy ? 3 : 1); }
     st.lock = {sha: t.sha, stolen: t.stolen ?? null};
+    save(D, st); // 아래에서 막혀도 end 가 잠금을 풀 수 있게
   }
   // ④ main 일 폴더 — 전 그림 · 기록 · 진화 칸 자료를 여기서 읽음
   st.wt.main = path.join(D.run, 'wt', 'main');
   const w = G.worktreeAdd(D.root, st.wt.main, st.main0);
+  save(D, st);
   if (!w.ok) stop(w.why);
   const dataRaw = readJson(path.join(st.wt.main, L.DATA_FILE));
   if (dataRaw) {
@@ -265,6 +268,7 @@ export async function cmdRevert(a, D) {
   if (!wd.clear) fail('다른 올리기가 아직 돎 — 다음 회차', 3);
   if (!G.fetchMain(D.root).ok) fail('main 을 못 받음');
   const base = G.revParse(D.root, 'origin/main');
+  if (!G.git(D.root, ['cat-file', '-e', g.merge + '^{commit}']).ok) G.git(D.root, ['fetch', '-q', '--no-tags', 'origin', g.merge]); // 얕은 사본이면 그 커밋만 받음
   if (!G.isAncestor(D.root, g.merge, base)) fail('들어간 커밋이 main 에 없음');
   st.wt.revert = path.join(D.run, 'wt', 'revert');
   const wa = G.worktreeAdd(D.root, st.wt.revert, base); if (!wa.ok) fail(wa.why);
@@ -338,7 +342,7 @@ export async function cmdFix(a, D) {
   const msg = `${W.name} 고친 고장(${kind}) — ${what}\n\n진화 회차 ${st.id} · 진화 아님([8] 9) · ${files.length}파일 · ${fc.lines}줄\n\njinhwa: fix ${id}`;
   const ap = G.applyOnto(wt, head, base, msg);
   if (!ap.ok) fail(ap.why);
-  if (!G.codeSame(D.root, ap.sha, head, CODE_PATHS) && !G.codeSame(D.root, st.main0, base, CODE_PATHS)) fail('main 의 코드가 그새 바뀜 — 다음 회차');
+  if (!G.codeSame(D.root, ap.sha, head, CODE_PATHS)) fail('main 의 코드가 그새 바뀜 — 검사한 판과 달라 넣지 않음(다음 회차)');
   const pm = await pushMainSafe(D, wt, {head: ap.sha, base, msg});
   if (!pm.ok) fail(pm.why);
   const at = L.isoKst(D.now());
@@ -525,8 +529,8 @@ export async function cmdScore(a, D) {
   const st = load(D);
   const recs = recordsOf(st), mem = L.memoryOf(recs);
   const cal = readJson(path.join(st.wt.main, L.CAL_FILE));
-  const fresh = L.normalizeTally(await D.fetchTally(62));
-  st.tally = fresh.ok ? fresh.days : null;
+  const fresh = L.normalizeTally(await D.fetchTally(200)); // 합계 칸 읽기는 200일까지(KD) — 앞 칸 · 뒤 칸 60거래일씩도 한 번에
+  st.tally = fresh.ok ? Object.fromEntries(Object.entries(fresh.days).sort().slice(-14)) : null; // 기록에는 지난 14일만(앞날은 앞 기록에 · 읽기 창 200일 밖을 이어 붙일 때만 씀)
   if (!fresh.ok) notDone(st, `합계 칸을 못 읽음(${fresh.why}) — 채점 미룸`);
   const tally = L.mergeTally(...recs.map(r => (r.tally ? {ok: true, days: r.tally} : null)), fresh);
   const rounds = [...recs.map(r => ({date: r.facts?.at ? L.kst(r.facts.at).date : null, mismatch: r.facts?.mismatch})), {date: st.facts?.at ? L.kst(st.facts.at).date : null, mismatch: st.facts?.mismatch}].filter(x => x.date);
@@ -550,7 +554,11 @@ export async function cmdRecord(a, D) {
   if (st.recorded) stop('이번 회차는 이미 기록함', 2);
   const W = await loadWords(D.root), metrics = metricsOf(D.root), ess = L.readEssence(D.root);
   const now = D.now();
+  // 이번 회차에 만든 대안 — 카드 검사를 못 지났으면 내림(미리 검사가 돌아도 진화 칸에 오르지 않음)
+  const madeOk = st.made.filter(m => m.ok);
+  if (st.plan?.next === 'make' && madeOk.length && !st.cards.length) for (const m of madeOk) if (!st.dropped.some(x => x.id === m.id)) st.dropped.push({id: m.id, why: '카드 검사를 지나지 못함'});
   const dropped = [...new Set(st.dropped.map(x => x.id))];
+  const pending = madeOk.filter(m => m.preview?.state === 'running' && !dropped.includes(m.id)).map(m => m.id).concat(st.retested.filter(r => r.preview?.state === 'running').map(r => r.id));
   const mem = L.memoryOf(recordsOf(st));
   const applies = st.data0.waiting.filter(w => mem.get(w.id)?.merge).map(w => ({id: w.id, at: mem.get(w.id).appliedAt ?? st.start}));
   const reverts = st.data0.applied.filter(x => !x.revertedAt && mem.get(x.id)?.reverted).map(x => ({id: x.id, at: mem.get(x.id).reverted}));
@@ -567,7 +575,8 @@ export async function cmdRecord(a, D) {
   const moved = JSON.stringify(live) !== JSON.stringify(readJson(path.join(st.wt.main, L.DATA_FILE)));
   if (moved) notDone(st, '진화 칸 자료가 회차 동안 main 에서 바뀜 — 덮어쓰지 않고 기록만 남김(다음 회차가 맞춤)');
   const imgDir = path.join(wt, L.IMG_DIR); fs.mkdirSync(imgDir, {recursive: true});
-  const shot = new Set([...st.newCards.map(c => c.id), ...st.retested.filter(r => r.ok && r.images).map(r => r.id)]);
+  // 그림 — 새로 오르는 카드 · 다시 찍은 것 · 아직 미리 검사를 기다리는 대안(다음 회차는 새 방이라 이 방 그림 폴더가 없음 → main 에 먼저 둠)
+  const shot = new Set([...st.newCards.map(c => c.id), ...st.retested.filter(r => r.ok && r.images).map(r => r.id), ...pending]);
   for (const id of shot) for (const k of ['before', 'after']) { const src = path.join(D.run, 'img', `${id}-${k}.png`); if (fs.existsSync(src)) fs.copyFileSync(src, path.join(wt, L.imgFileOf(id, k))); }
   const v0 = L.validateJinhwa(next, {measures: metrics ? L.measureTexts(metrics) : null, units: L.essenceUnits(ess.lines), words: wordsOpt(W), exists: f => fs.existsSync(path.join(wt, f))});
   const v = moved ? {ok: false, errors: ['회차 동안 main 에서 바뀜']} : v0;
@@ -576,15 +585,16 @@ export async function cmdRecord(a, D) {
   else fs.writeFileSync(path.join(wt, L.DATA_FILE), JSON.stringify(next, null, 1) + '\n');
   // 아무 데서도 안 쓰는 그림만 치움(지금 남는 판 기준 — 꼴 검사에 걸려 옛 판이 남으면 옛 판 그림을 지킴)
   const kept = v.ok ? next : (live ?? st.data0);
-  const keep = new Set([...kept.waiting, ...kept.applied].flatMap(x => [L.imgFileOf(x.id, 'before'), L.imgFileOf(x.id, 'after')]));
+  const waitIds = [...mem.values()].filter(x => x.pending && !x.dropped && !x.merge && !st.finished.some(f => f.id === x.id)).map(x => x.id); // 지난 회차부터 기다리는 미리 검사
+  const keep = new Set([...kept.waiting.map(x => x.id), ...kept.applied.map(x => x.id), ...pending, ...waitIds].flatMap(id => [L.imgFileOf(id, 'before'), L.imgFileOf(id, 'after')]));
   for (const n of fs.readdirSync(imgDir)) { const rel = `${L.IMG_DIR}/${n}`; if (/\.png$/.test(n) && !keep.has(rel)) fs.rmSync(path.join(wt, rel), {force: true}); }
   const carry = L.carrySlot(now);
   const newN = v.ok ? st.newCards.length : 0;
   const owner = L.ownerLines({applied: !!st.apply?.ok, reverted: !!st.revert?.ok, fixed: st.fixed.length, made: newN, retested: st.retested.filter(r => r.ok).length,
-    failed: st.apply && !st.apply.ok ? '확인하신 진화를 넣지 못했어요' : st.revert && !st.revert.ok ? '되돌리기를 하지 못했어요' : '',
+    failed: st.apply && !st.apply.ok ? (/확인이 아님|거둬짐/.test(st.apply.why) ? '확인을 거두셔서 넣지 않았어요.' : '확인하신 진화를 이번에는 넣지 않았어요. 다음 회차가 다시 봐요.')
+      : st.revert && !st.revert.ok ? (/요청이 아님|거둬짐/.test(st.revert.why) ? '되돌리기를 거두셔서 그대로 뒀어요.' : '되돌리기를 이번에는 하지 않았어요. 다음 회차가 다시 봐요.') : '',
     waiting: v.ok ? next.waiting.length : st.data0.waiting.length, carry: st.apply?.ok ? new Date(st.apply.carry) : st.revert?.ok ? new Date(st.revert.carry) : carry, notDone: st.notDone.length});
   const notice = newN ? L.noticeLine(newN, carry, W.name) : '';
-  const pending = st.made.filter(m => m.ok && m.preview?.state === 'running').map(m => m.id).concat(st.retested.filter(r => r.preview?.state === 'running').map(r => r.id));
   const rec = {schema: L.REC_SCHEMA, id: st.id, start: st.start, end: L.isoKst(now), essence: {file: st.essence.file, sha256: st.essence.sha, first: st.essence.first},
     main: st.main0, cutoff: st.cutoff, status: {ok: st.status.ok, why: st.status.why, items: st.status.items, unknown: st.status.unknown}, plan: st.plan,
     apply: st.apply ?? null, revert: st.revert ?? null, fixed: st.fixed, made: st.made.map(({seed, ...m}) => ({...m, seed: seed ?? {}})), debate: st.debate ?? null, cards: st.cards,
@@ -594,7 +604,7 @@ export async function cmdRecord(a, D) {
   let file;
   try { file = L.writeRecord(path.join(wt, L.REC_DIR), rec); } catch (e) { stop(e.code === 'EEXIST' ? '같은 이름의 기록이 이미 있음 — 쓰지 않음(새 파일만)' : '기록을 못 씀 ' + e.message); }
   G.git(wt, ['add', '-A', '--', L.DATA_FILE, L.IMG_DIR, L.REC_DIR]);
-  const msg = `골똘이 진화 회차 ${st.id} 기록 — ${owner[0]}\n\n본질 ${st.essence.sha.slice(0, 8)} · 기다리는 대안 ${rec.data.waiting.length} · 진화 ${rec.data.n}번째 · 못 한 것 ${st.notDone.length}가지 · 새 파일 ${path.relative(wt, file)}`;
+  const msg = `${W.name} 진화 회차 ${st.id} 기록 — ${owner[0]}\n\n본질 ${st.essence.sha.slice(0, 8)} · 기다리는 대안 ${rec.data.waiting.length} · 진화 ${rec.data.n}번째 · 못 한 것 ${st.notDone.length}가지 · 새 파일 ${path.relative(wt, file)}`;
   const c = G.git(wt, ['commit', '-q', '--no-verify', '-m', msg]);
   if (!c.ok) stop('기록 커밋을 못 만듦 ' + G.short(c.err));
   let head = G.revParse(wt, 'HEAD'), pushed = null;
@@ -611,8 +621,8 @@ export async function cmdRecord(a, D) {
   }
   if (!pushed) stop('main 이 계속 앞서 감 — 기록을 못 밂');
   // 회차 가지 치우기 — 기다림에서 나간(들어감 · 내려감) 번호의 시험 가지 · 대안 가지(기록에 커밋 번호가 남음)
-  const still = new Set((v.ok ? next.waiting : st.data0.waiting).map(w => w.id));
-  for (const id of new Set([...dropped, ...(st.apply?.ok ? [st.apply.id] : [])])) if (!still.has(id)) { G.deleteRemoteBranch(D.root, L.tryBranchOf(id)); G.deleteRemoteBranch(D.root, L.branchOf(id)); }
+  const still = new Set([...(v.ok ? next.waiting : st.data0.waiting).map(w => w.id), ...pending, ...waitIds]);
+  for (const id of new Set([...dropped, ...(st.apply?.ok ? [st.apply.id] : []), ...madeOk.map(m => m.id)])) if (!still.has(id)) { G.deleteRemoteBranch(D.root, L.tryBranchOf(id)); G.deleteRemoteBranch(D.root, L.branchOf(id)); }
   st.recorded = {file: path.relative(wt, file), commit: pushed, at: L.isoKst(D.now())};
   save(D, st);
   return {file: st.recorded.file, commit: pushed.slice(0, 7), data: rec.data, owner, notice, notDone: st.notDone};
@@ -623,7 +633,7 @@ export async function cmdEnd(a, D) {
   const st = load(D, {open: false});
   if (st.lock?.sha) { const r = G.lockRelease(D.root, {sha: st.lock.sha}); if (!r.ok) notDone(st, '회차 잠금을 못 풂(100분 뒤 저절로 풀림)'); }
   for (const w of Object.values(st.wt ?? {})) if (typeof w === 'string') G.worktreeRemove(D.root, w);
-  for (const b of Object.keys(st.wt ?? {}).filter(k => /^alt\d$/.test(k))) { const n = b.slice(3); if (!st.made.some(m => m.n === Number(n) && m.preview?.run)) G.git(D.root, ['branch', '-D', L.branchOf(`${st.id}-${n}`)]); }
+  for (const b of Object.keys(st.wt ?? {}).filter(k => /^alt\d$/.test(k))) G.git(D.root, ['branch', '-D', L.branchOf(`${st.id}-${b.slice(3)}`)]); // 이 기계의 가지만(원격 가지는 기록 단계가 정리)
   if (st.fixing) G.git(D.root, ['branch', '-D', L.fixBranchOf(st.fixing.id)]);
   st.ended = L.isoKst(D.now()); save(D, st);
   return {id: st.id, ended: st.ended, recorded: !!st.recorded, notDone: st.notDone};

@@ -142,7 +142,7 @@ test('⑬ 지시문 첫 줄 = 본질 먼저 · 꼭 있을 말 · 회차 도구�
   ok(first.startsWith(`먼저 ${L.essenceFileOf(ROOT)}를 읽는다`), '첫 줄: ' + first.slice(0, 60));
   for (const w of ['gh api', '/api/jinhwa/status', 'round.mjs begin', 'round.mjs apply', 'round.mjs record', '한 번에 하나', '카너먼', '멍거', '포퍼', 'PushNotification', '세 줄', '확인 없이', '고친 고장', '사전 부검', '큰 것', '10거래일', '없으면 없다고'])
     ok(doc.includes(w), '지시문에 「' + w + '」');
-  for (const f of ['round.mjs', 'gh.mjs', 'lib.mjs', 'shots.mjs', 'selftest.mjs'].map(f => path.join(ROOT, 'scripts/atlas11/jinhwa', f)).concat(path.join(ROOT, L.ROUND_DOC))) {
+  for (const f of ['round.mjs', 'gh.mjs', 'lib.mjs', 'shots.mjs', 'selftest.mjs', 'read.mjs'].map(f => path.join(ROOT, 'scripts/atlas11/jinhwa', f)).concat(path.join(ROOT, L.ROUND_DOC), path.join(ROOT, '.github/workflows/atlas11-jinhwa-read.yml')).filter(f => fs.existsSync(f))) {
     const t = fs.readFileSync(f, 'utf8');
     ok(!/(ghp_|github_pat_|gho_|nfp_|sk-ant-)[A-Za-z0-9_]{16,}/.test(t), '비밀 값 ' + f);
     if (!/selftest|ROUND_DOC|jinhwa-round/.test(path.basename(f))) ok(!/x-atlas-owner/i.test(t), '사장님 열쇠 머리글 ' + f);
@@ -206,6 +206,30 @@ test('⑱ 때 — 회차 때 · 실리는 업데이트 · 확인하면 들어가
   eq(L.isoKst(L.carrySlot(new Date('2026-10-19T00:57:00Z'))), '2026-10-19T12:00:00+09:00', '4분 안이면 다음 업데이트');
   eq(L.isoKst(L.nextSlot(new Date('2026-10-18T10:00:00Z'))), '2026-10-19T12:00:00+09:00', '일요일 저녁 판 → 월요일 12시');
   eq(L.roundId(new Date('2026-10-19T00:30:00Z')), '20261019-0930');
+});
+
+test('⑲ 열쇠 없는 읽기 — GET 둘뿐(상태 · 합계) · 바로 읽기 · 닿지 못하면 상태 없음(시험 서버 · 따로 뜬 프로세스)', async () => {
+  const {spawn} = await import('node:child_process');
+  // curl 은 spawnSync 로 돌아 이 프로세스를 멈춤 → 시험 서버는 따로 띄움(받은 요청을 줄마다 찍음)
+  const code = `const http=require('http');const s=http.createServer((q,r)=>{console.log('REQ '+q.method+' '+q.url+(q.headers['x-atlas-owner']?' 열쇠':''));r.setHeader('content-type','application/json');
+    r.end(q.url.startsWith('/api/jinhwa/status')?JSON.stringify({items:[{id:'${ID(1)}',state:'confirmed',at:'2026-10-19T00:10:00.000Z'}]}):JSON.stringify({days:[{day:'2026-10-19',stop:3,stop_rest:1,promise:0,promise_yes:0}]}))});
+    s.listen(0,'127.0.0.1',()=>console.log('PORT '+s.address().port));setTimeout(()=>process.exit(0),60000);`;
+  const p = spawn(process.execPath, ['-e', code], {stdio: ['ignore', 'pipe', 'inherit']});
+  let outText = '';
+  const port = await new Promise((res, rej) => { p.stdout.on('data', b => { outText += b; const m = /PORT (\d+)/.exec(outText); if (m) res(Number(m[1])); }); setTimeout(() => rej(Error('시험 서버가 안 뜸')), 5000); });
+  const base = `http://127.0.0.1:${port}`;
+  try {
+    const {readBoth} = await import('./read.mjs');
+    const r = await readBoth({base, days: 5});
+    ok(r.status.ok && r.tally.ok, JSON.stringify(r));
+    eq(L.normalizeStatus(r.status.json).items[0].state, 'confirmed'); eq(L.normalizeTally(r.tally.json).days['2026-10-19'].stop_rest, 1);
+    const k = await G.readKeyless(ROOT, {site: base, want: 'status'}); eq(k.via, 'direct'); ok(Array.isArray(k.status?.items), JSON.stringify(k));
+    const t = await G.readKeyless(ROOT, {site: base, want: 'tally', days: 7}); ok(Array.isArray(t.tally?.days), JSON.stringify(t));
+    const dead = await G.readKeyless(ROOT, {site: 'http://127.0.0.1:9', want: 'status'}); eq(dead.status, null, '닿지 못하면 상태 없음(넣지 않음)');
+    await new Promise(r => setTimeout(r, 100));
+    const reqs = outText.split('\n').filter(l => l.startsWith('REQ ')).map(l => l.slice(4));
+    ok(reqs.length >= 4 && reqs.every(x => /^GET \/api\/(jinhwa\/status|tally\/sum\?days=\d+)$/.test(x)), '읽기는 열쇠 없는 GET 둘뿐 — ' + reqs.join(' | '));
+  } finally { p.kill(); }
 });
 
 // ───────────── 끝까지(임시 git 원격) ─────────────
@@ -403,6 +427,42 @@ test('E8 본질 파일이 잠금과 다르면 회차를 멈춤 · 기록 이름�
   fs.appendFileSync(path.join(work, L.essenceFileOf(ROOT)), '\n7. 사라고 권한다.\n');
   r = await R({...D, run: path.join(ctx.tmp, 'run8b')}, 'begin'); eq(r.code, 1); ok(/본질 잠금/.test(r.out.why), r.out.why);
   sh(work, 'git', ['checkout', '-q', '--', L.essenceFileOf(ROOT)]);
+});
+
+test('E9 미리 검사가 회차를 넘김 — 기록에 그림을 먼저 두고 · 다음 회차(새 방)가 finish 로 카드를 올림', async ctx => {
+  const tmp9 = path.join(ctx.tmp, 'e9'); fs.mkdirSync(tmp9);
+  const {work} = makeRepo(tmp9);
+  let state = 'running';
+  const mk = (run, now) => fakeDeps({work, run: path.join(tmp9, run), now, status: {items: []}, preview: () => state});
+  const D = mk('a', '2026-10-26T00:30:00Z'), id = n => `20261026-0930-${n}`;
+  let r = await R(D, 'begin'); eq(r.out.plan.next, 'make');
+  for (const [n, f, from, to] of [[1, 'site/next/p-why.js', "'why 칸'", "'why 칸 · 한 번 더'"], [2, 'site/next/p-today.js', "'today 칸'", "'today 칸 · 받은 때'"]]) {
+    const st = await R(D, 'alt-start', '--n', String(n)); commitIn(st.out.dir, f, from, to);
+    const a = await R(D, 'alt', '--n', String(n), '--route', '#/'); eq(a.code, 0, JSON.stringify(a.out));
+  }
+  const eyes = {kahneman: {faster: false}, munger: {ruin: false, bend: false}, popper: {predict: true, revert: true, small: true}}, all = {kahneman: true, munger: true, popper: true};
+  const v = {kahneman: '서두르게 하지 않아요.', munger: '망치는 길에 닿지 않아요.', popper: '틀리면 바로 되돌려요.'};
+  const base = {voices: v, eyes, accept: all, revert: '나빠지면 되돌려요.', premortem: '아무도 못 봤을 수 있어요.', predict: {text: '「쉬어 가자」 몫이 늘어요.', rule: {measure: 'stop', num: 'stop_rest', den: 'stop', dir: 'up'}}};
+  const df = path.join(tmp9, 'debate.json');
+  fs.writeFileSync(df, JSON.stringify({mode: 'single', top: {kahneman: 1, munger: 1, popper: 2}, alts: [
+    {...base, n: 1, title: '왜 사 칸 한 줄', serves: '① 「왜 사?」 열한 질문으로 내 이유를 확인한다.', big: true, risks: ['본질 칸이라 멈춤이 줄 수 있어요.', '말이 길면 건너뛸 수 있어요.']},
+    {...base, n: 2, title: '오늘 칸 받은 때', serves: '② 지난 기록만 보여 준다.', big: false, risks: []}]}));
+  r = await R(D, 'cards', '--debate', df); eq(r.code, 0, JSON.stringify(r.out)); eq(r.out.order, [1, 2]);
+  r = await R(D, 'finish', '--wait', '0'); eq(r.out.left, [id(1), id(2)]); eq(r.out.newCards, []);
+  r = await R(D, 'record'); eq(r.code, 0, JSON.stringify(r.out)); eq(r.out.data.waiting, []);
+  for (const n of [1, 2]) ok(mainFile(work, L.imgFileOf(id(n), 'after')) !== null, '기다리는 대안 그림이 main 에 먼저');
+  await R(D, 'end');
+  state = 'pass';
+  const D2 = mk('b', '2026-10-26T02:30:00Z'); // 다음 회차 — 새 방(그림 폴더 없음)
+  r = await R(D2, 'begin'); eq(r.out.plan.next, 'finish'); eq(r.out.plan.pending.sort(), [id(1), id(2)]);
+  r = await R(D2, 'finish', '--wait', '0'); eq(r.out.newCards, [id(1), id(2)]);
+  r = await R(D2, 'record'); eq(r.code, 0, JSON.stringify(r.out)); ok(/새 진화 대안 2개/.test(r.out.owner[0]), r.out.owner[0]);
+  const d = JSON.parse(mainFile(work, L.DATA_FILE)); eq(d.waiting.map(w => [w.id, w.pick]), [[id(1), true], [id(2), false]]);
+  const W = await loadWords(ROOT);
+  const val = L.validateJinhwa(d, {measures: L.measureTexts(METRICS), units: UNITS, words: {screenHits: W.screenHits, ruinHits: W.ruinHits, gainHits: W.gainHits, oldNames: W.oldNames}, exists: f => mainFile(work, f) !== null});
+  ok(val.ok, val.errors.join(' · '));
+  await R(D2, 'end');
+  const D3 = mk('c', '2026-10-26T04:30:00Z'); r = await R(D3, 'begin'); eq(r.out.plan.next, 'retest', '다음은 다시 시험(새로 안 만듦)'); await R(D3, 'end');
 });
 
 /** 모두 돌리기 — {pass, fail, seconds} */
