@@ -361,6 +361,7 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
       h('p', {class: 'wy-note', text: '막대가 짧은 묶음을 한 번 더 생각해 봐.'}),
       lines(J),
       h('p', {class: 'wy-note', text: saved ? (page ? '오늘 답을 아래 매매일지에 날짜와 함께 쌓았어요.' : '오늘 답을 매매일지에 날짜와 함께 쌓았어요.') : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
+      ...(saved ? [h('p', {class: 'wy-note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.'})] : []),
       h('div', {class: 'wy-nav'}, btn('wy-next', '다시 하기', () => { start(); focusSel = i === PICK ? '.wy-find' : '.wy-opt'; draw(); keepTop(); }),
         page ? null : h('a', {class: 'wy-link', href: '#/why', text: '매매일지 보기 ›'})));
   };
