@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>골똘이 시안 s07 — 메종</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* s07 · 메종 — 가운데 한 줄 · 금빛 머리카락 선 · 고운바탕 · 예를 갖춘 고요함 */
+:root{--bg:#FFFFFF;--ink:#16181D;--soft:#5A606B;--gold:#8A6516;--hair:rgba(138,101,22,.34);--wash:rgba(138,101,22,.06);--up:#D0202E;--dn:#1E5BD8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#FFFFFF}
+body{color:#16181D;font:400 17px/1.5 'Pretendard Variable',sans-serif;padding-bottom:80px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+
+/* 위 띠 — 이름은 가운데 */
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:64px;padding:0 4px;border-bottom:1px solid var(--hair)}
+.top .l{display:flex}.top .r{display:flex;justify-content:flex-end}
+.logo{font-family:'Gowun Batang',serif;font-weight:700;font-size:24px;letter-spacing:.22em;padding-left:.22em}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;background:none;border:0;font-size:17px;color:#16181D}
+#jhBtn{color:var(--gold);font-weight:600}
+
+#view{padding:0 24px;text-align:center}
+
+/* 본질 */
+.ess{padding:30px 0 0}
+.mark{display:flex;align-items:center;justify-content:center;gap:14px;font-size:17px;letter-spacing:.32em;color:var(--gold);font-weight:500;padding-left:.32em}
+.mark::before,.mark::after{content:"";width:36px;height:1px;background:var(--hair)}
+.ess p[data-ess="1"]{font-family:'Gowun Batang',serif;font-weight:400;font-size:22px;line-height:1.62;margin:18px auto 0;max-width:310px;word-break:keep-all;text-wrap:balance}
+.cnt{display:flex;justify-content:center;align-items:stretch;margin:26px auto 0;max-width:280px}
+.cnt div{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--soft)}
+.cnt i{width:1px;background:var(--hair)}
+.cnt b{font-family:'Gowun Batang',serif;font-weight:400;font-size:40px;line-height:1;color:#16181D}
+.ess details summary{list-style:none;min-height:48px;display:flex;align-items:center;justify-content:center;color:var(--soft);cursor:pointer;margin-top:6px}
+.ess details summary::-webkit-details-marker{display:none}
+.ess details p{font-size:17px;color:#16181D;margin:0 auto 10px;max-width:310px;word-break:keep-all;text-wrap:balance}
+
+/* 물음 */
+.ask{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:20px;padding-top:22px;border-top:1px solid var(--hair)}
+.ask svg{flex:0 0 40px;width:40px;height:40px}
+.say{font-family:'Gowun Batang',serif;font-size:21px}
+
+/* 찾기 — 금빛 선 알약 + 금빛 원 */
+.find{display:flex;align-items:center;margin-top:16px;height:56px;border:1px solid var(--gold);border-radius:28px;padding:0 3px 0 22px}
+.find input{flex:1;min-width:0;height:48px;border:0;background:transparent;font-size:17px;outline-offset:4px}
+.find input::placeholder{color:#6B717C}
+.find button{flex:0 0 48px;width:48px;height:48px;border:0;border-radius:24px;background:#8A6516;color:#FFFFFF;font-family:'Gowun Batang',serif;font-weight:700;font-size:18px}
+
+/* 오늘 장 */
+.today{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;column-gap:12px;min-height:48px;margin-top:14px;font-size:17px;color:var(--soft)}
+.today .q{color:var(--gold);font-weight:700}
+.today b{font-weight:500}
+.up{color:#D0202E}.dn{color:#1E5BD8}
+
+/* 골똘이 칸 */
+.gdr{display:flex;margin-top:14px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.gdr a{flex:1;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-family:'Gowun Batang',serif;font-size:17px;position:relative}
+.gdr a+a::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:1px;background:var(--hair)}
+.gdr svg{width:22px;height:22px}
+
+/* 전부 보기 */
+.all summary{list-style:none;min-height:52px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--soft);cursor:pointer}
+.all summary::-webkit-details-marker{display:none}
+.all ul{list-style:none;border-top:1px solid var(--hair);text-align:left}
+.all li a{display:flex;min-height:52px;align-items:center;border-bottom:1px solid var(--hair);width:100%}
+
+/* 시황 */
+.news{margin-top:30px}
+.news h2{font-family:'Gowun Batang',serif;font-weight:400;font-size:19px;margin-bottom:8px}
+.news ul{list-style:none;border-top:1px solid var(--hair)}
+.news li{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;min-height:68px;border-bottom:1px solid var(--hair);text-align:left}
+.news li>span:first-child{display:flex;align-items:baseline;gap:10px}
+.news li b{font-family:'Gowun Batang',serif;font-weight:400;font-size:26px}
+.news button{min-height:48px;padding:0 18px;border:1px solid var(--gold);border-radius:24px;background:var(--wash);color:var(--gold);font-size:17px}
+.news .qs{display:none;width:100%;padding:0 0 12px;color:var(--soft)}
+.news li.open .qs{display:block}
+
+/* 아래 단추 */
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;background:#FFFFFF;border-top:1px solid var(--hair);height:64px}
+.tabs a{flex:1;display:flex;align-items:center;justify-content:center;font-size:17px;min-height:48px;color:var(--soft);position:relative}
+.tabs a[aria-current]{color:#16181D;font-weight:600}
+.tabs a[aria-current]::after{content:"";position:absolute;left:30%;right:30%;bottom:10px;height:1px;background:var(--gold)}
+
+/* 작은 화면 — 여백만 줄임 */
+@media (max-height:640px){
+  .ess{padding-top:16px}
+  .ess p[data-ess="1"]{font-size:20px;line-height:1.5;margin-top:10px}
+  .cnt{margin-top:12px}.cnt b{font-size:32px}
+  .ess details summary{margin-top:0}
+  .ask{margin-top:6px;padding-top:10px}
+  .find{margin-top:10px}
+}
+@media (max-width:340px){#view{padding:0 16px}.logo{letter-spacing:.14em;padding-left:.14em}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="l">
+    <button id="jhBtn" class="tb">진화</button>
+    <button class="tb" aria-label="언어">EN</button>
+  </div>
+  <span class="logo">골똘이</span>
+  <div class="r">
+    <button class="tb" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#16181D" stroke-width="1.6"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </div>
+</header>
+<main id="view">
+  <section class="ess" data-w="ess">
+    <div class="mark">본질</div>
+    <p data-ess="1">주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.</p>
+    <div class="cnt"><div data-num><b>0</b>번 멈춤</div><i></i><div data-num><b>0</b>번 약속</div></div>
+    <details>
+      <summary>더 보기</summary>
+      <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
+      <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
+    </details>
+  </section>
+
+  <div class="ask">
+    <svg viewBox="0 0 48 48" aria-label="골똘이 앵무새" fill="none" stroke="#8A6516" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="24" cy="24" r="22.5"/>
+      <circle cx="26" cy="16" r="6.2"/>
+      <path d="M31.6 13.6 Q37.5 14.6 35.4 21.6 Q33.6 19.8 31.4 18.8"/>
+      <path d="M21 20.6 Q14.6 27.6 18.4 35.8 Q22.6 40.2 27.6 36.4 Q31.4 29.6 29.6 21.4"/>
+      <path d="M19.6 36.4 L15.6 43 M22.6 38.4 L20.6 44"/>
+      <path d="M22.6 26 Q24.6 30.6 27.8 31.4"/>
+      <circle cx="27.8" cy="15.2" r=".9" fill="#8A6516" stroke="none"/>
+    </svg>
+    <p class="say" data-say>오늘은 쉬어 갈까?</p>
+  </div>
+
+  <form class="find" data-w="find" onsubmit="return false">
+    <input type="search" placeholder="친구야, 왜 사? 회사 이름" aria-label="친구야, 왜 사? 회사 이름">
+    <button type="submit" data-path="q1" aria-label="열한 질문 시작">왜?</button>
+  </form>
+
+  <a class="today" data-w="today" data-num href="#/f/day"><span class="q">?</span><span>10월 12일</span><span>코스피 <b class="dn">−3.28%</b></span><span>코스닥 <b class="dn">−4.36%</b></span></a>
+
+  <nav class="gdr" data-w="gdr" aria-label="골똘이 칸">
+    <a href="#/why"><svg viewBox="0 0 26 26" fill="none" stroke="#8A6516" stroke-width="1.2"><path d="M4 4h18v14H11l-5 4v-4H4z"/></svg>골똘이</a>
+    <a href="#/cal"><svg viewBox="0 0 26 26" fill="none" stroke="#8A6516" stroke-width="1.2"><rect x="3" y="5" width="20" height="17" rx="1"/><path d="M3 10h20M8 2v5M18 2v5"/></svg>달력</a>
+    <a href="#/cond"><svg viewBox="0 0 26 26" fill="none" stroke="#8A6516" stroke-width="1.2"><path d="M3 5h20l-8 9v7l-4-2v-5z"/></svg>조건</a>
+    <a href="#/lead"><svg viewBox="0 0 26 26" fill="none" stroke="#8A6516" stroke-width="1.2"><path d="M5 22V12M13 22V5M21 22v-7"/></svg>대장주</a>
+  </nav>
+
+  <details class="all">
+    <summary data-w="all">전부 보기 <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="#8A6516" stroke-width="1.2"><path d="M1 1l5 5 5-5"/></svg></summary>
+    <ul>
+      <li><a href="#/watch">관심</a></li>
+      <li><a href="#/hold">보유</a></li>
+      <li><a href="#/f/rise">오르는 업종 · 반도체 검사·측정 +4.73%</a></li>
+      <li><a href="#/surge">급등</a></li>
+    </ul>
+  </details>
+
+  <section class="news" data-w="news">
+    <h2>시황 · 10월 13일</h2>
+    <ul>
+      <li data-fact><span data-num>오른 곳 <b class="up">766</b></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></li>
+      <li data-fact><span data-num>내린 곳 <b class="dn">1,632</b></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></li>
+    </ul>
+  </section>
+</main>
+<nav class="tabs">
+  <a href="#/" aria-current="page">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why">매매일지</a>
+  <a href="#/watch">관심</a>
+  <a href="#/hold">보유종목</a>
+</nav>
+<script>
+document.querySelectorAll('[data-fact] button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('open')));
+</script>
+</body>
+</html>
