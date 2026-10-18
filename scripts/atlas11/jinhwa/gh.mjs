@@ -25,27 +25,40 @@ export const short = (s, n = 160) => String(s ?? '').replace(/https?:\/\/\S+/g, 
 export const DATA_EXCLUDES = Object.freeze([`:(exclude)${DATA_FILE}`, `:(exclude)${IMG_DIR}`]);
 
 // ───────────── 잠금(회차 하나씩) — 원격 가지 jinhwa-lock · 없을 때만 만들어짐(--force-with-lease=…:) ─────────────
+//   2026-10-18 20:20 첫 회차: end 뒤에도 잠금 가지가 남음 — Claude 예약 방의 git 길은 가지 지우기(push --delete)를 받지 않음(같은 회차의 대안 가지 셋도 안 지워짐)
+//   → 풀기 = 지우기가 안 되면 잠금 위에 「풀림」 커밋 하나를 앞으로만 밂(released) · 잡기 = 풀린 잠금은 바로 · 묵은 잠금(100분)은 그 위에 앞으로만 새 잠금(강제 밀기 없음)
+const lockMsg = (cwd, sha) => { try { return JSON.parse(git(cwd, ['log', '-1', '--format=%B', sha]).out); } catch { return null; } };
 export function lockTake(cwd, {by = 'jinhwa', now = new Date(), staleMin = LOCK_STALE_MIN, remote = 'origin'} = {}) {
   const tree = git(cwd, ['hash-object', '-t', 'tree', '-w', '--stdin'], {input: ''}).out;
   // 잠금 커밋마다 다른 값(nonce) — 같은 초 · 같은 글이면 같은 커밋이 되어 둘째 밀기가 「이미 같음」으로 지나가 버림(자기 시험 E2 가 잡음)
-  const c = git(cwd, ['commit-tree', tree, '-m', JSON.stringify({at: now.toISOString(), by, nonce: crypto.randomBytes(8).toString('hex'), pid: process.pid})]);
+  const make = parent => git(cwd, ['commit-tree', tree, ...(parent ? ['-p', parent] : []), '-m', JSON.stringify({at: now.toISOString(), by, nonce: crypto.randomBytes(8).toString('hex'), pid: process.pid})]);
+  const c = make(null);
   if (!c.ok) return {ok: false, why: '잠금 커밋을 못 만듦 ' + short(c.err)};
-  const sha = c.out.trim();
+  let sha = c.out.trim();
   const mine = () => git(cwd, ['ls-remote', remote, `refs/heads/${LOCK_BRANCH}`]).out.split(/\s+/)[0] === sha; // 밀린 뒤 원격이 내 잠금인지 다시 읽어 봄
   let r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
   if (r.ok && mine()) return {ok: true, sha};
   const old = git(cwd, ['ls-remote', remote, `refs/heads/${LOCK_BRANCH}`]).out.split(/\s+/)[0];
   if (!/^[0-9a-f]{40}$/.test(old || '')) return {ok: false, why: '잠금을 못 밂 ' + short(r.err)};
   git(cwd, ['fetch', '-q', '--no-tags', remote, `refs/heads/${LOCK_BRANCH}`]);
-  let at = null; try { at = JSON.parse(git(cwd, ['log', '-1', '--format=%B', old]).out).at; } catch { /* 꼴 모름 = 묵은 것으로 봄 */ }
-  const age = at ? (now - new Date(at)) / 60e3 : Infinity;
+  const m = lockMsg(cwd, old), released = !!m?.released;
+  const age = released ? Infinity : m?.at ? (now - new Date(m.at)) / 60e3 : Infinity; // 꼴 모름 = 묵은 것으로 봄
   if (age < staleMin) return {ok: false, busy: true, why: `다른 진화 회차가 돌고 있음 — ${Math.round(age)}분 전에 시작`};
+  const c2 = make(old); // 앞 잠금 위에 — 앞으로만 밂(강제 밀기를 받지 않는 길에서도 됨)
+  if (!c2.ok) return {ok: false, why: '잠금 커밋을 못 만듦 ' + short(c2.err)};
+  sha = c2.out.trim();
   r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${old}`, remote, `${sha}:refs/heads/${LOCK_BRANCH}`]);
-  return r.ok && mine() ? {ok: true, sha, stolen: old} : {ok: false, busy: true, why: '묵은 잠금을 못 가져옴 ' + short(r.err)};
+  return r.ok && mine() ? {ok: true, sha, ...(released ? {after: old} : {stolen: old})} : {ok: false, busy: true, why: '묵은 잠금을 못 가져옴 ' + short(r.err)};
 }
-export function lockRelease(cwd, {sha, remote = 'origin'}) {
+/** 풀기 — 먼저 지우기 · 안 되면 「풀림」 커밋을 앞으로만(그새 남이 잡았으면 lease 가 막음) · {ok, how: 'deleted' | 'released', why} */
+export function lockRelease(cwd, {sha, remote = 'origin', now = new Date()}) {
   const r = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${sha}`, remote, `:refs/heads/${LOCK_BRANCH}`]);
-  return {ok: r.ok, why: r.ok ? '' : short(r.err)};
+  if (r.ok) return {ok: true, how: 'deleted', why: ''};
+  const tree = git(cwd, ['hash-object', '-t', 'tree', '-w', '--stdin'], {input: ''}).out;
+  const c = git(cwd, ['commit-tree', tree, '-p', sha, '-m', JSON.stringify({released: now.toISOString(), of: sha, nonce: crypto.randomBytes(8).toString('hex')})]);
+  if (!c.ok) return {ok: false, why: '지우기 ' + short(r.err, 80) + ' · 풀림 커밋을 못 만듦'};
+  const p = git(cwd, ['push', '-q', '--no-verify', `--force-with-lease=refs/heads/${LOCK_BRANCH}:${sha}`, remote, `${c.out.trim()}:refs/heads/${LOCK_BRANCH}`]);
+  return p.ok ? {ok: true, how: 'released', why: ''} : {ok: false, why: '지우기 ' + short(r.err, 80) + ' · 풀림 ' + short(p.err, 80)};
 }
 
 // ───────────── 다른 올리기가 도나([8] 2 「다른 올리기가 돌고 있으면 끝날 때까지 기다려라」) ─────────────
@@ -82,30 +95,52 @@ export function curlJson(url, {timeoutS = 20} = {}) {
   return {ok: false, http, blocked: http === 0, why: http ? 'HTTP ' + http : short(r.err || '닿지 못함', 80)};
 }
 export const READ_WORKFLOW = 'atlas11-jinhwa-read.yml';
-/** 깃허브 작업으로 읽기(이 방의 바깥 길이 aaa7377.com 을 막을 때) — 작업이 main 에 있어야 함 · {ok, status, tally, run, why} */
-export async function readViaActions(cwd, {days = 200, maxMin = 5, say = () => {}} = {}) {
+/** 읽기 작업의 알림 줄(check-run annotations)을 깃허브 REST 로만 받아 다시 맞춤 — {ok, json, why}
+ *  Claude 예약 방은 묶음 · 작업 기록을 못 받음(2026-10-18 20:20 첫 회차 — *.blob.core.windows.net 을 바깥 길이 막음) · api.github.com 은 됨 */
+export async function readAnnotations(cwd, runId, {runner = gh} = {}) {
+  const R = await import('./read.mjs');
+  const j = runner(cwd, ['api', `repos/${REPO}/actions/runs/${runId}/jobs`]);
+  if (!j.ok) return {ok: false, why: '작업 목록을 못 읽음 ' + short(j.err, 80)};
+  let jobs; try { jobs = JSON.parse(j.out || '{}').jobs; } catch { return {ok: false, why: '작업 목록 꼴'}; }
+  if (!Array.isArray(jobs) || !jobs.length) return {ok: false, why: '작업이 없음'};
+  const job = jobs.find(x => x?.name === 'read') ?? (jobs.length === 1 ? jobs[0] : null);
+  const cid = /\/check-runs\/(\d+)$/.exec(String(job?.check_run_url ?? ''))?.[1] ?? (Number.isInteger(job?.id) ? String(job.id) : null);
+  if (!cid) return {ok: false, why: '읽기 작업 번호를 못 찾음'};
+  const a = runner(cwd, ['api', `repos/${REPO}/check-runs/${cid}/annotations?per_page=100`]);
+  if (!a.ok) return {ok: false, why: '알림 줄을 못 읽음 ' + short(a.err, 80)};
+  let list; try { list = JSON.parse(a.out || '[]'); } catch { return {ok: false, why: '알림 줄 꼴'}; }
+  return R.fromAnnotations(list);
+}
+/** 받은 읽기 묶음(read.mjs 꼴) → readViaActions 결과 · 때(t0) 뒤에 읽은 것만 */
+function readResult(j, id, t0, via) {
+  if (j?.schema !== 'kkolttori-jinhwa-read-1' || !(Date.parse(j.at) >= t0)) return {ok: false, run: id, why: '읽은 것 꼴 · 때가 맞지 않음'};
+  return {ok: true, via, run: id, status: j.status?.ok ? j.status.json : null, tally: j.tally?.ok ? j.tally.json : null, why: [j.status?.ok ? '' : '상태 ' + j.status?.why, j.tally?.ok ? '' : '합계 ' + j.tally?.why].filter(Boolean).join(' · ')};
+}
+/** 깃허브 작업으로 읽기(이 방의 바깥 길이 aaa7377.com 을 막을 때) — 작업이 main 에 있어야 함 · {ok, status, tally, run, why}
+ *  받는 길: 먼저 알림 줄(REST) · 안 되면 묶음 받기 · 둘 다 안 되면 ok false(닫힌 쪽 — 넣지 않음) */
+export async function readViaActions(cwd, {days = 200, maxMin = 5, say = () => {}, runner = gh, wait = sleep} = {}) {
   if (!git(cwd, ['cat-file', '-e', `origin/main:.github/workflows/${READ_WORKFLOW}`]).ok) return {ok: false, why: `읽기 작업(${READ_WORKFLOW})이 main 에 없음`};
   const t0 = Date.now() - 15e3;
-  const w = gh(cwd, ['workflow', 'run', READ_WORKFLOW, '-R', REPO, '--ref', 'main', '-f', `days=${days}`]);
+  const w = runner(cwd, ['workflow', 'run', READ_WORKFLOW, '-R', REPO, '--ref', 'main', '-f', `days=${days}`]);
   if (!w.ok) return {ok: false, why: '읽기 작업을 못 시작함 ' + short(w.err)};
   say('열쇠 없는 읽기 — 깃허브 작업으로');
   let id = null;
   for (let i = 0; i < 24 && !id; i++) {
-    await sleep(5000);
-    const l = gh(cwd, ['run', 'list', '-R', REPO, '--workflow', READ_WORKFLOW, '--limit', '5', '--json', 'databaseId,createdAt']);
+    await wait(5000);
+    const l = runner(cwd, ['run', 'list', '-R', REPO, '--workflow', READ_WORKFLOW, '--limit', '5', '--json', 'databaseId,createdAt']);
     try { id = JSON.parse(l.out || '[]').filter(x => Date.parse(x.createdAt) >= t0).sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))[0]?.databaseId ?? null; } catch { /* 다시 */ }
   }
   if (!id) return {ok: false, why: '읽기 작업 실행을 못 찾음'};
-  const wch = gh(cwd, ['run', 'watch', String(id), '-R', REPO, '--exit-status', '--interval', '10'], {timeout: maxMin * 60e3});
+  const wch = runner(cwd, ['run', 'watch', String(id), '-R', REPO, '--exit-status', '--interval', '10'], {timeout: maxMin * 60e3});
   if (!wch.ok) return {ok: false, run: id, why: '읽기 작업이 끝나지 못함'};
+  const an = await readAnnotations(cwd, id, {runner});
+  if (an.ok) return readResult(an.json, id, t0, 'actions-annotations');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'jinhwa-read-'));
   try {
-    const dl = gh(cwd, ['run', 'download', String(id), '-R', REPO, '-n', 'jinhwa-read', '-D', dir]);
-    if (!dl.ok) return {ok: false, run: id, why: '읽은 것을 못 받음 ' + short(dl.err)};
-    const j = JSON.parse(fs.readFileSync(path.join(dir, 'jinhwa-read.json'), 'utf8'));
-    if (j?.schema !== 'kkolttori-jinhwa-read-1' || !(Date.parse(j.at) >= t0)) return {ok: false, run: id, why: '읽은 것 꼴 · 때가 맞지 않음'};
-    return {ok: true, via: 'actions', run: id, status: j.status?.ok ? j.status.json : null, tally: j.tally?.ok ? j.tally.json : null, why: [j.status?.ok ? '' : '상태 ' + j.status?.why, j.tally?.ok ? '' : '합계 ' + j.tally?.why].filter(Boolean).join(' · ')};
-  } catch (e) { return {ok: false, run: id, why: '읽은 것을 못 읽음 ' + short(e?.message ?? e)}; }
+    const dl = runner(cwd, ['run', 'download', String(id), '-R', REPO, '-n', 'jinhwa-read', '-D', dir]);
+    if (!dl.ok) return {ok: false, run: id, why: `알림 줄 ${an.why} · 묶음도 못 받음 ${short(dl.err, 80)}`};
+    return readResult(JSON.parse(fs.readFileSync(path.join(dir, 'jinhwa-read.json'), 'utf8')), id, t0, 'actions-artifact');
+  } catch (e) { return {ok: false, run: id, why: `알림 줄 ${an.why} · 묶음을 못 읽음 ${short(e?.message ?? e, 80)}`}; }
   finally { fs.rmSync(dir, {recursive: true, force: true}); }
 }
 /** 열쇠 없는 읽기 — 먼저 바로(curl) · 닿지 못하면(바깥 길이 막힘) 깃허브 작업으로 · {status, tally, via, why} · 꼴은 lib normalizeStatus · normalizeTally 가 봄 */
@@ -189,7 +224,13 @@ export function pushMain(cwd, sha) {
   const r = git(cwd, ['push', '-q', 'origin', `${sha}:refs/heads/main`], {timeout: 300e3});
   return {ok: r.ok, rejected: /rejected|non-fast-forward|fetch first|stale info/i.test(r.err), why: r.ok ? '' : short(r.err, 200)};
 }
-export function deleteRemoteBranch(cwd, b) { return git(cwd, ['push', '-q', '--no-verify', 'origin', '--delete', b]); }
+/** 회차 가지 지우기 — git 길이 지우기를 안 받으면(Claude 예약 방 · 2026-10-18 첫 회차) 깃허브 REST 로 한 번 더 · 둘 다 안 되면 ok false(가지만 남음 · 아무것도 넣지 않음) */
+export function deleteRemoteBranch(cwd, b, {runner = gh} = {}) {
+  const r = git(cwd, ['push', '-q', '--no-verify', 'origin', '--delete', b]);
+  if (r.ok || !/^jinhwa(-try|-fix)?\//.test(b) || !git(cwd, ['remote', 'get-url', 'origin']).out.includes(REPO)) return r; // REST 는 진짜 저장소 원격일 때만(자기 시험의 가짜 원격에서 진짜 가지를 지우지 않게)
+  const a = runner(cwd, ['api', '-X', 'DELETE', `repos/${REPO}/git/refs/heads/${b}`]);
+  return a.ok ? {...a, via: 'api'} : {ok: false, code: a.code, out: '', err: short(r.err, 80) + ' · ' + short(a.err, 80)};
+}
 
 // ───────────── 본질 문(KA · scripts/atlas11/next/essence_check.mjs) — 없으면 실패(닫힌 쪽) ─────────────
 /** 진화 가지 지킴 — 회차를 연 저장소(main) 의 문으로 base..head 를 봄(가지 쪽 문을 쓰지 않음) · 끝 코드 0 = 지남 */

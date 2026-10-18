@@ -41,12 +41,15 @@ const readJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } c
 
 /** 진짜 손발(망 · git · 깃허브 · 브라우저) — 자기 시험은 이것을 갈음 */
 export function realDeps({root = ROOT, run = process.env.JINHWA_RUN || path.join(os.tmpdir(), 'jinhwa-run')} = {}) {
+  let lastWhy = '';
   return {
     root, run, now: () => new Date(), sleep: G.sleep, every: 30, waitDeploysMin: 20, previewMaxMin: 22,
     say: s => process.stderr.write(String(s) + '\n'),
     // 읽기 주소 — 늘 열쇠 없는 GET 둘뿐([9] 8) · 바로(curl) 못 닿으면 깃허브 작업 atlas11-jinhwa-read.yml 로 · JINHWA_SITE = 시험 서버로 바꿔 볼 때만(예 http://127.0.0.1:8826)
-    fetchStatus: async () => (await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'status', say: s => process.stderr.write(s + '\n')})).status,
-    fetchTally: async days => (await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'tally', days, say: s => process.stderr.write(s + '\n')})).tally,
+    //   못 읽은 까닭은 readWhy() 로 기록에 남김(2026-10-18 첫 회차 — 까닭이 「꼴을 모름」으로만 남아 묶음을 못 받은 것을 몰랐음)
+    fetchStatus: async () => { const r = await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'status', say: s => process.stderr.write(s + '\n')}); lastWhy = r.status ? '' : r.why; return r.status; },
+    fetchTally: async days => { const r = await G.readKeyless(root, {site: process.env.JINHWA_SITE || L.SITE, want: 'tally', days, say: s => process.stderr.write(s + '\n')}); lastWhy = r.tally ? '' : r.why; return r.tally; },
+    readWhy: () => lastWhy,
     ghRunner: G.gh,
     essenceDiff: (base, head) => G.essenceDiff(root, base, head),
     essenceStatic: siteDir => G.essenceStatic(root, siteDir),
@@ -141,6 +144,7 @@ export async function cmdBegin(a, D) {
   st.marks = marksOf(D.root, st.main0);
   // ⑥ 열쇠 없는 상태 읽기([9] 8) → 할 일
   st.status = L.normalizeStatus(await D.fetchStatus());
+  if (!st.status.ok && D.readWhy?.()) st.status.why += ` — ${G.short(D.readWhy(), 160)}`;
   st.cutoff = L.isoKst(L.roundCutoff(now));
   st.plan = L.planRound({data: st.data0, status: st.status, records: recordsOf(st), cutoff: st.cutoff});
   if (!st.status.ok) notDone(st, `확인 상태를 못 읽음(${st.status.why}) — 넣기 · 되돌리기 없음`);
@@ -379,10 +383,13 @@ export async function cmdAlt(a, D) {
   const d = G.diffInfo(D.root, st.main0, head);
   const fc = L.fileCheck(d.files, {patch: d.patch});
   made.files = d.files.map(f => f.path); made.changeHash = L.changeHash(d.patch);
-  made.big = L.bigReasons(d.files, L.addedText(d.patch));
+  const tp = dropBuilt(d.patch); // 영어 사전(빌드한 한 줄짜리 큰 JSON · 원본의 쉼표 붙은 옛 줄)은 낱말 · 큰 것 셈에서 뺌 — 그 안의 옛 글이 「더한 글」로 잡히지 않게
+  made.big = L.bigReasons(d.files, L.addedText(tp));
   made.why.push(...fc.why);
-  for (const t of L.addedKoreanStrings(d.patch)) for (const h of L.textHits(t, wordsOpt(W))) made.why.push(`더한 글 「${t.slice(0, 20)}」 — ${h}`);
+  for (const t of L.addedKoreanStrings(tp)) for (const h of L.textHits(t, wordsOpt(W))) made.why.push(`더한 글 「${t.slice(0, 20)}」 — ${h}`);
   for (const o of st.made) if (o.ok && o.changeHash === made.changeHash) made.why.push(`대안 ${o.n} 과 같은 고침 — 서로 달라야 함`);
+  const en = await enGaps(D.root, dir, d.patch); // 영어 없는 새 화면 글 — 미리 검사를 쓰기 전에 막음(첫 회차 대안 셋이 en 에서 떨어짐)
+  if (!en.ok) { made.why.push(en.why); made.en = {gaps: en.gaps.slice(0, 5), stale: en.stale.slice(0, 5)}; }
   if (!made.why.length) { const e = D.essenceDiff(st.main0, head); if (!e.ok) made.why.push(e.why); }
   if (!made.why.length) { const sg = staticGate(D, st, dir); if (!sg.ok) made.why.push(sg.why); }
   if (made.why.length) return done();
@@ -399,6 +406,62 @@ export async function cmdAlt(a, D) {
   made.ok = true; made.why = [];
   note(st, `대안 ${n} 검사 지남 · 미리 검사 시작 ${ps.run ?? '?'}`);
   return done();
+}
+/** 바뀐 것에서 영어 사전(site/next/i18n/ — i18n_build.mjs 가 만든 한 줄짜리 · 원본 scripts/atlas11/next/i18n/ — 쉼표만 붙은 옛 줄)을 뺀 것 — 화면 글은 화면 파일 쪽에서 봄 */
+export function dropBuilt(patch) {
+  let on = true; const out = [];
+  for (const l of String(patch).split('\n')) { if (l.startsWith('diff --git ')) on = !/ b\/(site\/next\/i18n\/|scripts\/atlas11\/next\/i18n\/)/.test(l); if (on) out.push(l); }
+  return out.join('\n');
+}
+/** 영어 사전에 없는 화면 글 — 2026-10-18 20:20 첫 회차: 대안 셋이 p-why.js 에 영어 없는 한국어 글을 넣어 모든 쪽 미리 검사(en · share · past)에서 모두 떨어짐
+ *  → 미리 검사(약 20분) 전에 여기서 막음. 엔진 = 회차를 연 폴더(main)의 site/next/i18n.js 그대로(틀 {n} {q} {e} {d} 나누기 · 「 · 」 쪼개기 — 새 셈을 만들지 않음)
+ *  사전 = 대안 폴더의 site/next/i18n/en.json(사이트가 실제로 읽는 것) · en-names.json · 원본 en-src.json 에만 있으면 「i18n_build 를 안 돌림」
+ *  보는 글 = 더한 줄의 따옴표 안 한글(L.addedKoreanStrings) — site/next 의 .js · .html 만 · 사전 · 자료 파일 · lang="ko" 원문 줄은 뺌 · ${…} 는 숫자 · 빈칸 둘로 넣어 하나라도 영어가 되면 지남
+ *  돌려줌 {ok, gaps: [{text, keys}], stale(원본엔 있으나 사전에 없음), why} · 엔진 · 사전을 못 읽으면 ok false(닫힌 쪽) */
+export async function enGaps(root, dir, patch) {
+  const keep = [], cur = {on: false};
+  for (const l of String(patch).split('\n')) {
+    if (l.startsWith('diff --git ')) { const f = / b\/(.+)$/.exec(l)?.[1] ?? ''; cur.on = /^site\/next\/(?!data\/|i18n\/)[^]*\.(js|html)$/.test(f); cur.js = /\.js$/.test(f); }
+    if (!cur.on || /lang\s*[:=]\s*\\?['"]ko\\?['"]/.test(l) || /^\+\s*(\*|\/\*|\/\/)/.test(l)) continue; // 원문 줄 · 주석 줄은 화면 글이 아님
+    if (cur.js && l.startsWith('+') && !/['"`]/.test(l)) continue; // .js 의 따옴표 없는 줄 = 여러 줄 주석 속(화면 글은 따옴표 안에만)
+    keep.push(l);
+  }
+  const texts = [...new Set(L.addedKoreanStrings(keep.join('\n')))];
+  if (!texts.length) return {ok: true, gaps: [], stale: [], why: ''};
+  const J = f => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+  const engine = async (dict, names) => { // 한 번 쓰는 엔진 — 주소 꼬리로 따로 읽어 사전 · 캐시가 섞이지 않음 · 영어로 켜려고 잠깐 location 을 둠
+    const had = Object.prototype.hasOwnProperty.call(globalThis, 'location'), old = globalThis.location;
+    globalThis.location = {pathname: '/next/', search: '?lang=en', hash: ''};
+    try { const m = await import(pathToFileURL(path.join(root, 'site/next/i18n.js')).href + '?jinhwa-en-' + Math.random().toString(36).slice(2)); m.useDict(dict, names?.names ?? null, names?.latin ?? null); return m; }
+    finally { if (had) globalThis.location = old; else delete globalThis.location; }
+  };
+  let site, src;
+  try {
+    const names = J('site/next/i18n/en-names.json');
+    site = await engine(J('site/next/i18n/en.json'), names);
+    const S = J('scripts/atlas11/next/i18n/en-src.json'); src = await engine({templates: S.templates, entities: S.entities}, names);
+  } catch (e) { return {ok: false, gaps: [], stale: [], why: '영어 사전 · 엔진을 못 읽음 — ' + G.short(e?.message ?? e, 80)}; }
+  if (!site.ON) return {ok: false, gaps: [], stale: [], why: '영어 엔진이 영어로 켜지지 않음'};
+  const HAN = /[가-힣]/;
+  // 코드 조각(정규식 · 이어 붙인 식)과 한 글자 단위(조 · 억 · 원)는 화면 글이 아님 — 따옴표만으로 JS 를 다 가를 수 없어 이 둘은 뺌
+  const segs = t => String(t).replace(/\\n/g, ' ').replace(/\\(['"`\\])/g, '$1').split(/<[^>]*>/).map(x => x.trim())
+    .filter(x => HAN.test(x) && (x.match(/[가-힣]/g) ?? []).length >= 2 && !/[\[\]\\|^]|\)\.|=>|\.(replace|match|test|split)\(/.test(x));
+  // ${…} 는 숫자 · 빈칸 · 이름으로, 앞뒤에 이어 붙는 값(이름 + ' 관심에 담았어요')은 이름 · 숫자로 붙여 봄 — 하나라도 한글 없이 바뀌면 지남
+  const ent = Object.keys(site.nameEn ? (J('site/next/i18n/en-names.json').names ?? {}) : {}).find(k => HAN.test(k)) ?? '반도체';
+  const variants = x => (x.includes('${') ? ['7', '', ent] : ['']).map(v => x.replace(/\$\{[^}]*\}/g, v).replace(/\s{2,}/g, ' ').trim()).filter(Boolean)
+    .flatMap(v => [v, `${ent} ${v}`, `${ent}${v}`, `${v} ${ent}`, `7${v}`, `${v} 7`]);
+  const passes = (m, x) => variants(x).some(v => !HAN.test(m.t(v)));
+  const gaps = [], stale = [];
+  for (const t of texts) for (const x of segs(t)) {
+    if (passes(site, x)) continue;
+    const before = new Set(src.missing().map(k => k.key)), base = variants(x)[0] ?? x; // 빠진 틀 = 원본 사전으로도 못 바꾼 조각(엔진 missing · 「…」 안 글 포함)
+    if (passes(src, x)) { stale.push(x); continue; }
+    gaps.push({text: x, keys: [...new Set([...src.missing().map(k => k.key).filter(k => !before.has(k)), src.templateOf(base).key])].slice(0, 3)});
+  }
+  const why = [];
+  if (gaps.length) why.push(`영어 사전에 없는 화면 글 ${gaps.length}개(${[...new Set(gaps.flatMap(g => (g.keys.length ? g.keys : [g.text])))].slice(0, 3).map(k => `「${k.slice(0, 40)}」`).join(' · ')}) — 같은 가지에서 node scripts/atlas11/next/i18n/add.mjs "<한국어 틀>" "<영어>" → node scripts/atlas11/next/i18n_build.mjs 를 돌려 함께 커밋(두 파일도 다섯에 듦 · 틀의 {n} {q} {e} 는 그대로)`);
+  if (stale.length) why.push(`영어 원본(en-src.json)에는 있으나 사이트 사전(site/next/i18n/en.json)에 없는 글 ${stale.length}개(「${stale[0].slice(0, 30)}」) — node scripts/atlas11/next/i18n_build.mjs 를 돌려 함께 커밋`);
+  return {ok: !why.length, gaps, stale, why: why.join(' · ')};
 }
 /** 지금 사이트 자료 — 회차에 한 번만(전후 그림이 같은 자료를 씀 · 못 받으면 저장소 자료 그대로 · 기록에 적음) */
 async function liveOnce(D, st) {
@@ -530,6 +593,7 @@ export async function cmdScore(a, D) {
   const recs = recordsOf(st), mem = L.memoryOf(recs);
   const cal = readJson(path.join(st.wt.main, L.CAL_FILE));
   const fresh = L.normalizeTally(await D.fetchTally(200)); // 합계 칸 읽기는 200일까지(KD) — 앞 칸 · 뒤 칸 60거래일씩도 한 번에
+  if (!fresh.ok && D.readWhy?.()) fresh.why += ` — ${G.short(D.readWhy(), 160)}`;
   st.tally = fresh.ok ? Object.fromEntries(Object.entries(fresh.days).sort().slice(-14)) : null; // 기록에는 지난 14일만(앞날은 앞 기록에 · 읽기 창 200일 밖을 이어 붙일 때만 씀)
   if (!fresh.ok) notDone(st, `합계 칸을 못 읽음(${fresh.why}) — 채점 미룸`);
   const tally = L.mergeTally(...recs.map(r => (r.tally ? {ok: true, days: r.tally} : null)), fresh);
@@ -631,12 +695,12 @@ export async function cmdRecord(a, D) {
 // ───────────── end · status · validate · empty ─────────────
 export async function cmdEnd(a, D) {
   const st = load(D, {open: false});
-  if (st.lock?.sha) { const r = G.lockRelease(D.root, {sha: st.lock.sha}); if (!r.ok) notDone(st, '회차 잠금을 못 풂(100분 뒤 저절로 풀림)'); }
+  if (st.lock?.sha) { const r = G.lockRelease(D.root, {sha: st.lock.sha, now: D.now()}); st.lockReleased = r.ok ? r.how : null; if (!r.ok) notDone(st, `회차 잠금을 못 풂(${r.why}) — 100분 뒤 다음 회차가 묵은 잠금으로 가져감`); }
   for (const w of Object.values(st.wt ?? {})) if (typeof w === 'string') G.worktreeRemove(D.root, w);
   for (const b of Object.keys(st.wt ?? {}).filter(k => /^alt\d$/.test(k))) G.git(D.root, ['branch', '-D', L.branchOf(`${st.id}-${b.slice(3)}`)]); // 이 기계의 가지만(원격 가지는 기록 단계가 정리)
   if (st.fixing) G.git(D.root, ['branch', '-D', L.fixBranchOf(st.fixing.id)]);
   st.ended = L.isoKst(D.now()); save(D, st);
-  return {id: st.id, ended: st.ended, recorded: !!st.recorded, notDone: st.notDone};
+  return {id: st.id, ended: st.ended, recorded: !!st.recorded, lock: st.lock?.sha ? (st.lockReleased ?? 'not released') : 'none', notDone: st.notDone};
 }
 export async function cmdStatus(a, D) { const raw = await D.fetchStatus(); return L.normalizeStatus(raw); }
 export async function cmdValidate(a, D) {
