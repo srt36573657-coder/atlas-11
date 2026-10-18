@@ -46,6 +46,9 @@ html.f2 .wtabs, html.f3 .wtabs { grid-template-columns: repeat(2, minmax(0, 1fr)
 .nx.cw small { font-size: var(--fs-1); }
 .nx.cw .th .big { left: auto; right: var(--sp-1); top: var(--sp-1); font-size: var(--fs-1); text-align: right; }
 .nx.cw .th .dur { font-size: var(--fs-1); text-align: right; }
+/* 「다음 볼 것」 줄 + 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 일꾼 KB2 · app.js kkWrap .kkr.kkn) — 고리 오른쪽 16px 가 그림과 단추 사이 · 단추 오른쪽 16px · 단추는 그림 가운데 높이 */
+.kkr.kkn { padding-right: var(--sp-2); padding-bottom: var(--sp-2); }
+.kkr.kkn > .nx.cw { padding-right: var(--sp-1); padding-bottom: 0; }
 
 /* ── 3단 자세히 칸(p-co.js) ── */
 .pco { margin-top: var(--sp-3); padding-bottom: var(--sp-1); border-top: 1px solid var(--hair); }

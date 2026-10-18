@@ -6,6 +6,8 @@
 import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; // 새 화면 제 영어 엔진 · 사전(/next/i18n/ — 2026-10-17 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」로 /atlas/ 와 떼어 냄)
 import {NAME, VIDEO} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
 import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026-10-18 [10] 1 · 2 — 갈래 → 큰 업종 …) · 그리는 곳 한 줄(route)
+import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
+import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -173,7 +175,7 @@ function premCard() {
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
 const NB = ' ';
 const HELLO_PROMO = '3명만 소개해도 스타벅스 상품권 1만원!';
-const HELLO_MSG = ['꼴똘이 주식 격언 열 가지','1. 쉬는 것도 투자다. 안 사는 날이 더 많아야 합니다.', '2. 잃지 않는 게 버는 거다. 돈을 불리기 전에 먼저 지킵니다.', '3. 사기 전에 팔 곳부터 정해라. 떨어지면 어디서 팔지 미리 정합니다.', '4. 모두가 웃을 때 나는 늦었다. 다들 좋다고 떠들면 이미 비싼 겁니다.', '5. 헷갈리면 안 사는 게 답이다. 애매하면 그냥 넘깁니다.', '6. 자신 없으면 조금만. 확신이 없으면 내 돈의 열에 하나까지만.', '7. 시장이 흔들리면 나는 멈춘다. 크게 출렁이는 날은 쉽니다.', '8. 손해는 짧게, 이익은 길게. 떨어지면 빨리 팔고, 오르면 오래 들고 갑니다.', '9. 돈이 가는 길을 따라가라. 돈이 몰리는 업종에서만 고릅니다.', '10. 기회는 찾아오는 거지, 만드는 게 아니다. 억지로 사지 말고 좋은 때를 기다립니다.'];
+const HELLO_MSG = ['골똘이 주식 격언 열 가지','1. 쉬는 것도 투자다. 안 사는 날이 더 많아야 합니다.', '2. 잃지 않는 게 버는 거다. 돈을 불리기 전에 먼저 지킵니다.', '3. 사기 전에 팔 곳부터 정해라. 떨어지면 어디서 팔지 미리 정합니다.', '4. 모두가 웃을 때 나는 늦었다. 다들 좋다고 떠들면 이미 비싼 겁니다.', '5. 헷갈리면 안 사는 게 답이다. 애매하면 그냥 넘깁니다.', '6. 자신 없으면 조금만. 확신이 없으면 내 돈의 열에 하나까지만.', '7. 시장이 흔들리면 나는 멈춘다. 크게 출렁이는 날은 쉽니다.', '8. 손해는 짧게, 이익은 길게. 떨어지면 빨리 팔고, 오르면 오래 들고 갑니다.', '9. 돈이 가는 길을 따라가라. 돈이 몰리는 업종에서만 고릅니다.', '10. 기회는 찾아오는 거지, 만드는 게 아니다. 억지로 사지 말고 좋은 때를 기다립니다.'];
 const INTRO_FLY = 4200, INTRO_LAND = 800; // 날기 시작 · 나는 때(합 5초 = 여는 고도리 5초 · 규칙 66)
 let helloIntro = true;
 const ICON2 = {
@@ -193,7 +195,7 @@ function m4letter() {
   if (!intro) return a;
   a.classList.add('intro');
   const pi = h('span', {class: 'hpi', 'aria-hidden': 'true'}, h('i', {class: 'm4-bm'}), h('img', {class: 'hpi-bird', src: '/media/makbi-hello.svg', alt: '', width: 240, height: 300, decoding: 'async'}),
-    ...['b1', 'b2', 'b3'].map(k => h('b', {class: 'hpi-b ' + k, text: '꼴똘이!'})));
+    ...['b1', 'b2', 'b3'].map(k => h('b', {class: 'hpi-b ' + k, text: '골똘이!'})));
   a.append(pi);
   let done = false;
   const land = () => { if (done) return; done = true; a.classList.remove('intro', 'flying'); a.classList.add('rv', 'landed'); pi.remove(); };
@@ -376,17 +378,31 @@ async function homeRest() {
   if (gs.length) out.push(h('h2', {class: 'sec', text: '큰 업종 · 한 달'}), crows(gs, g => ({href: '#/ch/g/' + enc(g.id), name: g.name, x: g.chg, v: g.v})));
   out.push(premCard());
   if (T?.open) out.push(h('a', {class: 'm4-mr', href: oldOr('time', '#/time')}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.open)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
-  out.push(h('section', {class: 'm4-seal-box', 'aria-label': '꼴똘이 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '꼴똘이는 들은 것만 따라 말해요.'}), h('span', {text: '그래서 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'})));
+  out.push(h('section', {class: 'm4-seal-box', 'aria-label': '골똘이 약속'}, h('span', {class: 'm4-seal', 'aria-hidden': 'true'}, h('i')), h('p', {class: 'm4-pr'}, h('span', {text: '골똘이는 들은 것만 따라 말해요.'}), h('span', {text: '그래서 지난 기록만 보여요.'})), h('p', {class: 'm4-cap', text: fourADay(D.sum) ? '숫자는 네이버 증권에서 하루 4번 새로 받아요.' : '숫자는 네이버 증권에서 업데이트 때마다 새로 받아요.'}))); // 「하루 4번」은 지난 7일 기록과 맞을 때만([5] 4 · 일꾼 KC)
   return out.filter(Boolean);
+}
+/* 첫 화면 본질 세 줄(사장님 2026-10-18(싱가포르) 16:39 [5] 1 ~ 5 · 8 · 일꾼 KC) — 이야기 입구 바로 위 칸 하나(#view > section.ess) · 글 = essence.js 세 줄 그대로
+   숫자 둘(회사 수 · 마지막으로 받은 때)은 요약 파일(sumOk — 새것일 때만)에서 · 없으면 「?」 · 받은 때가 오래되면 앞에 「? 」 · 「?」가 든 줄은 금빛
+   처음 온 기기 = 펼침(세 줄) · 다시 온 기기 = 접힘(첫 줄 한 줄 · 누르면 세 줄) — 기억 atlas:essence-seen(저장소가 막히면 늘 펼침) · 쪽을 연 동안은 처음 정한 대로(누르면 따라감)
+   VIDEO.ready 일 때만 칸 밑에 「VIDEO.title + 보기 ›」(소개 쪽 영상 · 이름 · 제목은 brand.js) · 이 칸은 이야기 입구 밑 세 덩이(규칙 79)와 따로 셈([5] 8) */
+const K_ESS = 'atlas:essence-seen';
+let essOpen = null;
+function essenceBox() {
+  if (essOpen == null) { essOpen = store.get(K_ESS, false) !== true; store.set(K_ESS, true); }
+  const [l1, l2, l3] = essenceLines(essenceData({summary: sumOk(), now: Date.now()})), cl = t => (t.includes('?') ? 'ess-l q' : 'ess-l');
+  const d = h('details', {class: 'ess-d', open: essOpen}, h('summary', {class: 'ess-s'}, h('span', {class: 'ess-t', 'data-ess': '1', text: l1})),
+    h('p', {class: cl(l2), 'data-ess': '2', text: l2}), h('p', {class: cl(l3), 'data-ess': '3', text: l3}));
+  d.addEventListener('toggle', () => { essOpen = d.open; });
+  return h('section', {class: 'ess', 'aria-label': NAME + ' 세 줄'}, d, VIDEO.ready ? h('a', {class: 'ess-v', href: '/hello.html#hp-vid', text: VIDEO.title + ' 보기 ›'}) : null);
 }
 async function vHomeAll() {
   const H = homeSrc(), band = homeBand(H);
-  const nodes = [chipsBar('all'), h('a', {class: 'tk-entry', href: oldOr('talk', '#/talk')}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'})), band.el];
+  const nodes = [chipsBar('all'), essenceBox(), h('a', {class: 'tk-entry', href: oldOr('talk', '#/talk')}, h('b', {text: '오늘의 이야기'}), h('span', {text: '이야깃거리 · 대가 한마디 · 유튜브'}), h('i', {'aria-hidden': 'true', text: '›'})), band.el];
   nodes.push(...await godoriHome()); // 이야기 입구 밑 세 덩이 = 띠 · 「친구야, 왜 사?」 · 고도리 칸(명령문 [6] 3)
   const body = h('div', {class: 'hm-in'}, homeSum(H, band.day)), more = h('details', {class: 'hm-more'}, h('summary', {class: 'hm-ms', text: '더 보기'}), body);
   let filled = false;
   more.addEventListener('toggle', () => { if (!more.open || filled) return; filled = true; homeRest().then(xs => body.append(...xs), e => { console.error(e); body.append(h('p', {class: 'empty', text: '? 나머지 칸을 그리지 못했어요.'})); }); });
-  nodes.push(more, h('p', {class: 'safe hm-safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+  nodes.push(more, h('p', {class: 'safe hm-safe', text: '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
   return {title: '오늘 장', nodes};
 }
 
@@ -422,10 +438,17 @@ function chipList(items, big, row, unit = '곳') {
   if (rest > 0) { const b = h('button', {class: 'more', type: 'button', 'aria-expanded': 'false', text: '나머지 ' + num(rest) + unit + ' 보기'}); b.addEventListener('click', () => { for (const e of li) e.hidden = false; b.remove(); }); out.push(b); }
   return out;
 }
-/** 한 줄(이름 · % · 작은 선) — r = {href(null 이면 누르지 않는 줄), name, x, pt?, v} · 칩 목록 · 첫 화면 「더 보기」가 함께 씀 */
+/** 카톡 줄(사장님 2026-10-18 16:39 [6] 1 · 6 · 8 · 일꾼 KB2) — 종목 줄 · 카드 = 줄 고리(a)와 카톡 단추(share-btn.js shareButtons 하나)를 형제로 · 단추는 오른쪽 끝
+    kk = {code, name, price?, day?, kind: 'share' | 'surge'} · place = 검사(check_kakao.mjs)가 곳마다 세는 이름 · cls = 줄 꼴(.kkr 줄 · .kkr.kkc 카드 · app.css 「카톡 줄」)
+    단추를 못 만들면(번호가 틀림 · kk 없음) 줄 그대로 */
+function kkWrap(el, kk, place, cls = 'kkr') {
+  const b = el && kk ? shareButtons(kk, {kakao: true}) : null;
+  return b ? h('div', {class: cls, 'data-kkrow': place}, el, b) : el;
+}
+/** 한 줄(이름 · % · 작은 선) — r = {href(null 이면 누르지 않는 줄), name, x, pt?, v, kk?(종목이면 카톡 단추 — kkWrap)} · 칩 목록 · 첫 화면 「더 보기」가 함께 씀 */
 function crowLi(r, hide = false) {
-  return h('li', {hidden: hide}, h(r.href ? 'a' : 'div', {class: 'crow', href: r.href || null}, h('b', {class: 'cn', text: r.name}), h('span', {class: 'cp ' + cls(r.x), text: r.pt ?? pct(r.x)}),
-    lineSvg(r.v, {w: 96, ht: 36, fill: false, dot: false, sw: 2}) || h('i', {class: 'ln0', 'aria-hidden': 'true'})));
+  return h('li', {hidden: hide}, kkWrap(h(r.href ? 'a' : 'div', {class: 'crow', href: r.href || null}, h('b', {class: 'cn', text: r.name}), h('span', {class: 'cp ' + cls(r.x), text: r.pt ?? pct(r.x)}),
+    lineSvg(r.v, {w: 96, ht: 36, fill: false, dot: false, sw: 2}) || h('i', {class: 'ln0', 'aria-hidden': 'true'})), r.kk, 'chip.row'));
 }
 function crows(items, row) { const li = items.map(row).filter(Boolean).map(r => crowLi(r)); return li.length ? h('ul', {class: 'clist'}, li) : null; }
 
@@ -446,17 +469,18 @@ function dayThumb(vals, per, perX, day = null) {
 }
 function coCard(code, badge = '한 달', extra = null, bare = false, day = null) {
   const c = coOf(code); if (!c) return null;
-  return card('#/w/' + code, dayThumb(c.l, badge, c20(c), day), c.n, (c.i || '?') + ' 업종' + (extra ? ' · ' + extra : ''), first(c.i));
+  return kkWrap(card('#/w/' + code, dayThumb(c.l, badge, c20(c), day), c.n, (c.i || '?') + ' 업종' + (extra ? ' · ' + extra : ''), first(c.i)), {code, name: c.n, kind: 'share'}, 'chip.card', 'kkr kkc');
 }
 function riseCard(r, bare = false) { const core = ix()?.core ?? D.core; return card('#/ch/i/' + enc(r.name), dayThumb(r.v, '1주', r.chg), r.name, bare ? '1주 동안 오른 업종' : '업종 채널 · ' + md(core?.rise?.from) + ' → ' + md(core?.rise?.to), first(r.name)); }
 function groupCard(g, bare = false) { return card('#/ch/g/' + enc(g.id), dayThumb(g.v, '한 달', g.chg), g.name + ' 큰 업종', '회사 ' + num(g.n) + '곳 · 큰 회사 기준 ' + pct(g.cwChg), first(g.short || g.name)); }
-/** 급등 카드 — 급등 칩 안에만(첫 화면에 두지 않음 · 보내기 없음 · 「1등」 말 없음 [6] 5) · hf = surgeHalf() 면 숫자 옆에 반값 한 줄([6] 6) · 큰 숫자 = 마지막 날 하루(d1) */
+/** 급등 카드 — 급등 칩 안에만(첫 화면에 두지 않음 · 「1등」 말 없음 [6] 5) · hf = surgeHalf() 면 숫자 옆에 반값 한 줄([6] 6) · 큰 숫자 = 마지막 날 하루(d1)
+    카톡 단추 = kind 'surge'(사장님 2026-10-18 16:39 [6] 8 — 앞 명령문의 「급등 카드 보내기 없음」을 바꿈 · 받는 카드에 반값 한 줄) */
 function surgeCard(m, hf = null) {
   const e = card('#/w/' + m.c, dayThumb(m.v, '5일', m.r5, m.d1), m.n, (m.i || '?') + ' · 급등 칸 · ' + md(D.surge?.asOf) + '까지', first(m.i));
   if (hf) e.querySelector('.meta b')?.after(h('span', {class: 'half', text: halfLine(hf)}));
-  return e;
+  return kkWrap(e, {code: m.c, name: m.n, kind: 'surge'}, 'chip.card', 'kkr kkc');
 }
-function leadCard(code, o, bare = false) { const c = coOf(code); if (!c) return null; return card('#/w/' + code, dayThumb(o.l5, '5일', o.r5, dayOf(c.l) ?? dayOf(o.l5)), c.n + ', ' + (o.i || c.i) + ' 대장주', bare ? (o.i || c.i) + ' 대장주 · 업종에서 가장 큰 회사' : '업종에서 가장 큰 회사 · ' + md(D.cond?.d5) + ' → ' + md(D.cond?.asOf), first(o.i || c.i)); } // 「1등」 말 없음([6] 5 · [10] 1 흔한 말)
+function leadCard(code, o, bare = false) { const c = coOf(code); if (!c) return null; return kkWrap(card('#/w/' + code, dayThumb(o.l5, '5일', o.r5, dayOf(c.l) ?? dayOf(o.l5)), c.n + ', ' + (o.i || c.i) + ' 대장주', bare ? (o.i || c.i) + ' 대장주 · 업종에서 가장 큰 회사' : '업종에서 가장 큰 회사 · ' + md(D.cond?.d5) + ' → ' + md(D.cond?.asOf), first(o.i || c.i)), {code, name: c.n, kind: 'share'}, 'chip.card', 'kkr kkc'); } // 「1등」 말 없음([6] 5 · [10] 1 흔한 말)
 function shelf(fs) {
   const tiles = fs.map((f, i) => f.tile ? h('a', {class: 'st', href: '#/shorts/' + i, 'aria-label': '시황 ' + f.l1}, h('b', {class: f.bc, text: f.tile[0]}), h('small', {text: f.tile[1]})) : null).filter(Boolean).slice(0, 4);
   return tiles.length ? [h('h2', {class: 'sec', text: '시황 · 왜 움직였나'}), h('div', {class: 'shelf'}, tiles)] : [];
@@ -505,18 +529,18 @@ async function vChip(chip) {
     note('급등 칸 ' + sm.length + '곳 · 5일 동안 많이 오른 차례 · ' + md(D.surge.asOf) + '까지');
     nodes.push(h('p', {class: 'note half', text: hf ? halfLine(hf) : '? 1년 안에 반값 아래로 떨어진 적 있는 곳을 아직 못 셌어요'}));
     if (hf && hf.known < hf.n) note('? ' + num(hf.n - hf.known) + '곳은 1년 값이 모자라 못 셌어요');
-    nodes.push(...chipList(sm, m => surgeCard(m, hf), m => ({href: '#/w/' + m.c, name: m.n, x: m.r5, v: m.v})));
+    nodes.push(...chipList(sm, m => surgeCard(m, hf), m => ({href: '#/w/' + m.c, name: m.n, x: m.r5, v: m.v, kk: {code: m.c, name: m.n, kind: 'surge'}})));
     nodes.push(h('a', {class: 'more', href: oldOr('surge', '#/surge'), text: '급등 다섯 칸 자세히 ›'}));
   } else if (chip === 'lead') {
     const C = condOf(), co = D.mkt?.companies; if (!C || !co) return none('회사 크기 자료');
     const leads = [...C.entries()].filter(([c, o]) => o.rk === 1 && co[c] && Array.isArray(o.l5) && Number.isFinite(o.r5)).sort((a, b) => b[1].r5 - a[1].r5 || a[0].localeCompare(b[0]));
     note('업종마다 가장 큰 회사 ' + leads.length + '곳 · 5일 동안 많이 오른 차례');
-    nodes.push(...chipList(leads, ([c, o]) => leadCard(c, o), ([c, o]) => ({href: '#/w/' + c, name: co[c].n, x: o.r5, v: o.l5})));
+    nodes.push(...chipList(leads, ([c, o]) => leadCard(c, o), ([c, o]) => ({href: '#/w/' + c, name: co[c].n, x: o.r5, v: o.l5, kk: {code: c, name: co[c].n, kind: 'share'}})));
   } else if (chip === 'pick') {
     const s3 = D.home?.s365, co = D.mkt?.companies || {}, picks = Array.isArray(s3?.list) ? s3.list.filter(([c]) => co[c]) : [];
     if (!picks.length) return none('고른 곳 자료');
     note('고른 곳 ' + s3.n + '곳 · ' + md(s3.date) + ' 하루 많이 오른 차례');
-    nodes.push(...chipList(picks, ([c, x]) => coCard(c, '한 달', md(s3.date) + ' 마감', false, x),([c, x]) => ({href: '#/w/' + c, name: co[c].n, x, v: co[c].l})));
+    nodes.push(...chipList(picks, ([c, x]) => coCard(c, '한 달', md(s3.date) + ' 마감', false, x),([c, x]) => ({href: '#/w/' + c, name: co[c].n, x, v: co[c].l, kk: {code: c, name: co[c].n, kind: 'share'}})));
   } else if (chip === 'us') {
     const us = D.home?.us; if (!us?.rows?.length) return none('미국 자료');
     note('미국 마지막 장 · ' + md(us.date) + ' 마감');
@@ -609,7 +633,7 @@ async function vWatch(a) {
     mem.sort((p, q) => capOf(q) - capOf(p) || p.localeCompare(q));
     nodes.push(h('h2', {class: 'sec', text: '다음 볼 것 · 같은 업종'}), h('p', {class: 'note', text: Cd ? '큰 회사부터 보여 줘요.' : '번호 차례예요.'}));
     const list = h('div', {});
-    const row = m => { const o = X.co[m]; return h('a', {class: 'nx cw', href: '#/w/' + m}, h('div', {}, h('b', {text: o.n}), h('small', {text: '하루 ' + pct(dayOf(o.l))})), thumb(o.l, '한 달', {x: c20(o)})); }; // 글이 왼쪽 · 작은 선이 오른쪽(글 시작 왼쪽 줄 하나 · [7] 5 한 줄 목록 꼴)
+    const row = m => { const o = X.co[m]; return kkWrap(h('a', {class: 'nx cw', href: '#/w/' + m}, h('div', {}, h('b', {text: o.n}), h('small', {text: '하루 ' + pct(dayOf(o.l))})), thumb(o.l, '한 달', {x: c20(o)})), {code: m, name: o.n, kind: 'share'}, 'watch.next', 'kkr kkn'); }; // 글이 왼쪽 · 작은 선이 오른쪽(글 시작 왼쪽 줄 하나 · [7] 5 한 줄 목록 꼴) · 카톡 단추는 그 오른쪽 끝(KB2)
     let shown = 0; const step = 6, more = h('button', {class: 'more', type: 'button'});
     const fill = () => { for (const m of mem.slice(shown, shown + step)) list.append(row(m)); shown = Math.min(mem.length, shown + step); more.textContent = '더 보기 · ' + (mem.length - shown) + '곳'; more.hidden = shown >= mem.length; };
     more.addEventListener('click', fill); fill();
@@ -666,7 +690,7 @@ async function vShorts(a) {
       f.mini && f.ml ? h('p', {class: 'ml', text: f.ml}) : null, // 작은 선의 기간 — 큰 숫자(하루)와 선(여러 날)의 색이 달라도 헷갈리지 않게
       f.id === 'us' ? (() => { const rs = (D.home?.us?.rows || []).slice(0, 3).filter(r => Number.isFinite(r?.chg)), mx = Math.max(...rs.map(r => Math.abs(r.chg)), 0.01); // 미국 장 — 세 지수 하루 막대(빈 곳 줄임 [10] 9 · 글은 위 두 줄과 같은 값)
         return rs.length ? h('div', {class: 'bars'}, rs.map(r => [h('p', {class: 'br'}, h('span', {text: r.name}), h('span', {class: cls(r.chg), text: p2(r.chg)})), (() => { const b = sv('svg', {class: 'bt', viewBox: '0 0 100 10', preserveAspectRatio: 'none', 'aria-hidden': 'true'}); b.append(sv('rect', {x: 0, y: 0, width: 100, height: 10, fill: '#1C1F26'}), sv('rect', {x: 0, y: 0, width: Math.max(2, Math.abs(r.chg) / mx * 100).toFixed(1), height: 10, fill: COLOR[cls(r.chg)]})); return b; })()])) : null; })() : null,
-      h('div', {class: 'bub'}, h('span', {text: '꼴똘이는 지난 기록만 따라 말해요'}), h('img', {alt: '', src: '/media/makbi-icon.svg'})), // 글이 먼저 — 글 시작이 위 글과 같은 줄([10] 7)
+      h('div', {class: 'bub'}, h('span', {text: '골똘이는 지난 기록만 따라 말해요'}), h('img', {alt: '', src: '/media/makbi-icon.svg'})), // 글이 먼저 — 글 시작이 위 글과 같은 줄([10] 7)
       side, i === 0 ? h('p', {class: 'hint', text: '위로 밀면 다음 사실이에요'}) : null); // 보기 · 보내기 = 글 아래 한 줄(옆 76px 자리 · 14px 글 없앰 [10] 5 · 8)
     box.append(sec);
   });
@@ -702,7 +726,7 @@ async function vChannel(a) {
   const pane = h('div', {}), tabBar = h('div', {class: 'ctabs', role: 'tablist'});
   const showCo = () => {
     const grid = h('div', {class: 'grid'}); let shown = 0; const more = h('button', {class: 'more', type: 'button'});
-    const fill = () => { for (const m of members.slice(shown, shown + 20)) { const o = X.co[m]; grid.append(h('a', {href: '#/w/' + m}, thumb(o.l, '20일', {x: c20(o)}), h('b', {text: o.n}), h('small', {text: kind === 'g' ? o.i : '하루 ' + pct(dayOf(o.l))}))); } shown = Math.min(members.length, shown + 20); more.textContent = '더 보기 · ' + (members.length - shown) + '곳'; more.hidden = shown >= members.length; };
+    const fill = () => { for (const m of members.slice(shown, shown + 20)) { const o = X.co[m]; grid.append(kkWrap(h('a', {href: '#/w/' + m}, thumb(o.l, '20일', {x: c20(o)}), h('b', {text: o.n}), h('small', {text: kind === 'g' ? o.i : '하루 ' + pct(dayOf(o.l))})), {code: m, name: o.n, kind: 'share'}, 'ch.grid', 'kkr kkg')); } shown = Math.min(members.length, shown + 20); more.textContent = '더 보기 · ' + (members.length - shown) + '곳'; more.hidden = shown >= members.length; }; // 칸마다 카톡 단추(KB2 — 그림 밑 글 줄 오른쪽 끝)
     more.addEventListener('click', fill); fill();
     pane.replaceChildren(h('p', {class: 'note', text: Cd ? '몸값 큰 차례예요.' : '번호 차례예요.'}), grid, more);
   };
@@ -738,8 +762,9 @@ async function vSub() {
     nodes.push(h('p', {class: 'note', text: md(X.mkt.asOf) + ' 장 마감 · 담은 차례예요.'}));
     for (const c of cos) {
       const o = X.co[c], x = c20(o);
-      nodes.push(h('div', {class: 'chan wl'}, h('a', {href: '#/w/' + c}, h('span', {class: 'wl-th', 'aria-hidden': 'true'}, lineSvg(o.l, {w: 120, ht: 60, fill: false, sw: 3})),
-        h('div', {}, h('b', {text: o.n}), h('small', {}, (o.i || '?') + ' · ', '20거래일 ', h('span', {class: cls(x) + ' wl-p', text: pct(x)})))), laterBtn(c, o.n, 'sub-btn')));
+      const kb = shareButtons({code: c, name: o.n, kind: 'share'}, {kakao: true}); // 카톡 단추 = 관심 담음 단추 오른쪽 끝(KB2 · 줄이 이미 고리와 단추를 형제로 둠)
+      nodes.push(h('div', {class: 'chan wl', 'data-kkrow': kb ? 'sub.co' : null}, h('a', {href: '#/w/' + c}, h('span', {class: 'wl-th', 'aria-hidden': 'true'}, lineSvg(o.l, {w: 120, ht: 60, fill: false, sw: 3})),
+        h('div', {}, h('b', {text: o.n}), h('small', {}, (o.i || '?') + ' · ', '20거래일 ', h('span', {class: cls(x) + ' wl-p', text: pct(x)})))), laterBtn(c, o.n, 'sub-btn'), kb));
     }
   } else nodes.push(h('p', {class: 'note', text: '회사 화면에서 「관심 담기」를 누르면 여기 모여요.'}));
   // 관심 업종 · 갈래
@@ -778,12 +803,12 @@ async function vMe() {
   // 본 기록(본 회사 열둘 · 이 기기에만) — 지우기는 본 기록만(관심 회사는 관심 칸에서 하나씩 뺌)
   nodes.push(h('h2', {class: 'sec', text: '본 기록'}), typeof Hm?.keepNote === 'function' ? Hm.keepNote() : h('p', {class: 'note', text: '이 기기에만 남아요. 이름도 열쇠도 받지 않아요.'})); // 가입한 사람에게만 「카카오로 지켜요.」(2026-10-18 [4] 4)
   if (hist.length) {
-    nodes.push(h('div', {class: 'row'}, hist.slice(0, 12).map(c => h('a', {href: '#/w/' + c}, thumb(X.co[c].l, '20일', {x: c20(X.co[c])}), h('b', {text: X.co[c].n})))));
+    nodes.push(h('div', {class: 'row'}, hist.slice(0, 12).map(c => kkWrap(h('a', {href: '#/w/' + c}, thumb(X.co[c].l, '20일', {x: c20(X.co[c])}), h('b', {text: X.co[c].n})), {code: c, name: X.co[c].n, kind: 'share'}, 'me.hist', 'kkr kkg')))); // 칸마다 카톡 단추(KB2)
     const clr = h('button', {type: 'button', text: '본 기록 지우기'}, h('span', {text: '›'}));
     clr.addEventListener('click', () => { if (!confirm(L('본 기록을 이 기기에서 지울까요?'))) return; store.set(K_HIST, []); toast('지웠어요.'); route(true); });
     nodes.push(h('div', {class: 'lst'}, clr));
   } else nodes.push(h('p', {class: 'note', text: '아직 본 회사가 없어요. 오늘 장에서 카드를 눌러 보세요.'}));
-  nodes.push(h('p', {class: 'safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+  nodes.push(h('p', {class: 'safe', text: '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
   return {title: '보유종목', nodes};
 }
 
@@ -848,7 +873,7 @@ async function vFind(a) {
     for (const x of top) {
       if (x.k === 'g') { const g = X.grp.get(x.c); out.push(h('a', {href: '#/ch/g/' + enc(g.id), role: 'listitem'}, g.name + ' 갈래', h('small', {text: '큰 갈래 · 회사 ' + num(g.n) + '곳 · 20거래일 ' + pct(g.chg)}))); }
       else if (x.k === 'i') { const i = X.ind.get(x.c); out.push(h('a', {href: '#/ch/i/' + enc(i.name), role: 'listitem'}, i.name + ' 업종', h('small', {text: '업종 · 회사 ' + num(i.n) + '곳 · 20거래일 ' + pct(i.chg)}))); }
-      else if (x.k === 'c') { const o = X.co[x.c]; out.push(h('a', {href: '#/w/' + x.c, role: 'listitem'}, h('span', {class: 'nm', 'data-proper': '', text: o.n}), h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))}))); }
+      else if (x.k === 'c') { const o = X.co[x.c], a = h('a', {href: '#/w/' + x.c}, h('span', {class: 'nm', 'data-proper': '', text: o.n}), h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))})), w = kkWrap(a, {code: x.c, name: o.n, kind: 'share'}, 'find.co', 'kkr kkh'); w.setAttribute('role', 'listitem'); out.push(w); } // 회사 줄 = 고리 + 카톡 단추(KB2 · 목록 칸은 둘을 감싼 줄)
       else out.push(h('a', {href: oldOr('x', '#/x/' + enc(x.c)), role: 'listitem', class: 'xo'}, h('span', {class: 'nm', 'data-proper': '', text: x.n}), h('small', {text: x.w || '회사 주식 밖'})));
     }
     if (!out.length) out.push(h('p', {class: 'note', text: '「' + q + '」 — 찾는 이름이 없어요. ' + (N ? '코스피 · 코스닥 목록 ' + num(N.funnel?.universe ?? rows.length) + '개' + (N.collected ? '(' + N.collected + ' 모음 · 펀드 · 우선주까지)' : '') + ' 안에 없는 이름이에요. ' : '') + '띄어쓰기를 빼거나 첫 글자로도 찾아보세요.'}));
@@ -898,6 +923,7 @@ globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, day
   findMatch, findReady, shareBox, laterBtn, isLater, toggleLater}; // findMatch · findReady = 찾기 잣대(매매일지 종목 고르기) · shareBox = 보내기 글상자(옛 share 대신) · laterBtn = 회사 관심 담기 단추
 /* 길 — 화면마다 새 칸 · 늦게 끝난 앞 화면은 버림 · 돌아오면 그 자리 */
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
+VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 일꾼 KD(2026-10-18 16:39 [9] 1 · [10] 2) — 진화 칸 길(사장님 열쇠 기기가 아니면 p-jinhwa 가 그리지 않고 #/ 로) · 합계 칸 참고 「연 수」 쪽마다 한 번
 /* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
 const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};

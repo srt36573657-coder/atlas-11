@@ -9,14 +9,47 @@ export const C = {
   ring: '#EEF1F6', pupil: '#28191F', blush: '#B9476F', brow: '#D7859C', foot: '#959CA8', gold: '#E9C46A',
 };
 let uid = 0;
-/** 막비 한 마리(viewBox 0 0 240 270) — o: {tilt, blink(0~1), glasses, wingUp · wingL · wingR(0~1 · 날개 펴기), crestUp(0~1), id, beakOpen(0~1)} */
+// ── 꼴똘이의 고민(2026-10-18 · 사장님 16:39 명령문 [4]) 몸짓 — 모두 고를 때만 그림(안 고르면 옛 그림과 한 글자도 같음 · 달 · 아이콘 · 미리보기 그림은 그대로) ──
+const _r = x => Math.round(x * 10) / 10;
+/** 흰 주름 깃(햄릿 깃) — 목에 두르는 둥근 주름(r: 0 ~ 1 보임) */
+function ruffSvg(r) {
+  if (!(r > .01)) return '';
+  const cx = 120, cy = 187, rx = 78, ry = 23, n = 24, P = (a, k) => [_r(cx + rx * k * Math.cos(a)), _r(cy + ry * k * Math.sin(a))];
+  const edge = dy => { let d = ''; for (let i = 0; i <= n; i++) { const a = i / n * 2 * Math.PI, [x, y] = P(a, 1); if (!i) { d += `M${x} ${y + dy}`; continue; } const [qx, qy] = P(a - Math.PI / n, 1.2); d += ` Q${qx} ${_r(qy + dy)} ${x} ${_r(y + dy)}`; } return d + ' Z'; };
+  let pl = ''; for (let i = 0; i < n; i++) { const a = (i + .5) / n * 2 * Math.PI; if (Math.sin(a) < -.25) continue; const [x0, y0] = P(a, .5), [x1, y1] = P(a, 1.08); pl += `M${x0} ${y0} L${x1} ${y1} `; }
+  return `<g class="mb-ruff" opacity="${r.toFixed(2)}"><path d="${edge(7)}" fill="#D8D0BF"/><path d="${edge(0)}" fill="#FCFAF3" stroke="#B8AE9B" stroke-width="1.4"/><path d="${pl}" stroke="#CDC4B2" stroke-width="1.7" stroke-linecap="round"/><ellipse cx="${cx}" cy="${cy - 3}" rx="${rx * .42}" ry="${ry * .38}" fill="${C.body0}"/></g>`;
+}
+/** 깃털 흐트러짐 — m: 0 ~ 1 · 머리(모자 · 볼)와 몸 둘레에 삐친 깃 */
+const TUFT_HEAD = [[-150, 0], [-128, 1], [-104, 1], [-76, 1], [-50, 1], [-28, 0], [192, 2], [-6, 2]], TUFT_BODY = [[150, 0], [196, 1], [-16, 1], [24, 0], [118, 1]];
+function tufts(m, list, cx, cy, rx, ry, cols) {
+  if (!(m > .01)) return '';
+  const op = Math.min(1, .45 + m).toFixed(2);
+  return list.map(([deg, c], i) => {
+    const a = deg * Math.PI / 180, ux = Math.cos(a), uy = Math.sin(a), px = -uy, py = ux, bx = cx + rx * .9 * ux, by = cy + ry * .9 * uy, L = (12 + 10 * m) * (1 + .22 * ((i * 7) % 3 - 1));
+    const d = [-1, 1].map(k => `M${_r(bx + px * k * 5)} ${_r(by + py * k * 5)} L${_r(bx + ux * L + px * k * 6 * m)} ${_r(by + uy * L + py * k * 6 * m)} L${_r(bx - px * k * 2)} ${_r(by - py * k * 2)} Z`).join(' ');
+    return `<path d="${d}" fill="${cols[c]}" opacity="${op}"/>`;
+  }).join('');
+}
+/** 긴 꼬리(0 ~ 1) · 갈고리(꼬리로 가지에 매달릴 때 — 갈고리 가운데 = HOOK) */
+export const HOOK = [120, 322];
+function tailSvg(L, hook) {
+  const y = _r(238 + 68 * L);
+  let s = `<path d="M104 234 C98 ${_r(250 + 20 * L)} 106 ${_r(y - 8)} 120 ${y} C134 ${_r(y - 8)} 142 ${_r(250 + 20 * L)} 136 234 Z" fill="${C.wing2}"/><path d="M120 244 L120 ${_r(y - 6)}" stroke="${C.wing0}" stroke-width="3" stroke-linecap="round" opacity=".55"/>`;
+  if (hook > .01) s += `<path d="M120 ${_r(y - 4)} C120 ${HOOK[1] + 10} 108 ${HOOK[1] + 13} 106 ${HOOK[1]} C104 ${HOOK[1] - 11} 118 ${HOOK[1] - 15} 129 ${HOOK[1] - 9} C137 ${HOOK[1] - 4} 134 ${HOOK[1] + 6} 128 ${HOOK[1] + 6}" fill="none" stroke="${C.wing2}" stroke-width="10" stroke-linecap="round" opacity="${hook.toFixed(2)}"/>`;
+  return s;
+}
+const WING_R = 'M170 170 C194 184 200 222 182 246 C174 240 170 232 166 224 C164 238 158 246 150 250 C148 222 148 194 154 172 Z';
+/** 막비 한 마리(viewBox 0 0 240 270) — o: {tilt, blink(0~1), glasses, wingUp · wingL · wingR(0~1 · 날개 펴기), crestUp(0~1), id, beakOpen(0~1)}
+ *  꼴똘이의 고민(고를 때만): ruff(흰 주름 깃 0 ~ 1) · chest(오른 날개를 가슴에 0 ~ 1 · chestA 각도 · chestY 아래로) · messy(흐트러진 깃 0 ~ 1) · tail(긴 꼬리 0 ~ 1) · hook(꼬리 갈고리 0 ~ 1)
+ *    · lookX · lookY(눈동자 −1 ~ 1) · wince(찡그린 눈 > < · 0.5 넘으면) */
 export function makbi(o = {}) {
   const k = o.id ?? `mb${++uid}`, tilt = o.tilt ?? -7, blink = Math.min(1, Math.max(0, o.blink ?? 0)), wu = o.wingUp ?? 0, wl = o.wingL ?? wu, wr = o.wingR ?? wu, cu = o.crestUp ?? 0, bo = o.beakOpen ?? 0;
-  const eyeRy = 20 * (1 - blink * 0.92), pupR = 12.5 * (1 - blink * 0.95), shine = blink < 0.5;
-  const eye = (cx, flip) => `<ellipse cx="${cx}" cy="116" rx="19" ry="${eyeRy.toFixed(2)}" fill="${C.ring}"/>` +
-    (blink < 0.85 ? `<ellipse cx="${cx + (flip ? -1 : 1)}" cy="118" rx="12.5" ry="${pupR.toFixed(2)}" fill="${C.pupil}"/>` : `<path d="M${cx - 13} 117 q13 7 26 0" fill="none" stroke="${C.pupil}" stroke-width="3.2" stroke-linecap="round"/>`) +
+  const eyeRy = 20 * (1 - blink * 0.92), pupR = 12.5 * (1 - blink * 0.95), shine = blink < 0.5, lx = _r(5 * (o.lookX ?? 0)), ly = _r(5 * (o.lookY ?? 0)), ch = Math.min(1, Math.max(0, o.chest ?? 0)), ms = o.messy ?? 0;
+  const eye = (cx, flip) => (o.wince ?? 0) >= .5 ? `<path d="M${flip ? cx + 12 : cx - 12} 104 L${flip ? cx - 10 : cx + 10} 116 L${flip ? cx + 12 : cx - 12} 128" fill="none" stroke="${C.pupil}" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>` : `<ellipse cx="${cx}" cy="116" rx="19" ry="${eyeRy.toFixed(2)}" fill="${C.ring}"/>` +
+    (blink < 0.85 ? `<ellipse cx="${cx + (flip ? -1 : 1) + lx}" cy="${118 + ly}" rx="12.5" ry="${pupR.toFixed(2)}" fill="${C.pupil}"/>` : `<path d="M${cx - 13} 117 q13 7 26 0" fill="none" stroke="${C.pupil}" stroke-width="3.2" stroke-linecap="round"/>`) +
     (shine ? `<circle cx="${cx - 5}" cy="111" r="4.8" fill="#fff"/><circle cx="${cx + 4}" cy="123" r="2" fill="#fff" opacity=".85"/>` : '');
-  const crestRot = -cu * 16;
+  const crestRot = -cu * 16, sp = ms > .01 ? [-22 * ms, 10 * ms, 26 * ms] : null, cr = (i, p) => sp ? `<g transform="rotate(${_r(sp[i])} ${[110, 128, 142][i]} 42)">${p}</g>` : p;
+  const chestWing = ch > .01 ? `<g transform="translate(0 ${_r((o.chestY ?? -4) * ch)}) rotate(${_r(-wr * 62 * (1 - ch) + (o.chestA ?? 95) * ch)} 156 178)"><path d="${WING_R}" fill="url(#${k}w)"/><path d="M180 214 q-8 4 -14 -2 M178 230 q-8 4 -14 -2" fill="none" stroke="#7B8290" stroke-width="2" stroke-linecap="round" opacity=".5"/></g>` : '';
   return `<g class="makbi">
   <defs>
     <radialGradient id="${k}f" cx="50%" cy="35%" r="72%"><stop offset="0" stop-color="${C.face0}"/><stop offset=".66" stop-color="${C.face1}"/><stop offset="1" stop-color="${C.face2}"/></radialGradient>
@@ -27,19 +60,19 @@ export function makbi(o = {}) {
     <clipPath id="${k}h"><circle cx="120" cy="108" r="74"/></clipPath>
     <filter id="${k}s" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="1.8"/></filter>
   </defs>
-  <path d="M106 238 C108 258 132 262 134 238 Z" fill="${C.wing2}"/>
+  ${o.tail > .01 || o.hook > .01 ? tailSvg(o.tail ?? 0, o.hook ?? 0) : `<path d="M106 238 C108 258 132 262 134 238 Z" fill="${C.wing2}"/>`}
   <g transform="rotate(${(wl * 62).toFixed(1)} 84 178)"><path d="M70 170 C46 184 40 222 58 246 C66 240 70 232 74 224 C76 238 82 246 90 250 C92 222 92 194 86 172 Z" fill="url(#${k}w)"/><path d="M60 214 q8 4 14 -2 M62 230 q8 4 14 -2" fill="none" stroke="#7B8290" stroke-width="2" stroke-linecap="round" opacity=".5"/></g>
-  <g transform="rotate(${(-wr * 62).toFixed(1)} 156 178)"><path d="M170 170 C194 184 200 222 182 246 C174 240 170 232 166 224 C164 238 158 246 150 250 C148 222 148 194 154 172 Z" fill="url(#${k}w)"/><path d="M180 214 q-8 4 -14 -2 M178 230 q-8 4 -14 -2" fill="none" stroke="#7B8290" stroke-width="2" stroke-linecap="round" opacity=".5"/></g>
-  <ellipse cx="120" cy="198" rx="54" ry="52" fill="url(#${k}b)"/>
+  ${ch > .01 ? '' : `<g transform="rotate(${(-wr * 62).toFixed(1)} 156 178)"><path d="M170 170 C194 184 200 222 182 246 C174 240 170 232 166 224 C164 238 158 246 150 250 C148 222 148 194 154 172 Z" fill="url(#${k}w)"/><path d="M180 214 q-8 4 -14 -2 M178 230 q-8 4 -14 -2" fill="none" stroke="#7B8290" stroke-width="2" stroke-linecap="round" opacity=".5"/></g>`}
+  ${tufts(ms, TUFT_BODY, 120, 198, 54, 52, [C.body0, C.body1, C.wing1])}<ellipse cx="120" cy="198" rx="54" ry="52" fill="url(#${k}b)"/>
   <g fill="none" stroke="#AE4A70" stroke-width="2.2" stroke-linecap="round" opacity=".26"><path d="M100 186 q7 5 14 0"/><path d="M122 192 q7 5 14 0"/><path d="M108 204 q7 5 14 0"/><path d="M130 212 q7 5 14 0"/><path d="M98 218 q7 5 14 0"/><path d="M118 228 q7 5 14 0"/></g>
   <g fill="${C.foot}"><path d="M101 240 q-7 10 -3 15 q6 -2 9 -8 q3 8 9 8 q2 -6 -4 -15 z"/><path d="M139 240 q7 10 3 15 q-6 -2 -9 -8 q-3 8 -9 8 q-2 -6 4 -15 z"/></g>
-  <g class="mb-head" transform="rotate(${tilt} 120 150)">
+  ${ruffSvg(o.ruff ?? 0)}${chestWing}<g class="mb-head" transform="rotate(${tilt} 120 150)">
     <g transform="rotate(${crestRot.toFixed(1)} 124 44)">
-      <path d="M104 44 C96 26 104 10 118 13 C113 22 115 31 122 38 Z" fill="${C.crest[0]}"/>
-      <path d="M116 38 C114 18 130 6 144 14 C135 19 133 28 135 39 Z" fill="${C.crest[1]}"/>
-      <path d="M130 42 C135 27 152 21 162 31 C151 32 145 38 143 47 Z" fill="${C.crest[2]}"/>
+      ${cr(0, `<path d="M104 44 C96 26 104 10 118 13 C113 22 115 31 122 38 Z" fill="${C.crest[0]}"/>`)}
+      ${cr(1, `<path d="M116 38 C114 18 130 6 144 14 C135 19 133 28 135 39 Z" fill="${C.crest[1]}"/>`)}
+      ${cr(2, `<path d="M130 42 C135 27 152 21 162 31 C151 32 145 38 143 47 Z" fill="${C.crest[2]}"/>`)}
     </g>
-    <circle cx="120" cy="108" r="74" fill="url(#${k}f)"/>
+    ${tufts(ms, TUFT_HEAD, 120, 108, 74, 74, [C.cap1, C.cap2, C.face1])}<circle cx="120" cy="108" r="74" fill="url(#${k}f)"/>
     <g clip-path="url(#${k}h)"><path d="M40 118 C38 62 76 30 120 30 C164 30 202 62 200 118 C182 100 162 92 147 96 C137 92 129 98 120 100 C111 98 103 92 93 96 C78 92 58 100 40 118 Z" fill="url(#${k}c)" filter="url(#${k}s)"/>
       <g fill="${C.spot}" opacity=".62"><ellipse cx="150" cy="62" rx="9" ry="6"/><ellipse cx="94" cy="58" rx="6.5" ry="4.5"/><ellipse cx="128" cy="76" rx="6" ry="4"/><ellipse cx="172" cy="86" rx="5" ry="3.5"/><ellipse cx="110" cy="44" rx="4" ry="3"/></g></g>
     <g class="mb-eyes">${eye(88, false)}${eye(152, true)}</g>
@@ -108,6 +141,20 @@ export function gearSvg(g, o) {
   }
   return s;
 }
+// ── 새 떼 · 떨어진 깃털(꼴똘이의 고민 ③ ⑦ — 2026-10-18 명령문 [4] 2) — 남의 캐릭터 아닌 둥근 작은 새 · 얼굴 없음(눈 점 하나) ──
+/** 작은 새 한 마리(가운데 0 0 · 오른쪽을 봄 · 폭 약 52) — o: {flap(0 아래 ~ 1 위), messy(0 ~ 1 · 0.6 넘으면 어질어질 눈), c: [몸, 날개, 배]} */
+export function sparrow(o = {}) {
+  const f = o.flap ?? 0, m = o.messy ?? 0, c = o.c ?? ['#AFB6D6', '#7F87AB', '#DCDFEE'], wa = _r(38 - 112 * f);
+  let s = `<path d="M-12 0 L-28 -7 L-25 2 L-29 10 Z" fill="${c[1]}"/><ellipse cx="0" cy="0" rx="15.5" ry="11.5" fill="${c[0]}"/><ellipse cx="3" cy="5" rx="9" ry="5.6" fill="${c[2]}" opacity=".75"/><circle cx="12" cy="-8.5" r="8.6" fill="${c[0]}"/>`;
+  s += `<path d="M19.6 -10.4 L27 -7.6 L19.6 -4.8 Z" fill="#E9B949"/>`;
+  s += m > .6 ? `<path d="M11.2 -12.2 l4.6 4.6 M15.8 -12.2 l-4.6 4.6" stroke="#14111C" stroke-width="1.8" stroke-linecap="round"/>` : `<circle cx="14.4" cy="-10" r="2.2" fill="#14111C"/><circle cx="15.1" cy="-10.8" r=".75" fill="#fff"/>`;
+  if (m > .01) s += [[-150, 1], [-100, 0], [-60, 0], [150, 1], [40, 2]].map(([deg, k], i) => { const a = deg * Math.PI / 180, cx = i < 3 ? 12 : 0, cy = i < 3 ? -8.5 : 0, r = i < 3 ? 8 : 13, L = 6 + 7 * m; const bx = cx + r * Math.cos(a), by = cy + r * Math.sin(a), px = -Math.sin(a) * 2.6, py = Math.cos(a) * 2.6;
+    return `<path d="M${_r(bx + px)} ${_r(by + py)} L${_r(bx + Math.cos(a) * L)} ${_r(by + Math.sin(a) * L)} L${_r(bx - px)} ${_r(by - py)} Z" fill="${c[k]}"/>`; }).join('');
+  return s + `<g transform="rotate(${wa} -2 -4)"><path d="M-2 -4 C-8 -9 -22 -8 -30 -1 C-20 3 -9 2 -2 -4 Z" fill="${c[1]}"/></g>`;
+}
+/** 떨어진 깃털 하나(가운데 0 0 · 길이 약 26) */
+export const feather = (col = '#ADB3BE', vein = '#E8EBF0') => `<path d="M0 -13 C6 -6 6 6 0 13 C-6 6 -6 -6 0 -13 Z" fill="${col}"/><path d="M0 -12 L0 15" stroke="${vein}" stroke-width="1.4" stroke-linecap="round"/>`;
+
 /** 홍표(지금 보이는 이름 보드리) 한 마리(첨단 차림) — o: makbi 의 몸짓(glasses = 금테 안경 · 1분 영상 편지 · 신문 장면) + visor · vs(가리개 보임) · visorOff · flame · glowWing · g: gearSvg 의 g */
 export function hongpyo(o, t, g) {
   return flameSvg(o.flame, t, g && g.boot > .5 ? 258 : 251) + makbi({id: o.id ?? 'hp', tilt: o.tilt, blink: o.blink, wingL: o.wingL, wingR: o.wingR, crestUp: o.crestUp, beakOpen: o.beakOpen, glasses: o.glasses}) + gearSvg(g, o) + wingGlow(o.glowWing, o.wingL, o.wingR)

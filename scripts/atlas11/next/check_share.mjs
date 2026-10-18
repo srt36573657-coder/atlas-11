@@ -21,8 +21,14 @@
 //   ⑩ 카톡 켜짐(가짜 서버 · 가짜 도구): 글상자에 카드 미리보기 · 보내기 = 카드 한 장(feed · 단추 정확히 둘 「카카오로 시작하기」 · 「그냥 보기」 · 종목 이름 · 보낸 사람 글 · 보낸 날 값 · 수익률 0) ·
 //      단추 1 = 우리 주소 → /api/kakao/start?to=<보낸 쪽>(&ref=) · 단추 2 = 보낸 주소 · 보내기만으로는 가입 요청 0 · 「그냥 보기」 쪽 요청 0 · 매매일지 끝에서 권유 칸 한 번(「이 기록 지키기」 + 단추 하나) ·
 //      카카오 도구가 없거나 던지면 공유 창으로 · 시황 같은 종목 아닌 보내기는 카드 아님 · 동의 화면에서 돌아옴(?kakao=ok|none) · 조용한 로그인(카톡 안 + 앞서 가입한 기기만) · 영어
-//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text · no-lang · card-rate · card-start-skip · vals-first · neg-margin · offer-twice · switch-on · probe-early · silent-anyone · inline-style · intro-first · name-big — 받은 p-share.js · p-share.css · kakao.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
-//   --only co,fb,nd,en,ent,land,off,on(= card,offer,ret,enk) — 보고 싶은 묶음만(기본 모두 · 검사 자체 시험은 알맞은 묶음만 돎) · --w 360 = 한 폭만(고치는 동안 — 마지막엔 두 폭 모두)
+//   ⑪ 카톡 단추(사장님 2026-10-18 16:39 「진화가 본질인 명령문」 [6] 2 ~ 5 · 7 · 8 · 9 · [7] 1 ~ 7 · 일꾼 KB1 · 묶음 kk · env):
+//      share-btn.js 단추를 줄 고리(<a>) 안에 넣어 그림 → 44 × 44 · 노란 말풍선 · 이름표 · 눌러도 주소 그대로(쪽 이동 0) · 글상자에 이름 · 오늘 값 ·
+//      빠른 말 = 바로 보냄 · 공유만 켜짐(가짜 도구 · 가입 꺼짐) → 카톡 단추 1 + 빠른 말 1 = 누름 2 에 카톡 친구 고르기(sendDefault) · 카드 단추 「열어 보기」 하나 ·
+//      보낸 뒤 쪽 위치 · 주소 그대로 · 폭죽 0 · 급등(kind surge) = 반값 한 줄(파일 있음 · 없음 · 깨짐) · 친구 쪽 「나도 보내기」는 다 답한 뒤에만 하나
+//      env = 네 곳 흉내(카톡 안 · 아이폰 · 안드로이드 · 컴퓨터 — 사용자 에이전트 · 화면 · 누름 · 공유 창 있음/없음) × 열쇠 있음/없음 → 간 길(kakao · share · copy)과 누름 수를 결과 envs 에 적음 ·
+//      실제 폰 · 실제 카카오는 잴 수 없어 결과에 「?」(가짜 도구는 sendDefault 가 불렸는지만 앎)
+//   검사 자체 시험: --mutate dup-name · no-filter · no-gain · msg-early · no-text · no-lang · card-rate · card-start-skip · vals-first · neg-margin · offer-twice · switch-on · probe-early · silent-anyone · inline-style · intro-first · name-big · kk-nav · quick-wait · again-early · half-made — 받은 p-share.js · p-share.css · kakao.js 를 일부러 망가뜨려 이 검사가 잡는지(잡으면 끝 코드 0)
+//   --only co,fb,nd,en,ent,land,off,on(= card,offer,ret,enk),kk,env — 보고 싶은 묶음만(기본 모두 · 검사 자체 시험은 알맞은 묶음만 돎) · --w 360 = 한 폭만(고치는 동안 — 마지막엔 두 폭 모두)
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -47,8 +53,8 @@ const MUTS = {
   'no-text': [[['await navigator.share({title, text, url});', 'await navigator.share({title, url});']], ['공유 창에 글이 없음'], 'p-share.js', 'co'],
   'no-lang': [[["lang: /[가-힣]/.test(txt) ? 'ko' : null", 'lang: null']], ['보낸 말(쓴 사람 글)에 lang="ko" 없음', '걸린 낱말(쓴 사람 글)에 lang="ko" 없음 — 엔진이 바꿈'], 'p-share.js', 'co,land'],
   // 카톡(켜짐) — 보낸 카드에 수익 숫자 · 단추 1 이 가입 길이 아님 · 값 칸이 질문보다 위 · 음수 간격 · 권유가 여러 번  ·  [[고칠 자리, 바꿀 글]], [기대하는 실패], 파일(기본 p-share.js), 묶음
-  'card-rate': [[["description: [...said, value].join('\\n')", "description: [...said, value, '+12% 올랐어'].join('\\n')"]], ['카드에 수익 숫자 · 퍼센트 · 1등 · 급등'], 'p-share.js', 'card'],
-  'card-start-skip': [[['const start = K ? origin + K.startUrl(see, {ref: K.ref()}) : null;', 'const start = K ? see : null;']], ['카드 단추 1 주소(가입 길)'], 'p-share.js', 'card'],
+  'card-rate': [[["description: [...said, half, value].filter(Boolean).join('\\n')", "description: [...said, half, value, '+12% 올랐어'].filter(Boolean).join('\\n')"]], ['카드에 수익 숫자 · 퍼센트 · 1등 · 급등'], 'p-share.js', 'card'],
+  'card-start-skip': [[['const start = K && join ? origin + K.startUrl(see, {ref: K.ref()}) : null;', 'const start = K && join ? see : null;']], ['카드 단추 1 주소(가입 길)'], 'p-share.js', 'card'],
   'vals-first': [[['nodes: [top,\n', 'nodes: [top, valsBox,\n'], ['after, valsBox, SAFE()]', 'after, SAFE()]']], ['질문이 값 칸보다 아래([5] 10 — 질문이 맨 위 · 값 칸은 질문 뒤)'], 'p-share.js', 'land'],
   'neg-margin': [[['.ps-why { margin: 0; }', '.ps-why { margin: 0 -16px; }']], ['음수 간격(겹침)([10] 8 · 음수 간격 0)'], 'p-share.css', 'land'],
   'offer-twice': [[["if (E.ls.get(FLAG_OFFERED) === '1' && !flagged()) return false;", '']], ['권유 칸이 한 번이 아님'], 'kakao.js', 'offer'],
@@ -59,6 +65,11 @@ const MUTS = {
   'switch-on': [[['export const SWITCH = false;', 'export const SWITCH = true;']], ['카카오 요청이 꺼짐 상태에서 나감([12] 2 — 요청 0 이어야 함)'], 'kakao.js', 'off'],
   'probe-early': [[['if (flagged() || back) ready().catch(() => {});', 'ready().catch(() => {});']], ['처음 온 사람인데 서버 확인이 나감([2] 10)'], 'kakao.js', 'ret'],
   'silent-anyone': [[['if (flagged() && inKakaoTalk())', 'if (inKakaoTalk())'], ['if (flagged() || back) ready().catch(() => {});', 'ready().catch(() => {});']], ['건드리면 안 되는 사람에게 로그인 길이 열림([2] 10)'], 'kakao.js', 'ret'],
+  // 카톡 단추 · 빠른 말 · 친구 쪽 · 반값 한 줄(사장님 2026-10-18 16:39 [6] · 일꾼 KB1)
+  'kk-nav': [[['ev.preventDefault(); ev.stopPropagation(); openBox(pack(o, kind));', 'openBox(pack(o, kind));']], ['카톡 단추가 줄 고리로 감(쪽이 바뀜 [6] 6)'], 'share-btn.js', 'kk'],
+  'quick-wait': [[['ta.value = ev.currentTarget.textContent || L(q); send(); }', 'ta.value = ev.currentTarget.textContent || L(q); }']], ['빠른 말을 눌러도 바로 안 감([6] 4)'], 'p-share.js', 'kk'],
+  'again-early': [[['after.append(lock);', 'after.append(lock, againBtn(S, name, null, null, false));']], ['「나도 보내기」가 다 답하기 전에 보임([6] 9)'], 'p-share.js', 'land'],
+  'half-made': [[['export const halfLine = j => (j && ', 'export const halfLine = j => ((j = j ?? {n: 3, of: 36}), j && ']], ['반값 파일이 없는데 그 줄이 나감(짓지 않음 [6] 8)'], 'p-share.js', 'kk'],
 };
 const MUT = arg('--mutate', null);
 if (MUT && !MUTS[MUT]) { console.error('모르는 --mutate', MUT, Object.keys(MUTS).join(' · ')); process.exit(1); }

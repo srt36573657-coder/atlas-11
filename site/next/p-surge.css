@@ -164,3 +164,10 @@ button.psurge-undo { border-color: var(--sub); color: var(--ink); }
 .psurge-safe { color: var(--sub); text-align: center; margin-top: var(--sp-2); }
 a.psurge-btn { display: flex; align-items: center; justify-content: center; min-height: 48px; margin-top: var(--sp-2); border-radius: 12px; background: var(--card2); color: var(--ink); font-size: var(--fs-1); text-align: center; }
 @media (hover: hover) { .psurge-chip:hover, .psurge-go:hover, button.psurge-hide:hover, button.psurge-show:hover { color: var(--ink); } a.psurge-br:hover, a.psurge-row:hover { background: rgba(242, 239, 232, .04); } }
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 8 · 일꾼 KB2) — 경주판 줄 · 까닭 줄 오른쪽 끝(고리와 형제 · 줄은 회사 · 단추는 보내기) · 따라간 줄은 첫 줄(이름 · 관심 없음) 오른쪽 끝 · 줄 밑 금은 줄 전체 */
+.psurge-board > .psurge-kr { border-bottom: 1px solid var(--hair); }
+.psurge-board > .psurge-kr > a.psurge-br { border-bottom: 0; }
+.psurge-inn > .psurge-kr { border-bottom: 1px solid var(--m4-soft); }
+.psurge-inn > .psurge-kr:last-child { border-bottom: 0; }
+.psurge-kr > a.psurge-row { border-bottom: 0; }

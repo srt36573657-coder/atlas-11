@@ -10,6 +10,7 @@
    펀드 · 우선주 등은 점검 못 하는 까닭(#/x 와 같은 까닭 — 회사 주식이 아님 · [5] 9) · 이름은 brand.js 한 곳(규칙 76) · 글은 textContent 로만(보안 규칙) */
 import {NAME, NAME_EN, josa} from './brand.js';
 import * as WHY from './p-why.js'; // 매매일지(일꾼 B) — records() · QS 가 없거나 못 읽어도 이 칸은 돎(기록을 직접 읽음)
+import {shareButtons} from './share-btn.js'; // 카톡 단추 한 곳(KB1) — 보유 카드 · 소식 줄(일꾼 KB2)
 const NX = globalThis.NX;
 const {h} = NX;
 const KEY = 'atlas:godori-hold', WHY_KEY = 'atlas:godori-why';
@@ -275,7 +276,10 @@ function cardOf(o, S, mkt, G, redraw) {
   const A = assess(o, S, mkt, G), code = o.code;
   const card = h('article', {class: 'hd-card', 'data-code': code, 'data-id': o.id ?? ''});
   const nm = A.co ? h('a', {class: 'hd-name', href: '#/w/' + NX.enc(code), 'data-proper': '', text: A.name}) : h('b', {class: 'hd-name', 'data-proper': '', text: A.name});
-  card.append(h('p', {class: 'hd-ch'}, nm, h('span', {class: 'hd-meta', text: `${A.co ? (A.ind ?? '?') : A.kind.label} · ${md(dayOf(o.day))}에 산 ${qtyTxt(Number(o.qty))}`})));
+  const head = h('p', {class: 'hd-ch'}, nm, h('span', {class: 'hd-meta', text: `${A.co ? (A.ind ?? '?') : A.kind.label} · ${md(dayOf(o.day))}에 산 ${qtyTxt(Number(o.qty))}`}));
+  // 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 3 · 일꾼 KB2) — 회사 주식 카드만 · 이름 줄 오른쪽 끝 · 오늘 값과 그 날을 담음(산 값 · 수익률은 담지 않음) · 펀드 · 우선주 등은 회사 자료가 없어 뺌
+  const kb = A.co ? shareButtons({code, name: A.name, price: A.p ?? null, day: dayOf(A.pd), kind: 'share'}, {kakao: true}) : null;
+  if (kb) { card.setAttribute('data-kkrow', 'hold.card'); card.append(h('div', {class: 'hd-kr'}, head, kb)); } else card.append(head);
   card.append(h('p', {class: 'hd-px'}, ...(A.p ? [h('span', {text: '오늘 값 '}), h('b', {class: 'num', text: won(A.p)}), h('span', {text: ` · ${md(A.pd)} 종가`})] : [h('span', {text: A.co ? '? 오늘 값을 못 받았어.' : '? 오늘 값을 몰라.'})])));
   const ans = o.ask && o.ask.d === S.day && [0, 1, 2].includes(o.ask.a) ? o.ask.a : null;
   if (ans == null) {
@@ -512,6 +516,7 @@ export function shortcuts() {
       }
     }
     box.replaceChildren(...rows);
+    try { if (localStorage.getItem('atlas11:invite:owner')) import('./p-jinhwa.js').then(m => m.ownerRow(box)).catch(() => {}); } catch { /* 기억 못 하는 기계 */ } // 진화 칸 줄(일꾼 KD · 2026-10-18 16:39 [9] 1) — 사장님 열쇠 기기에서 서버가 맞다고 한 뒤에만 끝에 붙음 · 다른 기기는 모듈도 안 받음
     if (focus === 'q') q?.focus({preventScroll: true}); else if (focus === 'wd') wd?.focus({preventScroll: true});
   };
   watch(box, () => draw());
@@ -555,7 +560,10 @@ export async function news(X, ks) {
     const o = X.co[e.code];
     const head = [h('b', {class: 'sb-nm', text: o.n}), e.kind === 'mov' ? h('b', {class: 'num sb-p ' + NX.cls(e.pct), text: NX.pct(e.pct)}) : h('span', {class: 'sb-k sb-' + e.kind, text: KIND[e.kind][0]})];
     const sub = [md(e.d), e.ch.label, ...(e.kind === 'mov' ? [KIND.mov[0]] : []), ...(e.box ? [TR_BOX[e.box]] : [])];
-    return h('a', {class: 'sb-n', href: '#/w/' + NX.enc(e.code), 'data-kind': e.kind, 'data-d': e.d}, h('span', {class: 'sb-h'}, ...head), h('small', {class: 'sb-s', text: sub.join(' · ')}));
+    const a = h('a', {class: 'sb-n', href: '#/w/' + NX.enc(e.code), 'data-kind': e.kind, 'data-d': e.d}, h('span', {class: 'sb-h'}, ...head), h('small', {class: 'sb-s', text: sub.join(' · ')}));
+    // 카톡 단추(KB2 · [6] 1 · 8) — 줄 오른쪽 끝 · 급등 달력의 뽑힘 · 옮김 · 빠짐 줄은 kind 'surge'(받는 카드에 반값 한 줄) · 오늘 가장 많이 움직인 곳은 'share'
+    const kb = shareButtons({code: e.code, name: o.n, kind: e.kind === 'mov' ? 'share' : 'surge'}, {kakao: true});
+    return kb ? h('div', {class: 'kkr sb-kr', 'data-kkrow': 'hold.news'}, a, kb) : a;
   };
   const sec = h('section', {class: 'sb', 'aria-labelledby': 'sb-h'}, h('h2', {class: 'sec', id: 'sb-h', text: '소식'}));
   sec.append(h('p', {class: 'note', text: T ? `급등 달력의 뽑힘 · 옮김 · 빠짐이에요. ${md(dayOf(T.asOf))} 기록까지 셌어요.` : '? 소식 자료를 못 받았어요. 오늘 많이 움직인 곳만 보여요.'}));

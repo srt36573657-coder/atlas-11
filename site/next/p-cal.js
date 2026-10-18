@@ -9,6 +9,7 @@
    모양만 새 아틀란스 말투(큰 제목 → 그림 → 숫자 · 설명 → 접은 칸 · 칩) · 회사 고리는 새 보는 화면 #/w/<번호> · 종목 파일 고리는 #/cal/<번호> 그대로
    보안 규칙: 글은 textContent · 자리는 CSSOM · 그림은 svg(캔버스 · 입체 · 그림자 없음 · 점은 svg 안 — 바둑판 셈 밖 · 규칙 50 · 51) */
 import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접고 누르면 펼침(사장님 2026-10-18 [10] 10)
+import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(KB1) — 달력 줄(일꾼 KB2)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 
@@ -99,7 +100,7 @@ function foot(C, src = null) {
     f.append(h('p', {text: src ? `자료: ${price} · ${src}.` : `자료: ${price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}));
     if (C.provisional) f.append(h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}));
   } else f.append(h('p', {class: 'q', text: '? 자료 줄을 받지 못했어요.'}));
-  f.append(h('p', {class: 'pcal-safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+  f.append(h('p', {class: 'pcal-safe', text: '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
   return f;
 }
 const hon = () => [h('p', {class: 'pcal-hon', text: '사고팔 곳을 고른 목록이 아니에요.'}), h('p', {class: 'pcal-small', text: '지난 값일 뿐 앞날을 말하지 않아요.'})];
@@ -139,8 +140,10 @@ function trAnswer(T, R) {
 function trRowEl(r, star) {
   const right = r.st === 'n' ? h('span', {class: 'pcal-nw num', text: `5일간 ${pct(r.r5)}`}) : r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v);
   const fl = trFlag(r);
-  return h('a', {class: 'pcal-row', href: '#/cal/' + r.c, 'data-c': r.c}, h('span', {class: 'nm', 'data-proper': '1'}, star.has(r.c) ? h('span', {class: 'pcal-st', text: '★ '}) : null, r.n), right, fl ? h('span', {class: 'pcal-fl', text: fl}) : null);
+  return kkRow(h('a', {class: 'pcal-row', href: '#/cal/' + r.c, 'data-c': r.c}, h('span', {class: 'nm', 'data-proper': '1'}, star.has(r.c) ? h('span', {class: 'pcal-st', text: '★ '}) : null, r.n), right, fl ? h('span', {class: 'pcal-fl', text: fl}) : null), r, 'cal.row');
 }
+/** 카톡 줄(사장님 2026-10-18 16:39 [6] 1 · 6 · 8 · 일꾼 KB2) — 줄 고리(종목 파일)와 카톡 단추(share-btn.js 하나)를 형제로 · 달력은 급등 기록이라 kind 'surge'(받는 카드에 반값 한 줄) · 단추를 못 만들면 줄 그대로 */
+function kkRow(a, r, place) { const kb = shareButtons({code: r.c, name: r.n, kind: 'surge'}, {kakao: true}); return kb ? h('div', {class: 'kkr pcal-kr', 'data-kkrow': place}, a, kb) : a; }
 /** 날 하나 — 달력 날 판(달 · 날 · 요일) + 「선택 k · 이동 m · 탈락 x」 + 그날 뽑힌 줄 넷 + 「나머지 n곳 보기」 + 「이날 이동 · 탈락 보기」 */
 function trDay(x, byC, vis, star, reNote = false) {
   const ok = c => { const r = byC.get(c); return r && vis(r); };
@@ -160,7 +163,7 @@ function trDay(x, byC, vis, star, reNote = false) {
   const items = [...mv.map(([c, b]) => [c, `${trTo(b)} 이동`, 0]), ...out.map(c => [c, '탈락', 1]), ...re.map(([c, b]) => [c, `다시 선택 · ${TR_B[b] ?? '?'}`, 2])]
     .sort((a, b) => a[2] - b[2] || byC.get(a[0]).n.localeCompare(byC.get(b[0]).n, 'ko') || (a[0] < b[0] ? -1 : 1));
   if (items.length) sec.append(det('pcal-ev', 'ev-' + x.d, tx(`${re.length ? '이동 · 탈락 · 다시 선택' : '이동 · 탈락'} ${items.length}곳 보기`),
-    h('div', {class: 'pcal-in'}, ...items.map(([c, t]) => { const r = byC.get(c); return h('a', {class: 'pcal-erow', href: '#/cal/' + c}, h('span', {class: 'nm', 'data-proper': '1', text: r.n}), h('span', {class: 'pcal-et', text: tx(t)}), r.st === 'n' ? h('span', {class: 'pcal-nw num', text: `5일간 ${pct(r.r5)}`}) : r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)); }))));
+    h('div', {class: 'pcal-in'}, ...items.map(([c, t]) => { const r = byC.get(c); return kkRow(h('a', {class: 'pcal-erow', href: '#/cal/' + c}, h('span', {class: 'nm', 'data-proper': '1', text: r.n}), h('span', {class: 'pcal-et', text: tx(t)}), r.st === 'n' ? h('span', {class: 'pcal-nw num', text: `5일간 ${pct(r.r5)}`}) : r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)), r, 'cal.ev'); }))));
   return sec;
 }
 async function vCal() {
@@ -177,7 +180,7 @@ async function vCal() {
     const lab = AL.map(A => (A.kind === 'halt' ? `? 거래 멈춤 ${A.n}곳` : `${A.f === 2 ? '?' : '!'} 반 토막 ${A.n}곳`)).join(' · ');
     const items = AL.flatMap(A => (A.cs ?? (A.top?.c ? [A.top.c] : [])).map(c => [c, A.kind])).filter(([c]) => byC.has(c));
     v.append(det('pcal-al', 'alerts', tx(lab), h('div', {class: 'pcal-in'}, h('p', {class: 'pcal-small', text: '마지막 장날 종가로 새로 생긴 일이에요.'}),
-      ...items.map(([c, k]) => { const r = byC.get(c); return h('a', {class: 'pcal-erow', href: '#/cal/' + c}, h('span', {class: 'nm', 'data-proper': '1', text: r.n}), h('span', {class: 'pcal-et q', text: k === 'halt' ? '? 거래 멈춤' : r.f === 2 ? '? 반 토막' : '! 반 토막'}), r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)); }))));
+      ...items.map(([c, k]) => { const r = byC.get(c); return kkRow(h('a', {class: 'pcal-erow', href: '#/cal/' + c}, h('span', {class: 'nm', 'data-proper': '1', text: r.n}), h('span', {class: 'pcal-et q', text: k === 'halt' ? '? 거래 멈춤' : r.f === 2 ? '? 반 토막' : '! 반 토막'}), r.v == null ? h('b', {class: 'num q', text: '?'}) : pctEl(r.v)), r, 'cal.alert'); }))));
   }
   const chips = h('div', {class: 'pcal-chips', role: 'group', 'aria-label': '뽑힌 칸 고르기'}, ...TR_F.map(([k, t]) => h('button', {type: 'button', class: 'pcal-chip', 'data-f': k, 'aria-pressed': String(trF === k), text: t})));
   const list = h('div', {class: 'pcal-list'}), live = h('p', {class: 'pcal-sr', role: 'status', 'aria-live': 'polite'});
@@ -203,7 +206,7 @@ async function vCal() {
   list.addEventListener('click', e => { const b = e.target.closest('button.pcal-show'); if (!b) return; const hid = hideGet(); hid.delete(b.dataset.c); hidePut(hid); draw(); live.textContent = `${byC.get(b.dataset.c)?.n ?? ''} 다시 보여요.`; });
   draw();
   v.append(det('pcal-how', null, '어떻게 골랐나요?', h('div', {class: 'pcal-in'}, ...[
-    '5일 동안 10% 넘게 오른 회사의 네 칸(10%대 · 20%대 · 30%대 · 40% 이상)에 새로 든 날을 「선택」으로 적어요. 칸은 하루 4번 업데이트 때 정해요.',
+    '5일 동안 10% 넘게 오른 회사의 네 칸(10%대 · 20%대 · 30%대 · 40% 이상)에 새로 든 날을 「선택」으로 적어요. 칸은 ' + (NX.D.sum?.fourADay === true ? '하루 4번 업데이트' : '정해진 업데이트') + ' 때 정해요.', // 「하루 4번」은 요약의 fourADay 일 때만([5] 4 · 일꾼 KC)
     '뽑힌 날부터 60거래일 동안 날마다 따라가요. 칸에서 빠져도 끝까지 따라가요.',
     '%는 뽑힌 날 종가를 0으로 두고 센 값이에요.',
     '「이동」은 그 회사 5일 오름이 다른 칸으로 옮긴 날이에요. 「탈락」은 10% 밑으로 내려가거나 거래가 적어진 날이에요. 자리가 차서 밀린 것은 탈락이 아니에요.',

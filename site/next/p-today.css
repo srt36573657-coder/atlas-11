@@ -146,3 +146,7 @@ a.ptoday-sr:active, a.ptoday-mv:active, a.ptoday-g:active, a.ptoday-mr:active { 
 }
 .ptoday-page .safe { margin: var(--sp-3) var(--sp-2) var(--sp-1); font-size: var(--fs-1); } /* 맨 아래 알림 — 글 17px 넘게 */
 .ptoday-page a.more { margin: var(--sp-2) var(--sp-2) 0; padding: var(--sp-1) var(--sp-2); font-size: var(--fs-1); }
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 고른 곳 줄 오른쪽 끝(고리와 형제 · 줄은 회사 · 단추는 보내기) · 줄 밑 금은 줄 전체 */
+.ptoday-kr { border-bottom: 1px solid var(--card2); }
+.ptoday-kr > a.ptoday-mv { border-bottom: 0; }

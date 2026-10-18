@@ -131,3 +131,8 @@ ol.pcal-steps li .s.q { color: var(--gold); }
 .pcal-btn[aria-pressed="true"] { border-color: var(--ink); background: var(--card); }
 button.pcal-more-steps { margin-top: var(--sp-1); }
 .pcal .pcal-acts { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin: var(--sp-3) 0 0; }
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 8 · 일꾼 KB2) — 달력 줄 · 이동 · 탈락 줄 · 새로 생긴 일 줄 오른쪽 끝(고리와 형제 · 줄은 종목 파일로 · 단추는 보내기) · 줄 밑 금은 줄 전체 */
+.pcal-kr { border-bottom: 1px solid var(--m4-soft); }
+.pcal-kr:last-child { border-bottom: 0; }
+.pcal-kr > a.pcal-row, .pcal-kr > a.pcal-erow { border-bottom: 0; }

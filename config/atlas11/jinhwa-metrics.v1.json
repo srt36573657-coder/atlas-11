@@ -1,0 +1,62 @@
+{
+  "schema": "kkolttori-jinhwa-metrics-1",
+  "version": "v1",
+  "madeAt": "2026-10-18",
+  "source": "사장님 2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」 [10] 1 ~ 6 · 원문 docs/design/kkolttori-2026-10-18/order-1639.txt",
+  "words": {
+    "10-1": "잣대는 셋뿐이다. ① 멈춤: 매매일지를 끝낸 수, 그중 「쉬어 가자」 수 ② 약속: 한 달 뒤 「정한 대로 했어?」에 답한 수, 그중 「했어」 수 ③ 사실: 화면 숫자가 자료와 다른 곳 0",
+    "10-2": "방문 수, 가입 수, 보내기 수는 잣대가 아니다. 참고로만 적는다.",
+    "10-3": "합계 칸은 사람 이름도, 기기 번호도, 쿠키도 없이 날마다 합계만 센다. 서버는 편지 여는 밤과 같은 넷리파이 함수와 저장소.",
+    "10-5": "표본이 작으면 판단하지 말고 모아라. 하루 숫자는 소음이다.",
+    "10-6": "대안의 예측은 이 잣대로 10거래일 뒤 채점해 진화 칸에 적는다."
+  },
+  "rule": "기계(진화 회차 · 예약 작업)는 이 파일을 스스로 고치지 못한다([8] 10 「기계는 본질 파일, 망치는 길 목록, 잣대, 이 명령문을 스스로 고치지 못한다」 · 옛 config/atlas11/evolution.v1.json 「모델·실행기는 이 파일과 채점 정책을 스스로 바꾸지 못한다(새 버전 파일 + 사람 승인만)」을 이어받음). 바꾸려면 새 판 이름 파일(jinhwa-metrics.v2.json) + 사장님 말씀(날짜 · 원문).",
+  "measures": [
+    {
+      "id": "stop",
+      "name": "멈춤",
+      "what": "매매일지를 끝낸 수 · 그중 「오늘은 쉬어 가자」 수",
+      "counters": {"total": "stop", "of": "stop_rest"},
+      "keys": {"stop": "끝낸 수", "rest_share": "끝낸 수 가운데 「오늘은 쉬어 가자」 몫(stop_rest ÷ stop)"},
+      "fires": "site/next/p-why.js finish() — 열한 질문과 두 줄을 끝내 결과가 처음 보일 때 한 번 · 「오늘은 쉬어 가자」면 stop_rest 하나(= 끝냄 1 + 쉬어 가자 1)"
+    },
+    {
+      "id": "promise",
+      "name": "약속",
+      "what": "한 달 뒤 「그날 정한 대로 했어?」에 답한 수 · 그중 「했어」 수",
+      "counters": {"total": "promise", "of": "promise_yes"},
+      "keys": {"promise": "답한 수", "yes_share": "답한 수 가운데 「했어」 몫(promise_yes ÷ promise)"},
+      "fires": "site/next/p-why.js laterBox — 「했어」 · 「안 했어」를 누를 때 한 번 · 「했어」면 promise_yes 하나(= 답함 1 + 했어 1)"
+    },
+    {
+      "id": "fact",
+      "name": "사실",
+      "what": "화면 숫자가 자료와 다른 곳",
+      "goal": 0,
+      "keys": {"fact": "다른 곳 수(0 이어야 함)"},
+      "from": "site/next/data/jinhwa.json facts {mismatch, at} — 진화 회차가 검사 결과로 적음(합계 칸에서 세지 않음)"
+    }
+  ],
+  "reference": {
+    "counters": ["visit", "share", "signup"],
+    "names": {"visit": "사이트를 연 수(쪽을 열 때 한 번)", "share": "보내기를 마친 수", "signup": "가입을 마친 수"},
+    "use": "참고로만 적는다 — 대안을 고르거나 예측을 채점할 때 쓰지 않는다(망치는 길 「방문 수를 잣대로 삼기」) · 읽기는 사장님 열쇠로만"
+  },
+  "server": {
+    "add": "POST /api/tally {k} — k = stop · stop_rest · promise · promise_yes · visit · share · signup",
+    "read": "GET /api/tally/sum?days=N(1 ~ 62 · 기본 14) — 열쇠 없이 잣대 칸 넷 · 사장님 열쇠면 참고 칸 셋도",
+    "store": "넷리파이 Blobs atlas11-tally-v1 · m/<서울 날짜> = {stop, stop_rest, promise, promise_yes} · r/<서울 날짜> = {visit, share, signup} · 숫자만",
+    "notStored": ["사람 이름", "기기 번호", "쿠키", "인터넷 주소", "화면 주소", "받은 때(초)", "고른 종목 · 답"],
+    "notCounted": "자동으로 움직이는 브라우저(navigator.webdriver — 검사 · 봇)는 보내지 않음"
+  },
+  "judge": {
+    "window": "한 칸 = 10거래일(한국 장이 열린 날 열 번)이 걸친 서울 날짜 모두 — 하루 숫자로는 판단하지 않는다",
+    "dailyIsNoise": true,
+    "minSample": 30,
+    "minSampleWhy": "[가정] 우리가 정한 문턱(사장님 말씀의 숫자가 아님) — 몫(rest_share · yes_share)은 밑수(stop · promise)가, 수(stop · promise)는 그 수가 앞 칸 · 뒤 칸 모두 30 이상일 때만 판단한다. 아래면 「모으는 중」으로 적고 맞음 · 틀림을 적지 않는다",
+    "noise": "[가정] 앞 칸과 뒤 칸의 차이가 소음 안이면 판단하지 않는다 — 몫은 두 몫 차이 z(합친 몫 표준 오차), 수는 (뒤 − 앞) ÷ √(앞 + 뒤) · |z| < 1.96 이면 「차이가 소음 안 · 판단 못 함」",
+    "scoreAfterTradingDays": 10,
+    "how": "대안이 들어간 날(applied.at 의 서울 날짜)을 뒤 칸의 첫날로 · 그 앞 10거래일 = 앞 칸 · 뒤 10거래일이 다 지난 뒤 처음 회차가 채점해 applied[].score {at, ok, text} 에 적는다(ok = true 맞음 · false 틀림 · null 판단 못 함 — text 에 까닭)",
+    "fact": "사실은 표본 문턱 없음 — 뒤 칸 동안 facts.mismatch 가 한 번이라도 0 이 아니면 틀림"
+  }
+}

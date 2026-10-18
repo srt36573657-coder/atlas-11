@@ -5,6 +5,7 @@
    자료 = surge.json(sv-v1 · 네 칸 bands sb-v1) · surgecal.json(sk-v1 · 못 받으면 그 칸만 「?」) — 화면은 보여 주기만(셈은 surge.py · 따로 세기 surge_verify.mjs)
    「관심 없음」 = 이 기기에만(localStorage atlas:surge-hide — 옛 쪽과 같은 열쇠 · 같은 꼴) · 회사 고리 = #/w/<번호>
    그림 「5일 오름 자」(svg · 점은 svg 안 — 바둑판 아님) · 줄 선(svg) · 입체 없음 · 글은 textContent 로만 · 자리 · 길이는 CSSOM 으로만(보안 규칙) · 모양 = p-surge.css(psurge-) */
+import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(KB1) — 급등 줄(일꾼 KB2)
 const NX = globalThis.NX;
 const {h, sv, pct, r1, enc} = NX;
 const RM = NX.RM || matchMedia('(prefers-reduced-motion: reduce)');
@@ -129,17 +130,19 @@ function board(items, parent, label, n = 6) {
     if (parent) spk.append(sv('path', {class: 'psurge-pa', d: lineTo(parent.v, n - 1, Rg)}));
     spk.append(sv('path', {class: 'psurge-ln ' + cl(d), d: lineTo(it.v, n - 1, Rg)}));
     const nm = h('span', {class: 'psurge-nm'}, h('span', {class: 'psurge-nt', text: it.name}), it.badge ? h('span', {class: 'psurge-badge', text: it.badge}) : null, it.gold ? h('span', {class: 'psurge-badge psurge-gold', text: it.gold}) : null);
-    const row = h('a', {class: 'psurge-br', href: it.href}, nm, h('b', {class: 'psurge-val psurge-num ' + (d == null ? 'q' : cl(d)), text: pct(d)}), h('span', {class: 'psurge-track', 'aria-hidden': 'true'}, spk), h('span', {class: 'psurge-chev', 'aria-hidden': 'true', text: '›'}));
+    const row = kkRow(h('a', {class: 'psurge-br', href: it.href}, nm, h('b', {class: 'psurge-val psurge-num ' + (d == null ? 'q' : cl(d)), text: pct(d)}), h('span', {class: 'psurge-track', 'aria-hidden': 'true'}, spk), h('span', {class: 'psurge-chev', 'aria-hidden': 'true', text: '›'})), it.c, it.name, 'surge.board');
     return {row, cur: v};
   });
   for (const r of rows.slice().sort((a, b) => (b.cur ?? -Infinity) - (a.cur ?? -Infinity) || 0)) box.append(r.row); // 5일 동안 많이 오른 차례(옛 경주판 끝 차례)
   return box;
 }
-const boardItems = (M, prov, newOn) => M.map(m => ({name: m.n, href: cHref(m.c), v: m.v, badge: newOn && m.tag === 'new' ? '새로' : null, gold: prov && m.prov ? '? 장 중' : null}));
+const boardItems = (M, prov, newOn) => M.map(m => ({c: m.c, name: m.n, href: cHref(m.c), v: m.v, badge: newOn && m.tag === 'new' ? '새로' : null, gold: prov && m.prov ? '? 장 중' : null}));
 const boardKey = S => h('p', {class: 'psurge-key'}, h('span', {}, h('i', {class: 'psurge-kup'}), '오름'), h('span', {}, h('i', {class: 'psurge-kdn'}), '내림'), h('span', {}, h('i', {class: 'psurge-kavg'}), '셀 수 있는 회사 가운데값'), h('span', {}, h('i', {class: 'psurge-kb0'}), `5일 전(${md(S.window?.[0] ?? S.asOf)}) 값`));
 
 /* ── 줄 조각(옛 svRow · svLi · svNames) ── */
-const svRow = (o, showPct) => h('a', {class: 'psurge-row', href: cHref(o.c)}, h('span', {class: 'psurge-rt'}, h('span', {class: 'psurge-nm', text: o.n}), showPct ? (o.r5 == null ? qEl() : pctEl(o.r5)) : null), h('span', {class: 'psurge-why' + (/^\?/.test(o.why) ? ' q' : ''), text: o.why}), h('span', {class: 'psurge-chev', 'aria-hidden': 'true', text: '›'}));
+const svRow = (o, showPct) => kkRow(h('a', {class: 'psurge-row', href: cHref(o.c)}, h('span', {class: 'psurge-rt'}, h('span', {class: 'psurge-nm', text: o.n}), showPct ? (o.r5 == null ? qEl() : pctEl(o.r5)) : null), h('span', {class: 'psurge-why' + (/^\?/.test(o.why) ? ' q' : ''), text: o.why}), h('span', {class: 'psurge-chev', 'aria-hidden': 'true', text: '›'})), o.c, o.n, 'surge.row');
+/** 카톡 줄(사장님 2026-10-18 16:39 [6] 1 · 6 · 8 · 일꾼 KB2) — 줄 고리와 카톡 단추(share-btn.js 하나)를 형제로 · 급등 종목이라 kind 'surge'(받는 카드에 반값 한 줄) · 단추를 못 만들면 줄 그대로 */
+function kkRow(a, c, name, place) { const kb = shareButtons({code: c, name, kind: 'surge'}, {kakao: true}); return kb ? h('div', {class: 'kkr psurge-kr', 'data-kkrow': place}, a, kb) : a; }
 const svLi = (mark, b, t, names, mo = null) => h('li', {}, h('span', {class: 'psurge-m' + (mark === '?' ? ' q' : ' psurge-w'), text: mark}), h('span', {}, h('b', {text: b + ' '}), t, names?.length ? h('span', {class: 'psurge-nms', text: names.join(' · ')}) : null, mo ? h('span', {class: 'psurge-nms', text: `${mo[0]}: ${mo[1].join(' · ')}`}) : null));
 /** 이름 고리 — 옮긴 곳(어디서 · 어디로)은 한 줄에 한 곳 · 나머지는 「 · 」로 잇고 15곳 넘으면 12곳 + 접은 칸 · xs = [{c, n, t}] */
 function svNames(lab, xs) {
@@ -193,7 +196,7 @@ function svCal(v, tab, ok, K, back) {
   const tabDays = K.days.filter(x => set.has(x.d) && x.ev.some(e => e[5] === tab || e[6] === tab)).map(x => x.d).sort();
   const f0 = K.days.filter(x => set.has(x.d) && x.ev.some(e => e[4] === 'first' && e[5] === tab)).map(x => x.d).sort()[0];
   const start = f0 && tabDays[0] === f0 ? f0 : dates[0]; // 이 칸을 처음 고른 날이 창 안이면 그 앞은 「기록 전」
-  v.append(h('p', {class: 'psurge-note', text: `하루 4번 업데이트 때 적어요. 날짜를 누르면 그날 ${SV_KAN[tab]} 들어온 곳과 나간 곳이 나와요.`}));
+  v.append(h('p', {class: 'psurge-note', text: `${NX.D.sum?.fourADay === true ? '하루 4번 업데이트' : '정해진 업데이트'} 때 적어요. 날짜를 누르면 그날 ${SV_KAN[tab]} 들어온 곳과 나간 곳이 나와요.`})) /* 「하루 4번」은 요약의 fourADay 일 때만([5] 4 · 일꾼 KC) */;
   if (start > dates[0]) v.append(h('p', {class: 'psurge-small', text: `${md(start)}부터 적었어요. 날마다 쌓여 지난 ${K.keep}거래일까지 남아요.`}));
   const head = h('div', {class: 'psurge-wk psurge-hd', 'aria-hidden': 'true'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {text: t})));
   const from = start > dates[0] ? start : dates[0]; // 기록이 짧으면 처음 적은 주부터(빈 칸이 줄지어 서지 않게)
@@ -242,8 +245,9 @@ function svSpark(t, Pp) {
 function svTrRow(t) {
   const Pp = t.path ?? []; let li = -1; for (let i = Pp.length - 1; i >= 0; i--) if (Pp[i][1] != null) { li = i; break; }
   const nowT = (t.now ?? []).map(x => SV_NAME[x]).filter(Boolean);
-  return h('div', {class: 'psurge-tr', 'data-c': t.c},
-    h('div', {class: 'psurge-trt'}, h('a', {class: 'psurge-nm', href: cHref(t.c), text: t.n}), h('button', {type: 'button', class: 'psurge-hide', 'data-c': t.c, text: '관심 없음'})), // 이름이 길면 단추가 밑 줄로(이름은 가르지 않음)
+  const kb = shareButtons({code: t.c, name: t.n, kind: 'surge'}, {kakao: true}); // 카톡 단추 = 첫 줄(이름 · 관심 없음) 오른쪽 끝(KB2 · [6] 1 · 8)
+  return h('div', {class: 'psurge-tr', 'data-c': t.c, 'data-kkrow': kb ? 'surge.track' : null},
+    h('div', {class: 'psurge-trt'}, h('a', {class: 'psurge-nm', href: cHref(t.c), text: t.n}), h('button', {type: 'button', class: 'psurge-hide', 'data-c': t.c, text: '관심 없음'}), kb), // 이름이 길면 단추가 밑 줄로(이름은 가르지 않음)
     h('p', {class: 'psurge-trsub'}, h('span', {text: `처음 찾은 칸: ${SV_NAME[t.t] ?? '?'}`}), h('span', {text: nowT.length ? `지금 든 칸: ${nowT.join(', ')}` : '지금은 다섯 칸 밖'})),
     svSpark(t, Pp),
     h('span', {class: 'psurge-v'}, li >= 0 ? h('span', {class: 'psurge-dd', text: `${li + 1}일 뒤 `}) : null, li >= 0 ? pctEl(Pp[li][1]) : qEl()));
@@ -323,7 +327,7 @@ function foot(C, src = null) {
   return h('footer', {class: 'psurge-foot'},
     h('p', {text: src ? `자료: ${price} · ${src}.` : C ? `자료: ${price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).` : '? 자료 줄을 받지 못했어요.'}),
     C?.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
-    h('p', {class: 'psurge-safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+    h('p', {class: 'psurge-safe', text: '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
 }
 /** 칸 머리 — 제목 · 때 한 줄 */
 const svHead = (v, title, S) => v.append(h('h1', {class: 'psurge-h', text: title}), h('p', {class: 'psurge-when', text: svTime(S)}));
@@ -436,7 +440,7 @@ function svBand(v, S, b, ok, K, C, back) {
     '칸은 10%대 · 20%대 · 30%대 · 40% 이상 넷이에요. 칸끼리 겹치지 않아요. 10%대는 10% 이상 20% 밑이에요.',
     '값이 빈 날 · 거래가 없던 날 · 하루 35% 넘게 바뀐 날이 있거나, 새로 상장했거나, 석 달 안에 오래 멈췄던 곳은 빼요. 평소 하루 거래가 1억 원이 안 되는 곳도 빼요.',
     `칸마다 많이 오른 차례로 ${BS.cap}곳까지 실어요. 채우려고 문턱을 낮추지 않아요.`,
-    '하루 4번 업데이트 때 다시 세요. 다른 칸으로 간 곳은 「옮김」으로 적어요. 다른 셈으로 한 번 더 세어 같을 때만 올려요.',
+    (NX.D.sum?.fourADay === true ? '하루 4번 업데이트' : '정해진 업데이트') + ' 때 다시 세요. 다른 칸으로 간 곳은 「옮김」으로 적어요. 다른 셈으로 한 번 더 세어 같을 때만 올려요.', // 「하루 4번」은 요약의 fourADay 일 때만([5] 4 · 일꾼 KC)
     '급등 칸과 따로 세요. 급등 칸은 들어오는 문 · 나가는 문이 따로 있어서, 한 회사가 급등 칸과 이 칸에서 다르게 보일 수 있어요.',
     '센 것일 뿐 다음 날을 말하지 않아요.'].map(t => h('p', {text: t})), 'psurge-how'));
   v.append(foot(C, isDay(S.window?.[0]) && isDay(S.asOf) ? `${name} 목록은 ${md(S.window[0])} 종가와 ${md(S.asOf)} 값을 견줘 셌어요` : null));

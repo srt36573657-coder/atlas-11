@@ -6,6 +6,7 @@
      많이 오른 순 줄(작은 선 · 점선 = 기준일 값 · 흐린 점선 = 위 단 평균 · 숫자 · 흐름 · 1곳 · ? · 금빛) · 가장 낮던 날 · 1곳 · ? 줄 · 금빛 · 두 보기 정직 글 · 자료 줄
    셈은 지금 아틀란스와 같음 — 줄 값 = 선 끝 − 100 · 많이 오른 순(같으면 원래 차례 · 값 없음은 맨 끝) · 줄 눈금은 줄마다(기준일 100 · 위 단 평균 포함)
    글은 textContent 로만 · 꾸밈은 p-chx.css 와 CSSOM(보안 규칙) · 쓰지 않을 말 없음(옛 맨 아래 알림 글은 쓰지 않을 말을 빼고 같은 뜻 쉬운 말로) */
+import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(KB1) — 2단 업종의 회사 줄(일꾼 KB2)
 const NX = globalThis.NX;
 const NBSP = ' ';
 const SPW = 100, SPH = 30; // 줄 선 그림 칸(늘여 그림 · 선 굵기는 그대로)
@@ -83,11 +84,14 @@ function rowEl(r, n, mode) {
   r.ln = S('path', {class: 'pchx-ln ' + lc(d), d: lineTo(arr, n - 1, R, n)});
   spk.append(S('line', {class: 'pchx-b0', x1: 0, x2: SPW, y1: y0, y2: y0}), ...(r.pa ? [r.pa] : []), r.ln);
   const t = it.tr ? (mode === 'cw' && it.trc ? it.trc : it.tr) : null;
-  return h('a', {class: 'pchx-row' + (it.pk ? ' pk' : '') + (t ? ' two' : ''), href: it.href},
+  const a = h('a', {class: 'pchx-row' + (it.pk ? ' pk' : '') + (t ? ' two' : ''), href: it.href, 'data-kkskip': !it.kk && /^#\/w\//.test(it.href ?? '') ? 'industry' : null}, // 회사가 한 곳뿐인 업종 줄(고리가 그 회사) — 업종 줄이라 카톡 단추 없음(검사가 까닭을 읽음)
     h('span', {class: 'pchx-nm'}, h('span', {class: 'pchx-nt', ...(it.proper ? {'data-proper': ''} : {}), text: it.name}), it.badge ? h('span', {class: 'pchx-bd' + (it.badge === '?' ? ' q' : ''), text: it.badge}) : null, it.gold ? h('span', {class: 'pchx-bd gold', text: it.gold}) : null),
     h('b', {class: 'pchx-val ' + (d == null ? 'q' : NX.cls(d)), text: NX.pct(d)}),
     spk, t ? trFill(h('span', {class: 'pchx-trd'}), t) : null,
     h('i', {class: 'pchx-chev', 'aria-hidden': 'true', text: '›'}));
+  // 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 2단 업종 화면의 회사 줄만(it.kk) · 줄 오른쪽 끝 · 고리와 형제
+  const kb = it.kk ? shareButtons(it.kk, {kakao: true}) : null;
+  return kb ? h('div', {class: 'kkr pchx-kr', 'data-kkrow': 'chx.row'}, a, kb) : a;
 }
 
 /** 소리 — 지금 아틀란스 speak 와 같은 차례(머리 · 몇 곳 · 위 세 줄) */
@@ -199,7 +203,7 @@ function industry(X, name) {
   const row = c => X.co[c];
   const href = c => cHref(C, c, row(c)?.p), noLine = c => !(Array.isArray(row(c)?.l) && row(c).l.some(x => x != null));
   const members = i.members || [], shown = members.filter(c => !noLine(c)), none = members.filter(noLine);
-  const items = shown.map(c => { const m = row(c); return {key: c, name: m.n, proper: true, href: href(c), v: m.l.map(x => (x == null ? null : x / 100)), cw: null, gold: mk && m.p ? '고른 곳' : null, pk: !!(mk && m.p), badge: m.j ? '?' : null}; });
+  const items = shown.map(c => { const m = row(c); return {key: c, name: m.n, proper: true, href: href(c), v: m.l.map(x => (x == null ? null : x / 100)), cw: null, gold: mk && m.p ? '고른 곳' : null, pk: !!(mk && m.p), badge: m.j ? '?' : null, kk: {code: c, name: m.n, kind: 'share'}}; }); // kk = 카톡 단추(KB2)
   return screen(X, {now: 2, up: g ? {href: '#/ch/g/' + NX.enc(g.id), text: `1단 ${g.short} 갈래로`} : null, node: i, title: i.name, items, legendName: i.name, gold: mk && !!i.pk, unit: '곳', cap: CAP,
     listTitle: `회사 ${shown.length}곳`,
     listLabel: `${i.name} 회사 ${shown.length}곳 — ${C.days}거래일 많이 오른 순: ` + shown.map(c => row(c).n + ' ' + NX.pct(row(c).c)).join(', '),

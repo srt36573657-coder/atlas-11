@@ -1,0 +1,62 @@
+/* 진화 칸(#/jinhwa) — 사장님 열쇠 기기에서만(일꾼 KD · 2026-10-18 16:39 [9] 10 「휴대폰 한 화면에 들어오게. 글씨 17px 이상, 단추 44px.」)
+   글씨는 var(--fs-1 ~ 4) 만(17px 아래 없음) · 간격은 var(--sp-1 ~ 3) 와 0 만(음수 없음) · 입체 · 그림자 없음 · 빨강 · 파랑은 오름 · 내림 뜻에만(여기서는 안 씀) · 금빛 = 뜻 있는 표시(세 사람이 고른 것 · 확인함 · ?)
+   360×640 첫 화면 = 제목 · 본질 한 줄 · 진화 n번째 · 「기다리는 진화」 첫 카드의 이름 · 전과 후 그림 · 확인 단추(카드는 옆으로 넘김 — 다음 카드가 조금 보임) */
+.jh { padding-bottom: var(--sp-3); }
+.jh .num { font-variant-numeric: tabular-nums; }
+.jh-h1 { margin: var(--sp-1) var(--sp-2) 0; font-size: var(--fs-4); line-height: 1.3; }
+.jh-ess { margin: var(--sp-1) var(--sp-2) 0; font-size: var(--fs-1); line-height: 1.5; }
+.jh-n { margin: 0 var(--sp-2); color: var(--gold); font-size: var(--fs-1); font-weight: 700; line-height: 1.5; }
+.jh h2.sec { margin: var(--sp-2) var(--sp-2) var(--sp-1); }
+.jh .note { line-height: 1.55; }
+.jh .jh-q { color: var(--gold); }
+
+/* 기다리는 진화 — 옆으로 넘기는 카드(한 장 88% · 하나뿐이면 꽉 참) */
+.jh-rail { display: flex; gap: var(--sp-1); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--sp-2); padding: 0 var(--sp-2) var(--sp-1); }
+.jh-card { flex: 0 0 88%; min-width: 0; scroll-snap-align: start; padding: var(--sp-2); border: 1px solid var(--hair2); border-radius: 12px; background: var(--card); }
+.jh-card:only-child { flex-basis: 100%; }
+.jh-card.jh-pick { border-color: var(--gold-line); }
+.jh-top { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); margin: 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.5; }
+.jh-badge { color: var(--gold); font-weight: 700; }
+.jh-bigt { padding: 0 var(--sp-1); border: 1px solid var(--gold-line); border-radius: 8px; color: var(--gold); font-weight: 700; }
+.jh-name { margin: 0 0 var(--sp-1); font-size: var(--fs-2); line-height: 1.4; font-weight: 700; }
+
+/* 전과 후 그림 — 두 칸 · 그림은 제 꼴 그대로 줄여 넣음(잘라 내지 않음) · 누르면 크게 */
+.jh-pics { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-1); margin: 0 0 var(--sp-1); }
+.jh-fig { display: flex; flex-direction: column; min-width: 0; margin: 0; }
+.jh-pic { display: flex; align-items: center; justify-content: center; height: 120px; min-height: 44px; overflow: hidden; border-radius: 8px; background: var(--card2); }
+.jh-pics.sm .jh-pic { height: 96px; }
+.jh-img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+.jh-noimg { padding: 0 var(--sp-1); color: var(--gold); font-size: var(--fs-1); text-align: center; }
+.jh-fig figcaption { color: var(--sub); font-size: var(--fs-1); line-height: 1.5; text-align: center; }
+
+/* 단추 — 확인 · 되돌리기(누르면 금빛 테 · 글 = 언제 들어가는지) */
+.jh-ok, .jh-rv { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin: var(--sp-1) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid transparent; border-radius: 12px; background: var(--ink); color: #111; font-size: var(--fs-2); font-weight: 700; line-height: 1.35; text-align: center; }
+.jh-rv { background: var(--card2); color: var(--ink); border-color: var(--hair2); }
+.jh-ok.on, .jh-rv.on { background: var(--gold-wash); color: var(--gold); border-color: var(--gold-line); font-size: var(--fs-1); }
+.jh-ok:disabled, .jh-rv:disabled { cursor: default; opacity: .7; }
+
+/* 카드 · 줄 안 글 — 이름표(회색) + 회차가 쓴 글 */
+.jh-line { margin: var(--sp-1) 0 0; font-size: var(--fs-1); line-height: 1.55; }
+.jh-k { color: var(--sub); }
+.jh-vh { margin-top: var(--sp-2); }
+ul.jh-voices { margin: 0; padding: 0; list-style: none; font-size: var(--fs-1); line-height: 1.55; }
+ul.jh-voices li { margin: var(--sp-1) 0 0; }
+.jh-risk { color: var(--gold); }
+
+/* 진화한 것 · 고친 고장 */
+.jh-done { margin: 0 var(--sp-2) var(--sp-2); padding: var(--sp-2); border: 1px solid var(--hair); border-radius: 12px; background: var(--card); }
+.jh-dd { margin: 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.5; }
+.jh-score.ok span:first-child, .jh-score.no span:first-child { font-weight: 700; }
+ul.jh-fix { margin: 0 var(--sp-2) var(--sp-2); padding: 0; list-style: none; font-size: var(--fs-1); line-height: 1.55; }
+ul.jh-fix li { padding: var(--sp-1) 0; border-bottom: 1px solid var(--hair); }
+
+/* 잣대 셋 — 지난 14일 합계 · 참고 숫자는 접음 */
+.jh-ms .jh-m { margin: 0 var(--sp-2) var(--sp-1); font-size: var(--fs-1); line-height: 1.55; }
+.jh-ms .jh-m b { font-weight: 700; }
+.jh-few { color: var(--gold); }
+details.jh-ref { margin: var(--sp-1) var(--sp-2) 0; }
+details.jh-ref > summary { display: flex; align-items: center; min-height: 48px; padding: 0 var(--sp-2); border-radius: 12px; background: var(--card2); font-size: var(--fs-1); cursor: pointer; list-style: none; }
+details.jh-ref > summary::-webkit-details-marker { display: none; }
+details.jh-ref > summary::after { content: "›"; margin-left: auto; color: var(--sub); }
+details.jh-ref[open] > summary::after { content: "‹"; }
+details.jh-ref .jh-m { margin: var(--sp-1) 0 0; color: var(--sub); }

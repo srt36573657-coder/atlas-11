@@ -384,3 +384,43 @@ ul.hm-sum { list-style: none; margin: 0 var(--sp-2); padding: 0; display: grid; 
 .hm-why { min-width: 0; font-size: var(--fs-2); line-height: 1.45; text-wrap: pretty; overflow-wrap: anywhere; }
 .hm-mkt a.more { margin: var(--sp-1) var(--sp-2); display: flex; align-items: center; justify-content: center; }
 p.hm-safe { margin: var(--sp-2) var(--sp-2) var(--sp-1); }
+
+/* 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 2 · 9 · 일꾼 KB1 · 단추를 만드는 곳 site/next/share-btn.js 한 곳) — 종목 줄 · 카드 오른쪽 끝 · 누르는 자리 44px · 노란 말풍선 그림
+   줄 꼴(flex · grid)은 각 쪽 css 가 정함 — 이 묶음은 단추 자체만(줄이 좁아도 줄지 않음 · 간격 없음 · 음수 간격 없음) */
+.kk-btn { flex: none; width: 44px; height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; align-self: center; border-radius: 50%; background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer; }
+.kk-btn:active { background: var(--card2); }
+.kk-ic { width: 28px; height: 28px; flex: none; display: block; pointer-events: none; }
+.kk-ic .kk-b { fill: #FEE500; } /* 카카오 노랑 */
+.kk-btn.kk-wide { width: auto; min-height: 44px; height: auto; gap: var(--sp-1); padding: 0 var(--sp-2); border-radius: 8px; background: var(--card2); box-shadow: inset 0 0 0 1px var(--hair2); font-size: var(--fs-2); font-weight: 700; }
+
+/* 카톡 줄(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 앱(app.js) 종목 줄 · 카드의 꼴 · 줄 고리(a)와 카톡 단추가 형제(app.js kkWrap) · 단추는 오른쪽 끝
+   .kkr = 한 줄(고리가 남는 자리 · 단추는 줄지 않음) · .kkc = 큰 카드(단추 = 카드 밑 글 줄 오른쪽 끝) · .kkg = 작은 칸(채널 회사 칸 · 본 기록) · .kkh = 찾기 줄 · .kkn = 회사 화면 「다음 볼 것」(p-co.css) */
+.kkr { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; }
+.kkr > :first-child { flex: 1 1 auto; min-width: 0; }
+.kkr.kkc, .kkr.kkg { display: block; position: relative; }
+.kkc > .kk-btn { position: absolute; right: var(--sp-2); bottom: var(--sp-2); }
+.kkc > .card .meta { width: calc(100% - 52px); } /* 글이 단추 밑으로 가지 않게(단추 44px + 8px) */
+.kkg > .kk-btn { position: absolute; right: 0; bottom: 0; }
+.kkg > a > b, .kkg > a > small { width: calc(100% - 52px); }
+.row > .kkg > a > b { min-height: 44px; } /* 본 기록 칸 밑 글은 이름 한 줄 — 단추가 그림에 닿지 않게 */
+.row > .kkg { flex: none; width: 46%; }
+.row > .kkg > a { width: auto; }
+.hits > .kkh { border-bottom: 1px solid var(--hair); padding-right: var(--sp-2); }
+.hits > .kkh > a { border-bottom: 0; flex-wrap: wrap; row-gap: 0; padding-top: var(--sp-1); padding-bottom: var(--sp-1); } /* 좁으면(320) 꼬리 글이 이름 밑 줄로 — 이름이 글자마다 꺾이지 않게 */
+.hits > .kkh .nm { min-width: 0; overflow-wrap: anywhere; }
+.chan.wl[data-kkrow] { gap: var(--sp-1); } /* 관심 회사 줄 — 단추 둘(관심 담음 · 카톡)이 이름 칸을 너무 누르지 않게 */
+
+/* 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] 1 ~ 5 · 8 · 일꾼 KC · 그리는 곳 app.js essenceBox) — 이야기 입구 바로 위 칸 하나(section.ess)
+   글 시작 = 16 + 16px(칩 · 이야기 입구 · 띠 글과 같은 왼쪽 줄 · [10] 7) · 글씨 --fs-2 하나 · 간격 --sp 만 · 테두리는 안쪽 그림자(띠와 같은 꼴) · 누르는 자리 48px
+   펼침 = 세 줄 · 접힘(다시 온 기기) = 첫 줄 한 줄(넘으면 「…」 — 누르면 세 줄) · 「?」가 든 줄은 금빛 */
+section.ess { margin: var(--sp-1) var(--sp-2) 0; border-radius: 8px; background: var(--card); box-shadow: inset 0 0 0 1px var(--hair2); }
+.ess-d > summary { display: flex; align-items: center; gap: var(--sp-1); min-height: 48px; padding: var(--sp-1) var(--sp-2); cursor: pointer; list-style: none; font-size: var(--fs-2); font-weight: 700; line-height: 1.45; }
+.ess-d > summary::-webkit-details-marker { display: none; }
+.ess-d > summary::after { content: '▾'; flex: none; color: var(--sub); font-weight: 400; }
+.ess-d[open] > summary::after { content: '▴'; }
+.ess-t { flex: 1 1 auto; min-width: 0; text-wrap: pretty; }
+.ess-d:not([open]) .ess-t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ess-l { margin: 0; padding: 0 var(--sp-2) var(--sp-1); font-size: var(--fs-2); line-height: 1.45; text-wrap: pretty; }
+.ess-d > .ess-l:last-child { padding-bottom: var(--sp-2); }
+.ess-l.q { color: var(--gold); }
+a.ess-v { display: flex; align-items: center; min-height: 44px; padding: 0 var(--sp-2) var(--sp-1); color: var(--sub); font-size: var(--fs-2); text-decoration: underline; text-underline-offset: 3px; }

@@ -86,3 +86,6 @@ li.privals-me .privals-pn { color: var(--ink); font-weight: 700; }
 .privals-q0 { margin: var(--sp-1) 0 0; color: var(--gold); font-size: var(--fs-1); }
 .privals-safe { font-size: var(--fs-1); }
 .privals-next .chap-next { display: flex; align-items: center; min-height: 52px; padding: var(--sp-1) var(--sp-2); font-size: var(--fs-2); font-weight: 600; } /* 다음 챕터 고리 — 이 쪽 칸 안에서만 글을 가운데 줄로 */
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 다른 회사 줄 오른쪽 끝(고리와 형제) · 단추가 없는 줄(이 회사 · 모르는 회사)도 같은 넓이 → 막대 자(트랙)가 줄마다 같음 */
+.privals-kk > li > div.privals-pr { width: calc(100% - 52px); }

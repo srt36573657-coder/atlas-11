@@ -111,3 +111,7 @@ span.wy-vg { color: #34C759; } span.wy-vy { color: #FFCC00; } span.wy-vr { color
 .wy-lv b { color: var(--ink); }
 .wy-lv b.up { color: var(--up); } .wy-lv b.dn { color: var(--down); } .wy-lv b.wy-qm { color: var(--gold); }
 html.en .wy-say q, html.en .wy-mine { quotes: '“' '”'; }
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 일꾼 KB2) — 기록 줄의 종목(이름 · 그날 값) 오른쪽 끝 · 단추 꼴은 app.css 「카톡 단추」 */
+.wy-kr { display: flex; align-items: center; gap: var(--sp-1); margin: 0 0 var(--sp-1); }
+.wy-kr > .wy-rs { flex: 1 1 auto; min-width: 0; margin: 0; }

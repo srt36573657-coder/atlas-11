@@ -17,7 +17,7 @@ function foot(C) {
     h('p', {class: 'pinfo-links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/us/', text: '미국 판'})),
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
     C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`, {short: '? 확정 전 값이에요 — 누르면 펼쳐요', cls: 'in'}) : null,
-    h('p', {class: 'safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
+    h('p', {class: 'safe', text: '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
     h('p', {class: 'safe pinfo-safe2', text: '투자 상담이 아니에요. 지난 기록을 센 공부예요.'}));
 }
 /** 깔때기 두 갈래(멍거 · 린치 — 2026-10-14 06:05 「가」) — 막대 길이 = 목록 모두 가운데 남은 몫(옛 쪽 funnel 그대로 · r 없이) */
@@ -35,9 +35,9 @@ const ul = (...xs) => h('ul', {class: 'pinfo-ul'}, ...xs.filter(Boolean).map(t =
 
 export async function render() {
   const C = await NX.need('core');
-  if (!C) return {title: '꼴똘이는 어떻게 셌나요', nodes: NX.noData()};
+  if (!C) return {title: '골똘이는 어떻게 셌나요', nodes: NX.noData()};
   const F = C.facts ?? {}, RU = C.rules ?? {}, root = h('div', {class: 'pinfo', 'data-page': 'info'});
-  root.append(h('h1', {class: 'wt', text: '꼴똘이는 어떻게 셌나요'}),
+  root.append(h('h1', {class: 'wt', text: '골똘이는 어떻게 셌나요'}),
     h('p', {class: 'pinfo-lead'}, h('b', {text: pickName(C)}), ` — ${pickLine(C)}.`),
     h('p', {class: 'pinfo-p', text: `${RU.notMunger} ${pickHow(C)} · 앞날 값은 쓰지 않았습니다 · 순서가 아닙니다.`}));
   // 그림 한 장 — 깔때기 두 갈래(목록 모두 → 고른 곳)
@@ -55,7 +55,7 @@ export async function render() {
     `「큰 회사는 크게」 = ${md(C.base)}에 시가총액만큼 사 두었다고 보고 그대로 둔 값.`,
     '배당은 넣지 않은 주가만 셉니다. 「가장 깊이 빠짐」 = 꼭대기에서 가장 많이 내려간 비율.'));
   root.append(h('h2', {class: 'sec', text: '자료 · 때'}), ul(C.sources?.price, C.sources?.pick));
-  root.append(h('a', {class: 'pinfo-go', href: '#/up'}, h('span', {}, h('b', {text: '업데이트 기록 보기 ›'}), h('span', {text: ' — 하루 4번 다시 센 기록 · 시장 판독 · 네 눈 점검'})))); // 업데이트 기록은 도움말의 고리로(규칙 72)
+  root.append(h('a', {class: 'pinfo-go', href: '#/up'}, h('span', {}, h('b', {text: '업데이트 기록 보기 ›'}), h('span', {text: NX.D.sum?.fourADay === true ? ' — 하루 4번 다시 센 기록 · 시장 판독 · 네 눈 점검' : ' — 업데이트 때마다 다시 센 기록 · 시장 판독 · 네 눈 점검'})))); // 업데이트 기록은 도움말의 고리로(규칙 72) · 「하루 4번」은 요약의 fourADay 일 때만([5] 4 · 일꾼 KC)
   root.append(h('h2', {class: 'sec', text: '모르는 것 ?'}), warn(h('ul', {class: 'pinfo-ul pinfo-qs'},
     h('li', {text: '? 거래정지 · 관리종목 · 투자경고 표시 — 아직 거르지 못합니다.'}),
     h('li', {text: C.sincePick ? `? 고른 뒤 기록 — ${md(C.pickAsOf)} 뒤 ${C.sincePick}거래일뿐이라 아직 짧습니다.` : `? 고른 뒤 기록 — ${md(C.pickAsOf)} 종가로 골라 고른 뒤 기록은 아직 없습니다. 지금 보이는 선은 모두 고른 기간 안입니다.`}),
@@ -63,5 +63,5 @@ export async function render() {
     C.funnel?.q ? h('li', {text: `? 두 조건 모두 셀 자료가 없는 ${C.funnel.q}곳은 넣지 않았습니다.`}) : null,
     h('li', {text: `? 다시 고르기 — ${RU.next}.`})), {short: '? 아직 모르는 것 — 누르면 펼쳐요'}));
   root.append(foot(C));
-  return {title: '꼴똘이는 어떻게 셌나요', nodes: [root]};
+  return {title: '골똘이는 어떻게 셌나요', nodes: [root]};
 }

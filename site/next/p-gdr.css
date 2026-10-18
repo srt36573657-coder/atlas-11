@@ -90,3 +90,7 @@
 .gdr.page ~ .safe, .gdr-fun ~ .safe { margin: var(--sp-3) var(--sp-2) var(--sp-1); font-size: var(--fs-1); }
 html.en .gdr-say q { quotes: '“' '”'; }
 .gdr-score { font-size: var(--fs-1); line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 카드 이름 줄 오른쪽 끝 · 이름 고리와 단추는 형제(이름 누르면 회사 · 단추 누르면 보내기) */
+.gdr-kr { display: flex; align-items: center; gap: var(--sp-1); }
+.gdr-kr > .gdr-name { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }

@@ -9,7 +9,7 @@ import {open as shareBox} from '/next/p-share.js';
 import {VIDEO} from '/next/brand.js';
 if (VIDEO.ready) document.querySelector('.hp-vid')?.removeAttribute('hidden'); // 새 영상이 올라간 뒤에만 영상 칸을 보임(사장님 2026-10-18 16:39 [3] 9)
 await startI18n();
-const HELLO_SHARE = {title: L('꼴똘이를 소개합니다'), text: L('앵무새 꼴똘이가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!')};
+const HELLO_SHARE = {title: L('골똘이를 소개합니다'), text: L('앵무새 골똘이가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!')};
 const helloUrl = () => new URL('/hello.html', location.origin).href;
 /** 글상자를 열고 닫힐 때 결과 — {how: 'share' | 'copy' | 'show' | 'cancel' | 'close', text, url} */
 const shareHello = () => shareBox({kind: 'share', title: HELLO_SHARE.title, text: HELLO_SHARE.text, url: helloUrl()});

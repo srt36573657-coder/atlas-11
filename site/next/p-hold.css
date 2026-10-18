@@ -150,3 +150,10 @@ html.m4 .hd-fold[data-open="false"] a.hello.m4-letter .hpi img.hpi-bird { bottom
 .sb-p { flex: none; font-size: var(--fs-2); text-align: right; }
 .sb-s { display: block; font-size: var(--fs-1); color: var(--sub); overflow-wrap: anywhere; }
 .sb-rest summary { display: flex; align-items: center; min-height: 48px; margin: 0 var(--sp-2); font-size: var(--fs-1); color: var(--sub); cursor: pointer; }
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 단추는 share-btn.js 하나(꼴은 app.css 「카톡 단추」) · 여기는 줄 꼴만
+   보유 카드 = 이름 줄(이름 · 업종 · 산 날) 오른쪽 끝 · 소식 줄 = 줄 오른쪽 끝(고리와 단추는 형제 — 줄 누르면 회사 · 단추 누르면 보내기) */
+.hd-kr { display: flex; align-items: center; gap: var(--sp-1); }
+.hd-kr > .hd-ch { flex: 1 1 auto; min-width: 0; }
+.sb-kr { border-bottom: 1px solid var(--hair); }
+.sb-kr > .sb-n { border-bottom: 0; }

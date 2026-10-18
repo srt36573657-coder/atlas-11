@@ -135,7 +135,7 @@ function hudFrame(op){if(op<=.01)return '';let s='<g opacity="'+f2(op)+'" fill="
 // 휴대폰 틀(16 ~ 28.9초) — 들어옴 · 나감
 const phoneY=t=>t<16.5?(1-back(win(t,16.0,16.5)))*1050:0, phoneOut=t=>ease(win(t,28.5,28.9));
 const TAB_SW=[18.5,21,23.5,26], tabX=k=>128+116*k;
-// ── 꼴똘이 자리 · 몸짓(때마다 · 곧은 시계 하나) ──
+// ── 골똘이 자리 · 몸짓(때마다 · 곧은 시계 하나) ──
 function bd(t){const o={tilt:-7,blink:0,wingL:0,wingR:0,crestUp:.35,beakOpen:0,visor:0,vs:1,flame:0,glowWing:0,visorOff:0,glasses:0};let X=150,Y=470,S=1.75,sx=1,sy=1,show=1;
  o.blink=Math.max(pulse(t,5.3,.22),pulse(t,10.5,.2),pulse(t,14.1,.2),pulse(t,30.0,.2),pulse(t,39.1,.2),pulse(t,50.4,.2),pulse(t,58.9,.22));
  const feet=(cx,cy,s)=>{S=s;X=cx-120*s;Y=cy-252*s;};
@@ -183,7 +183,7 @@ function bd(t){const o={tilt:-7,blink:0,wingL:0,wingR:0,crestUp:.35,beakOpen:0,v
   else{const g=ease(win(t,56.8,57.35));X=216;Y=lerp(-520,530,g);S=1.2;o.flame=t<57.45?1:.4+.1*Math.sin(t*9);o.glowWing=.8;o.wingL=.25;o.wingR=t>57.5?.6+.3*Math.sin((t-57.5)*7):.25;o.crestUp=.8;o.tilt=-9;
    o.beakOpen=Math.max(pulse(t,57.3,.25),pulse(t,57.65,.25))*.6;const q=pulse(t,57.35,.35);sy=1-.1*q;sx=1+.08*q;}}
  return {o,X,Y,S,sx,sy,show};}
-const CAP=[[1.7,3.0,'쾅! 누구지?'],[3.2,6.0,'안녕! 나는<br>꼴똘이야'],[6.2,9.0,'들은 말만<br>따라 해'],[9.2,12.0,'그래서<br>지난 기록만'],
+const CAP=[[1.7,3.0,'쾅! 누구지?'],[3.2,6.0,'안녕! 나는<br>골똘이야'],[6.2,9.0,'들은 말만<br>따라 해'],[9.2,12.0,'그래서<br>지난 기록만'],
  [12.2,16.0,'첫 화면엔<br>격언 열 가지'],[16.2,18.5,'한눈에 보는<br>오늘 시장'],[18.7,21.0,'업종 '+D.IND+'개<br>줄 세우기'],[21.2,23.5,'조건 세 개로<br>거르기'],
  [23.7,26.0,'5일 동안<br>많이 오른 곳'],[26.2,28.5,'날마다<br>달력에 기록'],[28.7,31.5,'코스피 코스닥<br>회사 모두'],[31.7,34.9,'누를수록 자세히<br>일곱 계단'],
  [35.0,38.0,D.NEWS?'끝 계단엔<br>뉴스와 공시':'회사 '+D.NCO.toLocaleString('ko-KR')+'곳<br>모두 일곱 계단'],[38.2,41.0,'영어로도<br>봐요'],[41.1,43.1,'친구 '+D.FR+'명만<br>소개하면'],[43.2,44.5,D.COUNT+'<br>벌써 끝!'],
@@ -205,10 +205,10 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
    s+=ring(360,912,1.45,t,.75,30,340,'#BFFFF4',10,.22)+ring(360,914,1.5,t,.9,20,260,GOLD,6,.2)+burst(360,880,1.45,t,.9,32,'#BFFFF4',320);}
   s+=hudFrame(fade(t,1.7,3.3,.3,.3));o+=T(360,215,38,'정체 확인 중…','hud',fade(t,1.85,3.05,.15,.2));
   for(let i=0;i<6;i++)s+=sparkle(120+i*96,300+((i*67)%3)*18,7,'#BFFFF4',pulse(t,1.75+i*.17,.3));}
- // ── 2장면 반짝 점검 · 「꼴똘이!」 세 번 ──
+ // ── 2장면 반짝 점검 · 「골똘이!」 세 번 ──
  else if(t<6){s+=hudFrame(1-win(t,3.0,3.4));s+=ring(360,660,3.0,t,.5,40,200,'#BFFFF4',6);s+=sparkle(232,800,16,'#fff',pulse(t,3.18,.4))+sparkle(492,800,16,'#fff',pulse(t,3.26,.4));
   const a4=fade(t,3.4,6.1,.4,.25);if(a4>0)s+='<g opacity="'+f2(a4*.5)+'" transform="rotate('+f1(t*14)+' 360 659)"><circle cx="360" cy="659" r="262" fill="none" stroke="'+CY+'" stroke-width="2.5" stroke-dasharray="24 14"/></g><g opacity="'+f2(a4*.35)+'" transform="rotate('+f1(-t*20)+' 360 659)"><circle cx="360" cy="659" r="292" fill="none" stroke="'+GOLD+'" stroke-width="2" stroke-dasharray="6 18"/></g>';
-  [[3.5,190,450,46],[4.0,532,410,52],[4.5,360,300,64]].forEach(([a5,x,y,sz])=>{const op=fade(t,a5,6.0,.1,.25);if(op>0)o+='<div class="bub" style="left:'+x+'px;top:'+y+'px;font-size:'+sz+'px;opacity:'+f2(op)+';border:3px solid '+CY+';box-shadow:0 0 22px rgba(127,255,230,.6);transform:translate(-50%,-50%) scale('+f2(.6+.4*back(win(t,a5,a5+.25)))+')">꼴똘이!</div>';s+=ring(x,y,a5,t,.45,10,110,'#FFE3A0',5);});}
+  [[3.5,190,450,46],[4.0,532,410,52],[4.5,360,300,64]].forEach(([a5,x,y,sz])=>{const op=fade(t,a5,6.0,.1,.25);if(op>0)o+='<div class="bub" style="left:'+x+'px;top:'+y+'px;font-size:'+sz+'px;opacity:'+f2(op)+';border:3px solid '+CY+';box-shadow:0 0 22px rgba(127,255,230,.6);transform:translate(-50%,-50%) scale('+f2(.6+.4*back(win(t,a5,a5+.25)))+')">골똘이!</div>';s+=ring(x,y,a5,t,.45,10,110,'#FFE3A0',5);});}
  // ── 3장면 따라쟁이 — 「기록 없음」 도장 ──
  else if(t<9){const a1=fade(t,6.15,8.95,.25,.3),a2=fade(t,6.85,8.95,.2,.3);
   if(a1>0){const gx=t<6.35?Math.sin(t*120)*8:0;o+=BUB(300+gx,250,'내일 뭐가 올라?',a1,1)+T(120,322,30,'— 들린 말','hud l',a1);}
@@ -226,7 +226,7 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
    o+=T(130+sl,182,34,'지난 한 달','hud l',pa)+T(470+sl,560,30,'오늘','',pa,'color:'+INK)+T(569+sl,460,30,'내일','',pa*.7,'color:'+MUTE);
    o+=T(569+sl,345,120,'?','',pa*(t<11.05?.25:.55+.45*Math.sin(t*7)),'color:'+GOLD+';font-weight:900;text-shadow:0 0 18px rgba(233,185,73,.6)');}
   tp+=brush(t,12);}
- // ── 5장면 편지 — 「꼴똘이 주식 격언 열 가지」(D.TITLE = next/app.js HELLO_MSG 첫 줄) ──
+ // ── 5장면 편지 — 「골똘이 주식 격언 열 가지」(D.TITLE = next/app.js HELLO_MSG 첫 줄) ──
  else if(t<16){tp+=brush(t,12);const ei=ease(win(t,12.05,12.55)),ex=lerp(820,440,ei),ey=lerp(940,500,ei),er=lerp(28,0,ei),op2=1-win(t,12.75,13.05);
   if(op2>0&&t>=12.05)s+='<g opacity="'+f2(op2)+'" transform="translate('+f1(ex)+' '+f1(ey)+') rotate('+f1(er)+')"><rect x="-150" y="-95" width="300" height="190" rx="14" fill="'+INK+'"/><path d="M-150 -95 L0 '+f1(lerp(15,-170,win(t,12.65,12.85)))+' L150 -95" fill="#D9D4C9" stroke="#BDB7AA" stroke-width="2"/>'
    +'<g transform="translate(0 0) scale('+f2(t<12.6?0:back(win(t,12.6,12.8)))+')"><circle r="30" fill="url(#gold)"/><path d="M8 -16 a18 18 0 1 0 0 32 a14 14 0 1 1 0 -32" fill="#0C0E12" opacity=".75"/></g></g>';
@@ -344,7 +344,7 @@ window.render=t=>{let s=DEFS,o='',tp='',cam='',fl=0;
   s+=sparkle(96,170,18,'#FFE3A0',fade(t,56.3,60,.3,.1)*(.5+.5*Math.sin(t*5)))+sparkle(628,380,14,'#fff',fade(t,56.4,60,.3,.1)*(.5+.5*Math.cos(t*6)))+sparkle(600,150,10,'#FFE3A0',fade(t,56.5,60,.3,.1)*(.5+.5*Math.sin(t*7+2)));
   o+=T(360,392,38,'aaa7377.com','',fade(t,56.6,60.5,.3,.1),'color:'+INK+';font-weight:800;letter-spacing:1px')+T(360,452,30,'지난 기록을 센 공부예요','',fade(t,56.8,60.5,.3,.1),'color:'+SUB+';font-weight:600')+T(360,494,30,'사고팔기를 권하지 않아요','',fade(t,56.9,60.5,.3,.1),'color:'+SUB+';font-weight:600');
   if(t>=57.3)s+=ring(360,860,57.35,t,.7,20,260,'#BFFFF4',8,.25)+burst(360,850,57.35,t,.8,24,'#BFFFF4',240);}
- // 꼴똘이
+ // 골똘이
  if(st.show){const tr='translate('+f1(st.X)+' '+f1(st.Y)+') scale('+(st.S*st.sx).toFixed(3)+' '+(st.S*st.sy).toFixed(3)+')';
   if(O.glowWing>.3||O.flame>.3)s+='<ellipse cx="'+f1(st.X+120*st.S)+'" cy="'+f1(st.Y+150*st.S)+'" rx="'+f1(170*st.S)+'" ry="'+f1(170*st.S)+'" fill="url(#aura)" opacity="'+f2(Math.max(O.glowWing,O.flame)*.8)+'"/>';
   s+='<g transform="'+tr+'">'+hongpyo(O,t,{boot:1,guard:1})+'</g>';}
@@ -366,7 +366,7 @@ const look = txt => { for (const l of String(txt).split('\n')) if (l.trim()) see
 const judge = () => {
   const all = [...seen].join('\n');
   for (const re of BAD) if (re.test(all)) stop('그린 글에 ' + re + ' 이(가) 나옴');
-  for (const need of ['꼴똘이!', '스타벅스 상품권 1만원', PHONE, `${FR}명마다 1만원씩!`, D.TITLE, NAME, NAME_EN, '사고팔기를 권하지 않아요'])
+  for (const need of ['골똘이!', '스타벅스 상품권 1만원', PHONE, `${FR}명마다 1만원씩!`, D.TITLE, NAME, NAME_EN, '사고팔기를 권하지 않아요'])
     if (!all.includes(need)) stop('그린 글에 「' + need + '」 이(가) 없음');
 };
 if (ONLY) {
