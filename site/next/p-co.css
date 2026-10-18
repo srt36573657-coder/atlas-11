@@ -151,5 +151,5 @@ html.white .why-go.cw { outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white .pco-tip, html.white .pco-chev { color: #FFFFFF; }
 html.white .pco-key .k-co { background: none; border-left: 12px solid var(--up); border-right: 12px solid var(--down); }
 html.white .pco-key .k-pick { background: var(--gold); background-clip: padding-box; border-left: 11px solid transparent; border-right: 11px solid transparent; }
-html.white .pco-why { padding-left: calc(var(--sp-2) - 2px); border-left: 2px solid var(--sub); }
+html.white .pco-why { position: relative; } html.white .pco-why::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--sub); } /* 그림자 대신 막대(안쪽 띄움 16 그대로 — 간격 0 · 8 · 16 · 24) */
 html.white .pco-next { outline: 1px solid var(--hair2); outline-offset: -1px; }

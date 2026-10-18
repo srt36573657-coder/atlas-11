@@ -512,7 +512,7 @@ html.white .av.on { outline: 3px solid var(--gold); outline-offset: 0; }
 html.white .st { background: #FFFFFF; border-color: var(--hair2); }
 html.white .player { background: #FFFFFF; border-bottom: 1px solid var(--hair-soft); }
 html.white .player .scrub { background: var(--hair-soft); }
-html.white .player .tip { background: #FFFFFF; color: var(--ink); border: 1px solid var(--hair2); }
+html.white .player .tip { background: #FFFFFF; color: var(--ink); outline: 1px solid var(--hair2); outline-offset: -1px; } /* 테는 자리를 안 차지하게(글 시작 줄 그대로) */
 html.white .player .cur { background: var(--hair2); }
 html.white .chaps .cp, html.white .stats > div { background: #FFFFFF; border-color: var(--hair2); }
 html.white .chaps .cp i { background: #FFFFFF; border: 1px solid var(--gold); }

@@ -116,3 +116,4 @@ html.white .pchx-chip:active, html.white .pchx-ib:active, html.white .pchx-row:a
 html.white .pchx-key .k-avg { border-top-color: var(--mute); }
 html.white .pchx-key .k-b0 { border-top-color: var(--mute); }
 html.white .pchx-b0 { stroke: var(--mute); }
+html.white .pchx-inl { justify-content: flex-start; } /* 2026-10-19 둘째 올림 — 흰 판 48 칸에서 짧은 이름도 글 시작 줄에 맞춤 */

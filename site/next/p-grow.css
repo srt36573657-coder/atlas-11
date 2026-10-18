@@ -112,7 +112,7 @@ html.white .pgrow-tip { color: #FFFFFF; }
 html.white .pgrow-k-band, html.white .pgrow-rb-bd { background: var(--press); }
 html.white .pgrow-rb { background: var(--hair-soft); }
 html.white :is(.pgrow-none, ol.pgrow-yrs li, .pgrow-box ul.pgrow-chk, details.pgrow-more) { outline: 1px solid var(--hair); outline-offset: -1px; }
-html.white .pgrow-alt { padding-left: calc(var(--sp-2) - 2px); border-left: 2px solid var(--m4-line); }
+html.white .pgrow-alt { position: relative; } html.white .pgrow-alt::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--m4-line); }
 html.white .pgrow-chip.g5 { color: #FFFFFF; }
 html.white .pgrow-chip.g4 { background: var(--press); }
 html.white .pgrow-chip.g3 { background: #FFFFFF; border: 1px solid var(--hair2); }

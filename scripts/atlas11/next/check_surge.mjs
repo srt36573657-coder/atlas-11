@@ -123,7 +123,7 @@ const grab0 = (p, root) => p.evaluate(r => {
   for (const d of v.querySelectorAll('details')) d.open = true;
   for (const e of v.querySelectorAll('[hidden]')) e.hidden = false;
   const own = e => [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').replace(/[\u00a0]/g, ' ').replace(/\u2060/g, '').replace(/\s+/g, ' ').trim();
-  const colorOf = e => { const c = getComputedStyle(e).color; return c === 'rgb(233, 185, 73)' ? 'gold' : c === 'rgb(255, 90, 101)' ? 'up' : c === 'rgb(91, 150, 255)' ? 'down' : null; };
+  const colorOf = e => { const c = getComputedStyle(e).color; return c === 'rgb(233, 185, 73)' || c === 'rgb(138, 101, 22)' ? 'gold' : c === 'rgb(255, 90, 101)' || c === 'rgb(208, 32, 46)' ? 'up' : c === 'rgb(91, 150, 255)' || c === 'rgb(30, 91, 216)' ? 'down' : null; }; // 먹빛 판 색 + 흰 판 색(2026-10-19 · 금빛 #8A6516 · 오름 #D0202E · 내림 #1E5BD8)
   const marks = [];
   for (const e of v.querySelectorAll('*')) { if (e.closest('svg')) continue; const t = own(e); if (!t) continue; const c = colorOf(e); if (c) marks.push(c + '|' + t); }
   return {text: v.innerText, marks, hrefs: [...v.querySelectorAll('a[href]')].map(a => a.getAttribute('href')), h1: v.querySelector('h1')?.textContent ?? '', title: document.title};
