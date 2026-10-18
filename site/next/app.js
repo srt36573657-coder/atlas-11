@@ -328,7 +328,7 @@ function homeBand(H, short = false) { // short = 흰 첫 화면 한 줄(날짜 �
   const ixs = [[K, '코스피'], [Q, '코스닥']].filter(([x]) => x).flatMap(([x, nm], i) => [i ? (short ? ' ' : ' · ') : null, h('span', {class: 'hm-ix'}, h('span', {text: nm}), ' ', h('b', {class: 'num ' + cls(x.day), text: p2(x.day)}))]);
   a.append(h('span', {class: 'hm-row'}, w.stale ? [h('b', {class: 'hm-q', 'aria-hidden': 'true', text: '?'}), ' '] : null, h('span', {class: 'hm-bd', text: when}), chev), h('span', {class: 'hm-ixs'}, ...ixs)); // 날짜 줄 · 숫자 줄(늘 같은 두 줄 · 글 흐름 — 읽어 주기도 「코스피 −3.28% · 코스닥 −4.36%」)
   if (idxOk(K) || idxOk(Q)) { const al = idxAlerts(H); // 큰 날 금빛 「!」 = 띠 안(명령문 [6] 1)
-    if (short && al.length) { const full = al.map(x => x.textContent).join(' '); a.append(h('p', {class: 'm4-al', 'aria-label': full, title: full, text: '! 크게 움직인 날'})); } // 흰 첫 화면 = 짧은 꼴(글자 수 잣대 · 자세한 글은 누르면 #/today · 읽어 주기는 전체 글)
+    if (short && al.length) a.append(h('p', {class: 'm4-al', text: '! 크게 움직인 날'})); // 흰 첫 화면 = 짧은 꼴(글자 수 잣대 · 자세한 글은 누르면 #/today)
     else a.append(...al); }
   return {el: a, day: d};
 }
