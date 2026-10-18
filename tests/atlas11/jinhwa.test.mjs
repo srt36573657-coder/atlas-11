@@ -143,13 +143,13 @@ test('깃허브 열쇠 0 · 비밀 값 0 · 함수 길', async () => {
 
 /* ── 「○시」 셈(화면 p-jinhwa.js) — 진화 회차 = 평일 09:30 · 11:30 · 13:30 · 17:30(서울 · [8] 1) · 회차마다 하나 ── */
 const ms = s => KST(s).getTime(), iso = s => KST(s).toISOString();
-test('업데이트 때 — 평일 10 · 12 · 14 · 18시 · 회차는 30분 전 · 주말 건너뜀', () => {
-  assert.deepEqual([...SLOTS], [10, 12, 14, 18]); assert.equal(LEAD_MIN, 30);
-  assert.equal(slotAfter(ms('2026-10-19T09:29:00')), ms('2026-10-19T10:00:00'), '월 09:29 → 10시 회차에 듦');
-  assert.equal(slotAfter(ms('2026-10-19T09:30:00')), ms('2026-10-19T12:00:00'), '09:30 회차가 이미 돎 → 12시');
+test('업데이트 때 — 매시 정각(주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 회차는 30분 전', () => {
+  assert.deepEqual([...SLOTS], Array.from({length: 24}, (_, h) => h)); assert.equal(LEAD_MIN, 30);
+  assert.equal(slotAfter(ms('2026-10-19T09:29:00')), ms('2026-10-19T10:00:00'), '09:29 → 10시 회차에 듦');
+  assert.equal(slotAfter(ms('2026-10-19T09:30:00')), ms('2026-10-19T11:00:00'), '09:30 회차가 이미 돎 → 11시');
   assert.equal(slotAfter(ms('2026-10-19T09:45:00'), false), ms('2026-10-19T10:00:00'), '다음 업데이트(회차 아님)');
-  assert.equal(slotAfter(ms('2026-10-23T17:31:00')), ms('2026-10-26T10:00:00'), '금 17:31 → 월 10시');
-  assert.equal(slotAfter(ms('2026-10-24T12:00:00'), false), ms('2026-10-26T10:00:00'), '토요일 → 월 10시');
+  assert.equal(slotAfter(ms('2026-10-24T12:10:00'), false), ms('2026-10-24T13:00:00'), '토요일도 매시');
+  assert.equal(slotAfter(ms('2026-10-24T23:45:00')), ms('2026-10-25T01:00:00'), '자정 넘어 일요일 1시');
 });
 
 test('「○시」 차례 = 진화 회차 차례 — 회차마다 하나 · 되돌리기 먼저 · 이른 것부터 · 기다리는 것 · 들어간 것만', () => {
@@ -157,17 +157,17 @@ test('「○시」 차례 = 진화 회차 차례 — 회차마다 하나 · 되�
   let p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], now, sets);
   assert.equal(p.get(W1), ms('2026-10-19T10:00:00'));
   p = slotPlan([{id: W2, state: 'confirmed', at: iso('2026-10-19T09:05:00')}, {id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], now, sets);
-  assert.deepEqual([p.get(W1), p.get(W2)], [ms('2026-10-19T10:00:00'), ms('2026-10-19T12:00:00')], '둘이면 하나씩');
+  assert.deepEqual([p.get(W1), p.get(W2)], [ms('2026-10-19T10:00:00'), ms('2026-10-19T11:00:00')], '둘이면 하나씩');
   p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T08:00:00')}, {id: A1, state: 'revert', at: iso('2026-10-19T09:00:00')}], now, sets);
-  assert.deepEqual([p.get(A1), p.get(W1)], [ms('2026-10-19T10:00:00'), ms('2026-10-19T12:00:00')], '되돌리기 먼저(lib.mjs planRound)');
+  assert.deepEqual([p.get(A1), p.get(W1)], [ms('2026-10-19T10:00:00'), ms('2026-10-19T11:00:00')], '되돌리기 먼저(lib.mjs planRound)');
   p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:35:00')}], ms('2026-10-19T09:40:00'), sets);
-  assert.equal(p.get(W1), ms('2026-10-19T12:00:00'), '09:30 회차 뒤에 누름 → 12시');
+  assert.equal(p.get(W1), ms('2026-10-19T11:00:00'), '09:30 회차 뒤에 누름 → 11시');
   p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], ms('2026-10-19T09:40:00'), sets);
   assert.equal(p.get(W1), ms('2026-10-19T10:00:00'), '09:30 회차가 실었고 10시 업데이트 전');
   p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], ms('2026-10-19T10:05:00'), sets);
-  assert.equal(p.get(W1), ms('2026-10-19T12:00:00'), '회차가 못 넣었으면 다음 업데이트');
+  assert.equal(p.get(W1), ms('2026-10-19T11:00:00'), '회차가 못 넣었으면 다음 업데이트');
   p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-23T17:40:00')}], ms('2026-10-23T17:41:00'), sets);
-  assert.equal(p.get(W1), ms('2026-10-26T10:00:00'), '금요일 마지막 회차 뒤 → 월 10시');
+  assert.equal(p.get(W1), ms('2026-10-23T19:00:00'), '17:30 회차 뒤에 누름 → 18:30 회차 → 19시(매시)');
   p = slotPlan([{id: 'gone', state: 'confirmed', at: iso('2026-10-19T09:00:00')}, {id: W3, state: 'withdrawn', at: iso('2026-10-19T09:00:00')}, {id: W1, state: 'revert', at: iso('2026-10-19T09:00:00')}, {id: W2, state: 'confirmed', at: iso('2026-10-19T09:01:00')}], now, sets);
   assert.deepEqual([...p.keys()], [W2], '내려간 대안 · 거둔 것 · 기다리는 것의 되돌리기는 셈 밖');
 });

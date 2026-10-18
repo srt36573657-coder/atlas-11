@@ -45,14 +45,13 @@ function away() {
   });
 }
 
-/* ── 업데이트 때(「○시」) — 평일(서울) 10 · 12 · 14 · 18시 · 진화 회차는 30분 전 ── */
-export const SLOTS = Object.freeze([10, 12, 14, 18]), LEAD_MIN = 30;
+/* ── 업데이트 때(「○시」) — 매시 정각(서울 · 주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 진화 회차는 30분 전 ── */
+export const SLOTS = Object.freeze(Array.from({length: 24}, (_, h) => h)), LEAD_MIN = 30;
 /** t(ms) 뒤 첫 업데이트 — lead = 회차가 그 업데이트 30분 전에 돌아 그때까지 들어온 확인만 봄(true) · false 면 그냥 다음 업데이트 */
 export function slotAfter(t, lead = true) {
   const k = new Date(t + KST);
   for (let i = 0; i < 15; i++) {
-    const day = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate() + i), wd = new Date(day).getUTCDay();
-    if (wd === 0 || wd === 6) continue;
+    const day = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate() + i);
     for (const hh of SLOTS) { const s = day + hh * 36e5 - KST; if ((lead ? s - LEAD_MIN * 6e4 : s) > t) return s; }
   }
   return null;

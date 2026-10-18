@@ -34,7 +34,7 @@ export const REC_SCHEMA = 'kkolttori-jinhwa-round-1';
 export const MAX_FILES = 5;                            // [8] 7 「바뀌는 파일 다섯 개 안」
 export const FIX_MAX_FILES = 3, FIX_MAX_LINES = 20, FIX_MAX_CHARS = 24, FIX_MAX_PER_ROUND = 1; // [8] 9 고장 고침 — 작은 것만(모양 · 뜻이 바뀌면 고장 고침이 아님)
 export const FIX_KINDS = Object.freeze(['깨진 길', '날짜 「?」', '오타']);
-export const SLOTS = Object.freeze([[10, 0], [12, 0], [14, 0], [18, 0]]); // 하루 4번 업데이트(평일 · 서울) — 업데이트 예약 작업은 1분 앞 :59
+export const SLOTS = Object.freeze(Array.from({length: 24}, (_, h) => Object.freeze([h, 0]))); // 매시 업데이트(서울 · 주말 · 공휴일도 — 사장님 2026-10-18 20:59 「한시간 마다 업데이트를 하라」 · 21:00 「진화도 24번 한다」) — 업데이트 예약 작업은 1분 앞 :59 · 옛 판 하루 4번(평일 10 · 12 · 14 · 18)
 export const ROUND_LEAD_MIN = 30;                      // 회차 = 업데이트 30분 전(09:30 · 11:30 · 13:30 · 17:30)
 export const CARRY_MARGIN_MIN = 4;                     // 업데이트 4분 전까지 main 에 든 것이 그 업데이트에 실림
 export const DEPLOY_WORKFLOWS = Object.freeze(['atlas11-site.yml', 'atlas11-daily.yml', 'atlas11-evening.yml']); // 사이트를 올리는 작업 — [8] 2 「다른 올리기가 돌고 있으면 끝날 때까지 기다려라」
@@ -62,12 +62,10 @@ export const roundId = t => { const k = kst(t); return `${k.y}${p2(k.mo)}${p2(k.
 export const isoKst = t => { const k = kst(t), s = new Date(t).getUTCSeconds(); return `${k.date}T${p2(k.H)}:${p2(k.M)}:${p2(s)}+09:00`; };
 const kstDate = (date, H, M) => new Date(`${date}T${p2(H)}:${p2(M)}:00+09:00`);
 export const addDays = (date, n) => { const t = new Date(date + 'T00:00:00Z'); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
-/** t 뒤(같거나)의 업데이트 때 n 개(평일 10 · 12 · 14 · 18시) */
+/** t 뒤(같거나)의 업데이트 때 n 개(매시 정각 · 주말도) */
 export function slotsFrom(t, n = 1) {
   const out = [], t0 = new Date(t).getTime();
   for (let day = kst(t).date, guard = 0; out.length < n && guard < 30; day = addDays(day, 1), guard++) {
-    const wd = new Date(day + 'T00:00:00Z').getUTCDay();
-    if (wd === 0 || wd === 6) continue;
     for (const [H, M] of SLOTS) { const s = kstDate(day, H, M); if (s.getTime() >= t0 && out.length < n) out.push(s); }
   }
   return out;
