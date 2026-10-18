@@ -207,6 +207,7 @@ jobs:
           echo "DATA=$src $(node -p 'require("./dist/atlas/data/mkt.json").asOf' 2>/dev/null || echo '?')" >> "$GITHUB_ENV"
           # 시험 서버 — 넷리파이처럼 dist/ 를 내보냄(보안 머리말 · /api/letter · /api/invite 포함) · 열쇠는 이 실행기에서만 쓰는 시험 열쇠(진짜 열쇠 아님)
           key=$(node -e 'process.stdout.write(require("crypto").randomBytes(24).toString("base64url"))')
+          echo "ATLAS_DEV_OWNER_KEY=$key" >> "$GITHUB_ENV" # 진화 칸 검사(check_jinhwa)가 「사장님 열쇠 기기」 길을 시험 — 이 실행기에서만 쓰는 시험 열쇠(진짜 열쇠 아님 · 사장님 2026-10-18 16:39 [9] 1)
           nohup node scripts/atlas11/invite_dev.mjs --dir dist --port 8826 --owner-key "$key" >/tmp/dev.log 2>&1 &
           for i in $(seq 1 90); do
             if curl -fs -o /dev/null http://127.0.0.1:8826/next/ 2>/dev/null && curl -fs -o /dev/null http://127.0.0.1:8826/atlas/data/core.json 2>/dev/null; then break; fi
