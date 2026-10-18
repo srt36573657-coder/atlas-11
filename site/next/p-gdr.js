@@ -23,6 +23,7 @@
    rules 줄(문턱마다 값 · 왜 이 값인가 · 조금 움직이면 남는 곳 수 접음) · 큰 업종 비중 합 · 세 곳이 함께 내린 날 · 목록 문(status.lists) · 분기 숫자(status.quarters) · 고른 곳 0도 그림 */
 import {NAME, josa} from './brand.js';
 import * as WHY from './p-why.js'; // 매매일지(일꾼 S1)의 doneOnce() · todayResult() — 없거나 못 읽으면 기록을 직접 읽거나 그 줄을 뺌
+import {shareButtons} from './share-btn.js'; // 카톡 단추 한 곳(KB1) — 칸 카드 이름 줄(일꾼 KB2)
 const NX = globalThis.NX;
 const {h} = NX;
 // 모양 파일(p-gdr.css)이 붙은 뒤에 이 쪽을 내놓음 — 느린 망에서 모양 없는 칸이 한순간 보이지 않게(app.js mod() 는 모양 고리를 붙인 뒤 곧바로 이 모듈을 받음 · 늦어도 3초 뒤엔 그냥 그림)
@@ -221,8 +222,11 @@ function mcLines(p) {
 /** 카드 하나 — 번호 · 업종 · 이유 한 줄 · 틀린다면 이유 · (가까스로 넘음) · (못 돌린 날 값) · 고른 날 뒤 성적 · 회사 값 한 줄 · (몬테카를로) · 비중 · 격언(있을 때만) */
 function card(G, p, X) {
   const I = X ? X.info.get(p.code) ?? null : undefined, stale = !!(X?.site && G.asOf && G.asOf < X.site), say = G.sayings?.[p.saying], near = nearLine(G, p);
-  return h('div', {class: 'gdr-card', id: 'gdr-' + p.no},
-    h('a', {class: 'gdr-name', href: '#/w/' + NX.enc(p.code), 'data-proper': '', text: p.name}),
+  const nm = h('a', {class: 'gdr-name', href: '#/w/' + NX.enc(p.code), 'data-proper': '', text: p.name});
+  // 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 일꾼 KB2) — 이름 줄 오른쪽 끝 · 고리와 형제 · 값은 마지막 종가(받았으면) · 아니면 글상자가 오늘 값으로 채움
+  const kb = shareButtons({code: p.code, name: p.name, price: I?.last ?? null, day: I?.lastD ?? null, kind: 'share'}, {kakao: true});
+  return h('div', {class: 'gdr-card', id: 'gdr-' + p.no, 'data-kkrow': kb ? 'gdr.card' : null},
+    kb ? h('div', {class: 'gdr-kr'}, nm, kb) : nm,
     h('p', {class: 'gdr-ind'}, h('b', {class: 'num', text: p.no + '번'}), h('span', {text: ' · ' + p.ind})),
     h('p', {class: 'gdr-why', text: reasonTxt(p.reason)}),
     h('p', {class: 'gdr-wrong'}, h('span', {class: 'gdr-wk', text: '틀린다면 이유 '}), typeof p.wrong === 'string' && p.wrong.trim() ? h('span', {text: p.wrong}) : h('span', {}, h('b', {class: 'gdr-qm', text: '? '}), h('span', {text: '아직 못 셌어요.'}))),

@@ -3,6 +3,7 @@
    셈 · 글은 옛 쪽 그대로(cond.json cd-v1 · 거르기 · 세기 · 몸값 큰 차례 · 값을 모르면 「?」로 따로) · 기억 열쇠 그대로(atlas:cond · atlas:cond-seen) ·
    「더 보기」 수는 옛 쪽처럼 이 열린 창 동안 이어지고, 조건을 바꾸면 20곳부터 · 주소는 옛 쪽처럼 고를 때 바꾸지 않음
    그림 = 깔때기(모든 회사 → ① → ② → ③ · 막대 길이 = 모든 회사 가운데 남은 몫 · 칸이 곧 고르는 단추) · 결과 줄마다 5일 작은 선 · 고르는 판은 이 쪽 안의 덮는 판(닫기 · Esc) */
+import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(KB1) — 결과 줄 · 「?」 줄(일꾼 KB2)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 const NB = ' ';
@@ -68,7 +69,7 @@ const HOWTO = [
   '고른 조건은 이 기계에만 남아요.',
 ];
 const HON = '사고팔 곳을 고른 목록이 아니에요.', PAST = '지난 값일 뿐 앞날을 말하지 않아요.';
-const SAFE = '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'; // 새 화면 안전 문장(첫 화면 · 나 칸과 같은 글)
+const SAFE = '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'; // 새 화면 안전 문장(첫 화면 · 나 칸과 같은 글)
 
 /* ── 아래 자료 줄(옛 쪽 foot 의 자료 · 장 중 「?」 줄) ── */
 const NP = C => C?.funnel?.picked ?? '?';
@@ -117,12 +118,15 @@ export async function render(arg) {
   const nameOf = j => names[C.c[j]]?.n ?? C.c[j];
   const row = j => {
     const c = C.c[j], pk = C.p[j] === 1, r5 = C.r5[j], k = r5 == null ? 'q' : NX.cls(r5);
-    return h('a', {class: 'pcond-row', href: coHref(core, c, pk), 'data-c': c},
+    const a = h('a', {class: 'pcond-row', href: coHref(core, c, pk), 'data-c': c},
       h('span', {class: 'pcond-nm' + (pk ? ' gold' : ''), text: nameOf(j)}),
       h('span', {class: 'pcond-v'}, h('span', {class: 'pcond-5', text: '5일간 '}), r5 == null ? h('b', {class: 'num q', text: '?'}) : h('b', {class: 'num ' + k, text: NX.pct(r5)})),
       h('span', {class: 'pcond-sub'}, tx(X.ind[C.i[j]].n + (C.rk[j] ? ` · 몸값 ${C.rk[j]}등` : '')), pk ? h('span', {class: 'pcond-pk', text: ' · 고른 곳'}) : null),
       spark(cdLine(C, j), k));
+    return kkRow(a, c, nameOf(j), 'cond.row'); // 카톡 단추 = 줄 오른쪽 끝(KB2)
   };
+  /** 카톡 줄(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 줄 고리와 카톡 단추(share-btn.js 하나)를 형제로 · 단추를 못 만들면 줄 그대로 */
+  const kkRow = (a, c, name, place) => { const kb = shareButtons({code: c, name, kind: 'share'}, {kakao: true}); return kb ? h('div', {class: 'kkr pcond-kr', 'data-kkrow': place}, a, kb) : a; };
   /** 업데이트 뒤 — 같은 조건 · 다른 날이면 지난번과 견줌(보는 기계에만 · 옛 쪽과 같은 열쇠 · 그리기마다 견주고 새로 적음) */
   const seen = R => {
     let note = null;
@@ -168,13 +172,13 @@ export async function render(arg) {
     mb.addEventListener('click', () => {
       const from = more; more += 20;
       const add = R.res.slice(from, more).map(row); list.append(...add);
-      if (n > more) moreText(); else { mb.remove(); add[0]?.focus({preventScroll: true}); } // 단추가 사라지면 새로 든 첫 줄로
+      if (n > more) moreText(); else { mb.remove(); (add[0]?.matches?.('a') ? add[0] : add[0]?.querySelector('a'))?.focus({preventScroll: true}); } // 단추가 사라지면 새로 든 첫 줄로(카톡 줄이면 그 줄 고리)
       const d = seen(R), el = box.querySelector('.pcond-diff'); if (el && !d) el.remove(); // 옛 쪽은 「더 보기」도 새로 그려 견줌 — 같은 날이면 견줌 줄이 사라짐
     });
     if (n > more) { moreText(); box.append(mb); }
     // ④ 값을 몰라 넣지 않은 곳(?) — 넘음 · 빠짐으로 치지 않음
     if (R.q.length) box.append(h('details', {class: 'pcond-q'}, h('summary', {text: `? 값을 몰라 넣지 않은 곳 ${loc(R.q.length)}곳`}),
-      h('div', {class: 'pcond-in'}, ...R.q.map(([j, k]) => h('a', {class: 'pcond-qr', href: coHref(core, C.c[j], C.p[j] === 1)}, h('b', {text: nameOf(j)}), h('span', {text: tx(` — ${CIRC[CD_SLOTS.findIndex(S => S.k === k)]} ${CD_QWHY[k]}`)}))))));
+      h('div', {class: 'pcond-in'}, ...R.q.map(([j, k]) => kkRow(h('a', {class: 'pcond-qr', href: coHref(core, C.c[j], C.p[j] === 1)}, h('b', {text: nameOf(j)}), h('span', {text: tx(` — ${CIRC[CD_SLOTS.findIndex(S => S.k === k)]} ${CD_QWHY[k]}`)})), C.c[j], nameOf(j), 'cond.q'))))); // 값을 몰라 넣지 않은 곳도 종목 줄 — 카톡 단추(KB2)
     const d = seen(R); if (d) box.prepend(h('p', {class: 'note pcond-diff', text: d}));
   };
   /** 고르는 판 — 칸 하나의 고르기(줄마다 이걸 고르면 남는 곳) · 누르면 바로 걸리고 닫힘 · 닫기 · Esc */

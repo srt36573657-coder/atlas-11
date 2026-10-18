@@ -16,6 +16,8 @@
      [9] 8 색 점마다 읽어 주는 글(좋음 · 주의 · 위험) · [2] 7 결과가 처음 보인 뒤 NX.kakao.offer('journal') 한 번(offerOnce — 이 화면을 연 동안 한 번 · NX.kakao 가 없거나 꺼져 있으면 부르지 않음)
      [10] 글씨 = --fs-1 ~ --fs-5 · 간격 = --sp-1 ~ --sp-3(p-why.css) */
 import {NAME, josa} from './brand.js';
+import {tally} from './tally.js'; // 합계 칸 신호 셋(일꾼 KD · 2026-10-18 16:39 [10] 1) — 끝냄(stop · stop_rest) · 한 달 답(promise · promise_yes) · 보내고 기다리지 않음
+import {shareButtons} from './share-btn.js'; // 카톡 단추 한 곳(KB1) — 기록 줄의 종목(일꾼 KB2)
 const NX = globalThis.NX;
 const {h} = NX;
 const PT = {g: 0, y: 1, r: 2};
@@ -343,6 +345,7 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     i = RES; err = ''; draw(); keepTop();
     if (typeof onDone === 'function') { try { onDone(last, saved); } catch (e) { console.error(e); } }
     offerOnce(); // [2] 7 — 결과가 처음 보인 뒤 한 번(일꾼 K2c 의 NX.kakao · 꺼져 있거나 없으면 아무 일 없음)
+    tally(V_CODE[J.verdict] === 'rest' ? 'stop_rest' : 'stop'); // 합계 칸 ① 멈춤(KD · [10] 1) — 끝낸 순간 한 번 · 「오늘은 쉬어 가자」면 stop_rest(= 끝냄 + 쉬어 가자)
   };
   const resView = () => {
     const J = last, ready = readyOf(J), tone = VTONE[J.verdict];
@@ -397,8 +400,11 @@ function recBox(here) {
     const rd = readyOf(r);
     const row = h('div', {class: 'wy-rec'},
       h('p', {class: 'wy-rh'}, h('b', {text: fmtDay(r.at)}), h('span', {text: ' · '}), h('span', {class: 'num', text: rd == null ? '준비 ?' : `준비 ${rd} / ${MAX}`}), h('span', {class: 'wy-v' + (VTONE[r.verdict] ?? 'y'), text: ` · ${r.verdict}`})));
-    if (r.code || r.name) row.append(h('p', {class: 'wy-rs'}, h('span', {class: 'wy-stn', 'data-proper': '', text: String(r.name || r.code)}),
-      h('span', {text: r.price > 0 ? ` · 그날 값 ${won(r.price)}` + (r.day ? ` · ${NX.md(r.day)} 종가` : '') : ' · 그날 값 ?'})));
+    const rs = r.code || r.name ? h('p', {class: 'wy-rs'}, h('span', {class: 'wy-stn', 'data-proper': '', text: String(r.name || r.code)}),
+      h('span', {text: r.price > 0 ? ` · 그날 값 ${won(r.price)}` + (r.day ? ` · ${NX.md(r.day)} 종가` : '') : ' · 그날 값 ?'})) : null;
+    // 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 3 · 일꾼 KB2) — 회사 주식 기록만 · 종목 줄 오른쪽 끝 · 값은 글상자가 오늘 값으로 채움([6] 3 「오늘 값」 — 그날 값 · 답 · 준비 점수는 담지 않음)
+    const kb = rs && coOf(normCode(r.code)) ? shareButtons({code: normCode(r.code), name: coOf(normCode(r.code)).n, kind: 'share'}, {kakao: true}) : null;
+    if (kb) { row.setAttribute('data-kkrow', 'why.rec'); row.append(h('div', {class: 'wy-kr'}, rs, kb)); } else if (rs) row.append(rs);
     row.append(bars(r.groups, true));
     if (r.why || r.promise || r.bigDay) row.append(lines(r));
     const out = h('div', {class: 'wy-later'}); row.append(out); laterBox(r, out);
@@ -475,7 +481,7 @@ async function laterBox(r, out) {
     busy(false);
   };
   if (r.kept?.a === 'yes' || r.kept?.a === 'no') { showVals(false); return; }
-  const ask = yes => () => { keep(r, yes); showVals(true); };
+  const ask = yes => () => { keep(r, yes); tally(yes ? 'promise_yes' : 'promise'); showVals(true); }; // 합계 칸 ② 약속(KD · [10] 1) — 답한 순간 한 번 · 「했어」면 promise_yes(= 답함 + 했어)
   const b1 = h('button', {class: 'wy-kb', type: 'button', text: '했어'}), b2 = h('button', {class: 'wy-kb', type: 'button', text: '안 했어'});
   b1.addEventListener('click', ask(true)); b2.addEventListener('click', ask(false));
   out.replaceChildren(h('p', {class: 'wy-kq', text: '그날 정한 대로 했어?'}), h('div', {class: 'wy-kbs', role: 'group', 'aria-label': '그날 정한 대로 했어?'}, b1, b2));

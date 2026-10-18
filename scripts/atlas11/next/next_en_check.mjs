@@ -351,8 +351,8 @@ async function gdrLocked(q, r) {
   try {
     await go(z, r);
     const x = await z.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock1'), go: document.querySelector('#view section.gdr.lock1 a.gdr-l1')?.getAttribute('href') ?? null, cells: document.querySelectorAll('#view .gdr-cell').length})); // 잠금 한 줄 = section.gdr.lock1 · a.gdr-l1([6] 10 · p-gdr lockBox)
-    if (!x.lock || x.go !== '#/why' || x.cells) fail('누르기', r + ' · 잠김', '질문 전인데 꼴똘이 칸이 잠기지 않음 ' + JSON.stringify(x));
-    await judge(z, r + ' · 잠김', {widths: r === '#/gdr'}); bump('꼴똘이 칸 잠김');
+    if (!x.lock || x.go !== '#/why' || x.cells) fail('누르기', r + ' · 잠김', '질문 전인데 골똘이 칸이 잠기지 않음 ' + JSON.stringify(x));
+    await judge(z, r + ' · 잠김', {widths: r === '#/gdr'}); bump('골똘이 칸 잠김');
   } finally { await z.context().close(); }
   await seedWhy(q, r);
 }
@@ -360,10 +360,10 @@ async function gdrLocked(q, r) {
 async function gdrWalk(q, where) {
   const keep = await keepKey(q, MONEY_KEY);
   try {
-    if (await q.locator('#view .gdr .gdr-in').count()) { fail('누르기', where, '꼴똘이 칸에 내 돈 칸(.gdr-in)이 있음 — [9] 4 는 입력 칸 0'); return; }
+    if (await q.locator('#view .gdr .gdr-in').count()) { fail('누르기', where, '골똘이 칸에 내 돈 칸(.gdr-in)이 있음 — [9] 4 는 입력 칸 0'); return; }
     const cell = q.locator('#view .gdr .gdr-cell:not(.cash):not(.on)').first();
     if (!(await cell.count())) return; // 고른 곳 0
-    await cell.click(); await settle(q); await judge(q, where + ' · 칸 엶', {widths: true}); bump('꼴똘이 칸 누르기');
+    await cell.click(); await settle(q); await judge(q, where + ' · 칸 엶', {widths: true}); bump('골똘이 칸 누르기');
   } finally { await putKey(q, MONEY_KEY, keep); }
 }
 
@@ -569,7 +569,7 @@ if (p) { // 창을 닫기 전에 엔진이 마지막 화면 뒤에 쌓은 틀까
 /* ── ⑤ 새 창 — 자료 파일을 못 받을 때(받은 것을 화면 안에서 바꿀 수 없는 칸: 몸값 · 급등 · 모든 자료) ── 일감 @newwin(맡은 몫만) */
 tS = Date.now();
 if (NEWWIN_MINE && EDGE && on('edge')) {
-  for (const [nm, block, hs] of [['몸값 · 급등 · 첫 화면 · 꼴똘이 칸 자료 못 받음', ['cond.json', 'surge.json', 'home.json', '/next/data/gdr.json'], ['#/', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/us', '#/shorts', '#/w/KOSPI', '#/w/005930', ...(modHave.gdr ? ['#/gdr'] : []), ...(modHave.why ? ['#/why'] : [])]],
+  for (const [nm, block, hs] of [['몸값 · 급등 · 첫 화면 · 골똘이 칸 자료 못 받음', ['cond.json', 'surge.json', 'home.json', '/next/data/gdr.json'], ['#/', '#/f/surge', '#/f/lead', '#/f/pick', '#/f/us', '#/shorts', '#/w/KOSPI', '#/w/005930', ...(modHave.gdr ? ['#/gdr'] : []), ...(modHave.why ? ['#/why'] : [])]],
     ['모든 자료 못 받음', ['core.json', 'mkt.json'], ['#/', '#/f/rise', '#/f/ind', '#/shorts', '#/w/005930', '#/w/KOSPI', '#/ch/g/semi', '#/ch/i/' + enc('반도체'), '#/sub', '#/me', '#/find']]]) {
     let q = null;
     try {

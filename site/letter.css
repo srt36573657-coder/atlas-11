@@ -70,12 +70,7 @@ a{color:var(--mint)}
 .rep{display:flex;gap:8px;align-items:center;margin:8px 0 0}.rep .in{margin:0;flex:1;min-width:0}.lt .rep .in{background:#fff;color:var(--pen);border-color:#CFC4B0}
 .lt .rep .ghost,.lt .own .ghost{margin:0;border-color:var(--pen);color:var(--pen)}
 .lt .own{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0 0;padding:8px 16px;border-radius:16px;background:rgba(233,185,73,.12)}.card.own{background:rgba(233,185,73,.12)}
-/* 도장 · 초대장 */
-.seals{display:flex;gap:8px 16px;flex-wrap:wrap;justify-content:center;margin:16px 0}
-.sl{width:70px;height:70px;border-radius:50%;border:2px dashed #3A3F4A;display:flex;align-items:center;justify-content:center;text-align:center;font-size:21px;color:var(--mute)}
-.sl.g{border:0;background:radial-gradient(circle at 34% 28%,#FFF1C4,var(--gold) 55%,#9C6E1C);color:#0C0E12;font-weight:900}
-.sl.s{border:0;background:radial-gradient(circle at 34% 28%,#FFFFFF,#C9CED6 55%,#7C838F);color:#0C0E12;font-weight:900}
-.sl.m{border:0;background:radial-gradient(circle at 34% 28%,#FFFFFF,#BFFFF4 50%,#2FB89F);color:#0C0E12;font-weight:900}
+/* 초대장(쓴 주 도장 칸은 지움 — 연속 접속 보상 · 본질 문 ③) */
 .tickets,.codes{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0}
 .tk{flex:1 1 30%;min-width:96px;min-height:72px;border-radius:14px;border:2px dashed var(--gold);background:none;color:#FFD98A;font:inherit;font-size:21px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px}
 .tk b{font-size:21px}.tk.used{border-style:solid;border-color:#3A3F4A;color:var(--sub)}

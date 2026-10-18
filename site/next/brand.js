@@ -3,9 +3,11 @@
 //   이름 바꾸기 = ko · en 을 바꾸고 was 맨 앞에 옛 이름을 더함 → node scripts/atlas11/next/brand_apply.mjs(글 속 옛 이름을 모두 새 이름으로 · 토씨 맞춤)
 //                → node scripts/atlas11/makbi/build.mjs(영상 · 그림) → 검사(next-modules 시험 ⑤ ⑥ · next_check 「옛 이름 남음」)
 //   2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」 [3] 1 「brand.js를 꼴똘이, 영어 Kkolttori로 바꿔라. was 맨 앞에 고도리를 더하라(until 2026-10-18).」
+//   2026-10-18(싱가포르) 17:15 「꼴똘이가 아니다! 꼴동이야」 · 17:17 「골-!  똘이야」 · 17:18 「골똘이!」 — 이름 = 골똘이(골똘히 생각하는 앵무새 · 플랫폼 이름도) · 영어는 꼴똘이 Kkolttori 와 같은 꼴로 Golttori · 꼴똘이는 한 시간 쓴 판이라 was 맨 앞(검사가 남은 글을 잡게)
 export const BRAND = Object.freeze({
-  ko: '꼴똘이', en: 'Kkolttori',
+  ko: '골똘이', en: 'Golttori',
   was: Object.freeze([ // 옛 이름(새 것부터) — 검사가 화면에 남았는지 봄 · 옛 쪽(/atlas/)과 맞댈 때 새 이름으로 바꿔 맞댐
+    Object.freeze({ko: '꼴똘이', en: 'Kkolttori', until: '2026-10-18'}),
     Object.freeze({ko: '고도리', en: 'Godori', until: '2026-10-18'}),
     Object.freeze({ko: '보드리', en: 'Bodri', until: '2026-10-17'}),
     Object.freeze({ko: '아틀란스', en: 'ATLAS', until: '2026-10-17'}),

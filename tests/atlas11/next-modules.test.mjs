@@ -89,7 +89,7 @@ test('⑤ 옛 이름 없음 — 새 화면 글(따옴표 · 틀 글) · index.ht
 });
 
 test('⑥ 옛 이름 없음 — 지금 사이트의 다른 쪽(소개 /hello.html · 편지 /letter.html · 초대 /invite.html)의 글', () => {
-  const SITE = path.join(ROOT, 'site'), files = ['hello.html', 'hello-send.js', 'hello-promo.css', 'letter.html', 'letter.js', 'letter.css', 'invite.html'].filter(f => fs.existsSync(path.join(SITE, f))); // 옛 화면(site/index.html · /atlas/ · /app/ · /us/ · /new/)은 손대지 않으니 셈 밖
+  const SITE = path.join(ROOT, 'site'), files = ['hello.html', 'hello-send.js', 'hello-promo.css', 'letter.html', 'letter.js', 'letter.css', 'invite.html', 'invite.js'].filter(f => fs.existsSync(path.join(SITE, f))); // invite.js = 초대장 쪽 지금 사이트 사본(2026-10-18 일꾼 KI — 옛 /app/invite.js 대신) // 옛 화면(site/index.html · /atlas/ · /app/ · /us/ · /new/)은 손대지 않으니 셈 밖
   assert.ok(files.includes('hello.html') && files.includes('letter.js'), '소개 · 편지 쪽 파일을 못 찾음');
   const bad = files.flatMap(f => oldNamesInSource(path.join(SITE, f), 'site/' + f));
   assert.deepEqual(bad, [], '옛 이름 남음:\n' + bad.join('\n'));

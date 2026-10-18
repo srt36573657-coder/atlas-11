@@ -177,8 +177,8 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
   const server = new BlobsServer({directory: dir, token}); const {port} = await server.start();
   try {
     const s = await stageFunctions(root, stage);
-    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['invite', 'letter']); // 2026-10-17 편지 여는 밤 함수 더함
-    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'functions/atlas11/letter.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/letter.mjs', 'site/next/words.js']); // 2026-10-17 21:10 [4] 4 쓰지 않을 말 한 곳(words.js)을 편지 함수도 부름
+    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['invite', 'jinhwa', 'letter', 'tally']); // 2026-10-17 편지 여는 밤 함수 더함 · 2026-10-18 16:39 [9] 8 · [10] 3 진화 칸 · 합계 칸 함수(일꾼 KD)
+    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'functions/atlas11/jinhwa.mjs', 'functions/atlas11/letter.mjs', 'functions/atlas11/tally.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/jinhwa.mjs', 'lib/atlas11/letter.mjs', 'lib/atlas11/tally.mjs', 'site/next/words.js']); // 2026-10-17 21:10 [4] 4 쓰지 않을 말 한 곳(words.js)을 편지 함수도 부름
     assert.ok(s.packages.includes('@netlify/blobs') && s.packages.includes('@netlify/runtime-utils'), s.packages.join(','));
     assert.ok(!s.packages.includes('react') && !s.files.some(f => f.startsWith('netlify/')), '옛 함수 · 쓰지 않는 패키지는 옮기지 않음');
     const edge = `http://127.0.0.1:${port}`;
@@ -189,6 +189,11 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
     const lf = (await import(path.join(stage, 'functions/atlas11/letter.mjs'))).default; // 편지 함수도 옮긴 폴더만으로 돈다
     const st = await lf(new Request('https://aaa7377.com/api/letter', {method: 'GET'}));
     assert.equal(st.status, 200); assert.equal((await st.json()).member, false);
+    const jf = (await import(path.join(stage, 'functions/atlas11/jinhwa.mjs'))).default, tf = (await import(path.join(stage, 'functions/atlas11/tally.mjs'))).default; // 진화 칸 · 합계 칸(KD)도 옮긴 폴더만으로 돈다
+    assert.deepEqual(await (await jf(new Request('https://aaa7377.com/api/jinhwa/status'))).json(), {items: []});
+    assert.equal((await jf(new Request('https://aaa7377.com/api/jinhwa/me'))).status, 403, '열쇠 없으면 사장님 기기 아님');
+    assert.equal((await tf(new Request('https://aaa7377.com/api/tally', {method: 'POST', body: '{"k":"visit"}', headers: {'content-type': 'application/json'}}))).status, 204);
+    assert.equal((await (await tf(new Request('https://aaa7377.com/api/tally/sum?days=1'))).json()).n, 1);
     assert.equal((await stageFunctions(root, stage, 'functions/none')), null, '함수 폴더가 없으면 함수 없이 올림');
   } finally { delete process.env.NETLIFY_BLOBS_CONTEXT; await server.stop(); await fs.rm(stage, {recursive: true, force: true}); await fs.rm(dir, {recursive: true, force: true}); }
 });

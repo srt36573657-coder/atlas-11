@@ -159,6 +159,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url
   const {artGate} = await import('./art_gate.mjs'), gate = await artGate(root);
   if (!gate.ok) { console.error('올리기 문 막힘 — 사이트에 올리지 않음:\n' + gate.bad.map(x => ' · ' + x).join('\n')); console.log(JSON.stringify({state: 'blocked', gate: gate.bad})); process.exit(3); }
   console.log(`올리기 문 통과 — 빠짐없이 도는 검사 화면 ${gate.report.pages}개 · 맞댄 숫자 ${gate.report.numbers}개 · 실패 0`);
+  // 본질 문(사장님 2026-10-18 16:39 「진화가 본질인 명령문」 [2] 4 · 일꾼 KA) — 올리는 폴더 그대로 일곱 가지(정적 · 자료 셈) · 막음 · 못 봄이면 올리지 않고 지금 사이트 그대로
+  const {essenceGate} = await import('./next/essence_check.mjs'), eg = await essenceGate({dist: path.resolve(arg('--dir') ?? 'dist')});
+  if (!eg.ok) { console.error('본질 문이 막음 — 지금 사이트 그대로:\n' + eg.lines.map(x => ' · ' + x).join('\n')); console.log(JSON.stringify({state: 'blocked', essence: eg.lines})); process.exit(3); }
+  console.log('본질 문 통과 — ' + eg.lines.at(-1));
   const out = await deploy({distDir: path.resolve(arg('--dir') ?? 'dist'), message: arg('--message')});
   console.log(JSON.stringify({...out, error: out.error ? out.error.slice(0, 300) : null}));
   process.exitCode = out.state === 'failed' ? 2 : 0;

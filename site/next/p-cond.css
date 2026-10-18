@@ -95,3 +95,9 @@ button.pcond-op[aria-current="true"] { border-color: var(--ink); background: var
 .pcond-oc { font-size: var(--fs-2); font-weight: 800; white-space: nowrap; text-align: right; }
 @media (prefers-reduced-motion: no-preference) { .pcond-sheet .pcond-sin { animation: pcond-up .22s var(--ease) both; } }
 @keyframes pcond-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* 카톡 단추 자리(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 결과 줄 · 「?」 줄 오른쪽 끝(고리와 형제) · 줄 밑 금은 줄 전체(단추까지) */
+.pcond-kr { border-bottom: 1px solid var(--hair); }
+.pcond-kr > a.pcond-row { border-bottom: 0; }
+.pcond-in > .pcond-kr { border-top: 1px solid var(--hair); border-bottom: 0; }
+.pcond-in > .pcond-kr > a.pcond-qr { border-top: 0; }

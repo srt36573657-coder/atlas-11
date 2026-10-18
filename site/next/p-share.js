@@ -8,12 +8,16 @@
    주소(회사 주식): <곳>#/s/<번호>/<보낸 날>/<그날 값>/<s|a>[/<말>] — s = 보내기 · a = 같이 따져 줘 · 말 = UTF-8 → base64url(150바이트까지 · 200자 안)
    render(arg) — 친구가 연 주소: 종목 이름(맨 위 한 줄) → 왜 사? 질문부터 → 다 답한 뒤에 보낸 사람 말 · 같이 따져 줘면 「반토막 난다면 왜일까?」 → 맨 밑에 보낸 날 값 · 오늘 값(그림 한 장 · 사장님 2026-10-18 [5] 10 「질문을 맨 위로 · 값 칸은 질문 뒤로」)
    보안 규칙 안: innerHTML · 글 속 style 없음 · 다른 주소 스크립트 없음 — 이 파일은 카카오 도구도 카카오 주소도 받지 않음
-   카톡(사장님 2026-10-18 [2] 2 ~ 7 · 일꾼 K2c): 서버가 켜져 있고 카카오 도구가 켜졌을 때만(NX.kakao.sdkReady) — 보내기 = 카카오 그림 카드 하나(단추 둘: 「카카오로 시작하기」 · 「그냥 보기」) · 글상자에 그 카드 미리보기 ·
-     offerBox() = 매매일지를 끝낸 뒤 한 번 뜨는 「이 기록 지키기」 칸(kakao.js 가 부름). 꺼져 있으면(NX.kakao 없음 · on false · 도구 없음) 한 줄도 안 돌고 휴대폰 공유 창(글 + 주소)으로 감
+   카톡(사장님 2026-10-18 [2] 2 ~ 7 · 일꾼 K2c → 2026-10-18 16:39 「진화가 본질인 명령문」 [6] · [7] · 일꾼 KB1): 공유 스위치가 켜졌고 카카오 도구가 켜졌을 때만(NX.kakao.share · sdkReady) —
+     보내기 = 카카오 그림 카드 하나(종목 이름 · 보낸 사람 말 · 보낸 날 값 · 단추: 가입이 꺼짐 = 「열어 보기」 하나 / 가입이 켜짐 = 「카카오로 시작하기」 · 「그냥 보기」) · 글상자에 그 카드 미리보기 ·
+     빠른 말 셋은 누르는 즉시 보냄(카톡 단추 1 + 빠른 말 1 = 누름 두 번에 카톡 친구 고르기) · 보내는 글 첫 줄 = 종목 이름 · 그날 값(저절로 · 칠 것 0) · 급등 줄은 반값 한 줄(halfLine)
+     offerBox() = 매매일지를 끝낸 뒤 한 번 뜨는 「이 기록 지키기」 칸(kakao.js 가 부름). 꺼져 있으면(NX.kakao 없음 · 공유 꺼짐 · 도구 없음) 카드 길은 한 줄도 안 돌고 휴대폰 공유 창(글 + 주소) → 글 + 주소 복사로 감
    이름은 brand.js 한 곳 · 거르는 말은 words.js 한 곳 */
 import {sendHits} from './words.js';
+import {shareButtons, kakaoButton} from './share-btn.js'; // 보내기 단추 한 곳(사장님 2026-10-18 16:39 [6] 2) — 옛 부르는 곳을 위해 아래에서 다시 내보냄
 import {NAME, josa, hasBatchim} from './brand.js';
 import {t as L} from './i18n.js'; // 보내는 글 속 붙박이 말(기본 말 · 「반토막 난다면」)은 지금 말로 — 화면 글은 엔진이 그려진 뒤 바꿈 · 한국어면 그대로
+import {tally} from './tally.js'; // 합계 칸 참고 신호(사장님 2026-10-18 16:39 [10] · 일꾼 KD tally.js) — 보내기를 마친 때 한 번 · 몸은 {k} 하나 · 보내고 잊음(일꾼 KI)
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const nx = () => globalThis.NX ?? null;
@@ -89,7 +93,13 @@ function getJson(name) {
   const N = nx(); if (N?.getJson) return N.getJson(name);
   return fetch('/atlas/data/' + name, {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null);
 }
-async function coInfo(code) { const j = await getJson('co/' + code + '.json'); const c = j?.c; return c ? {price: Number(c.price) > 0 ? Number(c.price) : null, day: DAY_RE.test(c.priceDate ?? '') ? c.priceDate : null, name: c.name ?? null, j} : {j}; }
+/** 회사 값(이름 · 오늘 값 · 그날) — 회사 파일 co/<번호>.json 의 c · 없으면 고른 곳 파일 comp.json companies[번호]
+    (고른 곳 56곳은 회사 파일에 c 가 없고 값이 comp.json 에만 있음 — app.js vWatch 와 같은 셈 · 일꾼 KB2 알림 2026-10-18: #/f/pick · #/today 첫 줄들 · 친구가 연 쪽 오늘 값도) · j = 회사 파일(마감 기록) */
+async function coInfo(code) {
+  const j = await getJson('co/' + code + '.json');
+  const c = j?.c ?? (await getJson('comp.json'))?.companies?.[code] ?? null, pd = String(c?.priceDate ?? '').slice(0, 10);
+  return c ? {price: Number(c.price) > 0 ? Number(c.price) : null, day: DAY_RE.test(pd) ? pd : null, name: c.name ?? null, j} : {j};
+}
 
 /* 모양 — 앱은 NX.mod 가 붙임 · 소개 · 편지 쪽은 여기서 한 번(다 받을 때까지 기다림 · 1.5초까지) */
 let cssP = null;
@@ -105,17 +115,30 @@ function toast(t) { const e = h('p', {class: 'ps-toast', role: 'status', text: t
 
 /* ───── 카톡 그림 카드 · 가입 권유(사장님 2026-10-18 [2] 2 ~ 8) ─────
    카카오 도구 · 서버 길은 NX.kakao(site/next/kakao.js)가 맡음 — 여기서는 카드에 무엇을 담을지 · 어떻게 보일지만 정함
-   NX.kakao 가 없거나(소개 · 편지 쪽) 꺼졌으면(on !== true) kk() 가 null → 아래 길은 한 줄도 안 돎 */
-const kk = () => { try { const K = nx()?.kakao; return K && K.on === true ? K : null; } catch { return null; } };
-export const CARD_BTN = Object.freeze(['카카오로 시작하기', '그냥 보기']); // 카드 단추는 둘까지 · 이 차례(1 = 가입 길 · 2 = 가입 없이 보기)
+   NX.kakao 가 없거나(소개 · 편지 쪽) 가입 · 공유가 다 꺼졌으면 kk() 가 null → 아래 길은 한 줄도 안 돎 */
+const kk = () => { try { const K = nx()?.kakao; return K && (K.on === true || K.share === true) ? K : null; } catch { return null; } }; // 가입(서버) 또는 공유 스위치가 켜짐(사장님 2026-10-18 16:39 [7] 1 · 스위치 둘)
+export const CARD_BTN = Object.freeze(['카카오로 시작하기', '그냥 보기']); // 가입이 켜졌을 때 카드 단추 둘 · 이 차례(1 = 가입 길 · 2 = 가입 없이 보기)
+export const CARD_OPEN = '열어 보기'; // 가입이 꺼졌을 때 카드 단추 하나([7] 5)
 const CARD_IMG = '/og-makbi.jpg'; // 카드 그림(우리 사이트 것)
-/** 카드에 담는 것([2] 3) — 종목 이름 · 보낸 사람 글 · 보낸 날 값(수익률 없음) · 단추 1 = 우리 주소 → 곧바로 카카오 동의 화면(사이에 우리 화면 없음 · 보낸 사람 표가 있으면 함께) · 단추 2 = 보낸 주소 그대로(가입 없음)
-    K = null 이면 단추 1 주소가 없음(미리보기용) */
-export function cardOf({name, msg = '', lead = '', price, day, see}, K = kk(), origin = typeof location !== 'undefined' ? location.origin : '') {
+/** 카드에 담는 것([7] 5) — 종목 이름 · 보낸 사람 글 · (급등이면 반값 한 줄) · 보낸 날 값(수익률 없음 · 늘 마지막 줄)
+    단추: 가입이 꺼짐 = 「열어 보기」 하나(보낸 주소) · 가입이 켜짐(서버가 켜짐 — K.on 또는 미리보기 signup) = 1 우리 주소 → 곧바로 카카오 동의 화면(보낸 사람 표가 있으면 함께) · 2 보낸 주소 그대로(가입 없음)
+    K = null 이면 가입 길 주소가 없음(미리보기용) */
+export function cardOf({name, msg = '', lead = '', half = '', price, day, see, signup = null}, K = kk(), origin = typeof location !== 'undefined' ? location.origin : '') {
   const value = L(`${md(day)} 값 ${num(price)}원`), said = [msg, lead].filter(Boolean);
-  const start = K ? origin + K.startUrl(see, {ref: K.ref()}) : null;
-  return {title: L(String(name)), value, said, description: [...said, value].join('\n'), imageUrl: origin + CARD_IMG, url: see,
-    buttons: [{title: L(CARD_BTN[0]), url: start}, {title: L(CARD_BTN[1]), url: see}]};
+  const join = signup ?? K?.on === true;
+  const start = K && join ? origin + K.startUrl(see, {ref: K.ref()}) : null;
+  return {title: L(String(name)), value, said, half: half || null, description: [...said, half, value].filter(Boolean).join('\n'), imageUrl: origin + CARD_IMG, url: see,
+    buttons: join ? [{title: L(CARD_BTN[0]), url: start}, {title: L(CARD_BTN[1]), url: see}] : [{title: L(CARD_OPEN), url: see}]};
+}
+/** 급등 카드 한 줄([6] 8 · 글은 리드가 정함 2026-10-18 17:27 · 사장님 17:25 「현명하게 해」) — 「1년 전 날아오른 36곳 중 n곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요」
+    n · 36 = /next/data/half36.json {n, of}(일꾼 KG · 1년 전 이맘때 5거래일 오름 상위 36곳) · 파일이 없거나 깨졌거나 못 센 곳(unknown)이 있으면 '' — 줄을 뺌(짓지 않음)
+    「1년 전 날아오른 · 그 뒤」를 붙인 까닭: 급등 칩의 옛 줄 「36곳 중 31곳이 지난 1년 안에 …」(지금 36곳의 지난 1년)과 셈이 달라 숫자가 헷갈리지 않게 */
+export const halfLine = j => (j && Number.isInteger(j.n) && Number.isInteger(j.of) && j.of > 0 && j.n >= 0 && j.n <= j.of && !(Number(j.unknown) > 0) ? `1년 전 날아오른 ${j.of}곳 중 ${j.n}곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요` : '');
+let halfP = null;
+function halfOf(given) {
+  if (given && halfLine(given)) return Promise.resolve(halfLine(given));
+  halfP = halfP ?? fetch('/next/data/half36.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).then(halfLine).catch(() => '');
+  return halfP.then(s => { if (!s) halfP = null; return s; });
 }
 /** 가입 권유 칸([2] 7) — 글 「이 기록 지키기」 + 단추 하나 「카카오로 시작하기」 · 입력칸 · 닫기 없음 · 누르면 start() 한 번(kakao.js 가 매매일지를 끝낸 순간 한 번만 그림) */
 const OFFER_H = '이 기록 지키기', OFFER_P = '폰을 바꿔도 이 기록이 남아요. 받는 것은 카카오 회원 번호 하나뿐이에요.';
@@ -162,11 +185,15 @@ export async function open(o = {}) {
   await css();
   const code = String(o.code ?? ''), stock = CODE_RE.test(code);
   const kind = o.kind === 'ask' && stock ? 'ask' : 'share';
+  const surge = stock && o.kind === 'surge'; // 급등 줄의 카톡 단추([6] 8) — 보내기와 같고 받는 카드 · 글에 반값 한 줄만 더함
   let day = DAY_RE.test(o.day ?? '') ? o.day : null, price = Number(o.price) > 0 ? Number(o.price) : null, name = o.name ?? null;
-  if (stock && (!day || !price || !name)) { const c = await coInfo(code); day = day ?? c.day; price = price ?? c.price; name = name ?? c.name; }
+  const [c, halfTxt] = await Promise.all([stock && (!day || !price || !name) ? coInfo(code) : null, surge ? halfOf(o.half) : '']);
+  if (c) { day = day ?? c.day; price = price ?? c.price; name = name ?? c.name; }
   if (my !== SEQ) return {how: 'close', text: null, url: null}; // 받는 사이에 다른 보내기를 눌렀음 — 새 것만 엶
   const asStock = stock && !!day && !!price;
-  const title = noGain(o.title) || NAME, lead = noGain(o.text);
+  const title = noGain(o.title) || (asStock && name ? L(name + ' · ' + NAME) : NAME), lead = noGain(o.text);
+  const half = asStock && halfTxt ? L(halfTxt) : ''; // 보내는 글 · 카드에 들어가는 반값 한 줄(지금 말로) — 화면에는 한국어 원문(엔진이 바꿈)
+  const head = asStock ? L(String(name ?? code)) + ' · ' + L(`${md(day)} 값 ${num(price)}원`) : ''; // 종목 이름 · 오늘 값은 저절로([6] 3 — 칠 글자 0) · 수익률 없음
   const urlFor = msg => (asStock ? stockUrl({code, day, price, kind, msg}) : String(o.url || (typeof location !== 'undefined' ? location.href : '')));
   const opener = document.activeElement;
 
@@ -176,7 +203,8 @@ export async function open(o = {}) {
   const urlEl = h('span', {class: 'ps-url', text: urlFor('')});
   const go = h('button', {class: 'ps-go', type: 'button', text: '보내기'});
   const x = h('button', {class: 'ps-x', type: 'button', text: '닫기'});
-  const quick = h('div', {class: 'ps-q', role: 'group', 'aria-label': '빠른 말'}, ...QUICK.map(q => h('button', {class: 'ps-qb', type: 'button', text: q, onclick: ev => { ta.value = ev.currentTarget.textContent || L(q); judge(); ta.focus(); }}))); // 보이는 글 그대로(영어면 바뀐 글)
+  // 빠른 말 셋은 누르는 즉시 보냄([6] 4 — 카톡 단추 1 + 빠른 말 1 = 누름 두 번에 카톡 친구 고르기) · 보이는 글 그대로(영어면 바뀐 글) · 누른 손길 안에서 바로 보냄
+  const quick = h('div', {class: 'ps-q', role: 'group', 'aria-label': '빠른 말'}, ...QUICK.map(q => h('button', {class: 'ps-qb', type: 'button', text: q, onclick: ev => { ta.value = ev.currentTarget.textContent || L(q); send(); }})));
   const what = asStock
     ? (kind === 'ask'
       ? [h('b', {text: name ?? code}), `${josa(name ?? code, '을').slice(String(name ?? code).length)} 친구와 같이 따져 봐요. 친구에게 「${ASK_Q}」를 물어요.`]
@@ -184,6 +212,7 @@ export async function open(o = {}) {
     : [h('b', {text: title})];
   const note = asStock ? '수익 숫자는 보내지 않아요. 친구는 질문에 다 답한 뒤에 네 말을 봐요.' : '수익 숫자는 보내지 않아요. 자랑이 퍼지면 남이 따라 하거든.';
   const leadEl = lead ? h('p', {class: 'ps-lead'}, h('span', {class: 'ps-pk', text: '같이 가는 글 '}), lead) : null;
+  const halfEl = half ? h('p', {class: 'ps-lead ps-half'}, h('span', {class: 'ps-pk', text: '같이 가는 글 '}), halfTxt) : null; // 급등 — 받는 카드에도 같은 한 줄
   const shown = h('textarea', {class: 'ps-t ps-show', rows: 4, readonly: true, 'aria-label': '보낼 글과 주소', hidden: true});
   const kkEl = h('div', {class: 'ps-kk', hidden: true}); // 카톡 카드 미리보기 — 서버가 켜졌고 카카오 도구가 켜졌을 때만 보임(그 전엔 숨김) · 회사 주식 보내기만
   let kkOn = false;
@@ -192,7 +221,7 @@ export async function open(o = {}) {
     h('p', {id: 'ps-d', class: 'ps-d'}, ...what),
     quick,
     h('div', {class: 'ps-lrow'}, h('label', {class: 'ps-lab', for: 'ps-t', text: '보낼 말'}), cnt), ta, say,
-    h('p', {class: 'ps-n', text: note}), leadEl, kkEl,
+    h('p', {class: 'ps-n', text: note}), leadEl, halfEl, kkEl,
     h('p', {class: 'ps-pv'}, h('span', {class: 'ps-pk', text: '같이 가는 주소 '}), urlEl), shown);
   const acts = h('div', {class: 'ps-acts ps-stick'}, go, x); // 보내기 · 닫기는 늘 보이게(칸 밑에 붙음)
   const native = typeof HTMLDialogElement === 'function' && typeof HTMLDialogElement.prototype.showModal === 'function';
@@ -212,38 +241,44 @@ export async function open(o = {}) {
     if (kkOn) kkPaint(bad.length ? '' : cleanMsg(v) || L(DEF[kind]));
     return bad;
   }
-  /** 카톡 카드 미리보기 — 보낼 카드(cardOf)와 같은 글: 종목 이름 · 보낸 사람 글 · 보낸 날 값 · 단추 둘 */
+  /** 카톡 카드 미리보기 — 보낼 카드(cardOf)와 같은 글: 종목 이름 · 보낸 사람 글 · (급등 반값 한 줄) · 보낸 날 값 · 단추(가입이 꺼짐 = 「열어 보기」 하나 · 켜짐 = 둘) */
   function kkPaint(msgNow) {
-    const c = cardOf({name: name ?? code, msg: msgNow, lead, price, day, see: urlEl.textContent}, null), nm = String(c.title);
+    const join = kk()?.on === true;
+    const c = cardOf({name: name ?? code, msg: msgNow, lead, half: halfTxt, price, day, see: urlEl.textContent, signup: join}, null), nm = String(c.title);
     kkEl.replaceChildren(
       h('p', {class: 'ps-pk', text: '카톡 그림 카드로 가요'}),
       h('div', {class: 'ps-card', role: 'group', 'aria-label': '카드 미리보기'},
         h('b', {class: 'ps-card-t', text: nm}), // 이름은 지금 말로(영어면 영어 이름 · 엔진이 같은 이름표로 바꿈)
         ...c.said.map(s => own('ps-card-d', s)),
+        c.half ? h('p', {class: 'ps-card-d ps-card-h', text: c.half}) : null,
         h('p', {class: 'ps-card-v', text: c.value}),
-        h('p', {class: 'ps-card-b'}, h('span', {text: CARD_BTN[0]}), h('span', {text: CARD_BTN[1]}))),
-      h('p', {class: 'ps-n', text: '가입은 친구가 직접 「카카오로 시작하기」를 눌러야 돼요. 보내기만으로는 가입되지 않아요.'}));
+        h('p', {class: 'ps-card-b'}, ...(join ? CARD_BTN : [CARD_OPEN]).map(t => h('span', {text: t})))),
+      join ? h('p', {class: 'ps-n', text: '가입은 친구가 직접 「카카오로 시작하기」를 눌러야 돼요. 보내기만으로는 가입되지 않아요.'}) : null);
   }
   function kkShow() { if (kkOn || closed || !asStock) return; kkOn = true; kkEl.hidden = false; judge(); }
   ta.addEventListener('input', judge);
   let busy = false; // 공유 창이 열려 있는 동안 다시 누름은 버림
-  go.addEventListener('click', () => {
+  /** 보내기 — 「보내기」 단추와 빠른 말이 함께 씀(글칸의 말 · 비면 기본 말) · 걸리면 막고 그 낱말을 짚음 · 누른 손길 안에서 기다림 없이 카드 · 공유 창을 엶 */
+  function send() {
     if (busy) return;
     const msg = cleanMsg(ta.value) || L(DEF[kind]), bad = judge().length ? hitsNow() : sendHits(msg);
     if (bad.length) { say.className = 'ps-m no'; say.replaceChildren(...badSay(bad[0])); go.setAttribute('aria-disabled', 'true'); const r = findIn(ta.value, bad[0].word); ta.focus(); if (r) ta.setSelectionRange(r[0], r[1]); return; }
-    const url = urlFor(msg), text = [msg, lead].filter(Boolean).join('\n');
-    const K = kk(), card = asStock && kkOn && K?.canSend?.() ? cardOf({name: name ?? code, msg, lead, price, day, see: url}, K) : null; // 카드는 누른 손길 안에서 만들어 바로 보냄
+    const url = urlFor(msg), text = [head, msg, lead, half].filter(Boolean).join('\n');
+    const K = kk(), card = asStock && K?.canSend?.() ? cardOf({name: name ?? code, msg, lead, half, price, day, see: url}, K) : null; // 공유 스위치 + 도구가 켜졌으면 카드(누른 손길 안에서 만들어 바로 보냄 → 카톡 친구 고르기)
     sent = {text, url};
     say.className = 'ps-m'; say.textContent = '여는 중이에요…'; busy = true;
     deliver({title, text, url, card}).then(r => {
       busy = false; last = r;
-      if (r === 'share' || r === 'kakao') { close(r); toast(asStock ? '보냈어요. 친구가 열면 질문부터 봐요.' : '보냈어요.'); return; }
+      if (r === 'kakao' || r === 'share' || r === 'copy') tally('share'); // 보내기 마침 = 카톡 친구 고르기를 엶 · 공유 창을 마침 · 글과 주소를 담음(닫음 · 담기 막힘은 셈 밖)
+      // 보낸 뒤 = 보던 자리 그대로(글상자만 닫고 연 단추로 돌아감 · 쪽 이동 · 폭죽 없음 [6] 7)
+      if (r === 'share' || r === 'kakao') { close(r); toast(r === 'kakao' ? '카톡 친구 고르기를 열었어요.' : asStock ? '보냈어요. 친구가 열면 질문부터 봐요.' : '보냈어요.'); return; }
       if (r === 'cancel') { say.textContent = '보내기 창을 닫았어요. 다시 누르면 돼.'; return; }
       if (r === 'copy') { say.className = 'ps-m ok'; say.textContent = '글과 주소를 함께 담았어요. 카톡 대화창에 붙여 넣어 보내 줘.'; return; }
       shown.hidden = false; shown.value = text + '\n' + url; shown.focus(); shown.select();
       say.className = 'ps-m ok'; say.textContent = '담기가 막혔어요. 위 글을 길게 눌러 복사해 줘.';
     });
-  });
+  }
+  go.addEventListener('click', send);
   x.addEventListener('click', () => close('close'));
   // 갇힌 차례(Tab) · Esc 닫기 — 열린 칸 밖으로 나가지 않음
   D.addEventListener('keydown', e => {
@@ -277,13 +312,8 @@ export async function open(o = {}) {
 }
 /** 같이 따져 줘(명령문 [4] 8) — 회사 주식만 · 아니면 보통 보내기 */
 export const ask = o => open({...o, kind: 'ask'});
-/** 앱 보내기 단추 — 「보내기」 + 회사 주식이면 「같이 따져 줘」 · cls = 앱 단추 꼴(.act 등) · 누르면 NX.shareBox 가 있으면 그리로(아니면 바로 open) */
-export function shareButtons(o, {cls = 'act', shareText = '보내기', askText = '같이 따져 줘'} = {}) {
-  const run = k => () => { const N = nx(), oo = {...o, kind: k}; if (N?.shareBox) N.shareBox(oo); else open(oo); };
-  const out = [h('button', {class: cls, type: 'button', text: shareText, onclick: run('share')})];
-  if (CODE_RE.test(String(o?.code ?? ''))) out.push(h('button', {class: cls + ' ps-askb', type: 'button', text: askText, onclick: run('ask')}));
-  return out;
-}
+/** 보내기 단추는 share-btn.js 한 곳(사장님 2026-10-18 16:39 [6] 2) — 옛 부르는 곳을 위해 다시 내보냄 · 카톡 단추 = shareButtons(o, {kakao: true}) */
+export {shareButtons, kakaoButton};
 
 /* ───── 친구가 연 주소 #/s/… (명령문 [4] 6 · 7 · 8) ───── */
 /** 보낸 날부터 오늘까지 선 — 금빛 점 = 보낸 날 · 끝 점 = 오늘 · 값이 없으면 빈 축 */
@@ -367,15 +397,14 @@ function senderMsg(S) {
   return h('blockquote', {class: 'ps-said'}, own(null, '「' + S.msg + '」'));
 }
 /** 이 종목을 내가 다시 보내기 — 오늘 값이 있으면 오늘 값 · 날로(없으면 보낸 날 것) · prefill = 글상자에 미리 넣을 말 */
-function againBtn(S, name, now, nowDay, later, label, prefill) {
-  return h('button', {class: 'ps-go', type: 'button', text: label, onclick: () => {
-    const N = nx(), o = {kind: 'share', code: S.code, name, price: later ? now : S.price, day: later ? nowDay : S.day, title: name + ' · ' + NAME, prefill};
-    if (N?.shareBox) N.shareBox(o); else open(o);
-  }});
+/** 「나도 보내기」(사장님 2026-10-18 16:39 [6] 9) — 친구가 연 쪽 · 질문에 다 답한 뒤에만 화면에 들어감(이 함수는 답한 뒤 그리는 칸에서만 부름) · 단추는 share-btn.js 한 곳(넓은 카톡 단추) */
+export const AGAIN = '나도 보내기';
+function againBtn(S, name, now, nowDay, later, prefill) {
+  return shareButtons({kind: 'share', code: S.code, name, price: later ? now : S.price, day: later ? nowDay : S.day, prefill}, {kakao: true, text: AGAIN});
 }
 function msgPart(S, name, now, nowDay, later) {
   return [h('h2', {class: 'ps-h2', text: '친구가 보낸 말'}), senderMsg(S),
-    h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, '나도 친구에게 보내기'), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'}))];
+    h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'}))];
 }
 /** 같이 따져 줘 — 「반토막 난다면 왜일까?」 친구 생각(왜 사? 두 줄 ① 답 · mine) 뒤에 보낸 사람 말 · 답장은 글상자로
     mine 이 없으면(질문 칸이 기록을 안 넘김) 여기서 한 줄 받음 — 답은 이 화면에만(어디에도 남기지 않음) */
@@ -383,7 +412,7 @@ function askPart(S, name, now, nowDay, later, mine) {
   if (mine) return [h('h2', {class: 'ps-h2 ps-askq', text: ASK_Q}),
     h('p', {class: 'ps-mine'}, h('span', {class: 'ps-pk', text: '내 생각 '}), own(null, '「' + mine + '」')),
     h('h2', {class: 'ps-h2', text: '친구가 보낸 말'}), senderMsg(S),
-    h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, '친구에게 내 생각 보내기', L('반토막 난다면') + ' ' + mine), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'}))];
+    h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, L('반토막 난다면') + ' ' + mine), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'}))];
   const ta = h('textarea', {id: 'ps-ask', class: 'ps-t', rows: 2, maxlength: MAX, placeholder: '예) 파는 물건이 덜 팔리면', 'aria-describedby': 'ps-askm'});
   const m = h('p', {id: 'ps-askm', class: 'ps-m', role: 'status', 'aria-live': 'polite'}), rest = h('div', {class: 'ps-rest'});
   const okB = h('button', {class: 'ps-go', type: 'button', text: '다 적었어'});
@@ -395,7 +424,7 @@ function askPart(S, name, now, nowDay, later, mine) {
     m.className = 'ps-m'; m.textContent = '';
     okB.remove(); idk.remove(); ta.readOnly = true;
     rest.replaceChildren(h('h2', {class: 'ps-h2', text: '친구가 보낸 말'}), senderMsg(S),
-      h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, '친구에게 내 생각 보내기', L('반토막 난다면') + ' ' + t), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'})));
+      h('div', {class: 'ps-acts'}, againBtn(S, name, now, nowDay, later, L('반토막 난다면') + ' ' + t), h('a', {class: 'ps-link', href: '#/w/' + S.code, text: '이 회사 자세히 보기 ›'})));
   });
   return [h('h2', {class: 'ps-h2 ps-askq', text: ASK_Q}),
     h('p', {class: 'ps-p', text: '친구가 같이 따져 달래. 1년 뒤 반토막 났다면 왜일지 한 줄로 적어 봐.'}),

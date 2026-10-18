@@ -27,13 +27,14 @@ const MISC = new Set(['up', 'time', 'info', 'x', 'talk']);
 export function checksFor(f) {
   const out = [], page = n => out.push(MISC.has(n) ? 'check_misc' : 'check_' + n);
   let m;
-  if ((m = /^site\/next\/p-([a-z]+)\.(js|css)$/.exec(f))) { page(m[1]); out.push('next_check', 'modules'); }
-  else if (/^site\/next\/(app\.js|app\.css|index\.html|brand\.js|words\.js)$/.test(f)) out.push('next_check', 'modules', 'check_why', 'check_gdr', 'check_hold', 'check_share');
+  if ((m = /^site\/next\/p-([a-z]+)\.(js|css)$/.exec(f))) { page(m[1]); out.push('next_check', 'modules', 'check_kakao'); } // 카톡 줄(사장님 2026-10-18 16:39 [6] 1 — 종목 줄마다 같은 단추 · 일꾼 KB2)
+  else if (/^site\/next\/(app\.js|app\.css|index\.html|brand\.js|words\.js)$/.test(f)) out.push('next_check', 'modules', 'check_why', 'check_gdr', 'check_hold', 'check_share', 'check_kakao');
   else if (/^site\/next\/(i18n\.js|i18n\/|en\.css)/.test(f) || /^scripts\/atlas11\/next\/(i18n\/|i18n_build\.mjs)/.test(f)) out.push('en');
   else if (/^site\/next\/data\/|^scripts\/atlas11\/next\/gdr\//.test(f)) out.push('verify', 'check_gdr', 'check_hold');
   else if (/^site\/(letter|invite)\.|^lib\/atlas11\/(letter|invite)\.mjs$|^functions\/atlas11\//.test(f)) out.push('letter-tests');
+  else if (/^lib\/atlas11\/(jinhwa|tally)\.mjs$|^tests\/atlas11\/(jinhwa|tally)\.test\.mjs$|^site\/next\/p-jinhwa\./.test(f)) out.push('jinhwa-tests', 'check_jinhwa', 'letter-tests'); // 진화 칸 · 합계 칸(사장님 2026-10-18 16:39 [9] · [10] · 일꾼 KD)
   else if (/^site\/hello/.test(f)) out.push('check_share', 'letter-tests');
-  else if (/^site\/next\/kakao\.js$|^tests\/atlas11\/kakao-client\.test\.mjs$/.test(f)) out.push('kakao-client', 'check_share', 'modules'); // 카톡 화면 쪽(K2c 알림 · 2026-10-18)
+  else if (/^site\/next\/(kakao|share-btn)\.js$|^tests\/atlas11\/kakao-client\.test\.mjs$/.test(f)) out.push('kakao-client', 'check_share', 'check_kakao', 'modules'); // 카톡 화면 쪽(K2c 알림 · 2026-10-18)
   else if (/^site\/next\/(glossary|warn)\.js$/.test(f)) out.push('next_check', 'modules', 'en'); // 낱말 바꾸기 · 금빛 두 줄 — 모든 쪽에 걸림
   else if ((m = /^scripts\/atlas11\/next\/(check_[a-z]+|next_check|next_en_check)\.mjs$/.exec(f)) && m[1] !== 'check_changed') out.push(m[1] === 'next_en_check' ? 'en' : m[1]);
   else if (/^scripts\/atlas11\/next\/(rename|brand_apply)\.mjs$|^tests\/atlas11\/next-modules/.test(f)) out.push('modules');
@@ -45,6 +46,7 @@ const CMD = {
   modules: () => ['node', ['--test', 'tests/atlas11/next-modules.test.mjs']],
   'letter-tests': () => ['node', ['--test', 'tests/atlas11/letter.test.mjs', 'tests/atlas11/invite.test.mjs']],
   'kakao-client': () => ['node', ['--test', 'tests/atlas11/kakao-client.test.mjs']],
+  'jinhwa-tests': () => ['node', ['--test', 'tests/atlas11/jinhwa.test.mjs', 'tests/atlas11/tally.test.mjs']],
   // 고도리 칸 셈 v2 따로 세기(2026-10-18 · G4x) — 끝 코드 4 = 이 기계에 없는 입력으로 만든 파일이라 셀 수 없음 → 건너뜀(실패 아님)
   verify: () => ['python3', ['-I', 'scripts/atlas11/next/gdr/verify2.py', '--quiet', '--out', path.join(TMP, 'verify2.json')]],
 };
@@ -54,7 +56,7 @@ const cmdOf = k => (CMD[k] ? CMD[k]() : ['node', ['scripts/atlas11/next/' + k + 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const files = arg('--files', null)?.split(',').filter(Boolean) ?? changedFiles();
   const want = [...new Set(files.flatMap(checksFor))].filter(k => CMD[k] || fs.existsSync(path.join(ROOT, 'scripts/atlas11/next', k + '.mjs')));
-  const order = ['modules', 'verify', 'letter-tests', 'kakao-client', ...want.filter(k => /^check_/.test(k)).sort(), 'next_check', 'en'].filter(k => want.includes(k));
+  const order = ['modules', 'verify', 'letter-tests', 'kakao-client', 'jinhwa-tests', ...want.filter(k => /^check_/.test(k)).sort(), 'next_check', 'en'].filter(k => want.includes(k));
   console.log(`바뀐 파일 ${files.length}개 → 짝 검사 ${order.length}개: ${order.join(' · ') || '없음'}`);
   if (DRY || !order.length) process.exit(0);
   const t0 = Date.now(), rows = [];

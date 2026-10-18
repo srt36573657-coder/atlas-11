@@ -9,6 +9,7 @@
    주소: 업종 → #/ch/i/<이름> · 큰 업종 → #/ch/g/<번호> · 회사 → #/w/<번호> · 봉인 → #/time(새 화면이 없으면 /atlas/#/time)
    보안 규칙(CSP): 글은 textContent · 꾸밈은 p-today.css 와 CSSOM(style.setProperty) · 입체 · 그림자 · 바둑판 없음 · 움직임 줄이기면 움직임 없음 */
 import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접고 누르면 펼침([10] 10)
+import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(KB1) — 고른 곳 줄(일꾼 KB2)
 const NX = globalThis.NX;
 const {h, sv, pct, p2} = NX;
 const cls = x => NX.cls(x); // up · dn · fl · q(모름 = 금빛)
@@ -285,7 +286,7 @@ function breadth(H, C, notes) {
     SW.length ? h('div', {}, h('p', {class: 'ptoday-sl', text: '약한 업종'}), h('div', {class: 'ptoday-rows'}, ...SW.map(row))) : null) : null;
   add(b, two, notes.sectors,
     how('오른 곳과 내린 곳', `${jo(`네이버 증권 업종 회사${B?.n ? ` ${B.n.toLocaleString('ko-KR')}곳` : ''}`, '을', '를')} 그 앞 거래일 종가와 견줬어요. 「10곳 중 n곳」은 오른 곳 · 그대로 · 내린 곳을 모두 넣고 셌어요.`,
-      `업종은 회사 5곳 이상인 ${S.ranked ?? '?'}개만 줄 세웠어요. 업종마다 오른 비율은 네이버 증권이 셈한 값이에요. 줄을 누르면 그 회사들이 가장 많이 든 꼴똘이 업종으로 가요.`,
+      `업종은 회사 5곳 이상인 ${S.ranked ?? '?'}개만 줄 세웠어요. 업종마다 오른 비율은 네이버 증권이 셈한 값이에요. 줄을 누르면 그 회사들이 가장 많이 든 골똘이 업종으로 가요.`,
       '이날 강한 업종이 다음 날도 강하다는 뜻은 아니에요.'));
   return X.el;
 }
@@ -348,8 +349,10 @@ function picks(H, C, P) {
   const mv = pickMoves(S, P), byC = new Map(mv.map(x => [x.c, x])), nm = c => P.comp?.[c]?.name ?? (S.top?.c === c ? S.top.n : S.bot?.c === c ? S.bot.n : c);
   const chgOf = c => byC.get(c)?.chg ?? S.list.find(y => y[0] === c)?.[1] ?? (S.top?.c === c ? S.top.chg : S.bot?.c === c ? S.bot.chg : null); // 목록에 없으면 양 끝 값
   const row = (c, tag) => { const x = byC.get(c), chg = chgOf(c);
-    return h('a', {class: 'ptoday-mv', href: '#/w/' + enc(c)}, h('span', {class: 'ptoday-top'}, h('span', {class: 'ptoday-nm', 'data-proper': '', text: nm(c)}), h('b', {class: 'num ' + cls(chg), text: pct(chg)})),
-      h('span', {class: 'ptoday-tg', text: [tag, usualW(x?.ratio)].filter(Boolean).join(', ')}), chev()); };
+    const a = h('a', {class: 'ptoday-mv', href: '#/w/' + enc(c)}, h('span', {class: 'ptoday-top'}, h('span', {class: 'ptoday-nm', 'data-proper': '', text: nm(c)}), h('b', {class: 'num ' + cls(chg), text: pct(chg)})),
+      h('span', {class: 'ptoday-tg', text: [tag, usualW(x?.ratio)].filter(Boolean).join(', ')}), chev());
+    const kb = shareButtons({code: c, name: nm(c), kind: 'share'}, {kakao: true}); // 카톡 단추(사장님 2026-10-18 16:39 [6] 1 · 6 · 일꾼 KB2) — 줄 오른쪽 끝 · 고리와 형제 · 값은 글상자가 오늘 값으로 채움
+    return kb ? h('div', {class: 'kkr ptoday-kr', 'data-kkrow': 'today.mv'}, a, kb) : a; };
   // 두 묶음: 가장 많이 오른 곳 · 내린 곳 / 제 평소의 2.5배 이상 움직인 곳(그 밖에서 큰 차례 셋 + 나머지 접은 칸)
   const ends = [[S.top?.c, '가장 많이 오름'], [S.bot?.c, '가장 많이 내림']].filter(([c], i, a) => c && a.findIndex(y => y[0] === c) === i);
   if (ends.length) b.append(h('p', {class: 'ptoday-sl', text: '가장 많이 오른 곳과 내린 곳'}), h('div', {class: 'ptoday-mvs'}, ...ends.map(([c, t]) => row(c, t))));
@@ -391,10 +394,10 @@ async function needComp() {
 }
 export async function render(arg) {
   if (arg === 'home') return {title: '오늘 시장', nodes: []}; // [6] 4 — 첫 화면에는 그리지 않음(세 줄 요약 + #/today 고리는 첫 화면 몫)
-  await Promise.all([NX.need('core'), NX.need('home')]);
+  await Promise.all([NX.need('core'), NX.need('home'), NX.need('sum')]); // sum = 첫 화면 요약(몇 KB) — 「하루 4번」 글을 첫 화면과 같게(fourADay · 일꾼 KC)
   const C = NX.D.core, H = NX.D.home ?? null;
   const wrap = h('div', {class: 'ptoday ptoday-page'});
-  wrap.append(h('h1', {class: 'wt', text: '오늘 시장'}), h('p', {class: 'ws', text: '숫자는 네이버 증권에서 하루 4번 새로 받아요.'}));
+  wrap.append(h('h1', {class: 'wt', text: '오늘 시장'}), h('p', {class: 'ws', text: NX.D.sum?.fourADay === true ? '숫자는 네이버 증권에서 하루 4번 새로 받아요.' : '숫자는 네이버 증권에서 업데이트 때마다 새로 받아요.'})); // 「하루 4번」은 요약의 fourADay(지난 7일 업데이트 기록과 맞음)일 때만 — essence.js fourADay 와 같은 셈([5] 4 · 일꾼 KC)
   if (!C?.groups) { wrap.append(...NX.noData()); return {title: '오늘 시장', nodes: [wrap]}; }
   const P = await needComp();
   m4load();
@@ -413,6 +416,6 @@ export async function render(arg) {
   }
   safe('큰 업종', () => wrap.append(groups(C)));
   if (!H) wrap.append(h('a', {class: 'more', href: '#/f/rise', text: '요즘 오르는 업종 보기 ›'}));
-  wrap.append(h('p', {class: 'safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+  wrap.append(h('p', {class: 'safe', text: '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
   return {title: '오늘 시장', nodes: [wrap]};
 }

@@ -17,6 +17,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
 import {fetchJSON, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {fourDeep} from '../../../site/next/essence.js'; // 「하루 4번」 글 → 참인 말(사장님 2026-10-18 16:39 [5] 4 · 일꾼 KC — 새 쪽은 요약의 fourADay 일 때만 「하루 4번」 · 옛 쪽 글을 같은 표로 맞춰 맞댐)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
 const require = createRequire(arg('--pw', '/opt/node-tools/'));
@@ -31,6 +32,8 @@ const WIDTHS = [[320, 0], [360, 0], [390, 0], [320, 2], [360, 1]]; // [폭, 글�
 /* ── 자료 ── */
 const getJ = f => fetchJSON(base + '/atlas/data/' + f, f); // 망 탈(끊김 · 429 · 5xx)에만 기다렸다 다시 · 404 는 바로 실패(net.mjs)
 const [SITE_S, SITE_K, CORE] = await Promise.all(['surge.json', 'surgecal.json', 'core.json'].map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
+const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null); // 첫 화면 요약(fourADay — 못 받으면 새 쪽도 참인 말 · 일꾼 KC)
+const oldText = x => fourDeep(oldToNewDeep(x), SUMJ); // 옛 쪽 글 = 새 이름 · 「하루 4번」 글은 새 쪽과 같은 표로
 if (!SITE_S || !CORE) { console.error('자료를 못 받음'); process.exit(1); }
 const readJ = async p => { try { return JSON.parse(await fs.readFile(path.join(ROOT, p), 'utf8')); } catch { return null; } };
 const REC_DIR = 'reports/atlas11/t365/surge';
@@ -206,7 +209,7 @@ for (const sc of RUN) {
     for (const [i, [box]] of BOXES.entries()) {
       const hash = BOX_HASH(box);
       await open(po, 'old', hash, i === 0); await open(pn, 'new', hash, i === 0);
-      const [o, n] = [oldToNewDeep(await grab(po, '#view')), await grab(pn, 'main#view')]; // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
+      const [o, n] = [oldText(await grab(po, '#view')), await grab(pn, 'main#view')]; // 옛 쪽 글은 이름만 새 이름으로(rename.mjs) · 「하루 4번」 글은 새 쪽과 같은 표로(oldText)
       compare(sc, box, o, n, names);
     }
     for (const p of [po, pn]) for (const e of p._errs) fail('화면 오류', `${sc.id} ${p === po ? '옛' : '새'} — ${e}`);
@@ -313,7 +316,7 @@ if (hideSc) {
   try {
     for (const bad of ['#/surge/abc', '#/surge/50', '#/surge/10/x']) {
       await open(po, 'old', bad, true); await open(pn, 'new', bad, true);
-      const [o, n] = [oldToNewDeep(await grab(po, '#view')), await grab(pn, 'main#view')];
+      const [o, n] = [oldText(await grab(po, '#view')), await grab(pn, 'main#view')];
       for (const L of ['없는 주소입니다', '주소가 바뀌었거나 잘못 들어왔습니다.', '처음 화면으로']) { if (!o.text.includes(L)) fail('옛 쪽 없는 주소 글', `${bad} — ${L}`); if (!norm(n.text).includes(L)) fail('없는 주소 글', `${bad} — ${L}`); }
       bump('없는 주소');
     }

@@ -198,7 +198,7 @@ const READH = sel => {
   const cls = (e, re) => ((e?.className || '').match(re) || [])[1] ?? null;
   const cards = [...s.querySelectorAll('article.hd-card')].map(c => ({
     id: c.getAttribute('data-id'), code: c.getAttribute('data-code'), text: c.textContent,
-    kids: [...c.children].map(k => k.className.split(' ')[0]),
+    kids: [...c.children].map(k => (k.classList.contains('hd-kr') ? k.firstElementChild?.className.split(' ')[0] ?? 'hd-kr' : k.className.split(' ')[0])), // 이름 줄은 카톡 단추와 함께 감쌈(div.hd-kr = 이름 + 단추 · p-hold KB2) — 차례는 그 안 첫 칸(hd-ch)으로 셈(일꾼 KI)
     head: c.querySelector('.hd-ch')?.textContent ?? '', nameProper: !!c.querySelector('.hd-ch [data-proper]'), nameHref: c.querySelector('a.hd-name')?.getAttribute('href') ?? null,
     px: c.querySelector('.hd-px')?.textContent ?? '', qh: c.querySelector('.hd-qh')?.textContent ?? null, opts: [...c.querySelectorAll('.hd-opt')].map(b => b.textContent),
     ans: c.querySelector('.hd-ans b')?.textContent ?? null, badge: c.querySelector('.hd-badge') ? {c: cls(c.querySelector('.hd-badge'), /\bhd-c([gyrqu])\b/), t: c.querySelector('.hd-badge').textContent} : null,
@@ -766,7 +766,7 @@ if (RUN(11)) {
     const s = document.querySelector('#view section.sb'); if (!s) return null;
     const row = a => ({href: a.getAttribute('href'), kind: a.getAttribute('data-kind'), d: a.getAttribute('data-d'), name: a.querySelector('.sb-nm')?.textContent ?? '', right: a.querySelector('.sb-k, .sb-p')?.textContent ?? '', rcls: a.querySelector('.sb-p')?.className ?? '', sub: a.querySelector('.sb-s')?.textContent ?? ''});
     const det = s.querySelector('details.sb-rest');
-    return {head: s.querySelector('h2')?.textContent ?? '', notes: [...s.querySelectorAll(':scope > p.note')].map(x => x.textContent), rows: [...s.querySelectorAll('a.sb-n')].map(row), shown: [...s.querySelectorAll(':scope > .sb-list > a.sb-n')].length, rest: det?.querySelector('summary')?.textContent ?? null, restOpen: !!det?.open, h2s: [...document.querySelectorAll('#view h2.sec')].map(x => x.textContent), labelled: s.getAttribute('aria-labelledby')};
+    return {head: s.querySelector('h2')?.textContent ?? '', notes: [...s.querySelectorAll(':scope > p.note')].map(x => x.textContent), rows: [...s.querySelectorAll('a.sb-n')].map(row), shown: [...s.querySelectorAll(':scope > .sb-list > a.sb-n, :scope > .sb-list > [data-kkrow] > a.sb-n')].length, /* 줄 = 고리 · 카톡 단추와 함께 감싼 줄(kkWrap · data-kkrow) 안의 고리도 셈(일꾼 KI) */ rest: det?.querySelector('summary')?.textContent ?? null, restOpen: !!det?.open, h2s: [...document.querySelectorAll('#view h2.sec')].map(x => x.textContent), labelled: s.getAttribute('aria-labelledby')};
   };
   const run = async (tag, w, h, keys, {tr = true, routes = [], allow = []} = {}) => {
     const p = await newPage2(w, h, {seed: {'atlas:new:sub': JSON.stringify(keys)}, routes, allow});

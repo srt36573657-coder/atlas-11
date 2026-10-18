@@ -1,24 +1,42 @@
 /* 고도리 카카오 — 브라우저 쪽(사장님 2026-10-18 00:15 「72개와 카톡 두 번 가입」 [2] 4 ~ 10 · [3] 7 · [4] 9 · 일 나누기 brief4 K2 · 일꾼 K2c)
-   NX.kakao = {on, member(), ref(), friends(), ready(), sdkReady(), canSend(), start(fromPath), startUrl(path, opt), offer(where), withdraw(), exportFile(), sendCard(card), sync()} — index.html 에서 app.js 바로 다음 줄에 <script type="module" src="/next/kakao.js"></script>
+   NX.kakao = {on(가입), share(공유), member(), ref(), friends(), ready(), sdkReady(), canSend(), start(fromPath), startUrl(path, opt), offer(where), withdraw(), exportFile(), sendCard(card), sync()} — index.html 에서 app.js 바로 다음 줄에 <script type="module" src="/next/kakao.js"></script>
      withdraw() = true | false · exportFile() = {ok, name, bytes, keys} | false · 가입 여부가 알려지거나 바뀌면 window 에 'nx:kakao' 알림(detail {on, member})
    · 꺼짐이 기본 — 스위치(SWITCH · 아래 한 곳)가 꺼져 있으면 서버를 묻지도 않음(요청 0 · 카카오 도구 0 · 카카오 주소 0). 켜져 있어도 GET /api/kakao/me 가 404 · 오류 · {on:false} 면 꺼짐
      꺼져 있으면 start · offer · withdraw · sendCard · sync 는 아무 일도 안 하고(false) · exportFile 만 늘 됨(요청 0)
-     켤 때 함께 바꿀 것(한꺼번에): 이 파일 SWITCH = true · config/atlas11/kakao.json "on": true · 넷리파이 환경 값(열쇠) · 보안 머리말(script-src — 카카오 도구를 쓸 때만) · SDK 세 값 — 시험이 SWITCH 와 config 가 같은지 맞대 봄(tests/atlas11/kakao-client.test.mjs)
+     가입을 켤 때 함께 바꿀 것(한꺼번에): 이 파일 SWITCH = true · config/atlas11/kakao.json "on": true · 편지 쪽 KAKAO_ON · 넷리파이 환경 값(열쇠) — 시험이 셋이 같은지 맞대 봄(tests/atlas11/kakao-client.test.mjs ⑯) · 공유는 따로(아래 스위치 둘)
    · 시험 서버(127.0.0.1 · localhost)에서만: 쪽을 열기 전에 globalThis.__GODORI_KAKAO_TEST__ = true 이거나 주소에 ?kakaodev=1 이면 켜진 것으로 보고 서버(가짜 카카오 포함)를 물음. 실제 사이트는 이 값을 심을 길이 없음
    · 서버를 묻는 때 — 처음 온 사람에게는 첫 화면에서 묻지 않음: 보내기 글상자를 열 때 · 매매일지를 끝낼 때 · 앞서 가입한 기기(atlas:kakao:member) · 카카오 동의 화면에서 막 돌아온 쪽(?kakao=ok|none)만. 이 탭에서는 한 번(sessionStorage)
    · 이 기기에 두는 것(개인정보 처리방침에 같은 이름) — localStorage: atlas:kakao:member ("1" = 이 기기에서 카카오로 시작한 적 있음) · atlas:kakao:offered ("1" = 「이 기록 지키기」를 한 번 보임) ·
      atlas:kakao:base (마지막으로 서버와 맞춘 관심 · 나중에 볼 것 목록 — 이 기기에서 뺀 것을 서버에 알리려고) / sessionStorage(이 탭에서만): atlas:kakao:status (서버 답 잠깐 기억) · atlas:kakao:silent (조용한 로그인 마지막 시도 시각)
    · 기록 넷 = KEYS(매매일지 · 관심 · 나중에 볼 것 · 보유종목) — 내 돈 칸(atlas:godori-money)은 읽지도 쓰지도 올리지도 않음. 가입한 사람만 서버에 합쳐 올리고(서버가 지우지 않고 합침) 이 기기 기록은 줄지 않음
    · 로그인 증표는 서버가 준 HttpOnly 쿠키뿐 — 이 코드는 읽지 못함 · 화면 저장소에 두지 않음 · 받는 것은 카카오 회원 번호뿐(이름 · 사진 · 전화번호는 받지 않음 — 서버)
-   · 카카오 도구(SDK)는 카드 보내기에만 씀 — SDK.src · SDK.integrity · 열쇠가 모두 채워져야만 받음(지금은 비어 있음 · 보안 규칙(CSP)도 그대로). 가입 자체는 도구 없이 주소 이동만으로 됨 */
+   · 카카오 도구(SDK)는 카드 보내기에만 씀 — 도구 주소 · 무결성 · 열쇠가 모두 채워져야만 받음(지금은 비어 있음 · 보안 규칙(CSP)도 그대로). 가입 자체는 도구 없이 주소 이동만으로 됨
+   · 스위치 둘(사장님 2026-10-18 16:39 「진화가 본질인 명령문」 [7] 1 · 2 · 일꾼 KB1) — 공유와 가입을 따로 켬
+     공유 = 카카오 값 세 칸(자바스크립트 열쇠 · 도구 판 · 무결성)이 다 차면 켜짐(따로 켜는 값 없음 · 사이트 주소 등록은 카카오 개발자 쪽 · 사장님 몫) — 서버 · 가입 스위치와 상관없이 카드 보내기만
+       값의 원본 = config/atlas11/invite.json "kakao"(옛 선물형 초대장과 같은 앱 · 같은 열쇠) · 이 파일 SDK 는 그 사본(요청 0 — 쪽에서 따로 읽지 않음 · 시험 ⑯ 이 둘이 같은지 맞대 봄)
+       보안 머리말은 그 세 칸이 찼을 때만 도구 주소 하나를 더함(scripts/atlas11/site_headers.mjs · package.mjs addInvite 와 같은 셈)
+     가입 SWITCH = 서버(/api/kakao/*) · 「카카오로 시작하기」 길 — config "on" · 편지 쪽 KAKAO_ON 과 늘 같음(지금 꺼짐)
+     카드 단추: 가입이 꺼짐 = 「열어 보기」 하나 · 가입이 켜짐(서버가 켜짐) = 「카카오로 시작하기」 · 「그냥 보기」(p-share.js cardOf)
+     공유가 켜졌어도 도구는 보내려는 뜻이 보일 때만 받음(카톡 단추를 누르기 시작할 때 · 글상자를 열 때 — sdkReady) · 첫 화면에서 미리 받지 않음 */
 import {NAME_EN} from './brand.js';
+import {tally} from './tally.js'; // 합계 칸 참고 신호(사장님 2026-10-18 16:39 [10] · 일꾼 KD) — 카카오 가입을 마친 때 한 번 tally('signup') · 몸은 {k} 하나(일꾼 KI)
 
-export const SWITCH = false; // 카카오 켜기 스위치 — 열쇠가 생겨 사장님이 켜라고 하실 때만 true (config/atlas11/kakao.json "on" 과 늘 같아야 함)
+export const SWITCH = false; // 가입 스위치 — 열쇠가 생겨 사장님이 켜라고 하실 때만 true (config/atlas11/kakao.json "on" 과 늘 같아야 함)
 export const KEYS = Object.freeze(['atlas:godori-why', 'atlas:new:sub', 'atlas:new:later', 'atlas:godori-hold']);
 export const NEVER = 'atlas:godori-money';
 export const FLAG_MEMBER = 'atlas:kakao:member', FLAG_OFFERED = 'atlas:kakao:offered', BASE = 'atlas:kakao:base', SS_STATUS = 'atlas:kakao:status', SS_SILENT = 'atlas:kakao:silent';
 export const API = '/api/kakao';
-export const SDK = Object.freeze({src: '', integrity: '', key: ''}); // 열쇠가 생기면 채움(src = 카카오 도구 주소 · integrity = 그 판의 SRI 값 · key = 자바스크립트 열쇠(공개 열쇠)) — 비어 있는 동안 아무것도 받지 않음
+/** 공유 값(카카오 도구 주소 · 무결성 · 자바스크립트 열쇠) — config/atlas11/invite.json "kakao" 의 사본 · 비어 있는 동안 공유 꺼짐(카카오 요청 · 도구 0)
+    켤 때: invite.json kakao.key · kakao.integrity 를 채우고 여기 세 칸을 sdkOf(그 kakao) 와 같게(src = 도구 주소/kakao_js_sdk/<version>/kakao.min.js) — 다르면 시험 ⑯ 이 막음 */
+export const SDK = Object.freeze({src: '', integrity: '', key: ''});
+export const SDK_HOST = 'https://t1.kakaocdn.net'; // 카카오 도구 주소(보안 머리말 script-src 에 더하는 값과 같음 · site_headers.mjs KAKAO_CSP · 옛 초대장 site/app/invite.js 와 같은 주소)
+/** 세 칸 → 도구 값 {src, integrity, key} · 하나라도 비거나 꼴이 틀리면 null(반쯤 찬 것은 꺼짐) */
+export const sdkOf = k => (k && typeof k === 'object' && typeof k.key === 'string' && /^[0-9A-Za-z]{16,64}$/.test(k.key) && typeof k.version === 'string' && /^\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(k.version)
+  && typeof k.integrity === 'string' && /^sha(256|384|512)-[A-Za-z0-9+/]{20,}={0,2}$/.test(k.integrity) ? Object.freeze({src: `${SDK_HOST}/kakao_js_sdk/${k.version}/kakao.min.js`, integrity: k.integrity, key: k.key}) : null);
+/** 도구 값이 다 찼나(src · integrity · key) */
+export const sdkFilled = s => !!(s && typeof s.src === 'string' && s.src.startsWith(SDK_HOST + '/') && typeof s.integrity === 'string' && /^sha(256|384|512)-/.test(s.integrity) && typeof s.key === 'string' && /^[0-9A-Za-z]{16,64}$/.test(s.key));
+export const SHARE = sdkFilled(SDK); // 공유 스위치(따로 켜는 값 없음 — 세 칸이 다 차면 켜짐)
+export const SIGNUP = SWITCH; // 이름만 다른 같은 값(가입 스위치)
 const WATCH = ['atlas:new:sub', 'atlas:new:later']; // 뺀 것을 서버에 알리는 두 목록(서버 PUT 의 off)
 const STATUS_MS = 10 * 60e3, SILENT_MS = 30 * 60e3, SYNC_MS = 20e3, FAIL_MS = 5 * 60e3;
 const REF_RE = /^[A-Za-z0-9_-]{4,40}$/, CODE_RE = /^[A-Za-z0-9-]{4,24}$/;
@@ -90,7 +108,9 @@ export function createKakao(env = {}) {
     kakao: typeof env.kakao === 'function' ? env.kakao : env.kakao !== undefined ? () => env.kakao : () => g.Kakao,
     sdk: env.sdk ?? SDK,
     switchOn: env.switchOn ?? SWITCH,
+    shareOn: env.shareOn, // 시험만 — 공유 스위치를 바꿔 끼움(없으면 SDK 세 칸으로 정함)
     test: () => (env.test !== undefined ? !!env.test : g.__GODORI_KAKAO_TEST__ === true),
+    tally: env.tally ?? tally, // 시험은 바꿔 끼움
   };
   const st = {on: false, member: false, ref: null, friends: null, next: null, code: null};
   let probeP = null, probeAt = 0, probeFail = false, lastSnap = null, sdkP = null, syncP = null, timer = null, failAt = 0, told = 'off:0';
@@ -100,6 +120,11 @@ export function createKakao(env = {}) {
   const query = () => { try { return new URLSearchParams(E.loc.search ?? ''); } catch { return new URLSearchParams(''); } };
   /** 켜 볼까 — 스위치가 켜졌거나, 시험 서버에서 시험 표시가 있을 때만 */
   const trying = () => E.switchOn === true || (local() && (E.test() || query().get('kakaodev') === '1'));
+  /** 공유가 켜졌나 — SDK 세 칸이 다 참 · 가입 · 서버와 따로 · 요청 0
+      시험 서버(127.0.0.1 · localhost)에서만: 쪽을 열기 전 globalThis.__KAKAO_SHARE_TEST__ = true 이거나 주소에 ?kakaoshare=1 이면 켜진 것으로 봄
+      (가입 시험 표시와 따로 — 가짜 도구 window.Kakao 는 시험이 심음 · 실제 사이트는 이 값을 심을 길이 없음) */
+  const shareTest = () => (env.shareTest !== undefined ? !!env.shareTest : g.__KAKAO_SHARE_TEST__ === true) || query().get('kakaoshare') === '1';
+  const sharing = () => (E.shareOn !== undefined ? E.shareOn === true : sdkFilled(E.sdk)) || (local() && shareTest());
   const inKakaoTalk = () => /KAKAOTALK/i.test(E.ua);
   const flagged = () => E.ls.get(FLAG_MEMBER) === '1';
 
@@ -138,24 +163,24 @@ export function createKakao(env = {}) {
       return api;
     }).then(afterStatus));
   }
-  /** 켜진 것을 안 뒤 — 카카오 도구 받기(열쇠가 있을 때만) · 회원이면 기록 맞추기 · 조용한 로그인(카톡 안 + 앞서 가입한 기기만) */
+  /** 켜진 것을 안 뒤 — 회원이면 기록 맞추기 · 조용한 로그인(카톡 안 + 앞서 가입한 기기만) · 카카오 도구는 여기서 받지 않음(공유 스위치 · 보내려는 뜻이 보일 때 sdkReady) */
   async function afterStatus() {
     tell();
     if (!st.on) return api;
-    loadSdk();
     if (st.member) { watch(); sync().catch(() => {}); return api; }
     if (flagged() && inKakaoTalk()) { const last = Number(E.ss.get(SS_SILENT)); if (!(Number.isFinite(last) && E.now() - last < SILENT_MS) && E.ss.set(SS_SILENT, String(E.now()))) api.start(null, {silent: true}); } // 시도 시각을 적을 수 없는 기계는 하지 않음(되풀이 막기)
     return api;
   }
 
-  /* 카카오 도구(SDK) — 주소 · 판 값 · 열쇠가 모두 있을 때만 받음 */
+  /* 카카오 도구(SDK) — 공유 스위치가 켜졌을 때만 · 주소 · 판 값 · 열쇠가 모두 있을 때만 받음(시험 서버의 가짜 도구는 이미 있는 것을 씀) */
   function loadSdk() {
     if (sdkP) return sdkP;
-    if (!st.on) return Promise.resolve(false);
-    const K = E.kakao(), key = E.sdk.key;
+    if (!sharing()) return Promise.resolve(false);
+    const s = E.sdk, K = E.kakao(), key = s?.key;
     if (K?.Share && typeof K.isInitialized === 'function') { try { if (!K.isInitialized() && key) K.init(key); } catch { /* 이미 켜짐 */ } return Promise.resolve(true); }
-    if (!E.sdk.src || !E.sdk.integrity || !key) return Promise.resolve(false);
-    sdkP = new Promise(res => E.addScript(E.sdk.src, E.sdk.integrity, ok => { try { if (ok) { const k = E.kakao(); if (!k.isInitialized()) k.init(key); } res(!!ok); } catch { res(false); } }));
+    if (!sdkFilled(s)) return Promise.resolve(false);
+    const p = new Promise(res => E.addScript(s.src, s.integrity, ok => { try { if (ok) { const k = E.kakao(); if (!k.isInitialized()) k.init(key); } res(!!ok); } catch { res(false); } }));
+    sdkP = p.then(ok => { if (!ok && sdkP === q) sdkP = null; return ok; }); const q = sdkP; // 못 받았으면(망 · 무결성 틀림) 다음 누름에 다시
     return sdkP;
   }
 
@@ -215,15 +240,17 @@ export function createKakao(env = {}) {
   }
 
   const api = {
-    get on() { return st.on === true; },
+    get on() { return st.on === true; }, // 가입(서버)이 켜졌나
+    get share() { return sharing(); }, // 공유 스위치(카드 보내기)가 켜졌나 — 가입과 따로
     member: () => st.on === true && st.member === true,
     ref: () => (st.on === true && st.member === true ? st.ref : null),
     friends: () => (st.on === true && st.member === true ? {n: st.friends, next: st.next, code: st.code} : null),
     ready, sync, startUrl, state: () => ({...st}),
-    /** 카카오톡 카드를 지금 보낼 수 있나(켜짐 + 카카오 도구가 켜짐) — 동기 */
-    canSend() { if (!st.on) return false; const K = E.kakao(); return !!(K?.Share && typeof K.Share.sendDefault === 'function' && (typeof K.isInitialized !== 'function' || K.isInitialized())); },
-    /** 서버 답을 받고 카카오 도구까지 켠 뒤 canSend() 를 풀어 줌(실패해도 false 로 풀림 · 던지지 않음) */
-    async sdkReady() { try { await ready(); if (!st.on) return false; await loadSdk(); } catch { return false; } return api.canSend(); },
+    /** 카카오톡 카드를 지금 보낼 수 있나(공유 스위치 + 카카오 도구가 켜짐) — 동기 · 가입 스위치와 따로 */
+    canSend() { if (!sharing()) return false; const K = E.kakao(); return !!(K?.Share && typeof K.Share.sendDefault === 'function' && (typeof K.isInitialized !== 'function' || K.isInitialized())); },
+    /** 가입 서버 답(가입 스위치가 꺼져 있으면 묻지 않음)과 카카오 도구를 함께 기다린 뒤 canSend() 를 풀어 줌(실패해도 false 로 풀림 · 던지지 않음)
+        도구는 서버 답을 기다리지 않고 바로 받기 시작함([6] 4 — 카톡 단추를 누르기 시작할 때 받기 시작해 두 번째 누름에 카톡 친구 고르기가 바로 뜨게) */
+    async sdkReady() { try { if (!sharing()) { await ready(); return false; } await Promise.all([ready().catch(() => api), loadSdk()]); } catch { return false; } return api.canSend(); },
     /** 「카카오로 시작하기」 — 카카오 동의 화면으로 바로 보냄(주소 하나) · 꺼져 있거나 이미 회원이면 false · fromPath 가 없으면 지금 쪽 */
     start(fromPath, opt = {}) {
       if (!api.on || api.member()) return false;
@@ -260,9 +287,9 @@ export function createKakao(env = {}) {
       let ok = false; try { ok = E.download(name, text) === true; } catch { ok = false; }
       return ok ? {ok: true, name, bytes: text.length, keys: names.length} : false;
     },
-    /** 카카오톡 그림 카드(feed) 보내기 — card = {title, description, imageUrl?, url, buttons: [{title, url}] (둘까지)} · 주소는 모두 우리 사이트 것만 · 켜짐 + 카카오 도구가 켜졌을 때만 · 보냈으면 true */
+    /** 카카오톡 그림 카드(feed) 보내기 — card = {title, description, imageUrl?, url, buttons: [{title, url}] (둘까지)} · 주소는 모두 우리 사이트 것만 · 공유 스위치 + 카카오 도구가 켜졌을 때만 · 보냈으면 true(카톡 친구 고르기 화면이 열림) */
     sendCard(card) {
-      if (!api.on || !card || typeof card !== 'object') return false;
+      if (!sharing() || !card || typeof card !== 'object') return false;
       const K = E.kakao();
       if (!K?.Share || typeof K.Share.sendDefault !== 'function') return false;
       if (typeof K.isInitialized === 'function' && !K.isInitialized()) return false;
@@ -278,13 +305,14 @@ export function createKakao(env = {}) {
   /** 쪽을 열 때 한 번 — 카카오 동의 화면에서 돌아온 표(?kakao=ok|none)를 읽고 주소에서 지움 · 앞서 가입한 기기 또는 막 돌아온 쪽만 서버를 물음. 나머지는 가만히 있음 */
   api.boot = () => {
     const q = query(), back = q.get('kakao');
+    const fresh = back === 'ok' && !flagged(); // 동의 화면에서 막 돌아옴 + 이 기기에 회원 표시가 아직 없음 = 「카카오로 시작하기」를 눌러 마침(조용한 로그인은 표시가 있는 기기만)
     if (back) {
       E.ss.del(SS_STATUS); // 막 동의를 마치고 돌아옴 — 앞서 적어 둔 서버 답(회원 아님)을 버림
       if (back === 'none') E.ss.set(SS_SILENT, String(E.now())); // 조용한 로그인이 안 됐음 — 이 탭에서는 다시 안 함
       q.delete('kakao'); const rest = q.toString();
       E.replaceUrl((E.loc.pathname || '/') + (rest ? '?' + rest : '') + (E.loc.hash || ''));
     }
-    if (flagged() || back) ready().catch(() => {});
+    if (flagged() || back) ready().then(() => { if (fresh && api.member()) E.tally('signup'); }).catch(() => {}); // 서버가 회원이라고 답한 뒤에만 「가입 마침」 한 번
     return api;
   };
   return api;

@@ -272,7 +272,7 @@ async function open(p, hash, sel) { // 같은 주소면 다시 불러옴(같은 
 const getRecs = p => p.evaluate(k => { try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch { return null; } }, KEY);
 const setRecs = (p, a) => p.evaluate(([k, x]) => localStorage.setItem(k, JSON.stringify(x)), [KEY, a]);
 const waitStk = (p, sel) => p.waitForFunction(s => { const e = document.querySelector(s + ' .wy-stk:not([hidden])'); return !!e && !/받는 중/.test(e.textContent); }, sel, {timeout: 20000});
-const modCall = (p, fn) => p.evaluate(async f => { const W = await import('/next/p-why.js'); return f === 'done' ? W.doneOnce() : f === 'today' ? W.todayResult() : f === 'me' ? (() => { const e = W.meRecords(); return {h: e.querySelector('h2')?.textContent ?? '', rows: e.querySelectorAll('.wy-rec').length, btn: e.querySelectorAll('button:not(.wy-kb), input, select, textarea, [role="button"]').length}; })() : null; }, fn);
+const modCall = (p, fn) => p.evaluate(async f => { const W = await import('/next/p-why.js'); return f === 'done' ? W.doneOnce() : f === 'today' ? W.todayResult() : f === 'me' ? (() => { const e = W.meRecords(); return {h: e.querySelector('h2')?.textContent ?? '', rows: e.querySelectorAll('.wy-rec').length, btn: e.querySelectorAll('button:not(.wy-kb):not([data-kk]), input, select, textarea, [role="button"]').length}; })() : null; }, fn);
 
 /* 화면에서 읽기(화면 안에서 돎 — 바깥 것을 쓰지 않음) · 색 = 칠한 배경(투명이 아니면 칠함) · sr = 점 안 읽어 주는 글 */
 const READQ = sel => {
@@ -331,7 +331,7 @@ const READLIST = () => {
       later: L ? {note: [...L.querySelectorAll(':scope > p.note')].map(x => x.textContent).join(' | '), kq: L.querySelector('.wy-kq')?.textContent ?? null, kb: [...L.querySelectorAll('button')].map(b => b.tagName + ':' + b.textContent),
         kd: L.querySelector('.wy-kd')?.textContent ?? null, lv: [...L.querySelectorAll('.wy-lv')].map(x => x.textContent), busy: /셈하는 중/.test(L.textContent),
         cls: [...L.querySelectorAll('.wy-lv b')].map(b => b.className)} : null};
-  }), btn: [...s.querySelectorAll('button, [role="button"], input, select, textarea')].filter(x => !x.classList.contains('wy-kb')).map(x => x.textContent.trim() || x.getAttribute('aria-label') || x.tagName)};
+  }), btn: [...s.querySelectorAll('button, [role="button"], input, select, textarea')].filter(x => !x.classList.contains('wy-kb') && !x.hasAttribute('data-kk')).map(x => x.textContent.trim() || x.getAttribute('aria-label') || x.tagName)}; // 카톡 단추(data-kk · 기록 줄 종목 보내기 — 명령문 [6] 1 · KB2)는 지우는 단추가 아니라 셈 밖(일꾼 KI)
 };
 /** 지우는 단추 — 화면 어디에도(누르는 것 가운데 「지우 · 지움 · 삭제」) */
 const DELS = root => [...document.querySelectorAll(root + ' a, ' + root + ' button, ' + root + ' [role="button"]')].filter(e => /지우|지움|삭제/.test(e.textContent + ' ' + (e.getAttribute('aria-label') ?? ''))).map(e => e.textContent.trim());

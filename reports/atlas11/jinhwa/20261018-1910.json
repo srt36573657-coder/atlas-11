@@ -1,0 +1,70 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261018-1910",
+ "kind": "setup",
+ "start": "2026-10-18T19:10:01+09:00",
+ "end": "2026-10-18T19:10:01+09:00",
+ "essence": {
+  "file": "docs/골똘이_본질.md",
+  "sha256": "a71d3864c200f586491e1d60108b231ef4d95e1b3cfc5b07150bd9d06caec50a",
+  "first": "골똘이의 본질: 주식을 사기 전에 한 번 멈추게 하는 곳이다.",
+  "lockOk": true
+ },
+ "how": [
+  "이 폴더 = 진화 회차 기록(사장님 2026-10-18 16:39 [8] 10 「기록은 회차마다 새 파일(reports/atlas11/jinhwa/)로 남기고 지우지 않는다」)",
+  "파일 하나 = 회차 하나 · 이름 = 회차 번호(서울 YYYYMMDD-HHMM).json · 쓰는 곳은 round.mjs record 하나(같은 이름이 있으면 쓰지 않음 — wx)",
+  "고치지 않고 지우지 않는다 · 잘못 적었으면 다음 회차 기록이 바로잡는 줄을 더함",
+  "다음 회차가 읽는 칸: made(대안 · 지문 · 가지 커밋 · 미리 검사) · cards(카드 · 잴 규칙) · retested · finished · apply(들어감 · main 커밋) · revert · dropped · facts(사실 잣대) · tally(합계 14일)",
+  "main 커밋 글의 표시 jinhwa: apply <번호> · jinhwa: revert <번호> 가 둘째 근거(기록을 못 밀었어도 들어감 · 되돌림을 잃지 않음)",
+  "이 첫 기록은 회차가 아니라 폴더를 연 기록이다 — 진짜 회차는 첫 올리기 뒤 리드가 시험으로 돌린다"
+ ],
+ "main": null,
+ "cutoff": null,
+ "status": {
+  "ok": false,
+  "why": "이 첫 기록은 상태를 읽지 않음(이 방의 바깥 길은 aaa7377.com 을 막음 — 회차는 깃허브 작업 atlas11-jinhwa-read.yml 로 읽음)",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": null,
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [],
+ "debate": null,
+ "cards": [],
+ "retested": [],
+ "finished": [],
+ "dropped": [],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": 0,
+  "at": "2026-10-18T17:26:25+09:00"
+ },
+ "factsNote": "끝 코드만 실패이고 걸린 곳 0 인 쪽: gdr",
+ "tally": null,
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 0,
+  "waiting": [],
+  "errors": []
+ },
+ "owner": [
+  "진화 칸 자료를 처음 만들었어요.",
+  "진화 칸에 기다리는 대안은 없어요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 1가지예요."
+ ],
+ "notice": "",
+ "notDone": [
+  "진짜 진화 회차는 아직 돌지 않음 — 첫 올리기 뒤 리드가 시험 회차를 돌림"
+ ],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-10-18T19:10:01+09:00 폴더를 엶 · 진화 칸 자료 빈 판(진화 0 · 기다림 0 · 들어간 것 0 · 고친 고장 0)"
+ ]
+}

@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-import {createKakao, cleanTo, mergeKeys, KEYS, NEVER, FLAG_MEMBER, FLAG_OFFERED, BASE, SS_STATUS, SS_SILENT, SWITCH, SDK, fileName} from '../../site/next/kakao.js';
+import {createKakao, cleanTo, mergeKeys, KEYS, NEVER, FLAG_MEMBER, FLAG_OFFERED, BASE, SS_STATUS, SS_SILENT, SWITCH, SIGNUP, SHARE, SDK, SDK_HOST, sdkOf, sdkFilled, fileName} from '../../site/next/kakao.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const ORIGIN = 'https://aaa7377.com';
@@ -35,10 +35,10 @@ function mk(o = {}) {
     go: u => gos.push(u), replaceUrl: u => urls.push(u), emit: d => events.push(d),
     download: o.download ?? ((name, text) => { downloads.push({name, text}); return true; }),
     showOffer: o.showOffer ?? (async () => { offers.push(1); return true; }),
-    addScript: () => { throw new Error('이 시험에서는 카카오 도구를 받지 않음'); },
-    kakao: o.kakao ?? undefined, sdk: o.sdk, test: o.test,
+    addScript: o.addScript ?? (() => { throw new Error('이 시험에서는 카카오 도구를 받지 않음'); }),
+    kakao: o.kakao ?? undefined, sdk: o.sdk, test: o.test, shareOn: o.shareOn, shareTest: o.shareTest,
   };
-  if (o.kakao === undefined) delete env.kakao; if (o.sdk === undefined) delete env.sdk; if (o.test === undefined) delete env.test;
+  for (const k of ['kakao', 'sdk', 'test', 'shareOn', 'shareTest']) if (o[k] === undefined) delete env[k];
   const K = createKakao(env);
   return {K, log, gos, events, downloads, offers, urls, ls, ss, clock, env};
 }
@@ -61,7 +61,7 @@ test('① 꺼짐(스위치 false) — 서버를 묻지 않음 · 요청 0 · 하
   t.K.boot(); await t.K.ready();
   const ex = t.K.exportFile();
   assert.equal(ex.ok, true); assert.equal(ex.keys, 1);
-  assert.equal(t.log.length, 0, '요청 0');
+  assert.equal(t.log.length, 0, '요청 0(가입 꺼짐 · 공유 꺼짐 — 공유 값은 화면 코드 속 사본이라 읽는 요청도 없음)');
   assert.deepEqual(t.gos, []); assert.deepEqual(t.offers, []); assert.deepEqual(t.events, []);
 });
 
@@ -266,7 +266,7 @@ test('⑪ 기록 합치기(mergeKeys) — 합집합 · 지우지 않음 · 네 �
 
 test('⑫ 카드 보내기(sendCard) — feed 한 장 · 단추 둘까지 · 우리 사이트 주소만', async () => {
   const sent = [];
-  const t = mk({routes: ME_ON, kakao: fakeKakao(sent)});
+  const t = mk({routes: ME_ON, kakao: fakeKakao(sent), shareOn: true});
   await t.K.ready(); assert.equal(t.K.canSend(), true); assert.equal(await t.K.sdkReady(), true);
   const card = {title: '삼성전자', description: '이거 어때?\n10월 16일 값 70,000원', imageUrl: ORIGIN + '/og-makbi.jpg', url: ORIGIN + '/#/s/005930/2026-10-16/70000/s/abc',
     buttons: [{title: '카카오로 시작하기', url: ORIGIN + '/api/kakao/start?to=%2F%23%2Fs%2Fx'}, {title: '그냥 보기', url: ORIGIN + '/#/s/005930/2026-10-16/70000/s/abc'}, {title: '셋째', url: ORIGIN + '/x'}]};
@@ -286,11 +286,15 @@ test('⑫ 카드 보내기(sendCard) — feed 한 장 · 단추 둘까지 · 우
   assert.equal(t.K.sendCard({...card, title: ''}), false); assert.equal(t.K.sendCard(null), false); assert.equal(t.K.sendCard('x'), false);
   assert.equal(sent.length, 0);
   // 도구가 안 켜졌거나 던지면 false(보내는 쪽이 휴대폰 공유 창으로 바꿈)
-  const t2 = mk({routes: ME_ON, kakao: fakeKakao([], {init: false})}); await t2.K.ready(); assert.equal(t2.K.sendCard(card), false); assert.equal(t2.K.canSend(), false);
+  const t2 = mk({routes: ME_ON, kakao: fakeKakao([], {init: false}), shareOn: true}); await t2.K.ready(); assert.equal(t2.K.sendCard(card), false); assert.equal(t2.K.canSend(), false);
   const bad = {isInitialized: () => true, Share: {sendDefault() { throw new Error('막힘'); }}};
-  const t3 = mk({routes: ME_ON, kakao: bad}); await t3.K.ready(); assert.equal(t3.K.sendCard(card), false);
-  const t4 = mk({routes: ME_ON}); await t4.K.ready(); assert.equal(t4.K.canSend(), false); assert.equal(await t4.K.sdkReady(), false, '도구 주소 · 열쇠가 비어 있으면 받지 않음');
-  assert.deepEqual(SDK, {src: '', integrity: '', key: ''}, '열쇠가 생기기 전에는 비어 있음');
+  const t3 = mk({routes: ME_ON, kakao: bad, shareOn: true}); await t3.K.ready(); assert.equal(t3.K.sendCard(card), false);
+  const t4 = mk({routes: ME_ON}); await t4.K.ready(); assert.equal(t4.K.canSend(), false); assert.equal(await t4.K.sdkReady(), false, '공유 값(SDK 세 칸)이 비어 있으면 받지 않음');
+  // 스위치 둘([7] 1) — 가입이 꺼져도(서버 404) 공유가 켜지면 카드가 감 · 공유가 꺼지면 가입이 켜져도 카드 0
+  const s2 = [], onlyShare = mk({routes: ME_OFF, kakao: fakeKakao(s2), shareOn: true}); await onlyShare.K.ready();
+  assert.equal(onlyShare.K.on, false); assert.equal(onlyShare.K.share, true); assert.equal(onlyShare.K.sendCard(card), true); assert.equal(s2.length, 1);
+  const s3 = [], onlySignup = mk({routes: ME_ON, kakao: fakeKakao(s3), shareOn: false}); await onlySignup.K.ready();
+  assert.equal(onlySignup.K.on, true); assert.equal(onlySignup.K.share, false); assert.equal(onlySignup.K.sendCard(card), false); assert.equal(onlySignup.K.canSend(), false); assert.equal(s3.length, 0);
 });
 
 test('⑬ 동의 화면에서 돌아옴(?kakao=ok|none) — 주소에서 지움 · 서버 기억 버림 · none 은 조용한 로그인 멈춤', async () => {
@@ -332,7 +336,7 @@ test('⑮ 시험 서버(127.0.0.1) — 스위치가 꺼져 있으면 시험 표�
   const prod = mk({switchOn: false, routes: ME_ON, test: true}); await prod.K.ready(); assert.equal(prod.log.length, 0, '실제 사이트에서는 시험 표시가 있어도 스위치만 봄');
 });
 
-test('⑯ 스위치 한 곳 — SWITCH 는 저장소의 config/atlas11/kakao.json on 과 같음(파일이 없으면 false)', () => {
+test('⑯ 스위치 한 곳 — SWITCH 는 저장소의 config/atlas11/kakao.json on 과 같음(파일이 없으면 false)', async () => {
   const f = path.join(ROOT, 'config/atlas11/kakao.json');
   const on = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')).on === true : false;
   assert.equal(SWITCH, on, '켤 때는 두 곳을 함께 바꿈');
@@ -340,31 +344,58 @@ test('⑯ 스위치 한 곳 — SWITCH 는 저장소의 config/atlas11/kakao.jso
   const lj = fs.readFileSync(path.join(ROOT, 'site/letter.js'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, ''), m = /^const KAKAO_ON = (true|false);/m.exec(lj);
   assert.ok(m, 'site/letter.js 에 KAKAO_ON 이 있어야 함');
   assert.equal(m[1] === 'true', SWITCH, '편지 쪽 KAKAO_ON · kakao.js SWITCH · config on 셋은 늘 같음(켤 때 함께 바꿈)');
+  assert.equal(SIGNUP, SWITCH, '가입 스위치 = SWITCH');
+  // 공유 스위치([7] 1 · 2 — 사장님 2026-10-18 16:39) — 값은 한 곳(config share.from = invite.json kakao 세 칸) · 따로 켜는 값 없음 · 오늘은 꺼짐
+  const cfg = JSON.parse(fs.readFileSync(f, 'utf8'));
+  assert.equal(cfg.share?.from, 'config/atlas11/invite.json'); assert.deepEqual(cfg.share?.fields, ['kakao.key', 'kakao.version', 'kakao.integrity']);
+  assert.ok(!('key' in (cfg.share ?? {})) && !('on' in (cfg.share ?? {})), 'kakao.json 에는 공유 열쇠 · 공유 켜기 값이 없음(한 곳만)');
+  const inv = JSON.parse(fs.readFileSync(path.join(ROOT, cfg.share.from), 'utf8')), want = sdkOf(inv.kakao);
+  // 화면 사본 SDK = 원본 invite.json kakao(찼으면 같은 세 칸 · 비었으면 SDK 도 빔) — 켤 때 한쪽만 바꾸면 여기서 막힘
+  if (want) assert.deepEqual({...SDK}, {...want}, 'site/next/kakao.js SDK 가 config/atlas11/invite.json kakao 와 다름');
+  else assert.deepEqual({...SDK}, {src: '', integrity: '', key: ''}, 'invite.json 에 열쇠 · 무결성이 없으면 화면 SDK 도 비어 있어야 함');
+  assert.equal(SHARE, !!want, '공유 스위치 = 원본 세 칸이 다 참');
+  const full = {key: '0123456789abcdef0123456789abcdef', version: '2.8.3', integrity: 'sha384-' + 'Ab12'.repeat(16)};
+  assert.deepEqual({...sdkOf(full)}, {src: SDK_HOST + '/kakao_js_sdk/2.8.3/kakao.min.js', integrity: full.integrity, key: full.key}, '세 칸이 다 차면 켜짐 · 도구 주소는 판에서');
+  for (const half of [{...full, key: ''}, {...full, integrity: ''}, {...full, version: ''}, {...full, version: '2.8'}, {...full, integrity: 'md5-x'}, {...full, key: 'a b'}, null, 'x'])
+    assert.equal(sdkOf(half), null, '반쯤 찬 것 · 꼴이 틀린 것은 꺼짐 ' + JSON.stringify(half));
+  assert.equal(sdkFilled(sdkOf(full)), true); assert.equal(sdkFilled({...SDK}), !!want);
+  // 세 곳이 같은 칸을 봄 — 서버(lib/atlas11/kakao.mjs signupOn · shareOn · SHARE_FIELDS) · 보안 머리말(site_headers.mjs shareKeyIn = package.mjs addInvite 셈) · 화면(kakao.js sdkOf)
+  const Lk = await import('../../lib/atlas11/kakao.mjs'), H = await import('../../scripts/atlas11/site_headers.mjs');
+  assert.deepEqual([...Lk.SHARE_FIELDS], cfg.share.fields, '서버가 아는 공유 칸 = config share.fields');
+  assert.equal(Lk.signupOn(cfg), SWITCH, '서버 가입 스위치 = config on = SWITCH(옛 "on" 을 가입 스위치로 이어 읽음)');
+  for (const x of [{on: 'true'}, {on: 1}, {}, null, {share: {on: true}}]) assert.equal(Lk.signupOn(x), false, '가입은 on === true 일 때만 · 공유 칸이 가입을 켜지 않음 ' + JSON.stringify(x));
+  assert.equal(Lk.shareOn(inv), SHARE); assert.equal(H.shareKeyIn(inv), SHARE); assert.equal(H.SHARE_KEY, SHARE, '서버 · 머리말 · 화면이 같은 공유 상태');
+  for (const c of [{kakao: full}, {kakao: {...full, key: ''}}, {kakao: {...full, integrity: ''}}, {kakao: {...full, version: ''}}, {kakao: null}, {}, null]) assert.equal(Lk.shareOn(c), H.shareKeyIn(c), '서버 shareOn = 머리말 shareKeyIn ' + JSON.stringify(c));
+  // 원본이 「찬 것처럼」 보이는데 꼴이 틀리면(머리말 · 서버는 켜짐으로 보는데 화면은 꺼짐) 여기서 막힘 — 켤 때 값을 잘못 넣은 것
+  if (H.shareKeyIn(inv)) assert.ok(want, 'config/atlas11/invite.json kakao 세 칸의 꼴이 틀림(열쇠 16 ~ 64자 · 판 x.y.z · 무결성 sha256|384|512-…)');
 });
 
 test('⑰ 소스 지킴 — 바깥 주소 · innerHTML · 쿠키 읽기 · 평가 0 · p-share 는 도구를 받지 않음', () => {
   const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   const strip = s => s.replace(/\/\*[\s\S]*?\*\//g, '').split('\n').map(l => l.replace(/(^|[^:'"`])\/\/.*$/, '$1')).join('\n');
-  const k = strip(read('site/next/kakao.js')), p = strip(read('site/next/p-share.js'));
-  for (const [name, code] of [['kakao.js', k], ['p-share.js', p]]) {
-    const urls = (code.match(/https?:\/\/[^'"`\s)]*/g) || []).filter(u => !['http://www.w3.org/2000/svg', 'https://aaa7377.com/'].includes(u)); // 그림 이름 공간 · 옛 바탕 주소(사이트 자기 이름)만 허락
+  const k = strip(read('site/next/kakao.js')), p = strip(read('site/next/p-share.js')), sb = strip(read('site/next/share-btn.js'));
+  for (const [name, code] of [['kakao.js', k], ['p-share.js', p], ['share-btn.js', sb]]) {
+    const urls = (code.match(/https?:\/\/[^'"`\s)]*/g) || []).filter(u => !['http://www.w3.org/2000/svg', 'https://aaa7377.com/', ...(name === 'kakao.js' ? [SDK_HOST] : [])].includes(u)); // 그림 이름 공간 · 옛 바탕 주소(사이트 자기 이름) · kakao.js 의 카카오 도구 주소 하나(공유 값이 찼을 때만 씀)만 허락
     assert.deepEqual(urls, [], name + ' — 코드 속 바깥 주소 0');
     assert.ok(!/innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(|new Function/.test(code), name + ' — 위험한 글 넣기 0');
     assert.ok(!/document\.cookie/.test(code), name + ' — 쿠키 읽기 0');
     assert.ok(!/회원가입/.test(code), name + ' — 「회원가입」 낱말 0');
   }
   assert.ok(!/createElement\(\s*['"]script['"]\s*\)/.test(p) && !/h\(\s*['"]script['"]/.test(p), 'p-share.js 는 바깥 스크립트를 받지 않음');
-  assert.ok(!/kakao\.com|kakaocdn/.test(p + k), '카카오 도구 주소 0(열쇠가 생길 때 SDK 값으로만 들어옴)');
+  assert.ok(!/kakao\.com|kakaocdn/.test(p + sb), 'p-share.js · share-btn.js 에 카카오 도구 주소 0');
+  assert.equal((k.match(/kakaocdn/g) || []).length, 1, 'kakao.js 의 카카오 도구 주소는 SDK_HOST 한 곳뿐(공유 값이 찼을 때만 씀)');
+  assert.ok(!/kakao\.com/.test(k), 'kakao.js 에 카카오 다른 주소 0');
+  assert.ok(!/\bstyle\s*[:=]|setAttribute\(\s*['"]style|\.style\./.test(sb), 'share-btn.js — 글 속 style 0(보안 규칙)');
   const css = read('site/next/p-share.css');
   const flat = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/var\([^)]*\)/g, 'V');
   assert.ok(!/(?:^|[;{\s])(?:margin|padding)[a-z-]*\s*:[^;}]*[\s:]-\d/.test(flat), 'p-share.css — 음수 간격 0');
 });
 
 test('⑱ 카드 — p-share cardOf 가 만든 카드를 kakao.js sendCard 가 그대로 보냄 · 단추 둘 · 가입 길 주소 · 수익 숫자 0', async () => {
-  const {cardOf, CARD_BTN} = await import('../../site/next/p-share.js');
+  const {cardOf, CARD_BTN, CARD_OPEN, halfLine} = await import('../../site/next/p-share.js');
   const see = ORIGIN + '/next/#/s/005930/2026-10-13/234000/s/abc', card = (K, o = {}) => cardOf({name: '삼성전자', msg: '이거 어때?', lead: '', price: 234000, day: '2026-10-13', see, ...o}, K, ORIGIN);
   const sent = [];
-  const t = mk({routes: ME_ON, kakao: fakeKakao(sent)}); await t.K.ready();
+  const t = mk({routes: ME_ON, kakao: fakeKakao(sent), shareOn: true}); await t.K.ready();
   const c = card(t.K);
   assert.deepEqual(c.buttons.map(b => b.title), [...CARD_BTN], '단추 이름 · 차례');
   const u = new URL(c.buttons[0].url);
@@ -379,13 +410,111 @@ test('⑱ 카드 — p-share cardOf 가 만든 카드를 kakao.js sendCard 가 �
   assert.ok(!/[%％]|퍼센트|프로|1등|1위|급등/.test(JSON.stringify(s).replace(/%[0-9A-F]{2}/g, '')), '수익 숫자 · 1등 · 급등 0');
   assert.equal(t.log.filter(x => /start|data|withdraw/.test(x.url)).length, 0, '보내기만으로는 가입 길 요청 0');
   // 회원이 보내면 단추 1 에 보낸 사람 표
-  const m = mk({routes: {...ME_MEMBER, 'GET /api/kakao/data': [200, {data: {}}], 'PUT /api/kakao/data': [200, {ok: true, data: {}}]}, kakao: fakeKakao([])}); await m.K.ready();
+  const m = mk({routes: {...ME_MEMBER, 'GET /api/kakao/data': [200, {data: {}}], 'PUT /api/kakao/data': [200, {ok: true, data: {}}]}, kakao: fakeKakao([]), shareOn: true}); await m.K.ready();
   assert.equal(new URL(card(m.K).buttons[0].url).searchParams.get('ref'), 'ABCDEFGHIJKL');
-  // 카카오 쪽 없이(미리보기) — 단추 1 주소 없음 · 글은 같음
-  const p = card(null); assert.equal(p.buttons[0].url, null); assert.equal(p.description, c.description);
+  // 카카오 쪽 없이(미리보기) — 가입이 켜진 미리보기는 단추 1 주소 없음 · 가입이 꺼진 미리보기는 「열어 보기」 하나 · 글은 같음
+  const p = card(null, {signup: true}); assert.equal(p.buttons[0].url, null); assert.equal(p.description, c.description);
+  const p0 = card(null); assert.deepEqual(p0.buttons, [{title: CARD_OPEN, url: see}], '가입이 꺼짐 = 「열어 보기」 하나([7] 5)');
+  // 공유만 켜짐(가입 서버 꺼짐 · 404) — 카드 단추 「열어 보기」 하나 · 보낸 주소 · 가입 길 요청 0([7] 3 · 5)
+  const s1 = [], so = mk({routes: ME_OFF, kakao: fakeKakao(s1), shareOn: true}); await so.K.ready();
+  const c1 = card(so.K); assert.deepEqual(c1.buttons, [{title: CARD_OPEN, url: see}]);
+  assert.equal(so.K.sendCard(c1), true); assert.equal(s1.length, 1); assert.deepEqual(s1[0].buttons.map(b => b.title), [CARD_OPEN]); assert.equal(s1[0].buttons[0].link.webUrl, see);
+  assert.equal(s1[0].content.title, '삼성전자'); assert.equal(s1[0].content.description, '이거 어때?\n10월 13일 값 234,000원', '종목 이름 · 보낸 사람 말 · 보낸 날 값');
+  assert.equal(so.log.filter(x => /\/api\/kakao\/(start|data|withdraw)/.test(x.url)).length, 0);
+  // 급등([6] 8 · 글은 리드가 정함 2026-10-18 17:27) — 반값 한 줄은 값 바로 앞 · 값은 늘 마지막 줄 · halfLine 은 n · of 가 바른 수이고 못 센 곳이 없을 때만
+  const hl = halfLine({n: 4, of: 36}); assert.equal(hl, '1년 전 날아오른 36곳 중 4곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요');
+  assert.equal(halfLine({schema: 'kkolttori-half36-1', n: 18, of: 36, unknown: 0}), '1년 전 날아오른 36곳 중 18곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요', 'half36.json 꼴 그대로');
+  for (const bad of [null, {}, {n: 40, of: 36}, {n: -1, of: 36}, {n: 1.5, of: 36}, {n: '4', of: 36}, {n: 4, of: 0}, {n: 4, of: 36, unknown: 2}]) assert.equal(halfLine(bad), '', '짓지 않음 ' + JSON.stringify(bad));
+  let real = null; try { real = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/next/data/half36.json'), 'utf8')); } catch { real = null; } // 없거나 깨졌으면 아래 맞댐을 건너뜀(그때 화면은 줄을 뺌 — check_share kk 가 봄)
+  if (real) assert.equal(halfLine(real), Number.isInteger(real.n) && Number.isInteger(real.of) && !(real.unknown > 0) ? `1년 전 날아오른 ${real.of}곳 중 ${real.n}곳이 그 뒤 1년 안에 반값 아래로 떨어진 적 있어요` : '', '저장소 half36.json 의 n · of 를 그대로(지어내지 않음)');
+  const ch = card(so.K, {half: hl}); assert.equal(ch.description, '이거 어때?\n' + hl + '\n10월 13일 값 234,000원');
+  assert.ok(!/[%％]|퍼센트|1등|1위|급등/.test(ch.description), '반값 한 줄에도 수익 숫자 · 급등 낱말 0');
   // 보낸 말 + 같이 가는 글이 있으면 두 줄 · 값은 늘 마지막 줄
   assert.equal(card(t.K, {msg: '나는 이렇게 봤어', lead: '소개 한 줄'}).description, '나는 이렇게 봤어\n소개 한 줄\n10월 13일 값 234,000원');
   // 바깥 주소 · 단추 없음은 보내지 않음 · 켜져 있지 않으면 보내지 않음
   assert.equal(t.K.sendCard({...c, url: 'https://evil.example/x'}), false); assert.equal(t.K.sendCard({...c, buttons: [{title: 'x', url: 'https://evil.example/y'}]}), false); assert.equal(sent.length, 1);
   const off = mk({switchOn: false, kakao: fakeKakao([])}); assert.equal(off.K.sendCard(c), false);
+});
+
+test('⑲ 보내기 단추 한 곳(사장님 2026-10-18 16:39 [6] 2) — shareButtons 정의는 share-btn.js 하나 · p-share.js 는 다시 내보냄 · 쓰는 곳은 새로 만들지 않음', async () => {
+  const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const strip = s => s.replace(/\/\*[\s\S]*?\*\//g, '').split('\n').map(l => l.replace(/(^|[^:'"`])\/\/.*$/, '$1')).join('\n');
+  const files = fs.readdirSync(path.join(ROOT, 'site/next')).filter(f => f.endsWith('.js')).map(f => 'site/next/' + f);
+  const defs = files.filter(f => /\bfunction\s+shareButtons\s*\(|\bshareButtons\s*=\s*(?:\(|function|[a-z]\s*=>)/.test(strip(read(f))));
+  assert.deepEqual(defs, ['site/next/share-btn.js'], 'shareButtons 를 만드는 곳은 share-btn.js 하나');
+  const ps = strip(read('site/next/p-share.js'));
+  assert.match(ps, /import \{shareButtons, kakaoButton\} from '\.\/share-btn\.js';/); assert.match(ps, /export \{shareButtons, kakaoButton\};/);
+  const sb = strip(read('site/next/share-btn.js'));
+  assert.ok(!/^\s*import\s/m.test(sb), 'share-btn.js 는 처음에 아무 모듈도 받지 않음(작고 동기 · 글상자는 누를 때 import())');
+  assert.match(sb, /preventDefault\(\);\s*ev\.stopPropagation\(\)/, '누름은 줄 고리로 새지 않음');
+  const m = await import('../../site/next/share-btn.js'), p = await import('../../site/next/p-share.js');
+  assert.equal(p.shareButtons, m.shareButtons, '같은 함수(다시 내보냄)');
+  assert.equal(m.KK_CLASS, 'kk-btn'); assert.equal(m.KK_LABEL, '카톡으로 보내기');
+  const css = read('site/next/app.css');
+  const blk = /\.kk-btn \{[^}]*\}/.exec(css)?.[0] ?? '';
+  assert.match(blk, /width: 44px/); assert.match(blk, /height: 44px/); assert.match(blk, /flex: none/);
+  assert.match(css, /\.kk-ic \.kk-b \{ fill: #FEE500; \}/, '노란 말풍선');
+  assert.equal(p.AGAIN, '나도 보내기');
+});
+
+test('⑳ 보안 머리말 두 상태([7] 6) — 공유 열쇠 없음 = 오늘과 한 바이트도 같음 · 있음 = script-src 에 카카오 도구 주소 하나만 · 반쯤 참 = 그대로', async () => {
+  const H = await import('../../scripts/atlas11/site_headers.mjs');
+  const TODAY = "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  X-Frame-Options: DENY\n";
+  const inv = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/atlas11/invite.json'), 'utf8'));
+  // HEADER_TOP(옛 새 ATLAS 네 눈 점검 · 올리기 묶음 바탕)은 열쇠와 상관없이 늘 한 바이트도 같음 — 네 눈 점검이 「script-src 'self';」를 찾으므로 여기에는 더하지 않음
+  assert.equal(Buffer.compare(Buffer.from(H.HEADER_TOP), Buffer.from(TODAY)), 0, '바탕 머리말 = 한 바이트도 같음');
+  assert.equal(H.BASE_TOP, TODAY);
+  assert.equal(H.SHARE_KEY, H.shareKeyIn(inv));
+  // 올라가는 머리말(SHARE_TOP) — 열쇠가 없으면 오늘과 한 바이트도 같음 · 있으면 headerTopFor 그대로
+  assert.equal(Buffer.compare(Buffer.from(H.SHARE_TOP), Buffer.from(H.SHARE_KEY ? H.headerTopFor(inv) : TODAY)), 0, '올라가는 머리말 = 열쇠 상태 그대로(없으면 오늘과 같음)');
+  if (!H.SHARE_KEY) assert.equal(H.SHARE_TOP, TODAY, '오늘(열쇠 없음) = 한 바이트도 안 다름');
+  // 올리는 _headers 에서 더하는 곳(package.mjs addInvite)이 이 파일과 같은 셈인지 — 같은 세 칸 · 같은 줄 바꿈(소스를 맞댐 · 그 파일은 무거워 부르지 않음)
+  const pk = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/package.mjs'), 'utf8');
+  assert.match(pk, /kakao = k\?\.key && k\?\.version && k\?\.integrity \?/, 'package.mjs addInvite 의 켜는 셈 = 세 칸이 다 참(shareKeyIn 과 같음)');
+  const rep = /if \(kakao\) head = head\.replace\("([^"]+)", "([^"]+)"\);/.exec(pk);
+  assert.ok(rep, 'package.mjs addInvite 의 머리말 바꿈 줄');
+  const keyed = {kakao: {key: '0123456789abcdef0123456789abcdef', version: '2.8.3', integrity: 'sha384-abc'}};
+  assert.equal(TODAY.replace(rep[1], rep[2]), H.headerTopFor(keyed), 'package.mjs 가 올리는 머리말 = site_headers headerTopFor(열쇠 있음)');
+  assert.equal(H.headerTopFor(keyed).replace(rep[1], rep[2]), H.headerTopFor(keyed), '두 번 더하지 않음(이미 더한 머리말에 package.mjs 셈을 또 해도 같음)');
+  for (const c of [null, {}, {kakao: null}, {kakao: {key: '', version: '2.8.3', integrity: ''}}, {kakao: {key: 'k', version: '2.8.3', integrity: ''}}, {kakao: {key: '', version: '2.8.3', integrity: 'sha384-x'}}])
+    assert.equal(H.headerTopFor(c), TODAY, '열쇠 없음 · 반쯤 참 ' + JSON.stringify(c));
+  const on = H.headerTopFor({kakao: {key: '0123456789abcdef0123456789abcdef', version: '2.8.3', integrity: 'sha384-abc'}});
+  const a = TODAY.split('\n'), b = on.split('\n');
+  assert.equal(a.length, b.length);
+  const diff = a.map((l, i) => [l, b[i]]).filter(([x, y]) => x !== y);
+  assert.equal(diff.length, 1, '바뀐 줄은 보안 규칙 한 줄뿐');
+  assert.equal(diff[0][1], diff[0][0].replace("script-src 'self';", "script-src 'self' " + SDK_HOST + ';'), 'script-src 에 카카오 도구 주소 하나만(다른 지시 바뀜 0)');
+  assert.equal(H.KAKAO_CSP.share['script-src'][0], SDK_HOST, '화면이 받는 도구 주소와 머리말에 더하는 주소가 같음');
+  assert.ok(!/kakao/.test(on.replace(SDK_HOST, '')), '카카오 주소는 그 하나뿐');
+  assert.equal(H.headerTopFor({kakao: {key: 'k', version: '2.8.3', integrity: 'sha384-abc'}}), H.kakaoHeaderTop({share: true}).head, 'package.mjs addInvite 와 같은 값');
+});
+
+test('㉑ 공유 스위치 — SDK 세 칸이 다 찼을 때만 카카오 도구를 받음(판 주소 · 무결성 · 열쇠) · 가입 서버 요청 0 · 못 받으면 다음에 다시 · 시험 표시는 시험 서버에서만', async () => {
+  const full = sdkOf({key: '0123456789abcdef0123456789abcdef', version: '2.8.3', integrity: 'sha384-' + 'Ab12'.repeat(16)});
+  const sent = [], inits = [], adds = []; let loaded = false;
+  const fake = {isInitialized: () => inits.length > 0, init(k) { inits.push(k); }, Share: {sendDefault: o => { sent.push(o); }}};
+  const t = mk({switchOn: false, routes: {}, sdk: full, kakao: () => (loaded ? fake : undefined), addScript: (src, integrity, done) => { adds.push({src, integrity}); loaded = true; done(true); }});
+  assert.equal(t.K.share, true, '세 칸이 다 차면 켜짐(따로 켜는 값 없음)'); assert.equal(t.K.on, false);
+  assert.equal(t.K.canSend(), false, '도구를 받기 전');
+  assert.equal(await t.K.sdkReady(), true);
+  assert.equal(t.K.on, false, '가입은 따로 꺼짐');
+  assert.deepEqual(adds, [{src: SDK_HOST + '/kakao_js_sdk/2.8.3/kakao.min.js', integrity: full.integrity}]);
+  assert.deepEqual(inits, [full.key]);
+  assert.equal(t.log.length, 0, '가입 서버 · 공유 값 읽기 요청 0(도구 하나만 받음)');
+  await t.K.sdkReady(); assert.equal(adds.length, 1, '도구는 한 번만 받음');
+  assert.equal(t.K.sendCard({title: '삼성전자', url: ORIGIN + '/#/s/005930/2026-10-16/70000/s', buttons: [{title: '열어 보기', url: ORIGIN + '/#/s/005930/2026-10-16/70000/s'}]}), true);
+  assert.equal(sent.length, 1);
+  // 반쯤 참 · 꼴이 틀림 → 꺼짐 · 도구 0
+  for (const sdk of [{...full, key: ''}, {...full, integrity: ''}, {...full, src: ''}, {...full, src: 'https://evil.example/kakao.min.js'}]) {
+    const a2 = []; const x = mk({switchOn: false, routes: {}, sdk, addScript: (s2, i, d) => { a2.push(s2); d(true); }});
+    assert.equal(x.K.share, false, JSON.stringify(sdk)); assert.equal(await x.K.sdkReady(), false); assert.deepEqual(a2, []);
+  }
+  // 도구를 못 받음(망 · 무결성 틀림) → false · 다음 누름에 다시 받음
+  let tries = 0; const flaky = mk({switchOn: false, routes: {}, sdk: full, kakao: () => (tries > 1 ? fake : undefined), addScript: (s2, i, d) => { tries++; d(tries > 1); }});
+  assert.equal(await flaky.K.sdkReady(), false); assert.equal(await flaky.K.sdkReady(), true); assert.equal(tries, 2);
+  // 시험 서버 표시 — 127.0.0.1 에서만 공유를 켜 봄(가짜 도구) · 실제 사이트에서는 표시가 있어도 꺼짐
+  const loc = {hostname: '127.0.0.1', origin: 'http://127.0.0.1:8826', pathname: '/next/', search: '?dev=1', hash: '#/'};
+  const dev = mk({switchOn: false, routes: {}, loc, shareTest: true, kakao: fakeKakao([])}); assert.equal(await dev.K.sdkReady(), true); assert.equal(dev.K.share, true); assert.equal(dev.K.on, false); assert.equal(dev.log.length, 0);
+  const dev2 = mk({switchOn: false, routes: {}, loc: {...loc, search: '?dev=1&kakaoshare=1'}, kakao: fakeKakao([])}); assert.equal(dev2.K.share, true);
+  const prod = mk({switchOn: false, routes: {}, shareTest: true, kakao: fakeKakao([])}); assert.equal(await prod.K.sdkReady(), false); assert.equal(prod.K.share, false);
 });

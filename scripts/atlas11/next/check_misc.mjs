@@ -14,6 +14,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNew, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {fourDeep} from '../../../site/next/essence.js'; // 「하루 4번」 글 → 참인 말(사장님 2026-10-18 16:39 [5] 4 · 일꾼 KC — 새 쪽은 요약의 fourADay 일 때만 「하루 4번」 · 옛 쪽 글을 같은 표로 맞춰 맞댐)
 import {fetchJSON, stylesReady, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 모양 파일 기다림 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
@@ -33,6 +34,7 @@ const getJ = f => fetchJSON(base + f, f); // 망 탈(끊김 · 429 · 5xx)에만
 const [core, mkt, names, updates, time, home, surge, talk] = await Promise.all(['/atlas/data/core.json', '/atlas/data/mkt.json', '/atlas/data/names.json', '/atlas/data/updates.json', '/atlas/data/time.json', '/atlas/data/home.json', '/atlas/data/surge.json', '/atlas/talk.json']
   .map(f => getJ(f).catch(e => { fail('자료', e.message); return null; })));
 if (!core || !mkt || !names || !updates || !time || !talk) { console.error('자료를 못 받음', fails); process.exit(1); }
+const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null); // 첫 화면 요약(fourADay — 못 받으면 새 쪽도 참인 말 · 일꾼 KC)
 const clone = x => JSON.parse(JSON.stringify(x));
 
 /* 쓰지 않을 말(규칙 72 ⑥ · next_check.mjs 와 같은 목록) + 지운 36곳 화면 글(inspect4.mjs OLD36_TEXT) */
@@ -57,7 +59,7 @@ const mapHref = h => { // 옛 주소 → 새 주소(안내 「새 주소로 바�
 };
 function compare(tag, O0, N) {
   if (!O0 || !N) { fail('맞댈 화면 없음', tag); return; }
-  const O = {...O0, text: oldToNew(O0.text, [...KEEP, ...O0.proper])}; // 고리 · 남의 글(data-proper)은 그대로 맞댐
+  const O = {...O0, text: fourDeep(oldToNew(O0.text, [...KEEP, ...O0.proper]), SUMJ)}; // 고리 · 남의 글(data-proper)은 그대로 맞댐 · 「하루 4번」 글은 새 쪽과 같은 표로(fourDeep · 일꾼 KC)
   bump('맞댄 화면');
   const nt = norm(N.text);
   let lines = 0;

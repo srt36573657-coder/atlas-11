@@ -1,11 +1,26 @@
 {
   "schema": "godori-kakao-config-1",
   "on": false,
+  "switches": "스위치 둘(사장님 2026-10-18 16:39 「진화가 본질인 명령문」 [7] 1 · 2 · 일꾼 KB1) — \"on\" = 가입 스위치(옛 이름 그대로 · 서버 lib/atlas11/kakao.mjs · 올리기 scripts/atlas11/deploy_netlify.mjs 가 봄 · 화면 site/next/kakao.js SWITCH · 편지 쪽 site/letter.js KAKAO_ON 과 늘 같음 · 지금 꺼짐) · \"share\" = 공유 스위치(카톡 그림 카드 보내기만 · 가입과 따로 · 따로 켜는 값 없음 — 아래 share.from 파일의 세 칸이 다 차면 켜짐)",
+  "share": {
+    "from": "config/atlas11/invite.json",
+    "fields": [
+      "kakao.key",
+      "kakao.version",
+      "kakao.integrity"
+    ],
+    "note": "공유 값의 원본 = config/atlas11/invite.json \"kakao\"(옛 선물형 초대장과 같은 카카오 앱 · 같은 자바스크립트 열쇠 — 이 파일에는 열쇠를 두지 않음) · 세 칸이 다 차면 켜짐: 화면 site/next/kakao.js SDK 에 같은 값의 사본(src = https://t1.kakaocdn.net/kakao_js_sdk/<version>/kakao.min.js · 시험 tests/atlas11/kakao-client.test.mjs ⑯ 이 둘이 같은지 맞대 봄 · 쪽에서 따로 읽는 요청 0) · 보안 머리말 script-src 에 카카오 도구 주소 하나만 더함(scripts/atlas11/site_headers.mjs · package.mjs addInvite 와 같은 셈 · 비면 오늘과 한 바이트도 안 다름 · 시험 ⑳) · 사이트 주소 등록(https://aaa7377.com)은 카카오 개발자 쪽 — 사장님 몫 · 켜는 차례는 docs/design/godori-2026-10-18/kakao-signup.md 맨 위 「카톡 공유 켜기」"
+  },
   "note": "카톡 가입 켜는 스위치 하나(사장님 2026-10-18 order-0015 [4] 2). false = 모두 꺼짐: 넷리파이에 카톡 함수를 올리지 않음(/api/kakao/* 404) · 화면 site/next/kakao.js SWITCH 도 같은 값(시험이 맞대 봄). true 로 바꿔도 넷리파이 환경 값 넷이 다 있어야 켜짐. 열쇠 값은 이 파일 · 저장소에 두지 않는다.",
   "site": "https://aaa7377.com",
   "page": "/next/",
   "callback": "/api/kakao/callback",
-  "env": ["ATLAS_KAKAO_REST_KEY", "ATLAS_KAKAO_CLIENT_SECRET", "ATLAS_KAKAO_ADMIN_KEY", "ATLAS_KAKAO_HASH_SECRET"],
+  "env": [
+    "ATLAS_KAKAO_REST_KEY",
+    "ATLAS_KAKAO_CLIENT_SECRET",
+    "ATLAS_KAKAO_ADMIN_KEY",
+    "ATLAS_KAKAO_HASH_SECRET"
+  ],
   "howTo": [
     "ATLAS_KAKAO_REST_KEY = 카카오 개발자 › 내 앱 › 플랫폼 키 › REST API 키",
     "ATLAS_KAKAO_CLIENT_SECRET = 같은 REST API 키 화면의 클라이언트 시크릿(코드 만들기 · 사용함)",

@@ -167,3 +167,65 @@ export function screenHits(text) {
   for (const w of SCREEN_OK) t = t.split(w).join('');
   return SCREEN.filter(w => (w === 'TOP' ? /(^|[^A-Za-z])TOP($|[^A-Za-z])/.test(t) : t.includes(w)));
 }
+
+/* ── 망치는 길 낱말(사장님 2026-10-18(싱가포르) 16:39 「진화가 본질인 명령문」 [2] 2 · 5 ③ · [11] 6 「쓰지 않을 말은 words.js 한 곳」 · 일꾼 KA) ──
+   본질 파일 docs/<이름>_본질.md(이름 = brand.js NAME) 「망치는 길」 여덟 갈래마다 낱말 목록 하나 — 본질 문(scripts/atlas11/next/essence_check.mjs ③)이 올리기 직전 사이트의 보이는 글
+   (next/*.js 글 · next/*.html · 소개 · 편지 · 초대장 쪽 · next/data/*.json 글 · 영어 사전 값)에서 0 인지 봄 · 하나라도 걸리면 새 판을 올리지 않음
+   · ko = 한국어(글자 그대로 · 띄어쓰기를 지운 꼴로도 봄) · en = 영어 화면(작은 글자로 · 낱말 경계) · 그림 글자는 ko 에
+   · 고른 잣대: 오늘(10월 18일) 사이트 글 약 24,000줄에 돌려 진짜 어긴 곳만 걸리게 — 회사 설명 · 사실 말(「내리 오른 날」 · 「몇 배」 · 「visitors」 · 「too late」)과
+     「왜 사?」 같은 멈추게 하는 물음(「꼭 사야 해?」 · 「지금 사면 …」)은 걸리지 않게 골랐다 · 걸린 곳과 까닭은 essence_check 보고에
+   · RUIN_OK = 먼저 지우는 괜찮은 글 — 갈래 이름 그 자체(본질 글을 그대로 보여 주는 곳) · 「… 않아요」 꼴의 하지 않는다는 글. 넓히면 구멍이 되니 한 줄씩 까닭과 함께만 더한다
+   · 기계(진화 회차)는 이 목록을 못 고친다(이 파일은 지킴 파일 — essence_check.mjs PROTECTED) */
+export const RUIN = Object.freeze([
+  {key: 'push', name: '사라고 부추기기',
+    // 「매수 검토」 = 사려고 살펴볼 곳을 골라 줌(옛 「매수 검토 후보 · 우선순위」) — 사장님 2026-10-13 06:45 「매수 검토 36곳 영구 삭제 하라」(규칙 55)
+    ko: ['놓치지 마세요', '놓치면 후회', '서두르세요', '마지막 기회', '지금이 기회', '매수 기회', '매수 타이밍', '매수 검토', '강력 매수', '적극 매수', '풀매수', '몰빵', '줍줍', '가즈아', '지금 담으세요', '담아 두세요', '사 두세요', '사 두면 좋', '물 들어올 때'],
+    en: ['buy now', "don't miss out", 'strong buy', 'buying opportunity', 'must-buy', 'act now', 'last chance', 'hurry up', 'get in now', "before it's too late"]},
+  {key: 'brag', name: '급등 자랑',
+    ko: ['대박', '떡상', '폭등', '불기둥', '수익 인증', '수익인증', '인증샷', '자랑해', '자랑하세요', '자랑하기', '배 먹었', '텐배거', '🚀', '🔥', '💰', '🤑'],
+    en: ['to the moon', 'skyrocket', 'brag about', 'show off your', 'tenbagger', 'massive gains', 'huge gains', 'jackpot']},
+  {key: 'rank', name: '수익 순위',
+    ko: ['수익률 순위', '수익률 랭킹', '수익 랭킹', '수익률 1위', '수익률 1등', '수익왕', '수익률 높은 순', '많이 번 순', '랭킹', '순위표', '명예의 전당', '수익률 TOP', '수익 TOP'],
+    en: ['leaderboard', 'top gainers', 'best performers', 'return ranking', 'gain ranking', 'hall of fame', 'top earners']},
+  {key: 'hide', name: '손실 숨기기',
+    ko: ['손실 없는', '손실 없이', '무손실', '원금 보장', '원금보장', '수익 보장', '확정 수익', '보장된 수익', '안전한 수익', '잃을 일 없', '절대 안 잃', '손실은 빼고', '손실은 숨', '오른 것만 보여', '번 것만 보여', '이긴 것만 보여'],
+    en: ['risk-free', 'risk free', 'no risk', 'guaranteed return', 'guaranteed profit', "can't lose", 'cannot lose', 'no losses', 'zero loss', 'only winners']},
+  {key: 'reward', name: '폭죽과 연속 접속 보상',
+    // 「도장 모으기」 = 편지 쪽(letter.js)의 「쓴 주마다 도장이 하나씩 · 넷째 주 은빛 · 열두째 주 달빛」 — 쓸수록 커지는 보상(오늘 사이트에서 걸리는 한 곳 · 보고함)
+    ko: ['폭죽', '🎉', '🎊', '🎆', '🎇', '축하해요', '축하합니다', '축하드려요', '연속 접속', '연속 출석', '연속 방문', '출석 체크', '출석체크', '연속 달성', '스트릭', '보상을 받', '보상 받', '레벨 업', '레벨업', '배지 획득', '배지를 받', '도장 모으기'],
+    en: ['confetti', 'fireworks', 'congratulations', 'congrats', 'login streak', 'daily streak', 'day streak', 'streak reward', 'check-in reward', 'level up', 'earn a badge', 'unlock a badge', 'collect stamps']},
+  {key: 'predict', name: '앞날 맞히기',
+    ko: ['오를 겁니다', '오를 거예요', '오를 것입니다', '오를 전망', '상승 전망', '하락 전망', '오를 확률', '내릴 확률', '떨어질 확률', '목표가', '목표 주가', '예상 수익', '기대 수익', '곧 오를', '반드시 오를', '확실히 오를', '내일 오를', '급등 예상', '상승 예상'],
+    en: ['stock will rise', 'price will rise', 'shares will rise', 'stock will go up', 'price will go up', 'price target', 'target price', 'expected return', 'sure to rise', 'bound to rise']},
+  {key: 'visits', name: '방문 수를 잣대로 삼기',
+    ko: ['방문 목표', '방문자 목표', '조회수 목표', '방문 수를 늘', '방문자를 늘', '방문을 늘', '조회수를 늘', '조회수 올리', '많이 본 종목', '많이 본 순', '실시간 인기', '인기 종목', '인기 순위', '조회 순위', '접속자 순위', '명이 보고 있', '명이 방문했', '명이 봤어요'],
+    en: ['most viewed', 'trending stocks', 'popular stocks', 'people are watching', 'people viewed', 'visitor goal', 'grow visits']},
+  {key: 'consent', name: '동의 없는 수집',
+    ko: ['자동 가입', '자동으로 가입', '자동 동의', '동의한 것으로', '동의 없이 수집', '동의 없이 가입', '동의 없이 저장', '동의 없이 모', '몰래 수집', '몰래 저장', '몰래 모', '연락처를 가져', '주소록을 가져', '주소록에서', '친구 목록을 가져'],
+    en: ['without your consent', 'without consent', 'auto-enroll', 'automatically signed up', 'automatically enrolled', 'we collect your contacts', 'access your contacts', 'your contact list']},
+].map(p => Object.freeze({...p, ko: Object.freeze(p.ko), en: Object.freeze(p.en)})));
+/** 먼저 지우는 괜찮은 글 — ① 갈래 이름 그 자체(본질 파일의 망치는 길 줄을 화면에 그대로 보일 때) ② 하지 않는다는 글(「… 않」 꼴 · 까닭: 그 일을 하지 않는다고 밝히는 글) */
+export const RUIN_OK = Object.freeze([...RUIN.map(p => p.name),
+  '폭죽은 없', '폭죽 없', // [6] 7 「축하 폭죽은 없다」를 밝히는 글
+  '자동 가입되지 않', '자동으로 가입되지 않', '자동으로 가입시키지 않', '동의 없이 가입되지 않', '동의 없이 가입시키지 않', '동의 없이 모으지 않', '동의 없이 수집하지 않', '동의 없이 저장하지 않', '몰래 모으지 않', // [11] 7 「받는 사람 동의 없이 가입시키지 마라」를 밝히는 글
+  'never without your consent', 'not without your consent', 'never without consent',
+  '예상 수익률 순위 아님', '수익률 순위 아님']); // 순위가 아니라고 밝히는 글(옛 초대장 쪽 「(예상 수익률 순위 아님)」 — 앞의 「매수 검토」는 따로 걸림)
+const RUIN_ESC = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const RUIN_SQ = s => s.replace(/\s+/g, '');
+const RUIN_OK_RE = RUIN_OK.map(w => new RegExp(RUIN_ESC(w), 'gi'));
+const RUIN_OK_SQ = RUIN_OK.map(w => new RegExp(RUIN_ESC(RUIN_SQ(w)), 'gi'));
+// 영어 = 낱말 경계(앞 글자를 함께 잡음 — 뒤돌아보기 글꼴은 옛 사파리에서 이 파일을 통째로 못 읽게 함 · 쓰지 않음)
+const RUIN_EN = RUIN.map(p => p.en.map(w => [w, new RegExp('(^|[^a-z0-9])' + RUIN_ESC(w.toLowerCase()) + '(?![a-z0-9])')]));
+/** 화면 글 하나에 걸린 망치는 길 낱말 — [{key, name, word}] · 갈래 차례 · 없으면 빈 목록 */
+export function ruinHits(text) {
+  let t = String(text ?? '').normalize('NFC').replace(/[    　]/g, ' ').replace(/[‘’ʼ]/g, "'");
+  let s = RUIN_SQ(t);
+  for (const re of RUIN_OK_RE) t = t.replace(re, ' ');
+  for (const re of RUIN_OK_SQ) s = s.replace(re, ' ');
+  const low = t.toLowerCase(), out = [];
+  RUIN.forEach((p, i) => {
+    for (const w of p.ko) if (t.includes(w) || s.includes(RUIN_SQ(w))) out.push({key: p.key, name: p.name, word: w});
+    for (const [w, re] of RUIN_EN[i]) if (re.test(low)) out.push({key: p.key, name: p.name, word: w});
+  });
+  return out;
+}

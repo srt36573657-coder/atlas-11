@@ -4,6 +4,7 @@
    글 · 숫자는 옛 쪽 그대로(scripts/atlas11/next/check_misc.mjs 가 맞대 봄) · 모양만 새 아틀란스(제목 → 그림 → 지금 · 지나온 길 · 앞날 → 접은 칸 → 봉인 번호)
    2026-10-18 [10] 10 — 맨 아래 금빛 경고 글(확정 전 값)은 warn() 으로: 두 줄 안이면 그대로 · 넘으면 「?」 한 줄로 접고 누르면 펼침(글은 그대로) */
 import {warn} from '/next/warn.js';
+import {fourText} from '/next/essence.js'; // 「하루 4번」 글은 지난 7일 기록이 맞을 때만(사장님 2026-10-18 16:39 [5] 4 · 요약 fourADay · 일꾼 KI) — 0거래일 줄
 const NX = globalThis.NX;
 const {h, sv} = NX;
 const md = d => { const p = String(d).split('-'); return (+p[1]) + '월 ' + (+p[2]) + '일'; }; // 옛 쪽 md 그대로(붙임 띄어쓰기)
@@ -45,7 +46,7 @@ function foot(C) {
     h('p', {class: 'ptime-links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/us/', text: '미국 판'})),
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
     C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`, {short: '? 확정 전 값이에요 — 누르면 펼쳐요', cls: 'in'}) : null,
-    h('p', {class: 'safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
+    h('p', {class: 'safe', text: '골똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
     h('p', {class: 'safe ptime-safe2', text: '투자 상담이 아니에요. 지난 기록을 센 공부예요.'}));
 }
 
@@ -109,7 +110,7 @@ function growSummary(C, Gs) {
 }
 
 export async function render() {
-  const [C, TM] = await Promise.all([NX.need('core'), NX.getJson('time.json')]);
+  const [C, TM] = await Promise.all([NX.need('core'), NX.getJson('time.json'), NX.need('sum')]); // sum = 첫 화면 요약(fourADay — 못 받으면 참인 말)
   if (!C || !TM) return {title: '봉인', nodes: NX.noData('봉인 자료')};
   const K = TM.capsules?.[0], root = h('div', {class: 'ptime', 'data-page': 'time'});
   if (!K) { root.append(h('h1', {class: 'wt', text: '봉인이 아직 없습니다'}), h('p', {class: 'ptime-count', text: '? 봉인 파일을 못 찾았습니다.'}), foot(C)); return {title: '봉인', nodes: [root]}; }
@@ -123,7 +124,7 @@ export async function render() {
     h('span', {}, h('i', {class: 'k-seal'}), '봉인 날 = 100'), h('span', {}, h('i', {class: 'k-open'}), '3년 뒤 여는 날')));
   // 지금 — 봉인 뒤 지금까지(현재에 집중)
   root.append(h('h2', {class: 'sec', text: '지금 — 봉인 뒤 지금까지'}));
-  if (!S.days) root.append(h('p', {class: 'ptime-p'}, h('span', {class: 'q', text: '? '}), `아직 0거래일 — ${md(K.seal)}이 봉인 날이자 마지막 종가 날입니다. 다음 거래일부터 회차마다(하루 4번) 한 칸씩 채웁니다.`));
+  if (!S.days) root.append(h('p', {class: 'ptime-p'}, h('span', {class: 'q', text: '? '}), fourText(`아직 0거래일 — ${md(K.seal)}이 봉인 날이자 마지막 종가 날입니다. 다음 거래일부터 회차마다(하루 4번) 한 칸씩 채웁니다.`, NX.D.sum)));
   else {
     root.append(h('div', {class: 'ptime-trio'}, h('div', {}, h('span', {text: '봉인 365곳'}), pctEl(S.chg365)), h('div', {}, h('span', {text: '후보 모두'}), pctEl(S.chgPool))));
     root.append(h('p', {class: 'ptime-src', text: `${md(K.seal)} 종가 → ${md(S.dates.at(-1))} 종가 · 봉인 뒤 ${S.days}거래일 · 같은 돈 나눠 사서 그대로 · 값 있는 ${S.have365}곳 · ${S.havePool.toLocaleString('ko-KR')}곳` + (S.stale365 ? ` · 마지막 날 값 없는 ${S.stale365}곳은 앞 값` : '')}));
