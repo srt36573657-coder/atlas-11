@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-18T05:06:47.131Z",
+ "at": "2026-10-18T05:25:30.730Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -16,12 +16,12 @@
  "modFiles": {
   "rivals": true,
   "past": true,
-  "grow": true,
+  "surge": true,
   "range": true,
   "cal": true,
   "cond": true,
-  "surge": true,
   "talk": true,
+  "grow": true,
   "up": true,
   "time": true,
   "info": true,
@@ -47,8 +47,8 @@
    "@newwin": 15
   }
  },
- "seconds": 220,
- "secondsSum": 2349,
+ "seconds": 219,
+ "secondsSum": 2337,
  "shards": [
   {
    "shard": "1/11",
@@ -57,10 +57,10 @@
    "routes": 1227,
    "screens": 1227,
    "mine": 1227,
-   "seconds": 213,
+   "seconds": 207,
    "secs": {
-    "open": 0.3,
-    "routes": 212.1
+    "open": 0.2,
+    "routes": 206.8
    }
   },
   {
@@ -70,10 +70,10 @@
    "routes": 1227,
    "screens": 1266,
    "mine": 1227,
-   "seconds": 220,
+   "seconds": 214,
    "secs": {
-    "open": 0.3,
-    "routes": 219.4
+    "open": 0.2,
+    "routes": 213.7
    }
   },
   {
@@ -83,10 +83,10 @@
    "routes": 1227,
    "screens": 1265,
    "mine": 1227,
-   "seconds": 220,
+   "seconds": 216,
    "secs": {
     "open": 0.3,
-    "routes": 219
+    "routes": 215
    }
   },
   {
@@ -94,12 +94,12 @@
    "ok": true,
    "fails": 0,
    "routes": 1227,
-   "screens": 1229,
+   "screens": 1228,
    "mine": 1227,
-   "seconds": 214,
+   "seconds": 216,
    "secs": {
-    "open": 0.4,
-    "routes": 211.8
+    "open": 0.3,
+    "routes": 214.4
    }
   },
   {
@@ -107,12 +107,12 @@
    "ok": true,
    "fails": 0,
    "routes": 1227,
-   "screens": 1229,
+   "screens": 1228,
    "mine": 1227,
-   "seconds": 212,
+   "seconds": 210,
    "secs": {
     "open": 0.2,
-    "routes": 211.5
+    "routes": 208.7
    }
   },
   {
@@ -122,10 +122,10 @@
    "routes": 1227,
    "screens": 1227,
    "mine": 1227,
-   "seconds": 213,
+   "seconds": 208,
    "secs": {
     "open": 0.3,
-    "routes": 212.5
+    "routes": 206.7
    }
   },
   {
@@ -135,10 +135,10 @@
    "routes": 1227,
    "screens": 1227,
    "mine": 1227,
-   "seconds": 216,
+   "seconds": 213,
    "secs": {
-    "open": 0.3,
-    "routes": 214.7
+    "open": 0.2,
+    "routes": 211.9
    }
   },
   {
@@ -148,10 +148,10 @@
    "routes": 1227,
    "screens": 1227,
    "mine": 1227,
-   "seconds": 208,
+   "seconds": 219,
    "secs": {
-    "open": 0.2,
-    "routes": 207.9
+    "open": 0.3,
+    "routes": 218.2
    }
   },
   {
@@ -161,10 +161,10 @@
    "routes": 1232,
    "screens": 1232,
    "mine": 1226,
-   "seconds": 210,
+   "seconds": 216,
    "secs": {
     "open": 0.3,
-    "routes": 209
+    "routes": 214.7
    }
   },
   {
@@ -174,10 +174,10 @@
    "routes": 1212,
    "screens": 1233,
    "mine": 1213,
-   "seconds": 209,
+   "seconds": 210,
    "secs": {
     "open": 0.3,
-    "routes": 206.6,
+    "routes": 207,
     "newwin": 1.6
    }
   },
@@ -188,18 +188,18 @@
    "routes": 1147,
    "screens": 1267,
    "mine": 1148,
-   "seconds": 214,
+   "seconds": 208,
    "secs": {
-    "open": 0.3,
-    "routes": 200.5,
-    "act": 7.1,
-    "edge": 4.8,
+    "open": 0.2,
+    "routes": 195.4,
+    "act": 6.8,
+    "edge": 4.7,
     "grammar": 0
    }
   }
  ],
  "counts": {
-  "화면": 13629,
+  "화면": 13627,
   "길 · home": 1,
   "길 · find": 9,
   "길 · watch": 2560,
@@ -208,7 +208,6 @@
   "길 · chips": 7,
   "왜 사? 끝까지": 2,
   "고도리 칸 잠김": 2,
-  "고도리 칸 누르기": 2,
   "쇼츠 장": 6,
   "길 · shorts": 7,
   "길 · sub": 1,

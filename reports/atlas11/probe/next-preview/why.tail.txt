@@ -1,5 +1,5 @@
 {
- "sec": 27,
+ "sec": 26,
  "quick": false,
  "accept": {
   "css": {
@@ -49,13 +49,14 @@
   "leftScreens": 94
  },
  "timing": {
-  "flowMs": 632,
+  "flowMs": 618,
   "taps": 14,
   "qTaps": 11,
   "qTapsBefore": 22,
   "typed": 4
  },
  "counts": {
+  "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "찾기와 같은 차례": 7,
   "펀드 · 우선주 까닭 줄": 5,
   "모양 잰 화면": 107,
