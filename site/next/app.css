@@ -442,3 +442,103 @@ section.ess { margin: var(--sp-1) var(--sp-2) 0; border-radius: 8px; background:
 .ess-d > .ess-l:last-child { padding-bottom: var(--sp-2); }
 .ess-l.q { color: var(--gold); }
 a.ess-v { display: flex; align-items: center; min-height: 44px; padding: 0 var(--sp-2) var(--sp-1); color: var(--sub); font-size: var(--fs-2); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── 흰 판(html.white) — 사장님 2026-10-19 02:03 「구글과 잡스 판」 · 고른 시안 w3-b · 일꾼 A(색) · docs/design/white-2026-10-19/brief-build.md
+   html 에 white 가 붙은 동안만(지금은 첫 화면 · app.js 가 붙이고 뗌) — 붙지 않으면 위 먹빛 그대로
+   흰 바탕 · 먹 글 · 금빛 · 빨강 = 오름 · 파랑 = 내림 · 흐린 글도 흰 바탕 위 4.5 넘게(--sub 8.1 · --mute 6.3 · --gold 5.3 · --up 5.3 · --down 5.9)
+   단추 · 칸 테두리 = --hair2 #6B717C(흰 바탕 위 4.9) · 위 · 아래 막대 줄 = --line #8E949E(3.0) · 목록 사이 줄 --hair #8E949E(3.0 · 시안 잣대 예) · 칸 안 꾸밈(눈금 · 진행 막대 바탕 · 달)만 --hair-soft #D9DCE1
+   단추 바탕은 흰색(둘레와 같음 — 모양은 테두리가 보임) 또는 먹(흰 글) · 그림자 · 그러데이션 · 입체 없음 · 글 17px 아래 없음 · 누르는 것 48 × 48 넘게 */
+html.white {
+  color-scheme: light;
+  --bg: #FFFFFF; --night: #FFFFFF; --band: #FFFFFF; --violet: #16181D;
+  --card: #FFFFFF; --card2: #FFFFFF; --card3: #FFFFFF;
+  --hair: #8E949E; --hair2: #6B717C; --line: #8E949E; --hair-soft: #D9DCE1; --seam: #D9DCE1; --press: #EEF0F3; --lift: #FFFFFF;
+  --ink: #16181D; --ink-hi: #000000; --sub: #4A505A; --mute: #5A606B; --flat: #5A606B;
+  --violet-ink: #16181D; --violet-wash: #FFFFFF; --violet-line: #6B717C; --violet-glow: #FFFFFF;
+  --gold: #8A6516; --gold-wash: #FFFFFF; --gold-line: #8A6516;
+  --up: #D0202E; --down: #1E5BD8; --up-ink: #D0202E; --down-ink: #1E5BD8;
+  --up-fill: rgba(208, 32, 46, .25); --down-fill: rgba(30, 91, 216, .25); --up-fade: rgba(208, 32, 46, .04); --down-fade: rgba(30, 91, 216, .04);
+  --lacquer: #FFFFFF; --lacquer-ink: #16181D; --lacquer-sub: #4A505A; --lacquer-gold: #8A6516;
+  --moon: #16181D; --moonrow: #FFFFFF;
+  --m4-band: #FFFFFF; --m4-line: #8E949E; --m4-soft: #8E949E; --m4-neu: #5A606B; --m4-line2: #EEF0F3;
+  background: #FFFFFF;
+}
+html.white body { background: #FFFFFF; color: var(--ink); }
+/* 그림자 · 글 그림자는 흰 판 안 어디에도 없음(입체는 원래 없음)(테두리가 필요한 칸은 아래에서 outline · border 로 다시 그림) */
+html.white :is(.top, .tabs, #view, .foot, .trial, .toast),
+html.white :is(.top, .tabs, #view, .foot, .trial) * { box-shadow: none !important; text-shadow: none !important; }
+/* 누르는 것은 48 × 48 넘게(글 속 고리처럼 줄 안에 흐르는 것은 칸이 정함) */
+html.white :is(.top, .tabs, #view) :is(a[href], button, summary, input, select, textarea, [role="button"]) { min-height: 48px; min-width: 48px; }
+
+/* 위 막대 · 아래 단추 · 시험판 띠 · 맨 아래 고리 */
+html.white .top { background: #FFFFFF; border-bottom: 1px solid var(--line); }
+html.white .logo { min-height: 48px; }
+html.white .ibtn { width: 48px; height: 48px; }
+html.white .ibtn:active, html.white .tbtn:active, html.white .kk-btn:active { background: var(--press); }
+html.white .tbtn { height: 48px; min-width: 48px; border-radius: 24px; border-color: var(--hair2); }
+html.white .tbtn[aria-current="page"] { border-color: var(--gold); color: var(--gold); }
+html.white .tabs { background: #FFFFFF; border-top: 1px solid var(--line); }
+html.white .tabs a { min-height: 48px; color: var(--mute); }
+html.white .tabs a[aria-current="page"] { color: var(--ink); }
+html.white .trial { background: #FFFFFF; border-bottom: 1px solid var(--gold); color: var(--gold); }
+html.white .trial a, html.white .foot a { min-height: 48px; }
+html.white .toast { background: var(--ink); color: #FFFFFF; }
+
+/* 칩 · 단추 — 흰 바탕 + 테두리(누른 것 · 고른 것 = 먹 바탕 흰 글) */
+html.white .chips, html.white .shelf { -webkit-mask-image: none; mask-image: none; }
+html.white .chip { min-height: 48px; background: #FFFFFF; border: 1px solid var(--hair2); color: var(--ink); }
+html.white .chip[aria-current="page"], html.white .chip.on { background: var(--ink); border-color: var(--ink); color: #FFFFFF; }
+html.white .act, html.white .more, html.white .sh .side a, html.white .sh .side button { min-height: 48px; background: #FFFFFF; border: 1px solid var(--hair2); color: var(--ink); }
+html.white .act[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+html.white .sub-btn { min-height: 48px; background: var(--ink); color: #FFFFFF; border: 1px solid var(--ink); }
+html.white .sub-btn[aria-pressed="true"] { background: #FFFFFF; color: var(--ink); border-color: var(--hair2); }
+html.white .why-go { min-height: 52px; background: #FFFFFF; border-color: var(--hair2); }
+html.white .ctabs button, html.white .avs a, html.white .chan > a, html.white a.ess-v, html.white details.nw > summary { min-height: 48px; }
+html.white .ctabs button[aria-selected="true"] { border-bottom-color: var(--ink); }
+html.white .find input { min-height: 52px; background: #FFFFFF; border: 2px solid var(--ink); color: var(--ink); }
+html.white .find input::placeholder { color: var(--mute); opacity: 1; }
+html.white .kk-btn { width: 48px; height: 48px; min-width: 48px; }
+html.white .kk-btn.kk-wide { width: auto; min-height: 48px; background: #FFFFFF; border: 1px solid var(--hair2); }
+html.white .kkc > .card .meta { width: calc(100% - 56px); }
+html.white .kkg > a > b, html.white .kkg > a > small { width: calc(100% - 56px); }
+
+/* 그림 카드 · 보는 화면 · 시황 칸 · 채널 — 어두운 면 · 그러데이션을 흰 면 + 테두리로 */
+html.white .th { background: #FFFFFF; border-color: var(--hair2); }
+html.white .th .big { background: #FFFFFF; color: var(--ink); }
+html.white .th .dur { background: #FFFFFF; color: var(--ink); border: 1px solid var(--hair2); } /* 먹 바탕이면 안의 빨강 · 파랑 숫자가 3.3 으로 흐려짐 */
+html.white .play { background: var(--ink); border-color: #FFFFFF; }
+html.white .av { background: #FFFFFF; border: 1px solid var(--gold); color: var(--gold); }
+html.white .av.on { outline: 3px solid var(--gold); outline-offset: 0; }
+html.white .st { background: #FFFFFF; border-color: var(--hair2); }
+html.white .player { background: #FFFFFF; border-bottom: 1px solid var(--hair-soft); }
+html.white .player .scrub { background: var(--hair-soft); }
+html.white .player .tip { background: #FFFFFF; color: var(--ink); border: 1px solid var(--hair2); }
+html.white .player .cur { background: var(--hair2); }
+html.white .chaps .cp, html.white .stats > div { background: #FFFFFF; border-color: var(--hair2); }
+html.white .chaps .cp i { background: #FFFFFF; border: 1px solid var(--gold); }
+html.white .chaps .cp.now { border-color: var(--gold); }
+html.white .stats.chs { background: #FFFFFF; outline-color: var(--hair2); }
+html.white .sh .bt { background: var(--hair-soft); }
+html.white .sh .bub { background: #FFFFFF; border: 1px solid var(--hair2); }
+html.white .sbar { background: #FFFFFF; }
+html.white .sbar i { background: var(--hair-soft); }
+html.white .sbar i.on { background: var(--ink); }
+html.white .banner { background: #FFFFFF; border-bottom: 1px solid var(--hair); }
+html.white .prem .pth { background: #FFFFFF; border-color: var(--gold); }
+html.white .me small { font-size: var(--fs-1); }
+
+/* 첫 화면 붙박이 — 편지 줄 무늬 · 달 · 별 · 말풍선 · 도장 · 띠 · 본질 칸(안쪽 그림자 테두리 → outline · 글 시작 줄은 그대로) */
+html.white .m4-msg { background-image: none; }
+html.white .m4-msg .m4-moon, html.white .m4-letter .hpi .m4-bm { background: #FFFFFF; border-color: var(--hair-soft); outline-color: var(--hair-soft); }
+html.white .m4-stars i { background: var(--mute); }
+html.white .m4-letter .hpi .hpi-b { background: var(--ink); color: #FFFFFF; border-color: var(--ink); }
+html.white .m4-seal { border-color: var(--hair2); }
+html.white .m4-seal i { background-color: #FFFFFF; }
+html.white .m4-al { background: #FFFFFF; border-color: var(--gold); }
+html.white a.tk-entry, html.white a.hm-band { min-height: 48px; background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .hm-it { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white section.ess { background: #FFFFFF; outline: 2px solid var(--ink); outline-offset: -2px; }
+html.white details.hm-more { border-top-color: var(--hair); }
+/* 좁은 폭 로고 — 먹빛 판은 글자를 0px 로 숨기지만 흰 판은 17px 아래 글이 없어야 함 → 48 × 48 칸에 둥근 그림만 보이게 글자는 칸 밖으로 밀어 잘라 둠(읽는 이름은 aria-label) */
+@media (max-width: 349px) { html.white .top .logo { font-size: var(--fs-1); width: 48px; min-width: 48px; overflow: hidden; justify-content: flex-start; gap: 24px; padding-left: 9px; } }
+@media (max-width: 389px) { html.white.en .top .logo { font-size: var(--fs-1); width: 48px; min-width: 48px; overflow: hidden; justify-content: flex-start; gap: 24px; padding-left: 9px; } }
