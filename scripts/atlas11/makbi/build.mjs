@@ -17,7 +17,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 import {makbi, makbiHead, svg, C, hongpyo, GEAR_DEFS} from './draw.mjs';
-import {NAME, josa} from '../../../site/next/brand.js'; // 이름 한 곳(규칙 76) — 링크 미리보기 그림 글도 여기서
+import {NAME, josa, VIDEO} from '../../../site/next/brand.js'; // 이름 한 곳(규칙 76) — 링크 미리보기 그림 글도 여기서
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
 const MEDIA = path.join(ROOT, 'site/media');
@@ -68,7 +68,7 @@ if (!only || only === 'og') {
     <div class="mb"><svg viewBox="0 -6 240 330"><defs>${GEAR_DEFS}</defs>${hongpyo({id: 'o', tilt: -8, blink: 0, wingL: .15, wingR: .5, crestUp: .9, beakOpen: .5, visor: 0, vs: 1, flame: .55, glowWing: .6}, .3, {boot: 1, guard: 1})}</svg></div>
     <div class="bub">${NAME}! ${NAME}! ${NAME}!</div>
     <div class="tx"><h1>${josa(NAME, '를')}<br>소개합니다</h1><p class="who">안내 · 앵무새 ${NAME}</p><p class="wit">앵무새는 들은 것만 말해요.<br>그래서 지난 기록만 말해요.</p>
-    <div class="row"><span class="btn">▶ 1분 영상</span><span class="dom">aaa7377.com</span></div></div></body>`, {waitUntil: 'load'});
+    <div class="row"><span class="btn">▶ ${VIDEO.ready ? VIDEO.title : '왜 사? 열한 질문'}</span><span class="dom">aaa7377.com</span></div></div></body>`, {waitUntil: 'load'});
   await pg.evaluate(() => document.fonts.ready); await pg.waitForTimeout(200);
   await pg.screenshot({path: path.join(ROOT, 'site/og-makbi.jpg'), type: 'jpeg', quality: 88});
   await pg.close(); console.log('og 1');

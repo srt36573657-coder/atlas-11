@@ -22,7 +22,7 @@ function foot(C) {
     h('p', {class: 'ptalk-links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/us/', text: '미국 판'})),
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
     C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`, {cls: 'in'}) : null,
-    h('p', {class: 'safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
+    h('p', {class: 'safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),
     h('p', {class: 'safe ptalk-safe2', text: '투자 상담이 아니에요. 지난 기록을 센 공부예요.'}));
 }
 
@@ -88,7 +88,7 @@ export async function render() {
   root.append(h('details', {class: 'ptalk-more'}, h('summary', {text: `격언 ${mx.length}개 모두 보기`}), h('div', {class: 'ptalk-in'}, ...mx.map(m => mk(m, false)))));
   // 유튜브 — 갈래마다 · 밖 사이트로 나감(새 창)
   const yt = T.youtube ?? [];
-  root.append(h('h2', {class: 'sec', text: `유튜브 ${yt.length}개`}), h('p', {class: 'note', text: '고도리가 만든 영상이 아니에요. 앞날 맞히기와 종목 찍어 주기 영상은 뺐어요.'}));
+  root.append(h('h2', {class: 'sec', text: `유튜브 ${yt.length}개`}), h('p', {class: 'note', text: '꼴똘이가 만든 영상이 아니에요. 앞날 맞히기와 종목 찍어 주기 영상은 뺐어요.'}));
   for (const [k, name] of TK_CAT) {
     const xs = yt.filter(y => y[2] === k); if (!xs.length) continue;
     root.append(h('h3', {class: 'ptalk-cat', text: name}), h('ul', {class: 'ptalk-yt'}, ...xs.map(([id, title]) => h('li', {}, ext('https://www.youtube.com/watch?v=' + encodeURIComponent(id),

@@ -6,8 +6,10 @@
 //   2026-10-17 이름 바꾸기(사장님 15:48 「아틀란스에서 보드리로 모두 변경해」 · 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」 · 규칙 75) — 엔진 · 사전은 지금 사이트 것(/next/i18n.js · 사전 원본 scripts/atlas11/next/i18n/en-src.json · 옛 /atlas/i18n.js 는 고치지 않는 옛 판)
 import {ON as EN, startI18n, t as L} from '/next/i18n.js';
 import {open as shareBox} from '/next/p-share.js';
+import {VIDEO} from '/next/brand.js';
+if (VIDEO.ready) document.querySelector('.hp-vid')?.removeAttribute('hidden'); // 새 영상이 올라간 뒤에만 영상 칸을 보임(사장님 2026-10-18 16:39 [3] 9)
 await startI18n();
-const HELLO_SHARE = {title: L('고도리를 소개합니다'), text: L('앵무새 고도리가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!')};
+const HELLO_SHARE = {title: L('꼴똘이를 소개합니다'), text: L('앵무새 꼴똘이가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!')};
 const helloUrl = () => new URL('/hello.html', location.origin).href;
 /** 글상자를 열고 닫힐 때 결과 — {how: 'share' | 'copy' | 'show' | 'cancel' | 'close', text, url} */
 const shareHello = () => shareBox({kind: 'share', title: HELLO_SHARE.title, text: HELLO_SHARE.text, url: helloUrl()});

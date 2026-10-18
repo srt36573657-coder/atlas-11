@@ -45,3 +45,6 @@
 .tabs a.plus .ic { width: 38px; height: 38px; color: #E9B949; }
 @media (max-width: 340px) { .tabs a { letter-spacing: -.06em; } }
 @media (min-width: 720px) { .tabs { left: 50%; transform: translateX(-50%); max-width: 720px; } }
+
+/* 영상 칸 — 새 영상 「꼴똘이의 고민」이 올라가기 전에는 숨김(사장님 2026-10-18 16:39 [3] 9 · /next/brand.js VIDEO.ready · hello-send.js 가 hidden 을 걷음) */
+.hp-vid[hidden] { display: none; }

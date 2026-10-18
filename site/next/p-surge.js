@@ -323,7 +323,7 @@ function foot(C, src = null) {
   return h('footer', {class: 'psurge-foot'},
     h('p', {text: src ? `자료: ${price} · ${src}.` : C ? `자료: ${price} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).` : '? 자료 줄을 받지 못했어요.'}),
     C?.provisional ? h('p', {class: 'q', text: `? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`}) : null,
-    h('p', {class: 'psurge-safe', text: '고도리는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
+    h('p', {class: 'psurge-safe', text: '꼴똘이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}));
 }
 /** 칸 머리 — 제목 · 때 한 줄 */
 const svHead = (v, title, S) => v.append(h('h1', {class: 'psurge-h', text: title}), h('p', {class: 'psurge-when', text: svTime(S)}));
