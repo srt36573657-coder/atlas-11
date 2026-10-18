@@ -99,7 +99,7 @@ async function pageOf(ctx) {
   return p;
 }
 const settle = p => p.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 15000}).catch(() => {});
-const seen = p => p.evaluate(() => ({...window.__jhSeen, hash: location.hash, hist: history.length, title: document.title}));
+const seen = p => p.evaluate(() => ({...window.__jhSeen, hash: location.hash, hist: history.length, docTitle: document.title}));
 
 /* ── ① 문 밖 ── */
 const offCases = [
@@ -113,14 +113,19 @@ const offCases = [
   {name: '보유종목 바로 가기 · 열쇠 없음', key: null, hash: ME},
   {name: '보유종목 바로 가기 · 틀린 열쇠', key: 'wrong-key-000000000000000000', hash: ME},
   {name: '보유종목 바로 가기 · 서버 못 닿음', key: KEY ?? 'any-key-0000000000000000', hash: ME, me: 'abort'},
+  {name: '앱 안에서 #/jinhwa 로 감 · 열쇠 없음', key: null, hash: ROUTE, inApp: true},
+  {name: '앱 안에서 #/jinhwa 로 감 · 틀린 열쇠', key: 'wrong-key-000000000000000000', hash: ROUTE, inApp: true},
 ];
-let offOpens = 0;
+let offOpens = 0, hist0 = null;
+{ const ctx = await ctxOf({}), p = await ctx.newPage(); await p.goto(url(HOME), {waitUntil: 'domcontentloaded'}); hist0 = await p.evaluate(() => history.length); await ctx.close(); } // 바로 연 쪽의 주소 기록 수(브라우저 빈 쪽 포함)
 for (const c of offCases) {
   const ctx = await ctxOf({key: c.key}), p = await pageOf(ctx);
   try {
     if (c.me) await p.route(/\/api\/jinhwa\/me(\?|$)/, r => (c.me === 'abort' ? r.abort('connectionrefused') : r.fulfill({status: c.me, contentType: 'application/json', body: '{"error":"x"}'})));
     else if (!LOCAL && !c.live) await p.route(/\/api\/jinhwa\//, r => r.fulfill({status: 403, contentType: 'application/json', body: '{"error":"owner_only"}'})); // 진짜 사이트에 묻지 않음(틀린 열쇠 한 길만 진짜로)
-    await p.goto(url(c.hash), {waitUntil: 'domcontentloaded'});
+    let wantHist = hist0;
+    if (c.inApp) { await p.goto(url(HOME), {waitUntil: 'domcontentloaded'}); await settle(p); wantHist = (await p.evaluate(() => history.length)) + 1; await p.evaluate(h => { location.hash = h; }, c.hash); await sleep(300); } // 고리를 누른 것처럼 — 기록 하나가 늘고 그 자리가 #/ 로 바뀜(#/jinhwa 는 안 남음)
+    else await p.goto(url(c.hash), {waitUntil: 'domcontentloaded'});
     await settle(p);
     if (c.hash === ME) await p.waitForSelector('#view .hd-sc', {timeout: 15000}).catch(() => fail('보유종목 바로 가기 칸', c.name + ' — 칸이 안 그려짐'));
     await sleep(c.hash === ME ? 1500 : 900);
@@ -129,7 +134,7 @@ for (const c of offCases) {
     const row = {name: c.name, opens: n, drawn: s.drawn, row: s.row, title: s.title, hash: s.hash, hist: s.hist, mod: p.net.mod, api: p.net.api.length};
     R.off.push(row);
     check(n === 0, '[9] 1 문 밖에서 진화 칸 · 줄 · 제목 0', `${c.name} ${JSON.stringify(row)}`);
-    if (c.hash !== ME) { check(s.hash === HOME, '문 밖 → 첫 화면(#/)', `${c.name} 「${s.hash}」`); check(s.hist === 1, '문 밖 — 주소 기록 늘지 않음', `${c.name} history ${s.hist}`); }
+    if (c.hash !== ME) { check(s.hash === HOME, '문 밖 → 첫 화면(#/)', `${c.name} 「${s.hash}」`); check(s.hist === wantHist, '문 밖 — 주소 기록에 #/jinhwa 가 남지 않음(바꿔 씀)', `${c.name} history ${s.hist} ≠ ${wantHist}`); }
     if (!c.key || c.key === 'short') { check(p.net.mod === 0, '열쇠 없는 기기는 진화 칸 모듈을 받지 않음', `${c.name} ${p.net.mod}번`); check(p.net.api.length === 0, '열쇠 없는 기기는 서버에 묻지 않음', `${c.name} ${p.net.api.join(' ')}`); }
     check(!p.net.errs.length, '화면 오류 0', `${c.name} ${p.net.errs.join(' | ')}`);
   } catch (e) { fail('문 밖 판 멈춤', `${c.name}: ${String(e.message).split('\n')[0]}`); }
@@ -172,7 +177,7 @@ else {
       cards: qa('.jh-card', root).map(c => ({id: c.dataset.id, name: tx(q('.jh-name', c)), figs: qa('figure.jh-fig', c).length, img: qa('img.jh-img', c).length, noimg: qa('.jh-noimg', c).length, btns: qa('button', c).length, ok: tx(q('.jh-ok', c)), dis: !!q('.jh-ok', c)?.disabled,
         badge: tx(q('.jh-badge', c)), big: tx(q('.jh-bigt', c)), voices: qa('ul.jh-voices li', c).map(tx), lines: qa('.jh-line', c).map(tx), risks: qa('.jh-risk', c).length})),
       done: qa('.jh-done', root).map(d => ({id: d.dataset.id, dd: tx(q('.jh-dd', d)), score: tx(q('.jh-score', d)), rv: tx(q('.jh-rv', d)), text: tx(d)})),
-      fix: qa('ul.jh-fix li', root).map(tx), ms: qa('.jh-ms .jh-m', root).map(tx), few: qa('.jh-ms .jh-few', root).length, ref: !!q('details.jh-ref', root), refOpen: !!q('details.jh-ref[open]', root),
+      fix: qa('ul.jh-fix li', root).map(tx), ms: qa('.jh-ms > p.jh-m', root).map(tx), few: qa('.jh-ms .jh-few', root).length, ref: !!q('details.jh-ref', root), refOpen: !!q('details.jh-ref[open]', root),
       title: document.title, hash: location.hash};
   };
   const LAYOUT = () => {
@@ -198,6 +203,8 @@ else {
     let {ctx, p} = await keyPage();
     await p.waitForFunction(() => document.querySelectorAll('#view .jh .jh-card .jh-ok').length > 0 && !document.querySelector('#view .jh .jh-card .jh-ok[disabled]'), null, {timeout: 10000}).catch(() => {});
     let M = await p.evaluate(MODEL);
+    const pos = await seen(p);
+    check(pos.drawn >= 1 && pos.title >= 1, '문 밖 셈의 맞는 짝 — 열쇠 기기에서는 같은 셈이 진화 칸 · 제목을 셈(셈이 헛돌지 않음)', JSON.stringify(pos));
     check(M.ess === ESS && M.essKo === 'ko', '[9] 2 맨 위 본질 한 줄 = 자료 essence(사장님 글 그대로 · 바꾸지 않음)', `「${M.ess}」`);
     check(M.n === `진화 ${FIX.n}번째`, '[9] 2 「진화 n번째」 = 자료 n', `「${M.n}」`);
     check(M.title === '진화 칸 · ' + NEW_NAME, '창 제목', `「${M.title}」`);
@@ -311,6 +318,7 @@ else {
     await p.waitForSelector('#view .hd-sc a.jh-row', {timeout: 10000}).catch(() => {});
     const rows = await p.locator('#view a.jh-row').count();
     check(rows === 1, '[9] 1 열쇠 기기 보유종목 바로 가기에 「진화 칸」 줄 하나', `${rows}줄`);
+    check((await seen(p)).row >= 1, '문 밖 셈의 맞는 짝 — 열쇠 기기에서는 같은 셈이 「진화 칸」 줄을 셈', JSON.stringify(await seen(p)));
     if (rows === 1) { await p.locator('#view a.jh-row').click(); await p.waitForSelector('#view .jh', {timeout: 10000}).catch(() => {}); check(await p.locator('#view .jh').count() === 1, '「진화 칸」 줄 → 진화 칸', await p.evaluate(() => location.hash)); }
     await ctx.close();
     // ③ 서버

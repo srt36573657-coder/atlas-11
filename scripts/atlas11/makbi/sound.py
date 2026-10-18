@@ -260,10 +260,10 @@ ACT, ROLL, CHEST = evs('act'), evs('roll'), evs('chest')
 if len(ACT) != 3 or len(ROLL) != 2 or len(CHEST) != 2:
     sys.exit('멈춤: 때 표 막 · 북 · 가슴 사건 수가 다름')
 for k in range(32):
-    add(timp(73.4, 0.3), ROLL[0] + k * 0.05, 0.05 + 0.25 * (k / 32) ** 2)
+    add(timp(73.4, 0.3), ROLL[0] + k * 0.05, 0.04 + 0.17 * (k / 32) ** 2)
 add(swish(1.6), ev('curtain'), 0.32)
 h = ev('hit')
-add(timp(73.4, 1.4), h, 0.7); add(boom(1.2), h, 0.35); add(pad([38, 50, 53, 57], 3.6, 1400, att=0.02), h, 0.22)
+add(timp(73.4, 1.4), h, 0.5); add(boom(1.2), h, 0.25); add(pad([38, 50, 53, 57], 3.6, 1400, att=0.02), h, 0.22)
 for m in (50, 53, 57, 62):
     add(pluck(mf(m), 1.6), h + 0.01, 0.12)
 arp(D_MIN, 2.0, SC[1][1], 0.25, 0.07)

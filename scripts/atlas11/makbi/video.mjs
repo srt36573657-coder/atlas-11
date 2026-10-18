@@ -237,7 +237,7 @@ function browserMain() {
   }
   // 골똘이 자세 — A(세상 자리) · P(새 그림 속 받침점) · rot · S · sx · sy · o(makbi 몸짓)
   function pose(t) {
-    const o = {ruff: 1, chest: 0, messy: 0, tail: 0, hook: 0, tilt: -7, blink: 0, wingL: 0, wingR: 0, crestUp: .35, beakOpen: 0, lookX: 0, lookY: 0, wince: 0};
+    const o = {ruff: 1, chest: 0, chestY: 16, chestA: 100, messy: 0, tail: 0, hook: 0, tilt: -7, blink: 0, wingL: 0, wingR: 0, crestUp: .35, beakOpen: 0, lookX: 0, lookY: 0, wince: 0}; // 가슴 날개는 주름 깃 아래(손을 가슴에)
     let A = [X1, 691], P = [120, 252], rot = 0, S = BS, sx = 1, sy = 1;
     o.blink = Math.max(...[5.2, 9.0, 12.85, 19.3, 27.3, 35.1, 39.4, 45.2, 50.9, 53.0, 58.95].map(b => pulse(t, b, .2)));
     o.beakOpen = .85 * beakAt(t);
@@ -517,7 +517,7 @@ if (process.env.HP_POSTER_ONLY === '1') {
   await fs.copyFile(path.join(TMP, 'poster.jpg'), path.join(OUT, 'makbi-poster.jpg'));
   if (STILLS) { // 장면 사진 열 장 — 다 구운 mp4 에서 뽑음(장면마다 글상자가 다 보이는 때)
     await fs.mkdir(STILLS, {recursive: true});
-    const AT = [4.6, 11.2, 20.6, 26.2, 31.0, 38.2, 46.4, 53.4, 56.4, 59.4];
+    const AT = [4.6, 7.6, 15.1, 26.2, 31.0, 37.9, 46.4, 53.4, 56.4, 59.4]; // ② 날개 폄 · ③ 새 떼 외침 · ⑥ 멈춘 카드
     AT.forEach((t, i) => ff('-ss', String(t), '-i', path.join(OUT, 'makbi-intro.mp4'), '-frames:v', '1', path.join(STILLS, `scene-${String(i + 1).padStart(2, '0')}.png`)));
     await fs.writeFile(path.join(STILLS, 'cues.json'), JSON.stringify(CU, null, 1));
   }

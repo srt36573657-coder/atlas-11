@@ -217,7 +217,8 @@ test('길 · 문 — 열쇠 없는 기기는 모듈도 안 받음 · 보유종�
   const line = app.split('\n').find(l => l.startsWith('VIEWS.jinhwa = '));
   assert.ok(line, 'app.js 길 한 줄');
   assert.match(line, /localStorage\.getItem\('atlas11:invite:owner'\)/);
-  assert.match(line, /return k \? page\('jinhwa', a\) : new Promise\(res => \{ addEventListener\('hashchange', [^]*location\.replace\('#\/'\)/, '열쇠가 없으면 모듈 없이 #/ 로(기록 바꿔 씀)');
+  assert.match(line, /return k && k\.length >= 16 && k\.length <= 128 \? page\('jinhwa', a\) : new Promise\(res => \{ addEventListener\('hashchange', [^]*location\.replace\('#\/'\)/, '열쇠가 없으면(길이도 p-jinhwa ownerKey 와 같은 잣대) 모듈 없이 #/ 로(기록 바꿔 씀)');
+  assert.match(pj, /k\.length >= 16 && k\.length <= 128/, 'p-jinhwa 열쇠 길이 잣대');
   const sc = hold.slice(hold.indexOf('export function shortcuts()'), hold.indexOf('export async function news'));
   assert.match(sc, /if \(localStorage\.getItem\('atlas11:invite:owner'\)\) import\('\.\/p-jinhwa\.js'\)\.then\(m => m\.ownerRow\(box\)\)/);
   assert.equal((hold.match(/p-jinhwa/g) ?? []).length, 1, 'p-hold 은 그 한 줄만');

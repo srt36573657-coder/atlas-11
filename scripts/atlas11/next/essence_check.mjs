@@ -842,9 +842,9 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
             const shown = names.filter(nm => (g?.textContent || '').includes(nm));
             return {lock: !!v?.querySelector('.gdr.lock1, a[href="#/why"]'), cells, tags, shown, kan: /칸\s*\d+번/.test(v?.textContent || ''), gtext: text.slice(0, 80)};
           }, pickNames);
-          if (s.cells) bad(c, `${hash} — 열한 질문 전인데 꼴똘이 칸 ${s.cells}칸이 보임`);
+          if (s.cells) bad(c, `${hash} — 열한 질문 전인데 ${NAME} 칸 ${s.cells}칸이 보임`);
           if (s.shown.length) bad(c, `${hash} — 열한 질문 전인데 칸에 고른 곳 이름이 보임(${s.shown.slice(0, 3).join(' · ')})`);
-          if (s.tags.length || s.kan) bad(c, `${hash} — 열한 질문 전인데 칸 번호 고리가 보임(${s.tags.slice(0, 3).join(' · ') || '꼴똘이 칸 n번'})`);
+          if (s.tags.length || s.kan) bad(c, `${hash} — 열한 질문 전인데 칸 번호 고리가 보임(${s.tags.slice(0, 3).join(' · ') || NAME + ' 칸 n번'})`);
           if ((u === 'r4-gdr' || u === 'r4-home') && !s.lock) bad(c, `${hash} — 잠금 한 줄(→ #/why)이 없음`);
         } finally { await ctx.close(); }
       }
