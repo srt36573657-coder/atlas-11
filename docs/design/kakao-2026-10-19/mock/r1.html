@@ -140,7 +140,25 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .split .f.open .qs{display:block}
 .read+.from{margin-top:12px}
 .read+.from .who{margin-bottom:2px}
-.read~.gdr{margin-top:10px}
+.read~.gdr{margin-top:8px}
+.gdr a{min-height:48px}
+.evo{padding:4px 16px 6px 12px}
+.plate .head{height:80px}
+.plate p[data-ess="1"]{margin-top:10px}
+.plate .foot{margin-top:4px;padding-bottom:4px}
+.read .news h2.lbl.talk span.say{padding:7px 16px 8px}
+.st3 .talk .say{padding:7px 16px 8px}
+.st3 .talk{min-height:44px}
+/* 씨앗 판 — 사실은 왼쪽(꽃돌이 쪽) · 해바라기 가운데 · 내 답 「왜 그럴까?」는 카톡처럼 오른쪽 */
+.garden{display:grid;grid-template-columns:auto 1fr auto;column-gap:6px;row-gap:8px;align-items:center}
+.garden .facts,.garden .facts .f{display:contents}
+.garden .fu>span[data-num]{grid-row:1;grid-column:1}
+.garden .fd>span[data-num]{grid-row:2;grid-column:1}
+.garden .fu button{grid-row:1;grid-column:3;justify-self:end}
+.garden .fd button{grid-row:2;grid-column:3;justify-self:end}
+.garden .sun{grid-row:1/3;grid-column:2;justify-self:center}
+.garden .fu .qs{grid-row:3;grid-column:1/-1}
+.garden .fd .qs{grid-row:4;grid-column:1/-1}
 .read~.all{margin-top:2px}
 .plate .head{height:104px}
 .plate p[data-ess="1"]{line-height:1.6}
@@ -188,7 +206,25 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .evo+.pill .in{background:none}
 .evo+.pill a{padding:11px 0 9px;column-gap:10px}
 .from{margin-top:0;align-items:center}
-.gdr{margin-top:10px}
+.gdr{margin-top:8px}
+.gdr a{min-height:48px}
+.evo{padding:4px 16px 6px 12px}
+.plate .head{height:80px}
+.plate p[data-ess="1"]{margin-top:10px}
+.plate .foot{margin-top:4px;padding-bottom:4px}
+.read .news h2.lbl.talk span.say{padding:7px 16px 8px}
+.st3 .talk .say{padding:7px 16px 8px}
+.st3 .talk{min-height:44px}
+/* 씨앗 판 — 사실은 왼쪽(꽃돌이 쪽) · 해바라기 가운데 · 내 답 「왜 그럴까?」는 카톡처럼 오른쪽 */
+.garden{display:grid;grid-template-columns:auto 1fr auto;column-gap:6px;row-gap:8px;align-items:center}
+.garden .facts,.garden .facts .f{display:contents}
+.garden .fu>span[data-num]{grid-row:1;grid-column:1}
+.garden .fd>span[data-num]{grid-row:2;grid-column:1}
+.garden .fu button{grid-row:1;grid-column:3;justify-self:end}
+.garden .fd button{grid-row:2;grid-column:3;justify-self:end}
+.garden .sun{grid-row:1/3;grid-column:2;justify-self:center}
+.garden .fu .qs{grid-row:3;grid-column:1/-1}
+.garden .fd .qs{grid-row:4;grid-column:1/-1}
 .all{margin-top:2px}
 .all li a b{font-family:"Gowun Batang",serif;font-weight:700;color:#F6C744;margin:0 2px}
 .read{margin-top:56px}
@@ -287,7 +323,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 /* r1 · 「말 거는 꽃돌이」 — n1 그림 · 씨앗 나선 · 하는 일 셋 그대로 · 말투만 친구처럼 · 카톡 1:1 방(방 이름 = 꽃돌이)
    진화 칸은 카톡 「공지」 자리(맨 위) · 꽃돌이 얼굴은 왼쪽 칸에 크게 한 번 · 이름판이 꽃돌이의 첫 말풍선(꼬리 = 왼쪽 위 모서리)
    ②③ = 꽃돌이 말풍선(물음으로 끝) + 오른쪽 작은 회색 글(카톡의 시각 자리) · 「왜 그럴까?」 = 내 답(노랑 · 꼬리 = 오른쪽 아래) */
-.evo{margin:2px 0 14px}
+.evo{margin:0 0 10px}
 .chat{position:relative;list-style:none}
 .chat::before{content:"";position:absolute;left:23px;top:64px;bottom:26px;width:1px;background:#4E4E4E}
 .me-row{position:relative;padding-left:58px}
@@ -295,11 +331,11 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .av img{width:42px;height:42px;display:block}
 .plate{border-radius:10px 36px 36px 36px}
 .plate .frame{border-radius:4px 28px 28px 28px}
-.flow{margin-top:14px}
+.flow{margin-top:8px}
 .flow::before{display:none}
 .st{padding-left:58px}
 .st>.no{left:6px}
-.st+.st{margin-top:12px}
+.st+.st{margin-top:6px}
 .talk{display:flex;align-items:flex-end;gap:8px;flex-wrap:nowrap}
 .talk .say{display:inline-flex;align-items:center;gap:6px;background:#282828;color:#FFFFFF;border-radius:6px 22px 22px 22px;padding:9px 16px 10px;font-size:19px;line-height:1.3;white-space:nowrap;font-family:"Gowun Batang",serif;font-weight:400;margin:0}
 .talk .say img{width:30px;height:30px;margin:-4px 0 -4px -6px}
@@ -307,17 +343,42 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .talk .side .per{display:inline-flex;align-items:center;gap:5px}
 .read .news h2.lbl.talk{display:flex;justify-content:flex-start;align-items:flex-end;margin:0 0 2px;font-size:17px;color:#BDBDBD}
 .read .news h2.lbl.talk .say{font-size:19px;color:#FFFFFF}
-.read .news h2.lbl.talk span{background:#282828}
+.read .news h2.lbl.talk span.say{background:#282828;border-radius:6px 22px 22px 22px;padding:9px 16px 10px}
 .read .news h2.lbl.talk .side,.read .news h2.lbl.talk .side span{background:none;padding:0;border-radius:0}
+.read .news h2.lbl.talk .side .per{margin:0;color:#BDBDBD;font-size:17px}
 .read .pill a{min-height:48px}
 .facts{gap:8px}
-.facts button{background:#F6C744;color:#111111;border:0;border-radius:24px 24px 8px 24px;font-family:"Gowun Batang",serif;font-weight:700;padding:0 14px}
+.facts .f{flex-wrap:nowrap}
+.sun{flex-basis:104px;width:104px;height:104px}
+.garden{gap:6px;margin-top:2px}
+.facts button{background:#F6C744;color:#111111;border:0;border-radius:24px 24px 8px 24px;font-family:"Gowun Batang",serif;font-weight:700;padding:0 12px}
 .st3 .talk{min-height:48px}
-.gdr{margin-top:14px}
+.gdr{margin-top:8px}
+.gdr a{min-height:48px}
+.evo{padding:4px 16px 6px 12px}
+.plate .head{height:80px}
+.plate p[data-ess="1"]{margin-top:10px}
+.plate .foot{margin-top:4px;padding-bottom:4px}
+.read .news h2.lbl.talk span.say{padding:7px 16px 8px}
+.st3 .talk .say{padding:7px 16px 8px}
+.st3 .talk{min-height:44px}
+/* 씨앗 판 — 사실은 왼쪽(꽃돌이 쪽) · 해바라기 가운데 · 내 답 「왜 그럴까?」는 카톡처럼 오른쪽 */
+.garden{display:grid;grid-template-columns:auto 1fr auto;column-gap:6px;row-gap:8px;align-items:center}
+.garden .facts,.garden .facts .f{display:contents}
+.garden .fu>span[data-num]{grid-row:1;grid-column:1}
+.garden .fd>span[data-num]{grid-row:2;grid-column:1}
+.garden .fu button{grid-row:1;grid-column:3;justify-self:end}
+.garden .fd button{grid-row:2;grid-column:3;justify-self:end}
+.garden .sun{grid-row:1/3;grid-column:2;justify-self:center}
+.garden .fu .qs{grid-row:3;grid-column:1/-1}
+.garden .fd .qs{grid-row:4;grid-column:1/-1}
 @media (max-width:359px){
-  .me-row{padding-left:0;padding-top:56px}
-  .av{width:44px;height:44px;border-radius:17px}
-  .av img{width:38px;height:38px}
+  .me-row{padding-left:44px}
+  .av{width:38px;height:38px;border-radius:15px}
+  .av img{width:34px;height:34px}
+  .garden .sun{width:80px;height:80px;flex-basis:80px}
+  .facts .lb{white-space:nowrap}
+  .garden{column-gap:4px}
   .chat::before{display:none}
   .st{padding-left:42px}
   .st>.no{left:0}
@@ -338,6 +399,14 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 </header>
 <main id="view">
 
+  <a class="evo" href="#/jinhwa" aria-label="진화 칸 열기">
+    <span class="row"><svg class="stem" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="#F6C744" stroke-width="1.4" stroke-dasharray="3 4"/><circle cx="24" cy="24" r="14" fill="#F6C744"/><text x="24" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#111111" font-family="Gowun Batang,serif">1</text></svg><b class="serif">진화 <span class="n">1</span>번째</b><span class="when"><span class="n">10</span>월 <span class="n">31</span>일쯤 채점</span><span class="go" aria-hidden="true">›</span></span>
+    <span class="ln">「끝낸 수가 는다」 · 사장님 확인만</span>
+  </a>
+
+  <div class="chat">
+  <div class="me-row">
+  <span class="av"><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이"></span>
   <section class="plate" data-w="ess">
     <div class="frame">
       <div class="head">
@@ -354,7 +423,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 <g transform="translate(278.6 82)"><circle r="14.5" fill="none" stroke="#F6C744" stroke-width="1.3" stroke-dasharray="2.4 3"/><circle r="9.6" fill="#F6C744" stroke="#0F1B45" stroke-width="1.8"/><text y="4.4" text-anchor="middle" font-size="13" font-weight="700" fill="#0F1B45" font-family="Gowun Batang,serif">1</text></g>
 </g></svg>
         <span class="no" aria-hidden="true">1</span>
-        <span class="big serif">왜 사?</span>
+        <span class="big serif" data-say>왜 사?</span>
       </div>
       <span class="rule"><i></i></span>
       <p data-ess="1" class="serif">주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.</p>
@@ -369,17 +438,14 @@ button,input{font:inherit;color:inherit;background:none;border:0}
       </div>
     </div>
   </section>
+  </div>
 
-  <a class="evo" href="#/jinhwa" aria-label="진화 칸 열기">
-    <span class="row"><svg class="stem" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="#F6C744" stroke-width="1.4" stroke-dasharray="3 4"/><circle cx="24" cy="24" r="14" fill="#F6C744"/><text x="24" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#111111" font-family="Gowun Batang,serif">1</text></svg><b class="serif">진화 <span class="n">1</span>번째</b><span class="when"><span class="n">10</span>월 <span class="n">31</span>일쯤 채점</span><span class="go" aria-hidden="true">›</span></span>
-    <span class="ln">「끝낸 수가 는다」 · 사장님 확인으로만</span>
-  </a>
 
   <ol class="flow" aria-label="하는 일 셋">
     <li class="st st2 read">
       <span class="no" aria-hidden="true">2</span>
       <div class="news" data-w="news">
-        <h2 class="lbl"><span>지난 기록만<span class="sub">10월 13일</span></span><span class="per"><svg width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 1C9.6 4 10 11 6 15C2 11 2.4 4 6 1Z" fill="#BDBDBD"/></svg>= 20곳</span></h2>
+        <h2 class="lbl talk"><span class="say" data-say>지난 기록만 볼까?</span><span class="side"><span class="per"><svg width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 1C9.6 4 10 11 6 15C2 11 2.4 4 6 1Z" fill="#BDBDBD"/></svg>= 20곳</span><span>10월 13일</span></span></h2>
         <div class="pill" data-w="today"><span class="in"><a data-num href="#/f/day"><span class="q">?</span><span>10월 <span class="n">12</span>일</span><span class="dn">코스피 <span class="n">−3.28</span>%</span><span class="dn">코스닥 <span class="n">−4.36</span>%</span></a></span></div>
         <div class="garden">
           <div class="facts" role="list">
@@ -392,9 +458,10 @@ button,input{font:inherit;color:inherit;background:none;border:0}
     </li>
     <li class="st st3">
       <span class="no" aria-hidden="true">3</span>
-      <div class="row"><span class="lbl">한 달 뒤</span><p class="say serif" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">그날 정한 대로 했어?</p></div>
+      <div class="talk"><p class="say" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">그날 정한 대로 했어?</p><span class="side">한 달 뒤</span></div>
     </li>
   </ol>
+  </div>
 
   <nav class="gdr" data-w="gdr" aria-label="꽃돌이 칸">
     <a href="#/why">꽃돌이</a><i></i>
