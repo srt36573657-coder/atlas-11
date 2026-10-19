@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 시안 n2 — 꽃잎 둘레</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* d1 · 「설중화」 — f3 새긴 글자 · 둥근 결 그대로 · 밤에 눈 속 제주 수선화 한 송이(흰 꽃덮이 여섯 + 금빛 잔)가 「왜 사?」 곁에 · 금빛은 꽃 잔과 내 것에만 · 초록은 가는 선에만 */
+:root{--bg:#080808;--pill:#1B1B1B;--date:#1C1C1C;--card:#282828;--bar:#141414;--mine:#F6C744;--ink:#FFFFFF;--soft:#BDBDBD;--hair:#3A3A3A;--frame:#4E4E4E;--edge:#8A8A8A;--up:#FF5A65;--dn:#49A8F8;--petal:#F7F3E8;--gold:#F6C744;--leaf:#6E9B5A;--leafline:#3C4A34}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:176px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.serif{font-family:"Gowun Batang",serif;font-weight:400;letter-spacing:0}
+
+/* 위 줄 — 카톡 그대로 · 이름만 글자 간격을 벌려 새김 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:6px}
+.ttl::after{content:"";width:5px;height:5px;border-radius:50%;background:#F6C744;margin-left:-.32em}
+
+#view{padding:0 22px}
+
+/* 날짜 알약 — 숫자만 고운바탕 */
+.pill{display:flex;justify-content:center;margin:4px 0 22px}
+.pill .in{background:#1C1C1C;border-radius:999px;display:flex}
+.pill a{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:baseline;justify-content:center;column-gap:8px;min-height:48px;padding:11px 16px 9px;font-size:17px;color:#FFFFFF}
+.pill .q{font-weight:700}
+.pill .n{font-family:"Gowun Batang",serif;font-size:17px}
+.up{color:#FF5A65}.dn{color:#49A8F8}
+
+/* 본질 = 새긴 이름판 — 회색 판 속 머리카락 테 · 가운데 맞춤 · 넓은 숨 */
+.plate{background:#282828;border-radius:40px;padding:10px}
+.plate .frame{border:1px solid #4E4E4E;border-radius:31px;padding:24px 22px 0;text-align:center}
+.plate .big{display:block;font-size:56px;line-height:1;color:#FFFFFF;letter-spacing:.04em}
+.plate .head{position:relative}
+.plate .flower{position:absolute;right:-12px;bottom:1px;width:84px;height:100px;overflow:visible}
+.plate .rule{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px auto 14px}
+.plate .rule::before,.plate .rule::after{content:"";flex:1;height:1px;background:#4A473F}
+.plate .rule i{width:5px;height:5px;border-radius:50%;background:#F6C744}
+.plate p[data-ess="1"]{font-size:20px;line-height:1.7;color:#FFFFFF;word-break:keep-all;max-width:15.5em;margin:0 auto}
+.plate .foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;border-top:1px solid #3A3A3A;padding:4px 0 6px}
+.plate details{flex:1;text-align:left}
+.plate summary{list-style:none;min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#49A8F8;cursor:pointer;padding-left:4px}
+.plate summary::-webkit-details-marker{display:none}
+.plate details p{font-size:17px;color:#D6D6D6;text-align:left;margin:4px 4px 12px;line-height:1.55}
+.kk-btn{width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A !important;display:flex;align-items:center;justify-content:center}
+
+/* 내 말 = 노랑 · 숫자는 크게 새기고 단위는 작게 */
+.mine{display:flex;justify-content:flex-end;align-items:flex-end;gap:10px;margin-top:18px}
+.mine .t{font-size:17px;color:#BDBDBD;padding-bottom:4px}
+.mine a{display:flex;align-items:baseline;background:#F6C744;color:#111111;border-radius:30px 30px 10px 30px;padding:9px 24px 11px;min-height:56px}
+.mine .cell{display:flex;align-items:baseline;gap:4px}
+.mine .cell+.cell{margin-left:16px;padding-left:16px;border-left:1px solid #9A7A1E}
+.mine b{font-family:"Gowun Batang",serif;font-weight:700;font-size:34px;line-height:1}
+.mine span{font-size:17px;color:#111111}
+
+/* 받은 말 = 꽃돌이 */
+.from{margin-top:14px;display:flex;gap:12px;align-items:flex-start}
+.from .av{flex:0 0 48px;width:48px;height:48px;border-radius:24px;background:#1B1B1B;border:1px solid #3C4A34;display:flex;align-items:center;justify-content:center}
+.from .av img{width:40px;height:40px}
+.from .who{font-size:17px;color:#F6C744;margin-bottom:6px;letter-spacing:.06em}
+.say{display:inline-block;background:#282828;border-radius:10px 30px 30px 30px;padding:11px 24px;font-size:22px}
+
+/* 꽃돌이 칸 — 상자 없이 머리카락 선 사이 글자 넷 */
+.gdr{margin:12px 0 0 60px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+.gdr a{flex:1 1 0;min-width:0;min-height:50px;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:18px;color:#FFFFFF;border:1px solid #8A8A8A;border-radius:999px;white-space:nowrap}
+.gdr i{display:none}
+
+/* 전부 보기 — 양 옆 머리카락 선 */
+.all{margin-top:6px}
+.all summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:16px;font-size:17px;color:#BDBDBD;cursor:pointer;white-space:nowrap}
+.all summary::-webkit-details-marker{display:none}
+.all summary::before,.all summary::after{content:"";flex:1;height:1px;background:#3A3A3A}
+.all ul{list-style:none}
+.all li a{display:flex;min-height:52px;align-items:center;padding:0 4px;width:100%;font-size:17px}
+.all li{border-bottom:1px solid #3A3A3A}
+
+/* 시황 — 둘째 날짜 알약 + 숫자를 새긴 장부 두 줄 */
+.news{margin-top:72px}
+.news h2{font-weight:400;font-size:17px;display:flex;justify-content:center;margin-bottom:20px}
+.news h2 span{background:#1C1C1C;border-radius:999px;padding:12px 22px}
+.news ul{list-style:none;margin-left:60px;border-top:1px solid #3A3A3A}
+.news li{border-bottom:1px solid #3A3A3A;padding:10px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.news li>span[data-num]{display:flex;align-items:baseline;gap:6px}
+.news .lb{font-size:17px;color:#BDBDBD}
+.news .v{font-family:"Gowun Batang",serif;font-size:30px;line-height:1}
+.news button{min-height:48px;padding:0 18px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF}
+.news .qs{display:none;width:100%;font-size:17px;color:#D6D6D6}
+.news li.open .qs{display:block}
+
+/* 아래 입력 줄 = 찾기(내 것) */
+.find{position:fixed;left:0;right:0;bottom:64px;padding:8px 14px 10px;background:#080808}
+.find .bar{height:64px;background:#141414;border:1px solid #2A2A2A;border-radius:32px;display:flex;align-items:center;padding:0 8px 0 22px;gap:8px}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-family:"Gowun Batang",serif}
+.find input::placeholder{color:#A6A6A6}
+.find button{flex:0 0 auto;min-width:64px;height:48px;border-radius:999px;background:#F6C744;color:#111111;font-family:"Gowun Batang",serif;font-weight:700;font-size:20px;padding:0 16px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700;flex-direction:column;gap:3px}
+.tabs a[aria-current]::after{content:"";width:4px;height:4px;border-radius:50%;background:#F6C744}
+
+
+/* g3 · 「목판화 꽃가지」 — 이름판 위쪽 넓은 남빛 면 하나 · 수선화 꽃대가 오른쪽 아래에서 왼쪽 위로 가로지름 · 단색 면 + 짙은 남빛 윤곽선(목판처럼) · 번짐 · 그러데이션 · 그림자 0 */
+.plate .frame{padding-top:10px}
+.plate .head{position:relative;background:#1F3A8A;border-radius:22px;margin:0 -12px;height:112px;overflow:hidden;text-align:left;display:flex;align-items:flex-end}
+.plate .head::before{content:"";position:absolute;inset:6px;border:1px solid #4E66AE;border-radius:17px;pointer-events:none}
+.plate .print{position:absolute;inset:0;width:100%;height:100%}
+.plate .big{position:relative;padding:0 0 18px 24px;letter-spacing:.02em}
+.plate .rule{margin:14px auto 12px}
+
+/* n2 · 「꽃잎 둘레」 — e3 자라는 꽃(판화 수선화 · 진화 1번째)을 그대로 두고, e1 하는 일 셋(① 왜 사? ② 지난 기록만 ③ 한 달 뒤)을 가는 세로선 하나로 담음. 장사 막대 대신 한지 위 목판 꽃 한 송이 — 꽃잎 24장을 곳 수 몫대로 나눔(오른 곳 8장 위로 펼침 · 다홍 / 내린 곳 16장 숙임 · 남빛 · 가운데 금빛 잔). 같은 색 꽃잎은 path 하나 · 먹 윤곽 · 그림자 · 그러데이션 · 흐림 0 */
+#view{padding:0 16px}
+.plate{padding:8px}
+.plate .frame{padding:8px 10px 0}
+.plate .head{height:86px;margin:0 -4px}
+.plate .big{font-size:50px;padding:0 0 15px 62px}
+.no{flex:0 0 auto;width:34px;height:34px;border-radius:17px;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:18px;line-height:1;color:#FFFFFF}
+.plate .head .no{position:absolute;left:16px;bottom:17px;background:#1F3A8A;border-color:#F7F3E8;color:#F7F3E8}
+.plate .rule{margin:8px auto 4px}
+.plate .foot{border-top:0;margin:0;padding:0 0 8px 6px;gap:10px;align-items:center}
+.plate p[data-ess="1"]{flex:1;max-width:none;margin:0;text-align:left;font-size:19px;line-height:1.45}
+
+/* 진화 — 금빛 마디 하나 · 한 장 */
+.evo{display:flex;align-items:center;gap:12px;margin-top:8px;padding:7px 14px 7px 10px;border:1px solid #8A8A8A;border-radius:26px;font-size:17px;line-height:1.35;color:#D6D6D6}
+.evo .stem{flex:0 0 40px;width:40px;height:40px}
+.evo .tx{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px}
+.evo b{font-size:23px;line-height:1.25;color:#FFFFFF;font-weight:400}
+.evo .n{color:#F6C744;font-weight:700}
+.evo .ln2{flex-basis:100%;white-space:nowrap}
+.evo .go{font-size:28px;color:#BDBDBD;line-height:1}
+
+/* 하는 일 셋 — 가는 세로선 */
+.flow{list-style:none;position:relative;margin-top:10px}
+.flow::before{content:"";position:absolute;left:16px;top:17px;bottom:24px;width:1px;background:#4E4E4E}
+.st{position:relative;padding-left:44px}
+.st+.st{margin-top:4px}
+.st>.no{position:absolute;left:0;top:0}
+.lbl{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:34px;font-size:18px;line-height:1.3;color:#FFFFFF;white-space:nowrap}
+.read .news h2.lbl{margin:0;font-weight:400}
+.read .news h2.lbl span{background:none;padding:0}
+.lbl .sub{color:#BDBDBD;font-size:17px}
+.read .pill{justify-content:flex-start;margin:0}
+.read .pill .in{background:none}
+.read .pill a{padding:0;column-gap:6px;min-height:48px;align-items:center;justify-content:flex-start}
+.news{margin-top:0}
+
+/* 꽃 한 송이 + 사실 둘 — 꽃은 세로선 위에 걸린 목판 한 장(선이 꽃 뒤로 지나감) */
+.bloom{display:flex;align-items:center;gap:14px;margin:2px 0 0 -44px;position:relative}
+.bloom .petals{flex:0 0 112px;width:112px;height:112px}
+.facts{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.facts .f{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 8px}
+.facts .f>span[data-num]{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.facts .lb{display:flex;align-items:center;gap:8px;font-size:17px;line-height:1.2;color:#BDBDBD;white-space:nowrap}
+.facts .v{font-family:"Gowun Batang",serif;font-size:28px;line-height:1.05}
+.facts .pc{display:inline-flex;align-items:center;gap:3px;font-family:"Gowun Batang",serif;font-size:17px;color:#BDBDBD}
+.facts .pc svg{width:10px;height:15px}
+.facts button{min-height:48px;padding:0 13px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF;white-space:nowrap}
+.facts .qs{display:none;flex-basis:100%;font-size:17px;color:#D6D6D6;margin-top:4px}
+.facts .f.open .qs{display:block}
+.read .news h2.lbl{justify-content:space-between}
+
+/* 한 달 뒤 — 꽃돌이가 묻는 말 */
+.st3 .row{display:flex;align-items:center;gap:10px;min-height:48px}
+.st3 .lbl{min-height:34px}
+.say{display:inline-flex;align-items:center;gap:6px;background:#282828;border-radius:8px 24px 24px 24px;padding:8px 16px 8px 8px;font-size:19px;line-height:1.3;white-space:nowrap}
+.say img{width:28px;height:28px}
+
+.gdr{margin:6px 0 0 0}
+.all{margin-top:0}
+.all li a b{font-family:"Gowun Batang",serif;font-weight:700;color:#F6C744;margin:0 2px}
+.all li.ess23{padding:8px 4px}
+.all li.ess23 p{font-size:17px;color:#D6D6D6;line-height:1.55}
+
+@media (max-width:359px){
+  .top{padding:0 8px}
+  #jhBtn{white-space:nowrap;padding:0 10px}
+  .ttl{font-size:20px;letter-spacing:.18em;text-indent:.18em}
+  .ttl::after{margin-left:-.18em}
+  .tabs a{letter-spacing:-0.07em}
+  .gdr a{font-size:17px}
+  .evo b{font-size:21px}
+  #view{padding:0 12px}
+  .plate .big{font-size:40px;padding:0 0 16px 56px}
+  .plate .head .no{left:12px}
+  .plate p[data-ess="1"]{font-size:18px}
+  .evo .ln2{white-space:normal}
+  .st{padding-left:40px}
+  .read .pill a{flex-wrap:wrap;column-gap:8px}
+  .bloom{margin-left:-40px;gap:10px}
+  .bloom .petals{flex-basis:96px;width:96px;height:96px}
+  .facts .v{font-size:24px}
+  .facts button{padding:0 10px}
+  .st3 .row{flex-wrap:wrap}
+  .say{font-size:17px;white-space:normal}
+}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+
+  <section class="plate" data-w="ess">
+    <div class="frame">
+      <div class="head">
+        <svg class="print" viewBox="0 0 320 112" preserveAspectRatio="xMaxYMax slice" aria-hidden="true"><defs>
+<g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g>
+<g id="g3-side"><g transform="scale(.56 1)"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g></g><path d="M-1 -5.6 L-13 -8.6 Q-15.4 -9.4 -16 -7 Q-17.6 0 -16 7 Q-15.4 9.4 -13 8.6 L-1 5.6 Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><ellipse cx="-15.8" cy="0" rx="2.4" ry="8.4" fill="#D99A1C" stroke="#0F1B45" stroke-width="1.1"/></g>
+</defs>
+<g fill="#F7F3E8"><circle cx="26" cy="20" r="1.6"/><circle cx="70" cy="10" r="1.2"/><circle cx="52" cy="40" r="1.1"/><circle cx="104" cy="6" r="1.1"/><circle cx="168" cy="14" r="1.2"/><circle cx="214" cy="30" r="1.1"/></g>
+<path d="M266 118 C 254 98 238 84 214 76 C 240 78 260 92 276 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M296 118 C 304 96 306 80 300 64 C 298 84 292 102 286 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#0F1B45" stroke-width="7.6" stroke-linecap="round"/><path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#6E9B5A" stroke-width="4.6" stroke-linecap="round"/>
+<path d="M281 50 C 288 44 292 36 292 28 C 285 32 281 40 280 48 Z" fill="#D8CBA8" stroke="#0F1B45" stroke-width="1.1" stroke-linejoin="round"/>
+<use href="#g3-bloom" transform="translate(276 30) rotate(10) scale(.9)"/>
+<g transform="translate(278.6 82)"><circle r="14.5" fill="none" stroke="#F6C744" stroke-width="1.3" stroke-dasharray="2.4 3"/><circle r="9.6" fill="#F6C744" stroke="#0F1B45" stroke-width="1.8"/><text y="4.4" text-anchor="middle" font-size="13" font-weight="700" fill="#0F1B45" font-family="Gowun Batang,serif">1</text></g>
+</svg>
+        <span class="no" aria-hidden="true">1</span>
+        <span class="big serif">왜 사?</span>
+      </div>
+      <span class="rule"><i></i></span>
+      <div class="foot">
+        <p data-ess="1" class="serif">주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.</p>
+        <button class="kk-btn" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <a class="evo" href="#/jinhwa" aria-label="진화 칸 열기">
+    <svg class="stem" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="#F6C744" stroke-width="1.4" stroke-dasharray="3 4"/><circle cx="24" cy="24" r="14" fill="#F6C744"/><text x="24" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#111111" font-family="Gowun Batang,serif">1</text></svg>
+    <span class="tx"><b class="serif">진화 <span class="n">1</span>번째</b><span class="ln">사장님 확인으로만</span><span class="ln ln2">「끝낸 수가 는다」 · <span class="n">10</span>월 <span class="n">31</span>일쯤 채점</span></span>
+    <span class="go" aria-hidden="true">›</span>
+  </a>
+
+  <ol class="flow" aria-label="하는 일 셋">
+    <li class="st st2 read">
+      <span class="no" aria-hidden="true">2</span>
+      <div class="news" data-w="news">
+        <h2 class="lbl"><span>지난 기록만</span><span class="sub">10월 13일</span></h2>
+        <div class="pill" data-w="today"><span class="in"><a data-num href="#/f/day"><span class="q">?</span><span>10월 <span class="n">12</span>일</span><span class="dn">코스피 <span class="n">−3.28</span>%</span><span class="dn">코스닥 <span class="n">−4.36</span>%</span></a></span></div>
+        <div class="bloom">
+          <svg class="petals" viewBox="-62 -62 124 124" role="img" aria-labelledby="n2t"><title id="n2t">꽃잎 24장 · 오른 곳 766 : 내린 곳 1,632 ≈ 32 : 68 → 24장 중 7.66장을 반올림해 8장을 위로 펼치고 16장은 숙임</title>
+<circle r="60" fill="#F3EEDF"/><circle r="56.5" fill="none" stroke="#16181D" stroke-width=".8"/>
+<circle r="54.4" fill="none" stroke="#16181D" stroke-width=".5"/>
+<path d="M13.6 -6.37 L15.62 -8.32 L17.81 -10.06 L20.2 -11.55 L22.81 -12.72 L25.61 -13.49 L28.56 -13.8 L31.57 -13.59 L34.55 -12.82 L37.35 -11.5 L39.86 -9.66 L41.94 -7.39 L43.03 -4.25 L40.14 -4.39 L37.79 -4.77 L35.54 -4.95 L33.37 -5.02 L31.23 -5.02 L29.08 -5.02 L26.88 -5.02 L24.57 -5.03 L22.14 -5.04 L19.58 -5.05 L16.9 -5.07 L14.12 -5.11ZM14.78 -2.63 L17.24 -3.99 L19.8 -5.11 L22.5 -5.93 L25.32 -6.38 L28.23 -6.4 L31.16 -5.94 L34.02 -4.95 L36.69 -3.44 L39.06 -1.44 L41 0.98 L42.42 3.72 L42.67 7.04 L39.91 6.15 L37.74 5.17 L35.61 4.41 L33.53 3.79 L31.47 3.23 L29.39 2.68 L27.26 2.11 L25.03 1.5 L22.69 0.86 L20.22 0.19 L17.64 -0.52 L14.96 -1.28ZM14.96 1.28 L17.68 0.61 L20.45 0.19 L23.27 0.1 L26.11 0.39 L28.92 1.12 L31.63 2.33 L34.14 4.02 L36.33 6.17 L38.1 8.72 L39.35 11.56 L40.01 14.57 L39.39 17.84 L36.96 16.27 L35.11 14.76 L33.25 13.48 L31.4 12.34 L29.56 11.27 L27.7 10.2 L25.78 9.09 L23.79 7.93 L21.7 6.71 L19.49 5.42 L17.17 4.06 L14.78 2.63ZM14.12 5.11 L16.92 5.16 L19.7 5.48 L22.45 6.12 L25.12 7.13 L27.65 8.57 L29.95 10.44 L31.93 12.72 L33.49 15.36 L34.55 18.28 L35.02 21.35 L34.88 24.43 L33.43 27.43 L31.49 25.28 L30.09 23.35 L28.63 21.63 L27.14 20.05 L25.63 18.53 L24.11 17.02 L22.55 15.46 L20.93 13.82 L19.22 12.09 L17.42 10.27 L15.53 8.37 L13.6 6.37ZM12.31 8.59 L15.01 9.36 L17.61 10.36 L20.11 11.63 L22.44 13.22 L24.55 15.15 L26.38 17.42 L27.84 19.99 L28.86 22.81 L29.4 25.79 L29.42 28.83 L28.9 31.82 L27.17 34.62 L25.43 32.26 L24.27 30.12 L23.03 28.15 L21.78 26.28 L20.53 24.47 L19.29 22.63 L18.05 20.73 L16.8 18.74 L15.52 16.64 L14.2 14.43 L12.85 12.1 L11.49 9.67ZM9.67 11.49 L12.08 12.91 L14.35 14.51 L16.45 16.31 L18.35 18.33 L19.99 20.58 L21.33 23.06 L22.33 25.73 L22.93 28.55 L23.13 31.47 L22.9 34.4 L22.26 37.28 L20.52 40.02 L18.78 37.59 L17.67 35.32 L16.55 33.17 L15.45 31.08 L14.41 29.01 L13.42 26.91 L12.5 24.74 L11.64 22.48 L10.82 20.1 L10.04 17.61 L9.29 15.02 L8.59 12.31ZM6.37 13.6 L8.33 15.59 L10.13 17.68 L11.74 19.89 L13.13 22.23 L14.26 24.7 L15.11 27.29 L15.64 29.98 L15.84 32.75 L15.72 35.56 L15.27 38.36 L14.52 41.13 L12.77 43.8 L11.03 41.32 L9.99 38.92 L9.01 36.59 L8.1 34.29 L7.3 31.99 L6.63 29.65 L6.08 27.27 L5.67 24.81 L5.37 22.26 L5.19 19.63 L5.1 16.91 L5.11 14.12ZM2.63 14.78 L4.02 17.21 L5.25 19.67 L6.29 22.16 L7.12 24.69 L7.73 27.27 L8.08 29.87 L8.17 32.51 L8.01 35.17 L7.59 37.83 L6.94 40.49 L6.08 43.14 L4.34 45.75 L2.59 43.2 L1.63 40.68 L0.81 38.18 L0.13 35.68 L-0.37 33.18 L-0.68 30.67 L-0.8 28.13 L-0.72 25.57 L-0.46 22.96 L-0.02 20.33 L0.56 17.66 L1.28 14.96ZM-1.28 14.96 L-0.56 17.66 L0.02 20.33 L0.46 22.96 L0.72 25.57 L0.8 28.13 L0.68 30.67 L0.37 33.18 L-0.13 35.68 L-0.81 38.18 L-1.63 40.68 L-2.59 43.2 L-4.34 45.75 L-6.08 43.14 L-6.94 40.49 L-7.59 37.83 L-8.01 35.17 L-8.17 32.51 L-8.08 29.87 L-7.73 27.27 L-7.12 24.69 L-6.29 22.16 L-5.25 19.67 L-4.02 17.21 L-2.63 14.78ZM-5.11 14.12 L-5.1 16.91 L-5.19 19.63 L-5.37 22.26 L-5.67 24.81 L-6.08 27.27 L-6.63 29.65 L-7.3 31.99 L-8.1 34.29 L-9.01 36.59 L-9.99 38.92 L-11.03 41.32 L-12.77 43.8 L-14.52 41.13 L-15.27 38.36 L-15.72 35.56 L-15.84 32.75 L-15.64 29.98 L-15.11 27.29 L-14.26 24.7 L-13.13 22.23 L-11.74 19.89 L-10.13 17.68 L-8.33 15.59 L-6.37 13.6ZM-8.59 12.31 L-9.29 15.02 L-10.04 17.61 L-10.82 20.1 L-11.64 22.48 L-12.5 24.74 L-13.42 26.91 L-14.41 29.01 L-15.45 31.08 L-16.55 33.17 L-17.67 35.32 L-18.78 37.59 L-20.52 40.02 L-22.26 37.28 L-22.9 34.4 L-23.13 31.47 L-22.93 28.55 L-22.33 25.73 L-21.33 23.06 L-19.99 20.58 L-18.35 18.33 L-16.45 16.31 L-14.35 14.51 L-12.08 12.91 L-9.67 11.49ZM-11.49 9.67 L-12.85 12.1 L-14.2 14.43 L-15.52 16.64 L-16.8 18.74 L-18.05 20.73 L-19.29 22.63 L-20.53 24.47 L-21.78 26.28 L-23.03 28.15 L-24.27 30.12 L-25.43 32.26 L-27.17 34.62 L-28.9 31.82 L-29.42 28.83 L-29.4 25.79 L-28.86 22.81 L-27.84 19.99 L-26.38 17.42 L-24.55 15.15 L-22.44 13.22 L-20.11 11.63 L-17.61 10.36 L-15.01 9.36 L-12.31 8.59ZM-13.6 6.37 L-15.53 8.37 L-17.42 10.27 L-19.22 12.09 L-20.93 13.82 L-22.55 15.46 L-24.11 17.02 L-25.63 18.53 L-27.14 20.05 L-28.63 21.63 L-30.09 23.35 L-31.49 25.28 L-33.43 27.43 L-34.88 24.43 L-35.02 21.35 L-34.55 18.28 L-33.49 15.36 L-31.93 12.72 L-29.95 10.44 L-27.65 8.57 L-25.12 7.13 L-22.45 6.12 L-19.7 5.48 L-16.92 5.16 L-14.12 5.11ZM-14.78 2.63 L-17.17 4.06 L-19.49 5.42 L-21.7 6.71 L-23.79 7.93 L-25.78 9.09 L-27.7 10.2 L-29.56 11.27 L-31.4 12.34 L-33.25 13.48 L-35.11 14.76 L-36.96 16.27 L-39.39 17.84 L-40.01 14.57 L-39.35 11.56 L-38.1 8.72 L-36.33 6.17 L-34.14 4.02 L-31.63 2.33 L-28.92 1.12 L-26.11 0.39 L-23.27 0.1 L-20.45 0.19 L-17.68 0.61 L-14.96 1.28ZM-14.96 -1.28 L-17.64 -0.52 L-20.22 0.19 L-22.69 0.86 L-25.03 1.5 L-27.26 2.11 L-29.39 2.68 L-31.47 3.23 L-33.53 3.79 L-35.61 4.41 L-37.74 5.17 L-39.91 6.15 L-42.67 7.04 L-42.42 3.72 L-41 0.98 L-39.06 -1.44 L-36.69 -3.44 L-34.02 -4.95 L-31.16 -5.94 L-28.23 -6.4 L-25.32 -6.38 L-22.5 -5.93 L-19.8 -5.11 L-17.24 -3.99 L-14.78 -2.63ZM-14.12 -5.11 L-16.9 -5.07 L-19.58 -5.05 L-22.14 -5.04 L-24.57 -5.03 L-26.88 -5.02 L-29.08 -5.02 L-31.23 -5.02 L-33.37 -5.02 L-35.54 -4.95 L-37.79 -4.77 L-40.14 -4.39 L-43.03 -4.25 L-41.94 -7.39 L-39.86 -9.66 L-37.35 -11.5 L-34.55 -12.82 L-31.57 -13.59 L-28.56 -13.8 L-25.61 -13.49 L-22.81 -12.72 L-20.2 -11.55 L-17.81 -10.06 L-15.62 -8.32 L-13.6 -6.37Z" fill="#2E5BBA" stroke="#16181D" stroke-width="1.05" stroke-linejoin="round"/>
+<path d="M21.17 -8.29 L23.69 -8.87 L26.24 -9.25 L28.82 -9.41 L31.4 -9.3 L33.96 -8.92 L36.45 -8.23M22.6 -2.53 L25.18 -2.44 L27.74 -2.15 L30.27 -1.63 L32.74 -0.86 L35.11 0.18 L37.33 1.49M22.48 3.4 L24.95 4.16 L27.35 5.11 L29.66 6.26 L31.85 7.64 L33.87 9.26 L35.68 11.1M20.83 9.1 L23.02 10.48 L25.1 12.01 L27.03 13.73 L28.78 15.63 L30.32 17.71 L31.59 19.95M17.81 14.14 L19.62 15.98 L21.3 17.94 L22.83 20.02 L24.18 22.23 L25.32 24.54 L26.22 26.97M13.64 18.21 L14.99 20.4 L16.25 22.66 L17.38 24.98 L18.37 27.37 L19.19 29.82 L19.84 32.32M8.56 21.08 L9.4 23.52 L10.17 25.98 L10.87 28.47 L11.47 30.98 L11.97 33.52 L12.36 36.07M2.92 22.56 L3.2 25.13 L3.46 27.7 L3.7 30.27 L3.9 32.85 L4.07 35.43 L4.2 38.01M-2.92 22.56 L-3.2 25.13 L-3.46 27.7 L-3.7 30.27 L-3.9 32.85 L-4.07 35.43 L-4.2 38.01M-8.56 21.08 L-9.4 23.52 L-10.17 25.98 L-10.87 28.47 L-11.47 30.98 L-11.97 33.52 L-12.36 36.07M-13.64 18.21 L-14.99 20.4 L-16.25 22.66 L-17.38 24.98 L-18.37 27.37 L-19.19 29.82 L-19.84 32.32M-17.81 14.14 L-19.62 15.98 L-21.3 17.94 L-22.83 20.02 L-24.18 22.23 L-25.32 24.54 L-26.22 26.97M-20.83 9.1 L-23.02 10.48 L-25.1 12.01 L-27.03 13.73 L-28.78 15.63 L-30.32 17.71 L-31.59 19.95M-22.48 3.4 L-24.95 4.16 L-27.35 5.11 L-29.66 6.26 L-31.85 7.64 L-33.87 9.26 L-35.68 11.1M-22.6 -2.53 L-25.18 -2.44 L-27.74 -2.15 L-30.27 -1.63 L-32.74 -0.86 L-35.11 0.18 L-37.33 1.49M-21.17 -8.29 L-23.69 -8.87 L-26.24 -9.25 L-28.82 -9.41 L-31.4 -9.3 L-33.96 -8.92 L-36.45 -8.23" fill="none" stroke="#8FA6E0" stroke-width=".7" stroke-linecap="round"/>
+<path d="M-12.34 -8.56 L-15.75 -9.73 L-19.05 -11.04 L-22.24 -12.49 L-25.31 -14.11 L-28.24 -15.9 L-31.03 -17.88 L-33.66 -20.06 L-36.15 -22.43 L-38.5 -24.97 L-40.73 -27.68 L-42.85 -30.53 L-44.43 -34.09 L-40.58 -33.49 L-37.28 -32.18 L-34.09 -30.73 L-31.02 -29.12 L-28.09 -27.32 L-25.3 -25.34 L-22.67 -23.16 L-20.18 -20.8 L-17.82 -18.25 L-15.59 -15.54 L-13.47 -12.69 L-11.46 -9.71ZM-9.71 -11.46 L-12.69 -13.47 L-15.54 -15.59 L-18.25 -17.82 L-20.8 -20.18 L-23.16 -22.67 L-25.34 -25.3 L-27.32 -28.09 L-29.12 -31.02 L-30.73 -34.09 L-32.18 -37.28 L-33.49 -40.58 L-34.09 -44.43 L-30.53 -42.85 L-27.68 -40.73 L-24.97 -38.5 L-22.43 -36.15 L-20.06 -33.66 L-17.88 -31.03 L-15.9 -28.24 L-14.11 -25.31 L-12.49 -22.24 L-11.04 -19.05 L-9.73 -15.75 L-8.56 -12.34ZM-6.41 -13.58 L-8.77 -16.3 L-10.98 -19.09 L-13.01 -21.94 L-14.87 -24.87 L-16.51 -27.89 L-17.93 -31 L-19.12 -34.2 L-20.1 -37.5 L-20.86 -40.88 L-21.44 -44.34 L-21.85 -47.87 L-21.43 -51.74 L-18.4 -49.29 L-16.19 -46.51 L-14.16 -43.66 L-12.31 -40.72 L-10.66 -37.71 L-9.24 -34.6 L-8.05 -31.39 L-7.08 -28.1 L-6.31 -24.72 L-5.73 -21.26 L-5.32 -17.73 L-5.07 -14.14ZM-2.68 -14.78 L-4.25 -18.02 L-5.66 -21.28 L-6.89 -24.56 L-7.92 -27.87 L-8.73 -31.21 L-9.29 -34.58 L-9.62 -37.99 L-9.71 -41.42 L-9.57 -44.89 L-9.23 -48.38 L-8.71 -51.89 L-7.31 -55.52 L-5.01 -52.38 L-3.6 -49.12 L-2.37 -45.83 L-1.35 -42.52 L-0.54 -39.18 L0.03 -35.81 L0.35 -32.41 L0.44 -28.97 L0.3 -25.51 L-0.04 -22.02 L-0.55 -18.5 L-1.24 -14.97ZM1.24 -14.97 L0.55 -18.5 L0.04 -22.02 L-0.3 -25.51 L-0.44 -28.97 L-0.35 -32.41 L-0.03 -35.81 L0.54 -39.18 L1.35 -42.52 L2.37 -45.83 L3.6 -49.12 L5.01 -52.38 L7.31 -55.52 L8.71 -51.89 L9.23 -48.38 L9.57 -44.89 L9.71 -41.42 L9.62 -37.99 L9.29 -34.58 L8.73 -31.21 L7.92 -27.87 L6.89 -24.56 L5.66 -21.28 L4.25 -18.02 L2.68 -14.78ZM5.07 -14.14 L5.32 -17.73 L5.73 -21.26 L6.31 -24.72 L7.08 -28.1 L8.05 -31.39 L9.24 -34.6 L10.66 -37.71 L12.31 -40.72 L14.16 -43.66 L16.19 -46.51 L18.4 -49.29 L21.43 -51.74 L21.85 -47.87 L21.44 -44.34 L20.86 -40.88 L20.1 -37.5 L19.12 -34.2 L17.93 -31 L16.51 -27.89 L14.87 -24.87 L13.01 -21.94 L10.98 -19.09 L8.77 -16.3 L6.41 -13.58ZM8.56 -12.34 L9.73 -15.75 L11.04 -19.05 L12.49 -22.24 L14.11 -25.31 L15.9 -28.24 L17.88 -31.03 L20.06 -33.66 L22.43 -36.15 L24.97 -38.5 L27.68 -40.73 L30.53 -42.85 L34.09 -44.43 L33.49 -40.58 L32.18 -37.28 L30.73 -34.09 L29.12 -31.02 L27.32 -28.09 L25.34 -25.3 L23.16 -22.67 L20.8 -20.18 L18.25 -17.82 L15.54 -15.59 L12.69 -13.47 L9.71 -11.46ZM11.46 -9.71 L13.47 -12.69 L15.59 -15.54 L17.82 -18.25 L20.18 -20.8 L22.67 -23.16 L25.3 -25.34 L28.09 -27.32 L31.02 -29.12 L34.09 -30.73 L37.28 -32.18 L40.58 -33.49 L44.43 -34.09 L42.85 -30.53 L40.73 -27.68 L38.5 -24.97 L36.15 -22.43 L33.66 -20.06 L31.03 -17.88 L28.24 -15.9 L25.31 -14.11 L22.24 -12.49 L19.05 -11.04 L15.75 -9.73 L12.34 -8.56Z" fill="#EE4B36" stroke="#16181D" stroke-width="1.05" stroke-linejoin="round"/>
+<path d="M-20.03 -15.37 L-22.74 -17.45 L-25.45 -19.53 L-28.16 -21.61 L-30.87 -23.69 L-33.59 -25.77 L-36.3 -27.85M-15.37 -20.03 L-17.45 -22.74 L-19.53 -25.45 L-21.61 -28.16 L-23.69 -30.87 L-25.77 -33.59 L-27.85 -36.3M-9.66 -23.33 L-10.97 -26.48 L-12.28 -29.64 L-13.59 -32.8 L-14.89 -35.95 L-16.2 -39.11 L-17.51 -42.27M-3.3 -25.03 L-3.74 -28.42 L-4.19 -31.81 L-4.63 -35.2 L-5.08 -38.58 L-5.53 -41.97 L-5.97 -45.36M3.3 -25.03 L3.74 -28.42 L4.19 -31.81 L4.63 -35.2 L5.08 -38.58 L5.53 -41.97 L5.97 -45.36M9.66 -23.33 L10.97 -26.48 L12.28 -29.64 L13.59 -32.8 L14.89 -35.95 L16.2 -39.11 L17.51 -42.27M15.37 -20.03 L17.45 -22.74 L19.53 -25.45 L21.61 -28.16 L23.69 -30.87 L25.77 -33.59 L27.85 -36.3M20.03 -15.37 L22.74 -17.45 L25.45 -19.53 L28.16 -21.61 L30.87 -23.69 L33.59 -25.77 L36.3 -27.85" fill="none" stroke="#F6B3A6" stroke-width=".7" stroke-linecap="round"/>
+<path d="M0 -11.8 L3.15 -9.7 L6.94 -9.55 L8.25 -6 L11.22 -3.65 L10.2 0 L11.22 3.65 L8.25 6 L6.94 9.55 L3.15 9.7 L0 11.8 L-3.15 9.7 L-6.94 9.55 L-8.25 6 L-11.22 3.65 L-10.2 0 L-11.22 -3.65 L-8.25 -6 L-6.94 -9.55 L-3.15 -9.7Z" fill="#F6C744" stroke="#16181D" stroke-width="1.1" stroke-linejoin="round"/>
+<circle r="6.4" fill="#D99A1C" stroke="#16181D" stroke-width=".8"/><circle r="2.2" fill="#F6C744"/>
+</svg>
+          <div class="facts" role="list">
+            <div class="f fu" role="listitem" data-fact><span class="up" data-num><span class="lb">오른 곳<span class="pc" aria-hidden="true"><svg viewBox="0 0 12 18"><path d="M6 17 C 1 12 1.6 5 6 1 C 10.4 5 11 12 6 17 Z" fill="#EE4B36" stroke="#F7F3E8" stroke-width="1"/></svg>8</span></span><span class="v">766</span></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></div>
+            <div class="f fd" role="listitem" data-fact><span class="dn" data-num><span class="lb">내린 곳<span class="pc" aria-hidden="true"><svg viewBox="0 0 12 18"><path d="M6 1 C 1 6 1.6 13 6 17 C 10.4 13 11 6 6 1 Z" fill="#2E5BBA" stroke="#F7F3E8" stroke-width="1"/></svg>16</span></span><span class="v">1,632</span></span><button type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li class="st st3">
+      <span class="no" aria-hidden="true">3</span>
+      <div class="row"><span class="lbl">한 달 뒤</span><p class="say serif" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">그날 정한 대로 했어?</p></div>
+    </li>
+  </ol>
+
+  <nav class="gdr" data-w="gdr" aria-label="꽃돌이 칸">
+    <a href="#/why">꽃돌이</a><i></i>
+    <a href="#/cal">달력</a><i></i>
+    <a href="#/cond">조건</a><i></i>
+    <a href="#/lead">대장주</a>
+  </nav>
+
+  <details class="all">
+    <summary data-w="all">전부 보기 ⌄</summary>
+    <ul>
+      <li><a href="#/why" data-num>내 기록 · <b>0</b>번 멈춤 · <b>0</b>번 약속</a></li>
+      <li><a href="#/watch">관심</a></li>
+      <li><a href="#/hold">보유</a></li>
+      <li><a href="#/f/rise">오르는 업종 · 반도체 검사·측정 +4.73%</a></li>
+      <li><a href="#/surge">급등</a></li>
+      <li class="ess23"><p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p><p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p></li>
+    </ul>
+  </details>
+
+  <form class="find" data-w="find" onsubmit="return false"><div class="bar">
+    <input type="search" placeholder="친구야, 왜 사? 회사 이름" aria-label="친구야, 왜 사? 회사 이름">
+    <button type="submit" data-path="q1" aria-label="열한 질문 시작">왜?</button>
+  </div></form>
+</main>
+<nav class="tabs">
+  <a href="#/" aria-current="page">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why">매매일지</a>
+  <a href="#/watch">관심</a>
+  <a href="#/hold">보유종목</a>
+</nav>
+<script>
+document.querySelectorAll('[data-fact] button').forEach(b=>b.addEventListener('click',()=>b.closest('[data-fact]').classList.toggle('open')));
+</script>
+</body>
+</html>
