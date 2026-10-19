@@ -742,7 +742,7 @@ async function checkCard(p, n, {msg, kind = 's', ref = null}, tag) {
   if (/[%％]|퍼센트|프로|1등|1위|급등/.test(blob.replace(/%2F|%3F|%23|%3D|%26|%[0-9A-F]{2}/g, '')) || W.gainHits(c.content?.title + '\n' + c.content?.description).length) fail('카드에 수익 숫자 · 퍼센트 · 1등 · 급등', `${tag} 「${c.content?.description}」`);
   if (!String(c.content?.imageUrl ?? '').startsWith(base + '/')) fail('카드 그림 주소(우리 사이트 것)', `${tag} 「${c.content?.imageUrl}」`);
   else { const r = await fetch(c.content.imageUrl).catch(() => null); if (!r?.ok) fail('카드 그림 파일을 못 받음', `${tag} ${c.content.imageUrl}`); }
-  const bs = c.buttons ?? [];
+  const bs = c.buttons ?? []; // 가입이 켜진 판(SIGNUP_ON)의 카드 단추는 「카톡 켜짐 · 카드」 장면(kakaoCard)이 따로 맞댐
   if (bs.length !== 2) fail('카드 단추는 정확히 둘', `${tag} ${bs.length}개`);
   if (JSON.stringify(bs.map(b => b.title)) !== JSON.stringify([BTN_START, BTN_SEE])) fail('카드 단추 이름 · 차례(원문 [2] 2)', `${tag} ${JSON.stringify(bs.map(b => b.title))}`);
   const w0 = bs[0]?.link?.webUrl ?? '', u0 = (() => { try { return new URL(w0); } catch { return null; } })();
@@ -1033,7 +1033,7 @@ function kkCard(c, msg, half, tag) {
   const want = [msg, half, md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원'].filter(Boolean).join('\n');
   if (c.content?.description !== want) fail('카드 글 = 보낸 사람 말 + (반값 한 줄) + 보낸 날 값([7] 5 · [6] 8)', `${tag} 「${c.content?.description}」 ≠ 「${want}」`);
   const bs = c.buttons ?? [];
-  if (bs.length !== 1 || bs[0]?.title !== OPEN_BTN || bs[0]?.link?.webUrl !== see || bs[0]?.link?.mobileWebUrl !== see) fail('가입이 꺼졌을 때 카드 단추 = 「열어 보기」 하나 · 보낸 주소([7] 5)', `${tag} ${JSON.stringify(bs).slice(0, 200)}`);
+  if (!SIGNUP_ON && (bs.length !== 1 || bs[0]?.title !== OPEN_BTN || bs[0]?.link?.webUrl !== see || bs[0]?.link?.mobileWebUrl !== see)) fail('가입이 꺼졌을 때 카드 단추 = 「열어 보기」 하나 · 보낸 주소([7] 5)', `${tag} ${JSON.stringify(bs).slice(0, 200)}`);
   if (/[%％]|퍼센트|1등|1위|급등/.test(JSON.stringify(c).replace(/%[0-9A-F]{2}/g, '')) || W.gainHits(c.content?.title + '\n' + c.content?.description).length) fail('카드에 수익 숫자 · 퍼센트 · 1등 · 급등', `${tag} 「${c.content?.description}」`);
   bump('보낸 카드');
 }
@@ -1063,8 +1063,8 @@ async function kkButton(W_, H_) {
     if (s.ta !== '') fail('글상자 글칸이 처음부터 차 있음(칠 것 0 — 빠른 말 · 기본 말로 감)', `${tag} 「${s.ta}」`);
     try { await p.waitForSelector('.ps-dlg .ps-kk:not([hidden])', {timeout: 8000}); } catch { fail('공유가 켜졌는데 카드 미리보기가 안 나옴', tag); }
     const k = await p.evaluate(READK);
-    if (k && JSON.stringify(k.btns) !== JSON.stringify([OPEN_BTN])) fail('가입이 꺼졌을 때 카드 미리보기 단추 = 「열어 보기」 하나([7] 5)', `${tag} ${JSON.stringify(k.btns)}`);
-    if (k && new RegExp(BTN_START + '|' + BTN_SEE).test(k.text)) fail('가입이 꺼졌는데 가입 단추 · 안내가 보임([7] 5)', tag);
+    if (k && !SIGNUP_ON && JSON.stringify(k.btns) !== JSON.stringify([OPEN_BTN])) fail('가입이 꺼졌을 때 카드 미리보기 단추 = 「열어 보기」 하나([7] 5)', `${tag} ${JSON.stringify(k.btns)}`);
+    if (k && !SIGNUP_ON && new RegExp(BTN_START + '|' + BTN_SEE).test(k.text)) fail('가입이 꺼졌는데 가입 단추 · 안내가 보임([7] 5)', tag);
     await layout(p, DLG, tag + ' 글상자');
     // 누름 2 — 빠른 말(손가락) = 바로 카톡 친구 고르기(가짜 도구 sendDefault)
     await sendQuick(p, 0, tag, {tap: true}); taps++;
