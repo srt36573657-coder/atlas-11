@@ -203,3 +203,4 @@
 {"at":"2026-10-19T19:01:49.427Z","kst":"2026-10-20 04:01","slot":null,"result":"그대로","served":"rolled","asOf":"2026-10-19","base":"2026-09-15","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-10-19T20:01:07.413Z","kst":"2026-10-20 05:01","slot":null,"result":"그대로","served":"rolled","asOf":"2026-10-19","base":"2026-09-15","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-10-19T21:00:59.251Z","kst":"2026-10-20 06:00","slot":null,"result":"그대로","served":"rolled","asOf":"2026-10-19","base":"2026-09-15","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
+{"at":"2026-10-19T21:51:42.739Z","kst":"2026-10-20 06:51","slot":null,"result":"그대로","served":"rolled","asOf":"2026-10-19","base":"2026-09-15","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
