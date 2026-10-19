@@ -6,7 +6,7 @@
 .th-back span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .th-no { display: inline-flex; align-items: baseline; gap: var(--sp-1); flex: none; margin: 0; color: var(--sub); font-size: var(--fs-1); text-align: right; }
 .th-no b { color: var(--ink); font-weight: 700; }
-.th-ch { color: var(--up); font-weight: 700; }
+.th-ch { color: var(--gold); font-weight: 700; } /* 빨강(오름)은 숫자에만 — check_white ④ */
 .th-hd { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); margin: var(--sp-1) 0 var(--sp-2); }
 .th-h1 { flex: 1; min-width: 0; margin: 0; font-size: var(--fs-5); font-weight: 800; line-height: 1.2; letter-spacing: -.02em; word-break: keep-all; }
 .th-art { flex: none; width: 96px; height: 77px; }
@@ -50,7 +50,7 @@
 .th-rn { overflow: hidden; font-size: var(--fs-4); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 .th-meta { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; color: #BDBDBD; font-size: var(--fs-1); white-space: nowrap; }
 .th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #6E6E6E; border-radius: 8px; color: var(--ink); font-style: normal; }
-.th-tg.new { border-color: var(--up); color: var(--up); }
+.th-tg.new { border-color: var(--up); color: var(--ink); }
 .th-bar { flex: 0 1 96px; min-width: 32px; height: 8px; }
 .th-bar .th-bar0, .th-rbar .th-bar0 { fill: #2A2A2A; }
 .th-bar .th-bar1, .th-rbar .th-bar1 { fill: var(--up); }
@@ -77,7 +77,7 @@
 .th-st { display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .th-st b { font-size: var(--fs-3); font-weight: 700; }
 .th-st span, .th-st .th-ckd { color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
-.th-z.S { color: var(--up); } .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #BDBDBD; }
+.th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #BDBDBD; }
 .th-ck { display: grid; grid-template-columns: 32px 1fr; align-items: center; column-gap: var(--sp-2); min-height: 64px; border-bottom: 1px solid #2A2A2A; }
 .th-ck > b { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: var(--fs-2); text-align: center; }
 .th-ck > b.y { background: var(--up); color: #080808; }
@@ -90,7 +90,7 @@
 .th-li, .th-cor { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #2A2A2A; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
 .th-li > span:first-child, .th-rn2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .th-li b, .th-cor b { font-weight: 700; text-align: right; }
-.th-li.th-me > span:first-child { color: var(--up); font-weight: 700; }
+.th-li.th-me > span:first-child { color: var(--gold); font-weight: 700; }
 .th-sp { display: block; }
 .th-sp .th-spl { fill: none; stroke-width: 2; } .th-sp .th-spl.up, .th-sp .th-spd.up { stroke: var(--up); fill: none; } .th-sp .th-spd.up { fill: var(--up); } .th-sp .th-spl.dn { stroke: var(--down); } .th-sp .th-spd.dn { fill: var(--down); stroke: none; }
 .th-bars { display: block; margin: var(--sp-1) 0 0; }
@@ -117,3 +117,4 @@
 /* 있는 쪽(관심 · 매매일지 · 보유종목 · 가짜 돈 · 진화) 맨 아래 「다음」 한 줄 — app.js flowFoot */
 .th-foot { margin: var(--sp-3) var(--sp-2) var(--sp-2); }
 .th-foot .th-next { margin: 0; }
+.th-next.th-one { justify-content: center; padding: 0 var(--sp-2); font-size: var(--fs-3); font-weight: 800; text-align: center; }

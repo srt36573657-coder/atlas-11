@@ -42,6 +42,8 @@ function pgBar(no, prev) {
 export function nextBtn(title, href, lead = '다음') {
   return h('a', {class: 'th-next', href}, h('span', {class: 'th-nx'}, h('small', {text: lead}), h('b', {text: title})), h('i', {'aria-hidden': 'true', text: '›'}));
 }
+/** 있는 쪽 맨 아래 「다음」 한 줄(app.js flowFoot) — 가운데 맞춘 글 한 덩이(그 쪽 「글 시작 왼쪽 줄 셋」 규칙 [10] 7 에 줄을 더하지 않음) */
+export function footBtn(title, href) { return h('a', {class: 'th-next th-one', href}, h('span', {text: `다음 · ${title} ›`})); }
 const safe = () => h('p', {class: 'th-safe', text: '돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'});
 const say = t => h('p', {class: 'th-say'}, h('span', {class: 'th-who', text: '돌이'}), h('span', {text: t}));
 const hd = (t, art) => h('div', {class: 'th-hd'}, h('h1', {class: 'th-h1', text: t}), h('img', {class: 'th-art', src: '/media/stone/' + art + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
@@ -265,7 +267,7 @@ async function pCo(code, sub) {
       h('div', {class: 'th-box'}, h('b', {text: '업종이 꽃이 될지'}), h('span', {text: R?.real?.p != null ? `진짜 싹도 100번 가운데 ${100 - Math.round(R.real.p)}번은 한 달 안에 꽃 선을 못 넘었어요.` : '싹 자리에서 다시 잠잠으로 가는 일도 많아요.'}))];
   } else if (sub === 'keep') {
     art = 'me'; sayT = '담아 두면 관심 칸에서 다시 봐요.';
-    body = [h('h2', {class: 'th-ans'}, h('em', {text: c.n})), nx().laterBtn(code, c.n, 'th-keep'), h('p', {class: 'th-sub', text: '사기 전에는 열한 질문을 먼저 해요.'})];
+    body = [h('h2', {class: 'th-ans', text: c.n}), nx().laterBtn(code, c.n, 'th-keep'), h('p', {class: 'th-sub', text: '사기 전에는 열한 질문을 먼저 해요.'})];
   }
   return {title: CO_SUB[k][1] ?? c.n, nodes: [shell(no, CO_SUB[k][1] ?? c.n, art, sayT, prev, next, [...body, asOf(TH)])]};
 }

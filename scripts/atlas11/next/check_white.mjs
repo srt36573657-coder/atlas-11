@@ -11,6 +11,9 @@
 //     [data-path~="q1"] 첫 질문 길(누를 것 — 찾기 칸에 「삼성전자」를 친 뒤 뜬 회사 줄에도 붙임) · [data-num] 숫자 줄(「?」는 맨 앞 모름 · 오래됨 표시뿐)
 //   잣대
 //     ① 390 × 844 · 처음 온 기기와 다시 온 기기 모두: 바탕 #FFFFFF · 다섯 칸이 아래 단추 위 한 화면 안 · 320 × 568 은 본질 카드와 찾기 칸까지
+//        ↳ 2026-10-19 다시 겨눔(사장님 16:06 「될듯 한걸 찾아주는거야 이게 돌이에 본질이야 … 이 본질이 중이이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」 · 원칙 85):
+//          맨 위 = 테마 시계(section.th-home) — 시계 그림이 한 화면 안(두 크기 모두) · 다섯 칸은 그 아래에 다 있어야 함 · 엄지 자리(찾기 칸 · 바로 가기 · 전부 보기)는 한 화면 안 그대로
+//          ② 글자 수 기준은 예전 칸들만 셈(테마 시계 칸 밖) · 테마 시계 칸은 따로 THEME_CHARS 자 아래
 //        첫 화면 원칙: 오르는 것(급등 · 오르는 업종)은 처음 화면에 안 보이고 누름 2번에 닿음 · 「전부 보기」는 한 줄에 하나씩(네모 칸 깔기 · 바둑판 0)
 //        시황 [data-w="news"] = 오른 곳(.up)과 내린 곳(.dn)을 함께 · 사실마다([data-fact]) 「왜 그럴까?」 단추 · 한 달 된 기록이 있으면 「그날 정한 대로 했어?」 한 줄
 //     ② 글자 수 = 다시 온 기기 지금의 60% 이하 · 처음 온 기기 지금의 90% 이하(기준 = white-baseline.json)
@@ -36,7 +39,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const BASEFILE = path.join(ROOT, 'config/atlas11/white-baseline.json');
 /* 돌 판(사장님 2026-10-19(싱가포르) 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3) — 바탕 먹 #080808 · 글 흰색 · 돌 그림(/media/stone/)은 허락한 그림(입체 · 그림자는 그 그림 파일 안에만 · 10:12 「다써」) */
 const BG = '#080808', INK = '#FFFFFF';
-const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'];
+const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'], THUMB = ['find', 'gdr', 'all'], THEME_CHARS = 200; // THUMB = 엄지 자리(한 화면 안) · THEME_CHARS = 테마 시계 칸 글자 한도(2026-10-19 잰 값 172자)
 const TABS = ['오늘 장', '시황', '매매일지', '관심', '보유종목'];
 const R = {schema: 'golttori-check-white-1', at: new Date().toISOString(), base: MOCK ? null : base, mock: MOCK, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const fail = (what, why) => { R.counts.fail++; R.fails.push(`${what} — ${why}`); console.log('실패 ' + what + ' — ' + why); };
@@ -58,7 +61,9 @@ const MEASURE = () => {
   const out = {bodyLum: lum(bgOf(document.body)), chars: 0, blocks: {}, tabsTop: tabs ? tabs.getBoundingClientRect().top : innerHeight, lowContrast: [], uiContrast: [], tiny: [], small: [], ruin: [], says: [], numQ: [], tabs: [], jh: !!document.querySelector('#jhBtn'), whyTab: !!document.querySelector('.tabs a[href="#/why"]'), ess: [1, 2, 3].map(i => !!document.querySelector(`[data-ess="${i}"]`))};
   for (const k of ['ess', 'find', 'today', 'gdr', 'all']) { const e = document.querySelector(`[data-w="${k}"]`); out.blocks[k] = e && vis(e) ? Math.round(e.getBoundingClientRect().bottom) : null; }
   out.tabs = tabs ? [...tabs.querySelectorAll('a')].map(a => a.textContent.trim()) : [];
-  for (const el of root.querySelectorAll('*')) if (vis(el)) out.chars += (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈)
+  out.themeChars = 0;
+  for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.closest('section.th-home')) out.themeChars += n; else out.chars += n; } // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈) · 테마 시계 칸은 따로(2026-10-19)
+  { const tb = document.querySelector('#view section.th-home'), tc = tb?.querySelector('svg.th-clock'); out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), clockBottom: tc ? Math.round(tc.getBoundingClientRect().bottom) : null} : null; }
   for (const el of all) {
     if (!vis(el)) continue;
     const cs = getComputedStyle(el), r = el.getBoundingClientRect(), t = ownText(el), tag = el.tagName.toLowerCase(), name = `${tag}.${String(el.className?.baseVal ?? el.className).split(' ')[0]}`;
@@ -104,7 +109,10 @@ function judge(m, tag, B) {
   check(!m.grid.length, `${tag} 바둑판 0`, m.grid.slice(0, 3).join(' | '));
   check(!!m.news && m.news.up && m.news.dn, `${tag} 시황 = 오른 곳과 내린 곳 함께`, m.news ? `오름 ${m.news.up} · 내림 ${m.news.dn}` : '[data-w="news"] 가 없음');
   check(!!m.news && m.news.facts > 0 && m.news.why === m.news.facts, `${tag} 시황 사실마다 「왜 그럴까?」 단추`, m.news ? `사실 ${m.news.facts} · 단추 ${m.news.why}` : '');
-  for (const k of BLOCKS) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
+  for (const k of BLOCKS) check(m.blocks[k] != null, `${tag} ① 칸 ${k}`, '칸이 없음'); // 다섯 칸은 테마 시계 아래에 그대로(2026-10-19 16:54)
+  for (const k of THUMB) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 엄지 자리 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
+  check(!!m.theme && m.theme.clockBottom != null && m.theme.clockBottom <= m.tabsTop + 0.5, `${tag} ① 테마 시계 그림 한 화면 안`, m.theme ? `그림 아래 ${m.theme.clockBottom} > 아래 단추 ${Math.round(m.tabsTop)}` : '테마 시계 칸(section.th-home)이 없음');
+  check(m.themeChars <= THEME_CHARS, `${tag} ② 테마 시계 칸 글자 수`, `${m.themeChars}자 > ${THEME_CHARS}자`);
   if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'})`); }
   check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
   check(!m.uiContrast.length, `${tag} ② 단추 테두리 대비 3`, `${m.uiContrast.length}곳 · ${m.uiContrast.slice(0, 3).join(' · ')}`);
@@ -164,7 +172,8 @@ try {
     // ① 320 × 568 — 본질 카드와 찾기 칸까지 한 화면
     {
       const ctx = await ctxOf(false, {viewport: {width: 320, height: 568}}), {p} = await open(ctx, HOME), m = await p.evaluate(MEASURE);
-      for (const k of ['ess', 'find']) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `320 × 568 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
+      for (const k of ['find']) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `320 × 568 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`); // 본질 카드는 테마 시계 아래로(2026-10-19 16:54 · 원칙 85)
+      check(!!m.theme && m.theme.clockBottom != null && m.theme.clockBottom <= m.tabsTop + 0.5, '320 × 568 테마 시계 그림 한 화면 안', m.theme ? `그림 아래 ${m.theme.clockBottom} > 아래 단추 ${Math.round(m.tabsTop)}` : '칸 없음');
       check(!m.small.length, '320 × 568 누르는 크기 48', m.small.slice(0, 3).join(' · '));
       check(await p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1), '320 × 568 옆 넘침 0', '');
       await ctx.close();

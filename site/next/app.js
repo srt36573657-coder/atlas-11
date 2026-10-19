@@ -1121,7 +1121,7 @@ if (parse(location.hash || '#/').k !== '') { fontsOn = true; fontsAdd(); }
 const FLOW_NEXT = {sub: ['매매일지', '#/why'], why: ['보유종목', '#/me'], me: ['가짜 돈 연습', '#/game'], game: ['진화', '#/jinhwa'], jinhwa: ['오늘 정리', '#/t/today']};
 function flowFoot(k, a, root, my) {
   const n = a ? null : FLOW_NEXT[k]; if (!n) return;
-  mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); if (my === seq && root.isConnected && !root.querySelector('.th-foot')) root.append(h('nav', {class: 'th-foot', 'aria-label': '다음 쪽'}, m.nextBtn(n[0], n[1]))); }).catch(() => {});
+  mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); if (my === seq && root.isConnected && !root.querySelector('.th-foot')) root.append(h('nav', {class: 'th-foot', 'aria-label': '다음 쪽'}, m.footBtn(n[0], n[1]))); }).catch(() => {});
 }
 let seq = 0, curHash = null;
 const scrollMem = new Map();

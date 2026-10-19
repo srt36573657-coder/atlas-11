@@ -8724,6 +8724,7 @@
   "테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.": "Could not draw the theme clock. Please open it again shortly.",
   "이 회사는 테마 시계의 앞선 회사 줄에 없어요.": "This company is not in the theme clock's leading list.",
   "회사 자세히 보기": "Company details",
-  "돌이": "Dori"
+  "돌이": "Dori",
+  "다음 · {e} ›": "Next · {e} ›"
  }
 }

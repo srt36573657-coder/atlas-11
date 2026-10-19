@@ -9,13 +9,14 @@
 //   ⑥ 자료를 못 받으면 「?」 한 줄(첫 화면 · 쪽) — 화면이 죽지 않음
 //   실패가 하나라도 있으면 끝 코드 1
 import fs from 'node:fs/promises';
+import fss from 'node:fs';
 import {createRequire} from 'node:module';
 import {screenHits} from '../../../site/next/words.js';
 import {pp} from '../../../site/next/theme-engine.js';
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
-const require = createRequire(arg('--pw', '/opt/node-tools/'));
+const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')).replace(/\/?$/, '/')); // check_white 와 같은 길(깃허브 실행기는 PW_DIR)
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), OUT = arg('--out', null), PAGE = base + '/next/';
 const fails = [], counts = {}, t0 = Date.now();
@@ -37,7 +38,8 @@ bump('자료');
 const TOP = TH.order.S[0] ?? TH.order.B[0] ?? TH.inds[0].n, LEAD = TM.inds[TOP]?.top?.[0];
 const I1 = ind.get(TOP);
 
-const browser = await chromium.launch({executablePath: process.env.PW_CHROMIUM || '/opt/pw-browsers/chromium'});
+const EXE = process.env.PW_CHROMIUM || '/opt/pw-browsers/chromium'; // 이 방은 미리 깔린 크로미움 · 깃허브 실행기는 playwright 가 깐 것(check_white 와 같음)
+const browser = await chromium.launch({...(fss.existsSync(EXE) ? {executablePath: EXE} : {}), args: ['--disable-dev-shm-usage']});
 async function open(hash, {w = 390, h = 844, routes = null} = {}) {
   const ctx = await browser.newContext({viewport: {width: w, height: h}, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
   if (routes) for (const [pat, fn] of routes) await ctx.route(pat, fn);
@@ -65,7 +67,7 @@ async function look(where, p) {
   if (p._errs.length) fail('화면 오류', where + ' ' + p._errs.slice(0, 2).join(' | '));
   return s;
 }
-const nextOf = p => p.evaluate(() => { const a = [...document.querySelectorAll('#view a.th-next')]; return {n: a.length, href: a.at(-1)?.getAttribute('href') ?? null, title: a.at(-1)?.querySelector('b')?.textContent ?? null}; });
+const nextOf = p => p.evaluate(() => { const a = [...document.querySelectorAll('#view a.th-next')]; return {n: a.length, href: a.at(-1)?.getAttribute('href') ?? null, title: a.at(-1)?.querySelector('b')?.textContent ?? a.at(-1)?.textContent ?? null}; });
 const prevOf = p => p.evaluate(() => document.querySelector('#view a.th-back')?.getAttribute('href') ?? null);
 const noOf = p => p.evaluate(() => document.querySelector('#view .th-no b')?.textContent ?? null);
 
