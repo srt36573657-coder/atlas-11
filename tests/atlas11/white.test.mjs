@@ -14,7 +14,7 @@ const CHECK = 'scripts/atlas11/next/check_white.mjs', GATE = 'scripts/atlas11/ne
 test('검사 파일이 있고 잣대를 품음', () => {
   const s = read(CHECK);
   for (const k of ['ess', 'find', 'today', 'gdr', 'all']) assert.match(s, new RegExp(`'${k}'`), `칸 ${k}`);
-  for (const c of ['#FFFFFF', '#16181D']) assert.ok(s.includes(c), `색 ${c}`);
+  for (const c of ['#080808', '#FFFFFF']) assert.ok(s.includes(c), `색 ${c}`); // 돌 판(2026-10-19 10:31) 바탕 · 글
   for (const w of ['390', '844', '320', '568', '47.5', '16.95', '2500', '200', '0.1', '4.5', '0.6', '0.9']) assert.ok(s.includes(w), `숫자 ${w}`);
   for (const w of ['오늘 장', '시황', '매매일지', '관심', '보유종목', 'jhBtn', 'data-ess', '#/why', 'data-say', 'data-fact', '왜 그럴까\\?', '그날 정한 대로 했어\\?', 'q1', '급등', '그림자', '입체', '작은 빨간 점'])
     assert.ok(s.includes(w), `잣대 ${w}`);
@@ -53,7 +53,7 @@ test('정적 문이 망치는 길 · 옛 화면 남김을 잡음(가짜 폴더)'
     const d = path.join(tmp, 'dist'), n = path.join(d, 'next'); fs.mkdirSync(n, {recursive: true});
     const nav = '<nav class="tabs"><a href="#/">오늘 장</a><a href="#/m">시황</a><a href="#/why">매매일지</a><a href="#/s">관심</a><a href="#/me">보유종목</a></nav>';
     fs.writeFileSync(path.join(n, 'index.html'), `<link rel="stylesheet" href="/next/home.css">${nav}`);
-    fs.writeFileSync(path.join(n, 'app.css'), 'html.white{--bg:#FFFFFF;--ink:#16181D;--gold:#8A6516;--up:#D0202E;--down:#1E5BD8}');
+    fs.writeFileSync(path.join(n, 'app.css'), 'html.white{--bg:#080808;--ink:#FFFFFF;--gold:#F9D21C;--up:#FF6A3D;--down:#6C86FF}');
     fs.writeFileSync(path.join(n, 'home.css'), '.x{color:red}');
     fs.writeFileSync(path.join(n, 'app.js'), `const a = "jhBtn data-ess data-w data-say data-fact"; document.documentElement.classList.toggle('white', true);`);
     fs.writeFileSync(path.join(d, '_headers'), '/next/*\n  X-Robots-Tag: noindex\n  Cache-Control: no-cache\n');

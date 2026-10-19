@@ -36,7 +36,7 @@ function pct(x) { if (x == null || !isFinite(x)) return '?'; const v = r1(x), a 
 /** 지수 · 미국 하루 — 자료가 둘째 자리까지라 둘째 자리 그대로(지금 아틀란스 p2 와 같음 · 한 자리로 다시 줄이면 2.05 → 2.1 처럼 두 번 반올림됨) */
 const p2 = v => (v == null || !isFinite(v) ? '?' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%');
 const cls = x => (x == null || !isFinite(x)) ? 'q' : r1(x) > 0 ? 'up' : r1(x) < 0 ? 'dn' : 'fl';
-const COLOR = {up: '#FF5A65', dn: '#5B96FF', fl: '#8E959F', q: '#E9B949'};
+const COLOR = {up: '#FF6A3D', dn: '#6C86FF', fl: '#A6A6A6', q: '#F9D21C'}; // 돌 판(2026-10-19 10:31) 오름 · 내림 · 그대로 · 모름 — app.css html.white 토큰과 같은 값
 const num = n => Number(n).toLocaleString('ko-KR');
 const md = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) ? (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일' : '?';
 const chgOf = v => (Array.isArray(v) && v.length > 1 && v[0] > 0 && v[v.length - 1] > 0) ? (v[v.length - 1] / v[0] - 1) * 100 : null;
@@ -506,7 +506,7 @@ function kkIcon() { const s = sv('svg', {class: 'kk-ic', viewBox: '0 0 24 24', w
 function evoLine() {
   const b = h('b', {text: '진화'}), t = h('span', {class: 'when', text: '보기'});
   const a = h('a', {class: 's-evo', href: '#/jinhwa'}, b, t, h('i', {'aria-hidden': 'true', text: '›'}));
-  fetch('/next/data/jinhwa.json', {credentials: 'omit'}).then(r => (r.ok ? r.json() : null)).then(J => { if (Number.isInteger(J?.n) && J.n > 0) { b.textContent = '진화 ' + num(J.n) + '번째'; const w = (J.applied ?? []).find(x => x?.score && !x.score.at); t.textContent = w ? (Number.isInteger(w.predict?.days) ? w.predict.days : 10) + '거래일 뒤 채점' : '보기'; } }).catch(() => {});
+  fetch('/next/data/jinhwa.json', {credentials: 'omit'}).then(r => (r.ok ? r.json() : null)).then(J => { if (Number.isInteger(J?.n) && J.n > 0) { b.textContent = '진화 ' + num(J.n) + '번째'; const w = (J.applied ?? []).find(x => x?.score && !x.score.at); t.textContent = w ? '채점 전' : '보기'; } }).catch(() => {});
   return a;
 }
 async function vHomeAll() {
@@ -525,9 +525,9 @@ async function vHomeAll() {
   const story = h('ol', {class: 's-story'},
     ch(1, ess),
     ch(2, h('p', {class: 's-lbl'}, h('span', {class: 't', text: '지난 기록'})), band.el, newsBox(H)),
-    ch(3, month ?? h('a', {class: 's-ghost', href: '#/why'}, h('span', {text: '한 달 뒤 물어볼게요'})), h('div', {class: 's-mem'}, ess.querySelector('.w-cnt'), h('span', {class: 's-dev', text: '기록은 이 기기에만'}))));
+    ch(3, month ?? h('a', {class: 's-ghost', href: '#/why'}, h('span', {text: '한 달 뒤 물어볼게요'})), h('div', {class: 's-mem'}, ess.querySelector('.w-cnt'), h('span', {class: 's-dev', text: '이 기기에만'}))));
   const thumb = h('div', {class: 's-thumb'}, findBox(), go4((C?.stop ?? 0) > 0), allBox(H, band)); // 엄지 자리 — 아래 단추 바로 위에 붙어 있음(stone.css sticky · 펼치면 풀림)
-  const nodes = [hd, say, story, thumb, evoLine(), h('p', {class: 'safe hm-safe', text: '돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})];
+  const nodes = [hd, say, story, thumb, evoLine()]; // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
   return {title: '오늘 장', nodes};
 }
 
@@ -1118,6 +1118,7 @@ async function route(force) {
 const STONE = {shorts: 'shorts', today: 'today', surge: 'surge', sub: 'sub', me: 'me', cal: 'cal', cond: 'cond', jinhwa: 'jinhwa'};
 function stoneArt(k, a, root) {
   const n = k === 'why' ? (a ? 'why-q1' : 'why') : k === 'w' ? (a && !a.includes('/') ? 'company' : null) : STONE[k];
+  if (n === 'shorts') { const sh = root.querySelector('.shorts'); if (sh && !sh.querySelector('.st-art')) sh.append(h('img', {class: 'st-art st-abs', src: '/media/stone/shorts.svg', alt: '', width: 120, height: 96, decoding: 'async'})); return; } // 시황은 큰 제목이 없어 오른쪽 위 빈 자리에
   const t = n ? root.querySelector('h1') : null; if (!t || t.querySelector('.st-art')) return;
   t.classList.add('st-h');
   t.append(h('img', {class: 'st-art', src: '/media/stone/' + n + '.svg', alt: '', width: 128, height: 102, decoding: 'async'}));

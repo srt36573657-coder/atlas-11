@@ -5,13 +5,13 @@
 /* ── 위 막대: 왼쪽 「진화」 · 가운데 이름 · 오른쪽 셋(말 · 글씨 · 찾기) ── */
 html.white .top { height: 64px; gap: 4px; background: #080808; border-bottom: 1px solid #1B1B1B; }
 html.white .top .sp { display: none; }
-html.white .top #jhBtn { order: -1; height: 48px; padding: 0 16px; border: 1px solid #2A2A2A; border-radius: 24px; background: #141414; color: var(--ink); font-size: var(--fs-1); font-weight: 600; }
+html.white .top #jhBtn { order: -1; height: 48px; padding: 0 16px; border: 1px solid #6A6A6A; border-radius: 24px; background: #141414; color: var(--ink); font-size: var(--fs-1); font-weight: 600; }
 html.white .top #jhBtn[aria-current="page"] { border-color: var(--ink); color: var(--ink); }
 html.white .top .logo { flex: 1 1 auto; justify-content: center; color: var(--ink); font-size: 20px; font-weight: 700; letter-spacing: .14em; text-indent: .14em; }
 html.white .top .logo img { display: none; }
-html.white .top .ibtn { background: #141414; border-top: 1px solid #2A2A2A; border-bottom: 1px solid #2A2A2A; border-radius: 0; color: var(--ink); }
-html.white .top #langBtn { border-left: 1px solid #2A2A2A; border-radius: 24px 0 0 24px; }
-html.white .top #findBtn { border-right: 1px solid #2A2A2A; border-radius: 0 24px 24px 0; }
+html.white .top .ibtn { background: #141414; border-top: 1px solid #6A6A6A; border-bottom: 1px solid #6A6A6A; border-radius: 0; color: var(--ink); }
+html.white .top #langBtn { border-left: 1px solid #6A6A6A; border-radius: 24px 0 0 24px; }
+html.white .top #findBtn { border-right: 1px solid #6A6A6A; border-radius: 0 24px 24px 0; }
 @media (max-width: 349px) { html.white .top .logo { font-size: var(--fs-1); letter-spacing: .04em; text-indent: 0; width: auto; min-width: 48px; overflow: visible; justify-content: center; gap: 0; padding-left: 0; } }
 @media (max-width: 429px) { html.white.en .top .logo { width: auto; overflow: visible; justify-content: center; gap: 0; padding-left: 0; letter-spacing: .04em; text-indent: 0; } }
 
@@ -32,6 +32,9 @@ html.white svg.ln path[fill="none"] { stroke-width: 2.5; }
 /* ── 화면 큰 제목 + 돌 그림(app.js stoneArt — 첫 h1 오른쪽) ── */
 html.white #view h1.st-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 102px; margin-top: 4px; font-size: 40px; font-weight: 800; line-height: 1.08; letter-spacing: -.03em; color: var(--ink); overflow-wrap: anywhere; }
 html.white #view h1.st-h .st-art { flex: none; width: 128px; height: 102px; margin: -6px -8px -6px 0; }
+html.white .shorts { position: relative; }
+html.white .shorts > .st-abs { position: absolute; top: 24px; right: 0; width: 120px; height: 96px; pointer-events: none; }
+@media (max-width: 349px) { html.white .shorts > .st-abs { width: 88px; height: 70px; } }
 @media (max-width: 349px) { html.white #view h1.st-h { font-size: 32px; min-height: 80px; } html.white #view h1.st-h .st-art { width: 96px; height: 77px; } }
 
 /* ── 첫 화면(html.white.home · app.js vHomeAll 돌 판) ── */
@@ -100,7 +103,7 @@ html.white.home a.s-evo i { font-style: normal; font-size: 24px; color: #BDBDBD;
 
 /* 엄지 자리 — 찾기 칸(흰 「시작」 하나) · 바로 가기 · 전부 보기 */
 html.white.home .s-thumb { position: sticky; bottom: calc(var(--tabs) + env(safe-area-inset-bottom)); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; margin: auto calc(-1 * var(--sp-2)) 0; padding: 12px var(--sp-2) 4px; border-top: 1px solid #1B1B1B; border-radius: 20px 20px 0 0; background: #0E0E0E; }
-html.white.home .s-thumb form.w-find { flex: 1 1 100%; min-width: 0; margin: 0; height: 56px; align-items: center; padding: 0 4px 0 0; border: 1px solid #2A2A2A; border-radius: 28px; background: #141414; }
+html.white.home .s-thumb form.w-find { flex: 1 1 100%; min-width: 0; margin: 0; height: 56px; align-items: center; padding: 0 4px 0 0; border: 1px solid #6A6A6A; border-radius: 28px; background: #141414; }
 html.white.home .s-thumb .w-find .w-in { flex: 1 1 0; width: 0; height: 52px; padding: 0 16px; border-radius: 28px 0 0 28px; background: transparent; color: var(--ink); font-size: 19px; }
 html.white.home .s-thumb .w-find .w-in::placeholder { color: #BDBDBD; }
 html.white.home .s-thumb .w-find .w-go { width: auto; min-width: 72px; height: 48px; padding: 0 18px; border-radius: 24px; background: #FFFFFF; color: #080808; font-size: var(--fs-1); font-weight: 700; }

@@ -241,7 +241,7 @@ const knownHref = (h, c) => {
 };
 const TOK = /[+−]?\d[\d,]*(?:\.\d+)?(?: ?억 원| ?조 원| ?만 원|%|거래일|원|곳|배|일|번|년|월|호)?/g;
 const bag = s => { const m = new Map(); for (const t of s.match(TOK) || []) m.set(t, (m.get(t) || 0) + 1); return m; };
-const UPDN = ['rgb(255, 90, 101)', 'rgb(91, 150, 255)', 'rgb(208, 32, 46)', 'rgb(30, 91, 216)']; // 먹빛 판 + 흰 판(2026-10-19) 오름 · 내림
+const UPDN = ['rgb(255, 90, 101)', 'rgb(91, 150, 255)', 'rgb(208, 32, 46)', 'rgb(30, 91, 216)', 'rgb(255, 106, 61)', 'rgb(108, 134, 255)']; // 먹빛 판 + 흰 판(2026-10-19) 오름 · 내림
 
 /** 맞대기 하나 — o = 옛 쪽 · n = 새 쪽 · where = 실패 글 앞머리 · chart = 그림 · 챕터 · 다음 챕터까지 볼지(회사 화면) */
 function compare(c, o0, n, where, chart) {

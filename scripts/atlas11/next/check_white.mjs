@@ -34,6 +34,8 @@ const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/nod
 const {chromium} = require('playwright');
 const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1'), OUT = arg('--out', null), MOCK = arg('--mock', null);
 const BASEFILE = path.join(ROOT, 'config/atlas11/white-baseline.json');
+/* 돌 판(사장님 2026-10-19(싱가포르) 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3) — 바탕 먹 #080808 · 글 흰색 · 돌 그림(/media/stone/)은 허락한 그림(입체 · 그림자는 그 그림 파일 안에만 · 10:12 「다써」) */
+const BG = '#080808', INK = '#FFFFFF';
 const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'];
 const TABS = ['오늘 장', '시황', '매매일지', '관심', '보유종목'];
 const R = {schema: 'golttori-check-white-1', at: new Date().toISOString(), base: MOCK ? null : base, mock: MOCK, counts: {pass: 0, fail: 0}, fails: [], m: {}};
@@ -70,7 +72,8 @@ const MEASURE = () => {
     if (el.matches('a[href], button, summary, input, select, textarea, [role="button"]')) {
       if (r.height < 47.5 || r.width < 47.5) out.small.push(`${name} ${Math.round(r.width)}×${Math.round(r.height)} 「${el.textContent.trim().slice(0, 14)}」`);
       const own = rgb(cs.backgroundColor), bd = parseFloat(cs.borderTopWidth) > 0 ? rgb(cs.borderTopColor) : null, around = bgOf(el.parentElement || document.body);
-      const edges = [own && own.a > 0 ? ratio(mix(own, around), around) : 0, bd && bd.a > 0 ? ratio(mix(bd, around), around) : 0];
+      const ol = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 ? rgb(cs.outlineColor) : null; // 테 대신 그린 outline 도 보이는 테(돌 판 2026-10-19)
+      const edges = [own && own.a > 0 ? ratio(mix(own, around), around) : 0, bd && bd.a > 0 ? ratio(mix(bd, around), around) : 0, ol && ol.a > 0 ? ratio(mix(ol, around), around) : 0];
       if ((own && own.a > 0 && ratio(mix(own, around), around) > 1.05) || (bd && bd.a > 0)) { if (Math.max(...edges) < 3) out.uiContrast.push(`${name} ${Math.max(...edges).toFixed(2)} 「${el.textContent.trim().slice(0, 14)}」`); }
     }
     if (cs.boxShadow !== 'none') out.ruin.push(`그림자 ${name}`);
@@ -79,7 +82,7 @@ const MEASURE = () => {
     if (/drop-shadow|blur/.test(cs.filter)) out.ruin.push(`그림자 거름 ${name}`);
     if (cs.perspective !== 'none' || cs.transformStyle === 'preserve-3d' || /matrix3d|rotate[XY]|perspective/.test(cs.transform)) out.ruin.push(`입체 ${name}`);
     const red = rgb(cs.backgroundColor); if (red && red.a > 0.5 && red.r > 180 && red.g < 90 && red.b < 90 && r.width <= 16 && r.height <= 16) out.ruin.push(`작은 빨간 점 ${name}`);
-    if (tag === 'img' && !/\/media\/makbi-|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`);
+    if (tag === 'img' && !/\/media\/makbi-|\/media\/stone\/|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`);
   }
   out.bodyHex = (() => { const c = rgb(getComputedStyle(document.body).backgroundColor); return c ? '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase() + (c.a < 1 ? '~' : '') : '?'; })();
   out.inkHex = (() => { const c = rgb(getComputedStyle(document.body).color); return c ? '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase() : '?'; })();
@@ -94,8 +97,8 @@ const MEASURE = () => {
 };
 
 function judge(m, tag, B) {
-  check(m.bodyHex === '#FFFFFF', `${tag} ① 흰 바탕 #FFFFFF`, `바탕 ${m.bodyHex}`);
-  check(m.inkHex === '#16181D', `${tag} 글 #16181D`, `글 ${m.inkHex}`);
+  check(m.bodyHex === BG, `${tag} ① 바탕 ${BG}`, `바탕 ${m.bodyHex}`);
+  check(m.inkHex === INK, `${tag} 글 ${INK}`, `글 ${m.inkHex}`);
   check(m.findInput, `${tag} 「친구야, 왜 사?」 찾기 칸`, '[data-w="find"] 안에 글 칸이 없음');
   check(!m.riseShown.length, `${tag} 첫 화면 원칙 1 · 오르는 것은 한 번 더 눌러야`, m.riseShown.slice(0, 3).join(' | '));
   check(!m.grid.length, `${tag} 바둑판 0`, m.grid.slice(0, 3).join(' | '));
@@ -215,7 +218,7 @@ try {
           const {p, errs} = await open(ctx, base + NEXT + hs); const m = await p.evaluate(MEASURE), wide = await p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1);
           const tag = `다른 쪽 ${hs} ${vw}`, ruin = [...new Set(m.ruin)];
           R.m.pages[`${hs} ${vw}`] = {low: m.lowContrast.length, ui: m.uiContrast.length, small: m.small.length, ruin: ruin.length};
-          check(m.bodyHex === '#FFFFFF', `${tag} 흰 바탕`, `바탕 ${m.bodyHex}`);
+          check(m.bodyHex === BG, `${tag} 바탕 ${BG}`, `바탕 ${m.bodyHex}`);
           check(!m.lowContrast.length, `${tag} 글 대비`, m.lowContrast.slice(0, 3).join(' · '));
           check(!m.uiContrast.length, `${tag} 단추 테두리 대비 3`, m.uiContrast.slice(0, 3).join(' · '));
           check(!m.small.length, `${tag} 누르는 크기 48`, m.small.slice(0, 3).join(' · '));
