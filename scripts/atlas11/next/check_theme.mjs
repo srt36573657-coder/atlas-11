@@ -438,6 +438,51 @@ try {
       }
     }
   }
+  /* ⑪ 첫 화면 시계 누르는 곳(사장님 2026-10-20 07:05 「여기 주황색 있는 4곳 클릭하면 해당페이지로 넘어가게」 · 07:08 「응」)
+     — 번호 셋 = 그 업종 쪽(아래 줄 셋과 같은 차례) · 싹 칸 = 싹 자리 전부 · 누르는 자리 44 넘게 · 그림은 aria-hidden · 영어 이름표 */
+  for (const [w, en] of [[390, false], [320, false], [320, true]]) {
+    const {p, ctx} = await open((en ? '?lang=en' : '') + '#/', {w, h: 844});
+    if (en) { await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(200); }
+    await p.waitForFunction(() => document.querySelectorAll('#view section.th-home svg.th-clock a.th-tap').length > 0, null, {timeout: 20000}).catch(() => {});
+    const tag = `시계 누르는 곳 @${w}${en ? ' 영어' : ''}`;
+    const r = await p.evaluate(() => {
+      const s = document.querySelector('#view section.th-home svg.th-clock'); if (!s) return null;
+      const rows = [...document.querySelectorAll('#view section.th-home .th-rows a.th-row')].slice(0, 3).map(a => a.getAttribute('href'));
+      const taps = [...s.querySelectorAll('a.th-tap')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), label: a.getAttribute('aria-label'), w: Math.round(b.width), h: Math.round(b.height), n: a.querySelector('.th-nbt')?.textContent ?? null, badge: !!a.querySelector('circle.th-nb')}; });
+      return {hidden: s.getAttribute('aria-hidden'), role: s.getAttribute('role'), deco: !!s.querySelector('g[aria-hidden="true"] .th-dot'), focusInHidden: s.querySelectorAll('g[aria-hidden="true"] a').length, rows, taps};
+    });
+    if (!r) { fail('시계 누르는 곳', tag + ' 시계 없음'); await ctx.close(); continue; }
+    const nums = r.taps.filter(t => t.badge), zone = r.taps.filter(t => !t.badge);
+    if (r.hidden === 'true' || r.role !== 'group' || !r.deco || r.focusInHidden) fail('시계 누르는 곳 — 읽기 프로그램', tag + ' ' + JSON.stringify({hidden: r.hidden, role: r.role, deco: r.deco, inHidden: r.focusInHidden}));
+    if (zone.length !== 1 || zone[0].href !== '#/t/sprout') fail('싹 칸 고리', tag + ' ' + JSON.stringify(zone));
+    if (nums.length !== Math.min(3, r.rows.length) || JSON.stringify(nums.map(t => t.href).sort()) !== JSON.stringify([...r.rows].sort()) || nums.some(t => !['1', '2', '3'].includes(t.n))) fail('번호 셋 고리 = 아래 줄 셋', tag + ' ' + JSON.stringify(nums.map(t => [t.n, t.href])) + ' 줄 ' + JSON.stringify(r.rows));
+    for (const t of nums) { const want = r.rows[+t.n - 1]; if (t.href !== want) fail('번호 차례 = 줄 차례', `${tag} ${t.n}번 ${t.href} ≠ ${want}`); }
+    const small = r.taps.filter(t => t.w < 48 || t.h < 48); if (small.length) fail('시계 누르는 자리 48px 아래(흰 판 새 단추)', tag + ' ' + JSON.stringify(small));
+    if (en && (r.taps.some(t => /[가-힣]/.test(t.label ?? '') && !/^Open No\./.test(t.label ?? '')) || zone[0]?.label !== 'See all sprouts' || nums.some(t => !/^Open No\. \d: /.test(t.label ?? '')))) fail('시계 누르는 곳 영어 이름표', tag + ' ' + JSON.stringify(r.taps.map(t => t.label)));
+    if (!en && (zone[0]?.label !== '싹 자리 전부 보기' || nums.some(t => !new RegExp('^' + t.n + '번 .+ 보기$').test(t.label ?? '')))) fail('시계 누르는 곳 이름표', tag + ' ' + JSON.stringify(r.taps.map(t => t.label)));
+    if (!en) {
+      // 누르기 — ① 은 그 업종 쪽 · 싹 칸(번호가 덮지 않은 곳)은 싹 자리 전부
+      const one = p.locator('#view section.th-home svg.th-clock a.th-tapn').filter({has: p.locator('text.th-nbt', {hasText: /^1$/})});
+      if (await one.count()) {
+        await one.first().locator('circle.th-nb').click(); await settle(p);
+        const h1 = await p.evaluate(() => location.hash);
+        if (h1 !== r.rows[0]) fail('① 누르면 그 업종 쪽', `${tag} ${h1} ≠ ${r.rows[0]}`);
+        await p.evaluate(() => { location.hash = '#/'; }); await settle(p);
+        await p.waitForFunction(() => document.querySelectorAll('#view section.th-home svg.th-clock a.th-tap').length > 0, null, {timeout: 20000}).catch(() => {});
+      } else fail('① 번호 고리 없음', tag);
+      const pt = await p.evaluate(() => {
+        const z = document.querySelector('#view section.th-home svg.th-clock a.th-tapz'); if (!z) return null;
+        z.scrollIntoView({block: 'center'}); const b = z.getBoundingClientRect();
+        for (let fy = 0.9; fy > 0.1; fy -= 0.1) for (let fx = 0.08; fx < 0.95; fx += 0.12) { const x = b.left + b.width * fx, y = b.top + b.height * fy; if (document.elementFromPoint(x, y)?.closest('a') === z) return {x, y}; }
+        return null;
+      });
+      if (!pt) fail('싹 칸에 누를 곳 없음', tag);
+      else { await p.mouse.click(pt.x, pt.y); await settle(p); const h2 = await p.evaluate(() => location.hash); if (h2 !== '#/t/sprout') fail('싹 칸 누르면 싹 자리 전부', `${tag} ${h2}`); }
+      if (w === 390) { await p.evaluate(() => { location.hash = '#/'; }); await settle(p); await look(tag + ' 첫 화면', p); }
+    }
+    if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
+    bump('시계 누르는 곳'); await ctx.close();
+  }
   /* ⑥ 자료를 못 받으면 「?」 */
   {
     const no = [['**/next/data/theme*.json*', r => r.fulfill({status: 404, body: 'x'})]];

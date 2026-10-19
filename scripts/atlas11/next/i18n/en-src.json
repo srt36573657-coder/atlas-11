@@ -8793,6 +8793,8 @@
   "관심 업종은 {n}곳까지예요. 알림 쪽에서 하나를 빼고 담아요.": "You can watch up to {n} industries. Remove one on the Alerts page first.",
   "업종|관심 업종 {n}곳": "Watched industries: {n}",
   "지금 자료에 없어요": "Not in today's data",
-  "이 업종은 지금 테마 시계 자료에 없어요.": "This industry is not in today's theme clock data."
+  "이 업종은 지금 테마 시계 자료에 없어요.": "This industry is not in today's theme clock data.",
+  "{n}번 {e} 보기": "Open No. {n}: {e}",
+  "싹 자리 전부 보기": "See all sprouts"
  }
 }

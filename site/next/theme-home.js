@@ -23,26 +23,39 @@ export function nextBtn(title, href, lead = '다음') {
 export function footBtn(title, href) { return h('a', {class: 'th-next th-one', href}, h('span', {text: `다음 · ${title} ›`})); }
 /* ── 그림: 테마 시계(가로 = 한 달 동안 시장보다 더 오른 %p · 세로 = 지난 닷새 · 꽃 선 = 가로 5) ── */
 function txt(x, y, s, a = {}) { const e = sv('text', {x, y, ...a}); e.textContent = s; return e; }
-export function clock(TH, {hi = null, marks = null, W = 326, H = 300} = {}) {
+/** links = 첫 화면 시계 — 주황 번호 셋은 그 업종 쪽 · 싹 칸은 싹 자리 전부로 넘어감(사장님 2026-10-20 07:05 「여기 주황색 있는 4곳 클릭하면 해당페이지로 넘어가게」 · 07:08 「응」)
+ *  그림(점 · 길 · 글)은 aria-hidden 묶음 · 누르는 곳만 <a>(글 읽기 프로그램 · 키보드도 감) · 누르는 자리는 투명 원 · 네모(320 폭에서도 48px 넘게 — 흰 판 새 단추) */
+export function clock(TH, {hi = null, marks = null, W = 326, H = 300, links = false} = {}) {
   const X0 = RULE.bloomX, pad = 14, hiI = hi ? indOf(TH, hi) : null;
   const hp = (hiI ? [[hiI.x, hiI.y], ...(Array.isArray(hiI.t) ? hiI.t : [])] : (marks ?? []).map(n => indOf(TH, n)).filter(Boolean).map(i => [i.x, i.y])).filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b));
   const SX = Math.max(15, ...hp.map(([a]) => Math.ceil(Math.abs(a - X0) * 1.15))), SY = Math.max(6, ...hp.map(([, b]) => Math.ceil(Math.abs(b) * 1.15))); // 고른 업종(지나온 길 꼬리 · 첫 화면 번호 셋)이 끝에 붙거나 번호가 그림 밖으로 나가지 않게 눈금을 넓힘(2026-10-19 실제 사이트 첫 화면 ① 이 잘림)
   const X = v => W / 2 + Math.max(-1, Math.min(1, (v - X0) / SX)) * (W / 2 - pad);
   const Y = v => H / 2 - Math.max(-1, Math.min(1, v / SY)) * (H / 2 - pad);
-  const s = sv('svg', {class: 'th-clock', viewBox: `0 0 ${W} ${H}`, width: '100%', 'aria-hidden': 'true', focusable: 'false'});
+  const s = sv('svg', links ? {class: 'th-clock', viewBox: `0 0 ${W} ${H}`, width: '100%', role: 'group', 'aria-label': '테마 시계'} : {class: 'th-clock', viewBox: `0 0 ${W} ${H}`, width: '100%', 'aria-hidden': 'true', focusable: 'false'});
+  const g = links ? sv('g', {'aria-hidden': 'true'}) : s, tap = []; // g = 그림 · tap = 누르는 곳(그림 위에 얹음)
   const defs = sv('defs'), mk = sv('marker', {id: 'th-ah', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto'});
-  mk.append(sv('path', {d: 'M0 0L10 5L0 10z', class: 'th-arw'})); defs.append(mk); s.append(defs);
-  s.append(sv('rect', {x: 0, y: 0, width: W / 2, height: H / 2, class: 'th-sz'}), sv('line', {x1: 0, y1: H / 2, x2: W, y2: H / 2, class: 'th-ax'}), sv('line', {x1: W / 2, y1: H / 2, x2: W / 2, y2: H, class: 'th-ax'}),
+  mk.append(sv('path', {d: 'M0 0L10 5L0 10z', class: 'th-arw'})); defs.append(mk); s.append(defs); if (links) s.append(g);
+  g.append(sv('rect', {x: 0, y: 0, width: W / 2, height: H / 2, class: 'th-sz'}), sv('line', {x1: 0, y1: H / 2, x2: W, y2: H / 2, class: 'th-ax'}), sv('line', {x1: W / 2, y1: H / 2, x2: W / 2, y2: H, class: 'th-ax'}),
     sv('line', {x1: W / 2, y1: 0, x2: W / 2, y2: H / 2, class: 'th-bl'}));
   for (const d of [`M ${W / 2 - 50} 40 Q ${W / 2} 14 ${W / 2 + 50} 40`, `M ${W - 40} ${H / 2 - 50} Q ${W - 14} ${H / 2} ${W - 40} ${H / 2 + 50}`, `M ${W / 2 + 50} ${H - 40} Q ${W / 2} ${H - 14} ${W / 2 - 50} ${H - 40}`, `M 40 ${H / 2 + 50} Q 14 ${H / 2} 40 ${H / 2 - 50}`])
-    s.append(sv('path', {d, class: 'th-turn', 'marker-end': 'url(#th-ah)'}));
+    g.append(sv('path', {d, class: 'th-turn', 'marker-end': 'url(#th-ah)'}));
   const inds = TH.inds ?? [], mark = hi ? [hi] : (marks ?? []);
-  for (const i of inds) if (mark.includes(i.n) && Array.isArray(i.t)) s.append(sv('polyline', {points: i.t.map(([a, b]) => X(a).toFixed(1) + ',' + Y(b).toFixed(1)).join(' '), class: 'th-tail'}));
-  for (const i of inds) { const on = mark.includes(i.n) || (!hi && i.z === 'S'); s.append(sv('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: on ? 6 : 3.5, class: on ? 'th-dot on' : 'th-dot'})); }
-  if (hi) { const i = indOf(TH, hi); if (i) { const lx = X(i.x), right = lx < W / 2; s.append(txt((right ? lx + 12 : lx - 12).toFixed(1), (Y(i.y) - 12).toFixed(1), i.n, {class: 'th-lb', 'text-anchor': right ? 'start' : 'end'})); } }
-  else (marks ?? []).forEach((n, k) => { const i = indOf(TH, n); if (!i) return; const cx = X(i.x) + (k % 2 ? 16 : -16), cy = Y(i.y) - 18; s.append(sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 12, class: 'th-nb'}), txt(cx.toFixed(1), (cy + 6).toFixed(1), String(k + 1), {class: 'th-nbt', 'text-anchor': 'middle'})); });
-  s.append(txt(10, 24, ZONES.S, {class: 'th-zl th-zs'}), txt(W - 10, 24, ZONES.B, {class: 'th-zl', 'text-anchor': 'end'}), txt(W - 10, H - 10, ZONES.W, {class: 'th-zl th-zq', 'text-anchor': 'end'}), txt(10, H - 10, ZONES.Q, {class: 'th-zl th-zq'}),
+  for (const i of inds) if (mark.includes(i.n) && Array.isArray(i.t)) g.append(sv('polyline', {points: i.t.map(([a, b]) => X(a).toFixed(1) + ',' + Y(b).toFixed(1)).join(' '), class: 'th-tail'}));
+  for (const i of inds) { const on = mark.includes(i.n) || (!hi && i.z === 'S'); g.append(sv('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: on ? 6 : 3.5, class: on ? 'th-dot on' : 'th-dot'})); }
+  if (hi) { const i = indOf(TH, hi); if (i) { const lx = X(i.x), right = lx < W / 2; g.append(txt((right ? lx + 12 : lx - 12).toFixed(1), (Y(i.y) - 12).toFixed(1), i.n, {class: 'th-lb', 'text-anchor': right ? 'start' : 'end'})); } }
+  else (marks ?? []).forEach((n, k) => {
+    const i = indOf(TH, n); if (!i) return; const cx = X(i.x) + (k % 2 ? 16 : -16), cy = Y(i.y) - 18;
+    const parts = [sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 12, class: 'th-nb'}), txt(cx.toFixed(1), (cy + 6).toFixed(1), String(k + 1), {class: 'th-nbt', 'text-anchor': 'middle'})];
+    if (!links) { g.append(...parts); return; }
+    const a = sv('a', {href: '#/t/i/' + enc(i.n), class: 'th-tap th-tapn', 'aria-label': `${k + 1}번 ${i.n} 보기`}); // 번호 = 그 업종 쪽
+    a.append(sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 33, class: 'th-hit'}), ...parts); tap.push(a); // 누르는 원 r 33 = 320 폭에서 51px(흰 판 새 단추 48 · check_white)
+  });
+  g.append(txt(10, 24, ZONES.S, {class: 'th-zl th-zs'}), txt(W - 10, 24, ZONES.B, {class: 'th-zl', 'text-anchor': 'end'}), txt(W - 10, H - 10, ZONES.W, {class: 'th-zl th-zq', 'text-anchor': 'end'}), txt(10, H - 10, ZONES.Q, {class: 'th-zl th-zq'}),
     txt(W / 2 + 6, H / 2 - 8, '꽃 선', {class: 'th-bt'}));
+  if (links) { // 싹 칸(투명 네모 — 점 · 「싹」 글 위) 먼저 · 번호 셋이 그 위
+    const za = sv('a', {href: '#/t/sprout', class: 'th-tap th-tapz', 'aria-label': '싹 자리 전부 보기'});
+    za.append(sv('rect', {x: 0, y: 0, width: W / 2, height: H / 2, class: 'th-hit'})); s.append(za, ...tap.reverse()); // ① 이 맨 위(겹치면 앞 번호)
+  }
   return s;
 }
 /** 점 넷(채운 동그라미 = 참) */
@@ -79,7 +92,7 @@ export async function homeBlock() {
   const box = h('section', {class: 'th-home', 'data-w': 'theme', 'aria-label': '테마 시계'});
   if (!TH) { box.append(h('p', {class: 'empty', text: '? 테마 시계 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return box; }
   const S = TH.order.S.map(n => indOf(TH, n)).filter(Boolean), top = S.slice(0, 3);
-  box.append(h('div', {class: 'th-map'}, clock(TH, {marks: top.map(i => i.n)}), h('p', {class: 'th-cap th-cap1', text: `업종은 시계 방향으로 돌아요. 잠잠 → 싹 → 꽃 → 시듦. 지금 싹 자리에 ${num(TH.count.S)}곳이 있어요.`})));
+  box.append(h('div', {class: 'th-map'}, clock(TH, {marks: top.map(i => i.n), links: true}), h('p', {class: 'th-cap th-cap1', text: `업종은 시계 방향으로 돌아요. 잠잠 → 싹 → 꽃 → 시듦. 지금 싹 자리에 ${num(TH.count.S)}곳이 있어요.`})));
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
   box.append(TH.count.real ? h('h2', {class: 'th-ans'}, h('span', {text: '진짜 싹 '}), h('em', {'data-tr': '업종', text: num(TH.count.real) + '곳'})) : h('h2', {class: 'th-ans', text: '지금은 진짜 싹이 없어요'})); // data-tr = 영어에서 「n곳」을 업종 수로(i18n.js 자리 표)
   box.append(h('div', {class: 'th-three', 'data-tr': '업종'}, ...[[TH.count.real, '진짜 싹'], [TH.count.fresh, '새로 들어옴'], [TH.count.S, '싹 자리']].map(([n, t]) => h('p', {}, h('b', {text: num(n) + '곳'}), h('span', {text: t})))));

@@ -12,6 +12,11 @@
 .th-clock .th-dot.on { fill: var(--up); }
 .th-clock .th-nb { fill: var(--up); stroke: #080808; stroke-width: 2; }
 .th-clock .th-nbt { fill: #080808; font-size: var(--fs-1); font-weight: 700; }
+/* 첫 화면 시계 누르는 곳(번호 셋 · 싹 칸 — 2026-10-20 07:08 「응」) — 누르는 자리는 투명 · 키보드로 오면 금빛 테 */
+.th-clock .th-tap { cursor: pointer; -webkit-tap-highlight-color: transparent; outline: none; }
+.th-clock .th-hit { fill: transparent; stroke: none; }
+.th-clock .th-tap:focus-visible .th-hit { stroke: var(--gold); stroke-width: 3; }
+.th-clock .th-tapn:active .th-nb { fill: var(--gold); }
 .th-clock .th-lb { fill: var(--ink); font-size: var(--fs-1); }
 .th-clock .th-lb, .th-clock .th-zl, .th-clock .th-bt { paint-order: stroke; stroke: #080808; stroke-width: 4px; stroke-linejoin: round; } /* 점 · 꽃 선 위에서도 글이 읽히게(새 눈 검사 11) */
 .th-clock .th-zl { fill: var(--ink); font-size: var(--fs-2); font-weight: 700; }
