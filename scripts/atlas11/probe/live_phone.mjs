@@ -146,14 +146,14 @@ async function runDevice(name, engine, end) {
   let ctx;
   try { ctx = await br.b.newContext({...prof, locale: 'ko-KR', timezoneId: 'Asia/Seoul'}); } catch (e) { D.launch = 'context: ' + line1(e); return; }
   D.version = br.b.version();
-  const G = {errors: new Map(), small: new Map(), tap: new Map()}, C = D.nextChain; let cur = '(start)', page = null;
+  const G = {errors: new Map(), small: new Map(), tap: new Map()}, C = D.nextChain; let cur = '(start)', shooting = false, page = null;
   const group = (m, key, base, route, n = 1) => { let x = m.get(key); if (!x) m.set(key, x = {...base, routes: [], n: 0}); if (!x.routes.includes(route)) x.routes.push(route); x.n += n; return x; };
   const err = (type, text, extra = {}) => group(G.errors, type + '|' + text, {type, text: String(text).slice(0, 300), ...extra}, cur);
   const fresh = async () => { // 새 탭(처음 · 탭이 죽었을 때)
     try { await page?.close(); } catch { /* 이미 닫힘 */ }
     page = await ctx.newPage();
     page.on('pageerror', e => err('pageerror', line1(e)));
-    page.on('console', m => { if (m.type() === 'error') { const u = m.location()?.url; err('console', m.text().replace(/\s+/g, ' ').slice(0, 300), u ? {url: cleanUrl(u)} : {}); } });
+    page.on('console', m => { if (m.type() === 'error' && shooting) { (D.shotNoise ??= []).push({route: cur, text: m.text().replace(/\s+/g, ' ').slice(0, 200)}); return; } if (m.type() === 'error') { const u = m.location()?.url; err('console', m.text().replace(/\s+/g, ' ').slice(0, 300), u ? {url: cleanUrl(u)} : {}); } });
     page.on('crash', () => err('crash', 'page crashed'));
   };
   try {
@@ -178,7 +178,7 @@ async function runDevice(name, engine, end) {
         const shot = SHOTS.get(hash);
         if (shot) {
           const f = path.join(OUT, `${slug(name)}-${shot}.png`), scale = shotBytes > SHOT_CAP ? 'css' : 'device';
-          await page.screenshot({path: f, scale, timeout: 20000, caret: 'initial'}); // caret 'hide'(기본)는 Playwright 가 <style> 을 넣어 사이트 보안 규칙(style-src 'self')에 막힘 — 아이폰 엔진만 「Refused to apply a stylesheet」을 남겼음(사진 찍는 다섯 쪽에서만 · 2026-10-19 23:33)
+          shooting = true; try { await page.screenshot({path: f, scale, timeout: 20000, caret: 'initial'}); await page.waitForTimeout(50); } finally { shooting = false; } // 사진 찍는 동안 난 오류는 shotNoise 로 따로 남김(사이트 오류 셈 밖) — 아이폰 엔진은 사진 때 Playwright 가 넣는 <style> 이 보안 규칙에 막혀 경고를 남김(2026-10-19 두 번 · 사진 찍은 다섯 쪽에서만) // caret 'hide'(기본)는 Playwright 가 <style> 을 넣어 사이트 보안 규칙(style-src 'self')에 막힘 — 아이폰 엔진만 「Refused to apply a stylesheet」을 남겼음(사진 찍는 다섯 쪽에서만 · 2026-10-19 23:33)
           const bytes = fs.statSync(f).size; shotBytes += bytes; D.shots.push({name: shot, file: path.basename(f), bytes, scale});
         }
       } catch (e) { row.fail = line1(e); err('load', row.fail); await fresh(); }
