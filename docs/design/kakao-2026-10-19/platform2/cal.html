@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 시안 2판 · 달력</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+:root{--bg:#080808;--ink:#FFFFFF;--cream:#F3EBD6;--soft:#BDBDBD;--mute:#A6A6A6;--thread:#4E4E4E;--hair:#2A2A2A;--edge:#8A8A8A;--well:#161616;--gold:#F6C744;--up:#FF6A3D;--dn:#6C86FF}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:152px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0}
+.serif,.n{font-family:"Gowun Batang",serif;font-weight:400}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+/* ① 위 막대 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+#jhBtn[aria-current]{box-shadow:none;outline:1.5px solid #FFFFFF;outline-offset:-1.5px}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap}
+#view{padding:0 16px}
+/* ② 제목 + 꽃돌이 물음 */
+.hd{display:flex;align-items:center;gap:10px;padding-top:6px}
+.hd h1{font-size:34px;line-height:1.1;font-weight:400}
+.hd .fl{width:34px;height:34px;flex:0 0 auto}
+.ask{display:flex;align-items:center;gap:10px;margin-top:10px;min-height:48px;padding:0 0 0 2px;font-size:20px;line-height:1.35;color:#F3EBD6;word-break:keep-all}
+.ask img{width:32px;height:32px;flex:0 0 auto}
+.ctx{font-size:17px;line-height:1.45;color:#BDBDBD;margin-top:4px;word-break:keep-all}
+/* ③ 읽는 곳 — 가는 줄 · 숫자는 크게 단위는 작게 */
+.sec{margin-top:16px;padding-top:12px;border-top:1px solid #2A2A2A}
+.sec>h2{font-size:17px;font-weight:600;color:#BDBDBD;letter-spacing:.01em}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;border-bottom:1px solid #2A2A2A}
+.row:last-child{border-bottom:0}
+.row .nm{font-size:19px;line-height:1.25;word-break:keep-all}
+.row .nm small{display:block;font-size:17px;color:#A6A6A6}
+.row .v{font-size:17px;color:#A6A6A6;white-space:nowrap}
+.row .v .n{font-size:22px}
+.big{font-size:44px;line-height:1}
+.unit{font-size:17px;color:#BDBDBD}
+.pill{display:flex;gap:6px}
+.pill a{flex:1 1 0;min-height:48px;display:flex;align-items:center;justify-content:center;border:1px solid #4E4E4E;border-radius:24px;font-size:17px;color:#BDBDBD;white-space:nowrap}
+.pill a[aria-current]{border:2px solid #FFFFFF;color:#FFFFFF;font-weight:700}
+.honest{font-size:17px;color:#A6A6A6;line-height:1.45;margin-top:14px}
+/* ④ 엄지 자리 — 할 일 하나 */
+.thumb{position:fixed;left:0;right:0;bottom:64px;padding:10px 16px 12px;background:#080808;border-top:1px solid #2A2A2A}
+.go{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;border-radius:28px;background:#F6C744;color:#111111;font-size:19px;font-weight:700;letter-spacing:-.01em}
+/* ⑤ 아래 단추 다섯 */
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700;flex-direction:column;gap:3px}
+.tabs a[aria-current]::after{content:"";width:4px;height:4px;border-radius:50%;background:#FFFFFF}
+
+.cmp .bars{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.cr .l{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:17px;color:#BDBDBD}
+.cr .l b{font-weight:400;color:#FFFFFF;font-size:17px;white-space:nowrap}
+.cr .l b .n{font-size:28px;line-height:1;margin:0 1px}
+.bar{position:relative;height:8px;margin-top:6px;border-radius:4px;background:#2A2A2A}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:#8A8A8A}
+.bar.mine i{background:#FFFFFF}
+.cal .pill{margin-top:14px}
+.day{margin-top:14px;display:grid;grid-template-columns:48px 1fr;column-gap:12px}
+.dn0{width:48px;height:48px;border-radius:50%;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center;font-size:22px}
+.dh b{font-family:"Gowun Batang",serif;font-weight:400;font-size:22px;line-height:1.2}
+.dh .tag{font-size:17px;color:#A6A6A6;margin-left:6px}
+.cnt{font-size:17px;color:#BDBDBD;line-height:1.4}
+.cnt .n{color:#FFFFFF;font-size:19px}
+.day .list{grid-column:1/-1;margin-top:4px;border-top:1px solid #2A2A2A}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="hd"><h1 class="serif">달력</h1><svg class="fl" viewBox="0 0 60 60" aria-hidden="true"><defs><g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g></defs>
+<path d="M30 58 C 22 46 14 40 4 38 C 16 38 26 46 33 58 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"/>
+<path d="M31 58 C 30 44 30 32 30 22" fill="none" stroke="#0F1B45" stroke-width="5.6" stroke-linecap="round"/><path d="M31 58 C 30 44 30 32 30 22" fill="none" stroke="#6E9B5A" stroke-width="3" stroke-linecap="round"/>
+<use href="#g3-bloom" transform="translate(30 19) scale(.62)"/></svg></div>
+<p class="ask serif"><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">모든 회사와 견주면 얼마나 다를까?</p>
+<p class="ctx">5일간 10% 넘게 오르면 뽑혀요. 10월 13일 종가예요.</p>
+
+<section class="sec cmp" aria-label="뽑힌 날보다 올라 있는 곳">
+  <h2>뽑힌 날보다 올라 있는 곳</h2>
+  <div class="bars">
+    <div class="cr"><p class="l">지켜보는 403곳<b>10곳 중 <span class="n">4</span>곳꼴</b></p><div class="bar mine" role="img" aria-label="10곳 중 4곳꼴"><i style="width:40%"></i></div></div>
+    <div class="cr"><p class="l">같은 기간 모든 회사<b>10곳 중 <span class="n">3</span>곳꼴</b></p><div class="bar" role="img" aria-label="10곳 중 3곳꼴"><i style="width:30%"></i></div></div>
+  </div>
+</section>
+<div class="cal"><nav class="pill" aria-label="칸 고르기">
+  <a href="#/cal" aria-current="true">전체</a><a href="#/cal/10">10%</a><a href="#/cal/20">20%</a><a href="#/cal/30">30%</a><a href="#/cal/40">40%</a>
+</nav></div>
+<section class="day" aria-label="10월 13일">
+  <span class="dn0 n" aria-hidden="true">13</span>
+  <div><p class="dh"><b>10월 13일 화</b><span class="tag">되짚음</span></p>
+  <p class="cnt">선택 <span class="n">8</span> · 이동 <span class="n">15</span> · 탈락 <span class="n">26</span> · 다시 선택 <span class="n">12</span></p></div>
+  <div class="list">
+    <p class="row"><span class="nm">아티스트스튜디오</span><span class="v">5일간 <span class="n up">+31.2</span>%</span></p>
+    <p class="row"><span class="nm">뉴인텍</span><span class="v">5일간 <span class="n up">+23.9</span>%</span></p>
+  </div>
+</section>
+<section class="day" aria-label="10월 12일">
+  <span class="dn0 n" aria-hidden="true">12</span>
+  <div><p class="dh"><b>10월 12일 월</b><span class="tag">되짚음</span></p>
+  <p class="cnt">선택 <span class="n">17</span> · 이동 <span class="n">20</span> · 탈락 <span class="n">92</span> · 다시 선택 <span class="n">4</span></p></div>
+  <div class="list">
+    <p class="row"><span class="nm">HLB바이오스텝</span><span class="v">뽑힌 날부터 <span class="n up">+12.1</span>%</span></p>
+    <p class="row"><span class="nm">한화머시너리앤서비스홀딩스</span><span class="v"><span class="n dn">−2.5</span>%</span></p>
+  </div>
+</section>
+<p class="honest">사고팔 곳을 고른 목록이 아니에요. 지난 값일 뿐 앞날을 말하지 않아요.</p>
+
+</main>
+<div class="thumb"><a class="go" href="#/cal/day/1013">10월 13일 나머지 6곳 · 이동 · 탈락 53곳</a></div>
+<nav class="tabs"><a href="#/">오늘 장</a><a href="#/news">시황</a><a href="#/why" aria-current="page">매매일지</a><a href="#/watch">관심</a><a href="#/hold">보유종목</a></nav>
+</body>
+</html>
