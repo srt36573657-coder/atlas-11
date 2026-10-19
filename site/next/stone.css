@@ -80,7 +80,17 @@ html.white.home .w-news .w-f { display: flex; align-items: baseline; gap: var(--
 html.white.home .w-news .w-lb { min-width: 52px; color: #BDBDBD; font-size: var(--fs-1); font-weight: 500; }
 html.white.home .w-news .w-f b { font-size: var(--fs-5); font-weight: 300; line-height: 1.2; letter-spacing: -.03em; }
 html.white.home .w-news .w-why { min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #8A8A8A; border-radius: 24px; background: transparent; color: var(--ink); font-size: var(--fs-1); font-weight: 500; white-space: nowrap; }
-html.white.home .w-news .w-qs { flex-basis: 100%; margin: 0; padding: 0 0 0 var(--sp-2); color: #D6D6D6; font-size: var(--fs-1); }
+html.white.home .w-news .w-qs { flex-basis: 100%; margin: 0 0 var(--sp-1); padding: 0; list-style: none; color: #D6D6D6; font-size: var(--fs-1); }
+/* 물음 셋 — 누르면 바로 밑에 받은 자료로 센 지난 사실(app.js whyQ · 사장님 2026-10-19 13:27 「해결해」) */
+html.white.home .w-news .w-qs li { border-top: 1px solid #1B1B1B; }
+html.white.home .w-news button.w-q { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); width: 100%; min-height: 48px; margin: 0; padding: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-1); font-weight: 600; text-align: left; cursor: pointer; }
+html.white.home .w-news button.w-q i { font-style: normal; color: #BDBDBD; transition: transform .15s; }
+html.white.home .w-news button.w-q[aria-expanded="true"] i { transform: rotate(90deg); }
+html.white.home .w-news .w-ans { margin: 0; padding: 0 0 var(--sp-1); }
+html.white.home .w-news .w-ans p { margin: 0; color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
+html.white.home .w-news .w-ans p.w-ah { margin: var(--sp-1) 0 0; color: var(--ink); font-weight: 700; }
+html.white.home #view:has(.w-qs:not([hidden])) .s-thumb { position: static; }
+html.white.home .w-news .w-ans a { display: inline-flex; align-items: center; min-height: 48px; color: var(--ink); font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; }
 html.white.home .s-split { display: flex; align-items: center; gap: var(--sp-1); height: 8px; margin: 0; }
 html.white.home .s-split i { display: block; flex: 1 1 0; height: 2px; }
 html.white.home .s-split .gu { background: var(--up); }

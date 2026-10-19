@@ -8448,6 +8448,25 @@
   "시작": "Start",
   "채점 전": "Not scored yet",
   "아직 바뀔 수 있는 값이에요": "This value may still change",
-  "이 칸에 든 곳이 많아 많이 오른 차례로 {n}곳만 실었어요. 나머지 {n}곳은 싣지 않아요.": "Too many here, so only the top {n} by gain are listed. The other {n} are not listed."
+  "이 칸에 든 곳이 많아 많이 오른 차례로 {n}곳만 실었어요. 나머지 {n}곳은 싣지 않아요.": "Too many here, so only the top {n} by gain are listed. The other {n} are not listed.",
+  "{d} 하루 사고판 돈이에요.": "Money bought and sold on {d}.",
+  "외국인 {n} 원 팔았어요": "Foreigners sold {n} won",
+  "외국인 {n} 원 샀어요": "Foreigners bought {n} won",
+  "기관 {n} 원 팔았어요": "Institutions sold {n} won",
+  "기관 {n} 원 샀어요": "Institutions bought {n} won",
+  "개인 {n} 원 팔았어요": "Individuals sold {n} won",
+  "개인 {n} 원 샀어요": "Individuals bought {n} won",
+  "지난 한 달 동안 {n}일 오르고 {n}일 내렸어요.": "Over the past month it rose on {n} days and fell on {n} days.",
+  "지난 {n}거래일 동안 {n}일 오르고 {n}일 내렸어요.": "Over the past {n} trading days it rose on {n} days and fell on {n} days.",
+  "마지막 {n}일은 잇달아 내렸어요.": "The last {n} days fell in a row.",
+  "마지막 {n}일은 잇달아 올랐어요.": "The last {n} days rose in a row.",
+  "? 지난 날 지수 값을 못 받았어요.": "? Could not get past index values.",
+  "? 이 기기가 기록을 기억하지 못해요.": "? This device cannot keep records.",
+  "아직 적은 이유가 없어요. 사기 전에 열한 질문으로 먼저 적어 두면 여기서 바로 견줘 봐요.": "No reasons written yet. Write them first with the eleven questions before buying, and you can compare them here.",
+  "열한 질문으로 적기 ›": "Write with the eleven questions ›",
+  "내가 적은 이유 {n}개가 있어요.": "You have written {n} reasons.",
+  "가장 최근 — {d} {e}": "Most recent — {d} {e}",
+  "가장 최근 — {e}": "Most recent — {e}",
+  "내 이유 다시 보기 ›": "See my reasons again ›"
  }
 }
