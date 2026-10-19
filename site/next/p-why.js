@@ -180,7 +180,8 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     const p = S.wait = lookup(pre).catch(() => null).then(r => {
       if (S.wait !== p) return; // 그새 다른 종목을 고름
       S.wait = null;
-      if (r?.co) { setStock(r.c, r.n, true); if (i === 0) box.querySelector('.wy-stk')?.replaceWith(stockBar()); else { i = 0; focusSel = '.wy-opt'; draw(); } return; }
+      // 자료가 늦게 와도 답하던 자리 그대로 — 종목 줄만 바꿈 · 1번으로 되돌리는 것은 종목 고르기 칸(PICK)에 있을 때만(2026-10-19 실제 사이트: 5번까지 답한 뒤 자료가 오자 1번으로 튐 · 「다음」 단추 없는 장)
+      if (r?.co) { setStock(r.c, r.n, true); if (i === PICK) { i = 0; focusSel = '.wy-opt'; draw(); } else box.querySelector('.wy-stk')?.replaceWith(stockBar()); return; }
       clearStock(); i = PICK; S.note = r ? {n: r.n, w: r.w} : {nf: true}; focusSel = '.wy-find'; draw();
     });
   };

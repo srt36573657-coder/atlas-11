@@ -585,10 +585,14 @@ const AGAINS = () => {
 };
 /** 왜 사? 칸을 끝까지(첫 답 · 다음 · 두 줄 · 결과 보기) — 모양은 그 칸 검사(check_why)가 봄 */
 async function finishWhy(p, why, tag) {
-  for (let k = 0; k < 40; k++) {
+  // 실제 사이트(2026-10-19 · 10-18): 자료(core · mkt)가 늦으면 칸이 마지막 질문에서 기다림(aria-busy · 누름은 버림) → 끝나면 저절로 「마지막 두 줄」로 감.
+  //   그 사이 누른 답 단추가 사라져 click 이 30초 기다리다 멈췄음 → 기다리는 동안은 누르지 않고(기다림은 40번 셈 밖 · 모두 30초 안) · 누르기는 5초까지 — 못 누르면 상태를 다시 읽음(끝내 못 열면 아래 「안 열림」 실패)
+  const until = Date.now() + 30000, tap = l => l.click({timeout: 5000}).catch(e => { if (!/Timeout \d+ms exceeded/.test(String(e?.message))) throw e; });
+  for (let k = 0; k < 40 && Date.now() < until; k++) {
     const st = await p.evaluate(() => {
       const c = document.querySelector('#view .ps-why .wy'); if (!c) return 'none';
       if (!document.querySelector('#view .ps-lock')) return 'open';
+      if (c.getAttribute('aria-busy') === 'true') return 'busy';
       if (c.querySelector('.wy-res')) return 'res';
       if (c.querySelector('.wy-why')) return 'lines';
       if (c.querySelector('.wy-opt')) return c.querySelector('.wy-opt[aria-pressed="true"]') ? 'next' : 'pick';
@@ -596,13 +600,13 @@ async function finishWhy(p, why, tag) {
     });
     if (st === 'open') return true;
     if (st === 'none' || st === 'res') break;
-    if (st === 'wait') { await p.waitForTimeout(150); continue; }
-    if (st === 'pick') await p.locator('#view .ps-why .wy-opt').first().click();
-    else if (st === 'next') await p.locator('#view .ps-why .wy-next').first().click();
+    if (st === 'wait' || st === 'busy') { await p.waitForTimeout(150); if (st === 'busy') k--; continue; }
+    if (st === 'pick') await tap(p.locator('#view .ps-why .wy-opt').first());
+    else if (st === 'next') await tap(p.locator('#view .ps-why .wy-next').first());
     else {
       await p.locator('#view .ps-why .wy-why').fill(why);
       for (const [c, v] of [['.wy-sell', '1000'], ['.wy-half', '2000']]) { const x = p.locator('#view .ps-why ' + c); if ((await x.count()) && !(await x.inputValue())) await x.fill(v); }
-      await p.locator('#view .ps-why .wy-next').last().click();
+      await tap(p.locator('#view .ps-why .wy-next').last());
     }
     await p.waitForTimeout(60);
   }

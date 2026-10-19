@@ -158,11 +158,15 @@ async function tab(width, height = 640) {
 const oldUrl = c => base + '/atlas/#/c/' + c + '/range', newUrl = c => base + '/next/?dev=1#/w/' + c + '/range';
 const nameOf = c => (PK[c]?.name ?? CO[c]?.n ?? null);
 const missHead = c => { const r = (names?.rows || []).find(x => x.c === c); return r ? `${r.n} — 지금 ${pickName} 밖` : '없는 주소입니다'; };
+const oldWant = c => (nameOf(c) ? nameOf(c) + ' — 범위 · 확인' : missHead(c)); // 옛 쪽 제목 — 열 때 · 읽을 때 같은 잣대
 // 여는 둘 — 망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle · 망 탈 없이 못 그리면 앞과 같은 실패) · 여는 데 쓴 때를 쪽마다 셈(tm)
 async function openOld(p, c) {
-  const want = nameOf(c) ? nameOf(c) + ' — 범위 · 확인' : missHead(c), url = oldUrl(c);
+  const want = oldWant(c), url = oldUrl(c);
   const ok = await tm.old(() => settle(p, async () => {
-    if (!p.url().startsWith(base + '/atlas/')) await p.goto(url); else await p.evaluate(h => { location.hash = h; }, '#/c/' + c + '/range');
+    if (!p.url().startsWith(base + '/atlas/')) await p.goto(url);
+    else for (let k = 0; ; k++) { // 옛 앱이 스스로 새로 고치는 사이(아래 readOld 글)에 주소를 바꾸면 Execution context was destroyed — 새 쪽이 뜬 뒤 다시(다섯 번까지)
+      try { await p.evaluate(h => { location.hash = h; }, '#/c/' + c + '/range'); break; } catch (e) { if (k >= 4 || !/Execution context was destroyed/.test(String(e?.message))) throw e; await p.waitForTimeout(200); await p.waitForLoadState('domcontentloaded').catch(() => {}); }
+    }
     // 없는 주소: 이름표에 있으면 이름을 받은 뒤에야 제목이 바뀜(want = 바뀐 제목) · 없으면 받아도 글이 그대로
     return p.waitForFunction(([w, slots]) => {
       const v = document.querySelector('#view'); if (!v || v.querySelector('.boot')) return false;
@@ -182,19 +186,24 @@ async function openNew(p, c) {
   if (ok === false) fail('새 쪽 덜 열림', c + ' ' + want + ' · 지금 「' + (await p.evaluate(() => document.querySelector('main#view h1')?.textContent ?? document.querySelector('main#view')?.textContent?.slice(0, 80) ?? '')) + '」');
   return !!ok;
 }
-/** 옛 쪽 — 글 마디 · 숫자 · 막대 · 표지(옮기지 않은 조각은 뺌: 단 숫자 줄 · 3단 회사로 줄 · 꽃밭 · 친구 소개 · 미국 판 고리) */
-const readOld = p => p.evaluate(() => {
-  const v = document.querySelector('#view .vw') || document.querySelector('#view'), cl = v.cloneNode(true);
+/** 옛 쪽 — 글 마디 · 숫자 · 막대 · 표지(옮기지 않은 조각은 뺌: 단 숫자 줄 · 3단 회사로 줄 · 꽃밭 · 친구 소개 · 미국 판 고리)
+ *  다 그렸나(openOld 와 같은 잣대 — 제목 = want · 「여는 중」 없음)를 읽는 그 순간에 다시 보고 같은 순간에 읽음 · 아니면 다시 다 그릴 때까지 기다림(20초 · 못 그리면 실패 · null)
+ *  까닭(2026-10-19 실제 사이트 · 071280 막대 · 표지 0): 옛 앱은 10분 넘게 연 화면에서 자료가 바뀌었으면(core.json made) 스스로 새로 고침(atlas.js freshCheck) —
+ *  검사 도중 자료를 올리면 열린 것을 본 뒤 읽기 전에 새로 고쳐 빈 화면(「여는 중」)을 읽거나 읽기가 멈췄음(Execution context was destroyed) · waitForFunction 은 새로 연 쪽에서 다시 봄 */
+const readOld = (p, want, tag, slots = hasSlots) => p.waitForFunction(([w, sl]) => {
+  const vv = document.querySelector('#view'); if (!vv || vv.querySelector('.boot') || (vv.querySelector('h1')?.textContent || '') !== w) return false;
+  const tt = vv.textContent; if (tt.includes('여는 중') || (sl && tt.includes('다음 회차 ?'))) return false;
+  const v = document.querySelector('#view .vw') || vv, cl = v.cloneNode(true);
   for (const s of ['nav.steps ol', '.links2', 'footer .links', '.foot-mo', '.boot']) cl.querySelectorAll(s).forEach(e => e.remove());
   const norm = s => String(s).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
   const segs = [...cl.querySelectorAll('h1, h2, small, p, li, summary, .why')].map(e => norm(e.textContent)).filter(Boolean);
-  return {segs, text: norm(cl.textContent),
+  return JSON.stringify({segs, text: norm(cl.textContent), // 글(원시 값)로 돌려줌 — 받아 오는 사이 쪽이 새로 고쳐져도 그대로
     aria: [...v.querySelectorAll('ul.dirbars [role="img"]')].map(e => norm(e.getAttribute('aria-label'))),
     bw: [...v.querySelectorAll('ul.dirbars .db')].map(e => e.style.width), mk: [...v.querySelectorAll('ul.dirbars .dm')].map(e => e.style.left),
     marks: [...v.querySelectorAll('ul.chk > li')].map(li => { const m = li.querySelector('.m'); return (m.classList.contains('no') ? 'no' : m.classList.contains('q') ? 'q' : 'ok') + m.textContent; }),
     markTx: [...v.querySelectorAll('ul.chk > li')].map(li => norm(li.textContent)), // 줄 글(채점 칸으로 옮긴 「한 달 범위 맞대 볼 날」 줄의 표지를 빼려고)
-    tone: [...v.querySelectorAll('ul.chk span.num:is(.up, .down, .flat)')].map(e => (e.classList.contains('up') ? 'up' : e.classList.contains('down') ? 'dn' : e.textContent === '?' ? 'q' : 'fl') + ' ' + e.textContent)}; // 지나온 1년 % 색(옛 「?」 = 회색 → 새 화면 금빛 ? — 뜻 같음)
-});
+    tone: [...v.querySelectorAll('ul.chk span.num:is(.up, .down, .flat)')].map(e => (e.classList.contains('up') ? 'up' : e.classList.contains('down') ? 'dn' : e.textContent === '?' ? 'q' : 'fl') + ' ' + e.textContent)}); // 지나온 1년 % 색(옛 「?」 = 회색 → 새 화면 금빛 ? — 뜻 같음)
+}, [want, slots], {timeout: 20000}).then(async h => JSON.parse(await h.jsonValue())).catch(e => { fail('옛 쪽 덜 열림', `${tag} ${want} · 읽을 때 · ${String(e?.message ?? e).split('\n')[0]}`); return null; });
 const readNew = p => p.evaluate(() => {
   const v = document.querySelector('main#view'), norm = s => String(s).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
   const cl = v.cloneNode(true); cl.querySelectorAll('[data-proper]').forEach(e => e.remove());
@@ -328,7 +337,8 @@ for (const c of SH.part('c', [...list, ...missingCodes])) {
   const miss = !nameOf(c), pk = !!PK[c];
   const okO = await openOld(po, c), okN = await openNew(pn, c);
   if (!okO || !okN) continue;
-  compare(c, await tm.old(() => readOld(po)), await tm.new(() => readNew(pn)), c, !miss);
+  const o = await tm.old(() => readOld(po, oldWant(c), c)); if (!o) continue;
+  compare(c, o, await tm.new(() => readNew(pn)), c, !miss);
   for (const x of await tm.new(() => layout(pn))) fail('모양 360', c + ' ' + x);
   for (const x of await tm.new(() => pageRules(pn))) fail('모양 규칙', c + ' ' + x);
   if (pn._errs.length) { fail('화면 오류', c + ' ' + pn._errs.join(' | ').slice(0, 200)); pn._errs.length = 0; }
@@ -368,7 +378,7 @@ await po.context().close(); await pn.context().close();
       const want = s.head ?? head;
       const okO = await tm.old(async () => { await po2.goto(oldUrl(s.c)); return po2.waitForFunction(([w, slots]) => { const v = document.querySelector('#view'); if (!v || v.querySelector('.boot')) return false; if ((v.querySelector('h1')?.textContent || '') !== w) return false; const t = v.textContent; return !t.includes('여는 중') && !(slots && t.includes('다음 회차 ?')); }, [want, s.slots ?? hasSlots], {timeout: 20000}).then(() => true, () => false); });
       if (!okO) fail('빈 날 길 옛 쪽 덜 열림', s.k + ' ' + s.c);
-      else compare(s.c, await tm.old(() => readOld(po2)), n, '빈 날 길 ' + s.k + ' ' + s.c, !!nameOf(s.c) && s.k !== '모든 회사 못 받음');
+      else { const o = await tm.old(() => readOld(po2, want, '빈 날 길 ' + s.k + ' ' + s.c, s.slots ?? hasSlots)); if (o) compare(s.c, o, n, '빈 날 길 ' + s.k + ' ' + s.c, !!nameOf(s.c) && s.k !== '모든 회사 못 받음'); }
       await po2.context().close();
     }
     await pn2.context().close();
