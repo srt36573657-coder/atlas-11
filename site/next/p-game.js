@@ -5,6 +5,7 @@
 import {GAME, newAccount, okAccount, trade, valueOf, eok, CODE_RE} from '/next/game-rule.js';
 import {kakao} from '/next/kakao.js';
 import {ownerOk} from '/next/p-jinhwa.js';
+import {sendCode} from '/next/p-admin.js';
 
 export const PUBLIC = false; // 모두에게 열기 — 사장님이 변호사 확인 뒤 「열어」 하실 때만 true
 const K = 'atlas:dori-game';
@@ -84,8 +85,8 @@ export async function render() {
     const held = Object.entries(acc.pos);
     const prizeBox = h('section', {class: 'gm-prize'}, h('h2', {text: '30억 원을 만들면'}),
       h('p', {text: `스타벅스 상품권 ${(GAME.prize.each / 10000).toLocaleString('ko-KR')}만 원짜리 ${GAME.prize.count}장을 드려요. 기간과 순위는 없어요.`}),
-      prize ? h('p', {class: 'gm-code num', text: prize}) : null,
-      h('p', {class: 'gm-t', text: prize ? '이 번호를 보내 주시면 상품권을 보내 드려요.' : member ? '목표를 넘으면 여기에 상 번호가 생겨요.' : '상은 카톡으로 가입한 사람만 받아요. 지금은 이 기기에서 연습만 해요.'}));
+      prize ? h('p', {class: 'gm-code num', text: prize}) : null, prize ? sendCode('돌이 30억 상 번호 ' + prize) : null,
+      h('p', {class: 'gm-t', text: prize ? '돌이를 알려 준 분께 이 번호를 카톡으로 보내 주세요. 확인한 뒤 상품권을 보내 드려요.' : member ? '목표를 넘으면 여기에 상 번호가 생겨요.' : '상은 카톡으로 가입한 사람만 받아요. 지금은 이 기기에서 연습만 해요.'}));
     box.replaceChildren(...[
       h('section', {class: 'gm-sum'}, h('p', {class: 'gm-lb', text: '지금 합계'}), h('p', {class: 'gm-big num', text: eok(v.total)}), bar,
         h('p', {class: 'gm-t', text: v.won ? '목표 30억 원을 넘었어요.' : `목표 30억 원까지 ${eok(v.left)} 남았어요.`}),

@@ -14,6 +14,12 @@ const h = (...a) => nx().h(...a);
 const toast = t => { try { nx().toast(t); } catch { /* 알림 못 띄움 */ } };
 const localRecords = () => { try { const x = JSON.parse(localStorage.getItem(K_WHY) || '[]'); return Array.isArray(x) ? x : null; } catch { return null; } };
 
+/** 번호 보내기 단추 — 휴대폰 보내기 창(카톡이 그 안에) · 못 열면 번호를 복사 */
+export function sendCode(text) {
+  const b = h('button', {type: 'button', class: 'cp-go', text: '번호 보내기'});
+  b.addEventListener('click', async () => { try { if (navigator.share) { await navigator.share({text}); return; } } catch { return; } try { await navigator.clipboard.writeText(text); toast('번호를 복사했어요.'); } catch { toast('? 번호를 복사하지 못했어요.'); } });
+  return b;
+}
 /** 쿠폰 칸 — 점수 막대 하나 · 지금 할 일 한 줄 · 번호(있을 때) */
 export function couponCard() {
   const box = h('section', {class: 'cp-card', 'aria-label': '커피 쿠폰'});
@@ -24,7 +30,7 @@ export function couponCard() {
     if (Number.isInteger(n)) bar.firstChild.style.width = Math.round(n / RULE.need * 100) + '%';
     const rows = [h('p', {class: 'cp-h'}, h('span', {text: '커피 쿠폰까지'}), h('b', {class: 'num', text: n == null ? '?' : `${n} / ${RULE.need}`})), bar,
       h('p', {class: 'cp-t', text: '열한 질문을 끝까지 하면 하루에 1점이 쌓여요. 10점이면 커피 쿠폰 한 장이에요. 한 사람에 한 달 한 장이에요.'})];
-    if (S?.code) rows.push(h('p', {class: 'cp-t', text: '이번 달 쿠폰 번호예요. 이 번호를 보내 주시면 커피 쿠폰을 보내 드려요.'}), h('p', {class: 'cp-code num', text: S.code}));
+    if (S?.code) rows.push(h('p', {class: 'cp-t', text: '이번 달 쿠폰 번호예요. 돌이를 알려 준 분께 이 번호를 카톡으로 보내 주세요. 확인한 뒤 커피 쿠폰을 보내 드려요.'}), h('p', {class: 'cp-code num', text: S.code}), sendCode('돌이 커피 쿠폰 번호 ' + S.code)); // 받을 곳 — 사장님 15:24 「너가 알아서 해」: 알려 준 분께 카톡으로(이름 · 전화를 받지 않음)
     else if (S?.wait) rows.push(h('p', {class: 'cp-t', text: '이번 달 쿠폰은 이미 받았어요. 다음 달에 다시 받을 수 있어요.'}));
     else if (!S && kakao?.on) rows.push(h('p', {class: 'cp-t', text: '쿠폰을 받으려면 카톡으로 가입해 주세요. 점수는 이 휴대폰 기록으로 세어 두었어요.'}), (() => { const b = h('button', {type: 'button', class: 'cp-go', text: '카톡으로 가입하기'}); b.addEventListener('click', () => kakao.start(location.hash || '#/why')); return b; })());
     else if (!S) rows.push(h('p', {class: 'cp-t cp-q', text: '쿠폰 받기는 카톡 가입이 열리면 시작해요. 점수는 이 휴대폰에 쌓여요.'}));
