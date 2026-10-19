@@ -517,7 +517,7 @@ async function vHomeAll() {
   band.el.setAttribute('data-w', 'today'); band.el.setAttribute('data-num', ''); band.el.classList.add('w-today');
   const kk = h('button', {class: 'kk-btn w-kk', type: 'button', 'aria-label': NAME + ' 주소를 카톡으로 친구에게 보내기'}, icon('share')); // 이 곳 주소만(종목 · 숫자 · 답 없음) — 휴대폰 보내기 창(카톡이 그 안에)
   kk.addEventListener('click', () => share(NAME, absUrl('#/')));
-  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '왜 사?'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 166, height: 133, decoding: 'async'}));
+  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '왜 사?'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 150, height: 120, decoding: 'async'}));
   const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '첫 질문을 해 볼까?'})), kk);
   const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
   const month = await monthLine(C);
@@ -1118,10 +1118,10 @@ async function route(force) {
 const STONE = {shorts: 'shorts', today: 'today', surge: 'surge', sub: 'sub', me: 'me', cal: 'cal', cond: 'cond', jinhwa: 'jinhwa'};
 function stoneArt(k, a, root) {
   const n = k === 'why' ? (a ? 'why-q1' : 'why') : k === 'w' ? (a && !a.includes('/') ? 'company' : null) : STONE[k];
-  if (n === 'shorts') { const sh = root.querySelector('.shorts'); if (sh && !sh.querySelector('.st-art')) sh.append(h('img', {class: 'st-art st-abs', src: '/media/stone/shorts.svg', alt: '', width: 120, height: 96, decoding: 'async'})); return; } // 시황은 큰 제목이 없어 오른쪽 위 빈 자리에
+  if (n === 'shorts') { const sh = root.querySelector('.shorts'); if (sh && !sh.querySelector('.st-art')) sh.append(h('img', {class: 'st-art st-abs', src: '/media/stone/shorts.svg', alt: '', width: 96, height: 77, decoding: 'async'})); return; } // 시황은 큰 제목이 없어 오른쪽 위 빈 자리에
   const t = n ? root.querySelector('h1') : null; if (!t || t.querySelector('.st-art')) return;
-  t.classList.add('st-h');
-  t.append(h('img', {class: 'st-art', src: '/media/stone/' + n + '.svg', alt: '', width: 128, height: 102, decoding: 'async'}));
+  t.classList.add('st-h'); if (k === 'why') t.classList.add('st-why');
+  t.append(h('img', {class: 'st-art', src: '/media/stone/' + n + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
 }
 window.addEventListener('hashchange', () => route());
 $('#findBtn')?.replaceChildren(icon('search'));

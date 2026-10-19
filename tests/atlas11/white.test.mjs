@@ -98,14 +98,14 @@ test('올리기 직전 문: 본질 문 바로 뒤에 흰 첫 화면 문 · 앞 �
 test('화면 잣대 한 장이 있고 기계 · 진화가 못 고침', async () => {
   const s = read(DOC);
   assert.match(s.split('\n').slice(0, 4).join('\n'), /사장님 말씀.*으로만 고친다\. 기계와 진화 회차는 못 고친다\./);
-  for (const w of ['#FFFFFF', '#16181D', '#8A6516', '#D0202E', '#1E5BD8', '390×844', '320×568', '2.5초', '48px']) assert.ok(s.includes(w), w);
+  for (const w of ['#080808', '#FFFFFF', '#F9D21C', '#FF6A3D', '#6C86FF', '390×844', '320×568', '2.5초', '48px']) assert.ok(s.includes(w), w);
   const rows = s.split('## 실패할 길 일곱과 막는 줄')[1]?.split('\n## ')[0].split('\n').filter(l => /^\| [1-7]\. /.test(l)) ?? [];
   assert.equal(rows.length, 7, '실패할 길 일곱');
   for (const r of rows) assert.match(r, /`[^`]+\.(mjs|md)`|`docs\//, '막는 줄마다 파일 이름: ' + r.slice(0, 30));
   const L = await import(path.join(ROOT, 'scripts/atlas11/jinhwa/lib.mjs'));
   for (const f of [DOC, GATE, CHECK]) assert.equal(L.protectedHits([f]).length, 1, `진화 지킴 ${f}`);
   assert.match(L.protectedHits([DOC])[0].why, /화면 잣대/);
-  for (const f of ['docs/골똘이_본질.md', 'scripts/atlas11/deploy_netlify.mjs', '.github/workflows/atlas11-daily.yml']) assert.equal(L.protectedHits([f]).length, 1, `앞 지킴 그대로 ${f}`);
+  for (const f of ['docs/돌이_본질.md', 'scripts/atlas11/deploy_netlify.mjs', '.github/workflows/atlas11-daily.yml']) assert.equal(L.protectedHits([f]).length, 1, `앞 지킴 그대로 ${f}`);
 });
 
 test('원칙 문서와 기록 탭에 바뀐 앞 규칙을 적음', () => {

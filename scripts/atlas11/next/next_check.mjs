@@ -125,6 +125,7 @@ const knownHref = h => {
   if (h === '/hello.html#hp-vid') return VIDEO.ready; // 첫 화면 세 줄 칸 밑 「골똘이의 고민 1분 보기 ›」 = 소개 쪽 영상 칸(새 영상이 오른 뒤에만 · [5] 5)
   if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
+  if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)
   if ((mm = /^#\/why\/([0-9A-Z]{6})$/.exec(h))) return READY.has('why') && !!CO[mm[1]]; // 「이 회사로 왜 사?」(회사 화면 a.why-go · 보유종목 「이 회사로 왜 사? 적기」 — [3] 2)
   if ((mm = /^#\/gdr(?:\/(\d+))?$/.exec(h))) return READY.has('gdr') && (mm[1] == null || !!GDR?.picks?.some(x => String(x.no) === mm[1])); // 고도리 칸 · 카드 하나(번호는 gdr.json 에 있어야)
@@ -196,31 +197,33 @@ for (const w of [320, 360, 390]) {
      본질 카드([data-w=ess] · section.ess) → (한 달 된 기록이 있을 때만 금빛 a.w-month) → 앵무새 물음(div.w-say) → 「친구야, 왜 사?」 찾기 칸(form.w-find) → 오늘 장 한 줄(a.hm-band → #/today)
      → 바로 가기 넷(nav.w-go4 · 골똘이 칸은 열한 질문 뒤에만 #/gdr · 그 전 #/why) → 「전부 보기」(details.w-all · 처음 닫힘 · 한 줄에 하나 · 안에 옛 「더 보기」 세 줄 · 봉인 · 약속) → 시황 사실(section.w-news) → 안전 한 줄
      옛 잣대 → 새 자리: 칩 줄 「달력」 「조건 찾기」 → 바로 가기 · 이야기 입구 → 전부 보기 줄 · 질문 칸(section.wy) → 찾기 칸(회사를 치면 #/why/<번호>) · 칸 자리(section.gdr) → 바로 가기 + #/gdr · 칩 줄 끝 흐림(마스크) → 칩 줄이 없어 뺌 */
-  const HOME_ORDER = ['section.ess', 'a.w-month', 'div.w-say', 'form.w-find', 'a.hm-band', 'nav.w-go4', 'details.w-all', 'section.w-news', 'p.safe'];
+  /* 돌 판 첫 화면(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3/home · 규칙 82) — 큰 제목 + 돌 그림 → 돌이 물음 → 읽는 곳 셋(① 본질 카드 ② 오늘 장 한 줄 + 시황 사실 ③ 한 달 된 기록 금빛 줄 또는 「한 달 뒤 물어볼게요」)
+     → 엄지 자리(찾기 칸 · 바로 가기 넷 · 전부 보기) → 진화 한 줄 · 차례는 #view 안 칸을 문서 차례로 셈(칸이 읽는 곳 · 엄지 자리 안에 듦) · 안전 글은 본질 세 줄 안 */
+  const HOME_ORDER = ['div.s-hd', 'div.w-say', 'section.ess', 'a.hm-band', 'section.w-news', 'a.w-month', 'a.s-ghost', 'form.w-find', 'nav.w-go4', 'details.w-all', 'a.s-evo'];
   const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk')]; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
   const g = await q.evaluate(ord => {
-    const kids = [...document.querySelectorAll('#view > *')], gd = document.querySelector('#view section.gdr');
-    const band = document.querySelector('#view > a.hm-band'), more = document.querySelector('#view > details.w-all'), go4 = document.querySelector('#view > nav.w-go4'), fi = document.querySelector('#view form.w-find input');
+    const kids = [...document.querySelectorAll('#view *')].filter(e => ord.some(s => e.matches(s)) && !e.closest('.w-allin')), gd = document.querySelector('#view section.gdr');
+    const band = document.querySelector('#view a.hm-band.w-today'), more = document.querySelector('#view details.w-all'), go4 = document.querySelector('#view nav.w-go4'), fi = document.querySelector('#view form.w-find input');
     return {order: kids.map(e => ord.find(s => e.matches(s)) ?? e.tagName.toLowerCase() + '.' + e.className), blocks: [...document.querySelectorAll('#view [data-w]')].map(e => e.getAttribute('data-w')),
       today: document.querySelectorAll('#view .today, #view .today-d, #view .ptoday, #view .ptoday-home').length, surgeCards: [...document.querySelectorAll('#view a.card')].filter(a => /급등/.test(a.textContent)).length,
       al: [...document.querySelectorAll('#view .m4-al')].map(e => ({t: e.textContent, inBand: !!e.closest('a.hm-band')})), top: document.querySelectorAll('#view .m4-top').length,
       band: band ? {href: band.getAttribute('href'), t: band.innerText.replace(/ /g, ' ')} : null, moreOpen: !!more?.open,
-      dates: ([...document.querySelectorAll('#view > *')].filter(e => !e.matches('section.ess')).map(e => e.innerText).join('\n').replace(/ /g, ' ').match(/\d{1,2}월 \d{1,2}일/g) || []), // 닫힌 「전부 보기」 안 글은 innerText 에 없음 · 본질 세 줄 칸(받은 때)은 따로 셈([5] 8)
-      ess: (() => { const s = document.querySelector('#view > section.ess'), d = s?.querySelector('details'); return s ? {open: !!d?.open, lines: [...s.querySelectorAll('[data-ess]')].map(e => e.textContent), shown: [...s.querySelectorAll('[data-ess]')].map(e => e.checkVisibility()),
+      dates: (() => { const sp = t => t.replace(/\u00a0/g, ' '), all = sp(document.querySelector('#view')?.innerText ?? '').match(/\d{1,2}월 \d{1,2}일/g) || [], es = sp(document.querySelector('#view section.ess')?.innerText ?? '').match(/\d{1,2}월 \d{1,2}일/g) || []; for (const d of es) { const j = all.indexOf(d); if (j >= 0) all.splice(j, 1); } return all; })(), // 돌 판 — 본질 칸이 읽는 곳 안에 들어 #view 글에서 본질 칸 날짜만 뺌(닫힌 「전부 보기」 안 글은 innerText 에 없음)
+      ess: (() => { const s = document.querySelector('#view section.ess'), d = s?.querySelector('details'); return s ? {open: !!d?.open, lines: [...s.querySelectorAll('[data-ess]')].map(e => e.textContent), shown: [...s.querySelectorAll('[data-ess]')].map(e => e.checkVisibility()),
         dates: (d?.innerText ?? s.innerText).match(/\d{1,2}월\s\d{1,2}일/g) || [], v: s.querySelector('a.ess-v')?.textContent ?? null} : null; })(), // 본질 세 줄(2026-10-18 16:39 [5] · 일꾼 KC)
       go4: go4 ? [...go4.querySelectorAll('a')].map(a => a.getAttribute('href')) : [], letter: document.querySelectorAll('#view .m4-letter, #view .hpi').length,
       findTop: fi ? Math.round(fi.getBoundingClientRect().top + scrollY) : null, findPh: fi?.getAttribute('placeholder') ?? null, vh: innerHeight, wy: document.querySelectorAll('#view section.wy').length,
       gdrBox: !!gd, gdrLinks: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')).filter(x => /^#\/gdr(\/|$)/.test(x ?? '')),
       tk: document.querySelectorAll('#view > a.tk-entry, #view > .chips').length};
   }, HOME_ORDER);
-  const ordWant = HOME_ORDER.filter(s => s !== 'a.w-month' || g.order.includes('a.w-month'));
-  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(흰 첫 화면 — 본질 카드 → 앵무새 물음 → 찾기 칸 → 오늘 장 → 바로 가기 넷 → 전부 보기 → 시황 사실 → 안전 한 줄)', g.order.join(' → '));
+  const ordWant = HOME_ORDER.filter(s => !['a.w-month', 'a.s-ghost'].includes(s) || g.order.includes(s)); // 한 달 된 기록 줄이나 「한 달 뒤」 줄 가운데 하나
+  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(돌 판 — 큰 제목 → 돌이 물음 → 본질 카드 → 오늘 장 → 시황 사실 → 한 달 뒤 → 찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화)', g.order.join(' → '));
   for (const k of ['ess', 'find', 'today', 'gdr', 'all', 'news']) if (!g.blocks.includes(k)) fail('첫 화면 칸 [data-w="' + k + '"]', g.blocks.join(' · '));
   if (g.tk) fail('첫 화면에 칩 줄 · 이야기 입구 띠가 남음(흰 첫 화면 — 전부 보기 안으로)', String(g.tk));
   /* 본질 세 줄(사장님 2026-10-18 16:39 [5] 1 ~ 3 · 5 · 8 · 일꾼 KC) — 처음 온 기기(새 칸 q)는 펼침 · 글 = essence.js 셈(요약이 새것일 때만 숫자 · 아니면 「?」) · 칸 안 날짜는 받은 때 하나까지(띠 날짜와 따로 셈)
      · 「… 1분 보기 ›」는 VIDEO.ready 일 때만 · 다시 온 기기(atlas:essence-seen)는 한 줄로 접힘 */
   { const want = essenceLines(essenceData({summary: sumFresh ? SUMJ : null, now: Date.now()}));
-    if (!g.ess) fail('본질 세 줄 칸 없음([5] 1)', '#view > section.ess');
+    if (!g.ess) fail('본질 세 줄 칸 없음([5] 1)', '#view section.ess');
     else {
       if (!g.ess.open || g.ess.shown.some(x => !x)) fail('본질 세 줄 — 처음 온 기기는 펼침([5] 1)', JSON.stringify({open: g.ess.open, shown: g.ess.shown}));
       if (g.ess.lines.join('\n') !== want.join('\n')) fail('본질 세 줄 글 ≠ essence.js 셈([5] 2 · 3)', JSON.stringify({got: g.ess.lines, want}));
@@ -229,7 +232,7 @@ for (const w of [320, 360, 390]) {
     }
     const z = await page(390, 844); await z.context().addInitScript(() => { try { localStorage.setItem('atlas:essence-seen', 'true'); } catch { /* 기억 못 함 */ } });
     if (await first(z, base + '/next/#/', () => !!document.querySelector('#view section.ess') && !document.querySelector('#view .boot')) === false) fail('본질 세 줄 — 다시 온 기기', '20초 안에 안 나옴');
-    else { const r = await z.evaluate(() => { const s = document.querySelector('#view > section.ess'), d = s?.querySelector('details'); return {open: !!d?.open, shown: [...(s?.querySelectorAll('[data-ess]') || [])].map(e => e.checkVisibility()), h: Math.round(s?.getBoundingClientRect().height ?? 0)}; });
+    else { const r = await z.evaluate(() => { const s = document.querySelector('#view section.ess'), d = s?.querySelector('details'); return {open: !!d?.open, shown: [...(s?.querySelectorAll('[data-ess]') || [])].map(e => e.checkVisibility()), h: Math.round(s?.getBoundingClientRect().height ?? 0)}; });
       if (r.open || r.shown.join() !== 'true,false,false') fail('본질 세 줄 — 다시 온 기기는 한 줄로 접힘([5] 1)', JSON.stringify(r)); }
     await z.context().close(); }
   if (g.today) fail('첫 화면에 오늘 시장 칸이 남음([6] 4 → #/today)', String(g.today));

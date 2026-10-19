@@ -8440,6 +8440,14 @@
   "{e} 주소를 카톡으로 친구에게 보내기": "Send the {e} link to a friend on KakaoTalk",
   "좋아, 정해 둔 대로만 할까?": "Good, stick to your plan?",
   "반만 준비됐을까?": "Only half ready?",
-  "! 크게 움직인 날": "! A big-move day"
+  "! 크게 움직인 날": "! A big-move day",
+  "첫 질문을 해 볼까?": "Shall we ask the first question?",
+  "지난 기록": "Past record",
+  "한 달 뒤 물어볼게요": "I'll ask again in a month",
+  "이 기기에만": "Only on this device",
+  "시작": "Start",
+  "채점 전": "Not scored yet",
+  "아직 바뀔 수 있는 값이에요": "This value may still change",
+  "이 칸에 든 곳이 많아 많이 오른 차례로 {n}곳만 실었어요. 나머지 {n}곳은 싣지 않아요.": "Too many here, so only the top {n} by gain are listed. The other {n} are not listed."
  }
 }
