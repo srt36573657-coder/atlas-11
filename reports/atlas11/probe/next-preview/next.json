@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-19T22:32:05.852Z",
+ "at": "2026-10-19T22:46:43.960Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-19",
  "ready": [
@@ -29,11 +29,11 @@
  "oldNameAllow": [
   "아틀라스링크"
  ],
- "seconds": 133,
+ "seconds": 142,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 132.9,
+  "wall": 141.7,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
