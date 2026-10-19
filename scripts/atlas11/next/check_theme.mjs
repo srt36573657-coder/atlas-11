@@ -93,6 +93,7 @@ function variant(V) {
   else Object.assign(ix, {z: 'Q', d: 4, dots: [0, 0, 1, 1], sc: 2});
   Object.assign(hm, {count: th.count, record: th.record, provisional: th.provisional});
   const hi = hm.inds.find(i => i.n === X); if (hi) for (const k of ['z', 'x', 'y', 'd', 'dots', 'sc']) if (k in ix && k in hi) hi[k] = ix[k];
+  if (V === 'B') hm.order.S.slice(0, 3).forEach((n, k) => { const i = hm.inds.find(x => x.n === n); if (i) Object.assign(i, {y: [9.6, 8.2, 7.1][k], x: [3.9, -2.5, 4.8][k]}); }); // 싹 앞 셋이 높을 때(큰 하락 뒤 · 실제 사이트 2026-10-19) 번호가 그림 안에
   return {th, mo, hm, X, lead: lead?.c ?? null};
 }
 const nextOf = p => p.evaluate(() => { const a = [...document.querySelectorAll('#view a.th-next')]; return {n: a.length, href: a.at(-1)?.getAttribute('href') ?? null, title: a.at(-1)?.querySelector('b')?.textContent ?? a.at(-1)?.textContent ?? null}; });
@@ -205,7 +206,11 @@ try {
       const {p, ctx} = await open((en ? '?lang=en' : '') + hs[0], {w: 320, h: 640, routes});
       for (const hsh of hs) {
         if (hsh !== hs[0]) { await p.evaluate(x => { location.hash = x; }, hsh); await settle(p); }
-        if (!en) { await look(V + ' ' + hsh + ' @320', p); bump('바꾼 자료 쪽'); continue; }
+        if (!en) {
+          await look(V + ' ' + hsh + ' @320', p); bump('바꾼 자료 쪽');
+          if (hsh === '#/') { const nb = await p.evaluate(() => { const s = document.querySelector('#view section.th-home svg.th-clock'); if (!s) return null; const vb = s.viewBox.baseVal; return [...s.querySelectorAll('circle.th-nb')].map(c => [+c.getAttribute('cx'), +c.getAttribute('cy'), +c.getAttribute('r')]).filter(([x, y, r]) => x - r < 0 || y - r < 0 || x + r > vb.width || y + r > vb.height); }); if (nb?.length) fail('첫 화면 시계 번호가 그림 밖', V + ' ' + JSON.stringify(nb)); } // 2026-10-19 실제 사이트 첫 화면 ① 이 잘림
+          continue;
+        }
         await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(150);
         const s = await enScan(p);
         if (s.han.length) fail('영어 — 보이는 한글', V + ' ' + hsh + ' 「' + s.han.slice(0, 3).join('」 「') + '」');
