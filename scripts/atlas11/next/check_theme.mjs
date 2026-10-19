@@ -7,6 +7,9 @@
 //   ③ 「다음」 차례 — 인사에서 「다음」만 눌러 열여덟 번(→ #/why/<번호>) · 있는 쪽 다섯(관심 → 매매일지 → 보유종목 → 가짜 돈 → 진화 → 오늘 정리 → 첫 화면) · 앞 쪽(‹) 고리
 //   ④ 숫자 = 자료(업종 쪽 점 넷 ✓ · 번짐 수 · 회사 열흘 %) ⑤ 두 폭(360 · 390) 가로 넘침 0 · 글 17px 넘게 · 누르는 자리 44px · 화면 오류 0 · 쓰지 않을 말 0
 //   ⑥ 자료를 못 받으면 「?」 한 줄(첫 화면 · 쪽) — 화면이 죽지 않음
+//   ⑦ 자료를 바꾼 다섯 판(A ~ E · 받은 자료를 이 검사 안에서 바꿔 끼움)으로 열아홉 쪽을 한국어 · 영어 320 폭에서 — 자료에 따라 갈리는 글이 모두 한 번씩 그려짐
+//      (진짜 싹 0 · 새로 들어옴 · 점 하나 · 큰 회사 값 없음 · 무리 없음 · 장중 · 시듦 빔 · 꽃 · 시듦 · 잠잠 업종 · 회사 줄 밖 · 먼저 · 뒤따름 · 성적표 못 셈)
+//      한국어 = ⑤ 잣대 · 영어 = 사전에 없는 틀 0 · 보이는 한글 0(lang="ko" 빼고) · 화면 밖 칸 0 · 줄 안 넘침 0 — 2026-10-19 틀림 장부 60(이 방 자료 한 판으로는 영어가 통과해도 실제 자료에서 걸림)
 //   실패가 하나라도 있으면 끝 코드 1
 import fs from 'node:fs/promises';
 import fss from 'node:fs';
@@ -26,7 +29,7 @@ const getJ = async f => { for (let i = 0; i < 4; i++) { try { const r = await fe
 const enc = encodeURIComponent, num = n => Number(n).toLocaleString('ko-KR');
 const MD = d => (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일';
 
-const [TH, TM] = await Promise.all([getJ('/next/data/theme.json'), getJ('/next/data/theme-more.json')]);
+const [TH, TM, HM] = await Promise.all([getJ('/next/data/theme.json'), getJ('/next/data/theme-more.json'), getJ('/next/data/theme-home.json')]);
 if (!TH || !TM) { console.error('테마 자료를 못 받음'); if (OUT) await fs.writeFile(OUT, JSON.stringify({ok: false, fails: [['자료', 'theme.json · theme-more.json']]})); process.exit(1); }
 /* ① 자료 꼴 */
 const Z = ['S', 'B', 'W', 'Q'], ind = new Map(TH.inds.map(i => [i.n, i]));
@@ -66,6 +69,31 @@ async function look(where, p) {
   const bad = screenHits(s.text); if (bad.length) fail('쓰지 않을 말', where + ' ' + bad.join(' · '));
   if (p._errs.length) fail('화면 오류', where + ' ' + p._errs.slice(0, 2).join(' | '));
   return s;
+}
+/** 영어 화면 — 보이는 한글(lang="ko" 빼고) · 화면 밖 칸 · 테마 줄 안에서 넘친 글(번호 · 점과 겹침 — 2026-10-19 꽃 줄) */
+const enScan = p => p.evaluate(() => {
+  const v = document.querySelector('#view'), HAN = /[가-힣]/, vw = innerWidth, out = {han: [], over: document.documentElement.scrollWidth - vw, off: [], spill: []};
+  const w = document.createTreeWalker(v, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) { const el = n.parentElement; if (!el || el.closest('[lang="ko"]') || !HAN.test(n.textContent)) continue; const r = el.getBoundingClientRect(); if (r.width && r.height) out.han.push(n.textContent.trim().slice(0, 40)); }
+  for (const el of v.querySelectorAll('*')) { const r = el.getBoundingClientRect(); if (!r.width || (r.right <= vw + 0.5 && r.left >= -0.5)) continue; let a = el.parentElement, clip = false; while (a && a !== document.body) { if (/(auto|scroll|hidden|clip)/.test(getComputedStyle(a).overflowX)) { clip = true; break; } a = a.parentElement; } if (!clip) out.off.push(String(el.className?.baseVal ?? el.className) + ' ' + Math.round(r.right)); }
+  for (const el of v.querySelectorAll('.th-meta, .th-mid2, .th-srow, .th-li, .th-cor')) if (el.clientWidth && el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX === 'visible') out.spill.push(String(el.className) + ' ' + el.scrollWidth + '>' + el.clientWidth);
+  return out;
+});
+/** 자료를 바꾼 판(⑦) — 싹 맨 앞 업종 · 그 업종 앞선 회사를 바꿔 글 갈래를 고르게 그림(셈이 아니라 그리기만 봄) */
+function variant(V) {
+  const th = structuredClone(TH), mo = structuredClone(TM), hm = structuredClone(HM);
+  const X = th.order.S[0] ?? th.inds[0].n, ix = th.inds.find(i => i.n === X), M = mo.inds[X], lead = M?.top?.[0] ?? null;
+  if (V === 'A') { // 진짜 싹 없음 · 새로 들어옴 · 점 하나 · 큰 회사 값 없음 · 업종 내림 · 성적표 차이 없음 · 장중 · 시듦 빔 · 무리 없음 · 회사 2번째 · 최근에 몰림 · 먼저
+    Object.assign(ix, {dots: [1, 0, 0, 0], sc: 1, d: 1, bigAvg: null, m10: -1.23, gn: null, g: null, A5: -2, B5: 1}); th.count.real = 0; th.record.more = false; th.provisional = true; th.count.W = 0; th.order.W = [];
+    for (const b of M?.big ?? []) Object.assign(b, {d10: null, a5: null, b5: null, rank: null, gap: null, l: null});
+    if (lead) Object.assign(lead, {rank: 2, a5: 1, b5: 3});
+  } else if (V === 'B') { Object.assign(ix, {dots: [1, 1, 1, 1], sc: 4, d: 7, bigAvg: 1.5, m10: 2.5, A5: 1, B5: 1.5}); th.record.more = true; th.provisional = false; if (lead) Object.assign(lead, {rank: 1, a5: 5, b5: 1, gap: 0.4}); } // 진짜 싹 · 앞에 몰림
+  else if (V === 'C') { Object.assign(ix, {z: 'B', d: 3, dots: [1, 1, 0, 1], sc: 3, A5: 0, B5: 0, m10: 0}); th.record.real.n = 0; if (lead) Object.assign(lead, {rank: null, a5: 0.5, b5: 4}); } // 꽃 업종 · 회사 줄 밖 · 뒤따름 · 업종 그대로 · 성적표 못 셈
+  else if (V === 'D') Object.assign(ix, {z: 'W', d: 2});
+  else Object.assign(ix, {z: 'Q', d: 4, dots: [0, 0, 1, 1], sc: 2});
+  Object.assign(hm, {count: th.count, record: th.record, provisional: th.provisional});
+  const hi = hm.inds.find(i => i.n === X); if (hi) for (const k of ['z', 'x', 'y', 'd', 'dots', 'sc']) if (k in ix && k in hi) hi[k] = ix[k];
+  return {th, mo, hm, X, lead: lead?.c ?? null};
 }
 const nextOf = p => p.evaluate(() => { const a = [...document.querySelectorAll('#view a.th-next')]; return {n: a.length, href: a.at(-1)?.getAttribute('href') ?? null, title: a.at(-1)?.querySelector('b')?.textContent ?? a.at(-1)?.textContent ?? null}; });
 const prevOf = p => p.evaluate(() => document.querySelector('#view a.th-back')?.getAttribute('href') ?? null);
@@ -167,6 +195,28 @@ try {
   /* ⑤ 두 폭 — 남은 쪽들 */
   for (const w of [360, 320]) for (const hsh of ['#/', '#/t/how', '#/t/sprout', ib, ib + '/co', ib + '/near', ...(cb ? [cb + '/lead', cb + '/why', cb + '/rank'] : []), '#/t/today']) {
     const {p, ctx} = await open(hsh, {w, h: 640}); await look(hsh + ' @' + w, p); bump('폭'); await ctx.close();
+  }
+  /* ⑦ 자료를 바꾼 다섯 판 — 한국어 · 영어(320) */
+  if (HM) for (const V of ['A', 'B', 'C', 'D', 'E']) {
+    const v = variant(V), ib2 = '#/t/i/' + enc(v.X), cb2 = v.lead ? '#/t/c/' + v.lead : null;
+    const hs = ['#/', '#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today', ib2, ...['path', 'spread', 'big', 'co', 'near'].map(s => ib2 + '/' + s), ...(cb2 ? [cb2, ...['lead', 'why', 'rank', 'unknown', 'keep'].map(s => cb2 + '/' + s)] : [])];
+    const routes = [['**/next/data/theme.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.th)})], ['**/next/data/theme-more.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.mo)})], ['**/next/data/theme-home.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.hm)})]];
+    for (const en of [false, true]) {
+      const {p, ctx} = await open((en ? '?lang=en' : '') + hs[0], {w: 320, h: 640, routes});
+      for (const hsh of hs) {
+        if (hsh !== hs[0]) { await p.evaluate(x => { location.hash = x; }, hsh); await settle(p); }
+        if (!en) { await look(V + ' ' + hsh + ' @320', p); bump('바꾼 자료 쪽'); continue; }
+        await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(150);
+        const s = await enScan(p);
+        if (s.han.length) fail('영어 — 보이는 한글', V + ' ' + hsh + ' 「' + s.han.slice(0, 3).join('」 「') + '」');
+        if (s.over > 0 || s.off.length) fail('영어 — 화면 밖', V + ' ' + hsh + ' ' + s.over + 'px ' + s.off.slice(0, 3).join(' | '));
+        if (s.spill.length) fail('줄 안 넘침', V + ' ' + hsh + ' ' + s.spill.slice(0, 3).join(' | '));
+        bump('바꾼 자료 영어 쪽');
+      }
+      if (en) { const miss = await p.evaluate(() => (window.__atlasI18n?.missing?.() ?? []).map(m => m.key)); if (miss.length) fail('영어 — 사전에 없는 틀', V + ' ' + miss.slice(0, 4).join(' | ')); }
+      if (p._errs.length) fail('화면 오류', V + (en ? ' 영어 ' : ' ') + p._errs.slice(0, 2).join(' | '));
+      await ctx.close();
+    }
   }
   /* ⑥ 자료를 못 받으면 「?」 */
   {
