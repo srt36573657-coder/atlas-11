@@ -8785,6 +8785,14 @@
   "{e} 싹": "{e}: Sprout",
   "{e} 꽃": "{e}: Bloom",
   "{e} 시듦": "{e}: Fading",
-  "{e} 잠잠": "{e}: Quiet"
+  "{e} 잠잠": "{e}: Quiet",
+  "다시 꽃 자리로 왔어요": "is back in the bloom zone",
+  "그 밖에 {n}곳도 자리가 바뀌었어요": "{n} more {pl:industry|industries} changed zone",
+  "외 {n}곳": "and {n} more",
+  "이 기기에 담지 못했어요. 저장이 꺼져 있는지 봐 주세요.": "Could not save on this device. Check that site storage is on.",
+  "관심 업종은 {n}곳까지예요. 알림 쪽에서 하나를 빼고 담아요.": "You can watch up to {n} industries. Remove one on the Alerts page first.",
+  "업종|관심 업종 {n}곳": "Watched industries: {n}",
+  "지금 자료에 없어요": "Not in today's data",
+  "이 업종은 지금 테마 시계 자료에 없어요.": "This industry is not in today's theme clock data."
  }
 }

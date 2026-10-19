@@ -48,12 +48,12 @@ export function clock(TH, {hi = null, marks = null, W = 326, H = 300} = {}) {
 /** 점 넷(채운 동그라미 = 참) */
 export function dots(i) { const s = sv('svg', {class: 'th-dots', viewBox: '0 0 88 20', width: 88, height: 20, role: 'img', 'aria-label': '점 넷 가운데 ' + i.sc + '개'}); i.dots.forEach((v, k) => s.append(sv('circle', {cx: 10 + k * 22, cy: 10, r: 7, class: v ? 'th-d on' : 'th-d'}))); return s; }
 /** 꽃까지 막대 */
-export function bar(x) { const W = 64, s = sv('svg', {class: 'th-bar', viewBox: `0 0 ${W} 8`, width: W, height: 8, 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: W, height: 8, rx: 4, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Math.round(nearBar(x) * W), height: 8, rx: 4, class: 'th-bar1'})); return s; } // 길이 64 하나(줄마다 같은 길이)
+export function bar(x) { const W = 64, s = sv('svg', {class: 'th-bar', viewBox: `0 0 ${W} 8`, width: W, height: 8, preserveAspectRatio: 'none', 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: W, height: 8, rx: 4, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Math.round(nearBar(x) * W), height: 8, rx: 4, class: 'th-bar1'})); return s; } // 길이 64 하나(줄마다 같은 길이)
 /** 줄 하나(싹 · 꽃 · 시듦 목록 · 첫 화면) */
 export function row(i, k, {num: showNum = true, meta = 'near'} = {}) {
   const tag = i.d === 1 ? '새로 들어옴' : i.d + '일째';
   const mid = h('span', {class: 'th-mid2'}, h('span', {class: 'th-rn', text: i.n}),
-    meta === 'near' ? h('span', {class: 'th-meta'}, h('span', {class: 'th-to'}, h('span', {text: '꽃까지'}), bar(i.x)), h('em', {class: 'th-tg' + (i.d === 1 ? ' new' : ''), text: tag})) // 둘째 줄 = 「꽃까지 ▬」 다음 며칠째(글 시작이 이름과 같은 자리 · [10] 7 · 막대 길이 하나)
+    meta === 'near' ? h('span', {class: 'th-meta'}, h('em', {class: 'th-tg' + (i.d === 1 ? ' new' : ''), text: tag}), h('span', {class: 'th-to'}, h('span', {text: '꽃까지'}), bar(i.x))) // 둘째 줄 며칠째 · 셋째 줄 「꽃까지 ▬」(견본 차례 · 줄 높이 늘 같게 · 새 눈 검사 2026-10-19 22시)
       : h('span', {class: 'th-meta'}, h('em', {class: 'th-tg', text: tag}), h('span', {text: '한 달 시장보다'}), h('b', {class: cls(i.x), text: pp(i.x) + '%p'})));
   return h('a', {class: 'th-row', href: '#/t/i/' + enc(i.n)}, showNum ? h('span', {class: 'th-n' + (k < 3 ? ' th-top' : ''), text: String(k + 1)}) : null, mid, dots(i), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}));
 }

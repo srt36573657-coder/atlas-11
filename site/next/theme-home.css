@@ -30,22 +30,24 @@
 .th-sub { margin: 0 0 var(--sp-2); color: #BDBDBD; font-size: var(--fs-2); line-height: 1.5; word-break: keep-all; }
 .th-rows { margin: 0 0 var(--sp-1); }
 .th-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 80px; border-bottom: 1px solid #2A2A2A; color: var(--ink); text-decoration: none; }
+html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 48(app.css)보다 앞 — 줄 높이 80 그대로(새 눈 검사 2026-10-19 22시) */
 .th-n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #3A3A3A; color: var(--ink); font-size: var(--fs-1); font-weight: 700; text-align: center; }
 .th-n.th-top { background: var(--up); color: #080808; }
 .th-mid2 { display: flex; flex: 1; flex-direction: column; gap: 0; min-width: 0; }
 .th-rn { overflow: hidden; font-size: var(--fs-4); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.th-meta { display: block; min-width: 0; color: #BDBDBD; font-size: var(--fs-1); line-height: 1.6; } /* 한 덩이 글(안 칸은 줄 안 글) — 글 시작 = 「꽃까지」 = 이름과 같은 자리([10] 7) · 좁으면 며칠째가 아래 줄로 */
-.th-tg { display: inline; margin: 0 0 0 var(--sp-1); padding: 0 var(--sp-1); border: 1px solid #6E6E6E; border-radius: 8px; color: var(--ink); font-style: normal; white-space: nowrap; }
+.th-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-width: 0; color: #BDBDBD; font-size: var(--fs-1); line-height: 1.6; } /* 줄은 늘 셋 — 이름 · 며칠째 · 「꽃까지 ▬」(폭 · 글꼴 · 말이 바뀌어도 줄 높이가 같게 · 알약이 홀로 들여 쓰이지 않게 · 새 눈 검사 2026-10-19 22시) */
+.th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #6E6E6E; border-radius: 8px; color: var(--ink); font-style: normal; line-height: 1.5; text-align: center; white-space: nowrap; } /* 알약 테 왼쪽 = 이름 글 시작([10] 7 · 알약 안 글은 가운데) */
 .th-tg.new { border-color: var(--up); color: var(--ink); }
 .th-bar { flex: none; width: 64px; height: 8px; } /* 막대 길이는 줄마다 같게(채운 비율을 견주게 · 새 눈 검사 11) */
-.th-to { display: inline; } /* 「꽃까지 ▬」 — 줄 안 글 */
+.th-to { display: flex; flex-basis: 100%; align-items: center; gap: var(--sp-1); min-width: 0; } /* 「꽃까지 ▬」 제 줄 — 글 시작 = 이름과 같은 자리([10] 7) */
+.th-to > span { flex: none; white-space: nowrap; }
 /* 관심 업종 소식(사이트 안 알림 · theme-watch.js noticeBox) — 상자 글 시작 = 테 1 + 16([10] 7) */
 .th-news { margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid var(--gold); border-radius: 16px; }
 .th-nh { margin: 0; color: var(--gold); font-size: var(--fs-2); font-weight: 700; line-height: 1.5; }
 .th-nl { display: block; padding: var(--sp-1) 0; color: var(--ink); font-size: var(--fs-2); line-height: 1.5; text-decoration: none; }
 .th-nm { margin: 0; padding: var(--sp-1) 0; color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
 .th-hi { display: flex; align-items: center; justify-content: center; min-height: 48px; color: #BDBDBD; font-size: var(--fs-1); text-align: center; text-decoration: underline; } /* 돌이 인사(1장)로 — 가운데 한 줄 */
-.th-to .th-bar { display: inline-block; margin: 0 0 0 var(--sp-1); vertical-align: middle; } /* 길이 64 하나 · 좁으면 아래 줄로 */
+.th-to .th-bar { flex: 0 1 64px; min-width: 32px; width: auto; } /* 늘 64 · 아주 좁고 큰 글씨 영어일 때만 줄마다 똑같이 줄어듦(이름표가 같은 말이라 막대 길이는 줄마다 같음) */
 .th-bar .th-bar0, .th-rbar .th-bar0 { fill: #2A2A2A; }
 .th-bar .th-bar1, .th-rbar .th-bar1 { fill: var(--up); }
 .th-dots { flex: none; }

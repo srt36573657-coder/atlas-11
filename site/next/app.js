@@ -132,23 +132,25 @@ const absUrl = hash => location.origin + '/' + hash;
 /* 구독 · 본 기록 · 나중에 볼 것(이 기기에만) */
 const subs = () => store.get(K_SUB, []).filter(x => typeof x === 'string');
 const isSub = key => subs().includes(key);
-function toggleSub(key) { const s = subs(), on = s.includes(key); const nx = on ? s.filter(x => x !== key) : [key, ...s].slice(0, 60); store.set(K_SUB, nx); return !on; }
+/** 돌려줌 = 지금 담겼나 · 이 기기 저장이 막혔으면 null(담았다고 하지 않음 — 새 눈 검사 2026-10-19 22시 · 테마 관심 업종과 같은 잣대) */
+function toggleSub(key) { const s = subs(), on = s.includes(key); const nx = on ? s.filter(x => x !== key) : [key, ...s].slice(0, 60); return store.set(K_SUB, nx) ? !on : null; }
+const SAVE_FAIL = '이 기기에 담지 못했어요. 저장이 꺼져 있는지 봐 주세요.';
 /* 관심 담기 단추(사장님 2026-10-17 21:10 [2] 8 — 옛 「구독」 · 「나중에 볼 것 담기」를 한 이름으로) · 기억 열쇠는 옛 이름 그대로(atlas:new:sub · atlas:new:later — 바꾸면 담아 둔 것이 사라짐) */
 const KEEP_ON = '관심 담음', KEEP_OFF = '관심 담기';
 const keepMsg = (name, on) => (on ? name + ' 관심에 담았어요. 관심 칸에 모여요.' : name + ' 관심에서 뺐어요.');
 function subBtn(key, name) {
   const b = h('button', {class: 'sub-btn', type: 'button', 'aria-pressed': String(isSub(key)), text: isSub(key) ? KEEP_ON : KEEP_OFF});
-  b.addEventListener('click', e => { e.preventDefault(); const on = toggleSub(key); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? KEEP_ON : KEEP_OFF; toast(keepMsg(name, on)); });
+  b.addEventListener('click', e => { e.preventDefault(); const on = toggleSub(key); if (on == null) { toast(SAVE_FAIL); return; } b.setAttribute('aria-pressed', String(on)); b.textContent = on ? KEEP_ON : KEEP_OFF; toast(keepMsg(name, on)); });
   return b;
 }
 function pushHist(code) { const s = store.get(K_HIST, []).filter(x => x !== code); store.set(K_HIST, [code, ...s].slice(0, 30)); }
 const laters = () => store.get(K_LATER, []).filter(x => typeof x === 'string');
 const isLater = code => laters().includes(code);
-function toggleLater(code) { const s = laters(), on = !s.includes(code); store.set(K_LATER, on ? [code, ...s].slice(0, 60) : s.filter(x => x !== code)); return on; }
+function toggleLater(code) { const s = laters(), on = !s.includes(code); return store.set(K_LATER, on ? [code, ...s].slice(0, 60) : s.filter(x => x !== code)) ? on : null; } // 막히면 null(toggleSub 와 같음)
 /** 회사 관심 담기 단추 — 보는 화면 · 관심 칸이 함께 씀(cls = 꼴 이름) */
 function laterBtn(code, name, cls = 'act') {
   const b = h('button', {class: cls, type: 'button', 'aria-pressed': String(isLater(code)), text: isLater(code) ? KEEP_ON : KEEP_OFF});
-  b.addEventListener('click', e => { e.preventDefault(); const on = toggleLater(code); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? KEEP_ON : KEEP_OFF; toast(keepMsg(name, on)); });
+  b.addEventListener('click', e => { e.preventDefault(); const on = toggleLater(code); if (on == null) { toast(SAVE_FAIL); return; } b.setAttribute('aria-pressed', String(on)); b.textContent = on ? KEEP_ON : KEEP_OFF; toast(keepMsg(name, on)); });
   return b;
 }
 function chanName(key) {

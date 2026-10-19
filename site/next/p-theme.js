@@ -6,7 +6,7 @@
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
 import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock} from './theme-home.js';
-import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
+import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
 
 const nx = () => globalThis.NX;
@@ -48,6 +48,8 @@ const say = t => h('p', {class: 'th-say'}, h('span', {class: 'th-who', text: '�
 const hd = (t, art) => h('div', {class: 'th-hd'}, h('h1', {class: 'th-h1', text: t}), h('img', {class: 'th-art', src: '/media/stone/' + art + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
 const asOf = TH => h('p', {class: 'th-asof', text: md(TH.asOf) + ' 장 마감 기준' + (TH.provisional ? ' · 장중 값이 섞여 있어요' : '')});
 const none = (title, what = '테마 시계') => ({title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'}, hd(title, 'home'), h('p', {class: 'empty', text: '? ' + what + ' 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}), nextBtn('테마 시계', '#/', '처음으로'))]});
+/** 자료는 왔는데 이 업종이 없음(이름이 바뀌었거나 빠짐 · 담아 둔 옛 관심 업종) — 「잠시 뒤 다시」가 아님(새 눈 검사 2026-10-19 22시) */
+const gone = title => ({title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'}, hd(title, 'home'), h('p', {class: 'empty', text: '? 이 업종은 지금 테마 시계 자료에 없어요.'}), nextBtn('테마 시계', '#/', '처음으로'))]});
 
 /** 작은 선(1000 = 열흘 전) */
 function spark(l, w = 96, ht = 36) {
@@ -118,7 +120,8 @@ const ckRow = (ok, t, d) => h('div', {class: 'th-ck'}, h('b', {class: ok ? 'y' :
 async function pInd(name, sub) {
   const [TH, TM] = await Promise.all([themeData(), moreData()]);
   const i = indOf(TH, name);
-  if (!TH || !i) return none(name || '업종', TH ? '이 업종' : '테마 시계');
+  if (!TH) return none(name || '업종');
+  if (!i) return gone(name || '업종');
   const k = IND_SUB.findIndex(s => s[0] === sub); if (k < 0) return none(name, '이 쪽');
   const [, , no] = IND_SUB[k], M = TM?.inds?.[name] ?? null, base = '#/t/i/' + enc(name);
   const href = j => base + (IND_SUB[j][0] ? '/' + IND_SUB[j][0] : ''), title = j => IND_SUB[j][1] ?? name;
@@ -218,18 +221,23 @@ async function pCo(code, sub) {
 /** 26 알림(견본 flow36 26 쪽) — 켜짐 넷 · 관심 업종 줄 · 사이트 안 알림이라는 것 그대로 */
 async function pAlert() {
   const TH = await themeData(); if (!TH) return none('알림');
-  const w = watchList();
-  const zOf = new Map((TH.inds ?? []).map(i => [i.n, i.z]));
-  const rows = w.map(n => {
-    const b = h('button', {class: 'th-sw', type: 'button', text: '빼기', 'aria-label': n + ' 빼기'});
-    const r = h('div', {class: 'th-al'}, h('a', {class: 'th-alt', href: '#/t/i/' + enc(n), text: n}), h('b', {class: 'th-z ' + (zOf.get(n) ?? ''), text: zw(zOf.get(n))}), b);
-    b.addEventListener('click', e => { e.preventDefault(); toggleWatch(n); r.remove(); nx()?.toast?.('관심 업종에서 뺐어요.'); });
-    return r;
-  });
+  const zOf = new Map((TH.inds ?? []).map(i => [i.n, i.z])), list = h('div', {class: 'th-wl'});
+  /** 관심 업종 줄 — 빼면 다시 그림(머리 수 · 빈 줄 · 누름 자리는 다음 줄 빼기 단추 · 다 빼면 머리) · 지금 자료에 없는 업종은 고리 없이 까닭만(새 눈 검사 2026-10-19 22시) */
+  const draw = (at = -1) => {
+    const w = watchList();
+    const rows = w.map((n, j) => {
+      const z = zOf.get(n) ?? null, b = h('button', {class: 'th-sw', type: 'button', text: '빼기', 'aria-label': n + ' 빼기'});
+      b.addEventListener('click', e => { e.preventDefault(); const r = toggleWatch(n); if (!r.ok) { nx()?.toast?.(SAVE_FAIL); return; } nx()?.toast?.('관심 업종에서 뺐어요.'); draw(j); });
+      return h('div', {class: 'th-al'}, z ? h('a', {class: 'th-alt', href: '#/t/i/' + enc(n), text: n}) : h('span', {class: 'th-alt', text: n}), h('b', {class: 'th-z ' + (z ?? 'gone'), text: z ? zw(z) : '지금 자료에 없어요'}), b);
+    });
+    const head = h('h2', {class: 'th-ans', tabindex: '-1', 'data-tr': '업종', text: `관심 업종 ${num(w.length)}곳`});
+    list.replaceChildren(head, w.length ? h('div', {class: 'th-als'}, rows) : h('p', {class: 'th-sub', text: '아직 담은 업종이 없어요. 업종 쪽에서 관심 업종에 담기를 눌러요.'}));
+    if (at >= 0) (list.querySelectorAll('.th-al .th-sw')[Math.min(at, w.length - 1)] ?? head).focus();
+  };
+  draw();
   return {title: '알림', nodes: [shell(ALERT_NO, '알림', 'me', '자리가 바뀌면 알려요.', ['관심', '#/sub'], ['매매일지', '#/why'], [
-    h('h2', {class: 'th-ans'}, h('span', {text: '관심 업종 '}), h('em', {'data-tr': '업종', text: num(w.length) + '곳'})),
-    h('div', {class: 'th-als'}, ALERTS.map(([k, t]) => alertSwitch(k, t))),
-    w.length ? h('div', {class: 'th-als'}, rows) : h('p', {class: 'th-sub', text: '아직 담은 업종이 없어요. 업종 쪽에서 관심 업종에 담기를 눌러요.'}),
+    h('div', {class: 'th-als'}, ALERTS.map(([k, t]) => alertSwitch(k, t))), // 견본 26 쪽 차례 — 켜기 넷 먼저
+    list,
     h('div', {class: 'th-box'}, h('b', {text: '돌이를 열면 첫 화면에서 알려요'}), h('span', {text: '이 기기에만 담겨요. 카톡으로 받기는 아직 준비 중이에요.'})),
     asOf(TH)])]};
 }

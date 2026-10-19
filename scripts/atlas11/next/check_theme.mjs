@@ -269,7 +269,7 @@ try {
         if (s.han.length) fail('영어 — 보이는 한글', V + ' ' + hsh + ' 「' + s.han.slice(0, 3).join('」 「') + '」');
         if (s.over > 0 || s.off.length) fail('영어 — 화면 밖', V + ' ' + hsh + ' ' + s.over + 'px ' + s.off.slice(0, 3).join(' | '));
         if (s.spill.length) fail('줄 안 넘침', V + ' ' + hsh + ' ' + s.spill.slice(0, 3).join(' | '));
-        const ic = await p.evaluate(() => [...document.querySelectorAll('#view .th-ans em[data-tr], #view .th-three b')].map(e => e.textContent).filter(x => /compan/i.test(x))); if (ic.length) fail('영어 업종 수가 회사로', V + ' ' + hsh + ' ' + ic.join(' | ')); // 2026-10-19 「다해」 못 한 것 3
+        const ic = await p.evaluate(() => [...document.querySelectorAll('#view .th-ans em[data-tr], #view .th-ans[data-tr], #view .th-three b')].map(e => e.textContent).filter(x => /compan/i.test(x))); if (ic.length) fail('영어 업종 수가 회사로', V + ' ' + hsh + ' ' + ic.join(' | ')); // 2026-10-19 「다해」 못 한 것 3
         bump('바꾼 자료 영어 쪽');
       }
       if (en) { const miss = await p.evaluate(() => (window.__atlasI18n?.missing?.() ?? []).map(m => m.key)); if (miss.length) fail('영어 — 사전에 없는 틀', V + ' ' + miss.slice(0, 4).join(' | ')); }
@@ -304,6 +304,138 @@ try {
       if (!expect && n) fail('첫 화면 관심 업종 소식(' + tag + ')', '알림을 모두 꺼도 소식 칸이 보임 ' + JSON.stringify(n));
       if (p._errs.length) fail('화면 오류', '관심 소식 ' + p._errs[0]);
       bump('관심 업종 알림'); await c.close();
+    }
+  }
+  /* ⑩ 새 눈 검사(2026-10-19 22시) 열 가지 — 싹 줄 높이 · 저장 막힘 · 20곳 · 빼기 · 없는 업종 · 같은 기준 날 다시 셈 · 깨진 기록 · 시듦→꽃 글 · 소식 줄 수 · 단추 여백 · 줄 높이 맞춤 · 낱말 끊김 */
+  {
+    async function openSeed(hash, seed, {w = 390, h = 844, en = false, font = 0, block = false} = {}) {
+      const ctx = await browser.newContext({viewport: {width: w, height: h}, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
+      await ctx.addInitScript(([sd, f, bl]) => { try { for (const [k, v] of Object.entries(sd)) localStorage.setItem(k, JSON.stringify(v)); if (f) localStorage.setItem('atlas:font', String(f)); } catch { /* 없음 */ } if (bl) { const o = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (String(k).startsWith('dori:')) throw new DOMException('막힘', 'QuotaExceededError'); return o.call(this, k, v); }; } }, [seed, font, block]);
+      const p = await ctx.newPage(); p._errs = []; p.on('pageerror', e => p._errs.push(String(e.message).slice(0, 160)));
+      await p.goto(PAGE + (en ? '?lang=en' : '') + hash, {waitUntil: 'domcontentloaded'}); await settle(p);
+      if (en) { await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(150); }
+      return {p, ctx};
+    }
+    const lastToast = p => p.evaluate(() => [...document.querySelectorAll('p.toast')].pop()?.textContent ?? '');
+    const homeNews = async p => { await p.waitForFunction(() => document.querySelector('#view section.th-home .th-row, #view section.th-home .empty'), null, {timeout: 20000}).catch(() => {}); return p.evaluate(() => ({nl: [...document.querySelectorAll('#view section.th-home .th-news a.th-nl')].map(a => a.textContent), nm: document.querySelector('#view section.th-home .th-news .th-nm')?.textContent ?? null})); };
+    // (가) 싹 줄 — 폭 · 글꼴 · 말이 바뀌어도 줄 높이 같음 · 며칠째 알약 테 왼쪽 = 꽃까지 = 이름 글 시작 · 막대 길이 하나
+    for (const [w, en, font] of [[390, false, 0], [360, false, 0], [320, false, 1], [320, true, 0], [320, true, 2]]) {
+      const {p, ctx} = await openSeed('#/t/sprout', {}, {w, h: 800, en, font});
+      const r = await p.evaluate(() => [...document.querySelectorAll('#view a.th-row')].map(a => { const q = s => a.querySelector(s)?.getBoundingClientRect(); const n = q('.th-rn'), t = q('.th-tg'), b = q('.th-to'), bar = q('.th-to .th-bar'); return {h: Math.round(a.getBoundingClientRect().height), nl: n?.left, tl: t?.left, tb: t?.bottom, bt: b?.top, bl: b?.left, bw: bar ? Math.round(bar.width) : null}; }));
+      const tag = `싹 줄 @${w}${en ? ' 영어' : ''}${font ? ' 글씨' + font : ''}`, hs = r.map(x => x.h), bws = new Set(r.map(x => x.bw));
+      if (!r.length) fail('싹 줄 없음', tag);
+      else if (Math.max(...hs) - Math.min(...hs) > 2) fail('싹 줄 높이 다름', tag + ' ' + [...new Set(hs)].join('/'));
+      if (bws.size > 1) fail('꽃까지 막대 길이 다름', tag + ' ' + [...bws].join('/'));
+      const bad = r.filter(x => x.tl == null || Math.abs(x.tl - x.nl) > 1.5 || Math.abs(x.bl - x.nl) > 1.5 || x.bt < x.tb - 1);
+      if (bad.length) fail('싹 줄 알약 · 꽃까지 자리', tag + ' ' + JSON.stringify(bad[0]));
+      if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
+      bump('싹 줄 모양'); await ctx.close();
+    }
+    // (나) 저장이 막히면 「담았어요」라 하지 않음 · 켜기 단추도 그대로
+    {
+      const {p, ctx} = await openSeed(ib, {}, {block: true});
+      await p.locator('#view .th-watch').click(); await p.waitForTimeout(200);
+      const a1 = await p.evaluate(() => ({pressed: document.querySelector('#view .th-watch')?.getAttribute('aria-pressed'), text: document.querySelector('#view .th-watch')?.textContent}));
+      const t1 = await lastToast(p);
+      if (a1.pressed !== 'false' || /담았어요/.test(a1.text) || !/담지 못했어요/.test(t1)) fail('저장 막힘 — 관심 담기', JSON.stringify(a1) + ' 「' + t1 + '」');
+      await p.evaluate(() => { location.hash = '#/t/alert'; }); await settle(p);
+      await p.locator('#view .th-sw[role="switch"]').first().click(); await p.waitForTimeout(150);
+      const a2 = await p.evaluate(() => document.querySelector('#view .th-sw[role="switch"]')?.getAttribute('aria-checked')), t2 = await lastToast(p);
+      if (a2 !== 'true' || !/담지 못했어요/.test(t2)) fail('저장 막힘 — 알림 켜짐 단추', a2 + ' 「' + t2 + '」');
+      if (cb) { // 같은 쪽 회사 관심 담기(app.js laterBtn)도 같은 잣대
+        await p.evaluate(x => { location.hash = x; }, cb + '/keep'); await settle(p);
+        await p.locator('#view .th-keep:not(.th-watch)').first().click(); await p.waitForTimeout(150);
+        const a3 = await p.evaluate(() => document.querySelector('#view .th-keep:not(.th-watch)')?.getAttribute('aria-pressed')), t3 = await lastToast(p);
+        if (a3 !== 'false' || !/담지 못했어요/.test(t3)) fail('저장 막힘 — 회사 관심 담기', a3 + ' 「' + t3 + '」');
+      }
+      if (p._errs.length) fail('화면 오류', '저장 막힘 ' + p._errs[0]);
+      bump('관심 업종 알림'); await ctx.close();
+    }
+    // (다) 20곳이 차면 21번째는 막고 까닭을 알림(맨 앞을 말없이 빼지 않음)
+    {
+      const twenty = TH.inds.map(i => i.n).filter(n => n !== TOP).slice(0, 20);
+      const {p, ctx} = await openSeed(ib, {'dori:watch-ind': twenty});
+      await p.locator('#view .th-watch').click(); await p.waitForTimeout(200);
+      const r = await p.evaluate(() => ({pressed: document.querySelector('#view .th-watch')?.getAttribute('aria-pressed'), list: JSON.parse(localStorage.getItem('dori:watch-ind') ?? '[]')})), t = await lastToast(p);
+      if (r.pressed !== 'false' || r.list.length !== 20 || r.list.includes(TOP) || r.list[0] !== twenty[0] || !/20곳까지/.test(t)) fail('관심 업종 20곳', JSON.stringify({pressed: r.pressed, n: r.list.length, t}));
+      bump('관심 업종 알림'); await ctx.close();
+    }
+    // (라) 알림 쪽 — 없는 업종은 고리 없이 까닭 · 빼면 머리 수 · 빈 줄 · 누름 자리 · 없는 업종 쪽 글
+    {
+      const GONE = '없어진 업종';
+      const {p, ctx} = await openSeed('#/t/alert', {'dori:watch-ind': [TOP, GONE]});
+      const st = () => p.evaluate(() => ({h: document.querySelector('#view .th-wl h2')?.textContent, links: [...document.querySelectorAll('#view .th-wl a.th-alt')].map(a => a.textContent), gone: [...document.querySelectorAll('#view .th-wl span.th-alt')].map(s => s.textContent + ' ' + s.nextElementSibling?.textContent), n: document.querySelectorAll('#view .th-wl .th-al').length, empty: document.querySelector('#view .th-wl p.th-sub')?.textContent ?? '', focus: (document.activeElement?.tagName ?? '') + '.' + (document.activeElement?.className ?? ''), list: JSON.parse(localStorage.getItem('dori:watch-ind') ?? '[]')}));
+      const r0 = await st();
+      if (r0.h !== '관심 업종 2곳' || r0.links.join() !== TOP || r0.gone.join() !== GONE + ' 지금 자료에 없어요') fail('알림 쪽 없는 업종 줄', JSON.stringify(r0));
+      await p.locator('#view .th-wl .th-al .th-sw').first().click(); await p.waitForTimeout(150);
+      const r1 = await st();
+      if (r1.h !== '관심 업종 1곳' || r1.n !== 1 || !/th-sw/.test(r1.focus) || r1.list.join() !== GONE) fail('알림 쪽 빼기 — 하나 남음', JSON.stringify(r1));
+      await p.locator('#view .th-wl .th-al .th-sw').first().click(); await p.waitForTimeout(150);
+      const r2 = await st();
+      if (r2.h !== '관심 업종 0곳' || !/아직 담은 업종이 없어요/.test(r2.empty) || !r2.focus.startsWith('H2') || r2.list.length) fail('알림 쪽 빼기 — 다 뺌', JSON.stringify(r2));
+      await p.evaluate(g => { location.hash = '#/t/i/' + encodeURIComponent(g); }, GONE); await settle(p);
+      const g = await p.evaluate(() => document.querySelector('#view .empty')?.textContent ?? '');
+      if (!/지금 테마 시계 자료에 없어요/.test(g) || /잠시 뒤/.test(g)) fail('없는 업종 쪽 글', g);
+      if (p._errs.length) fail('화면 오류', '알림 쪽 빼기 ' + p._errs[0]);
+      bump('관심 업종 알림'); await ctx.close();
+    }
+    // (마) 같은 기준 날에 자료를 다시 만들면(16시 · 19시) 소식도 지금 자리로 다시 셈 · 깨진 기록은 버림 · 빼기는 오류 없음
+    {
+      const z0 = I1.z, other = z0 === 'S' ? 'Q' : 'S', day = HM?.asOf ?? TH.asOf, set = {S: true, B: true, W: true, M: false};
+      for (const [tag, seen, expect] of [['같은 날 · 바탕과 다름', {asOf: day, base: {[TOP]: other}, zones: {[TOP]: other}}, true], ['같은 날 · 다시 만든 자료가 바탕과 같음', {asOf: day, base: {[TOP]: z0}, zones: {[TOP]: other}}, false], ['깨진 기록', {asOf: '2000-01-01', zones: {[TOP]: other}, news: [null]}, true]]) {
+        const {p, ctx} = await openSeed('#/', {'dori:watch-ind': [TOP], 'dori:watch-seen': seen, 'dori:alert-set': set});
+        const n = await homeNews(p), has = n.nl.some(t => t.startsWith(TOP));
+        if (has !== expect) fail('관심 소식 — ' + tag, JSON.stringify(n.nl) + ' 바람 ' + (expect ? '있음' : '없음'));
+        if (tag === '깨진 기록') {
+          await p.evaluate(x => { location.hash = x; }, ib); await settle(p);
+          await p.locator('#view .th-watch').click(); await p.waitForTimeout(200);
+          const pr = await p.evaluate(() => document.querySelector('#view .th-watch')?.getAttribute('aria-pressed'));
+          if (pr !== 'false') fail('관심 소식 — 깨진 기록 뒤 빼기', pr);
+        }
+        if (p._errs.length) fail('화면 오류', '관심 소식 ' + tag + ' ' + p._errs[0]);
+        bump('관심 업종 알림'); await ctx.close();
+      }
+    }
+    // (바) 시듦→꽃 글 · 첫 화면 소식 세 줄 + 「그 밖에」 · 아침 한 줄 다섯 곳 + 「외」
+    {
+      const six = TH.inds.filter(i => i.z !== 'Q').slice(0, 6), seen = {asOf: '2000-01-01', zones: Object.fromEntries(six.map(i => [i.n, i.z === 'S' ? 'Q' : 'S']))};
+      const {p, ctx} = await openSeed('#/', {'dori:watch-ind': six.map(i => i.n), 'dori:watch-seen': seen, 'dori:alert-set': {S: true, B: true, W: true, M: true}});
+      const n = await homeNews(p);
+      const tx = await p.evaluate(async () => { const m = await import('./theme-watch.js'); return [m.newsText({n: 'x', from: 'W', to: 'B'}), m.newsText({n: 'x', from: 'S', to: 'B'})]; });
+      if (tx[0] !== '다시 꽃 자리로 왔어요' || tx[1] !== '꽃 선을 넘었어요') fail('시듦→꽃 소식 글', tx.join(' | '));
+      if (six.length === 6 && (n.nl.length !== 4 || !/^그 밖에 3곳도/.test(n.nl[3] ?? '') || !/ 외 1곳$/.test(n.nm ?? ''))) fail('첫 화면 소식 줄 수', JSON.stringify(n));
+      if (p._errs.length) fail('화면 오류', '소식 줄 수 ' + p._errs[0]);
+      bump('관심 업종 알림'); await ctx.close();
+    }
+    // (사) 관심 담기 쪽 단추 여백 · 알림 쪽 이름 · 자리 · 단추 한 높이 · 영어 큰 글씨에서 낱말 가운데 끊김 없음
+    {
+      if (cb) {
+        const {p, ctx} = await openSeed(cb + '/keep', {});
+        const pd = await p.evaluate(() => { const b = document.querySelector('#view .th-watch'); if (!b) return null; const cs = getComputedStyle(b), R = document.createRange(); R.selectNodeContents(b); const t = R.getBoundingClientRect(), r = b.getBoundingClientRect(); return {pl: parseFloat(cs.paddingLeft), pt: parseFloat(cs.paddingTop), in: Math.round(Math.min(t.left - r.left, r.right - t.right))}; });
+        if (!pd || pd.pl < 16 || pd.pt < 8 || pd.in < 16) fail('관심 담기 단추 여백', JSON.stringify(pd));
+        await ctx.close();
+      }
+      const names = TH.inds.map(i => i.n).sort((a, b) => b.length - a.length).slice(0, 6);
+      for (const [w, en, font] of [[390, false, 0], [320, true, 2]]) {
+        const {p, ctx} = await openSeed('#/t/alert', {'dori:watch-ind': names}, {w, h: 800, en, font});
+        const r = await p.evaluate(() => {
+          const out = {mis: [], split: []}, R = document.createRange();
+          for (const row of document.querySelectorAll('#view .th-wl .th-al')) {
+            const a = row.querySelector('.th-alt'), z = row.querySelector('.th-z'), b = row.querySelector('.th-sw'); if (!a || !z || !b) continue;
+            R.selectNodeContents(a); const ar = [...R.getClientRects()], zr = z.getBoundingClientRect(), br = b.getBoundingClientRect();
+            if (ar.length === 1 && Math.abs(zr.top - br.top) < 4) { const cy = q => q.top + q.height / 2; if (Math.abs(cy(ar[0]) - cy(zr)) > 3) out.mis.push(a.textContent + ' ' + Math.round(cy(ar[0]) - cy(zr))); }
+            const tn = [...a.childNodes].find(n => n.nodeType === 3); if (!tn) continue;
+            for (const m of tn.nodeValue.matchAll(/[^\s·&]+/g)) { R.setStart(tn, m.index); R.setEnd(tn, m.index + m[0].length); const rs = [...R.getClientRects()].filter(q => q.width >= 1); if (rs.length > 1 && new Set(rs.map(q => Math.round(q.top))).size > 1) out.split.push(m[0]); }
+          }
+          return out;
+        });
+        const tag = `알림 쪽 @${w}${en ? ' 영어 글씨' + font : ''}`;
+        if (r.mis.length) fail('알림 쪽 줄 높이 어긋남', tag + ' ' + r.mis.slice(0, 3).join(' | '));
+        if (r.split.length) fail('알림 쪽 낱말 가운데 끊김', tag + ' ' + r.split.slice(0, 4).join(' | '));
+        if (!en) await rules(tag, p);
+        if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
+        bump('관심 업종 알림'); await ctx.close();
+      }
     }
   }
   /* ⑥ 자료를 못 받으면 「?」 */
