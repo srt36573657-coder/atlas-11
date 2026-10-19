@@ -468,7 +468,7 @@ function go4(open) {
   return h('nav', {class: 'w-go4', 'data-w': 'gdr', 'aria-label': '바로 가기'}, ...GO4(open).map(([href, t, d]) => { const s = sv('svg', {class: 'ic', viewBox: '0 0 24 24', 'aria-hidden': 'true'}); for (const [k, a] of d) s.append(sv(k, a)); return h('a', {href}, s, h('span', {text: t})); }));
 }
 /** 「전부 보기」 — 한 줄에 하나(네모 칸 없음) · 오르는 것(오르는 업종 · 급등)은 여기서만 · 처음 펼 때 오늘 시장 세 줄 · homeRest(요약 파일로) */
-const ALL_ROWS = () => [['#/f/rise', '오르는 업종'], [oldOr('surge', '#/surge'), '급등'], ['#/f/group', '큰 업종'], ['#/f/ind', '업종'], ['#/f/us', '미국'], ['#/f/pick', '고른 곳'], [oldOr('talk', '#/talk'), '오늘의 이야기']];
+const ALL_ROWS = () => [['#/f/rise', '오르는 업종'], [oldOr('surge', '#/surge'), '급등'], ['#/f/group', '큰 업종'], ['#/f/ind', '업종'], ['#/f/us', '미국'], ['#/f/pick', '고른 곳'], [oldOr('talk', '#/talk'), '오늘의 이야기'], ['#/game', '가짜 돈 연습']]; // 가짜 돈 연습(2026-10-19 15:47 변호사 확인 뒤 공개)
 function allBox(H, band) {
   const body = h('div', {class: 'w-allin'}), d = h('details', {class: 'w-all'}, h('summary', {'data-w': 'all', text: '전부 보기'}), body);
   let filled = false;

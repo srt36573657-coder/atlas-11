@@ -201,7 +201,7 @@ for (const w of [320, 360, 390]) {
   /* 돌 판 첫 화면(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3/home · 규칙 82) — 큰 제목 + 돌 그림 → 돌이 물음 → 읽는 곳 셋(① 본질 카드 ② 오늘 장 한 줄 + 시황 사실 ③ 한 달 된 기록 금빛 줄 또는 「한 달 뒤 물어볼게요」)
      → 엄지 자리(찾기 칸 · 바로 가기 넷 · 전부 보기) → 진화 한 줄 · 차례는 #view 안 칸을 문서 차례로 셈(칸이 읽는 곳 · 엄지 자리 안에 듦) · 안전 글은 본질 세 줄 안 */
   const HOME_ORDER = ['div.s-hd', 'div.w-say', 'section.ess', 'a.hm-band', 'section.w-news', 'a.w-month', 'a.s-ghost', 'form.w-find', 'nav.w-go4', 'details.w-all', 'a.s-evo'];
-  const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk')]; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
+  const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk'), '#/game']; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
   const g = await q.evaluate(ord => {
     const kids = [...document.querySelectorAll('#view *')].filter(e => ord.some(s => e.matches(s)) && !e.closest('.w-allin')), gd = document.querySelector('#view section.gdr');
     const band = document.querySelector('#view a.hm-band.w-today'), more = document.querySelector('#view details.w-all'), go4 = document.querySelector('#view nav.w-go4'), fi = document.querySelector('#view form.w-find input');

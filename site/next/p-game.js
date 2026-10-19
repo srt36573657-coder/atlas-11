@@ -7,7 +7,7 @@ import {kakao} from '/next/kakao.js';
 import {ownerOk} from '/next/p-jinhwa.js';
 import {sendCode} from '/next/p-admin.js';
 
-export const PUBLIC = false; // 모두에게 열기 — 사장님이 변호사 확인 뒤 「열어」 하실 때만 true
+export const PUBLIC = true; // 모두에게 열기 — 사장님 2026-10-19 15:47 「변호시에게 확인했어 이상 없다고햐」(변호사 확인 · 서면은 저장소에 없음)
 const K = 'atlas:dori-game';
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -21,6 +21,8 @@ async function priceOf(code) {
   try { const r = await fetch('/atlas/data/co/' + code + '.json', {cache: 'no-cache'}); const j = r.ok ? await r.json() : null; const p = j?.c?.price; v = Number.isFinite(p) && p > 0 ? {px: p, d: typeof j.c.priceDate === 'string' ? j.c.priceDate : null} : null; } catch { v = null; }
   PX.set(code, v); return v;
 }
+/** 돈 글 — 한국어는 「9억 7,660만 원」 · 영어 화면은 엔진이 「억 · 만」 두 단위를 함께 못 바꿔 「976,600,000원」(엔진이 million 으로 바꿈) */
+const won = v => (document.documentElement.classList.contains('en') ? Math.max(0, Math.floor(Number(v) || 0)).toLocaleString('ko-KR') + '원' : eok(v));
 const nameOf = c => nx().ix()?.co?.[c]?.n ?? c;
 const md = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일` : '?');
 const WHY = {cash: '현금이 모자라요.', hold: '가진 주보다 많이 팔 수 없어요.', qty: '주 수를 다시 넣어 주세요.', price: '? 지금 값을 받지 못했어요.', code: '? 회사를 다시 골라 주세요.', account: '? 계좌를 읽지 못했어요.'};
@@ -88,15 +90,15 @@ export async function render() {
       prize ? h('p', {class: 'gm-code num', text: prize}) : null, prize ? sendCode('돌이 30억 상 번호 ' + prize) : null,
       h('p', {class: 'gm-t', text: prize ? '돌이를 알려 준 분께 이 번호를 카톡으로 보내 주세요. 확인한 뒤 상품권을 보내 드려요.' : member ? '목표를 넘으면 여기에 상 번호가 생겨요.' : '상은 카톡으로 가입한 사람만 받아요. 지금은 이 기기에서 연습만 해요.'}));
     box.replaceChildren(...[
-      h('section', {class: 'gm-sum'}, h('p', {class: 'gm-lb', text: '지금 합계'}), h('p', {class: 'gm-big num', text: eok(v.total)}), bar,
-        h('p', {class: 'gm-t', text: v.won ? '목표 30억 원을 넘었어요.' : `목표 30억 원까지 ${eok(v.left)} 남았어요.`}),
-        h('p', {class: 'gm-t', text: `현금 ${eok(v.cash)} · 주식 ${eok(v.stock)}`}),
+      h('section', {class: 'gm-sum'}, h('p', {class: 'gm-lb', text: '지금 합계'}), h('p', {class: 'gm-big num', text: won(v.total)}), bar,
+        h('p', {class: 'gm-t', text: v.won ? '목표 30억 원을 넘었어요.' : `목표 30억 원까지 ${won(v.left)} 남았어요.`}),
+        h('p', {class: 'gm-t', text: `현금 ${won(v.cash)} · 주식 ${won(v.stock)}`}),
         v.unknown.length ? h('p', {class: 'gm-t gm-q', text: `? 값을 못 받은 회사 ${v.unknown.length}곳은 산 돈으로 셌어요.`}) : null),
       prizeBox,
       h('section', {class: 'gm-sec'}, h('h2', {text: '회사 고르기'}), find, hits, deal),
       h('section', {class: 'gm-sec'}, h('h2', {text: '가진 주식'}), held.length ? h('ul', {class: 'gm-list'}, ...held.map(([c, p]) => {
         const now = pr[c], val = Number.isFinite(now) ? p.q * now : null, ch = val != null && p.cost > 0 ? (val / p.cost - 1) * 100 : null;
-        const b = h('button', {type: 'button', class: 'gm-own'}, h('span', {'data-proper': '', text: nameOf(c)}), h('small', {text: `${p.q.toLocaleString('ko-KR')}주 · ${val == null ? '?' : eok(val)}`}), h('b', {class: 'num ' + (ch == null ? '' : ch > 0 ? 'up' : ch < 0 ? 'dn' : ''), text: ch == null ? '?' : (ch > 0 ? '+' : ch < 0 ? '−' : '') + Math.abs(ch).toFixed(1) + '%'}));
+        const b = h('button', {type: 'button', class: 'gm-own'}, h('span', {'data-proper': '', text: nameOf(c)}), h('small', {text: `${p.q.toLocaleString('ko-KR')}주 가짐 · ${val == null ? '?' : won(val)}`}), h('b', {class: 'num ' + (ch == null ? '' : ch > 0 ? 'up' : ch < 0 ? 'dn' : ''), text: ch == null ? '?' : (ch > 0 ? '+' : ch < 0 ? '−' : '') + Math.abs(ch).toFixed(1) + '%'}));
         b.addEventListener('click', () => { pick = c; paintDeal(); deal.scrollIntoView({block: 'nearest'}); });
         return h('li', {}, b);
       })) : h('p', {class: 'gm-t', text: '아직 가진 주식이 없어요. 위에서 회사를 골라 보세요.'})),
