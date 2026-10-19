@@ -184,7 +184,9 @@ test('길 ① 처음 온 사람 — 카드 단추 1 + 카카오 동의 1 = 2 · 
   const st = R.seen.find(x => new URL(x.url).pathname === '/api/kakao/start').setCookies[0];
   assert.match(st, new RegExp(`^${COOKIE.state}=[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{43}; Path=/; Max-Age=${STATE_SEC}; HttpOnly; Secure; SameSite=Lax$`)); // 쿠키 = 내용.서명(VK F4)
   const me = await meOf(friend);
-  assert.deepEqual(Object.keys(me).sort(), ['code', 'friends', 'member', 'next', 'on', 'ref']);
+  assert.deepEqual(Object.keys(me).sort(), ['code', 'coffee', 'friends', 'member', 'next', 'on', 'ref']); // coffee = 커피 쿠폰(2026-10-19 · lib/atlas11/coupon.mjs)
+  assert.deepEqual(Object.keys(me.coffee).sort(), ['code', 'codes', 'month', 'n', 'need', 'wait']); // 점수 · 번호만 — 이름 · 사람 표 없음
+  assert.equal(me.coffee.n, 0); assert.equal(me.coffee.code, null);
   assert.equal(me.member, true); assert.equal(me.on, true);
   assert.equal((await meOf(sender)).friends, 1, '보낸 사람 소개 수 +1');
   RESULT.ourTaps = s.taps; RESULT.extraTaps = s.extra;

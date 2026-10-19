@@ -112,7 +112,7 @@ export function createKakao(env = {}) {
     test: () => (env.test !== undefined ? !!env.test : g.__GODORI_KAKAO_TEST__ === true),
     tally: env.tally ?? tally, // 시험은 바꿔 끼움
   };
-  const st = {on: false, member: false, ref: null, friends: null, next: null, code: null};
+  const st = {on: false, member: false, ref: null, friends: null, next: null, code: null, coffee: null};
   let probeP = null, probeAt = 0, probeFail = false, lastSnap = null, sdkP = null, syncP = null, timer = null, failAt = 0, told = 'off:0';
   /** 켜짐 · 가입 상태가 지난번 알림과 다르면 한 번 알림('nx:kakao') */
   const tell = () => { const k = (st.on ? 'on' : 'off') + ':' + (st.member ? 1 : 0); if (k === told) return; told = k; try { E.emit({on: st.on, member: st.member}); } catch { /* 듣는 쪽 오류는 무시 */ } };
@@ -146,6 +146,8 @@ export function createKakao(env = {}) {
     st.friends = st.member && Number.isInteger(j.friends) && j.friends >= 0 ? j.friends : null;
     st.next = st.member && Number.isInteger(j.next) && j.next >= 0 ? j.next : null;
     st.code = st.member && typeof j.code === 'string' && CODE_RE.test(j.code) ? j.code : null;
+    const cf = st.member && j.coffee && typeof j.coffee === 'object' ? j.coffee : null; // 커피 쿠폰(2026-10-19 · lib/atlas11/coupon.mjs) — 점수 · 이번 달 번호만
+    st.coffee = cf && Number.isInteger(cf.n) && Number.isInteger(cf.need) ? {n: cf.n, need: cf.need, code: typeof cf.code === 'string' && CODE_RE.test(cf.code) ? cf.code : null, wait: cf.wait === true} : null;
     if (st.member) E.ls.set(FLAG_MEMBER, '1');
     return st;
   }
@@ -159,7 +161,7 @@ export function createKakao(env = {}) {
     return (probeP = call('GET', API + '/me').then(r => {
       if (!r.ok && r.status !== 404) probeFail = true;
       apply(r.ok ? r.json : null);
-      if (r.ok || r.status === 404) E.ss.set(SS_STATUS, JSON.stringify({t: E.now(), s: {on: st.on, member: st.member, ref: st.ref, friends: st.friends, next: st.next, code: st.code}}));
+      if (r.ok || r.status === 404) E.ss.set(SS_STATUS, JSON.stringify({t: E.now(), s: {on: st.on, member: st.member, ref: st.ref, friends: st.friends, next: st.next, code: st.code, coffee: st.coffee}}));
       return api;
     }).then(afterStatus));
   }
@@ -245,6 +247,7 @@ export function createKakao(env = {}) {
     member: () => st.on === true && st.member === true,
     ref: () => (st.on === true && st.member === true ? st.ref : null),
     friends: () => (st.on === true && st.member === true ? {n: st.friends, next: st.next, code: st.code} : null),
+    coffee: () => (st.on === true && st.member === true ? st.coffee : null), // 커피 쿠폰 {n, need, code, wait} | null
     ready, sync, startUrl, state: () => ({...st}),
     /** 카카오톡 카드를 지금 보낼 수 있나(공유 스위치 + 카카오 도구가 켜짐) — 동기 · 가입 스위치와 따로 */
     canSend() { if (!sharing()) return false; const K = E.kakao(); return !!(K?.Share && typeof K.Share.sendDefault === 'function' && (typeof K.isInitialized !== 'function' || K.isInitialized())); },
@@ -275,7 +278,7 @@ export function createKakao(env = {}) {
       if (r.status === 401) { st.member = false; E.ss.del(SS_STATUS); tell(); return false; } // 로그인이 풀려 있음 — 서버 사본은 그대로 · 이 기기 표시(atlas:kakao:member)는 남겨 조용한 로그인 · 다시 권유가 되게
       if (!(r.ok && r.json && r.json.ok === true && r.json.unlinked !== false)) return false;
       E.ls.del(FLAG_MEMBER); E.ls.del(BASE); E.ss.del(SS_STATUS); E.ss.del(SS_SILENT);
-      st.member = false; st.ref = null; st.friends = null; st.next = null; st.code = null; lastSnap = null;
+      st.member = false; st.ref = null; st.friends = null; st.next = null; st.code = null; st.coffee = null; lastSnap = null;
       tell();
       return true;
     },
