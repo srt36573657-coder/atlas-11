@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-19T03:13:03.999Z",
+ "at": "2026-10-19T03:35:38.966Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -22,14 +22,14 @@
    }
   }
  },
- "seconds": 117,
+ "seconds": 118,
  "counts": {
   "routes": 251,
   "rows": 7786,
   "btns": 7786,
   "links": 8959,
   "clicks": 479,
-  "fail": 1,
+  "fail": 0,
   "places": {
    "chip.card": {
     "rows": 3,
@@ -343,7 +343,7 @@
     "btns": 0,
     "links": 0,
     "clicked": "",
-    "fail": 1
+    "fail": 0
    },
    {
     "route": "#/shorts",
@@ -2211,14 +2211,7 @@
    }
   ]
  },
- "fails": [
-  {
-   "route": "#/",
-   "w": 320,
-   "k": "쪽 가로 넘침",
-   "x": "330>320"
-  }
- ],
+ "fails": [],
  "warn": [],
- "ok": false
+ "ok": true
 }

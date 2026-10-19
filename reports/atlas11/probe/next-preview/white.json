@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-19T03:11:04.583Z",
+ "at": "2026-10-19T03:33:41.991Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -10,14 +10,14 @@
  "fails": [],
  "m": {
   "first": {
-   "bodyLum": 0.0024282158683907,
-   "chars": 165,
+   "bodyLum": 1,
+   "chars": 159,
    "blocks": {
-    "ess": 409,
-    "find": 720,
-    "today": 501,
-    "gdr": 772,
-    "all": 772
+    "ess": 349,
+    "find": 473,
+    "today": 525,
+    "gdr": 579,
+    "all": 627
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -26,7 +26,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "첫 질문을 해 볼까?"
+    "오늘은 쉬어 갈까?"
    ],
    "numQ": [],
    "tabs": [
@@ -43,29 +43,29 @@
     true,
     true
    ],
-   "bodyHex": "#080808",
-   "inkHex": "#FFFFFF",
+   "bodyHex": "#FFFFFF",
+   "inkHex": "#16181D",
    "findInput": true,
    "riseShown": [],
    "grid": [],
    "news": {
     "up": true,
     "dn": true,
-    "facts": 2,
-    "why": 2
+    "facts": 1,
+    "why": 1
    },
    "monthLine": false,
    "errs": []
   },
   "back": {
-   "bodyLum": 0.0024282158683907,
-   "chars": 104,
+   "bodyLum": 1,
+   "chars": 95,
    "blocks": {
-    "ess": 302,
-    "find": 694,
-    "today": 394,
-    "gdr": 746,
-    "all": 746
+    "ess": 206,
+    "find": 330,
+    "today": 382,
+    "gdr": 436,
+    "all": 484
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -74,7 +74,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "첫 질문을 해 볼까?"
+    "오늘은 쉬어 갈까?"
    ],
    "numQ": [],
    "tabs": [
@@ -91,16 +91,16 @@
     true,
     true
    ],
-   "bodyHex": "#080808",
-   "inkHex": "#FFFFFF",
+   "bodyHex": "#FFFFFF",
+   "inkHex": "#16181D",
    "findInput": true,
    "riseShown": [],
    "grid": [],
    "news": {
     "up": true,
     "dn": true,
-    "facts": 2,
-    "why": 2
+    "facts": 1,
+    "why": 1
    },
    "monthLine": false,
    "errs": []
@@ -415,8 +415,8 @@
    }
   },
   "speed": {
-   "lcp": 2228,
-   "inp": 16,
+   "lcp": 1800,
+   "inp": 24,
    "cls": 0.009
   }
  },

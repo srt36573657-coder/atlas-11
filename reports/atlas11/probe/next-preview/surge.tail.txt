@@ -1,4 +1,4 @@
-{"time":{"old":6.1,"new":17.3,"wall":26.7,"opensOld":137,"opensNew":264,"oldPct":22.7,"oldShare":26},"net":{"req":4,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-급등 다섯 칸 맞대기 — 자료 판 13개(site · rec-20261015T110206Z · rec-20261016T030127Z · rec-20261016T050036Z · rec-20261016T090115Z · rec-20261017T090146Z · rec-20261019T010123Z · edge-carry · edge-late · edge-empty · edge-nobands · edge-nocal · edge-badcal) · 27초
-줄 21,038 · 숫자 낱말 14,716 · 이름 2,232 · 색 글 3,816 · 맞댄 칸 65 · 폭 화면 100 · 금빛 ? 줄(옛 쪽은 회색에 덮임) 20 · 관심 없음 칸 4 · 관심 없음 검사 1 · 돌아오기 검사 1 · 없는 주소 3 · 자료 못 받음 10
+{"time":{"old":10.3,"new":25.9,"wall":41.2,"opensOld":147,"opensNew":274,"oldPct":25,"oldShare":28.4},"net":{"req":4,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+급등 다섯 칸 맞대기 — 자료 판 14개(site · rec-20261015T110206Z · rec-20261016T030127Z · rec-20261016T050036Z · rec-20261016T090115Z · rec-20261017T090146Z · rec-20261019T010123Z · rec-20261019T030056Z · edge-carry · edge-late · edge-empty · edge-nobands · edge-nocal · edge-badcal) · 41초
+줄 23,271 · 숫자 낱말 16,410 · 이름 2,521 · 색 글 4,199 · 맞댄 칸 70 · 폭 화면 100 · 금빛 ? 줄(옛 쪽은 회색에 덮임) 20 · 관심 없음 칸 4 · 관심 없음 검사 1 · 돌아오기 검사 1 · 없는 주소 3 · 자료 못 받음 10
 실패 0
