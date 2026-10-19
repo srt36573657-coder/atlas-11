@@ -1,5 +1,5 @@
 {
- "at": "2026-10-19T15:33:54.559Z",
+ "at": "2026-10-19T23:00:21.061Z",
  "base": "https://aaa7377.com",
  "shots": [
   "reports/atlas11/probe/live-white/home-first.png",
@@ -42,5 +42,5 @@
    "news"
   ]
  },
- "check": "ok"
+ "check": "fail"
 }

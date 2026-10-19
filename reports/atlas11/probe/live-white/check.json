@@ -1,21 +1,25 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-19T15:34:05.608Z",
+ "at": "2026-10-19T23:00:33.121Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 425,
-  "fail": 0
+  "pass": 422,
+  "fail": 3
  },
- "fails": [],
+ "fails": [
+  "다른 쪽 #/x/005935 320 바탕 #080808 — 바탕 #FFFFFF",
+  "다른 쪽 #/x/005935 320 누르는 크기 48 — a. 53×16 「Netlify」",
+  "다른 쪽 #/x/005935 320 망치는 길 그림 0 — 그림자 div.card"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0024282158683907,
    "chars": 169,
    "blocks": {
-    "ess": 1711,
+    "ess": 1657,
     "find": 728,
-    "today": 1803,
+    "today": 1749,
     "gdr": 776,
     "all": 776
    },
@@ -66,9 +70,9 @@
    "bodyLum": 0.0024282158683907,
    "chars": 105,
    "blocks": {
-    "ess": 1562,
+    "ess": 1534,
     "find": 728,
-    "today": 1654,
+    "today": 1626,
     "gdr": 776,
     "all": 776
    },
@@ -420,16 +424,16 @@
    "#/x/005935 320": {
     "low": 0,
     "ui": 0,
-    "small": 0,
-    "ruin": 0
+    "small": 1,
+    "ruin": 1
    }
   },
   "speed": {
-   "lcp": 1032,
-   "inp": 24,
-   "cls": 0.088
+   "lcp": 1048,
+   "inp": 16,
+   "cls": 0.079
   }
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
