@@ -118,7 +118,10 @@ try {
         if (nx.n !== 1) fail('다음 단추 수', here + ' ' + nx.n);
         if (nx.href !== CHAIN[k + 1]) fail('다음 차례', here + ' → ' + nx.href + ' (바람 ' + CHAIN[k + 1] + ')');
         const wantNo = NO[here] ?? (k <= 11 ? k + 1 : k + 1); if (no !== String(wantNo)) fail('쪽 번호', here + ' ' + no + ' ≠ ' + wantNo);
-        if (k > 0 && pv !== CHAIN[k - 1] && !(k === 6 && pv === '#/t/wilt')) fail('앞 쪽 고리', here + ' ‹ ' + pv + ' (바람 ' + CHAIN[k - 1] + ')');
+        // 앞 쪽 = 흐름의 앞 장 · 다만 업종 첫 쪽은 그 업종이 든 목록 · 회사 첫 쪽은 들어온 줄(함께 움직인 회사)로(2026-10-19 새 눈 검사 8 — 어디서 왔든 「‹ 시듦 자리」 이던 것)
+        const zoneList = {S: '#/t/sprout', B: '#/t/bloom', W: '#/t/wilt'}[TH.inds.find(i => i.n === TOP)?.z] ?? '#/';
+        const wantPv = k === 6 ? zoneList : k === 12 ? ib + '/co' : CHAIN[k - 1];
+        if (k > 0 && pv !== wantPv) fail('앞 쪽 고리', here + ' ‹ ' + pv + ' (바람 ' + wantPv + ')');
         await look(here, p);
       }
       const want = CHAIN[k + 1];

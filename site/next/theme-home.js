@@ -24,7 +24,9 @@ export function footBtn(title, href) { return h('a', {class: 'th-next th-one', h
 /* ── 그림: 테마 시계(가로 = 한 달 동안 시장보다 더 오른 %p · 세로 = 지난 닷새 · 꽃 선 = 가로 5) ── */
 function txt(x, y, s, a = {}) { const e = sv('text', {x, y, ...a}); e.textContent = s; return e; }
 export function clock(TH, {hi = null, marks = null, W = 326, H = 300} = {}) {
-  const X0 = RULE.bloomX, SX = 15, SY = 6, pad = 14;
+  const X0 = RULE.bloomX, pad = 14, hiI = hi ? indOf(TH, hi) : null;
+  const hp = hiI ? [[hiI.x, hiI.y], ...(Array.isArray(hiI.t) ? hiI.t : [])].filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b)) : [];
+  const SX = Math.max(15, ...hp.map(([a]) => Math.ceil(Math.abs(a - X0) * 1.15))), SY = Math.max(6, ...hp.map(([, b]) => Math.ceil(Math.abs(b) * 1.15))); // 고른 업종(지나온 길)은 꼬리가 끝에 붙지 않게 눈금을 넓힘
   const X = v => W / 2 + Math.max(-1, Math.min(1, (v - X0) / SX)) * (W / 2 - pad);
   const Y = v => H / 2 - Math.max(-1, Math.min(1, v / SY)) * (H / 2 - pad);
   const s = sv('svg', {class: 'th-clock', viewBox: `0 0 ${W} ${H}`, width: '100%', 'aria-hidden': 'true', focusable: 'false'});
@@ -46,7 +48,7 @@ export function clock(TH, {hi = null, marks = null, W = 326, H = 300} = {}) {
 /** 점 넷(채운 동그라미 = 참) */
 export function dots(i) { const s = sv('svg', {class: 'th-dots', viewBox: '0 0 88 20', width: 88, height: 20, role: 'img', 'aria-label': '점 넷 가운데 ' + i.sc + '개'}); i.dots.forEach((v, k) => s.append(sv('circle', {cx: 10 + k * 22, cy: 10, r: 7, class: v ? 'th-d on' : 'th-d'}))); return s; }
 /** 꽃까지 막대 */
-export function bar(x) { const s = sv('svg', {class: 'th-bar', viewBox: '0 0 96 8', width: 96, height: 8, 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: 96, height: 8, rx: 4, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Math.round(nearBar(x) * 96), height: 8, rx: 4, class: 'th-bar1'})); return s; }
+export function bar(x) { const W = 64, s = sv('svg', {class: 'th-bar', viewBox: `0 0 ${W} 8`, width: W, height: 8, 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: W, height: 8, rx: 4, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Math.round(nearBar(x) * W), height: 8, rx: 4, class: 'th-bar1'})); return s; } // 길이 64 하나(줄마다 같은 길이)
 /** 줄 하나(싹 · 꽃 · 시듦 목록 · 첫 화면) */
 export function row(i, k, {num: showNum = true, meta = 'near'} = {}) {
   const tag = i.d === 1 ? '새로 들어옴' : i.d + '일째';
@@ -54,6 +56,10 @@ export function row(i, k, {num: showNum = true, meta = 'near'} = {}) {
     meta === 'near' ? h('span', {class: 'th-meta'}, h('em', {class: 'th-tg' + (i.d === 1 ? ' new' : ''), text: tag}), h('span', {text: '꽃까지'}), bar(i.x))
       : h('span', {class: 'th-meta'}, h('em', {class: 'th-tg', text: tag}), h('span', {text: '한 달 시장보다'}), h('b', {class: cls(i.x), text: pp(i.x) + '%p'})));
   return h('a', {class: 'th-row', href: '#/t/i/' + enc(i.n)}, showNum ? h('span', {class: 'th-n' + (k < 3 ? ' th-top' : ''), text: String(k + 1)}) : null, mid, dots(i), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}));
+}
+/** 꽃 · 시듦 목록 줄(견본 flow36 5 · 6 쪽 그대로) — 이름 · 한 달 동안 시장보다 더 오른 %p · 「한 달」 */
+export function simpleRow(i, {zone = false} = {}) {
+  return h('a', {class: 'th-srow', href: '#/t/i/' + enc(i.n)}, h('span', {class: 'th-rn', text: i.n}), zone ? h('b', {class: 'th-z ' + i.z, text: ZONES[i.z] ?? '?'}) : null, h('b', {class: 'th-sv ' + cls(i.x), text: pp(i.x) + '%p'}), h('span', {class: 'th-sk', text: '한 달'}));
 }
 export const yearsOf = TH => { const a = Date.parse(TH.recFrom), b = Date.parse(TH.recTo); return Number.isFinite(a) && Number.isFinite(b) ? Math.max(1, Math.round((b - a) / (365.25 * 864e5))) : null; };
 /** 성적표 한 줄 — 지난 기록에서 센 횟수(앞날을 맞히는 숫자 아님 · 결정표 6) */
@@ -74,7 +80,7 @@ export async function homeBlock() {
   box.append(h('div', {class: 'th-map'}, clock(TH, {marks: top.map(i => i.n)}), h('p', {class: 'th-cap th-cap1', text: `업종은 시계 방향으로 돌아요. 잠잠 → 싹 → 꽃 → 시듦. 지금 싹 자리에 ${num(TH.count.S)}곳이 있어요.`})));
   box.append(TH.count.real ? h('h2', {class: 'th-ans'}, h('span', {text: '진짜 싹 '}), h('em', {text: num(TH.count.real) + '곳'})) : h('h2', {class: 'th-ans', text: '지금은 진짜 싹이 없어요'}));
   box.append(h('div', {class: 'th-three'}, ...[[TH.count.real, '진짜 싹'], [TH.count.fresh, '새로 들어옴'], [TH.count.S, '싹 자리']].map(([n, t]) => h('p', {}, h('b', {text: num(n) + '곳'}), h('span', {text: t})))));
-  box.append(h('p', {class: 'th-sub', text: '점 넷이 다 차면 진짜 싹이에요. 지난 닷새 힘이 센 차례예요.'}));
+  box.append(h('p', {class: 'th-sub', text: '점 넷이 다 차면 진짜 싹이에요. 점이 많이 찬 순서예요.'})); // 싹 순서 = 점 수 → 지난 닷새(결정표 4)
   box.append(h('div', {class: 'th-rows'}, top.map((i, k) => row(i, k))));
   box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `싹 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
   box.append(recordLine(TH), nextBtn('시계 읽는 법', '#/t/how')); // 기준 날은 첫 화면에 안 씀(보이는 날짜는 띠에 한 번 — [6] 2 · next_check) · 테마 쪽마다 아래에 씀

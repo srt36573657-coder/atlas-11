@@ -16,8 +16,22 @@ v1.1 changes versus v1 (all taken from the table):
   * dot 3 : mean of close(t)/close(t-10)-1 over the 셀 회사 among rk 1,2,3  >= 0.01 (none -> false).
   * section 5: d10 exists only for 셀 회사 at T; top8 and the big-three d10 use only those (spike -> null).
   * spread series, record (section 6) use the same 셀 filter on every day.
+
+v1.2 additions (2026-10-19 · same table, section 5 + section 1; written from the table only):
+  * per industry  : m10 = I(T)/I(T-10)-1 · A5 = I(T-5)/I(T-10)-1 · B5 = I(T)/I(T-5)-1   (x100, NOT rounded)
+                    m10 has no line of its own in v1.2 — it is the ratio of dot ④ (I(t)/I(t-10)), as the caller defined it.
+  * ordering      : companies with d10 (= 셀 회사 at T), d10 descending on the exact rational value, ties by code
+                    (string order) -> rank 1.. ; gap = own d10 - next-lower d10 (exact, x100), last one -> null.
+  * top8x / bigx  : c · n(mkt name) · d10 · a5 · b5 (x100, NOT rounded) · rank · gap · l ; bigx also rk.
+                    a5/b5 need close(T-5) — the carry rule is written for the line only, so a missing close(T-5) -> null.
+                    l = for s in T-10..T: close(s)/close(T-10)*1000 rounded half-up (반올림) on the exact value;
+                    missing close(s) carries the previous day's close; close(T-10) missing -> no line (null).
+                    big company outside the ordering (튄 회사 · 값 빔) -> every numeric field null, the line included.
+  * new values are written unrounded so compare_theme.py can accept only 2-decimal rounding differences.
+  Usage: python3 -I verify_theme.py --data <site>/atlas/data --out <dir>  -> <dir>/recount_v11.json (name kept for callers)
 """
 import json
+import math
 import os
 import sys
 from fractions import Fraction
@@ -152,6 +166,9 @@ def compute(exact3=False):
     acc_real = [0, 0]
     acc_dots = {k: [0, 0] for k in range(5)}
     acc_half = {'all': [[0, 0], [0, 0]], 'real': [[0, 0], [0, 0]]}
+    # v1.2 diagnostics: how often the table's edge clauses actually fire (counted per published row)
+    diag = {'ranked': 0, 'adjacent_exact_ties': 0, 'order_double_vs_exact': 0, 'big_outside_order': 0,
+            'missing_close_T5': 0, 'line_carried_days': 0, 'line_exact_half': 0}
 
     for name, mem in inds.items():
         I = build_index(mem)
@@ -229,6 +246,71 @@ def compute(exact3=False):
         cand.sort(key=lambda z: (-z[0], z[1]))           # 반올림 전 값, 같으면 번호 차례
         top8 = [[c, r2(v * 100)] for v, c in cand[:8]]
 
+        # ---- v1.2 · 5. 회사 칸 + 업종 앞 · 뒤 닷새 (exact rationals, x100, unrounded) ----
+        m10 = (I[T] / I[T - 10] - 1) * 100
+        A5 = (I[T - 5] / I[T - 10] - 1) * 100
+        B5 = (I[T] / I[T - 5] - 1) * 100
+
+        def fr(c, s):
+            return Fraction(px[c][s])
+
+        # 업종 안 자리: d10 이 있는 회사(= 셀 회사 at T) · d10 큰 차례 · 같으면 번호 차례 · 반올림 전 값
+        order = sorted((c for c in mem if chg10[c][T] is not None),
+                       key=lambda c: (-(fr(c, T) / fr(c, T - 10)), c))
+        if [c for c in order[:8]] != [c for _, c in cand[:8]]:
+            diag['order_double_vs_exact'] += 1          # sanity: the double order above must agree
+        pos = {c: j for j, c in enumerate(order)}
+        exd10 = {c: fr(c, T) / fr(c, T - 10) - 1 for c in order}
+        for j in range(len(order) - 1):
+            if exd10[order[j]] == exd10[order[j + 1]]:
+                diag['adjacent_exact_ties'] += 1
+
+        def line(c):
+            a = px[c]
+            base = a[T - 10]
+            if base is None:
+                return None                              # 열흘 전 종가가 없으면 선 없음
+            out = []
+            last = base
+            for s in range(T - 10, T + 1):
+                v = a[s]
+                if v is None:
+                    v = last                             # 종가가 빈 날은 바로 앞 날 값
+                    diag['line_carried_days'] += 1
+                last = v
+                f = Fraction(v) * 1000 / Fraction(base)
+                if f.denominator == 2:
+                    diag['line_exact_half'] += 1
+                out.append(math.floor(f + Fraction(1, 2)))   # 반올림 = half-up on the exact value
+            return out
+
+        def co_row(c):
+            row = {'c': c, 'n': mkt[c].get('n')}
+            if c not in pos:                             # 튄 회사 · 값 빔 -> 숫자 칸 모두 없음
+                diag['big_outside_order'] += 1
+                row.update({'d10': None, 'a5': None, 'b5': None, 'rank': None, 'gap': None, 'l': None})
+                return row
+            j = pos[c]
+            row['d10'] = float(exd10[c] * 100)
+            if px[c][T - 5] is None:
+                diag['missing_close_T5'] += 1
+                row['a5'] = row['b5'] = None
+            else:
+                row['a5'] = float((fr(c, T - 5) / fr(c, T - 10) - 1) * 100)
+                row['b5'] = float((fr(c, T) / fr(c, T - 5) - 1) * 100)
+            row['rank'] = j + 1
+            row['gap'] = float((exd10[c] - exd10[order[j + 1]]) * 100) if j + 1 < len(order) else None
+            row['l'] = line(c)
+            return row
+
+        top8x = [co_row(c) for c in order[:8]]
+        bigx = []
+        for c in big:
+            row = co_row(c)
+            row['rk'] = rk_of[c]
+            bigx.append(row)
+        diag['ranked'] += len(order)
+
         out_inds[name] = {
             'n': len(mem),
             'zone': zT,
@@ -243,6 +325,11 @@ def compute(exact3=False):
             'big': {'codes': list(big), 'avg': big_avg},
             'bigD10': big_d10,
             'top8': top8,
+            # v1.2 (unrounded x100 values; compare_theme.py allows only 2-decimal rounding differences)
+            'm10': m10, 'A5': A5, 'B5': B5,
+            'ranked': len(order),
+            'top8x': top8x,
+            'bigx': bigx,
         }
         ctx[name] = {'I': I, 'x': x, 'y': y, 'cnt': cnt, 'tot': tot, 'big': big,
                      'y_exact': y[T], 'score': score, 'zone': zT, 'mem': mem, 'chg10': chg10}
@@ -288,7 +375,8 @@ def compute(exact3=False):
                      pct1_half_up(acc_half['real'][1][1], acc_half['real'][1][0])],
         },
     }
-    result = {'T': D[T], 'industries': out_inds, 'sproutOrder': sprout, 'record': record}
+    result = {'T': D[T], 'table': 'v1.2', 'industries': out_inds, 'sproutOrder': sprout, 'record': record,
+              'diag': diag}
     extra = {
         'N': N, 'T': T, 'h_cut': h_cut,
         'n_companies': len(codes), 'n_industries': len(inds),
@@ -317,6 +405,7 @@ def main():
           ' excluded(<5):', extra['excluded_industries'])
     print('zones     :', zc)
     print('record    :', json.dumps(result['record'], ensure_ascii=False))
+    print('v1.2 diag :', json.dumps(result['diag'], ensure_ascii=False))
 
 
 if __name__ == '__main__':

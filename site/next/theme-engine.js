@@ -74,7 +74,8 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
       return {c, d10, a5, b5};
     }).filter(r => r.d10 != null).sort((p, q) => q.d10 - p.d10 || (p.c < q.c ? -1 : 1));
     const line = c => { const a = closes.get(c), b = a[T - RULE.back]; if (!ok(b)) return null; const out = []; let last = b; for (let t = T - RULE.back; t <= T; t++) { if (ok(a[t])) last = a[t]; out.push(Math.round(last / b * 1000)); } return out; };
-    const full = (r, k) => ({c: r.c, n: companies[r.c].n, d10: r2(r.d10 * 100), a5: r2(r.a5 * 100), b5: r2(r.b5 * 100), rank: k + 1, gap: r2((r.d10 - (rows[k + 1]?.d10 ?? NaN)) * 100), l: line(r.c)});
+    const p100 = v => r2(v == null ? NaN : v * 100); // 빈 값(null)은 null 로(null × 100 = 0 이 되지 않게 · 따로 세기 v1.2 가 짚음)
+    const full = (r, k) => ({c: r.c, n: companies[r.c].n, d10: p100(r.d10), a5: p100(r.a5), b5: p100(r.b5), rank: k + 1, gap: p100(r.d10 - (rows[k + 1]?.d10 ?? NaN)), l: line(r.c)});
     const top = rows.slice(0, RULE.top).map(full);
     // 큰 회사 셋도 같은 칸(결정표 5 · v1.2) — 줄(d10 차례)에 없으면(튄 회사 · 값 빔) 숫자 칸은 모두 없음
     const big = u.bigCodes.map(c => { const k = rows.findIndex(r => r.c === c); return k < 0 ? {c, n: companies[c].n, rk: rk.get(c), d10: null, a5: null, b5: null, rank: null, gap: null, l: null} : {...full(rows[k], k), rk: rk.get(c)}; });

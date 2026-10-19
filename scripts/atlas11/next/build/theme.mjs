@@ -41,9 +41,10 @@ export async function build({siteDir = 'site', made = new Date().toISOString()} 
   const out = path.join(siteDir, 'next', 'data');
   await fs.mkdir(out, {recursive: true});
   const a = JSON.stringify(theme), b = JSON.stringify(more), c = JSON.stringify(homeOf(theme));
-  await fs.writeFile(path.join(out, 'theme.json'), a + '\n');
-  await fs.writeFile(path.join(out, 'theme-more.json'), b + '\n');
-  await fs.writeFile(path.join(out, 'theme-home.json'), c + '\n'); // 첫 화면 칸만(느린 4G 첫 그림 · check_white ③)
+  const put = async (f, s) => { const p = path.join(out, f), tmp = p + '.tmp' + process.pid; await fs.writeFile(tmp, s + '\n'); await fs.rename(tmp, p); }; // 다 쓴 뒤 바꿔 끼움(쓰는 동안 화면이 반쪽 파일을 받지 않게 · 새 눈 검사 12)
+  await put('theme.json', a);
+  await put('theme-more.json', b);
+  await put('theme-home.json', c); // 첫 화면 칸만(느린 4G 첫 그림 · check_white ③)
   const R = theme.record;
   return `업종 ${theme.inds.length}곳 · 기준 ${theme.asOf} · 싹 ${theme.count.S} 꽃 ${theme.count.B} 시듦 ${theme.count.W} 잠잠 ${theme.count.Q} · 진짜 싹 ${theme.count.real} · 성적표 모든 날 ${R.all.p}%(${R.all.n}) 진짜 싹 ${R.real.p}%(${R.real.n}) 두 절반 ${R.more ? '모두 높음' : '차이 없음'} · ${Buffer.byteLength(a) + 1}+${Buffer.byteLength(b) + 1}바이트`;
 }

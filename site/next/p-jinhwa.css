@@ -22,7 +22,7 @@
 /* 카드 — 한 장이 화면 폭 꽉(밀면 다음 장) */
 .jh-rail { display: flex; align-items: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
 .jh-rail::-webkit-scrollbar { display: none; }
-.jh-card { flex: 0 0 100%; min-width: 0; box-sizing: border-box; scroll-snap-align: start; scroll-snap-stop: always; padding: var(--sp-1) var(--sp-2) 0; }
+.jh-card { flex: 0 0 100%; min-width: 0; box-sizing: border-box; scroll-snap-align: start; scroll-snap-stop: always; padding: 0 var(--sp-2); } /* 위 띄움 0 — 본질 1번이 세 문장이 되어(사장님 2026-10-19 16:06 · 16:54) 360 × 640 첫 화면에 그림까지 들게 */
 .jh-top { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); margin: 0; font-size: var(--fs-1); line-height: 1.5; }
 .jh-tag { color: var(--sub); font-weight: 700; }
 .jh-tag.wait { color: var(--ink); }
@@ -30,11 +30,11 @@
 .jh-bigt { padding: 0 var(--sp-1); border: 1px solid var(--gold-line); border-radius: 8px; color: var(--gold); font-weight: 700; }
 .jh-name { margin: 0 0 var(--sp-1); font-size: var(--fs-2); line-height: 1.4; font-weight: 700; }
 
-/* 전과 후 그림 — 휴대폰 화면 그림(세로)이라 나란히 · 가운데 화살표 · 제 꼴 그대로 줄여 넣음(잘라 내지 않음) · 누르면 크게 */
+/* 전과 후 그림 — 휴대폰 화면 그림(세로)이라 나란히 · 가운데 화살표 · 제 꼴 그대로 줄여 넣음(잘라 내지 않음) · 누르면 크게 · 높이 150(옛 200 — 본질 1번이 길어져 사장님 기기 360 × 640 첫 화면에 들게 · 2026-10-19) */
 .jh-pics { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--sp-1); margin: 0 0 var(--sp-1); }
 .jh-arrow { color: var(--sub); font-size: var(--fs-2); }
 .jh-fig { display: flex; flex-direction: column; min-width: 0; margin: 0; }
-.jh-pic { display: flex; align-items: center; justify-content: center; height: 200px; min-height: 44px; overflow: hidden; border: 1px solid var(--hair); border-radius: 8px; background: var(--card2); }
+.jh-pic { display: flex; align-items: center; justify-content: center; height: 150px; min-height: 44px; overflow: hidden; border: 1px solid var(--hair); border-radius: 8px; background: var(--card2); }
 .jh-frame { position: relative; display: block; height: 100%; aspect-ratio: 360 / 640; max-width: 100%; }
 .jh-img { display: block; width: 100%; height: 100%; object-fit: contain; }
 /* 바뀐 곳 네모(사장님 2026-10-19 「어디를 고쳤는지 … 표기가 없어서」) — 후 = 금빛 굵은 테 · 전 = 금빛 점선(여기가 바뀌어요) · 자리는 p-jinhwa.js 가 % 로 */
@@ -51,7 +51,7 @@
 .jh-fig figcaption { color: var(--sub); font-size: var(--fs-1); line-height: 1.5; text-align: center; }
 
 /* 단추(사장님 열쇠 기기만) — 확인 · 되돌리기(누르면 금빛 테 · 글 = 언제 들어가는지) */
-.jh-ok, .jh-rv { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin: var(--sp-1) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid transparent; border-radius: 12px; background: var(--ink); color: #111; font-size: var(--fs-2); font-weight: 700; line-height: 1.35; text-align: center; }
+.jh-ok, .jh-rv { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin: 0 0 var(--sp-1); padding: var(--sp-1) var(--sp-2); border: 1px solid transparent; border-radius: 12px; background: var(--ink); color: #111; font-size: var(--fs-2); font-weight: 700; line-height: 1.35; text-align: center; }
 .jh-ok { background: var(--gold); color: #111; font-size: var(--fs-3); } /* 확인 = 금빛 큰 단추 · 이름 바로 밑(사장님 2026-10-19 「승인 버튼을 못찾겠어 잘 보이개 해야 해」) */
 .jh-rv { background: var(--card2); color: var(--ink); border-color: var(--hair2); }
 .jh-ok.on, .jh-rv.on { background: var(--gold-wash); color: var(--gold); border-color: var(--gold-line); font-size: var(--fs-1); }

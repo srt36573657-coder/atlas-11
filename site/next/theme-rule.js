@@ -21,4 +21,4 @@ export function pp(v) {
 /** 꽃까지 막대(0 ~ 1) */
 export const nearBar = x => (Number.isFinite(x) ? Math.max(0, Math.min(1, 1 - (RULE.bloomX - x) / RULE.barSpan)) : 0);
 /** 점 넷 글(결정표 3 화면 글) */
-export const DOT_TEXT = Object.freeze(['시장보다 힘이 붙어요', '오른 회사가 늘어요', '큰 회사도 움직여요', '값이 진짜로 올라요']);
+export const DOT_TEXT = Object.freeze(['시장보다 힘이 붙어요', '오른 회사가 많아요', '큰 회사도 움직여요', '값이 진짜로 올라요']); // ② 는 절반 이상인지(높이)만 봄 — 늘었는지는 안 봄(2026-10-19 새 눈 검사)

@@ -13,6 +13,7 @@
 .th-clock .th-nb { fill: var(--up); stroke: #080808; stroke-width: 2; }
 .th-clock .th-nbt { fill: #080808; font-size: var(--fs-1); font-weight: 700; }
 .th-clock .th-lb { fill: var(--ink); font-size: var(--fs-1); }
+.th-clock .th-lb, .th-clock .th-zl, .th-clock .th-bt { paint-order: stroke; stroke: #080808; stroke-width: 4px; stroke-linejoin: round; } /* 점 · 꽃 선 위에서도 글이 읽히게(새 눈 검사 11) */
 .th-clock .th-zl { fill: var(--ink); font-size: var(--fs-2); font-weight: 700; }
 .th-clock .th-zl.th-zs, .th-clock .th-bt { fill: var(--up); }
 .th-clock .th-zl.th-zq { fill: #BDBDBD; }
@@ -33,10 +34,10 @@
 .th-n.th-top { background: var(--up); color: #080808; }
 .th-mid2 { display: flex; flex: 1; flex-direction: column; gap: 0; min-width: 0; }
 .th-rn { overflow: hidden; font-size: var(--fs-4); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.th-meta { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; color: #BDBDBD; font-size: var(--fs-1); white-space: nowrap; }
+.th-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-width: 0; color: #BDBDBD; font-size: var(--fs-1); white-space: nowrap; } /* 좁으면 둘째 줄로(320 폭) */
 .th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #6E6E6E; border-radius: 8px; color: var(--ink); font-style: normal; }
 .th-tg.new { border-color: var(--up); color: var(--ink); }
-.th-bar { flex: 0 1 96px; min-width: 32px; height: 8px; }
+.th-bar { flex: none; width: 64px; height: 8px; } /* 막대 길이는 줄마다 같게(채운 비율을 견주게 · 새 눈 검사 11) */
 .th-bar .th-bar0, .th-rbar .th-bar0 { fill: #2A2A2A; }
 .th-bar .th-bar1, .th-rbar .th-bar1 { fill: var(--up); }
 .th-dots { flex: none; }

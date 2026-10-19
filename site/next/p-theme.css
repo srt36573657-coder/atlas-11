@@ -37,6 +37,12 @@
 .th-li > span:first-child, .th-rn2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .th-li b, .th-cor b { font-weight: 700; text-align: right; }
 .th-li.th-me > span:first-child { color: var(--gold); font-weight: 700; }
+/* 꽃 · 시듦 목록 줄 — 견본 flow36 5 · 6 쪽 그대로(이름 · 값 · 「한 달」 · 64px · 320 폭에서도 한 줄) */
+.th-srow { display: flex; align-items: center; gap: var(--sp-2); min-height: 64px; border-bottom: 1px solid #2A2A2A; color: var(--ink); font-size: var(--fs-3); text-decoration: none; }
+.th-srow .th-rn { flex: 1; min-width: 0; font-size: var(--fs-3); }
+.th-srow .th-sv { flex: none; font-weight: 700; }
+.th-srow .th-sk { flex: none; color: #A6A6A6; font-size: var(--fs-1); }
+.th-srow .th-z { flex: none; font-size: var(--fs-1); } /* 이웃 업종 줄의 자리 이름 */
 .th-sp { display: block; }
 .th-sp .th-spl { fill: none; stroke-width: 2; } .th-sp .th-spl.up, .th-sp .th-spd.up { stroke: var(--up); fill: none; } .th-sp .th-spd.up { fill: var(--up); } .th-sp .th-spl.dn { stroke: var(--down); } .th-sp .th-spd.dn { fill: var(--down); stroke: none; }
 .th-line { display: block; margin: 0 0 var(--sp-1); }
