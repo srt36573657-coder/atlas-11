@@ -113,39 +113,41 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .plate .big{position:relative;padding:0 0 18px 24px;letter-spacing:.02em}
 .plate .rule{margin:14px auto 12px}
 
-/* e1 · 「하는 일 셋」 — 판화 이름판(①) 아래로 한 줄 길(가는 세로선)이 내려가며 ② 지난 기록만 → ③ 한 달 뒤. 내 자리(노랑)는 그 길 위에: ① 끝에 멈춤 · ③ 끝에 약속. 하지 않는 일 둘은 이름판 맨 아래 조용한 한 줄 */
-.plate .head{height:84px}
-.plate .frame{padding-bottom:0}
-.plate .rule{margin:10px auto 8px}
-.plate p[data-ess="1"]{line-height:1.55;font-size:20px}
-.plate .foot{margin-top:10px;padding:2px 0 4px}
-.plate summary{color:#BDBDBD;gap:8px}
-.plate summary::after{content:"⌄";font-size:17px;color:#8A8A8A;margin-top:-6px}
-.step-no{position:absolute;left:-2px;top:0;width:34px;height:34px;border-radius:17px;background:#080808;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:18px;line-height:1;color:#FFFFFF}
-.plate .head .step-no{left:14px;top:12px;background:#1F3A8A;border-color:#F7F3E8;color:#F7F3E8}
-.flow{position:relative;margin-top:12px;padding-left:46px}
-.flow::before{content:"";position:absolute;left:15px;top:-12px;bottom:26px;width:1px;background:#4E4E4E}
-.st{position:relative}
-.st+.st{margin-top:14px}
-.st .step-no{left:-46px}
-.st .lbl{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:34px;font-size:18px;line-height:1.3;color:#FFFFFF;white-space:nowrap}
-.st .lbl .sub{color:#BDBDBD;font-size:17px}
-.chip{display:inline-flex;align-items:baseline;gap:3px;background:#F6C744;color:#111111;border-radius:24px 24px 8px 24px;min-height:48px;padding:7px 16px 0;white-space:nowrap}
+/* e1 · 「하는 일 셋」 — 판화 이름판이 ① · 그 밑으로 가는 세로선 한 줄이 ② 지난 기록만 → ③ 한 달 뒤로 내려감. 내 자리(노랑)는 그 길 위에: ① 끝에 멈춤 · ③ 끝에 약속. 하지 않는 일 둘은 길 끝 조용한 한 줄(누르면 본질 2 · 3) */
+.plate .frame{padding:10px 12px 0}
+.plate .head{height:76px}
+.plate .big{padding:0 0 14px 64px}
+.plate .rule{margin:8px auto 6px}
+.plate p[data-ess="1"]{line-height:1.5;font-size:19px}
+.plate .foot{margin-top:8px;padding:6px 0 6px;justify-content:space-between}
+.no{flex:0 0 auto;width:34px;height:34px;border-radius:17px;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:18px;line-height:1;color:#FFFFFF}
+.plate .head .no{position:absolute;left:18px;bottom:16px;background:#1F3A8A;border-color:#F7F3E8;color:#F7F3E8}
+.chip{display:inline-flex;align-items:baseline;gap:3px;background:#F6C744;color:#111111;border-radius:24px 24px 8px 24px;min-height:48px;padding:8px 16px 0;white-space:nowrap}
 .chip b{font-family:"Gowun Batang",serif;font-weight:700;font-size:26px;line-height:1}
 .chip span{font-size:17px;color:#111111}
-.st1 .lbl{min-height:48px}
+.mine-l{display:flex;align-items:center;gap:10px;font-size:17px;color:#BDBDBD}
+.flow{list-style:none;position:relative;margin-top:10px}
+.flow::before{content:"";position:absolute;left:16px;top:-10px;bottom:24px;width:1px;background:#4E4E4E}
+.st{position:relative;padding-left:46px}
+.st+.st{margin-top:12px}
+.st>.no{position:absolute;left:0;top:0}
+.lbl{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:34px;font-size:18px;line-height:1.3;color:#FFFFFF;white-space:nowrap}
+.lbl .sub{color:#BDBDBD;font-size:17px}
+.read .news h2.lbl{display:flex;justify-content:space-between;margin:0;font-weight:400;font-size:18px}
+.read .news h2.lbl span{background:none;padding:0;border-radius:0}
+.read .news h2.lbl .sub{color:#BDBDBD;font-size:17px}
 .read .pill{justify-content:flex-start;align-items:center;margin:0}
 .read .pill .in{background:none}
-.read .pill a{padding:6px 0 6px;column-gap:10px;min-height:48px;align-items:center}
+.read .pill a{padding:0;column-gap:10px;min-height:48px;align-items:center}
 .news{margin-top:0}
-.split{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:6px}
+.split{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:4px}
 .split .f{display:contents}
 .split .f>span[data-num]{display:flex;align-items:baseline;gap:6px;grid-row:1}
 .split .fu>span[data-num]{grid-column:1}
 .split .fd>span[data-num]{grid-column:2;justify-content:flex-end}
 .split .lb{font-size:17px;color:#BDBDBD}
 .split .v{font-family:"Gowun Batang",serif;font-size:28px;line-height:1}
-.bar2{grid-row:2;grid-column:1/3;display:flex;gap:3px;height:12px}
+.bar2{grid-row:2;grid-column:1/3;display:flex;gap:3px;height:12px;margin:2px 0}
 .bar2 i{display:block;flex-basis:0;min-width:0}
 .bar2 .bu{background:#FF5A65;border-radius:6px 2px 2px 6px}
 .bar2 .bd{background:#49A8F8;border-radius:2px 6px 6px 2px}
@@ -155,32 +157,43 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .split .qs{display:none;grid-column:1/3;font-size:17px;color:#D6D6D6}
 .split .fu .qs{grid-row:4}.split .fd .qs{grid-row:5}
 .split .f.open .qs{display:block}
-.st .say{display:inline-block;margin-top:8px;background:#282828;border-radius:8px 24px 24px 24px;padding:8px 18px;font-size:19px;line-height:1.4;white-space:nowrap}
-.st .say img{width:26px;height:26px;vertical-align:-6px;margin-right:6px}
-.st3 .q{display:block;font-family:"Gowun Batang",serif;font-size:20px;line-height:1.4;color:#FFFFFF;margin-top:2px}
-.gdr{margin:14px 0 0 0}
+.st3 .row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.st3 .say{display:inline-flex;align-items:center;gap:6px;background:#282828;border-radius:8px 24px 24px 24px;padding:8px 16px 8px 10px;font-size:19px;line-height:1.3;white-space:nowrap}
+.st3 .say img{width:28px;height:28px}
+.st4{min-height:0}
+.quiet summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:8px;font-size:17px;color:#BDBDBD;cursor:pointer;white-space:nowrap}
+.quiet summary::-webkit-details-marker{display:none}
+.quiet summary::after{content:"⌄";color:#8A8A8A;margin-top:-6px}
+.quiet p{font-size:17px;color:#D6D6D6;line-height:1.55;margin:0 0 8px}
+.st4>.dot{position:absolute;left:12px;top:20px;width:9px;height:9px;border-radius:5px;border:1px solid #8A8A8A;background:#080808}
+.gdr{margin:6px 0 0 0}
+#view{padding:0 16px}
+.read .pill a{column-gap:6px;justify-content:flex-start}
+.st3 .say{font-size:18px;padding:8px 14px 8px 8px;gap:5px}
+.st3 .say img{width:24px;height:24px}
+.st3 .chip{padding:8px 13px 0}
 .all{margin-top:0}
 
 @media (max-width:359px){
-  .plate .head{height:84px;margin:0 -4px}
-  .plate .big{padding:0 0 16px 60px;font-size:40px}
-  .plate .head .step-no{left:12px;top:auto;bottom:16px}
+  .plate .head{height:76px;margin:0 -4px}
+  .plate .big{font-size:40px;padding:0 0 16px 58px}
+  .plate .head .no{left:14px}
   .plate .frame{padding:10px 10px 0}
-  .plate p[data-ess="1"]{font-size:18px;line-height:1.5}
+  .plate p[data-ess="1"]{font-size:18px}
   .top{padding:0 8px}
   .ttl{font-size:20px;letter-spacing:.18em;text-indent:.18em}
   .ttl::after{margin-left:-.18em}
   #view{padding:0 12px}
-  .flow{padding-left:40px}
-  .flow::before{left:15px}
-  .st .step-no{left:-40px}
+  .st{padding-left:42px}
   .read .pill a{flex-wrap:wrap;white-space:normal;column-gap:8px}
   .split .v{font-size:24px}
   .split button{padding:0 10px}
-  .st .say{white-space:normal;font-size:18px}
-  .st .lbl{font-size:17px}
-  .chip{padding:7px 12px 0}
+  .st3 .row{flex-wrap:wrap}
+  .st3 .say{font-size:17px;padding:8px 12px 8px 8px}
+  .st3 .say img{width:24px;height:24px}
+  .chip{padding:8px 12px 0}
   .chip b{font-size:22px}
+  .quiet summary{white-space:normal}
   .gdr a{font-size:17px}
   .tabs a{letter-spacing:-0.07em}
 }
@@ -201,7 +214,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   <section class="plate" data-w="ess">
     <div class="frame">
       <div class="head">
-        <svg class="print" viewBox="0 0 320 112" preserveAspectRatio="xMaxYMax slice" aria-hidden="true"><defs>
+        <svg class="print" viewBox="0 0 320 112" preserveAspectRatio="xMaxYMid meet" aria-hidden="true"><defs>
 <g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g>
 <g id="g3-side"><g transform="scale(.56 1)"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g></g><path d="M-1 -5.6 L-13 -8.6 Q-15.4 -9.4 -16 -7 Q-17.6 0 -16 7 Q-15.4 9.4 -13 8.6 L-1 5.6 Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><ellipse cx="-15.8" cy="0" rx="2.4" ry="8.4" fill="#D99A1C" stroke="#0F1B45" stroke-width="1.1"/></g>
 </defs>
@@ -218,28 +231,21 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 <use href="#g3-side" transform="translate(246 74) rotate(196) scale(.7)"/>
 <use href="#g3-bloom" transform="translate(262 30) rotate(14) scale(.94)"/>
 </svg>
-        <span class="step-no" aria-label="하는 일 하나">1</span>
+        <span class="no" aria-hidden="true">1</span>
         <span class="big serif">왜 사?</span>
       </div>
       <span class="rule"><i></i></span>
       <p data-ess="1" class="serif">주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.</p>
       <div class="foot">
-        <details>
-          <summary>앞날 안 맞혀요 · 사고팔기 안 권해요</summary>
-          <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
-          <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
-        </details>
+        <span class="mine-l"><a class="chip" href="#/why" data-num><b>0</b><span>번 멈춤</span></a></span>
         <button class="kk-btn" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button>
       </div>
     </div>
   </section>
 
   <ol class="flow" aria-label="하는 일 셋">
-    <li class="st st1">
-      <div class="lbl"><span>열한 질문</span><a class="chip" href="#/why" data-num><b>0</b><span>번 멈춤</span></a></div>
-    </li>
     <li class="st st2 read">
-      <span class="step-no">2</span>
+      <span class="no" aria-hidden="true">2</span>
       <div class="news" data-w="news">
         <h2 class="lbl"><span>지난 기록만</span><span class="sub">10월 13일</span></h2>
         <div class="pill" data-w="today"><span class="in"><a data-num href="#/f/day"><span class="q">?</span><span>10월 <span class="n">12</span>일</span><span class="dn">코스피 <span class="n">−3.28</span>%</span><span class="dn">코스닥 <span class="n">−4.36</span>%</span></a></span></div>
@@ -249,12 +255,19 @@ button,input{font:inherit;color:inherit;background:none;border:0}
           <span class="bar2" aria-hidden="true"><i class="bu" style="flex-grow:766"></i><i class="bd" style="flex-grow:1632"></i></span>
         </div>
       </div>
-      <p class="say serif" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">내린 곳이 두 배 넘는데 살까?</p>
     </li>
     <li class="st st3">
-      <span class="step-no">3</span>
-      <div class="lbl"><span>한 달 뒤</span><a class="chip" href="#/why" data-num><b>0</b><span>번 약속</span></a></div>
-      <span class="q">「그날 정한 대로 했어?」</span>
+      <span class="no" aria-hidden="true">3</span>
+      <div class="lbl"><span>한 달 뒤</span></div>
+      <div class="row"><p class="say serif" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">그날 정한 대로 했어?</p><a class="chip" href="#/why" data-num><b>0</b><span>번 약속</span></a></div>
+    </li>
+    <li class="st st4">
+      <span class="dot" aria-hidden="true"></span>
+      <details class="quiet">
+        <summary>앞날 안 맞혀요 · 사고팔기 안 권해요</summary>
+        <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
+        <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
+      </details>
     </li>
   </ol>
 
