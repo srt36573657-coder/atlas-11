@@ -1,0 +1,672 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261019-1131",
+ "start": "2026-10-19T11:31:04+09:00",
+ "end": "2026-10-19T11:51:13+09:00",
+ "essence": {
+  "file": "docs/골똘이_본질.md",
+  "sha256": "a71d3864c200f586491e1d60108b231ef4d95e1b3cfc5b07150bd9d06caec50a",
+  "first": "골똘이의 본질: 주식을 사기 전에 한 번 멈추게 하는 곳이다."
+ },
+ "main": "84487ec732eb7775a023a36f5e2c36916ac4f6d3",
+ "cutoff": "2026-10-19T11:30:00+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "make",
+  "retest": [],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [
+  {
+   "n": 1,
+   "id": "20261019-1131-1",
+   "ok": true,
+   "route": "#/why",
+   "steps": [
+    {
+     "fill": ".wy-find",
+     "text": "삼성전자"
+    },
+    {
+     "wait": 600
+    },
+    {
+     "click": ".wy-hit"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-quick button"
+    },
+    {
+     "click": ".wy-nav .wy-next"
+    }
+   ],
+   "commit": "a3a54a71dd81495066e611f868c0b103d6236c42",
+   "base": "84487ec732eb7775a023a36f5e2c36916ac4f6d3",
+   "why": [],
+   "files": [
+    "site/next/p-why.js"
+   ],
+   "changeHash": "28630a9ca6722cc7",
+   "big": [
+    "본질(열한 질문 · 골똘이 칸 · 본질 세 줄 · 한 달 뒤 돌아보기)"
+   ],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "mark": {
+    "box": {
+     "x": 27,
+     "y": 186,
+     "w": 306,
+     "h": 38
+    },
+    "text": "한 달 뒤에 그날 정한 대로 했는지 물어요.",
+    "route": "#/why",
+    "steps": [
+     {
+      "fill": ".wy-find",
+      "text": "삼성전자"
+     },
+     {
+      "wait": 600
+     },
+     {
+      "click": ".wy-hit"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-quick button"
+     },
+     {
+      "click": ".wy-nav .wy-next"
+     }
+    ]
+   },
+   "preview": {
+    "state": "fail",
+    "run": 39190808322,
+    "sha": "a3a54a71dd81495066e611f868c0b103d6236c42",
+    "at": "2026-10-19T11:37:07+09:00"
+   },
+   "seed": {}
+  },
+  {
+   "n": 2,
+   "id": "20261019-1131-2",
+   "ok": true,
+   "route": "#/why",
+   "steps": [
+    {
+     "fill": ".wy-find",
+     "text": "삼성전자"
+    },
+    {
+     "wait": 600
+    },
+    {
+     "click": ".wy-hit"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    },
+    {
+     "click": ".wy-opt"
+    }
+   ],
+   "commit": "e2b106b3cee0afea736b120776a06b4de6fd65c3",
+   "base": "84487ec732eb7775a023a36f5e2c36916ac4f6d3",
+   "why": [],
+   "files": [
+    "site/next/p-why.js"
+   ],
+   "changeHash": "b75f2734cad208db",
+   "big": [
+    "본질(열한 질문 · 골똘이 칸 · 본질 세 줄 · 한 달 뒤 돌아보기)"
+   ],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "mark": {
+    "box": {
+     "x": 27,
+     "y": 186,
+     "w": 306,
+     "h": 38
+    },
+    "text": "한 달 뒤에 그날 정한 대로 했는지 물어요.",
+    "route": "#/why",
+    "steps": [
+     {
+      "fill": ".wy-find",
+      "text": "삼성전자"
+     },
+     {
+      "wait": 600
+     },
+     {
+      "click": ".wy-hit"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     },
+     {
+      "click": ".wy-opt"
+     }
+    ]
+   },
+   "preview": {
+    "state": "fail",
+    "run": 39191185661,
+    "sha": "e2b106b3cee0afea736b120776a06b4de6fd65c3",
+    "at": "2026-10-19T11:42:05+09:00"
+   },
+   "seed": {}
+  }
+ ],
+ "debate": {
+  "mode": "single",
+  "top": {
+   "kahneman": 1,
+   "munger": 1,
+   "popper": 1
+  },
+  "order": [
+   1,
+   2
+  ],
+  "people": {
+   "kahneman": "사기 전 마음이 가장 달아오른 곳(결과 화면)과 약속을 쓰는 곳에서 한 달 뒤의 나를 떠올리게 하면 한 박자 늦출 수 있다.",
+   "munger": "새 글을 만들면 영어 검사와 잣대 검사에 막힌다. 이미 번역된 사장님 문장만 쓰고 부추김이 없는 쪽을 고른다.",
+   "popper": "둘 다 글 한 줄이라 한 번에 되돌릴 수 있고, 한 달 뒤 답한 수와 「했어」 몫으로 틀렸는지 잴 수 있다. 한 일꾼이 세 사람을 차례로 맡았다."
+  },
+  "at": "2026-10-19T11:42:46+09:00",
+  "ok": true,
+  "why": []
+ },
+ "cards": [
+  {
+   "n": 1,
+   "id": "20261019-1131-1",
+   "ok": true,
+   "rule": {
+    "measure": "promise",
+    "num": "promise_yes",
+    "den": "promise",
+    "dir": "up"
+   },
+   "card": {
+    "id": "20261019-1131-1",
+    "title": "결과 화면에도 한 달 뒤 돌아보기 안내를 놓기",
+    "pick": true,
+    "serves": "③ 한 달 뒤 「그날 정한 대로 했어?」로 돌아보게 한다.",
+    "before": "/next/data/jinhwa/20261019-1131-1-before.png",
+    "after": "/next/data/jinhwa/20261019-1131-1-after.png",
+    "voices": {
+     "kahneman": "마음이 가장 달아오른 결과 화면에서 한 달 뒤의 나를 먼저 떠올리게 해요.",
+     "munger": "이미 번역된 같은 문장이라 영어 화면도 안 깨지고, 부추김이 없어요.",
+     "popper": "답한 수와 「했어」 몫으로 맞는지 틀린지 바로 잴 수 있어요."
+    },
+    "predict": {
+     "text": "안내를 본 사람이 한 달 뒤 물음에 답하는 일이 늘고, 답한 가운데 「했어」 몫이 들어가기 전 10거래일보다 늘 것으로 어림한다.",
+     "measure": "② 약속 · 답한 수 가운데 「했어」 몫이 들어가기 전 10거래일보다 늘면 맞아요",
+     "days": 10
+    },
+    "revert": "한 달 뒤 답한 수가 지금보다 줄면 이 줄을 뺀다.",
+    "premortem": "36번째 이유: 사기 전에 한 번 멈추게 하는 곳이라서 — 1년 뒤 실패했다면 같은 문장이 여러 곳에 있어 지루한 반복으로 읽혀 무시되었기 때문이다.",
+    "big": true,
+    "risks": [
+     "한 달 뒤 돌아보기(본질 ③)에 닿는 글이라 사장님 확인이 꼭 필요함",
+     "같은 문장이 결과 화면과 기록 쪽 두 곳에 보임"
+    ],
+    "branch": "jinhwa/20261019-1131-1",
+    "files": [
+     "site/next/p-why.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    },
+    "mark": {
+     "box": {
+      "x": 27,
+      "y": 186,
+      "w": 306,
+      "h": 38
+     },
+     "text": "한 달 뒤에 그날 정한 대로 했는지 물어요.",
+     "route": "#/why",
+     "steps": [
+      {
+       "fill": ".wy-find",
+       "text": "삼성전자"
+      },
+      {
+       "wait": 600
+      },
+      {
+       "click": ".wy-hit"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-quick button"
+      },
+      {
+       "click": ".wy-nav .wy-next"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "n": 2,
+   "id": "20261019-1131-2",
+   "ok": true,
+   "rule": {
+    "measure": "promise",
+    "num": "promise_yes",
+    "den": "promise",
+    "dir": "up"
+   },
+   "card": {
+    "id": "20261019-1131-2",
+    "title": "팔 약속 쓰는 쪽에 한 달 뒤 돌아보기 안내를 놓기",
+    "pick": false,
+    "serves": "③ 한 달 뒤 「그날 정한 대로 했어?」로 돌아보게 한다.",
+    "before": "/next/data/jinhwa/20261019-1131-2-before.png",
+    "after": "/next/data/jinhwa/20261019-1131-2-after.png",
+    "voices": {
+     "kahneman": "약속을 적는 차분한 때에 점검이 있다는 앎이 숫자를 더 신중히 적게 해요.",
+     "munger": "이미 번역된 같은 문장이라 영어가 안 깨지고, 숫자를 올리라 내리라 하지 않아요.",
+     "popper": "한 달 뒤 답한 수로 맞는지 틀린지 잴 수 있고, 한 줄만 빼면 돌아가요."
+    },
+    "predict": {
+     "text": "약속을 쓰는 쪽에서 안내를 본 사람이 한 달 뒤 물음에 답하는 일이 늘고, 답한 가운데 「했어」 몫이 들어가기 전 10거래일보다 늘 것으로 어림한다.",
+     "measure": "② 약속 · 답한 수 가운데 「했어」 몫이 들어가기 전 10거래일보다 늘면 맞아요",
+     "days": 10
+    },
+    "revert": "한 달 뒤 답한 수가 지금보다 줄면 이 줄을 뺀다.",
+    "premortem": "36번째 이유: 사기 전에 한 번 멈추게 하는 곳이라서 — 1년 뒤 실패했다면 약속 칸 아래 작은 글이라 눈에 띄지 않아 아무도 읽지 않았기 때문이다.",
+    "big": true,
+    "risks": [
+     "한 달 뒤 돌아보기(본질 ③)에 닿는 글이라 사장님 확인이 꼭 필요함",
+     "같은 문장이 약속 쓰는 쪽과 기록 쪽 두 곳에 보임"
+    ],
+    "branch": "jinhwa/20261019-1131-2",
+    "files": [
+     "site/next/p-why.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    },
+    "mark": {
+     "box": {
+      "x": 27,
+      "y": 186,
+      "w": 306,
+      "h": 38
+     },
+     "text": "한 달 뒤에 그날 정한 대로 했는지 물어요.",
+     "route": "#/why",
+     "steps": [
+      {
+       "fill": ".wy-find",
+       "text": "삼성전자"
+      },
+      {
+       "wait": 600
+      },
+      {
+       "click": ".wy-hit"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      },
+      {
+       "click": ".wy-opt"
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "retested": [],
+ "finished": [
+  {
+   "id": "20261019-1131-1",
+   "kind": "made",
+   "state": "fail",
+   "sha": "a3a54a71dd81495066e611f868c0b103d6236c42",
+   "round": "20261019-1131",
+   "why": "검사 실패 — 실패한 쪽 co(1) · en(1) · rivals(1) · share(1)"
+  },
+  {
+   "id": "20261019-1131-2",
+   "kind": "made",
+   "state": "fail",
+   "sha": "e2b106b3cee0afea736b120776a06b4de6fd65c3",
+   "round": "20261019-1131",
+   "why": "검사 실패 — 실패한 쪽 co(1) · en(1) · rivals(1) · share(1)"
+  }
+ ],
+ "dropped": [
+  {
+   "id": "20261019-1131-1",
+   "why": "모든 쪽 미리 검사 실패"
+  },
+  {
+   "id": "20261019-1131-2",
+   "why": "모든 쪽 미리 검사 실패"
+  }
+ ],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": 0,
+  "at": "2026-10-18T17:26:25+09:00"
+ },
+ "factsNote": "끝 코드만 실패이고 걸린 곳 0 인 쪽: gdr",
+ "tally": {
+  "2026-10-06": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-07": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-08": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-09": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-10": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-11": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-12": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-13": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-14": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-15": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-16": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-17": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-18": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-19": {
+   "stop": 2,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  }
+ },
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 1,
+  "waiting": [],
+  "errors": []
+ },
+ "owner": [
+  "이번 진화 회차는 바꾼 것이 없어요.",
+  "진화 칸에 기다리는 대안은 없어요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 1가지예요."
+ ],
+ "notice": "",
+ "notDone": [
+  "전후 그림에 지금 사이트 자료를 못 씀(못 받음 dist-manifest.json) — 저장소 자료로 찍음"
+ ],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-10-19T11:31:35+09:00 시작 · 본질 a71d3864 · main 84487ec · 할 일 넣기 없음 → make",
+  "2026-10-19T11:37:07+09:00 대안 1 검사 지남 · 미리 검사 시작 39190808322",
+  "2026-10-19T11:42:05+09:00 대안 2 검사 지남 · 미리 검사 시작 39191185661"
+ ]
+}
