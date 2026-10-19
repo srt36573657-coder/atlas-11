@@ -15,7 +15,7 @@
   "323280",
   "000040"
  ],
- "made": "2026-10-19T03:40:27.722Z",
+ "made": "2026-10-19T03:46:42.657Z",
  "shard": "all/2",
  "units": {
   "total": 2562,
@@ -39,14 +39,14 @@
  "sec": 201,
  "secondsSum": 402,
  "time": {
-  "old": 124.4,
-  "new": 296.3,
-  "wall": 201.4,
-  "wallSum": 402.4,
+  "old": 120.5,
+  "new": 295.6,
+  "wall": 200.8,
+  "wallSum": 401.3,
   "opensOld": 25572,
   "opensNew": 33283,
-  "oldPct": 30.9,
-  "oldShare": 29.6
+  "oldPct": 30,
+  "oldShare": 29
  },
  "net": {
   "req": 4,
