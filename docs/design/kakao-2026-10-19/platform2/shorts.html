@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 · 시황(두 번째 판)</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* 플랫폼 두 번째 판 — 한 벌 뼈대: ① 위 막대 → ② 제목 + 꽃돌이 물음 → ③ 읽는 곳 → ④ 엄지 자리(노랑 칠은 이것 하나) → ⑤ 아래 단추 다섯
+   절제: 칠한 노랑 = 한 화면 하나(가장 중요한 누름) · 고른 칸은 흰 테 · 꽃돌이 말은 밝은 회색 바탕 · 색은 오름 · 내림 숫자와 작은 꽃 하나에만 */
+
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--line:#2E2E2E;--edge:#8A8A8A;--say:#1E1E1E;--up:#FF6A3D;--dn:#6C86FF;--key:#F6C744}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.serif{font-family:"Gowun Batang",serif;font-weight:400}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+/* ① 위 막대 — 카톡 꼴 · 색 없음 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap}
+#view{padding:0 16px;display:flex;flex-direction:column;min-height:calc(100vh - 128px);min-height:calc(100svh - 128px)}
+/* ② 제목 한 줄 + 꽃돌이 물음 한 줄 */
+.hd{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding-top:4px}
+.h1{font-family:"Gowun Batang",serif;font-weight:400;font-size:36px;line-height:1.1;letter-spacing:.01em}
+.when{font-size:17px;color:#BDBDBD;margin-top:4px;line-height:1.3}
+.when b{color:#FFFFFF;font-weight:700}
+.flower{flex:0 0 auto;width:46px;height:50px;display:block}
+.askrow{display:flex;align-items:center;gap:8px;margin-top:10px}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#1E1E1E;border-radius:22px 22px 22px 6px;padding:6px 16px 6px 7px;font-family:"Gowun Batang",serif;font-size:19px;line-height:1.3;white-space:nowrap}
+.say img{width:30px;height:30px;flex:0 0 auto}
+.ic{margin-left:auto;flex:0 0 auto;width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center}
+/* ③ 읽는 곳 — 가는 실 한 가닥 · 마디 번호 · 숫자는 크게 단위는 작게 */
+.story{list-style:none;position:relative;margin-top:14px}
+.story::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:1px;background:#2E2E2E}
+.ch{position:relative;padding-left:40px}
+.ch+.ch{margin-top:14px;padding-top:12px;border-top:1px solid #1B1B1B}
+.no{position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:17px;line-height:1;color:#FFFFFF}
+.ch+.ch .no{top:12px}
+.lbl{display:flex;align-items:baseline;gap:8px;white-space:nowrap;min-height:27px}
+.lbl .t{font-family:"Gowun Batang",serif;font-size:21px;line-height:1.25;font-weight:400}
+.lbl .sub{margin-left:auto;font-size:17px;color:#BDBDBD}
+.cap{font-size:17px;line-height:1.4;color:#BDBDBD}
+.v{font-family:"Gowun Batang",serif;font-weight:400;line-height:1}
+.u{font-size:17px;color:#BDBDBD;margin-left:2px;font-family:"Pretendard Variable","Apple SD Gothic Neo",sans-serif}
+.lb{font-size:17px;color:#BDBDBD;line-height:1.2}
+.ghostbtn{min-height:48px;padding:0 14px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF;white-space:nowrap}
+/* ④ 엄지 자리 — 할 일 하나만 노랑 · 나머지는 글 단추 */
+.dock{position:sticky;bottom:64px;z-index:2;margin:auto -16px 0;padding:10px 16px 6px;background:#080808;border-top:1px solid #2E2E2E}
+.key{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;border-radius:28px;background:#F6C744;color:#111111;font-family:"Gowun Batang",serif;font-weight:700;font-size:20px;white-space:nowrap}
+.txt{display:flex;align-items:stretch;justify-content:space-between;margin-top:2px}
+.txt a,.txt summary{min-height:48px;min-width:48px;display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap;cursor:pointer;list-style:none}
+.txt summary::-webkit-details-marker{display:none}
+.seg{display:flex;gap:2px;margin-bottom:8px}
+.seg a{flex:1 1 0;min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#BDBDBD;border:1px solid transparent;border-radius:24px;white-space:nowrap}
+.seg a[aria-current]{border-color:#FFFFFF;color:#FFFFFF;font-weight:700}
+/* ⑤ 아래 단추 다섯 — 지금 칸은 흰 글 + 흰 밑줄(색 없음) */
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a::after{content:"";width:18px;height:2px;background:transparent}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+.tabs a[aria-current]::after{background:#FFFFFF}
+@media (max-width:359px){
+ .top{padding:0 8px}.ttl{font-size:20px;letter-spacing:.18em;text-indent:.18em}
+ #view{padding:0 10px}.dock{margin:auto -10px 0;padding:8px 10px 6px}
+ .h1{font-size:30px}.say{white-space:normal;font-size:17px}
+ .ch{padding-left:36px}.lbl{flex-wrap:wrap;white-space:normal}.lbl .sub{margin-left:0}
+ .txt a,.txt summary{padding:0 2px;letter-spacing:-0.04em}.tabs a{letter-spacing:-0.07em}
+}
+
+.strip{display:flex;gap:4px;margin:2px 0 8px}
+.strip i{flex:1;height:3px;border-radius:2px;background:#2E2E2E}
+.strip i.on{background:#FFFFFF}
+.big{font-size:60px;letter-spacing:-.01em;margin-top:6px}
+.big .u{font-size:24px;color:#6C86FF;margin-left:4px}
+.sub2{font-size:19px;margin-top:6px}
+.chart{display:block;width:100%;height:auto;margin-top:10px}
+.next{display:flex;align-items:center;gap:10px;min-height:48px;font-size:19px;line-height:1.4}
+.next b{font-family:"Gowun Batang",serif;font-weight:400;font-size:21px}
+.next .go{margin-left:auto;font-size:24px;color:#BDBDBD}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="strip" aria-label="사실 6가지 가운데 1번째"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="hd"><div><h1 class="h1">시황</h1><p class="when">10월 12일 장 중 · 6가지 사실 가운데 1</p></div><svg class="flower" viewBox="226 26 80 86" aria-hidden="true"><defs>
+<g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g>
+<g id="g3-side"><g transform="scale(.56 1)"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g></g><path d="M-1 -5.6 L-13 -8.6 Q-15.4 -9.4 -16 -7 Q-17.6 0 -16 7 Q-15.4 9.4 -13 8.6 L-1 5.6 Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><ellipse cx="-15.8" cy="0" rx="2.4" ry="8.4" fill="#D99A1C" stroke="#0F1B45" stroke-width="1.1"/></g>
+</defs>
+<g transform="translate(280 118) scale(.76) translate(-280 -118)"><path d="M266 118 C 254 98 238 84 214 76 C 240 78 260 92 276 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M296 118 C 304 96 306 80 300 64 C 298 84 292 102 286 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#0F1B45" stroke-width="7.6" stroke-linecap="round"/><path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#6E9B5A" stroke-width="4.6" stroke-linecap="round"/>
+<path d="M281 50 C 288 44 292 36 292 28 C 285 32 281 40 280 48 Z" fill="#D8CBA8" stroke="#0F1B45" stroke-width="1.1" stroke-linejoin="round"/>
+<use href="#g3-bloom" transform="translate(276 30) rotate(10) scale(.9)"/>
+
+</g></svg></div>
+<div class="askrow"><p class="say" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">다른 날에도 그랬을까?</p></div>
+<ol class="story" aria-label="사실 둘">
+  <li class="ch">
+    <span class="no" aria-hidden="true">1</span>
+    <h2 class="lbl"><span class="t">코스피는 하루</span></h2>
+    <div class="big v dn" data-num>−3.28<span class="u">%</span></div>
+    <p class="sub2">코스닥은 <span class="dn" data-num>−4.36%</span>이에요</p>
+    <svg class="chart" viewBox="-14 -14 340 150" role="img" aria-label="코스피 한 달 선 · 끝이 가장 낮음">
+    <path d="M0 108H312" stroke="#2E2E2E" stroke-width="1"/>
+    <path d="M0.0 18.8 L15.0 4.4 L30.0 7.0 L45.0 25.4 L60.0 59.0 L75.0 67.5 L90.0 54.0 L105.0 54.4 L120.0 27.8 L135.0 10.9 L150.0 9.4 L165.0 0.0 L180.0 28.4 L195.0 31.3 L210.0 36.1 L225.0 16.3 L240.0 11.5 L255.0 20.8 L270.0 41.2 L285.0 67.7 L300.0 100.0" fill="none" stroke="#F7F3E8" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="300" cy="100" r="5" fill="#6C86FF" stroke="#080808" stroke-width="2"/>
+  </svg>
+    <p class="cap">선은 코스피 한 달이에요 · 끝 점이 10월 12일</p>
+  </li>
+  <li class="ch">
+    <span class="no" aria-hidden="true">2</span>
+    <a class="next" href="#/shorts/2"><span><b>10월 13일 장 마감</b><br>2,551곳 가운데 <span class="dn" data-num>1,632</span>곳 내렸어요</span><span class="go" aria-hidden="true">↑</span></a>
+  </li>
+</ol>
+<div class="dock" aria-label="누르는 곳">
+  <a class="key" href="#/shorts/2">다음 사실 ↑</a>
+  <div class="txt"><a href="#/today">보기</a><a href="#/share">보내기</a><a href="#/shorts/list">6가지 모두</a></div>
+</div>
+</main>
+<nav class="tabs"><a href="#/">오늘 장</a><a href="#/shorts" aria-current="page">시황</a><a href="#/why">매매일지</a><a href="#/sub">관심</a><a href="#/me">보유종목</a></nav>
+</body>
+</html>

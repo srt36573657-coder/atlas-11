@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 · 오늘 시장(두 번째 판)</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* 플랫폼 두 번째 판 — 한 벌 뼈대: ① 위 막대 → ② 제목 + 꽃돌이 물음 → ③ 읽는 곳 → ④ 엄지 자리(노랑 칠은 이것 하나) → ⑤ 아래 단추 다섯
+   절제: 칠한 노랑 = 한 화면 하나(가장 중요한 누름) · 고른 칸은 흰 테 · 꽃돌이 말은 밝은 회색 바탕 · 색은 오름 · 내림 숫자와 작은 꽃 하나에만 */
+
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--line:#2E2E2E;--edge:#8A8A8A;--say:#1E1E1E;--up:#FF6A3D;--dn:#6C86FF;--key:#F6C744}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.serif{font-family:"Gowun Batang",serif;font-weight:400}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+/* ① 위 막대 — 카톡 꼴 · 색 없음 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap}
+#view{padding:0 16px;display:flex;flex-direction:column;min-height:calc(100vh - 128px);min-height:calc(100svh - 128px)}
+/* ② 제목 한 줄 + 꽃돌이 물음 한 줄 */
+.hd{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding-top:4px}
+.h1{font-family:"Gowun Batang",serif;font-weight:400;font-size:36px;line-height:1.1;letter-spacing:.01em}
+.when{font-size:17px;color:#BDBDBD;margin-top:4px;line-height:1.3}
+.when b{color:#FFFFFF;font-weight:700}
+.flower{flex:0 0 auto;width:46px;height:50px;display:block}
+.askrow{display:flex;align-items:center;gap:8px;margin-top:10px}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#1E1E1E;border-radius:22px 22px 22px 6px;padding:6px 16px 6px 7px;font-family:"Gowun Batang",serif;font-size:19px;line-height:1.3;white-space:nowrap}
+.say img{width:30px;height:30px;flex:0 0 auto}
+.ic{margin-left:auto;flex:0 0 auto;width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center}
+/* ③ 읽는 곳 — 가는 실 한 가닥 · 마디 번호 · 숫자는 크게 단위는 작게 */
+.story{list-style:none;position:relative;margin-top:14px}
+.story::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:1px;background:#2E2E2E}
+.ch{position:relative;padding-left:40px}
+.ch+.ch{margin-top:14px;padding-top:12px;border-top:1px solid #1B1B1B}
+.no{position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:17px;line-height:1;color:#FFFFFF}
+.ch+.ch .no{top:12px}
+.lbl{display:flex;align-items:baseline;gap:8px;white-space:nowrap;min-height:27px}
+.lbl .t{font-family:"Gowun Batang",serif;font-size:21px;line-height:1.25;font-weight:400}
+.lbl .sub{margin-left:auto;font-size:17px;color:#BDBDBD}
+.cap{font-size:17px;line-height:1.4;color:#BDBDBD}
+.v{font-family:"Gowun Batang",serif;font-weight:400;line-height:1}
+.u{font-size:17px;color:#BDBDBD;margin-left:2px;font-family:"Pretendard Variable","Apple SD Gothic Neo",sans-serif}
+.lb{font-size:17px;color:#BDBDBD;line-height:1.2}
+.ghostbtn{min-height:48px;padding:0 14px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF;white-space:nowrap}
+/* ④ 엄지 자리 — 할 일 하나만 노랑 · 나머지는 글 단추 */
+.dock{position:sticky;bottom:64px;z-index:2;margin:auto -16px 0;padding:10px 16px 6px;background:#080808;border-top:1px solid #2E2E2E}
+.key{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;border-radius:28px;background:#F6C744;color:#111111;font-family:"Gowun Batang",serif;font-weight:700;font-size:20px;white-space:nowrap}
+.txt{display:flex;align-items:stretch;justify-content:space-between;margin-top:2px}
+.txt a,.txt summary{min-height:48px;min-width:48px;display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap;cursor:pointer;list-style:none}
+.txt summary::-webkit-details-marker{display:none}
+.seg{display:flex;gap:2px;margin-bottom:8px}
+.seg a{flex:1 1 0;min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#BDBDBD;border:1px solid transparent;border-radius:24px;white-space:nowrap}
+.seg a[aria-current]{border-color:#FFFFFF;color:#FFFFFF;font-weight:700}
+/* ⑤ 아래 단추 다섯 — 지금 칸은 흰 글 + 흰 밑줄(색 없음) */
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a::after{content:"";width:18px;height:2px;background:transparent}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+.tabs a[aria-current]::after{background:#FFFFFF}
+@media (max-width:359px){
+ .top{padding:0 8px}.ttl{font-size:20px;letter-spacing:.18em;text-indent:.18em}
+ #view{padding:0 10px}.dock{margin:auto -10px 0;padding:8px 10px 6px}
+ .h1{font-size:30px}.say{white-space:normal;font-size:17px}
+ .ch{padding-left:36px}.lbl{flex-wrap:wrap;white-space:normal}.lbl .sub{margin-left:0}
+ .txt a,.txt summary{padding:0 2px;letter-spacing:-0.04em}.tabs a{letter-spacing:-0.07em}
+}
+
+.kv{display:flex;align-items:baseline;gap:10px;margin-top:4px}
+.kv .lead{font-size:19px}
+.kv .v{font-size:44px}
+.chart{display:block;width:100%;margin-top:8px}
+.ax{display:flex;justify-content:space-between;font-size:17px;color:#BDBDBD;margin-top:2px}
+.lg{display:flex;gap:16px;font-size:17px;margin-top:4px;flex-wrap:wrap}
+.lg span{display:inline-flex;align-items:center;gap:6px}
+.lg b{font-family:"Gowun Batang",serif;font-weight:400}
+.garden2{display:flex;align-items:center;gap:12px;margin-top:4px}
+.sun{width:104px;height:104px;flex:0 0 auto}
+.nums{flex:1}
+.nums .r{display:flex;align-items:baseline;justify-content:space-between;padding:2px 0}
+.nums .r+.r{border-top:1px solid #1E1E1E}
+.nums .v{font-size:28px}
+.nums .flat{color:#FFFFFF}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="hd"><div><h1 class="h1">오늘 시장</h1><p class="when"><b>?</b> 10월 12일 오후 2:59까지 · 장 중</p></div><svg class="flower" viewBox="226 26 80 86" aria-hidden="true"><defs>
+<g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g>
+<g id="g3-side"><g transform="scale(.56 1)"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g></g><path d="M-1 -5.6 L-13 -8.6 Q-15.4 -9.4 -16 -7 Q-17.6 0 -16 7 Q-15.4 9.4 -13 8.6 L-1 5.6 Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><ellipse cx="-15.8" cy="0" rx="2.4" ry="8.4" fill="#D99A1C" stroke="#0F1B45" stroke-width="1.1"/></g>
+</defs>
+<g transform="translate(280 118) scale(.76) translate(-280 -118)"><path d="M266 118 C 254 98 238 84 214 76 C 240 78 260 92 276 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M296 118 C 304 96 306 80 300 64 C 298 84 292 102 286 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#0F1B45" stroke-width="7.6" stroke-linecap="round"/><path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#6E9B5A" stroke-width="4.6" stroke-linecap="round"/>
+<path d="M281 50 C 288 44 292 36 292 28 C 285 32 281 40 280 48 Z" fill="#D8CBA8" stroke="#0F1B45" stroke-width="1.1" stroke-linejoin="round"/>
+<use href="#g3-bloom" transform="translate(276 30) rotate(10) scale(.9)"/>
+
+</g></svg></div>
+<div class="askrow"><p class="say" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">누가 팔았을까?</p></div>
+<ol class="story" aria-label="오늘 시장 둘">
+  <li class="ch">
+    <span class="no" aria-hidden="true">1</span>
+    <h2 class="lbl"><span class="t">시장</span><span class="sub">3달 · 첫날 = 0%</span></h2>
+    <div class="kv" data-num><span class="lead">코스피 하루</span><span class="v dn">−3.28<span class="u" style="color:#6C86FF">%</span></span></div>
+    <p class="cap" style="color:#D6D6D6">평소의 2.5배 · 4거래일 잇달아 내렸어요</p>
+    <svg class="chart" viewBox="0 14 282 142" preserveAspectRatio="none" style="height:116px" role="img" aria-label="3달 선 두 개 · 코스피 −5.9% · 코스닥 +6.8%">
+      <path d="M4 77H274" stroke="#8A8A8A" stroke-width="1" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
+      <path d="M4.0 77.0 L8.6 84.2 L13.2 62.9 L17.7 80.5 L22.3 100.4 L26.9 98.6 L31.5 99.7 L36.0 81.3 L40.6 101.0 L45.2 93.2 L49.8 121.0 L54.3 141.2 L58.9 149.7 L63.5 114.4 L68.1 106.1 L72.6 85.8 L77.2 76.9 L81.8 75.9 L86.4 77.3 L90.9 51.1 L95.5 49.5 L100.1 49.0 L104.7 47.9 L109.3 46.3 L113.8 60.6 L118.4 65.2 L123.0 57.5 L127.6 75.8 L132.1 70.4 L136.7 63.9 L141.3 64.1 L145.9 59.0 L150.4 58.7 L155.0 60.6 L159.6 66.7 L164.2 74.8 L168.7 81.3 L173.3 70.4 L177.9 66.3 L182.5 71.1 L187.1 62.4 L191.6 59.4 L196.2 67.0 L200.8 73.5 L205.4 70.9 L209.9 69.2 L214.5 66.3 L219.1 64.0 L223.7 59.7 L228.2 60.5 L232.8 55.8 L237.4 54.8 L242.0 53.3 L246.5 50.4 L251.1 32.4 L255.7 32.9 L260.3 20.3 L264.8 30.4 L269.4 33.3 L274.0 51.6" fill="none" stroke="#BDB49C" stroke-width="2" stroke-dasharray="5 3" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+      <path d="M4.0 77.0 L8.6 74.3 L13.2 50.7 L17.7 76.3 L22.3 93.0 L26.9 80.3 L31.5 77.5 L36.0 61.0 L40.6 83.4 L45.2 79.8 L49.8 120.2 L54.3 140.1 L58.9 144.0 L63.5 88.7 L68.1 107.3 L72.6 101.7 L77.2 88.5 L81.8 105.2 L86.4 107.3 L90.9 105.0 L95.5 102.5 L100.1 89.6 L104.7 76.7 L109.3 67.6 L113.8 73.5 L118.4 95.5 L123.0 74.5 L127.6 71.2 L132.1 83.1 L136.7 80.5 L141.3 76.9 L145.9 71.2 L150.4 78.0 L155.0 76.3 L159.6 75.4 L164.2 90.5 L168.7 89.6 L173.3 83.6 L177.9 66.6 L182.5 68.9 L187.1 63.5 L191.6 64.5 L196.2 71.3 L200.8 83.8 L205.4 86.9 L209.9 81.9 L214.5 82.1 L219.1 72.2 L223.7 65.9 L228.2 65.4 L232.8 61.9 L237.4 72.4 L242.0 73.5 L246.5 75.3 L251.1 67.9 L255.7 66.1 L260.3 69.6 L264.8 77.2 L269.4 87.0 L274.0 99.0" fill="none" stroke="#F7F3E8" stroke-width="2.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+      
+    </svg>
+    <div class="ax"><span>7월 13일</span><span>10월 12일</span></div>
+    <div class="lg"><span><svg width="22" height="6"><path d="M0 3H22" stroke="#F7F3E8" stroke-width="2.4"/></svg>코스피 <b class="dn" data-num>−5.9%</b></span><span><svg width="22" height="6"><path d="M0 3H22" stroke="#BDB49C" stroke-width="2" stroke-dasharray="5 3"/></svg>코스닥 <b class="up" data-num>+6.8%</b></span></div>
+  </li>
+  <li class="ch">
+    <span class="no" aria-hidden="true">2</span>
+    <h2 class="lbl"><span class="t">오른 곳과 내린 곳</span></h2>
+    <p class="cap" style="color:#D6D6D6">10곳 중 8곳이 내렸어요 · 한 알 ≈ 24곳</p>
+    <div class="garden2">
+      <svg class="sun" viewBox="0 0 140 140" role="img" aria-label="씨앗 120알 · 한 알이 회사 약 24곳 · 다홍 17알 오름 · 회색 10알 그대로 · 남빛 93알 내림"><path d="M63.74 13.34Q61.40 7.84 70.00 1.50Q78.60 7.84 76.26 13.34M80.72 14.02Q80.10 8.07 90.19 4.54Q96.54 13.14 92.68 17.71M96.75 19.66Q97.91 13.80 108.59 13.40Q112.12 23.49 107.09 26.71M110.39 29.78Q113.23 24.52 123.56 27.29Q123.96 37.97 118.20 39.57M120.45 43.48Q124.72 39.28 133.76 44.97Q131.00 55.30 125.03 55.13M126.03 59.53Q131.34 56.78 138.31 64.88Q132.63 73.93 126.96 72.01M126.63 76.51Q132.51 75.45 136.78 85.24Q128.69 92.22 123.84 88.71M122.19 92.91Q128.13 93.63 129.32 104.25Q119.53 108.53 115.94 103.75M113.12 107.28Q118.58 109.71 116.59 120.21Q105.97 121.41 103.95 115.79M100.22 118.33Q104.72 122.27 99.72 131.72Q89.22 129.73 88.94 123.76M84.63 125.09Q87.77 130.18 80.21 137.73Q70.76 132.75 72.26 126.96M67.74 126.96Q69.24 132.75 59.79 137.73Q52.23 130.18 55.37 125.09M51.06 123.76Q50.78 129.73 40.28 131.72Q35.28 122.27 39.78 118.33M36.05 115.79Q34.03 121.41 23.41 120.21Q21.42 109.71 26.88 107.28M24.06 103.75Q20.47 108.53 10.68 104.25Q11.87 93.63 17.81 92.91M16.16 88.71Q11.31 92.22 3.22 85.24Q7.49 75.45 13.37 76.51M13.04 72.01Q7.37 73.93 1.69 64.88Q8.66 56.78 13.97 59.53M14.97 55.13Q9.00 55.30 6.24 44.97Q15.28 39.28 19.55 43.48M21.80 39.57Q16.04 37.97 16.44 27.29Q26.77 24.52 29.61 29.78M32.91 26.71Q27.88 23.49 31.41 13.40Q42.09 13.80 43.25 19.66M47.32 17.71Q43.46 13.14 49.81 4.54Q59.90 8.07 59.28 14.02" fill="none" stroke="#8C7A3A" stroke-width="1" stroke-linejoin="round"/><circle cx="70" cy="70" r="56.50" fill="none" stroke="#4A473F" stroke-width="1"/><path d="M45.18 69.88Q38.90 65.65 36.78 69.84Q38.86 74.05 45.18 69.88ZM29.11 67.71Q21.97 62.35 19.22 67.15Q21.41 72.24 29.11 67.71ZM65.54 69.61Q60.96 65.93 59.05 69.04Q60.39 72.43 65.54 69.61ZM38.43 65.60Q32.33 60.17 29.46 64.34Q31.08 69.14 38.43 65.60ZM25.10 61.38Q18.45 54.83 14.93 59.42Q16.49 65.00 25.10 61.38ZM51.11 65.75Q46.21 60.60 43.42 64.02Q44.48 68.30 51.11 65.75ZM33.67 59.85Q28.02 53.29 24.41 57.27Q25.44 62.54 33.67 59.85ZM44.03 60.37Q39.44 54.05 35.90 57.36Q36.43 62.18 44.03 60.37ZM30.66 53.08Q25.70 45.46 21.39 49.10Q21.71 54.73 30.66 53.08ZM59.12 64.91Q55.75 59.35 52.59 61.85Q52.70 65.88 59.12 64.91ZM39.80 53.94Q35.83 46.57 31.60 49.58Q31.47 54.77 39.80 53.94ZM50.77 57.64Q47.81 50.85 43.86 53.20Q43.37 57.76 50.77 57.64ZM37.72 46.83Q34.60 38.56 29.76 41.12Q28.89 46.52 37.72 46.83ZM46.90 50.34Q44.70 42.61 40.11 44.56Q38.92 49.40 46.90 50.34ZM37.54 39.38Q35.46 30.37 30.08 32.34Q28.42 37.83 37.54 39.38ZM58.11 58.05Q56.77 51.28 52.71 52.62Q51.34 56.68 58.11 58.05ZM45.67 42.92Q44.44 34.45 39.33 35.86Q37.39 40.79 45.67 42.92Z" fill="#F2552C" stroke="#080808" stroke-width=".7"/><path d="M54.32 49.34Q53.85 41.69 49.18 42.57Q47.08 46.83 54.32 49.34ZM46.54 35.57Q46.45 26.57 40.92 27.32Q38.20 32.19 46.54 35.57ZM65.74 63.30Q65.87 57.15 62.07 57.54Q60.11 60.81 65.74 63.30ZM53.85 41.49Q54.44 33.27 49.34 33.53Q46.49 37.78 53.85 41.49ZM49.24 28.55Q50.39 19.23 44.57 19.23Q41.08 23.89 49.24 28.55ZM61.31 51.18Q62.42 44.04 57.94 43.90Q55.14 47.40 61.31 51.18ZM55.66 34.28Q57.45 25.74 52.06 25.30Q48.47 29.35 55.66 34.28ZM61.54 42.56Q63.79 34.99 58.96 34.19Q55.42 37.57 61.54 42.56ZM59.32 27.82Q62.37 19.19 56.83 17.98Q52.53 21.69 59.32 27.82ZM67.00 56.33Q69.41 50.13 65.41 49.12Q62.20 51.71 67.00 56.33Z" fill="#9A9A9A" stroke="#080808" stroke-width=".7"/><path d="M64.23 35.43Q67.69 27.74 62.69 26.20Q58.46 29.28 64.23 35.43ZM68.01 46.03Q71.65 39.46 67.33 37.73Q63.35 40.15 68.01 46.03ZM68.72 29.55Q73.42 22.00 68.41 19.69Q63.56 22.31 68.72 29.55ZM70.00 69.39Q73.10 64.73 70.00 63.18Q66.90 64.73 70.00 69.39ZM71.60 38.78Q76.44 32.26 72.06 29.78Q67.45 31.80 71.60 38.78ZM74.62 24.95Q80.54 17.78 75.67 14.69Q70.28 16.73 74.62 24.95ZM72.45 51.77Q77.10 46.49 73.49 44.04Q69.37 45.45 72.45 51.77ZM76.84 33.43Q82.85 27.26 78.59 24.04Q73.46 25.51 76.84 33.43ZM77.14 43.95Q82.99 38.87 79.41 35.66Q74.69 36.59 77.14 43.95ZM83.27 29.77Q90.40 24.18 86.42 20.23Q80.86 21.04 83.27 29.77ZM73.61 60.11Q78.75 56.34 76.04 53.47Q72.11 53.91 73.61 60.11ZM83.14 39.03Q90.09 34.46 86.74 30.54Q81.59 30.86 83.14 39.03ZM90.54 27.73Q98.69 22.95 95.12 18.30Q89.26 18.37 90.54 27.73ZM80.25 50.50Q86.69 46.99 84.03 43.30Q79.49 43.21 80.25 50.50ZM90.01 36.24Q97.93 32.43 94.98 27.85Q89.54 27.46 90.01 36.24ZM87.20 45.79Q94.65 42.94 92.32 38.57Q87.43 37.81 87.20 45.79ZM97.39 35.33Q106.15 32.49 103.73 27.32Q98.14 26.15 97.39 35.33ZM80.16 57.94Q86.70 56.05 85.03 52.17Q80.92 51.18 80.16 57.94ZM94.49 43.79Q102.76 41.84 100.93 36.89Q95.87 35.40 94.49 43.79ZM88.66 53.07Q96.18 51.94 94.91 47.40Q90.51 45.70 88.66 53.07ZM101.88 43.92Q110.79 43.05 109.57 37.63Q104.50 35.36 101.88 43.92ZM74.59 66.48Q80.56 66.09 79.86 62.44Q76.52 60.82 74.59 66.48ZM96.50 51.75Q104.69 51.63 103.99 46.60Q99.54 44.14 96.50 51.75ZM109.11 45.92Q118.46 46.25 117.95 40.47Q113.02 37.41 109.11 45.92ZM87.20 60.14Q94.33 60.63 94.08 56.20Q90.39 53.74 87.20 60.14ZM103.87 52.82Q112.50 53.85 112.47 48.47Q108.14 45.26 103.87 52.82ZM95.97 59.43Q103.66 61.00 104.03 56.15Q100.37 52.94 95.97 59.43ZM110.65 55.82Q119.48 58.10 120.20 52.49Q116.15 48.55 110.65 55.82ZM82.12 66.20Q88.41 68.03 89.06 64.02Q86.23 61.10 82.12 66.20ZM103.40 61.37Q111.32 64.13 112.41 59.04Q108.99 55.12 103.40 61.37ZM92.92 66.06Q99.72 69.08 101.06 64.66Q98.33 60.94 92.92 66.06ZM109.70 65.25Q117.60 69.25 119.45 64.08Q116.43 59.50 109.70 65.25ZM100.62 68.88Q107.49 73.11 109.56 68.56Q107.17 64.17 100.62 68.88ZM114.84 70.66Q122.48 75.91 125.12 70.81Q122.63 65.63 114.84 70.66ZM87.37 70.80Q92.96 74.92 95.06 71.16Q93.32 67.22 87.37 70.80ZM106.50 73.56Q113.14 78.99 115.97 74.49Q114.06 69.52 106.50 73.56ZM95.87 74.71Q101.41 80.05 104.27 76.23Q102.93 71.65 95.87 74.71ZM110.79 79.59Q116.94 86.18 120.52 81.88Q119.23 76.44 110.79 79.59ZM78.56 72.30Q82.67 76.99 85.24 74.10Q84.47 70.31 78.56 72.30ZM101.45 80.20Q106.58 86.69 110.17 83.03Q109.41 77.96 101.45 80.20ZM113.51 86.62Q118.96 94.29 123.26 90.34Q122.69 84.53 113.51 86.62ZM89.53 78.17Q93.55 84.22 96.96 81.28Q96.66 76.79 89.53 78.17ZM104.93 86.76Q109.39 94.29 113.68 90.96Q113.59 85.54 104.93 86.76ZM95.06 84.68Q98.52 91.81 102.64 89.13Q102.97 84.23 95.06 84.68ZM106.55 94.01Q110.14 102.45 115.06 99.60Q115.73 93.95 106.55 94.01ZM81.95 78.40Q84.38 84.66 88.04 82.68Q88.66 78.57 81.95 78.40ZM97.82 91.77Q100.48 99.80 105.21 97.55Q106.26 92.41 97.82 91.77ZM87.94 86.60Q89.70 93.92 94.08 92.27Q95.38 87.79 87.94 86.60ZM98.43 99.14Q100.08 107.90 105.34 106.21Q107.15 100.99 98.43 99.14ZM71.94 72.12Q72.82 77.81 76.25 76.83Q77.53 73.49 71.94 72.12ZM90.11 94.34Q90.94 102.44 95.86 101.30Q97.91 96.68 90.11 94.34ZM97.15 106.51Q97.63 115.82 103.32 114.81Q105.93 109.65 97.15 106.51ZM80.78 85.50Q80.92 92.57 85.26 91.94Q87.36 88.09 80.78 85.50ZM89.80 101.80Q89.53 110.44 94.86 109.94Q97.66 105.37 89.80 101.80ZM82.49 94.34Q81.60 102.07 86.43 102.02Q89.29 98.13 82.49 94.34ZM87.49 108.84Q86.00 117.79 91.62 118.02Q95.18 113.66 87.49 108.84ZM74.31 80.44Q73.05 86.75 77.03 87.04Q79.65 84.03 74.31 80.44ZM81.33 101.98Q79.28 110.07 84.42 110.70Q88.00 106.98 81.33 101.98ZM83.47 115.25Q80.68 124.29 86.46 125.31Q90.75 121.30 83.47 115.25ZM75.72 91.70Q73.33 98.68 77.81 99.61Q81.24 96.59 75.72 91.70ZM78.10 108.65Q74.82 116.83 80.11 118.22Q84.39 114.82 78.10 108.65ZM73.71 99.78Q70.13 106.95 74.81 108.60Q78.94 105.85 73.71 99.78ZM73.23 114.29Q68.69 122.32 73.98 124.50Q78.90 121.57 73.23 114.29ZM70.67 86.31Q67.11 92.16 70.99 93.91Q74.71 91.85 70.67 86.31ZM69.65 106.14Q64.85 113.19 69.56 115.60Q74.31 113.28 69.65 106.14ZM67.64 95.46Q62.84 101.39 66.86 103.89Q71.27 102.17 67.64 95.46ZM64.08 111.00Q58.08 117.68 62.65 120.86Q67.93 119.11 64.08 111.00ZM68.80 76.81Q64.60 81.20 67.62 83.45Q71.23 82.38 68.80 76.81ZM62.72 101.65Q56.74 107.29 60.67 110.53Q65.63 109.33 62.72 101.65ZM57.37 114.39Q50.23 120.47 54.52 124.39Q60.24 123.31 57.37 114.39ZM63.84 89.32Q58.22 93.81 61.41 96.92Q65.82 96.23 63.84 89.32ZM56.53 105.79Q49.46 110.86 53.13 114.82Q58.50 114.26 56.53 105.79ZM57.85 95.64Q51.10 99.69 54.11 103.53Q58.99 103.43 57.85 95.64ZM49.49 108.12Q41.43 112.41 44.69 117.04Q50.35 117.21 49.49 108.12ZM63.30 81.56Q57.37 84.48 59.63 87.90Q63.71 88.15 63.30 81.56ZM51.05 99.16Q43.33 102.48 45.97 106.98Q51.15 107.57 51.05 99.16ZM55.51 88.71Q48.43 91.08 50.44 95.26Q54.98 96.16 55.51 88.71ZM43.78 100.51Q35.23 102.90 37.36 107.97Q42.70 109.31 43.78 100.51ZM47.95 91.73Q40.01 93.26 41.56 98.03Q46.31 99.65 47.95 91.73ZM36.33 99.95Q27.13 101.24 28.63 106.80Q33.98 108.93 36.33 99.95ZM56.26 81.47Q49.31 82.21 50.31 86.43Q54.28 88.17 56.26 81.47ZM40.47 92.19Q31.89 92.67 32.84 97.92Q37.61 100.30 40.47 92.19ZM47.44 84.20Q39.72 83.99 40.19 88.76Q44.28 91.25 47.44 84.20ZM33.24 90.59Q24.23 89.89 24.50 95.49Q29.13 98.64 33.24 90.59ZM61.37 74.48Q55.10 73.80 55.16 77.71Q58.32 80.00 61.37 74.48ZM39.66 83.84Q31.47 82.52 31.29 87.66Q35.29 90.89 39.66 83.84ZM26.50 87.22Q17.28 85.24 16.77 91.07Q21.13 94.97 26.50 87.22ZM49.67 77.31Q42.59 75.56 42.05 80.05Q45.33 83.18 49.67 77.31ZM32.68 81.31Q24.29 78.77 23.37 84.13Q27.11 88.08 32.68 81.31ZM41.29 76.17Q33.89 73.24 32.66 78.02Q35.74 81.87 41.29 76.17ZM26.60 77.02Q18.24 73.21 16.54 78.65Q19.87 83.28 26.60 77.02ZM54.93 71.95Q48.87 68.96 47.49 72.92Q49.83 76.39 54.93 71.95ZM34.51 72.77Q27.11 68.62 25.13 73.50Q27.84 78.00 34.51 72.77Z" fill="#4166F5" stroke="#080808" stroke-width=".7"/><g transform="translate(70 70) scale(.9)"><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#4E4E4E" stroke="#080808" stroke-width="1.2" stroke-linejoin="round"/><circle r="5" fill="#2E2E2E"/><circle r="1.8" fill="#4E4E4E"/></g></svg>
+      <div class="nums" data-num>
+        <div class="r" data-fact><span class="lb">오름</span><span><span class="v up">405</span><span class="u">곳</span></span></div>
+        <div class="r" data-fact><span class="lb">그대로</span><span><span class="v flat">231</span><span class="u">곳</span></span></div>
+        <div class="r" data-fact><span class="lb">내림</span><span><span class="v dn">2,233</span><span class="u">곳</span></span></div>
+        <p class="cap" style="text-align:right">모두 2,869곳</p>
+      </div>
+    </div>
+  </li>
+</ol>
+<div class="dock" aria-label="누르는 곳">
+  <nav class="seg" aria-label="기간"><a href="#/today?w=1">1주</a><a href="#/today?w=m">1달</a><a href="#/today?w=3" aria-current="true">3달</a></nav>
+  <a class="key" href="#/today/flow">사고팔기 보기</a>
+  <div class="txt" style="justify-content:center"><a href="#/today/us">미국 마지막 장 ›</a></div>
+</div>
+</main>
+<nav class="tabs"><a href="#/" aria-current="page">오늘 장</a><a href="#/shorts">시황</a><a href="#/why">매매일지</a><a href="#/sub">관심</a><a href="#/me">보유종목</a></nav>
+</body>
+</html>
