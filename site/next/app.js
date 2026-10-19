@@ -1119,7 +1119,7 @@ function fontsLater() {
 if (parse(location.hash || '#/').k !== '') { fontsOn = true; fontsAdd(); }
 /* 서른여섯 장 흐름(사장님 2026-10-19 16:46 「클릭을 하면 물 흐르듯 … 다음다음다음이 제대로 이어지게」 · 견본 flow36) — 테마 쪽(#/t/…)은 p-theme.js 가 「다음」을 그림 ·
    있는 쪽은 여기서 맨 아래에 「다음」 한 줄만 더함(그 쪽 칸 · 차례는 그대로) · 질문 중(#/why/<번호>) · 시황(#/shorts · 한 화면 넘김)은 더하지 않음 */
-const FLOW_NEXT = {sub: ['매매일지', '#/why'], why: ['보유종목', '#/me'], me: ['가짜 돈 연습', '#/game'], game: ['진화', '#/jinhwa'], jinhwa: ['오늘 정리', '#/t/today']};
+const FLOW_NEXT = {sub: ['알림', '#/t/alert'], why: ['보유종목', '#/me'], me: ['가짜 돈 연습', '#/game'], game: ['진화', '#/jinhwa'], jinhwa: ['오늘 정리', '#/t/today']};
 function flowFoot(k, a, root, my) {
   const n = a ? null : FLOW_NEXT[k]; if (!n) return;
   mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); if (my === seq && root.isConnected && !root.querySelector('.th-foot')) root.append(h('nav', {class: 'th-foot', 'aria-label': '다음 쪽'}, m.footBtn(n[0], n[1]))); }).catch(() => {});

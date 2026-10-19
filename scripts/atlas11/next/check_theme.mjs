@@ -10,6 +10,9 @@
 //   ⑦ 자료를 바꾼 다섯 판(A ~ E · 받은 자료를 이 검사 안에서 바꿔 끼움)으로 열아홉 쪽을 한국어 · 영어 320 폭에서 — 자료에 따라 갈리는 글이 모두 한 번씩 그려짐
 //      (진짜 싹 0 · 새로 들어옴 · 점 하나 · 큰 회사 값 없음 · 무리 없음 · 장중 · 시듦 빔 · 꽃 · 시듦 · 잠잠 업종 · 회사 줄 밖 · 먼저 · 뒤따름 · 성적표 못 셈)
 //      한국어 = ⑤ 잣대 · 영어 = 사전에 없는 틀 0 · 보이는 한글 0(lang="ko" 빼고) · 화면 밖 칸 0 · 줄 안 넘침 0 — 2026-10-19 틀림 장부 60(이 방 자료 한 판으로는 영어가 통과해도 실제 자료에서 걸림)
+//      · 영어 업종 수 = 「industries」(「companies」 아님 · i18n.js 자리 표 data-tr)
+//   ⑧ 글줄 · 글씨 · 간격([10] 5 · 6 · 7 · 8 — check_hold ⑭ 와 같은 셈 · 그림 <svg> 속 글은 셈 밖): 열아홉 쪽 390(③ 차례) · 320(⑦ A 판) — 글 시작 왼쪽 줄 3 이하 · 17px 아래 0 · 글씨 6가지 · 토큰 · 간격 0 · 8 · 16 · 24 · 음수 0
+//      사장님 2026-10-19 20:40 「다해」(못 한 것 4 — 테마 쪽은 견본 모양 그대로라 왼쪽 줄이 6 ~ 18) → 16 · 33 · 56 세 줄
 //   실패가 하나라도 있으면 끝 코드 1
 import fs from 'node:fs/promises';
 import fss from 'node:fs';
@@ -96,6 +99,55 @@ function variant(V) {
   if (V === 'B') hm.order.S.slice(0, 3).forEach((n, k) => { const i = hm.inds.find(x => x.n === n); if (i) Object.assign(i, {y: [9.6, 8.2, 7.1][k], x: [3.9, -2.5, 4.8][k]}); }); // 싹 앞 셋이 높을 때(큰 하락 뒤 · 실제 사이트 2026-10-19) 번호가 그림 안에
   return {th, mo, hm, X, lead: lead?.c ?? null};
 }
+/** ⑧ 재기 — check_hold.mjs ⑭ EDGES 그대로(그림 <svg> 속 글만 셈 밖) */
+const EDGES = () => {
+  const view = document.querySelector('#view'), vw = document.documentElement.clientWidth, R = document.createRange(), SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'TITLE']);
+  const vis = (el, q) => { let l = q.left, t = q.top, r = q.right, b = q.bottom; for (let a = el; a && a !== document.documentElement; a = a.parentElement) { const cs = getComputedStyle(a); if (cs.overflowX !== 'visible' || cs.overflowY !== 'visible') { const x = a.getBoundingClientRect(); l = Math.max(l, x.left); t = Math.max(t, x.top); r = Math.min(r, x.right); b = Math.min(b, x.bottom); } } return r - l >= 1 && b - t >= 1; };
+  const blockOf = el => { for (let a = el; a; a = a.parentElement) { const d = getComputedStyle(a).display; if (d !== 'inline' && d !== 'contents') return a; } return document.body; };
+  const blocks = new Map(), sizes = new Map(), own = new Map(), letterSizes = new Map(); const tw = document.createTreeWalker(view, NodeFilter.SHOW_TEXT);
+  for (let n; (n = tw.nextNode());) {
+    if (!n.nodeValue.trim()) continue; const el = n.parentElement; if (!el || SKIP.has(el.tagName)) continue; if (el.closest('svg')) continue;
+    R.selectNodeContents(n); const rs = [...R.getClientRects()].filter(q => q.width >= 1 && q.height >= 1); if (!rs.length) continue;
+    if (el.checkVisibility && !el.checkVisibility({checkOpacity: true, checkVisibilityCSS: true})) continue;
+    if (!vis(el, rs[0])) continue;
+    const f = Math.round(parseFloat(getComputedStyle(el).fontSize) * 2) / 2, inL = !!el.closest('a.m4-letter');
+    (inL ? letterSizes : sizes).set(f, (sizes.get(f) || 0) + 1); if (!own.has(el)) own.set(el, f);
+    const b = blockOf(el); if (!blocks.has(b)) blocks.set(b, {n, q: rs[0]});
+  }
+  const xs = new Map(), ex = {};
+  for (const [b, t] of blocks) { if (/center|right|end/.test(getComputedStyle(b).textAlign)) continue; const x = Math.round(t.q.left); if (x < 0 || x >= vw) continue; xs.set(x, (xs.get(x) || 0) + 1); if (!ex[x]) ex[x] = b.tagName.toLowerCase() + '.' + String(b.className).split(' ')[0] + ' 「' + t.n.nodeValue.trim().slice(0, 12) + '」'; }
+  // 간격([10] 8) — #view 안 그려진 칸(가려지거나 잘린 것도)의 margin · padding · gap 이 0 · 8 · 16 · 24 인지, 음수는 없는지(measure_type.mjs 와 같은 잣대 — auto · % 는 뺌)
+  const PROPS = ['margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left', 'row-gap', 'column-gap'], SPV = [0, 8, 16, 24];
+  const nm = el => el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className.trim() ? '.' + el.className.trim().split(/\s+/)[0] : '');
+  const spBad = new Map(); let spN = 0, neg = 0; const negEx = [];
+  for (const el of view.querySelectorAll('*')) {
+    if (el.closest('svg') && el.tagName.toLowerCase() !== 'svg') continue;
+    if (!el.getClientRects().length) continue;
+    const map = el.computedStyleMap ? el.computedStyleMap() : null, cs = getComputedStyle(el);
+    for (const pr of PROPS) {
+      if (pr.endsWith('gap') && !/flex|grid/.test(cs.display)) continue;
+      let v = null; const sv = map?.get(pr);
+      if (sv && sv.constructor?.name === 'CSSKeywordValue') continue;
+      if (sv && sv.constructor?.name === 'CSSUnitValue') { if (sv.unit === 'percent') continue; v = sv.unit === 'px' ? sv.value : parseFloat(cs.getPropertyValue(pr)); } else v = parseFloat(cs.getPropertyValue(pr));
+      if (!Number.isFinite(v)) continue;
+      if (v < -0.5) { neg++; if (negEx.length < 6) negEx.push(nm(el) + ' ' + pr + ' ' + Math.round(v)); continue; }
+      if (SPV.some(s => Math.abs(s - v) < 0.6)) continue;
+      spN++; const k = nm(el) + ' ' + pr.replace(/-(top|right|bottom|left)$/, '') + ' ' + Math.round(v * 10) / 10; spBad.set(k, (spBad.get(k) || 0) + 1);
+    }
+  }
+  return {lefts: Object.fromEntries([...xs].sort((a, b) => a[0] - b[0])), ex, sizes: [...new Set([...sizes.keys()])].sort((a, b) => a - b), letter: [...letterSizes.keys()].sort((a, b) => a - b), px: Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), spN, neg, negEx, spEx: [...spBad].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, n]) => k + ' ×' + n)};
+};
+
+async function rules(where, p) {
+  const m = await p.evaluate(EDGES), n = Object.keys(m.lefts).length;
+  if (n > 3) fail('글 시작 왼쪽 줄 3 넘음([10] 7)', where + ' ' + JSON.stringify(m.lefts) + ' ' + JSON.stringify(m.ex).slice(0, 200));
+  const bad = m.sizes.filter(f => f < 16.95); if (bad.length) fail('17px 아래 글([10] 5)', where + ' ' + bad);
+  if (m.sizes.length > 6) fail('글씨 크기 6가지 넘음([10] 6)', where + ' ' + m.sizes);
+  const nt = m.sizes.filter(f => ![17, 19, 21, 24, 30, 48].includes(f)); if (nt.length) fail('글씨 크기가 토큰 밖([10] 6)', where + ' ' + nt);
+  if (m.neg) fail('음수 간격([10] 8)', where + ' ' + m.negEx.join(' | '));
+  if (m.spN) fail('간격이 0 · 8 · 16 · 24 아님([10] 8)', where + ' ' + (m.spEx ?? []).join(' | '));
+  bump('글줄 · 글씨 · 간격 쪽');
+}
 const nextOf = p => p.evaluate(() => { const a = [...document.querySelectorAll('#view a.th-next')]; return {n: a.length, href: a.at(-1)?.getAttribute('href') ?? null, title: a.at(-1)?.querySelector('b')?.textContent ?? a.at(-1)?.textContent ?? null}; });
 const prevOf = p => p.evaluate(() => document.querySelector('#view a.th-back')?.getAttribute('href') ?? null);
 const noOf = p => p.evaluate(() => document.querySelector('#view .th-no b')?.textContent ?? null);
@@ -110,7 +162,7 @@ try {
       return {box: !!box, afterSay: !!(box && say && (say.compareDocumentPosition(box) & Node.DOCUMENT_POSITION_FOLLOWING)), beforeEss: !!(box && ess && (box.compareDocumentPosition(ess) & Node.DOCUMENT_POSITION_FOLLOWING)),
         rows: [...(box?.querySelectorAll('a.th-row') ?? [])].map(a => ({href: a.getAttribute('href'), name: a.querySelector('.th-rn')?.textContent})), ans: box?.querySelector('.th-ans')?.textContent ?? '',
         three: [...(box?.querySelectorAll('.th-three p') ?? [])].map(x => x.textContent), rec: box?.querySelector('.th-rec')?.textContent ?? '', asof: box?.querySelector('.th-asof')?.textContent ?? '',
-        next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock'), h1: v.querySelector('h1')?.textContent ?? ''};
+        next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, hi: box?.querySelector('a.th-hi')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock'), h1: v.querySelector('h1')?.textContent ?? ''};
     });
     if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
     else {
@@ -130,6 +182,7 @@ try {
       if (g.asof) fail('첫 화면 기준 날', '첫 화면에는 날짜를 띠에 한 번만([6] 2) — 테마 칸에 ' + g.asof);
       if (g.next !== '#/t/how') fail('첫 화면 다음', g.next);
       if (g.more !== '#/t/sprout') fail('싹 자리 모두 보기 고리', g.more);
+      if (g.hi !== '#/t/hello') fail('돌이 인사 고리', '첫 화면 테마 칸에 1장(#/t/hello)으로 가는 고리가 없음 — ' + g.hi);
     }
     await look('#/', p); bump('첫 화면'); await ctx.close();
   }
@@ -151,7 +204,7 @@ try {
         const zoneList = {S: '#/t/sprout', B: '#/t/bloom', W: '#/t/wilt'}[TH.inds.find(i => i.n === TOP)?.z] ?? '#/';
         const wantPv = k === 6 ? zoneList : k === 12 ? ib + '/co' : CHAIN[k - 1];
         if (k > 0 && pv !== wantPv) fail('앞 쪽 고리', here + ' ‹ ' + pv + ' (바람 ' + wantPv + ')');
-        await look(here, p);
+        await look(here, p); await rules(here + ' @390', p);
       }
       const want = CHAIN[k + 1];
       await p.evaluate(h => { const a = location.hash === '#/' || location.hash === '' ? document.querySelector('#view section.th-home a.th-next') : [...document.querySelectorAll('#view a.th-next')].at(-1); if (a) a.click(); else location.hash = h; }, want);
@@ -164,7 +217,7 @@ try {
     await ctx.close();
   }
   /* 있는 쪽 맨 아래 「다음」 한 줄 · 오늘 정리 */
-  for (const [from, to] of [['#/sub', '#/why'], ['#/why', '#/me'], ['#/me', '#/game'], ['#/game', '#/jinhwa'], ['#/jinhwa', '#/t/today'], ['#/t/today', '#/']]) {
+  for (const [from, to] of [['#/sub', '#/t/alert'], ['#/t/alert', '#/why'], ['#/why', '#/me'], ['#/me', '#/game'], ['#/game', '#/jinhwa'], ['#/jinhwa', '#/t/today'], ['#/t/today', '#/']]) {
     const {p, ctx} = await open(from);
     await p.waitForFunction(() => document.querySelector('#view a.th-next'), null, {timeout: 8000}).catch(() => {});
     const nx = await nextOf(p);
@@ -194,20 +247,20 @@ try {
     bump('숫자');
   }
   /* ⑤ 두 폭 — 남은 쪽들 */
-  for (const w of [360, 320]) for (const hsh of ['#/', '#/t/how', '#/t/sprout', ib, ib + '/co', ib + '/near', ...(cb ? [cb + '/lead', cb + '/why', cb + '/rank'] : []), '#/t/today']) {
+  for (const w of [360, 320]) for (const hsh of ['#/', '#/t/alert', '#/t/how', '#/t/sprout', ib, ib + '/co', ib + '/near', ...(cb ? [cb + '/lead', cb + '/why', cb + '/rank'] : []), '#/t/today']) {
     const {p, ctx} = await open(hsh, {w, h: 640}); await look(hsh + ' @' + w, p); bump('폭'); await ctx.close();
   }
   /* ⑦ 자료를 바꾼 다섯 판 — 한국어 · 영어(320) */
   if (HM) for (const V of ['A', 'B', 'C', 'D', 'E']) {
     const v = variant(V), ib2 = '#/t/i/' + enc(v.X), cb2 = v.lead ? '#/t/c/' + v.lead : null;
-    const hs = ['#/', '#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today', ib2, ...['path', 'spread', 'big', 'co', 'near'].map(s => ib2 + '/' + s), ...(cb2 ? [cb2, ...['lead', 'why', 'rank', 'unknown', 'keep'].map(s => cb2 + '/' + s)] : [])];
+    const hs = ['#/', '#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today', '#/t/alert', ib2, ...['path', 'spread', 'big', 'co', 'near'].map(s => ib2 + '/' + s), ...(cb2 ? [cb2, ...['lead', 'why', 'rank', 'unknown', 'keep'].map(s => cb2 + '/' + s)] : [])];
     const routes = [['**/next/data/theme.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.th)})], ['**/next/data/theme-more.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.mo)})], ['**/next/data/theme-home.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.hm)})]];
     for (const en of [false, true]) {
       const {p, ctx} = await open((en ? '?lang=en' : '') + hs[0], {w: 320, h: 640, routes});
       for (const hsh of hs) {
         if (hsh !== hs[0]) { await p.evaluate(x => { location.hash = x; }, hsh); await settle(p); }
         if (!en) {
-          await look(V + ' ' + hsh + ' @320', p); bump('바꾼 자료 쪽');
+          await look(V + ' ' + hsh + ' @320', p); bump('바꾼 자료 쪽'); if (V === 'A' && hsh !== '#/') await rules(V + ' ' + hsh + ' @320', p);
           if (hsh === '#/') { const nb = await p.evaluate(() => { const s = document.querySelector('#view section.th-home svg.th-clock'); if (!s) return null; const vb = s.viewBox.baseVal; return [...s.querySelectorAll('circle.th-nb')].map(c => [+c.getAttribute('cx'), +c.getAttribute('cy'), +c.getAttribute('r')]).filter(([x, y, r]) => x - r < 0 || y - r < 0 || x + r > vb.width || y + r > vb.height); }); if (nb?.length) fail('첫 화면 시계 번호가 그림 밖', V + ' ' + JSON.stringify(nb)); } // 2026-10-19 실제 사이트 첫 화면 ① 이 잘림
           continue;
         }
@@ -216,11 +269,41 @@ try {
         if (s.han.length) fail('영어 — 보이는 한글', V + ' ' + hsh + ' 「' + s.han.slice(0, 3).join('」 「') + '」');
         if (s.over > 0 || s.off.length) fail('영어 — 화면 밖', V + ' ' + hsh + ' ' + s.over + 'px ' + s.off.slice(0, 3).join(' | '));
         if (s.spill.length) fail('줄 안 넘침', V + ' ' + hsh + ' ' + s.spill.slice(0, 3).join(' | '));
+        const ic = await p.evaluate(() => [...document.querySelectorAll('#view .th-ans em[data-tr], #view .th-three b')].map(e => e.textContent).filter(x => /compan/i.test(x))); if (ic.length) fail('영어 업종 수가 회사로', V + ' ' + hsh + ' ' + ic.join(' | ')); // 2026-10-19 「다해」 못 한 것 3
         bump('바꾼 자료 영어 쪽');
       }
       if (en) { const miss = await p.evaluate(() => (window.__atlasI18n?.missing?.() ?? []).map(m => m.key)); if (miss.length) fail('영어 — 사전에 없는 틀', V + ' ' + miss.slice(0, 4).join(' | ')); }
       if (p._errs.length) fail('화면 오류', V + (en ? ' 영어 ' : ' ') + p._errs.slice(0, 2).join(' | '));
       await ctx.close();
+    }
+  }
+  /* ⑨ 관심 업종 · 사이트 안 알림(2026-10-19 「다해」 못 한 것 1 · 견본 18 · 26 쪽) — 담기 → 알림 쪽 줄 · 켜짐 단추 · 첫 화면 소식(바뀐 자리만 · 꺼 두면 없음) */
+  {
+    const z0 = I1.z, other = z0 === 'S' ? 'Q' : 'S', want = {S: '싹 자리에 들어왔어요', B: '꽃 선을 넘었어요', W: '시듦 자리로 갔어요', Q: '잠잠 자리로 갔어요'}[z0];
+    const a = await open(ib);
+    const w0 = await a.p.evaluate(() => document.querySelector('#view .th-watch')?.getAttribute('aria-pressed'));
+    await a.p.locator('#view .th-watch').click(); await a.p.waitForTimeout(200);
+    const w1 = await a.p.evaluate(() => ({pressed: document.querySelector('#view .th-watch')?.getAttribute('aria-pressed'), list: JSON.parse(localStorage.getItem('dori:watch-ind') ?? '[]')}));
+    if (w0 !== 'false' || w1.pressed !== 'true' || !w1.list.includes(TOP)) fail('관심 업종 담기', JSON.stringify({w0, w1}));
+    await a.p.evaluate(() => { location.hash = '#/t/alert'; }); await settle(a.p);
+    const al = await a.p.evaluate(() => ({sw: [...document.querySelectorAll('#view .th-sw[role="switch"]')].map(b => b.getAttribute('aria-checked')), rows: [...document.querySelectorAll('#view .th-al a.th-alt')].map(x => x.textContent), no: document.querySelector('#view .th-no b')?.textContent}));
+    if (JSON.stringify(al.sw) !== JSON.stringify(['true', 'true', 'true', 'true']) || !al.rows.includes(TOP) || al.no !== '26') fail('알림 쪽', JSON.stringify(al));
+    await a.p.locator('#view .th-sw[role="switch"]').first().click(); await a.p.waitForTimeout(150);
+    const s1 = await a.p.evaluate(() => ({c: document.querySelector('#view .th-sw[role="switch"]')?.getAttribute('aria-checked'), set: JSON.parse(localStorage.getItem('dori:alert-set') ?? 'null')}));
+    if (s1.c !== 'false' || s1.set?.S !== false) fail('알림 켜짐 단추', JSON.stringify(s1));
+    await look('#/t/alert (담음 1)', a.p); await rules('#/t/alert (담음 1) @390', a.p);
+    await a.ctx.close();
+    for (const [tag, set, expect] of [['켜짐', {S: true, B: true, W: true, M: false}, true], ['꺼짐', {S: false, B: false, W: false, M: false}, false]]) {
+      const c = await browser.newContext({viewport: {width: 390, height: 844}, locale: 'ko-KR'});
+      await c.addInitScript(([n, oz, s]) => { try { localStorage.setItem('dori:watch-ind', JSON.stringify([n])); localStorage.setItem('dori:watch-seen', JSON.stringify({asOf: '2000-01-01', zones: {[n]: oz}, news: []})); localStorage.setItem('dori:alert-set', JSON.stringify(s)); } catch { /* 없음 */ } }, [TOP, other, set]);
+      const p = await c.newPage(); p._errs = []; p.on('pageerror', e => p._errs.push(String(e.message)));
+      await p.goto(PAGE + '#/', {waitUntil: 'domcontentloaded'}); await settle(p);
+      await p.waitForFunction(() => document.querySelector('#view section.th-home .th-row, #view section.th-home .empty'), null, {timeout: 20000}).catch(() => {});
+      const n = await p.evaluate(() => { const b = document.querySelector('#view section.th-home .th-news'); return b ? {links: [...b.querySelectorAll('a.th-nl')].map(a => [a.getAttribute('href'), a.textContent]), set: b.querySelector('a.th-hi')?.getAttribute('href')} : null; });
+      if (expect && !(n && n.links.some(([href, tx]) => href === '#/t/i/' + enc(TOP) && tx.includes(want)) && n.set === '#/t/alert')) fail('첫 화면 관심 업종 소식(' + tag + ')', JSON.stringify(n) + ' 바람 「' + TOP + ' ' + want + '」');
+      if (!expect && n) fail('첫 화면 관심 업종 소식(' + tag + ')', '알림을 모두 꺼도 소식 칸이 보임 ' + JSON.stringify(n));
+      if (p._errs.length) fail('화면 오류', '관심 소식 ' + p._errs[0]);
+      bump('관심 업종 알림'); await c.close();
     }
   }
   /* ⑥ 자료를 못 받으면 「?」 */

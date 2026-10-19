@@ -30,30 +30,37 @@
 .th-sub { margin: 0 0 var(--sp-2); color: #BDBDBD; font-size: var(--fs-2); line-height: 1.5; word-break: keep-all; }
 .th-rows { margin: 0 0 var(--sp-1); }
 .th-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 80px; border-bottom: 1px solid #2A2A2A; color: var(--ink); text-decoration: none; }
-.th-n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: #3A3A3A; color: var(--ink); font-size: var(--fs-1); font-weight: 700; text-align: center; }
+.th-n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #3A3A3A; color: var(--ink); font-size: var(--fs-1); font-weight: 700; text-align: center; }
 .th-n.th-top { background: var(--up); color: #080808; }
 .th-mid2 { display: flex; flex: 1; flex-direction: column; gap: 0; min-width: 0; }
 .th-rn { overflow: hidden; font-size: var(--fs-4); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.th-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-width: 0; color: #BDBDBD; font-size: var(--fs-1); white-space: nowrap; } /* 좁으면 둘째 줄로(320 폭) */
-.th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #6E6E6E; border-radius: 8px; color: var(--ink); font-style: normal; }
+.th-meta { display: block; min-width: 0; color: #BDBDBD; font-size: var(--fs-1); line-height: 1.6; } /* 한 덩이 글(안 칸은 줄 안 글) — 글 시작 = 「꽃까지」 = 이름과 같은 자리([10] 7) · 좁으면 며칠째가 아래 줄로 */
+.th-tg { display: inline; margin: 0 0 0 var(--sp-1); padding: 0 var(--sp-1); border: 1px solid #6E6E6E; border-radius: 8px; color: var(--ink); font-style: normal; white-space: nowrap; }
 .th-tg.new { border-color: var(--up); color: var(--ink); }
 .th-bar { flex: none; width: 64px; height: 8px; } /* 막대 길이는 줄마다 같게(채운 비율을 견주게 · 새 눈 검사 11) */
-.th-to { display: flex; flex-basis: 100%; min-width: 0; align-items: center; gap: var(--sp-1); } /* 「꽃까지 ▬」 한 덩이 — 며칠째 아래 제 줄 */
-.th-to .th-bar { flex: 0 1 64px; min-width: 32px; width: auto; } /* 한국어는 늘 64(320 폭에도 자리 있음) · 긴 영어 이름표일 때만 줄어듦 */
+.th-to { display: inline; } /* 「꽃까지 ▬」 — 줄 안 글 */
+/* 관심 업종 소식(사이트 안 알림 · theme-watch.js noticeBox) — 상자 글 시작 = 테 1 + 16([10] 7) */
+.th-news { margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid var(--gold); border-radius: 16px; }
+.th-nh { margin: 0; color: var(--gold); font-size: var(--fs-2); font-weight: 700; line-height: 1.5; }
+.th-nl { display: block; padding: var(--sp-1) 0; color: var(--ink); font-size: var(--fs-2); line-height: 1.5; text-decoration: none; }
+.th-nm { margin: 0; padding: var(--sp-1) 0; color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
+.th-hi { display: flex; align-items: center; justify-content: center; min-height: 48px; color: #BDBDBD; font-size: var(--fs-1); text-align: center; text-decoration: underline; } /* 돌이 인사(1장)로 — 가운데 한 줄 */
+.th-to .th-bar { display: inline-block; margin: 0 0 0 var(--sp-1); vertical-align: middle; } /* 길이 64 하나 · 좁으면 아래 줄로 */
 .th-bar .th-bar0, .th-rbar .th-bar0 { fill: #2A2A2A; }
 .th-bar .th-bar1, .th-rbar .th-bar1 { fill: var(--up); }
 .th-dots { flex: none; }
 .th-dots .th-d { fill: none; stroke: var(--up); stroke-width: 2; }
 .th-dots .th-d.on { fill: var(--up); }
-.th-go { flex: none; color: #BDBDBD; font-style: normal; font-size: var(--fs-3); }
+.th-go { flex: none; color: #BDBDBD; font-style: normal; font-size: var(--fs-3); text-align: right; } /* 오른쪽 끝 표시(글 시작 왼쪽 줄 셈 밖 · [10] 7) */
 .th-more { display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #2A2A2A; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
+.th-more i { font-style: normal; text-align: right; }
 .th-rec { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0 var(--sp-1); padding: var(--sp-2); border: 1px dashed #6A6A6A; border-radius: 16px; color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
 .th-rec span:first-child { color: var(--ink); font-weight: 700; }
-.th-next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-3) 0 var(--sp-1); padding: 0 var(--sp-3); border-radius: 32px; background: #FFFFFF; color: #080808; text-decoration: none; }
+.th-next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-3) 0 var(--sp-1); padding: 0 var(--sp-2); border: 1px solid #FFFFFF; border-radius: 32px; background: #FFFFFF; color: #080808; text-decoration: none; } /* 글 시작 = 테 1 + 16 = 말풍선 · 상자와 같은 자리([10] 7) */
 .th-nx { display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .th-nx small { color: #5E5E5E; font-size: var(--fs-1); font-weight: 600; }
 .th-nx b { overflow: hidden; font-size: var(--fs-3); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
-.th-next i { flex: none; font-style: normal; font-size: var(--fs-4); }
+.th-next i { flex: none; font-style: normal; font-size: var(--fs-4); text-align: right; }
 .th-bars { display: block; margin: var(--sp-1) 0 0; }
 .th-bars .th-b0 { fill: #5E5E5E; } .th-bars .th-b1 { fill: var(--up); }
 .th-home .up { color: var(--up); } .th-home .dn { color: var(--down); } .th-home .fl { color: var(--flat); }

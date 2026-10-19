@@ -116,9 +116,10 @@ function splitTop(s, sep) {
 const SEPS = [' · ', ' — ', ' → ', ': ', ' / ', ', '];
 /** 「, 」는 목록일 때만 나눔(날짜 목록 · 짧은 조각 셋 넘게) — 글 속 쉼표는 문장째로 찾음 */
 const listy = parts => parts.length >= 3 && parts.every(p => templateOf(p.trim()).key.length <= 30) || parts.every(p => /\{d\}/.test(templateOf(p).key)); // 길이는 틀로 잼(2026-10-16 — 「CJ CGV 2300000000000 원, …」처럼 큰 수 · 긴 이름이 든 막대 이름표 목록이 나뉘지 않던 것)
-function tr(core, depth = 0) {
+function tr(core, depth = 0, ctx = null) {
   if (!HAN.test(core)) return core;
   const {key, v} = templateOf(core);
+  if (ctx && T[ctx + '|' + key] != null) return fill(T[ctx + '|' + key], v); // 자리 표(data-tr) — 같은 글도 그 자리 뜻으로(테마 쪽 「n곳」 = 업종 수 · 2026-10-19)
   if (T[key] != null) return fill(T[key], v);
   if (EL.size) { const q = templateOf(core, {latin: true}); if (q.key !== key && T[q.key] != null) return fill(T[q.key], q.v); } // 로마자 이름 회사 줄(「KCC 매출 길」 → 「{e} 매출 길」)
   if (E.size) { const p = templateOf(core, {noEnt: true}); if (p.key !== key && T[p.key] != null) return fill(T[p.key], p.v); } // 이름 사전의 낱말(반도체 · 화학 …)이 보통 말로 쓰인 줄
@@ -126,22 +127,23 @@ function tr(core, depth = 0) {
   for (const sep of SEPS) {
     const parts = splitTop(core, sep);
     if (sep === ', ' && !listy(parts)) continue;
-    if (parts.length > 1 && depth < 6) return parts.map(p => { const lead = p.match(/^\s*/)[0], tail = p.match(/\s*$/)[0]; return lead + tr(p.trim(), depth + 1) + tail; }).join(sep);
+    if (parts.length > 1 && depth < 6) return parts.map(p => { const lead = p.match(/^\s*/)[0], tail = p.match(/\s*$/)[0]; return lead + tr(p.trim(), depth + 1, ctx) + tail; }).join(sep);
   }
-  const pre = /^(‹ |· |— |→ |✓ |★ |☆ |▲ |▼ |▶ |! |\? )/.exec(core); if (pre && depth < 6) return pre[0] + tr(core.slice(pre[0].length), depth + 1);
-  const post = /( ›| →)$/.exec(core); if (post && depth < 6) return tr(core.slice(0, -post[0].length), depth + 1) + post[0];
-  const wrap = /^\((.*)\)$/.exec(core); if (wrap && depth < 6) return '(' + tr(wrap[1], depth + 1) + ')';
+  const pre = /^(‹ |· |— |→ |✓ |★ |☆ |▲ |▼ |▶ |! |\? )/.exec(core); if (pre && depth < 6) return pre[0] + tr(core.slice(pre[0].length), depth + 1, ctx);
+  const post = /( ›| →)$/.exec(core); if (post && depth < 6) return tr(core.slice(0, -post[0].length), depth + 1, ctx) + post[0];
+  const wrap = /^\((.*)\)$/.exec(core); if (wrap && depth < 6) return '(' + tr(wrap[1], depth + 1, ctx) + ')';
   if (!misses.has(key)) misses.set(key, core);
   return core;
 }
-/** 글 하나를 영어로(앞뒤 빈칸은 그대로 · 같은 글은 한 번만 셈) */
-export function t(s) {
+/** 글 하나를 영어로(앞뒤 빈칸은 그대로 · 같은 글은 한 번만 셈) · ctx = 자리 표(그 칸 · 조상의 data-tr — 사전의 「ctx|틀」을 먼저 봄) */
+export function t(s, ctx = null) {
   if (!ON || s == null) return s;
   const str = String(s).replace(/[\u200b\u2060]/g, ''); if (!HAN.test(str)) return str;
-  if (cache.has(str)) return cache.get(str);
+  const ck = ctx ? ctx + '\u0001' + str : str;
+  if (cache.has(ck)) return cache.get(ck);
   const lead = str.match(/^\s*/)[0], tail = str.match(/\s*$/)[0], core = str.slice(lead.length, str.length - tail.length).replace(/\u00a0/g, ' ');
-  const out = lead + tr(expandUnits(core)) + tail;
-  cache.set(str, out); return out;
+  const out = lead + tr(expandUnits(core), 0, ctx) + tail;
+  cache.set(ck, out); return out;
 }
 export const missing = () => [...misses].map(([key, ex]) => ({key, ex}));
 
@@ -149,7 +151,7 @@ export const missing = () => [...misses].map(([key, ex]) => ({key, ex}));
 const ATTRS = ['aria-label', 'title', 'placeholder', 'alt'];
 const skip = el => !el || el.closest?.('[lang="ko"], script, style, noscript');
 const done = new WeakMap(); // 이미 바꾼 글(바꾼 뒤 다시 들어오는 바뀜 알림은 넘어감 — 영어 글 속 한국어 이름 · 찾은 글자를 다시 찾지 않게)
-function doText(n) { const p = n.parentElement; if (skip(p)) return; const s = n.nodeValue; if (!HAN.test(s) || done.get(n) === s) return; const o = t(s); if (o !== s) { n.nodeValue = o; done.set(n, o); } else done.set(n, s); }
+function doText(n) { const p = n.parentElement; if (skip(p)) return; const s = n.nodeValue; if (!HAN.test(s) || done.get(n) === s) return; const o = t(s, p.closest('[data-tr]')?.getAttribute('data-tr') ?? null); if (o !== s) { n.nodeValue = o; done.set(n, o); } else done.set(n, s); }
 function doEl(el) {
   if (skip(el)) return;
   for (const a of ATTRS) { const s = el.getAttribute?.(a); if (s && HAN.test(s) && done.get(el)?.[a] !== s) { const o = t(s); const m = done.get(el) ?? {}; m[a] = o; done.set(el, m); if (o !== s) el.setAttribute(a, o); } }

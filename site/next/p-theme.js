@@ -5,7 +5,8 @@
    길: #/t/hello 1 · (#/ 2 = 첫 화면 homeBlock) · how 3 · sprout 4 · bloom 5 · wilt 6 · i/<업종>[/path|spread|big|co|near] 7 ~ 12 · c/<번호>[/lead|why|rank|unknown|keep] 13 ~ 18 · today 36
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
-import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock} from './theme-home.js'; // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
+import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock} from './theme-home.js';
+import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
 
 const nx = () => globalThis.NX;
@@ -34,11 +35,12 @@ const zw = z => ZONES[z] ?? '?';
 const CH = ['', '테마 시계', '업종 한 곳', '회사 한 곳', '왜 사? 열한 질문', '내 것', '돌이와 나'];
 const IND_SUB = [['', null, 7], ['path', '지나온 길', 8], ['spread', '번지는 중일까', 9], ['big', '큰 회사도 움직였을까', 10], ['co', '함께 움직인 회사', 11], ['near', '이웃 업종', 12]];
 const CO_SUB = [['', null, 13], ['lead', '먼저일까 뒤따름일까', 14], ['why', '왜 그럴까?', 15], ['rank', '업종 안 자리', 16], ['unknown', '아직 모르는 것', 17], ['keep', '관심 담기', 18]];
+const ALERT_NO = 26; // 견본 flow36 26 쪽 「알림」(내 것 마당 · 관심 #/sub 다음 · 매매일지 #/why 앞)
 const chOf = no => (no <= 6 ? 1 : no <= 12 ? 2 : no <= 18 ? 3 : no <= 24 ? 4 : no <= 30 ? 5 : 6);
 /** 쪽 위 한 줄(‹ 앞 쪽 · 마당 n / 36) */
 function pgBar(no, prev) {
   return h('div', {class: 'th-pg'},
-    prev ? h('a', {class: 'th-back', href: prev[1]}, h('span', {'aria-hidden': 'true', text: '‹'}), h('span', {text: prev[0]})) : h('span'),
+    prev ? h('a', {class: 'th-back', href: prev[1], text: '‹ ' + prev[0]}) : h('span'), // 글 한 덩이 — 「‹」 를 따로 칸에 두면 글 시작 왼쪽 줄이 하나 더 생김([10] 7)
     h('p', {class: 'th-no'}, h('span', {class: 'th-ch', text: CH[chOf(no)]}), h('b', {text: String(no)}), h('span', {text: '/ 36'})));
 }
 const safe = () => h('p', {class: 'th-safe', text: '돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'});
@@ -103,7 +105,7 @@ async function pZone(z) {
   const prev = {S: ['시계 읽는 법', '#/t/how'], B: ['싹 자리 전부', '#/t/sprout'], W: ['꽃 자리', '#/t/bloom']}[z];
   const top = TH.order.S[0];
   const next = {S: ['꽃 자리', '#/t/bloom'], B: ['시듦 자리', '#/t/wilt'], W: top ? [top, '#/t/i/' + enc(top)] : ['테마 시계', '#/']}[z];
-  const body = [h('h2', {class: 'th-ans'}, h('span', {text: zw(z) + ' 자리 '}), h('em', {text: num(list.length) + '곳'}))];
+  const body = [h('h2', {class: 'th-ans'}, h('span', {text: zw(z) + ' 자리 '}), h('em', {'data-tr': '업종', text: num(list.length) + '곳'}))]; // data-tr = 영어에서 업종 수(i18n.js 자리 표)
   if (z === 'B') body.push(h('p', {class: 'th-sub', text: '돌이는 꽃보다 싹을 먼저 봐요. 꽃은 이미 오른 곳이라 늦을 수 있어요.'}));
   if (z === 'W') body.push(h('p', {class: 'th-sub', text: '힘이 빠지는 중이에요. 다시 잠잠으로 갈까?'}));
   body.push(list.length ? h('div', {class: 'th-rows'}, list.map((i, k) => (z === 'S' ? row(i, k) : simpleRow(i)))) : h('p', {class: 'empty', text: '지금 이 자리에는 업종이 없어요.'}));
@@ -129,7 +131,8 @@ async function pInd(name, sub) {
     body = [h('h2', {class: 'th-ans'}, h('span', {text: '점 넷 가운데 '}), h('em', {text: num(i.sc) + '개'})), dots(i),
       ckRow(i.dots[0], DOT_TEXT[0], `지난 닷새 시장보다 ${pp(i.y)}%p`), ckRow(i.dots[1], DOT_TEXT[1], `${num(i.tot)}곳 가운데 ${num(i.up)}곳이 2% 넘게 올랐어요`),
       ckRow(i.dots[2], DOT_TEXT[2], i.bigAvg == null ? '? 큰 회사 값을 못 받았어요' : `가장 큰 회사 셋 평균 ${pp(i.bigAvg)}%`), ckRow(i.dots[3], DOT_TEXT[3], `열흘 동안 ${pp(i.m10)}%`),
-      h('p', {class: 'th-sub', text: i.z === 'S' && i.sc === 4 ? '진짜 싹이에요. 한 달 뒤 꽃 선을 넘을까?' : i.z === 'S' ? '싹 자리지만, 점이 덜 찼어요. 꽃 선을 넘을까?' : i.z === 'B' ? '이미 꽃 자리예요. 늦은 건 아닐까?' : i.z === 'W' ? '꽃이 지는 중이에요. 다시 잠잠으로 갈까?' : '아직 잠잠해요. 힘이 붙을까?'})];
+      h('p', {class: 'th-sub', text: i.z === 'S' && i.sc === 4 ? '진짜 싹이에요. 한 달 뒤 꽃 선을 넘을까?' : i.z === 'S' ? '싹 자리지만, 점이 덜 찼어요. 꽃 선을 넘을까?' : i.z === 'B' ? '이미 꽃 자리예요. 늦은 건 아닐까?' : i.z === 'W' ? '꽃이 지는 중이에요. 다시 잠잠으로 갈까?' : '아직 잠잠해요. 힘이 붙을까?'}),
+      watchBtn(i), h('a', {class: 'th-hi', href: '#/t/alert', text: '알림 설정 ›'})]; // 관심 업종 담기(자리가 바뀌면 첫 화면에서 알림)
   } else if (sub === 'path') {
     art = 'cal'; sayT = '닷새 동안 어디서 왔을까?';
     body = [h('div', {class: 'th-map'}, clock(TH, {hi: name}), h('p', {class: 'th-cap', text: '닷새 전부터 오늘까지 지나온 길이에요.'})),
@@ -157,7 +160,7 @@ async function pInd(name, sub) {
     art = 'cond'; sayT = '같은 무리 업종도 움직일까?';
     const same = (TH.inds ?? []).filter(o => o.g && o.g === i.g && o.n !== name).sort((a, b) => b.x - a.x || (a.n < b.n ? -1 : 1)); // 보이는 숫자(한 달) 차례
     const live = same.filter(o => o.z === 'S' || o.z === 'B').length;
-    body = [h('h2', {class: 'th-ans'}, h('span', {text: (i.gn ?? '같은 무리') + ' '}), h('em', {text: num(same.length) + '곳'})),
+    body = [h('h2', {class: 'th-ans'}, h('span', {text: (i.gn ?? '같은 무리') + ' '}), h('em', {'data-tr': '업종', text: num(same.length) + '곳'})),
       h('p', {class: 'th-sub', text: `그 가운데 싹이나 꽃 자리가 ${num(live)}곳이에요. 함께 움직이면 테마가 커질 수 있어요.`}),
       h('div', {class: 'th-rows'}, same.map(o => simpleRow(o, {zone: true}))), h('p', {class: 'th-cap2', text: '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'})];
   }
@@ -208,9 +211,27 @@ async function pCo(code, sub) {
       h('div', {class: 'th-box'}, h('b', {text: '업종이 꽃이 될지'}), h('span', {text: R?.real?.p != null ? `진짜 싹도 100번 가운데 ${100 - Math.round(R.real.p)}번은 한 달 뒤 꽃 선을 넘지 못했어요.` : '싹 자리에서 다시 잠잠으로 가는 일도 많아요.'}))];
   } else if (sub === 'keep') {
     art = 'me'; sayT = '담아 두면 관심 칸에서 다시 봐요.';
-    body = [h('h2', {class: 'th-ans', text: c.n}), nx().laterBtn(code, c.n, 'th-keep'), h('p', {class: 'th-sub', text: '사기 전에는 열한 질문을 먼저 해요.'})];
+    body = [h('h2', {class: 'th-ans', text: c.n}), nx().laterBtn(code, c.n, 'th-keep'), ...(I ? [watchBtn(I, `${ind} 자리가 바뀌면 알림 받기`)] : []), h('p', {class: 'th-sub', text: '사기 전에는 열한 질문을 먼저 해요.'})]; // 견본 18 쪽 — 업종 알림(사이트 안)
   }
   return {title: CO_SUB[k][1] ?? c.n, nodes: [shell(no, CO_SUB[k][1] ?? c.n, art, sayT, prev, next, [...body, asOf(TH)])]};
+}
+/** 26 알림(견본 flow36 26 쪽) — 켜짐 넷 · 관심 업종 줄 · 사이트 안 알림이라는 것 그대로 */
+async function pAlert() {
+  const TH = await themeData(); if (!TH) return none('알림');
+  const w = watchList();
+  const zOf = new Map((TH.inds ?? []).map(i => [i.n, i.z]));
+  const rows = w.map(n => {
+    const b = h('button', {class: 'th-sw', type: 'button', text: '빼기', 'aria-label': n + ' 빼기'});
+    const r = h('div', {class: 'th-al'}, h('a', {class: 'th-alt', href: '#/t/i/' + enc(n), text: n}), h('b', {class: 'th-z ' + (zOf.get(n) ?? ''), text: zw(zOf.get(n))}), b);
+    b.addEventListener('click', e => { e.preventDefault(); toggleWatch(n); r.remove(); nx()?.toast?.('관심 업종에서 뺐어요.'); });
+    return r;
+  });
+  return {title: '알림', nodes: [shell(ALERT_NO, '알림', 'me', '자리가 바뀌면 알려요.', ['관심', '#/sub'], ['매매일지', '#/why'], [
+    h('h2', {class: 'th-ans'}, h('span', {text: '관심 업종 '}), h('em', {'data-tr': '업종', text: num(w.length) + '곳'})),
+    h('div', {class: 'th-als'}, ALERTS.map(([k, t]) => alertSwitch(k, t))),
+    w.length ? h('div', {class: 'th-als'}, rows) : h('p', {class: 'th-sub', text: '아직 담은 업종이 없어요. 업종 쪽에서 관심 업종에 담기를 눌러요.'}),
+    h('div', {class: 'th-box'}, h('b', {text: '돌이를 열면 첫 화면에서 알려요'}), h('span', {text: '이 기기에만 담겨요. 카톡으로 받기는 아직 준비 중이에요.'})),
+    asOf(TH)])]};
 }
 async function pToday() {
   const [TH, TM] = await Promise.all([themeData(), moreData()]); if (!TH) return none('오늘 정리');
@@ -231,6 +252,7 @@ export async function render(arg = '') {
   if (k === 'bloom') return pZone('B');
   if (k === 'wilt') return pZone('W');
   if (k === 'today') return pToday();
+  if (k === 'alert') return pAlert();
   if (k === 'i' && x) return pInd(x, y ?? '');
   if (k === 'c' && /^[0-9A-Z]{6}$/.test(x ?? '')) return pCo(x, y ?? '');
   return none('테마 시계', '이 쪽');

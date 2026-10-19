@@ -129,7 +129,7 @@ if (MODULES && on('mod')) {
     theme: await (async () => { // 테마 시계 열아홉 쪽 — 싹 첫 업종 · 그 업종 앞선 회사(자료를 못 받으면 업종 · 회사 없는 쪽만)
       const th = await fetchRetry(base + '/next/data/theme.json').then(r => (r.ok ? r.json() : null)).catch(() => null), tm = await fetchRetry(base + '/next/data/theme-more.json').then(r => (r.ok ? r.json() : null)).catch(() => null);
       const top = th?.order?.S?.[0] ?? th?.inds?.[0]?.n, lead = top ? tm?.inds?.[top]?.top?.[0]?.c : null, ib = top ? '#/t/i/' + enc(top) : null;
-      return ['#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today', ...(ib ? [ib, ib + '/path', ib + '/spread', ib + '/big', ib + '/co', ib + '/near'] : []), ...(lead ? ['#/t/c/' + lead, '#/t/c/' + lead + '/lead', '#/t/c/' + lead + '/why', '#/t/c/' + lead + '/rank', '#/t/c/' + lead + '/unknown', '#/t/c/' + lead + '/keep'] : [])];
+      return ['#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today', '#/t/alert', ...(ib ? [ib, ib + '/path', ib + '/spread', ib + '/big', ib + '/co', ib + '/near'] : []), ...(lead ? ['#/t/c/' + lead, '#/t/c/' + lead + '/lead', '#/t/c/' + lead + '/why', '#/t/c/' + lead + '/rank', '#/t/c/' + lead + '/unknown', '#/t/c/' + lead + '/keep'] : [])];
     })(),
     share: ['#/s/005930/' + mkt.base + '/70000/s', '#/s/005930/' + mkt.base + '/70000/a', '#/s/ZZZZZZ/2026-13-40/0/s']}; // 친구가 연 보내기 · 같이 따져 줘 · 깨진 주소([4] 6 ~ 8)
   for (const [m, rs] of Object.entries(R)) { if (MODS_ONLY && !MODS_ONLY.includes(m)) continue; if (!modHave[m]) { fail('모듈 없음', 'p-' + m + '.js', '옮긴 쪽 파일이 아직 없음 — 길 ' + rs.length + '개를 못 봄'); continue; } for (const r of rs) routes.push({kind: 'mod', r, mod: m}); }

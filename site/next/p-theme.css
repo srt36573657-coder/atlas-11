@@ -1,16 +1,15 @@
 /* 테마 시계(p-theme.js · 첫 화면 맨 위 칸 + #/t/… · 사장님 2026-10-19 16:06 · 16:46 · 16:54) — 돌 판 색 · 글씨는 var(--fs-*) · 간격은 var(--sp-*) · 음수 여백 없음 */
 .tc { padding: 0 var(--sp-2) var(--sp-3); }
 .th-pg { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); margin: var(--sp-1) 0 0; }
-.th-back { display: inline-flex; align-items: center; gap: var(--sp-1); min-width: 0; color: var(--sub); font-size: var(--fs-1); text-decoration: none; }
-.th-back span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.th-back { display: block; min-width: 0; overflow: hidden; color: var(--sub); font-size: var(--fs-1); line-height: 48px; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; } /* 「‹ 앞 쪽」 글 한 덩이 · 누르는 높이 48 */
 .th-no { display: inline-flex; align-items: baseline; gap: var(--sp-1); flex: none; margin: 0; color: var(--sub); font-size: var(--fs-1); text-align: right; }
 .th-no b { color: var(--ink); font-weight: 700; }
 .th-ch { color: var(--gold); font-weight: 700; } /* 빨강(오름)은 숫자에만 — check_white ④ */
 .th-hd { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); margin: var(--sp-1) 0 var(--sp-2); }
 .th-h1 { flex: 1; min-width: 0; margin: 0; font-size: var(--fs-5); font-weight: 800; line-height: 1.2; letter-spacing: -.02em; word-break: keep-all; }
 .th-art { flex: none; width: 96px; height: 77px; }
-.th-say { display: inline-flex; align-items: center; gap: var(--sp-1); max-width: 100%; margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #262626; border-radius: 22px 22px 22px 6px; background: #161616; font-size: var(--fs-2); line-height: 1.35; }
-.th-who { flex: none; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #3A3A3A; color: #A6A6A6; font-size: var(--fs-1); }
+.th-say { display: block; width: fit-content; max-width: 100%; box-sizing: border-box; margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #262626; border-radius: 22px 22px 22px 6px; background: #161616; font-size: var(--fs-2); line-height: 1.35; } /* 한 덩이 글(「돌이 |」 와 말이 줄 안에) — 글 시작 = 테 1 + 16([10] 7) */
+.th-who { display: inline; margin: 0 var(--sp-1) 0 0; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #3A3A3A; color: #A6A6A6; font-size: var(--fs-1); }
 /* 시계 칸 */
 /* 답 · 세 칸 · 줄 */
 .th-asof, .th-cap2 { margin: var(--sp-1) 0 0; color: #A6A6A6; font-size: var(--fs-1); }
@@ -24,7 +23,7 @@
 .th-st b { font-size: var(--fs-3); font-weight: 700; }
 .th-st span, .th-st .th-ckd { color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
 .th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #BDBDBD; }
-.th-ck { display: grid; grid-template-columns: 32px 1fr; align-items: center; column-gap: var(--sp-2); min-height: 64px; border-bottom: 1px solid #2A2A2A; }
+.th-ck { display: grid; grid-template-columns: 32px 1fr; align-items: center; column-gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #2A2A2A; } /* 글 시작 = 차례 줄과 같은 자리(16 + 32 + 8 · [10] 7) */
 .th-ck > b { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: var(--fs-2); text-align: center; }
 .th-ck > b.y { background: var(--up); color: #080808; }
 .th-ck > b.n { border: 2px solid #6E6E6E; color: #BDBDBD; }
@@ -35,14 +34,15 @@
 .th-list { margin: 0 0 var(--sp-1); }
 .th-li, .th-cor { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #2A2A2A; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
 .th-li > span:first-child, .th-rn2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.th-li b, .th-cor b { font-weight: 700; text-align: right; }
+.th-li b, .th-cor b, .th-li > span:not(:first-child) { font-weight: 700; text-align: right; } /* 오른쪽 값 · 이름표(글 시작 왼쪽 줄 셈 밖 · [10] 7) */
+.th-li > span.th-cap2 { margin: 0; font-weight: 400; }
 .th-li.th-me > span:first-child { color: var(--gold); font-weight: 700; }
 /* 꽃 · 시듦 목록 줄 — 견본 flow36 5 · 6 쪽 그대로(이름 · 값 · 「한 달」 · 64px · 320 폭에서도 한 줄) */
 .th-srow { display: flex; align-items: center; gap: var(--sp-2); min-height: 64px; border-bottom: 1px solid #2A2A2A; color: var(--ink); font-size: var(--fs-3); text-decoration: none; }
 .th-srow .th-rn { flex: 1; min-width: 0; font-size: var(--fs-3); }
-.th-srow .th-sv { flex: none; font-weight: 700; }
-.th-srow .th-sk { flex: none; color: #A6A6A6; font-size: var(--fs-1); }
-.th-srow .th-z { flex: none; font-size: var(--fs-1); } /* 이웃 업종 줄의 자리 이름 */
+.th-srow .th-sv { flex: none; font-weight: 700; text-align: right; }
+.th-srow .th-sk { flex: none; color: #A6A6A6; font-size: var(--fs-1); text-align: right; }
+.th-srow .th-z { flex: none; font-size: var(--fs-1); text-align: right; } /* 이웃 업종 줄의 자리 이름 · 오른쪽 셋은 글 시작 왼쪽 줄 셈 밖([10] 7) */
 .th-sp { display: block; }
 .th-sp .th-spl { fill: none; stroke-width: 2; } .th-sp .th-spl.up, .th-sp .th-spd.up { stroke: var(--up); fill: none; } .th-sp .th-spd.up { fill: var(--up); } .th-sp .th-spl.dn { stroke: var(--down); } .th-sp .th-spd.dn { fill: var(--down); stroke: none; }
 .th-line { display: block; margin: 0 0 var(--sp-1); }
@@ -53,6 +53,14 @@
 .th-two b { font-size: var(--fs-5); font-weight: 400; }
 .th-keep { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin: var(--sp-1) 0 var(--sp-2); border: 1px solid var(--hair2); border-radius: 28px; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-3); font-weight: 700; }
 .th-keep[aria-pressed="true"] { border-color: var(--up); color: var(--up); }
+.th-watch[aria-pressed="true"] { border-color: var(--gold); color: var(--ink); } /* 관심 업종 담김 — 빨강은 숫자에만 */
+/* 알림 쪽(견본 26) — 줄마다 이름표(왼쪽) + 켜짐 단추(오른쪽 · 가운데 글) */
+.th-als { margin: 0 0 var(--sp-2); }
+.th-al { display: flex; align-items: center; gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #2A2A2A; }
+.th-alt { flex: 1; min-width: 0; color: var(--ink); font-size: var(--fs-2); line-height: 1.4; text-decoration: none; }
+.th-al .th-z { flex: none; font-size: var(--fs-1); text-align: right; }
+.th-sw { flex: none; min-width: 72px; min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #6E6E6E; border-radius: 24px; background: transparent; color: #BDBDBD; font: inherit; font-size: var(--fs-1); font-weight: 700; text-align: center; }
+.th-sw[aria-checked="true"] { border-color: var(--gold); color: var(--ink); }
 .th-rbs { margin: 0 0 var(--sp-2); }
 .th-rb { display: grid; grid-template-columns: 96px 1fr 56px; align-items: center; gap: var(--sp-1); min-height: 40px; font-size: var(--fs-1); }
 .th-rb b { font-weight: 700; text-align: right; }
