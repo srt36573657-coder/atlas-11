@@ -1,0 +1,28 @@
+/* 가짜 돈 연습(#/game · p-game.js · 사장님 2026-10-19 15:02 · 15:04 「일단해」) — 돌 판 색 · 글씨는 var(--fs-*) · 간격은 var(--sp-*) */
+.gm { padding: 0 var(--sp-2) var(--sp-3); }
+.gm-h1 { margin: var(--sp-2) 0 var(--sp-1); font-size: var(--fs-5); font-weight: 800; }
+.gm-beta { margin: 0 0 var(--sp-2); color: var(--gold); font-size: var(--fs-1); }
+.gm-sum, .gm-prize, .gm-sec { margin: 0 0 var(--sp-2); padding: var(--sp-2); border: 1px solid var(--hair2); border-radius: 16px; }
+.gm-lb { margin: 0; color: var(--sub); font-size: var(--fs-1); }
+.gm-big { margin: 0 0 var(--sp-1); font-size: var(--fs-5); font-weight: 700; }
+.gm-bar { height: 8px; margin: 0 0 var(--sp-1); border-radius: 4px; background: #262626; overflow: hidden; }
+.gm-fill { display: block; width: 0; height: 100%; border-radius: 4px; background: var(--ink); }
+.gm-t { margin: 0 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); }
+.gm-q { color: var(--gold); }
+.gm-prize h2, .gm-sec h2 { margin: 0 0 var(--sp-1); font-size: var(--fs-3); font-weight: 700; }
+.gm-prize p { margin: 0 0 var(--sp-1); font-size: var(--fs-1); }
+.gm-code { margin: 0 0 var(--sp-1); color: var(--ink); font-size: var(--fs-5); font-weight: 700; letter-spacing: .06em; }
+.gm-in, .gm-q[type="number"] { min-height: 48px; padding: 0 var(--sp-2); border: 1px solid var(--hair2); border-radius: 24px; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-2); }
+.gm-in { width: 100%; box-sizing: border-box; }
+.gm-hits, .gm-list, .gm-log { margin: 0; padding: 0; list-style: none; }
+.gm-hit, .gm-own { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-1); width: 100%; min-height: 48px; margin: 0; padding: 0; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-2); text-align: left; cursor: pointer; }
+.gm-hit small, .gm-own small { color: var(--sub); font-size: var(--fs-1); }
+.gm-own span { flex: 1 1 100%; }
+.gm-deal .gm-nm { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 var(--sp-1); margin: var(--sp-1) 0; font-size: var(--fs-2); }
+.gm-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); }
+.gm-row .gm-q[type="number"] { width: 112px; color: var(--ink); }
+.gm-b, .gm-s { min-height: 48px; min-width: 96px; padding: 0 var(--sp-2); border-radius: 24px; font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }
+.gm-b { border: 0; background: #FFFFFF; color: #080808; }
+.gm-s { border: 1px solid var(--hair2); background: transparent; color: var(--ink); }
+.gm-s:disabled { opacity: .45; cursor: default; }
+.gm-log li { padding: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-1); }

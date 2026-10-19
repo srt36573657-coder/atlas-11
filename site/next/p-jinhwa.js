@@ -35,7 +35,8 @@ export function ownerRow(box) {
   ownerOk().then(ok => {
     if (!ok || !box || box.querySelector('a.jh-row')) return;
     box.append(h('a', {class: 'jh-row', href: '#/jinhwa'}, '진화 칸', h('span', {text: '›'})));
-    if (!box.querySelector('a.adm-row')) box.append(h('a', {class: 'adm-row', href: '#/admin'}, '관리자 화면', h('span', {text: '›'}))); // 쿠폰 번호 확인 · 쿠폰 목록 · 가입 수(2026-10-19 13:54 「관리자 페이지도 있어야 해」)
+    if (!box.querySelector('a.adm-row')) box.append(h('a', {class: 'adm-row', href: '#/admin'}, '관리자 화면', h('span', {text: '›'})));
+    if (!box.querySelector('a.gm-row')) box.append(h('a', {class: 'gm-row', href: '#/game'}, '가짜 돈 연습', h('span', {text: '›'}))); // 시험판(2026-10-19 15:04 「일단해」) — 공개 전에는 사장님 기기만 // 쿠폰 번호 확인 · 쿠폰 목록 · 가입 수(2026-10-19 13:54 「관리자 페이지도 있어야 해」)
   }).catch(() => {});
 }
 /* ── 업데이트 때(「○시」) — 매시 정각(서울 · 주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 진화 회차는 30분 전 ── */

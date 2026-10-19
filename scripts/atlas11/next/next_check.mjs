@@ -125,7 +125,7 @@ const knownHref = h => {
   if (h === '/hello.html#hp-vid') return VIDEO.ready; // 첫 화면 세 줄 칸 밑 「골똘이의 고민 1분 보기 ›」 = 소개 쪽 영상 칸(새 영상이 오른 뒤에만 · [5] 5)
   if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
-  if (h === '#/admin') return true; // 관리자 화면(사장님 열쇠 기기 보유종목 바로 가기 · 2026-10-19 13:54)
+  if (h === '#/admin' || h === '#/game') return true; // 가짜 돈 연습(2026-10-19 15:04) // 관리자 화면(사장님 열쇠 기기 보유종목 바로 가기 · 2026-10-19 13:54)
   if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)
   if ((mm = /^#\/why\/([0-9A-Z]{6})$/.exec(h))) return READY.has('why') && !!CO[mm[1]]; // 「이 회사로 왜 사?」(회사 화면 a.why-go · 보유종목 「이 회사로 왜 사? 적기」 — [3] 2)
