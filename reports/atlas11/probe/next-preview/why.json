@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-3",
- "when": "2026-10-19T07:17:15.512Z",
+ "when": "2026-10-19T07:25:41.388Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -73,13 +73,13 @@
   "leftScreens": 94
  },
  "timing": {
-  "flowMs": 560,
+  "flowMs": 584,
   "taps": 14,
   "qTaps": 11,
   "qTapsBefore": 22,
   "typed": 4
  },
- "sec": 27,
+ "sec": 29,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "찾기와 같은 차례": 7,
@@ -147,7 +147,7 @@
   ],
   [
    "화면 오류",
-   "한 달 뒤 · 가운데 값 못 받음 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me | 404 http://127.0.0.1:8826/api/kakao/me"
+   "한 달 뒤 · 가운데 값 못 받음 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
   ],
   [
    "화면 오류",
@@ -163,7 +163,7 @@
   ],
   [
    "화면 오류",
-   "쓰기만 막힘 390×844 #/why · 카톡 그대로 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+   "쓰기만 막힘 390×844 #/why · 카톡 그대로 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me | 404 http://127.0.0.1:8826/api/kakao/me"
   ],
   [
    "화면 오류",

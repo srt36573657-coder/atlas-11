@@ -53,11 +53,11 @@
  - 화면 오류 · 종목 고르기 360×640 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · 360×640 #/why · 모두 초록 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · 한 달 뒤 360×640 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
- - 화면 오류 · 한 달 뒤 · 가운데 값 못 받음 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me | 404 http://127.0.0.1:8826/api/kakao/me
+ - 화면 오류 · 한 달 뒤 · 가운데 값 못 받음 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · 360×640 whyCard 옵션 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · localStorage 막힘 390×844 #/why · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · localStorage 막힘 360×640 #/why/005930 · 카톡 꺼짐 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
- - 화면 오류 · 쓰기만 막힘 390×844 #/why · 카톡 그대로 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
+ - 화면 오류 · 쓰기만 막힘 390×844 #/why · 카톡 그대로 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me | 404 http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · 돌이 칸 자료 못 받음 360×640 #/why · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · 망가진 줄 섞임 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
  - 화면 오류 · 걸린 때 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me
