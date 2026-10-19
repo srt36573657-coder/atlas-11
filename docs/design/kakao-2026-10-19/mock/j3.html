@@ -58,7 +58,7 @@ svg.ic{display:block;width:20px;height:20px;flex:0 0 20px}
 .plate .big{position:relative;display:block;padding-left:64px;font-size:56px;line-height:56px;color:var(--ink);letter-spacing:.02em}
 .plate .rule{display:none}
 .plate p[data-ess="1"]{margin:var(--s2) auto 0;max-width:15.5em;font-size:19px;line-height:28px;text-align:center;word-break:keep-all;color:var(--ink)}
-.plate .foot{display:flex;align-items:center;gap:var(--s1);margin-top:var(--s1);padding-left:var(--s1)}
+.plate .foot{display:flex;align-items:center;gap:var(--s1);margin-top:var(--s1);padding-left:var(--s3)} /* 안내 꺾쇠 = 찾기 칸 글 시작 줄(바깥 테 2 + 22)에 맞춤 */
 .plate .foot .h1{order:0}
 .plate .foot details{order:1;margin-left:auto}
 .plate .foot .kk-btn{order:2}
@@ -77,7 +77,7 @@ svg.ic{display:block;width:20px;height:20px;flex:0 0 20px}
 .find button{flex:0 0 auto;height:var(--h);padding:0 var(--s3);border-radius:var(--r3);background:var(--gold);color:#111111;font-family:"Gowun Batang",serif;font-weight:700;font-size:19px;line-height:28px;white-space:nowrap}
 
 /* 진화 — 알약 하나(48) · 금빛 고리 32 를 왼쪽 띄움 8 로 동심원처럼 */
-.evo{display:flex;align-items:center;gap:var(--s1);height:var(--h);margin-top:var(--s1);padding:0 var(--s2) 0 var(--s1);border:1px solid var(--edge);border-radius:var(--pillr)}
+.evo{display:flex;align-items:center;gap:var(--s2);height:var(--h);margin-top:var(--s1);padding:0 var(--s2) 0 7px;border:1px solid var(--edge);border-radius:var(--pillr)}
 .evo .row{display:flex;align-items:center;gap:var(--s1);width:100%}
 .evo .stem{flex:0 0 32px;width:32px;height:32px}
 .evo b{flex:0 0 auto;font-size:24px;line-height:32px;color:var(--ink);font-weight:400}
@@ -87,9 +87,10 @@ svg.ic{display:block;width:20px;height:20px;flex:0 0 20px}
 
 /* 하는 일 셋 — 세로선은 번호 동그라미 가운데(16) · 글은 48 에서 시작 */
 .flow{list-style:none;position:relative;margin-top:var(--s1)}
-.flow::before{content:"";position:absolute;left:16px;top:var(--s2);bottom:64px;width:1px;background:var(--frame)}
+.flow::before{content:"";position:absolute;left:24px;top:var(--s2);bottom:64px;width:1px;background:var(--frame)}
 .st{position:relative;padding-left:var(--h)}
-.st>.no{position:absolute;left:0;top:0}
+.st>.no{left:var(--s1)}
+.st>.no{position:absolute;top:0}
 .st+.st{margin-top:var(--s1)}
 .lbl{display:flex;align-items:center;gap:var(--s2);min-height:32px;font-size:19px;line-height:28px;color:var(--ink);font-weight:400;white-space:nowrap}
 .read .news h2.lbl>span:first-child{display:flex;align-items:center;gap:var(--s2)}
@@ -97,7 +98,7 @@ svg.ic{display:block;width:20px;height:20px;flex:0 0 20px}
 
 /* 오늘 장 한 줄 — 누르는 줄 48 */
 .pill .in{display:flex}
-.pill a{display:flex;align-items:center;column-gap:var(--s1);min-height:var(--h);font-size:17px;line-height:24px;color:var(--ink);white-space:nowrap}
+.pill a{display:flex;align-items:center;column-gap:var(--s1);min-height:var(--h);font-size:17px;line-height:24px;color:var(--ink);white-space:nowrap;letter-spacing:-0.02em}
 .pill .q{font-weight:700}
 .pill .n{font-family:"Gowun Batang",serif}
 
@@ -150,6 +151,7 @@ svg.ic{display:block;width:20px;height:20px;flex:0 0 20px}
   .plate .head .no{left:var(--s1)}
   .plate p[data-ess="1"]{font-size:17px;line-height:24px}
   .find .bar{padding-left:14px}
+  .plate .foot{padding-left:var(--s2)}
   .find input{font-size:17px}
   .find button{padding:0 var(--s2);font-size:17px}
   .evo{padding-right:var(--s1)}
