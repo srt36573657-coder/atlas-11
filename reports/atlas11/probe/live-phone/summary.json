@@ -1,0 +1,1680 @@
+{
+ "schema": "atlas11-live-phone-1",
+ "at": "2026-10-19T15:33:58.112Z",
+ "base": "https://aaa7377.com",
+ "path": "/",
+ "partial": false,
+ "limits": {
+  "text": 16.95,
+  "tap": 43.5,
+  "chain": 19
+ },
+ "data": {
+  "asOf": "2026-10-19",
+  "top": "연예 기획사",
+  "lead": "352820"
+ },
+ "routes": [
+  "#/",
+  "#/t/hello",
+  "#/t/how",
+  "#/t/sprout",
+  "#/t/bloom",
+  "#/t/wilt",
+  "#/t/today",
+  "#/t/alert",
+  "#/t/i/연예 기획사",
+  "#/t/i/연예 기획사/path",
+  "#/t/i/연예 기획사/spread",
+  "#/t/i/연예 기획사/big",
+  "#/t/i/연예 기획사/co",
+  "#/t/i/연예 기획사/near",
+  "#/t/c/352820",
+  "#/t/c/352820/lead",
+  "#/t/c/352820/why",
+  "#/t/c/352820/rank",
+  "#/t/c/352820/unknown",
+  "#/t/c/352820/keep"
+ ],
+ "devices": [
+  {
+   "name": "iPhone SE",
+   "engine": "webkit",
+   "ok": false,
+   "viewport": {
+    "width": 320,
+    "height": 568
+   },
+   "dpr": 2,
+   "touch": true,
+   "errors": [
+    {
+     "type": "console",
+     "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.",
+     "url": "/#/",
+     "routes": [
+      "#/",
+      "#/t/sprout",
+      "#/t/alert",
+      "#/t/i/연예 기획사",
+      "#/t/c/352820"
+     ],
+     "n": 5
+    }
+   ],
+   "overflow": [],
+   "small": [],
+   "tap": [],
+   "nextOne": [],
+   "nextChain": {
+    "steps": [
+     {
+      "k": 1,
+      "from": "#/t/hello",
+      "href": "#/",
+      "to": "#/",
+      "ok": true,
+      "ms": 151
+     },
+     {
+      "k": 2,
+      "from": "#/",
+      "href": "#/t/how",
+      "to": "#/t/how",
+      "ok": true,
+      "ms": 150
+     },
+     {
+      "k": 3,
+      "from": "#/t/how",
+      "href": "#/t/sprout",
+      "to": "#/t/sprout",
+      "ok": true,
+      "ms": 44
+     },
+     {
+      "k": 4,
+      "from": "#/t/sprout",
+      "href": "#/t/bloom",
+      "to": "#/t/bloom",
+      "ok": true,
+      "ms": 47
+     },
+     {
+      "k": 5,
+      "from": "#/t/bloom",
+      "href": "#/t/wilt",
+      "to": "#/t/wilt",
+      "ok": true,
+      "ms": 30
+     },
+     {
+      "k": 6,
+      "from": "#/t/wilt",
+      "href": "#/t/i/연예 기획사",
+      "to": "#/t/i/연예 기획사",
+      "ok": true,
+      "ms": 244
+     },
+     {
+      "k": 7,
+      "from": "#/t/i/연예 기획사",
+      "href": "#/t/i/연예 기획사/path",
+      "to": "#/t/i/연예 기획사/path",
+      "ok": true,
+      "ms": 33
+     },
+     {
+      "k": 8,
+      "from": "#/t/i/연예 기획사/path",
+      "href": "#/t/i/연예 기획사/spread",
+      "to": "#/t/i/연예 기획사/spread",
+      "ok": true,
+      "ms": 30
+     },
+     {
+      "k": 9,
+      "from": "#/t/i/연예 기획사/spread",
+      "href": "#/t/i/연예 기획사/big",
+      "to": "#/t/i/연예 기획사/big",
+      "ok": true,
+      "ms": 47
+     },
+     {
+      "k": 10,
+      "from": "#/t/i/연예 기획사/big",
+      "href": "#/t/i/연예 기획사/co",
+      "to": "#/t/i/연예 기획사/co",
+      "ok": true,
+      "ms": 46
+     },
+     {
+      "k": 11,
+      "from": "#/t/i/연예 기획사/co",
+      "href": "#/t/i/연예 기획사/near",
+      "to": "#/t/i/연예 기획사/near",
+      "ok": true,
+      "ms": 32
+     },
+     {
+      "k": 12,
+      "from": "#/t/i/연예 기획사/near",
+      "href": "#/t/c/352820",
+      "to": "#/t/c/352820",
+      "ok": true,
+      "ms": 29
+     },
+     {
+      "k": 13,
+      "from": "#/t/c/352820",
+      "href": "#/t/c/352820/lead",
+      "to": "#/t/c/352820/lead",
+      "ok": true,
+      "ms": 31
+     },
+     {
+      "k": 14,
+      "from": "#/t/c/352820/lead",
+      "href": "#/t/c/352820/why",
+      "to": "#/t/c/352820/why",
+      "ok": true,
+      "ms": 30
+     },
+     {
+      "k": 15,
+      "from": "#/t/c/352820/why",
+      "href": "#/t/c/352820/rank",
+      "to": "#/t/c/352820/rank",
+      "ok": true,
+      "ms": 45
+     },
+     {
+      "k": 16,
+      "from": "#/t/c/352820/rank",
+      "href": "#/t/c/352820/unknown",
+      "to": "#/t/c/352820/unknown",
+      "ok": true,
+      "ms": 29
+     },
+     {
+      "k": 17,
+      "from": "#/t/c/352820/unknown",
+      "href": "#/t/c/352820/keep",
+      "to": "#/t/c/352820/keep",
+      "ok": true,
+      "ms": 28
+     },
+     {
+      "k": 18,
+      "from": "#/t/c/352820/keep",
+      "href": "#/why/352820",
+      "to": "#/why/352820",
+      "ok": true,
+      "ms": 27
+     }
+    ],
+    "ok": true,
+    "end": "#/why/352820"
+   },
+   "routes": [
+    {
+     "route": "#/",
+     "title": "오늘 장 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1797
+    },
+    {
+     "route": "#/t/hello",
+     "title": "돌이 인사 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1147
+    },
+    {
+     "route": "#/t/how",
+     "title": "시계 읽는 법 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1085
+    },
+    {
+     "route": "#/t/sprout",
+     "title": "싹 자리 전부 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1390
+    },
+    {
+     "route": "#/t/bloom",
+     "title": "꽃 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1038
+    },
+    {
+     "route": "#/t/wilt",
+     "title": "시듦 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1077
+    },
+    {
+     "route": "#/t/today",
+     "title": "오늘 정리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1055
+    },
+    {
+     "route": "#/t/alert",
+     "title": "알림 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1059
+    },
+    {
+     "route": "#/t/i/연예 기획사",
+     "title": "연예 기획사 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1077
+    },
+    {
+     "route": "#/t/i/연예 기획사/path",
+     "title": "지나온 길 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1143
+    },
+    {
+     "route": "#/t/i/연예 기획사/spread",
+     "title": "번지는 중일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1079
+    },
+    {
+     "route": "#/t/i/연예 기획사/big",
+     "title": "큰 회사도 움직였을까 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1084
+    },
+    {
+     "route": "#/t/i/연예 기획사/co",
+     "title": "함께 움직인 회사 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1102
+    },
+    {
+     "route": "#/t/i/연예 기획사/near",
+     "title": "이웃 업종 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1650
+    },
+    {
+     "route": "#/t/c/352820",
+     "title": "하이브 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1122
+    },
+    {
+     "route": "#/t/c/352820/lead",
+     "title": "먼저일까 뒤따름일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1073
+    },
+    {
+     "route": "#/t/c/352820/why",
+     "title": "왜 그럴까? · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1060
+    },
+    {
+     "route": "#/t/c/352820/rank",
+     "title": "업종 안 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1058
+    },
+    {
+     "route": "#/t/c/352820/unknown",
+     "title": "아직 모르는 것 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1182
+    },
+    {
+     "route": "#/t/c/352820/keep",
+     "title": "관심 담기 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1120
+    }
+   ],
+   "shots": [
+    {
+     "name": "home",
+     "file": "iphone-se-home.png",
+     "bytes": 140038,
+     "scale": "device"
+    },
+    {
+     "name": "sprout",
+     "file": "iphone-se-sprout.png",
+     "bytes": 115300,
+     "scale": "device"
+    },
+    {
+     "name": "alert",
+     "file": "iphone-se-alert.png",
+     "bytes": 118045,
+     "scale": "device"
+    },
+    {
+     "name": "industry",
+     "file": "iphone-se-industry.png",
+     "bytes": 118777,
+     "scale": "device"
+    },
+    {
+     "name": "company",
+     "file": "iphone-se-company.png",
+     "bytes": 111326,
+     "scale": "device"
+    }
+   ],
+   "version": "26.0",
+   "ms": 32657
+  },
+  {
+   "name": "iPhone 13",
+   "engine": "webkit",
+   "ok": false,
+   "viewport": {
+    "width": 390,
+    "height": 664
+   },
+   "dpr": 3,
+   "touch": true,
+   "errors": [
+    {
+     "type": "console",
+     "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.",
+     "url": "/#/",
+     "routes": [
+      "#/",
+      "#/t/sprout",
+      "#/t/alert",
+      "#/t/i/연예 기획사",
+      "#/t/c/352820"
+     ],
+     "n": 5
+    }
+   ],
+   "overflow": [],
+   "small": [],
+   "tap": [],
+   "nextOne": [],
+   "nextChain": {
+    "steps": [
+     {
+      "k": 1,
+      "from": "#/t/hello",
+      "href": "#/",
+      "to": "#/",
+      "ok": true,
+      "ms": 135
+     },
+     {
+      "k": 2,
+      "from": "#/",
+      "href": "#/t/how",
+      "to": "#/t/how",
+      "ok": true,
+      "ms": 131
+     },
+     {
+      "k": 3,
+      "from": "#/t/how",
+      "href": "#/t/sprout",
+      "to": "#/t/sprout",
+      "ok": true,
+      "ms": 53
+     },
+     {
+      "k": 4,
+      "from": "#/t/sprout",
+      "href": "#/t/bloom",
+      "to": "#/t/bloom",
+      "ok": true,
+      "ms": 33
+     },
+     {
+      "k": 5,
+      "from": "#/t/bloom",
+      "href": "#/t/wilt",
+      "to": "#/t/wilt",
+      "ok": true,
+      "ms": 40
+     },
+     {
+      "k": 6,
+      "from": "#/t/wilt",
+      "href": "#/t/i/연예 기획사",
+      "to": "#/t/i/연예 기획사",
+      "ok": true,
+      "ms": 243
+     },
+     {
+      "k": 7,
+      "from": "#/t/i/연예 기획사",
+      "href": "#/t/i/연예 기획사/path",
+      "to": "#/t/i/연예 기획사/path",
+      "ok": true,
+      "ms": 31
+     },
+     {
+      "k": 8,
+      "from": "#/t/i/연예 기획사/path",
+      "href": "#/t/i/연예 기획사/spread",
+      "to": "#/t/i/연예 기획사/spread",
+      "ok": true,
+      "ms": 38
+     },
+     {
+      "k": 9,
+      "from": "#/t/i/연예 기획사/spread",
+      "href": "#/t/i/연예 기획사/big",
+      "to": "#/t/i/연예 기획사/big",
+      "ok": true,
+      "ms": 38
+     },
+     {
+      "k": 10,
+      "from": "#/t/i/연예 기획사/big",
+      "href": "#/t/i/연예 기획사/co",
+      "to": "#/t/i/연예 기획사/co",
+      "ok": true,
+      "ms": 39
+     },
+     {
+      "k": 11,
+      "from": "#/t/i/연예 기획사/co",
+      "href": "#/t/i/연예 기획사/near",
+      "to": "#/t/i/연예 기획사/near",
+      "ok": true,
+      "ms": 203
+     },
+     {
+      "k": 12,
+      "from": "#/t/i/연예 기획사/near",
+      "href": "#/t/c/352820",
+      "to": "#/t/c/352820",
+      "ok": true,
+      "ms": 41
+     },
+     {
+      "k": 13,
+      "from": "#/t/c/352820",
+      "href": "#/t/c/352820/lead",
+      "to": "#/t/c/352820/lead",
+      "ok": true,
+      "ms": 122
+     },
+     {
+      "k": 14,
+      "from": "#/t/c/352820/lead",
+      "href": "#/t/c/352820/why",
+      "to": "#/t/c/352820/why",
+      "ok": true,
+      "ms": 41
+     },
+     {
+      "k": 15,
+      "from": "#/t/c/352820/why",
+      "href": "#/t/c/352820/rank",
+      "to": "#/t/c/352820/rank",
+      "ok": true,
+      "ms": 42
+     },
+     {
+      "k": 16,
+      "from": "#/t/c/352820/rank",
+      "href": "#/t/c/352820/unknown",
+      "to": "#/t/c/352820/unknown",
+      "ok": true,
+      "ms": 43
+     },
+     {
+      "k": 17,
+      "from": "#/t/c/352820/unknown",
+      "href": "#/t/c/352820/keep",
+      "to": "#/t/c/352820/keep",
+      "ok": true,
+      "ms": 38
+     },
+     {
+      "k": 18,
+      "from": "#/t/c/352820/keep",
+      "href": "#/why/352820",
+      "to": "#/why/352820",
+      "ok": true,
+      "ms": 38
+     }
+    ],
+    "ok": true,
+    "end": "#/why/352820"
+   },
+   "routes": [
+    {
+     "route": "#/",
+     "title": "오늘 장 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1695
+    },
+    {
+     "route": "#/t/hello",
+     "title": "돌이 인사 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1007
+    },
+    {
+     "route": "#/t/how",
+     "title": "시계 읽는 법 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1090
+    },
+    {
+     "route": "#/t/sprout",
+     "title": "싹 자리 전부 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1127
+    },
+    {
+     "route": "#/t/bloom",
+     "title": "꽃 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1024
+    },
+    {
+     "route": "#/t/wilt",
+     "title": "시듦 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1020
+    },
+    {
+     "route": "#/t/today",
+     "title": "오늘 정리 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1136
+    },
+    {
+     "route": "#/t/alert",
+     "title": "알림 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1092
+    },
+    {
+     "route": "#/t/i/연예 기획사",
+     "title": "연예 기획사 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1090
+    },
+    {
+     "route": "#/t/i/연예 기획사/path",
+     "title": "지나온 길 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1054
+    },
+    {
+     "route": "#/t/i/연예 기획사/spread",
+     "title": "번지는 중일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1068
+    },
+    {
+     "route": "#/t/i/연예 기획사/big",
+     "title": "큰 회사도 움직였을까 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1052
+    },
+    {
+     "route": "#/t/i/연예 기획사/co",
+     "title": "함께 움직인 회사 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1170
+    },
+    {
+     "route": "#/t/i/연예 기획사/near",
+     "title": "이웃 업종 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1037
+    },
+    {
+     "route": "#/t/c/352820",
+     "title": "하이브 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1217
+    },
+    {
+     "route": "#/t/c/352820/lead",
+     "title": "먼저일까 뒤따름일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1041
+    },
+    {
+     "route": "#/t/c/352820/why",
+     "title": "왜 그럴까? · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1044
+    },
+    {
+     "route": "#/t/c/352820/rank",
+     "title": "업종 안 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1053
+    },
+    {
+     "route": "#/t/c/352820/unknown",
+     "title": "아직 모르는 것 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1035
+    },
+    {
+     "route": "#/t/c/352820/keep",
+     "title": "관심 담기 · 돌이",
+     "next": 1,
+     "scrollWidth": 390,
+     "innerWidth": 390,
+     "small": 0,
+     "tap": 0,
+     "ms": 1042
+    }
+   ],
+   "shots": [
+    {
+     "name": "home",
+     "file": "iphone-13-home.png",
+     "bytes": 329740,
+     "scale": "device"
+    },
+    {
+     "name": "sprout",
+     "file": "iphone-13-sprout.png",
+     "bytes": 209935,
+     "scale": "device"
+    },
+    {
+     "name": "alert",
+     "file": "iphone-13-alert.png",
+     "bytes": 211233,
+     "scale": "device"
+    },
+    {
+     "name": "industry",
+     "file": "iphone-13-industry.png",
+     "bytes": 227114,
+     "scale": "device"
+    },
+    {
+     "name": "company",
+     "file": "iphone-13-company.png",
+     "bytes": 214034,
+     "scale": "device"
+    }
+   ],
+   "version": "26.0",
+   "ms": 28638
+  },
+  {
+   "name": "Galaxy S9+",
+   "engine": "chromium",
+   "ok": true,
+   "viewport": {
+    "width": 320,
+    "height": 658
+   },
+   "dpr": 4.5,
+   "touch": true,
+   "errors": [],
+   "overflow": [],
+   "small": [],
+   "tap": [],
+   "nextOne": [],
+   "nextChain": {
+    "steps": [
+     {
+      "k": 1,
+      "from": "#/t/hello",
+      "href": "#/",
+      "to": "#/",
+      "ok": true,
+      "ms": 208
+     },
+     {
+      "k": 2,
+      "from": "#/",
+      "href": "#/t/how",
+      "to": "#/t/how",
+      "ok": true,
+      "ms": 136
+     },
+     {
+      "k": 3,
+      "from": "#/t/how",
+      "href": "#/t/sprout",
+      "to": "#/t/sprout",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 4,
+      "from": "#/t/sprout",
+      "href": "#/t/bloom",
+      "to": "#/t/bloom",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 5,
+      "from": "#/t/bloom",
+      "href": "#/t/wilt",
+      "to": "#/t/wilt",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 6,
+      "from": "#/t/wilt",
+      "href": "#/t/i/연예 기획사",
+      "to": "#/t/i/연예 기획사",
+      "ok": true,
+      "ms": 135
+     },
+     {
+      "k": 7,
+      "from": "#/t/i/연예 기획사",
+      "href": "#/t/i/연예 기획사/path",
+      "to": "#/t/i/연예 기획사/path",
+      "ok": true,
+      "ms": 135
+     },
+     {
+      "k": 8,
+      "from": "#/t/i/연예 기획사/path",
+      "href": "#/t/i/연예 기획사/spread",
+      "to": "#/t/i/연예 기획사/spread",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 9,
+      "from": "#/t/i/연예 기획사/spread",
+      "href": "#/t/i/연예 기획사/big",
+      "to": "#/t/i/연예 기획사/big",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 10,
+      "from": "#/t/i/연예 기획사/big",
+      "href": "#/t/i/연예 기획사/co",
+      "to": "#/t/i/연예 기획사/co",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 11,
+      "from": "#/t/i/연예 기획사/co",
+      "href": "#/t/i/연예 기획사/near",
+      "to": "#/t/i/연예 기획사/near",
+      "ok": true,
+      "ms": 135
+     },
+     {
+      "k": 12,
+      "from": "#/t/i/연예 기획사/near",
+      "href": "#/t/c/352820",
+      "to": "#/t/c/352820",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 13,
+      "from": "#/t/c/352820",
+      "href": "#/t/c/352820/lead",
+      "to": "#/t/c/352820/lead",
+      "ok": true,
+      "ms": 217
+     },
+     {
+      "k": 14,
+      "from": "#/t/c/352820/lead",
+      "href": "#/t/c/352820/why",
+      "to": "#/t/c/352820/why",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 15,
+      "from": "#/t/c/352820/why",
+      "href": "#/t/c/352820/rank",
+      "to": "#/t/c/352820/rank",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 16,
+      "from": "#/t/c/352820/rank",
+      "href": "#/t/c/352820/unknown",
+      "to": "#/t/c/352820/unknown",
+      "ok": true,
+      "ms": 167
+     },
+     {
+      "k": 17,
+      "from": "#/t/c/352820/unknown",
+      "href": "#/t/c/352820/keep",
+      "to": "#/t/c/352820/keep",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 18,
+      "from": "#/t/c/352820/keep",
+      "href": "#/why/352820",
+      "to": "#/why/352820",
+      "ok": true,
+      "ms": 118
+     }
+    ],
+    "ok": true,
+    "end": "#/why/352820"
+   },
+   "routes": [
+    {
+     "route": "#/",
+     "title": "오늘 장 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1679
+    },
+    {
+     "route": "#/t/hello",
+     "title": "돌이 인사 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1064
+    },
+    {
+     "route": "#/t/how",
+     "title": "시계 읽는 법 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1101
+    },
+    {
+     "route": "#/t/sprout",
+     "title": "싹 자리 전부 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1357
+    },
+    {
+     "route": "#/t/bloom",
+     "title": "꽃 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1459
+    },
+    {
+     "route": "#/t/wilt",
+     "title": "시듦 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1137
+    },
+    {
+     "route": "#/t/today",
+     "title": "오늘 정리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1180
+    },
+    {
+     "route": "#/t/alert",
+     "title": "알림 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1215
+    },
+    {
+     "route": "#/t/i/연예 기획사",
+     "title": "연예 기획사 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1164
+    },
+    {
+     "route": "#/t/i/연예 기획사/path",
+     "title": "지나온 길 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1237
+    },
+    {
+     "route": "#/t/i/연예 기획사/spread",
+     "title": "번지는 중일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1216
+    },
+    {
+     "route": "#/t/i/연예 기획사/big",
+     "title": "큰 회사도 움직였을까 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1317
+    },
+    {
+     "route": "#/t/i/연예 기획사/co",
+     "title": "함께 움직인 회사 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1101
+    },
+    {
+     "route": "#/t/i/연예 기획사/near",
+     "title": "이웃 업종 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1099
+    },
+    {
+     "route": "#/t/c/352820",
+     "title": "하이브 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1166
+    },
+    {
+     "route": "#/t/c/352820/lead",
+     "title": "먼저일까 뒤따름일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1017
+    },
+    {
+     "route": "#/t/c/352820/why",
+     "title": "왜 그럴까? · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1083
+    },
+    {
+     "route": "#/t/c/352820/rank",
+     "title": "업종 안 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1067
+    },
+    {
+     "route": "#/t/c/352820/unknown",
+     "title": "아직 모르는 것 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1084
+    },
+    {
+     "route": "#/t/c/352820/keep",
+     "title": "관심 담기 · 돌이",
+     "next": 1,
+     "scrollWidth": 320,
+     "innerWidth": 320,
+     "small": 0,
+     "tap": 0,
+     "ms": 1066
+    }
+   ],
+   "shots": [
+    {
+     "name": "home",
+     "file": "galaxy-s9plus-home.png",
+     "bytes": 367315,
+     "scale": "device"
+    },
+    {
+     "name": "sprout",
+     "file": "galaxy-s9plus-sprout.png",
+     "bytes": 282807,
+     "scale": "device"
+    },
+    {
+     "name": "alert",
+     "file": "galaxy-s9plus-alert.png",
+     "bytes": 272934,
+     "scale": "device"
+    },
+    {
+     "name": "industry",
+     "file": "galaxy-s9plus-industry.png",
+     "bytes": 269005,
+     "scale": "device"
+    },
+    {
+     "name": "company",
+     "file": "galaxy-s9plus-company.png",
+     "bytes": 262899,
+     "scale": "device"
+    }
+   ],
+   "version": "141.0.7390.37",
+   "ms": 31319
+  },
+  {
+   "name": "Pixel 7",
+   "engine": "chromium",
+   "ok": true,
+   "viewport": {
+    "width": 412,
+    "height": 839
+   },
+   "dpr": 2.625,
+   "touch": true,
+   "errors": [],
+   "overflow": [],
+   "small": [],
+   "tap": [],
+   "nextOne": [],
+   "nextChain": {
+    "steps": [
+     {
+      "k": 1,
+      "from": "#/t/hello",
+      "href": "#/",
+      "to": "#/",
+      "ok": true,
+      "ms": 124
+     },
+     {
+      "k": 2,
+      "from": "#/",
+      "href": "#/t/how",
+      "to": "#/t/how",
+      "ok": true,
+      "ms": 137
+     },
+     {
+      "k": 3,
+      "from": "#/t/how",
+      "href": "#/t/sprout",
+      "to": "#/t/sprout",
+      "ok": true,
+      "ms": 135
+     },
+     {
+      "k": 4,
+      "from": "#/t/sprout",
+      "href": "#/t/bloom",
+      "to": "#/t/bloom",
+      "ok": true,
+      "ms": 135
+     },
+     {
+      "k": 5,
+      "from": "#/t/bloom",
+      "href": "#/t/wilt",
+      "to": "#/t/wilt",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 6,
+      "from": "#/t/wilt",
+      "href": "#/t/i/연예 기획사",
+      "to": "#/t/i/연예 기획사",
+      "ok": true,
+      "ms": 217
+     },
+     {
+      "k": 7,
+      "from": "#/t/i/연예 기획사",
+      "href": "#/t/i/연예 기획사/path",
+      "to": "#/t/i/연예 기획사/path",
+      "ok": true,
+      "ms": 219
+     },
+     {
+      "k": 8,
+      "from": "#/t/i/연예 기획사/path",
+      "href": "#/t/i/연예 기획사/spread",
+      "to": "#/t/i/연예 기획사/spread",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 9,
+      "from": "#/t/i/연예 기획사/spread",
+      "href": "#/t/i/연예 기획사/big",
+      "to": "#/t/i/연예 기획사/big",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 10,
+      "from": "#/t/i/연예 기획사/big",
+      "href": "#/t/i/연예 기획사/co",
+      "to": "#/t/i/연예 기획사/co",
+      "ok": true,
+      "ms": 132
+     },
+     {
+      "k": 11,
+      "from": "#/t/i/연예 기획사/co",
+      "href": "#/t/i/연예 기획사/near",
+      "to": "#/t/i/연예 기획사/near",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 12,
+      "from": "#/t/i/연예 기획사/near",
+      "href": "#/t/c/352820",
+      "to": "#/t/c/352820",
+      "ok": true,
+      "ms": 136
+     },
+     {
+      "k": 13,
+      "from": "#/t/c/352820",
+      "href": "#/t/c/352820/lead",
+      "to": "#/t/c/352820/lead",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 14,
+      "from": "#/t/c/352820/lead",
+      "href": "#/t/c/352820/why",
+      "to": "#/t/c/352820/why",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 15,
+      "from": "#/t/c/352820/why",
+      "href": "#/t/c/352820/rank",
+      "to": "#/t/c/352820/rank",
+      "ok": true,
+      "ms": 136
+     },
+     {
+      "k": 16,
+      "from": "#/t/c/352820/rank",
+      "href": "#/t/c/352820/unknown",
+      "to": "#/t/c/352820/unknown",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 17,
+      "from": "#/t/c/352820/unknown",
+      "href": "#/t/c/352820/keep",
+      "to": "#/t/c/352820/keep",
+      "ok": true,
+      "ms": 133
+     },
+     {
+      "k": 18,
+      "from": "#/t/c/352820/keep",
+      "href": "#/why/352820",
+      "to": "#/why/352820",
+      "ok": true,
+      "ms": 33
+     }
+    ],
+    "ok": true,
+    "end": "#/why/352820"
+   },
+   "routes": [
+    {
+     "route": "#/",
+     "title": "오늘 장 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1631
+    },
+    {
+     "route": "#/t/hello",
+     "title": "돌이 인사 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1054
+    },
+    {
+     "route": "#/t/how",
+     "title": "시계 읽는 법 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1100
+    },
+    {
+     "route": "#/t/sprout",
+     "title": "싹 자리 전부 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1099
+    },
+    {
+     "route": "#/t/bloom",
+     "title": "꽃 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1120
+    },
+    {
+     "route": "#/t/wilt",
+     "title": "시듦 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1047
+    },
+    {
+     "route": "#/t/today",
+     "title": "오늘 정리 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1150
+    },
+    {
+     "route": "#/t/alert",
+     "title": "알림 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1133
+    },
+    {
+     "route": "#/t/i/연예 기획사",
+     "title": "연예 기획사 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1132
+    },
+    {
+     "route": "#/t/i/연예 기획사/path",
+     "title": "지나온 길 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1152
+    },
+    {
+     "route": "#/t/i/연예 기획사/spread",
+     "title": "번지는 중일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1166
+    },
+    {
+     "route": "#/t/i/연예 기획사/big",
+     "title": "큰 회사도 움직였을까 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1100
+    },
+    {
+     "route": "#/t/i/연예 기획사/co",
+     "title": "함께 움직인 회사 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1050
+    },
+    {
+     "route": "#/t/i/연예 기획사/near",
+     "title": "이웃 업종 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1118
+    },
+    {
+     "route": "#/t/c/352820",
+     "title": "하이브 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1161
+    },
+    {
+     "route": "#/t/c/352820/lead",
+     "title": "먼저일까 뒤따름일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1088
+    },
+    {
+     "route": "#/t/c/352820/why",
+     "title": "왜 그럴까? · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1100
+    },
+    {
+     "route": "#/t/c/352820/rank",
+     "title": "업종 안 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1050
+    },
+    {
+     "route": "#/t/c/352820/unknown",
+     "title": "아직 모르는 것 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1083
+    },
+    {
+     "route": "#/t/c/352820/keep",
+     "title": "관심 담기 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1083
+    }
+   ],
+   "shots": [
+    {
+     "name": "home",
+     "file": "pixel-7-home.png",
+     "bytes": 300313,
+     "scale": "device"
+    },
+    {
+     "name": "sprout",
+     "file": "pixel-7-sprout.png",
+     "bytes": 202705,
+     "scale": "device"
+    },
+    {
+     "name": "alert",
+     "file": "pixel-7-alert.png",
+     "bytes": 194204,
+     "scale": "device"
+    },
+    {
+     "name": "industry",
+     "file": "pixel-7-industry.png",
+     "bytes": 192056,
+     "scale": "device"
+    },
+    {
+     "name": "company",
+     "file": "pixel-7-company.png",
+     "bytes": 174215,
+     "scale": "device"
+    }
+   ],
+   "version": "141.0.7390.37",
+   "ms": 29864
+  }
+ ],
+ "ok": false,
+ "ms": 123017,
+ "shotBytes": 4313995
+}
