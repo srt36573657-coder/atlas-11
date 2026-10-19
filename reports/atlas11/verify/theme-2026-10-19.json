@@ -1,0 +1,64 @@
+{
+ "schema": "atlas11-verify-1",
+ "what": "테마 시계 셈 따로 세기(지도 규칙 6 — 다른 일꾼이 결정표만 보고 따로 셈 · 틀림 0 일 때만 씀)",
+ "made": "2026-10-19T19:10+08:00",
+ "table": "docs/design/theme-2026-10-19/theme-engine.md",
+ "runs": [
+  {
+   "table": "v1",
+   "asOf": "2026-10-13",
+   "industries": 77,
+   "mismatches": 0,
+   "record": {
+    "all": [
+     59983,
+     15.9
+    ],
+    "sprout": [
+     20646,
+     15.2
+    ],
+    "real": [
+     2026,
+     22.0
+    ]
+   }
+  },
+  {
+   "table": "v1.1",
+   "asOf": "2026-10-13",
+   "industries": 77,
+   "mismatches": 0,
+   "record": {
+    "all": [
+     59983,
+     15.9
+    ],
+    "sprout": [
+     20646,
+     15.2
+    ],
+    "real": [
+     2025,
+     22.0
+    ],
+    "halves": {
+     "all": [
+      14.3,
+      17.4
+     ],
+     "real": [
+      20.0,
+      23.5
+     ]
+    }
+   },
+   "changes": "② 2% 넘게를 정수 곱으로 · 튄 회사(하루 |r| ≥ 0.35)를 회사 셈에서 뺌 — 따로 센 일꾼이 v1 에서 짚은 두 곳"
+  }
+ ],
+ "tools": [
+  "scripts/atlas11/next/theme/verify_theme.py",
+  "scripts/atlas11/next/theme/compare_theme.py"
+ ],
+ "compared": "업종마다 회원 수 · 자리 · x · y · 며칠째 · 꼬리 여섯 · 점 넷 · 점 수 · 번짐 줄 열하나 · 지금 · 닷새 전 · 가장 많을 때 · 셀 회사 수 · 큰 회사 셋(번호 · 평균 · 열흘) · 함께 움직인 8곳(번호 · 열흘 · 수) · 싹 차례 · 성적표(모든 날 · 싹 · 진짜 싹 · 점 수 0 ~ 4 · 두 절반)"
+}

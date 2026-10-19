@@ -126,6 +126,9 @@ const knownHref = h => {
   if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
   if (h === '#/admin' || h === '#/game') return true; // 가짜 돈 연습(2026-10-19 15:04) // 관리자 화면(사장님 열쇠 기기 보유종목 바로 가기 · 2026-10-19 13:54)
+  if ((mm = /^#\/t\/(hello|how|sprout|bloom|wilt|today)$/.exec(h))) return true; // 테마 시계 쪽(사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js — check_theme 이 쪽마다 맞대 봄)
+  if ((mm = /^#\/t\/i\/([^/]+)(?:\/(?:path|spread|big|co|near))?$/.exec(h))) { let nm = mm[1]; try { nm = decodeURIComponent(nm); } catch { return false; } return (core.industries ?? []).some(i => i.name === nm); } // 업종 여섯 쪽 — 업종 이름이 자료에 있어야
+  if ((mm = /^#\/t\/c\/([0-9A-Z]{6})(?:\/(?:lead|why|rank|unknown|keep))?$/.exec(h))) return !!CO[mm[1]]; // 회사 여섯 쪽
   if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)
   if ((mm = /^#\/why\/([0-9A-Z]{6})$/.exec(h))) return READY.has('why') && !!CO[mm[1]]; // 「이 회사로 왜 사?」(회사 화면 a.why-go · 보유종목 「이 회사로 왜 사? 적기」 — [3] 2)
@@ -200,7 +203,7 @@ for (const w of [320, 360, 390]) {
      옛 잣대 → 새 자리: 칩 줄 「달력」 「조건 찾기」 → 바로 가기 · 이야기 입구 → 전부 보기 줄 · 질문 칸(section.wy) → 찾기 칸(회사를 치면 #/why/<번호>) · 칸 자리(section.gdr) → 바로 가기 + #/gdr · 칩 줄 끝 흐림(마스크) → 칩 줄이 없어 뺌 */
   /* 돌 판 첫 화면(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3/home · 규칙 82) — 큰 제목 + 돌 그림 → 돌이 물음 → 읽는 곳 셋(① 본질 카드 ② 오늘 장 한 줄 + 시황 사실 ③ 한 달 된 기록 금빛 줄 또는 「한 달 뒤 물어볼게요」)
      → 엄지 자리(찾기 칸 · 바로 가기 넷 · 전부 보기) → 진화 한 줄 · 차례는 #view 안 칸을 문서 차례로 셈(칸이 읽는 곳 · 엄지 자리 안에 듦) · 안전 글은 본질 세 줄 안 */
-  const HOME_ORDER = ['div.s-hd', 'div.w-say', 'section.ess', 'a.hm-band', 'section.w-news', 'a.w-month', 'a.s-ghost', 'form.w-find', 'nav.w-go4', 'details.w-all', 'a.s-evo'];
+  const HOME_ORDER = ['div.s-hd', 'div.w-say', 'section.th-home', 'section.ess', 'a.hm-band', 'section.w-news', 'a.w-month', 'a.s-ghost', 'form.w-find', 'nav.w-go4', 'details.w-all', 'a.s-evo'];
   const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk'), '#/game']; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
   const g = await q.evaluate(ord => {
     const kids = [...document.querySelectorAll('#view *')].filter(e => ord.some(s => e.matches(s)) && !e.closest('.w-allin')), gd = document.querySelector('#view section.gdr');
@@ -218,7 +221,7 @@ for (const w of [320, 360, 390]) {
       tk: document.querySelectorAll('#view > a.tk-entry, #view > .chips').length};
   }, HOME_ORDER);
   const ordWant = HOME_ORDER.filter(s => !['a.w-month', 'a.s-ghost'].includes(s) || g.order.includes(s)); // 한 달 된 기록 줄이나 「한 달 뒤」 줄 가운데 하나
-  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(돌 판 — 큰 제목 → 돌이 물음 → 본질 카드 → 오늘 장 → 시황 사실 → 한 달 뒤 → 찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화)', g.order.join(' → '));
+  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(돌 판 — 큰 제목 → 돌이 물음 → 테마 시계 → 본질 카드 → 오늘 장 → 시황 사실 → 한 달 뒤 → 찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화)', g.order.join(' → '));
   for (const k of ['ess', 'find', 'today', 'gdr', 'all', 'news']) if (!g.blocks.includes(k)) fail('첫 화면 칸 [data-w="' + k + '"]', g.blocks.join(' · '));
   if (g.tk) fail('첫 화면에 칩 줄 · 이야기 입구 띠가 남음(흰 첫 화면 — 전부 보기 안으로)', String(g.tk));
   /* 본질 세 줄(사장님 2026-10-18 16:39 [5] 1 ~ 3 · 5 · 8 · 일꾼 KC) — 처음 온 기기(새 칸 q)는 펼침 · 글 = essence.js 셈(요약이 새것일 때만 숫자 · 아니면 「?」) · 칸 안 날짜는 받은 때 하나까지(띠 날짜와 따로 셈)

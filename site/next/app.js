@@ -559,8 +559,10 @@ async function vHomeAll() {
   band.el.setAttribute('data-w', 'today'); band.el.setAttribute('data-num', ''); band.el.classList.add('w-today');
   const kk = h('button', {class: 'kk-btn w-kk', type: 'button', 'aria-label': NAME + ' 주소를 카톡으로 친구에게 보내기'}, icon('share')); // 이 곳 주소만(종목 · 숫자 · 답 없음) — 휴대폰 보내기 창(카톡이 그 안에)
   kk.addEventListener('click', () => share(NAME, absUrl('#/')));
-  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '왜 사?'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 150, height: 120, decoding: 'async'}));
-  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '첫 질문을 해 볼까?'})), kk);
+  // 테마 시계(사장님 2026-10-19 16:06 「이 본질이 중심이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」) — 맨 위 = 테마 시계(p-theme.js homeBlock · 견본 flow36 둘째 장) · 그 아래 읽는 곳 셋 · 엄지 자리 · 진화는 그대로
+  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '테마 시계'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 150, height: 120, decoding: 'async'}));
+  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '지금 몇 시 자리일까?'})), kk);
+  const theme = await mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); return m.homeBlock(); }).catch(() => h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
   const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
   const month = await monthLine(C);
   const ess = essCard(essenceBox(false), C); // 멈춤 · 약속 수(w-cnt)는 ③ 줄로 옮김(한 화면에 들게)
@@ -569,7 +571,7 @@ async function vHomeAll() {
     ch(2, h('p', {class: 's-lbl'}, h('span', {class: 't', text: '지난 기록'})), band.el, newsBox(H)),
     ch(3, month ?? h('a', {class: 's-ghost', href: '#/why'}, h('span', {text: '한 달 뒤 물어볼게요'})), h('div', {class: 's-mem'}, ess.querySelector('.w-cnt'), h('span', {class: 's-dev', text: '이 기기에만'}))));
   const thumb = h('div', {class: 's-thumb'}, findBox(), go4((C?.stop ?? 0) > 0), allBox(H, band)); // 엄지 자리 — 아래 단추 바로 위에 붙어 있음(stone.css sticky · 펼치면 풀림)
-  const nodes = [hd, say, story, thumb, evoLine()]; // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
+  const nodes = [hd, say, theme, story, thumb, evoLine()]; // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
   return {title: '오늘 장', nodes};
 }
 
@@ -656,7 +658,7 @@ function shelf(fs) {
 async function vHome(chip) {
   if (!chipPage(chip)) chip = 'all';
   // 첫 줄 자료([9] 7): 첫 화면 = home.json(7KB) + 요약(home-summary.json · 3KB)만 · 「더 보기」도 요약으로(옛것이면 core 하나) · mkt · cond 는 대장주 · 고른 곳 칩(vChip) · 그 화면을 열 때만 · 요약이 없거나 옛것이어도 첫 화면은 home.json 으로 그림
-  if (chip === 'all') { await Promise.all([need('home'), need('sum')]); return vHomeAll(); } // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll)
+  if (chip === 'all') { await Promise.all([need('home'), need('sum'), mod('theme').then(m => m.themeData()).catch(() => null)]); return vHomeAll(); } // 테마 시계 자료(/next/data/theme.json)도 같이 받음 — 첫 화면은 mkt · cond 를 받지 않음([9] 7) // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll)
   return vChip(chip);
 }
 /** 칩 쪽(#/f/…) — 칩마다 제 자료만 받음 · 맨 앞 하나만 큰 카드 + 한 줄 목록 10줄 + 「나머지 n곳 보기」([7] 5) · 급등은 반값 한 줄([6] 6) · 「1등」 말 · 보내기 없음([6] 5) */
@@ -1085,6 +1087,7 @@ globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, day
   findMatch, findReady, shareBox, laterBtn, isLater, toggleLater}; // findMatch · findReady = 찾기 잣대(매매일지 종목 고르기) · shareBox = 보내기 글상자(옛 share 대신) · laterBtn = 회사 관심 담기 단추
 /* 길 — 화면마다 새 칸 · 늦게 끝난 앞 화면은 버림 · 돌아오면 그 자리 */
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
+VIEWS.t = a => page('theme', a); // 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js)
 VIEWS.game = a => page('game', a); // 가짜 돈 연습(사장님 2026-10-19 15:02 · 15:04 「일단해」 · p-game.js — PUBLIC 전에는 사장님 열쇠 기기만)
 VIEWS.admin = a => page('admin', a); // 관리자 화면(사장님 2026-10-19 13:54 「관리자 페이지도 있어야 해」 · 사장님 열쇠 기기만 · p-admin.js)
 VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 진화 쪽 길(사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」 · 일꾼 KM) — 모든 기기가 엶 · 단추는 p-jinhwa 가 사장님 열쇠 기기에서만 그림 · 합계 칸 참고 「연 수」 쪽마다 한 번(일꾼 KD)
@@ -1113,6 +1116,13 @@ function fontsLater() {
 }
 // 첫 화면이 아닌 쪽으로 바로 열면 글꼴 표를 곧바로 붙임(옛 꼴 그대로 — 그린 뒤 글꼴이 바뀌어 보던 자리가 밀리지 않게 · 모든 쪽 검사 2026-10-19 03:40 보내기 검사)
 if (parse(location.hash || '#/').k !== '') { fontsOn = true; fontsAdd(); }
+/* 서른여섯 장 흐름(사장님 2026-10-19 16:46 「클릭을 하면 물 흐르듯 … 다음다음다음이 제대로 이어지게」 · 견본 flow36) — 테마 쪽(#/t/…)은 p-theme.js 가 「다음」을 그림 ·
+   있는 쪽은 여기서 맨 아래에 「다음」 한 줄만 더함(그 쪽 칸 · 차례는 그대로) · 질문 중(#/why/<번호>) · 시황(#/shorts · 한 화면 넘김)은 더하지 않음 */
+const FLOW_NEXT = {sub: ['매매일지', '#/why'], why: ['보유종목', '#/me'], me: ['가짜 돈 연습', '#/game'], game: ['진화', '#/jinhwa'], jinhwa: ['오늘 정리', '#/t/today']};
+function flowFoot(k, a, root, my) {
+  const n = a ? null : FLOW_NEXT[k]; if (!n) return;
+  mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); if (my === seq && root.isConnected && !root.querySelector('.th-foot')) root.append(h('nav', {class: 'th-foot', 'aria-label': '다음 쪽'}, m.nextBtn(n[0], n[1]))); }).catch(() => {});
+}
 let seq = 0, curHash = null;
 const scrollMem = new Map();
 function parse(hash) {
@@ -1140,6 +1150,7 @@ async function route(force) {
   for (const t of document.querySelectorAll('.tabs a, #jhBtn')) t.removeAttribute('aria-current');
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (TABS[k]) $('.tabs a[data-tab="' + TABS[k] + '"]')?.setAttribute('aria-current', 'page');
+  if (k === 't') $('.tabs a[data-tab="home"]')?.setAttribute('aria-current', 'page'); // 테마 쪽은 첫 단추 칸(창 제목은 그 쪽 이름 그대로)
   root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'}));
   let out;
   try { out = await view(a); }
@@ -1148,7 +1159,8 @@ async function route(force) {
   whiteFor(k);
   root.replaceChildren(...out.nodes);
   stoneArt(k, a, root);
-  if (k === 'why' && !a) mod('admin').then(m => { if (my === seq && root.isConnected && !root.querySelector('.cp-card')) root.append(m.couponCard()); }).catch(() => {}); // 커피 쿠폰 칸 — 매매일지 쪽 맨 아래(위 칸을 밀지 않음 · 2026-10-19 13:54)
+  const cp = k === 'why' && !a ? mod('admin').then(m => { if (my === seq && root.isConnected && !root.querySelector('.cp-card')) root.append(m.couponCard()); }).catch(() => {}) : Promise.resolve(); // 커피 쿠폰 칸 — 매매일지 쪽 맨 아래(위 칸을 밀지 않음 · 2026-10-19 13:54)
+  cp.then(() => flowFoot(k, a, root, my)); // 서른여섯 장 흐름 — 있는 쪽 맨 아래 「다음」 한 줄(쿠폰 칸 뒤)
   fontsLater();
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
   const tabName = k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름
