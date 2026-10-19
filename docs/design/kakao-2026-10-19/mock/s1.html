@@ -114,14 +114,14 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .plate .rule{margin:14px auto 12px}
 
 /* s1 · 「똑똑한 한 줄」 — 판화 이름판 바로 밑에 오늘 장을 한 줄로: 날짜 알약(지수 둘) → 오른 곳 : 내린 곳 막대 하나(곳 수 그대로의 비율 · 평평한 두 색) → 사실마다 「왜 그럴까?」 · 꽃돌이 물음은 그 사실에서 나옴 */
-.read{margin-top:14px;border-top:1px solid #3A3A3A;padding-top:12px}
-.read .pill{justify-content:space-between;align-items:center;margin:0 0 8px}
+.read{margin-top:10px}
+.read .pill{justify-content:flex-start;align-items:center;margin:0}
 .read .pill .in{background:none}
 .read .pill a{padding:11px 0 9px;column-gap:10px}
 .news{margin-top:0}
-.read .news h2{display:block;font-weight:400;font-size:17px;color:#BDBDBD;margin:0 0 6px;text-align:left}
+.read .news h2{display:block;font-weight:400;font-size:17px;color:#BDBDBD;margin:0 0 4px;line-height:1.3;text-align:left}
 .read .cap{font-size:17px;color:#BDBDBD;white-space:nowrap}
-.split{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:8px}
+.split{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:6px}
 .split .f{display:contents}
 .split .f>span[data-num]{display:flex;align-items:baseline;gap:6px;grid-row:1}
 .split .fu>span[data-num]{grid-column:1}
@@ -138,8 +138,14 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .split .qs{display:none;grid-column:1/3;font-size:17px;color:#D6D6D6}
 .split .fu .qs{grid-row:4}.split .fd .qs{grid-row:5}
 .split .f.open .qs{display:block}
-.read+.from{margin-top:16px}
-.from .say{font-size:20px;border-radius:10px 26px 26px 26px;padding:11px 20px}
+.read+.from{margin-top:12px}
+.read+.from .who{margin-bottom:2px}
+.read~.gdr{margin-top:10px}
+.read~.all{margin-top:2px}
+.plate .head{height:104px}
+.plate p[data-ess="1"]{line-height:1.6}
+.plate .rule{margin:12px auto 10px}
+.from .say{font-size:20px;line-height:1.4;border-radius:10px 26px 26px 26px;padding:10px 18px;white-space:nowrap}
 .mine{margin-top:24px}
 
 @media (max-width:359px){
@@ -159,8 +165,9 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   .plate .foot{margin-top:12px}
   .gdr,.news ul{margin-left:0}
   .split .v{font-size:26px}
+  .from .say{white-space:normal;font-size:19px}
   .split button{padding:0 12px}
-  .read .pill a{column-gap:8px}
+  .read .pill a{column-gap:8px;justify-content:flex-start}
   .gdr a{font-size:17px}
   .ttl::after{margin-left:-.18em}
   .tabs a{letter-spacing:-0.07em}
@@ -230,7 +237,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
     <span class="av"><img src="../../../../site/media/makbi-icon.svg" alt=""></span>
     <div>
       <div class="who">꽃돌이</div>
-      <p class="say serif" data-say>내린 곳이 두 배 넘는 날, 꼭 오늘 사야 할까?</p>
+      <p class="say serif" data-say>내린 곳이 두 배 넘는데 살까?</p>
     </div>
   </div>
   <nav class="gdr" data-w="gdr" aria-label="꽃돌이 칸">
