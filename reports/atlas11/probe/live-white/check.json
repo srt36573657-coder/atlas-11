@@ -1,21 +1,28 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-19T04:13:42.975Z",
+ "at": "2026-10-19T11:17:30.329Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 415,
-  "fail": 0
+  "pass": 419,
+  "fail": 6
  },
- "fails": [],
+ "fails": [
+  "다른 쪽 #/f/lead 320 바탕 #080808 — 바탕 #FFFFFF",
+  "다른 쪽 #/f/lead 320 누르는 크기 48 — a. 53×16 「Netlify」",
+  "다른 쪽 #/f/lead 320 망치는 길 그림 0 — 그림자 div.card",
+  "다른 쪽 #/x/005935 320 바탕 #080808 — 바탕 #FFFFFF",
+  "다른 쪽 #/x/005935 320 누르는 크기 48 — a. 53×16 「Netlify」",
+  "다른 쪽 #/x/005935 320 망치는 길 그림 0 — 그림자 div.card"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0024282158683907,
-   "chars": 168,
+   "chars": 169,
    "blocks": {
-    "ess": 420,
+    "ess": 1630,
     "find": 728,
-    "today": 512,
+    "today": 1722,
     "gdr": 776,
     "all": 776
    },
@@ -26,7 +33,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "첫 질문을 해 볼까?"
+    "지금 몇 시 자리일까?"
    ],
    "numQ": [],
    "tabs": [
@@ -43,6 +50,11 @@
     true,
     true
    ],
+   "themeChars": 157,
+   "theme": {
+    "top": 232,
+    "clockBottom": 547
+   },
    "bodyHex": "#080808",
    "inkHex": "#FFFFFF",
    "findInput": true,
@@ -59,13 +71,13 @@
   },
   "back": {
    "bodyLum": 0.0024282158683907,
-   "chars": 104,
+   "chars": 105,
    "blocks": {
-    "ess": 297,
-    "find": 684,
-    "today": 389,
-    "gdr": 732,
-    "all": 732
+    "ess": 1479,
+    "find": 728,
+    "today": 1571,
+    "gdr": 776,
+    "all": 776
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -74,7 +86,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "첫 질문을 해 볼까?"
+    "지금 몇 시 자리일까?"
    ],
    "numQ": [],
    "tabs": [
@@ -91,6 +103,11 @@
     true,
     true
    ],
+   "themeChars": 157,
+   "theme": {
+    "top": 232,
+    "clockBottom": 547
+   },
    "bodyHex": "#080808",
    "inkHex": "#FFFFFF",
    "findInput": true,
@@ -404,22 +421,22 @@
    "#/f/lead 320": {
     "low": 0,
     "ui": 0,
-    "small": 0,
-    "ruin": 0
+    "small": 1,
+    "ruin": 1
    },
    "#/x/005935 320": {
     "low": 0,
     "ui": 0,
-    "small": 0,
-    "ruin": 0
+    "small": 1,
+    "ruin": 1
    }
   },
   "speed": {
-   "lcp": 1160,
+   "lcp": 1040,
    "inp": 24,
-   "cls": 0.006
+   "cls": 0.088
   }
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
