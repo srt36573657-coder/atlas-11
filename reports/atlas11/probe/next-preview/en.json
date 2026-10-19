@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-19T02:44:46.235Z",
+ "at": "2026-10-19T02:50:29.851Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -17,22 +17,22 @@
   "past": true,
   "rivals": true,
   "grow": true,
-  "surge": true,
-  "cal": true,
   "range": true,
-  "cond": true,
+  "cal": true,
+  "surge": true,
   "talk": true,
   "up": true,
+  "cond": true,
   "time": true,
   "info": true,
   "x": true,
   "co": true,
   "chx": true,
-  "today": true,
   "why": true,
   "gdr": true,
   "share": true,
-  "hold": true
+  "hold": true,
+  "today": true
  },
  "edge": true,
  "only": null,
@@ -48,7 +48,7 @@
   }
  },
  "seconds": 271,
- "secondsSum": 2379,
+ "secondsSum": 2359,
  "shards": [
   {
    "shard": "1/9",
@@ -57,10 +57,10 @@
    "routes": 1501,
    "screens": 1502,
    "mine": 1501,
-   "seconds": 271,
+   "seconds": 261,
    "secs": {
     "open": 0.2,
-    "routes": 269.6
+    "routes": 259.1
    }
   },
   {
@@ -70,10 +70,10 @@
    "routes": 1501,
    "screens": 1501,
    "mine": 1501,
-   "seconds": 261,
+   "seconds": 254,
    "secs": {
     "open": 0.2,
-    "routes": 259.9
+    "routes": 253.3
    }
   },
   {
@@ -83,10 +83,10 @@
    "routes": 1501,
    "screens": 1501,
    "mine": 1501,
-   "seconds": 262,
+   "seconds": 264,
    "secs": {
-    "open": 0.3,
-    "routes": 261.2
+    "open": 0.2,
+    "routes": 263.3
    }
   },
   {
@@ -96,10 +96,10 @@
    "routes": 1501,
    "screens": 1501,
    "mine": 1501,
-   "seconds": 267,
+   "seconds": 258,
    "secs": {
-    "open": 0.4,
-    "routes": 264.7
+    "open": 0.2,
+    "routes": 256.1
    }
   },
   {
@@ -112,7 +112,7 @@
    "seconds": 263,
    "secs": {
     "open": 0.2,
-    "routes": 261.9
+    "routes": 262.1
    }
   },
   {
@@ -122,10 +122,10 @@
    "routes": 1500,
    "screens": 1500,
    "mine": 1500,
-   "seconds": 267,
+   "seconds": 255,
    "secs": {
-    "open": 0.3,
-    "routes": 265.3
+    "open": 0.2,
+    "routes": 254.7
    }
   },
   {
@@ -135,10 +135,10 @@
    "routes": 1500,
    "screens": 1539,
    "mine": 1500,
-   "seconds": 267,
+   "seconds": 269,
    "secs": {
     "open": 0.2,
-    "routes": 266.4
+    "routes": 268.4
    }
   },
   {
@@ -148,11 +148,11 @@
    "routes": 1486,
    "screens": 1508,
    "mine": 1487,
-   "seconds": 257,
+   "seconds": 264,
    "secs": {
     "open": 0.2,
-    "routes": 254.4,
-    "newwin": 1.6
+    "routes": 260.8,
+    "newwin": 1.9
    }
   },
   {
@@ -162,12 +162,12 @@
    "routes": 1427,
    "screens": 1585,
    "mine": 1422,
-   "seconds": 264,
+   "seconds": 271,
    "secs": {
     "open": 0.3,
-    "routes": 250.2,
-    "act": 6.8,
-    "edge": 4.7,
+    "routes": 256.6,
+    "act": 7.4,
+    "edge": 5.1,
     "grammar": 0
    }
   }
