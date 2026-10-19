@@ -1,6 +1,6 @@
 {
   "schema": "godori-kakao-config-1",
-  "on": true,
+  "on": false,
   "switches": "스위치 둘(사장님 2026-10-18 16:39 「진화가 본질인 명령문」 [7] 1 · 2 · 일꾼 KB1) — \"on\" = 가입 스위치(옛 이름 그대로 · 서버 lib/atlas11/kakao.mjs · 올리기 scripts/atlas11/deploy_netlify.mjs 가 봄 · 화면 site/next/kakao.js SWITCH · 편지 쪽 site/letter.js KAKAO_ON 과 늘 같음 · 지금 꺼짐) · \"share\" = 공유 스위치(카톡 그림 카드 보내기만 · 가입과 따로 · 따로 켜는 값 없음 — 아래 share.from 파일의 세 칸이 다 차면 켜짐)",
   "share": {
     "from": "config/atlas11/invite.json",

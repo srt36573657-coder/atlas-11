@@ -21,7 +21,7 @@
 import {NAME_EN} from './brand.js';
 import {tally} from './tally.js'; // 합계 칸 참고 신호(사장님 2026-10-18 16:39 [10] · 일꾼 KD) — 카카오 가입을 마친 때 한 번 tally('signup') · 몸은 {k} 하나(일꾼 KI)
 
-export const SWITCH = true; // 가입 스위치 — 열쇠가 생겨 사장님이 켜라고 하실 때만 true (config/atlas11/kakao.json "on" 과 늘 같아야 함)
+export const SWITCH = false; // 가입 스위치 — 열쇠가 생겨 사장님이 켜라고 하실 때만 true (config/atlas11/kakao.json "on" 과 늘 같아야 함)
 export const KEYS = Object.freeze(['atlas:godori-why', 'atlas:new:sub', 'atlas:new:later', 'atlas:godori-hold']);
 export const NEVER = 'atlas:godori-money';
 export const FLAG_MEMBER = 'atlas:kakao:member', FLAG_OFFERED = 'atlas:kakao:offered', BASE = 'atlas:kakao:base', SS_STATUS = 'atlas:kakao:status', SS_SILENT = 'atlas:kakao:silent';
