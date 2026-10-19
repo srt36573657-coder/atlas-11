@@ -1,24 +1,24 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-19T04:02:59.341Z",
+ "at": "2026-10-19T05:41:56.810Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-19",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 73,
+ "seconds": 64,
  "time": {
-  "old": 57.3,
-  "new": 54.7,
-  "wall": 73.3,
+  "old": 49.8,
+  "new": 47.5,
+  "wall": 64.4,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 78.2,
-  "oldShare": 51.1
+  "oldPct": 77.4,
+  "oldShare": 51.2
  },
  "net": {
-  "req": 2561,
+  "req": 5129,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -32,7 +32,7 @@
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 70
+   "compare": 61
   },
   "글 마디": 54126,
   "숫자 낱말": 53930,
@@ -43,7 +43,7 @@
   "옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)": 7,
   "oldSnap": {
    "use": false,
-   "why": "검사 · 브라우저 · 목록이 바뀜",
+   "why": "바뀐 파일 2281개(/atlas/data/core.json · /atlas/data/surge.json · /atlas/data/home.json)",
    "made": null,
    "inputs": 2568,
    "reads": 2564,
