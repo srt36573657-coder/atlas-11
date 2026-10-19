@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-19T22:52:22.421Z",
- "kst": "2026-10-20 07:52",
+ "at": "2026-10-19T23:01:41.908Z",
+ "kst": "2026-10-20 08:01",
  "slot": null,
- "reason": "첫 화면 시계 — 주황 번호 셋 · 싹 칸 누르면 넘어감(전체 검사 2/11 통과)",
+ "reason": "08:00 회차",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-eQl1US/closes/20261019T225222Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-THfaav/closes/20261019T230141Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261019",
-  "sec": 165,
+  "sec": 189,
   "firstErrors": []
  },
  "asOf": "2026-10-19",
@@ -128,7 +128,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 635,
+  "ms": 590,
   "lenses": [
    {
     "key": "apple",
@@ -143,7 +143,7 @@
     "name": "구글",
     "n": 111,
     "fail": 0,
-    "things": 641817,
+    "things": 641733,
     "first": []
    },
    {
@@ -151,7 +151,7 @@
     "name": "클로드",
     "n": 111,
     "fail": 0,
-    "things": 416394,
+    "things": 416352,
     "first": []
    },
    {
@@ -159,14 +159,14 @@
     "name": "CIA",
     "n": 111,
     "fail": 0,
-    "things": 163344,
+    "things": 163330,
     "first": []
    }
   ]
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-20 07:56",
+  "kst": "2026-10-20 08:06",
   "live": false,
   "idx": true,
   "flows": true,
@@ -212,17 +212,17 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 164.7
+   "sec": 189.3
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 3.9
+   "sec": 4.2
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 6.1
+   "sec": 6
   },
   {
    "name": "업종 정리",
@@ -232,32 +232,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 2.1
+   "sec": 2.3
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 14
+   "sec": 13.2
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 4.1
+   "sec": 4.2
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 32.7
+   "sec": 39.1
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 39.1
+   "sec": 38.2
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 2.8
+   "sec": 3.4
   },
   {
    "name": "첫 화면 자료",
@@ -267,12 +267,12 @@
   {
    "name": "달력 셈",
    "code": 0,
-   "sec": 6.9
+   "sec": 6.5
   },
   {
    "name": "달력 따로 세기",
    "code": 0,
-   "sec": 3.3
+   "sec": 3.5
   },
   {
    "name": "조건 찾기 셈",
@@ -287,7 +287,7 @@
   {
    "name": "네 눈 점검",
    "code": 0,
-   "sec": 0.7
+   "sec": 0.6
   }
  ],
  "cond": {
