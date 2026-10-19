@@ -8,7 +8,7 @@
    「예측」(사장님 말)은 화면에서 「어림」 — site/next/words.js SCREEN 이 화면 글 「예측」을 막음
    「○시」 = 진화 회차(업데이트 30분 전)가 회차마다 하나만 넣는 차례(되돌리기 먼저 · 그다음 확인 · 이른 때부터 — scripts/atlas11/jinhwa/lib.mjs planRound)를 흉내 낸 셈 — slotPlan
    회차가 쓴 글(이름 · 섬기는 본질 · 세 사람 · 어림 · 고장 · 채점 까닭)은 한국어 그대로(lang="ko") · 글은 textContent 로만(보안 규칙) · 노드에서도 불러 시험(맨 위에서 NX 를 안 읽음) · 이름은 brand.js 한 곳 */
-import {NAME} from './brand.js';
+import {NAME, BRAND, josa} from './brand.js';
 const OWNER = 'atlas11:invite:owner', DAYS = 14, MIN_SAMPLE = 30; // MIN_SAMPLE = config/atlas11/jinhwa-metrics.v1.json judge.minSample
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -138,7 +138,10 @@ function zoom(x) {
 /** 이름표 + 회차가 쓴 글 한 줄(없으면 안 그림) */
 const line = (k, v, cls = '') => (typeof v === 'string' && v.trim() ? h('p', {class: 'jh-line ' + cls}, h('span', {class: 'jh-k', text: k + ' '}), h('span', {lang: 'ko', text: v.trim()})) : null);
 const failN = v => (Number.isInteger(v) ? v : Number.isInteger(v?.fail) ? v.fail : Number.isInteger(v?.fails) ? v.fails : null);
-const txt = v => (typeof v === 'string' && v.trim() ? v.trim() : null);
+/* 회차 기록은 그때 글자 그대로 두고 화면에만 지금 이름(사장님 2026-10-19 10:21 「돌이야」 — 옛 이름 + 토씨를 새 이름 받침에 맞춤 · 기록 파일은 안 고침) */
+const OLD_RE = new RegExp('(' + BRAND.was.map(w => w.ko).join('|') + ')(이에요|예요|으로|은|는|이|가|을|를|과|와|로|의)?', 'g');
+const nowName = s => s.replace(OLD_RE, (m, o, p) => (p ? (p === '의' ? NAME + '의' : josa(NAME, p)) : NAME));
+const txt = v => (typeof v === 'string' && v.trim() ? nowName(v.trim()) : null);
 
 /** 되돌린 때 — 진화 회차 꼴 reverted {at} · 옛 꼴 revertedAt · reverted 글(때) — 되돌리지 않았으면 null */
 export const revertedAt = a => (a?.reverted && typeof a.reverted === 'object' ? a.reverted.at ?? '' : typeof a?.reverted === 'string' ? a.reverted : a?.reverted === true ? '' : a?.revertedAt ?? null);
@@ -274,7 +277,7 @@ export async function render(arg) {
   C.replan = () => { C.plan = slotPlan([...C.st.values()], Date.now(), sets); for (const p of C.painters) p(); };
   C.plan = slotPlan(items, Date.now(), sets);
   const root = h('div', {class: 'jh', 'data-page': 'jinhwa'});
-  const ess = typeof J?.essence === 'string' && J.essence.trim() ? J.essence.trim() : '?';
+  const ess = txt(J?.essence) ?? '?';
   root.append(h('h1', {class: 'jh-h1', text: `${NAME} 진화`}), h('p', {class: 'jh-ess', lang: 'ko', text: ess}));
   const head = h('div', {class: 'jh-head'}, h('p', {class: 'jh-n', text: `진화 ${n ?? '?'}번째`}));
   root.append(head);

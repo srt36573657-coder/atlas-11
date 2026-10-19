@@ -4,9 +4,11 @@
 //                → node scripts/atlas11/makbi/build.mjs(영상 · 그림) → 검사(next-modules 시험 ⑤ ⑥ · next_check 「옛 이름 남음」)
 //   2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」 [3] 1 「brand.js를 꼴똘이, 영어 Kkolttori로 바꿔라. was 맨 앞에 고도리를 더하라(until 2026-10-18).」
 //   2026-10-18(싱가포르) 17:15 「꼴똘이가 아니다! 꼴동이야」 · 17:17 「골-!  똘이야」 · 17:18 「골똘이!」 — 이름 = 골똘이(골똘히 생각하는 앵무새 · 플랫폼 이름도) · 영어는 꼴똘이 Kkolttori 와 같은 꼴로 Golttori · 꼴똘이는 한 시간 쓴 판이라 was 맨 앞(검사가 남은 글을 잡게)
+//   2026-10-19(싱가포르) 10:21 「1번으로 하자 그래서 전체 디자인을 해봐  꽃돌이가 아니야 돌이야 이리이 돌이  알겠지」 · 10:31 「이제 실제로 만들어 이기준으로 알겠지」 — 이름 = 돌이 · 영어 Dori · 판 = 「돌에서 꺼냄」(docs/design/kakao-2026-10-19/platform3)
 export const BRAND = Object.freeze({
-  ko: '골똘이', en: 'Golttori',
+  ko: '돌이', en: 'Dori',
   was: Object.freeze([ // 옛 이름(새 것부터) — 검사가 화면에 남았는지 봄 · 옛 쪽(/atlas/)과 맞댈 때 새 이름으로 바꿔 맞댐
+    Object.freeze({ko: '골똘이', en: 'Golttori', until: '2026-10-19'}),
     Object.freeze({ko: '꼴똘이', en: 'Kkolttori', until: '2026-10-18'}),
     Object.freeze({ko: '고도리', en: 'Godori', until: '2026-10-18'}),
     Object.freeze({ko: '보드리', en: 'Bodri', until: '2026-10-17'}),

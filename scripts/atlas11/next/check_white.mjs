@@ -109,7 +109,7 @@ function judge(m, tag, B) {
   check(!m.small.length, `${tag} ② 누르는 크기 48`, `${m.small.length}곳 · ${m.small.slice(0, 3).join(' · ')}`);
   check(!m.ruin.length, `${tag} ④ 망치는 길 그림 0`, `${m.ruin.length}곳 · ${[...new Set(m.ruin)].slice(0, 4).join(' · ')}`);
   const badSay = m.says.filter(t => !/\?$/.test(t));
-  check(m.says.length > 0 && !badSay.length, `${tag} ④ 골똘이 말은 「?」로 끝남`, m.says.length ? badSay.slice(0, 3).join(' | ') : '골똘이 말([data-say])이 없음');
+  check(m.says.length > 0 && !badSay.length, `${tag} ④ 돌이 말은 「?」로 끝남`, m.says.length ? badSay.slice(0, 3).join(' | ') : '돌이 말([data-say])이 없음');
   check(!m.numQ.length, `${tag} ④ 숫자 줄 「?」는 맨 앞뿐`, m.numQ.slice(0, 3).join(' | '));
 }
 function keep(m, tag) {

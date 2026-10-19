@@ -46,7 +46,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 /* ── 시험 자료(이번 검사만의 번호 · 본질 줄은 본질 파일 첫 줄) ── */
 const NONCE = Date.now().toString(36);
 const ID = k => `jh${NONCE}-${k}`;
-const ESS = (await fs.readFile(path.join(ROOT, 'docs/골똘이_본질.md'), 'utf8')).split('\n').find(l => /^1\.\s/.test(l))?.replace(/^1\.\s*/, '').trim() ?? '?';
+const ESS = (await fs.readFile(path.join(ROOT, 'docs/돌이_본질.md'), 'utf8')).split('\n').find(l => /^1\.\s/.test(l))?.replace(/^1\.\s*/, '').trim() ?? '?';
 const iso = t => new Date(t).toISOString(), DAY = 864e5;
 const card = (k, o = {}) => {
   const id = ID('w' + k);
@@ -225,7 +225,7 @@ else {
     // ② 모든 사람(열쇠 없음) — 같은 자료 · 카드 차례 · 단추 0 · 잣대 셋 0 · 위험 · 검사 줄 0 · 「확인을 기다려요」 · 「n월 n일 들어감」 · 숫자로 보기(접힘)
     let {ctx, p} = await keyPage({key: null});
     let M = await p.evaluate(MODEL);
-    check(M.h1 === NEW_NAME + ' 진화' && M.ess === ESS && M.essKo === 'ko' && M.n === `진화 ${FIX.n}번째`, '맨 위 = 「골똘이 진화」 · 본질 첫 줄(자료 글 그대로) · 「진화 n번째」', `${M.h1} · ${M.ess} · ${M.n}`);
+    check(M.h1 === NEW_NAME + ' 진화' && M.ess === ESS && M.essKo === 'ko' && M.n === `진화 ${FIX.n}번째`, '맨 위 = 「돌이 진화」 · 본질 첫 줄(자료 글 그대로) · 「진화 n번째」', `${M.h1} · ${M.ess} · ${M.n}`);
     check(M.title === '진화 · ' + NEW_NAME, '창 제목', `「${M.title}」`);
     check(JSON.stringify(M.cards.map(c => c.id)) === JSON.stringify(ORDER), '카드 차례 = 들어간 것(새 날짜부터) → 확인을 기다리는 것', M.cards.map(c => c.id).join());
     check(M.cnt === `1 / ${ORDER.length}`, '넘기기 「1 / n」', `「${M.cnt}」`);
