@@ -33,7 +33,7 @@ html.white svg.ln path[fill="none"] { stroke-width: 2.5; }
 html.white #view h1.st-h { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); font-size: var(--fs-5); font-weight: 800; line-height: 1.15; letter-spacing: -.03em; color: var(--ink); overflow-wrap: anywhere; }
 html.white #view h1.st-h .st-art { flex: none; width: 96px; height: 77px; }
 html.white #view h1.st-h.st-why { font-size: var(--fs-4); } /* 매매일지는 판정 글(30)이 가장 큰 글씨([5] 2) */
-html.white #view h1.st-h.st-why .st-art { width: 64px; height: 51px; }
+html.white #view h1.st-h.st-sm .st-art { width: 48px; height: 38px; }
 html.white .shorts { position: relative; }
 html.white .shorts > .st-abs { position: absolute; top: 24px; right: 0; width: 96px; height: 77px; pointer-events: none; }
 @media (max-width: 349px) { html.white #view h1.st-h .st-art, html.white .shorts > .st-abs { width: 72px; height: 58px; } }
@@ -111,7 +111,8 @@ html.white.home .s-thumb .w-hits { background: #141414; border-color: #8A8A8A; }
 html.white.home .s-thumb nav.w-go4 { flex: 1 1 auto; min-width: 0; margin: 0; border: 0; }
 html.white.home .s-thumb .w-go4 a { min-width: 0; min-height: 48px; color: #BDBDBD; font-size: var(--fs-1); }
 html.white.home .s-thumb .w-go4 .ic { display: none; }
-html.white.home .s-thumb details.w-all { flex: none; margin: 0; border: 0; }
+html.white.home .s-thumb details.w-all { flex: none; min-width: 0; max-width: 100%; margin: 0; border: 0; }
+html.white.home .s-thumb nav.w-go4 { flex-wrap: wrap; }
 html.white.home .s-thumb details.w-all[open] { flex: 1 1 100%; }
 html.white.home .s-thumb details.w-all > summary { min-height: 48px; display: flex; align-items: center; padding: 0 var(--sp-1); color: #BDBDBD; font-size: var(--fs-1); }
 

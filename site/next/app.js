@@ -434,7 +434,7 @@ function essCard(box, C) {
 let findQ = '';
 const findWarm = () => { Promise.all([need('core'), need('mkt')]).then(() => findReady()).catch(() => {}); };
 function findBox() {
-  const inp = h('input', {type: 'search', class: 'w-in', value: findQ, placeholder: '친구야, 왜 사?', 'aria-label': '친구야, 왜 사? 회사 이름', autocomplete: 'off', enterkeyhint: 'go'});
+  const inp = h('input', {type: 'search', class: 'w-in', value: findQ, placeholder: '친구야, 왜 사? 회사 이름', 'aria-label': '친구야, 왜 사? 회사 이름', autocomplete: 'off', enterkeyhint: 'go'});
   const hits = h('div', {class: 'w-hits', role: 'list', hidden: true});
   const go = h('button', {class: 'w-go', type: 'submit', 'aria-label': '열한 질문 시작', text: '시작'}); // 돌 판 — 흰 「시작」 하나(시안 platform3/home)
   const form = h('form', {class: 'w-find', 'data-w': 'find', role: 'search'}, inp, go, hits);
@@ -1120,7 +1120,7 @@ function stoneArt(k, a, root) {
   const n = k === 'why' ? (a ? 'why-q1' : 'why') : k === 'w' ? (a && !a.includes('/') ? 'company' : null) : STONE[k];
   if (n === 'shorts') { const sh = root.querySelector('.shorts'); if (sh && !sh.querySelector('.st-art')) sh.append(h('img', {class: 'st-art st-abs', src: '/media/stone/shorts.svg', alt: '', width: 96, height: 77, decoding: 'async'})); return; } // 시황은 큰 제목이 없어 오른쪽 위 빈 자리에
   const t = n ? root.querySelector('h1') : null; if (!t || t.querySelector('.st-art')) return;
-  t.classList.add('st-h'); if (k === 'why') t.classList.add('st-why');
+  t.classList.add('st-h'); if (k === 'why') t.classList.add('st-why'); if (k === 'why' || k === 'jinhwa') t.classList.add('st-sm'); // 작은 그림 — 매매일지 답 셋 · 진화 첫 카드 그림이 한 화면에 들게(check_why [5] 3 · check_jinhwa)
   t.append(h('img', {class: 'st-art', src: '/media/stone/' + n + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
 }
 window.addEventListener('hashchange', () => route());
