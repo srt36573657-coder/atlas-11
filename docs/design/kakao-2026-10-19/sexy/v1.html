@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 · 돌에서 꺼냄</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* x3 페라리 판 「멈춘 바늘」(사장님 2026-10-19 09:59 · 토론 docs/design/kakao-2026-10-19/sexy/debate.md 2차 페라리 수정)
+   매혹 = 정밀한 계기 · 바늘은 0 에 멈춤(멈추는 힘) · 가는 눈금 · 단단한 글씨 · 가는 선 무늬(탄소 짜임 · 칠 번짐 없음)
+   노랑 = 0 눈금 한 줄뿐 · 칠한 노랑 단추 0 · 빨강은 오름 숫자 · 오름 막대에만 · 기울임 · 속도선 0 */
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--line:#2E2E2E;--edge:#8A8A8A;--up:#FF6A3D;--dn:#6C86FF;--mod:#F9D21C}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+/* 탄소 짜임 — 가는 선 두 겹(칠 번짐 아님 · 그림 무늬) */
+.carbon{background-color:#080808;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M0 8L8 0M-2 2L2 -2M6 10L10 6' stroke='%23151515' stroke-width='1.2'/%3E%3Cpath d='M0 0L4 4' stroke='%230E0E0E' stroke-width='1'/%3E%3C/svg%3E")}
+/* ① 위 막대 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px;border-bottom:1px solid #1B1B1B}
+.solo,.group{background:#141414;border:1px solid #2A2A2A;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px;letter-spacing:.01em}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:20px;font-weight:700;letter-spacing:.14em;text-indent:.14em;white-space:nowrap}
+#view{padding:0 16px;display:flex;flex-direction:column;min-height:calc(100vh - 128px);min-height:calc(100svh - 128px)}
+/* ② 제목 + 멈춘 바늘 */
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:2px}
+.h1{font-size:48px;font-weight:800;line-height:1;letter-spacing:-.035em}
+.dial{flex:0 0 auto;width:166px;height:133px;display:block;margin:-6px -10px -8px 0}
+.askrow{display:flex;align-items:center;gap:8px;margin-top:0}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#161616;border:1px solid #262626;border-radius:22px 22px 22px 6px;padding:8px 16px;font-size:19px;font-weight:500;line-height:1.3;white-space:nowrap;letter-spacing:-.01em}
+.say .who{flex:0 0 auto;font-size:17px;color:#A6A6A6;padding-right:8px;border-right:1px solid #3A3A3A}
+.ic{margin-left:auto;flex:0 0 auto;width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center}
+/* ③ 읽는 곳 — 실 대신 가는 자(눈금) · 번호는 계기 테 */
+.story{list-style:none;position:relative;margin-top:12px}
+.story::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='8'%3E%3Cpath d='M.5 0V8M.5 .5H4' stroke='%23343434' stroke-width='1'/%3E%3C/svg%3E") repeat-y}
+.ch{position:relative;padding-left:40px}
+.ch+.ch{margin-top:8px;padding-top:9px;border-top:1px solid #1B1B1B}
+.no{position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;line-height:1;color:#FFFFFF}
+.ch+.ch .no{top:9px}
+.lbl{display:flex;align-items:baseline;gap:8px;white-space:nowrap;min-height:27px}
+.lbl .t{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.02em}
+.lbl .sub{margin-left:auto;font-size:17px;color:#BDBDBD;font-weight:600}
+.v{font-weight:300;line-height:1;letter-spacing:-.03em}
+.lb{font-size:17px;color:#BDBDBD;line-height:1.2;font-weight:500}
+.ghostbtn{min-height:48px;padding:0 14px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF;white-space:nowrap;font-weight:500}
+.ess p{font-size:19px;line-height:1.55;word-break:keep-all;padding-right:56px;font-weight:500;letter-spacing:-.015em}
+.ess{position:relative}
+.ess details summary{position:absolute;right:0;top:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid #8A8A8A;border-radius:24px;cursor:pointer;list-style:none}
+.ess details summary::-webkit-details-marker{display:none}
+.ess details[open] summary svg{transform:rotate(180deg)}
+.ess details p{font-size:17px;color:#D6D6D6;margin-top:6px;padding-right:0;font-weight:400}
+.pill a{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;column-gap:8px;min-height:48px;font-size:17px;font-weight:400;letter-spacing:-.01em}
+.pill .q{font-weight:700}
+/* 사실 두 줄 — 숫자 · 정밀 자 · 「왜 그럴까?」 */
+.facts{display:flex;flex-direction:column}
+.facts .f{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0}
+.facts .f>span[data-num]{display:flex;align-items:baseline;gap:12px}
+.facts .lb{min-width:52px}
+.facts .v{font-size:36px}
+/* 가는 자 한 줄 — 두 사실 사이 · 길이 = 곳 수(오른 곳 | 내린 곳) · 눈금은 그림 무늬 한 장 */
+.split{position:relative;height:12px;margin:2px 0;display:flex;align-items:flex-start;gap:3px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='12'%3E%3Cpath d='M.5 6V12' stroke='%232E2E2E' stroke-width='1'/%3E%3C/svg%3E") repeat-x}
+.split i{display:block;height:2px;margin-top:2px}
+.split .gu{background:#FF6A3D}.split .gd{background:#6C86FF}
+.facts .qs{display:none;flex-basis:100%;font-size:17px;color:#D6D6D6}
+.facts .f.open{flex-wrap:wrap}
+.facts .f.open .qs{display:block}
+.ghost{display:inline-flex;align-items:center;gap:8px;min-height:44px;border:1px dashed #8A8A8A;border-radius:6px 22px 22px 22px;padding:4px 16px;font-size:19px;font-weight:500;line-height:1.2;white-space:nowrap}
+.ghost .now{display:none}
+.back .ghost{border-style:solid;border-color:#1E1E1E;background:#1E1E1E}
+.back .ghost .was{display:none}.back .ghost .now{display:inline}
+.mem{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:17px;color:#BDBDBD;white-space:nowrap}
+.evo{display:flex;align-items:center;gap:10px;min-height:48px;margin-top:2px;font-size:17px;color:#D6D6D6}
+.evo b{font-size:20px;font-weight:700;color:#FFFFFF;white-space:nowrap;letter-spacing:-.02em}
+.evo .when2{flex:1;white-space:nowrap}
+.evo .go{font-size:24px;color:#BDBDBD}
+/* ④ 엄지 자리 — 탄소 짜임 판 · 칠한 단추는 흰 「시작」 하나 */
+.dock{position:sticky;bottom:64px;z-index:2;margin:auto -16px 0;padding:10px 16px 6px;border-top:1px solid #2E2E2E}
+.find .bar{height:60px;border:1px solid #8A8A8A;border-radius:30px;display:flex;align-items:center;padding:0 5px 0 18px;gap:8px;background:#080808}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-weight:500}
+.find input::placeholder{color:#BDBDBD}
+.find button{flex:0 0 auto;height:48px;min-width:84px;border-radius:24px;background:#F2F2F2;color:#080808;font-weight:800;font-size:19px;padding:0 20px;letter-spacing:.02em}
+.txt{display:flex;align-items:stretch;justify-content:space-between;margin-top:2px;position:relative;gap:4px}
+.txt a,.txt summary{min-height:48px;min-width:48px;display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap;cursor:pointer;list-style:none;font-weight:500}
+.txt summary::-webkit-details-marker{display:none}
+.all ul{list-style:none;position:absolute;left:0;right:0;bottom:calc(100% + 72px);background:#141414;border:1px solid #3A3A3A;border-radius:20px;padding:0 12px;z-index:3}
+.all li+li{border-top:1px solid #3A3A3A}
+.all li a{display:flex;justify-content:flex-start;min-height:52px;align-items:center;padding:0 4px;font-size:17px;color:#FFFFFF}
+.all li a b{font-weight:700;margin:0 2px}
+.all[open] summary{color:#FFFFFF;text-decoration:underline;text-underline-offset:5px}
+/* ⑤ 아래 단추 다섯 */
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a::after{content:"";width:18px;height:2px;background:transparent}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+.tabs a[aria-current]::after{background:#FFFFFF}
+@media (max-width:359px){
+ .top{padding:0 8px}.ttl{font-size:18px;letter-spacing:.08em;text-indent:.08em}
+ #view{padding:0 10px}.dock{margin:auto -10px 0;padding:8px 10px 6px}
+ .h1{font-size:38px}.dial{width:104px;height:71px}
+ .say{white-space:normal;font-size:17px}
+ .ess p{font-size:17px}
+ .ch{padding-left:36px}.lbl{flex-wrap:wrap;white-space:normal}.lbl .sub{margin-left:0}
+ .pill a{flex-wrap:wrap;white-space:normal}
+ .facts .v{font-size:28px}.facts .f>span[data-num]{gap:8px}
+ .ghost{white-space:normal}
+ .evo{flex-wrap:wrap}.evo .when2{flex:1 1 100%;order:3}
+ .find .bar{padding-left:12px}.find input{font-size:17px}.find button{min-width:64px;padding:0 12px;font-size:17px}
+ .txt a,.txt summary{padding:0 2px;letter-spacing:-0.04em}.tabs a{letter-spacing:-0.07em}
+}
+</style>
+</head>
+<body>
+<header class="top carbon">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="hd"><div><h1 class="h1">왜 사?</h1></div>
+<svg class="dial" viewBox="0 0 150 120" role="img" aria-label="꽃돌이 계기 · 돌에서 깎아 낸 판 · 바늘은 0에 멈춰 있어요 · 사기 전에 한 번 멈춤">
+  <path d="M144.99 57.78L140.51 74.84L133.52 73.26L132.85 58.16ZM140.51 74.84L129.53 97.17L124.33 93.63L133.52 73.26ZM129.53 97.17L118.92 103.44L116.79 101.33L124.33 93.63ZM118.92 103.44L96.94 108.88L96.54 107.98L116.79 101.33ZM96.94 108.88L83.77 112.00L83.29 109.22L96.54 107.98ZM83.77 112.00L71.92 108.66L71.81 110.34L83.29 109.22ZM71.92 108.66L51.96 110.28L53.56 106.77L71.81 110.34ZM28.50 60.00L30.08 47.96L37.33 49.91L36.00 60.00ZM30.08 47.96L34.73 36.75L41.23 40.50L37.33 49.91ZM34.73 36.75L42.12 27.12L47.42 32.42L41.23 40.50ZM42.12 27.12L51.75 19.73L55.50 26.23L47.42 32.42ZM51.75 19.73L62.96 15.08L64.91 22.33L55.50 26.23ZM62.96 15.08L75.00 13.50L75.00 21.00L64.91 22.33ZM75.00 13.50L87.04 15.08L85.09 22.33L75.00 21.00Z" fill="#5C5955" stroke="#5C5955" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M132.85 58.16L133.52 73.26L120.35 70.27L121.48 58.53ZM133.52 73.26L124.33 93.63L113.42 86.19L120.35 70.27ZM124.33 93.63L116.79 101.33L108.06 92.70L113.42 86.19ZM116.79 101.33L96.54 107.98L94.04 102.42L108.06 92.70ZM96.54 107.98L83.29 109.22L82.73 105.85L94.04 102.42ZM83.29 109.22L71.81 110.34L72.06 106.41L82.73 105.85ZM71.81 110.34L53.56 106.77L55.63 102.27L72.06 106.41ZM51.96 110.28L39.22 108.99L42.78 104.13L53.56 106.77ZM53.56 106.77L42.78 104.13L47.58 97.55L55.63 102.27ZM39.22 108.99L18.34 97.37L24.15 93.54L42.78 104.13ZM18.34 97.37L9.48 84.89L20.28 80.79L24.15 93.54ZM98.47 10.45L113.65 13.68L111.00 16.86L97.59 12.31ZM113.65 13.68L138.62 26.43L128.62 31.71L111.00 16.86ZM138.62 26.43L141.47 34.43L131.02 38.45L128.62 31.71ZM128.62 31.71L131.02 38.45L118.40 43.31L116.13 38.30ZM141.47 34.43L144.99 57.78L132.85 58.16L131.02 38.45ZM131.02 38.45L132.85 58.16L121.48 58.53L118.40 43.31ZM42.12 92.88L34.73 83.25L41.23 79.50L47.42 87.58ZM34.73 83.25L30.08 72.04L37.33 70.09L41.23 79.50ZM30.08 72.04L28.50 60.00L36.00 60.00L37.33 70.09ZM87.04 15.08L98.25 19.73L94.50 26.23L85.09 22.33ZM98.25 19.73L107.88 27.12L102.58 32.42L94.50 26.23Z" fill="#8E8A83" stroke="#8E8A83" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M42.78 104.13L24.15 93.54L36.18 85.61L47.58 97.55ZM24.15 93.54L20.28 80.79L31.53 76.51L36.18 85.61ZM9.48 84.89L10.67 64.75L16.12 64.35L20.28 80.79ZM20.28 80.79L16.12 64.35L28.63 63.42L31.53 76.51ZM11.51 42.29L21.76 21.18L26.48 24.62L19.41 44.49ZM69.06 10.64L86.53 9.25L86.12 11.03L68.96 9.89ZM86.12 11.03L97.59 12.31L94.90 17.97L85.30 14.66ZM97.59 12.31L111.00 16.86L104.79 24.30L94.90 17.97ZM111.00 16.86L128.62 31.71L116.13 38.30L104.79 24.30ZM62.96 104.92L51.75 100.27L55.50 93.77L64.91 97.67ZM51.75 100.27L42.12 92.88L47.42 87.58L55.50 93.77ZM107.88 27.12L115.27 36.75L108.77 40.50L102.58 32.42ZM115.27 36.75L119.92 47.96L112.67 49.91L108.77 40.50Z" fill="#BEBAB2" stroke="#BEBAB2" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M10.67 64.75L11.51 42.29L19.41 44.49L16.12 64.35ZM16.12 64.35L19.41 44.49L30.21 47.51L28.63 63.42ZM19.41 44.49L26.48 24.62L37.43 32.60L30.21 47.51ZM21.76 21.18L28.98 13.64L34.00 18.70L26.48 24.62ZM26.48 24.62L34.00 18.70L42.24 27.00L37.43 32.60ZM28.98 13.64L49.48 10.76L50.63 12.99L34.00 18.70ZM34.00 18.70L50.63 12.99L53.60 18.72L42.24 27.00ZM49.48 10.76L69.06 10.64L68.96 9.89L50.63 12.99ZM50.63 12.99L68.96 9.89L69.44 13.83L53.60 18.72ZM68.96 9.89L86.12 11.03L85.30 14.66L69.44 13.83ZM86.53 9.25L98.47 10.45L97.59 12.31L86.12 11.03ZM121.50 60.00L119.92 72.04L112.67 70.09L114.00 60.00ZM119.92 72.04L115.27 83.25L108.77 79.50L112.67 70.09ZM115.27 83.25L107.88 92.88L102.58 87.58L108.77 79.50ZM107.88 92.88L98.25 100.27L94.50 93.77L102.58 87.58ZM98.25 100.27L87.04 104.92L85.09 97.67L94.50 93.77ZM87.04 104.92L75.00 106.50L75.00 99.00L85.09 97.67ZM75.00 106.50L62.96 104.92L64.91 97.67L75.00 99.00ZM119.92 47.96L121.50 60.00L114.00 60.00L112.67 49.91ZM114.00 60.00L113.67 65.09L112.67 70.09L111.03 74.92L108.77 79.50L105.94 83.74L102.58 87.58L98.74 90.94L94.50 93.77L89.92 96.03L85.09 97.67L80.09 98.67L75.00 99.00L69.91 98.67L64.91 97.67L60.08 96.03L55.50 93.77L51.26 90.94L47.42 87.58L44.06 83.74L41.23 79.50L38.97 74.92L37.33 70.09L36.33 65.09L36.00 60.00L36.33 54.91L37.33 49.91L38.97 45.08L41.23 40.50L44.06 36.26L47.42 32.42L51.26 29.06L55.50 26.23L60.08 23.97L64.91 22.33L69.91 21.33L75.00 21.00L80.09 21.33L85.09 22.33L89.92 23.97L94.50 26.23L98.74 29.06L102.58 32.42L105.94 36.26L108.77 40.50L111.03 45.08L112.67 49.91L113.67 54.91Z" fill="#E6E3DC" stroke="#E6E3DC" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M110.16 16.42L113.14 18.45M109.46 17.46L112.44 19.49M108.75 18.49L111.74 20.52M108.05 19.52L111.03 21.55M107.35 20.56L110.33 22.59M23.98 91.57L21.70 86.42M25.12 91.07L22.84 85.91M26.26 90.56L23.98 85.41M10.61 78.85L12.62 73.49M11.78 79.29L13.79 73.93M12.95 79.73L14.96 74.38M14.12 80.17L16.13 74.82M15.29 80.61L17.30 75.26M25.39 26.82L25.85 22.45M26.64 26.95L27.09 22.58M27.88 27.08L28.34 22.71M29.12 27.21L29.58 22.84M30.37 27.34L30.82 22.97M18.54 70.04L15.71 66.09M19.55 69.31L16.73 65.37M20.57 68.59L17.74 64.64M21.59 67.86L18.76 63.91M13.04 70.22L12.63 66.49M14.29 70.08L13.87 66.36M15.53 69.94L15.11 66.22M16.77 69.80L16.35 66.08M56.37 12.50L58.97 11.00M56.99 13.58L59.60 12.08M57.62 14.67L60.22 13.16M58.25 15.75L60.85 14.24M12.41 49.40L12.28 45.48M13.66 49.35L13.53 45.44M14.91 49.31L14.78 45.40M16.16 49.27L16.03 45.36M92.16 10.29L95.23 12.81M91.36 11.25L94.43 13.78M90.57 12.22L93.64 14.74M89.78 13.18L92.85 15.71M88.98 14.15L92.05 16.67M13.37 68.99L14.31 65.85M14.57 69.35L15.51 66.20M15.77 69.71L16.71 66.56M19.75 88.71L14.51 85.30M20.43 87.66L15.19 84.25M21.11 86.61L15.87 83.20M21.79 85.56L16.56 82.16M22.47 84.52L17.24 81.11M14.74 76.82L12.10 74.32M15.60 75.92L12.96 73.41M16.46 75.01L13.82 72.50M17.32 74.10L14.68 71.60M44.31 16.03L46.96 14.53M44.92 17.12L47.58 15.62M45.54 18.21L48.19 16.71M86.72 12.20L92.28 10.80M87.03 13.41L92.59 12.01M87.33 14.62L92.89 13.23M87.64 15.83L93.20 14.44M14.43 87.80L14.59 83.82M15.68 87.85L15.84 83.88M16.93 87.90L17.09 83.93M18.18 87.95L18.34 83.98M100.86 13.33L103.68 16.63M99.91 14.14L102.73 17.44M98.96 14.95L101.78 18.25M98.01 15.76L100.83 19.07M97.06 16.57L99.88 19.88M97.27 12.88L101.03 12.76M97.31 14.13L101.07 14.01M97.35 15.38L101.11 15.26M115.27 14.82L118.84 19.54M114.27 15.57L117.84 20.29M113.28 16.32L116.84 21.04M112.28 17.08L115.85 21.80M51.19 14.09L56.10 11.72M51.73 15.21L56.64 12.85M52.28 16.34L57.18 13.97M75.15 11.34L80.68 11.25M75.17 12.59L80.70 12.50M75.19 13.84L80.72 13.74M75.21 15.09L80.74 14.99M54.90 12.43L59.00 11.10M55.28 13.62L59.39 12.29M55.67 14.81L59.77 13.48M56.05 16.00L60.16 14.67M58.17 10.98L62.14 12.21M57.80 12.18L61.77 13.41M57.43 13.37L61.40 14.60M57.06 14.56L61.04 15.79M100.63 15.63L104.12 15.75M100.58 16.88L104.07 17.00M100.54 18.13L104.03 18.25M48.49 15.56L50.81 12.66M49.47 16.34L51.78 13.44M50.45 17.12L52.76 14.22M58.87 12.62L63.38 10.66M59.37 13.76L63.88 11.81M59.86 14.91L64.37 12.96M60.36 16.06L64.87 14.10M58.70 12.35L62.18 11.39M59.03 13.56L62.51 12.59M59.37 14.76L62.85 13.80M81.39 11.14L84.95 9.90M81.80 12.32L85.37 11.08M82.21 13.50L85.78 12.26M82.63 14.68L86.19 13.44M109.54 15.64L113.58 17.76M108.96 16.75L113.00 18.87M108.38 17.86L112.42 19.97M107.80 18.96L111.83 21.08M35.08 23.82L38.85 21.70M35.69 24.91L39.47 22.79M36.31 26.00L40.08 23.88M36.92 27.09L40.69 24.97M16.89 57.18L16.96 52.77M18.14 57.20L18.21 52.79M19.39 57.22L19.46 52.81M20.64 57.24L20.71 52.83M21.89 57.26L21.96 52.85M42.43 14.06L48.55 13.80M42.48 15.31L48.61 15.05M42.54 16.56L48.66 16.30M42.59 17.81L48.72 17.54M52.12 13.89L57.43 10.18M52.84 14.92L58.14 11.20M53.56 15.94L58.86 12.22M54.28 16.96L59.58 13.25M30.35 17.84L32.52 15.22M31.31 18.64L33.48 16.01M32.27 19.43L34.44 16.81M33.24 20.23L35.41 17.61M34.20 21.03L36.37 18.40M113.37 15.92L116.84 17.60M112.83 17.04L116.29 18.72M112.28 18.17L115.75 19.85M111.74 19.29L115.20 20.97M18.06 60.22L18.11 57.78M19.31 60.25L19.36 57.81M20.56 60.28L20.61 57.84M21.81 60.31L21.86 57.87M94.94 11.94L97.84 13.69M94.30 13.01L97.19 14.76M93.65 14.08L96.55 15.83M93.01 15.16L95.90 16.90" fill="none" stroke="#8E8A83" stroke-width=".7" stroke-linecap="round"/>
+  <path d="M130.63 87.84L127.57 92.55M129.58 87.16L126.53 91.87M128.53 86.48L125.48 91.19M127.49 85.80L124.43 90.51M126.44 85.12L123.38 89.83M128.29 43.27L130.24 45.50M127.35 44.10L129.30 46.33M126.41 44.92L128.36 47.15M125.47 45.74L127.42 47.97M137.57 62.05L139.09 65.96M136.41 62.50L137.92 66.41M135.24 62.95L136.75 66.86M134.08 63.40L135.59 67.31M28.46 97.21L26.02 94.10M29.45 96.44L27.00 93.32M30.43 95.66L27.98 92.55M31.41 94.89L28.96 91.78M127.36 81.30L127.52 84.69M126.11 81.36L126.28 84.75M124.86 81.42L125.03 84.81M125.53 94.15L121.62 98.84M124.57 93.35L120.66 98.04M123.61 92.55L119.70 97.24M128.11 82.46L126.99 86.54M126.90 82.12L125.78 86.21M125.70 81.79L124.57 85.87M124.49 81.46L123.37 85.54M109.62 101.28L108.43 105.76M108.41 100.96L107.22 105.44M107.20 100.63L106.01 105.12M45.24 101.67L42.57 101.66M45.24 100.42L42.57 100.41M45.24 99.17L42.57 99.16M45.25 97.92L42.58 97.91M95.60 106.53L90.80 109.62M94.93 105.48L90.13 108.57M94.25 104.43L89.45 107.52M93.57 103.38L88.77 106.47M131.25 41.29L133.35 43.92M130.27 42.07L132.38 44.70M129.30 42.85L131.40 45.48M128.32 43.63L130.42 46.26M47.25 107.20L45.65 102.67M48.43 106.78L46.83 102.26M49.61 106.37L48.00 101.84M129.04 23.66L130.08 28.39M127.82 23.93L128.86 28.66M126.60 24.20L127.64 28.93M125.38 24.47L126.42 29.20M137.02 68.10L136.37 73.22M135.78 67.95L135.13 73.07M134.54 67.79L133.89 72.91M133.30 67.64L132.65 72.76M132.05 67.48L131.41 72.60M87.82 109.88L83.96 109.35M87.99 108.64L84.13 108.11M88.16 107.40L84.30 106.87M88.33 106.16L84.47 105.64M88.50 104.92L84.63 104.40M101.62 106.73L97.08 107.52M101.41 105.50L96.87 106.29M101.19 104.27L96.65 105.06M100.98 103.04L96.44 103.83M76.89 110.02L73.12 108.55M77.34 108.85L73.57 107.38M77.79 107.69L74.02 106.22M119.45 24.65L120.84 28.54M118.27 25.07L119.67 28.96M117.09 25.49L118.49 29.39M115.92 25.91L117.31 29.81M76.24 109.75L71.93 109.86M76.21 108.50L71.90 108.61M76.17 107.25L71.87 107.36M25.84 97.73L26.10 92.20M27.09 97.79L27.35 92.26M28.34 97.85L28.60 92.32M29.59 97.91L29.85 92.38M56.87 107.92L51.99 109.13M56.57 106.71L51.69 107.91M56.27 105.49L51.39 106.70M55.97 104.28L51.09 105.49M55.67 103.07L50.79 104.27M123.69 97.16L121.57 103.34M122.50 96.75L120.39 102.94M121.32 96.35L119.21 102.54M24.95 96.25L22.51 92.45M26.00 95.58L23.56 91.78M27.05 94.90L24.61 91.10M28.11 94.23L25.67 90.43M121.52 87.89L119.20 90.03M120.68 86.97L118.35 89.11M119.83 86.05L117.51 88.19M125.57 89.95L123.51 92.35M124.62 89.13L122.56 91.54M123.67 88.32L121.61 90.73M122.72 87.51L120.66 89.92M71.81 111.08L68.59 108.48M72.60 110.11L69.38 107.51M73.38 109.14L70.17 106.54M74.17 108.16L70.95 105.56M65.12 107.90L61.23 108.68M64.87 106.67L60.98 107.46M64.62 105.45L60.74 106.23M127.02 55.76L129.14 58.23M126.08 56.57L128.19 59.04M125.13 57.39L127.24 59.85M124.18 58.20L126.29 60.67M28.44 94.15L25.59 93.11M28.87 92.97L26.01 91.94M29.29 91.80L26.44 90.76M130.06 74.28L130.16 76.68M128.82 74.33L128.91 76.73M127.57 74.38L127.66 76.78M126.32 74.43L126.41 76.83M138.64 42.38L139.37 46.53M137.41 42.60L138.14 46.75M136.18 42.82L136.91 46.96M134.95 43.03L135.68 47.18M86.76 108.94L84.38 110.04M86.23 107.80L83.85 108.90M85.71 106.67L83.33 107.77M85.19 105.53L82.80 106.63" fill="none" stroke="#2B2927" stroke-width=".7" stroke-linecap="round"/>
+  <path d="M114.00 60.00 L113.81 63.82 L113.25 67.61 L112.32 71.32 L111.03 74.92 L109.39 78.38 L107.43 81.67 L105.15 84.74 L102.58 87.58 L99.74 90.15 L96.67 92.43 L93.38 94.39 L89.92 96.03 L86.32 97.32 L82.61 98.25 L78.82 98.81 L75.00 99.00 L71.18 98.81 L67.39 98.25 L63.68 97.32 L60.08 96.03 L56.62 94.39 L53.33 92.43 L50.26 90.15 L47.42 87.58 L44.85 84.74 L42.57 81.67 L40.61 78.38 L38.97 74.92 L37.68 71.32 L36.75 67.61 L36.19 63.82 L36.00 60.00 L36.19 56.18 L36.75 52.39 L37.68 48.68 L38.97 45.08 L40.61 41.62 L42.57 38.33 L44.85 35.26 L47.42 32.42 L50.26 29.85 L53.33 27.57 L56.62 25.61 L60.08 23.97 L63.68 22.68 L67.39 21.75 L71.18 21.19 L75.00 21.00 L78.82 21.19 L82.61 21.75 L86.32 22.68 L89.92 23.97 L93.38 25.61 L96.67 27.57 L99.74 29.85 L102.58 32.42 L105.15 35.26 L107.43 38.33 L109.39 41.62 L111.03 45.08 L112.32 48.68 L113.25 52.39 L113.81 56.18Z M114.72 58.14 L114.16 54.41 L113.25 50.75 L111.98 47.20 L110.37 43.80 L108.43 40.57 L106.18 37.54 L103.65 34.75 L100.86 32.22 L97.83 29.97 L94.60 28.03 L91.20 26.42 L87.65 25.15 L83.99 24.24 L80.26 23.68 L76.50 23.50 L72.74 23.68 L69.01 24.24 L65.35 25.15 L61.80 26.42 L58.40 28.03 L55.17 29.97 L52.14 32.22 L49.35 34.75 L46.82 37.54 L44.57 40.57 L42.63 43.80 L41.02 47.20 L39.75 50.75 L38.84 54.41 L38.28 58.14 L38.10 61.90 L38.28 65.66 L38.84 69.39 L39.75 73.05 L41.02 76.60 L42.63 80.00 L44.57 83.23 L46.82 86.26 L49.35 89.05 L52.14 91.58 L55.17 93.83 L58.40 95.77 L61.80 97.38 L65.35 98.65 L69.01 99.56 L72.74 100.12 L76.50 100.30 L80.26 100.12 L83.99 99.56 L87.65 98.65 L91.20 97.38 L94.60 95.77 L97.83 93.83 L100.86 91.58 L103.65 89.05 L106.18 86.26 L108.43 83.23 L110.37 80.00 L111.98 76.60 L113.25 73.05 L114.16 69.39 L114.72 65.66 L114.90 61.90Z" fill="#5C5955" fill-rule="evenodd"/>
+  <path d="M43.94 73.83L41.38 74.97M42.66 70.51L40.00 71.37M41.74 67.07L39.00 67.65M41.19 63.55L38.40 63.85M44.50 60.00L38.20 60.00M41.19 56.45L38.40 56.15M41.74 52.93L39.00 52.35M42.66 49.49L40.00 48.63M43.94 46.17L41.38 45.03M48.59 44.75L43.13 41.60M47.49 40.02L45.23 38.37M49.73 37.25L47.65 35.38M52.25 34.73L50.38 32.65M55.02 32.49L53.37 30.23M59.75 33.59L56.60 28.13M61.17 28.94L60.03 26.38M64.49 27.66L63.63 25.00M67.93 26.74L67.35 24.00M71.45 26.19L71.15 23.40M75.00 29.50L75.00 23.20M78.55 26.19L78.85 23.40M82.07 26.74L82.65 24.00M85.51 27.66L86.37 25.00M88.83 28.94L89.97 26.38M90.25 33.59L93.40 28.13M94.98 32.49L96.63 30.23M97.75 34.73L99.62 32.65M100.27 37.25L102.35 35.38M102.51 40.02L104.77 38.37M101.41 44.75L106.87 41.60M106.06 46.17L108.62 45.03M107.34 49.49L110.00 48.63M108.26 52.93L111.00 52.35M108.81 56.45L111.60 56.15M105.50 60.00L111.80 60.00M108.81 63.55L111.60 63.85M108.26 67.07L111.00 67.65M107.34 70.51L110.00 71.37M106.06 73.83L108.62 74.97M101.41 75.25L106.87 78.40" fill="none" stroke="#5C5955" stroke-width=".9" stroke-linecap="round"/>
+  <path d="M43.13 78.40L49.89 74.50" stroke="#F9D21C" stroke-width="1.7" stroke-linecap="round"/>
+  <text x="51.95" y="76.00" font-size="16" font-weight="300" fill="#2B2927" font-family="Pretendard Variable, sans-serif">0</text>
+  <path d="M81.06 56.50L46.85 76.25L75.75 61.30Z" fill="#5C5955"/>
+  <path d="M81.06 56.50L46.85 76.25L74.25 58.70Z" fill="#2B2927"/>
+  <path d="M75.00 60.00L74.18 54.86L77.46 50.82ZM75.00 60.00L79.04 56.72L84.18 57.54ZM75.00 60.00L71.72 64.04L72.54 69.18ZM75.00 60.00L69.86 59.18L65.82 62.46ZM75.00 60.00L70.14 58.14L68.28 53.28ZM75.00 60.00L73.14 55.14L68.28 53.28Z" fill="#E6E3DC" stroke="#2B2927" stroke-width=".45" stroke-linejoin="round"/>
+  <path d="M75.00 60.00L78.28 55.96L77.46 50.82ZM75.00 60.00L80.14 60.82L84.18 57.54ZM75.00 60.00L79.86 61.86L81.72 66.72ZM75.00 60.00L76.86 64.86L81.72 66.72ZM75.00 60.00L75.82 65.14L72.54 69.18ZM75.00 60.00L70.96 63.28L65.82 62.46Z" fill="#8E8A83" stroke="#2B2927" stroke-width=".45" stroke-linejoin="round"/>
+  <path d="M78.09 60.82L75.83 63.09L72.74 62.27L71.91 59.18L74.17 56.91L77.26 57.73ZM76.55 59.25L74.91 58.81L73.71 60.01L74.15 61.65L75.79 62.09L76.99 60.89Z" fill="#5C5955" fill-rule="evenodd" stroke="#2B2927" stroke-width=".45"/>
+</svg></div>
+<div class="askrow"><p class="say"><span class="who">꽃돌이</span><span data-say>첫 질문을 해 볼까?</span></p><button class="ic" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button></div>
+<ol class="story" aria-label="하는 일 셋">
+  <li class="ch">
+  <span class="no" aria-hidden="true">1</span>
+  <section class="ess" data-w="ess">
+    <p data-ess="1">주식을 사기 전에 <span class="nw">「왜 사?」</span> 열한 질문으로 내 이유부터 확인해요.</p>
+    <details>
+      <summary aria-label="더 보기"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l5 5 5-5"/></svg></summary>
+      <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
+      <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
+    </details>
+  </section>
+  </li>
+  <li class="ch">
+    <span class="no" aria-hidden="true">2</span>
+    <div data-w="news">
+      <h2 class="lbl"><span class="t">지난 기록만</span><span class="sub">10월 13일</span></h2>
+      <div class="pill" data-w="today"><a data-num href="#/f/day"><span class="q">?</span><span>10월 12일</span><span class="dn">코스피 −3.28%</span><span class="dn">코스닥 −4.36%</span></a></div>
+      <div class="facts" role="list" aria-label="가운데 가는 자 = 오른 곳과 내린 곳의 곳 수 길이">
+        <div class="f" role="listitem" data-fact><span data-num><span class="lb">오른 곳</span><span class="v up">766</span></span><button class="ghostbtn" type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></div>
+        <div class="split" aria-hidden="true"><i class="gu" style="flex:766 1 0"></i><i class="gd" style="flex:1632 1 0"></i></div>
+        <div class="f" role="listitem" data-fact><span data-num><span class="lb">내린 곳</span><span class="v dn">1,632</span></span><button class="ghostbtn" type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></div>
+      </div>
+    </div>
+  </li>
+  <li class="ch">
+    <span class="no" aria-hidden="true">3</span>
+    <p class="ghost" aria-label="아직 빈 자리 · 첫 기록이 생기면 한 달 뒤 꽃돌이가 여기서 물어요"><span class="was">한 달 뒤 물어볼게요</span><span class="now" data-say>그날 정한 대로 했어?</span></p>
+    <p class="mem"><svg width="14" height="16" viewBox="0 0 16 18" fill="none" stroke="#BDBDBD" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="8" width="13" height="9" rx="2"/><path d="M4.5 8V5.5a3.5 3.5 0 0 1 7 0V8"/></svg>기록은 이 기기에만</p>
+    <a class="evo" href="#/jinhwa" aria-label="진화 칸 열기 · 「끝낸 수가 는다」 · 사장님 확인으로만"><b>진화 1번째</b><span class="when2">10월 31일쯤 채점</span><span class="go" aria-hidden="true">›</span></a>
+  </li>
+</ol>
+<div class="dock carbon" aria-label="누르는 곳">
+  <form class="find" data-w="find" onsubmit="return false"><div class="bar">
+    <input type="search" placeholder="친구야, 왜 사?" aria-label="친구야, 왜 사? 회사 이름을 넣어요">
+    <button type="submit" data-path="q1" aria-label="열한 질문 시작">시작</button>
+  </div></form>
+  <div class="txt">
+  <nav class="txt" data-w="gdr" aria-label="꽃돌이 칸" style="flex:1;margin:0;justify-content:space-around">
+    <a href="#/cal">달력</a><a href="#/cond">조건</a><a href="#/lead">대장주</a>
+  </nav>
+  <details class="all">
+    <summary data-w="all">전부 보기</summary>
+    <ul>
+      <li><a href="#/why" data-num>내 기록 · <b>0</b>번 멈춤 · <b>0</b>번 약속</a></li>
+      <li><a href="#/watch">관심</a></li>
+      <li><a href="#/hold">보유</a></li>
+      <li><a href="#/f/rise">오르는 업종 · 반도체 검사·측정 +4.73%</a></li>
+      <li><a href="#/surge">급등</a></li>
+    </ul>
+  </details>
+  </div>
+</div>
+</main>
+<nav class="tabs"><a href="#/" aria-current="page">오늘 장</a><a href="#/news">시황</a><a href="#/why">매매일지</a><a href="#/watch">관심</a><a href="#/hold">보유종목</a></nav>
+<script>
+/* 다시 온 나 — 시안은 ?back=1 로만 미리 봄(지어낸 기록 없음) */
+if (/[?&]back=1/.test(location.search)) document.body.classList.add('back');
+document.querySelectorAll('[data-fact] button').forEach(b=>b.addEventListener('click',()=>b.closest('[data-fact]').classList.toggle('open')));
+</script>
+</body>
+</html>

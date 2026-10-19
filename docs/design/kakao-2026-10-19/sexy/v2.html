@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 · 엇갈린 균형</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* v2 「엇갈린 균형」(사장님 2026-10-19 10:09 · 미켈란젤로 입체감 + 페라리 · 잣대 sexy/brief-michelangelo.md)
+   콘트라포스토를 짜임으로: 들린 어깨 = 오른쪽 위 계기 · 반대쪽 내린 엉덩이 = 왼쪽 아래 큰 숫자 · 두 사선이 엇갈려 긴장
+   입체 = 평평한 면 네 단(색마다 path 하나) · 어두운 면에만 가는 빗금 · 윤곽선 굵기(빛 쪽 가늘게 · 그늘 쪽 굵게)
+   그림자 · 그러데이션 · 흐림 · 3D 변환 0 · 바늘은 0 에 멈춤
+   ── 바탕 x3 페라리 판 「멈춘 바늘」(사장님 2026-10-19 09:59 · 토론 docs/design/kakao-2026-10-19/sexy/debate.md 2차 페라리 수정)
+   매혹 = 정밀한 계기 · 바늘은 0 에 멈춤(멈추는 힘) · 가는 눈금 · 단단한 글씨 · 가는 선 무늬(탄소 짜임 · 칠 번짐 없음)
+   노랑 = 0 눈금 한 줄뿐 · 칠한 노랑 단추 0 · 빨강은 오름 숫자 · 오름 막대에만 · 기울임 · 속도선 0 */
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--line:#2E2E2E;--edge:#8A8A8A;--up:#FF6A3D;--dn:#6C86FF;--mod:#F9D21C}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+/* 탄소 짜임 — 가는 선 두 겹(칠 번짐 아님 · 그림 무늬) */
+.carbon{background-color:#080808;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M0 8L8 0M-2 2L2 -2M6 10L10 6' stroke='%23151515' stroke-width='1.2'/%3E%3Cpath d='M0 0L4 4' stroke='%230E0E0E' stroke-width='1'/%3E%3C/svg%3E")}
+/* ① 위 막대 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px;border-bottom:1px solid #1B1B1B}
+.solo,.group{background:#141414;border:1px solid #2A2A2A;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px;letter-spacing:.01em}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:20px;font-weight:700;letter-spacing:.14em;text-indent:.14em;white-space:nowrap}
+#view{position:relative;padding:0 16px;display:flex;flex-direction:column;min-height:calc(100vh - 128px);min-height:calc(100svh - 128px)}
+/* ② 제목 + 멈춘 바늘 */
+.hd{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding-top:0;position:relative;z-index:1}
+.hd>div{padding-bottom:10px}
+.h1{font-size:48px;font-weight:800;line-height:1;letter-spacing:-.035em}
+.dial{flex:0 0 auto;width:166px;height:130px;display:block;margin-right:-10px;margin-top:-2px}
+.askrow{position:relative;z-index:1;display:flex;align-items:center;gap:8px;margin-top:0}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#161616;border:1px solid #262626;border-radius:22px 22px 22px 6px;padding:8px 16px;font-size:19px;font-weight:500;line-height:1.3;white-space:nowrap;letter-spacing:-.01em}
+.say .who{flex:0 0 auto;font-size:17px;color:#A6A6A6;padding-right:8px;border-right:1px solid #3A3A3A}
+.ic{margin-left:auto;flex:0 0 auto;width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center}
+/* ③ 읽는 곳 — 실 대신 가는 자(눈금) · 번호는 계기 테 */
+.story{z-index:1;list-style:none;position:relative;margin-top:4px}
+.story::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='8'%3E%3Cpath d='M.5 0V8M.5 .5H4' stroke='%23343434' stroke-width='1'/%3E%3C/svg%3E") repeat-y}
+.ch{position:relative;padding-left:40px}
+.ch+.ch{margin-top:6px;padding-top:8px;border-top:1px solid #1B1B1B}
+.no{position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;line-height:1;color:#FFFFFF}
+.ch+.ch .no{top:9px}
+.lbl{display:flex;align-items:baseline;gap:8px;white-space:nowrap;min-height:27px}
+.lbl .t{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.02em}
+.lbl .sub{margin-left:auto;font-size:17px;color:#BDBDBD;font-weight:600}
+.v{font-weight:300;line-height:1;letter-spacing:-.03em}
+.lb{font-size:17px;color:#BDBDBD;line-height:1.2;font-weight:500}
+.ghostbtn{min-height:48px;padding:0 14px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF;white-space:nowrap;font-weight:500}
+.ess p{font-size:19px;line-height:1.55;word-break:keep-all;padding-right:56px;font-weight:500;letter-spacing:-.015em}
+.ess{position:relative}
+.ess details summary{position:absolute;right:0;top:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid #8A8A8A;border-radius:24px;cursor:pointer;list-style:none}
+.ess details summary::-webkit-details-marker{display:none}
+.ess details[open] summary svg{transform:rotate(180deg)}
+.ess details p{font-size:17px;color:#D6D6D6;margin-top:6px;padding-right:0;font-weight:400}
+.pill a{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;column-gap:8px;min-height:48px;font-size:17px;font-weight:400;letter-spacing:-.01em}
+.pill .q{font-weight:700}
+/* 사실 두 줄 — 숫자 · 정밀 자 · 「왜 그럴까?」 */
+.facts{display:flex;flex-direction:column}
+.facts .f{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0}
+.facts .f>span[data-num]{display:flex;align-items:baseline;gap:12px}
+.facts .lb{min-width:52px}
+.facts .v{font-size:38px}
+.facts .f.hip>span[data-num]{padding-left:22px}
+.facts .f.hip .v{font-size:42px}
+/* 가는 자 한 줄 — 두 사실 사이 · 길이 = 곳 수(오른 곳 | 내린 곳) · 눈금은 그림 무늬 한 장 */
+.split{position:relative;height:12px;margin:2px 0;display:flex;align-items:flex-start;gap:3px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='12'%3E%3Cpath d='M.5 6V12' stroke='%232E2E2E' stroke-width='1'/%3E%3C/svg%3E") repeat-x}
+.split i{display:block;height:2px;margin-top:2px}
+.split .gu{background:#FF6A3D}.split .gd{background:#6C86FF}
+.facts .qs{display:none;flex-basis:100%;font-size:17px;color:#D6D6D6}
+.facts .f.open{flex-wrap:wrap}
+.facts .f.open .qs{display:block}
+.ghost{display:inline-flex;align-items:center;gap:8px;min-height:44px;border:1px dashed #8A8A8A;border-radius:6px 22px 22px 22px;padding:4px 16px;font-size:19px;font-weight:500;line-height:1.2;white-space:nowrap}
+.ghost .now{display:none}
+.back .ghost{border-style:solid;border-color:#1E1E1E;background:#1E1E1E}
+.back .ghost .was{display:none}.back .ghost .now{display:inline}
+.mem{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:17px;color:#BDBDBD;white-space:nowrap}
+.evo{display:flex;align-items:center;gap:10px;min-height:48px;margin-top:2px;font-size:17px;color:#D6D6D6}
+.evo b{font-size:20px;font-weight:700;color:#FFFFFF;white-space:nowrap;letter-spacing:-.02em}
+.evo .when2{flex:1;white-space:nowrap}
+.evo .go{font-size:24px;color:#BDBDBD}
+/* 엇갈린 사선 둘 — 어깨(계기)에서 엉덩이(숫자)로 · 반대쪽으로 한 줄 더 · 가는 선 */
+.tense{position:absolute;left:0;right:0;top:0;height:560px;width:100%;pointer-events:none;z-index:0}
+/* ④ 엄지 자리 — 탄소 짜임 판 · 칠한 단추는 흰 「시작」 하나 */
+.dock{position:sticky;bottom:64px;z-index:2;margin:auto -16px 0;padding:10px 16px 6px;border-top:1px solid #2E2E2E}
+.find .bar{height:60px;border:1px solid #8A8A8A;border-radius:30px;display:flex;align-items:center;padding:0 5px 0 18px;gap:8px;background:#080808}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-weight:500}
+.find input::placeholder{color:#BDBDBD}
+.find button{flex:0 0 auto;height:48px;min-width:84px;border-radius:24px;background:#F2F2F2;color:#080808;font-weight:800;font-size:19px;padding:0 20px;letter-spacing:.02em}
+.txt{display:flex;align-items:stretch;justify-content:space-between;margin-top:2px;position:relative;gap:4px}
+.txt a,.txt summary{min-height:48px;min-width:48px;display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap;cursor:pointer;list-style:none;font-weight:500}
+.txt summary::-webkit-details-marker{display:none}
+.all ul{list-style:none;position:absolute;left:0;right:0;bottom:calc(100% + 72px);background:#141414;border:1px solid #3A3A3A;border-radius:20px;padding:0 12px;z-index:3}
+.all li+li{border-top:1px solid #3A3A3A}
+.all li a{display:flex;justify-content:flex-start;min-height:52px;align-items:center;padding:0 4px;font-size:17px;color:#FFFFFF}
+.all li a b{font-weight:700;margin:0 2px}
+.all[open] summary{color:#FFFFFF;text-decoration:underline;text-underline-offset:5px}
+/* ⑤ 아래 단추 다섯 */
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a::after{content:"";width:18px;height:2px;background:transparent}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+.tabs a[aria-current]::after{background:#FFFFFF}
+@media (max-width:359px){
+ .top{padding:0 8px}.ttl{font-size:18px;letter-spacing:.08em;text-indent:.08em}
+ #view{padding:0 10px}.dock{margin:auto -10px 0;padding:8px 10px 6px}
+ .h1{font-size:38px}.dial{width:118px;height:92px}.tense{height:520px}
+ .say{white-space:normal;font-size:17px}
+ .ess p{font-size:17px}
+ .ch{padding-left:36px}.lbl{flex-wrap:wrap;white-space:normal}.lbl .sub{margin-left:0}
+ .pill a{flex-wrap:wrap;white-space:normal}
+ .facts .v{font-size:28px}.facts .f>span[data-num]{gap:8px}
+ .ghost{white-space:normal}
+ .evo{flex-wrap:wrap}.evo .when2{flex:1 1 100%;order:3}
+ .find .bar{padding-left:12px}.find input{font-size:17px}.find button{min-width:64px;padding:0 12px;font-size:17px}
+ .txt a,.txt summary{padding:0 2px;letter-spacing:-0.04em}.tabs a{letter-spacing:-0.07em}
+}
+</style>
+</head>
+<body>
+<header class="top carbon">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<svg class="tense" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M86 12L13 87M5 5L96 82" fill="none" stroke="#262626" stroke-width="1" vector-effect="non-scaling-stroke"/><path d="M86 12L84.2 13.6M13 87L14.8 85.4" fill="none" stroke="#5A5A5A" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
+<div class="hd"><div><h1 class="h1">왜 사?</h1></div>
+<svg class="dial" viewBox="4 -6 112 88" role="img" aria-label="꽃돌이 계기 · 바늘은 0에 멈춰 있어요 · 사기 전에 한 번 멈춤">
+  <defs><pattern id="cf" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0" stroke="#161616" stroke-width="1"/><path d="M0 0L2 2" stroke="#0E0E0E" stroke-width=".8"/></pattern></defs>
+  <circle cx="60" cy="50" r="45.5" fill="url(#cf)"/>
+  <!-- 깎은 테: 면 네 단 · 색마다 path 하나 -->
+  <path d="M21.45 76.00L11.37 62.46L14.96 61.54ZM14.96 61.54L11.37 62.46L9.83 51.65ZM14.96 61.54L9.83 51.65L13.53 51.53ZM13.53 51.53L9.83 51.65L13.23 31.76ZM13.53 51.53L13.23 31.76L16.68 33.10ZM16.68 33.10L13.23 31.76L19.63 20.16ZM16.68 33.10L19.63 20.16L22.61 22.36ZM22.61 22.36L19.63 20.16L37.40 5.18ZM22.61 22.36L37.40 5.18L39.06 8.48ZM39.06 8.48L37.40 5.18L48.38 1.16ZM39.06 8.48L48.38 1.16L49.24 4.76ZM49.24 4.76L48.38 1.16L67.01 0.29ZM49.24 4.76L67.01 0.29L66.49 3.96ZM98.43 17.70L108.18 26.74L105.21 28.18ZM105.21 28.18L108.18 26.74L113.28 45.10ZM105.21 28.18L113.28 45.10L109.99 45.41ZM109.99 45.41L113.28 45.10L112.21 61.66ZM109.99 45.41L112.21 61.66L108.99 60.94ZM108.99 60.94L112.21 61.66L104.35 79.92ZM108.99 60.94L104.35 79.92L101.62 78.07Z" fill="#161616"/>
+  <path d="M18.38 78.07L8.17 63.28L11.37 62.46ZM21.45 76.00L18.38 78.07L11.37 62.46ZM66.49 3.96L67.01 0.29L81.20 4.50ZM66.49 3.96L81.20 4.50L79.64 7.85ZM81.20 4.50L82.59 1.50L100.96 15.58ZM81.20 4.50L100.96 15.58L98.43 17.70ZM79.64 7.85L81.20 4.50L98.43 17.70ZM79.64 7.85L98.43 17.70L95.60 20.08ZM98.43 17.70L100.96 15.58L108.18 26.74ZM95.60 20.08L105.21 28.18L101.88 29.78Z" fill="#232323"/>
+  <path d="M18.38 78.07L15.65 79.92L8.17 63.28ZM11.37 62.46L8.17 63.28L6.53 51.76ZM11.37 62.46L6.53 51.76L9.83 51.65ZM13.23 31.76L16.98 18.20L19.63 20.16ZM48.38 1.16L67.47 -2.98L67.01 0.29ZM95.60 20.08L98.43 17.70L105.21 28.18ZM101.88 29.78L105.21 28.18L109.99 45.41ZM101.88 29.78L109.99 45.41L106.30 45.74ZM105.38 60.14L101.62 78.07L98.55 76.00Z" fill="#323232"/>
+  <path d="M9.83 51.65L6.53 51.76L10.16 30.56ZM9.83 51.65L10.16 30.56L13.23 31.76ZM13.23 31.76L10.16 30.56L16.98 18.20ZM19.63 20.16L16.98 18.20L35.91 2.23ZM19.63 20.16L35.91 2.23L37.40 5.18ZM37.40 5.18L35.91 2.23L47.62 -2.05ZM37.40 5.18L47.62 -2.05L48.38 1.16ZM48.38 1.16L47.62 -2.05L67.47 -2.98ZM67.01 0.29L67.47 -2.98L82.59 1.50ZM67.01 0.29L82.59 1.50L81.20 4.50ZM106.30 45.74L109.99 45.41L108.99 60.94ZM106.30 45.74L108.99 60.94L105.38 60.14ZM105.38 60.14L108.99 60.94L101.62 78.07Z" fill="#474747"/>
+  <path d="M14.19 60.05L10.98 58.80M13.78 57.96L10.63 56.56M13.47 55.86L10.39 54.32M13.25 53.74L10.24 52.06M13.10 49.91L10.24 47.99M13.15 47.78L10.38 45.73M13.30 45.66L10.63 43.49M13.55 43.54L10.97 41.25M13.89 41.44L11.42 39.04M14.32 39.36L11.97 36.85M14.85 37.30L12.61 34.68M15.48 35.26L13.36 32.55M16.93 31.44L15.05 28.55M17.81 29.51L16.07 26.54M18.79 27.61L17.18 24.57M19.85 25.77L18.38 22.65M20.99 23.97L19.66 20.79M23.28 20.82L22.23 17.54M24.64 19.18L23.74 15.86M26.08 17.61L25.33 14.25M27.58 16.11L26.99 12.72M29.15 14.67L28.71 11.26M30.79 13.31L30.50 9.88M32.48 12.02L32.35 8.58M34.23 10.81L34.26 7.37M36.04 9.68L36.22 6.25M37.89 8.64L38.23 5.21M40.36 7.41L40.89 4.01M42.31 6.57L43.00 3.19M44.30 5.81L45.14 2.47M46.32 5.14L47.31 1.84M50.74 4.02L52.05 0.84M52.84 3.65L54.29 0.53M54.95 3.37L56.54 0.32M57.07 3.19L58.80 0.21M59.20 3.11L61.06 0.21M61.32 3.12L63.32 0.31M63.45 3.23L65.57 0.51M65.57 3.43L67.81 0.82M106.31 29.61L109.38 30.48M107.19 31.73L110.22 32.74M107.97 33.89L110.95 35.03M108.65 36.08L111.57 37.36M109.23 38.30L112.09 39.71M109.71 40.54L112.51 42.09M110.09 42.81L112.81 44.48M110.52 47.13L113.09 49.03M110.60 49.42L113.08 51.43M110.57 51.72L112.96 53.84M110.44 54.01L112.73 56.24M110.21 56.30L112.39 58.63M109.87 58.57L111.95 60.99M108.97 62.75L110.84 65.34M108.34 64.95L110.09 67.63M107.61 67.13L109.24 69.88M106.79 69.27L108.28 72.10M105.86 71.38L107.23 74.26M104.85 73.43L106.08 76.38M103.74 75.45L104.84 78.44M102.54 77.40L103.50 80.45" fill="none" stroke="#3C3C3C" stroke-width=".45" stroke-linecap="round"/>
+  <path d="M21.45 76.00L15.65 79.92M14.96 61.54L8.17 63.28M13.53 51.53L6.53 51.76M16.68 33.10L10.16 30.56M22.61 22.36L16.98 18.20M39.06 8.48L35.91 2.23M49.24 4.76L47.62 -2.05M66.49 3.96L67.47 -2.98M79.64 7.85L82.59 1.50M95.60 20.08L100.96 15.58M101.88 29.78L108.18 26.74M106.30 45.74L113.28 45.10M105.38 60.14L112.21 61.66M98.55 76.00L104.35 79.92" fill="none" stroke="#0A0A0A" stroke-width=".5"/>
+  <path d="M15.65 79.92A53.5 53.5 0 0 1 50.71 -2.69" fill="none" stroke="#9A9A9A" stroke-width=".45"/>
+  <path d="M50.71 -2.69A53.5 53.5 0 0 1 104.35 79.92" fill="none" stroke="#6A6A6A" stroke-width="1.7"/>
+  <path d="M21.45 76.00A46.5 46.5 0 1 1 98.55 76.00" fill="none" stroke="#050505" stroke-width=".9"/>
+  <path d="M30.56 67.00A34 34 0 1 1 89.44 67.00" fill="none" stroke="#2A2A2A" stroke-width=".6"/>
+  <path d="M17.98 68.71L21.63 67.08M16.25 64.21L20.06 62.98M15.01 59.56L18.92 58.73M14.25 54.81L18.23 54.39M14.00 50.00L22.00 50.00M14.25 45.19L18.23 45.61M15.01 40.44L18.92 41.27M16.25 35.79L20.06 37.02M17.98 31.29L21.63 32.92M20.16 27.00L27.09 31.00M22.79 22.96L26.02 25.31M25.82 19.22L28.79 21.90M29.22 15.82L31.90 18.79M32.96 12.79L35.31 16.02M37.00 10.16L41.00 17.09M41.29 7.98L42.92 11.63M45.79 6.25L47.02 10.06M50.44 5.01L51.27 8.92M55.19 4.25L55.61 8.23M60.00 4.00L60.00 12.00M64.81 4.25L64.39 8.23M69.56 5.01L68.73 8.92M74.21 6.25L72.98 10.06M78.71 7.98L77.08 11.63M83.00 10.16L79.00 17.09M87.04 12.79L84.69 16.02M90.78 15.82L88.10 18.79M94.18 19.22L91.21 21.90M97.21 22.96L93.98 25.31M99.84 27.00L92.91 31.00M102.02 31.29L98.37 32.92M103.75 35.79L99.94 37.02M104.99 40.44L101.08 41.27M105.75 45.19L101.77 45.61M106.00 50.00L98.00 50.00M105.75 54.81L101.77 54.39M104.99 59.56L101.08 58.73M103.75 64.21L99.94 62.98M102.02 68.71L98.37 67.08M99.84 73.00L92.91 69.00" fill="none" stroke="#B4B4B4" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M19.30 73.50L28.82 68.00" stroke="#F9D21C" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="25.4" cy="74.7" r="1.4" fill="#5A5A5A"/>
+  <path d="M67.79 45.50L25.36 70.00" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+  <g transform="translate(60 50)" fill="#080808" stroke="#FFFFFF" stroke-width=".9"><ellipse cx="0" cy="-4.2" rx="2.3" ry="3.6"/><ellipse cx="0" cy="-4.2" rx="2.3" ry="3.6" transform="rotate(60)"/><ellipse cx="0" cy="-4.2" rx="2.3" ry="3.6" transform="rotate(120)"/><ellipse cx="0" cy="-4.2" rx="2.3" ry="3.6" transform="rotate(180)"/><ellipse cx="0" cy="-4.2" rx="2.3" ry="3.6" transform="rotate(240)"/><ellipse cx="0" cy="-4.2" rx="2.3" ry="3.6" transform="rotate(300)"/><circle r="2" fill="#FFFFFF" stroke="none"/></g>
+  <text x="29" y="61" font-size="17" font-weight="300" fill="#BDBDBD" font-family="Pretendard Variable, sans-serif">0</text>
+</svg></div>
+<div class="askrow"><p class="say"><span class="who">꽃돌이</span><span data-say>첫 질문을 해 볼까?</span></p><button class="ic" type="button" aria-label="친구에게 보내기"><svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"><path d="M11 14V3M6.5 7.5L11 3l4.5 4.5M4 12v6h14v-6"/></svg></button></div>
+<ol class="story" aria-label="하는 일 셋">
+  <li class="ch">
+  <span class="no" aria-hidden="true">1</span>
+  <section class="ess" data-w="ess">
+    <p data-ess="1">주식을 사기 전에 <span class="nw">「왜 사?」</span> 열한 질문으로 내 이유부터 확인해요.</p>
+    <details>
+      <summary aria-label="더 보기"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l5 5 5-5"/></svg></summary>
+      <p data-ess="2">앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.</p>
+      <p data-ess="3">사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: ?.</p>
+    </details>
+  </section>
+  </li>
+  <li class="ch">
+    <span class="no" aria-hidden="true">2</span>
+    <div data-w="news">
+      <h2 class="lbl"><span class="t">지난 기록만</span><span class="sub">10월 13일</span></h2>
+      <div class="pill" data-w="today"><a data-num href="#/f/day"><span class="q">?</span><span>10월 12일</span><span class="dn">코스피 −3.28%</span><span class="dn">코스닥 −4.36%</span></a></div>
+      <div class="facts" role="list" aria-label="가운데 가는 자 = 오른 곳과 내린 곳의 곳 수 길이">
+        <div class="f" role="listitem" data-fact><span data-num><span class="lb">오른 곳</span><span class="v up">766</span></span><button class="ghostbtn" type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></div>
+        <div class="split" aria-hidden="true"><i class="gu" style="flex:766 1 0"></i><i class="gd" style="flex:1632 1 0"></i></div>
+        <div class="f hip" role="listitem" data-fact><span data-num><span class="lb">내린 곳</span><span class="v dn">1,632</span></span><button class="ghostbtn" type="button">왜 그럴까?</button><span class="qs">누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?</span></div>
+      </div>
+    </div>
+  </li>
+  <li class="ch">
+    <span class="no" aria-hidden="true">3</span>
+    <p class="ghost" aria-label="아직 빈 자리 · 첫 기록이 생기면 한 달 뒤 꽃돌이가 여기서 물어요"><span class="was">한 달 뒤 물어볼게요</span><span class="now" data-say>그날 정한 대로 했어?</span></p>
+    <p class="mem"><svg width="14" height="16" viewBox="0 0 16 18" fill="none" stroke="#BDBDBD" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="8" width="13" height="9" rx="2"/><path d="M4.5 8V5.5a3.5 3.5 0 0 1 7 0V8"/></svg>기록은 이 기기에만</p>
+    <a class="evo" href="#/jinhwa" aria-label="진화 칸 열기 · 「끝낸 수가 는다」 · 사장님 확인으로만"><b>진화 1번째</b><span class="when2">10월 31일쯤 채점</span><span class="go" aria-hidden="true">›</span></a>
+  </li>
+</ol>
+<div class="dock carbon" aria-label="누르는 곳">
+  <form class="find" data-w="find" onsubmit="return false"><div class="bar">
+    <input type="search" placeholder="친구야, 왜 사?" aria-label="친구야, 왜 사? 회사 이름을 넣어요">
+    <button type="submit" data-path="q1" aria-label="열한 질문 시작">시작</button>
+  </div></form>
+  <div class="txt">
+  <nav class="txt" data-w="gdr" aria-label="꽃돌이 칸" style="flex:1;margin:0;justify-content:space-around">
+    <a href="#/cal">달력</a><a href="#/cond">조건</a><a href="#/lead">대장주</a>
+  </nav>
+  <details class="all">
+    <summary data-w="all">전부 보기</summary>
+    <ul>
+      <li><a href="#/why" data-num>내 기록 · <b>0</b>번 멈춤 · <b>0</b>번 약속</a></li>
+      <li><a href="#/watch">관심</a></li>
+      <li><a href="#/hold">보유</a></li>
+      <li><a href="#/f/rise">오르는 업종 · 반도체 검사·측정 +4.73%</a></li>
+      <li><a href="#/surge">급등</a></li>
+    </ul>
+  </details>
+  </div>
+</div>
+</main>
+<nav class="tabs"><a href="#/" aria-current="page">오늘 장</a><a href="#/news">시황</a><a href="#/why">매매일지</a><a href="#/watch">관심</a><a href="#/hold">보유종목</a></nav>
+<script>
+/* 다시 온 나 — 시안은 ?back=1 로만 미리 봄(지어낸 기록 없음) */
+if (/[?&]back=1/.test(location.search)) document.body.classList.add('back');
+document.querySelectorAll('[data-fact] button').forEach(b=>b.addEventListener('click',()=>b.closest('[data-fact]').classList.toggle('open')));
+</script>
+</body>
+</html>
