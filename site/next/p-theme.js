@@ -22,7 +22,9 @@ function load(name) {
     .then(j => { const ok = j && typeof j.schema === 'string' && j.schema.startsWith('dori-theme-1'); C[name].v = ok ? j : null; return ok ? j : null; });
   C[name] = {p, v: null, t: Date.now()}; return p;
 }
-export const themeData = () => load('theme.json');
+const okTheme = j => !!j && j.schema === 'dori-theme-1' && Array.isArray(j.inds) && j.order && j.count;
+/** 첫 화면 자료 — app.js 공용 받기(need('theme') · 모듈과 같이 받음 · 15초 뒤 다시) */
+export const themeData = () => (nx()?.need ? nx().need('theme').then(j => (okTheme(j) ? j : null)).catch(() => null) : load('theme.json'));
 const moreData = () => load('theme-more.json');
 const indOf = (TH, n) => TH?.inds?.find(i => i.n === n) ?? null;
 const zw = z => ZONES[z] ?? '?';

@@ -53,7 +53,7 @@ function odd(l) {
 }
 
 /* 자료 — 못 받으면 null(화면은 「?」) · 15초 뒤 다시 받아 봄 */
-const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json'}; // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
+const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json'}; // theme = 테마 시계(올릴 때 셈 · p-theme.js 가 need('theme') 로 같이 씀 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
 const D = {}, failAt = {}, inflight = {};
 function need(k) {
   if (D[k] != null) return Promise.resolve(D[k]);
@@ -562,7 +562,10 @@ async function vHomeAll() {
   // 테마 시계(사장님 2026-10-19 16:06 「이 본질이 중심이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」) — 맨 위 = 테마 시계(p-theme.js homeBlock · 견본 flow36 둘째 장) · 그 아래 읽는 곳 셋 · 엄지 자리 · 진화는 그대로
   const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '테마 시계'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 150, height: 120, decoding: 'async'}));
   const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '지금 몇 시 자리일까?'})), kk);
-  const theme = await mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); return m.homeBlock(); }).catch(() => h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
+  // 첫 그림은 테마 칸을 기다리지 않음(느린 4G 가장 큰 그림 2.5초 — check_white ③) — 자리(aria-busy · 높이 잡아 둠)만 먼저 · 모듈 · 자료가 오면 그 자리를 갈아 끼움(밀림 0)
+  const theme = h('section', {class: 'th-home', 'data-w': 'theme', 'aria-label': '테마 시계', 'aria-busy': 'true'});
+  mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); const b = await m.homeBlock(); if (theme.isConnected) theme.replaceWith(b); else theme.replaceChildren(...b.childNodes); theme.removeAttribute('aria-busy'); })
+    .catch(() => { theme.removeAttribute('aria-busy'); theme.replaceChildren(h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})); });
   const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
   const month = await monthLine(C);
   const ess = essCard(essenceBox(false), C); // 멈춤 · 약속 수(w-cnt)는 ③ 줄로 옮김(한 화면에 들게)
@@ -658,7 +661,7 @@ function shelf(fs) {
 async function vHome(chip) {
   if (!chipPage(chip)) chip = 'all';
   // 첫 줄 자료([9] 7): 첫 화면 = home.json(7KB) + 요약(home-summary.json · 3KB)만 · 「더 보기」도 요약으로(옛것이면 core 하나) · mkt · cond 는 대장주 · 고른 곳 칩(vChip) · 그 화면을 열 때만 · 요약이 없거나 옛것이어도 첫 화면은 home.json 으로 그림
-  if (chip === 'all') { await Promise.all([need('home'), need('sum'), mod('theme').then(m => m.themeData()).catch(() => null)]); return vHomeAll(); } // 테마 시계 자료(/next/data/theme.json)도 같이 받음 — 첫 화면은 mkt · cond 를 받지 않음([9] 7) // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll)
+  if (chip === 'all') { need('theme'); mod('theme').catch(() => null); await Promise.all([need('home'), need('sum')]); return vHomeAll(); } // 테마 시계 모듈 · 자료(/next/data/theme.json)는 함께 받기 시작만(첫 그림은 기다리지 않음) — 첫 화면은 mkt · cond 를 받지 않음([9] 7) // 테마 시계 자료(/next/data/theme.json)도 같이 받음 — 첫 화면은 mkt · cond 를 받지 않음([9] 7) // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll)
   return vChip(chip);
 }
 /** 칩 쪽(#/f/…) — 칩마다 제 자료만 받음 · 맨 앞 하나만 큰 카드 + 한 줄 목록 10줄 + 「나머지 n곳 보기」([7] 5) · 급등은 반값 한 줄([6] 6) · 「1등」 말 · 보내기 없음([6] 5) */
