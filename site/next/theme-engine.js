@@ -74,8 +74,10 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
       return {c, d10, a5, b5};
     }).filter(r => r.d10 != null).sort((p, q) => q.d10 - p.d10 || (p.c < q.c ? -1 : 1));
     const line = c => { const a = closes.get(c), b = a[T - RULE.back]; if (!ok(b)) return null; const out = []; let last = b; for (let t = T - RULE.back; t <= T; t++) { if (ok(a[t])) last = a[t]; out.push(Math.round(last / b * 1000)); } return out; };
-    const top = rows.slice(0, RULE.top).map((r, k) => ({c: r.c, n: companies[r.c].n, d10: r2(r.d10 * 100), a5: r2(r.a5 * 100), b5: r2(r.b5 * 100), rank: k + 1, gap: r2((r.d10 - (rows[k + 1]?.d10 ?? NaN)) * 100), l: line(r.c)}));
-    const big = u.bigCodes.map(c => ({c, n: companies[c].n, rk: rk.get(c), d10: r2((chg10(closes.get(c), T) ?? NaN) * 100)}));
+    const full = (r, k) => ({c: r.c, n: companies[r.c].n, d10: r2(r.d10 * 100), a5: r2(r.a5 * 100), b5: r2(r.b5 * 100), rank: k + 1, gap: r2((r.d10 - (rows[k + 1]?.d10 ?? NaN)) * 100), l: line(r.c)});
+    const top = rows.slice(0, RULE.top).map(full);
+    // 큰 회사 셋도 같은 칸(결정표 5 · v1.2) — 줄(d10 차례)에 없으면(튄 회사 · 값 빔) 숫자 칸은 모두 없음
+    const big = u.bigCodes.map(c => { const k = rows.findIndex(r => r.c === c); return k < 0 ? {c, n: companies[c].n, rk: rk.get(c), d10: null, a5: null, b5: null, rank: null, gap: null, l: null} : {...full(rows[k], k), rk: rk.get(c)}; });
     return {
       _x: x, _y: y, n: u.n, g: gOf.get(u.n) ?? null, gn: gName.get(gOf.get(u.n)) ?? null, k: cs.length, z, x: r2(x), y: r2(y), d, t: tail, tz,
       dots: D0.dots.map(Number), sc: D0.dots.filter(Boolean).length, up: D0.up, tot: D0.tot, sp: series, sp5: series[series.length - 6], peak: Math.max(...series),
