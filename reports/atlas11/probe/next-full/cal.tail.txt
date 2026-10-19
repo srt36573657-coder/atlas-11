@@ -1,13 +1,1 @@
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-
-page.reload: Timeout 30000ms exceeded.
-Call log:
-  - waiting for navigation until "load"
-
-    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_cal.mjs:281:12 {
-  name: 'TimeoutError'
-}
-
-Node.js v22.23.3
+{"ok":true,"took_s":111,"limit":"all","wide":"all","time":{"old":23.4,"new":75.6,"wall":110.8,"opensOld":974,"opensNew":2377,"oldPct":21.1,"oldShare":23.7},"net":{"req":5,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"맞댄 화면":490,"맞댄 줄":81306,"맞댄 숫자 낱말":55534,"맞댄 고리":21226,"맞댄 그림 이름":1258,"종목 파일":460,"없는 주소 · 밖 번호":4,"바꿔치기":8,"세 폭 화면":1389,"칸 고르기 줄":1930}}
