@@ -32,8 +32,8 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .when b{color:#FFFFFF;font-weight:700}
 .flower{flex:0 0 auto;width:46px;height:50px;display:block}
 .askrow{display:flex;align-items:center;gap:8px;margin-top:10px}
-.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#1E1E1E;border-radius:22px 22px 22px 6px;padding:6px 16px 6px 7px;font-family:"Gowun Batang",serif;font-size:19px;line-height:1.3;white-space:nowrap}
-.say img{width:30px;height:30px;flex:0 0 auto}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#1E1E1E;border-radius:22px 22px 22px 6px;padding:9px 16px;font-family:"Gowun Batang",serif;font-size:19px;line-height:1.3;white-space:nowrap}
+.say .who{flex:0 0 auto;font-family:"Pretendard Variable","Apple SD Gothic Neo",sans-serif;font-size:17px;color:#A6A6A6;padding-right:8px;border-right:1px solid #3A3A3A}
 .ic{margin-left:auto;flex:0 0 auto;width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center}
 /* ③ 읽는 곳 — 가는 실 한 가닥 · 마디 번호 · 숫자는 크게 단위는 작게 */
 .story{list-style:none;position:relative;margin-top:14px}
@@ -57,6 +57,9 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .txt a,.txt summary{min-height:48px;min-width:48px;display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap;cursor:pointer;list-style:none}
 .txt summary::-webkit-details-marker{display:none}
 .seg{display:flex;gap:2px;margin-bottom:8px}
+.krow{display:flex;align-items:center;gap:6px;padding-bottom:4px}
+.krow .key{flex:1 1 auto;width:auto}
+.krow .side{flex:0 0 auto;min-height:48px;display:flex;align-items:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap}
 .seg a{flex:1 1 0;min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#BDBDBD;border:1px solid transparent;border-radius:24px;white-space:nowrap}
 .seg a[aria-current]{border-color:#FFFFFF;color:#FFFFFF;font-weight:700}
 /* ⑤ 아래 단추 다섯 — 지금 칸은 흰 글 + 흰 밑줄(색 없음) */
@@ -73,16 +76,17 @@ button,input{font:inherit;color:inherit;background:none;border:0}
  .txt a,.txt summary{padding:0 2px;letter-spacing:-0.04em}.tabs a{letter-spacing:-0.07em}
 }
 
+.seg.mini{margin:0 0 0 auto;gap:0}.seg.mini a{flex:0 0 auto;min-width:56px;padding:0 8px}
 .kv{display:flex;align-items:baseline;gap:10px;margin-top:4px}
 .kv .lead{font-size:19px}
-.kv .v{font-size:44px}
-.chart{display:block;width:100%;margin-top:8px}
+.kv .v{font-size:40px}
+.chart{display:block;width:100%;margin-top:6px;height:84px!important}
 .ax{display:flex;justify-content:space-between;font-size:17px;color:#BDBDBD;margin-top:2px}
 .lg{display:flex;gap:16px;font-size:17px;margin-top:4px;flex-wrap:wrap}
 .lg span{display:inline-flex;align-items:center;gap:6px}
 .lg b{font-family:"Gowun Batang",serif;font-weight:400}
 .garden2{display:flex;align-items:center;gap:12px;margin-top:4px}
-.sun{width:104px;height:104px;flex:0 0 auto}
+.sun{width:96px;height:96px;flex:0 0 auto}
 .nums{flex:1}
 .nums .r{display:flex;align-items:baseline;justify-content:space-between;padding:2px 0}
 .nums .r+.r{border-top:1px solid #1E1E1E}
@@ -112,11 +116,11 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 <use href="#g3-bloom" transform="translate(276 30) rotate(10) scale(.9)"/>
 
 </g></svg></div>
-<div class="askrow"><p class="say" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">누가 팔았을까?</p></div>
+<div class="askrow"><p class="say"><span class="who">꽃돌이</span><span data-say>누가 팔았을까?</span></p></div>
 <ol class="story" aria-label="오늘 시장 둘">
   <li class="ch">
     <span class="no" aria-hidden="true">1</span>
-    <h2 class="lbl"><span class="t">시장</span><span class="sub">3달 · 첫날 = 0%</span></h2>
+    <div class="lbl" style="align-items:center"><h2 class="t">시장</h2><nav class="seg mini" aria-label="기간"><a href="#/today?w=1">1주</a><a href="#/today?w=m">1달</a><a href="#/today?w=3" aria-current="true">3달</a></nav></div>
     <div class="kv" data-num><span class="lead">코스피 하루</span><span class="v dn">−3.28<span class="u" style="color:#6C86FF">%</span></span></div>
     <p class="cap" style="color:#D6D6D6">평소의 2.5배 · 4거래일 잇달아 내렸어요</p>
     <svg class="chart" viewBox="0 14 282 142" preserveAspectRatio="none" style="height:116px" role="img" aria-label="3달 선 두 개 · 코스피 −5.9% · 코스닥 +6.8%">
@@ -125,7 +129,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
       <path d="M4.0 77.0 L8.6 74.3 L13.2 50.7 L17.7 76.3 L22.3 93.0 L26.9 80.3 L31.5 77.5 L36.0 61.0 L40.6 83.4 L45.2 79.8 L49.8 120.2 L54.3 140.1 L58.9 144.0 L63.5 88.7 L68.1 107.3 L72.6 101.7 L77.2 88.5 L81.8 105.2 L86.4 107.3 L90.9 105.0 L95.5 102.5 L100.1 89.6 L104.7 76.7 L109.3 67.6 L113.8 73.5 L118.4 95.5 L123.0 74.5 L127.6 71.2 L132.1 83.1 L136.7 80.5 L141.3 76.9 L145.9 71.2 L150.4 78.0 L155.0 76.3 L159.6 75.4 L164.2 90.5 L168.7 89.6 L173.3 83.6 L177.9 66.6 L182.5 68.9 L187.1 63.5 L191.6 64.5 L196.2 71.3 L200.8 83.8 L205.4 86.9 L209.9 81.9 L214.5 82.1 L219.1 72.2 L223.7 65.9 L228.2 65.4 L232.8 61.9 L237.4 72.4 L242.0 73.5 L246.5 75.3 L251.1 67.9 L255.7 66.1 L260.3 69.6 L264.8 77.2 L269.4 87.0 L274.0 99.0" fill="none" stroke="#F7F3E8" stroke-width="2.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
       
     </svg>
-    <div class="ax"><span>7월 13일</span><span>10월 12일</span></div>
+    <div class="ax"><span>7월 13일</span><span>첫날 = 0%</span><span>10월 12일</span></div>
     <div class="lg"><span><svg width="22" height="6"><path d="M0 3H22" stroke="#F7F3E8" stroke-width="2.4"/></svg>코스피 <b class="dn" data-num>−5.9%</b></span><span><svg width="22" height="6"><path d="M0 3H22" stroke="#BDB49C" stroke-width="2" stroke-dasharray="5 3"/></svg>코스닥 <b class="up" data-num>+6.8%</b></span></div>
   </li>
   <li class="ch">
@@ -144,9 +148,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   </li>
 </ol>
 <div class="dock" aria-label="누르는 곳">
-  <nav class="seg" aria-label="기간"><a href="#/today?w=1">1주</a><a href="#/today?w=m">1달</a><a href="#/today?w=3" aria-current="true">3달</a></nav>
-  <a class="key" href="#/today/flow">사고팔기 보기</a>
-  <div class="txt" style="justify-content:center"><a href="#/today/us">미국 마지막 장 ›</a></div>
+  <div class="krow"><a class="key" href="#/today/flow">사고팔기 보기</a><a class="side" href="#/today/us">미국 ›</a></div>
 </div>
 </main>
 <nav class="tabs"><a href="#/" aria-current="page">오늘 장</a><a href="#/shorts">시황</a><a href="#/why">매매일지</a><a href="#/sub">관심</a><a href="#/me">보유종목</a></nav>

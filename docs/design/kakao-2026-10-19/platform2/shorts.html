@@ -32,8 +32,8 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .when b{color:#FFFFFF;font-weight:700}
 .flower{flex:0 0 auto;width:46px;height:50px;display:block}
 .askrow{display:flex;align-items:center;gap:8px;margin-top:10px}
-.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#1E1E1E;border-radius:22px 22px 22px 6px;padding:6px 16px 6px 7px;font-family:"Gowun Batang",serif;font-size:19px;line-height:1.3;white-space:nowrap}
-.say img{width:30px;height:30px;flex:0 0 auto}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#1E1E1E;border-radius:22px 22px 22px 6px;padding:9px 16px;font-family:"Gowun Batang",serif;font-size:19px;line-height:1.3;white-space:nowrap}
+.say .who{flex:0 0 auto;font-family:"Pretendard Variable","Apple SD Gothic Neo",sans-serif;font-size:17px;color:#A6A6A6;padding-right:8px;border-right:1px solid #3A3A3A}
 .ic{margin-left:auto;flex:0 0 auto;width:48px;height:48px;border-radius:24px;border:1px solid #8A8A8A;display:flex;align-items:center;justify-content:center}
 /* ③ 읽는 곳 — 가는 실 한 가닥 · 마디 번호 · 숫자는 크게 단위는 작게 */
 .story{list-style:none;position:relative;margin-top:14px}
@@ -57,6 +57,9 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 .txt a,.txt summary{min-height:48px;min-width:48px;display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap;cursor:pointer;list-style:none}
 .txt summary::-webkit-details-marker{display:none}
 .seg{display:flex;gap:2px;margin-bottom:8px}
+.krow{display:flex;align-items:center;gap:6px;padding-bottom:4px}
+.krow .key{flex:1 1 auto;width:auto}
+.krow .side{flex:0 0 auto;min-height:48px;display:flex;align-items:center;padding:0 6px;font-size:17px;color:#D6D6D6;white-space:nowrap}
 .seg a{flex:1 1 0;min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#BDBDBD;border:1px solid transparent;border-radius:24px;white-space:nowrap}
 .seg a[aria-current]{border-color:#FFFFFF;color:#FFFFFF;font-weight:700}
 /* ⑤ 아래 단추 다섯 — 지금 칸은 흰 글 + 흰 밑줄(색 없음) */
@@ -108,7 +111,7 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 <use href="#g3-bloom" transform="translate(276 30) rotate(10) scale(.9)"/>
 
 </g></svg></div>
-<div class="askrow"><p class="say" data-say><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">다른 날에도 그랬을까?</p></div>
+<div class="askrow"><p class="say"><span class="who">꽃돌이</span><span data-say>다른 날에도 그랬을까?</span></p></div>
 <ol class="story" aria-label="사실 둘">
   <li class="ch">
     <span class="no" aria-hidden="true">1</span>
