@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-18T22:52:12.227Z",
+ "at": "2026-10-19T00:42:31.527Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,22 +14,22 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "past": true,
-  "rivals": true,
   "grow": true,
-  "surge": true,
-  "cal": true,
+  "rivals": true,
   "range": true,
+  "past": true,
+  "cal": true,
+  "surge": true,
   "cond": true,
   "talk": true,
   "up": true,
   "time": true,
   "info": true,
   "x": true,
-  "chx": true,
   "co": true,
-  "why": true,
+  "chx": true,
   "gdr": true,
+  "why": true,
   "share": true,
   "hold": true,
   "today": true
@@ -41,132 +41,132 @@
  "full": false,
  "units": {
   "total": 13403,
-  "hash": "0f52503d03e5350b",
+  "hash": "18fc46f92bb30511",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 271,
- "secondsSum": 2360,
+ "seconds": 285,
+ "secondsSum": 2392,
  "shards": [
   {
    "shard": "1/9",
-   "ok": true,
-   "fails": 0,
-   "routes": 1500,
-   "screens": 1500,
-   "mine": 1500,
-   "seconds": 265,
-   "secs": {
-    "open": 0.2,
-    "routes": 263.9
-   }
-  },
-  {
-   "shard": "2/9",
-   "ok": true,
-   "fails": 0,
-   "routes": 1500,
-   "screens": 1500,
-   "mine": 1500,
-   "seconds": 256,
-   "secs": {
-    "open": 0.2,
-    "routes": 255.7
-   }
-  },
-  {
-   "shard": "3/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1500,
    "screens": 1500,
    "mine": 1500,
    "seconds": 262,
    "secs": {
-    "open": 0.3,
+    "open": 0.2,
+    "routes": 261.3
+   }
+  },
+  {
+   "shard": "2/9",
+   "ok": false,
+   "fails": 2,
+   "routes": 1500,
+   "screens": 1500,
+   "mine": 1500,
+   "seconds": 262,
+   "secs": {
+    "open": 0.2,
     "routes": 260.8
    }
   },
   {
+   "shard": "3/9",
+   "ok": false,
+   "fails": 2,
+   "routes": 1500,
+   "screens": 1500,
+   "mine": 1500,
+   "seconds": 265,
+   "secs": {
+    "open": 0.2,
+    "routes": 263
+   }
+  },
+  {
    "shard": "4/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1499,
    "screens": 1499,
    "mine": 1499,
-   "seconds": 261,
+   "seconds": 263,
    "secs": {
     "open": 0.2,
-    "routes": 260.2
+    "routes": 261.3
    }
   },
   {
    "shard": "5/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1499,
    "screens": 1499,
    "mine": 1499,
-   "seconds": 260,
+   "seconds": 262,
    "secs": {
     "open": 0.2,
-    "routes": 258.7
+    "routes": 259.8
    }
   },
   {
    "shard": "6/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1499,
    "screens": 1538,
    "mine": 1499,
-   "seconds": 265,
+   "seconds": 261,
    "secs": {
-    "open": 0.2,
-    "routes": 264
+    "open": 0.1,
+    "routes": 260.7
    }
   },
   {
    "shard": "7/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1499,
    "screens": 1537,
    "mine": 1499,
-   "seconds": 261,
+   "seconds": 263,
    "secs": {
     "open": 0.2,
-    "routes": 260.3
+    "routes": 262.6
    }
   },
   {
    "shard": "8/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1485,
    "screens": 1507,
    "mine": 1486,
-   "seconds": 271,
+   "seconds": 285,
    "secs": {
-    "open": 0.2,
-    "routes": 267.6,
-    "newwin": 2
+    "open": 0.4,
+    "routes": 281.3,
+    "newwin": 2.4
    }
   },
   {
    "shard": "9/9",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1426,
    "screens": 1547,
    "mine": 1421,
-   "seconds": 259,
+   "seconds": 269,
    "secs": {
     "open": 0.2,
-    "routes": 246,
-    "act": 7,
+    "routes": 255.5,
+    "act": 7.1,
     "edge": 4.8,
     "grammar": 0
    }
@@ -192,23 +192,55 @@
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412
  },
- "missing": 0,
+ "missing": 1,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "한글 남음(모듈 칸)": 1,
+  "사전에 없는 틀": 1
+ },
+ "fails": 2,
  "own": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
  "mod": {
-  "fails": 0,
-  "missing": 0,
-  "leftover": 0
+  "fails": 2,
+  "missing": 1,
+  "leftover": 1
  },
- "missingList": [],
- "all": [],
+ "missingList": [
+  {
+   "key": "아직 바뀔 수 있는 값이에요",
+   "ex": "아직 바뀔 수 있는 값이에요",
+   "at": "[모듈] #/w/000100"
+  }
+ ],
+ "all": [
+  {
+   "kind": "한글 남음(모듈 칸)",
+   "what": "? 아직 바뀔 수 있는 값이에요 ›",
+   "ex": "? 아직 바뀔 수 있는 값이에요 ›",
+   "at": [
+    "#/w/000100",
+    "#/w/000240",
+    "#/w/000440",
+    "#/w/000650",
+    "#/w/000810"
+   ],
+   "n": 2577
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "아직 바뀔 수 있는 값이에요  ← 「아직 바뀔 수 있는 값이에요」",
+   "ex": null,
+   "at": [
+    "[모듈] #/w/000100"
+   ],
+   "n": 1
+  }
+ ],
  "truncated": false,
  "problems": [],
- "ok": true
+ "ok": false
 }
