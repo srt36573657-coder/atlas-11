@@ -15,7 +15,7 @@
   "323280",
   "000040"
  ],
- "made": "2026-10-19T00:52:28.671Z",
+ "made": "2026-10-19T02:44:46.321Z",
  "shard": "all/2",
  "units": {
   "total": 2562,
@@ -36,17 +36,17 @@
    }
   }
  },
- "sec": 201,
- "secondsSum": 402,
+ "sec": 202,
+ "secondsSum": 400,
  "time": {
-  "old": 120.3,
-  "new": 295.2,
-  "wall": 201,
-  "wallSum": 401.6,
+  "old": 102,
+  "new": 293,
+  "wall": 202,
+  "wallSum": 400.4,
   "opensOld": 25572,
   "opensNew": 33283,
-  "oldPct": 30,
-  "oldShare": 29
+  "oldPct": 25.5,
+  "oldShare": 25.8
  },
  "net": {
   "req": 4,
@@ -62,7 +62,7 @@
  },
  "counts": {
   "맞댄 칸": 191775,
-  "숫자 낱말": 421186,
+  "숫자 낱말": 421744,
   "선 누르기": 7671,
   "화면(기간)": 7671,
   "회사": 2557,
@@ -76,7 +76,7 @@
    "shard": "1/2",
    "ok": true,
    "fails": 0,
-   "seconds": 201,
+   "seconds": 198,
    "mine": 1281,
    "kinds": {
     "c": 1279,
@@ -88,7 +88,7 @@
    "shard": "2/2",
    "ok": true,
    "fails": 0,
-   "seconds": 201,
+   "seconds": 202,
    "mine": 1281,
    "kinds": {
     "c": 1278,
