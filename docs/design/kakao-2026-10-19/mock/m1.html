@@ -45,17 +45,17 @@ button,input{font:inherit;color:inherit;background:none;border:0}
 
 /* ① 왜 사? — 가장 큰 한 마디 · 판 없이 바탕 위에 */
 .c1 .no{top:14px}
-.c1 .head{display:flex;align-items:flex-end;gap:6px}
-.c1 .head .big{margin-right:auto;white-space:nowrap}
-.c1 section{position:relative}
+.c1 .head{display:flex;align-items:flex-end;gap:4px}
+.c1 .head .big{margin-right:auto;white-space:nowrap;letter-spacing:0}
+
 .c1 .head::after{content:"";order:2;flex:0 0 48px;height:48px;align-self:center}
-.more summary{position:absolute;top:8px;right:114px}
+.more summary{position:absolute;top:8px;right:102px}
 .more[open] p:first-of-type{margin-top:6px}
 .c1 .head .kk-btn{order:3;align-self:center;flex:0 0 48px}
 .c1 .head .flower{order:4}
 
 .big{display:block;font-size:60px;line-height:1;letter-spacing:.02em;padding-top:4px}
-.flower{flex:0 0 auto;width:54px;height:60px;display:block}
+.flower{flex:0 0 auto;width:46px;height:56px;display:block}
 .c1 p[data-ess="1"]{margin-top:8px;font-size:20px;line-height:1.55;word-break:keep-all;color:#FFFFFF}
 .foot{display:flex;align-items:center;gap:10px;margin-top:8px}
 .more summary{list-style:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid #8A8A8A;border-radius:24px;cursor:pointer}
@@ -142,8 +142,9 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   .ttl::after{margin-left:-.18em}
   #view{padding:0 10px 0 8px}
   .ch{padding-left:42px}
-  .big{font-size:46px}
-  .flower{width:54px;height:54px}
+  .big{font-size:40px}
+  .flower{width:40px;height:48px}
+  .more summary{top:4px;right:96px}
   .c1 p[data-ess="1"]{font-size:18px}
   .find .bar{padding-left:12px}
   .find input{font-size:17px}
@@ -156,7 +157,6 @@ button,input{font:inherit;color:inherit;background:none;border:0}
   .nums .v{font-size:26px}
   .ask{font-size:17px}
   .sun{width:86px;height:86px}
-  .c1 .head{flex-wrap:wrap}
   .whyrow{flex-wrap:wrap}
   .whyrow .wire{display:none}
   .c3 .say{white-space:normal}
