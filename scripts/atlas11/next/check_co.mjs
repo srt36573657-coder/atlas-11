@@ -316,7 +316,9 @@ for (const code of SH.part('c', list)) {
   // ① 옛 글 줄 → 새 글
   const NT = norm(nw.text);
   const OT = mapOld(old.text); // 옛 글을 새 낱말로(OLDMAP) 바꾼 뒤 견줌
-  for (const raw of OT.split('\n')) { const l = norm(raw); if (!l || /^[›‹·]$/.test(l)) continue; bump('줄'); if (!NT.includes(l)) fail('옛 줄 빠짐', where + ' 「' + l.slice(0, 90) + '」'); }
+  // 장 중 값 경고(옛 쪽은 펼친 한 줄 · 새 쪽은 「? 아직 바뀔 수 있는 값이에요 ›」 접은 칸)는 위 「장 중 값 「?」 펼친 글」 · 「접힘 한 줄」이 따로 맞댐 — 여기서 또 세면 장 중 자료 날마다 회사 수만큼 걸림(2026-10-19 낮 main 검사 400건)
+  const PROV = /값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다/;
+  for (const raw of OT.split('\n')) { const l = norm(raw); if (!l || /^[›‹·]$/.test(l)) continue; if (PROV.test(l) && nw.warn0) continue; bump('줄'); if (!NT.includes(l)) fail('옛 줄 빠짐', where + ' 「' + l.slice(0, 90) + '」'); }
   const oc = tokCount(OT), nc = tokCount(nw.text);
   for (const [k, n] of oc) { bump('숫자 낱말', n); if ((nc.get(k) || 0) < n) fail('숫자 낱말 모자람', where + ' 「' + k + '」 옛 ' + n + ' · 새 ' + (nc.get(k) || 0)); }
   for (const x of old.crumb) { const t = norm(x).replace(/\(1곳\)$/, ''); if (t && t !== '›' && t !== '한눈에' && !NT.includes(t)) fail('위치 줄(갈래 · 업종) 빠짐', where + ' ' + t); }

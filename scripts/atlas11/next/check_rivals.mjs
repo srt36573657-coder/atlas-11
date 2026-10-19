@@ -125,7 +125,7 @@ const newRead = () => {
     q0: !!q('.privals-q0'), peersLabel: q('.privals-peers')?.getAttribute('aria-label') ?? null, note: q('.privals-note')?.textContent ?? null, shape: q('.privals-shape b')?.textContent ?? null, shpOn: qa('.privals-shp.privals-on').map(x => x.textContent), shpN: qa('.privals-shp').length,
     rv: qa('.privals-rv').length, h3: q('.privals-h3')?.textContent ?? null, ext: qa('a[target="_blank"]').map(a => a.getAttribute('href')),
     extRel: qa('a[target="_blank"]').every(a => /noopener/.test(a.rel || '')), chaps: qa('.chaps .cp').map(x => [x.querySelector('i')?.textContent, x.classList.contains('now'), x.getAttribute('href')]),
-    next: q('a.chap-next')?.getAttribute('href') ?? null, safe: qa('.safe').map(x => x.textContent), details: qa('details').length, title: document.title};
+    next: q('a.chap-next')?.getAttribute('href') ?? null, safe: qa('.safe').map(x => x.textContent), details: qa('details').filter(d => !/^\?/.test((d.querySelector('summary')?.textContent ?? '').trim())).length, title: document.title}; // 「?」로 시작하는 접은 칸 = 장 중 값 노란 경고(warn.js — 두 줄 넘으면 접힘)는 「접은 칸」 셈에서 뺌(2026-10-19 낮 main 검사 56건)
 };
 const strip = t => { let s = norm(t); for (let k = 0; k < 3; k++) s = s.replace(/^[·—–\-:,]\s*/, '').trim(); return s; };
 const NUM = /[−+]?\d[\d,]*(?:\.\d+)?(?:\s?(?:%|조 원|억 원|만 원|원|곳|배|번째|위|년|월|일|분기|인치|개|명|거래일|단))?/g;

@@ -90,8 +90,8 @@ html.white.home .s-split .gd { background: var(--down); }
 html.white.home a.s-ghost, html.white.home a.w-month { justify-self: start; display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 48px; margin: 0; padding: 0 var(--sp-2); border: 1px dashed #8A8A8A; border-radius: 6px 22px 22px 22px; background: transparent; color: var(--ink); font-size: var(--fs-2); font-weight: 500; text-decoration: none; }
 html.white.home a.w-month { border-style: solid; border-color: var(--gold); }
 html.white.home .s-mem { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-2); margin: 0; color: #BDBDBD; font-size: var(--fs-1); }
-html.white.home .s-mem .w-cnt { display: flex; gap: var(--sp-2); margin: 0; border-top: 0; }
-html.white.home .s-mem .w-n { flex: none; margin: 0; padding: 0; color: #BDBDBD; font-size: var(--fs-1); }
+html.white.home .s-mem .w-cnt { display: flex; flex-wrap: wrap; gap: 0 var(--sp-2); min-width: 0; margin: 0; border-top: 0; }
+html.white.home .s-mem .w-n { flex: 0 1 auto; min-width: 0; flex-wrap: wrap; margin: 0; padding: 0; color: #BDBDBD; font-size: var(--fs-1); }
 html.white.home .s-mem .w-n b { color: var(--ink); font-size: var(--fs-3); font-weight: 700; }
 
 /* 진화 한 줄 */
