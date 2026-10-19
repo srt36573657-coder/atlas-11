@@ -107,12 +107,12 @@ ol.pgrow-facts a { display: inline-flex; align-items: center; justify-content: c
 /* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
    html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 그림 칸 바탕(먹빛 #050608)은 흰색 · 흰 판은 그림자를 모두 걷으므로 안쪽 그림자 테 → outline(자리를 안 차지함) · 왼쪽 줄 → border-left
    흰 바탕에서 사라지는 밝은 반투명 칠 → --press · 먹 바탕 위 글은 흰색 */
-html.white .pgrow-art { background: #FFFFFF; }
-html.white .pgrow-tip { color: #FFFFFF; }
+html.white .pgrow-art { background: var(--bg); }
+html.white .pgrow-tip { color: var(--bg); }
 html.white .pgrow-k-band, html.white .pgrow-rb-bd { background: var(--press); }
 html.white .pgrow-rb { background: var(--hair-soft); }
 html.white :is(.pgrow-none, ol.pgrow-yrs li, .pgrow-box ul.pgrow-chk, details.pgrow-more) { outline: 1px solid var(--hair); outline-offset: -1px; }
 html.white .pgrow-alt { position: relative; } html.white .pgrow-alt::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--m4-line); }
-html.white .pgrow-chip.g5 { color: #FFFFFF; }
+html.white .pgrow-chip.g5 { color: var(--bg); }
 html.white .pgrow-chip.g4 { background: var(--press); }
-html.white .pgrow-chip.g3 { background: #FFFFFF; border: 1px solid var(--hair2); }
+html.white .pgrow-chip.g3 { background: var(--bg); border: 1px solid var(--hair2); }

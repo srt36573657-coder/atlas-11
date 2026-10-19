@@ -86,6 +86,7 @@ function dateAt(n, i) { const d = ix()?.dates; return d && d.length >= n ? d[d.l
 /* 그림 조각 */
 const ICONS = {
   search: [['circle', {cx: 10.5, cy: 10.5, r: 6.5}], ['path', {d: 'm15.5 15.5 5 5'}]],
+  share: [['path', {d: 'M12 15V4M7.5 8.5 12 4l4.5 4.5M5 13v6h14v-6'}]], // 돌 판 보내기(노란 칠 말풍선 대신 가는 선 — 시안 platform3)
 };
 function icon(k) { const s = sv('svg', {class: 'ic', viewBox: '0 0 24 24', 'aria-hidden': 'true'}); for (const [t, a] of ICONS[k]) s.append(sv(t, a)); return s; }
 /** 선 — 썸네일(16:9 칸 안 92% × 60% = 320 × 117 비율 그대로 · 끝 점) · 넓은 칸은 늘림(점 없음) */
@@ -433,9 +434,9 @@ function essCard(box, C) {
 let findQ = '';
 const findWarm = () => { Promise.all([need('core'), need('mkt')]).then(() => findReady()).catch(() => {}); };
 function findBox() {
-  const inp = h('input', {type: 'search', class: 'w-in', value: findQ, placeholder: '친구야, 왜 사? 회사 이름', 'aria-label': '친구야, 왜 사? 회사 이름', autocomplete: 'off', enterkeyhint: 'go'});
+  const inp = h('input', {type: 'search', class: 'w-in', value: findQ, placeholder: '친구야, 왜 사?', 'aria-label': '친구야, 왜 사? 회사 이름', autocomplete: 'off', enterkeyhint: 'go'});
   const hits = h('div', {class: 'w-hits', role: 'list', hidden: true});
-  const go = h('button', {class: 'w-go', type: 'submit', 'aria-label': '열한 질문 시작'}, icon('search'));
+  const go = h('button', {class: 'w-go', type: 'submit', 'aria-label': '열한 질문 시작', text: '시작'}); // 돌 판 — 흰 「시작」 하나(시안 platform3/home)
   const form = h('form', {class: 'w-find', 'data-w': 'find', role: 'search'}, inp, go, hits);
   let seq = 0, top = null;
   const run = async () => {
@@ -486,23 +487,47 @@ function newsBox(H) {
   const v = Y && Y.n > 0 ? {up: Y.up, dn: Y.dn, d: Y.date} : B && B.up + B.down + B.flat > 0 ? {up: B.up, dn: B.down, d: H.sectors.date} : null;
   const box = h('section', {class: 'w-news', 'data-w': 'news', 'aria-label': '시황 사실'});
   if (!v) { box.append(h('p', {class: 'note', 'data-num': '', text: '? 오른 곳 · 내린 곳 수를 못 받았어요'})); return box; }
-  const qs = h('ul', {class: 'w-qs', hidden: true}, ...WHY3.map(q => h('li', {text: q})));
-  const b = h('button', {type: 'button', class: 'w-why', 'aria-expanded': 'false', text: '왜 그럴까?'});
-  b.addEventListener('click', () => { qs.hidden = !qs.hidden; b.setAttribute('aria-expanded', String(!qs.hidden)); });
-  const nb = (c, t, n) => h('span', {class: 'w-f', 'data-num': ''}, h('span', {text: t + ' '}), h('b', {class: 'num ' + c, text: Number.isFinite(n) ? num(n) : '?'}));
   box.setAttribute('aria-label', '시황 사실 · ' + md(v.d)); // 날짜는 오늘 장 줄 · 읽어 주기에 — 보이는 글은 글자 수 잣대 안
-  box.append(h('div', {class: 'w-facts', 'data-fact': ''}, h('p', {class: 'w-fl'}, nb('up', '오른 곳', v.up), nb('dn', '내린 곳', v.dn)), b, qs));
+  /* 돌 판(2026-10-19 10:31 · 시안 platform3/home) — 사실 두 줄(오른 곳 · 내린 곳)마다 「왜 그럴까?」 · 사이에 가는 막대 한 줄(길이 = 곳 수) */
+  const fact = (c, t, n) => {
+    const qs = h('ul', {class: 'w-qs', hidden: true}, ...WHY3.map(q => h('li', {text: q})));
+    const b = h('button', {type: 'button', class: 'w-why', 'aria-expanded': 'false', text: '왜 그럴까?'});
+    b.addEventListener('click', () => { qs.hidden = !qs.hidden; b.setAttribute('aria-expanded', String(!qs.hidden)); });
+    return h('div', {class: 'w-facts', 'data-fact': ''}, h('p', {class: 'w-fl'}, h('span', {class: 'w-f', 'data-num': ''}, h('span', {class: 'w-lb', text: t}), h('b', {class: 'num ' + c, text: Number.isFinite(n) ? num(n) : '?'}))), b, qs);
+  };
+  const bar = h('div', {class: 's-split', 'aria-hidden': 'true'}), gu = h('i', {class: 'gu'}), gd = h('i', {class: 'gd'});
+  if (Number.isFinite(v.up) && Number.isFinite(v.dn) && v.up + v.dn > 0) { gu.style.flexGrow = String(v.up); gd.style.flexGrow = String(v.dn); bar.append(gu, gd); }
+  box.append(fact('up', '오른 곳', v.up), bar, fact('dn', '내린 곳', v.dn));
   return box;
 }
 /** 노란 말풍선(share-btn.js 와 같은 모양 · 색은 app.css .kk-ic .kk-b) */
 function kkIcon() { const s = sv('svg', {class: 'kk-ic', viewBox: '0 0 24 24', width: 28, height: 28, 'aria-hidden': 'true', focusable: 'false'}); s.append(sv('path', {class: 'kk-b', d: 'M12 3C6.75 3 2.5 6.36 2.5 10.5c0 2.65 1.74 4.98 4.37 6.31l-1.1 4.02c-.1.36.31.65.62.44l4.78-3.17c.27.02.55.03.83.03 5.25 0 9.5-3.36 9.5-7.5S17.25 3 12 3z'})); return s; }
+/** 진화 한 줄 — 진화 자료(/next/data/jinhwa.json)를 늦게 받아 채움(첫 그림을 막지 않음) · 못 받으면 「진화 보기 ›」 그대로 */
+function evoLine() {
+  const b = h('b', {text: '진화'}), t = h('span', {class: 'when', text: '보기'});
+  const a = h('a', {class: 's-evo', href: '#/jinhwa'}, b, t, h('i', {'aria-hidden': 'true', text: '›'}));
+  fetch('/next/data/jinhwa.json', {credentials: 'omit'}).then(r => (r.ok ? r.json() : null)).then(J => { if (Number.isInteger(J?.n) && J.n > 0) { b.textContent = '진화 ' + num(J.n) + '번째'; const w = (J.applied ?? []).find(x => x?.score && !x.score.at); t.textContent = w ? (Number.isInteger(w.predict?.days) ? w.predict.days : 10) + '거래일 뒤 채점' : '보기'; } }).catch(() => {});
+  return a;
+}
 async function vHomeAll() {
+  /* 돌 판 첫 화면(사장님 2026-10-19 10:21 「1번으로 하자 그래서 전체 디자인을 해봐 … 돌이야」 · 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3/home)
+     위에서 아래: 큰 제목 「왜 사?」 + 돌 그림 → 돌이 물음 한 줄 → 읽는 곳 셋(① 본질 ② 지난 기록 = 오늘 장 + 오른 곳 · 내린 곳 ③ 한 달 뒤 물어볼게요) → 진화 한 줄
+     → 엄지 자리(「친구야, 왜 사?」 찾기 칸 + 바로 가기 넷 + 「전부 보기」) → 안전 한 줄 · 표시(data-w · data-ess · data-say · data-fact · data-num · data-path)는 흰 판과 같음 */
   const H = homeSrc(), band = homeBand(H, true), C = myCounts();
   band.el.setAttribute('data-w', 'today'); band.el.setAttribute('data-num', ''); band.el.classList.add('w-today');
-  const kk = h('button', {class: 'kk-btn w-kk', type: 'button', 'aria-label': NAME + ' 주소를 카톡으로 친구에게 보내기'}, kkIcon()); // 이 곳 주소만(종목 · 숫자 · 답 없음) — 휴대폰 보내기 창(카톡이 그 안에)
+  const kk = h('button', {class: 'kk-btn w-kk', type: 'button', 'aria-label': NAME + ' 주소를 카톡으로 친구에게 보내기'}, icon('share')); // 이 곳 주소만(종목 · 숫자 · 답 없음) — 휴대폰 보내기 창(카톡이 그 안에)
   kk.addEventListener('click', () => share(NAME, absUrl('#/')));
-  const say = h('div', {class: 'w-say'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 48, height: 48}), h('p', {'data-say': '', text: '오늘은 쉬어 갈까?'}), kk);
-  const nodes = [essCard(essenceBox(false), C), await monthLine(C), say, findBox(), band.el, go4((C?.stop ?? 0) > 0), allBox(H, band), newsBox(H), h('p', {class: 'safe hm-safe', text: '돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})].filter(Boolean);
+  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '왜 사?'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 166, height: 133, decoding: 'async'}));
+  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '첫 질문을 해 볼까?'})), kk);
+  const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
+  const month = await monthLine(C);
+  const ess = essCard(essenceBox(false), C); // 멈춤 · 약속 수(w-cnt)는 ③ 줄로 옮김(한 화면에 들게)
+  const story = h('ol', {class: 's-story'},
+    ch(1, ess),
+    ch(2, h('p', {class: 's-lbl'}, h('span', {class: 't', text: '지난 기록'})), band.el, newsBox(H)),
+    ch(3, month ?? h('a', {class: 's-ghost', href: '#/why'}, h('span', {text: '한 달 뒤 물어볼게요'})), h('div', {class: 's-mem'}, ess.querySelector('.w-cnt'), h('span', {class: 's-dev', text: '기록은 이 기기에만'}))));
+  const thumb = h('div', {class: 's-thumb'}, findBox(), go4((C?.stop ?? 0) > 0), allBox(H, band)); // 엄지 자리 — 아래 단추 바로 위에 붙어 있음(stone.css sticky · 펼치면 풀림)
+  const nodes = [hd, say, story, thumb, evoLine(), h('p', {class: 'safe hm-safe', text: '돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})];
   return {title: '오늘 장', nodes};
 }
 
@@ -1032,7 +1057,7 @@ function whiteFor(k) {
   const on = true; // 2026-10-19 둘째 올림 — 다른 쪽도 흰 판(사장님 02:03 「둘로 올려라 … ② 다른 쪽」)
   document.documentElement.classList.toggle('white', on);
   document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
-  $('meta[name="theme-color"]')?.setAttribute('content', on ? '#FFFFFF' : '#0C0E12');
+  $('meta[name="theme-color"]')?.setAttribute('content', on ? '#080808' : '#0C0E12'); // 돌 판(2026-10-19 10:31) — 먹 바탕
 }
 whiteFor(parse(location.hash || '#/').k);
 /** 글꼴 표 — 첫 화면을 그린 다음 그림 때에 한 번 붙임(그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap) */
@@ -1078,6 +1103,7 @@ async function route(force) {
   if (my !== seq) return; // 늦게 끝난 앞 화면
   whiteFor(k);
   root.replaceChildren(...out.nodes);
+  stoneArt(k, a, root);
   fontsLater();
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
   const tabName = k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름
@@ -1085,6 +1111,16 @@ async function route(force) {
   glossView(root); // 낱말표(site/next/glossary.js) — 한국어면 이 화면 · 창 제목 · 뒤에 그려지는 칸의 옛 낱말을 바꿈 · 영어면 영어 엔진 뒤에 「20 trading days」만
   document.body.classList.toggle('noscroll', !!out.noScroll);
   window.scrollTo(0, out.noScroll ? 0 : scrollMem.get(hash) ?? 0);
+}
+/* 돌 그림(사장님 2026-10-19 10:21 「1번으로 하자 그래서 전체 디자인을 해봐」 · 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3 열세 장)
+   화면 맨 위 큰 제목(첫 h1) 오른쪽에 그 화면의 돌 그림 한 장(/media/stone/<이름>.svg · 꾸밈 그림 · 읽지 않음) · 첫 화면은 vHomeAll 이 직접 그림 · 그림이 없는 쪽은 그대로
+   입체 · 그림자는 이 그림 파일 안에만(사장님 10:12 「다써」) — 글 · 단추는 평평 */
+const STONE = {shorts: 'shorts', today: 'today', surge: 'surge', sub: 'sub', me: 'me', cal: 'cal', cond: 'cond', jinhwa: 'jinhwa'};
+function stoneArt(k, a, root) {
+  const n = k === 'why' ? (a ? 'why-q1' : 'why') : k === 'w' ? (a && !a.includes('/') ? 'company' : null) : STONE[k];
+  const t = n ? root.querySelector('h1') : null; if (!t || t.querySelector('.st-art')) return;
+  t.classList.add('st-h');
+  t.append(h('img', {class: 'st-art', src: '/media/stone/' + n + '.svg', alt: '', width: 128, height: 102, decoding: 'async'}));
 }
 window.addEventListener('hashchange', () => route());
 $('#findBtn')?.replaceChildren(icon('search'));

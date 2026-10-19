@@ -126,13 +126,13 @@ html.white .wy-g, html.white .wy-fill.wy-g { background: #1B7A3A; }
 html.white .wy-y, html.white .wy-fill.wy-y { background: #9A6700; }
 html.white .wy-r, html.white .wy-fill.wy-r { background: #D0202E; }
 html.white .wy-reds .wy-dot { width: 18px; height: 18px; }
-html.white .wy-dot .wy-sr { color: #FFFFFF; } /* 점 안 읽어 주는 글(눈에는 안 보임) — 색 점 위 대비 */
+html.white .wy-dot .wy-sr { color: var(--bg); } /* 점 안 읽어 주는 글(눈에는 안 보임) — 색 점 위 대비 */
 html.white .wy-dot.wy-n { background: transparent; } /* 고르기 전 빈 테두리 — 위 흰 판 색 줄보다 뒤 · 더 좁게 */
 html.white :is(.wy-vg, .wy-vy, .wy-vr) b, html.white span:is(.wy-vg, .wy-vy, .wy-vr) { color: var(--ink); }
 html.white .wy-track { background: var(--hair-soft); }
-html.white .wy-next { color: #FFFFFF; }
+html.white .wy-next { color: var(--bg); }
 html.white :is(.wy-prev, .wy-one, .wy-stk, .wy-lines) { outline: 1px solid var(--hair); outline-offset: -1px; }
 html.white .wy-prev .wy-one { outline: 0; }
-html.white .wy-back { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .wy-back { background: var(--bg); outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white .wy-date { color-scheme: light; }
 html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-10-19 둘째 올림 — 흰 판 48 줄(app.css #view)이 고르기 칸 56 을 덮지 않게 */

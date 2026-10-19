@@ -103,6 +103,6 @@ html.white :is(.privals-box, .privals-shp, .privals-rv, .privals-more, .privals-
 html.white .privals-shp.privals-on, html.white .privals-funnel li.privals-stop { outline: 2px solid var(--ink); outline-offset: -2px; }
 html.white .privals-pt { background: var(--hair-soft); }
 html.white .privals-ff { background: var(--press); }
-html.white .privals-rw { background: #FFFFFF; outline: 1px solid var(--hair); outline-offset: -1px; }
-html.white .privals-go { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .privals-rw { background: var(--bg); outline: 1px solid var(--hair); outline-offset: -1px; }
+html.white .privals-go { background: var(--bg); outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white a.privals-pr:active { background: var(--press); }

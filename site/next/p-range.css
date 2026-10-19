@@ -127,4 +127,4 @@ html.white :is(.prange-b, .prange-sw).prange-neg { background: rgba(138, 101, 22
 html.white .prange-ok .prange-mk { background: var(--press); }
 html.white :is(.prange-no, .prange-q) .prange-mk { outline-color: var(--gold); }
 html.white ol.prange-fl > li::after { background: var(--hair-soft); }
-html.white .prange-go a { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .prange-go a { background: var(--bg); outline: 1px solid var(--hair2); outline-offset: -1px; }

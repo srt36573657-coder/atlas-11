@@ -77,7 +77,7 @@ details.nw.ppast-jump > summary { color: var(--gold); }
 
 /* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
    html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 고른 기간은 먹 바탕 흰 글 · 범례 두 색 줄은 그러데이션 대신 바탕 + 오른쪽 테 · 금빛 상자 테는 그림자 대신 outline */
-html.white .ppast-seg button[aria-pressed="true"] { color: #FFFFFF; }
+html.white .ppast-seg button[aria-pressed="true"] { color: var(--bg); }
 html.white .ppast-k-co { background: none; border-left: 8px solid var(--up); border-right: 8px solid var(--down); } /* 두 색 줄 = 테 둘(바탕 칠 아님 — 작은 빨간 점이 아님) */
-html.white details.nw.ppast-jump { background: #FFFFFF; outline: 1px solid var(--gold); outline-offset: -1px; }
+html.white details.nw.ppast-jump { background: var(--bg); outline: 1px solid var(--gold); outline-offset: -1px; }
 html.white .ppast-ft { background: var(--hair-soft); }

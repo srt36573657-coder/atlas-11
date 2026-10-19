@@ -143,12 +143,12 @@ details.pco-warn > p { margin: 0 0 var(--sp-1); font-size: var(--fs-1); line-hei
 /* ── 흰 판(html.white) — 다른 쪽 올리기 ② 준비(일꾼 E · 2026-10-19 · docs/design/white-2026-10-19/brief-build.md)
    html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 흰 판은 그림자를 모두 걷으므로(app.css) 안쪽 그림자 테 → outline(자리를 안 차지함) · 왼쪽 줄 → 같은 두께 border-left(글 자리는 그대로)
    범례 두 색 줄 · 금빛 세로 줄은 그러데이션 대신 바탕 + 테로 · 먹 바탕 위 글은 흰색 */
-html.white .wtag { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .wtag { background: var(--bg); outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white .wtag.pk { outline-color: var(--gold); }
 html.white .wtab { outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white .wtab:active, html.white .pco-next:active { background: var(--press); }
 html.white .why-go.cw { outline: 1px solid var(--hair2); outline-offset: -1px; }
-html.white .pco-tip, html.white .pco-chev { color: #FFFFFF; }
+html.white .pco-tip, html.white .pco-chev { color: var(--bg); }
 html.white .pco-key .k-co { background: none; border-left: 12px solid var(--up); border-right: 12px solid var(--down); }
 html.white .pco-key .k-pick { background: var(--gold); background-clip: padding-box; border-left: 11px solid transparent; border-right: 11px solid transparent; }
 html.white .pco-why { position: relative; } html.white .pco-why::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--sub); } /* 그림자 대신 막대(안쪽 띄움 16 그대로 — 간격 0 · 8 · 16 · 24) */
