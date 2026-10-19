@@ -114,17 +114,23 @@ test('길 ⑥ 꺼짐 — 스위치 꺼짐 · 열쇠 하나라도 없음 · 모�
   RESULT.offChecks = n;
 });
 
-test('스위치 파일 config/atlas11/kakao.json — 저장소에는 on=false · 열쇠 값 0(이름만) · 올리기 준비는 꺼져 있으면 카톡 함수를 안 올림', async () => {
+test('스위치 파일 config/atlas11/kakao.json — 저장소에는 on=true(2026-10-19 열쇠 넷을 넣고 켬) · 열쇠 값 0(이름만) · 올리기 준비는 꺼져 있으면 카톡 함수를 안 올림', async () => {
   const text = await fs.readFile(path.join(ROOT, 'config/atlas11/kakao.json'), 'utf8'), cfg = JSON.parse(text);
-  assert.equal(cfg.on, false);
+  assert.equal(cfg.on, true, '사장님 2026-10-19 넷리파이 열쇠 넷을 넣고 가입을 켬');
   assert.deepEqual(cfg.env, Object.values(ENV));
   assert.equal(cfg.site, DEFAULTS.site); assert.equal(cfg.page, DEFAULTS.page); assert.equal(cfg.callback, DEFAULTS.callback);
   assert.ok(!/[0-9a-f]{32}/i.test(text), '열쇠처럼 보이는 값 없음');
   const {stageFunctions, functionSwitchedOn, SWITCH_STUB} = await import('../../scripts/atlas11/deploy_netlify.mjs');
-  assert.equal(await functionSwitchedOn(ROOT, 'kakao.mjs'), false);
+  assert.equal(await functionSwitchedOn(ROOT, 'kakao.mjs'), true);
+  // 끄면(스위치 파일만 false 인 사본 뿌리) 카톡 함수를 안 올림 — 다시 끌 때를 위한 확인
+  const fakeOff = await fs.mkdtemp(path.join(os.tmpdir(), 'kakao-root-off-'));
+  for (const d of ['functions', 'lib', 'site', 'node_modules']) await fs.symlink(path.join(ROOT, d), path.join(fakeOff, d));
+  await fs.mkdir(path.join(fakeOff, 'config/atlas11'), {recursive: true});
+  await fs.writeFile(path.join(fakeOff, 'config/atlas11/kakao.json'), JSON.stringify({...cfg, on: false}));
+  assert.equal(await functionSwitchedOn(fakeOff, 'kakao.mjs'), false);
   const off = await fs.mkdtemp(path.join(os.tmpdir(), 'kakao-stage-off-'));
   try {
-    const s = await stageFunctions(ROOT, off);
+    const s = await stageFunctions(fakeOff, off);
     assert.deepEqual(s.functions, ['invite', 'jinhwa', 'letter', 'tally'], '꺼져 있으면 함수 목록이 그 전과 같음(카톡 빼고 · 진화 칸 · 합계 칸 함수는 2026-10-18 일꾼 KD)');
     assert.ok(!s.files.some(f => f.includes('kakao')), '꺼져 있으면 카톡 셈 파일 0(편지 함수가 불러도)');
     // VK F1 — 편지 함수가 부르는 카톡 셈 두 파일 자리에는 막대 파일(「카카오 회원 아님」) · 편지는 오늘 길 그대로
@@ -133,7 +139,7 @@ test('스위치 파일 config/atlas11/kakao.json — 저장소에는 on=false ·
     const stub = await import(path.join(off, 'lib/atlas11/kakao.mjs'));
     assert.equal(await stub.kakaoMemberOf(new Request(`${SITE}/x`), ENVV, {}), null);
     assert.equal((await import(path.join(off, 'lib/atlas11/kakao-store.mjs'))).KAKAO_STORE, 'atlas11-kakao-v1');
-  } finally { await fs.rm(off, {recursive: true, force: true}); }
+  } finally { await fs.rm(off, {recursive: true, force: true}); await fs.rm(fakeOff, {recursive: true, force: true}); }
   // 켜면(스위치 파일만 true 인 사본 뿌리) 카톡 함수 · 셈 파일이 함께 올라가고 옮긴 폴더만으로 돈다(열쇠 없으면 404)
   const fake = await fs.mkdtemp(path.join(os.tmpdir(), 'kakao-root-')), on = await fs.mkdtemp(path.join(os.tmpdir(), 'kakao-stage-on-'));
   try {

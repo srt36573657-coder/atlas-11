@@ -10,7 +10,7 @@ import {badWord} from '/next/words.js';
 import {open as shareBox} from '/next/p-share.js';
 /* 카카오 켜기 스위치(2026-10-18 K2c 「스위치 꺼짐 = 카카오 요청 0」) — site/next/kakao.js SWITCH · config/atlas11/kakao.json "on" 과 늘 같아야 함(켤 때 셋을 함께 바꿈 · 시험 kakao-client ⑯ 이 셋을 맞대 봄).
    /next/kakao.js 를 여기서 부르면 카카오 도구 전체(createKakao · NX 붙이기 기다림)가 편지 쪽에 만들어져서 불 하나만 따로 둠. 꺼져 있으면 /api/kakao/* 를 아예 부르지 않음(사장님 열쇠 기기도) */
-const KAKAO_ON = false;
+const KAKAO_ON = true;
 /** 시험 서버(127.0.0.1 · localhost)에서만: 쪽을 열기 전에 __GODORI_KAKAO_TEST__ = true 이거나 주소에 ?kakaodev=1 이면 켜진 것으로 보고 물음 — site/next/kakao.js 와 같은 규칙(실제 사이트에서는 시험 표시가 있어도 스위치만 봄) */
 const KAKAO_TRY = KAKAO_ON || (/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\]|::1)$/.test(location.hostname) && (globalThis.__GODORI_KAKAO_TEST__ === true || new URLSearchParams(location.search).get('kakaodev') === '1')); // 쪽을 열 때 한 번만 봄(열쇠를 주소에서 지울 때 ?kakaodev=1 도 함께 지워짐)
 const kakaoTry = () => KAKAO_TRY;

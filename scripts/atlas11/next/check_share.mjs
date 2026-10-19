@@ -73,6 +73,9 @@ const MUTS = {
   'pick-noval': [[["const c = j?.c ?? (await getJson('comp.json'))?.companies?.[code] ?? null", 'const c = j?.c ?? null']], ['고른 곳 — 글상자에 이름 · 오늘 값이 저절로 안 들어감([6] 3 · comp.json)'], 'p-share.js', 'kk'],
 };
 const MUT = arg('--mutate', null);
+// 가입 스위치(사장님 2026-10-19 16:37 「공유 검사 고쳐도 돼」 · 카톡 가입 발행) — 켜진 판에서는 「꺼짐」 장면 대신 켜짐 장면만 보고, /api/kakao/* 요청을 꺼짐 위반으로 보지 않음(시험 서버가 가짜 카카오로 답함) · 꺼진 판은 예전과 똑같이 검사
+const SIGNUP_ON = await fs.readFile(path.join(ROOT, 'config/atlas11/kakao.json'), 'utf8').then(t => JSON.parse(t).on === true).catch(() => false);
+if (SIGNUP_ON && MUTS['switch-on']) delete MUTS['switch-on']; // 켜진 판에는 「켜면 잡아라」 자기 시험이 맞지 않음
 if (MUT && !MUTS[MUT]) { console.error('모르는 --mutate', MUT, Object.keys(MUTS).join(' · ')); process.exit(1); }
 if (MUT && MUTS[MUT][3] && !ONLY.size) for (const g of MUTS[MUT][3].split(',')) ONLY.add(g); // 알맞은 묶음만 돎
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 400)]); };
@@ -238,7 +241,7 @@ async function newPage(width, height, {mode = 'share', letter = false, noDialog 
     for (const [x, y] of MUTS[MUT][0]) { if (!body.includes(x)) { console.error('망가뜨릴 자리를 못 찾음(검사 자체 시험을 고칠 것)', x); process.exit(1); } body = body.replace(x, y); }
     await r.fulfill({response: res, body});
   });
-  const p = await ctx.newPage(); p._errs = []; p._kk = []; p._kkOk = kakao === 'on'; p._reqs = 0;
+  const p = await ctx.newPage(); p._errs = []; p._kk = []; p._kkOk = kakao === 'on' || SIGNUP_ON; p._reqs = 0;
   p._ownerMe = letter === true; // 편지 쪽 사장님 열쇠 기기 — letter.js 가 카카오가 켜졌나 /api/kakao/me 를 한 번 물음(꺼짐이면 404 한 줄) · 다른 사람 기기(letter: 'plain')는 0
   p._kkExt = [];
   p.on('request', r => { const url = r.url(); if (/^https?:/.test(url)) p._reqs++; if (KK_RE.test(url)) { const u = new URL(url); if (u.origin !== base) p._kkExt.push(url); else p._kk.push(r.method() + ' ' + u.pathname + u.search); } });
@@ -1202,7 +1205,8 @@ for (const [w, h] of SIZES) {
   if (want('land')) await step(`${w}×${h} 친구 주소`, () => landing(w, h, full ? CASES : CASES.slice(0, 1)));
   if (want('land')) await step(`${w}×${h} 친구 쪽 첫 화면`, () => firstView(w, h, {only: full ? 0 : 1}));
   if (want('land') && w === 360) await step('320×568 친구 쪽 첫 화면', () => firstView(320, 568, {min: 2, only: 1}));
-  if (want('off')) await step(`${w}×${h} 카톡 꺼짐`, () => kakaoOff(w, h, full));
+  if (want('off') && !SIGNUP_ON) await step(`${w}×${h} 카톡 꺼짐`, () => kakaoOff(w, h, full));
+  if (want('off') && SIGNUP_ON) bump('카톡 꺼짐 길 건너뜀(가입 스위치 켜짐 · 켜짐 길은 아래에서 그대로 검사)');
   // 켜짐 길은 시험 서버(127.0.0.1 · localhost)에서만 — kakao.js 는 실제 사이트에서 시험 표시(__GODORI_KAKAO_TEST__)를 보지 않고 스위치만 봄(카톡 꺼짐 · 보안)
   //   그래서 실제 사이트(https://aaa7377.com)에서는 켤 수 없어 늘 걸렸음(2026-10-18 실제 사이트 검사) → 건너뛰고 수만 적음 · 올리기 전 검사(local)는 그대로 모두 봄
   const on = k => !LIVE_SITE && (want('on') || want(k));
