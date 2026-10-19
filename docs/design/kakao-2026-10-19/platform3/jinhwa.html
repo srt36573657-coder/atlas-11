@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>돌이 · 진화</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--line:#2E2E2E;--edge:#8A8A8A;--up:#FF6A3D;--dn:#6C86FF}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:156px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+/* 탄소 짜임 — v1 그대로 */
+.carbon{background-color:#080808;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M0 8L8 0M-2 2L2 -2M6 10L10 6' stroke='%23151515' stroke-width='1.2'/%3E%3Cpath d='M0 0L4 4' stroke='%230E0E0E' stroke-width='1'/%3E%3C/svg%3E")}
+/* ① 위 막대 */
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px;border-bottom:1px solid #1B1B1B}
+.solo,.group{background:#141414;border:1px solid #2A2A2A;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px;letter-spacing:.01em}
+#jhBtn{padding:0 12px}
+#jhBtn[aria-current]{outline:1.5px solid #FFFFFF;outline-offset:-1.5px}
+.ttl{flex:1;text-align:center;font-size:20px;font-weight:700;letter-spacing:.14em;text-indent:.14em;white-space:nowrap}
+#view{padding:0 16px}
+/* ② 제목 + 돌 주인공 */
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:2px}
+.h1{font-size:44px;font-weight:800;line-height:1.05;letter-spacing:-.035em;white-space:nowrap}
+.hero{flex:0 0 auto;width:140px;height:112px;display:block;margin:-4px -10px -10px 0;transform:perspective(520px) rotateY(-14deg) rotateX(7deg);transform-origin:60% 50%}
+.say{display:flex;align-items:center;gap:8px;max-width:100%;width:fit-content;background:#161616;border:1px solid #262626;border-radius:22px 22px 22px 6px;padding:8px 16px;font-size:19px;font-weight:500;line-height:1.35;letter-spacing:-.01em;word-break:keep-all}
+.say .who{flex:0 0 auto;font-size:17px;color:#A6A6A6;padding-right:8px;border-right:1px solid #3A3A3A;align-self:stretch;display:flex;align-items:center}
+.ctx{font-size:17px;line-height:1.45;color:#BDBDBD;margin-top:8px;word-break:keep-all}
+/* ③ 읽는 곳 — 가는 자 · 번호는 계기 테(v1) */
+.story{list-style:none;position:relative;margin-top:12px}
+.story::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='8'%3E%3Cpath d='M.5 0V8M.5 .5H4' stroke='%23343434' stroke-width='1'/%3E%3C/svg%3E") repeat-y}
+.ch{position:relative;padding-left:40px}
+.ch+.ch{margin-top:8px;padding-top:9px;border-top:1px solid #1B1B1B}
+.no{position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;line-height:1;color:#FFFFFF}
+.no.dash{border-style:dashed}
+.ch+.ch .no{top:9px}
+.lbl{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-height:27px}
+.lbl .t{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.02em}
+.lbl .sub{font-size:17px;color:#BDBDBD;font-weight:600}
+.lbl .sub.r{margin-left:auto}
+.v{font-weight:300;line-height:1;letter-spacing:-.03em}
+.lb{font-size:17px;color:#BDBDBD;line-height:1.2;font-weight:500}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;border-bottom:1px solid #1B1B1B}
+.row:last-child{border-bottom:0}
+.row .nm{font-size:19px;line-height:1.25;word-break:keep-all;font-weight:500}
+.row .nm small{display:block;font-size:17px;color:#A6A6A6;font-weight:400}
+.row .val{font-size:17px;color:#A6A6A6;white-space:nowrap}
+.row .val .v{font-size:24px}
+a.row::after{content:"›";font-size:22px;color:#A6A6A6;line-height:1;margin-left:2px}
+.honest{font-size:17px;color:#A6A6A6;line-height:1.45;margin:14px 0 0 40px;word-break:keep-all}
+/* 가는 자 막대 — v1 split 의 눈금 무늬 위 2px 선 */
+.rule{position:relative;height:12px;margin-top:4px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='12'%3E%3Cpath d='M.5 6V12' stroke='%232E2E2E' stroke-width='1'/%3E%3C/svg%3E") repeat-x}
+.rule i{position:absolute;left:0;top:2px;height:2px;background:#8A8A8A}
+.rule.mine i{background:#FFFFFF}
+.cmp{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.cmp .l{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.cmp .l b{font-weight:500;font-size:17px;white-space:nowrap}
+.cmp .l b .v{font-size:32px;margin:0 2px}
+/* 칸 고르기 — 테만 · 고른 칸은 흰 테 두 겹 */
+.pick{display:flex;gap:6px;margin:12px 0 0 40px}
+.pick a{flex:1 1 0;min-height:48px;display:flex;align-items:center;justify-content:center;border:1px solid #3A3A3A;border-radius:24px;font-size:17px;color:#BDBDBD;white-space:nowrap}
+.pick a[aria-current]{border:2px solid #FFFFFF;color:#FFFFFF;font-weight:700}
+.cnt{font-size:17px;color:#BDBDBD;line-height:1.4;margin-top:2px}
+.cnt b{color:#FFFFFF;font-weight:600;font-size:19px}
+/* 조건 — 테 단추(v1 ghostbtn 결) */
+.cd{display:flex;align-items:center;gap:8px;min-height:52px;padding:4px 14px 4px 16px;border:1px solid #8A8A8A;border-radius:26px}
+.cd .t{flex:1 1 auto;min-width:0;font-size:19px;line-height:1.25;word-break:keep-all;font-weight:500}
+.cd .c{white-space:nowrap;font-size:17px;color:#BDBDBD}
+.cd .c .v{font-size:26px;color:#FFFFFF;margin-right:1px}
+a.cd::after{content:"›";font-size:22px;color:#A6A6A6;line-height:1}
+.base{display:flex;align-items:baseline;justify-content:space-between;min-height:27px;color:#BDBDBD;font-size:17px}
+.base .v{font-size:26px;color:#FFFFFF;margin-right:1px}
+.left{display:flex;align-items:baseline;gap:6px}
+.left .big{font-size:52px}
+.left .ud{margin-left:auto;font-size:17px;color:#BDBDBD;white-space:nowrap}
+.left .ud .v{font-size:24px}
+.path{font-size:17px;color:#A6A6A6;margin-top:4px}
+.lst{margin-top:4px;border-top:1px solid #1B1B1B}
+/* 진화 */
+.ess{margin-top:12px;padding:10px 0;border-top:1px solid #1B1B1B;border-bottom:1px solid #1B1B1B;font-size:19px;line-height:1.5;font-weight:600;word-break:keep-all}
+.ess small{display:block;font-size:17px;color:#A6A6A6;font-weight:400}
+.no.on{border:2px solid #FFFFFF}
+.k{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.k b{font-size:21px;font-weight:700;letter-spacing:-.02em}
+.k span{font-size:17px;color:#BDBDBD}
+.ch h2{font-size:19px;line-height:1.4;font-weight:500;word-break:keep-all;margin-top:2px}
+.guess{margin-top:6px;font-size:17px;line-height:1.45;color:#BDBDBD;word-break:keep-all}
+.guess em{font-style:normal;color:#FFFFFF;font-weight:600;margin-right:4px}
+.when{margin-top:4px;font-size:17px;color:#A6A6A6}
+.when b{color:#FFFFFF;font-weight:600}
+.alt{display:flex;align-items:center;gap:8px;min-height:52px}
+.alt p{flex:1 1 auto;min-width:0;font-size:17px;line-height:1.4;word-break:keep-all}
+.alt::after{content:"›";font-size:22px;color:#A6A6A6}
+.wh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:17px;color:#BDBDBD}
+.wh b{color:#FFFFFF;font-weight:700;font-size:19px}
+/* ④ 엄지 자리 — 탄소 짜임 판 · 흰 칠 단추 하나(v1 「시작」) */
+.dock{position:fixed;left:0;right:0;bottom:64px;z-index:2;padding:10px 16px 10px;border-top:1px solid #2E2E2E}
+.go{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;border-radius:28px;background:#F2F2F2;color:#080808;font-size:19px;font-weight:800;letter-spacing:-.01em;white-space:nowrap;padding:0 16px}
+/* ⑤ 아래 단추 다섯 */
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a::after{content:"";width:18px;height:2px;background:transparent}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+.tabs a[aria-current]::after{background:#FFFFFF}
+@media (max-width:359px){
+ .top{padding:0 8px}.ttl{font-size:18px;letter-spacing:.08em;text-indent:.08em}
+ #view{padding:0 10px}.dock{padding:8px 10px}
+ .h1{font-size:34px}.hero{width:104px;height:83px}
+ .ch{padding-left:36px}.pick,.honest{margin-left:36px}
+ .go{font-size:17px;white-space:normal;text-align:center}
+ .tabs a{letter-spacing:-0.07em}
+}
+</style>
+</head>
+<body>
+<header class="top carbon">
+  <span class="solo"><button id="jhBtn" class="tb" aria-current="page">진화</button></span>
+  <span class="ttl">돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="hd"><h1 class="h1">진화</h1>
+<svg class="hero" viewBox="0 0 150 120" role="img" aria-label="돌이 수선화 · 돌에서 깎다 만 꽃 · 아직 다듬는 중이에요">
+  <defs>
+    <radialGradient id="jpool" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#6E6A64" stop-opacity=".55"/><stop offset="1" stop-color="#6E6A64" stop-opacity="0"/></radialGradient>
+    <radialGradient id="jlit" gradientUnits="userSpaceOnUse" cx="38" cy="22" r="118"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".42"/><stop offset=".38" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".62" stop-color="#000000" stop-opacity=".08"/><stop offset="1" stop-color="#000000" stop-opacity=".62"/></radialGradient>
+    <filter id="jlift" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="1.3" dy="1.8" stdDeviation=".9" flood-color="#1A1816" flood-opacity=".55"/></filter>
+    <filter id="jsit" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="2.5" dy="4" stdDeviation="2.6" flood-color="#000000" flood-opacity=".9"/></filter>
+  <radialGradient id="jfs" gradientUnits="userSpaceOnUse" cx="70" cy="20" r="26"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".45"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient></defs>
+  <ellipse cx="74" cy="113" rx="68" ry="7" fill="url(#jpool)"/>
+  <g filter="url(#jsit)"><path d="M125.67 109.70L102.22 114.21L94.94 106.50L109.91 102.17ZM102.22 114.21L94.13 116.39L87.18 105.21L93.33 104.79ZM93.33 104.79L87.18 105.21L81.88 96.68L85.34 96.33ZM94.13 116.39L82.27 115.72L80.10 106.46L88.53 107.39ZM88.53 107.39L80.10 106.46L77.86 96.92L81.88 96.68ZM82.27 115.72L75.32 115.78L75.29 107.86L79.73 104.86ZM79.73 104.86L75.29 107.86L75.26 96.99L77.86 96.92Z" fill="#5C5955" stroke="#5C5955" stroke-width=".35" stroke-linejoin="round"/><path d="M142.00 91.57L125.67 109.70L109.85 102.14L124.17 89.81ZM124.17 89.81L109.85 102.14L94.18 94.66L103.99 87.82ZM109.91 102.17L94.94 106.50L85.34 96.33L94.18 94.66ZM75.32 115.78L68.60 115.01L70.43 106.92L75.30 108.59ZM75.30 108.59L70.43 106.92L72.67 96.99L75.26 96.99ZM68.60 115.01L59.92 115.80L64.96 105.84L70.25 107.73ZM70.25 107.73L64.96 105.84L69.48 96.90L72.67 96.99ZM59.92 115.80L52.81 116.51L59.12 107.81L64.91 105.93ZM64.91 105.93L59.12 107.81L67.14 96.76L69.48 96.90ZM52.81 116.51L35.48 115.55L51.21 103.76L61.18 104.98ZM101.39 70.76L121.57 74.92L107.30 78.14L93.38 75.26ZM121.57 74.92L142.00 91.57L125.42 89.93L109.78 77.58Z" fill="#8E8A83" stroke="#8E8A83" stroke-width=".35" stroke-linejoin="round"/><path d="M61.18 104.98L51.21 103.76L61.35 96.16L67.14 96.76ZM35.48 115.55L14.34 108.31L32.21 101.63L46.18 107.53ZM46.18 107.53L32.21 101.63L52.18 94.18L61.35 96.16ZM14.34 108.31L7.79 92.84L21.63 91.14L29.39 102.69ZM60.86 67.58L69.09 66.90L71.12 73.25L66.06 74.17ZM76.32 71.84L80.05 74.42L78.03 79.08L75.69 79.01ZM82.76 68.18L89.45 70.19L85.84 74.06L79.85 74.87ZM89.45 70.19L101.39 70.76L93.54 75.17L84.76 75.22ZM84.76 75.22L93.54 75.17L85.50 79.69L81.00 79.25ZM93.38 75.26L107.30 78.14L93.70 81.21L85.50 79.69ZM109.78 77.58L125.42 89.93L103.99 87.82L93.70 81.21Z" fill="#BEBAB2" stroke="#BEBAB2" stroke-width=".35" stroke-linejoin="round"/><path d="M29.39 102.69L21.63 91.14L44.03 88.39L52.18 94.18ZM7.79 92.84L20.98 76.47L37.16 79.06L25.37 90.69ZM25.37 90.69L37.16 79.06L52.94 81.59L44.03 88.39ZM20.98 76.47L34.82 70.82L44.44 74.34L39.88 79.50ZM39.88 79.50L44.44 74.34L60.02 80.04L52.94 81.59ZM34.82 70.82L48.99 68.08L57.52 73.84L48.14 75.69ZM48.14 75.69L57.52 73.84L65.68 79.35L60.02 80.04ZM48.99 68.08L60.86 67.58L64.55 72.25L58.80 74.70ZM58.80 74.70L64.55 72.25L69.93 79.08L65.68 79.35ZM66.06 74.17L71.12 73.25L72.96 79.01L69.93 79.08ZM69.09 66.90L76.79 66.52L76.15 73.81L70.93 72.66ZM70.93 72.66L76.15 73.81L75.69 79.01L72.96 79.01ZM76.79 66.52L82.76 68.18L80.05 74.42L76.32 71.84ZM79.85 74.87L85.84 74.06L81.00 79.25L78.03 79.08Z" fill="#E6E3DC" stroke="#E6E3DC" stroke-width=".35" stroke-linejoin="round"/><path d="M74.08 110.71L77.60 113.21M73.41 111.65L76.94 114.15M80.13 107.67L77.46 110.16M79.34 106.83L76.68 109.32M78.56 105.99L75.89 108.48M77.51 101.99L75.57 103.04M76.95 100.98L75.02 102.04M80.18 110.06L78.17 113.90M79.16 109.53L77.15 113.36M78.14 108.99L76.13 112.83M85.93 111.76L81.73 113.32M85.53 110.68L81.33 112.24M79.87 110.46L83.88 110.57M79.84 111.61L83.85 111.71M79.81 112.76L83.82 112.86M113.89 105.18L117.89 105.38M113.84 106.33L117.83 106.52M113.78 107.48L117.78 107.67M109.14 105.93L112.02 108.79M108.33 106.75L111.21 109.61M104.83 109.98L100.57 110.04M104.81 108.83L100.55 108.89M104.80 107.68L100.53 107.74M87.59 107.47L89.64 110.62M86.63 108.10L88.67 111.25M89.91 100.48L89.01 102.41M88.87 99.99L87.97 101.92M87.83 99.51L86.93 101.44M86.79 99.02L85.88 100.95M83.19 99.61L81.98 100.87M82.35 98.82L81.15 100.08M81.52 98.02L80.32 99.29M80.68 97.23L79.48 98.50M90.93 106.31L92.22 109.63M89.86 106.72L91.15 110.05M88.79 107.14L90.08 110.46M96.24 109.45L93.98 113.16M95.26 108.85L93.00 112.56M94.28 108.26L92.02 111.97M90.95 102.96L90.29 105.64M89.84 102.68L89.17 105.36M88.72 102.41L88.05 105.08M87.61 102.13L86.94 104.81M78.56 105.44L78.57 108.66M77.41 105.44L77.42 108.67M76.26 105.44L76.27 108.67M88.76 104.34L91.28 105.79M88.19 105.33L90.71 106.79M87.61 106.33L90.13 107.78M101.25 106.78L98.28 109.07M100.55 105.87L97.58 108.16M99.85 104.96L96.87 107.24M99.15 104.05L96.17 106.33M78.28 103.73L77.52 106.40M77.18 103.42L76.42 106.09M76.07 103.10L75.31 105.77M89.08 109.87L92.53 112.32M88.41 110.81L91.86 113.26M87.75 111.75L91.20 114.19" fill="none" stroke="#2B2927" stroke-width=".6" stroke-linecap="round"/><path d="M72.97 104.71L74.15 107.47M71.92 105.16L73.09 107.92M131.35 102.23L126.99 104.06M130.91 101.17L126.54 103.00M66.16 108.84L66.24 112.92M65.01 108.86L65.09 112.94M63.86 108.88L63.94 112.97M123.89 84.69L121.02 86.52M123.27 83.72L120.40 85.55M54.96 107.94L58.07 110.02M54.32 108.90L57.43 110.97M66.80 107.51L64.15 109.96M66.02 106.66L63.37 109.11M72.61 109.36L72.63 113.56M71.46 109.36L71.48 113.57M70.31 109.37L70.33 113.58M96.25 97.93L97.95 98.02M96.19 99.08L97.89 99.16M97.58 100.71L97.85 103.19M96.44 100.84L96.71 103.31M95.30 100.96L95.57 103.44M94.15 101.09L94.42 103.56M102.64 71.62L98.93 73.30M102.16 70.57L98.45 72.26M109.97 70.12L112.62 74.10M109.02 70.76L111.67 74.74M108.06 71.40L110.71 75.37M107.10 72.04L109.75 76.01M111.77 78.19L114.85 79.28M111.39 79.27L114.47 80.36M111.00 80.36L114.08 81.45M98.03 73.73L94.98 74.89M97.62 72.65L94.57 73.82M124.05 105.23L122.00 109.56M123.01 104.74L120.96 109.06M121.97 104.24L119.92 108.57M96.06 72.11L97.81 75.15M95.06 72.68L96.81 75.73M94.07 73.25L95.81 76.30M93.07 73.83L94.82 76.87M66.45 109.59L62.69 110.72M66.12 108.49L62.36 109.62M65.79 107.39L62.03 108.52M65.46 106.28L61.69 107.42M125.91 98.98L123.41 102.18M125.01 98.27L122.50 101.47M124.10 97.56L121.60 100.77M54.29 106.01L57.00 107.93M53.63 106.95L56.34 108.87M66.36 103.07L67.52 105.40M65.33 103.58L66.49 105.91M64.30 104.09L65.46 106.42M63.27 104.60L64.43 106.93M106.38 72.33L103.17 74.65M105.70 71.40L102.50 73.72M105.03 70.47L101.82 72.79M104.35 69.54L101.15 71.86M114.35 70.88L114.12 75.54M113.21 70.82L112.98 75.48M112.06 70.76L111.83 75.43M110.91 70.71L110.68 75.37M101.29 71.81L103.85 74.76M100.42 72.57L102.98 75.51M99.55 73.32L102.11 76.26M72.88 109.21L73.02 113.38M71.73 109.25L71.87 113.42M98.77 70.96L103.25 71.45M98.64 72.11L103.13 72.60M98.52 73.25L103.00 73.74M61.58 113.38L66.26 113.81M61.47 114.52L66.15 114.95M61.37 115.67L66.05 116.10M61.26 116.81L65.94 117.24M71.02 111.80L72.57 116.34M69.93 112.17L71.48 116.71M68.85 112.54L70.39 117.08M67.76 112.91L69.30 117.45M62.96 105.11L65.75 105.89M62.65 106.21L65.44 107.00M62.34 107.32L65.13 108.10M74.93 110.57L71.88 113.69M74.11 109.77L71.06 112.88M73.29 108.96L70.24 112.07M72.47 108.16L69.42 111.27M73.88 107.72L73.69 111.51M72.73 107.66L72.54 111.45M71.58 107.60L71.39 111.39M115.45 75.98L119.64 76.34M115.35 77.12L119.54 77.49M72.28 104.34L71.96 107.26M71.14 104.22L70.82 107.14M69.99 104.10L69.68 107.02M64.98 112.04L69.23 113.56M64.60 113.12L68.84 114.64M44.50 110.42L48.69 111.56M44.20 111.52L48.39 112.67M43.90 112.63L48.09 113.78M43.59 113.74L47.78 114.89M116.72 75.13L112.75 76.13M116.43 74.01L112.47 75.01M116.15 72.90L112.19 73.90M115.87 71.78L111.91 72.78M73.98 110.02L70.62 112.47M73.30 109.09L69.94 111.54M72.62 108.16L69.26 110.62M68.51 111.92L72.56 113.96M67.99 112.95L72.05 114.98M67.47 113.98L71.53 116.01M58.17 107.14L54.84 107.99M57.89 106.03L54.56 106.87M57.61 104.91L54.28 105.76M57.32 103.80L53.99 104.64M128.46 88.32L131.03 91.63M127.55 89.02L130.12 92.34M126.65 89.72L129.21 93.04M122.71 74.61L119.46 77.76M121.91 73.79L118.66 76.94M121.11 72.96L117.86 76.11M120.31 72.14L117.06 75.29" fill="none" stroke="#5C5955" stroke-width=".6" stroke-linecap="round"/><path d="M24.32 98.07L22.23 101.17M23.36 97.43L21.28 100.52M105.01 77.00L102.30 77.59M104.77 75.87L102.05 76.47M104.52 74.75L101.81 75.34M97.81 74.68L100.69 75.82M97.39 75.75L100.27 76.89M96.97 76.82L99.85 77.96M65.12 69.61L68.75 71.74M64.54 70.60L68.16 72.73M86.33 76.19L86.67 78.06M85.20 76.40L85.54 78.26M84.07 76.61L84.41 78.47M82.94 76.81L83.28 78.67M38.48 110.35L41.42 114.10M37.57 111.06L40.52 114.81M36.67 111.77L39.61 115.52M35.77 112.48L38.71 116.23M69.50 67.38L69.42 71.96M68.35 67.36L68.27 71.94M86.69 69.66L82.53 71.02M86.34 68.56L82.17 69.93M92.08 73.71L95.33 74.13M91.93 74.85L95.18 75.28M91.78 75.99L95.03 76.42M91.63 77.13L94.89 77.56M33.47 107.94L30.39 111.32M32.62 107.16L29.54 110.55M31.77 106.39L28.69 109.77M30.92 105.62L27.84 109.00M68.03 72.74L71.17 73.53M67.75 73.85L70.89 74.64M67.46 74.97L70.61 75.76M121.44 84.73L118.98 86.64M120.73 83.82L118.27 85.74M120.02 82.91L117.56 84.83M119.31 82.01L116.85 83.92M92.93 68.91L93.97 73.09M91.81 69.19L92.85 73.37M90.70 69.46L91.74 73.65M89.58 69.74L90.62 73.93M18.72 96.14L18.41 100.17M17.57 96.05L17.26 100.08M16.42 95.96L16.12 100.00M77.39 75.55L76.15 77.12M76.49 74.84L75.25 76.41M75.59 74.12L74.34 75.69M74.69 73.41L73.44 74.98M35.48 101.23L34.25 104.29M34.42 100.80L33.18 103.86M37.26 101.35L37.80 104.47M36.12 101.55L36.67 104.67M34.99 101.75L35.53 104.87M33.86 101.94L34.40 105.07M92.42 69.51L91.95 73.56M91.27 69.37L90.81 73.43M90.13 69.24L89.66 73.30M88.99 69.11L88.52 73.16M91.59 69.19L92.11 73.33M90.45 69.33L90.97 73.47M86.21 68.82L88.83 72.28M85.29 69.51L87.91 72.97M59.61 102.53L61.66 103.84M58.99 103.50L61.05 104.81M34.33 102.44L36.88 104.65M33.58 103.31L36.13 105.51M13.45 92.42L8.93 93.49M13.19 91.30L8.66 92.37M12.92 90.18L8.40 91.25M12.66 89.06L8.13 90.13M30.13 101.90L32.60 104.47M29.30 102.70L31.77 105.27M28.47 103.50L30.94 106.07M27.64 104.29L30.11 106.86M26.99 99.18L28.71 102.21M25.99 99.74L27.71 102.77M24.99 100.31L26.70 103.34M87.85 70.15L91.74 71.79M87.40 71.21L91.30 72.85M86.95 72.27L90.85 73.91M41.96 104.65L44.95 106.12M41.46 105.69L44.45 107.15M40.95 106.72L43.94 108.19M62.09 102.88L59.98 104.23M61.48 101.91L59.36 103.26M60.86 100.94L58.74 102.29M34.13 105.24L30.31 105.91M33.94 104.10L30.12 104.77M118.66 83.71L116.83 85.93M117.78 82.98L115.94 85.19M85.79 70.31L89.95 71.26M85.54 71.43L89.69 72.38M85.28 72.56L89.44 73.50M85.03 73.68L89.18 74.62M110.95 82.46L108.97 83.35M110.48 81.41L108.49 82.31M110.00 80.36L108.02 81.26M109.53 79.31L107.55 80.21" fill="none" stroke="#8E8A83" stroke-width=".6" stroke-linecap="round"/><path d="M69.93 68.44L72.62 71.91M69.02 69.15L71.71 72.61M68.12 69.85L70.80 73.31M67.21 70.56L69.89 74.02M27.32 89.29L24.65 90.61M26.82 88.26L24.14 89.57M26.31 87.23L23.63 88.54M25.80 86.19L23.13 87.51M75.38 75.19L73.48 76.32M74.80 74.20L72.89 75.34M74.21 73.21L72.30 74.35M27.98 74.12L23.26 74.56M27.87 72.97L23.15 73.41M72.74 70.95L75.36 73.42M71.95 71.78L74.58 74.25M82.11 67.46L81.27 71.97M80.98 67.25L80.14 71.76M79.85 67.04L79.01 71.55M78.72 66.83L77.88 71.34M50.20 71.22L49.97 74.86M49.05 71.15L48.82 74.79M47.90 71.07L47.67 74.72M14.81 87.71L10.96 89.98M14.23 86.72L10.38 88.98M13.65 85.73L9.80 87.99M13.07 84.74L9.22 87.00M53.74 68.41L52.50 72.67M52.64 68.09L51.40 72.34M51.54 67.77L50.29 72.02M79.94 68.85L75.75 70.64M79.49 67.79L75.30 69.58M73.53 71.21L70.13 72.67M73.07 70.16L69.68 71.62M72.62 69.10L69.22 70.56M72.17 68.04L68.77 69.51M46.69 70.45L43.59 73.32M45.91 69.61L42.80 72.48M45.12 68.76L42.02 71.64M72.85 71.92L74.78 74.48M71.93 72.61L73.86 75.17M55.36 72.22L58.79 73.17M55.06 73.33L58.49 74.28M54.75 74.44L58.18 75.39M36.30 73.06L36.97 76.80M35.17 73.27L35.84 77.00M34.04 73.47L34.71 77.20M43.21 73.13L44.06 76.43M42.10 73.42L42.95 76.71M60.44 67.15L59.04 71.67M59.34 66.81L57.94 71.33M21.39 77.00L22.70 80.99M20.30 77.36L21.60 81.35M74.25 71.27L74.12 74.58M73.10 71.22L72.97 74.53M67.07 75.29L66.58 77.29M65.96 75.02L65.46 77.01M64.84 74.74L64.35 76.73M41.77 75.22L40.80 78.09M40.68 74.85L39.71 77.73M39.59 74.49L38.62 77.36M38.49 74.12L37.53 77.00M57.94 69.80L56.27 73.40M56.89 69.32L55.23 72.91M55.85 68.84L54.18 72.43M26.74 83.05L25.64 86.00M25.67 82.65L24.56 85.60M26.34 84.61L28.76 86.26M25.69 85.56L28.12 87.21M25.04 86.51L27.47 88.16M45.41 70.54L48.37 73.41M44.61 71.36L47.57 74.24M78.72 70.32L74.99 71.85M78.29 69.25L74.56 70.79M61.98 69.24L57.41 70.05M61.78 68.11L57.21 68.92M49.88 70.74L46.10 72.56M49.38 69.70L45.60 71.53M48.88 68.67L45.10 70.49M53.80 67.48L55.30 71.93M52.71 67.84L54.21 72.30M51.62 68.21L53.12 72.67M50.53 68.58L52.04 73.04M23.05 73.87L23.44 78.42M21.91 73.97L22.29 78.52M20.76 74.07L21.14 78.61M19.62 74.16L20.00 78.71M57.10 69.74L61.43 70.73M56.85 70.86L61.17 71.85M50.10 71.19L50.50 74.82M48.96 71.32L49.36 74.95M72.77 68.37L68.54 70.39M72.27 67.33L68.04 69.36M40.27 72.75L43.95 74.02M39.89 73.84L43.58 75.11M39.52 74.93L43.20 76.20M75.69 70.34L79.35 71.98M75.22 71.39L78.88 73.03M74.76 72.44L78.42 74.08M74.29 73.49L77.95 75.13M61.27 70.09L56.93 70.68M61.12 68.95L56.78 69.54M60.96 67.81L56.62 68.40M44.61 76.82L47.29 76.84M44.60 77.97L47.28 77.99M44.59 79.12L47.28 79.14M44.58 80.27L47.27 80.29" fill="none" stroke="#BEBAB2" stroke-width=".6" stroke-linecap="round"/><clipPath id="jblk"><path clip-rule="evenodd" d="M142.00 91.57L125.67 109.70L102.22 114.21L94.13 116.39L82.27 115.72L75.32 115.78L68.60 115.01L59.92 115.80L52.81 116.51L35.48 115.55L14.34 108.31L7.79 92.84L20.98 76.47L34.82 70.82L48.99 68.08L60.86 67.58L69.09 66.90L76.79 66.52L82.76 68.18L89.45 70.19L101.39 70.76L121.57 74.92ZM104.00 88.00L102.50 90.81L99.00 92.97L95.10 94.40L91.60 95.29L88.68 95.85L86.29 96.21L84.30 96.45L82.62 96.62L81.17 96.74L79.90 96.82L78.75 96.89L77.70 96.93L76.72 96.96L75.79 96.98L74.89 97.00L74.00 97.00L73.11 97.00L72.21 96.98L71.28 96.96L70.30 96.93L69.25 96.89L68.10 96.82L66.83 96.74L65.38 96.62L63.70 96.45L61.71 96.21L59.32 95.85L56.40 95.29L52.90 94.40L49.00 92.97L45.50 90.81L44.00 88.00L45.50 85.19L49.00 83.03L52.90 81.60L56.40 80.71L59.32 80.15L61.71 79.79L63.70 79.55L65.38 79.38L66.83 79.26L68.10 79.18L69.25 79.11L70.30 79.07L71.28 79.04L72.21 79.02L73.11 79.00L74.00 79.00L74.89 79.00L75.79 79.02L76.72 79.04L77.70 79.07L78.75 79.11L79.90 79.18L81.17 79.26L82.62 79.38L84.30 79.55L86.29 79.79L88.68 80.15L91.60 80.71L95.10 81.60L99.00 83.03L102.50 85.19Z"/></clipPath><g clip-path="url(#jblk)"><path d="M25.43 79.80L36.34 78.40 47.34 78.19 58.23 79.73 69.22 79.33 80.12 77.81 91.11 78.30 102.02 79.66 112.53 82.92 122.09 88.36 131.33 94.32 141.25 99.08 150.72 104.68 160.80 109.07M18.71 82.81L28.95 86.84 39.70 89.14 50.70 89.00 61.67 89.81 72.47 91.92 83.39 93.22 94.38 92.85 105.38 92.81 116.31 91.53 127.09 89.33 137.22 85.04 147.25 80.53 157.33 76.14M7.66 92.41L18.51 90.61 29.39 88.93 39.65 84.97 50.40 82.64 61.40 82.66 72.32 81.34 83.24 82.66 94.16 81.32 104.48 77.52 114.68 73.39 123.99 67.54 132.87 61.04 142.01 54.92" fill="none" stroke="#7D7972" stroke-opacity=".32" stroke-width=".5"/></g><path d="M142.00 91.57L125.67 109.70L102.22 114.21L94.13 116.39L82.27 115.72L75.32 115.78L68.60 115.01L59.92 115.80L52.81 116.51L35.48 115.55L14.34 108.31L7.79 92.84L20.98 76.47L34.82 70.82L48.99 68.08L60.86 67.58L69.09 66.90L76.79 66.52L82.76 68.18L89.45 70.19L101.39 70.76L121.57 74.92Z" fill="url(#jlit)"/><path d="M44.00 88.00L45.92 84.84L50.12 82.55L54.47 81.17L58.14 80.36L60.51 81.50L57.21 82.13L53.14 83.24L48.98 85.18L47.00 88.00ZM58.14 80.36L61.07 79.88L63.44 79.58L65.38 79.38L67.02 79.25L68.16 80.68L66.77 80.77L65.12 80.92L63.08 81.14L60.51 81.50ZM67.02 79.25L68.44 79.16L69.71 79.09L70.87 79.05L71.95 79.02L72.29 80.52L71.39 80.54L70.42 80.57L69.36 80.61L68.16 80.68ZM71.95 79.02L72.99 79.01L74.00 79.00L75.01 79.01L76.05 79.02L75.71 80.52L74.84 80.50L74.00 80.50L73.16 80.50L72.29 80.52Z" fill="#2B2927" stroke="#2B2927" stroke-width=".35"/><path d="M58.14 95.64L54.47 94.83L50.12 93.45L45.92 91.16L44.00 88.00L47.00 88.00L48.98 90.82L53.14 92.76L57.21 93.87L60.51 94.50ZM76.05 79.02L77.13 79.05L78.29 79.09L79.56 79.16L80.98 79.25L79.84 80.68L78.64 80.61L77.58 80.57L76.61 80.54L75.71 80.52ZM80.98 79.25L82.62 79.38L84.56 79.58L86.93 79.88L89.86 80.36L87.49 81.50L84.92 81.14L82.88 80.92L81.23 80.77L79.84 80.68Z" fill="#5C5955" stroke="#5C5955" stroke-width=".35"/><path d="M71.95 96.98L70.87 96.95L69.71 96.91L68.44 96.84L67.02 96.75L68.16 95.32L69.36 95.39L70.42 95.43L71.39 95.46L72.29 95.48ZM67.02 96.75L65.38 96.62L63.44 96.42L61.07 96.12L58.14 95.64L60.51 94.50L63.08 94.86L65.12 95.08L66.77 95.23L68.16 95.32ZM89.86 80.36L93.53 81.17L97.88 82.55L102.08 84.84L104.00 88.00L101.00 88.00L99.02 85.18L94.86 83.24L90.79 82.13L87.49 81.50Z" fill="#8E8A83" stroke="#8E8A83" stroke-width=".35"/><path d="M104.00 88.00L102.08 91.16L97.88 93.45L93.53 94.83L89.86 95.64L87.49 94.50L90.79 93.87L94.86 92.76L99.02 90.82L101.00 88.00ZM89.86 95.64L86.93 96.12L84.56 96.42L82.62 96.62L80.98 96.75L79.84 95.32L81.23 95.23L82.88 95.08L84.92 94.86L87.49 94.50ZM80.98 96.75L79.56 96.84L78.29 96.91L77.13 96.95L76.05 96.98L75.71 95.48L76.61 95.46L77.58 95.43L78.64 95.39L79.84 95.32ZM76.05 96.98L75.01 96.99L74.00 97.00L72.99 96.99L71.95 96.98L72.29 95.48L73.16 95.50L74.00 95.50L74.84 95.50L75.71 95.48Z" fill="#BEBAB2" stroke="#BEBAB2" stroke-width=".35"/></g>
+  <path d="M101.00 88.00L98.40 91.21L93.43 93.21L89.04 94.23L85.71 94.76L83.19 95.05L81.23 95.23L79.63 95.34L78.28 95.41L77.09 95.45L76.00 95.48L74.99 95.49L74.00 95.50L73.01 95.49L72.00 95.48L70.91 95.45L69.72 95.41L68.37 95.34L66.77 95.23L64.81 95.05L62.29 94.76L58.96 94.23L54.57 93.21L49.60 91.21L47.00 88.00L49.60 84.79L54.57 82.79L58.96 81.77L62.29 81.24L64.81 80.95L66.77 80.77L68.37 80.66L69.72 80.59L70.91 80.55L72.00 80.52L73.01 80.51L74.00 80.50L74.99 80.51L76.00 80.52L77.09 80.55L78.28 80.59L79.63 80.66L81.23 80.77L83.19 80.95L85.71 81.24L89.04 81.77L93.43 82.79L98.40 84.79Z" fill="#8E8A83"/><path d="M82.35 90.18l1.72 -1.62M55.75 88.74l2.22 -1.46M91.85 85.84l2.28 -1.74M81.06 84.11l1.97 -1.30M91.45 86.30l2.26 -1.72M63.16 84.15l2.29 -1.21M64.00 84.99l1.97 -1.99M62.80 84.65l2.35 -1.32M69.93 91.89l1.77 -1.39M61.56 90.95l2.22 -1.88M74.51 90.44l2.15 -1.14M79.99 88.62l1.82 -1.78M78.81 84.07l2.43 -1.34M67.40 91.00l1.75 -1.18M88.68 86.23l2.50 -1.01M67.45 90.07l1.81 -1.66M55.38 84.64l2.23 -1.52M63.15 91.44l1.55 -1.73M93.97 86.28l2.03 -1.86M89.26 88.63l2.46 -1.70M75.77 84.88l1.79 -1.53M58.82 86.02l2.27 -1.14M55.52 86.61l2.31 -1.64M70.15 84.78l1.79 -1.96M66.36 89.62l2.24 -1.10M86.47 91.45l2.11 -1.11" stroke="#5C5955" stroke-width=".6" stroke-linecap="round"/>
+  <g filter="url(#jlift)"><path d="M68 90C60 76 56 60 52 44C61 56 67 70 72 88Z" fill="#BEBAB2"/><path d="M52 44C61 56 67 70 72 88L69 89C64 74 59 60 52 44Z" fill="#8E8A83"/><path d="M68 90C60 76 56 60 52 44" fill="none" stroke="#5C5955" stroke-width=".45"/><path d="M73 90C73 74 74 60 79 42" fill="none" stroke="#5C5955" stroke-width="5" stroke-linecap="round"/><path d="M72.6 90C72.6 74 73.6 60 78.4 42" fill="none" stroke="#BEBAB2" stroke-width="2.4" stroke-linecap="round"/><g transform="translate(82 32) rotate(300)"><path d="M0 -3C7.4 -5 9 -13.02 0 -21C-9 -13.02 -7.4 -5 0 -3Z" fill="#E6E3DC" stroke="#5C5955" stroke-width=".45" stroke-linejoin="round"/><path d="M0 -3C-7.4 -5 -9 -13.02 0 -21Z" fill="#BEBAB2" opacity=".85"/><path d="M0 -6V-17" stroke="#8E8A83" stroke-width=".5" stroke-linecap="round"/></g><g transform="translate(82 32) rotate(0)"><path d="M0 -3C6.4 -5 8 -11.16 0 -18C-8 -11.16 -6.4 -5 0 -3Z" fill="#E6E3DC" stroke="#5C5955" stroke-width=".45" stroke-linejoin="round"/><path d="M0 -3C-6.4 -5 -8 -11.16 0 -18Z" fill="#BEBAB2" opacity=".85"/><path d="M0 -6V-14" stroke="#8E8A83" stroke-width=".5" stroke-linecap="round"/></g><g transform="translate(82 32) rotate(240)"><path d="M0 -3C7.4 -5 9 -13.02 0 -21C-9 -13.02 -7.4 -5 0 -3Z" fill="#BEBAB2" stroke="#5C5955" stroke-width=".45" stroke-linejoin="round"/><path d="M0 -3C-7.4 -5 -9 -13.02 0 -21Z" fill="#8E8A83" opacity=".85"/><path d="M0 -6V-17" stroke="#8E8A83" stroke-width=".5" stroke-linecap="round"/></g><g transform="translate(82 32) rotate(180)"><path d="M0 -3C6.4 -5 8 -11.16 0 -18C-8 -11.16 -6.4 -5 0 -3Z" fill="#BEBAB2" stroke="#5C5955" stroke-width=".45" stroke-linejoin="round"/><path d="M0 -3C-6.4 -5 -8 -11.16 0 -18Z" fill="#8E8A83" opacity=".85"/><path d="M0 -6V-14" stroke="#8E8A83" stroke-width=".5" stroke-linecap="round"/></g><g transform="translate(82 32) rotate(60)"><path d="M0 -3L3.26 -5.25L6.12 -7.50L6.95 -9.75L8.72 -12.00L9.53 -14.25L5.91 -16.50L3.76 -18.75L0.00 -21.00L-3.82 -18.75L-5.43 -16.50L-8.32 -14.25L-10.02 -12.00L-7.42 -9.75L-6.56 -7.50L-2.94 -5.25Z" fill="#8E8A83" stroke="#5C5955" stroke-width=".5" stroke-linejoin="round"/><path d="M-3.21 -3.80L1.19 -6.20M-0.99 -5.47L3.41 -7.87M-4.02 -7.13L0.38 -9.53M-0.86 -8.80L3.54 -11.20M-4.13 -10.47L0.27 -12.87M-4.03 -12.13L0.37 -14.53M1.39 -13.80L5.79 -16.20M-1.14 -15.47L3.26 -17.87M-2.55 -17.13L1.85 -19.53" stroke="#5C5955" stroke-width=".6" stroke-linecap="round"/></g><g transform="translate(82 32) rotate(120)"><path d="M0 -3L3.33 -4.88L4.72 -6.75L7.70 -8.63L8.44 -10.50L6.11 -12.38L4.93 -14.25L2.88 -16.13L0.00 -18.00L-3.22 -16.13L-6.56 -14.25L-7.63 -12.38L-9.05 -10.50L-8.11 -8.63L-5.21 -6.75L-2.58 -4.88Z" fill="#8E8A83" stroke="#5C5955" stroke-width=".5" stroke-linejoin="round"/><path d="M-4.31 -3.80L0.09 -6.20M-5.13 -5.13L-0.73 -7.53M-3.95 -6.47L0.45 -8.87M0.30 -7.80L4.70 -10.20M-2.51 -9.13L1.89 -11.53M-5.13 -10.47L-0.73 -12.87M-0.43 -11.80L3.97 -14.20M-1.65 -13.13L2.75 -15.53M-3.57 -14.47L0.83 -16.87" stroke="#5C5955" stroke-width=".6" stroke-linecap="round"/></g><circle cx="82" cy="32" r="6.4" fill="#BEBAB2"/><circle cx="82.6" cy="32.7" r="3.9" fill="#5C5955"/><circle cx="82" cy="32" r="6.4" fill="none" stroke="#F9D21C" stroke-width="1.1"/></g>
+  <circle cx="74" cy="24" r="22" fill="url(#jfs)"/>
+</svg></div>
+<p class="say"><span class="who">돌이</span><span>정말 끝낸 수가 늘까?</span></p>
+<p class="ctx">들어감 1 · 확인을 기다려요 3</p>
+<p class="ess"><small>돌이의 본질</small>주식을 사기 전에 한 번 멈추게 하는 곳이다.</p>
+<ol class="story" aria-label="진화 마디">
+  <li class="ch"><span class="no on" aria-hidden="true">1</span>
+    <p class="k"><b>진화 1번째</b><span>10월 19일 들어감</span></p>
+    <h2>첫 화면을 흰 바탕 한 장으로 다시 지음</h2>
+    <p class="guess"><em>「끝낸 수가 는다」</em>열한 질문을 끝낸 수가 공사 전 10거래일보다 늘 것으로 어림해요.</p>
+    <p class="when">채점 전 · <b>10</b>월 <b>31</b>일쯤 매겨요</p>
+  </li>
+  <li class="ch"><span class="no dash" aria-hidden="true"></span>
+    <p class="wh"><b>확인을 기다려요 3</b><span>세 사람이 고른 것</span></p>
+    <a class="alt" href="#/jinhwa/2"><p>결과 화면에도 한 달 뒤 돌아보기 안내를 놓기</p></a>
+  </li>
+  <li class="ch"><span class="no dash" aria-hidden="true"></span><a class="alt" href="#/jinhwa/3"><p>「좋아」가 나온 날에 급한 마음의 격언 한 줄 보여 주기</p></a></li>
+  <li class="ch"><span class="no dash" aria-hidden="true"></span><a class="alt" href="#/jinhwa/4"><p>팔 약속 쓰는 쪽에서 「틀린 것도 지우지 않아요」 보여 주기</p></a></li>
+</ol>
+<p class="honest">확인 단추는 사장님 휴대폰에만 보여요.<br>고친 고장 <b style="color:#FFF;font-weight:600">0</b></p>
+</main>
+<div class="dock carbon"><a class="go" href="#/jinhwa/1">진화 1번째 자세히 보기</a></div>
+<nav class="tabs"><a href="#/">오늘 장</a><a href="#/news">시황</a><a href="#/why">매매일지</a><a href="#/watch">관심</a><a href="#/hold">보유종목</a></nav>
+</body>
+</html>
