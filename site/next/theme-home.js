@@ -53,7 +53,7 @@ export function bar(x) { const W = 64, s = sv('svg', {class: 'th-bar', viewBox: 
 export function row(i, k, {num: showNum = true, meta = 'near'} = {}) {
   const tag = i.d === 1 ? '새로 들어옴' : i.d + '일째';
   const mid = h('span', {class: 'th-mid2'}, h('span', {class: 'th-rn', text: i.n}),
-    meta === 'near' ? h('span', {class: 'th-meta'}, h('em', {class: 'th-tg' + (i.d === 1 ? ' new' : ''), text: tag}), h('span', {text: '꽃까지'}), bar(i.x))
+    meta === 'near' ? h('span', {class: 'th-meta'}, h('em', {class: 'th-tg' + (i.d === 1 ? ' new' : ''), text: tag}), h('span', {class: 'th-to'}, h('span', {text: '꽃까지'}), bar(i.x))) // 「꽃까지 ▬」는 늘 제 줄(막대 길이 하나 · 폭 · 글꼴에 따라 막대만 떨어지지 않게)
       : h('span', {class: 'th-meta'}, h('em', {class: 'th-tg', text: tag}), h('span', {text: '한 달 시장보다'}), h('b', {class: cls(i.x), text: pp(i.x) + '%p'})));
   return h('a', {class: 'th-row', href: '#/t/i/' + enc(i.n)}, showNum ? h('span', {class: 'th-n' + (k < 3 ? ' th-top' : ''), text: String(k + 1)}) : null, mid, dots(i), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}));
 }

@@ -38,6 +38,8 @@
 .th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #6E6E6E; border-radius: 8px; color: var(--ink); font-style: normal; }
 .th-tg.new { border-color: var(--up); color: var(--ink); }
 .th-bar { flex: none; width: 64px; height: 8px; } /* 막대 길이는 줄마다 같게(채운 비율을 견주게 · 새 눈 검사 11) */
+.th-to { display: flex; flex-basis: 100%; min-width: 0; align-items: center; gap: var(--sp-1); } /* 「꽃까지 ▬」 한 덩이 — 며칠째 아래 제 줄 */
+.th-to .th-bar { flex: 0 1 64px; min-width: 32px; width: auto; } /* 한국어는 늘 64(320 폭에도 자리 있음) · 긴 영어 이름표일 때만 줄어듦 */
 .th-bar .th-bar0, .th-rbar .th-bar0 { fill: #2A2A2A; }
 .th-bar .th-bar1, .th-rbar .th-bar1 { fill: var(--up); }
 .th-dots { flex: none; }
