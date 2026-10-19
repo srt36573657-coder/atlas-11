@@ -1,0 +1,92 @@
+{
+ "startedAt": "2026-10-19T21:49:07.757Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-19T21:49:08.204Z",
+   "mode": "update",
+   "run": "reports/atlas11/us/runs/2026-10-19T21-49-07",
+   "newYork": {
+    "date": "2026-10-19",
+    "hm": "17:49",
+    "weekday": 1
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-19T21:49:09.506Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/AVGO.O/day"
+  },
+  {
+   "name": "일봉(지금 365곳)",
+   "at": "2026-10-19T21:49:26.778Z",
+   "asked": 365,
+   "got": 363,
+   "latest": "2026-10-19"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-19T21:49:26.953Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/AVGO.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-19T21:49:41.356Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-19T21:49:41.695Z",
+   "news": 365,
+   "newsItems": 5854,
+   "index": [
+    "S&P 500 2026-10-19",
+    "나스닥 종합 2026-10-19",
+    "다우존스 2026-10-19"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-19T21:49:41.934Z",
+   "assets": 365,
+   "asOf": "2026-10-19",
+   "late": 2,
+   "sessions": 296,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-10-19T21-49-07/input.json.gz",
+    "sha256": "91a1589e272a7c3206b3291f28475114a9ee7b1031b5d44295f480f9281de3d8",
+    "bytes": 657145
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day?startDateTime=202508150000&endDateTime=202610192359",
+   "status": 200,
+   "ms": 1183
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/WBD.O?periodType=dayCandle",
+   "status": 200,
+   "ms": 169
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/AVGO.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 174
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202609290000&endDateTime=202610192359",
+   "status": 200,
+   "ms": 167
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-19T21:49:41.934Z"
+}
