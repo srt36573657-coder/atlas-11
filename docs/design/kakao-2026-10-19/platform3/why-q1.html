@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>돌이 셋째 판 — 열한 질문</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* 셋째 판 「돌에서 꺼냄」(sexy/v1 부품 · 색 · 글꼴) · 내용은 platform2 그대로 · 이름 = 돌이(사장님 2026-10-19 10:21)
+   그림자 · 번지는 색 · 3D 는 제목 옆 대리석 주인공 그림에만 · 글 · 칸 · 단추는 평평 · 노랑 칠 0 · 흰 칠 단추는 한 화면 하나까지 */
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--line:#2E2E2E;--edge:#8A8A8A;--up:#FF6A3D;--dn:#6C86FF;--mod:#F9D21C;--g:#7DC46E;--y:#E3A632;--r:#F2545B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.carbon{background-color:#080808;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M0 8L8 0M-2 2L2 -2M6 10L10 6' stroke='%23151515' stroke-width='1.2'/%3E%3Cpath d='M0 0L4 4' stroke='%230E0E0E' stroke-width='1'/%3E%3C/svg%3E")}
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px;border-bottom:1px solid #1B1B1B}
+.solo,.group{background:#141414;border:1px solid #2A2A2A;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px;letter-spacing:.01em}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:20px;font-weight:700;letter-spacing:.14em;text-indent:.14em;white-space:nowrap}
+#view{padding:0 16px;display:flex;flex-direction:column;min-height:calc(100vh - 128px);min-height:calc(100svh - 128px)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px}
+.h1{font-size:40px;font-weight:800;line-height:1.08;letter-spacing:-.035em}
+.hero{flex:0 0 auto;width:132px;height:106px;display:block;margin:-4px -8px -6px 0;transform:perspective(520px) rotateY(-14deg) rotateX(7deg);transform-origin:60% 50%}
+.ctx{margin-top:4px;font-size:17px;color:#BDBDBD;white-space:nowrap;font-weight:500}
+.ctx b{color:#FFFFFF;font-weight:700}
+.ctx .v{font-weight:400}
+.askrow{display:flex;align-items:center;gap:8px;margin-top:10px}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#161616;border:1px solid #262626;border-radius:22px 22px 22px 6px;padding:8px 16px;font-size:19px;font-weight:500;line-height:1.3;white-space:nowrap;letter-spacing:-.01em}
+.say .who{flex:0 0 auto;font-size:17px;color:#A6A6A6;padding-right:8px;border-right:1px solid #3A3A3A}
+.mine{display:inline-block;max-width:88%;background:#161616;border:1px solid #8A8A8A;border-radius:22px 22px 6px 22px;padding:7px 16px;font-size:17px;line-height:1.4;font-weight:500;word-break:keep-all}
+.mine .k{color:#BDBDBD;font-weight:400}
+.me{display:flex;justify-content:flex-end}
+.story{list-style:none;position:relative;margin-top:12px}
+.story::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='8'%3E%3Cpath d='M.5 0V8M.5 .5H4' stroke='%23343434' stroke-width='1'/%3E%3C/svg%3E") repeat-y}
+.ch{position:relative;padding-left:40px}
+.ch+.ch{margin-top:8px;padding-top:9px;border-top:1px solid #1B1B1B}
+.no{position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;line-height:1;color:#FFFFFF}
+.ch.now .no{background:#FFFFFF;color:#080808;border-color:#FFFFFF}
+.ch+.ch .no{top:9px}
+.lbl{display:flex;align-items:baseline;gap:8px;white-space:nowrap;min-height:27px}
+.lbl .t{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.02em}
+.lbl .sub{margin-left:auto;font-size:17px;color:#BDBDBD;font-weight:600}
+.v{font-weight:300;line-height:1;letter-spacing:-.03em}
+.qs{display:grid;grid-template-columns:auto 1fr;gap:0 12px;margin-top:4px}
+.qs dt{font-size:17px;color:#FFFFFF;font-weight:700;line-height:1.55}
+.qs dd{font-size:17px;color:#BDBDBD;line-height:1.55;white-space:nowrap;letter-spacing:-.02em}
+.ghost{display:inline-flex;align-items:center;gap:8px;min-height:44px;border:1px dashed #8A8A8A;border-radius:6px 22px 22px 22px;padding:4px 16px;font-size:19px;font-weight:500;line-height:1.2;white-space:nowrap}
+.mem{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:17px;color:#BDBDBD;white-space:nowrap}
+.fine{margin-top:12px;font-size:17px;color:#BDBDBD;line-height:1.5;word-break:keep-all}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.dot.g{background:#7DC46E}.dot.y{background:#E3A632}.dot.r{background:#F2545B}
+.dock{position:sticky;bottom:64px;z-index:2;margin:auto -16px 0;padding:10px 16px 6px;border-top:1px solid #2E2E2E}
+.find .bar{height:60px;border:1px solid #8A8A8A;border-radius:30px;display:flex;align-items:center;padding:0 5px 0 18px;gap:8px;background:#080808}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-weight:500}
+.find input::placeholder{color:#BDBDBD}
+.primary{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;height:48px;min-width:84px;border-radius:24px;background:#F2F2F2;color:#080808;font-weight:800;font-size:19px;padding:0 20px;letter-spacing:.02em;white-space:nowrap}
+.txt{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.tnote{min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#D6D6D6;font-weight:500}
+.tlink{min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#FFFFFF;font-weight:500;text-decoration:underline;text-underline-offset:5px;text-decoration-color:#8A8A8A;padding:0 2px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a::after{content:"";width:18px;height:2px;background:transparent}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+.tabs a[aria-current]::after{background:#FFFFFF}
+@media (max-width:359px){
+ .top{padding:0 8px}.ttl{font-size:18px}
+ #view{padding:0 10px}.dock{margin:auto -10px 0;padding:8px 10px 6px}
+ .h1{font-size:32px}.hero{width:100px;height:80px}
+ .say,.ctx,.qs dd,.lbl,.ghost,.mem{white-space:normal}
+}
+
+.prog{display:flex;align-items:center;gap:10px;margin-top:10px}
+.prog .st{font-size:17px;color:#BDBDBD;white-space:nowrap;font-weight:500}
+.prog .st b{font-size:24px;font-weight:300;color:#FFFFFF}
+.ticks{flex:1;display:flex;gap:4px}
+.ticks i{flex:1 1 0;height:2px;background:#333333}
+.ticks i.on{background:#F9D21C}
+.qbig{margin-top:12px;padding-bottom:12px;border-bottom:1px solid #2E2E2E}
+.qbig .who{font-size:17px;color:#BDBDBD;font-weight:500}
+.qbig .q{display:flex;align-items:baseline;gap:8px;font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-.035em;margin-top:6px}
+.qbig .q .v{font-size:28px;color:#BDBDBD}
+.log{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.small{font-size:17px;color:#BDBDBD;font-weight:500}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:14px;min-height:58px;padding:0 20px;border:1px solid #8A8A8A;border-radius:29px;font-size:20px;font-weight:600;text-align:left;width:100%;background:#080808;letter-spacing:-.01em}
+.ring{width:20px;height:20px;border-radius:50%;border:1.5px solid #8A8A8A;flex:0 0 auto}
+.dock .txt{margin-top:2px}
+
+</style>
+</head>
+<body>
+<header class="top carbon">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl">돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="hd"><div><h1 class="h1">열한 질문</h1>
+<p class="ctx"><b>삼성전자</b> <span class="v">234,000</span>원<br>10월 13일 종가</p></div>
+<svg class="hero" viewBox="0 0 150 120" role="img" aria-label="돌에 새긴 번호 1 · 열한 질문 가운데 첫째">
+  <defs>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#6E6A64" stop-opacity=".55"/><stop offset="1" stop-color="#6E6A64" stop-opacity="0"/></radialGradient>
+    <radialGradient id="lit" gradientUnits="userSpaceOnUse" cx="36" cy="18" r="128"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".42"/><stop offset=".38" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".62" stop-color="#000000" stop-opacity=".08"/><stop offset="1" stop-color="#000000" stop-opacity=".62"/></radialGradient>
+    <radialGradient id="sheen" gradientUnits="userSpaceOnUse" cx="46" cy="40" r="52"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="cut" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2B2927"/><stop offset="1" stop-color="#5C5955"/></linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="1.1" dy="1.5" stdDeviation=".8" flood-color="#1A1816" flood-opacity=".5"/></filter>
+    <filter id="sit" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="2.5" dy="4" stdDeviation="2.6" flood-color="#000000" flood-opacity=".9"/></filter>
+    <clipPath id="blk"><path d="M11.00 35.00L10.99 31.22L12.58 27.73L16.00 27.00L19.31 22.58L20.26 20.77L22.00 18.00L24.31 17.69L27.71 15.97L33.00 14.00L45.98 13.32L61.07 12.32L77.00 13.00L95.07 15.34L108.14 16.69L125.00 16.00L125.73 17.20L130.56 19.96L131.00 21.00L129.91 34.49L131.07 42.60L133.00 55.00L133.53 65.58L130.77 75.79L131.00 89.00L126.86 91.70L125.20 94.11L124.00 96.00L122.10 99.13L123.35 102.60L120.00 106.00L104.66 108.61L87.27 106.48L73.00 109.00L55.80 110.40L33.90 107.64L16.00 109.00L14.05 108.60L8.66 106.31L7.00 102.00L8.68 91.12L6.65 77.59L7.00 68.00L6.30 59.04L8.52 46.90Z"/></clipPath>
+    <clipPath id="ftop"><path d="M10.00 28.00L13.74 22.89L17.92 19.23L24.00 15.00L59.15 16.03L94.72 15.42L130.00 15.00L125.33 19.82L120.54 23.00L116.00 28.00L82.16 29.49L46.35 28.62Z"/></clipPath><clipPath id="fside"><path d="M116.00 28.00L118.87 23.83L122.28 20.04L127.41 17.91L130.00 15.00L131.68 34.61L132.56 56.18L129.80 74.01L132.00 95.00L129.89 98.15L126.63 101.15L120.05 105.19L118.00 108.00L118.45 87.22L115.60 67.43L118.08 48.88Z"/></clipPath>
+  </defs>
+  <ellipse cx="73.92" cy="112.40" rx="66" ry="8" fill="url(#pool)"/>
+  <g filter="url(#sit)">
+  <g clip-path="url(#blk)">
+  <path d="M116.00 28.00L118.87 23.83L122.28 20.04L127.41 17.91L130.00 15.00L131.68 34.61L132.56 56.18L129.80 74.01L132.00 95.00L129.89 98.15L126.63 101.15L120.05 105.19L118.00 108.00L118.45 87.22L115.60 67.43L118.08 48.88Z" fill="#8E8A83" stroke="#8E8A83" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M10.00 28.00L13.74 22.89L17.92 19.23L24.00 15.00L59.15 16.03L94.72 15.42L130.00 15.00L125.33 19.82L120.54 23.00L116.00 28.00L82.16 29.49L46.35 28.62Z" fill="#BEBAB2" stroke="#BEBAB2" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M10.00 28.00L36.38 28.16L64.10 27.91L89.52 28.23L116.00 28.00L115.68 48.03L117.34 68.76L116.44 87.49L118.00 108.00L89.44 108.81L63.50 106.81L36.75 109.21L8.00 108.00L8.90 88.30L8.11 66.74L9.57 46.85Z" fill="#E6E3DC" stroke="#E6E3DC" stroke-width=".35" stroke-linejoin="round"/>
+  <g clip-path="url(#ftop)"><path d="M94.44 25.31L97.53 22.19M93.62 24.50L96.72 21.38M92.81 23.70L95.90 20.57M118.10 26.32L120.89 24.75M117.53 25.32L120.32 23.75M116.97 24.32L119.75 22.74M78.74 23.12L81.23 21.25M78.04 22.21L80.53 20.33M19.62 23.31L23.73 21.28M19.11 22.28L23.22 20.25M18.60 21.25L22.71 19.22M56.61 24.56L59.28 22.14M55.84 23.70L58.51 21.29M72.24 21.69L73.94 19.28M71.30 21.03L73.00 18.62M37.63 24.08L40.38 22.09M36.95 23.15L39.70 21.16M36.28 22.21L39.03 20.23M40.70 15.15L43.13 13.53M40.06 14.19L42.50 12.57M72.21 24.80L74.96 23.55M71.73 23.75L74.48 22.50M71.25 22.71L74.00 21.45M117.01 19.25L119.41 16.30M116.12 18.52L118.51 15.58M115.22 17.80L117.62 14.85M106.45 24.81L108.16 22.75M105.56 24.08L107.27 22.01M79.97 19.11L81.90 17.49M79.23 18.24L81.16 16.61M95.35 27.35L97.11 25.10M94.44 26.64L96.21 24.39M93.54 25.93L95.30 23.68M66.56 27.03L69.57 24.11M65.76 26.21L68.77 23.28M64.96 25.39L67.96 22.46M90.66 24.31L94.09 21.86M89.99 23.38L93.43 20.92M89.32 22.44L92.76 19.99M18.96 15.41L21.33 11.83M18.00 14.77L20.37 11.19M17.04 14.14L19.41 10.56M78.47 19.02L80.68 15.57M77.50 18.40L79.72 14.95M58.62 17.47L61.31 14.44M57.76 16.71L60.45 13.68M105.62 27.79L107.07 25.79M104.69 27.12L106.14 25.11M103.76 26.44L105.21 24.44M125.02 23.90L127.04 22.14M124.26 23.03L126.29 21.28M95.71 24.82L97.62 21.90M94.75 24.18L96.66 21.27M42.68 19.49L45.68 17.04M41.95 18.60L44.95 16.15" fill="none" stroke="#8E8A83" stroke-width=".6" stroke-linecap="round"/></g>
+  <g clip-path="url(#fside)"><path d="M122.30 88.65L124.80 92.24M123.24 87.99L125.74 91.58M124.18 87.34L126.68 90.92M118.08 57.18L118.42 60.86M119.22 57.07L119.56 60.76M120.37 56.97L120.71 60.65M124.80 75.70L125.30 79.07M125.94 75.53L126.44 78.90M127.07 75.36L127.58 78.73M123.42 75.57L123.98 78.21M124.54 75.33L125.10 77.97M119.41 98.70L119.64 103.25M120.56 98.64L120.78 103.19M121.71 98.59L121.93 103.13M120.19 81.80L120.95 83.90M121.27 81.41L122.03 83.51M123.05 66.18L124.47 69.97M124.13 65.78L125.54 69.57M119.49 95.68L121.42 98.27M120.41 94.99L122.35 97.58M121.34 94.31L123.27 96.89M126.99 100.19L127.10 103.52M128.13 100.15L128.25 103.48M129.28 100.11L129.40 103.44M131.13 60.81L133.69 64.48M132.08 60.15L134.64 63.82M123.03 66.97L124.31 70.96M124.13 66.61L125.41 70.61M124.36 93.46L125.96 96.62M125.39 92.94L126.99 96.10M126.42 92.42L128.01 95.58M131.28 95.92L132.94 99.18M132.30 95.39L133.97 98.66M131.50 63.75L133.32 66.83M132.48 63.16L134.31 66.24M124.05 71.29L124.17 73.55M125.20 71.22L125.32 73.49M126.35 71.16L126.47 73.43M124.70 107.01L126.12 109.07M125.65 106.36L127.07 108.41M117.05 65.10L117.25 68.29M118.20 65.03L118.40 68.22M119.35 64.96L119.55 68.14M120.31 59.00L121.26 61.32M121.37 58.57L122.32 60.88M122.43 58.13L123.39 60.44M124.40 25.10L126.33 27.66M125.32 24.41L127.25 26.97M126.24 23.72L128.17 26.28M118.07 87.47L119.23 89.41M119.06 86.88L120.22 88.81M116.19 41.42L118.11 44.86M117.19 40.86L119.11 44.29M118.20 40.30L120.12 43.73M117.68 82.97L118.52 85.32M118.76 82.59L119.60 84.94M119.84 82.20L120.68 84.55" fill="none" stroke="#5C5955" stroke-width=".6" stroke-linecap="round"/><path d="M127.48 83.21L128.02 87.49M128.62 83.07L129.16 87.35M129.77 82.93L130.30 87.20M129.20 76.11L127.83 79.32M130.26 76.56L128.89 79.77M124.47 95.65L123.05 99.03M125.53 96.10L124.11 99.48M130.64 77.11L130.72 80.15M131.79 77.08L131.87 80.12M132.94 77.06L133.01 80.09M130.25 41.16L130.32 45.23M131.40 41.14L131.47 45.21M118.14 44.87L118.05 48.81M119.29 44.89L119.20 48.84M122.96 103.12L121.91 106.46M124.05 103.46L123.01 106.81M122.44 81.87L122.47 84.12M123.59 81.86L123.62 84.10M124.74 81.84L124.77 84.08M130.58 105.38L130.14 107.81M131.71 105.58L131.27 108.02M132.85 105.78L132.41 108.22M124.04 81.91L124.30 84.55M125.19 81.80L125.44 84.44" fill="none" stroke="#2B2927" stroke-width=".6" stroke-linecap="round"/></g>
+  <path d="M10.00 28.00L36.38 28.16L64.10 27.91L89.52 28.23L116.00 28.00L115.68 48.03L117.34 68.76L116.44 87.49L118.00 108.00L89.44 108.81L63.50 106.81L36.75 109.21L8.00 108.00L8.90 88.30L8.11 66.74L9.57 46.85Z" fill="none" stroke="#FFFFFF" stroke-opacity=".35" stroke-width=".7"/>
+  </g>
+  <g clip-path="url(#blk)"><path d="M39.00 8.32 43.71 17.32 45.46 26.32 43.28 35.32 39.56 44.32 42.92 53.32 37.82 62.32 34.78 71.32 36.06 80.32 41.14 89.32 43.12 98.32 40.77 107.32 46.69 116.32 43.34 125.32 M40.55 8.32 40.35 17.32 35.13 26.32 31.42 35.32 30.22 44.32 31.66 53.32 27.37 62.32 26.08 71.32 31.66 80.32 38.40 89.32 40.94 98.32 43.93 107.32 45.53 116.32 41.35 125.32 M8.58 8.32 14.41 17.32 17.53 26.32 24.04 35.32 18.32 44.32 20.59 53.32 20.86 62.32 24.35 71.32 22.50 80.32 29.49 89.32 24.47 98.32 25.57 107.32 29.15 116.32 34.85 125.32" fill="none" stroke="#7D7972" stroke-opacity=".32" stroke-width=".5"/></g>
+  <path d="M11.00 35.00L10.99 31.22L12.58 27.73L16.00 27.00L19.31 22.58L20.26 20.77L22.00 18.00L24.31 17.69L27.71 15.97L33.00 14.00L45.98 13.32L61.07 12.32L77.00 13.00L95.07 15.34L108.14 16.69L125.00 16.00L125.73 17.20L130.56 19.96L131.00 21.00L129.91 34.49L131.07 42.60L133.00 55.00L133.53 65.58L130.77 75.79L131.00 89.00L126.86 91.70L125.20 94.11L124.00 96.00L122.10 99.13L123.35 102.60L120.00 106.00L104.66 108.61L87.27 106.48L73.00 109.00L55.80 110.40L33.90 107.64L16.00 109.00L14.05 108.60L8.66 106.31L7.00 102.00L8.68 91.12L6.65 77.59L7.00 68.00L6.30 59.04L8.52 46.90Z" fill="url(#lit)"/>
+  </g>
+  <path d="M10.00 28.00L36.38 28.16L64.10 27.91L89.52 28.23L116.00 28.00L115.68 48.03L117.34 68.76L116.44 87.49L118.00 108.00L89.44 108.81L63.50 106.81L36.75 109.21L8.00 108.00L8.90 88.30L8.11 66.74L9.57 46.85Z" fill="url(#sheen)" opacity=".7"/>
+  <rect x="20" y="38" width="86" height="62" rx="3" fill="none" stroke="#BEBAB2" stroke-width=".8"/>
+  <text x="55.3" y="92.5" font-size="64" font-weight="400" fill="#FFFFFF" fill-opacity=".8" font-family="Pretendard Variable, sans-serif" text-anchor="middle">1</text><text x="54" y="91" font-size="64" font-weight="400" fill="url(#cut)" font-family="Pretendard Variable, sans-serif" text-anchor="middle">1</text><text x="53.3" y="90.2" font-size="64" font-weight="400" fill="none" stroke="#1A1816" stroke-opacity=".35" stroke-width=".6" font-family="Pretendard Variable, sans-serif" text-anchor="middle">1</text>
+  <text x="88.3" y="92.5" font-size="17" font-weight="500" fill="#FFFFFF" fill-opacity=".8" font-family="Pretendard Variable, sans-serif" text-anchor="middle">/11</text><text x="87" y="91" font-size="17" font-weight="500" fill="url(#cut)" font-family="Pretendard Variable, sans-serif" text-anchor="middle">/11</text><text x="86.3" y="90.2" font-size="17" font-weight="500" fill="none" stroke="#1A1816" stroke-opacity=".35" stroke-width=".6" font-family="Pretendard Variable, sans-serif" text-anchor="middle">/11</text>
+  <path d="M40 97.5 L68 97.5" stroke="#F9D21C" stroke-width="1.5" stroke-linecap="round"/>
+</svg></div>
+<div class="prog"><p class="st"><b>1</b> / <span class="v">11</span> · 이유</p><div class="ticks" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<div class="qbig"><p class="who">돌이</p>
+<p class="q"><span class="v">1.</span>왜 사?</p></div>
+<div class="log">
+  <p class="small">돌이 · 어떤 종목이야?</p>
+  <div class="me"><p class="mine">삼성전자</p></div>
+  <p class="small">하나만 누르면 다음 질문이에요.</p>
+</div>
+<div class="dock carbon" aria-label="누르는 곳 · 답 셋">
+  <div class="opts" role="group" aria-label="왜 사?">
+    <button class="opt" type="button"><span class="ring" aria-hidden="true"></span>친구 말</button>
+    <button class="opt" type="button"><span class="ring" aria-hidden="true"></span>뉴스</button>
+    <button class="opt" type="button"><span class="ring" aria-hidden="true"></span>내가 따져 봄</button>
+  </div>
+  <div class="txt"><button class="tlink" type="button">‹ 앞 질문</button><span class="tnote">색은 고른 뒤에 보여요</span></div>
+</div>
+</main>
+<nav class="tabs"><a href="#/">오늘 장</a><a href="#/news">시황</a><a href="#/why" aria-current="page">매매일지</a><a href="#/watch">관심</a><a href="#/hold">보유종목</a></nav>
+</body>
+</html>

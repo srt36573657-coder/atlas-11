@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>돌이 셋째 판 — 매매일지</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+/* 셋째 판 「돌에서 꺼냄」(sexy/v1 부품 · 색 · 글꼴) · 내용은 platform2 그대로 · 이름 = 돌이(사장님 2026-10-19 10:21)
+   그림자 · 번지는 색 · 3D 는 제목 옆 대리석 주인공 그림에만 · 글 · 칸 · 단추는 평평 · 노랑 칠 0 · 흰 칠 단추는 한 화면 하나까지 */
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--line:#2E2E2E;--edge:#8A8A8A;--up:#FF6A3D;--dn:#6C86FF;--mod:#F9D21C;--g:#7DC46E;--y:#E3A632;--r:#F2545B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.carbon{background-color:#080808;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M0 8L8 0M-2 2L2 -2M6 10L10 6' stroke='%23151515' stroke-width='1.2'/%3E%3Cpath d='M0 0L4 4' stroke='%230E0E0E' stroke-width='1'/%3E%3C/svg%3E")}
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px;border-bottom:1px solid #1B1B1B}
+.solo,.group{background:#141414;border:1px solid #2A2A2A;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px;letter-spacing:.01em}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:20px;font-weight:700;letter-spacing:.14em;text-indent:.14em;white-space:nowrap}
+#view{padding:0 16px;display:flex;flex-direction:column;min-height:calc(100vh - 128px);min-height:calc(100svh - 128px)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px}
+.h1{font-size:40px;font-weight:800;line-height:1.08;letter-spacing:-.035em}
+.hero{flex:0 0 auto;width:132px;height:106px;display:block;margin:-4px -8px -6px 0;transform:perspective(520px) rotateY(-14deg) rotateX(7deg);transform-origin:60% 50%}
+.ctx{margin-top:4px;font-size:17px;color:#BDBDBD;white-space:nowrap;font-weight:500}
+.ctx b{color:#FFFFFF;font-weight:700}
+.ctx .v{font-weight:400}
+.askrow{display:flex;align-items:center;gap:8px;margin-top:10px}
+.say{display:inline-flex;align-items:center;gap:8px;min-width:0;background:#161616;border:1px solid #262626;border-radius:22px 22px 22px 6px;padding:8px 16px;font-size:19px;font-weight:500;line-height:1.3;white-space:nowrap;letter-spacing:-.01em}
+.say .who{flex:0 0 auto;font-size:17px;color:#A6A6A6;padding-right:8px;border-right:1px solid #3A3A3A}
+.mine{display:inline-block;max-width:88%;background:#161616;border:1px solid #8A8A8A;border-radius:22px 22px 6px 22px;padding:7px 16px;font-size:17px;line-height:1.4;font-weight:500;word-break:keep-all}
+.mine .k{color:#BDBDBD;font-weight:400}
+.me{display:flex;justify-content:flex-end}
+.story{list-style:none;position:relative;margin-top:12px}
+.story::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='8'%3E%3Cpath d='M.5 0V8M.5 .5H4' stroke='%23343434' stroke-width='1'/%3E%3C/svg%3E") repeat-y}
+.ch{position:relative;padding-left:40px}
+.ch+.ch{margin-top:8px;padding-top:9px;border-top:1px solid #1B1B1B}
+.no{position:absolute;left:0;top:0;width:27px;height:27px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;line-height:1;color:#FFFFFF}
+.ch.now .no{background:#FFFFFF;color:#080808;border-color:#FFFFFF}
+.ch+.ch .no{top:9px}
+.lbl{display:flex;align-items:baseline;gap:8px;white-space:nowrap;min-height:27px}
+.lbl .t{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.02em}
+.lbl .sub{margin-left:auto;font-size:17px;color:#BDBDBD;font-weight:600}
+.v{font-weight:300;line-height:1;letter-spacing:-.03em}
+.qs{display:grid;grid-template-columns:auto 1fr;gap:0 12px;margin-top:4px}
+.qs dt{font-size:17px;color:#FFFFFF;font-weight:700;line-height:1.55}
+.qs dd{font-size:17px;color:#BDBDBD;line-height:1.55;white-space:nowrap;letter-spacing:-.02em}
+.ghost{display:inline-flex;align-items:center;gap:8px;min-height:44px;border:1px dashed #8A8A8A;border-radius:6px 22px 22px 22px;padding:4px 16px;font-size:19px;font-weight:500;line-height:1.2;white-space:nowrap}
+.mem{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:17px;color:#BDBDBD;white-space:nowrap}
+.fine{margin-top:12px;font-size:17px;color:#BDBDBD;line-height:1.5;word-break:keep-all}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.dot.g{background:#7DC46E}.dot.y{background:#E3A632}.dot.r{background:#F2545B}
+.dock{position:sticky;bottom:64px;z-index:2;margin:auto -16px 0;padding:10px 16px 6px;border-top:1px solid #2E2E2E}
+.find .bar{height:60px;border:1px solid #8A8A8A;border-radius:30px;display:flex;align-items:center;padding:0 5px 0 18px;gap:8px;background:#080808}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-weight:500}
+.find input::placeholder{color:#BDBDBD}
+.primary{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;height:48px;min-width:84px;border-radius:24px;background:#F2F2F2;color:#080808;font-weight:800;font-size:19px;padding:0 20px;letter-spacing:.02em;white-space:nowrap}
+.txt{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.tnote{min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#D6D6D6;font-weight:500}
+.tlink{min-height:48px;display:inline-flex;align-items:center;font-size:17px;color:#FFFFFF;font-weight:500;text-decoration:underline;text-underline-offset:5px;text-decoration-color:#8A8A8A;padding:0 2px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a::after{content:"";width:18px;height:2px;background:transparent}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700}
+.tabs a[aria-current]::after{background:#FFFFFF}
+@media (max-width:359px){
+ .top{padding:0 8px}.ttl{font-size:18px}
+ #view{padding:0 10px}.dock{margin:auto -10px 0;padding:8px 10px 6px}
+ .h1{font-size:32px}.hero{width:100px;height:80px}
+ .say,.ctx,.qs dd,.lbl,.ghost,.mem{white-space:normal}
+}
+
+.dock .txt{margin-top:2px}
+
+</style>
+</head>
+<body>
+<header class="top carbon">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl">돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="hd"><h1 class="h1">친구야,<br>왜 사?</h1>
+<svg class="hero" viewBox="0 0 150 120" role="img" aria-label="돌이 공책 · 대리석에서 깎아 낸 펼친 공책 · 내 이유를 적는 곳">
+  <defs>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#6E6A64" stop-opacity=".55"/><stop offset="1" stop-color="#6E6A64" stop-opacity="0"/></radialGradient>
+    <radialGradient id="lit" gradientUnits="userSpaceOnUse" cx="36" cy="18" r="128"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".42"/><stop offset=".38" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".62" stop-color="#000000" stop-opacity=".08"/><stop offset="1" stop-color="#000000" stop-opacity=".62"/></radialGradient>
+    <radialGradient id="sheen" gradientUnits="userSpaceOnUse" cx="46" cy="40" r="52"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="cut" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2B2927"/><stop offset="1" stop-color="#5C5955"/></linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="1.1" dy="1.5" stdDeviation=".8" flood-color="#1A1816" flood-opacity=".5"/></filter>
+    <filter id="sit" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="2.5" dy="4" stdDeviation="2.6" flood-color="#000000" flood-opacity=".9"/></filter>
+    <clipPath id="blk"><path d="M11.00 35.00L13.02 32.14L15.83 31.62L16.00 27.00L17.89 24.72L18.07 21.89L22.00 18.00L26.31 18.84L30.75 14.39L33.00 14.00L47.16 14.41L60.23 13.16L77.00 13.00L91.54 12.32L107.06 16.18L125.00 16.00L125.37 16.56L128.52 20.97L131.00 21.00L129.82 32.11L132.55 45.35L133.00 55.00L133.74 67.93L130.69 77.29L131.00 89.00L128.05 93.02L128.35 92.13L124.00 96.00L121.24 98.15L120.16 102.60L120.00 106.00L104.73 105.96L86.48 107.64L73.00 109.00L53.42 109.29L36.99 109.84L16.00 109.00L13.07 107.18L10.78 102.37L7.00 102.00L8.76 91.90L8.65 80.64L7.00 68.00L7.86 56.56L7.92 46.59Z"/></clipPath>
+    <clipPath id="ftop"><path d="M10.00 28.00L13.60 22.52L18.76 20.28L24.00 15.00L58.38 15.24L95.08 14.62L130.00 15.00L125.48 18.02L119.35 22.78L116.00 28.00L81.21 27.78L44.78 28.26Z"/></clipPath><clipPath id="fside"><path d="M116.00 28.00L119.34 24.07L124.00 22.18L125.63 18.50L130.00 15.00L130.59 36.28L131.78 54.28L133.13 73.70L132.00 95.00L128.22 99.12L123.82 101.46L119.93 105.32L118.00 108.00L118.40 88.25L118.28 67.37L117.16 48.32Z"/></clipPath>
+  </defs>
+  <ellipse cx="74.37" cy="111.84" rx="66" ry="8" fill="url(#pool)"/>
+  <g filter="url(#sit)">
+  <g clip-path="url(#blk)">
+  <path d="M116.00 28.00L119.34 24.07L124.00 22.18L125.63 18.50L130.00 15.00L130.59 36.28L131.78 54.28L133.13 73.70L132.00 95.00L128.22 99.12L123.82 101.46L119.93 105.32L118.00 108.00L118.40 88.25L118.28 67.37L117.16 48.32Z" fill="#8E8A83" stroke="#8E8A83" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M10.00 28.00L13.60 22.52L18.76 20.28L24.00 15.00L58.38 15.24L95.08 14.62L130.00 15.00L125.48 18.02L119.35 22.78L116.00 28.00L81.21 27.78L44.78 28.26Z" fill="#BEBAB2" stroke="#BEBAB2" stroke-width=".35" stroke-linejoin="round"/>
+  <path d="M10.00 28.00L36.04 27.09L63.39 26.89L89.59 27.65L116.00 28.00L115.35 48.02L115.80 67.83L116.38 86.94L118.00 108.00L90.30 108.85L62.02 107.28L35.83 109.16L8.00 108.00L8.70 87.73L10.24 66.82L10.43 47.45Z" fill="#E6E3DC" stroke="#E6E3DC" stroke-width=".35" stroke-linejoin="round"/>
+  <g clip-path="url(#ftop)"><path d="M36.77 25.55L40.82 23.46M36.24 24.53L40.29 22.43M108.20 24.62L110.32 22.88M107.47 23.73L109.59 21.99M106.74 22.84L108.86 21.10M97.72 27.86L100.81 25.18M96.97 27.00L100.06 24.31M93.10 27.43L96.09 26.09M92.63 26.39L95.61 25.04M92.16 25.34L95.14 23.99M124.60 19.74L126.36 17.65M123.72 19.00L125.48 16.91M50.53 21.27L54.22 18.59M49.85 20.34L53.54 17.66M67.54 23.49L69.90 20.12M66.60 22.83L68.96 19.46M119.17 25.17L122.20 22.56M118.42 24.30L121.45 21.69M62.07 23.27L64.27 22.29M61.60 22.21L63.81 21.24M61.14 21.16L63.34 20.19M65.58 24.66L67.05 22.76M64.67 23.96L66.14 22.06M13.31 22.68L16.04 20.81M12.66 21.73L15.39 19.86M12.01 20.78L14.74 18.91M88.87 19.56L90.97 16.74M87.95 18.87L90.05 16.05M105.92 24.44L108.02 23.18M105.33 23.46L107.43 22.20M62.06 26.33L64.72 23.11M61.17 25.60L63.84 22.38M60.28 24.87L62.95 21.64M35.53 21.52L38.32 18.60M34.70 20.72L37.49 17.81M33.87 19.93L36.66 17.01M110.10 15.79L113.69 14.07M109.61 14.76L113.19 13.03M109.11 13.72L112.69 12.00M109.26 26.42L110.79 24.42M108.34 25.72L109.87 23.72M114.74 25.09L117.90 23.26M114.16 24.10L117.33 22.27M30.68 21.16L33.79 18.73M29.97 20.25L33.08 17.82M29.27 19.34L32.37 16.92M91.88 21.90L94.79 20.22M91.30 20.90L94.21 19.22M39.82 18.60L42.94 16.01M39.08 17.72L42.20 15.12M101.20 26.86L103.84 24.95M100.52 25.93L103.17 24.02" fill="none" stroke="#8E8A83" stroke-width=".6" stroke-linecap="round"/></g>
+  <g clip-path="url(#fside)"><path d="M127.08 57.07L128.32 60.32M128.16 56.66L129.39 59.91M127.19 96.52L129.33 100.43M128.20 95.97L130.34 99.88M129.44 27.75L130.38 30.06M130.51 27.32L131.44 29.63M126.74 54.84L127.97 57.25M127.76 54.31L129.00 56.72M130.35 29.36L131.32 33.16M131.47 29.08L132.43 32.88M120.05 27.76L120.69 31.02M121.18 27.54L121.82 30.80M122.37 60.32L123.01 64.85M123.51 60.15L124.15 64.69M127.30 107.45L128.53 110.37M128.36 107.00L129.59 109.92M129.42 106.56L130.65 109.48M121.10 82.16L121.79 84.30M122.19 81.80L122.89 83.94M123.28 81.45L123.98 83.58M127.25 50.74L128.83 53.80M128.27 50.22L129.85 53.27M117.81 100.42L118.11 103.16M118.95 100.30L119.26 103.03M120.25 18.68L122.18 22.27M121.26 18.14L123.19 21.72M129.12 94.01L129.38 97.82M130.26 93.93L130.53 97.75M131.41 93.85L131.67 97.67M118.39 100.48L119.18 103.96M119.51 100.23L120.30 103.71M120.46 89.36L120.73 91.99M121.61 89.25L121.87 91.87M122.75 89.13L123.02 91.76M131.01 74.00L133.38 77.38M131.96 73.34L134.32 76.72M117.07 95.24L118.50 98.20M118.10 94.74L119.53 97.70M119.14 94.24L120.57 97.20M130.83 39.91L131.65 42.28M131.91 39.54L132.73 41.91M131.01 105.14L132.49 107.55M131.99 104.54L133.47 106.95M132.97 103.94L134.45 106.35M126.06 64.39L127.07 66.89M127.13 63.96L128.13 66.46M120.33 89.74L123.07 93.42M121.25 89.06L123.99 92.73M127.73 66.25L128.68 68.73M128.80 65.84L129.75 68.32M129.88 65.43L130.83 67.91" fill="none" stroke="#5C5955" stroke-width=".6" stroke-linecap="round"/><path d="M117.70 92.97L117.15 96.16M118.83 93.17L118.28 96.36M119.97 93.36L119.41 96.55M131.52 50.55L131.51 53.26M132.67 50.55L132.66 53.27M129.32 83.66L128.89 87.36M130.46 83.79L130.03 87.49M131.60 83.92L131.18 87.62M131.71 94.47L131.15 96.63M132.82 94.76L132.26 96.92M133.94 95.05L133.38 97.21M122.89 29.60L122.51 33.38M124.04 29.71L123.66 33.49M125.18 29.83L124.80 33.60M125.58 82.49L125.63 84.80M126.73 82.47L126.78 84.77M127.88 82.44L127.93 84.75M123.13 46.85L121.09 50.87M124.16 47.37L122.11 51.39M125.18 47.89L123.13 51.91M119.91 105.15L119.66 108.08M121.06 105.25L120.81 108.18M121.37 31.96L120.59 34.73M122.47 32.27L121.70 35.04M124.08 25.41L124.31 28.24M125.22 25.32L125.46 28.14M126.37 25.22L126.60 28.04" fill="none" stroke="#2B2927" stroke-width=".6" stroke-linecap="round"/></g>
+  <path d="M10.00 28.00L36.04 27.09L63.39 26.89L89.59 27.65L116.00 28.00L115.35 48.02L115.80 67.83L116.38 86.94L118.00 108.00L90.30 108.85L62.02 107.28L35.83 109.16L8.00 108.00L8.70 87.73L10.24 66.82L10.43 47.45Z" fill="none" stroke="#FFFFFF" stroke-opacity=".35" stroke-width=".7"/>
+  </g>
+  <g clip-path="url(#blk)"><path d="M14.89 8.32 9.76 17.32 6.48 26.32 2.59 35.32 1.01 44.32 -4.31 53.32 -10.30 62.32 -14.34 71.32 -19.02 80.32 -20.29 89.32 -25.96 98.32 -20.59 107.32 -18.61 116.32 -22.68 125.32 M51.03 8.32 49.76 17.32 45.36 26.32 50.39 35.32 57.31 44.32 57.36 53.32 57.65 62.32 52.77 71.32 48.10 80.32 46.55 89.32 43.99 98.32 48.77 107.32 44.87 116.32 39.17 125.32 M73.95 8.32 69.86 17.32 70.92 26.32 65.27 35.32 66.13 44.32 72.85 53.32 78.08 62.32 81.13 71.32 78.52 80.32 77.29 89.32 73.46 98.32 77.50 107.32 78.42 116.32 82.55 125.32" fill="none" stroke="#7D7972" stroke-opacity=".32" stroke-width=".5"/></g>
+  <path d="M11.00 35.00L13.02 32.14L15.83 31.62L16.00 27.00L17.89 24.72L18.07 21.89L22.00 18.00L26.31 18.84L30.75 14.39L33.00 14.00L47.16 14.41L60.23 13.16L77.00 13.00L91.54 12.32L107.06 16.18L125.00 16.00L125.37 16.56L128.52 20.97L131.00 21.00L129.82 32.11L132.55 45.35L133.00 55.00L133.74 67.93L130.69 77.29L131.00 89.00L128.05 93.02L128.35 92.13L124.00 96.00L121.24 98.15L120.16 102.60L120.00 106.00L104.73 105.96L86.48 107.64L73.00 109.00L53.42 109.29L36.99 109.84L16.00 109.00L13.07 107.18L10.78 102.37L7.00 102.00L8.76 91.90L8.65 80.64L7.00 68.00L7.86 56.56L7.92 46.59Z" fill="url(#lit)"/>
+  </g>
+  <path d="M10.00 28.00L36.04 27.09L63.39 26.89L89.59 27.65L116.00 28.00L115.35 48.02L115.80 67.83L116.38 86.94L118.00 108.00L90.30 108.85L62.02 107.28L35.83 109.16L8.00 108.00L8.70 87.73L10.24 66.82L10.43 47.45Z" fill="url(#sheen)" opacity=".7"/>
+  <path d="M20 44 Q41 38 63 43 Q85 38 106 44 L106 98 Q85 92 63 97 Q41 92 20 98Z" fill="#5C5955" opacity=".55"/>
+  <g filter="url(#lift)">
+  <path d="M22 42 Q42 36 63 41 L63 95 Q42 90 22 96Z" fill="#EFECE6" stroke="#BEBAB2" stroke-width=".5"/>
+  <path d="M63 41 Q84 36 104 42 L104 96 Q84 90 63 95Z" fill="#BEBAB2" stroke="#8E8A83" stroke-width=".5"/>
+  <path d="M63 41 L63 95" stroke="#2B2927" stroke-width="1.3"/>
+  <path d="M64.2 42 L64.2 94" stroke="#FFFFFF" stroke-opacity=".5" stroke-width=".6"/>
+  </g>
+  <path d="M28.00 50.18L58.00 51.10" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M28.00 49.48L58.00 50.40" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M68.00 51.10L98.00 50.18" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M68.00 50.40L98.00 49.48" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M28.00 57.65L58.00 58.50" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M28.00 56.95L58.00 57.80" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M68.00 58.50L98.00 57.65" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M68.00 57.80L98.00 56.95" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M28.00 65.11L58.00 65.90" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M28.00 64.41L58.00 65.20" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M68.00 65.90L98.00 65.11" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M68.00 65.20L98.00 64.41" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M28.00 72.58L58.00 73.30" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M28.00 71.88L58.00 72.60" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M68.00 73.30L98.00 72.58" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M68.00 72.60L98.00 71.88" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M28.00 80.04L58.00 80.70" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M28.00 79.34L58.00 80.00" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M68.00 80.70L98.00 80.04" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M68.00 80.00L98.00 79.34" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M28.00 87.51L58.00 88.10" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M28.00 86.81L58.00 87.40" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M68.00 88.10L98.00 87.51" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="0.8" stroke-linecap="round"/><path d="M68.00 87.40L98.00 86.81" stroke="#5C5955" stroke-width="0.8" stroke-linecap="round"/>
+  <path d="M84 39.2 L86.5 104" stroke="#F9D21C" stroke-width="1.5" stroke-linecap="round"/>
+</svg></div>
+<p class="ctx">사기 전에 돌이랑 내 이유를 확인해요.</p>
+<div class="askrow"><p class="say"><span class="who">돌이</span><span>어떤 종목이야?</span></p></div>
+<ol class="story" aria-label="매매일지 차례 셋">
+  <li class="ch now"><span class="no" aria-hidden="true">1</span>
+    <h2 class="lbl"><span class="t">종목 고르기</span><span class="sub">지금</span></h2></li>
+  <li class="ch"><span class="no" aria-hidden="true">2</span>
+    <h2 class="lbl"><span class="t">열한 질문</span><span class="sub">답 하나에 한 장</span></h2>
+    <dl class="qs">
+      <dt>이유</dt><dd>왜 사? · 공부했어? · 뭐가 좋아?</dd>
+      <dt>돈</dt><dd>얼마 넣어? · 언제 쓸 돈? · 나눠 넣어?</dd>
+      <dt>때</dt><dd>흐름은? · 얼마나 올랐어?</dd>
+      <dt>마음</dt><dd>떨어지면? · 오르면? · 마음은?</dd>
+    </dl></li>
+  <li class="ch"><span class="no" aria-hidden="true">3</span>
+    <p class="ghost">한 달 뒤 물어볼게요</p>
+    <p class="mem"><svg width="14" height="16" viewBox="0 0 16 18" fill="none" stroke="#BDBDBD" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="8" width="13" height="9" rx="2"/><path d="M4.5 8V5.5a3.5 3.5 0 0 1 7 0V8"/></svg>왜 사? 기록 <span class="v">0</span>번 · 이 기기에만</p></li>
+</ol>
+<p class="fine">지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.</p>
+<div class="dock carbon" aria-label="누르는 곳">
+  <form class="find" onsubmit="return false"><div class="bar">
+    <input type="search" placeholder="회사 이름이나 번호" aria-label="종목 찾기">
+    <button class="primary" type="submit">찾기</button>
+  </div></form>
+  <div class="txt"><span class="tnote">첫 글자(ㅅㅅㅈㅈ)와 번호도 돼요.</span></div>
+</div>
+</main>
+<nav class="tabs"><a href="#/">오늘 장</a><a href="#/news">시황</a><a href="#/why" aria-current="page">매매일지</a><a href="#/watch">관심</a><a href="#/hold">보유종목</a></nav>
+</body>
+</html>
