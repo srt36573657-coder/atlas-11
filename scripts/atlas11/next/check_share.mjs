@@ -73,6 +73,9 @@ const MUTS = {
   'pick-noval': [[["const c = j?.c ?? (await getJson('comp.json'))?.companies?.[code] ?? null", 'const c = j?.c ?? null']], ['고른 곳 — 글상자에 이름 · 오늘 값이 저절로 안 들어감([6] 3 · comp.json)'], 'p-share.js', 'kk'],
 };
 const MUT = arg('--mutate', null);
+// 가입 스위치(사장님 2026-10-19 16:37 「공유 검사 고쳐도 돼」 · 카톡 가입 발행) — 켜진 판에서는 「꺼짐」 장면 대신 켜짐 장면만 보고, /api/kakao/* 요청을 꺼짐 위반으로 보지 않음(시험 서버가 가짜 카카오로 답함) · 꺼진 판은 예전과 똑같이 검사
+const SIGNUP_ON = await fs.readFile(path.join(ROOT, 'config/atlas11/kakao.json'), 'utf8').then(t => JSON.parse(t).on === true).catch(() => false);
+if (SIGNUP_ON && MUTS['switch-on']) delete MUTS['switch-on']; // 켜진 판에는 「켜면 잡아라」 자기 시험이 맞지 않음
 if (MUT && !MUTS[MUT]) { console.error('모르는 --mutate', MUT, Object.keys(MUTS).join(' · ')); process.exit(1); }
 if (MUT && MUTS[MUT][3] && !ONLY.size) for (const g of MUTS[MUT][3].split(',')) ONLY.add(g); // 알맞은 묶음만 돎
 const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 400)]); };
@@ -238,7 +241,7 @@ async function newPage(width, height, {mode = 'share', letter = false, noDialog 
     for (const [x, y] of MUTS[MUT][0]) { if (!body.includes(x)) { console.error('망가뜨릴 자리를 못 찾음(검사 자체 시험을 고칠 것)', x); process.exit(1); } body = body.replace(x, y); }
     await r.fulfill({response: res, body});
   });
-  const p = await ctx.newPage(); p._errs = []; p._kk = []; p._kkOk = kakao === 'on'; p._reqs = 0;
+  const p = await ctx.newPage(); p._errs = []; p._kk = []; p._kkOk = kakao === 'on' || SIGNUP_ON; p._reqs = 0;
   p._ownerMe = letter === true; // 편지 쪽 사장님 열쇠 기기 — letter.js 가 카카오가 켜졌나 /api/kakao/me 를 한 번 물음(꺼짐이면 404 한 줄) · 다른 사람 기기(letter: 'plain')는 0
   p._kkExt = [];
   p.on('request', r => { const url = r.url(); if (/^https?:/.test(url)) p._reqs++; if (KK_RE.test(url)) { const u = new URL(url); if (u.origin !== base) p._kkExt.push(url); else p._kk.push(r.method() + ' ' + u.pathname + u.search); } });
@@ -739,7 +742,7 @@ async function checkCard(p, n, {msg, kind = 's', ref = null}, tag) {
   if (/[%％]|퍼센트|프로|1등|1위|급등/.test(blob.replace(/%2F|%3F|%23|%3D|%26|%[0-9A-F]{2}/g, '')) || W.gainHits(c.content?.title + '\n' + c.content?.description).length) fail('카드에 수익 숫자 · 퍼센트 · 1등 · 급등', `${tag} 「${c.content?.description}」`);
   if (!String(c.content?.imageUrl ?? '').startsWith(base + '/')) fail('카드 그림 주소(우리 사이트 것)', `${tag} 「${c.content?.imageUrl}」`);
   else { const r = await fetch(c.content.imageUrl).catch(() => null); if (!r?.ok) fail('카드 그림 파일을 못 받음', `${tag} ${c.content.imageUrl}`); }
-  const bs = c.buttons ?? [];
+  const bs = c.buttons ?? []; // 가입이 켜진 판(SIGNUP_ON)의 카드 단추는 「카톡 켜짐 · 카드」 장면(kakaoCard)이 따로 맞댐
   if (bs.length !== 2) fail('카드 단추는 정확히 둘', `${tag} ${bs.length}개`);
   if (JSON.stringify(bs.map(b => b.title)) !== JSON.stringify([BTN_START, BTN_SEE])) fail('카드 단추 이름 · 차례(원문 [2] 2)', `${tag} ${JSON.stringify(bs.map(b => b.title))}`);
   const w0 = bs[0]?.link?.webUrl ?? '', u0 = (() => { try { return new URL(w0); } catch { return null; } })();
@@ -1030,7 +1033,7 @@ function kkCard(c, msg, half, tag) {
   const want = [msg, half, md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원'].filter(Boolean).join('\n');
   if (c.content?.description !== want) fail('카드 글 = 보낸 사람 말 + (반값 한 줄) + 보낸 날 값([7] 5 · [6] 8)', `${tag} 「${c.content?.description}」 ≠ 「${want}」`);
   const bs = c.buttons ?? [];
-  if (bs.length !== 1 || bs[0]?.title !== OPEN_BTN || bs[0]?.link?.webUrl !== see || bs[0]?.link?.mobileWebUrl !== see) fail('가입이 꺼졌을 때 카드 단추 = 「열어 보기」 하나 · 보낸 주소([7] 5)', `${tag} ${JSON.stringify(bs).slice(0, 200)}`);
+  if (!SIGNUP_ON && (bs.length !== 1 || bs[0]?.title !== OPEN_BTN || bs[0]?.link?.webUrl !== see || bs[0]?.link?.mobileWebUrl !== see)) fail('가입이 꺼졌을 때 카드 단추 = 「열어 보기」 하나 · 보낸 주소([7] 5)', `${tag} ${JSON.stringify(bs).slice(0, 200)}`);
   if (/[%％]|퍼센트|1등|1위|급등/.test(JSON.stringify(c).replace(/%[0-9A-F]{2}/g, '')) || W.gainHits(c.content?.title + '\n' + c.content?.description).length) fail('카드에 수익 숫자 · 퍼센트 · 1등 · 급등', `${tag} 「${c.content?.description}」`);
   bump('보낸 카드');
 }
@@ -1060,8 +1063,8 @@ async function kkButton(W_, H_) {
     if (s.ta !== '') fail('글상자 글칸이 처음부터 차 있음(칠 것 0 — 빠른 말 · 기본 말로 감)', `${tag} 「${s.ta}」`);
     try { await p.waitForSelector('.ps-dlg .ps-kk:not([hidden])', {timeout: 8000}); } catch { fail('공유가 켜졌는데 카드 미리보기가 안 나옴', tag); }
     const k = await p.evaluate(READK);
-    if (k && JSON.stringify(k.btns) !== JSON.stringify([OPEN_BTN])) fail('가입이 꺼졌을 때 카드 미리보기 단추 = 「열어 보기」 하나([7] 5)', `${tag} ${JSON.stringify(k.btns)}`);
-    if (k && new RegExp(BTN_START + '|' + BTN_SEE).test(k.text)) fail('가입이 꺼졌는데 가입 단추 · 안내가 보임([7] 5)', tag);
+    if (k && !SIGNUP_ON && JSON.stringify(k.btns) !== JSON.stringify([OPEN_BTN])) fail('가입이 꺼졌을 때 카드 미리보기 단추 = 「열어 보기」 하나([7] 5)', `${tag} ${JSON.stringify(k.btns)}`);
+    if (k && !SIGNUP_ON && new RegExp(BTN_START + '|' + BTN_SEE).test(k.text)) fail('가입이 꺼졌는데 가입 단추 · 안내가 보임([7] 5)', tag);
     await layout(p, DLG, tag + ' 글상자');
     // 누름 2 — 빠른 말(손가락) = 바로 카톡 친구 고르기(가짜 도구 sendDefault)
     await sendQuick(p, 0, tag, {tap: true}); taps++;
@@ -1202,7 +1205,8 @@ for (const [w, h] of SIZES) {
   if (want('land')) await step(`${w}×${h} 친구 주소`, () => landing(w, h, full ? CASES : CASES.slice(0, 1)));
   if (want('land')) await step(`${w}×${h} 친구 쪽 첫 화면`, () => firstView(w, h, {only: full ? 0 : 1}));
   if (want('land') && w === 360) await step('320×568 친구 쪽 첫 화면', () => firstView(320, 568, {min: 2, only: 1}));
-  if (want('off')) await step(`${w}×${h} 카톡 꺼짐`, () => kakaoOff(w, h, full));
+  if (want('off') && !SIGNUP_ON) await step(`${w}×${h} 카톡 꺼짐`, () => kakaoOff(w, h, full));
+  if (want('off') && SIGNUP_ON) bump('카톡 꺼짐 길 건너뜀(가입 스위치 켜짐 · 켜짐 길은 아래에서 그대로 검사)');
   // 켜짐 길은 시험 서버(127.0.0.1 · localhost)에서만 — kakao.js 는 실제 사이트에서 시험 표시(__GODORI_KAKAO_TEST__)를 보지 않고 스위치만 봄(카톡 꺼짐 · 보안)
   //   그래서 실제 사이트(https://aaa7377.com)에서는 켤 수 없어 늘 걸렸음(2026-10-18 실제 사이트 검사) → 건너뛰고 수만 적음 · 올리기 전 검사(local)는 그대로 모두 봄
   const on = k => !LIVE_SITE && (want('on') || want(k));

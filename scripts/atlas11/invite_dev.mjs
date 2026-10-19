@@ -12,6 +12,7 @@
  */
 import http from 'node:http';
 import fs from 'node:fs/promises';
+import {readFileSync} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -28,7 +29,9 @@ const fn = (await import('../../functions/atlas11/invite.mjs')).default;
 process.env.ATLAS_LETTER_DEV = '1';
 const lfn = (await import('../../functions/atlas11/letter.mjs')).default;
 // 카톡 가입(2026-10-18 · K1c) — --fake-kakao 일 때만 켬: 가짜 열쇠(이 시험 서버에만) · 카카오 대신 가짜 카카오(같은 서버 /__fake-kakao/*) · 저장소는 위 Blobs 로컬 서버
-const kakao = process.argv.includes('--fake-kakao') ? await (async () => {
+// 가입 스위치가 켜진 판(config/atlas11/kakao.json on: true)을 검사할 때는 --fake-kakao 를 안 붙여도 가짜 카카오로 켬 — 진짜 사이트처럼 /api/kakao/* 가 답해야 하므로(2026-10-19 카톡 가입 발행)
+const kakaoSwitchOn = (() => { try { return JSON.parse(readFileSync(new URL('../../config/atlas11/kakao.json', import.meta.url), 'utf8')).on === true; } catch { return false; } })();
+const kakao = (process.argv.includes('--fake-kakao') || kakaoSwitchOn) ? await (async () => {
   const [{handleKakao}, {KAKAO_STORE}, {createFakeKakao}, {getStore}, {detachKakao, LETTER_STORE}] = await Promise.all([import('../../lib/atlas11/kakao.mjs'), import('../../lib/atlas11/kakao-store.mjs'), import('../../tests/atlas11/fake-kakao/fake.mjs'), import('@netlify/blobs'), import('../../lib/atlas11/letter.mjs')]);
   const env = {ATLAS_KAKAO_REST_KEY: 'fake-rest-key', ATLAS_KAKAO_CLIENT_SECRET: 'fake-client-secret', ATLAS_KAKAO_ADMIN_KEY: 'fake-admin-key', ATLAS_KAKAO_HASH_SECRET: 'fake-hash-secret-for-this-dev-server-only-000'};
   Object.assign(process.env, env); // 같은 시험 서버의 편지 함수([4] 8 · kakaoMemberOf)도 같은 가짜 열쇠를 봄 — 이 시험 서버 안에서만
