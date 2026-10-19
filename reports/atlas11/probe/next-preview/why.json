@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-3",
- "when": "2026-10-19T06:27:10.086Z",
+ "when": "2026-10-19T07:17:15.512Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -73,13 +73,13 @@
   "leftScreens": 94
  },
  "timing": {
-  "flowMs": 540,
+  "flowMs": 560,
   "taps": 14,
   "qTaps": 11,
   "qTapsBefore": 22,
   "typed": 4
  },
- "sec": 25,
+ "sec": 27,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "찾기와 같은 차례": 7,
@@ -92,6 +92,7 @@
   "1번 뒤로 → 종목 고르기": 2,
   "펀드 번호 → 까닭": 1,
   "회사 화면 → 그 종목으로": 1,
+  "fail": 11,
   "맞댄 옛 꼴 줄": 52,
   "[5] 9 가운데 값 따로 셈 맞댄 줄": 10,
   "[5] 8 먼저 물음": 56,
@@ -131,6 +132,51 @@
   "첫 화면에 매매일지 칸 없음(가운데 단추로만)": 1,
   "기억 · 자료 바꾼 길": 5
  },
- "fails": [],
- "ok": true
+ "fails": [
+  [
+   "화면 오류",
+   "종목 고르기 360×640 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "360×640 #/why · 모두 초록 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "한 달 뒤 360×640 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "한 달 뒤 · 가운데 값 못 받음 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me | 404 http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "360×640 whyCard 옵션 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "localStorage 막힘 390×844 #/why · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "localStorage 막힘 360×640 #/why/005930 · 카톡 꺼짐 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "쓰기만 막힘 390×844 #/why · 카톡 그대로 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "돌이 칸 자료 못 받음 360×640 #/why · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "망가진 줄 섞임 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ],
+  [
+   "화면 오류",
+   "걸린 때 390×844 · 404 http://127.0.0.1:8826/api/kakao/me | Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8826/api/kakao/me"
+  ]
+ ],
+ "ok": false
 }

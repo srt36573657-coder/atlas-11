@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-19T06:27:11.458Z",
+ "at": "2026-10-19T07:18:59.356Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-19",
  "ready": [
@@ -29,11 +29,11 @@
  "oldNameAllow": [
   "아틀라스링크"
  ],
- "seconds": 90,
+ "seconds": 139,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 90.4,
+  "wall": 139,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
@@ -52,8 +52,9 @@
   }
  },
  "counts": {
-  "고리": 9463,
+  "고리": 9466,
   "화면": 135,
+  "fail": 6,
   "옛 이름 본 화면": 2696,
   "큰 글씨 화면": 45,
   "첫 화면 한 화면": 1,
@@ -71,6 +72,31 @@
   "찾기": 2557,
   "누르기": 1
  },
- "fails": [],
- "ok": true
+ "fails": [
+  [
+   "화면 오류",
+   "320 #/why Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "화면 오류",
+   "360 #/why Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "화면 오류",
+   "390 #/why Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "화면 오류",
+   "320 질문 뒤 #/why Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "화면 오류",
+   "360 질문 뒤 #/why Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  [
+   "화면 오류",
+   "390 질문 뒤 #/why Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+ ],
+ "ok": false
 }
