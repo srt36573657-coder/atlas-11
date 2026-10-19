@@ -1026,7 +1026,12 @@ async function kkRow(p, o, id) {
     return {w: r.width, h: r.height, fill: path ? getComputedStyle(path).fill : null, label: b.getAttribute('aria-label'), kk: b.dataset.kk, kind: b.dataset.kind, text: b.textContent.trim(), tag: b.tagName, type: b.type, inLink: !!b.closest('a')};
   }, [o, id, KK_NAV]);
 }
-const AT = () => ({y: Math.round(scrollY), hash: location.hash});
+/** 보던 자리 — 보던 줄(#kk-a)이 화면 어디에 있나 + 주소 · scrollY 는 참고만(2026-10-19 22시 전체 검사 share 걸림: 360×640 2911 → 2881)
+ *  scrollY 만 재면 글꼴이 늦게 와 위쪽 높이가 바뀔 때 브라우저가 보던 줄을 제자리에 두려고 scrollY 를 옮긴 것(눈에는 그대로)까지 걸림 —
+ *  390×844 에서 글꼴을 1.5초 늦추면 scrollY 2744 → 2639 · 보던 줄은 화면 613 그대로(scratchpad shift/probe.mjs) · 그래서 눈에 보이는 자리(줄의 화면 위치)로 잼 */
+const AT = () => ({y: Math.round(scrollY), hash: location.hash, top: Math.round(document.querySelector('#kk-a')?.getBoundingClientRect().top ?? NaN)});
+/** 글꼴이 다 올 때까지 — 늦게 온 글꼴이 줄을 바꿔 맨 아래에서 보던 자리가 밀리는 것은 보내기와 상관없는 일(지도 못 한 것 · 원칙 87) · 보내기 앞에 기다림 */
+const FONTS_DONE = async p => { await p.evaluate(async () => { await document.fonts.ready; await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))); await document.fonts.ready; }); await p.waitForTimeout(120); };
 /** 보낸 카드(가입 꺼짐 · 공유만 켜짐) — feed · 제목 = 이름 · 글 = 말 (+ 반값 한 줄) + 보낸 날 값 · 단추 「열어 보기」 하나 = 보낸 주소 · 수익 숫자 0 */
 function kkCard(c, msg, half, tag) {
   if (!c) return;
@@ -1054,6 +1059,7 @@ async function kkButton(W_, H_) {
     if (Math.round(m.w) !== kkSide || Math.round(m.h) !== kkSide) fail(`카톡 단추 ${kkSide} × ${kkSide} 아님([6] 1 · 흰 판 48)`, `${tag} ${m.w}×${m.h}`);
     if (m.fill !== 'rgb(254, 229, 0)') fail('노란 말풍선 아님([6] 1)', `${tag} ${m.fill}`);
     if (m.label !== CO.c.name + ' 카톡으로 보내기' || m.kk !== CODE || m.kind !== 'share' || m.text || m.tag !== 'BUTTON' || m.type !== 'button' || !m.inLink) fail('카톡 단추 꼴(이름표 · 번호 · 글 없음 · button · 고리 안에 둠)', `${tag} ${JSON.stringify(m)}`);
+    await FONTS_DONE(p);
     const at0 = await p.evaluate(AT);
     // 누름 1 — 카톡 단추(손가락) → 글상자 · 쪽 그대로 · 아직 안 보냄 · 이름 · 오늘 값이 저절로
     let taps = 0;
@@ -1080,12 +1086,12 @@ async function kkButton(W_, H_) {
     // 보낸 뒤 — 글상자 닫힘 · 보던 자리 · 주소 그대로 · 폭죽 0([6] 7)
     try { await p.waitForSelector(DLG, {state: 'detached', timeout: 4000}); } catch { fail('카드를 보낸 뒤 글상자가 안 닫힘', tag); }
     await p.waitForTimeout(250);
-    const at2 = await p.evaluate(() => ({y: Math.round(scrollY), hash: location.hash, fx: document.querySelectorAll('canvas, [class*="confetti"], [class*="firework"], [class*="fx-"]').length, open: document.documentElement.classList.contains('ps-open'), toast: [...document.querySelectorAll('.ps-toast')].map(e => e.textContent).join(' ')}));
-    if (at2.hash !== at0.hash || Math.abs(at2.y - at0.y) > 1) fail('보낸 뒤 보던 자리가 바뀜([6] 7)', `${tag} ${at0.hash} ${at0.y} → ${at2.hash} ${at2.y}`);
+    const at2 = await p.evaluate(() => ({y: Math.round(scrollY), hash: location.hash, top: Math.round(document.querySelector('#kk-a')?.getBoundingClientRect().top ?? NaN), fx: document.querySelectorAll('canvas, [class*="confetti"], [class*="firework"], [class*="fx-"]').length, open: document.documentElement.classList.contains('ps-open'), toast: [...document.querySelectorAll('.ps-toast')].map(e => e.textContent).join(' ')}));
+    if (at2.hash !== at0.hash || !Number.isFinite(at0.top) || Math.abs(at2.top - at0.top) > 1) fail('보낸 뒤 보던 자리가 바뀜([6] 7)', `${tag} ${at0.hash} 보던 줄 화면 ${at0.top} → ${at2.hash} ${at2.top} · scrollY ${at0.y} → ${at2.y}`);
     if (at2.fx || at2.open) fail('보낸 뒤 폭죽 · 그림판 · 잠긴 화면이 남음([6] 7)', `${tag} ${JSON.stringify(at2)}`);
     const fw = (typeof W.ruinHits === 'function' ? W.ruinHits(at2.toast) : []).filter(x => x.key === 'reward');
     if (fw.length || /[🎉🎊🎆🎇]|축하/u.test(at2.toast)) fail('보낸 뒤 축하 · 폭죽 글([6] 7 — 없어야 함)', `${tag} 「${at2.toast}」`);
-    KK_OUT.after = {y: at0.y, sameSpot: at2.hash === at0.hash && Math.abs(at2.y - at0.y) <= 1, fireworks: at2.fx + fw.length};
+    KK_OUT.after = {y: at0.y, top: at0.top, sameSpot: at2.hash === at0.hash && Math.abs(at2.top - at0.top) <= 1, fireworks: at2.fx + fw.length};
     if (!(at0.y > 0)) fail('검사 준비 — 시험 줄이 화면 맨 위라 「보던 자리」를 못 잼', `${tag} y ${at0.y}`);
     bump('카톡 단추 맞댐');
     // 급등([6] 8) — 반값 파일 없음 · 깨짐 · 있음(사이트 자료 그대로)
