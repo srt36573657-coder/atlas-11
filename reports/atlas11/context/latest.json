@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-19",
- "fetchedAt": "2026-10-19T07:50:52Z",
- "file": "reports/atlas11/context/2026-10-19/2026-10-19T07-50-52Z.json",
+ "fetchedAt": "2026-10-19T10:09:46Z",
+ "file": "reports/atlas11/context/2026-10-19/2026-10-19T10-09-46Z.json",
  "summary": {
   "day": "2026-10-19",
-  "fetchedAt": "2026-10-19T07:50:52Z",
+  "fetchedAt": "2026-10-19T10:09:46Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-19",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7209,
-   "distinct": 7155,
-   "republished": 54,
+   "distinct": 7157,
+   "republished": 52,
    "sameArticle": 0,
-   "stocksWithTodayNews": 191,
-   "todayDistinct": 1377
+   "stocksWithTodayNews": 197,
+   "todayDistinct": 1506
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 782
+   "corporateActions": 783
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-19",
-     "value": 1331.6,
-     "changePct": -0.48
+     "value": 1330.9,
+     "changePct": -0.53
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 249,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,14 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-10-19",
-   "corporateActions": 782,
+   "corporateActions": 783,
    "recentActions": [
+    {
+     "code": "064350",
+     "title": "현대로템(주) 자기주식 취득 결정",
+     "publishedAt": "2026-10-19T17:01:13+09:00",
+     "word": "자기주식"
+    },
     {
      "code": "247540",
      "title": "(주)에코프로비엠 유상증자 또는 주식관련사채 등의 청약결과(자율공시)",
@@ -305,12 +311,6 @@
      "title": "KG스틸(주) 자기주식 처분 결정",
      "publishedAt": "2026-10-15T06:52:24+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "016380",
-     "title": "KG스틸(주) 주식 소각 결정",
-     "publishedAt": "2026-10-15T06:52:23+09:00",
-     "word": "소각"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-19",
-     "value": 1331.6,
+     "value": 1330.9,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
