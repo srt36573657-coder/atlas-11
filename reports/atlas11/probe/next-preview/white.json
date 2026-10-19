@@ -1,13 +1,15 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-19T00:36:02.572Z",
+ "at": "2026-10-19T00:39:11.865Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 415,
-  "fail": 0
+  "pass": 414,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "③ 밀림 0.1 아래 — 0.136"
+ ],
  "m": {
   "first": {
    "bodyLum": 1,
@@ -415,11 +417,11 @@
    }
   },
   "speed": {
-   "lcp": 1800,
-   "inp": 24,
-   "cls": 0.009
+   "lcp": 1792,
+   "inp": 40,
+   "cls": 0.136
   }
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
