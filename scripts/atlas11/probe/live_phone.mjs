@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 진짜 사이트 폰 엔진 검사(사장님 2026-10-19 「진짜 폰 테스트」) — 폰을 손에 들 수 없어, 폰과 같은 브라우저 엔진 · 화면 · 배율 · 터치로 진짜 사이트를 엶
 //   iPhone SE · iPhone 13 = WebKit(아이폰 사파리 엔진) · Galaxy S9+ · Pixel 7 = Chromium(안드로이드 크롬 엔진) — playwright devices 그대로
-//   쪽 19곳(#/ · #/t/…)마다: 오류 · 옆으로 넘침 · 17px 아래 글 · 44px 아래 누르는 자리 · #/t/… 의 「다음」 단추가 하나인지
+//   쪽 20곳(#/ · #/t/… · 알림 쪽 2026-10-19 22시 더함)마다: 오류 · 옆으로 넘침 · 17px 아래 글 · 44px 아래 누르는 자리 · #/t/… 의 「다음」 단추가 하나인지
 //   「다음」 사슬: #/t/hello 에서 손가락으로 「다음」을 눌러 주소가 그 단추 주소로 바뀌는지(19걸음 · 테마 길이 아니면 멈춤) · 첫 화면 사진 넷(첫 화면 · 싹 · 업종 · 회사)
 //   기록 reports/atlas11/probe/live-phone/(summary.json · <기기>-<쪽>.png) · 검사 기록이라 늘 0 으로 끝남 · 엔진이 안 켜지면 적고 나머지 기기만
 //   깃허브 실행기(probe which=livephone)에서 돎 — 이 방은 사이트에 못 닿음 · 여기서 시험: LIVE_BASE=http://127.0.0.1:8826 LIVE_PATH=/next/ OUT_DIR=<임시>
@@ -103,7 +103,7 @@ async function settle(page, idleMs) { // 글꼴 · 늦게 오는 자료가 자�
   await page.waitForTimeout(200);
 }
 
-/* ── 테마 자료 먼저(맨 앞 싹 업종 · 그 안 맨 앞 회사) → 쪽 19곳 ── */
+/* ── 테마 자료 먼저(맨 앞 싹 업종 · 그 안 맨 앞 회사) → 쪽 20곳 ── */
 async function getJson(u) {
   const r = await fetch(u, {headers: {'cache-control': 'no-cache'}, signal: AbortSignal.timeout(20000)});
   if (!r.ok) throw new Error(`${cleanUrl(u)} HTTP ${r.status}`);
@@ -116,11 +116,11 @@ try {
   LEAD = TOP ? more?.inds?.[TOP]?.top?.[0]?.c ?? null : null;
   S.data = {asOf: th?.asOf ?? null, top: TOP, lead: LEAD, ...(TOP ? {} : {err: 'theme.json order.S · order.B empty'}), ...(TOP && !LEAD ? {err: 'theme-more.json inds[top].top empty'} : {})};
 } catch (e) { S.data = {err: line1(e)}; }
-const ROUTES = ['#/', '#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today'];
+const ROUTES = ['#/', '#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today', '#/t/alert']; // 알림 쪽(26 · 2026-10-19 22시 더함)
 const IND = TOP ? '#/t/i/' + encodeURIComponent(TOP) : null, CO = LEAD ? '#/t/c/' + encodeURIComponent(LEAD) : null;
 if (IND) ROUTES.push(IND, ...['path', 'spread', 'big', 'co', 'near'].map(s => IND + '/' + s));
 if (CO) ROUTES.push(CO, ...['lead', 'why', 'rank', 'unknown', 'keep'].map(s => CO + '/' + s));
-const SHOTS = new Map([['#/', 'home'], ['#/t/sprout', 'sprout'], ...(IND ? [[IND, 'industry']] : []), ...(CO ? [[CO, 'company']] : [])]);
+const SHOTS = new Map([['#/', 'home'], ['#/t/sprout', 'sprout'], ['#/t/alert', 'alert'], ...(IND ? [[IND, 'industry']] : []), ...(CO ? [[CO, 'company']] : [])]);
 S.routes = ROUTES.map(show);
 
 let pw;
