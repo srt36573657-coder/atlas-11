@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-10-18T03:32:03Z",
+ "at": "2026-10-19T17:45:02Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -29,9 +29,9 @@
  },
  "inputs": {
   "bundle": {
-   "path": "reports/atlas11/universe/2026-10-14-1209-to1013/bundle.json.gz",
-   "sha256": "0cf61ebde872cd380f4b5dacdf112b5f2193440446173f959ab5b6536389d061",
-   "last": "2026-10-13"
+   "path": "../../_temp/gdr/bundle.json.gz",
+   "sha256": "a58566c9ee090bc7ab62caa61cf099428175133d48416f0addfe76c97e07efd1",
+   "last": "2026-10-19"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -43,248 +43,252 @@
    "sha256": "3b7d61ae7ac6fdd5c5bff6912083ebcb724b489e743f352fa38af7b57c694e95"
   },
   "quarters": {
-   "path": null,
-   "from": "gdr.src null",
-   "present": false
+   "path": "reports/atlas11/godori/quarter-latest.json",
+   "from": "flag",
+   "present": true
   },
   "lists": {
-   "path": null,
-   "from": "gdr.src null",
-   "present": false,
+   "path": "reports/atlas11/godori/kind-latest.json",
+   "from": "flag",
+   "present": true,
    "complete": false
   },
   "calendar": {
-   "n": 839,
+   "n": 843,
    "first": "2023-04-28",
-   "last": "2026-10-13",
+   "last": "2026-10-19",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "61548bc2e9cbb3a9dea863cd6795d33fd8845725b7c6b6ede105b9ee84108275"
+   "sha256": "5d47dec221083165a4d4ca933109c4e8c32f58a1d95901ca70f4a6330672caf1"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "a058a8f23eb2c7715f40589100c021a88690281de7418ac57100384393625082"
+   "sha256": "34c6799d1ad1cc7ee438c3d336234dc7dad85b623f9bb94ee742bb819235b5e9"
   },
   "private": {
-   "path": null,
+   "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": null
+   "sha256": "589b4d37e34898affda898593d8589054f857baf55069bd83b74bc5525c603d7"
+  },
+  "prev": {
+   "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
+   "error": null
   }
  },
  "k": {
-  "k": 838,
-  "day": "2026-10-13",
-  "src": "§2 규칙"
+  "k": 842,
+  "day": "2026-10-19",
+  "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1650,
-   "outThinQ": 6,
-   "outHalt": 1,
-   "outList": 0,
-   "listQ": 906,
-   "afterOut": 906,
-   "g1": 0,
-   "g2": 668,
-   "g3": 79,
-   "g4": 676,
-   "g5": 86,
+   "outThin": 1664,
+   "outThinQ": 11,
+   "outHalt": 3,
+   "outList": 8,
+   "listQ": 882,
+   "afterOut": 882,
+   "g1": 267,
+   "g2": 688,
+   "g3": 93,
+   "g4": 668,
+   "g5": 66,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 893,
-   "why": "lists,quarters"
+   "loss3": 869,
+   "why": "lists"
   },
-  "loss3Years": 893,
+  "loss3Years": 869,
   "status": {
-   "lists": "missing",
-   "quarters": "missing"
+   "lists": "partial",
+   "quarters": "ok"
   },
   "sens": {
    "thin": [
     [
      1100000000.0,
-     0
+     1
     ],
     [
      1000000000.0,
-     0
+     1
     ],
     [
      900000000.0,
-     0
+     1
     ]
    ],
    "opGrow": [
     [
      5.0,
-     0
+     1
     ],
     [
      0.0,
-     0
+     1
     ],
     [
      -5.0,
-     0
+     1
     ]
    ],
    "salesGrow": [
     [
      5.0,
-     0
+     1
     ],
     [
      0.0,
-     0
+     1
     ],
     [
      -5.0,
-     0
+     1
     ]
    ],
    "quietX": [
     [
      1.8,
-     0
+     1
     ],
     [
      2.0,
-     0
+     1
     ],
     [
      2.2,
-     0
+     1
     ]
    ],
    "hot5": [
     [
      9.0,
-     0
+     1
     ],
     [
      10.0,
-     0
+     1
     ],
     [
      11.0,
-     0
+     1
     ]
    ],
    "r20": [
     [
      22.5,
-     0
+     1
     ],
     [
      25.0,
-     0
+     1
     ],
     [
      27.5,
-     0
+     1
     ]
    ],
    "r60lo": [
     [
      5.5,
-     0
+     1
     ],
     [
      5.0,
-     0
+     1
     ],
     [
      4.5,
-     0
+     1
     ]
    ],
    "r60hi": [
     [
      36.0,
-     0
+     1
     ],
     [
      40.0,
-     0
+     1
     ],
     [
      44.0,
-     0
+     1
     ]
    ],
    "jump": [
     [
      13.5,
-     0
+     1
     ],
     [
      15.0,
-     0
+     1
     ],
     [
      16.5,
-     0
+     1
     ]
    ],
    "mdd60": [
     [
      18.0,
-     0
+     1
     ],
     [
      20.0,
-     0
+     1
     ],
     [
      22.0,
-     2
+     1
     ]
    ],
    "dd0": [
     [
      13.5,
-     0
+     1
     ],
     [
      15.0,
-     0
+     1
     ],
     [
      16.5,
-     0
+     1
     ]
    ],
    "low2x": [
     [
      1.8,
-     0
+     1
     ],
     [
      2.0,
-     0
+     1
     ],
     [
      2.2,
-     0
+     1
     ]
    ],
    "indX": [
     [
      1.21,
-     0
+     1
     ],
     [
      1.1,
-     0
+     1
     ],
     [
      0.99,
@@ -294,15 +298,15 @@
    "indMed": [
     [
      1.0,
-     0
+     1
     ],
     [
      0.0,
-     0
+     1
     ],
     [
      -1.0,
-     3
+     1
     ]
    ]
   },
@@ -317,48 +321,27 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-09-09",
-   "to": "2026-10-13",
-   "n": 2,
-   "counted": 2,
-   "up": 0,
-   "lo": 9,
-   "hi": 13,
+   "from": "2026-09-15",
+   "to": "2026-10-19",
+   "n": 1,
+   "counted": 1,
+   "up": 1,
+   "lo": 4,
+   "hi": 6,
    "rows": [
     {
-     "code": "004690",
-     "name": "삼천리",
-     "lo": 5,
-     "hi": 7,
-     "from": 134500,
-     "to": 124500,
-     "up": 0,
-     "mcCounts": [
-      1037,
-      1029,
-      1229,
-      1003
-     ],
-     "mcEdges": [
-      0,
-      0,
-      0,
-      0
-     ]
-    },
-    {
-     "code": "004370",
-     "name": "농심",
+     "code": "006730",
+     "name": "서부T&D",
      "lo": 4,
      "hi": 6,
-     "from": 413500,
-     "to": 399000,
-     "up": 0,
+     "from": 11230,
+     "to": 12820,
+     "up": 1,
      "mcCounts": [
-      929,
-      930,
-      1119,
-      952
+      950,
+      960,
+      1112,
+      1000
      ],
      "mcEdges": [
       0,
@@ -417,10 +400,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1650,
-    1,
-    0,
-    906,
+    1664,
+    3,
+    8,
+    882,
     2557
    ]
   },
@@ -434,694 +417,35 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1650,
-  "outThinQ": 6,
-  "outHalt": 1,
-  "outList": 0,
-  "listQ": 906,
-  "afterOut": 906,
-  "g1": 0,
-  "g2": 668,
-  "g3": 79,
-  "g4": 676,
-  "g5": 86,
+  "outThin": 1664,
+  "outThinQ": 11,
+  "outHalt": 3,
+  "outList": 8,
+  "listQ": 882,
+  "afterOut": 882,
+  "g1": 267,
+  "g2": 688,
+  "g3": 93,
+  "g4": 668,
+  "g5": 66,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 893,
-  "why": "lists,quarters"
+  "loss3": 869,
+  "why": "lists"
  },
- "back": {
-  "days": [
-   {
-    "k": 250,
-    "date": "2024-05-09",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 280,
-    "date": "2024-06-24",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 310,
-    "date": "2024-08-05",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 340,
-    "date": "2024-09-20",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 370,
-    "date": "2024-11-06",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 399,
-    "date": "2024-12-17",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 429,
-    "date": "2025-02-06",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 459,
-    "date": "2025-03-21",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 489,
-    "date": "2025-05-07",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 519,
-    "date": "2025-06-20",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 549,
-    "date": "2025-08-01",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 579,
-    "date": "2025-09-15",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 609,
-    "date": "2025-11-03",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 639,
-    "date": "2025-12-15",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 669,
-    "date": "2026-01-29",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 698,
-    "date": "2026-03-17",
-    "picks": 0,
-    "why": "years"
-   },
-   {
-    "k": 709,
-    "date": "2026-04-01",
-    "picks": 5,
-    "why": null
-   },
-   {
-    "k": 711,
-    "date": "2026-04-03",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 714,
-    "date": "2026-04-08",
-    "picks": 2,
-    "why": null
-   },
-   {
-    "k": 716,
-    "date": "2026-04-10",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 718,
-    "date": "2026-04-14",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 720,
-    "date": "2026-04-16",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 722,
-    "date": "2026-04-20",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 724,
-    "date": "2026-04-22",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 726,
-    "date": "2026-04-24",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 728,
-    "date": "2026-04-28",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 730,
-    "date": "2026-04-30",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 732,
-    "date": "2026-05-06",
-    "picks": 4,
-    "why": null
-   },
-   {
-    "k": 734,
-    "date": "2026-05-08",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 740,
-    "date": "2026-05-18",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 744,
-    "date": "2026-05-22",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 758,
-    "date": "2026-06-15",
-    "picks": 0,
-    "why": "none"
-   },
-   {
-    "k": 772,
-    "date": "2026-07-03",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 774,
-    "date": "2026-07-07",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 788,
-    "date": "2026-07-28",
-    "picks": 0,
-    "why": "none"
-   },
-   {
-    "k": 796,
-    "date": "2026-08-07",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 800,
-    "date": "2026-08-13",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 802,
-    "date": "2026-08-18",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 804,
-    "date": "2026-08-20",
-    "picks": 2,
-    "why": null
-   },
-   {
-    "k": 806,
-    "date": "2026-08-24",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 808,
-    "date": "2026-08-26",
-    "picks": 3,
-    "why": null
-   },
-   {
-    "k": 810,
-    "date": "2026-08-28",
-    "picks": 2,
-    "why": null
-   },
-   {
-    "k": 812,
-    "date": "2026-09-01",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 814,
-    "date": "2026-09-03",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 816,
-    "date": "2026-09-07",
-    "picks": 1,
-    "why": null
-   },
-   {
-    "k": 818,
-    "date": "2026-09-09",
-    "picks": 2,
-    "why": null
-   }
-  ],
-  "compared": 676,
-  "diffs": 0,
-  "sample": [
-   250,
-   280,
-   310,
-   340,
-   370,
-   399,
-   429,
-   459,
-   489,
-   519,
-   549,
-   579,
-   609,
-   639,
-   669,
-   698,
-   709,
-   711,
-   714,
-   716,
-   718,
-   720,
-   722,
-   724,
-   726,
-   728,
-   730,
-   732,
-   734,
-   740,
-   744,
-   758,
-   772,
-   774,
-   788,
-   796,
-   800,
-   802,
-   804,
-   806,
-   808,
-   810,
-   812,
-   814,
-   816,
-   818
-  ]
- },
- "stress": {
-  "dir": "/tmp/claude-0/-home-claude/e38c6e2a-a659-5015-b86a-265061dd2612/scratchpad/g4x/final-stress",
-  "node": "--permission",
-  "cases": [
-   {
-    "case": "A_today_full",
-    "asof": null,
-    "quarters": "a",
-    "lists": "full",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 906,
-    "ok": true,
-    "compared": 2700,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 838,
-    "day": "2026-10-13",
-    "picked": 0,
-    "passAll": 0,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": "none",
-    "outList": 3,
-    "near": 0,
-    "scoreSrc": "recomputed",
-    "secs": 8.3
-   },
-   {
-    "case": "B_0401_alt",
-    "asof": "2026-04-01",
-    "quarters": "a",
-    "lists": "alt",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 3,
-    "ok": true,
-    "compared": 2755,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 709,
-    "day": "2026-04-01",
-    "picked": 2,
-    "passAll": 2,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": null,
-    "outList": 1,
-    "near": 5,
-    "scoreSrc": "recomputed",
-    "secs": 21.2
-   },
-   {
-    "case": "C_0331_full",
-    "asof": "2026-03-31",
-    "quarters": "a",
-    "lists": "full",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 1239,
-    "ok": true,
-    "compared": 2693,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 708,
-    "day": "2026-03-31",
-    "picked": 0,
-    "passAll": 0,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": "years",
-    "outList": 3,
-    "near": 0,
-    "scoreSrc": "recomputed",
-    "secs": 15.7
-   },
-   {
-    "case": "D_0909_full_b",
-    "asof": "2026-09-09",
-    "quarters": "b",
-    "lists": "full",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 2,
-    "ok": true,
-    "compared": 2724,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 818,
-    "day": "2026-09-09",
-    "picked": 1,
-    "passAll": 1,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": null,
-    "outList": 1,
-    "near": 2,
-    "scoreSrc": "recomputed",
-    "secs": 21.5
-   },
-   {
-    "case": "E_today_partial",
-    "asof": null,
-    "quarters": "a",
-    "lists": "partial",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 906,
-    "ok": true,
-    "compared": 2700,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 838,
-    "day": "2026-10-13",
-    "picked": 0,
-    "passAll": 0,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": "lists",
-    "outList": 1,
-    "near": 0,
-    "scoreSrc": "recomputed",
-    "secs": 20.0
-   },
-   {
-    "case": "F_today_dartoff",
-    "asof": null,
-    "quarters": "a",
-    "lists": "dartoff",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 906,
-    "ok": true,
-    "compared": 2700,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 838,
-    "day": "2026-10-13",
-    "picked": 0,
-    "passAll": 0,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": "lists",
-    "outList": 0,
-    "near": 0,
-    "scoreSrc": "recomputed",
-    "secs": 19.0
-   },
-   {
-    "case": "G_0715_noq",
-    "asof": "2026-07-15",
-    "quarters": null,
-    "lists": "full",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 917,
-    "ok": true,
-    "compared": 2693,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 780,
-    "day": "2026-07-15",
-    "picked": 0,
-    "passAll": 0,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": "quarters",
-    "outList": 3,
-    "near": 0,
-    "scoreSrc": "recomputed",
-    "secs": 15.8
-   },
-   {
-    "case": "H_today_prev",
-    "asof": null,
-    "quarters": "b",
-    "lists": "full",
-    "prev": "D_0909_full_b",
-    "exit": 0,
-    "listedCandidates": 906,
-    "ok": true,
-    "compared": 2700,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 838,
-    "day": "2026-10-13",
-    "picked": 0,
-    "passAll": 0,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": "none",
-    "outList": 3,
-    "near": 0,
-    "scoreSrc": "kept",
-    "secs": 19.4
-   },
-   {
-    "case": "I_0602_full_b",
-    "asof": "2026-06-02",
-    "quarters": "b",
-    "lists": "full",
-    "prev": null,
-    "exit": 0,
-    "listedCandidates": 1329,
-    "ok": true,
-    "compared": 2735,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 750,
-    "day": "2026-06-02",
-    "picked": 0,
-    "passAll": 0,
-    "cutInd": 0,
-    "cutBig": 0,
-    "why": "none",
-    "outList": 3,
-    "near": 0,
-    "scoreSrc": "recomputed",
-    "secs": 38.9
-   },
-   {
-    "case": "S_synth_bundle",
-    "exit": 0,
-    "meta": {
-     "industries": [
-      "연예 기획사",
-      "출판",
-      "방송",
-      "부동산",
-      "은행·카드",
-      "보험",
-      "헬스케어 기술",
-      "의료용품",
-      "병원·헬스 서비스",
-      "반도체 검사·측정",
-      "반도체 소재",
-      "반도체 부품",
-      "자동차",
-      "정밀화학",
-      "시멘트",
-      "통신",
-      "인터넷 플랫폼",
-      "IT 시스템 통합",
-      "전력기기",
-      "정유·가스",
-      "2차전지 장비",
-      "디스플레이 장비",
-      "조선 기자재",
-      "항공·우주",
-      "조선",
-      "항공",
-      "해운",
-      "복합기업"
-     ],
-     "candidates": 84,
-     "specials": {
-      "016880": "quiet",
-      "033830": "thin",
-      "006220": "r60lo",
-      "000370": "r60hi",
-      "028300": "mdd60",
-      "043710": "dd0",
-      "005290": "hot5",
-      "007660": "hot5x",
-      "002840": "jumpx",
-      "000910": "low2x"
-     },
-     "twin": [
-      "036000",
-      "000400"
-     ],
-     "crashDays": [
-      "2025-10-31",
-      "2026-01-14",
-      "2026-03-31",
-      "2026-05-29",
-      "2026-08-11"
-     ]
-    },
-    "ok": true,
-    "compared": 3575,
-    "diffN": 0,
-    "diffs": [],
-    "invariantsBad": [],
-    "k": 838,
-    "day": "2026-10-13",
-    "picked": 28,
-    "passAll": 53,
-    "cutInd": 16,
-    "cutBig": 9,
-    "outList": 2,
-    "why": null,
-    "fall3": 5,
-    "nearKeys": {
-     "salesGrow": 19,
-     "thin": 1,
-     "indMed": 2,
-     "jump": 1,
-     "mdd60": 1,
-     "indX": 1,
-     "opGrow": 10
-    },
-    "weights": {
-     "3.0": 12,
-     "2.5": 12,
-     "2.0": 4
-    },
-    "edges": [],
-    "secs": 75.1
-   }
-  ],
-  "ok": true,
-  "unit": {
-   "n": 25,
-   "bad": []
-  },
-  "n": 9
- },
- "compared": 3378,
+ "compared": 2700,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 3.8,
-  "build": 3.3,
-  "recount": 1.1,
-  "back": 12.7,
-  "stress": 255.0,
-  "total": 276.0
+  "readBundle": 2.6,
+  "build": 3.2,
+  "recount": 1.2,
+  "total": 7.2
  }
 }
