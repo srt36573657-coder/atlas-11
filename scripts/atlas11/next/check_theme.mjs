@@ -310,7 +310,7 @@ try {
   {
     async function openSeed(hash, seed, {w = 390, h = 844, en = false, font = 0, block = false} = {}) {
       const ctx = await browser.newContext({viewport: {width: w, height: h}, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
-      await ctx.addInitScript(([sd, f, bl]) => { try { for (const [k, v] of Object.entries(sd)) localStorage.setItem(k, JSON.stringify(v)); if (f) localStorage.setItem('atlas:font', String(f)); } catch { /* 없음 */ } if (bl) { const o = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (String(k).startsWith('dori:')) throw new DOMException('막힘', 'QuotaExceededError'); return o.call(this, k, v); }; } }, [seed, font, block]);
+      await ctx.addInitScript(([sd, f, bl]) => { try { for (const [k, v] of Object.entries(sd)) localStorage.setItem(k, JSON.stringify(v)); if (f) localStorage.setItem('atlas:font', String(f)); } catch { /* 없음 */ } if (bl) { const o = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (/^(dori:|atlas:new:)/.test(String(k))) throw new DOMException('막힘', 'QuotaExceededError'); return o.call(this, k, v); }; } }, [seed, font, block]);
       const p = await ctx.newPage(); p._errs = []; p.on('pageerror', e => p._errs.push(String(e.message).slice(0, 160)));
       await p.goto(PAGE + (en ? '?lang=en' : '') + hash, {waitUntil: 'domcontentloaded'}); await settle(p);
       if (en) { await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(150); }

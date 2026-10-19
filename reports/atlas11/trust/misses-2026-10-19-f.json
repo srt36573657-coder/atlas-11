@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-19T22:33+08:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-19 22시 1e4c63173",
+  "to": "2026-10-19 22시 고침"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 69,
+   "when": "2026-10-19 22시 1e4c63173 깃허브 전체 검사(올리기 전)",
+   "what": "회사 관심 담기(app.js)도 저장이 막히면 「담았어요」라 하지 않게 고치고 검사를 더했는데, 검사가 막는 열쇠를 dori: 로만 두어 회사 관심 열쇠(atlas:new:later)는 그대로 담김 — 검사가 고친 것을 잴 수 없어 전체 검사 theme 쪽 실패",
+   "found_by": "Claude — 이 방 짝 검사(check_changed)와 깃허브 전체 검사 summary 가 같은 줄로 걸림",
+   "fixed": "scripts/atlas11/next/check_theme.mjs ⑩(나) — dori: 와 atlas:new: 를 함께 막음 · 다시 돌려 통과"
+  }
+ ]
+}
