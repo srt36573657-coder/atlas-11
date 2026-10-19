@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-19T15:36:11.162Z",
+ "at": "2026-10-19T16:50:14.152Z",
  "base": "https://aaa7377.com",
  "all": true,
  "limit": null,
@@ -22,13 +22,13 @@
    }
   }
  },
- "seconds": 158,
+ "seconds": 144,
  "counts": {
   "routes": 251,
-  "rows": 7829,
-  "btns": 7829,
-  "links": 9036,
-  "clicks": 477,
+  "rows": 7835,
+  "btns": 7835,
+  "links": 9048,
+  "clicks": 479,
   "fail": 0,
   "places": {
    "chip.card": {
@@ -178,25 +178,26 @@
     "share": 1536,
     "routes": 87
    },
+   "watch.next": {
+    "rows": 467,
+    "btns": 467,
+    "surge": 0,
+    "share": 467,
+    "routes": 78
+   },
    "rivals.peer": {
     "rows": 272,
     "btns": 272,
     "surge": 0,
     "share": 272,
     "routes": 57
-   },
-   "watch.next": {
-    "rows": 461,
-    "btns": 461,
-    "surge": 0,
-    "share": 461,
-    "routes": 77
    }
   },
   "skipped": {
    "그날 들고 난 이름 목록(이름 글 — 줄 · 카드 아님)": 345,
+   "종목 파일 쪽의 길 단추 「회사 보기 ›」(쪽 자체가 그 종목)": 1,
    "고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사)": 112,
-   "7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)": 745,
+   "7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)": 750,
    "글 속 이름(선을 못 그린 회사 — 문장 안)": 6
   },
   "list": [
@@ -276,7 +277,7 @@
     "route": "#/cal/005870",
     "rows": 0,
     "btns": 0,
-    "links": 0,
+    "links": 1,
     "clicked": "",
     "fail": 0
    },
@@ -378,10 +379,10 @@
    },
    {
     "route": "#/w/005930",
-    "rows": 0,
-    "btns": 0,
-    "links": 0,
-    "clicked": "",
+    "rows": 6,
+    "btns": 6,
+    "links": 11,
+    "clicked": "watch.next",
     "fail": 0
    },
    {
