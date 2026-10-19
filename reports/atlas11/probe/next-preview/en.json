@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-19T02:50:29.851Z",
+ "at": "2026-10-19T03:17:29.709Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -9,7 +9,7 @@
   360,
   390
  ],
- "routes": 13417,
+ "routes": 13421,
  "companies": 2557,
  "allCompanies": true,
  "modules": true,
@@ -18,21 +18,21 @@
   "rivals": true,
   "grow": true,
   "range": true,
-  "cal": true,
   "surge": true,
+  "cal": true,
+  "cond": true,
   "talk": true,
   "up": true,
-  "cond": true,
   "time": true,
   "info": true,
   "x": true,
-  "co": true,
   "chx": true,
+  "co": true,
+  "today": true,
   "why": true,
   "gdr": true,
   "share": true,
-  "hold": true,
-  "today": true
+  "hold": true
  },
  "edge": true,
  "only": null,
@@ -40,35 +40,61 @@
  "shard": "all/9",
  "full": false,
  "units": {
-  "total": 13413,
-  "hash": "8479afc7639fc84f",
+  "total": 13417,
+  "hash": "75f76dfb615affe0",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 271,
- "secondsSum": 2359,
+ "seconds": 269,
+ "secondsSum": 2367,
  "shards": [
   {
    "shard": "1/9",
    "ok": false,
-   "fails": 2,
-   "routes": 1501,
+   "fails": 1031,
+   "routes": 1502,
    "screens": 1502,
-   "mine": 1501,
-   "seconds": 261,
+   "mine": 1502,
+   "seconds": 260,
    "secs": {
     "open": 0.2,
-    "routes": 259.1
+    "routes": 259.6
    }
   },
   {
    "shard": "2/9",
    "ok": false,
-   "fails": 2,
+   "fails": 1033,
    "routes": 1501,
-   "screens": 1501,
+   "screens": 1540,
+   "mine": 1501,
+   "seconds": 268,
+   "secs": {
+    "open": 0.2,
+    "routes": 267.4
+   }
+  },
+  {
+   "shard": "3/9",
+   "ok": false,
+   "fails": 1028,
+   "routes": 1501,
+   "screens": 1539,
+   "mine": 1501,
+   "seconds": 269,
+   "secs": {
+    "open": 0.2,
+    "routes": 267.7
+   }
+  },
+  {
+   "shard": "4/9",
+   "ok": false,
+   "fails": 1025,
+   "routes": 1501,
+   "screens": 1502,
    "mine": 1501,
    "seconds": 254,
    "secs": {
@@ -77,113 +103,87 @@
    }
   },
   {
-   "shard": "3/9",
-   "ok": false,
-   "fails": 2,
-   "routes": 1501,
-   "screens": 1501,
-   "mine": 1501,
-   "seconds": 264,
-   "secs": {
-    "open": 0.2,
-    "routes": 263.3
-   }
-  },
-  {
-   "shard": "4/9",
-   "ok": false,
-   "fails": 2,
-   "routes": 1501,
-   "screens": 1501,
-   "mine": 1501,
-   "seconds": 258,
-   "secs": {
-    "open": 0.2,
-    "routes": 256.1
-   }
-  },
-  {
    "shard": "5/9",
    "ok": false,
-   "fails": 2,
-   "routes": 1500,
-   "screens": 1500,
-   "mine": 1500,
-   "seconds": 263,
+   "fails": 1022,
+   "routes": 1501,
+   "screens": 1502,
+   "mine": 1501,
+   "seconds": 265,
    "secs": {
-    "open": 0.2,
-    "routes": 262.1
+    "open": 0.3,
+    "routes": 263.7
    }
   },
   {
    "shard": "6/9",
    "ok": false,
-   "fails": 2,
-   "routes": 1500,
-   "screens": 1500,
-   "mine": 1500,
-   "seconds": 255,
+   "fails": 1022,
+   "routes": 1501,
+   "screens": 1501,
+   "mine": 1501,
+   "seconds": 264,
    "secs": {
     "open": 0.2,
-    "routes": 254.7
+    "routes": 263.2
    }
   },
   {
    "shard": "7/9",
    "ok": false,
-   "fails": 2,
-   "routes": 1500,
-   "screens": 1539,
-   "mine": 1500,
-   "seconds": 269,
+   "fails": 1022,
+   "routes": 1501,
+   "screens": 1501,
+   "mine": 1501,
+   "seconds": 261,
    "secs": {
     "open": 0.2,
-    "routes": 268.4
+    "routes": 260.6
    }
   },
   {
    "shard": "8/9",
    "ok": false,
-   "fails": 2,
+   "fails": 1022,
    "routes": 1486,
-   "screens": 1508,
+   "screens": 1507,
    "mine": 1487,
-   "seconds": 264,
+   "seconds": 263,
    "secs": {
     "open": 0.2,
-    "routes": 260.8,
-    "newwin": 1.9
+    "routes": 260.3,
+    "newwin": 2.1
    }
   },
   {
    "shard": "9/9",
    "ok": false,
-   "fails": 2,
+   "fails": 994,
    "routes": 1427,
-   "screens": 1585,
+   "screens": 1547,
    "mine": 1422,
-   "seconds": 271,
+   "seconds": 263,
    "secs": {
-    "open": 0.3,
-    "routes": 256.6,
-    "act": 7.4,
-    "edge": 5.1,
+    "open": 0.2,
+    "routes": 249.4,
+    "act": 7.2,
+    "edge": 4.9,
     "grammar": 0
    }
   }
  ],
  "counts": {
-  "화면": 13637,
+  "화면": 13641,
   "길 · home": 1,
   "길 · sub": 1,
   "길 · find": 9,
   "길 · watch": 2560,
   "길 · chan": 89,
-  "길 · mod": 10742,
-  "골똘이 칸 잠김": 2,
+  "길 · mod": 10746,
   "길 · chips": 7,
   "길 · me": 1,
   "왜 사? 끝까지": 2,
+  "돌이 칸 잠김": 2,
   "새 창": 2,
   "쇼츠 장": 6,
   "길 · shorts": 7,
@@ -192,31 +192,148 @@
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412
  },
- "missing": 1,
+ "missing": 8,
  "avatarLetters": 0,
  "kinds": {
-  "한글 남음(모듈 칸)": 1,
-  "사전에 없는 틀": 1
+  "한글 남음": 6,
+  "칸 안에서 넘친 글": 7146,
+  "한글 남음(모듈 칸)": 1
  },
- "fails": 2,
+ "fails": 7153,
  "own": {
-  "fails": 0,
+  "fails": 7152,
   "missing": 0,
-  "leftover": 0
+  "leftover": 6
  },
  "mod": {
-  "fails": 2,
-  "missing": 1,
+  "fails": 1,
+  "missing": 0,
   "leftover": 1
  },
  "missingList": [
   {
+   "key": "첫 질문을 해 볼까?",
+   "ex": "첫 질문을 해 볼까?",
+   "at": "#/"
+  },
+  {
+   "key": "지난 기록",
+   "ex": "지난 기록",
+   "at": "#/"
+  },
+  {
+   "key": "한 달 뒤 물어볼게요",
+   "ex": "한 달 뒤 물어볼게요",
+   "at": "#/"
+  },
+  {
+   "key": "이 기기에만",
+   "ex": "이 기기에만",
+   "at": "#/"
+  },
+  {
+   "key": "시작",
+   "ex": "시작",
+   "at": "#/"
+  },
+  {
+   "key": "채점 전",
+   "ex": "채점 전",
+   "at": "#/"
+  },
+  {
    "key": "아직 바뀔 수 있는 값이에요",
    "ex": "아직 바뀔 수 있는 값이에요",
    "at": "[모듈] #/w/000100"
+  },
+  {
+   "key": "이 칸에 든 곳이 많아 많이 오른 차례로 {n}곳만 실었어요. 나머지 {n}곳은 싣지 않아요.",
+   "ex": "이 칸에 든 곳이 많아 많이 오른 차례로 36곳만 실었어요. 나머지 6곳은 싣지 않아요.",
+   "at": "[모듈] #/surge/10"
   }
  ],
  "all": [
+  {
+   "kind": "한글 남음",
+   "what": "첫 질문을 해 볼까?",
+   "ex": "첫 질문을 해 볼까?",
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "한글 남음",
+   "what": "지난 기록",
+   "ex": "지난 기록",
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "한글 남음",
+   "what": "한 달 뒤 물어볼게요",
+   "ex": "한 달 뒤 물어볼게요",
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "한글 남음",
+   "what": "이 기기에만",
+   "ex": "이 기기에만",
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "한글 남음",
+   "what": "시작",
+   "ex": "시작",
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "한글 남음",
+   "what": "채점 전",
+   "ex": "채점 전",
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".h 「Watch」 @320",
+   "ex": null,
+   "at": [
+    "#/sub @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".h 「Watch」 @360",
+   "ex": null,
+   "at": [
+    "#/sub @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".h 「Watch」 @390",
+   "ex": null,
+   "at": [
+    "#/sub @390"
+   ],
+   "n": 1
+  },
   {
    "kind": "한글 남음(모듈 칸)",
    "what": "? 아직 바뀔 수 있는 값이에요 ›",
@@ -231,16 +348,7129 @@
    "n": 2577
   },
   {
-   "kind": "사전에 없는 틀",
-   "what": "아직 바뀔 수 있는 값이에요  ← 「아직 바뀔 수 있는 값이에요」",
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Yuhan」 @320",
    "ex": null,
    "at": [
-    "[모듈] #/w/000100"
+    "#/w/000100 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Yuhan」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000100 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Yuhan」 @390",
+   "ex": null,
+   "at": [
+    "#/w/000100 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hankook & Company」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000240 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hankook & Company」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000240 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hankook & Company」 @390",
+   "ex": null,
+   "at": [
+    "#/w/000240 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Joong Ang Enervis」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000440 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Joong Ang Enervis」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000440 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Joong Ang Enervis」 @390",
+   "ex": null,
+   "at": [
+    "#/w/000440 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Chunil Express」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000650 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Chunil Express」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000650 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Chunil Express」 @390",
+   "ex": null,
+   "at": [
+    "#/w/000650 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Fire & Marine Insura」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000810 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Fire & Marine Insura」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000810 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Fire & Marine Insura」 @390",
+   "ex": null,
+   "at": [
+    "#/w/000810 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DB HiTek」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000990 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DB HiTek」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000990 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DB HiTek」 @390",
+   "ex": null,
+   "at": [
+    "#/w/000990 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「WISE PLANET COMPANY」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0010S0 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「WISE PLANET COMPANY」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0010S0 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「WISE PLANET COMPANY」 @390",
+   "ex": null,
+   "at": [
+    "#/w/0010S0 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GS Global」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001250 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GS Global」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001250 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GS Global」 @390",
+   "ex": null,
+   "at": [
+    "#/w/001250 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tae Won Mulsan」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001420 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tae Won Mulsan」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001420 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tae Won Mulsan」 @390",
+   "ex": null,
+   "at": [
+    "#/w/001420 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Di Dong Il」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001530 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Di Dong Il」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001530 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Di Dong Il」 @390",
+   "ex": null,
+   "at": [
+    "#/w/001530 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Chong Kun Dang Holdings」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001630 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Chong Kun Dang Holdings」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001630 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Chong Kun Dang Holdings」 @390",
+   "ex": null,
+   "at": [
+    "#/w/001630 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ORION Holdings」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001800 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ORION Holdings」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001800 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ORION Holdings」 @390",
+   "ex": null,
+   "at": [
+    "#/w/001800 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002140 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002140 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/002140 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Asia Paper Manufacturing」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002310 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Asia Paper Manufacturing」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002310 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Asia Paper Manufacturing」 @390",
+   "ex": null,
+   "at": [
+    "#/w/002310 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HS Hwasung」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002460 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HS Hwasung」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002460 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HS Hwasung」 @390",
+   "ex": null,
+   "at": [
+    "#/w/002460 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bolak Company」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002760 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bolak Company」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002760 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bolak Company」 @390",
+   "ex": null,
+   "at": [
+    "#/w/002760 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DYA」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002880 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DYA」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002880 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DYA」 @390",
+   "ex": null,
+   "at": [
+    "#/w/002880 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolon Global」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003070 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolon Global」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003070 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolon Global」 @390",
+   "ex": null,
+   "at": [
+    "#/w/003070 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taekwang Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003240 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taekwang Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003240 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taekwang Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/003240 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korean Airlines」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003490 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korean Airlines」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003490 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korean Airlines」 @390",
+   "ex": null,
+   "at": [
+    "#/w/003490 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Mobility」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003620 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Mobility」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003620 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Mobility」 @390",
+   "ex": null,
+   "at": [
+    "#/w/003620 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Boryung」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003850 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Boryung」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003850 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Boryung」 @390",
+   "ex": null,
+   "at": [
+    "#/w/003850 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taeyang Metal Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004100 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taeyang Metal Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004100 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taeyang Metal Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/004100 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samick THK」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004380 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samick THK」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004380 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samick THK」 @390",
+   "ex": null,
+   "at": [
+    "#/w/004380 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Changhae Ethanol」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004650 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Changhae Ethanol」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004650 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Changhae Ethanol」 @390",
+   "ex": null,
+   "at": [
+    "#/w/004650 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DRB」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004840 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DRB」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004840 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DRB」 @390",
+   "ex": null,
+   "at": [
+    "#/w/004840 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Husteel」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005010 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Husteel」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005010 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Husteel」 @390",
+   "ex": null,
+   "at": [
+    "#/w/005010 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ONTIDE」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005320 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ONTIDE」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005320 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ONTIDE」 @390",
+   "ex": null,
+   "at": [
+    "#/w/005320 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FOODWELL」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005670 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FOODWELL」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005670 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FOODWELL」 @390",
+   "ex": null,
+   "at": [
+    "#/w/005670 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Wonlim」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005820 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Wonlim」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005820 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Wonlim」 @390",
+   "ex": null,
+   "at": [
+    "#/w/005820 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongbu」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005960 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongbu」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005960 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongbu」 @390",
+   "ex": null,
+   "at": [
+    "#/w/005960 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KEC」 @320",
+   "ex": null,
+   "at": [
+    "#/w/006200 @320",
+    "#/w/092220 @320"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KEC」 @360",
+   "ex": null,
+   "at": [
+    "#/w/006200 @360",
+    "#/w/092220 @360"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KEC」 @390",
+   "ex": null,
+   "at": [
+    "#/w/006200 @390",
+    "#/w/092220 @390"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daelim Trading」 @320",
+   "ex": null,
+   "at": [
+    "#/w/006570 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daelim Trading」 @360",
+   "ex": null,
+   "at": [
+    "#/w/006570 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daelim Trading」 @390",
+   "ex": null,
+   "at": [
+    "#/w/006570 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taekyung Chemical」 @320",
+   "ex": null,
+   "at": [
+    "#/w/006890 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taekyung Chemical」 @360",
+   "ex": null,
+   "at": [
+    "#/w/006890 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taekyung Chemical」 @390",
+   "ex": null,
+   "at": [
+    "#/w/006890 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Steel」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007280 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Steel」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007280 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Steel」 @390",
+   "ex": null,
+   "at": [
+    "#/w/007280 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sempio Company」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007540 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sempio Company」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007540 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sempio Company」 @390",
+   "ex": null,
+   "at": [
+    "#/w/007540 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanil Chemical Ind」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007770 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanil Chemical Ind」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007770 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanil Chemical Ind」 @390",
+   "ex": null,
+   "at": [
+    "#/w/007770 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kanaph Therapeutics」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0082N0 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kanaph Therapeutics」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0082N0 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kanaph Therapeutics」 @390",
+   "ex": null,
+   "at": [
+    "#/w/0082N0 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hotel Shilla」 @320",
+   "ex": null,
+   "at": [
+    "#/w/008770 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hotel Shilla」 @360",
+   "ex": null,
+   "at": [
+    "#/w/008770 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hotel Shilla」 @390",
+   "ex": null,
+   "at": [
+    "#/w/008770 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SIMPAC」 @320",
+   "ex": null,
+   "at": [
+    "#/w/009160 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SIMPAC」 @360",
+   "ex": null,
+   "at": [
+    "#/w/009160 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SIMPAC」 @390",
+   "ex": null,
+   "at": [
+    "#/w/009160 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ajin Electronic Components」 @320",
+   "ex": null,
+   "at": [
+    "#/w/009320 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ajin Electronic Components」 @360",
+   "ex": null,
+   "at": [
+    "#/w/009320 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ajin Electronic Components」 @390",
+   "ex": null,
+   "at": [
+    "#/w/009320 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Moorim P&P」 @320",
+   "ex": null,
+   "at": [
+    "#/w/009580 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Moorim P&P」 @360",
+   "ex": null,
+   "at": [
+    "#/w/009580 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Moorim P&P」 @390",
+   "ex": null,
+   "at": [
+    "#/w/009580 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Youngone」 @320",
+   "ex": null,
+   "at": [
+    "#/w/009970 @320",
+    "#/w/111770 @320"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Youngone」 @360",
+   "ex": null,
+   "at": [
+    "#/w/009970 @360",
+    "#/w/111770 @360"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Youngone」 @390",
+   "ex": null,
+   "at": [
+    "#/w/009970 @390",
+    "#/w/111770 @390"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Itcenentec」 @320",
+   "ex": null,
+   "at": [
+    "#/w/010280 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Itcenentec」 @360",
+   "ex": null,
+   "at": [
+    "#/w/010280 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Itcenentec」 @390",
+   "ex": null,
+   "at": [
+    "#/w/010280 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FIRSTEC」 @320",
+   "ex": null,
+   "at": [
+    "#/w/010820 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FIRSTEC」 @360",
+   "ex": null,
+   "at": [
+    "#/w/010820 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FIRSTEC」 @390",
+   "ex": null,
+   "at": [
+    "#/w/010820 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lotte Chemical」 @320",
+   "ex": null,
+   "at": [
+    "#/w/011170 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lotte Chemical」 @360",
+   "ex": null,
+   "at": [
+    "#/w/011170 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lotte Chemical」 @390",
+   "ex": null,
+   "at": [
+    "#/w/011170 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Busan Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/011390 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Busan Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/011390 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Busan Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/011390 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PIECE PEACE STUDIO」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0117P0 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PIECE PEACE STUDIO」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0117P0 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PIECE PEACE STUDIO」 @390",
+   "ex": null,
+   "at": [
+    "#/w/0117P0 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Yeong Hwa Metal」 @320",
+   "ex": null,
+   "at": [
+    "#/w/012280 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Yeong Hwa Metal」 @360",
+   "ex": null,
+   "at": [
+    "#/w/012280 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Yeong Hwa Metal」 @390",
+   "ex": null,
+   "at": [
+    "#/w/012280 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Epis」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0126Z0 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Epis」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0126Z0 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Epis」 @390",
+   "ex": null,
+   "at": [
+    "#/w/0126Z0 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「A-Jin Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/013310 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「A-Jin Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/013310 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「A-Jin Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/013310 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Zinus」 @320",
+   "ex": null,
+   "at": [
+    "#/w/013890 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Zinus」 @360",
+   "ex": null,
+   "at": [
+    "#/w/013890 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Zinus」 @390",
+   "ex": null,
+   "at": [
+    "#/w/013890 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kukdong Oil & Chemicals」 @320",
+   "ex": null,
+   "at": [
+    "#/w/014530 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kukdong Oil & Chemicals」 @360",
+   "ex": null,
+   "at": [
+    "#/w/014530 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kukdong Oil & Chemicals」 @390",
+   "ex": null,
+   "at": [
+    "#/w/014530 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sungmoon Electronics」 @320",
+   "ex": null,
+   "at": [
+    "#/w/014910 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sungmoon Electronics」 @360",
+   "ex": null,
+   "at": [
+    "#/w/014910 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sungmoon Electronics」 @390",
+   "ex": null,
+   "at": [
+    "#/w/014910 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INVENI」 @320",
+   "ex": null,
+   "at": [
+    "#/w/015360 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INVENI」 @360",
+   "ex": null,
+   "at": [
+    "#/w/015360 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INVENI」 @390",
+   "ex": null,
+   "at": [
+    "#/w/015360 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daehyun」 @320",
+   "ex": null,
+   "at": [
+    "#/w/016090 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daehyun」 @360",
+   "ex": null,
+   "at": [
+    "#/w/016090 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daehyun」 @390",
+   "ex": null,
+   "at": [
+    "#/w/016090 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Q Capital Partners」 @320",
+   "ex": null,
+   "at": [
+    "#/w/016600 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Q Capital Partners」 @360",
+   "ex": null,
+   "at": [
+    "#/w/016600 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Q Capital Partners」 @390",
+   "ex": null,
+   "at": [
+    "#/w/016600 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SHINWON CONSTRUCTION COMPANY」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017000 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SHINWON CONSTRUCTION COMPANY」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017000 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SHINWON CONSTRUCTION COMPANY」 @390",
+   "ex": null,
+   "at": [
+    "#/w/017000 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daelim Paper」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017650 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daelim Paper」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017650 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daelim Paper」 @390",
+   "ex": null,
+   "at": [
+    "#/w/017650 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Unison」 @320",
+   "ex": null,
+   "at": [
+    "#/w/018000 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Unison」 @360",
+   "ex": null,
+   "at": [
+    "#/w/018000 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Unison」 @390",
+   "ex": null,
+   "at": [
+    "#/w/018000 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SK Gas」 @320",
+   "ex": null,
+   "at": [
+    "#/w/018670 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SK Gas」 @360",
+   "ex": null,
+   "at": [
+    "#/w/018670 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SK Gas」 @390",
+   "ex": null,
+   "at": [
+    "#/w/018670 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ilji Technology」 @320",
+   "ex": null,
+   "at": [
+    "#/w/019540 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ilji Technology」 @360",
+   "ex": null,
+   "at": [
+    "#/w/019540 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ilji Technology」 @390",
+   "ex": null,
+   "at": [
+    "#/w/019540 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lotte Energy Materials」 @320",
+   "ex": null,
+   "at": [
+    "#/w/020150 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lotte Energy Materials」 @360",
+   "ex": null,
+   "at": [
+    "#/w/020150 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lotte Energy Materials」 @390",
+   "ex": null,
+   "at": [
+    "#/w/020150 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「COWAY」 @320",
+   "ex": null,
+   "at": [
+    "#/w/021240 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「COWAY」 @360",
+   "ex": null,
+   "at": [
+    "#/w/021240 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「COWAY」 @390",
+   "ex": null,
+   "at": [
+    "#/w/021240 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SAMWONSTEEL」 @320",
+   "ex": null,
+   "at": [
+    "#/w/023000 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SAMWONSTEEL」 @360",
+   "ex": null,
+   "at": [
+    "#/w/023000 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SAMWONSTEEL」 @390",
+   "ex": null,
+   "at": [
+    "#/w/023000 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sambo Corrugated Board」 @320",
+   "ex": null,
+   "at": [
+    "#/w/023600 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sambo Corrugated Board」 @360",
+   "ex": null,
+   "at": [
+    "#/w/023600 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sambo Corrugated Board」 @390",
+   "ex": null,
+   "at": [
+    "#/w/023600 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hung -Gu Oil」 @320",
+   "ex": null,
+   "at": [
+    "#/w/024060 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hung -Gu Oil」 @360",
+   "ex": null,
+   "at": [
+    "#/w/024060 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hung -Gu Oil」 @390",
+   "ex": null,
+   "at": [
+    "#/w/024060 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kbi Metal」 @320",
+   "ex": null,
+   "at": [
+    "#/w/024840 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kbi Metal」 @360",
+   "ex": null,
+   "at": [
+    "#/w/024840 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kbi Metal」 @390",
+   "ex": null,
+   "at": [
+    "#/w/024840 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Synopex」 @320",
+   "ex": null,
+   "at": [
+    "#/w/025320 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Synopex」 @360",
+   "ex": null,
+   "at": [
+    "#/w/025320 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Synopex」 @390",
+   "ex": null,
+   "at": [
+    "#/w/025320 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lee Ku Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/025820 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lee Ku Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/025820 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Lee Ku Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/025820 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tuksu Engineering & Construc」 @320",
+   "ex": null,
+   "at": [
+    "#/w/026150 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tuksu Engineering & Construc」 @360",
+   "ex": null,
+   "at": [
+    "#/w/026150 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tuksu Engineering & Construc」 @390",
+   "ex": null,
+   "at": [
+    "#/w/026150 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SANGBO」 @320",
+   "ex": null,
+   "at": [
+    "#/w/027580 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SANGBO」 @360",
+   "ex": null,
+   "at": [
+    "#/w/027580 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SANGBO」 @390",
+   "ex": null,
+   "at": [
+    "#/w/027580 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung C&T」 @320",
+   "ex": null,
+   "at": [
+    "#/w/028260 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung C&T」 @360",
+   "ex": null,
+   "at": [
+    "#/w/028260 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung C&T」 @390",
+   "ex": null,
+   "at": [
+    "#/w/028260 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KT」 @320",
+   "ex": null,
+   "at": [
+    "#/w/030200 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KT」 @360",
+   "ex": null,
+   "at": [
+    "#/w/030200 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KT」 @390",
+   "ex": null,
+   "at": [
+    "#/w/030200 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Eyesvision」 @320",
+   "ex": null,
+   "at": [
+    "#/w/031310 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Eyesvision」 @360",
+   "ex": null,
+   "at": [
+    "#/w/031310 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Eyesvision」 @390",
+   "ex": null,
+   "at": [
+    "#/w/031310 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samil」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032280 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samil」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032280 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samil」 @390",
+   "ex": null,
+   "at": [
+    "#/w/032280 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Softcen」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032680 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Softcen」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032680 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Softcen」 @390",
+   "ex": null,
+   "at": [
+    "#/w/032680 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongil Technology」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032960 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongil Technology」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032960 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongil Technology」 @390",
+   "ex": null,
+   "at": [
+    "#/w/032960 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CHASYS」 @320",
+   "ex": null,
+   "at": [
+    "#/w/033250 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CHASYS」 @360",
+   "ex": null,
+   "at": [
+    "#/w/033250 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CHASYS」 @390",
+   "ex": null,
+   "at": [
+    "#/w/033250 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bluecom」 @320",
+   "ex": null,
+   "at": [
+    "#/w/033560 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bluecom」 @360",
+   "ex": null,
+   "at": [
+    "#/w/033560 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bluecom」 @390",
+   "ex": null,
+   "at": [
+    "#/w/033560 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Paradise」 @320",
+   "ex": null,
+   "at": [
+    "#/w/034230 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Paradise」 @360",
+   "ex": null,
+   "at": [
+    "#/w/034230 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Paradise」 @390",
+   "ex": null,
+   "at": [
+    "#/w/034230 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Gradiant」 @320",
+   "ex": null,
+   "at": [
+    "#/w/035080 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Gradiant」 @360",
+   "ex": null,
+   "at": [
+    "#/w/035080 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Gradiant」 @390",
+   "ex": null,
+   "at": [
+    "#/w/035080 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Solborn」 @320",
+   "ex": null,
+   "at": [
+    "#/w/035610 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Solborn」 @360",
+   "ex": null,
+   "at": [
+    "#/w/035610 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Solborn」 @390",
+   "ex": null,
+   "at": [
+    "#/w/035610 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「kt alpha」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036030 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「kt alpha」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036030 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「kt alpha」 @390",
+   "ex": null,
+   "at": [
+    "#/w/036030 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daesung Microbiological Labs」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036480 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daesung Microbiological Labs」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036480 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daesung Microbiological Labs」 @390",
+   "ex": null,
+   "at": [
+    "#/w/036480 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samyang KCI」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036670 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samyang KCI」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036670 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samyang KCI」 @390",
+   "ex": null,
+   "at": [
+    "#/w/036670 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Paseco」 @320",
+   "ex": null,
+   "at": [
+    "#/w/037070 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Paseco」 @360",
+   "ex": null,
+   "at": [
+    "#/w/037070 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Paseco」 @390",
+   "ex": null,
+   "at": [
+    "#/w/037070 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LG HelloVision」 @320",
+   "ex": null,
+   "at": [
+    "#/w/037560 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LG HelloVision」 @360",
+   "ex": null,
+   "at": [
+    "#/w/037560 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LG HelloVision」 @390",
+   "ex": null,
+   "at": [
+    "#/w/037560 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「RedcapTour」 @320",
+   "ex": null,
+   "at": [
+    "#/w/038390 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「RedcapTour」 @360",
+   "ex": null,
+   "at": [
+    "#/w/038390 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「RedcapTour」 @390",
+   "ex": null,
+   "at": [
+    "#/w/038390 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FINEDIGITAL」 @320",
+   "ex": null,
+   "at": [
+    "#/w/038950 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FINEDIGITAL」 @360",
+   "ex": null,
+   "at": [
+    "#/w/038950 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FINEDIGITAL」 @390",
+   "ex": null,
+   "at": [
+    "#/w/038950 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Business News」 @320",
+   "ex": null,
+   "at": [
+    "#/w/039340 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Business News」 @360",
+   "ex": null,
+   "at": [
+    "#/w/039340 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Business News」 @390",
+   "ex": null,
+   "at": [
+    "#/w/039340 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Aurora World」 @320",
+   "ex": null,
+   "at": [
+    "#/w/039830 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Aurora World」 @360",
+   "ex": null,
+   "at": [
+    "#/w/039830 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Aurora World」 @390",
+   "ex": null,
+   "at": [
+    "#/w/039830 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ICD」 @320",
+   "ex": null,
+   "at": [
+    "#/w/040910 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ICD」 @360",
+   "ex": null,
+   "at": [
+    "#/w/040910 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ICD」 @390",
+   "ex": null,
+   "at": [
+    "#/w/040910 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「InBody」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041830 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「InBody」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041830 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「InBody」 @390",
+   "ex": null,
+   "at": [
+    "#/w/041830 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEOWIZ HOLDINGS」 @320",
+   "ex": null,
+   "at": [
+    "#/w/042420 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEOWIZ HOLDINGS」 @360",
+   "ex": null,
+   "at": [
+    "#/w/042420 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEOWIZ HOLDINGS」 @390",
+   "ex": null,
+   "at": [
+    "#/w/042420 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Value Added Technology」 @320",
+   "ex": null,
+   "at": [
+    "#/w/043150 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Value Added Technology」 @360",
+   "ex": null,
+   "at": [
+    "#/w/043150 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Value Added Technology」 @390",
+   "ex": null,
+   "at": [
+    "#/w/043150 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kook Soon Dang」 @320",
+   "ex": null,
+   "at": [
+    "#/w/043650 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kook Soon Dang」 @360",
+   "ex": null,
+   "at": [
+    "#/w/043650 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kook Soon Dang」 @390",
+   "ex": null,
+   "at": [
+    "#/w/043650 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taewoong」 @320",
+   "ex": null,
+   "at": [
+    "#/w/044490 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taewoong」 @360",
+   "ex": null,
+   "at": [
+    "#/w/044490 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Taewoong」 @390",
+   "ex": null,
+   "at": [
+    "#/w/044490 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DAEA TI」 @320",
+   "ex": null,
+   "at": [
+    "#/w/045390 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DAEA TI」 @360",
+   "ex": null,
+   "at": [
+    "#/w/045390 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DAEA TI」 @390",
+   "ex": null,
+   "at": [
+    "#/w/045390 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Financial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/046440 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Financial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/046440 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Financial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/046440 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ESTsoft」 @320",
+   "ex": null,
+   "at": [
+    "#/w/047560 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ESTsoft」 @360",
+   "ex": null,
+   "at": [
+    "#/w/047560 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ESTsoft」 @390",
+   "ex": null,
+   "at": [
+    "#/w/047560 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SM C&C」 @320",
+   "ex": null,
+   "at": [
+    "#/w/048550 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SM C&C」 @360",
+   "ex": null,
+   "at": [
+    "#/w/048550 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SM C&C」 @390",
+   "ex": null,
+   "at": [
+    "#/w/048550 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Komelon」 @320",
+   "ex": null,
+   "at": [
+    "#/w/049430 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Komelon」 @360",
+   "ex": null,
+   "at": [
+    "#/w/049430 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Komelon」 @390",
+   "ex": null,
+   "at": [
+    "#/w/049430 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「meerecompany」 @320",
+   "ex": null,
+   "at": [
+    "#/w/049950 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「meerecompany」 @360",
+   "ex": null,
+   "at": [
+    "#/w/049950 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「meerecompany」 @390",
+   "ex": null,
+   "at": [
+    "#/w/049950 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GaeaSoft」 @320",
+   "ex": null,
+   "at": [
+    "#/w/051160 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GaeaSoft」 @360",
+   "ex": null,
+   "at": [
+    "#/w/051160 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GaeaSoft」 @390",
+   "ex": null,
+   "at": [
+    "#/w/051160 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CUROHOLDINGS」 @320",
+   "ex": null,
+   "at": [
+    "#/w/051780 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CUROHOLDINGS」 @360",
+   "ex": null,
+   "at": [
+    "#/w/051780 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CUROHOLDINGS」 @390",
+   "ex": null,
+   "at": [
+    "#/w/051780 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kona I」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052400 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kona I」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052400 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kona I」 @390",
+   "ex": null,
+   "at": [
+    "#/w/052400 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kx Hitech」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052900 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kx Hitech」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052900 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kx Hitech」 @390",
+   "ex": null,
+   "at": [
+    "#/w/052900 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YES24」 @320",
+   "ex": null,
+   "at": [
+    "#/w/053280 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YES24」 @360",
+   "ex": null,
+   "at": [
+    "#/w/053280 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YES24」 @390",
+   "ex": null,
+   "at": [
+    "#/w/053280 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sambo Motors」 @320",
+   "ex": null,
+   "at": [
+    "#/w/053700 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sambo Motors」 @360",
+   "ex": null,
+   "at": [
+    "#/w/053700 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sambo Motors」 @390",
+   "ex": null,
+   "at": [
+    "#/w/053700 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Elentec」 @320",
+   "ex": null,
+   "at": [
+    "#/w/054210 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Elentec」 @360",
+   "ex": null,
+   "at": [
+    "#/w/054210 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Elentec」 @390",
+   "ex": null,
+   "at": [
+    "#/w/054210 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「IDIS」 @320",
+   "ex": null,
+   "at": [
+    "#/w/054800 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「IDIS」 @360",
+   "ex": null,
+   "at": [
+    "#/w/054800 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「IDIS」 @390",
+   "ex": null,
+   "at": [
+    "#/w/054800 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SFA」 @320",
+   "ex": null,
+   "at": [
+    "#/w/056190 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SFA」 @360",
+   "ex": null,
+   "at": [
+    "#/w/056190 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SFA」 @390",
+   "ex": null,
+   "at": [
+    "#/w/056190 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「POSCO STEELEON」 @320",
+   "ex": null,
+   "at": [
+    "#/w/058430 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「POSCO STEELEON」 @360",
+   "ex": null,
+   "at": [
+    "#/w/058430 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「POSCO STEELEON」 @390",
+   "ex": null,
+   "at": [
+    "#/w/058430 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KTis」 @320",
+   "ex": null,
+   "at": [
+    "#/w/058860 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KTis」 @360",
+   "ex": null,
+   "at": [
+    "#/w/058860 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KTis」 @390",
+   "ex": null,
+   "at": [
+    "#/w/058860 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NHN KCP」 @320",
+   "ex": null,
+   "at": [
+    "#/w/060250 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NHN KCP」 @360",
+   "ex": null,
+   "at": [
+    "#/w/060250 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NHN KCP」 @390",
+   "ex": null,
+   "at": [
+    "#/w/060250 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dreamus Company」 @320",
+   "ex": null,
+   "at": [
+    "#/w/060570 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dreamus Company」 @360",
+   "ex": null,
+   "at": [
+    "#/w/060570 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dreamus Company」 @390",
+   "ex": null,
+   "at": [
+    "#/w/060570 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LB Semicon」 @320",
+   "ex": null,
+   "at": [
+    "#/w/061970 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LB Semicon」 @360",
+   "ex": null,
+   "at": [
+    "#/w/061970 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LB Semicon」 @390",
+   "ex": null,
+   "at": [
+    "#/w/061970 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「InkredibleBuzz」 @320",
+   "ex": null,
+   "at": [
+    "#/w/064090 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「InkredibleBuzz」 @360",
+   "ex": null,
+   "at": [
+    "#/w/064090 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「InkredibleBuzz」 @390",
+   "ex": null,
+   "at": [
+    "#/w/064090 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tokai Carbon Korea」 @320",
+   "ex": null,
+   "at": [
+    "#/w/064760 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tokai Carbon Korea」 @360",
+   "ex": null,
+   "at": [
+    "#/w/064760 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Tokai Carbon Korea」 @390",
+   "ex": null,
+   "at": [
+    "#/w/064760 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Shinsung Delta Tech」 @320",
+   "ex": null,
+   "at": [
+    "#/w/065350 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Shinsung Delta Tech」 @360",
+   "ex": null,
+   "at": [
+    "#/w/065350 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Shinsung Delta Tech」 @390",
+   "ex": null,
+   "at": [
+    "#/w/065350 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hyper」 @320",
+   "ex": null,
+   "at": [
+    "#/w/065650 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hyper」 @360",
+   "ex": null,
+   "at": [
+    "#/w/065650 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hyper」 @390",
+   "ex": null,
+   "at": [
+    "#/w/065650 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Cherrybro」 @320",
+   "ex": null,
+   "at": [
+    "#/w/066360 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Cherrybro」 @360",
+   "ex": null,
+   "at": [
+    "#/w/066360 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Cherrybro」 @390",
+   "ex": null,
+   "at": [
+    "#/w/066360 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DAP」 @320",
+   "ex": null,
+   "at": [
+    "#/w/066900 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DAP」 @360",
+   "ex": null,
+   "at": [
+    "#/w/066900 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DAP」 @390",
+   "ex": null,
+   "at": [
+    "#/w/066900 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Multicampus」 @320",
+   "ex": null,
+   "at": [
+    "#/w/067280 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Multicampus」 @360",
+   "ex": null,
+   "at": [
+    "#/w/067280 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Multicampus」 @390",
+   "ex": null,
+   "at": [
+    "#/w/067280 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Savezone I&C」 @320",
+   "ex": null,
+   "at": [
+    "#/w/067830 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Savezone I&C」 @360",
+   "ex": null,
+   "at": [
+    "#/w/067830 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Savezone I&C」 @390",
+   "ex": null,
+   "at": [
+    "#/w/067830 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ilShinbiobase」 @320",
+   "ex": null,
+   "at": [
+    "#/w/068330 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ilShinbiobase」 @360",
+   "ex": null,
+   "at": [
+    "#/w/068330 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ilShinbiobase」 @390",
+   "ex": null,
+   "at": [
+    "#/w/068330 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「nTels」 @320",
+   "ex": null,
+   "at": [
+    "#/w/069410 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「nTels」 @360",
+   "ex": null,
+   "at": [
+    "#/w/069410 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「nTels」 @390",
+   "ex": null,
+   "at": [
+    "#/w/069410 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「QuantumRail」 @320",
+   "ex": null,
+   "at": [
+    "#/w/070300 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「QuantumRail」 @360",
+   "ex": null,
+   "at": [
+    "#/w/070300 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「QuantumRail」 @390",
+   "ex": null,
+   "at": [
+    "#/w/070300 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「A-Tech Solution」 @320",
+   "ex": null,
+   "at": [
+    "#/w/071670 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「A-Tech Solution」 @360",
+   "ex": null,
+   "at": [
+    "#/w/071670 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「A-Tech Solution」 @390",
+   "ex": null,
+   "at": [
+    "#/w/071670 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「MemRAY BT」 @320",
+   "ex": null,
+   "at": [
+    "#/w/072770 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「MemRAY BT」 @360",
+   "ex": null,
+   "at": [
+    "#/w/072770 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「MemRAY BT」 @390",
+   "ex": null,
+   "at": [
+    "#/w/072770 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Frtek」 @320",
+   "ex": null,
+   "at": [
+    "#/w/073540 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Frtek」 @360",
+   "ex": null,
+   "at": [
+    "#/w/073540 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Frtek」 @390",
+   "ex": null,
+   "at": [
+    "#/w/073540 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sejin Heavy Industries」 @320",
+   "ex": null,
+   "at": [
+    "#/w/075580 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sejin Heavy Industries」 @360",
+   "ex": null,
+   "at": [
+    "#/w/075580 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sejin Heavy Industries」 @390",
+   "ex": null,
+   "at": [
+    "#/w/075580 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ubiquoss Holdings」 @320",
+   "ex": null,
+   "at": [
+    "#/w/078070 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ubiquoss Holdings」 @360",
+   "ex": null,
+   "at": [
+    "#/w/078070 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Ubiquoss Holdings」 @390",
+   "ex": null,
+   "at": [
+    "#/w/078070 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daejoo Electronic Materials」 @320",
+   "ex": null,
+   "at": [
+    "#/w/078600 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daejoo Electronic Materials」 @360",
+   "ex": null,
+   "at": [
+    "#/w/078600 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Daejoo Electronic Materials」 @390",
+   "ex": null,
+   "at": [
+    "#/w/078600 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hyundai Livart Furniture Com」 @320",
+   "ex": null,
+   "at": [
+    "#/w/079430 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hyundai Livart Furniture Com」 @360",
+   "ex": null,
+   "at": [
+    "#/w/079430 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hyundai Livart Furniture Com」 @390",
+   "ex": null,
+   "at": [
+    "#/w/079430 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Huvis」 @320",
+   "ex": null,
+   "at": [
+    "#/w/079980 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Huvis」 @360",
+   "ex": null,
+   "at": [
+    "#/w/079980 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Huvis」 @390",
+   "ex": null,
+   "at": [
+    "#/w/079980 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Union Korea Pharm」 @320",
+   "ex": null,
+   "at": [
+    "#/w/080720 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Union Korea Pharm」 @360",
+   "ex": null,
+   "at": [
+    "#/w/080720 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Union Korea Pharm」 @390",
+   "ex": null,
+   "at": [
+    "#/w/080720 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Vivozon Pharmaceutical」 @320",
+   "ex": null,
+   "at": [
+    "#/w/082800 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Vivozon Pharmaceutical」 @360",
+   "ex": null,
+   "at": [
+    "#/w/082800 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Vivozon Pharmaceutical」 @390",
+   "ex": null,
+   "at": [
+    "#/w/082800 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INCON」 @320",
+   "ex": null,
+   "at": [
+    "#/w/083640 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INCON」 @360",
+   "ex": null,
+   "at": [
+    "#/w/083640 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INCON」 @390",
+   "ex": null,
+   "at": [
+    "#/w/083640 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LabGenomics」 @320",
+   "ex": null,
+   "at": [
+    "#/w/084650 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LabGenomics」 @360",
+   "ex": null,
+   "at": [
+    "#/w/084650 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LabGenomics」 @390",
+   "ex": null,
+   "at": [
+    "#/w/084650 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「MIRAE ASSET Life Insurance」 @320",
+   "ex": null,
+   "at": [
+    "#/w/085620 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「MIRAE ASSET Life Insurance」 @360",
+   "ex": null,
+   "at": [
+    "#/w/085620 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「MIRAE ASSET Life Insurance」 @390",
+   "ex": null,
+   "at": [
+    "#/w/085620 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DongKook Pharmaceutical」 @320",
+   "ex": null,
+   "at": [
+    "#/w/086450 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DongKook Pharmaceutical」 @360",
+   "ex": null,
+   "at": [
+    "#/w/086450 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DongKook Pharmaceutical」 @390",
+   "ex": null,
+   "at": [
+    "#/w/086450 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Showbox」 @320",
+   "ex": null,
+   "at": [
+    "#/w/086980 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Showbox」 @360",
+   "ex": null,
+   "at": [
+    "#/w/086980 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Showbox」 @390",
+   "ex": null,
+   "at": [
+    "#/w/086980 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanwha Life Insurance」 @320",
+   "ex": null,
+   "at": [
+    "#/w/088350 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanwha Life Insurance」 @360",
+   "ex": null,
+   "at": [
+    "#/w/088350 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanwha Life Insurance」 @390",
+   "ex": null,
+   "at": [
+    "#/w/088350 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Computer Terminal」 @320",
+   "ex": null,
+   "at": [
+    "#/w/089150 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Computer Terminal」 @360",
+   "ex": null,
+   "at": [
+    "#/w/089150 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Korea Computer Terminal」 @390",
+   "ex": null,
+   "at": [
+    "#/w/089150 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「VM」 @320",
+   "ex": null,
+   "at": [
+    "#/w/089970 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「VM」 @360",
+   "ex": null,
+   "at": [
+    "#/w/089970 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「VM」 @390",
+   "ex": null,
+   "at": [
+    "#/w/089970 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Amorepacific」 @320",
+   "ex": null,
+   "at": [
+    "#/w/090430 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Amorepacific」 @360",
+   "ex": null,
+   "at": [
+    "#/w/090430 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Amorepacific」 @390",
+   "ex": null,
+   "at": [
+    "#/w/090430 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Nam Hwa Construction」 @320",
+   "ex": null,
+   "at": [
+    "#/w/091590 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Nam Hwa Construction」 @360",
+   "ex": null,
+   "at": [
+    "#/w/091590 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Nam Hwa Construction」 @390",
+   "ex": null,
+   "at": [
+    "#/w/091590 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Exicon」 @320",
+   "ex": null,
+   "at": [
+    "#/w/092870 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Exicon」 @360",
+   "ex": null,
+   "at": [
+    "#/w/092870 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Exicon」 @390",
+   "ex": null,
+   "at": [
+    "#/w/092870 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SEOWONINTECH」 @320",
+   "ex": null,
+   "at": [
+    "#/w/093920 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SEOWONINTECH」 @360",
+   "ex": null,
+   "at": [
+    "#/w/093920 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SEOWONINTECH」 @390",
+   "ex": null,
+   "at": [
+    "#/w/093920 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEORIGIN」 @320",
+   "ex": null,
+   "at": [
+    "#/w/094860 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEORIGIN」 @360",
+   "ex": null,
+   "at": [
+    "#/w/094860 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEORIGIN」 @390",
+   "ex": null,
+   "at": [
+    "#/w/094860 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEOWIZ」 @320",
+   "ex": null,
+   "at": [
+    "#/w/095660 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEOWIZ」 @360",
+   "ex": null,
+   "at": [
+    "#/w/095660 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEOWIZ」 @390",
+   "ex": null,
+   "at": [
+    "#/w/095660 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Aroot」 @320",
+   "ex": null,
+   "at": [
+    "#/w/096690 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Aroot」 @360",
+   "ex": null,
+   "at": [
+    "#/w/096690 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Aroot」 @390",
+   "ex": null,
+   "at": [
+    "#/w/096690 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CJ Cheiljedang」 @320",
+   "ex": null,
+   "at": [
+    "#/w/097950 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CJ Cheiljedang」 @360",
+   "ex": null,
+   "at": [
+    "#/w/097950 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CJ Cheiljedang」 @390",
+   "ex": null,
+   "at": [
+    "#/w/097950 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongbang Ship Machinery」 @320",
+   "ex": null,
+   "at": [
+    "#/w/099410 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongbang Ship Machinery」 @360",
+   "ex": null,
+   "at": [
+    "#/w/099410 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dongbang Ship Machinery」 @390",
+   "ex": null,
+   "at": [
+    "#/w/099410 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Visang Education」 @320",
+   "ex": null,
+   "at": [
+    "#/w/100220 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Visang Education」 @360",
+   "ex": null,
+   "at": [
+    "#/w/100220 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Visang Education」 @390",
+   "ex": null,
+   "at": [
+    "#/w/100220 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Worldex Industry & Trading」 @320",
+   "ex": null,
+   "at": [
+    "#/w/101160 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Worldex Industry & Trading」 @360",
+   "ex": null,
+   "at": [
+    "#/w/101160 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Worldex Industry & Trading」 @390",
+   "ex": null,
+   "at": [
+    "#/w/101160 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HNK Machine Tool」 @320",
+   "ex": null,
+   "at": [
+    "#/w/101680 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HNK Machine Tool」 @360",
+   "ex": null,
+   "at": [
+    "#/w/101680 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HNK Machine Tool」 @390",
+   "ex": null,
+   "at": [
+    "#/w/101680 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolon Life Science」 @320",
+   "ex": null,
+   "at": [
+    "#/w/102940 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolon Life Science」 @360",
+   "ex": null,
+   "at": [
+    "#/w/102940 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolon Life Science」 @390",
+   "ex": null,
+   "at": [
+    "#/w/102940 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Corentec」 @320",
+   "ex": null,
+   "at": [
+    "#/w/104540 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Corentec」 @360",
+   "ex": null,
+   "at": [
+    "#/w/104540 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Corentec」 @390",
+   "ex": null,
+   "at": [
+    "#/w/104540 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Posbank」 @320",
+   "ex": null,
+   "at": [
+    "#/w/105760 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Posbank」 @360",
+   "ex": null,
+   "at": [
+    "#/w/105760 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Posbank」 @390",
+   "ex": null,
+   "at": [
+    "#/w/105760 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LX Semicon」 @320",
+   "ex": null,
+   "at": [
+    "#/w/108320 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LX Semicon」 @360",
+   "ex": null,
+   "at": [
+    "#/w/108320 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LX Semicon」 @390",
+   "ex": null,
+   "at": [
+    "#/w/108320 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DSK」 @320",
+   "ex": null,
+   "at": [
+    "#/w/109740 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DSK」 @360",
+   "ex": null,
+   "at": [
+    "#/w/109740 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DSK」 @390",
+   "ex": null,
+   "at": [
+    "#/w/109740 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Namhwa Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/111710 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Namhwa Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/111710 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Namhwa Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/111710 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Green Lifescience」 @320",
+   "ex": null,
+   "at": [
+    "#/w/114450 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Green Lifescience」 @360",
+   "ex": null,
+   "at": [
+    "#/w/114450 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Green Lifescience」 @390",
+   "ex": null,
+   "at": [
+    "#/w/114450 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CU Medical Systems」 @320",
+   "ex": null,
+   "at": [
+    "#/w/115480 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CU Medical Systems」 @360",
+   "ex": null,
+   "at": [
+    "#/w/115480 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CU Medical Systems」 @390",
+   "ex": null,
+   "at": [
+    "#/w/115480 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Motrex」 @320",
+   "ex": null,
+   "at": [
+    "#/w/118990 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Motrex」 @360",
+   "ex": null,
+   "at": [
+    "#/w/118990 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Motrex」 @390",
+   "ex": null,
+   "at": [
+    "#/w/118990 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GOLFZON」 @320",
+   "ex": null,
+   "at": [
+    "#/w/121440 @320",
+    "#/w/215000 @320"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GOLFZON」 @360",
+   "ex": null,
+   "at": [
+    "#/w/121440 @360",
+    "#/w/215000 @360"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GOLFZON」 @390",
+   "ex": null,
+   "at": [
+    "#/w/121440 @390",
+    "#/w/215000 @390"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YG Entertainment」 @320",
+   "ex": null,
+   "at": [
+    "#/w/122870 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YG Entertainment」 @360",
+   "ex": null,
+   "at": [
+    "#/w/122870 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YG Entertainment」 @390",
+   "ex": null,
+   "at": [
+    "#/w/122870 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hankook Cosmetics」 @320",
+   "ex": null,
+   "at": [
+    "#/w/123690 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hankook Cosmetics」 @360",
+   "ex": null,
+   "at": [
+    "#/w/123690 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hankook Cosmetics」 @390",
+   "ex": null,
+   "at": [
+    "#/w/123690 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Amogreentech」 @320",
+   "ex": null,
+   "at": [
+    "#/w/125210 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Amogreentech」 @360",
+   "ex": null,
+   "at": [
+    "#/w/125210 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Amogreentech」 @390",
+   "ex": null,
+   "at": [
+    "#/w/125210 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「JNK Global」 @320",
+   "ex": null,
+   "at": [
+    "#/w/126880 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「JNK Global」 @360",
+   "ex": null,
+   "at": [
+    "#/w/126880 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「JNK Global」 @390",
+   "ex": null,
+   "at": [
+    "#/w/126880 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Abko」 @320",
+   "ex": null,
+   "at": [
+    "#/w/129890 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Abko」 @360",
+   "ex": null,
+   "at": [
+    "#/w/129890 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Abko」 @390",
+   "ex": null,
+   "at": [
+    "#/w/129890 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dilli Illustrate」 @320",
+   "ex": null,
+   "at": [
+    "#/w/131180 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dilli Illustrate」 @360",
+   "ex": null,
+   "at": [
+    "#/w/131180 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dilli Illustrate」 @390",
+   "ex": null,
+   "at": [
+    "#/w/131180 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「e-future」 @320",
+   "ex": null,
+   "at": [
+    "#/w/134060 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「e-future」 @360",
+   "ex": null,
+   "at": [
+    "#/w/134060 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「e-future」 @390",
+   "ex": null,
+   "at": [
+    "#/w/134060 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Narae Nanotech」 @320",
+   "ex": null,
+   "at": [
+    "#/w/137080 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Narae Nanotech」 @360",
+   "ex": null,
+   "at": [
+    "#/w/137080 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Narae Nanotech」 @390",
+   "ex": null,
+   "at": [
+    "#/w/137080 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NIBEC」 @320",
+   "ex": null,
+   "at": [
+    "#/w/138610 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NIBEC」 @360",
+   "ex": null,
+   "at": [
+    "#/w/138610 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NIBEC」 @390",
+   "ex": null,
+   "at": [
+    "#/w/138610 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DaeChang Steel」 @320",
+   "ex": null,
+   "at": [
+    "#/w/140520 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DaeChang Steel」 @360",
+   "ex": null,
+   "at": [
+    "#/w/140520 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DaeChang Steel」 @390",
+   "ex": null,
+   "at": [
+    "#/w/140520 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hands」 @320",
+   "ex": null,
+   "at": [
+    "#/w/143210 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hands」 @360",
+   "ex": null,
+   "at": [
+    "#/w/143210 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hands」 @390",
+   "ex": null,
+   "at": [
+    "#/w/143210 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samyang」 @320",
+   "ex": null,
+   "at": [
+    "#/w/145990 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samyang」 @360",
+   "ex": null,
+   "at": [
+    "#/w/145990 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samyang」 @390",
+   "ex": null,
+   "at": [
+    "#/w/145990 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Avatec」 @320",
+   "ex": null,
+   "at": [
+    "#/w/149950 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Avatec」 @360",
+   "ex": null,
+   "at": [
+    "#/w/149950 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Avatec」 @390",
+   "ex": null,
+   "at": [
+    "#/w/149950 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dasan Solueta」 @320",
+   "ex": null,
+   "at": [
+    "#/w/154040 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dasan Solueta」 @360",
+   "ex": null,
+   "at": [
+    "#/w/154040 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dasan Solueta」 @390",
+   "ex": null,
+   "at": [
+    "#/w/154040 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEW」 @320",
+   "ex": null,
+   "at": [
+    "#/w/160550 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEW」 @360",
+   "ex": null,
+   "at": [
+    "#/w/160550 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEW」 @390",
+   "ex": null,
+   "at": [
+    "#/w/160550 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DRB Industrial」 @320",
+   "ex": null,
+   "at": [
+    "#/w/163560 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DRB Industrial」 @360",
+   "ex": null,
+   "at": [
+    "#/w/163560 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DRB Industrial」 @390",
+   "ex": null,
+   "at": [
+    "#/w/163560 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dong-A ST」 @320",
+   "ex": null,
+   "at": [
+    "#/w/170900 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dong-A ST」 @360",
+   "ex": null,
+   "at": [
+    "#/w/170900 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dong-A ST」 @390",
+   "ex": null,
+   "at": [
+    "#/w/170900 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「AGOS」 @320",
+   "ex": null,
+   "at": [
+    "#/w/175140 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「AGOS」 @360",
+   "ex": null,
+   "at": [
+    "#/w/175140 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「AGOS」 @390",
+   "ex": null,
+   "at": [
+    "#/w/175140 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PI Advanced Materials」 @320",
+   "ex": null,
+   "at": [
+    "#/w/178920 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PI Advanced Materials」 @360",
+   "ex": null,
+   "at": [
+    "#/w/178920 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PI Advanced Materials」 @390",
+   "ex": null,
+   "at": [
+    "#/w/178920 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Asia Cement」 @320",
+   "ex": null,
+   "at": [
+    "#/w/183190 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Asia Cement」 @360",
+   "ex": null,
+   "at": [
+    "#/w/183190 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Asia Cement」 @390",
+   "ex": null,
+   "at": [
+    "#/w/183190 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HLB Genex」 @320",
+   "ex": null,
+   "at": [
+    "#/w/187420 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HLB Genex」 @360",
+   "ex": null,
+   "at": [
+    "#/w/187420 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「HLB Genex」 @390",
+   "ex": null,
+   "at": [
+    "#/w/187420 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SEOJEON ELECTRIC MACHINERY」 @320",
+   "ex": null,
+   "at": [
+    "#/w/189860 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SEOJEON ELECTRIC MACHINERY」 @360",
+   "ex": null,
+   "at": [
+    "#/w/189860 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「SEOJEON ELECTRIC MACHINERY」 @390",
+   "ex": null,
+   "at": [
+    "#/w/189860 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Cuckoo」 @320",
+   "ex": null,
+   "at": [
+    "#/w/192400 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Cuckoo」 @360",
+   "ex": null,
+   "at": [
+    "#/w/192400 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Cuckoo」 @390",
+   "ex": null,
+   "at": [
+    "#/w/192400 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Maniker F&G」 @320",
+   "ex": null,
+   "at": [
+    "#/w/195500 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Maniker F&G」 @360",
+   "ex": null,
+   "at": [
+    "#/w/195500 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Maniker F&G」 @390",
+   "ex": null,
+   "at": [
+    "#/w/195500 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CAP」 @320",
+   "ex": null,
+   "at": [
+    "#/w/198080 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CAP」 @360",
+   "ex": null,
+   "at": [
+    "#/w/198080 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CAP」 @390",
+   "ex": null,
+   "at": [
+    "#/w/198080 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolmar BNH」 @320",
+   "ex": null,
+   "at": [
+    "#/w/200130 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolmar BNH」 @360",
+   "ex": null,
+   "at": [
+    "#/w/200130 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kolmar BNH」 @390",
+   "ex": null,
+   "at": [
+    "#/w/200130 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ABION」 @320",
+   "ex": null,
+   "at": [
+    "#/w/203400 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ABION」 @360",
+   "ex": null,
+   "at": [
+    "#/w/203400 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ABION」 @390",
+   "ex": null,
+   "at": [
+    "#/w/203400 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GL Pharm Tech」 @320",
+   "ex": null,
+   "at": [
+    "#/w/204840 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GL Pharm Tech」 @360",
+   "ex": null,
+   "at": [
+    "#/w/204840 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GL Pharm Tech」 @390",
+   "ex": null,
+   "at": [
+    "#/w/204840 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Biologics」 @320",
+   "ex": null,
+   "at": [
+    "#/w/207940 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Biologics」 @360",
+   "ex": null,
+   "at": [
+    "#/w/207940 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Samsung Biologics」 @390",
+   "ex": null,
+   "at": [
+    "#/w/207940 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DY Power」 @320",
+   "ex": null,
+   "at": [
+    "#/w/210540 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DY Power」 @360",
+   "ex": null,
+   "at": [
+    "#/w/210540 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DY Power」 @390",
+   "ex": null,
+   "at": [
+    "#/w/210540 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hecto Innovation」 @320",
+   "ex": null,
+   "at": [
+    "#/w/214180 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hecto Innovation」 @360",
+   "ex": null,
+   "at": [
+    "#/w/214180 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hecto Innovation」 @390",
+   "ex": null,
+   "at": [
+    "#/w/214180 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PharmaResearch」 @320",
+   "ex": null,
+   "at": [
+    "#/w/214450 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PharmaResearch」 @360",
+   "ex": null,
+   "at": [
+    "#/w/214450 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PharmaResearch」 @390",
+   "ex": null,
+   "at": [
+    "#/w/214450 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「TOEBOX KOREA」 @320",
+   "ex": null,
+   "at": [
+    "#/w/215480 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「TOEBOX KOREA」 @360",
+   "ex": null,
+   "at": [
+    "#/w/215480 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「TOEBOX KOREA」 @390",
+   "ex": null,
+   "at": [
+    "#/w/215480 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Russell」 @320",
+   "ex": null,
+   "at": [
+    "#/w/217500 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Russell」 @360",
+   "ex": null,
+   "at": [
+    "#/w/217500 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Russell」 @390",
+   "ex": null,
+   "at": [
+    "#/w/217500 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DYD」 @320",
+   "ex": null,
+   "at": [
+    "#/w/219550 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DYD」 @360",
+   "ex": null,
+   "at": [
+    "#/w/219550 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DYD」 @390",
+   "ex": null,
+   "at": [
+    "#/w/219550 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Creative & Innovative System」 @320",
+   "ex": null,
+   "at": [
+    "#/w/222080 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Creative & Innovative System」 @360",
+   "ex": null,
+   "at": [
+    "#/w/222080 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Creative & Innovative System」 @390",
+   "ex": null,
+   "at": [
+    "#/w/222080 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LK Samyang」 @320",
+   "ex": null,
+   "at": [
+    "#/w/225190 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LK Samyang」 @360",
+   "ex": null,
+   "at": [
+    "#/w/225190 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LK Samyang」 @390",
+   "ex": null,
+   "at": [
+    "#/w/225190 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「OSTEONIC」 @320",
+   "ex": null,
+   "at": [
+    "#/w/226400 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「OSTEONIC」 @360",
+   "ex": null,
+   "at": [
+    "#/w/226400 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「OSTEONIC」 @390",
+   "ex": null,
+   "at": [
+    "#/w/226400 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Rayence」 @320",
+   "ex": null,
+   "at": [
+    "#/w/228850 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Rayence」 @360",
+   "ex": null,
+   "at": [
+    "#/w/228850 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Rayence」 @390",
+   "ex": null,
+   "at": [
+    "#/w/228850 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sewon」 @320",
+   "ex": null,
+   "at": [
+    "#/w/234100 @320",
+    "#/w/024830 @320"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sewon」 @360",
+   "ex": null,
+   "at": [
+    "#/w/234100 @360",
+    "#/w/024830 @360"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sewon」 @390",
+   "ex": null,
+   "at": [
+    "#/w/234100 @390",
+    "#/w/024830 @390"
+   ],
+   "n": 2
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PNC Technologies」 @320",
+   "ex": null,
+   "at": [
+    "#/w/237750 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PNC Technologies」 @360",
+   "ex": null,
+   "at": [
+    "#/w/237750 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「PNC Technologies」 @390",
+   "ex": null,
+   "at": [
+    "#/w/237750 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「P&H Tech」 @320",
+   "ex": null,
+   "at": [
+    "#/w/239890 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「P&H Tech」 @360",
+   "ex": null,
+   "at": [
+    "#/w/239890 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「P&H Tech」 @390",
+   "ex": null,
+   "at": [
+    "#/w/239890 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Mecaro」 @320",
+   "ex": null,
+   "at": [
+    "#/w/241770 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Mecaro」 @360",
+   "ex": null,
+   "at": [
+    "#/w/241770 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Mecaro」 @390",
+   "ex": null,
+   "at": [
+    "#/w/241770 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「EDGC」 @320",
+   "ex": null,
+   "at": [
+    "#/w/245620 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「EDGC」 @360",
+   "ex": null,
+   "at": [
+    "#/w/245620 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「EDGC」 @390",
+   "ex": null,
+   "at": [
+    "#/w/245620 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sempio Foods Company」 @320",
+   "ex": null,
+   "at": [
+    "#/w/248170 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sempio Foods Company」 @360",
+   "ex": null,
+   "at": [
+    "#/w/248170 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sempio Foods Company」 @390",
+   "ex": null,
+   "at": [
+    "#/w/248170 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Pum-Tech Korea」 @320",
+   "ex": null,
+   "at": [
+    "#/w/251970 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Pum-Tech Korea」 @360",
+   "ex": null,
+   "at": [
+    "#/w/251970 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Pum-Tech Korea」 @390",
+   "ex": null,
+   "at": [
+    "#/w/251970 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YAS」 @320",
+   "ex": null,
+   "at": [
+    "#/w/255440 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YAS」 @360",
+   "ex": null,
+   "at": [
+    "#/w/255440 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YAS」 @390",
+   "ex": null,
+   "at": [
+    "#/w/255440 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sejong Medical」 @320",
+   "ex": null,
+   "at": [
+    "#/w/258830 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sejong Medical」 @360",
+   "ex": null,
+   "at": [
+    "#/w/258830 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sejong Medical」 @390",
+   "ex": null,
+   "at": [
+    "#/w/258830 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「APRO」 @320",
+   "ex": null,
+   "at": [
+    "#/w/262260 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「APRO」 @360",
+   "ex": null,
+   "at": [
+    "#/w/262260 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「APRO」 @390",
+   "ex": null,
+   "at": [
+    "#/w/262260 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「UST」 @320",
+   "ex": null,
+   "at": [
+    "#/w/263770 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「UST」 @360",
+   "ex": null,
+   "at": [
+    "#/w/263770 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「UST」 @390",
+   "ex": null,
+   "at": [
+    "#/w/263770 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Advanced Process Systems」 @320",
+   "ex": null,
+   "at": [
+    "#/w/265520 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Advanced Process Systems」 @360",
+   "ex": null,
+   "at": [
+    "#/w/265520 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Advanced Process Systems」 @390",
+   "ex": null,
+   "at": [
+    "#/w/265520 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Barrel」 @320",
+   "ex": null,
+   "at": [
+    "#/w/267790 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Barrel」 @360",
+   "ex": null,
+   "at": [
+    "#/w/267790 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Barrel」 @390",
+   "ex": null,
+   "at": [
+    "#/w/267790 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Iljin Hysolus」 @320",
+   "ex": null,
+   "at": [
+    "#/w/271940 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Iljin Hysolus」 @360",
+   "ex": null,
+   "at": [
+    "#/w/271940 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Iljin Hysolus」 @390",
+   "ex": null,
+   "at": [
+    "#/w/271940 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YM Tech」 @320",
+   "ex": null,
+   "at": [
+    "#/w/273640 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YM Tech」 @360",
+   "ex": null,
+   "at": [
+    "#/w/273640 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「YM Tech」 @390",
+   "ex": null,
+   "at": [
+    "#/w/273640 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「TSI」 @320",
+   "ex": null,
+   "at": [
+    "#/w/277880 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「TSI」 @360",
+   "ex": null,
+   "at": [
+    "#/w/277880 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「TSI」 @390",
+   "ex": null,
+   "at": [
+    "#/w/277880 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「BGF Retail」 @320",
+   "ex": null,
+   "at": [
+    "#/w/282330 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「BGF Retail」 @360",
+   "ex": null,
+   "at": [
+    "#/w/282330 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「BGF Retail」 @390",
+   "ex": null,
+   "at": [
+    "#/w/282330 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NanoSilikhan Advanced Materi」 @320",
+   "ex": null,
+   "at": [
+    "#/w/286750 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NanoSilikhan Advanced Materi」 @360",
+   "ex": null,
+   "at": [
+    "#/w/286750 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NanoSilikhan Advanced Materi」 @390",
+   "ex": null,
+   "at": [
+    "#/w/286750 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GIANTSTEP」 @320",
+   "ex": null,
+   "at": [
+    "#/w/289220 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GIANTSTEP」 @360",
+   "ex": null,
+   "at": [
+    "#/w/289220 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GIANTSTEP」 @390",
+   "ex": null,
+   "at": [
+    "#/w/289220 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dynamic solution」 @320",
+   "ex": null,
+   "at": [
+    "#/w/290660 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dynamic solution」 @360",
+   "ex": null,
+   "at": [
+    "#/w/290660 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dynamic solution」 @390",
+   "ex": null,
+   "at": [
+    "#/w/290660 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kakao Games」 @320",
+   "ex": null,
+   "at": [
+    "#/w/293490 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kakao Games」 @360",
+   "ex": null,
+   "at": [
+    "#/w/293490 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Kakao Games」 @390",
+   "ex": null,
+   "at": [
+    "#/w/293490 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INNOAX」 @320",
+   "ex": null,
+   "at": [
+    "#/w/296640 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INNOAX」 @360",
+   "ex": null,
+   "at": [
+    "#/w/296640 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「INNOAX」 @390",
+   "ex": null,
+   "at": [
+    "#/w/296640 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ABL Bio」 @320",
+   "ex": null,
+   "at": [
+    "#/w/298380 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ABL Bio」 @360",
+   "ex": null,
+   "at": [
+    "#/w/298380 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「ABL Bio」 @390",
+   "ex": null,
+   "at": [
+    "#/w/298380 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanil Cement」 @320",
+   "ex": null,
+   "at": [
+    "#/w/300720 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanil Cement」 @360",
+   "ex": null,
+   "at": [
+    "#/w/300720 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Hanil Cement」 @390",
+   "ex": null,
+   "at": [
+    "#/w/300720 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Saltlux」 @320",
+   "ex": null,
+   "at": [
+    "#/w/304100 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Saltlux」 @360",
+   "ex": null,
+   "at": [
+    "#/w/304100 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Saltlux」 @390",
+   "ex": null,
+   "at": [
+    "#/w/304100 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KUKJEON」 @320",
+   "ex": null,
+   "at": [
+    "#/w/307750 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KUKJEON」 @360",
+   "ex": null,
+   "at": [
+    "#/w/307750 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KUKJEON」 @390",
+   "ex": null,
+   "at": [
+    "#/w/307750 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「JOYWORKS&Co」 @320",
+   "ex": null,
+   "at": [
+    "#/w/309930 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「JOYWORKS&Co」 @360",
+   "ex": null,
+   "at": [
+    "#/w/309930 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「JOYWORKS&Co」 @390",
+   "ex": null,
+   "at": [
+    "#/w/309930 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Carry」 @320",
+   "ex": null,
+   "at": [
+    "#/w/313760 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Carry」 @360",
+   "ex": null,
+   "at": [
+    "#/w/313760 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Carry」 @390",
+   "ex": null,
+   "at": [
+    "#/w/313760 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Xi S&D」 @320",
+   "ex": null,
+   "at": [
+    "#/w/317400 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Xi S&D」 @360",
+   "ex": null,
+   "at": [
+    "#/w/317400 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Xi S&D」 @390",
+   "ex": null,
+   "at": [
+    "#/w/317400 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Pharmsville」 @320",
+   "ex": null,
+   "at": [
+    "#/w/318010 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Pharmsville」 @360",
+   "ex": null,
+   "at": [
+    "#/w/318010 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Pharmsville」 @390",
+   "ex": null,
+   "at": [
+    "#/w/318010 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sensorview」 @320",
+   "ex": null,
+   "at": [
+    "#/w/321370 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sensorview」 @360",
+   "ex": null,
+   "at": [
+    "#/w/321370 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sensorview」 @390",
+   "ex": null,
+   "at": [
+    "#/w/321370 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dawon Nexview」 @320",
+   "ex": null,
+   "at": [
+    "#/w/323350 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dawon Nexview」 @360",
+   "ex": null,
+   "at": [
+    "#/w/323350 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dawon Nexview」 @390",
+   "ex": null,
+   "at": [
+    "#/w/323350 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「WITHUS PHARMACEUTICAL」 @320",
+   "ex": null,
+   "at": [
+    "#/w/330350 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「WITHUS PHARMACEUTICAL」 @360",
+   "ex": null,
+   "at": [
+    "#/w/330350 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「WITHUS PHARMACEUTICAL」 @390",
+   "ex": null,
+   "at": [
+    "#/w/330350 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Wireless Power Amplifier Mod」 @320",
+   "ex": null,
+   "at": [
+    "#/w/332570 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Wireless Power Amplifier Mod」 @360",
+   "ex": null,
+   "at": [
+    "#/w/332570 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Wireless Power Amplifier Mod」 @390",
+   "ex": null,
+   "at": [
+    "#/w/332570 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Solus Advanced Materials」 @320",
+   "ex": null,
+   "at": [
+    "#/w/336370 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Solus Advanced Materials」 @360",
+   "ex": null,
+   "at": [
+    "#/w/336370 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Solus Advanced Materials」 @390",
+   "ex": null,
+   "at": [
+    "#/w/336370 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Serim B&G」 @320",
+   "ex": null,
+   "at": [
+    "#/w/340440 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Serim B&G」 @360",
+   "ex": null,
+   "at": [
+    "#/w/340440 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Serim B&G」 @390",
+   "ex": null,
+   "at": [
+    "#/w/340440 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Life Semantics」 @320",
+   "ex": null,
+   "at": [
+    "#/w/347700 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Life Semantics」 @360",
+   "ex": null,
+   "at": [
+    "#/w/347700 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Life Semantics」 @390",
+   "ex": null,
+   "at": [
+    "#/w/347700 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEXTIN」 @320",
+   "ex": null,
+   "at": [
+    "#/w/348210 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEXTIN」 @360",
+   "ex": null,
+   "at": [
+    "#/w/348210 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NEXTIN」 @390",
+   "ex": null,
+   "at": [
+    "#/w/348210 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CNTUS」 @320",
+   "ex": null,
+   "at": [
+    "#/w/352700 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CNTUS」 @360",
+   "ex": null,
+   "at": [
+    "#/w/352700 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「CNTUS」 @390",
+   "ex": null,
+   "at": [
+    "#/w/352700 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NGeneBio」 @320",
+   "ex": null,
+   "at": [
+    "#/w/354200 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NGeneBio」 @360",
+   "ex": null,
+   "at": [
+    "#/w/354200 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「NGeneBio」 @390",
+   "ex": null,
+   "at": [
+    "#/w/354200 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sukgyung AT」 @320",
+   "ex": null,
+   "at": [
+    "#/w/357550 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sukgyung AT」 @360",
+   "ex": null,
+   "at": [
+    "#/w/357550 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Sukgyung AT」 @390",
+   "ex": null,
+   "at": [
+    "#/w/357550 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「RBW」 @320",
+   "ex": null,
+   "at": [
+    "#/w/361570 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「RBW」 @360",
+   "ex": null,
+   "at": [
+    "#/w/361570 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「RBW」 @390",
+   "ex": null,
+   "at": [
+    "#/w/361570 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「curacle」 @320",
+   "ex": null,
+   "at": [
+    "#/w/365270 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「curacle」 @360",
+   "ex": null,
+   "at": [
+    "#/w/365270 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「curacle」 @390",
+   "ex": null,
+   "at": [
+    "#/w/365270 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FIBERPRO」 @320",
+   "ex": null,
+   "at": [
+    "#/w/368770 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FIBERPRO」 @360",
+   "ex": null,
+   "at": [
+    "#/w/368770 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「FIBERPRO」 @390",
+   "ex": null,
+   "at": [
+    "#/w/368770 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Xcell Therapeutics」 @320",
+   "ex": null,
+   "at": [
+    "#/w/373110 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Xcell Therapeutics」 @360",
+   "ex": null,
+   "at": [
+    "#/w/373110 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Xcell Therapeutics」 @390",
+   "ex": null,
+   "at": [
+    "#/w/373110 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dear U」 @320",
+   "ex": null,
+   "at": [
+    "#/w/376300 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dear U」 @360",
+   "ex": null,
+   "at": [
+    "#/w/376300 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Dear U」 @390",
+   "ex": null,
+   "at": [
+    "#/w/376300 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Winia Aid」 @320",
+   "ex": null,
+   "at": [
+    "#/w/377460 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Winia Aid」 @360",
+   "ex": null,
+   "at": [
+    "#/w/377460 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Winia Aid」 @390",
+   "ex": null,
+   "at": [
+    "#/w/377460 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Mobility Platform」 @320",
+   "ex": null,
+   "at": [
+    "#/w/381970 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Mobility Platform」 @360",
+   "ex": null,
+   "at": [
+    "#/w/381970 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「KG Mobility Platform」 @390",
+   "ex": null,
+   "at": [
+    "#/w/381970 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DT&CRO」 @320",
+   "ex": null,
+   "at": [
+    "#/w/383930 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DT&CRO」 @360",
+   "ex": null,
+   "at": [
+    "#/w/383930 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「DT&CRO」 @390",
+   "ex": null,
+   "at": [
+    "#/w/383930 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LiComm」 @320",
+   "ex": null,
+   "at": [
+    "#/w/388790 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LiComm」 @360",
+   "ex": null,
+   "at": [
+    "#/w/388790 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「LiComm」 @390",
+   "ex": null,
+   "at": [
+    "#/w/388790 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Udmtek」 @320",
+   "ex": null,
+   "at": [
+    "#/w/389680 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Udmtek」 @360",
+   "ex": null,
+   "at": [
+    "#/w/389680 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Udmtek」 @390",
+   "ex": null,
+   "at": [
+    "#/w/389680 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Nextchip」 @320",
+   "ex": null,
+   "at": [
+    "#/w/396270 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Nextchip」 @360",
+   "ex": null,
+   "at": [
+    "#/w/396270 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Nextchip」 @390",
+   "ex": null,
+   "at": [
+    "#/w/396270 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Green Resource」 @320",
+   "ex": null,
+   "at": [
+    "#/w/402490 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Green Resource」 @360",
+   "ex": null,
+   "at": [
+    "#/w/402490 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Green Resource」 @390",
+   "ex": null,
+   "at": [
+    "#/w/402490 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GGUMBI」 @320",
+   "ex": null,
+   "at": [
+    "#/w/407400 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GGUMBI」 @360",
+   "ex": null,
+   "at": [
+    "#/w/407400 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「GGUMBI」 @390",
+   "ex": null,
+   "at": [
+    "#/w/407400 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bi Matrix」 @320",
+   "ex": null,
+   "at": [
+    "#/w/413640 @320"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bi Matrix」 @360",
+   "ex": null,
+   "at": [
+    "#/w/413640 @360"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「Bi Matrix」 @390",
+   "ex": null,
+   "at": [
+    "#/w/413640 @390"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".wt 「TRUEN」 @320",
+   "ex": null,
+   "at": [
+    "#/w/417790 @320"
    ],
    "n": 1
   }
  ],
- "truncated": false,
+ "truncated": true,
  "problems": [],
  "ok": false
 }
