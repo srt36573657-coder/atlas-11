@@ -1,1 +1,1 @@
-{"name":"en","code":1,"seconds":270,"shards":9,"codes":[0,0,0,1,0,0,0,1,0],"shardSeconds":[257,265,262,257,264,260,270,263,260],"mode":"local","sha":"69471cdfba77a774f0be78eb32d93200a622a1c5","data":"live 2026-10-19","build":25}
+{"name":"en","code":0,"seconds":270,"shards":9,"codes":[0,0,0,0,0,0,0,0,0],"shardSeconds":[268,263,262,258,255,264,261,264,270],"mode":"local","sha":"c10c13a27c8ba7f214e283eb0c523bef084ca893","data":"live 2026-10-19","build":28}

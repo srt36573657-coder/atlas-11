@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-10-19T06:14:46.262Z",
+ "at": "2026-10-19T06:23:39.508Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "all": true,
@@ -161,12 +161,10 @@
   "owner": 0
  },
  "counts": {
-  "pass": 160,
-  "fail": 1
+  "pass": 162,
+  "fail": 0
  },
- "fails": [
-  "[9] 1 열쇠 기기 보유종목 바로 가기에 「진화 칸」 줄 하나 — 2줄"
- ],
+ "fails": [],
  "warn": [],
  "public": {
   "fold": {
@@ -179,6 +177,6 @@
    "pics": 510.59375
   }
  },
- "seconds": 30.8,
- "ok": false
+ "seconds": 35,
+ "ok": true
 }
