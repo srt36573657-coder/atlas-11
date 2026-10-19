@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 시안 · 진화</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--thread:#4E4E4E;--hair:#2E2E2E;--edge:#8A8A8A;--mine:#F6C744;--say:#282828;--up:#FF6A3D;--dn:#6C86FF}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.serif,.n{font-family:"Gowun Batang",serif;font-weight:400}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+#jhBtn[aria-current]{border:1.5px solid #F6C744}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:6px}
+.ttl::after{content:"";width:5px;height:5px;border-radius:50%;background:#F6C744;margin-left:-.32em}
+#view{padding:0 14px 0 12px}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding-top:2px}
+.ph h1{font-size:40px;line-height:1.05;font-weight:400}
+.ph svg{flex:0 0 auto;width:46px;height:46px}
+.lead{font-size:17px;line-height:1.45;color:#D6D6D6;margin-top:4px;word-break:keep-all}
+.ask{display:inline-flex;align-items:center;gap:6px;max-width:100%;background:#282828;border-radius:24px 24px 24px 8px;padding:6px 16px 6px 7px;font-size:19px;line-height:1.3}
+.ask img{width:30px;height:30px;flex:0 0 auto}
+.more{display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:0 16px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF}
+.more::after{content:"›";font-size:22px;color:#BDBDBD;line-height:1}
+.honest{font-size:17px;color:#BDBDBD;line-height:1.45;margin-top:10px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700;flex-direction:column;gap:3px}
+.tabs a[aria-current]::after{content:"";width:4px;height:4px;border-radius:50%;background:#F6C744}
+
+.ess{font-size:17px;line-height:1.45;color:#D6D6D6;margin-top:4px;word-break:keep-all}
+/* 자라는 수선화 — 줄기 한 가닥 · 마디마다 번호 · 들어간 마디만 금빛 */
+.grow{display:flex;gap:10px;margin-top:10px}
+.stalk{flex:0 0 64px;width:64px;height:auto;align-self:stretch}
+.steps{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.in{padding-bottom:12px;border-bottom:1px solid #2E2E2E}
+.in .k{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.in .k b{font-family:"Gowun Batang",serif;font-weight:400;font-size:25px;line-height:1.2}
+.in .k b .n{color:#F6C744;font-weight:700}
+.in .k span{font-size:17px;color:#BDBDBD}
+.in h2{font-size:21px;line-height:1.35;font-weight:700;margin-top:4px;word-break:keep-all}
+.guess{margin-top:8px;font-size:17px;line-height:1.45;color:#D6D6D6;word-break:keep-all}
+.guess em{font-style:normal;font-family:"Gowun Batang",serif;font-size:21px;color:#FFFFFF}
+.when{margin-top:6px;font-size:17px;color:#BDBDBD}
+.when .n{color:#FFFFFF}
+.say{margin-top:10px}
+.wt{margin-top:12px}
+.wt h3{display:flex;align-items:baseline;justify-content:space-between;font-size:19px;font-weight:700}
+.wt h3 span{font-size:17px;font-weight:400;color:#BDBDBD}
+.alt{display:flex;align-items:center;gap:8px;min-height:60px;padding:6px 0;border-bottom:1px solid #2E2E2E}
+.alt p{flex:1 1 auto;min-width:0;font-size:17px;line-height:1.4;word-break:keep-all}
+.alt p small{display:block;color:#BDBDBD;font-size:17px}
+.alt::after{content:"›";font-size:22px;color:#BDBDBD}
+.foot{margin-top:8px;font-size:17px;color:#BDBDBD}
+.foot .n{color:#FFFFFF}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb" aria-current="page">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="ph"><h1 class="serif">진화</h1></div>
+<p class="ess">꽃돌이의 본질: 주식을 사기 전에 한 번 멈추게 하는 곳이다.</p>
+
+<div class="grow">
+  <svg class="stalk" viewBox="0 0 64 560" preserveAspectRatio="xMidYMin meet" role="img" aria-label="자라는 수선화 · 들어간 마디 1 · 확인을 기다리는 마디 셋">
+<defs><g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g></defs>
+<path d="M32 556 C 30 470 34 380 32 300 C 30 230 33 150 32 70" fill="none" stroke="#0F1B45" stroke-width="7.6" stroke-linecap="round"/>
+<path d="M32 556 C 30 470 34 380 32 300 C 30 230 33 150 32 70" fill="none" stroke="#6E9B5A" stroke-width="4.6" stroke-linecap="round"/>
+<path d="M31 556 C 22 520 12 500 2 492 C 18 494 30 512 36 556 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M33 556 C 40 520 48 500 60 486 C 50 506 42 530 38 556 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.4" stroke-linejoin="round"/>
+<use href="#g3-bloom" transform="translate(32 40) scale(1)"/>
+<g transform="translate(32 40)"><circle r="30" fill="none" stroke="#F6C744" stroke-width="1.3" stroke-dasharray="2.4 3"/></g>
+<g transform="translate(32 104)"><circle r="17" fill="#F6C744" stroke="#0F1B45" stroke-width="2"/><text y="6" text-anchor="middle" font-size="18" font-weight="700" fill="#0F1B45" font-family="Gowun Batang,serif">1</text></g>
+<g fill="#080808" stroke="#8A8A8A" stroke-width="1.4" stroke-dasharray="3 3.5"><circle cx="32" cy="372" r="11"/><circle cx="32" cy="432" r="11"/><circle cx="32" cy="492" r="11"/></g>
+</svg>
+  <div class="steps">
+    <section class="in" aria-label="진화 1번째">
+      <p class="k"><b>진화 <span class="n">1</span>번째</b><span>10월 19일 들어감</span></p>
+      <h2>첫 화면을 흰 바탕 한 장으로 다시 지음</h2>
+      <p class="guess"><em>「끝낸 수가 는다」</em><br>열한 질문을 끝낸 수가 공사 전 10거래일보다 늘 것으로 어림해요.</p>
+      <p class="when">채점 전 · <span class="n">10</span>월 <span class="n">31</span>일쯤 매겨요</p>
+      <p class="ask serif say"><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">정말 끝낸 수가 늘까?</p>
+    </section>
+    <section class="wt" aria-label="확인을 기다려요">
+      <h3>확인을 기다려요<span>세 사람이 고른 것</span></h3>
+      <a class="alt" href="#/jinhwa/2"><p>결과 화면에도 한 달 뒤 돌아보기 안내를 놓기<small>바뀐 곳 · 매매일지</small></p></a>
+      <a class="alt" href="#/jinhwa/3"><p>「좋아」가 나온 날에 급한 마음의 격언 한 줄 보여 주기</p></a>
+      <a class="alt" href="#/jinhwa/4"><p>팔 약속 쓰는 쪽에서 「틀린 것도 지우지 않아요」 보여 주기</p></a>
+    </section>
+    <p class="foot">확인 단추는 사장님 휴대폰에만 보여요. 고친 고장 <span class="n">0</span></p>
+  </div>
+</div>
+
+</main>
+<nav class="tabs">
+  <a href="#/">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why">매매일지</a>
+  <a href="#/watch">관심</a>
+  <a href="#/hold">보유종목</a>
+</nav>
+</body>
+</html>

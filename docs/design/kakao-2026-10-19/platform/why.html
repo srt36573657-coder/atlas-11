@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 시안 — 매매일지</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--thread:#4E4E4E;--hair:#2E2E2E;--edge:#8A8A8A;--mine:#F6C744;--say:#282828;--up:#FF6A3D;--dn:#6C86FF;--go:#7DC46E;--wait:#E3A632;--rest:#F2545B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.serif{font-family:"Gowun Batang",serif;font-weight:400}
+.n{font-family:"Gowun Batang",serif}
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:6px}
+.ttl::after{content:"";width:5px;height:5px;border-radius:50%;background:#F6C744;margin-left:-.32em}
+#view{padding:0 14px 0 12px;display:flex;flex-direction:column;min-height:calc(100vh - 128px)}
+.flower{flex:0 0 auto;width:60px;height:60px;display:block;margin-right:-4px}
+.flower.sm{width:40px;height:40px}
+/* 머리 */
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.h1{font-size:40px;line-height:1.1;padding-top:2px}
+.lead{margin-top:6px;font-size:19px;line-height:1.5;color:#FFFFFF;word-break:keep-all}
+/* 실 · 번호 */
+.story{list-style:none;position:relative;margin-top:14px}
+.story::before{content:"";position:absolute;left:17px;top:20px;bottom:20px;width:1px;background:#4E4E4E}
+.ch{position:relative;padding-left:46px}
+.ch+.ch{margin-top:14px}
+.no{position:absolute;left:0;top:2px;width:35px;height:35px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:19px;line-height:1;color:#FFFFFF}
+.no.on{border-color:#F6C744;color:#F6C744}
+.lbl{display:flex;align-items:center;gap:8px;min-height:38px;white-space:nowrap}
+.lbl .t{font-family:"Gowun Batang",serif;font-size:24px;line-height:1.2}
+.lbl .sub{margin-left:auto;font-size:17px;color:#BDBDBD}
+/* 꽃돌이 말풍선 · 내 말풍선 */
+.say{display:inline-flex;align-items:center;gap:8px;max-width:100%;background:#282828;border-radius:24px 24px 24px 8px;padding:8px 16px 8px 8px;font-size:19px;line-height:1.35;font-family:"Gowun Batang",serif}
+.say img{width:32px;height:32px;flex:0 0 auto}
+.me{display:flex;justify-content:flex-end}
+.mine{display:inline-block;max-width:84%;background:#F6C744;color:#111111;border-radius:24px 24px 8px 24px;padding:8px 16px;font-size:19px;line-height:1.35;font-weight:600;word-break:keep-all}
+.mine .k{font-weight:400;color:#3A2F00}
+.ghost{display:inline-flex;align-items:center;gap:8px;min-height:44px;border:1.5px dashed #8A8A8A;border-radius:8px 24px 24px 24px;padding:4px 16px 4px 6px;font-size:20px;line-height:1.2;white-space:nowrap;font-family:"Gowun Batang",serif}
+.ghost img{width:30px;height:30px;flex:0 0 auto}
+.mem{display:flex;align-items:center;gap:6px;margin-top:4px;padding-left:4px;font-size:17px;line-height:1.3;color:#BDBDBD;white-space:nowrap}
+.note{font-size:17px;line-height:1.5;color:#BDBDBD;word-break:keep-all}
+/* 신호 점 — 초록 좋음 · 노랑 주의 · 빨강 위험(글을 함께) */
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;flex:0 0 auto;vertical-align:-1px}
+.dot.g{background:#7DC46E}.dot.y{background:#E3A632}.dot.r{background:#F2545B}
+.ring{display:inline-block;width:22px;height:22px;border-radius:50%;border:2px solid #8A8A8A;flex:0 0 auto}
+/* 고른 종목 한 줄 */
+.stk{display:flex;align-items:baseline;gap:8px;flex-wrap:nowrap;white-space:nowrap;font-size:17px;color:#BDBDBD}
+.stk b{font-size:20px;color:#FFFFFF;font-weight:700}
+.stk .v{font-family:"Gowun Batang",serif;font-size:20px;color:#FFFFFF}
+/* 엄지 칸 */
+.dock{position:sticky;bottom:64px;z-index:2;margin:auto -14px 0 -12px;padding:10px 14px 10px 12px;background:#141414;border-radius:28px 28px 0 0;border-top:1px solid #2E2E2E}
+.find .bar{height:60px;background:#080808;border:2px solid #F6C744;border-radius:30px;display:flex;align-items:center;padding:0 5px 0 18px;gap:8px}
+.find input{flex:1;min-width:0;height:48px;font-size:19px;color:#FFFFFF;outline:0;font-family:"Gowun Batang",serif}
+.find input::placeholder{color:#BDBDBD}
+.find button{flex:0 0 auto;height:48px;border-radius:999px;background:#F6C744;color:#111111;font-family:"Gowun Batang",serif;font-weight:700;font-size:19px;padding:0 18px;white-space:nowrap}
+.pills{display:flex;gap:6px;margin-top:8px}
+.pills a,.pills button{flex:1 1 0;min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:17px;color:#FFFFFF;border:1px solid #8A8A8A;border-radius:999px;white-space:nowrap;padding:0 8px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700;flex-direction:column;gap:3px}
+.tabs a[aria-current]::after{content:"";width:4px;height:4px;border-radius:50%;background:#F6C744}
+
+.qs{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin-top:4px;padding:10px 0 2px;border-top:1px solid #2E2E2E}
+.qs dt{font-family:"Gowun Batang",serif;font-size:19px;color:#FFFFFF;line-height:1.35}
+.qs dd{font-size:17px;color:#D6D6D6;line-height:1.45;word-break:keep-all}
+.lbl .sub{font-weight:400}
+.c1 .say{margin-top:2px}
+.hint{margin:8px 4px 0;font-size:17px;color:#BDBDBD;line-height:1.4}
+.fine{margin-top:12px;padding-left:46px}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+
+<section>
+  <div class="head"><h1 class="h1 serif">친구야, 왜 사?</h1><svg class="flower" viewBox="226 26 80 86" aria-hidden="true"><defs>
+<g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g>
+<g id="g3-side"><g transform="scale(.56 1)"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g></g><path d="M-1 -5.6 L-13 -8.6 Q-15.4 -9.4 -16 -7 Q-17.6 0 -16 7 Q-15.4 9.4 -13 8.6 L-1 5.6 Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><ellipse cx="-15.8" cy="0" rx="2.4" ry="8.4" fill="#D99A1C" stroke="#0F1B45" stroke-width="1.1"/></g>
+</defs>
+<g transform="translate(280 118) scale(.76) translate(-280 -118)"><path d="M266 118 C 254 98 238 84 214 76 C 240 78 260 92 276 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M296 118 C 304 96 306 80 300 64 C 298 84 292 102 286 118 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#0F1B45" stroke-width="7.6" stroke-linecap="round"/><path d="M280 118 C 278 92 278 66 279 44" fill="none" stroke="#6E9B5A" stroke-width="4.6" stroke-linecap="round"/>
+<path d="M281 50 C 288 44 292 36 292 28 C 285 32 281 40 280 48 Z" fill="#D8CBA8" stroke="#0F1B45" stroke-width="1.1" stroke-linejoin="round"/>
+<use href="#g3-bloom" transform="translate(276 30) rotate(10) scale(.9)"/>
+
+</g></svg></div>
+  <p class="lead serif">사기 전에 꽃돌이랑 내 이유를 확인해요.</p>
+</section>
+<ol class="story" aria-label="매매일지 차례 셋">
+  <li class="ch c1"><span class="no on" aria-hidden="true">1</span>
+    <h2 class="lbl"><span class="t">종목 고르기</span></h2>
+    <p class="say"><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">어떤 종목이야?</p>
+  </li>
+  <li class="ch"><span class="no" aria-hidden="true">2</span>
+    <h2 class="lbl"><span class="t">열한 질문</span><span class="sub">답 하나에 한 장</span></h2>
+    <dl class="qs">
+      <dt>이유</dt><dd>왜 사? · 공부했어? · 뭐가 좋아?</dd>
+      <dt>돈</dt><dd>얼마 넣어? · 언제 쓸 돈? · 나눠 넣어?</dd>
+      <dt>때</dt><dd>흐름은? · 얼마나 올랐어?</dd>
+      <dt>마음</dt><dd>떨어지면? · 오르면? · 마음은?</dd>
+    </dl>
+  </li>
+  <li class="ch"><span class="no" aria-hidden="true">3</span>
+    <p class="ghost"><img src="../../../../site/media/makbi-icon.svg" alt="">한 달 뒤 물어볼게요</p>
+    <p class="mem"><svg width="14" height="16" viewBox="0 0 16 18" fill="none" stroke="#BDBDBD" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="8" width="13" height="9" rx="2"/><path d="M4.5 8V5.5a3.5 3.5 0 0 1 7 0V8"/></svg>왜 사? 기록 0번 · 이 기기에만</p>
+  </li>
+</ol>
+<p class="note fine">지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.</p>
+<div class="dock" aria-label="누르는 곳">
+  <form class="find" onsubmit="return false"><div class="bar">
+    <input type="search" placeholder="회사 이름이나 번호" aria-label="종목 찾기">
+    <button type="submit">찾기</button>
+  </div></form>
+  <p class="hint">첫 글자(ㅅㅅㅈㅈ)와 번호도 돼요.</p>
+</div>
+
+</main>
+<nav class="tabs">
+  <a href="#/">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why" aria-current="page">매매일지</a>
+  <a href="#/watch">관심</a>
+  <a href="#/hold">보유종목</a>
+</nav>
+</body>
+</html>

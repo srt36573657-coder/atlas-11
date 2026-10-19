@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꽃돌이 시안 · 조건 찾기</title>
+<link rel="stylesheet" href="../../../../site/atlas/fonts.css">
+<style>
+:root{--bg:#080808;--ink:#FFFFFF;--soft:#BDBDBD;--thread:#4E4E4E;--hair:#2E2E2E;--edge:#8A8A8A;--mine:#F6C744;--say:#282828;--up:#FF6A3D;--dn:#6C86FF}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808}
+body{color:#FFFFFF;font:19px/1.5 "Pretendard Variable","Apple SD Gothic Neo","Noto Sans CJK KR",sans-serif;padding-bottom:64px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0}
+.nw{white-space:nowrap}
+.serif,.n{font-family:"Gowun Batang",serif;font-weight:400}
+.up{color:#FF6A3D}.dn{color:#6C86FF}
+.top{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px}
+.solo,.group{background:#1B1B1B;border-radius:30px;display:flex;align-items:center;height:56px;padding:0 4px}
+.tb{min-width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#FFFFFF;border-radius:24px}
+#jhBtn{padding:0 12px}
+#jhBtn[aria-current]{border:1.5px solid #F6C744}
+.ttl{flex:1;text-align:center;font-size:22px;letter-spacing:.32em;text-indent:.32em;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:6px}
+.ttl::after{content:"";width:5px;height:5px;border-radius:50%;background:#F6C744;margin-left:-.32em}
+#view{padding:0 14px 0 12px}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding-top:2px}
+.ph h1{font-size:40px;line-height:1.05;font-weight:400}
+.ph svg{flex:0 0 auto;width:46px;height:46px}
+.lead{font-size:17px;line-height:1.45;color:#D6D6D6;margin-top:4px;word-break:keep-all}
+.ask{display:inline-flex;align-items:center;gap:6px;max-width:100%;background:#282828;border-radius:24px 24px 24px 8px;padding:6px 16px 6px 7px;font-size:19px;line-height:1.3}
+.ask img{width:30px;height:30px;flex:0 0 auto}
+.more{display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:0 16px;border:1px solid #8A8A8A;border-radius:24px;font-size:17px;color:#FFFFFF}
+.more::after{content:"›";font-size:22px;color:#BDBDBD;line-height:1}
+.honest{font-size:17px;color:#BDBDBD;line-height:1.45;margin-top:10px}
+.tabs{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;background:#080808;border-top:1px solid #1E1E1E}
+.tabs a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:17px;color:#A6A6A6;min-height:48px;letter-spacing:-0.04em;white-space:nowrap}
+.tabs a[aria-current]{color:#FFFFFF;font-weight:700;flex-direction:column;gap:3px}
+.tabs a[aria-current]::after{content:"";width:4px;height:4px;border-radius:50%;background:#F6C744}
+
+/* 깔때기 — 세로 실 한 가닥 · 마디 = 내 조건(금빛 테) */
+.fn{list-style:none;position:relative;margin-top:12px}
+.fn::before{content:"";position:absolute;left:17px;top:24px;bottom:30px;width:1px;background:#4E4E4E}
+.st{position:relative;padding-left:46px}
+.st+.st{margin-top:8px}
+.no{position:absolute;left:0;top:7px;width:35px;height:35px;border-radius:50%;border:1px solid #8A8A8A;background:#080808;display:flex;align-items:center;justify-content:center;font-family:"Gowun Batang",serif;font-size:19px;line-height:1}
+.no.all{border-style:dashed}
+.cd{display:flex;align-items:center;gap:8px;min-height:52px;padding:4px 10px 4px 14px;border:1.5px solid #F6C744;border-radius:26px}
+.cd .t{flex:1 1 auto;min-width:0;font-size:19px;line-height:1.25;word-break:keep-all}
+.cd .c{white-space:nowrap;font-size:17px;color:#D6D6D6}
+.cd .c .n{font-size:23px;color:#FFFFFF}
+.cd::after{content:"›";font-size:22px;color:#BDBDBD;line-height:1;padding-left:2px}
+.st.base .cd{border:0;padding-left:0}
+.st.base .cd::after{content:none}
+.st.base .t{color:#D6D6D6;font-size:17px}
+.left{display:flex;align-items:baseline;gap:8px;margin-top:14px;flex-wrap:wrap}
+.left .big{font-size:52px;line-height:1}
+.left .lb{font-size:19px}
+.left .ud{font-size:19px;margin-left:auto;white-space:nowrap}
+.left .ud .n{font-size:23px}
+.path{font-size:17px;color:#BDBDBD;margin-top:2px}
+.say{margin-top:10px}
+.co{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:56px;border-bottom:1px solid #2E2E2E}
+.co .nm{display:flex;flex-direction:column;line-height:1.25}
+.co .nm b{font-size:19px;font-weight:700}
+.co .nm small{font-size:17px;color:#BDBDBD}
+.co .v{font-size:17px;color:#BDBDBD;white-space:nowrap}
+.co .v .n{font-size:21px}
+.list{margin-top:6px;border-top:1px solid #2E2E2E}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="solo"><button id="jhBtn" class="tb">진화</button></span>
+  <span class="ttl serif">꽃돌이</span>
+  <span class="group">
+    <button class="tb" aria-label="언어">EN</button>
+    <button class="tb serif" aria-label="글씨 크기">가</button>
+    <button class="tb" aria-label="찾기"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFFFFF" stroke-width="2"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l6 6"/></svg></button>
+  </span>
+</header>
+<main id="view">
+<div class="ph"><h1 class="serif">조건 찾기</h1><svg viewBox="0 0 60 60" aria-hidden="true"><defs><g id="g3-bloom"><g fill="#F7F3E8" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(60)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(180)"/><path d="M0 -4 C 8.6 -5.6 11.6 -16 5.6 -23 Q 0 -26.8 -5.6 -23 C -11.6 -16 -8.6 -5.6 0 -4 Z" transform="rotate(300)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(0)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(120)"/><path d="M0 -4 C 10 -6 13.5 -18 6.5 -26 Q 0 -30.5 -6.5 -26 C -13.5 -18 -10 -6 0 -4 Z" transform="rotate(240)"/></g><g stroke="#BDB49C" stroke-width=".9" stroke-linecap="round"><path d="M0 -9 L0 -22" transform="rotate(0)"/><path d="M0 -9 L0 -19" transform="rotate(60)"/><path d="M0 -9 L0 -22" transform="rotate(120)"/><path d="M0 -9 L0 -19" transform="rotate(180)"/><path d="M0 -9 L0 -22" transform="rotate(240)"/><path d="M0 -9 L0 -19" transform="rotate(300)"/></g><path d="M9.20 0.00 L7.70 2.50 L7.44 5.41 L4.76 6.55 L2.84 8.75 L0.00 8.10 L-2.84 8.75 L-4.76 6.55 L-7.44 5.41 L-7.70 2.50 L-9.20 0.00 L-7.70 -2.50 L-7.44 -5.41 L-4.76 -6.55 L-2.84 -8.75 L-0.00 -8.10 L2.84 -8.75 L4.76 -6.55 L7.44 -5.41 L7.70 -2.50Z" fill="#F6C744" stroke="#0F1B45" stroke-width="1.2" stroke-linejoin="round"/><circle r="5.2" fill="#D99A1C"/><circle r="1.8" fill="#F6C744"/></g></defs>
+<path d="M30 58 C 22 46 14 40 4 38 C 16 38 26 46 33 58 Z" fill="#6E9B5A" stroke="#0F1B45" stroke-width="1.3" stroke-linejoin="round"/>
+<path d="M31 58 C 30 44 30 32 30 22" fill="none" stroke="#0F1B45" stroke-width="5.6" stroke-linecap="round"/><path d="M31 58 C 30 44 30 32 30 22" fill="none" stroke="#6E9B5A" stroke-width="3" stroke-linecap="round"/>
+<use href="#g3-bloom" transform="translate(30 19) scale(.62)"/></svg></div>
+<p class="lead">10월 13일 장 마감 값이에요. 세 조건을 모두 넘은 곳만 남아요.</p>
+
+<ol class="fn" aria-label="내 조건 셋">
+  <li class="st base"><span class="no all" aria-hidden="true"></span><div class="cd"><span class="t">모든 회사</span><span class="c"><span class="n">2,557</span>곳</span></div></li>
+  <li class="st"><span class="no" aria-hidden="true">1</span><a class="cd" href="#/cond/1"><span class="t">큰 회사가 오른 업종</span><span class="c"><span class="n">244</span>곳</span></a></li>
+  <li class="st"><span class="no" aria-hidden="true">2</span><a class="cd" href="#/cond/2"><span class="t">대장주</span><span class="c"><span class="n">9</span>곳</span></a></li>
+  <li class="st"><span class="no" aria-hidden="true">3</span><a class="cd" href="#/cond/3"><span class="t">5일 10% 넘게 오른 곳 빼기</span><span class="c"><span class="n">7</span>곳</span></a></li>
+</ol>
+
+<div class="left"><span class="lb">남은 곳</span><span class="big serif">7</span><span class="lb">곳</span><span class="ud">▲<span class="n up">6</span> ▼<span class="n dn">1</span></span></div>
+<p class="path">예로 걸어 둔 조건 · 회사 크기가 큰 차례</p>
+
+<p class="ask serif say"><img src="../../../../site/media/makbi-icon.svg" alt="꽃돌이">이 일곱 곳, 내 이유와 맞을까?</p>
+
+<div class="list">
+  <a class="co" href="#/c/011200"><span class="nm"><b>HMM</b><small>해운 · 회사 크기 1등</small></span><span class="v">5일간 <span class="n up">+2.6</span>%</span></a>
+  <a class="co" href="#/c/033780"><span class="nm"><b>KT&amp;G</b><small>식품 · 회사 크기 1등</small></span><span class="v">5일간 <span class="n up">+1.9</span>%</span></a>
+  <a class="co" href="#/c/352820"><span class="nm"><b>하이브</b><small>연예 기획사 · 회사 크기 1등</small></span><span class="v">5일간 <span class="n up">+4.4</span>%</span></a>
+  <a class="co" href="#/c/079160"><span class="nm"><b>CJ CGV</b><small>콘텐츠 제작 · 회사 크기 1등</small></span><span class="v">5일간 <span class="n dn">−1.3</span>%</span></a>
+</div>
+<p class="honest">사고팔 곳을 고른 목록이 아니에요. 지난 값일 뿐 앞날을 말하지 않아요.</p>
+
+</main>
+<nav class="tabs">
+  <a href="#/">오늘 장</a>
+  <a href="#/news">시황</a>
+  <a href="#/why" aria-current="page">매매일지</a>
+  <a href="#/watch">관심</a>
+  <a href="#/hold">보유종목</a>
+</nav>
+</body>
+</html>
