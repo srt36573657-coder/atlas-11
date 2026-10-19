@@ -178,7 +178,7 @@ async function runDevice(name, engine, end) {
         const shot = SHOTS.get(hash);
         if (shot) {
           const f = path.join(OUT, `${slug(name)}-${shot}.png`), scale = shotBytes > SHOT_CAP ? 'css' : 'device';
-          await page.screenshot({path: f, scale, timeout: 20000});
+          await page.screenshot({path: f, scale, timeout: 20000, caret: 'initial'}); // caret 'hide'(기본)는 Playwright 가 <style> 을 넣어 사이트 보안 규칙(style-src 'self')에 막힘 — 아이폰 엔진만 「Refused to apply a stylesheet」을 남겼음(사진 찍는 다섯 쪽에서만 · 2026-10-19 23:33)
           const bytes = fs.statSync(f).size; shotBytes += bytes; D.shots.push({name: shot, file: path.basename(f), bytes, scale});
         }
       } catch (e) { row.fail = line1(e); err('load', row.fail); await fresh(); }
