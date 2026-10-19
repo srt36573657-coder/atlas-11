@@ -7,6 +7,7 @@ import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; /
 import {NAME, VIDEO} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
 import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026-10-18 [10] 1 · 2 — 갈래 → 큰 업종 …) · 그리는 곳 한 줄(route)
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
+import {homeBlock as themeHome} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -53,7 +54,7 @@ function odd(l) {
 }
 
 /* 자료 — 못 받으면 null(화면은 「?」) · 15초 뒤 다시 받아 봄 */
-const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json'}; // theme = 테마 시계(올릴 때 셈 · p-theme.js 가 need('theme') 로 같이 씀 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
+const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json', themeHome: '/next/data/theme-home.json'}; // theme = 테마 쪽 자료 · themeHome = 첫 화면 칸 자료(올릴 때 셈 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
 const D = {}, failAt = {}, inflight = {};
 function need(k) {
   if (D[k] != null) return Promise.resolve(D[k]);
@@ -562,10 +563,7 @@ async function vHomeAll() {
   // 테마 시계(사장님 2026-10-19 16:06 「이 본질이 중심이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」) — 맨 위 = 테마 시계(p-theme.js homeBlock · 견본 flow36 둘째 장) · 그 아래 읽는 곳 셋 · 엄지 자리 · 진화는 그대로
   const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '테마 시계'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 150, height: 120, decoding: 'async'}));
   const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '지금 몇 시 자리일까?'})), kk);
-  // 첫 그림은 테마 칸을 기다리지 않음(느린 4G 가장 큰 그림 2.5초 — check_white ③) — 자리(aria-busy · 높이 잡아 둠)만 먼저 · 모듈 · 자료가 오면 그 자리를 갈아 끼움(밀림 0)
-  const theme = h('section', {class: 'th-home', 'data-w': 'theme', 'aria-label': '테마 시계', 'aria-busy': 'true'});
-  mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); const b = await m.homeBlock(); if (theme.isConnected) theme.replaceWith(b); else theme.replaceChildren(...b.childNodes); theme.removeAttribute('aria-busy'); })
-    .catch(() => { theme.removeAttribute('aria-busy'); theme.replaceChildren(h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})); });
+  const theme = await themeHome().catch(() => h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})); // 자료(need theme)는 vHome 이 home · 요약과 같이 받음
   const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
   const month = await monthLine(C);
   const ess = essCard(essenceBox(false), C); // 멈춤 · 약속 수(w-cnt)는 ③ 줄로 옮김(한 화면에 들게)
@@ -661,7 +659,7 @@ function shelf(fs) {
 async function vHome(chip) {
   if (!chipPage(chip)) chip = 'all';
   // 첫 줄 자료([9] 7): 첫 화면 = home.json(7KB) + 요약(home-summary.json · 3KB)만 · 「더 보기」도 요약으로(옛것이면 core 하나) · mkt · cond 는 대장주 · 고른 곳 칩(vChip) · 그 화면을 열 때만 · 요약이 없거나 옛것이어도 첫 화면은 home.json 으로 그림
-  if (chip === 'all') { need('theme'); mod('theme').catch(() => null); await Promise.all([need('home'), need('sum')]); return vHomeAll(); } // 테마 시계 모듈 · 자료(/next/data/theme.json)는 함께 받기 시작만(첫 그림은 기다리지 않음) — 첫 화면은 mkt · cond 를 받지 않음([9] 7) // 테마 시계 자료(/next/data/theme.json)도 같이 받음 — 첫 화면은 mkt · cond 를 받지 않음([9] 7) // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll)
+  if (chip === 'all') { await Promise.all([need('home'), need('sum'), need('themeHome')]); return vHomeAll(); } // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll) · 테마 시계 칸 자료 theme-home.json(4KB 남짓 · index.html 이 미리 받음) — 첫 화면은 mkt · cond · theme.json 을 받지 않음([9] 7 · 2026-10-19)
   return vChip(chip);
 }
 /** 칩 쪽(#/f/…) — 칩마다 제 자료만 받음 · 맨 앞 하나만 큰 카드 + 한 줄 목록 10줄 + 「나머지 n곳 보기」([7] 5) · 급등은 반값 한 줄([6] 6) · 「1등」 말 · 보내기 없음([6] 5) */

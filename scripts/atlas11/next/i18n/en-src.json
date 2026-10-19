@@ -8725,6 +8725,7 @@
   "이 회사는 테마 시계의 앞선 회사 줄에 없어요.": "This company is not in the theme clock's leading list.",
   "회사 자세히 보기": "Company details",
   "돌이": "Dori",
-  "다음 · {e} ›": "Next · {e} ›"
+  "다음 · {e} ›": "Next · {e} ›",
+  "업종은 시계 방향으로 돌아요. 잠잠 → 싹 → 꽃 → 시듦. 지금 싹 자리에 {n}곳이 있어요.": "Industries turn clockwise. Quiet → Sprout → Bloom → Fading. {n} are in the sprout zone now."
  }
 }

@@ -17,10 +17,12 @@
 <link rel="stylesheet" href="/next/home.css">
 <!-- 돌 판 모양(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3) — 흰 판 토큰 값은 app.css · 모양은 이 파일 -->
 <link rel="stylesheet" href="/next/stone.css">
+<!-- 테마 시계(사장님 2026-10-19 16:54 · p-theme.js) — 첫 화면 맨 위 칸 모양 · 첫 그림에 같이(느린 4G 2.5초) -->
+<link rel="stylesheet" href="/next/theme-home.css">
 <script type="module" src="/next/app.js"></script>
 <!-- app.js 가 부르는 모듈을 app.js 와 함께 받음(차례로 받으면 왕복 한 번이 더 듦) · 첫 화면 자료 둘도 미리 -->
-<link rel="modulepreload" href="/next/i18n.js"><link rel="modulepreload" href="/next/brand.js"><link rel="modulepreload" href="/next/glossary.js"><link rel="modulepreload" href="/next/share-btn.js"><link rel="modulepreload" href="/next/essence.js"><link rel="modulepreload" href="/next/tally.js">
-<link rel="preload" href="/atlas/data/home.json" as="fetch" crossorigin><link rel="preload" href="/next/data/home-summary.json" as="fetch" crossorigin>
+<link rel="modulepreload" href="/next/i18n.js"><link rel="modulepreload" href="/next/brand.js"><link rel="modulepreload" href="/next/glossary.js"><link rel="modulepreload" href="/next/share-btn.js"><link rel="modulepreload" href="/next/essence.js"><link rel="modulepreload" href="/next/tally.js"><link rel="modulepreload" href="/next/theme-home.js"><link rel="modulepreload" href="/next/theme-rule.js">
+<link rel="preload" href="/atlas/data/home.json" as="fetch" crossorigin><link rel="preload" href="/next/data/home-summary.json" as="fetch" crossorigin><link rel="preload" href="/next/data/theme-home.json" as="fetch" crossorigin>
 <script type="module" src="/next/kakao.js"></script>
 </head>
 <body>

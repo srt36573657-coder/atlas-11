@@ -4,7 +4,9 @@
    이 파일은 그리기만 — 숫자는 theme.json · theme-more.json 그대로(화면에서 다시 세지 않음) · 글은 textContent 로만(보안 규칙) · 앞날 말 없음 · 사고팔기 권하지 않음
    길: #/t/hello 1 · (#/ 2 = 첫 화면 homeBlock) · how 3 · sprout 4 · bloom 5 · wilt 6 · i/<업종>[/path|spread|big|co|near] 7 ~ 12 · c/<번호>[/lead|why|rank|unknown|keep] 13 ~ 18 · today 36
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
-import {ZONES, DOT_TEXT, RULE, pp, nearBar, zoneOf} from '/next/theme-engine.js';
+import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
+import {clock, dots, bar, row, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock} from './theme-home.js'; // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
+export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -26,7 +28,6 @@ const okTheme = j => !!j && j.schema === 'dori-theme-1' && Array.isArray(j.inds)
 /** 첫 화면 자료 — app.js 공용 받기(need('theme') · 모듈과 같이 받음 · 15초 뒤 다시) */
 export const themeData = () => (nx()?.need ? nx().need('theme').then(j => (okTheme(j) ? j : null)).catch(() => null) : load('theme.json'));
 const moreData = () => load('theme-more.json');
-const indOf = (TH, n) => TH?.inds?.find(i => i.n === n) ?? null;
 const zw = z => ZONES[z] ?? '?';
 
 /* ── 흐름(서른여섯 장 · 견본 flow36 차례) ── */
@@ -40,44 +41,12 @@ function pgBar(no, prev) {
     prev ? h('a', {class: 'th-back', href: prev[1]}, h('span', {'aria-hidden': 'true', text: '‹'}), h('span', {text: prev[0]})) : h('span'),
     h('p', {class: 'th-no'}, h('span', {class: 'th-ch', text: CH[chOf(no)]}), h('b', {text: String(no)}), h('span', {text: '/ 36'})));
 }
-/** 쪽 아래 「다음」 큰 단추 하나 */
-export function nextBtn(title, href, lead = '다음') {
-  return h('a', {class: 'th-next', href}, h('span', {class: 'th-nx'}, h('small', {text: lead}), h('b', {text: title})), h('i', {'aria-hidden': 'true', text: '›'}));
-}
-/** 있는 쪽 맨 아래 「다음」 한 줄(app.js flowFoot) — 가운데 맞춘 글 한 덩이(그 쪽 「글 시작 왼쪽 줄 셋」 규칙 [10] 7 에 줄을 더하지 않음) */
-export function footBtn(title, href) { return h('a', {class: 'th-next th-one', href}, h('span', {text: `다음 · ${title} ›`})); }
 const safe = () => h('p', {class: 'th-safe', text: '돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'});
 const say = t => h('p', {class: 'th-say'}, h('span', {class: 'th-who', text: '돌이'}), h('span', {text: t}));
 const hd = (t, art) => h('div', {class: 'th-hd'}, h('h1', {class: 'th-h1', text: t}), h('img', {class: 'th-art', src: '/media/stone/' + art + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
 const asOf = TH => h('p', {class: 'th-asof', text: md(TH.asOf) + ' 장 마감 기준' + (TH.provisional ? ' · 장중 값이 섞여 있어요' : '')});
 const none = (title, what = '테마 시계') => ({title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'}, hd(title, 'home'), h('p', {class: 'empty', text: '? ' + what + ' 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}), nextBtn('테마 시계', '#/', '처음으로'))]});
 
-/* ── 그림: 테마 시계(가로 = 한 달 동안 시장보다 더 오른 %p · 세로 = 지난 닷새 · 꽃 선 = 가로 5) ── */
-function txt(x, y, s, a = {}) { const e = sv('text', {x, y, ...a}); e.textContent = s; return e; }
-function clock(TH, {hi = null, marks = null, W = 326, H = 300} = {}) {
-  const X0 = RULE.bloomX, SX = 15, SY = 6, pad = 14;
-  const X = v => W / 2 + Math.max(-1, Math.min(1, (v - X0) / SX)) * (W / 2 - pad);
-  const Y = v => H / 2 - Math.max(-1, Math.min(1, v / SY)) * (H / 2 - pad);
-  const s = sv('svg', {class: 'th-clock', viewBox: `0 0 ${W} ${H}`, width: '100%', 'aria-hidden': 'true', focusable: 'false'});
-  const defs = sv('defs'), mk = sv('marker', {id: 'th-ah', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto'});
-  mk.append(sv('path', {d: 'M0 0L10 5L0 10z', class: 'th-arw'})); defs.append(mk); s.append(defs);
-  s.append(sv('rect', {x: 0, y: 0, width: W / 2, height: H / 2, class: 'th-sz'}), sv('line', {x1: 0, y1: H / 2, x2: W, y2: H / 2, class: 'th-ax'}), sv('line', {x1: W / 2, y1: H / 2, x2: W / 2, y2: H, class: 'th-ax'}),
-    sv('line', {x1: W / 2, y1: 0, x2: W / 2, y2: H / 2, class: 'th-bl'}));
-  for (const d of [`M ${W / 2 - 50} 40 Q ${W / 2} 14 ${W / 2 + 50} 40`, `M ${W - 40} ${H / 2 - 50} Q ${W - 14} ${H / 2} ${W - 40} ${H / 2 + 50}`, `M ${W / 2 + 50} ${H - 40} Q ${W / 2} ${H - 14} ${W / 2 - 50} ${H - 40}`, `M 40 ${H / 2 + 50} Q 14 ${H / 2} 40 ${H / 2 - 50}`])
-    s.append(sv('path', {d, class: 'th-turn', 'marker-end': 'url(#th-ah)'}));
-  const inds = TH.inds ?? [], mark = hi ? [hi] : (marks ?? []);
-  for (const i of inds) if (mark.includes(i.n) && Array.isArray(i.t)) s.append(sv('polyline', {points: i.t.map(([a, b]) => X(a).toFixed(1) + ',' + Y(b).toFixed(1)).join(' '), class: 'th-tail'}));
-  for (const i of inds) { const on = mark.includes(i.n) || (!hi && i.z === 'S'); s.append(sv('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: on ? 6 : 3.5, class: on ? 'th-dot on' : 'th-dot'})); }
-  if (hi) { const i = indOf(TH, hi); if (i) { const lx = X(i.x), right = lx < W / 2; s.append(txt((right ? lx + 12 : lx - 12).toFixed(1), (Y(i.y) - 12).toFixed(1), i.n, {class: 'th-lb', 'text-anchor': right ? 'start' : 'end'})); } }
-  else (marks ?? []).forEach((n, k) => { const i = indOf(TH, n); if (!i) return; const cx = X(i.x) + (k % 2 ? 16 : -16), cy = Y(i.y) - 18; s.append(sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 12, class: 'th-nb'}), txt(cx.toFixed(1), (cy + 6).toFixed(1), String(k + 1), {class: 'th-nbt', 'text-anchor': 'middle'})); });
-  s.append(txt(10, 24, ZONES.S, {class: 'th-zl th-zs'}), txt(W - 10, 24, ZONES.B, {class: 'th-zl', 'text-anchor': 'end'}), txt(W - 10, H - 10, ZONES.W, {class: 'th-zl th-zq', 'text-anchor': 'end'}), txt(10, H - 10, ZONES.Q, {class: 'th-zl th-zq'}),
-    txt(W / 2 + 6, H / 2 - 8, '꽃 선', {class: 'th-bt'}));
-  return s;
-}
-/** 점 넷(채운 동그라미 = 참) */
-function dots(i) { const s = sv('svg', {class: 'th-dots', viewBox: '0 0 88 20', width: 88, height: 20, role: 'img', 'aria-label': '점 넷 가운데 ' + i.sc + '개'}); i.dots.forEach((v, k) => s.append(sv('circle', {cx: 10 + k * 22, cy: 10, r: 7, class: v ? 'th-d on' : 'th-d'}))); return s; }
-/** 꽃까지 막대 */
-function bar(x) { const s = sv('svg', {class: 'th-bar', viewBox: '0 0 96 8', width: 96, height: 8, 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: 96, height: 8, rx: 4, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Math.round(nearBar(x) * 96), height: 8, rx: 4, class: 'th-bar1'})); return s; }
 /** 작은 선(1000 = 열흘 전) */
 function spark(l, w = 96, ht = 36) {
   const s = sv('svg', {class: 'th-sp', viewBox: `0 0 ${w} ${ht}`, width: w, height: ht, 'aria-hidden': 'true'});
@@ -96,40 +65,6 @@ function bigLine(l, w = 358, ht = 110) {
   s.append(sv('line', {x1: x(m), y1: 0, x2: x(m), y2: ht, class: 'th-mid'}), sv('polyline', {points: pts(P.slice(0, m + 1)), class: 'th-l0'}), sv('polyline', {points: pts(P.slice(m)), class: 'th-l1'}), sv('circle', {cx: x(l.length - 1), cy: y(l[l.length - 1]), r: 5, class: 'th-l1d'}));
   return s;
 }
-/** 줄 하나(싹 · 꽃 · 시듦 목록 · 첫 화면) */
-function row(i, k, {num: showNum = true, meta = 'near'} = {}) {
-  const tag = i.d === 1 ? '새로 들어옴' : i.d + '일째';
-  const mid = h('span', {class: 'th-mid2'}, h('span', {class: 'th-rn', text: i.n}),
-    meta === 'near' ? h('span', {class: 'th-meta'}, h('em', {class: 'th-tg' + (i.d === 1 ? ' new' : ''), text: tag}), h('span', {text: '꽃까지'}), bar(i.x))
-      : h('span', {class: 'th-meta'}, h('em', {class: 'th-tg', text: tag}), h('span', {text: '한 달 시장보다'}), h('b', {class: cls(i.x), text: pp(i.x) + '%p'})));
-  return h('a', {class: 'th-row', href: '#/t/i/' + enc(i.n)}, showNum ? h('span', {class: 'th-n' + (k < 3 ? ' th-top' : ''), text: String(k + 1)}) : null, mid, dots(i), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}));
-}
-const yearsOf = TH => { const a = Date.parse(TH.recFrom), b = Date.parse(TH.recTo); return Number.isFinite(a) && Number.isFinite(b) ? Math.max(1, Math.round((b - a) / (365.25 * 864e5))) : null; };
-/** 성적표 한 줄 — 지난 기록에서 센 횟수(앞날을 맞히는 숫자 아님 · 결정표 6) */
-function recordLine(TH) {
-  const R = TH.record, y = yearsOf(TH);
-  if (!R?.real?.n || R.real.p == null || R.all.p == null) return h('p', {class: 'th-rec', text: '? 지난 기록을 아직 못 셌어요.'});
-  return h('p', {class: 'th-rec'}, h('span', {text: '지난 ' + (y ?? '?') + '년 기록'}),
-    h('span', {text: R.more ? `진짜 싹이었던 날, 100번 가운데 ${Math.round(R.real.p)}번은 한 달 뒤 꽃 선을 넘었어요.` : `진짜 싹이었던 날도 아무 업종과 차이가 없었어요.`}),
-    h('span', {text: `아무 업종은 100번 가운데 ${Math.round(R.all.p)}번이었어요.`}));
-}
-
-/* ── 첫 화면(#/) 맨 위 칸 — app.js vHomeAll 이 부름(본질 세 줄 · 찾기 칸 · 바로 가기 넷 · 전부 보기는 그 아래 그대로) ── */
-export async function homeBlock() {
-  const TH = await themeData();
-  const box = h('section', {class: 'th-home', 'data-w': 'theme', 'aria-label': '테마 시계'});
-  if (!TH) { box.append(h('p', {class: 'empty', text: '? 테마 시계 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return box; }
-  const S = TH.order.S.map(n => indOf(TH, n)).filter(Boolean), top = S.slice(0, 3);
-  box.append(h('div', {class: 'th-map'}, clock(TH, {marks: top.map(i => i.n)}), h('p', {class: 'th-cap'}, h('span', {text: '업종은 시계 방향으로 돌아요. 잠잠 → 싹 → 꽃 → 시듦.'}), h('span', {text: `지금 싹 자리에 ${num(TH.count.S)}곳이 있어요.`}))));
-  box.append(TH.count.real ? h('h2', {class: 'th-ans'}, h('span', {text: '진짜 싹 '}), h('em', {text: num(TH.count.real) + '곳'})) : h('h2', {class: 'th-ans', text: '지금은 진짜 싹이 없어요'}));
-  box.append(h('div', {class: 'th-three'}, ...[[TH.count.real, '진짜 싹'], [TH.count.fresh, '새로 들어옴'], [TH.count.S, '싹 자리']].map(([n, t]) => h('p', {}, h('b', {text: num(n) + '곳'}), h('span', {text: t})))));
-  box.append(h('p', {class: 'th-sub', text: '점 넷이 다 차면 진짜 싹이에요. 지난 닷새 힘이 센 차례예요.'}));
-  box.append(h('div', {class: 'th-rows'}, top.map((i, k) => row(i, k))));
-  box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `싹 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
-  box.append(recordLine(TH), asOf(TH), nextBtn('시계 읽는 법', '#/t/how'));
-  return box;
-}
-
 /* ── 쪽들 ── */
 function shell(no, title, art, sayT, prev, next, body, {pageKey = 'theme'} = {}) {
   return h('div', {class: 'tc', 'data-page': pageKey}, pgBar(no, prev), hd(title, art), sayT ? say(sayT) : null, ...body, next ? nextBtn(next[0], next[1], next[2]) : null, safe());

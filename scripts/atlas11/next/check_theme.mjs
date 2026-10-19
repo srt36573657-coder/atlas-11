@@ -98,7 +98,7 @@ try {
       const R = TH.record;
       if (R.more && !(g.rec.includes(`100번 가운데 ${Math.round(R.real.p)}번`) && g.rec.includes(`100번 가운데 ${Math.round(R.all.p)}번이었어요`))) fail('성적표 숫자', g.rec);
       if (!R.more && !g.rec.includes('차이가 없었어요')) fail('성적표 차이 없음 글', g.rec);
-      if (!g.asof.startsWith(MD(TH.asOf))) fail('기준 날', g.asof + ' ≠ ' + MD(TH.asOf));
+      if (g.asof) fail('첫 화면 기준 날', '첫 화면에는 날짜를 띠에 한 번만([6] 2) — 테마 칸에 ' + g.asof);
       if (g.next !== '#/t/how') fail('첫 화면 다음', g.next);
       if (g.more !== '#/t/sprout') fail('싹 자리 모두 보기 고리', g.more);
     }
@@ -147,6 +147,7 @@ try {
     if (JSON.stringify(s.ck) !== JSON.stringify(I1.dots.map(d => (d ? '✓' : '✗')))) fail('업종 점 넷', TOP + ' ' + s.ck.join('') + ' ≠ ' + I1.dots.join(''));
     if (s.ans !== '점 넷 가운데 ' + I1.sc + '개') fail('업종 점 수 줄', s.ans);
     await ctx.close();
+    { const z = await open('#/t/sprout'); const a = await z.p.evaluate(() => document.querySelector('#view .th-asof')?.textContent ?? ''); if (!a.startsWith(MD(TH.asOf))) fail('기준 날', '#/t/sprout ' + a + ' ≠ ' + MD(TH.asOf)); await z.ctx.close(); }
     const q = await open(ib + '/spread');
     const sp = await q.p.evaluate(() => ({ans: document.querySelector('#view .th-ans')?.textContent ?? '', bars: document.querySelectorAll('#view svg.th-bars rect').length}));
     if (sp.ans !== `${num(I1.tot)}곳 가운데 ${num(I1.up)}곳`) fail('번짐 수', sp.ans);

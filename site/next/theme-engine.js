@@ -3,15 +3,8 @@
    다른 파일을 부르지 않음 · 화면(DOM)을 만지지 않음 — 올릴 때 셈(scripts/atlas11/next/build/theme.mjs) · 시험(tests/atlas11/theme.test.mjs) · 화면(p-theme.js 의 글 틀)이 같이 부름
    셈은 올릴 때 한 번(모든 회사 종가 839일) → /next/data/theme.json · theme-more.json — 화면은 그 파일만 읽음(첫 화면은 mkt · cond 를 받지 않음 · [9] 7) */
 
-export const THEME_SCHEMA = 'dori-theme-1';
-/** 잣대(결정표 2 · 3 · 6) — 바꾸면 결정표 · 따로 세기도 함께 */
-export const RULE = Object.freeze({minN: 5, jump: 0.35, bloomX: 5, powerY: 2, spreadUp: 0.02, bigUp: 0.01, bigRanks: 3, win: 20, near: 5, back: 10, tail: 6, recFrom: 40, recAhead: 20, barSpan: 10, top: 8});
-/** 자리 — 결정표 2 (x = 한 달 동안 시장보다 더 오른 %p · y = 지난 닷새 동안 더 오른 %p) */
-export const ZONES = Object.freeze({B: '꽃', W: '시듦', S: '싹', Q: '잠잠'});
-export function zoneOf(x, y) {
-  if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
-  return x >= RULE.bloomX ? (y >= 0 ? 'B' : 'W') : (y >= 0 ? 'S' : 'Q');
-}
+import {THEME_SCHEMA, RULE, ZONES, zoneOf, pp, nearBar, DOT_TEXT} from './theme-rule.js'; // 잣대 · 글 꼴은 theme-rule.js 한 곳(화면도 같이 씀)
+export {THEME_SCHEMA, RULE, ZONES, zoneOf, pp, nearBar, DOT_TEXT};
 const r2 = v => (Number.isFinite(v) ? Math.round(v * 100) / 100 : null);
 const r1 = v => (Number.isFinite(v) ? Math.round(v * 10) / 10 : null);
 const ok = v => typeof v === 'number' && v > 0;
@@ -126,15 +119,3 @@ export function recordOf(U, M, T) {
   const A = out(all), R = out(real);
   return {from: t0, to: t1, all: A, sprout: out(sp), real: R, byDots: byDots.map(out), more: R.h[0] != null && R.h[1] != null && A.h[0] != null && A.h[1] != null && R.h[0] > A.h[0] && R.h[1] > A.h[1]};
 }
-
-/* ── 화면 글 틀(p-theme.js · 첫 화면이 같이 씀 · 숫자 꼴은 이 아래 한 곳) ── */
-/** %p 한 자리(+1.2 · −0.4) — 사이트 숫자 꼴(app.js pct 와 같은 반올림 · 부호 − ) */
-export function pp(v) {
-  if (!Number.isFinite(v)) return '?';
-  const a = Math.sign(v) * Math.floor(Math.abs(v) * 10 + 0.5 + 1e-7) / 10;
-  return (a > 0 ? '+' : a < 0 ? '−' : '') + Math.abs(a).toFixed(1);
-}
-/** 꽃까지 막대(0 ~ 1) */
-export const nearBar = x => (Number.isFinite(x) ? Math.max(0, Math.min(1, 1 - (RULE.bloomX - x) / RULE.barSpan)) : 0);
-/** 점 넷 글(결정표 3 화면 글) */
-export const DOT_TEXT = Object.freeze(['시장보다 힘이 붙어요', '오른 회사가 늘어요', '큰 회사도 움직여요', '값이 진짜로 올라요']);

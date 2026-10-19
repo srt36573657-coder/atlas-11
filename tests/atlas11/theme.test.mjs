@@ -102,6 +102,10 @@ test('올릴 때 셈 — 저장소 자료(있을 때만)로 두 파일을 쓰고
   assert.ok(th.inds.length >= 50);
   assert.equal(th.order.S.length, th.count.S);
   for (const i of th.inds) { assert.ok(['B', 'W', 'S', 'Q'].includes(i.z)); assert.equal(i.dots.length, 4); assert.ok(mo.inds[i.n]); }
-  assert.ok(fs.statSync(path.join(tmp, 'next/data/theme.json')).size < 60_000, '첫 화면 파일은 60KB 아래');
+  assert.ok(fs.statSync(path.join(tmp, 'next/data/theme.json')).size < 60_000, '테마 쪽 파일은 60KB 아래');
+  const hm = JSON.parse(fs.readFileSync(path.join(tmp, 'next/data/theme-home.json'), 'utf8'));
+  assert.equal(hm.schema, 'dori-theme-1-home'); assert.deepEqual(hm.order.S, th.order.S.slice(0, 3)); assert.deepEqual(hm.count, th.count); assert.deepEqual(hm.record, th.record);
+  for (const n of hm.order.S) { const a = hm.inds.find(i => i.n === n), b = th.inds.find(i => i.n === n); assert.deepEqual([a.x, a.y, a.d, a.t, a.dots, a.sc], [b.x, b.y, b.d, b.t, b.dots, b.sc]); }
+  assert.ok(fs.statSync(path.join(tmp, 'next/data/theme-home.json')).size < 8_192, '첫 화면 칸 파일은 8KB 아래');
   fs.rmSync(tmp, {recursive: true, force: true});
 });
