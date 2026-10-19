@@ -1,25 +1,23 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-19T00:45:32.530Z",
+ "at": "2026-10-19T03:49:48.487Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 414,
-  "fail": 1
+  "pass": 415,
+  "fail": 0
  },
- "fails": [
-  "③ 밀림 0.1 아래 — 0.132"
- ],
+ "fails": [],
  "m": {
   "first": {
-   "bodyLum": 1,
-   "chars": 159,
+   "bodyLum": 0.0024282158683907,
+   "chars": 165,
    "blocks": {
-    "ess": 349,
-    "find": 473,
-    "today": 525,
-    "gdr": 579,
-    "all": 627
+    "ess": 396,
+    "find": 728,
+    "today": 488,
+    "gdr": 776,
+    "all": 776
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -28,7 +26,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "오늘은 쉬어 갈까?"
+    "첫 질문을 해 볼까?"
    ],
    "numQ": [],
    "tabs": [
@@ -45,29 +43,29 @@
     true,
     true
    ],
-   "bodyHex": "#FFFFFF",
-   "inkHex": "#16181D",
+   "bodyHex": "#080808",
+   "inkHex": "#FFFFFF",
    "findInput": true,
    "riseShown": [],
    "grid": [],
    "news": {
     "up": true,
     "dn": true,
-    "facts": 1,
-    "why": 1
+    "facts": 2,
+    "why": 2
    },
    "monthLine": false,
    "errs": []
   },
   "back": {
-   "bodyLum": 1,
-   "chars": 95,
+   "bodyLum": 0.0024282158683907,
+   "chars": 104,
    "blocks": {
-    "ess": 206,
-    "find": 330,
-    "today": 382,
-    "gdr": 436,
-    "all": 484
+    "ess": 297,
+    "find": 684,
+    "today": 389,
+    "gdr": 732,
+    "all": 732
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -76,7 +74,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "오늘은 쉬어 갈까?"
+    "첫 질문을 해 볼까?"
    ],
    "numQ": [],
    "tabs": [
@@ -93,16 +91,16 @@
     true,
     true
    ],
-   "bodyHex": "#FFFFFF",
-   "inkHex": "#16181D",
+   "bodyHex": "#080808",
+   "inkHex": "#FFFFFF",
    "findInput": true,
    "riseShown": [],
    "grid": [],
    "news": {
     "up": true,
     "dn": true,
-    "facts": 1,
-    "why": 1
+    "facts": 2,
+    "why": 2
    },
    "monthLine": false,
    "errs": []
@@ -417,11 +415,11 @@
    }
   },
   "speed": {
-   "lcp": 1792,
-   "inp": 0,
-   "cls": 0.132
+   "lcp": 2200,
+   "inp": 16,
+   "cls": 0.005
   }
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
