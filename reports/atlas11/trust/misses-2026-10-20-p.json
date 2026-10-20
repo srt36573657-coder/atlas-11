@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-20T23:10+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 0,
+ "scope": {
+  "from": "2026-10-20 23:08 박승혁 님 일(co-stage) 전체 검사 다시 부름",
+  "to": "2026-10-20 23:10 셈이 어긋난 것을 찾음"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 89,
+   "when": "2026-10-20 23:08(서울) node scripts/atlas11/next/full_run.mjs --work co-stage --ref wip-stage --local (깃허브 run 39436540696 · 검사한 커밋 5b837e0fb)",
+   "what": "박승혁 님 일의 두 번째 전체 검사를 행성 가지(wip-planet) 폴더에서 불렀음 — 셈 파일 reports/atlas11/full-runs/co-stage.jsonl 은 박승혁 님 가지(wip-stage)에만 있어서, 셈이 「1/11」로 새로 열려 찍힘 · 진짜로는 두 번째(첫째 = run 39428443900 · ffac91f23)",
+   "found_by": "나 — 23:09 셈 파일 두 곳을 맞대 봄",
+   "fixed": "두 기록 줄은 쓴 그대로 둠(고치지 않음) · 행성 가지에 그대로 커밋하고, 박승혁 님 가지가 main 을 합칠 때 두 줄을 함께 둠 → 줄 수 = 2 = 진짜 셈 · 사장님 보고에는 「두 번째」로 적음 · 다음부터 full_run 은 그 일의 가지 폴더에서만 부름"
+  }
+ ]
+}
