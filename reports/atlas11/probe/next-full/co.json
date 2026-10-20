@@ -1,8 +1,8 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-19T17:04:53.802Z",
+ "at": "2026-10-20T02:18:42.586Z",
  "base": "https://aaa7377.com",
- "asOf": "2026-10-19",
+ "asOf": "2026-10-20",
  "companies": 2557,
  "all": true,
  "limit": null,
@@ -11,7 +11,7 @@
  "units": {
   "total": 2566,
   "mine": 2566,
-  "hash": "8b31793aa0099b99",
+  "hash": "10ad3bb966905bac",
   "kinds": {
    "c": {
     "total": 2557,
@@ -31,21 +31,22 @@
    }
   }
  },
- "seconds": 969,
+ "seconds": 777,
  "time": {
-  "old": 283.1,
-  "new": 345.8,
-  "wall": 969.1,
+  "old": 205.4,
+  "new": 270.3,
+  "wall": 777.1,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 29.2,
-  "oldShare": 45
+  "oldPct": 26.4,
+  "oldShare": 43.2
  },
  "net": {
   "req": 2509,
   "retry": 0,
   "waitSec": 0,
   "why": {},
+  "cut": 0,
   "page": {
    "retry": 0,
    "waitSec": 0,
@@ -55,8 +56,8 @@
  },
  "counts": {
   "줄": 114497,
-  "숫자 낱말": 206511,
-  "따로 셈": 41248,
+  "숫자 낱말": 216717,
+  "따로 셈": 43805,
   "머리 셈": 38355,
   "고리": 2557,
   "회사": 2557,
