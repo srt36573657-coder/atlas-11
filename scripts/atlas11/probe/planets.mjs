@@ -17,10 +17,10 @@ const A = 'https://assets.science.nasa.gov/content/dam/science/psd/photojournal/
 /** [이름, 주소, 출처, 미리 자르기(비율 l · t · w · h) | null, 덩이(남길 밝은 덩이 — 'largest' = 가장 큰 하나 · 기본 = 가장 큰 것의 5% 넘는 덩이 모두(토성 고리))] */
 export const LIST = [
   ['sun', 'https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg', 'NASA/SDO/HMI', null, 'largest'], // 사진 아래 글씨(날짜 줄)는 덩이 걸름으로 뺌
-  ['mercury', A + 'pia11/pia11406/PIA11406.jpg', 'NASA/Johns Hopkins University Applied Physics Laboratory/Carnegie Institution of Washington', null, 'largest'], // 두 둥근 판 가운데 큰 하나
+  ['mercury', A + 'pia15/pia15161/PIA15161.jpg', 'NASA/Johns Hopkins University Applied Physics Laboratory/Carnegie Institution of Washington', null, 'largest'], // 둘째 판(PIA11406)은 두 둥근 판이 겹쳐 하나만 못 뗌 — 한 공 모자이크(회색 = 눈으로 보는 빛깔에 가까움)로 바꿈
   ['venus', A + 'pia00/pia00104/PIA00104.jpg', 'NASA/JPL', null],
   ['earth', 'https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/84000/84214/bluemarble_2014089_lrg.jpg', 'NASA Earth Observatory/NOAA (Suomi NPP VIIRS)', null],
-  ['moon', 'https://assets.science.nasa.gov/content/dam/science/psd/earths-moon/outreach-materials/NASA-LRO-Moon-mosaic.png', "NASA's Scientific Visualization Studio (LRO)", null],
+  ['moon', 'https://svs.gsfc.nasa.gov/vis/a000000/a005400/a005415/frames/730x730_1x1_30p/moon.0311.jpg', "NASA's Scientific Visualization Studio (LRO data · Dial-A-Moon 2025-01-13 22:00 UT)", null, 'largest'], // 둘째 판(SVS 5001 모자이크)은 작은 네모 사진 1,231장을 이어 붙인 「모자이크 그림」이라 네모가 보여 바꿈
   ['mars', A + 'pia00/pia00407/PIA00407.jpg', 'NASA/JPL/USGS', null],
   ['jupiter', A + 'pia02/pia02873/PIA02873.jpg', 'NASA/JPL/University of Arizona', null, 'largest'], // 첫 판(PIA04866)은 오른쪽이 잘려 바꿈
   ['saturn', A + 'pia06/pia06193/PIA06193.jpg', 'NASA/JPL/Space Science Institute', null],
