@@ -1177,9 +1177,13 @@ let fontsOn = false;
 const fontsAdd = () => { if (document.querySelector('link[href="/atlas/fonts.css"]')) return; const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/atlas/fonts.css'; document.head.append(l); };
 /** 본질 첫 줄 높이 잡기(2026-10-21 전체 검사 thumb 1/11 ③ 밀림 0.140) — 첫 화면은 기기 글꼴로 먼저 그리고 글꼴 표는 그린 뒤에 붙임(위 fontsLater)
  *  받은 글꼴이 기기 글꼴보다 좁으면 본질 첫 줄이 세 줄 → 두 줄로 줄어 그 아래가 모두 28px 위로 밀림(맨 아래 「전부 보기」를 보던 사람 눈앞에서)
- *  처음 그린 높이를 아래 한도로 잡아 둠 · 그 줄 글꼴이 다 왔고 그 줄이 화면 아래 밖일 때만 놓음 — 놓을 때 움직이는 것은 화면 밖뿐 */
+ *  처음 그린 높이를 아래 한도로 잡아 둠 · 그 줄 글꼴이 다 왔고 그 줄이 화면 아래 밖일 때만 놓음 — 놓을 때 움직이는 것은 화면 밖뿐
+ *  재기는 첫 그림 다음(그리기 길에 강제 배치를 더하지 않음 · 가장 큰 그림 2.5초) — fontsLater 보다 먼저 불러서 글꼴 표가 붙기 전에 잼 */
 function holdEss(root) {
   const t = root.querySelector('.w-ess .ess-t'); if (!t || document.querySelector('link[href="/atlas/fonts.css"]')?.sheet) return;
+  requestAnimationFrame(() => setTimeout(() => { if (t.isConnected && !document.querySelector('link[href="/atlas/fonts.css"]')?.sheet) hold(t); }, 0));
+}
+function hold(t) {
   t.style.minHeight = Math.ceil(t.getBoundingClientRect().height) + 'px';
   const ready = () => {
     if (!document.querySelector('link[href="/atlas/fonts.css"]')?.sheet || document.fonts?.status === 'loading') return false;
