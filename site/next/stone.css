@@ -125,6 +125,18 @@ html.white.home .s-thumb details.w-all { flex: none; min-width: 0; max-width: 10
 html.white.home .s-thumb nav.w-go4 { flex-wrap: wrap; }
 html.white.home .s-thumb details.w-all[open] { flex: 1 1 100%; }
 html.white.home .s-thumb details.w-all > summary { min-height: 48px; display: flex; align-items: center; padding: 0 var(--sp-1); color: #BDBDBD; font-size: var(--fs-1); }
+/* 엄지 칸 한 줄 · 다시 나오는 칸(사장님 2026-10-21 02:11 · 02:29 「어」) — 아래로 읽으면 아래로 미끄러져 숨고(s-away) 위로 밀면 0.32초에 다시 · 화면을 밀지 않음(transform) */
+html.white.home .s-thumb { transition: transform .32s ease; will-change: transform; }
+html.white.home .s-thumb.s-away { transform: translateY(calc(100% + var(--tabs) + 16px + env(safe-area-inset-bottom))); pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { html.white.home .s-thumb { transition: none; } }
+/* 바로 가기 넷 · 전부 보기 — 붙지 않고 화면 안 제자리(엄지 칸에서 내려옴 · 모양은 예전 엄지 칸 그대로) */
+html.white.home .s-short { display: flex; flex-wrap: wrap; align-items: center; margin: var(--sp-2) 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #26314F; }
+html.white.home .s-short nav.w-go4 { flex: 1 1 auto; flex-wrap: wrap; min-width: 0; margin: 0; border: 0; }
+html.white.home .s-short .w-go4 a { min-width: 0; min-height: 48px; color: #BDBDBD; font-size: var(--fs-1); }
+html.white.home .s-short .w-go4 .ic { display: none; }
+html.white.home .s-short details.w-all { flex: none; min-width: 0; max-width: 100%; margin: 0; border: 0; }
+html.white.home .s-short details.w-all[open] { flex: 1 1 100%; }
+html.white.home .s-short details.w-all > summary { min-height: 48px; display: flex; align-items: center; padding: 0 var(--sp-1); color: #BDBDBD; font-size: var(--fs-1); }
 
 /* 좁은 폭(320) — 그림을 줄여 본질 · 찾기 칸이 한 화면에 들게 */
 @media (max-width: 349px) {
