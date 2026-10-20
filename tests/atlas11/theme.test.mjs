@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {zoneOf, indexOf, exOf, dotsAt, jumpy, computeTheme, sproutCmp, pp, nearBar, RULE, THEME_SCHEMA} from '../../site/next/theme-engine.js';
+import {zoneOf, indexOf, exOf, dotsAt, jumpy, computeTheme, sproutCmp, pp, nearBar, RULE, THEME_SCHEMA, coZoneOf} from '../../site/next/theme-engine.js';
 import {build} from '../../scripts/atlas11/next/build/theme.mjs';
 
 test('자리 — 꽃 선(가로 5) · 세로 0 경계', () => {
@@ -68,9 +68,29 @@ function fake() {
   return computeTheme({dates, closes, companies, industries, groups: [{id: 'a', name: '무리 A'}, {id: 'b', name: '무리 B'}], rk, made: '2026-01-01T00:00:00.000Z'});
 }
 
+test('회사 자리(결정표 9 · v1.3) — 한 달 · 닷새 시장보다 · 셀 수 없음 둘', () => {
+  const N = 30, T = N - 1, M = Float64Array.from({length: N}, () => 100); // 시장 그대로
+  const at = f => Float64Array.from({length: N}, (_, t) => f(t));
+  const up = at(t => (t >= T - 4 ? 120 : t >= T - 19 ? 110 : 100)); // close(T − 20) 100 · close(T − 5) 110 · close(T) 120 → 한 달 +20% · 닷새 +9.09%
+  let v = coZoneOf(up, M, T); assert.equal(v.z, 'B'); assert.ok(Math.abs(v.x - 20) < 1e-9); assert.ok(Math.abs(v.y - (120 / 110 - 1) * 100) < 1e-9);
+  v = coZoneOf(at(t => (t >= T - 4 ? 104 : 110)), M, T); assert.equal(v.z, 'Q'); // 한 달 −5.45% · 닷새 −5.45%
+  v = coZoneOf(at(t => (t >= T - 4 ? 104 : 100)), M, T); assert.equal(v.z, 'S'); // 한 달 +4% · 닷새 +4% — 꽃 선 앞
+  v = coZoneOf(at(t => (t >= T - 4 ? 110 : t >= T - 19 ? 120 : 100)), M, T); assert.equal(v.z, 'W'); // 한 달 +10% · 닷새 −8.3%
+  const Mup = at(t => 100 * (1 + 0.01 * t)); v = coZoneOf(up, Mup, T); // 시장이 오르면 앞선 만큼은 줆(나눔 꼴)
+  assert.ok(Math.abs(v.x - ((120 / 100) / (Mup[T] / Mup[T - 20]) - 1) * 100) < 1e-9); assert.ok(Math.abs(v.y - ((120 / 110) / (Mup[T] / Mup[T - 5]) - 1) * 100) < 1e-9);
+  const gap = at(t => 100); gap[T - 5] = 0; assert.equal(coZoneOf(gap, M, T), null); // 닷새 전 값 없음
+  const gap20 = at(t => 100); gap20[T - 20] = 0; assert.equal(coZoneOf(gap20, M, T), null); // 한 달 전 값 없음
+  const mid = at(t => 100); mid[T - 10] = 0; assert.equal(coZoneOf(mid, M, T)?.z, 'S'); // 가운데 빈 날은 괜찮음(셋만 봄) · x = y = 0 → 싹(세로 0 은 위쪽)
+  const jump = at(t => (t >= T - 19 ? 140 : 100)); assert.equal(coZoneOf(jump, M, T), null); // T − 19 날 +40% = 튄 날
+  const jumpOld = at(t => (t >= T - 20 ? 140 : 100)); assert.equal(coZoneOf(jumpOld, M, T)?.z, 'S'); // T − 20 날의 튐은 창 밖(셈 그대로 · x = y = 0)
+  assert.equal(coZoneOf(at(() => 100), M, 10), null); // 날이 20일보다 적음
+});
+
 test('전체 셈 — 업종 셋 · 작은 업종 뺌 · 뜨는 업종은 싹이고 점 넷 · 자료 꼴', () => {
-  const {theme, more} = fake();
+  const {theme, more, co} = fake();
   assert.equal(theme.schema, THEME_SCHEMA);
+  assert.equal(co.schema, THEME_SCHEMA + '-co'); assert.equal(co.asOf, theme.asOf); assert.equal(co.n + co.skip, 16); // 회사 16곳 모두 자리가 있거나 셀 수 없음
+  for (const [c, [x, y, z]] of Object.entries(co.co)) { assert.equal(z, zoneOf(x, y) ?? z); assert.ok(['B', 'W', 'S', 'Q'].includes(z), c); }
   assert.deepEqual(theme.inds.map(i => i.n).sort(), ['내리는 업종', '뜨는 업종', '잔잔한 업종']);
   const up = theme.inds.find(i => i.n === '뜨는 업종');
   assert.equal(up.z, 'S'); // 한 달은 아직 5%p 아래 · 닷새 힘 큼 → 꽃 선 앞 싹
@@ -107,5 +127,9 @@ test('올릴 때 셈 — 저장소 자료(있을 때만)로 두 파일을 쓰고
   assert.equal(hm.schema, 'dori-theme-1-home'); assert.deepEqual(hm.order.S, th.order.S.slice(0, 3)); assert.deepEqual(hm.count, th.count); assert.deepEqual(hm.record, th.record);
   for (const n of hm.order.S) { const a = hm.inds.find(i => i.n === n), b = th.inds.find(i => i.n === n); assert.deepEqual([a.x, a.y, a.d, a.t, a.dots, a.sc], [b.x, b.y, b.d, b.t, b.dots, b.sc]); }
   assert.ok(fs.statSync(path.join(tmp, 'next/data/theme-home.json')).size < 8_192, '첫 화면 칸 파일은 8KB 아래');
+  const tc = JSON.parse(fs.readFileSync(path.join(tmp, 'next/data/theme-co.json'), 'utf8'));
+  assert.equal(tc.schema, THEME_SCHEMA + '-co'); assert.equal(tc.asOf, th.asOf); assert.ok(tc.n >= 1000, '회사 자리 1,000곳 넘게'); assert.equal(Object.keys(tc.co).length, tc.n);
+  for (const [c, v] of Object.entries(tc.co)) { assert.match(c, /^[0-9][0-9A-Z]{5}$/); assert.equal(v.length, 3); assert.ok(['B', 'W', 'S', 'Q'].includes(v[2]), c); }
+  assert.ok(fs.statSync(path.join(tmp, 'next/data/theme-co.json')).size < 120_000, '회사 자리 파일은 120KB 아래');
   fs.rmSync(tmp, {recursive: true, force: true});
 });

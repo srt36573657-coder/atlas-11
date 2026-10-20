@@ -34,6 +34,8 @@ const R1 = x => Math.sign(x) * Math.floor(Math.abs(x) * 10 + 0.5 + 1e-7) / 10;
 function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math.floor(Math.abs(x) * 10 + 0.5 + 1e-7) / 10; if (r === 0) return '0.0%'; return (x > 0 ? '+' : '−') + (r >= 100 ? Math.floor(r + 0.5 + 1e-7).toLocaleString('ko-KR') : r.toFixed(1)) + '%'; }
 const MD = d => (/^\d{4}-\d{2}-\d{2}/.test(String(d)) ? (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일' : '?');
 const N = n => Number(n).toLocaleString('ko-KR');
+const PP = v => { if (!Number.isFinite(v)) return '?'; const r = Math.floor(Math.abs(v) * 10 + 0.5 + 1e-7) / 10; return (r === 0 ? '' : v > 0 ? '+' : '−') + r.toFixed(1); }; // %p 첫째 자리(테마 시계 글 꼴 — 부호는 반올림한 값으로)
+const ZN = {B: '꽃', W: '시듦', S: '싹', Q: '잠잠'}; // 결정표 2 자리 이름
 const WON = v => (v == null ? '?' : N(Math.round(v)) + '원');
 const EOK = v => { if (v == null) return '?'; const s = v < 0 ? '−' : '', a = Math.abs(v); return a >= 10000 ? s + R1(a / 10000).toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '조 원' : s + N(Math.round(a)) + '억 원'; };
 const JOSA = w => { const k = String(w).trim().slice(-1).charCodeAt(0) - 0xAC00; return k < 0 || k > 11171 ? w + '은(는)' : w + (k % 28 ? '은' : '는'); };
@@ -49,7 +51,8 @@ if (!core || !mkt || !comp || !lines || !names) { console.error('자료를 못 �
 const CO = mkt.companies, codes = Object.keys(CO), COMP = comp.companies, LINES = lines.lines;
 const surge = await getJ('surge.json').catch(e => { fail('자료', e.message); return null; }); // 꼬리표(급등 칸) 따로 셈
 const GDR = await fetchJSON(base + '/next/data/gdr.json', 'gdr.json').catch(e => { fail('자료', 'gdr.json ' + e.message); return null; }); // 꼬리표(고도리 칸 n번) 따로 셈
-const cond = await getJ('cond.json').catch(e => { fail('자료', e.message); return null; }); // 꼬리표(대장주) 따로 셈 — 칸 줄(c · rk · r5 · l5)을 이 검사가 직접 읽음
+const cond = await getJ('cond.json').catch(e => { fail('자료', e.message); return null; });
+const TCO = await fetchJSON(base + '/next/data/theme-co.json', 'theme-co.json').catch(() => null); // 테마 시계 자리 한 줄(결정표 9 · 2026-10-20 「맞아 정말 맞아」 박승혁 님 생각) — 파일 값 그대로 보이는지(셈 자체는 verify_theme_co.py 가 따로 셈) · 파일이 없으면 줄 없음 // 꼬리표(대장주) 따로 셈 — 칸 줄(c · rk · r5 · l5)을 이 검사가 직접 읽음
 /** 대장주 = 업종 안 회사 크기 1등(rk 1) · 5일 선(l5)이 있고 5일 오름(r5)이 숫자 · 시장 자료에 든 회사 · cond 가 시장과 같은 날일 때만(#/f/lead 칩과 같은 걸름 — 앱 코드는 안 씀) */
 const LEAD = new Set(cond?.asOf === mkt.asOf && cond?.co?.c ? cond.co.c.filter((c, k) => cond.co.rk?.[k] === 1 && CO[c] && Array.isArray(cond.co.l5?.[k]) && Number.isFinite(cond.co.r5?.[k])) : []);
 const IND = new Map(core.industries.map(i => [i.name, i]));
@@ -145,6 +148,7 @@ async function newGrab0(p, code) {
         tags: [...v.querySelectorAll('.wtags > a')].map(a => [N1(a), a.getAttribute('href'), a.classList.contains('pk')]),
         tabs: [...v.querySelectorAll('nav.wtabs > a')].map(a => [N1(a), a.getAttribute('href')]), tabsLabel: v.querySelector('nav.wtabs')?.getAttribute('aria-label') ?? null,
         play: v.querySelectorAll('.player .play').length, chapsOld: v.querySelectorAll('.chaps').length,
+        wz: (() => { const z = v.querySelector('.wz'); if (!z) return null; const tb = v.querySelector('nav.wtabs'), r = z.getBoundingClientRect(); return {tag: z.tagName.toLowerCase(), t: N1(z.querySelector('.wz-t')), n: [...z.querySelectorAll('.wz-n > span')].map(N1), q: N1(z.querySelector('.wz-n')), href: z.getAttribute('href'), z: z.getAttribute('data-z'), h: Math.round(r.height), after: !!(tb && (tb.compareDocumentPosition(z) & Node.DOCUMENT_POSITION_FOLLOWING))}; })(), // 테마 시계 자리 한 줄(결정표 9)
         order: [...v.children].filter(e => e.matches('.player, nav.wpath, h1.wt, p.wnow, p.ws, p.wsd, .wtags, nav.wtabs')).map(e => e.tagName.toLowerCase() + '.' + (e.classList[0] ?? '')),
       },
       sums: [...s.querySelectorAll('details.pco-more > summary')].map(e => N1(e)),
@@ -203,6 +207,12 @@ function headCheck(nw, code, o, c, where) {
   w('탭 넷 이름', H.tabs.map(x => x[0]), STEPS.map(x => x[1]));
   w('탭 넷 이름(aria)', H.tabsLabel, '7단 중 4 ~ 7단');
   H.tabs.forEach((x, k) => { bump('머리 셈'); const st = STEPS[k]?.[0]; if (!st || (x[1] !== '#/w/' + code + '/' + st && x[1] !== '/atlas/#/c/' + code + '/' + st)) fail('탭 고리', where + ' ' + x[0] + ' ' + x[1]); });
+  // 테마 시계 자리 한 줄(결정표 9 · 2026-10-20) — theme-co.json 값 그대로(자리 이름 · %p 첫째 자리 · 시계 읽는 법 고리 · 탭 아래) · 셀 수 없으면 「?」 줄 · 파일이 없으면 줄 없음
+  const zv = TCO?.co?.[code];
+  if (!TCO) w('테마 시계 자리 줄(자료 없음 → 줄 없음)', H.wz, null);
+  else if (Array.isArray(zv)) w('테마 시계 자리 줄', H.wz && [H.wz.tag, H.wz.t, H.wz.n, H.wz.href, H.wz.z, H.wz.after], ['a', `테마 시계로 보면 지금 ${ZN[zv[2]] ?? '?'} 자리예요`, [`한 달 시장보다 ${PP(zv[0])}%p`, `지난 닷새 시장보다 ${PP(zv[1])}%p`], '#/t/how', zv[2], true]);
+  else w('테마 시계 자리 줄(못 셈)', H.wz && [H.wz.tag, H.wz.t, H.wz.q, H.wz.after], ['p', '? 테마 시계 자리를 못 셌어요', '한 달 사이 값이 비었거나 크게 튄 날이 있어요.', true]);
+  if (H.wz && H.wz.h < 47.5) fail('테마 시계 자리 줄 높이 48px 밑', where + ' ' + H.wz.h);
   if (H.play) fail('큰 선 ▶ 표시 남음', where + ' ' + H.play);
   if (H.chapsOld) fail('옛 일곱 칸(.chaps) 남음', where + ' ' + H.chapsOld);
   w('머리 차례(탭 넷이 꼬리표보다 먼저)', H.order, ['div.player', 'nav.wpath', 'h1.wt', 'p.wnow', 'p.ws', 'nav.wtabs', ...(dateNote ? ['p.wsd'] : []), ...(wantTags(code, o).length ? ['div.wtags'] : [])]);

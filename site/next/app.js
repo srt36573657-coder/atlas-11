@@ -7,6 +7,7 @@ import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; /
 import {NAME, VIDEO} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
 import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026-10-18 [10] 1 · 2 — 갈래 → 큰 업종 …) · 그리는 곳 한 줄(route)
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
+import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
 import {homeBlock as themeHome} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 const $ = (sel, r = document) => r.querySelector(sel);
@@ -54,7 +55,7 @@ function odd(l) {
 }
 
 /* 자료 — 못 받으면 null(화면은 「?」) · 15초 뒤 다시 받아 봄 */
-const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json', themeHome: '/next/data/theme-home.json'}; // theme = 테마 쪽 자료 · themeHome = 첫 화면 칸 자료(올릴 때 셈 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
+const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json', themeHome: '/next/data/theme-home.json', themeCo: '/next/data/theme-co.json'}; // theme = 테마 쪽 자료 · themeHome = 첫 화면 칸 자료(올릴 때 셈 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
 const D = {}, failAt = {}, inflight = {};
 function need(k) {
   if (D[k] != null) return Promise.resolve(D[k]);
@@ -754,10 +755,24 @@ function wTags(a, X, open = false) { // open = 열한 질문을 끝낸 기기(p-
 function wTabs(a) { return h('nav', {class: 'wtabs', 'aria-label': '7단 중 4 ~ 7단'}, ...chapList(a).slice(3).map(([k, t, href]) => h('a', {class: 'wtab', href, 'data-step': k, text: t}))); }
 /** 모양 파일이 붙을 때까지(늦으면 3초 뒤 그냥 그림) — 회사 머리 모양이 p-co.css 에 있음 */
 function sheetReady(href) { const l = [...document.querySelectorAll('link[rel="stylesheet"]')].find(x => x.getAttribute('href') === href); return !l || l.sheet ? Promise.resolve() : new Promise(r => { l.addEventListener('load', r, {once: true}); l.addEventListener('error', r, {once: true}); setTimeout(r, 3000); }); }
+/** 테마 시계 자리 한 줄 — 회사 한 곳을 업종 시계와 같은 잣대로(결정표 9 · 사장님 2026-10-20 21:56 「맞아 정말 맞아」 — 박승혁 님 「삼성전자를 치면 이게 지금 꽃을 피운 단계에 있는 건지 시듦의 단계인건지도」)
+ *  자료(theme-co.json)를 못 받으면 줄 없음 · 셀 수 없는 회사(값 빔 · 크게 튄 날)는 「?」 한 줄 · 누르면 시계 읽는 법(#/t/how) · 지난 한 달 · 닷새 기록만(앞날 말 없음) */
+function wZone(a, TC) {
+  if (!TC || typeof TC.co !== 'object' || !TC.co) return null;
+  const v = TC.co[a];
+  if (!Array.isArray(v) || !Number.isFinite(v[0]) || !Number.isFinite(v[1]) || !TH_ZONES[v[2]]) return h('p', {class: 'wz wz-q cw'}, h('span', {class: 'wz-t', text: '? 테마 시계 자리를 못 셌어요'}), h('small', {class: 'wz-n', text: '한 달 사이 값이 비었거나 크게 튄 날이 있어요.'}));
+  const [x, y, z] = v;
+  return h('a', {class: 'wz cw', href: '#/t/how', 'data-z': z},
+    h('span', {class: 'wz-b'},
+      h('span', {class: 'wz-t'}, h('span', {text: '테마 시계로 보면 지금'}), ' ', h('b', {class: 'wz-z ' + z, text: TH_ZONES[z]}), ' ', h('span', {text: '자리예요'})),
+      h('small', {class: 'wz-n'}, h('span', {text: '한 달 시장보다 ' + thPp(x) + '%p'}), h('span', {text: '지난 닷새 시장보다 ' + thPp(y) + '%p'}))), // 두 줄(한 줄에 붙이면 390 폭에서 숫자가 끊겨 넘어감)
+    h('i', {'aria-hidden': 'true', text: '›'}));
+}
 async function vWatch(a) {
   if (a === 'KOSPI' || a === 'KOSDAQ') return vIndex(a);
   { const [code, sub] = String(a).split('/'); if (sub) { if (['past', 'rivals', 'grow', 'range'].includes(sub) && ready(sub)) return page(sub, code); location.replace('/atlas/#/c/' + code + '/' + sub); return {title: '…', nodes: []}; } }
   const css = ready('co') ? mod('co').then(() => sheetReady('/next/p-co.css'), () => {}) : null; // 회사 머리 모양이 붙은 뒤에 그림(첫 화면 숫자 자리가 흔들리지 않게)
+  const tcP = need('themeCo'); // 회사 자리(결정표 9 · 2026-10-20 「맞아 정말 맞아」 박승혁 님 생각) — 탭 아래 한 줄 · 못 받으면 줄 없음
   const rest = Promise.all([need('cond'), need('surge'), gdr(), css]); rest.catch(() => {}); // 먼저 시작 — 아래에서 회사 목록(core · mkt)을 기다리는 동안 함께 받음
   const gdrM = mod('gdr').catch(() => null); // 칸 번호 꼬리표 문(p-gdr opened — 못 받으면 꼬리표를 뺌 · 일꾼 KI)
   await Promise.all([need('core'), need('mkt')]);
@@ -789,6 +804,7 @@ async function vWatch(a) {
     h('p', {class: 'ws'}, h('span', {text: md(X.mkt.asOf) + ' 마감'}), ' · ', h('span', {text: '한 달 동안'}), ' ', h('b', {class: cls(x20), text: pct(x20)})),
     wTabs(a), // 탭 넷이 먼저 — 꼬리표가 늘어 둘째 줄이 생겨도 탭 줄이 첫 화면(아래 막대 위 572px) 안에 머물게
     pDay && pDay !== X.mkt.asOf ? h('p', {class: 'wsd'}, h('span', {text: '값은 ' + md(pDay) + ' 종가'})) : null, // 값 날이 마감 날과 다르면 탭 아래 한 줄(2026-10-20 — 날 줄 뒤에 붙이면 360 폭에서 두 줄이 되어 탭 넷이 첫 화면 밖으로 밀렸음 · 실제 사이트 000500 탭 아래 끝 585 > 막대 572)
+    wZone(a, await tcP), // 테마 시계 자리 한 줄(결정표 9) — 탭 넷 아래(탭이 첫 화면 밖으로 밀리지 않게)
     wTags(a, X, GM?.opened?.() === true), // 칸 번호 꼬리표는 열한 질문 뒤에만(opened)
     // 관심 담기(첫 단추 — 검사가 .acts 첫 .act 를 누름) · 보내기 · 매매일지로(2026-10-17 21:10 [3] 2 · 규칙 1 「하나 넣으면 하나 뺀다」 — 넣은 「이 회사로 왜 사?」 자리에서 「편지 쓰기」를 뺌 · 편지 여는 밤은 보유종목 바로 가기에)
     h('div', {class: 'acts cw'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),

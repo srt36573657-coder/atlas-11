@@ -3,6 +3,7 @@
 //   셈 = site/next/theme-engine.js computeTheme(결정표 docs/design/theme-2026-10-19/theme-engine.md) — 이 파일은 파일 읽기 · 쓰기만
 //   읽음: <site>/atlas/data/days.json · co/*.json(close · k0) · mkt.json(이름 · 업종) · core.json(업종 무리) · cond.json(업종 안 몸값 차례)
 //   씀:   <site>/next/data/theme.json(목록 · 업종 쪽 — 모든 업종 자리 · 점 넷 · 성적표) · theme-more.json(업종 쪽 회사 줄 — 큰 회사 셋 · 함께 움직인 8곳) · theme-home.json(첫 화면 칸만 · 4KB 남짓)
+//         · theme-co.json(회사 한 곳의 자리 — 결정표 9 · v1.3 · 2026-10-20 「맞아 정말 맞아」 박승혁 님 생각 · 회사 화면 탭 아래 한 줄)
 //   사이트 자료는 바꾸지 않음 · 못 만들면 던짐(build_data.mjs 가 받아 적고 나머지는 만듦 — 화면은 파일이 없으면 「?」 한 줄)
 //   쓰는 법: node scripts/atlas11/next/build/theme.mjs [--site site]   ·   import {build} from './theme.mjs'; await build({siteDir})
 import fs from 'node:fs/promises';
@@ -37,7 +38,7 @@ export async function build({siteDir = 'site', made = new Date().toISOString()} 
   if (closes.size < 100) throw Error('theme: 종가 파일이 너무 적음 ' + closes.size);
   const co = cond?.co, rk = new Map();
   if (co && Array.isArray(co.c) && Array.isArray(co.rk)) co.c.forEach((c, k) => { if (Number.isInteger(co.rk[k])) rk.set(c, co.rk[k]); });
-  const {theme, more} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, provisional: core?.provisional === true || cond?.provisional === true, made});
+  const {theme, more, co: coz} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, provisional: core?.provisional === true || cond?.provisional === true, made});
   const out = path.join(siteDir, 'next', 'data');
   await fs.mkdir(out, {recursive: true});
   const a = JSON.stringify(theme), b = JSON.stringify(more), c = JSON.stringify(homeOf(theme));
@@ -45,8 +46,9 @@ export async function build({siteDir = 'site', made = new Date().toISOString()} 
   await put('theme.json', a);
   await put('theme-more.json', b);
   await put('theme-home.json', c); // 첫 화면 칸만(느린 4G 첫 그림 · check_white ③)
+  await put('theme-co.json', JSON.stringify(coz)); // 회사 자리(결정표 9) — 회사 화면만 받음(첫 화면은 안 받음)
   const R = theme.record;
-  return `업종 ${theme.inds.length}곳 · 기준 ${theme.asOf} · 싹 ${theme.count.S} 꽃 ${theme.count.B} 시듦 ${theme.count.W} 잠잠 ${theme.count.Q} · 진짜 싹 ${theme.count.real} · 성적표 모든 날 ${R.all.p}%(${R.all.n}) 진짜 싹 ${R.real.p}%(${R.real.n}) 두 절반 ${R.more ? '모두 높음' : '차이 없음'} · ${Buffer.byteLength(a) + 1}+${Buffer.byteLength(b) + 1}바이트`;
+  return `회사 자리 ${coz.n}곳(못 셈 ${coz.skip}) · 업종 ${theme.inds.length}곳 · 기준 ${theme.asOf} · 싹 ${theme.count.S} 꽃 ${theme.count.B} 시듦 ${theme.count.W} 잠잠 ${theme.count.Q} · 진짜 싹 ${theme.count.real} · 성적표 모든 날 ${R.all.p}%(${R.all.n}) 진짜 싹 ${R.real.p}%(${R.real.n}) 두 절반 ${R.more ? '모두 높음' : '차이 없음'} · ${Buffer.byteLength(a) + 1}+${Buffer.byteLength(b) + 1}바이트`;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

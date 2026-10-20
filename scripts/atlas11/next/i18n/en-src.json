@@ -8804,6 +8804,11 @@
   "오늘 새로 들어온 싹은 없어요.": "No new sprouts today.",
   "더 깊이 보기": "Go deeper",
   "누르면 일곱 단까지 가요.": "Tap to go all seven steps.",
-  "다음 단 · 사기 전에 ›": "Next step · Before buying ›"
+  "다음 단 · 사기 전에 ›": "Next step · Before buying ›",
+  "테마 시계로 보면 지금": "On the theme clock, now in the",
+  "자리예요": "zone",
+  "한 달 시장보다 {n}%p": "{n}pp vs market over 1 month",
+  "? 테마 시계 자리를 못 셌어요": "? Couldn't place it on the theme clock",
+  "한 달 사이 값이 비었거나 크게 튄 날이 있어요.": "A price was missing in the past month, or a day jumped too much."
  }
 }

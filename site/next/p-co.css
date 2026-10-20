@@ -158,3 +158,14 @@ html.white .pco-next { outline: 1px solid var(--hair2); outline-offset: -1px; }
 /* 좁은 폭(374px 아래)에서 회사 큰 선을 2 : 1 로(16 : 9 보다 360 폭에서 22px 낮음) — 오늘 값 줄(30px 두 숫자 · 28px 아래로 못 줄임)이 긴 값 · 큰 하루 %(예 123,450원 하루 +29.98%)로 두 줄이 되어도 탭 넷이 첫 화면(아래 막대 위 572px) 안에 머물게
    2026-10-20 실제 사이트 000500 탭 아래 끝 585 > 572(이 방 흉내: 오늘 값 줄 39 → 78px · 탭 546 → 585) — 틀림 장부 80 */
 @media (max-width: 374px) { .player.cw { aspect-ratio: 2 / 1; } }
+/* 테마 시계 자리 한 줄(결정표 9 · 사장님 2026-10-20 21:56 「맞아 정말 맞아」 — 박승혁 님 생각 · app.js wZone) — 탭 아래 · 누르면 시계 읽는 법 · 테 한 줄(그림자 없음) */
+.wz.cw { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); margin: var(--sp-1) var(--sp-2) 0; min-height: 48px; padding: var(--sp-1) var(--sp-2); border: 0; outline: 1px solid var(--hair2); outline-offset: -1px; border-radius: 12px; color: var(--ink); } /* 테는 outline — 글 시작이 다른 칸(32px)과 같은 줄(border 1px 이면 33px 새 줄 · check_co 왼쪽 줄 ≤ 3) */
+.wz.cw .wz-b { min-width: 0; }
+.wz.cw .wz-t { display: block; font-size: var(--fs-2); line-height: 1.35; }
+.wz.cw .wz-n { display: block; margin-top: 0; font-size: var(--fs-1); line-height: 1.35; color: var(--sub); } /* 간격 0 · 8 · 16 · 24 만 */
+.wz.cw .wz-n > span { display: block; }
+.wz.cw .wz-z { font-weight: 800; }
+.wz.cw .wz-z.S, .wz.cw .wz-z.B { color: var(--ink); }
+.wz.cw .wz-z.W, .wz.cw .wz-z.Q { color: var(--sub); }
+.wz.cw > i { flex: none; font-style: normal; color: var(--sub); font-size: var(--fs-3); text-align: right; } /* 오른쪽 끝 표시는 글 시작 줄 셈 밖 */
+.wz.cw.wz-q { display: block; }

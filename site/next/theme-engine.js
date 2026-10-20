@@ -1,7 +1,8 @@
 /* 테마 시계 셈 한 곳(사장님 2026-10-19(싱가포르) 16:06 「테마가 된 게 아니라 될 듯한 걸 찾아 주는 거야 … 이 본질이 중심이자 시작」 ·
    16:54 「큰 구조는 건들이지 말고 더 스마트한 내부 시스템을 만들어서 올려」) — 결정표 docs/design/theme-2026-10-19/theme-engine.md 그대로
    다른 파일을 부르지 않음 · 화면(DOM)을 만지지 않음 — 올릴 때 셈(scripts/atlas11/next/build/theme.mjs) · 시험(tests/atlas11/theme.test.mjs) · 화면(p-theme.js 의 글 틀)이 같이 부름
-   셈은 올릴 때 한 번(모든 회사 종가 839일) → /next/data/theme.json · theme-more.json — 화면은 그 파일만 읽음(첫 화면은 mkt · cond 를 받지 않음 · [9] 7) */
+   셈은 올릴 때 한 번(모든 회사 종가 839일) → /next/data/theme.json · theme-more.json — 화면은 그 파일만 읽음(첫 화면은 mkt · cond 를 받지 않음 · [9] 7)
+   v1.3(2026-10-20 · 결정표 9): 회사 한 곳의 자리 → /next/data/theme-co.json(회사 화면 탭 아래 한 줄 — app.js wZone) */
 
 import {THEME_SCHEMA, RULE, ZONES, zoneOf, pp, nearBar, DOT_TEXT} from './theme-rule.js'; // 잣대 · 글 꼴은 theme-rule.js 한 곳(화면도 같이 씀)
 export {THEME_SCHEMA, RULE, ZONES, zoneOf, pp, nearBar, DOT_TEXT};
@@ -38,6 +39,17 @@ export function dotsAt({I, M, cs, big}, t) {
   const bx = big.map(a => chg10(a, t)).filter(v => v != null), bigAvg = bx.length ? bx.reduce((p, q) => p + q, 0) / bx.length : null;
   const real = I[t] / I[t - RULE.back] > 1;
   return {dots: [y >= RULE.powerY, tot > 0 && up * 2 >= tot, bigAvg != null && bigAvg >= RULE.bigUp, real], up, tot, bigAvg};
+}
+
+/** 회사 자리(결정표 9 · v1.3 · 사장님 2026-10-20 21:56 「맞아 정말 맞아」 — 박승혁 님 생각 「삼성전자를 치면 이게 지금 꽃을 피운 단계에 있는 건지 시듦의 단계인건지도」)
+ *  업종 지수 I 대신 회사 한 곳의 종가 a 로 2 의 셈 그대로 → {x, y, z} · 셀 수 없으면 null
+ *  셀 수 없음 = ① close(T) · close(T − 5) · close(T − 20) 가운데 빈 것 ② T − 19 ~ T 에 하루 |r| ≥ 0.35 인 날(1 의 지수에서 빼는 것과 같은 잣대 — 나눔 · 합침 · 자료 잘못) */
+export function coZoneOf(a, M, T) {
+  const k = RULE.win;
+  if (!a || T - k < 0 || !ok(a[T]) || !ok(a[T - 5]) || !ok(a[T - k])) return null;
+  for (let s = T - k + 1; s <= T; s++) if (ok(a[s - 1]) && ok(a[s]) && Math.abs(a[s] / a[s - 1] - 1) >= RULE.jump) return null;
+  const x = exOf(a, M, T, k) * 100, y = exOf(a, M, T, 5) * 100;
+  return {x, y, z: zoneOf(x, y)};
 }
 
 /** 싹 순서(결정표 4) — 점 수 → y → 이름 */
@@ -98,7 +110,11 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
     inds: inds.map(lite), record,
   };
   const more = {schema: THEME_SCHEMA + '-more', made, asOf: dates[T], inds: Object.fromEntries(inds.map(i => [i.n, {big: i.big, top: i.top, ranked: i.ranked}]))};
-  return {theme, more};
+  // 회사 자리(결정표 9 · v1.3) — 모든 회사 · 셀 수 없는 회사는 빠짐(화면은 「?」) · x · y 는 소수 둘째 자리(8)
+  const cz = {}; let skip = 0;
+  for (const c of codes) { const v = coZoneOf(closes.get(c), M, T); if (!v) { skip++; continue; } cz[c] = [r2(v.x), r2(v.y), v.z]; }
+  const co = {schema: THEME_SCHEMA + '-co', made, asOf: dates[T], from20: dates[T - RULE.win], from5: dates[T - 5], provisional: !!provisional, n: Object.keys(cz).length, skip, co: cz};
+  return {theme, more, co};
 }
 
 /** 성적표(결정표 6) — t = 40 ~ T − 20 · 「한 달 뒤 꽃 선」 = ex(t + 20, 20) ≥ 0.05 */
