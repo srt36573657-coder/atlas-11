@@ -141,11 +141,11 @@ async function newGrab0(p, code) {
       words, warn0, title: document.title,
       head: { // 머리(app.js vWatch) — 큰 선 밑 길 표시 · 이름 · 오늘 값 · 날 줄 · 꼬리표 · 탭 넷
         path: [...v.querySelectorAll('nav.wpath > a, nav.wpath > span:not(.wsep)')].map(e => [N1(e), e.getAttribute('href')]), pathLabel: v.querySelector('nav.wpath')?.getAttribute('aria-label') ?? null,
-        wt: N1(v.querySelector('h1.wt')), price: N1(wn?.querySelector('.wn-p')), dayK: N1(wn?.querySelector('.wn-k')), day: N1(wn?.querySelector('.wn-d')), dayCls: wn?.querySelector('.wn-d')?.className ?? '', ws: N1(v.querySelector('p.ws')),
+        wt: N1(v.querySelector('h1.wt')), price: N1(wn?.querySelector('.wn-p')), dayK: N1(wn?.querySelector('.wn-k')), day: N1(wn?.querySelector('.wn-d')), dayCls: wn?.querySelector('.wn-d')?.className ?? '', ws: N1(v.querySelector('p.ws')), wsd: N1(v.querySelector('p.wsd')),
         tags: [...v.querySelectorAll('.wtags > a')].map(a => [N1(a), a.getAttribute('href'), a.classList.contains('pk')]),
         tabs: [...v.querySelectorAll('nav.wtabs > a')].map(a => [N1(a), a.getAttribute('href')]), tabsLabel: v.querySelector('nav.wtabs')?.getAttribute('aria-label') ?? null,
         play: v.querySelectorAll('.player .play').length, chapsOld: v.querySelectorAll('.chaps').length,
-        order: [...v.children].filter(e => e.matches('.player, nav.wpath, h1.wt, p.wnow, p.ws, .wtags, nav.wtabs')).map(e => e.tagName.toLowerCase() + '.' + (e.classList[0] ?? '')),
+        order: [...v.children].filter(e => e.matches('.player, nav.wpath, h1.wt, p.wnow, p.ws, p.wsd, .wtags, nav.wtabs')).map(e => e.tagName.toLowerCase() + '.' + (e.classList[0] ?? '')),
       },
       sums: [...s.querySelectorAll('details.pco-more > summary')].map(e => N1(e)),
       text: v.innerText, pco: s.innerText,
@@ -196,14 +196,16 @@ function headCheck(nw, code, o, c, where) {
   w('오늘 하루 %', H.day, P(day));
   if (!H.dayCls.split(' ').includes(clsOf(day))) fail('오늘 하루 색', where + ' ' + H.dayCls + ' ≠ ' + clsOf(day));
   const pDay = okP && /^\d{4}-\d{2}-\d{2}/.test(String(c.priceDate ?? '')) ? String(c.priceDate).slice(0, 10) : null;
-  w('날 줄', H.ws, `${MD(mkt.asOf)} 마감 · 한 달 동안 ${P(c20(o))}` + (pDay && pDay !== mkt.asOf ? ` · 값은 ${MD(pDay)} 종가` : ''));
+  const dateNote = pDay && pDay !== mkt.asOf; // 값 날이 마감 날과 다르면 탭 아래 한 줄(p.wsd · 2026-10-20 — 날 줄 뒤에 붙이면 360 폭에서 탭 넷이 첫 화면 밖으로 밀렸음)
+  w('날 줄', H.ws, `${MD(mkt.asOf)} 마감 · 한 달 동안 ${P(c20(o))}`);
+  w('값 날 줄(탭 아래)', H.wsd, dateNote ? `값은 ${MD(pDay)} 종가` : '');
   w('꼬리표', H.tags, wantTags(code, o));
   w('탭 넷 이름', H.tabs.map(x => x[0]), STEPS.map(x => x[1]));
   w('탭 넷 이름(aria)', H.tabsLabel, '7단 중 4 ~ 7단');
   H.tabs.forEach((x, k) => { bump('머리 셈'); const st = STEPS[k]?.[0]; if (!st || (x[1] !== '#/w/' + code + '/' + st && x[1] !== '/atlas/#/c/' + code + '/' + st)) fail('탭 고리', where + ' ' + x[0] + ' ' + x[1]); });
   if (H.play) fail('큰 선 ▶ 표시 남음', where + ' ' + H.play);
   if (H.chapsOld) fail('옛 일곱 칸(.chaps) 남음', where + ' ' + H.chapsOld);
-  w('머리 차례(탭 넷이 꼬리표보다 먼저)', H.order, ['div.player', 'nav.wpath', 'h1.wt', 'p.wnow', 'p.ws', 'nav.wtabs', ...(wantTags(code, o).length ? ['div.wtags'] : [])]);
+  w('머리 차례(탭 넷이 꼬리표보다 먼저)', H.order, ['div.player', 'nav.wpath', 'h1.wt', 'p.wnow', 'p.ws', 'nav.wtabs', ...(dateNote ? ['p.wsd'] : []), ...(wantTags(code, o).length ? ['div.wtags'] : [])]);
 }
 /** 한 화면 재기(쪽 안에서 돎 · measure_type.mjs 와 같은 자 — 글 마디: 빈칸 아닌 글 중 상자 1×1px 넘고 보이는 것 · 제 글을 가진 칸 = 그 글을 바로 품은 요소)
     접은 칸(details)은 닫은 채로 잼 — 사람이 처음 보는 모습 */

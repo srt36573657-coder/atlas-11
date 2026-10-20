@@ -786,8 +786,9 @@ async function vWatch(a) {
     wPath(I, g),
     h('h1', {class: 'wt', text: c.n}),
     h('p', {class: 'wnow'}, h('b', {class: 'wn-p num', text: okP ? num(pr) + '원' : '?'}), h('span', {class: 'wn-k', text: '하루'}), h('b', {class: 'wn-d num ' + cls(day), text: pct(day)})),
-    h('p', {class: 'ws'}, h('span', {text: md(X.mkt.asOf) + ' 마감'}), ' · ', h('span', {text: '한 달 동안'}), ' ', h('b', {class: cls(x20), text: pct(x20)}), ...(pDay && pDay !== X.mkt.asOf ? [' · ', h('span', {text: '값은 ' + md(pDay) + ' 종가'})] : [])),
+    h('p', {class: 'ws'}, h('span', {text: md(X.mkt.asOf) + ' 마감'}), ' · ', h('span', {text: '한 달 동안'}), ' ', h('b', {class: cls(x20), text: pct(x20)})),
     wTabs(a), // 탭 넷이 먼저 — 꼬리표가 늘어 둘째 줄이 생겨도 탭 줄이 첫 화면(아래 막대 위 572px) 안에 머물게
+    pDay && pDay !== X.mkt.asOf ? h('p', {class: 'wsd'}, h('span', {text: '값은 ' + md(pDay) + ' 종가'})) : null, // 값 날이 마감 날과 다르면 탭 아래 한 줄(2026-10-20 — 날 줄 뒤에 붙이면 360 폭에서 두 줄이 되어 탭 넷이 첫 화면 밖으로 밀렸음 · 실제 사이트 000500 탭 아래 끝 585 > 막대 572)
     wTags(a, X, GM?.opened?.() === true), // 칸 번호 꼬리표는 열한 질문 뒤에만(opened)
     // 관심 담기(첫 단추 — 검사가 .acts 첫 .act 를 누름) · 보내기 · 매매일지로(2026-10-17 21:10 [3] 2 · 규칙 1 「하나 넣으면 하나 뺀다」 — 넣은 「이 회사로 왜 사?」 자리에서 「편지 쓰기」를 뺌 · 편지 여는 밤은 보유종목 바로 가기에)
     h('div', {class: 'acts cw'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),

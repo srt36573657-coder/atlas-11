@@ -153,3 +153,5 @@ html.white .pco-key .k-co { background: none; border-left: 12px solid var(--up);
 html.white .pco-key .k-pick { background: var(--gold); background-clip: padding-box; border-left: 11px solid transparent; border-right: 11px solid transparent; }
 html.white .pco-why { position: relative; } html.white .pco-why::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--sub); } /* 그림자 대신 막대(안쪽 띄움 16 그대로 — 간격 0 · 8 · 16 · 24) */
 html.white .pco-next { outline: 1px solid var(--hair2); outline-offset: -1px; }
+/* 값 날 줄(마감 날과 다를 때 · 탭 넷 아래 — 2026-10-20 탭이 360 폭 첫 화면 밖으로 밀리던 것) — 날 줄(.ws)과 같은 글씨 */
+.wsd { margin: var(--sp-1) var(--sp-2) 0; color: var(--sub); font-size: var(--fs-1); }
