@@ -1,15 +1,13 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T19:40:24.803Z",
+ "at": "2026-10-20T20:00:09.466Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 420,
-  "fail": 1
+  "pass": 421,
+  "fail": 0
  },
- "fails": [
-  "③ 첫 질문까지 누름 2번 안 — 1번 눌러도 「1 / 11」이 안 보임"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
@@ -373,7 +371,7 @@
   },
   "taps": {
    "rise": 2,
-   "q1": null,
+   "q1": 1,
    "record": 1,
    "jinhwa": 1,
    "kakao": 1
@@ -681,18 +679,15 @@
    }
   },
   "speed": {
-   "lcp": 1092,
+   "lcp": 1072,
    "inp": 32,
-   "cls": 0.003
+   "cls": 0.004
   }
  },
  "net": {
-  "retry": 6,
-  "why": {
-   "HTTP 403": 2,
-   "열기 실패": 4
-  }
+  "retry": 0,
+  "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
