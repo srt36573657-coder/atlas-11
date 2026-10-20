@@ -181,7 +181,7 @@ let CUR = null, SEQ = 0;
 /** 「친구에게 무슨 말을 할래?」 — 닫히면 {how: 'share' | 'copy' | 'show' | 'cancel' | 'close' | 'kakao', text, url} */
 export async function open(o = {}) {
   if (CUR) CUR.close('replace');
-  const my = ++SEQ;
+  const my = ++SEQ, h0 = typeof location !== 'undefined' ? location.hash : ''; // 누른 쪽 — 모양 · 회사 자료를 받는 사이 다른 쪽으로 가면 열지 않음(아래)
   await css();
   const code = String(o.code ?? ''), stock = CODE_RE.test(code);
   const kind = o.kind === 'ask' && stock ? 'ask' : 'share';
@@ -190,6 +190,7 @@ export async function open(o = {}) {
   const [c, halfTxt] = await Promise.all([stock && (!day || !price || !name) ? coInfo(code) : null, surge ? halfOf(o.half) : '']);
   if (c) { day = day ?? c.day; price = price ?? c.price; name = name ?? c.name; }
   if (my !== SEQ) return {how: 'close', text: null, url: null}; // 받는 사이에 다른 보내기를 눌렀음 — 새 것만 엶
+  if (typeof location !== 'undefined' && location.hash !== h0) return {how: 'close', text: null, url: null}; // 받는 사이에 다른 쪽으로 감 — 늦게 떠서 다음 쪽을 덮지 않게(2026-10-20 실제 사이트 큰 시험 #/surge/30 · 40)
   const asStock = stock && !!day && !!price;
   const title = noGain(o.title) || (asStock && name ? L(name + ' · ' + NAME) : NAME), lead = noGain(o.text);
   const half = asStock && halfTxt ? L(halfTxt) : ''; // 보내는 글 · 카드에 들어가는 반값 한 줄(지금 말로) — 화면에는 한국어 원문(엔진이 바꿈)

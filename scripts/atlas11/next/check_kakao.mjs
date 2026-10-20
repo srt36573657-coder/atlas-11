@@ -28,6 +28,8 @@ const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 const has = k => argv.includes(k);
 const BASE = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), PATH = arg('--path', '/next/?dev=1');
+/** 실제 사이트(원격)인가 — 시험 서버(127.0.0.1 · localhost)는 다시 누르지 않음(net.mjs isRemote 와 같은 잣대) */
+const REMOTE = !/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:\d+)?(\/|$)/i.test(BASE);
 const ALL = has('--all'), LIMIT = Number(arg('--limit', 0)) || 0, CLICK = !has('--no-click'), OUT = arg('--out', null);
 const WIDTHS = String(arg('--w', '360,320,390')).split(',').map(Number).filter(w => w >= 280 && w <= 1600);
 const ONLY = arg('--routes', null)?.split(',').map(s => s.trim()).filter(Boolean) ?? null;
@@ -156,6 +158,7 @@ function scan({skip, nolink}) {
 const browser = await chromium.launch((await fs.stat('/opt/pw-browsers/chromium').catch(() => null)) ? {executablePath: '/opt/pw-browsers/chromium'} : {}).catch(e => { console.error('브라우저를 못 띄움 —', e.message); process.exit(2); });
 const ctx = await browser.newContext({viewport: {width: WIDTHS[0], height: 640}, deviceScaleFactor: 1, reducedMotion: 'reduce'});
 await ctx.addInitScript(sd => { try { if (window.top !== window) return; if (sessionStorage.getItem('kk-seeded')) return; sessionStorage.setItem('kk-seeded', '1'); for (const [k, v] of Object.entries(sd)) localStorage.setItem(k, v); } catch { /* 기억 못 하는 쪽 */ } }, SEED);
+if (process.env.KK_SLOW_TEST) { let slow = false; await ctx.route('**/next/p-share.js*', async r => { if (!slow) { slow = true; await new Promise(res => setTimeout(res, 10000)); } return r.continue().catch(() => {}); }); } // 검사 자체 시험 — 글상자 모듈 첫 받기를 10초 늦춤(실제 사이트에서 8초 넘어 열리는 글상자 흉내 · 다시 누름 길)
 const p = await ctx.newPage();
 const st = {n: 0, last: Date.now()}, errs = [];
 p.on('request', () => { st.n++; st.last = Date.now(); });
@@ -180,7 +183,8 @@ async function openAll() {
   if (n) { await netQuiet(120, 1500); await frames(); }
 }
 
-const fails = [], warn = [], places = {}, skipped = {}, list = [];
+const fails = [], warn = [], places = {}, skipped = {}, list = [], again = {};
+const bump2 = k => { again[k] = (again[k] || 0) + 1; }; // 다시 눌러 열린 수(실제 사이트) — 결과 counts.again
 let nRows = 0, nBtns = 0, nLinks = 0, clicks = 0;
 const fail = (route, w, k, x) => fails.push({route, w, k, x});
 for (const route of mine) {
@@ -215,18 +219,36 @@ for (const route of mine) {
   let clicked = '';
   if (CLICK && first?.nrows) {
     if (p.viewportSize()?.width !== WIDTHS[0]) { await p.setViewportSize({width: WIDTHS[0], height: 640}); await frames(); }
-    const pickBtn = await p.evaluate(() => {
+    const pick = () => p.evaluate(() => {
       for (const e of document.querySelectorAll('[data-kkt],[data-kkl]')) { e.removeAttribute('data-kkt'); e.removeAttribute('data-kkl'); }
       const rows = [...document.querySelectorAll('#view [data-kkrow]')].filter(r => { const b = r.querySelector('button.kk-btn[data-kk]'), x = b?.getBoundingClientRect(); return x && x.width > 0 && x.height > 0; });
       const r = rows[0]; if (!r) return null;
       const b = r.querySelector('button.kk-btn[data-kk]'); b.setAttribute('data-kkt', '1'); b.scrollIntoView({block: 'center'});
       return {place: r.dataset.kkrow, code: b.dataset.kk, name: String(b.getAttribute('aria-label') ?? '').replace(/ 카톡으로 보내기$/, '')};
     });
+    const isOpen = () => { const d = document.querySelector('.ps-dlg'); return !!d && (d.tagName !== 'DIALOG' || d.open); };
+    let pickBtn = await pick();
     if (pickBtn) {
       await frames();
-      const before = await p.evaluate(() => ({hash: location.hash, y: Math.round(scrollY)}));
-      await p.click('[data-kkt="1"]', {timeout: 5000}).catch(e => fail(route, WIDTHS[0], '카톡 단추를 못 누름', `${pickBtn.place} ${String(e.message).split('\n')[0]}`));
-      const box = await p.waitForFunction(() => { const d = document.querySelector('.ps-dlg'); return !!d && (d.tagName !== 'DIALOG' || d.open); }, null, {timeout: 8000, polling: 100}).then(() => true, () => false);
+      let before = await p.evaluate(() => ({hash: location.hash, y: Math.round(scrollY)})), clickErr = null;
+      await p.click('[data-kkt="1"]', {timeout: 5000}).catch(e => { clickErr = e; });
+      let box = await p.waitForFunction(isOpen, null, {timeout: 8000, polling: 100}).then(() => true, () => false);
+      if (!box && REMOTE) { // 실제 사이트에서 8초 안에 안 열림(2026-10-20 live-fix 5/11 #/surge/20 · 30 · 40 — 늦게 뜬 글상자가 다음 길까지 남아 다른 회사 이름 · 못 누름 · 보던 자리까지 번짐)
+        // 늦게 뜨는 글상자를 15초까지 기다려 닫고(다음 길로 새지 않게) · 이 길을 새로 열어 첫 줄 단추를 한 번 더 — 같은 8초 잣대 · 그래도 안 열리면 그대로 실패
+        const late = await p.waitForFunction(isOpen, null, {timeout: 15000, polling: 200}).then(() => true, () => false);
+        if (late) { await p.click('.ps-dlg .ps-x', {timeout: 3000}).catch(() => p.keyboard.press('Escape')); await p.waitForFunction(() => { const d = document.querySelector('.ps-dlg'); return !d || (d.tagName === 'DIALOG' && !d.open) || !d.isConnected; }, null, {timeout: 4000, polling: 100}).catch(() => {}); warn.push(`${route} 카톡 글상자가 8초 넘어 열림(실제 사이트) — 다시 누름`); }
+        await p.reload({waitUntil: 'commit', timeout: 20000}).catch(() => {}); await go(route).catch(() => false); await openAll();
+        if (p.viewportSize()?.width !== WIDTHS[0]) { await p.setViewportSize({width: WIDTHS[0], height: 640}); await frames(); }
+        pickBtn = await pick();
+        if (pickBtn) {
+          await frames(); before = await p.evaluate(() => ({hash: location.hash, y: Math.round(scrollY)})); clickErr = null;
+          await p.click('[data-kkt="1"]', {timeout: 5000}).catch(e => { clickErr = e; });
+          box = await p.waitForFunction(isOpen, null, {timeout: 8000, polling: 100}).then(() => true, () => false);
+          if (box) bump2('카톡 단추 다시 눌러 열림(실제 사이트)');
+        }
+      }
+      if (clickErr) fail(route, WIDTHS[0], '카톡 단추를 못 누름', `${pickBtn?.place} ${String(clickErr.message).split('\n')[0]}`);
+      if (!pickBtn) pickBtn = {place: '?', code: '?', name: null};
       const mid = await p.evaluate(() => ({hash: location.hash, d: document.querySelector('.ps-dlg #ps-d')?.textContent ?? ''}));
       if (!box) fail(route, WIDTHS[0], '카톡 단추를 눌러도 글상자가 안 열림', `${pickBtn.place} ${pickBtn.code}`);
       else if (pickBtn.name && !(mid.d.includes(pickBtn.name) && /값 [\d,]+원/.test(mid.d))) fail(route, WIDTHS[0], '글상자에 종목 이름 · 오늘 값이 저절로 안 들어감([6] 3)', `${pickBtn.place} ${pickBtn.code} ${pickBtn.name} · 「${mid.d.slice(0, 40)}」`);
@@ -271,7 +293,7 @@ await browser.close().catch(() => {});
 
 const res = {schema: 'atlas11-next-kakao-1', at: new Date().toISOString(), base: BASE, all: ALL, limit: LIMIT || null, widths: WIDTHS, click: CLICK, ...SH.info(),
   seconds: Math.round((Date.now() - T0) / 1000),
-  counts: {routes: mine.length, rows: nRows, btns: nBtns, links: nLinks, clicks, fail: fails.length, places, skipped, list},
+  counts: {routes: mine.length, rows: nRows, btns: nBtns, links: nLinks, clicks, fail: fails.length, places, skipped, list, again},
   fails: fails.slice(0, 500), warn: [...new Set(warn)].slice(0, 50), ok: fails.length === 0};
 if (OUT) { await fs.mkdir(path.dirname(path.resolve(ROOT, OUT)), {recursive: true}); await fs.writeFile(path.resolve(ROOT, OUT), JSON.stringify(res, null, 1) + '\n'); }
 for (const f of fails.slice(0, 40)) console.log(`  ✗ ${f.route} · ${f.w} · ${f.k} — ${f.x}`);

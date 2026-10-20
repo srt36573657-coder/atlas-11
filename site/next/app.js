@@ -122,8 +122,9 @@ async function share(title, url) {
 /** 보내기 글상자(사장님 2026-10-17 21:10 [4] — 「친구에게 무슨 말을 할래?」부터 · 수익률 글 없음) — 일꾼 C 의 p-share open(o) 을 부름
     o = {kind: 'share' | 'ask', title, url, code?, price?, day?} · 모듈을 못 받으면 옛 보내기(제목 · 주소) */
 async function shareBox(o = {}) {
-  let m = null;
+  let m = null; const h0 = location.hash; // 누른 쪽 — 모듈을 받는 사이(느린 망) 다른 쪽으로 가면 열지 않음(2026-10-20 늦게 뜬 글상자가 다음 쪽을 덮고 다른 회사 이름으로 열리던 것)
   try { m = await mod('share'); } catch (e) { console.error(e); }
+  if (location.hash !== h0) return {how: 'close', text: null, url: null};
   if (typeof m?.open === 'function') { try { return await m.open(o); } catch (e) { console.error(e); } }
   return share(o.title, o.url);
 }
