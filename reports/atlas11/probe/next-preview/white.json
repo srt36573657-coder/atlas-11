@@ -1,23 +1,25 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T16:33:20.295Z",
+ "at": "2026-10-20T17:55:51.482Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 425,
-  "fail": 0
+  "pass": 420,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "③ 밀림 0.1 아래 — 0.140"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
     "ess": 1199,
-    "find": 728,
+    "find": 776,
     "today": 1291,
-    "gdr": 776,
-    "all": 776
+    "gdr": 1640,
+    "all": 1640
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -199,10 +201,10 @@
    "chars": 105,
    "blocks": {
     "ess": 1076,
-    "find": 728,
+    "find": 776,
     "today": 1168,
-    "gdr": 776,
-    "all": 776
+    "gdr": 1517,
+    "all": 1517
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -679,15 +681,15 @@
    }
   },
   "speed": {
-   "lcp": 2304,
-   "inp": 40,
-   "cls": 0.1
+   "lcp": 2292,
+   "inp": 32,
+   "cls": 0.14
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
