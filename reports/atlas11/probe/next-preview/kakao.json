@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-20T05:16:26.837Z",
+ "at": "2026-10-20T05:40:06.035Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -14,7 +14,7 @@
  "units": {
   "total": 251,
   "mine": 251,
-  "hash": "b774d2299eb63bef",
+  "hash": "f5c2d62023bf049d",
   "kinds": {
    "r": {
     "total": 251,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 119,
+ "seconds": 115,
  "counts": {
   "routes": 251,
-  "rows": 7918,
-  "btns": 7918,
-  "links": 9273,
+  "rows": 7903,
+  "btns": 7903,
+  "links": 9258,
   "clicks": 479,
   "fail": 0,
   "places": {
@@ -46,11 +46,11 @@
     "routes": 3
    },
    "surge.row": {
-    "rows": 32,
-    "btns": 32,
-    "surge": 32,
+    "rows": 14,
+    "btns": 14,
+    "surge": 14,
     "share": 0,
-    "routes": 4
+    "routes": 1
    },
    "surge.board": {
     "rows": 91,
@@ -102,10 +102,10 @@
     "routes": 1
    },
    "today.mv": {
-    "rows": 4,
-    "btns": 4,
+    "rows": 7,
+    "btns": 7,
     "surge": 0,
-    "share": 4,
+    "share": 7,
     "routes": 1
    },
    "talk.card": {
@@ -235,26 +235,26 @@
    },
    {
     "route": "#/surge/10",
-    "rows": 132,
-    "btns": 132,
-    "links": 378,
-    "clicked": "surge.row",
+    "rows": 122,
+    "btns": 122,
+    "links": 368,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/20",
-    "rows": 49,
-    "btns": 49,
-    "links": 142,
-    "clicked": "surge.row",
+    "rows": 43,
+    "btns": 43,
+    "links": 136,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/30",
-    "rows": 24,
-    "btns": 24,
-    "links": 67,
-    "clicked": "surge.row",
+    "rows": 22,
+    "btns": 22,
+    "links": 65,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
@@ -291,9 +291,9 @@
    },
    {
     "route": "#/today",
-    "rows": 4,
-    "btns": 4,
-    "links": 4,
+    "rows": 7,
+    "btns": 7,
+    "links": 7,
     "clicked": "today.mv",
     "fail": 0
    },
@@ -674,18 +674,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/%EC%B6%9C%ED%8C%90",
-    "rows": 14,
-    "btns": 14,
-    "links": 14,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/%EA%B5%90%EC%9C%A1",
     "rows": 42,
     "btns": 42,
     "links": 44,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/%EC%B6%9C%ED%8C%90",
+    "rows": 14,
+    "btns": 14,
+    "links": 14,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -850,18 +850,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/IT%EC%84%9C%EB%B9%84%EC%8A%A4",
-    "rows": 96,
-    "btns": 96,
-    "links": 97,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
     "rows": 48,
     "btns": 48,
     "links": 48,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/IT%EC%84%9C%EB%B9%84%EC%8A%A4",
+    "rows": 96,
+    "btns": 96,
+    "links": 97,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -1362,7 +1362,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/127710",
+    "route": "#/w/067280",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1370,7 +1370,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/067280",
+    "route": "#/w/127710",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1394,7 +1394,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/032860",
+    "route": "#/w/003580",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1426,7 +1426,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/452260",
+    "route": "#/w/362320",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1482,7 +1482,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/006110",
+    "route": "#/w/009730",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1538,7 +1538,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/393210",
+    "route": "#/w/012030",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1546,7 +1546,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/012030",
+    "route": "#/w/393210",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1658,7 +1658,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/095270",
+    "route": "#/w/065450",
     "rows": 6,
     "btns": 6,
     "links": 11,
