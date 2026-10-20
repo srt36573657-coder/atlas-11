@@ -94,7 +94,9 @@ async function page(width, height = 900, net = true) {
 async function hashGo(p, url, hash) { if (!p.url().startsWith(url)) await p.goto(url + hash); else await p.evaluate(x => { location.hash = x; }, hash); }
 
 /* 옛 쪽 — 3단 회사 화면이 다 그려지고(이름표 까닭까지) 나서 글을 뽑음 */
-async function oldGrab(p, code) { return tm.old(() => oldGrab0(p, code)); } // 여는 데 쓴 때(옛 쪽)
+async function oldGrab(p, code) { // 여는 데 쓴 때(옛 쪽) · 옛 앱이 스스로 새로 고치는 사이(자료 made 가 바뀌면 atlas.js freshCheck)에 읽으면 「Execution context was destroyed」 — 다시 엶(2026-10-20 실제 사이트 큰 시험 co · check_range 와 같은 까닭)
+  return tm.old(async () => { for (let k = 0; ; k++) { try { return await oldGrab0(p, code); } catch (e) { if (k >= 2 || !/Execution context was destroyed|frame was detached|navigation/i.test(String(e?.message))) throw e; await p.waitForLoadState('domcontentloaded').catch(() => {}); await p.waitForTimeout(800); } } });
+}
 async function oldGrab0(p, code) {
   // 망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle) — 망 탈 없이 못 그리면 앞과 같음(null)
   const ok = await settle(p, async () => { await hashGo(p, base + '/atlas/', '#/c/' + code); return p.waitForFunction(n => { const v = document.querySelector('#view .vw'); if (!v || v.querySelector('.boot')) return false; if (v.querySelector('h1.head')?.textContent === '없는 주소입니다') return true;

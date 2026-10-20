@@ -328,7 +328,7 @@ function homeBand(H, short = false) { // short = 흰 첫 화면 한 줄(날짜 �
   const K = fromSum(H?.idx?.KOSPI, 'KOSPI'), Q = fromSum(H?.idx?.KOSDAQ, 'KOSDAQ'), X0 = K ?? Q, a = h('a', {class: 'hm-band', href: '#/today'}), chev = h('i', {class: 'hm-chev', 'aria-hidden': 'true', text: '›'});
   if (!X0 || !isDay(X0.date)) { a.append(h('span', {class: 'hm-row'}, h('span', {class: 'hm-bd', text: '? 오늘 시장 값을 못 받았어요'}), chev)); return {el: a, day: null}; }
   const w = whenOf(H, 'idx', X0.live), d = String(X0.date).slice(0, 10);
-  const when = short ? (w.now ? `${mdN(d)} 장 중` : mdN(d)) : w.now ? `${mdN(d)} ${ampm(w.t)} 장 중` : w.intra && isTime(w.t) ? `${mdN(w.t.slice(0, 10))} ${ampm(w.t)}까지` : `${mdN(d)} 마감`;
+  const when = short ? (w.now ? `${mdN(d)} ${isTime(w.t) ? w.t.slice(11, 16) : '장 중'}` : mdN(d)) : w.now ? `${mdN(d)} ${ampm(w.t)} 장 중` : w.intra && isTime(w.t) ? `${mdN(w.t.slice(0, 10))} ${ampm(w.t)}까지` : `${mdN(d)} 마감`; // 흰 첫 화면 장 중 = 받은 시각 숫자(글자 수 잣대 밖) — 사장님 2026-10-20 09:45 「응」 첫 화면 글 두 자 줄이기(장 중 두 자 때문에 107 > 105)
   const ixs = [[K, '코스피'], [Q, '코스닥']].filter(([x]) => x).flatMap(([x, nm], i) => [i ? (short ? ' ' : ' · ') : null, h('span', {class: 'hm-ix'}, h('span', {text: nm}), ' ', h('b', {class: 'num ' + cls(x.day), text: p2(x.day)}))]);
   a.append(h('span', {class: 'hm-row'}, w.stale ? [h('b', {class: 'hm-q', 'aria-hidden': 'true', text: '?'}), ' '] : null, h('span', {class: 'hm-bd', text: when}), chev), h('span', {class: 'hm-ixs'}, ...ixs)); // 날짜 줄 · 숫자 줄(늘 같은 두 줄 · 글 흐름 — 읽어 주기도 「코스피 −3.28% · 코스닥 −4.36%」)
   if (idxOk(K) || idxOk(Q)) { const al = idxAlerts(H); // 큰 날 금빛 「!」 = 띠 안(명령문 [6] 1)

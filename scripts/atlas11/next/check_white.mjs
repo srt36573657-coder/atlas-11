@@ -62,7 +62,9 @@ const MEASURE = () => {
   for (const k of ['ess', 'find', 'today', 'gdr', 'all']) { const e = document.querySelector(`[data-w="${k}"]`); out.blocks[k] = e && vis(e) ? Math.round(e.getBoundingClientRect().bottom) : null; }
   out.tabs = tabs ? [...tabs.querySelectorAll('a')].map(a => a.textContent.trim()) : [];
   out.themeChars = 0;
-  for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.closest('section.th-home')) out.themeChars += n; else out.chars += n; } // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈) · 테마 시계 칸은 따로(2026-10-19)
+  out.top = []; // 글자 수를 이룬 글(테마 칸 밖 · 많은 차례) — 걸리면 어느 글이 늘었는지 보이게(2026-10-20 「다시 온 기기 ② 글자 수 107 > 105」 까닭을 이 방에서 못 봄)
+  for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.closest('section.th-home')) out.themeChars += n; else { out.chars += n; if (n) out.top.push([n, (el.closest('[data-w]')?.getAttribute('data-w') ?? '-') + ' ' + el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className ? '.' + el.className.split(' ')[0] : ''), ownText(el).slice(0, 30)]); } }
+  out.top.sort((x, y) => y[0] - x[0]); // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈) · 테마 시계 칸은 따로(2026-10-19)
   { const tb = document.querySelector('#view section.th-home'), tc = tb?.querySelector('svg.th-clock'); out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), clockBottom: tc ? Math.round(tc.getBoundingClientRect().bottom) : null} : null; }
   for (const el of all) {
     if (!vis(el)) continue;
@@ -113,7 +115,7 @@ function judge(m, tag, B) {
   for (const k of THUMB) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 엄지 자리 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
   check(!!m.theme && m.theme.clockBottom != null && m.theme.clockBottom <= m.tabsTop + 0.5, `${tag} ① 테마 시계 그림 한 화면 안`, m.theme ? `그림 아래 ${m.theme.clockBottom} > 아래 단추 ${Math.round(m.tabsTop)}` : '테마 시계 칸(section.th-home)이 없음');
   check(m.themeChars <= THEME_CHARS, `${tag} ② 테마 시계 칸 글자 수`, `${m.themeChars}자 > ${THEME_CHARS}자`);
-  if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'})`); }
+  if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'}) · 글 ${(m.top ?? []).map(x => x[0] + ' ' + x[1] + ' 「' + x[2] + '」').join(' / ')}`); }
   check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
   check(!m.uiContrast.length, `${tag} ② 단추 테두리 대비 3`, `${m.uiContrast.length}곳 · ${m.uiContrast.slice(0, 3).join(' · ')}`);
   check(!m.tiny.length, `${tag} ② 글씨 17px 아래 0`, `${m.tiny.length}곳 · ${m.tiny.slice(0, 3).join(' · ')}`);
@@ -139,7 +141,20 @@ const ctxOf = async (first, extra = {}) => {
   return ctx;
 };
 const settle = async p => { await p.waitForFunction(() => !document.querySelector('#view .boot') && document.fonts?.status === 'loaded', null, {timeout: 20000}).catch(() => {}); await p.waitForTimeout(400); };
-const open = async (ctx, url) => { const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(String(e.message).slice(0, 120))); await p.goto(url, {waitUntil: 'load', timeout: 30000}); await settle(p); return {p, errs}; };
+/** 열기 — 실제 사이트에서 문서가 넷리파이 오류 쪽(403 · 429 · 5xx — 세게 두드린 실행기를 잠깐 막음)이면 10 · 20 · 30초 기다렸다 다시(2026-10-20 #/f/lead · #/x/005935 가 목록 끝에서 넷리파이 흰 쪽) · 다시 연 수는 R.net */
+const REMOTE_W = !MOCK && !/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:\d+)?(\/|$)/i.test(String(base));
+R.net = {retry: 0, why: {}};
+const open = async (ctx, url) => {
+  const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
+  for (let k = 0; ; k++) {
+    const rs = await p.goto(url, {waitUntil: 'load', timeout: 30000}).catch(e => { if (!REMOTE_W || k >= 3) throw e; return null; });
+    const st = rs?.status() ?? 0, ours = st > 0 && st < 400 && await p.evaluate(() => !!document.querySelector('#view')).catch(() => false);
+    if (ours || !REMOTE_W || k >= 3) break;
+    const why = st ? 'HTTP ' + st : '열기 실패'; R.net.retry++; R.net.why[why] = (R.net.why[why] || 0) + 1;
+    await p.waitForTimeout([10000, 20000, 30000][k]);
+  }
+  await settle(p); return {p, errs};
+};
 
 try {
   if (MOCK) {

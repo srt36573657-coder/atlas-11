@@ -100,17 +100,20 @@ async function pHow() {
   ])]};
 }
 function rb(p) { const s = sv('svg', {class: 'th-rbar', viewBox: '0 0 100 12', width: '100%', height: 12, preserveAspectRatio: 'none', 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: 100, height: 12, rx: 6, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Number.isFinite(p) ? Math.max(0, Math.min(100, p)) : 0, height: 12, rx: 6, class: 'th-bar1'})); return s; }
-async function pZone(z) {
-  const TH = await themeData(); const T = {S: ['싹 자리 전부', 4, 'surge', '점이 많이 찬 순서예요.'], B: ['꽃 자리', 5, 'cond', '이미 테마가 된 곳이에요.'], W: ['시듦 자리', 6, 'sub', '꽃이 지고 있는 곳이에요.']}[z];
+/** 싹 목록 거르기(첫 화면 주황 숫자 — 2026-10-20 09:46) — real = 점 넷이 다 참(결정표 진짜 싹 · count.real) · new = 오늘 새로 들어옴(d 1 · count.fresh) */
+const SPROUT_F = {real: ['진짜 싹', i => i.sc === 4, '점 넷이 다 찬 곳이에요.', '오늘은 진짜 싹이 없어요.'], new: ['새로 들어온 싹', i => i.d === 1, '오늘 싹 자리에 새로 들어왔어요.', '오늘 새로 들어온 싹은 없어요.']};
+async function pZone(z, f = '') {
+  const F = z === 'S' && f ? SPROUT_F[f] : null;
+  const TH = await themeData(); const T = F ? [F[0], 4, 'surge', F[2]] : {S: ['싹 자리 전부', 4, 'surge', '점이 많이 찬 순서예요.'], B: ['꽃 자리', 5, 'cond', '이미 테마가 된 곳이에요.'], W: ['시듦 자리', 6, 'sub', '꽃이 지고 있는 곳이에요.']}[z];
   if (!TH) return none(T[0]);
-  const list = TH.order[z].map(n => indOf(TH, n)).filter(Boolean);
-  const prev = {S: ['시계 읽는 법', '#/t/how'], B: ['싹 자리 전부', '#/t/sprout'], W: ['꽃 자리', '#/t/bloom']}[z];
+  const list = TH.order[z].map(n => indOf(TH, n)).filter(Boolean).filter(i => !F || F[1](i));
+  const prev = F ? ['테마 시계', '#/'] : {S: ['시계 읽는 법', '#/t/how'], B: ['싹 자리 전부', '#/t/sprout'], W: ['꽃 자리', '#/t/bloom']}[z];
   const top = TH.order.S[0];
-  const next = {S: ['꽃 자리', '#/t/bloom'], B: ['시듦 자리', '#/t/wilt'], W: top ? [top, '#/t/i/' + enc(top)] : ['테마 시계', '#/']}[z];
-  const body = [h('h2', {class: 'th-ans'}, h('span', {text: zw(z) + ' 자리 '}), h('em', {'data-tr': '업종', text: num(list.length) + '곳'}))]; // data-tr = 영어에서 업종 수(i18n.js 자리 표)
+  const next = F ? ['싹 자리 전부', '#/t/sprout'] : {S: ['꽃 자리', '#/t/bloom'], B: ['시듦 자리', '#/t/wilt'], W: top ? [top, '#/t/i/' + enc(top)] : ['테마 시계', '#/']}[z];
+  const body = [h('h2', {class: 'th-ans'}, h('span', {text: (F ? F[0] : zw(z) + ' 자리') + ' '}), h('em', {'data-tr': '업종', text: num(list.length) + '곳'}))]; // data-tr = 영어에서 업종 수(i18n.js 자리 표)
   if (z === 'B') body.push(h('p', {class: 'th-sub', text: '돌이는 꽃보다 싹을 먼저 봐요. 꽃은 이미 오른 곳이라 늦을 수 있어요.'}));
   if (z === 'W') body.push(h('p', {class: 'th-sub', text: '힘이 빠지는 중이에요. 다시 잠잠으로 갈까?'}));
-  body.push(list.length ? h('div', {class: 'th-rows'}, list.map((i, k) => (z === 'S' ? row(i, k) : simpleRow(i)))) : h('p', {class: 'empty', text: '지금 이 자리에는 업종이 없어요.'}));
+  body.push(list.length ? h('div', {class: 'th-rows'}, list.map((i, k) => (z === 'S' ? row(i, k) : simpleRow(i)))) : h('p', {class: 'empty', text: F ? F[3] : '지금 이 자리에는 업종이 없어요.'}));
   if (z !== 'S' && list.length) body.push(h('p', {class: 'th-cap2', text: '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'}));
   if (z === 'W') body.push(h('p', {class: 'th-sub', text: `잠잠 자리는 ${num(TH.count.Q)}곳이에요.`}));
   body.push(asOf(TH));
@@ -256,7 +259,7 @@ export async function render(arg = '') {
   const a = String(arg ?? ''), [k, x, y] = a.split('/');
   if (k === '' || k === 'hello') return pHello();
   if (k === 'how') return pHow();
-  if (k === 'sprout') return pZone('S');
+  if (k === 'sprout') return x == null || x === '' || Object.hasOwn(SPROUT_F, x) ? pZone('S', x ?? '') : none('싹 자리 전부', '이 쪽'); // #/t/sprout/real · /new = 첫 화면 주황 숫자
   if (k === 'bloom') return pZone('B');
   if (k === 'wilt') return pZone('W');
   if (k === 'today') return pToday();

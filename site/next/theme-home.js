@@ -117,8 +117,9 @@ export async function homeBlock() {
   const S = TH.order.S.map(n => indOf(TH, n)).filter(Boolean), top = S.slice(0, 3);
   box.append(h('div', {class: 'th-map'}, clock(TH, {marks: top.map(i => i.n), links: true}), h('p', {class: 'th-cap th-cap1', text: `업종은 시계 방향으로 돌아요. 잠잠 → 싹 → 꽃 → 시듦. 지금 싹 자리에 ${num(TH.count.S)}곳이 있어요.`})));
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
-  box.append(TH.count.real ? h('h2', {class: 'th-ans'}, h('span', {text: '진짜 싹 '}), h('em', {'data-tr': '업종', text: num(TH.count.real) + '곳'})) : h('h2', {class: 'th-ans', text: '지금은 진짜 싹이 없어요'})); // data-tr = 영어에서 「n곳」을 업종 수로(i18n.js 자리 표)
-  box.append(h('div', {class: 'th-three', 'data-tr': '업종'}, ...[[TH.count.real, '진짜 싹'], [TH.count.fresh, '새로 들어옴'], [TH.count.S, '싹 자리']].map(([n, t]) => h('p', {}, h('b', {text: num(n) + '곳'}), h('span', {text: t})))));
+  // 주황 숫자 넷 = 누르면 그 목록(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」 — 진짜 싹 · 새로 들어옴 · 싹 자리)
+  box.append(TH.count.real ? h('h2', {class: 'th-ans'}, h('a', {class: 'th-ansl', href: '#/t/sprout/real'}, h('span', {text: '진짜 싹 '}), h('em', {'data-tr': '업종', text: num(TH.count.real) + '곳'}), h('i', {'aria-hidden': 'true', text: '›'}))) : h('h2', {class: 'th-ans', text: '지금은 진짜 싹이 없어요'})); // data-tr = 영어에서 「n곳」을 업종 수로(i18n.js 자리 표)
+  box.append(h('div', {class: 'th-three', 'data-tr': '업종'}, ...[[TH.count.real, '진짜 싹', '#/t/sprout/real'], [TH.count.fresh, '새로 들어옴', '#/t/sprout/new'], [TH.count.S, '싹 자리', '#/t/sprout']].map(([n, t, href]) => h('a', {href}, h('b', {text: num(n) + '곳'}), h('span', {text: t})))));
   box.append(h('p', {class: 'th-sub', text: '점 넷이 다 차면 진짜 싹이에요. 점이 많이 찬 순서예요.'})); // 싹 순서 = 점 수 → 지난 닷새(결정표 4)
   box.append(h('div', {class: 'th-rows'}, top.map((i, k) => row(i, k))));
   box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `싹 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));

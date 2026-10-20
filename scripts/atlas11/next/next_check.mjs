@@ -126,7 +126,7 @@ const knownHref = h => {
   if (/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(h)) return true; // 바깥 출처 고리(유튜브 · 기사 · 네이버 증권 · 공시) — 쪽 검사가 자료와 맞대 봄
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
   if (h === '#/admin' || h === '#/game') return true; // 가짜 돈 연습(2026-10-19 15:04) // 관리자 화면(사장님 열쇠 기기 보유종목 바로 가기 · 2026-10-19 13:54)
-  if ((mm = /^#\/t\/(hello|how|sprout|bloom|wilt|today|alert)$/.exec(h))) return true; // 테마 시계 쪽(사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js — check_theme 이 쪽마다 맞대 봄 · alert = 26 알림(관심 #/sub 다음 · 2026-10-19 20:40 「다해」))
+  if ((mm = /^#\/t\/(hello|how|sprout|sprout\/real|sprout\/new|bloom|wilt|today|alert)$/.exec(h))) return true; // 테마 시계 쪽(사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js — check_theme 이 쪽마다 맞대 봄 · alert = 26 알림(관심 #/sub 다음 · 2026-10-19 20:40 「다해」))
   if ((mm = /^#\/t\/i\/([^/]+)(?:\/(?:path|spread|big|co|near))?$/.exec(h))) { let nm = mm[1]; try { nm = decodeURIComponent(nm); } catch { return false; } return (core.industries ?? []).some(i => i.name === nm); } // 업종 여섯 쪽 — 업종 이름이 자료에 있어야
   if ((mm = /^#\/t\/c\/([0-9A-Z]{6})(?:\/(?:lead|why|rank|unknown|keep))?$/.exec(h))) return !!CO[mm[1]]; // 회사 여섯 쪽
   if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)

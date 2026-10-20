@@ -185,6 +185,27 @@ async function runDevice(name, engine, end) {
       row.ms = Date.now() - t; D.routes.push(row);
     }
 
+    /* 1b) 첫 화면 누르기(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 손가락으로: 시계 번호 ① · 싹 칸 · 주황 숫자 칸 셋 · 「진짜 싹 n곳」 머리 → 주소가 그 쪽으로 */
+    D.taps = [];
+    for (const [name, sel, want] of [['clock-1', 'section.th-home svg.th-clock a.th-tapn', TOP ? '#/t/i/' + TOP : null], ['clock-sprout', 'section.th-home svg.th-clock a.th-tapz', '#/t/sprout'], ['box-real', 'section.th-home .th-three a >> nth=0', '#/t/sprout/real'], ['box-new', 'section.th-home .th-three a >> nth=1', '#/t/sprout/new'], ['box-all', 'section.th-home .th-three a >> nth=2', '#/t/sprout'], ['head-real', 'section.th-home h2.th-ans a.th-ansl', '#/t/sprout/real']]) {
+      if (Date.now() > end) break;
+      const T = {name, want}; D.taps.push(T); cur = 'tap ' + name;
+      try {
+        await page.goto(urlOf('#/', 'tap-' + name), {waitUntil: 'domcontentloaded', timeout: 45000});
+        if (!(await waitView(page, 30000))) { T.ok = false; T.why = 'home not drawn'; continue; }
+        await settle(page, 3000);
+        if (name === 'head-real' && !(await page.locator(sel).count())) { T.ok = true; T.skip = 'no real sprout today'; continue; }
+        let pt = null;
+        if (name === 'clock-1') pt = await page.evaluate(() => { const a = [...document.querySelectorAll('section.th-home svg.th-clock a.th-tapn')].find(x => x.querySelector('.th-nbt')?.textContent === '1'); if (!a) return null; const c = a.querySelector('circle.th-nb'); c.scrollIntoView({block: 'center'}); const b = c.getBoundingClientRect(); return {x: b.left + b.width / 2, y: b.top + b.height / 2}; });
+        else if (name === 'clock-sprout') pt = await page.evaluate(() => { const z = document.querySelector('section.th-home svg.th-clock a.th-tapz'); if (!z) return null; z.scrollIntoView({block: 'center'}); const b = z.getBoundingClientRect(); for (let fy = 0.9; fy > 0.1; fy -= 0.1) for (let fx = 0.08; fx < 0.95; fx += 0.12) { const x = b.left + b.width * fx, y = b.top + b.height * fy; if (document.elementFromPoint(x, y)?.closest('a') === z) return {x, y}; } return null; });
+        else { const h = await page.locator(sel).first().elementHandle({timeout: 5000}).catch(() => null); pt = h ? await h.evaluate(el => { el.scrollIntoView({block: 'center'}); const b = el.getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2, top = document.elementFromPoint(x, y); return {x, y, covered: top && !el.contains(top) ? (top.closest('a, button')?.getAttribute('href') ?? top.tagName) : null}; }) : null; if (pt?.covered) T.covered = pt.covered; } // 가운데로 올려 누름(맨 아래 고정 띠 밑에 깔리지 않게)
+        if (!pt) { T.ok = false; T.why = 'target not found'; continue; }
+        if (D.touch) await page.touchscreen.tap(pt.x, pt.y); else await page.mouse.click(pt.x, pt.y);
+        const moved = await page.waitForFunction(w => { let h = location.hash || '#/'; try { h = decodeURIComponent(h); } catch { /* 그대로 */ } return h === w; }, want, {timeout: 10000, polling: 50}).then(() => true, () => false);
+        T.to = show(await page.evaluate(() => location.hash).catch(() => '?')); T.ok = moved; if (!moved) T.why = 'hash did not change';
+      } catch (e) { T.ok = false; T.why = line1(e); }
+    }
+
     /* 2) 「다음」 사슬 — 손가락으로 누름(터치 기기) · 주소가 단추 주소로 바뀌는지 · 테마 길(#/ · #/t/…)이 아니면 멈춤 */
     cur = 'chain #/t/hello';
     await page.goto(urlOf('#/t/hello', 'chain'), {waitUntil: 'domcontentloaded', timeout: 45000});
@@ -218,7 +239,7 @@ async function runDevice(name, engine, end) {
     try { await ctx.close(); } catch { /* 이미 닫힘 */ }
     D.errors = [...G.errors.values()]; D.small = [...G.small.values()]; D.tap = [...G.tap.values()];
     D.ms = Date.now() - start;
-    D.ok = !D.broke && !D.skipped && D.routes.length === ROUTES.length && D.routes.every(r => !r.fail) && !D.errors.length && !D.overflow.length && !D.small.length && !D.tap.length && !D.nextOne.length && C.ok;
+    D.ok = !D.broke && !D.skipped && D.routes.length === ROUTES.length && D.routes.every(r => !r.fail) && !D.errors.length && !D.overflow.length && !D.small.length && !D.tap.length && !D.nextOne.length && C.ok && (D.taps ?? []).every(t => t.ok);
   }
 }
 

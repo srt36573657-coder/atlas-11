@@ -8795,6 +8795,12 @@
   "지금 자료에 없어요": "Not in today's data",
   "이 업종은 지금 테마 시계 자료에 없어요.": "This industry is not in today's theme clock data.",
   "{n}번 {e} 보기": "Open No. {n}: {e}",
-  "싹 자리 전부 보기": "See all sprouts"
+  "싹 자리 전부 보기": "See all sprouts",
+  "새로 들어온 싹": "New sprouts",
+  "새로 들어온 싹 {n}곳": "New sprouts: {n}",
+  "점 넷이 다 찬 곳이에요.": "All four dots are filled here.",
+  "오늘 싹 자리에 새로 들어왔어요.": "These entered the sprout zone today.",
+  "오늘은 진짜 싹이 없어요.": "No real sprouts today.",
+  "오늘 새로 들어온 싹은 없어요.": "No new sprouts today."
  }
 }

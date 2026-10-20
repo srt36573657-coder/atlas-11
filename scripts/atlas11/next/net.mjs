@@ -32,7 +32,7 @@ export async function fetchJSON(url, label = url, {as = 'json', init = {}, tries
     let wait = jitter(Math.min(30000, 1000 * 2 ** i));
     try {
       const r = await fetch(url, {cache: 'no-store', ...init, signal: AbortSignal.timeout(timeout)});
-      if (r.status === 429 || r.status >= 500) {
+      if (r.status === 429 || r.status >= 500 || (r.status === 403 && isRemote(url))) { // 실제 사이트 403 = 넷리파이가 세게 두드린 실행기를 잠깐 막음(2026-10-19 · 20 cal 403 · grow 회사 파일 수백 개) — 기다렸다 다시
         last = 'HTTP ' + r.status;
         const ra = Number(r.headers.get('retry-after'));
         if (ra > 0) wait = Math.min(30000, ra * 1000);
@@ -75,7 +75,8 @@ export function watch(p, base) {
     if (!mine(rq.url()) || /ERR_ABORTED/.test(t)) return;
     net.n++; net.last = t + ' ' + rq.url().slice(origin.length, origin.length + 70);
   });
-  p.on('response', rs => { const s = rs.status(); if ((s === 429 || s >= 500) && mine(rs.url())) { net.n++; net.last = 'HTTP ' + s + ' ' + rs.url().slice(origin.length, origin.length + 70); } });
+  const remote = isRemote(base);
+  p.on('response', rs => { const s = rs.status(); if ((s === 429 || s >= 500 || (s === 403 && remote)) && mine(rs.url())) { net.n++; net.last = 'HTTP ' + s + ' ' + rs.url().slice(origin.length, origin.length + 70); } });
   return p;
 }
 /** 지금 15초 넘게 답이 없는 이 사이트 요청 수 */

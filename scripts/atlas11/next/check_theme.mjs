@@ -160,8 +160,8 @@ try {
     const g = await p.evaluate(() => {
       const v = document.querySelector('#view'), box = v.querySelector('section.th-home'), say = v.querySelector('div.w-say'), ess = v.querySelector('section.ess');
       return {box: !!box, afterSay: !!(box && say && (say.compareDocumentPosition(box) & Node.DOCUMENT_POSITION_FOLLOWING)), beforeEss: !!(box && ess && (box.compareDocumentPosition(ess) & Node.DOCUMENT_POSITION_FOLLOWING)),
-        rows: [...(box?.querySelectorAll('a.th-row') ?? [])].map(a => ({href: a.getAttribute('href'), name: a.querySelector('.th-rn')?.textContent})), ans: box?.querySelector('.th-ans')?.textContent ?? '',
-        three: [...(box?.querySelectorAll('.th-three p') ?? [])].map(x => x.textContent), rec: box?.querySelector('.th-rec')?.textContent ?? '', asof: box?.querySelector('.th-asof')?.textContent ?? '',
+        rows: [...(box?.querySelectorAll('a.th-row') ?? [])].map(a => ({href: a.getAttribute('href'), name: a.querySelector('.th-rn')?.textContent})), ans: (box?.querySelector('.th-ans')?.textContent ?? '').replace(/›\s*$/, ''), // 머리 끝 「›」 = 누르면 진짜 싹 목록(2026-10-20 09:46)
+        three: [...(box?.querySelectorAll('.th-three a, .th-three p') ?? [])].map(x => x.textContent), rec: box?.querySelector('.th-rec')?.textContent ?? '', asof: box?.querySelector('.th-asof')?.textContent ?? '',
         next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, hi: box?.querySelector('a.th-hi')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock'), h1: v.querySelector('h1')?.textContent ?? ''};
     });
     if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
@@ -253,7 +253,7 @@ try {
   /* ⑦ 자료를 바꾼 다섯 판 — 한국어 · 영어(320) */
   if (HM) for (const V of ['A', 'B', 'C', 'D', 'E']) {
     const v = variant(V), ib2 = '#/t/i/' + enc(v.X), cb2 = v.lead ? '#/t/c/' + v.lead : null;
-    const hs = ['#/', '#/t/hello', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', '#/t/today', '#/t/alert', ib2, ...['path', 'spread', 'big', 'co', 'near'].map(s => ib2 + '/' + s), ...(cb2 ? [cb2, ...['lead', 'why', 'rank', 'unknown', 'keep'].map(s => cb2 + '/' + s)] : [])];
+    const hs = ['#/', '#/t/hello', '#/t/how', '#/t/sprout', '#/t/sprout/real', '#/t/sprout/new', '#/t/bloom', '#/t/wilt', '#/t/today', '#/t/alert', ib2, ...['path', 'spread', 'big', 'co', 'near'].map(s => ib2 + '/' + s), ...(cb2 ? [cb2, ...['lead', 'why', 'rank', 'unknown', 'keep'].map(s => cb2 + '/' + s)] : [])];
     const routes = [['**/next/data/theme.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.th)})], ['**/next/data/theme-more.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.mo)})], ['**/next/data/theme-home.json*', r => r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(v.hm)})]];
     for (const en of [false, true]) {
       const {p, ctx} = await open((en ? '?lang=en' : '') + hs[0], {w: 320, h: 640, routes});
@@ -486,6 +486,40 @@ try {
     }
     if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
     bump('시계 누르는 곳'); await ctx.close();
+  }
+  /* ⑫ 첫 화면 주황 숫자 넷(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 「진짜 싹 n곳」 머리 · 칸 셋(진짜 싹 · 새로 들어옴 · 싹 자리)을 누르면 그 목록
+     — 고리 · 누르는 자리 48 · 목록 업종 = 자료 거르기(진짜 = 점 넷 · 새로 = d 1) · 수 = 첫 화면 숫자 · 없는 거르기는 「?」 */
+  if (HM) {
+    const wantReal = TH.order.S.filter(n => ind.get(n)?.sc === 4), wantNew = TH.order.S.filter(n => ind.get(n)?.d === 1);
+    for (const w of [390, 320]) {
+      const {p, ctx} = await open('#/', {w, h: 844}), tag = `주황 숫자 @${w}`;
+      await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-three a').length === 3, null, {timeout: 20000}).catch(() => {});
+      const r = await p.evaluate(() => ({head: (() => { const a = document.querySelector('#view section.th-home h2.th-ans a.th-ansl'); if (!a) return null; const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(b.width), h: Math.round(b.height)}; })(), boxes: [...document.querySelectorAll('#view section.th-home .th-three a')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), n: a.querySelector('b')?.textContent, t: a.querySelector('span')?.textContent, w: Math.round(b.width), h: Math.round(b.height)}; })}));
+      const wantB = [['#/t/sprout/real', num(HM.count.real) + '곳', '진짜 싹'], ['#/t/sprout/new', num(HM.count.fresh) + '곳', '새로 들어옴'], ['#/t/sprout', num(HM.count.S) + '곳', '싹 자리']];
+      if (JSON.stringify(r.boxes.map(b => [b.href, b.n, b.t])) !== JSON.stringify(wantB)) fail('주황 숫자 칸 고리', tag + ' ' + JSON.stringify(r.boxes));
+      if (HM.count.real && (!r.head || r.head.href !== '#/t/sprout/real')) fail('「진짜 싹 n곳」 머리 고리', tag + ' ' + JSON.stringify(r.head));
+      const small = [r.head, ...r.boxes].filter(b => b && (b.w < 48 || b.h < 48)); if (small.length) fail('주황 숫자 누르는 자리 48 아래', tag + ' ' + JSON.stringify(small));
+      if (w === 390) for (const [k, sel] of [[0, '#view section.th-home .th-three a >> nth=0'], [1, '#view section.th-home .th-three a >> nth=1'], [2, '#view section.th-home .th-three a >> nth=2'], [3, '#view section.th-home h2.th-ans a.th-ansl']]) {
+        if (k === 3 && !HM.count.real) continue;
+        await p.evaluate(() => { location.hash = '#/'; }); await settle(p);
+        await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-three a').length === 3, null, {timeout: 20000}).catch(() => {});
+        await p.locator(sel).first().click(); await settle(p);
+        const hh = await p.evaluate(() => location.hash), want = k === 3 ? '#/t/sprout/real' : wantB[k][0];
+        if (hh !== want) { fail('주황 숫자 누르면 그 목록', `${tag} ${k} ${hh} ≠ ${want}`); continue; }
+        const L = await p.evaluate(() => ({h2: document.querySelector('#view .th-ans')?.textContent ?? '', rows: [...document.querySelectorAll('#view .th-rows a.th-row')].map(a => decodeURIComponent(a.getAttribute('href').replace('#/t/i/', ''))), empty: document.querySelector('#view .empty')?.textContent ?? ''}));
+        const wantRows = want === '#/t/sprout/real' ? wantReal : want === '#/t/sprout/new' ? wantNew : TH.order.S;
+        if (JSON.stringify(L.rows) !== JSON.stringify(wantRows)) fail('거른 목록 업종', `${tag} ${want} ${L.rows.length} ≠ ${wantRows.length} 「${L.rows.slice(0, 3).join(' · ')}」`);
+        if (!wantRows.length && !L.empty) fail('거른 목록 빈 글', `${tag} ${want}`);
+        if (want !== '#/t/sprout' && !L.h2.startsWith(want.endsWith('real') ? '진짜 싹 ' : '새로 들어온 싹 ')) fail('거른 목록 머리', `${tag} ${want} 「${L.h2}」`);
+        await look(tag + ' ' + want, p); if (want !== '#/t/sprout') await rules(tag + ' ' + want, p);
+      }
+      if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
+      bump('주황 숫자'); await ctx.close();
+    }
+    const b = await open('#/t/sprout/zzz');
+    const t = await b.p.evaluate(() => document.querySelector('#view .empty')?.textContent ?? '');
+    if (!/^\?/.test(t)) fail('없는 거르기 주소', t.slice(0, 40));
+    await b.ctx.close();
   }
   /* ⑥ 자료를 못 받으면 「?」 */
   {
