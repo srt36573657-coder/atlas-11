@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-20T04:44:32.527Z",
+ "at": "2026-10-20T05:53:51.141Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -9,30 +9,30 @@
   360,
   390
  ],
- "routes": 13458,
+ "routes": 13462,
  "companies": 2557,
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "rivals": true,
-  "cal": true,
-  "surge": true,
-  "cond": true,
-  "past": true,
-  "grow": true,
   "range": true,
-  "gdr": true,
-  "chx": true,
-  "why": true,
-  "co": true,
-  "hold": true,
-  "x": true,
-  "share": true,
-  "up": true,
-  "talk": true,
-  "today": true,
-  "time": true,
+  "cond": true,
+  "grow": true,
+  "past": true,
+  "surge": true,
+  "rivals": true,
   "theme": true,
+  "talk": true,
+  "up": true,
+  "x": true,
+  "co": true,
+  "gdr": true,
+  "today": true,
+  "hold": true,
+  "share": true,
+  "why": true,
+  "chx": true,
+  "cal": true,
+  "time": true,
   "info": true
  },
  "edge": true,
@@ -41,72 +41,72 @@
  "shard": "all/3",
  "full": false,
  "units": {
-  "total": 13454,
-  "hash": "6c4fe4065a241b10",
+  "total": 13458,
+  "hash": "2827a6ed0625dd69",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 1047,
- "secondsSum": 2998,
+ "seconds": 1021,
+ "secondsSum": 2779,
  "shards": [
   {
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "routes": 4516,
-   "screens": 4554,
-   "mine": 4516,
-   "seconds": 1047,
+   "routes": 4517,
+   "screens": 4557,
+   "mine": 4517,
+   "seconds": 884,
    "secs": {
-    "open": 1.1,
-    "routes": 1044.7
+    "open": 0.4,
+    "routes": 882.1
    }
   },
   {
    "shard": "2/3",
-   "ok": false,
-   "fails": 2,
-   "routes": 4500,
-   "screens": 4561,
-   "mine": 4501,
-   "seconds": 907,
+   "ok": true,
+   "fails": 0,
+   "routes": 4502,
+   "screens": 4524,
+   "mine": 4503,
+   "seconds": 1021,
    "secs": {
-    "open": 0.5,
-    "routes": 901.3,
-    "newwin": 3.1
+    "open": 0.6,
+    "routes": 1015.5,
+    "newwin": 3.2
    }
   },
   {
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "routes": 4442,
-   "screens": 4563,
-   "mine": 4437,
-   "seconds": 1044,
+   "routes": 4443,
+   "screens": 4601,
+   "mine": 4438,
+   "seconds": 874,
    "secs": {
-    "open": 0.8,
-    "routes": 1028.6,
+    "open": 0.5,
+    "routes": 859.8,
     "act": 7.3,
-    "edge": 5.1,
+    "edge": 5.3,
     "grammar": 0
    }
   }
  ],
  "counts": {
-  "화면": 13678,
+  "화면": 13682,
   "길 · home": 1,
   "길 · chips": 7,
   "길 · sub": 1,
   "길 · find": 9,
   "길 · watch": 2560,
   "길 · chan": 89,
-  "길 · mod": 10783,
+  "길 · mod": 10787,
   "왜 사? 끝까지": 2,
-  "길 · me": 1,
   "돌이 칸 잠김": 2,
+  "길 · me": 1,
   "새 창": 2,
   "쇼츠 장": 6,
   "길 · shorts": 7,
@@ -117,12 +117,10 @@
  },
  "missing": 0,
  "avatarLetters": 0,
- "kinds": {
-  "칸 안에서 넘친 글": 2
- },
- "fails": 2,
+ "kinds": {},
+ "fails": 0,
  "own": {
-  "fails": 2,
+  "fails": 0,
   "missing": 0,
   "leftover": 0
  },
@@ -132,27 +130,8 @@
   "leftover": 0
  },
  "missingList": [],
- "all": [
-  {
-   "kind": "칸 안에서 넘친 글",
-   "what": "a 「Holdings」 @320",
-   "ex": null,
-   "at": [
-    "#/f/rise @320"
-   ],
-   "n": 1
-  },
-  {
-   "kind": "칸 안에서 넘친 글",
-   "what": "a 「Holdings」 @360",
-   "ex": null,
-   "at": [
-    "#/f/rise @360"
-   ],
-   "n": 1
-  }
- ],
+ "all": [],
  "truncated": false,
  "problems": [],
- "ok": false
+ "ok": true
 }
