@@ -213,6 +213,40 @@ async function runDevice(name, engine, end) {
       } catch (e) { T.ok = false; T.why = line1(e); }
     }
 
+    /* 1c) 일곱 단(사장님 2026-10-20 12:59 「지금 3단 클릭 구조로 되어있는걸 7단 클릭구조로 … 토스증권처럼」) — 테마 회사 쪽 「더 깊이 보기」 4단을 손가락으로 →
+       넘어간 쪽 줄의 1 · 2 · 3 이 테마 쪽인지 → 「다음 단」 셋(5 · 6 · 7) → 7단 「다음 단」 = #/why/<번호> · 쪽마다 다 그려질 때까지 봄(그리기 전에 떠나지 않게) */
+    D.seven = {steps: [], ok: false};
+    if (CO && LEAD && Date.now() <= end) {
+      cur = 'seven';
+      try {
+        await page.goto(urlOf(CO, 'seven'), {waitUntil: 'domcontentloaded', timeout: 45000});
+        if (!(await waitView(page, 30000))) throw new Error('company not drawn');
+        await settle(page, 3000);
+        const tapSel = async (sel, want, k) => {
+          const h0 = await page.locator(sel).first().elementHandle({timeout: 8000}).catch(() => null);
+          if (!h0) return {k, ok: false, why: 'target not found ' + sel};
+          const pt = await h0.evaluate(el => { el.scrollIntoView({block: 'center'}); const b = el.getBoundingClientRect(); return {x: b.left + b.width / 2, y: b.top + b.height / 2}; });
+          await page.evaluate(() => { for (const c of document.querySelector('#view')?.children ?? []) c.setAttribute('data-probe-old', '1'); });
+          if (D.touch) await page.touchscreen.tap(pt.x, pt.y); else await page.mouse.click(pt.x, pt.y);
+          const moved = await page.waitForFunction(w => location.hash === w, want, {timeout: 10000, polling: 50}).then(() => true, () => false);
+          if (!moved) return {k, ok: false, why: 'hash ' + show(await page.evaluate(() => location.hash))};
+          const drawn = await waitView(page, 20000); await settle(page, 2000);
+          await page.waitForFunction(() => !!document.querySelector('#view .chaps .cp.now'), null, {timeout: 15000, polling: 100}).catch(() => {});
+          const head = await page.evaluate(() => [...document.querySelectorAll('#view .chaps .cp')].slice(0, 3).map(a => a.getAttribute('href')));
+          return {k, ok: drawn, to: show(want), head};
+        };
+        const c = encodeURIComponent(LEAD);
+        let st = await tapSel('#view .chaps a.cp >> nth=3', '#/w/' + LEAD + '/past', 4); D.seven.steps.push(st);
+        if (st.ok && !(st.head?.[0] === '#/' && st.head?.[2] === '#/t/c/' + c)) { st.ok = false; st.why = 'head not theme ' + JSON.stringify(st.head); }
+        for (const [k, sub] of [[5, 'rivals'], [6, 'grow'], [7, 'range']]) {
+          if (!st.ok || Date.now() > end) break;
+          st = await tapSel('#view a.chap-next >> nth=-1', '#/w/' + LEAD + '/' + sub, k); D.seven.steps.push(st);
+        }
+        const last = await page.evaluate(() => [...document.querySelectorAll('#view a.chap-next')].at(-1)?.getAttribute('href') ?? null);
+        D.seven.end = last; D.seven.ok = D.seven.steps.length === 4 && D.seven.steps.every(x => x.ok) && last === '#/why/' + c;
+      } catch (e) { D.seven.why = line1(e); }
+    } else D.seven.why = 'no theme company';
+
     /* 2) 「다음」 사슬 — 손가락으로 누름(터치 기기) · 주소가 단추 주소로 바뀌는지 · 테마 길(#/ · #/t/…)이 아니면 멈춤 */
     cur = 'chain #/t/hello';
     await page.goto(urlOf('#/t/hello', 'chain'), {waitUntil: 'domcontentloaded', timeout: 45000});
@@ -246,7 +280,7 @@ async function runDevice(name, engine, end) {
     try { await ctx.close(); } catch { /* 이미 닫힘 */ }
     D.errors = [...G.errors.values()]; D.small = [...G.small.values()]; D.tap = [...G.tap.values()];
     D.ms = Date.now() - start;
-    D.ok = !D.broke && !D.skipped && D.routes.length === ROUTES.length && D.routes.every(r => !r.fail) && !D.errors.length && !D.overflow.length && !D.small.length && !D.tap.length && !D.nextOne.length && C.ok && (D.taps ?? []).every(t => t.ok);
+    D.ok = !D.broke && !D.skipped && D.routes.length === ROUTES.length && D.routes.every(r => !r.fail) && !D.errors.length && !D.overflow.length && !D.small.length && !D.tap.length && !D.nextOne.length && C.ok && (D.taps ?? []).every(t => t.ok) && D.seven?.ok === true;
   }
 }
 

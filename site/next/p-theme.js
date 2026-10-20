@@ -139,6 +139,7 @@ async function pInd(name, sub) {
       ckRow(i.dots[2], DOT_TEXT[2], i.bigAvg == null ? '? 큰 회사 값을 못 받았어요' : `가장 큰 회사 셋 평균 ${pp(i.bigAvg)}%`), ckRow(i.dots[3], DOT_TEXT[3], `열흘 동안 ${pp(i.m10)}%`),
       h('p', {class: 'th-sub', text: i.z === 'S' && i.sc === 4 ? '진짜 싹이에요. 한 달 뒤 꽃 선을 넘을까?' : i.z === 'S' ? '싹 자리지만, 점이 덜 찼어요. 꽃 선을 넘을까?' : i.z === 'B' ? '이미 꽃 자리예요. 늦은 건 아닐까?' : i.z === 'W' ? '꽃이 지는 중이에요. 다시 잠잠으로 갈까?' : '아직 잠잠해요. 힘이 붙을까?'}),
       watchBtn(i), h('a', {class: 'th-hi', href: '#/t/alert', text: '알림 설정 ›'})]; // 관심 업종 담기(자리가 바뀌면 첫 화면에서 알림)
+    if (lead && nx()?.chaps) { nx().setTrail?.({code: lead.c, ind: name, name: lead.n}); body.unshift(nx().chaps(lead.c, '2')); } // 일곱 단 줄(2단 · 3단부터는 앞선 회사로 — 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」)
   } else if (sub === 'path') {
     art = 'cal'; sayT = '닷새 동안 어디서 왔을까?';
     body = [h('div', {class: 'th-map'}, clock(TH, {hi: name}), h('p', {class: 'th-cap', text: '닷새 전부터 오늘까지 지나온 길이에요.'})),
@@ -184,13 +185,16 @@ async function pCo(code, sub) {
   const href = j => base + (CO_SUB[j][0] ? '/' + CO_SUB[j][0] : ''), title = j => CO_SUB[j][1] ?? c.n;
   const inTop = (M?.top ?? []).some(t => t.c === code);
   const prev = k ? [title(k - 1), href(k - 1)] : inTop ? ['함께 움직인 회사', '#/t/i/' + enc(ind) + '/co'] : ['큰 회사도 움직였을까', '#/t/i/' + enc(ind) + '/big']; // 들어온 줄로(새 눈 검사 8)
-  const next = k < CO_SUB.length - 1 ? [title(k + 1), href(k + 1)] : ['사기 전에', '#/why/' + enc(code)];
+  const deep = sub2 => (nx()?.ready?.(sub2) ? '#/w/' + enc(code) + '/' + sub2 : '/atlas/#/c/' + enc(code) + '/' + sub2); // 4 ~ 7단(새 화면에 있으면 #/w/ · 아니면 옛 판 — app.js chapList 와 같음)
+  nx()?.setTrail?.({code, ind, name: c.n}); // 이 회사의 4 ~ 7단 줄은 1 · 2 · 3 을 테마 쪽으로(app.js chapList)
+  const next = k < CO_SUB.length - 1 ? [title(k + 1), href(k + 1)] : ['지나온 길', deep('past')]; // 회사 다음 = 4단 지나온 길(일곱 단 · 2026-10-20) — 7단 다음이 「사기 전에」(app.js chapNext)
   let body = [], sayT = null, art = 'company';
   const lead = c.a5 != null && I ? (c.a5 - I.A5) > (c.b5 - I.B5) : null;
   if (sub === '') {
     sayT = '먼저 움직였을까, 뒤따랐을까?';
     body = [h('p', {class: 'th-cap2', text: `${ind} 업종 회사예요.`}), bigLine(c.l), h('h2', {class: 'th-ans'}, h('span', {text: '열흘 동안 '}), h('em', {class: cls(c.d10), text: pp(c.d10) + '%'})),
       h('p', {class: 'th-sub', text: c.rank === 1 ? `${ind} ${num(M.ranked)}곳 가운데 가장 많이 올랐어요.` : c.rank ? `${ind} ${num(M.ranked)}곳 가운데 ${num(c.rank)}번째로 많이 올랐어요.` : `${ind} 업종에서 몸값이 큰 회사예요.`})];
+    if (nx()?.chaps) body.push(h('h2', {class: 'th-h2', text: '더 깊이 보기'}), h('p', {class: 'th-cap2', text: '누르면 일곱 단까지 가요.'}), nx().chaps(code, '3')); // 3단 = 일곱 칸 모두(1 테마 시계 · 2 업종 · 3 이 회사 · 4 지나온 길 · 5 누구와 다투나 · 6 앞으로 클까? · 7 범위) — 토스증권처럼 누르기만 하면 더 깊이
   } else if (sub === 'lead') {
     art = 'cal'; sayT = '앞 닷새와 뒤 닷새를 견줘요.';
     body = [bigLine(c.l), h('div', {class: 'th-two'}, h('p', {}, h('span', {text: '앞 닷새'}), h('b', {class: cls(c.a5), text: pp(c.a5) + '%'}), h('small', {text: '업종 ' + pp(I?.A5) + '%'})), h('p', {}, h('span', {text: '뒤 닷새'}), h('b', {class: cls(c.b5), text: pp(c.b5) + '%'}), h('small', {text: '업종 ' + pp(I?.B5) + '%'}))),

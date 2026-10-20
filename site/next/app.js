@@ -810,9 +810,17 @@ async function vWatch(a) {
   return {title: c.n, nodes};
 }
 /* 7단 길(1 큰 업종 · 2 업종 · 3 회사 · 4 지나온 길 · 5 누구와 다투나 · 6 앞으로 클까? · 7 범위) — 보는 화면 머리(길 표시 · 탭 넷) · 4 ~ 7단 쪽 모듈이 함께 씀(NX.chaps · NX.chapNext) · 지금 단은 금빛 테 */
+/* 테마 길로 들어온 회사(사장님 2026-10-20 12:59 「지금 3단 클릭 구조로 되어있는걸 7단 클릭구조로 만들어 더 깊이 클릭만으로 알수 있게 토스증권처럼」 · 13:04 「어」)
+   테마 시계 → 업종 → 회사(3단) 다음에 4 지나온 길 · 5 누구와 다투나 · 6 앞으로 클까? · 7 범위가 이어짐 — 테마 업종 · 회사 쪽(p-theme.js)이 setTrail 로 알려 줌
+   그 회사의 7단 줄은 1 · 2 · 3 을 테마 쪽(테마 시계 · 그 업종 · 그 회사)으로 · 7단 다음은 「사기 전에」(#/why/<번호> · 서른여섯 장 19 쪽) · 이 앱을 연 동안만 기억(다시 열면 처음 7단 줄) */
+let TRAIL = null;
+const setTrail = t => { TRAIL = t && typeof t.code === 'string' && typeof t.ind === 'string' && t.ind ? {code: t.code, ind: t.ind, name: typeof t.name === 'string' && t.name ? t.name : null} : null; };
 function chapList(a) {
   const X = ix(), c = X?.co?.[a], I = c ? X.ind.get(c.i) : null, g = I ? X.grp.get(I.g) : null, base = '/atlas/#/c/' + enc(a), sub = k => (ready(k) ? '#/w/' + enc(a) + '/' + k : base + '/' + k);
-  return [['1', '갈래', g ? '#/ch/g/' + enc(g.id) : null], ['2', '업종', I ? '#/ch/i/' + enc(I.name) : null], ['3', '회사', ready('co') ? '#/w/' + enc(a) : base], ['4', '지나온 길', sub('past')], ['5', '누구와 다투나', sub('rivals')], ['6', '앞으로 클까?', sub('grow')], ['7', '범위', sub('range')]];
+  const T = TRAIL?.code === a ? TRAIL : null;
+  const head = T ? [['1', '테마 시계', '#/'], ['2', '업종', '#/t/i/' + enc(T.ind)], ['3', T.name ?? '회사', '#/t/c/' + enc(a)]]
+    : [['1', '갈래', g ? '#/ch/g/' + enc(g.id) : null], ['2', '업종', I ? '#/ch/i/' + enc(I.name) : null], ['3', '회사', ready('co') ? '#/w/' + enc(a) : base]];
+  return [...head, ['4', '지나온 길', sub('past')], ['5', '누구와 다투나', sub('rivals')], ['6', '앞으로 클까?', sub('grow')], ['7', '범위', sub('range')]];
 }
 function chaps(a, now) {
   const row = now !== '3'; // 4 ~ 7단 = 한 줄로 밀어 보기 · 보는 화면(3단) = 일곱 칸 모두
@@ -820,6 +828,7 @@ function chaps(a, now) {
   return el;
 }
 function chapNext(a, now) {
+  if (now === '7' && TRAIL?.code === a) return h('a', {class: 'more chap-next', href: '#/why/' + enc(a), text: '다음 단 · 사기 전에 ›'}); // 테마 길 — 7단 다음은 서른여섯 장 19 쪽(왜 사? 열한 질문)
   const L = chapList(a), i = L.findIndex(x => x[0] === now), nx = L[i + 1];
   return nx?.[2] ? h('a', {class: 'more chap-next', href: nx[2], text: '다음 단 · ' + nx[0] + ' ' + nx[1] + ' ›'}) : h('a', {class: 'more chap-next', href: '#/w/' + enc(a), text: '회사로 돌아가기 ›'});
 }
@@ -1087,7 +1096,7 @@ function gdr() {
   return gdrP;
 }
 globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, dayOf, c20, enc, first, odd, need, D, ix, condOf, dateAt, lineSvg, thumb, numThumb, card, toast, share, absUrl,
-  subBtn, isSub, toggleSub, pushHist, laters, jo, hasB, a1, NB, kstNow, dayK, ampm, isDay, isTime, idxOk, gauge, getJson, RM, player, ready, page, chaps, chapNext, noData, gdr, mod,
+  subBtn, isSub, toggleSub, pushHist, laters, jo, hasB, a1, NB, kstNow, dayK, ampm, isDay, isTime, idxOk, gauge, getJson, RM, player, ready, page, chaps, chapNext, setTrail, noData, gdr, mod,
   findMatch, findReady, shareBox, laterBtn, isLater, toggleLater}; // findMatch · findReady = 찾기 잣대(매매일지 종목 고르기) · shareBox = 보내기 글상자(옛 share 대신) · laterBtn = 회사 관심 담기 단추
 /* 길 — 화면마다 새 칸 · 늦게 끝난 앞 화면은 버림 · 돌아오면 그 자리 */
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};

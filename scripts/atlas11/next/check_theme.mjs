@@ -189,7 +189,7 @@ try {
   /* ③ 「다음」 차례 — 인사부터 열여덟 번 */
   const ib = '#/t/i/' + enc(TOP), cb = LEAD ? '#/t/c/' + LEAD.c : null;
   const CHAIN = ['#/t/hello', '#/', '#/t/how', '#/t/sprout', '#/t/bloom', '#/t/wilt', ib, ib + '/path', ib + '/spread', ib + '/big', ib + '/co', ib + '/near',
-    ...(cb ? [cb, cb + '/lead', cb + '/why', cb + '/rank', cb + '/unknown', cb + '/keep', '#/why/' + LEAD.c] : ['#/'])];
+    ...(cb ? [cb, cb + '/lead', cb + '/why', cb + '/rank', cb + '/unknown', cb + '/keep', '#/w/' + LEAD.c + '/past'] : ['#/'])]; // 회사 다음 = 4단 지나온 길(일곱 단 · 2026-10-20 12:59) — 7단 다음이 #/why/<번호>(아래 ⑬)
   const NO = {'#/t/hello': 1, '#/t/how': 3, '#/t/sprout': 4, '#/t/bloom': 5, '#/t/wilt': 6};
   {
     const {p, ctx} = await open(CHAIN[0]);
@@ -534,6 +534,53 @@ try {
     if (!/^\? 테마 시계 자료를 받지 못했어요/.test(u)) fail('자료 없을 때 쪽', u.slice(0, 60));
     await b.ctx.close();
     bump('자료 없음');
+  }
+  /* ⑬ 일곱 단(사장님 2026-10-20 12:59 「지금 3단 클릭 구조로 되어있는걸 7단 클릭구조로 만들어 더 깊이 클릭만으로 알수 있게 토스증권처럼」 · 13:04 「어」)
+     테마 업종 쪽 = 일곱 칸 줄(2단 금빛 · 3단부터 앞선 회사) · 테마 회사 쪽 = 「더 깊이 보기」 일곱 칸(3단 금빛) · 4단을 누르면 지나온 길 · 그 줄의 1 · 2 · 3 은 테마 쪽
+     「다음 단」으로 5 → 6 → 7 · 7단 다음 = 「사기 전에」(#/why/<번호>) · 테마를 거치지 않고 연 7단은 처음 줄 그대로(1 큰 업종 · 「회사로 돌아가기」) · 손가락 자리 44px(⑤) */
+  if (LEAD) {
+    const enc2 = s2 => encodeURIComponent(s2), c = LEAD.c;
+    const WANT = [['1', '테마 시계', '#/'], ['2', '업종', '#/t/i/' + enc2(TOP)], ['3', LEAD.n, '#/t/c/' + c], ['4', '지나온 길', '#/w/' + c + '/past'], ['5', '누구와 다투나', '#/w/' + c + '/rivals'], ['6', '앞으로 클까?', '#/w/' + c + '/grow'], ['7', '범위', '#/w/' + c + '/range']];
+    const cellsOf = q => q.evaluate(() => [...document.querySelectorAll('#view .chaps .cp')].map(a => ({k: a.querySelector('i')?.textContent ?? '', t: a.querySelector('span')?.textContent ?? '', href: a.getAttribute('href'), now: a.classList.contains('now'), cur: a.getAttribute('aria-current'), row: !!a.closest('.chaps.row'), h: Math.round(a.getBoundingClientRect().height)})));
+    const same = (where, got, now, {row}) => {
+      if (got.length !== 7) { fail('일곱 단 칸 수', `${where} ${got.length}`); return; }
+      got.forEach((g, j) => {
+        const [k, t, href] = WANT[j];
+        if (g.k !== k || g.t !== t) fail('일곱 단 이름', `${where} ${j + 1}번째 「${g.k} ${g.t}」 ≠ 「${k} ${t}」`);
+        if (decodeURIComponent(g.href ?? '') !== decodeURIComponent(href)) fail('일곱 단 고리', `${where} ${k}단 ${g.href} ≠ ${href}`);
+        if ((g.now || g.cur === 'page') !== (k === now)) fail('일곱 단 지금 단', `${where} ${k}단 now=${g.now} cur=${g.cur}`);
+        if (g.h < 48) fail('일곱 단 칸 높이 48', `${where} ${k}단 ${g.h}px`);
+        if (g.row !== row) fail('일곱 단 꼴', `${where} ${row ? '한 줄' : '일곱 칸'}이어야 함`);
+      });
+    };
+    const {p, ctx} = await open('#/t/i/' + enc2(TOP));
+    same('업종 쪽', await cellsOf(p), '2', {row: true}); await look('⑬ 업종 쪽', p);
+    await p.click('#view .chaps a.cp >> nth=2'); await p.waitForFunction(w => decodeURIComponent(location.hash) === w, '#/t/c/' + c, {timeout: 8000}).catch(() => fail('일곱 단 3단 누름', p.url())); await settle(p);
+    same('회사 쪽', await cellsOf(p), '3', {row: false});
+    const deepHead = await p.evaluate(() => [...document.querySelectorAll('#view h2.th-h2')].map(x => x.textContent));
+    if (!deepHead.includes('더 깊이 보기')) fail('회사 쪽 「더 깊이 보기」', JSON.stringify(deepHead)); await look('⑬ 회사 쪽', p);
+    await p.click('#view .chaps a.cp >> nth=3'); await p.waitForFunction(w => location.hash === w, '#/w/' + c + '/past', {timeout: 8000}).catch(() => fail('일곱 단 4단 누름', p.url())); await settle(p);
+    await p.waitForFunction(() => !!document.querySelector('#view .chaps .cp.now'), null, {timeout: 15000}).catch(() => {});
+    const g4 = await cellsOf(p);
+    for (let j = 0; j < 3; j++) if (decodeURIComponent(g4[j]?.href ?? '') !== decodeURIComponent(WANT[j][2]) || g4[j]?.t !== WANT[j][1]) fail('4단 줄 앞 셋 = 테마 쪽', `${j + 1} 「${g4[j]?.t}」 ${g4[j]?.href}`);
+    if (!g4.find(g => g.k === '4')?.now) fail('4단 지금 단', JSON.stringify(g4.map(g => g.k + (g.now ? '*' : ''))));
+    for (const [k, sub] of [['5', 'rivals'], ['6', 'grow'], ['7', 'range']]) {
+      const nx = await p.evaluate(() => [...document.querySelectorAll('#view a.chap-next')].at(-1)?.getAttribute('href') ?? null);
+      if (nx !== '#/w/' + c + '/' + sub) { fail('다음 단', `${k}단 앞 「다음 단」 ${nx} ≠ #/w/${c}/${sub}`); break; }
+      await p.evaluate(() => [...document.querySelectorAll('#view a.chap-next')].at(-1).click());
+      await p.waitForFunction(w => location.hash === w, '#/w/' + c + '/' + sub, {timeout: 8000}).catch(() => fail('다음 단 눌러 감', k + '단'));
+      await settle(p); await p.waitForFunction(() => !!document.querySelector('#view a.chap-next'), null, {timeout: 15000}).catch(() => {});
+      bump('일곱 단 걸음');
+    }
+    const end7 = await p.evaluate(() => { const a = [...document.querySelectorAll('#view a.chap-next')].at(-1); return a ? [a.textContent, a.getAttribute('href')] : null; });
+    if (!end7 || end7[1] !== '#/why/' + c || !end7[0].includes('사기 전에')) fail('7단 다음 = 사기 전에', JSON.stringify(end7));
+    await ctx.close();
+    const d = await open('#/w/' + c + '/range'); await d.p.waitForFunction(() => !!document.querySelector('#view .chaps .cp'), null, {timeout: 15000}).catch(() => {});
+    const gd = await cellsOf(d.p), nd = await d.p.evaluate(() => [...document.querySelectorAll('#view a.chap-next')].at(-1)?.textContent ?? null);
+    if (gd[0]?.href === '#/' || gd[2]?.href === '#/t/c/' + c) fail('테마를 거치지 않은 7단 줄', `처음 줄이어야 함 — ${gd[0]?.href} · ${gd[2]?.href}`);
+    if (nd !== '회사로 돌아가기 ›') fail('테마를 거치지 않은 7단 다음', String(nd));
+    await d.ctx.close();
+    bump('일곱 단');
   }
 } finally { await browser.close(); }
 

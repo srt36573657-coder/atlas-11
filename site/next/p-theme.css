@@ -73,3 +73,6 @@
 .th-fold summary { display: flex; align-items: center; min-height: 48px; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; }
 .th-fold p { margin: 0 0 var(--sp-1); }
 .tc .up { color: var(--up); } .tc .dn { color: var(--down); } .tc .fl { color: var(--flat); }
+/* 일곱 단 줄(app.js chaps · 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」) — 테마 쪽 안에서는 쪽 여백(.tc)과 줄을 맞춤(칸 여백 두 번 겹치지 않게) */
+.tc .chaps { padding: 0; margin: var(--sp-1) 0 0; }
+.tc .chaps.row { scroll-padding: 0; }
