@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-range-check-1",
- "at": "2026-10-20T01:25:54.724Z",
+ "at": "2026-10-20T01:39:18.611Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-20",
  "rangeAsOf": "2026-10-20",
@@ -68,21 +68,22 @@
   "045390": "회사 글에 쓰지 않을 말",
   "080160": "회사 글에 쓰지 않을 말"
  },
- "seconds": 184,
+ "seconds": 144,
  "time": {
-  "old": 70.7,
-  "new": 109,
-  "wall": 184,
+  "old": 40.2,
+  "new": 99.9,
+  "wall": 143.5,
   "opensOld": 5130,
   "opensNew": 10405,
-  "oldPct": 38.4,
-  "oldShare": 39.3
+  "oldPct": 28,
+  "oldShare": 28.7
  },
  "net": {
   "req": 10,
   "retry": 0,
   "waitSec": 0,
   "why": {},
+  "cut": 0,
   "page": {
    "retry": 0,
    "waitSec": 0,

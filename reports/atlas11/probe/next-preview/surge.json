@@ -1,7 +1,7 @@
 {
- "at": "2026-10-20T01:26:12.521Z",
+ "at": "2026-10-20T01:41:44.647Z",
  "base": "http://127.0.0.1:8826",
- "secs": 33,
+ "secs": 45,
  "scenarios": [
   "site",
   "rec-20261015T110206Z",
@@ -22,19 +22,20 @@
   "edge-badcal"
  ],
  "time": {
-  "old": 8.9,
-  "new": 20.2,
-  "wall": 33.5,
+  "old": 11.7,
+  "new": 27.4,
+  "wall": 44.8,
   "opensOld": 177,
   "opensNew": 304,
-  "oldPct": 26.6,
-  "oldShare": 30.6
+  "oldPct": 26.2,
+  "oldShare": 30
  },
  "net": {
   "req": 4,
   "retry": 0,
   "waitSec": 0,
   "why": {},
+  "cut": 0,
   "page": {
    "retry": 0,
    "waitSec": 0,
