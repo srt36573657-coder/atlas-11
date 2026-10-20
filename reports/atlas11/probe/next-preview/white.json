@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T05:57:31.166Z",
+ "at": "2026-10-20T12:05:58.444Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -10,12 +10,12 @@
  "fails": [],
  "m": {
   "first": {
-   "bodyLum": 0.0024282158683907,
-   "chars": 166,
+   "bodyLum": 0.0034637699048826634,
+   "chars": 169,
    "blocks": {
-    "ess": 1641,
+    "ess": 1666,
     "find": 728,
-    "today": 1733,
+    "today": 1758,
     "gdr": 776,
     "all": 776
    },
@@ -46,7 +46,7 @@
    "themeChars": 167,
    "top": [
     [
-     32,
+     35,
      "ess p.ess-l",
      "사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아"
     ],
@@ -153,7 +153,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 20일 14:54"
+     "10월 20일"
     ],
     [
      2,
@@ -180,7 +180,7 @@
     "top": 232,
     "clockBottom": 547
    },
-   "bodyHex": "#080808",
+   "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
    "findInput": true,
    "riseShown": [],
@@ -195,7 +195,7 @@
    "errs": []
   },
   "back": {
-   "bodyLum": 0.0024282158683907,
+   "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
     "ess": 1543,
@@ -328,7 +328,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 20일 14:54"
+     "10월 20일"
     ],
     [
      2,
@@ -355,7 +355,7 @@
     "top": 232,
     "clockBottom": 547
    },
-   "bodyHex": "#080808",
+   "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
    "findInput": true,
    "riseShown": [],
@@ -679,9 +679,9 @@
    }
   },
   "speed": {
-   "lcp": 2120,
-   "inp": 16,
-   "cls": 0.078
+   "lcp": 2228,
+   "inp": 48,
+   "cls": 0.079
   }
  },
  "net": {
