@@ -1,21 +1,23 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T04:53:06.021Z",
+ "at": "2026-10-20T05:05:56.921Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 425,
-  "fail": 0
+  "pass": 424,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "한 달 된 기록 · 「그날 정한 대로 했어?」 한 줄 — 첫 화면에 그 줄이 없음"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0024282158683907,
-   "chars": 169,
+   "chars": 166,
    "blocks": {
-    "ess": 1666,
+    "ess": 1641,
     "find": 728,
-    "today": 1758,
+    "today": 1733,
     "gdr": 776,
     "all": 776
    },
@@ -43,10 +45,10 @@
     true,
     true
    ],
-   "themeChars": 167,
+   "themeChars": 172,
    "top": [
     [
-     35,
+     32,
      "ess p.ess-l",
      "사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아"
     ],
@@ -153,7 +155,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 20일 13:13"
+     "10월 12일"
     ],
     [
      2,
@@ -228,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 167,
+   "themeChars": 172,
    "top": [
     [
      24,
@@ -328,7 +330,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 20일 13:13"
+     "10월 12일"
     ],
     [
      2,
@@ -679,8 +681,8 @@
    }
   },
   "speed": {
-   "lcp": 2136,
-   "inp": 24,
+   "lcp": 2112,
+   "inp": 16,
    "cls": 0.078
   }
  },
@@ -688,6 +690,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
