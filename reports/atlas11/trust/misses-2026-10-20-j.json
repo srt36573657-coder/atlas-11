@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-20T15:00+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-20 12:10 틀림 장부 77 고침(check_co · grow · past 따로)",
+  "to": "2026-10-20 14:53 실제 사이트 큰 시험 seven 5/11"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 81,
+   "when": "2026-10-20 12:10(서울) 「열던 화면이 다시 열려 끊김」을 고칠 때",
+   "what": "끊김(Execution context was destroyed)을 check_co · check_grow · check_past 에 따로따로만 넣고, 모든 검사가 함께 쓰는 열기(net.mjs settle)에는 넣지 않음 — settle 이 망 탈 때 스스로 다시 연(reload) 것이 늦게 붙는 사이 rivals 가 같은 글로 멈춤(seven 5/11). 틀림 장부 77 과 같은 꼴(한 곳만 고치고 같은 까닭의 다른 곳을 안 봄)",
+   "found_by": "실제 사이트 큰 시험 seven 5/11(run 39375066425) rivals 끝 글",
+   "fixed": "scripts/atlas11/next/net.mjs settle — 끊김을 망 탈처럼 기다렸다 다시(「열기 끊김」 · 이 방 흉내: 첫 열기에서 다시 열리게 해도 두 번째에 그림) · 실제 사이트 자료 받기는 12번 · 5분까지(chx 「core.json ETIMEDOUT · 7번 받아 봄」)"
+  }
+ ]
+}
