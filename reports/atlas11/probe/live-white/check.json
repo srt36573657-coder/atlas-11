@@ -1,23 +1,25 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T16:56:00.013Z",
+ "at": "2026-10-20T19:33:33.083Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 425,
-  "fail": 0
+  "pass": 420,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "③ 첫 질문까지 누름 2번 안 — 1번 눌러도 「1 / 11」이 안 보임"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
     "ess": 1199,
-    "find": 728,
+    "find": 776,
     "today": 1291,
-    "gdr": 776,
-    "all": 776
+    "gdr": 1640,
+    "all": 1640
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -198,11 +200,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 1076,
-    "find": 728,
-    "today": 1168,
-    "gdr": 776,
-    "all": 776
+    "ess": 1105,
+    "find": 776,
+    "today": 1197,
+    "gdr": 1546,
+    "all": 1546
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -371,7 +373,7 @@
   },
   "taps": {
    "rise": 2,
-   "q1": 1,
+   "q1": null,
    "record": 1,
    "jinhwa": 1,
    "kakao": 1
@@ -679,18 +681,15 @@
    }
   },
   "speed": {
-   "lcp": 1076,
-   "inp": 40,
-   "cls": 0.1
+   "lcp": 1116,
+   "inp": 32,
+   "cls": 0.003
   }
  },
  "net": {
-  "retry": 3,
-  "why": {
-   "HTTP 403": 1,
-   "열기 실패": 2
-  }
+  "retry": 0,
+  "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
