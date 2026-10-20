@@ -110,9 +110,13 @@ html.white.home a.s-evo b { color: var(--ink); font-size: var(--fs-3); font-weig
 html.white.home a.s-evo .when { flex: 1; }
 html.white.home a.s-evo i { font-style: normal; font-size: var(--fs-4); color: #BDBDBD; }
 
-/* 엄지 자리 — 찾기 칸(흰 「시작」 하나) · 바로 가기 · 전부 보기 · 아래 단추 바로 위에 붙음(펼치거나 찾은 줄이 뜨면 풀림) */
+/* 엄지 자리 — 찾기 칸(흰 「시작」 하나) · 아래 단추 바로 위에 붙음(찾은 줄은 붙은 채로 위로 펼침 · 「왜 그럴까?」 물음이 열리면 풀림) */
 html.white.home .s-thumb { position: sticky; bottom: calc(var(--tabs) + env(safe-area-inset-bottom)); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; margin: auto 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #26314F; background: #070B17; }
-html.white.home .s-thumb:has(details.w-all[open]), html.white.home .s-thumb:has(.w-hits:not([hidden])) { position: static; }
+html.white.home .s-thumb:has(details.w-all[open]) { position: static; }
+/* 찾은 줄은 엄지 칸 위로 펼침 · 칸은 아래에 붙은 채로(2026-10-21 04:3x 진짜 사이트 흰 판 검사 「첫 질문까지 누름 2번 안 — 1번 눌러도 1 / 11 이 안 보임」 두 번) —
+   예전엔 찾은 줄이 뜨면 칸이 풀려(static) 제자리로 감 · 엄지 칸 한 줄 뒤 제자리가 쪽 가운데라 치던 칸과 찾은 줄이 화면 밖으로 사라지고 · 글꼴이 늦게 오면 누르는 사이 위 글이 줄어 찾은 줄이 움직임
+   → 붙은 채로 위로 펼치면 화면에 묶여 위 글이 바뀌어도 안 움직임 · 높이는 app.js quickReturn 이 칸 위 남은 자리에 맞춤 */
+html.white.home .s-thumb .w-hits { top: auto; bottom: calc(100% + 4px); }
 html.white.home .s-thumb form.w-find { flex: 1 1 100%; min-width: 0; height: 56px; align-items: center; margin: 0; padding: 0 var(--sp-1) 0 0; border: 1px solid #6A6A6A; border-radius: 28px; background: #141414; }
 html.white.home .s-thumb .w-find .w-in { flex: 1 1 0; width: 0; height: 52px; padding: 0 var(--sp-2); border-radius: 28px 0 0 28px; background: transparent; color: var(--ink); font-size: var(--fs-2); }
 html.white.home .s-thumb .w-find .w-in::placeholder { color: #BDBDBD; }

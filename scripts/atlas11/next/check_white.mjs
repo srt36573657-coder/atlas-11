@@ -219,7 +219,9 @@ try {
       let {p} = await open(ctx, HOME), n = 0;
       const fi = p.locator('#view [data-w="find"] input').first(); // 찾기 칸에 회사 이름을 침(치는 것은 누름이 아님) → 뜬 회사를 누름
       if (await fi.count()) { await fi.fill('삼성전자'); await p.waitForTimeout(1500); }
-      while (n < 2 && !(await seen(p))) { const t = p.locator('#view [data-path~="q1"]:visible').first(); if (!(await t.count())) break; await t.click({timeout: 5000}); n++; await settle(p); }
+      // 누른 뒤 그 쪽이 다 열릴 때까지(8초 안) 기다린 다음 셈 — settle 만 쓰면 주소가 바뀌기 전에 끝나 0.4초 안에 못 연 쪽을 「못 감」으로 셌음
+      // (2026-10-21 04:3x 진짜 사이트 두 번 「1번 눌러도 1 / 11 이 안 보임」 · 탐침 live_q1 = 누름 · 주소 바뀜은 맞고 그 0.4초에 「여는 중이에요…」 · 올린 직후 지나서는 세 번 모두 1번) · 재는 것은 누름 수 그대로(빠르기는 ③ 가장 큰 그림 · 누른 뒤 그려짐이 잼)
+      while (n < 2 && !(await seen(p))) { const t = p.locator('#view [data-path~="q1"]:visible').first(); if (!(await t.count())) break; await t.click({timeout: 5000}); n++; await p.waitForFunction(() => /(^|\s)1\s*\/\s*11(\s|$)/.test(document.querySelector('#view')?.innerText || ''), null, {timeout: 8000}).catch(() => {}); await settle(p); }
       const q1 = await seen(p); R.m.taps = {...(R.m.taps || {}), q1: q1 ? n : null};
       check(q1 && n <= 2, '③ 첫 질문까지 누름 2번 안', q1 ? `${n}번` : `${n}번 눌러도 「1 / 11」이 안 보임`);
       await p.goto(HOME); await settle(p);

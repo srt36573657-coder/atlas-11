@@ -569,19 +569,35 @@ function evoLine() {
 /** 다시 나오는 엄지 칸(2026-10-21 02:29 「어」) — 아래로 24px 넘게 읽으면 숨고(s-away) · 위로 8px 밀면 다시 나옴 · 맨 위(120px 안) · 맨 아래(320px 안) ·
  *  글 칸에 손이 가 있거나 찾은 줄이 떠 있으면 늘 보임 · 화면이 바뀌어 칸이 빠지면 듣기를 그만둠 · 움직임 줄이기면 미끄러짐 없이(stone.css) */
 function quickReturn(el) {
-  let last = scrollY, acc = 0;
+  let last = scrollY, acc = 0, was = false; // was = 한 번이라도 화면에 붙었음(붙기 전 · 여는 동안의 움직임으로 듣기를 그만두지 않게)
   const near = () => scrollY < 120 || innerHeight + scrollY > document.documentElement.scrollHeight - 320; // 맨 아래 320 안 = 칸이 제자리(바로 가기 위)에 와 있음 — 숨기면 바로 가기를 덮음
   const busy = () => el.contains(document.activeElement) || !!el.querySelector('.w-hits:not([hidden])');
+  const gone = () => { if (el.isConnected) { was = true; return false; } return was; };
+  /* 찾은 줄(2026-10-21 04:3x 진짜 사이트 「첫 질문까지 누름 2번 안」) — 칸이 붙은 채로 위로 펼침(stone.css) · 높이는 칸 위 남은 자리(머리줄 아래 · 세 줄 168 ~ 420) ·
+     칸 밖을 누르면 닫힘(붙은 칸 위에 펼친 줄이 읽는 글을 계속 가리지 않게 · 찾은 줄 · 시작 · 보내기 단추는 칸 안이라 그대로) */
+  const hits = el.querySelector('.w-hits');
+  const fit = () => {
+    if (!hits || hits.hidden || !el.isConnected) return;
+    const head = document.querySelector('header.top')?.getBoundingClientRect().bottom ?? 0;
+    hits.style.maxHeight = Math.max(168, Math.min(420, Math.floor(el.getBoundingClientRect().top - head - 12))) + 'px';
+  };
+  if (hits) new MutationObserver(fit).observe(hits, {attributes: true, attributeFilter: ['hidden'], childList: true});
+  const out = e => { if (gone()) return removeEventListener('pointerdown', out, true); if (hits && !hits.hidden && !el.contains(e.target)) hits.hidden = true; };
+  addEventListener('pointerdown', out, true);
   const on = () => {
-    if (!el.isConnected) { if (++on.gone > 2) removeEventListener('scroll', on); return; } on.gone = 0;
+    if (gone()) return removeEventListener('scroll', on);
+    if (!el.isConnected) return;
     const y = scrollY, d = y - last; last = y;
+    fit();
     if (near() || busy()) { el.classList.remove('s-away'); acc = 0; return; }
     acc = (d > 0) === (acc > 0) ? acc + d : d;
     if (acc > 24) el.classList.add('s-away'); else if (acc < -8) el.classList.remove('s-away');
   };
-  on.gone = 0;
   addEventListener('scroll', on, {passive: true});
-  el.addEventListener('focusin', () => el.classList.remove('s-away'));
+  el.addEventListener('focusin', e => {
+    el.classList.remove('s-away');
+    if (hits?.hidden && e.target?.matches?.('.w-in') && e.target.value.trim()) e.target.dispatchEvent(new Event('input')); // 밖을 눌러 닫은 뒤 다시 칸에 손을 대면 찾은 줄을 다시
+  });
   return el;
 }
 async function vHomeAll() {
