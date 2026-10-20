@@ -32,7 +32,7 @@ const note = (o, k) => { o[k] = (o[k] || 0) + 1; };
  * @param {string} label 실패 글 앞머리(예: 'core.json')
  * @param {{as?: 'json'|'text'|'response', init?: RequestInit, tries?: number, timeout?: number, budget?: number}} [o]
  */
-export async function fetchJSON(url, label = url, {as = 'json', init = {}, tries = 7, timeout = 20000, budget = 150000} = {}) {
+export async function fetchJSON(url, label = url, {as = 'json', init = {}, tries = isRemote(url) ? 12 : 7, timeout = 20000, budget = isRemote(url) ? 300000 : 150000} = {}) { // 실제 사이트는 5분까지(2026-10-20 seven 5/11 chx 「core.json ETIMEDOUT · 7번 받아 봄」 — 그 실행기가 2분 30초 넘게 사이트에 못 닿음 · 막힘 5분이면 DOWN_MS 가 끊음)
   const t0 = Date.now();
   let last = '';
   for (let i = 0; ; i++) {
@@ -95,6 +95,8 @@ const stalled = p => { let n = 0; const now = Date.now(); for (const t of p._net
 /** 망 탈로 열기에 실패해 크로미움 오류 쪽(chrome-error://)에 머문 화면인가 — 이때 주소만 바꿔서는 아무것도 열리지 않음 */
 const dead = p => /^chrome-error:/.test(p.url());
 const NETERR = /net::ERR_|ERR_(CONNECTION|TIMED_OUT|NAME|NETWORK|EMPTY_RESPONSE|HTTP2|SSL)|Navigation timeout|Timeout \d+ms exceeded/;
+/** 열던 화면이 그사이 다시 열려 끊김 — 망 탈로 다시 연(reload) 것이 늦게 붙거나 · 옛 앱이 스스로 다시 열 때(2026-10-20 seven 5/11 rivals 「Execution context was destroyed」 로 멈춤) · 망 탈처럼 기다렸다 다시 */
+const CUT = /Execution context was destroyed|frame was detached/;
 /**
  * 화면 열기 — attempt(k) 가 true(다 그림)를 내고 그동안 망 탈이 없으면 끝
  *   망 탈이 있었으면(못 받은 자료로 「?」를 그렸을 수 있음 · 앱은 못 받은 자료를 15초 · 쪽 모듈은 끝까지 기억) 이 열기를 믿지 않고
@@ -114,7 +116,7 @@ export async function settle(p, attempt, {what = '', fail = null, budget = 18000
     else if (k > 0 && (p._net?.n ?? 0) > n0) { bad = p._net.n - n0; why = '다시 열기 망 탈'; } // 다시 연 것부터 망 탈 — 그 쪽에서 attempt 를 부르지 않고 또 기다림
     else {
       const e0 = p._errs?.length ?? 0;
-      try { ok = await attempt(k); } catch (e) { if (!NETERR.test(String(e?.message)) && !dead(p)) throw e; why = String(e.message).match(NETERR)?.[0] ?? '열기 오류'; }
+      try { ok = await attempt(k); } catch (e) { const m = String(e?.message); if (!NETERR.test(m) && !CUT.test(m) && !dead(p)) throw e; why = m.match(NETERR)?.[0] ?? (CUT.test(m) ? '열기 끊김' : '열기 오류'); if (CUT.test(m)) await p.waitForLoadState('domcontentloaded', {timeout: 30000}).catch(() => null); }
       bad = (p._net?.n ?? 0) - n0; stuck = ok ? 0 : stalled(p);
       if (!why && !bad && !stuck && !dead(p)) { upNow(); return !!ok; }
       why ||= dead(p) ? '오류 쪽' : bad ? (p._net.last.replace(/ \/.*$/, '') || '망 탈') : '답 없는 요청';
