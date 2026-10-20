@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-19T17:11:18.954Z",
+ "at": "2026-10-19T23:15:49.890Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-19",
  "ready": [
@@ -29,11 +29,11 @@
  "oldNameAllow": [
   "아틀라스링크"
  ],
- "seconds": 385,
+ "seconds": 267,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 384.9,
+  "wall": 267,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
@@ -52,7 +52,7 @@
   }
  },
  "counts": {
-  "고리": 9723,
+  "고리": 9733,
   "화면": 135,
   "옛 이름 본 화면": 2696,
   "큰 글씨 화면": 45,
