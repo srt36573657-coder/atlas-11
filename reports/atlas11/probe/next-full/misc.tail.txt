@@ -1,20 +1,23 @@
 {
- "sec": 58,
+ "sec": 71,
  "xCodes": 1750,
  "time": {
-  "old": 20.5,
-  "new": 33.5,
-  "wall": 57.7,
+  "old": 23,
+  "new": 43.2,
+  "wall": 71,
   "opensOld": 1771,
   "opensNew": 1834,
-  "oldPct": 35.4,
-  "oldShare": 37.9
+  "oldPct": 32.5,
+  "oldShare": 34.8
  },
  "net": {
-  "req": 9,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
+  "req": 10,
+  "retry": 1,
+  "waitSec": 1,
+  "why": {
+   "ECONNRESET": 1
+  },
+  "cut": 0,
   "page": {
    "retry": 0,
    "waitSec": 0,
@@ -24,8 +27,8 @@
  },
  "counts": {
   "맞댄 화면": 1771,
-  "맞댄 줄": 48239,
-  "맞댄 숫자 낱말": 38853,
+  "맞댄 줄": 48251,
+  "맞댄 숫자 낱말": 38896,
   "맞댄 고리": 232,
   "맞댄 남의 말": 290,
   "업데이트 회차": 60,

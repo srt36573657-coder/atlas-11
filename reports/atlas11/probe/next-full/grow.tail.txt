@@ -1,1 +1,12 @@
-{"ok":false,"companies":2557,"seconds":399,"time":{"old":290.2,"new":144.2,"wall":399.2,"opensOld":7412,"opensNew":9926,"oldPct":72.7,"oldShare":66.8},"net":{"req":5126,"retry":0,"waitSec":0,"why":{},"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"맞댄 글 낱낱":41935,"맞댄 숫자 낱말":77536,"이야기 있는 회사":61,"손가락 이름표":8180,"회사":2467,"fail":90,"oldSnap":{"use":false,"why":"바뀐 파일 1개(/atlas/data/core.json)","made":null,"inputs":2476,"reads":2467,"note":"기준값 새로 씀(파일 2476개 · 값 2467개)"},"아주 크게":9,"세 폭 화면":30,"둘레":9},"fails":[["회사 파일","240810"],["회사 파일","241710"],["회사 파일","241790"],["회사 파일","241840"],["회사 파일","243840"],["회사 파일","244920"],["회사 파일","246250"],["회사 파일","247540"],["회사 파일","248070"],["회사 파일","249420"],["회사 파일","250060"],["회사 파일","251270"],["회사 파일","251630"],["회사 파일","252500"],["회사 파일","253590"]]}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Execution context was destroyed, most likely because of a navigation
+    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:208:78
+    at Object.old (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/net.mjs:154:76)
+    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:208:48 {
+  name: 'Error'
+}
+
+Node.js v22.23.3
