@@ -34,6 +34,7 @@ import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {mkV2 as mkV2f} from './fixtures/gdr-v2-sample.mjs';
 import {NEW_NAME, jsStrings} from './rename.mjs'; // 이름 = site/next/brand.js 한 곳(규칙 76) — 글자를 박지 않음
+import {isRemote} from './net.mjs';
 import {screenHits} from '../../../site/next/words.js'; // 쓰지 않을 말 한 곳(명령문 [4] 4 · 일꾼 C) — 「사라져」 같은 보통 말은 빼고 셈
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
@@ -349,7 +350,13 @@ async function viaHome(p, tag) {
   else await p.evaluate(() => { location.hash = '#/gdr'; });
   await p.waitForFunction(s => location.hash === '#/gdr' && !!document.querySelector(s), SEL, {timeout: 30000}).catch(() => fail('첫 화면 → #/gdr 칸이 안 열림', tag));
 }
+/* 실제 사이트에서 첫 열기가 30초 안에 안 그려지면 한 번 더 엶(2026-10-20 seven 10/11 gdr 「고른 곳 0 390×844 #/gdr: page.waitForFunction: Timeout 30000ms exceeded」 · 같은 판 다른 다섯 길은 통과) — 두 번째도 넘으면 그대로 던짐 · 이 방(127.0.0.1)은 한 번 */
 async function open(p, hash) {
+  for (let k = 0; ; k++) {
+    try { await open1(p, hash); return; } catch (e) { if (!isRemote(base) || k >= 1 || !/Timeout \d+ms exceeded/.test(String(e?.message))) throw e; bump('첫 열기 다시'); }
+  }
+}
+async function open1(p, hash) {
   if (hash === '#/') { await p.goto(base + NEXT + '#/', {waitUntil: 'domcontentloaded'}); await viaHome(p, '#/ 처음'); await settle(p); return; }
   await p.goto(base + NEXT + hash, {waitUntil: 'domcontentloaded'}); await settle(p);
 }
