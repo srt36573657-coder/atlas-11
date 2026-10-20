@@ -1,0 +1,49 @@
+import {createRequire} from 'node:module';
+import fs from 'node:fs';
+const {chromium} = createRequire('/tmp/pw/')('playwright');
+const [file, outDir, width = '390'] = process.argv.slice(2);
+const W = Number(width);
+const b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium'});
+const ctx = await b.newContext({viewport: {width: W, height: 844}, deviceScaleFactor: 2, hasTouch: true});
+const p = await ctx.newPage();
+const errs = [];
+p.on('pageerror', e => errs.push('pageerror ' + e.message));
+p.on('console', m => { if (m.type() === 'error' && !/fonts\.g/.test(m.text())) errs.push(m.text()); });
+await p.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+await p.goto('file://' + file);
+await p.waitForTimeout(400);
+const nav = async route => { await p.evaluate(r => { const a = document.createElement('a'); a.href = '#'; a.dataset.go = r; document.body.append(a); a.click(); a.remove(); }, route); await p.waitForTimeout(500); };
+const audit = async name => p.evaluate(name => {
+  const out = {name, overflow: document.documentElement.scrollWidth - innerWidth, small: [], tiny: []};
+  const walker = document.createTreeWalker(document.getElementById('view'), NodeFilter.SHOW_TEXT);
+  const seen = new Set();
+  while (walker.nextNode()) { const t = walker.currentNode; if (!t.textContent.trim()) continue; const el = t.parentElement; if (seen.has(el)) continue; seen.add(el); const cs = getComputedStyle(el); const r = el.getBoundingClientRect(); if (!r.width || cs.visibility === 'hidden' || el.closest('[hidden]')) continue; if (parseFloat(cs.fontSize) < 17) out.small.push(el.textContent.trim().slice(0, 30) + ' ' + cs.fontSize); }
+  for (const el of document.querySelectorAll('#view a, #view button, #view [role=link], .dock a, .top a, .top button')) { const r = el.getBoundingClientRect(); if (!r.width || el.hidden) continue; if (r.height < 43.5 || r.width < 43.5) out.tiny.push((el.getAttribute('aria-label') || el.textContent.trim()).slice(0, 24) + ` ${Math.round(r.width)}x${Math.round(r.height)}`); }
+  out.text = document.getElementById('view').innerText;
+  return out;
+}, name);
+const shots = [];
+const snap = async (name, full = true) => { const a = await audit(name); shots.push(a); await p.screenshot({path: `${outDir}/${name}.png`, fullPage: full}); };
+await snap('01-home');
+await nav('how'); await snap('02-how');
+await nav('zones'); await snap('03-zones');
+await nav('z:S'); await snap('04-list');
+await nav('i:2차전지'); await snap('05-ind');
+await nav('c:373220'); await snap('06-co');
+await nav('c:373220:past'); await snap('07-past');
+await nav('c:373220:near'); await snap('08-near');
+await nav('c:373220:grow'); await snap('09-grow');
+await nav('c:373220:range'); await snap('10-range');
+await nav('why:373220'); await snap('11-why');
+await p.click('text=첫 질문 ›'); await p.waitForTimeout(300);
+await p.locator('.ans button').nth(2).click(); await p.waitForTimeout(300); await snap('12-why-q1');
+for (let k = 0; k < 11; k++) { const n = await p.locator('.ans button').count(); if (!n) break; if (await p.locator('.ans button[aria-pressed="true"]').count() === 0) await p.locator('.ans button').nth(0).click(); await p.waitForTimeout(120); const nb = p.locator('.btns .btn.solid'); if (await nb.count()) await nb.first().click(); await p.waitForTimeout(150); }
+await snap('13-why-done');
+await nav('back'); await snap('14-back');
+await nav('find'); await p.fill('#find-q', '삼성'); await p.waitForTimeout(200); await snap('15-find');
+await nav('z:Q'); await snap('16-quiet');
+fs.writeFileSync(`${outDir}/audit-${W}.json`, JSON.stringify({errs, shots: shots.map(({text, ...r}) => r)}, null, 1));
+fs.writeFileSync(`${outDir}/text-${W}.json`, JSON.stringify(shots.map(s => [s.name, s.text])));
+console.log('errs', errs.length, errs.slice(0, 3));
+for (const s of shots) console.log(s.name, 'overflow', s.overflow, 'small', s.small.length, s.small.slice(0, 3).join(' | '), 'tiny', s.tiny.length, s.tiny.slice(0, 4).join(' | '));
+await b.close();

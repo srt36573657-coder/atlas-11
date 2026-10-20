@@ -1,0 +1,893 @@
+<title>우주 돌이</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* 판: 천장 벽화처럼 읽는 밤하늘 — 금빛 두 줄 테를 두른 큰 하늘 판 하나, 그 아래로 글판이 한 줄로 흐름 · 한 화면에 질문 하나 · 맨 아래는 늘 다음 한 걸음 */
+:root {
+  --sky: #060A14; --sky-2: #0C1322; --sky-3: #141D33; --line: #243050;
+  --ink: #EEF1F7; --dim: #B4BDCE; --faint: #8C97AC;
+  --moon: #F3E7C8; --wax: #FFC857; --wax-soft: rgba(255, 200, 87, .10);
+  --up: #FF6A3D; --down: #5EA2FF;
+  --ok: #4CC38A; --warn: #F2C14E; --bad: #FF6B6B;
+  --frame: #9C8456; --frame-soft: rgba(156, 132, 86, .45);
+  --moon-base: #101A30; --moon-edge: #3A4766; --star: #DCE5FF; --sky-glow: #101A33; --next-sub: #5A5446;
+  --serif: "Gowun Batang", "Nanum Myeongjo", "Noto Serif KR", serif;
+  --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --fs-1: 17px; --fs-2: 20px; --fs-3: 23px; --fs-4: 28px; --fs-5: 34px; --fs-6: 46px;
+  --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 40px;
+  --r: 18px;
+  color-scheme: dark;
+}
+html, body { background: var(--sky); color: var(--ink); }
+body { margin: 0; font-family: var(--sans); font-size: var(--fs-2); line-height: 1.55; -webkit-text-size-adjust: 100%; word-break: keep-all; overflow-wrap: anywhere; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sky); }
+#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+a { color: inherit; }
+figure { position: relative; margin: 0; }
+:focus-visible { outline: 3px solid var(--wax); outline-offset: 3px; border-radius: 6px; }
+
+/* 위 띠 */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; display: flex; align-items: center; gap: var(--sp-1); min-height: 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: rgba(6, 10, 20, .88); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.top .back { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; margin-left: -12px; border: 0; background: none; color: var(--ink); font: inherit; font-size: var(--fs-4); cursor: pointer; }
+.brand { flex: none; white-space: nowrap; display: inline-flex; align-items: center; min-height: 48px; min-width: 48px; font-family: var(--serif); font-size: var(--fs-4); font-weight: 700; color: var(--moon); text-decoration: none; letter-spacing: .02em; }
+.top .when { min-width: 0; overflow: hidden; text-overflow: ellipsis; margin-left: auto; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--dim); font-size: var(--fs-1); white-space: nowrap; }
+
+/* 본문 */
+main { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: var(--sp-3) calc(112px + env(safe-area-inset-bottom, 0px)); outline: none; }
+.page { display: flex; flex-direction: column; gap: var(--sp-3); }
+.page.enter { animation: rise .42s cubic-bezier(.2, .7, .2, 1); }
+.page.enter.back-in { animation-name: rise-back; }
+@keyframes rise { from { opacity: .35; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes rise-back { from { opacity: .35; transform: scale(1.015); } to { opacity: 1; transform: none; } }
+.block { display: flex; flex-direction: column; gap: var(--sp-1); }
+.eyebrow { margin: 0; color: var(--dim); font-size: var(--fs-1); letter-spacing: .03em; }
+.hero { margin: 0; font-family: var(--serif); font-size: var(--fs-6); font-weight: 700; line-height: 1.18; text-wrap: balance; }
+.hero em { font-style: normal; color: var(--wax); }
+.t { margin: 0; font-family: var(--serif); font-size: var(--fs-5); font-weight: 700; line-height: 1.22; text-wrap: balance; }
+.q { margin: 0; font-family: var(--serif); font-size: var(--fs-4); font-weight: 700; line-height: 1.3; text-wrap: balance; }
+.lead { margin: 0; font-size: var(--fs-3); line-height: 1.5; }
+.sub { margin: 0; color: var(--dim); font-size: var(--fs-2); }
+.cap { margin: 0; color: var(--faint); font-size: var(--fs-1); }
+.center { text-align: center; }
+b.wax, .wax { color: var(--wax); }
+.up { color: var(--up); } .dn { color: var(--down); } .fl { color: var(--dim); }
+.chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 2px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--dim); font-size: var(--fs-1); }
+.chip.wax { border-color: var(--wax); color: var(--wax); }
+.chip svg { width: 22px; height: 22px; }
+a.chip { min-height: 44px; text-decoration: none; }
+.meta .near { flex: 1 1 96px; min-width: 80px; max-width: 160px; }
+
+/* 하늘 판 — 금빛 두 줄 테(천장 벽화의 그린 테두리) */
+.sky { position: relative; margin: 0; border: 1px solid var(--frame); border-radius: 8px; padding: 6px; background: radial-gradient(120% 90% at 30% 25%, var(--sky-glow) 0%, var(--sky) 70%); box-shadow: inset 0 0 0 5px var(--sky), inset 0 0 0 6px var(--frame-soft); }
+.sky svg { display: block; width: 100%; height: auto; }
+.skyin { position: relative; }
+.ov { position: absolute; z-index: 2; font-size: var(--fs-1); line-height: 1.2; white-space: nowrap; pointer-events: none; text-shadow: 0 0 6px var(--sky), 0 0 3px var(--sky); }
+.ov.mid { transform: translate(-50%, -50%); }
+.ov.end { transform: translate(-100%, -50%); }
+.ov.start { transform: translate(0, -50%); }
+.ov.wax { color: var(--wax); font-weight: 700; }
+.ov.moon { color: var(--moon); }
+.ov.dim { color: var(--dim); }
+.ov.big { font-size: var(--fs-2); font-weight: 700; }
+.ax { stroke: var(--line); stroke-width: 1.2; }
+.orbit { fill: none; stroke: var(--faint); stroke-width: 1; stroke-dasharray: 3 7; opacity: .7; }
+.arw { fill: var(--faint); opacity: .8; }
+.zone-s { fill: var(--wax-soft); }
+.st { fill: var(--faint); }
+.st.S { fill: var(--wax); opacity: .9; }
+.st.B { fill: var(--moon); opacity: .85; }
+.st.W, .st.Q { fill: var(--faint); opacity: .75; }
+.ring { fill: none; stroke: var(--wax); stroke-width: 1.4; opacity: .65; }
+.trail { fill: none; stroke: var(--wax); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: .55; stroke-dasharray: 2 5; }
+.tdot { fill: var(--wax); opacity: .5; }
+.glow { fill: var(--wax); opacity: .16; }
+.real { fill: var(--wax); }
+.tap { fill: transparent; cursor: pointer; }
+.tap:focus-visible { outline: none; stroke: var(--wax); stroke-width: 2; }
+@media (prefers-reduced-motion: no-preference) {
+  .glow { animation: breathe 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes breathe { 0%, 100% { opacity: .10; transform: scale(.85); } 50% { opacity: .24; transform: scale(1.12); } }
+}
+/* 달 */
+.m-base { fill: var(--moon-base); stroke: var(--moon-edge); stroke-width: 1.5; }
+.moon.wax .m-lit { fill: var(--wax); }
+.moon.full .m-lit { fill: var(--moon); }
+.moon.wane .m-lit { fill: var(--dim); }
+.mi { flex: none; width: 40px; height: 40px; }
+.mi.s { width: 28px; height: 28px; }
+.mi.xl { width: 64px; height: 64px; }
+
+/* 줄 고리 */
+.rows { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.row { display: flex; align-items: center; gap: var(--sp-2); min-height: 72px; padding-block: 10px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; cursor: pointer; }
+.row:active { background: var(--sky-2); }
+.row .mid { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.row .nm { font-size: var(--fs-3); font-weight: 700; line-height: 1.3; }
+.row .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--sp-1); color: var(--dim); font-size: var(--fs-1); }
+.row .end { flex: none; color: var(--dim); font-size: var(--fs-2); text-align: right; }
+.row .end b { color: var(--ink); font-size: var(--fs-3); }
+.row .go { flex: none; color: var(--faint); font-size: var(--fs-4); line-height: 1; }
+.row.static { cursor: default; }
+
+/* 오늘 답 */
+.answer { display: flex; flex-direction: column; gap: var(--sp-1); }
+.realcard { display: flex; align-items: center; gap: var(--sp-2); min-height: 96px; padding: var(--sp-2); border: 1px solid var(--wax); border-radius: var(--r); background: linear-gradient(180deg, rgba(255, 200, 87, .08), rgba(255, 200, 87, .02)); color: var(--ink); text-decoration: none; }
+.realcard .nm { font-family: var(--serif); font-size: var(--fs-5); font-weight: 700; color: var(--wax); line-height: 1.2; }
+.realcard .meta { color: var(--dim); font-size: var(--fs-1); }
+.realcard .mid { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
+.realcard .go { flex: none; color: var(--wax); font-size: var(--fs-4); }
+
+/* 네 별 · 작은 별 줄 */
+.four { flex: none; }
+.four .s4 { fill: none; stroke: var(--wax); stroke-width: 1.6; }
+.four .s4.on { fill: var(--wax); }
+.four .l4 { stroke: var(--wax); stroke-width: 1; opacity: .4; }
+.cond { display: flex; flex-direction: column; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
+.cond li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; }
+.cond li.on { border-color: rgba(255, 200, 87, .55); background: var(--wax-soft); }
+.cond .k { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; margin-top: 2px; border-radius: 50%; border: 1.5px solid var(--faint); color: var(--faint); font-size: var(--fs-1); font-weight: 700; }
+.cond li.on .k { border-color: var(--wax); background: var(--wax); color: var(--sky); }
+.cond .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cond .tx b { font-size: var(--fs-2); }
+.cond .tx span { color: var(--dim); font-size: var(--fs-1); }
+.kite { display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto; }
+.kite .kl { stroke: var(--wax); stroke-width: 1.2; opacity: .35; }
+.kite .ks { fill: var(--moon-base); stroke: var(--faint); stroke-width: 1.5; }
+.kite .ks.on { fill: var(--wax); stroke: var(--wax); }
+.kite .kg { fill: var(--wax); opacity: .18; }
+
+/* 막대 */
+.near { display: block; width: 100%; height: 8px; }
+.near .b0 { fill: var(--sky-3); }
+.near .b1 { fill: var(--wax); }
+.bar100 { display: flex; flex-direction: column; gap: 12px; }
+.bar100 .r { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 3.4em; align-items: center; gap: var(--sp-1); font-size: var(--fs-1); color: var(--dim); }
+.bar100 .r b { color: var(--ink); text-align: right; font-size: var(--fs-2); font-variant-numeric: tabular-nums; }
+.bar100 svg { display: block; width: 100%; height: 14px; }
+.bar100 .t0 { fill: var(--sky-3); }
+.bar100 .t1 { fill: var(--wax); }
+.bar100 .t2 { fill: var(--dim); }
+
+/* 기록 상자 · 다음 단추 · 안전 글 */
+.rec { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-2); border: 1px dashed var(--frame); border-radius: var(--r); }
+.next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 72px; padding: 10px 22px; border-radius: 999px; background: var(--moon); color: var(--sky); text-decoration: none; cursor: pointer; }
+.next .nx { display: flex; flex-direction: column; min-width: 0; }
+.next small { font-size: var(--fs-1); color: var(--next-sub); font-weight: 600; }
+.next b { font-size: var(--fs-3); font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+.next i { flex: none; font-style: normal; font-size: var(--fs-4); }
+.next.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.next.ghost small { color: var(--dim); }
+.safe { margin: var(--sp-2) 0 0; padding-top: var(--sp-2); border-top: 1px solid var(--line); color: var(--faint); font-size: var(--fs-1); line-height: 1.6; }
+
+/* 일곱 별(북두칠성) */
+.steps { display: flex; align-items: center; gap: var(--sp-2); }
+.steps svg { flex: none; width: 132px; height: auto; }
+.steps .st-tx { display: flex; flex-direction: column; min-width: 0; }
+.steps .st-tx b { font-size: var(--fs-2); }
+.steps .st-tx span { color: var(--dim); font-size: var(--fs-1); }
+.dl { stroke: var(--faint); stroke-width: 1.4; opacity: .45; }
+.dl.on { stroke: var(--wax); opacity: .9; }
+.dp { stroke: var(--moon); stroke-width: 1.2; stroke-dasharray: 3 5; opacity: .55; }
+.ds { fill: var(--moon-base); stroke: var(--faint); stroke-width: 1.6; }
+.ds.done { fill: var(--wax); stroke: var(--wax); }
+.ds.now { fill: var(--wax); stroke: var(--moon); stroke-width: 2.5; }
+.pol { fill: var(--moon); }
+.dipfig { position: relative; margin: 0; }
+.dipfig svg { display: block; width: 100%; height: auto; }
+
+/* 그림(선 · 막대) */
+.chart { position: relative; margin: 0; }
+.chart svg { display: block; width: 100%; height: auto; }
+.ln { fill: none; stroke: var(--moon); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.ar { fill: rgba(243, 231, 200, .08); }
+.gd { stroke: var(--line); stroke-width: 1; }
+.hi { fill: var(--up); } .lo { fill: var(--down); } .nowp { fill: var(--wax); }
+.spark { flex: none; width: 96px; height: 36px; }
+.spark .sl { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.spark .sl.up { stroke: var(--up); } .spark .sl.dn { stroke: var(--down); } .spark .sl.fl { stroke: var(--dim); }
+.facts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; margin: 0; }
+.facts > div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px var(--sp-2); padding-block: 12px; border-bottom: 1px solid var(--line); }
+.facts dt { color: var(--dim); font-size: var(--fs-1); }
+.facts dd { margin: 0; font-size: var(--fs-2); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.hbars { display: flex; flex-direction: column; gap: 14px; }
+.hb { display: flex; flex-direction: column; gap: 6px; color: var(--ink); text-decoration: none; }
+.hb .lbl { display: flex; justify-content: space-between; gap: var(--sp-1); font-size: var(--fs-1); color: var(--dim); }
+.hb .lbl b { color: var(--ink); font-size: var(--fs-2); }
+.hb.me .lbl b { color: var(--wax); }
+.hb svg { display: block; width: 100%; height: 16px; }
+.hb .h0 { fill: var(--sky-3); } .hb .h1 { fill: var(--dim); } .hb.me .h1 { fill: var(--wax); }
+.grow3 { display: flex; flex-direction: column; gap: var(--sp-3); }
+.g3 { display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-2); border: 1px solid var(--line); border-radius: var(--r); }
+.g3 h3 { margin: 0; font-size: var(--fs-3); }
+.g3 .say { margin: 0; color: var(--dim); font-size: var(--fs-1); }
+.g3 svg { display: block; width: 100%; height: auto; }
+.g3 .yb { fill: var(--dim); } .g3 .yb.last { fill: var(--moon); } .g3 .yb.neg { fill: var(--down); }
+.g3 .zero { stroke: var(--faint); stroke-width: 1; }
+.yrs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-1); text-align: center; }
+.yrs span { display: flex; flex-direction: column; color: var(--dim); font-size: var(--fs-1); }
+.yrs b { color: var(--ink); font-size: var(--fs-1); font-variant-numeric: tabular-nums; }
+.band svg { display: block; width: 100%; height: auto; }
+.band .bb { fill: var(--sky-3); }
+.band .bf { fill: rgba(243, 231, 200, .22); }
+.band .bn { fill: var(--wax); }
+.band-l { display: flex; justify-content: space-between; gap: var(--sp-1); color: var(--dim); font-size: var(--fs-1); }
+
+/* 왜 사? */
+.polaris { display: flex; align-items: center; gap: var(--sp-2); }
+.polaris svg { flex: none; width: 64px; height: 64px; }
+.pg { display: flex; gap: 6px; flex-wrap: wrap; }
+.pg svg { width: 22px; height: 22px; }
+.pg .p0 { fill: none; stroke: var(--faint); stroke-width: 1.5; }
+.pg .p1 { fill: var(--wax); }
+.ans { display: flex; flex-direction: column; gap: 12px; }
+.ans button { display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--sky-2); color: var(--ink); font: inherit; font-size: var(--fs-3); text-align: left; cursor: pointer; }
+.ans button[aria-pressed="true"] { border-color: var(--moon); background: var(--sky-3); }
+.ans button:disabled { cursor: default; }
+.ans button:disabled:not([aria-pressed="true"]) { opacity: .45; }
+.dot { flex: none; width: 16px; height: 16px; border-radius: 50%; }
+.dot.g { background: var(--ok); } .dot.y { background: var(--warn); } .dot.r { background: var(--bad); }
+.reply { display: flex; flex-direction: column; gap: 6px; padding: var(--sp-2); border-radius: var(--r); background: var(--sky-2); border: 1px solid var(--line); }
+.reply b { font-size: var(--fs-2); }
+.reply span { color: var(--dim); font-size: var(--fs-1); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 22px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-2); cursor: pointer; text-decoration: none; }
+.btn.solid { background: var(--moon); border-color: var(--moon); color: var(--sky); font-weight: 700; }
+.btns { display: flex; flex-wrap: wrap; gap: 12px; }
+.verdict { margin: 0; font-family: var(--serif); font-size: var(--fs-5); font-weight: 700; line-height: 1.25; color: var(--moon); }
+.verdict.stop { color: var(--bad); }
+.ready { display: flex; flex-direction: column; gap: 6px; }
+.ready svg { display: block; width: 100%; height: 18px; }
+.ready .r0 { fill: var(--sky-3); } .ready .r1 { fill: var(--ok); } .ready .r1.mid { fill: var(--warn); } .ready .r1.low { fill: var(--bad); }
+.redlist { margin: 0; padding-left: 1.2em; color: var(--dim); font-size: var(--fs-1); }
+
+/* 이야기 판(달 읽는 법) */
+.story { display: flex; flex-direction: column; gap: var(--sp-3); counter-reset: sc; }
+.scene { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-2); border: 1px solid var(--frame); border-radius: 8px; box-shadow: inset 0 0 0 4px var(--sky), inset 0 0 0 5px var(--frame-soft); background: rgba(12, 19, 34, .72); }
+.scene .no { color: var(--frame); font-family: var(--serif); font-size: var(--fs-2); font-weight: 700; }
+.scene h2 { margin: 0; font-family: var(--serif); font-size: var(--fs-4); line-height: 1.3; text-wrap: balance; }
+.scene p { margin: 0; color: var(--dim); font-size: var(--fs-2); }
+.scene figure { position: relative; margin: 0; }
+.scene svg { display: block; width: 100%; height: auto; }
+.beam { stroke: var(--wax); stroke-width: 2; stroke-dasharray: 4 8; fill: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .beam { animation: flow 2.4s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -48; } }
+  .orb { animation: spin 14s linear infinite; transform-origin: 180px 105px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+}
+.planet { fill: var(--down); }
+.orbit2 { fill: none; stroke: var(--faint); stroke-width: 1.2; stroke-dasharray: 2 6; }
+.orbdot { fill: var(--wax); }
+
+/* 찾기 */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { color: var(--dim); font-size: var(--fs-1); }
+.field input { min-height: 60px; padding: 0 18px; border: 1px solid var(--frame); border-radius: 16px; background: var(--sky-2); color: var(--ink); font: inherit; font-size: var(--fs-3); }
+.field input::placeholder { color: var(--faint); }
+
+/* 아래 단추 넷 */
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: rgba(6, 10, 20, .94); border-top: 1px solid var(--line); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.dock a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 68px; color: var(--faint); font-size: var(--fs-1); text-decoration: none; }
+.dock a[aria-current="page"] { color: var(--moon); }
+.dock svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.dock a[aria-current="page"] svg { stroke: var(--wax); }
+@media (prefers-reduced-motion: reduce) { .page.enter { animation: none; } }
+</style>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+<header class="top">
+  <button class="back" id="back" type="button" aria-label="뒤로" hidden>‹</button>
+  <a class="brand" href="#" data-go="home" data-root="1">돌이</a>
+  <span class="when" id="when">시험판</span>
+</header>
+<main id="view" tabindex="-1"></main>
+<nav class="dock" aria-label="아래 단추">
+  <a href="#" data-go="home" data-root="1" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3.5a8.5 8.5 0 1 0 5 15.4A7 7 0 0 1 15.5 3.5z"/></svg>하늘</a>
+  <a href="#" data-go="find" data-root="1" data-tab="find"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>찾기</a>
+  <a href="#" data-go="why" data-root="1" data-tab="why"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c.8 5 4.5 8.7 9.5 9.5-5 .8-8.7 4.5-9.5 9.5-.8-5-4.5-8.7-9.5-9.5 5-.8 8.7-4.5 9.5-9.5z"/></svg>왜 사?</a>
+  <a href="#" data-go="back" data-root="1" data-tab="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg>돌아보기</a>
+</nav>
+<script type="application/json" id="dori-data">__DATA__</script>
+<script>
+(() => {
+'use strict';
+/* ── 자료 · 바탕 ── */
+const D = JSON.parse(document.getElementById('dori-data').textContent);
+const NS = 'http://www.w3.org/2000/svg';
+const VIEW = document.getElementById('view');
+const BLOOM = 5; // 한 달 동안 시장보다 5% 넘게 더 오르면 보름 쪽(테마 시계 잣대와 같음)
+const XMIN = -17, XMAX = 31, YMIN = -16, YMAX = 13;
+const DOT_TEXT = ['시장보다 힘이 붙어요', '오른 회사가 많아요', '큰 회사도 움직여요', '값이 진짜로 올라요'];
+const SAFE = '저는 투자 상담사가 아닙니다 · 이 자료는 지난 기록을 센 공부이며, 특정 종목의 사고팔기 · 보유 또는 시장 전망을 권하지 않습니다.';
+const ZN = {
+  S: {name: '차오르는 달', short: '차오름', moon: 'wax', sub: '곧 보름이 될까? 네 별이 많이 켜진 순서예요.', line: '아직 덜 찼지만 빛이 붙는 중이에요.'},
+  B: {name: '보름달', short: '보름', moon: 'full', sub: '이미 꽉 찬 곳이에요. 모두가 보고 있어서 늦을 수 있어요.', line: '이미 꽉 찼어요. 모두가 보고 있어요.'},
+  W: {name: '기우는 달', short: '기우는 중', moon: 'wane', sub: '보름을 지나 빛이 빠지는 중이에요.', line: '보름을 지나 빛이 빠지는 중이에요.'},
+  Q: {name: '그믐달', short: '그믐', moon: 'new', sub: '아직 어둡고 조용해요. 다시 차오를 수도, 더 쉴 수도 있어요.', line: '어둡고 조용해요.'},
+};
+const ZORDER = ['S', 'B', 'W', 'Q'];
+const STEP_NAME = ['하늘', '별자리', '별', '지나온 길', '이웃 별', '커 왔을까', '흔들림'];
+const state = {stack: [], route: 'home', why: null, lastWhy: null, findQ: ''};
+
+/* ── 만드는 손 ── */
+function put(el, kids) { for (const k of kids.flat(Infinity)) { if (k == null || k === false || k === '') continue; el.append(k.nodeType ? k : document.createTextNode(String(k))); } return el; }
+function attrs(el, a) {
+  if (!a) return el;
+  for (const [k, v] of Object.entries(a)) {
+    if (v == null || v === false) continue;
+    if (k === 'text') el.textContent = v;
+    else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : String(v));
+  }
+  return el;
+}
+const h = (t, a, ...k) => put(attrs(document.createElement(t), a), k);
+const s = (t, a, ...k) => put(attrs(document.createElementNS(NS, t), a), k);
+const go1 = (route, cls, ...kids) => h('a', {href: '#', 'data-go': route, class: cls}, ...kids);
+const MINUS = '−';
+const sgn = v => (v > 0 ? '+' : v < 0 ? MINUS : '');
+const pct = (v, d = 1) => (v == null || !isFinite(v) ? '?' : sgn(+(+v).toFixed(d)) + Math.abs(v).toFixed(d) + '%');
+const cls3 = v => (v == null || !isFinite(v) || Math.abs(v) < 0.05 ? 'fl' : v > 0 ? 'up' : 'dn');
+const comma = v => Math.round(v).toLocaleString('ko-KR');
+const won = v => (v == null ? '?' : comma(v) + '원');
+function eok(v) { if (v == null || !isFinite(v)) return '?'; const a = Math.abs(v), g = v < 0 ? MINUS : ''; return a >= 10000 ? g + (a / 10000).toFixed(1).replace(/\.0$/, '') + '조 원' : g + comma(a) + '억 원'; }
+function kdate(iso) { if (!iso) return '?'; const [y, m, d] = iso.split('-').map(Number); return `${y}년 ${m}월 ${d}일`; }
+function kshort(iso) { if (!iso) return '?'; const [, m, d] = iso.split('-').map(Number); return `${m}월 ${d}일`; }
+const X = x => 14 + (Math.max(XMIN, Math.min(XMAX, x)) - XMIN) / (XMAX - XMIN) * 332;
+const Y = y => 14 + (YMAX - Math.max(YMIN, Math.min(YMAX, y))) / (YMAX - YMIN) * 332;
+const nearBar = x => (isFinite(x) ? Math.max(0, Math.min(1, 1 - (BLOOM - x) / 10)) : 0);
+const yearsRec = Math.max(1, Math.round((Date.parse(D.recTo) - Date.parse(D.recFrom)) / (365.25 * 864e5)));
+const realList = () => D.order.S.filter(n => D.inds[n] && D.inds[n].sc === 4);
+const freshList = () => D.order.S.filter(n => D.inds[n] && D.inds[n].d === 1);
+const allInd = () => ZORDER.flatMap(z => D.order[z]);
+
+/* 글자를 그림 위에 얹음(그림이 작아져도 글씨는 17 이상) — vb = [가로, 세로] */
+function ov(fig, vb, x, y, text, cls) { const e = h('span', {class: 'ov ' + cls, 'aria-hidden': 'true'}, text); e.style.left = (x / vb[0] * 100) + '%'; e.style.top = (y / vb[1] * 100) + '%'; fig.append(e); return e; }
+
+/* ── 그림 조각 ── */
+function moon(kind, cx, cy, r) {
+  const g = s('g', {class: 'moon ' + kind});
+  g.append(s('circle', {cx, cy, r, class: 'm-base'}));
+  if (kind === 'full') g.append(s('circle', {cx, cy, r: r - 0.75, class: 'm-lit'}));
+  else if (kind === 'wax' || kind === 'wane') {
+    const rx = (r * 0.42).toFixed(2), top = `${cx} ${cy - r}`, bot = `${cx} ${cy + r}`;
+    const d = kind === 'wax' ? `M${top} A${r} ${r} 0 0 1 ${bot} A${rx} ${r} 0 0 0 ${top} Z` : `M${top} A${r} ${r} 0 0 0 ${bot} A${rx} ${r} 0 0 1 ${top} Z`;
+    g.append(s('path', {d, class: 'm-lit'}));
+  }
+  return g;
+}
+const moonSvg = (kind, cls = 'mi') => s('svg', {viewBox: '0 0 40 40', class: cls, 'aria-hidden': 'true'}, moon(kind, 20, 20, 17));
+function sparkle(cx, cy, r, cls) {
+  const q = r * 0.26;
+  return s('path', {class: cls, d: `M${cx} ${cy - r} Q${cx + q} ${cy - q} ${cx + r} ${cy} Q${cx + q} ${cy + q} ${cx} ${cy + r} Q${cx - q} ${cy + q} ${cx - r} ${cy} Q${cx - q} ${cy - q} ${cx} ${cy - r} Z`});
+}
+/* 네 별 작은 줄(켜진 별 = 채움) */
+function four(dots) {
+  const g = s('svg', {viewBox: '0 0 76 20', width: 76, height: 20, class: 'four', role: 'img', 'aria-label': `네 별 가운데 ${(dots || []).filter(Boolean).length}개 켜짐`});
+  g.append(s('line', {x1: 10, y1: 10, x2: 66, y2: 10, class: 'l4'}));
+  for (let k = 0; k < 4; k++) g.append(sparkle(10 + k * 18.7, 10, 7.5, 's4' + (dots && dots[k] ? ' on' : '')));
+  return g;
+}
+function spark(l, d10) {
+  if (!Array.isArray(l) || l.length < 2) return null;
+  const lo = Math.min(...l), hi = Math.max(...l), sp = hi - lo || 1;
+  const pts = l.map((v, i) => `${(2 + i / (l.length - 1) * 92).toFixed(1)},${(34 - (v - lo) / sp * 32).toFixed(1)}`).join(' ');
+  return s('svg', {viewBox: '0 0 96 36', class: 'spark', 'aria-hidden': 'true'}, s('polyline', {points: pts, class: 'sl ' + cls3(d10)}));
+}
+function bar01(v, cls = 'near') { return s('svg', {viewBox: '0 0 100 8', preserveAspectRatio: 'none', class: cls, 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 100, height: 8, rx: 4, class: 'b0'}), s('rect', {x: 0, y: 0, width: Math.max(0, Math.min(100, v * 100)).toFixed(1), height: 8, rx: 4, class: 'b1'})); }
+
+/* 북두칠성 — 일곱 단(1 하늘 ~ 7 흔들림) · 별 6 → 7 을 이으면 북극성(왜 사?) */
+const DIP = [[18, 122], [70, 100], [112, 104], [150, 120], [160, 166], [230, 178], [240, 128]], POL = [255, 50];
+function dipperSvg(step, big) {
+  const g = s('svg', {viewBox: '0 20 300 180', 'aria-hidden': 'true'});
+  for (const [a, b] of [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]]) g.append(s('line', {x1: DIP[a][0], y1: DIP[a][1], x2: DIP[b][0], y2: DIP[b][1], class: 'dl' + (a + 1 <= step && b + 1 <= step ? ' on' : '')}));
+  g.append(s('line', {x1: DIP[5][0], y1: DIP[5][1], x2: POL[0], y2: POL[1] + 14, class: 'dp'}));
+  DIP.forEach(([x, y], k) => { const n = k + 1; g.append(s('circle', {cx: x, cy: y, r: n === step ? (big ? 11 : 13) : (big ? 7.5 : 9), class: 'ds' + (n < step ? ' done' : n === step ? ' now' : '')})); });
+  g.append(sparkle(POL[0], POL[1], big ? 14 : 16, 'pol'));
+  return g;
+}
+function steps(step) {
+  return h('div', {class: 'steps'}, dipperSvg(step, false), h('div', {class: 'st-tx'}, h('b', {}, `일곱 별 가운데 ${step}번째`), h('span', {}, STEP_NAME[step - 1])));
+}
+/* 회사 쪽 큰 북두칠성 — 별을 누르면 그 단으로 */
+function dipperNav(code, ind) {
+  const fig = h('figure', {class: 'dipfig'});
+  const svg = dipperSvg(3, true); fig.append(svg);
+  const routes = ['home', 'i:' + ind, 'c:' + code, `c:${code}:past`, `c:${code}:near`, `c:${code}:grow`, `c:${code}:range`];
+  DIP.forEach(([x, y], k) => {
+    const t = s('circle', {cx: x, cy: y, r: 24, class: 'tap', role: 'link', tabindex: 0, 'data-go': routes[k], 'aria-label': `${k + 1}번째 별 · ${STEP_NAME[k]}`}); svg.append(t);
+    ov(fig, [300, 180], x + 14, y - 20 - 20, String(k + 1), k >= 3 ? 'start moon big' : 'start dim');
+  });
+  svg.append(s('circle', {cx: POL[0], cy: POL[1], r: 26, class: 'tap', role: 'link', tabindex: 0, 'data-go': 'why:' + code, 'aria-label': '북극성 · 왜 사?'}));
+  ov(fig, [300, 180], POL[0] - 22, POL[1] - 20, '북극성 · 왜 사?', 'end wax');
+  return fig;
+}
+
+/* ── 하늘 판(첫 화면 · 엿새 길) ── */
+function skyFigure({trailOf = null, taps = true} = {}) {
+  const fig = h('figure', {class: 'sky'}), box = h('div', {class: 'skyin'});
+  const svg = s('svg', {viewBox: '0 0 360 360', role: trailOf || !taps ? 'img' : 'group', 'aria-label': trailOf ? `${trailOf}의 엿새 길` : `업종 ${Object.keys(D.inds).length}곳의 달 자리`});
+  fig.append(box); box.append(svg);
+  const x5 = X(BLOOM), y0 = Y(0);
+  svg.append(s('rect', {x: 14, y: 14, width: (x5 - 14).toFixed(1), height: (y0 - 14).toFixed(1), class: 'zone-s'}));
+  svg.append(s('line', {x1: x5, y1: 14, x2: x5, y2: 346, class: 'ax'}), s('line', {x1: 14, y1: y0, x2: 346, y2: y0, class: 'ax'}));
+  const R = 118;
+  svg.append(s('circle', {cx: x5, cy: y0, r: R, class: 'orbit'}));
+  // 시계 방향 화살 넷(위 → 오른쪽 → 아래 → 왼쪽)
+  const arrow = (x, y, ang) => s('path', {d: 'M-6 -5 L6 0 L-6 5 Z', class: 'arw', transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang})`});
+  svg.append(arrow(x5, y0 - R, 0), arrow(x5 + R, y0, 90), arrow(x5, y0 + R, 180), arrow(x5 - R, y0, 270));
+  // 네 모서리 달
+  const corners = {S: [36, 36, 'start', 60], B: [324, 36, 'end', 300], W: [324, 324, 'end', 300], Q: [36, 324, 'start', 60]};
+  for (const z of ZORDER) {
+    const [cx, cy, an, tx] = corners[z];
+    svg.append(moon(ZN[z].moon, cx, cy, 15));
+    ov(box, [360, 360], tx, cy, ZN[z].name, an + (z === 'S' ? ' wax' : z === 'B' ? ' moon' : ' dim'));
+  }
+  // 네 자리 누르는 곳(첫 화면만)
+  if (!trailOf && taps) {
+    const zr = {S: [14, 14, x5 - 14, y0 - 14], B: [x5, 14, 346 - x5, y0 - 14], W: [x5, y0, 346 - x5, 346 - y0], Q: [14, y0, x5 - 14, 346 - y0]};
+    for (const z of ZORDER) { const [x, y, w, hh] = zr[z]; svg.append(s('rect', {x, y, width: w.toFixed(1), height: hh.toFixed(1), class: 'tap', role: 'link', tabindex: 0, 'data-go': 'z:' + z, 'aria-label': `${ZN[z].name} 자리 ${D.count[z]}곳 보기`})); }
+  }
+  // 별(업종)
+  const names = Object.keys(D.inds);
+  for (const n of names) {
+    const i = D.inds[n]; if (trailOf && n !== trailOf) continue;
+    if (!trailOf) svg.append(s('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: i.z === 'S' ? 3.6 : 3.1, class: 'st ' + i.z}));
+    if (!trailOf && i.z === 'S' && i.d === 1 && i.sc !== 4) svg.append(s('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: 7.5, class: 'ring'}));
+  }
+  const lit = trailOf ? [trailOf] : realList();
+  for (const n of lit) {
+    const i = D.inds[n]; if (!i) continue;
+    if (Array.isArray(i.t) && i.t.length > 1) {
+      svg.append(s('polyline', {points: i.t.map(([a, b]) => `${X(a).toFixed(1)},${Y(b).toFixed(1)}`).join(' '), class: 'trail'}));
+      i.t.slice(0, -1).forEach(([a, b]) => svg.append(s('circle', {cx: X(a).toFixed(1), cy: Y(b).toFixed(1), r: 3.4, class: 'tdot'})));
+    }
+    const cx = X(i.x), cy = Y(i.y);
+    svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}));
+    svg.append(sparkle(cx, cy, 11, 'real'));
+    if (!trailOf && taps) svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 30, class: 'tap', role: 'link', tabindex: 0, 'data-go': 'i:' + n, 'aria-label': `${n} 보기`}));
+    const right = cx < 220;
+    ov(box, [360, 360], cx + (right ? 16 : -16), cy + (trailOf ? 22 : -18), n, (right ? 'start' : 'end') + ' wax big');
+    if (trailOf && i.t && i.t.length > 1) { const [a, b] = i.t[0]; ov(box, [360, 360], X(a) + 10, Y(b) + 16, '엿새 전', 'start dim'); }
+  }
+  return fig;
+}
+
+/* ── 공통 끝 줄 ── */
+function next(label, title, route, ghost) { return go1(route, 'next' + (ghost ? ' ghost' : ''), h('span', {class: 'nx'}, h('small', {}, label), h('b', {}, title)), h('i', {'aria-hidden': 'true'}, '›')); }
+const safe = () => h('p', {class: 'safe'}, SAFE);
+function recordBox() {
+  const R = D.rec, real = Math.round(R.real), all = Math.round(R.all);
+  const row = (lbl, v, c) => h('div', {class: 'r'}, h('span', {}, lbl), s('svg', {viewBox: '0 0 100 14', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 100, height: 14, rx: 7, class: 't0'}), s('rect', {x: 0, y: 0, width: v, height: 14, rx: 7, class: c})), h('b', {}, v + '번'));
+  return h('section', {class: 'rec', 'aria-label': '지난 기록'},
+    h('p', {class: 'eyebrow'}, `지난 ${yearsRec}년 기록 · 100번 가운데`),
+    h('p', {class: 'lead'}, '진짜 차오르던 날도 ', h('b', {class: 'wax'}, `100번 가운데 ${real}번`), '만 한 달 뒤 보름 선을 넘었어요.'),
+    h('div', {class: 'bar100'}, row('진짜 차오름', real, 't1'), row('아무 업종', all, 't2')),
+    h('p', {class: 'cap'}, '그래서 돌이는 앞날을 맞히지 않아요. 지난 기록만 보여 줘요.'));
+}
+
+/* ── 쪽 ── */
+function pHome() {
+  const real = realList(), fresh = freshList(), total = allInd().length;
+  const realRow = n => { const i = D.inds[n]; return go1('i:' + n, 'realcard', h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(i.dots), ' 네 별이 다 켜졌어요 · ', i.d === 1 ? '오늘 차올랐어요' : `${i.d}일째 차오르는 중`)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')); };
+  return [
+    h('div', {class: 'block'},
+      h('p', {class: 'eyebrow'}, `오늘 밤 하늘 · ${kdate(D.asOf)} 기록`),
+      h('h1', {class: 'hero'}, '보름달 말고,', h('br'), h('em', {}, '차오르는 달.')),
+      h('p', {class: 'lead'}, '돌이는 테마가 된 곳보다, 테마가 될 듯한 곳을 먼저 찾아 줘요.')),
+    h('div', {class: 'block'}, skyFigure(), h('p', {class: 'cap center'}, '점 하나가 업종 하나예요. 달처럼 시계 방향으로 돌아요.'), h('p', {class: 'cap center'}, '달 자리를 누르면 그 자리 업종이 나와요.')),
+    h('section', {class: 'answer'}, h('p', {class: 'eyebrow'}, '오늘 진짜 차오르는 곳'),
+      real.length ? real.map(realRow) : h('p', {class: 'sub'}, '오늘은 네 별이 다 켜진 곳이 없어요.')),
+    h('nav', {class: 'rows', 'aria-label': '달 자리'},
+      go1('z:S:new', 'row', moonSvg('wax'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '새로 차오른 곳'), h('span', {class: 'meta'}, '오늘 차오르는 달 자리에 들어왔어요')), h('span', {class: 'end'}, h('b', {}, fresh.length), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+      go1('z:S', 'row', moonSvg('wax'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '차오르는 곳 모두'), h('span', {class: 'meta'}, '네 별이 많이 켜진 순서')), h('span', {class: 'end'}, h('b', {}, D.count.S), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+      go1('zones', 'row', moonSvg('full'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '하늘 전체'), h('span', {class: 'meta'}, '차오름 · 보름 · 기우는 중 · 그믐')), h('span', {class: 'end'}, h('b', {}, total), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))),
+    recordBox(),
+    next('처음이면', '돌이 하늘 읽는 법', 'how'),
+    safe(),
+  ];
+}
+
+function pHow() {
+  const scene = (no, title, text, fig) => h('section', {class: 'scene'}, h('span', {class: 'no'}, no), h('h2', {}, title), fig, h('p', {}, text));
+  // 1 별빛
+  const f1 = h('figure', {}); const s1 = s('svg', {viewBox: '0 0 360 120', 'aria-hidden': 'true'}); f1.append(s1);
+  s1.append(sparkle(48, 60, 22, 'real'), s('circle', {cx: 48, cy: 60, r: 30, class: 'glow'}), s('line', {x1: 80, y1: 60, x2: 300, y2: 60, class: 'beam'}), s('circle', {cx: 318, cy: 60, r: 14, class: 'planet'}));
+  ov(f1, [360, 120], 48, 104, '별', 'mid dim'); ov(f1, [360, 120], 318, 104, '우리', 'mid dim'); ov(f1, [360, 120], 190, 34, '오래전에 떠난 빛', 'mid wax');
+  // 2 달 넷
+  const f2 = h('figure', {}); const s2 = s('svg', {viewBox: '0 0 360 110', 'aria-hidden': 'true'}); f2.append(s2);
+  const seq = ['new', 'wax', 'full', 'wane'], lab = ['그믐', '차오름', '보름', '기우는 중'];
+  seq.forEach((k, j) => { const cx = 45 + j * 90; s2.append(moon(k, cx, 42, 24)); if (j < 3) s2.append(s('path', {d: `M${cx + 32} 42 l10 0 m-5 -5 l5 5 l-5 5`, class: 'orbit'})); ov(f2, [360, 110], cx, 94, lab[j], 'mid ' + (k === 'wax' ? 'wax' : 'dim')); });
+  // 3 시계
+  const f3 = skyFigure({taps: false});
+  // 4 네 별
+  const f4 = kiteFigure([1, 1, 1, 1]);
+  // 5 기록
+  const f5 = recordBars();
+  // 6 북두칠성
+  const f6 = h('figure', {class: 'dipfig'}); f6.append(dipperSvg(7, true)); ov(f6, [300, 180], POL[0] - 22, POL[1] - 20, '북극성 · 왜 사?', 'end wax'); ov(f6, [300, 180], DIP[0][0] - 4, DIP[0][1] + 16 - 20, '1 하늘', 'start dim'); ov(f6, [300, 180], DIP[6][0] + 16, DIP[6][1] - 20, '7 흔들림', 'start dim');
+  // 7 한 바퀴
+  const f7 = orbitFigure();
+  return [
+    h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '일곱 장면이면 돌이를 다 알아요'), h('h1', {class: 't'}, '돌이 하늘 읽는 법')),
+    h('div', {class: 'story'},
+      scene('하나', '하늘의 빛은 모두 지난 빛이에요.', '별빛은 오래전에 별을 떠나 이제 닿은 빛이에요. 돌이도 이미 지난 기록만 보여 줘요.', f1),
+      scene('둘', '달은 차고 기울어요.', '업종도 달처럼 돌아요. 그믐달에서 차오르고, 보름달이 되고, 다시 기울어요.', f2),
+      scene('셋', '돌이는 차오르는 달을 먼저 찾아요.', '보름달은 이미 모두가 봐요. 늦을 수 있어요. 차오르는 달은 아직 조용해요. 왼쪽 위 금빛 자리예요.', f3),
+      scene('넷', '네 별이 다 켜지면 진짜 차오름이에요.', '힘이 붙고, 오른 회사가 많고, 큰 회사도 움직이고, 값이 진짜로 오르면 네 별이 다 켜져요.', f4),
+      scene('다섯', '그래도 앞날은 몰라요.', `진짜 차오름도 100번 가운데 ${Math.round(D.rec.real)}번만 한 달 뒤 보름 선을 넘었어요. 하늘의 달과 달리, 업종은 꼭 차지 않아요.`, f5),
+      scene('여섯', '일곱 별을 따라가면 북극성이에요.', '북두칠성 일곱 별을 하나씩 눌러 더 깊이 봐요. 끝에는 북극성, 「왜 사?」가 있어요. 길을 잃지 않게 내 이유를 물어요.', f6),
+      scene('일곱', '달이 한 바퀴 돌면 다시 물어요.', '한 달 뒤 돌이가 물어요. 「그날 정한 대로 했어?」 잘했다고 상을 주지 않아요. 같이 돌아볼 뿐이에요.', f7)),
+    next('다 읽었으면', '오늘 하늘 보러 가기', 'home'),
+    safe(),
+  ];
+}
+function kiteFigure(dots, labels) {
+  const fig = h('figure', {}); const svg = s('svg', {viewBox: '0 0 360 150', class: 'kite', 'aria-hidden': 'true'}); fig.append(svg);
+  const P = [[60, 96], [145, 46], [225, 84], [305, 40]];
+  for (let k = 0; k < 3; k++) svg.append(s('line', {x1: P[k][0], y1: P[k][1], x2: P[k + 1][0], y2: P[k + 1][1], class: 'kl'}));
+  P.forEach(([x, y], k) => { if (dots[k]) svg.append(s('circle', {cx: x, cy: y, r: 20, class: 'kg'})); svg.append(sparkle(x, y, 13, 'ks' + (dots[k] ? ' on' : ''))); ov(fig, [360, 150], x, y + 36, String(k + 1), 'mid ' + (dots[k] ? 'wax' : 'dim')); });
+  return fig;
+}
+function recordBars() { const box = recordBox(); box.querySelectorAll('.eyebrow, .lead, .cap').forEach(e => e.remove()); box.classList.remove('rec'); return box; }
+function orbitFigure() {
+  const fig = h('figure', {}); const svg = s('svg', {viewBox: '0 0 360 240', 'aria-hidden': 'true'}); fig.append(svg);
+  svg.append(s('circle', {cx: 180, cy: 105, r: 78, class: 'orbit2'}));
+  svg.append(moon('new', 102, 105, 16), moon('wax', 180, 27, 16), moon('full', 258, 105, 16), moon('wane', 180, 183, 16));
+  const g = s('g', {class: 'orb'}); g.append(s('circle', {cx: 180, cy: 183, r: 6, class: 'orbdot'})); svg.append(g);
+  ov(fig, [360, 240], 80, 105, '오늘 적음', 'end dim'); ov(fig, [360, 240], 180, 224, '달이 한 바퀴 돌면 돌이가 물어요', 'mid wax');
+  return fig;
+}
+
+function pZones() {
+  const total = allInd().length;
+  return [
+    h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, `${kdate(D.asOf)} 기록`), h('h1', {class: 't'}, '하늘 전체'), h('p', {class: 'sub'}, `업종 ${total}곳이 지금 어느 달 자리에 있는지예요.`)),
+    skyFigure(),
+    h('nav', {class: 'rows'}, ZORDER.map(z => go1('z:' + z, 'row', moonSvg(ZN[z].moon), h('span', {class: 'mid'}, h('span', {class: 'nm'}, ZN[z].name), h('span', {class: 'meta'}, ZN[z].line)), h('span', {class: 'end'}, h('b', {}, D.count[z]), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')))),
+    h('p', {class: 'cap'}, `가로는 한 달 동안 시장보다 더 오른 만큼, 세로는 지난 닷새 동안 더 오른 만큼이에요. 한 달 동안 ${BLOOM}% 넘게 더 오르면 보름 쪽이에요.`),
+    next('먼저 볼 곳', '차오르는 달', 'z:S'),
+    safe(),
+  ];
+}
+
+function pZone(z, f) {
+  let list = D.order[z].filter(n => D.inds[n]);
+  let title = ZN[z].name, sub = ZN[z].sub;
+  if (z === 'S' && f === 'real') { list = realList(); title = '진짜 차오르는 달'; sub = '네 별이 다 켜진 곳이에요.'; }
+  if (z === 'S' && f === 'new') { list = freshList(); title = '새로 차오른 달'; sub = '오늘 차오르는 달 자리에 새로 들어왔어요.'; }
+  const row = n => {
+    const i = D.inds[n];
+    if (z === 'S') return go1('i:' + n, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(i.dots), i.d === 1 ? '오늘 차오름' : `차오름 ${i.d}일째`), h('span', {class: 'meta'}, '보름까지', bar01(nearBar(i.x)))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'));
+    return go1('i:' + n, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, '한 달 동안 시장보다 ', h('b', {class: cls3(i.x)}, pct(i.x)))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'));
+  };
+  const first = list[0];
+  return [
+    h('div', {class: 'block'}, h('div', {class: 'chips'}, h('span', {class: 'chip' + (z === 'S' ? ' wax' : '')}, moonSvg(ZN[z].moon, 'mi s'), ZN[z].short)), h('h1', {class: 't'}, title, ' ', h('span', {class: z === 'S' ? 'wax' : ''}, `${list.length}곳`)), h('p', {class: 'sub'}, sub)),
+    list.length ? h('nav', {class: 'rows'}, list.map(row)) : h('p', {class: 'sub'}, '오늘은 이 자리에 업종이 없어요.'),
+    z === 'S' ? h('p', {class: 'cap'}, '보름까지 막대는 한 달 동안 시장보다 더 오른 만큼이에요. 끝까지 차면 보름 선이에요.') : h('p', {class: 'cap'}, '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'),
+    first ? next('다음 · 2번째 별', first, 'i:' + first) : next('돌아가기', '오늘 하늘', 'home', true),
+    safe(),
+  ];
+}
+
+function pInd(n) {
+  const i = D.inds[n], M = D.more[n];
+  if (!i) return [h('h1', {class: 't'}, '? 이 업종을 찾지 못했어요.'), next('돌아가기', '오늘 하늘', 'home')];
+  const z = i.z, dots = i.dots || [0, 0, 0, 0], on = dots.filter(Boolean).length;
+  const detail = [
+    i.y != null ? `지난 닷새 동안 시장보다 ${pct(i.y)} 더 올랐어요` : '?',
+    i.tot ? `${i.tot}곳 가운데 ${i.up}곳이 열흘 동안 2% 넘게 올랐어요` : '?',
+    i.bigAvg != null ? `큰 회사 셋이 열흘 동안 평균 ${pct(i.bigAvg)}` : '?',
+    i.m10 != null ? `업종 값이 열흘 동안 ${pct(i.m10)}` : '?'];
+  const big = (M && M.big) || [], top = ((M && M.top) || []).filter(t => !big.some(b => b[0] === t[0])).sort((p, q) => p[1].localeCompare(q[1], 'ko'));
+  const coRow = ([c, nm, d10, l]) => (D.co[c] ? go1 : (r, cl, ...k) => h('div', {class: cl + ' static'}, ...k))('c:' + c, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, nm), h('span', {class: 'meta'}, '열흘 ', h('b', {class: cls3(d10)}, pct(d10)))), spark(l, d10), D.co[c] ? h('i', {class: 'go', 'aria-hidden': 'true'}, '›') : null);
+  const lead = big[0] || top[0];
+  return [
+    steps(2),
+    h('div', {class: 'block'}, h('div', {class: 'chips'}, h('span', {class: 'chip' + (z === 'S' ? ' wax' : '')}, moonSvg(ZN[z].moon, 'mi s'), ZN[z].short, z === 'S' ? (i.d === 1 ? ' · 오늘부터' : ` · ${i.d}일째`) : '')), h('h1', {class: 't'}, n), i.gn ? h('p', {class: 'cap'}, i.gn) : null),
+    h('section', {class: 'block'},
+      h('h2', {class: 'q'}, z === 'S' ? '왜 차오른다고 볼까?' : '네 별은 몇 개 켜졌을까?'),
+      kiteFigure(dots),
+      h('ul', {class: 'cond'}, DOT_TEXT.map((t, k) => h('li', {class: dots[k] ? 'on' : ''}, h('span', {class: 'k'}, k + 1), h('span', {class: 'tx'}, h('b', {}, t), h('span', {}, detail[k]))))),
+      h('p', {class: 'sub'}, on === 4 ? '네 별이 다 켜졌어요.' : `네 별 가운데 ${on}개가 켜졌어요.`, z !== 'S' ? ' ' + ZN[z].line : '')),
+    h('section', {class: 'block'}, h('h2', {class: 'q'}, '엿새 동안 어디를 지나왔을까?'), skyFigure({trailOf: n}), h('p', {class: 'cap'}, '점선이 엿새 동안 지나온 길이에요. 별 모양이 오늘 자리예요.')),
+    big.length || top.length ? h('section', {class: 'block'}, h('h2', {class: 'q'}, '이 별자리의 별들'),
+      big.length ? h('p', {class: 'eyebrow'}, '큰 별 · 몸집이 큰 회사') : null, big.length ? h('nav', {class: 'rows'}, big.map(coRow)) : null,
+      top.length ? h('p', {class: 'eyebrow'}, '열흘 동안 많이 움직인 별 · 이름 순') : null, top.length ? h('nav', {class: 'rows'}, top.map(coRow)) : null,
+      h('p', {class: 'cap'}, '많이 움직인 별은 흔들림도 커요.')) : null,
+    lead && D.co[lead[0]] ? next('다음 · 3번째 별', (big[0] ? '가장 큰 별, ' : '') + lead[1], 'c:' + lead[0]) : next('돌아가기', '오늘 하늘', 'home', true),
+    h('p', {class: 'cap'}, `이 업종이 보름이 될지는 아무도 몰라요. ${kdate(D.asOf)} 기록이에요.`),
+    safe(),
+  ];
+}
+
+function pCo(c) {
+  const C = D.co[c];
+  if (!C) return [h('h1', {class: 't'}, '? 이 회사를 찾지 못했어요.'), next('돌아가기', '오늘 하늘', 'home')];
+  const ind = C.i, i = ind ? D.inds[ind] : null;
+  const mine = ind && D.more[ind] ? [...D.more[ind].big, ...D.more[ind].top].find(x => x[0] === c) : null;
+  return [
+    steps(3),
+    h('div', {class: 'block'}, h('div', {class: 'chips'}, ind ? go1('i:' + ind, 'chip' + (i && i.z === 'S' ? ' wax' : ''), i ? moonSvg(ZN[i.z].moon, 'mi s') : null, ind) : null, C.mk ? h('span', {class: 'chip'}, C.mk === 'KOSPI' ? '코스피' : C.mk === 'KOSDAQ' ? '코스닥' : C.mk) : null), h('h1', {class: 't'}, C.n)),
+    h('section', {class: 'block'}, h('h2', {class: 'q'}, '어떤 회사일까?'),
+      h('dl', {class: 'facts'},
+        C.prod ? h('div', {}, h('dt', {}, '만드는 것'), h('dd', {}, C.prod)) : null,
+        C.cap ? h('div', {}, h('dt', {}, '몸집 · 시가총액'), h('dd', {}, eok(C.cap))) : null,
+        C.rank && C.of ? h('div', {}, h('dt', {}, '별자리 안 자리'), h('dd', {}, `매출로 ${C.of}곳 가운데 ${C.rank}번째`)) : null,
+        C.price ? h('div', {}, h('dt', {}, `값 · ${kshort(C.pd)}`), h('dd', {}, won(C.price))) : null,
+        mine ? h('div', {}, h('dt', {}, '열흘 길'), h('dd', {}, h('span', {class: cls3(mine[2])}, pct(mine[2])), ' ', spark(mine[3], mine[2]))) : null)),
+    h('section', {class: 'block'}, h('h2', {class: 'q'}, '더 깊이 보기'), h('p', {class: 'sub'}, '북두칠성 별을 누르면 그 단으로 가요.'), dipperNav(c, ind),
+      h('nav', {class: 'rows'},
+        go1(`c:${c}:past`, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, '4 · 지나온 길'), h('span', {class: 'meta'}, '1년 동안 어떤 길을 걸었을까?')), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+        go1(`c:${c}:near`, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, '5 · 이웃 별'), h('span', {class: 'meta'}, '누구와 다툴까?')), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+        go1(`c:${c}:grow`, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, '6 · 커 왔을까'), h('span', {class: 'meta'}, '3년 동안 번 돈은?')), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+        go1(`c:${c}:range`, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, '7 · 흔들림'), h('span', {class: 'meta'}, '하루하루 얼마나 흔들렸을까?')), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+        go1('why:' + c, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm wax'}, '북극성 · 왜 사?'), h('span', {class: 'meta'}, '사기 전에 한 번 멈춰요')), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')))),
+    next('다음 · 4번째 별', '지나온 길', `c:${c}:past`),
+    safe(),
+  ];
+}
+
+function head(step, c, title, q) { const C = D.co[c]; return [steps(step), h('div', {class: 'block'}, h('div', {class: 'chips'}, go1('c:' + c, 'chip', C.n)), h('h1', {class: 't'}, title), q ? h('p', {class: 'sub'}, q) : null)]; }
+
+function pPast(c) {
+  const C = D.co[c]; if (!C) return pCo(c);
+  const fig = h('figure', {class: 'chart'}); const W = 360, H = 200, L = C.line, n = L.length;
+  const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': `${C.n} ${C.full ? '1년' : '상장 뒤'} 값 — ${won(C.f0)}에서 ${won(C.f1)}`}); fig.append(svg);
+  const px = k => 6 + k / (n - 1) * (W - 12), py = v => 14 + (999 - v) / 999 * (H - 28);
+  for (const gy of [14, H / 2, H - 14]) svg.append(s('line', {x1: 0, y1: gy, x2: W, y2: gy, class: 'gd'}));
+  const pts = L.map((v, k) => `${px(k).toFixed(1)},${py(v).toFixed(1)}`);
+  svg.append(s('path', {d: `M${px(0).toFixed(1)},${H - 14} L${pts.join(' L')} L${px(n - 1).toFixed(1)},${H - 14} Z`, class: 'ar'}), s('polyline', {points: pts.join(' '), class: 'ln'}));
+  const mx = Math.max(...L), mn = Math.min(...L), kHi = L.indexOf(mx), kLo = L.indexOf(mn);
+  svg.append(s('circle', {cx: px(kHi).toFixed(1), cy: py(mx).toFixed(1), r: 6, class: 'hi'}));
+  svg.append(s('circle', {cx: px(kLo).toFixed(1), cy: py(mn).toFixed(1), r: 6, class: 'lo'}));
+  svg.append(s('circle', {cx: px(n - 1).toFixed(1), cy: py(L[n - 1]).toFixed(1), r: 7, class: 'nowp'}));
+  return [
+    ...head(4, c, '지나온 길', C.full ? '1년 동안 어떤 길을 걸어왔을까?' : '상장한 뒤 어떤 길을 걸어왔을까?'),
+    h('div', {class: 'band-l'}, h('span', {}, kshort(C.from)), h('span', {}, kshort(C.to))),
+    fig,
+    h('dl', {class: 'facts'},
+      h('div', {}, h('dt', {}, `${kdate(C.from)} → ${kdate(C.to)}`), h('dd', {}, `${won(C.f0)} → ${won(C.f1)}`)),
+      h('div', {}, h('dt', {}, '그사이 바뀐 값'), h('dd', {class: cls3(C.chg)}, pct(C.chg))),
+      h('div', {}, h('dt', {}, h('span', {class: 'up'}, '●'), ' 가장 높을 때'), h('dd', {}, `${won(C.hi[0])} · ${kshort(C.hi[1])}`)),
+      h('div', {}, h('dt', {}, h('span', {class: 'dn'}, '●'), ' 가장 낮을 때'), h('dd', {}, `${won(C.lo[0])} · ${kshort(C.lo[1])}`)),
+      C.mdd != null ? h('div', {}, h('dt', {}, '가장 깊이 빠졌을 때'), h('dd', {class: 'dn'}, pct(C.mdd))) : null),
+    h('p', {class: 'cap'}, '지나온 길이에요. 앞길은 아니에요.'),
+    next('다음 · 5번째 별', '이웃 별', `c:${c}:near`),
+    safe(),
+  ];
+}
+
+function pNear(c) {
+  const C = D.co[c]; if (!C) return pCo(c);
+  let riv = Array.isArray(C.riv) ? C.riv.slice() : [];
+  if (!riv.some(r => r[2] === c) && C.me) riv.push([C.n, C.me, c]);
+  const mx = Math.max(1, ...riv.map(r => r[1] || 0));
+  const bar = ([nm, rev, code]) => {
+    const me = code === c, inner = [h('span', {class: 'lbl'}, h('span', {}, nm + (me ? ' · 이 회사' : '')), h('b', {}, eok(rev))), s('svg', {viewBox: '0 0 100 16', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 100, height: 16, rx: 8, class: 'h0'}), s('rect', {x: 0, y: 0, width: Math.max(1.5, (rev || 0) / mx * 100).toFixed(1), height: 16, rx: 8, class: 'h1'}))];
+    return !me && D.co[code] ? go1('c:' + code, 'hb', ...inner) : h('div', {class: 'hb' + (me ? ' me' : '')}, ...inner);
+  };
+  return [
+    ...head(5, c, '이웃 별', '누구와 다툴까?'),
+    riv.length ? h('section', {class: 'block'}, h('h2', {class: 'q'}, `${C.i || '같은 업종'} 별자리에서 매출이 큰 곳`), h('p', {class: 'cap'}, `${C.by || ''}년 한 해 동안 판 돈이에요.`), h('div', {class: 'hbars'}, riv.map(bar))) : h('p', {class: 'sub'}, '? 이웃 별 기록이 없어요.'),
+    C.rank && C.of ? h('p', {class: 'sub'}, `별자리 ${C.of}곳 가운데 매출 ${C.rank}번째예요.`) : null,
+    next('다음 · 6번째 별', '커 왔을까', `c:${c}:grow`),
+    safe(),
+  ];
+}
+
+function pGrow(c) {
+  const C = D.co[c]; if (!C) return pCo(c);
+  const F = C.fin;
+  const block = (title, say, arr) => {
+    if (!F || !Array.isArray(arr)) return null;
+    const vals = arr.map(v => (v == null ? null : +v)), ok = vals.filter(v => v != null);
+    if (!ok.length) return null;
+    const mx = Math.max(1, ...ok.map(Math.abs)), hasNeg = ok.some(v => v < 0), H = 120, base = hasNeg ? 60 : 110, span = hasNeg ? 50 : 100;
+    const svg = s('svg', {viewBox: `0 0 300 ${H}`, 'aria-hidden': 'true'});
+    svg.append(s('line', {x1: 0, y1: base, x2: 300, y2: base, class: 'zero'}));
+    vals.forEach((v, k) => { if (v == null) return; const hgt = Math.abs(v) / mx * span, x = 30 + k * 100; svg.append(s('rect', {x, y: (v >= 0 ? base - hgt : base).toFixed(1), width: 40, height: Math.max(1.5, hgt).toFixed(1), rx: 4, class: 'yb' + (v < 0 ? ' neg' : k === vals.length - 1 ? ' last' : '')})); });
+    const a = vals[0], b = vals[vals.length - 1];
+    const trend = a == null || b == null ? '' : b > a * 1.05 + 1e-9 && b > a ? '늘었어요' : b < a - Math.abs(a) * 0.05 ? '줄었어요' : '비슷해요';
+    return h('div', {class: 'g3'}, h('h3', {}, title), h('p', {class: 'say'}, say), svg,
+      h('div', {class: 'yrs'}, F.y.map((y, k) => h('span', {}, String(y).slice(0, 4) + '년', h('b', {class: vals[k] != null && vals[k] < 0 ? 'dn' : ''}, eok(vals[k]))))),
+      trend ? h('p', {class: 'sub'}, `${eok(a)}에서 ${eok(b)}으로 ${trend}.`) : null);
+  };
+  const blocks = F ? [block('매출', '한 해 동안 판 돈이에요.', F.rev), block('영업이익', '장사로 남긴 돈이에요.', F.op), block('순이익', '모든 것을 빼고 마지막에 남은 돈이에요.', F.net)].filter(Boolean) : [];
+  return [
+    ...head(6, c, '커 왔을까?', '3년 동안의 성적표예요.'),
+    blocks.length ? h('div', {class: 'grow3'}, blocks) : h('p', {class: 'sub'}, '? 이 회사의 해마다 기록이 아직 없어요.'),
+    h('p', {class: 'cap'}, '앞으로 클지는 맞히지 않아요. 지나온 성적만 보여 줘요.'),
+    next('다음 · 7번째 별', '흔들림', `c:${c}:range`),
+    safe(),
+  ];
+}
+
+function pRange(c) {
+  const C = D.co[c]; if (!C) return pCo(c);
+  const span = C.hi[0] - C.lo[0] || 1, pos = (C.f1 - C.lo[0]) / span;
+  const band = h('figure', {class: 'band chart'}); const svg = s('svg', {viewBox: '0 0 300 44', role: 'img', 'aria-label': `1년 가장 낮을 때 ${won(C.lo[0])}, 가장 높을 때 ${won(C.hi[0])}, 지금 ${won(C.f1)}`}); band.append(svg);
+  svg.append(s('rect', {x: 0, y: 14, width: 300, height: 16, rx: 8, class: 'bb'}), s('rect', {x: 0, y: 14, width: (pos * 300).toFixed(1), height: 16, rx: 8, class: 'bf'}), s('circle', {cx: Math.max(10, Math.min(290, pos * 300)).toFixed(1), cy: 22, r: 10, class: 'bn'}));
+  return [
+    ...head(7, c, '얼마나 흔들렸을까?', `${C.full ? '1년' : '상장한 뒤'} 동안 하루하루 움직인 크기예요.`),
+    h('section', {class: 'block'}, h('h2', {class: 'q'}, '지금은 가장 낮을 때와 높을 때 사이 어디?'), band, h('div', {class: 'band-l'}, h('span', {}, '낮을 때 ', won(C.lo[0])), h('span', {}, '높을 때 ', won(C.hi[0]))), h('p', {class: 'sub'}, `지금 ${won(C.f1)} · 금빛 동그라미예요.`)),
+    h('dl', {class: 'facts'},
+      h('div', {}, h('dt', {}, '하루에 가장 크게 오른 날'), h('dd', {class: 'up'}, `${pct(C.up1[0])} · ${kshort(C.up1[1])}`)),
+      h('div', {}, h('dt', {}, '하루에 가장 크게 내린 날'), h('dd', {class: 'dn'}, `${pct(C.dn1[0])} · ${kshort(C.dn1[1])}`)),
+      h('div', {}, h('dt', {}, '하루에 5% 넘게 움직인 날'), h('dd', {}, `${C.days}일 가운데 ${C.big5}일`)),
+      C.mdd != null ? h('div', {}, h('dt', {}, '가장 깊이 빠졌을 때'), h('dd', {class: 'dn'}, pct(C.mdd))) : null),
+    C.jumps ? h('p', {class: 'cap'}, `하루에 35% 넘게 바뀐 날 ${C.jumps}일은 주식 나눔이나 합침일 수 있어 뺐어요.`) : null,
+    h('p', {class: 'cap'}, '흔들림이 크면 마음도 크게 흔들려요. 넣을 돈을 정할 때 이 숫자를 함께 봐요.'),
+    next('다음 · 북극성', '사기 전에 멈춰요 · 왜 사?', 'why:' + c),
+    safe(),
+  ];
+}
+
+/* ── 왜 사?(열한 질문 · 사이트 매매일지와 같은 글) ── */
+const QS = [
+  {q: '왜 사?', a: [['r', '친구 말', '친구 말만 듣고 사면, 팔 때도 친구 말을 기다리게 돼.'], ['y', '뉴스', '뉴스는 모두가 같이 봐. 내 이유를 하나 더 찾아봐.'], ['g', '내가 따져 봄', '좋아! 내 이유가 있으면 흔들릴 때 버틸 수 있어.']], say: '남의 말로 산 주식은 남의 말에 판다'},
+  {q: '공부했어?', a: [['g', '했다', '좋아, 아는 만큼 덜 무서워.'], ['y', '조금', '조금 더 알아보자. 무엇을 파는 회사인지부터.'], ['r', '안 했다', '모르는 회사는 떨어질 때 더 무서워.']], say: '모르는 주식은 사지 마라'},
+  {q: '뭐가 좋아?', a: [['g', '돈을 잘 번다', '돈을 잘 버는 회사는 오래 볼 힘이 있어.'], ['y', '클 일이 있다', '클 일이 정말 일어날지 날짜를 적어 두자.'], ['r', '그냥 오를 것 같다', '느낌은 이유가 아니야. 한 번 더 생각해 보자.']], say: '느낌은 이유가 아니다'},
+  {q: '얼마 넣어?', a: [['g', '내 돈 열에 하나 이하', '좋아, 틀려도 다시 일어설 수 있어.'], ['y', '반쯤', '반은 많아. 조금 줄이면 마음이 편해.'], ['r', '거의 다·빌린 돈', '빌린 돈은 밤잠을 뺏어. 오늘은 줄이자.']], say: '빚으로 산 주식은 잠을 뺏는다'},
+  {q: '흐름은?', a: [['g', '조용히 조금씩 오름', '조용히 오를 때가 마음 편히 볼 때야.'], ['y', '떨어지는 중', '떨어지는 칼은 잡지 말자. 멈추는지 보자.'], ['r', '다들 떠들며 급등', '다들 떠들 때는 이미 늦었을 수 있어.']], say: '소문에 팔고 조용할 때 사라'},
+  {q: '얼마나 올랐어?', a: [['g', '아직', '아직이면 서두를 까닭이 없어.'], ['y', '조금', '조금 올랐으면 어디까지 볼지 정해 두자.'], ['r', '벌써 두 배', '두 배 오른 뒤엔 내릴 길도 길어.']], say: '무릎에 사서 어깨에 팔아라'},
+  {q: '떨어지면?', a: [['g', '팔 곳 정함', '좋아, 정한 대로만 하면 돼.'], ['y', '생각만', '생각만 하면 그때 가서 흔들려. 숫자로 적어 둬.'], ['r', '안 정함', '사기 전에 팔 곳부터 정하자.']], say: '사기 전에 팔 곳부터 정해라'},
+  {q: '오르면?', a: [['g', '정함', '좋아, 욕심이 날 때 그 숫자를 보자.'], ['y', '모름', '오를 때 어디서 나눌지 미리 정해 두자.'], ['r', '끝까지 간다', '끝까지는 아무도 몰라. 나눠서 챙기자.']], say: '손해는 짧게 이익은 길게'},
+  {q: '언제 쓸 돈?', a: [['g', '1년 넘게', '오래 둘 돈이면 기다릴 수 있어.'], ['y', '몇 달 안', '몇 달 안에 쓸 돈은 흔들리면 곤란해.'], ['r', '곧', '곧 쓸 돈은 주식에 넣지 말자.']], say: '급한 돈은 주식에 넣지 마라'},
+  {q: '마음은?', a: [['g', '차분', '차분하면 좋은 값을 기다릴 수 있어.'], ['r', '놓칠까 급함', '급하면 가장 비싼 값을 치르게 돼.'], ['r', '본전 생각', '본전 생각은 판단을 흐려. 오늘은 쉬자.']], say: '급한 마음이 가장 비싼 값을 치른다'},
+  {q: '나눠 넣어?', a: [['g', '세 곳 이상', '좋아, 하나가 넘어져도 괜찮아.'], ['y', '두 곳', '한 곳 더 나눠 담으면 마음이 편해.'], ['r', '한 곳', '달걀을 한 바구니에 담지 말자.']], say: '달걀을 한 바구니에 담지 마라'},
+];
+const PT = {g: 0, y: 1, r: 2}, MAX = QS.length * 2;
+function judge(ans) {
+  const pts = ans.map((k, i) => PT[QS[i].a[k][0]]), score = pts.reduce((a, b) => a + b, 0), reds = pts.filter(x => x === 2).length;
+  const stop = ans[3] === QS[3].a.findIndex(a => a[1] === '거의 다·빌린 돈') || ans[8] === QS[8].a.findIndex(a => a[1] === '곧');
+  const verdict = stop || score >= 12 || reds >= 4 ? '오늘은 쉬어 가자' : score >= 6 ? '반만 준비됐어' : '좋아, 정해 둔 대로만';
+  return {score, ready: MAX - score, reds, stop, verdict};
+}
+function pWhy(c) {
+  if (!state.why || state.why.code !== (c || null)) state.why = {code: c || null, i: -1, ans: [], picked: null};
+  const W = state.why, C = c ? D.co[c] : null;
+  const pg = () => h('div', {class: 'pg', 'aria-label': `열한 질문 가운데 ${W.ans.length}개 답함`}, QS.map((_, k) => s('svg', {viewBox: '0 0 22 22', 'aria-hidden': 'true'}, sparkle(11, 11, 9, k < W.ans.length ? 'p1' : 'p0'))));
+  const polaris = h('div', {class: 'polaris'}, s('svg', {viewBox: '0 0 64 64', 'aria-hidden': 'true'}, s('circle', {cx: 32, cy: 32, r: 26, class: 'glow'}), sparkle(32, 32, 24, 'pol')), h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '북극성'), h('h1', {class: 't'}, '사기 전에 멈춰요.')));
+  if (W.i < 0) return [
+    polaris,
+    C ? h('div', {class: 'chips'}, h('span', {class: 'chip wax'}, `${C.n} · 사기 전에`)) : null,
+    h('p', {class: 'lead'}, '열한 가지만 물어볼게요. 내 이유가 단단한지 같이 봐요.'),
+    h('p', {class: 'sub'}, '답은 이 화면에만 있어요. 어디에도 보내지 않아요.'),
+    pg(),
+    h('div', {class: 'btns'}, h('button', {type: 'button', class: 'btn solid', onclick: () => { W.i = 0; render(true); }}, '첫 질문 ›')),
+    safe(),
+  ];
+  if (W.i >= QS.length) {
+    const J = judge(W.ans), reds = W.ans.map((k, i) => [i, k]).filter(([i, k]) => QS[i].a[k][0] === 'r');
+    state.lastWhy = {...J, code: W.code, name: C ? C.n : null};
+    const lvl = J.ready >= 17 ? '' : J.ready >= 11 ? ' mid' : ' low';
+    return [
+      polaris,
+      h('p', {class: 'eyebrow'}, '열한 질문을 다 했어요'),
+      h('p', {class: 'verdict' + (J.verdict === '오늘은 쉬어 가자' ? ' stop' : '')}, J.verdict),
+      h('div', {class: 'ready'}, h('span', {class: 'sub'}, `준비 ${J.ready} / ${MAX} · 높을수록 좋아요`), s('svg', {viewBox: '0 0 100 18', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: 100, height: 18, rx: 9, class: 'r0'}), s('rect', {x: 0, y: 0, width: (J.ready / MAX * 100).toFixed(1), height: 18, rx: 9, class: 'r1' + lvl}))),
+      J.stop ? h('p', {class: 'sub'}, '빌린 돈이나 곧 쓸 돈이면 점수와 관계없이 오늘은 쉬어 가요.') : null,
+      reds.length ? h('section', {class: 'block'}, h('p', {class: 'eyebrow'}, '한 번 더 볼 답'), h('ul', {class: 'redlist'}, reds.map(([i, k]) => h('li', {}, `${QS[i].q} · ${QS[i].a[k][1]}`)))) : null,
+      h('div', {class: 'reply'}, h('b', {}, '달이 한 바퀴 돌면 다시 물어볼게요.'), h('span', {}, '「그날 정한 대로 했어?」')),
+      next('다음', '돌아보기 미리 보기', 'back'),
+      h('div', {class: 'btns'}, h('button', {type: 'button', class: 'btn', onclick: () => { state.why = null; render(true); }}, '처음부터 다시')),
+      safe(),
+    ];
+  }
+  const Q = QS[W.i];
+  const pick = k => () => { if (W.picked != null) return; W.picked = k; render(true, true); };
+  const nextQ = () => { W.ans.push(W.picked); W.picked = null; W.i += 1; render(true); };
+  return [
+    polaris, pg(),
+    h('p', {class: 'eyebrow'}, `${W.i + 1} / ${QS.length}`),
+    h('h2', {class: 'q'}, Q.q),
+    h('div', {class: 'ans', role: 'group', 'aria-label': Q.q}, Q.a.map(([col, txt], k) => h('button', {type: 'button', 'aria-pressed': W.picked === k ? 'true' : 'false', disabled: W.picked != null, onclick: pick(k)}, h('span', {class: 'dot ' + col, 'aria-hidden': 'true'}), txt))),
+    W.picked != null ? h('div', {class: 'reply', 'aria-live': 'polite'}, h('b', {}, '돌이: ', Q.a[W.picked][2]), h('span', {}, `옛말 · ${Q.say}`)) : null,
+    W.picked != null ? h('div', {class: 'btns'}, h('button', {type: 'button', class: 'btn solid', onclick: nextQ}, W.i + 1 < QS.length ? '다음 질문 ›' : '결과 보기 ›')) : h('p', {class: 'cap'}, '셋 가운데 하나를 눌러요.'),
+    safe(),
+  ];
+}
+
+function pBack() {
+  const L = state.lastWhy;
+  const card = h('section', {class: 'rec'});
+  if (L) put(card, [h('p', {class: 'eyebrow'}, '오늘 적은 것'), h('p', {class: 'lead'}, (L.name ? L.name + ' · ' : ''), L.verdict, ` · 준비 ${L.ready} / ${MAX}`)]);
+  else put(card, [h('p', {class: 'eyebrow'}, '보기 · 예를 든 기록이에요'), h('p', {class: 'lead'}, '한 달 전에 「떨어지면 팔 곳 정함」이라고 적었어요.')]);
+  const out = h('p', {class: 'sub', 'aria-live': 'polite'});
+  put(card, [h('p', {class: 'q'}, '그날 정한 대로 했어?'),
+    h('div', {class: 'btns'},
+      h('button', {type: 'button', class: 'btn', onclick: () => { out.textContent = '좋아요. 정한 대로 한 것이 실력이에요.'; }}, '했어'),
+      h('button', {type: 'button', class: 'btn', onclick: () => { out.textContent = '괜찮아요. 왜 못 했는지 한 줄 적어 두면 다음에 도움이 돼요.'; }}, '못 했어')), out]);
+  return [
+    h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '돌아보기'), h('h1', {class: 't'}, '달이 한 바퀴 돌면'), h('p', {class: 'lead'}, '한 달 뒤 돌이가 물어요. 「그날 정한 대로 했어?」')),
+    orbitFigure(),
+    card,
+    h('p', {class: 'cap'}, '돌이는 잘했다고 상을 주지 않아요. 정한 대로 했는지만 같이 봐요. 시험판이라 실제로 알림을 보내지는 않아요.'),
+    next('아직 안 적었다면', '왜 사? 열한 질문', 'why'),
+    safe(),
+  ];
+}
+
+function pFind() {
+  const input = h('input', {id: 'find-q', type: 'search', autocomplete: 'off', placeholder: '예: 2차전지, 삼성SDI', value: state.findQ});
+  const out = h('div', {class: 'block'});
+  const norm = t => String(t || '').replace(/[\s·]/g, '').toLowerCase();
+  const draw = () => {
+    const q = norm(input.value); state.findQ = input.value; out.replaceChildren();
+    if (!q) { put(out, [h('p', {class: 'eyebrow'}, '차오르는 달 가운데'), h('nav', {class: 'rows'}, D.order.S.slice(0, 8).map(n => go1('i:' + n, 'row', moonSvg('wax'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(D.inds[n].dots))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]); return; }
+    const inds = Object.keys(D.inds).filter(n => norm(n).includes(q)).slice(0, 10);
+    const cos = Object.entries(D.co).filter(([c, C]) => norm(C.n).includes(q) || c.includes(q)).slice(0, 20);
+    if (!inds.length && !cos.length) { out.append(h('p', {class: 'sub'}, '? 찾지 못했어요. 시험판에는 업종 77곳과 회사 일부만 있어요.')); return; }
+    if (inds.length) put(out, [h('p', {class: 'eyebrow'}, '업종'), h('nav', {class: 'rows'}, inds.map(n => go1('i:' + n, 'row', moonSvg(ZN[D.inds[n].z].moon), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, ZN[D.inds[n].z].name)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]);
+    if (cos.length) put(out, [h('p', {class: 'eyebrow'}, '회사'), h('nav', {class: 'rows'}, cos.map(([c, C]) => go1('c:' + c, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, C.n), h('span', {class: 'meta'}, C.i || '')), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]);
+  };
+  input.addEventListener('input', draw); draw();
+  return [
+    h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '찾기'), h('h1', {class: 't'}, '어느 별을 볼까?')),
+    h('div', {class: 'field'}, h('label', {for: 'find-q'}, '업종이나 회사 이름'), input),
+    out,
+    safe(),
+  ];
+}
+
+/* ── 길 ── */
+function pageFor(route) {
+  const [k, a, b] = route.split(':');
+  if (k === 'home') return pHome();
+  if (k === 'how') return pHow();
+  if (k === 'zones') return pZones();
+  if (k === 'z') return pZone(a, b);
+  if (k === 'i') return pInd(a);
+  if (k === 'c') return b === 'past' ? pPast(a) : b === 'near' ? pNear(a) : b === 'grow' ? pGrow(a) : b === 'range' ? pRange(a) : pCo(a);
+  if (k === 'why') return pWhy(a);
+  if (k === 'back') return pBack();
+  if (k === 'find') return pFind();
+  return pHome();
+}
+const TAB = r => (r.startsWith('find') ? 'find' : r.startsWith('why') ? 'why' : r === 'back' ? 'back' : 'home');
+function render(keep, keepScroll, dir) {
+  const page = h('div', {class: 'page'}, pageFor(state.route));
+  if (!keep) page.classList.add('enter'); if (dir === 'back') page.classList.add('back-in');
+  VIEW.replaceChildren(page);
+  document.getElementById('back').hidden = state.stack.length === 0;
+  for (const a of document.querySelectorAll('.dock a')) { if (a.dataset.tab === TAB(state.route)) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }
+  if (!keepScroll) { window.scrollTo(0, 0); }
+  if (!keep) VIEW.focus({preventScroll: true});
+}
+function go(route, root) {
+  if (root) state.stack = []; else if (route !== state.route) state.stack.push(state.route);
+  state.route = route; render(false, false, 'in');
+}
+function back() { if (!state.stack.length) return; state.route = state.stack.pop(); render(false, false, 'back'); }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-go]'); if (!t) return;
+  e.preventDefault(); go(t.dataset.go, t.dataset.root === '1');
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const t = e.target.closest && e.target.closest('[data-go]'); if (!t || t.tagName === 'A') return;
+  e.preventDefault(); go(t.dataset.go, t.dataset.root === '1');
+});
+document.getElementById('back').addEventListener('click', back);
+document.getElementById('when').textContent = `시험판 · ${kshort(D.asOf)}`;
+
+/* ── 별 하늘(뒤 그림 · 움직임 줄이기면 멈춤) ── */
+(function starfield() {
+  const cv = document.getElementById('stars'), ctx = cv.getContext('2d'); if (!ctx) return;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const col = getComputedStyle(document.documentElement).getPropertyValue('--star').trim() || '#DCE5FF';
+  let W = 0, H = 0, dpr = 1, stars = [];
+  function seed() { let r = 7; const rnd = () => (r = (r * 16807) % 2147483647) / 2147483647; const n = Math.round(W * H / 2400); stars = Array.from({length: n}, () => ({x: rnd() * W, y: rnd() * H, s: rnd() * 1.1 + 0.3, a: rnd() * 0.55 + 0.2, p: rnd() * 6.28, w: rnd() * 0.8 + 0.2})); }
+  function draw(t) { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.fillStyle = col; for (const st of stars) { ctx.globalAlpha = st.a * (reduce ? 1 : 0.6 + 0.4 * Math.sin(st.p + t * 0.0011 * st.w)); ctx.beginPath(); ctx.arc(st.x, st.y, st.s, 0, 6.2832); ctx.fill(); } }
+  function size() { dpr = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); seed(); draw(0); }
+  size(); window.addEventListener('resize', size);
+  if (!reduce) { let last = 0; const loop = t => { if (t - last > 70) { draw(t); last = t; } requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+})();
+
+render(true);
+})();
+</script>
