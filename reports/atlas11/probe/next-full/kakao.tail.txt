@@ -1,4 +1,11 @@
-90/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
+als.peer
+통과 #/w/003650/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
+통과 #/w/006140/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
+통과 #/w/012700/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
+통과 #/w/013000/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
+통과 #/w/016740/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
+통과 #/w/017390/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
+통과 #/w/018290/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
 통과 #/w/021240/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
 통과 #/w/023760/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
 통과 #/w/024830/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
@@ -30,11 +37,6 @@
 통과 #/w/094850/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
 통과 #/find/%ED%98%84%EB%8C%80 · 줄 36 · 단추 36 · 종목 고리 36 · 누름 find.co
 통과 #/find/%EC%97%90%EC%8A%A4 · 줄 40 · 단추 40 · 종목 고리 40 · 누름 find.co
-  ✗ #/surge/20 · 360 · 카톡 단추를 눌러도 글상자가 안 열림 — surge.row 000100
-  ✗ #/surge/30 · 360 · 카톡 단추를 눌러도 글상자가 안 열림 — surge.row 354200
-  ✗ #/surge/40 · 360 · 카톡 단추를 못 누름 — surge.row page.click: Timeout 5000ms exceeded.
-  ✗ #/surge/40 · 360 · 글상자에 종목 이름 · 오늘 값이 저절로 안 들어감([6] 3) — surge.row 030960 양지사 · 「엔젠바이오 · 10월 20일 값 935원을 같이 보내요.」
-  ✗ #/surge/40 · 360 · 닫은 뒤 보던 자리가 바뀜 — 585 → 289
-곳 21 · chip.card 3 · chip.row 166 · surge.row 32 · surge.board 95 · surge.track 199 · cal.row 472 · cal.ev 1470 · cond.row 7 · today.mv 4 · talk.card 1 · talk.fact 3 · hold.news 538 · sub.co 2 · hold.card 1 · me.hist 3 · why.rec 1 · find.co 92 · chx.row 2551 · ch.grid 1536 · rivals.peer 272 · watch.next 461
+곳 23 · chip.card 3 · chip.row 166 · surge.row 14 · surge.board 95 · surge.track 197 · surge.gone 2 · cal.row 471 · cal.ev 1468 · cal.gone 1 · cond.row 7 · today.mv 5 · talk.card 1 · talk.fact 3 · hold.news 538 · sub.co 2 · hold.card 1 · me.hist 3 · why.rec 1 · find.co 92 · chx.row 2551 · ch.grid 1536 · rivals.peer 272 · watch.next 461
 뺀 꼴 그날 들고 난 이름 목록(이름 글 453 · 고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사) 112 · 7단 길 고리 745 · 글 속 이름(선을 못 그린 회사 6
-실패 5 · 길 251 · 줄 7909 · 단추 7909 · 누름 477 · 175초
+모두 통과 · 길 251 · 줄 7890 · 단추 7890 · 누름 477 · 130초
