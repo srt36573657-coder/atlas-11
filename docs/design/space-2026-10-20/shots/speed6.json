@@ -1,0 +1,23 @@
+{
+ "made": "2026-10-20 19:1x 서울",
+ "how": "proto/speed.mjs — 날짜 막대 값을 한 화면 그릴 때마다 적어 장/초를 셈(가운데 값)",
+ "before": {
+  "file": "before13.html",
+  "fwd_median_fps": 3.12,
+  "year_secs_at_median": 16,
+  "back_fastest_fps": 30.8,
+  "note": "6판 앞(5판 7번째) — 1년 51장을 16초에 · 끝나면 초당 약 31장으로 되감음"
+ },
+ "after": {
+  "file": "pub-test.html",
+  "samples": 3002,
+  "fwd_median_fps": 1.25,
+  "fwd_max_fps": 5,
+  "back_samples": 1,
+  "back_fastest_fps": 2941.2,
+  "jumps_ms": [
+   4671
+  ],
+  "year_secs_at_median": 40
+ }
+}

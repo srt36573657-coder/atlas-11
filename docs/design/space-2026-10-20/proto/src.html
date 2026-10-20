@@ -6,13 +6,13 @@
 <style>
 /* 판: 천장 벽화처럼 읽는 밤하늘 — 금빛 두 줄 테를 두른 큰 하늘 판 하나, 그 아래로 글판이 한 줄로 흐름 · 한 화면에 질문 하나 · 맨 아래는 늘 다음 한 걸음 */
 :root {
-  --sky: #060A14; --sky-2: #0C1322; --sky-3: #141D33; --line: #243050;
+  --sky: #070B17; --sky-2: #0D1428; --sky-3: #141C36; --line: rgba(150, 170, 220, .17); --line-2: rgba(150, 170, 220, .28);
   --ink: #EEF1F7; --dim: #B4BDCE; --faint: #8C97AC;
-  --moon: #F3E7C8; --wax: #FFC857; --wax-soft: rgba(255, 200, 87, .10);
+  --moon: #F1E6C8; --wax: #F2C46A; --wax-soft: rgba(242, 196, 106, .10);
   --up: #FF6A3D; --down: #5EA2FF;
   --ok: #4CC38A; --warn: #F2C14E; --bad: #FF6B6B;
-  --frame: #9C8456; --frame-soft: rgba(156, 132, 86, .45);
-  --moon-base: #101A30; --moon-edge: #3A4766; --star: #DCE5FF; --sky-glow: #101A33; --next-sub: #5A5446; --sheen: #FFF6D6;
+  --frame: #A88A55; --frame-soft: rgba(168, 138, 85, .38);
+  --moon-base: #0F1830; --moon-edge: #3A4766; --star: #DCE5FF; --sky-glow: #121C3C; --cool: #8FA0C4; --next-sub: #5A5446; --sheen: #FFF6D6;
   --serif: "Gowun Batang", "Nanum Myeongjo", "Noto Serif KR", serif;
   --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
   --fs-1: 17px; --fs-2: 20px; --fs-3: 23px; --fs-4: 28px; --fs-5: 34px; --fs-6: 46px;
@@ -20,17 +20,19 @@
   --r: 18px;
   color-scheme: dark;
 }
-html, body { background: var(--sky); color: var(--ink); }
-body { margin: 0; font-family: var(--sans); font-size: var(--fs-2); line-height: 1.55; -webkit-text-size-adjust: 100%; word-break: keep-all; overflow-wrap: anywhere; }
+html { background: radial-gradient(120% 55% at 88% -6%, rgba(72, 96, 186, .22) 0%, rgba(72, 96, 186, 0) 62%) no-repeat, radial-gradient(80% 45% at -12% 26%, rgba(118, 84, 170, .10) 0%, rgba(118, 84, 170, 0) 60%) no-repeat, var(--sky); color: var(--ink); }
+body { background: transparent; color: var(--ink); }
+body { margin: 0; font-family: var(--sans); font-size: var(--fs-2); line-height: 1.6; -webkit-text-size-adjust: 100%; word-break: keep-all; overflow-wrap: anywhere; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sky); }
 #stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 a { color: inherit; }
 figure { position: relative; margin: 0; }
 [hidden] { display: none !important; } /* 숨긴 것은 늘 숨김 — 뒤로 단추처럼 display 를 따로 준 것도 */
 :focus-visible { outline: 3px solid var(--wax); outline-offset: 3px; border-radius: 6px; }
 
 /* 위 띠 */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; display: flex; align-items: center; gap: var(--sp-1); min-height: 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: rgba(6, 10, 20, .88); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; display: flex; align-items: center; gap: var(--sp-1); min-height: 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: rgba(7, 11, 23, .82); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .top .back { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; margin-left: -12px; border: 0; background: none; color: var(--ink); font: inherit; font-size: var(--fs-4); cursor: pointer; }
 .brand { flex: none; white-space: nowrap; display: inline-flex; align-items: center; min-height: 48px; min-width: 48px; font-family: var(--serif); font-size: var(--fs-4); font-weight: 700; color: var(--moon); text-decoration: none; letter-spacing: .02em; }
 .top .when { min-width: 0; overflow: hidden; text-overflow: ellipsis; margin-left: auto; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--dim); font-size: var(--fs-1); white-space: nowrap; }
@@ -39,8 +41,8 @@ figure { position: relative; margin: 0; }
 main { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: var(--sp-3) calc(112px + env(safe-area-inset-bottom, 0px)); outline: none; }
 .page { display: flex; flex-direction: column; gap: var(--sp-3); }
 .block { display: flex; flex-direction: column; gap: var(--sp-1); }
-.eyebrow { margin: 0; color: var(--dim); font-size: var(--fs-1); letter-spacing: .03em; }
-.hero { margin: 0; font-family: var(--serif); font-size: var(--fs-6); font-weight: 700; line-height: 1.18; text-wrap: balance; }
+.eyebrow { margin: 0; color: var(--faint); font-size: var(--fs-1); letter-spacing: .02em; }
+.hero { margin: 0; font-family: var(--serif); font-size: var(--fs-6); font-weight: 700; line-height: 1.22; letter-spacing: -.01em; text-wrap: balance; }
 .hero em { font-style: normal; color: var(--wax); }
 .t { margin: 0; font-family: var(--serif); font-size: var(--fs-5); font-weight: 700; line-height: 1.22; text-wrap: balance; }
 .q { margin: 0; font-family: var(--serif); font-size: var(--fs-4); font-weight: 700; line-height: 1.3; text-wrap: balance; }
@@ -58,10 +60,10 @@ a.chip { min-height: 44px; text-decoration: none; }
 .meta .near { flex: 1 1 96px; min-width: 80px; max-width: 160px; }
 
 /* 하늘 판 — 금빛 두 줄 테(천장 벽화의 그린 테두리) */
-.sky { position: relative; margin: 0; border: 1px solid var(--frame); border-radius: 8px; padding: 6px; background: radial-gradient(120% 90% at 30% 25%, var(--sky-glow) 0%, var(--sky) 70%); box-shadow: inset 0 0 0 5px var(--sky), inset 0 0 0 6px var(--frame-soft); }
+.sky { position: relative; margin: 0; border: 1px solid var(--frame); border-radius: 6px; padding: 7px; background: radial-gradient(120% 90% at 28% 22%, var(--sky-glow) 0%, var(--sky) 72%); box-shadow: inset 0 0 0 6px var(--sky), inset 0 0 0 7px var(--frame-soft); }
 .sky svg { display: block; width: 100%; height: auto; }
 .skyin { position: relative; }
-.ov { position: absolute; z-index: 2; font-size: var(--fs-1); line-height: 1.2; white-space: nowrap; pointer-events: none; text-shadow: 0 0 6px var(--sky), 0 0 3px var(--sky); }
+.ov { position: absolute; z-index: 2; font-family: var(--serif); font-size: var(--fs-1); line-height: 1.2; white-space: nowrap; pointer-events: none; text-shadow: 0 0 2px var(--sky), 0 0 5px var(--sky), 0 0 10px var(--sky), 0 0 14px var(--sky); } /* 6판 — 이름 둘레를 밤빛으로 넓게 감싸 별 점이 글자에 붙어 보이지 않게 */
 .ov.mid { transform: translate(-50%, -50%); }
 .ov.end { transform: translate(-100%, -50%); }
 .ov.start { transform: translate(0, -50%); }
@@ -69,18 +71,20 @@ a.chip { min-height: 44px; text-decoration: none; }
 .ov.moon { color: var(--moon); }
 .ov.dim { color: var(--dim); }
 .ov.big { font-size: var(--fs-2); font-weight: 700; }
-.ax { stroke: var(--line); stroke-width: 1.2; }
-.orbit { fill: none; stroke: var(--faint); stroke-width: 1; stroke-dasharray: 3 7; opacity: .7; }
-.arw { fill: var(--faint); opacity: .8; }
-.zone-s { fill: var(--wax-soft); }
+.ax { stroke: rgba(200, 212, 240, .16); stroke-width: 1; }
+.orbit { fill: none; stroke: var(--moon); stroke-width: .9; opacity: .26; }
+.orbit2 { fill: none; stroke: var(--moon); stroke-width: .8; stroke-dasharray: 1 5; stroke-linecap: round; opacity: .3; }
+.tick { stroke: var(--moon); stroke-width: .8; opacity: .22; }
+.arw { fill: var(--moon); opacity: .42; }
+.zone-s { fill: url(#zoneglow); }
 .st { fill: var(--faint); }
-.st.S { fill: var(--wax); opacity: .9; }
-.st.B { fill: var(--moon); opacity: .85; }
-.st.W, .st.Q { fill: var(--faint); opacity: .75; }
+.st.S { fill: var(--wax); opacity: .95; stroke: rgba(242, 196, 106, .22); stroke-width: 3.4; }
+.st.B { fill: var(--moon); opacity: .82; }
+.st.W, .st.Q { fill: var(--cool); opacity: .55; }
 .ring { fill: none; stroke: var(--wax); stroke-width: 1.4; opacity: .65; }
 .trail { fill: none; stroke: var(--wax); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: .55; stroke-dasharray: 2 5; }
 .tdot { fill: var(--wax); opacity: .5; }
-.glow { fill: var(--wax); opacity: .16; }
+.glow { fill: url(#starglow); opacity: .9; } /* 6판 — 금빛이 번지는 빛(어두운 원판 대신) */
 .real { fill: var(--wax); }
 .tap { fill: transparent; cursor: pointer; }
 .tap:focus-visible { outline: none; stroke: var(--wax); stroke-width: 2; }
@@ -107,7 +111,7 @@ a.chip { min-height: 44px; text-decoration: none; }
 
 /* 오늘 답 */
 .answer { display: flex; flex-direction: column; gap: var(--sp-1); }
-.realcard { display: flex; align-items: center; gap: var(--sp-2); min-height: 96px; padding: var(--sp-2); border: 1px solid var(--wax); border-radius: var(--r); background: linear-gradient(180deg, rgba(255, 200, 87, .08), rgba(255, 200, 87, .02)); color: var(--ink); text-decoration: none; }
+.realcard { display: flex; align-items: center; gap: var(--sp-2); min-height: 96px; padding: var(--sp-2); border: 1px solid rgba(242, 196, 106, .6); border-radius: var(--r); background: radial-gradient(120% 140% at 0% 0%, rgba(242, 196, 106, .12), rgba(242, 196, 106, .02) 70%); color: var(--ink); text-decoration: none; }
 .realcard .nm { font-family: var(--serif); font-size: var(--fs-5); font-weight: 700; color: var(--wax); line-height: 1.2; }
 .realcard .meta { color: var(--dim); font-size: var(--fs-1); }
 .realcard .mid { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
@@ -119,8 +123,8 @@ a.chip { min-height: 44px; text-decoration: none; }
 .four .s4.on { fill: var(--wax); }
 .four .l4 { stroke: var(--wax); stroke-width: 1; opacity: .4; }
 .cond { display: flex; flex-direction: column; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
-.cond li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; }
-.cond li.on { border-color: rgba(255, 200, 87, .55); background: var(--wax-soft); }
+.cond li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: rgba(13, 20, 40, .4); }
+.cond li.on { border-color: rgba(242, 196, 106, .5); background: var(--wax-soft); }
 .cond .k { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; margin-top: 2px; border-radius: 50%; border: 1.5px solid var(--faint); color: var(--faint); font-size: var(--fs-1); font-weight: 700; }
 .cond li.on .k { border-color: var(--wax); background: var(--wax); color: var(--sky); }
 .cond .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -265,14 +269,16 @@ a.chip { min-height: 44px; text-decoration: none; }
 .timebar { display: flex; flex-direction: column; gap: 10px; }
 .tb-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
 .timebar input[type=range] { display: block; width: 100%; height: 44px; margin: 0; accent-color: var(--wax); }
-.trails { transition: opacity 1.4s ease; }
+.trails { transition: opacity 1.8s ease; }
 .trails.off { opacity: 0; }
+.skyin .st, .skyin .ring, .skyin .rl, .skyin .minering, .skyin .mineln, .skyin .ov.wax.big, .skyin .ov.mine { transition: opacity .9s ease; }
+.skyin.dim .st, .skyin.dim .ring, .skyin.dim .rl, .skyin.dim .minering, .skyin.dim .mineln, .skyin.dim .ov.wax.big, .skyin.dim .ov.mine, .skyin.dim .trails { opacity: 0; }
 .daylab { flex: none; text-align: right; color: var(--moon); font-size: var(--fs-2); font-variant-numeric: tabular-nums; }
 .btn.play { flex: none; }
-.strail { fill: none; stroke-width: 1.3; opacity: .5; stroke-linecap: round; stroke-linejoin: round; }
-.strail.S { stroke: var(--wax); } .strail.B { stroke: var(--moon); } .strail.W, .strail.Q { stroke: var(--faint); opacity: .35; }
+.strail { fill: none; stroke-width: 1; opacity: .36; stroke-linecap: round; stroke-linejoin: round; }
+.strail.S { stroke: var(--wax); } .strail.B { stroke: var(--moon); } .strail.W, .strail.Q { stroke: var(--cool); opacity: .16; }
 .sel { fill: none; stroke: var(--moon); stroke-width: 2; }
-.lens { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-2); border: 1px solid var(--wax); border-radius: var(--r); background: var(--sky-2); }
+.lens { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-2); border: 1px solid rgba(242, 196, 106, .55); border-radius: var(--r); background: rgba(13, 20, 40, .92); }
 .lens-h { display: flex; align-items: center; gap: 12px; }
 .lens-t { display: flex; flex: 1; flex-direction: column; min-width: 0; }
 .lens-t b { font-size: var(--fs-3); line-height: 1.3; }
@@ -305,32 +311,29 @@ a.chip { min-height: 44px; text-decoration: none; }
 .tapring { position: fixed; z-index: 30; width: 60px; height: 60px; margin: -30px 0 0 -30px; border: 2px solid var(--wax); border-radius: 50%; pointer-events: none; opacity: 0; }
 .trav { fill: var(--moon); }
 .beckon { fill: none; stroke: var(--wax); stroke-width: 2; }
-.mo-on .page.enter > * { animation: rise .55s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
-.mo-on .page.enter .rows > * { animation: rise .5s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--j, 0) * 55ms + 180ms); }
-@keyframes rise { from { opacity: 0; transform: translateY(16px); } }
-.mo-full .page.enter.deep { animation: zoomin .55s cubic-bezier(.2, .7, .2, 1) both; }
-@keyframes zoomin { from { transform: scale(.93); filter: blur(4px); } }
-.mo-full .page.enter.back-in { animation: zoomout .5s cubic-bezier(.2, .7, .2, 1) both; }
-@keyframes zoomout { from { transform: scale(1.06); filter: blur(3px); } }
-.mo-on .tapring { animation: tapring .55s ease-out forwards; }
-@keyframes tapring { from { transform: scale(.25); opacity: .95; } to { transform: scale(1.6); opacity: 0; } }
-.mo-on .hero em { background: linear-gradient(100deg, var(--wax) 35%, var(--sheen) 50%, var(--wax) 65%); background-size: 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: sheen 5s ease-in-out infinite; }
+.mo-on .page.enter { animation: fadein .6s ease-out both; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+.mo-full .page.enter.deep { animation: fadein .6s ease-out both; }
+.mo-full .page.enter.back-in { animation: fadein .6s ease-out both; }
+.mo-on .tapring { animation: tapring .8s ease-out forwards; }
+@keyframes tapring { from { transform: scale(.4); opacity: .6; } to { transform: scale(1.4); opacity: 0; } }
+/* 6판 — 큰 제목 금빛 번쩍임 없앰 */
 @keyframes sheen { 0% { background-position: 100% 0; } 60%, 100% { background-position: 0 0; } }
-.mo-on .glow { animation: breathe 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes breathe { 0%, 100% { opacity: .10; transform: scale(.85); } 50% { opacity: .26; transform: scale(1.15); } }
-.mo-on .real { animation: twinkle 3.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.2) rotate(18deg); } }
-.mo-on .orbitg { animation: spin2 90s linear infinite; transform-origin: 166px 162.8px; }
+.mo-on .glow { animation: breathe 7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes breathe { 0%, 100% { opacity: .75; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.06); } }
+.mo-on .real { animation: twinkle 6.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes twinkle { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+.mo-on .orbitg { animation: spin2 240s linear infinite; transform-origin: 166px 162.8px; }
 @keyframes spin2 { to { transform: rotate(360deg); } }
-.mo-on .beam { animation: flow 2.4s linear infinite; }
+.mo-on .beam { animation: flow 6s linear infinite; }
 @keyframes flow { to { stroke-dashoffset: -48; } }
-.mo-on .orb { animation: spin 14s linear infinite; transform-origin: 180px 105px; }
+.mo-on .orb { animation: spin 36s linear infinite; transform-origin: 180px 105px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.mo-on .st.appear { animation: appear .9s ease-out both; }
+.mo-on .st.appear { animation: appear 1.6s ease-out both; }
 @keyframes appear { from { opacity: .08; } }
-.mo-on .ignite { animation: ignite 1.3s cubic-bezier(.2, .7, .2, 1) .5s both; transform-box: fill-box; transform-origin: center; }
+.mo-on .ignite { animation: ignite 2s cubic-bezier(.2, .7, .2, 1) .6s both; transform-box: fill-box; transform-origin: center; }
 @keyframes ignite { from { opacity: .2; transform: scale(.3); } }
-.mo-on .photon { animation: photon 2.6s linear infinite; }
+.mo-on .photon { animation: photon 6.5s linear infinite; }
 @keyframes photon { from { transform: translateX(0); } to { transform: translateX(206px); } }
 .mo-on .rd.on { animation: lightdot .5s ease-out both; }
 @keyframes lightdot { from { fill: var(--sky-3); } }
@@ -342,28 +345,28 @@ a.chip { min-height: 44px; text-decoration: none; }
 .mo-on .show .pol, .mo-on .show .polg { animation: polglow 1.1s cubic-bezier(.2, .7, .2, 1) 2.5s both; transform-box: fill-box; transform-origin: center; }
 @keyframes polglow { from { opacity: .1; transform: scale(.4); } }
 @keyframes fadein { from { opacity: 0; } }
-.mo-on .zone-s.pulse, .mo-on .zone-s.live { animation: zpulse 3.2s ease-in-out infinite; }
+/* 6판 — 차오르는 달 칸 깜빡임 없앰 */
 @keyframes zpulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
 .mo-on .ln.draw { stroke-dasharray: 1000; animation: draw 1.6s cubic-bezier(.3, .6, .2, 1) both; }
 @keyframes draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
 .mo-on .page.enter .spark .sl { stroke-dasharray: 100; animation: draw100 1s ease-out .35s both; }
 @keyframes draw100 { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 .mo-on .ar.fade { animation: fadein 1.2s ease-out .5s both; }
-.mo-on .pgnow, .mo-on .beckon { animation: ping 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes ping { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .3; transform: scale(1.3); } }
+.mo-on .pgnow, .mo-on .beckon { animation: ping 4.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes ping { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .5; transform: scale(1.12); } }
 .mo-on .grow { animation: growx .9s cubic-bezier(.2, .7, .2, 1) .3s both; transform-box: fill-box; transform-origin: left center; }
 @keyframes growx { from { transform: scaleX(0); } }
 .mo-on .page.enter .yb { animation: growy .8s cubic-bezier(.2, .7, .2, 1) .2s both; transform-box: fill-box; transform-origin: center bottom; }
 .mo-on .page.enter .yb.neg { transform-origin: center top; }
 @keyframes growy { from { transform: scaleY(0); } }
-.mo-on .lens.pop { animation: pop .38s cubic-bezier(.2, .9, .3, 1.25) both; }
-@keyframes pop { from { opacity: 0; transform: scale(.92); } }
+.mo-on .lens.pop { animation: pop .45s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.98); } }
 .mo-on .reply, .mo-on .qin { animation: rise .45s cubic-bezier(.2, .7, .2, 1) both; }
 .mo-on .trav { transition: transform .9s cubic-bezier(.4, 0, .2, 1), opacity .5s ease-in .7s; }
-.mo-on .dipnav .ds { animation: dstw 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes dstw { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-.mo-on .nowp { animation: breathe2 2.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes breathe2 { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+.mo-on .dipnav .ds { animation: dstw 6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes dstw { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+.mo-on .nowp { animation: breathe2 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes breathe2 { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
 .mo-on .row:active, .mo-on .next:active, .mo-on .btn:active, .mo-on .realcard:active { transform: scale(.985); transition: transform .08s; }
 
 /* ── 4판: 돌이가 읽어 주기 · 내 별자리 · 맞혀 볼까 · 이유 타임캡슐 · 작은 소리 ── */
@@ -371,7 +374,7 @@ a.chip { min-height: 44px; text-decoration: none; }
 .top .ic svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .top .ic[aria-pressed="true"] { color: var(--wax); }
 .top .gap { flex: 1; }
-.speak { display: flex; flex-direction: column; gap: 10px; padding: var(--sp-2); border: 1px solid var(--line); border-radius: var(--r); background: rgba(12, 19, 34, .75); }
+.speak { display: flex; flex-direction: column; gap: 10px; padding: var(--sp-2); border: 1px solid var(--line); border-radius: var(--r); background: rgba(13, 20, 40, .55); }
 .speak-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
 .speak-h b { font-size: var(--fs-2); }
 .speak-l { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
@@ -387,7 +390,7 @@ a.chip { min-height: 44px; text-decoration: none; }
 .quiz .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .quiz .choices .btn { width: 100%; min-height: 60px; font-size: var(--fs-3); font-weight: 700; border-color: var(--frame); }
 .linkish { align-self: flex-start; min-height: 44px; padding: 0 4px; border: 0; background: none; color: var(--dim); font: inherit; font-size: var(--fs-1); text-decoration: underline; cursor: pointer; }
-.capsule { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-2); border: 1px solid var(--frame); border-radius: var(--r); background: rgba(12, 19, 34, .8); }
+.capsule { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-2); border: 1px solid var(--frame-soft); border-radius: var(--r); background: rgba(13, 20, 40, .6); }
 .seal { display: flex; align-items: center; gap: var(--sp-2); }
 .seal svg { flex: none; width: 72px; height: 72px; }
 .seal .days { display: flex; flex-direction: column; }
@@ -396,11 +399,11 @@ a.chip { min-height: 44px; text-decoration: none; }
 .quote { margin: 0; padding: 12px 16px; border-radius: 12px; background: var(--sky-3); font-family: var(--serif); font-size: var(--fs-3); line-height: 1.45; }
 .toast { box-sizing: border-box; position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 40; width: max-content; max-width: calc(100vw - 32px); padding: 12px 20px; border-radius: 999px; background: var(--moon); color: var(--sky); font-size: var(--fs-2); font-weight: 700; transform: translateX(-50%); box-shadow: 0 6px 24px rgba(0, 0, 0, .45); pointer-events: none; }
 .toast.out { opacity: 0; transition: opacity .4s; }
-.mo-on .toast { animation: toastin .35s cubic-bezier(.2, .9, .3, 1.2) both; }
-@keyframes toastin { from { opacity: 0; transform: translate(-50%, 12px); } }
-.mo-on .seal svg { animation: sealin .9s cubic-bezier(.2, .9, .3, 1.15) both; }
-@keyframes sealin { from { opacity: 0; transform: scale(1.6) rotate(-40deg); } }
-.mo-on .minering { animation: ping 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.mo-on .toast { animation: toastin .5s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes toastin { from { opacity: 0; transform: translate(-50%, 6px); } }
+.mo-on .seal svg { animation: sealin 1s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes sealin { from { opacity: 0; transform: scale(.92); } }
+/* 6판 — 내 별 고리는 가만히 */
 
 /* ── 5판: 망원경 하늘 · 별똥별 잡기 · 내 별자리 이름 · 네 별 켜 보기 · 하늘 퀴즈 ── */
 .skyin svg { touch-action: pan-y; }
@@ -424,10 +427,10 @@ a.chip { min-height: 44px; text-decoration: none; }
 .cond li.hid { border-style: dashed; }
 .cond li.hid .tx span { color: var(--faint); }
 .cond li.offk .k { border-color: var(--down); color: var(--down); }
-.mo-on .kgame .ks:not(.lit):not(.nope) { animation: dstw 1.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+/* 6판 — 아직 안 누른 별 흔들림 없앰 */
 .mo-on .kite .ks.lit { animation: lightup .55s ease-out both; }
-.mo-on .kite .ks.nope { animation: nope .5s ease-in-out; transform-box: fill-box; transform-origin: center; }
-@keyframes nope { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+.mo-on .kite .ks.nope { animation: nope .9s ease-in-out; }
+@keyframes nope { 50% { opacity: .35; } }
 .qopts { display: flex; flex-direction: column; gap: 10px; }
 .qopts button { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 60px; padding: 8px 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--sky-2); color: var(--ink); font: inherit; font-size: var(--fs-3); text-align: left; cursor: pointer; }
 .qopts button.right { border-color: var(--ok); background: rgba(76, 195, 138, .12); }
@@ -435,13 +438,13 @@ a.chip { min-height: 44px; text-decoration: none; }
 .qopts button:disabled { cursor: default; }
 .qopts button i { font-style: normal; font-size: var(--fs-2); }
 .hlring { fill: none; stroke: var(--moon); stroke-width: 2; }
-.mo-on .hlring { animation: ping 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.mo-on .hlring { animation: ping 4.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 
 /* ── 1년 하늘(5판) — 업종 77곳의 지난 1년 자리(닷새마다 · 테마 시계와 같은 셈) ── */
 .seg2 { display: inline-flex; gap: 0; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
 .seg2 button { min-width: 64px; min-height: 48px; padding: 0 14px; border: 0; background: transparent; color: var(--dim); font: inherit; font-size: var(--fs-2); cursor: pointer; }
 .seg2 button[aria-pressed="true"] { background: var(--moon); color: var(--sky); font-weight: 700; }
-.ov.month { font-family: var(--serif); font-size: var(--fs-6); font-weight: 700; color: var(--moon); opacity: .16; text-shadow: none; }
+.ov.month { font-family: var(--serif); font-size: var(--fs-5); font-weight: 700; color: var(--moon); opacity: .1; text-shadow: none; }
 .tb-row .grow1 { flex: 1; }
 
 .factc { box-sizing: border-box; position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 41; display: flex; flex-direction: column; gap: 4px; width: min(420px, calc(100vw - 32px)); padding: 12px 16px 14px; border: 1px solid var(--wax); border-radius: var(--r); background: var(--sky-2); transform: translateX(-50%); box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
@@ -450,10 +453,11 @@ a.chip { min-height: 44px; text-decoration: none; }
 .factc b { font-size: var(--fs-3); }
 .factc p { margin: 0; font-size: var(--fs-2); }
 .factc.out { opacity: 0; transition: opacity .45s; }
-.mo-on .factc { animation: toastin .4s cubic-bezier(.2, .9, .3, 1.2) both; }
+.mo-on .factc { animation: toastin .55s cubic-bezier(.2, .7, .2, 1) both; }
 </style>
 
 <canvas id="stars" aria-hidden="true"></canvas>
+<svg class="defs" aria-hidden="true" focusable="false"><defs><radialGradient id="starglow"><stop offset="0" stop-color="#F2C46A" stop-opacity=".55"/><stop offset=".45" stop-color="#F2C46A" stop-opacity=".16"/><stop offset="1" stop-color="#F2C46A" stop-opacity="0"/></radialGradient><radialGradient id="zoneglow" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#F2C46A" stop-opacity=".15"/><stop offset=".45" stop-color="#F2C46A" stop-opacity=".06"/><stop offset=".7" stop-color="#F2C46A" stop-opacity="0"/></radialGradient></defs></svg>
 <header class="top">
   <button class="back" id="back" type="button" aria-label="뒤로" hidden>‹</button>
   <a class="brand" href="#" data-go="home" data-root="1">돌이</a>
@@ -716,8 +720,9 @@ function skyBase(svg, box, pulse) {
   svg.append(s('rect', {x: 14, y: 14, width: (x5 - 14).toFixed(1), height: (y0 - 14).toFixed(1), class: 'zone-s' + (pulse ? ' pulse' : '')}));
   svg.append(s('line', {x1: x5, y1: 14, x2: x5, y2: 346, class: 'ax'}), s('line', {x1: 14, y1: y0, x2: 346, y2: y0, class: 'ax'}));
   const og = s('g', {class: 'orbitg'});
-  og.append(s('circle', {cx: x5, cy: y0, r: R, class: 'orbit'}));
-  const arrow = (x, y, ang) => s('path', {d: 'M-6 -5 L6 0 L-6 5 Z', class: 'arw', transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang})`});
+  og.append(s('circle', {cx: x5, cy: y0, r: R, class: 'orbit'}), s('circle', {cx: x5, cy: y0, r: R + 7, class: 'orbit2'}));
+  for (let k = 0; k < 24; k++) { const a = k * Math.PI / 12, c = Math.cos(a), sn = Math.sin(a), r1 = R + 2, r2 = R + (k % 6 ? 5 : 9); og.append(s('line', {x1: (x5 + c * r1).toFixed(1), y1: (y0 + sn * r1).toFixed(1), x2: (x5 + c * r2).toFixed(1), y2: (y0 + sn * r2).toFixed(1), class: 'tick'})); }
+  const arrow = (x, y, ang) => s('path', {d: 'M-4.5 -3.6 L4.5 0 L-4.5 3.6 Z', class: 'arw', transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang})`});
   og.append(arrow(x5, y0 - R, 0), arrow(x5 + R, y0, 90), arrow(x5, y0 + R, 180), arrow(x5 - R, y0, 270));
   svg.append(og);
   const corners = {S: [36, 36, 'start', 60], B: [324, 36, 'end', 300], W: [324, 324, 'end', 300], Q: [36, 324, 'start', 60]}, moons = {};
@@ -800,7 +805,7 @@ function liveSky() {
   const pins = labels.slice();
   const reals = realList().map(n => {
     const i = D.inds[n], cx = X(i.x), cy = Y(i.y), right = cx < 220;
-    const g = s('g', {'aria-hidden': 'true'}), inner = s('g', {class: intro ? 'ignite' : ''});
+    const g = s('g', {'aria-hidden': 'true', class: 'rl'}), inner = s('g', {class: intro ? 'ignite' : ''});
     inner.append(s('polyline', {points: (i.t || []).map(([a, b]) => `${X(a).toFixed(1)},${Y(b).toFixed(1)}`).join(' '), class: 'trail'}), s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), sparkle(cx, cy, 11, 'real'));
     g.append(inner); svg.append(g);
     const pin = {el: ov(box, [360, 360], 0, 0, n, (right ? 'start' : 'end') + ' wax big'), x: cx + (right ? 16 : -16), y: cy - 18}; pins.push(pin);
@@ -870,14 +875,21 @@ function liveSky() {
   let mode = YR ? 'y' : '6';
   const frames = () => (mode === 'y' ? YR.dates.length : 6), last = () => frames() - 1;
   const track = st => (mode === 'y' && YR.inds[st.n] ? YR.inds[st.n] : st.i.t);
-  const posT = (t, f, i) => { if (!Array.isArray(t) || t.length < 2) return [i.x, i.y]; const k = Math.max(0, Math.min(t.length - 2, Math.floor(f))), u = Math.max(0, Math.min(1, f - k)); return [t[k][0] + (t[k + 1][0] - t[k][0]) * u, t[k][1] + (t[k + 1][1] - t[k][1]) * u]; };
+  /* 6판 — 장과 장 사이를 부드러운 곡선(캣멀롬)으로 · 닷새마다 찍힌 진짜 자리는 정확히 지남 */
+  const posT = (t, f, i) => {
+    if (!Array.isArray(t) || t.length < 2) return [i.x, i.y];
+    const n = t.length, k = Math.max(0, Math.min(n - 2, Math.floor(f))), u = Math.max(0, Math.min(1, f - k));
+    const p0 = t[Math.max(0, k - 1)], p1 = t[k], p2 = t[k + 1], p3 = t[Math.min(n - 1, k + 2)];
+    const cr = (a, b, c, d) => 0.5 * (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u * u + (-a + 3 * b - 3 * c + d) * u * u * u);
+    return [cr(p0[0], p1[0], p2[0], p3[0]), cr(p0[1], p1[1], p2[1], p3[1])];
+  };
   const zoneOfAt = (st, f, x, y) => { const k = Math.round(f); if (Math.abs(f - k) < 1e-6) { const zs = mode === 'y' ? YR.zs && YR.zs[st.n] : st.i.tz; const z = zs && zs[k]; if (z) return z; } return zoneAt(x, y); };
   const monthPin = {el: ov(box, [360, 360], 0, 0, '', 'mid month'), x: 180, y: 196};
   pins.push(monthPin);
   let f = 5, raf = 0, timer = 0, trailsOn = false;
   function setDay(v) {
     f = Math.max(0, Math.min(last(), v));
-    const tail = mode === 'y' ? 2.6 : 1.2, stepT = mode === 'y' ? 0.3 : 0.15;
+    const tail = mode === 'y' ? 1.6 : 0.9, stepT = mode === 'y' ? 0.2 : 0.15;
     for (const st of stars) {
       const t = track(st), [x, y] = posT(t, f, st.i); st.cx = X(x); st.cy = Y(y);
       st.el.setAttribute('cx', st.cx.toFixed(1)); st.el.setAttribute('cy', st.cy.toFixed(1));
@@ -888,7 +900,7 @@ function liveSky() {
     const kk = Math.round(f), ds = mode === 'y' ? YR.dates[kk] : days[kk];
     monthPin.el.textContent = mode === 'y' && ds ? `${Number(ds.slice(5, 7))}월` : ''; monthPin.el.hidden = mode !== 'y';
     const corners = labels.filter(shown).map(rectOf);
-    for (const r of reals) { const [x, y] = posT(mode === 'y' && YR.inds[r.n] ? YR.inds[r.n] : r.i.t, f, r.i), dx = X(x) - r.cx, dy = Y(y) - r.cy; r.g.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); const px = r.cx + dx, py = r.cy + dy, R = r.right ? 1 : -1, A = R > 0 ? 'start' : 'end', Z = R > 0 ? 'end' : 'start'; settle(r.pin, [[px + 16 * R, py - 18, A], [px - 16 * R, py - 18, Z], [px + 16 * R, py + 20, A], [px - 16 * R, py + 20, Z], [px, py + 46, 'mid'], [px, py - 40, 'mid'], [px + 16 * R, py + 46, A], [px - 16 * R, py + 46, Z], [px, py + 72, 'mid'], [px, py - 66, 'mid']], corners); } // 금빛 이름이 네 귀퉁이 달 이름과 겹치면 다른 쪽으로
+    for (const r of reals) { const [x, y] = posT(mode === 'y' && YR.inds[r.n] ? YR.inds[r.n] : r.i.t, f, r.i), dx = X(x) - r.cx, dy = Y(y) - r.cy; r.g.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); if (r.tl) r.tl.setAttribute('visibility', mode === 'y' && f < last() - 0.02 ? 'hidden' : 'visible'); const px = r.cx + dx, py = r.cy + dy, R = r.right ? 1 : -1, A = R > 0 ? 'start' : 'end', Z = R > 0 ? 'end' : 'start'; settle(r.pin, [[px + 16 * R, py - 18, A], [px - 16 * R, py - 18, Z], [px + 16 * R, py + 20, A], [px - 16 * R, py + 20, Z], [px, py + 46, 'mid'], [px, py - 40, 'mid'], [px + 16 * R, py + 46, A], [px - 16 * R, py + 46, Z], [px, py + 72, 'mid'], [px, py - 66, 'mid']], corners); } // 금빛 이름이 네 귀퉁이 달 이름과 겹치면 다른 쪽으로
     lab.textContent = ds ? (mode === 'y' ? kdate(ds) : kshort(ds)) : ''; rng.max = String(last() * 100); rng.value = String(Math.round(f * 100));
     if (sel.getAttribute('visibility') === 'visible' && sel._st) { sel.setAttribute('cx', sel._st.cx.toFixed(1)); sel.setAttribute('cy', sel._st.cy.toFixed(1)); }
     if (mineEl.size || state.mine.size) drawMine();
@@ -896,30 +908,41 @@ function liveSky() {
   }
   let fadeT = 0, auto = MOVE(), visible = true, hold = 0, mt = 0;
   const fadeTrails = () => { clearTimeout(fadeT); fadeT = setTimeout(() => trails.classList.add('off'), 900); };
-  const showTrails = () => { clearTimeout(fadeT); trails.classList.remove('off'); trailsOn = true; };
-  const stopAll = () => { if (raf) cancelAnimationFrame(raf); if (timer) clearTimeout(timer); clearTimeout(hold); raf = 0; timer = 0; hold = 0; };
+  const showTrails = () => { clearTimeout(fadeT); if (mode === 'y') return; trails.classList.remove('off'); trailsOn = true; }; // 1년 하늘은 꼬리 없이(차분히)
+  const stopAll = () => { if (raf) cancelAnimationFrame(raf); if (timer) clearTimeout(timer); clearTimeout(hold); raf = 0; timer = 0; hold = 0; box.classList.remove('dim'); };
   const setBtn = () => { btn.textContent = auto ? '■ 멈추기' : '▶ 하늘 돌리기'; };
+  /* 6판 — 천천히 떠나 천천히 닿음(코사인 고르기) · 빠르기는 장/초 */
+  const ease = u => { const a = 0.12; if (u < a) return u * u / (2 * a * (1 - a)); if (u > 1 - a) { const v = 1 - u; return 1 - v * v / (2 * a * (1 - a)); } return (u - a / 2) / (1 - a); }; // 처음 · 끝 12% 만 천천히 · 가운데는 고른 빠르기
   function runTo(target, speed, done) {
-    let last = performance.now();
+    const from = f, dur = Math.max(1, Math.abs(target - from) / speed * 1000); let t0 = 0;
     const step = now => {
-      const d = Math.min(0.1, (now - last) / 1000) * speed; last = now;
-      const nf = target > f ? Math.min(target, f + d) : Math.max(target, f - d); setDay(nf);
-      if (nf !== target) raf = visible ? requestAnimationFrame(step) : 0; else { raf = 0; if (done) done(); }
+      if (!t0) t0 = now;
+      const u = Math.min(1, (now - t0) / dur); setDay(from + (target - from) * ease(u));
+      if (u < 1) raf = visible ? requestAnimationFrame(step) : 0; else { raf = 0; if (done) done(); }
     };
     raf = requestAnimationFrame(step);
   }
+  /* 1년 = 51장을 약 40초에 · 엿새 = 약 10초에 · 끝(오늘)에서 4.5초 쉼 · 되감지 않고 별을 살며시 감췄다가 처음 자리에서 다시 띄움 */
+  const SPEED = () => (mode === 'y' ? 1.25 : 0.5);
   function cycle() {
     stopAll(); if (!auto || !visible) return;
-    trailsOn = false; trails.classList.add('off');
-    const Y1 = mode === 'y';
-    runTo(0, Y1 ? 22 : 3.4, () => { showTrails(); runTo(last(), Y1 ? 3.2 : 1.05, () => { fadeTrails(); hold = setTimeout(cycle, 2800); }); });
+    if (f >= last() - 0.001) hold = setTimeout(() => { hold = 0; rest(); }, 1800); else go();
   }
-  function stepOnce() { stopAll(); if (f >= last() - 0.001) setDay(0); showTrails(); const tick = () => { setDay(Math.floor(f + 1e-6) + 1); if (f < last()) timer = setTimeout(tick, mode === 'y' ? 260 : 800); else { timer = 0; fadeTrails(); } }; timer = setTimeout(tick, 400); }
+  function go() {
+    if (!auto || !visible) return;
+    showTrails(); runTo(last(), SPEED(), () => { fadeTrails(); hold = setTimeout(() => { hold = 0; rest(); }, 4500); });
+  }
+  function rest() {
+    if (!auto || !visible) return;
+    box.classList.add('dim');
+    hold = setTimeout(() => { trailsOn = false; trails.classList.add('off'); setDay(0); box.classList.remove('dim'); hold = setTimeout(() => { hold = 0; go(); }, 1200); }, 950);
+  }
+  function stepOnce() { stopAll(); if (f >= last() - 0.001) setDay(0); showTrails(); const tick = () => { setDay(Math.floor(f + 1e-6) + 1); if (f < last()) timer = setTimeout(tick, mode === 'y' ? 480 : 1100); else { timer = 0; fadeTrails(); } }; timer = setTimeout(tick, 400); }
   btn.addEventListener('click', () => { if (!MOVE()) { stepOnce(); return; } auto = !auto; setBtn(); if (auto) cycle(); else { stopAll(); fadeTrails(); } });
   rng.addEventListener('input', () => { auto = false; setBtn(); stopAll(); showTrails(); setDay(Number(rng.value) / 100); fadeTrails(); });
   let io = null;
   const lit = moons.S && moons.S.querySelector('.m-lit');
-  const moonTimer = MOVE() && lit ? setInterval(() => { mt += 0.045; lit.setAttribute('d', moonD(36, 36, 15, 0.38 + 0.26 * Math.sin(mt), 'R')); }, 60) : 0;
+  const moonTimer = MOVE() && lit ? setInterval(() => { mt += 0.03; lit.setAttribute('d', moonD(36, 36, 15, 0.4 + 0.16 * Math.sin(mt), 'R')); }, 90) : 0;
   state.cleanup.push(() => { auto = false; stopAll(); clearTimeout(fadeT); clearInterval(moonTimer); if (io) io.disconnect(); if (ro) ro.disconnect(); });
   function closeLens() { lens.hidden = true; sel.setAttribute('visibility', 'hidden'); sel._st = null; }
   function showLens(st) {
@@ -1636,7 +1659,7 @@ const SKY = (() => {
   }
   function draw(now) {
     const dt = Math.min(100, now - (lastT || now)); lastT = now;
-    if (MOVE()) ang -= dt * 0.000012;
+    if (MOVE()) ang -= dt * 0.000008;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
     let k = 0, dir = 0;
     if (warp) { const u = (now - warp.t0) / 700; if (u >= 1) warp = null; else { k = Math.sin(u * Math.PI); dir = warp.dir; } }
@@ -1645,30 +1668,30 @@ const SKY = (() => {
     for (const st of stars) {
       const a = st.t + ang, x = pole.x + Math.cos(a) * st.r, y = pole.y + Math.sin(a) * st.r;
       if (x < -30 || y < -30 || x > W + 30 || y > H + 30) continue;
-      ctx.globalAlpha = st.a * (MOVE() ? 0.6 + 0.4 * Math.sin(st.p + now * 0.0011 * st.w) : 1);
+      ctx.globalAlpha = st.a * (MOVE() ? 0.82 + 0.18 * Math.sin(st.p + now * 0.0006 * st.w) : 1);
       if (k > 0.02) { const m = 1 + dir * k * 0.3; ctx.lineWidth = st.s * 1.4; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(cx + (x - cx) * m, cy + (y - cy) * m); ctx.stroke(); }
       else { ctx.beginPath(); ctx.arc(x, y, st.s, 0, 6.2832); ctx.fill(); }
     }
     const g = ctx.createRadialGradient(pole.x, pole.y, 0, pole.x, pole.y, 10); g.addColorStop(0, 'rgba(255,246,214,.95)'); g.addColorStop(1, 'rgba(255,246,214,0)');
     ctx.globalAlpha = 0.85; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(pole.x, pole.y, 10, 0, 6.2832); ctx.fill(); ctx.fillStyle = col;
     if (!MOVE()) return;
-    if (!met && now > nextMet) met = {x: W * (0.35 + Math.random() * 0.6), y: H * (0.08 + Math.random() * 0.4), vx: -(0.17 + Math.random() * 0.1), vy: 0.09 + Math.random() * 0.07, t0: now};
+    if (!met && now > nextMet) met = {x: W * (0.35 + Math.random() * 0.6), y: H * (0.08 + Math.random() * 0.4), vx: -(0.10 + Math.random() * 0.05), vy: 0.05 + Math.random() * 0.04, t0: now};
     if (met) {
-      const age = now - met.t0, life = 2000, x = met.x + met.vx * age, y = met.y + met.vy * age, L = 300; met.hx = x; met.hy = y;
-      const gr = ctx.createLinearGradient(x, y, x - met.vx * L, y - met.vy * L); gr.addColorStop(0, 'rgba(255,244,220,.9)'); gr.addColorStop(1, 'rgba(255,244,220,0)');
+      const age = now - met.t0, life = 2800, x = met.x + met.vx * age, y = met.y + met.vy * age, L = 220; met.hx = x; met.hy = y;
+      const gr = ctx.createLinearGradient(x, y, x - met.vx * L, y - met.vy * L); gr.addColorStop(0, 'rgba(255,244,220,.75)'); gr.addColorStop(1, 'rgba(255,244,220,0)');
       ctx.globalAlpha = Math.max(0, Math.min(1, age / 150, 1 - (age - life * 0.6) / (life * 0.4))); ctx.strokeStyle = gr; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - met.vx * L, y - met.vy * L); ctx.stroke(); ctx.strokeStyle = col;
-      if (age > life) { met = null; nextMet = now + 5000 + Math.random() * 6000; }
+      if (age > life) { met = null; nextMet = now + 16000 + Math.random() * 12000; }
     }
   }
   function loop(now) { raf = requestAnimationFrame(loop); if (now - lastDraw < (warp || met ? 14 : 33)) return; lastDraw = now; draw(now); }
   function size() { dpr = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); seed(); draw(performance.now()); }
   size(); window.addEventListener('resize', size);
-  nextMet = performance.now() + 2500;
+  nextMet = performance.now() + 6000;
   const start = () => { if (!raf) { lastT = 0; raf = requestAnimationFrame(loop); } };
   const still = () => { if (raf) cancelAnimationFrame(raf); raf = 0; met = null; warp = null; draw(performance.now()); };
   if (MOVE()) start();
   document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (MOVE()) start(); });
-  return {warp(dir) { if (FULL()) warp = {dir, t0: performance.now()}; }, start, still, catchAt(x, y) { if (!met || met.hx == null) return false; if (Math.hypot(x - met.hx, y - met.hy) > 64) return false; met = null; nextMet = performance.now() + 5000; return true; }};
+  return {warp() { /* 6판 — 별이 스치는 순간이동은 없앰(차분히) */ }, start, still, catchAt(x, y) { if (!met || met.hx == null) return false; if (Math.hypot(x - met.hx, y - met.hy) > 64) return false; met = null; nextMet = performance.now() + 16000; return true; }};
 })();
 /* 누른 자리에 빛 고리 하나(폭죽 아님 · 한 번 퍼지고 사라짐) */
 document.addEventListener('pointerdown', e => {
