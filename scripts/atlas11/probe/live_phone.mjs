@@ -200,9 +200,16 @@ async function runDevice(name, engine, end) {
         else if (name === 'clock-sprout') pt = await page.evaluate(() => { const z = document.querySelector('section.th-home svg.th-clock a.th-tapz'); if (!z) return null; z.scrollIntoView({block: 'center'}); const b = z.getBoundingClientRect(); for (let fy = 0.9; fy > 0.1; fy -= 0.1) for (let fx = 0.08; fx < 0.95; fx += 0.12) { const x = b.left + b.width * fx, y = b.top + b.height * fy; if (document.elementFromPoint(x, y)?.closest('a') === z) return {x, y}; } return null; });
         else { const h = await page.locator(sel).first().elementHandle({timeout: 5000}).catch(() => null); pt = h ? await h.evaluate(el => { el.scrollIntoView({block: 'center'}); const b = el.getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2, top = document.elementFromPoint(x, y); return {x, y, covered: top && !el.contains(top) ? (top.closest('a, button')?.getAttribute('href') ?? top.tagName) : null}; }) : null; if (pt?.covered) T.covered = pt.covered; } // 가운데로 올려 누름(맨 아래 고정 띠 밑에 깔리지 않게)
         if (!pt) { T.ok = false; T.why = 'target not found'; continue; }
+        await page.evaluate(() => { for (const c of document.querySelector('#view')?.children ?? []) c.setAttribute('data-probe-old', '1'); }); // 앞 화면 표시(넘어간 쪽이 새로 그려졌는지 가림 — 아래 「다음」 사슬과 같음)
         if (D.touch) await page.touchscreen.tap(pt.x, pt.y); else await page.mouse.click(pt.x, pt.y);
         const moved = await page.waitForFunction(w => { let h = location.hash || '#/'; try { h = decodeURIComponent(h); } catch { /* 그대로 */ } return h === w; }, want, {timeout: 10000, polling: 50}).then(() => true, () => false);
         T.to = show(await page.evaluate(() => location.hash).catch(() => '?')); T.ok = moved; if (!moved) T.why = 'hash did not change';
+        // 넘어간 쪽이 다 그려질 때까지 봄 — 주소만 바뀌고 그리기 전에 다음 열기로 가면 아이폰 엔진이 받던 쪽 모듈을 끊고 「Importing a module script failed」를 다음 칸에 냄
+        //   (2026-10-20 10:40 실제 사이트 탐침: 누르기 여섯 모두 맞는데 아이폰 둘만 그 글 여섯 번 — 누른 쪽마다 하나씩 · 다음 칸 이름으로 적힘)
+        if (moved) {
+          if (!(await waitView(page, 15000))) { T.ok = false; T.why = 'destination not drawn'; }
+          else { await settle(page, 2000); T.h2 = await page.evaluate(() => document.querySelector('#view h2')?.textContent?.replace(/\s+/g, ' ').trim().slice(0, 40) ?? null).catch(() => null); if (!T.h2) { T.ok = false; T.why = 'destination has no heading'; } }
+        }
       } catch (e) { T.ok = false; T.why = line1(e); }
     }
 
