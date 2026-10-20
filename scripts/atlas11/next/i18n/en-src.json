@@ -8809,6 +8809,19 @@
   "자리예요": "zone",
   "한 달 시장보다 {n}%p": "{n}pp vs market over 1 month",
   "? 테마 시계 자리를 못 셌어요": "? Couldn't place it on the theme clock",
-  "한 달 사이 값이 비었거나 크게 튄 날이 있어요.": "A price was missing in the past month, or a day jumped too much."
+  "한 달 사이 값이 비었거나 크게 튄 날이 있어요.": "A price was missing in the past month, or a day jumped too much.",
+  "행성 열": "The planets",
+  "업종 무리마다 행성이 하나예요. 가운데는 해예요.": "Each industry group has its own planet. The Sun sits in the middle.",
+  "사진은 미국 항공우주국이 찍은 진짜 사진이에요.": "The photos are real pictures taken by NASA.",
+  "지구": "Earth",
+  "수성": "Mercury",
+  "해왕성": "Neptune",
+  "천왕성": "Uranus",
+  "금성": "Venus",
+  "달": "Moon",
+  "화성": "Mars",
+  "목성": "Jupiter",
+  "토성": "Saturn",
+  "명왕성": "Pluto"
  }
 }

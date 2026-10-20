@@ -22,6 +22,12 @@ export function nextBtn(title, href, lead = '다음') {
 /** 있는 쪽 맨 아래 「다음」 한 줄(app.js flowFoot) — 가운데 맞춘 글 한 덩이(그 쪽 「글 시작 왼쪽 줄 셋」 규칙 [10] 7 에 줄을 더하지 않음) */
 export function footBtn(title, href) { return h('a', {class: 'th-next th-one', href}, h('span', {text: `다음 · ${title} ›`})); }
 /* ── 그림: 테마 시계(가로 = 한 달 동안 시장보다 더 오른 %p · 세로 = 지난 닷새 · 꽃 선 = 가로 5) ── */
+/* 행성 사진(사장님 2026-10-20(서울) 22:17 「우주에 주황샥으로만 여러게 있는데 태양계 그리고 몰라 진짜 실사 행성으로 해 / 학습해서 해」 · 22:22 행성 사진 보기)
+   업종 점 = 진짜 행성 사진(미국 항공우주국 NASA · /media/planet/ · 출처 /media/planet/sources.json) — 큰 업종 열 무리마다 행성 하나 · 가운데(꽃 선과 가로축이 만나는 곳)는 해
+   싹 자리는 크고 밝게 · 다른 자리는 작고 흐리게 · 번호 셋(또는 고른 업종)은 가장 크게 — 자리 셈 · 누르는 곳 · 번호는 그대로 */
+export const PLANET = Object.freeze({semi: 'earth', elec: 'mercury', it: 'neptune', bio: 'uranus', kcon: 'venus', hold: 'moon', mat: 'mars', power: 'jupiter', heavy: 'saturn', fin: 'pluto'});
+export const PLANET_KO = Object.freeze({earth: '지구', mercury: '수성', neptune: '해왕성', uranus: '천왕성', venus: '금성', moon: '달', mars: '화성', jupiter: '목성', saturn: '토성', pluto: '명왕성', sun: '해'});
+export const planetSrc = (g, px = 96) => `/media/planet/${g === 'sun' ? 'sun' : PLANET[g] ?? 'moon'}-${px}.webp`;
 let HIT_SEQ = 0;
 /** 번호 하나의 누르는 칸 — (cx, cy) 둘레 네모(±r)를 다른 번호와의 가운데 선으로 자름(그 번호가 가장 가까운 곳) · 꼭짓점 목록 */
 function voronoiCell(cx, cy, r, others) {
@@ -56,9 +62,11 @@ export function clock(TH, {hi = null, marks = null, W = 326, H = 300, links = fa
     sv('line', {x1: W / 2, y1: 0, x2: W / 2, y2: H / 2, class: 'th-bl'}));
   for (const d of [`M ${W / 2 - 50} 40 Q ${W / 2} 14 ${W / 2 + 50} 40`, `M ${W - 40} ${H / 2 - 50} Q ${W - 14} ${H / 2} ${W - 40} ${H / 2 + 50}`, `M ${W / 2 + 50} ${H - 40} Q ${W / 2} ${H - 14} ${W / 2 - 50} ${H - 40}`, `M 40 ${H / 2 + 50} Q 14 ${H / 2} 40 ${H / 2 - 50}`])
     g.append(sv('path', {d, class: 'th-turn', 'marker-end': 'url(#th-ah)'}));
+  g.append(sv('image', {href: planetSrc('sun'), x: (W / 2 - 15).toFixed(1), y: (H / 2 - 15).toFixed(1), width: 30, height: 30, class: 'th-sun'})); // 가운데 해(2026-10-20 22:17 「태양계」) — 점보다 먼저 그려 점이 위
   const inds = TH.inds ?? [], mark = hi ? [hi] : (marks ?? []);
   for (const i of inds) if (mark.includes(i.n) && Array.isArray(i.t)) g.append(sv('polyline', {points: i.t.map(([a, b]) => X(a).toFixed(1) + ',' + Y(b).toFixed(1)).join(' '), class: 'th-tail'}));
-  for (const i of inds) { const on = mark.includes(i.n) || (!hi && i.z === 'S'); g.append(sv('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: on ? 6 : 3.5, class: on ? 'th-dot on' : 'th-dot'})); }
+  const pts = inds.filter(i => Number.isFinite(i.x) && Number.isFinite(i.y)).map(i => ({i, big: mark.includes(i.n), on: mark.includes(i.n) || (!hi && i.z === 'S')})).sort((a, b) => (a.on - b.on) || (a.big - b.big));
+  for (const {i, on, big} of pts) { const d = big ? 22 : on ? 15 : 9; g.append(sv('image', {href: planetSrc(i.g), x: (X(i.x) - d / 2).toFixed(1), y: (Y(i.y) - d / 2).toFixed(1), width: d, height: d, class: on ? 'th-dot th-pl on' : 'th-dot th-pl', 'data-g': i.g ?? ''})); } // 업종 = 행성 사진(큰 업종 무리마다 하나)
   if (hi) { const i = indOf(TH, hi); if (i) { const lx = X(i.x), right = lx < W / 2; g.append(txt((right ? lx + 12 : lx - 12).toFixed(1), (Y(i.y) - 12).toFixed(1), i.n, {class: 'th-lb', 'text-anchor': right ? 'start' : 'end'})); } }
   else {
     const bs = (marks ?? []).map((n, k) => { const i = indOf(TH, n); return i ? {i, k, cx: X(i.x) + (k % 2 ? 16 : -16), cy: Y(i.y) - 18} : null; }).filter(Boolean);

@@ -7,9 +7,11 @@
 .th-clock .th-bl { stroke: var(--up); stroke-width: 2; stroke-dasharray: 4 4; }
 .th-clock .th-turn { fill: none; stroke: #6E6E6E; stroke-width: 2; }
 .th-clock .th-arw { fill: #6E6E6E; }
-.th-clock .th-tail { fill: none; stroke: var(--up); stroke-width: 2.5; opacity: .85; }
+.th-clock .th-tail { fill: none; stroke: #FFFFFF; stroke-width: 2; opacity: .5; } /* 지나온 길 = 행성이 지나온 궤도처럼 흰 선(2026-10-20 22:17 「주황색으로만」) */
 .th-clock .th-dot { fill: #5E5E5E; stroke: #070B17; stroke-width: 1.5; }
 .th-clock .th-dot.on { fill: var(--up); }
+.th-clock .th-pl { opacity: .5; } .th-clock .th-pl.on { opacity: 1; } /* 업종 행성 사진(NASA) — 싹 자리는 밝게 · 다른 자리는 흐리게 */
+.th-clock .th-sun { opacity: .95; } /* 가운데 해 */
 .th-clock .th-nb { fill: var(--up); stroke: #070B17; stroke-width: 2; }
 .th-clock .th-nbt { fill: #070B17; font-size: var(--fs-1); font-weight: 700; }
 /* 첫 화면 시계 누르는 곳(번호 셋 · 싹 칸 — 2026-10-20 07:08 「응」) — 누르는 자리는 투명 · 키보드로 오면 금빛 테 */

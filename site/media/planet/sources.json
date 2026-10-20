@@ -1,0 +1,118 @@
+{
+ "schema": "dori-planet-sources-1",
+ "made": "2026-10-20T13:44:53.525Z",
+ "why": "사장님 2026-10-20(서울) 22:17 「진짜 실사 행성으로 해」 · 22:22 행성 사진 — 미국 항공우주국(NASA) 사진만 · 출처 NASA · 로고 없음 · 보증 아님",
+ "policy": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+ "files": [
+  {
+   "file": "sun-96.webp",
+   "from": "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg",
+   "credit": "NASA/SDO/HMI",
+   "sha256_of_original": "83d6a2410fbd704accb9b9c2372638f48caae0062981e3830916c6936383865a",
+   "original_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "file": "mercury-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia15/pia15161/PIA15161.jpg",
+   "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Carnegie Institution of Washington",
+   "sha256_of_original": "a7c030aee3554c9ef578229823486dc5562aadc44035f21d0cd4bf0d12dd345a",
+   "original_px": [
+    2147,
+    2147
+   ]
+  },
+  {
+   "file": "venus-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00104/PIA00104.jpg",
+   "credit": "NASA/JPL",
+   "sha256_of_original": "bfa8ec6972fe083f04d9e494d172adea3f9ff5b360d61f63d9834cd7b98f1afc",
+   "original_px": [
+    4096,
+    4096
+   ]
+  },
+  {
+   "file": "earth-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/84000/84214/bluemarble_2014089_lrg.jpg",
+   "credit": "NASA Earth Observatory/NOAA (Suomi NPP VIIRS)",
+   "sha256_of_original": "ffb0c3d2bd798571103a0f96416e7a34f1d968c2bb8e990f1355258e8aedf4ef",
+   "original_px": [
+    3840,
+    2160
+   ]
+  },
+  {
+   "file": "moon-96.webp",
+   "from": "https://svs.gsfc.nasa.gov/vis/a000000/a005400/a005415/frames/730x730_1x1_30p/moon.0311.jpg",
+   "credit": "NASA's Scientific Visualization Studio (LRO data · Dial-A-Moon 2025-01-13 22:00 UT)",
+   "sha256_of_original": "51bccd09b6365c68fa724e056a088654e97784309ed274305b4c530a0bb147a8",
+   "original_px": [
+    730,
+    730
+   ]
+  },
+  {
+   "file": "mars-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00407/PIA00407.jpg",
+   "credit": "NASA/JPL/USGS",
+   "sha256_of_original": "fc62a86416794444988338e55591d23290e1de2c7c32f3613b872caa8413ea2f",
+   "original_px": [
+    6787,
+    6787
+   ]
+  },
+  {
+   "file": "jupiter-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia02/pia02873/PIA02873.jpg",
+   "credit": "NASA/JPL/University of Arizona",
+   "sha256_of_original": "1e2142ad747dc3a1b105428e0f3224f658b1e4cd2752052753ca5518a4137a28",
+   "original_px": [
+    1920,
+    1080
+   ]
+  },
+  {
+   "file": "saturn-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia06/pia06193/PIA06193.jpg",
+   "credit": "NASA/JPL/Space Science Institute",
+   "sha256_of_original": "0938b9e0c44a1e81efdca6560b1d75200e9e60caa6a02060bac0466357b9bae6",
+   "original_px": [
+    8888,
+    4544
+   ]
+  },
+  {
+   "file": "uranus-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00032/PIA00032.jpg",
+   "credit": "NASA/JPL",
+   "sha256_of_original": "bbe6badecb4fef5d8e5e672574baeec7463872d7342af52bd0a001e9456d574d",
+   "original_px": [
+    2000,
+    1000
+   ]
+  },
+  {
+   "file": "neptune-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia01/pia01492/PIA01492.jpg",
+   "credit": "NASA/JPL",
+   "sha256_of_original": "97b57802f44be2218578a98c8c26f8426ff7a95890d266d34486734f14c1edb6",
+   "original_px": [
+    2188,
+    2185
+   ]
+  },
+  {
+   "file": "pluto-96.webp",
+   "from": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia19/pia19857/PIA19857.jpg",
+   "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute",
+   "sha256_of_original": "b07f17f412b3fc4c7663c245e611fb83657eec271f4176c9b80a52e8fa0588e5",
+   "original_px": [
+    1920,
+    1080
+   ]
+  }
+ ]
+}
