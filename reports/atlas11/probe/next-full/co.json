@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-10-20T06:57:12.586Z",
+ "at": "2026-10-20T07:31:11.586Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-20",
  "companies": 2557,
@@ -31,23 +31,21 @@
    }
   }
  },
- "seconds": 721,
+ "seconds": 975,
  "time": {
-  "old": 335.5,
-  "new": 159.4,
-  "wall": 721.1,
+  "old": 269.7,
+  "new": 328.2,
+  "wall": 975.2,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 46.5,
-  "oldShare": 67.8
+  "oldPct": 27.7,
+  "oldShare": 45.1
  },
  "net": {
-  "req": 2510,
-  "retry": 1,
-  "waitSec": 1,
-  "why": {
-   "ECONNRESET": 1
-  },
+  "req": 2509,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
   "cut": 0,
   "page": {
    "retry": 0,
@@ -58,7 +56,7 @@
  },
  "counts": {
   "줄": 114497,
-  "숫자 낱말": 216720,
+  "숫자 낱말": 216718,
   "따로 셈": 43805,
   "머리 셈": 40912,
   "고리": 2557,

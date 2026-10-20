@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-3",
- "when": "2026-10-20T07:01:06.246Z",
+ "when": "2026-10-20T07:35:02.765Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
@@ -73,13 +73,13 @@
   "leftScreens": 94
  },
  "timing": {
-  "flowMs": 625,
+  "flowMs": 622,
   "taps": 14,
   "qTaps": 11,
   "qTapsBefore": 22,
   "typed": 4
  },
- "sec": 63,
+ "sec": 66,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "찾기와 같은 차례": 7,
