@@ -1,0 +1,12 @@
+import {createRequire} from 'node:module';
+const {chromium} = createRequire('/tmp/pw/')('playwright');
+const [file, out] = process.argv.slice(2);
+const b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium'});
+const p = await (await b.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 2})).newPage();
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+await p.goto('file://' + file); await p.waitForTimeout(2500);
+await p.screenshot({path: out + '-a.png'});
+await p.evaluate(() => window.scrollTo(0, 520)); await p.waitForTimeout(1800);
+await p.screenshot({path: out + '-b.png'});
+console.log('errors', errs.length, errs.slice(0, 2)); await b.close();

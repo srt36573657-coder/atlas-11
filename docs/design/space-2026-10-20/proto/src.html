@@ -78,7 +78,7 @@ a.chip { min-height: 44px; text-decoration: none; }
 .arw { fill: var(--moon); opacity: .42; }
 .zone-s { fill: url(#zoneglow); }
 .st { fill: var(--faint); }
-.st.S { fill: var(--wax); opacity: .95; stroke: rgba(242, 196, 106, .22); stroke-width: 3.4; }
+.st.S { fill: #F7CF7A; opacity: 1; stroke: rgba(242, 196, 106, .24); stroke-width: 3.4; }
 .st.B { fill: var(--moon); opacity: .82; }
 .st.W, .st.Q { fill: var(--cool); opacity: .55; }
 .ring { fill: none; stroke: var(--wax); stroke-width: 1.4; opacity: .65; }
@@ -186,7 +186,19 @@ a.chip { min-height: 44px; text-decoration: none; }
 .gd { stroke: rgba(200, 212, 240, .12); stroke-width: 1; }
 .hi { fill: var(--up); } .lo { fill: var(--down); } .nowp { fill: var(--wax); }
 .hi, .lo, .nowp { stroke: var(--sky); stroke-width: 1.5; }
-.halo { fill: url(#starglow); }
+.halo { fill: url(#starglow); } .halo.r { fill: url(#redglow); } .halo.b { fill: url(#blueglow); } .halo.w { fill: url(#whiteglow); }
+/* 8판 — 초롱초롱(3.5 ~ 7초에 한 번 · 움직임을 끄면 멈춤) */
+.flare { fill: var(--sheen); opacity: .28; }
+.mo-on .flare { animation: flareb 5.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes flareb { 0%, 100% { opacity: .16; transform: scale(.9); } 50% { opacity: .42; transform: scale(1.06); } }
+.mo-on .skyin .st.S[data-tw] { animation: halotw 4.6s ease-in-out infinite; animation-delay: var(--twd, 0s); }
+@keyframes halotw { 0%, 100% { stroke: rgba(242, 196, 106, .2); stroke-width: 3.4; } 50% { stroke: rgba(255, 226, 150, .55); stroke-width: 7; } }
+.mo-on .tw { animation: twk 4.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes twk { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.16); } }
+.mo-on .hbar i::after { animation: headtw 3.8s ease-in-out infinite; }
+.mo-on .hb:nth-child(2n) .hbar i::after { animation-delay: -1.3s; } .mo-on .hb:nth-child(3n) .hbar i::after { animation-delay: -2.4s; }
+@keyframes headtw { 0%, 100% { opacity: .82; transform: scale(1); } 50% { opacity: 1; transform: scale(1.22); } }
+.hero em, .realcard .nm { text-shadow: 0 0 22px rgba(242, 196, 106, .32); }
 .ov.cl { font-family: var(--sans); font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
 .spark { flex: none; width: 96px; height: 36px; }
 .spark .sl { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
@@ -203,9 +215,9 @@ a.chip { min-height: 44px; text-decoration: none; }
 .hb.me .lbl b { color: var(--wax); }
 .hbar { display: block; position: relative; height: 12px; margin-right: 6px; background: linear-gradient(rgba(150, 170, 220, .14), rgba(150, 170, 220, .14)) center / 100% 1px no-repeat; }
 .hbar i { display: block; position: relative; height: 4px; margin-top: 4px; border-radius: 2px; background: linear-gradient(90deg, rgba(143, 160, 196, 0), rgba(143, 160, 196, .85)); }
-.hbar i::after { content: ""; position: absolute; right: -5px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--star); box-shadow: 0 0 6px 2px rgba(143, 160, 196, .55); }
+.hbar i::after { content: ""; position: absolute; right: -5px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: #F4F7FF; box-shadow: 0 0 8px 3px rgba(190, 205, 240, .6), 0 0 18px 4px rgba(143, 160, 196, .25); }
 .hb.me .hbar i, .bar100 .hbar i.t1 { background: linear-gradient(90deg, rgba(242, 196, 106, 0), rgba(242, 196, 106, .95)); }
-.hb.me .hbar i::after, .bar100 .hbar i.t1::after { background: var(--sheen); box-shadow: 0 0 8px 3px rgba(242, 196, 106, .7); }
+.hb.me .hbar i::after, .bar100 .hbar i.t1::after { background: #FFFBEA; box-shadow: 0 0 10px 4px rgba(242, 196, 106, .75), 0 0 22px 6px rgba(242, 196, 106, .3); }
 .mo-on .page.enter .hbar i { animation: growx 1s cubic-bezier(.2, .7, .2, 1) .25s both; transform-origin: left center; }
 .hb .h0 { fill: var(--sky-3); } .hb .h1 { fill: var(--dim); } .hb.me .h1 { fill: var(--wax); }
 .grow3 { display: flex; flex-direction: column; gap: var(--sp-3); }
@@ -475,7 +487,7 @@ a.chip { min-height: 44px; text-decoration: none; }
 </style>
 
 <canvas id="stars" aria-hidden="true"></canvas>
-<svg class="defs" aria-hidden="true" focusable="false"><defs><linearGradient id="areamoon" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1E6C8" stop-opacity=".16"/><stop offset="1" stop-color="#F1E6C8" stop-opacity="0"/></linearGradient><linearGradient id="rangegrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5EA2FF" stop-opacity=".6"/><stop offset=".5" stop-color="#8C97AC" stop-opacity=".32"/><stop offset="1" stop-color="#FF6A3D" stop-opacity=".6"/></linearGradient><linearGradient id="trailgrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="360" y2="0"><stop offset="0" stop-color="#F1E6C8" stop-opacity=".28"/><stop offset=".75" stop-color="#F1E6C8" stop-opacity=".85"/><stop offset="1" stop-color="#FFF6D6" stop-opacity="1"/></linearGradient><linearGradient id="pillarS" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#8FA0C4" stop-opacity=".04"/><stop offset="1" stop-color="#8FA0C4" stop-opacity=".8"/></linearGradient><linearGradient id="pillarG" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#F2C46A" stop-opacity=".05"/><stop offset="1" stop-color="#F2C46A" stop-opacity=".95"/></linearGradient><linearGradient id="pillarB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5EA2FF" stop-opacity=".05"/><stop offset="1" stop-color="#5EA2FF" stop-opacity=".9"/></linearGradient><linearGradient id="arcgrad" gradientUnits="userSpaceOnUse" x1="38" y1="0" x2="262" y2="0"><stop offset="0" stop-color="#5EA2FF"/><stop offset=".5" stop-color="#8C97AC"/><stop offset="1" stop-color="#FF6A3D"/></linearGradient><radialGradient id="starglow"><stop offset="0" stop-color="#F2C46A" stop-opacity=".55"/><stop offset=".45" stop-color="#F2C46A" stop-opacity=".16"/><stop offset="1" stop-color="#F2C46A" stop-opacity="0"/></radialGradient><radialGradient id="zoneglow" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#F2C46A" stop-opacity=".15"/><stop offset=".45" stop-color="#F2C46A" stop-opacity=".06"/><stop offset=".7" stop-color="#F2C46A" stop-opacity="0"/></radialGradient></defs></svg>
+<svg class="defs" aria-hidden="true" focusable="false"><defs><linearGradient id="areamoon" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1E6C8" stop-opacity=".16"/><stop offset="1" stop-color="#F1E6C8" stop-opacity="0"/></linearGradient><linearGradient id="rangegrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5EA2FF" stop-opacity=".6"/><stop offset=".5" stop-color="#8C97AC" stop-opacity=".32"/><stop offset="1" stop-color="#FF6A3D" stop-opacity=".6"/></linearGradient><linearGradient id="trailgrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="360" y2="0"><stop offset="0" stop-color="#F1E6C8" stop-opacity=".28"/><stop offset=".75" stop-color="#F1E6C8" stop-opacity=".85"/><stop offset="1" stop-color="#FFF6D6" stop-opacity="1"/></linearGradient><linearGradient id="pillarS" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#8FA0C4" stop-opacity=".04"/><stop offset="1" stop-color="#8FA0C4" stop-opacity=".8"/></linearGradient><linearGradient id="pillarG" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#F2C46A" stop-opacity=".05"/><stop offset="1" stop-color="#F2C46A" stop-opacity=".95"/></linearGradient><linearGradient id="pillarB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5EA2FF" stop-opacity=".05"/><stop offset="1" stop-color="#5EA2FF" stop-opacity=".9"/></linearGradient><linearGradient id="arcgrad" gradientUnits="userSpaceOnUse" x1="38" y1="0" x2="262" y2="0"><stop offset="0" stop-color="#5EA2FF"/><stop offset=".5" stop-color="#8C97AC"/><stop offset="1" stop-color="#FF6A3D"/></linearGradient><radialGradient id="redglow"><stop offset="0" stop-color="#FF6A3D" stop-opacity=".5"/><stop offset=".45" stop-color="#FF6A3D" stop-opacity=".14"/><stop offset="1" stop-color="#FF6A3D" stop-opacity="0"/></radialGradient><radialGradient id="blueglow"><stop offset="0" stop-color="#5EA2FF" stop-opacity=".5"/><stop offset=".45" stop-color="#5EA2FF" stop-opacity=".14"/><stop offset="1" stop-color="#5EA2FF" stop-opacity="0"/></radialGradient><radialGradient id="whiteglow"><stop offset="0" stop-color="#E3EBFF" stop-opacity=".5"/><stop offset=".45" stop-color="#E3EBFF" stop-opacity=".14"/><stop offset="1" stop-color="#E3EBFF" stop-opacity="0"/></radialGradient><radialGradient id="starglow"><stop offset="0" stop-color="#F2C46A" stop-opacity=".55"/><stop offset=".45" stop-color="#F2C46A" stop-opacity=".16"/><stop offset="1" stop-color="#F2C46A" stop-opacity="0"/></radialGradient><radialGradient id="zoneglow" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#F2C46A" stop-opacity=".15"/><stop offset=".45" stop-color="#F2C46A" stop-opacity=".06"/><stop offset=".7" stop-color="#F2C46A" stop-opacity="0"/></radialGradient></defs></svg>
 <header class="top">
   <button class="back" id="back" type="button" aria-label="뒤로" hidden>‹</button>
   <a class="brand" href="#" data-go="home" data-root="1">돌이</a>
@@ -680,6 +692,8 @@ const moonSvg = (kind, cls = 'mi', f) => s('svg', {viewBox: '0 0 40 40', class: 
 /* 업종 달 — 차오름은 보름 선까지 온 만큼 차고, 보름은 꽉 차고, 기우는 중은 남은 만큼, 그믐은 어두움 */
 const fullOf = i => (i.z === 'B' ? 1 : i.z === 'S' ? 0.14 + 0.72 * nearBar(i.x) : i.z === 'W' ? 0.14 + 0.6 * nearBar(i.x) : 0);
 const moonOf = (i, cls) => moonSvg(ZN[i.z].moon, cls, fullOf(i));
+/* 8판 — 진짜 차오름 별 뒤의 옅은 빛살(45도 기운 큰 별 · 천천히 숨 쉼) */
+function flare(cx, cy) { const g = s('g', {transform: `rotate(45 ${(+cx).toFixed(1)} ${(+cy).toFixed(1)})`, 'aria-hidden': 'true'}); g.append(sparkle(+(+cx).toFixed(1), +(+cy).toFixed(1), 21, 'flare')); return g; }
 function sparkle(cx, cy, r, cls) {
   const q = r * 0.26;
   return s('path', {class: cls, d: `M${cx} ${cy - r} Q${cx + q} ${cy - q} ${cx + r} ${cy} Q${cx + q} ${cy + q} ${cx} ${cy + r} Q${cx - q} ${cy + q} ${cx - r} ${cy} Q${cx - q} ${cy - q} ${cx} ${cy - r} Z`});
@@ -762,7 +776,7 @@ function skyFigure({trailOf = null, pulse = false, hl = null} = {}) {
       i.t.slice(0, -1).forEach(([a, b]) => svg.append(s('circle', {cx: X(a).toFixed(1), cy: Y(b).toFixed(1), r: 3.4, class: 'tdot'})));
     }
     const cx = X(i.x), cy = Y(i.y), right = cx < 220;
-    svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), sparkle(cx, cy, 11, 'real'));
+    svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), flare(cx, cy), sparkle(cx, cy, 11, 'real'));
     ov(box, [360, 360], cx + (right ? 16 : -16), cy + (trailOf ? 22 : -18), n, (right ? 'start' : 'end') + ' wax big');
     if (trailOf && i.t && i.t.length > 1) { const [a, b] = i.t[0]; ov(box, [360, 360], X(a) + 10, Y(b) + 16, '엿새 전', 'start dim'); }
   }
@@ -783,6 +797,7 @@ function liveSky() {
   const stars = Object.entries(D.inds).map(([n, i]) => {
     const el = s('circle', {r: i.z === 'S' ? 3.6 : 3.1, class: 'st ' + i.z + (intro ? ' appear' : ''), 'aria-hidden': 'true'});
     if (intro) el.style.animationDelay = (Math.random() * 0.9).toFixed(2) + 's';
+    if (Math.random() < 0.34) { el.setAttribute('data-tw', '1'); el.style.setProperty('--twd', (-Math.random() * 5).toFixed(2) + 's'); }
     const ring = i.z === 'S' && i.d === 1 && i.sc !== 4 ? s('circle', {r: 7.5, class: 'ring', 'aria-hidden': 'true'}) : null;
     const tr = s('polyline', {class: 'strail ' + i.z, points: ''});
     trails.append(tr); svg.append(el); if (ring) svg.append(ring);
@@ -825,7 +840,7 @@ function liveSky() {
   const reals = realList().map(n => {
     const i = D.inds[n], cx = X(i.x), cy = Y(i.y), right = cx < 220;
     const g = s('g', {'aria-hidden': 'true', class: 'rl'}), inner = s('g', {class: intro ? 'ignite' : ''});
-    inner.append(s('polyline', {points: (i.t || []).map(([a, b]) => `${X(a).toFixed(1)},${Y(b).toFixed(1)}`).join(' '), class: 'trail'}), s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), sparkle(cx, cy, 11, 'real'));
+    inner.append(s('polyline', {points: (i.t || []).map(([a, b]) => `${X(a).toFixed(1)},${Y(b).toFixed(1)}`).join(' '), class: 'trail'}), s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), flare(cx, cy), sparkle(cx, cy, 11, 'real'));
     g.append(inner); svg.append(g);
     const pin = {el: ov(box, [360, 360], 0, 0, n, (right ? 'start' : 'end') + ' wax big'), x: cx + (right ? 16 : -16), y: cy - 18}; pins.push(pin);
     return {n, i, g, pin, cx, cy, right, tl: inner.firstChild};
@@ -1337,11 +1352,11 @@ function pPast(c) {
   for (const gy of [py(top), py((top + bot) / 2), py(bot)]) svg.append(s('line', {x1: 0, y1: gy.toFixed(1), x2: W, y2: gy.toFixed(1), class: 'gd'}));
   const pts = P.map(([d, v]) => `${px(d).toFixed(1)},${py(v).toFixed(1)}`), yb = py(bot).toFixed(1);
   let sd = [...String(c)].reduce((a2, ch) => (a2 * 31 + ch.charCodeAt(0)) % 2147483647, 7) || 7; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
-  for (let k = 0; k < 34; k++) svg.append(s('circle', {cx: (rnd() * W).toFixed(1), cy: (rnd() * H).toFixed(1), r: (0.5 + rnd() * 0.8).toFixed(2), class: 'cf', opacity: (0.12 + rnd() * 0.3).toFixed(2)}));
+  for (let k = 0; k < 34; k++) svg.append(s('circle', {cx: (rnd() * W).toFixed(1), cy: (rnd() * H).toFixed(1), r: (0.5 + rnd() * 0.8).toFixed(2), class: 'cf', opacity: (0.18 + rnd() * 0.42).toFixed(2)}));
   svg.append(s('polyline', {points: pts.join(' '), class: 'lnglow'}), s('polyline', {points: pts.join(' '), class: 'ln trail2 draw', pathLength: 1000}));
   const kHi = vals.indexOf(Math.max(...vals)), kLo = vals.indexOf(Math.min(...vals)), kEnd = n - 1, at = k => [px(P[k][0]), py(P[k][1])];
   const [hx, hy] = at(kHi), [lx, ly] = at(kLo), [ex, ey] = at(kEnd);
-  svg.append(s('circle', {cx: ex.toFixed(1), cy: ey.toFixed(1), r: 17, class: 'halo'}), sparkle(+hx.toFixed(1), +hy.toFixed(1), 7.5, 'hi'), sparkle(+lx.toFixed(1), +ly.toFixed(1), 7.5, 'lo'), sparkle(+ex.toFixed(1), +ey.toFixed(1), 10, 'nowp'));
+  svg.append(s('circle', {cx: hx.toFixed(1), cy: hy.toFixed(1), r: 12, class: 'halo r'}), s('circle', {cx: lx.toFixed(1), cy: ly.toFixed(1), r: 12, class: 'halo b'}), s('circle', {cx: ex.toFixed(1), cy: ey.toFixed(1), r: 18, class: 'halo'}), sparkle(+hx.toFixed(1), +hy.toFixed(1), 7.5, 'hi tw'), sparkle(+lx.toFixed(1), +ly.toFixed(1), 7.5, 'lo tw'), sparkle(+ex.toFixed(1), +ey.toFixed(1), 10, 'nowp'));
   /* 이름표는 셋만 — 가장 높을 때 · 낮을 때 · 오늘(글은 글자색 · 색은 점이 가짐) · 겹치면 뒤의 것을 뺌 */
   const UW = t => String(t).length * 12 + 8, UH = 28, boxes = [];
   const lab = (x, y, text, side) => { const w = UW(text), x0 = side === 'end' ? x - w : x, yy = Math.max(14, Math.min(H - 14, y)), r = [x0, yy - UH / 2, x0 + w, yy + UH / 2]; if (boxes.some(b => r[0] < b[2] && b[0] < r[2] && r[1] < b[3] && b[1] < r[3])) return; boxes.push(r); ov(fig, [W, H], x, yy, text, 'cl ' + side); };
@@ -1416,7 +1431,7 @@ function pGrow(c) {
     vals.forEach((v, k) => {
       if (v == null) return;
       const hgt = Math.max(1.5, Math.abs(v) / mx * span), cx = 50 + k * 100, up = v >= 0, e = up ? base - hgt : base + hgt, t = v < 0 ? 'b' : k === vals.length - 1 ? 'g' : 's';
-      svg.append(s('rect', {x: cx - 7, y: (up ? e : base).toFixed(1), width: 14, height: hgt.toFixed(1), class: 'yb pl ' + t + (up ? '' : ' neg')}), sparkle(cx, +e.toFixed(1), 8, 'cap ' + t));
+      svg.append(s('rect', {x: cx - 7, y: (up ? e : base).toFixed(1), width: 14, height: hgt.toFixed(1), class: 'yb pl ' + t + (up ? '' : ' neg')}), s('circle', {cx, cy: e.toFixed(1), r: 13, class: 'halo ' + (t === 'g' ? '' : t === 'b' ? 'b' : 'w')}), sparkle(cx, +e.toFixed(1), 8, 'cap tw ' + t));
     });
     const a = vals[0], b = vals[vals.length - 1];
     const trend = a == null || b == null ? '' : b > a * 1.05 + 1e-9 && b > a ? '늘었어요' : b < a - Math.abs(a) * 0.05 ? '줄었어요' : '비슷해요';
@@ -1441,7 +1456,7 @@ function pRange(c) {
   const AX = 150, AY = 134, AR = 112, pp = Math.max(0, Math.min(1, pos)), th = Math.PI * (1 - pp), mxp = AX + AR * Math.cos(th), myp = AY - AR * Math.sin(th);
   svg.append(s('line', {x1: 8, y1: AY, x2: 292, y2: AY, class: 'hz'}), s('path', {d: `M${AX - AR} ${AY} A${AR} ${AR} 0 0 1 ${AX + AR} ${AY}`, class: 'arcg'}), s('path', {d: `M${AX - AR} ${AY} A${AR} ${AR} 0 0 1 ${AX + AR} ${AY}`, class: 'arc'}));
   for (let k = 0; k <= 10; k++) { const a = Math.PI * (1 - k / 10), c1 = Math.cos(a), s1 = Math.sin(a), r1 = AR + 5, r2 = AR + (k % 5 ? 10 : 15); svg.append(s('line', {x1: (AX + c1 * r1).toFixed(1), y1: (AY - s1 * r1).toFixed(1), x2: (AX + c1 * r2).toFixed(1), y2: (AY - s1 * r2).toFixed(1), class: 'atk'})); }
-  svg.append(s('circle', {cx: mxp.toFixed(1), cy: myp.toFixed(1), r: 22, class: 'halo'}), s('circle', {cx: mxp.toFixed(1), cy: myp.toFixed(1), r: 10, class: 'bn'}));
+  svg.append(s('circle', {cx: mxp.toFixed(1), cy: myp.toFixed(1), r: 26, class: 'halo'}), s('circle', {cx: mxp.toFixed(1), cy: myp.toFixed(1), r: 10, class: 'bn'}));
   return [
     ...head(7, c, '얼마나 흔들렸을까?', `${C.full ? '1년' : '상장한 뒤'} 동안 하루하루 움직인 크기예요.`),
     h('section', {class: 'block'}, h('h2', {class: 'q'}, '지금은 가장 낮을 때와 높을 때 사이 어디?'), band, h('div', {class: 'band-l'}, h('span', {}, '낮을 때 ', won(C.lo[0])), h('span', {}, '높을 때 ', won(C.hi[0]))), h('p', {class: 'sub'}, `지금 ${won(C.f1)} · 하늘길 위 금빛 달이에요.`)),
@@ -1694,12 +1709,15 @@ const SKY = (() => {
   const cv = document.getElementById('stars'), ctx = cv.getContext('2d');
   if (!ctx) return {warp() {}, start() {}, still() {}};
   const col = getComputedStyle(document.documentElement).getPropertyValue('--star').trim() || '#DCE5FF';
+  /* 번지는 빛 한 장을 미리 그려 두고 밝은 별마다 찍음(가벼움) */
+  const GLOW = document.createElement('canvas'); GLOW.width = GLOW.height = 32;
+  { const g2 = GLOW.getContext('2d'); if (g2) { const gr = g2.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, 'rgba(255,248,228,.95)'); gr.addColorStop(0.22, 'rgba(255,248,228,.38)'); gr.addColorStop(1, 'rgba(255,248,228,0)'); g2.fillStyle = gr; g2.fillRect(0, 0, 32, 32); } }
   let W = 0, H = 0, dpr = 1, stars = [], pole = {x: 0, y: 0}, ang = 0, met = null, nextMet = 0, warp = null, raf = 0, lastT = 0, lastDraw = 0;
   function seed() {
     pole = {x: W * 0.84, y: Math.min(H * 0.2, 170)};
     const R = Math.hypot(Math.max(pole.x, W - pole.x), Math.max(pole.y, H - pole.y)) + 30;
     let r0 = 11; const rnd = () => (r0 = (r0 * 16807) % 2147483647) / 2147483647;
-    stars = Array.from({length: Math.min(900, Math.round(Math.PI * R * R / 2600))}, () => ({r: Math.sqrt(rnd()) * R, t: rnd() * 6.2832, s: rnd() * 1.1 + 0.3, a: rnd() * 0.55 + 0.2, p: rnd() * 6.28, w: rnd() * 0.8 + 0.2}));
+    stars = Array.from({length: Math.min(900, Math.round(Math.PI * R * R / 2600))}, () => ({r: Math.sqrt(rnd()) * R, t: rnd() * 6.2832, s: rnd() * 1.1 + 0.3, a: rnd() * 0.6 + 0.28, p: rnd() * 6.28, w: rnd() * 0.8 + 0.2, b: rnd() < 0.07, hue: rnd()}));
   }
   function draw(now) {
     const dt = Math.min(100, now - (lastT || now)); lastT = now;
@@ -1709,15 +1727,29 @@ const SKY = (() => {
     if (warp) { const u = (now - warp.t0) / 700; if (u >= 1) warp = null; else { k = Math.sin(u * Math.PI); dir = warp.dir; } }
     const cx = W / 2, cy = H * 0.45;
     ctx.fillStyle = col; ctx.strokeStyle = col; ctx.lineCap = 'round';
+    const bright = [];
     for (const st of stars) {
       const a = st.t + ang, x = pole.x + Math.cos(a) * st.r, y = pole.y + Math.sin(a) * st.r;
       if (x < -30 || y < -30 || x > W + 30 || y > H + 30) continue;
+      if (st.b) { bright.push([st, x, y]); continue; }
       ctx.globalAlpha = st.a * (MOVE() ? 0.82 + 0.18 * Math.sin(st.p + now * 0.0006 * st.w) : 1);
       if (k > 0.02) { const m = 1 + dir * k * 0.3; ctx.lineWidth = st.s * 1.4; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(cx + (x - cx) * m, cy + (y - cy) * m); ctx.stroke(); }
       else { ctx.beginPath(); ctx.arc(x, y, st.s, 0, 6.2832); ctx.fill(); }
     }
-    const g = ctx.createRadialGradient(pole.x, pole.y, 0, pole.x, pole.y, 10); g.addColorStop(0, 'rgba(255,246,214,.95)'); g.addColorStop(1, 'rgba(255,246,214,0)');
-    ctx.globalAlpha = 0.85; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(pole.x, pole.y, 10, 0, 6.2832); ctx.fill(); ctx.fillStyle = col;
+    /* 8판 — 초롱초롱한 별: 번지는 빛 · 맑은 알맹이 · 십자 빛 · 3.6 ~ 7초에 한 번 천천히 */
+    for (const [st, x, y] of bright) {
+      const tw = MOVE() ? 0.55 + 0.45 * Math.sin(st.p + now * 0.0011 * (0.6 + st.w)) : 0.85, al = Math.min(1, st.a + 0.35) * tw, rr = st.s * 1.25 + 0.35, c2 = st.hue < 0.5 ? '#FFF6D6' : '#E3EBFF';
+      ctx.globalAlpha = al * 0.6; ctx.drawImage(GLOW, x - rr * 6, y - rr * 6, rr * 12, rr * 12);
+      ctx.globalAlpha = al; ctx.fillStyle = c2; ctx.beginPath(); ctx.arc(x, y, rr, 0, 6.2832); ctx.fill();
+      const L = rr * (3.5 + 3.5 * tw); ctx.globalAlpha = al * 0.65; ctx.strokeStyle = c2; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.moveTo(x - L, y); ctx.lineTo(x + L, y); ctx.moveTo(x, y - L); ctx.lineTo(x, y + L); ctx.stroke();
+    }
+    ctx.fillStyle = col; ctx.strokeStyle = col;
+    /* 북극성 — 더 맑게 · 십자 빛 */
+    const pt = MOVE() ? 0.8 + 0.2 * Math.sin(now * 0.0011) : 0.9;
+    ctx.globalAlpha = 0.9 * pt; ctx.drawImage(GLOW, pole.x - 22, pole.y - 22, 44, 44);
+    ctx.globalAlpha = pt; ctx.fillStyle = '#FFF6D6'; ctx.beginPath(); ctx.arc(pole.x, pole.y, 2.6, 0, 6.2832); ctx.fill();
+    ctx.globalAlpha = 0.7 * pt; ctx.strokeStyle = '#FFF6D6'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pole.x - 15, pole.y); ctx.lineTo(pole.x + 15, pole.y); ctx.moveTo(pole.x, pole.y - 15); ctx.lineTo(pole.x, pole.y + 15); ctx.stroke();
+    ctx.fillStyle = col; ctx.strokeStyle = col;
     if (!MOVE()) return;
     if (!met && now > nextMet) met = {x: W * (0.35 + Math.random() * 0.6), y: H * (0.08 + Math.random() * 0.4), vx: -(0.10 + Math.random() * 0.05), vy: 0.05 + Math.random() * 0.04, t0: now};
     if (met) {
