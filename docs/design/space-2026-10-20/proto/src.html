@@ -26,6 +26,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 #stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 a { color: inherit; }
 figure { position: relative; margin: 0; }
+[hidden] { display: none !important; } /* 숨긴 것은 늘 숨김 — 뒤로 단추처럼 display 를 따로 준 것도 */
 :focus-visible { outline: 3px solid var(--wax); outline-offset: 3px; border-radius: 6px; }
 
 /* 위 띠 */
@@ -765,7 +766,37 @@ function liveSky() {
   });
   /* 글자 자리 — 하늘 좌표에 꽂아 두고, 망원경으로 보이는 곳이 바뀌면 다시 셈 */
   const vb = {x: 0, y: 0, w: 360};
-  const place = p => { const L = (p.x - vb.x) / vb.w * 100, T = (p.y - vb.y) / vb.w * 100; p.el.style.left = L + '%'; p.el.style.top = T + '%'; p.el.style.visibility = L < -1 || L > 101 || T < -1 || T > 101 ? 'hidden' : ''; };
+  const place = p => { const L = (p.x - vb.x) / vb.w * 100, T = (p.y - vb.y) / vb.w * 100; p.el.style.left = L + '%'; p.el.style.top = T + '%'; p.el.style.visibility = vb.w < 359 && (L < -1 || L > 101 || T < -1 || T > 101) ? 'hidden' : ''; }; // 망원경으로 키웠을 때만 밖의 이름을 숨기고, 아니면 fit 이 안으로 당김
+  /* 글자가 하늘 밖으로 나가거나 이름끼리 겹치지 않게 — 글자 크기는 글이 바뀔 때만 잼 */
+  let bw = 0;
+  const BW = () => bw || (bw = box.clientWidth);
+  const wOf = p => { const t = p.el.textContent; if (p._t !== t || !p._w) { const w = p.el.offsetWidth; if (w) { p._t = t; p._w = w; p._h = p.el.offsetHeight; } } return p._w || 0; };
+  const shown = p => p && !p.el.hidden && p.el.style.visibility !== 'hidden' && p.el.textContent;
+  const fit = p => {
+    if (!shown(p)) return;
+    const B = BW(), w = wOf(p); if (!B || !w) return;
+    const c = p.el.classList, hh = (p._h || 24) / 2, L = parseFloat(p.el.style.left) / 100 * B, T = parseFloat(p.el.style.top) / 100 * B;
+    const lo = c.contains('mid') ? w / 2 + 4 : c.contains('end') ? w + 4 : 4, hi = c.contains('mid') ? B - w / 2 - 4 : c.contains('end') ? B - 4 : B - w - 4;
+    if (lo < hi) p.el.style.left = (Math.max(lo, Math.min(hi, L)) / B * 100) + '%';
+    if (hh + 2 < B - hh - 2) p.el.style.top = (Math.max(hh + 2, Math.min(B - hh - 2, T)) / B * 100) + '%';
+  };
+  const rectOf = p => { const B = BW(), w = wOf(p), hh = (p._h || 24) / 2, c = p.el.classList, L = parseFloat(p.el.style.left) / 100 * B, T = parseFloat(p.el.style.top) / 100 * B, x0 = c.contains('mid') ? L - w / 2 : c.contains('end') ? L - w : L; return [x0 - 3, T - hh, x0 + w + 3, T + hh]; };
+  /* 자리 후보를 글자 상자로 바꿔 겹침을 셈 — fit 과 같이 안으로 당긴 뒤 · 망원경일 때 보이는 곳 밖이면 벌점 */
+  const geo = (p, x, y, an) => {
+    const B = BW(), w = wOf(p), hh = (p._h || 24) / 2;
+    let L = (x - vb.x) / vb.w * B, T = (y - vb.y) / vb.w * B; const out = vb.w < 359 && (L < 0 || L > B || T < 0 || T > B);
+    const lo = an === 'mid' ? w / 2 + 4 : an === 'end' ? w + 4 : 4, hi = an === 'mid' ? B - w / 2 - 4 : an === 'end' ? B - 4 : B - w - 4;
+    if (lo < hi) L = Math.max(lo, Math.min(hi, L));
+    if (hh + 2 < B - hh - 2) T = Math.max(hh + 2, Math.min(B - hh - 2, T));
+    const x0 = an === 'mid' ? L - w / 2 : an === 'end' ? L - w : L, r = [x0 - 3, T - hh, x0 + w + 3, T + hh]; r.out = out; return r;
+  };
+  const lapOf = (a, list) => { let sum = a.out ? 1e7 : 0; for (const q of list) { const ww = Math.min(a[2], q[2]) - Math.max(a[0], q[0]), hh = Math.min(a[3], q[3]) - Math.max(a[1], q[1]); if (ww > 0 && hh > 0) sum += ww * hh; } return sum; };
+  const settle = (p, cands, list) => { // 겹침이 없는 첫 자리 — 없으면 가장 덜 겹치는 자리
+    let best = cands[0], bestA = Infinity;
+    for (const c of cands) { const A = lapOf(geo(p, c[0], c[1], c[2]), list); if (A < bestA) { bestA = A; best = c; if (!A) break; } }
+    p.x = best[0]; p.y = best[1]; if (!p.el.classList.contains(best[2])) { p.el.classList.remove('start', 'end', 'mid'); p.el.classList.add(best[2]); }
+    place(p); fit(p); return geo(p, best[0], best[1], best[2]);
+  };
   const pins = labels.slice();
   const reals = realList().map(n => {
     const i = D.inds[n], cx = X(i.x), cy = Y(i.y), right = cx < 220;
@@ -781,18 +812,31 @@ function liveSky() {
   const titlePin = {el: ov(box, [360, 360], 0, 0, '', 'mid mine big'), x: 0, y: 0};
   function drawMine() {
     for (const [n, m] of mineEl) if (!state.mine.has(n)) { m.ring.remove(); m.pin.el.remove(); mineEl.delete(n); }
-    const pts = []; let sx = 0, sy = 0, c = 0, top = 999;
+    const pts = []; let sx = 0, sy = 0, c = 0, top = 999, bot = -999;
     for (const n of state.mine) {
       const st = stars.find(x => x.n === n); if (!st) continue;
       let m = mineEl.get(n);
       if (!m) { m = {ring: s('circle', {r: 9, class: 'minering', 'aria-hidden': 'true'}), pin: {el: ov(box, [360, 360], 0, 0, n, 'start mine'), x: 0, y: 0}}; svg.insertBefore(m.ring, sel); mineEl.set(n, m); }
+      m.pin.el.hidden = reals.some(r => r.n === n); // 진짜 차오름 별은 금빛 이름이 이미 있어요
       m.ring.setAttribute('cx', st.cx.toFixed(1)); m.ring.setAttribute('cy', st.cy.toFixed(1));
-      m.pin.x = st.cx + 11; m.pin.y = st.cy + 14; place(m.pin);
-      pts.push(`${st.cx.toFixed(1)},${st.cy.toFixed(1)}`); sx += st.cx; sy += st.cy; c++; top = Math.min(top, st.cy);
+      m.st = st;
+      pts.push(`${st.cx.toFixed(1)},${st.cy.toFixed(1)}`); sx += st.cx; sy += st.cy; c++; top = Math.min(top, st.cy); bot = Math.max(bot, st.cy);
     }
     mineLn.setAttribute('points', pts.length > 1 ? pts.join(' ') : '');
     titlePin.el.textContent = c > 1 ? `「${state.mineName || '내 별자리'}」` : ''; titlePin.el.hidden = c < 2;
-    if (c > 1) { titlePin.x = sx / c; titlePin.y = top - 22; place(titlePin); }
+    /* 이름 자리 고르기 — 금빛 이름 · 네 귀퉁이 이름을 먼저 두고, 내 별 이름 · 별자리 이름이 겹치지 않는 자리를 찾음 */
+    for (const r of reals) { place(r.pin); fit(r.pin); }
+    const list = pins.filter(q => q !== monthPin && shown(q)).map(rectOf);
+    for (const m of mineEl.values()) {
+      if (m.pin.el.hidden || !m.st) continue;
+      const {cx, cy} = m.st;
+      list.push(settle(m.pin, [[cx + 11, cy + 14, 'start'], [cx + 11, cy - 14, 'start'], [cx - 11, cy + 14, 'end'], [cx - 11, cy - 14, 'end'], [cx + 11, cy + 32, 'start'], [cx - 11, cy - 32, 'end'], [cx + 11, cy - 32, 'start'], [cx - 11, cy + 32, 'end'], [cx, cy + 30, 'mid'], [cx, cy - 30, 'mid'], [cx + 11, cy + 50, 'start'], [cx - 11, cy - 50, 'end'], [cx - 11, cy + 50, 'end'], [cx + 11, cy - 50, 'start']], list));
+    }
+    if (c > 1) {
+      const mx = sx / c, cand = [];
+      for (const y of [top - 22, bot + 26, top - 46, bot + 50, top - 70, bot + 74]) for (const x of [mx, mx - 70, mx + 70, mx - 120, mx + 120]) cand.push([x, y, 'mid']);
+      settle(titlePin, cand, list);
+    }
   }
   /* 망원경 — 키우면 보이는 별 이름(가운데에서 가까운 28개까지) */
   const zl = [];
@@ -806,7 +850,9 @@ function liveSky() {
     }
     for (let j = used; j < zl.length; j++) zl[j].el.hidden = true;
   }
-  function relayout() { pins.forEach(place); for (const m of mineEl.values()) place(m.pin); if (!titlePin.el.hidden) place(titlePin); zoomLabels(); }
+  function relayout() { pins.forEach(place); for (const m of mineEl.values()) place(m.pin); if (!titlePin.el.hidden) place(titlePin); for (const r of reals) fit(r.pin); for (const m of mineEl.values()) fit(m.pin); fit(titlePin); zoomLabels(); }
+  const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(() => { bw = 0; setDay(f); }) /* 화면에 붙은 뒤 다시 자리 고름 */ : null; if (ro) ro.observe(box);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { bw = 0; for (const q of pins.concat([titlePin])) q._w = 0; for (const m of mineEl.values()) m.pin._w = 0; if (box.isConnected) setDay(f); });
   const zk = h('span', {class: 'zk'});
   function applyView() {
     vb.w = Math.max(90, Math.min(360, vb.w)); vb.x = Math.max(0, Math.min(360 - vb.w, vb.x)); vb.y = Math.max(0, Math.min(360 - vb.w, vb.y));
@@ -841,7 +887,8 @@ function liveSky() {
     }
     const kk = Math.round(f), ds = mode === 'y' ? YR.dates[kk] : days[kk];
     monthPin.el.textContent = mode === 'y' && ds ? `${Number(ds.slice(5, 7))}월` : ''; monthPin.el.hidden = mode !== 'y';
-    for (const r of reals) { const [x, y] = posT(mode === 'y' && YR.inds[r.n] ? YR.inds[r.n] : r.i.t, f, r.i), dx = X(x) - r.cx, dy = Y(y) - r.cy; r.g.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); r.pin.x = r.cx + dx + (r.right ? 16 : -16); r.pin.y = r.cy + dy - 18; }
+    const corners = labels.filter(shown).map(rectOf);
+    for (const r of reals) { const [x, y] = posT(mode === 'y' && YR.inds[r.n] ? YR.inds[r.n] : r.i.t, f, r.i), dx = X(x) - r.cx, dy = Y(y) - r.cy; r.g.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); const px = r.cx + dx, py = r.cy + dy, R = r.right ? 1 : -1, A = R > 0 ? 'start' : 'end', Z = R > 0 ? 'end' : 'start'; settle(r.pin, [[px + 16 * R, py - 18, A], [px - 16 * R, py - 18, Z], [px + 16 * R, py + 20, A], [px - 16 * R, py + 20, Z], [px, py + 46, 'mid'], [px, py - 40, 'mid'], [px + 16 * R, py + 46, A], [px - 16 * R, py + 46, Z], [px, py + 72, 'mid'], [px, py - 66, 'mid']], corners); } // 금빛 이름이 네 귀퉁이 달 이름과 겹치면 다른 쪽으로
     lab.textContent = ds ? (mode === 'y' ? kdate(ds) : kshort(ds)) : ''; rng.max = String(last() * 100); rng.value = String(Math.round(f * 100));
     if (sel.getAttribute('visibility') === 'visible' && sel._st) { sel.setAttribute('cx', sel._st.cx.toFixed(1)); sel.setAttribute('cy', sel._st.cy.toFixed(1)); }
     if (mineEl.size || state.mine.size) drawMine();
@@ -873,7 +920,7 @@ function liveSky() {
   let io = null;
   const lit = moons.S && moons.S.querySelector('.m-lit');
   const moonTimer = MOVE() && lit ? setInterval(() => { mt += 0.045; lit.setAttribute('d', moonD(36, 36, 15, 0.38 + 0.26 * Math.sin(mt), 'R')); }, 60) : 0;
-  state.cleanup.push(() => { auto = false; stopAll(); clearTimeout(fadeT); clearInterval(moonTimer); if (io) io.disconnect(); });
+  state.cleanup.push(() => { auto = false; stopAll(); clearTimeout(fadeT); clearInterval(moonTimer); if (io) io.disconnect(); if (ro) ro.disconnect(); });
   function closeLens() { lens.hidden = true; sel.setAttribute('visibility', 'hidden'); sel._st = null; }
   function showLens(st) {
     const i = st.i;
@@ -1469,7 +1516,6 @@ function pQuiz() {
   const SQ = state.sq;
   const dots = () => h('div', {class: 'sdots', 'aria-hidden': 'true'}, QZ.map((_, j) => h('i', {class: j < SQ.picks.length ? 'on' : ''})));
   if (SQ.i >= QZ.length) {
-    const right = SQ.picks.filter((p, j) => p === QZ[j].ans).length;
     if (!SQ.chimed) { SQ.chimed = true; setTimeout(() => SND.chime(), 300); }
     return [
       h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '하늘 퀴즈 · 끝'), dots(), h('h1', {class: 't'}, '하늘 퀴즈를 다 풀었어요'), h('p', {class: 'sub'}, '답을 한 번 더 볼까요? 점수는 없어요.')),
@@ -1487,7 +1533,7 @@ function pQuiz() {
     skyFigure({hl: picked != null ? q.hl : null, trailOf: picked != null && SQ.i === 2 ? (realList()[0] || D.order.S[0]) : null}),
     h('div', {class: 'qopts', role: 'group', 'aria-label': q.q}, q.opts.map(o => h('button', {type: 'button', disabled: picked != null, class: picked == null ? '' : o === q.ans ? 'right' : o === picked ? 'wrong' : '', onclick: choose(o)}, h('span', {}, o), picked != null && o === q.ans ? h('i', {}, '맞아요') : picked != null && o === picked ? h('i', {}, '아니에요') : null))),
     picked != null ? h('div', {class: 'reply', 'aria-live': 'polite'}, h('b', {}, picked === q.ans ? '맞았어요. ' : `답은 「${q.ans}」예요. `, q.why)) : h('p', {class: 'cap'}, '하나를 눌러요. 답을 고르면 하늘에 표시가 떠요.'),
-    picked != null ? next(SQ.i + 1 < QZ.length ? '다음 문제' : '다 풀었어요', SQ.i + 1 < QZ.length ? `${SQ.i + 2}번째 문제` : '몇 개 맞혔을까?', 'quiz') : null,
+    picked != null ? next(SQ.i + 1 < QZ.length ? '다음 문제' : '다 풀었어요', SQ.i + 1 < QZ.length ? `${SQ.i + 2}번째 문제` : '답 한 번 더 보기', 'quiz') : null,
     safe(),
   ];
 }
