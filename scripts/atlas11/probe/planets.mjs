@@ -14,18 +14,17 @@ const require = createRequire(process.env.SHARP_DIR ? process.env.SHARP_DIR.repl
 const sharp = require('sharp');
 const OUT = 'reports/atlas11/probe/planets';
 const A = 'https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/';
-/** [이름, 주소, 출처, 미리 자르기(비율 l · t · w · h) | null] */
+/** [이름, 주소, 출처, 미리 자르기(비율 l · t · w · h) | null, 덩이(남길 밝은 덩이 — 'largest' = 가장 큰 하나 · 기본 = 가장 큰 것의 5% 넘는 덩이 모두(토성 고리))] */
 export const LIST = [
-  ['sun', 'https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg', 'NASA/SDO/HMI', null],
-  ['sun-aia', 'https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0171.jpg', 'NASA/SDO/AIA', null],
-  ['mercury', A + 'pia11/pia11406/PIA11406.jpg', 'NASA/Johns Hopkins University Applied Physics Laboratory/Carnegie Institution of Washington', [0, 0, 0.5, 1]],
+  ['sun', 'https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg', 'NASA/SDO/HMI', null, 'largest'], // 사진 아래 글씨(날짜 줄)는 덩이 걸름으로 뺌
+  ['mercury', A + 'pia11/pia11406/PIA11406.jpg', 'NASA/Johns Hopkins University Applied Physics Laboratory/Carnegie Institution of Washington', null, 'largest'], // 두 둥근 판 가운데 큰 하나
   ['venus', A + 'pia00/pia00104/PIA00104.jpg', 'NASA/JPL', null],
   ['earth', 'https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/84000/84214/bluemarble_2014089_lrg.jpg', 'NASA Earth Observatory/NOAA (Suomi NPP VIIRS)', null],
   ['moon', 'https://assets.science.nasa.gov/content/dam/science/psd/earths-moon/outreach-materials/NASA-LRO-Moon-mosaic.png', "NASA's Scientific Visualization Studio (LRO)", null],
   ['mars', A + 'pia00/pia00407/PIA00407.jpg', 'NASA/JPL/USGS', null],
-  ['jupiter', A + 'pia04/pia04866/PIA04866.jpg', 'NASA/JPL/Space Science Institute', null],
+  ['jupiter', A + 'pia02/pia02873/PIA02873.jpg', 'NASA/JPL/University of Arizona', null, 'largest'], // 첫 판(PIA04866)은 오른쪽이 잘려 바꿈
   ['saturn', A + 'pia06/pia06193/PIA06193.jpg', 'NASA/JPL/Space Science Institute', null],
-  ['uranus', A + 'pia00/pia00032/PIA00032.jpg', 'NASA/JPL', [0, 0, 0.5, 1]],
+  ['uranus', A + 'pia00/pia00032/PIA00032.jpg', 'NASA/JPL', [0, 0, 0.5, 1], 'largest'], // 왼쪽 = 참 빛깔
   ['neptune', A + 'pia01/pia01492/PIA01492.jpg', 'NASA/JPL', null],
   ['pluto', A + 'pia19/pia19857/PIA19857.jpg', 'NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute', null],
 ];
@@ -40,7 +39,7 @@ async function get(url) {
   }
 }
 /** 바깥 검은 하늘만 투명 — 가장자리에서 어두운(L < T) 곳을 따라 채운 곳 = 하늘 · 그 밖 = 몸(불투명) · 하늘 쪽 가장자리는 밝기로 부드럽게 */
-function keyOut({data, info}, T = 26, lo = 10, hi = 44) {
+function keyOut({data, info}, keep = 'some', T = 26, lo = 10, hi = 44) {
   const {width: W, height: H} = info, n = W * H, L = new Float32Array(n), sky = new Uint8Array(n), q = new Int32Array(n);
   for (let i = 0; i < n; i++) { const r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2]; L[i] = 0.2126 * r + 0.7152 * g + 0.0722 * b; }
   let qh = 0, qt = 0;
@@ -48,9 +47,21 @@ function keyOut({data, info}, T = 26, lo = 10, hi = 44) {
   for (let x = 0; x < W; x++) { push(x); push((H - 1) * W + x); }
   for (let y = 0; y < H; y++) { push(y * W); push(y * W + W - 1); }
   while (qh < qt) { const i = q[qh++], x = i % W, y = (i / W) | 0; if (x > 0) push(i - 1); if (x < W - 1) push(i + 1); if (y > 0) push(i - W); if (y < H - 1) push(i + W); }
+  const al = new Float32Array(n);
+  for (let i = 0; i < n; i++) al[i] = sky[i] ? Math.max(0, Math.min(1, (L[i] - lo) / (hi - lo))) : 1;
+  // 밝은 덩이 나누기(알파 0.1 넘게 · 네 이웃) — 글씨 · 둘째 판 · 떠도는 별을 뺌
+  const lab = new Int32Array(n).fill(-1), sizes = [];
+  for (let i = 0; i < n; i++) {
+    if (al[i] <= 0.1 || lab[i] >= 0) continue;
+    const id = sizes.length; let cnt = 0; qh = 0; qt = 0; q[qt++] = i; lab[i] = id;
+    while (qh < qt) { const j = q[qh++]; cnt++; const x = j % W, y = (j / W) | 0; for (const k of [x > 0 ? j - 1 : -1, x < W - 1 ? j + 1 : -1, y > 0 ? j - W : -1, y < H - 1 ? j + W : -1]) if (k >= 0 && lab[k] < 0 && al[k] > 0.1) { lab[k] = id; q[qt++] = k; } }
+    sizes.push(cnt);
+  }
+  const big = sizes.length ? Math.max(...sizes) : 0, keepId = new Set(sizes.map((c, id) => [c, id]).filter(([c]) => (keep === 'largest' ? c === big : c >= big * 0.05)).map(([, id]) => keep === 'largest' ? id : id));
+  if (keep === 'largest') { const first = sizes.indexOf(big); keepId.clear(); keepId.add(first); }
   let x0 = W, y0 = H, x1 = -1, y1 = -1;
   for (let i = 0; i < n; i++) {
-    const a = sky[i] ? Math.max(0, Math.min(1, (L[i] - lo) / (hi - lo))) : 1;
+    const a = lab[i] >= 0 && keepId.has(lab[i]) ? al[i] : 0;
     data[i * 4 + 3] = Math.round(a * 255);
     if (a > 0.5) { const x = i % W, y = (i / W) | 0; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
   }
@@ -59,7 +70,7 @@ function keyOut({data, info}, T = 26, lo = 10, hi = 44) {
 
 await fs.mkdir(OUT, {recursive: true});
 const rows = [], tiles = [];
-for (const [name, url, credit, pre] of LIST) {
+for (const [name, url, credit, pre, keep = 'some'] of LIST) {
   const row = {name, url, credit};
   try {
     const buf = await get(url);
@@ -69,7 +80,7 @@ for (const [name, url, credit, pre] of LIST) {
     if (pre) { const [l, t, w, h] = pre; img = img.extract({left: Math.round(l * meta.width), top: Math.round(t * meta.height), width: Math.round(w * meta.width), height: Math.round(h * meta.height)}); }
     // 큰 사진은 먼저 줄여서 셈(긴 변 1600) — 자르기 · 투명은 줄인 판에서
     const small = await img.resize({width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true}).ensureAlpha().raw().toBuffer({resolveWithObject: true});
-    const k = keyOut(small); row.skyPct = k.skyPct;
+    const k = keyOut(small, keep); row.skyPct = k.skyPct; row.keep = keep;
     if (!k.box) throw Error('몸을 못 찾음');
     const side = Math.max(k.box.width, k.box.height), pad = Math.round(side * 0.02);
     const cx = k.box.left + k.box.width / 2, cy = k.box.top + k.box.height / 2, S = side + pad * 2;
