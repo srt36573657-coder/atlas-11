@@ -1,29 +1,120 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-20T06:05:45.102Z",
- "base": null,
- "page": null,
+ "at": "2026-10-20T06:32:37.120Z",
+ "base": "https://aaa7377.com",
+ "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
- "widths": null,
- "routes": 0,
- "companies": null,
- "allCompanies": null,
- "modules": null,
- "modFiles": null,
- "edge": null,
+ "widths": [
+  320,
+  360,
+  390
+ ],
+ "routes": 13462,
+ "companies": 2557,
+ "allCompanies": true,
+ "modules": true,
+ "modFiles": {
+  "rivals": true,
+  "surge": true,
+  "past": true,
+  "cond": true,
+  "range": true,
+  "cal": true,
+  "grow": true,
+  "talk": true,
+  "x": true,
+  "gdr": true,
+  "share": true,
+  "chx": true,
+  "theme": true,
+  "up": true,
+  "info": true,
+  "hold": true,
+  "today": true,
+  "why": true,
+  "co": true,
+  "time": true
+ },
+ "edge": true,
  "only": null,
  "appFile": null,
  "shard": "all/3",
  "full": false,
  "units": {
-  "total": 0,
-  "hash": null,
-  "w": null
+  "total": 13458,
+  "hash": "addf06660d189706",
+  "w": {
+   "@tail": 80,
+   "@newwin": 15
+  }
  },
- "seconds": 0,
- "secondsSum": 0,
- "shards": [],
- "counts": {},
+ "seconds": 1043,
+ "secondsSum": 2939,
+ "shards": [
+  {
+   "shard": "1/3",
+   "ok": true,
+   "fails": 0,
+   "routes": 4517,
+   "screens": 4557,
+   "mine": 4517,
+   "seconds": 983,
+   "secs": {
+    "open": 0.5,
+    "routes": 980.4
+   }
+  },
+  {
+   "shard": "2/3",
+   "ok": true,
+   "fails": 0,
+   "routes": 4502,
+   "screens": 4524,
+   "mine": 4503,
+   "seconds": 1043,
+   "secs": {
+    "open": 0.9,
+    "routes": 1037,
+    "newwin": 3.4
+   }
+  },
+  {
+   "shard": "3/3",
+   "ok": true,
+   "fails": 0,
+   "routes": 4443,
+   "screens": 4601,
+   "mine": 4438,
+   "seconds": 913,
+   "secs": {
+    "open": 0.4,
+    "routes": 898.2,
+    "act": 7.4,
+    "edge": 5.2,
+    "grammar": 0
+   }
+  }
+ ],
+ "counts": {
+  "화면": 13682,
+  "길 · home": 1,
+  "길 · chips": 7,
+  "길 · sub": 1,
+  "길 · find": 9,
+  "길 · watch": 2560,
+  "길 · chan": 89,
+  "길 · mod": 10787,
+  "왜 사? 끝까지": 2,
+  "돌이 칸 잠김": 2,
+  "길 · me": 1,
+  "새 창": 2,
+  "쇼츠 장": 6,
+  "길 · shorts": 7,
+  "보내기 글상자": 3,
+  "누르기": 1,
+  "바꿔치기": 1,
+  "오늘 한 줄 문장": 412
+ },
  "missing": 0,
  "avatarLetters": 0,
  "kinds": {},
@@ -41,11 +132,6 @@
  "missingList": [],
  "all": [],
  "truncated": false,
- "problems": [
-  "몫 결과가 하나도 없음",
-  "1/3 몫 결과 없음",
-  "2/3 몫 결과 없음",
-  "3/3 몫 결과 없음"
- ],
- "ok": false
+ "problems": [],
+ "ok": true
 }

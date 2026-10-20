@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-20T05:31:15.542Z",
+ "at": "2026-10-20T06:09:03.052Z",
  "base": "https://aaa7377.com",
  "all": true,
  "limit": null,
@@ -14,7 +14,7 @@
  "units": {
   "total": 251,
   "mine": 251,
-  "hash": "f5c2d62023bf049d",
+  "hash": "72926bbc51775169",
   "kinds": {
    "r": {
     "total": 251,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 128,
+ "seconds": 144,
  "counts": {
   "routes": 251,
-  "rows": 7897,
-  "btns": 7897,
-  "links": 9246,
+  "rows": 7896,
+  "btns": 7896,
+  "links": 9245,
   "clicks": 477,
   "fail": 0,
   "places": {
@@ -102,10 +102,10 @@
     "routes": 1
    },
    "today.mv": {
-    "rows": 7,
-    "btns": 7,
+    "rows": 6,
+    "btns": 6,
     "surge": 0,
-    "share": 7,
+    "share": 6,
     "routes": 1
    },
    "talk.card": {
@@ -290,9 +290,9 @@
    },
    {
     "route": "#/today",
-    "rows": 7,
-    "btns": 7,
-    "links": 7,
+    "rows": 6,
+    "btns": 6,
+    "links": 6,
     "clicked": "today.mv",
     "fail": 0
    },
@@ -449,18 +449,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4%20%EC%86%8C%EC%9E%AC",
-    "rows": 28,
-    "btns": 28,
-    "links": 28,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4%20%EC%9E%A5%EB%B9%84",
     "rows": 69,
     "btns": 69,
     "links": 71,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4%20%EC%86%8C%EC%9E%AC",
+    "rows": 28,
+    "btns": 28,
+    "links": 28,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -857,18 +857,18 @@
     "fail": 0
    },
    {
-    "route": "#/ch/i/IT%EC%84%9C%EB%B9%84%EC%8A%A4",
-    "rows": 96,
-    "btns": 96,
-    "links": 97,
-    "clicked": "chx.row",
-    "fail": 0
-   },
-   {
     "route": "#/ch/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC",
     "rows": 30,
     "btns": 30,
     "links": 31,
+    "clicked": "chx.row",
+    "fail": 0
+   },
+   {
+    "route": "#/ch/i/IT%EC%84%9C%EB%B9%84%EC%8A%A4",
+    "rows": 96,
+    "btns": 96,
+    "links": 97,
     "clicked": "chx.row",
     "fail": 0
    },
@@ -1137,7 +1137,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/425040",
+    "route": "#/w/092870",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1145,7 +1145,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/092870",
+    "route": "#/w/425040",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1281,7 +1281,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/131100",
+    "route": "#/w/200350",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1425,7 +1425,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/362320",
+    "route": "#/w/452260",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1481,7 +1481,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/009730",
+    "route": "#/w/006110",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1521,7 +1521,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/008250",
+    "route": "#/w/186230",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1545,7 +1545,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/393210",
+    "route": "#/w/089230",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1553,7 +1553,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/089230",
+    "route": "#/w/393210",
     "rows": 6,
     "btns": 6,
     "links": 11,
@@ -1657,7 +1657,7 @@
     "fail": 0
    },
    {
-    "route": "#/w/065450",
+    "route": "#/w/214430",
     "rows": 6,
     "btns": 6,
     "links": 11,

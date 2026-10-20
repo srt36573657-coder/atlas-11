@@ -1,1 +1,17 @@
-{"ok":true,"took_s":114,"limit":"all","wide":"all","time":{"old":23.7,"new":77.5,"wall":114,"opensOld":1006,"opensNew":2457,"oldPct":20.8,"oldShare":23.4},"net":{"req":5,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"맞댄 화면":506,"맞댄 줄":83190,"맞댄 숫자 낱말":59660,"맞댄 고리":21398,"맞댄 그림 이름":1289,"종목 파일":476,"없는 주소 · 밖 번호":4,"바꿔치기":8,"세 폭 화면":1437,"칸 고르기 줄":1946}}
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://aaa7377.com/next/?dev=1#/cal", waiting until "load"
+
+    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_cal.mjs:72:36
+    at Object.new (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/net.mjs:156:76)
+    at T (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_cal.mjs:34:59)
+    at open (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_cal.mjs:72:9)
+    at async file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_cal.mjs:236:15 {
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.3
