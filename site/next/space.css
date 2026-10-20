@@ -1,27 +1,7 @@
-/* 우주 판 — 시험판 「우주 돌이」의 밤하늘을 진짜 사이트에(사장님 2026-10-20 20:10 「맞아 멋지게 만들어」 · 미리 보기 가지 wip-space)
-   html.white.space 일 때만 · 흰 판(돌 판) 토큰 이름은 그대로 두고 값만 밤하늘로 — 고리 · 검사가 쓰는 이름(white · home)은 그대로
-   글 · 단추 · 칸에는 그림자 · 광택 · 입체 없음(흰 판 규칙 그대로) · 빛 번짐은 뒤 별 하늘(캔버스)에만
-   대비: 바탕 #070B17 위 — 글 #F2F4FA 17.6 · --sub #BAC3D6 11.0 · --mute #A3ADC2 8.6 · 금빛 #F2C46A 11.4 · 오름 #FF6A3D 6.4 · 내림 #7C93FF 6.4 · 테두리 --hair2 #7C8AAB 5.5 · 줄 --hair #5B6A8C 3.4 */
-html.white.space {
-  color-scheme: dark;
-  --bg: #070B17; --night: #070B17; --band: #070B17; --violet: #F2F4FA;
-  --card: #0D1428; --card2: #111A33; --card3: #17213F;
-  --hair: #5B6A8C; --hair2: #7C8AAB; --line: #1E2945; --hair-soft: #18213B; --seam: #111A33; --press: #17213F; --lift: #0D1428;
-  --ink: #F2F4FA; --ink-hi: #FFFFFF; --sub: #BAC3D6; --mute: #A3ADC2; --flat: #A3ADC2;
-  --violet-ink: #F2F4FA; --violet-wash: #0D1428; --violet-line: #7C8AAB; --violet-glow: #0D1428;
-  --gold: #F2C46A; --gold-wash: #0D1428; --gold-line: #F2C46A;
-  --up: #FF6A3D; --down: #7C93FF; --up-ink: #FF6A3D; --down-ink: #7C93FF;
-  --up-fill: rgba(255, 106, 61, .3); --down-fill: rgba(124, 147, 255, .3); --up-fade: rgba(255, 106, 61, .06); --down-fade: rgba(124, 147, 255, .06);
-  --lacquer: #0D1428; --lacquer-ink: #F2F4FA; --lacquer-sub: #BAC3D6; --lacquer-gold: #F2C46A;
-  --moon: #F2F4FA; --moonrow: #0D1428;
-  --m4-band: #070B17; --m4-line: #4A5878; --m4-soft: #4A5878; --m4-neu: #A3ADC2; --m4-line2: #17213F;
-  background: radial-gradient(120% 55% at 88% -6%, rgba(72, 96, 186, .24) 0%, rgba(72, 96, 186, 0) 62%) no-repeat, radial-gradient(80% 45% at -12% 26%, rgba(118, 84, 170, .12) 0%, rgba(118, 84, 170, 0) 60%) no-repeat, #070B17;
-}
-html.white.space body { background: transparent; }
-/* 뒤 별 하늘(sky.js 가 그림) — 글 뒤 · 누름을 막지 않음 */
-.stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-html.white.space #view, html.white.space .foot, html.white.space .trial { position: relative; z-index: 1; }
-/* 위 막대 · 아래 단추 — 밤하늘이 비치게 반투명(그림자 없음) */
-html.white.space .top { background: rgba(7, 11, 23, .84); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-html.white.space .tabs { background: rgba(7, 11, 23, .9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-html.white.space .tabs a[aria-current="page"] { color: var(--gold); }
+/* 우주 밤하늘(사장님 2026-10-20 20:10 「맞아 멋지게 만들어」 · 20:27 「올려  우주」 · 잣대 docs/골똘이_화면잣대.md 색 4 — 바탕 #070B17 · 금빛 #F2C46A)
+   색 토큰은 app.css 흰 판(html.white) 묶음에 있음 · 이 파일은 뒤 별 하늘(sky.js 의 평평한 SVG 그림 한 장 · 캔버스 없음 — 규칙 50) 자리만
+   글 · 단추 · 칸에는 그림자 · 광택 · 입체 없음(잣대 그대로) · 별빛 번짐은 그 그림 안에만 · html.space 일 때만
+   쌓는 차례: body 가 제 층을 엶(isolation) → 하늘은 body 바탕 바로 위 · 글판 · 위 막대 · 아래 단추 · 뜨는 창은 모두 그 위(예전 층 차례 그대로) */
+html.space body { isolation: isolate; }
+.stars { position: fixed; top: 0; left: 0; z-index: -1; display: block; pointer-events: none; will-change: transform; } /* 제 층 — 별이 움직여도 글판은 다시 안 그림 */
+/* 위 막대 · 아래 단추는 밤 바탕 그대로(stone.css · 흐림 거름 없음 — 잣대 「광택 없음」) */

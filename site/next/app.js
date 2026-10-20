@@ -37,7 +37,7 @@ function pct(x) { if (x == null || !isFinite(x)) return '?'; const v = r1(x), a 
 /** 지수 · 미국 하루 — 자료가 둘째 자리까지라 둘째 자리 그대로(지금 아틀란스 p2 와 같음 · 한 자리로 다시 줄이면 2.05 → 2.1 처럼 두 번 반올림됨) */
 const p2 = v => (v == null || !isFinite(v) ? '?' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2) + '%');
 const cls = x => (x == null || !isFinite(x)) ? 'q' : r1(x) > 0 ? 'up' : r1(x) < 0 ? 'dn' : 'fl';
-const COLOR = {up: '#FF6A3D', dn: '#6C86FF', fl: '#A6A6A6', q: '#F9D21C'}; // 돌 판(2026-10-19 10:31) 오름 · 내림 · 그대로 · 모름 — app.css html.white 토큰과 같은 값
+const COLOR = {up: '#FF6A3D', dn: '#6C86FF', fl: '#A9B3C7', q: '#F2C46A'}; // 돌 판(2026-10-19 10:31) 오름 · 내림 · 그대로 · 모름 — app.css html.white 토큰과 같은 값
 const num = n => Number(n).toLocaleString('ko-KR');
 const md = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) ? (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일' : '?';
 const chgOf = v => (Array.isArray(v) && v.length > 1 && v[0] > 0 && v[v.length - 1] > 0) ? (v[v.length - 1] / v[0] - 1) * 100 : null;
@@ -1118,7 +1118,7 @@ function whiteFor(k) {
   const on = true; // 2026-10-19 둘째 올림 — 다른 쪽도 흰 판(사장님 02:03 「둘로 올려라 … ② 다른 쪽」)
   document.documentElement.classList.toggle('white', on);
   document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
-  $('meta[name="theme-color"]')?.setAttribute('content', on ? '#080808' : '#0C0E12'); // 돌 판(2026-10-19 10:31) — 먹 바탕
+  $('meta[name="theme-color"]')?.setAttribute('content', on ? '#070B17' : '#0C0E12'); // 우주 밤하늘(2026-10-20 20:27 「올려  우주」) — 밤 바탕
 }
 whiteFor(parse(location.hash || '#/').k);
 /** 글꼴 표 — 첫 화면을 그린 다음 그림 때에 한 번 붙임(그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap) */

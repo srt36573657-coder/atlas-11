@@ -25,7 +25,7 @@
 .th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #BDBDBD; }
 .th-ck { display: grid; grid-template-columns: 32px 1fr; align-items: center; column-gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #2A2A2A; } /* 글 시작 = 차례 줄과 같은 자리(16 + 32 + 8 · [10] 7) */
 .th-ck > b { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: var(--fs-2); text-align: center; }
-.th-ck > b.y { background: var(--up); color: #080808; }
+.th-ck > b.y { background: var(--up); color: #070B17; }
 .th-ck > b.n { border: 2px solid #6E6E6E; color: #BDBDBD; }
 .th-ckt { color: var(--ink); font-size: var(--fs-3); }
 .th-box { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0; padding: var(--sp-2); border: 1px dashed #6A6A6A; border-radius: 16px; }

@@ -1,0 +1,27 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-20T21:02+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 0,
+ "scope": {
+  "from": "2026-10-20 20:18 우주 판 미리 보기(wip-space 14689a3b8 · 안 올림)",
+  "to": "2026-10-20 20:56 바로잡음(올리기 전)"
+ },
+ "count": 2,
+ "items": [
+  {
+   "n": 87,
+   "when": "2026-10-20 20:18(서울) 우주 판 미리 보기 가지 wip-space 14689a3b8",
+   "what": "뒤 별 하늘(site/next/sky.js)을 캔버스로 그려 가지에 밀어 넣음 — 규칙 50 「입체 없음」이 새 화면에 캔버스를 쓰지 않게 정해 두었음(next-modules ③) · 카톡 검사(check_share)는 보낸 뒤 캔버스를 「폭죽」으로 셈 · 20:20 보고 그림의 자세히 칸에도 「캔버스 하나」라고 적었음",
+   "found_by": "기계 — 20:4x 바뀐 쪽 검사(check_changed)의 modules · check_share 실패",
+   "fixed": "같은 하늘을 평평한 SVG 그림 한 장으로 다시 그림(캔버스 0) · 하늘은 제 층(will-change)이라 글판은 다시 안 그림 · 잣대 문장의 「캔버스 한 장」을 「평평한 그림 한 장」으로 고침 · 진짜 사이트에는 캔버스 판이 올라간 적 없음"
+  },
+  {
+   "n": 88,
+   "when": "2026-10-20 20:5x(서울) SVG 로 다시 쓴 sky.js(커밋 전)",
+   "what": "파일 맨 위에서 start() 를 불러 아래에 둔 const r1 을 준비 전에 씀 — 화면 오류 「Cannot access 'r1' before initialization」(로컬에서 도는 검사 check_surge 가 이 파일을 막 바꾼 때 읽어 잡음)",
+   "found_by": "기계 — 로컬 바뀐 쪽 검사 check_surge 의 pageerror",
+   "fixed": "start() 부르기를 파일 맨 끝으로 옮김 · 그 뒤 CSP 를 진짜와 같게 붙여 아홉 쪽을 다시 열어 화면 오류 0 · CSP 어김 0 · 캔버스 0 확인 · 커밋 · 올리기 전에 고침"
+  }
+ ]
+}

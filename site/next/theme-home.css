@@ -8,17 +8,17 @@
 .th-clock .th-turn { fill: none; stroke: #6E6E6E; stroke-width: 2; }
 .th-clock .th-arw { fill: #6E6E6E; }
 .th-clock .th-tail { fill: none; stroke: var(--up); stroke-width: 2.5; opacity: .85; }
-.th-clock .th-dot { fill: #5E5E5E; stroke: #080808; stroke-width: 1.5; }
+.th-clock .th-dot { fill: #5E5E5E; stroke: #070B17; stroke-width: 1.5; }
 .th-clock .th-dot.on { fill: var(--up); }
-.th-clock .th-nb { fill: var(--up); stroke: #080808; stroke-width: 2; }
-.th-clock .th-nbt { fill: #080808; font-size: var(--fs-1); font-weight: 700; }
+.th-clock .th-nb { fill: var(--up); stroke: #070B17; stroke-width: 2; }
+.th-clock .th-nbt { fill: #070B17; font-size: var(--fs-1); font-weight: 700; }
 /* 첫 화면 시계 누르는 곳(번호 셋 · 싹 칸 — 2026-10-20 07:08 「응」) — 누르는 자리는 투명 · 키보드로 오면 금빛 테 */
 .th-clock .th-tap { cursor: pointer; -webkit-tap-highlight-color: transparent; outline: none; }
 .th-clock .th-hit { fill: transparent; stroke: none; }
 .th-clock .th-tap:focus-visible .th-hit { stroke: var(--gold); stroke-width: 3; }
 .th-clock .th-tapn:active .th-nb { fill: var(--gold); }
 .th-clock .th-lb { fill: var(--ink); font-size: var(--fs-1); }
-.th-clock .th-lb, .th-clock .th-zl, .th-clock .th-bt { paint-order: stroke; stroke: #080808; stroke-width: 4px; stroke-linejoin: round; } /* 점 · 꽃 선 위에서도 글이 읽히게(새 눈 검사 11) */
+.th-clock .th-lb, .th-clock .th-zl, .th-clock .th-bt { paint-order: stroke; stroke: #070B17; stroke-width: 4px; stroke-linejoin: round; } /* 점 · 꽃 선 위에서도 글이 읽히게(새 눈 검사 11) */
 .th-clock .th-zl { fill: var(--ink); font-size: var(--fs-2); font-weight: 700; }
 .th-clock .th-zl.th-zs, .th-clock .th-bt { fill: var(--up); }
 .th-clock .th-zl.th-zq { fill: #BDBDBD; }
@@ -41,7 +41,7 @@
 .th-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 80px; border-bottom: 1px solid #2A2A2A; color: var(--ink); text-decoration: none; }
 html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 48(app.css)보다 앞 — 줄 높이 80 그대로(새 눈 검사 2026-10-19 22시) */
 .th-n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #3A3A3A; color: var(--ink); font-size: var(--fs-1); font-weight: 700; text-align: center; }
-.th-n.th-top { background: var(--up); color: #080808; }
+.th-n.th-top { background: var(--up); color: #070B17; }
 .th-mid2 { display: flex; flex: 1; flex-direction: column; gap: 0; min-width: 0; }
 .th-rn { overflow: hidden; font-size: var(--fs-4); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 .th-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-width: 0; color: #BDBDBD; font-size: var(--fs-1); line-height: 1.6; } /* 줄은 늘 셋 — 이름 · 며칠째 · 「꽃까지 ▬」(폭 · 글꼴 · 말이 바뀌어도 줄 높이가 같게 · 알약이 홀로 들여 쓰이지 않게 · 새 눈 검사 2026-10-19 22시) */
@@ -67,7 +67,7 @@ html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 4
 .th-more i { font-style: normal; text-align: right; }
 .th-rec { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0 var(--sp-1); padding: var(--sp-2); border: 1px dashed #6A6A6A; border-radius: 16px; color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
 .th-rec span:first-child { color: var(--ink); font-weight: 700; }
-.th-next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-3) 0 var(--sp-1); padding: 0 var(--sp-2); border: 1px solid #FFFFFF; border-radius: 32px; background: #FFFFFF; color: #080808; text-decoration: none; } /* 글 시작 = 테 1 + 16 = 말풍선 · 상자와 같은 자리([10] 7) */
+.th-next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-3) 0 var(--sp-1); padding: 0 var(--sp-2); border: 1px solid #FFFFFF; border-radius: 32px; background: #FFFFFF; color: #070B17; text-decoration: none; } /* 글 시작 = 테 1 + 16 = 말풍선 · 상자와 같은 자리([10] 7) */
 .th-nx { display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .th-nx small { color: #5E5E5E; font-size: var(--fs-1); font-weight: 600; }
 .th-nx b { overflow: hidden; font-size: var(--fs-3); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
