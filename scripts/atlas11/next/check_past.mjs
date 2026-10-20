@@ -80,13 +80,24 @@ async function page(width, height = 844, init = null) {
 const frames = p => p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
 /** 길 바꾸기 — 앞 화면 칸에 표시를 달고 주소를 바꾼 뒤, 표시 없는 새 칸에 그 회사 제목이 뜰 때까지 기다림(앞 회사 글을 읽지 않게) */
 //   망 탈(이 사이트 요청 끊김 · 429 · 5xx · 15초 넘게 답 없음)이 있었던 열기는 믿지 않고 새로 고쳐 다시(net.mjs settle) — 망 탈 없이 못 그리면 앞과 같은 실패(던짐) · 여는 데 쓴 때를 쪽마다 셈(tm)
-async function goOld(p, code) {
+async function goOld(p, code) { // 옛 앱이 새로 고치는 사이에 주소를 바꾸면 끊김 — 기다렸다 다시(세 번까지 · 아래 reopenOld 글)
+  for (let k = 0; ; k++) {
+    try { return await goOld0(p, code); } catch (e) { if (k >= 2 || !RELOADED.test(String(e?.message))) throw e; await p.waitForLoadState('domcontentloaded').catch(() => {}); await p.waitForTimeout(800); }
+  }
+}
+async function goOld0(p, code) {
   const ok = await tm.old(() => settle(p, async () => {
     await p.evaluate(h => { if (location.hash === h) return; document.querySelector('#view > .vw')?.setAttribute('data-stale', '1'); location.hash = h; }, '#/c/' + code + '/past');
     return p.waitForFunction(t => { const v = document.querySelector('#view > .vw:not([data-stale])'); return v && !v.querySelector('.boot') && v.querySelector('.co-head h1')?.textContent === t; }, CO[code].n + ' — 지나온 길', {timeout: 20000}).then(() => true, () => false);
   }, {what: '옛 쪽 ' + code, fail}));
   if (!ok) throw Error(ok === null ? '망 막힘' : '20초 안에 안 그려짐');
 }
+/** 옛 쪽을 새로 엶(같은 주소 다시 읽기) — 옛 앱이 스스로 새로 고치는 사이(10분 넘게 연 화면에서 자료 made 가 바뀜 → atlas.js freshCheck)에 단추를 누르거나 읽으면 빈 화면 · 끊김
+ *  2026-10-20 실제 사이트 큰 시험 past 「기간 단추 — 253450 20거래일 · 1년 · 3년 false true」(옛 쪽만 단추가 없었음 · 이 방에서 같은 회사는 단추 셋 그대로 · check_co · check_grow 와 같은 까닭) */
+const RELOADED = /Execution context was destroyed|frame was detached|navigation/i;
+/** 검사 자체 시험 — OLD_RELOAD_MS=<밀리초> 면 옛 쪽 탭이 그만큼마다 스스로 새로 고침(옛 앱 freshCheck 흉내 · 다시 열기 길을 이 방에서 돌려 봄) */
+const OLD_RELOAD = Number(process.env.OLD_RELOAD_MS) > 0 ? {content: `if (location.pathname.startsWith('/atlas/')) setTimeout(() => location.reload(), ${Number(process.env.OLD_RELOAD_MS)});`} : null;
+async function reopenOld(p, code) { await tm.old(() => p.reload({waitUntil: 'domcontentloaded', timeout: 30000}).catch(() => null)); await goOld(p, code); bump('옛 쪽 다시 열림'); }
 async function goNew(p, code) {
   const ok = await tm.new(() => settle(p, async () => {
     await p.evaluate(h => { if (location.hash === h) return; document.querySelector('#view > .ppast')?.setAttribute('data-stale', '1'); location.hash = h; }, '#/w/' + code + '/past');
@@ -194,7 +205,7 @@ function compare(code, perName, o, n) {
 /* ① 맞대기 */
 const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
 {
-  const po = await page(390), pn = await page(390), c0 = list.find(c => CO[c]) ?? codes[0]; // 처음부터 그 쪽으로 엶(첫 화면의 다른 쪽 모듈 오류가 섞이지 않게)
+  const po = await page(390, 844, OLD_RELOAD), pn = await page(390), c0 = list.find(c => CO[c]) ?? codes[0]; // 처음부터 그 쪽으로 엶(첫 화면의 다른 쪽 모듈 오류가 섞이지 않게)
   await Promise.all([tm.old(() => settle(po, async () => { await po.goto(base + '/atlas/#/c/' + c0 + '/past'); return po.waitForFunction(() => !!document.querySelector('#view > .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '옛 쪽 첫 열림', fail})),
     tm.new(() => settle(pn, async () => { await pn.goto(base + NEXT + '#/w/' + c0 + '/past'); return pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '새 쪽 첫 열림', fail}))]);
   await Promise.all([po.waitForFunction(() => !!document.querySelector('#view > .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => fail('옛 쪽 첫 열림', c0)), pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).catch(() => fail('새 쪽 첫 열림', c0))]);
@@ -208,12 +219,25 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
       if (a !== '1년' || z !== '1년') fail('처음 기간', a + ' · ' + z); first = false;
     }
     for (const [, name] of P) {
-      const [ca, cb] = await Promise.all([tm.old(() => clickPer(po, '#view .seg.seg3 button', name)), tm.new(() => clickPer(pn, '#view .ppast-seg button', gloss(name)))]);
+      const oldClick = () => tm.old(() => clickPer(po, '#view .seg.seg3 button', name)).catch(e => { if (RELOADED.test(String(e?.message))) return false; throw e; });
+      let [ca, cb] = await Promise.all([oldClick(), tm.new(() => clickPer(pn, '#view .ppast-seg button', gloss(name)))]);
+      if (!ca && cb) ca = await reopenOld(po, code).then(oldClick, () => false); // 옛 쪽만 단추가 없으면 옛 쪽을 새로 열어 한 번 더(새 쪽은 그대로 잼)
       if (!ca || !cb) { fail('기간 단추', code + ' ' + name + ' ' + ca + ' ' + cb); continue; }
       await tm.new(() => frames(pn));
-      const [o, n] = await Promise.all([tm.old(() => po.evaluate(OLD_X).then(x => oldToNewDeep(x))), tm.new(() => pn.evaluate(NEW_X))]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
+      // 읽는 사이 옛 앱이 새로 고치면(끊김 · 빈 화면 · 기간이 처음 1년으로 돌아감) 다시 열고 같은 기간을 눌러 다시 읽음(두 번까지 · 그래도 안 되면 읽은 그대로 맞대어 실패로 남김)
+      const pressedOld = () => po.evaluate(() => document.querySelector('#view .seg.seg3 button[aria-pressed="true"]')?.textContent?.trim() ?? null).catch(() => null);
+      const oldRead = async (fn, arg, nullOk = false) => {
+        for (let k = 0; ; k++) {
+          let v = null, cut = false;
+          try { v = await tm.old(() => po.evaluate(fn, arg)); } catch (e) { if (!RELOADED.test(String(e?.message))) throw e; cut = true; }
+          if (!cut && (nullOk || v != null) && (await pressedOld()) === name) return v;
+          if (k >= 2) return v;
+          await reopenOld(po, code); await oldClick();
+        }
+      };
+      const [o, n] = await Promise.all([oldRead(OLD_X).then(x => oldToNewDeep(x)), tm.new(() => pn.evaluate(NEW_X))]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
       compare(code, name, o, n);
-      const [to, tn] = await Promise.all([tm.old(() => po.evaluate(TIPS, ['#view > .vw .lc svg', '#view > .vw .lc .tip'])), tm.new(() => pn.evaluate(TIPS, ['#view > .ppast .ppast-lc svg', '#view > .ppast .ppast-tip']))]);
+      const [to, tn] = await Promise.all([oldRead(TIPS, ['#view > .vw .lc svg', '#view > .vw .lc .tip'], true), tm.new(() => pn.evaluate(TIPS, ['#view > .ppast .ppast-lc svg', '#view > .ppast .ppast-tip']))]);
       bump('선 누르기');
       if (!to || !tn || !eq(to, tn)) fail('선을 누른 날 값', code + ' ' + name + ' 옛 ' + JSON.stringify(to).slice(0, 200) + ' · 새 ' + JSON.stringify(tn).slice(0, 200));
       const t0v = await pn.evaluate(() => document.querySelector('#view .ppast-tip')?.textContent);

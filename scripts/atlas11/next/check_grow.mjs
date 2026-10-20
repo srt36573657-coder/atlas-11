@@ -75,6 +75,14 @@ async function openOld(p, code, title, first) {
   if (ok) await tm.old(() => raf2(p));
   return !!ok;
 }
+/** 옛 앱이 스스로 새로 고치는 사이(10분 넘게 연 화면에서 자료 made 가 바뀜 → atlas.js freshCheck)에 열거나 읽으면 「Execution context was destroyed」 — 다시 열어 다시(세 번까지)
+ *  2026-10-20 실제 사이트 큰 시험 grow 가 이 글로 멈춤(장 중에 자료가 새로 올라옴 · check_co · check_range 와 같은 까닭) · 그 밖의 오류는 그대로 던짐 */
+const RELOADED = /Execution context was destroyed|frame was detached|navigation/i;
+async function oldRetry(p, fn) {
+  for (let k = 0; ; k++) {
+    try { return await fn(k); } catch (e) { if (k >= 2 || !RELOADED.test(String(e?.message))) throw e; bump('옛 쪽 다시 열림'); await p.waitForLoadState('domcontentloaded').catch(() => {}); await p.waitForTimeout(800); }
+  }
+}
 async function openNew(p, code, title, first) {
   const ok = await tm.new(() => settle(p, async () => {
     if (first || !p.url().startsWith(base + '/next/')) await p.goto(base + '/next/?dev=1#/w/' + code + '/grow'); else await p.evaluate(h => { location.hash = h; }, '#/w/' + code + '/grow');
@@ -188,7 +196,9 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
 {
   const SNAP = await tm.old(async () => oldSnap({file: arg('--old-snap', null), page: 'grow', base, remote: isRemote(base), refresh: has('--old-refresh'),
     key: {checker: await fileSha(fileURLToPath(import.meta.url)), browser: b.version(), width: 390, list: createHash('sha256').update(own.join(',')).digest('hex')}}));
-  const cO = SNAP.use ? null : await ctxOf(390), cN = await ctxOf(390), po = cO ? watch(await mkPage(cO), base) : null, pn = watch(await mkPage(cN), base); // 기준값을 쓰면 옛 쪽을 열지 않음(po = null)
+  const cO = SNAP.use ? null : await ctxOf(390), cN = await ctxOf(390);
+  if (cO && Number(process.env.OLD_RELOAD_MS) > 0) await cO.addInitScript({content: `if (location.pathname.startsWith('/atlas/')) setTimeout(() => location.reload(), ${Number(process.env.OLD_RELOAD_MS)});`}); // 검사 자체 시험 — 옛 쪽 탭이 스스로 새로 고침(옛 앱 freshCheck 흉내 · oldRetry 길을 이 방에서 돌려 봄)
+  const po = cO ? watch(await mkPage(cO), base) : null, pn = watch(await mkPage(cN), base); // 기준값을 쓰면 옛 쪽을 열지 않음(po = null)
   if (po) SNAP.watch(po); // 옛 쪽 · 새 쪽은 창을 따로(한 창 두 탭이면 뒤 탭의 그림 때(rAF)가 늦춰짐) · 망 탈 셈(net.mjs)
   let firstO = true, firstN = true; // 첫 번째만 주소로 엶 · 그다음은 # 만 바꿈(빠르게)
   for (const code of own) {
@@ -200,12 +210,12 @@ async function errsOf(p, tag, which) { if (p._errs.length) { (which === '새' ? 
       bump('없는 주소'); continue;
     }
     const title = d.name + ' — 앞으로 클까?';
-    const [ok1, ok2] = await Promise.all([po ? openOld(po, code, title, firstO) : true, openNew(pn, code, title, firstN)]); firstO = firstN = false;
+    const [ok1, ok2] = await Promise.all([po ? oldRetry(po, k => openOld(po, code, title, firstO || k > 0)) : true, openNew(pn, code, title, firstN)]); firstO = firstN = false;
     if (!ok1) { fail('옛 쪽 안 열림', code); continue; }
     if (!ok2) { fail('새 쪽 안 열림', code + ' ' + await pn.evaluate(() => document.querySelector('main#view')?.textContent?.slice(0, 80))); continue; }
     // 옛 쪽 값 — 열어서 읽음(글 낱낱 · 손가락 이름표 · 옛 쪽 화면 오류 수를 함께 찍음) · 또는 기준값
     const ns = nSlots(d.G), sk = 'c|' + code;
-    const [O0, n] = await Promise.all([po ? tm.old(async () => ({o: await po.evaluate(OLD_X), to: ns ? await po.evaluate(TIPS, ['#view .gc svg[role=img]', '.tip', ns]) : null, oe: po._errs.length})) : SNAP.get(sk), tm.new(() => pn.evaluate(NEW_X))]);
+    const [O0, n] = await Promise.all([po ? oldRetry(po, async k => { if (k && !(await openOld(po, code, title, true))) return null; return tm.old(async () => ({o: await po.evaluate(OLD_X), to: ns ? await po.evaluate(TIPS, ['#view .gc svg[role=img]', '.tip', ns]) : null, oe: po._errs.length})); }) : SNAP.get(sk), tm.new(() => pn.evaluate(NEW_X))]);
     if (po) SNAP.put(sk, O0);
     if (!O0?.o) { fail('옛 쪽 기준값 없음', code); continue; }
     const o = oldToNewDeep(O0.o); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)

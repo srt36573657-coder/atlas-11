@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-20T12:10+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-20 10:20 check_co 만 고침",
+  "to": "2026-10-20 11:31 실제 사이트 큰 시험(live-fix 3/11)"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 77,
+   "when": "2026-10-20 10:20(서울) 실제 사이트 큰 시험 튼튼히 하기",
+   "what": "옛 앱이 장 중에 스스로 다시 열리는 까닭(10분 넘게 연 화면 · 자료 made 바뀜)을 찾고도 check_co 하나만 고치고, 옛 쪽을 오래 열어 두는 같은 꼴의 check_grow · check_past 는 안 봄 — 또 실제 사이트 403 은 자료 받기(net.mjs)에서만 다시 받게 하고 화면 오류로 403 을 세는 check_cal 은 안 봄. 그래서 실제 사이트 큰 시험이 grow(멈춤) · past(253450 기간 단추) · cal(③ 360 403) 셋에서 다시 걸림",
+   "found_by": "실제 사이트 큰 시험 live-fix 3/11(run 39356901566) 끝 글",
+   "fixed": "check_grow oldRetry · check_past goOld · reopenOld · oldRead(빈 화면 · 기간이 처음으로 돌아감도 다시) · check_cal ③ 실제 사이트 403 뿐이면 새 탭으로 같은 길을 다시(두 번까지 · 다시도 오류면 실패) — 검사 자체 시험 OLD_RELOAD_MS · CAL_403_TEST 로 이 방에서 돌려 봄(grow 다시 열림 1 · past 옛 쪽 열기 +22 · cal 403 뒤 깨끗함 1 · 시험 서버는 같은 403 으로 실패)"
+  }
+ ]
+}

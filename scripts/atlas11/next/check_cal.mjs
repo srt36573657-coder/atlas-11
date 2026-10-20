@@ -18,7 +18,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep, SAFE_LINE} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리) — 옛 쪽 글을 새 이름으로 고쳐 맞댐
-import {fetchJSON, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9 — 자료 넷은 처음 한 번 받아 두 쪽에 같은 것을 줌(pin))
+import {fetchJSON, timer, netSummary, isRemote} from './net.mjs'; // 망 탈에만 다시 받기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9 — 자료 넷은 처음 한 번 받아 두 쪽에 같은 것을 줌(pin))
 import {fourDeep} from '../../../site/next/essence.js'; // 「하루 4번」 글 → 참인 말(사장님 2026-10-18 16:39 [5] 4 · 일꾼 KC — 새 쪽은 요약의 fourADay 일 때만 「하루 4번」 · 옛 쪽 글을 같은 표로 맞춰 맞댐)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
@@ -62,11 +62,13 @@ const rowKey = r => { const [href, t] = r.split('\u0001'); return href + ' ' + l
 const exe = '/opt/pw-browsers/chromium';
 const browser = await chromium.launch((await fs.stat(exe).catch(() => null)) ? {executablePath: exe} : {});
 const SIDE = {old: {url: h => `${base}/atlas/${h}`, root: '#view'}, new: {url: h => `${base}/next/?dev=1${h}`, root: 'main#view'}};
+/** 실제 사이트 403 — 넷리파이가 세게 두드린 실행기를 잠깐 막음(2026-10-19 · 20 실제 사이트 큰 시험 cal 「화면 오류 — ③ 360 Failed to load resource … 403」) · 시험 서버는 셈 밖 */
+const R403 = /Failed to load resource: the server responded with a status of 403/, REMOTE = isRemote(base);
 const errsOk = new Set(); // 일부러 못 받게 한 자료의 404 줄은 봐줌(바꿔치기 ②)
 async function open(ctx, side, hash, {allow404 = false} = {}) {
   const p = await ctx.newPage(); p._side = side; p._errs = [];
   p.on('pageerror', e => p._errs.push('pageerror: ' + e.message));
-  p.on('console', m => { if (m.type() === 'error' && !(allow404 && /Failed to load resource/.test(m.text()))) p._errs.push(m.text()); });
+  p.on('console', m => { if (m.type() === 'error' && !(allow404 && /Failed to load resource/.test(m.text()))) p._errs.push(m.text() + (R403.test(m.text()) ? ' ' + String(m.location()?.url ?? '').replace(base, '').slice(0, 80) : '')); }); // 403 이면 어느 파일인지 함께(2026-10-20)
   await T(p, async () => { await p.goto(SIDE[side].url(hash)); await settle(p, hash); });
   return p;
 }
@@ -230,8 +232,9 @@ const LAYOUT = () => {
   const wl = casePick(WIDE);
   for (const w of [320, 360, 390]) {
     const ctx = await browser.newContext({viewport: {width: w, height: 760}, deviceScaleFactor: 1, hasTouch: true}); await pin(ctx);
-    const p = await open(ctx, 'new', '#/cal');
-    for (const hsh of ['#/cal', ...wl.map(c => '#/cal/' + c), '#/cal/abc', '#/cal/' + notTracked]) {
+    if (process.env.CAL_403_TEST && w === 360) await ctx.route('**/media/stone/cal.svg', r => r.fulfill({status: 403, contentType: 'text/plain', body: 'blocked'})); // 검사 자체 시험 — 첫 탭만 403(다시 연 탭은 그대로)
+    const p = await open(ctx, 'new', '#/cal'), HS = ['#/cal', ...wl.map(c => '#/cal/' + c), '#/cal/abc', '#/cal/' + notTracked];
+    for (const hsh of HS) {
       await nav(p, hsh);
       const L = await p.evaluate(LAYOUT);
       if (L.sw > L.vw) fail('가로 넘침', `${w} ${hsh} ${L.sw}>${L.vw}`);
@@ -239,6 +242,17 @@ const LAYOUT = () => {
       for (const x of L.small) fail('누르는 자리 44px 안 됨', `${w} ${hsh} ${x}`);
       for (const x of L.tiny) fail('글 17px 안 됨', `${w} ${hsh} ${x}`);
       bump('세 폭 화면');
+    }
+    if (REMOTE && p._errs.length && p._errs.every(e => R403.test(e))) { // 실제 사이트에서 화면 오류가 403 뿐이면 — 기다렸다 같은 길을 새 탭으로 다시 열어 봄(두 번까지) · 다시도 오류면 그 오류로 실패(넘기지 않음)
+      const first = p._errs.slice(0, 2).join(' | '); let again = p._errs.slice();
+      for (let k = 0; k < 2 && again.length; k++) {
+        await new Promise(r => setTimeout(r, 15000 * (k + 1)));
+        const c2 = await browser.newContext({viewport: {width: w, height: 760}, deviceScaleFactor: 1, hasTouch: true}); await pin(c2);
+        const p2 = await open(c2, 'new', '#/cal'); for (const hsh of HS) await nav(p2, hsh);
+        again = p2._errs.slice(); await c2.close();
+      }
+      p._errs.length = 0;
+      if (again.length) p._errs.push(...again, '(처음 403: ' + first + ')'); else bump('403 뒤 다시 열어 깨끗함');
     }
     errsOf(p, '③ ' + w);
     await ctx.close();
