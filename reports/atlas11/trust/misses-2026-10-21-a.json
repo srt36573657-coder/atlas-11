@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-21T01:33+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 0,
+ "scope": {
+  "from": "2026-10-21 01:22 계절 궤도 첫 화면 전체 검사 season 1/11(run 39456795111 · dd0b616c1)",
+  "to": "2026-10-21 01:33 올리기 전에 찾음"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 91,
+   "when": "2026-10-21 01:22(서울) node scripts/atlas11/next/full_run.mjs --work season --ref wip-season --local",
+   "what": "전체 검사 전에 origin/main 을 가지에 합치지 않았음 — 가지를 만든 뒤 main 에 자료 커밋 「godori pick 2026-10-20」(3f11c7d38 · site/next/data/gdr.json · gates.json)이 들어와, 검사한 판(dd0b616c1)과 올릴 판의 코드 칸(site)이 달라짐 → 올리기 문(wait_preview)이 막을 판이라 1/11 결과로는 못 올림",
+   "found_by": "나 — 01:31 main 을 합친 뒤 코드 칸 맞대기(git diff --stat)에서 site/next/data 두 줄",
+   "fixed": "main 을 합친 판(3acbc2dd0)으로 전체 검사 2/11 을 다시 부름 · 다음부터 full_run 을 부르기 바로 전에 origin/main 을 합침(박승혁 님 셋째 판처럼)"
+  }
+ ]
+}
