@@ -155,3 +155,20 @@ test('행성 — 무리마다 다른 행성 · 사진 파일 · 첫 화면 자�
   assert.equal(src.files.length, ids.length + 1);
   for (const r of src.files) assert.match(r.credit, /NASA/);
 });
+
+// 계절 궤도(사장님 2026-10-21 00:51 「이기준에 스마트하게」) — 행성 각이 결정표 네 자리와 같은 쪽(봄 = 싹 · 여름 = 꽃 · 가을 = 시듦 · 겨울 = 잠잠)
+test('계절 각 — 네 자리와 같은 쪽 · 계절 이름', async () => {
+  const {seasonAngle, SEASON} = await import('../../site/next/theme-home.js');
+  assert.deepEqual(SEASON, {Q: '겨울', S: '봄', B: '여름', W: '가을'});
+  const side = a => (a >= Math.PI / 2 ? 'S' : a >= 0 ? 'B' : a >= -Math.PI / 2 ? 'W' : 'Q'); // 화면: 왼쪽 위 · 오른쪽 위 · 오른쪽 아래 · 왼쪽 아래
+  let n = 0;
+  for (let x = -30; x <= 30; x += 0.7) for (let y = -15; y <= 15; y += 0.45) {
+    if (x === RULE.bloomX) continue;
+    const z = zoneOf(x, y), a = seasonAngle(x, y);
+    if (y === 0) continue; // 가로축 위는 결정표가 위쪽(싹 · 꽃)으로 셈 — 각 0 / π 경계는 따로 보지 않음
+    assert.equal(side(a), z, `x ${x} y ${y}`); n++;
+  }
+  assert.ok(n > 3000);
+  const H = JSON.parse(fs.readFileSync('site/next/data/theme-home.json', 'utf8'));
+  for (const i of H.inds) if (Number.isFinite(i.x) && Number.isFinite(i.y) && i.y !== 0 && i.x !== RULE.bloomX) assert.equal(side(seasonAngle(i.x, i.y)), i.z, i.n);
+});

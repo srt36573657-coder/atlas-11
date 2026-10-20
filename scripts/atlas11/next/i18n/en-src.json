@@ -8822,6 +8822,16 @@
   "화성": "Mars",
   "목성": "Jupiter",
   "토성": "Saturn",
-  "명왕성": "Pluto"
+  "명왕성": "Pluto",
+  "지금 봄이 온 곳": "Spring is here",
+  "봄 · 싹": "Spring · Sprout",
+  "여름 · 꽃": "Summer · Bloom",
+  "가을 · 시듦": "Autumn · Fading",
+  "겨울 · 잠잠": "Winter · Quiet",
+  "요즘 시장보다 힘이 붙은 곳이에요.": "These have been gaining on the market lately.",
+  "봄이 온 곳 {n}곳 모두 보기": "See all {n} industries in spring",
+  "숫자로 자세히 보기": "See the numbers",
+  "행성 하나가 업종 무리 하나예요.": "Each planet is one industry group.",
+  "어느 계절일까?": "What season is it?"
  }
 }

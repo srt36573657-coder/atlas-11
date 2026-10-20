@@ -565,8 +565,9 @@ async function vHomeAll() {
   const kk = h('button', {class: 'kk-btn w-kk', type: 'button', 'aria-label': NAME + ' 주소를 카톡으로 친구에게 보내기'}, icon('share')); // 이 곳 주소만(종목 · 숫자 · 답 없음) — 휴대폰 보내기 창(카톡이 그 안에)
   kk.addEventListener('click', () => share(NAME, absUrl('#/')));
   // 테마 시계(사장님 2026-10-19 16:06 「이 본질이 중심이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」) — 맨 위 = 테마 시계(p-theme.js homeBlock · 견본 flow36 둘째 장) · 그 아래 읽는 곳 셋 · 엄지 자리 · 진화는 그대로
-  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '테마 시계'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 150, height: 120, decoding: 'async'}));
-  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '지금 몇 시 자리일까?'})), kk);
+  // 2026-10-21 00:51 「확임 했어 이기준에 스마트하게 만들어」(00:49 시안 「지금 봄이 온 곳」) — 큰 제목 · 돌이 물음을 계절 말로(셈 · 칸 차례는 그대로 · 물음은 다시 온 기기 첫 화면 글자 105자 아래에 맞게 짧게 — check_white ②)
+  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '지금 봄이 온 곳'}), h('img', {class: 's-art', src: '/media/stone/home.svg', alt: '', width: 150, height: 120, decoding: 'async'}));
+  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '어느 계절일까?'})), kk);
   const theme = await themeHome().catch(() => h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})); // 자료(need theme)는 vHome 이 home · 요약과 같이 받음
   const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
   const month = await monthLine(C);

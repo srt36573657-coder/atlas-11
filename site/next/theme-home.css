@@ -81,3 +81,20 @@ html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 4
 .th-foot { margin: var(--sp-3) var(--sp-2) var(--sp-2); }
 .th-foot .th-next { margin: 0; }
 .th-next.th-one { justify-content: center; padding: 0 var(--sp-2); font-size: var(--fs-3); font-weight: 800; text-align: center; }
+/* 계절 궤도 첫 화면(2026-10-21 00:51 「이기준에 스마트하게」 · 00:49 시안) — 해 · 궤도 · 봄 활 · 계절 넷 · 행성 · 번호 셋 · 숫자는 접는 칸 안 */
+.th-orbit .th-orb { fill: none; stroke: #3A4466; stroke-width: 2; }
+.th-orbit .th-orbs { fill: none; stroke: var(--up); stroke-width: 5; stroke-linecap: round; opacity: .9; } /* 봄 활 = 싹 자리 */
+.th-orbit .th-oturn { stroke-width: 1.5; }
+.th-orbit .th-sunl { fill: #D6D6D6; font-size: var(--fs-1); paint-order: stroke; stroke: #070B17; stroke-width: 4px; stroke-linejoin: round; }
+.th-orbit .th-sun { opacity: 1; }
+/* 첫 화면 줄 한 줄(번호 · 이름 · 행성 · ›) — 글 시작 = 번호 옆(예전 줄과 같은 자리 · [10] 7) · 행성은 오른쪽 끝 표시 쪽 */
+#view a.th-row.th-row2, html.white #view a[href].th-row.th-row2 { min-height: 56px; }
+.th-row2 .th-rp { flex: none; width: 32px; height: 32px; }
+/* 숫자로 자세히 보기(접는 칸) — 펼치면 진짜 싹 머리 · 주황 숫자 셋 · 점 넷 · 성적표 */
+.th-hfold { margin: var(--sp-1) 0 0; border-bottom: 1px solid #2A2A2A; }
+.th-hfold > summary { display: flex; align-items: center; justify-content: space-between; min-height: 56px; color: var(--ink); font-size: var(--fs-2); cursor: pointer; list-style: none; }
+.th-hfold > summary::-webkit-details-marker { display: none; }
+.th-hfold > summary::after { content: "›"; color: #BDBDBD; font-size: var(--fs-3); transition: transform .15s; }
+.th-hfold[open] > summary::after { transform: rotate(90deg); }
+.th-hfold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .th-hfold > summary::after { transition: none; } }

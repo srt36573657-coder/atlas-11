@@ -164,12 +164,14 @@ try {
       return {box: !!box, afterSay: !!(box && say && (say.compareDocumentPosition(box) & Node.DOCUMENT_POSITION_FOLLOWING)), beforeEss: !!(box && ess && (box.compareDocumentPosition(ess) & Node.DOCUMENT_POSITION_FOLLOWING)),
         rows: [...(box?.querySelectorAll('a.th-row') ?? [])].map(a => ({href: a.getAttribute('href'), name: a.querySelector('.th-rn')?.textContent})), ans: (box?.querySelector('.th-ans')?.textContent ?? '').replace(/›\s*$/, ''), // 머리 끝 「›」 = 누르면 진짜 싹 목록(2026-10-20 09:46)
         three: [...(box?.querySelectorAll('.th-three a, .th-three p') ?? [])].map(x => x.textContent), rec: box?.querySelector('.th-rec')?.textContent ?? '', asof: box?.querySelector('.th-asof')?.textContent ?? '',
-        next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, hi: box?.querySelector('a.th-hi')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock'), h1: v.querySelector('h1')?.textContent ?? ''};
+        fold: !!box?.querySelector('details.th-hfold > summary') && (box?.querySelector('details.th-hfold > summary')?.textContent ?? '') === '숫자로 자세히 보기' && !!box?.querySelector('details.th-hfold .th-three'), orbit: !!box?.querySelector('svg.th-clock.th-orbit circle.th-orb') && box.querySelectorAll('svg.th-clock.th-orbit text.th-zl').length === 4, next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, hi: box?.querySelector('a.th-hi')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock'), h1: v.querySelector('h1')?.textContent ?? ''};
     });
     if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
     else {
       if (!g.afterSay || !g.beforeEss) fail('첫 화면 차례', '돌이 물음 → 테마 시계 → 본질 카드 차례가 아님');
-      if (!/테마 시계/.test(g.h1)) fail('첫 화면 제목', g.h1);
+      if (!/^지금 봄이 온 곳$/.test(g.h1.trim())) fail('첫 화면 제목', g.h1); // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
+      if (!g.fold) fail('첫 화면 숫자 접는 칸', '「숫자로 자세히 보기」(details.th-hfold)가 없음 — 진짜 싹 · 주황 숫자 셋 · 성적표는 그 안');
+      if (!g.orbit) fail('첫 화면 계절 궤도', '해 · 궤도 · 계절 넷 그림(svg.th-orbit)이 아님');
       if (!g.clock) fail('첫 화면 시계 그림', '없음');
       const want = TH.order.S.slice(0, 3);
       if (JSON.stringify(g.rows.map(r => r.name)) !== JSON.stringify(want)) fail('첫 화면 줄 셋', g.rows.map(r => r.name).join(' · ') + ' ≠ ' + want.join(' · '));
@@ -506,6 +508,8 @@ try {
       try {
       const {p, ctx} = await open('#/', {w, h: 844}), tag = `주황 숫자 @${w}`;
       await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-three a').length === 3, null, {timeout: 20000}).catch(() => {});
+      const openFold = () => p.evaluate(() => { const d = document.querySelector('#view section.th-home details.th-hfold'); if (d) d.open = true; return !!d; }); // 계절 판(2026-10-21 00:51) — 주황 숫자는 「숫자로 자세히 보기」 안 · 펼친 뒤 똑같이 잼
+      if (!await openFold()) fail('주황 숫자 접는 칸', `@${w} details.th-hfold 없음`);
       const r = await p.evaluate(() => ({head: (() => { const a = document.querySelector('#view section.th-home h2.th-ans a.th-ansl'); if (!a) return null; const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(b.width), h: Math.round(b.height)}; })(), boxes: [...document.querySelectorAll('#view section.th-home .th-three a')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), n: a.querySelector('b')?.textContent, t: a.querySelector('span')?.textContent, w: Math.round(b.width), h: Math.round(b.height)}; })}));
       const wantB = [['#/t/sprout/real', num(HM.count.real) + '곳', '진짜 싹'], ['#/t/sprout/new', num(HM.count.fresh) + '곳', '새로 들어옴'], ['#/t/sprout', num(HM.count.S) + '곳', '싹 자리']];
       if (JSON.stringify(r.boxes.map(b => [b.href, b.n, b.t])) !== JSON.stringify(wantB)) fail('주황 숫자 칸 고리', tag + ' ' + JSON.stringify(r.boxes));
@@ -515,6 +519,7 @@ try {
         if (k === 3 && !HM.count.real) continue;
         await p.evaluate(() => { location.hash = '#/'; }); await settle(p);
         await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-three a').length === 3, null, {timeout: 20000}).catch(() => {});
+        await openFold();
         await p.locator(sel).first().click(); await settle(p);
         const hh = await p.evaluate(() => location.hash), want = k === 3 ? '#/t/sprout/real' : wantB[k][0];
         if (hh !== want) { fail('주황 숫자 누르면 그 목록', `${tag} ${k} ${hh} ≠ ${want}`); continue; }

@@ -89,7 +89,7 @@ const MEASURE = () => {
     if (/drop-shadow|blur/.test(cs.filter)) out.ruin.push(`그림자 거름 ${name}`);
     if (cs.perspective !== 'none' || cs.transformStyle === 'preserve-3d' || /matrix3d|rotate[XY]|perspective/.test(cs.transform)) out.ruin.push(`입체 ${name}`);
     const red = rgb(cs.backgroundColor); if (red && red.a > 0.5 && red.r > 180 && red.g < 90 && red.b < 90 && r.width <= 16 && r.height <= 16) out.ruin.push(`작은 빨간 점 ${name}`);
-    if (tag === 'img' && !/\/media\/makbi-|\/media\/stone\/|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`);
+    if (tag === 'img' && !/\/media\/makbi-|\/media\/stone\/|\/media\/planet\/|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`); // /media/planet/ = 화면 잣대 색 4 「행성 사진 파일 안에만」(사장님 2026-10-20 22:17 · 미국 항공우주국 진짜 사진) — 2026-10-21 00:51 계절 판 첫 화면 줄의 행성
   }
   out.bodyHex = (() => { const c = rgb(getComputedStyle(document.body).backgroundColor); return c ? '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase() + (c.a < 1 ? '~' : '') : '?'; })();
   out.inkHex = (() => { const c = rgb(getComputedStyle(document.body).color); return c ? '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase() : '?'; })();
