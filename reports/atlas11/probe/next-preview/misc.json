@@ -1,23 +1,24 @@
 {
- "when": "2026-10-20T01:28:55.765Z",
+ "when": "2026-10-20T01:43:02.974Z",
  "base": "http://127.0.0.1:8826",
- "sec": 43,
+ "sec": 44,
  "xCodes": 1750,
  "all": true,
  "time": {
-  "old": 14.8,
-  "new": 24.8,
-  "wall": 43,
+  "old": 15.1,
+  "new": 25.6,
+  "wall": 44.1,
   "opensOld": 1771,
   "opensNew": 1834,
-  "oldPct": 34.4,
-  "oldShare": 37.3
+  "oldPct": 34.3,
+  "oldShare": 37.1
  },
  "net": {
   "req": 9,
   "retry": 0,
   "waitSec": 0,
   "why": {},
+  "cut": 0,
   "page": {
    "retry": 0,
    "waitSec": 0,

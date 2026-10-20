@@ -1,35 +1,21 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T00:49:24.189Z",
+ "at": "2026-10-20T01:39:57.432Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 412,
-  "fail": 13
+  "pass": 425,
+  "fail": 0
  },
- "fails": [
-  "다시 온 기기 ② 글자 수 — 107자 > 105자(기준 175의 60%) · 글 24 ess span.ess-t 「주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부」 / 8 - span 「지금 몇 시 자리일까?」 / 8 - span 「한 달 뒤 물어볼게요」 / 5 - span.s-dev 「이 기기에만」 / 4 - h1.s-h1 「테마 시계」 / 4 - span.t 「지난 기록」 / 4 today span.hm-bd 「10월 20일 장 중」 / 4 news button.w-why 「왜 그럴까?」 / 4 news button.w-why 「왜 그럴까?」 / 4 all summary 「전부 보기」 / 4 - b 「진화 1번째」 / 3 today span 「코스피」 / 3 today span 「코스닥」 / 3 news span.w-lb 「오른 곳」 / 3 news span.w-lb 「내린 곳」 / 3 - span 「번 멈춤」 / 3 - span 「번 약속」 / 3 gdr span 「대장주」 / 3 - span.when 「채점 전」 / 2 - span.s-who 「돌이」 / 2 find button.w-go 「시작」 / 2 gdr span 「돌이」 / 2 gdr span 「달력」 / 2 gdr span 「조건」",
-  "다른 쪽 #/f/lead 390 바탕 #080808 — 바탕 #FFFFFF",
-  "다른 쪽 #/f/lead 390 누르는 크기 48 — a. 53×16 「Netlify」",
-  "다른 쪽 #/f/lead 390 망치는 길 그림 0 — 그림자 div.card",
-  "다른 쪽 #/x/005935 390 바탕 #080808 — 바탕 #FFFFFF",
-  "다른 쪽 #/x/005935 390 누르는 크기 48 — a. 53×16 「Netlify」",
-  "다른 쪽 #/x/005935 390 망치는 길 그림 0 — 그림자 div.card",
-  "다른 쪽 #/f/lead 320 바탕 #080808 — 바탕 #FFFFFF",
-  "다른 쪽 #/f/lead 320 누르는 크기 48 — a. 53×16 「Netlify」",
-  "다른 쪽 #/f/lead 320 망치는 길 그림 0 — 그림자 div.card",
-  "다른 쪽 #/x/005935 320 바탕 #080808 — 바탕 #FFFFFF",
-  "다른 쪽 #/x/005935 320 누르는 크기 48 — a. 53×16 「Netlify」",
-  "다른 쪽 #/x/005935 320 망치는 길 그림 0 — 그림자 div.card"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0024282158683907,
-   "chars": 171,
+   "chars": 169,
    "blocks": {
-    "ess": 1657,
+    "ess": 1666,
     "find": 728,
-    "today": 1749,
+    "today": 1758,
     "gdr": 776,
     "all": 776
    },
@@ -101,11 +87,6 @@
     ],
     [
      4,
-     "today span.hm-bd",
-     "10월 20일 장 중"
-    ],
-    [
-     4,
      "news button.w-why",
      "왜 그럴까?"
     ],
@@ -171,6 +152,11 @@
     ],
     [
      2,
+     "today span.hm-bd",
+     "10월 20일 10:35"
+    ],
+    [
+     2,
      "find button.w-go",
      "시작"
     ],
@@ -210,11 +196,11 @@
   },
   "back": {
    "bodyLum": 0.0024282158683907,
-   "chars": 107,
+   "chars": 105,
    "blocks": {
-    "ess": 1534,
+    "ess": 1543,
     "find": 728,
-    "today": 1626,
+    "today": 1635,
     "gdr": 776,
     "all": 776
    },
@@ -276,11 +262,6 @@
     ],
     [
      4,
-     "today span.hm-bd",
-     "10월 20일 장 중"
-    ],
-    [
-     4,
      "news button.w-why",
      "왜 그럴까?"
     ],
@@ -343,6 +324,11 @@
      2,
      "- span.s-who",
      "돌이"
+    ],
+    [
+     2,
+     "today span.hm-bd",
+     "10월 20일 10:35"
     ],
     [
      2,
@@ -532,14 +518,14 @@
    "#/f/lead 390": {
     "low": 0,
     "ui": 0,
-    "small": 1,
-    "ruin": 1
+    "small": 0,
+    "ruin": 0
    },
    "#/x/005935 390": {
     "low": 0,
     "ui": 0,
-    "small": 1,
-    "ruin": 1
+    "small": 0,
+    "ruin": 0
    },
    "#/today 320": {
     "low": 0,
@@ -682,22 +668,29 @@
    "#/f/lead 320": {
     "low": 0,
     "ui": 0,
-    "small": 1,
-    "ruin": 1
+    "small": 0,
+    "ruin": 0
    },
    "#/x/005935 320": {
     "low": 0,
     "ui": 0,
-    "small": 1,
-    "ruin": 1
+    "small": 0,
+    "ruin": 0
    }
   },
   "speed": {
-   "lcp": 1068,
-   "inp": 16,
-   "cls": 0.079
+   "lcp": 1092,
+   "inp": 24,
+   "cls": 0.088
   }
  },
- "ok": false,
+ "net": {
+  "retry": 3,
+  "why": {
+   "HTTP 403": 1,
+   "열기 실패": 2
+  }
+ },
+ "ok": true,
  "enforced": true
 }
