@@ -1,0 +1,320 @@
+{
+ "made": "2026-10-20T13:32:37.757Z",
+ "policy": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+ "order": [
+  "sun",
+  "sun-aia",
+  "mercury",
+  "venus",
+  "earth",
+  "moon",
+  "mars",
+  "jupiter",
+  "saturn",
+  "uranus",
+  "neptune",
+  "pluto"
+ ],
+ "rows": [
+  {
+   "name": "sun",
+   "url": "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg",
+   "credit": "NASA/SDO/HMI",
+   "bytes": 200796,
+   "sha256": "8ca6d7f1b029b62f6e1035432a630d91954c649390142d72fc822caaa0cc42e8",
+   "orig": [
+    1024,
+    1024
+   ],
+   "skyPct": 31.5,
+   "w96": 3120,
+   "w192": 6714,
+   "box": {
+    "left": 4,
+    "top": 34,
+    "width": 986,
+    "height": 972
+   },
+   "center": [
+    497,
+    520
+   ],
+   "ok": true
+  },
+  {
+   "name": "sun-aia",
+   "url": "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0171.jpg",
+   "credit": "NASA/SDO/AIA",
+   "bytes": 187335,
+   "sha256": "3761437054bc0c347b6ad195336574a8f2608bdda6fce7919370d9c98c9ebf5b",
+   "orig": [
+    1024,
+    1024
+   ],
+   "skyPct": 31.3,
+   "w96": 4166,
+   "w192": 11914,
+   "box": {
+    "left": 0,
+    "top": 33,
+    "width": 1021,
+    "height": 977
+   },
+   "center": [
+    511,
+    522
+   ],
+   "ok": true
+  },
+  {
+   "name": "mercury",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia11/pia11406/PIA11406.jpg",
+   "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Carnegie Institution of Washington",
+   "bytes": 47965,
+   "sha256": "9f29881bf59d2e9c4125c813aca4fe064ff91e99c40f386d3ef4f31e26c94906",
+   "orig": [
+    720,
+    486
+   ],
+   "skyPct": 43.1,
+   "w96": 2962,
+   "w192": 8908,
+   "box": {
+    "left": 67,
+    "top": 34,
+    "width": 293,
+    "height": 414
+   },
+   "center": [
+    214,
+    241
+   ],
+   "ok": true
+  },
+  {
+   "name": "venus",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00104/PIA00104.jpg",
+   "credit": "NASA/JPL",
+   "bytes": 1681236,
+   "sha256": "bfa8ec6972fe083f04d9e494d172adea3f9ff5b360d61f63d9834cd7b98f1afc",
+   "orig": [
+    4096,
+    4096
+   ],
+   "skyPct": 36.3,
+   "w96": 4664,
+   "w192": 12942,
+   "box": {
+    "left": 80,
+    "top": 80,
+    "width": 1440,
+    "height": 1440
+   },
+   "center": [
+    800,
+    800
+   ],
+   "ok": true
+  },
+  {
+   "name": "earth",
+   "url": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/84000/84214/bluemarble_2014089_lrg.jpg",
+   "credit": "NASA Earth Observatory/NOAA (Suomi NPP VIIRS)",
+   "bytes": 1221454,
+   "sha256": "ffb0c3d2bd798571103a0f96416e7a34f1d968c2bb8e990f1355258e8aedf4ef",
+   "orig": [
+    3840,
+    2160
+   ],
+   "skyPct": 62.9,
+   "w96": 5030,
+   "w192": 14190,
+   "box": {
+    "left": 387,
+    "top": 37,
+    "width": 826,
+    "height": 826
+   },
+   "center": [
+    800,
+    450
+   ],
+   "ok": true
+  },
+  {
+   "name": "moon",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/earths-moon/outreach-materials/NASA-LRO-Moon-mosaic.png",
+   "credit": "NASA's Scientific Visualization Studio (LRO)",
+   "bytes": 1008660,
+   "sha256": "7d0b642c84f2d6fd2f017ee729c29f333438c469afba53b241f801b122e37271",
+   "orig": [
+    1041,
+    1041
+   ],
+   "skyPct": 24.8,
+   "w96": 3658,
+   "w192": 10176,
+   "box": {
+    "left": 0,
+    "top": 0,
+    "width": 1041,
+    "height": 1041
+   },
+   "center": [
+    521,
+    521
+   ],
+   "ok": true
+  },
+  {
+   "name": "mars",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00407/PIA00407.jpg",
+   "credit": "NASA/JPL/USGS",
+   "bytes": 3638446,
+   "sha256": "fc62a86416794444988338e55591d23290e1de2c7c32f3613b872caa8413ea2f",
+   "orig": [
+    6787,
+    6787
+   ],
+   "skyPct": 21.3,
+   "w96": 3610,
+   "w192": 9196,
+   "box": {
+    "left": 0,
+    "top": 0,
+    "width": 1600,
+    "height": 1600
+   },
+   "center": [
+    800,
+    800
+   ],
+   "ok": true
+  },
+  {
+   "name": "jupiter",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia04/pia04866/PIA04866.jpg",
+   "credit": "NASA/JPL/Space Science Institute",
+   "bytes": 179416,
+   "sha256": "bcd8549b7bbcc0041309d0a35673a2329ee78dcecc4f06bfc86488434132f3cd",
+   "orig": [
+    1920,
+    2400
+   ],
+   "skyPct": 50.5,
+   "w96": 2512,
+   "w192": 6170,
+   "box": {
+    "left": 136,
+    "top": 63,
+    "width": 927,
+    "height": 1477
+   },
+   "center": [
+    600,
+    802
+   ],
+   "ok": true
+  },
+  {
+   "name": "saturn",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia06/pia06193/PIA06193.jpg",
+   "credit": "NASA/JPL/Space Science Institute",
+   "bytes": 5662681,
+   "sha256": "0938b9e0c44a1e81efdca6560b1d75200e9e60caa6a02060bac0466357b9bae6",
+   "orig": [
+    8888,
+    4544
+   ],
+   "skyPct": 76.9,
+   "w96": 2538,
+   "w192": 5766,
+   "box": {
+    "left": 142,
+    "top": 160,
+    "width": 1298,
+    "height": 506
+   },
+   "center": [
+    791,
+    413
+   ],
+   "ok": true
+  },
+  {
+   "name": "uranus",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00032/PIA00032.jpg",
+   "credit": "NASA/JPL",
+   "bytes": 99588,
+   "sha256": "bbe6badecb4fef5d8e5e672574baeec7463872d7342af52bd0a001e9456d574d",
+   "orig": [
+    2000,
+    1000
+   ],
+   "skyPct": 59.6,
+   "w96": 2336,
+   "w192": 4802,
+   "box": {
+    "left": 140,
+    "top": 142,
+    "width": 714,
+    "height": 722
+   },
+   "center": [
+    497,
+    503
+   ],
+   "ok": true
+  },
+  {
+   "name": "neptune",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia01/pia01492/PIA01492.jpg",
+   "credit": "NASA/JPL",
+   "bytes": 258997,
+   "sha256": "97b57802f44be2218578a98c8c26f8426ff7a95890d266d34486734f14c1edb6",
+   "orig": [
+    2188,
+    2185
+   ],
+   "skyPct": 45.4,
+   "w96": 2656,
+   "w192": 6240,
+   "box": {
+    "left": 75,
+    "top": 72,
+    "width": 1484,
+    "height": 1415
+   },
+   "center": [
+    817,
+    780
+   ],
+   "ok": true
+  },
+  {
+   "name": "pluto",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia19/pia19857/PIA19857.jpg",
+   "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute",
+   "bytes": 131576,
+   "sha256": "b07f17f412b3fc4c7663c245e611fb83657eec271f4176c9b80a52e8fa0588e5",
+   "orig": [
+    1920,
+    1080
+   ],
+   "skyPct": 73.8,
+   "w96": 3822,
+   "w192": 11252,
+   "box": {
+    "left": 451,
+    "top": 95,
+    "width": 699,
+    "height": 699
+   },
+   "center": [
+    801,
+    445
+   ],
+   "ok": true
+  }
+ ]
+}
