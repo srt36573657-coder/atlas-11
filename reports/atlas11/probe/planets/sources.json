@@ -1,5 +1,5 @@
 {
- "made": "2026-10-20T13:36:03.502Z",
+ "made": "2026-10-20T13:44:53.525Z",
  "policy": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
  "order": [
   "sun",
@@ -19,16 +19,16 @@
    "name": "sun",
    "url": "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg",
    "credit": "NASA/SDO/HMI",
-   "bytes": 201241,
-   "sha256": "719bb02654019824b817f98f359e17ea911865af0aafac566aa29763c438a412",
+   "bytes": 201120,
+   "sha256": "83d6a2410fbd704accb9b9c2372638f48caae0062981e3830916c6936383865a",
    "orig": [
     1024,
     1024
    ],
    "skyPct": 31.5,
    "keep": "largest",
-   "w96": 2946,
-   "w192": 6238,
+   "w96": 2952,
+   "w192": 6262,
    "box": {
     "left": 34,
     "top": 34,
@@ -43,27 +43,27 @@
   },
   {
    "name": "mercury",
-   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia11/pia11406/PIA11406.jpg",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia15/pia15161/PIA15161.jpg",
    "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Carnegie Institution of Washington",
-   "bytes": 47965,
-   "sha256": "9f29881bf59d2e9c4125c813aca4fe064ff91e99c40f386d3ef4f31e26c94906",
+   "bytes": 870234,
+   "sha256": "a7c030aee3554c9ef578229823486dc5562aadc44035f21d0cd4bf0d12dd345a",
    "orig": [
-    720,
-    486
+    2147,
+    2147
    ],
-   "skyPct": 41.4,
+   "skyPct": 35,
    "keep": "largest",
-   "w96": 3666,
-   "w192": 10612,
+   "w96": 3682,
+   "w192": 10934,
    "box": {
-    "left": 67,
-    "top": 32,
-    "width": 596,
-    "height": 417
+    "left": 72,
+    "top": 73,
+    "width": 1455,
+    "height": 1454
    },
    "center": [
-    365,
-    241
+    800,
+    800
    ],
    "ok": true
   },
@@ -121,27 +121,27 @@
   },
   {
    "name": "moon",
-   "url": "https://assets.science.nasa.gov/content/dam/science/psd/earths-moon/outreach-materials/NASA-LRO-Moon-mosaic.png",
-   "credit": "NASA's Scientific Visualization Studio (LRO)",
-   "bytes": 1008660,
-   "sha256": "7d0b642c84f2d6fd2f017ee729c29f333438c469afba53b241f801b122e37271",
+   "url": "https://svs.gsfc.nasa.gov/vis/a000000/a005400/a005415/frames/730x730_1x1_30p/moon.0311.jpg",
+   "credit": "NASA's Scientific Visualization Studio (LRO data · Dial-A-Moon 2025-01-13 22:00 UT)",
+   "bytes": 105650,
+   "sha256": "51bccd09b6365c68fa724e056a088654e97784309ed274305b4c530a0bb147a8",
    "orig": [
-    1041,
-    1041
+    730,
+    730
    ],
-   "skyPct": 24.8,
-   "keep": "some",
-   "w96": 3672,
-   "w192": 10166,
+   "skyPct": 36.4,
+   "keep": "largest",
+   "w96": 3746,
+   "w192": 9978,
    "box": {
-    "left": 0,
-    "top": 0,
-    "width": 1041,
-    "height": 1041
+    "left": 36,
+    "top": 36,
+    "width": 658,
+    "height": 658
    },
    "center": [
-    521,
-    521
+    365,
+    365
    ],
    "ok": true
   },
