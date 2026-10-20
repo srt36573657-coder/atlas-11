@@ -1,15 +1,13 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T05:05:56.921Z",
+ "at": "2026-10-20T05:14:28.781Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 424,
-  "fail": 1
+  "pass": 425,
+  "fail": 0
  },
- "fails": [
-  "한 달 된 기록 · 「그날 정한 대로 했어?」 한 줄 — 첫 화면에 그 줄이 없음"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0024282158683907,
@@ -45,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 172,
+   "themeChars": 167,
    "top": [
     [
      32,
@@ -155,7 +153,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 12일"
+     "10월 20일 14:06"
     ],
     [
      2,
@@ -230,7 +228,7 @@
     true,
     true
    ],
-   "themeChars": 172,
+   "themeChars": 167,
    "top": [
     [
      24,
@@ -330,7 +328,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 12일"
+     "10월 20일 14:06"
     ],
     [
      2,
@@ -681,15 +679,15 @@
    }
   },
   "speed": {
-   "lcp": 2112,
-   "inp": 16,
-   "cls": 0.078
+   "lcp": 2136,
+   "inp": 24,
+   "cls": 0.088
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
