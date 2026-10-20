@@ -32,6 +32,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {NEW_NAME, SAFE_LINE, TITLE_TAIL, OLD_NAME_RE} from './rename.mjs'; // 이름 = site/next/brand.js 한 곳(규칙 76) — 글자를 박지 않음
 import {screenHits} from '../../../site/next/words.js'; // 쓰지 않을 말 — 화면 글 셈(「사라지다」 같은 보통 말은 빼고 봄)
+import {fetchJSON} from './net.mjs'; // 회사 파일 2,557개 — 망 탈 · 실제 사이트 403(넷리파이가 잠깐 막음)은 기다렸다 다시 · 막힘이 5분 넘게 이어지면 그만(2026-10-20 실제 사이트 큰 시험 why 「못 받은 회사 파일 6개」)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -183,11 +184,11 @@ let ALLCO = null;
 async function allCo() {
   if (ALLCO) return ALLCO;
   const mkt = await getJ('/atlas/data/mkt.json').catch(() => null), codes = Object.keys(mkt?.companies ?? {}).filter(c => /^[0-9][0-9A-Z]{5}$/.test(c)).sort();
-  const out = []; let i = 0, miss = 0;
+  const out = []; let i = 0, miss = 0; const missWhy = []; // 못 받은 회사 · 까닭(실패 글에 앞 여섯)
   // 실제 사이트에서는 4개씩 · 못 받으면 쉬었다 두 번 더(2026-10-18 — 24개씩 2,557개를 한꺼번에 받으면 실제 사이트가 이 기계를 한동안 막아 뒤 판의 쪽 열기가 33초 넘게 멈추고 · 못 받은 회사 때문에 가운데 값이 다르게 셈됨)
-  const CONC = LIVE_SITE ? 4 : 24, getCo = async c => { for (let t = 0; t < 3; t++) { const j = await getJ('/atlas/data/co/' + c + '.json').catch(() => null); if (j) return j; await new Promise(r => setTimeout(r, 800 * (t + 1))); } return null; };
-  await Promise.all(Array.from({length: CONC}, async () => { while (i < codes.length) { const c = codes[i++], j = await getCo(c); if (Array.isArray(j?.close)) out.push({close: j.close, k0: Number.isInteger(j.k0) ? j.k0 : 0}); else miss++; } }));
-  ALLCO = {series: out.filter(s => s.k0 >= 0 && s.k0 + s.close.length <= DD.length), codes: codes.length, miss}; return ALLCO;
+  const CONC = LIVE_SITE ? 4 : 24, getCo = async c => { try { return await fetchJSON(base + '/atlas/data/co/' + c + '.json', 'co/' + c + '.json'); } catch (e) { missWhy.push(c + ' ' + String(e?.message ?? e).replace(/^co\/\S+ /, '').slice(0, 40)); return null; } }; // net.mjs — 끊김 · 429 · 5xx · 실제 사이트 403 은 1 · 2 · 4 … 30초 기다렸다 다시(2분 30초 안) · 404 는 바로
+  await Promise.all(Array.from({length: CONC}, async () => { while (i < codes.length) { const c = codes[i++], j = await getCo(c); if (Array.isArray(j?.close)) out.push({close: j.close, k0: Number.isInteger(j.k0) ? j.k0 : 0}); else { miss++; if (j) missWhy.push(c + ' close 없음'); } } }));
+  ALLCO = {series: out.filter(s => s.k0 >= 0 && s.k0 + s.close.length <= DD.length), codes: codes.length, miss, missWhy}; return ALLCO;
 }
 function medianAt(k, series) {
   const xs = []; for (const {close, k0} of series) { const a = close[k - k0], b = close[k + LATER - k0]; if (a > 0 && b > 0) xs.push((b / a - 1) * 100); }
@@ -212,7 +213,7 @@ async function medVerify(k) {
   if (MEDV.has(k)) return; MEDV.add(k);
   const A = await allCo(), mine = medianAt(k, A.series), row = MEDF.byS.get(DD[k]);
   if (!mine) { if (row) fail('[5] 9 가운데 값 파일에 줄이 있는데 따로 셈은 값 없음', DD[k]); return; }
-  if (!row || row[1] !== DD[k + LATER] || Math.abs(row[2] - mine.m) > 0.0051 || row[3] !== mine.n) fail('[5] 9 가운데 값 파일이 따로 셈과 다름(median20.mjs)', `${DD[k]} → ${DD[k + LATER]} 파일 ${JSON.stringify(row)} · 따로 셈 ${mine.m.toFixed(3)} · ${mine.n}곳 · 못 받은 회사 파일 ${A.miss}개`);
+  if (!row || row[1] !== DD[k + LATER] || Math.abs(row[2] - mine.m) > 0.0051 || row[3] !== mine.n) fail('[5] 9 가운데 값 파일이 따로 셈과 다름(median20.mjs)', `${DD[k]} → ${DD[k + LATER]} 파일 ${JSON.stringify(row)} · 따로 셈 ${mine.m.toFixed(3)} · ${mine.n}곳 · 못 받은 회사 파일 ${A.miss}개${A.missWhy?.length ? ' (' + A.missWhy.slice(0, 6).join(' · ') + ')' : ''}`);
   else { bump('[5] 9 가운데 값 따로 셈 맞댄 줄'); accept.median = {coFiles: A.codes, coMissing: A.miss, rowsChecked: MEDV.size, fileRows: MEDF.M.rows.length}; }
 }
 /** 기록 하나 → 한 달 칸 기대(없으면 null = 아직) · home = 그 화면이 받는 지수 줄 · medOk = 가운데 값 파일을 받는 판 · coOk = 회사 파일을 받는 판(막은 파일 빼고) */

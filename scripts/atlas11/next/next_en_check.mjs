@@ -257,6 +257,7 @@ async function judge(p, where, {widths = true} = {}) {
     mod: [...document.querySelectorAll('.co-d, .chx-d, .today-d, .wy, .wy-me, .gdr')].some(s => s.textContent.includes(m.ex) || [...s.querySelectorAll('[aria-label]')].some(e => e.getAttribute('aria-label').includes(m.ex)))})), [...miss.keys()]);
   for (const m of ms) if (!miss.has(m.key)) miss.set(m.key, {ex: m.ex, at: (m.mod || /^#\/(w\/[^/]+\/|surge|cal|cond|talk|up|time|info|x\/|why|gdr)/.test(where) ? '[모듈] ' : '') + where});
   if (widths) {
+    await p.evaluate(async () => { try { await Promise.race([document.fonts?.ready, new Promise(r => setTimeout(r, 5000))]); } catch { /* 글꼴 없음 */ } }); // 글꼴이 다 온 뒤에 잼(실제 사이트는 글꼴이 늦게 와 바뀌는 사이 「칸 안에서 넘친 글」 둘 — 2026-10-20 live-fix 7/11 · 다섯 초까지)
     for (const w of WIDTHS) {
       if (w !== MAIN_W) { await p.setViewportSize({width: w, height: H}); await p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))); }
       const g = await p.evaluate(judgeBox);
