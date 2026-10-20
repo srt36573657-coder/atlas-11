@@ -1,0 +1,27 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-20T10:40+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-16 01:21 소개 쪽 영어 · 2026-10-18 14:09 카톡 가입 서버",
+  "to": "2026-10-20 10:40 찾음"
+ },
+ "count": 2,
+ "items": [
+  {
+   "n": 75,
+   "when": "2026-10-16 01:21(싱가포르) 소개 쪽 영어(7c439865d)부터",
+   "what": "영어 소개 쪽(hello.html?lang=en)의 「친구에게 보내기」 단추를 사전(en.json 1MB 남짓)을 다 받은 뒤에야 붙여서, 느린 망에서 사전이 오기 전에 누르면 아무 일이 없었음 — 실제 사이트 큰 시험 「글상자가 안 열림 — 390×844 영어 소개 쪽」(2026-10-20 09:15)을 「시간 넘김」으로만 적고 까닭을 안 봄",
+   "found_by": "Claude — 실제 사이트 큰 시험의 걸린 쪽 끝 글(share.tail.txt)을 다시 읽고 hello-send.js 를 봄",
+   "fixed": "site/hello-send.js — 단추를 바로 붙이고 누르면 사전을 기다렸다가 엶 · 사전이 깨져도 엶 · check_share 에 「사전 늦음」 길(사전을 3초 늦추고 바로 누름 — 옛 hello-send.js 로 되돌리면 걸림)"
+  },
+  {
+   "n": 76,
+   "when": "2026-10-18 14:09(싱가포르) 카톡 가입 서버(e4706123a)부터",
+   "what": "카톡 가입 서버 함수(functions/atlas11/kakao.mjs)를 더하면서 올리기 준비 시험(tests/atlas11/invite.test.mjs — 옮기는 함수 목록)을 같이 고치지 않아 이틀 동안 편지 시험(letter-tests) 하나가 걸려 있었음 — 전체 검사에는 이 시험이 없어 아무도 못 봄",
+   "found_by": "Claude — 2026-10-20 소개 쪽을 고친 뒤 짝 검사(check_changed)가 letter-tests 를 돌림",
+   "fixed": "tests/atlas11/invite.test.mjs — 옮기는 함수 다섯 · 파일 열다섯(카톡 함수가 부르는 kakao · kakao-store · coupon · game · game-rule.js) · 카톡 함수도 옮긴 폴더만으로 풀리는지 봄"
+  }
+ ]
+}

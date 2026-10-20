@@ -12,14 +12,22 @@ const LOCAL = /^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:\d+)?(\/|$)/i;
 export const isRemote = base => !LOCAL.test(String(base));
 
 /** 받기 셈(결과 파일 net) — 다시 받은 수 · 기다린 초 · 까닭 */
-export const NET = {req: 0, retry: 0, waitMs: 0, why: {}, page: {retry: 0, waitMs: 0, blocked: 0, why: {}}};
-export const netSummary = () => ({req: NET.req, retry: NET.retry, waitSec: Math.round(NET.waitMs / 1000), why: NET.why,
+export const NET = {req: 0, retry: 0, waitMs: 0, why: {}, page: {retry: 0, waitMs: 0, blocked: 0, why: {}}, downSince: null, cut: 0};
+/** 실제 사이트 막힘이 길게 이어지면 더 기다리지 않음 — 받은 것(자료 · 화면)이 하나도 없이 5분이 넘으면 다시 받기 · 다시 열기를 그만두고 바로 「망 막힘」 실패
+ *  (2026-10-20 실제 사이트 큰 시험: 한 작업 안의 쪽 넷이 「결과 없음」 — 작업 시간 75분을 넘김. 회사 파일 2,557개 · 화면 수천 개가 저마다 2분 30초 · 3분씩 기다리면 몇 시간이 됨)
+ *  막힘이 풀려 하나라도 받으면 다시 처음처럼 기다렸다 받음 · 시험 서버(127.0.0.1)는 셈 밖 · NET_DOWN_MS 로 바꿀 수 있음(검사 자체 시험) */
+export const DOWN_MS = Number(process.env.NET_DOWN_MS) > 0 ? Number(process.env.NET_DOWN_MS) : 300000;
+const upNow = () => { NET.downSince = null; };
+const downNow = () => { NET.downSince ??= Date.now(); };
+/** 막힘이 DOWN_MS 넘게 이어지는 중인가(원격만) — 돌려줌 = 이어진 분(아니면 0) */
+export const longDown = remote => (remote && NET.downSince != null && Date.now() - NET.downSince > DOWN_MS ? Math.max(1, Math.round((Date.now() - NET.downSince) / 60000)) : 0);
+export const netSummary = () => ({req: NET.req, retry: NET.retry, waitSec: Math.round(NET.waitMs / 1000), why: NET.why, cut: NET.cut,
   page: {retry: NET.page.retry, waitSec: Math.round(NET.page.waitMs / 1000), blocked: NET.page.blocked, why: NET.page.why}});
 const note = (o, k) => { o[k] = (o[k] || 0) + 1; };
 
 /**
- * 자료 받기 — 한 번에 20초 · 망 끊김(fetch failed · 시간 넘음 · 몸이 끊김) · 429 · 5xx 면 1 · 2 · 4 · 8 · 16 · 30초(흔들기 ±25% · Retry-After 따름) 뒤 다시 · 모두 2분 30초 안
- * 그 밖의 답(404 · 403 …)은 다시 받지 않고 바로 Error(label + ' ' + 번호) — 앞과 같은 글(정말 없는 파일은 지금처럼 실패)
+ * 자료 받기 — 한 번에 20초 · 망 끊김(fetch failed · 시간 넘음 · 몸이 끊김) · 429 · 5xx · 실제 사이트의 403 이면 1 · 2 · 4 · 8 · 16 · 30초(흔들기 ±25% · Retry-After 따름) 뒤 다시 · 모두 2분 30초 안
+ * 막힘이 DOWN_MS(5분) 넘게 이어지면 더 기다리지 않고 바로 「망 막힘」 · 그 밖의 답(404 · 시험 서버의 403 …)은 다시 받지 않고 바로 Error(label + ' ' + 번호) — 앞과 같은 글(정말 없는 파일은 지금처럼 실패)
  * @param {string} url
  * @param {string} label 실패 글 앞머리(예: 'core.json')
  * @param {{as?: 'json'|'text'|'response', init?: RequestInit, tries?: number, timeout?: number, budget?: number}} [o]
@@ -38,14 +46,16 @@ export async function fetchJSON(url, label = url, {as = 'json', init = {}, tries
         if (ra > 0) wait = Math.min(30000, ra * 1000);
         await r.arrayBuffer().catch(() => null);
       } else if (!r.ok) {
-        const e = Error(label + ' ' + r.status); e.http = r.status; throw e;
-      } else if (as === 'response') return r;
-      else return as === 'text' ? await r.text() : await r.json(); // 몸이 끊기거나 반만 오면(SyntaxError · terminated) 아래에서 다시
+        upNow(); const e = Error(label + ' ' + r.status); e.http = r.status; throw e; // 404 같은 보통 답 = 망은 삶
+      } else if (as === 'response') { upNow(); return r; }
+      else { const out = as === 'text' ? await r.text() : await r.json(); upNow(); return out; } // 몸이 끊기거나 반만 오면(SyntaxError · terminated) 아래에서 다시
     } catch (e) {
       if (e?.http) throw e;
       last = String(e?.cause?.code || e?.name || e?.message || e).slice(0, 60);
     }
-    note(NET.why, last);
+    note(NET.why, last); downNow();
+    const dn = longDown(isRemote(url));
+    if (dn) { NET.cut++; throw Error(`${label} ${last} · 망 막힘(${dn}분 넘게 받은 것 없음 · 더 기다리지 않음)`); }
     if (i + 1 >= tries || Date.now() - t0 + wait > budget) throw Error(`${label} ${last} · ${i + 1}번 받아 봄`);
     NET.retry++; NET.waitMs += wait;
     await sleep(wait);
@@ -75,7 +85,7 @@ export function watch(p, base) {
     if (!mine(rq.url()) || /ERR_ABORTED/.test(t)) return;
     net.n++; net.last = t + ' ' + rq.url().slice(origin.length, origin.length + 70);
   });
-  const remote = isRemote(base);
+  const remote = net.remote = isRemote(base);
   p.on('response', rs => { const s = rs.status(); if ((s === 429 || s >= 500 || (s === 403 && remote)) && mine(rs.url())) { net.n++; net.last = 'HTTP ' + s + ' ' + rs.url().slice(origin.length, origin.length + 70); } });
   return p;
 }
@@ -106,17 +116,18 @@ export async function settle(p, attempt, {what = '', fail = null, budget = 18000
       const e0 = p._errs?.length ?? 0;
       try { ok = await attempt(k); } catch (e) { if (!NETERR.test(String(e?.message)) && !dead(p)) throw e; why = String(e.message).match(NETERR)?.[0] ?? '열기 오류'; }
       bad = (p._net?.n ?? 0) - n0; stuck = ok ? 0 : stalled(p);
-      if (!why && !bad && !stuck && !dead(p)) return !!ok;
+      if (!why && !bad && !stuck && !dead(p)) { upNow(); return !!ok; }
       why ||= dead(p) ? '오류 쪽' : bad ? (p._net.last.replace(/ \/.*$/, '') || '망 탈') : '답 없는 요청';
       if (p._errs) p._errs.length = e0; // 망 탈 때 쌓인 「Failed to load resource」 · 그 열기의 화면 오류는 다시 연 열기로 판정
       if (!dead(p) && !/^about:blank/.test(p.url())) good = p.url();
     }
-    note(NET.page.why, why);
+    note(NET.page.why, why); downNow();
     if (process.env.NET_DEBUG) console.error(`[settle] ${what} 번 ${k} ok=${ok} bad=${bad} stuck=${stuck} ${why} ${p._net?.last ?? ''} ${Math.round((Date.now() - t0) / 1000)}s`);
-    const wait = jitter([2000, 5000, 10000, 20000, 30000][Math.min(k, 4)]);
-    if (Date.now() - t0 + wait > budget) {
+    const wait = jitter([2000, 5000, 10000, 20000, 30000][Math.min(k, 4)]), dn = longDown(!!p._net?.remote);
+    if (dn || Date.now() - t0 + wait > budget) {
+      if (dn) NET.cut++;
       NET.page.blocked++;
-      if (fail) fail('망 막힘', `${what} · ${Math.round((Date.now() - t0) / 1000)}초 동안 ${k + 1}번 열어 봄 · ${why} ${p._net?.last ?? ''}`.trim());
+      if (fail) fail('망 막힘', `${what} · ${Math.round((Date.now() - t0) / 1000)}초 동안 ${k + 1}번 열어 봄${dn ? ` · ${dn}분 넘게 받은 것 없음(더 기다리지 않음)` : ''} · ${why} ${p._net?.last ?? ''}`.trim());
       return null;
     }
     NET.page.retry++; NET.page.waitMs += wait;

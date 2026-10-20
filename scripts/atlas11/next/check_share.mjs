@@ -476,6 +476,24 @@ async function englishBox(W_, H_) {
     } finally { await done(p); }
   }
 }
+/** 영어 소개 쪽 · 사전이 늦게 옴 — 사전(en.json)을 3초 늦추고 lang 이 en 이 되자마자 「친구에게 보내기」를 누름 → 사전이 온 뒤 글상자가 열려야 함(누름이 사라지면 안 됨)
+ *  2026-10-20 실제 사이트 큰 시험 「글상자가 안 열림 — 390×844 영어 소개 쪽」: hello-send.js 가 단추를 사전을 다 받은 뒤에 붙여서, 느린 망에서 그 전에 누르면 아무 일이 없던 것(옛 hello-send.js 로 되돌리면 이 길이 걸림) */
+async function slowDictBox(W_, H_) {
+  const tag = `${W_}×${H_} 영어 소개 쪽 · 사전 늦음`, p = await newPage(W_, H_); EN_PAGE.add(p);
+  try {
+    await p.route('**/next/i18n/en.json', async r => { await new Promise(res => setTimeout(res, 3000)); await r.continue().catch(() => null); });
+    await p.goto(base + '/hello.html?lang=en', {waitUntil: 'domcontentloaded'});
+    await p.waitForFunction(() => document.documentElement.lang === 'en' && !!document.querySelector('#hp-send'), null, {timeout: 30000});
+    if (await p.evaluate(() => !!window.__helloShare)) fail('느린 사전 판을 꾸미지 못함(누르기 전에 사전이 벌써 옴)', tag);
+    await p.locator('#hp-send').click();
+    try { await p.waitForSelector(DLG, {state: 'visible', timeout: 20000}); } catch { fail('글상자가 안 열림', `${tag} — 사전이 오기 전에 누른 것이 사라짐`); return; }
+    await p.waitForTimeout(300); // 엔진이 그려진 글을 바꾸는 사이
+    const q = await p.evaluate(() => [...document.querySelectorAll('.ps-dlg .ps-q button')].map(b => b.textContent));
+    if (!q.length || q.some(x => /[가-힣]/.test(x))) fail('늦은 사전 — 빠른 말이 영어로 안 바뀜', `${tag} ${JSON.stringify(q)}`);
+    bump('늦은 사전 누름');
+    errsOf(p, tag);
+  } finally { await done(p); }
+}
 /** 대화창을 못 쓰는 옛 기계 — 칸(div role=dialog)으로 열림 · 갇힌 차례 · Esc · 보내기 */
 async function noDialogBox(W_, H_) {
   const tag = `${W_}×${H_} 대화창 없는 기계`, p = await newPage(W_, H_, {noDialog: true});
@@ -1210,6 +1228,7 @@ for (const [w, h] of SIZES) {
     if (want('fb')) await step(`${w}×${h} 복사 · 보여 줌`, () => fallbacks(w, h));
     if (want('nd')) await step(`${w}×${h} 대화창 없는 기계`, () => noDialogBox(w, h));
     if (want('en')) await step(`${w}×${h} 영어`, () => englishBox(w, h));
+    if (want('en') && w === 360) await step(`${w}×${h} 영어 소개 쪽 · 사전 늦음`, () => slowDictBox(w, h));
     if (want('ent')) await step(`${w}×${h} 다른 입구`, () => otherEntries(w, h));
   }
   if (want('land')) await step(`${w}×${h} 친구 주소`, () => landing(w, h, full ? CASES : CASES.slice(0, 1)));

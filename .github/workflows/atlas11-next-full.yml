@@ -233,6 +233,9 @@ jobs:
           for i in $(seq 1 300); do [ -s /tmp/pw/.done ] && break; sleep 1; done
           if [ "$(cat /tmp/pw/.done 2>/dev/null)" != 0 ]; then echo "브라우저 준비 실패($(cat /tmp/pw/.done 2>/dev/null || echo 시간 넘음))"; tail -c 3000 /tmp/pw.log; exit 1; fi
           snap0=$(cat oldsnap/*.json 2>/dev/null | sha256sum | cut -c1-16)
+          # 쪽마다 시간 끝 — 작업 시간(75분) 안에서 남은 만큼만(60분 뒤 끝) · 넘기면 그 쪽만 끊고(124) 끝 글을 남김 · 시간이 모자라면 뒤 쪽은 97
+          #   (2026-10-20 실제 사이트 큰 시험: 한 작업이 75분을 넘겨 통째로 끊겨 쪽 넷이 「결과 없음」(99) — 어느 쪽이 왜 오래 걸렸는지 글이 남지 않던 것)
+          end=$(( $(date +%s) + 3600 ))
           base=https://aaa7377.com; mode=live
           if [ "$LOCAL" = 1 ]; then base=http://127.0.0.1:8826; mode=local; fi
           for n in $PAGES; do # 쪽 하나씩(묶음은 차례로 · 몫 작업은 몫 하나) · 쪽마다 결과 셋(json · exit.json · tail.txt — 이름은 몫 이름 그대로 · 예 co2)
@@ -245,13 +248,17 @@ jobs:
               chx|grow|rivals) f="check_$pg.mjs"; extra="--all --old-snap oldsnap/$n.json $sh"; if [ "$OLD_REFRESH" = 1 ]; then extra="$extra --old-refresh"; fi ;; # 옛 쪽 기준값을 쓰는 검사(옛 쪽 때 chx 86% · grow 90% · rivals 79% — 2026-10-17 39039859850) · 몫이면 몫마다 제 파일
               *) f="check_$pg.mjs"; extra="--all $sh" ;;
             esac
+            left=$(( end - $(date +%s) )); [ "$left" -gt 4200 ] && left=4200
             if [ "$LOCAL" = 1 ] && ! curl -fs -o /dev/null "$base/next/"; then
               code=98; { echo "시험 서버가 안 떴음 — 묶기 · 띄우기 실패"; tail -c 2500 /tmp/pack.log 2>/dev/null; tail -c 1200 /tmp/dev.log 2>/dev/null; } > "out/$n.log"
+            elif [ "$left" -lt 120 ]; then
+              code=97; echo "작업 시간이 모자라 이 쪽을 못 돌림 — 앞 쪽들이 오래 걸림(작업 75분 · 쪽은 남은 시간까지만)" > "out/$n.log"
             else
               set +e
-              PW_DIR=/tmp/pw/ timeout 4200 node "scripts/atlas11/next/$f" --base "$base" --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
+              PW_DIR=/tmp/pw/ timeout "$left" node "scripts/atlas11/next/$f" --base "$base" --pw /tmp/pw/ $extra --out "out/$n.json" > "out/$n.log" 2>&1
               code=$?
               set -e
+              if [ "$code" = 124 ]; then echo "시간 넘김 — ${left}초 안에 못 끝남(작업 시간 75분 안에서 남은 만큼) · 위가 멈춘 곳의 끝 글" >> "out/$n.log"; fi
             fi
             echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 )),\"mode\":\"$mode\",\"sha\":\"$GITHUB_SHA\"${BUILD_S:+,\"build\":$BUILD_S}${DATA:+,\"data\":\"$DATA\"}}" > "out/$n.exit.json"
             tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"

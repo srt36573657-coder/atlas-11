@@ -177,8 +177,8 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
   const server = new BlobsServer({directory: dir, token}); const {port} = await server.start();
   try {
     const s = await stageFunctions(root, stage);
-    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['invite', 'jinhwa', 'letter', 'tally']); // 2026-10-17 편지 여는 밤 함수 더함 · 2026-10-18 16:39 [9] 8 · [10] 3 진화 칸 · 합계 칸 함수(일꾼 KD)
-    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'functions/atlas11/jinhwa.mjs', 'functions/atlas11/letter.mjs', 'functions/atlas11/tally.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/jinhwa.mjs', 'lib/atlas11/letter.mjs', 'lib/atlas11/tally.mjs', 'site/next/words.js']); // 2026-10-17 21:10 [4] 4 쓰지 않을 말 한 곳(words.js)을 편지 함수도 부름
+    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['invite', 'jinhwa', 'kakao', 'letter', 'tally']); // 2026-10-17 편지 여는 밤 함수 더함 · 2026-10-18 16:39 [9] 8 · [10] 3 진화 칸 · 합계 칸 함수(일꾼 KD) · 2026-10-18 14:09 카톡 가입 서버(꺼짐 · e4706123a — 이 시험을 같이 안 고쳐 그때부터 걸려 있던 것을 2026-10-20 바로잡음)
+    assert.deepEqual(s.files, ['functions/atlas11/invite.mjs', 'functions/atlas11/jinhwa.mjs', 'functions/atlas11/kakao.mjs', 'functions/atlas11/letter.mjs', 'functions/atlas11/tally.mjs', 'lib/atlas11/coupon.mjs', 'lib/atlas11/game.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/jinhwa.mjs', 'lib/atlas11/kakao-store.mjs', 'lib/atlas11/kakao.mjs', 'lib/atlas11/letter.mjs', 'lib/atlas11/tally.mjs', 'site/next/game-rule.js', 'site/next/words.js']); // 카톡 함수가 부르는 kakao · kakao-store · coupon · game(+ game-rule.js)도 함께 // 2026-10-17 21:10 [4] 4 쓰지 않을 말 한 곳(words.js)을 편지 함수도 부름
     assert.ok(s.packages.includes('@netlify/blobs') && s.packages.includes('@netlify/runtime-utils'), s.packages.join(','));
     assert.ok(!s.packages.includes('react') && !s.files.some(f => f.startsWith('netlify/')), '옛 함수 · 쓰지 않는 패키지는 옮기지 않음');
     const edge = `http://127.0.0.1:${port}`;
@@ -189,6 +189,7 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
     const lf = (await import(path.join(stage, 'functions/atlas11/letter.mjs'))).default; // 편지 함수도 옮긴 폴더만으로 돈다
     const st = await lf(new Request('https://aaa7377.com/api/letter', {method: 'GET'}));
     assert.equal(st.status, 200); assert.equal((await st.json()).member, false);
+    assert.equal(typeof (await import(path.join(stage, 'functions/atlas11/kakao.mjs'))).default, 'function', '카톡 함수도 옮긴 폴더만으로 풀림');
     const jf = (await import(path.join(stage, 'functions/atlas11/jinhwa.mjs'))).default, tf = (await import(path.join(stage, 'functions/atlas11/tally.mjs'))).default; // 진화 칸 · 합계 칸(KD)도 옮긴 폴더만으로 돈다
     assert.deepEqual(await (await jf(new Request('https://aaa7377.com/api/jinhwa/status'))).json(), {items: []});
     assert.equal((await jf(new Request('https://aaa7377.com/api/jinhwa/me'))).status, 403, '열쇠 없으면 사장님 기기 아님');
