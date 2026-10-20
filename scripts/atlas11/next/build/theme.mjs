@@ -15,7 +15,7 @@ const J = async f => JSON.parse(await fs.readFile(f, 'utf8'));
 export function homeOf(theme) {
   const top = theme.order.S.slice(0, 3);
   return {schema: 'dori-theme-1-home', made: theme.made, asOf: theme.asOf, provisional: theme.provisional, recFrom: theme.recFrom, recTo: theme.recTo, count: theme.count, order: {S: top}, record: theme.record,
-    inds: theme.inds.map(i => (top.includes(i.n) ? {n: i.n, z: i.z, x: i.x, y: i.y, d: i.d, t: i.t, dots: i.dots, sc: i.sc} : {n: i.n, z: i.z, x: i.x, y: i.y}))};
+    inds: theme.inds.map(i => (top.includes(i.n) ? {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y, d: i.d, t: i.t, dots: i.dots, sc: i.sc} : {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y}))}; // g = 큰 업종 무리(시계 행성 사진 — 2026-10-20 22:17)
 }
 export async function build({siteDir = 'site', made = new Date().toISOString()} = {}) {
   const dd = path.join(siteDir, 'atlas', 'data');

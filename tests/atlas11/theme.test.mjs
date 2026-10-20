@@ -109,3 +109,25 @@ test('올릴 때 셈 — 저장소 자료(있을 때만)로 두 파일을 쓰고
   assert.ok(fs.statSync(path.join(tmp, 'next/data/theme-home.json')).size < 8_192, '첫 화면 칸 파일은 8KB 아래');
   fs.rmSync(tmp, {recursive: true, force: true});
 });
+
+// 행성 시계(사장님 2026-10-20(서울) 22:17 「진짜 실사 행성으로 해」) — 큰 업종 무리마다 행성 하나 · 사진 파일이 있음 · 첫 화면 자료에 무리(g)가 실림
+test('행성 — 무리마다 다른 행성 · 사진 파일 · 첫 화면 자료의 g', async () => {
+  const {PLANET, PLANET_KO, planetSrc} = await import('../../site/next/theme-home.js');
+  const T = JSON.parse(fs.readFileSync('site/next/data/theme.json', 'utf8'));
+  const ids = T.groups.map(g => g.id);
+  assert.deepEqual([...ids].sort(), Object.keys(PLANET).sort(), '무리 열 = 행성 열');
+  assert.equal(new Set(Object.values(PLANET)).size, ids.length, '행성이 겹치지 않음');
+  for (const id of [...ids, 'sun']) {
+    const f = path.join('site', planetSrc(id));
+    assert.ok(fs.existsSync(f), f);
+    const b = fs.readFileSync(f);
+    assert.equal(b.subarray(0, 4).toString(), 'RIFF'); assert.equal(b.subarray(8, 12).toString(), 'WEBP');
+    assert.ok(b.length < 8000, f + ' 작게');
+  }
+  for (const k of Object.values(PLANET)) assert.ok(PLANET_KO[k], k);
+  const H = JSON.parse(fs.readFileSync('site/next/data/theme-home.json', 'utf8'));
+  for (const i of H.inds) assert.ok(ids.includes(i.g), i.n + ' 무리');
+  const src = JSON.parse(fs.readFileSync('site/media/planet/sources.json', 'utf8'));
+  assert.equal(src.files.length, ids.length + 1);
+  for (const r of src.files) assert.match(r.credit, /NASA/);
+});

@@ -8804,6 +8804,19 @@
   "오늘 새로 들어온 싹은 없어요.": "No new sprouts today.",
   "더 깊이 보기": "Go deeper",
   "누르면 일곱 단까지 가요.": "Tap to go all seven steps.",
-  "다음 단 · 사기 전에 ›": "Next step · Before buying ›"
+  "다음 단 · 사기 전에 ›": "Next step · Before buying ›",
+  "행성 열": "The planets",
+  "업종 무리마다 행성이 하나예요. 가운데는 해예요.": "Each industry group has its own planet. The Sun sits in the middle.",
+  "사진은 미국 항공우주국이 찍은 진짜 사진이에요.": "The photos are real pictures taken by NASA.",
+  "지구": "Earth",
+  "수성": "Mercury",
+  "해왕성": "Neptune",
+  "천왕성": "Uranus",
+  "금성": "Venus",
+  "달": "Moon",
+  "화성": "Mars",
+  "목성": "Jupiter",
+  "토성": "Saturn",
+  "명왕성": "Pluto"
  }
 }
