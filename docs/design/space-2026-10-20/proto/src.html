@@ -393,13 +393,63 @@ a.chip { min-height: 44px; text-decoration: none; }
 .seal .days b { font-family: var(--serif); font-size: var(--fs-5); color: var(--moon); line-height: 1.1; }
 .seal .days span { color: var(--dim); font-size: var(--fs-1); }
 .quote { margin: 0; padding: 12px 16px; border-radius: 12px; background: var(--sky-3); font-family: var(--serif); font-size: var(--fs-3); line-height: 1.45; }
-.toast { position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 40; width: max-content; max-width: calc(100vw - 32px); padding: 12px 20px; border-radius: 999px; background: var(--moon); color: var(--sky); font-size: var(--fs-2); font-weight: 700; transform: translateX(-50%); box-shadow: 0 6px 24px rgba(0, 0, 0, .45); pointer-events: none; }
+.toast { box-sizing: border-box; position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 40; width: max-content; max-width: calc(100vw - 32px); padding: 12px 20px; border-radius: 999px; background: var(--moon); color: var(--sky); font-size: var(--fs-2); font-weight: 700; transform: translateX(-50%); box-shadow: 0 6px 24px rgba(0, 0, 0, .45); pointer-events: none; }
 .toast.out { opacity: 0; transition: opacity .4s; }
 .mo-on .toast { animation: toastin .35s cubic-bezier(.2, .9, .3, 1.2) both; }
 @keyframes toastin { from { opacity: 0; transform: translate(-50%, 12px); } }
 .mo-on .seal svg { animation: sealin .9s cubic-bezier(.2, .9, .3, 1.15) both; }
 @keyframes sealin { from { opacity: 0; transform: scale(1.6) rotate(-40deg); } }
 .mo-on .minering { animation: ping 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+
+/* ── 5판: 망원경 하늘 · 별똥별 잡기 · 내 별자리 이름 · 네 별 켜 보기 · 하늘 퀴즈 ── */
+.skyin svg { touch-action: pan-y; }
+.sky.zoomed .skyin svg { touch-action: none; cursor: grab; }
+.ov.zl { color: var(--ink); font-size: var(--fs-1); }
+.zbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.zbar .zk { margin-right: auto; color: var(--dim); font-size: var(--fs-1); }
+.zbar .btn { min-width: 52px; min-height: 48px; padding: 0 14px; font-size: var(--fs-3); }
+.zbar .btn.rs { font-size: var(--fs-1); }
+.toast.act { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; pointer-events: auto; }
+.toast.act a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; background: var(--sky); color: var(--moon); font-size: var(--fs-1); text-decoration: none; }
+.mname { display: flex; flex-direction: column; gap: 6px; }
+.mname input { min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--sky-2); color: var(--ink); font: inherit; font-size: var(--fs-2); }
+.kgame { position: relative; margin: 0; }
+.kbtn { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
+.kbtn:focus-visible { outline: 3px solid var(--wax); outline-offset: 0; }
+.kite .ks.lit { fill: var(--wax); stroke: var(--wax); }
+.kite .ks.nope { fill: var(--moon-base); stroke: var(--down); }
+.kite .kl.dim { opacity: .18; }
+.kite .kl.lit { stroke: var(--wax); opacity: .9; }
+.cond li.hid { border-style: dashed; }
+.cond li.hid .tx span { color: var(--faint); }
+.cond li.offk .k { border-color: var(--down); color: var(--down); }
+.mo-on .kgame .ks:not(.lit):not(.nope) { animation: dstw 1.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.mo-on .kite .ks.lit { animation: lightup .55s ease-out both; }
+.mo-on .kite .ks.nope { animation: nope .5s ease-in-out; transform-box: fill-box; transform-origin: center; }
+@keyframes nope { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+.qopts { display: flex; flex-direction: column; gap: 10px; }
+.qopts button { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 60px; padding: 8px 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--sky-2); color: var(--ink); font: inherit; font-size: var(--fs-3); text-align: left; cursor: pointer; }
+.qopts button.right { border-color: var(--ok); background: rgba(76, 195, 138, .12); }
+.qopts button.wrong { border-color: var(--bad); background: rgba(255, 107, 107, .10); }
+.qopts button:disabled { cursor: default; }
+.qopts button i { font-style: normal; font-size: var(--fs-2); }
+.hlring { fill: none; stroke: var(--moon); stroke-width: 2; }
+.mo-on .hlring { animation: ping 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+
+/* ── 1년 하늘(5판) — 업종 77곳의 지난 1년 자리(닷새마다 · 테마 시계와 같은 셈) ── */
+.seg2 { display: inline-flex; gap: 0; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.seg2 button { min-width: 64px; min-height: 48px; padding: 0 14px; border: 0; background: transparent; color: var(--dim); font: inherit; font-size: var(--fs-2); cursor: pointer; }
+.seg2 button[aria-pressed="true"] { background: var(--moon); color: var(--sky); font-weight: 700; }
+.ov.month { font-family: var(--serif); font-size: var(--fs-6); font-weight: 700; color: var(--moon); opacity: .16; text-shadow: none; }
+.tb-row .grow1 { flex: 1; }
+
+.factc { box-sizing: border-box; position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 41; display: flex; flex-direction: column; gap: 4px; width: min(420px, calc(100vw - 32px)); padding: 12px 16px 14px; border: 1px solid var(--wax); border-radius: var(--r); background: var(--sky-2); transform: translateX(-50%); box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
+.factc .fc-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--wax); font-size: var(--fs-1); }
+.factc .x { flex: none; width: 48px; height: 48px; margin: -8px -10px -8px 0; border: 0; background: none; color: var(--dim); font: inherit; font-size: var(--fs-4); cursor: pointer; }
+.factc b { font-size: var(--fs-3); }
+.factc p { margin: 0; font-size: var(--fs-2); }
+.factc.out { opacity: 0; transition: opacity .45s; }
+.mo-on .factc { animation: toastin .4s cubic-bezier(.2, .9, .3, 1.2) both; }
 </style>
 
 <canvas id="stars" aria-hidden="true"></canvas>
@@ -437,7 +487,7 @@ const ZN = {
 };
 const ZORDER = ['S', 'B', 'W', 'Q'];
 const STEP_NAME = ['하늘', '별자리', '별', '지나온 길', '이웃 별', '커 왔을까', '흔들림'];
-const state = {stack: [], route: 'home', why: null, lastWhy: null, findQ: '', cleanup: [], introDone: false, mine: new Set(), quiz: null, capsule: null, capsuleOpen: false, capsuleAns: ''};
+const state = {stack: [], route: 'home', why: null, lastWhy: null, findQ: '', cleanup: [], introDone: false, mine: new Set(), mineName: '', quiz: null, capsule: null, capsuleOpen: false, capsuleAns: '', sq: null};
 /* 움직임 — 처음부터 켬(사장님 2026-10-20 16:46 「지금 움직이지 않잖아 · 생동감 있게」) · 위 띠 단추로 끔 · 기기가 움직임 줄이기면 날아 들어가기 · 크게 당기기만 뺌 */
 const OSRED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 const motion = {on: true};
@@ -490,6 +540,29 @@ const ICON = {
   stop: () => s('svg', {viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('rect', {x: 6.5, y: 6.5, width: 11, height: 11, rx: 2})),
   star: on => s('svg', {viewBox: '0 0 24 24', 'aria-hidden': 'true', class: on ? 'on' : ''}, s('path', {d: 'M12 3.2l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6-4.5-4.1 6-.7z'})),
 };
+function skyFact() {
+  const R = Math.random, inds = Object.keys(D.inds), cos = Object.keys(D.co).filter(c => D.co[c] && D.co[c].n);
+  const oneInd = () => inds[Math.floor(R() * inds.length)], oneCo = () => D.co[cos[Math.floor(R() * cos.length)]];
+  const kinds = [
+    () => { const n = oneInd(), i = D.inds[n]; return {t: n, x: `지금 ${ieyo(ZN[i.z].name)}. 한 달 동안 시장보다 ${pct(i.x)}였어요.`}; },
+    () => { const C = oneCo(); return C.mdd == null ? null : {t: C.n, x: `${C.full ? '1년' : '상장한 뒤'} 동안 가장 깊이 빠졌을 때 ${pct(C.mdd)}였어요.`}; },
+    () => { const C = oneCo(); return C.days ? {t: C.n, x: `${C.days}일 가운데 ${C.big5}일은 하루에 5% 넘게 움직였어요.`} : null; },
+    () => { const C = oneCo(); return C.dn1 && C.dn1[1] ? {t: C.n, x: `하루에 가장 크게 내린 날은 ${kdate(C.dn1[1])}, ${pct(C.dn1[0])}였어요.`} : null; },
+    () => { const n = oneInd(), z = D.year && D.year.zs && D.year.zs[n]; if (!z) return null; const turns = [...z].filter((c, k) => k && c !== z[k - 1]).length; return {t: n, x: `지난 1년 동안 달 자리가 ${turns}번 바뀌었어요.`}; },
+    () => ({t: '지난 기록', x: `지난 ${yearsRec}년, 네 별이 다 켜진 날도 100번 가운데 ${Math.round(D.rec.real)}번만 한 달 뒤 보름 선을 넘었어요.`}),
+  ];
+  for (let k = 0; k < 10; k++) { const v = kinds[Math.floor(R() * kinds.length)](); if (v) return v; }
+  return kinds[kinds.length - 1]();
+}
+/* 별똥별이 가져온 지난 기록 — 아래쪽 카드(7초 뒤 사라짐 · 닫기 단추) */
+function factCard(F) {
+  document.querySelectorAll('.factc').forEach(e => e.remove());
+  const c = h('div', {class: 'factc', role: 'status'},
+    h('div', {class: 'fc-h'}, h('span', {}, '별똥별이 가져온 지난 기록'), h('button', {type: 'button', class: 'x', 'aria-label': '닫기', onclick: () => c.remove()}, '×')),
+    h('b', {}, F.t), h('p', {}, F.x), h('p', {class: 'cap'}, '지난 기록이에요. 앞날은 아니에요.'));
+  document.body.append(c); setTimeout(() => c.classList.add('out'), 7000); setTimeout(() => c.remove(), 7500);
+}
+function actToast(msg, label, route) { const t = h('div', {class: 'toast act', role: 'status'}, h('span', {}, msg), go1(route, '', label)); t.querySelector('a').dataset.root = '1'; document.body.append(t); setTimeout(() => t.classList.add('out'), 4200); setTimeout(() => t.remove(), 4700); }
 function toast(msg) { const t = h('div', {class: 'toast', role: 'status'}, msg); document.body.append(t); setTimeout(() => t.classList.add('out'), 1700); setTimeout(() => t.remove(), 2200); }
 const jong = w => { const c = String(w).charCodeAt(String(w).length - 1); return c >= 0xAC00 && c <= 0xD7A3 ? (c - 0xAC00) % 28 !== 0 : /[0136789lmnr]$/i.test(String(w)); };
 const ieyo = w => w + (jong(w) ? '이에요' : '예요');
@@ -647,11 +720,12 @@ function skyBase(svg, box, pulse) {
   og.append(arrow(x5, y0 - R, 0), arrow(x5 + R, y0, 90), arrow(x5, y0 + R, 180), arrow(x5 - R, y0, 270));
   svg.append(og);
   const corners = {S: [36, 36, 'start', 60], B: [324, 36, 'end', 300], W: [324, 324, 'end', 300], Q: [36, 324, 'start', 60]}, moons = {};
-  for (const z of ZORDER) { const [cx, cy, an, tx] = corners[z]; moons[z] = moon(ZN[z].moon, cx, cy, 15); svg.append(moons[z]); ov(box, [360, 360], tx, cy, ZN[z].name, an + (z === 'S' ? ' wax' : z === 'B' ? ' moon' : ' dim')); }
-  return {x5, y0, moons};
+  const labels = [];
+  for (const z of ZORDER) { const [cx, cy, an, tx] = corners[z]; moons[z] = moon(ZN[z].moon, cx, cy, 15); svg.append(moons[z]); labels.push({el: ov(box, [360, 360], tx, cy, ZN[z].name, an + (z === 'S' ? ' wax' : z === 'B' ? ' moon' : ' dim')), x: tx, y: cy}); }
+  return {x5, y0, moons, labels};
 }
 /* 가만히 있는 하늘(엿새 길 · 이야기) */
-function skyFigure({trailOf = null, pulse = false} = {}) {
+function skyFigure({trailOf = null, pulse = false, hl = null} = {}) {
   const fig = h('figure', {class: 'sky'}), box = h('div', {class: 'skyin'});
   const svg = s('svg', {viewBox: '0 0 360 360', role: 'img', 'aria-label': trailOf ? `${trailOf}의 엿새 길` : `업종 ${Object.keys(D.inds).length}곳의 달 자리`});
   fig.append(box); box.append(svg); skyBase(svg, box, pulse);
@@ -667,14 +741,15 @@ function skyFigure({trailOf = null, pulse = false} = {}) {
     ov(box, [360, 360], cx + (right ? 16 : -16), cy + (trailOf ? 22 : -18), n, (right ? 'start' : 'end') + ' wax big');
     if (trailOf && i.t && i.t.length > 1) { const [a, b] = i.t[0]; ov(box, [360, 360], X(a) + 10, Y(b) + 16, '엿새 전', 'start dim'); }
   }
+  if (Array.isArray(hl)) for (const n of hl) { const i = D.inds[n]; if (!i) continue; const cx = X(i.x), cy = Y(i.y); svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: hl.length > 6 ? 7 : 10, class: 'hlring'})); if (hl.length <= 6 && !realList().includes(n)) ov(box, [360, 360], cx + (cx < 220 ? 12 : -12), cy + 16, n, (cx < 220 ? 'start' : 'end') + ' moon'); }
   return fig;
 }
-/* 첫 화면 하늘 — 엿새 돌려 보기 · 별을 누르면 이름표 */
+/* 첫 화면 하늘 — 저절로 돎 · 별을 누르면 이름표 · 망원경(키우기 · 옮기기 · 키우면 별 이름) · 내 별자리 */
 function liveSky() {
   const fig = h('figure', {class: 'sky'}), box = h('div', {class: 'skyin'});
   const svg = s('svg', {viewBox: '0 0 360 360', role: 'group', 'aria-label': `업종 ${Object.keys(D.inds).length}곳의 달 자리 · 별을 누르면 이름이 나와요`});
   fig.append(box); box.append(svg);
-  const {x5, y0, moons} = skyBase(svg, box, false);
+  const {x5, y0, moons, labels} = skyBase(svg, box, false);
   svg.querySelector('.zone-s').classList.add('live');
   const zr = {S: [14, 14, x5 - 14, y0 - 14], B: [x5, 14, 346 - x5, y0 - 14], W: [x5, y0, 346 - x5, 346 - y0], Q: [14, y0, x5 - 14, 346 - y0]};
   for (const z of ZORDER) { const [x, y, w, hh] = zr[z]; svg.append(s('rect', {x, y, width: w.toFixed(1), height: hh.toFixed(1), class: 'tap', role: 'link', tabindex: 0, 'data-go': 'z:' + z, 'aria-label': `${ZN[z].name} 자리 ${D.count[z]}곳 보기`})); }
@@ -688,56 +763,96 @@ function liveSky() {
     trails.append(tr); svg.append(el); if (ring) svg.append(ring);
     return {n, i, el, ring, tr, cx: 0, cy: 0, z: i.z};
   });
+  /* 글자 자리 — 하늘 좌표에 꽂아 두고, 망원경으로 보이는 곳이 바뀌면 다시 셈 */
+  const vb = {x: 0, y: 0, w: 360};
+  const place = p => { const L = (p.x - vb.x) / vb.w * 100, T = (p.y - vb.y) / vb.w * 100; p.el.style.left = L + '%'; p.el.style.top = T + '%'; p.el.style.visibility = L < -1 || L > 101 || T < -1 || T > 101 ? 'hidden' : ''; };
+  const pins = labels.slice();
   const reals = realList().map(n => {
     const i = D.inds[n], cx = X(i.x), cy = Y(i.y), right = cx < 220;
     const g = s('g', {'aria-hidden': 'true'}), inner = s('g', {class: intro ? 'ignite' : ''});
     inner.append(s('polyline', {points: (i.t || []).map(([a, b]) => `${X(a).toFixed(1)},${Y(b).toFixed(1)}`).join(' '), class: 'trail'}), s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), sparkle(cx, cy, 11, 'real'));
     g.append(inner); svg.append(g);
-    const lab = ov(box, [360, 360], cx + (right ? 16 : -16), cy - 18, n, (right ? 'start' : 'end') + ' wax big');
-    return {n, i, g, lab, cx, cy, right};
+    const pin = {el: ov(box, [360, 360], 0, 0, n, (right ? 'start' : 'end') + ' wax big'), x: cx + (right ? 16 : -16), y: cy - 18}; pins.push(pin);
+    return {n, i, g, pin, cx, cy, right, tl: inner.firstChild};
   });
   const sel = s('circle', {r: 12, class: 'sel', visibility: 'hidden', 'aria-hidden': 'true'}); svg.append(sel);
   const mineLn = s('polyline', {class: 'mineln', points: '', 'aria-hidden': 'true'}); svg.insertBefore(mineLn, trails);
   const mineEl = new Map();
+  const titlePin = {el: ov(box, [360, 360], 0, 0, '', 'mid mine big'), x: 0, y: 0};
   function drawMine() {
-    for (const [n, m] of mineEl) if (!state.mine.has(n)) { m.ring.remove(); m.lab.remove(); mineEl.delete(n); }
-    const pts = [];
+    for (const [n, m] of mineEl) if (!state.mine.has(n)) { m.ring.remove(); m.pin.el.remove(); mineEl.delete(n); }
+    const pts = []; let sx = 0, sy = 0, c = 0, top = 999;
     for (const n of state.mine) {
       const st = stars.find(x => x.n === n); if (!st) continue;
       let m = mineEl.get(n);
-      if (!m) { m = {ring: s('circle', {r: 9, class: 'minering', 'aria-hidden': 'true'}), lab: ov(box, [360, 360], 0, 0, n, 'start mine')}; svg.insertBefore(m.ring, sel); mineEl.set(n, m); }
+      if (!m) { m = {ring: s('circle', {r: 9, class: 'minering', 'aria-hidden': 'true'}), pin: {el: ov(box, [360, 360], 0, 0, n, 'start mine'), x: 0, y: 0}}; svg.insertBefore(m.ring, sel); mineEl.set(n, m); }
       m.ring.setAttribute('cx', st.cx.toFixed(1)); m.ring.setAttribute('cy', st.cy.toFixed(1));
-      m.lab.style.left = ((st.cx + 11) / 360 * 100) + '%'; m.lab.style.top = ((st.cy + 14) / 360 * 100) + '%';
-      pts.push(`${st.cx.toFixed(1)},${st.cy.toFixed(1)}`);
+      m.pin.x = st.cx + 11; m.pin.y = st.cy + 14; place(m.pin);
+      pts.push(`${st.cx.toFixed(1)},${st.cy.toFixed(1)}`); sx += st.cx; sy += st.cy; c++; top = Math.min(top, st.cy);
     }
     mineLn.setAttribute('points', pts.length > 1 ? pts.join(' ') : '');
+    titlePin.el.textContent = c > 1 ? `「${state.mineName || '내 별자리'}」` : ''; titlePin.el.hidden = c < 2;
+    if (c > 1) { titlePin.x = sx / c; titlePin.y = top - 22; place(titlePin); }
   }
+  /* 망원경 — 키우면 보이는 별 이름(가운데에서 가까운 28개까지) */
+  const zl = [];
+  function zoomLabels() {
+    let used = 0;
+    if (vb.w <= 360 / 1.7) {
+      const mx = vb.x + vb.w / 2, my = vb.y + vb.w / 2;
+      const cand = stars.filter(st => st.cx >= vb.x && st.cx <= vb.x + vb.w && st.cy >= vb.y && st.cy <= vb.y + vb.w && !state.mine.has(st.n) && !reals.some(r => r.n === st.n))
+        .sort((a, b) => Math.hypot(a.cx - mx, a.cy - my) - Math.hypot(b.cx - mx, b.cy - my));
+      for (const st of cand.slice(0, 28)) { let z = zl[used]; if (!z) { z = {el: ov(box, [360, 360], 0, 0, '', 'start zl'), x: 0, y: 0}; zl.push(z); } z.el.textContent = st.n; z.el.hidden = false; z.x = st.cx + 6 * vb.w / 360 + 1; z.y = st.cy - 8 * vb.w / 360; place(z); used++; }
+    }
+    for (let j = used; j < zl.length; j++) zl[j].el.hidden = true;
+  }
+  function relayout() { pins.forEach(place); for (const m of mineEl.values()) place(m.pin); if (!titlePin.el.hidden) place(titlePin); zoomLabels(); }
+  const zk = h('span', {class: 'zk'});
+  function applyView() {
+    vb.w = Math.max(90, Math.min(360, vb.w)); vb.x = Math.max(0, Math.min(360 - vb.w, vb.x)); vb.y = Math.max(0, Math.min(360 - vb.w, vb.y));
+    svg.setAttribute('viewBox', `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.w.toFixed(2)}`);
+    fig.classList.toggle('zoomed', vb.w < 359); zk.textContent = vb.w < 359 ? `망원경 ${(360 / vb.w).toFixed(1).replace(/\.0$/, '')}배 · 끌어서 옮겨요` : '망원경 · 두 번 누르면 커져요';
+    relayout();
+  }
+  function zoomAt(px, py, factor) { const nw = Math.max(90, Math.min(360, vb.w / factor)); vb.x = px - (px - vb.x) * nw / vb.w; vb.y = py - (py - vb.y) * nw / vb.w; vb.w = nw; applyView(); }
   const lens = h('div', {class: 'lens', 'aria-live': 'polite'}); lens.hidden = true;
   const btn = h('button', {type: 'button', class: 'btn solid play'}, '▶ 엿새 돌려 보기');
   const rng = h('input', {type: 'range', id: 'sky-day', min: 0, max: 500, step: 1, value: 500, 'aria-label': '며칠째 하늘인지 고르기'});
   const lab = h('span', {class: 'daylab'});
-  const days = D.days6 || [];
+  const days = D.days6 || [], YR = D.year && D.year.inds && Array.isArray(D.year.dates) ? D.year : null;
+  /* 길 둘 — 「1년」 = 닷새마다 한 장(51장) · 「엿새」 = 마지막 엿새(6장) */
+  let mode = YR ? 'y' : '6';
+  const frames = () => (mode === 'y' ? YR.dates.length : 6), last = () => frames() - 1;
+  const track = st => (mode === 'y' && YR.inds[st.n] ? YR.inds[st.n] : st.i.t);
+  const posT = (t, f, i) => { if (!Array.isArray(t) || t.length < 2) return [i.x, i.y]; const k = Math.max(0, Math.min(t.length - 2, Math.floor(f))), u = Math.max(0, Math.min(1, f - k)); return [t[k][0] + (t[k + 1][0] - t[k][0]) * u, t[k][1] + (t[k + 1][1] - t[k][1]) * u]; };
+  const zoneOfAt = (st, f, x, y) => { const k = Math.round(f); if (Math.abs(f - k) < 1e-6) { const zs = mode === 'y' ? YR.zs && YR.zs[st.n] : st.i.tz; const z = zs && zs[k]; if (z) return z; } return zoneAt(x, y); };
+  const monthPin = {el: ov(box, [360, 360], 0, 0, '', 'mid month'), x: 180, y: 196};
+  pins.push(monthPin);
   let f = 5, raf = 0, timer = 0, trailsOn = false;
   function setDay(v) {
-    f = Math.max(0, Math.min(5, v));
+    f = Math.max(0, Math.min(last(), v));
+    const tail = mode === 'y' ? 2.6 : 1.2, stepT = mode === 'y' ? 0.3 : 0.15;
     for (const st of stars) {
-      const [x, y] = posAt(st.i, f); st.cx = X(x); st.cy = Y(y);
+      const t = track(st), [x, y] = posT(t, f, st.i); st.cx = X(x); st.cy = Y(y);
       st.el.setAttribute('cx', st.cx.toFixed(1)); st.el.setAttribute('cy', st.cy.toFixed(1));
-      const z = zoneAt(x, y); if (z !== st.z) { st.z = z; st.el.setAttribute('class', 'st ' + z); }
-      if (st.ring) { st.ring.setAttribute('cx', st.cx.toFixed(1)); st.ring.setAttribute('cy', st.cy.toFixed(1)); st.ring.setAttribute('visibility', f > 4.5 ? 'visible' : 'hidden'); }
-      if (trailsOn) { const pts = []; for (let g = Math.max(0, f - 1.2); g < f - 0.01; g += 0.15) { const [a, b] = posAt(st.i, g); pts.push(`${X(a).toFixed(1)},${Y(b).toFixed(1)}`); } pts.push(`${st.cx.toFixed(1)},${st.cy.toFixed(1)}`); st.tr.setAttribute('points', pts.join(' ')); }
+      const z = zoneOfAt(st, f, x, y); if (z !== st.z) { st.z = z; st.el.setAttribute('class', 'st ' + z); }
+      if (st.ring) { st.ring.setAttribute('cx', st.cx.toFixed(1)); st.ring.setAttribute('cy', st.cy.toFixed(1)); st.ring.setAttribute('visibility', f > last() - 0.5 ? 'visible' : 'hidden'); }
+      if (trailsOn) { const pts = []; for (let g = Math.max(0, f - tail); g < f - 0.01; g += stepT) { const [a, b] = posT(t, g, st.i); pts.push(`${X(a).toFixed(1)},${Y(b).toFixed(1)}`); } pts.push(`${st.cx.toFixed(1)},${st.cy.toFixed(1)}`); st.tr.setAttribute('points', pts.join(' ')); }
     }
-    for (const r of reals) { const [x, y] = posAt(r.i, f), dx = X(x) - r.cx, dy = Y(y) - r.cy; r.g.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); r.lab.style.left = ((r.cx + dx + (r.right ? 16 : -16)) / 360 * 100) + '%'; r.lab.style.top = ((r.cy + dy - 18) / 360 * 100) + '%'; }
-    const k = Math.round(f); lab.textContent = days[k] ? kshort(days[k]) : ''; rng.value = String(Math.round(f * 100));
+    const kk = Math.round(f), ds = mode === 'y' ? YR.dates[kk] : days[kk];
+    monthPin.el.textContent = mode === 'y' && ds ? `${Number(ds.slice(5, 7))}월` : ''; monthPin.el.hidden = mode !== 'y';
+    for (const r of reals) { const [x, y] = posT(mode === 'y' && YR.inds[r.n] ? YR.inds[r.n] : r.i.t, f, r.i), dx = X(x) - r.cx, dy = Y(y) - r.cy; r.g.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); r.pin.x = r.cx + dx + (r.right ? 16 : -16); r.pin.y = r.cy + dy - 18; }
+    lab.textContent = ds ? (mode === 'y' ? kdate(ds) : kshort(ds)) : ''; rng.max = String(last() * 100); rng.value = String(Math.round(f * 100));
     if (sel.getAttribute('visibility') === 'visible' && sel._st) { sel.setAttribute('cx', sel._st.cx.toFixed(1)); sel.setAttribute('cy', sel._st.cy.toFixed(1)); }
     if (mineEl.size || state.mine.size) drawMine();
+    relayout();
   }
   let fadeT = 0, auto = MOVE(), visible = true, hold = 0, mt = 0;
   const fadeTrails = () => { clearTimeout(fadeT); fadeT = setTimeout(() => trails.classList.add('off'), 900); };
   const showTrails = () => { clearTimeout(fadeT); trails.classList.remove('off'); trailsOn = true; };
   const stopAll = () => { if (raf) cancelAnimationFrame(raf); if (timer) clearTimeout(timer); clearTimeout(hold); raf = 0; timer = 0; hold = 0; };
   const setBtn = () => { btn.textContent = auto ? '■ 멈추기' : '▶ 하늘 돌리기'; };
-  function runTo(target, speed, done) { // speed = 하루에 몇 초가 아니라 1초에 며칠
+  function runTo(target, speed, done) {
     let last = performance.now();
     const step = now => {
       const d = Math.min(0.1, (now - last) / 1000) * speed; last = now;
@@ -746,12 +861,13 @@ function liveSky() {
     };
     raf = requestAnimationFrame(step);
   }
-  function cycle() { // 되감기(꼬리 없이 빠르게) → 엿새 돌기(꼬리별) → 마지막 날에서 잠깐 멈춤 → 다시
+  function cycle() {
     stopAll(); if (!auto || !visible) return;
     trailsOn = false; trails.classList.add('off');
-    runTo(0, 3.4, () => { showTrails(); runTo(5, 1.05, () => { fadeTrails(); hold = setTimeout(cycle, 2600); }); });
+    const Y1 = mode === 'y';
+    runTo(0, Y1 ? 22 : 3.4, () => { showTrails(); runTo(last(), Y1 ? 3.2 : 1.05, () => { fadeTrails(); hold = setTimeout(cycle, 2800); }); });
   }
-  function stepOnce() { stopAll(); if (f >= 4.999) setDay(0); showTrails(); const tick = () => { setDay(Math.floor(f + 1e-6) + 1); if (f < 5) timer = setTimeout(tick, 800); else { timer = 0; fadeTrails(); } }; timer = setTimeout(tick, 400); }
+  function stepOnce() { stopAll(); if (f >= last() - 0.001) setDay(0); showTrails(); const tick = () => { setDay(Math.floor(f + 1e-6) + 1); if (f < last()) timer = setTimeout(tick, mode === 'y' ? 260 : 800); else { timer = 0; fadeTrails(); } }; timer = setTimeout(tick, 400); }
   btn.addEventListener('click', () => { if (!MOVE()) { stepOnce(); return; } auto = !auto; setBtn(); if (auto) cycle(); else { stopAll(); fadeTrails(); } });
   rng.addEventListener('input', () => { auto = false; setBtn(); stopAll(); showTrails(); setDay(Number(rng.value) / 100); fadeTrails(); });
   let io = null;
@@ -770,19 +886,66 @@ function liveSky() {
     SND.star();
     lens.hidden = false; lens.classList.remove('pop'); void lens.offsetWidth; lens.classList.add('pop');
   }
+  /* 손가락 — 한 손가락으로 끌면 옮김(키웠을 때) · 두 손가락으로 벌리면 키움 · 두 번 누르면 키움 · 끈 뒤의 누름은 버림 */
+  const toSvg = (cx, cy) => { const m = svg.getScreenCTM(); const pt = svg.createSVGPoint(); pt.x = cx; pt.y = cy; return m ? pt.matrixTransform(m.inverse()) : {x: 180, y: 180}; };
+  const ptrs = new Map(); let gest = null, moved = 0, lastTap = {t: 0, x: 0, y: 0};
+  svg.addEventListener('pointerdown', e => {
+    ptrs.set(e.pointerId, {x: e.clientX, y: e.clientY}); if (ptrs.size === 1) moved = 0;
+    if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; gest = {d: Math.hypot(a.x - b.x, a.y - b.y) || 1, w: vb.w}; }
+    else gest = {px: e.clientX, py: e.clientY, x: vb.x, y: vb.y};
+    if (vb.w < 359 || ptrs.size === 2) { try { svg.setPointerCapture(e.pointerId); } catch (err) { /* 없음 */ } }
+  });
+  svg.addEventListener('pointermove', e => {
+    if (!ptrs.has(e.pointerId)) return;
+    ptrs.set(e.pointerId, {x: e.clientX, y: e.clientY});
+    if (ptrs.size === 2 && gest && gest.d) { const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), mid = toSvg((a.x + b.x) / 2, (a.y + b.y) / 2); zoomAt(mid.x, mid.y, vb.w / (gest.w * gest.d / Math.max(10, d))); moved = 99; return; }
+    if (ptrs.size === 1 && gest && gest.px != null && vb.w < 359) {
+      const dx = e.clientX - gest.px, dy = e.clientY - gest.py, u = vb.w / (svg.getBoundingClientRect().width || 1);
+      moved = Math.max(moved, Math.abs(dx) + Math.abs(dy)); vb.x = gest.x - dx * u; vb.y = gest.y - dy * u; applyView();
+    }
+  });
+  const up = e => {
+    ptrs.delete(e.pointerId);
+    if (ptrs.size === 1) { const [a] = [...ptrs.values()]; gest = {px: a.x, py: a.y, x: vb.x, y: vb.y}; } else if (!ptrs.size) gest = null;
+    if (e.type === 'pointerup' && moved < 8 && !ptrs.size) {
+      const now = performance.now();
+      if (now - lastTap.t < 320 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 34) { const p = toSvg(e.clientX, e.clientY); zoomAt(p.x, p.y, vb.w <= 100 ? 1 / 4 : 2); lastTap.t = 0; SND.tick(); }
+      else lastTap = {t: now, x: e.clientX, y: e.clientY};
+    }
+  };
+  svg.addEventListener('pointerup', up); svg.addEventListener('pointercancel', up);
+  svg.addEventListener('click', e => { if (moved > 8) { e.preventDefault(); e.stopPropagation(); } }, true);
+  svg.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); const p = toSvg(e.clientX, e.clientY); zoomAt(p.x, p.y, e.deltaY < 0 ? 1.15 : 1 / 1.15); }, {passive: false});
   svg.addEventListener('click', e => {
-    const m = svg.getScreenCTM(); if (!m) return;
-    const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(m.inverse());
-    let best = null, bd = 20 * 20;
+    const p = toSvg(e.clientX, e.clientY), r = 20 * vb.w / (svg.getBoundingClientRect().width || 360);
+    let best = null, bd = r * r;
     for (const st of stars) { const dx = st.cx - p.x, dy = st.cy - p.y, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = st; } }
     if (best) { e.preventDefault(); e.stopPropagation(); showLens(best); }
+    else if (vb.w < 359) { e.preventDefault(); e.stopPropagation(); } // 키운 동안 빈 곳 누름은 자리 목록으로 안 감
   });
-  setDay(5); setBtn();
+  const zIn = h('button', {type: 'button', class: 'btn', 'aria-label': '하늘 키우기', onclick: () => { const c = sel._st ? {x: sel._st.cx, y: sel._st.cy} : {x: vb.x + vb.w / 2, y: vb.y + vb.w / 2}; zoomAt(c.x, c.y, 1.8); }}, '＋');
+  const zOut = h('button', {type: 'button', class: 'btn', 'aria-label': '하늘 줄이기', onclick: () => zoomAt(vb.x + vb.w / 2, vb.y + vb.w / 2, 1 / 1.8)}, '－');
+  const zRs = h('button', {type: 'button', class: 'btn rs', onclick: () => { vb.x = 0; vb.y = 0; vb.w = 360; applyView(); }}, '원래대로');
+  const cap = h('p', {class: 'cap'});
+  const segB = {};
+  const setMode = m => {
+    if (m === mode && segB[m] && segB[m].getAttribute('aria-pressed') === 'true') return;
+    stopAll(); mode = m; trailsOn = false; trails.classList.add('off');
+    for (const [k, b] of Object.entries(segB)) b.setAttribute('aria-pressed', k === mode ? 'true' : 'false');
+    for (const r of reals) if (r.tl) r.tl.setAttribute('visibility', mode === 'y' ? 'hidden' : 'visible');
+    cap.textContent = mode === 'y' ? `${kdate(YR.dates[0])}부터 ${kdate(YR.dates[YR.dates.length - 1])}까지, 닷새마다 한 장이에요. 업종들이 달처럼 차고 기울어요.` : `${days[0] ? kshort(days[0]) : '엿새 전'}부터 ${days[5] ? kshort(days[5]) : '오늘'}까지 별들이 돈 길이에요.`;
+    setDay(last());
+    if (auto) hold = setTimeout(cycle, 700);
+  };
+  const seg = YR ? h('div', {class: 'seg2', role: 'group', 'aria-label': '돌려 볼 길이'}, ...[['y', '1년'], ['6', '엿새']].map(([k, t]) => (segB[k] = h('button', {type: 'button', 'aria-pressed': k === mode ? 'true' : 'false', onclick: () => { setMode(k); SND.tick(); }}, t)))) : null;
+  for (const r of reals) if (r.tl) r.tl.setAttribute('visibility', mode === 'y' ? 'hidden' : 'visible');
+  cap.textContent = mode === 'y' ? `${kdate(YR.dates[0])}부터 ${kdate(YR.dates[YR.dates.length - 1])}까지, 닷새마다 한 장이에요. 업종들이 달처럼 차고 기울어요.` : `${days[0] ? kshort(days[0]) : '엿새 전'}부터 ${days[5] ? kshort(days[5]) : '오늘'}까지 별들이 돈 길이에요.`;
+  setDay(last()); setBtn(); applyView();
   if (auto) hold = setTimeout(cycle, intro ? 2300 : 900);
   // 화면에 붙은 뒤에 지켜봄(붙기 전에 보면 「안 보임」 한 번만 오고 끝남 — 2026-10-20 시험에서 하늘이 안 돌던 까닭)
   if ('IntersectionObserver' in window) setTimeout(() => { if (!fig.isConnected) return; io = new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible && auto && !raf && !hold) cycle(); }, {threshold: 0.15}); io.observe(fig); }, 0);
-  const bar = h('div', {class: 'timebar'}, h('div', {class: 'tb-row'}, btn, lab), rng, h('p', {class: 'cap'}, `${days[0] ? kshort(days[0]) : '엿새 전'}부터 ${days[5] ? kshort(days[5]) : '오늘'}까지 별들이 돈 길을 되풀이해 보여 줘요.`));
-  return h('div', {class: 'block'}, fig, bar, lens, h('p', {class: 'cap center'}, '점 하나가 업종 하나예요. 별을 누르면 이름이 나와요.'));
+  const bar = h('div', {class: 'timebar'}, h('div', {class: 'tb-row'}, btn, seg, h('span', {class: 'grow1'}), lab), rng, cap, h('div', {class: 'zbar'}, zk, zOut, zIn, zRs));
+  return h('div', {class: 'block'}, fig, bar, lens, h('p', {class: 'cap center'}, '점 하나가 업종 하나예요. 별을 누르면 이름이 나와요. 별똥별이 지나가면 눌러 잡아 보세요.'));
 }
 
 /* ── 공통 끝 줄 ── */
@@ -825,6 +988,14 @@ function recordBox() {
     h('p', {class: 'cap'}, '그래서 돌이는 앞날을 맞히지 않아요. 지난 기록만 보여 줘요.'));
 }
 
+/* 내 별자리 이름 — 하늘 위에 「이름」으로 뜸 · 이 화면에만 */
+function mineName() {
+  const inp = h('input', {id: 'mine-name', type: 'text', maxlength: 14, autocomplete: 'off', placeholder: '예: 겨울 바다', value: state.mineName});
+  inp.addEventListener('input', () => { state.mineName = inp.value.trim(); });
+  inp.addEventListener('change', () => { toast(state.mineName ? `「${state.mineName}」 별자리가 됐어요` : '이름을 지웠어요'); render(true, true); });
+  return h('div', {class: 'mname'}, h('label', {for: 'mine-name'}, '내 별자리 이름 붙이기'), inp);
+}
+const eun = w => w + (jong(w) ? '은' : '는');
 /* ── 쪽 ── */
 function pHome() {
   const real = realList(), fresh = freshList(), total = allInd().length;
@@ -846,8 +1017,9 @@ function pHome() {
     h('nav', {class: 'rows', 'aria-label': '달 자리'},
       go1('z:S:new', 'row', moonSvg('wax', 'mi', 0.18), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '새로 차오른 곳'), h('span', {class: 'meta'}, '오늘 차오르는 달 자리에 들어왔어요')), h('span', {class: 'end'}, cnt(fresh.length), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
       go1('z:S', 'row', moonSvg('wax', 'mi', 0.4), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '차오르는 곳 모두'), h('span', {class: 'meta'}, '네 별이 많이 켜진 순서')), h('span', {class: 'end'}, cnt(D.count.S), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+      go1('quiz', 'row', s('svg', {viewBox: '0 0 40 40', class: 'mi', 'aria-hidden': 'true'}, sparkle(20, 20, 15, 'real')), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '하늘 퀴즈'), h('span', {class: 'meta'}, '다섯 문제로 하늘 읽기')), h('span', {class: 'end'}, cnt(5), '문제'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
       go1('zones', 'row', moonSvg('full'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '하늘 전체'), h('span', {class: 'meta'}, '차오름 · 보름 · 기우는 중 · 그믐')), h('span', {class: 'end'}, cnt(total), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))),
-    state.mine.size ? h('section', {class: 'block'}, h('p', {class: 'eyebrow'}, `내 별자리 · ${state.mine.size}곳 · 하늘에 점선으로 이어져요`), h('nav', {class: 'rows'}, [...state.mine].filter(n => D.inds[n]).map(n => go1('i:' + n, 'row', moonOf(D.inds[n]), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, ZN[D.inds[n].z].name)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))) : h('p', {class: 'cap center'}, '별을 눌러 「내 하늘에 담기」를 하면 하늘에 내 별자리가 생겨요.'),
+    state.mine.size ? h('section', {class: 'block'}, h('p', {class: 'eyebrow'}, `내 별자리 · ${state.mine.size}곳 · 하늘에 점선으로 이어져요`), mineName(), h('nav', {class: 'rows'}, [...state.mine].filter(n => D.inds[n]).map(n => go1('i:' + n, 'row', moonOf(D.inds[n]), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, ZN[D.inds[n].z].name)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))) : h('p', {class: 'cap center'}, '별을 눌러 「내 하늘에 담기」를 하면 하늘에 내 별자리가 생겨요.'),
     quizBox(),
     next('처음이면 · 일곱 장면', '돌이 하늘 읽는 법', 'how:0'),
     safe(),
@@ -898,6 +1070,32 @@ function figDipperShow() {
   ov(f, [300, 180], DIP[6][0] + 16, DIP[6][1] - 20, '7 흔들림', 'start dim');
   return f;
 }
+/* 네 별 켜 보기 — 별을 하나씩 누르면 켜짐(기록이 참이면 금빛 · 아니면 흔들리고 꺼진 채) · 한꺼번에 켜 보기도 */
+function kiteGame(dots, detail) {
+  const fig = h('figure', {class: 'kgame'}); const svg = s('svg', {viewBox: '0 0 360 150', class: 'kite', 'aria-hidden': 'true'}); fig.append(svg);
+  const P = [[60, 96], [145, 46], [225, 84], [305, 40]], lines = [], glows = [], stars = [];
+  for (let k = 0; k < 3; k++) { const l = s('line', {x1: P[k][0], y1: P[k][1], x2: P[k + 1][0], y2: P[k + 1][1], class: 'kl dim'}); svg.append(l); lines.push(l); }
+  P.forEach(([x, y], k) => { const gl = s('circle', {cx: x, cy: y, r: 20, class: 'kg', visibility: 'hidden'}); const st = sparkle(x, y, 13, 'ks'); svg.append(gl, st); glows.push(gl); stars.push(st); ov(fig, [360, 150], x, y + 36, String(k + 1), 'mid dim'); });
+  const shown = [false, false, false, false], total = dots.filter(Boolean).length;
+  const items = DOT_TEXT.map((t, k) => h('li', {class: 'hid'}, h('span', {class: 'k'}, k + 1), h('span', {class: 'tx'}, h('b', {}, t), h('span', {}, '별을 눌러 켜 보세요'))));
+  const sum = h('p', {class: 'sub', 'aria-live': 'polite'}, '별을 하나씩 눌러 켜 보세요.');
+  const btns = [];
+  const reveal = k => {
+    if (shown[k]) return; shown[k] = true;
+    const on = !!dots[k], li = items[k];
+    li.className = on ? 'on' : 'offk'; li.querySelector('.tx span').textContent = (on ? '켜졌어요 · ' : '아직 꺼져 있어요 · ') + detail[k];
+    stars[k].setAttribute('class', 'ks ' + (on ? 'lit' : 'nope')); if (on) glows[k].setAttribute('visibility', 'visible');
+    if (on) SND.star(); else SND.pick('r');
+    for (let j = 0; j < 3; j++) if (shown[j] && shown[j + 1] && dots[j] && dots[j + 1]) lines[j].setAttribute('class', 'kl lit');
+    btns[k].setAttribute('aria-pressed', 'true');
+    const n = shown.filter(Boolean).length;
+    sum.textContent = n < 4 ? `${n}개 눌렀어요. 남은 별도 눌러 봐요.` : total === 4 ? '네 별이 다 켜졌어요. 진짜 차오름이에요.' : `네 별 가운데 ${total}개가 켜졌어요.`;
+    if (n === 4 && total === 4) setTimeout(() => SND.chime(), 300);
+  };
+  P.forEach(([x, y], k) => { const b = h('button', {type: 'button', class: 'kbtn', 'aria-pressed': 'false', 'aria-label': `${k + 1}번 별 켜 보기 · ${DOT_TEXT[k]}`, onclick: () => reveal(k)}); b.style.left = (x / 360 * 100) + '%'; b.style.top = (y / 150 * 100) + '%'; fig.append(b); btns.push(b); });
+  const all = h('button', {type: 'button', class: 'btn', onclick: () => { let j = 0; [0, 1, 2, 3].forEach(k => { if (!shown[k]) setTimeout(() => reveal(k), (j++) * 420); }); }}, '한꺼번에 켜 보기');
+  return [fig, sum, h('ul', {class: 'cond'}, items), h('div', {class: 'btns'}, all)];
+}
 function kiteFigure(dots, opt = {}) {
   const fig = h('figure', {}); const svg = s('svg', {viewBox: '0 0 360 150', class: 'kite' + (opt.seq ? ' seq' : ''), 'aria-hidden': 'true'}); fig.append(svg);
   const P = [[60, 96], [145, 46], [225, 84], [305, 40]];
@@ -937,7 +1135,7 @@ function pHow(k) {
   return [
     h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, `돌이 하늘 읽는 법 · ${k + 1} / ${SCENES.length}`), h('div', {class: 'sdots', 'aria-hidden': 'true'}, SCENES.map((_, j) => h('i', {class: j <= k ? 'on' : ''})))),
     h('section', {class: 'scene show'}, h('span', {class: 'no'}, ['하나', '둘', '셋', '넷', '다섯', '여섯', '일곱'][k]), h('h2', {}, S.t), S.fig(), body),
-    last ? next('다 봤어요', '오늘 하늘 보러 가기', 'home', false, true) : next('다음 장면', SCENES[k + 1].t, 'how:' + (k + 1)),
+    last ? next('다 봤어요 · 이제 풀어 볼까', '하늘 퀴즈 다섯 문제', 'quiz') : next('다음 장면', SCENES[k + 1].t, 'how:' + (k + 1)),
     k > 0 ? h('div', {class: 'btns'}, h('button', {type: 'button', class: 'btn', onclick: prev}, '‹ 앞 장면')) : null,
     safe(),
   ];
@@ -987,15 +1185,13 @@ function pInd(n) {
   const big = (M && M.big) || [], top = ((M && M.top) || []).filter(t => !big.some(b => b[0] === t[0])).sort((p, q) => p[1].localeCompare(q[1], 'ko'));
   const coRow = ([c, nm, d10, l]) => (D.co[c] ? go1 : (r, cl, ...k) => h('div', {class: cl + ' static'}, ...k))('c:' + c, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, nm), h('span', {class: 'meta'}, '열흘 ', h('b', {class: cls3(d10)}, pct(d10)))), spark(l, d10), D.co[c] ? h('i', {class: 'go', 'aria-hidden': 'true'}, '›') : null);
   const lead = big[0] || top[0];
-  if (MOVE()) { const ids = dots.map((d, k) => (d ? setTimeout(() => SND.star(), Math.round((0.3 + k * 0.45) * 1000 + 250)) : 0)); state.cleanup.push(() => ids.forEach(clearTimeout)); }
   return [
     steps(2),
     h('div', {class: 'block'}, h('div', {class: 'chips'}, h('span', {class: 'chip' + (z === 'S' ? ' wax' : '')}, moonOf(i, 'mi s'), ZN[z].short, z === 'S' ? (i.d === 1 ? ' · 오늘부터' : ` · ${i.d}일째`) : '')), h('h1', {class: 't'}, n), i.gn ? h('p', {class: 'cap'}, i.gn) : null, h('div', {class: 'btns'}, mineBtn(n))),
     h('section', {class: 'block'},
       h('h2', {class: 'q'}, z === 'S' ? '왜 차오른다고 볼까?' : '네 별은 몇 개 켜졌을까?'),
-      kiteFigure(dots, {seq: true}),
-      h('ul', {class: 'cond'}, DOT_TEXT.map((t, k) => h('li', {class: dots[k] ? 'on' : ''}, h('span', {class: 'k'}, k + 1), h('span', {class: 'tx'}, h('b', {}, t), h('span', {}, detail[k]))))),
-      h('p', {class: 'sub'}, on === 4 ? '네 별이 다 켜졌어요.' : `네 별 가운데 ${on}개가 켜졌어요.`, z !== 'S' ? ' ' + ZN[z].line : ''),
+      ...kiteGame(dots, detail),
+      z !== 'S' ? h('p', {class: 'sub'}, ZN[z].line) : null,
       readBox('네 별 이야기', [`${ieyo(n)}. 지금 ${ZN[z].name} 자리예요.`, on === 4 ? '네 별이 다 켜졌어요.' : `네 별 가운데 ${on}개가 켜졌어요.`, ...DOT_TEXT.map((t, k) => `${k + 1}번 별, ${t}. ${dots[k] ? '켜졌어요.' : '아직 꺼져 있어요.'}`), '이 업종이 보름이 될지는 아무도 몰라요.'])),
     h('section', {class: 'block'}, h('h2', {class: 'q'}, '엿새 동안 어디를 지나왔을까?'), skyFigure({trailOf: n}), h('p', {class: 'cap'}, '점선이 엿새 동안 지나온 길이에요. 별 모양이 오늘 자리예요.')),
     big.length || top.length ? h('section', {class: 'block'}, h('h2', {class: 'q'}, '이 별자리의 별들'),
@@ -1257,6 +1453,44 @@ function capsuleBox() {
   };
   draw(); return box;
 }
+function skyQuestions() {
+  const S = D.order.S, B = D.order.B, Q = D.order.Q, real = realList(), lead = real[0] || S[0], li = D.inds[lead], total = allInd().length, qs = [];
+  const uniq = arr => [...new Set(arr)];
+  if (B.length && S.length > 1) { const b = B[0]; qs.push({q: '지금 보름달 자리에 있는 업종은 무엇일까요?', opts: uniq([b, S[1], Q[0] || S[2]]).sort((p, q) => p.localeCompare(q, 'ko')), ans: b, why: `${eun(b)} 한 달 동안 시장보다 ${pct(D.inds[b].x)} 더 올라 이미 꽉 찼어요.`, hl: [b]}); }
+  qs.push({q: '네 별이 다 켜진 진짜 차오름은 몇 곳일까요?', opts: uniq([0, 1, 3, 7, real.length]).sort((a, b) => a - b).slice(0, 4).map(v => v + '곳'), ans: real.length + '곳', why: real.length ? `${real.join(', ')} 한 곳뿐이에요. 하늘에서 반짝이는 별이에요.`.replace(' 한 곳뿐', real.length === 1 ? ' 한 곳뿐' : ` ${real.length}곳`) : '오늘은 네 별이 다 켜진 곳이 없어요.', hl: real});
+  if (li && Array.isArray(li.tz) && li.tz.length) qs.push({q: `엿새 전 ${eun(lead)} 어느 달 자리에 있었을까요?`, opts: ZORDER.map(z => ZN[z].name), ans: ZN[li.tz[0]].name, why: `엿새 동안 ${li.tz.map(z => ZN[z].short).join(' → ')} 길을 지났어요.`, hl: [lead]});
+  const c = D.count.S; qs.push({q: '차오르는 달 자리에는 업종이 몇 곳 있을까요?', opts: uniq([Math.max(1, Math.round(c * 0.3)), c, Math.round(c * 1.6), total]).sort((a, b) => a - b).map(v => v + '곳'), ans: c + '곳', why: `하늘 ${total}곳 가운데 ${c}곳이 차오르는 중이에요.`, hl: S});
+  qs.push({q: '보름달 자리 업종은 지금이 늘 좋은 때일까요?', opts: ['늘 좋아요', '늦을 수 있어요'], ans: '늦을 수 있어요', why: '보름달은 이미 모두가 봐요. 그래서 돌이는 차오르는 달을 먼저 보여 줘요.', hl: B});
+  return qs.slice(0, 5);
+}
+function pQuiz() {
+  const QZ = skyQuestions();
+  if (!state.sq || state.sq.n !== QZ.length) state.sq = {i: 0, picks: [], n: QZ.length};
+  const SQ = state.sq;
+  const dots = () => h('div', {class: 'sdots', 'aria-hidden': 'true'}, QZ.map((_, j) => h('i', {class: j < SQ.picks.length ? 'on' : ''})));
+  if (SQ.i >= QZ.length) {
+    const right = SQ.picks.filter((p, j) => p === QZ[j].ans).length;
+    if (!SQ.chimed) { SQ.chimed = true; setTimeout(() => SND.chime(), 300); }
+    return [
+      h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '하늘 퀴즈 · 끝'), dots(), h('h1', {class: 't'}, '하늘 퀴즈를 다 풀었어요'), h('p', {class: 'sub'}, '답을 한 번 더 볼까요? 점수는 없어요.')),
+      h('ul', {class: 'cond'}, QZ.map((q, j) => h('li', {class: ''}, h('span', {class: 'k'}, j + 1), h('span', {class: 'tx'}, h('b', {}, q.q), h('span', {}, `답 · ${q.ans}`))))),
+      h('p', {class: 'cap'}, '퀴즈는 지금 자리와 지난 기록만 물어요. 앞날은 돌이도 몰라요.'),
+      h('div', {class: 'btns'}, h('button', {type: 'button', class: 'btn solid', onclick: () => { state.sq = null; render(false); }}, '다시 풀기')),
+      next('다 풀었어요', '오늘 하늘 보러 가기', 'home', false, true),
+      safe(),
+    ];
+  }
+  const q = QZ[SQ.i], picked = SQ.picks.length > SQ.i ? SQ.picks[SQ.i] : null;
+  const choose = o => () => { if (picked != null) return; SQ.picks.push(o); if (o === q.ans) SND.star(); else SND.pick('r'); render(true, true); };
+  return [
+    h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, `하늘 퀴즈 · ${SQ.i + 1} / ${QZ.length}`), dots(), h('h1', {class: 'q'}, q.q)),
+    skyFigure({hl: picked != null ? q.hl : null, trailOf: picked != null && SQ.i === 2 ? (realList()[0] || D.order.S[0]) : null}),
+    h('div', {class: 'qopts', role: 'group', 'aria-label': q.q}, q.opts.map(o => h('button', {type: 'button', disabled: picked != null, class: picked == null ? '' : o === q.ans ? 'right' : o === picked ? 'wrong' : '', onclick: choose(o)}, h('span', {}, o), picked != null && o === q.ans ? h('i', {}, '맞아요') : picked != null && o === picked ? h('i', {}, '아니에요') : null))),
+    picked != null ? h('div', {class: 'reply', 'aria-live': 'polite'}, h('b', {}, picked === q.ans ? '맞았어요. ' : `답은 「${q.ans}」예요. `, q.why)) : h('p', {class: 'cap'}, '하나를 눌러요. 답을 고르면 하늘에 표시가 떠요.'),
+    picked != null ? next(SQ.i + 1 < QZ.length ? '다음 문제' : '다 풀었어요', SQ.i + 1 < QZ.length ? `${SQ.i + 2}번째 문제` : '몇 개 맞혔을까?', 'quiz') : null,
+    safe(),
+  ];
+}
 function pBack() {
   const L = state.lastWhy;
   return [
@@ -1304,11 +1538,13 @@ function pageFor(route) {
   if (k === 'why') return pWhy(a);
   if (k === 'back') return pBack();
   if (k === 'find') return pFind();
+  if (k === 'quiz') return pQuiz();
   return pHome();
 }
 const TAB = r => (r.startsWith('find') ? 'find' : r.startsWith('why') ? 'why' : r === 'back' ? 'back' : 'home');
 function render(keep, keepScroll, dir) {
   for (const f of state.cleanup.splice(0)) { try { f(); } catch (e) { /* 지움 */ } }
+  if (!keep) document.querySelectorAll('.factc').forEach(e => e.remove()); // 다른 쪽으로 가면 별똥별 카드는 접음
   const page = h('div', {class: 'page'}, pageFor(state.route));
   if (!keep) { page.classList.add('enter'); if (dir === 'deep') page.classList.add('deep'); if (dir === 'back') page.classList.add('back-in'); }
   [...page.children].forEach((c, k) => c.style.setProperty('--i', String(Math.min(k, 8))));
@@ -1322,6 +1558,7 @@ function render(keep, keepScroll, dir) {
   if (!keep) VIEW.focus({preventScroll: true});
 }
 function go(route, root) {
+  if (route === 'quiz' && state.route === 'quiz' && state.sq && state.sq.picks.length > state.sq.i) { state.sq.i += 1; SKY.warp(1); render(false, false, 'deep'); return; }
   const deeper = !root && route !== state.route;
   if (root) state.stack = []; else if (route !== state.route) state.stack.push(state.route);
   state.route = route; if (deeper) SKY.warp(1);
@@ -1369,12 +1606,12 @@ const SKY = (() => {
     const g = ctx.createRadialGradient(pole.x, pole.y, 0, pole.x, pole.y, 10); g.addColorStop(0, 'rgba(255,246,214,.95)'); g.addColorStop(1, 'rgba(255,246,214,0)');
     ctx.globalAlpha = 0.85; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(pole.x, pole.y, 10, 0, 6.2832); ctx.fill(); ctx.fillStyle = col;
     if (!MOVE()) return;
-    if (!met && now > nextMet) met = {x: W * (0.3 + Math.random() * 0.65), y: H * Math.random() * 0.4, vx: -(0.32 + Math.random() * 0.2), vy: 0.18 + Math.random() * 0.12, t0: now};
+    if (!met && now > nextMet) met = {x: W * (0.35 + Math.random() * 0.6), y: H * (0.08 + Math.random() * 0.4), vx: -(0.17 + Math.random() * 0.1), vy: 0.09 + Math.random() * 0.07, t0: now};
     if (met) {
-      const age = now - met.t0, life = 1100, x = met.x + met.vx * age, y = met.y + met.vy * age, L = 175;
+      const age = now - met.t0, life = 2000, x = met.x + met.vx * age, y = met.y + met.vy * age, L = 300; met.hx = x; met.hy = y;
       const gr = ctx.createLinearGradient(x, y, x - met.vx * L, y - met.vy * L); gr.addColorStop(0, 'rgba(255,244,220,.9)'); gr.addColorStop(1, 'rgba(255,244,220,0)');
       ctx.globalAlpha = Math.max(0, Math.min(1, age / 150, 1 - (age - life * 0.6) / (life * 0.4))); ctx.strokeStyle = gr; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - met.vx * L, y - met.vy * L); ctx.stroke(); ctx.strokeStyle = col;
-      if (age > life) { met = null; nextMet = now + 6000 + Math.random() * 9000; }
+      if (age > life) { met = null; nextMet = now + 5000 + Math.random() * 6000; }
     }
   }
   function loop(now) { raf = requestAnimationFrame(loop); if (now - lastDraw < (warp || met ? 14 : 33)) return; lastDraw = now; draw(now); }
@@ -1385,11 +1622,13 @@ const SKY = (() => {
   const still = () => { if (raf) cancelAnimationFrame(raf); raf = 0; met = null; warp = null; draw(performance.now()); };
   if (MOVE()) start();
   document.addEventListener('visibilitychange', () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else if (MOVE()) start(); });
-  return {warp(dir) { if (FULL()) warp = {dir, t0: performance.now()}; }, start, still};
+  return {warp(dir) { if (FULL()) warp = {dir, t0: performance.now()}; }, start, still, catchAt(x, y) { if (!met || met.hx == null) return false; if (Math.hypot(x - met.hx, y - met.hy) > 64) return false; met = null; nextMet = performance.now() + 5000; return true; }};
 })();
 /* 누른 자리에 빛 고리 하나(폭죽 아님 · 한 번 퍼지고 사라짐) */
 document.addEventListener('pointerdown', e => {
-  const t = e.target && e.target.closest ? e.target.closest('a, button, [role=link], .skyin svg, .chart') : null; if (!t) return;
+  const t = e.target && e.target.closest ? e.target.closest('a, button, input, label, [role=link], .skyin svg, .chart, .kgame') : null;
+  if (!t && MOVE() && SKY.catchAt(e.clientX, e.clientY)) { SND.chime(); const r = h('div', {class: 'tapring', 'aria-hidden': 'true'}); r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px'; document.body.append(r); setTimeout(() => r.remove(), 650); factCard(skyFact()); return; }
+  if (!t) return;
   SND.tick();
   if (!MOVE()) return;
   const r = h('div', {class: 'tapring', 'aria-hidden': 'true'}); r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px'; document.body.append(r); setTimeout(() => r.remove(), 650);
