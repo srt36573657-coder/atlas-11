@@ -1,9 +1,8 @@
 {
- "made": "2026-10-20T13:32:37.757Z",
+ "made": "2026-10-20T13:36:03.502Z",
  "policy": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
  "order": [
   "sun",
-  "sun-aia",
   "mercury",
   "venus",
   "earth",
@@ -20,49 +19,25 @@
    "name": "sun",
    "url": "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg",
    "credit": "NASA/SDO/HMI",
-   "bytes": 200796,
-   "sha256": "8ca6d7f1b029b62f6e1035432a630d91954c649390142d72fc822caaa0cc42e8",
+   "bytes": 201241,
+   "sha256": "719bb02654019824b817f98f359e17ea911865af0aafac566aa29763c438a412",
    "orig": [
     1024,
     1024
    ],
    "skyPct": 31.5,
-   "w96": 3120,
-   "w192": 6714,
+   "keep": "largest",
+   "w96": 2946,
+   "w192": 6238,
    "box": {
-    "left": 4,
+    "left": 34,
     "top": 34,
-    "width": 986,
-    "height": 972
+    "width": 956,
+    "height": 956
    },
    "center": [
-    497,
-    520
-   ],
-   "ok": true
-  },
-  {
-   "name": "sun-aia",
-   "url": "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0171.jpg",
-   "credit": "NASA/SDO/AIA",
-   "bytes": 187335,
-   "sha256": "3761437054bc0c347b6ad195336574a8f2608bdda6fce7919370d9c98c9ebf5b",
-   "orig": [
-    1024,
-    1024
-   ],
-   "skyPct": 31.3,
-   "w96": 4166,
-   "w192": 11914,
-   "box": {
-    "left": 0,
-    "top": 33,
-    "width": 1021,
-    "height": 977
-   },
-   "center": [
-    511,
-    522
+    512,
+    512
    ],
    "ok": true
   },
@@ -76,17 +51,18 @@
     720,
     486
    ],
-   "skyPct": 43.1,
-   "w96": 2962,
-   "w192": 8908,
+   "skyPct": 41.4,
+   "keep": "largest",
+   "w96": 3666,
+   "w192": 10612,
    "box": {
     "left": 67,
-    "top": 34,
-    "width": 293,
-    "height": 414
+    "top": 32,
+    "width": 596,
+    "height": 417
    },
    "center": [
-    214,
+    365,
     241
    ],
    "ok": true
@@ -102,8 +78,9 @@
     4096
    ],
    "skyPct": 36.3,
-   "w96": 4664,
-   "w192": 12942,
+   "keep": "some",
+   "w96": 4662,
+   "w192": 12944,
    "box": {
     "left": 80,
     "top": 80,
@@ -127,8 +104,9 @@
     2160
    ],
    "skyPct": 62.9,
-   "w96": 5030,
-   "w192": 14190,
+   "keep": "some",
+   "w96": 5016,
+   "w192": 14158,
    "box": {
     "left": 387,
     "top": 37,
@@ -152,8 +130,9 @@
     1041
    ],
    "skyPct": 24.8,
-   "w96": 3658,
-   "w192": 10176,
+   "keep": "some",
+   "w96": 3672,
+   "w192": 10166,
    "box": {
     "left": 0,
     "top": 0,
@@ -177,8 +156,9 @@
     6787
    ],
    "skyPct": 21.3,
-   "w96": 3610,
-   "w192": 9196,
+   "keep": "some",
+   "w96": 3614,
+   "w192": 9204,
    "box": {
     "left": 0,
     "top": 0,
@@ -193,26 +173,27 @@
   },
   {
    "name": "jupiter",
-   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia04/pia04866/PIA04866.jpg",
-   "credit": "NASA/JPL/Space Science Institute",
-   "bytes": 179416,
-   "sha256": "bcd8549b7bbcc0041309d0a35673a2329ee78dcecc4f06bfc86488434132f3cd",
+   "url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia02/pia02873/PIA02873.jpg",
+   "credit": "NASA/JPL/University of Arizona",
+   "bytes": 76676,
+   "sha256": "1e2142ad747dc3a1b105428e0f3224f658b1e4cd2752052753ca5518a4137a28",
    "orig": [
     1920,
-    2400
+    1080
    ],
-   "skyPct": 50.5,
-   "w96": 2512,
-   "w192": 6170,
+   "skyPct": 62.1,
+   "keep": "largest",
+   "w96": 3002,
+   "w192": 7348,
    "box": {
-    "left": 136,
-    "top": 63,
-    "width": 927,
-    "height": 1477
+    "left": 400,
+    "top": 40,
+    "width": 848,
+    "height": 829
    },
    "center": [
-    600,
-    802
+    824,
+    455
    ],
    "ok": true
   },
@@ -227,8 +208,9 @@
     4544
    ],
    "skyPct": 76.9,
-   "w96": 2538,
-   "w192": 5766,
+   "keep": "some",
+   "w96": 2516,
+   "w192": 5718,
    "box": {
     "left": 142,
     "top": 160,
@@ -252,8 +234,9 @@
     1000
    ],
    "skyPct": 59.6,
-   "w96": 2336,
-   "w192": 4802,
+   "keep": "largest",
+   "w96": 2332,
+   "w192": 4848,
    "box": {
     "left": 140,
     "top": 142,
@@ -277,17 +260,18 @@
     2185
    ],
    "skyPct": 45.4,
-   "w96": 2656,
-   "w192": 6240,
+   "keep": "some",
+   "w96": 2784,
+   "w192": 6600,
    "box": {
-    "left": 75,
-    "top": 72,
-    "width": 1484,
-    "height": 1415
+    "left": 91,
+    "top": 120,
+    "width": 1334,
+    "height": 1367
    },
    "center": [
-    817,
-    780
+    758,
+    804
    ],
    "ok": true
   },
@@ -302,8 +286,9 @@
     1080
    ],
    "skyPct": 73.8,
-   "w96": 3822,
-   "w192": 11252,
+   "keep": "some",
+   "w96": 3784,
+   "w192": 11248,
    "box": {
     "left": 451,
     "top": 95,
