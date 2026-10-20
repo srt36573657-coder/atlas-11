@@ -12,7 +12,7 @@
 //   잣대
 //     ① 390 × 844 · 처음 온 기기와 다시 온 기기 모두: 바탕 #FFFFFF · 다섯 칸이 아래 단추 위 한 화면 안 · 320 × 568 은 본질 카드와 찾기 칸까지
 //        ↳ 2026-10-19 다시 겨눔(사장님 16:06 「될듯 한걸 찾아주는거야 이게 돌이에 본질이야 … 이 본질이 중이이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」 · 원칙 85):
-//          맨 위 = 테마 시계(section.th-home) — 시계 그림이 한 화면 안(두 크기 모두) · 다섯 칸은 그 아래에 다 있어야 함 · 엄지 자리(찾기 칸 · 바로 가기 · 전부 보기)는 한 화면 안 그대로
+//          맨 위 = 테마 시계(section.th-home) — 시계 그림이 한 화면 안(두 크기 모두) · 다섯 칸은 그 아래에 다 있어야 함 · 엄지 자리(찾기 칸 · 바로 가기 · 전부 보기)는 한 화면 안 그대로 → 2026-10-21 02:29 「어」부터 찾기 칸 한 줄만 한 화면 안(아래로 읽으면 숨고 위로 밀면 다시)
 //          ② 글자 수 기준은 예전 칸들만 셈(테마 시계 칸 밖) · 테마 시계 칸은 따로 THEME_CHARS 자 아래
 //        첫 화면 원칙: 오르는 것(급등 · 오르는 업종)은 처음 화면에 안 보이고 누름 2번에 닿음 · 「전부 보기」는 한 줄에 하나씩(네모 칸 깔기 · 바둑판 0)
 //        시황 [data-w="news"] = 오른 곳(.up)과 내린 곳(.dn)을 함께 · 사실마다([data-fact]) 「왜 그럴까?」 단추 · 한 달 된 기록이 있으면 「그날 정한 대로 했어?」 한 줄
@@ -39,7 +39,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const BASEFILE = path.join(ROOT, 'config/atlas11/white-baseline.json');
 /* 돌 판(사장님 2026-10-19(싱가포르) 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3) — 바탕 먹 #080808 · 글 흰색 · 돌 그림(/media/stone/)은 허락한 그림(입체 · 그림자는 그 그림 파일 안에만 · 10:12 「다써」) */
 const BG = '#070B17', INK = '#FFFFFF'; // 우주 밤하늘(사장님 2026-10-20 20:27 「올려  우주」 · 잣대 색 4)
-const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'], THUMB = ['find', 'gdr', 'all'], THEME_CHARS = 200; // THUMB = 엄지 자리(한 화면 안) · THEME_CHARS = 테마 시계 칸 글자 한도(2026-10-19 잰 값 172자)
+const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'], THUMB = ['find'], THEME_CHARS = 200; // THUMB = 엄지 자리(한 화면 안) — 2026-10-21 02:29 사장님 「어」(02:11 「친구야  왜? 사 이창 … 너무 불편해」): 붙어 있는 것은 찾기 칸 한 줄만 · 바로 가기(gdr) · 전부 보기(all)는 화면 안 제자리(칸이 있는지는 BLOCKS 가 그대로 잼) · THEME_CHARS = 테마 시계 칸 글자 한도(2026-10-19 잰 값 172자)
 const TABS = ['오늘 장', '시황', '매매일지', '관심', '보유종목'];
 const R = {schema: 'golttori-check-white-1', at: new Date().toISOString(), base: MOCK ? null : base, mock: MOCK, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const fail = (what, why) => { R.counts.fail++; R.fails.push(`${what} — ${why}`); console.log('실패 ' + what + ' — ' + why); };

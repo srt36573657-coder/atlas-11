@@ -556,6 +556,24 @@ function evoLine() {
   fetch('/next/data/jinhwa.json', {credentials: 'omit'}).then(r => (r.ok ? r.json() : null)).then(J => { if (Number.isInteger(J?.n) && J.n > 0) { b.textContent = '진화 ' + num(J.n) + '번째'; const w = (J.applied ?? []).find(x => x?.score && !x.score.at); t.textContent = w ? '채점 전' : '보기'; } }).catch(() => {});
   return a;
 }
+/** 다시 나오는 엄지 칸(2026-10-21 02:29 「어」) — 아래로 24px 넘게 읽으면 숨고(s-away) · 위로 8px 밀면 다시 나옴 · 맨 위(120px 안) · 맨 아래(320px 안) ·
+ *  글 칸에 손이 가 있거나 찾은 줄이 떠 있으면 늘 보임 · 화면이 바뀌어 칸이 빠지면 듣기를 그만둠 · 움직임 줄이기면 미끄러짐 없이(stone.css) */
+function quickReturn(el) {
+  let last = scrollY, acc = 0;
+  const near = () => scrollY < 120 || innerHeight + scrollY > document.documentElement.scrollHeight - 320; // 맨 아래 320 안 = 칸이 제자리(바로 가기 위)에 와 있음 — 숨기면 바로 가기를 덮음
+  const busy = () => el.contains(document.activeElement) || !!el.querySelector('.w-hits:not([hidden])');
+  const on = () => {
+    if (!el.isConnected) { if (++on.gone > 2) removeEventListener('scroll', on); return; } on.gone = 0;
+    const y = scrollY, d = y - last; last = y;
+    if (near() || busy()) { el.classList.remove('s-away'); acc = 0; return; }
+    acc = (d > 0) === (acc > 0) ? acc + d : d;
+    if (acc > 24) el.classList.add('s-away'); else if (acc < -8) el.classList.remove('s-away');
+  };
+  on.gone = 0;
+  addEventListener('scroll', on, {passive: true});
+  el.addEventListener('focusin', () => el.classList.remove('s-away'));
+  return el;
+}
 async function vHomeAll() {
   /* 돌 판 첫 화면(사장님 2026-10-19 10:21 「1번으로 하자 그래서 전체 디자인을 해봐 … 돌이야」 · 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3/home)
      위에서 아래: 큰 제목 「왜 사?」 + 돌 그림 → 돌이 물음 한 줄 → 읽는 곳 셋(① 본질 ② 지난 기록 = 오늘 장 + 오른 곳 · 내린 곳 ③ 한 달 뒤 물어볼게요) → 진화 한 줄
@@ -576,8 +594,12 @@ async function vHomeAll() {
     ch(1, ess),
     ch(2, h('p', {class: 's-lbl'}, h('span', {class: 't', text: '지난 기록'})), band.el, newsBox(H)),
     ch(3, month ?? h('a', {class: 's-ghost', href: '#/why'}, h('span', {text: '한 달 뒤 물어볼게요'})), h('div', {class: 's-mem'}, ess.querySelector('.w-cnt'), h('span', {class: 's-dev', text: '이 기기에만'}))));
-  const thumb = h('div', {class: 's-thumb'}, findBox(), go4((C?.stop ?? 0) > 0), allBox(H, band)); // 엄지 자리 — 아래 단추 바로 위에 붙어 있음(stone.css sticky · 펼치면 풀림)
-  const nodes = [hd, say, theme, story, thumb, evoLine()]; // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
+  // 엄지 자리(사장님 2026-10-21 02:11 「친구야  왜? 사 이창 있잖아 너무 불편해 구글과 잡스라면 어떻게 개선할거야」 · 02:29 「어」) —
+  //   붙어 있는 것은 「친구야, 왜 사?」 한 줄만(잡스 · 하나만) · 바로 가기 넷 · 전부 보기는 화면 안 제자리(붙지 않음)
+  //   아래로 읽을 때는 그 한 줄도 숨고, 조금 위로 밀면 다시 나옴(구글 · 닐슨 노먼 그룹 2021 「다시 나오는 칸」) — quickReturn
+  const short = h('div', {class: 's-short'}, go4((C?.stop ?? 0) > 0), allBox(H, band));
+  const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
+  const nodes = [hd, say, theme, story, thumb, short, evoLine()]; // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
   return {title: '오늘 장', nodes};
 }
 
