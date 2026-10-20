@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-10-19T17:45:02Z",
+ "at": "2026-10-20T15:45:42Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "a58566c9ee090bc7ab62caa61cf099428175133d48416f0addfe76c97e07efd1",
-   "last": "2026-10-19"
+   "sha256": "4b1efd3de0caf8bdb01312e0d0b27fb7057c103876f07e8fa7e1fc1db8554945",
+   "last": "2026-10-20"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 843,
+   "n": 844,
    "first": "2023-04-28",
-   "last": "2026-10-19",
+   "last": "2026-10-20",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "5d47dec221083165a4d4ca933109c4e8c32f58a1d95901ca70f4a6330672caf1"
+   "sha256": "3191c45a7108278aa953e496a7664903147ee33acea090d1817a1a070dd46564"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "34c6799d1ad1cc7ee438c3d336234dc7dad85b623f9bb94ee742bb819235b5e9"
+   "sha256": "1279c5b35b0510e56213a6f870fbe58dafdd938505eddf183634bd90ecdc204b"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "589b4d37e34898affda898593d8589054f857baf55069bd83b74bc5525c603d7"
+   "sha256": "b7e644ff08dafb28bba148781e4db3e873283ff4f410272353ca02093aa066c5"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 842,
-  "day": "2026-10-19",
+  "k": 843,
+  "day": "2026-10-20",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1664,
-   "outThinQ": 11,
-   "outHalt": 3,
-   "outList": 8,
-   "listQ": 882,
-   "afterOut": 882,
-   "g1": 267,
-   "g2": 688,
-   "g3": 93,
-   "g4": 668,
-   "g5": 66,
+   "outThin": 1666,
+   "outThinQ": 14,
+   "outHalt": 5,
+   "outList": 7,
+   "listQ": 879,
+   "afterOut": 879,
+   "g1": 265,
+   "g2": 716,
+   "g3": 77,
+   "g4": 697,
+   "g5": 22,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 869,
+   "loss3": 867,
    "why": "lists"
   },
-  "loss3Years": 869,
+  "loss3Years": 867,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,27 +321,27 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-09-15",
-   "to": "2026-10-19",
+   "from": "2026-09-16",
+   "to": "2026-10-20",
    "n": 1,
    "counted": 1,
-   "up": 1,
+   "up": 0,
    "lo": 4,
    "hi": 6,
    "rows": [
     {
-     "code": "006730",
-     "name": "서부T&D",
+     "code": "014530",
+     "name": "극동유화",
      "lo": 4,
      "hi": 6,
-     "from": 11230,
-     "to": 12820,
-     "up": 1,
+     "from": 3365,
+     "to": 3320,
+     "up": 0,
      "mcCounts": [
-      950,
-      960,
-      1112,
-      1000
+      913,
+      941,
+      1186,
+      1008
      ],
      "mcEdges": [
       0,
@@ -400,10 +400,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1664,
-    3,
-    8,
-    882,
+    1666,
+    5,
+    7,
+    879,
     2557
    ]
   },
@@ -417,23 +417,23 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1664,
-  "outThinQ": 11,
-  "outHalt": 3,
-  "outList": 8,
-  "listQ": 882,
-  "afterOut": 882,
-  "g1": 267,
-  "g2": 688,
-  "g3": 93,
-  "g4": 668,
-  "g5": 66,
+  "outThin": 1666,
+  "outThinQ": 14,
+  "outHalt": 5,
+  "outList": 7,
+  "listQ": 879,
+  "afterOut": 879,
+  "g1": 265,
+  "g2": 716,
+  "g3": 77,
+  "g4": 697,
+  "g5": 22,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 869,
+  "loss3": 867,
   "why": "lists"
  },
  "compared": 2700,
@@ -443,9 +443,9 @@
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.6,
-  "build": 3.2,
-  "recount": 1.2,
-  "total": 7.2
+  "readBundle": 3.2,
+  "build": 3.3,
+  "recount": 1.3,
+  "total": 7.8
  }
 }
