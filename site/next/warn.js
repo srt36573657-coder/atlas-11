@@ -30,11 +30,15 @@ function settle(d) {
 }
 const widthOf = d => Math.round(d.getBoundingClientRect().width);
 const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(es => {
+  const todo = [];
   for (const e of es) {
     const d = e.target; if (!d.isConnected) { ro.unobserve(d); continue; } // 지난 화면의 칸
     const w = widthOf(d); if (!w || W.get(d) === w) continue; // 같은 폭 — 접고 펴서 높이만 바뀐 것
-    W.set(d, w); settle(d);
+    W.set(d, w); todo.push(d);
   }
+  // 접고 펴기는 다음 그림 때(rAF) — 알림 안에서 칸 높이를 바꾸면 아이폰 엔진이 「ResizeObserver loop completed with undelivered notifications」 오류를 냄
+  //   (2026-10-20 휴대폰 탐침 1c 일곱 단 — 아이폰 둘에서 4 ~ 7단 쪽 노란 경고 · p-past · p-grow 와 같은 방법)
+  if (todo.length) requestAnimationFrame(() => { for (const d of todo) if (d.isConnected) settle(d); });
 }) : null;
 /** 글꼴이 다 오면 모두 다시(폭은 같아도 글자 폭이 바뀜) */
 function settleAll() { for (const d of document.querySelectorAll('details.nw')) { if (!d.isConnected) continue; W.set(d, widthOf(d)); settle(d); } }
