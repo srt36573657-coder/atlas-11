@@ -1,17 +1,19 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-19T22:44:21.383Z",
+ "at": "2026-10-20T00:29:30.258Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 425,
-  "fail": 0
+  "pass": 424,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "다시 온 기기 ② 글자 수 — 107자 > 105자(기준 175의 60%)"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0024282158683907,
-   "chars": 169,
+   "chars": 171,
    "blocks": {
     "ess": 1657,
     "find": 728,
@@ -43,7 +45,7 @@
     true,
     true
    ],
-   "themeChars": 166,
+   "themeChars": 167,
    "theme": {
     "top": 232,
     "clockBottom": 547
@@ -64,7 +66,7 @@
   },
   "back": {
    "bodyLum": 0.0024282158683907,
-   "chars": 105,
+   "chars": 107,
    "blocks": {
     "ess": 1534,
     "find": 728,
@@ -96,7 +98,7 @@
     true,
     true
    ],
-   "themeChars": 166,
+   "themeChars": 167,
    "theme": {
     "top": 232,
     "clockBottom": 547
@@ -425,11 +427,11 @@
    }
   },
   "speed": {
-   "lcp": 2100,
-   "inp": 16,
-   "cls": 0.078
+   "lcp": 2132,
+   "inp": 24,
+   "cls": 0.089
   }
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
