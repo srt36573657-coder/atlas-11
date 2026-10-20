@@ -457,6 +457,10 @@ try {
     if (zone.length !== 1 || zone[0].href !== '#/t/sprout') fail('싹 칸 고리', tag + ' ' + JSON.stringify(zone));
     if (nums.length !== Math.min(3, r.rows.length) || JSON.stringify(nums.map(t => t.href).sort()) !== JSON.stringify([...r.rows].sort()) || nums.some(t => !['1', '2', '3'].includes(t.n))) fail('번호 셋 고리 = 아래 줄 셋', tag + ' ' + JSON.stringify(nums.map(t => [t.n, t.href])) + ' 줄 ' + JSON.stringify(r.rows));
     for (const t of nums) { const want = r.rows[+t.n - 1]; if (t.href !== want) fail('번호 차례 = 줄 차례', `${tag} ${t.n}번 ${t.href} ≠ ${want}`); }
+    { // 보이는 번호 가운데 · 위 · 아래 · 옆을 누르면 늘 제 고리(번호끼리 가까워도 옆 번호가 덮지 않음 · 2026-10-20 ① ③ 35 떨어짐)
+      const steal = await p.evaluate(() => { const out = []; for (const a of document.querySelectorAll('#view section.th-home svg.th-clock a.th-tapn')) { const c = a.querySelector('circle.th-nb'); c.scrollIntoView({block: 'center'}); const b = c.getBoundingClientRect(), mx = b.left + b.width / 2, my = b.top + b.height / 2, q = b.width * 0.35; for (const [dx, dy] of [[0, 0], [0, -q], [0, q], [-q, 0], [q, 0]]) { const hit = document.elementFromPoint(mx + dx, my + dy)?.closest('a'); if (hit !== a) out.push(a.querySelector('.th-nbt')?.textContent + ' ' + dx.toFixed(0) + ',' + dy.toFixed(0) + ' → ' + (hit?.querySelector?.('.th-nbt')?.textContent ?? hit?.getAttribute('href') ?? '없음')); } } return out; });
+      if (steal.length) fail('번호를 눌렀는데 옆 고리로 감', tag + ' ' + steal.slice(0, 4).join(' | '));
+    }
     const small = r.taps.filter(t => t.w < 48 || t.h < 48); if (small.length) fail('시계 누르는 자리 48px 아래(흰 판 새 단추)', tag + ' ' + JSON.stringify(small));
     if (en && (r.taps.some(t => /[가-힣]/.test(t.label ?? '') && !/^Open No\./.test(t.label ?? '')) || zone[0]?.label !== 'See all sprouts' || nums.some(t => !/^Open No\. \d: /.test(t.label ?? '')))) fail('시계 누르는 곳 영어 이름표', tag + ' ' + JSON.stringify(r.taps.map(t => t.label)));
     if (!en && (zone[0]?.label !== '싹 자리 전부 보기' || nums.some(t => !new RegExp('^' + t.n + '번 .+ 보기$').test(t.label ?? '')))) fail('시계 누르는 곳 이름표', tag + ' ' + JSON.stringify(r.taps.map(t => t.label)));

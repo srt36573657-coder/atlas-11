@@ -22,6 +22,23 @@ export function nextBtn(title, href, lead = '다음') {
 /** 있는 쪽 맨 아래 「다음」 한 줄(app.js flowFoot) — 가운데 맞춘 글 한 덩이(그 쪽 「글 시작 왼쪽 줄 셋」 규칙 [10] 7 에 줄을 더하지 않음) */
 export function footBtn(title, href) { return h('a', {class: 'th-next th-one', href}, h('span', {text: `다음 · ${title} ›`})); }
 /* ── 그림: 테마 시계(가로 = 한 달 동안 시장보다 더 오른 %p · 세로 = 지난 닷새 · 꽃 선 = 가로 5) ── */
+let HIT_SEQ = 0;
+/** 번호 하나의 누르는 칸 — (cx, cy) 둘레 네모(±r)를 다른 번호와의 가운데 선으로 자름(그 번호가 가장 가까운 곳) · 꼭짓점 목록 */
+function voronoiCell(cx, cy, r, others) {
+  let poly = [[cx - r, cy - r], [cx + r, cy - r], [cx + r, cy + r], [cx - r, cy + r]];
+  for (const o of others) {
+    const nx = o.cx - cx, ny = o.cy - cy, m = ((o.cx * o.cx + o.cy * o.cy) - (cx * cx + cy * cy)) / 2; // 남길 곳: nx·x + ny·y ≤ m
+    if (!nx && !ny) continue;
+    const side = ([x, y]) => nx * x + ny * y - m, out = [];
+    for (let j = 0; j < poly.length; j++) {
+      const P = poly[j], Q = poly[(j + 1) % poly.length], a = side(P), b = side(Q);
+      if (a <= 0) out.push(P);
+      if ((a < 0 && b > 0) || (a > 0 && b < 0)) { const t = a / (a - b); out.push([P[0] + (Q[0] - P[0]) * t, P[1] + (Q[1] - P[1]) * t]); }
+    }
+    poly = out; if (poly.length < 3) break;
+  }
+  return poly;
+}
 function txt(x, y, s, a = {}) { const e = sv('text', {x, y, ...a}); e.textContent = s; return e; }
 /** links = 첫 화면 시계 — 주황 번호 셋은 그 업종 쪽 · 싹 칸은 싹 자리 전부로 넘어감(사장님 2026-10-20 07:05 「여기 주황색 있는 4곳 클릭하면 해당페이지로 넘어가게」 · 07:08 「응」)
  *  그림(점 · 길 · 글)은 aria-hidden 묶음 · 누르는 곳만 <a>(글 읽기 프로그램 · 키보드도 감) · 누르는 자리는 투명 원 · 네모(320 폭에서도 48px 넘게 — 흰 판 새 단추) */
@@ -43,13 +60,19 @@ export function clock(TH, {hi = null, marks = null, W = 326, H = 300, links = fa
   for (const i of inds) if (mark.includes(i.n) && Array.isArray(i.t)) g.append(sv('polyline', {points: i.t.map(([a, b]) => X(a).toFixed(1) + ',' + Y(b).toFixed(1)).join(' '), class: 'th-tail'}));
   for (const i of inds) { const on = mark.includes(i.n) || (!hi && i.z === 'S'); g.append(sv('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: on ? 6 : 3.5, class: on ? 'th-dot on' : 'th-dot'})); }
   if (hi) { const i = indOf(TH, hi); if (i) { const lx = X(i.x), right = lx < W / 2; g.append(txt((right ? lx + 12 : lx - 12).toFixed(1), (Y(i.y) - 12).toFixed(1), i.n, {class: 'th-lb', 'text-anchor': right ? 'start' : 'end'})); } }
-  else (marks ?? []).forEach((n, k) => {
-    const i = indOf(TH, n); if (!i) return; const cx = X(i.x) + (k % 2 ? 16 : -16), cy = Y(i.y) - 18;
-    const parts = [sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 12, class: 'th-nb'}), txt(cx.toFixed(1), (cy + 6).toFixed(1), String(k + 1), {class: 'th-nbt', 'text-anchor': 'middle'})];
-    if (!links) { g.append(...parts); return; }
-    const a = sv('a', {href: '#/t/i/' + enc(i.n), class: 'th-tap th-tapn', 'aria-label': `${k + 1}번 ${i.n} 보기`}); // 번호 = 그 업종 쪽
-    a.append(sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 33, class: 'th-hit'}), ...parts); tap.push(a); // 누르는 원 r 33 = 320 폭에서 51px(흰 판 새 단추 48 · check_white)
-  });
+  else {
+    const bs = (marks ?? []).map((n, k) => { const i = indOf(TH, n); return i ? {i, k, cx: X(i.x) + (k % 2 ? 16 : -16), cy: Y(i.y) - 18} : null; }).filter(Boolean);
+    for (const {i, k, cx, cy} of bs) {
+      const parts = [sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 12, class: 'th-nb'}), txt(cx.toFixed(1), (cy + 6).toFixed(1), String(k + 1), {class: 'th-nbt', 'text-anchor': 'middle'})];
+      if (!links) { g.append(...parts); continue; }
+      const a = sv('a', {href: '#/t/i/' + enc(i.n), class: 'th-tap th-tapn', 'aria-label': `${k + 1}번 ${i.n} 보기`}); // 번호 = 그 업종 쪽
+      // 누르는 원 r 33(320 폭 51px · 흰 판 새 단추 48) — 번호끼리 가까우면 원이 겹쳐 옆 번호를 덮음(2026-10-20 ① ③ 35 떨어짐) →
+      // 원을 「이 번호가 가장 가까운 곳」만 남게 자름(가까운 번호 쪽으로 감 · 보이는 번호는 늘 제 고리)
+      const id = 'th-hc' + (++HIT_SEQ), cell = voronoiCell(cx, cy, 33, bs.filter(o => o.k !== k));
+      const cp = sv('clipPath', {id}); cp.append(sv('polygon', {points: cell.map(([x, y]) => x.toFixed(1) + ',' + y.toFixed(1)).join(' ')})); defs.append(cp);
+      a.append(sv('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 33, class: 'th-hit', 'clip-path': `url(#${id})`}), ...parts); tap.push(a);
+    }
+  }
   g.append(txt(10, 24, ZONES.S, {class: 'th-zl th-zs'}), txt(W - 10, 24, ZONES.B, {class: 'th-zl', 'text-anchor': 'end'}), txt(W - 10, H - 10, ZONES.W, {class: 'th-zl th-zq', 'text-anchor': 'end'}), txt(10, H - 10, ZONES.Q, {class: 'th-zl th-zq'}),
     txt(W / 2 + 6, H / 2 - 8, '꽃 선', {class: 'th-bt'}));
   if (links) { // 싹 칸(투명 네모 — 점 · 「싹」 글 위) 먼저 · 번호 셋이 그 위
