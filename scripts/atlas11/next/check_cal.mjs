@@ -69,7 +69,9 @@ async function open(ctx, side, hash, {allow404 = false} = {}) {
   const p = await ctx.newPage(); p._side = side; p._errs = [];
   p.on('pageerror', e => p._errs.push('pageerror: ' + e.message));
   p.on('console', m => { if (m.type() === 'error' && !(allow404 && /Failed to load resource/.test(m.text()))) p._errs.push(m.text() + (R403.test(m.text()) ? ' ' + String(m.location()?.url ?? '').replace(base, '').slice(0, 80) : '')); }); // 403 이면 어느 파일인지 함께(2026-10-20)
-  await T(p, async () => { await p.goto(SIDE[side].url(hash)); await settle(p, hash); });
+  // 실제 사이트 첫 열기가 30초 넘게 안 끝나면 두 번 더(2026-10-20 seven 9/11 cal 「page.goto: Timeout 30000ms exceeded — #/cal」 · 그 한 번에 검사가 통째로 멈춤) · 세 번 다 넘으면 그대로 던짐
+  const go = async () => { for (let k = 0; ; k++) { try { return await p.goto(SIDE[side].url(hash), {timeout: REMOTE ? 45000 : 30000}); } catch (e) { if (!REMOTE || k >= 2 || !/Timeout \d+ms exceeded/.test(String(e?.message))) throw e; bump('첫 열기 다시'); await p.waitForTimeout(3000); } } };
+  await T(p, async () => { await go(); await settle(p, hash); });
   return p;
 }
 async function settle(p, what) {

@@ -16,7 +16,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {oldToNewDeep} from './rename.mjs';
 import {gloss} from '../../../site/next/glossary.js'; // 낱말표(2026-10-18 [10] 1) — 새 쪽 기간 단추 글(20거래일 → 한 달) // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
-import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
+import {fetchJSON, watch, settle, timer, netSummary, isRemote} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 import {shardOf} from './shard/part.mjs'; // --shard k/n = 한 번 다 돌 때의 일감(회사 · 없는 번호 · 세 폭)을 n 몫으로 가른 k 번째만(깃허브 여러 대 · 합치기 shard/merge.mjs · 2026-10-18 고도리 길 1)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
@@ -26,7 +26,8 @@ const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1');
 const ALL = has('--all'), LIMIT = Number(arg('--limit', '0')) || 0, WIDE = Number(arg('--wide', '10')), OUT = arg('--out', null);
 const fails = [], counts = {}, warn = [], t0 = Date.now(), tm = timer(t0);
-const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 400)]); };
+let sink = null; // 실제 사이트에서 회사 하나를 맞대는 동안 걸린 것을 모아 둠 — 걸리면 두 쪽을 새로 열어 한 번 더 맞대고 그 결과만 남김(아래 ①)
+const fail = (k, x) => { if (sink) { sink.push([k, x]); return; } counts.fail = (counts.fail || 0) + 1; if (fails.length < 500) fails.push([k, String(x).slice(0, 400)]); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const BANNED = ['추천', '매수', '매도', '팔라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', 'TOP', '매수 검토'];
 
@@ -210,10 +211,28 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
     tm.new(() => settle(pn, async () => { await pn.goto(base + NEXT + '#/w/' + c0 + '/past'); return pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).then(() => true, () => false); }, {what: '새 쪽 첫 열림', fail}))]);
   await Promise.all([po.waitForFunction(() => !!document.querySelector('#view > .vw') && !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => fail('옛 쪽 첫 열림', c0)), pn.waitForFunction(() => !!document.querySelector('#view > .ppast'), null, {timeout: 30000}).catch(() => fail('새 쪽 첫 열림', c0))]);
   let first = true;
+  /* 실제 사이트는 매시 새 자료로 올라감 — 회사 하나를 맞대는 사이에 바뀌면 옛 쪽 · 새 쪽이 다른 때의 값을 보여 줌
+     (2026-10-20 seven 9/11 past 「0155E0 오늘 값 옛 8,400원 · 새 8,340원」 — 회사 이백 곳 가운데 이 한 곳만 · 두 쪽 모두 새로 열면 같은 때 자료)
+     → 걸리면 두 쪽을 새로 열어 한 번 더 맞대고 그 결과만 남김 · 진짜 다름은 두 번째에도 걸림 · 이 방(묶은 자료)은 그대로 한 번 */
+  const REMOTE = isRemote(base); let staleDone = false; // PAST_STALE_TEST = 검사 자체 시험(첫 회사 첫 맞대기만 걸린 척 · 실제 사이트 쪽은 다시 맞대어 통과 · 이 방은 걸림)
   for (const code of SH.part('c', list)) {
     if (!CO[code]) { fail('목록에 없는 번호', code); continue; }
+    for (let again = 0; ; again++) {
+      sink = REMOTE && again === 0 ? [] : null;
+      try { await oneCo(code); if (process.env.PAST_STALE_TEST && again === 0 && !staleDone) { staleDone = true; fail('시험 · 값 바뀜 흉내', code); } } catch (e) { const g = sink; sink = null; for (const [k, x] of g ?? []) fail(k, x); throw e; } // 던지면 모은 것을 그대로 남김
+      const got = sink; sink = null;
+      if (!got || !got.length) break;
+      bump('값이 바뀌어 다시 맞댐'); warn.push('값이 바뀌어 다시 맞댐 ' + code + ' ' + got.length + '건 · 첫 줄 ' + got[0][0] + ' ' + String(got[0][1]).slice(0, 160)); // 숨기지 않고 남김
+      await Promise.all([tm.old(() => po.reload({waitUntil: 'domcontentloaded', timeout: 30000}).catch(() => null)), tm.new(() => pn.reload({waitUntil: 'domcontentloaded', timeout: 30000}).catch(() => null))]);
+    }
+    if (pn._errs.length) { fail('새 쪽 화면 오류', code + ' ' + pn._errs.join(' | ').slice(0, 300)); pn._errs.length = 0; }
+    if (po._errs.length) { warn.push('옛 쪽 화면 오류 ' + code + ' ' + po._errs.join(' | ').slice(0, 200)); po._errs.length = 0; }
+    bump('회사');
+    if (counts['회사'] % 100 === 0) console.log(`… ${counts['회사']}곳 · 실패 ${counts.fail || 0} · ${Math.round((Date.now() - t0) / 1000)}초`);
+  }
+  async function oneCo(code) {
     const ok = await Promise.all([goOld(po, code).then(() => true, e => { fail('옛 쪽 열림', code + ' ' + e.message.slice(0, 80)); return false; }), goNew(pn, code).then(() => true, e => { fail('새 쪽 열림', code + ' ' + e.message.slice(0, 80)); return false; })]);
-    if (!ok[0] || !ok[1]) continue;
+    if (!ok[0] || !ok[1]) return;
     if (first) { // 처음 연 기간 = 1년(두 쪽 모두)
       const [a, z] = await Promise.all([po.evaluate(() => document.querySelector('#view .seg.seg3 button[aria-pressed="true"]')?.textContent), pn.evaluate(() => document.querySelector('#view .ppast-seg button[aria-pressed="true"]')?.textContent)]);
       if (a !== '1년' || z !== '1년') fail('처음 기간', a + ' · ' + z); first = false;
@@ -244,10 +263,6 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
       if (t0v !== '선을 누르면 그날 값이 보여요') fail('선을 놓으면 처음 글', code + ' ' + name + ' ' + t0v);
       bump('화면(기간)');
     }
-    if (pn._errs.length) { fail('새 쪽 화면 오류', code + ' ' + pn._errs.join(' | ').slice(0, 300)); pn._errs.length = 0; }
-    if (po._errs.length) { warn.push('옛 쪽 화면 오류 ' + code + ' ' + po._errs.join(' | ').slice(0, 200)); po._errs.length = 0; }
-    bump('회사');
-    if (counts['회사'] % 100 === 0) console.log(`… ${counts['회사']}곳 · 실패 ${counts.fail || 0} · ${Math.round((Date.now() - t0) / 1000)}초`);
   }
   // 없는 번호 · 깨진 주소 — 새 쪽은 「?」 줄과 찾기 고리(옛 쪽은 「없는 주소」)
   for (const _ of SH.part('x', ['없는 번호'], 20)) { // 몫 하나에서만(--shard)

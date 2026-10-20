@@ -19,6 +19,7 @@ import fss from 'node:fs';
 import {createRequire} from 'node:module';
 import {screenHits} from '../../../site/next/words.js';
 import {pp} from '../../../site/next/theme-engine.js';
+import {isRemote} from './net.mjs';
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -26,7 +27,8 @@ const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/nod
 const {chromium} = require('playwright');
 const base = arg('--base', 'http://127.0.0.1:8826').replace(/\/$/, ''), OUT = arg('--out', null), PAGE = base + '/next/';
 const fails = [], counts = {}, t0 = Date.now();
-const fail = (k, x) => { counts.fail = (counts.fail || 0) + 1; if (fails.length < 300) fails.push([k, String(x).slice(0, 300)]); console.log('걸림 ' + k + ' — ' + String(x).slice(0, 200)); };
+let sink = null; // 실제 사이트 ⑫ — 자료가 바뀐 사이에 걸린 것을 모아 두고 새 자료로 한 번 더 셈(아래 ⑫)
+const fail = (k, x) => { if (sink) { sink.push([k, x]); return; } counts.fail = (counts.fail || 0) + 1; if (fails.length < 300) fails.push([k, String(x).slice(0, 300)]); console.log('걸림 ' + k + ' — ' + String(x).slice(0, 200)); };
 const bump = (k, n = 1) => { counts[k] = (counts[k] || 0) + n; };
 const getJ = async f => { for (let i = 0; i < 4; i++) { try { const r = await fetch(base + f, {cache: 'no-store'}); if (r.ok) return await r.json(); if (r.status === 404) return null; } catch { /* 다시 */ } await new Promise(r => setTimeout(r, 800 * (i + 1))); } return null; };
 const enc = encodeURIComponent, num = n => Number(n).toLocaleString('ko-KR');
@@ -489,9 +491,19 @@ try {
   }
   /* ⑫ 첫 화면 주황 숫자 넷(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 「진짜 싹 n곳」 머리 · 칸 셋(진짜 싹 · 새로 들어옴 · 싹 자리)을 누르면 그 목록
      — 고리 · 누르는 자리 48 · 목록 업종 = 자료 거르기(진짜 = 점 넷 · 새로 = d 1) · 수 = 첫 화면 숫자 · 없는 거르기는 「?」 */
+  /* 실제 사이트는 매시 새 자료로 올라감 — 검사가 처음 받은 자료와 화면이 받은 자료가 다른 때일 수 있음
+     (2026-10-20 seven 9/11 theme 「새로 들어옴 화면 5곳 · 검사 자료 4곳 · 싹 자리 38 · 37」 — 화면 숫자와 목록은 서로 같았음)
+     → 셀 때마다 자료를 새로 받고, 걸리면 자료를 다시 받아 화면을 새로 열어 한 번 더 셈 · 그 결과만 남김 · 진짜 다름은 두 번째에도 걸림 */
   if (HM) {
-    const wantReal = TH.order.S.filter(n => ind.get(n)?.sc === 4), wantNew = TH.order.S.filter(n => ind.get(n)?.d === 1);
-    for (const w of [390, 320]) {
+    const REMOTE = isRemote(base);
+    for (const w of [390, 320]) for (let again = 0; ; again++) {
+      const [TH, HM] = await Promise.all([getJ('/next/data/theme.json'), getJ('/next/data/theme-home.json')]);
+      if (!TH || !HM) { fail('주황 숫자 자료', `@${w} 다시 못 받음`); break; }
+      if (process.env.THEME_STALE_TEST && again === 0) HM.count.fresh += 1; // 검사 자체 시험 — 처음 받은 자료만 한 곳 많게(자료가 바뀐 사이 흉내 · 실제 사이트 쪽은 다시 세어 통과 · 이 방은 걸림)
+      const ind = new Map(TH.inds.map(i => [i.n, i]));
+      const wantReal = TH.order.S.filter(n => ind.get(n)?.sc === 4), wantNew = TH.order.S.filter(n => ind.get(n)?.d === 1);
+      sink = REMOTE && again === 0 ? [] : null;
+      try {
       const {p, ctx} = await open('#/', {w, h: 844}), tag = `주황 숫자 @${w}`;
       await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-three a').length === 3, null, {timeout: 20000}).catch(() => {});
       const r = await p.evaluate(() => ({head: (() => { const a = document.querySelector('#view section.th-home h2.th-ans a.th-ansl'); if (!a) return null; const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(b.width), h: Math.round(b.height)}; })(), boxes: [...document.querySelectorAll('#view section.th-home .th-three a')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), n: a.querySelector('b')?.textContent, t: a.querySelector('span')?.textContent, w: Math.round(b.width), h: Math.round(b.height)}; })}));
@@ -515,6 +527,10 @@ try {
       }
       if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
       bump('주황 숫자'); await ctx.close();
+      } catch (e) { const g = sink; sink = null; for (const [k, x] of g ?? []) fail(k, x); throw e; }
+      const got = sink; sink = null;
+      if (!got || !got.length) break;
+      bump('자료가 바뀌어 다시 셈'); console.log(`자료가 바뀌어 다시 셈 — 주황 숫자 @${w} ${got.length}건 · 첫 줄 ${got[0][0]} ${String(got[0][1]).slice(0, 160)}`); // 숨기지 않고 남김
     }
     const b = await open('#/t/sprout/zzz');
     const t = await b.p.evaluate(() => document.querySelector('#view .empty')?.textContent ?? '');
