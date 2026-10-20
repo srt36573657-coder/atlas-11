@@ -1,0 +1,219 @@
+{
+ "made": "2026-10-20T14:51:35.030Z",
+ "base": "https://aaa7377.com",
+ "files": {
+  "themeCo": {
+   "status": 200,
+   "bytes": 66791,
+   "schema": "dori-theme-1-co",
+   "asOf": "2026-10-20",
+   "n": 2541,
+   "skip": 16,
+   "s005930": [
+    -14.46,
+    -8.21,
+    "Q"
+   ],
+   "s000660": [
+    -29.73,
+    -16.01,
+    "Q"
+   ]
+  },
+  "app": {
+   "status": 200,
+   "themeCo": true,
+   "wZone": true
+  },
+  "planet": [
+   {
+    "n": "sun",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 2952,
+    "webp": true
+   },
+   {
+    "n": "earth",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 5016,
+    "webp": true
+   },
+   {
+    "n": "mercury",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 3682,
+    "webp": true
+   },
+   {
+    "n": "venus",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 4662,
+    "webp": true
+   },
+   {
+    "n": "moon",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 3746,
+    "webp": true
+   },
+   {
+    "n": "mars",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 3614,
+    "webp": true
+   },
+   {
+    "n": "jupiter",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 3002,
+    "webp": true
+   },
+   {
+    "n": "saturn",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 2516,
+    "webp": true
+   },
+   {
+    "n": "uranus",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 2332,
+    "webp": true
+   },
+   {
+    "n": "neptune",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 2784,
+    "webp": true
+   },
+   {
+    "n": "pluto",
+    "status": 200,
+    "type": "image/webp",
+    "bytes": 3784,
+    "webp": true
+   }
+  ]
+ },
+ "co": [
+  {
+   "code": "005930",
+   "scrollY": 0,
+   "player": [
+    64,
+    283
+   ],
+   "tabs": [
+    503,
+    563
+   ],
+   "chanBtn": [
+    750,
+    798
+   ],
+   "wz": [
+    825,
+    913
+   ],
+   "h": 844,
+   "tag": "a",
+   "t": "테마 시계로 보면 지금 잠잠 자리예요",
+   "n": [
+    "한 달 시장보다 −14.5%p",
+    "지난 닷새 시장보다 −8.2%p"
+   ],
+   "q": "한 달 시장보다 −14.5%p지난 닷새 시장보다 −8.2%p",
+   "href": "#/t/how",
+   "zone": "Q",
+   "afterChan": true
+  },
+  {
+   "code": "000660",
+   "scrollY": 0,
+   "player": [
+    64,
+    283
+   ],
+   "tabs": [
+    503,
+    563
+   ],
+   "chanBtn": [
+    694,
+    742
+   ],
+   "wz": [
+    769,
+    857
+   ],
+   "h": 844,
+   "tag": "a",
+   "t": "테마 시계로 보면 지금 잠잠 자리예요",
+   "n": [
+    "한 달 시장보다 −29.7%p",
+    "지난 닷새 시장보다 −16.0%p"
+   ],
+   "q": "한 달 시장보다 −29.7%p지난 닷새 시장보다 −16.0%p",
+   "href": "#/t/how",
+   "zone": "Q",
+   "afterChan": true
+  },
+  {
+   "code": "035420",
+   "scrollY": 0,
+   "player": [
+    64,
+    283
+   ],
+   "tabs": [
+    503,
+    563
+   ],
+   "chanBtn": [
+    750,
+    798
+   ],
+   "wz": [
+    825,
+    913
+   ],
+   "h": 844,
+   "tag": "a",
+   "t": "테마 시계로 보면 지금 싹 자리예요",
+   "n": [
+    "한 달 시장보다 −9.2%p",
+    "지난 닷새 시장보다 +2.7%p"
+   ],
+   "q": "한 달 시장보다 −9.2%p지난 닷새 시장보다 +2.7%p",
+   "href": "#/t/how",
+   "zone": "S",
+   "afterChan": true
+  }
+ ],
+ "how": {
+  "rows": 10,
+  "imgs": 10,
+  "bad": 0,
+  "first": [
+   "지구반도체",
+   "천왕성바이오 · 헬스케어"
+  ],
+  "clockPlanets": 77,
+  "sun": 1,
+  "sw": 390,
+  "cw": 390
+ },
+ "errors": [],
+ "pageErrors": [],
+ "csp": []
+}
