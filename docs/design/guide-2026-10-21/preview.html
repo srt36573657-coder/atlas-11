@@ -1,0 +1,201 @@
+<title>처음 온 사람 길</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
+<style>
+/* 돌이 우주 판 그대로 — 밤하늘 바탕 · 흰 글 · 별빛 금 · 오름 주황(돌이 화면 잣대 색 4) · 한 장 = 휴대폰 화면 하나 위에 엄마 말풍선 */
+:root {
+  --sky: #070B17; --sky2: #0E1428; --ink: #FFFFFF; --sub: #C9CEDA; --gold: #F2C46A; --up: #FF6A3D; --line: #2A3352; --veil: rgba(4, 7, 16, .76);
+  --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --fs-1: 17px; --fs-2: 19px; --fs-3: 21px; --fs-4: 24px; --fs-5: 30px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--sky); color: var(--ink); }
+body { margin: 0; font: var(--fs-2)/1.55 var(--sans); word-break: keep-all; overflow-wrap: anywhere; -webkit-tap-highlight-color: transparent; }
+.wrap { max-width: 720px; margin: 0 auto; padding-block: 16px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 24px; }
+.intro { display: grid; gap: 8px; }
+.kick { margin: 0; color: var(--gold); font-size: var(--fs-1); font-weight: 700; letter-spacing: .02em; }
+h1 { margin: 0; font-size: var(--fs-5); line-height: 1.25; text-wrap: balance; }
+.lede { margin: 0; color: var(--sub); font-size: var(--fs-2); }
+/* 휴대폰 화면 — 한 화면에 다 들어오게(높이를 먼저 맞추고 폭은 따라감) */
+.stage-wrap { display: flex; justify-content: center; }
+.stage { position: relative; width: min(100%, 390px); width: min(100%, 390px, calc((100vh - 48px) * 390 / 844)); width: min(100%, 390px, calc((100dvh - 48px) * 390 / 844)); aspect-ratio: 390 / 844; max-width: 100%; border-radius: 22px; overflow: hidden; outline: 1px solid var(--line); background: var(--sky2); touch-action: manipulation; }
+.shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; transition: opacity .18s ease; }
+.shot.swap { opacity: .25; }
+.veil { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.dim { fill: var(--veil); }
+.ring { fill: none; stroke: var(--gold); stroke-width: 3; vector-effect: non-scaling-stroke; animation: glow 1.4s ease-in-out infinite; }
+.ring2 { fill: none; stroke: var(--gold); stroke-width: 2; stroke-dasharray: 6 6; vector-effect: non-scaling-stroke; opacity: .8; }
+.nudge .ring { animation-duration: .45s; stroke-width: 5; }
+@keyframes glow { 0%, 100% { stroke-opacity: 1; } 50% { stroke-opacity: .3; } }
+.tap { position: absolute; margin: 0; padding: 0; border: 0; background: transparent; border-radius: 14px; cursor: pointer; }
+.tap:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+/* 엄마 말풍선 — 짧은 두 줄 · 큰 글 · 단추는 48px 넘게 */
+.bubble { position: absolute; left: 4%; width: 92%; display: grid; gap: 8px; padding: 16px; border-radius: 18px; background: var(--sky); border: 2px solid var(--gold); color: var(--ink); }
+.bubble p { margin: 0; }
+.b1 { font-size: var(--fs-3); font-weight: 700; line-height: 1.4; text-wrap: balance; }
+.b2 { font-size: var(--fs-2); color: var(--sub); line-height: 1.5; }
+.hint { font-size: var(--fs-2); color: var(--up); font-weight: 700; }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { min-height: 48px; padding: 0 20px; border-radius: 24px; font: 700 var(--fs-2)/1 var(--sans); cursor: pointer; border: 2px solid var(--gold); }
+.btn.main { background: var(--gold); color: var(--sky); }
+.btn.soft { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.count { font-size: var(--fs-1); color: var(--sub); font-variant-numeric: tabular-nums; }
+/* 아래 설명 — 바뀐 것 · 다음에 할 일 */
+.notes { display: grid; gap: 24px; }
+.card { display: grid; gap: 8px; padding: 16px; border-radius: 18px; background: var(--sky2); border: 1px solid var(--line); }
+.card h2 { margin: 0; font-size: var(--fs-4); line-height: 1.3; }
+.card ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.card li { display: grid; grid-template-columns: 24px 1fr; gap: 8px; align-items: start; }
+.card li::before { content: ""; width: 12px; height: 12px; margin-top: 8px; border-radius: 50%; background: var(--gold); }
+.card p { margin: 0; color: var(--sub); }
+.card p strong { color: var(--ink); }
+.src { margin: 0; font-size: var(--fs-1); color: var(--sub); line-height: 1.6; }
+.src a { color: var(--gold); }
+@media (prefers-reduced-motion: reduce) { .ring, .nudge .ring { animation: none; } .shot { transition: none; } }
+</style>
+
+<main class="wrap">
+  <header class="intro">
+    <p class="kick">돌이 · 미리 보기</p>
+    <h1>처음 온 사람 길</h1>
+    <p class="lede">진짜 돌이 화면 위에 엄마처럼 알려 주는 말을 얹었어요. 빛나는 곳을 눌러 보세요.</p>
+  </header>
+
+  <section class="stage-wrap" aria-label="눌러 보는 화면">
+    <div class="stage" id="stage">
+      <img class="shot" id="shot" src="img/a-home.webp" alt="돌이 첫 화면 테마 시계" width="390" height="844">
+      <svg class="veil" id="veil" viewBox="0 0 390 844" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <mask id="hole" maskUnits="userSpaceOnUse" x="0" y="0" width="390" height="844">
+            <rect x="0" y="0" width="390" height="844" fill="#fff"></rect>
+            <rect id="holeR" x="0" y="0" width="0" height="0" rx="14" fill="#000"></rect>
+            <rect id="holeR2" x="0" y="0" width="0" height="0" rx="14" fill="#000"></rect>
+          </mask>
+        </defs>
+        <rect class="dim" x="0" y="0" width="390" height="844" mask="url(#hole)"></rect>
+        <rect class="ring2" id="ring2" x="0" y="0" width="0" height="0" rx="14"></rect>
+        <rect class="ring" id="ring" x="0" y="0" width="0" height="0" rx="14"></rect>
+      </svg>
+      <button class="tap" id="tap" type="button" aria-label="여기 눌러 봐요" hidden></button>
+      <div class="bubble" id="bubble" aria-live="polite">
+        <p class="b1" id="b1">처음 왔어요?</p>
+        <p class="b2" id="b2">제가 하나씩 알려 줄게요.</p>
+        <p class="hint" id="hint" hidden>반짝이는 곳을 눌러 봐요.</p>
+        <div class="acts" id="acts"></div>
+        <p class="count" id="count"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div class="card">
+      <h2>이 길에서 바뀐 것</h2>
+      <ul>
+        <li>빛나는 곳이 한 번에 하나만 있어요.</li>
+        <li>누르기 전에 무엇인지 먼저 말해 줘요.</li>
+        <li>다른 곳을 누르면 다시 알려 줘요.</li>
+        <li>혼자 볼게요를 누르면 바로 멈춰요.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>다음에 할 일</h2>
+      <p>주식을 모르는 분 세 분께 눌러 보게 해 주세요.</p>
+      <p>어디서 멈췄는지 알려 주시면 그곳부터 고쳐요.</p>
+      <p><strong>진짜 사이트에는 신대근 사장님 확인 뒤에 올려요.</strong></p>
+    </div>
+    <p class="src">출처: 엄마처럼 가르치기 — 우드 · 브루너 · 로스, 1976년 아이 가르치기 연구 · 해 보며 배우기 — <a href="https://developer.apple.com/design/human-interface-guidelines/onboarding" target="_blank" rel="noopener">애플 처음 안내 기준</a> · 한 번에 하나씩 — <a href="https://www.nngroup.com/articles/mobile-instructional-overlay/" target="_blank" rel="noopener">닐슨 노먼 그룹, 2014년</a> · 화면은 2026년 10월 21일 0시 32분의 진짜 돌이 그대로예요.</p>
+  </section>
+</main>
+
+<script>
+(() => {
+  // 진짜 화면 넷의 짚을 곳(CSS px · 390×844 화면 안) — 2026-10-21 00:32 aaa7377.com 에서 잼(scripts/atlas11/probe/live_guide.mjs)
+  const S = {
+    a: {img: 'img/a-home.webp', alt: '돌이 첫 화면 테마 시계', clock: [33, 249, 324, 298], sun: [180, 383, 30, 30], sprout: [33, 249, 162, 149], one: [140, 253, 24, 24]},
+    b: {img: 'img/b-ind.webp', alt: '연예 기획사 업종 화면', head: [16, 128, 358, 77], chip: [204, 281, 165, 52]},
+    c: {img: 'img/c-co.webp', alt: '하이브 회사 화면', player: [0, 64, 390, 219], why: [16, 683, 358, 48]},
+    d: {img: 'img/d-why.webp', alt: '왜 사? 열한 질문 화면', opts: [33, 332, 324, 184]},
+  };
+  const IND = '연예 기획사', CO = '하이브';
+  const STEPS = [
+    {s: 'a', b1: '처음 왔어요?', b2: '제가 하나씩 알려 줄게요.', acts: [['알려 줘요', 'next', 'main'], ['혼자 볼게요', 'skip', 'soft']]},
+    {s: 'a', t: 'clock', b1: '이건 우주 시계예요.', b2: '가운데 해는 시장 전체예요. 행성 하나는 업종 하나예요.', acts: [['알겠어요', 'next', 'main']]},
+    {s: 'a', t: 'one', t2: 'sprout', pad: 14, b1: '왼쪽 위는 싹 자리예요. 막 힘이 붙는 곳이에요.', b2: '①을 눌러 봐요.', tap: true},
+    {s: 'b', t: 'head', b1: '이건 ' + IND + ' 업종이에요.', b2: '같은 일을 하는 회사 무리예요.', acts: [['알겠어요', 'next', 'main']]},
+    {s: 'b', t: 'chip', b1: '여기 눌러 봐요.', b2: '이 무리에서 앞서 달리는 회사예요.', tap: true},
+    {s: 'c', t: 'player', b1: '이건 ' + CO + '예요.', b2: '선은 한 달 동안 값이 걸어온 길이에요.', acts: [['알겠어요', 'next', 'main']]},
+    {s: 'c', t: 'why', b1: '사기 전에 여기 눌러 봐요.', b2: '내가 왜 사는지 먼저 따져 봐요.', tap: true},
+    {s: 'd', t: 'opts', b1: '여기서 왜 사는지 골라요.', b2: '돌이는 사라고 하지 않아요.', acts: [['다 배웠어요', 'next', 'main']]},
+    {s: 'a', end: true, b1: '다 배웠어요.', b2: '이제 혼자 눌러 봐요.', acts: [['처음부터 다시', 'restart', 'main']]},
+  ];
+  const SKIP = {s: 'a', end: true, b1: '언제든 다시 배울 수 있어요.', b2: '처음부터 다시를 누르면 돼요.', acts: [['처음부터 다시', 'restart', 'main']]};
+  const N = STEPS.length - 1;
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), shot = $('shot'), tap = $('tap'), bubble = $('bubble'), hint = $('hint'), acts = $('acts');
+  const setR = (el, r) => { const [x, y, w, h] = r || [0, 0, 0, 0]; el.setAttribute('x', x); el.setAttribute('y', y); el.setAttribute('width', w); el.setAttribute('height', h); };
+  const grow = (r, p) => r ? [r[0] - p, r[1] - p, r[2] + p * 2, r[3] + p * 2] : null;
+  let i = 0, cur = STEPS[0], nudgeT = 0;
+
+  function place() {
+    const W = stage.clientWidth, H = stage.clientHeight, k = W / 390;
+    const r = cur.t ? grow(S[cur.s][cur.t], cur.pad ?? 6) : null;
+    if (r) {
+      const tx = r[0] * k, ty = r[1] * k, tw = r[2] * k, th = r[3] * k, m = Math.max(0, (48 - Math.min(tw, th)) / 2);
+      Object.assign(tap.style, {left: Math.max(0, tx - m) + 'px', top: Math.max(0, ty - m) + 'px', width: Math.min(W, tw + m * 2) + 'px', height: Math.min(H, th + m * 2) + 'px'});
+    }
+    const bh = bubble.offsetHeight, gap = 12;
+    const r2 = cur.t2 ? grow(S[cur.s][cur.t2], 4) : null, u = r && r2 ? [0, Math.min(r[1], r2[1]), 0, Math.max(r[1] + r[3], r2[1] + r2[3]) - Math.min(r[1], r2[1])] : r; // 말풍선은 짚은 두 곳을 다 비켜 앉음
+    let top;
+    if (!u) top = (H - bh) / 2;
+    else {
+      const ty = u[1] * k, tb = (u[1] + u[3]) * k;
+      const below = tb + gap, above = ty - gap - bh;
+      if ((u[1] + u[3] / 2) < 844 * 0.6 && below + bh <= H - 8) top = below;
+      else if (above >= 8) top = above;
+      else if (below + bh <= H - 8) top = below;
+      else top = Math.max(8, H - bh - 8);
+    }
+    bubble.style.top = Math.round(top) + 'px';
+  }
+
+  function show(step, focus = true) {
+    cur = step;
+    const sc = S[step.s];
+    if (shot.getAttribute('src') !== sc.img) { shot.classList.add('swap'); shot.src = sc.img; shot.alt = sc.alt; shot.decode?.().catch(() => {}).finally(() => shot.classList.remove('swap')); }
+    const r = step.t ? grow(sc[step.t], step.pad ?? 6) : null, r2 = step.t2 ? grow(sc[step.t2], 4) : null;
+    setR($('holeR'), r); setR($('ring'), r); setR($('holeR2'), r2); setR($('ring2'), r2);
+    $('b1').textContent = step.b1; $('b2').textContent = step.b2;
+    hint.hidden = true; stage.classList.remove('nudge');
+    acts.replaceChildren(...(step.acts || []).map(([label, act, kind]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ' + kind; b.textContent = label; b.dataset.act = act; return b; }));
+    acts.hidden = !(step.acts && step.acts.length);
+    tap.hidden = !step.tap;
+    $('count').textContent = step.end ? '' : `${Math.min(i + 1, N)} / ${N}`;
+    $('count').hidden = !!step.end;
+    requestAnimationFrame(place);
+    if (focus) requestAnimationFrame(() => (step.tap ? tap : acts.querySelector('button'))?.focus({preventScroll: true}));
+  }
+  const go = n => { i = n; show(STEPS[i]); };
+  acts.addEventListener('click', e => {
+    e.stopPropagation(); // 단추를 누른 뒤 바뀐 걸음이 「다른 곳을 눌렀다」로 읽히지 않게
+    const a = e.target.closest('button')?.dataset.act; if (!a) return;
+    if (a === 'next') go(Math.min(i + 1, STEPS.length - 1));
+    else if (a === 'skip') { i = 0; show(SKIP); }
+    else if (a === 'restart') go(0);
+  });
+  tap.addEventListener('click', e => { e.stopPropagation(); go(Math.min(i + 1, STEPS.length - 1)); });
+  // 엄마는 다그치지 않아요 — 다른 곳을 누르면 빛을 한 번 더 크게 하고 한 줄로 다시 알려 줌
+  stage.addEventListener('click', e => {
+    if (!cur.tap || e.target.closest('#tap, .bubble')) return;
+    hint.hidden = false; stage.classList.add('nudge'); place();
+    clearTimeout(nudgeT); nudgeT = setTimeout(() => stage.classList.remove('nudge'), 1600);
+  });
+  addEventListener('resize', place);
+  if ('ResizeObserver' in window) new ResizeObserver(place).observe(stage);
+  ['b-ind', 'c-co', 'd-why'].forEach(n => { const im = new Image(); im.src = `img/${n}.webp`; });
+  show(STEPS[0], false);
+})();
+</script>
