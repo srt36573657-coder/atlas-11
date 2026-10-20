@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-20T03:15:35.428Z",
+ "at": "2026-10-20T03:55:06.844Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -2209,7 +2209,8 @@
     "clicked": "find.co",
     "fail": 0
    }
-  ]
+  ],
+  "again": {}
  },
  "fails": [],
  "warn": [],
