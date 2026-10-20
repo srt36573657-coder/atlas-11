@@ -475,14 +475,24 @@ function go4(open) {
 /** 「전부 보기」 — 한 줄에 하나(네모 칸 없음) · 오르는 것(오르는 업종 · 급등)은 여기서만 · 처음 펼 때 오늘 시장 세 줄 · homeRest(요약 파일로) */
 const ALL_ROWS = () => [['#/f/rise', '오르는 업종'], [oldOr('surge', '#/surge'), '급등'], ['#/f/group', '큰 업종'], ['#/f/ind', '업종'], ['#/f/us', '미국'], ['#/f/pick', '고른 곳'], [oldOr('talk', '#/talk'), '오늘의 이야기'], ['#/game', '가짜 돈 연습']]; // 가짜 돈 연습(2026-10-19 15:47 변호사 확인 뒤 공개)
 function allBox(H, band) {
-  const body = h('div', {class: 'w-allin'}), d = h('details', {class: 'w-all'}, h('summary', {'data-w': 'all', text: '전부 보기'}), body);
-  let filled = false;
-  d.addEventListener('toggle', () => {
-    if (!d.open || filled) return; filled = true;
-    body.append(h('ul', {class: 'w-rows'}, ...ALL_ROWS().map(([href, t]) => h('li', {}, h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))),
-      VIDEO.ready ? h('li', {}, h('a', {href: '/hello.html#hp-vid'}, h('span', {text: VIDEO.title + ' 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))) : null), homeSum(H, band.day));
+  const body = h('div', {class: 'w-allin'}), sum = h('summary', {'data-w': 'all', text: '전부 보기'}), d = h('details', {class: 'w-all'}, sum, body);
+  let rowsIn = false, restIn = false;
+  /* 두 번에 나눠 채움(2026-10-21 전체 검사 thumb 1/11 ③ 밀림 0.140) — 바로 가기 넷 옆 제자리(맨 아래)에서 펼치면 그 아래 진화 줄 · 맨 아래 줄이 화면 안에 있음
+     ① 누름 그 자리: 가벼운 줄 목록만 → 펼친 첫 그림에 줄이 있어 그 아래가 그때 함께 화면 밖으로 밀림(누른 뒤 0.5초 안 = 밀림 셈 밖)
+     ② 'toggle'(누름 뒤 따로 · 그린 다음): 무거운 나머지(요약 · 업종 · 봉인 · 약속) → 이미 화면 밖 아래에 붙음 · 누른 뒤 그려짐 0.2초도 지킴(무거운 일을 누름에 얹지 않음)
+     누름 없이 열릴 때(다른 코드)는 'toggle' 이 둘 다 채움 */
+  const rows = () => {
+    if (rowsIn) return; rowsIn = true;
+    body.prepend(h('ul', {class: 'w-rows'}, ...ALL_ROWS().map(([href, t]) => h('li', {}, h('a', {href}, h('span', {text: t}), h('i', {'aria-hidden': 'true', text: '›'})))),
+      VIDEO.ready ? h('li', {}, h('a', {href: '/hello.html#hp-vid'}, h('span', {text: VIDEO.title + ' 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))) : null));
+  };
+  const rest = () => {
+    rows(); if (restIn) return; restIn = true;
+    body.append(homeSum(H, band.day));
     homeRest().then(xs => body.append(...xs), e => { console.error(e); body.append(h('p', {class: 'empty', text: '? 나머지 칸을 그리지 못했어요.'})); });
-  });
+  };
+  sum.addEventListener('click', () => { if (!d.open) rows(); }); // 누름 처리는 열림보다 먼저 — 아직 닫혀 있으면 이제 열릴 차례
+  d.addEventListener('toggle', () => { if (d.open) rest(); });
   return d;
 }
 /** 시황 사실 — 모든 회사 마지막 날 오른 곳 · 내린 곳(요약 파일 · 옛것이면 home.json 네이버 업종 회사 수) · 사실마다 「왜 그럴까?」 → 살펴볼 물음 셋(답 · 앞날 없음) */
@@ -1165,6 +1175,24 @@ whiteFor(parse(location.hash || '#/').k);
 /** 글꼴 표 — 첫 화면을 그린 다음 그림 때에 한 번 붙임(그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap) */
 let fontsOn = false;
 const fontsAdd = () => { if (document.querySelector('link[href="/atlas/fonts.css"]')) return; const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/atlas/fonts.css'; document.head.append(l); };
+/** 본질 첫 줄 높이 잡기(2026-10-21 전체 검사 thumb 1/11 ③ 밀림 0.140) — 첫 화면은 기기 글꼴로 먼저 그리고 글꼴 표는 그린 뒤에 붙임(위 fontsLater)
+ *  받은 글꼴이 기기 글꼴보다 좁으면 본질 첫 줄이 세 줄 → 두 줄로 줄어 그 아래가 모두 28px 위로 밀림(맨 아래 「전부 보기」를 보던 사람 눈앞에서)
+ *  처음 그린 높이를 아래 한도로 잡아 둠 · 그 줄 글꼴이 다 왔고 그 줄이 화면 아래 밖일 때만 놓음 — 놓을 때 움직이는 것은 화면 밖뿐 */
+function holdEss(root) {
+  const t = root.querySelector('.w-ess .ess-t'); if (!t || document.querySelector('link[href="/atlas/fonts.css"]')?.sheet) return;
+  t.style.minHeight = Math.ceil(t.getBoundingClientRect().height) + 'px';
+  const ready = () => {
+    if (!document.querySelector('link[href="/atlas/fonts.css"]')?.sheet || document.fonts?.status === 'loading') return false;
+    try { const s = getComputedStyle(t); return document.fonts?.check?.(`${s.fontWeight} ${s.fontSize} ${s.fontFamily}`, t.textContent) !== false; } catch { return true; } // 못 재면 놓아도 됨(놓는 때는 어차피 화면 밖)
+  };
+  const stop = () => { removeEventListener('scroll', free); document.fonts?.removeEventListener?.('loadingdone', free); };
+  const free = () => {
+    if (!t.isConnected) return stop();
+    if (ready() && t.getBoundingClientRect().top > innerHeight) { t.style.minHeight = ''; stop(); }
+  };
+  addEventListener('scroll', free, {passive: true});
+  document.fonts?.addEventListener?.('loadingdone', free);
+}
 function fontsLater() {
   if (fontsOn) return; fontsOn = true;
   requestAnimationFrame(() => setTimeout(fontsAdd, 0));
@@ -1216,6 +1244,7 @@ async function route(force) {
   stoneArt(k, a, root);
   const cp = k === 'why' && !a ? mod('admin').then(m => { if (my === seq && root.isConnected && !root.querySelector('.cp-card')) root.append(m.couponCard()); }).catch(() => {}) : Promise.resolve(); // 커피 쿠폰 칸 — 매매일지 쪽 맨 아래(위 칸을 밀지 않음 · 2026-10-19 13:54)
   cp.then(() => flowFoot(k, a, root, my)); // 서른여섯 장 흐름 — 있는 쪽 맨 아래 「다음」 한 줄(쿠폰 칸 뒤)
+  if (k === '') holdEss(root); // 첫 화면 — 글꼴 표가 아직이면 본질 첫 줄 높이를 잡아 둠(글꼴이 바뀌어도 아래가 안 밀리게)
   fontsLater();
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
   const tabName = k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름

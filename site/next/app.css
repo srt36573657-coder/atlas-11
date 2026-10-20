@@ -52,6 +52,8 @@ html.f2 #view { zoom: 1.143; } html.f3 #view { zoom: 1.286; }
 /* 맨 아래 개인정보 처리방침 고리 — 아래 단추에 가리지 않게 아래 여백은 이 줄이 가짐(사장님 2026-10-18 [4] 3) */
 .foot { display: block; padding: 8px 16px calc(var(--tabs) + 24px + env(safe-area-inset-bottom)); text-align: center; }
 .foot a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--sp-1); color: var(--mute); font-size: var(--fs-1); text-decoration: underline; }
+/* 여는 동안(「여는 중이에요…」만 있을 때)은 맨 아래 줄을 그리지 않음 — 짧은 판 맨 아래에 그려졌다가 화면이 그려지며 밀려나던 것(밀림 0.07 · 2026-10-21 전체 검사 thumb 1/11 ③ 0.140 까닭 하나) · 다 그린 뒤 처음 나타나는 것은 밀림이 아님 */
+body:has(> #view > .boot) > .foot { display: none; }
 .boot, .empty { margin: var(--sp-3) var(--sp-2); color: var(--sub); text-align: center; }
 .pad { padding: var(--sp-2); }
 h1.h { font-size: var(--fs-4); line-height: 1.35; margin: var(--sp-2) var(--sp-2) var(--sp-1); }
