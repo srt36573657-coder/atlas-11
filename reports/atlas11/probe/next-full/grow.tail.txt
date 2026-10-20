@@ -1,12 +1,1 @@
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-
-page.evaluate: Execution context was destroyed, most likely because of a navigation
-    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:208:78
-    at Object.old (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/net.mjs:154:76)
-    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_grow.mjs:208:48 {
-  name: 'Error'
-}
-
-Node.js v22.23.3
+{"ok":true,"companies":2557,"seconds":435,"time":{"old":231.6,"new":216.1,"wall":435.1,"opensOld":7682,"opensNew":10286,"oldPct":53.2,"oldShare":51.7},"net":{"req":2560,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}},"counts":{"맞댄 글 낱낱":45948,"맞댄 숫자 낱말":90312,"이야기 있는 회사":61,"손가락 이름표":8477,"회사":2557,"oldSnap":{"use":false,"why":"검사 · 브라우저 · 목록이 바뀜","made":null,"inputs":2566,"reads":2557,"note":"기준값 새로 씀(파일 2566개 · 값 2557개)"},"아주 크게":9,"세 폭 화면":30,"둘레":9},"fails":[]}
