@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-20T13:05:42.768Z",
- "kst": "2026-10-20 22:05",
+ "at": "2026-10-20T14:02:02.689Z",
+ "kst": "2026-10-20 23:02",
  "slot": null,
- "reason": "22:00 회차",
+ "reason": "23:00 회차",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-Jgmq1b/closes/20261020T130542Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-uitZTP/closes/20261020T140202Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261020",
-  "sec": 164,
+  "sec": 195,
   "firstErrors": []
  },
  "asOf": "2026-10-20",
@@ -129,7 +129,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 643,
+  "ms": 675,
   "lenses": [
    {
     "key": "apple",
@@ -167,7 +167,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-20 22:10",
+  "kst": "2026-10-20 23:07",
   "live": false,
   "idx": true,
   "flows": true,
@@ -222,12 +222,12 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 164.4
+   "sec": 195.3
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 4.2
+   "sec": 4.3
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
@@ -247,7 +247,7 @@
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 14.9
+   "sec": 15.2
   },
   {
    "name": "사이트 자료 따로 세기",
@@ -257,17 +257,17 @@
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 33
+   "sec": 33.9
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 39.2
+   "sec": 39.7
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 2.6
+   "sec": 4
   },
   {
    "name": "첫 화면 자료",
@@ -277,7 +277,7 @@
   {
    "name": "달력 셈",
    "code": 0,
-   "sec": 7.6
+   "sec": 7.8
   },
   {
    "name": "달력 따로 세기",
