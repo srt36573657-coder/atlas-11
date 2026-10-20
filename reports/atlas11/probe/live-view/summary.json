@@ -1,5 +1,5 @@
 {
- "made": "2026-10-20T16:49:56.394Z",
+ "made": "2026-10-20T19:33:16.177Z",
  "base": "https://aaa7377.com",
  "live": true,
  "media": [
@@ -396,7 +396,7 @@
     ],
     [
      "돌이!",
-     0.986342
+     0.98138
     ]
    ],
    "shown": false,
@@ -407,7 +407,7 @@
     615,
     844
    ],
-   "at": 2709
+   "at": 2701
   },
   "i4": {
    "intro": true,
@@ -418,7 +418,7 @@
     1,
     1
    ],
-   "at": 4003
+   "at": 4002
   },
   "i2": {
    "intro": false,
@@ -671,7 +671,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "여는 밤까지 2일 18시간 07분 남았어요",
+  "clock": "여는 밤까지 2일 15시간 23분 남았어요",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -712,7 +712,7 @@
      "보유종목"
     ]
    ],
-   "blocks": "div.s-hd,div.w-say,section.th-home,ol.s-story,div.s-thumb,a.s-evo",
+   "blocks": "div.s-hd,div.w-say,section.th-home,ol.s-story,div.s-thumb,div.s-short,a.s-evo",
    "chips": 0,
    "q": 0,
    "sw": 390,
@@ -1055,7 +1055,7 @@
    },
    {
     "url": "/#/up",
-    "n": 3583,
+    "n": 3693,
     "bad": 0,
     "sel": true,
     "sw": 390,
