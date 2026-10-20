@@ -1,5 +1,5 @@
 {
- "made": "2026-10-19T16:59:15.350Z",
+ "made": "2026-10-19T23:10:53.790Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -47,15 +47,15 @@
  },
  "fails": [],
  "warn": [],
- "sec": 587,
+ "sec": 544,
  "time": {
-  "old": 294.2,
-  "new": 464.2,
-  "wall": 586.9,
+  "old": 189,
+  "new": 431,
+  "wall": 543.9,
   "opensOld": 25571,
   "opensNew": 33282,
-  "oldPct": 50.1,
-  "oldShare": 38.8
+  "oldPct": 34.7,
+  "oldShare": 30.5
  },
  "net": {
   "req": 2,
@@ -63,10 +63,12 @@
   "waitSec": 0,
   "why": {},
   "page": {
-   "retry": 0,
-   "waitSec": 0,
+   "retry": 1,
+   "waitSec": 2,
    "blocked": 0,
-   "why": {}
+   "why": {
+    "답 없는 요청": 1
+   }
   }
  }
 }

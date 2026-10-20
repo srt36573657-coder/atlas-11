@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-live-phone-1",
- "at": "2026-10-19T16:41:31.814Z",
+ "at": "2026-10-19T23:00:59.593Z",
  "base": "https://aaa7377.com",
  "path": "/",
  "partial": false,
@@ -60,7 +60,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 141
+      "ms": 148
      },
      {
       "k": 2,
@@ -68,7 +68,7 @@
       "href": "#/t/how",
       "to": "#/t/how",
       "ok": true,
-      "ms": 130
+      "ms": 148
      },
      {
       "k": 3,
@@ -76,7 +76,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 57
+      "ms": 86
      },
      {
       "k": 4,
@@ -84,7 +84,7 @@
       "href": "#/t/bloom",
       "to": "#/t/bloom",
       "ok": true,
-      "ms": 48
+      "ms": 51
      },
      {
       "k": 5,
@@ -92,7 +92,7 @@
       "href": "#/t/wilt",
       "to": "#/t/wilt",
       "ok": true,
-      "ms": 46
+      "ms": 49
      },
      {
       "k": 6,
@@ -100,7 +100,7 @@
       "href": "#/t/i/연예 기획사",
       "to": "#/t/i/연예 기획사",
       "ok": true,
-      "ms": 128
+      "ms": 148
      },
      {
       "k": 7,
@@ -108,7 +108,7 @@
       "href": "#/t/i/연예 기획사/path",
       "to": "#/t/i/연예 기획사/path",
       "ok": true,
-      "ms": 49
+      "ms": 56
      },
      {
       "k": 8,
@@ -116,7 +116,7 @@
       "href": "#/t/i/연예 기획사/spread",
       "to": "#/t/i/연예 기획사/spread",
       "ok": true,
-      "ms": 47
+      "ms": 49
      },
      {
       "k": 9,
@@ -124,7 +124,7 @@
       "href": "#/t/i/연예 기획사/big",
       "to": "#/t/i/연예 기획사/big",
       "ok": true,
-      "ms": 43
+      "ms": 47
      },
      {
       "k": 10,
@@ -132,7 +132,7 @@
       "href": "#/t/i/연예 기획사/co",
       "to": "#/t/i/연예 기획사/co",
       "ok": true,
-      "ms": 47
+      "ms": 53
      },
      {
       "k": 11,
@@ -140,7 +140,7 @@
       "href": "#/t/i/연예 기획사/near",
       "to": "#/t/i/연예 기획사/near",
       "ok": true,
-      "ms": 31
+      "ms": 56
      },
      {
       "k": 12,
@@ -148,7 +148,7 @@
       "href": "#/t/c/352820",
       "to": "#/t/c/352820",
       "ok": true,
-      "ms": 47
+      "ms": 49
      },
      {
       "k": 13,
@@ -156,7 +156,7 @@
       "href": "#/t/c/352820/lead",
       "to": "#/t/c/352820/lead",
       "ok": true,
-      "ms": 48
+      "ms": 49
      },
      {
       "k": 14,
@@ -164,7 +164,7 @@
       "href": "#/t/c/352820/why",
       "to": "#/t/c/352820/why",
       "ok": true,
-      "ms": 46
+      "ms": 41
      },
      {
       "k": 15,
@@ -172,7 +172,7 @@
       "href": "#/t/c/352820/rank",
       "to": "#/t/c/352820/rank",
       "ok": true,
-      "ms": 46
+      "ms": 45
      },
      {
       "k": 16,
@@ -180,7 +180,7 @@
       "href": "#/t/c/352820/unknown",
       "to": "#/t/c/352820/unknown",
       "ok": true,
-      "ms": 29
+      "ms": 46
      },
      {
       "k": 17,
@@ -188,7 +188,7 @@
       "href": "#/t/c/352820/keep",
       "to": "#/t/c/352820/keep",
       "ok": true,
-      "ms": 44
+      "ms": 38
      },
      {
       "k": 18,
@@ -196,7 +196,7 @@
       "href": "#/why/352820",
       "to": "#/why/352820",
       "ok": true,
-      "ms": 26
+      "ms": 43
      }
     ],
     "ok": true,
@@ -211,7 +211,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 3019
+     "ms": 2718
     },
     {
      "route": "#/t/hello",
@@ -221,7 +221,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1019
+     "ms": 1124
     },
     {
      "route": "#/t/how",
@@ -231,7 +231,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1145
+     "ms": 1315
     },
     {
      "route": "#/t/sprout",
@@ -241,7 +241,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1201
+     "ms": 1308
     },
     {
      "route": "#/t/bloom",
@@ -251,7 +251,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1060
+     "ms": 1223
     },
     {
      "route": "#/t/wilt",
@@ -261,7 +261,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1054
+     "ms": 1203
     },
     {
      "route": "#/t/today",
@@ -271,7 +271,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1134
+     "ms": 1262
     },
     {
      "route": "#/t/alert",
@@ -281,7 +281,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1151
+     "ms": 1311
     },
     {
      "route": "#/t/i/연예 기획사",
@@ -291,7 +291,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1252
+     "ms": 1388
     },
     {
      "route": "#/t/i/연예 기획사/path",
@@ -301,7 +301,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1073
+     "ms": 1261
     },
     {
      "route": "#/t/i/연예 기획사/spread",
@@ -311,7 +311,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1069
+     "ms": 1239
     },
     {
      "route": "#/t/i/연예 기획사/big",
@@ -321,7 +321,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1062
+     "ms": 1251
     },
     {
      "route": "#/t/i/연예 기획사/co",
@@ -331,7 +331,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1030
+     "ms": 1190
     },
     {
      "route": "#/t/i/연예 기획사/near",
@@ -341,7 +341,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1034
+     "ms": 1193
     },
     {
      "route": "#/t/c/352820",
@@ -351,7 +351,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1092
+     "ms": 1263
     },
     {
      "route": "#/t/c/352820/lead",
@@ -361,7 +361,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1042
+     "ms": 1190
     },
     {
      "route": "#/t/c/352820/why",
@@ -371,7 +371,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1058
+     "ms": 1248
     },
     {
      "route": "#/t/c/352820/rank",
@@ -381,7 +381,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1001
+     "ms": 1215
     },
     {
      "route": "#/t/c/352820/unknown",
@@ -391,7 +391,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1011
+     "ms": 1200
     },
     {
      "route": "#/t/c/352820/keep",
@@ -401,7 +401,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1006
+     "ms": 1194
     }
    ],
    "shots": [
@@ -459,7 +459,7 @@
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     }
    ],
-   "ms": 47629
+   "ms": 38217
   },
   {
    "name": "iPhone 13",
@@ -484,7 +484,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 130
+      "ms": 151
      },
      {
       "k": 2,
@@ -492,7 +492,7 @@
       "href": "#/t/how",
       "to": "#/t/how",
       "ok": true,
-      "ms": 130
+      "ms": 144
      },
      {
       "k": 3,
@@ -500,7 +500,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 66
+      "ms": 86
      },
      {
       "k": 4,
@@ -508,7 +508,7 @@
       "href": "#/t/bloom",
       "to": "#/t/bloom",
       "ok": true,
-      "ms": 48
+      "ms": 53
      },
      {
       "k": 5,
@@ -516,7 +516,7 @@
       "href": "#/t/wilt",
       "to": "#/t/wilt",
       "ok": true,
-      "ms": 34
+      "ms": 46
      },
      {
       "k": 6,
@@ -524,7 +524,7 @@
       "href": "#/t/i/연예 기획사",
       "to": "#/t/i/연예 기획사",
       "ok": true,
-      "ms": 137
+      "ms": 146
      },
      {
       "k": 7,
@@ -532,7 +532,7 @@
       "href": "#/t/i/연예 기획사/path",
       "to": "#/t/i/연예 기획사/path",
       "ok": true,
-      "ms": 34
+      "ms": 56
      },
      {
       "k": 8,
@@ -540,7 +540,7 @@
       "href": "#/t/i/연예 기획사/spread",
       "to": "#/t/i/연예 기획사/spread",
       "ok": true,
-      "ms": 44
+      "ms": 48
      },
      {
       "k": 9,
@@ -556,7 +556,7 @@
       "href": "#/t/i/연예 기획사/co",
       "to": "#/t/i/연예 기획사/co",
       "ok": true,
-      "ms": 37
+      "ms": 44
      },
      {
       "k": 11,
@@ -564,7 +564,7 @@
       "href": "#/t/i/연예 기획사/near",
       "to": "#/t/i/연예 기획사/near",
       "ok": true,
-      "ms": 215
+      "ms": 295
      },
      {
       "k": 12,
@@ -572,7 +572,7 @@
       "href": "#/t/c/352820",
       "to": "#/t/c/352820",
       "ok": true,
-      "ms": 32
+      "ms": 50
      },
      {
       "k": 13,
@@ -580,7 +580,7 @@
       "href": "#/t/c/352820/lead",
       "to": "#/t/c/352820/lead",
       "ok": true,
-      "ms": 120
+      "ms": 128
      },
      {
       "k": 14,
@@ -588,7 +588,7 @@
       "href": "#/t/c/352820/why",
       "to": "#/t/c/352820/why",
       "ok": true,
-      "ms": 34
+      "ms": 46
      },
      {
       "k": 15,
@@ -596,7 +596,7 @@
       "href": "#/t/c/352820/rank",
       "to": "#/t/c/352820/rank",
       "ok": true,
-      "ms": 46
+      "ms": 43
      },
      {
       "k": 16,
@@ -604,7 +604,7 @@
       "href": "#/t/c/352820/unknown",
       "to": "#/t/c/352820/unknown",
       "ok": true,
-      "ms": 41
+      "ms": 48
      },
      {
       "k": 17,
@@ -612,7 +612,7 @@
       "href": "#/t/c/352820/keep",
       "to": "#/t/c/352820/keep",
       "ok": true,
-      "ms": 48
+      "ms": 40
      },
      {
       "k": 18,
@@ -620,7 +620,7 @@
       "href": "#/why/352820",
       "to": "#/why/352820",
       "ok": true,
-      "ms": 36
+      "ms": 40
      }
     ],
     "ok": true,
@@ -635,7 +635,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1971
+     "ms": 2226
     },
     {
      "route": "#/t/hello",
@@ -645,7 +645,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1027
+     "ms": 1128
     },
     {
      "route": "#/t/how",
@@ -655,7 +655,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1466
+     "ms": 1286
     },
     {
      "route": "#/t/sprout",
@@ -665,7 +665,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1248
+     "ms": 1374
     },
     {
      "route": "#/t/bloom",
@@ -675,7 +675,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1201
+     "ms": 1203
     },
     {
      "route": "#/t/wilt",
@@ -685,7 +685,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1343
+     "ms": 1230
     },
     {
      "route": "#/t/today",
@@ -695,7 +695,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1088
+     "ms": 1247
     },
     {
      "route": "#/t/alert",
@@ -705,7 +705,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1211
+     "ms": 1391
     },
     {
      "route": "#/t/i/연예 기획사",
@@ -715,7 +715,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1167
+     "ms": 1360
     },
     {
      "route": "#/t/i/연예 기획사/path",
@@ -725,7 +725,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1243
+     "ms": 1293
     },
     {
      "route": "#/t/i/연예 기획사/spread",
@@ -735,7 +735,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1138
+     "ms": 1243
     },
     {
      "route": "#/t/i/연예 기획사/big",
@@ -745,7 +745,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1081
+     "ms": 1215
     },
     {
      "route": "#/t/i/연예 기획사/co",
@@ -755,7 +755,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1023
+     "ms": 1189
     },
     {
      "route": "#/t/i/연예 기획사/near",
@@ -765,7 +765,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1016
+     "ms": 1214
     },
     {
      "route": "#/t/c/352820",
@@ -775,7 +775,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1162
+     "ms": 1348
     },
     {
      "route": "#/t/c/352820/lead",
@@ -785,7 +785,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1036
+     "ms": 1231
     },
     {
      "route": "#/t/c/352820/why",
@@ -795,7 +795,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1086
+     "ms": 1238
     },
     {
      "route": "#/t/c/352820/rank",
@@ -805,7 +805,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1031
+     "ms": 1172
     },
     {
      "route": "#/t/c/352820/unknown",
@@ -815,7 +815,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1012
+     "ms": 1215
     },
     {
      "route": "#/t/c/352820/keep",
@@ -825,7 +825,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1024
+     "ms": 1210
     }
    ],
    "shots": [
@@ -883,7 +883,7 @@
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     }
    ],
-   "ms": 30251
+   "ms": 33362
   },
   {
    "name": "Galaxy S9+",
@@ -908,7 +908,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 205
+      "ms": 210
      },
      {
       "k": 2,
@@ -924,7 +924,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 136
+      "ms": 134
      },
      {
       "k": 4,
@@ -948,7 +948,7 @@
       "href": "#/t/i/연예 기획사",
       "to": "#/t/i/연예 기획사",
       "ok": true,
-      "ms": 136
+      "ms": 134
      },
      {
       "k": 7,
@@ -956,7 +956,7 @@
       "href": "#/t/i/연예 기획사/path",
       "to": "#/t/i/연예 기획사/path",
       "ok": true,
-      "ms": 135
+      "ms": 133
      },
      {
       "k": 8,
@@ -964,7 +964,7 @@
       "href": "#/t/i/연예 기획사/spread",
       "to": "#/t/i/연예 기획사/spread",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 9,
@@ -972,7 +972,7 @@
       "href": "#/t/i/연예 기획사/big",
       "to": "#/t/i/연예 기획사/big",
       "ok": true,
-      "ms": 134
+      "ms": 135
      },
      {
       "k": 10,
@@ -980,7 +980,7 @@
       "href": "#/t/i/연예 기획사/co",
       "to": "#/t/i/연예 기획사/co",
       "ok": true,
-      "ms": 136
+      "ms": 134
      },
      {
       "k": 11,
@@ -988,7 +988,7 @@
       "href": "#/t/i/연예 기획사/near",
       "to": "#/t/i/연예 기획사/near",
       "ok": true,
-      "ms": 133
+      "ms": 103
      },
      {
       "k": 12,
@@ -996,7 +996,7 @@
       "href": "#/t/c/352820",
       "to": "#/t/c/352820",
       "ok": true,
-      "ms": 136
+      "ms": 135
      },
      {
       "k": 13,
@@ -1012,7 +1012,7 @@
       "href": "#/t/c/352820/why",
       "to": "#/t/c/352820/why",
       "ok": true,
-      "ms": 134
+      "ms": 136
      },
      {
       "k": 15,
@@ -1020,7 +1020,7 @@
       "href": "#/t/c/352820/rank",
       "to": "#/t/c/352820/rank",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 16,
@@ -1028,7 +1028,7 @@
       "href": "#/t/c/352820/unknown",
       "to": "#/t/c/352820/unknown",
       "ok": true,
-      "ms": 134
+      "ms": 135
      },
      {
       "k": 17,
@@ -1036,7 +1036,7 @@
       "href": "#/t/c/352820/keep",
       "to": "#/t/c/352820/keep",
       "ok": true,
-      "ms": 134
+      "ms": 135
      },
      {
       "k": 18,
@@ -1044,7 +1044,7 @@
       "href": "#/why/352820",
       "to": "#/why/352820",
       "ok": true,
-      "ms": 116
+      "ms": 117
      }
     ],
     "ok": true,
@@ -1059,7 +1059,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1613
+     "ms": 1931
     },
     {
      "route": "#/t/hello",
@@ -1069,7 +1069,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1127
+     "ms": 1087
     },
     {
      "route": "#/t/how",
@@ -1079,7 +1079,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1100
+     "ms": 1285
     },
     {
      "route": "#/t/sprout",
@@ -1089,7 +1089,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1247
+     "ms": 1413
     },
     {
      "route": "#/t/bloom",
@@ -1099,7 +1099,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1036
+     "ms": 1204
     },
     {
      "route": "#/t/wilt",
@@ -1109,7 +1109,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1084
+     "ms": 1166
     },
     {
      "route": "#/t/today",
@@ -1119,7 +1119,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1133
+     "ms": 1349
     },
     {
      "route": "#/t/alert",
@@ -1129,7 +1129,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1235
+     "ms": 1450
     },
     {
      "route": "#/t/i/연예 기획사",
@@ -1139,7 +1139,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1265
+     "ms": 1365
     },
     {
      "route": "#/t/i/연예 기획사/path",
@@ -1149,7 +1149,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1083
+     "ms": 1187
     },
     {
      "route": "#/t/i/연예 기획사/spread",
@@ -1159,7 +1159,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1117
+     "ms": 1331
     },
     {
      "route": "#/t/i/연예 기획사/big",
@@ -1169,7 +1169,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1083
+     "ms": 1166
     },
     {
      "route": "#/t/i/연예 기획사/co",
@@ -1179,7 +1179,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 967
+     "ms": 1149
     },
     {
      "route": "#/t/i/연예 기획사/near",
@@ -1189,7 +1189,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1116
+     "ms": 1135
     },
     {
      "route": "#/t/c/352820",
@@ -1199,7 +1199,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1238
+     "ms": 1383
     },
     {
      "route": "#/t/c/352820/lead",
@@ -1209,7 +1209,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 962
+     "ms": 1134
     },
     {
      "route": "#/t/c/352820/why",
@@ -1219,7 +1219,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1017
+     "ms": 1232
     },
     {
      "route": "#/t/c/352820/rank",
@@ -1229,7 +1229,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1034
+     "ms": 1133
     },
     {
      "route": "#/t/c/352820/unknown",
@@ -1239,7 +1239,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 982
+     "ms": 1118
     },
     {
      "route": "#/t/c/352820/keep",
@@ -1249,7 +1249,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1019
+     "ms": 1266
     }
    ],
    "shots": [
@@ -1285,7 +1285,7 @@
     }
    ],
    "version": "141.0.7390.37",
-   "ms": 30615
+   "ms": 33624
   },
   {
    "name": "Pixel 7",
@@ -1310,7 +1310,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 137
+      "ms": 151
      },
      {
       "k": 2,
@@ -1318,7 +1318,7 @@
       "href": "#/t/how",
       "to": "#/t/how",
       "ok": true,
-      "ms": 137
+      "ms": 138
      },
      {
       "k": 3,
@@ -1326,7 +1326,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 136
+      "ms": 137
      },
      {
       "k": 4,
@@ -1334,7 +1334,7 @@
       "href": "#/t/bloom",
       "to": "#/t/bloom",
       "ok": true,
-      "ms": 134
+      "ms": 135
      },
      {
       "k": 5,
@@ -1342,7 +1342,7 @@
       "href": "#/t/wilt",
       "to": "#/t/wilt",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 6,
@@ -1350,7 +1350,7 @@
       "href": "#/t/i/연예 기획사",
       "to": "#/t/i/연예 기획사",
       "ok": true,
-      "ms": 219
+      "ms": 215
      },
      {
       "k": 7,
@@ -1358,7 +1358,7 @@
       "href": "#/t/i/연예 기획사/path",
       "to": "#/t/i/연예 기획사/path",
       "ok": true,
-      "ms": 217
+      "ms": 218
      },
      {
       "k": 8,
@@ -1382,7 +1382,7 @@
       "href": "#/t/i/연예 기획사/co",
       "to": "#/t/i/연예 기획사/co",
       "ok": true,
-      "ms": 133
+      "ms": 134
      },
      {
       "k": 11,
@@ -1390,7 +1390,7 @@
       "href": "#/t/i/연예 기획사/near",
       "to": "#/t/i/연예 기획사/near",
       "ok": true,
-      "ms": 132
+      "ms": 134
      },
      {
       "k": 12,
@@ -1406,7 +1406,7 @@
       "href": "#/t/c/352820/lead",
       "to": "#/t/c/352820/lead",
       "ok": true,
-      "ms": 134
+      "ms": 133
      },
      {
       "k": 14,
@@ -1414,7 +1414,7 @@
       "href": "#/t/c/352820/why",
       "to": "#/t/c/352820/why",
       "ok": true,
-      "ms": 134
+      "ms": 133
      },
      {
       "k": 15,
@@ -1422,7 +1422,7 @@
       "href": "#/t/c/352820/rank",
       "to": "#/t/c/352820/rank",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 16,
@@ -1430,7 +1430,7 @@
       "href": "#/t/c/352820/unknown",
       "to": "#/t/c/352820/unknown",
       "ok": true,
-      "ms": 132
+      "ms": 133
      },
      {
       "k": 17,
@@ -1438,7 +1438,7 @@
       "href": "#/t/c/352820/keep",
       "to": "#/t/c/352820/keep",
       "ok": true,
-      "ms": 133
+      "ms": 135
      },
      {
       "k": 18,
@@ -1446,7 +1446,7 @@
       "href": "#/why/352820",
       "to": "#/why/352820",
       "ok": true,
-      "ms": 32
+      "ms": 30
      }
     ],
     "ok": true,
@@ -1461,7 +1461,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1313
+     "ms": 1758
     },
     {
      "route": "#/t/hello",
@@ -1471,7 +1471,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1005
+     "ms": 1098
     },
     {
      "route": "#/t/how",
@@ -1481,7 +1481,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1015
+     "ms": 1366
     },
     {
      "route": "#/t/sprout",
@@ -1491,7 +1491,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1145
+     "ms": 1346
     },
     {
      "route": "#/t/bloom",
@@ -1501,7 +1501,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 990
+     "ms": 1286
     },
     {
      "route": "#/t/wilt",
@@ -1511,7 +1511,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 983
+     "ms": 1201
     },
     {
      "route": "#/t/today",
@@ -1521,7 +1521,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1000
+     "ms": 1284
     },
     {
      "route": "#/t/alert",
@@ -1531,7 +1531,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1159
+     "ms": 1377
     },
     {
      "route": "#/t/i/연예 기획사",
@@ -1541,7 +1541,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1166
+     "ms": 1299
     },
     {
      "route": "#/t/i/연예 기획사/path",
@@ -1551,7 +1551,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1008
+     "ms": 1306
     },
     {
      "route": "#/t/i/연예 기획사/spread",
@@ -1561,7 +1561,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 999
+     "ms": 1283
     },
     {
      "route": "#/t/i/연예 기획사/big",
@@ -1571,7 +1571,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1051
+     "ms": 1152
     },
     {
      "route": "#/t/i/연예 기획사/co",
@@ -1581,7 +1581,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1017
+     "ms": 1132
     },
     {
      "route": "#/t/i/연예 기획사/near",
@@ -1591,7 +1591,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 999
+     "ms": 1133
     },
     {
      "route": "#/t/c/352820",
@@ -1601,7 +1601,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1174
+     "ms": 1340
     },
     {
      "route": "#/t/c/352820/lead",
@@ -1611,7 +1611,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1010
+     "ms": 1143
     },
     {
      "route": "#/t/c/352820/why",
@@ -1621,7 +1621,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1150
+     "ms": 1233
     },
     {
      "route": "#/t/c/352820/rank",
@@ -1631,7 +1631,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1000
+     "ms": 1167
     },
     {
      "route": "#/t/c/352820/unknown",
@@ -1641,7 +1641,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1117
+     "ms": 1135
     },
     {
      "route": "#/t/c/352820/keep",
@@ -1651,7 +1651,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 982
+     "ms": 1133
     }
    ],
    "shots": [
@@ -1687,10 +1687,10 @@
     }
    ],
    "version": "141.0.7390.37",
-   "ms": 28498
+   "ms": 32581
   }
  ],
  "ok": true,
- "ms": 137988,
+ "ms": 138381,
  "shotBytes": 4313995
 }
