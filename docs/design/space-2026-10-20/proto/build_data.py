@@ -54,8 +54,7 @@ for c in sorted(codes):
     for j in idx:
         v = seg[j] or last
         raw.append(v); last = v
-    span = (hi - lo) or 1
-    line = [round((v - lo) / span * 999) for v in raw]  # 0 ~ 999 (가장 낮을 때 0 · 높을 때 999)
+    line = [int(v) for v in raw]  # 이틀마다 종가 그대로(손가락으로 따라갈 때 그날 값)
     cc = x.get('c') or {}
     fin = x.get('fin') or {}
     g = x.get('grow') or {}
@@ -65,7 +64,7 @@ for c in sorted(codes):
         'i': cc.get('i'), 'prod': cc.get('products'), 'mk': cc.get('market'), 'cap': cc.get('cap'),
         'price': cc.get('price'), 'pd': cc.get('priceDate'),
         'from': dates[S0 + first], 'to': dates[N - 1], 'full': first == 0,
-        'line': line, 'f0': seg[0], 'f1': seg[-1], 'hi': [hi, hi_d], 'lo': [lo, lo_d],
+        'line': line, 'k0': first, 'f0': seg[0], 'f1': seg[-1], 'hi': [hi, hi_d], 'lo': [lo, lo_d],
         'chg': round((seg[-1] / seg[0] - 1) * 100, 1),
         'mdd': None if jumps else round(mdd * 100, 1),
         'up1': [round(up1 * 100, 1), d_up], 'dn1': [round(dn1 * 100, 1), d_dn], 'big5': big5, 'days': len(seg) - 1, 'jumps': jumps,
@@ -73,7 +72,7 @@ for c in sorted(codes):
         'rank': gi.get('rank'), 'of': gi.get('n'), 'me': gi.get('me'), 'riv': g.get('top'), 'by': g.get('baseYear'),
     }
 R0 = th['record']
-data = {'asOf': th['asOf'], 'made': th['made'], 'recFrom': th['recFrom'], 'recTo': th['recTo'], 'count': th['count'], 'order': th['order'],
+data = {'asOf': th['asOf'], 'made': th['made'], 'dates': dates[S0:], 'days6': th.get('days6'), 'recFrom': th['recFrom'], 'recTo': th['recTo'], 'count': th['count'], 'order': th['order'],
         'rec': {'all': R0['all']['p'], 'real': R0['real']['p'], 'nReal': R0['real']['n'], 'more': R0.get('more')},
         'groups': th['groups'], 'inds': inds, 'more': more, 'co': co}
 s = json.dumps(data, ensure_ascii=False, separators=(',', ':'))

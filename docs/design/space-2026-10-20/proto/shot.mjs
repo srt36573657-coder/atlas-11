@@ -25,7 +25,13 @@ const audit = async name => p.evaluate(name => {
 const shots = [];
 const snap = async (name, full = true) => { const a = await audit(name); shots.push(a); await p.screenshot({path: `${outDir}/${name}.png`, fullPage: full}); };
 await snap('01-home');
-await nav('how'); await snap('02-how');
+await nav('how:0'); await snap('02-how');
+await nav('how:1'); await p.waitForTimeout(900); await snap('02b-moon', false);
+await nav('how:4'); await p.waitForTimeout(2600); await snap('02c-ring', false);
+await nav('how:5'); await p.waitForTimeout(3800); await snap('02d-dipper', false);
+await nav('home'); await p.click('.btn.play'); await p.waitForTimeout(2600); await snap('01b-played', false); await p.waitForTimeout(3600);
+await p.evaluate(() => { const svg = document.querySelector('.skyin svg'); const r = svg.getBoundingClientRect(); window.scrollTo(0, r.top + scrollY - 80); }); await p.waitForTimeout(200);
+await (async () => { const svg = await p.$('.skyin svg'); const b = await svg.boundingBox(); const pt = await p.evaluate(() => { const st = [...document.querySelectorAll('.skyin svg circle.st.B')][0]; const r = st.getBoundingClientRect(); return {x: r.x + r.width / 2, y: r.y + r.height / 2}; }); await p.mouse.click(pt.x, pt.y); })(); await p.waitForTimeout(300); await snap('01c-lens', false);
 await nav('zones'); await snap('03-zones');
 await nav('z:S'); await snap('04-list');
 await nav('i:2차전지'); await snap('05-ind');

@@ -274,6 +274,67 @@ a.chip { min-height: 44px; text-decoration: none; }
 .dock svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .dock a[aria-current="page"] svg { stroke: var(--wax); }
 @media (prefers-reduced-motion: reduce) { .page.enter { animation: none; } }
+
+/* ── 2판: 움직이는 하늘 · 별 이름표 · 별 이야기 · 손가락 따라가기 ── */
+.timebar { display: flex; flex-direction: column; gap: 10px; }
+.tb-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.timebar input[type=range] { display: block; width: 100%; height: 44px; margin: 0; accent-color: var(--wax); }
+.trails { transition: opacity 1.4s ease; }
+.trails.off { opacity: 0; }
+.daylab { flex: none; text-align: right; color: var(--moon); font-size: var(--fs-2); font-variant-numeric: tabular-nums; }
+.btn.play { flex: none; }
+.strail { fill: none; stroke-width: 1.3; opacity: .5; stroke-linecap: round; stroke-linejoin: round; }
+.strail.S { stroke: var(--wax); } .strail.B { stroke: var(--moon); } .strail.W, .strail.Q { stroke: var(--faint); opacity: .35; }
+.sel { fill: none; stroke: var(--moon); stroke-width: 2; }
+.lens { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-2); border: 1px solid var(--wax); border-radius: var(--r); background: var(--sky-2); }
+.lens-h { display: flex; align-items: center; gap: 12px; }
+.lens-t { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.lens-t b { font-size: var(--fs-3); line-height: 1.3; }
+.lens-t span { color: var(--dim); font-size: var(--fs-1); }
+.lens .x { flex: none; width: 48px; height: 48px; border: 0; background: none; color: var(--dim); font: inherit; font-size: var(--fs-4); cursor: pointer; }
+.lens .btn { align-self: flex-start; }
+.ov.huge { font-family: var(--serif); font-size: var(--fs-5); font-weight: 700; }
+.photon { fill: var(--moon); }
+.rd { fill: var(--sky-3); } .rd.on { fill: var(--wax); }
+.sdots { display: flex; gap: 8px; }
+.sdots i { width: 12px; height: 12px; border-radius: 50%; background: var(--sky-3); border: 1px solid var(--line); }
+.sdots i.on { background: var(--wax); border-color: var(--wax); }
+.scene.show { gap: 14px; }
+.chart.scrub { touch-action: pan-y; cursor: crosshair; -webkit-user-select: none; user-select: none; }
+.guide { stroke: var(--moon); stroke-width: 1; stroke-dasharray: 3 4; opacity: .7; }
+.pick { fill: var(--wax); stroke: var(--sky); stroke-width: 2; }
+.tip { position: absolute; z-index: 3; display: flex; flex-direction: column; gap: 0; min-width: 9.5em; padding: 8px 12px; border: 1px solid var(--frame); border-radius: 12px; background: var(--sky-2); transform: translate(-50%, calc(-100% - 16px)); pointer-events: none; white-space: nowrap; }
+.tip.below { transform: translate(-50%, 16px); }
+.tip b { font-size: var(--fs-2); }
+.tip span { color: var(--dim); font-size: var(--fs-1); }
+.tip span.up { color: var(--up); } .tip span.dn { color: var(--down); }
+.pgs { display: block; width: 100%; height: auto; }
+.pgl { fill: none; stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 2 5; }
+.pgnow { fill: none; stroke: var(--wax); stroke-width: 1.5; }
+@media (prefers-reduced-motion: no-preference) {
+  .st.appear { animation: appear .9s ease-out both; }
+  @keyframes appear { from { opacity: .08; } }
+  .ignite { animation: ignite 1.3s cubic-bezier(.2, .7, .2, 1) .5s both; transform-box: fill-box; transform-origin: center; }
+  @keyframes ignite { from { opacity: .2; transform: scale(.3); } }
+  .photon { animation: photon 2.6s linear infinite; }
+  @keyframes photon { from { transform: translateX(0); } to { transform: translateX(206px); } }
+  .rd.on { animation: lightdot .5s ease-out both; }
+  @keyframes lightdot { from { fill: var(--sky-3); } }
+  .kite.seq .ks.on, .show .ds { animation: lightup .55s ease-out both; }
+  @keyframes lightup { from { fill: var(--moon-base); stroke: var(--faint); } }
+  .kite.seq .kg { animation: fadein .6s ease-out both; }
+  .show .dp { animation: fadein .8s ease-out 2.1s both; }
+  .show .pol, .show .polg { animation: polglow 1.1s cubic-bezier(.2, .7, .2, 1) 2.5s both; transform-box: fill-box; transform-origin: center; }
+  @keyframes polglow { from { opacity: .1; transform: scale(.4); } }
+  @keyframes fadein { from { opacity: 0; } }
+  .zone-s.pulse { animation: zpulse 2.4s ease-in-out infinite; }
+  @keyframes zpulse { 0%, 100% { opacity: .55; } 50% { opacity: 1.6; } }
+  .ln.draw { stroke-dasharray: 1000; animation: draw 1.6s cubic-bezier(.3, .6, .2, 1) both; }
+  @keyframes draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+  .ar.fade { animation: fadein 1.2s ease-out .5s both; }
+  .pgnow { animation: ping 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes ping { 0%, 100% { opacity: .9; transform: scale(1); } 50% { opacity: .35; transform: scale(1.25); } }
+}
 </style>
 
 <canvas id="stars" aria-hidden="true"></canvas>
@@ -309,7 +370,9 @@ const ZN = {
 };
 const ZORDER = ['S', 'B', 'W', 'Q'];
 const STEP_NAME = ['하늘', '별자리', '별', '지나온 길', '이웃 별', '커 왔을까', '흔들림'];
-const state = {stack: [], route: 'home', why: null, lastWhy: null, findQ: ''};
+const state = {stack: [], route: 'home', why: null, lastWhy: null, findQ: '', cleanup: [], introDone: false};
+const REDUCE = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const zoneAt = (x, y) => (x >= BLOOM ? (y >= 0 ? 'B' : 'W') : (y >= 0 ? 'S' : 'Q'));
 
 /* ── 만드는 손 ── */
 function put(el, kids) { for (const k of kids.flat(Infinity)) { if (k == null || k === false || k === '') continue; el.append(k.nodeType ? k : document.createTextNode(String(k))); } return el; }
@@ -347,18 +410,25 @@ const allInd = () => ZORDER.flatMap(z => D.order[z]);
 function ov(fig, vb, x, y, text, cls) { const e = h('span', {class: 'ov ' + cls, 'aria-hidden': 'true'}, text); e.style.left = (x / vb[0] * 100) + '%'; e.style.top = (y / vb[1] * 100) + '%'; fig.append(e); return e; }
 
 /* ── 그림 조각 ── */
-function moon(kind, cx, cy, r) {
+/* 달 — f = 밝은 몫(0 그믐 ~ 1 보름) · 차오름은 오른쪽, 기욺은 왼쪽이 밝음 */
+function moonD(cx, cy, r, f, side) {
+  const top = `${cx} ${cy - r}`, bot = `${cx} ${cy + r}`, rx = (Math.abs(1 - 2 * f) * r).toFixed(2);
+  const o = side === 'R' ? 1 : 0, inner = f < 0.5 ? (side === 'R' ? 0 : 1) : (side === 'R' ? 1 : 0);
+  return `M${top} A${r} ${r} 0 0 ${o} ${bot} A${rx} ${r} 0 0 ${inner} ${top} Z`;
+}
+const fullD = (cx, cy, r) => `M${cx - r} ${cy} A${r} ${r} 0 1 0 ${cx + r} ${cy} A${r} ${r} 0 1 0 ${cx - r} ${cy} Z`;
+function moon(kind, cx, cy, r, f) {
   const g = s('g', {class: 'moon ' + kind});
   g.append(s('circle', {cx, cy, r, class: 'm-base'}));
-  if (kind === 'full') g.append(s('circle', {cx, cy, r: r - 0.75, class: 'm-lit'}));
-  else if (kind === 'wax' || kind === 'wane') {
-    const rx = (r * 0.42).toFixed(2), top = `${cx} ${cy - r}`, bot = `${cx} ${cy + r}`;
-    const d = kind === 'wax' ? `M${top} A${r} ${r} 0 0 1 ${bot} A${rx} ${r} 0 0 0 ${top} Z` : `M${top} A${r} ${r} 0 0 0 ${bot} A${rx} ${r} 0 0 1 ${top} Z`;
-    g.append(s('path', {d, class: 'm-lit'}));
-  }
+  const fr = f != null ? f : kind === 'full' ? 1 : kind === 'new' ? 0 : 0.3;
+  if (fr >= 0.985) g.append(s('path', {d: fullD(cx, cy, r - 0.75), class: 'm-lit'}));
+  else if (fr > 0.015) g.append(s('path', {d: moonD(cx, cy, r, fr, kind === 'wane' ? 'L' : 'R'), class: 'm-lit'}));
   return g;
 }
-const moonSvg = (kind, cls = 'mi') => s('svg', {viewBox: '0 0 40 40', class: cls, 'aria-hidden': 'true'}, moon(kind, 20, 20, 17));
+const moonSvg = (kind, cls = 'mi', f) => s('svg', {viewBox: '0 0 40 40', class: cls, 'aria-hidden': 'true'}, moon(kind, 20, 20, 17, f));
+/* 업종 달 — 차오름은 보름 선까지 온 만큼 차고, 보름은 꽉 차고, 기우는 중은 남은 만큼, 그믐은 어두움 */
+const fullOf = i => (i.z === 'B' ? 1 : i.z === 'S' ? 0.14 + 0.72 * nearBar(i.x) : i.z === 'W' ? 0.14 + 0.6 * nearBar(i.x) : 0);
+const moonOf = (i, cls) => moonSvg(ZN[i.z].moon, cls, fullOf(i));
 function sparkle(cx, cy, r, cls) {
   const q = r * 0.26;
   return s('path', {class: cls, d: `M${cx} ${cy - r} Q${cx + q} ${cy - q} ${cx + r} ${cy} Q${cx + q} ${cy + q} ${cx} ${cy + r} Q${cx - q} ${cy + q} ${cx - r} ${cy} Q${cx - q} ${cy - q} ${cx} ${cy - r} Z`});
@@ -405,58 +475,126 @@ function dipperNav(code, ind) {
   return fig;
 }
 
-/* ── 하늘 판(첫 화면 · 엿새 길) ── */
-function skyFigure({trailOf = null, taps = true} = {}) {
-  const fig = h('figure', {class: 'sky'}), box = h('div', {class: 'skyin'});
-  const svg = s('svg', {viewBox: '0 0 360 360', role: trailOf || !taps ? 'img' : 'group', 'aria-label': trailOf ? `${trailOf}의 엿새 길` : `업종 ${Object.keys(D.inds).length}곳의 달 자리`});
-  fig.append(box); box.append(svg);
-  const x5 = X(BLOOM), y0 = Y(0);
-  svg.append(s('rect', {x: 14, y: 14, width: (x5 - 14).toFixed(1), height: (y0 - 14).toFixed(1), class: 'zone-s'}));
+/* ── 하늘 판 ── */
+const posAt = (i, f) => { const t = i.t; if (!Array.isArray(t) || t.length < 2) return [i.x, i.y]; const k = Math.max(0, Math.min(t.length - 2, Math.floor(f))), u = Math.max(0, Math.min(1, f - k)); return [t[k][0] + (t[k + 1][0] - t[k][0]) * u, t[k][1] + (t[k + 1][1] - t[k][1]) * u]; };
+/* 바탕 — 차오름 자리 빛 · 두 선 · 시계 방향 궤도 · 네 모서리 달 */
+function skyBase(svg, box, pulse) {
+  const x5 = X(BLOOM), y0 = Y(0), R = 118;
+  svg.append(s('rect', {x: 14, y: 14, width: (x5 - 14).toFixed(1), height: (y0 - 14).toFixed(1), class: 'zone-s' + (pulse ? ' pulse' : '')}));
   svg.append(s('line', {x1: x5, y1: 14, x2: x5, y2: 346, class: 'ax'}), s('line', {x1: 14, y1: y0, x2: 346, y2: y0, class: 'ax'}));
-  const R = 118;
   svg.append(s('circle', {cx: x5, cy: y0, r: R, class: 'orbit'}));
-  // 시계 방향 화살 넷(위 → 오른쪽 → 아래 → 왼쪽)
   const arrow = (x, y, ang) => s('path', {d: 'M-6 -5 L6 0 L-6 5 Z', class: 'arw', transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang})`});
   svg.append(arrow(x5, y0 - R, 0), arrow(x5 + R, y0, 90), arrow(x5, y0 + R, 180), arrow(x5 - R, y0, 270));
-  // 네 모서리 달
   const corners = {S: [36, 36, 'start', 60], B: [324, 36, 'end', 300], W: [324, 324, 'end', 300], Q: [36, 324, 'start', 60]};
-  for (const z of ZORDER) {
-    const [cx, cy, an, tx] = corners[z];
-    svg.append(moon(ZN[z].moon, cx, cy, 15));
-    ov(box, [360, 360], tx, cy, ZN[z].name, an + (z === 'S' ? ' wax' : z === 'B' ? ' moon' : ' dim'));
-  }
-  // 네 자리 누르는 곳(첫 화면만)
-  if (!trailOf && taps) {
-    const zr = {S: [14, 14, x5 - 14, y0 - 14], B: [x5, 14, 346 - x5, y0 - 14], W: [x5, y0, 346 - x5, 346 - y0], Q: [14, y0, x5 - 14, 346 - y0]};
-    for (const z of ZORDER) { const [x, y, w, hh] = zr[z]; svg.append(s('rect', {x, y, width: w.toFixed(1), height: hh.toFixed(1), class: 'tap', role: 'link', tabindex: 0, 'data-go': 'z:' + z, 'aria-label': `${ZN[z].name} 자리 ${D.count[z]}곳 보기`})); }
-  }
-  // 별(업종)
-  const names = Object.keys(D.inds);
-  for (const n of names) {
-    const i = D.inds[n]; if (trailOf && n !== trailOf) continue;
-    if (!trailOf) svg.append(s('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: i.z === 'S' ? 3.6 : 3.1, class: 'st ' + i.z}));
-    if (!trailOf && i.z === 'S' && i.d === 1 && i.sc !== 4) svg.append(s('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: 7.5, class: 'ring'}));
-  }
-  const lit = trailOf ? [trailOf] : realList();
-  for (const n of lit) {
+  for (const z of ZORDER) { const [cx, cy, an, tx] = corners[z]; svg.append(moon(ZN[z].moon, cx, cy, 15)); ov(box, [360, 360], tx, cy, ZN[z].name, an + (z === 'S' ? ' wax' : z === 'B' ? ' moon' : ' dim')); }
+  return {x5, y0};
+}
+/* 가만히 있는 하늘(엿새 길 · 이야기) */
+function skyFigure({trailOf = null, pulse = false} = {}) {
+  const fig = h('figure', {class: 'sky'}), box = h('div', {class: 'skyin'});
+  const svg = s('svg', {viewBox: '0 0 360 360', role: 'img', 'aria-label': trailOf ? `${trailOf}의 엿새 길` : `업종 ${Object.keys(D.inds).length}곳의 달 자리`});
+  fig.append(box); box.append(svg); skyBase(svg, box, pulse);
+  if (!trailOf) for (const i of Object.values(D.inds)) svg.append(s('circle', {cx: X(i.x).toFixed(1), cy: Y(i.y).toFixed(1), r: i.z === 'S' ? 3.6 : 3.1, class: 'st ' + i.z}));
+  for (const n of (trailOf ? [trailOf] : realList())) {
     const i = D.inds[n]; if (!i) continue;
     if (Array.isArray(i.t) && i.t.length > 1) {
       svg.append(s('polyline', {points: i.t.map(([a, b]) => `${X(a).toFixed(1)},${Y(b).toFixed(1)}`).join(' '), class: 'trail'}));
       i.t.slice(0, -1).forEach(([a, b]) => svg.append(s('circle', {cx: X(a).toFixed(1), cy: Y(b).toFixed(1), r: 3.4, class: 'tdot'})));
     }
-    const cx = X(i.x), cy = Y(i.y);
-    svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}));
-    svg.append(sparkle(cx, cy, 11, 'real'));
-    if (!trailOf && taps) svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 30, class: 'tap', role: 'link', tabindex: 0, 'data-go': 'i:' + n, 'aria-label': `${n} 보기`}));
-    const right = cx < 220;
+    const cx = X(i.x), cy = Y(i.y), right = cx < 220;
+    svg.append(s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), sparkle(cx, cy, 11, 'real'));
     ov(box, [360, 360], cx + (right ? 16 : -16), cy + (trailOf ? 22 : -18), n, (right ? 'start' : 'end') + ' wax big');
     if (trailOf && i.t && i.t.length > 1) { const [a, b] = i.t[0]; ov(box, [360, 360], X(a) + 10, Y(b) + 16, '엿새 전', 'start dim'); }
   }
   return fig;
 }
+/* 첫 화면 하늘 — 엿새 돌려 보기 · 별을 누르면 이름표 */
+function liveSky() {
+  const fig = h('figure', {class: 'sky'}), box = h('div', {class: 'skyin'});
+  const svg = s('svg', {viewBox: '0 0 360 360', role: 'group', 'aria-label': `업종 ${Object.keys(D.inds).length}곳의 달 자리 · 별을 누르면 이름이 나와요`});
+  fig.append(box); box.append(svg);
+  const {x5, y0} = skyBase(svg, box, false);
+  const zr = {S: [14, 14, x5 - 14, y0 - 14], B: [x5, 14, 346 - x5, y0 - 14], W: [x5, y0, 346 - x5, 346 - y0], Q: [14, y0, x5 - 14, 346 - y0]};
+  for (const z of ZORDER) { const [x, y, w, hh] = zr[z]; svg.append(s('rect', {x, y, width: w.toFixed(1), height: hh.toFixed(1), class: 'tap', role: 'link', tabindex: 0, 'data-go': 'z:' + z, 'aria-label': `${ZN[z].name} 자리 ${D.count[z]}곳 보기`})); }
+  const trails = s('g', {'aria-hidden': 'true', class: 'trails'}); svg.append(trails);
+  const intro = !state.introDone && !REDUCE; state.introDone = true;
+  const stars = Object.entries(D.inds).map(([n, i]) => {
+    const el = s('circle', {r: i.z === 'S' ? 3.6 : 3.1, class: 'st ' + i.z + (intro ? ' appear' : ''), 'aria-hidden': 'true'});
+    if (intro) el.style.animationDelay = (Math.random() * 0.9).toFixed(2) + 's';
+    const ring = i.z === 'S' && i.d === 1 && i.sc !== 4 ? s('circle', {r: 7.5, class: 'ring', 'aria-hidden': 'true'}) : null;
+    const tr = s('polyline', {class: 'strail ' + i.z, points: ''});
+    trails.append(tr); svg.append(el); if (ring) svg.append(ring);
+    return {n, i, el, ring, tr, cx: 0, cy: 0, z: i.z};
+  });
+  const reals = realList().map(n => {
+    const i = D.inds[n], cx = X(i.x), cy = Y(i.y), right = cx < 220;
+    const g = s('g', {'aria-hidden': 'true'}), inner = s('g', {class: intro ? 'ignite' : ''});
+    inner.append(s('polyline', {points: (i.t || []).map(([a, b]) => `${X(a).toFixed(1)},${Y(b).toFixed(1)}`).join(' '), class: 'trail'}), s('circle', {cx: cx.toFixed(1), cy: cy.toFixed(1), r: 18, class: 'glow'}), sparkle(cx, cy, 11, 'real'));
+    g.append(inner); svg.append(g);
+    const lab = ov(box, [360, 360], cx + (right ? 16 : -16), cy - 18, n, (right ? 'start' : 'end') + ' wax big');
+    return {n, i, g, lab, cx, cy, right};
+  });
+  const sel = s('circle', {r: 12, class: 'sel', visibility: 'hidden', 'aria-hidden': 'true'}); svg.append(sel);
+  const lens = h('div', {class: 'lens', 'aria-live': 'polite'}); lens.hidden = true;
+  const btn = h('button', {type: 'button', class: 'btn solid play'}, '▶ 엿새 돌려 보기');
+  const rng = h('input', {type: 'range', id: 'sky-day', min: 0, max: 500, step: 1, value: 500, 'aria-label': '며칠째 하늘인지 고르기'});
+  const lab = h('span', {class: 'daylab'});
+  const days = D.days6 || [];
+  let f = 5, raf = 0, timer = 0, trailsOn = false;
+  function setDay(v) {
+    f = Math.max(0, Math.min(5, v));
+    for (const st of stars) {
+      const [x, y] = posAt(st.i, f); st.cx = X(x); st.cy = Y(y);
+      st.el.setAttribute('cx', st.cx.toFixed(1)); st.el.setAttribute('cy', st.cy.toFixed(1));
+      const z = zoneAt(x, y); if (z !== st.z) { st.z = z; st.el.setAttribute('class', 'st ' + z); }
+      if (st.ring) { st.ring.setAttribute('cx', st.cx.toFixed(1)); st.ring.setAttribute('cy', st.cy.toFixed(1)); st.ring.setAttribute('visibility', f > 4.5 ? 'visible' : 'hidden'); }
+      if (trailsOn) { const pts = []; for (let g = Math.max(0, f - 1.2); g < f - 0.01; g += 0.15) { const [a, b] = posAt(st.i, g); pts.push(`${X(a).toFixed(1)},${Y(b).toFixed(1)}`); } pts.push(`${st.cx.toFixed(1)},${st.cy.toFixed(1)}`); st.tr.setAttribute('points', pts.join(' ')); }
+    }
+    for (const r of reals) { const [x, y] = posAt(r.i, f), dx = X(x) - r.cx, dy = Y(y) - r.cy; r.g.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); r.lab.style.left = ((r.cx + dx + (r.right ? 16 : -16)) / 360 * 100) + '%'; r.lab.style.top = ((r.cy + dy - 18) / 360 * 100) + '%'; }
+    const k = Math.round(f); lab.textContent = days[k] ? kshort(days[k]) : ''; rng.value = String(Math.round(f * 100));
+    if (sel.getAttribute('visibility') === 'visible' && sel._st) { sel.setAttribute('cx', sel._st.cx.toFixed(1)); sel.setAttribute('cy', sel._st.cy.toFixed(1)); }
+  }
+  let fadeT = 0;
+  const fadeTrails = () => { clearTimeout(fadeT); fadeT = setTimeout(() => trails.classList.add('off'), 900); };
+  const showTrails = () => { clearTimeout(fadeT); trails.classList.remove('off'); trailsOn = true; };
+  function stop(label) { if (raf) cancelAnimationFrame(raf); if (timer) clearTimeout(timer); raf = 0; timer = 0; btn.textContent = label; fadeTrails(); }
+  function play() {
+    if (raf || timer) { stop('▶ 이어서 돌려 보기'); return; }
+    if (f >= 4.999) setDay(0);
+    showTrails(); btn.textContent = '■ 멈춤';
+    if (REDUCE) { const tick = () => { setDay(Math.floor(f) + 1); if (f < 5) timer = setTimeout(tick, 800); else stop('▶ 다시 돌려 보기'); }; timer = setTimeout(tick, 500); return; }
+    let last = performance.now();
+    const step = now => { setDay(f + Math.min(0.1, (now - last) / 1000) / 0.95); last = now; if (f < 5) raf = requestAnimationFrame(step); else stop('▶ 다시 돌려 보기'); };
+    raf = requestAnimationFrame(step);
+  }
+  btn.addEventListener('click', play);
+  rng.addEventListener('input', () => { if (raf || timer) stop('▶ 엿새 돌려 보기'); showTrails(); setDay(Number(rng.value) / 100); fadeTrails(); });
+  state.cleanup.push(() => { stop(''); clearTimeout(fadeT); });
+  function closeLens() { lens.hidden = true; sel.setAttribute('visibility', 'hidden'); sel._st = null; }
+  function showLens(st) {
+    const i = st.i;
+    sel._st = st; sel.setAttribute('cx', st.cx.toFixed(1)); sel.setAttribute('cy', st.cy.toFixed(1)); sel.setAttribute('visibility', 'visible');
+    lens.replaceChildren(...[
+      h('div', {class: 'lens-h'}, moonOf(i, 'mi'), h('div', {class: 'lens-t'}, h('b', {}, st.n), h('span', {}, ZN[i.z].name, i.z === 'S' ? (i.d === 1 ? ' · 오늘 차오름' : ` · ${i.d}일째`) : '')), h('button', {type: 'button', class: 'x', 'aria-label': '이름표 닫기', onclick: closeLens}, '×')),
+      i.z === 'S' && i.dots ? h('p', {class: 'sub'}, four(i.dots), ` 네 별 가운데 ${i.dots.filter(Boolean).length}개`) : null,
+      h('p', {class: 'sub'}, '한 달 동안 시장보다 ', h('b', {class: cls3(i.x)}, pct(i.x)), ' · 지난 닷새 ', h('b', {class: cls3(i.y)}, pct(i.y))),
+      go1('i:' + st.n, 'btn solid', `${st.n} 보러 가기 ›`)].filter(Boolean));
+    lens.hidden = false;
+  }
+  svg.addEventListener('click', e => {
+    const m = svg.getScreenCTM(); if (!m) return;
+    const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(m.inverse());
+    let best = null, bd = 20 * 20;
+    for (const st of stars) { const dx = st.cx - p.x, dy = st.cy - p.y, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = st; } }
+    if (best) { e.preventDefault(); e.stopPropagation(); showLens(best); }
+  });
+  setDay(5);
+  const bar = h('div', {class: 'timebar'}, h('div', {class: 'tb-row'}, btn, lab), rng, h('p', {class: 'cap'}, `${days[0] ? kshort(days[0]) : '엿새 전'}부터 ${days[5] ? kshort(days[5]) : '오늘'}까지 별들이 어떻게 돌았는지 봐요.`));
+  return h('div', {class: 'block'}, fig, bar, lens, h('p', {class: 'cap center'}, '점 하나가 업종 하나예요. 별을 누르면 이름이 나와요.'));
+}
 
 /* ── 공통 끝 줄 ── */
-function next(label, title, route, ghost) { return go1(route, 'next' + (ghost ? ' ghost' : ''), h('span', {class: 'nx'}, h('small', {}, label), h('b', {}, title)), h('i', {'aria-hidden': 'true'}, '›')); }
+function next(label, title, route, ghost, root) { const a = go1(route, 'next' + (ghost ? ' ghost' : ''), h('span', {class: 'nx'}, h('small', {}, label), h('b', {}, title)), h('i', {'aria-hidden': 'true'}, '›')); if (root) a.dataset.root = '1'; return a; }
 const safe = () => h('p', {class: 'safe'}, SAFE);
 function recordBox() {
   const R = D.rec, real = Math.round(R.real), all = Math.round(R.all);
@@ -471,67 +609,81 @@ function recordBox() {
 /* ── 쪽 ── */
 function pHome() {
   const real = realList(), fresh = freshList(), total = allInd().length;
-  const realRow = n => { const i = D.inds[n]; return go1('i:' + n, 'realcard', h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(i.dots), ' 네 별이 다 켜졌어요 · ', i.d === 1 ? '오늘 차올랐어요' : `${i.d}일째 차오르는 중`)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')); };
+  const realRow = n => { const i = D.inds[n]; return go1('i:' + n, 'realcard', moonOf(i, 'mi'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(i.dots), ' 네 별이 다 켜졌어요 · ', i.d === 1 ? '오늘 차올랐어요' : `${i.d}일째 차오르는 중`)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')); };
   return [
     h('div', {class: 'block'},
       h('p', {class: 'eyebrow'}, `오늘 밤 하늘 · ${kdate(D.asOf)} 기록`),
       h('h1', {class: 'hero'}, '보름달 말고,', h('br'), h('em', {}, '차오르는 달.')),
       h('p', {class: 'lead'}, '돌이는 테마가 된 곳보다, 테마가 될 듯한 곳을 먼저 찾아 줘요.')),
-    h('div', {class: 'block'}, skyFigure(), h('p', {class: 'cap center'}, '점 하나가 업종 하나예요. 달처럼 시계 방향으로 돌아요.'), h('p', {class: 'cap center'}, '달 자리를 누르면 그 자리 업종이 나와요.')),
+    liveSky(),
     h('section', {class: 'answer'}, h('p', {class: 'eyebrow'}, '오늘 진짜 차오르는 곳'),
       real.length ? real.map(realRow) : h('p', {class: 'sub'}, '오늘은 네 별이 다 켜진 곳이 없어요.')),
     h('nav', {class: 'rows', 'aria-label': '달 자리'},
-      go1('z:S:new', 'row', moonSvg('wax'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '새로 차오른 곳'), h('span', {class: 'meta'}, '오늘 차오르는 달 자리에 들어왔어요')), h('span', {class: 'end'}, h('b', {}, fresh.length), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
-      go1('z:S', 'row', moonSvg('wax'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '차오르는 곳 모두'), h('span', {class: 'meta'}, '네 별이 많이 켜진 순서')), h('span', {class: 'end'}, h('b', {}, D.count.S), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+      go1('z:S:new', 'row', moonSvg('wax', 'mi', 0.18), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '새로 차오른 곳'), h('span', {class: 'meta'}, '오늘 차오르는 달 자리에 들어왔어요')), h('span', {class: 'end'}, h('b', {}, fresh.length), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
+      go1('z:S', 'row', moonSvg('wax', 'mi', 0.4), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '차오르는 곳 모두'), h('span', {class: 'meta'}, '네 별이 많이 켜진 순서')), h('span', {class: 'end'}, h('b', {}, D.count.S), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›')),
       go1('zones', 'row', moonSvg('full'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, '하늘 전체'), h('span', {class: 'meta'}, '차오름 · 보름 · 기우는 중 · 그믐')), h('span', {class: 'end'}, h('b', {}, total), '곳'), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))),
     recordBox(),
-    next('처음이면', '돌이 하늘 읽는 법', 'how'),
+    next('처음이면 · 일곱 장면', '돌이 하늘 읽는 법', 'how:0'),
     safe(),
   ];
 }
 
-function pHow() {
-  const scene = (no, title, text, fig) => h('section', {class: 'scene'}, h('span', {class: 'no'}, no), h('h2', {}, title), fig, h('p', {}, text));
-  // 1 별빛
-  const f1 = h('figure', {}); const s1 = s('svg', {viewBox: '0 0 360 120', 'aria-hidden': 'true'}); f1.append(s1);
-  s1.append(sparkle(48, 60, 22, 'real'), s('circle', {cx: 48, cy: 60, r: 30, class: 'glow'}), s('line', {x1: 80, y1: 60, x2: 300, y2: 60, class: 'beam'}), s('circle', {cx: 318, cy: 60, r: 14, class: 'planet'}));
-  ov(f1, [360, 120], 48, 104, '별', 'mid dim'); ov(f1, [360, 120], 318, 104, '우리', 'mid dim'); ov(f1, [360, 120], 190, 34, '오래전에 떠난 빛', 'mid wax');
-  // 2 달 넷
-  const f2 = h('figure', {}); const s2 = s('svg', {viewBox: '0 0 360 110', 'aria-hidden': 'true'}); f2.append(s2);
-  const seq = ['new', 'wax', 'full', 'wane'], lab = ['그믐', '차오름', '보름', '기우는 중'];
-  seq.forEach((k, j) => { const cx = 45 + j * 90; s2.append(moon(k, cx, 42, 24)); if (j < 3) s2.append(s('path', {d: `M${cx + 32} 42 l10 0 m-5 -5 l5 5 l-5 5`, class: 'orbit'})); ov(f2, [360, 110], cx, 94, lab[j], 'mid ' + (k === 'wax' ? 'wax' : 'dim')); });
-  // 3 시계
-  const f3 = skyFigure({taps: false});
-  // 4 네 별
-  const f4 = kiteFigure([1, 1, 1, 1]);
-  // 5 기록
-  const f5 = recordBars();
-  // 6 북두칠성
-  const f6 = h('figure', {class: 'dipfig'}); f6.append(dipperSvg(7, true)); ov(f6, [300, 180], POL[0] - 22, POL[1] - 20, '북극성 · 왜 사?', 'end wax'); ov(f6, [300, 180], DIP[0][0] - 4, DIP[0][1] + 16 - 20, '1 하늘', 'start dim'); ov(f6, [300, 180], DIP[6][0] + 16, DIP[6][1] - 20, '7 흔들림', 'start dim');
-  // 7 한 바퀴
-  const f7 = orbitFigure();
-  return [
-    h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '일곱 장면이면 돌이를 다 알아요'), h('h1', {class: 't'}, '돌이 하늘 읽는 법')),
-    h('div', {class: 'story'},
-      scene('하나', '하늘의 빛은 모두 지난 빛이에요.', '별빛은 오래전에 별을 떠나 이제 닿은 빛이에요. 돌이도 이미 지난 기록만 보여 줘요.', f1),
-      scene('둘', '달은 차고 기울어요.', '업종도 달처럼 돌아요. 그믐달에서 차오르고, 보름달이 되고, 다시 기울어요.', f2),
-      scene('셋', '돌이는 차오르는 달을 먼저 찾아요.', '보름달은 이미 모두가 봐요. 늦을 수 있어요. 차오르는 달은 아직 조용해요. 왼쪽 위 금빛 자리예요.', f3),
-      scene('넷', '네 별이 다 켜지면 진짜 차오름이에요.', '힘이 붙고, 오른 회사가 많고, 큰 회사도 움직이고, 값이 진짜로 오르면 네 별이 다 켜져요.', f4),
-      scene('다섯', '그래도 앞날은 몰라요.', `진짜 차오름도 100번 가운데 ${Math.round(D.rec.real)}번만 한 달 뒤 보름 선을 넘었어요. 하늘의 달과 달리, 업종은 꼭 차지 않아요.`, f5),
-      scene('여섯', '일곱 별을 따라가면 북극성이에요.', '북두칠성 일곱 별을 하나씩 눌러 더 깊이 봐요. 끝에는 북극성, 「왜 사?」가 있어요. 길을 잃지 않게 내 이유를 물어요.', f6),
-      scene('일곱', '달이 한 바퀴 돌면 다시 물어요.', '한 달 뒤 돌이가 물어요. 「그날 정한 대로 했어?」 잘했다고 상을 주지 않아요. 같이 돌아볼 뿐이에요.', f7)),
-    next('다 읽었으면', '오늘 하늘 보러 가기', 'home'),
-    safe(),
-  ];
+/* ── 별 이야기 — 한 장면씩 ── */
+function figLight() {
+  const f = h('figure', {}); const sv = s('svg', {viewBox: '0 0 360 140', 'aria-hidden': 'true'}); f.append(sv);
+  sv.append(s('circle', {cx: 48, cy: 70, r: 30, class: 'glow'}), sparkle(48, 70, 22, 'real'), s('line', {x1: 80, y1: 70, x2: 296, y2: 70, class: 'beam'}), s('circle', {cx: 86, cy: 70, r: 5, class: 'photon'}), s('circle', {cx: 318, cy: 70, r: 16, class: 'planet'}));
+  ov(f, [360, 140], 48, 120, '별', 'mid dim'); ov(f, [360, 140], 318, 120, '우리', 'mid dim'); ov(f, [360, 140], 190, 36, '오래전에 떠난 빛', 'mid wax');
+  return f;
 }
-function kiteFigure(dots, labels) {
-  const fig = h('figure', {}); const svg = s('svg', {viewBox: '0 0 360 150', class: 'kite', 'aria-hidden': 'true'}); fig.append(svg);
+function figMoonCycle() {
+  const f = h('figure', {}); const sv = s('svg', {viewBox: '0 0 360 170', 'aria-hidden': 'true'}); f.append(sv);
+  const g = s('g', {class: 'moon wax'}); g.append(s('circle', {cx: 180, cy: 70, r: 54, class: 'm-base'})); const lit = s('path', {class: 'm-lit'}); g.append(lit); sv.append(g);
+  const lab = ov(f, [360, 170], 180, 152, '', 'mid big');
+  let ph = 0.2;
+  const draw = () => {
+    const waxing = ph <= 0.5, fr = waxing ? ph * 2 : (1 - ph) * 2;
+    g.setAttribute('class', 'moon ' + (fr >= 0.94 ? 'full' : waxing ? 'wax' : 'wane'));
+    lit.setAttribute('d', fr >= 0.985 ? fullD(180, 70, 53) : fr <= 0.02 ? '' : moonD(180, 70, 54, fr, waxing ? 'R' : 'L'));
+    lab.textContent = fr <= 0.07 ? '그믐' : fr >= 0.94 ? '보름' : waxing ? '차오름' : '기우는 중';
+    lab.className = 'ov mid big ' + (fr >= 0.94 ? 'moon' : waxing && fr > 0.07 ? 'wax' : 'dim');
+  };
+  draw();
+  if (!REDUCE) { const id = setInterval(() => { ph = (ph + 0.008) % 1; draw(); }, 50); state.cleanup.push(() => clearInterval(id)); }
+  return f;
+}
+function figRing() {
+  const f = h('figure', {}); const sv = s('svg', {viewBox: '0 0 360 230', 'aria-hidden': 'true'}); f.append(sv);
+  const real = Math.round(D.rec.real);
+  for (let k = 0; k < 100; k++) {
+    const a = -Math.PI / 2 + k / 100 * Math.PI * 2, x = 180 + Math.cos(a) * 94, y = 114 + Math.sin(a) * 94, on = k < real;
+    const c = s('circle', {cx: x.toFixed(1), cy: y.toFixed(1), r: on ? 4.6 : 3.2, class: on ? 'rd on' : 'rd'});
+    if (on) c.style.animationDelay = (0.3 + k * 0.08).toFixed(2) + 's';
+    sv.append(c);
+  }
+  ov(f, [360, 230], 180, 104, `${real}번`, 'mid wax huge'); ov(f, [360, 230], 180, 140, '100번 가운데', 'mid dim');
+  return f;
+}
+function figDipperShow() {
+  const f = h('figure', {class: 'dipfig'}); const sv = dipperSvg(7, true); sv.classList.add('show'); f.append(sv);
+  sv.querySelectorAll('.ds').forEach((c, k) => { c.style.animationDelay = (0.2 + k * 0.26).toFixed(2) + 's'; });
+  sv.insertBefore(s('circle', {cx: POL[0], cy: POL[1], r: 22, class: 'glow polg'}), sv.querySelector('.pol'));
+  ov(f, [300, 180], POL[0] - 24, POL[1] - 20, '북극성 · 왜 사?', 'end wax');
+  ov(f, [300, 180], DIP[0][0] - 4, DIP[0][1] - 4, '1 하늘', 'start dim');
+  ov(f, [300, 180], DIP[6][0] + 16, DIP[6][1] - 20, '7 흔들림', 'start dim');
+  return f;
+}
+function kiteFigure(dots, opt = {}) {
+  const fig = h('figure', {}); const svg = s('svg', {viewBox: '0 0 360 150', class: 'kite' + (opt.seq ? ' seq' : ''), 'aria-hidden': 'true'}); fig.append(svg);
   const P = [[60, 96], [145, 46], [225, 84], [305, 40]];
   for (let k = 0; k < 3; k++) svg.append(s('line', {x1: P[k][0], y1: P[k][1], x2: P[k + 1][0], y2: P[k + 1][1], class: 'kl'}));
-  P.forEach(([x, y], k) => { if (dots[k]) svg.append(s('circle', {cx: x, cy: y, r: 20, class: 'kg'})); svg.append(sparkle(x, y, 13, 'ks' + (dots[k] ? ' on' : ''))); ov(fig, [360, 150], x, y + 36, String(k + 1), 'mid ' + (dots[k] ? 'wax' : 'dim')); });
+  P.forEach(([x, y], k) => {
+    const d = (0.3 + k * 0.45).toFixed(2) + 's';
+    if (dots[k]) { const gl = s('circle', {cx: x, cy: y, r: 20, class: 'kg'}); if (opt.seq) gl.style.animationDelay = d; svg.append(gl); }
+    const st = sparkle(x, y, 13, 'ks' + (dots[k] ? ' on' : '')); if (opt.seq) st.style.animationDelay = d; svg.append(st);
+    ov(fig, [360, 150], x, y + 36, String(k + 1), 'mid ' + (dots[k] ? 'wax' : 'dim'));
+  });
   return fig;
 }
-function recordBars() { const box = recordBox(); box.querySelectorAll('.eyebrow, .lead, .cap').forEach(e => e.remove()); box.classList.remove('rec'); return box; }
 function orbitFigure() {
   const fig = h('figure', {}); const svg = s('svg', {viewBox: '0 0 360 240', 'aria-hidden': 'true'}); fig.append(svg);
   svg.append(s('circle', {cx: 180, cy: 105, r: 78, class: 'orbit2'}));
@@ -539,6 +691,30 @@ function orbitFigure() {
   const g = s('g', {class: 'orb'}); g.append(s('circle', {cx: 180, cy: 183, r: 6, class: 'orbdot'})); svg.append(g);
   ov(fig, [360, 240], 80, 105, '오늘 적음', 'end dim'); ov(fig, [360, 240], 180, 224, '달이 한 바퀴 돌면 돌이가 물어요', 'mid wax');
   return fig;
+}
+const SCENES = [
+  {t: '하늘의 빛은 모두 지난 빛이에요.', p: '별빛은 오래전에 별을 떠나 이제 닿은 빛이에요. 돌이도 이미 지난 기록만 보여 줘요.', fig: figLight},
+  {t: '달은 차고 기울어요.', p: '업종도 달처럼 돌아요. 그믐에서 차오르고, 보름이 되고, 다시 기울어요.', fig: figMoonCycle},
+  {t: '돌이는 차오르는 달을 먼저 찾아요.', p: '보름달은 이미 모두가 봐요. 늦을 수 있어요. 차오르는 달은 아직 조용해요. 왼쪽 위 금빛 자리예요.', fig: () => skyFigure({pulse: true})},
+  {t: '네 별이 다 켜지면 진짜 차오름이에요.', p: null, fig: () => kiteFigure([1, 1, 1, 1], {seq: true})},
+  {t: '그래도 앞날은 몰라요.', p: null, fig: figRing},
+  {t: '일곱 별을 따라가면 북극성이에요.', p: '북두칠성 일곱 별을 하나씩 눌러 더 깊이 봐요. 끝의 두 별이 북극성을 가리켜요. 북극성에서 「왜 사?」를 물어요.', fig: figDipperShow},
+  {t: '달이 한 바퀴 돌면 다시 물어요.', p: '한 달 뒤 돌이가 물어요. 「그날 정한 대로 했어?」 잘했다고 상을 주지 않아요. 같이 돌아볼 뿐이에요.', fig: orbitFigure},
+];
+function pHow(k) {
+  k = Math.max(0, Math.min(SCENES.length - 1, Number(k) || 0));
+  const S = SCENES[k], last = k === SCENES.length - 1;
+  let body = S.p ? h('p', {}, S.p) : null;
+  if (k === 3) body = h('ul', {class: 'cond'}, DOT_TEXT.map((t, j) => h('li', {class: 'on'}, h('span', {class: 'k'}, j + 1), h('span', {class: 'tx'}, h('b', {}, t)))));
+  if (k === 4) body = h('p', {}, `진짜 차오름도 100번 가운데 ${Math.round(D.rec.real)}번만 한 달 뒤 보름 선을 넘었어요. 아무 업종은 ${Math.round(D.rec.all)}번이었어요. 하늘의 달과 달리, 업종은 꼭 차지 않아요.`);
+  const prev = () => { const p = 'how:' + (k - 1); if (state.stack[state.stack.length - 1] === p) back(); else go(p); };
+  return [
+    h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, `돌이 하늘 읽는 법 · ${k + 1} / ${SCENES.length}`), h('div', {class: 'sdots', 'aria-hidden': 'true'}, SCENES.map((_, j) => h('i', {class: j <= k ? 'on' : ''})))),
+    h('section', {class: 'scene show'}, h('span', {class: 'no'}, ['하나', '둘', '셋', '넷', '다섯', '여섯', '일곱'][k]), h('h2', {}, S.t), S.fig(), body),
+    last ? next('다 봤어요', '오늘 하늘 보러 가기', 'home', false, true) : next('다음 장면', SCENES[k + 1].t, 'how:' + (k + 1)),
+    k > 0 ? h('div', {class: 'btns'}, h('button', {type: 'button', class: 'btn', onclick: prev}, '‹ 앞 장면')) : null,
+    safe(),
+  ];
 }
 
 function pZones() {
@@ -560,8 +736,8 @@ function pZone(z, f) {
   if (z === 'S' && f === 'new') { list = freshList(); title = '새로 차오른 달'; sub = '오늘 차오르는 달 자리에 새로 들어왔어요.'; }
   const row = n => {
     const i = D.inds[n];
-    if (z === 'S') return go1('i:' + n, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(i.dots), i.d === 1 ? '오늘 차오름' : `차오름 ${i.d}일째`), h('span', {class: 'meta'}, '보름까지', bar01(nearBar(i.x)))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'));
-    return go1('i:' + n, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, '한 달 동안 시장보다 ', h('b', {class: cls3(i.x)}, pct(i.x)))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'));
+    if (z === 'S') return go1('i:' + n, 'row', moonOf(i), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(i.dots), i.d === 1 ? '오늘 차오름' : `차오름 ${i.d}일째`), h('span', {class: 'meta'}, '보름까지', bar01(nearBar(i.x)))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'));
+    return go1('i:' + n, 'row', moonOf(i), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, '한 달 동안 시장보다 ', h('b', {class: cls3(i.x)}, pct(i.x)))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'));
   };
   const first = list[0];
   return [
@@ -587,10 +763,10 @@ function pInd(n) {
   const lead = big[0] || top[0];
   return [
     steps(2),
-    h('div', {class: 'block'}, h('div', {class: 'chips'}, h('span', {class: 'chip' + (z === 'S' ? ' wax' : '')}, moonSvg(ZN[z].moon, 'mi s'), ZN[z].short, z === 'S' ? (i.d === 1 ? ' · 오늘부터' : ` · ${i.d}일째`) : '')), h('h1', {class: 't'}, n), i.gn ? h('p', {class: 'cap'}, i.gn) : null),
+    h('div', {class: 'block'}, h('div', {class: 'chips'}, h('span', {class: 'chip' + (z === 'S' ? ' wax' : '')}, moonOf(i, 'mi s'), ZN[z].short, z === 'S' ? (i.d === 1 ? ' · 오늘부터' : ` · ${i.d}일째`) : '')), h('h1', {class: 't'}, n), i.gn ? h('p', {class: 'cap'}, i.gn) : null),
     h('section', {class: 'block'},
       h('h2', {class: 'q'}, z === 'S' ? '왜 차오른다고 볼까?' : '네 별은 몇 개 켜졌을까?'),
-      kiteFigure(dots),
+      kiteFigure(dots, {seq: true}),
       h('ul', {class: 'cond'}, DOT_TEXT.map((t, k) => h('li', {class: dots[k] ? 'on' : ''}, h('span', {class: 'k'}, k + 1), h('span', {class: 'tx'}, h('b', {}, t), h('span', {}, detail[k]))))),
       h('p', {class: 'sub'}, on === 4 ? '네 별이 다 켜졌어요.' : `네 별 가운데 ${on}개가 켜졌어요.`, z !== 'S' ? ' ' + ZN[z].line : '')),
     h('section', {class: 'block'}, h('h2', {class: 'q'}, '엿새 동안 어디를 지나왔을까?'), skyFigure({trailOf: n}), h('p', {class: 'cap'}, '점선이 엿새 동안 지나온 길이에요. 별 모양이 오늘 자리예요.')),
@@ -611,7 +787,7 @@ function pCo(c) {
   const mine = ind && D.more[ind] ? [...D.more[ind].big, ...D.more[ind].top].find(x => x[0] === c) : null;
   return [
     steps(3),
-    h('div', {class: 'block'}, h('div', {class: 'chips'}, ind ? go1('i:' + ind, 'chip' + (i && i.z === 'S' ? ' wax' : ''), i ? moonSvg(ZN[i.z].moon, 'mi s') : null, ind) : null, C.mk ? h('span', {class: 'chip'}, C.mk === 'KOSPI' ? '코스피' : C.mk === 'KOSDAQ' ? '코스닥' : C.mk) : null), h('h1', {class: 't'}, C.n)),
+    h('div', {class: 'block'}, h('div', {class: 'chips'}, ind ? go1('i:' + ind, 'chip' + (i && i.z === 'S' ? ' wax' : ''), i ? moonOf(i, 'mi s') : null, ind) : null, C.mk ? h('span', {class: 'chip'}, C.mk === 'KOSPI' ? '코스피' : C.mk === 'KOSDAQ' ? '코스닥' : C.mk) : null), h('h1', {class: 't'}, C.n)),
     h('section', {class: 'block'}, h('h2', {class: 'q'}, '어떤 회사일까?'),
       h('dl', {class: 'facts'},
         C.prod ? h('div', {}, h('dt', {}, '만드는 것'), h('dd', {}, C.prod)) : null,
@@ -635,20 +811,37 @@ function head(step, c, title, q) { const C = D.co[c]; return [steps(step), h('di
 
 function pPast(c) {
   const C = D.co[c]; if (!C) return pCo(c);
-  const fig = h('figure', {class: 'chart'}); const W = 360, H = 200, L = C.line, n = L.length;
+  const fig = h('figure', {class: 'chart scrub'}); const W = 360, H = 210, L = C.line, n = L.length;
   const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': `${C.n} ${C.full ? '1년' : '상장 뒤'} 값 — ${won(C.f0)}에서 ${won(C.f1)}`}); fig.append(svg);
-  const px = k => 6 + k / (n - 1) * (W - 12), py = v => 14 + (999 - v) / 999 * (H - 28);
-  for (const gy of [14, H / 2, H - 14]) svg.append(s('line', {x1: 0, y1: gy, x2: W, y2: gy, class: 'gd'}));
+  const hi = C.hi[0], lo = C.lo[0], span = hi - lo || 1;
+  const px = k => 6 + k / Math.max(1, n - 1) * (W - 12), py = v => 16 + (hi - v) / span * (H - 32);
+  for (const gy of [16, H / 2, H - 16]) svg.append(s('line', {x1: 0, y1: gy, x2: W, y2: gy, class: 'gd'}));
   const pts = L.map((v, k) => `${px(k).toFixed(1)},${py(v).toFixed(1)}`);
-  svg.append(s('path', {d: `M${px(0).toFixed(1)},${H - 14} L${pts.join(' L')} L${px(n - 1).toFixed(1)},${H - 14} Z`, class: 'ar'}), s('polyline', {points: pts.join(' '), class: 'ln'}));
+  svg.append(s('path', {d: `M${px(0).toFixed(1)},${H - 16} L${pts.join(' L')} L${px(n - 1).toFixed(1)},${H - 16} Z`, class: 'ar fade'}), s('polyline', {points: pts.join(' '), class: 'ln draw', pathLength: 1000}));
   const mx = Math.max(...L), mn = Math.min(...L), kHi = L.indexOf(mx), kLo = L.indexOf(mn);
-  svg.append(s('circle', {cx: px(kHi).toFixed(1), cy: py(mx).toFixed(1), r: 6, class: 'hi'}));
-  svg.append(s('circle', {cx: px(kLo).toFixed(1), cy: py(mn).toFixed(1), r: 6, class: 'lo'}));
-  svg.append(s('circle', {cx: px(n - 1).toFixed(1), cy: py(L[n - 1]).toFixed(1), r: 7, class: 'nowp'}));
+  svg.append(s('circle', {cx: px(kHi).toFixed(1), cy: py(mx).toFixed(1), r: 6, class: 'hi'}), s('circle', {cx: px(kLo).toFixed(1), cy: py(mn).toFixed(1), r: 6, class: 'lo'}), s('circle', {cx: px(n - 1).toFixed(1), cy: py(L[n - 1]).toFixed(1), r: 7, class: 'nowp'}));
+  const guide = s('line', {y1: 8, y2: H - 8, class: 'guide', visibility: 'hidden'}), dot = s('circle', {r: 7, class: 'pick', visibility: 'hidden'});
+  svg.append(guide, dot);
+  const tip = h('div', {class: 'tip', 'aria-live': 'polite'}); tip.hidden = true; fig.append(tip);
+  const idx = []; for (let j = 0; j <= C.days; j += 2) idx.push(j); if (idx[idx.length - 1] !== C.days) idx.push(C.days);
+  const show = k => {
+    const x = px(k), y = py(L[k]);
+    guide.setAttribute('x1', x.toFixed(1)); guide.setAttribute('x2', x.toFixed(1)); guide.setAttribute('visibility', 'visible');
+    dot.setAttribute('cx', x.toFixed(1)); dot.setAttribute('cy', y.toFixed(1)); dot.setAttribute('visibility', 'visible');
+    const di = D.dates[(C.k0 || 0) + (idx[k] ?? 0)], ch = (L[k] / C.f0 - 1) * 100;
+    tip.replaceChildren(h('b', {}, won(L[k])), h('span', {}, di ? kdate(di) : ''), h('span', {class: cls3(ch)}, `처음보다 ${pct(ch)}`));
+    tip.hidden = false;
+    const fw = fig.clientWidth || W, tw = tip.offsetWidth || 160, left = Math.max(tw / 2 + 2, Math.min(fw - tw / 2 - 2, x / W * fw));
+    tip.style.left = left + 'px'; tip.style.top = (y / H * 100) + '%'; tip.classList.toggle('below', y / H < 0.42);
+  };
+  const pick = e => { const m = svg.getScreenCTM(); if (!m) return; const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(m.inverse()); show(Math.max(0, Math.min(n - 1, Math.round((p.x - 6) / (W - 12) * (n - 1))))); };
+  fig.addEventListener('pointerdown', pick);
+  fig.addEventListener('pointermove', e => { if (e.pointerType === 'mouse' || e.buttons) pick(e); });
   return [
     ...head(4, c, '지나온 길', C.full ? '1년 동안 어떤 길을 걸어왔을까?' : '상장한 뒤 어떤 길을 걸어왔을까?'),
-    h('div', {class: 'band-l'}, h('span', {}, kshort(C.from)), h('span', {}, kshort(C.to))),
+    h('div', {class: 'band-l'}, h('span', {}, kdate(C.from)), h('span', {}, kshort(C.to))),
     fig,
+    h('p', {class: 'cap center'}, '선 위를 손가락으로 따라가 보세요. 그날 값이 나와요.'),
     h('dl', {class: 'facts'},
       h('div', {}, h('dt', {}, `${kdate(C.from)} → ${kdate(C.to)}`), h('dd', {}, `${won(C.f0)} → ${won(C.f1)}`)),
       h('div', {}, h('dt', {}, '그사이 바뀐 값'), h('dd', {class: cls3(C.chg)}, pct(C.chg))),
@@ -750,7 +943,15 @@ function judge(ans) {
 function pWhy(c) {
   if (!state.why || state.why.code !== (c || null)) state.why = {code: c || null, i: -1, ans: [], picked: null};
   const W = state.why, C = c ? D.co[c] : null;
-  const pg = () => h('div', {class: 'pg', 'aria-label': `열한 질문 가운데 ${W.ans.length}개 답함`}, QS.map((_, k) => s('svg', {viewBox: '0 0 22 22', 'aria-hidden': 'true'}, sparkle(11, 11, 9, k < W.ans.length ? 'p1' : 'p0'))));
+  const pg = () => {
+    const sv = s('svg', {viewBox: '0 0 360 96', class: 'pgs', role: 'img', 'aria-label': `열한 질문 가운데 ${W.ans.length}개 답함 · 끝에 북극성`});
+    const pts = QS.map((_, k) => [18 + k * 28, 80 - Math.sin(k / (QS.length - 1) * Math.PI / 2) * 48]);
+    sv.append(s('polyline', {points: pts.map(p => p.map(v => v.toFixed(1)).join(',')).join(' ') + ' 338,18', class: 'pgl'}));
+    pts.forEach(([x, y], k) => { const done = k < W.ans.length; if (k === W.ans.length && W.i >= 0 && W.i < QS.length) sv.append(s('circle', {cx: x.toFixed(1), cy: y.toFixed(1), r: 12, class: 'pgnow'})); sv.append(sparkle(x, y, done ? 8 : 6, done ? 'p1' : 'p0')); });
+    const fin = W.i >= QS.length; if (fin) sv.append(s('circle', {cx: 338, cy: 18, r: 16, class: 'glow'}));
+    sv.append(sparkle(338, 18, fin ? 14 : 10, fin ? 'pol' : 'p0'));
+    return sv;
+  };
   const polaris = h('div', {class: 'polaris'}, s('svg', {viewBox: '0 0 64 64', 'aria-hidden': 'true'}, s('circle', {cx: 32, cy: 32, r: 26, class: 'glow'}), sparkle(32, 32, 24, 'pol')), h('div', {class: 'block'}, h('p', {class: 'eyebrow'}, '북극성'), h('h1', {class: 't'}, '사기 전에 멈춰요.')));
   if (W.i < 0) return [
     polaris,
@@ -818,11 +1019,11 @@ function pFind() {
   const norm = t => String(t || '').replace(/[\s·]/g, '').toLowerCase();
   const draw = () => {
     const q = norm(input.value); state.findQ = input.value; out.replaceChildren();
-    if (!q) { put(out, [h('p', {class: 'eyebrow'}, '차오르는 달 가운데'), h('nav', {class: 'rows'}, D.order.S.slice(0, 8).map(n => go1('i:' + n, 'row', moonSvg('wax'), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(D.inds[n].dots))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]); return; }
+    if (!q) { put(out, [h('p', {class: 'eyebrow'}, '차오르는 달 가운데'), h('nav', {class: 'rows'}, D.order.S.slice(0, 8).map(n => go1('i:' + n, 'row', moonOf(D.inds[n]), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, four(D.inds[n].dots))), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]); return; }
     const inds = Object.keys(D.inds).filter(n => norm(n).includes(q)).slice(0, 10);
     const cos = Object.entries(D.co).filter(([c, C]) => norm(C.n).includes(q) || c.includes(q)).slice(0, 20);
     if (!inds.length && !cos.length) { out.append(h('p', {class: 'sub'}, '? 찾지 못했어요. 시험판에는 업종 77곳과 회사 일부만 있어요.')); return; }
-    if (inds.length) put(out, [h('p', {class: 'eyebrow'}, '업종'), h('nav', {class: 'rows'}, inds.map(n => go1('i:' + n, 'row', moonSvg(ZN[D.inds[n].z].moon), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, ZN[D.inds[n].z].name)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]);
+    if (inds.length) put(out, [h('p', {class: 'eyebrow'}, '업종'), h('nav', {class: 'rows'}, inds.map(n => go1('i:' + n, 'row', moonOf(D.inds[n]), h('span', {class: 'mid'}, h('span', {class: 'nm'}, n), h('span', {class: 'meta'}, ZN[D.inds[n].z].name)), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]);
     if (cos.length) put(out, [h('p', {class: 'eyebrow'}, '회사'), h('nav', {class: 'rows'}, cos.map(([c, C]) => go1('c:' + c, 'row', h('span', {class: 'mid'}, h('span', {class: 'nm'}, C.n), h('span', {class: 'meta'}, C.i || '')), h('i', {class: 'go', 'aria-hidden': 'true'}, '›'))))]);
   };
   input.addEventListener('input', draw); draw();
@@ -838,7 +1039,7 @@ function pFind() {
 function pageFor(route) {
   const [k, a, b] = route.split(':');
   if (k === 'home') return pHome();
-  if (k === 'how') return pHow();
+  if (k === 'how') return pHow(a);
   if (k === 'zones') return pZones();
   if (k === 'z') return pZone(a, b);
   if (k === 'i') return pInd(a);
@@ -850,6 +1051,7 @@ function pageFor(route) {
 }
 const TAB = r => (r.startsWith('find') ? 'find' : r.startsWith('why') ? 'why' : r === 'back' ? 'back' : 'home');
 function render(keep, keepScroll, dir) {
+  for (const f of state.cleanup.splice(0)) { try { f(); } catch (e) { /* 지움 */ } }
   const page = h('div', {class: 'page'}, pageFor(state.route));
   if (!keep) page.classList.add('enter'); if (dir === 'back') page.classList.add('back-in');
   VIEW.replaceChildren(page);
@@ -875,17 +1077,27 @@ document.addEventListener('keydown', e => {
 document.getElementById('back').addEventListener('click', back);
 document.getElementById('when').textContent = `시험판 · ${kshort(D.asOf)}`;
 
-/* ── 별 하늘(뒤 그림 · 움직임 줄이기면 멈춤) ── */
+/* ── 별 하늘(뒤 그림 · 가끔 별똥별 · 움직임 줄이기면 멈춤) ── */
 (function starfield() {
   const cv = document.getElementById('stars'), ctx = cv.getContext('2d'); if (!ctx) return;
-  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const col = getComputedStyle(document.documentElement).getPropertyValue('--star').trim() || '#DCE5FF';
-  let W = 0, H = 0, dpr = 1, stars = [];
+  let W = 0, H = 0, dpr = 1, stars = [], met = null, nextMet = 0;
   function seed() { let r = 7; const rnd = () => (r = (r * 16807) % 2147483647) / 2147483647; const n = Math.round(W * H / 2400); stars = Array.from({length: n}, () => ({x: rnd() * W, y: rnd() * H, s: rnd() * 1.1 + 0.3, a: rnd() * 0.55 + 0.2, p: rnd() * 6.28, w: rnd() * 0.8 + 0.2})); }
-  function draw(t) { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.fillStyle = col; for (const st of stars) { ctx.globalAlpha = st.a * (reduce ? 1 : 0.6 + 0.4 * Math.sin(st.p + t * 0.0011 * st.w)); ctx.beginPath(); ctx.arc(st.x, st.y, st.s, 0, 6.2832); ctx.fill(); } }
-  function size() { dpr = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); seed(); draw(0); }
+  function draw(t) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.fillStyle = col;
+    for (const st of stars) { ctx.globalAlpha = st.a * (REDUCE ? 1 : 0.6 + 0.4 * Math.sin(st.p + t * 0.0011 * st.w)); ctx.beginPath(); ctx.arc(st.x, st.y, st.s, 0, 6.2832); ctx.fill(); }
+    if (REDUCE) return;
+    if (!met && t > nextMet) met = {x: W * (0.35 + Math.random() * 0.6), y: H * Math.random() * 0.35, vx: -(0.32 + Math.random() * 0.2), vy: 0.18 + Math.random() * 0.12, t0: t};
+    if (met) {
+      const age = t - met.t0, life = 1100, x = met.x + met.vx * age, y = met.y + met.vy * age, L = 70;
+      const g = ctx.createLinearGradient(x, y, x - met.vx * L / 0.4, y - met.vy * L / 0.4); g.addColorStop(0, 'rgba(255,244,220,.9)'); g.addColorStop(1, 'rgba(255,244,220,0)');
+      ctx.globalAlpha = Math.max(0, Math.min(1, age / 150, 1 - (age - life * 0.6) / (life * 0.4))); ctx.strokeStyle = g; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - met.vx * L / 0.4, y - met.vy * L / 0.4); ctx.stroke();
+      if (age > life) { met = null; nextMet = t + 8000 + Math.random() * 10000; }
+    }
+  }
+  function size() { dpr = Math.min(2, window.devicePixelRatio || 1); W = window.innerWidth; H = window.innerHeight; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); seed(); draw(performance.now()); }
   size(); window.addEventListener('resize', size);
-  if (!reduce) { let last = 0; const loop = t => { if (t - last > 70) { draw(t); last = t; } requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+  if (!REDUCE) { let last = 0; nextMet = performance.now() + 3500; const loop = t => { if (t - last > (met ? 16 : 70)) { draw(t); last = t; } requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 })();
 
 render(true);
