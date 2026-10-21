@@ -3,7 +3,8 @@
    별똥별은 40 ~ 70초에 하나(처음은 20초 뒤) · 느리고 옅게 · 기기가 「움직임 줄이기」면 그대로 멈춘 하늘 한 장 · 창이 안 보이면 쉼
    그리는 것은 평평한 SVG 그림 한 장(캔버스 없음 — 규칙 50 · next-modules ③ · check_share 「폭죽 0」) · 글 · 단추 · 칸에는 손대지 않음 · html.space 일 때만 켬
    조용한 하늘(사장님 2026-10-21 23:09 「아 해 섹시하게」 — 23:04 ~ 23:07 지인 카톡 「너무 번잡해 · 행성에 별똥별에 외계인까지 · 솔직히 조잡해보여 · 간결하게」를 보내신 뒤
-   「하늘 쇼를 걷어내고 별만 조용히 도는 하늘로」): 나는 것들(sky-fly.js · 19:44 ~ 21:55)은 받지 않음 · 별똥별은 더 드물게(16 ~ 28초 → 40 ~ 70초) · 붙이는 자리(plug)만 남김
+   「하늘 쇼를 걷어내고 별만 조용히 도는 하늘로」): 별똥별은 더 드물게(16 ~ 28초 → 40 ~ 70초)
+   2026-10-22 00:00 「내 가 그렸던것 존중하면서 해야지 다 무시하면 안돼 아름답게」(23:58): 나는 것들(sky-fly.js)을 다시 받되 하나씩 — 해와 행성 · 비행접시 · 우주선 · 별똥별 비는 뺌
    그림 높이 = 창 높이와 기기 높이 가운데 큰 쪽(폰 주소 막대가 숨었다 나와도 하늘이 튀지 않음) · 폭이 바뀌면 다시 그림 · 그리는 빠르기 초당 15번(별똥별 때 30번) · 하늘은 제 층(space.css will-change)이라 글판은 다시 안 그림 */
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -108,6 +109,11 @@ function start() {
   build(); draw(performance.now());
   nextMet = performance.now() + 20000;
   go();
+  /* 나는 것들(sky-fly.js) — 2026-10-22 00:00 사장님 「내 가 그렸던것 존중하면서 해야지 다 무시하면 안돼 아름답게」: 다시 받되 하나씩(그래프 차례마다 하나 · 다른 쪽은 아주 가끔)
+     창 load 뒤 한가할 때 받음(첫 그림 · 첫 반응을 늦추지 않음) · 못 받으면 별 하늘 그대로 */
+  const fly = () => import('./sky-fly.js').then(m => { const p = m.plug(); plug.push(p); p.build(api()); draw(performance.now()); globalThis.__skyFly = p; }).catch(() => {});
+  const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(fly, {timeout: 2500}) : setTimeout(fly, 600));
+  if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true});
   let rs = 0;
   window.addEventListener('resize', () => {
     clearTimeout(rs);

@@ -73,8 +73,6 @@ const AZURE = {fill: '#62C9FF', edge: '#D2F3FF', fin: '#A08CFF', belly: '#E8F8FF
 export function plug() {
   let W = 0, H = 0, vh = 0, fsv = null, aur = null, rays = null, root = null, defs = null, sun = null, seq = 0;
   let act = [], tws = [], nextBig = 0, nextMet = 0, nextShower = 0, last = 0, vt = 0, showAt = -1, showI = 0, lastKind = '';
-  const SHOW = [[400, 'shower'], [1500, 'peter'], [9000, 'angels'], [16000, 'ship'], [22000, 'dragons'], [30000, 'parrot'], [35000, 'ufo'], [42000, 'comet']];
-  const KINDS = ['peter', 'angels', 'ship', 'dragons', 'parrot', 'ufo', 'comet'];
   /* 누르거나 내리는 동안은 쉼(0.35초) — 손가락이 먼저(반응 0.2초 잣대) · 쉬는 동안 하늘 시계도 멈춤 */
   let hold = 0;
   const rest = () => { hold = performance.now() + 350; };
@@ -83,8 +81,14 @@ export function plug() {
   /* 첫 화면 — 한 해 그래프(theme-year.js 알림 dori:year)와 같이 시작 · 같이 끝(사장님 21:55 「이렇게 만들고」 — 물음 「그래프와 하늘 쇼를 같이 시작하고 같이 끝나게 할까요?」의 답)
      1번 그래프 = 별똥별 비 · 피터팬과 팅커벨(하트를 그림) · 비행접시 / 2번 = 천사 다섯 · 우주선 · 혜성 / 3번 = 용 두 마리 · 앵무새 돌이 / 끝 = 하트 별자리 → 고요한 하늘
      그래프 멈춤 = 하늘도 멈춤 · 다시 보기 = 둘 다 처음부터 · 그래프가 없는 다른 쪽은 따로 돎(첫 쇼 → 둘까지 겹쳐) */
-  const PHASE = [['shower', 'peter', 'ufo'], ['angels', 'ship', 'comet'], ['dragons', 'parrot']];
-  const PDUR = {peter: 10800, angels: 10800, ship: 10200, comet: 10800, dragons: 11500, parrot: 10800};
+  /* 2026-10-22 00:00 사장님 「내 가 그렸던것 존중하면서 해야지 다 무시하면 안돼 아름답게」(23:58) — 조용한 하늘(23:09 「아 해 섹시하게」) 위에 사장님이 그리신 것을 하나씩
+     1번 그래프 = 피터팬과 팅커벨(하트를 그림) / 2번 = 천사 다섯 또는 황룡 하나(들를 때마다 하나 — 둘이 함께 날지 않게) / 3번 = 앵무새 돌이(하트) / 끝 = 하트 별자리
+     빼 둔 것(지인 말 「행성에 별똥별에 외계인까지 · 갑자기 모든게 다보였어」): 해와 행성 · 해 빛살 · 비행접시 · 우주선 · 혜성 · 별똥별 비 · 잦은 별똥별(별 하늘 sky.js 의 드문 별똥별만) */
+  const ALT = Math.random() < 0.5;
+  const PHASE = [['peter'], [ALT ? 'angels' : 'dragon'], ['parrot']];
+  const PDUR = {peter: 10800, angels: 10800, dragon: 11500, parrot: 10800};
+  /* 그래프가 없는 다른 쪽 — 하나씩 아주 가끔(처음 20초 뒤 · 그다음 60 ~ 90초마다 · 날고 있는 것이 있으면 기다림) */
+  const GENTLE = ['peter', 'angels', 'parrot', 'dragon'];
   let frozen = false, seen = new Set(), showArmed = false, hearts = null;
   const isHome = () => document.documentElement.classList.contains('home');
   function phase(k) { if (seen.has(k) || !PHASE[k]) return; seen.add(k); for (const kind of PHASE[k]) spawn(kind, vt, {dur: PDUR[kind]}); }
@@ -104,10 +108,10 @@ export function plug() {
     const first = !root;
     W = api.W; H = api.H; vh = api.vh;
     if (!fsv || !fsv.isConnected) {
-      aur = [layer('sky-aurora'), layer('sky-aurora a2')]; rays = layer('sky-rays'); fsv = layer('sky-near', {preserveAspectRatio: 'xMaxYMin slice'});
-      api.sv.after(aur[0], aur[1], rays, fsv); // 차례: 별 하늘 → 오로라 둘 → 해 빛살 → 나는 것들(모두 글판 아래)
+      aur = [layer('sky-aurora'), layer('sky-aurora a2')]; fsv = layer('sky-near', {preserveAspectRatio: 'xMaxYMin slice'});
+      api.sv.after(aur[0], aur[1], fsv); // 차례: 별 하늘 → 오로라 둘(옅게 · 천천히 나타남) → 나는 것들(모두 글판 아래) · 해 빛살은 뺌(2026-10-22 00:00)
     }
-    for (const e of [...aur, rays, fsv]) while (e.firstChild) e.removeChild(e.firstChild);
+    for (const e of [...aur, fsv]) while (e.firstChild) e.removeChild(e.firstChild);
     set(fsv, {width: W, height: H, viewBox: `0 0 ${W} ${H}`});
     root = mk('g', {class: 'sky-fly'}, fsv);
     defs = mk('defs', {}, root);
@@ -121,7 +125,7 @@ export function plug() {
     grad(defs, 'linearGradient', 'flyBeam', [[0, '#BDF6FF', 0.5], [0.6, '#8FE3FF', 0.16], [1, '#8FE3FF', 0]], {x1: 0, y1: 0, x2: 0, y2: 1});
     grad(defs, 'radialGradient', 'flyPink', [[0, '#FFD3EA', 0.75], [0.35, '#FF8ACB', 0.28], [1, '#FF8ACB', 0]]);
     for (const p of PLANETS) grad(defs, 'radialGradient', 'flyP' + p.k, [[0, p.c, 0.55], [1, p.c, 0]]);
-    buildSun(); buildRays(); buildAurora(); buildTwinkles();
+    buildAurora(); buildTwinkles(); // 해와 행성 · 해 빛살은 그리지 않음(2026-10-22 00:00 · 지인 말 「행성에 … 외계인까지」)
     act = [];
     hearts = heartPool(20);
     nextMet = Math.max(nextMet, vt + 2600);
@@ -171,7 +175,7 @@ export function plug() {
       body.setAttribute('transform', `translate(${f1(x)} ${f1(y)}) rotate(${f1(tilt)}) scale(${f2(1 / sq)} ${f2(sq)})`);
       const beat = Math.max(0, Math.sin(age * 0.009)) ** 3; // 두근 — 콩닥
       hg.setAttribute('transform', `translate(0 48) scale(${f2(1 + 0.16 * beat)})`);
-      if (now - hk > 300 && u < 0.95) { hk = now; hearts.add(now, x - dir * 34 + rnd(-6, 6), y + rnd(-10, 24), rnd(0.8, 1.35)); }
+      if (now - hk > 600 && u < 0.95) { hk = now; hearts.add(now, x - dir * 34 + rnd(-6, 6), y + rnd(-10, 24), rnd(0.8, 1.35)); } // 0.6초마다(조용히)
       return true;
     }};
   }
@@ -506,8 +510,8 @@ export function plug() {
     const D = Math.hypot(xe - xs, y1 - y0), ux = (xe - xs) / D, uy = (y1 - y0) / D, nx = -uy, ny = ux;
     const A = Math.min(40, vh * 0.05), lam = rnd(250, 310), ph = rnd(0, TAU), C2 = 22, lc = rnd(150, 190), v = o.dur ? (D + LEN + 120) / o.dur : 0.056; // 그래프에 맞출 때는 그 시간 안에 다 지나감
     const P = (s, age, k) => { const o = A * Math.sin(s / lam * TAU + ph) + k * C2 * Math.sin(s / lc * TAU + ph * 0.7) + 4 * Math.sin(s / 34 - age * 0.0045); return [xs + ux * s + nx * o, y0 + uy * s + ny * o]; };
-    const gold = oneDragon(gG, GOLD, dir, N), azure = oneDragon(gA, AZURE, dir, N);
-    const glitG = dust(g, 14, GOLD.glit, 1300, -0.5, 10, 0.8), glitA = dust(g, 14, AZURE.glit, 1300, -0.5, 10, 0.8);
+    const gold = oneDragon(gG, GOLD, dir, N), azure = o.one ? null : oneDragon(gA, AZURE, dir, N); // o.one = 황룡 하나(2026-10-22 00:00 — 하나씩)
+    const glitG = dust(g, 14, GOLD.glit, 1300, -0.5, 10, 0.8), glitA = o.one ? null : dust(g, 14, AZURE.glit, 1300, -0.5, 10, 0.8);
     const pearl = mk('g', {}, g);
     mk('circle', {r: 30, fill: 'url(#flyG)'}, pearl); mk('circle', {r: 18, fill: 'url(#flyC)', opacity: 0.6}, pearl);
     mk('circle', {r: 5.5, fill: '#FFF8E8'}, pearl);
@@ -518,7 +522,7 @@ export function plug() {
     return {g, big: true, step(now) {
       const age = now - t, sh = v * age; if (sh > D + LEN + 120) return false;
       const go = now - gl > 120; if (go) gl = now;
-      for (const [dr, k, off, glit] of [[gold, 1, 0, glitG], [azure, -1, 26, glitA]]) {
+      for (const [dr, k, off, glit] of o.one ? [[gold, 0, 0, glitG]] : [[gold, 1, 0, glitG], [azure, -1, 26, glitA]]) {
         const s0 = sh - off, S = [];
         for (let i = 0; i <= N; i++) S.push(P(s0 - 8 - i * SP, age, k));
         const hp = P(s0, age, k), hq = P(s0 + 2, age, k);
@@ -653,32 +657,22 @@ export function plug() {
   function spawn(kind, now, o) {
     const dir = Math.random() < 0.5 ? -1 : 1;
     const p = o ?? {};
-    const f = kind === 'peter' ? peter(now, dir, p) : kind === 'angels' ? angels(now, dir, p) : kind === 'ship' ? ship(now, p) : kind === 'dragons' ? dragons(now, dir, p) : kind === 'ufo' ? ufo(now) : kind === 'comet' ? comet(now, p)
+    const f = kind === 'peter' ? peter(now, dir, p) : kind === 'angels' ? angels(now, dir, p) : kind === 'dragon' ? dragons(now, dir, {...p, one: true}) : kind === 'ship' ? ship(now, p) : kind === 'dragons' ? dragons(now, dir, p) : kind === 'ufo' ? ufo(now) : kind === 'comet' ? comet(now, p)
       : kind === 'parrot' ? parrot(now, dir, p) : kind === 'finale' ? finale(now) : kind === 'shower' ? shower(now) : meteor(now, o);
     f.kind = kind; act.push(f);
     return f;
-  }
-  /** 다음 큰 것 — 지금 날고 있는 것 · 바로 앞 것과 다른 것 */
-  function pick() {
-    const on = new Set(act.filter(f => f.big).map(f => f.kind)), ks = KINDS.filter(k => !on.has(k) && k !== lastKind);
-    return ks.length ? ks[Math.floor(Math.random() * ks.length)] : '';
   }
 
   function draw(now, move) {
     if (!root) return;
     if (move && (now < hold || frozen)) { last = now; return; } // 누르는 · 내리는 중 · 그래프 멈춤 — 그리지 않음(시계도 멈춤)
     vt += last ? Math.min(100, Math.max(0, now - last)) : 0; last = now; // 창이 숨었다 오면 한 걸음만
-    drawSun(vt, move); drawTwinkles(move);
+    drawTwinkles(move);
     if (!move) { for (const f of act) { f.g.remove(); for (const x of f.grs ?? []) x.remove(); } act = []; return; }
-    if (!isHome()) { // 그래프가 없는 쪽 — 하늘 쇼가 따로(첫 쇼 → 둘까지 겹쳐) · 첫 화면은 그래프 알림으로만(onYear)
-      if (!showArmed) { showArmed = true; showAt = vt; nextBig = vt + 48000; nextShower = vt + 50000; }
-      while (showI < SHOW.length && vt - showAt >= SHOW[showI][0]) { lastKind = SHOW[showI][1]; spawn(SHOW[showI][1], vt); showI++; }
-      if (showI >= SHOW.length) {
-        if (vt >= nextShower) { spawn('shower', vt); nextShower = vt + rnd(35000, 50000); }
-        if (vt >= nextBig && act.filter(f => f.big).length < 2) { const k = pick(); if (k) { lastKind = k; spawn(k, vt); } nextBig = vt + rnd(4000, 8000); }
-      }
+    if (!isHome()) { // 그래프가 없는 쪽 — 하나씩 아주 가끔 · 첫 화면은 그래프 알림으로만(onYear)
+      if (!showArmed) { showArmed = true; nextBig = vt + 20000; }
+      if (vt >= nextBig && !act.some(f => f.big)) { spawn(GENTLE[showI++ % GENTLE.length], vt); nextBig = vt + rnd(60000, 90000); }
     }
-    if (vt >= nextMet) { spawn('meteor', vt); nextMet = vt + rnd(2500, 6000); }
     hearts?.step(vt);
     const cur = act; act = [];
     for (const f of cur) { if (f.step(vt)) act.push(f); else { f.g.remove(); for (const x of f.grs ?? []) x.remove(); } } // 걸음 중에 새로 난 것(별똥별 비)은 act 에 바로 들어감
