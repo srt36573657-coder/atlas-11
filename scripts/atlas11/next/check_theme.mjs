@@ -164,14 +164,20 @@ try {
       return {box: !!box, afterSay: !!(box && say && (say.compareDocumentPosition(box) & Node.DOCUMENT_POSITION_FOLLOWING)), beforeEss: !!(box && ess && (box.compareDocumentPosition(ess) & Node.DOCUMENT_POSITION_FOLLOWING)),
         rows: [...(box?.querySelectorAll('a.th-row') ?? [])].map(a => ({href: a.getAttribute('href'), name: a.querySelector('.th-rn')?.textContent})), ans: (box?.querySelector('.th-ans')?.textContent ?? '').replace(/›\s*$/, ''), // 머리 끝 「›」 = 누르면 진짜 싹 목록(2026-10-20 09:46)
         three: [...(box?.querySelectorAll('.th-three a, .th-three p') ?? [])].map(x => x.textContent), rec: box?.querySelector('.th-rec')?.textContent ?? '', asof: box?.querySelector('.th-asof')?.textContent ?? '',
-        fold: !!box?.querySelector('details.th-hfold > summary') && (box?.querySelector('details.th-hfold > summary')?.textContent ?? '') === '숫자로 자세히 보기' && !!box?.querySelector('details.th-hfold .th-three'), orbit: !!box?.querySelector('svg.th-clock.th-orbit circle.th-orb') && box.querySelectorAll('svg.th-clock.th-orbit text.th-zl').length === 4, next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, hi: box?.querySelector('a.th-hi')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock'), h1: v.querySelector('h1')?.textContent ?? ''};
+        fold: !!box?.querySelector('details.th-hfold > summary') && (box?.querySelector('details.th-hfold > summary')?.textContent ?? '') === '숫자로 자세히 보기' && !!box?.querySelector('details.th-hfold .th-three'), orbit: !!box?.querySelector('svg.th-orbit'), planets: [...(box?.querySelectorAll('image, img') ?? [])].filter(e => /\/media\/planet\//.test(e.getAttribute('href') ?? e.getAttribute('src') ?? '')).length, pills: [...(box?.querySelectorAll('.th-map a.th-row .th-pill') ?? [])].map(e => e.textContent), title: box?.querySelector('.th-map .th-lt')?.textContent ?? '', year: !!box?.querySelector('.th-map button.th-yr svg.th-yrg'), next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, hi: box?.querySelector('a.th-hi')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock, svg.th-yrg'), h1: v.querySelector('h1')?.textContent ?? ''};
     });
     if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
     else {
       if (!g.afterSay || !g.beforeEss) fail('첫 화면 차례', '돌이 물음 → 테마 시계 → 본질 카드 차례가 아님');
       if (!/^지금 봄이 온 곳$/.test(g.h1.trim())) fail('첫 화면 제목', g.h1); // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
       if (!g.fold) fail('첫 화면 숫자 접는 칸', '「숫자로 자세히 보기」(details.th-hfold)가 없음 — 진짜 싹 · 주황 숫자 셋 · 성적표는 그 안');
-      if (!g.orbit) fail('첫 화면 계절 궤도', '해 · 궤도 · 계절 넷 그림(svg.th-orbit)이 아님');
+      // 2026-10-21 18:22 사장님 「그랴」(17:51 「이렇기 행성 나오는것 지우고 주싣쪽으로 표혐할수 있는 방법 모색해보 … 이건 주식에 본질에 맞지도 않고 장난스러워」 · 18:11 「구글과 잡스라면 … 뭘 고를까?」)
+      //   첫 화면 = 카드 안 업종 줄 셋(번호 · 이름 · 닷새 동안 시장보다 숫자 알약) + 한 해 줄 그림 단추 하나 · 궤도 · 해 · 행성 사진 없음
+      if (g.orbit) fail('첫 화면 궤도', '궤도 그림(svg.th-orbit)이 남음 — 2026-10-21 18:22 지움');
+      if (g.planets) fail('첫 화면 행성 사진', g.planets + '개 — 2026-10-21 18:22 지움');
+      if (g.title !== '요즘 시장보다 힘이 붙은 곳') fail('첫 화면 업종 줄 머리', g.title || '없음');
+      if (g.pills.length !== Math.min(3, TH.order.S.length) || g.pills.some(t => !/^([+−]?\d+\.\d%|\?)$/.test(t))) fail('첫 화면 숫자 알약', g.pills.join(' | ') || '없음');
+      if (!g.year) fail('첫 화면 한 해 줄 그림', '카드 안 button.th-yr svg.th-yrg 가 없음');
       if (!g.clock) fail('첫 화면 시계 그림', '없음');
       const want = TH.order.S.slice(0, 3);
       if (JSON.stringify(g.rows.map(r => r.name)) !== JSON.stringify(want)) fail('첫 화면 줄 셋', g.rows.map(r => r.name).join(' · ') + ' ≠ ' + want.join(' · '));
@@ -442,54 +448,43 @@ try {
       }
     }
   }
-  /* ⑪ 첫 화면 시계 누르는 곳(사장님 2026-10-20 07:05 「여기 주황색 있는 4곳 클릭하면 해당페이지로 넘어가게」 · 07:08 「응」)
-     — 번호 셋 = 그 업종 쪽(아래 줄 셋과 같은 차례) · 싹 칸 = 싹 자리 전부 · 누르는 자리 44 넘게 · 그림은 aria-hidden · 영어 이름표 */
+  /* ⑪ 첫 화면 누르는 곳(사장님 2026-10-20 07:05 「여기 주황색 있는 4곳 클릭하면 해당페이지로 넘어가게」 · 07:08 「응」)
+     2026-10-21 18:22 「그랴」(구글과 잡스라면 — 업종 줄 셋 + 한 해 줄 그림 · 궤도 · 행성 없음)부터 주황 번호 셋은 카드 안 업종 줄(줄 전체가 그 업종 쪽 고리) · 싹 자리 전부 = 「모두 보기」
+     — 줄 셋 = 싹 앞 셋 차례 · 번호 1 · 2 · 3 · 누르는 자리 48 넘게 · ① 줄을 누르면 그 업종 쪽 · 모두 보기를 누르면 싹 자리 전부 · 한 해 줄 그림 단추는 고리가 아님(멈춤 단추) */
   for (const [w, en] of [[390, false], [320, false], [320, true]]) {
     const {p, ctx} = await open((en ? '?lang=en' : '') + '#/', {w, h: 844});
     if (en) { await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(200); }
-    await p.waitForFunction(() => document.querySelectorAll('#view section.th-home svg.th-clock a.th-tap').length > 0, null, {timeout: 20000}).catch(() => {});
-    const tag = `시계 누르는 곳 @${w}${en ? ' 영어' : ''}`;
+    await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-map a.th-row').length > 0, null, {timeout: 20000}).catch(() => {});
+    const tag = `첫 화면 누르는 곳 @${w}${en ? ' 영어' : ''}`;
     const r = await p.evaluate(() => {
-      const s = document.querySelector('#view section.th-home svg.th-clock'); if (!s) return null;
-      const rows = [...document.querySelectorAll('#view section.th-home .th-rows a.th-row')].slice(0, 3).map(a => a.getAttribute('href'));
-      const taps = [...s.querySelectorAll('a.th-tap')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), label: a.getAttribute('aria-label'), w: Math.round(b.width), h: Math.round(b.height), n: a.querySelector('.th-nbt')?.textContent ?? null, badge: !!a.querySelector('circle.th-nb')}; });
-      return {hidden: s.getAttribute('aria-hidden'), role: s.getAttribute('role'), deco: !!s.querySelector('g[aria-hidden="true"] .th-dot'), focusInHidden: s.querySelectorAll('g[aria-hidden="true"] a').length, rows, taps};
+      const box = document.querySelector('#view section.th-home'); if (!box) return null;
+      const rows = [...box.querySelectorAll('.th-map a.th-row')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), n: a.querySelector('.th-n')?.textContent ?? null, w: Math.round(b.width), h: Math.round(b.height)}; });
+      const more = box.querySelector('a.th-more'), mb = more?.getBoundingClientRect();
+      return {rows, more: more ? {href: more.getAttribute('href'), h: Math.round(mb.height)} : null, clockTaps: box.querySelectorAll('svg.th-clock a.th-tap').length, yr: box.querySelector('.th-map button.th-yr')?.tagName ?? null};
     });
-    if (!r) { fail('시계 누르는 곳', tag + ' 시계 없음'); await ctx.close(); continue; }
-    const nums = r.taps.filter(t => t.badge), zone = r.taps.filter(t => !t.badge);
-    if (r.hidden === 'true' || r.role !== 'group' || !r.deco || r.focusInHidden) fail('시계 누르는 곳 — 읽기 프로그램', tag + ' ' + JSON.stringify({hidden: r.hidden, role: r.role, deco: r.deco, inHidden: r.focusInHidden}));
-    if (zone.length !== 1 || zone[0].href !== '#/t/sprout') fail('싹 칸 고리', tag + ' ' + JSON.stringify(zone));
-    if (nums.length !== Math.min(3, r.rows.length) || JSON.stringify(nums.map(t => t.href).sort()) !== JSON.stringify([...r.rows].sort()) || nums.some(t => !['1', '2', '3'].includes(t.n))) fail('번호 셋 고리 = 아래 줄 셋', tag + ' ' + JSON.stringify(nums.map(t => [t.n, t.href])) + ' 줄 ' + JSON.stringify(r.rows));
-    for (const t of nums) { const want = r.rows[+t.n - 1]; if (t.href !== want) fail('번호 차례 = 줄 차례', `${tag} ${t.n}번 ${t.href} ≠ ${want}`); }
-    { // 보이는 번호 가운데 · 위 · 아래 · 옆을 누르면 늘 제 고리(번호끼리 가까워도 옆 번호가 덮지 않음 · 2026-10-20 ① ③ 35 떨어짐)
-      const steal = await p.evaluate(() => { const out = []; for (const a of document.querySelectorAll('#view section.th-home svg.th-clock a.th-tapn')) { const c = a.querySelector('circle.th-nb'); c.scrollIntoView({block: 'center'}); const b = c.getBoundingClientRect(), mx = b.left + b.width / 2, my = b.top + b.height / 2, q = b.width * 0.35; for (const [dx, dy] of [[0, 0], [0, -q], [0, q], [-q, 0], [q, 0]]) { const hit = document.elementFromPoint(mx + dx, my + dy)?.closest('a'); if (hit !== a) out.push(a.querySelector('.th-nbt')?.textContent + ' ' + dx.toFixed(0) + ',' + dy.toFixed(0) + ' → ' + (hit?.querySelector?.('.th-nbt')?.textContent ?? hit?.getAttribute('href') ?? '없음')); } } return out; });
-      if (steal.length) fail('번호를 눌렀는데 옆 고리로 감', tag + ' ' + steal.slice(0, 4).join(' | '));
-    }
-    const small = r.taps.filter(t => t.w < 48 || t.h < 48); if (small.length) fail('시계 누르는 자리 48px 아래(흰 판 새 단추)', tag + ' ' + JSON.stringify(small));
-    if (en && (r.taps.some(t => /[가-힣]/.test(t.label ?? '') && !/^Open No\./.test(t.label ?? '')) || zone[0]?.label !== 'See all sprouts' || nums.some(t => !/^Open No\. \d: /.test(t.label ?? '')))) fail('시계 누르는 곳 영어 이름표', tag + ' ' + JSON.stringify(r.taps.map(t => t.label)));
-    if (!en && (zone[0]?.label !== '싹 자리 전부 보기' || nums.some(t => !new RegExp('^' + t.n + '번 .+ 보기$').test(t.label ?? '')))) fail('시계 누르는 곳 이름표', tag + ' ' + JSON.stringify(r.taps.map(t => t.label)));
+    if (!r) { fail('첫 화면 누르는 곳', tag + ' 테마 칸 없음'); await ctx.close(); continue; }
+    const want = TH.order.S.slice(0, 3).map(n => '#/t/i/' + enc(n));
+    if (JSON.stringify(r.rows.map(x => x.href)) !== JSON.stringify(want)) fail('업종 줄 고리 = 싹 앞 셋 차례', tag + ' ' + JSON.stringify(r.rows.map(x => x.href)) + ' ≠ ' + JSON.stringify(want));
+    if (r.rows.some((x, k) => x.n !== String(k + 1))) fail('업종 줄 번호 1 · 2 · 3', tag + ' ' + JSON.stringify(r.rows.map(x => x.n)));
+    const small = r.rows.filter(x => x.w < 48 || x.h < 48); if (small.length) fail('업종 줄 누르는 자리 48px 아래', tag + ' ' + JSON.stringify(small));
+    if (!r.more || r.more.href !== '#/t/sprout' || r.more.h < 48) fail('싹 자리 모두 보기 고리', tag + ' ' + JSON.stringify(r.more));
+    if (r.clockTaps) fail('첫 화면 그림 위 고리', tag + ' 궤도 · 시계 누르는 곳 ' + r.clockTaps + '개가 남음 — 2026-10-21 18:22 지움');
+    if (r.yr !== 'BUTTON') fail('한 해 줄 그림 단추', tag + ' ' + r.yr);
     if (!en) {
-      // 누르기 — ① 은 그 업종 쪽 · 싹 칸(번호가 덮지 않은 곳)은 싹 자리 전부
-      const one = p.locator('#view section.th-home svg.th-clock a.th-tapn').filter({has: p.locator('text.th-nbt', {hasText: /^1$/})});
+      const one = p.locator('#view section.th-home .th-map a.th-row').first();
       if (await one.count()) {
-        await one.first().locator('circle.th-nb').click(); await settle(p);
+        await one.click(); await settle(p);
         const h1 = await p.evaluate(() => location.hash);
-        if (h1 !== r.rows[0]) fail('① 누르면 그 업종 쪽', `${tag} ${h1} ≠ ${r.rows[0]}`);
+        if (h1 !== want[0]) fail('① 줄 누르면 그 업종 쪽', `${tag} ${h1} ≠ ${want[0]}`);
         await p.evaluate(() => { location.hash = '#/'; }); await settle(p);
-        await p.waitForFunction(() => document.querySelectorAll('#view section.th-home svg.th-clock a.th-tap').length > 0, null, {timeout: 20000}).catch(() => {});
-      } else fail('① 번호 고리 없음', tag);
-      const pt = await p.evaluate(() => {
-        const z = document.querySelector('#view section.th-home svg.th-clock a.th-tapz'); if (!z) return null;
-        z.scrollIntoView({block: 'center'}); const b = z.getBoundingClientRect();
-        for (let fy = 0.9; fy > 0.1; fy -= 0.1) for (let fx = 0.08; fx < 0.95; fx += 0.12) { const x = b.left + b.width * fx, y = b.top + b.height * fy; if (document.elementFromPoint(x, y)?.closest('a') === z) return {x, y}; }
-        return null;
-      });
-      if (!pt) fail('싹 칸에 누를 곳 없음', tag);
-      else { await p.mouse.click(pt.x, pt.y); await settle(p); const h2 = await p.evaluate(() => location.hash); if (h2 !== '#/t/sprout') fail('싹 칸 누르면 싹 자리 전부', `${tag} ${h2}`); }
+        await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-map a.th-row').length > 0, null, {timeout: 20000}).catch(() => {});
+      } else fail('① 업종 줄 없음', tag);
+      const more = p.locator('#view section.th-home a.th-more').first();
+      if (await more.count()) { await more.click(); await settle(p); const h2 = await p.evaluate(() => location.hash); if (h2 !== '#/t/sprout') fail('모두 보기 누르면 싹 자리 전부', `${tag} ${h2}`); }
       if (w === 390) { await p.evaluate(() => { location.hash = '#/'; }); await settle(p); await look(tag + ' 첫 화면', p); }
     }
     if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
-    bump('시계 누르는 곳'); await ctx.close();
+    bump('첫 화면 누르는 곳'); await ctx.close();
   }
   /* ⑫ 첫 화면 주황 숫자 넷(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 「진짜 싹 n곳」 머리 · 칸 셋(진짜 싹 · 새로 들어옴 · 싹 자리)을 누르면 그 목록
      — 고리 · 누르는 자리 48 · 목록 업종 = 자료 거르기(진짜 = 점 넷 · 새로 = d 1) · 수 = 첫 화면 숫자 · 없는 거르기는 「?」 */

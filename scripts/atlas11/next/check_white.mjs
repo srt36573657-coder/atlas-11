@@ -65,7 +65,7 @@ const MEASURE = () => {
   out.top = []; // 글자 수를 이룬 글(테마 칸 밖 · 많은 차례) — 걸리면 어느 글이 늘었는지 보이게(2026-10-20 「다시 온 기기 ② 글자 수 107 > 105」 까닭을 이 방에서 못 봄)
   for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.closest('section.th-home')) out.themeChars += n; else { out.chars += n; if (n) out.top.push([n, (el.closest('[data-w]')?.getAttribute('data-w') ?? '-') + ' ' + el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className ? '.' + el.className.split(' ')[0] : ''), ownText(el).slice(0, 30)]); } }
   out.top.sort((x, y) => y[0] - x[0]); // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈) · 테마 시계 칸은 따로(2026-10-19)
-  { const tb = document.querySelector('#view section.th-home'), tc = tb?.querySelector('svg.th-clock'); out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), clockBottom: tc ? Math.round(tc.getBoundingClientRect().bottom) : null} : null; }
+  { const tb = document.querySelector('#view section.th-home'), tc = tb?.querySelector('svg.th-yrg, svg.th-clock'); out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), clockBottom: tc ? Math.round(tc.getBoundingClientRect().bottom) : null} : null; } // 첫 화면 그림 = 한 해 줄 그림(2026-10-21 18:22 「그랴」 — 궤도 · 행성 지움 · 업종 줄 + 줄 그림) · 옛 판은 시계
   for (const el of all) {
     if (!vis(el)) continue;
     const cs = getComputedStyle(el), r = el.getBoundingClientRect(), t = ownText(el), tag = el.tagName.toLowerCase(), name = `${tag}.${String(el.className?.baseVal ?? el.className).split(' ')[0]}`;

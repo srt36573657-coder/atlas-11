@@ -19,7 +19,6 @@
 .th-steps { margin: 0 0 var(--sp-2); padding: 0; list-style: none; }
 .th-steps li { display: grid; grid-template-columns: 32px 1fr; column-gap: var(--sp-1); padding: var(--sp-1) 0; border-top: 1px solid #2E2E2E; }
 .th-sn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #8A8A8A; border-radius: 50%; font-size: var(--fs-1); text-align: center; }
-.th-pi { display: block; width: 28px; height: 28px; } /* 행성 열의 행성 사진(번호 동그라미와 같은 자리 · 같은 크기 — 2026-10-20 22:17) */
 .th-st { display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .th-st b { font-size: var(--fs-3); font-weight: 700; }
 .th-st span, .th-st .th-ckd { color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }

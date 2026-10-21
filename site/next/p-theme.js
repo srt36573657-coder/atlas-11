@@ -5,7 +5,7 @@
    길: #/t/hello 1 · (#/ 2 = 첫 화면 homeBlock) · how 3 · sprout 4 · bloom 5 · wilt 6 · i/<업종>[/path|spread|big|co|near] 7 ~ 12 · c/<번호>[/lead|why|rank|unknown|keep] 13 ~ 18 · today 36
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
-import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, PLANET, PLANET_KO, planetSrc} from './theme-home.js';
+import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock} from './theme-home.js';
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
 
@@ -86,11 +86,7 @@ async function pHow() {
   return {title: '시계 읽는 법', nodes: [shell(3, '시계 읽는 법', 'today', '네 자리만 알면 돼요.', ['테마 시계', '#/'], ['싹 자리 전부', '#/t/sprout'], [
     h('div', {class: 'th-map'}, clock(TH), h('p', {class: 'th-cap'}, h('span', {text: '가로는 한 달 동안 시장보다 더 오른 만큼이에요.'}), h('span', {text: '세로는 지난 닷새 동안 시장보다 더 오른 만큼이에요.'}), h('span', {text: '한 달 동안 시장보다 5% 넘게 더 오르면 꽃 선을 넘어요.'}))),
     h('ol', {class: 'th-steps'}, zones.map(([z, t], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {class: 'th-z ' + z, text: ZONES[z]}), h('span', {text: t}))))),
-    // 행성 열(2026-10-20 22:17 「진짜 실사 행성으로 해」) — 시계의 행성 하나 = 큰 업종 무리 하나 · 사진 출처를 적음(미국 항공우주국 · /media/planet/sources.json)
-    h('h2', {class: 'th-h2', text: '행성 열'}),
-    h('p', {class: 'th-sub', text: '업종 무리마다 행성이 하나예요. 가운데는 해예요.'}),
-    h('ul', {class: 'th-steps th-pls'}, (TH.groups ?? []).filter(g => PLANET[g.id]).map(g => h('li', {}, h('img', {class: 'th-pi', src: planetSrc(g.id), alt: '', width: 28, height: 28, loading: 'lazy', decoding: 'async'}), h('span', {class: 'th-st'}, h('b', {text: PLANET_KO[PLANET[g.id]]}), h('span', {text: g.name}))))),
-    h('p', {class: 'th-sub', text: '사진은 미국 항공우주국이 찍은 진짜 사진이에요.'}),
+    // 행성 열은 2026-10-21 18:22 「그랴」(17:51 「이렇기 행성 나오는것 지우고 … 장난스러워」)로 지움 — 시계의 업종은 작은 점
     h('h2', {class: 'th-h2', text: '점 넷'}),
     h('ol', {class: 'th-steps'}, [['시장보다 힘이 붙어요', '지난 닷새 시장보다 2% 넘게 더 올랐어요.'], [DOT_TEXT[1], '열흘 동안 2% 넘게 오른 회사가 절반 이상이에요.'], ['큰 회사도 움직여요', '가장 큰 회사 셋의 평균이 열흘 동안 1% 이상 올랐어요.'], ['값이 진짜로 올라요', '업종 값이 열흘 전보다 올랐어요.']]
       .map(([a, b], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {text: a}), h('span', {text: b}))))),

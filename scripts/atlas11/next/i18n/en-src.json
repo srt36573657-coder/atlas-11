@@ -8839,6 +8839,9 @@
   "한 해 다시 보기": "Replay the year",
   "한 해 길을 받지 못했어요.": "Couldn't load the past year.",
   "값이 없는 곳 {n}곳": "{n} with no value",
-  "지금 ?": "Now ?"
+  "지금 ?": "Now ?",
+  "요즘 시장보다 힘이 붙은 곳": "Gaining on the market lately",
+  "닷새 동안 시장보다": "Last 5 days vs. the market",
+  "{n}번, {n}번, {n}번 줄 그림이 차례로 그려져요.": "Charts #{n}, #{n} and #{n} draw in turn."
  }
 }

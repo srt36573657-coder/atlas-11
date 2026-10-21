@@ -10,8 +10,6 @@
 .th-clock .th-tail { fill: none; stroke: #FFFFFF; stroke-width: 2; opacity: .5; } /* 지나온 길 = 행성이 지나온 궤도처럼 흰 선(2026-10-20 22:17 「주황색으로만」) */
 .th-clock .th-dot { fill: #5E5E5E; stroke: #070B17; stroke-width: 1.5; }
 .th-clock .th-dot.on { fill: var(--up); }
-.th-clock .th-pl { opacity: .5; } .th-clock .th-pl.on { opacity: 1; } /* 업종 행성 사진(NASA) — 싹 자리는 밝게 · 다른 자리는 흐리게 */
-.th-clock .th-sun { opacity: .95; } /* 가운데 해 */
 .th-clock .th-nb { fill: var(--up); stroke: #070B17; stroke-width: 2; }
 .th-clock .th-nbt { fill: #070B17; font-size: var(--fs-1); font-weight: 700; }
 /* 첫 화면 시계 누르는 곳(번호 셋 · 싹 칸 — 2026-10-20 07:08 「응」) — 누르는 자리는 투명 · 키보드로 오면 금빛 테 */
@@ -81,13 +79,15 @@ html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 4
 .th-foot { margin: var(--sp-3) var(--sp-2) var(--sp-2); }
 .th-foot .th-next { margin: 0; }
 .th-next.th-one { justify-content: center; padding: 0 var(--sp-2); font-size: var(--fs-3); font-weight: 800; text-align: center; }
-/* 계절 궤도 첫 화면(2026-10-21 00:51 「이기준에 스마트하게」 · 00:49 시안) — 해 · 궤도 · 봄 활 · 계절 넷 · 행성 · 번호 셋 · 숫자는 접는 칸 안 */
-.th-orbit .th-orb { fill: none; stroke: #3A4466; stroke-width: 2; }
-.th-orbit .th-orbs { fill: none; stroke: var(--up); stroke-width: 5; stroke-linecap: round; opacity: .9; } /* 봄 활 = 싹 자리 */
-.th-orbit .th-oturn { stroke-width: 1.5; }
-.th-orbit .th-sunl { fill: #D6D6D6; font-size: var(--fs-1); paint-order: stroke; stroke: #070B17; stroke-width: 4px; stroke-linejoin: round; }
-.th-orbit .th-sun { opacity: 1; }
 /* 지난 한 해 다시 보기(2026-10-21 10:44 · 11:07 「단추가 아니라 자동으로 보여주게해」 — theme-home.js yearBox) — 궤도 위 움직이는 행성 + 그 아래 줄 그림 · 그림 칸 전체가 멈춤 · 이어 보기 단추 */
+/* 첫 화면 업종 줄 + 한 해 줄 그림(2026-10-21 18:22 「그랴」 — 18:11 「구글과 잡스라면」: 증권사 업종 시세 · 아이폰 주식 앱 꼴 · 행성 없음) — 카드 안 위 = 줄 셋 · 아래 = 줄 그림 */
+.th-lt { margin: 0; color: var(--ink); font-size: var(--fs-3); font-weight: 700; line-height: 1.4; text-wrap: balance; }
+.th-lc { margin: 0 0 var(--sp-1); color: #BDBDBD; font-size: var(--fs-1); text-align: right; } /* 숫자 알약의 뜻(오른쪽 맞춤 — 글 시작 왼쪽 줄 셈 밖 · [10] 7) */
+.th-map .th-rows { margin: 0; }
+#view .th-map a.th-row.th-row2, html.white #view .th-map a[href].th-row.th-row2 { min-height: 56px; padding: 0 0 0 var(--sp-1); border-left: 4px solid transparent; border-bottom-color: #232A40; }
+#view .th-map a.th-row.th-row2.th-now, html.white #view .th-map a[href].th-row.th-row2.th-now { border-left-color: var(--up); } /* 지금 줄 그림의 업종 — 왼쪽 테 색만(크기 그대로 · 밀림 0 · 바탕은 그대로 — 흰 판 단추 테두리 잣대) */
+.th-pill { flex: none; min-width: 72px; padding: 0 var(--sp-1); border-radius: 8px; background: var(--up); color: #070B17; font-size: var(--fs-2); font-weight: 700; line-height: 32px; text-align: center; font-variant-numeric: tabular-nums; }
+.th-pill.th-pdn { background: var(--down); } /* 이름을 .up · .dn 과 따로(app.css 글 색 규칙이 알약 글을 바탕색으로 덮음) */
 .th-yr { display: block; width: 100%; margin: var(--sp-1) 0 0; padding: 0; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .th-yr:disabled { cursor: default; }
 .th-yrg { display: block; width: 100%; height: auto; overflow: hidden; }
@@ -97,7 +97,6 @@ html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 4
 .th-yrg .th-yrlm { fill: none; stroke: var(--mute); stroke-width: 2; stroke-dasharray: 5 4; stroke-linejoin: round; }
 /* 첫 화면 줄 한 줄(번호 · 이름 · 행성 · ›) — 글 시작 = 번호 옆(예전 줄과 같은 자리 · [10] 7) · 행성은 오른쪽 끝 표시 쪽 */
 #view a.th-row.th-row2, html.white #view a[href].th-row.th-row2 { min-height: 56px; }
-.th-row2 .th-rp { flex: none; width: 32px; height: 32px; }
 /* 숫자로 자세히 보기(접는 칸) — 펼치면 진짜 싹 머리 · 주황 숫자 셋 · 점 넷 · 성적표 */
 .th-hfold { margin: var(--sp-1) 0 0; border-bottom: 1px solid #2A2A2A; }
 .th-hfold > summary { display: flex; align-items: center; justify-content: space-between; min-height: 56px; color: var(--ink); font-size: var(--fs-2); cursor: pointer; list-style: none; }
