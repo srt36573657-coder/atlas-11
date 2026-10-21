@@ -13,6 +13,9 @@ const sv = (...a) => nx().sv(...a);
 const txt = (x, y, s, a = {}) => { const e = sv('text', {x, y, ...a}); e.textContent = s; return e; };
 const YR = {ran: false, k: 0}; // 이 쪽에서 저절로 돈 적 있나 · 마지막에 보인 번호(모듈은 한 번만 받으므로 쪽을 오가도 그대로)
 let SEQ = 0;
+/** 하늘 쇼에 알림(사장님 2026-10-21 21:55 「이렇게 만들고」 — 물음 「그래프와 하늘 쇼를 같이 시작하고 같이 끝나게 할까요?」의 답) — start · phase · pause · play · done · gone 과 지금 번호
+    받는 곳 = sky-fly.js(첫 화면 하늘) · 늦게 받은 쪽을 위해 마지막 알림을 globalThis.DORI_YEAR 에도 둠 */
+const say = (state, k) => { const d = {state, k, at: performance.now()}; globalThis.DORI_YEAR = d; try { window.dispatchEvent(new CustomEvent('dori:year', {detail: d})); } catch { /* 옛 기기 */ } };
 const okPath = (P, TH, names) => !!P && P.schema === 'dori-theme-1-path' && P.asOf === TH.asOf && Array.isArray(P.M) && P.M.length >= 2 && P.M.every(Number.isFinite) && Array.isArray(P.inds) && P.inds.length === names.length
   && P.inds.every((i, k) => i.n === names[k] && Array.isArray(i.I) && i.I.length === P.M.length && i.I.every(Number.isFinite));
 const pctTxt = v => { const a = Math.round(v); return (a > 0 ? '+' : a < 0 ? '−' : '') + Math.abs(a) + '%'; };
@@ -88,16 +91,16 @@ export async function run({TH, top, rows = [], btn, svg, tt}) {
   function rest() { mode = 'done'; t = last; draw(); setIcon(); } // 멈춘 그림 — 줄 그림은 한 해 전부 · 그 업종 줄이 밝음
   function tick(now) {
     raf = 0; if (mode !== 'play' || hid || off) return;
-    if (!live()) { mode = 'gone'; return; }
+    if (!live()) { mode = 'gone'; say('gone', k); return; }
     const dt = Math.min(64, now - (prev || now)); prev = now;
-    if (hold > 0) { hold -= dt; if (hold <= 0) { if (k < PL.length - 1) { k++; t = 0; draw(); } else { rest(); return; } } } // 한 해 끝 — 1.8초 머문 뒤 다음 번호(머무는 동안은 그리지 않음)
+    if (hold > 0) { hold -= dt; if (hold <= 0) { if (k < PL.length - 1) { k++; t = 0; draw(); say('phase', k); } else { rest(); say('done', k); return; } } } // 한 해 끝 — 1.8초 머문 뒤 다음 번호(머무는 동안은 그리지 않음) · 하늘 쇼에도 알림
     else { t += dt * last / RUN; if (t >= last) { t = last; hold = HOLD; } draw(); }
     raf = requestAnimationFrame(tick);
   }
   const wake = () => { if (mode === 'play' && !hid && !off && !raf) { prev = 0; raf = requestAnimationFrame(tick); } };
-  function play() { mode = 'play'; YR.ran = true; setIcon(); draw(); wake(); }
+  function play() { const fresh = k === 0 && t === 0 && hold === 0; mode = 'play'; YR.ran = true; setIcon(); draw(); wake(); say(fresh ? 'start' : 'play', k); } // 처음부터면 하늘 쇼도 처음부터 · 이어 보기면 하늘도 이어서
   btn.addEventListener('click', () => {
-    if (mode === 'play') { mode = 'pause'; setIcon(); } // 그 자리에 멈춤
+    if (mode === 'play') { mode = 'pause'; setIcon(); say('pause', k); } // 그 자리에 멈춤 · 하늘도 멈춤
     else if (mode === 'pause') play();
     else if (mode === 'done') { k = 0; t = 0; hold = 0; play(); } // 다시 보기 = 1번부터
   });
