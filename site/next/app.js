@@ -619,7 +619,7 @@ async function vHomeAll() {
     if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true}); }
   // 상품권 방 고리(사장님 2026-10-22 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」) — 사람이 가장 많이 머무는 첫 화면 맨 위 줄 · 금빛 선물 그림 하나(글 0자 — 다시 온 기기 글자 수 잣대 105자 그대로) · 카톡 보내기 단추 옆
   const gift = h('a', {class: 'w-gift', href: '#/gift', 'aria-label': '상품권 받기 — 친구 3명 소개하고 우주 영상 1분 보기'}, giftIcon());
-  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '어느 계절일까?'})), gift, kk);
+  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '어느 계절일까?'})), h('span', {class: 'w-acts'}, gift, kk)); // 단추 둘은 한 덩이(좁으면 함께 다음 줄 오른쪽)
   const theme = await themeHome().catch(() => h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})); // 자료(need theme)는 vHome 이 home · 요약과 같이 받음
   const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
   const month = await monthLine(C);

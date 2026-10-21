@@ -77,7 +77,7 @@ test('앱 안 상품권 방(#/gift) — 첫 화면 금빛 선물 단추 · 걸�
   assert.match(app, /VIEWS\.gift = a => page\('gift', a\);/);
   assert.match(app, /gift: 'why-q1'\}/, '돌 그림');
   assert.match(app, /const gift = h\('a', \{class: 'w-gift', href: '#\/gift'/, '첫 화면 고리');
-  assert.match(app, /h\('span', \{'data-say': '', text: '어느 계절일까\?'\}\)\), gift, kk\);/, '돌이 물음 줄 · 카톡 보내기 앞');
+  assert.match(app, /h\('span', \{'data-say': '', text: '어느 계절일까\?'\}\)\), h\('span', \{class: 'w-acts'\}, gift, kk\)\);/, '돌이 물음 줄 · 카톡 보내기 앞 · 한 덩이');
   assert.match(js, /from '\.\/gift-rule\.js'/);
   assert.doesNotMatch(js, /innerHTML|\.style\.|setAttribute\('style'|insertAdjacentHTML|document\.write|controls/);
   assert.match(js, /상품권은 우주 영상 1분을 끝까지 본 분께만 드려요\. 이 약속은 꼭 지켜요\./);
