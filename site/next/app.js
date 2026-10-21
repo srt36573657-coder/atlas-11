@@ -189,7 +189,7 @@ const ICON2 = {
   send: () => { const s = sv('svg', {width: 22, height: 22, viewBox: '0 0 24 24', 'aria-hidden': 'true'}); s.append(sv('path', {d: 'M3 11.5 21 4l-7.5 18-2.5-7.5z', fill: 'none', stroke: 'currentColor', 'stroke-width': 1.6, 'stroke-linejoin': 'round'}), sv('path', {d: 'm11 14.5 4-4', stroke: 'currentColor', 'stroke-width': 1.6, 'stroke-linecap': 'round'})); return s; },
   gift: () => { const s = sv('svg', {class: 'm4-gi', width: 22, height: 22, viewBox: '0 0 24 24', 'aria-hidden': 'true'}); s.append(sv('rect', {x: 3.5, y: 9, width: 17, height: 11.5, rx: 2, fill: 'none', stroke: 'currentColor', 'stroke-width': 1.6}), sv('path', {d: 'M3.5 13h17M12 9v11.5M12 9c-1.5-4-6-4-6-1.5S12 9 12 9zm0 0c1.5-4 6-4 6-1.5S12 9 12 9z', fill: 'none', stroke: 'currentColor', 'stroke-width': 1.6, 'stroke-linejoin': 'round'})); return s; },
 };
-/** 선물 상자 그림(첫 화면 상품권 방 고리 · 편지 상품권 줄 그림과 같은 꼴) */
+/** 선물 상자 그림(위 막대 상품권 방 단추 · 편지 상품권 줄 그림과 같은 꼴) */
 const giftIcon = () => { const s = sv('svg', {class: 'ic', width: 24, height: 24, viewBox: '0 0 24 24', 'aria-hidden': 'true'}); s.append(sv('rect', {x: 3.5, y: 9, width: 17, height: 11.5, rx: 2}), sv('path', {d: 'M3.5 13h17M12 9v11.5M12 9c-1.5-4-6-4-6-1.5S12 9 12 9zm0 0c1.5-4 6-4 6-1.5S12 9 12 9z'})); return s; };
 /** 사장님 편지 + 친구에게 소개하기 + 상품권 줄 · 처음 열 때 한 번 보드리 5초(움직임 줄이기면 바로 글) */
 function m4letter() {
@@ -617,9 +617,7 @@ async function vHomeAll() {
   { const t = hd.firstChild, go = () => import('/next/home-title.js').then(m => m.rotateTitle(t)).catch(() => {}); // 큰 제목 돌리기(사장님 2026-10-21 23:55 「어 섹시하게」 · home-title.js) — 첫 그림 뒤 한가할 때
     const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(go, {timeout: 2500}) : setTimeout(go, 600));
     if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true}); }
-  // 상품권 방 고리(사장님 2026-10-22 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」) — 사람이 가장 많이 머무는 첫 화면 맨 위 줄 · 금빛 선물 그림 하나(글 0자 — 다시 온 기기 글자 수 잣대 105자 그대로) · 카톡 보내기 단추 옆
-  const gift = h('a', {class: 'w-gift', href: '#/gift', 'aria-label': '상품권 받기 — 친구 3명 소개하고 우주 영상 1분 보기'}, giftIcon());
-  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '어느 계절일까?'})), h('span', {class: 'w-acts'}, gift, kk)); // 단추 둘은 한 덩이(좁으면 함께 다음 줄 오른쪽)
+  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '어느 계절일까?'})), kk);
   const theme = await themeHome().catch(() => h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})); // 자료(need theme)는 vHome 이 home · 요약과 같이 받음
   const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
   const month = await monthLine(C);
@@ -1178,13 +1176,18 @@ globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, day
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
 VIEWS.t = a => page('theme', a); // 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js)
 VIEWS.game = a => page('game', a); // 가짜 돈 연습(사장님 2026-10-19 15:02 · 15:04 「일단해」 · p-game.js — PUBLIC 전에는 사장님 열쇠 기기만)
-VIEWS.gift = a => page('gift', a); // 상품권 방(사장님 2026-10-22 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 · p-gift.js) — 첫 화면 금빛 선물 단추에서 한 번
+VIEWS.gift = a => page('gift', a); // 상품권 방(사장님 2026-10-22 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 · p-gift.js) — 모든 쪽 위 막대 금빛 선물 단추에서 한 번
 VIEWS.help = a => page('help', a); // 고객센터(사장님 2026-10-21 22:54 · 22:55 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · 23:09 · p-help.js) — 모든 기기 · 맨 아래 고리
 VIEWS.admin = a => page('admin', a); // 관리자 화면(사장님 2026-10-19 13:54 「관리자 페이지도 있어야 해」 · 사장님 열쇠 기기만 · p-admin.js)
 VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 진화 쪽 길(사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」 · 일꾼 KM) — 모든 기기가 엶 · 단추는 p-jinhwa 가 사장님 열쇠 기기에서만 그림 · 합계 칸 참고 「연 수」 쪽마다 한 번(일꾼 KD)
 /* 위 막대 「진화」 단추(일꾼 KM · 2026-10-18 22:45) — 모든 사람 · 44px · 찾기 단추 앞 · 그 쪽이면 aria-current */
 const jhBtn = h('a', {class: 'tbtn', id: 'jhBtn', href: '#/jinhwa', text: '진화'});
 $('.top #langBtn')?.before(jhBtn);
+/* 위 막대 금빛 선물 단추(사장님 2026-10-22 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 · order-0338)
+   구글 = 사람이 어느 쪽에 있든 늘 보이는 자리(모든 쪽 위 막대)에서 한 번에 상품권 방(#/gift) · 잡스 = 글 없이 금빛 선물 그림 하나 · 진화 단추 옆
+   글이 없어 첫 화면 글자 잣대 · 테마 시계 자리를 건드리지 않음 · 320 폭에서도 넘침 0(이름 칸이 줄어 듦 · 2026-10-22 이 방에서 잼) */
+const giftBtn = h('a', {class: 'ibtn tgift', id: 'giftBtn', href: '#/gift', 'aria-label': '상품권 받기 — 친구 3명 소개하고 우주 영상 1분 보기'}, giftIcon());
+jhBtn.after(giftBtn);
 /* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
 const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};
@@ -1260,8 +1263,9 @@ async function route(force) {
   const view = k === 's' ? (() => page('share', raw)) : OLD_KINDS.has(k) ? (arg => page(k, arg)) : VIEWS[k];
   if (!view || (a == null && k !== 's')) { location.replace('#/'); return; }
   const my = ++seq, root = $('#view');
-  for (const t of document.querySelectorAll('.tabs a, #jhBtn')) t.removeAttribute('aria-current');
+  for (const t of document.querySelectorAll('.tabs a, #jhBtn, #giftBtn')) t.removeAttribute('aria-current');
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
+  if (k === 'gift') giftBtn.setAttribute('aria-current', 'page');
   if (TABS[k]) $('.tabs a[data-tab="' + TABS[k] + '"]')?.setAttribute('aria-current', 'page');
   if (k === 't') $('.tabs a[data-tab="home"]')?.setAttribute('aria-current', 'page'); // 테마 쪽은 첫 단추 칸(창 제목은 그 쪽 이름 그대로)
   root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'}));

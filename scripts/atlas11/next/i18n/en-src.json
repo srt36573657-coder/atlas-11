@@ -9033,6 +9033,7 @@
   "찍어 둔 화면을 문자로 보내 주세요.": "Text us the screenshot you took.",
   "문자를 보내면 보낸 전화번호가 운영자 휴대폰에 남아요.": "If you text us, your phone number stays on the operator's phone.",
   "보냈으면 보낸 화면을 찍어 두세요. {n}명이 되면 다음 걸음이에요.": "If you sent it, take a screenshot. At {n} friends, go to the next step.",
-  "친구 {n}명 소개하고 우주 영상 {n}분 보기": "tell {n1} friends and watch a {n2}-minute universe video"
+  "친구 {n}명 소개하고 우주 영상 {n}분 보기": "tell {n1} friends and watch a {n2}-minute universe video",
+  "하얀 비숑": "a white Bichon"
  }
 }

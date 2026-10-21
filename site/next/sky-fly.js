@@ -84,12 +84,13 @@ export function plug() {
   /* 2026-10-22 00:00 사장님 「내 가 그렸던것 존중하면서 해야지 다 무시하면 안돼 아름답게」(23:58) — 조용한 하늘(23:09 「아 해 섹시하게」) 위에 사장님이 그리신 것을 하나씩
      1번 그래프 = 피터팬과 팅커벨(하트를 그림) / 2번 = 천사 다섯 또는 황룡 하나(들를 때마다 하나 — 둘이 함께 날지 않게) / 3번 = 앵무새 돌이(하트) / 끝 = 하트 별자리
      빼 둔 것(지인 말 「행성에 별똥별에 외계인까지 · 갑자기 모든게 다보였어」): 해와 행성 · 해 빛살 · 비행접시 · 우주선 · 혜성 · 별똥별 비 · 잦은 별똥별(별 하늘 sky.js 의 드문 별똥별만) */
-  const ALT = Math.random() < 0.5;
-  const PHASE = [['peter'], [ALT ? 'angels' : 'dragon'], ['parrot']];
-  const PDUR = {peter: 10800, angels: 10800, dragon: 11500, parrot: 10800};
+  /* 2026-10-22 03:58 「비숑도 넣어주세요🤍」 — 2번 자리에 하얀 비숑도(천사 다섯 · 황룡 · 비숑 가운데 들를 때마다 하나 — 둘이 함께 날지 않게) */
+  const ALT = ['angels', 'dragon', 'bichon'][Math.floor(Math.random() * 3)];
+  const PHASE = [['peter'], [ALT], ['parrot']];
+  const PDUR = {peter: 10800, angels: 10800, dragon: 11500, parrot: 10800, bichon: 10800};
   /* 그래프가 없는 다른 쪽 — 하나씩 아주 가끔(처음 20초 뒤 · 그다음 60 ~ 90초마다 · 날고 있는 것이 있으면 기다림) */
-  const GENTLE = ['peter', 'angels', 'parrot', 'dragon'];
-  let frozen = false, seen = new Set(), showArmed = false, hearts = null;
+  const GENTLE = ['peter', 'angels', 'parrot', 'dragon', 'bichon']; // 비숑(2026-10-22 03:58)
+  let frozen = false, seen = new Set(), showArmed = false, hearts = null, whites = null; // whites = 비숑이 뿌리는 하얀 하트
   const isHome = () => document.documentElement.classList.contains('home');
   function phase(k) { if (seen.has(k) || !PHASE[k]) return; seen.add(k); for (const kind of PHASE[k]) spawn(kind, vt, {dur: PDUR[kind]}); }
   function clearBig() { act = act.filter(f => { if (!f.big) return true; f.g.remove(); for (const x of f.grs ?? []) x.remove(); return false; }); }
@@ -127,19 +128,19 @@ export function plug() {
     for (const p of PLANETS) grad(defs, 'radialGradient', 'flyP' + p.k, [[0, p.c, 0.55], [1, p.c, 0]]);
     buildAurora(); buildTwinkles(); // 해와 행성 · 해 빛살은 그리지 않음(2026-10-22 00:00 · 지인 말 「행성에 … 외계인까지」)
     act = [];
-    hearts = heartPool(20);
+    hearts = heartPool(20); whites = heartPool(14, true);
     nextMet = Math.max(nextMet, vt + 2600);
     if (first) { const y = globalThis.DORI_YEAR; if (y && ['start', 'phase', 'play'].includes(y.state) && performance.now() - y.at < 11000) phase(y.k); } // 그래프가 먼저 시작했으면 그 번호부터 같이
   }
 
   /* 떠오르는 하트 — 미리 만든 하트를 돌려 씀 · 천천히 오르며 흔들리다 옅어짐(터지지 않음) */
-  function heartPool(n) {
-    const g = mk('g', {class: 'sky-hearts'}, root);
+  function heartPool(n, white = false) { // white = 하얀 하트(비숑 · 🤍)
+    const g = mk('g', {class: white ? 'sky-hearts sky-whites' : 'sky-hearts'}, root);
     const P = Array.from({length: n}, (_, i) => {
       const e = mk('g', {opacity: 0}, g);
-      mk('circle', {r: 14, fill: 'url(#flyPink)'}, e);
-      mk('path', {d: HEART, fill: i % 3 ? '#FF9ECF' : '#FFC2E2'}, e);
-      glow(e, '#FFE4F2', [4, 1], [0.12, 0.8]).d(HEART);
+      mk('circle', {r: 14, fill: white ? 'url(#flyW)' : 'url(#flyPink)', opacity: white ? 0.7 : 1}, e);
+      mk('path', {d: HEART, fill: white ? (i % 3 ? '#FFFFFF' : '#F3F0FF') : (i % 3 ? '#FF9ECF' : '#FFC2E2')}, e);
+      glow(e, white ? '#FFFFFF' : '#FFE4F2', [4, 1], [0.12, 0.8]).d(HEART);
       return {e, t: -1e9, x: 0, y: 0, s: 1, ph: 0, life: 2600, rise: 60, on: false};
     });
     let k = 0;
@@ -176,6 +177,24 @@ export function plug() {
       const beat = Math.max(0, Math.sin(age * 0.009)) ** 3; // 두근 — 콩닥
       hg.setAttribute('transform', `translate(0 48) scale(${f2(1 + 0.16 * beat)})`);
       if (now - hk > 600 && u < 0.95) { hk = now; hearts.add(now, x - dir * 34 + rnd(-6, 6), y + rnd(-10, 24), rnd(0.8, 1.35)); } // 0.6초마다(조용히)
+      return true;
+    }};
+  }
+
+  /* 하얀 비숑(사장님 방 2026-10-22 03:58 「비숑도 넣어주세요🤍」) — 새로 그린 그림 /media/bichon.svg · 하얀 빛을 두르고 앞발을 뻗어 둥실둥실 날며 하얀 하트를 뿌림
+     가는 쪽을 봄(왼쪽으로 가면 그림을 뒤집음) · 숨 쉬듯 살짝 부풀었다 줄었다 · 0.7초마다 하트 하나(조용히) */
+  function bichon(t, dir, o = {}) {
+    const g = mk('g', {class: 'sky-bichon'}, root), body = mk('g', {}, g);
+    mk('circle', {r: 68, fill: 'url(#flyW)', opacity: 0.5}, body);
+    const face = mk('g', dir > 0 ? {} : {transform: 'scale(-1 1)'}, body);
+    mk('image', {href: '/media/bichon.svg', x: -58, y: -41, width: 116, height: 81}, face);
+    const y0 = vh * rnd(0.28, 0.46), xs = dir > 0 ? -90 : W + 90, xe = dir > 0 ? W + 90 : -90, dur = o.dur ?? 13000;
+    let hk = 0;
+    return {g, big: true, step(now) {
+      const age = now - t, u = age / dur; if (u > 1) return false;
+      const x = xs + (xe - xs) * u, y = y0 - vh * 0.05 * Math.sin(Math.PI * u) + 10 * Math.sin(age * 0.0045), tilt = dir * 4 * Math.sin(age * 0.0045 + 0.6), sq = 1 + 0.035 * Math.sin(age * 0.011);
+      body.setAttribute('transform', `translate(${f1(x)} ${f1(y)}) rotate(${f1(tilt)}) scale(${f2(sq)} ${f2(1 / sq)})`);
+      if (now - hk > 700 && u < 0.95) { hk = now; whites.add(now, x - dir * 50 + rnd(-6, 6), y + rnd(-8, 18), rnd(0.75, 1.2)); }
       return true;
     }};
   }
@@ -658,7 +677,7 @@ export function plug() {
     const dir = Math.random() < 0.5 ? -1 : 1;
     const p = o ?? {};
     const f = kind === 'peter' ? peter(now, dir, p) : kind === 'angels' ? angels(now, dir, p) : kind === 'dragon' ? dragons(now, dir, {...p, one: true}) : kind === 'ship' ? ship(now, p) : kind === 'dragons' ? dragons(now, dir, p) : kind === 'ufo' ? ufo(now) : kind === 'comet' ? comet(now, p)
-      : kind === 'parrot' ? parrot(now, dir, p) : kind === 'finale' ? finale(now) : kind === 'shower' ? shower(now) : meteor(now, o);
+      : kind === 'parrot' ? parrot(now, dir, p) : kind === 'bichon' ? bichon(now, dir, p) : kind === 'finale' ? finale(now) : kind === 'shower' ? shower(now) : meteor(now, o);
     f.kind = kind; act.push(f);
     return f;
   }
@@ -673,7 +692,7 @@ export function plug() {
       if (!showArmed) { showArmed = true; nextBig = vt + 20000; }
       if (vt >= nextBig && !act.some(f => f.big)) { spawn(GENTLE[showI++ % GENTLE.length], vt); nextBig = vt + rnd(60000, 90000); }
     }
-    hearts?.step(vt);
+    hearts?.step(vt); whites?.step(vt);
     const cur = act; act = [];
     for (const f of cur) { if (f.step(vt)) act.push(f); else { f.g.remove(); for (const x of f.grs ?? []) x.remove(); } } // 걸음 중에 새로 난 것(별똥별 비)은 act 에 바로 들어감
   }

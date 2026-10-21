@@ -1,7 +1,7 @@
 /* 상품권 방(#/gift) — 사장님 2026-10-22(서울) 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해 질문하지말고 바로 해」
    · 01:49 「… 마오는영상 1붘을 봐야 그게 정당해 그게 고지 해야고 그약솓 지켜야 상품권 받기 그때 나오게 해 그리고 정말쉽개 안내해야해 사람들에 1분 우리에게 투자하는것 서로 존중해야 잖아」 · 01:59 「맞아」
    명령문 원문 docs/design/gift-2026-10-22/order-0149.txt · order-0338.txt
-   구글 = 사람들이 이미 있는 곳에서 한 번에 닿음 — 첫 화면 맨 위 돌이 물음 줄의 금빛 선물 단추(app.js giftBtn) → 이 쪽 · 앱 밖(소개 쪽)으로 나가지 않고 여기서 끝냄
+   구글 = 사람들이 이미 있는 곳에서 한 번에 닿음 — 모든 쪽 위 막대의 금빛 선물 단추(app.js giftBtn) → 이 쪽 · 앱 밖(소개 쪽)으로 나가지 않고 여기서 끝냄
    잡스 = 한 쪽 · 걸음 셋(소개 → 1분 → 받기) · 지금 할 걸음 하나만 금빛 번호 · 걸음마다 단추 하나 · 꾸밈 없이 글과 가는 선
    약속을 먼저(「상품권은 우주 영상 1분을 끝까지 본 분께만」) · 본 초 = 실제로 틀어진 구간(gift-rule.js · 건너뛰기 · 빨리 감기는 셈 밖)
    끝까지 본 기기는 소개 쪽(/hello.html)과 같은 표시(atlas:gift:seen) — 어느 쪽에서 봐도 둘 다 열림 · 표시는 이 기기에만(서버로 안 감 · 처리방침에 적음)
@@ -33,7 +33,7 @@ export function render() {
   });
   /* ② 우주 영상 1분 — 기본 막대 없음(건너뛸 막대가 없게) · 큰 단추 하나로 보기 · 멈추기 */
   const v = h('video', {class: 'gf-uv', playsinline: true, preload: 'none', poster: '/media/universe-poster.jpg', width: 720, height: 1280,
-    'aria-label': josa(NAME, '의') + ' 우주 1분 — 오로라 · 피터팬과 팅커벨 · 우주선 · 황룡과 청룡 · 천사 다섯 · 혜성과 별똥별 · 비행접시 · 앵무새 ' + NAME + ' · 하트 별자리'},
+    'aria-label': josa(NAME, '의') + ' 우주 1분 — 오로라 · 피터팬과 팅커벨 · 우주선 · 황룡과 청룡 · 천사 다섯 · 하얀 비숑 · 혜성과 별똥별 · 비행접시 · 앵무새 ' + NAME + ' · 하트 별자리'},
   h('source', {src: '/media/universe.mp4', type: 'video/mp4'}), h('source', {src: '/media/universe.webm', type: 'video/webm'}));
   const play = h('button', {type: 'button', class: 'gf-btn gf-play', 'aria-pressed': 'false', text: '우주 영상 보기'});
   const bar = h('progress', {class: 'gf-bar', max: String(GIFT.need), value: '0'});

@@ -204,15 +204,15 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   const hp2 = await page.evaluate(() => ({got: document.querySelector('#hp-got')?.hidden ?? null, box: document.querySelector('#hp-promo')?.innerText ?? '', sms: document.querySelector('#hp-got a.hp-sms')?.textContent ?? ''}));
   await page.evaluate(() => { try { localStorage.removeItem('atlas:gift:seen'); } catch {} });
   hp.gate = gate; hp.after = hp2;
-  /* 2026-10-22 03:38 사장님 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」(order-0338) — 첫 화면 맨 위 금빛 선물 단추 → 앱 안 상품권 방(#/gift) · 처음엔 받기 칸 숨김 · 번호 숨김 */
+  /* 2026-10-22 03:38 사장님 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」(order-0338) — 모든 쪽 위 막대 금빛 선물 단추 → 앱 안 상품권 방(#/gift) · 처음엔 받기 칸 숨김 · 번호 숨김 */
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
-  const homeGift = await page.evaluate(() => { const a = document.querySelector('#view .w-gift'); if (!a) return null; const r = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(r.width), h: Math.round(r.height), top: Math.round(r.top), inSay: !!a.closest('.w-say')}; });
+  const homeGift = await page.evaluate(() => { const a = document.querySelector('#giftBtn'); if (!a) return null; const r = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(r.width), h: Math.round(r.height), top: Math.round(r.top), inTop: !!a.closest('header.top')}; });
   await page.goto(B + '/?v=' + Date.now() + '#/gift', {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(1500);
   const room = await page.evaluate(() => { const g = document.querySelector('#view .gf'); return g ? {h1: document.querySelector('#view h1')?.textContent?.trim() ?? '', steps: g.querySelectorAll('ol li').length, got: g.querySelector('.gf-got')?.hidden ?? null, text: g.innerText.slice(0, 600), ctl: !!g.querySelector('video')?.controls, src: [...g.querySelectorAll('video source')].map(x => x.getAttribute('src'))} : null; });
   await shot('p23-gift-room');
   hp.home = homeGift; hp.room = room ? {...room, text: room.text.slice(0, 200)} : null;
   await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(800); // 아래 소개 쪽 상품권 칸 사진(p23-hello-promo)은 그 쪽에서
-  const roomOk = !!homeGift && homeGift.href === '#/gift' && homeGift.w >= 48 && homeGift.h >= 48 && homeGift.inSay && !!room && room.h1 === '상품권' && room.steps === 3 && room.got === true && !room.ctl
+  const roomOk = !!homeGift && homeGift.href === '#/gift' && homeGift.w >= 48 && homeGift.h >= 48 && homeGift.inTop && !!room && room.h1 === '상품권' && room.steps === 3 && room.got === true && !room.ctl
     && /먼저 알려 드려요/.test(room.text) && /상품권은 우주 영상 1분을 끝까지 본 분께만 드려요/.test(room.text) && !/010-9011-7377/.test(room.text) && room.src.join(' ') === '/media/universe.mp4 /media/universe.webm';
   const gateOk = gate.got === true && /먼저 알려 드려요/.test(hp.box) && /상품권은 우주 영상 1분을 끝까지 본 분께만 드려요/.test(hp.box) && /끝까지 보면 여기에 「상품권 받기」 단추가 나와요/.test(gate.lock) && !gate.ctl
     && gate.media.length === 3 && gate.media.every(m => m.code === 200) && /video\/mp4/.test(gate.media[0].type) && /video\/webm/.test(gate.media[1].type) && /image\/jpeg/.test(gate.media[2].type)

@@ -1,8 +1,8 @@
 // 상품권 앞 「우주 영상 1분」 검사 — 두 곳(앱 안 상품권 방 #/gift · 소개 한 장 hello.html) · 진짜 1분을 두 곳에서 함께 끝까지 틀어 봄(약 90초)
 //   사장님 2026-10-22(서울) 01:49 「… 마오는영상 1붘을 봐야 그게 정당해 그게 고지 해야고 그약솓 지켜야 상품권 받기 그때 나오게 해 그리고 정말쉽개 안내해야해
 //   사람들에 1분 우리에게 투자하는것 서로 존중해야 잖아」 · 01:59 「맞아」 — docs/design/gift-2026-10-22/order-0149.txt
-//   03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 — order-0338.txt(첫 화면 금빛 선물 단추 → 앱 안 상품권 방)
-//   보는 것: ① 첫 화면 맨 위 줄에 금빛 선물 단추(48px · #/gift) → 누르면 상품권 방 ② 두 곳 처음 = 약속 알림 · 걸음 · 「상품권 받기」 · 번호 숨김 · 건너뛸 막대 없음 · 가로 넘침 없음 · 글씨 17px 위 · 단추 48px 위
+//   03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 — order-0338.txt(모든 쪽 위 막대 금빛 선물 단추 → 앱 안 상품권 방)
+//   보는 것: ① 모든 쪽 위 막대에 금빛 선물 단추(48px · #/gift · 320 폭 넘침 0) → 누르면 상품권 방 ② 두 곳 처음 = 약속 알림 · 걸음 · 「상품권 받기」 · 번호 숨김 · 건너뛸 막대 없음 · 가로 넘침 없음 · 글씨 17px 위 · 단추 48px 위
 //            ③ 틀기 → 건너뛰기(50초로) 막힘 · 빨리 감기(4배) 막힘 ④ 끝까지 → 「상품권 받기」 · 번호 · 고마움 줄 · 이 기기 표시 ⑤ 다시 열면 바로 열림 · 다른 곳도 함께 열림 ⑥ 영어 팩이면 한글 없음
 //   node scripts/atlas11/next/check_gift.mjs [--base http://127.0.0.1:8826] [--path /next/] [--pw /tmp/pw/] [--out 결과.json]  (scripts/atlas11/invite_dev.mjs --dir site 가 떠 있어야 함 · 깃허브 전체 검사도 이 꼴로 부름)
 import {createRequire} from 'node:module';
@@ -35,19 +35,19 @@ const openAt = async (ctx, url, w = 390, h = 844) => {
   await p.goto(B + url, {waitUntil: 'networkidle'}); await p.waitForTimeout(900); return p;
 };
 
-/* ① 첫 화면 금빛 선물 단추 → 상품권 방 */
-for (const [w, h] of [[390, 844], [320, 568]]) {
-  const ctx = await browser.newContext(), p = await openAt(ctx, NEXT + '#/', w, h);
-  await p.waitForSelector('#view .w-gift', {timeout: 20000}).catch(() => {});
-  const g = await p.evaluate(() => { const a = document.querySelector('#view .w-gift'); if (!a) return null; const r = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(r.width), h: Math.round(r.height), top: Math.round(r.top), label: a.getAttribute('aria-label') || '', inSay: !!a.closest('.w-say')}; });
-  if (!g) fail(`${w} 첫 화면 금빛 선물 단추 없음`);
+/* ① 모든 쪽 위 막대 금빛 선물 단추 → 상품권 방(첫 화면 · 매매일지 쪽에서) */
+for (const [w, h] of [[390, 844], [320, 568]]) for (const r of ['#/', '#/why']) {
+  const ctx = await browser.newContext(), p = await openAt(ctx, NEXT + r, w, h);
+  await p.waitForSelector('#giftBtn', {timeout: 20000}).catch(() => {});
+  const g = await p.evaluate(() => { const a = document.querySelector('#giftBtn'); if (!a) return null; const r = a.getBoundingClientRect(), lg = document.querySelector('.top .logo'); return {href: a.getAttribute('href'), w: Math.round(r.width), h: Math.round(r.height), top: Math.round(r.top), inTop: !!a.closest('header.top'), label: a.getAttribute('aria-label') || '', logoCut: lg ? lg.scrollWidth > lg.clientWidth + 1 : null, over: document.documentElement.scrollWidth > innerWidth}; });
+  if (!g) fail(`${w} ${r} 위 막대 금빛 선물 단추 없음`);
   else {
-    if (g.href !== '#/gift' || g.w < 48 || g.h < 48 || !g.inSay || g.top > h) fail(`${w} 첫 화면 선물 단추(맨 위 돌이 물음 줄 · 48px · #/gift · 첫 화면 안)`, JSON.stringify(g));
-    await p.click('#view .w-gift'); await p.waitForTimeout(1500);
-    const at = await p.evaluate(() => ({hash: location.hash, h1: document.querySelector('#view h1')?.textContent?.trim() ?? '', gf: !!document.querySelector('#view .gf')}));
-    if (at.hash !== '#/gift' || !at.gf || at.h1 !== '상품권') fail(`${w} 선물 단추를 누르면 상품권 방`, JSON.stringify(at)); else ok(`${w}×${h} 첫 화면 맨 위 금빛 선물 단추 → 한 번에 상품권 방(${g.w}×${g.h} · 위에서 ${g.top}px)`);
+    if (g.href !== '#/gift' || g.w < 48 || g.h < 48 || !g.inTop || g.top > 80 || g.logoCut || g.over || !/상품권/.test(g.label)) fail(`${w} ${r} 위 막대 선물 단추(48px · #/gift · 이름 칸 안 잘림 · 넘침 0)`, JSON.stringify(g));
+    await p.click('#giftBtn'); await p.waitForTimeout(1500);
+    const at = await p.evaluate(() => ({hash: location.hash, h1: document.querySelector('#view h1')?.textContent?.trim() ?? '', gf: !!document.querySelector('#view .gf'), cur: document.querySelector('#giftBtn')?.getAttribute('aria-current')}));
+    if (at.hash !== '#/gift' || !at.gf || at.h1 !== '상품권' || at.cur !== 'page') fail(`${w} ${r} 선물 단추를 누르면 상품권 방`, JSON.stringify(at)); else ok(`${w}×${h} ${r} 위 막대 금빛 선물 단추 → 한 번에 상품권 방(${g.w}×${g.h})`);
   }
-  if (p.errs.length) fail(`${w} 첫 화면 쪽 오류`, p.errs.join(' | '));
+  if (p.errs.length) fail(`${w} ${r} 쪽 오류`, p.errs.join(' | '));
   await ctx.close();
 }
 

@@ -1,0 +1,23 @@
+<!-- 하얀 비숑(날아가는 모습 · 오른쪽을 봄) — 사장님 방 2026-10-22 03:58 「비숑도 넣어주세요🤍」 · 새로 그린 그림(구름 같은 동그라미를 겹쳐 털을 만듦 · 남의 캐릭터 아님) · 하늘(sky-fly.js bichon) · 우주 영상 1분 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 112" width="160" height="112">
+<defs>
+<radialGradient id="bF" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".65" stop-color="#FBF8F3"/><stop offset="1" stop-color="#EEE6DB"/></radialGradient>
+<radialGradient id="bE" cx="45%" cy="35%" r="80%"><stop offset="0" stop-color="#FAF5EE"/><stop offset="1" stop-color="#E8DDCF"/></radialGradient>
+</defs>
+<g fill="#D3C8BA"><circle cx="40" cy="44" r="10.8"/><circle cx="33" cy="36" r="9.8"/><circle cx="42" cy="31" r="8.8"/><circle cx="49" cy="38" r="7.8"/></g><g fill="url(#bF)"><circle cx="40" cy="44" r="9"/><circle cx="33" cy="36" r="8"/><circle cx="42" cy="31" r="7"/><circle cx="49" cy="38" r="6"/></g>
+<g fill="#D3C8BA"><circle cx="44" cy="82" r="9.3"/><circle cx="35" cy="79" r="8.3"/></g><g fill="url(#bF)"><circle cx="44" cy="82" r="7.5"/><circle cx="35" cy="79" r="6.5"/></g>
+<g fill="#D3C8BA"><circle cx="50" cy="68" r="16.8"/><circle cx="62" cy="60" r="18.8"/><circle cx="77" cy="58" r="18.8"/><circle cx="90" cy="64" r="16.8"/><circle cx="58" cy="77" r="14.8"/><circle cx="74" cy="77" r="14.8"/><circle cx="88" cy="76" r="12.8"/></g><g fill="url(#bF)"><circle cx="50" cy="68" r="15"/><circle cx="62" cy="60" r="17"/><circle cx="77" cy="58" r="17"/><circle cx="90" cy="64" r="15"/><circle cx="58" cy="77" r="13"/><circle cx="74" cy="77" r="13"/><circle cx="88" cy="76" r="11"/></g>
+<g fill="none" stroke="#E4DACD" stroke-width="1.3" stroke-linecap="round"><path d="M56 63q3-3 6 0"/><path d="M70 56q3-3 6 0"/><path d="M80 66q3-3 6 0"/><path d="M62 72q3-3 6 0"/><path d="M74 73q3-3 6 0"/></g>
+<g fill="#D3C8BA"><circle cx="101" cy="84" r="9.3"/><circle cx="111" cy="88" r="8.6"/></g><g fill="url(#bF)"><circle cx="101" cy="84" r="7.5"/><circle cx="111" cy="88" r="6.8"/></g>
+<g fill="#D3C8BA"><circle cx="95" cy="54" r="10.8"/><circle cx="92" cy="64" r="10.3"/><circle cx="95" cy="72" r="8.8"/></g><g fill="url(#bE)"><circle cx="95" cy="54" r="9"/><circle cx="92" cy="64" r="8.5"/><circle cx="95" cy="72" r="7"/></g>
+<g fill="#D3C8BA"><circle cx="114" cy="48" r="26.8"/><circle cx="97" cy="37" r="11.3"/><circle cx="107" cy="26" r="12.3"/><circle cx="121" cy="24" r="12.3"/><circle cx="134" cy="33" r="11.8"/><circle cx="140" cy="47" r="11.3"/><circle cx="136" cy="61" r="11.3"/><circle cx="124" cy="70" r="11.3"/><circle cx="109" cy="71" r="11.3"/><circle cx="98" cy="61" r="10.8"/></g><g fill="url(#bF)"><circle cx="114" cy="48" r="25"/><circle cx="97" cy="37" r="9.5"/><circle cx="107" cy="26" r="10.5"/><circle cx="121" cy="24" r="10.5"/><circle cx="134" cy="33" r="10"/><circle cx="140" cy="47" r="9.5"/><circle cx="136" cy="61" r="9.5"/><circle cx="124" cy="70" r="9.5"/><circle cx="109" cy="71" r="9.5"/><circle cx="98" cy="61" r="9"/></g>
+<g fill="none" stroke="#E7DED2" stroke-width="1.2" stroke-linecap="round"><path d="M103 33q2.5-2.5 5 0"/><path d="M117 29q2.5-2.5 5 0"/><path d="M131 40q2.5-2.5 5 0"/><path d="M104 66q2.5-2.5 5 0"/><path d="M128 66q2.5-2.5 5 0"/></g>
+<g fill="#231F1C"><circle cx="110" cy="46" r="4.4"/><circle cx="126" cy="46" r="4.4"/></g>
+<g fill="#FFFFFF"><circle cx="111.6" cy="44.4" r="1.5"/><circle cx="127.6" cy="44.4" r="1.5"/></g>
+<g fill="#FFB3CB" opacity=".55"><circle cx="103" cy="56" r="5"/><circle cx="133" cy="56" r="5"/></g>
+<ellipse cx="118" cy="55" rx="5.2" ry="4.1" fill="#1E1A17"/>
+<ellipse cx="116.4" cy="53.6" rx="1.7" ry="1.1" fill="#6B625B"/>
+<path d="M118 59v2.4M112.6 61.6q2.7 2.6 5.4 0q2.7 2.6 5.4 0" fill="none" stroke="#3A302A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M115.4 63.3q2.6 4.6 5.2 0z" fill="#FF8FB1"/>
+<g transform="translate(128 21) rotate(18)"><path d="M0 0L-8 -5L-8 5Z M0 0L8 -5L8 5Z" fill="#FF9ECF"/><circle r="2.6" fill="#FF7FB6"/></g>
+</svg>
