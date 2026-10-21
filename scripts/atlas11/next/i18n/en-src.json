@@ -9023,6 +9023,16 @@
   "이 휴대폰에서 영상을 끝까지 봤어요. 상품권을 받을 수 있어요.": "You've watched the video to the end on this phone. You can get the gift card.",
   "상품권 받기": "Get the gift card",
   "문자 번호": "Text number",
-  "{n}분은 소중한 시간이에요. 내어 주셔서 고마워요.": "A minute is precious time. Thank you for giving us yours."
+  "{n}분은 소중한 시간이에요. 내어 주셔서 고마워요.": "A minute is precious time. Thank you for giving us yours.",
+  "상품권": "Gift card",
+  "친구 {n}명에게 소개하고 우주 영상 {n}분을 보면 드려요.": "Tell {n1} friends and watch the {n2}-minute universe video to get it.",
+  "친구 {n}명에게 소개해요": "Tell {n} friends about us",
+  "카톡으로 {e}를 보내고, 보낸 화면을 찍어 두세요.": "Send {e} on KakaoTalk and take a screenshot of what you sent.",
+  "우주 영상 {n}분을 끝까지 봐요": "Watch the {n}-minute universe video to the end",
+  "상품권 받기를 눌러요": "Tap “Get the gift card”",
+  "찍어 둔 화면을 문자로 보내 주세요.": "Text us the screenshot you took.",
+  "문자를 보내면 보낸 전화번호가 운영자 휴대폰에 남아요.": "If you text us, your phone number stays on the operator's phone.",
+  "보냈으면 보낸 화면을 찍어 두세요. {n}명이 되면 다음 걸음이에요.": "If you sent it, take a screenshot. At {n} friends, go to the next step.",
+  "친구 {n}명 소개하고 우주 영상 {n}분 보기": "tell {n1} friends and watch a {n2}-minute universe video"
  }
 }

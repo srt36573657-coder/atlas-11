@@ -2,10 +2,10 @@
    사장님 2026-10-22(서울) 01:49 「… 마오는영상 1붘을 봐야 그게 정당해 그게 고지 해야고 그약솓 지켜야 상품권 받기 그때 나오게 해 그리고 정말쉽개 안내해야해
    사람들에 1분 우리에게 투자하는것 서로 존중해야 잖아」 · 01:59 「맞아」(친구 3명 소개 스타벅스 상품권) — 명령문 원문 docs/design/gift-2026-10-22/order-0149.txt
    · 영상 = /media/universe.mp4 · webm(사이트 하늘 그대로 · scripts/atlas11/universe/film.mjs) · 휴대폰 기본 막대(controls)는 두지 않음 — 건너뛸 막대가 없게, 큰 단추 하나로 보기 · 멈추기
-   · 본 초 = 브라우저가 적는 실제로 틀어진 구간(video.played) — 셈은 /gift-rule.js(시험 tests/atlas11/gift.test.mjs · 진짜 1분 검사 scripts/atlas11/next/check_gift.mjs)
+   · 본 초 = 브라우저가 적는 실제로 틀어진 구간(video.played) — 셈은 /next/gift-rule.js(시험 tests/atlas11/gift.test.mjs · 진짜 1분 검사 scripts/atlas11/next/check_gift.mjs)
    · 끝까지 본 기기는 이 기기에만 날짜 한 줄(GIFT.key) — 다시 와도 또 보지 않음 · 글 · 단추 · 칸 꾸밈은 /hello-promo.css(쪽 보안 규칙 style-src 'self')*/
 import {t as L} from '/next/i18n.js';
-import {GIFT, playedOf, reachOf, done, clampSeek, sayLeft} from '/gift-rule.js';
+import {GIFT, playedOf, reachOf, done, clampSeek, sayLeft} from '/next/gift-rule.js';
 
 const $ = id => document.getElementById(id);
 const v = $('hp-uv'), play = $('hp-uplay'), bar = $('hp-ubar'), left = $('hp-uleft'), lock = $('hp-lock'), got = $('hp-got'), thx = $('hp-thx');

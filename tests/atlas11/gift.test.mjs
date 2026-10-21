@@ -1,10 +1,10 @@
-// 상품권 앞 「우주 영상 1분」 시험(site/gift-rule.js · site/hello.html · site/hello-gift.js · site/privacy.html · site/next/app.js)
+// 상품권 앞 「우주 영상 1분」 시험(site/next/gift-rule.js · site/next/p-gift.js · site/hello.html · site/hello-gift.js · site/privacy.html · site/next/app.js)
 //   사장님 2026-10-22(서울) 01:49 「… 마오는영상 1붘을 봐야 그게 정당해 그게 고지 해야고 그약솓 지켜야 상품권 받기 그때 나오게 해 그리고 정말쉽개 안내해야해
 //   사람들에 1분 우리에게 투자하는것 서로 존중해야 잖아」 · 01:59 「맞아」 — docs/design/gift-2026-10-22/order-0149.txt
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {GIFT, playedOf, reachOf, done, clampSeek, sayLeft} from '../../site/gift-rule.js';
+import {GIFT, playedOf, reachOf, done, clampSeek, sayLeft} from '../../site/next/gift-rule.js';
 
 const read = p => fs.readFileSync(new URL('../../' + p, import.meta.url), 'utf8');
 
@@ -65,9 +65,26 @@ test('소개 쪽 — 약속을 먼저 알림 · 쉬운 네 걸음 · 영상 · �
 test('쪽 규칙 — 글 안 꾸밈 · innerHTML 없음 · 처리방침에 저장 열쇠 · 편지 상품권 줄도 같은 약속', () => {
   const js = read('site/hello-gift.js');
   assert.doesNotMatch(js, /innerHTML|\.style\.|setAttribute\('style'|insertAdjacentHTML|document\.write/);
-  assert.match(js, /from '\/gift-rule\.js'/);
+  assert.match(js, /from '\/next\/gift-rule\.js'/);
   assert.match(read('site/privacy.html'), /<code>atlas:gift:seen<\/code>/);
   assert.match(read('site/next/app.js'), /const HELLO_PROMO = '3명 소개하고 1분 영상 보면 스타벅스 상품권 1만원!';/);
   const css = read('site/hello-promo.css');
   for (const m of css.matchAll(/font-size:\s*([\d.]+)rem/g)) assert.ok(['1.0625', '1.1875', '1.3125', '1.5', '1.875'].includes(m[1]), '글씨 크기 ' + m[1]);
+});
+
+test('앱 안 상품권 방(#/gift) — 첫 화면 금빛 선물 단추 · 걸음 셋 · 같은 셈 · 쪽 규칙(사장님 2026-10-22 03:38 · order-0338)', async () => {
+  const app = read('site/next/app.js'), js = read('site/next/p-gift.js');
+  assert.match(app, /VIEWS\.gift = a => page\('gift', a\);/);
+  assert.match(app, /gift: 'why-q1'\}/, '돌 그림');
+  assert.match(app, /const gift = h\('a', \{class: 'w-gift', href: '#\/gift'/, '첫 화면 고리');
+  assert.match(app, /h\('span', \{'data-say': '', text: '어느 계절일까\?'\}\)\), gift, kk\);/, '돌이 물음 줄 · 카톡 보내기 앞');
+  assert.match(js, /from '\.\/gift-rule\.js'/);
+  assert.doesNotMatch(js, /innerHTML|\.style\.|setAttribute\('style'|insertAdjacentHTML|document\.write|controls/);
+  assert.match(js, /상품권은 우주 영상 1분을 끝까지 본 분께만 드려요\. 이 약속은 꼭 지켜요\./);
+  assert.equal((js.match(/step\(\d, /g) ?? []).length, 3, '걸음 셋');
+  assert.match(js, /const got = h\('div', \{class: 'gf-got', hidden: true\}/, '받기 칸은 처음에 숨김');
+  assert.ok(js.indexOf("'sms:' + TEL") > js.indexOf("const got = h('div'"), '문자 고리는 받기 칸 안에만');
+  assert.doesNotMatch(js.replace(/^\/\*[\s\S]*?\*\//, ''), /'돌이/, '이름은 brand.js');
+  const {cssRules} = await import('../../scripts/atlas11/next/page_rules.mjs');
+  assert.deepEqual(cssRules('site/next/p-gift.css'), []);
 });

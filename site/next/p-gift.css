@@ -1,0 +1,44 @@
+/* 상품권 방(#/gift · p-gift.js) — 사장님 2026-10-22(서울) 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 · 01:49 우주 영상 1분
+   잡스 = 글과 가는 선만 · 지금 할 걸음 번호만 금빛 · 칠한 단추는 「상품권 받기」 하나 · 그림자 · 광택 · 입체 없음 · 빨강 없음
+   글씨는 var(--fs-1 ~ 3)만 · 바깥 · 안 여백과 사이는 0 · auto · var(--sp-1 ~ 3)만(page_rules.mjs cssRules) · 누르는 것 48 × 48 넘게 */
+.gf { padding: 0 var(--sp-2) var(--sp-3); }
+.gf-lead { margin: 0 0 var(--sp-2); font-size: var(--fs-2); line-height: 1.5; color: var(--ink); }
+.gf-lead b { display: block; font-size: var(--fs-3); font-weight: 800; color: var(--gold); }
+.gf-lead span { display: block; }
+.gf-vow { display: flex; flex-direction: column; gap: var(--sp-1); margin: 0 0 var(--sp-3); padding: var(--sp-2); border: 1px solid var(--gold-line); border-radius: 16px; text-align: center; }
+.gf-vow b { font-size: var(--fs-2); font-weight: 800; color: var(--gold); }
+.gf-vow span { font-size: var(--fs-1); line-height: 1.55; color: var(--ink); }
+.gf-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair2); }
+.gf-step { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--sp-2); padding: var(--sp-3) 0; border-bottom: 1px solid var(--hair2); }
+.gf-no { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; box-sizing: border-box; border: 1px solid var(--hair2); border-radius: 50%; color: var(--mute); font-size: var(--fs-2); font-weight: 700; text-align: center; }
+.gf-step.on .gf-no { border-color: var(--gold); color: var(--gold); }
+.gf-body { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-1); }
+.gf-h2 { margin: 0; font-size: var(--fs-3); font-weight: 700; line-height: 1.35; color: var(--ink); }
+.gf-p { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }
+.gf-btn { min-height: 48px; min-width: 48px; padding: 0 var(--sp-3); border: 1px solid var(--ink); border-radius: 24px; color: var(--ink); font-size: var(--fs-2); font-weight: 700; text-align: center; }
+.gf-btn:active { background: var(--card2); }
+.gf-btn:focus-visible, .gf-sms:focus-visible, .gf-call:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.gf-said { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }
+.gf-said:empty, .gf-left:empty { display: none; }
+.gf-uv { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; border-radius: 16px; background: #070B17; cursor: pointer; }
+.gf-bar { -webkit-appearance: none; appearance: none; display: block; width: 100%; max-width: 360px; height: 8px; border: 0; border-radius: 4px; background: var(--hair); overflow: hidden; }
+.gf-bar::-webkit-progress-bar { background: var(--hair); border-radius: 4px; }
+.gf-bar::-webkit-progress-value { background: var(--gold); border-radius: 4px; }
+.gf-bar::-moz-progress-bar { background: var(--gold); border-radius: 4px; }
+.gf-left { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--ink); }
+.gf-lock { align-self: stretch; margin: 0; padding: var(--sp-2); border: 1px dashed var(--hair2); border-radius: 16px; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); text-align: center; }
+.gf-got { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-1); }
+.gf-got[hidden], .gf-lock[hidden] { display: none; }
+.gf-thx { margin: 0; font-size: var(--fs-2); font-weight: 700; line-height: 1.45; color: var(--gold); }
+.gf-tel { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.gf-sms, .gf-call { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 0 var(--sp-3); box-sizing: border-box; border-radius: 24px; font-size: var(--fs-2); font-weight: 800; text-align: center; text-decoration: none; }
+.gf-sms { background: var(--gold); color: #070B17; }
+.gf-call { border: 1px solid var(--gold); color: var(--gold); }
+.gf-num { margin: 0; font-size: var(--fs-1); color: var(--ink); }
+.gf-num b { color: var(--gold); font-weight: 800; }
+.gf-pn { display: flex; flex-direction: column; gap: var(--sp-1); margin: var(--sp-3) 0 0; }
+.gf-pn p { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }
+.gf-pn p:first-child { font-weight: 700; color: var(--ink); }
+.gf-fine { margin: var(--sp-2) 0 0; font-size: var(--fs-1); line-height: 1.5; color: var(--mute); }
+.gf-fine a { display: inline-flex; align-items: center; min-height: 48px; color: var(--sub); text-decoration: underline; text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .gf-btn, .gf-sms, .gf-call { transition: none; } }
