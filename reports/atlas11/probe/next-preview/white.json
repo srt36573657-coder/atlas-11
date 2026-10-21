@@ -1,23 +1,25 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-21T08:12:07.796Z",
+ "at": "2026-10-21T09:42:40.446Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 421,
-  "fail": 0
+  "pass": 420,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "320 × 568 테마 시계 그림 한 화면 안 — 그림 아래 535 > 아래 단추 500"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
-    "ess": 1318,
+    "ess": 1090,
     "find": 776,
-    "today": 1410,
-    "gdr": 1760,
-    "all": 1760
+    "today": 1182,
+    "gdr": 1531,
+    "all": 1531
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +45,7 @@
     true,
     true
    ],
-   "themeChars": 100,
+   "themeChars": 95,
    "top": [
     [
      35,
@@ -178,7 +180,7 @@
    ],
    "theme": {
     "top": 232,
-    "clockBottom": 488
+    "clockBottom": 599
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -198,11 +200,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 1195,
+    "ess": 967,
     "find": 776,
-    "today": 1287,
-    "gdr": 1636,
-    "all": 1636
+    "today": 1059,
+    "gdr": 1408,
+    "all": 1408
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 100,
+   "themeChars": 95,
    "top": [
     [
      24,
@@ -353,7 +355,7 @@
    ],
    "theme": {
     "top": 232,
-    "clockBottom": 488
+    "clockBottom": 599
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -679,15 +681,15 @@
    }
   },
   "speed": {
-   "lcp": 2356,
+   "lcp": 2324,
    "inp": 40,
-   "cls": 0.011
+   "cls": 0.007
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
