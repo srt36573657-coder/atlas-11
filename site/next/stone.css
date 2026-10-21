@@ -168,3 +168,12 @@ html.white .cp-card .cp-t { margin: 0 0 var(--sp-1); color: var(--sub); font-siz
 html.white .cp-card .cp-q { color: var(--sub); }
 html.white .cp-card .cp-code { margin: 0 0 var(--sp-1); color: var(--ink); font-size: var(--fs-5); font-weight: 700; letter-spacing: .06em; }
 html.white .cp-card .cp-go { min-height: 48px; padding: 0 var(--sp-2); border: 0; border-radius: 24px; background: #FFFFFF; color: #070B17; font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }
+
+/* 커피쿠폰 띠(2026-10-22) — 큰 글 하나 · 단추 하나 · 금빛 가는 선(구글처럼 비우고 잡스처럼 하나만) */
+html.white.home .s-coffee { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 1px solid var(--gold); border-radius: 6px 22px 22px 22px; background: transparent; color: var(--ink); }
+html.white.home .s-coffee p { margin: 0; }
+html.white.home .s-coffee .cf-big { font-size: var(--fs-4); font-weight: 700; line-height: 1.25; }
+html.white.home .s-coffee .cf-how { font-size: var(--fs-2); }
+html.white.home .s-coffee .cf-id { font-weight: 800; letter-spacing: .02em; }
+html.white.home .s-coffee .cf-rule { font-size: var(--fs-1); color: var(--sub); }
+html.white.home .s-coffee .cf-copy { justify-self: start; min-height: 48px; padding: 0 var(--sp-3); border: 0; border-radius: 6px 22px 22px 22px; background: #FFFFFF; color: #070B17; font: inherit; font-size: var(--fs-2); font-weight: 700; cursor: pointer; }

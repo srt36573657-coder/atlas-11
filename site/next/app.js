@@ -561,6 +561,15 @@ function whyQ(q, i, H) {
 /** 노란 말풍선(share-btn.js 와 같은 모양 · 색은 app.css .kk-ic .kk-b) */
 function kkIcon() { const s = sv('svg', {class: 'kk-ic', viewBox: '0 0 24 24', width: 28, height: 28, 'aria-hidden': 'true', focusable: 'false'}); s.append(sv('path', {class: 'kk-b', d: 'M12 3C6.75 3 2.5 6.36 2.5 10.5c0 2.65 1.74 4.98 4.37 6.31l-1.1 4.02c-.1.36.31.65.62.44l4.78-3.17c.27.02.55.03.83.03 5.25 0 9.5-3.36 9.5-7.5S17.25 3 12 3z'})); return s; }
 /** 진화 한 줄 — 진화 자료(/next/data/jinhwa.json)를 늦게 받아 채움(첫 그림을 막지 않음) · 못 받으면 「진화 보기 ›」 그대로 */
+/** 커피쿠폰 띠(사장님 2026-10-22 「메인화면 커피쿠폰 한정 갯수 2만개 · 카카오톡 아이디 공개 · 구글과 잡스」) — 큰 글 하나 + 아이디 복사 단추 하나(잡스 · 하나만) · 남은 개수 숫자는 쓰지 않음(세지 않은 숫자는 거짓) */
+function coffeeBand() {
+  const ID = 'srt36573657', btn = h('button', {class: 'cf-copy', type: 'button', text: '아이디 복사'});
+  btn.addEventListener('click', () => { const ok = () => toast('복사했어요. 카톡에서 친구 추가해 주세요.'), no = () => toast('아이디: ' + ID);
+    try { navigator.clipboard.writeText(ID).then(ok, no); } catch { no(); } });
+  return h('section', {class: 's-coffee', 'aria-label': '커피쿠폰'}, h('p', {class: 'cf-big'}, h('b', {text: '커피쿠폰 2만 장'}), ' 선착순'),
+    h('p', {class: 'cf-how'}, '카톡 ', h('b', {class: 'cf-id', text: ID}), ' 에 「커피」만 보내 주세요'), btn,
+    h('p', {class: 'cf-rule', text: '다른 이야기나 욕을 하면 바로 차단돼요'}));
+}
 function evoLine() {
   const b = h('b', {text: '진화'}), t = h('span', {class: 'when', text: '보기'});
   const a = h('a', {class: 's-evo', href: '#/jinhwa'}, b, t, h('i', {'aria-hidden': 'true', text: '›'}));
@@ -629,7 +638,7 @@ async function vHomeAll() {
   //   아래로 읽을 때는 그 한 줄도 숨고, 조금 위로 밀면 다시 나옴(구글 · 닐슨 노먼 그룹 2021 「다시 나오는 칸」) — quickReturn
   const short = h('div', {class: 's-short'}, go4((C?.stop ?? 0) > 0), allBox(H, band));
   const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
-  const nodes = [hd, say, theme, story, thumb, short, evoLine()]; // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
+  const nodes = [hd, say, theme, coffeeBand(), story, thumb, short, evoLine()]; // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
   return {title: '오늘 장', nodes};
 }
 
