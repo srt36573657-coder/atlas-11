@@ -1,5 +1,5 @@
 {
- "made": "2026-10-21T10:18:07.483Z",
+ "made": "2026-10-21T13:37:22.735Z",
  "base": "https://aaa7377.com",
  "app": "/",
  "runs": [
@@ -8,71 +8,95 @@
    "at": [
     {
      "tag": "a",
-     "t": 1949,
+     "t": 2041,
      "run": true,
      "now": 1,
      "label": "멈춤",
      "dis": false,
      "title": "1번 연예 기획사",
-     "v": "−12% −3%",
+     "v": "−12% +1%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-peter,sky-ufo",
+     "yr": "start0",
+     "clock": {
+      "min": 37.4,
+      "now": 37.4
+     }
     },
     {
      "tag": "p1",
-     "t": 6449,
+     "t": 6466,
      "run": true,
      "now": 1,
      "label": "멈춤",
      "dis": false,
      "title": "1번 연예 기획사",
-     "v": "−35% +6%",
+     "v": "−40% −2%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-peter,sky-ufo",
+     "yr": "start0",
+     "clock": {
+      "min": 37.5,
+      "now": 37.5
+     }
     },
     {
      "tag": "p2",
-     "t": 16446,
+     "t": 16709,
      "run": true,
      "now": 2,
      "label": "멈춤",
      "dis": false,
      "title": "2번 인터넷 플랫폼",
-     "v": "−6% +22%",
+     "v": "−10% +21%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-angels,sky-ship,sky-comet",
+     "yr": "phase1",
+     "clock": {
+      "min": 37.7,
+      "now": 37.7
+     }
     },
     {
      "tag": "p3",
-     "t": 26445,
+     "t": 26617,
      "run": true,
      "now": 3,
      "label": "멈춤",
      "dis": false,
      "title": "3번 바이오 의약품",
-     "v": "+18% +10%",
+     "v": "+17% +8%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-dragon,sky-parrot",
+     "yr": "phase2",
+     "clock": {
+      "min": 37.8,
+      "now": 37.8
+     }
     },
     {
      "tag": "end",
-     "t": 40450,
+     "t": 40537,
      "run": false,
      "now": 3,
      "label": "한 해 다시 보기",
@@ -82,47 +106,111 @@
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts",
+     "yr": "done2",
+     "clock": {
+      "min": 38.1,
+      "now": 38.1
+     }
     },
     {
      "tag": "tap1",
-     "t": 42760,
+     "t": 42738,
      "run": true,
      "now": 1,
      "label": "멈춤",
      "dis": false,
      "title": "1번 연예 기획사",
-     "v": "−8% +1%",
+     "v": "−7% +1%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-peter,sky-ufo",
+     "yr": "start0",
+     "clock": {
+      "min": 38.1,
+      "now": 38.1
+     }
     },
     {
      "tag": "tap2",
-     "t": 44310,
+     "t": 44323,
      "run": false,
      "now": 1,
      "label": "이어 보기",
      "dis": false,
      "title": "1번 연예 기획사",
-     "v": "−9% 0%",
+     "v": "−9% +1%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-peter,sky-ufo",
+     "yr": "pause0",
+     "clock": {
+      "min": 38.1,
+      "now": 38.1
+     }
     }
+   ],
+   "sky": [
+    [
+     0,
+     " | -"
+    ],
+    [
+     0.4,
+     "sky-hearts | -"
+    ],
+    [
+     0.8,
+     "sky-hearts,sky-peter,sky-ufo | start0"
+    ],
+    [
+     11.5,
+     "sky-hearts,sky-peter,sky-angels,sky-ship,sky-comet | phase1"
+    ],
+    [
+     11.9,
+     "sky-hearts,sky-angels,sky-ship,sky-comet | phase1"
+    ],
+    [
+     22.2,
+     "sky-hearts,sky-ship | phase1"
+    ],
+    [
+     22.6,
+     "sky-hearts,sky-ship,sky-dragon,sky-parrot | phase2"
+    ],
+    [
+     24.2,
+     "sky-hearts,sky-dragon,sky-parrot | phase2"
+    ],
+    [
+     33.3,
+     "sky-hearts,sky-dragon,sky-heart | done2"
+    ],
+    [
+     34.1,
+     "sky-hearts,sky-heart | done2"
+    ],
+    [
+     39.7,
+     "sky-hearts | done2"
+    ]
    ],
    "net": {
     "theme-year.js": 200,
-    "data/theme-path.json": 200,
-    "theme-year.css": 200
+    "theme-year.css": 200,
+    "data/theme-path.json": 200
    },
    "errs": []
   },
@@ -131,7 +219,7 @@
    "at": [
     {
      "tag": "a",
-     "t": 2053,
+     "t": 2308,
      "run": true,
      "now": 1,
      "label": "멈춤",
@@ -141,106 +229,182 @@
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-peter,sky-ufo",
+     "yr": "start0",
+     "clock": {
+      "min": 38.3,
+      "now": 38.3
+     }
     },
     {
      "tag": "p1",
-     "t": 6552,
+     "t": 6761,
      "run": true,
      "now": 1,
      "label": "멈춤",
      "dis": false,
      "title": "1번 연예 기획사",
-     "v": "−6% +13%",
+     "v": "−8% +4%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-peter,sky-ufo",
+     "yr": "start0",
+     "clock": {
+      "min": 38.3,
+      "now": 38.3
+     }
     },
     {
      "tag": "p2",
-     "t": 16553,
+     "t": 16724,
      "run": true,
-     "now": 2,
+     "now": 1,
      "label": "멈춤",
      "dis": false,
-     "title": "2번 인터넷 플랫폼",
-     "v": "−3% +1%",
+     "title": "1번 연예 기획사",
+     "v": "−43% −2%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts",
+     "yr": "start0",
+     "clock": {
+      "min": 38.5,
+      "now": 38.5
+     }
     },
     {
      "tag": "p3",
-     "t": 26551,
+     "t": 26654,
      "run": true,
      "now": 2,
      "label": "멈춤",
      "dis": false,
      "title": "2번 인터넷 플랫폼",
-     "v": "−27% −7%",
+     "v": "−9% +10%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-angels,sky-ship,sky-comet",
+     "yr": "phase1",
+     "clock": {
+      "min": 38.7,
+      "now": 38.7
+     }
     },
     {
      "tag": "end",
-     "t": 40552,
+     "t": 40683,
      "run": true,
      "now": 3,
      "label": "멈춤",
      "dis": false,
      "title": "3번 바이오 의약품",
-     "v": "−18% −7%",
+     "v": "+11% +1%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-dragon,sky-parrot",
+     "yr": "phase2",
+     "clock": {
+      "min": 38.9,
+      "now": 38.9
+     }
     },
     {
      "tag": "tap1",
-     "t": 42336,
+     "t": 42700,
      "run": false,
      "now": 3,
      "label": "이어 보기",
      "dis": false,
      "title": "3번 바이오 의약품",
-     "v": "−18% −7%",
+     "v": "+14% +1%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-dragon,sky-parrot",
+     "yr": "pause2",
+     "clock": {
+      "min": 38.9,
+      "now": 38.9
+     }
     },
     {
      "tag": "tap2",
-     "t": 43893,
-     "run": false,
+     "t": 44319,
+     "run": true,
      "now": 3,
-     "label": "한 해 다시 보기",
+     "label": "멈춤",
      "dis": false,
      "title": "3번 바이오 의약품",
-     "v": "−18% −7%",
+     "v": "+9% +4%",
      "say": false,
      "sw": 390,
      "lt": "요즘 시장보다 힘이 붙은 곳",
-     "pills": "+8.1% +7.7% +2.7%",
+     "pills": "+8.1% +7.4% +2.7%",
      "orbit": 0,
-     "pl": 0
+     "pl": 0,
+     "sky": "sky-hearts,sky-dragon,sky-parrot",
+     "yr": "play2",
+     "clock": {
+      "min": 38.9,
+      "now": 39
+     }
     }
+   ],
+   "sky": [
+    [
+     0,
+     " | -"
+    ],
+    [
+     0.9,
+     "sky-hearts,sky-peter,sky-ufo | start0"
+    ],
+    [
+     14.5,
+     "sky-hearts,sky-peter | start0"
+    ],
+    [
+     15.3,
+     "sky-hearts | start0"
+    ],
+    [
+     18.8,
+     "sky-hearts,sky-angels,sky-ship,sky-comet | phase1"
+    ],
+    [
+     32,
+     "sky-hearts,sky-ship | phase1"
+    ],
+    [
+     34,
+     "sky-hearts | phase1"
+    ],
+    [
+     36.8,
+     "sky-hearts,sky-dragon,sky-parrot | phase2"
+    ]
    ],
    "net": {
     "theme-year.js": 200,
