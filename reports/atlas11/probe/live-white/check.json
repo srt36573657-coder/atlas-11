@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-20T20:27:31.518Z",
+ "at": "2026-10-21T08:30:23.605Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
-    "ess": 1199,
+    "ess": 1371,
     "find": 776,
-    "today": 1291,
-    "gdr": 1640,
-    "all": 1640
+    "today": 1463,
+    "gdr": 1812,
+    "all": 1812
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 85,
+   "themeChars": 102,
    "top": [
     [
      35,
@@ -153,7 +153,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 20일"
+     "10월 21일"
     ],
     [
      2,
@@ -177,8 +177,8 @@
     ]
    ],
    "theme": {
-    "top": 232,
-    "clockBottom": 488
+    "top": 256,
+    "clockBottom": 512
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -196,13 +196,13 @@
   },
   "back": {
    "bodyLum": 0.0034637699048826634,
-   "chars": 105,
+   "chars": 102,
    "blocks": {
-    "ess": 1076,
+    "ess": 1248,
     "find": 776,
-    "today": 1168,
-    "gdr": 1517,
-    "all": 1517
+    "today": 1340,
+    "gdr": 1688,
+    "all": 1688
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +228,7 @@
     true,
     true
    ],
-   "themeChars": 85,
+   "themeChars": 102,
    "top": [
     [
      24,
@@ -276,11 +276,6 @@
      "전부 보기"
     ],
     [
-     4,
-     "- b",
-     "진화 1번째"
-    ],
-    [
      3,
      "today span",
      "코스피"
@@ -316,11 +311,6 @@
      "대장주"
     ],
     [
-     3,
-     "- span.when",
-     "채점 전"
-    ],
-    [
      2,
      "- span.s-who",
      "돌이"
@@ -328,7 +318,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 20일"
+     "10월 21일"
     ],
     [
      2,
@@ -349,11 +339,21 @@
      2,
      "gdr span",
      "조건"
+    ],
+    [
+     2,
+     "- b",
+     "진화"
+    ],
+    [
+     2,
+     "- span.when",
+     "보기"
     ]
    ],
    "theme": {
-    "top": 232,
-    "clockBottom": 488
+    "top": 256,
+    "clockBottom": 512
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -679,9 +679,9 @@
    }
   },
   "speed": {
-   "lcp": 1120,
+   "lcp": 1084,
    "inp": 40,
-   "cls": 0.004
+   "cls": 0.003
   }
  },
  "net": {
