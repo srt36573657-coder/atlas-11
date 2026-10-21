@@ -1,0 +1,7 @@
+[
+ {"id":"false-stale-alarm","what":"저장소 사본만 보고 「테마 자료가 8일 묵었다」고 잘못 알리고 휴대폰 알림까지 보냄","proof":"저장소 theme.json asOf 2026-10-13 ↔ 실제 올리기 기록 reports/atlas11/t365/updates/20261021T160114Z.json asOf 2026-10-21 · 받은 회사 2557 · 실패 0","fix":"audit36 의 날짜 검사를 실제 올리기 기록 기준으로 바꿈(이 파일)"},
+ {"id":"clone-shallow","what":"기록을 밀 때 얕은 복제 안내를 미리 지키지 않아 첫 밀기가 실패함","proof":"record 첫 결과 「기록을 main 에 못 밂 error: failed to push」 → git fetch --unshallow 뒤 성공(커밋 7a9da63)","fix":"다음 회차는 시작 때 git fetch --unshallow 를 먼저 함"},
+ {"id":"no-tasklist","what":"여러 단계 일인데 할 일 목록 도구를 쓰지 않고 진행함","proof":"이 회차 대화 기록에 TaskCreate 호출 0번","fix":"여러 단계 일은 시작 때 목록부터 만듦"},
+ {"id":"no-diagram","what":"여러 단계인 가격 자료 길을 그림 없이 글로만 설명함(사장님 설정은 도식화)","proof":"대화 기록의 「원인」 · 「이 8곳이 뭐냐면」 답변에 도식 0개","fix":"다음 설명부터 움직이는 그림을 함께 냄"},
+ {"id":"jargon","what":"사장님께 어려운 말(365 쪽 자료 · 보관용 원본)을 풀지 않고 씀","proof":"대화 기록 「원인」 답변 첫 줄","fix":"한 줄로 풀어 쓰거나 쉬운 말로 바꿈"}
+]
