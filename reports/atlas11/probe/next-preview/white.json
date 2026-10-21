@@ -1,15 +1,13 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-21T18:55:38.538Z",
+ "at": "2026-10-21T19:52:58.628Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 420,
-  "fail": 1
+  "pass": 421,
+  "fail": 0
  },
- "fails": [
-  "320 × 568 테마 시계 그림 한 화면 안 — 그림 아래 507 > 아래 단추 500"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
@@ -682,7 +680,7 @@
   },
   "speed": {
    "lcp": 2384,
-   "inp": 32,
+   "inp": 40,
    "cls": 0.007
   }
  },
@@ -690,6 +688,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
