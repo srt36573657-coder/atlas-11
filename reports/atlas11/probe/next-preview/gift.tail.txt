@@ -1,22 +1,8 @@
-node:internal/modules/cjs/loader:1430
-  const err = new Error(message);
-              ^
-
-Error: Cannot find module 'playwright'
-Require stack:
-- /opt/node-tools/noop.js
-    at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
-    at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
-    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
-    at Function._load (node:internal/modules/cjs/loader:1216:25)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
-    at Module.require (node:internal/modules/cjs/loader:1527:12)
-    at require (node:internal/modules/helpers:147:16)
-    at file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_gift.mjs:10:20
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [ '/opt/node-tools/noop.js' ]
-}
-
-Node.js v22.23.3
+✓ 390×844 처음 모습(약속 · 걸음 넷 · 잠김 · 번호 숨김)
+✓ 320×568 처음 모습(약속 · 걸음 넷 · 잠김 · 번호 숨김)
+✓ 건너뛰기(50초로) 막힘 → 0.3초
+✓ 빨리 감기(4배) 막힘
+✓ 끝까지 본 뒤 열림(본 초 60) · 번호 · 「상품권 받기」 · 고마움 줄
+✓ 다시 열면 바로 열림(또 보지 않음)
+✓ 영어 팩 — 상품권 칸 한글 0
+상품권 영상 검사 실패 0
