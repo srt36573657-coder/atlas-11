@@ -9,4 +9,4 @@
 ④ 돌이 칸은 열한 질문 뒤에만 — 지나감
 ⑤ 친구가 연 쪽은 질문부터 — 지나감
 ⑦ 오래된 날짜에 「?」 — 지나감
-화면 층 1/1 · 일감 7개(r2-home · r4-gdr · r4-home · r4-company · r4-open · r5-friend · r7-old) · 6.7초 · 지나감
+화면 층 1/1 · 일감 7개(r2-home · r4-gdr · r4-home · r4-company · r4-open · r5-friend · r7-old) · 6.6초 · 지나감
