@@ -8837,6 +8837,8 @@
   "멈춤": "Pause",
   "이어 보기": "Resume",
   "한 해 다시 보기": "Replay the year",
-  "한 해 길을 받지 못했어요.": "Couldn't load the past year."
+  "한 해 길을 받지 못했어요.": "Couldn't load the past year.",
+  "값이 없는 곳 {n}곳": "{n} with no value",
+  "지금 ?": "Now ?"
  }
 }

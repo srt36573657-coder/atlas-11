@@ -194,9 +194,9 @@ async function variant(name, {tr, trc, core, cases = [], want = [], wantCase = {
   T.alerts = [{kind: 'halt', n: 1, cs: [cH]}, {kind: 'half', f: 1, n: 1, cs: [cF1]}, {kind: 'half', f: 2, n: 1, top: {c: cF2}}, {kind: 'half', f: 1, n: 0, cs: []}];
   T.days.find(x => x.d === noSel).sel = [];
   C.provisional = true;
-  const nm = c => CASE.get(c)[1];
+  const nm = c => CASE.get(c)[1], nq = T.cases.filter(x => x[6] === 'q').length; // 값이 없는 곳 수 = 바꾼 자료의 q 수(2026-10-21 실제 자료에 q 가 한 곳 있어 바꾼 뒤 2곳 — 「1곳」을 박아 두면 실제 자료 따라 걸림)
   await variant('장 중 · 금빛 · 값 없음', {tr: T, core: C, cases: [cH, cF1, cF2, cQ],
-    want: ['? 거래 멈춤 1곳 · ! 반 토막 1곳 · ? 반 토막 1곳', '오후 2:05 값이에요. 장 중이라 바뀌어요.', '이날 새로 뽑힌 곳은 없어요.', '? 값이 없는 곳 1곳', '마지막 장날 종가로 새로 생긴 일이에요.', '그날 저녁 8시 전에 받아'],
+    want: ['? 거래 멈춤 1곳 · ! 반 토막 1곳 · ? 반 토막 1곳', '오후 2:05 값이에요. 장 중이라 바뀌어요.', '이날 새로 뽑힌 곳은 없어요.', `? 값이 없는 곳 ${nq}곳`, '마지막 장날 종가로 새로 생긴 일이에요.', '그날 저녁 8시 전에 받아'],
     wantCase: {[cH]: ['? 거래 멈춤 — 마지막 장날에 거래가 없었어요.', '값은 장 중 값이에요. 저녁 8시까지 바뀌어요.'], [cF1]: ['! 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요.'], [cF2]: ['? 반 토막 — 뽑힌 뒤 가장 높던 종가의 반 밑이에요. 하루 35% 넘게'], [cQ]: ['? 값 없음', nm(cQ)]}});
   const T2 = clone(TR); T2.N = 0; T2.k = 5;
   await variant('처음 뽑힘', {tr: T2, want: ['에 처음 5곳이 뽑혔어요.', '등락률은 다음 장날부터 쌓여요.']});
