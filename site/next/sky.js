@@ -1,8 +1,9 @@
 /* 뒤 별 하늘 — 시험판 「우주 돌이」의 밤하늘을 진짜 사이트에(사장님 2026-10-20 20:10 「맞아 멋지게 만들어」 · 20:27 「올려  우주」)
    북극성을 가운데 두고 아주 천천히 돎(13분에 한 바퀴 · 북쪽 하늘처럼 반시계) · 별은 작게 숨 쉼 · 백 개에 일곱 개꼴 밝은 별 = 번지는 빛 + 십자 빛(3.6 ~ 7초에 한 번)
-   별똥별은 16 ~ 28초에 하나 · 느리고 옅게 · 기기가 「움직임 줄이기」면 그대로 멈춘 하늘 한 장 · 창이 안 보이면 쉼
+   별똥별은 40 ~ 70초에 하나(처음은 20초 뒤) · 느리고 옅게 · 기기가 「움직임 줄이기」면 그대로 멈춘 하늘 한 장 · 창이 안 보이면 쉼
    그리는 것은 평평한 SVG 그림 한 장(캔버스 없음 — 규칙 50 · next-modules ③ · check_share 「폭죽 0」) · 글 · 단추 · 칸에는 손대지 않음 · html.space 일 때만 켬
-   나는 것들(별똥별 · 태양계 · 우주선 · 용 · 천사 — sky-fly.js · 사장님 2026-10-21 19:44)은 첫 그림 뒤 한가할 때 받아 이 그림 한 장 안 맨 위 묶음에 그림 · 날 때는 초당 30번
+   조용한 하늘(사장님 2026-10-21 23:09 「아 해 섹시하게」 — 23:04 ~ 23:07 지인 카톡 「너무 번잡해 · 행성에 별똥별에 외계인까지 · 솔직히 조잡해보여 · 간결하게」를 보내신 뒤
+   「하늘 쇼를 걷어내고 별만 조용히 도는 하늘로」): 나는 것들(sky-fly.js · 19:44 ~ 21:55)은 받지 않음 · 별똥별은 더 드물게(16 ~ 28초 → 40 ~ 70초) · 붙이는 자리(plug)만 남김
    그림 높이 = 창 높이와 기기 높이 가운데 큰 쪽(폰 주소 막대가 숨었다 나와도 하늘이 튀지 않음) · 폭이 바뀌면 다시 그림 · 그리는 빠르기 초당 15번(별똥별 때 30번) · 하늘은 제 층(space.css will-change)이라 글판은 다시 안 그림 */
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -97,7 +98,7 @@ function start() {
       const p = {x1: r1(x), y1: r1(y), x2: r1(x - met.vx * L), y2: r1(y - met.vy * L)};
       for (const k of Object.keys(p)) { metLine.setAttribute(k, p[k]); metGrad.setAttribute(k, p[k]); }
       metLine.setAttribute('opacity', r3(Math.max(0, Math.min(1, age / 150, 1 - (age - life * 0.6) / (life * 0.4)))));
-      if (age > life) { met = null; metLine.setAttribute('opacity', 0); nextMet = now + 16000 + Math.random() * 12000; }
+      if (age > life) { met = null; metLine.setAttribute('opacity', 0); nextMet = now + 40000 + Math.random() * 30000; }
     }
   }
   function loop(now) { raf = requestAnimationFrame(loop); if (now - lastDraw < (met || plug.some(p => p.busy()) ? 33 : 66)) return; lastDraw = now; draw(now); }
@@ -105,12 +106,8 @@ function start() {
   const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
 
   build(); draw(performance.now());
-  nextMet = performance.now() + 6000;
+  nextMet = performance.now() + 20000;
   go();
-  /* 나는 것들 — 창 load 뒤 한가할 때 받음(첫 그림 · 첫 반응을 늦추지 않음) · 못 받으면 별 하늘 그대로 */
-  const fly = () => import('./sky-fly.js').then(m => { const p = m.plug(); plug.push(p); p.build(api()); draw(performance.now()); globalThis.__skyFly = p; }).catch(() => {});
-  const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(fly, {timeout: 2500}) : setTimeout(fly, 600));
-  if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true});
   let rs = 0;
   window.addEventListener('resize', () => {
     clearTimeout(rs);
