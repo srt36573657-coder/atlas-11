@@ -3,7 +3,7 @@
 //   쓰는 법: node scripts/atlas11/next/check_help.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--out 결과.json]
 //     다른 쪽 검사와 같은 꼴(--all · --limit · --shard 를 받음 — 이 검사는 짧아서 늘 모두 돎) · 사장님 열쇠 = 환경 ATLAS_DEV_OWNER_KEY(없고 127.0.0.1 이면 시험 서버 열쇠 testowner-key-1234567890)
 //   ① 세 폭(320 · 360 · 390) + 320 「아주 크게」 — 문 셋을 차례로 열어: 가로 넘침 0 · 글 17px 넘게 · 누르는 것 48 × 48 넘게 · 화면 오류 0 · 쓰지 않을 말 0(사람이 쓴 글 lang="ko" 빼고) · 모양 규칙(pageRules)
-//   ② 길(390): 열기만 하면 이 기기에 아무것도 안 남김 → 한마디(안 돼요) 보내기 → 연락처 꼴은 막음(서버에 안 감) → 물음 보내기 → 「내가 남긴 글」에 「답을 기다려요」
+//   ② 길(390): 열기만 하면 이 기기에 아무것도 안 남김 → 한마디(안 돼요) 보내기 → 앵무새 돌이가 들은 말을 그대로 따라 말함(2026-10-22 01:22 「사람들에게 감동을 줘」) → 연락처 꼴은 막음(서버에 안 감) → 물음 보내기 → 「내가 남긴 글」에 「답을 기다려요」
 //      → 사장님 열쇠로 답 · 모두에게 보이기 → 그 기기에 답 · 「많이 묻는 것」에 올라옴 → 지우기 두 번 → 서버에서 사라짐 → 곧은 말 단추 → 글이 곧은 말로 · 기억
 //      → 사장님 화면(#/admin)에 「고객센터 글」 · 열쇠 없는 기기는 /api/help/all 403
 //   ③ 영어(?lang=en) — 쉬운 말 · 곧은 말 두 벌로 문 셋 · 안내 안 남은 한글 0(사람이 쓴 글 lang="ko" 빼고) · 맨 아래 「고객센터」 고리도 영어
@@ -12,6 +12,7 @@ import fs from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import {screenHits} from '../../../site/next/words.js';
 import {pageRules} from './page_rules.mjs';
+import {NAME, josa} from '../../../site/next/brand.js'; // 이름은 한 곳(규칙 76)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -54,8 +55,10 @@ try {
     const ok = await p.waitForSelector('#view .hp-door', {timeout: 20000}).then(() => true).catch(() => false);
     check(ok, `${tag} 문 셋`, ok ? '' : '고객센터 쪽이 안 그려짐');
     if (!ok) { await ctx.close(); continue; }
-    const head = await p.evaluate(() => ({h1: document.querySelector('#view h1')?.firstChild?.textContent?.trim(), doors: document.querySelectorAll('#view .hp-door').length, radios: document.querySelectorAll('#view .hp-vb[role="radio"]').length, dev: localStorage.getItem('atlas:help:dev'), foot: [...document.querySelectorAll('footer.foot a')].map(a => a.getAttribute('href'))}));
+    const head = await p.evaluate(() => ({h1: document.querySelector('#view h1')?.firstChild?.textContent?.trim(), doors: document.querySelectorAll('#view .hp-door').length, radios: document.querySelectorAll('#view .hp-vb[role="radio"]').length, dev: localStorage.getItem('atlas:help:dev'), foot: [...document.querySelectorAll('footer.foot a')].map(a => a.getAttribute('href')),
+      note: document.querySelector('#view .hp-note-card .hp-n1')?.textContent, sign: document.querySelector('#view .hp-note-card figcaption')?.textContent}));
     check(head.h1 === '고객센터' && head.doors === 3 && head.radios === 2, `${tag} 제목 · 문 · 말투 단추`, JSON.stringify(head));
+    check(head.note === '남겨 주신 말은 한 줄도 빠짐없이 제가 직접 읽어요.' && head.sign === '— ' + josa(NAME, '를') + ' 만든 사람', `${tag} 만든 사람의 말(맨 위)`, `${head.note} ${head.sign}`);
     check(head.dev == null, `${tag} 열기만 하면 남기는 것 0`, head.dev);
     check(head.foot[0] === '#/help', `${tag} 맨 아래 첫 고리 = 고객센터`, head.foot.join(' '));
     for (let i = 0; i < 3; i++) {
@@ -87,9 +90,11 @@ try {
     await p.click('#view .hp-door >> nth=0'); await p.click('#view .hp-tone[data-tone="broken"]');
     const ph = await p.getAttribute('#view .hp-ta', 'placeholder');
     check(ph === '어디에서 무엇이 안 되나요?', '한마디 갈래 → 빈칸 안내 글', ph);
-    await p.fill('#view .hp-ta', '검사 — 매매일지 3번 질문 글자가 겹쳐요 ' + Date.now()); await p.click('#view .hp-go');
-    const okSay = await p.waitForFunction(() => document.querySelector('#view .hp-out.ok')?.textContent || null, null, {timeout: 10000}).then(x => x.jsonValue()).catch(() => null);
-    check(okSay === '잘 받았어요. 들은 그대로 전할게요.', '한마디 보냄', okSay);
+    const noteText = '검사 — 매매일지 3번 질문 글자가 겹쳐요 ' + Date.now();
+    await p.fill('#view .hp-ta', noteText); await p.click('#view .hp-go');
+    const echo = await p.waitForFunction(() => { const e = document.querySelector('#view .hp-echo'); return e ? {h: e.querySelector('.hp-echo-h')?.textContent, q: e.querySelector('.hp-echo-q')?.textContent, ko: e.querySelector('.hp-echo-q')?.getAttribute('lang'), s: e.querySelector('.hp-echo-s')?.textContent, up: e.querySelector('a.hp-echo-up')?.getAttribute('href'), img: e.querySelector('img.hp-parrot')?.getAttribute('src')} : null; }, null, {timeout: 10000}).then(x => x.jsonValue()).catch(() => null);
+    check(echo?.h === josa(NAME, '가') + ' 들은 말' && echo?.q === '「' + noteText + '」' && echo?.ko === 'ko' && echo?.s === '한 글자도 바꾸지 않고 그대로 전했어요. 고마워요.' && echo?.up === '#/up' && echo?.img === '/media/makbi-hello.svg',
+      '한마디 보냄 — 앵무새 돌이가 들은 말을 한 글자도 바꾸지 않고 따라 말함', JSON.stringify(echo));
     const dev = await p.evaluate(() => localStorage.getItem('atlas:help:dev'));
     check(/^[A-Za-z0-9_-]{43}$/.test(dev ?? ''), '처음 보낼 때 이 기기 열쇠를 만듦', dev);
     // 연락처 꼴 — 화면이 막고 서버에도 안 감
@@ -131,8 +136,9 @@ try {
     check(!(await api('/api/help/faq')).j?.items?.some(x => x.q === '검사 — 관심 회사는 몇 개까지 담나요?'), '지운 물음은 많이 묻는 것에서도 사라짐');
     // 곧은 말
     await p.click('#view .hp-vb >> nth=1'); await p.waitForTimeout(200);
-    const dir = await p.evaluate(() => ({d: [...document.querySelectorAll('#view .hp-door .hp-dt b')].map(b => b.textContent), lead: document.querySelector('#view .hp-lead')?.textContent, mem: localStorage.getItem('atlas:help:voice')}));
-    check(dir.d.join('|') === '의견 보내기|질문하기|운영 안내' && dir.lead === '필요한 곳을 고르세요.' && dir.mem === 'direct', '곧은 말 단추 → 글이 바뀌고 기억', JSON.stringify(dir));
+    const dir = await p.evaluate(() => ({d: [...document.querySelectorAll('#view .hp-door .hp-dt b')].map(b => b.textContent), lead: document.querySelector('#view .hp-note-card .hp-n1')?.textContent, mem: localStorage.getItem('atlas:help:voice')}));
+    check(dir.d.join('|') === '의견 보내기|질문하기|운영 안내' && dir.lead === '모든 글은 운영자가 직접 읽습니다.' && dir.mem === 'direct', '곧은 말 단추 → 글이 바뀌고 기억', JSON.stringify(dir));
+    check(await p.evaluate(() => !!document.querySelector('#view h1 img.st-art')), '말투를 바꿔도 제목 돌 그림이 남음');
     await p.reload({waitUntil: 'load'}); await p.waitForSelector('#view .hp-door');
     check(await p.evaluate(() => document.querySelector('#view .hp-vb[aria-checked="true"]')?.textContent) === '곧은 말', '다시 열어도 곧은 말');
     check(!errs.length, '길 화면 오류 0', errs.slice(0, 2).join(' | '));

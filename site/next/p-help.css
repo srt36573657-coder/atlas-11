@@ -5,7 +5,22 @@
 .hp-voice { display: inline-flex; margin: 0 0 var(--sp-2); padding: 0; border: 1px solid var(--hair2); border-radius: 24px; }
 .hp-vb { min-height: 48px; min-width: 48px; padding: 0 var(--sp-2); border-radius: 24px; color: var(--sub); font-size: var(--fs-1); font-weight: 600; }
 .hp-vb[aria-checked="true"] { background: #FFFFFF; color: #070B17; font-weight: 700; }
-.hp-lead { margin: 0 0 var(--sp-2); font-size: var(--fs-3); font-weight: 600; color: var(--ink); }
+/* 만든 사람의 말(사장님 2026-10-22 01:22 「사람들에게 감동을 줘」) — 따옴 줄 하나 · 가는 선만 */
+.hp-note-card { margin: 0 0 var(--sp-3); padding: 0 0 0 var(--sp-2); border-left: 2px solid var(--ink); }
+.hp-note-card blockquote { margin: 0; padding: 0; }
+.hp-n1 { margin: 0; font-size: var(--fs-3); font-weight: 700; color: var(--ink); line-height: 1.45; }
+.hp-n2 { margin: var(--sp-1) 0 0; font-size: var(--fs-2); color: var(--sub); }
+.hp-note-card figcaption { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--mute); }
+/* 보낸 뒤 — 앵무새 돌이가 들은 말을 그대로 따라 말함 · 살며시 나와 고개를 두 번 끄덕임(옮김 · 돌림 · 짙기만) */
+.hp-echo { display: flex; align-items: flex-start; gap: var(--sp-2); margin: var(--sp-2) 0 0; padding: var(--sp-2); border: 1px solid var(--hair2); border-radius: 16px; animation: hpIn .6s var(--ease) both; }
+.hp-parrot { flex: none; width: 64px; height: 80px; transform-origin: 50% 90%; animation: hpNod 1.2s ease-in-out .6s 2; }
+.hp-echo-t { min-width: 0; }
+.hp-echo-h { margin: 0; font-size: var(--fs-1); color: var(--mute); }
+.hp-echo-q { margin: var(--sp-1) 0 0; font-size: var(--fs-2); color: var(--ink); white-space: pre-line; overflow-wrap: anywhere; }
+.hp-echo-s { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--sub); }
+.hp-echo-up { display: inline-flex; align-items: center; min-height: 48px; color: var(--sub); font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; }
+@keyframes hpIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes hpNod { 0%, 100% { transform: rotate(0); } 40% { transform: rotate(-7deg); } 70% { transform: rotate(3deg); } }
 .hp-doors { border-top: 1px solid var(--hair2); }
 .hp-door { scroll-margin-top: 80px; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); width: 100%; min-height: 72px; padding: var(--sp-2) 0; border-bottom: 1px solid var(--hair2); text-align: left; color: var(--ink); }
 .hp-dt { display: flex; flex-direction: column; gap: 0; min-width: 0; }
@@ -55,4 +70,4 @@
 .hp-mail { font-size: var(--fs-2); user-select: all; overflow-wrap: anywhere; }
 .hp-links { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: var(--sp-3) 0 0; }
 .hp-links a { display: inline-flex; align-items: center; min-height: 48px; color: var(--sub); font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) { .hp-chev { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .hp-chev { transition: none; } .hp-echo, .hp-parrot { animation: none; } }

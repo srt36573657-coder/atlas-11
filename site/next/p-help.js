@@ -8,6 +8,7 @@
    본질: 사고팔기를 권하지 않음 · 앞날을 맞히지 않음 — 「많이 묻는 것」 답은 사이트에 이미 적힌 사실만(개인정보 처리방침 · 본질 한 장 · 첫 화면 본질 줄)
    글은 textContent 로만 · 사람이 쓴 글(물음 · 답)은 lang="ko"(영어 엔진이 바꾸지 않음) · 지우기는 두 번 눌러야(첫 번에 글이 바뀜) · 폭죽 없음 */
 import {LIM, contactOf, cleanText} from './help-rule.js';
+import {NAME, josa} from './brand.js'; // 이름은 한 곳(규칙 76) — 글에 이름을 박지 않음
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -29,32 +30,32 @@ export function pageFrom(hash = globalThis.NX_FROM) { const m = /^#\/([a-z]{0,12
 /* ── 말투 둘(사장님 23:05) — easy = 쉬운 말 · direct = 곧은 말 ── */
 export const V = {
   easy: {
-    lead: '무엇을 도와줄까?',
-    say: ['한마디 남기기', '좋았던 것, 바라는 것, 안 되는 것을 알려 주세요'], ask: ['물어보기', '궁금한 것을 물으면 이 휴대폰에서 답을 받아요'], guide: ['고객센터 안내', '연락할 곳과 돌이의 약속'],
+    note: ['남겨 주신 말은 한 줄도 빠짐없이 제가 직접 읽어요.', `그 말들이 모여 ${josa(NAME, '가')} 자라요.`], sign: `${josa(NAME, '를')} 만든 사람`,
+    say: ['한마디 남기기', '좋았던 것, 바라는 것, 안 되는 것을 알려 주세요'], ask: ['물어보기', '궁금한 것을 물으면 이 휴대폰에서 답을 받아요'], guide: ['고객센터 안내', `연락할 곳과 ${NAME}의 약속`],
     tones: {good: '좋았어요', want: '바라요', broken: '안 돼요'},
-    ph: {good: '무엇이 좋았나요?', want: '무엇이 있으면 좋을까요?', broken: '어디에서 무엇이 안 되나요?', ask: '돌이 쓰는 법을 물어보세요'},
-    privacy: '이름, 전화번호, 이메일은 적지 마세요.', consent: '보내면 이 글과 보던 화면 이름이 돌이 만드는 사람에게 가요.',
-    send: '보내기', askSend: '물어보기', askNote: '어떤 주식을 사고팔지는 답하지 않아요. 돌이 쓰는 법은 무엇이든 물어보세요.',
-    okSay: '잘 받았어요. 들은 그대로 전할게요.', okAsk: '잘 받았어요. 답이 오면 아래 내가 남긴 글에 보여요.',
+    ph: {good: '무엇이 좋았나요?', want: '무엇이 있으면 좋을까요?', broken: '어디에서 무엇이 안 되나요?', ask: `${NAME} 쓰는 법을 물어보세요`},
+    privacy: '이름, 전화번호, 이메일은 적지 마세요.', consent: `보내면 이 글과 보던 화면 이름이 ${josa(NAME, '를')} 만든 사람에게 가요.`,
+    send: '보내기', askSend: '물어보기', askNote: `어떤 주식을 사고팔지는 답하지 않아요. ${NAME} 쓰는 법은 무엇이든 물어보세요.`,
+    echoH: `${josa(NAME, '가')} 들은 말`, okSay: '한 글자도 바꾸지 않고 그대로 전했어요. 고마워요.', okAsk: '그대로 전했어요. 답이 오면 아래 내가 남긴 글에 보여요.', echoUp: '바뀐 것은 업데이트 기록에 남겨요',
     errContact: '전화번호나 이메일은 빼고 보내 주세요.', errShort: '두 글자 넘게 적어 주세요.', errBusy: '잠시 뒤에 다시 보내 주세요.', errNet: '? 보내지 못했어요. 잠시 뒤 다시 해 주세요.', errKey: '? 이 휴대폰에 기억할 수 없어 보내지 못했어요.',
     faqH: '많이 묻는 것', mineH: '내가 남긴 글', mineEmpty: '아직 남긴 글이 없어요.', mineDev: '이 휴대폰에서만 보여요.', mineErr: '? 남긴 글을 받지 못했어요.',
-    wait: '답을 기다려요', sent: '잘 전했어요', ansBy: '돌이 만드는 사람의 답', del: '지우기', delAgain: '한 번 더 누르면 지워요', deleted: '지웠어요.',
-    howH: '이렇게 도와드려요', how: ['한마디와 물음은 언제든 남길 수 있어요.', '남긴 글은 돌이 만드는 사람이 읽어요.', '답은 물어보기의 내가 남긴 글에 와요.'],
+    wait: '답을 기다려요', sent: '잘 전했어요', ansBy: `${josa(NAME, '를')} 만든 사람의 답`, del: '지우기', delAgain: '한 번 더 누르면 지워요', deleted: '지웠어요.',
+    howH: '이렇게 도와드려요', how: ['한마디와 물음은 언제든 남길 수 있어요.', `남긴 글은 ${josa(NAME, '를')} 만든 사람이 직접 읽어요.`, '답은 물어보기의 내가 남긴 글에 와요.'],
     mailH: '개인정보나 급한 일은 이메일로 알려 주세요.', copy: '주소 복사', copied: '이메일 주소를 담았어요.',
-    promiseH: '돌이의 약속', promise: ['사고팔기를 권하지 않아요.', '앞날을 맞히지 않아요.', '광고를 붙이지 않고, 기록을 팔지 않아요.'],
+    promiseH: `${NAME}의 약속`, promise: ['사고팔기를 권하지 않아요.', '앞날을 맞히지 않아요.', '광고를 붙이지 않고, 기록을 팔지 않아요.'],
     keep: '남긴 글은 1년 뒤에 지워요. 지우기를 누르면 바로 지워져요.',
-    faq: [['가입해야 쓸 수 있나요?', '아니요. 가입하지 않아도 모든 화면을 볼 수 있어요.'], ['어떤 주식을 사면 돼요?', '돌이는 사고팔기를 권하지 않아요. 지난 기록만 보여 줘요.'],
-      ['앞으로 오를지 알려 줘요?', '아니요. 돌이는 앞날을 맞히지 않아요.'], ['숫자는 어디서 와요?', '네이버 증권에서 받아요.'],
+    faq: [['가입해야 쓸 수 있나요?', '아니요. 가입하지 않아도 모든 화면을 볼 수 있어요.'], ['어떤 주식을 사면 돼요?', `${josa(NAME, '는')} 사고팔기를 권하지 않아요. 지난 기록만 보여 줘요.`],
+      ['앞으로 오를지 알려 줘요?', `아니요. ${josa(NAME, '는')} 앞날을 맞히지 않아요.`], ['숫자는 어디서 와요?', '네이버 증권에서 받아요.'],
       ['내 기록은 어디에 남아요?', '가입하지 않으면 이 휴대폰에만 남아요.'], ['매매일지는 뭐예요?', '사기 전에 「왜 사?」 열한 질문으로 내 이유를 확인하는 곳이에요.']],
   },
   direct: {
-    lead: '필요한 곳을 고르세요.',
+    note: ['모든 글은 운영자가 직접 읽습니다.', '의견은 다음 업데이트를 정하는 데 씁니다.'], sign: '운영자',
     say: ['의견 보내기', '좋은 점 · 요청 · 오류'], ask: ['질문하기', '답변은 이 기기에서 확인'], guide: ['운영 안내', '연락처 · 원칙 · 보관 기간'],
     tones: {good: '좋은 점', want: '요청', broken: '오류'},
     ph: {good: '좋은 점을 적어 주세요', want: '요청 사항을 적어 주세요', broken: '화면 이름과 증상을 적어 주세요', ask: '질문을 적어 주세요'},
     privacy: '개인정보는 적지 마세요. 이름 · 전화번호 · 이메일', consent: '전송: 본문 · 보던 화면 이름 · 시각. 운영자만 봅니다.',
     send: '보내기', askSend: '질문 보내기', askNote: '종목 · 매매 판단에는 답하지 않습니다. 사용법 질문만 받습니다.',
-    okSay: '접수됐습니다.', okAsk: '접수됐습니다. 답변은 아래 「내 글」에 표시됩니다.',
+    echoH: '접수한 원문', okSay: '원문 그대로 운영자에게 전달했습니다.', okAsk: '원문 그대로 전달했습니다. 답변은 아래 「내 글」에 표시됩니다.', echoUp: '반영 내역: 업데이트 기록',
     errContact: '연락처가 들어 있습니다. 지우고 다시 보내 주세요.', errShort: '2자 이상 입력해 주세요.', errBusy: '요청이 많습니다. 잠시 후 다시 시도해 주세요.', errNet: '? 전송 실패. 잠시 후 다시 시도해 주세요.', errKey: '? 이 기기에 저장할 수 없어 전송하지 못했습니다.',
     faqH: '자주 묻는 질문', mineH: '내 글', mineEmpty: '남긴 글 없음', mineDev: '이 기기에서만 표시됩니다.', mineErr: '? 내 글을 불러오지 못했습니다.',
     wait: '답변 대기', sent: '전달됨', ansBy: '운영자 답변', del: '삭제', delAgain: '한 번 더 눌러 삭제', deleted: '삭제했습니다.',
@@ -83,6 +84,18 @@ async function api(method, path, body) {
 /* ── 그리기 ── */
 const chev = () => { const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('class', 'hp-chev'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', 'M9 6l6 6-6 6'); s.append(p); return s; };
 
+/** 보낸 뒤 — 앵무새 돌이가 들은 말을 한 글자도 바꾸지 않고 따라 말함(본질 4 「앵무새는 들은 것만 따라 말한다」 · 사장님 2026-10-22 01:22 「사람들에게 감동을 줘」)
+ *  글은 서버에 간 그대로(cleanText 뒤) · 폭죽 없음 — 돌이가 살며시 나와 고개를 두 번 끄덕임(움직임 줄이기면 멈춘 그림) */
+function echoCard(L, kind, text) {
+  return h('div', {class: 'hp-echo'},
+    h('img', {class: 'hp-parrot', src: '/media/makbi-hello.svg', alt: '', width: 64, height: 80, decoding: 'async'}),
+    h('div', {class: 'hp-echo-t'},
+      h('p', {class: 'hp-echo-h', text: L.echoH}),
+      h('p', {class: 'hp-echo-q', lang: 'ko', text: '「' + text + '」'}),
+      h('p', {class: 'hp-echo-s', text: kind === 'note' ? L.okSay : L.okAsk}),
+      kind === 'note' ? h('a', {class: 'hp-echo-up', href: '#/up', text: L.echoUp + ' ›'}) : null));
+}
+
 function form(L, kind, onSent) {
   let tone = 'good';
   const box = h('div', {class: 'hp-form'});
@@ -95,6 +108,7 @@ function form(L, kind, onSent) {
   const cnt = h('span', {class: 'hp-cnt num', 'aria-hidden': 'true', text: `0 / ${LIM.text}`});
   const out = h('p', {class: 'hp-out', role: 'status', 'aria-live': 'polite'});
   const go = h('button', {type: 'button', class: 'hp-go', text: kind === 'note' ? L.send : L.askSend});
+  const echo = h('div', {class: 'hp-echo-box', hidden: true, 'aria-live': 'polite'});
   ta.addEventListener('input', () => { cnt.textContent = `${Array.from(ta.value).length} / ${LIM.text}`; out.textContent = ''; out.className = 'hp-out'; });
   go.addEventListener('click', async () => {
     const text = cleanText(ta.value);
@@ -104,14 +118,15 @@ function form(L, kind, onSent) {
     go.disabled = true;
     const r = await api('POST', '', {op: 'send', kind, tone: kind === 'note' ? tone : undefined, text, agree: true, page: pageFrom(), voice: voiceNow()});
     go.disabled = false;
-    if (r.status === 200) { ta.value = ''; cnt.textContent = `0 / ${LIM.text}`; say(kind === 'note' ? L.okSay : L.okAsk); onSent?.(); return; }
+    if (r.status === 200) { ta.value = ''; cnt.textContent = `0 / ${LIM.text}`; out.textContent = ''; out.className = 'hp-out'; echo.replaceChildren(echoCard(L, kind, text)); echo.hidden = false; onSent?.(); return; }
     if (r.status === -1) return say(L.errKey, true);
     if (r.json?.error === 'contact') return say(L.errContact, true);
     if (r.json?.error === 'short') return say(L.errShort, true);
     if (r.status === 429) return say(L.errBusy, true);
     say(L.errNet, true);
   });
-  box.append(...[chips, ta, h('div', {class: 'hp-meta'}, h('span', {class: 'hp-fine', text: L.privacy}), cnt), h('p', {class: 'hp-fine', text: L.consent}), go, out].filter(Boolean));
+  ta.addEventListener('focus', () => { echo.hidden = true; });
+  box.append(...[chips, ta, h('div', {class: 'hp-meta'}, h('span', {class: 'hp-fine', text: L.privacy}), cnt), h('p', {class: 'hp-fine', text: L.consent}), go, out, echo].filter(Boolean));
   return box;
 }
 
@@ -172,6 +187,7 @@ export function render(arg) {
   const want = ['say', 'ask', 'guide'].includes(arg) ? arg : null;
   const root = h('div', {class: 'hp', 'data-page': 'help'});
   let open = want;
+  const title = h('h1', {class: 'hp-h1', text: '고객센터'}); // 한 번만 만듦 — app.js 가 붙이는 돌 그림(stoneArt)이 말투 · 문을 바꿔도 남게
   const paint = () => {
     const L = V[voiceNow()];
     const vt = h('div', {class: 'hp-voice', role: 'radiogroup', 'aria-label': '말투'}, ...[['easy', '쉬운 말'], ['direct', '곧은 말']].map(([k, t]) => {
@@ -188,7 +204,8 @@ export function render(arg) {
       btn.addEventListener('click', () => { open = open === k ? null : k; paint(); if (open) requestAnimationFrame(() => root.querySelector('#hp-' + open)?.previousElementSibling?.scrollIntoView({block: 'start', behavior: 'smooth'})); });
       return [btn, pane];
     }).flat();
-    root.replaceChildren(h('h1', {class: 'hp-h1', text: '고객센터'}), vt, h('p', {class: 'hp-lead', text: L.lead}), h('div', {class: 'hp-doors'}, ...doors));
+    const note = h('figure', {class: 'hp-note-card'}, h('blockquote', {}, h('p', {class: 'hp-n1', text: L.note[0]}), h('p', {class: 'hp-n2', text: L.note[1]})), h('figcaption', {text: '— ' + L.sign}));
+    root.replaceChildren(title, vt, note, h('div', {class: 'hp-doors'}, ...doors));
   };
   paint();
   return {title: '고객센터', nodes: [root]};
