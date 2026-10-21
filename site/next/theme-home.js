@@ -96,8 +96,9 @@ export function clock(TH, {hi = null, marks = null, W = 326, H = 300, links = fa
 export const SEASON = Object.freeze({Q: '겨울', S: '봄', B: '여름', W: '가을'});
 /** 계절 각(라디안 · 수학 각) — 꽃 선(x = bloomX)과 가로축(y = 0)이 만나는 곳을 해로 둔 시계 자리의 각 · 0 ~ π/2 여름 · π/2 ~ π 봄 · 그 아래 반쪽은 가을 · 겨울(결정표 네 자리와 같음) */
 export const seasonAngle = (x, y) => Math.atan2(y, x - RULE.bloomX);
+export const ORB_R = 86; // 궤도 반지름(그림 단위) — 궤도 그림과 한 해 다시 보기(theme-year.js)가 같이 씀
 export function orbit(TH, {marks = [], links = false, W = 326, H = 240} = {}) {
-  const cx = W / 2, cy = H / 2, R = 86, X0 = RULE.bloomX; // 첫 줄 셋이 엄지 칸 위에 보이게 높이 240(2026-10-21 01:00 첫 판 390 에서 첫 줄이 가림)
+  const cx = W / 2, cy = H / 2, R = ORB_R, X0 = RULE.bloomX; // 첫 줄 셋이 엄지 칸 위에 보이게 높이 240(2026-10-21 01:00 첫 판 390 에서 첫 줄이 가림)
   const s = sv('svg', links ? {class: 'th-clock th-orbit', viewBox: `0 0 ${W} ${H}`, width: '100%', role: 'group', 'aria-label': '테마 시계'} : {class: 'th-clock th-orbit', viewBox: `0 0 ${W} ${H}`, width: '100%', 'aria-hidden': 'true', focusable: 'false'});
   const g = links ? sv('g', {'aria-hidden': 'true'}) : s, tap = [];
   const defs = sv('defs'), mk = sv('marker', {id: 'th-oh', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 6, markerHeight: 6, orient: 'auto'});
@@ -115,7 +116,7 @@ export function orbit(TH, {marks = [], links = false, W = 326, H = 240} = {}) {
   inds.forEach((p, k) => { p.r = p.big ? R : R + [0, -13, 13][k % 3]; });
   for (const p of [...inds].sort((u, v) => (u.on - v.on) || (u.big - v.big))) {
     const d = p.big ? 24 : p.on ? 13 : 9, [x, y] = P(p.r, p.a);
-    g.append(sv('image', {href: planetSrc(p.i.g), x: (x - d / 2).toFixed(1), y: (y - d / 2).toFixed(1), width: d, height: d, class: p.on ? 'th-dot th-pl on' : 'th-dot th-pl', 'data-g': p.i.g ?? '', 'data-z': p.i.z}));
+    g.append(sv('image', {href: planetSrc(p.i.g), x: (x - d / 2).toFixed(1), y: (y - d / 2).toFixed(1), width: d, height: d, class: p.big ? 'th-dot th-pl on th-big' : p.on ? 'th-dot th-pl on' : 'th-dot th-pl', 'data-g': p.i.g ?? '', 'data-z': p.i.z}));
   }
   // 번호 셋 — 궤도 안쪽(해 쪽 빈 곳)에 둠 · 서로 26 넘게 떨어지게 살짝 밂 · 그림 안
   const bs = marks.map((n, k) => { const p = inds.find(q => q.i.n === n); if (!p) return null; const [x, y] = P(R - 32, p.a); return {i: p.i, k, cx: x, cy: y}; }).filter(Boolean);
@@ -129,13 +130,25 @@ export function orbit(TH, {marks = [], links = false, W = 326, H = 240} = {}) {
     const cp = sv('clipPath', {id}); cp.append(sv('polygon', {points: cell.map(([x, y]) => x.toFixed(1) + ',' + y.toFixed(1)).join(' ')})); defs.append(cp);
     a.append(sv('circle', {cx: bx.toFixed(1), cy: by.toFixed(1), r: 33, class: 'th-hit', 'clip-path': `url(#${id})`}), ...parts); tap.push(a);
   }
-  g.append(txt(8, 24, SEASON.S + ' · ' + ZONES.S, {class: 'th-zl th-zs'}), txt(W - 8, 24, SEASON.B + ' · ' + ZONES.B, {class: 'th-zl', 'text-anchor': 'end'}),
-    txt(W - 8, H - 10, SEASON.W + ' · ' + ZONES.W, {class: 'th-zl th-zq', 'text-anchor': 'end'}), txt(8, H - 10, SEASON.Q + ' · ' + ZONES.Q, {class: 'th-zl th-zq'}));
+  g.append(txt(8, 24, SEASON.S + ' · ' + ZONES.S, {class: 'th-zl th-zs', 'data-z': 'S'}), txt(W - 8, 24, SEASON.B + ' · ' + ZONES.B, {class: 'th-zl', 'text-anchor': 'end', 'data-z': 'B'}),
+    txt(W - 8, H - 10, SEASON.W + ' · ' + ZONES.W, {class: 'th-zl th-zq', 'text-anchor': 'end', 'data-z': 'W'}), txt(8, H - 10, SEASON.Q + ' · ' + ZONES.Q, {class: 'th-zl th-zq', 'data-z': 'Q'})); // data-z = 한 해 다시 보기가 지금 계절 글만 밝힘
   if (links) { // 봄 칸(왼쪽 위 네모 = 싹 자리 전부) 먼저 · 번호 셋이 그 위
     const za = sv('a', {href: '#/t/sprout', class: 'th-tap th-tapz', 'aria-label': '싹 자리 전부 보기'});
     za.append(sv('rect', {x: 0, y: 0, width: W / 2, height: H / 2, class: 'th-hit'})); s.append(za, ...tap.reverse());
   }
   return s;
+}
+/* ── 지난 한 해 다시 보기 — 사장님 2026-10-21 10:44 「1.2.3 번에 행성이 어떻게 움직었는지 지난 1년에 주식 변화를 그래프로도 이 우주안에서 동영상으로 보여줘야해 1번 보여주고 그다음 2번 보여주고 그다음 3번 보려주는거야」 · 11:07 「음 단추가 아니라 자동으로 보여주게해」
+   여기는 칸 뼈대만(첫 그림 가볍게 — 느린 4G 2.5초 · check_white ③): 그림 칸 단추 하나 · 머리 줄(굵은 줄 = 업종 줄 · 번호와 이름) · 아래 글(1년 전 · 오늘 · 시장) — 칸 자리는 처음부터 잡아 둠(밀림 0)
+   움직임 · 자료(/next/data/theme-path.json)는 창 load 뒤 한가할 때 theme-year.js(+ theme-year.css)가 붙임 — 1번 → 2번 → 3번이 저절로 차례로 · 날짜 글은 쓰지 않음([6] 2) */
+const afterLoad = f => { const go = () => (globalThis.requestIdleCallback ? requestIdleCallback(f, {timeout: 1500}) : setTimeout(f, 300)); if (document.readyState === 'complete') go(); else addEventListener('load', go, {once: true}); };
+function yearBox(TH, top, orb) {
+  const svg = sv('svg', {class: 'th-yrg', viewBox: '0 0 326 112', width: '100%', 'aria-hidden': 'true', focusable: 'false'});
+  const btn = h('button', {type: 'button', class: 'th-yr', 'aria-label': '멈춤', disabled: true}, svg);
+  const tt = txt(24, 21, top[0] ? `1번 ${top[0].n}` : '', {class: 'th-yrt'});
+  svg.append(sv('line', {x1: 1, y1: 14, x2: 17, y2: 14, class: 'th-yrs'}), tt, txt(0, 106, '1년 전', {class: 'th-yra'}), txt(236, 106, '오늘', {class: 'th-yra', 'text-anchor': 'end'}), sv('line', {x1: 248, y1: 100, x2: 262, y2: 100, class: 'th-yrlm'}), txt(268, 106, '시장', {class: 'th-yra'}));
+  if (top.length) afterLoad(() => { if (btn.isConnected) import('./theme-year.js').then(m => m.run({TH, top, orb, btn, svg, tt})).catch(() => { if (btn.isConnected) svg.append(txt(0, 64, '? 한 해 길을 받지 못했어요.', {class: 'th-yra'})); }); });
+  return btn;
 }
 /** 첫 화면 줄(계절 판) — 번호 · 이름 · 행성 · › 한 줄(점 넷 · 꽃까지 막대는 싹 자리 쪽에 그대로) */
 export function seasonRow(i, k) {
@@ -177,7 +190,8 @@ export async function homeBlock() {
   if (!TH) { box.append(h('p', {class: 'empty', text: '? 테마 시계 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return box; }
   const S = TH.order.S.map(n => indOf(TH, n)).filter(Boolean), top = S.slice(0, 3);
   // 계절 판(2026-10-21 00:51 「이기준에 스마트하게」 · 00:49 시안) — 궤도 → 봄이 온 곳 셋 → 모두 보기 → 숫자는 「자세히」 안(접음) → 시계 읽는 법 → 처음이세요?
-  box.append(h('div', {class: 'th-map'}, orbit(TH, {marks: top.map(i => i.n), links: true}), h('p', {class: 'th-cap th-cap1', text: '행성 하나가 업종 무리 하나예요.'})));
+  const orb = orbit(TH, {marks: top.map(i => i.n), links: true}); // 궤도 + 그 아래 지난 한 해 다시 보기(1 · 2 · 3번이 저절로 차례로 — 2026-10-21 10:44 · 11:07)
+  box.append(h('div', {class: 'th-map'}, orb, yearBox(TH, top, orb), h('p', {class: 'th-cap th-cap1', text: '행성 하나가 업종 무리 하나예요.'})));
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
   box.append(h('p', {class: 'th-sub', text: '요즘 시장보다 힘이 붙은 곳이에요.'}));
   box.append(h('div', {class: 'th-rows'}, top.map((i, k) => seasonRow(i, k))));

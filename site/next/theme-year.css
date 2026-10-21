@@ -1,0 +1,20 @@
+/* 지난 한 해 다시 보기 — 움직임 모양(theme-year.js 가 창 load 뒤에 붙임 · 첫 그림 가볍게 — 느린 4G 2.5초 · check_white ③) · 사장님 2026-10-21 10:44 · 11:07 「음 단추가 아니라 자동으로 보여주게해」
+   칸 뼈대 모양(.th-yr · .th-yrg · 머리 줄 · 아래 글 · 시장 줄)은 theme-home.css · 글씨는 var(--fs-*) · 색은 판 색(var(--ink) · --sub · --mute · --up) */
+.th-yrg .th-yrb0 { stroke: #3A4466; stroke-width: 1; stroke-dasharray: 3 4; } /* 한 해 전 = 100 */
+.th-yrg .th-yrgh { fill: none; stroke: #3A4466; stroke-width: 1.5; stroke-linejoin: round; }
+.th-yrg .th-yrli { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.th-yrg .th-yrhi { fill: var(--ink); stroke: #070B17; stroke-width: 2; }
+.th-yrg .th-yrhm { fill: var(--mute); }
+.th-yrg .th-yrv { fill: var(--ink); font-size: var(--fs-1); font-weight: 700; font-variant-numeric: tabular-nums; }
+.th-yrg .th-yrv.th-yrvm { fill: var(--sub); font-weight: 400; }
+.th-yrg .th-yric { fill: rgba(255, 255, 255, .06); stroke: var(--sub); stroke-width: 1.5; }
+.th-yrg .th-yri path, .th-yrg .th-yri rect { fill: var(--ink); }
+.th-yrg .th-yri .th-yrar { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.th-orbit .th-yro { display: none; pointer-events: none; }
+.th-orbit.th-run .th-yro { display: inline; }
+.th-orbit .th-yrnb { fill: var(--up); stroke: #070B17; stroke-width: 2; } /* 움직이는 번호(오늘 자리 번호 .th-nb 와 같은 모양) */
+.th-orbit .th-yrtl { fill: var(--ink); }
+.th-orbit .th-yrgw { fill: none; stroke: var(--ink); stroke-width: 1.5; opacity: .55; }
+.th-orbit.th-run .th-big, .th-orbit.th-run .th-tapn { opacity: .25; } /* 도는 동안 오늘 자리 큰 행성 · 번호는 흐리게(움직이는 행성이 한 해 끝에 그 자리에 닿음) */
+.th-orbit.th-run .th-zl { opacity: .45; }
+.th-orbit.th-run .th-zl.on { opacity: 1; } /* 지금 계절 글만 밝게 */

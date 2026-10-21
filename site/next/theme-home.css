@@ -87,6 +87,14 @@ html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 4
 .th-orbit .th-oturn { stroke-width: 1.5; }
 .th-orbit .th-sunl { fill: #D6D6D6; font-size: var(--fs-1); paint-order: stroke; stroke: #070B17; stroke-width: 4px; stroke-linejoin: round; }
 .th-orbit .th-sun { opacity: 1; }
+/* 지난 한 해 다시 보기(2026-10-21 10:44 · 11:07 「단추가 아니라 자동으로 보여주게해」 — theme-home.js yearBox) — 궤도 위 움직이는 행성 + 그 아래 줄 그림 · 그림 칸 전체가 멈춤 · 이어 보기 단추 */
+.th-yr { display: block; width: 100%; margin: var(--sp-1) 0 0; padding: 0; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.th-yr:disabled { cursor: default; }
+.th-yrg { display: block; width: 100%; height: auto; overflow: hidden; }
+.th-yrg .th-yrs { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; } /* 머리 줄의 굵은 줄 = 업종 줄 */
+.th-yrg .th-yrt { fill: var(--ink); font-size: var(--fs-2); font-weight: 700; }
+.th-yrg .th-yra { fill: var(--sub); font-size: var(--fs-1); }
+.th-yrg .th-yrlm { fill: none; stroke: var(--mute); stroke-width: 2; stroke-dasharray: 5 4; stroke-linejoin: round; }
 /* 첫 화면 줄 한 줄(번호 · 이름 · 행성 · ›) — 글 시작 = 번호 옆(예전 줄과 같은 자리 · [10] 7) · 행성은 오른쪽 끝 표시 쪽 */
 #view a.th-row.th-row2, html.white #view a[href].th-row.th-row2 { min-height: 56px; }
 .th-row2 .th-rp { flex: none; width: 32px; height: 32px; }

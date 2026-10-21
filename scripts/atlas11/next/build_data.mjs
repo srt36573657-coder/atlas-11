@@ -79,7 +79,7 @@ export async function buildData({siteDir = 'site', verify = false, log = console
   try { const r = await themeBuild({siteDir}); out.theme = r; log('테마 시계 ' + r); }
   catch (e) {
     out.themeError = e.message; log('테마 시계 못 만듦 — ' + e.message);
-    for (const f of ['theme.json', 'theme-more.json', 'theme-home.json', 'theme-co.json']) fs.rmSync(path.join(siteDir, 'next', 'data', f), {force: true}); // 화면은 파일이 없으면 「?」 한 줄
+    for (const f of ['theme.json', 'theme-more.json', 'theme-home.json', 'theme-co.json', 'theme-path.json']) fs.rmSync(path.join(siteDir, 'next', 'data', f), {force: true}); // 화면은 파일이 없으면 「?」 한 줄
   }
   return out;
 }

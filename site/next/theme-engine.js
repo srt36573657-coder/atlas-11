@@ -114,7 +114,23 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
   const cz = {}; let skip = 0;
   for (const c of codes) { const v = coZoneOf(closes.get(c), M, T); if (!v) { skip++; continue; } cz[c] = [r2(v.x), r2(v.y), v.z]; }
   const co = {schema: THEME_SCHEMA + '-co', made, asOf: dates[T], from20: dates[T - RULE.win], from5: dates[T - 5], provisional: !!provisional, n: Object.keys(cz).length, skip, co: cz};
-  return {theme, more, co};
+  return {theme, more, co, path: pathOf(U, M, dates, sprout.slice(0, 3).map(i => i.n), made)};
+}
+
+/** 지난 한 해 길(사장님 2026-10-21 10:44 「1.2.3 번에 행성이 어떻게 움직었는지 지난 1년에 주식 변화를 그래프로도 이 우주안에서 동영상으로 … 1번 보여주고 그다음 2번 … 3번」 ·
+ *  11:07 「단추가 아니라 자동으로 보여주게해」) — 첫 화면 1 · 2 · 3번(싹 앞 셋)의 날마다 x · y(결정표 2 그대로) · 자리 · 업종 지수(한 해 전 = 100) + 시장 지수
+ *  마지막 날 x · y · 자리는 theme.inds 와 같음(시험) · 날 = 기준 날의 달력 한 해 전 같은 날 뒤 첫 거래일부터(날이 모자라면 한 달 셈이 되는 날부터)
+ *  날짜 글은 싣지 않음(첫 화면에 보이는 날짜는 띠에 한 번 — [6] 2) · 화면은 첫 그림 뒤에만 받음(/next/data/theme-path.json · theme-home.js) */
+export function pathOf(U, M, dates, names, made) {
+  const T = dates.length - 1, y1 = String(Number(dates[T].slice(0, 4)) - 1) + dates[T].slice(4);
+  let t0 = dates.findIndex(d => d > y1); if (t0 < RULE.win) t0 = RULE.win;
+  const inds = names.map(n => U.find(u => u.n === n)).filter(Boolean).map(u => {
+    const x = [], y = [], I = []; let z = '';
+    for (let t = t0; t <= T; t++) { const xx = exOf(u.I, M, t, RULE.win) * 100, yy = exOf(u.I, M, t, 5) * 100; x.push(r2(xx)); y.push(r2(yy)); z += zoneOf(xx, yy) ?? '-'; I.push(r1(u.I[t] / u.I[t0] * 100)); }
+    return {n: u.n, x, y, z, I};
+  });
+  const Mv = []; for (let t = t0; t <= T; t++) Mv.push(r1(M[t] / M[t0] * 100));
+  return {schema: THEME_SCHEMA + '-path', made, asOf: dates[T], from: dates[t0], days: T - t0 + 1, M: Mv, inds};
 }
 
 /** 성적표(결정표 6) — t = 40 ~ T − 20 · 「한 달 뒤 꽃 선」 = ex(t + 20, 20) ≥ 0.05 */

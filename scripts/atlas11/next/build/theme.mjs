@@ -38,7 +38,7 @@ export async function build({siteDir = 'site', made = new Date().toISOString()} 
   if (closes.size < 100) throw Error('theme: 종가 파일이 너무 적음 ' + closes.size);
   const co = cond?.co, rk = new Map();
   if (co && Array.isArray(co.c) && Array.isArray(co.rk)) co.c.forEach((c, k) => { if (Number.isInteger(co.rk[k])) rk.set(c, co.rk[k]); });
-  const {theme, more, co: coz} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, provisional: core?.provisional === true || cond?.provisional === true, made});
+  const {theme, more, co: coz, path: yr} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, provisional: core?.provisional === true || cond?.provisional === true, made});
   const out = path.join(siteDir, 'next', 'data');
   await fs.mkdir(out, {recursive: true});
   const a = JSON.stringify(theme), b = JSON.stringify(more), c = JSON.stringify(homeOf(theme));
@@ -47,6 +47,7 @@ export async function build({siteDir = 'site', made = new Date().toISOString()} 
   await put('theme-more.json', b);
   await put('theme-home.json', c); // 첫 화면 칸만(느린 4G 첫 그림 · check_white ③)
   await put('theme-co.json', JSON.stringify(coz)); // 회사 자리(결정표 9) — 회사 화면만 받음(첫 화면은 안 받음)
+  await put('theme-path.json', JSON.stringify(yr)); // 1 · 2 · 3번 지난 한 해 길(2026-10-21 11:07 「자동으로 보여주게해」) — 첫 화면이 첫 그림 뒤에만 받음
   const R = theme.record;
   return `회사 자리 ${coz.n}곳(못 셈 ${coz.skip}) · 업종 ${theme.inds.length}곳 · 기준 ${theme.asOf} · 싹 ${theme.count.S} 꽃 ${theme.count.B} 시듦 ${theme.count.W} 잠잠 ${theme.count.Q} · 진짜 싹 ${theme.count.real} · 성적표 모든 날 ${R.all.p}%(${R.all.n}) 진짜 싹 ${R.real.p}%(${R.real.n}) 두 절반 ${R.more ? '모두 높음' : '차이 없음'} · ${Buffer.byteLength(a) + 1}+${Buffer.byteLength(b) + 1}바이트`;
 }

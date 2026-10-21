@@ -109,6 +109,20 @@ test('전체 셈 — 업종 셋 · 작은 업종 뺌 · 뜨는 업종은 싹이�
   assert.equal(typeof R.more, 'boolean');
 });
 
+// 한 해 길(사장님 2026-10-21 10:44 · 11:07 「단추가 아니라 자동으로 보여주게해」) — 첫 화면 1 · 2 · 3번이 지난 한 해 돈 길 · 마지막 날은 업종 자리와 같음
+test('한 해 길 — 싹 앞 셋 · 마지막 날 x · y · 자리는 업종 자리와 같음 · 지수는 100 에서 · 날짜 글 없음', () => {
+  const {theme, path: P} = fake();
+  assert.equal(P.schema, THEME_SCHEMA + '-path'); assert.equal(P.asOf, theme.asOf); assert.equal(P.days, P.M.length); assert.equal(P.M[0], 100);
+  assert.deepEqual(P.inds.map(i => i.n), theme.order.S.slice(0, 3)); assert.ok(P.inds.length >= 1);
+  for (const p of P.inds) {
+    const i = theme.inds.find(q => q.n === p.n);
+    assert.equal(p.x.length, P.days); assert.equal(p.y.length, P.days); assert.equal(p.I.length, P.days); assert.equal(p.z.length, P.days);
+    assert.equal(p.x.at(-1), i.x); assert.equal(p.y.at(-1), i.y); assert.equal(p.z.at(-1), i.z); assert.equal(p.I[0], 100);
+    for (let d = 0; d < P.days; d++) assert.equal(p.z[d], zoneOf(p.x[d], p.y[d]) ?? p.z[d], p.n + ' ' + d); // 소수 둘째 자리 반올림이 경계에 걸린 날만 빼고 같은 자리
+  }
+  assert.ok(!('dates' in P), '날짜 줄은 싣지 않음(첫 화면 날짜는 띠에 한 번)');
+});
+
 test('올릴 때 셈 — 저장소 자료(있을 때만)로 두 파일을 쓰고 꼴이 맞음', async t => {
   const src = path.resolve('site/atlas/data');
   if (!fs.existsSync(path.join(src, 'days.json')) || !fs.existsSync(path.join(src, 'co'))) { t.skip('저장소 자료 없음'); return; }
@@ -131,6 +145,11 @@ test('올릴 때 셈 — 저장소 자료(있을 때만)로 두 파일을 쓰고
   assert.equal(tc.schema, THEME_SCHEMA + '-co'); assert.equal(tc.asOf, th.asOf); assert.ok(tc.n >= 1000, '회사 자리 1,000곳 넘게'); assert.equal(Object.keys(tc.co).length, tc.n);
   for (const [c, v] of Object.entries(tc.co)) { assert.match(c, /^[0-9][0-9A-Z]{5}$/); assert.equal(v.length, 3); assert.ok(['B', 'W', 'S', 'Q'].includes(v[2]), c); }
   assert.ok(fs.statSync(path.join(tmp, 'next/data/theme-co.json')).size < 120_000, '회사 자리 파일은 120KB 아래');
+  const tp = JSON.parse(fs.readFileSync(path.join(tmp, 'next/data/theme-path.json'), 'utf8'));
+  assert.equal(tp.schema, THEME_SCHEMA + '-path'); assert.equal(tp.asOf, th.asOf); assert.deepEqual(tp.inds.map(i => i.n), hm.order.S);
+  assert.ok(tp.days >= 200 && tp.days <= 260, '한 해 = 거래일 200 ~ 260 ' + tp.days);
+  for (const p of tp.inds) { const a = hm.inds.find(i => i.n === p.n); assert.deepEqual([p.x.at(-1), p.y.at(-1), p.z.at(-1)], [a.x, a.y, a.z]); }
+  assert.ok(fs.statSync(path.join(tmp, 'next/data/theme-path.json')).size < 24_576, '한 해 길 파일은 24KB 아래');
   fs.rmSync(tmp, {recursive: true, force: true});
 });
 

@@ -1633,7 +1633,7 @@
   "{n}년 이익의 몇 배 값이 비어 있음": "The price ÷ {n}-year earnings value is missing",
   "{n}년 자기 돈 {n}원으로 {n}원 벎": "{n1}: earned {n3} won per {n2} won of equity",
   "{n}년 자기 돈으로 돈을 못 벎": "{n}: made no money on equity",
-  "{n}년 전": "{n} years ago",
+  "{n}년 전": "{n} {pl:year|years} ago",
   "{n}년 전 {d}부터 봉인 날 {d}까지 실제 선(봉인 날 = {n})": "Actual line from {n} years ago ({d}) to seal day {d} (seal day = {n})",
   "{n}년 전부터": "From {n} years ago",
   "{n}년 주가": "{n}Y stock prices",
@@ -8832,6 +8832,11 @@
   "봄이 온 곳 {n}곳 모두 보기": "See all {n} industries in spring",
   "숫자로 자세히 보기": "See the numbers",
   "행성 하나가 업종 무리 하나예요.": "Each planet is one industry group.",
-  "어느 계절일까?": "What season is it?"
+  "어느 계절일까?": "What season is it?",
+  "{n}번 {e}": "#{n} {e}",
+  "멈춤": "Pause",
+  "이어 보기": "Resume",
+  "한 해 다시 보기": "Replay the year",
+  "한 해 길을 받지 못했어요.": "Couldn't load the past year."
  }
 }

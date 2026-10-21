@@ -55,7 +55,7 @@ function odd(l) {
 }
 
 /* 자료 — 못 받으면 null(화면은 「?」) · 15초 뒤 다시 받아 봄 */
-const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json', themeHome: '/next/data/theme-home.json', themeCo: '/next/data/theme-co.json'}; // theme = 테마 쪽 자료 · themeHome = 첫 화면 칸 자료(올릴 때 셈 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
+const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json', themeHome: '/next/data/theme-home.json', themeCo: '/next/data/theme-co.json', themePath: '/next/data/theme-path.json'}; // theme = 테마 쪽 자료 · themeHome = 첫 화면 칸 자료(올릴 때 셈 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
 const D = {}, failAt = {}, inflight = {};
 function need(k) {
   if (D[k] != null) return Promise.resolve(D[k]);
