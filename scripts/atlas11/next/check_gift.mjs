@@ -3,15 +3,16 @@
 //   사람들에 1분 우리에게 투자하는것 서로 존중해야 잖아」 · 01:59 「맞아」 — docs/design/gift-2026-10-22/order-0149.txt
 //   보는 것: ① 처음 = 약속 알림 · 걸음 넷 · 「상품권 받기」 · 번호 숨김 · 건너뛸 막대 없음 · 가로 넘침 없음 · 글씨 17px 위 · 단추 48px 위
 //            ② 틀기 → 건너뛰기(50초로) 막힘 · 빨리 감기(4배) 막힘 ③ 끝까지 → 「상품권 받기」 · 번호 · 고마움 줄 · 이 기기 표시 ④ 다시 열면 바로 열림 ⑤ 영어 팩이면 한글 없음
-//   node scripts/atlas11/next/check_gift.mjs [--base http://127.0.0.1:8826]  (scripts/atlas11/invite_dev.mjs --dir site 가 떠 있어야 함)
+//   node scripts/atlas11/next/check_gift.mjs [--base http://127.0.0.1:8826] [--pw /tmp/pw/] [--out 결과.json]  (scripts/atlas11/invite_dev.mjs --dir site 가 떠 있어야 함 · 깃허브 전체 검사도 이 꼴로 부름)
 import {createRequire} from 'node:module';
 
-const require = createRequire('/opt/node-tools/');
+const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 && process.argv[i + 1] != null && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : d; };
+const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/node-tools/')).replace(/\/?$/, '/')); // 깃허브 전체 검사는 PW_DIR · PW_EXE(다른 검사와 같은 길)
 const {chromium} = require('playwright');
-const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
-const B = arg('--base', 'http://127.0.0.1:8826');
+const B = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, '');
 const fails = [], fail = (m, x = '') => { fails.push(m + (x ? ' — ' + x : '')); console.log('✗ ' + m, x); }, ok = m => console.log('✓ ' + m);
-const browser = await chromium.launch({executablePath: '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell', args: ['--autoplay-policy=user-gesture-required']});
+const EXE = process.env.PW_EXE || (process.env.PW_DIR ? null : '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell');
+const browser = await chromium.launch({...(EXE ? {executablePath: EXE} : {}), args: ['--autoplay-policy=user-gesture-required']});
 
 const look = p => p.evaluate(() => {
   const sec = document.querySelector('#hp-promo'), v = document.querySelector('#hp-uv'), got = document.querySelector('#hp-got');
@@ -79,5 +80,7 @@ for (const [w, h] of [[390, 844], [320, 568]]) {
   await p.close();
 }
 await browser.close();
+const OUT = arg('--out', null);
+if (OUT) { const fs = await import('node:fs/promises'); await fs.writeFile(OUT, JSON.stringify({schema: 'atlas11-check-gift-1', base: B, ok: !fails.length, fails}, null, 1)); } // 전체 검사가 쪽마다 남기는 결과(다른 검사와 같은 --out)
 console.log(fails.length ? `실패 ${fails.length}` : '상품권 영상 검사 실패 0');
 process.exit(fails.length ? 1 : 0);
