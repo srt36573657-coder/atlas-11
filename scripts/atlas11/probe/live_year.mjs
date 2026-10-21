@@ -41,5 +41,27 @@ for (const eng of ['chromium', 'webkit']) {
   R.net = net; R.errs = errs;
   await ctx.close(); await b.close();
 }
+// 고객센터(#/help · 사장님 2026-10-21 22:54 · 2026-10-22 01:22) — 읽기만(보내기 0 · 진짜 저장소에 글을 남기지 않음): 제목 · 문 셋 · 만든 사람의 말 · 맨 아래 고리 · /api/help 대답(faq 200 · 열쇠 없는 mine 401 · all 403)
+try {
+  const b = await pw.chromium.launch(process.env.PW_EXE ? {executablePath: process.env.PW_EXE} : {});
+  const ctx = await b.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
+  await ctx.addInitScript(() => { try { localStorage.setItem('atlas:essence-seen', 'true'); localStorage.setItem('atlas:white-seen', 'true'); } catch { /* 없음 */ } });
+  const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
+  await p.goto(B + APP + '?v=' + Date.now() + '#/help', {waitUntil: 'load', timeout: 60000});
+  await p.waitForSelector('#view .hp-door', {timeout: 20000}).catch(() => {});
+  out.help = await p.evaluate(async () => {
+    const st = async (u, o) => { try { return (await fetch(u, o)).status; } catch { return 0; } };
+    return {h1: document.querySelector('#view h1')?.firstChild?.textContent?.trim() ?? null, doors: [...document.querySelectorAll('#view .hp-door .hp-dt b')].map(b => b.textContent),
+      note: document.querySelector('#view .hp-note-card .hp-n1')?.textContent ?? null, sign: document.querySelector('#view .hp-note-card figcaption')?.textContent ?? null,
+      voice: [...document.querySelectorAll('#view .hp-vb')].map(b => b.textContent), foot: document.querySelector('footer.foot a')?.getAttribute('href') ?? null, dev: localStorage.getItem('atlas:help:dev'),
+      faq: await st('/api/help/faq'), mine: await st('/api/help/mine'), all: await st('/api/help/all')};
+  });
+  await p.click('#view .hp-door >> nth=1').catch(() => {}); await p.waitForTimeout(800);
+  out.help.faqN = await p.evaluate(() => document.querySelectorAll('#view details.hp-qa').length);
+  await p.screenshot({path: `${dir}/help.png`});
+  out.help.errs = errs;
+  await ctx.close(); await b.close();
+} catch (e) { out.help = {err: String(e.message).split('\n')[0].slice(0, 200)}; }
 await fs.writeFile(`${dir}/year.json`, JSON.stringify(out, null, 1) + '\n');
+console.log(JSON.stringify(out.help ?? null));
 console.log(JSON.stringify(out.runs.map(r => ({eng: r.eng, err: r.err, net: r.net, errs: r.errs, at: (r.at || []).map(a => [a.tag, a.run ? 'run' : '-', 'now' + a.now, a.label, a.title, a.v, a.say ? '?' : '', a.sw, 'orbit' + a.orbit, 'pl' + a.pl, a.pills].join(':')), lt: r.at?.[0]?.lt, sky: r.sky, clock: (r.at || []).map(a => a.clock)}))));
