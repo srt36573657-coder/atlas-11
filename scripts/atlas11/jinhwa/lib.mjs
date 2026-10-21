@@ -716,8 +716,20 @@ export function scoreApplied({rule, at, today, cal, tally, rounds = [], minSampl
 }
 
 // ───────────────────────── 사실 잣대(화면 숫자 = 자료) ─────────────────────────
-/** 지금 사이트 모든 쪽 검사(live) 결과 → {mismatch, at, note} — 쪽 결과 파일마다 걸린 수(fails 목록 길이 · 수)의 합 [가정: 쪽 검사는 화면 숫자를 자료와 맞댐]
- *  쪽 결과 파일을 못 읽거나 · fails 꼴을 모르거나 · 이틀 넘게 묵으면 mismatch null(「?」) · 끝 코드만 1 이고 fails 0 인 쪽은 note 에 적음(견본 자료 길 등 — 지금 사이트 숫자 아님) */
+/** 쪽 결과 파일 하나의 걸린 수 — fails(목록 길이 · 수) 꼴, 또는 본질 화면 층 꼴(checks[].status · check_essence.mjs 가 씀 — 2026-10-21 사장님 「진화 영구 세팅」 때 더함)
+ *  본질 화면 층 꼴: status 'fail' 인 칸마다 까닭 수(없으면 1)를 더함 · 'pass' 만이면 0 · 'cant'(보지 못함)가 있고 fail 이 없으면 null(통과로 적지 않음) · 모르는 꼴도 null */
+export function failsOf(j) {
+  if (Array.isArray(j?.fails)) return j.fails.length;
+  if (Number.isInteger(j?.fails)) return j.fails;
+  if (Array.isArray(j?.checks) && j.checks.length && j.checks.every(c => typeof c?.status === 'string')) {
+    const bad = j.checks.filter(c => c.status === 'fail');
+    if (bad.length) return bad.reduce((s, c) => s + Math.max(1, Array.isArray(c.reasons) ? c.reasons.length : 0), 0);
+    return j.checks.every(c => c.status === 'pass') ? 0 : null;
+  }
+  return null;
+}
+/** 지금 사이트 모든 쪽 검사(live) 결과 → {mismatch, at, note} — 쪽 결과 파일마다 걸린 수(failsOf)의 합 [가정: 쪽 검사는 화면 숫자를 자료와 맞댐]
+ *  쪽 결과 파일을 못 읽거나 · 걸린 수 꼴을 모르거나 · 이틀 넘게 묵으면 mismatch null(「?」) · 끝 코드만 1 이고 걸린 수 0 인 쪽은 note 에 적음(견본 자료 길 등 — 지금 사이트 숫자 아님) */
 export function factsFrom(summary, pageOf = () => null, now = new Date()) {
   const none = note => ({mismatch: null, at: null, note});
   if (!summary || summary.mode !== 'live' || !Array.isArray(summary.pages) || !summary.pages.length || !ISO_RE.test(summary.at ?? '')) return none('지금 사이트 모든 쪽 검사 결과를 못 읽음');
@@ -725,7 +737,7 @@ export function factsFrom(summary, pageOf = () => null, now = new Date()) {
   let n = 0; const codeOnly = [];
   for (const p of summary.pages) {
     const j = pageOf(p.name);
-    const f = Array.isArray(j?.fails) ? j.fails.length : Number.isInteger(j?.fails) ? j.fails : null;
+    const f = failsOf(j);
     if (f == null) return {mismatch: null, at: isoKst(summary.at), note: `${p.name} 쪽 결과를 못 읽음`};
     n += f;
     if (p.code !== 0 && f === 0) codeOnly.push(p.name);

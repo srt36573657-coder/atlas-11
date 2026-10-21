@@ -190,6 +190,13 @@ test('⑯ 사실 잣대 — 지금 사이트 모든 쪽 검사 결과에서 셈 
   eq(L.factsFrom({mode: 'live', at: '2026-10-18T08:26:25.988Z', pages: [{name: 'a', code: 0}]}, () => null, new Date('2026-10-18T09:00:00Z')).mismatch, null, '쪽 결과 없음');
   eq(L.factsFrom({mode: 'live', at: '2026-10-18T08:26:25.988Z', pages: [{name: 'a', code: 1}, {name: 'b', code: 0}]}, n => ({fails: n === 'a' ? [1, 2] : 0}), new Date('2026-10-18T09:00:00Z')).mismatch, 2);
   eq(L.factsFrom({mode: 'live', at: '2026-10-10T08:26:25.988Z', pages: [{name: 'a', code: 0}]}, () => ({fails: []}), new Date('2026-10-18T09:00:00Z')).mismatch, null, '이틀 넘게 묵음');
+  // 본질 화면 층 꼴(checks[].status · 2026-10-21 더함) — 다 지나감 0 · fail 칸은 까닭 수 · 보지 못함(cant)만이면 「?」 · 모르는 꼴 「?」
+  const one = (pageJson, code = 0) => L.factsFrom({mode: 'live', at: '2026-10-21T08:26:25.988Z', pages: [{name: 'e', code}]}, () => pageJson, new Date('2026-10-21T09:00:00Z')).mismatch;
+  eq(one({checks: [{status: 'pass'}, {status: 'pass', reasons: []}]}), 0, '본질 화면 층 다 지나감');
+  eq(one({checks: [{status: 'pass'}, {status: 'fail', reasons: ['a', 'b']}, {status: 'fail', reasons: []}]}, 1), 3, '본질 화면 층 fail 칸 = 까닭 수(없으면 1)');
+  eq(one({checks: [{status: 'pass'}, {status: 'cant', reasons: ['보지 못함 — x']}]}, 1), null, '보지 못함만 있으면 통과로 적지 않음');
+  eq(one({checks: []}), null, '빈 checks 는 모르는 꼴');
+  eq(one({ok: true}), null, 'fails 도 checks 도 없으면 모르는 꼴');
 });
 test('⑰ 본질 잠금 — 지금 저장소 맞음 · 한 글자 바꾸면 회차를 멈춤', () => {
   ok(L.essenceLockCheck(ROOT).ok, L.essenceLockCheck(ROOT).why.join(' · '));
