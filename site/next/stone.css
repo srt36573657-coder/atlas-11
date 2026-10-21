@@ -42,6 +42,11 @@ html.white .shorts > .st-abs { position: absolute; top: 24px; right: 0; width: 9
 html.white.home #view { display: flex; flex-direction: column; min-height: calc(100vh - 128px); min-height: calc(100svh - 128px); padding: 0 var(--sp-2); }
 html.white.home .s-hd { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); }
 html.white.home .s-h1 { margin: 0; font-size: var(--fs-6); font-weight: 800; line-height: 1; letter-spacing: -.035em; color: var(--ink); }
+/* 큰 제목 돌리기(home-title.js · 미리 보기 2026-10-21 23:09) — 두 줄 자리 고정(밀림 0) · 옅어지며 살짝 오르고 · 새 말은 아래에서 살짝 올라옴(옮김 · 짙기만) */
+html.white.home .s-h1 { min-height: 2em; transition: opacity .5s var(--ease), transform .5s var(--ease); }
+html.white.home .s-h1.tt-out { opacity: 0; transform: translateY(-6px); }
+html.white.home .s-h1.tt-in { opacity: 0; transform: translateY(6px); transition: none; }
+@media (prefers-reduced-motion: reduce) { html.white.home .s-h1 { transition: none; } }
 html.white.home .s-art { flex: none; width: 150px; height: 120px; }
 /* 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」 · stone-clock.js) — 돌 그림 위에 바늘 그림을 겹침 · 칸 크기는 위 .s-art 그대로(밀림 0) */
 .s-clock { position: relative; display: block; }
