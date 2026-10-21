@@ -3,5 +3,12 @@
    글 · 단추 · 칸에는 그림자 · 광택 · 입체 없음(잣대 그대로) · 별빛 번짐은 그 그림 안에만 · html.space 일 때만
    쌓는 차례: body 가 제 층을 엶(isolation) → 하늘은 body 바탕 바로 위 · 글판 · 위 막대 · 아래 단추 · 뜨는 창은 모두 그 위(예전 층 차례 그대로) */
 html.space body { isolation: isolate; }
-.stars, .sky-near { position: fixed; top: 0; left: 0; z-index: -1; display: block; pointer-events: none; will-change: transform; } /* 제 층 — 별이 움직여도 글판은 다시 안 그림 · .sky-near = 나는 것들(sky-fly.js — 별똥별 · 태양계 · 우주선 · 용 · 천사 · 사장님 2026-10-21 19:44) 층 · 별 하늘 바로 위 */
+.stars, .sky-near { position: fixed; top: 0; left: 0; z-index: -1; display: block; pointer-events: none; will-change: transform; } /* 제 층 — 별이 움직여도 글판은 다시 안 그림 · .sky-near = 나는 것들(sky-fly.js — 별똥별 · 태양계 · 우주선 · 용 · 천사 · 사장님 2026-10-21 19:44 · 20:22 「더 판타스틱하게 해」) 층 · 별 하늘 바로 위 */
+/* 오로라 둘 · 해 빛살(sky-fly.js) — 그림은 한 번만 그리고 층째 천천히 움직임(옮김 · 돌림 · 짙기만 — 다시 그리지 않음) · 움직임 줄이기면 멈춘 그림 */
+.sky-aurora { position: fixed; top: 0; left: 0; z-index: -1; display: block; overflow: visible; pointer-events: none; will-change: transform, opacity; transform-origin: 50% 0; animation: skyAur 19s ease-in-out infinite alternate; }
+.sky-aurora.a2 { animation-duration: 27s; animation-direction: alternate-reverse; }
+.sky-rays { position: fixed; z-index: -1; display: block; pointer-events: none; will-change: transform; animation: skyRay 150s linear infinite; }
+@keyframes skyAur { from { transform: translateX(-4%) scaleY(0.92); opacity: 0.72; } to { transform: translateX(4%) scaleY(1.08); opacity: 1; } }
+@keyframes skyRay { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .sky-aurora, .sky-rays { animation: none; } }
 /* 위 막대 · 아래 단추는 밤 바탕 그대로(stone.css · 흐림 거름 없음 — 잣대 「광택 없음」) */
