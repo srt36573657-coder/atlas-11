@@ -1,4 +1,4 @@
-/* 첫 화면 큰 제목 돌리기(미리 보기 — 사장님 2026-10-21 23:09 「아 해 섹시하게」 · 차례 ② 「큰 제목 후보를 쉬운 말과 곧은 말로 나눠 보여 드릴게요」)
+/* 첫 화면 큰 제목 돌리기 — 사장님 2026-10-21 23:55 「어 섹시하게」(23:21 물음 「이 넷을 차례로 돌려 보일까요?」의 답) · 23:09 「아 해 섹시하게」 차례 ② 큰 제목
    까닭: 23:07 지인 말 「지금 봄이온곳~ 언어순환 필요 · 타겟팅을제대로해서.조금더고급스러운 언어로 순회시키기 · 지금은 ai수준. 미래는 테슬라처럼」
         · 사장님 23:05 「1.주식을잘모르는아이들을위한 편안한 쉬운 말투 2.주식을 이미 아는 사람들이 확실하게 볼수잇는 돌리지않는말투」
    쉬운 말(easy)과 곧은 말(direct)을 번갈아 · 6초마다 · 0.5초 동안 옅어지며 살짝 오르고 · 새 말이 아래에서 살짝 올라와 짙어짐(옮김 · 짙기만 — 입체 없음)
@@ -22,7 +22,7 @@ export function rotateTitle(el, {list = TITLES, every = EVERY_MS} = {}) {
   el.setAttribute('aria-live', 'off');
   const stop = () => { clearTimeout(timer); clearTimeout(swap); timer = swap = 0; el.classList.remove('tt-out', 'tt-in'); };
   const next = () => {
-    if (!el.isConnected) { stop(); return; }
+    if (!el.isConnected || english()) { stop(); return; } // 화면에서 떨어졌거나 영어로 바뀌면 멈춤(첫 말 그대로)
     if (document.hidden) { timer = setTimeout(next, every); return; }
     i = (i + 1) % list.length;
     el.classList.add('tt-out');
