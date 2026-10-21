@@ -1,0 +1,21 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-22T02:45+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 0,
+ "scope": {
+  "from": "2026-10-21 22:54 사장님 「피드백 남기는 공간이랑  QA남기는공간 고객센터 안내 공간이  있으면 좋울것 같아」 — 고객센터 함수 help 를 올림",
+  "to": "2026-10-22 02:40 상품권 영상 일(01:49 주문)에서 tests/atlas11 모두를 돌려 찾음"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 95,
+   "when": "2026-10-22 01:20쯤(서울) 고객센터를 올림 · 02:40 찾음",
+   "what": "고객센터 함수(help)를 더하면서 「올리는 함수 목록」 시험 둘(tests/atlas11/invite.test.mjs · tests/atlas11/kakao.test.mjs)을 함께 고치지 않음 — main 에서 그 시험 둘이 실패한 채로 사이트를 올림(전체 검사는 이 시험 둘을 돌리지 않아 못 잡음)",
+   "found_by": "나 — 상품권 영상 일에서 tests/atlas11 모두를 돌려 봄",
+   "fixed": "두 시험의 함수 · 파일 목록에 help · lib/atlas11/help.mjs · site/next/help-rule.js 를 더함(가지 wip-gift · 두 시험 32개 통과) · 다음부터 서버 함수를 더하면 tests/atlas11 모두를 돌린 뒤 올림",
+   "evidence": ["tests/atlas11/invite.test.mjs", "tests/atlas11/kakao.test.mjs", "functions/atlas11/help.mjs", "docs/design/help-2026-10-21/order-2255.txt"]
+  }
+ ]
+}

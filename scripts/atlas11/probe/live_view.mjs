@@ -194,11 +194,24 @@ await step('오늘 업종 고리 · 상품권 · 1장 글', async () => { // 사
   if (got[0]) { await page.locator('#view a.m4-sr').first().click(); await page.waitForTimeout(2000); after = await page.evaluate(() => ({hash: location.hash, h1: document.querySelector('#view h1')?.textContent ?? '', step: document.querySelector('#view .steps, #view .lv')?.textContent ?? ''})); await shot('p21-sec-industry'); }
   await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(800);
   const hp = await page.evaluate(() => ({bar: document.querySelector('.hp-pbar')?.textContent ?? '', box: document.querySelector('#hp-promo')?.innerText ?? '', sms: document.querySelector('#hp-promo a[href^="sms:"]')?.getAttribute('href') ?? null, tel: document.querySelector('#hp-promo a[href^="tel:"]')?.getAttribute('href') ?? null}));
+  /* 2026-10-22 01:49 사장님 「… 마오는영상 1붘을 봐야 그게 정당해 그게 고지 해야고 그약솓 지켜야 상품권 받기 그때 나오게 해」(order-0149) — 약속을 먼저 알림 · 처음엔 「상품권 받기」 · 번호 숨김 · 영상 둘이 열림
+     · 끝까지 본 기기(atlas:gift:seen)면 열림 — 이 기기 표시를 잠깐 두고 다시 열어 봄(진짜 1분 보기는 check_gift.mjs 가 봄) · 본 뒤 표시를 지움 */
+  const gate = await page.evaluate(async () => { const v = document.querySelector('#hp-uv'), src = [...(v?.querySelectorAll('source') ?? [])].map(s => s.getAttribute('src'));
+    const head = async u => { try { const r = await fetch(u, {method: 'HEAD', cache: 'no-store'}); return {u, code: r.status, type: r.headers.get('content-type') ?? '', len: Number(r.headers.get('content-length') ?? 0)}; } catch (e) { return {u, code: 0, err: String(e)}; } };
+    return {got: document.querySelector('#hp-got')?.hidden ?? null, lock: document.querySelector('#hp-lock')?.innerText ?? '', ctl: !!v?.controls, src, media: await Promise.all([...src, v?.getAttribute('poster') ?? ''].filter(Boolean).map(head))}; });
+  await page.evaluate(() => { try { localStorage.setItem('atlas:gift:seen', '2026-10-22'); } catch {} });
+  await page.goto(B + '/hello.html?v=' + Date.now(), {waitUntil: 'networkidle', timeout: 60000}); await page.waitForTimeout(800);
+  const hp2 = await page.evaluate(() => ({got: document.querySelector('#hp-got')?.hidden ?? null, box: document.querySelector('#hp-promo')?.innerText ?? '', sms: document.querySelector('#hp-got a.hp-sms')?.textContent ?? ''}));
+  await page.evaluate(() => { try { localStorage.removeItem('atlas:gift:seen'); } catch {} });
+  hp.gate = gate; hp.after = hp2;
+  const gateOk = gate.got === true && /먼저 알려 드려요/.test(hp.box) && /상품권은 우주 영상 1분을 끝까지 본 분께만 드려요/.test(hp.box) && /끝까지 보면 여기에 「상품권 받기」 단추가 나와요/.test(gate.lock) && !gate.ctl
+    && gate.media.length === 3 && gate.media.every(m => m.code === 200) && /video\/mp4/.test(gate.media[0].type) && /video\/webm/.test(gate.media[1].type) && /image\/jpeg/.test(gate.media[2].type)
+    && hp2.got === false && /010-9011-7377/.test(hp2.box) && hp2.sms === '상품권 받기';
   await page.evaluate(() => document.querySelector('#hp-promo')?.scrollIntoView({block: 'center'})); await page.waitForTimeout(400);
   await shot('p23-hello-promo');
   out.promo = {secFirst: first?.name ?? null, want: w, got: got.slice(0, 6), after, s1, hp,
     ok: !!w && got[0] === w && !!after && after.hash === w && /아틀란스 주식 격언 열 가지/.test(s1.msg) && /10\. 기회는 찾아오는 거지, 만드는 게 아니다\./.test(s1.msg) && !/하규는|안상미/.test(s1.msg) && !/10명중에|못버는건/.test(s1.msg) && /스타벅스 상품권 1만원/.test(s1.promo) && !/커피 1잔|상품권 1장/.test(s1.promo)
-      && /010-9011-7377/.test(hp.box) && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스 상품권 1만원/.test(hp.bar) && /스타벅스 상품권 1만원/.test(hp.box) && !/1잔|상품권 1장|1장씩/.test(hp.box + hp.bar) && /3명만 소개해도/.test(hp.bar) && /3명마다 1만원씩/.test(hp.box) && !/10명/.test(hp.box + hp.bar) && /3명만 소개해도/.test(s1.promo) /* 2026-10-16 21:35 「3명만 추천해도 1만원」 */}; // 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」
+      && !/010-9011-7377/.test(hp.box) && gateOk && hp.sms === 'sms:01090117377' && hp.tel === 'tel:01090117377' && /스타벅스 상품권 1만원/.test(hp.bar) && /스타벅스 상품권 1만원/.test(hp.box) && !/1잔|상품권 1장|1장씩/.test(hp.box + hp.bar) && /3명 소개하고 1분 영상 보면/.test(hp.bar) && !/3명만 소개해도/.test(hp.bar + hp.box) && /3명마다 1만원씩/.test(hp.box) && !/10명/.test(hp.box + hp.bar) && /3명만 소개해도/.test(s1.promo) /* 2026-10-16 21:35 「3명만 추천해도 1만원」 */}; // 18:19(싱가포르) 「스타벅스 상품권 1만원 이라고 해 1장이 아니라」
   if (!out.promo.ok) out.errors.push('오늘 업종 고리 · 상품권 · 1장 글: ' + JSON.stringify(out.promo).slice(0, 300));
 });
 await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 21:50 「막비 이름을 홍표 라고 해」 · 22:29 「홍표 홍표 홍표 3번 하면서 더 아이어맨스럽게 만들어봐 그리고 아틀란스에 올려」(규칙 65 · 사진 p26)

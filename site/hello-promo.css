@@ -48,3 +48,27 @@
 
 /* 영상 칸 — 새 영상 「꼴똘이의 고민」이 올라가기 전에는 숨김(사장님 2026-10-18 16:39 [3] 9 · /next/brand.js VIDEO.ready · hello-send.js 가 hidden 을 걷음) */
 .hp-vid[hidden] { display: none; }
+
+/* 상품권 앞 「우주 영상 1분」(사장님 2026-10-22 01:49 · 01:59 · docs/design/gift-2026-10-22/order-0149.txt) — 약속 알림 · 영상 · 큰 단추 하나 · 본 초 막대 · 잠긴 줄 · 열린 「상품권 받기」
+   글씨 17 · 19 · 21 · 24 만 · 간격 0 · 8 · 16 · 24 만 · 단추 48px 위 · 그림자 · 광택 없음 */
+.hp-vow { margin: 0 0 16px; padding: 16px; border: 2px solid #FFD98A; border-radius: 16px; background: rgba(20, 26, 49, .72); font-size: 1.0625rem; line-height: 1.55; text-align: center; color: #F4EEFA; }
+.hp-vow b { display: block; margin: 0 0 8px; font-size: 1.1875rem; font-weight: 800; color: #FFD98A; }
+.hp-uni { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 0 0 16px; }
+.hp-ucap { margin: 0; font-size: 1.0625rem; line-height: 1.5; text-align: center; color: #E8DDF2; }
+.hp-ucap b { display: block; font-size: 1.3125rem; font-weight: 800; color: #FFE2A0; }
+.hp-uv { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; border-radius: 16px; background: #070B17; cursor: pointer; }
+.hp-uplay { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 48px; min-width: 200px; padding: 0 24px; border: 2px solid #FFD98A; border-radius: 999px; background: transparent; color: #FFD98A; font: inherit; font-size: 1.1875rem; font-weight: 800; cursor: pointer; }
+.hp-uplay:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
+.hp-ubar { -webkit-appearance: none; appearance: none; display: block; width: 100%; max-width: 360px; height: 8px; border: 0; border-radius: 999px; background: rgba(244, 238, 250, .18); overflow: hidden; }
+.hp-ubar::-webkit-progress-bar { background: rgba(244, 238, 250, .18); border-radius: 999px; }
+.hp-ubar::-webkit-progress-value { background: #FFD98A; border-radius: 999px; }
+.hp-ubar::-moz-progress-bar { background: #FFD98A; border-radius: 999px; }
+.hp-uleft { margin: 0; font-size: 1.0625rem; line-height: 1.5; text-align: center; color: #F4EEFA; }
+.hp-lock { margin: 0 0 16px; padding: 16px; border: 1px dashed rgba(244, 238, 250, .45); border-radius: 16px; font-size: 1.0625rem; line-height: 1.55; text-align: center; color: #E8DDF2; }
+.hp-got { margin: 0 0 16px; }
+.hp-thx { margin: 0 0 16px; font-size: 1.1875rem; line-height: 1.5; font-weight: 800; text-align: center; color: #FFD98A; }
+.hp-got .hp-tel { margin: 0 0 8px; }
+.hp-got .hp-sms { min-width: 200px; font-size: 1.3125rem; }
+.hp-num { margin: 0; font-size: 1.0625rem; line-height: 1.5; text-align: center; color: #F4EEFA; }
+.hp-num b { color: #FFD98A; font-weight: 800; }
+.hp-got[hidden], .hp-lock[hidden] { display: none; }

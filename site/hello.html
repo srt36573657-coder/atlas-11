@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="/app/hello.css">
 <link rel="stylesheet" href="/hello-promo.css">
 <script type="module" src="/hello-send.js"></script>
+<script type="module" src="/hello-gift.js"></script>
 </head>
 <body class="hp">
 <main class="hp-main">
@@ -38,7 +39,7 @@
 <li>사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요.</li>
 </ul>
 </section>
-<a class="hp-pbar" href="#hp-promo">친구 3명만 소개해도 스타벅스 상품권 1만원! ›</a>
+<a class="hp-pbar" href="#hp-promo">친구 3명 소개하고 1분 영상 보면 스타벅스 상품권 1만원! ›</a>
 <a class="hp-talk" href="/#/talk">돌이 오늘의 이야기 보러 가기 ›</a>
 <video class="hp-vid" id="hp-vid" hidden poster="/media/makbi-poster.jpg" controls playsinline preload="metadata" aria-label="앵무새 돌이의 1분 고민극 — 높은 가지 끝 · 날 것이냐 말 것이냐 · 소문 바람에 날아오르는 새 떼 · 꼬리로 매달림 · 날기 전에 열한 번 묻자 · 오늘은 쉬어 가자 · 본질 세 줄 · 친구야 왜 사? · 돌이 세 번">
 <source src="/media/makbi-intro.mp4" type="video/mp4">
@@ -49,18 +50,37 @@
 <button class="hp-send" type="button" id="hp-send">친구에게 보내기</button>
 </div>
 <p class="hp-msg" id="hp-msg" role="status"></p>
+<!-- 상품권 칸(사장님 2026-10-22 01:49 「… 마오는영상 1붘을 봐야 그게 정당해 그게 고지 해야고 그약솓 지켜야 상품권 받기 그때 나오게 해 그리고 정말쉽개 안내해야해 사람들에 1분 우리에게 투자하는것 서로 존중해야 잖아」 · 01:59 「맞아」 · docs/design/gift-2026-10-22/order-0149.txt)
+     약속을 먼저 알림 → 쉬운 네 걸음 → 우주 영상 1분(건너뛰기 막대 없음 · 큰 단추 하나) → 끝까지 보면 그때 「상품권 받기」(/hello-gift.js · 셈 /gift-rule.js) -->
 <section class="hp-promo" id="hp-promo" aria-labelledby="hp-pt">
-<h2 class="hp-pt" id="hp-pt">친구 3명에게만 소개해도<br>스타벅스 상품권 1만원!</h2>
+<h2 class="hp-pt" id="hp-pt">친구 3명에게 소개하고<br>우주 영상 1분을 보면<br>스타벅스 상품권 1만원!</h2>
+<p class="hp-vow"><b>먼저 알려 드려요</b>상품권은 우주 영상 1분을 끝까지 본 분께만 드려요. 이 약속은 꼭 지켜요.</p>
 <ol class="hp-steps">
 <li>카톡으로 친구 <b>3명</b>에게 돌이를 소개해 주세요.</li>
-<li>보낸 화면을 찍어 아래 번호로 문자를 보내 주세요.</li>
+<li>아래 <b>우주 영상 1분</b>을 끝까지 봐 주세요.</li>
+<li>「상품권 받기」를 누르고, 보낸 화면을 찍어 문자로 보내 주세요.</li>
 <li><b>스타벅스 상품권 1만원</b>을 보내 드려요.</li>
 </ol>
+<figure class="hp-uni">
+<figcaption class="hp-ucap"><b>돌이의 우주 · 1분</b>우주선, 용, 오로라가 나와요.</figcaption>
+<video class="hp-uv" id="hp-uv" playsinline preload="none" poster="/media/universe-poster.jpg" width="720" height="1280" aria-label="돌이의 우주 1분 — 오로라 · 피터팬과 팅커벨 · 우주선 · 황룡과 청룡 · 천사 다섯 · 혜성과 별똥별 · 비행접시 · 앵무새 돌이 · 하트 별자리">
+<source src="/media/universe.mp4" type="video/mp4">
+<source src="/media/universe.webm" type="video/webm">
+</video>
+<button class="hp-uplay" id="hp-uplay" type="button" aria-pressed="false">우주 영상 보기</button>
+<progress class="hp-ubar" id="hp-ubar" max="60" value="0">아직 안 봤어요. 60초를 끝까지 봐 주세요.</progress>
+<p class="hp-uleft" id="hp-uleft" role="status">아직 안 봤어요. 60초를 끝까지 봐 주세요.</p>
+</figure>
+<p class="hp-lock" id="hp-lock">영상을 끝까지 보면 여기에 「상품권 받기」 단추가 나와요.</p>
+<div class="hp-got" id="hp-got" hidden>
+<p class="hp-thx" id="hp-thx">끝까지 봐 주셔서 고마워요! 이제 상품권을 받을 수 있어요.</p>
 <div class="hp-tel">
-<a class="hp-sms" href="sms:01090117377">문자 보내기 010-9011-7377</a>
+<a class="hp-sms" href="sms:01090117377">상품권 받기</a>
 <a class="hp-call" href="tel:01090117377">전화</a>
 </div>
-<p class="hp-pn">3명마다 1만원씩, 여러 번 받을 수 있어요.<br>이벤트가 끝날 때는 이 자리에 먼저 알려 드려요.</p>
+<p class="hp-num">문자 번호 <b>010-9011-7377</b></p>
+</div>
+<p class="hp-pn">1분은 소중한 시간이에요. 내어 주셔서 고마워요.<br>3명마다 1만원씩, 여러 번 받을 수 있어요.<br>이벤트가 끝날 때는 이 자리에 먼저 알려 드려요.</p>
 </section>
 <!-- 개인정보 네 줄(사장님 2026-10-18 00:15 [9] 5 「소개 쪽에 네 줄을 붙여라. 모으는 것, 쓰는 곳, 지우는 때, 거부할 수 있음」) — 자세한 글은 맨 아래 처리방침. 네 줄은 /privacy.html 1 ~ 5 (2026-10-18 판)의 쉬운 요약 — 그 쪽이 바뀌면 이 네 줄도 함께 고침(S7l 11:55: 「오늘은 모으는 것이 없어요」는 편지 별명 · 글이 서버에 남는 것과 맞지 않아 바꿈 · S7l 12:3x VL [9] 5: 카카오로 시작하면 내 기록 넷도 서버에 한 벌 두는 것 · 상품권 문자의 보낸 전화번호가 남는 것을 1 · 3줄에 더함 — privacy.html 1 · 3 · 4 와 같은 뜻) -->
 <section class="hp-data" aria-labelledby="hp-dt">
