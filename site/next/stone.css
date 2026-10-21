@@ -43,6 +43,10 @@ html.white.home #view { display: flex; flex-direction: column; min-height: calc(
 html.white.home .s-hd { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); }
 html.white.home .s-h1 { margin: 0; font-size: var(--fs-6); font-weight: 800; line-height: 1; letter-spacing: -.035em; color: var(--ink); }
 html.white.home .s-art { flex: none; width: 150px; height: 120px; }
+/* 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」 · stone-clock.js) — 돌 그림 위에 바늘 그림을 겹침 · 칸 크기는 위 .s-art 그대로(밀림 0) */
+.s-clock { position: relative; display: block; }
+.s-clock img, .s-clock .s-hands { position: absolute; top: 0; left: 0; display: block; width: 100%; height: 100%; }
+.s-clock .s-hands { pointer-events: none; }
 
 /* 돌이 물음 한 줄 — 말풍선 + 보내기 */
 html.white.home .w-say { display: flex; align-items: center; gap: var(--sp-1); margin: 0; }

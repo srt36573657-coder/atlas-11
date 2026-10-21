@@ -1,10 +1,10 @@
-/* 뒤 하늘에 나는 것들 — 별똥별 · 별똥별 비 · 태양계 · 혜성 · 오로라 · 우주선 · 비행접시 · 용 두 마리 · 천사 다섯
-   사장님 2026-10-21(서울) 19:44 「배경에 우주 있잖아 별똘별 태양계 그리고 우주선 그리고 용 그리고  천사들이 판타스틱하게 날아다니고 아주 아름답게 빛나게 해」 · 20:22 「더 판타스틱하게 해」
+/* 뒤 하늘에 나는 것들 — 별똥별 · 별똥별 비 · 태양계 · 혜성 · 오로라 · 우주선 · 비행접시 · 용 두 마리 · 천사 다섯 · 피터팬과 팅커벨
+   사장님 2026-10-21(서울) 19:44 「배경에 우주 있잖아 별똘별 태양계 그리고 우주선 그리고 용 그리고  천사들이 판타스틱하게 날아다니고 아주 아름답게 빛나게 해」 · 20:22 「더 판타스틱하게 해」 · 21:21 「피터팬도 넣고 팅커벨넣고」
    그리는 곳 = 별 하늘(sky.js) 바로 위 제 층들 — 오로라 둘 · 해 빛살 하나(그림은 가만있고 층째 천천히 움직임 — 다시 그리지 않음) · 나는 것들 하나(.sky-near)
    캔버스 없음(규칙 50) · 글 속 꾸밈 없음(CSP — 층 자리만 CSSOM) · 빛 = 그림 안의 둥근 빛(방사 그라데이션)과 같은 길을 굵고 옅게 겹친 선(거름 없음)
    글 · 단추 · 칸은 손대지 않음 · 터지는 불꽃 · 축하 그림 없음(본질 「망치는 길」 폭죽) — 별똥별 비도 한 줄 꼬리들만
    기기 「움직임 줄이기」면 날지 않음(오로라 · 해 · 행성만 멈춘 그림) · 누르거나 내리는 동안 0.35초 쉼 · 창이 숨으면 sky.js 가 쉬고 다시 보이면 그 자리에서 이어 감(하늘 시계 vt)
-   처음 받으면 첫 쇼(별똥별 비 → 천사 다섯 → 우주선 → 용 두 마리 → 비행접시 → 혜성) · 그다음은 둘까지 겹쳐 날고 별똥별은 2.5 ~ 6초에 하나 · 별똥별 비는 35 ~ 50초에 한 번 */
+   처음 받으면 첫 쇼(별똥별 비 → 피터팬과 팅커벨 → 천사 다섯 → 우주선 → 용 두 마리 → 비행접시 → 혜성) · 그다음은 둘까지 겹쳐 날고 별똥별은 2.5 ~ 6초에 하나 · 별똥별 비는 35 ~ 50초에 한 번 */
 const NS = 'http://www.w3.org/2000/svg';
 const f1 = v => Math.round(v * 10) / 10, f2 = v => Math.round(v * 100) / 100;
 const TAU = Math.PI * 2, DEG = 180 / Math.PI;
@@ -68,8 +68,8 @@ const AZURE = {fill: '#62C9FF', edge: '#D2F3FF', fin: '#A08CFF', belly: '#E8F8FF
 export function plug() {
   let W = 0, H = 0, vh = 0, fsv = null, aur = null, rays = null, root = null, defs = null, sun = null, seq = 0;
   let act = [], tws = [], nextBig = 0, nextMet = 0, nextShower = 0, last = 0, vt = 0, showAt = -1, showI = 0, lastKind = '';
-  const SHOW = [[400, 'shower'], [1500, 'angels'], [7000, 'ship'], [12500, 'dragons'], [25500, 'ufo'], [31500, 'comet']];
-  const KINDS = ['angels', 'ship', 'dragons', 'ufo', 'comet'];
+  const SHOW = [[400, 'shower'], [1500, 'peter'], [9000, 'angels'], [16000, 'ship'], [22000, 'dragons'], [35000, 'ufo'], [42000, 'comet']];
+  const KINDS = ['peter', 'angels', 'ship', 'dragons', 'ufo', 'comet'];
   /* 누르거나 내리는 동안은 쉼(0.35초) — 손가락이 먼저(반응 0.2초 잣대) · 쉬는 동안 하늘 시계도 멈춤 */
   let hold = 0;
   const rest = () => { hold = performance.now() + 350; };
@@ -97,7 +97,7 @@ export function plug() {
     for (const p of PLANETS) grad(defs, 'radialGradient', 'flyP' + p.k, [[0, p.c, 0.55], [1, p.c, 0]]);
     buildSun(); buildRays(); buildAurora(); buildTwinkles();
     act = [];
-    if (showAt < 0) { showAt = vt; nextBig = vt + 38000; nextShower = vt + 42000; }
+    if (showAt < 0) { showAt = vt; nextBig = vt + 48000; nextShower = vt + 50000; }
     nextMet = Math.max(nextMet, vt + 2600);
   }
 
@@ -482,9 +482,60 @@ export function plug() {
     }};
   }
 
+  /* 피터팬과 팅커벨(사장님 2026-10-21 21:21) — 원작 동화(J. M. 배리 1904 연극 · 1911 「피터와 웬디」 — 누구나 쓸 수 있는 글)의 모습: 나뭇잎 옷 · 맨발 · 헝클어진 머리로 한 손을 앞으로 뻗고 나는 아이
+     팅커벨 = 작은 빛 요정(원작대로 「빛」으로 보이는 요정 · 잠자리 날개) · 피터 둘레를 맴돌며 금빛 요정 가루를 뿌림 · 가운데에서 한 바퀴 공중제비 · 영화 속 모습(옷 · 모자 · 머리 모양)은 따라 그리지 않음 */
+  function peter(t, dir) {
+    const g = mk('g', {class: 'sky-peter'}, root);
+    const trP = ribbon(g, defs, 'flyPt' + (++seq), [[0, '#E9FFF2', 0.55], [0.5, '#9EF0C4', 0.2], [1, '#9EF0C4', 0]], [8, 1.4], [0.18, 0.7]);
+    const trT = ribbon(g, defs, 'flyTt' + (++seq), [[0, '#FFF6DA', 0.95], [0.35, '#F2C46A', 0.5], [1, '#F2C46A', 0]], [9, 2], [0.22, 1]);
+    const dustT = dust(g, 30, '#FFE7A8', 1800, -0.5, 26, 0.95);
+    const P = mk('g', {}, g), C = '#F0FFF6', LEAF = '#9EF0C4';
+    // 몸 · 나뭇잎 옷(톱니 끝단) · 다리 · 팔 · 머리
+    const TUNIC = 'M9.5 -1.5C5 -3.2 -1 -3.2 -5 -1.8L-8.5 -0.2L-6.2 1.6L-9.8 3.2L-6 4L-8.4 6.8L-3.6 5.4L-3.8 8.4L-0.6 5.6C3 5 7 3.5 9.5 1.8Z';
+    const legs = glow(P, C, [7, 3, 1.1], [0.06, 0.2, 0.92]);
+    mk('path', {d: TUNIC, fill: LEAF, 'fill-opacity': 0.2}, P);
+    glow(P, LEAF, [8, 3.4, 1.1], [0.07, 0.22, 0.95]).d(TUNIC + 'M7.5 0.2C3.5 -0.3 -0.5 0.1 -4.5 1.3M2.5 0C1.5 1.6 0.5 2.8 -1 3.8M-1.5 0.4C-2.5 1.8 -3.6 2.8 -5 3.4M4.5 -0.1C4.5 -1.4 4 -2.2 3.2 -2.8');
+    const arm = glow(P, C, [6, 2.6, 1.1], [0.06, 0.2, 0.92]);
+    mk('circle', {cx: 13, cy: -3, r: 12, fill: 'url(#flyW)', opacity: 0.5}, P);
+    mk('circle', {cx: 13, cy: -3, r: 4.2, fill: '#FFF4E2'}, P);
+    glow(P, C, [5, 2.2, 1], [0.07, 0.24, 0.9]).d('M10.5 -6.8C8 -9.5 4.5 -10 1.5 -8.8M13 -7.3C11 -11 7 -12 3.5 -11.2M15.5 -6.5C14.5 -10.5 11.5 -12.5 7.5 -12.8M9 -4.8C6.5 -6 4.5 -5.6 2.5 -6.6'); // 바람에 뒤로 날리는 머리
+    // 팅커벨 — 빛 · 반짝 별 · 잠자리 날개 넷 · 작은 몸
+    const T = mk('g', {}, g);
+    mk('circle', {r: 18, fill: 'url(#flyG)'}, T);
+    const sp = mk('path', {d: twinkle(0, 0, 7), fill: '#FFF8E0', opacity: 0.7}, T);
+    const wings = mk('g', {}, T);
+    for (const [cx, cy, rx, ry, r] of [[-2.8, -2.6, 4.8, 2.2, -35], [2.8, -2.6, 4.8, 2.2, 35], [-2.2, 0.9, 3.1, 1.6, -15], [2.2, 0.9, 3.1, 1.6, 15]]) mk('ellipse', {cx, cy, rx, ry, transform: `rotate(${r} ${cx} ${cy})`, fill: '#E6FCFF', 'fill-opacity': 0.4, stroke: '#FFFFFF', 'stroke-opacity': 0.75, 'stroke-width': 0.5}, wings);
+    mk('path', {d: 'M0 -2.6C1.5 -1 1.7 1.7 0 3.6C-1.7 1.7 -1.5 -1 0 -2.6Z', fill: '#FFF1C8'}, T);
+    mk('circle', {cy: -3.6, r: 1.3, fill: '#FFF8E8'}, T);
+    const y0 = vh * rnd(0.38, 0.5), y1 = y0 - vh * rnd(0.06, 0.12), xs = dir > 0 ? -90 : W + 90, xe = dir > 0 ? W + 140 : -140, dur = 14000, K = 2, R = 50; // 공중제비가 돌 시계에 가리지 않게 가운데 높이
+    const pos = u => { let x = xs + (xe - xs) * u, y = y0 + (y1 - y0) * u - 26 * Math.sin(Math.PI * u); const k = (u - 0.38) / 0.24; if (k > 0 && k < 1) { x += dir * R * Math.sin(TAU * k); y -= R * (1 - Math.cos(TAU * k)); } return [x, y]; };
+    const hp = [], ht = []; let hs = 0, ds = 0;
+    return {g, big: true, grs: [trP.gr, trT.gr], step(now) {
+      const age = now - t, u = age / dur; if (u > 1.06) return false;
+      const uu = Math.min(1, u), [x, y] = pos(uu), [x2, y2] = pos(Math.min(1, uu + 0.004)), a = Math.atan2(y2 - y, x2 - x) * DEG;
+      P.setAttribute('transform', tf(x, y, a, K, K * dir));
+      const kick = Math.sin(age * 0.009);
+      legs.d(`M-6 0.5C-12 ${f1(-0.2 + kick)} -18 ${f1(0.4 - kick)} -24 ${f1(-0.4 + kick * 1.5)}C-26 ${f1(-1.2 + kick * 1.5)} -27.5 ${f1(-1 + kick * 1.5)} -28.5 ${f1(kick * 1.5)}M-5.5 3C-11 ${f1(5 - kick)} -16 ${f1(7.6 - kick)} -20 ${f1(7.2 - kick * 1.4)}C-22 ${f1(7 - kick * 1.4)} -23.5 ${f1(8 - kick * 1.4)} -24.5 ${f1(9.5 - kick * 1.4)}`);
+      arm.d(`M7 -1.5C12 -3.5 16 -4.8 21.5 ${f1(-6.2 + 0.6 * Math.sin(age * 0.004))}M6 1C3 3.5 0 5 -3 6`);
+      // 팅커벨 — 피터 둘레를 맴돌다 앞서 나감
+      const th = age * 0.0029, lead = 26 * Math.sin(age * 0.0011), tx = x + Math.cos(th) * 44 + dir * lead + rnd(-1, 1), ty = y + Math.sin(th) * 26 - 16 + rnd(-1, 1);
+      T.setAttribute('transform', tf(tx, ty, 0, 1.6, 1.6));
+      wings.setAttribute('transform', `scale(${f2(0.35 + 0.65 * Math.abs(Math.sin(age * 0.05)))} 1)`);
+      sp.setAttribute('transform', `rotate(${f1(age * 0.15)}) scale(${f2(0.7 + 0.3 * Math.sin(age * 0.01))})`);
+      if (u < 1 && now - hs > 40) { hs = now; hp.push([x - Math.cos(a / DEG) * 26 * K, y - Math.sin(a / DEG) * 26 * K]); ht.push([tx, ty]); if (hp.length > 22) hp.shift(); if (ht.length > 34) ht.shift(); }
+      if (u >= 1) { hp.shift(); ht.shift(); }
+      trP.draw(hp.slice().reverse());
+      trT.draw(u < 1 ? [[tx, ty], ...ht.slice().reverse()] : ht.slice().reverse());
+      if (u < 1 && now - ds > 60) { ds = now; dustT.add(now, tx + rnd(-4, 4), ty + rnd(-2, 4), rnd(0.8, 1.8)); }
+      dustT.step(now);
+      g.setAttribute('opacity', f2(Math.min(1, (1.06 - u) * 12)));
+      return true;
+    }};
+  }
+
   function spawn(kind, now, o) {
     const dir = Math.random() < 0.5 ? -1 : 1;
-    const f = kind === 'angels' ? angels(now, dir) : kind === 'ship' ? ship(now) : kind === 'dragons' ? dragons(now, dir) : kind === 'ufo' ? ufo(now) : kind === 'comet' ? comet(now) : kind === 'shower' ? shower(now) : meteor(now, o);
+    const f = kind === 'peter' ? peter(now, dir) : kind === 'angels' ? angels(now, dir) : kind === 'ship' ? ship(now) : kind === 'dragons' ? dragons(now, dir) : kind === 'ufo' ? ufo(now) : kind === 'comet' ? comet(now) : kind === 'shower' ? shower(now) : meteor(now, o);
     f.kind = kind; act.push(f);
     return f;
   }
