@@ -1,0 +1,183 @@
+{
+ "made": "2026-10-21T08:32:34.160Z",
+ "base": "https://aaa7377.com",
+ "app": "/",
+ "runs": [
+  {
+   "eng": "chromium",
+   "at": [
+    {
+     "tag": "a",
+     "t": 2022,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "−16% −5%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "p1",
+     "t": 6518,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "−32% +11%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "p2",
+     "t": 16518,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "2번 인터넷 플랫폼",
+     "v": "−5% +22%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "p3",
+     "t": 26517,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "3번 가공식품",
+     "v": "−9% +12%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "end",
+     "t": 40518,
+     "run": false,
+     "label": "한 해 다시 보기",
+     "dis": false,
+     "title": "3번 가공식품",
+     "v": "−23% −7%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "tap1",
+     "t": 42582,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "−8% +1%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "tap2",
+     "t": 44152,
+     "run": true,
+     "label": "이어 보기",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "−9% +1%",
+     "say": false,
+     "sw": 390
+    }
+   ],
+   "net": {
+    "theme-year.js": 200,
+    "theme-year.css": 200,
+    "data/theme-path.json": 200
+   },
+   "errs": []
+  },
+  {
+   "eng": "webkit",
+   "at": [
+    {
+     "tag": "a",
+     "t": 2697,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "0% 0%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "p1",
+     "t": 7197,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "−13% +7%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "p2",
+     "t": 17196,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "2번 인터넷 플랫폼",
+     "v": "−3% +2%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "p3",
+     "t": 27195,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "2번 인터넷 플랫폼",
+     "v": "−27% −7%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "end",
+     "t": 41195,
+     "run": false,
+     "label": "한 해 다시 보기",
+     "dis": false,
+     "title": "3번 가공식품",
+     "v": "−23% −7%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "tap1",
+     "t": 42951,
+     "run": true,
+     "label": "멈춤",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "−12% +1%",
+     "say": false,
+     "sw": 390
+    },
+    {
+     "tag": "tap2",
+     "t": 44563,
+     "run": true,
+     "label": "이어 보기",
+     "dis": false,
+     "title": "1번 연예 기획사",
+     "v": "−9% +2%",
+     "say": false,
+     "sw": 390
+    }
+   ],
+   "net": {
+    "theme-year.js": 200,
+    "data/theme-path.json": 200,
+    "theme-year.css": 200
+   },
+   "errs": []
+  }
+ ]
+}
