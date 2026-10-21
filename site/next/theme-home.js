@@ -146,7 +146,7 @@ export async function homeBlock() {
   // 2026-10-21 18:22 「그랴」(18:11 「구글과 잡스라면 … 뭘 고를까?」의 답 — 13번 업종 시세판 위 · 1번 두 줄 견주기 아래) — 카드 안: 업종 줄 셋 → 한 해 줄 그림(저절로 1 · 2 · 3) → 모두 보기 → 숫자는 「자세히」 안(접음) → 시계 읽는 법 → 처음이세요?
   const rows = top.map((i, k) => seasonRow(i, k)); if (rows[0]) rows[0].classList.add('th-now'); // 지금 줄 그림의 업종(처음 = 1번)
   box.append(h('div', {class: 'th-map th-map2'}, h('h2', {class: 'th-lt', text: '요즘 시장보다 힘이 붙은 곳'}), h('p', {class: 'th-lc', text: '닷새 동안 시장보다'}), h('div', {class: 'th-rows'}, rows),
-    yearBox(TH, top, rows), h('p', {class: 'th-cap th-cap1', text: '1번, 2번, 3번 줄 그림이 차례로 그려져요.'})));
+    yearBox(TH, top, rows), h('p', {class: 'th-cap th-cap1', text: '지난 1년 동안 걸어온 길이에요. 위 줄은 점이 많이 찬 차례예요. 숫자는 닷새 동안 시장보다 더 오른 만큼이에요.'}))); // 그림 아래 글 = 뜻(지난 기록 · 줄 차례의 까닭 · 숫자의 뜻) — 움직임 설명 대신(2026-10-22 총정리 · 감사 A2 · A4 · 그림 아래라 320 높이 그대로)
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
   box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄이 온 곳 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
   // 숫자는 접어 둠 — 주황 숫자 넷(사장님 2026-10-20 09:46 — 진짜 싹 · 새로 들어옴 · 싹 자리)과 점 넷 · 성적표는 「숫자로 자세히 보기」 안에 그대로

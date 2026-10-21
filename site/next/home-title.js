@@ -4,18 +4,20 @@
    쉬운 말(easy)과 곧은 말(direct)을 번갈아 · 6초마다 · 0.5초 동안 옅어지며 살짝 오르고 · 새 말이 아래에서 살짝 올라와 짙어짐(옮김 · 짙기만 — 입체 없음)
    한 줄 넉 자 + 띄어쓰기 하나 안쪽으로 두 줄(390 폭 48px · 돌 시계 옆 200px) · 제목 칸은 두 줄 자리 고정(stone.css .s-h1 min-height — 밀림 0)
    첫 말은 그대로 「지금 봄이 온 곳」(2026-10-21 00:51 · 00:59 사장님이 정하신 말) · 첫 그림 뒤 한가할 때 받음(가장 큰 그림을 늦추지 않음)
-   움직임 줄이기 · 영어 화면이면 돌리지 않음(첫 말만) · 창이 숨으면 쉼 · 제목이 화면에서 떨어지면 멈춤 · 글은 textContent 로만 */
+   움직임 줄이기 · 영어 화면이면 돌리지 않음(첫 말만) · 창이 숨으면 쉼 · 제목이 화면에서 떨어지면 멈춤 · 글은 textContent 로만
+   2026-10-22 총정리(사장님 04:09 「결과부터 나오는 구조」 · 감사 A1): 셋째 말 「꽃이 먼저 핀 곳」은 사이트가 가르치는 말(꽃 = 이미 된 테마)과 거꾸로 → 「싹이 먼저 튼 곳」(본질 1 · 6)
+     · 넷을 한 바퀴만 돌고 첫 말(「지금 봄이 온 곳」)에서 멈춤 — 끝은 늘 사장님이 정한 첫 말(읽는 도중 글이 끝없이 바뀌지 않게 · WCAG 2.2.2) */
 export const TITLES = Object.freeze([
   Object.freeze({t: '지금 봄이 온 곳', v: 'easy'}),
   Object.freeze({t: '시장보다 강한 업종', v: 'direct'}),
-  Object.freeze({t: '꽃이 먼저 핀 곳', v: 'easy'}),
+  Object.freeze({t: '싹이 먼저 튼 곳', v: 'easy'}),
   Object.freeze({t: '시장을 앞선 업종', v: 'direct'}),
 ]);
 export const EVERY_MS = 6000, FADE_MS = 500;
 const still = () => !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 const english = () => document.documentElement.classList.contains('en') || document.documentElement.lang === 'en';
 
-/** 제목 하나를 돌림 — 멈추는 함수를 돌려줌 */
+/** 제목 하나를 돌림 — 한 바퀴 돌아 첫 말(list[0])로 오면 멈춤 · 멈추는 함수를 돌려줌 */
 export function rotateTitle(el, {list = TITLES, every = EVERY_MS} = {}) {
   if (!el || still() || english() || list.length < 2) return () => {};
   let i = Math.max(0, list.findIndex(x => x.t === el.textContent.trim())), timer = 0, swap = 0;
@@ -32,6 +34,7 @@ export function rotateTitle(el, {list = TITLES, every = EVERY_MS} = {}) {
       el.classList.remove('tt-out'); el.classList.add('tt-in');
       void el.offsetWidth; // 새 말 자리(아래 · 옅음)를 한 번 그린 뒤 제자리로
       el.classList.remove('tt-in');
+      if (i === 0) { timer = 0; return; } // 한 바퀴 끝 — 첫 말에서 멈춤(2026-10-22 총정리 · 감사 A1)
       timer = setTimeout(next, every);
     }, FADE_MS);
   };

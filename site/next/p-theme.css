@@ -70,7 +70,12 @@
 .th-rbar { display: block; }
 .th-rb.all .th-bar1 { fill: #8A8A8A; }
 .th-fold { margin: var(--sp-2) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #3A3A3A; border-radius: 16px; color: #D6D6D6; font-size: var(--fs-1); }
-.th-fold summary { display: flex; align-items: center; min-height: 48px; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; }
+.th-fold summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; list-style: none; }
+.th-fold summary::-webkit-details-marker { display: none; }
+.th-fold summary::after { content: "›"; flex: none; color: #BDBDBD; font-size: var(--fs-3); transition: transform .15s; } /* 접는 칸 표시 — 첫 화면 「숫자로 자세히 보기」(th-hfold)와 같은 꼴(2026-10-22 총정리 · 감사 A12 「글 상자처럼 보여 못 엶」) */
+.th-fold[open] summary::after { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) { .th-fold summary::after { transition: none; } }
+.th-sub.th-key { color: var(--ink); font-weight: 700; } /* 그 쪽의 결 한 줄(무엇을 보라 · 센 숫자 그대로의 결론) — 글씨 크기는 그대로(fs-2) */
 .th-fold p { margin: 0 0 var(--sp-1); }
 .tc .up { color: var(--up); } .tc .dn { color: var(--down); } .tc .fl { color: var(--flat); }
 /* 일곱 단 줄(app.js chaps · 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」) — 테마 쪽 안에서는 쪽 여백(.tc)과 줄을 맞춤(칸 여백 두 번 겹치지 않게) */

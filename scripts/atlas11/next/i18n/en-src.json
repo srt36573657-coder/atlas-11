@@ -9034,6 +9034,12 @@
   "문자를 보내면 보낸 전화번호가 운영자 휴대폰에 남아요.": "If you text us, your phone number stays on the operator's phone.",
   "보냈으면 보낸 화면을 찍어 두세요. {n}명이 되면 다음 걸음이에요.": "If you sent it, take a screenshot. At {n} friends, go to the next step.",
   "친구 {n}명 소개하고 우주 영상 {n}분 보기": "tell {n1} friends and watch a {n2}-minute universe video",
-  "하얀 비숑": "a white Bichon"
+  "하얀 비숑": "a white Bichon",
+  "싹이 먼저 튼 곳": "Where sprouts came up first",
+  "왼쪽 위 {q} 칸을 {e}가 먼저 봐요. 아직 덜 올랐지만 지난 닷새는 시장보다 더 오른 곳이에요.": "{e} looks first at the top-left {q} box. Not up much yet, but ahead of the market over the last 5 days.",
+  "점 넷이 다 찬 날은 {n}번 가운데 {n}번, 아무 업종은 {n}번 한 달 뒤 꽃 선을 넘었어요.": "On days with all four dots, {n2} in {n1} crossed the bloom line a month later. For any industry, {n3}.",
+  "지난 {n}년, 싹 자리에서 점이 {n}개였던 날은 {n}번 가운데 {n}번 한 달 뒤 꽃 선을 넘었어요. 아무 업종은 {n}번이었어요.": "Past {n1} {pl:year|years}: on sprout-zone days with {n2} {pl:dot|dots}, {n4} in {n3} crossed the bloom line a month later. For any industry, {n5}.",
+  "그 가운데 싹이나 꽃 자리가 {n}곳이에요.": "{n} of them {pl:is a sprout or bloom|are sprouts or blooms}.",
+  "지난 {n}년 동안 걸어온 길이에요. 위 줄은 점이 많이 찬 차례예요. 숫자는 닷새 동안 시장보다 더 오른 만큼이에요.": "The path over the past {n} {pl:year|years}. The rows above are ordered by dots filled. Numbers show how much more each rose than the market over 5 days."
  }
 }

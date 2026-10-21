@@ -7,6 +7,7 @@
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
 import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock} from './theme-home.js';
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
+import {NAME, josa} from './brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않음
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
 
 const nx = () => globalThis.NX;
@@ -15,6 +16,7 @@ const sv = (...a) => nx().sv(...a);
 const enc = s => encodeURIComponent(s);
 const num = n => Number(n).toLocaleString('ko-KR');
 const md = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일` : '?');
+const ymd = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? `${+d.slice(0, 4)}년 ${md(d)}` : '?'); // 해까지(여러 해에 걸친 기록 — 「6월 29일부터 9월 9일까지」가 두 달처럼 읽히던 것 · 감사 A12)
 const cls = v => (!Number.isFinite(v) ? '' : Math.round(v * 10) === 0 ? 'fl' : v > 0 ? 'up' : 'dn');
 
 /* ── 자료(한 번 받고 기억 · 못 받으면 15초 뒤 다시) ── */
@@ -83,7 +85,11 @@ async function pHow() {
   const R = TH.record, y = yearsOf(TH);
   const zones = [['Q', '아직 꽃 선 전이고, 지난 닷새는 시장보다 덜 올랐어요.'], ['S', '아직 꽃 선 전이지만, 지난 닷새는 시장보다 더 올랐어요.'], ['B', '꽃 선을 넘었고, 지난 닷새도 시장보다 더 올랐어요.'], ['W', '꽃 선을 넘었지만, 지난 닷새는 시장보다 덜 올랐어요.']]; // 결정표 2 그대로
   const byDots = (R?.byDots ?? []).map((b, k) => h('div', {class: 'th-rb'}, h('span', {class: 'th-rbk', text: '점 ' + k + '개'}), h('span', {class: 'th-rbb'}, rb(b.p)), h('b', {text: b.p == null ? '?' : Math.round(b.p) + '번'})));
+  // 2026-10-22 총정리(사장님 04:09 「결과부터 나오는 구조」 · 감사 A11 · A12): 그림 위에 「무엇을 보라」 한 줄 · 성적표 머리 밑에 센 숫자 그대로의 결론 한 줄(판단 말 없음 · 「확률」 낱말 없음)
+  const p4 = R?.byDots?.[4]?.p, pAll = R?.all?.p;
+  const recKey = Number.isFinite(p4) && Number.isFinite(pAll) ? `점 넷이 다 찬 날은 100번 가운데 ${Math.round(p4)}번, 아무 업종은 ${Math.round(pAll)}번 한 달 뒤 꽃 선을 넘었어요.` : '? 아직 못 셌어요.';
   return {title: '시계 읽는 법', nodes: [shell(3, '시계 읽는 법', 'today', '네 자리만 알면 돼요.', ['테마 시계', '#/'], ['싹 자리 전부', '#/t/sprout'], [
+    h('p', {class: 'th-sub th-key', text: `왼쪽 위 「싹」 칸을 ${josa(NAME, '가')} 먼저 봐요. 아직 덜 올랐지만 지난 닷새는 시장보다 더 오른 곳이에요.`}),
     h('div', {class: 'th-map'}, clock(TH), h('p', {class: 'th-cap'}, h('span', {text: '가로는 한 달 동안 시장보다 더 오른 만큼이에요.'}), h('span', {text: '세로는 지난 닷새 동안 시장보다 더 오른 만큼이에요.'}), h('span', {text: '한 달 동안 시장보다 5% 넘게 더 오르면 꽃 선을 넘어요.'}))),
     h('ol', {class: 'th-steps'}, zones.map(([z, t], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {class: 'th-z ' + z, text: ZONES[z]}), h('span', {text: t}))))),
     // 행성 열은 2026-10-21 18:22 「그랴」(17:51 「이렇기 행성 나오는것 지우고 … 장난스러워」)로 지움 — 시계의 업종은 작은 점
@@ -91,10 +97,11 @@ async function pHow() {
     h('ol', {class: 'th-steps'}, [['시장보다 힘이 붙어요', '지난 닷새 시장보다 2% 넘게 더 올랐어요.'], [DOT_TEXT[1], '열흘 동안 2% 넘게 오른 회사가 절반 이상이에요.'], ['큰 회사도 움직여요', '가장 큰 회사 셋의 평균이 열흘 동안 1% 이상 올랐어요.'], ['값이 진짜로 올라요', '업종 값이 열흘 전보다 올랐어요.']]
       .map(([a, b], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {text: a}), h('span', {text: b}))))),
     h('h2', {class: 'th-h2', text: '돌이 성적표'}),
+    h('p', {class: 'th-sub th-key', text: recKey}),
     h('p', {class: 'th-sub', text: `지난 ${y ?? '?'}년 기록이에요. 싹 자리였던 날, 100번 가운데 몇 번이 한 달 뒤 꽃 선을 넘었을까?`}),
     h('div', {class: 'th-rbs'}, byDots, h('div', {class: 'th-rb all'}, h('span', {class: 'th-rbk', text: '아무 업종'}), h('span', {class: 'th-rbb'}, rb(R?.all?.p)), h('b', {text: R?.all?.p == null ? '?' : Math.round(R.all.p) + '번'}))),
     h('details', {class: 'th-fold'}, h('summary', {text: '돌이는 이렇게 셉니다'}),
-      h('p', {text: `${md(TH.recFrom)}부터 ${md(TH.recTo)}까지, 업종마다 날마다 셌어요. 같은 업종의 이어진 날도 하루씩 셌어요.`}),
+      h('p', {text: `${ymd(TH.recFrom)}부터 ${ymd(TH.recTo)}까지, 업종마다 날마다 셌어요. 같은 업종의 이어진 날도 하루씩 셌어요.`}),
       h('p', {text: '지금 상장된 회사로만 셌어요. 큰 회사 셋은 오늘 몸값 차례로 지난날도 셌어요.'}),
       h('p', {text: '시장이 크게 내린 날 뒤에는 덜 내린 업종도 싹 자리에 많이 들어와요.'}),
       h('p', {text: '앞날을 맞히는 숫자가 아니에요. 지난 기록에서 센 횟수예요.'})),
@@ -121,6 +128,14 @@ async function pZone(z, f = '') {
   return {title: T[0], nodes: [shell(T[1], T[0], T[2], T[3], prev, next, body)]};
 }
 const ckRow = (ok, t, d) => h('div', {class: 'th-ck'}, h('b', {class: ok ? 'y' : 'n', 'aria-label': ok ? '참' : '아님', text: ok ? '✓' : '✗'}), h('span', {class: 'th-st'}, h('span', {class: 'th-ckt', text: t}), d ? h('span', {class: 'th-ckd', text: d}) : null));
+/** 싹 자리 업종의 「한 달 뒤 꽃 선을 넘을까?」 바로 밑 — 같은 점 수였던 날의 지난 기록(결정표 6 · 앞날을 맞히는 숫자 아님 · 없으면 줄 없음)
+ *  2026-10-22 총정리(사장님 04:09 · 감사 A18): 물음 옆에 지난 기록이 없어 앞날 맞히기 놀이처럼 읽히던 것 */
+function recOf(TH, i) {
+  if (i?.z !== 'S') return null;
+  const y = yearsOf(TH), p = TH?.record?.byDots?.[i.sc]?.p, all = TH?.record?.all?.p;
+  if (!y || !Number.isFinite(p) || !Number.isFinite(all)) return null;
+  return h('p', {class: 'th-cap2', text: `지난 ${y}년, 싹 자리에서 점이 ${num(i.sc)}개였던 날은 100번 가운데 ${Math.round(p)}번 한 달 뒤 꽃 선을 넘었어요. 아무 업종은 ${Math.round(all)}번이었어요.`});
+}
 async function pInd(name, sub) {
   const [TH, TM] = await Promise.all([themeData(), moreData()]);
   const i = indOf(TH, name);
@@ -139,6 +154,7 @@ async function pInd(name, sub) {
       ckRow(i.dots[0], DOT_TEXT[0], `지난 닷새 시장보다 ${pp(i.y)}%p`), ckRow(i.dots[1], DOT_TEXT[1], `${num(i.tot)}곳 가운데 ${num(i.up)}곳이 2% 넘게 올랐어요`),
       ckRow(i.dots[2], DOT_TEXT[2], i.bigAvg == null ? '? 큰 회사 값을 못 받았어요' : `가장 큰 회사 셋 평균 ${pp(i.bigAvg)}%`), ckRow(i.dots[3], DOT_TEXT[3], `열흘 동안 ${pp(i.m10)}%`),
       h('p', {class: 'th-sub', text: i.z === 'S' && i.sc === 4 ? '진짜 싹이에요. 한 달 뒤 꽃 선을 넘을까?' : i.z === 'S' ? '싹 자리지만, 점이 덜 찼어요. 꽃 선을 넘을까?' : i.z === 'B' ? '이미 꽃 자리예요. 늦은 건 아닐까?' : i.z === 'W' ? '꽃이 지는 중이에요. 다시 잠잠으로 갈까?' : '아직 잠잠해요. 힘이 붙을까?'}),
+      recOf(TH, i),
       watchBtn(i), h('a', {class: 'th-hi', href: '#/t/alert', text: '알림 설정 ›'})]; // 관심 업종 담기(자리가 바뀌면 첫 화면에서 알림)
     if (lead && nx()?.chaps) { nx().setTrail?.({code: lead.c, ind: name, name: lead.n}); body.unshift(nx().chaps(lead.c, '2')); } // 일곱 단 줄(2단 · 3단부터는 앞선 회사로 — 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」)
   } else if (sub === 'path') {
@@ -169,7 +185,7 @@ async function pInd(name, sub) {
     const same = (TH.inds ?? []).filter(o => o.g && o.g === i.g && o.n !== name).sort((a, b) => b.x - a.x || (a.n < b.n ? -1 : 1)); // 보이는 숫자(한 달) 차례
     const live = same.filter(o => o.z === 'S' || o.z === 'B').length;
     body = [h('h2', {class: 'th-ans'}, h('span', {text: (i.gn ?? '같은 무리') + ' '}), h('em', {'data-tr': '업종', text: num(same.length) + '곳'})),
-      h('p', {class: 'th-sub', text: `그 가운데 싹이나 꽃 자리가 ${num(live)}곳이에요. 함께 움직이면 테마가 커질 수 있어요.`}),
+      h('p', {class: 'th-sub', text: `그 가운데 싹이나 꽃 자리가 ${num(live)}곳이에요.`}), // 앞날 말(「함께 움직이면 테마가 커질 수 있어요」)은 지움 — 지난 사실에서 끝냄(2026-10-22 총정리 · 감사 A18 · 본질 3)
       h('div', {class: 'th-rows'}, same.map(o => simpleRow(o, {zone: true}))), h('p', {class: 'th-cap2', text: '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'})];
   }
   return {title: IND_SUB[k][1] ?? name, nodes: [shell(no, IND_SUB[k][1] ?? name, art, sayT, prev, next, [...body, asOf(TH)])]};
