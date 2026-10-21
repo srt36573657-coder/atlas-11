@@ -1,15 +1,13 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-21T19:34:56.398Z",
+ "at": "2026-10-21T19:52:58.628Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 420,
-  "fail": 1
+  "pass": 421,
+  "fail": 0
  },
- "fails": [
-  "③ 가장 큰 그림 2.5초 안(느린 4G) — 2508ms"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
@@ -681,8 +679,8 @@
    }
   },
   "speed": {
-   "lcp": 2508,
-   "inp": 48,
+   "lcp": 2384,
+   "inp": 40,
    "cls": 0.007
   }
  },
@@ -690,6 +688,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
