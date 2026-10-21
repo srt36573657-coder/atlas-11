@@ -1,25 +1,23 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-21T09:42:40.446Z",
+ "at": "2026-10-21T09:51:50.798Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 420,
-  "fail": 1
+  "pass": 421,
+  "fail": 0
  },
- "fails": [
-  "320 × 568 테마 시계 그림 한 화면 안 — 그림 아래 535 > 아래 단추 500"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
-    "ess": 1090,
+    "ess": 1042,
     "find": 776,
-    "today": 1182,
-    "gdr": 1531,
-    "all": 1531
+    "today": 1134,
+    "gdr": 1483,
+    "all": 1483
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -180,7 +178,7 @@
    ],
    "theme": {
     "top": 232,
-    "clockBottom": 599
+    "clockBottom": 551
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -200,11 +198,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 967,
+    "ess": 919,
     "find": 776,
-    "today": 1059,
-    "gdr": 1408,
-    "all": 1408
+    "today": 1011,
+    "gdr": 1360,
+    "all": 1360
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -355,7 +353,7 @@
    ],
    "theme": {
     "top": 232,
-    "clockBottom": 599
+    "clockBottom": 551
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -681,15 +679,15 @@
    }
   },
   "speed": {
-   "lcp": 2324,
+   "lcp": 2308,
    "inp": 40,
-   "cls": 0.007
+   "cls": 0.011
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
