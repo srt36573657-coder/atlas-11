@@ -2,6 +2,7 @@
    북극성을 가운데 두고 아주 천천히 돎(13분에 한 바퀴 · 북쪽 하늘처럼 반시계) · 별은 작게 숨 쉼 · 백 개에 일곱 개꼴 밝은 별 = 번지는 빛 + 십자 빛(3.6 ~ 7초에 한 번)
    별똥별은 16 ~ 28초에 하나 · 느리고 옅게 · 기기가 「움직임 줄이기」면 그대로 멈춘 하늘 한 장 · 창이 안 보이면 쉼
    그리는 것은 평평한 SVG 그림 한 장(캔버스 없음 — 규칙 50 · next-modules ③ · check_share 「폭죽 0」) · 글 · 단추 · 칸에는 손대지 않음 · html.space 일 때만 켬
+   나는 것들(별똥별 · 태양계 · 우주선 · 용 · 천사 — sky-fly.js · 사장님 2026-10-21 19:44)은 첫 그림 뒤 한가할 때 받아 이 그림 한 장 안 맨 위 묶음에 그림 · 날 때는 초당 30번
    그림 높이 = 창 높이와 기기 높이 가운데 큰 쪽(폰 주소 막대가 숨었다 나와도 하늘이 튀지 않음) · 폭이 바뀌면 다시 그림 · 그리는 빠르기 초당 15번(별똥별 때 30번) · 하늘은 제 층(space.css will-change)이라 글판은 다시 안 그림 */
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -28,6 +29,8 @@ function start() {
   const TW = [[0, 1], [1.7, 0.75], [3.4, 0.55], [5.1, 0.35]];
   let W = 0, H = 0, pole = {x: 0, y: 0}, ang = 0, met = null, nextMet = 0, raf = 0, lastT = 0, lastDraw = 0;
   let rot = null, tw = [], bright = [], polar = null, metLine = null, metGrad = null;
+  const plug = []; // 이 그림에 붙는 것(sky-fly.js) — build · draw · busy
+  const api = () => ({sv, W, H, vh: window.innerHeight || H});
 
   function build() {
     const vh = window.innerHeight || 640;
@@ -69,6 +72,7 @@ function start() {
     mk('path', {d: 'M-15 0H15M0-15V15', fill: 'none', stroke: '#FFF6D6', 'stroke-width': 1, 'stroke-linecap': 'round', opacity: 0.7}, polar);
     metLine = mk('line', {x1: 0, y1: 0, x2: 1, y2: 0, stroke: 'url(#skyMet)', 'stroke-width': 1.6, 'stroke-linecap': 'round', opacity: 0}, sv);
     met = null;
+    for (const p of plug) p.build(api());
   }
 
   function draw(now) {
@@ -85,6 +89,7 @@ function start() {
       b.gl.setAttribute('transform', `rotate(${-deg}) scale(${r3(b.rr * (3.5 + 3.5 * t))})`); // 십자 빛은 늘 가로 · 세로
     }
     polar.setAttribute('opacity', r3(move ? 0.8 + 0.2 * Math.sin(now * 0.0011) : 0.9));
+    for (const p of plug) p.draw(now, move);
     if (!move) { met = null; metLine.setAttribute('opacity', 0); return; }
     if (!met && now > nextMet) { const vh = window.innerHeight || H; met = {x: W * (0.35 + Math.random() * 0.6), y: vh * (0.08 + Math.random() * 0.4), vx: -(0.10 + Math.random() * 0.05), vy: 0.05 + Math.random() * 0.04, t0: now}; }
     if (met) {
@@ -95,13 +100,17 @@ function start() {
       if (age > life) { met = null; metLine.setAttribute('opacity', 0); nextMet = now + 16000 + Math.random() * 12000; }
     }
   }
-  function loop(now) { raf = requestAnimationFrame(loop); if (now - lastDraw < (met ? 33 : 66)) return; lastDraw = now; draw(now); }
+  function loop(now) { raf = requestAnimationFrame(loop); if (now - lastDraw < (met || plug.some(p => p.busy()) ? 33 : 66)) return; lastDraw = now; draw(now); }
   const go = () => { if (!raf && !still() && !document.hidden) { lastT = 0; raf = requestAnimationFrame(loop); } };
   const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
 
   build(); draw(performance.now());
   nextMet = performance.now() + 6000;
   go();
+  /* 나는 것들 — 창 load 뒤 한가할 때 받음(첫 그림 · 첫 반응을 늦추지 않음) · 못 받으면 별 하늘 그대로 */
+  const fly = () => import('./sky-fly.js').then(m => { const p = m.plug(); plug.push(p); p.build(api()); draw(performance.now()); globalThis.__skyFly = p; }).catch(() => {});
+  const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(fly, {timeout: 2500}) : setTimeout(fly, 600));
+  if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true});
   let rs = 0;
   window.addEventListener('resize', () => {
     clearTimeout(rs);

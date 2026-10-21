@@ -3,5 +3,5 @@
    글 · 단추 · 칸에는 그림자 · 광택 · 입체 없음(잣대 그대로) · 별빛 번짐은 그 그림 안에만 · html.space 일 때만
    쌓는 차례: body 가 제 층을 엶(isolation) → 하늘은 body 바탕 바로 위 · 글판 · 위 막대 · 아래 단추 · 뜨는 창은 모두 그 위(예전 층 차례 그대로) */
 html.space body { isolation: isolate; }
-.stars { position: fixed; top: 0; left: 0; z-index: -1; display: block; pointer-events: none; will-change: transform; } /* 제 층 — 별이 움직여도 글판은 다시 안 그림 */
+.stars, .sky-near { position: fixed; top: 0; left: 0; z-index: -1; display: block; pointer-events: none; will-change: transform; } /* 제 층 — 별이 움직여도 글판은 다시 안 그림 · .sky-near = 나는 것들(sky-fly.js — 별똥별 · 태양계 · 우주선 · 용 · 천사 · 사장님 2026-10-21 19:44) 층 · 별 하늘 바로 위 */
 /* 위 막대 · 아래 단추는 밤 바탕 그대로(stone.css · 흐림 거름 없음 — 잣대 「광택 없음」) */
