@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-21T10:17:46.790Z",
+ "at": "2026-10-21T13:34:54.385Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -679,16 +679,16 @@
    }
   },
   "speed": {
-   "lcp": 1068,
+   "lcp": 1112,
    "inp": 32,
-   "cls": 0.006
+   "cls": 0.004
   }
  },
  "net": {
-  "retry": 3,
+  "retry": 6,
   "why": {
-   "HTTP 403": 1,
-   "열기 실패": 2
+   "HTTP 403": 2,
+   "열기 실패": 4
   }
  },
  "ok": true,
