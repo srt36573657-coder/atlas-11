@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-21T08:30:23.605Z",
+ "at": "2026-10-21T10:17:46.790Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
-    "ess": 1371,
+    "ess": 1042,
     "find": 776,
-    "today": 1463,
-    "gdr": 1812,
-    "all": 1812
+    "today": 1134,
+    "gdr": 1483,
+    "all": 1483
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 102,
+   "themeChars": 95,
    "top": [
     [
      35,
@@ -177,8 +177,8 @@
     ]
    ],
    "theme": {
-    "top": 256,
-    "clockBottom": 512
+    "top": 232,
+    "clockBottom": 551
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -196,13 +196,13 @@
   },
   "back": {
    "bodyLum": 0.0034637699048826634,
-   "chars": 102,
+   "chars": 105,
    "blocks": {
-    "ess": 1248,
+    "ess": 919,
     "find": 776,
-    "today": 1340,
-    "gdr": 1688,
-    "all": 1688
+    "today": 1011,
+    "gdr": 1360,
+    "all": 1360
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +228,7 @@
     true,
     true
    ],
-   "themeChars": 102,
+   "themeChars": 95,
    "top": [
     [
      24,
@@ -276,6 +276,11 @@
      "전부 보기"
     ],
     [
+     4,
+     "- b",
+     "진화 1번째"
+    ],
+    [
      3,
      "today span",
      "코스피"
@@ -311,6 +316,11 @@
      "대장주"
     ],
     [
+     3,
+     "- span.when",
+     "채점 전"
+    ],
+    [
      2,
      "- span.s-who",
      "돌이"
@@ -339,21 +349,11 @@
      2,
      "gdr span",
      "조건"
-    ],
-    [
-     2,
-     "- b",
-     "진화"
-    ],
-    [
-     2,
-     "- span.when",
-     "보기"
     ]
    ],
    "theme": {
-    "top": 256,
-    "clockBottom": 512
+    "top": 232,
+    "clockBottom": 551
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -679,9 +679,9 @@
    }
   },
   "speed": {
-   "lcp": 1084,
-   "inp": 40,
-   "cls": 0.003
+   "lcp": 1068,
+   "inp": 32,
+   "cls": 0.006
   }
  },
  "net": {
