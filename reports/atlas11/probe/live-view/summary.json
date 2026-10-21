@@ -1,5 +1,5 @@
 {
- "made": "2026-10-21T18:22:48.506Z",
+ "made": "2026-10-21T20:23:49.264Z",
  "base": "https://aaa7377.com",
  "live": true,
  "media": [
@@ -133,6 +133,7 @@
   "reports/atlas11/probe/live-view/p22-slide1.png",
   "reports/atlas11/probe/live-view/p21-sec-slide.png",
   "reports/atlas11/probe/live-view/p21-sec-industry.png",
+  "reports/atlas11/probe/live-view/p23-gift-room.png",
   "reports/atlas11/probe/live-view/p23-hello-promo.png",
   "reports/atlas11/probe/live-view/p26-hello-video.png",
   "reports/atlas11/probe/live-view/p27-hello-intro.png",
@@ -381,19 +382,19 @@
       "u": "/media/universe.mp4",
       "code": 200,
       "type": "video/mp4",
-      "len": 3709976
+      "len": 3788206
      },
      {
       "u": "/media/universe.webm",
       "code": 200,
       "type": "video/webm",
-      "len": 3859074
+      "len": 3895512
      },
      {
       "u": "/media/universe-poster.jpg",
       "code": 200,
       "type": "image/jpeg",
-      "len": 27730
+      "len": 27718
      }
     ]
    },
@@ -401,6 +402,24 @@
     "got": false,
     "box": "친구 3명에게 소개하고\n우주 영상 1분을 보면\n스타벅스 상품권 1만원!\n\n먼저 알려 드려요\n상품권은 우주 영상 1분을 끝까지 본 분께만 드려요. 이 약속은 꼭 지켜요.\n\n카톡으로 친구 3명에게 돌이를 소개해 주세요.\n아래 우주 영상 1분을 끝까지 봐 주세요.\n「상품권 받기」를 누르고, 보낸 화면을 찍어 문자로 보내 주세요.\n스타벅스 상품권 1만원을 보내 드려요.\n돌이의 우주 · 1분\n우주선, 용, 오로라가 나와요.\n우주 영상 보기\n\n끝까지 다 봤어요.\n\n이 휴대폰에서 영상을 끝까지 봤어요. 상품권을 받을 수 있어요.\n\n상품권 받기\n전화\n\n문자 번호 010-9011-7377\n\n1분은 소중한 시간이에요. 내어 주셔서 고마워요.\n3명마다 1만원씩, 여러 번 받을 수 있어요.\n이벤트가 끝날 때는 이 자리에 먼저 알려 드려요.",
     "sms": "상품권 받기"
+   },
+   "home": {
+    "href": "#/gift",
+    "w": 48,
+    "h": 48,
+    "top": 8,
+    "inTop": true
+   },
+   "room": {
+    "h1": "상품권",
+    "steps": 3,
+    "got": true,
+    "text": "상품권\n\n스타벅스 상품권 1만원\n친구 3명에게 소개하고 우주 영상 1분을 보면 드려요.\n\n먼저 알려 드려요\n상품권은 우주 영상 1분을 끝까지 본 분께만 드려요. 이 약속은 꼭 지켜요.\n1\n친구 3명에게 소개해요\n\n카톡으로 돌이를 보내고, 보낸 화면을 찍어 두세요.\n\n친구에게 보내기\n2\n우주 영상 1분을 끝까지 봐요\n\n우주선, 용, 오로라가 나와요.\n\n우주 ",
+    "ctl": false,
+    "src": [
+     "/media/universe.mp4",
+     "/media/universe.webm"
+    ]
    }
   },
   "ok": true
@@ -430,7 +449,7 @@
     ],
     [
      "돌이!",
-     1
+     0.975356
     ]
    ],
    "shown": false,
@@ -441,7 +460,7 @@
     615,
     844
    ],
-   "at": 2703
+   "at": 2704
   },
   "i4": {
    "intro": true,
@@ -452,7 +471,7 @@
     1,
     1
    ],
-   "at": 4003
+   "at": 4004
   },
   "i2": {
    "intro": false,
@@ -709,7 +728,7 @@
   "owner": false,
   "foreign": 403,
   "h1": "금요일 밤,편지가 열려요",
-  "clock": "여는 밤까지 1일 16시간 34분 남았어요",
+  "clock": "여는 밤까지 1일 14시간 33분 남았어요",
   "guest": "초대받은 분만 쓸 수 있어요",
   "write": false,
   "sw": 390,
@@ -1093,7 +1112,7 @@
    },
    {
     "url": "/#/up",
-    "n": 3888,
+    "n": 3835,
     "bad": 0,
     "sel": true,
     "sw": 390,
