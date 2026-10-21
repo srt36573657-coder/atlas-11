@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-21",
- "fetchedAt": "2026-10-21T12:55:29Z",
- "file": "reports/atlas11/context/2026-10-21/2026-10-21T12-55-29Z.json",
+ "fetchedAt": "2026-10-21T13:15:42Z",
+ "file": "reports/atlas11/context/2026-10-21/2026-10-21T13-15-42Z.json",
  "summary": {
   "day": "2026-10-21",
-  "fetchedAt": "2026-10-21T12:55:29Z",
+  "fetchedAt": "2026-10-21T13:15:42Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-21",
@@ -32,11 +32,11 @@
   "news": {
    "stocks": 365,
    "raw": 7209,
-   "distinct": 7152,
-   "republished": 57,
+   "distinct": 7153,
+   "republished": 56,
    "sameArticle": 0,
    "stocksWithTodayNews": 208,
-   "todayDistinct": 1540
+   "todayDistinct": 1541
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-21",
-     "value": 1326.5,
-     "changePct": -0.04
+     "value": 1327,
+     "changePct": 0
     },
     "rows": 10
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-21",
-     "value": 1326.5,
+     "value": 1327,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
