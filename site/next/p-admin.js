@@ -75,6 +75,48 @@ export async function renderAdmin() {
   const days = Array.isArray(D?.json?.days) ? D.json.days : null;
   const sum = days ? days.reduce((a, d) => a + (Number.isInteger(d.done) ? d.done : 0), 0) : null;
   root.append(h('section', {class: 'adm-sec'}, h('h2', {text: '가입한 사람'}), h('p', {text: sum == null ? (on ? '? 가입 수를 받지 못했어요.' : '카톡 가입이 켜지면 여기에 쌓여요.') : `지난 30일 동안 ${sum}명이 가입했어요.`})));
+  root.append(await helpDesk()); // ④ 고객센터 글(사장님 2026-10-21 22:54 · 22:55 · p-help.js)
   return {title: '관리자 화면', nodes: [root]};
 }
 export const render = renderAdmin;
+
+/* ── 고객센터 글(사장님 2026-10-21 22:54 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · /api/help/all · lib/atlas11/help.mjs) ──
+   새것부터 · 한마디는 「읽음」 · 물음은 답 칸 + 「모두에게 보이기」(물음 글은 다듬어 보일 수 있음) · 지우기는 두 번 눌러야 · 말투(쉬운 말 · 곧은 말)를 보여 줌 — 같은 말투로 답하게
+   글은 textContent 로만 · 사람이 쓴 글은 lang="ko" */
+const PAGE_NAME = {home: '첫 화면', why: '매매일지', w: '회사', shorts: '시황', sub: '관심', me: '보유종목', t: '테마', jinhwa: '진화', find: '찾기', ch: '업종', surge: '급등', cal: '달력', cond: '조건', info: '도움말', up: '업데이트 기록', talk: '이야기', time: '봉인', today: '오늘 장', gdr: '돌이 칸', admin: '관리자 화면'};
+const TONE_NAME = {good: '좋았어요', want: '바라요', broken: '안 돼요'};
+const postOwner = async body => { try { const r = await fetch('/api/help', {method: 'POST', headers: {'content-type': 'application/json', 'x-atlas-owner': ownerKey() ?? ''}, body: JSON.stringify(body), cache: 'no-store', credentials: 'same-origin'}); return r.status; } catch { return 0; } };
+async function helpDesk() {
+  const sec = h('section', {class: 'adm-sec adm-help'}, h('h2', {text: '고객센터 글'}));
+  const r = await getOwner('/api/help/all'), items = Array.isArray(r.json?.items) ? r.json.items : null, c = r.json?.counts;
+  if (!items) { sec.append(h('p', {class: 'empty', text: r.status === 403 ? '? 사장님 휴대폰이 아니에요.' : '? 고객센터 글을 받지 못했어요.'})); return sec; }
+  sec.append(h('p', {text: `새 글 ${c?.fresh ?? 0}개 · 답을 기다리는 물음 ${c?.waiting ?? 0}개 · 모두 ${c?.all ?? items.length}개`}));
+  if (!items.length) { sec.append(h('p', {text: '아직 남긴 글이 없어요.'})); return sec; }
+  const again = async () => { sec.replaceWith(await helpDesk()); };
+  sec.append(h('ul', {class: 'adm-hl'}, ...items.map(it => {
+    const head = [it.kind === 'ask' ? '물음' : '한마디 · ' + (TONE_NAME[it.tone] ?? '?'), mdOf(it.at), it.voice === 'direct' ? '곧은 말' : '쉬운 말', it.page ? (PAGE_NAME[it.page] ?? it.page) + '에서' : null].filter(Boolean).join(' · ');
+    const li = h('li', {class: 'adm-hrow' + (it.status === 'new' ? ' fresh' : '')}, h('p', {class: 'adm-hh', text: head}), h('p', {class: 'adm-ht', lang: 'ko', text: it.text}));
+    const btns = h('div', {class: 'adm-row adm-hb'});
+    if (it.kind === 'ask') {
+      const ta = h('textarea', {class: 'adm-ta', rows: 3, maxlength: '1000', placeholder: it.voice === 'direct' ? '곧은 말로 답해 주세요' : '쉬운 말로 답해 주세요', 'aria-label': '답'}); ta.value = it.answer ?? '';
+      const pubQ = h('input', {class: 'adm-in', type: 'text', maxlength: '200', 'aria-label': '모두에게 보일 물음', placeholder: '모두에게 보일 물음(다듬기)'}); pubQ.value = it.text.slice(0, 200);
+      const pub = h('input', {type: 'checkbox', class: 'adm-ck'}); pub.checked = !!it.public;
+      const go = h('button', {type: 'button', class: 'adm-go', text: it.answer ? '답 고치기' : '답 달기'});
+      go.addEventListener('click', async () => { go.disabled = true; const s = await postOwner({op: 'answer', id: it.id, answer: ta.value, public: pub.checked, pubQ: pubQ.value}); go.disabled = false; if (s === 200) { toast('답을 달았어요.'); again(); } else toast(s === 400 ? '두 글자 넘게 적어 주세요.' : '? 답을 달지 못했어요.'); });
+      li.append(ta, h('label', {class: 'adm-pub'}, pub, h('span', {text: '모두에게 보이기 — 많이 묻는 것에 올림'})), pubQ);
+      btns.append(go);
+    } else if (it.status === 'new') {
+      const rd = h('button', {type: 'button', class: 'adm-go', text: '읽음'});
+      rd.addEventListener('click', async () => { rd.disabled = true; if ((await postOwner({op: 'read', id: it.id})) === 200) again(); else { rd.disabled = false; toast('? 읽음으로 바꾸지 못했어요.'); } });
+      btns.append(rd);
+    }
+    const del = h('button', {type: 'button', class: 'adm-del', text: '지우기'}); let armed = 0;
+    del.addEventListener('click', async () => {
+      if (!armed) { del.textContent = '한 번 더 누르면 지워요'; armed = setTimeout(() => { armed = 0; del.textContent = '지우기'; }, 4000); return; }
+      clearTimeout(armed); del.disabled = true; if ((await postOwner({op: 'drop', id: it.id})) === 200) { toast('지웠어요.'); again(); } else { del.disabled = false; toast('? 지우지 못했어요.'); }
+    });
+    btns.append(del); li.append(btns);
+    return li;
+  })));
+  return sec;
+}

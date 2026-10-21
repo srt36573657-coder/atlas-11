@@ -12,3 +12,14 @@
 .adm-list li { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-top: 1px solid var(--line); font-size: var(--fs-1); }
 .adm-list b.wait { color: var(--gold); }
 .adm-list b.ok { color: var(--sub); }
+/* 고객센터 글(p-admin.js helpDesk · 2026-10-21 22:54) — 한 줄에 하나 · 새 글은 금빛 선 */
+.adm-hl { margin: 0; padding: 0; list-style: none; }
+.adm-hrow { padding: var(--sp-2) 0; border-top: 1px solid var(--line); }
+.adm-hrow.fresh { border-top-color: var(--gold); }
+.adm-hh { margin: 0; font-size: var(--fs-1); color: var(--sub); }
+.adm-ht { margin: var(--sp-1) 0; font-size: var(--fs-2); color: var(--ink); white-space: pre-line; }
+.adm-ta { display: block; width: 100%; min-height: 96px; margin: var(--sp-1) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid var(--hair2); border-radius: 16px; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-2); }
+.adm-pub { display: flex; align-items: center; gap: var(--sp-1); min-height: 48px; font-size: var(--fs-1); color: var(--sub); }
+.adm-ck { width: 24px; height: 24px; }
+.adm-hb { margin: var(--sp-1) 0 0; flex-wrap: wrap; }
+.adm-del { min-height: 48px; padding: 0 var(--sp-2); border: 1px solid var(--hair2); border-radius: 24px; color: var(--sub); font-size: var(--fs-1); }

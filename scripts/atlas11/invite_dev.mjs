@@ -50,6 +50,11 @@ const jt = await (async () => {
     jinhwa: req => handleJinhwa(req, {store: getStore({name: JINHWA_STORE, consistency: 'strong'}), ownerHash: hash(), dataOf: r => (S.data ? Promise.resolve(S.data) : siteData(r))}),
     tally: req => handleTally(req, {store: getStore({name: TALLY_STORE, consistency: 'strong'}), ownerHash: hash()})};
 })();
+// 고객센터(사장님 2026-10-21 22:54 · 22:55 · 23:09 · lib/atlas11/help.mjs) — 함수 파일(functions/atlas11/help.mjs)과 같은 셈 · 같은 열쇠 해시 · 같은 저장소 이름
+const hp = await (async () => {
+  const [{handleHelp, HELP_STORE}, {getStore}, {OWNER_KEY_SHA256}] = await Promise.all([import('../../lib/atlas11/help.mjs'), import('@netlify/blobs'), import('../../lib/atlas11/invite.mjs')]);
+  return req => handleHelp(req, {store: getStore({name: HELP_STORE, consistency: 'strong'}), ownerHash: process.env.ATLAS_INVITE_OWNER_SHA256 || OWNER_KEY_SHA256});
+})();
 /** 함수 응답(Fetch Response) → node 응답 · Set-Cookie 여럿을 그대로(하나로 합치지 않음) */
 const sendFetch = async (res, r) => { const h = {}; for (const [k, v] of r.headers) if (k !== 'set-cookie') h[k] = v; const sc = r.headers.getSetCookie?.() ?? []; if (sc.length) h['set-cookie'] = sc; res.writeHead(r.status, h); res.end(Buffer.from(await r.arrayBuffer())); };
 const bodyOf = req => (req.method === 'POST' || req.method === 'PUT' ? new Promise(r => { let b = ''; req.on('data', d => { b += d; }); req.on('end', () => r(b)); }) : Promise.resolve(undefined));
@@ -82,6 +87,7 @@ const server = http.createServer(async (req, res) => {
     }
     if (kakao && url.pathname.startsWith('/__fake-kakao/')) { await sendFetch(res, await kakao.fake.handle(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
     if (url.pathname === '/api/jinhwa' || url.pathname.startsWith('/api/jinhwa/')) { await sendFetch(res, await jt.jinhwa(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
+    if (url.pathname === '/api/help' || url.pathname.startsWith('/api/help/')) { await sendFetch(res, await hp(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 고객센터
     if (url.pathname === '/api/tally' || url.pathname === '/api/tally/sum') { await sendFetch(res, await jt.tally(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
     if (url.pathname === '/__dev/jinhwa-data') { // 진화 칸 검사용 — 이 시험 서버에서만(올리는 사이트에는 없음)
       if (req.method === 'POST') { let d = null; try { d = JSON.parse(await bodyOf(req)); } catch { d = null; } jt.S.data = d && typeof d === 'object' && !Array.isArray(d) ? d : null; }

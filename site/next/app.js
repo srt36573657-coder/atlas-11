@@ -1171,6 +1171,7 @@ globalThis.NX = {h, sv, store, pct, p2, r1, cls, COLOR, num, md, mdN, chgOf, day
 const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vShorts, ch: vChannel, sub: vSub, me: vMe, find: vFind};
 VIEWS.t = a => page('theme', a); // 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js)
 VIEWS.game = a => page('game', a); // 가짜 돈 연습(사장님 2026-10-19 15:02 · 15:04 「일단해」 · p-game.js — PUBLIC 전에는 사장님 열쇠 기기만)
+VIEWS.help = a => page('help', a); // 고객센터(사장님 2026-10-21 22:54 · 22:55 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · 23:09 · p-help.js) — 모든 기기 · 맨 아래 고리
 VIEWS.admin = a => page('admin', a); // 관리자 화면(사장님 2026-10-19 13:54 「관리자 페이지도 있어야 해」 · 사장님 열쇠 기기만 · p-admin.js)
 VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 진화 쪽 길(사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」 · 일꾼 KM) — 모든 기기가 엶 · 단추는 p-jinhwa 가 사장님 열쇠 기기에서만 그림 · 합계 칸 참고 「연 수」 쪽마다 한 번(일꾼 KD)
 /* 위 막대 「진화」 단추(일꾼 KM · 2026-10-18 22:45) — 모든 사람 · 44px · 찾기 단추 앞 · 그 쪽이면 aria-current */
@@ -1277,7 +1278,7 @@ async function route(force) {
 /* 돌 그림(사장님 2026-10-19 10:21 「1번으로 하자 그래서 전체 디자인을 해봐」 · 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3 열세 장)
    화면 맨 위 큰 제목(첫 h1) 오른쪽에 그 화면의 돌 그림 한 장(/media/stone/<이름>.svg · 꾸밈 그림 · 읽지 않음) · 첫 화면은 vHomeAll 이 직접 그림 · 그림이 없는 쪽은 그대로
    입체 · 그림자는 이 그림 파일 안에만(사장님 10:12 「다써」) — 글 · 단추는 평평 */
-const STONE = {shorts: 'shorts', today: 'today', surge: 'surge', sub: 'sub', me: 'me', cal: 'cal', cond: 'cond', jinhwa: 'jinhwa'};
+const STONE = {shorts: 'shorts', today: 'today', surge: 'surge', sub: 'sub', me: 'me', cal: 'cal', cond: 'cond', jinhwa: 'jinhwa', help: 'why-q1'}; // help = 고객센터(빈 돌판 — 쓰는 곳)
 function stoneArt(k, a, root) {
   const n = k === 'why' ? (a ? 'why-q1' : 'why') : k === 'w' ? (a && !a.includes('/') ? 'company' : null) : STONE[k];
   if (n === 'shorts') { const sh = root.querySelector('.shorts'); if (sh && !sh.querySelector('.st-art')) sh.append(h('img', {class: 'st-art st-abs', src: '/media/stone/shorts.svg', alt: '', width: 96, height: 77, decoding: 'async'})); return; } // 시황은 큰 제목이 없어 오른쪽 위 빈 자리에
@@ -1285,6 +1286,7 @@ function stoneArt(k, a, root) {
   t.classList.add('st-h'); if (k === 'why') t.classList.add('st-why'); if (k === 'why' || k === 'jinhwa') t.classList.add('st-sm'); // 작은 그림 — 매매일지 답 셋 · 진화 첫 카드 그림이 한 화면에 들게(check_why [5] 3 · check_jinhwa)
   t.append(h('img', {class: 'st-art', src: '/media/stone/' + n + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
 }
+window.addEventListener('hashchange', e => { try { globalThis.NX_FROM = new URL(e.oldURL).hash; } catch { /* 옛 주소 못 읽음 */ } }); // 바로 전 길 — 고객센터 한마디의 「보던 화면 이름」(p-help.js · 첫 마디만)
 window.addEventListener('hashchange', () => route());
 $('#findBtn')?.replaceChildren(icon('search'));
 /* 글씨 크기 — 지금 아틀란스와 같은 세 칸(보통 · 크게 · 아주 크게)과 같은 기억(atlas:font) · 화면 칸을 통째로 키움(app.css html.f2 · f3) */
