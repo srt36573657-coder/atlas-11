@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-21T14:09:29.774Z",
- "kst": "2026-10-21 23:09",
+ "at": "2026-10-21T15:01:49.273Z",
+ "kst": "2026-10-22 00:01",
  "slot": null,
- "reason": "23:00 회차",
+ "reason": "00:00 회차",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-LMgUTJ/closes/20261021T140929Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-3DUTYT/closes/20261021T150149Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261021",
-  "sec": 165,
+  "sec": 183,
   "firstErrors": []
  },
  "asOf": "2026-10-21",
@@ -129,7 +129,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 432,
+  "ms": 452,
   "lenses": [
    {
     "key": "apple",
@@ -167,7 +167,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-21 23:13",
+  "kst": "2026-10-22 00:06",
   "live": false,
   "idx": true,
   "flows": true,
@@ -213,17 +213,17 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 165.4
+   "sec": 183.3
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 2.7
+   "sec": 2.9
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 5.1
+   "sec": 5.3
   },
   {
    "name": "업종 정리",
@@ -233,32 +233,32 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.6
+   "sec": 1.7
   },
   {
    "name": "사이트 자료",
    "code": 0,
-   "sec": 10.6
+   "sec": 11.1
   },
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 3.1
+   "sec": 3.2
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 21.8
+   "sec": 22.4
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 23.3
+   "sec": 24.4
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 2.8
+   "sec": 3.4
   },
   {
    "name": "첫 화면 자료",
@@ -268,7 +268,7 @@
   {
    "name": "달력 셈",
    "code": 0,
-   "sec": 5.6
+   "sec": 5.8
   },
   {
    "name": "달력 따로 세기",
@@ -278,7 +278,7 @@
   {
    "name": "조건 찾기 셈",
    "code": 0,
-   "sec": 0.5
+   "sec": 0.4
   },
   {
    "name": "조건 찾기 따로 세기",

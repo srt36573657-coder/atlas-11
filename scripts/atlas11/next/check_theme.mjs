@@ -20,6 +20,7 @@ import {createRequire} from 'node:module';
 import {screenHits} from '../../../site/next/words.js';
 import {pp} from '../../../site/next/theme-engine.js';
 import {isRemote} from './net.mjs';
+import {TITLES} from '../../../site/next/home-title.js'; // 큰 제목 넷(사장님 2026-10-21 23:55 「어 섹시하게」 — 23:21 물음 「이 넷을 차례로 돌려 보일까요?」의 답)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -169,7 +170,7 @@ try {
     if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
     else {
       if (!g.afterSay || !g.beforeEss) fail('첫 화면 차례', '돌이 물음 → 테마 시계 → 본질 카드 차례가 아님');
-      if (!/^지금 봄이 온 곳$/.test(g.h1.trim())) fail('첫 화면 제목', g.h1); // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
+      if (!TITLES.some(x => x.t === g.h1.trim())) fail('첫 화면 제목', g.h1); // 2026-10-21 23:55 큰 제목 넷이 6초마다 돎(home-title.js — 첫 말은 그대로 「지금 봄이 온 곳」) // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
       if (!g.fold) fail('첫 화면 숫자 접는 칸', '「숫자로 자세히 보기」(details.th-hfold)가 없음 — 진짜 싹 · 주황 숫자 셋 · 성적표는 그 안');
       // 2026-10-21 18:22 사장님 「그랴」(17:51 「이렇기 행성 나오는것 지우고 주싣쪽으로 표혐할수 있는 방법 모색해보 … 이건 주식에 본질에 맞지도 않고 장난스러워」 · 18:11 「구글과 잡스라면 … 뭘 고를까?」)
       //   첫 화면 = 카드 안 업종 줄 셋(번호 · 이름 · 닷새 동안 시장보다 숫자 알약) + 한 해 줄 그림 단추 하나 · 궤도 · 해 · 행성 사진 없음
