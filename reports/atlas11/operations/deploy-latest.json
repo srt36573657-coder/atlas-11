@@ -1,19 +1,19 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-10-21T13:21:21.667Z",
-  "state": "failed",
+  "at": "2026-10-21T13:31:44.495Z",
+  "state": "ready",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
-  "url": null,
-  "deployUrl": null,
-  "deployId": null,
+  "url": "https://aaa7377.com",
+  "deployUrl": "https://6ad8bee5b48a6f4fdb84c5c9--mulgil.netlify.app",
+  "deployId": "6ad8bee5b48a6f4fdb84c5c9",
   "noindex": false,
-  "files": 7077,
-  "exitCode": 1,
-  "error": "npm error code ETARGET\nnpm error notarget No matching version found for @netlify/functions-utils@^7.1.19.\nnpm error notarget In most cases you or one of your dependencies are requesting\nnpm error notarget a package version that doesn't exist.\nnpm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-10-21T13_21_44_967Z-debug-0.log\n",
+  "files": 7083,
+  "exitCode": 0,
+  "error": null,
   "functions": {
-    "state": "failed",
+    "state": "deployed",
     "names": [
       "invite",
       "jinhwa",
@@ -69,6 +69,6 @@
       "urlpattern-polyfill",
       "when-exit"
     ],
-    "error": "npm error code ETARGET\nnpm error notarget No matching version found for @netlify/functions-utils@^7.1.19.\nnpm error notarget In most cases you or one of your dependencies are requesting\nnpm error notarget a package version that doesn't exist.\nnpm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-10-21T13_21_23_728Z-debug-0.log\n"
+    "error": null
   }
 }
