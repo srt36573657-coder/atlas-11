@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-essence-render-1",
- "at": "2026-10-22T15:46:33.153Z",
+ "at": "2026-10-22T16:09:02.509Z",
  "base": "http://127.0.0.1:8826",
  "shard": "1/1",
  "units": [
@@ -62,9 +62,9 @@
    "reasons": [],
    "notes": [],
    "counts": {
-    "old": "마지막으로 받은 때: ? 9월 23일 0시."
+    "old": "마지막으로 받은 때: ? 9월 23일 1시."
    }
   }
  ],
- "seconds": 5.6
+ "seconds": 8
 }
