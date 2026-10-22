@@ -261,6 +261,22 @@ try {
       if (t.ans !== ansW) fail('회사 머리 = 먼저 · 뒤따름 답', t.ans + ' ≠ ' + ansW);
       if (!t.subs.includes(subW)) fail('회사 열흘', JSON.stringify(t.subs) + ' 에 「' + subW + '」 없음');
       await r.ctx.close();
+      // 15쪽 「왜 그럴까?」 = 열한 걸음 이어 말하기(사장님 2026-10-22 08:53 「… 원숭이 엉덩이는 빨개 … 11단계는 논리적으로 사방팔방으로 … 움직이는 도식화로」 · why-chain.js · why-co.js)
+      //   section.wc 하나 · 걸음(li.wc-n) 열하나 · 별자리 번호 열하나 · 첫 걸음 = 이 회사 열흘 값 · 둘째부터 물음(「?」로 끝) · 끝 걸음 = 이 회사 「왜 사?」 고리 · 걸음 고리는 사이트 안 · 누를 수 있음(테마 쪽에서 .play 가 누름을 막지 않음)
+      const w = await open(cb + '/why');
+      await w.p.waitForFunction(() => document.querySelectorAll('#view section.wc li.wc-n').length > 0, null, {timeout: 8000}).catch(() => {});
+      const wc = await w.p.evaluate(() => { const s = document.querySelector('#view section.wc'); return {n: document.querySelectorAll('#view section.wc').length, steps: [...(s?.querySelectorAll('li.wc-n') ?? [])].map(li => ({q: li.querySelector('.wc-q')?.textContent ?? null, a: li.querySelector('.wc-a')?.textContent ?? '', href: li.querySelector('a.wc-card')?.getAttribute('href') ?? null})), dots: s?.querySelectorAll('svg.wc-sky .wc-dot').length ?? 0, pe: s ? getComputedStyle(s).pointerEvents : null, pos: s ? getComputedStyle(s).position : null}; });
+      if (wc.n !== 1 || wc.steps.length !== 11 || wc.dots !== 11) fail('15쪽 열한 걸음', `칸 ${wc.n} · 걸음 ${wc.steps.length} · 별자리 ${wc.dots}`);
+      else {
+        if (!wc.steps[0].a.includes(pp(LEAD.d10) + '%') || wc.steps[0].q) fail('15쪽 첫 걸음 = 회사 열흘', JSON.stringify(wc.steps[0]));
+        const badQ = wc.steps.slice(1).filter(s => !/\?$/.test(s.q ?? '')); if (badQ.length) fail('15쪽 이어 묻는 말', JSON.stringify(badQ.slice(0, 2)));
+        if (wc.steps.some(s => !s.a.trim())) fail('15쪽 빈 걸음', JSON.stringify(wc.steps.map(s => s.a)));
+        if (wc.steps.at(-1).href !== '#/why/' + LEAD.c) fail('15쪽 끝 걸음 = 왜 사?', String(wc.steps.at(-1).href));
+        const out = wc.steps.filter(s => s.href && !/^#\//.test(s.href)); if (out.length) fail('15쪽 걸음 고리', JSON.stringify(out));
+        if (/1등|오를 거|내릴 거|될 거예요|사세요|파세요/.test(wc.steps.map(s => (s.q ?? '') + s.a).join(' '))) fail('15쪽 앞날 · 권함 말', JSON.stringify(wc.steps.map(s => s.a)));
+      }
+      if (wc.pe === 'none' || wc.pos === 'absolute') fail('15쪽 걸음 칸 누름 막힘', `pointer-events ${wc.pe} · position ${wc.pos} — app.css .play 와 이름 부딪힘`);
+      await look(cb + '/why (열한 걸음)', w.p); await w.ctx.close();
     }
     bump('숫자');
   }

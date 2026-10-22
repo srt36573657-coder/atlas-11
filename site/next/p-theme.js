@@ -8,6 +8,8 @@ import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
 import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON} from './theme-home.js';
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 import {NAME, josa} from './brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않음
+import {whyChain} from './why-chain.js'; // 「왜 그럴까?」 열한 걸음 그림(사장님 2026-10-22 08:53 · 15쪽)
+import {coSteps} from './why-co.js'; // 15쪽 걸음 글(지난 사실만)
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
 
 const nx = () => globalThis.NX;
@@ -79,7 +81,7 @@ async function pHello() {
   // 2026-10-22 총정리(사장님 04:09 「결과부터 나오는 구조」 · 감사 A10): 맨 위 = 오늘 찾은 곳(싹 맨 앞 업종 · 점 수 · 누르면 그 업종 쪽) · 세 걸음 글은 첫 화면에 실제로 있는 것으로(「시계」 대신 줄 셋)
   const TH = await themeData(), top = TH ? indOf(TH, TH.order?.S?.[0]) : null;
   const found = !TH ? null : top ? h('a', {class: 'th-found', href: '#/t/i/' + enc(top.n)}, h('span', {class: 'th-fk', text: `오늘 ${josa(NAME, '가')} 찾은 곳`}), h('b', {class: 'th-fn', text: top.n}),
-    h('span', {class: 'th-fd'}, dots(top), h('span', {text: `점 넷 가운데 ${num(top.sc)}개`})), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}))
+    h('span', {class: 'th-fd'}, h('span', {text: `점 넷 가운데 ${num(top.sc)}개`}), dots(top)), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'})) // 글 먼저 · 점 그림은 뒤(글 시작 = 카드 글 시작 · [10] 7)
     : h('p', {class: 'th-sub th-key', text: '오늘은 싹 자리가 비었어요.'});
   const steps = [['첫 화면 줄 셋을 봐요', '시장보다 힘이 붙은 업종이에요'], ['업종 하나를 눌러요', '점 넷이 다 차면 진짜 싹이에요'], ['회사를 눌러요', '먼저 움직였는지, 뒤따랐는지']];
   return {title: '돌이 인사', nodes: [shell(1, '돌이', 'home', '테마가 될 듯한 곳을 찾아 줘요.', null, ['테마 시계', '#/'],
@@ -243,14 +245,13 @@ async function pCo(code, sub) {
       h('h2', {class: 'th-ans', text: lead == null ? '? 아직 못 견줬어요' : lead ? '업종보다 먼저 움직였어요' : '업종을 뒤따라 움직였어요'}),
       h('p', {class: 'th-sub', text: '업종보다 더 오른 때가 앞 닷새면 먼저, 뒤 닷새면 뒤따름이에요.'})];
   } else if (sub === 'why') {
+    // 2026-10-22 사장님 08:53 「… 원숭이 엉덩이는 빨개 빨가면 사과 … 11단계는 논리적으로 사방팔방으로 이야기 해야지 그 이야기를 움직이는 도식화로」(order-0853.txt)
+    //   — 뻔한 셋 줄 대신 열한 걸음 이어 말하기(앞 걸음 끝말이 다음 물음 · 회사 → 지난날 → 업종 → 테마 시계 → 큰 회사 → 오른 회사 수 → 이웃 업종 → 뉴스 → 나) · 그림 = why-chain.js(별자리 선이 차례로) · 글 = why-co.js
     art = 'why'; sayT = '기록으로 찾은 것만 말해요.';
-    const has5 = Number.isFinite(c.a5) && Number.isFinite(c.b5), late = has5 && c.b5 >= c.a5;
-    const m10 = I?.m10, indT = !Number.isFinite(m10) ? '? 업종 값을 못 받았어요' : m10 > 0 ? '업종도 올랐어요' : m10 < 0 ? '업종은 내렸어요' : '업종은 그대로예요';
-    body = [h('ol', {class: 'th-steps'},
-      h('li', {}, h('span', {class: 'th-sn', text: '1'}), h('span', {class: 'th-st'}, h('b', {text: !has5 ? '? 닷새씩 못 견줬어요' : late ? '최근 닷새에 몰렸어요' : '앞 닷새에 몰렸어요'}), h('span', {text: `앞 닷새 ${pp(c.a5)}% · 뒤 닷새 ${pp(c.b5)}%`}))),
-      h('li', {}, h('span', {class: 'th-sn', text: '2'}), h('span', {class: 'th-st'}, h('b', {text: c.rank === 1 ? '업종 안에서 가장 앞서요' : c.rank ? `업종 안에서 ${num(c.rank)}번째예요` : '업종에서 몸값이 큰 회사예요'}), h('span', {text: c.rank === 1 && Number.isFinite(c.gap) ? `다음 회사보다 ${pp(c.gap)}%p 더 올랐어요` : `열흘 동안 ${pp(c.d10)}%`}))),
-      h('li', {}, h('span', {class: 'th-sn', text: '3'}), h('span', {class: 'th-st'}, h('b', {text: indT}), h('span', {text: `업종 열흘 ${pp(I?.m10)}%`})))),
-      h('div', {class: 'th-box'}, h('b', {text: '뉴스는 아직 확인 전이에요'}), h('span', {text: '왜 올랐는지는 뉴스로 꼭 확인해요.'}))];
+    const wc = whyChain(coSteps({c, ind, I, M, inds: TH.inds ?? []}));
+    const go = (n = 0) => { if (wc.isConnected) wc.play(); else if (n < 120) requestAnimationFrame(() => go(n + 1)); }; // 쪽에 붙은 뒤 처음부터 움직임(움직임 줄이기 기기는 why-chain.css 가 멈춘 그림)
+    requestAnimationFrame(() => go());
+    body = [wc];
   } else if (sub === 'rank') {
     art = 'surge'; sayT = `${num(M.ranked)}곳 가운데 몇 번째일까?`;
     body = [h('h2', {class: 'th-ans'}, h('span', {text: '열흘 동안 '}), h('em', {text: c.rank ? num(c.rank) + '번째' : '?'})),

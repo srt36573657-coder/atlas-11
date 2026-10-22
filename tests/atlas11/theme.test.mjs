@@ -191,3 +191,33 @@ test('계절 각 — 네 자리와 같은 쪽 · 계절 이름', async () => {
   const H = JSON.parse(fs.readFileSync('site/next/data/theme-home.json', 'utf8'));
   for (const i of H.inds) if (Number.isFinite(i.x) && Number.isFinite(i.y) && i.y !== 0 && i.x !== RULE.bloomX) assert.equal(side(seasonAngle(i.x, i.y)), i.z, i.n);
 });
+
+// 15쪽 「왜 그럴까?」 열한 걸음(사장님 2026-10-22(서울) 08:53 「… 원숭이 엉덩이는 빨개 빨가면 사과 … 11단계는 논리적으로 사방팔방으로 이야기 해야지 그 이야기를 움직이는 도식화로」 · site/next/why-co.js)
+test('15쪽 열한 걸음 — 저장소 자료로 열하나 · 첫 걸음만 물음 없음 · 갈래 · 앞 걸음 끝말이 다음 물음 · 지난 사실만 · 못 받으면 「?」', async () => {
+  const {coSteps, CO_TAGS} = await import('../../site/next/why-co.js');
+  const {SCREEN} = await import('../../site/next/words.js');
+  const T = JSON.parse(fs.readFileSync('site/next/data/theme.json', 'utf8')), M = JSON.parse(fs.readFileSync('site/next/data/theme-more.json', 'utf8'));
+  let n = 0;
+  for (const [ind, o] of Object.entries(M.inds)) for (const c of [o.top?.[0], o.big?.[0]].filter(Boolean)) {
+    const S = coSteps({c, ind, I: T.inds.find(i => i.n === ind), M: o, inds: T.inds});
+    assert.equal(S.length, 11, c.c);
+    assert.equal(S[0].q, undefined, '첫 걸음은 사실만');
+    for (const [i, s] of S.entries()) {
+      assert.ok(typeof s.a === 'string' && s.a.length > 0, c.c + ' ' + i);
+      if (i) assert.match(s.q, /\?$/, c.c + ' ' + i + ' 물음은 「?」로 끝남');
+      assert.ok(CO_TAGS.includes(s.tag), s.tag);
+      if (s.href) assert.match(s.href, /^#\//);
+    }
+    assert.ok(new Set(S.map(s => s.tag)).size >= 7, '사방팔방 — 갈래 일곱 넘게');
+    assert.equal(S.at(-1).href, '#/why/' + encodeURIComponent(c.c), '끝은 이 회사 왜 사?');
+    if (Number.isFinite(c.a5) && Number.isFinite(c.b5)) assert.ok(S[2].q.startsWith(S[1].a.split(' · ')[0].replace(/어요$/, '')), '셋째 물음이 둘째 답의 끝말을 이어 받음 ' + S[1].a + ' → ' + S[2].q);
+    const all = S.map(s => (s.q ?? '') + ' ' + s.a).join(' ');
+    for (const w of SCREEN) assert.ok(!all.includes(w), '쓰지 않을 말 ' + w);
+    assert.doesNotMatch(all, /1등|오를 거|내릴 거|될 거예요|사세요|파세요/, '앞날 · 권함 없음');
+    n++;
+  }
+  assert.ok(n > 50, '회사 ' + n);
+  const E = coSteps({c: {c: '000000', n: '없음'}, ind: '없는 업종'});
+  assert.equal(E.length, 11);
+  assert.match(E[0].a, /^\? /); assert.ok(E.slice(1, 9).every(s => s.a.startsWith('?') || s.a === '업종에서 몸값이 큰 회사예요'), E.map(s => s.a).join(' | '));
+});
