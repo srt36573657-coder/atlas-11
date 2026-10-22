@@ -1,5 +1,5 @@
 {
- "at": "2026-10-22T04:14:46.773Z",
+ "at": "2026-10-22T17:15:18.683Z",
  "base": "https://aaa7377.com",
  "shots": [
   "reports/atlas11/probe/live-white/home-first.png",
@@ -8,7 +8,7 @@
  ],
  "first": {
   "white": true,
-  "bg": "rgb(7, 11, 23)",
+  "bg": "rgb(255, 255, 255)",
   "blocks": [
    "ess",
    "find",
@@ -20,7 +20,7 @@
  },
  "back": {
   "white": true,
-  "bg": "rgb(7, 11, 23)",
+  "bg": "rgb(255, 255, 255)",
   "blocks": [
    "ess",
    "find",
@@ -32,7 +32,7 @@
  },
  "back-320": {
   "white": true,
-  "bg": "rgb(7, 11, 23)",
+  "bg": "rgb(255, 255, 255)",
   "blocks": [
    "ess",
    "find",
