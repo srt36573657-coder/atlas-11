@@ -7,14 +7,23 @@ export const CODE_RE = /^[0-9A-Z]{6}$/;
 export const newAccount = () => ({schema: GAME.schema, start: GAME.start, cash: GAME.start, pos: {}, log: []});
 const okPx = px => Number.isFinite(px) && px > 0 && px < 1e9;
 const okQ = q => Number.isInteger(q) && q >= 1 && q <= GAME.maxQ;
-/** 계좌가 망가지지 않았나(서버가 받은 값 · 기기 기억을 쓰기 전에) */
-export function okAccount(a) {
-  if (!a || typeof a !== 'object' || a.schema !== GAME.schema || !Number.isFinite(a.cash) || a.cash < 0 || !a.pos || typeof a.pos !== 'object' || !Array.isArray(a.log)) return false;
+const okShape = (a, schema) => {
+  if (!a || typeof a !== 'object' || a.schema !== schema || !Number.isFinite(a.cash) || a.cash < 0 || !a.pos || typeof a.pos !== 'object' || !Array.isArray(a.log)) return false;
   return Object.entries(a.pos).every(([c, p]) => CODE_RE.test(c) && p && okQ(p.q) && Number.isFinite(p.cost) && p.cost >= 0);
-}
+};
+/** 계좌가 망가지지 않았나(서버가 받은 값 · 기기 기억을 쓰기 전에) */
+export function okAccount(a) { return okShape(a, GAME.schema); }
 /** 사기 · 팔기 하나 → {ok, acc(새 계좌) | why} — 계좌를 고치지 않고 새 것을 돌려줌 */
-export function trade(acc, {code, side, q, px, t = Date.now()}) {
-  if (!okAccount(acc)) return {ok: false, why: 'account'};
+export function trade(acc, op) { return tradeAs(acc, op, GAME.schema, GAME.log); }
+/** 같은 셈을 다른 계좌 이름(schema)으로 — 자동으로 산 기록(사장님 2026-10-22 08:35 · 08:50 「가짜돈으로 해」 · lib/atlas11/auto.mjs 'dori-auto-1')이 부름
+ *  위 newAccount · okAccount · trade 는 그대로(GAME.schema · 기록 200개) · log = 남기는 기록 수 */
+export function ruleFor(schema, {log = GAME.log} = {}) {
+  if (typeof schema !== 'string' || !schema || schema === GAME.schema) throw new TypeError('game-rule: schema');
+  const cap = Number.isInteger(log) && log > 0 ? log : GAME.log;
+  return Object.freeze({schema, newAccount: () => ({schema, start: GAME.start, cash: GAME.start, pos: {}, log: []}), okAccount: a => okShape(a, schema), trade: (acc, op) => tradeAs(acc, op, schema, cap)});
+}
+function tradeAs(acc, {code, side, q, px, t = Date.now()}, schema, cap) {
+  if (!okShape(acc, schema)) return {ok: false, why: 'account'};
   if (!CODE_RE.test(code ?? '')) return {ok: false, why: 'code'};
   if (!okQ(q)) return {ok: false, why: 'qty'};
   if (!okPx(px)) return {ok: false, why: 'price'};
@@ -28,7 +37,7 @@ export function trade(acc, {code, side, q, px, t = Date.now()}) {
     const avg = cur.cost / cur.q; cash += q * px; cur.cost -= avg * q; cur.q -= q;
   } else return {ok: false, why: 'side'};
   if (cur.q > 0) pos[code] = {q: cur.q, cost: Math.round(cur.cost)}; else delete pos[code];
-  const log = [...acc.log, {t, c: code, s: side, q, px}].slice(-GAME.log);
+  const log = [...acc.log, {t, c: code, s: side, q, px}].slice(-cap);
   return {ok: true, acc: {...acc, cash: Math.round(cash), pos, log}};
 }
 /** 합계 — prices = {번호: 지금 값} · 값을 모르는 종목은 산 돈으로 셈(unknown 에 번호) */
