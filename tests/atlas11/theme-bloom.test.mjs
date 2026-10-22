@@ -67,8 +67,9 @@ test('꽃 핀 업종 안의 싹 회사 — 올리기 셈 = 따로 짠 쉬운 셈
   assert.equal(B.tried, Object.keys(RS.singles).filter(c => c !== 'C0').length, '싹에 더할 모습 수 = 연구 셈 후보(C0 그냥 싹 뺌)');
   assert.deepEqual(RS.passed, ['C3'], '지나간 모습은 C3 하나');
   const got = B.today.inds.flatMap(i => i.co.map(r => r[0])).sort();
-  assert.deepEqual(got, today, '오늘 목록');
-  assert.equal(B.today.n, today.length);
+  assert.equal(B.today.all, today.length, '고치기 전 오늘 수 = 쉬운 셈');
+  if (B.use == null) { assert.deepEqual(got, today, '오늘 목록'); assert.equal(B.today.n, today.length); }
+  else { assert.ok(got.every(c => today.includes(c)), '지나간 고침을 쓴 목록은 원래 목록 안'); assert.equal(B.today.n, got.length); }
   fs.rmSync(dir, {recursive: true, force: true});
 });
 
@@ -81,4 +82,29 @@ test('꽃 핀 업종 안의 싹 회사 — 회사는 이름 차례 · 업종은 
   const sec = page.slice(page.indexOf('async function pPick()'), page.indexOf('export async function render'));
   assert.ok(sec.length > 500, 'pPick 있음');
   for (const w of ['추천', '매수', '매도', '사세요', '팔', '예측', '확률', '유망']) assert.ok(!sec.includes(w), '쓰지 않을 말 ' + w);
+});
+
+test('기록 달력 · 꽃이 못 된 까닭 · 고쳐 본 것 — 셈이 서로 맞음(사장님 2026-10-22 22:54 · spec v6 · v7)', () => {
+  const B = JSON.parse(fs.readFileSync(path.join(ROOT, 'site', 'next', 'data', 'theme-bloom.json'), 'utf8'));
+  const D = B.cal.days;
+  assert.ok(D.length > 0 && D.length <= 60, '달력 60거래일 안');
+  assert.equal(D[0].d, B.cal.from); assert.equal(D.at(-1).d, B.cal.to); assert.equal(B.cal.to, B.asOf, '달력 끝 = 기준 날');
+  let seenWait = false;
+  for (const d of D) {
+    assert.ok(d.n >= d.hit + d.miss + d.wait, '고른 수 ≥ 꽃 + 못 됨 + 기다림 ' + d.d);
+    assert.equal(d.why.reduce((p, x) => p + x, 0), d.miss, '까닭 합 = 못 됨 ' + d.d);
+    assert.ok(d.bh <= d.bn, '같은 날 아무 회사 ' + d.d);
+    if (d.wait > 0) { seenWait = true; assert.equal(d.hit + d.miss, 0, '기다리는 날은 꽃 셈 없음 ' + d.d); }
+    else assert.ok(!seenWait, '기다림은 끝쪽에만 ' + d.d);
+  }
+  assert.equal(D.at(-1).n, B.today.all, '달력 마지막 날 고른 수 = 오늘 고치기 전 수');
+  for (const k of ['all', 'train', 'test']) assert.equal(B.why[k].why.reduce((p, x) => p + x, 0), B.why[k].miss, '까닭 합 ' + k);
+  assert.equal(B.why.all.miss, B.why.train.miss + B.why.test.miss, '모든 못 됨 = 앞 + 뒤');
+  for (const k of ['all', 'train', 'test']) { const R = B.record[k]; assert.ok(Math.abs((R.n - B.why[k].miss) - (R.rate * R.n) / 100) < 1, '꽃 = n − 못 됨 ' + k); }
+  assert.deepEqual(B.fix.map(f => f.id), ['F1', 'F2', 'F3', 'G1', 'G2'], '셈 전에 적은 다섯 고침');
+  for (const f of B.fix) {
+    assert.ok(f.train.n <= B.record.train.n && f.test.n <= B.record.test.n, '고치면 줄기만 함 ' + f.id);
+    assert.equal(f.pass, f.train.n >= B.record.train.n / 2 && f.train.rate - B.record.train.rate >= 1 && f.test.rate > B.record.test.rate, '지나감 잣대 ' + f.id);
+  }
+  assert.ok(B.use == null || B.fix.find(f => f.id === B.use)?.pass === true, '쓴 고침은 지나간 것');
 });

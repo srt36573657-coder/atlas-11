@@ -108,3 +108,17 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-hfold[open] > summary::after { transform: rotate(90deg); }
 .th-hfold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .th-hfold > summary::after { transition: none; } }
+/* 고른 싹 회사 기록 칸(사장님 2026-10-22 22:54 「그 기록을 한 달력이 첫화면에 직관적으로 … 신빙성에대해 딱 정직하게 앞에」) — 칸 하나가 고리(#/t/pick) */
+.th-pkhome { display: flex; flex-direction: column; gap: 6px; margin: 12px 0 4px; padding: 14px 14px 10px; border: 2px solid #46536F; border-radius: 16px; background: #121A2C; color: var(--ink); text-decoration: none; }
+.th-pkhh { font-size: var(--fs-3); font-weight: 700; }
+.th-pkhl { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-2); line-height: 1.45; }
+.th-pkhl span + span { color: #D6D6D6; }
+.th-pkhl .th-pkhk { color: var(--ink); font-weight: 700; }
+.th-pkhs { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px 0; }
+.th-pkhs i { width: 10px; height: 10px; border-radius: 3px; background: #46536F; }
+.th-pkhs i.up { background: var(--up); }
+.th-pkhs i.w { background: transparent; border: 2px solid #9AA4BC; box-sizing: border-box; }
+.th-pkhs i.z { background: #2A3550; }
+.th-pkhs i.dn { background: var(--down); }
+.th-pkhgo { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: var(--fs-2); color: var(--ink); border-top: 1px solid #2A3550; }
+.th-pkhgo i { font-style: normal; }

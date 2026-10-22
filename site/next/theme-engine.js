@@ -184,19 +184,31 @@ export function recordOf(U, M, T) {
  *  (docs/design/sprout-flower-2026-10-22/spec-v1.md v3 · 셈 scripts/atlas11/research/sprout_flower.py C3 · 같은 자료로 이 셈과 숫자가 같아야 함 — tests/atlas11/theme-bloom.test.mjs)
  *  지난 기록 = t = BLOOM.from ~ T − 20 · 회사 · 날마다 「한 달 뒤 꽃 선」(결정표 6 과 같은 잣대) · 한 달 평균 앞선 만큼(±50% 자름) · 크게 떨어짐(−5% 아래) — 아무 회사(셀 수 있는 모든 회사 · 날)와 나란히
  *  오늘 = T 의 회사 자리 S 이고 업종 자리 B 인 회사 · 업종은 x 큰 차례 · 회사는 이름 차례(차례에 뜻이 없음 — 지난 기록에서 차례를 가려낸 잣대를 못 찾음 · v4) */
-export const BLOOM = Object.freeze({from: 120, clip: 0.5, fall: -0.05, split: '2025-04-04'}); // split = 앞 · 뒤 기록 가름 — 연구 셈 때의 가운데 날(spec v1)에 묶음 · 그 날부터는 모습을 고를 때 안 본 기록이라 날이 쌓일수록 뒤 기록이 늘어남
+export const BLOOM = Object.freeze({from: 120, clip: 0.5, fall: -0.05, split: '2025-04-04', cal: 60});
+/** 고쳐 볼 것 셋(사장님 2026-10-22 22:54 「꽃이 되지못한 그이유 … 업데이트해서 더 확율을 높이는 태도」 · spec v6 · 셈 전에 적음) — 고르는 날까지의 값만(x 회사 한 달 · y 회사 닷새 · iy 업종 닷새 · %) */
+export const BLOOM_FIX = Object.freeze([
+  {id: 'F1', label: '닷새에 10% 넘게 오른 회사는 빼요', out: f => f.y >= 10},
+  {id: 'F2', label: '한 달에 10% 넘게 처진 회사는 빼요', out: f => f.x < -10},
+  {id: 'F3', label: '업종 닷새 힘이 1%가 안 되면 빼요', out: f => f.iy < 1},
+  {id: 'G1', label: '업종이 꽃이 된 지 닷새가 넘으면 빼요', out: f => f.ib > 5}, // spec v7 — 못 된 까닭 「업종째 식음」을 겨눔
+  {id: 'G2', label: '업종 한 달 힘이 15%가 넘으면 빼요', out: f => f.ix > 15},
+]); // split = 앞 · 뒤 기록 가름 — 연구 셈 때의 가운데 날(spec v1)에 묶음 · 그 날부터는 모습을 고를 때 안 본 기록이라 날이 쌓일수록 뒤 기록이 늘어남
 export function bloomOf({U, M, closes, codes, companies, dates, made = new Date().toISOString(), provisional = false}) {
   const N = dates.length, T = N - 1, k = RULE.win, A = RULE.recAhead;
   const t0 = BLOOM.from, t1 = T - A;
   let mid = dates.findIndex((d, t) => t > t0 && d >= BLOOM.split); if (mid < 0 || mid > t1) mid = Math.floor((t0 + t1) / 2); // 자료가 짧으면 가운데
-  const indZ = new Map();
-  for (const u of U) { const z = new Uint8Array(N); for (let t = k; t < N; t++) if (zoneOf(exOf(u.I, M, t, k) * 100, exOf(u.I, M, t, 5) * 100) === 'B') z[t] = 1; indZ.set(u.n, z); }
+  const indZ = new Map(), indI = new Map(U.map(u => [u.n, u.I]));
+  const c0 = Math.max(k, T - BLOOM.cal + 1), cal = []; for (let t = c0; t <= T; t++) cal.push({d: dates[t], n: 0, hit: 0, miss: 0, wait: 0, why: [0, 0, 0], bn: 0, bh: 0}); // 달력 — 날마다 고른 수 · 꽃 · 못 됨(까닭 가 · 나 · 다) · 기다림 · 같은 날 아무 회사(bn 센 수 · bh 꽃)
+  const whyOf = () => ({miss: 0, why: [0, 0, 0]}), why = {all: whyOf(), train: whyOf(), test: whyOf()}, fixAcc = Object.fromEntries(BLOOM_FIX.map(F => [F.id, {train: {n: 0, h: 0, f: 0, e: 0}, test: {n: 0, h: 0, f: 0, e: 0}}]));
+  const whyAt = (ex, I, t) => (ex >= 0 ? 0 : I && exOf(I, M, t + A, A) < 0 ? 1 : 2); // 가 조금 모자람 · 나 업종째 식음 · 다 회사만 처짐(spec v6)
+  const indRun = new Map(); // 업종이 꽃 자리에 이어 든 날 수(그날 포함)
+  for (const u of U) { const z = new Uint8Array(N), r = new Uint16Array(N); for (let t = k; t < N; t++) if (zoneOf(exOf(u.I, M, t, k) * 100, exOf(u.I, M, t, 5) * 100) === 'B') { z[t] = 1; r[t] = r[t - 1] + 1; } indZ.set(u.n, z); indRun.set(u.n, r); }
   const blank = () => ({n: 0, h: 0, f: 0, e: 0});
   const acc = {all: [blank(), blank(), blank()], train: [blank(), blank(), blank()], test: [blank(), blank(), blank()]}, years = {}; // [아무 회사 · 이 모습 · 그냥 싹]
   const add = (o, hit, fall, e) => { o.n++; if (hit) o.h++; if (fall) o.f++; o.e += e; };
   const today = [];
   for (const c of codes) {
-    const a = closes.get(c), iz = indZ.get(companies[c]?.i);
+    const a = closes.get(c), iz = indZ.get(companies[c]?.i), I = indI.get(companies[c]?.i), IR = indRun.get(companies[c]?.i);
     const J = new Int32Array(N), E = new Int32Array(N); // 튄 날 누적(결정표 1 · 9 와 같은 잣대) · 종가가 앞날과 같은 날 누적(거래가 멈춘 회사 — v5 · 따로 센 일꾼이 찾음)
     for (let t = 1; t < N; t++) { J[t] = J[t - 1] + (ok(a[t - 1]) && ok(a[t]) && Math.abs(a[t] / a[t - 1] - 1) >= RULE.jump ? 1 : 0); E[t] = E[t - 1] + (ok(a[t - 1]) && ok(a[t]) && a[t] === a[t - 1] ? 1 : 0); }
     const countable = t => t - k >= 0 && ok(a[t]) && ok(a[t - 5]) && ok(a[t - k]) && J[t] - J[t - k] === 0 && E[t] - E[t - k] < k; // t − 20 ~ t 스물한 날 종가가 모두 같으면 뺌
@@ -207,16 +219,35 @@ export function bloomOf({U, M, closes, codes, companies, dates, made = new Date(
       const sp = sproutAt(t), g = sp && !!iz && iz[t] === 1, half = t < mid ? 'train' : 'test', yr = dates[t].slice(0, 4);
       years[yr] ??= [blank(), blank(), blank()];
       for (const o of [acc.all, acc[half], years[yr]]) { add(o[0], hit, fall, e); if (g) add(o[1], hit, fall, e); if (sp) add(o[2], hit, fall, e); }
+      if (g) {
+        const f = {x: ((a[t] / a[t - k]) / (M[t] / M[t - k]) - 1) * 100, y: ((a[t] / a[t - 5]) / (M[t] / M[t - 5]) - 1) * 100, iy: I ? exOf(I, M, t, 5) * 100 : 0, ix: I ? exOf(I, M, t, k) * 100 : 0, ib: IR ? IR[t] : 0};
+        for (const F of BLOOM_FIX) if (!F.out(f)) add(fixAcc[F.id][half], hit, fall, e);
+        if (!hit) { const w = whyAt(ex, I, t); for (const o of [why.all, why[half]]) { o.miss++; o.why[w]++; } }
+      }
+    }
+    for (let t = c0; t <= T; t++) {
+      const cnt = countable(t), day = cal[t - c0], done = t <= t1 && cnt && ok(a[t + A]) && J[t + A] - J[t] === 0; // 한 달 안에 튄 날 · 값 없음 — 셈 밖(지난 기록과 같은 잣대)
+      const ex = done ? (a[t + A] / a[t]) / (M[t + A] / M[t]) - 1 : 0;
+      if (done) { day.bn++; if (ex >= RULE.bloomX / 100) day.bh++; } // 같은 날 아무 회사 — 고른 회사와 같은 날끼리 맞댐
+      if (!iz || iz[t] !== 1 || !cnt || !sproutAt(t)) continue;
+      day.n++;
+      if (t > t1) { day.wait++; continue; }
+      if (!done) continue;
+      if (ex >= RULE.bloomX / 100) day.hit++; else { day.miss++; day.why[whyAt(ex, I, t)]++; }
     }
     if (iz && iz[T] === 1 && countable(T) && sproutAt(T)) {
       const x = ((a[T] / a[T - k]) / (M[T] / M[T - k]) - 1) * 100, y = ((a[T] / a[T - 5]) / (M[T] / M[T - 5]) - 1) * 100;
-      today.push({c, n: companies[c].n ?? c, i: companies[c].i, x: r2(x), y: r2(y)});
+      today.push({c, n: companies[c].n ?? c, i: companies[c].i, x: r2(x), y: r2(y), iy: I ? exOf(I, M, T, 5) * 100 : 0, ix: I ? exOf(I, M, T, k) * 100 : 0, ib: IR ? IR[T] : 0});
     }
   }
   const pct = (v, n) => (n ? Math.round((v / n) * 10000) / 100 : null); // 소수 둘째 자리 — 화면은 다시 반올림해 「100번에 N번」(소수 한 자리로 두 번 반올림하면 27.48 이 28 이 됨)
   const out = ([b, g, s]) => ({n: g.n, base: pct(b.h, b.n), rate: pct(g.h, g.n), ex: pct(g.e, g.n), exBase: pct(b.e, b.n), fall: pct(g.f, g.n), fallBase: pct(b.f, b.n), baseN: b.n, plain: pct(s.h, s.n), plainN: s.n});
+  const r3 = acc.train[1], s3 = acc.test[1];
+  const fix = BLOOM_FIX.map(F => { const tr = fixAcc[F.id].train, te = fixAcc[F.id].test; return {id: F.id, label: F.label, train: {n: tr.n, rate: pct(tr.h, tr.n)}, test: {n: te.n, rate: pct(te.h, te.n)}, pass: tr.n >= r3.n / 2 && pct(tr.h, tr.n) - pct(r3.h, r3.n) >= 1 && pct(te.h, te.n) > pct(s3.h, s3.n)}; });
+  const use = fix.filter(x => x.pass).sort((p, q) => q.test.rate - p.test.rate)[0] ?? null; // 지나간 것 가운데 뒤 기록이 가장 높은 하나만(spec v6)
+  const useF = use ? BLOOM_FIX.find(F => F.id === use.id) : null, picked = useF ? today.filter(r => !useF.out(r)) : today; // 지나간 고침이 있으면 오늘 목록에 씀
   const byInd = new Map();
-  for (const r of today) { if (!byInd.has(r.i)) byInd.set(r.i, []); byInd.get(r.i).push(r); }
+  for (const r of picked) { if (!byInd.has(r.i)) byInd.set(r.i, []); byInd.get(r.i).push(r); }
   const inds = [...byInd.entries()].map(([n, rows]) => {
     const u = U.find(v => v.n === n);
     return {n, x: r2(exOf(u.I, M, T, k) * 100), y: r2(exOf(u.I, M, T, 5) * 100), co: rows.sort((p, q) => (p.n < q.n ? -1 : p.n > q.n ? 1 : 0)).map(r => [r.c, r.n, r.x, r.y])};
@@ -226,6 +257,9 @@ export function bloomOf({U, M, closes, codes, companies, dates, made = new Date(
     rule: {from: BLOOM.from, win: k, ahead: A, bloomX: RULE.bloomX, fall: BLOOM.fall * 100, clip: BLOOM.clip * 100},
     span: {from: dates[t0], to: dates[t1], train: [dates[t0], dates[mid - 1]], test: [dates[mid], dates[t1]]},
     record: {all: out(acc.all), train: out(acc.train), test: out(acc.test), years: Object.fromEntries(Object.keys(years).sort().map(yv => [yv, out(years[yv])]))},
-    today: {n: today.length, inds},
+    today: {n: picked.length, all: today.length, inds},
+    cal: {from: dates[c0], to: dates[T], days: cal}, // 지난 60거래일 — 날마다 고른 수 · 꽃 · 못 됨 · 까닭 · 기다림(사장님 22:54 「그 기록을 한 달력이 첫화면에」)
+    why: {all: why.all, train: why.train, test: why.test, names: ['조금 모자랐어요', '업종째 식었어요', '회사만 처졌어요']},
+    fix, use: use?.id ?? null,
   };
 }

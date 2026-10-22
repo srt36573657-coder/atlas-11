@@ -159,3 +159,16 @@ a.th-ck:active { background: #161616; }
 .th-pkrow i { font-style: normal; color: var(--sub, #B4BDD3); }
 .th-pkwhy { margin-top: var(--sp-2); } /* 왜 싹이에요?(2026-10-22 17:59 「사람들이 왜? 이게 싹이고 … 근거를 지시해야」) */
 .th-pkhow { margin-top: var(--sp-3); } /* 이 숫자는 어떻게 나왔어요? — 여섯 걸음 */
+
+/* 기록 달력 · 꽃이 못 된 까닭 · 그래서 고쳐 본 것(사장님 2026-10-22 22:54 「그 기록을 한 달력이 … 정직하게 앞에」) */
+.th-pkcal { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #46536F; border-radius: 16px; background: #121A2C; min-width: 0; }
+.th-pkgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; min-width: 0; }
+.th-pkwd { text-align: center; font-size: var(--fs-1); color: #D6D6D6; }
+.th-pkc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; min-width: 0; min-height: 52px; padding: 4px 2px; border-radius: 8px; background: #1D2640; font-size: var(--fs-1); line-height: 1.25; font-variant-numeric: tabular-nums; text-align: center; overflow-wrap: break-word; box-sizing: border-box; }
+.th-pkc b { font-weight: 700; }
+.th-pkc.up { background: var(--up); color: #0B1020; }
+.th-pkc.dn { background: var(--down); color: #0B1020; }
+.th-pkc.w { background: transparent; border: 2px solid #9AA4BC; }
+.th-pkc.e { background: transparent; }
+.th-pkwhy2, .th-pkfix { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; min-width: 0; }
+.th-pkwn { color: #D6D6D6; }

@@ -143,6 +143,28 @@ export function recordLine(TH) {
     h('span', {text: `아무 업종은 100번 가운데 ${Math.round(R.all.p)}번이었어요.`}));
 }
 
+/** 고른 싹 회사 기록 칸 — theme-bloom.json 의 달력(지난 60거래일) · 한 달이 지난 날의 꽃 된 수 · 지난 기록 · 누르면 #/t/pick */
+function pickCard() {
+  const lines = h('span', {class: 'th-pkhl'}, h('span', {text: '기록을 불러오는 중이에요.'}));
+  const strip = h('span', {class: 'th-pkhs', 'aria-hidden': 'true'});
+  const card = h('a', {class: 'th-pkhome', href: '#/t/pick'}, h('b', {class: 'th-pkhh', text: '고른 싹이 꽃이 됐을까?'}), lines, strip, h('span', {class: 'th-pkhgo'}, h('span', {text: '기록 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  const fill = B => {
+    const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string') : [], A = B?.record?.all;
+    const done = days.filter(d => d.hit + d.miss > 0), sum = f => done.reduce((p, d) => p + (Number(f(d)) || 0), 0);
+    const D = sum(d => d.hit + d.miss), N = sum(d => d.bn), P = D ? Math.round((sum(d => d.hit) / D) * 100) : null, Q = N ? Math.round((sum(d => d.bh) / N) * 100) : null;
+    const out = [];
+    if (P != null) out.push(h('span', {class: 'th-pkhk', text: `한 달이 지난 날만 보면 고른 회사는 100곳에 ${P}곳이 꽃이 됐어요.`}));
+    if (P != null && Q != null) out.push(h('span', {text: `같은 날 아무 회사는 100곳에 ${Q}곳이에요.`}), h('span', {class: 'th-pkhk', text: P < Q ? '요즘은 아무 회사보다 적었어요.' : P > Q ? '요즘은 아무 회사보다 많았어요.' : '요즘은 아무 회사와 비슷했어요.'}));
+    if (A && Number.isFinite(A.rate) && Number.isFinite(A.base)) out.push(h('span', {text: `지난 기록은 100번에 ${Math.round(A.rate)}번, 아무 회사는 ${Math.round(A.base)}번이에요.`}));
+    if (!out.length) out.push(h('span', {text: '? 기록을 아직 못 받았어요.'}));
+    lines.replaceChildren(...out);
+    const up = d => (d.bn > 0 ? d.hit / (d.hit + d.miss) >= d.bh / d.bn : A && Number.isFinite(A.base) ? d.hit / (d.hit + d.miss) >= A.base / 100 : false);
+    strip.replaceChildren(...days.map(d => h('i', {class: d.wait ? 'w' : d.hit + d.miss === 0 ? 'z' : up(d) ? 'up' : 'dn'})));
+  };
+  setTimeout(() => { fetch('/next/data/theme-bloom.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).then(j => fill(j && typeof j.schema === 'string' && j.schema.startsWith('dori-theme-1') ? j : null)).catch(() => fill(null)); }, 0);
+  return card;
+}
+
 /* ── 첫 화면(#/) 맨 위 칸 — app.js vHomeAll 이 부름(본질 세 줄 · 찾기 칸 · 바로 가기 넷 · 전부 보기는 그 아래 그대로) ── */
 /** 관심 업종을 담은 기기인가(theme-watch.js 를 받기 전 · 저장소 한 칸만 봄) */
 const hasWatch = () => { try { const a = JSON.parse(localStorage.getItem('dori:watch-ind') ?? '[]'); return Array.isArray(a) && a.length > 0; } catch { return false; } };
@@ -157,7 +179,7 @@ export async function homeBlock() {
     yearBox(TH, top, rows), h('p', {class: 'th-cap th-cap1', text: '지난 1년 동안 걸어온 길이에요. 위 줄은 점이 많이 찬 차례예요. 숫자는 닷새 동안 시장보다 더 오른 만큼이에요.'}))); // 그림 아래 글 = 뜻(지난 기록 · 줄 차례의 까닭 · 숫자의 뜻) — 움직임 설명 대신(2026-10-22 총정리 · 감사 A2 · A4 · 그림 아래라 320 높이 그대로)
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
   box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
-  box.append(h('a', {class: 'th-more th-pickk', href: '#/t/pick'}, h('span', {text: '꽃 핀 업종 안의 싹 회사'}), h('i', {'aria-hidden': 'true', text: '›'}))); // 사장님 2026-10-22 16:56 「싹에서 꽃이 되는 종목을 찾는게 돌이에 본질」 — 지난 기록 앞 · 뒤 두 번 지나간 모습(#/t/pick)
+  box.append(pickCard()); // 고른 싹 회사 기록 달력(사장님 2026-10-22 22:54 「그 기록을 한 달력이 첫화면에 직관적으로 … 신빙성에대해 딱 정직하게 앞에」) — 자료는 첫 그림 뒤에 받음(느린 4G 첫 그림에 안 끼게)
   box.append(h('a', {class: 'th-more th-calk', href: '#/t/cal'}, h('span', {text: '날마다 찾은 세 곳 달력'}), h('i', {'aria-hidden': 'true', text: '›'}))); // 싹 달력(사장님 2026-10-22 11:55 「제시만 해가지고 기록이 없으면 그건 하수야」) // 첫 화면 계절 말 「봄」 = 테마 쪽 「싹」(감사 A6)
   // 숫자는 접어 둠 — 주황 숫자(사장님 2026-10-20 09:46 — 진짜 싹 · 새로 들어옴 · 싹 자리)와 성적표는 「숫자로 자세히 보기」 안에 그대로
   // 2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A7): 맨 위 = 성적표 한 줄(가장 중요한 숫자) → 한 줄에 하나(진짜 싹 · 새로 들어옴 · 싹 자리 · 같은 고리 · 48px 넘게) → 점 넷 뜻

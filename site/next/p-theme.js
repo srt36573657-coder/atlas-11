@@ -403,6 +403,44 @@ async function pPick() {
   const yrs = Object.entries(R.years ?? {}).filter(([y, v]) => /^\d{4}$/.test(y) && ok2(v)).sort((p, q) => (p[0] < q[0] ? -1 : 1));
   const upY = yrs.filter(([, v]) => v.rate > v.base).length;
   const tried = Number.isInteger(B.tried) && B.tried > 0 ? B.tried : null;
+  // 사장님 2026-10-22 22:54 「그 기록을 한 달력이 … 신빙성에대해 딱 정직하게 앞에 · 꽃이 되지못한 그이유도 적고 · 그 이유를 가지구 업데이트해서 더 확율을 높이는 태도」(spec v6 · v7)
+  const days = Array.isArray(B.cal?.days) ? B.cal.days.filter(d => d && /^\d{4}-\d{2}-\d{2}$/.test(d.d ?? '')) : [], done = days.filter(d => d.hit + d.miss > 0);
+  const sum = (xs, f) => xs.reduce((p, d) => p + (Number(f(d)) || 0), 0);
+  const cH = sum(done, d => d.hit), cD = sum(done, d => d.hit + d.miss), bH = sum(done, d => d.bh), bN = sum(done, d => d.bn);
+  const cP = cD ? Math.round((cH / cD) * 100) : null, bP = bN ? Math.round((bH / bN) * 100) : null;
+  const dayUp = d => (d.bn > 0 ? d.hit / (d.hit + d.miss) >= d.bh / d.bn : d.hit / (d.hit + d.miss) >= all.base / 100);
+  const wk = []; for (const d of days) { const wd = new Date(d.d + 'T00:00:00Z').getUTCDay(); if (wd < 1 || wd > 5) continue; if (!wk.length || wd <= wk.at(-1).last) wk.push({cells: Array(5).fill(null), last: 0}); const w = wk.at(-1); w.cells[wd - 1] = d; w.last = wd; }
+  const cell = d => d == null ? h('span', {class: 'th-pkc e', 'aria-hidden': 'true'}) : h('span', {class: 'th-pkc ' + (d.wait ? 'w' : d.hit + d.miss === 0 ? 'z' : dayUp(d) ? 'up' : 'dn'), role: 'listitem'}, h('b', {text: `${+d.d.slice(5, 7)}.${+d.d.slice(8, 10)}`}), h('span', {text: d.wait ? String(d.n) : d.hit + d.miss ? `${d.hit}/\u200b${d.hit + d.miss}` : '-'})); // 좁은 칸에서 「/」 뒤에서만 줄바꿈(숫자가 갈라지지 않게)
+  const verdict = cP == null || bP == null ? null : cP < bP ? '요즘은 아무 회사보다 적었어요.' : cP > bP ? '요즘은 아무 회사보다 많았어요.' : '요즘은 아무 회사와 비슷했어요.';
+  const calSec = days.length ? h('section', {class: 'th-pkcal', 'aria-label': '기록 달력'},
+    h('h2', {class: 'th-h2', text: '기록 달력'}),
+    h('p', {class: 'th-sub th-key', text: cP != null ? `한 달이 지난 날만 보면 고른 회사는 100곳에 ${cP}곳이 꽃이 됐어요.` : '? 한 달이 지난 날이 아직 없어요.'}),
+    bP != null ? h('p', {class: 'th-sub', text: `같은 날 아무 회사는 100곳에 ${bP}곳이에요.`}) : null,
+    verdict ? h('p', {class: 'th-sub th-key', text: verdict}) : null,
+    h('p', {class: 'th-sub', text: '칸마다 꽃이 된 수와 고른 수예요.'}),
+    h('div', {class: 'th-pkgrid', role: 'list', 'aria-label': '기록 달력'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-pkwd', 'aria-hidden': 'true', text: t})), ...wk.flatMap(w => w.cells.map(cell))),
+    h('p', {class: 'th-sub th-calnote', text: '주황 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.'}),
+    h('p', {class: 'th-sub th-calnote', text: '파란 칸은 아무 회사보다 적게 꽃이 된 날이에요.'}),
+    h('p', {class: 'th-sub th-calnote', text: '테두리 칸은 아직 한 달이 안 지나 고른 수만 적었어요.'})) : null;
+  const names = Array.isArray(B.why?.names) ? B.why.names : [], whyNote = [`시장보다 더 올랐지만 ${RULE.bloomX}%는 못 넘었어요.`, '업종이 한 달 뒤 시장보다 덜 올랐어요.', '업종은 괜찮았는데 회사만 덜 올랐어요.'];
+  const recentWhy = [0, 1, 2].map(i => sum(done, d => d.why?.[i])), recentMiss = sum(done, d => d.miss), W = B.why?.all;
+  const top = xs => xs.indexOf(Math.max(...xs));
+  const useRecent = recentMiss > 0, WM = useRecent ? recentMiss : W?.miss ?? 0, WW = useRecent ? recentWhy : W?.why ?? [0, 0, 0];
+  const whySec = WM > 0 && names.length === 3 ? h('section', {class: 'th-pkwhy2', 'aria-label': '꽃이 못 된 까닭'},
+    h('h2', {class: 'th-h2', text: '꽃이 못 된 까닭'}),
+    h('p', {class: 'th-sub', text: useRecent ? `달력에서 못 된 ${num(WM)}번을 셋으로 나눴어요.` : `지난 기록에서 못 된 ${num(WM)}번을 셋으로 나눴어요.`}),
+    ...[0, 1, 2].map(i => { const v = (WW[i] / WM) * 100, q = h('i'); q.style.width = Math.max(0, Math.min(100, v)) + '%'; return h('div', {class: 'th-pkbar ' + (i === top(WW) ? 'pick' : 'base')}, h('span', {class: 'th-pkl', text: names[i]}), h('span', {class: 'th-pkt', 'aria-hidden': 'true'}, q), h('b', {class: 'th-pkv', text: `100번에 ${Math.round(v)}번`}), h('span', {class: 'th-sub th-pkwn', text: whyNote[i]})); }),
+    useRecent && W?.miss > 0 && Array.isArray(W.why) ? h('p', {class: 'th-sub', text: top(W.why) === top(WW) ? '지난 기록 전체에서도 가장 많은 까닭은 같아요.' : '지난 기록 전체에서는 가장 많은 까닭이 달라요.'}) : null) : null;
+  const fixes = Array.isArray(B.fix) ? B.fix.filter(f => f && typeof f.label === 'string' && f.train && Number.isFinite(f.train.rate)) : [], used = fixes.find(f => f.id === B.use);
+  const fixWhy = f => (f.pass ? '두 기록 모두 늘어 지나갔어요.' : ok2(tr) && Number.isFinite(tr.n) && f.train.n < tr.n / 2 ? '남은 회사가 너무 적었어요.' : ok2(tr) && f.train.rate - tr.rate < 1 ? '앞 기록에서 1번도 더 늘지 않았어요.' : '뒤 기록에서 늘지 않았어요.');
+  const fixSec = fixes.length ? h('section', {class: 'th-pkfix', 'aria-label': '그래서 고쳐 본 것'},
+    h('h2', {class: 'th-h2', text: '그래서 고쳐 본 것'}),
+    h('p', {class: 'th-sub', text: '까닭을 보고 고르는 법을 고쳐 다시 셌어요.'}),
+    h('p', {class: 'th-sub', text: '앞 기록에서 1번 이상 늘고 뒤 기록에서도 늘어야 지나가요.'}),
+    h('ol', {class: 'th-steps'}, ...fixes.map((f, k) => step(k + 1, f.label, [ok2(tr) ? `고치면 앞 기록이 100번에 ${r0(f.train.rate)}번, 안 고치면 ${r0(tr.rate)}번이에요.` : null, fixWhy(f), f === used ? '이 법을 오늘 목록에 썼어요.' : null]))),
+    h('p', {class: 'th-sub th-key', text: used ? '지나간 법 하나를 오늘 목록에 썼어요.' : '모두 못 지나가서 고르는 법은 그대로 둬요.'}),
+    h('p', {class: 'th-sub', text: '고쳐 볼 것은 셈하기 전에 먼저 적어요.'}),
+    h('p', {class: 'th-sub', text: '못 된 날이 쌓이면 또 고쳐 보고 다시 재요.'})) : null;
   const how = h('section', {class: 'th-pkhow', 'aria-label': '이 숫자는 어떻게 나왔어요?'},
     h('h2', {class: 'th-h2', text: '이 숫자는 어떻게 나왔어요?'}),
     h('ol', {class: 'th-steps'},
@@ -420,6 +458,7 @@ async function pPick() {
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
     say('업종은 꽃이 폈고, 회사는 이제 막 힘이 붙었어요.'),
     h('p', {class: 'th-key', text: n ? `오늘 이 모습인 회사는 ${num(n)}곳이에요.` : '오늘은 이 모습인 회사가 없어요.'}),
+    calSec,
     h('section', {class: 'th-pkwhy', 'aria-label': '왜 싹이에요?'},
       h('h2', {class: 'th-h2', text: '왜 싹이에요?'}),
       h('p', {class: 'th-sub', text: '두 가지가 함께 맞는 회사만 골라요.'}),
@@ -436,6 +475,7 @@ async function pPick() {
       n ? h('p', {class: 'th-sub', text: '이 숫자가 어떻게 나왔는지는 회사 아래에 있어요.'}) : null),
     ...list,
     n ? h('p', {class: 'th-sub th-calnote', text: '회사는 이름 차례예요. 차례에는 뜻이 없어요.'}) : null,
+    whySec, fixSec,
     how,
     h('p', {class: 'th-sub th-calnote', text: `${Math.abs(Number(B.rule?.fall ?? -5))}% 넘게 덜 오르면 크게 떨어진 거예요.`}),
     h('p', {class: 'th-sub th-calnote', text: '앞날을 맞히는 숫자가 아니에요.'}),
