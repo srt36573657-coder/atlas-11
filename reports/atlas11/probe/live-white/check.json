@@ -1,23 +1,25 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T01:33:21.984Z",
+ "at": "2026-10-22T03:55:55.803Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 421,
-  "fail": 0
+  "pass": 420,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "320 × 568 테마 시계 그림 한 화면 안 — 그림 아래 517 > 아래 단추 500"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
-    "ess": 1093,
+    "ess": 1194,
     "find": 776,
-    "today": 1185,
-    "gdr": 1534,
-    "all": 1534
+    "today": 1286,
+    "gdr": 1635,
+    "all": 1635
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +45,7 @@
     true,
     true
    ],
-   "themeChars": 126,
+   "themeChars": 135,
    "top": [
     [
      35,
@@ -153,7 +155,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일 10:18"
+     "10월 22일 12:48"
     ],
     [
      2,
@@ -177,8 +179,8 @@
     ]
    ],
    "theme": {
-    "top": 232,
-    "clockBottom": 551
+    "top": 256,
+    "clockBottom": 575
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -198,11 +200,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 970,
+    "ess": 1047,
     "find": 776,
-    "today": 1062,
-    "gdr": 1411,
-    "all": 1411
+    "today": 1139,
+    "gdr": 1488,
+    "all": 1488
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 126,
+   "themeChars": 129,
    "top": [
     [
      24,
@@ -328,7 +330,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일 10:18"
+     "10월 22일 12:48"
     ],
     [
      2,
@@ -679,18 +681,18 @@
    }
   },
   "speed": {
-   "lcp": 1168,
-   "inp": 40,
+   "lcp": 1188,
+   "inp": 32,
    "cls": 0.003
   }
  },
  "net": {
-  "retry": 3,
+  "retry": 6,
   "why": {
-   "HTTP 403": 1,
-   "열기 실패": 2
+   "HTTP 403": 2,
+   "열기 실패": 4
   }
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
