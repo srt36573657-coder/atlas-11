@@ -1,18 +1,13 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T16:08:52.647Z",
+ "at": "2026-10-22T16:24:25.452Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 417,
-  "fail": 4
+  "pass": 421,
+  "fail": 0
  },
- "fails": [
-  "다른 쪽 #/surge 390 단추 테두리 대비 3 — button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」",
-  "다른 쪽 #/surge/10 390 단추 테두리 대비 3 — button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」",
-  "다른 쪽 #/surge 320 단추 테두리 대비 3 — button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」",
-  "다른 쪽 #/surge/10 320 단추 테두리 대비 3 — button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」 · button.psurge-hide 1.92 「관심 없음」"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 1,
@@ -426,13 +421,13 @@
    },
    "#/surge 390": {
     "low": 0,
-    "ui": 10,
+    "ui": 0,
     "small": 0,
     "ruin": 0
    },
    "#/surge/10 390": {
     "low": 0,
-    "ui": 22,
+    "ui": 0,
     "small": 0,
     "ruin": 0
    },
@@ -576,13 +571,13 @@
    },
    "#/surge 320": {
     "low": 0,
-    "ui": 10,
+    "ui": 0,
     "small": 0,
     "ruin": 0
    },
    "#/surge/10 320": {
     "low": 0,
-    "ui": 22,
+    "ui": 0,
     "small": 0,
     "ruin": 0
    },
@@ -684,8 +679,8 @@
    }
   },
   "speed": {
-   "lcp": 2436,
-   "inp": 40,
+   "lcp": 2432,
+   "inp": 32,
    "cls": 0.028
   }
  },
@@ -693,6 +688,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
