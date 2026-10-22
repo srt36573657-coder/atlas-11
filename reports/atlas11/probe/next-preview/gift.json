@@ -1,8 +1,0 @@
-{
- "schema": "atlas11-check-gift-1",
- "base": "http://127.0.0.1:8826",
- "ok": false,
- "fails": [
-  "상품권 방 320 맨 위 결 「지금 할 일」 단추(약속 칸 바로 밑 · 48px · 첫 화면 안) — {\"t\":\"지금 할 일 · 친구 3명에게 소개해요 ↓\",\"afterVow\":true,\"beforeSteps\":true,\"h\":71,\"inFirst\":false}"
- ]
-}

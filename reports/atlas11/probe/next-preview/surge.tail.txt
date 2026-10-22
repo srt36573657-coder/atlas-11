@@ -1,4 +1,0 @@
-{"time":{"old":19.5,"new":36.2,"wall":65.5,"opensOld":247,"opensNew":374,"oldPct":29.8,"oldShare":35},"net":{"req":4,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-급등 다섯 칸 맞대기 — 자료 판 24개(site · rec-20261015T110206Z · rec-20261016T030127Z · rec-20261016T050036Z · rec-20261016T090115Z · rec-20261017T090146Z · rec-20261019T010123Z · rec-20261019T030056Z · rec-20261019T050156Z · rec-20261019T090128Z · rec-20261020T010054Z · rec-20261020T030056Z · rec-20261020T050124Z · rec-20261020T090124Z · rec-20261021T010137Z · rec-20261021T090117Z · rec-20261022T010052Z · rec-20261022T030814Z · edge-carry · edge-late · edge-empty · edge-nobands · edge-nocal · edge-badcal) · 65초
-줄 75,481 · 숫자 낱말 54,393 · 이름 9,266 · 색 글 12,110 · 맞댄 칸 120 · 폭 화면 100 · 금빛 ? 줄(옛 쪽은 회색에 덮임) 20 · 관심 없음 칸 4 · 관심 없음 검사 1 · 돌아오기 검사 1 · 없는 주소 3 · 자료 못 받음 10
-실패 0
