@@ -247,10 +247,11 @@ function noneWarn(G) {
   if (!L && !Q) return null;
   const what = L && Q ? '목록과 분기 숫자가' : L ? '목록이' : '분기 숫자가', notes = (Array.isArray(G.note) ? G.note : []).filter(x => typeof x === 'string' && x.trim());
   return h('details', {class: 'gdr-wd gdr-q gdr-none'}, h('summary', {class: 'gdr-wq'}, h('b', {class: 'gdr-qm', text: '? '}), h('span', {text: what}), h('span', {text: ' 아직 안 와서 지금은 담을 곳이 없어요'})),
-    ...notes.map(t => h('p', {class: 'gdr-wb', text: t.trim()})), h('p', {class: 'gdr-wb', text: '못 본 채로 고르면 지어낸 것이 되니까 하나도 담지 않았어요. 전부 현금으로 둬요.'}));
+    ...notes.map(t => h('p', {class: 'gdr-wb', text: t.trim()})), h('p', {class: 'gdr-wb', text: `못 본 채로 고르면 지어낸 것이 되니까 하나도 담지 않았어요. ${NAME} 칸은 「현금으로 둠」만 남았어요.`})); // 칸을 말하는 꼴 · 사람에게 시키지 않음(B23 · 2026-10-22 총정리)
 }
-function qWarns(G) {
-  const none = noneWarn(G); if (none) return [none];
+/** 다른 「?」 줄 — 고른 곳 0 의 까닭 줄(noneWarn)이 있으면 그 줄이 대신함(그 줄은 머리 바로 밑 · B23) */
+function qWarns(G, none) {
+  if (none) return [];
   const out = [], st = G.status;
   if (st ? st.lists !== 'ok' : G.counts?.managed == null) out.push(warnP('gdr-q', '관리 종목은 아직 못 걸렀어요', '투자 경고도 아직 못 걸렀어요. 사기 전에 꼭 확인해.'));
   if (st && st.quarters === 'missing') out.push(warnP('gdr-qq', '분기 숫자를 아직 못 받았어요', '이익 문은 분기 숫자가 있어야 봐요. 지금은 모두 「?」로 두고 못 지난 걸로 쳐요.'));
@@ -297,18 +298,20 @@ export function gdrSection(G, opt = {}) {
     const P = G.picks.find(p => p.no === openNo);
     slot.replaceChildren(...(P ? [card(G, P, X)] : []));
   };
+  // 결 → 기 → 승 → 전(B23 · 2026-10-22 총정리): 머리 → 고른 곳 0 이면 바로 밑에 까닭 한 줄(결) → 칸 · 「현금으로 둠」 · 비중 합(기 · 사장님 설계 그대로) → 모자란 대로 줄(승) → 「?」 줄 · 고리(전)
+  const none = noneWarn(G), zero = !G.picks.length;
   box.append(
     h('div', {class: 'gdr-head'}, h('div', {class: 'gdr-ht'}, h('h2', {class: 'gdr-h', text: `${NAME} 칸 ${G.picks.length}곳`}), h('p', {class: 'gdr-sub', text: `${md(G.asOf)} 종가 · 곳마다 비중과 이유`})),
       h('img', {src: '/media/makbi-icon.svg', alt: '', width: 40, height: 40})),
+    ...(zero ? [none ?? h('p', {class: 'gdr-note gdr-zero', text: needOf(G) === 4 ? `오늘은 조건 다섯 가운데 넷을 지난 회사가 없어서 ${NAME} 칸이 비었어요.` : `오늘은 조건 다섯을 다 지난 회사가 없어서 ${NAME} 칸이 비었어요.`})] : []),
     cells, slot,
     h('p', {class: 'gdr-sum'}, h('span', {text: '비중 합 '}), h('b', {class: 'num', text: wTxt(Math.round((wsum + cash) * 10) / 10)})),
     ...(G.picks.length ? [pbox] : []),
     h('p', {class: 'gdr-note', text: `${NAME} 생각일 뿐이에요. 지난 기록으로 나눠 본 거고, 정하는 건 친구야.`}),
     stalePh, // 사이트 자료가 더 새면 자료가 온 뒤 여기에 밝힘(카드마다 두 값은 staleLine)
-    ...qWarns(G),
+    ...qWarns(G, none),
     ...bigNotes(G),
-    ...(!G.picks.length ? (noneWarn(G) ? [] : [h('p', {class: 'gdr-note', text: '지금은 담을 곳이 없어요. 전부 현금으로 둬요.'})])
-      : G.picks.length < maxOf(G) ? [h('p', {class: 'gdr-note', text: `조건을 다 지난 곳이 ${G.picks.length}곳뿐이라 그만큼만 골랐어요. 남는 몫은 현금으로 둬요.`})] : []),
+    ...(!zero && G.picks.length < maxOf(G) ? [h('p', {class: 'gdr-note', text: `조건을 다 지난 곳이 ${G.picks.length}곳뿐이라 그만큼만 골랐어요. 남는 몫은 「현금으로 둠」 칸에 두었어요.`})] : []), // 칸을 말하는 꼴(B23)
     ...(page ? [] : [h('a', {class: 'more', href: '#/gdr', text: '어떻게 골랐나 보기 ›'})]));
   show();
   perfBox(pbox, G, null);
@@ -374,6 +377,16 @@ function funnel2(G) {
   const c = G.counts ?? {}, rules = rulesOf(G), need = needOf(G), cnt = x => (x == null ? '?' : numTxt(x) + '곳');
   const li = (a, b) => h('li', {}, h('span', {text: a}), h('b', {class: 'num', text: b}));
   const sens = rules.filter(r => Array.isArray(r.sens) && r.sens.length);
+  // 다섯 조건은 남은 곳에서 하나씩 따로 센 수(깔때기가 아님) — 머리 한 줄 + 한 칸 안 다섯 줄 + 막대 길이 = 남은 곳 대비(B24 · 2026-10-22 총정리 · 숫자 그대로)
+  const base = fin(c.afterOut), qMiss = G.status?.quarters === 'missing';
+  const bar = v => {
+    if (typeof NX.sv !== 'function') return null;
+    const w = base > 0 && fin(v) != null && v >= 0 ? Math.min(100, Math.round(v / base * 1000) / 10) : 0, svg = NX.sv('svg', {class: 'gdr-bar', viewBox: '0 0 100 6', preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false'});
+    svg.append(NX.sv('rect', {class: 'gdr-bt', x: 0, y: 0, width: 100, height: 6}), NX.sv('rect', {class: 'gdr-bf', x: 0, y: 0, width: w, height: 6}));
+    return svg;
+  };
+  const each = h('li', {class: 'gdr-each'}, h('span', {text: base == null ? '조건마다 지난 곳(하나씩 따로 셈)' : `남은 ${numTxt(base)}곳 가운데 조건마다 지난 곳(하나씩 따로 셈)`}),
+    h('ol', {class: 'gdr-ol2'}, ...GATES_KO.map((nm, i) => { const v = i === 0 && qMiss ? null : c['g' + (i + 1)]; return h('li', {}, h('span', {text: nm}), h('b', {class: 'num', text: i === 0 && qMiss ? '? 아직 못 셈' : cnt(v)}), bar(v)); })));
   return h('section', {class: 'gdr-fun', 'aria-label': '어떻게 골랐나'},
     h('h2', {class: 'sec', text: '어떻게 골랐나'}),
     ...scoreNodes(G),
@@ -384,7 +397,7 @@ function funnel2(G) {
       li('거래가 멈춰 뺀 곳', cnt(c.outHalt)),
       li('관리 종목으로 뺀 곳', c.outList == null || G.status?.lists === 'missing' ? '? 아직 못 거름' : cnt(c.outList)),
       li('남은 곳', cnt(c.afterOut)),
-      ...GATES_KO.map((nm, i) => li(nm, i === 0 && G.status?.quarters === 'missing' ? '? 아직 못 셈' : cnt(c['g' + (i + 1)]))),
+      each,
       li(need === 4 ? '조건 다섯 가운데 넷을 지난 곳' : '조건 다섯을 다 지난 곳', cnt(c.passAll)),
       li('한 업종 자리가 차서 뺀 곳', cnt(c.cutInd)),
       li('큰 업종 위 끝에 걸려 뺀 곳', cnt(c.cutBig)),
@@ -399,8 +412,14 @@ function funnel2(G) {
 export async function render(arg) {
   const [G] = await Promise.all([NX.gdr ? NX.gdr() : null, NX.need ? NX.need('mkt') : null]), no = /^\d+$/.test(String(arg ?? '')) ? +arg : null; // mkt = 사이트 자료 날짜(고른 날과 견줌)
   const fun = G && Array.isArray(G.picks) ? funnel(G) : null; // 잠겨 있거나 쉬어 가는 날이면 짧게(한 줄만) — 같은 화면에서 기록이 바뀌면 곁 깔때기도 따라감(sync)
-  const sync = box => { if (!fun) return; const open = !box.classList.contains('lock1') && !box.classList.contains('rest1'); if (open && !fun.isConnected) box.after(fun); else if (!open) fun.remove(); };
-  const nodes = [gdrSection(G, {page: true, open: no, sync})], on = opened() && today()?.verdict !== 'rest';
+  // 잠금 · 쉬는 날 칸 밖 한 줄(B22 · 2026-10-22 총정리 — #/gdr 쪽만): 무엇을 담는 칸인지 · 왜 닫았는지(수 · 회사 이름 · 칸 번호 없음 — 잠긴 칸은 한 줄 그대로)
+  const about = h('p', {class: 'gdr-about'});
+  const aboutTxt = b => (b.classList.contains('lock1') ? (G && needOf(G) === 4 ? `${NAME} 칸은 조건 다섯 가운데 넷을 지난 회사를 ${josa(NAME, '가')} 나눠 담아 보는 칸이에요.` : `${NAME} 칸은 조건 다섯을 다 지난 회사를 ${josa(NAME, '가')} 나눠 담아 보는 칸이에요.`)
+    : b.classList.contains('rest1') ? '오늘 매매일지 결과가 「오늘은 쉬어 갈까?」라서 닫았어요.' : null);
+  const syncAbout = b => { const t = aboutTxt(b); if (!t) { about.remove(); return; } about.textContent = t; if (b.nextElementSibling !== about) b.after(about); };
+  const sync = box => { syncAbout(box); if (!fun) return; const open = !box.classList.contains('lock1') && !box.classList.contains('rest1'); if (open && !fun.isConnected) box.after(fun); else if (!open) fun.remove(); };
+  const box0 = gdrSection(G, {page: true, open: no, sync}), on = opened() && today()?.verdict !== 'rest';
+  const nodes = [box0, ...(aboutTxt(box0) ? [(about.textContent = aboutTxt(box0), about)] : [])];
   if (fun && isV2(G)) backOf().then(B => { if (B && !fun.querySelector('.gdr-back')) fun.querySelector('h2.sec')?.after(...backNodes(B)); }); // 지난 성적 한 줄 — 맨 위(제목 바로 밑) · gdr-v2 자료일 때만 파일을 받음(처음 올림은 v1 + 이 파일 없음 → 받으면 콘솔에 404)
   if (fun && on) nodes.push(fun);
   nodes.push(h('p', {class: 'safe', text: `${josa(NAME, '는')} 지난 기록만 보여 줘요. 나눠 담는 칸도 ${NAME} 생각이에요.`}));
