@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+// 고객센터 새 글을 사장님 카톡으로 — 일하는 방 쪽(사장님 2026-10-22(서울) 07:48 「… 다른 방한나더 별로 만들어 내 카톡으로 오게해라」 · 명령문 docs/design/helpkakao-2026-10-22/order-0748.txt)
+//   방(매시)이 하는 일: ① node scripts/atlas11/help/room.mjs --fetch  → 새 열쇠 한 쌍을 만들고 깃허브 작업(atlas11-help-forward.yml mode=fetch)을 부름
+//                         → 작업이 끝나면 알림 줄(잠긴 글)을 REST 로 받아 이 방 열쇠로 풂 → 카톡에 보낼 글을 파일 하나로(이 방 임시 폴더 · 방이 끝나면 사라짐)
+//                         → 한 줄 JSON {ok, n 글 수, msgs 카톡 통 수, more 남은 글, last, run, file}
+//                       ② (n > 0 이면) 방이 file 의 messages 를 차례대로 카톡 「나에게 보내기」로 한 통씩 — 글은 고치지 않음
+//                       ③ node scripts/atlas11/help/room.mjs --done --run <번호> --last <글 번호> → 깃허브 작업(mode=ack)으로 「여기까지 보냄」 · 읽은 작업 기록은 지움(잠긴 글이지만 남기지 않음)
+//   카톡을 다 못 보냈으면 ③을 하지 않음 → 다음 시간에 같은 글부터 다시(빠뜨리지 않음 · 두 번 갈 수는 있음)
+//   Claude 예약 방의 길: gh workflow run · gh run list · gh api(REST)만 됨(GraphQL · 묶음 받기 · aaa7377.com 막힘 — scripts/atlas11/jinhwa/gh.mjs 머리)
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import {newRoomKey, open, fromAnnotations, FWD_SCHEMA, ID_RE} from './forward.mjs';
+
+export const REPO = 'srt36573657-coder/atlas-11', WORKFLOW = 'atlas11-help-forward.yml';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const gh = args => { const r = spawnSync('gh', args, {encoding: 'utf8', timeout: 120e3}); return {ok: r.status === 0, out: String(r.stdout ?? '').trim(), err: String(r.stderr ?? r.error?.message ?? '').trim()}; };
+const short = s => String(s ?? '').replace(/\s+/g, ' ').slice(0, 160);
+
+/** 방금 부른 작업 번호 — 부른 때(t0) 뒤에 생긴 것 가운데 가장 새것 */
+async function findRun(t0, {tries = 20} = {}) {
+  for (let i = 0; i < tries; i++) {
+    const r = gh(['run', 'list', '-R', REPO, '--workflow', WORKFLOW, '-L', '5', '--json', 'databaseId,createdAt,status,conclusion,event']);
+    if (r.ok) { try { const x = JSON.parse(r.out).filter(o => o.event === 'workflow_dispatch' && Date.parse(o.createdAt) >= t0).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0]; if (x) return x.databaseId; } catch { /* 다시 */ } }
+    await sleep(3000);
+  }
+  return null;
+}
+async function waitRun(id, {maxMin = 8} = {}) {
+  const end = Date.now() + maxMin * 60e3;
+  while (Date.now() < end) {
+    const r = gh(['run', 'view', String(id), '-R', REPO, '--json', 'status,conclusion']);
+    if (r.ok) { try { const o = JSON.parse(r.out); if (o.status === 'completed') return o.conclusion; } catch { /* 다시 */ } }
+    await sleep(6000);
+  }
+  return 'timeout';
+}
+async function annotations(id) {
+  const j = gh(['api', `repos/${REPO}/actions/runs/${id}/jobs`]);
+  if (!j.ok) return {ok: false, why: '작업 목록을 못 읽음 ' + short(j.err)};
+  let jobs; try { jobs = JSON.parse(j.out).jobs; } catch { return {ok: false, why: '작업 목록 꼴'}; }
+  const job = (jobs ?? []).find(x => x?.name === 'forward') ?? jobs?.[0];
+  const cid = /\/check-runs\/(\d+)$/.exec(String(job?.check_run_url ?? ''))?.[1] ?? (Number.isInteger(job?.id) ? String(job.id) : null);
+  if (!cid) return {ok: false, why: '작업 번호를 못 찾음'};
+  const a = gh(['api', `repos/${REPO}/check-runs/${cid}/annotations?per_page=100`]);
+  if (!a.ok) return {ok: false, why: '알림 줄을 못 읽음 ' + short(a.err)};
+  try { return fromAnnotations(JSON.parse(a.out)); } catch { return {ok: false, why: '알림 줄 꼴'}; }
+}
+
+export async function fetchRoom({out = path.join(os.tmpdir(), 'help-forward.json')} = {}) {
+  const key = newRoomKey(), t0 = Date.now() - 15e3;
+  const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=fetch', '-f', `pub=${key.pub}`]);
+  if (!w.ok) return {ok: false, why: '작업을 못 부름 ' + short(w.err)};
+  const run = await findRun(t0);
+  if (!run) return {ok: false, why: '작업 번호를 못 찾음'};
+  const c = await waitRun(run);
+  if (c !== 'success') return {ok: false, run, why: '작업이 ' + c};
+  const an = await annotations(run);
+  if (!an.ok) return {ok: false, run, why: an.why};
+  let r; try { r = open(an.box, key.priv); } catch (e) { return {ok: false, run, why: '잠긴 글을 못 풂 ' + short(e?.message)}; }
+  if (r?.schema !== FWD_SCHEMA || !Array.isArray(r.messages)) return {ok: false, run, why: '꼴이 틀림'};
+  fs.writeFileSync(out, JSON.stringify({messages: r.messages, last: r.last, n: r.n, more: r.more}) + '\n', {mode: 0o600});
+  return {ok: true, n: r.n, msgs: r.messages.length, more: r.more, last: r.last, run, file: out};
+}
+export async function doneRoom({run, last}) {
+  if (!ID_RE.test(String(last ?? ''))) return {ok: false, why: '글 번호 꼴이 틀림'};
+  const t0 = Date.now() - 15e3;
+  const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=ack', '-f', `ack_id=${last}`]);
+  if (!w.ok) return {ok: false, why: '보낸 표시 작업을 못 부름 ' + short(w.err)};
+  const ackRun = await findRun(t0), c = ackRun ? await waitRun(ackRun) : 'none';
+  const del = run && /^\d+$/.test(String(run)) ? gh(['api', '-X', 'DELETE', `repos/${REPO}/actions/runs/${run}`]) : {ok: false};
+  return {ok: c === 'success', ackRun, ack: c, deleted: del.ok};
+}
+
+if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
+  const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 && i + 1 < a.length ? a[i + 1] : d; };
+  const r = a.includes('--done') ? await doneRoom({run: arg('--run', ''), last: arg('--last', '')}) : a.includes('--fetch') ? await fetchRoom({out: arg('--out', undefined)}) : {ok: false, why: '쓰는 법: room.mjs --fetch | --done --run <번호> --last <글 번호>'};
+  console.log(JSON.stringify(r));
+  process.exit(r.ok ? 0 : 1);
+}

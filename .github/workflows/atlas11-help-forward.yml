@@ -1,0 +1,56 @@
+name: atlas11-help-forward
+# 고객센터 새 글을 사장님 카톡으로(사장님 2026-10-22(서울) 07:48 「여기에 글을 남기면 카톡 게시물말고 다른 방한나더 별로 만들어 내 카톡으로 오게해라」 · 명령문 docs/design/helpkakao-2026-10-22/order-0748.txt)
+#   부르는 이 = Claude 일하는 방(매시 · scripts/atlas11/help/room.mjs) — 이 작업은 넷리파이 저장소(atlas11-help-v1)에서 「보낸 표시」 뒤 새 글만 꺼냄
+#   mode=fetch: 방이 준 공개 열쇠(pub)로 잠가 알림 줄(annotations)로 돌려줌 — 기록 줄에는 글 수만 · 사람 글은 맨글로 남지 않음(scripts/atlas11/help/forward.mjs)
+#   mode=ack:   방이 카톡을 다 보낸 뒤 「여기까지 보냄」(ack_id) — 앞으로만 옮김
+#   하지 않는 일: 저장소에 쓰기 · 사이트에 보내기 · 비밀 값 찍기 · 답 글 보내기(권한은 읽기만 · 넷리파이 열쇠는 이 작업 안에서만)
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'fetch(새 글 꺼내기) 또는 ack(여기까지 보냄)'
+        required: true
+        default: 'fetch'
+      pub:
+        description: '방의 공개 열쇠(X25519 · base64) — fetch 때'
+        required: false
+        default: ''
+      ack_id:
+        description: '보낸 마지막 글 번호 — ack 때'
+        required: false
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: atlas11-help-forward
+  cancel-in-progress: false
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/atlas11/help
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 넷리파이 저장소 읽기 준비(@netlify/blobs 하나만 · package.json 은 받지 않아 다른 것은 깔지 않음)
+        run: npm install --no-save --no-package-lock --no-audit --no-fund --ignore-scripts @netlify/blobs@11.1.1
+      - name: 새 글 꺼내 잠그기(fetch)
+        if: ${{ inputs.mode == 'fetch' }}
+        env:
+          PUB: ${{ inputs.pub }}
+        run: node scripts/atlas11/help/forward.mjs --fetch --pub "$PUB" --out sealed.json
+      - name: 잠긴 글을 알림 줄로(fetch)
+        if: ${{ inputs.mode == 'fetch' }}
+        run: node scripts/atlas11/help/forward.mjs --annotate sealed.json
+      - name: 여기까지 보냄(ack)
+        if: ${{ inputs.mode == 'ack' }}
+        env:
+          ACK_ID: ${{ inputs.ack_id }}
+        run: node scripts/atlas11/help/forward.mjs --ack "$ACK_ID"
