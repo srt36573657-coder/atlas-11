@@ -9410,6 +9410,9 @@
   "회색은 앞 닷새, 빨강은 뒤 닷새예요.": "Gray is the first 5 days, red the last 5 days.",
   "날마다 오른 회사 수 · 노랑은 최근 엿새": "Rising companies each day · yellow = last 6 days",
   "회색은 앞 닷새, 노랑은 뒤 닷새예요.": "Gray is the first 5 days, yellow the last 5 days.",
-  "노란 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.": "Yellow boxes: more bloomed than any company that day."
+  "노란 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.": "Yellow boxes: more bloomed than any company that day.",
+  "날마다 오른 회사 수 · 진한 초록은 최근 엿새": "Rising companies each day · dark green = last 6 days",
+  "회색은 앞 닷새, 진한 초록은 뒤 닷새예요.": "Gray is the first 5 days, dark green the last 5 days.",
+  "초록 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.": "Green boxes: more bloomed than any company that day."
  }
 }

@@ -191,7 +191,7 @@ async function pInd(name, sub) {
     i.sp.forEach((v, j) => { const hh = Math.max(4, Math.round(v / mx * (H - 8))); s.append(sv('rect', {x: (j * bw + 2).toFixed(1), y: H - hh, width: (bw - 4).toFixed(1), height: hh, rx: 2, class: j >= i.sp.length - 6 ? 'th-b1' : 'th-b0'})); });
     body = [h('h2', {class: 'th-ans'}, h('span', {text: `${num(i.tot)}곳 가운데 `}), h('em', {text: num(i.up) + '곳'})),
       h('p', {class: 'th-sub', text: `열흘 전보다 2% 넘게 오른 회사 수예요. 닷새 전에는 ${num(i.sp5)}곳, 가장 많을 때는 ${num(i.peak)}곳이었어요.`}), s,
-      h('p', {class: 'th-cap2', text: '날마다 오른 회사 수 · 노랑은 최근 엿새'}),
+      h('p', {class: 'th-cap2', text: '날마다 오른 회사 수 · 진한 초록은 최근 엿새'}),
       h('div', {class: 'th-box'}, h('b', {text: i.dots[1] ? '절반 이상 올랐어요 ✓' : '아직 절반이 안 돼요 ✗'}), h('span', {text: '절반 이상이면 넓게 번졌다고 봐요.'}))];
   } else if (sub === 'big') {
     art = 'company'; sayT = '큰 회사가 같이 가야 힘이 세요.';
@@ -234,7 +234,7 @@ async function pCo(code, sub) {
     sayT = '먼저 움직였을까, 뒤따랐을까?';
     // 2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A20): 말풍선 물음의 답(14쪽과 같은 셈 lead)이 머리 · 선 뜻 한 줄 · 열흘 값과 업종 안 자리는 작은 글로(오른 숫자가 머리이던 것)
     body = [h('h2', {class: 'th-ans', text: lead == null ? '? 아직 못 견줬어요' : lead ? '업종보다 먼저 움직였어요' : '업종을 뒤따라 움직였어요'}), h('p', {class: 'th-cap2', text: `${ind} 업종 회사예요.`}), bigLine(c.l),
-      h('p', {class: 'th-cap2', text: '회색은 앞 닷새, 노랑은 뒤 닷새예요.'}),
+      h('p', {class: 'th-cap2', text: '회색은 앞 닷새, 진한 초록은 뒤 닷새예요.'}),
       h('p', {class: 'th-sub', text: `열흘 동안 ${pp(c.d10)}% · ` + (c.rank ? `${num(M.ranked)}곳 가운데 ${num(c.rank)}번째` : '업종에서 몸값이 큰 회사예요')})];
     if (nx()?.chaps) body.push(h('h2', {class: 'th-h2', text: '더 깊이 보기'}), h('p', {class: 'th-cap2', text: '누르면 일곱 단까지 가요.'}), nx().chaps(code, '3')); // 3단 = 일곱 칸 모두(1 테마 시계 · 2 업종 · 3 이 회사 · 4 지나온 길 · 5 누구와 다투나 · 6 앞으로 클까? · 7 범위) — 토스증권처럼 누르기만 하면 더 깊이
   } else if (sub === 'lead') {
@@ -419,7 +419,7 @@ async function pPick() {
     verdict ? h('p', {class: 'th-sub th-key', text: verdict}) : null,
     h('p', {class: 'th-sub', text: '칸마다 꽃이 된 수와 고른 수예요.'}),
     h('div', {class: 'th-pkgrid', role: 'list', 'aria-label': '기록 달력'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-pkwd', 'aria-hidden': 'true', text: t})), ...wk.flatMap(w => w.cells.map(cell))),
-    h('p', {class: 'th-sub th-calnote', text: '노란 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.'}),
+    h('p', {class: 'th-sub th-calnote', text: '초록 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.'}),
     h('p', {class: 'th-sub th-calnote', text: '파란 칸은 아무 회사보다 적게 꽃이 된 날이에요.'}),
     h('p', {class: 'th-sub th-calnote', text: '테두리 칸은 아직 한 달이 안 지나 고른 수만 적었어요.'})) : null;
   const names = Array.isArray(B.why?.names) ? B.why.names : [], whyNote = [`시장보다 더 올랐지만 ${RULE.bloomX}%는 못 넘었어요.`, '업종이 한 달 뒤 시장보다 덜 올랐어요.', '업종은 괜찮았는데 회사만 덜 올랐어요.'];
