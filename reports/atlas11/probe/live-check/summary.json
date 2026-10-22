@@ -1,5 +1,5 @@
 {
- "made": "2026-10-22T10:04:51.303Z",
+ "made": "2026-10-22T11:27:08.091Z",
  "base": "https://aaa7377.com",
  "files": [
   {
@@ -55,14 +55,14 @@
    "path": "/atlas/data/home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 6881,
-   "sha256": "5b6a0693c1aed24e5eae8742c46261bbd3b7143286f9031c9ba6ab68d55a3bb5",
+   "bytes": 6863,
+   "sha256": "f399045b9932b493b7172518b1fa1610281e661804c34f91da347315b5c6d6b9",
    "has": {
     "\"rule\":\"home-v3\"": true,
     "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-22 19:01",
+     "kst": "2026-10-22 20:06",
      "alerts": []
     }
    },
@@ -72,8 +72,8 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 95559,
-   "sha256": "7bf65484b37148e4454c0ae0463243542f4c808a5e3971c341ddf3be525b53ad",
+   "bytes": 95269,
+   "sha256": "6b189c57a66bd3319c51b25a96eb149c1a20ab7c7a6ab34b9431e972323bd38b",
    "has": {
     "home-v3": false
    },
@@ -110,8 +110,8 @@
    "path": "/next/data/theme-cal.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 10917,
-   "sha256": "786702d7acf923d64d7343d948ce059965c22415dc1cf5fbb2afc9f3431d0809",
+   "bytes": 10924,
+   "sha256": "05667233fecb944c925a21722c32a36ad554842799a8cf90dfe2a0de645d1e13",
    "has": {
     "\"schema\":\"dori-theme-1-cal\"": true,
     "\"keepFrom\":\"2026-10-22\"": true,
@@ -125,24 +125,24 @@
      "hit3": 13,
      "last": {
       "d": "2026-10-22",
-      "s": 32,
+      "s": 31,
       "top": [
        {
         "n": "인터넷 플랫폼",
         "sc": 2,
-        "y": 6.9,
+        "y": 6.6,
         "hit": null
        },
        {
         "n": "자동차",
         "sc": 1,
-        "y": 4.9,
+        "y": 4.8,
         "hit": null
        },
        {
-        "n": "방산",
+        "n": "신약 개발",
         "sc": 1,
-        "y": 4.3,
+        "y": 4.4,
         "hit": null
        }
       ]
@@ -179,8 +179,8 @@
    "path": "/next/data/theme-home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 5543,
-   "sha256": "dfbfeed5edfc3a36186598a883db5fac8b0e35b76959e24cb75873cc7771a8a3",
+   "bytes": 5550,
+   "sha256": "ca5d0711567d08c909e9c7a76f719c4ded160c95be15307557a1bfb0d6b204f0",
    "has": {
     "\"record\"": true,
     "_rec": {
@@ -212,7 +212,7 @@
      "top": [
       "인터넷 플랫폼",
       "자동차",
-      "방산"
+      "신약 개발"
      ]
     }
    },
@@ -257,20 +257,19 @@
    "path": "/next/data/theme-bloom.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 2482,
-   "sha256": "60027eedf888ce157b7452596820bb0680a16e8dd30812bb6cd5f2e6bf6fb0bc",
+   "bytes": 2090,
+   "sha256": "b001c51f73b274659924d8f8aef4fb742b05f66ad23743e9dcfb0d11572f288f",
    "has": {
     "\"schema\":\"dori-theme-1-bloom\"": true,
     "\"record\"": true,
     "_bloom": {
      "asOf": "2026-10-22",
-     "provisional": true,
-     "today": 24,
+     "provisional": false,
+     "today": 14,
      "inds": [
       "바이오 도구·서비스",
-      "방송",
       "연예 기획사",
-      "콘텐츠 제작"
+      "방송"
      ],
      "all": {
       "n": 35717,
@@ -305,7 +304,7 @@
       "fall": 38.67,
       "fallBase": 38.65,
       "baseN": 872927,
-      "plain": 23.71,
+      "plain": 23.72,
       "plainN": 218320
      }
     }
