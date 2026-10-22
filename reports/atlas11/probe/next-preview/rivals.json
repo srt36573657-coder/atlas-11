@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-22T01:11:11.339Z",
+ "at": "2026-10-22T03:41:38.599Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-22",
  "companies": 2557,
@@ -9,16 +9,16 @@
  "limit": null,
  "seconds": 63,
  "time": {
-  "old": 48.2,
-  "new": 48,
-  "wall": 63.1,
-  "opensOld": 5130,
+  "old": 1.2,
+  "new": 56.8,
+  "wall": 62.5,
+  "opensOld": 1,
   "opensNew": 5195,
-  "oldPct": 76.4,
-  "oldShare": 50.1
+  "oldPct": 2,
+  "oldShare": 2.1
  },
  "net": {
-  "req": 2561,
+  "req": 5129,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -33,7 +33,7 @@
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 60
+   "compare": 58
   },
   "글 마디": 54126,
   "숫자 낱말": 53930,
@@ -43,12 +43,12 @@
   "없는 번호": 7,
   "옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)": 7,
   "oldSnap": {
-   "use": false,
-   "why": "기준값 파일 없음",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-10-22T03:30:35.167Z",
    "inputs": 2568,
    "reads": 2564,
-   "note": "기준값 새로 씀(파일 2568개 · 값 2564개)"
+   "note": "기준값 다시 씀"
   },
   "세 폭 화면": 30,
   "못 받은 파일 길": 6
