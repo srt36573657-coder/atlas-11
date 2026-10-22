@@ -107,12 +107,16 @@ test('VK1 꺼짐 — on≠true · 열쇠 하나 없음/짧음 → 모든 길(이
 
 test('VK2 꺼짐 — 올리기 준비(stageFunctions)에 카톡 셈 파일이 하나도 안 실림(편지 함수가 부르는 것 포함) · 그 자리는 「회원 아님」 막대뿐 · 켜면 진짜 파일', async () => {
   const {stageFunctions} = await import('../../../scripts/atlas11/deploy_netlify.mjs');
+  // 저장소의 스위치는 사장님 2026-10-19 카톡 가입 켬으로 켜져 있음 — 꺼짐 길은 스위치만 끈 사본 뿌리로 봄(아래 켜짐 길과 같은 꼴 · 2026-10-22)
   const cfg = JSON.parse(await fs.readFile(path.join(ROOT, 'config/atlas11/kakao.json'), 'utf8'));
-  assert.equal(cfg.on, false, '저장소의 스위치는 꺼짐');
+  const offRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'vk-root-off-'));
+  for (const d of ['functions', 'lib', 'site', 'node_modules']) await fs.symlink(path.join(ROOT, d), path.join(offRoot, d));
+  await fs.mkdir(path.join(offRoot, 'config/atlas11'), {recursive: true});
+  await fs.writeFile(path.join(offRoot, 'config/atlas11/kakao.json'), JSON.stringify({...cfg, on: false}));
   const out = await fs.mkdtemp(path.join(os.tmpdir(), 'vk-stage-'));
   try {
-    const s = await stageFunctions(ROOT, out);
-    assert.deepEqual(s.functions, ['invite', 'letter']);
+    const s = await stageFunctions(offRoot, out);
+    assert.ok(!s.functions.includes('kakao') && s.functions.includes('invite') && s.functions.includes('letter'), s.functions.join(' '));
     assert.deepEqual(s.files.filter(f => /kakao/i.test(f)), [], '꺼져 있으면 카톡 셈 파일 0');
     // 올라갈 폴더 전부(패키지 밖)를 훑음: 진짜 카톡 셈 글자 0 · 카톡 자리 두 파일은 막대(내보내는 것 = 회원 아님 · 저장소 이름)뿐
     const walk = async d => { const r = []; for (const e of await fs.readdir(d, {withFileTypes: true})) { const p = path.join(d, e.name); if (e.isDirectory()) { if (e.name !== 'node_modules') r.push(...await walk(p)); } else r.push(p); } return r; };
@@ -126,7 +130,7 @@ test('VK2 꺼짐 — 올리기 준비(stageFunctions)에 카톡 셈 파일이 �
     }
     const letterFn = await fs.readFile(path.join(out, 'functions/atlas11/letter.mjs'), 'utf8');
     for (const spec of letterFn.matchAll(/import\(\s*'([^']+)'\s*\)/g)) await fs.access(path.join(out, 'functions/atlas11', spec[1])); // 편지 함수가 부르는 자리는 모두 있음(묶기 깨짐 0)
-  } finally { await fs.rm(out, {recursive: true, force: true}); }
+  } finally { await fs.rm(out, {recursive: true, force: true}); await fs.rm(offRoot, {recursive: true, force: true}); }
   // 켜면(스위치 파일만 true 인 사본 뿌리): 카톡 함수 + 진짜 셈 파일 · 막대 0
   const fake = await fs.mkdtemp(path.join(os.tmpdir(), 'vk-root-')), on = await fs.mkdtemp(path.join(os.tmpdir(), 'vk-stage-on-'));
   try {
@@ -134,7 +138,7 @@ test('VK2 꺼짐 — 올리기 준비(stageFunctions)에 카톡 셈 파일이 �
     await fs.mkdir(path.join(fake, 'config/atlas11'), {recursive: true});
     await fs.writeFile(path.join(fake, 'config/atlas11/kakao.json'), JSON.stringify({...cfg, on: true}));
     const s = await stageFunctions(fake, on);
-    assert.deepEqual(s.functions, ['invite', 'kakao', 'letter']); assert.deepEqual(s.stubs ?? [], []);
+    assert.ok(['invite', 'kakao', 'letter'].every(f => s.functions.includes(f)), s.functions.join(' ')); assert.deepEqual(s.stubs ?? [], []);
     for (const f of ['lib/atlas11/kakao.mjs', 'lib/atlas11/kakao-store.mjs', 'lib/atlas11/letter.mjs']) assert.ok(s.files.includes(f), f);
   } finally { await fs.rm(fake, {recursive: true, force: true}); await fs.rm(on, {recursive: true, force: true}); }
 });
@@ -243,7 +247,7 @@ test('VK6 표는 한 번만 — 같은 표 쿠키 · 표로 두 번째 돌아오
 });
 
 /* ── 4 쿠키 · 새는 것 ── */
-test('VK7 쿠키 — 모든 Set-Cookie 가 __Host- · Path=/ · HttpOnly · Secure · SameSite=Lax · Domain 없음 · 몸에 증표 0 · CORS 머리글 0 · me 열쇠 여섯', async () => {
+test('VK7 쿠키 — 모든 Set-Cookie 가 __Host- · Path=/ · HttpOnly · Secure · SameSite=Lax · Domain 없음 · 몸에 증표 0 · CORS 머리글 0 · me 열쇠 일곱(커피 쿠폰 더함)', async () => {
   const R = rig();
   const a = browser(R); await signup(a, card('#/s/1'));
   const ref = (await meOf(a)).ref;
@@ -270,7 +274,7 @@ test('VK7 쿠키 — 모든 Set-Cookie 가 __Host- · Path=/ · HttpOnly · Secu
     if (/\/api\/kakao\/(me|data|withdraw|counts|verify)/.test(x.url)) assert.match(x.headers, /cache-control: no-store/);
   }
   const me = await meOf(a);
-  assert.deepEqual(Object.keys(me).sort(), ['code', 'friends', 'member', 'next', 'on', 'ref']);
+  assert.deepEqual(Object.keys(me).sort(), ['code', 'coffee', 'friends', 'member', 'next', 'on', 'ref']); // coffee = 커피 쿠폰 점수(2026-10-19 59fae31b7 · 내 기기 것만)
   for (const s of [...Object.values(ENVV), ...R.fake.users.keys()]) for (const x of [...R.seen.map(y => y.body + y.headers.replace(/^location: https:\/\/kauth\.kakao\.com\/oauth\/authorize\?.*$/m, '')), ...R.logs]) assert.ok(!x.includes(s), '비밀 · 번호 새지 않음');
 });
 

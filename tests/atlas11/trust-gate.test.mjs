@@ -43,7 +43,8 @@ test('올린 장부는 건수가 맞고 증거가 있음', () => {
   for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.json'))) {
     const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
     assert.equal(j.count, j.items.length, f);
-    for (const it of j.items) { assert.ok(it.what && it.when && it.evidence?.length, `${f} ${it.n}`); }
+    // 증거 = evidence 목록, 또는 2026-10-19 부터 쓰는 꼴(found_by 찾은 길 + fixed 고친 것) — 옛 장부는 새 파일만이라 고칠 수 없어 시험이 두 꼴을 다 받음
+    for (const it of j.items) { assert.ok(it.what && it.when && (it.evidence?.length || (typeof it.found_by === 'string' && it.found_by.trim() && typeof it.fixed === 'string' && it.fixed.trim())), `${f} ${it.n}`); }
     n += j.items.length;
   }
   assert.ok(n >= 11);

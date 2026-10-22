@@ -185,16 +185,15 @@ async function runDevice(name, engine, end) {
       row.ms = Date.now() - t; D.routes.push(row);
     }
 
-    /* 1b) 첫 화면 누르기(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 손가락으로: 시계 번호 ① · 싹 칸 · 주황 숫자 칸 셋 · 「진짜 싹 n곳」 머리 → 주소가 그 쪽으로 */
+    /* 1b) 첫 화면 누르기(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 손가락으로: 시계 번호 ① · 싹 칸 · 주황 숫자 칸 셋 → 주소가 그 쪽으로(「진짜 싹 n곳」 머리는 2026-10-22 총정리에서 없어져 뺌) */
     D.taps = [];
-    for (const [name, sel, want] of [['clock-1', 'section.th-home svg.th-clock a.th-tapn', TOP ? '#/t/i/' + TOP : null], ['clock-sprout', 'section.th-home svg.th-clock a.th-tapz', '#/t/sprout'], ['box-real', 'section.th-home .th-three a >> nth=0', '#/t/sprout/real'], ['box-new', 'section.th-home .th-three a >> nth=1', '#/t/sprout/new'], ['box-all', 'section.th-home .th-three a >> nth=2', '#/t/sprout'], ['head-real', 'section.th-home h2.th-ans a.th-ansl', '#/t/sprout/real']]) {
+    for (const [name, sel, want] of [['clock-1', 'section.th-home svg.th-clock a.th-tapn', TOP ? '#/t/i/' + TOP : null], ['clock-sprout', 'section.th-home svg.th-clock a.th-tapz', '#/t/sprout'], ['box-real', 'section.th-home .th-three a >> nth=0', '#/t/sprout/real'], ['box-new', 'section.th-home .th-three a >> nth=1', '#/t/sprout/new'], ['box-all', 'section.th-home .th-three a >> nth=2', '#/t/sprout']]) {
       if (Date.now() > end) break;
       const T = {name, want}; D.taps.push(T); cur = 'tap ' + name;
       try {
         await page.goto(urlOf('#/', 'tap-' + name), {waitUntil: 'domcontentloaded', timeout: 45000});
         if (!(await waitView(page, 30000))) { T.ok = false; T.why = 'home not drawn'; continue; }
         await settle(page, 3000);
-        if (name === 'head-real' && !(await page.locator(sel).count())) { T.ok = true; T.skip = 'no real sprout today'; continue; }
         let pt = null;
         if (name === 'clock-1') pt = await page.evaluate(() => { const a = [...document.querySelectorAll('section.th-home svg.th-clock a.th-tapn')].find(x => x.querySelector('.th-nbt')?.textContent === '1'); if (!a) return null; const c = a.querySelector('circle.th-nb'); c.scrollIntoView({block: 'center'}); const b = c.getBoundingClientRect(); return {x: b.left + b.width / 2, y: b.top + b.height / 2}; });
         else if (name === 'clock-sprout') pt = await page.evaluate(() => { const z = document.querySelector('section.th-home svg.th-clock a.th-tapz'); if (!z) return null; z.scrollIntoView({block: 'center'}); const b = z.getBoundingClientRect(); for (let fy = 0.9; fy > 0.1; fy -= 0.1) for (let fx = 0.08; fx < 0.95; fx += 0.12) { const x = b.left + b.width * fx, y = b.top + b.height * fy; if (document.elementFromPoint(x, y)?.closest('a') === z) return {x, y}; } return null; });
