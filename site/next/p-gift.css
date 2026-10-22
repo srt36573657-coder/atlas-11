@@ -8,6 +8,16 @@
 .gf-vow { display: flex; flex-direction: column; gap: var(--sp-1); margin: 0 0 var(--sp-3); padding: var(--sp-2); border: 1px solid var(--gold-line); border-radius: 16px; text-align: center; }
 .gf-vow b { font-size: var(--fs-2); font-weight: 800; color: var(--gold); }
 .gf-vow span { font-size: var(--fs-1); line-height: 1.55; color: var(--ink); }
+/* 맨 위 결(총정리 2026-10-22 D6 · D7) — 약속 칸 바로 밑 「지금 할 일 · … ↓」 한 줄 단추(가는 먹 테 · 칠 없음 · 칠한 단추는 「상품권 받기」 하나 그대로) · 누르면 그 걸음으로 */
+.gf-now { display: flex; align-items: center; width: 100%; min-height: 48px; margin: 0 0 var(--sp-3); padding: var(--sp-1) var(--sp-2); border: 1px solid var(--ink); border-radius: 24px; color: var(--ink); font-size: var(--fs-2); font-weight: 700; line-height: 1.4; text-align: left; }
+.gf-now:active { background: var(--card2); }
+.gf-now:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.gf-step, .gf-got { scroll-margin-top: 80px; }
+/* 화면 찍는 법(걸음 1 밑 접은 칸 · D8) — 요약 줄 48px · 글만 */
+.gf-how { align-self: stretch; margin: 0; }
+.gf-how > summary { display: flex; align-items: center; min-height: 48px; color: var(--sub); font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; list-style: none; }
+.gf-how > summary::-webkit-details-marker { display: none; }
+.gf-how > p { margin: 0 0 var(--sp-1); font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }
 .gf-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair2); }
 .gf-step { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--sp-2); padding: var(--sp-3) 0; border-bottom: 1px solid var(--hair2); }
 .gf-no { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; box-sizing: border-box; border: 1px solid var(--hair2); border-radius: 50%; color: var(--mute); font-size: var(--fs-2); font-weight: 700; text-align: center; }
@@ -21,8 +31,9 @@
 .gf-said { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }
 .gf-said:empty, .gf-left:empty { display: none; }
 .gf-uv { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; border-radius: 16px; background: #070B17; cursor: pointer; }
-.gf-bar { -webkit-appearance: none; appearance: none; display: block; width: 100%; max-width: 360px; height: 8px; border: 0; border-radius: 4px; background: var(--hair); overflow: hidden; }
-.gf-bar::-webkit-progress-bar { background: var(--hair); border-radius: 4px; }
+/* 본 초 막대(총정리 D11) — 바탕은 가는 테만(속 비움 · 0초가 꽉 찬 막대로 보이지 않게) · 본 만큼만 금빛 */
+.gf-bar { -webkit-appearance: none; appearance: none; display: block; width: 100%; max-width: 360px; height: 10px; border: 1px solid var(--sub); border-radius: 5px; background: transparent; overflow: hidden; }
+.gf-bar::-webkit-progress-bar { background: transparent; border-radius: 4px; }
 .gf-bar::-webkit-progress-value { background: var(--gold); border-radius: 4px; }
 .gf-bar::-moz-progress-bar { background: var(--gold); border-radius: 4px; }
 .gf-left { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--ink); }

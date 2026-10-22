@@ -4,6 +4,10 @@
    2026-10-18 [10] 10 — 금빛 경고 글(모르는 것 ? · 장 중 값 · 맨 아래 확정 전 값)은 warn() 으로: 두 줄 안이면 그대로 · 넘으면 「?」 한 줄로 접고 누르면 펼침(글은 그대로) */
 import {warn} from '/next/warn.js';
 import {fourText} from '/next/essence.js'; // 「하루 4번」 글은 지난 7일 기록이 맞을 때만(사장님 2026-10-18 16:39 [5] 4 · 요약 fourADay · 일꾼 KI) — 「다시 고르기」(core.json rules.next)
+/** 맨 위 결(총정리 2026-10-22 D17 · 사장님 04:09 「결과부터」) — 「도움말」을 누른 처음 온 사람이 첫 화면 시계 읽는 법에 한 번에 닿게 + 이 쪽이 무엇인지 한 줄(지난 기록만) · 옛 쪽 줄은 그대로 아래 */
+const firstBox = () => h('div', {class: 'pinfo-first'},
+  h('a', {class: 'pinfo-how', href: '#/t/how', text: '처음이면 「시계 읽는 법」부터 보세요 ›'}),
+  h('p', {class: 'pinfo-what', text: '이 쪽은 고른 곳을 어떻게 셌는지 적은 곳이에요. 지난 기록만 써요.'}));
 const NX = globalThis.NX;
 const {h} = NX;
 const md = d => { const p = String(d).split('-'); return (+p[1]) + '월 ' + (+p[2]) + '일'; }; // 옛 쪽 md 그대로(붙임 띄어쓰기)
@@ -38,7 +42,7 @@ export async function render() {
   const [C] = await Promise.all([NX.need('core'), NX.need('sum')]); // sum = 첫 화면 요약 — 「하루 4번」 글을 첫 화면과 같게(fourADay · 일꾼 KC)
   if (!C) return {title: '돌이는 어떻게 셌나요', nodes: NX.noData()};
   const F = C.facts ?? {}, RU = C.rules ?? {}, root = h('div', {class: 'pinfo', 'data-page': 'info'});
-  root.append(h('h1', {class: 'wt', text: '돌이는 어떻게 셌나요'}),
+  root.append(h('h1', {class: 'wt', text: '돌이는 어떻게 셌나요'}), firstBox(),
     h('p', {class: 'pinfo-lead'}, h('b', {text: pickName(C)}), ` — ${pickLine(C)}.`),
     h('p', {class: 'pinfo-p', text: `${RU.notMunger} ${pickHow(C)} · 앞날 값은 쓰지 않았습니다 · 순서가 아닙니다.`}));
   // 그림 한 장 — 깔때기 두 갈래(목록 모두 → 고른 곳)

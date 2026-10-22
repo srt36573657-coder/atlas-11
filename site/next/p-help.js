@@ -44,7 +44,9 @@ export const V = {
     mailH: '개인정보나 급한 일은 이메일로 알려 주세요.', copy: '주소 복사', copied: '이메일 주소를 담았어요.',
     promiseH: `${NAME}의 약속`, promise: ['사고팔기를 권하지 않아요.', '앞날을 맞히지 않아요.', '광고를 붙이지 않고, 기록을 팔지 않아요.'],
     keep: '남긴 글은 1년 뒤에 지워요. 지우기를 누르면 바로 지워져요.',
-    faq: [['가입해야 쓸 수 있나요?', '아니요. 가입하지 않아도 모든 화면을 볼 수 있어요.'], ['어떤 주식을 사면 돼요?', `${josa(NAME, '는')} 사고팔기를 권하지 않아요. 지난 기록만 보여 줘요.`],
+    ansGot: '답이 왔어요 · {n}개 ›', ansWait: '답을 기다려요 · {n}개 ›', howLink: '시계 읽는 법 ›', // 맨 위 결(총정리 2026-10-22 D1) · 첫 물음 밑 고리(D4)
+    faq: [[`${josa(NAME, '는')} 무엇을 해 줘요?`, '테마가 될 듯한 곳을 지난 기록으로 찾아 줘요. 앞날은 맞히지 않아요.'], // 본질 1(테마가 될 듯한 곳 · 중심이자 시작)을 맨 앞에(총정리 D4)
+      ['가입해야 쓸 수 있나요?', '아니요. 가입하지 않아도 모든 화면을 볼 수 있어요.'], ['어떤 주식을 사면 돼요?', `${josa(NAME, '는')} 사고팔기를 권하지 않아요. 지난 기록만 보여 줘요.`],
       ['앞으로 오를지 알려 줘요?', `아니요. ${josa(NAME, '는')} 앞날을 맞히지 않아요.`], ['숫자는 어디서 와요?', '네이버 증권에서 받아요.'],
       ['내 기록은 어디에 남아요?', '가입하지 않으면 이 휴대폰에만 남아요.'], ['매매일지는 뭐예요?', '사기 전에 「왜 사?」 열한 질문으로 내 이유를 확인하는 곳이에요.']],
   },
@@ -63,7 +65,9 @@ export const V = {
     mailH: '개인정보 · 긴급 문의', copy: '주소 복사', copied: '이메일 주소를 복사했습니다.',
     promiseH: '운영 원칙', promise: ['사고팔기 권유 없음', '주가 전망 없음', '광고 없음 · 기록 판매 없음'],
     keep: '보관: 1년 · 「삭제」를 누르면 즉시 삭제',
-    faq: [['가입이 필요한가요?', '아니요. 모든 화면은 가입 없이 열립니다.'], ['종목을 골라 주나요?', '아니요. 사고팔기를 권하지 않습니다. 지난 기록만 보여 줍니다.'],
+    ansGot: '답변 {n}건 ›', ansWait: '답변 대기 {n}건 ›', howLink: '시계 읽는 법 ›',
+    faq: [[`${josa(NAME, '는')} 무엇을 하나요?`, '테마가 될 수 있는 업종을 지난 기록으로 찾습니다. 전망은 하지 않습니다.'],
+      ['가입이 필요한가요?', '아니요. 모든 화면은 가입 없이 열립니다.'], ['종목을 골라 주나요?', '아니요. 사고팔기를 권하지 않습니다. 지난 기록만 보여 줍니다.'],
       ['주가 전망을 하나요?', '하지 않습니다. 지난 기록만 다룹니다.'], ['숫자 출처는?', '네이버 증권입니다.'],
       ['기록은 어디에 저장되나요?', '가입하지 않으면 이 기기 브라우저에만 저장됩니다. 서버로 보내지 않습니다.'], ['매매일지 기능은?', '사기 전에 「왜 사?」 열한 질문으로 이유를 점검합니다. 한 달 뒤 「그날 정한 대로 했어?」로 돌아봅니다.']],
   },
@@ -130,13 +134,16 @@ function form(L, kind, onSent) {
   return box;
 }
 
-function mineList(L) {
+/** 내가 남긴 글 — onItems(items) = 받은 글 목록을 맨 위 결 단추(render 의 hp-ans)에 넘김(못 받으면 null · 열쇠 없으면 빈 목록) · box.ready = 다 그린 때 */
+function mineList(L, onItems) {
   const box = h('section', {class: 'hp-mine', 'aria-label': L.mineH});
+  const tell = x => { try { onItems?.(x); } catch { /* 결 단추 못 그림 — 목록은 그대로 */ } };
   const paint = async () => {
     const head = [h('h3', {class: 'hp-h3', text: L.mineH}), h('p', {class: 'hp-fine', text: L.mineDev})];
-    if (!devKey()) { box.replaceChildren(...head, h('p', {class: 'hp-empty', text: L.mineEmpty})); return; }
+    if (!devKey()) { box.replaceChildren(...head, h('p', {class: 'hp-empty', text: L.mineEmpty})); tell([]); return; }
     const r = await api('GET', '/mine');
     const items = Array.isArray(r.json?.items) ? r.json.items : null;
+    tell(items);
     if (!items) { box.replaceChildren(...head, h('p', {class: 'hp-empty', text: L.mineErr})); return; }
     if (!items.length) { box.replaceChildren(...head, h('p', {class: 'hp-empty', text: L.mineEmpty})); return; }
     box.replaceChildren(...head, h('ul', {class: 'hp-list'}, ...items.map(it => {
@@ -157,15 +164,15 @@ function mineList(L) {
         del);
     })));
   };
-  paint();
-  box.refresh = paint;
+  box.ready = paint();
+  box.refresh = () => (box.ready = paint());
   return box;
 }
 
 function faqList(L) {
   const box = h('section', {class: 'hp-faq', 'aria-label': L.faqH}, h('h3', {class: 'hp-h3', text: L.faqH}));
-  const q = (a, b, own) => h('details', {class: 'hp-qa'}, h('summary', {}, h('span', own ? {lang: 'ko', text: a} : {text: a}), chev()), h('p', own ? {lang: 'ko', text: b} : {text: b}));
-  const list = h('div', {class: 'hp-qas'}, ...L.faq.map(([a, b]) => q(a, b)));
+  const q = (a, b, own, more = null) => h('details', {class: 'hp-qa'}, h('summary', {}, h('span', own ? {lang: 'ko', text: a} : {text: a}), chev()), h('p', own ? {lang: 'ko', text: b} : {text: b}), more);
+  const list = h('div', {class: 'hp-qas'}, ...L.faq.map(([a, b], i) => q(a, b, false, i === 0 ? h('a', {class: 'hp-qlink', href: '#/t/how', text: L.howLink}) : null))); // 첫 물음(무엇을 해 줘요?) 답 밑 「시계 읽는 법 ›」(총정리 D4)
   box.append(list);
   api('GET', '/faq').then(r => { const xs = Array.isArray(r.json?.items) ? r.json.items : []; for (const x of xs.slice(0, 12)) list.append(q(x.q, x.a, true)); }); // 사장님이 모두에게 보이기로 고른 물음(사람이 쓴 글 — 영어로 안 바꿈)
   return box;
@@ -183,11 +190,21 @@ function guide(L) {
     h('p', {class: 'hp-links'}, h('a', {href: '#/info', text: '도움말'}), h('a', {href: '#/up', text: '업데이트 기록'}), h('a', {href: '/privacy.html', text: '개인정보 처리방침'})));
 }
 
+/** 맨 위 결 단추(총정리 2026-10-22 D1) — 답이 온 글이 있으면 {got: true, text: 「답이 왔어요 · n개 ›」} · 답 없이 기다리는 물음만 있으면 {got: false, text: 「답을 기다려요 · n개 ›」}
+ *  그 밖(남긴 글 없음 · 한마디만 · 못 받음)은 null = 단추 없음 · 「읽음」 기억은 두지 않음(새 저장 열쇠 0) */
+export function ansOf(L, items) {
+  if (!Array.isArray(items)) return null;
+  const has = it => typeof it?.answer === 'string' && it.answer.trim() !== '';
+  const got = items.filter(has).length, wait = items.filter(it => it?.kind === 'ask' && !has(it)).length;
+  return got ? {got: true, text: L.ansGot.replace('{n}', String(got))} : wait ? {got: false, text: L.ansWait.replace('{n}', String(wait))} : null;
+}
+
 export function render(arg) {
   const want = ['say', 'ask', 'guide'].includes(arg) ? arg : null;
   const root = h('div', {class: 'hp', 'data-page': 'help'});
-  let open = want;
+  let open = want, last = null, curMine = null; // last = 마지막으로 받은 내 글 목록(말투 · 문을 바꿔 다시 그려도 결 단추가 깜빡이지 않게 · 이 쪽을 연 동안만 · 저장 0)
   const title = h('h1', {class: 'hp-h1', text: '고객센터'}); // 한 번만 만듦 — app.js 가 붙이는 돌 그림(stoneArt)이 말투 · 문을 바꿔도 남게
+  const smooth = () => !(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
   const paint = () => {
     const L = V[voiceNow()];
     const vt = h('div', {class: 'hp-voice', role: 'radiogroup', 'aria-label': '말투'}, ...[['easy', '쉬운 말'], ['direct', '곧은 말']].map(([k, t]) => {
@@ -195,7 +212,16 @@ export function render(arg) {
       b.addEventListener('click', () => { if (voiceNow() === k) return; ls.set(K_VOICE, k); paint(); });
       return b;
     }));
-    const mine = mineList(L);
+    /* 결 — 답이 왔는지 맨 위에서 바로(물어보기 문 · 맨 아래 「내가 남긴 글」까지 내려가지 않아도) · 누르면 물어보기 문을 열고 내 글로 내려감 · 자료는 아래 내 글 목록이 받는 것 그대로(서버 물음 더 없음) */
+    const ans = h('button', {type: 'button', class: 'hp-ans', hidden: true});
+    const setAns = items => { const a = ansOf(L, items); ans.hidden = !a; ans.classList.toggle('got', !!a?.got); if (a) ans.textContent = a.text; };
+    ans.addEventListener('click', () => {
+      open = 'ask'; paint();
+      const m = curMine; Promise.resolve(m?.ready).finally(() => requestAnimationFrame(() => { if (m?.isConnected) m.scrollIntoView({block: 'start', behavior: smooth() ? 'smooth' : 'auto'}); }));
+    });
+    const mine = mineList(L, items => { last = items; setAns(items); });
+    curMine = mine;
+    if (last) setAns(last);
     const panels = {say: () => form(L, 'note'), ask: () => h('div', {}, faqList(L), h('p', {class: 'hp-note', text: L.askNote}), form(L, 'ask', () => mine.refresh()), mine), guide: () => guide(L)};
     const doors = ['say', 'ask', 'guide'].map(k => {
       const id = 'hp-' + k, btn = h('button', {type: 'button', class: 'hp-door', 'aria-expanded': String(open === k), 'aria-controls': id},
@@ -205,8 +231,10 @@ export function render(arg) {
       return [btn, pane];
     }).flat();
     const note = h('figure', {class: 'hp-note-card'}, h('blockquote', {}, h('p', {class: 'hp-n1', text: L.note[0]}), h('p', {class: 'hp-n2', text: L.note[1]})), h('figcaption', {text: '— ' + L.sign}));
-    root.replaceChildren(title, vt, note, h('div', {class: 'hp-doors'}, ...doors));
+    root.replaceChildren(title, ans, vt, note, h('div', {class: 'hp-doors'}, ...doors));
   };
   paint();
+  /* #/help/say · ask · guide 로 바로 열면 그 문(이름 · 쓰는 칸 · 보내기)을 화면 맨 위에(총정리 D2) — app.js 가 그린 뒤 맨 위로 올리므로 두 틀 뒤에 */
+  if (want) requestAnimationFrame(() => requestAnimationFrame(() => { const d = root.querySelector('#hp-' + want)?.previousElementSibling; if (d?.isConnected) d.scrollIntoView({block: 'start'}); }));
   return {title: '고객센터', nodes: [root]};
 }

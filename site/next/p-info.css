@@ -5,6 +5,10 @@
 .pinfo .wt { margin: var(--sp-2) var(--sp-2) var(--sp-1); font-size: var(--fs-4); }
 .pinfo .q { color: var(--gold); }
 .pinfo .num { font-variant-numeric: tabular-nums; }
+/* 맨 위 결(총정리 2026-10-22 D17) — 처음 온 사람의 고리 하나(48px · 칸 안 글 32) + 이 쪽이 무엇인지 한 줄(글 16) */
+.pinfo-first { margin: var(--sp-1) var(--sp-2) var(--sp-2); }
+a.pinfo-how { display: flex; align-items: center; min-height: 48px; padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--card2); font-size: var(--fs-2); font-weight: 700; line-height: 1.45; }
+.pinfo-what { margin: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-2); line-height: 1.6; }
 .pinfo-lead { margin: var(--sp-1) var(--sp-2); font-size: var(--fs-3); line-height: 1.55; }
 .pinfo-lead b { font-weight: 800; }
 .pinfo-p { margin: 0 var(--sp-2) var(--sp-2); font-size: var(--fs-2); line-height: 1.65; }
@@ -56,4 +60,4 @@ html.white ol.pinfo-funnel { border-top-color: var(--hair); }
 html.white ol.pinfo-funnel li { border-bottom-color: var(--hair); }
 html.white ol.pinfo-funnel li::after { background: var(--hair-soft); }
 html.white ol.pinfo-funnel li .fill { background: var(--mute); }
-html.white details.pinfo-more > summary, html.white a.pinfo-go { outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white details.pinfo-more > summary, html.white a.pinfo-go, html.white a.pinfo-how { outline: 1px solid var(--hair2); outline-offset: -1px; }

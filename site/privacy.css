@@ -30,6 +30,10 @@ p{margin:0 0 var(--sp-1);color:var(--sub)}
 .pv-list li{position:relative;padding:0 0 0 var(--sp-2);margin:0 0 var(--sp-1);color:var(--sub)}
 .pv-list li::before{content:"·";position:absolute;left:0;top:0;color:var(--gold);font-weight:800}
 
+/* 바로 가기 줄(총정리 2026-10-22 D27) — 칸 이름 알약(48px · 가는 테 · 칠 · 그림자 없음) · 줄이 넘치면 다음 줄로 */
+.pv-jump{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin:0 0 var(--sp-3)}
+.pv-jump a{display:inline-flex;align-items:center;min-height:48px;padding:0 var(--sp-2);border:1px solid var(--hair);border-radius:24px;color:var(--ink);font-size:var(--fs-1);text-decoration:none}
+
 /* 칸 — 가는 선으로 나눔 */
 .pv-sec{border-top:1px solid var(--hair);padding:var(--sp-3) 0 var(--sp-2)}
 
