@@ -532,7 +532,7 @@ html.white .kkg > a > b, html.white .kkg > a > small { width: calc(100% - 56px);
 html.white .th { background: var(--bg); border-color: var(--hair2); }
 html.white .th .big { background: var(--bg); color: var(--ink); border: 1px solid var(--hair2); }
 html.white .th .dur { background: var(--bg); color: var(--ink); border: 1px solid var(--hair2); } /* 먹 바탕이면 안의 빨강 · 파랑 숫자가 3.3 으로 흐려짐 */
-html.white i.play { background: var(--ink); border-color: var(--bg); } /* ▶ 표시는 i.play 만(총정리 08:53 — 「왜 그럴까?」 열한 걸음 그림 section.wc 가 움직임을 다시 켤 때 붙이는 .play 와 이름이 같아 그림이 통째로 가운데 56px 칸으로 빨려 들어갔음) */
+html.white i.play { background: var(--ink); border-color: var(--bg); } /* ▶ 표시는 i.play 만(총정리 08:53 — 「왜 그럴까?」 열한 걸음 그림(why-chain.js)이 움직임을 다시 켤 때 붙이던 이름과 같아 그림이 통째로 가운데 56px 칸으로 빨려 들어갔음) */
 html.white .av { background: var(--bg); border: 1px solid var(--gold); color: var(--gold); }
 html.white .av.on { outline: 3px solid var(--gold); outline-offset: 0; }
 html.white .st { background: var(--bg); border-color: var(--hair2); }
