@@ -4,7 +4,7 @@
 .hp { padding: 0 var(--sp-2) var(--sp-3); }
 .hp-voice { display: inline-flex; margin: 0 0 var(--sp-2); padding: 0; border: 1px solid var(--hair2); border-radius: 24px; }
 .hp-vb { min-height: 48px; min-width: 48px; padding: 0 var(--sp-2); border-radius: 24px; color: var(--sub); font-size: var(--fs-1); font-weight: 600; }
-.hp-vb[aria-checked="true"] { background: #FFFFFF; color: #070B17; font-weight: 700; }
+.hp-vb[aria-checked="true"] { background: #FFFFFF; color: #0B2716; font-weight: 700; }
 /* 맨 위 결(총정리 2026-10-22 D1) — 「답이 왔어요 · n개 ›」 한 줄 단추 · 가는 선 · 답이 온 때만 먹 글 테(그림자 · 칠 없음) · 숨김은 hidden */
 .hp-ans { display: flex; align-items: center; width: 100%; min-height: 48px; margin: 0 0 var(--sp-2); padding: 0 var(--sp-2); border: 1px solid var(--hair2); border-radius: 24px; color: var(--sub); font-size: var(--fs-2); font-weight: 700; text-align: left; }
 .hp-ans.got { border-color: var(--ink); color: var(--ink); }
@@ -45,7 +45,7 @@
 .hp-fine { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--mute); }
 .hp-meta .hp-fine { margin: 0; }
 .hp-cnt { flex: none; font-size: var(--fs-1); color: var(--mute); }
-.hp-go { display: block; width: 100%; min-height: 56px; margin: var(--sp-2) 0 0; border-radius: 28px; background: #FFFFFF; color: #070B17; font-size: var(--fs-2); font-weight: 700; }
+.hp-go { display: block; width: 100%; min-height: 56px; margin: var(--sp-2) 0 0; border-radius: 28px; background: #FFFFFF; color: #0B2716; font-size: var(--fs-2); font-weight: 700; }
 .hp-go:disabled { opacity: .5; }
 .hp-out { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--ink); }
 .hp-out:empty { display: none; }

@@ -5,7 +5,7 @@
 .gm-sum, .gm-prize, .gm-sec { margin: 0 0 var(--sp-2); padding: var(--sp-2); border: 1px solid var(--hair2); border-radius: 16px; }
 .gm-lb { margin: 0; color: var(--sub); font-size: var(--fs-1); }
 .gm-big { margin: 0 0 var(--sp-1); font-size: var(--fs-5); font-weight: 700; }
-.gm-bar { height: 8px; margin: 0 0 var(--sp-1); border-radius: 4px; background: #262626; overflow: hidden; }
+.gm-bar { height: 8px; margin: 0 0 var(--sp-1); border-radius: 4px; background: #12351F; overflow: hidden; }
 .gm-fill { display: block; width: 0; height: 100%; border-radius: 4px; background: var(--ink); }
 .gm-t { margin: 0 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); }
 .gm-q { color: var(--gold); }
@@ -22,7 +22,7 @@
 .gm-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); }
 .gm-row .gm-q[type="number"] { width: 112px; color: var(--ink); }
 .gm-b, .gm-s { min-height: 48px; min-width: 96px; padding: 0 var(--sp-2); border-radius: 24px; font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }
-.gm-b { border: 0; background: #FFFFFF; color: #070B17; }
+.gm-b { border: 0; background: #FFFFFF; color: #0B2716; }
 .gm-s { border: 1px solid var(--hair2); background: transparent; color: var(--ink); }
 .gm-s:disabled { opacity: .45; cursor: default; }
 .gm-log li { padding: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-1); }

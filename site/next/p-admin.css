@@ -6,7 +6,7 @@
 .adm-sec p { margin: 0 0 var(--sp-1); font-size: var(--fs-1); color: var(--sub); }
 .adm-row { display: flex; gap: var(--sp-1); }
 .adm-in { flex: 1 1 0; min-width: 0; height: 48px; padding: 0 var(--sp-2); border: 1px solid var(--hair2); border-radius: 24px; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-2); letter-spacing: .08em; }
-.adm-go { flex: none; min-width: 72px; height: 48px; padding: 0 var(--sp-2); border: 0; border-radius: 24px; background: #FFFFFF; color: #070B17; font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }
+.adm-go { flex: none; min-width: 72px; height: 48px; padding: 0 var(--sp-2); border: 0; border-radius: 24px; background: #FFFFFF; color: #0B2716; font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }
 .adm-out { margin: var(--sp-1) 0 0; color: var(--ink); font-size: var(--fs-2); }
 .adm-list { margin: 0; padding: 0; list-style: none; }
 .adm-list li { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-top: 1px solid var(--line); font-size: var(--fs-1); }

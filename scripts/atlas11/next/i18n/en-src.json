@@ -9401,6 +9401,10 @@
   "고쳐 볼 것은 셈하기 전에 먼저 적어요.": "We write down each fix before counting.",
   "못 된 날이 쌓이면 또 고쳐 보고 다시 재요.": "As misses pile up, we will try new fixes and measure again.",
   "주황 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.": "Orange boxes: more bloomed than any company that day.",
-  "달력에서 못 된 {n}번을 셋으로 나눴어요.": "We split the {n} misses in the calendar into three kinds."
+  "달력에서 못 된 {n}번을 셋으로 나눴어요.": "We split the {n} misses in the calendar into three kinds.",
+  "고른 회사 {n}곳에 {n}곳이 꽃이 됐어요.": "{n2} of every {n1} picked companies bloomed.",
+  "아무 회사는 {n}곳이라 그보다 적었어요.": "Any company: {n}, so fewer than that.",
+  "아무 회사는 {n}곳이라 그보다 많았어요.": "Any company: {n}, so more than that.",
+  "아무 회사도 {n}곳이라 비슷했어요.": "Any company was also {n}, about the same."
  }
 }
