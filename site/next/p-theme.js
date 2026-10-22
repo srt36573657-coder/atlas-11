@@ -5,7 +5,7 @@
    길: #/t/hello 1 · (#/ 2 = 첫 화면 homeBlock) · how 3 · sprout 4 · bloom 5 · wilt 6 · i/<업종>[/path|spread|big|co|near] 7 ~ 12 · c/<번호>[/lead|why|rank|unknown|keep] 13 ~ 18 · today 36
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
-import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock} from './theme-home.js';
+import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON} from './theme-home.js';
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 import {NAME, josa} from './brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않음
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
@@ -76,9 +76,15 @@ function shell(no, title, art, sayT, prev, next, body, {pageKey = 'theme'} = {})
   return h('div', {class: 'tc', 'data-page': pageKey}, pgBar(no, prev), hd(title, art), sayT ? say(sayT) : null, ...body, next ? nextBtn(next[0], next[1], next[2]) : null, safe());
 }
 async function pHello() {
-  const steps = [['시계를 봐요', '업종이 지금 어느 자리인지'], ['싹 하나를 눌러요', '점 넷으로 진짜 싹인지'], ['회사를 눌러요', '먼저 움직였는지, 뒤따랐는지']];
+  // 2026-10-22 총정리(사장님 04:09 「결과부터 나오는 구조」 · 감사 A10): 맨 위 = 오늘 찾은 곳(싹 맨 앞 업종 · 점 수 · 누르면 그 업종 쪽) · 세 걸음 글은 첫 화면에 실제로 있는 것으로(「시계」 대신 줄 셋)
+  const TH = await themeData(), top = TH ? indOf(TH, TH.order?.S?.[0]) : null;
+  const found = !TH ? null : top ? h('a', {class: 'th-found', href: '#/t/i/' + enc(top.n)}, h('span', {class: 'th-fk', text: `오늘 ${josa(NAME, '가')} 찾은 곳`}), h('b', {class: 'th-fn', text: top.n}),
+    h('span', {class: 'th-fd'}, dots(top), h('span', {text: `점 넷 가운데 ${num(top.sc)}개`})), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}))
+    : h('p', {class: 'th-sub th-key', text: '오늘은 싹 자리가 비었어요.'});
+  const steps = [['첫 화면 줄 셋을 봐요', '시장보다 힘이 붙은 업종이에요'], ['업종 하나를 눌러요', '점 넷이 다 차면 진짜 싹이에요'], ['회사를 눌러요', '먼저 움직였는지, 뒤따랐는지']];
   return {title: '돌이 인사', nodes: [shell(1, '돌이', 'home', '테마가 될 듯한 곳을 찾아 줘요.', null, ['테마 시계', '#/'],
-    [h('h2', {class: 'th-ans', text: '세 번만 누르면 돼요'}), h('ol', {class: 'th-steps'}, steps.map(([a, b], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {text: a}), h('span', {text: b})))))])]};
+    [found, h('h2', {class: 'th-h2', text: '세 번만 누르면 돼요'}), h('ol', {class: 'th-steps'}, steps.map(([a, b], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {text: a}), h('span', {text: b}))))),
+      TH ? asOf(TH) : null])]};
 }
 async function pHow() {
   const TH = await themeData(); if (!TH) return none('시계 읽는 법');
@@ -91,7 +97,7 @@ async function pHow() {
   return {title: '시계 읽는 법', nodes: [shell(3, '시계 읽는 법', 'today', '네 자리만 알면 돼요.', ['테마 시계', '#/'], ['싹 자리 전부', '#/t/sprout'], [
     h('p', {class: 'th-sub th-key', text: `왼쪽 위 「싹」 칸을 ${josa(NAME, '가')} 먼저 봐요. 아직 덜 올랐지만 지난 닷새는 시장보다 더 오른 곳이에요.`}),
     h('div', {class: 'th-map'}, clock(TH), h('p', {class: 'th-cap'}, h('span', {text: '가로는 한 달 동안 시장보다 더 오른 만큼이에요.'}), h('span', {text: '세로는 지난 닷새 동안 시장보다 더 오른 만큼이에요.'}), h('span', {text: '한 달 동안 시장보다 5% 넘게 더 오르면 꽃 선을 넘어요.'}))),
-    h('ol', {class: 'th-steps'}, zones.map(([z, t], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {class: 'th-z ' + z, text: ZONES[z]}), h('span', {text: t}))))),
+    h('ol', {class: 'th-steps'}, zones.map(([z, t], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {class: 'th-z ' + z, text: `${ZONES[z]} · ${SEASON[z]}`}), h('span', {text: t}))))), // 자리 이름 + 첫 화면 계절 말(봄 = 싹 — 두 이름을 잇는 곳 · 감사 A6)
     // 행성 열은 2026-10-21 18:22 「그랴」(17:51 「이렇기 행성 나오는것 지우고 … 장난스러워」)로 지움 — 시계의 업종은 작은 점
     h('h2', {class: 'th-h2', text: '점 넷'}),
     h('ol', {class: 'th-steps'}, [['시장보다 힘이 붙어요', '지난 닷새 시장보다 2% 넘게 더 올랐어요.'], [DOT_TEXT[1], '열흘 동안 2% 넘게 오른 회사가 절반 이상이에요.'], ['큰 회사도 움직여요', '가장 큰 회사 셋의 평균이 열흘 동안 1% 이상 올랐어요.'], ['값이 진짜로 올라요', '업종 값이 열흘 전보다 올랐어요.']]
@@ -110,9 +116,20 @@ async function pHow() {
 function rb(p) { const s = sv('svg', {class: 'th-rbar', viewBox: '0 0 100 12', width: '100%', height: 12, preserveAspectRatio: 'none', 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: 100, height: 12, rx: 6, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Number.isFinite(p) ? Math.max(0, Math.min(100, p)) : 0, height: 12, rx: 6, class: 'th-bar1'})); return s; }
 /** 싹 목록 거르기(첫 화면 주황 숫자 — 2026-10-20 09:46) — real = 점 넷이 다 참(결정표 진짜 싹 · count.real) · new = 오늘 새로 들어옴(d 1 · count.fresh) */
 const SPROUT_F = {real: ['진짜 싹', i => i.sc === 4, '점 넷이 다 찬 곳이에요.', '오늘은 진짜 싹이 없어요.'], new: ['새로 들어온 싹', i => i.d === 1, '오늘 싹 자리에 새로 들어왔어요.', '오늘 새로 들어온 싹은 없어요.']};
+const DOT_WORD = ['없음', '하나', '둘', '셋', '넷'];
+/** 싹 자리 전부 — 점 수 묶음(진짜 싹 · 점 셋 · 둘 · 하나 · 점 없음은 접음) · 줄 차례 = order.S 그대로(이어진 같은 점 수끼리 묶음) · 번호는 전체 차례
+ *  2026-10-22 총정리(사장님 04:09 · 감사 A13): 37곳이 한 줄로 여섯 화면 · 점 0개도 같은 「봄」이던 것 → 결론(진짜 싹)이 맨 위 · 점 없는 곳은 접어 둠(지우지 않음) */
+function sproutGroups(list) {
+  const runs = [];
+  list.forEach((i, k) => { const r = runs.at(-1); if (r && r.sc === i.sc) r.xs.push([i, k]); else runs.push({sc: i.sc, xs: [[i, k]]}); });
+  return runs.map(({sc, xs}) => {
+    const name = sc === 4 ? '진짜 싹 · 점 넷' : sc > 0 ? '점 ' + (DOT_WORD[sc] ?? sc) : '점 없음', label = `${name} · ${num(xs.length)}곳`, rows = h('div', {class: 'th-rows'}, xs.map(([i, k]) => row(i, k)));
+    return sc > 0 ? h('section', {class: 'th-grp'}, h('h2', {class: 'th-gh', 'data-tr': '업종', text: label}), rows) : h('details', {class: 'th-grp th-gfold'}, h('summary', {'data-tr': '업종', text: label}), rows);
+  });
+}
 async function pZone(z, f = '') {
   const F = z === 'S' && f ? SPROUT_F[f] : null;
-  const TH = await themeData(); const T = F ? [F[0], 4, 'surge', F[2]] : {S: ['싹 자리 전부', 4, 'surge', '점이 많이 찬 순서예요.'], B: ['꽃 자리', 5, 'cond', '이미 테마가 된 곳이에요.'], W: ['시듦 자리', 6, 'sub', '꽃이 지고 있는 곳이에요.']}[z];
+  const TH = await themeData(); const T = F ? [F[0], 4, 'surge', F[2]] : {S: ['싹 자리 전부', 4, 'surge', '봄이 온 곳이 싹 자리예요. 점이 많이 찬 순서예요.'], B: ['꽃 자리', 5, 'cond', '이미 테마가 된 곳이에요.'], W: ['시듦 자리', 6, 'sub', '꽃이 지고 있는 곳이에요.']}[z]; // 싹 말풍선 = 첫 화면 「봄」과 이어 줌(감사 A6)
   if (!TH) return none(T[0]);
   const list = TH.order[z].map(n => indOf(TH, n)).filter(Boolean).filter(i => !F || F[1](i));
   const prev = F ? ['테마 시계', '#/'] : {S: ['시계 읽는 법', '#/t/how'], B: ['싹 자리 전부', '#/t/sprout'], W: ['꽃 자리', '#/t/bloom']}[z];
@@ -120,14 +137,19 @@ async function pZone(z, f = '') {
   const next = F ? ['싹 자리 전부', '#/t/sprout'] : {S: ['꽃 자리', '#/t/bloom'], B: ['시듦 자리', '#/t/wilt'], W: top ? [top, '#/t/i/' + enc(top)] : ['테마 시계', '#/']}[z];
   const body = [h('h2', {class: 'th-ans'}, h('span', {text: (F ? F[0] : zw(z) + ' 자리') + ' '}), h('em', {'data-tr': '업종', text: num(list.length) + '곳'}))]; // data-tr = 영어에서 업종 수(i18n.js 자리 표)
   if (z === 'B') body.push(h('p', {class: 'th-sub', text: '돌이는 꽃보다 싹을 먼저 봐요. 꽃은 이미 오른 곳이라 늦을 수 있어요.'}));
-  if (z === 'W') body.push(h('p', {class: 'th-sub', text: '힘이 빠지는 중이에요. 다시 잠잠으로 갈까?'}));
-  body.push(list.length ? h('div', {class: 'th-rows'}, list.map((i, k) => (z === 'S' ? row(i, k) : simpleRow(i)))) : h('p', {class: 'empty', text: F ? F[3] : '지금 이 자리에는 업종이 없어요.'}));
-  if (z !== 'S' && list.length) body.push(h('p', {class: 'th-cap2', text: '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'}));
+  if (z === 'W') body.push(h('p', {class: 'th-sub', text: '지난 닷새는 시장보다 덜 올랐어요. 다시 잠잠으로 갈까?'})); // 시듦의 까닭(닷새)을 머리 밑에(감사 A15)
+  if (!list.length) body.push(h('p', {class: 'empty', text: F ? F[3] : '지금 이 자리에는 업종이 없어요.'}));
+  else if (z === 'S' && !F) body.push(...sproutGroups(list)); // 싹 자리 전부 = 점 수 묶음(감사 A13 · 차례 order.S 그대로)
+  else body.push(h('div', {class: 'th-rows'}, list.map((i, k) => (z === 'S' ? row(i, k) : simpleRow(i, {mode: z})))));
+  if (z === 'B' && list.length) body.push(h('p', {class: 'th-cap2', text: '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'}));
+  if (z === 'W' && list.length) body.push(h('p', {class: 'th-cap2', text: '큰 숫자는 닷새, 작은 숫자는 한 달이에요.'}));
+  if (z === 'S' && !F) { const R = TH.record, y = yearsOf(TH); if (y && Number.isFinite(R?.sprout?.p) && Number.isFinite(R?.all?.p)) body.push(h('p', {class: 'th-sub', text: `싹 자리 전체는 지난 ${y}년 100번 가운데 ${Math.round(R.sprout.p)}번, 아무 업종은 ${Math.round(R.all.p)}번 한 달 뒤 꽃 선을 넘었어요.`})); } // 센 숫자 그대로(판단 말 없음)
   if (z === 'W') body.push(h('p', {class: 'th-sub', text: `잠잠 자리는 ${num(TH.count.Q)}곳이에요.`}));
   body.push(asOf(TH));
   return {title: T[0], nodes: [shell(T[1], T[0], T[2], T[3], prev, next, body)]};
 }
-const ckRow = (ok, t, d) => h('div', {class: 'th-ck'}, h('b', {class: ok ? 'y' : 'n', 'aria-label': ok ? '참' : '아님', text: ok ? '✓' : '✗'}), h('span', {class: 'th-st'}, h('span', {class: 'th-ckt', text: t}), d ? h('span', {class: 'th-ckd', text: d}) : null));
+/** 점 하나 줄 — href 가 있으면 그 근거 쪽 고리(줄 끝 ›) · 2026-10-22 총정리(감사 A17): ✓ 를 눌러도 근거로 안 가 「다음」을 두세 번 눌러야 했던 것 */
+const ckRow = (ok, t, d, href = null) => h(href ? 'a' : 'div', {class: 'th-ck', href}, h('b', {class: ok ? 'y' : 'n', 'aria-label': ok ? '참' : '아님', text: ok ? '✓' : '✗'}), h('span', {class: 'th-st'}, h('span', {class: 'th-ckt', text: t}), d ? h('span', {class: 'th-ckd', text: d}) : null), href ? h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}) : null);
 /** 싹 자리 업종의 「한 달 뒤 꽃 선을 넘을까?」 바로 밑 — 같은 점 수였던 날의 지난 기록(결정표 6 · 앞날을 맞히는 숫자 아님 · 없으면 줄 없음)
  *  2026-10-22 총정리(사장님 04:09 · 감사 A18): 물음 옆에 지난 기록이 없어 앞날 맞히기 놀이처럼 읽히던 것 */
 function recOf(TH, i) {
@@ -150,13 +172,14 @@ async function pInd(name, sub) {
   let body = [], sayT = null, art = 'today';
   if (sub === '') {
     sayT = i.z === 'S' ? (i.d === 1 ? '싹 자리에 새로 들어왔어요.' : `싹 자리 ${num(i.d)}일째예요.`) : `${zw(i.z)} 자리 ${num(i.d)}일째예요.`;
+    // 일곱 단 줄(2단 · 3단부터는 앞선 회사로 — 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」) — 2026-10-22 총정리(감사 A22): 결론(점 넷 · ✓ 줄 · 물음) 뒤로(320 에서 결론이 화면 3분의 2 아래로 밀리던 것 · 돌 그림 크기는 그대로)
+    const chapRow = lead && nx()?.chaps ? (nx().setTrail?.({code: lead.c, ind: name, name: lead.n}), nx().chaps(lead.c, '2')) : null;
     body = [h('h2', {class: 'th-ans'}, h('span', {text: '점 넷 가운데 '}), h('em', {text: num(i.sc) + '개'})), dots(i),
-      ckRow(i.dots[0], DOT_TEXT[0], `지난 닷새 시장보다 ${pp(i.y)}%p`), ckRow(i.dots[1], DOT_TEXT[1], `${num(i.tot)}곳 가운데 ${num(i.up)}곳이 2% 넘게 올랐어요`),
-      ckRow(i.dots[2], DOT_TEXT[2], i.bigAvg == null ? '? 큰 회사 값을 못 받았어요' : `가장 큰 회사 셋 평균 ${pp(i.bigAvg)}%`), ckRow(i.dots[3], DOT_TEXT[3], `열흘 동안 ${pp(i.m10)}%`),
+      ckRow(i.dots[0], DOT_TEXT[0], `지난 닷새 시장보다 ${pp(i.y)}%p`, base + '/path'), ckRow(i.dots[1], DOT_TEXT[1], `${num(i.tot)}곳 가운데 ${num(i.up)}곳이 2% 넘게 올랐어요`, base + '/spread'),
+      ckRow(i.dots[2], DOT_TEXT[2], i.bigAvg == null ? '? 큰 회사 값을 못 받았어요' : `가장 큰 회사 셋 평균 ${pp(i.bigAvg)}%`, base + '/big'), ckRow(i.dots[3], DOT_TEXT[3], `열흘 동안 ${pp(i.m10)}%`, base + '/co'), // ✓ 줄 = 근거 쪽 고리(① 지나온 길 ② 번지는 중일까 ③ 큰 회사도 움직였을까 ④ 함께 움직인 회사 · 감사 A17)
       h('p', {class: 'th-sub', text: i.z === 'S' && i.sc === 4 ? '진짜 싹이에요. 한 달 뒤 꽃 선을 넘을까?' : i.z === 'S' ? '싹 자리지만, 점이 덜 찼어요. 꽃 선을 넘을까?' : i.z === 'B' ? '이미 꽃 자리예요. 늦은 건 아닐까?' : i.z === 'W' ? '꽃이 지는 중이에요. 다시 잠잠으로 갈까?' : '아직 잠잠해요. 힘이 붙을까?'}),
-      recOf(TH, i),
+      recOf(TH, i), chapRow,
       watchBtn(i), h('a', {class: 'th-hi', href: '#/t/alert', text: '알림 설정 ›'})]; // 관심 업종 담기(자리가 바뀌면 첫 화면에서 알림)
-    if (lead && nx()?.chaps) { nx().setTrail?.({code: lead.c, ind: name, name: lead.n}); body.unshift(nx().chaps(lead.c, '2')); } // 일곱 단 줄(2단 · 3단부터는 앞선 회사로 — 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」)
   } else if (sub === 'path') {
     art = 'cal'; sayT = '닷새 동안 어디서 왔을까?';
     body = [h('div', {class: 'th-map'}, clock(TH, {hi: name}), h('p', {class: 'th-cap', text: '닷새 전부터 오늘까지 지나온 길이에요.'})),
@@ -209,8 +232,10 @@ async function pCo(code, sub) {
   const lead = c.a5 != null && I ? (c.a5 - I.A5) > (c.b5 - I.B5) : null;
   if (sub === '') {
     sayT = '먼저 움직였을까, 뒤따랐을까?';
-    body = [h('p', {class: 'th-cap2', text: `${ind} 업종 회사예요.`}), bigLine(c.l), h('h2', {class: 'th-ans'}, h('span', {text: '열흘 동안 '}), h('em', {class: cls(c.d10), text: pp(c.d10) + '%'})),
-      h('p', {class: 'th-sub', text: c.rank === 1 ? `${ind} ${num(M.ranked)}곳 가운데 가장 많이 올랐어요.` : c.rank ? `${ind} ${num(M.ranked)}곳 가운데 ${num(c.rank)}번째로 많이 올랐어요.` : `${ind} 업종에서 몸값이 큰 회사예요.`})];
+    // 2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A20): 말풍선 물음의 답(14쪽과 같은 셈 lead)이 머리 · 선 뜻 한 줄 · 열흘 값과 업종 안 자리는 작은 글로(오른 숫자가 머리이던 것)
+    body = [h('h2', {class: 'th-ans', text: lead == null ? '? 아직 못 견줬어요' : lead ? '업종보다 먼저 움직였어요' : '업종을 뒤따라 움직였어요'}), h('p', {class: 'th-cap2', text: `${ind} 업종 회사예요.`}), bigLine(c.l),
+      h('p', {class: 'th-cap2', text: '회색은 앞 닷새, 주황은 뒤 닷새예요.'}),
+      h('p', {class: 'th-sub', text: `열흘 동안 ${pp(c.d10)}% · ` + (c.rank ? `${num(M.ranked)}곳 가운데 ${num(c.rank)}번째` : '업종에서 몸값이 큰 회사예요')})];
     if (nx()?.chaps) body.push(h('h2', {class: 'th-h2', text: '더 깊이 보기'}), h('p', {class: 'th-cap2', text: '누르면 일곱 단까지 가요.'}), nx().chaps(code, '3')); // 3단 = 일곱 칸 모두(1 테마 시계 · 2 업종 · 3 이 회사 · 4 지나온 길 · 5 누구와 다투나 · 6 앞으로 클까? · 7 범위) — 토스증권처럼 누르기만 하면 더 깊이
   } else if (sub === 'lead') {
     art = 'cal'; sayT = '앞 닷새와 뒤 닷새를 견줘요.';
@@ -238,7 +263,8 @@ async function pCo(code, sub) {
       h('div', {class: 'th-box'}, h('b', {text: '업종이 꽃이 될지'}), h('span', {text: R?.real?.p != null ? `진짜 싹도 100번 가운데 ${100 - Math.round(R.real.p)}번은 한 달 뒤 꽃 선을 넘지 못했어요.` : '싹 자리에서 다시 잠잠으로 가는 일도 많아요.'}))];
   } else if (sub === 'keep') {
     art = 'me'; sayT = '담아 두면 관심 칸에서 다시 봐요.';
-    body = [h('h2', {class: 'th-ans', text: c.n}), nx().laterBtn(code, c.n, 'th-keep'), ...(I ? [watchBtn(I, `${ind} 자리가 바뀌면 알림 받기`)] : []), h('p', {class: 'th-sub', text: '사기 전에는 열한 질문을 먼저 해요.'})]; // 견본 18 쪽 — 업종 알림(사이트 안)
+    body = [h('h2', {class: 'th-ans', text: c.n}), nx().laterBtn(code, c.n, 'th-keep'), ...(I ? [watchBtn(I, `${ind} 자리가 바뀌면 알림 받기`)] : []), // 견본 18 쪽 — 업종 알림(사이트 안)
+      h('a', {class: 'th-why', href: '#/why/' + enc(code)}, h('span', {class: 'th-nx'}, h('small', {text: '사기 전에는 열한 질문을 먼저 해요.'}), h('b', {text: '이 회사로 왜 사?'})), h('i', {'aria-hidden': 'true', text: '›'}))]; // 누를 수 없던 글을 열한 질문 고리로(본질 2 · 감사 A21 · 「다음」 단추는 그대로 하나)
   }
   return {title: CO_SUB[k][1] ?? c.n, nodes: [shell(no, CO_SUB[k][1] ?? c.n, art, sayT, prev, next, [...body, asOf(TH)])]};
 }

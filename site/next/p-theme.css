@@ -23,7 +23,9 @@
 .th-st b { font-size: var(--fs-3); font-weight: 700; }
 .th-st span, .th-st .th-ckd { color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
 .th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #BDBDBD; }
-.th-ck { display: grid; grid-template-columns: 32px 1fr; align-items: center; column-gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #2A2A2A; } /* 글 시작 = 차례 줄과 같은 자리(16 + 32 + 8 · [10] 7) */
+.th-ck { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; column-gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #2A2A2A; } /* 글 시작 = 차례 줄과 같은 자리(16 + 32 + 8 · [10] 7) */
+a.th-ck { color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; } /* ✓ 줄 = 근거 쪽 고리(2026-10-22 총정리 · 감사 A17) — 끝 ›(.th-go)는 오른쪽 맞춤 */
+a.th-ck:active { background: #161616; }
 .th-ck > b { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: var(--fs-2); text-align: center; }
 .th-ck > b.y { background: var(--up); color: #070B17; }
 .th-ck > b.n { border: 2px solid #6E6E6E; color: #BDBDBD; }
@@ -43,6 +45,9 @@
 .th-srow .th-sv { flex: none; font-weight: 700; text-align: right; }
 .th-srow .th-sk { flex: none; color: #A6A6A6; font-size: var(--fs-1); text-align: right; }
 .th-srow .th-z { flex: none; font-size: var(--fs-1); text-align: right; } /* 이웃 업종 줄의 자리 이름 · 오른쪽 셋은 글 시작 왼쪽 줄 셈 밖([10] 7) */
+.th-srow .th-sv2 { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 0; padding: var(--sp-1) 0; text-align: right; } /* 꽃 · 시듦 줄 오른쪽 = 큰 값(꽃 n일째 · 닷새) 위 · 한 달 작은 글 아래(2026-10-22 총정리 · 감사 A14 · A15 — 좁은 폭 영어에서도 이름 자리가 남게 두 줄) */
+.th-srow .th-sv2 .th-sv { font-weight: 700; line-height: 1.3; }
+.th-srow .th-sv2 .th-sk { line-height: 1.4; }
 .th-sp { display: block; }
 .th-sp .th-spl { fill: none; stroke-width: 2; } .th-sp .th-spl.up, .th-sp .th-spd.up { stroke: var(--up); fill: none; } .th-sp .th-spd.up { fill: var(--up); } .th-sp .th-spl.dn { stroke: var(--down); } .th-sp .th-spd.dn { fill: var(--down); stroke: none; }
 .th-line { display: block; margin: 0 0 var(--sp-1); }
@@ -76,6 +81,29 @@
 .th-fold[open] summary::after { transform: rotate(90deg); }
 @media (prefers-reduced-motion: reduce) { .th-fold summary::after { transition: none; } }
 .th-sub.th-key { color: var(--ink); font-weight: 700; } /* 그 쪽의 결 한 줄(무엇을 보라 · 센 숫자 그대로의 결론) — 글씨 크기는 그대로(fs-2) */
+/* 돌이 인사(1/36) 맨 위 — 오늘 찾은 곳(싹 맨 앞 업종) 고리 한 칸(2026-10-22 총정리 · 감사 A10) · 글 시작 = 테 1 + 16 = 말풍선과 같은 자리([10] 7) */
+.th-found { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--sp-1); margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #6E6E6E; border-radius: 16px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.th-found > .th-fk, .th-found > .th-fn, .th-found > .th-fd { grid-column: 1; min-width: 0; }
+.th-found > .th-go { grid-column: 2; grid-row: 1 / span 3; }
+.th-found .th-fk { color: #BDBDBD; font-size: var(--fs-1); line-height: 1.5; }
+.th-found .th-fn { font-size: var(--fs-5); font-weight: 800; line-height: 1.3; word-break: keep-all; }
+.th-found .th-fd { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); font-size: var(--fs-2); line-height: 1.5; }
+.th-found:active { border-color: var(--ink); }
+/* 18쪽 「사기 전에는 열한 질문을 먼저 해요」 → 열한 질문 고리(2026-10-22 총정리 · 감사 A21) — 「다음」(흰 단추)과 다른 꼴 · 글 시작 = 테 1 + 16([10] 7) */
+.th-why { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-2) 0 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #6E6E6E; border-radius: 32px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.th-why .th-nx small { color: #BDBDBD; font-weight: 400; line-height: 1.5; }
+.th-why .th-nx b { white-space: normal; line-height: 1.3; }
+.th-why > i { flex: none; color: #BDBDBD; font-style: normal; font-size: var(--fs-4); text-align: right; }
+.th-why:active { border-color: var(--ink); }
+/* 싹 자리 전부 — 점 수 묶음 머리 · 점 없음 접는 칸(2026-10-22 총정리 · 감사 A13) · 머리 글 시작 = 쪽 왼쪽(16 · [10] 7) */
+.th-grp { margin: var(--sp-2) 0 0; }
+.th-gh { margin: 0; padding: var(--sp-1) 0; border-bottom: 1px solid #2A2A2A; color: var(--ink); font-size: var(--fs-2); font-weight: 700; line-height: 1.5; }
+.th-gfold > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #2A2A2A; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; list-style: none; }
+.th-gfold > summary::-webkit-details-marker { display: none; }
+.th-gfold > summary::after { content: "›"; flex: none; color: #BDBDBD; font-size: var(--fs-3); transition: transform .15s; }
+.th-gfold[open] > summary::after { transform: rotate(90deg); }
+.th-gfold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .th-gfold > summary::after { transition: none; } }
 .th-fold p { margin: 0 0 var(--sp-1); }
 .tc .up { color: var(--up); } .tc .dn { color: var(--down); } .tc .fl { color: var(--flat); }
 /* 일곱 단 줄(app.js chaps · 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」) — 테마 쪽 안에서는 쪽 여백(.tc)과 줄을 맞춤(칸 여백 두 번 겹치지 않게) */
