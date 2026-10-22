@@ -9405,6 +9405,8 @@
   "고른 회사 {n}곳에 {n}곳이 꽃이 됐어요.": "{n2} of every {n1} picked companies bloomed.",
   "아무 회사는 {n}곳이라 그보다 적었어요.": "Any company: {n}, so fewer than that.",
   "아무 회사는 {n}곳이라 그보다 많았어요.": "Any company: {n}, so more than that.",
-  "아무 회사도 {n}곳이라 비슷했어요.": "Any company was also {n}, about the same."
+  "아무 회사도 {n}곳이라 비슷했어요.": "Any company was also {n}, about the same.",
+  "날마다 오른 회사 수 · 빨강은 최근 엿새": "Rising companies each day · red = last 6 days",
+  "회색은 앞 닷새, 빨강은 뒤 닷새예요.": "Gray is the first 5 days, red the last 5 days."
  }
 }

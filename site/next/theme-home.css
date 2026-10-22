@@ -2,7 +2,7 @@
 .th-home { margin: 0; padding: 0; }
 .th-map { margin: 0 0 var(--sp-2); padding: var(--sp-2) var(--sp-2) var(--sp-1); border: 1px solid var(--hair); border-radius: 20px; }
 .th-clock { display: block; width: 100%; height: auto; }
-.th-clock .th-sz { fill: rgba(255, 106, 61, .10); }
+.th-clock .th-sz { fill: rgba(255, 90, 101, .10); }
 .th-clock .th-ax { stroke: #3A3A3A; stroke-width: 1; }
 .th-clock .th-bl { stroke: var(--up); stroke-width: 2; stroke-dasharray: 4 4; }
 .th-clock .th-turn { fill: none; stroke: #739C87; stroke-width: 2; }
