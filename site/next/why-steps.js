@@ -39,9 +39,9 @@ export function homeSteps({side = 'up', n, date, H, TH, mine = null} = {}) {
   // 지난날 — 코스피 지난 20거래일
   const last = rows.slice(-21), d = last.slice(1).map((r, j) => Math.sign(r[1] - last[j][1])), ups = d.filter(x => x > 0).length, dns = d.filter(x => x < 0).length;
   S.push({q: '이런 날이 자주 있었을까?', a: d.length >= 2 ? `코스피는 지난 ${num(d.length)}거래일 가운데 ${num(up ? ups : dns)}일 ${up ? '올랐어요' : '내렸어요'}` : '? 지난 날 값을 못 받았어요', tag: '지난날'});
-  // 싹 — 테마 시계
+  // 싹 — 테마 시계(물음은 본질 1 「싹에서 꽃이 되는 종목」 — 사장님 2026-10-22 16:56 · 옛 「테마가 될 듯한 곳」 말을 바꿈)
   const s1 = TH?.order?.S?.[0];
-  S.push({q: '그럼 테마가 될 듯한 곳은?', a: s1 ? `싹 맨 앞은 ${ieyo(s1)}` : '? 테마 시계 자료를 못 받았어요', tag: '싹', href: '#/t/sprout'});
+  S.push({q: '그럼 꽃이 될 듯한 싹은?', a: s1 ? `싹 맨 앞은 ${ieyo(s1)}` : '? 테마 시계 자료를 못 받았어요', tag: '싹', href: '#/t/sprout'});
   // 나 — 매매일지
   S.push({q: '그래서 나는?', a: mine?.count > 0 ? `내가 적은 이유 ${num(mine.count)}개 · 사기 전에 왜 사?` : '사기 전에 왜 사? 열한 질문으로 내 이유부터', tag: '나', href: '#/why'});
   return S;
