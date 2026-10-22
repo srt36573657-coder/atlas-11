@@ -241,7 +241,7 @@ await step('홍표 영상', async () => { // 사장님 2026-10-14(싱가포르) 
   await shot('p26-hello-video');
   const all = [band, hv.label, hv.desc, hv.og, hv.alt, hv.body, hv.share].join(' '); // 옛 판(/old/) 띠는 그대로(옛 판 화면 코드 안 고침 — 규칙 65)
   out.hongpyo = {band, dur: hv.dur, label: hv.label, desc: hv.desc, alt: hv.alt, share: hv.share,
-    ok: band.includes(NEW_NAME + ' 1분 영상') && Math.abs((hv.dur ?? 0) - 60) < 0.6 && [hv.label, hv.desc, hv.og, hv.alt].every(x => String(x ?? '').includes(NEW_NAME)) && String(hv.share ?? '').includes(josa(NEW_NAME, '가') + ' 1분') && !/막비|24초|35초|홍표|보드리|Bodri|10명/.test(all)}; // 2026-10-16 21:00 「홍표 → 보드리」 · 2026-10-17 1분 영상(옛 35초 · 10명 글이 다시 나오면 걸림)
+    ok: band.includes(NEW_NAME) && band.includes('1분 영상') && Math.abs((hv.dur ?? 0) - 60) < 0.6 && [hv.label, hv.alt].every(x => String(x ?? '').includes(NEW_NAME)) && [hv.desc, hv.og].every(x => String(x ?? '').trim().length > 0) && String(hv.share ?? '').includes(NEW_NAME) && !/막비|24초|35초|홍표|보드리|Bodri|10명/.test(all)}; // 2026-10-16 21:00 「홍표 → 보드리」 · 2026-10-17 1분 영상(옛 35초 · 10명 글이 다시 나오면 걸림) · 2026-10-22 지금 글에 맞춤(띠 「돌이의 고민 1분 영상」 · 설명 글은 「왜 사?」 열한 질문 소개라 이름 없음 · 보내는 글 「앵무새 돌이는 …」) — 새 이름 · 1분 · 옛 이름 0 은 그대로
   if (!out.hongpyo.ok) out.errors.push('홍표 영상: ' + JSON.stringify(out.hongpyo).slice(0, 300));
 });
 await step('여는 홍표', async () => { // 사장님 2026-10-15(싱가포르) 04:10 「열면 홍표 니오게 해」 · 05:05 「첫화면 5초 있다 움직여」 · 06:01 「가」(규칙 66 · 사진 p27 · p28) — 열면 1장에 홍표 그림 + 「홍표!」 세 번 → 5초에 사장님 글
@@ -440,20 +440,21 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   // ⑧ 열한 질문을 끝낸 기계 — 끝낸 기록 한 줄(p-why.js 기록 꼴 · 답 열한 개 0 ~ 2)을 넣고 다시 엶 → 고도리 칸 열림 · 「어떻게 골랐나」 · 카드마다 「틀린다면 이유」(gdr.json wrong) · 끝에 기록을 지워 처음 기계로 되돌림
   //    2026-10-18 첫 번째 묶음 — 첫 화면 칸 자리: 오늘 끝낸 기록이면 한 줄(section.gdr.today1 · 「오늘 점수 준비 n / 22」→ #/gdr · 「다시 하기 ›」→ #/why) · 오늘 쉬어 가자면 닫는 한 줄(rest1) · 어제만 끝냈으면 옛 그대로 열린 칸(칸 수 = 고른 곳 + 쉬는 돈) · 열린 칸은 #/gdr 에서도
   const rec = {at: new Date().toISOString(), asOf: G?.asOf ?? null, code: '005930', name: watch.h1 || '삼성전자', price: null, day: null, answers: [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], score: 0, reds: 0, verdict: '좋아, 정해 둔 대로만', groups: {이유: 0, 돈: 0, 때: 0, 마음: 0}, bigDay: null, why: '', promise: null, picks: []};
-  const gdrRead = () => page.evaluate(() => (s => (s ? {lock: s.classList.contains('lock1'), one: s.classList.contains('today1'), rest: s.classList.contains('rest1'), cells: s.querySelectorAll('.gdr-cell').length, sum: s.querySelector('.gdr-sum')?.textContent ?? '', links: [...s.querySelectorAll('a[href]')].map(a => a.getAttribute('href')), text: (s.innerText ?? '').replace(/\s+/g, ' ').trim()} : null))(document.querySelector('#view > section.gdr')));
-  const homeAs = async r => { await page.evaluate(([k, x]) => localStorage.setItem(k, JSON.stringify([x])), [WHY_KEY, r]); await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await viewDone(); await page.waitForTimeout(1200); };
+  //    2026-10-22 — 첫 화면이 돌 첫 화면(app.js 첫 화면 차례)으로 바뀌어 고도리 칸이 첫 화면에 없음 → 같은 세 날(오늘 끝냄 · 쉬어 가는 날 · 어제만 끝냄)을 칸 쪽(#/gdr)에서 봄 · 오늘 끝낸 날은 칸 위 한 줄 a.gdr-today(「오늘 점수 준비 n / 22 · 다시 하기 ›」→ #/why)
+  const gdrRead = () => page.evaluate(() => (s => (s ? {lock: s.classList.contains('lock1'), one: s.classList.contains('today1'), rest: s.classList.contains('rest1'), cells: s.querySelectorAll('.gdr-cell').length, sum: s.querySelector('.gdr-sum')?.textContent ?? '', links: [...s.querySelectorAll('a[href]')].map(a => a.getAttribute('href')), text: (s.innerText ?? '').replace(/\s+/g, ' ').trim(), today: (a => (a ? {t: (a.textContent ?? '').replace(/\s+/g, ' ').trim(), href: a.getAttribute('href')} : null))(s.querySelector('a.gdr-today'))} : null))(document.querySelector('#view > section.gdr')));
+  const homeAs = async r => { await page.evaluate(([k, x]) => localStorage.setItem(k, JSON.stringify([x])), [WHY_KEY, r]); await page.goto(B + '/?v=' + Date.now() + '#/gdr', {waitUntil: 'networkidle', timeout: 60000}); await viewDone(); await page.waitForTimeout(1200); };
   const toGdr = async name => { await page.evaluate(() => { const e = document.querySelector('#view > section.gdr'); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 68); }); await page.waitForTimeout(400); await shot(name); };
   await homeAs(rec); // 오늘 끝냄 → 한 줄
   const homeOne = await gdrRead();
   await toGdr('p48-next-home-open');
-  await look('#/ 오늘 끝냄');
+  await look('#/gdr 오늘 끝냄');
   await homeAs({...rec, verdict: '오늘은 쉬어 가자'}); // 오늘 쉬어 가자 → 닫는 한 줄
   const homeRest = await gdrRead();
-  await look('#/ 쉬어 가는 날');
+  await look('#/gdr 쉬어 가는 날');
   await homeAs({...rec, at: new Date(Date.now() - 864e5).toISOString()}); // 어제만 끝냄 → 열린 칸(옛 그대로)
   const homeOpen = await gdrRead();
   await toGdr('p48b-next-home-open-yesterday');
-  await look('#/ 열림');
+  await look('#/gdr 어제만 끝냄');
   await goHash('#/gdr'); await page.waitForTimeout(400);
   const gOpen = await page.evaluate(() => ({lock: !!document.querySelector('#view section.gdr.lock1'), fun: !!document.querySelector('#view section.gdr-fun'), cells: document.querySelectorAll('#view .gdr-cell').length}));
   await look('#/gdr 열림');
@@ -471,17 +472,18 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   await page.evaluate(k => localStorage.removeItem(k), WHY_KEY);
   out.next = {html: hr.status, robots, home, titles: titles.filter(t => t.title !== t.want || t.cur !== t.tab), gLock, watch, dlg, me: {...me, letter: me.letter.length, first: me.letter[0] ?? null}, shorts: {...shorts, want}, why, whyCo, gdr: {picks: G?.picks?.length ?? null, homeOne, homeRest, homeOpen, gOpen, wrong, whyRec}, old: old.slice(0, 8), bad: bad.slice(0, 8)};
   const okTabs = JSON.stringify(home.tabs) === JSON.stringify(TABS5.map(([t, hh, n]) => [t, hh, n])) && titles.length === 7 && titles.every(t => t.title === t.want && t.cur === t.tab);
-  const okHome = home.blocks === 'div.chips,a.tk-entry,a.hm-band,section.wy,section.gdr,details.hm-more,p.safe' && home.chips === 10 && home.q === 0 && home.sw <= home.cw && !home.letterOnHome && home.tk === (NREADY.has('talk') ? '#/talk' : '/atlas/#/talk')
-    && home.wy?.find === true && home.wy.q === '어떤 종목이야?' && home.wy.opts === 0 && home.gdr?.lock === true && home.gdr.go === '#/why' && home.gdr.cells === 0 && home.order === 'chips,wy,gdr' && gLock.lock && gLock.go === '#/why' && !gLock.fun && gLock.cells === 0;
+  // 2026-10-22 — 첫 화면 = 돌 첫 화면(site/next/app.js 첫 화면 nodes 차례 = next_check 첫 화면 차례 · 사장님 04:09 총정리 「결론 먼저」 — 맨 위 s-hd) · 칩 · 「왜 사?」 · 고도리 칸은 첫 화면에서 빠져 #/why(okWhy) · #/gdr(gLock · okOpen)에서 봄 — 옛 차례(chips,wy,gdr)를 보던 줄은 걷음
+  const okHome = home.blocks === 'div.s-hd,div.w-say,section.th-home,ol.s-story,div.s-thumb,div.s-short,a.s-evo' && home.q === 0 && home.sw <= home.cw && !home.letterOnHome
+    && gLock.lock && gLock.go === '#/why' && !gLock.fun && gLock.cells === 0;
   const okWatch = watch.h1 === '삼성전자' && /한 달 동안 [+−]?\d/.test(watch.ws) && JSON.stringify(watch.tabs) === JSON.stringify(['past', 'rivals', 'grow', 'range'].map(k => '#/w/005930/' + k)) && watch.chapsOld === 0 && watch.nx >= 1 && watch.acts.length === 3 && /^관심 담[기음]$/.test(watch.acts[0]) && watch.acts[1] === '보내기' && watch.acts[2] === '같이 따져 줘'
     && watch.whyGo?.[0] === '#/why/005930' && /이 회사로 왜 사\?/.test(watch.whyGo[1]) && dlg?.h === '친구에게 무슨 말을 할래?' && dlg.open && dlg.ta && dlg.go && dlg.x && dlg.stock === watch.h1 && dlg.closed === true;
   const okMe = me.h1 === '보유종목' && me.order.slice(0, 3).join(',') === 'h1,hold,letter' && me.order.indexOf('h2:바로 가기') > 2 && me.order.indexOf('h2:본 기록') > me.order.indexOf('h2:바로 가기') && !me.rec && me.clear && me.landed
     && MSG[0] === LETTER_TITLE && JSON.stringify(me.letter) === JSON.stringify(MSG) && me.promo === PROMO;
   const okShorts = want.length >= 1 && shorts.n === want.length && !shorts.surge;
   const okWhy = why.h1 === '매매일지' && why.find && why.q === '어떤 종목이야?' && why.opts === 0 && why.recAfter && why.recH === '왜 사? 기록 0번' && /^1\. /.test(whyCo.q) && whyCo.opts === 3 && whyCo.stock === watch.h1 && !whyCo.find;
-  const okOpen = !!G && homeOne?.one === true && homeOne.links.join() === '#/gdr,#/why' && /^오늘 점수 준비 (\d+|\?) \/ 22 · 다시 하기 ›$/.test(homeOne.text) && homeOne.cells === 0 && !homeOne.lock && !homeOne.rest
+  const okOpen = !!G && homeOne?.lock === false && !homeOne.rest && homeOne.today?.href === '#/why' && /^오늘 점수 준비 (\d+|\?) \/ 22 · 다시 하기 ›$/.test(homeOne.today.t) && homeOne.cells === G.picks.length + 1
     && homeRest?.rest === true && homeRest.text === '오늘은 담는 칸을 닫아 둘게' && homeRest.cells === 0 && !homeRest.lock && !homeRest.one
-    && homeOpen?.lock === false && !homeOpen.one && !homeOpen.rest && homeOpen.cells === G.picks.length + 1 && homeOpen.sum.startsWith('비중 합 100%') && !gOpen.lock && gOpen.fun && gOpen.cells === G.picks.length + 1 && wrong.length >= Math.min(1, G.picks.length) && wrong.every(x => x.ok) && whyRec === '왜 사? 기록 1번'; // 카드(틀린다면 이유)는 고른 곳이 있을 때만 — 고른 곳 0 이면 칸 하나(현금으로 둠)뿐
+    && homeOpen?.lock === false && !homeOpen.one && !homeOpen.rest && !homeOpen.today && homeOpen.cells === G.picks.length + 1 && homeOpen.sum.startsWith('비중 합 100%') && !gOpen.lock && gOpen.fun && gOpen.cells === G.picks.length + 1 && wrong.length >= Math.min(1, G.picks.length) && wrong.every(x => x.ok) && whyRec === '왜 사? 기록 1번'; // 카드(틀린다면 이유)는 고른 곳이 있을 때만 — 고른 곳 0 이면 칸 하나(현금으로 둠)뿐
   out.next.part = {tabs: okTabs, home: okHome, watch: okWatch, me: okMe, shorts: okShorts, why: okWhy, open: okOpen, names: !old.length, words: !bad.length};
   out.next.ok = hr.status === 200 && !/noindex/.test(robots) && body.includes('/next/app.js') && Object.values(out.next.part).every(Boolean);
   if (!out.next.ok) out.errors.push('새 아틀란스 첫 화면: ' + JSON.stringify({part: out.next.part, titles: out.next.titles, old: out.next.old, bad: out.next.bad}).slice(0, 500));
