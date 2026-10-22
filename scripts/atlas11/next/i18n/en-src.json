@@ -9034,6 +9034,12 @@
   "문자를 보내면 보낸 전화번호가 운영자 휴대폰에 남아요.": "If you text us, your phone number stays on the operator's phone.",
   "보냈으면 보낸 화면을 찍어 두세요. {n}명이 되면 다음 걸음이에요.": "If you sent it, take a screenshot. At {n} friends, go to the next step.",
   "친구 {n}명 소개하고 우주 영상 {n}분 보기": "tell {n1} friends and watch a {n2}-minute universe video",
-  "하얀 비숑": "a white Bichon"
+  "하얀 비숑": "a white Bichon",
+  "오늘 물을 것 {n}개": "{n} {pl:question|questions} to ask today",
+  "오늘 물을 것은 다 했어요.": "All of today's questions are answered.",
+  "지난 {n}거래일을 다시 뽑아 본 셈이에요.": "These numbers re-draw the past {n} trading days.",
+  "지난 날들을 다시 뽑아 본 셈이에요.": "These numbers re-draw past days.",
+  "한 달 뒤를 맞히는 숫자가 아니에요.": "They do not predict a month ahead.",
+  "사기 전에 · 이 회사로 왜 사? ›": "Before buying · Why buy this company? ›"
  }
 }

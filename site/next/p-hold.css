@@ -7,6 +7,9 @@
 .hd-h { margin: 0; font-size: var(--fs-4); line-height: 1.25; }
 .hd-sub { margin: 0; font-size: var(--fs-1); color: var(--sub); }
 .hd-note, .hd-q-note { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--sub); line-height: 1.45; }
+.hd-now { margin: var(--sp-2) 0 0; font-size: var(--fs-2); line-height: 1.45; color: var(--ink); overflow-wrap: anywhere; } /* 맨 위 결 한 줄(총정리 1차-10) — 오늘 물을 것 수만 · 값 · 색 없음 */
+.hd-now b { font-weight: 700; }
+.hd-now span { display: block; } /* 물음은 제 줄 — 글 시작은 같은 왼쪽 줄(32) */
 
 /* 몫 그림 — 막대 · 점선 = 셋에 하나 */
 .hd-pic { margin: var(--sp-2) 0 0; padding: var(--sp-2); border-radius: 12px; background: var(--card2); }
