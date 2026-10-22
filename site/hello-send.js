@@ -11,7 +11,7 @@ if (VIDEO.ready) document.querySelector('.hp-vid')?.removeAttribute('hidden'); /
 // 사전(en.json 1MB 남짓)을 받는 동안에도 「친구에게 보내기」가 먹게 — 단추는 바로 붙이고, 누르면 사전을 기다렸다가 엶
 //   (2026-10-20 실제 사이트 큰 시험 「글상자가 안 열림 — 390×844 영어 소개 쪽」: 단추를 사전을 다 받은 뒤에 붙여서, 느린 망에서 그 전에 누르면 아무 일이 없던 것)
 const ready = startI18n().catch(() => null); // 사전이 깨져도 글상자는 열림(한국어 글로)
-const helloShare = () => ({title: L('돌이를 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 테마가 될 듯한 곳을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`)}); // 보내는 글 = 본질 1(총정리 2026-10-22 D14 · 상품권 방 p-gift.js 와 같은 글)
+const helloShare = () => ({title: L('돌이를 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 싹에서 꽃이 되는 종목을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`)}); // 보내는 글 = 본질 1(총정리 2026-10-22 D14 · 상품권 방 p-gift.js 와 같은 글)
 const helloUrl = () => new URL('/hello.html', location.origin).href;
 /** 글상자를 열고 닫힐 때 결과 — {how: 'share' | 'copy' | 'show' | 'cancel' | 'close', text, url} */
 const shareHello = () => shareBox({kind: 'share', ...helloShare(), url: helloUrl()});

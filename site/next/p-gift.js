@@ -36,7 +36,7 @@ export function render() {
   const send = h('button', {type: 'button', class: 'gf-btn', text: '친구에게 보내기'});
   let sent = 0;
   send.addEventListener('click', async () => {
-    const r = await nx().shareBox({kind: 'share', title: L(josa(NAME, '를') + ' 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 테마가 될 듯한 곳을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`), url: new URL('/hello.html', location.origin).href}).catch(() => null); // 보내는 글 = 본질 1(총정리 D14)
+    const r = await nx().shareBox({kind: 'share', title: L(josa(NAME, '를') + ' 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 싹에서 꽃이 되는 종목을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`), url: new URL('/hello.html', location.origin).href}).catch(() => null); // 보내는 글 = 본질 1(총정리 D14)
     if (r?.how === 'share' || r?.how === 'copy' || r?.how === 'show') { sent++; said.textContent = L(sentLine(sent)); if (sent >= GIFT_FRIENDS && !opened) on(2); }
   });
   /* 화면 찍는 법(접은 칸 · 총정리 D8) — 걸음 글 「보낸 화면을 찍어 두세요」를 할 수 있게 */

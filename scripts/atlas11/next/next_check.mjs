@@ -128,7 +128,7 @@ const knownHref = h => {
   if (h === '/privacy.html#en') return true; // 영어 화면의 처리방침 고리 = 그 쪽 영어 칸(총정리 2026-10-22 D23 — app.js enPrivacy · 한국어 화면은 아래 /privacy.html 그대로)
   if (h === '#/gift' || h === '/privacy.html' || h === 'sms:01090117377' || h === 'tel:01090117377') return true; // 상품권 방(사장님 2026-10-22 03:38 · 위 막대 금빛 선물 단추 · p-gift.js) · 그 쪽 맨 밑 개인정보 처리방침 고리 · 다 본 뒤 나오는 문자 · 전화(사장님 번호 — 소개 쪽 상품권 칸과 같음)
   if (h === '#/admin' || h === '#/game') return true; // 가짜 돈 연습(2026-10-19 15:04) // 관리자 화면(사장님 열쇠 기기 보유종목 바로 가기 · 2026-10-19 13:54)
-  if ((mm = /^#\/t\/(hello|how|sprout|sprout\/real|sprout\/new|bloom|wilt|today|alert|cal)$/.exec(h))) return true; // cal = 싹 달력(사장님 2026-10-22 11:55 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」 · p-theme.js pCal) // 테마 시계 쪽(사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js — check_theme 이 쪽마다 맞대 봄 · alert = 26 알림(관심 #/sub 다음 · 2026-10-19 20:40 「다해」))
+  if ((mm = /^#\/t\/(hello|how|sprout|sprout\/real|sprout\/new|bloom|wilt|today|alert|cal|pick)$/.exec(h))) return true; // pick = 꽃 핀 업종 안의 싹 회사(사장님 2026-10-22 16:56 · p-theme.js pPick) // cal = 싹 달력(사장님 2026-10-22 11:55 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」 · p-theme.js pCal) // 테마 시계 쪽(사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js — check_theme 이 쪽마다 맞대 봄 · alert = 26 알림(관심 #/sub 다음 · 2026-10-19 20:40 「다해」))
   if ((mm = /^#\/t\/i\/([^/]+)(?:\/(?:path|spread|big|co|near))?$/.exec(h))) { let nm = mm[1]; try { nm = decodeURIComponent(nm); } catch { return false; } return (core.industries ?? []).some(i => i.name === nm); } // 업종 여섯 쪽 — 업종 이름이 자료에 있어야
   if ((mm = /^#\/t\/c\/([0-9A-Z]{6})(?:\/(?:lead|why|rank|unknown|keep))?$/.exec(h))) return !!CO[mm[1]]; // 회사 여섯 쪽
   if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)

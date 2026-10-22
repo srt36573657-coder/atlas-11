@@ -282,7 +282,7 @@ export async function render(arg) {
   const root = h('div', {class: 'jh', 'data-page': 'jinhwa'});
   const ess = txt(J?.essence) ?? '?';
   root.append(h('h1', {class: 'jh-h1', text: `${NAME} 진화`}),
-    ...(EN ? [h('p', {class: 'jh-ess-en', text: '테마가 될 듯한 곳을 찾아 줘요.'})] : []), // 영어 화면 — 본질 1을 사전에 이미 있는 영어 한 줄로(아래 한국어 본질 줄은 글자 그대로 · 총정리 D24)
+    ...(EN ? [h('p', {class: 'jh-ess-en', text: '싹에서 꽃이 되는 종목을 찾아 줘요.'})] : []), // 영어 화면 — 본질 1을 사전에 이미 있는 영어 한 줄로(아래 한국어 본질 줄은 글자 그대로 · 총정리 D24)
     h('p', {class: 'jh-ess', lang: 'ko', text: ess}));
   const head = h('div', {class: 'jh-head'}, h('p', {class: 'jh-n', text: `진화 ${n ?? '?'}번째`}));
   root.append(head);

@@ -10,7 +10,9 @@ const T = [['/', ['atlas.js']], ['/atlas/', ['atlas.js']], ['/atlas/atlas.js', [
   // 싹 달력(사장님 2026-10-22 11:55 · 12:17 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」) — 자료 · 쪽 · 첫 화면 고리가 정말 올라갔나
   ['/next/data/theme-cal.json', ['"schema":"dori-theme-1-cal"', '"keepFrom":"2026-10-22"']], ['/next/p-theme.js', ['function pCal(', '싹 달력']], ['/next/theme-home.js', ["'#/t/cal'", '날마다 찾은 세 곳 달력']], ['/next/data/theme-home.json', ['"record"']],
   // 싹 달력 잘 보이게(2026-10-22 14:28) · 글꼴(14:49 — 애플 기기 = 애플 글꼴 · 그 밖 = 프리텐다드) — 정말 올라갔나
-  ['/next/p-theme.css', ['.th-calhow', 'container-type: inline-size']], ['/next/app.css', ['--sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", \'Pretendard Variable\'', '.num { font-variant-numeric: tabular-nums; }']], ['/letter.css', ["font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard Variable'"]]];
+  ['/next/p-theme.css', ['.th-calhow', 'container-type: inline-size']], ['/next/app.css', ['--sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", \'Pretendard Variable\'', '.num { font-variant-numeric: tabular-nums; }']], ['/letter.css', ["font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard Variable'"]],
+  // 꽃 핀 업종 안의 싹 회사(사장님 2026-10-22 16:56 「싹에서 꽃이 되는 종목 · 엄선하고 검사해서 그것들만」) — 정말 올라갔나
+  ['/next/data/theme-bloom.json', ['"schema":"dori-theme-1-bloom"', '"record"']], ['/next/p-theme.js', ['async function pPick(', '꽃 핀 업종 안의 싹 회사']], ['/next/theme-home.js', ["'#/t/pick'"]]];
 const out = [];
 for (const [p, marks] of T) {
   let status = 0, bytes = 0, sha = null, has = {}, err = null, type = '';
@@ -19,6 +21,7 @@ for (const [p, marks] of T) {
     status = r.status; type = r.headers.get('content-type') ?? ''; const buf = Buffer.from(await r.arrayBuffer()); bytes = buf.length; sha = crypto.createHash('sha256').update(buf).digest('hex');
     const text = buf.toString('utf8'); for (const m of marks) has[m] = text.includes(m);
     if (p === '/next/data/theme-home.json') { try { const j = JSON.parse(text); has._rec = {asOf: j.asOf, all: j.record?.all ?? null, sprout: j.record?.sprout ?? null, real: j.record?.real ?? null, top: j.order?.S?.slice(0, 3) ?? null}; } catch {} } // 싹 달력 맨 위 「아무 업종은 100번 가운데 n번」 = record.all.p
+    if (p === '/next/data/theme-bloom.json') { try { const j = JSON.parse(text); has._bloom = {asOf: j.asOf, provisional: j.provisional, today: j.today?.n ?? null, inds: (j.today?.inds ?? []).map(i => i.n), all: j.record?.all ?? null, train: j.record?.train ?? null, test: j.record?.test ?? null}; } catch {} }
     if (p === '/next/data/theme-cal.json') { try { const j = JSON.parse(text), done = (j.days ?? []).filter(x => x.top?.length && typeof x.top[0].hit === 'boolean'), all3 = done.flatMap(x => x.top.filter(i => typeof i.hit === 'boolean')); has._cal = {asOf: j.asOf, days: j.days?.length ?? 0, kept: (j.days ?? []).filter(x => x.k).length, done: done.length, hit1: done.filter(x => x.top[0].hit).length, all3: all3.length, hit3: all3.filter(i => i.hit).length, last: j.days?.at(-1) ?? null}; } catch {} }
     if (p === '/atlas/data/home.json') { try { const j = JSON.parse(text); has._home = {rule: j.rule, kst: j.kst, alerts: (j.alerts ?? []).map(a => `${a.kind}:${a.key}:${a.why ?? '-'}`)}; } catch {} }
   } catch (e) { err = String(e.message); }

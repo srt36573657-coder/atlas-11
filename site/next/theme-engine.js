@@ -114,7 +114,7 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
   const cz = {}; let skip = 0;
   for (const c of codes) { const v = coZoneOf(closes.get(c), M, T); if (!v) { skip++; continue; } cz[c] = [r2(v.x), r2(v.y), v.z]; }
   const co = {schema: THEME_SCHEMA + '-co', made, asOf: dates[T], from20: dates[T - RULE.win], from5: dates[T - 5], provisional: !!provisional, n: Object.keys(cz).length, skip, co: cz};
-  return {theme, more, co, path: pathOf(U, M, dates, sprout.slice(0, 3).map(i => i.n), made), cal: calOf(U, M, dates, made, CAL_DAYS, kept)};
+  return {theme, more, co, path: pathOf(U, M, dates, sprout.slice(0, 3).map(i => i.n), made), cal: calOf(U, M, dates, made, CAL_DAYS, kept), bloom: bloomOf({U, M, closes, codes, companies, dates, made, provisional})};
 }
 
 /** 싹 달력(사장님 2026-10-22 11:55 「일 이 삼 찾아낸 것들 다 달력으로 … 제시만 해가지고 기록이 없으면 그건 하수야」 · 「구글 잡스라면」) — 지난 CAL_DAYS 거래일마다
@@ -176,4 +176,55 @@ export function recordOf(U, M, T) {
   const out = b => ({n: b.n, p: pc(b.y, b.n), h: [pc(b.h[0][1], b.h[0][0]), pc(b.h[1][1], b.h[1][0])]});
   const A = out(all), R = out(real);
   return {from: t0, to: t1, all: A, sprout: out(sp), real: R, byDots: byDots.map(out), more: R.h[0] != null && R.h[1] != null && A.h[0] != null && A.h[1] != null && R.h[0] > A.h[0] && R.h[1] > A.h[1]};
+}
+
+
+/** 꽃 핀 업종 안의 싹 회사(사장님 2026-10-22 16:56 「싹에서 꽃이 되는 종목을 찾는게 돌이에 본질이야 … 과거 데이타를 모조리 뒤져서 막 올리지말고 엄선하고 럼서해서 그것들만 올려야 해」 · 17:00 「어」 — 회사 하나하나)
+ *  모습 = 회사는 싹 자리(결정표 9 — x < 5 · y ≥ 0) · 그 회사 업종은 꽃 자리(결정표 2 — x ≥ 5 · y ≥ 0) — 후보 열일곱 가운데 앞 · 뒤 기록 두 번 지나간 하나
+ *  (docs/design/sprout-flower-2026-10-22/spec-v1.md v3 · 셈 scripts/atlas11/research/sprout_flower.py C3 · 같은 자료로 이 셈과 숫자가 같아야 함 — tests/atlas11/theme-bloom.test.mjs)
+ *  지난 기록 = t = BLOOM.from ~ T − 20 · 회사 · 날마다 「한 달 뒤 꽃 선」(결정표 6 과 같은 잣대) · 한 달 평균 앞선 만큼(±50% 자름) · 크게 떨어짐(−5% 아래) — 아무 회사(셀 수 있는 모든 회사 · 날)와 나란히
+ *  오늘 = T 의 회사 자리 S 이고 업종 자리 B 인 회사 · 업종은 x 큰 차례 · 회사는 이름 차례(차례에 뜻이 없음 — 지난 기록에서 차례를 가려낸 잣대를 못 찾음 · v4) */
+export const BLOOM = Object.freeze({from: 120, clip: 0.5, fall: -0.05});
+export function bloomOf({U, M, closes, codes, companies, dates, made = new Date().toISOString(), provisional = false}) {
+  const N = dates.length, T = N - 1, k = RULE.win, A = RULE.recAhead;
+  const t0 = BLOOM.from, t1 = T - A, mid = Math.floor((t0 + t1) / 2);
+  const indZ = new Map();
+  for (const u of U) { const z = new Uint8Array(N); for (let t = k; t < N; t++) if (zoneOf(exOf(u.I, M, t, k) * 100, exOf(u.I, M, t, 5) * 100) === 'B') z[t] = 1; indZ.set(u.n, z); }
+  const blank = () => ({n: 0, h: 0, f: 0, e: 0});
+  const acc = {all: [blank(), blank()], train: [blank(), blank()], test: [blank(), blank()]}, years = {};
+  const add = (o, hit, fall, e) => { o.n++; if (hit) o.h++; if (fall) o.f++; o.e += e; };
+  const today = [];
+  for (const c of codes) {
+    const a = closes.get(c), iz = indZ.get(companies[c]?.i);
+    const J = new Int32Array(N), E = new Int32Array(N); // 튄 날 누적(결정표 1 · 9 와 같은 잣대) · 종가가 앞날과 같은 날 누적(거래가 멈춘 회사 — v5 · 따로 센 일꾼이 찾음)
+    for (let t = 1; t < N; t++) { J[t] = J[t - 1] + (ok(a[t - 1]) && ok(a[t]) && Math.abs(a[t] / a[t - 1] - 1) >= RULE.jump ? 1 : 0); E[t] = E[t - 1] + (ok(a[t - 1]) && ok(a[t]) && a[t] === a[t - 1] ? 1 : 0); }
+    const countable = t => t - k >= 0 && ok(a[t]) && ok(a[t - 5]) && ok(a[t - k]) && J[t] - J[t - k] === 0 && E[t] - E[t - k] < k; // t − 20 ~ t 스물한 날 종가가 모두 같으면 뺌
+    const sproutAt = t => zoneOf(((a[t] / a[t - k]) / (M[t] / M[t - k]) - 1) * 100, ((a[t] / a[t - 5]) / (M[t] / M[t - 5]) - 1) * 100) === 'S';
+    for (let t = t0; t <= t1; t++) {
+      if (!countable(t) || !ok(a[t + A]) || J[t + A] - J[t] !== 0) continue;
+      const ex = (a[t + A] / a[t]) / (M[t + A] / M[t]) - 1, hit = ex >= RULE.bloomX / 100, fall = ex <= BLOOM.fall, e = Math.max(-BLOOM.clip, Math.min(BLOOM.clip, ex));
+      const g = !!iz && iz[t] === 1 && sproutAt(t), half = t < mid ? 'train' : 'test', yr = dates[t].slice(0, 4);
+      years[yr] ??= [blank(), blank()];
+      for (const o of [acc.all, acc[half], years[yr]]) { add(o[0], hit, fall, e); if (g) add(o[1], hit, fall, e); }
+    }
+    if (iz && iz[T] === 1 && countable(T) && sproutAt(T)) {
+      const x = ((a[T] / a[T - k]) / (M[T] / M[T - k]) - 1) * 100, y = ((a[T] / a[T - 5]) / (M[T] / M[T - 5]) - 1) * 100;
+      today.push({c, n: companies[c].n ?? c, i: companies[c].i, x: r2(x), y: r2(y)});
+    }
+  }
+  const pct = (v, n) => (n ? Math.round((v / n) * 1000) / 10 : null);
+  const out = ([b, g]) => ({n: g.n, base: pct(b.h, b.n), rate: pct(g.h, g.n), ex: pct(g.e, g.n), exBase: pct(b.e, b.n), fall: pct(g.f, g.n), fallBase: pct(b.f, b.n), baseN: b.n});
+  const byInd = new Map();
+  for (const r of today) { if (!byInd.has(r.i)) byInd.set(r.i, []); byInd.get(r.i).push(r); }
+  const inds = [...byInd.entries()].map(([n, rows]) => {
+    const u = U.find(v => v.n === n);
+    return {n, x: r2(exOf(u.I, M, T, k) * 100), y: r2(exOf(u.I, M, T, 5) * 100), co: rows.sort((p, q) => (p.n < q.n ? -1 : p.n > q.n ? 1 : 0)).map(r => [r.c, r.n, r.x, r.y])};
+  }).sort((p, q) => q.x - p.x || (p.n < q.n ? -1 : 1));
+  return {
+    schema: THEME_SCHEMA + '-bloom', made, asOf: dates[T], provisional: !!provisional,
+    rule: {from: BLOOM.from, win: k, ahead: A, bloomX: RULE.bloomX, fall: BLOOM.fall * 100, clip: BLOOM.clip * 100},
+    span: {from: dates[t0], to: dates[t1], train: [dates[t0], dates[mid - 1]], test: [dates[mid], dates[t1]]},
+    record: {all: out(acc.all), train: out(acc.train), test: out(acc.test), years: Object.fromEntries(Object.keys(years).sort().map(yv => [yv, out(years[yv])]))},
+    today: {n: today.length, inds},
+  };
 }

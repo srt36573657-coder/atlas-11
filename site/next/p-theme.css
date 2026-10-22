@@ -141,3 +141,19 @@ a.th-ck:active { background: #161616; }
 .th-calkey { display: flex; gap: var(--sp-3); flex-wrap: wrap; align-items: center; color: var(--ink); font-size: var(--fs-2); }
 .th-calhit { display: block; font-size: var(--fs-2); font-weight: 700; }
 .th-calmo { margin-top: var(--sp-2); }
+
+/* 꽃 핀 업종 안의 싹 회사(#/t/pick · 사장님 2026-10-22 16:56 「싹에서 꽃이 되는 종목」 · 17:00 「어」) — 지난 기록 막대 둘 · 업종마다 회사 줄 */
+.th-pkrec { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #46536F; border-radius: 16px; background: #121A2C; }
+.th-pkbar { display: grid; grid-template-columns: 1fr; gap: 4px; }
+.th-pkl { font-size: var(--fs-2); color: var(--ink); }
+.th-pkt { display: block; height: 18px; border-radius: 9px; background: #1D2640; overflow: hidden; }
+.th-pkt i { display: block; height: 100%; border-radius: 9px; background: #9AA4BC; }
+.th-pkbar.pick .th-pkt i { background: var(--up); }
+.th-pkv { font-size: var(--fs-2); font-variant-numeric: tabular-nums; }
+.th-pkind { margin-top: var(--sp-3); }
+.th-pkind .th-h2 a { color: var(--ink); text-decoration: none; }
+.th-pkco { list-style: none; margin: var(--sp-1) 0 0; padding: 0; display: grid; gap: 0; }
+.th-pkrow { display: grid; grid-template-columns: 1fr auto auto; gap: var(--sp-1); align-items: center; min-height: 52px; border-bottom: 1px solid #2A2A2A; color: var(--ink); text-decoration: none; font-size: var(--fs-2); }
+.th-pkrow b { min-width: 0; overflow-wrap: anywhere; }
+.th-pkrow span { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.th-pkrow i { font-style: normal; color: var(--sub, #B4BDD3); }

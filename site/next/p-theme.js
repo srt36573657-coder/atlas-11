@@ -82,7 +82,7 @@ async function pHello() {
     h('span', {class: 'th-fd'}, h('span', {text: `점 넷 가운데 ${num(top.sc)}개`}), dots(top)), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'})) // 글 먼저 · 점 그림은 뒤(글 시작 = 카드 글 시작 · [10] 7)
     : h('p', {class: 'th-sub th-key', text: '오늘은 싹 자리가 비었어요.'});
   const steps = [['첫 화면 줄 셋을 봐요', '시장보다 힘이 붙은 업종이에요'], ['업종 하나를 눌러요', '점 넷이 다 차면 진짜 싹이에요'], ['회사를 눌러요', '먼저 움직였는지, 뒤따랐는지']];
-  return {title: '돌이 인사', nodes: [shell(1, '돌이', 'home', '테마가 될 듯한 곳을 찾아 줘요.', null, ['테마 시계', '#/'],
+  return {title: '돌이 인사', nodes: [shell(1, '돌이', 'home', '싹에서 꽃이 되는 종목을 찾아 줘요.', null, ['테마 시계', '#/'],
     [found, h('h2', {class: 'th-h2', text: '세 번만 누르면 돼요'}), h('ol', {class: 'th-steps'}, steps.map(([a, b], k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {text: a}), h('span', {text: b}))))),
       TH ? asOf(TH) : null])]};
 }
@@ -363,6 +363,56 @@ async function pCal() {
     TH ? asOf(TH) : null, nextBtn('시계 읽는 법', '#/t/how'), safe())]};
 }
 
+/* ── 꽃 핀 업종 안의 싹 회사(#/t/pick · 사장님 2026-10-22 16:56 「싹에서 꽃이 되는 종목을 찾는게 돌이에 본질이야 … 과거 데이타를 모조리 뒤져서 막 올리지말고 엄선하고 럼서해서 그것들만 올려야 해」 · 17:00 「어」 — 회사 하나하나)
+   결론 먼저(오늘 이 모습인 회사 수) → 지난 기록(아무 회사와 나란히 · 앞 · 뒤 기록 두 번 · 크게 떨어진 일도) → 업종마다 회사(이름 차례 — 차례에 뜻 없음) → 한계
+   숫자는 /next/data/theme-bloom.json 그대로(셈 = theme-engine.js bloomOf · 연구 셈 scripts/atlas11/research/sprout_flower.py · 따로 센 일꾼과 같은 숫자) · 앞날 말 없음 · 사고팔기 말 없음 ── */
+const pickData = () => load('theme-bloom.json');
+async function pPick() {
+  const B = await pickData();
+  const title = '꽃 핀 업종 안의 싹 회사';
+  const R = B?.record, all = R?.all, tr = R?.train, te = R?.test;
+  if (!B || !all || !Number.isFinite(all.rate) || !Number.isFinite(all.base)) return none(title, '이 쪽');
+  const ok2 = x => x && Number.isFinite(x.rate) && Number.isFinite(x.base);
+  const both = ok2(tr) && ok2(te) && tr.rate > tr.base && te.rate > te.base;
+  const bar = (lab, v, cls) => {
+    const fill = h('i');
+    fill.style.width = Math.max(0, Math.min(100, v * 2)) + '%'; // 50번 = 가득(보안 규칙 — 글에 style 을 쓰지 않고 셈으로 넣음)
+    return h('div', {class: 'th-pkbar ' + cls}, h('span', {class: 'th-pkl', text: lab}), h('span', {class: 'th-pkt', 'aria-hidden': 'true'}, fill), h('b', {class: 'th-pkv', text: `100번에 ${Math.round(v)}번`}));
+  };
+  const fallLine = () => {
+    if (!Number.isFinite(all.fall) || !Number.isFinite(all.fallBase)) return null;
+    const f = Math.round(all.fall), t = Math.abs(all.fall - all.fallBase) < 2 ? `크게 떨어진 일은 100번에 ${f}번으로 아무 회사와 비슷해요.` : all.fall < all.fallBase ? `크게 떨어진 일은 100번에 ${f}번으로 아무 회사보다 적어요.` : `크게 떨어진 일은 100번에 ${f}번으로 아무 회사보다 많아요.`;
+    return h('p', {class: 'th-sub', text: t});
+  };
+  const inds = Array.isArray(B.today?.inds) ? B.today.inds.filter(i => typeof i?.n === 'string' && Array.isArray(i.co)) : [];
+  const n = inds.reduce((p, i) => p + i.co.length, 0);
+  const list = inds.map(i => h('section', {class: 'th-pkind', 'aria-label': i.n},
+    h('h2', {class: 'th-h2'}, h('a', {href: '#/t/i/' + enc(i.n)}, h('span', {'data-proper': '', text: i.n}))),
+    h('p', {class: 'th-sub', text: `업종 한 달 시장보다 ${pp(i.x)}%`}),
+    h('ul', {class: 'th-pkco'}, i.co.filter(r => Array.isArray(r) && /^[0-9A-Z]{6}$/.test(r[0] ?? '')).map(([c, nm, , y]) => h('li', {},
+      h('a', {class: 'th-pkrow', href: '#/w/' + c}, h('b', {'data-proper': '', text: String(nm ?? c)}), h('span', {class: cls(y), text: `닷새 ${pp(y)}%`}), h('i', {'aria-hidden': 'true', text: '›'})))))));
+  const span = B.span ?? {};
+  return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
+    h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
+    say('업종은 꽃이 폈고, 회사는 이제 막 힘이 붙었어요.'),
+    h('p', {class: 'th-key', text: n ? `오늘 이 모습인 회사는 ${num(n)}곳이에요.` : '오늘은 이 모습인 회사가 없어요.'}),
+    h('div', {class: 'th-pkrec'}, h('h2', {class: 'th-h2', text: '지난 기록'}),
+      bar('아무 회사', all.base, 'base'), bar('이 모습', all.rate, 'pick'),
+      h('p', {class: 'th-sub', text: '한 달 뒤 꽃 선을 넘은 횟수예요.'}),
+      h('p', {class: 'th-sub', text: both ? '앞 기록과 뒤 기록 두 번 다 아무 회사보다 많았어요.' : '앞 기록과 뒤 기록 가운데 한 번은 아무 회사보다 적었어요.'}),
+      fallLine()),
+    ...list,
+    n ? h('p', {class: 'th-sub th-calnote', text: '회사는 이름 차례예요. 차례에는 뜻이 없어요.'}) : null,
+    h('p', {class: 'th-sub th-calnote', text: `한 달 동안 시장보다 ${RULE.bloomX}% 넘게 더 오르면 꽃 선을 넘어요.`}),
+    h('p', {class: 'th-sub th-calnote', text: `${Math.abs(Number(B.rule?.fall ?? -5))}% 넘게 덜 오르면 크게 떨어진 거예요.`}),
+    span.from && span.to ? h('p', {class: 'th-sub th-calnote', text: `${ymd(span.from)}부터 ${ymd(span.to)}까지 회사마다 날마다 센 기록이에요.`}) : null,
+    h('p', {class: 'th-sub th-calnote', text: '지금 상장된 회사로만 센 기록이에요.'}),
+    h('p', {class: 'th-sub th-calnote', text: '거래가 멈춘 회사는 뺐어요.'}),
+    h('p', {class: 'th-sub th-calnote', text: '앞날을 맞히는 숫자가 아니에요.'}),
+    h('p', {class: 'th-asof', text: md(B.asOf) + ' 장 마감 기준' + (B.provisional ? ' · 장중 값이 섞여 있어요' : '')}),
+    nextBtn('싹 달력', '#/t/cal'), safe())]};
+}
+
 export async function render(arg = '') {
   const a = String(arg ?? ''), [k, x, y] = a.split('/');
   if (k === '' || k === 'hello') return pHello();
@@ -372,6 +422,7 @@ export async function render(arg = '') {
   if (k === 'wilt') return pZone('W');
   if (k === 'today') return pToday();
   if (k === 'cal') return pCal(); // 싹 달력(2026-10-22 11:55)
+  if (k === 'pick') return pPick(); // 꽃 핀 업종 안의 싹 회사(2026-10-22 16:56 · 17:00)
   if (k === 'alert') return pAlert();
   if (k === 'i' && x) return pInd(x, y ?? '');
   if (k === 'c' && /^[0-9A-Z]{6}$/.test(x ?? '')) return pCo(x, y ?? '');
