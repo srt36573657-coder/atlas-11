@@ -6,6 +6,7 @@ import {GAME, newAccount, okAccount, trade, valueOf, eok, CODE_RE} from '/next/g
 import {kakao} from '/next/kakao.js';
 import {ownerOk} from '/next/p-jinhwa.js';
 import {sendCode} from '/next/p-admin.js';
+import {NAME} from '/next/brand.js';
 
 export const PUBLIC = true; // 모두에게 열기 — 사장님 2026-10-19 15:47 「변호시에게 확인했어 이상 없다고햐」(변호사 확인 · 서면은 저장소에 없음)
 const K = 'atlas:dori-game';
@@ -27,11 +28,95 @@ const nameOf = c => nx().ix()?.co?.[c]?.n ?? c;
 const md = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일` : '?');
 const WHY = {cash: '현금이 모자라요.', hold: '가진 주보다 많이 팔 수 없어요.', qty: '주 수를 다시 넣어 주세요.', price: '? 지금 값을 받지 못했어요.', code: '? 회사를 다시 골라 주세요.', account: '? 계좌를 읽지 못했어요.'};
 
+/* ── 자동으로 산 기록(가짜 돈 · 사장님 2026-10-22 08:35 「자동 매수 프로그램을 만들어라 … 싹에 올라오는 1등부터 3등까지를 각각 3천만원 매수하라 업종이 바뀌면 무조건 매수 하라 매도는 내가 하겠다」 · 08:50 「가짜돈으로 해」)
+   사장님 열쇠 기기(ownerOk — p-jinhwa.js)에서만 맨 위에 한 칸 · 다른 기기는 칸 0 · 서버 물음 0(아래 render 의 if (owner))
+   셈은 서버(lib/atlas11/auto.mjs · /api/auto) — 열 때 셈(tick)을 한 번 불러 못 부른 날을 따라잡고, 사장님 열쇠로 기록을 받음
+   차례: 결(지금 합계 한 줄) → 기(그날 싹 1 ~ 3번 · 지난 셈에 한 일) → 승(가진 주식 · 전부 팔기 · 반 팔기 — 한 번 더 눌러야 팖) → 전(기록 · 규칙 · 가짜 돈 · 사장님 휴대폰에서만)
+   화면 말은 「샀어요 · 팔기」(words.js SCREEN — 사고팔기를 권하는 말 없음) · 순위 · 몫(%) 없음 · 글은 textContent 로만 */
+const OWNER_K = 'atlas11:invite:owner', AUTO_TOP = 3; // 싹 앞 셋(서버 lib/atlas11/auto.mjs AUTO.top 과 같음)
+const ownerKey = () => { try { const k = localStorage.getItem(OWNER_K); return typeof k === 'string' && k.length >= 16 && k.length <= 128 ? k : null; } catch { return null; } };
+const kstMd = t => (Number.isFinite(t) ? md(new Date(t + 9 * 3600e3).toISOString()) : '?');
+const SKIP = {cash: '대장주는 현금이 모자라 안 샀어요', price: '? 대장주는 값을 받지 못해 안 샀어요', qty: '대장주는 한 주 값이 너무 커서 안 샀어요', lead: '? 대장주를 찾지 못해 안 샀어요'};
+const SELL_WHY = {owner_only: '? 사장님 열쇠가 맞지 않아요.', hold: '? 가진 주가 없어요.', half: '1주는 반으로 나눌 수 없어요.', price: '? 지금 값을 받지 못했어요.', account: '? 계좌를 읽지 못했어요.'};
+/** 기록 줄(새것부터) — 셈 한 번(산 것 · 못 산 까닭 · 바뀐 업종 없음) + 사장님이 판 것 */
+function autoLog(acc, nameOfC) {
+  const rows = [];
+  for (const k of acc?.ticks ?? []) {
+    const day = md(k.asOf), at = Number(k.t) || 0;
+    if (!k.fresh?.length) { rows.push([at, `${day} 바뀐 업종이 없어서 안 샀어요`, null]); continue; }
+    for (const b of k.buys ?? []) rows.push([at, `${day} ${b.i} 대장주 ${b.n ?? nameOfC(b.c)} ${b.q.toLocaleString('ko-KR')}주 샀어요 · ${b.px.toLocaleString('ko-KR')}원`, null]);
+    for (const s of k.skips ?? []) { const t = SKIP[s.why] ?? '대장주는 사지 못했어요', q = t.startsWith('? '); rows.push([at, `${q ? '? ' : ''}${day} ${s.i} ${q ? t.slice(2) : t}`, q ? 'gm-q' : null]); }
+  }
+  for (const x of acc?.log ?? []) if (x.s === 's') rows.push([Number(x.t) || 0, `${kstMd(x.t)} ${nameOfC(x.c)} ${x.q.toLocaleString('ko-KR')}주 팔았어요 · ${x.px.toLocaleString('ko-KR')}원`, null]);
+  return rows.sort((a, b) => b[0] - a[0]).slice(0, 30);
+}
+/** 사장님 칸 — 바로 돌려주고(「받는 중」 한 줄) 셈 · 받기가 끝나면 채움 */
+function autoBox() {
+  const sec = h('section', {class: 'gm-auto', 'aria-label': '자동으로 산 기록'}, h('p', {class: 'gm-t', text: '자동으로 산 기록을 받는 중이에요.'}));
+  const key = ownerKey();
+  let S = null, T = null, armed = null, armT = 0;
+  const nameOfC = c => S?.acc?.meta?.[c]?.n ?? nameOf(c);
+  const getView = async () => { try { const r = await fetch('/api/auto', {headers: {'x-atlas-owner': key ?? ''}, cache: 'no-store', credentials: 'omit'}); const j = await r.json().catch(() => null); return r.ok && j?.ok ? j : {error: j?.error ?? 'server'}; } catch { return {error: 'net'}; } };
+  const disarm = () => { clearTimeout(armT); if (armed) { armed.b.textContent = armed.label; armed.b.classList.remove('arm'); } armed = null; };
+  const sell = async (code, part, b) => {
+    b.disabled = true;
+    let r = null, j = null;
+    try { r = await fetch('/api/auto', {method: 'POST', headers: {'content-type': 'application/json', 'x-atlas-owner': key ?? ''}, body: JSON.stringify({op: 'sell', code, part}), cache: 'no-store', credentials: 'omit'}); j = await r.json().catch(() => null); } catch { r = null; }
+    if (!r?.ok || !j?.ok) { toast(SELL_WHY[j?.error] ?? '? 서버에 닿지 못했어요.'); b.disabled = false; return; }
+    S = j; toast('가짜 돈으로 팔았어요.'); paint();
+  };
+  const sellBtn = (code, part, label, off) => {
+    const b = h('button', {type: 'button', class: 'gm-au-sell', 'data-part': part, 'data-code': code, text: label, disabled: off});
+    b.addEventListener('click', () => {
+      if (armed?.b === b) { disarm(); sell(code, part, b); return; } // 두 번째 누름 = 팖(확인 창 없이 이 칸 안에서)
+      disarm(); armed = {b, label}; b.textContent = '한 번 더 누르면 팔아요'; b.classList.add('arm');
+      armT = setTimeout(disarm, 6000);
+    });
+    return b;
+  };
+  const paint = () => {
+    disarm();
+    if (!S || S.error) { sec.replaceChildren(h('p', {class: 'empty', text: '? 자동으로 산 기록을 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return; }
+    const A = S.acc, v = S.value, last = S.last, day = A.asOf ? {d: A.asOf, top: A.top} : S.site ? {d: S.site.asOf, top: S.site.top} : null;
+    const held = Object.entries(A.pos ?? {});
+    const did = !A.asOf ? '아직 셈한 날이 없어요.' : last?.buys?.length ? '새로 든 업종 대장주를 샀어요.' : last?.fresh?.length ? '새로 든 업종이 있었지만 사지 못했어요.' : '바뀐 업종이 없어서 안 샀어요.';
+    const wait = T?.did === 'wait' && T.asOf && (!A.asOf || T.asOf > A.asOf) ? `${md(T.asOf)} 값은 장 중 값이라 장 마감 뒤에 셈해요.` : null;
+    sec.replaceChildren(...[ // replaceChildren 은 null 을 글 「null」로 넣음 — 빈 줄은 걸러 냄
+      h('p', {class: 'gm-au-sum'}, h('span', {text: `${NAME} 자동으로 산 기록 · 가짜 돈 ${won(A.start)} →\u00a0지금`}), h('b', {class: 'gm-au-big num', text: won(v.total)})),
+      h('p', {class: 'gm-t', text: `현금 ${won(v.cash)} · 주식 ${won(v.stock)}`}),
+      v.unknown?.length ? h('p', {class: 'gm-t gm-q', text: `? 값을 못 받은 회사 ${v.unknown.length}곳은 산 돈으로 셌어요.`}) : null,
+      day ? h('p', {class: 'gm-au-day', text: `${md(day.d)} 싹 1 ~ ${AUTO_TOP}번: ${day.top.join(' · ')}`}) : null,
+      h('p', {class: 'gm-t', text: did}),
+      wait ? h('p', {class: 'gm-t', text: wait}) : null,
+      T?.error ? h('p', {class: 'gm-t gm-q', text: '? 오늘 자료를 받지 못해 아직 셈하지 못했어요.'}) : null,
+      h('h2', {text: '가진 주식'}),
+      held.length ? h('ul', {class: 'gm-au-list'}, ...held.map(([c, p]) => {
+        const now = S.prices?.[c]?.px, val = Number.isFinite(now) ? p.q * now : null;
+        return h('li', {class: 'gm-au-row'},
+          h('p', {class: 'gm-au-nm'}, h('b', {'data-proper': '', text: nameOfC(c)}), A.meta?.[c]?.i ? h('span', {text: A.meta[c].i}) : null),
+          h('p', {class: 'gm-t', text: `${p.q.toLocaleString('ko-KR')}주 가짐 · 산 돈 ${won(p.cost)}`}),
+          val == null ? h('p', {class: 'gm-t gm-q', text: '? 지금 값을 받지 못했어요.'}) : h('p', {class: 'gm-au-now num ' + (val > p.cost ? 'up' : val < p.cost ? 'dn' : ''), text: `지금 ${won(val)}`}),
+          h('div', {class: 'gm-au-btns'}, sellBtn(c, 'all', '전부 팔기', false), sellBtn(c, 'half', '반 팔기', p.q < 2)));
+      })) : h('p', {class: 'gm-t', text: '아직 가진 주식이 없어요.'}),
+      h('h2', {text: '기록'}),
+      (() => { const rows = autoLog(A, nameOfC); return rows.length ? h('ul', {class: 'gm-au-log'}, ...rows.map(([, text, cls]) => h('li', {class: cls, text}))) : h('p', {class: 'gm-t', text: '아직 셈한 날이 없어요.'}); })(),
+      h('p', {class: 'gm-au-rule', text: `싹 1 ~ ${AUTO_TOP}번에 새 업종이 들어오면 그 업종에서 가장 큰 회사를 ${eok(S.buy ?? 3e7).replace(/ 원$/, '')} 원어치 사요. 파는 것은 사장님이 정해요.`}),
+      h('p', {class: 'gm-t', text: '가짜 돈이에요. 진짜 돈은 오가지 않아요.'}),
+      h('p', {class: 'gm-t', text: '사장님 휴대폰에서만 보여요.'})].filter(Boolean));
+  };
+  (async () => {
+    try { const r = await fetch('/api/auto', {method: 'POST', headers: {'content-type': 'application/json'}, body: '{"op":"tick"}', cache: 'no-store', credentials: 'omit'}); const j = await r.json().catch(() => null); T = r.ok && j?.ok ? j : {error: j?.error ?? 'server'}; } catch { T = {error: 'net'}; } // 못 부른 날 따라잡기(같은 날이면 아무 일 없음)
+    S = await getView(); paint();
+  })();
+  return sec;
+}
+
 export async function render() {
   const root = h('div', {class: 'gm', 'data-page': 'game'}, h('h1', {class: 'gm-h1', text: '가짜 돈 연습'}));
   const owner = await ownerOk();
   if (!PUBLIC && !owner) { root.append(h('p', {class: 'empty', text: '준비 중이에요. 곧 열려요.'})); return {title: '가짜 돈 연습', nodes: [root]}; }
   if (!PUBLIC) root.append(h('p', {class: 'gm-beta', text: '시험판이에요. 사장님 휴대폰에서만 열려요.'}));
+  if (owner) root.append(autoBox()); // 자동으로 산 기록(가짜 돈 · 2026-10-22 08:50) — 사장님 열쇠 기기에서만 맨 위 · 다른 기기는 칸 0 · 서버 물음 0
   await nx().findReady().catch(() => null); // 회사 목록(core · mkt · 이름) — 찾기 칸과 같은 셈
   await kakao?.ready?.().catch(() => null);
   const member = !!kakao?.member?.();

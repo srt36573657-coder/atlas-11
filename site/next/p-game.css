@@ -26,3 +26,22 @@
 .gm-s { border: 1px solid var(--hair2); background: transparent; color: var(--ink); }
 .gm-s:disabled { opacity: .45; cursor: default; }
 .gm-log li { padding: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-1); }
+/* 자동으로 산 기록(가짜 돈 · 사장님 열쇠 기기에서만 맨 위 · 사장님 2026-10-22 08:35 · 08:50 「가짜돈으로 해」) — 금빛 테 하나(사장님 칸) · 그림자 · 칠 번짐 없음 · 빨강은 오른 숫자에만(.up)
+   글 시작 왼쪽 줄은 칸 안쪽 한 줄(이름 옆 업종은 같은 줄 안 글 · 단추 글은 가운데) */
+.gm-auto { margin: 0 0 var(--sp-2); padding: var(--sp-2); border: 1px solid var(--gold-line, var(--hair2)); border-radius: 16px; }
+.gm-au-sum { margin: 0 0 var(--sp-1); font-size: var(--fs-2); font-weight: 700; }
+.gm-au-big { display: block; font-size: var(--fs-5); font-weight: 800; }
+.gm-au-day { margin: var(--sp-2) 0 var(--sp-1); font-size: var(--fs-2); font-weight: 700; }
+.gm-auto h2 { margin: var(--sp-3) 0 var(--sp-1); font-size: var(--fs-3); font-weight: 700; }
+.gm-au-list, .gm-au-log { margin: 0; padding: 0; list-style: none; }
+.gm-au-row { padding: var(--sp-2) 0; border-top: 1px solid var(--line, var(--hair)); }
+.gm-au-nm { margin: 0 0 var(--sp-1); font-size: var(--fs-2); }
+.gm-au-nm span { margin: 0 0 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); }
+.gm-au-now { margin: 0 0 var(--sp-1); font-size: var(--fs-2); font-weight: 700; }
+.gm-au-btns { display: flex; gap: var(--sp-1); }
+.gm-au-sell { flex: 1 1 0; min-width: 0; min-height: 48px; padding: 0 var(--sp-1); border: 1px solid var(--hair2); border-radius: 24px; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }
+.gm-au-sell.arm { border-color: var(--gold); color: var(--gold); }
+.gm-au-sell:disabled { opacity: .45; cursor: default; }
+.gm-au-log li { padding: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-1); }
+.gm-au-log li.gm-q { color: var(--gold); }
+.gm-au-rule { margin: var(--sp-2) 0 var(--sp-1); font-size: var(--fs-1); }
