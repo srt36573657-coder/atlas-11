@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-10-21T16:03:18Z",
+ "at": "2026-10-22T15:59:11Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "d677be6e7667a558d8afd1db4917cb8ff6df8b56d306962b4d613bebb3cec4d5",
-   "last": "2026-10-21"
+   "sha256": "eabe9629e60822e75947f3ae513c42b8a455dfedc94af53a5a1a5b3b60dd1267",
+   "last": "2026-10-22"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 845,
+   "n": 846,
    "first": "2023-04-28",
-   "last": "2026-10-21",
+   "last": "2026-10-22",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "450b2bdc0dd5e96e9b7de6fcc82384ba24c55fadfcc8ccb3139baaf6a5c343a4"
+   "sha256": "b18e00bd2b9a1d4254e7580814d8dedb51345eae3f539e74b755a10df5c5ae4c"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "0253b2cbcb09770f075c815c41c26b93042d6f026865449ec1a1d38fae646ffc"
+   "sha256": "7cd566bded662a1ac7bf5c9dd6c0ea00f06969c68d39692825c08e9226ddbdee"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "f716b0d279ae00f6ec27a86c2c6d250d48fdda6b0f870e4a1d1752ea953f43a4"
+   "sha256": "d5de2b48314139f967576dccdb72bc664b39ffbbac675f4a73be00eddc3a4236"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 844,
-  "day": "2026-10-21",
+  "k": 845,
+  "day": "2026-10-22",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1674,
-   "outThinQ": 16,
-   "outHalt": 4,
+   "outThin": 1683,
+   "outThinQ": 17,
+   "outHalt": 3,
    "outList": 8,
-   "listQ": 871,
-   "afterOut": 871,
-   "g1": 261,
-   "g2": 701,
-   "g3": 77,
-   "g4": 672,
-   "g5": 43,
+   "listQ": 863,
+   "afterOut": 863,
+   "g1": 260,
+   "g2": 659,
+   "g3": 55,
+   "g4": 682,
+   "g5": 9,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 859,
+   "loss3": 851,
    "why": "lists"
   },
-  "loss3Years": 859,
+  "loss3Years": 851,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -116,197 +116,197 @@
    "thin": [
     [
      1100000000.0,
-     1
+     0
     ],
     [
      1000000000.0,
-     1
+     0
     ],
     [
      900000000.0,
-     1
+     0
     ]
    ],
    "opGrow": [
     [
      5.0,
-     1
+     0
     ],
     [
      0.0,
-     1
+     0
     ],
     [
      -5.0,
-     1
+     0
     ]
    ],
    "salesGrow": [
     [
      5.0,
-     1
+     0
     ],
     [
      0.0,
-     1
+     0
     ],
     [
      -5.0,
-     1
+     0
     ]
    ],
    "quietX": [
     [
      1.8,
-     1
+     0
     ],
     [
      2.0,
-     1
+     0
     ],
     [
      2.2,
-     1
+     0
     ]
    ],
    "hot5": [
     [
      9.0,
-     1
+     0
     ],
     [
      10.0,
-     1
+     0
     ],
     [
      11.0,
-     1
+     0
     ]
    ],
    "r20": [
     [
      22.5,
-     1
+     0
     ],
     [
      25.0,
-     1
+     0
     ],
     [
      27.5,
-     1
+     0
     ]
    ],
    "r60lo": [
     [
      5.5,
-     1
+     0
     ],
     [
      5.0,
-     1
+     0
     ],
     [
      4.5,
-     1
+     0
     ]
    ],
    "r60hi": [
     [
      36.0,
-     1
+     0
     ],
     [
      40.0,
-     1
+     0
     ],
     [
      44.0,
-     1
+     0
     ]
    ],
    "jump": [
     [
      13.5,
-     1
+     0
     ],
     [
      15.0,
-     1
+     0
     ],
     [
      16.5,
-     1
+     0
     ]
    ],
    "mdd60": [
     [
      18.0,
-     1
+     0
     ],
     [
      20.0,
-     1
+     0
     ],
     [
      22.0,
-     1
+     0
     ]
    ],
    "dd0": [
     [
      13.5,
-     1
+     0
     ],
     [
      15.0,
-     1
+     0
     ],
     [
      16.5,
-     1
+     0
     ]
    ],
    "low2x": [
     [
      1.8,
-     1
+     0
     ],
     [
      2.0,
-     1
+     0
     ],
     [
      2.2,
-     1
+     0
     ]
    ],
    "indX": [
     [
      1.21,
-     1
+     0
     ],
     [
      1.1,
-     1
+     0
     ],
     [
      0.99,
-     1
+     0
     ]
    ],
    "indMed": [
     [
      1.0,
-     1
+     0
     ],
     [
      0.0,
-     1
+     0
     ],
     [
      -1.0,
-     1
+     0
     ]
    ]
   },
@@ -321,27 +321,27 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-09-17",
-   "to": "2026-10-21",
-   "n": 3,
-   "counted": 3,
+   "from": "2026-09-18",
+   "to": "2026-10-22",
+   "n": 4,
+   "counted": 4,
    "up": 1,
-   "lo": 13,
-   "hi": 22,
+   "lo": 15,
+   "hi": 29,
    "rows": [
     {
      "code": "014530",
      "name": "극동유화",
      "lo": 4,
      "hi": 7,
-     "from": 3375,
-     "to": 3320,
+     "from": 3360,
+     "to": 3315,
      "up": 0,
      "mcCounts": [
-      909,
-      939,
-      1333,
-      982
+      890,
+      904,
+      1251,
+      1020
      ],
      "mcEdges": [
       0,
@@ -351,18 +351,18 @@
      ]
     },
     {
-     "code": "298020",
-     "name": "효성티앤씨",
+     "code": "150900",
+     "name": "파수AI",
      "lo": 4,
-     "hi": 7,
-     "from": 324000,
-     "to": 262000,
+     "hi": 8,
+     "from": 4115,
+     "to": 4020,
      "up": 0,
      "mcCounts": [
-      1118,
-      944,
-      1307,
-      990
+      910,
+      980,
+      1425,
+      978
      ],
      "mcEdges": [
       0,
@@ -372,18 +372,39 @@
      ]
     },
     {
-     "code": "001120",
-     "name": "LX인터내셔널",
-     "lo": 5,
-     "hi": 8,
-     "from": 42100,
-     "to": 43250,
+     "code": "000100",
+     "name": "유한양행",
+     "lo": 3,
+     "hi": 6,
+     "from": 76000,
+     "to": 83000,
      "up": 1,
      "mcCounts": [
-      1191,
-      1010,
-      1424,
-      1007
+      777,
+      949,
+      1098,
+      971
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "code": "000640",
+     "name": "동아쏘시오홀딩스",
+     "lo": 4,
+     "hi": 8,
+     "from": 93600,
+     "to": 91300,
+     "up": 0,
+     "mcCounts": [
+      904,
+      1029,
+      1475,
+      968
      ],
      "mcEdges": [
       0,
@@ -442,10 +463,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1674,
-    4,
+    1683,
+    3,
     8,
-    871,
+    863,
     2557
    ]
   },
@@ -459,35 +480,35 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1674,
-  "outThinQ": 16,
-  "outHalt": 4,
+  "outThin": 1683,
+  "outThinQ": 17,
+  "outHalt": 3,
   "outList": 8,
-  "listQ": 871,
-  "afterOut": 871,
-  "g1": 261,
-  "g2": 701,
-  "g3": 77,
-  "g4": 672,
-  "g5": 43,
+  "listQ": 863,
+  "afterOut": 863,
+  "g1": 260,
+  "g2": 659,
+  "g3": 55,
+  "g4": 682,
+  "g5": 9,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 859,
+  "loss3": 851,
   "why": "lists"
  },
- "compared": 2714,
+ "compared": 2721,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.2,
-  "build": 3.0,
-  "recount": 1.2,
-  "total": 6.3
+  "readBundle": 2.9,
+  "build": 3.4,
+  "recount": 1.4,
+  "total": 7.8
  }
 }
