@@ -31,9 +31,11 @@ const sheet = () => new Promise(res => {
   const done = () => res(); l.addEventListener('load', done, {once: true}); l.addEventListener('error', done, {once: true}); setTimeout(done, 3000);
 });
 
-/** 움직임 붙이기 — TH = 첫 화면 자료 · top = 1 · 2 · 3번 업종(theme-home.json) · rows = 그 업종 줄(a.th-row 셋) · btn · svg · tt = yearBox 뼈대 */
-export async function run({TH, top, rows = [], btn, svg, tt}) {
-  const W = 326, H = 112, X1 = 236, Y0 = 34, Y1 = 84, RUN = 9000, HOLD = 1800, LO = 42, HI = 88, GAP = 19;
+/** 움직임 붙이기 — TH = 첫 화면 자료 · top = 1 · 2 · 3번 업종(theme-home.json) · rows = 그 업종 줄(a.th-row 셋) · btn · svg · tt = yearBox 뼈대 · x1 = 줄 그림 오른쪽 끝(yearBox 와 같은 값)
+ *  2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A3): 끝 숫자는 처음부터 끝값(한 해 동안 오른 만큼)으로 고정하고 이름을 붙임 — 「업종 1년 +21%」 · 「시장 1년 +2%」
+ *    (그리는 9초 동안 숫자가 계속 바뀌어 하나도 못 읽던 것 · 무엇의 몇 %인지 이름이 없던 것) · 선만 9초에 그려짐(움직임 · 하늘 쇼와 같이 시작 · 끝은 그대로) */
+export async function run({TH, top, rows = [], btn, svg, tt, x1 = 236}) {
+  const W = 326, H = 112, X1 = x1, Y0 = 34, Y1 = 84, RUN = 9000, HOLD = 1800, LO = 42, HI = 88, GAP = 19;
   const live = () => btn.isConnected;
   const [J] = await Promise.all([Promise.resolve(nx()?.need?.('themePath')).catch(() => null), sheet()]);
   if (!live()) return;
@@ -60,9 +62,10 @@ export async function run({TH, top, rows = [], btn, svg, tt}) {
     const dOf = arr => arr.map((v, i) => (i ? 'L' : 'M') + xS(i).toFixed(1) + ' ' + yS(v).toFixed(1)).join('');
     return {n: p.n, I: p.I, yS, dI: dOf(p.I), dM: dOf(M)};
   });
-  let k = 0, t = 0, mode = 'wait', hold = 0, prev = 0, raf = 0, hid = document.hidden, off = false, cur = -1, sI = '', sM = '';
+  let k = 0, t = 0, mode = 'wait', hold = 0, prev = 0, raf = 0, hid = document.hidden, off = false, cur = -1;
   const valAt = (arr, u) => { const i = Math.max(0, Math.min(last, Math.floor(u))), f = u - i; return i < last ? arr[i] + (arr[i + 1] - arr[i]) * f : arr[last]; };
-  const fit = () => { try { tt.removeAttribute('textLength'); tt.removeAttribute('lengthAdjust'); const max = 268; if (tt.getComputedTextLength() > max) { tt.setAttribute('textLength', max); tt.setAttribute('lengthAdjust', 'spacingAndGlyphs'); } } catch { /* 못 잼 */ } }; // 긴 이름(영어 판)이 작은 표에 닿지 않게
+  const squeeze = (el, max) => { try { el.removeAttribute('textLength'); el.removeAttribute('lengthAdjust'); if (el.getComputedTextLength() > max) { el.setAttribute('textLength', max); el.setAttribute('lengthAdjust', 'spacingAndGlyphs'); } } catch { /* 못 잼 */ } };
+  const fit = () => { squeeze(tt, 268); squeeze(vi, W - X1 - 12); squeeze(vm, W - X1 - 12); }; // 긴 이름(영어 판)이 작은 표 · 줄 끝에 닿지 않게
   function setIcon() {
     const m = mode === 'play' ? 'p' : mode === 'pause' ? 'r' : 'a';
     icPause.setAttribute('display', m === 'p' ? 'inline' : 'none'); icPlay.setAttribute('display', m === 'r' ? 'inline' : 'none'); icAgain.setAttribute('display', m === 'a' ? 'inline' : 'none');
@@ -70,23 +73,25 @@ export async function run({TH, top, rows = [], btn, svg, tt}) {
   }
   function setPlanet(j) { // j = 업종 차례(1 · 2 · 3번)
     if (cur === j) return; cur = j; YR.k = j; const p = PL[j];
-    tt.textContent = `${j + 1}번 ${p.n}`; requestAnimationFrame(fit); // 영어 판은 바꿈 알림(마이크로 일) 뒤에 잼
+    tt.textContent = `${j + 1}번 ${p.n}`;
     rows.forEach((r, q) => r.classList.toggle('th-now', q === j)); // 지금 줄 그림의 업종 줄만 밝힘(크기는 그대로 — 밀림 0)
     const b = p.yS(100).toFixed(1); base.setAttribute('y1', b); base.setAttribute('y2', b);
     ghost.setAttribute('d', p.dI); li.setAttribute('d', p.dI); lm.setAttribute('d', p.dM);
-  }
-  function draw() { // 줄 그림 — t 까지
-    const p = PL[k]; setPlanet(k);
-    const hx = xS(t), vI = valAt(p.I, t), vM = valAt(M, t), yI = p.yS(vI), yM = p.yS(vM);
-    clip.setAttribute('width', (hx + 8).toFixed(1));
-    hd.setAttribute('cx', hx.toFixed(1)); hd.setAttribute('cy', yI.toFixed(1)); hm.setAttribute('cx', hx.toFixed(1)); hm.setAttribute('cy', yM.toFixed(1));
-    const a = pctTxt(vI - 100), b = pctTxt(vM - 100);
-    if (a !== sI) { vi.textContent = a; sI = a; } if (b !== sM) { vm.textContent = b; sM = b; }
-    let a1 = yI + 6, a2 = yM + 6; // 끝 수는 머리 옆 높이 · 서로 겹치지 않게 · 머리 줄과 아래 글에 닿지 않게
+    // 끝 숫자 = 한 해 끝값(처음부터 고정 · 이름 붙임) — 자리는 두 줄이 끝나는 높이 옆 · 서로 겹치지 않게 · 머리 줄과 아래 글에 닿지 않게
+    const vI = p.I[last], vM = M[last];
+    vi.textContent = `업종 1년 ${pctTxt(vI - 100)}`; vm.textContent = `시장 1년 ${pctTxt(vM - 100)}`;
+    let a1 = p.yS(vI) + 6, a2 = p.yS(vM) + 6;
     if (Math.abs(a1 - a2) < GAP) { const m = (a1 + a2) / 2, s = a1 <= a2 ? -1 : 1; a1 = m + s * GAP / 2; a2 = m - s * GAP / 2; }
     const up = a1 <= a2; let lo = Math.min(a1, a2), hi = Math.max(a1, a2);
     if (lo < LO) { hi += LO - lo; lo = LO; } if (hi > HI) { lo -= hi - HI; hi = HI; } lo = Math.max(LO, lo);
     vi.setAttribute('y', (up ? lo : hi).toFixed(1)); vm.setAttribute('y', (up ? hi : lo).toFixed(1));
+    requestAnimationFrame(fit); // 영어 판은 바꿈 알림(마이크로 일) 뒤에 잼
+  }
+  function draw() { // 줄 그림 — t 까지(끝 숫자는 setPlanet 에서 한 번만)
+    const p = PL[k]; setPlanet(k);
+    const hx = xS(t), yI = p.yS(valAt(p.I, t)), yM = p.yS(valAt(M, t));
+    clip.setAttribute('width', (hx + 8).toFixed(1));
+    hd.setAttribute('cx', hx.toFixed(1)); hd.setAttribute('cy', yI.toFixed(1)); hm.setAttribute('cx', hx.toFixed(1)); hm.setAttribute('cy', yM.toFixed(1));
   }
   function rest() { mode = 'done'; t = last; draw(); setIcon(); } // 멈춘 그림 — 줄 그림은 한 해 전부 · 그 업종 줄이 밝음
   function tick(now) {
