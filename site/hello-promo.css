@@ -1,9 +1,9 @@
 /* 소개 한 장(hello.html) — 친구 소개 상품권 상자(사장님 2026-10-14 14:56 「01090117377 내 번호 올리고 카톡으로 아틀란스 소개 10명 시켜 주면 스타벅스 아메리카노 상품권 1장 준다고 올려 … 그 앵무새 영상에도」 · 14:59 「너가 알아서 해 그냥 많이줘」)
    · 쪽의 보안 규칙(style-src 'self')이 글 안 꾸밈을 막아 따로 둔 파일 · /app/ 아래 파일은 고치지 않음(옛 판 모든 화면 검사가 지키는 곳) */
 .hp-promo { width: 100%; box-sizing: border-box; margin: 0; padding: 16px; border: 2px solid #E9C46A; border-radius: 18px;
-  background: linear-gradient(180deg, rgba(233, 196, 106, .16), rgba(233, 196, 106, .06)); color: #F4EEFA; }
+  background: rgba(233, 196, 106, .08); color: #F4EEFA; } /* 한 색 바탕(총정리 D16 — 그라데이션 없음) */
 .hp-pt { margin: 0 0 8px; font-size: 1.5rem; line-height: 1.3; font-weight: 800; color: #FFD98A; text-align: center; letter-spacing: -.01em; }
-.hp-steps { margin: 0 0 16px; padding: 0; list-style-position: inside; text-align: center; font-size: 1.0625rem; line-height: 1.55; }
+.hp-steps { margin: 0 0 16px; padding: 0 0 0 24px; list-style-position: outside; text-align: left; font-size: 1.0625rem; line-height: 1.55; } /* 번호는 바깥 · 왼쪽 맞춤(총정리 D16 — 줄 첫머리가 흔들리지 않게) */
 .hp-steps li { margin: 8px 0; }
 .hp-steps b { color: #FFD98A; }
 .hp-tel { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 16px; }
@@ -59,8 +59,8 @@
 .hp-uv { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; border-radius: 16px; background: #070B17; cursor: pointer; }
 .hp-uplay { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 48px; min-width: 200px; padding: 0 24px; border: 2px solid #FFD98A; border-radius: 999px; background: transparent; color: #FFD98A; font: inherit; font-size: 1.1875rem; font-weight: 800; cursor: pointer; }
 .hp-uplay:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
-.hp-ubar { -webkit-appearance: none; appearance: none; display: block; width: 100%; max-width: 360px; height: 8px; border: 0; border-radius: 999px; background: rgba(244, 238, 250, .18); overflow: hidden; }
-.hp-ubar::-webkit-progress-bar { background: rgba(244, 238, 250, .18); border-radius: 999px; }
+.hp-ubar { -webkit-appearance: none; appearance: none; display: block; width: 100%; max-width: 360px; height: 10px; border: 1px solid rgba(244, 238, 250, .6); border-radius: 999px; background: transparent; overflow: hidden; } /* 바탕은 가는 테만(속 비움 · 0초가 꽉 찬 막대로 보이지 않게 · 총정리 D11) · 본 만큼만 금빛 */
+.hp-ubar::-webkit-progress-bar { background: transparent; border-radius: 999px; }
 .hp-ubar::-webkit-progress-value { background: #FFD98A; border-radius: 999px; }
 .hp-ubar::-moz-progress-bar { background: #FFD98A; border-radius: 999px; }
 .hp-uleft { margin: 0; font-size: 1.0625rem; line-height: 1.5; text-align: center; color: #F4EEFA; }
@@ -72,3 +72,12 @@
 .hp-num { margin: 0; font-size: 1.0625rem; line-height: 1.5; text-align: center; color: #F4EEFA; }
 .hp-num b { color: #FFD98A; font-weight: 800; }
 .hp-got[hidden], .hp-lock[hidden] { display: none; }
+
+/* 총정리(사장님 2026-10-22 04:09 「결과부터 · 기승전결」 · 04:11 「바로 제작해」) — 소개 쪽 결 · 영상 가르기 · 평평하게(옛 /app/hello.css 는 고치지 않고 여기서 덮음 · 이 파일이 나중에 읽힘)
+   D14 결 한 줄(본질 1) + 「돌이 보러 가기」가 제목 바로 밑 · D15 고민 영상 밑 「상품권 영상은 아래 우주 1분」 고리 · D16 그라데이션 · 빛 그림자 · 가운데 번호 없앰 */
+.hp-lead { margin: 0; font-size: 1.1875rem; line-height: 1.5; font-weight: 700; text-align: center; color: #F4EEFA; text-wrap: balance; }
+.hp-which { display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 100%; min-height: 44px; margin: 0; padding: 8px 16px; color: #FFD98A; font-size: 1.0625rem; line-height: 1.5; text-align: center; text-decoration: underline; text-underline-offset: 4px; text-wrap: balance; }
+.hp-which:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
+.hp-h { text-shadow: none; }
+.hp-vid { box-shadow: none; }
+.hp-send { background: #C93A6C; } /* 한 색(흰 글과 4.9 대 1) */

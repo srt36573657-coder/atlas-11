@@ -6,17 +6,18 @@
 //   2026-10-17 이름 바꾸기(사장님 15:48 「아틀란스에서 보드리로 모두 변경해」 · 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」 · 규칙 75) — 엔진 · 사전은 지금 사이트 것(/next/i18n.js · 사전 원본 scripts/atlas11/next/i18n/en-src.json · 옛 /atlas/i18n.js 는 고치지 않는 옛 판)
 import {ON as EN, startI18n, t as L} from '/next/i18n.js';
 import {open as shareBox} from '/next/p-share.js';
-import {VIDEO} from '/next/brand.js';
+import {VIDEO, NAME, josa} from '/next/brand.js';
 if (VIDEO.ready) document.querySelector('.hp-vid')?.removeAttribute('hidden'); // 새 영상이 올라간 뒤에만 영상 칸을 보임(사장님 2026-10-18 16:39 [3] 9)
 // 사전(en.json 1MB 남짓)을 받는 동안에도 「친구에게 보내기」가 먹게 — 단추는 바로 붙이고, 누르면 사전을 기다렸다가 엶
 //   (2026-10-20 실제 사이트 큰 시험 「글상자가 안 열림 — 390×844 영어 소개 쪽」: 단추를 사전을 다 받은 뒤에 붙여서, 느린 망에서 그 전에 누르면 아무 일이 없던 것)
 const ready = startI18n().catch(() => null); // 사전이 깨져도 글상자는 열림(한국어 글로)
-const helloShare = () => ({title: L('돌이를 소개합니다'), text: L('앵무새 돌이가 1분 동안 자기를 소개해요. 앵무새는 들은 것만 말해요 — 그래서 지난 기록만 말해요!')});
+const helloShare = () => ({title: L('돌이를 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 테마가 될 듯한 곳을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`)}); // 보내는 글 = 본질 1(총정리 2026-10-22 D14 · 상품권 방 p-gift.js 와 같은 글)
 const helloUrl = () => new URL('/hello.html', location.origin).href;
 /** 글상자를 열고 닫힐 때 결과 — {how: 'share' | 'copy' | 'show' | 'cancel' | 'close', text, url} */
 const shareHello = () => shareBox({kind: 'share', ...helloShare(), url: helloUrl()});
 const shareSay = r => L(r?.how === 'copy' ? '글과 주소를 함께 복사했어요 · 카카오톡 대화창에 붙여 넣으세요' : r?.how === 'show' ? `이 주소를 보내 주세요: ${r.url}` : '');
 if (EN) { const go = document.querySelector('.hp-go'); if (go) go.setAttribute('href', '/?lang=en'); for (const a of document.querySelectorAll('nav.tabs a')) a.setAttribute('href', a.getAttribute('href').replace('/#/', '/?lang=en#/')); } // 영어로 보던 사람은 영어 화면으로(아래 단추 다섯도 — 2026-10-18)
+if (EN) for (const a of document.querySelectorAll('a[href="/privacy.html"]')) a.setAttribute('href', '/privacy.html#en'); // 처리방침도 영어 칸으로(총정리 D23 — 그 쪽은 스크립트가 없어 스스로 말을 못 고름)
 const msg = document.getElementById('hp-msg');
 document.getElementById('hp-send')?.addEventListener('click', async () => { await ready; msg.textContent = shareSay(await shareHello()); });
 await ready;

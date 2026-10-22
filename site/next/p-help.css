@@ -5,6 +5,12 @@
 .hp-voice { display: inline-flex; margin: 0 0 var(--sp-2); padding: 0; border: 1px solid var(--hair2); border-radius: 24px; }
 .hp-vb { min-height: 48px; min-width: 48px; padding: 0 var(--sp-2); border-radius: 24px; color: var(--sub); font-size: var(--fs-1); font-weight: 600; }
 .hp-vb[aria-checked="true"] { background: #FFFFFF; color: #070B17; font-weight: 700; }
+/* 맨 위 결(총정리 2026-10-22 D1) — 「답이 왔어요 · n개 ›」 한 줄 단추 · 가는 선 · 답이 온 때만 먹 글 테(그림자 · 칠 없음) · 숨김은 hidden */
+.hp-ans { display: flex; align-items: center; width: 100%; min-height: 48px; margin: 0 0 var(--sp-2); padding: 0 var(--sp-2); border: 1px solid var(--hair2); border-radius: 24px; color: var(--sub); font-size: var(--fs-2); font-weight: 700; text-align: left; }
+.hp-ans.got { border-color: var(--ink); color: var(--ink); }
+.hp-ans[hidden] { display: none; }
+.hp-mine { scroll-margin-top: 80px; }
+.hp-qlink { display: inline-flex; align-items: center; min-height: 48px; margin: 0 0 var(--sp-1); color: var(--ink); font-size: var(--fs-2); text-decoration: underline; text-underline-offset: 3px; }
 /* 만든 사람의 말(사장님 2026-10-22 01:22 「사람들에게 감동을 줘」) — 따옴 줄 하나 · 가는 선만 */
 .hp-note-card { margin: 0 0 var(--sp-3); padding: 0 0 0 var(--sp-2); border-left: 2px solid var(--ink); }
 .hp-note-card blockquote { margin: 0; padding: 0; }

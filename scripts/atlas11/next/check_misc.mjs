@@ -6,6 +6,7 @@
 //      (옛 쪽 맨 아래 「… 매수 · 매도 …」 글은 쓰지 않을 말이라 새 안전 문장 두 줄이 있어야 함)
 //   ② 자료를 바꿔치기한 길 — talk.json · mkt.json · home.json · surge.json 못 받음 · 지수 받은 값 · 급등 기록 · 실패 회차 · 빈 기록 · 봉인 0거래일 · 봉인 없음 · 장 중 값 · co7 없음 — 옛 쪽 · 새 쪽 함께 맞댐
 //   ③ 새 쪽만 — 자료 파일(core · updates · time · names)을 못 받으면 「?」 줄 · 화면 오류 없음
+//      ③-2 업데이트 기록 맨 위 「요즘 바뀐 것」(총정리 2026-10-22 D19) — /changelog.json 시험 자료로 최신 업데이트 줄 셋 · 못 받으면 「?」 한 줄
 //   ④ 세 폭(320 · 360 · 390) + 320 폭 「아주 크게」 글씨(zoom) — 가로 넘침 0 · 봉인 그림 눈금 글 = 눈금선 높이 · 글 17px 넘게 · 누르는 자리 44px 넘게 · 화면 오류 0 · 쓰지 않을 말 0(남의 말 밖) · 캔버스 0 · 접은 칸을 펼쳐도 넘침 0
 //   ⑤ 밖 칸 — 회사 주식이 아닌 번호(기본 갈래마다 둘 · --limit N · --all 모두) · 회사 주식 번호는 보는 화면(#/w/) · 없는 번호는 「?」 · 번호 없음은 도움말과 같은 글
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
@@ -269,6 +270,37 @@ for (const [tag, hash, pg, file, a] of [['up · updates.json', '#/up', 'up', 'up
     if (realErrs(pn).length) fail('화면 오류(새 · 못 받음)', `${tag}: ${realErrs(pn).slice(0, 2).join(' | ')}`); }
   catch (e) { fail('못 받은 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
   await closePage(pn);
+}
+
+/* ③-2 업데이트 기록 맨 위 결 「요즘 바뀐 것」(총정리 2026-10-22 D19 · 사장님 04:09 「결과부터」) — /changelog.json(올릴 때 package.mjs 가 만듦 · 시험 서버엔 없음 → 시험 자료로 바꿔치기)
+   업데이트 줄 최신 셋만(자료 줄 · 미국 판 줄 · 쓰지 않을 말이 든 제목은 뺌 · 새것부터) · 날짜 · 사람이 쓴 제목(lang="ko") · 제목 두 줄 바로 다음 자리 · 못 받으면 「?」 한 줄 · 화면 오류 0 */
+if (on('up')) {
+  const LOG = {schema: 'atlas11-changelog-1', entries: [
+    {id: 'u-5', kind: 'update', place: 'all', made: '2026-10-22T06:00:00+09:00', live: '2026-10-22T06:05:00+09:00', title: '시험 추천 말이 든 줄', what: []}, // 쓰지 않을 말이 든 제목은 건너뜀
+    {id: 'u-4', kind: 'update', place: 'all', made: '2026-10-22T05:00:00+09:00', live: '2026-10-22T05:06:03+09:00', title: '시험 바뀐 것 넷', what: []},
+    {id: 'd-1', kind: 'data', place: 'kr', made: '2026-10-22T04:40:00+09:00', live: '2026-10-22T05:06:03+09:00', title: '시험 자료 줄', what: []},
+    {id: 'u-3', kind: 'update', place: 'all', made: '2026-10-22T04:30:00+09:00', live: '2026-10-22T05:06:03+09:00', title: '시험 바뀐 것 셋', what: []},
+    {id: 'u-us', kind: 'update', place: 'us', made: '2026-10-21T04:30:00+09:00', live: '2026-10-21T05:06:03+09:00', title: '시험 미국 판 줄', what: []},
+    {id: 'u-2', kind: 'update', place: 'all', made: '2026-10-21T01:30:00+09:00', live: '2026-10-21T01:54:29+09:00', title: '시험 바뀐 것 둘', what: []},
+    {id: 'u-1', kind: 'update', place: 'all', made: '2026-10-20T01:30:00+09:00', live: '2026-10-20T01:54:29+09:00', title: '시험 바뀐 것 하나', what: []}]};
+  const WANT = ['10월 22일 · 시험 바뀐 것 넷', '10월 22일 · 시험 바뀐 것 셋', '10월 21일 · 시험 바뀐 것 둘'];
+  for (const [tag, how] of [['받음', LOG], ['못 받음', 404]]) {
+    const pn = await newPage(360, {'/changelog.json': how});
+    try {
+      await openNew(pn, '#/up', 'up');
+      const g = await pn.evaluate(() => { const s = document.querySelector('#view .pup-new'); if (!s) return null; const sp = [...s.querySelectorAll('ul.pup-newl li > span')];
+        return {at: [...document.querySelector('#view .pup').children].indexOf(s), head: s.querySelector('h2')?.textContent ?? '', lines: [...s.querySelectorAll('ul.pup-newl li')].map(li => li.textContent.replace(/\s+/g, ' ').trim()), ko: sp.length > 0 && sp.every(x => x.getAttribute('lang') === 'ko'), q: s.querySelector('.pup-newq')?.textContent ?? ''}; });
+      bump('요즘 바뀐 것 길');
+      if (!g) fail('요즘 바뀐 것 칸 없음', tag);
+      else {
+        if (g.at !== 2 || g.head !== '요즘 바뀐 것') fail('요즘 바뀐 것 — 제목 두 줄 바로 다음 자리 · 머리 글', `${tag}: ${g.at} 「${g.head}」`);
+        if (how === 404 ? g.lines.length || g.q !== '? 바뀐 것 기록을 받지 못했어요' : JSON.stringify(g.lines) !== JSON.stringify(WANT) || !g.ko || g.q) fail('요즘 바뀐 것 — 업데이트 줄 최신 셋(자료 · 미국 판 줄 뺌 · 제목 lang="ko") · 못 받으면 「?」 한 줄', `${tag}: ${JSON.stringify(g)}`);
+      }
+      await layout(pn, '360 요즘 바뀐 것 ' + tag);
+      if (realErrs(pn).length) fail('화면 오류(새 · 요즘 바뀐 것)', `${tag}: ${realErrs(pn).slice(0, 2).join(' | ')}`);
+    } catch (e) { fail('요즘 바뀐 것 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
+    await closePage(pn);
+  }
 }
 
 /* ④ 세 폭 — 쪽 넷 + 밖 칸 열 곳까지 · 넷째 판 = 320 폭 「아주 크게」 글씨(#view zoom 1.286) */
