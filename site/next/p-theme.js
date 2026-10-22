@@ -374,16 +374,24 @@ async function pPick() {
   if (!B || !all || !Number.isFinite(all.rate) || !Number.isFinite(all.base)) return none(title, '이 쪽');
   const ok2 = x => x && Number.isFinite(x.rate) && Number.isFinite(x.base);
   const both = ok2(tr) && ok2(te) && tr.rate > tr.base && te.rate > te.base;
+  const r0 = v => Math.round(v);
   const bar = (lab, v, cls) => {
     const fill = h('i');
     fill.style.width = Math.max(0, Math.min(100, v * 2)) + '%'; // 50번 = 가득(보안 규칙 — 글에 style 을 쓰지 않고 셈으로 넣음)
-    return h('div', {class: 'th-pkbar ' + cls}, h('span', {class: 'th-pkl', text: lab}), h('span', {class: 'th-pkt', 'aria-hidden': 'true'}, fill), h('b', {class: 'th-pkv', text: `100번에 ${Math.round(v)}번`}));
+    return h('div', {class: 'th-pkbar ' + cls}, h('span', {class: 'th-pkl', text: lab}), h('span', {class: 'th-pkt', 'aria-hidden': 'true'}, fill), h('b', {class: 'th-pkv', text: `100번에 ${r0(v)}번`}));
   };
+  const step = (k, b, lines) => h('li', {}, h('span', {class: 'th-sn', text: String(k)}), h('span', {class: 'th-st'}, h('b', {text: b}), ...lines.filter(Boolean).map(t => h('span', {text: t}))));
   const fallLine = () => {
     if (!Number.isFinite(all.fall) || !Number.isFinite(all.fallBase)) return null;
-    const f = Math.round(all.fall), t = Math.abs(all.fall - all.fallBase) < 2 ? `크게 떨어진 일은 100번에 ${f}번으로 아무 회사와 비슷해요.` : all.fall < all.fallBase ? `크게 떨어진 일은 100번에 ${f}번으로 아무 회사보다 적어요.` : `크게 떨어진 일은 100번에 ${f}번으로 아무 회사보다 많아요.`;
+    const f = r0(all.fall), t = Math.abs(all.fall - all.fallBase) < 2 ? `크게 떨어진 일은 100번에 ${f}번으로 아무 회사와 비슷해요.` : all.fall < all.fallBase ? `크게 떨어진 일은 100번에 ${f}번으로 아무 회사보다 적어요.` : `크게 떨어진 일은 100번에 ${f}번으로 아무 회사보다 많아요.`;
     return h('p', {class: 'th-sub', text: t});
   };
+  // 사장님 2026-10-22 17:59 「사람들이 왜? 이게 싹이고 왜 이런데이타적인 확율이였는지 근거를 지시해야 하잖아」 — 왜 싹인지(아래 두 걸음) · 이 숫자가 어떻게 나왔는지(회사 아래 여섯 걸음) · 그냥 싹 막대
+  const plain = Number.isFinite(all.plain) ? all.plain : null;
+  const plainLine = () => plain == null ? null : h('p', {class: 'th-sub', text: plain < all.base ? '그냥 싹은 아무 회사보다 오히려 덜 넘었어요.' : '그냥 싹은 아무 회사보다 조금 더 넘었어요.'});
+  const whyMore = plain != null && plain < all.rate && all.base < all.rate ? h('p', {class: 'th-sub th-key', text: '그래서 싹만 보지 않고 업종도 함께 봐요.'}) : null;
+  const gap = all.rate - all.base;
+  const gapLine = h('p', {class: 'th-sub', text: gap >= 0.5 ? `100번에 ${r0(gap)}번쯤 더 많은 정도예요.` : '아무 회사와 거의 같아요.'});
   const inds = Array.isArray(B.today?.inds) ? B.today.inds.filter(i => typeof i?.n === 'string' && Array.isArray(i.co)) : [];
   const n = inds.reduce((p, i) => p + i.co.length, 0);
   const list = inds.map(i => h('section', {class: 'th-pkind', 'aria-label': i.n},
@@ -392,22 +400,44 @@ async function pPick() {
     h('ul', {class: 'th-pkco'}, i.co.filter(r => Array.isArray(r) && /^[0-9A-Z]{6}$/.test(r[0] ?? '')).map(([c, nm, , y]) => h('li', {},
       h('a', {class: 'th-pkrow', href: '#/w/' + c}, h('b', {'data-proper': '', text: String(nm ?? c)}), h('span', {class: cls(y), text: `닷새 ${pp(y)}%`}), h('i', {'aria-hidden': 'true', text: '›'})))))));
   const span = B.span ?? {};
+  const yrs = Object.entries(R.years ?? {}).filter(([y, v]) => /^\d{4}$/.test(y) && ok2(v)).sort((p, q) => (p[0] < q[0] ? -1 : 1));
+  const upY = yrs.filter(([, v]) => v.rate > v.base).length;
+  const tried = Number.isInteger(B.tried) && B.tried > 0 ? B.tried : null;
+  const how = h('section', {class: 'th-pkhow', 'aria-label': '이 숫자는 어떻게 나왔어요?'},
+    h('h2', {class: 'th-h2', text: '이 숫자는 어떻게 나왔어요?'}),
+    h('ol', {class: 'th-steps'},
+      step(1, Number.isInteger(B.companies) && B.companies > 0 ? `회사 ${num(B.companies)}곳을 날마다 봤어요` : '회사마다 날마다 봤어요', [span.from && span.to ? `${ymd(span.from)}부터 ${ymd(span.to)}까지 회사마다 날마다 센 기록이에요.` : null, '지금 상장된 회사로만 셌어요.']),
+      step(2, tried ? `싹에 더할 모습 ${tried}가지를 먼저 적었어요` : '싹에 더할 모습을 먼저 적었어요', ['셈하기 전에 적었어요.', '그래야 숫자를 보고 고르지 않아요.', '고친 것도 까닭과 함께 적었어요.']),
+      step(3, '앞 기록으로 고르고 뒤 기록으로 맞춰 봤어요', [
+        ok2(tr) ? `앞 기록은 100번에 ${r0(tr.rate)}번, 아무 회사는 ${r0(tr.base)}번이에요.` : null,
+        ok2(te) ? `뒤 기록은 100번에 ${r0(te.rate)}번, 아무 회사는 ${r0(te.base)}번이에요.` : null,
+        span.test?.[0] ? `뒤 기록은 ${ymd(span.test[0])}부터예요. 모습을 고를 때 안 본 기록이에요.` : null,
+        both && tried ? `${tried}가지 가운데 이 모습만 두 번 다 검사를 지나갔어요.` : both ? null : '두 기록 가운데 한 번은 아무 회사보다 적었어요.']),
+      yrs.length ? step(4, upY === yrs.length ? '해마다 나눠 봐도 모든 해에 더 많았어요' : '해마다 나눠 보면 더 많은 해도 있고 적은 해도 있었어요', yrs.map(([y, v]) => `${y}년에는 100번에 ${r0(v.rate)}번, 아무 회사는 ${r0(v.base)}번이에요.`)) : null,
+      step(yrs.length ? 5 : 4, '다른 방법으로 다시 셌어요', ['처음부터 따로 센 숫자와 같았어요.']),
+      step(yrs.length ? 6 : 5, '거래가 멈춘 회사는 뺐어요', ['한 달 내내 값이 그대로인 회사예요.'])));
   return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
     say('업종은 꽃이 폈고, 회사는 이제 막 힘이 붙었어요.'),
     h('p', {class: 'th-key', text: n ? `오늘 이 모습인 회사는 ${num(n)}곳이에요.` : '오늘은 이 모습인 회사가 없어요.'}),
+    h('section', {class: 'th-pkwhy', 'aria-label': '왜 싹이에요?'},
+      h('h2', {class: 'th-h2', text: '왜 싹이에요?'}),
+      h('p', {class: 'th-sub', text: '두 가지가 함께 맞는 회사만 골라요.'}),
+      h('ol', {class: 'th-steps'},
+        step(1, '회사는 이제 막 힘이 붙었어요', ['아직 꽃 선 전이지만, 지난 닷새는 시장보다 더 올랐어요.']),
+        step(2, '그 업종은 이미 꽃이 폈어요', ['꽃 선을 넘었고, 지난 닷새도 시장보다 더 올랐어요.'])),
+      h('p', {class: 'th-sub', text: `한 달 동안 시장보다 ${RULE.bloomX}% 넘게 더 오르면 꽃 선을 넘어요.`})),
     h('div', {class: 'th-pkrec'}, h('h2', {class: 'th-h2', text: '지난 기록'}),
-      bar('아무 회사', all.base, 'base'), bar('이 모습', all.rate, 'pick'),
+      bar('아무 회사', all.base, 'base'), plain != null ? bar('그냥 싹', plain, 'plain') : null, bar('이 모습', all.rate, 'pick'),
       h('p', {class: 'th-sub', text: '한 달 뒤 꽃 선을 넘은 횟수예요.'}),
+      plainLine(), whyMore,
       h('p', {class: 'th-sub', text: both ? '앞 기록과 뒤 기록 두 번 다 아무 회사보다 많았어요.' : '앞 기록과 뒤 기록 가운데 한 번은 아무 회사보다 적었어요.'}),
-      fallLine()),
+      gapLine, fallLine(),
+      n ? h('p', {class: 'th-sub', text: '이 숫자가 어떻게 나왔는지는 회사 아래에 있어요.'}) : null),
     ...list,
     n ? h('p', {class: 'th-sub th-calnote', text: '회사는 이름 차례예요. 차례에는 뜻이 없어요.'}) : null,
-    h('p', {class: 'th-sub th-calnote', text: `한 달 동안 시장보다 ${RULE.bloomX}% 넘게 더 오르면 꽃 선을 넘어요.`}),
+    how,
     h('p', {class: 'th-sub th-calnote', text: `${Math.abs(Number(B.rule?.fall ?? -5))}% 넘게 덜 오르면 크게 떨어진 거예요.`}),
-    span.from && span.to ? h('p', {class: 'th-sub th-calnote', text: `${ymd(span.from)}부터 ${ymd(span.to)}까지 회사마다 날마다 센 기록이에요.`}) : null,
-    h('p', {class: 'th-sub th-calnote', text: '지금 상장된 회사로만 센 기록이에요.'}),
-    h('p', {class: 'th-sub th-calnote', text: '거래가 멈춘 회사는 뺐어요.'}),
     h('p', {class: 'th-sub th-calnote', text: '앞날을 맞히는 숫자가 아니에요.'}),
     h('p', {class: 'th-asof', text: md(B.asOf) + ' 장 마감 기준' + (B.provisional ? ' · 장중 값이 섞여 있어요' : '')}),
     nextBtn('싹 달력', '#/t/cal'), safe())]};

@@ -151,9 +151,11 @@ a.th-ck:active { background: #161616; }
 .th-pkbar.pick .th-pkt i { background: var(--up); }
 .th-pkv { font-size: var(--fs-2); font-variant-numeric: tabular-nums; }
 .th-pkind { margin-top: var(--sp-3); }
-.th-pkind .th-h2 a { color: var(--ink); text-decoration: none; }
+.th-pkind .th-h2 a { display: inline-flex; align-items: center; min-height: 48px; min-width: 44px; color: var(--ink); text-decoration: none; } /* 누르는 자리 44px 위(업종 쪽으로 가는 고리 — 처음 판은 25px 였음 · 2026-10-22 18:2x 이 쪽을 큰 검사에 넣으며 찾음) */
 .th-pkco { list-style: none; margin: var(--sp-1) 0 0; padding: 0; display: grid; gap: 0; }
 .th-pkrow { display: grid; grid-template-columns: 1fr auto auto; gap: var(--sp-1); align-items: center; min-height: 52px; border-bottom: 1px solid #2A2A2A; color: var(--ink); text-decoration: none; font-size: var(--fs-2); }
 .th-pkrow b { min-width: 0; overflow-wrap: anywhere; }
 .th-pkrow span { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .th-pkrow i { font-style: normal; color: var(--sub, #B4BDD3); }
+.th-pkwhy { margin-top: var(--sp-2); } /* 왜 싹이에요?(2026-10-22 17:59 「사람들이 왜? 이게 싹이고 … 근거를 지시해야」) */
+.th-pkhow { margin-top: var(--sp-3); } /* 이 숫자는 어떻게 나왔어요? — 여섯 걸음 */

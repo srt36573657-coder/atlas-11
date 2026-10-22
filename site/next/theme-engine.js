@@ -184,14 +184,15 @@ export function recordOf(U, M, T) {
  *  (docs/design/sprout-flower-2026-10-22/spec-v1.md v3 · 셈 scripts/atlas11/research/sprout_flower.py C3 · 같은 자료로 이 셈과 숫자가 같아야 함 — tests/atlas11/theme-bloom.test.mjs)
  *  지난 기록 = t = BLOOM.from ~ T − 20 · 회사 · 날마다 「한 달 뒤 꽃 선」(결정표 6 과 같은 잣대) · 한 달 평균 앞선 만큼(±50% 자름) · 크게 떨어짐(−5% 아래) — 아무 회사(셀 수 있는 모든 회사 · 날)와 나란히
  *  오늘 = T 의 회사 자리 S 이고 업종 자리 B 인 회사 · 업종은 x 큰 차례 · 회사는 이름 차례(차례에 뜻이 없음 — 지난 기록에서 차례를 가려낸 잣대를 못 찾음 · v4) */
-export const BLOOM = Object.freeze({from: 120, clip: 0.5, fall: -0.05});
+export const BLOOM = Object.freeze({from: 120, clip: 0.5, fall: -0.05, split: '2025-04-04'}); // split = 앞 · 뒤 기록 가름 — 연구 셈 때의 가운데 날(spec v1)에 묶음 · 그 날부터는 모습을 고를 때 안 본 기록이라 날이 쌓일수록 뒤 기록이 늘어남
 export function bloomOf({U, M, closes, codes, companies, dates, made = new Date().toISOString(), provisional = false}) {
   const N = dates.length, T = N - 1, k = RULE.win, A = RULE.recAhead;
-  const t0 = BLOOM.from, t1 = T - A, mid = Math.floor((t0 + t1) / 2);
+  const t0 = BLOOM.from, t1 = T - A;
+  let mid = dates.findIndex((d, t) => t > t0 && d >= BLOOM.split); if (mid < 0 || mid > t1) mid = Math.floor((t0 + t1) / 2); // 자료가 짧으면 가운데
   const indZ = new Map();
   for (const u of U) { const z = new Uint8Array(N); for (let t = k; t < N; t++) if (zoneOf(exOf(u.I, M, t, k) * 100, exOf(u.I, M, t, 5) * 100) === 'B') z[t] = 1; indZ.set(u.n, z); }
   const blank = () => ({n: 0, h: 0, f: 0, e: 0});
-  const acc = {all: [blank(), blank()], train: [blank(), blank()], test: [blank(), blank()]}, years = {};
+  const acc = {all: [blank(), blank(), blank()], train: [blank(), blank(), blank()], test: [blank(), blank(), blank()]}, years = {}; // [아무 회사 · 이 모습 · 그냥 싹]
   const add = (o, hit, fall, e) => { o.n++; if (hit) o.h++; if (fall) o.f++; o.e += e; };
   const today = [];
   for (const c of codes) {
@@ -203,17 +204,17 @@ export function bloomOf({U, M, closes, codes, companies, dates, made = new Date(
     for (let t = t0; t <= t1; t++) {
       if (!countable(t) || !ok(a[t + A]) || J[t + A] - J[t] !== 0) continue;
       const ex = (a[t + A] / a[t]) / (M[t + A] / M[t]) - 1, hit = ex >= RULE.bloomX / 100, fall = ex <= BLOOM.fall, e = Math.max(-BLOOM.clip, Math.min(BLOOM.clip, ex));
-      const g = !!iz && iz[t] === 1 && sproutAt(t), half = t < mid ? 'train' : 'test', yr = dates[t].slice(0, 4);
-      years[yr] ??= [blank(), blank()];
-      for (const o of [acc.all, acc[half], years[yr]]) { add(o[0], hit, fall, e); if (g) add(o[1], hit, fall, e); }
+      const sp = sproutAt(t), g = sp && !!iz && iz[t] === 1, half = t < mid ? 'train' : 'test', yr = dates[t].slice(0, 4);
+      years[yr] ??= [blank(), blank(), blank()];
+      for (const o of [acc.all, acc[half], years[yr]]) { add(o[0], hit, fall, e); if (g) add(o[1], hit, fall, e); if (sp) add(o[2], hit, fall, e); }
     }
     if (iz && iz[T] === 1 && countable(T) && sproutAt(T)) {
       const x = ((a[T] / a[T - k]) / (M[T] / M[T - k]) - 1) * 100, y = ((a[T] / a[T - 5]) / (M[T] / M[T - 5]) - 1) * 100;
       today.push({c, n: companies[c].n ?? c, i: companies[c].i, x: r2(x), y: r2(y)});
     }
   }
-  const pct = (v, n) => (n ? Math.round((v / n) * 1000) / 10 : null);
-  const out = ([b, g]) => ({n: g.n, base: pct(b.h, b.n), rate: pct(g.h, g.n), ex: pct(g.e, g.n), exBase: pct(b.e, b.n), fall: pct(g.f, g.n), fallBase: pct(b.f, b.n), baseN: b.n});
+  const pct = (v, n) => (n ? Math.round((v / n) * 10000) / 100 : null); // 소수 둘째 자리 — 화면은 다시 반올림해 「100번에 N번」(소수 한 자리로 두 번 반올림하면 27.48 이 28 이 됨)
+  const out = ([b, g, s]) => ({n: g.n, base: pct(b.h, b.n), rate: pct(g.h, g.n), ex: pct(g.e, g.n), exBase: pct(b.e, b.n), fall: pct(g.f, g.n), fallBase: pct(b.f, b.n), baseN: b.n, plain: pct(s.h, s.n), plainN: s.n});
   const byInd = new Map();
   for (const r of today) { if (!byInd.has(r.i)) byInd.set(r.i, []); byInd.get(r.i).push(r); }
   const inds = [...byInd.entries()].map(([n, rows]) => {
@@ -221,7 +222,7 @@ export function bloomOf({U, M, closes, codes, companies, dates, made = new Date(
     return {n, x: r2(exOf(u.I, M, T, k) * 100), y: r2(exOf(u.I, M, T, 5) * 100), co: rows.sort((p, q) => (p.n < q.n ? -1 : p.n > q.n ? 1 : 0)).map(r => [r.c, r.n, r.x, r.y])};
   }).sort((p, q) => q.x - p.x || (p.n < q.n ? -1 : 1));
   return {
-    schema: THEME_SCHEMA + '-bloom', made, asOf: dates[T], provisional: !!provisional,
+    schema: THEME_SCHEMA + '-bloom', made, asOf: dates[T], provisional: !!provisional, companies: codes.length, tried: 17, // 싹에 더할 모습 — 셈 전에 적은 열일곱(C1 ~ C17 · C11 은 C11h 로 바꿈) 가운데 C3 하나만 지나감(reports/atlas11/research/sprout-flower-2026-10-22.json singles · 시험이 맞댐)
     rule: {from: BLOOM.from, win: k, ahead: A, bloomX: RULE.bloomX, fall: BLOOM.fall * 100, clip: BLOOM.clip * 100},
     span: {from: dates[t0], to: dates[t1], train: [dates[t0], dates[mid - 1]], test: [dates[mid], dates[t1]]},
     record: {all: out(acc.all), train: out(acc.train), test: out(acc.test), years: Object.fromEntries(Object.keys(years).sort().map(yv => [yv, out(years[yv])]))},

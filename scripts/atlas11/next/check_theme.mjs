@@ -281,7 +281,7 @@ try {
     bump('숫자');
   }
   /* ⑤ 두 폭 — 남은 쪽들 */
-  for (const w of [360, 320]) for (const hsh of ['#/', '#/t/alert', '#/t/how', '#/t/sprout', ib, ib + '/co', ib + '/near', ...(cb ? [cb + '/lead', cb + '/why', cb + '/rank'] : []), '#/t/today']) {
+  for (const w of [360, 320]) for (const hsh of ['#/', '#/t/alert', '#/t/how', '#/t/sprout', '#/t/pick', ib, ib + '/co', ib + '/near', ...(cb ? [cb + '/lead', cb + '/why', cb + '/rank'] : []), '#/t/today']) { // #/t/pick = 꽃 핀 업종 안의 싹 회사(2026-10-22 16:56 · 17:59 근거 칸) — 처음 판은 이 목록 밖이라 업종 고리 25px 를 못 잡았음
     const {p, ctx} = await open(hsh, {w, h: 640}); await look(hsh + ' @' + w, p); bump('폭'); await ctx.close();
   }
   /* ⑦ 자료를 바꾼 다섯 판 — 한국어 · 영어(320) */

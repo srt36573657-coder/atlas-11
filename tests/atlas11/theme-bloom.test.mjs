@@ -27,7 +27,8 @@ function brute() {
   const bloomInd = (g, t) => { const I = ind[g]; return !!I && ex(I, t, 20) * 100 >= 5 && ex(I, t, 5) * 100 >= 0; };
   const count = (a, t) => { if (t < 20 || !ok(a[t]) || !ok(a[t - 5]) || !ok(a[t - 20])) return false; let same = 0; for (let s = t - 19; s <= t; s++) { if (jump(a, s)) return false; if (ok(a[s - 1]) && a[s] === a[s - 1]) same++; } return same < 20; };
   const sprout = (a, t) => ex(a, t, 20) * 100 < 5 && ex(a, t, 5) * 100 >= 0;
-  const T = N - 1, t0 = 120, t1 = T - 20, mid = Math.floor((t0 + t1) / 2), z = () => ({n: 0, h: 0, bn: 0, bh: 0});
+  const T = N - 1, t0 = 120, t1 = T - 20, z = () => ({n: 0, h: 0, bn: 0, bh: 0, pn: 0, ph: 0});
+  let mid = D.findIndex((d, t) => t > t0 && d >= '2025-04-04'); if (mid < 0 || mid > t1) mid = Math.floor((t0 + t1) / 2); // 앞 · 뒤 가름 = 연구 셈 때의 가운데 날(spec v1)
   const R = {train: z(), test: z()}, today = [];
   codes.forEach((c, j) => {
     const a = P[j], g = comp[c].i;
@@ -36,11 +37,12 @@ function brute() {
       let jf = false; for (let s = t + 1; s <= t + 20; s++) if (jump(a, s)) { jf = true; break; } if (jf) continue;
       const hit = ex(a, t + 20, 20) >= 0.05, r = R[t < mid ? 'train' : 'test'];
       r.bn++; if (hit) r.bh++;
+      if (sprout(a, t)) { r.pn++; if (hit) r.ph++; }
       if (sprout(a, t) && bloomInd(g, t)) { r.n++; if (hit) r.h++; }
     }
     if (count(a, T) && sprout(a, T) && bloomInd(g, T)) today.push(c);
   });
-  return {R, today: today.sort(), pct: (v, n) => (n ? Math.round((v / n) * 1000) / 10 : null)};
+  return {R, today: today.sort(), codes: codes.length, pct: (v, n) => (n ? Math.round((v / n) * 10000) / 100 : null)};
 }
 
 test('꽃 핀 업종 안의 싹 회사 — 올리기 셈 = 따로 짠 쉬운 셈(앞 · 뒤 기록 · 오늘 목록)', async () => {
@@ -49,13 +51,21 @@ test('꽃 핀 업종 안의 싹 회사 — 올리기 셈 = 따로 짠 쉬운 셈
   fs.symlinkSync(DATA, path.join(dir, 'atlas', 'data'));
   await build({siteDir: dir, keptFile: path.join(dir, 'kept.json')});
   const B = JSON.parse(fs.readFileSync(path.join(dir, 'next', 'data', 'theme-bloom.json'), 'utf8'));
-  const {R, today, pct} = brute();
+  const {R, today, pct, codes} = brute();
   for (const k of ['train', 'test']) {
     assert.equal(B.record[k].n, R[k].n, k + ' n');
     assert.equal(B.record[k].baseN, R[k].bn, k + ' 바탕 n');
     assert.equal(B.record[k].rate, pct(R[k].h, R[k].n), k + ' 꽃 비율');
     assert.equal(B.record[k].base, pct(R[k].bh, R[k].bn), k + ' 바탕 꽃 비율');
+    assert.equal(B.record[k].plainN, R[k].pn, k + ' 그냥 싹 n');
+    assert.equal(B.record[k].plain, pct(R[k].ph, R[k].pn), k + ' 그냥 싹 꽃 비율');
   }
+  assert.equal(B.record.all.n, B.record.train.n + B.record.test.n, '모든 날 = 앞 + 뒤');
+  assert.equal(Object.values(B.record.years).reduce((p, y) => p + y.n, 0), B.record.all.n, '해마다 합 = 모든 날');
+  assert.equal(B.companies, codes, '본 회사 수');
+  const RS = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'atlas11', 'research', 'sprout-flower-2026-10-22.json'), 'utf8'));
+  assert.equal(B.tried, Object.keys(RS.singles).filter(c => c !== 'C0').length, '싹에 더할 모습 수 = 연구 셈 후보(C0 그냥 싹 뺌)');
+  assert.deepEqual(RS.passed, ['C3'], '지나간 모습은 C3 하나');
   const got = B.today.inds.flatMap(i => i.co.map(r => r[0])).sort();
   assert.deepEqual(got, today, '오늘 목록');
   assert.equal(B.today.n, today.length);
