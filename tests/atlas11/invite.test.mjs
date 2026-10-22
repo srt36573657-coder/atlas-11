@@ -177,8 +177,8 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
   const server = new BlobsServer({directory: dir, token}); const {port} = await server.start();
   try {
     const s = await stageFunctions(root, stage);
-    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['help', 'invite', 'jinhwa', 'kakao', 'letter', 'tally']); // 2026-10-21 22:54 고객센터 함수 help 더함(order-2255 · 시험을 함께 못 고쳐 2026-10-22 02:40 고침) · 2026-10-17 편지 여는 밤 함수 더함 · 2026-10-18 16:39 [9] 8 · [10] 3 진화 칸 · 합계 칸 함수(일꾼 KD) · 2026-10-18 14:09 카톡 가입 서버(꺼짐 · e4706123a — 이 시험을 같이 안 고쳐 그때부터 걸려 있던 것을 2026-10-20 바로잡음)
-    assert.deepEqual(s.files, ['functions/atlas11/help.mjs', 'functions/atlas11/invite.mjs', 'functions/atlas11/jinhwa.mjs', 'functions/atlas11/kakao.mjs', 'functions/atlas11/letter.mjs', 'functions/atlas11/tally.mjs', 'lib/atlas11/coupon.mjs', 'lib/atlas11/game.mjs', 'lib/atlas11/help.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/jinhwa.mjs', 'lib/atlas11/kakao-store.mjs', 'lib/atlas11/kakao.mjs', 'lib/atlas11/letter.mjs', 'lib/atlas11/tally.mjs', 'site/next/game-rule.js', 'site/next/help-rule.js', 'site/next/words.js']); // 고객센터 함수가 부르는 help · help-rule.js(2026-10-21 order-2255) · 카톡 함수가 부르는 kakao · kakao-store · coupon · game(+ game-rule.js)도 함께 // 2026-10-17 21:10 [4] 4 쓰지 않을 말 한 곳(words.js)을 편지 함수도 부름
+    assert.equal(s.rel, FUNCTIONS_DIR); assert.deepEqual(s.functions, ['auto', 'help', 'invite', 'jinhwa', 'kakao', 'letter', 'tally']); // 2026-10-22 08:50 자동으로 산 기록 함수 auto 더함(가짜 돈 · order-0835) · 2026-10-21 22:54 고객센터 함수 help 더함(order-2255 · 시험을 함께 못 고쳐 2026-10-22 02:40 고침) · 2026-10-17 편지 여는 밤 함수 더함 · 2026-10-18 16:39 [9] 8 · [10] 3 진화 칸 · 합계 칸 함수(일꾼 KD) · 2026-10-18 14:09 카톡 가입 서버(꺼짐 · e4706123a — 이 시험을 같이 안 고쳐 그때부터 걸려 있던 것을 2026-10-20 바로잡음)
+    assert.deepEqual(s.files, ['functions/atlas11/auto.mjs', 'functions/atlas11/help.mjs', 'functions/atlas11/invite.mjs', 'functions/atlas11/jinhwa.mjs', 'functions/atlas11/kakao.mjs', 'functions/atlas11/letter.mjs', 'functions/atlas11/tally.mjs', 'lib/atlas11/auto.mjs', 'lib/atlas11/coupon.mjs', 'lib/atlas11/game.mjs', 'lib/atlas11/help.mjs', 'lib/atlas11/invite.mjs', 'lib/atlas11/jinhwa.mjs', 'lib/atlas11/kakao-store.mjs', 'lib/atlas11/kakao.mjs', 'lib/atlas11/letter.mjs', 'lib/atlas11/tally.mjs', 'site/next/game-rule.js', 'site/next/help-rule.js', 'site/next/words.js']); // 고객센터 함수가 부르는 help · help-rule.js(2026-10-21 order-2255) · 카톡 함수가 부르는 kakao · kakao-store · coupon · game(+ game-rule.js)도 함께 // 2026-10-17 21:10 [4] 4 쓰지 않을 말 한 곳(words.js)을 편지 함수도 부름
     assert.ok(s.packages.includes('@netlify/blobs') && s.packages.includes('@netlify/runtime-utils'), s.packages.join(','));
     assert.ok(!s.packages.includes('react') && !s.files.some(f => f.startsWith('netlify/')), '옛 함수 · 쓰지 않는 패키지는 옮기지 않음');
     const edge = `http://127.0.0.1:${port}`;
@@ -195,6 +195,8 @@ test('올리기 준비(deploy_netlify.mjs stageFunctions): 함수 · 부르는 �
     assert.equal((await jf(new Request('https://aaa7377.com/api/jinhwa/me'))).status, 403, '열쇠 없으면 사장님 기기 아님');
     assert.equal((await tf(new Request('https://aaa7377.com/api/tally', {method: 'POST', body: '{"k":"visit"}', headers: {'content-type': 'application/json'}}))).status, 204);
     assert.equal((await (await tf(new Request('https://aaa7377.com/api/tally/sum?days=1'))).json()).n, 1);
+    const af = (await import(path.join(stage, 'functions/atlas11/auto.mjs'))).default; // 자동으로 산 기록(2026-10-22 08:50 가짜 돈)도 옮긴 폴더만으로 풀림 · 열쇠 없으면 보기 403
+    assert.equal((await af(new Request('https://aaa7377.com/api/auto'))).status, 403, '열쇠 없으면 자동으로 산 기록이 안 보임');
     assert.equal((await stageFunctions(root, stage, 'functions/none')), null, '함수 폴더가 없으면 함수 없이 올림');
   } finally { delete process.env.NETLIFY_BLOBS_CONTEXT; await server.stop(); await fs.rm(stage, {recursive: true, force: true}); await fs.rm(dir, {recursive: true, force: true}); }
 });
