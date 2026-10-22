@@ -45,6 +45,12 @@ test('글 꼴 — 받침 · 돈 단위', () => {
 test('그림 — 보안 규칙 · 별자리 자리 · 모양 규칙', async () => {
   const js = read('site/next/why-chain.js');
   assert.doesNotMatch(js, /innerHTML|insertAdjacentHTML|document\.write|setAttribute\('style'/);
+  // 이름이 다른 곳 모양과 겹치면 안 됨(2026-10-22 P1 — 「play」가 app.css 영상 단추 .play 와 겹쳐 사슬 전체가 56px 동그라미 · 누름 막힘)
+  const names = [...js.matchAll(/class: '([^']+)'|classList\.(?:add|remove|toggle)\('([^']+)'/g)].map(m => m[1] ?? m[2]);
+  assert.ok(names.length >= 10, names.join(' '));
+  for (const n of names) assert.match(n, /^wc(-[a-z]+)?$/, '모양 이름은 wc 로 시작 — ' + n);
+  const app = read('site/next/app.css') + read('site/next/stone.css');
+  for (const n of new Set(names)) assert.doesNotMatch(app, new RegExp('\\.' + n + '(?![\\w-])'), '공용 모양에 같은 이름 — ' + n);
   const {PTS, STEPS} = await import('../../site/next/why-chain.js').catch(() => ({})) ?? {};
   // why-chain.js 는 i18n.js(브라우저 모듈)를 불러 노드에서 못 읽힐 수 있음 — 자리는 글에서 읽음
   const pts = PTS ?? JSON.parse(/PTS = Object\.freeze\((\[\[[\d, \[\]]+\]\])\)/.exec(js)[1]);
