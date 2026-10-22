@@ -1,13 +1,13 @@
 {
- "made": "2026-10-22T13:42:40.020Z",
+ "made": "2026-10-22T17:04:34.995Z",
  "base": "https://aaa7377.com",
  "files": [
   {
    "path": "/",
    "status": 200,
    "type": "text/html; charset=UTF-8",
-   "bytes": 6500,
-   "sha256": "7d1a3d88d8186bc48ffd64c086dd2cf60649a70c163fb28066ddd7c8e2a51166",
+   "bytes": 6507,
+   "sha256": "653b41b363abc839e258a056329047cc8106eee472f8dbbf6d582331a356ef84",
    "has": {
     "atlas.js": false
    },
@@ -56,13 +56,13 @@
    "status": 200,
    "type": "application/json",
    "bytes": 6863,
-   "sha256": "fb7e5b4ab9850b838787bcb8b1dcd8d7f87ef81a55e8df7eb214d4616a624f49",
+   "sha256": "12e99ef3095dbe4cedeeb8c49e2899f4b11749d361df8cd607c0a4576cdf9a49",
    "has": {
     "\"rule\":\"home-v3\"": true,
     "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-22 22:33",
+     "kst": "2026-10-23 02:01",
      "alerts": []
     }
    },
@@ -72,8 +72,8 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 95125,
-   "sha256": "9bccf7b97905187525f3d5f49f37c1c0f03349d1ba6c36a2f9a76e05d65c2653",
+   "bytes": 93712,
+   "sha256": "afe1bc98b3cf8a313fddfd7e67f5d454c16fbf94b0c8dafa6ec24ba417570fad",
    "has": {
     "home-v3": false
    },
@@ -111,7 +111,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 10930,
-   "sha256": "9b4883a8b7159bce6c663e5c7738222bf9846c44f64570093dd1583017ee1f67",
+   "sha256": "52054eab2016512c5d4711a47c8788c21f71a9122633fe0023968ce798cf78f3",
    "has": {
     "\"schema\":\"dori-theme-1-cal\"": true,
     "\"keepFrom\":\"2026-10-22\"": true,
@@ -156,8 +156,8 @@
    "path": "/next/p-theme.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 54219,
-   "sha256": "908fbc1ff9b24ac0b42694bea7b317abec42414f3289d4b60aecf77ae1bc0ea7",
+   "bytes": 60416,
+   "sha256": "b9e1f84c38b373327082a74472eb4404588a513e348656ca6e5831034c4d2b5a",
    "has": {
     "function pCal(": true,
     "싹 달력": true
@@ -168,8 +168,8 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 22443,
-   "sha256": "b6df523a19f087d3d5579cd41f4fd105898826570845a9fc0759f2599615d368",
+   "bytes": 25281,
+   "sha256": "aec644dd3b00aada08b05dac2c9b2b9ba032de00f4326c6be9ecea3a33a8cb6d",
    "has": {
     "'#/t/cal'": true,
     "날마다 찾은 세 곳 달력": true
@@ -181,7 +181,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 5550,
-   "sha256": "20495f0b69cae27ebc6345b0a4402dedf6890bbf589ecade9006c4888e4c383a",
+   "sha256": "c9f1dfc35203deec462785f2371670f7d148a8032630dd9028175f33b7a1d704",
    "has": {
     "\"record\"": true,
     "_rec": {
@@ -223,8 +223,8 @@
    "path": "/next/p-theme.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 18804,
-   "sha256": "4075af7427667a095260a1f509cee091dd1102f3f76ba3888029a8a671fc6ce9",
+   "bytes": 20285,
+   "sha256": "3325073d73397cd1d374dc0a4617d6de098c61c7d8c93f877f0ee4fb54ec63e0",
    "has": {
     ".th-calhow": true,
     "container-type: inline-size": true
@@ -235,8 +235,8 @@
    "path": "/next/app.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 65938,
-   "sha256": "35ba6ea1cf69e543c3a12eeff0c3fd21a70900b7285985700fa071a27984013e",
+   "bytes": 67683,
+   "sha256": "6f8e73bc7523d3422b46874b98ae3c58f56728dd1a7a1e61f24d06bd37e9dff9",
    "has": {
     "--sans: -apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", 'Pretendard Variable'": true,
     ".num { font-variant-numeric: tabular-nums; }": true
@@ -258,8 +258,8 @@
    "path": "/next/data/theme-bloom.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 2090,
-   "sha256": "822bda6cc189a61bdf1329a3ebef4e8fb2915795b40f72c1a3859bbfd98f78b7",
+   "bytes": 8291,
+   "sha256": "0348ec20e7b3df90ad97bc97891af447c0298a9791af0340df32feaa1d120dce",
    "has": {
     "\"schema\":\"dori-theme-1-bloom\"": true,
     "\"record\"": true,
@@ -316,8 +316,8 @@
    "path": "/next/p-theme.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 54219,
-   "sha256": "908fbc1ff9b24ac0b42694bea7b317abec42414f3289d4b60aecf77ae1bc0ea7",
+   "bytes": 60416,
+   "sha256": "b9e1f84c38b373327082a74472eb4404588a513e348656ca6e5831034c4d2b5a",
    "has": {
     "async function pPick(": true,
     "꽃 핀 업종 안의 싹 회사": true
@@ -328,8 +328,8 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 22443,
-   "sha256": "b6df523a19f087d3d5579cd41f4fd105898826570845a9fc0759f2599615d368",
+   "bytes": 25281,
+   "sha256": "aec644dd3b00aada08b05dac2c9b2b9ba032de00f4326c6be9ecea3a33a8cb6d",
    "has": {
     "'#/t/pick'": true
    },
