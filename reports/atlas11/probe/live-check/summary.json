@@ -1,5 +1,5 @@
 {
- "made": "2026-10-22T07:24:31.872Z",
+ "made": "2026-10-22T10:04:51.303Z",
  "base": "https://aaa7377.com",
  "files": [
   {
@@ -55,14 +55,14 @@
    "path": "/atlas/data/home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 6867,
-   "sha256": "940623cd3fadaa0d818fb6098e069bfa779a0998e27424e16c9a67b3686ad3e5",
+   "bytes": 6881,
+   "sha256": "5b6a0693c1aed24e5eae8742c46261bbd3b7143286f9031c9ba6ab68d55a3bb5",
    "has": {
     "\"rule\":\"home-v3\"": true,
     "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-22 15:21",
+     "kst": "2026-10-22 19:01",
      "alerts": []
     }
    },
@@ -72,8 +72,8 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 95630,
-   "sha256": "3f1e7ae67796e37c934df44a0f54ab3c0f384dc7ae8cadab9deeb688dedad39a",
+   "bytes": 95559,
+   "sha256": "7bf65484b37148e4454c0ae0463243542f4c808a5e3971c341ddf3be525b53ad",
    "has": {
     "home-v3": false
    },
@@ -101,8 +101,8 @@
    "path": "/hello.html",
    "status": 200,
    "type": "text/html; charset=UTF-8",
-   "bytes": 11140,
-   "sha256": "a778c0b251ee6130397552c05258ad80357cdaadb1bbc15bf0d6f7097aec9525",
+   "bytes": 11146,
+   "sha256": "00f04af6f769029b4e4fe31621c7316e31a17b5473f862b69cd07516542502f0",
    "has": {},
    "err": null
   },
@@ -110,8 +110,8 @@
    "path": "/next/data/theme-cal.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 10923,
-   "sha256": "b112854b2c569e19ea5145a48a8e9ac5a791655ee3308775bea0619161794034",
+   "bytes": 10917,
+   "sha256": "786702d7acf923d64d7343d948ce059965c22415dc1cf5fbb2afc9f3431d0809",
    "has": {
     "\"schema\":\"dori-theme-1-cal\"": true,
     "\"keepFrom\":\"2026-10-22\"": true,
@@ -120,29 +120,29 @@
      "days": 60,
      "kept": 0,
      "done": 40,
-     "hit1": 3,
+     "hit1": 2,
      "all3": 120,
-     "hit3": 14,
+     "hit3": 13,
      "last": {
       "d": "2026-10-22",
-      "s": 30,
+      "s": 32,
       "top": [
        {
         "n": "인터넷 플랫폼",
         "sc": 2,
-        "y": 6.1,
-        "hit": null
-       },
-       {
-        "n": "신약 개발",
-        "sc": 1,
-        "y": 4.8,
+        "y": 6.9,
         "hit": null
        },
        {
         "n": "자동차",
         "sc": 1,
-        "y": 4.7,
+        "y": 4.9,
+        "hit": null
+       },
+       {
+        "n": "방산",
+        "sc": 1,
+        "y": 4.3,
         "hit": null
        }
       ]
@@ -155,8 +155,8 @@
    "path": "/next/p-theme.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 45300,
-   "sha256": "dce33f8105087f960b0887736dec62353d74c370d4b891fd28531176b353e3cd",
+   "bytes": 54219,
+   "sha256": "908fbc1ff9b24ac0b42694bea7b317abec42414f3289d4b60aecf77ae1bc0ea7",
    "has": {
     "function pCal(": true,
     "싹 달력": true
@@ -167,8 +167,8 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 22112,
-   "sha256": "f4d2daab0facba83a31489ad8d04fbf584a59a190ab5670a7d81d1a00abe6eef",
+   "bytes": 22443,
+   "sha256": "b6df523a19f087d3d5579cd41f4fd105898826570845a9fc0759f2599615d368",
    "has": {
     "'#/t/cal'": true,
     "날마다 찾은 세 곳 달력": true
@@ -180,7 +180,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 5543,
-   "sha256": "f89a15180339c0f8c856bbf1c0471390a6bdbf79ba24a63adf893df1ccb4674e",
+   "sha256": "dfbfeed5edfc3a36186598a883db5fac8b0e35b76959e24cb75873cc7771a8a3",
    "has": {
     "\"record\"": true,
     "_rec": {
@@ -211,8 +211,8 @@
      },
      "top": [
       "인터넷 플랫폼",
-      "신약 개발",
-      "자동차"
+      "자동차",
+      "방산"
      ]
     }
    },
@@ -222,8 +222,8 @@
    "path": "/next/p-theme.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 16921,
-   "sha256": "89a096644066e9590c451c90da15b6a1d0c012723550a33724cc7428f1cd67b8",
+   "bytes": 18804,
+   "sha256": "4075af7427667a095260a1f509cee091dd1102f3f76ba3888029a8a671fc6ce9",
    "has": {
     ".th-calhow": true,
     "container-type: inline-size": true
@@ -250,6 +250,88 @@
    "sha256": "7b822c37da7a243cffc83e0d9b89be591b60389a4fe1735837f01f550516fd06",
    "has": {
     "font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard Variable'": true
+   },
+   "err": null
+  },
+  {
+   "path": "/next/data/theme-bloom.json",
+   "status": 200,
+   "type": "application/json",
+   "bytes": 2482,
+   "sha256": "60027eedf888ce157b7452596820bb0680a16e8dd30812bb6cd5f2e6bf6fb0bc",
+   "has": {
+    "\"schema\":\"dori-theme-1-bloom\"": true,
+    "\"record\"": true,
+    "_bloom": {
+     "asOf": "2026-10-22",
+     "provisional": true,
+     "today": 24,
+     "inds": [
+      "바이오 도구·서비스",
+      "방송",
+      "연예 기획사",
+      "콘텐츠 제작"
+     ],
+     "all": {
+      "n": 35717,
+      "base": 23.58,
+      "rate": 26.68,
+      "ex": 0.64,
+      "exBase": -0.44,
+      "fall": 35.49,
+      "fallBase": 36.02,
+      "baseN": 1688980,
+      "plain": 22.63,
+      "plainN": 446106
+     },
+     "train": {
+      "n": 15818,
+      "base": 22.51,
+      "rate": 25.67,
+      "ex": 0.83,
+      "exBase": -0.33,
+      "fall": 31.5,
+      "fallBase": 33.21,
+      "baseN": 816053,
+      "plain": 21.6,
+      "plainN": 227786
+     },
+     "test": {
+      "n": 19899,
+      "base": 24.58,
+      "rate": 27.49,
+      "ex": 0.48,
+      "exBase": -0.55,
+      "fall": 38.67,
+      "fallBase": 38.65,
+      "baseN": 872927,
+      "plain": 23.71,
+      "plainN": 218320
+     }
+    }
+   },
+   "err": null
+  },
+  {
+   "path": "/next/p-theme.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 54219,
+   "sha256": "908fbc1ff9b24ac0b42694bea7b317abec42414f3289d4b60aecf77ae1bc0ea7",
+   "has": {
+    "async function pPick(": true,
+    "꽃 핀 업종 안의 싹 회사": true
+   },
+   "err": null
+  },
+  {
+   "path": "/next/theme-home.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 22443,
+   "sha256": "b6df523a19f087d3d5579cd41f4fd105898826570845a9fc0759f2599615d368",
+   "has": {
+    "'#/t/pick'": true
    },
    "err": null
   }
