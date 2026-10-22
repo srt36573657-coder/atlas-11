@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-22",
- "fetchedAt": "2026-10-22T07:50:26Z",
- "file": "reports/atlas11/context/2026-10-22/2026-10-22T07-50-26Z.json",
+ "fetchedAt": "2026-10-22T10:14:20Z",
+ "file": "reports/atlas11/context/2026-10-22/2026-10-22T10-14-20Z.json",
  "summary": {
   "day": "2026-10-22",
-  "fetchedAt": "2026-10-22T07:50:26Z",
+  "fetchedAt": "2026-10-22T10:14:20Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-22",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7209,
-   "distinct": 7151,
-   "republished": 58,
+   "distinct": 7153,
+   "republished": 56,
    "sameArticle": 0,
-   "stocksWithTodayNews": 191,
-   "todayDistinct": 1248
+   "stocksWithTodayNews": 199,
+   "todayDistinct": 1362
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 775
+   "corporateActions": 781
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-22",
-     "value": 1321.9,
-     "changePct": -0.42
+     "value": 1322.5,
+     "changePct": -0.38
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 242,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,50 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-10-22",
-   "corporateActions": 775,
+   "corporateActions": 781,
    "recentActions": [
+    {
+     "code": "207940",
+     "title": "삼성바이오로직스(주) (정정)신주인수권증서 신규상장",
+     "publishedAt": "2026-10-22T18:44:56+09:00",
+     "word": "신주인수권"
+    },
+    {
+     "code": "011070",
+     "title": "엘지이노텍(주) 주식 소각 결정",
+     "publishedAt": "2026-10-22T17:18:10+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "005940",
+     "title": "엔에이치투자증권(주) 상장지수증권 상장폐지(N2 월간 레버리지 코스피 200 선물 ETN)",
+     "publishedAt": "2026-10-22T17:06:18+09:00",
+     "word": "상장폐지"
+    },
+    {
+     "code": "005940",
+     "title": "엔에이치투자증권(주) 상장지수증권 상장폐지(N2 월간 레버리지 선진국 1등주 ETN)",
+     "publishedAt": "2026-10-22T17:06:09+09:00",
+     "word": "상장폐지"
+    },
+    {
+     "code": "005940",
+     "title": "엔에이치투자증권(주) 상장지수증권 상장폐지(N2 월간 레버리지 방위산업 Top5 ETN)",
+     "publishedAt": "2026-10-22T17:06:01+09:00",
+     "word": "상장폐지"
+    },
+    {
+     "code": "005940",
+     "title": "엔에이치투자증권(주) 상장지수증권 상장폐지(N2 레버리지 코스닥150 선물 ETN)",
+     "publishedAt": "2026-10-22T17:05:55+09:00",
+     "word": "상장폐지"
+    },
+    {
+     "code": "005940",
+     "title": "엔에이치투자증권(주) 상장지수증권 상장폐지(N2 인버스 2X 코스닥150 선물 ETN)",
+     "publishedAt": "2026-10-22T17:05:47+09:00",
+     "word": "상장폐지"
+    },
     {
      "code": "093050",
      "title": "(주)LF 자기주식 취득 결정",
@@ -269,48 +311,6 @@
      "title": "삼성바이오로직스(주) 신주인수권증서 신규상장",
      "publishedAt": "2026-10-21T06:52:46+09:00",
      "word": "신주인수권"
-    },
-    {
-     "code": "378340",
-     "title": "주식회사 필에너지 주권매매거래정지(단일판매공급계약)",
-     "publishedAt": "2026-10-21T06:50:18+09:00",
-     "word": "매매거래정지"
-    },
-    {
-     "code": "055550",
-     "title": "(주)신한금융지주회사 (정정)주식 소각 결정",
-     "publishedAt": "2026-10-20T06:51:25+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "016360",
-     "title": "삼성증권(주) 상장지수증권 상장폐지(삼성 인버스 2X 나스닥 100 TR ETN)",
-     "publishedAt": "2026-10-20T06:50:48+09:00",
-     "word": "상장폐지"
-    },
-    {
-     "code": "016360",
-     "title": "삼성증권(주) 상장지수증권 상장폐지(삼성 레버리지 나스닥 100 TR ETN)",
-     "publishedAt": "2026-10-20T06:50:48+09:00",
-     "word": "상장폐지"
-    },
-    {
-     "code": "064350",
-     "title": "현대로템(주) 자기주식 취득 결정",
-     "publishedAt": "2026-10-19T06:51:53+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "247540",
-     "title": "(주)에코프로비엠 유상증자 또는 주식관련사채 등의 청약결과(자율공시)",
-     "publishedAt": "2026-10-19T06:50:58+09:00",
-     "word": "유상증자"
-    },
-    {
-     "code": "257720",
-     "title": "주식회사 실리콘투 자기주식취득 신탁계약 체결 결정",
-     "publishedAt": "2026-10-19T06:50:35+09:00",
-     "word": "자기주식"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-22",
-     "value": 1321.9,
+     "value": 1322.5,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
