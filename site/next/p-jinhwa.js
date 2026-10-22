@@ -9,6 +9,7 @@
    「○시」 = 진화 회차(업데이트 30분 전)가 회차마다 하나만 넣는 차례(되돌리기 먼저 · 그다음 확인 · 이른 때부터 — scripts/atlas11/jinhwa/lib.mjs planRound)를 흉내 낸 셈 — slotPlan
    회차가 쓴 글(이름 · 섬기는 본질 · 세 사람 · 어림 · 고장 · 채점 까닭)은 한국어 그대로(lang="ko") · 글은 textContent 로만(보안 규칙) · 노드에서도 불러 시험(맨 위에서 NX 를 안 읽음) · 이름은 brand.js 한 곳 */
 import {NAME, BRAND, josa} from './brand.js';
+import {ON as EN} from './i18n.js'; // 영어 화면이면 본질 줄 위에 영어 한 줄(총정리 D24 · 노드에서 부르면 한국어 = false)
 const OWNER = 'atlas11:invite:owner', DAYS = 14, MIN_SAMPLE = 30; // MIN_SAMPLE = config/atlas11/jinhwa-metrics.v1.json judge.minSample
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -280,9 +281,13 @@ export async function render(arg) {
   C.plan = slotPlan(items, Date.now(), sets);
   const root = h('div', {class: 'jh', 'data-page': 'jinhwa'});
   const ess = txt(J?.essence) ?? '?';
-  root.append(h('h1', {class: 'jh-h1', text: `${NAME} 진화`}), h('p', {class: 'jh-ess', lang: 'ko', text: ess}));
+  root.append(h('h1', {class: 'jh-h1', text: `${NAME} 진화`}),
+    ...(EN ? [h('p', {class: 'jh-ess-en', text: '테마가 될 듯한 곳을 찾아 줘요.'})] : []), // 영어 화면 — 본질 1을 사전에 이미 있는 영어 한 줄로(아래 한국어 본질 줄은 글자 그대로 · 총정리 D24)
+    h('p', {class: 'jh-ess', lang: 'ko', text: ess}));
   const head = h('div', {class: 'jh-head'}, h('p', {class: 'jh-n', text: `진화 ${n ?? '?'}번째`}));
   root.append(head);
+  /* 결 — 이 쪽이 무엇을 세는지 한 줄 고리(총정리 2026-10-22 D21) · 그 밖 바뀐 것은 업데이트 기록 · 사장님 열쇠 기기는 확인 · 되돌리기 단추가 첫 화면에 들어야 해서 안 그림(check_jinhwa 360 × 640) */
+  if (!owner) root.append(h('a', {class: 'jh-what', href: '#/up', text: `${josa(NAME, '를')} 만든 사람이 확인한 나아짐만 세요 · 다른 바뀐 것은 업데이트 기록 ›`}));
   if (!J) root.append(h('p', {class: 'note jh-q', text: '? 진화 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
   else if (!cards.length) root.append(h('p', {class: 'note jh-empty', text: '아직 진화한 것이 없어요. 위 한 줄을 잣대로 천천히 고쳐 가요.'}));
   else {

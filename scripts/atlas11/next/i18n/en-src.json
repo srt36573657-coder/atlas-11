@@ -9059,6 +9059,7 @@
   "이 쪽은 고른 곳을 어떻게 셌는지 적은 곳이에요. 지난 기록만 써요.": "This page shows how the picks were counted. It uses past records only.",
   "요즘 바뀐 것": "Recent changes",
   "? 바뀐 것 기록을 받지 못했어요": "? Couldn't load the change log",
-  "아직 바뀐 것 기록이 없어요.": "No changes recorded yet."
+  "아직 바뀐 것 기록이 없어요.": "No changes recorded yet.",
+  "{e}를 만든 사람이 확인한 나아짐만 세요 · 다른 바뀐 것은 업데이트 기록 ›": "Counts only improvements checked by {e}'s maker · other changes are in the update log ›"
  }
 }
