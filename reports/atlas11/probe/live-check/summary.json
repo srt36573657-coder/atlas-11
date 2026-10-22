@@ -1,15 +1,15 @@
 {
- "made": "2026-10-12T17:23:43.095Z",
+ "made": "2026-10-22T03:52:00.542Z",
  "base": "https://aaa7377.com",
  "files": [
   {
    "path": "/",
    "status": 200,
    "type": "text/html; charset=UTF-8",
-   "bytes": 4893,
-   "sha256": "df7f7a362ef009c9a3c25b44fc44b0f09a1a8ae1040282e4e67b8fca9bdd34b5",
+   "bytes": 6500,
+   "sha256": "7d1a3d88d8186bc48ffd64c086dd2cf60649a70c163fb28066ddd7c8e2a51166",
    "has": {
-    "atlas.js": true
+    "atlas.js": false
    },
    "err": null
   },
@@ -17,8 +17,8 @@
    "path": "/atlas/",
    "status": 200,
    "type": "text/html; charset=UTF-8",
-   "bytes": 4893,
-   "sha256": "df7f7a362ef009c9a3c25b44fc44b0f09a1a8ae1040282e4e67b8fca9bdd34b5",
+   "bytes": 6300,
+   "sha256": "deb7adc10f1ea0b50708334abb34b444dd98745bc2cddb78a27a1f5da1da419a",
    "has": {
     "atlas.js": true
    },
@@ -28,14 +28,14 @@
    "path": "/atlas/atlas.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 189097,
-   "sha256": "e7cba9a9a7a1266cea6d4b7b0a323cdab80e99888f2ac18d0a7e37a8c4c5c190",
+   "bytes": 313505,
+   "sha256": "b4f6b83245779c064062b848aea22f4f5fa6d33ed1c2c2ed97b71320f718ea6d",
    "has": {
     "function gauge(": true,
-    "function homeToday(": true,
+    "function homeToday(": false,
     "평소와 견줌": true,
     "평소의 2.5배 넘게": true,
-    "class: 'hstep'": true
+    "class: 'hstep'": false
    },
    "err": null
   },
@@ -43,8 +43,8 @@
    "path": "/atlas/atlas.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 74921,
-   "sha256": "2e2656a7a8694548556c3b361c2650682e647e32f3570b9df5af2e3c6ba37347",
+   "bytes": 173225,
+   "sha256": "896eaa8a5e532ee63ed9d40c875981bd53f411cd4a5e0ee41c5364f53b609c86",
    "has": {
     ".gauge": true,
     ".hstep": true
@@ -55,19 +55,15 @@
    "path": "/atlas/data/home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 12184,
-   "sha256": "f7a66a1763a690d6e7bcc1dee26bafdcbf08c5150c90081a89090182738fdfe2",
+   "bytes": 6873,
+   "sha256": "3adbd05820b241abb4157c6866befe5ff8d8df6b7dc03cf0ae6f693efefbbb43",
    "has": {
     "\"rule\":\"home-v3\"": true,
-    "\"why\":": true,
+    "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-13 02:13",
-     "alerts": [
-      "idx:KOSPI:usual",
-      "idx:KOSDAQ:usual",
-      "flow:KOSPI:-"
-     ]
+     "kst": "2026-10-22 12:48",
+     "alerts": []
     }
    },
    "err": null
@@ -76,19 +72,28 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 59197,
-   "sha256": "eb3494a642ef6378d0fa35fcfaf8272d5bcc7d61736ed242c389904f27ba5589",
+   "bytes": 95655,
+   "sha256": "8d243f8e7f1e18c806bd6f9347fefe7076ee0212fc86f0b80d9b570f5396f925",
    "has": {
-    "home-v3": true
+    "home-v3": false
    },
    "err": null
   },
   {
-   "path": "/media/atlas-hello-wide.jpg",
+   "path": "/media/makbi-hello.svg",
    "status": 200,
-   "type": "image/jpeg",
-   "bytes": 39328,
-   "sha256": "8b44f952528b66ac558c613f8725bc2886e1b824e3a645a0a93174102b84b532",
+   "type": "image/svg+xml",
+   "bytes": 8228,
+   "sha256": "4296e8edb5c79ce9ea40173ec775f6ff59b194db5267c740a1649ec4cb37f473",
+   "has": {},
+   "err": null
+  },
+  {
+   "path": "/media/makbi-moon.svg",
+   "status": 200,
+   "type": "image/svg+xml",
+   "bytes": 3391,
+   "sha256": "23efff975283a4f0d7f846700e63c874123bf23e6b457192c6655a46a6c0350f",
    "has": {},
    "err": null
   },
@@ -96,9 +101,78 @@
    "path": "/hello.html",
    "status": 200,
    "type": "text/html; charset=UTF-8",
-   "bytes": 3005,
-   "sha256": "65795fc6d7ea0528913fbb919aaf9107318b7be9e38697d74b63ffc593e233ad",
+   "bytes": 11140,
+   "sha256": "a778c0b251ee6130397552c05258ad80357cdaadb1bbc15bf0d6f7097aec9525",
    "has": {},
+   "err": null
+  },
+  {
+   "path": "/next/data/theme-cal.json",
+   "status": 200,
+   "type": "application/json",
+   "bytes": 10935,
+   "sha256": "4f75ff343206fb07ef9a7547219acf501f6790215af0c656db5de684ad38295d",
+   "has": {
+    "\"schema\":\"dori-theme-1-cal\"": true,
+    "\"keepFrom\":\"2026-10-22\"": true,
+    "_cal": {
+     "asOf": "2026-10-22",
+     "days": 60,
+     "kept": 0,
+     "done": 40,
+     "hit1": 3,
+     "all3": 120,
+     "hit3": 14,
+     "last": {
+      "d": "2026-10-22",
+      "s": 29,
+      "top": [
+       {
+        "n": "인터넷 플랫폼",
+        "sc": 2,
+        "y": 6.2,
+        "hit": null
+       },
+       {
+        "n": "신약 개발",
+        "sc": 1,
+        "y": 5.3,
+        "hit": null
+       },
+       {
+        "n": "방산",
+        "sc": 1,
+        "y": 4.6,
+        "hit": null
+       }
+      ]
+     }
+    }
+   },
+   "err": null
+  },
+  {
+   "path": "/next/p-theme.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 44779,
+   "sha256": "7c9eeab8501ded976fce2336c841db58f9c47ee341e5a4c7a13861efcc29bc04",
+   "has": {
+    "function pCal(": true,
+    "싹 달력": true
+   },
+   "err": null
+  },
+  {
+   "path": "/next/theme-home.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 22112,
+   "sha256": "f4d2daab0facba83a31489ad8d04fbf584a59a190ab5670a7d81d1a00abe6eef",
+   "has": {
+    "'#/t/cal'": true,
+    "날마다 찾은 세 곳 달력": true
+   },
    "err": null
   }
  ]
