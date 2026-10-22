@@ -230,7 +230,7 @@ jobs:
         run: |
           mkdir -p out oldsnap
           # 브라우저 — 맨 처음 뒤에서 받기 시작한 것이 끝나기를 기다림(5분까지) · 못 받았으면 이 작업은 실패(쪽 결과 없음 → 모으기가 99 로 적음)
-          for i in $(seq 1 300); do [ -s /tmp/pw/.done ] && break; sleep 1; done
+          for i in $(seq 1 900); do [ -s /tmp/pw/.done ] && break; sleep 1; done # 15분까지(2026-10-22 20:48 ~ 21:26 세 번 연달아 작업 몇 개가 5분 안에 브라우저를 못 받아 결과 없이 끝남 — 코드와 무관)
           if [ "$(cat /tmp/pw/.done 2>/dev/null)" != 0 ]; then echo "브라우저 준비 실패($(cat /tmp/pw/.done 2>/dev/null || echo 시간 넘음))"; tail -c 3000 /tmp/pw.log; exit 1; fi
           snap0=$(cat oldsnap/*.json 2>/dev/null | sha256sum | cut -c1-16)
           # 쪽마다 시간 끝 — 작업 시간(75분) 안에서 남은 만큼만(60분 뒤 끝) · 넘기면 그 쪽만 끊고(124) 끝 글을 남김 · 시간이 모자라면 뒤 쪽은 97
