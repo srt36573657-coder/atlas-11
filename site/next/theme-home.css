@@ -2,23 +2,23 @@
 .th-home { margin: 0; padding: 0; }
 .th-map { margin: 0 0 var(--sp-2); padding: var(--sp-2) var(--sp-2) var(--sp-1); border: 1px solid var(--hair); border-radius: 20px; background: var(--card); } /* 애플 무리 목록 — 맑은 연초록 바탕 위 흰 칸(2026-10-23 00:11) */
 .th-clock { display: block; width: 100%; height: auto; }
-.th-clock .th-sz { fill: rgba(0, 112, 42, .10); }
-.th-clock .th-ax { stroke: #C9DCCF; stroke-width: 1; }
+.th-clock .th-sz { fill: rgba(0, 122, 53, .10); }
+.th-clock .th-ax { stroke: #DDDDDD; stroke-width: 1; }
 .th-clock .th-bl { stroke: var(--up); stroke-width: 2; stroke-dasharray: 4 4; }
-.th-clock .th-turn { fill: none; stroke: #5E7F6C; stroke-width: 2; }
-.th-clock .th-arw { fill: #5E7F6C; }
+.th-clock .th-turn { fill: none; stroke: #111111; stroke-width: 2; }
+.th-clock .th-arw { fill: #111111; }
 .th-clock .th-tail { fill: none; stroke: #000000; stroke-width: 2; opacity: .5; } /* 지나온 길 = 행성이 지나온 궤도처럼 흰 선(2026-10-20 22:17 「주황색으로만」) */
-.th-clock .th-dot { fill: #222222; stroke: #E6F5EB; stroke-width: 1.5; }
+.th-clock .th-dot { fill: #222222; stroke: #FFFFFF; stroke-width: 1.5; }
 .th-clock .th-dot.on { fill: var(--up); }
-.th-clock .th-nb { fill: var(--up); stroke: #E6F5EB; stroke-width: 2; }
-.th-clock .th-nbt { fill: #E6F5EB; font-size: var(--fs-1); font-weight: 700; }
+.th-clock .th-nb { fill: var(--up); stroke: #FFFFFF; stroke-width: 2; }
+.th-clock .th-nbt { fill: #FFFFFF; font-size: var(--fs-1); font-weight: 700; }
 /* 첫 화면 시계 누르는 곳(번호 셋 · 싹 칸 — 2026-10-20 07:08 「응」) — 누르는 자리는 투명 · 키보드로 오면 금빛 테 */
 .th-clock .th-tap { cursor: pointer; -webkit-tap-highlight-color: transparent; outline: none; }
 .th-clock .th-hit { fill: transparent; stroke: none; }
 .th-clock .th-tap:focus-visible .th-hit { stroke: var(--gold); stroke-width: 3; }
 .th-clock .th-tapn:active .th-nb { fill: var(--gold); }
 .th-clock .th-lb { fill: var(--ink); font-size: var(--fs-1); }
-.th-clock .th-lb, .th-clock .th-zl, .th-clock .th-bt { paint-order: stroke; stroke: #E6F5EB; stroke-width: 4px; stroke-linejoin: round; } /* 점 · 꽃 선 위에서도 글이 읽히게(새 눈 검사 11) */
+.th-clock .th-lb, .th-clock .th-zl, .th-clock .th-bt { paint-order: stroke; stroke: #FFFFFF; stroke-width: 4px; stroke-linejoin: round; } /* 점 · 꽃 선 위에서도 글이 읽히게(새 눈 검사 11) */
 .th-clock .th-zl { fill: var(--ink); font-size: var(--fs-2); font-weight: 700; }
 .th-clock .th-zl.th-zs, .th-clock .th-bt { fill: var(--up); }
 .th-clock .th-zl.th-zq { fill: #222222; }
@@ -30,7 +30,7 @@
 .th-ans em.dn { color: var(--down); } .th-ans em.fl { color: var(--flat); }
 /* 「숫자로 자세히 보기」 안 숫자 줄 — 한 줄에 하나(이름 · 주황 수 · ›) · 누르면 그 목록(2026-10-20 09:46) · 2026-10-22 총정리(감사 A7): 테 두른 작은 네모 셋(지도 규칙 11) → 줄 */
 .th-three { display: block; margin: 0 0 var(--sp-1); }
-.th-three a { display: flex; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-2); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.th-three a { display: flex; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #DDDDDD; color: var(--ink); font-size: var(--fs-2); text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .th-three a span { flex: 1; min-width: 0; }
 .th-three a i { flex: none; color: #111111; font-style: normal; font-size: var(--fs-3); text-align: right; }
 .th-three a:active { background: #FFFFFF; }
@@ -39,15 +39,15 @@
 .th-three b { flex: none; color: var(--up); font-size: var(--fs-3); font-weight: 700; text-align: right; }
 .th-sub { margin: 0 0 var(--sp-2); color: #111111; font-size: var(--fs-2); line-height: 1.5; word-break: keep-all; }
 .th-rows { margin: 0 0 var(--sp-1); }
-.th-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 80px; border-bottom: 1px solid #C9DCCF; color: var(--ink); text-decoration: none; }
+.th-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 80px; border-bottom: 1px solid #DDDDDD; color: var(--ink); text-decoration: none; }
 html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 48(app.css)보다 앞 — 줄 높이 80 그대로(새 눈 검사 2026-10-19 22시) */
-.th-n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #C9DCCF; color: var(--ink); font-size: var(--fs-1); font-weight: 700; text-align: center; }
-.th-n.th-top { background: var(--up-bg); color: #000000; }
+.th-n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #DDDDDD; color: var(--ink); font-size: var(--fs-1); font-weight: 700; text-align: center; }
+.th-n.th-top { background: #FFD200; color: #000000; } /* 순위 동그라미 = 방스 성당 유리의 해 노랑(마티스 판 2026-10-23 00:38) */
 .th-mid2 { display: flex; flex: 1; flex-direction: column; gap: 0; min-width: 0; }
 .th-rn { overflow: hidden; font-size: var(--fs-4); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
 html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-break: keep-all; overflow-wrap: anywhere; line-height: 1.3; } /* 글씨 「크게 · 아주 크게」에서는 첫 화면 업종 이름을 두 줄로(이름이 「…」로 잘려 큰 글씨가 필요한 사람만 못 보던 것 · 2026-10-22 총정리 · 감사 A8) — 보통 글씨는 한 줄 그대로(320 그림 높이) */
 .th-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-width: 0; color: #111111; font-size: var(--fs-1); line-height: 1.6; } /* 줄은 늘 셋 — 이름 · 며칠째 · 「꽃까지 ▬」(폭 · 글꼴 · 말이 바뀌어도 줄 높이가 같게 · 알약이 홀로 들여 쓰이지 않게 · 새 눈 검사 2026-10-19 22시) */
-.th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #5E7F6C; border-radius: 8px; color: var(--ink); font-style: normal; line-height: 1.5; text-align: center; white-space: nowrap; } /* 알약 테 왼쪽 = 이름 글 시작([10] 7 · 알약 안 글은 가운데) */
+.th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #111111; border-radius: 8px; color: var(--ink); font-style: normal; line-height: 1.5; text-align: center; white-space: nowrap; } /* 알약 테 왼쪽 = 이름 글 시작([10] 7 · 알약 안 글은 가운데) */
 .th-tg.new { border-color: var(--up); color: var(--ink); }
 .th-bar { flex: none; width: 64px; height: 8px; } /* 막대 길이는 줄마다 같게(채운 비율을 견주게 · 새 눈 검사 11) */
 .th-to { display: flex; flex-basis: 100%; align-items: center; gap: var(--sp-1); min-width: 0; } /* 「꽃까지 ▬」 제 줄 — 글 시작 = 이름과 같은 자리([10] 7) */
@@ -59,15 +59,15 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-nm { margin: 0; padding: var(--sp-1) 0; color: #111111; font-size: var(--fs-1); line-height: 1.5; }
 .th-hi { display: flex; align-items: center; justify-content: center; min-height: 48px; color: #111111; font-size: var(--fs-1); text-align: center; text-decoration: underline; } /* 돌이 인사(1장)로 — 가운데 한 줄 */
 .th-to .th-bar { flex: 0 1 64px; min-width: 32px; width: auto; } /* 늘 64 · 아주 좁고 큰 글씨 영어일 때만 줄마다 똑같이 줄어듦(이름표가 같은 말이라 막대 길이는 줄마다 같음) */
-.th-bar .th-bar0, .th-rbar .th-bar0 { fill: #C9DCCF; }
+.th-bar .th-bar0, .th-rbar .th-bar0 { fill: #DDDDDD; }
 .th-bar .th-bar1, .th-rbar .th-bar1 { fill: var(--up); }
 .th-dots { flex: none; }
 .th-dots .th-d { fill: none; stroke: var(--up); stroke-width: 2; }
 .th-dots .th-d.on { fill: var(--up); }
 .th-go { flex: none; color: #111111; font-style: normal; font-size: var(--fs-3); text-align: right; } /* 오른쪽 끝 표시(글 시작 왼쪽 줄 셈 밖 · [10] 7) */
-.th-more { display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
+.th-more { display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #DDDDDD; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
 .th-more i { font-style: normal; text-align: right; }
-.th-rec { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0 var(--sp-1); padding: var(--sp-2); border: 1px dashed #5E7F6C; border-radius: 16px; color: #111111; font-size: var(--fs-1); line-height: 1.5; }
+.th-rec { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0 var(--sp-1); padding: var(--sp-2); border: 1px dashed #111111; border-radius: 16px; color: #111111; font-size: var(--fs-1); line-height: 1.5; }
 .th-rec span:first-child { color: var(--ink); font-weight: 700; }
 .th-next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-3) 0 var(--sp-1); padding: 0 var(--sp-2); border: 1px solid #FFFFFF; border-radius: 32px; background: #000000; color: #FFFFFF; text-decoration: none; } /* 글 시작 = 테 1 + 16 = 말풍선 · 상자와 같은 자리([10] 7) */
 .th-nx { display: flex; flex-direction: column; gap: 0; min-width: 0; }
@@ -86,11 +86,11 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-lt { margin: 0; color: var(--ink); font-size: var(--fs-3); font-weight: 700; line-height: 1.4; text-wrap: balance; }
 .th-lc { margin: 0; color: #111111; font-size: var(--fs-1); text-align: right; } /* 숫자 알약의 뜻(오른쪽 맞춤 — 글 시작 왼쪽 줄 셈 밖 · [10] 7) */
 .th-map .th-rows { margin: 0; }
-#view .th-map a.th-row.th-row2, html.white #view .th-map a[href].th-row.th-row2 { min-height: 48px; padding: 0 0 0 var(--sp-1); border-left: 4px solid transparent; border-bottom-color: #C9DCCF; } /* 48 = 누름 칸 바닥(흰 판) — 작은 휴대폰 320 × 568 에서도 줄 그림이 한 화면 안(check_white ①) */
+#view .th-map a.th-row.th-row2, html.white #view .th-map a[href].th-row.th-row2 { min-height: 48px; padding: 0 0 0 var(--sp-1); border-left: 4px solid transparent; border-bottom-color: #DDDDDD; } /* 48 = 누름 칸 바닥(흰 판) — 작은 휴대폰 320 × 568 에서도 줄 그림이 한 화면 안(check_white ①) */
 .th-map.th-map2 { padding-top: var(--sp-1); } .th-map2 .th-yr { margin-top: 0; }
 #view .th-map a.th-row.th-row2.th-now, html.white #view .th-map a[href].th-row.th-row2.th-now { border-left-color: var(--up); } /* 지금 줄 그림의 업종 — 왼쪽 테 색만(크기 그대로 · 밀림 0 · 바탕은 그대로 — 흰 판 단추 테두리 잣대) */
-.th-pill { flex: none; min-width: 72px; padding: 0 var(--sp-1); border-radius: 8px; background: var(--up-bg); color: #000000; font-size: var(--fs-2); font-weight: 700; line-height: 32px; text-align: center; font-variant-numeric: tabular-nums; }
-.th-pill.th-pdn { background: var(--down-bg); } /* 이름을 .up · .dn 과 따로(app.css 글 색 규칙이 알약 글을 바탕색으로 덮음) */
+.th-pill { flex: none; min-width: 72px; padding: 0 var(--sp-1); border-radius: 8px; background: var(--up-bg); color: #FFFFFF; font-size: var(--fs-2); font-weight: 700; line-height: 32px; text-align: center; font-variant-numeric: tabular-nums; }
+.th-pill.th-pdn { background: var(--down-bg); color: #FFFFFF; } /* 이름을 .up · .dn 과 따로(app.css 글 색 규칙이 알약 글을 바탕색으로 덮음) */
 .th-yr { display: block; width: 100%; margin: var(--sp-1) 0 0; padding: 0; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .th-yr:disabled { cursor: default; }
 .th-yrg { display: block; width: 100%; height: auto; overflow: hidden; }
@@ -101,7 +101,7 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 /* 첫 화면 줄 한 줄(번호 · 이름 · 행성 · ›) — 글 시작 = 번호 옆(예전 줄과 같은 자리 · [10] 7) · 행성은 오른쪽 끝 표시 쪽 */
 #view a.th-row.th-row2, html.white #view a[href].th-row.th-row2 { min-height: 56px; }
 /* 숫자로 자세히 보기(접는 칸) — 펼치면 진짜 싹 머리 · 주황 숫자 셋 · 점 넷 · 성적표 */
-.th-hfold { margin: var(--sp-1) 0 0; border-bottom: 1px solid #C9DCCF; }
+.th-hfold { margin: var(--sp-1) 0 0; border-bottom: 1px solid #DDDDDD; }
 .th-hfold > summary { display: flex; align-items: center; justify-content: space-between; min-height: 56px; color: var(--ink); font-size: var(--fs-2); cursor: pointer; list-style: none; }
 .th-hfold > summary::-webkit-details-marker { display: none; }
 .th-hfold > summary::after { content: "›"; color: #111111; font-size: var(--fs-3); transition: transform .15s; }
@@ -114,7 +114,7 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-pkhl { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-2); line-height: 1.45; }
 .th-pkhl span + span { color: #111111; }
 .th-pkhl .th-pkhk { color: var(--ink); font-weight: 700; }
-.th-pkhgo { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: var(--fs-2); color: var(--ink); border-top: 1px solid #C9DCCF; }
+.th-pkhgo { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: var(--fs-2); color: var(--ink); border-top: 1px solid #DDDDDD; }
 .th-pkhgo i { font-style: normal; }
 
 .th-pkhs { display: block; width: 100%; height: auto; max-width: 340px; padding: 4px 0; } /* 날마다 작은 네모(svg) — 주황 = 같은 날 아무 회사보다 많이 핀 날 · 파랑 = 적게 · 테만 = 아직 한 달이 안 됨 */

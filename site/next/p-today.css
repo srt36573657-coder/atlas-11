@@ -76,7 +76,7 @@ details.ptoday-how > summary { color: var(--sub); font-size: var(--fs-1); }
 .ptoday-bar { display: flex; height: 16px; }
 .ptoday-bar i { display: block; height: 100%; transform-origin: left center; } .ptoday-bar i + i { border-left: 2px solid var(--card); }
 .ptoday-bar i:first-child { border-radius: 4px 0 0 4px; } .ptoday-bar i:last-child { border-radius: 0 4px 4px 0; }
-.ptoday-bar .ptoday-bu { background: var(--up-bg); } .ptoday-bar .ptoday-bf { background: #6F7782; } .ptoday-bar .ptoday-bd { background: var(--down-bg); }
+.ptoday-bar .ptoday-bu { background: var(--up-bg); color: #FFFFFF; } .ptoday-bar .ptoday-bf { background: #6F7782; } .ptoday-bar .ptoday-bd { background: var(--down-bg); color: #FFFFFF; }
 .ptoday-bl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--sp-2) 0 0; } /* 세 칸(가운데 맞춤) · 좁은 휴대폰 · 큰 글씨는 한 줄씩(아래) */
 .ptoday-bl > span { min-width: 0; padding: 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); text-align: center; white-space: nowrap; }
 .ptoday-bl > span + span { border-left: 1px solid var(--card3); }

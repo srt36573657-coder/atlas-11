@@ -99,14 +99,14 @@ i.play::after { content: ""; position: absolute; left: 21px; top: 15px; border-l
 .meta b { display: block; font-size: var(--fs-2); line-height: 1.4; }
 .meta small { display: block; font-size: var(--fs-1); color: var(--sub); }
 .meta .half { display: block; font-size: var(--fs-1); line-height: 1.4; color: var(--gold); } /* 급등 카드 숫자 옆 반값 한 줄([6] 6 · 조심 = 금빛) */
-.av { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #F2F8F4; color: var(--gold); display: inline-flex; align-items: center; justify-content: center; text-align: center; font-weight: 800; font-size: var(--fs-1); }
+.av { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #F7F7F7; color: var(--gold); display: inline-flex; align-items: center; justify-content: center; text-align: center; font-weight: 800; font-size: var(--fs-1); }
 .av.lg { width: 60px; height: 60px; font-size: var(--fs-4); }
 .av.on { box-shadow: 0 0 0 3px var(--gold); }
 
 /* 쇼츠 선반 */
 .shelf { display: flex; gap: 8px; padding: 0 16px 18px; overflow-x: auto; scrollbar-width: none; }
 .shelf::-webkit-scrollbar { display: none; }
-.st { flex: none; width: 31%; min-width: 108px; aspect-ratio: 9 / 15; border-radius: 12px; border: 1px solid var(--hair); background: linear-gradient(180deg, #F2F8F4, #0F1014); padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; }
+.st { flex: none; width: 31%; min-width: 108px; aspect-ratio: 9 / 15; border-radius: 12px; border: 1px solid var(--hair); background: linear-gradient(180deg, #F7F7F7, #0F1014); padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; }
 .st b { font-size: var(--fs-3); line-height: 1.2; }
 .st small { font-size: 17px; color: var(--sub); line-height: 1.3; margin-top: 8px; }
 
@@ -149,7 +149,7 @@ html.white.home #view:has(.w-chain:not([hidden])) .s-thumb { position: static; }
 /* 보는 화면 */
 .player { position: relative; aspect-ratio: 16 / 9; background: #050608; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .player .ln { position: absolute; left: 3%; top: 10%; width: 94%; height: 68%; overflow: visible; }
-.player .scrub { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: #DDEFE3; }
+.player .scrub { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: #EEEEEE; }
 .player .scrub b { position: absolute; left: 0; top: 0; bottom: 0; background: var(--sub); width: 100%; } /* 빨강은 오른 숫자에만(총정리 C10 — 내린 회사 위 빨간 띠였음) · 오름 · 내림 뜻은 선 색이 맡음 */
 .player .tip { position: absolute; left: 8px; bottom: 16px; font-size: var(--fs-1); background: rgba(0, 0, 0, .7); padding: 0 var(--sp-1); border-radius: 8px; }
 .player .cur { position: absolute; top: 6%; bottom: 8%; width: 2px; background: rgba(255, 255, 255, .55); display: none; }
@@ -221,13 +221,13 @@ a.more { display: flex; align-items: center; justify-content: center; text-align
 .sh .side { display: flex; gap: var(--sp-1); margin-top: var(--sp-2); }
 .sh .side a, .sh .side button { flex: 1; min-height: 48px; padding: 0 var(--sp-2); border-radius: 999px; background: var(--card2); font-size: var(--fs-1); display: flex; align-items: center; justify-content: center; text-align: center; }
 .sbar { position: sticky; top: 0; z-index: 2; display: flex; gap: var(--sp-1); padding: var(--sp-1) var(--sp-2); background: linear-gradient(var(--bg), rgba(12, 14, 18, 0)); }
-.sbar i { flex: 1; height: 4px; border-radius: 2px; background: #DDEFE3; }
+.sbar i { flex: 1; height: 4px; border-radius: 2px; background: #EEEEEE; }
 .sbar i.on { background: var(--ink); }
 .hint { text-align: center; color: var(--sub); font-size: var(--fs-1); margin: var(--sp-2) 0 0; }
 .sh > :first-child { margin-top: auto; } .sh > :last-child { margin-bottom: auto; } /* 남는 자리만 위아래로 나눔(가운데) · 넘치면 0 → 첫 줄(날짜)이 늘 칸 안 — 총정리 C20 */
 
 /* 채널 */
-.banner { height: 96px; background: linear-gradient(135deg, #F2F8F4, #101218); position: relative; }
+.banner { height: 96px; background: linear-gradient(135deg, #F7F7F7, #101218); position: relative; }
 .banner .ln { position: absolute; left: 0; top: 14%; width: 100%; height: 80%; }
 .chhead { display: flex; gap: var(--sp-2); align-items: center; justify-content: space-between; padding: 0 var(--sp-2); margin-top: var(--sp-2); position: relative; } /* 음수 겹침 없음([10] 8) — 띠 96px 아래에 놓음 · 글이 왼쪽 · 동그라미는 오른쪽 끝([10] 7) */
 .chhead > div { min-width: 0; }
@@ -283,7 +283,7 @@ details.sub-big { margin: var(--sp-1) 0 0; } /* 빈 관심 — 큰 업종 열은
 .hits a.xo { flex-wrap: wrap; row-gap: 0; padding-top: var(--sp-1); padding-bottom: var(--sp-1); } .hits a.xo .nm { overflow-wrap: anywhere; } .hits a.xo small { white-space: normal; } /* 펀드 · 증권 이름은 길어 둘째 줄로 */
 html.f2 .hits a, html.f3 .hits a { flex-wrap: wrap; row-gap: 0; padding-top: var(--sp-1); padding-bottom: var(--sp-1); } html.f2 .hits small, html.f3 .hits small { white-space: normal; } /* 큰 글씨 — 이름 다음 줄로 설명(넘치지 않게) */
 .prem { display: flex; gap: var(--sp-2); padding: var(--sp-1) var(--sp-2) var(--sp-2); align-items: center; } /* 편지 여는 밤(첫 화면 「더 보기」 · [10] 5 · 8) */
-.prem .pth { flex: none; width: 46%; aspect-ratio: 16 / 9; border-radius: 14px; border: 2px solid var(--gold); background: linear-gradient(160deg, #F2F8F4, #FFFFFF); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.prem .pth { flex: none; width: 46%; aspect-ratio: 16 / 9; border-radius: 14px; border: 2px solid var(--gold); background: linear-gradient(160deg, #F7F7F7, #FFFFFF); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 .prem .pth b { color: var(--gold); font-size: var(--fs-2); }
 .prem .pth small { font-size: var(--fs-1); color: var(--sub); }
 .prem b { display: block; font-size: var(--fs-2); }
@@ -475,26 +475,27 @@ a.ess-v { display: flex; align-items: center; min-height: 44px; padding: 0 var(-
    단추 · 칸 테두리 = --hair2 #6B717C(흰 바탕 위 4.9) · 위 · 아래 막대 줄 = --line #8E949E(3.0) · 목록 사이 줄 --hair #8E949E(3.0 · 시안 잣대 예) · 칸 안 꾸밈(눈금 · 진행 막대 바탕 · 달)만 --hair-soft #D9DCE1
    단추 바탕은 흰색(둘레와 같음 — 모양은 테두리가 보임) 또는 먹(흰 글) · 그림자 · 그러데이션 · 입체 없음 · 글 17px 아래 없음 · 누르는 것 48 × 48 넘게 */
 html.white {
-  /* 애플 방식 밝은 판(사장님 2026-10-23 00:11 「자 너가 이플 디자인너야 알겠지 학습해서 해봐」 — 애플 화면 잣대 원문을 읽고 짬:
-       색 https://developer.apple.com/design/human-interface-guidelines/color · 읽기 쉬움 https://developer.apple.com/design/human-interface-guidelines/accessibility · 글꼴 https://developer.apple.com/design/human-interface-guidelines/typography)
-     ① 바탕은 한 겹 · 칸은 흰 면(애플 「무리 바탕」 위 흰 칸) — 바탕은 노란빛 없는 맑은 연초록(00:01 · 00:07 사장님 말씀) ② 색은 아껴 씀 · 한 색은 한 뜻만(오름 = 초록 · 내림 = 파랑 · 금빛 자리는 갈색)
-     ③ 글 대비 4.5 넘게(굵고 19px 넘는 글은 3) · 흐린 회색 글 없음 ④ 움직임 · 반짝임 없음(「빠르게 움직이거나 깜박이는 것은 어지러움을 부른다」) ⑤ 오름 · 내림은 색만이 아니라 「+ · −」 부호로도 앎
-     옛 판: 맑은 연초록 #D6F2E0(00:09) · 숲 초록 #0B2716(2026-10-22 23:23) · 우주 밤하늘 #070B17(2026-10-20 20:27) · 돌 판 #080808(2026-10-19 10:31) */
+  /* 앙리 마티스 판(사장님 2026-10-23 00:38 「앙리 마티스가 이 걸 만든다는 철저한 입장으로 이기적으로 만들어봐」)
+     방스 로사리오 성당 — 흰 벽 · 흰 타일 위 검은 선 그림 · 유리창은 세 색뿐(「an intense yellow」 해 · 「an intense green」 풀 · 「a vivid blue」 바다와 하늘) https://en.wikipedia.org/wiki/Chapelle_du_Rosaire_de_Vence
+     「an art of balance, of purity and serenity … for the businessman … something like a good armchair」(1908 「화가의 노트」) https://bonjourparis.com/art/henri-matisse-at-150-art-as-comfy-as-an-easy-chair/
+     오려 붙인 색종이 — 칠한 종이를 가위로 오려 꽉 찬 색 면으로 https://www.moma.org/interactives/exhibitions/2014/matisse/the-cut-outs.html
+     ① 바탕은 흰 벽 #FFFFFF ② 글 · 테는 검은 선 ③ 색은 세 가지만 꽉 찬 면으로 — 초록 #007A35 = 자라남 · 오름 · 파랑 #1E4FC2 = 내림 · 노랑 = 해 · 뜻 있는 칸 바탕 ④ 섞지 않음 · 번짐 · 그림자 · 움직임 없음 ⑤ 「?」 같은 뜻 표시 글은 보라 #6B2A8C(마티스 오린 종이의 보라)
+     옛 판: 애플 방식 맑은 연초록 #E6F5EB(00:11) · 숲 초록 #0B2716 · 우주 밤하늘 #070B17 · 돌 판 #080808 */
   color-scheme: light;
-  --bg: #E6F5EB; --night: #E6F5EB; --band: #E6F5EB; --violet: #000000;
-  --card: #FFFFFF; --card2: #F2F8F4; --card3: #DDEFE3;
-  --hair: #5E7F6C; --hair2: #3D5E4B; --line: #C9DCCF; --hair-soft: #DCE9E0; --seam: #DDEFE3; --press: #DDEFE3; --lift: #FFFFFF;
+  --bg: #FFFFFF; --night: #FFFFFF; --band: #FFFFFF; --violet: #000000;
+  --card: #FFFFFF; --card2: #F7F7F7; --card3: #EEEEEE;
+  --hair: #111111; --hair2: #111111; --line: #DDDDDD; --hair-soft: #EEEEEE; --seam: #EEEEEE; --press: #EEEEEE; --lift: #FFFFFF;
   --ink: #000000; --ink-hi: #000000; --sub: #111111; --mute: #222222; --flat: #222222;
-  --violet-ink: #000000; --violet-wash: #FFFFFF; --violet-line: #3D5E4B; --violet-glow: #F2F8F4;
-  --gold: #7A5843; --gold-wash: #F2F8F4; --gold-line: #7A5843;
-  --up: #00702A; --down: #1E5BD8; --up-ink: #00702A; --down-ink: #1E5BD8; --up-bg: #D3F0DC; --down-bg: #DCE6FB; /* 오름 = 짙은 초록 글 · 맑은 초록 칸(00:07 「아니 노란빛 없이 맑은 녹색」) · 내림 = 파랑 글 · 연한 파랑 칸 */
-  --up-fill: rgba(0, 112, 42, .16); --down-fill: rgba(30, 91, 216, .16); --up-fade: rgba(0, 112, 42, .06); --down-fade: rgba(30, 91, 216, .06);
-  --lacquer: #FFFFFF; --lacquer-ink: #000000; --lacquer-sub: #111111; --lacquer-gold: #7A5843;
-  --moon: #000000; --moonrow: #F2F8F4;
-  --m4-band: #E6F5EB; --m4-line: #9DB7A7; --m4-soft: #9DB7A7; --m4-neu: #222222; --m4-line2: #DCE9E0;
-  background: #E6F5EB;
+  --violet-ink: #000000; --violet-wash: #FFFFFF; --violet-line: #111111; --violet-glow: #F7F7F7;
+  --gold: #6B2A8C; --gold-wash: #FFF3B8; --gold-line: #6B2A8C;
+  --up: #007A35; --down: #1E4FC2; --up-ink: #007A35; --down-ink: #1E4FC2; --up-bg: #007A35; --down-bg: #1E4FC2; /* 오름 = 짙은 초록 글 · 맑은 초록 칸(00:07 「아니 노란빛 없이 맑은 녹색」) · 내림 = 파랑 글 · 연한 파랑 칸 */
+  --up-fill: rgba(0, 122, 53, .16); --down-fill: rgba(30, 79, 194, .16); --up-fade: rgba(0, 122, 53, .06); --down-fade: rgba(30, 79, 194, .06);
+  --lacquer: #FFFFFF; --lacquer-ink: #000000; --lacquer-sub: #111111; --lacquer-gold: #6B2A8C;
+  --moon: #000000; --moonrow: #F7F7F7;
+  --m4-band: #FFFFFF; --m4-line: #BBBBBB; --m4-soft: #BBBBBB; --m4-neu: #222222; --m4-line2: #EEEEEE;
+  background: #FFFFFF;
 }
-html.white body { background: #E6F5EB; color: var(--ink); font-weight: 600; } /* 글씨 조금 진하게(사장님 2026-10-22 23:20 「글씨에 더 포인트가 갔으면 좋겠어요 · 글꼴진하게」) */
+html.white body { background: #FFFFFF; color: var(--ink); font-weight: 600; } /* 글씨 조금 진하게(사장님 2026-10-22 23:20 「글씨에 더 포인트가 갔으면 좋겠어요 · 글꼴진하게」) */
 /* 그림자 · 글 그림자는 흰 판 안 어디에도 없음(입체는 원래 없음)(테두리가 필요한 칸은 아래에서 outline · border 로 다시 그림) */
 html.white :is(.top, .tabs, #view, .foot, .trial, .toast),
 html.white :is(.top, .tabs, #view, .foot, .trial) * { box-shadow: none !important; text-shadow: none !important; }

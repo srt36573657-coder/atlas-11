@@ -5,7 +5,7 @@
 .gm-sum, .gm-prize, .gm-sec { margin: 0 0 var(--sp-2); padding: var(--sp-2); border: 1px solid var(--hair2); border-radius: 16px; }
 .gm-lb { margin: 0; color: var(--sub); font-size: var(--fs-1); }
 .gm-big { margin: 0 0 var(--sp-1); font-size: var(--fs-5); font-weight: 700; }
-.gm-bar { height: 8px; margin: 0 0 var(--sp-1); border-radius: 4px; background: #DDEFE3; overflow: hidden; }
+.gm-bar { height: 8px; margin: 0 0 var(--sp-1); border-radius: 4px; background: #EEEEEE; overflow: hidden; }
 .gm-fill { display: block; width: 0; height: 100%; border-radius: 4px; background: var(--ink); }
 .gm-t { margin: 0 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); }
 .gm-q { color: var(--gold); }

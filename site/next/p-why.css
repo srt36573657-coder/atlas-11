@@ -3,7 +3,7 @@
    2026-10-18 [10](일꾼 S1c): 글씨 크기는 app.css :root 의 --fs-1 ~ --fs-6 만(이 쪽은 다섯 — 17 · 19 · 21 · 24 · 30) · 간격은 0 · --sp-1 · --sp-2 · --sp-3(8 · 16 · 24)만 · 음수 없음
    [5] 1 고르기 전 답 점은 빈 테두리(.wy-n · 색 없음) · [5] 2 결과는 판정 글(--fs-5)이 가장 큼 · 「준비 n / 22」는 그 밑 --fs-1 · [9] 8 색 점마다 읽어 주는 글(.wy-sr)
    [10] 7 글 시작 왼쪽 줄 셋(360 폭: 화면 16 · 칸 안 33 · 칸 속 상자 49) — 그림 · 색 점은 글 오른쪽에 · 상자 테는 안쪽 그림자(자리를 안 먹음) · 오른쪽 숫자 · 단추 글은 가운데 · 오른쪽 맞춤 */
-.wy { margin: var(--sp-2); padding: var(--sp-2); border-radius: 18px; background: var(--card); border: 1px solid var(--hair2, #C9DCCF); }
+.wy { margin: var(--sp-2); padding: var(--sp-2); border-radius: 18px; background: var(--card); border: 1px solid var(--hair2, #DDDDDD); }
 .wy.page { margin-top: var(--sp-2); }
 .wy-head { display: flex; flex-direction: row-reverse; justify-content: space-between; gap: var(--sp-2); align-items: center; } /* 제목이 칸 왼쪽 줄 · 그림은 오른쪽 */
 .wy-head img { flex: none; width: 40px; height: 40px; }
@@ -12,7 +12,7 @@
 .wy-step { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--mute); }
 .wy-q { margin: 0 0 var(--sp-1); font-size: var(--fs-4); line-height: 1.3; }
 .wy-opts { display: grid; gap: var(--sp-1); }
-.wy-opt { display: flex; flex-direction: row-reverse; align-items: center; gap: var(--sp-2); width: 100%; min-height: 56px; padding: var(--sp-1) var(--sp-2); border-radius: 14px; border: 0; box-shadow: inset 0 0 0 1px var(--hair2, #C9DCCF); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-2); text-align: left; cursor: pointer; } /* 답 글 = 상자 왼쪽 줄 · 점은 오른쪽 */
+.wy-opt { display: flex; flex-direction: row-reverse; align-items: center; gap: var(--sp-2); width: 100%; min-height: 56px; padding: var(--sp-1) var(--sp-2); border-radius: 14px; border: 0; box-shadow: inset 0 0 0 1px var(--hair2, #DDDDDD); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-2); text-align: left; cursor: pointer; } /* 답 글 = 상자 왼쪽 줄 · 점은 오른쪽 */
 .wy-opt .wy-ot { flex: 1 1 auto; min-width: 0; }
 .wy-opt.on { box-shadow: inset 0 0 0 1px var(--ink); background: var(--card3); }
 .wy-opt:focus-visible, .wy-next:focus-visible, .wy-back:focus-visible, .wy-hit:focus-visible, .wy-chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
@@ -48,26 +48,26 @@
 .wy-stv b { color: var(--ink); font-weight: 700; }
 /* ① 종목 고르기 — 찾기와 같은 잣대 · 맨 위 여섯 */
 .wy-intro { margin: var(--sp-1) 0 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); } /* 「열한 질문 · 1분쯤 …」 끝나면 무엇이 나오나(B5 · 2026-10-22 총정리) */
-.wy-find, .wy-why { display: block; width: 100%; min-height: 52px; padding: 0 var(--sp-2); border-radius: 14px; border: 1px solid var(--hair2, #C9DCCF); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-3); }
+.wy-find, .wy-why { display: block; width: 100%; min-height: 52px; padding: 0 var(--sp-2); border-radius: 14px; border: 1px solid var(--hair2, #DDDDDD); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-3); }
 .wy-hits { display: grid; gap: var(--sp-1); margin-top: var(--sp-1); }
-.wy-hit { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 var(--sp-1); width: 100%; min-height: 56px; padding: var(--sp-1) var(--sp-2); border-radius: 14px; border: 0; box-shadow: inset 0 0 0 1px var(--hair2, #C9DCCF); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-2); text-align: left; cursor: pointer; }
+.wy-hit { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 var(--sp-1); width: 100%; min-height: 56px; padding: var(--sp-1) var(--sp-2); border-radius: 14px; border: 0; box-shadow: inset 0 0 0 1px var(--hair2, #DDDDDD); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-2); text-align: left; cursor: pointer; }
 .wy-hit .nm { font-weight: 700; overflow-wrap: anywhere; }
 .wy-hit small { color: var(--sub); font-size: var(--fs-1); text-align: right; }
-.wy-xrow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 var(--sp-1); padding: var(--sp-1) var(--sp-2); border-radius: 14px; outline: 1px dashed var(--hair2, #C9DCCF); outline-offset: -1px; color: var(--sub); font-size: var(--fs-1); } /* 펀드 · 우선주 … — 누르지 않음 · 까닭 한 줄 */
+.wy-xrow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 var(--sp-1); padding: var(--sp-1) var(--sp-2); border-radius: 14px; outline: 1px dashed var(--hair2, #DDDDDD); outline-offset: -1px; color: var(--sub); font-size: var(--fs-1); } /* 펀드 · 우선주 … — 누르지 않음 · 까닭 한 줄 */
 .wy-xrow .nm { color: var(--ink); overflow-wrap: anywhere; }
 .wy-xrow small { font-size: var(--fs-1); text-align: right; }
 .wy-hits .wy-note { margin: 0; }
 .wy-xw { margin-top: var(--sp-1); }
 /* ② 3번 「클 일이 있다」 — 그 일이 있는 날짜 */
 .wy-dl { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); margin: var(--sp-2) 0 0; font-size: var(--fs-2); }
-.wy-date { min-height: 48px; min-width: 0; max-width: 100%; padding: 0 var(--sp-2); border-radius: 12px; border: 1px solid var(--hair2, #C9DCCF); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-2); color-scheme: dark; }
+.wy-date { min-height: 48px; min-width: 0; max-width: 100%; padding: 0 var(--sp-2); border-radius: 12px; border: 1px solid var(--hair2, #DDDDDD); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-2); color-scheme: dark; }
 /* ③ 두 줄 — 1년 뒤 반토막 났다면 왜? · 팔 약속 */
 .wy-quick { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin: var(--sp-1) 0; }
-.wy-chip { min-height: 44px; padding: 0 var(--sp-2); border-radius: 999px; border: 1px solid var(--hair2, #C9DCCF); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-1); cursor: pointer; }
+.wy-chip { min-height: 44px; padding: 0 var(--sp-2); border-radius: 999px; border: 1px solid var(--hair2, #DDDDDD); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-1); cursor: pointer; }
 .wy-pr { display: block; margin: var(--sp-1) 0 0; font-size: var(--fs-2); } /* 한 글 덩이(왼쪽 줄 하나) */
 .wy-prh { margin: var(--sp-2) 0 0; font-size: var(--fs-1); color: var(--sub); } /* 「내 약속 · 숫자는 내가 정해요」 — ② 위 작은 머리(.wy-pr 밖 · B12 · 2026-10-22 총정리) */
 .wy-prn { margin-right: var(--sp-1); } /* 「만약 [숫자]원」 — 좁으면(영어 「If the price is」) 그 안에서도 줄을 바꿈(옆으로 넘침 0) */
-.wy-num { width: 6.5em; max-width: 100%; min-height: 48px; margin: 0 var(--sp-1); padding: 0 var(--sp-1); vertical-align: middle; border-radius: 12px; border: 1px solid var(--hair2, #C9DCCF); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-3); text-align: right; }
+.wy-num { width: 6.5em; max-width: 100%; min-height: 48px; margin: 0 var(--sp-1); padding: 0 var(--sp-1); vertical-align: middle; border-radius: 12px; border: 1px solid var(--hair2, #DDDDDD); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-3); text-align: right; }
 .wy-why:focus-visible, .wy-num:focus-visible, .wy-find:focus-visible, .wy-date:focus-visible { outline: 3px solid var(--ink); outline-offset: 1px; }
 /* ④ 결과 — [5] 2 판정 글이 가장 큼(--fs-5) · 「준비 n / 22」는 그 밑에 작게(--fs-1 · 숫자만 --fs-3) */
 .wy-res { margin-top: var(--sp-2); }
@@ -98,14 +98,14 @@ span.wy-vg { color: #34C759; } span.wy-vy { color: #FFCC00; } span.wy-vr { color
 .wy-mine { quotes: '「' '」'; }
 /* 쌓인 기록 — 매매일지 화면 아래(지우는 단추 없음) */
 .wy-me { margin: var(--sp-1) 0 var(--sp-2); }
-.wy-rec { margin: var(--sp-1) var(--sp-2); padding: var(--sp-2); border-radius: 14px; background: var(--card); border: 1px solid var(--hair2, #C9DCCF); }
+.wy-rec { margin: var(--sp-1) var(--sp-2); padding: var(--sp-2); border-radius: 14px; background: var(--card); border: 1px solid var(--hair2, #DDDDDD); }
 .wy-rh { margin: 0 0 var(--sp-1); font-size: var(--fs-1); }
 .wy-rs { margin: 0 0 var(--sp-1); font-size: var(--fs-1); color: var(--sub); }
 .wy-rs .wy-stn { color: var(--ink); font-size: var(--fs-2); }
 .wy-rec .wy-lines { margin-top: var(--sp-1); padding: var(--sp-1) var(--sp-2); }
 .wy.page ~ .safe { font-size: var(--fs-1); }
 /* 방금 끝낸 기록 — 위 결과와 같은 첫 줄은 한 줄로 접음(누르면 펼침 · 지우지 않음 · B15 · 2026-10-22 총정리) */
-.wy-fold > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; margin: var(--sp-1) var(--sp-2) 0; padding: 0 var(--sp-2); border-radius: 14px; border: 1px solid var(--hair2, #C9DCCF); background: var(--card); color: var(--sub); font-size: var(--fs-1); line-height: 1.4; list-style: none; cursor: pointer; }
+.wy-fold > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; margin: var(--sp-1) var(--sp-2) 0; padding: 0 var(--sp-2); border-radius: 14px; border: 1px solid var(--hair2, #DDDDDD); background: var(--card); color: var(--sub); font-size: var(--fs-1); line-height: 1.4; list-style: none; cursor: pointer; }
 .wy-fold > summary::-webkit-details-marker { display: none; }
 .wy-fold > summary::after { content: '▾'; flex: none; color: var(--mute); }
 .wy-fold[open] > summary::after { content: '▴'; }
@@ -122,7 +122,7 @@ span.wy-vg { color: #34C759; } span.wy-vy { color: #FFCC00; } span.wy-vr { color
 .wy-later .note { margin: var(--sp-1) 0 0; } /* 칸 안 왼쪽 줄(app.css .note 의 옆 여백을 뺌) */
 .wy-kq { margin: var(--sp-1) 0 0; font-size: var(--fs-2); font-weight: 700; }
 .wy-kbs { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin-top: var(--sp-1); }
-.wy-kb { min-height: 48px; padding: 0 var(--sp-2); border-radius: 999px; border: 1px solid var(--hair2, #C9DCCF); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-1); cursor: pointer; }
+.wy-kb { min-height: 48px; padding: 0 var(--sp-2); border-radius: 999px; border: 1px solid var(--hair2, #DDDDDD); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-1); cursor: pointer; }
 .wy-kb:focus-visible, .wy-kd:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .wy-kd { margin: var(--sp-1) 0 0; font-size: var(--fs-1); font-weight: 700; }
 .wy-lv { margin: var(--sp-1) 0 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }

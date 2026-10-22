@@ -4,15 +4,15 @@
    글씨는 var(--fs-1 ~ 6)만 · 바깥 · 안 여백과 사이는 0 · auto · var(--sp-1 ~ 3)만 · 음수 여백 없음(page_rules.mjs cssRules · [10] 6 · 8) · 누르는 것 48 × 48 넘게 */
 
 /* ── 위 막대: 왼쪽 「진화」 · 가운데 이름 · 오른쪽 셋(말 · 글씨 · 찾기) ── */
-html.white .top { height: 64px; gap: 0; background: #E6F5EB; border-bottom: 1px solid #C9DCCF; }
+html.white .top { height: 64px; gap: 0; background: #FFFFFF; border-bottom: 1px solid #DDDDDD; }
 html.white .top .sp { display: none; }
-html.white .top #jhBtn { order: -1; height: 48px; padding: 0 var(--sp-2); border: 1px solid #5E7F6C; border-radius: 24px; background: #FFFFFF; color: var(--ink); font-size: var(--fs-1); font-weight: 600; }
+html.white .top #jhBtn { order: -1; height: 48px; padding: 0 var(--sp-2); border: 1px solid #111111; border-radius: 24px; background: #FFFFFF; color: var(--ink); font-size: var(--fs-1); font-weight: 600; }
 html.white .top #jhBtn[aria-current="page"] { border-color: var(--ink); color: var(--ink); }
 html.white .top .logo { flex: 1 1 auto; justify-content: center; color: var(--ink); font-size: var(--fs-3); font-weight: 700; letter-spacing: .14em; text-indent: .14em; }
 html.white .top .logo img { display: none; }
-html.white .top .ibtn { background: #FFFFFF; border-top: 1px solid #5E7F6C; border-bottom: 1px solid #5E7F6C; border-radius: 0; color: var(--ink); }
-html.white .top #langBtn { border-left: 1px solid #5E7F6C; border-radius: 24px 0 0 24px; }
-html.white .top #findBtn { border-right: 1px solid #5E7F6C; border-radius: 0 24px 24px 0; }
+html.white .top .ibtn { background: #FFFFFF; border-top: 1px solid #111111; border-bottom: 1px solid #111111; border-radius: 0; color: var(--ink); }
+html.white .top #langBtn { border-left: 1px solid #111111; border-radius: 24px 0 0 24px; }
+html.white .top #findBtn { border-right: 1px solid #111111; border-radius: 0 24px 24px 0; }
 /* 위 막대 금빛 선물 단추(상품권 방 #/gift · 사장님 2026-10-22 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어」) — 금빛 테 동그라미 하나 · 진화 단추 옆 · 글 없음 */
 .top .tgift { color: var(--gold); }
 .top .tgift .ic { width: 24px; height: 24px; stroke-width: 1.6; }
@@ -25,7 +25,7 @@ html.white .top .ibtn.tgift[aria-current="page"] { background: var(--gold-wash);
 @media (max-width: 429px) { html.white.en .top .logo { width: auto; overflow: visible; justify-content: center; gap: 0; padding-left: 0; letter-spacing: .04em; text-indent: 0; } }
 
 /* ── 아래 단추 다섯: 먹 바탕 · 지금 쪽은 흰 글 · 가운데 단추도 노랑 칠 없음 ── */
-html.white .tabs { background: #E6F5EB; border-top: 1px solid #C9DCCF; }
+html.white .tabs { background: #FFFFFF; border-top: 1px solid #DDDDDD; }
 html.white .tabs a { color: #222222; }
 html.white .tabs a[aria-current="page"] { color: var(--ink); font-weight: 700; }
 html.white .tabs a.plus .ic, html.white .tabs a.plus svg { color: inherit; fill: none; stroke: currentColor; background: none; }
@@ -63,25 +63,25 @@ html.white.home .s-art { flex: none; width: 150px; height: 120px; }
 
 /* 돌이 물음 한 줄 — 말풍선 + 보내기 */
 html.white.home .w-say { display: flex; align-items: center; gap: var(--sp-1); margin: 0; }
-html.white.home .w-say p { display: inline-flex; align-items: center; gap: var(--sp-1); min-width: 0; margin: 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #C9DCCF; border-radius: 22px 22px 22px 6px; background: #FFFFFF; font-size: var(--fs-2); font-weight: 500; line-height: 1.3; }
-html.white.home .w-say .s-who { flex: none; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #C9DCCF; color: #222222; font-size: var(--fs-1); }
+html.white.home .w-say p { display: inline-flex; align-items: center; gap: var(--sp-1); min-width: 0; margin: 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #DDDDDD; border-radius: 22px 22px 22px 6px; background: #FFFFFF; font-size: var(--fs-2); font-weight: 500; line-height: 1.3; }
+html.white.home .w-say .s-who { flex: none; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #DDDDDD; color: #222222; font-size: var(--fs-1); }
 html.white.home .w-say .w-kk { margin: 0 0 0 auto; width: 48px; height: 48px; border-radius: 24px; border: 1px solid var(--hair2); background: transparent; color: var(--ink); }
 html.white.home .w-say .w-kk .ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* 읽는 곳 셋 — 왼쪽 번호 테 · 사이 가는 줄 */
 html.white.home ol.s-story { position: relative; margin: var(--sp-1) 0 0; padding: 0; list-style: none; }
-html.white.home ol.s-story::before { content: ''; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 1px; background: #DCE9E0; }
+html.white.home ol.s-story::before { content: ''; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 1px; background: #EEEEEE; }
 html.white.home .s-ch { display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: var(--sp-1); align-items: start; }
 html.white.home .s-ch > :not(.s-no) { grid-column: 2; }
-html.white.home .s-ch + .s-ch { margin: var(--sp-1) 0 0; padding-top: var(--sp-1); border-top: 1px solid #C9DCCF; }
-html.white.home .s-no { grid-column: 1; grid-row: 1 / span 9; position: relative; z-index: 1; width: 27px; height: 27px; display: flex; align-items: center; justify-content: center; border: 1px solid #3D5E4B; border-radius: 50%; background: #E6F5EB; color: var(--ink); font-size: var(--fs-1); font-weight: 600; line-height: 1; }
+html.white.home .s-ch + .s-ch { margin: var(--sp-1) 0 0; padding-top: var(--sp-1); border-top: 1px solid #DDDDDD; }
+html.white.home .s-no { grid-column: 1; grid-row: 1 / span 9; position: relative; z-index: 1; width: 27px; height: 27px; display: flex; align-items: center; justify-content: center; border: 1px solid #111111; border-radius: 50%; background: #FFFFFF; color: var(--ink); font-size: var(--fs-1); font-weight: 600; line-height: 1; }
 html.white.home .s-lbl { display: flex; align-items: baseline; gap: var(--sp-1); min-height: 27px; margin: 0; }
 html.white.home .s-lbl .t { font-size: var(--fs-3); font-weight: 700; line-height: 1.25; letter-spacing: -.02em; }
 
 /* ① 본질 — 테 없는 글 · 오른쪽 둥근 펼침 단추 */
 html.white.home section.w-ess { margin: 0; padding: 0; border: 0; border-radius: 0; background: none; outline: 0; }
 html.white.home .w-ess .ess-d > summary { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-1); min-height: 48px; padding: 0; font-size: var(--fs-2); font-weight: 500; line-height: 1.5; letter-spacing: -.015em; }
-html.white.home .w-ess .ess-d > summary::after { content: '⌄'; flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border: 1px solid #3D5E4B; border-radius: 24px; color: var(--ink); line-height: 1; }
+html.white.home .w-ess .ess-d > summary::after { content: '⌄'; flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border: 1px solid #111111; border-radius: 24px; color: var(--ink); line-height: 1; }
 html.white.home .w-ess .ess-d[open] > summary::after { content: '⌃'; }
 html.white.home .w-ess .ess-l, html.white.home .w-ess .ess-l.q { padding: 0; color: #111111; font-size: var(--fs-1); }
 html.white.home .w-ess .ess-l.q { color: var(--gold); }
@@ -96,10 +96,10 @@ html.white.home .w-news .w-fl { display: flex; margin: 0; }
 html.white.home .w-news .w-f { display: flex; align-items: baseline; gap: var(--sp-1); }
 html.white.home .w-news .w-lb { min-width: 52px; color: #111111; font-size: var(--fs-1); font-weight: 500; }
 html.white.home .w-news .w-f b { font-size: var(--fs-5); font-weight: 300; line-height: 1.2; letter-spacing: -.03em; }
-html.white.home .w-news .w-why { min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #3D5E4B; border-radius: 24px; background: transparent; color: var(--ink); font-size: var(--fs-1); font-weight: 500; white-space: nowrap; }
+html.white.home .w-news .w-why { min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #111111; border-radius: 24px; background: transparent; color: var(--ink); font-size: var(--fs-1); font-weight: 500; white-space: nowrap; }
 html.white.home .w-news .w-qs { flex-basis: 100%; margin: 0 0 var(--sp-1); padding: 0; list-style: none; color: #111111; font-size: var(--fs-1); }
 /* 물음 셋 — 누르면 바로 밑에 받은 자료로 센 지난 사실(app.js whyQ · 사장님 2026-10-19 13:27 「해결해」) */
-html.white.home .w-news .w-qs li { border-top: 1px solid #C9DCCF; }
+html.white.home .w-news .w-qs li { border-top: 1px solid #DDDDDD; }
 html.white.home .w-news button.w-q { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); width: 100%; min-height: 48px; margin: 0; padding: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-1); font-weight: 600; text-align: left; cursor: pointer; }
 html.white.home .w-news button.w-q i { font-style: normal; color: #111111; transition: transform .15s; }
 html.white.home .w-news button.w-q[aria-expanded="true"] i { transform: rotate(90deg); }
@@ -110,11 +110,11 @@ html.white.home #view:has(.w-qs:not([hidden])) .s-thumb { position: static; }
 html.white.home .w-news .w-ans a { display: inline-flex; align-items: center; min-height: 48px; color: var(--ink); font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; }
 html.white.home .s-split { display: flex; align-items: center; gap: var(--sp-1); height: 8px; margin: 0; }
 html.white.home .s-split i { display: block; flex: 1 1 0; height: 2px; }
-html.white.home .s-split .gu { background: var(--up-bg); }
-html.white.home .s-split .gd { background: var(--down-bg); }
+html.white.home .s-split .gu { background: var(--up-bg); color: #FFFFFF; }
+html.white.home .s-split .gd { background: var(--down-bg); color: #FFFFFF; }
 
 /* ③ 한 달 뒤 — 점선 말풍선 · 멈춤 · 약속 수 · 이 기기에만 */
-html.white.home a.s-ghost, html.white.home a.w-month { justify-self: start; display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 48px; margin: 0; padding: 0 var(--sp-2); border: 1px dashed #3D5E4B; border-radius: 6px 22px 22px 22px; background: transparent; color: var(--ink); font-size: var(--fs-2); font-weight: 500; text-decoration: none; }
+html.white.home a.s-ghost, html.white.home a.w-month { justify-self: start; display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 48px; margin: 0; padding: 0 var(--sp-2); border: 1px dashed #111111; border-radius: 6px 22px 22px 22px; background: transparent; color: var(--ink); font-size: var(--fs-2); font-weight: 500; text-decoration: none; }
 html.white.home a.w-month { border-style: solid; border-color: var(--gold); }
 html.white.home .s-mem { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-2); margin: 0; color: #111111; font-size: var(--fs-1); }
 html.white.home .s-mem .w-cnt { display: flex; flex-wrap: wrap; gap: 0 var(--sp-2); min-width: 0; margin: 0; border-top: 0; }
@@ -128,17 +128,17 @@ html.white.home a.s-evo .when { flex: 1; }
 html.white.home a.s-evo i { font-style: normal; font-size: var(--fs-4); color: #111111; }
 
 /* 엄지 자리 — 찾기 칸(흰 「시작」 하나) · 아래 단추 바로 위에 붙음(찾은 줄은 붙은 채로 위로 펼침 · 「왜 그럴까?」 물음이 열리면 풀림) */
-html.white.home .s-thumb { position: sticky; bottom: calc(var(--tabs) + env(safe-area-inset-bottom)); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; margin: auto 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #C9DCCF; background: #E6F5EB; }
+html.white.home .s-thumb { position: sticky; bottom: calc(var(--tabs) + env(safe-area-inset-bottom)); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; margin: auto 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #DDDDDD; background: #FFFFFF; }
 html.white.home .s-thumb:has(details.w-all[open]) { position: static; }
 /* 찾은 줄은 엄지 칸 위로 펼침 · 칸은 아래에 붙은 채로(2026-10-21 04:3x 진짜 사이트 흰 판 검사 「첫 질문까지 누름 2번 안 — 1번 눌러도 1 / 11 이 안 보임」 두 번) —
    예전엔 찾은 줄이 뜨면 칸이 풀려(static) 제자리로 감 · 엄지 칸 한 줄 뒤 제자리가 쪽 가운데라 치던 칸과 찾은 줄이 화면 밖으로 사라지고 · 글꼴이 늦게 오면 누르는 사이 위 글이 줄어 찾은 줄이 움직임
    → 붙은 채로 위로 펼치면 화면에 묶여 위 글이 바뀌어도 안 움직임 · 높이는 app.js quickReturn 이 칸 위 남은 자리에 맞춤 */
 html.white.home .s-thumb .w-hits { top: auto; bottom: calc(100% + 4px); }
-html.white.home .s-thumb form.w-find { flex: 1 1 100%; min-width: 0; height: 56px; align-items: center; margin: 0; padding: 0 var(--sp-1) 0 0; border: 1px solid #5E7F6C; border-radius: 28px; background: #FFFFFF; }
+html.white.home .s-thumb form.w-find { flex: 1 1 100%; min-width: 0; height: 56px; align-items: center; margin: 0; padding: 0 var(--sp-1) 0 0; border: 1px solid #111111; border-radius: 28px; background: #FFFFFF; }
 html.white.home .s-thumb .w-find .w-in { flex: 1 1 0; width: 0; height: 52px; padding: 0 var(--sp-2); border-radius: 28px 0 0 28px; background: transparent; color: var(--ink); font-size: var(--fs-2); }
 html.white.home .s-thumb .w-find .w-in::placeholder { color: #111111; }
 html.white.home .s-thumb .w-find .w-go { width: auto; min-width: 72px; height: 48px; padding: 0 var(--sp-2); border-radius: 24px; background: #000000; color: #FFFFFF; font-size: var(--fs-1); font-weight: 700; }
-html.white.home .s-thumb .w-hits { background: #FFFFFF; border-color: #3D5E4B; }
+html.white.home .s-thumb .w-hits { background: #FFFFFF; border-color: #111111; }
 html.white.home .s-thumb nav.w-go4 { flex: 1 1 auto; min-width: 0; margin: 0; border: 0; }
 html.white.home .s-thumb .w-go4 a { min-width: 0; min-height: 48px; color: #111111; font-size: var(--fs-1); }
 html.white.home .s-thumb .w-go4 .ic { display: none; }
@@ -151,7 +151,7 @@ html.white.home .s-thumb { transition: transform .32s ease; will-change: transfo
 html.white.home .s-thumb.s-away { transform: translateY(calc(100% + var(--tabs) + 16px + env(safe-area-inset-bottom))); pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { html.white.home .s-thumb { transition: none; } }
 /* 바로 가기 넷 · 전부 보기 — 붙지 않고 화면 안 제자리(엄지 칸에서 내려옴 · 모양은 예전 엄지 칸 그대로) */
-html.white.home .s-short { display: flex; flex-wrap: wrap; align-items: center; margin: var(--sp-2) 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #C9DCCF; }
+html.white.home .s-short { display: flex; flex-wrap: wrap; align-items: center; margin: var(--sp-2) 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #DDDDDD; }
 html.white.home .s-short nav.w-go4 { flex: 1 1 auto; flex-wrap: wrap; min-width: 0; margin: 0; border: 0; }
 html.white.home .s-short .w-go4 a { min-width: 0; min-height: 48px; color: #111111; font-size: var(--fs-1); }
 html.white.home .s-short .w-go4 .ic { display: none; }
@@ -170,7 +170,7 @@ html.white.home .s-short details.w-all > summary { min-height: 48px; display: fl
 html.white .cp-card { margin: var(--sp-2) var(--sp-2) var(--sp-3); padding: var(--sp-2); border: 1px solid var(--hair2); border-radius: 16px; }
 html.white .cp-card .cp-h { display: flex; align-items: baseline; justify-content: space-between; margin: 0 0 var(--sp-1); font-size: var(--fs-3); font-weight: 700; }
 html.white .cp-card .cp-h b { flex: 1 1 auto; font-size: var(--fs-4); text-align: right; }
-html.white .cp-card .cp-bar { height: 8px; margin: 0 0 var(--sp-1); border-radius: 4px; background: #DDEFE3; overflow: hidden; }
+html.white .cp-card .cp-bar { height: 8px; margin: 0 0 var(--sp-1); border-radius: 4px; background: #EEEEEE; overflow: hidden; }
 html.white .cp-card .cp-fill { display: block; width: 0; height: 100%; border-radius: 4px; background: var(--gold); }
 html.white .cp-card .cp-t { margin: 0 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); }
 html.white .cp-card .cp-q { color: var(--sub); }

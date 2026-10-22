@@ -16,7 +16,7 @@
 
    보는 것(켜졌을 때 · 정적)
      ㉠ 새 첫 화면 파일 next/home.css 가 있고 next/index.html 이 그것을 부름
-     ㉡ 색 출발값 다섯(#FFFFFF · #16181D · #8A6516 · #D0202E · #1E5BD8)이 next/app.css 또는 next/home.css 에 있음 · app.css 에 html.white 묶음
+     ㉡ 색 출발값 다섯(#FFFFFF · #16181D · #8A6516 · #D0202E · #1E4FC2)이 next/app.css 또는 next/home.css 에 있음 · app.css 에 html.white 묶음
      ㉢ 망치는 길 0 — home.css 전부와 app.css 의 html.white 규칙에 그림자 · 글 그림자 · 그림자 거름 · 그러데이션 · 입체(perspective · preserve-3d · rotateX/Y · matrix3d)
      ㉣ 그대로 — 아래 단추 다섯(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목 · 매매일지 = #/why) · 진화 단추(jhBtn) · 본질 세 줄(data-ess)
      ㉤ 첫 화면 표시 — app.js 에 data-w(칸) · data-say(골똘이 말) · data-fact(시황 사실) · 흰 판 붙이기(white)
@@ -30,7 +30,7 @@ import {fileURLToPath} from 'node:url';
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 /** 새 첫 화면 파일 — 이것이 저장소에 있으면 흰 첫 화면 문이 켜짐 */
 export const HOME_CSS = 'site/next/home.css';
-export const COLORS = Object.freeze(['#E6F5EB', '#000000', '#7A5843', '#00702A', '#1E5BD8']); // 맑은 연초록 판(사장님 2026-10-23 00:01 「맑은 은은한 녹색」) — 바탕 · 글 · 금빛 · 오름 · 내림 // 우주 밤하늘(사장님 2026-10-20 20:27 「올려  우주」 · 잣대 색 4) · // 돌 판(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」) — 바탕 · 글 · 금빛 · 오름 · 내림
+export const COLORS = Object.freeze(['#FFFFFF', '#000000', '#6B2A8C', '#007A35', '#1E4FC2']); // 맑은 연초록 판(사장님 2026-10-23 00:01 「맑은 은은한 녹색」) — 바탕 · 글 · 금빛 · 오름 · 내림 // 우주 밤하늘(사장님 2026-10-20 20:27 「올려  우주」 · 잣대 색 4) · // 돌 판(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」) — 바탕 · 글 · 금빛 · 오름 · 내림
 export const TABS = Object.freeze(['오늘 장', '시황', '매매일지', '관심', '보유종목']);
 /** 스위치 한 곳 — 저장소에 site/next/home.css 가 있으면 켜짐 */
 export const whiteOn = (root = ROOT) => fs.existsSync(path.join(root, HOME_CSS));

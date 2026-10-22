@@ -59,8 +59,8 @@ details.pchx-gold[open] > summary::after { transform: rotate(-90deg); }
 .pchx-key span { display: inline; margin-right: var(--sp-2); white-space: nowrap; }
 .pchx-key span:nth-child(3) { white-space: normal; overflow-wrap: anywhere; } /* 셋째 = 「{업종 이름} 평균」 — 영어 이름이 길면(Robots & Construction Machinery …) 줄을 바꿈 · 안 바꾸면 320px 에서 옆으로 넘침 */
 .pchx-key i { display: inline-block; vertical-align: middle; margin-left: var(--sp-1); }
-.pchx-key .k-up { width: 18px; height: 3px; border-radius: 2px; background: var(--up-bg); }
-.pchx-key .k-dn { width: 18px; height: 3px; border-radius: 2px; background: var(--down-bg); }
+.pchx-key .k-up { width: 18px; height: 3px; border-radius: 2px; background: var(--up-bg); color: #FFFFFF; }
+.pchx-key .k-dn { width: 18px; height: 3px; border-radius: 2px; background: var(--down-bg); color: #FFFFFF; }
 .pchx-key .k-avg { width: 18px; height: 0; border-top: 2px dashed rgba(242, 239, 232, .5); }
 .pchx-key .k-b0 { width: 18px; height: 0; border-top: 1px dotted rgba(255, 255, 255, .6); }
 .pchx-key .k-pk { width: 4px; height: 16px; border-radius: 2px; background: var(--gold); }
