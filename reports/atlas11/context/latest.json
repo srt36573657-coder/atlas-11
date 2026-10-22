@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-22",
- "fetchedAt": "2026-10-22T12:06:17Z",
- "file": "reports/atlas11/context/2026-10-22/2026-10-22T12-06-17Z.json",
+ "fetchedAt": "2026-10-22T12:49:45Z",
+ "file": "reports/atlas11/context/2026-10-22/2026-10-22T12-49-45Z.json",
  "summary": {
   "day": "2026-10-22",
-  "fetchedAt": "2026-10-22T12:06:17Z",
+  "fetchedAt": "2026-10-22T12:49:45Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-22",
@@ -36,7 +36,7 @@
    "republished": 56,
    "sameArticle": 0,
    "stocksWithTodayNews": 200,
-   "todayDistinct": 1382
+   "todayDistinct": 1384
   },
   "disclosures": {
    "stocks": 365,
