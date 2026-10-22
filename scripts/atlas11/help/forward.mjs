@@ -18,6 +18,10 @@ import {fileURLToPath} from 'node:url';
 export const FWD_SCHEMA = 'atlas11-help-forward-1';
 export const HELP_STORE = 'atlas11-help-v1'; // lib/atlas11/help.mjs HELP_STORE 와 같음(이 파일은 따로 돎 — 시험이 맞댐)
 export const CURSOR_KEY = 'fwd/cursor';
+/** 넘기기 시작 때 — 보낸 표시가 아직 없을 때만 씀 · 사장님 말씀 때(2026-10-22 07:48 서울) 뒤 글부터(옛 글을 한꺼번에 보내지 않음 · 켜기 전 글도 빠뜨리지 않음) */
+export const FWD_START = '2026-10-21T22:48:00.000Z';
+/** 시작 때의 보낸 표시 — 글 번호 앞 9자(때)와 같은 꼴 + 「-」(같은 때 글보다 앞) */
+export const startCursor = (iso = FWD_START) => Math.floor(Date.parse(iso)).toString(36).padStart(9, '0') + '-';
 export const ID_RE = /^[0-9a-z]{9}-[A-Za-z0-9_-]{12}$/; // site/next/help-rule.js ID_RE 와 같음(시험이 맞댐)
 export const MAX_ITEMS = 10, MSG_MAX = 190;
 
@@ -109,8 +113,8 @@ export function fromAnnotations(list) {
 // ───────────── 저장소(넷리파이 Blobs — 시험은 메모리 저장소) ─────────────
 const getJ = (store, key) => store.get(key, {type: 'json'}).catch(() => null);
 /** 새 글 꺼내기 — {schema, at, cursor, n, more, last, items, messages} */
-export async function fetchNew(store, {max = MAX_ITEMS, now = new Date()} = {}) {
-  const cur = await getJ(store, CURSOR_KEY), cursor = typeof cur?.id === 'string' && ID_RE.test(cur.id) ? cur.id : '';
+export async function fetchNew(store, {max = MAX_ITEMS, now = new Date(), start = FWD_START} = {}) {
+  const cur = await getJ(store, CURSOR_KEY), cursor = typeof cur?.id === 'string' && ID_RE.test(cur.id) ? cur.id : startCursor(start);
   const keys = (((await store.list({prefix: 'i/'}))?.blobs) ?? []).map(b => b.key).filter(k => ID_RE.test(k.slice(2)) && (!cursor || k.slice(2) > cursor)).sort();
   const items = [];
   for (let i = 0; i < Math.min(keys.length, max + 40); i += 20) items.push(...(await Promise.all(keys.slice(i, i + 20).map(k => getJ(store, k)))));
@@ -123,9 +127,9 @@ export async function fetchNew(store, {max = MAX_ITEMS, now = new Date()} = {}) 
 export const annParts = box => Math.ceil(Buffer.from(JSON.stringify(box), 'utf8').toString('base64').length / ANN_CHUNK);
 /** 꺼내 잠그기 — 잠긴 묶음이 알림 줄 아홉 조각 안에 들 때까지 글 수를 줄임(10 → 5 → 2 → 1 · 남은 글은 다음 시간에)
  *  아주 긴 글(그림 글자 500자 열 개 등)에 막혀 한 시간도 못 보내는 일이 없게 · 묶음에는 카톡 글만(글 목록은 빼 크기 절반) */
-export async function fetchSealed(store, pub, {steps = [MAX_ITEMS, 5, 2, 1], now, maxParts = ANN_MAX} = {}) {
+export async function fetchSealed(store, pub, {steps = [MAX_ITEMS, 5, 2, 1], now, start, maxParts = ANN_MAX} = {}) {
   for (const max of steps) {
-    const r = await fetchNew(store, {max, now});
+    const r = await fetchNew(store, {max, now, start});
     const box = seal({schema: r.schema, at: r.at, n: r.n, more: r.more, last: r.last, messages: r.messages}, pub);
     if (annParts(box) <= maxParts) return {r, box};
   }

@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {pickNew, toMessages, whenKo, newRoomKey, seal, open, toAnnotations, fromAnnotations, fetchNew, fetchSealed, annParts, ack, HELP_STORE, ID_RE, CURSOR_KEY, MSG_MAX, MAX_ITEMS, ANN_MAX} from '../../scripts/atlas11/help/forward.mjs';
+import {pickNew, toMessages, whenKo, newRoomKey, seal, open, toAnnotations, fromAnnotations, fetchNew, fetchSealed, annParts, ack, startCursor, FWD_START, HELP_STORE, ID_RE, CURSOR_KEY, MSG_MAX, MAX_ITEMS, ANN_MAX} from '../../scripts/atlas11/help/forward.mjs';
 import {HELP_STORE as LIB_STORE, ID_RE as LIB_ID, handleHelp} from '../../lib/atlas11/help.mjs';
 import {failStreak} from '../../scripts/atlas11/help/room.mjs';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
@@ -66,7 +66,7 @@ test('저장소 — 고객센터 서버가 쓴 글을 꺼냄 · 보낸 표시는
   const a = await call({op: 'send', kind: 'note', tone: 'good', text: '첫 화면이 예뻐요', agree: true, page: 'home'}, T0);
   const b = await call({op: 'send', kind: 'ask', text: '상품권은 언제 오나요?', agree: true, page: 'gift'}, T0 + 60e3);
   assert.ok(a.ok && b.ok, JSON.stringify([a, b]));
-  const r1 = await fetchNew(store, {now: new Date(T0 + 120e3)});
+  const r1 = await fetchNew(store, {now: new Date(T0 + 120e3), start: '2026-10-21T00:00:00Z'});
   assert.equal(r1.n, 2); assert.equal(r1.last, b.id);
   assert.ok(r1.messages[0].includes('첫 화면이 예뻐요') && r1.messages[1].includes('상품권은 언제 오나요?'));
   assert.equal((await ack(store, a.id)).moved, true);
@@ -78,6 +78,20 @@ test('저장소 — 고객센터 서버가 쓴 글을 꺼냄 · 보낸 표시는
   assert.equal((await ack(store, 'nope')).ok, false);
 });
 
+test('처음(보낸 표시 없음)에는 사장님 말씀 때(07:48) 뒤 글부터 — 옛 글은 한꺼번에 안 감 · 같은 때 글은 들어감', async () => {
+  const store = memoryStore(), S = Date.parse(FWD_START);
+  assert.equal(new Date(S).toISOString(), '2026-10-21T22:48:00.000Z');
+  for (const [t, r] of [[S - 86400e3, 'old0'], [S - 1, 'old1'], [S, 'same'], [S + 5e3, 'new1']]) {
+    const it = {id: id(t, r.padEnd(12, 'q')), kind: 'note', tone: 'good', text: r, page: 'home', at: new Date(t).toISOString()};
+    await store.setJSON('i/' + it.id, it);
+  }
+  const r = await fetchNew(store);
+  assert.deepEqual(r.items.map(x => x.text), ['same', 'new1']);
+  assert.ok(startCursor() < id(S, 'A'.repeat(12)) && startCursor() > id(S - 1, 'z'.repeat(12)));
+  assert.equal((await ack(store, r.last)).moved, true);
+  assert.equal((await fetchNew(store)).n, 0, '보낸 표시가 생기면 그 뒤만');
+});
+
 test('아주 긴 글 열 개(4바이트 글자 500자씩 · 마구잡이)도 막히지 않음 — 넘치면 글 수를 줄여 알림 줄 조각 안 · 남은 글은 다음 시간', async () => {
   const store = memoryStore(), k = newRoomKey();
   let seed = 7; const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
@@ -86,11 +100,11 @@ test('아주 긴 글 열 개(4바이트 글자 500자씩 · 마구잡이)도 막
     const it = {schema: 'atlas11-help-item-1', id: id(T0 + i * 1000, ('e' + i).padEnd(12, 'z')), kind: 'note', tone: 'good', text, page: 'home', at: new Date(T0 + i * 1000).toISOString(), dev: 'x', status: 'new'};
     await store.setJSON('i/' + it.id, it);
   }
-  assert.equal((await fetchNew(store)).n, 10);
-  const all = await fetchSealed(store, k.pub);
+  assert.equal((await fetchNew(store, {start: '2026-10-21T00:00:00Z'})).n, 10);
+  const all = await fetchSealed(store, k.pub, {start: '2026-10-21T00:00:00Z'});
   assert.ok(annParts(all.box) <= ANN_MAX && toAnnotations(all.box).length <= ANN_MAX + 1, '보통 한도 안');
   assert.equal(all.r.n + all.r.more, 10);
-  const {r, box} = await fetchSealed(store, k.pub, {maxParts: 3}); // 한도를 좁혀 줄이는 길을 꼭 지나게
+  const {r, box} = await fetchSealed(store, k.pub, {maxParts: 3, start: '2026-10-21T00:00:00Z'}); // 한도를 좁혀 줄이는 길을 꼭 지나게
   assert.ok(annParts(box) <= 3, String(annParts(box)));
   assert.ok(r.n >= 1 && r.n < 10 && r.more === 10 - r.n, `${r.n} + ${r.more}`);
   const got = open(box, k.priv);

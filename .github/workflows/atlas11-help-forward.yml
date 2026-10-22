@@ -3,7 +3,8 @@ name: atlas11-help-forward
 #   부르는 이 = Claude 일하는 방(매시 · scripts/atlas11/help/room.mjs) — 이 작업은 넷리파이 저장소(atlas11-help-v1)에서 「보낸 표시」 뒤 새 글만 꺼냄
 #   mode=fetch: 방이 준 공개 열쇠(pub)로 잠가 알림 줄(annotations)로 돌려줌 — 기록 줄에는 글 수만 · 사람 글은 맨글로 남지 않음(scripts/atlas11/help/forward.mjs)
 #   mode=ack:   방이 카톡을 다 보낸 뒤 「여기까지 보냄」(ack_id) — 앞으로만 옮김
-#   하지 않는 일: 저장소에 쓰기 · 사이트에 보내기 · 비밀 값 찍기 · 답 글 보내기(권한은 읽기만 · 넷리파이 열쇠는 이 작업 안에서만)
+#   넷리파이 저장소에 쓰는 것은 「보낸 표시」(fwd/cursor) 하나뿐 · 처음(보낸 표시 없음)에는 사장님 말씀 때(07:48) 뒤 글부터
+#   하지 않는 일: 고객 글 고치기 · 사이트에 보내기 · 비밀 값 찍기 · 답 글 보내기(깃허브 권한은 읽기만 · 넷리파이 열쇠는 이 작업 안에서만)
 on:
   workflow_dispatch:
     inputs:
