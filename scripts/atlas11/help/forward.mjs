@@ -18,8 +18,10 @@ import {fileURLToPath} from 'node:url';
 export const FWD_SCHEMA = 'atlas11-help-forward-1';
 export const HELP_STORE = 'atlas11-help-v1'; // lib/atlas11/help.mjs HELP_STORE 와 같음(이 파일은 따로 돎 — 시험이 맞댐)
 export const CURSOR_KEY = 'fwd/cursor';
-/** 넘기기 시작 때 — 보낸 표시가 아직 없을 때만 씀 · 사장님 말씀 때(2026-10-22 07:48 서울) 뒤 글부터(옛 글을 한꺼번에 보내지 않음 · 켜기 전 글도 빠뜨리지 않음) */
-export const FWD_START = '2026-10-21T22:48:00.000Z';
+/** 넘기기 시작 때 — 보낸 표시가 아직 없을 때만 씀 · 처리방침에 「카톡으로도 전해져요」 줄이 사이트에 오른 뒤 글부터
+ *  그 전 글은 처리방침에 없던 길이라 보내지 않음(사이트 고객센터에서 그대로 봄) · 올린 직후 보낸 표시를 올린 때로 한 번 옮김(작업 mode=ack · 앞으로만)
+ *  이 값은 그 한 번을 잊었을 때의 안전판(2026-10-22 14:00 서울 — 사장님께 말씀드린 올림 때) */
+export const FWD_START = '2026-10-22T05:00:00.000Z';
 /** 시작 때의 보낸 표시 — 글 번호 앞 9자(때)와 같은 꼴 + 「-」(같은 때 글보다 앞) */
 export const startCursor = (iso = FWD_START) => Math.floor(Date.parse(iso)).toString(36).padStart(9, '0') + '-';
 export const ID_RE = /^[0-9a-z]{9}-[A-Za-z0-9_-]{12}$/; // site/next/help-rule.js ID_RE 와 같음(시험이 맞댐)

@@ -6,6 +6,7 @@
 //                       ② (n > 0 이면) 방이 file 의 messages 를 차례대로 카톡 「나에게 보내기」로 한 통씩 — 글은 고치지 않음
 //                       ③ node scripts/atlas11/help/room.mjs --done --run <번호> --last <글 번호> → 깃허브 작업(mode=ack)으로 「여기까지 보냄」 · 읽은 작업 기록은 지움(잠긴 글이지만 남기지 않음)
 //   카톡을 다 못 보냈으면 ③을 하지 않음 → 다음 시간에 같은 글부터 다시(빠뜨리지 않음 · 두 번 갈 수는 있음)
+//   처음 켤 때: 사이트에 올린 직후 gh workflow run atlas11-help-forward.yml -f mode=ack -f ack_id=<올린 때 번호> 로 보낸 표시를 한 번 옮김(처리방침 줄 전 글은 안 감 · forward.mjs FWD_START)
 //   ①이 막히면(ok false) 결과에 streak(연달아 막힌 수) — 꼭 3 일 때만 방이 카톡 한 통 「넘기기가 세 번 연달아 막혔어요」(조용히 멈추지 않게 · 매시 되풀이 안 함)
 //   Claude 예약 방의 길: gh workflow run · gh run list · gh api(REST)만 됨(GraphQL · 묶음 받기 · aaa7377.com 막힘 — scripts/atlas11/jinhwa/gh.mjs 머리)
 import fs from 'node:fs';

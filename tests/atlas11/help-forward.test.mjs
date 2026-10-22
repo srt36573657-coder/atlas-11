@@ -78,9 +78,9 @@ test('저장소 — 고객센터 서버가 쓴 글을 꺼냄 · 보낸 표시는
   assert.equal((await ack(store, 'nope')).ok, false);
 });
 
-test('처음(보낸 표시 없음)에는 사장님 말씀 때(07:48) 뒤 글부터 — 옛 글은 한꺼번에 안 감 · 같은 때 글은 들어감', async () => {
+test('처음(보낸 표시 없음)에는 처리방침 카톡 줄이 오른 뒤 글부터 — 그 전 글은 안 감 · 같은 때 글은 들어감', async () => {
   const store = memoryStore(), S = Date.parse(FWD_START);
-  assert.equal(new Date(S).toISOString(), '2026-10-21T22:48:00.000Z');
+  assert.ok(S >= Date.parse('2026-10-22T05:00:00Z'), '사장님께 말씀드린 올림 때(14:00 서울)보다 앞이 아님');
   for (const [t, r] of [[S - 86400e3, 'old0'], [S - 1, 'old1'], [S, 'same'], [S + 5e3, 'new1']]) {
     const it = {id: id(t, r.padEnd(12, 'q')), kind: 'note', tone: 'good', text: r, page: 'home', at: new Date(t).toISOString()};
     await store.setJSON('i/' + it.id, it);
