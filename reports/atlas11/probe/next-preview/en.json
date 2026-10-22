@@ -1,35 +1,150 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-22T15:31:56.337Z",
- "base": null,
- "page": null,
+ "at": "2026-10-22T15:44:33.216Z",
+ "base": "http://127.0.0.1:8826",
+ "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
- "widths": null,
- "routes": 0,
- "companies": null,
- "allCompanies": null,
- "modules": null,
- "modFiles": null,
- "edge": null,
+ "widths": [
+  320,
+  360,
+  390
+ ],
+ "routes": 9636,
+ "companies": 2557,
+ "allCompanies": true,
+ "modules": true,
+ "modFiles": {
+  "past": true,
+  "rivals": true,
+  "grow": true,
+  "range": true,
+  "surge": true,
+  "cal": true,
+  "cond": true,
+  "talk": true,
+  "up": true,
+  "time": true,
+  "info": true,
+  "co": true,
+  "x": true,
+  "chx": true,
+  "today": true,
+  "why": true,
+  "gdr": true,
+  "share": true,
+  "hold": true,
+  "theme": true
+ },
+ "edge": true,
  "only": null,
  "appFile": null,
  "shard": "all/7",
  "full": false,
  "units": {
-  "total": 0,
-  "hash": null,
-  "w": null
+  "total": 13501,
+  "hash": "2655cd44c4f734f2",
+  "w": {
+   "@tail": 80,
+   "@newwin": 15
+  }
  },
- "seconds": 0,
- "secondsSum": 0,
- "shards": [],
- "counts": {},
+ "seconds": 351,
+ "secondsSum": 1729,
+ "shards": [
+  {
+   "shard": "2/7",
+   "ok": true,
+   "fails": 0,
+   "routes": 1948,
+   "screens": 1948,
+   "mine": 1942,
+   "seconds": 331,
+   "secs": {
+    "open": 0.3,
+    "routes": 329.7
+   }
+  },
+  {
+   "shard": "3/7",
+   "ok": true,
+   "fails": 0,
+   "routes": 1942,
+   "screens": 1942,
+   "mine": 1942,
+   "seconds": 346,
+   "secs": {
+    "open": 0.3,
+    "routes": 344.8
+   }
+  },
+  {
+   "shard": "4/7",
+   "ok": true,
+   "fails": 0,
+   "routes": 1942,
+   "screens": 1942,
+   "mine": 1942,
+   "seconds": 350,
+   "secs": {
+    "open": 0.3,
+    "routes": 348.8
+   }
+  },
+  {
+   "shard": "5/7",
+   "ok": true,
+   "fails": 0,
+   "routes": 1942,
+   "screens": 1981,
+   "mine": 1942,
+   "seconds": 351,
+   "secs": {
+    "open": 0.2,
+    "routes": 350.1
+   }
+  },
+  {
+   "shard": "7/7",
+   "ok": false,
+   "fails": 1,
+   "routes": 1862,
+   "screens": 2020,
+   "mine": 1863,
+   "seconds": 351,
+   "secs": {
+    "open": 0.3,
+    "routes": 335.6,
+    "act": 7.7,
+    "edge": 5.6,
+    "grammar": 0
+   }
+  }
+ ],
+ "counts": {
+  "쇼츠 장": 6,
+  "화면": 9833,
+  "길 · chips": 5,
+  "길 · shorts": 7,
+  "길 · find": 6,
+  "길 · watch": 1826,
+  "길 · chan": 64,
+  "길 · mod": 7726,
+  "길 · sub": 1,
+  "길 · me": 1,
+  "왜 사? 끝까지": 2,
+  "보내기 글상자": 3,
+  "누르기": 1,
+  "바꿔치기": 1,
+  "오늘 한 줄 문장": 412
+ },
  "missing": 0,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "가로 넘침": 1
+ },
+ "fails": 1,
  "own": {
-  "fails": 0,
+  "fails": 1,
   "missing": 0,
   "leftover": 0
  },
@@ -39,17 +154,25 @@
   "leftover": 0
  },
  "missingList": [],
- "all": [],
+ "all": [
+  {
+   "kind": "가로 넘침",
+   "what": "7px",
+   "ex": null,
+   "at": [
+    "아주 큰 글씨 · #/ch/g/semi @320",
+    "아주 큰 글씨 · #/ch/g/semi @360",
+    "아주 큰 글씨 · #/ch/i/%EB%B0%94%EC%9D%B4%EC%98%A4%20%EB%8F%84%EA%B5%AC%C2%B7%EC%84%9C%EB%B9%84%EC%8A%A4 @320",
+    "아주 큰 글씨 · #/ch/i/%EB%B0%94%EC%9D%B4%EC%98%A4%20%EB%8F%84%EA%B5%AC%C2%B7%EC%84%9C%EB%B9%84%EC%8A%A4 @360"
+   ],
+   "n": 4
+  }
+ ],
  "truncated": false,
  "problems": [
-  "몫 결과가 하나도 없음",
   "1/7 몫 결과 없음",
-  "2/7 몫 결과 없음",
-  "3/7 몫 결과 없음",
-  "4/7 몫 결과 없음",
-  "5/7 몫 결과 없음",
   "6/7 몫 결과 없음",
-  "7/7 몫 결과 없음"
+  "몫 일감 합 9631 ≠ 전체 13501"
  ],
  "ok": false
 }
