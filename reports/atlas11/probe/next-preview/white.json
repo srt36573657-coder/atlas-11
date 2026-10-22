@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T15:35:13.480Z",
+ "at": "2026-10-22T15:46:31.246Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -8,14 +8,14 @@
   "fail": 4
  },
  "fails": [
-  "다른 쪽 #/surge 390 단추 테두리 대비 3 — button.psurge-cell 1.91 「15든 25」 · button.psurge-cell 1.91 「16든 12뺌 5」 · button.psurge-cell 1.91 「19든 10뺌 6」",
-  "다른 쪽 #/surge/10 390 단추 테두리 대비 3 — button.psurge-cell 1.91 「15든 19」 · button.psurge-cell 1.91 「16든 36뺌 29」 · button.psurge-cell 1.91 「19든 43뺌 38」",
-  "다른 쪽 #/surge 320 단추 테두리 대비 3 — button.psurge-cell 1.91 「15든 25」 · button.psurge-cell 1.91 「16든 12뺌 5」 · button.psurge-cell 1.91 「19든 10뺌 6」",
-  "다른 쪽 #/surge/10 320 단추 테두리 대비 3 — button.psurge-cell 1.91 「15든 19」 · button.psurge-cell 1.91 「16든 36뺌 29」 · button.psurge-cell 1.91 「19든 43뺌 38」"
+  "다른 쪽 #/surge 390 단추 테두리 대비 3 — button.psurge-cell 1.92 「15든 25」 · button.psurge-cell 1.92 「16든 12뺌 5」 · button.psurge-cell 1.92 「19든 10뺌 6」",
+  "다른 쪽 #/surge/10 390 단추 테두리 대비 3 — button.psurge-cell 1.92 「15든 19」 · button.psurge-cell 1.92 「16든 36뺌 29」 · button.psurge-cell 1.92 「19든 43뺌 38」",
+  "다른 쪽 #/surge 320 단추 테두리 대비 3 — button.psurge-cell 1.92 「15든 25」 · button.psurge-cell 1.92 「16든 12뺌 5」 · button.psurge-cell 1.92 「19든 10뺌 6」",
+  "다른 쪽 #/surge/10 320 단추 테두리 대비 3 — button.psurge-cell 1.92 「15든 19」 · button.psurge-cell 1.92 「16든 36뺌 29」 · button.psurge-cell 1.92 「19든 43뺌 38」"
  ],
  "m": {
   "first": {
-   "bodyLum": 0.8812596829805006,
+   "bodyLum": 1,
    "chars": 166,
    "blocks": {
     "ess": 1341,
@@ -185,7 +185,7 @@
     "top": 232,
     "clockBottom": 551
    },
-   "bodyHex": "#E6F5EB",
+   "bodyHex": "#FFFFFF",
    "inkHex": "#000000",
    "findInput": true,
    "riseShown": [],
@@ -200,7 +200,7 @@
    "errs": []
   },
   "back": {
-   "bodyLum": 0.8812596829805006,
+   "bodyLum": 1,
    "chars": 105,
    "blocks": {
     "ess": 1242,
@@ -360,7 +360,7 @@
     "top": 232,
     "clockBottom": 551
    },
-   "bodyHex": "#E6F5EB",
+   "bodyHex": "#FFFFFF",
    "inkHex": "#000000",
    "findInput": true,
    "riseShown": [],
@@ -684,9 +684,9 @@
    }
   },
   "speed": {
-   "lcp": 2412,
-   "inp": 24,
-   "cls": 0.004
+   "lcp": 2436,
+   "inp": 40,
+   "cls": 0.028
   }
  },
  "net": {
