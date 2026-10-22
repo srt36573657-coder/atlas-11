@@ -287,7 +287,10 @@ function shortFacts() {
   if (!X) return out;
   const H = D.home, core = X.core, mkt = X.mkt;
   const kp = H?.idx?.KOSPI, kq = H?.idx?.KOSDAQ;
-  if (kp && Number.isFinite(kp.day)) out.push({id: 'idx', k: md(kp.date) + (kp.live ? ' 장 중' : ' 장 마감'), l1: '코스피는 하루', big: p2(kp.day), bc: cls(kp.day),
+  // 첫 장 머리 = 첫 화면 띠 · #/today 와 같은 셈(whenOf — 총정리 2026-10-22 C19: 지난 장 중 값이 「10월 12일 장 중」으로 「지금」처럼 읽히던 것) — 지난 값은 「? 10월 12일 오후 2:59까지」
+  const kw = kp ? whenOf(H, 'idx', kp.live) : null, kd = String(kp?.date ?? '').slice(0, 10);
+  const kk = !kw ? '' : (kw.stale ? '? ' : '') + (kw.now ? `${md(kd)} ${ampm(kw.t)} 장 중` : kw.intra && isTime(kw.t) ? `${md(kw.t.slice(0, 10))} ${ampm(kw.t)}까지` : `${md(kd)} 장 마감`);
+  if (kp && Number.isFinite(kp.day)) out.push({id: 'idx', k: kk, l1: '코스피는 하루', big: p2(kp.day), bc: cls(kp.day),
     l2: kq && Number.isFinite(kq.day) ? '코스닥은 ' + p2(kq.day) + '이에요' : '코스닥은 ?', mini: (kp.rows || []).slice(-21).map(r => r[1]), ml: '선은 코스피 20거래일이에요', go: '#/w/KOSPI', tile: ['코스피 ' + p2(kp.day), md(kp.date)],
     st: md(kp.date) + ' 코스피 · 코스닥 시황'});
   let up = 0, dn = 0, fl = 0;
@@ -295,8 +298,8 @@ function shortFacts() {
   if (up + dn + fl) out.push({id: 'breadth', k: md(mkt.asOf) + ' 장 마감', l1: '모든 회사 ' + num(up + dn + fl) + '곳 가운데', big: num(Math.max(up, dn)) + '곳', bc: up >= dn ? 'up' : 'dn',
     l2: up >= dn ? '올랐어요' : '내렸어요', ratio: {up, fl, dn}, go: null, tile: [num(Math.max(up, dn)) + '곳', up >= dn ? '오른 곳' : '내린 곳'], st: md(mkt.asOf) + ' 오른 곳과 내린 곳'});
   const r0 = core.rise?.list?.[0];
-  if (r0) out.push({id: 'rise', k: '1주 동안 · ' + md(core.rise.from) + '부터', l1: r0.name, big: pct(r0.chg), bc: cls(r0.chg), l2: '1주 동안 오른 업종 ' + core.rise.list.length + '개 가운데 1등이에요', mini: r0.v, ml: '선은 1주예요', go: '#/ch/i/' + enc(r0.name), tile: [pct(r0.chg), r0.name],
-    st: r0.name + ' 업종 1주 시황'});
+  if (r0) out.push({id: 'rise', k: '닷새 동안 · ' + md(core.rise.from) + '부터', l1: r0.name, big: pct(r0.chg), bc: cls(r0.chg), l2: '닷새 동안 오른 업종 ' + core.rise.list.length + '개 가운데 가장 많이 올랐어요', mini: r0.v, ml: '선은 닷새예요', go: '#/ch/i/' + enc(r0.name), tile: [pct(r0.chg), r0.name], // 「1등」 · 「1주」(주식 한 주와 헷갈림) 지움 — 총정리 C19 · C13
+    st: r0.name + ' 업종 닷새 시황'});
   const gs = [...(core.groups || [])].filter(g => Number.isFinite(g.chg)).sort((a, b) => b.chg - a.chg);
   if (gs.length) {
     const g = gs[0], w = gs[gs.length - 1];
@@ -385,7 +388,7 @@ async function homeRest() {
     const x = [...(core.groups || [])].filter(o => Number.isFinite(o.chg)).sort((p, q) => q.chg - p.chg); gs = x.length > 1 ? [x[0], x[x.length - 1]] : x;
     T = core.time?.opens?.[0]?.date ? {id: core.time.id, open: core.time.opens[0].date} : null;
   } else out.push(...noData());
-  if (rise.length) out.push(h('h2', {class: 'sec', text: '1주 동안 오른 업종'}), crows(rise, r => ({href: '#/ch/i/' + enc(r.name), name: r.name, x: r.chg, v: r.v})));
+  if (rise.length) out.push(h('h2', {class: 'sec', text: '닷새 동안 오른 업종'}), crows(rise, r => ({href: '#/ch/i/' + enc(r.name), name: r.name, x: r.chg, v: r.v}))); // 「1주」 → 「닷새」(총정리 C13 — 「전부 보기」를 펼친 뒤에만 보임 · 첫 화면 글자 셈 밖)
   if (gs.length) out.push(h('h2', {class: 'sec', text: '큰 업종 · 한 달'}), crows(gs, g => ({href: '#/ch/g/' + enc(g.id), name: g.name, x: g.chg, v: g.v})));
   out.push(premCard());
   if (T?.open) out.push(h('a', {class: 'm4-mr', href: oldOr('time', '#/time')}, h('span', {class: 'l', text: `봉인 ${T.id}호 — 3 · 5 · 10년 뒤 다시 엶`}), h('span', {class: 'k'}, '3년 뒤까지 ', h('b', {class: 'num', text: ddayText(T.open)})), h('i', {class: 'm4-chev', 'aria-hidden': 'true', text: '›'})));
@@ -465,7 +468,11 @@ function findBox() {
   inp.addEventListener('focus', findWarm, {once: true});
   inp.addEventListener('input', run);
   inp.addEventListener('keydown', e => { if (e.key === 'Escape') { inp.value = ''; run(); } });
-  form.addEventListener('submit', async e => { e.preventDefault(); if (!inp.value.trim()) { inp.focus(); return; } await run(); if (top) location.hash = '#/why/' + top.c; });
+  form.addEventListener('submit', async e => {
+    e.preventDefault(); if (!inp.value.trim()) { inp.focus(); return; } await run(); if (top) { location.hash = '#/why/' + top.c; return; }
+    // 찾은 줄이 펀드 · 우선주뿐인데 「시작」 — 말없이 그 자리라 고장처럼 보이던 것(총정리 B1) → 칸 밑 한 줄(줄 글 · 차례는 그대로 · 다시 치면 사라짐)
+    if (hits.querySelector('.w-xo') && !hits.querySelector('.w-st')) hits.prepend(h('p', {class: 'note w-st', role: 'status', text: '펀드 · 우선주는 열한 질문 밖이에요. 회사 이름을 골라 주세요.'}));
+  });
   if (findQ.trim()) run();
   return form;
 }
@@ -498,8 +505,10 @@ function allBox(H, band) {
   d.addEventListener('toggle', () => { if (d.open) rest(); });
   return d;
 }
-/** 시황 사실 — 모든 회사 마지막 날 오른 곳 · 내린 곳(요약 파일 · 옛것이면 home.json 네이버 업종 회사 수) · 사실마다 「왜 그럴까?」 → 살펴볼 물음 셋(답 · 앞날 없음) */
-const WHY3 = ['누가 팔았을까?', '다른 날에도 그랬을까?', '내 이유와 상관있을까?'];
+/** 시황 사실 — 모든 회사 마지막 날 오른 곳 · 내린 곳(요약 파일 · 옛것이면 home.json 네이버 업종 회사 수) · 사실마다 「왜 그럴까?」 → 열한 걸음 이어 묻기(지난 사실만 · 앞날 없음)
+    사장님 2026-10-22(서울) 08:53 「왜 그럴까를 뻔한 이야기로 하고 있어 … 원숭이 엉덩이는 빨개 빨가면 사과 … 11단계는 논리적으로 사방팔방으로 이야기 해야지 그 이야기를 움직이는 도식화로 해야 하고」
+    (명령문 docs/design/total-2026-10-22/order-0853.txt) — 옛 물음 셋(누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?)은 열한 걸음의 3 · 4 · 9 · 11 걸음이 맡음
+    그림 · 걸음 글은 why-chain.js · why-steps.js(처음 누를 때 받음 — 첫 그림 · 첫 화면 글자 셈에 안 듦) · 펼칠 때마다 처음부터 움직임(el.play) */
 function newsBox(H) {
   const Y = sumOk()?.day, B = H?.sectors?.breadth;
   const v = Y && Y.n > 0 ? {up: Y.up, dn: Y.dn, d: Y.date} : B && B.up + B.down + B.flat > 0 ? {up: B.up, dn: B.down, d: H.sectors.date} : null;
@@ -508,57 +517,28 @@ function newsBox(H) {
   box.setAttribute('aria-label', '시황 사실 · ' + md(v.d)); // 날짜는 오늘 장 줄 · 읽어 주기에 — 보이는 글은 글자 수 잣대 안
   /* 돌 판(2026-10-19 10:31 · 시안 platform3/home) — 사실 두 줄(오른 곳 · 내린 곳)마다 「왜 그럴까?」 · 사이에 가는 막대 한 줄(길이 = 곳 수) */
   const fact = (c, t, n) => {
-    const qs = h('ul', {class: 'w-qs', hidden: true}, ...WHY3.map((q, i) => whyQ(q, i, H)));
+    const wrap = h('div', {class: 'w-chain', hidden: true}); // 열한 걸음 칸(옛 ul.w-qs 자리 · 누르기 전에는 비어 있음)
     const b = h('button', {type: 'button', class: 'w-why', 'aria-expanded': 'false', text: '왜 그럴까?'});
-    b.addEventListener('click', () => { qs.hidden = !qs.hidden; b.setAttribute('aria-expanded', String(!qs.hidden)); });
-    return h('div', {class: 'w-facts', 'data-fact': ''}, h('p', {class: 'w-fl'}, h('span', {class: 'w-f', 'data-num': ''}, h('span', {class: 'w-lb', text: t}), h('b', {class: 'num ' + c, text: Number.isFinite(n) ? num(n) : '?'}))), b, qs);
+    let el = null, busy = false;
+    b.addEventListener('click', async () => {
+      if (!wrap.hidden) { wrap.hidden = true; b.setAttribute('aria-expanded', 'false'); return; }
+      if (!el) {
+        if (busy) return; busy = true;
+        try {
+          const [{whyChain}, {homeSteps}] = await Promise.all([import('/next/why-chain.js'), import('/next/why-steps.js')]), C = myCounts();
+          el = whyChain(homeSteps({side: c === 'dn' ? 'dn' : 'up', n, date: v.d, H, TH: D.themeHome, mine: C ? {count: C.stop} : null}), {});
+          wrap.replaceChildren(el);
+        } catch (e) { console.error(e); wrap.replaceChildren(h('p', {class: 'note', text: '? 이어 묻기를 열지 못했어요. 잠시 뒤 다시 눌러 주세요.'})); }
+        busy = false;
+      }
+      wrap.hidden = false; b.setAttribute('aria-expanded', 'true'); el?.play?.();
+    });
+    return h('div', {class: 'w-facts', 'data-fact': ''}, h('p', {class: 'w-fl'}, h('span', {class: 'w-f', 'data-num': ''}, h('span', {class: 'w-lb', text: t}), h('b', {class: 'num ' + c, text: Number.isFinite(n) ? num(n) : '?'}))), b, wrap);
   };
   const bar = h('div', {class: 's-split', 'aria-hidden': 'true'}), gu = h('i', {class: 'gu'}), gd = h('i', {class: 'gd'});
   if (Number.isFinite(v.up) && Number.isFinite(v.dn) && v.up + v.dn > 0) { gu.style.flexGrow = String(v.up); gd.style.flexGrow = String(v.dn); bar.append(gu, gd); }
   box.append(fact('up', '오른 곳', v.up), bar, fact('dn', '내린 곳', v.dn));
   return box;
-}
-/* 물음 셋의 답(사장님 2026-10-19 13:27 지인 의견 「이 버튼을 또 누른다면 한 번에 알아 볼 수 있게 정리가 되어있는 글이 나오면 … 따로 찾아보아야한다는 과정이 있어 조금 아쉬운것같습니댜」 · 「해결해」)
-   물음을 누르면 바로 밑에 받은 자료로 센 지난 사실만 펼침(앞날 · 사라 · 팔라 없음 · 못 받은 값은 「?」) — 0203 [화면] 6 「답과 앞날은 없다」를 이 말씀으로 「지난 사실 답은 있음 · 앞날은 없음」으로 바꿈
-   ① 누가 팔았을까? = 그날 개인 · 외국인 · 기관이 사고판 돈(home.json flows) ② 다른 날에도 그랬을까? = 지난 20거래일 지수가 오른 날 · 내린 날 · 잇달아 같은 쪽 날 수(home.json idx rows)
-   ③ 내 이유와 상관있을까? = 이 기기 매매일지에 적은 이유 수 · 가장 최근 한 줄(atlas:godori-why · 읽기만) + 매매일지 고리 */
-function whyLines(i, H) {
-  if (i === 0) {
-    const F = H?.flows, out = [];
-    for (const [k, nm] of [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']]) {
-      const x = F?.[k]; if (!x) continue;
-      const who = [['foreign', '외국인'], ['institutional', '기관'], ['personal', '개인']].filter(([q]) => Number.isFinite(x[q]));
-      if (!who.length) continue;
-      if (!out.length && isDay(x.date)) out.push(md(x.date) + ' 하루 사고판 돈이에요.');
-      out.push(['h', nm], ...who.map(([q, w]) => w + ' ' + eokH(x[q]) + (x[q] < 0 ? ' 팔았어요' : ' 샀어요'))); // 시장 이름 한 줄 + 누가 얼마 한 줄씩
-    }
-    return out.length ? {lines: out} : {lines: ['? 이번에 사고판 돈을 못 받았어요.']};
-  }
-  if (i === 1) {
-    const out = [];
-    for (const [k, nm] of [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']]) {
-      const rows = (H?.idx?.[k]?.rows ?? []).filter(r => Array.isArray(r) && Number.isFinite(r[1])).slice(-21);
-      if (rows.length < 3) continue;
-      const d = rows.slice(1).map((r, j) => Math.sign(r[1] - rows[j][1])), n = d.length, up = d.filter(x => x > 0).length, dn = d.filter(x => x < 0).length;
-      const last = d[n - 1]; let run = 0; for (let j = n - 1; j >= 0 && d[j] === last && last !== 0; j--) run++;
-      out.push(['h', nm], `지난 ${num(n)}거래일 동안 ${num(up)}일 오르고 ${num(dn)}일 내렸어요.`); if (run >= 2) out.push(`마지막 ${num(run)}일은 잇달아 ${last < 0 ? '내렸어요' : '올랐어요'}.`);
-    }
-    return out.length ? {lines: out} : {lines: ['? 지난 날 지수 값을 못 받았어요.']};
-  }
-  const C = myCounts();
-  if (!C) return {lines: ['? 이 기기가 기록을 기억하지 못해요.']};
-  const last = [...C.list].sort((p, q) => String(q.at).localeCompare(String(p.at)))[0];
-  if (!last) return {lines: ['아직 적은 이유가 없어요. 사기 전에 열한 질문으로 먼저 적어 두면 여기서 바로 견줘 봐요.'], link: ['#/why', '열한 질문으로 적기 ›']};
-  return {lines: [`내가 적은 이유 ${num(C.stop)}개가 있어요.`, `가장 최근 — ${isDay(last.at) ? md(String(last.at).slice(0, 10)) + ' ' : ''}${last.name ?? '?'}`], link: ['#/why', '내 이유 다시 보기 ›']};
-}
-function whyQ(q, i, H) {
-  const ans = h('div', {class: 'w-ans', hidden: true});
-  const b = h('button', {type: 'button', class: 'w-q', 'aria-expanded': 'false'}, h('span', {text: q}), h('i', {'aria-hidden': 'true', text: '›'}));
-  b.addEventListener('click', () => {
-    if (!ans.childElementCount) { const A = whyLines(i, H); ans.append(...A.lines.map(t => (Array.isArray(t) ? h('p', {class: 'w-ah', text: t[1]}) : h('p', {text: t})))); if (A.link) ans.append(h('a', {href: A.link[0], text: A.link[1]})); }
-    ans.hidden = !ans.hidden; b.setAttribute('aria-expanded', String(!ans.hidden));
-  });
-  return h('li', {}, b, ans);
 }
 /** 노란 말풍선(share-btn.js 와 같은 모양 · 색은 app.css .kk-ic .kk-b) */
 function kkIcon() { const s = sv('svg', {class: 'kk-ic', viewBox: '0 0 24 24', width: 28, height: 28, 'aria-hidden': 'true', focusable: 'false'}); s.append(sv('path', {class: 'kk-b', d: 'M12 3C6.75 3 2.5 6.36 2.5 10.5c0 2.65 1.74 4.98 4.37 6.31l-1.1 4.02c-.1.36.31.65.62.44l4.78-3.17c.27.02.55.03.83.03 5.25 0 9.5-3.36 9.5-7.5S17.25 3 12 3z'})); return s; }
@@ -676,7 +656,7 @@ function kkWrap(el, kk, place, cls = 'kkr') {
 }
 /** 한 줄(이름 · % · 작은 선) — r = {href(null 이면 누르지 않는 줄), name, x, pt?, v, kk?(종목이면 카톡 단추 — kkWrap)} · 칩 목록 · 첫 화면 「더 보기」가 함께 씀 */
 function crowLi(r, hide = false) {
-  return h('li', {hidden: hide}, kkWrap(h(r.href ? 'a' : 'div', {class: 'crow', href: r.href || null}, h('b', {class: 'cn', text: r.name}), h('span', {class: 'cp ' + cls(r.x), text: r.pt ?? pct(r.x)}),
+  return h('li', {hidden: hide}, kkWrap(h(r.href ? 'a' : 'div', {class: 'crow', href: r.href || null}, r.sub ? h('span', {class: 'cn cn2'}, h('b', {text: r.name}), h('small', {text: r.sub})) : h('b', {class: 'cn', text: r.name}), h('span', {class: 'cp ' + cls(r.x), text: r.pt ?? pct(r.x)}), // r.sub = 이름 밑 작은 뜻 글(미국 지수 · 총정리 C6)
     lineSvg(r.v, {w: 96, ht: 36, fill: false, dot: false, sw: 2}) || h('i', {class: 'ln0', 'aria-hidden': 'true'})), r.kk, 'chip.row'));
 }
 function crows(items, row) { const li = items.map(row).filter(Boolean).map(r => crowLi(r)); return li.length ? h('ul', {class: 'clist'}, li) : null; }
@@ -700,7 +680,7 @@ function coCard(code, badge = '한 달', extra = null, bare = false, day = null)
   const c = coOf(code); if (!c) return null;
   return kkWrap(card('#/w/' + code, dayThumb(c.l, badge, c20(c), day), c.n, (c.i || '?') + ' 업종' + (extra ? ' · ' + extra : ''), first(c.i)), {code, name: c.n, kind: 'share'}, 'chip.card', 'kkr kkc');
 }
-function riseCard(r, bare = false) { const core = ix()?.core ?? D.core; return card('#/ch/i/' + enc(r.name), dayThumb(r.v, '1주', r.chg), r.name, bare ? '1주 동안 오른 업종' : '업종 채널 · ' + md(core?.rise?.from) + ' → ' + md(core?.rise?.to), first(r.name)); }
+function riseCard(r, bare = false) { const core = ix()?.core ?? D.core; return card('#/ch/i/' + enc(r.name), dayThumb(r.v, '닷새', r.chg), r.name, bare ? '닷새 동안 오른 업종' : '업종 채널 · ' + md(core?.rise?.from) + ' → ' + md(core?.rise?.to), first(r.name)); } // 「1주」 → 「닷새」(총정리 C13 — 주식 「한 주」와 헷갈리지 않게 · 테마 시계의 「지난 닷새」와 같은 말)
 function groupCard(g, bare = false) { return card('#/ch/g/' + enc(g.id), dayThumb(g.v, '한 달', g.chg), g.name + ' 큰 업종', '회사 ' + num(g.n) + '곳 · 큰 회사 기준 ' + pct(g.cwChg), first(g.short || g.name)); }
 /** 급등 카드 — 급등 칩 안에만(첫 화면에 두지 않음 · 「1등」 말 없음 [6] 5) · hf = surgeHalf() 면 숫자 옆에 반값 한 줄([6] 6) · 큰 숫자 = 마지막 날 하루(d1)
     카톡 단추 = kind 'surge'(사장님 2026-10-18 16:39 [6] 8 — 앞 명령문의 「급등 카드 보내기 없음」을 바꿈 · 받는 카드에 반값 한 줄) */
@@ -721,27 +701,79 @@ async function vHome(chip) {
   if (chip === 'all') { await Promise.all([need('home'), need('sum'), need('themeHome')]); return vHomeAll(); } // 첫 화면 한 화면(2026-10-18 명령문 0015 [6] — 일꾼 S2 · vHomeAll) · 테마 시계 칸 자료 theme-home.json(4KB 남짓 · index.html 이 미리 받음) — 첫 화면은 mkt · cond · theme.json 을 받지 않음([9] 7 · 2026-10-19)
   return vChip(chip);
 }
-/** 칩 쪽(#/f/…) — 칩마다 제 자료만 받음 · 맨 앞 하나만 큰 카드 + 한 줄 목록 10줄 + 「나머지 n곳 보기」([7] 5) · 급등은 반값 한 줄([6] 6) · 「1등」 말 · 보내기 없음([6] 5) */
-const CHIP_NEED = {rise: ['core'], group: ['core'], ind: ['core'], us: ['home'], surge: ['surge', 'sum'], lead: ['cond', 'mkt'], pick: ['home', 'mkt']};
+/* 테마 시계 자리(총정리 2026-10-22 C1 ~ C7 · C24 · C25 · A24 — 칩 · 채널 · 관심 · 찾기 맨 위 결 한 줄)
+   자료 = 첫 화면이 이미 받는 theme-home.json(5KB · 업종마다 자리 z) · 업종 쪽 자료 theme.json 을 받아 두었으면 날 수(d) · 점(sc)은 거기서(첫 화면 파일엔 앞 셋만 있음)
+   못 받으면 null — 줄을 그리지 않음(지어 채우지 않음) · 지난 기록(올릴 때 셈)만 · 차례 · 목록은 그대로 */
+const TZ = ['S', 'B', 'W', 'Q']; // 싹 · 꽃 · 시듦 · 잠잠(테마 시계 쪽과 같은 차례)
+const thHome = () => { const j = D.themeHome; return j && j.schema === 'dori-theme-1-home' && Array.isArray(j.inds) && j.count && j.order ? j : null; };
+const thFull = () => { const j = D.theme; return j && j.schema === 'dori-theme-1' && Array.isArray(j.inds) ? j : null; };
+function thInd(n) {
+  const b = thFull()?.inds?.find(i => i?.n === n) ?? thHome()?.inds?.find(i => i?.n === n);
+  return b && TH_ZONES[b.z] ? {z: b.z, sc: Number.isFinite(b.sc) ? b.sc : null, d: Number.isFinite(b.d) ? b.d : null} : null;
+}
+/** 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 — 업종 · 대장주 목록 · 업종 채널의 업종 탭) — 업종 이름 → 차례 번호(작을수록 앞)
+    자리 싹 → 꽃 → 시듦 → 잠잠 · 자리 안은 theme.json order(테마 시계 쪽과 같은 차례 — 싹 = 점이 많이 찬 순서 · theme-engine.js)
+    theme.json 을 못 받으면 theme-home.json 으로 같은 잣대(싹 = 앞 셋 order.S 다음 닷새 x · 꽃 = 한 달 큰 차례 · 시듦 = 닷새 작은 차례 · 잠잠 = 닷새 큰 차례 · 같으면 이름)
+    둘 다 없으면 빈 표(부르는 쪽이 옛 차례를 둠) · 오른 크기로는 줄 세우지 않음 — 테마 자료에 없는 업종만 맨 뒤(부르기 전 차례 그대로) */
+function sproutRank() {
+  const r = new Map(), F = thFull();
+  if (F?.order) { for (const z of TZ) for (const n of Array.isArray(F.order[z]) ? F.order[z] : []) if (typeof n === 'string' && !r.has(n)) r.set(n, r.size); if (r.size) return r; }
+  const Hm = thHome(); if (!Hm) return r;
+  const top = Array.isArray(Hm.order?.S) ? Hm.order.S : [], ti = n => (top.includes(n) ? top.indexOf(n) : 99), y = i => (Number.isFinite(i.y) ? i.y : 0), x = i => (Number.isFinite(i.x) ? i.x : 0);
+  const inZone = (a, b) => (a.z === 'S' ? ti(a.n) - ti(b.n) || y(b) - y(a) : a.z === 'B' ? x(b) - x(a) : a.z === 'W' ? y(a) - y(b) : y(b) - y(a));
+  Hm.inds.filter(i => TZ.includes(i?.z) && typeof i.n === 'string').sort((a, b) => TZ.indexOf(a.z) - TZ.indexOf(b.z) || inZone(a, b) || (a.n < b.n ? -1 : a.n > b.n ? 1 : 0)).forEach(i => { if (!r.has(i.n)) r.set(i.n, r.size); });
+  return r;
+}
+/** 목록을 싹 먼저 차례로(같은 자리 · 테마 자료에 없는 것은 지금 차례 그대로 — 안정 정렬) · 표가 비면 null(옛 차례를 그대로 쓰라는 뜻) */
+const bySprout = (xs, nameOf) => { const r = sproutRank(); if (!r.size) return null; const at = x => r.get(nameOf(x)) ?? 1e9; return [...xs].sort((p, q) => at(p) - at(q)); };
+/** 업종 이름들의 자리 수 — 「싹 5 · 꽃 3」(0인 자리는 뺌 · 모르는 업종은 「? n」) · 테마 자료가 없으면 null */
+function zoneCount(names) {
+  if (!thHome() && !thFull()) return null;
+  const c = {S: 0, B: 0, W: 0, Q: 0}; let q = 0;
+  for (const n of names) { const z = thInd(n)?.z; if (z) c[z]++; else q++; }
+  return [...TZ.filter(z => c[z]).map(z => TH_ZONES[z] + ' ' + num(c[z])), ...(q ? ['? ' + num(q)] : [])].join(' · ') || null;
+}
+/** 칩 쪽 맨 위 결 한 줄(총정리 C1 ~ C6) — 굵은 글 한 줄(문장 한두 개) + 작은 글 한 줄 + 고리 한 줄(48px) · note() 앞 · 차례 · 목록은 그대로 */
+const chipLead = (t1, t2 = null, sub = null, go = null) => h('div', {class: 'c-lead'}, h('p', {class: 'c-lt'}, h('span', {text: t1}), t2 ? [' ', h('span', {text: t2})] : null),
+  sub ? h('p', {class: 'c-ls', text: sub}) : null, go ? h('a', {class: 'c-go', href: go[0]}, h('span', {text: go[1]}), h('i', {'aria-hidden': 'true', text: '›'})) : null);
+/** 업종 채널 이름 밑 결 한 줄(총정리 C7) — 「테마 시계로 보면 지금 시듦 자리 2일째예요 ›」 → 테마 업종 쪽(#/t/i/<업종>) · 자료가 없으면 null(줄 없음) */
+function chZone(n) {
+  const I = thInd(n); if (!I) return null;
+  return h('a', {class: 'ch-z', href: '#/t/i/' + enc(n)}, h('span', {class: 'ch-zt'}, h('span', {text: '테마 시계로 보면 지금'}), ' ', h('b', {text: TH_ZONES[I.z]}), ' ', h('span', {text: I.d ? '자리 ' + num(I.d) + '일째예요' : '자리예요'})), h('i', {'aria-hidden': 'true', text: '›'}));
+}
+/** 미국 지수 이름 밑 작은 뜻 글(총정리 C6 — 이름만으로는 무엇인지 모름) */
+const US_MEAN = {INX: '미국 큰 회사 500곳', IXIC: '기술 회사가 많은 미국 시장', DJI: '미국 큰 회사 30곳', SOX: '미국 반도체 회사들', VIX: '겁날 때 오르는 숫자'};
+/** 칩 쪽(#/f/…) — 칩마다 제 자료만 받음 · 맨 앞 하나만 큰 카드 + 한 줄 목록 10줄 + 「나머지 n곳 보기」([7] 5) · 급등은 반값 한 줄([6] 6) · 「1등」 말 · 보내기 없음([6] 5)
+    총정리 2026-10-22 C1 ~ C6: 맨 위 결 한 줄(테마 시계 자리 · 뜻 · 지난 하루) 먼저 — 차례는 그대로(바꾸기는 사장님께 여쭘) */
+const CHIP_NEED = {rise: ['core', 'themeHome'], group: ['core', 'themeHome'], ind: ['core', 'themeHome', 'theme'], us: ['home'], surge: ['surge', 'sum'], lead: ['cond', 'mkt', 'themeHome', 'theme'], pick: ['home', 'mkt']}; // theme = 업종 쪽 자료(30KB · 싹 먼저 차례 — 업종 · 대장주 칩을 열 때만)
 async function vChip(chip) {
   await Promise.all(CHIP_NEED[chip].map(need));
   const T = CHIPS.find(c => c[0] === chip)[1], nodes = [chipsBar(chip)], none = t => ({title: T, nodes: [chipsBar(chip), ...noData(t)]});
-  const note = t => nodes.push(h('p', {class: 'note', text: t})), core = D.core;
+  const note = t => nodes.push(h('p', {class: 'note', text: t})), core = D.core, lead = (...a) => nodes.push(chipLead(...a));
   if (chip === 'rise') {
     if (!core) return none();
-    const rise = core.rise?.list || [];
-    note('1주 동안 오른 업종을 많이 오른 차례로 보여요(' + md(core.rise?.from) + ' → ' + md(core.rise?.to) + ').');
-    if (!rise.length) nodes.push(h('p', {class: 'empty', text: '1주 동안 오른 업종이 없어요.'}));
+    const rise = core.rise?.list || [], zs = zoneCount(rise.map(r => r.name));
+    if (rise.length) lead('닷새 동안 오른 업종 ' + num(rise.length) + '곳' + (zs ? ' — ' + zs : ''));
+    note('닷새 동안 오른 업종을 많이 오른 차례로 보여요(' + md(core.rise?.from) + ' → ' + md(core.rise?.to) + ').');
+    if (!rise.length) nodes.push(h('p', {class: 'empty', text: '닷새 동안 오른 업종이 없어요.'}));
     nodes.push(...chipList(rise, riseCard, r => ({href: '#/ch/i/' + enc(r.name), name: r.name, x: r.chg, v: r.v}), '개'));
   } else if (chip === 'group') {
     if (!core) return none();
     const gs = [...(core.groups || [])].sort((a, b) => b.chg - a.chg);
+    if (thHome() || thFull()) { // 큰 업종마다 싹 자리 업종 수(테마 시계 · 지난 셈) — 가장 많은 곳(같으면 함께)
+      const sp = new Map(gs.map(g => [g.id, 0])); for (const i of core.industries || []) if (thInd(i.name)?.z === 'S' && sp.has(i.g)) sp.set(i.g, sp.get(i.g) + 1);
+      const mx = Math.max(0, ...sp.values()), tops = gs.filter(g => mx > 0 && sp.get(g.id) === mx).slice(0, 3).map(g => g.short || g.name); // 짧은 이름(「K-소비재」) — 긴 이름은 안에 「 · 」가 있어 여럿을 이으면 어디서 끊기는지 모름
+      const nm = tops.length < 2 ? tops.join('') : tops.length === 2 ? jo(tops[0], '과', '와') + ' ' + tops[1] : tops.slice(0, -1).join(', ') + ', ' + tops[tops.length - 1];
+      lead(!tops.length ? '지금은 싹 자리 업종이 든 큰 업종이 없어요.' : '싹이 가장 많은 큰 업종은 ' + jo(nm, '이에요', '예요') + '(' + num(mx) + '곳' + (tops.length > 1 ? '씩' : '') + ').');
+    }
     note('큰 업종 ' + gs.length + '개 · 한 달 평균으로 많이 오른 차례');
     nodes.push(...chipList(gs, groupCard, g => ({href: '#/ch/g/' + enc(g.id), name: g.name, x: g.chg, v: g.v}), '개'));
   } else if (chip === 'ind') {
     if (!core) return none();
-    const inds = [...(core.industries || [])].sort((p, q) => q.chg - p.chg);
-    note('업종 ' + inds.length + '개 · 한 달 평균으로 많이 오른 차례');
+    // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 — 옛 「한 달 평균으로 많이 오른 차례」를 바꿈) · 테마 자료를 못 받았을 때만 옛 차례 · 옛 글
+    const inds0 = [...(core.industries || [])].sort((p, q) => q.chg - p.chg), sp = bySprout(inds0, i => i.name), inds = sp ?? inds0, TH = thHome();
+    if (TH) lead(md(TH.asOf) + ' 기록 — ' + TZ.map(z => TH_ZONES[z] + ' ' + num(TH.count[z] ?? TH.inds.filter(i => i.z === z).length)).join(' · ') + '곳', null, null, ['#/t/sprout', '싹 자리 모두 보기']);
+    note(sp ? '업종 ' + inds.length + '개 · 싹 자리부터 꽃 · 시듦 · 잠잠 차례' : '업종 ' + inds.length + '개 · 한 달 평균으로 많이 오른 차례');
     nodes.push(...chipList(inds, i => card('#/ch/i/' + enc(i.name), dayThumb(i.v, '한 달', i.chg), i.name + ' 업종', '회사 ' + num(i.n) + '곳 · 큰 회사 기준 ' + pct(i.cwChg), first(i.name)),
       i => ({href: '#/ch/i/' + enc(i.name), name: i.name, x: i.chg, v: i.v}), '개'));
   } else if (chip === 'surge') {
@@ -755,19 +787,29 @@ async function vChip(chip) {
     nodes.push(h('a', {class: 'more', href: oldOr('surge', '#/surge'), text: '급등 다섯 칸 자세히 ›'}));
   } else if (chip === 'lead') {
     const C = condOf(), co = D.mkt?.companies; if (!C || !co) return none('회사 크기 자료');
-    const leads = [...C.entries()].filter(([c, o]) => o.rk === 1 && co[c] && Array.isArray(o.l5) && Number.isFinite(o.r5)).sort((a, b) => b[1].r5 - a[1].r5 || a[0].localeCompare(b[0]));
-    note('업종마다 가장 큰 회사 ' + leads.length + '곳 · 5일 동안 많이 오른 차례');
+    // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」) — 그 대장주가 든 업종의 자리 차례(업종 칩과 같은 표) · 같으면 종목 번호 · 테마 자료를 못 받았을 때만 옛 차례(5일 오른 차례) · 옛 글
+    const all = [...C.entries()].filter(([c, o]) => o.rk === 1 && co[c] && Array.isArray(o.l5) && Number.isFinite(o.r5)), rk = sproutRank(), indOf = ([c, o]) => o.i || co[c]?.i;
+    const leads = rk.size ? all.sort((a, b) => (rk.get(indOf(a)) ?? 1e9) - (rk.get(indOf(b)) ?? 1e9) || a[0].localeCompare(b[0])) : all.sort((a, b) => b[1].r5 - a[1].r5 || a[0].localeCompare(b[0]));
+    const zs = zoneCount(leads.map(indOf)); // 그 대장주가 든 업종의 테마 시계 자리(「1등」 말 없음 — [6] 5 · [10] 1)
+    if (leads.length) lead('대장주는 업종마다 회사 크기가 가장 큰 곳이에요.', null, zs ? '대장주 ' + num(leads.length) + '곳이 든 업종 자리 — ' + zs : null);
+    note(rk.size ? '업종마다 가장 큰 회사 ' + leads.length + '곳 · 싹 업종의 대장주부터' : '업종마다 가장 큰 회사 ' + leads.length + '곳 · 5일 동안 많이 오른 차례');
     nodes.push(...chipList(leads, ([c, o]) => leadCard(c, o), ([c, o]) => ({href: '#/w/' + c, name: co[c].n, x: o.r5, v: o.l5, kk: {code: c, name: co[c].n, kind: 'share'}})));
   } else if (chip === 'pick') {
     const s3 = D.home?.s365, co = D.mkt?.companies || {}, picks = Array.isArray(s3?.list) ? s3.list.filter(([c]) => co[c]) : [];
     if (!picks.length) return none('고른 곳 자료');
+    // 결(총정리 C5) — 누가 무슨 잣대로 고른 목록인지 · 사고팔기 권함이 아님 · 그날 오른 곳 · 내린 곳 수(#/today 고른 칸과 같은 셈 s365 up · down · flat)
+    const ud = [[s3.up, '오름'], [s3.down, '내림'], [s3.flat, '그대로']].filter(([v]) => Number.isFinite(v) && v > 0).map(([v, t]) => num(v) + '곳 ' + t).join(' · ');
+    lead('멍거 · 린치 조건을 넘은 ' + num(s3.n) + '곳이에요.', '사고팔기를 권하는 목록이 아니에요.', ud && isDay(s3.date) ? md(s3.date) + ': ' + ud : null);
     note('고른 곳 ' + s3.n + '곳 · ' + md(s3.date) + ' 하루 많이 오른 차례');
     nodes.push(...chipList(picks, ([c, x]) => coCard(c, '한 달', md(s3.date) + ' 마감', false, x),([c, x]) => ({href: '#/w/' + c, name: co[c].n, x, v: co[c].l, kk: {code: c, name: co[c].n, kind: 'share'}})));
   } else if (chip === 'us') {
     const us = D.home?.us; if (!us?.rows?.length) return none('미국 자료');
+    // 결(총정리 C6) — 큰 지수 셋(S&P 500 · 나스닥 · 다우)이 같은 쪽이었나(첫 화면 「더 보기」 · #/today 와 같은 말) · 이름 밑 작은 뜻 글
+    const three = ['INX', 'IXIC', 'DJI'].map(k => us.rows.find(r => r?.key === k)).filter(r => r && Number.isFinite(r.chg)), up3 = three.filter(r => r.chg > 0).length;
+    if (three.length) lead((isDay(us.date) ? md(us.date) + ' ' : '') + '미국 — ' + (three.length < 3 ? `${three.length}개 지수 가운데 ${up3}개가 올랐어요` : up3 === 3 ? '세 지수 모두 올랐어요' : up3 === 0 ? '세 지수 모두 내렸어요' : `세 지수 가운데 ${up3}개가 올랐어요`));
     note('미국 마지막 장 · ' + md(us.date) + ' 마감');
-    nodes.push(...chipList(us.rows, r => h('div', {class: 'card'}, numThumb(p2(r.chg), r.chg, r.name + ' · ' + num(r.close)), h('div', {class: 'meta'}, h('span', {class: 'av', 'aria-hidden': 'true', text: '미'}), h('div', {}, h('b', {text: r.name + ' 하루 ' + p2(r.chg)}), h('small', {text: md(r.date) + ' 마감 · 3달 낮은 값 ' + num(r.lo) + ' · 높은 값 ' + num(r.hi)})))),
-      r => ({href: null, name: r.name, x: r.chg, pt: p2(r.chg), v: null})));
+    nodes.push(...chipList(us.rows, r => h('div', {class: 'card'}, numThumb(p2(r.chg), r.chg, r.name + ' · ' + num(r.close)), h('div', {class: 'meta'}, h('span', {class: 'av', 'aria-hidden': 'true', text: '미'}), h('div', {}, h('b', {text: r.name + ' 하루 ' + p2(r.chg)}), h('small', {text: (US_MEAN[r.key] ? US_MEAN[r.key] + ' · ' : '') + md(r.date) + ' 마감 · 3달 낮은 값 ' + num(r.lo) + ' · 높은 값 ' + num(r.hi)})))),
+      r => ({href: null, name: r.name, sub: US_MEAN[r.key] ?? null, x: r.chg, pt: p2(r.chg), v: null})));
   }
   return {title: T, nodes};
 }
@@ -860,9 +902,10 @@ async function vWatch(a) {
     wTabs(a), // 탭 넷이 먼저 — 꼬리표가 늘어 둘째 줄이 생겨도 탭 줄이 첫 화면(아래 막대 위 572px) 안에 머물게
     pDay && pDay !== X.mkt.asOf ? h('p', {class: 'wsd'}, h('span', {text: '값은 ' + md(pDay) + ' 종가'})) : null, // 값 날이 마감 날과 다르면 탭 아래 한 줄(2026-10-20 — 날 줄 뒤에 붙이면 360 폭에서 두 줄이 되어 탭 넷이 첫 화면 밖으로 밀렸음 · 실제 사이트 000500 탭 아래 끝 585 > 막대 572)
     wTags(a, X, GM?.opened?.() === true), // 칸 번호 꼬리표는 열한 질문 뒤에만(opened)
+    // 「이 회사로 왜 사?」가 단추 셋보다 먼저(총정리 2026-10-22 04:09 · C11 — 본질 ② 사기 전에 한 번 멈춤이 이 쪽에서 가장 먼저 누를 것 · 금빛 테 p-co.css) — 높이 · 업종 줄 자리는 그대로(선 끌기 틀림 장부 90)
+    h('a', {class: 'why-go cw', href: '#/why/' + enc(a)}, h('b', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'})),
     // 관심 담기(첫 단추 — 검사가 .acts 첫 .act 를 누름) · 보내기 · 매매일지로(2026-10-17 21:10 [3] 2 · 규칙 1 「하나 넣으면 하나 뺀다」 — 넣은 「이 회사로 왜 사?」 자리에서 「편지 쓰기」를 뺌 · 편지 여는 밤은 보유종목 바로 가기에)
     h('div', {class: 'acts cw'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),
-    h('a', {class: 'why-go cw', href: '#/why/' + enc(a)}, h('b', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'})),
     h('div', {class: 'chan cw'}, h('a', {href: '#/ch/i/' + enc(c.i)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(c.i)}), h('div', {}, h('b', {text: (c.i || '?') + ' 업종'}), h('small', {text: '회사 ' + (I ? num(I.n) : '?') + '곳' + (g ? ' · 큰 업종 ' + g.short : '')}))), I ? subBtn('i:' + c.i, c.i + ' 업종') : null),
     // 테마 시계 자리 한 줄(결정표 9) — 업종 줄 아래 · 탭 · 관심 담기 · 업종 담기 단추를 아래로 밀지 않게
     //   (2026-10-20 23:2x 전체 검사 co-stage 2번째 next 「선 끌기」 실패 — 탭 아래에 두면 390×844 에서 업종 담기 단추가 첫 화면 밖으로 밀려 누를 때 화면이 내려감 · 틀림 장부 90)
@@ -955,7 +998,7 @@ async function vShorts(a) {
 
 /* 채널 — 업종(#/ch/i/<이름>) · 갈래(#/ch/g/<번호>) */
 async function vChannel(a) {
-  await Promise.all([need('core'), need('mkt'), need('cond')]);
+  await Promise.all([need('core'), need('mkt'), need('cond'), need('themeHome'), need('theme')]); // 테마 자료 — 업종 채널 이름 밑 자리 한 줄(총정리 C7 · theme.json 이 날 수를 가짐) · 큰 업종 채널 「업종」 탭의 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」)
   const X = ix(); if (!X) return {title: '채널', nodes: noData()};
   const kind = (a || '').slice(0, 1), id = (a || '').slice(2), Cd = condOf();
   const ch = kind === 'i' ? X.ind.get(id) : kind === 'g' ? X.grp.get(id) : null;
@@ -966,10 +1009,11 @@ async function vChannel(a) {
   const capOf = m => Cd?.get(m)?.cap ?? -1;
   members.sort((p, q) => capOf(q) - capOf(p) || p.localeCompare(q));
   const banner = h('div', {class: 'banner', 'aria-hidden': 'true'}, lineSvg(ch.v, {w: 360, ht: 100, stretch: true}));
-  const nodes = [banner,
+  const nodes = [banner, // 차례: 큰 선 → 이름 → 테마 시계 자리 한 줄 → 20거래일 · 관심 담기 → 두 숫자(next_check 이름 · 두 숫자 · 칸 수 그대로)
     h('div', {class: 'chhead'}, h('div', {}, h('h1', {text: name}), // 글이 먼저 · 동그라미는 오른쪽 끝 — 글 시작이 아래 줄들과 같은 왼쪽 줄(2026-10-18 [10] 7)
       h('small', {text: '회사 ' + num(members.length) + '곳' + (kind === 'i' && g ? ' · ' + g.short + ' 갈래' : '') + (kind === 'g' ? ' · 업종 ' + inds.length + '개' : '')})),
       h('span', {class: 'av lg', 'aria-hidden': 'true', text: first(kind === 'g' ? ch.short || ch.name : ch.name)})),
+    kind === 'i' ? chZone(ch.name) : null, // 이름 칸 밑 결 한 줄(총정리 C7) — 테마 시계 자리 · 며칠째 · 누르면 테마 업종 쪽(#/t/i/) · 못 받으면 줄 없음
     h('div', {class: 'chan'}, h('span', {class: 'ws', text: '20거래일 · ' + md(X.core.base) + '부터'}), subBtn(key, name)),
     h('div', {class: 'stats chs'}, h('div', {}, h('small', {text: '한 회사 한 표'}), h('b', {class: cls(ch.chg), text: pct(ch.chg)})), h('div', {}, h('small', {text: '큰 회사는 크게'}), h('b', {class: cls(ch.cwChg), text: pct(ch.cwChg)})))]; // 두 숫자 = 한 칸 두 줄(이름 왼쪽 · 숫자 오른쪽 끝)
   if (kind === 'g' && ch.say) nodes.push(h('p', {class: 'note', text: ch.say}));
@@ -981,7 +1025,7 @@ async function vChannel(a) {
     more.addEventListener('click', fill); fill();
     pane.replaceChildren(h('p', {class: 'note', text: Cd ? '몸값 큰 차례예요.' : '번호 차례예요.'}), grid, more);
   };
-  const showInd = () => { pane.replaceChildren(...[...inds].sort((p, q) => q.chg - p.chg).map(i => card('#/ch/i/' + enc(i.name), thumb(i.v, '20일', {x: i.chg}), i.name + ' 업종, 20거래일 ' + pct(i.chg), '회사 ' + num(i.n) + '곳 · 큰 회사는 크게 ' + pct(i.cwChg), first(i.name)))); };
+  const showInd = () => { const i0 = [...inds].sort((p, q) => q.chg - p.chg); pane.replaceChildren(...(bySprout(i0, i => i.name) ?? i0).map(i => card('#/ch/i/' + enc(i.name), thumb(i.v, '20일', {x: i.chg}), i.name + ' 업종, 20거래일 ' + pct(i.chg), '회사 ' + num(i.n) + '곳 · 큰 회사는 크게 ' + pct(i.cwChg), first(i.name)))); }; // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 · 업종 칩과 같은 표) — 테마 자료가 없을 때만 옛 차례
   for (const [t, label] of tabs) {
     const b = h('button', {type: 'button', role: 'tab', 'aria-selected': String(t === 'co'), text: label});
     b.addEventListener('click', () => { for (const x of tabBar.children) x.setAttribute('aria-selected', String(x === b)); (t === 'co' ? showCo : showInd)(); });
@@ -997,7 +1041,7 @@ async function vChannel(a) {
    차례: 담은 업종 · 갈래 동그라미 줄 → 관심 회사(줄마다 관심 담음 단추) → 업종 · 갈래 새 소식(오늘 가장 많이 움직인 곳)
    기억 열쇠는 그대로(atlas:new:sub · atlas:new:later) · 이 기기에만 */
 async function vSub() {
-  await Promise.all([need('core'), need('mkt')]);
+  await Promise.all([need('core'), need('mkt'), need('themeHome')]); // themeHome = 담은 업종의 테마 시계 자리 · 빈 관심의 싹 자리 셋(총정리 C24 · C25 — 첫 화면이 이미 받는 5KB)
   const X = ix(); if (!X) return {title: '관심', nodes: noData()};
   const ks = subs().filter(k => (k.startsWith('g:') && X.grp.has(k.slice(2))) || (k.startsWith('i:') && X.ind.has(k.slice(2))));
   const cos = laters().filter(c => X.co[c]);
@@ -1005,7 +1049,13 @@ async function vSub() {
   const lead = h('p', {class: 'note'}), leadText = k => '회사 ' + num(cos.length) + '곳 · 업종 · 갈래 ' + num(ks.length) + '개 · ' + k;
   if (typeof Hm?.liveNote === 'function') Hm.liveNote(lead, leadText); else lead.textContent = leadText('이 기기에만 남아요.'); // 끝 말 = 가입 여부(가입 안 함 「이 기기에만 남아요.」 · 가입함 「카카오로 지켜요.」)
   const nodes = [h('h1', {class: 'h', text: '관심'}), lead];
-  if (ks.length) nodes.push(h('div', {class: 'avs'}, ks.map(k => { const nm = chanName(k); return h('a', {href: chanHref(k)}, h('span', {class: 'av lg on', 'aria-hidden': 'true', text: first(nm)}), h('small', {text: nm.replace(/ (갈래|업종)$/, '')})); })));
+  // 결(총정리 C25) — 담은 업종마다 지금 테마 시계 자리(큰 업종은 「큰 업종」) · 앞 여섯까지 · 테마 자료를 못 받으면 줄 없음
+  if (ks.length && thHome()) {
+    const zs = ks.slice(0, 6).map(k => (k.startsWith('g:') ? (X.grp.get(k.slice(2))?.name ?? '?') + ' 큰 업종' : k.slice(2) + ' ' + (TH_ZONES[thInd(k.slice(2))?.z] ?? '?'))), more = ks.length - zs.length;
+    nodes.push(h('div', {class: 'c-lead'}, h('p', {class: 'c-lt', text: '담은 업종 ' + num(ks.length) + '곳 — ' + zs.join(' · ') + (more > 0 ? ' · 그 밖 ' + num(more) + '곳' : '')})));
+  }
+  // 동그라미 이름 — 업종은 이름 그대로 · 큰 업종은 이름 밑 「큰 업종」(같은 「반도체」 둘이 두 번 담은 것처럼 보이던 것 — 총정리 C25)
+  if (ks.length) nodes.push(h('div', {class: 'avs'}, ks.map(k => { const nm = chanName(k), g = k.startsWith('g:'); return h('a', {href: chanHref(k)}, h('span', {class: 'av lg on', 'aria-hidden': 'true', text: first(nm)}), g ? h('small', {class: 'av-g'}, h('span', {text: nm.replace(/ 갈래$/, '')}), ' ', h('span', {text: '큰 업종'})) : h('small', {text: nm.replace(/ (갈래|업종)$/, '')})); })));
   if (ks.length && typeof Hm?.news === 'function') { try { const sb = await Hm.news(X, ks); if (sb) nodes.push(sb); } catch (e) { console.error(e); } } // [7] 7 소식 줄 — 담은 곳의 뽑힘 · 옮김 · 빠짐 · 오늘 가장 많이 움직인 곳을 날짜 새 것 먼저(오늘 가장 많이 움직인 곳 카드는 이 줄로 합침)
   // 관심 회사 — 줄 = 작은 선(20거래일) · 이름 · 업종 · 20거래일 % · 관심 담음(누르면 빼고 · 다시 누르면 담음)
   nodes.push(h('h2', {class: 'sec', text: '관심 회사'}));
@@ -1021,8 +1071,14 @@ async function vSub() {
   // 관심 업종 · 갈래
   nodes.push(h('h2', {class: 'sec', text: '관심 업종 · 갈래'}));
   if (!ks.length) {
-    nodes.push(h('p', {class: 'note', text: '아직 담은 업종 · 갈래가 없어요. 큰 갈래부터 담아 보세요.'}));
-    for (const g of [...X.core.groups].sort((a, b) => b.chg - a.chg)) nodes.push(h('div', {class: 'chan'}, h('a', {href: '#/ch/g/' + enc(g.id)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(g.short || g.name)}), h('div', {}, h('b', {text: g.name + ' 갈래'}), h('small', {text: '20거래일 한 회사 한 표 ' + pct(g.chg)}))), subBtn('g:' + g.id, g.name + ' 갈래')));
+    // 빈 관심(총정리 C24) — 결 「담은 업종이 없어요. 지금 싹 자리 업종부터 볼까요?」 → 기 싹 자리 셋(theme-home.json order.S · 점 많이 찬 차례 · 줄마다 관심 담기) → 승 「싹이 뭐예요? ›」 → 전 큰 업종 열은 접은 칸 안(줄 그대로)
+    //   (옛 글은 「이미 오른 큰 업종」부터 권했음 — 본질 1 「될 듯한 곳」과 거꾸로) · 테마 자료를 못 받으면 옛 꼴 그대로
+    const sp = (thHome()?.order?.S ?? []).filter(n => typeof n === 'string' && X.ind.has(n)).slice(0, 3);
+    const big = [...X.core.groups].sort((a, b) => b.chg - a.chg).map(g => h('div', {class: 'chan'}, h('a', {href: '#/ch/g/' + enc(g.id)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(g.short || g.name)}), h('div', {}, h('b', {text: g.name + ' 갈래'}), h('small', {text: '20거래일 한 회사 한 표 ' + pct(g.chg)}))), subBtn('g:' + g.id, g.name + ' 갈래')));
+    if (!sp.length) { nodes.push(h('p', {class: 'note', text: '아직 담은 업종 · 갈래가 없어요. 큰 갈래부터 담아 보세요.'}), ...big); return {title: '관심', nodes}; }
+    nodes.push(h('div', {class: 'c-lead'}, h('p', {class: 'c-lt', text: '담은 업종이 없어요. 지금 싹 자리 업종부터 볼까요?'})));
+    for (const n of sp) { const I = thInd(n); nodes.push(h('div', {class: 'chan'}, h('a', {href: '#/t/i/' + enc(n)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(n)}), h('div', {}, h('b', {text: n + ' 업종'}), h('small', {text: '싹 자리' + (Number.isFinite(I?.sc) ? ' · 점 ' + I.sc + '개' : '')}))), subBtn('i:' + n, n + ' 업종'))); }
+    nodes.push(h('a', {class: 'more', href: '#/t/how', text: '싹이 뭐예요? ›'}), h('details', {class: 'hm-more sub-big'}, h('summary', {text: '큰 업종에서 고르기'}), ...big));
     return {title: '관심', nodes};
   }
   nodes.push(h('p', {class: 'note', text: md(X.mkt.asOf) + ' 장 마감 · 담은 업종 · 갈래 ' + ks.length + '개'}));
@@ -1111,20 +1167,30 @@ function findHits(X, rows, q) {
   return out.sort((p, q2) => p.score - q2.score || ((p.ix ?? -1) - (q2.ix ?? -1)));
 }
 async function vFind(a) {
-  await Promise.all([need('core'), need('mkt')]);
+  await Promise.all([need('core'), need('mkt'), need('themeHome'), need('theme')]); // 테마 자료 = 업종 줄의 테마 시계 자리 · 점(총정리 A24 · 첫 화면 파일 + 업종 쪽 파일 · 회사 목록 names.json 보다 작음)
   const X = ix(); if (!X) return {title: '찾기', nodes: noData()};
   const N = await needNames();
   const rows = N?.rows ?? coRows(X);
   const inp = h('input', {type: 'search', placeholder: '회사 이름이나 번호, 업종', 'aria-label': '찾기', enterkeyhint: 'search', autocomplete: 'off', value: a || ''});
   const hits = h('div', {class: 'hits', role: 'list'});
+  const coRow = c => { const o = X.co[c], a = h('a', {href: '#/w/' + c}, h('span', {class: 'nm', 'data-proper': '', text: o.n}), h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))})), w = kkWrap(a, {code: c, name: o.n, kind: 'share'}, 'find.co', 'kkr kkh'); w.setAttribute('role', 'listitem'); return w; }; // 회사 줄 = 고리 + 카톡 단추(KB2 · 목록 칸은 둘을 감싼 줄)
   const run = () => {
     const q = inp.value.trim(); hits.replaceChildren();
-    if (!q) { hits.append(h('p', {class: 'note', text: '회사 ' + num(Object.keys(X.co).length) + '곳 · 업종 ' + X.ind.size + '개 · 큰 갈래 ' + X.grp.size + '개에서 찾아요.'}), h('p', {class: 'note', text: '이름 한 글자부터 찾아요. 첫 글자(ㅅㅅㅈㅈ)와 종목 번호도 돼요.' + (N ? ' 펀드 · 우선주까지 ' + num(rows.length) + '개 목록이에요.' : '')})); return; }
-    const all = findMatch(q), top = all.slice(0, 40), out = []; // 매매일지 종목 고르기와 같은 잣대(NX.findMatch)
+    if (!q) {
+      // 빈 화면 맨 위 = 최근 본 회사 셋(총정리 B4 — 매매일지 종목 고르기와 같은 기억 atlas:new:hist · 읽기만) → 안내 두 줄 그대로
+      const hist = store.get(K_HIST, []).filter(c => typeof c === 'string' && X.co[c]).slice(0, 3);
+      if (hist.length) hits.append(h('p', {class: 'note', text: '최근 본 회사'}), ...hist.map(coRow));
+      hits.append(h('p', {class: 'note', text: '회사 ' + num(Object.keys(X.co).length) + '곳 · 업종 ' + X.ind.size + '개 · 큰 갈래 ' + X.grp.size + '개에서 찾아요.'}), h('p', {class: 'note', text: '이름 한 글자부터 찾아요. 첫 글자(ㅅㅅㅈㅈ)와 종목 번호도 돼요.' + (N ? ' 펀드 · 우선주까지 ' + num(rows.length) + '개 목록이에요.' : '')})); return;
+    }
+    const all = findMatch(q), top = all.slice(0, 40), out = []; let why = false; // 매매일지 종목 고르기와 같은 잣대(NX.findMatch)
     for (const x of top) {
       if (x.k === 'g') { const g = X.grp.get(x.c); out.push(h('a', {href: '#/ch/g/' + enc(g.id), role: 'listitem'}, g.name + ' 갈래', h('small', {text: '큰 갈래 · 회사 ' + num(g.n) + '곳 · 20거래일 ' + pct(g.chg)}))); }
-      else if (x.k === 'i') { const i = X.ind.get(x.c); out.push(h('a', {href: '#/ch/i/' + enc(i.name), role: 'listitem'}, i.name + ' 업종', h('small', {text: '업종 · 회사 ' + num(i.n) + '곳 · 20거래일 ' + pct(i.chg)}))); }
-      else if (x.k === 'c') { const o = X.co[x.c], a = h('a', {href: '#/w/' + x.c}, h('span', {class: 'nm', 'data-proper': '', text: o.n}), h('small', {text: (o.i || '?') + ' · 20거래일 ' + pct(c20(o))})), w = kkWrap(a, {code: x.c, name: o.n, kind: 'share'}, 'find.co', 'kkr kkh'); w.setAttribute('role', 'listitem'); out.push(w); } // 회사 줄 = 고리 + 카톡 단추(KB2 · 목록 칸은 둘을 감싼 줄)
+      else if (x.k === 'i') { // 업종 줄 → 테마 업종 쪽(싹 찾기 길 · 총정리 A24) · 작은 글 = 테마 시계 자리 · 점(싹일 때) · 회사 수 — 테마 자료가 없으면 옛 채널 줄 그대로
+        const i = X.ind.get(x.c), Z = thInd(i.name);
+        out.push(Z ? h('a', {href: '#/t/i/' + enc(i.name), role: 'listitem'}, i.name + ' 업종', h('small', {text: TH_ZONES[Z.z] + ' 자리' + (Z.z === 'S' && Number.isFinite(Z.sc) ? ' · 점 ' + Z.sc + '개' : '') + ' · 회사 ' + num(i.n) + '곳'}))
+          : h('a', {href: '#/ch/i/' + enc(i.name), role: 'listitem'}, i.name + ' 업종', h('small', {text: '업종 · 회사 ' + num(i.n) + '곳 · 20거래일 ' + pct(i.chg)})));
+      }
+      else if (x.k === 'c') { out.push(coRow(x.c)); if (!why) { why = true; out.push(h('a', {class: 'f-why', href: '#/why/' + enc(x.c), role: 'listitem'}, h('span', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'}))); } } // 찾은 맨 위 회사 줄에만 둘째 고리 — 사기 전에 열한 질문으로(총정리 B4 · 회사 화면 단추와 같은 말)
       else out.push(h('a', {href: oldOr('x', '#/x/' + enc(x.c)), role: 'listitem', class: 'xo'}, h('span', {class: 'nm', 'data-proper': '', text: x.n}), h('small', {text: x.w || '회사 주식 밖'})));
     }
     if (!out.length) out.push(h('p', {class: 'note', text: '「' + q + '」 — 찾는 이름이 없어요. ' + (N ? '코스피 · 코스닥 목록 ' + num(N.funnel?.universe ?? rows.length) + '개' + (N.collected ? '(' + N.collected + ' 모음 · 펀드 · 우선주까지)' : '') + ' 안에 없는 이름이에요. ' : '') + '띄어쓰기를 빼거나 첫 글자로도 찾아보세요.'}));
@@ -1267,7 +1333,7 @@ async function route(force) {
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (k === 'gift') giftBtn.setAttribute('aria-current', 'page');
   if (TABS[k]) $('.tabs a[data-tab="' + TABS[k] + '"]')?.setAttribute('aria-current', 'page');
-  if (k === 't') $('.tabs a[data-tab="home"]')?.setAttribute('aria-current', 'page'); // 테마 쪽은 첫 단추 칸(창 제목은 그 쪽 이름 그대로)
+  if (k === 't' || k === 'today') $('.tabs a[data-tab="home"]')?.setAttribute('aria-current', 'page'); // 테마 쪽 · 오늘 시장(#/today — 「오늘 장」 띠를 눌러 옴 · 총정리 C23)은 첫 단추 칸(창 제목은 그 쪽 이름 그대로)
   root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'}));
   let out;
   try { out = await view(a); }
@@ -1284,6 +1350,7 @@ async function route(force) {
   const tabName = k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름
   document.title = L((tabName ?? out.title) + ' · ' + NAME); // 영어면 창 제목도(엔진은 body 만 봄)
   glossView(root); // 낱말표(site/next/glossary.js) — 한국어면 이 화면 · 창 제목 · 뒤에 그려지는 칸의 옛 낱말을 바꿈 · 영어면 영어 엔진 뒤에 「20 trading days」만
+  enPrivacy(); // 영어면 처리방침 고리를 영어 칸(#en)으로(총정리 D23)
   document.body.classList.toggle('noscroll', !!out.noScroll);
   window.scrollTo(0, out.noScroll ? 0 : scrollMem.get(hash) ?? 0);
 }
@@ -1310,9 +1377,27 @@ $('#fontBtn')?.addEventListener('click', () => { setFont((fontK + 1) % 3); toast
 /* 영어 — 지금 아틀란스 영어 엔진(/atlas/i18n.js · 규칙 71 · 그려진 한국어를 사전 틀로 바꿈 · 기억 atlas:lang 그대로)을 새 화면에도
    EN_NEXT 가 false 인 동안(새 화면 글의 사전이 차기 전)은 지금 아틀란스 영어 판으로 넘김 · ?dev=1 이면 새 화면 영어를 시험으로 엶 */
 const EN_NEXT = true; // 2026-10-17 새 화면 글 사전 다 참(next_en_check 실패 0) — 영어도 새 아틀란스로
-if (EN_NEXT || DEV) $('#langBtn')?.addEventListener('click', e => { e.preventDefault(); switchLang(EN ? 'ko' : 'en'); });
+/* 지구 단추 뒤 돌아오는 길(총정리 2026-10-22 A23 — 한 번 누르면 계속 영어 · 그림뿐이라 돌아오는 길을 모름)
+   읽어 주는 이름 = 갈 말(「영어로 보기」 · 영어 화면은 「한국어로 보기」) · 바꾼 그 순간의 첫 화면에만 두 말 알림 한 줄(주소 표시 sw=1 — 새 저장 열쇠 0 · 띄운 뒤 주소에서 지움) · 단추 그림 · 위 막대 그대로 */
+const LANG_SW = (() => { try { return new URLSearchParams(location.search).get('sw') === '1'; } catch { return false; } })();
+if (LANG_SW) { try { const u = new URL(location.href); u.searchParams.delete('sw'); history.replaceState(history.state, '', u.pathname + u.search + u.hash); } catch { /* 주소 못 고침 — 알림은 그대로 */ } }
+$('#langBtn')?.setAttribute('aria-label', EN ? '한국어로 보기' : '영어로 보기');
+if (EN_NEXT || DEV) $('#langBtn')?.addEventListener('click', e => {
+  e.preventDefault();
+  try { const u = new URL(location.href); u.searchParams.set('sw', '1'); history.replaceState(history.state, '', u.pathname + u.search + u.hash); } catch { /* 표시 없이 바꿈 */ }
+  switchLang(EN ? 'ko' : 'en'); // 같은 주소(sw=1 포함)를 그 말로 다시 엶
+});
+function langTip() {
+  if (!LANG_SW || !EN) return;
+  const e = h('p', {class: 'toast lang-tip', role: 'status'}, h('span', {text: 'Tap 🌐 again for '}), h('span', {lang: 'ko', text: '한국어'}), ' · ', h('span', {lang: 'ko', text: '🌐 를 다시 누르면 한국어'}));
+  document.body.append(e); setTimeout(() => e.remove(), 6000);
+}
+/** 영어 화면 — 처리방침 고리(맨 아래 고리 · 상품권 방 · 고객센터)를 그 쪽 영어 칸(/privacy.html#en)으로(총정리 D23 — 처리방침 쪽은 스크립트가 없어 스스로 영어를 못 고름) · 그린 뒤 · 누를 때 한 번 더 */
+function enPrivacy(root = document) { if (EN) for (const a of root.querySelectorAll('a[href="/privacy.html"]')) a.setAttribute('href', '/privacy.html#en'); }
+if (EN) document.addEventListener('click', e => { const a = e.target?.closest?.('a[href="/privacy.html"]'); if (a) a.setAttribute('href', '/privacy.html#en'); }, true);
 if (EN && !(EN_NEXT || DEV)) location.replace('/atlas/?lang=en' + (location.hash || '#/'));
 else {
   if (EN) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/en.css'; document.head.append(l); await startI18n(); }
-  route();
+  enPrivacy(); // 맨 아래 고리(쪽 밖)
+  route().then(langTip, langTip);
 }
