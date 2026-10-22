@@ -1,23 +1,25 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T01:03:29.885Z",
+ "at": "2026-10-22T03:22:25.777Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 421,
-  "fail": 0
+  "pass": 420,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "③ 가장 큰 그림 2.5초 안(느린 4G) — 2504ms"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
    "chars": 169,
    "blocks": {
-    "ess": 1093,
+    "ess": 1141,
     "find": 776,
-    "today": 1185,
-    "gdr": 1534,
-    "all": 1534
+    "today": 1233,
+    "gdr": 1582,
+    "all": 1582
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +45,7 @@
     true,
     true
    ],
-   "themeChars": 127,
+   "themeChars": 135,
    "top": [
     [
      35,
@@ -153,7 +155,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일 09:16"
+     "10월 22일 12:12"
     ],
     [
      2,
@@ -198,11 +200,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 970,
+    "ess": 1018,
     "find": 776,
-    "today": 1062,
-    "gdr": 1411,
-    "all": 1411
+    "today": 1110,
+    "gdr": 1459,
+    "all": 1459
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 127,
+   "themeChars": 135,
    "top": [
     [
      24,
@@ -328,7 +330,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일 09:16"
+     "10월 22일 12:12"
     ],
     [
      2,
@@ -679,7 +681,7 @@
    }
   },
   "speed": {
-   "lcp": 2456,
+   "lcp": 2504,
    "inp": 32,
    "cls": 0.004
   }
@@ -688,6 +690,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
