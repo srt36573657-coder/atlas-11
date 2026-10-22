@@ -43,6 +43,7 @@
 .gdr-sum { font-size: var(--fs-1); color: var(--sub); }
 .gdr-sum b { color: var(--ink); }
 .gdr-note { font-size: var(--fs-1); color: var(--sub); }
+.gdr-zero { color: var(--ink); line-height: 1.5; } /* 고른 곳 0 — 머리 바로 밑 결 한 줄(B23 · 2026-10-22 총정리) */
 .gdr-qm { color: var(--gold); }
 .gdr .more { display: flex; align-items: center; justify-content: center; width: auto; min-height: 48px; margin: 0; border-radius: 12px; background: var(--card2); font-size: var(--fs-1); text-align: center; }
 /* 확인 못 한 것(?) — 두 줄 안이면 한 문단 · 길면 「?」 한 줄 + 누르면 펼침 */
@@ -74,6 +75,8 @@
 .gdr-t1a { min-width: 0; }
 .gdr-t1b { flex: none; white-space: nowrap; }
 .gdr-t1 a:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+/* 잠금 · 쉬는 날 칸 밖 한 줄(#/gdr 쪽만 · B22 · 2026-10-22 총정리) — 무엇을 담는 칸인지 · 왜 닫았는지 */
+.gdr-about { margin: 0 var(--sp-2) var(--sp-2); font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }
 /* 어떻게 골랐나 */
 .gdr-fun { display: grid; gap: var(--sp-1); margin: var(--sp-3) var(--sp-2) var(--sp-2); }
 .gdr-fun > * { margin: 0; min-width: 0; }
@@ -81,6 +84,14 @@
 .gdr-ol, .gdr-ul { display: grid; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
 .gdr-ol li { display: flex; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--card); font-size: var(--fs-1); }
 .gdr-ol li b { text-align: right; }
+/* 다섯 조건 — 남은 곳에서 하나씩 따로 센 수(깔때기 아님): 머리 한 줄 + 한 칸 안 다섯 줄 · 막대 = 남은 곳 대비(B24 · 2026-10-22 총정리) — 글 시작은 바깥 줄과 같은 왼쪽 줄(새 줄 0) */
+.gdr-ol > li.gdr-each { display: block; }
+.gdr-each > span { display: block; color: var(--ink); line-height: 1.5; }
+.gdr-ol2 { display: grid; gap: var(--sp-1); margin: var(--sp-1) 0 0; padding: 0; list-style: none; }
+.gdr-ol2 > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 0 var(--sp-2); padding: 0; border-radius: 0; background: none; color: var(--sub); }
+.gdr-ol2 .gdr-bar { grid-column: 1 / -1; display: block; width: 100%; height: 6px; margin: 0; border-radius: 999px; overflow: hidden; }
+.gdr-bt { fill: var(--card3); }
+.gdr-bf { fill: var(--sub); }
 .gdr-ul li { padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--card); font-size: var(--fs-1); color: var(--sub); }
 .gdr-rn, .gdr-rw { display: block; }
 .gdr-rn { color: var(--ink); }
@@ -99,3 +110,5 @@ html.en .gdr-say q { quotes: '“' '”'; }
    html 에 white 가 붙을 때만 · 먹빛은 위 그대로 · 먹빛에서 --card · --card2 바탕으로만 가르던 칸은 흰 판에서 흰색이 되어 사라짐 → outline 테(자리를 안 차지함) · 고른 칸은 먹 테 2px */
 html.white .gdr-cell.on { outline-width: 2px; outline-offset: -2px; }
 html.white :is(.gdr-pf, .gdr-ol li, .gdr-ul li) { outline: 1px solid var(--hair); outline-offset: -1px; }
+html.white .gdr-ol2 > li { outline: 0; }
+html.white .gdr-bt { fill: var(--hair-soft); }

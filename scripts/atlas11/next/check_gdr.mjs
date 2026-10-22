@@ -26,6 +26,8 @@
 //   ⑭ 고른 곳 0 — 목록 · 분기 숫자 못 받음이면 「? … 아직 안 와서 지금은 담을 곳이 없어요」 + 접은 까닭 · 현금으로 둠 100 · 지어낸 곳 0
 //   ⑯ 글씨 · 간격 · 높이([10] 5 ~ 10) — 17px 밑 글 0 · 글씨 가짓수 ≤ 6 · 글 시작 왼쪽 줄 ≤ 3 · 간격 0 · 8 · 16 · 24 · 음수 0 · 같은 칸 · 같은 카드는 같은 높이 · 금빛 「?」 두 줄 안(길면 「?」 한 줄 + 누르면 펼침)
 //   ⑮ 목록 역할 — 바깥 칸 role=list · 줄마다 role=listitem 은 감싼 칸 · button.gdr-cell 에 role 0 · 누르는 것은 button 또는 a
+//   ⑰ 2026-10-22 총정리(결 먼저 · 일꾼 P2 · 잣대 …/scratchpad/total/cross.md): B23 고른 곳 0 = 머리 바로 밑 결 한 줄(「전부 현금으로 둬요」 같은 시키는 말 0 · 「…곳뿐이라 그만큼만 골랐어요」 글 그대로) ·
+//      B22 잠금 · 쉬는 날은 칸 밖 한 줄(무엇을 담는 칸인지 · 왜 닫았는지 · 수 · 회사 이름 0 · 열린 칸이면 0) · B24 다섯 조건 = 「남은 n곳 가운데 조건마다 지난 곳(하나씩 따로 셈)」 한 칸 + 막대(남은 곳 대비)
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -36,6 +38,7 @@ import {mkV2 as mkV2f} from './fixtures/gdr-v2-sample.mjs';
 import {NEW_NAME, jsStrings} from './rename.mjs'; // 이름 = site/next/brand.js 한 곳(규칙 76) — 글자를 박지 않음
 import {isRemote} from './net.mjs';
 import {screenHits} from '../../../site/next/words.js'; // 쓰지 않을 말 한 곳(명령문 [4] 4 · 일꾼 C) — 「사라져」 같은 보통 말은 빼고 셈
+import {josa} from '../../../site/next/brand.js'; // 이름 + 토씨(2026-10-22 총정리 B22 잠금 칸 밖 한 줄 「… 돌이가 나눠 담아 보는 칸이에요」)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -150,6 +153,11 @@ function wrongOf(g) {
 }
 const reasonExp = s => String(s ?? '').replace(/업종 돈(\s*[\d.]+배)/g, '업종 거래$1'); // [8] 9 — 이유의 n배는 「업종 거래 n배」
 const maxOfD = D => D.limits?.max ?? D.max ?? 36, maxPicks = maxOfD(G);
+const needD = D => ((D?.limits?.need ?? D?.need ?? (Array.isArray(D?.rules) ? undefined : D?.rules?.need)) === 4 ? 4 : 5); // 조건 다섯 가운데 넷이면 4(p-gdr needOf 와 같은 뜻 · 따로 적음)
+/** B23 · B22 기대 글(2026-10-22 총정리 — 칸을 말하는 꼴 · 사람에게 시키지 않음) */
+const ZERO_TXT = D => (needD(D) === 4 ? `오늘은 조건 다섯 가운데 넷을 지난 회사가 없어서 ${NEW_NAME} 칸이 비었어요.` : `오늘은 조건 다섯을 다 지난 회사가 없어서 ${NEW_NAME} 칸이 비었어요.`);
+const LOCK_TXT = D => (needD(D) === 4 ? `${NEW_NAME} 칸은 조건 다섯 가운데 넷을 지난 회사를 ${josa(NEW_NAME, '가')} 나눠 담아 보는 칸이에요.` : `${NEW_NAME} 칸은 조건 다섯을 다 지난 회사를 ${josa(NEW_NAME, '가')} 나눠 담아 보는 칸이에요.`);
+const REST_TXT = '오늘 매매일지 결과가 「오늘은 쉬어 갈까?」라서 닫았어요.';
 
 /* 회사 값 — co/<번호>.json 에서 따로 셈(화면 코드를 열지 않음): PER · PBR · 회사 크기(억 원) · 지난 1년 가장 높은 종가 대비 · 종가 줄 × days.json 날짜 */
 const dates = Array.isArray(DAYS.dates) ? DAYS.dates : [];
@@ -404,13 +412,18 @@ const READG = sel => {
       w: T(card.querySelector('.gdr-w')), near: T(card.querySelector('.gdr-near')), mc: T(card.querySelector('.gdr-mc')), mcin: (e => (e ? {sum: T(e.querySelector('summary')), body: T(e.querySelector('.gdr-wb')), open: e.open} : null))(card.querySelector('details.gdr-mcin')),
       say: card.querySelector('.gdr-say q[data-proper]')?.textContent ?? null, sayRow: !!card.querySelector('.gdr-say'), old: [...card.querySelectorAll('.gdr-dl, .gdr-me, .gdr-amt, input')].length, paras: card.querySelectorAll('p').length, text: card.innerText, top: cr.top, bottom: cr.bottom, vh: innerHeight} : null,
     pf: s.querySelector('.gdr-pf') ? {h: s.querySelector('.gdr-pf h3')?.textContent ?? '', ps: [...s.querySelectorAll('.gdr-pf p')].map(x => x.textContent)} : null,
-    q: wd('gdr-q'), qq: wd('gdr-qq'), none: wd('gdr-none'), bigs: T(s.querySelector('.gdr-bigs')), fall3: T(s.querySelector('.gdr-fall3')), stale: wd('gdr-stale'), notes: [...s.querySelectorAll('.gdr-note')].map(x => x.textContent), more: s.querySelector('a.more')?.getAttribute('href') ?? null, fun: !!document.querySelector('#view section.gdr-fun')};
+    q: wd('gdr-q'), qq: wd('gdr-qq'), none: wd('gdr-none'), bigs: T(s.querySelector('.gdr-bigs')), fall3: T(s.querySelector('.gdr-fall3')), stale: wd('gdr-stale'), notes: [...s.querySelectorAll('.gdr-note')].map(x => x.textContent), more: s.querySelector('a.more')?.getAttribute('href') ?? null, fun: !!document.querySelector('#view section.gdr-fun'),
+    head2: (e => (e ? {cls: typeof e.className === 'string' ? e.className : '', text: e.textContent} : null))(s.querySelector(':scope > .gdr-head')?.nextElementSibling), // B23 — 머리 바로 밑
+    about: (e => (e ? {text: e.textContent, next: s.nextElementSibling === e, lines: lines(e)} : null))(document.querySelector('#view p.gdr-about'))}; // B22 — 칸 밖 한 줄(#/gdr 쪽)
 };
 const READF = () => {
   const f = document.querySelector('#view section.gdr-fun'); if (!f) return null;
   const sens = f.querySelector('details.gdr-sens'), dt = c => { const e = f.querySelector('details.' + c); return e ? {sum: e.querySelector('summary')?.textContent ?? '', bodies: [...e.querySelectorAll('.gdr-wb')].map(x => x.textContent), open: e.open} : null; };
   return {back: f.querySelector('.gdr-back')?.textContent ?? null, backFirst: !!f.querySelector('h2.sec')?.nextElementSibling?.classList.contains('gdr-back'), bk: dt('gdr-bk'), score: f.querySelector('.gdr-score')?.textContent ?? null, sc: dt('gdr-sc'),
-    rows: [...f.querySelectorAll('ol.gdr-ol > li')].map(li => [li.querySelector('span')?.textContent ?? '', li.querySelector('b')?.textContent ?? '']), rules: f.querySelector('ul.gdr-ul')?.textContent ?? '', uls: [...f.querySelectorAll('ul.gdr-ul > li')].map(x => x.textContent),
+    // B24(2026-10-22) — 다섯 조건은 li.gdr-each 안 ol.gdr-ol2 다섯 줄(따로 센 수) — 줄 읽기는 안쪽 다섯 줄을 펴서 옛 차례 그대로 맞댐 · 머리 글 · 막대 길이는 each 로 따로
+    rows: [...f.querySelectorAll('ol.gdr-ol > li')].flatMap(li => { const o = li.querySelector(':scope > ol.gdr-ol2'); return (o ? [...o.querySelectorAll(':scope > li')] : [li]).map(x => [x.querySelector('span')?.textContent ?? '', x.querySelector('b')?.textContent ?? '']); }),
+    each: (e => (e ? {head: e.querySelector(':scope > span')?.textContent ?? '', n: e.querySelectorAll(':scope > ol.gdr-ol2 > li').length, bars: [...e.querySelectorAll(':scope > ol.gdr-ol2 > li')].map(x => x.querySelector('svg.gdr-bar rect.gdr-bf')?.getAttribute('width') ?? null), at: [...f.querySelectorAll('ol.gdr-ol > li')].indexOf(e)} : null))(f.querySelector('ol.gdr-ol > li.gdr-each')),
+    rules: f.querySelector('ul.gdr-ul')?.textContent ?? '', uls: [...f.querySelectorAll('ul.gdr-ul > li')].map(x => x.textContent),
     sens: sens ? {sum: sens.querySelector('summary')?.textContent ?? '', ps: [...sens.querySelectorAll('.gdr-wb')].map(x => x.textContent), open: sens.open} : null, text: f.innerText};
 };
 /** 깔때기 읽기 — 지난 성적 한 줄(gdr-back.json)은 늦게 와서 있어야 하는 판이면 기다림 */
@@ -596,8 +609,9 @@ function checkHead(g, D, tag, onHome) {
   const mL = stt.lists === 'missing' || (stt.lists == null && whyS.includes('lists')), mQ = stt.quarters === 'missing' || (stt.quarters == null && whyS.includes('quarters')), none = zero && (mL || mQ);
   if (none) { // 고른 곳 0 + 자료가 아직 안 옴 → 까닭을 쉬운 말로 한 줄(「?」) + 접은 칸(데이터 note 줄 + 마무리) — 다른 「?」 줄 · 모자란 대로 줄 없음
     const what = mL && mQ ? '목록과 분기 숫자가' : mL ? '목록이' : '분기 숫자가', notes = (Array.isArray(D.note) ? D.note : []).filter(x => typeof x === 'string' && x.trim()).map(x => x.trim());
-    const wantSum = `? ${what} 아직 안 와서 지금은 담을 곳이 없어요`, wantBodies = [...notes, '못 본 채로 고르면 지어낸 것이 되니까 하나도 담지 않았어요. 전부 현금으로 둬요.'];
+    const wantSum = `? ${what} 아직 안 와서 지금은 담을 곳이 없어요`, wantBodies = [...notes, `못 본 채로 고르면 지어낸 것이 되니까 하나도 담지 않았어요. ${NEW_NAME} 칸은 「현금으로 둠」만 남았어요.`]; // 끝 줄: 2026-10-22 B23 — 옛 「전부 현금으로 둬요」(시키는 말) → 칸을 말하는 꼴
     if (!g.none || g.none.sum !== wantSum || !eq(g.none.bodies, wantBodies) || g.none.open) fail('고른 곳 0 — 목록 · 분기 숫자가 아직 안 온 까닭을 쉬운 말로(「?」 한 줄 + 접은 칸)', `${tag} ${JSON.stringify(g.none)} ≠ ${wantSum} / ${JSON.stringify(wantBodies)}`);
+    if (!/\bgdr-none\b/.test(g.head2?.cls ?? '')) fail('B23 고른 곳 0 까닭 줄은 머리 바로 밑(결)', `${tag} 머리 밑 ${JSON.stringify(g.head2)}`);
     if (g.qq || g.notes.some(t => t.includes('담을 곳이 없어요'))) fail('까닭 줄 말고 같은 뜻의 줄이 또 있음', `${tag} ${JSON.stringify([g.qq, g.notes])}`);
     if (!g.none?.sum.startsWith('?')) fail('까닭 줄은 「?」로 시작', tag);
     bump('맞댄 고른 곳 0 까닭 줄');
@@ -606,11 +620,16 @@ function checkHead(g, D, tag, onHome) {
     const listQ = D.status ? D.status.lists !== 'ok' : D.counts?.managed == null;
     if (listQ !== !!g.q) fail('관리 종목 「?」 줄(목록을 못 거른 때만)', `${tag} ${JSON.stringify(g.q)}`);
     else if (g.q && !g.q.sum.startsWith('?')) fail('관리 종목 「?」 줄은 「?」로 시작', `${tag} ${JSON.stringify(g.q)}`);
-    if (zero ? !g.notes.includes('지금은 담을 곳이 없어요. 전부 현금으로 둬요.') : (D.picks.length < maxOfD(D)) !== g.notes.some(t => t.includes(`${D.picks.length}곳뿐`))) fail(zero ? '고른 곳 0 — 「지금은 담을 곳이 없어요」 줄' : '모자란 대로 줄(위 끝 밑일 때만)', `${tag} ${JSON.stringify(g.notes)}`);
+    // 2026-10-22 B23 — 고른 곳 0 은 머리 바로 밑 결 한 줄(옛 끝 줄 「지금은 담을 곳이 없어요. 전부 현금으로 둬요.」 → 칸을 말하는 꼴 · 자리 = 머리 바로 밑) · 모자란 대로 줄은 글 그대로 맞댐(옛: 「n곳뿐」만)
+    const lessTxt = `조건을 다 지난 곳이 ${D.picks.length}곳뿐이라 그만큼만 골랐어요. 남는 몫은 「현금으로 둠」 칸에 두었어요.`;
+    if (zero ? !(g.head2?.text === ZERO_TXT(D) && /\bgdr-zero\b/.test(g.head2.cls) && g.notes.filter(t => t === ZERO_TXT(D)).length === 1) : (D.picks.length < maxOfD(D)) !== g.notes.includes(lessTxt) || g.notes.some(t => t.includes('곳뿐') && t !== lessTxt)) fail(zero ? 'B23 고른 곳 0 — 머리 바로 밑 결 한 줄' : '모자란 대로 줄(위 끝 밑일 때만 · 칸을 말하는 꼴)', `${tag} 머리 밑 ${JSON.stringify(g.head2)} · ${JSON.stringify(g.notes)}`);
+    if (g.notes.some(t => t.includes('담을 곳이 없어요'))) fail('B23 옛 끝 줄 「지금은 담을 곳이 없어요」가 남음', `${tag} ${JSON.stringify(g.notes)}`);
     if ((D.status?.quarters === 'missing') !== !!g.qq) fail('분기 숫자 「?」 줄(status.quarters 가 missing 일 때만)', `${tag} ${JSON.stringify(g.qq)}`);
   }
   if (zero && g.pf) fail('고른 곳 0인데 성적 칸이 있음', tag);
   if (!g.notes.some(t => t.includes(NEW_NAME))) fail(`「${NEW_NAME} 생각」 줄`, tag);
+  if (/둬요/.test(g.text ?? '')) fail('B23 칸 글에 사람에게 시키는 「… 둬요」가 남음', `${tag} 「${(/.{0,16}둬요/.exec(g.text) || [])[0]}」`);
+  if (g.about) fail('B22 열린 칸인데 칸 밖 잠금 · 쉬는 날 줄이 있음', `${tag} 「${g.about.text}」`);
   if (onHome ? g.more !== '#/gdr' : g.more != null) fail('「어떻게 골랐나 보기」 고리', `${tag} ${g.more}`);
 }
 /** 깔때기 — gdr.json counts · 다섯 문 이름(원문) · 기준 숫자 · 「조건 다섯」 · 「고도리 칸」 · 「현금으로 둠」 · 팔 선 줄 없음(v1 만 한 줄씩 맞댐) */
@@ -672,6 +691,12 @@ function checkFunnelV2(f, D, tag) {
   const want = [['상장', C.listed == null ? '?' : nTxt(C.listed) + '개'], ['회사 주식', cnt(C.companies)], ['거래가 너무 적', cnt(C.outThin)], ['거래가 멈춰', cnt(C.outHalt)], ['관리 종목', C.outList == null || stt.lists === 'missing' ? '? 아직 못 거름' : cnt(C.outList)], ['남은', cnt(C.afterOut)],
     ...gateNm.map((n, i) => [n, i === 0 && stt.quarters === 'missing' ? '? 아직 못 셈' : cnt(C['g' + (i + 1)])]), [need === 4 ? '조건 다섯 가운데 넷' : '조건 다섯', cnt(C.passAll)], ['한 업종 자리', cnt(C.cutInd)], ['큰 업종 위 끝', cnt(C.cutBig)], [`${NEW_NAME} 칸`, cnt(C.picked)], ['현금으로 둠', wTxt(C.cash ?? 0)]];
   if (f.rows.length !== want.length) fail('v2 깔때기 줄 수', `${tag} ${f.rows.length} ≠ ${want.length}`);
+  { // B24(2026-10-22) — 다섯 조건은 「남은 n곳 가운데 조건마다 지난 곳(하나씩 따로 셈)」 한 칸(남은 곳 줄 다음) · 막대 = 남은 곳 대비(소수 한 자리 · 못 셈 = 0)
+    const base = C.afterOut, wantHead = base == null ? '조건마다 지난 곳(하나씩 따로 셈)' : `남은 ${nTxt(base)}곳 가운데 조건마다 지난 곳(하나씩 따로 셈)`;
+    const wantBars = gateNm.map((_, i) => { const v = i === 0 && stt.quarters === 'missing' ? null : C['g' + (i + 1)]; return String(base > 0 && typeof v === 'number' && v >= 0 ? Math.min(100, Math.round(v / base * 1000) / 10) : 0); });
+    if (!f.each || f.each.head !== wantHead || f.each.n !== 5 || f.each.at !== 6 || !eq(f.each.bars, wantBars)) fail('B24 다섯 조건 = 따로 셈 한 칸(머리 · 다섯 줄 · 막대 = 남은 곳 대비)', `${tag} ${JSON.stringify(f.each)} · 기대 「${wantHead}」 ${JSON.stringify(wantBars)}`);
+    else bump('B24 맞댄 따로 셈 칸');
+  }
   want.forEach(([k, v], i) => { const r = f.rows[i]; if (!r || !r[0].includes(k) || r[1] !== v) fail('v2 깔때기 수(gdr.json counts)', `${tag} ${i + 1}째 ${JSON.stringify(r)} ≠ 「${k}」 ${v}`); });
   checkScore(f, D, tag);
   const rules = Array.isArray(D.rules) ? D.rules : [];
@@ -693,6 +718,8 @@ async function checkLock(p, tag, D = G) {
   if (g.l1 && !g.l1.text.includes(`${NEW_NAME} 칸`)) fail(`잠금 글에 「${NEW_NAME} 칸」`, `${tag} 「${g.l1.text}」`);
   if (g.items.length || g.inputs || g.cards || g.pf || g.fun || g.h2) fail('잠금인데 칸 · 입력 칸 · 카드 · 성적 · 깔때기가 보임', `${tag} ${JSON.stringify({cells: g.items.length, inputs: g.inputs, cards: g.cards, pf: !!g.pf, fun: g.fun, h2: g.h2})}`);
   if (D.picks.some(x => g.text.includes(x.name))) fail('잠금인데 고른 회사 이름이 보임([6] 10)', tag);
+  if (!g.about || g.about.text !== LOCK_TXT(D) || !g.about.next) fail('B22 잠금 칸 바로 밑(칸 밖) 한 줄 — 무엇을 담는 칸인지(수 · 회사 이름 없음)', `${tag} ${JSON.stringify(g.about)} ≠ 「${LOCK_TXT(D)}」`);
+  else if (/\d/.test(g.about.text) || D.picks.some(x => g.about.text.includes(x.name))) fail('B22 잠금 줄에 수 · 회사 이름(미끼 0)', tag);
   bump('맞댄 잠금');
   return g;
 }
@@ -704,6 +731,7 @@ async function checkRest(p, tag, D = G) {
   if (g.h > 64.5) fail('쉬어 가는 날 칸 높이 ≤ 64px', `${tag} ${g.h}`);
   if (g.items.length || g.inputs || g.cards || g.pf || g.fun || g.today || g.links.length || g.h2) fail('쉬어 가는 날인데 칸 · 카드 · 깔때기 · 성적 · 오늘 점수 · 고리가 보임([5] 7)', `${tag} ${JSON.stringify({cells: g.items.length, cards: g.cards, pf: !!g.pf, fun: g.fun, today: !!g.today, links: g.links})}`);
   if (D.picks.some(x => g.text.includes(x.name))) fail('쉬어 가는 날인데 고른 회사 이름이 보임([5] 7)', tag);
+  if (!g.about || g.about.text !== REST_TXT || !g.about.next) fail('B22 쉬는 날 칸 바로 밑(칸 밖) 한 줄 — 왜 닫았는지', `${tag} ${JSON.stringify(g.about)} ≠ 「${REST_TXT}」`);
   bump('맞댄 쉬어 가는 날');
   return g;
 }
@@ -883,6 +911,7 @@ if (want('lock')) {
         await p.evaluate(([k, v]) => window.__raw.set(k, v), [WHY_KEY, JSON.stringify([DONE()])]); p._why = JSON.stringify([DONE()]);
         await p.waitForFunction(s => !!document.querySelector(s + ':not(.lock1) .gdr-cell'), SEL, {timeout: 8000}).catch(() => fail('그 자리에서 열림(끝낸 기록이 생긴 뒤)', T));
         await settle(p); const g = await p.evaluate(READG, SEL); checkCells(g, G, T + ' 열린 뒤'); checkPerf(g, G, PE, T + ' 열린 뒤'); await layout(p, '#view', T + ' 열린 뒤');
+        if (g.about) fail('B22 그 자리에서 열리면 칸 밖 잠금 줄도 사라짐', `${T} 「${g.about.text}」`);
       }
       if (hash === '#/gdr/1') { // 고리를 누르면 열한 질문(#/why)
         await p.locator(SEL + ' a.gdr-l1').click({timeout: 8000});

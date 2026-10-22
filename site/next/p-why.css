@@ -26,6 +26,7 @@
 .wy-onet { flex: 1 1 auto; min-width: 0; }
 .wy-prev .wy-one { margin: 0; padding: 0; background: none; }
 .wy-prev .wy-say { margin: 0; }
+.wy-prevk { margin: 0; font-size: var(--fs-1); color: var(--mute); } /* 「n번 답에 돌이 한마디」 이름표(B7 · 2026-10-22 총정리) */
 .wy-one img { flex: none; width: 28px; height: 28px; }
 .wy-say { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--sub); }
 .wy-say q { quotes: '「' '」'; }
@@ -46,6 +47,7 @@
 .wy-stv { margin-left: var(--sp-1); color: var(--sub); }
 .wy-stv b { color: var(--ink); font-weight: 700; }
 /* ① 종목 고르기 — 찾기와 같은 잣대 · 맨 위 여섯 */
+.wy-intro { margin: var(--sp-1) 0 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); } /* 「열한 질문 · 1분쯤 …」 끝나면 무엇이 나오나(B5 · 2026-10-22 총정리) */
 .wy-find, .wy-why { display: block; width: 100%; min-height: 52px; padding: 0 var(--sp-2); border-radius: 14px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-3); }
 .wy-hits { display: grid; gap: var(--sp-1); margin-top: var(--sp-1); }
 .wy-hit { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 var(--sp-1); width: 100%; min-height: 56px; padding: var(--sp-1) var(--sp-2); border-radius: 14px; border: 0; box-shadow: inset 0 0 0 1px var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-2); text-align: left; cursor: pointer; }
@@ -63,6 +65,7 @@
 .wy-quick { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin: var(--sp-1) 0; }
 .wy-chip { min-height: 44px; padding: 0 var(--sp-2); border-radius: 999px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-1); cursor: pointer; }
 .wy-pr { display: block; margin: var(--sp-1) 0 0; font-size: var(--fs-2); } /* 한 글 덩이(왼쪽 줄 하나) */
+.wy-prh { margin: var(--sp-2) 0 0; font-size: var(--fs-1); color: var(--sub); } /* 「내 약속 · 숫자는 내가 정해요」 — ② 위 작은 머리(.wy-pr 밖 · B12 · 2026-10-22 총정리) */
 .wy-prn { margin-right: var(--sp-1); } /* 「만약 [숫자]원」 — 좁으면(영어 「If the price is」) 그 안에서도 줄을 바꿈(옆으로 넘침 0) */
 .wy-num { width: 6.5em; max-width: 100%; min-height: 48px; margin: 0 var(--sp-1); padding: 0 var(--sp-1); vertical-align: middle; border-radius: 12px; border: 1px solid var(--hair2, #272B34); background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-3); text-align: right; }
 .wy-why:focus-visible, .wy-num:focus-visible, .wy-find:focus-visible, .wy-date:focus-visible { outline: 3px solid var(--ink); outline-offset: 1px; }
@@ -71,6 +74,8 @@
 .wy-verdict { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: var(--sp-2); align-items: center; margin: var(--sp-1) 0; font-size: var(--fs-5); line-height: 1.25; } /* 판정 글 = 칸 왼쪽 줄 · 그림은 글 뒤 */
 .wy-verdict img { flex: none; width: 32px; height: 32px; }
 .wy-stop { margin: 0 0 var(--sp-1); font-size: var(--fs-1); color: var(--sub); }
+.wy-look { margin: 0 0 var(--sp-1); font-size: var(--fs-1); color: var(--ink); } /* 「한 번 더 볼 답 · n번 「답」」 — 판정보다 작게 · 색 점 없이 글만(B13 · 2026-10-22 총정리) */
+.wy-look .wy-lk { color: var(--sub); }
 .wy-score { margin: 0; font-size: var(--fs-1); color: var(--sub); }
 .wy-score b { font-size: var(--fs-3); line-height: 1.2; color: var(--ink); }
 .wy-reds { margin-left: var(--sp-1); color: var(--sub); font-size: var(--fs-1); }
@@ -99,6 +104,19 @@ span.wy-vg { color: #34C759; } span.wy-vy { color: #FFCC00; } span.wy-vr { color
 .wy-rs .wy-stn { color: var(--ink); font-size: var(--fs-2); }
 .wy-rec .wy-lines { margin-top: var(--sp-1); padding: var(--sp-1) var(--sp-2); }
 .wy.page ~ .safe { font-size: var(--fs-1); }
+/* 방금 끝낸 기록 — 위 결과와 같은 첫 줄은 한 줄로 접음(누르면 펼침 · 지우지 않음 · B15 · 2026-10-22 총정리) */
+.wy-fold > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; margin: var(--sp-1) var(--sp-2) 0; padding: 0 var(--sp-2); border-radius: 14px; border: 1px solid var(--hair2, #272B34); background: var(--card); color: var(--sub); font-size: var(--fs-1); line-height: 1.4; list-style: none; cursor: pointer; }
+.wy-fold > summary::-webkit-details-marker { display: none; }
+.wy-fold > summary::after { content: '▾'; flex: none; color: var(--mute); }
+.wy-fold[open] > summary::after { content: '▴'; }
+.wy-fold > summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+/* 매매일지 맨 위 「한 달 전 약속」(B17 + B18 · 2026-10-22 총정리 · 본질 ③) — 한 달 지났고 아직 답하지 않은 기록이 있을 때만 · 금빛 테 1px(첫 화면 금빛 「그날 정한 대로 했어?」 줄과 같은 뜻) */
+.wy-due { margin: var(--sp-2); padding: var(--sp-2); border-radius: 18px; background: var(--card); border: 1px solid var(--gold); }
+.wy-due[hidden] { display: none; }
+.wy-dh { margin: 0; font-size: var(--fs-2); line-height: 1.35; }
+.wy-due .wy-lines { margin-top: var(--sp-1); }
+.wy-due .wy-note { margin-top: var(--sp-1); }
+.wy-due .wy-kd:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 /* [5] 8 · 9 — 한 달 뒤: 「그날 정한 대로 했어?」 먼저 → 값 셋(날짜 박음) */
 .wy-later { margin-top: var(--sp-1); }
 .wy-later .note { margin: var(--sp-1) 0 0; } /* 칸 안 왼쪽 줄(app.css .note 의 옆 여백을 뺌) */
@@ -133,6 +151,7 @@ html.white .wy-track { background: var(--hair-soft); }
 html.white .wy-next { color: var(--bg); }
 html.white :is(.wy-prev, .wy-one, .wy-stk, .wy-lines) { outline: 1px solid var(--hair); outline-offset: -1px; }
 html.white .wy-prev .wy-one { outline: 0; }
+html.white .wy-fold > summary { background: var(--bg); }
 html.white .wy-back { background: var(--bg); outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white .wy-date { color-scheme: light; }
 html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-10-19 둘째 올림 — 흰 판 48 줄(app.css #view)이 고르기 칸 56 을 덮지 않게 */
