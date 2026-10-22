@@ -1,27 +1,37 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T13:16:17.337Z",
+ "at": "2026-10-22T14:21:24.805Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 421,
-  "fail": 0
+  "pass": 414,
+  "fail": 7
  },
- "fails": [],
+ "fails": [
+  "처음 온 기기 바둑판 0 — th-pkhs",
+  "처음 온 기기 ② 테마 시계 칸 글자 수 — 218자 > 200자",
+  "처음 온 기기 ② 단추 테두리 대비 3 — 1곳 · a.th-pkhome 2.55 「고른 싹이 꽃이 됐을까?한」",
+  "다시 온 기기 바둑판 0 — th-pkhs",
+  "다시 온 기기 ② 테마 시계 칸 글자 수 — 218자 > 200자",
+  "다시 온 기기 ② 단추 테두리 대비 3 — 1곳 · a.th-pkhome 2.55 「고른 싹이 꽃이 됐을까?한」",
+  "③ 가장 큰 그림 2.5초 안(느린 4G) — 2512ms"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
-   "chars": 169,
+   "chars": 166,
    "blocks": {
-    "ess": 1189,
+    "ess": 1471,
     "find": 776,
-    "today": 1281,
-    "gdr": 1630,
-    "all": 1630
+    "today": 1563,
+    "gdr": 1913,
+    "all": 1913
    },
    "tabsTop": 776,
    "lowContrast": [],
-   "uiContrast": [],
+   "uiContrast": [
+    "a.th-pkhome 2.55 「고른 싹이 꽃이 됐을까?한」"
+   ],
    "tiny": [],
    "small": [],
    "ruin": [],
@@ -43,10 +53,10 @@
     true,
     true
    ],
-   "themeChars": 145,
+   "themeChars": 218,
    "top": [
     [
-     35,
+     32,
      "ess p.ess-l",
      "사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아"
     ],
@@ -184,7 +194,9 @@
    "inkHex": "#FFFFFF",
    "findInput": true,
    "riseShown": [],
-   "grid": [],
+   "grid": [
+    "th-pkhs"
+   ],
    "news": {
     "up": true,
     "dn": true,
@@ -198,15 +210,17 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 1066,
+    "ess": 1372,
     "find": 776,
-    "today": 1158,
-    "gdr": 1507,
-    "all": 1507
+    "today": 1464,
+    "gdr": 1814,
+    "all": 1814
    },
    "tabsTop": 776,
    "lowContrast": [],
-   "uiContrast": [],
+   "uiContrast": [
+    "a.th-pkhome 2.55 「고른 싹이 꽃이 됐을까?한」"
+   ],
    "tiny": [],
    "small": [],
    "ruin": [],
@@ -228,7 +242,7 @@
     true,
     true
    ],
-   "themeChars": 145,
+   "themeChars": 218,
    "top": [
     [
      24,
@@ -359,7 +373,9 @@
    "inkHex": "#FFFFFF",
    "findInput": true,
    "riseShown": [],
-   "grid": [],
+   "grid": [
+    "th-pkhs"
+   ],
    "news": {
     "up": true,
     "dn": true,
@@ -679,15 +695,15 @@
    }
   },
   "speed": {
-   "lcp": 2480,
-   "inp": 32,
-   "cls": 0.008
+   "lcp": 2512,
+   "inp": 40,
+   "cls": 0.024
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
