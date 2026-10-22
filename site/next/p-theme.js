@@ -324,12 +324,13 @@ async function pCal() {
     Number.isFinite(base) ? h('p', {class: 'th-sub', text: `아무 업종은 100번 가운데 ${Math.round(base)}번이었어요.`}) : null);
   const pick = h('div', {class: 'th-calpick', 'aria-live': 'polite'});
   const btns = [];
-  const show = x => {
+  const show = (x, go = false) => {
     btns.forEach(b => { const on = b.dataset.d === x.d; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
     pick.replaceChildren(h('h2', {class: 'th-h2', text: `${md(x.d)} ${josa(NAME, '가')} 찾은 세 곳`}),
       x.top.length ? h('ol', {class: 'th-steps th-calli'}, x.top.map((i, k) => { const [mk, c, t] = hitOf(i.hit); return h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}),
         h('a', {class: 'th-st', href: '#/t/i/' + enc(i.n)}, h('b', {text: i.n}), h('span', {text: `닷새 동안 시장보다 ${pp(i.y)}%`}), h('span', {class: 'th-calhit ' + c}, h('i', {'aria-hidden': 'true', text: mk + ' '}), h('span', {text: t})))); }))
         : h('p', {class: 'th-sub', text: '이날은 싹 자리가 비었어요.'}));
+    if (go) requestAnimationFrame(() => pick.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'})); // 아래 달의 날짜를 눌러도 그날 세 곳이 바로 보이게(2026-10-22 14:28 「잘 보이게 해」)
   };
   const months = [];
   for (const x of days) { const m = x.d.slice(0, 7); if (!months.length || months.at(-1).m !== m) months.push({m, xs: []}); months.at(-1).xs.push(x); }
@@ -345,17 +346,18 @@ async function pCal() {
       const b = h('button', {type: 'button', class: 'th-calc' + (x.k ? ' kept' : ''), 'data-d': x.d, 'aria-pressed': 'false', 'aria-label': x.top[0] ? `${md(x.d)} 1번 ${x.top[0].n}` : `${md(x.d)} 싹 자리 없음`},
         h('b', {class: 'th-cald', text: String(+x.d.slice(8, 10))}), h('span', {class: 'th-caln', 'data-proper': '', text: x.top[0]?.n ?? '없음'}),
         h('span', {class: 'th-calm', 'aria-hidden': 'true'}, x.top.map(i => { const [mk, c] = hitOf(i.hit); return h('i', {class: c, text: mk}); })));
-      b.addEventListener('click', () => show(x));
+      b.addEventListener('click', () => show(x, true));
       btns.push(b); cells.push(b);
     }
     return h('section', {class: 'th-calmo', 'aria-label': `${+m.slice(5, 7)}월`}, h('h2', {class: 'th-h2', text: `${+m.slice(0, 4)}년 ${+m.slice(5, 7)}월`}),
       h('div', {class: 'th-calg', role: 'group'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-calw', 'aria-hidden': 'true', text: t})), ...cells));
   });
+  const how = [h('p', {class: 'th-calhow', text: '동그라미는 왼쪽부터 1번, 2번, 3번이에요.'}), h('p', {class: 'th-calhow', text: '날짜를 누르면 그날 세 곳이 위에 크게 나와요.'})];
   const key = h('p', {class: 'th-calkey'}, h('span', {}, h('i', {class: 'ok', text: '●'}), h('span', {text: ' 넘음'})), h('span', {}, h('i', {class: 'no', text: '○'}), h('span', {text: ' 못 넘음'})), h('span', {}, h('i', {class: 'wait', text: '·'}), h('span', {text: ' 아직'})));
   show(days.at(-1));
   return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
-    say(`날마다 ${josa(NAME, '가')} 찾은 세 곳을 남겨요.`), head, pick, key, ...grid.reverse(),
+    say(`날마다 ${josa(NAME, '가')} 찾은 세 곳을 남겨요.`), head, pick, key, ...how, ...grid.reverse(),
     typeof CAL.keepFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(CAL.keepFrom) ? h('p', {class: 'th-sub th-calnote', text: `${md(CAL.keepFrom)}부터는 그날 장 마감 때 나온 세 곳을 바꾸지 않고 남겨요.`}) : null,
     h('p', {class: 'th-sub th-calnote', text: '그 전 날은 그날까지의 값만으로 지금 규칙을 다시 돌린 셋이에요. 한 달 동안 시장보다 5% 넘게 더 오르면 꽃 선을 넘어요.'}),
     TH ? asOf(TH) : null, nextBtn('시계 읽는 법', '#/t/how'), safe())]};

@@ -9293,6 +9293,8 @@
   "그날까지의 값만으로 지금 규칙을 다시 돌린 셋이에요. 한 달 동안 시장보다 {n}% 넘게 더 오르면 꽃 선을 넘어요.": "These are today's rules re-run with only the prices known on each day. Rising over {n}% more than the market in a month crosses the bloom line.",
   "날마다 찾은 세 곳 달력": "Calendar of the daily three",
   "{d}부터는 그날 장 마감 때 나온 세 곳을 바꾸지 않고 남겨요.": "From {d}, the three shown at each day's close are kept unchanged.",
-  "그 전 날은 그날까지의 값만으로 지금 규칙을 다시 돌린 셋이에요. 한 달 동안 시장보다 {n}% 넘게 더 오르면 꽃 선을 넘어요.": "Earlier days are today's rules re-run with only the prices known on each day. Rising over {n}% more than the market in a month crosses the bloom line."
+  "그 전 날은 그날까지의 값만으로 지금 규칙을 다시 돌린 셋이에요. 한 달 동안 시장보다 {n}% 넘게 더 오르면 꽃 선을 넘어요.": "Earlier days are today's rules re-run with only the prices known on each day. Rising over {n}% more than the market in a month crosses the bloom line.",
+  "동그라미는 왼쪽부터 {n}번, {n}번, {n}번이에요.": "The circles are No. {n}, {n} and {n} from the left.",
+  "날짜를 누르면 그날 세 곳이 위에 크게 나와요.": "Tap a date to see that day's three places large at the top."
  }
 }

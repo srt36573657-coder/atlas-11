@@ -116,18 +116,28 @@ a.th-ck:active { background: #161616; }
 
 /* 싹 달력(#/t/cal · 2026-10-22 11:55) — 월 ~ 금 다섯 칸 · 칸 = 날짜 · 1번 이름 · 셋의 한 달 뒤 표(● 넘음 · ○ 못 넘음 · · 아직) · 누른 날 금빛 테 */
 .th-calsum { display: flex; flex-direction: column; gap: var(--sp-1); }
+/* 싹 달력 잘 보이게(사장님 2026-10-22 14:27 「달력이 잘 안 보여」 · 14:28 「잘 보이게 해」) — 칸을 키우고 날짜는 굵고 크게 · 표 셋은 글자 대신 그린 동그라미(● 주황 = 넘음 · ○ 흰 테 = 못 넘음 · 작은 회색 점 = 아직) · 테두리 밝게 · 1번 이름은 두 줄까지 */
 .th-calg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
-.th-calw { text-align: center; color: var(--sub); font-size: var(--fs-1); }
-.th-calx { min-height: 80px; }
-.th-calc { all: unset; box-sizing: border-box; min-height: 80px; min-width: 0; padding: 4px; border: 1px solid #2A2A2A; border-radius: 8px; display: flex; flex-direction: column; gap: 2px; cursor: pointer; color: var(--ink); }
+.th-calw { text-align: center; color: var(--ink); font-size: var(--fs-2); font-weight: 700; }
+.th-calx { min-height: 84px; }
+.th-calc { all: unset; box-sizing: border-box; min-height: 84px; min-width: 0; padding: 6px 3px; border: 2px solid #46536F; border-radius: 10px; background: #121A2C; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; color: var(--ink); text-align: center; container-type: inline-size; }
 .th-calc.kept { border-color: var(--gold-line, #E9B949); }
 .th-calc.on { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
 .th-calc:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
-.th-cald { font-size: var(--fs-1); }
-.th-caln { font-size: var(--fs-1); line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.th-calm { display: flex; gap: 2px; font-style: normal; font-size: var(--fs-1); line-height: 1.2; }
+.th-cald { font-size: var(--fs-4); font-weight: 800; line-height: 1.1; }
+.th-caln { display: none; width: 100%; font-size: var(--fs-1); font-weight: 700; line-height: 1.25; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; word-break: keep-all; } /* 휴대폰 칸(폭 60px 안팎)에는 이름이 조각나 안 보이므로 날짜 · 동그라미만 — 이름은 날짜를 누르면 위 칸에 크게 · 칸이 넓은 화면(태블릿 · 컴퓨터)에서만 이름도 */
+@container (min-width: 96px) { .th-caln { display: -webkit-box; } }
+.th-calpick { scroll-margin-top: 84px; }
+.th-calhow { margin: 0; color: var(--ink); font-size: var(--fs-2); line-height: 1.5; }
+.th-calm { display: flex; justify-content: center; align-items: center; gap: 3px; width: 100%; margin-top: auto; font-style: normal; font-size: 0; line-height: 0; }
+.th-calm i, .th-calkey i { flex: 0 1 16px; min-width: 8px; aspect-ratio: 1; box-sizing: border-box; border-radius: 50%; font-size: 0; line-height: 0; }
+.th-calm i.ok, .th-calkey i.ok { background: var(--up); }
+.th-calm i.no, .th-calkey i.no { border: 2px solid #E8ECF5; }
+.th-calm i.wait, .th-calkey i.wait { flex-basis: 6px; min-width: 6px; margin: 0 4px; background: #9AA4BC; }
+.th-calkey i { display: inline-block; width: 18px; height: 18px; vertical-align: -2px; margin-right: 4px; }
+.th-calkey i.wait { width: 8px; height: 8px; vertical-align: 2px; }
 .th-calm i, .th-calkey i, .th-calhit i { font-style: normal; }
 .tc .ok { color: var(--up); } .tc .no { color: var(--sub); } .tc .wait { color: var(--sub); }
-.th-calkey { display: flex; gap: var(--sp-2); flex-wrap: wrap; color: var(--sub); font-size: var(--fs-1); }
-.th-calhit { display: block; font-size: var(--fs-1); }
+.th-calkey { display: flex; gap: var(--sp-3); flex-wrap: wrap; align-items: center; color: var(--ink); font-size: var(--fs-2); }
+.th-calhit { display: block; font-size: var(--fs-2); font-weight: 700; }
 .th-calmo { margin-top: var(--sp-2); }
