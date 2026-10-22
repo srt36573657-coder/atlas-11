@@ -505,8 +505,10 @@ function allBox(H, band) {
   d.addEventListener('toggle', () => { if (d.open) rest(); });
   return d;
 }
-/** 시황 사실 — 모든 회사 마지막 날 오른 곳 · 내린 곳(요약 파일 · 옛것이면 home.json 네이버 업종 회사 수) · 사실마다 「왜 그럴까?」 → 살펴볼 물음 셋(답 · 앞날 없음) */
-const WHY3 = ['누가 팔았을까?', '다른 날에도 그랬을까?', '내 이유와 상관있을까?'];
+/** 시황 사실 — 모든 회사 마지막 날 오른 곳 · 내린 곳(요약 파일 · 옛것이면 home.json 네이버 업종 회사 수) · 사실마다 「왜 그럴까?」 → 열한 걸음 이어 묻기(지난 사실만 · 앞날 없음)
+    사장님 2026-10-22(서울) 08:53 「왜 그럴까를 뻔한 이야기로 하고 있어 … 원숭이 엉덩이는 빨개 빨가면 사과 … 11단계는 논리적으로 사방팔방으로 이야기 해야지 그 이야기를 움직이는 도식화로 해야 하고」
+    (명령문 docs/design/total-2026-10-22/order-0853.txt) — 옛 물음 셋(누가 팔았을까? · 다른 날에도 그랬을까? · 내 이유와 상관있을까?)은 열한 걸음의 3 · 4 · 9 · 11 걸음이 맡음
+    그림 · 걸음 글은 why-chain.js · why-steps.js(처음 누를 때 받음 — 첫 그림 · 첫 화면 글자 셈에 안 듦) · 펼칠 때마다 처음부터 움직임(el.play) */
 function newsBox(H) {
   const Y = sumOk()?.day, B = H?.sectors?.breadth;
   const v = Y && Y.n > 0 ? {up: Y.up, dn: Y.dn, d: Y.date} : B && B.up + B.down + B.flat > 0 ? {up: B.up, dn: B.down, d: H.sectors.date} : null;
@@ -515,57 +517,28 @@ function newsBox(H) {
   box.setAttribute('aria-label', '시황 사실 · ' + md(v.d)); // 날짜는 오늘 장 줄 · 읽어 주기에 — 보이는 글은 글자 수 잣대 안
   /* 돌 판(2026-10-19 10:31 · 시안 platform3/home) — 사실 두 줄(오른 곳 · 내린 곳)마다 「왜 그럴까?」 · 사이에 가는 막대 한 줄(길이 = 곳 수) */
   const fact = (c, t, n) => {
-    const qs = h('ul', {class: 'w-qs', hidden: true}, ...WHY3.map((q, i) => whyQ(q, i, H)));
+    const wrap = h('div', {class: 'w-chain', hidden: true}); // 열한 걸음 칸(옛 ul.w-qs 자리 · 누르기 전에는 비어 있음)
     const b = h('button', {type: 'button', class: 'w-why', 'aria-expanded': 'false', text: '왜 그럴까?'});
-    b.addEventListener('click', () => { qs.hidden = !qs.hidden; b.setAttribute('aria-expanded', String(!qs.hidden)); });
-    return h('div', {class: 'w-facts', 'data-fact': ''}, h('p', {class: 'w-fl'}, h('span', {class: 'w-f', 'data-num': ''}, h('span', {class: 'w-lb', text: t}), h('b', {class: 'num ' + c, text: Number.isFinite(n) ? num(n) : '?'}))), b, qs);
+    let el = null, busy = false;
+    b.addEventListener('click', async () => {
+      if (!wrap.hidden) { wrap.hidden = true; b.setAttribute('aria-expanded', 'false'); return; }
+      if (!el) {
+        if (busy) return; busy = true;
+        try {
+          const [{whyChain}, {homeSteps}] = await Promise.all([import('/next/why-chain.js'), import('/next/why-steps.js')]), C = myCounts();
+          el = whyChain(homeSteps({side: c === 'dn' ? 'dn' : 'up', n, date: v.d, H, TH: D.themeHome, mine: C ? {count: C.stop} : null}), {});
+          wrap.replaceChildren(el);
+        } catch (e) { console.error(e); wrap.replaceChildren(h('p', {class: 'note', text: '? 이어 묻기를 열지 못했어요. 잠시 뒤 다시 눌러 주세요.'})); }
+        busy = false;
+      }
+      wrap.hidden = false; b.setAttribute('aria-expanded', 'true'); el?.play?.();
+    });
+    return h('div', {class: 'w-facts', 'data-fact': ''}, h('p', {class: 'w-fl'}, h('span', {class: 'w-f', 'data-num': ''}, h('span', {class: 'w-lb', text: t}), h('b', {class: 'num ' + c, text: Number.isFinite(n) ? num(n) : '?'}))), b, wrap);
   };
   const bar = h('div', {class: 's-split', 'aria-hidden': 'true'}), gu = h('i', {class: 'gu'}), gd = h('i', {class: 'gd'});
   if (Number.isFinite(v.up) && Number.isFinite(v.dn) && v.up + v.dn > 0) { gu.style.flexGrow = String(v.up); gd.style.flexGrow = String(v.dn); bar.append(gu, gd); }
   box.append(fact('up', '오른 곳', v.up), bar, fact('dn', '내린 곳', v.dn));
   return box;
-}
-/* 물음 셋의 답(사장님 2026-10-19 13:27 지인 의견 「이 버튼을 또 누른다면 한 번에 알아 볼 수 있게 정리가 되어있는 글이 나오면 … 따로 찾아보아야한다는 과정이 있어 조금 아쉬운것같습니댜」 · 「해결해」)
-   물음을 누르면 바로 밑에 받은 자료로 센 지난 사실만 펼침(앞날 · 사라 · 팔라 없음 · 못 받은 값은 「?」) — 0203 [화면] 6 「답과 앞날은 없다」를 이 말씀으로 「지난 사실 답은 있음 · 앞날은 없음」으로 바꿈
-   ① 누가 팔았을까? = 그날 개인 · 외국인 · 기관이 사고판 돈(home.json flows) ② 다른 날에도 그랬을까? = 지난 20거래일 지수가 오른 날 · 내린 날 · 잇달아 같은 쪽 날 수(home.json idx rows)
-   ③ 내 이유와 상관있을까? = 이 기기 매매일지에 적은 이유 수 · 가장 최근 한 줄(atlas:godori-why · 읽기만) + 매매일지 고리 */
-function whyLines(i, H) {
-  if (i === 0) {
-    const F = H?.flows, out = [];
-    for (const [k, nm] of [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']]) {
-      const x = F?.[k]; if (!x) continue;
-      const who = [['foreign', '외국인'], ['institutional', '기관'], ['personal', '개인']].filter(([q]) => Number.isFinite(x[q]));
-      if (!who.length) continue;
-      if (!out.length && isDay(x.date)) out.push(md(x.date) + ' 하루 사고판 돈이에요.');
-      out.push(['h', nm], ...who.map(([q, w]) => w + ' ' + eokH(x[q]) + (x[q] < 0 ? ' 팔았어요' : ' 샀어요'))); // 시장 이름 한 줄 + 누가 얼마 한 줄씩
-    }
-    return out.length ? {lines: out} : {lines: ['? 이번에 사고판 돈을 못 받았어요.']};
-  }
-  if (i === 1) {
-    const out = [];
-    for (const [k, nm] of [['KOSPI', '코스피'], ['KOSDAQ', '코스닥']]) {
-      const rows = (H?.idx?.[k]?.rows ?? []).filter(r => Array.isArray(r) && Number.isFinite(r[1])).slice(-21);
-      if (rows.length < 3) continue;
-      const d = rows.slice(1).map((r, j) => Math.sign(r[1] - rows[j][1])), n = d.length, up = d.filter(x => x > 0).length, dn = d.filter(x => x < 0).length;
-      const last = d[n - 1]; let run = 0; for (let j = n - 1; j >= 0 && d[j] === last && last !== 0; j--) run++;
-      out.push(['h', nm], `지난 ${num(n)}거래일 동안 ${num(up)}일 오르고 ${num(dn)}일 내렸어요.`); if (run >= 2) out.push(`마지막 ${num(run)}일은 잇달아 ${last < 0 ? '내렸어요' : '올랐어요'}.`);
-    }
-    return out.length ? {lines: out} : {lines: ['? 지난 날 지수 값을 못 받았어요.']};
-  }
-  const C = myCounts();
-  if (!C) return {lines: ['? 이 기기가 기록을 기억하지 못해요.']};
-  const last = [...C.list].sort((p, q) => String(q.at).localeCompare(String(p.at)))[0];
-  if (!last) return {lines: ['아직 적은 이유가 없어요. 사기 전에 열한 질문으로 먼저 적어 두면 여기서 바로 견줘 봐요.'], link: ['#/why', '열한 질문으로 적기 ›']};
-  return {lines: [`내가 적은 이유 ${num(C.stop)}개가 있어요.`, `가장 최근 — ${isDay(last.at) ? md(String(last.at).slice(0, 10)) + ' ' : ''}${last.name ?? '?'}`], link: ['#/why', '내 이유 다시 보기 ›']};
-}
-function whyQ(q, i, H) {
-  const ans = h('div', {class: 'w-ans', hidden: true});
-  const b = h('button', {type: 'button', class: 'w-q', 'aria-expanded': 'false'}, h('span', {text: q}), h('i', {'aria-hidden': 'true', text: '›'}));
-  b.addEventListener('click', () => {
-    if (!ans.childElementCount) { const A = whyLines(i, H); ans.append(...A.lines.map(t => (Array.isArray(t) ? h('p', {class: 'w-ah', text: t[1]}) : h('p', {text: t})))); if (A.link) ans.append(h('a', {href: A.link[0], text: A.link[1]})); }
-    ans.hidden = !ans.hidden; b.setAttribute('aria-expanded', String(!ans.hidden));
-  });
-  return h('li', {}, b, ans);
 }
 /** 노란 말풍선(share-btn.js 와 같은 모양 · 색은 app.css .kk-ic .kk-b) */
 function kkIcon() { const s = sv('svg', {class: 'kk-ic', viewBox: '0 0 24 24', width: 28, height: 28, 'aria-hidden': 'true', focusable: 'false'}); s.append(sv('path', {class: 'kk-b', d: 'M12 3C6.75 3 2.5 6.36 2.5 10.5c0 2.65 1.74 4.98 4.37 6.31l-1.1 4.02c-.1.36.31.65.62.44l4.78-3.17c.27.02.55.03.83.03 5.25 0 9.5-3.36 9.5-7.5S17.25 3 12 3z'})); return s; }
