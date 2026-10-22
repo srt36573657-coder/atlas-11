@@ -1,1 +1,1 @@
-{"name":"en","code":1,"seconds":0,"shards":7,"codes":[99,99,99,99,99,99,99],"shardSeconds":[0,0,0,0,0,0,0]}
+{"name":"en","code":1,"seconds":348,"shards":7,"codes":[0,0,0,0,0,99,0],"shardSeconds":[348,338,345,345,347,0,348],"mode":"local","sha":"c6f1c917808f46d9213573f0370963d1f67b87ef","data":"live 2026-10-22","build":302}
