@@ -115,6 +115,19 @@ details.nw.long .nw-t { padding-bottom: var(--sp-1); }
 .crow .cn { flex: 1 1 auto; min-width: 0; font-size: var(--fs-2); font-weight: 600; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* 한 줄 목록 — 줄 높이가 늘 같게([7] 5 · [10] 9) */
 .crow .cp { flex: none; min-width: 72px; text-align: right; font-size: var(--fs-2); font-weight: 700; font-variant-numeric: tabular-nums; }
 .crow .ln, .crow .ln0 { flex: none; display: block; width: 72px; height: 32px; overflow: visible; }
+.crow .cn2 b, .crow .cn2 small { display: block; overflow: hidden; text-overflow: ellipsis; } /* 이름 밑 작은 뜻 글(미국 지수 · 총정리 C6) */
+.crow .cn2 small { color: var(--sub); font-size: var(--fs-1); font-weight: 400; }
+/* 칩 · 관심 쪽 맨 위 결 한 줄(총정리 2026-10-22 C1 ~ C6 · C24 · C25) — 지난 사실 한 줄이 먼저 · 글 시작은 다른 줄과 같은 16px · 고리는 48px 한 줄 */
+.c-lead { margin: var(--sp-2) var(--sp-2) 0; }
+.c-lt { margin: 0; font-size: var(--fs-2); font-weight: 700; line-height: 1.45; text-wrap: pretty; }
+.c-ls { margin: var(--sp-1) 0 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.45; }
+.c-go { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; color: var(--ink); font-size: var(--fs-1); }
+.c-go > span { text-decoration: underline; text-decoration-color: var(--hair2); text-underline-offset: 4px; }
+.c-go > i, .ch-z > i { flex: none; font-style: normal; color: var(--sub); font-size: var(--fs-3); }
+/* 업종 채널 이름 밑 테마 시계 자리 한 줄(총정리 C7) — 글 시작은 이름과 같은 16px · 누르는 자리 48px */
+.ch-z { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; margin: var(--sp-1) var(--sp-2) 0; color: var(--ink); font-size: var(--fs-1); line-height: 1.4; }
+.ch-zt { min-width: 0; text-decoration: underline; text-decoration-color: var(--hair2); text-underline-offset: 4px; }
+.ch-zt b { font-weight: 800; }
 /* 큰 카드 그림([6] 8) — 큰 숫자 = 마지막 날 하루(앞에 작은 「하루」) · 기간 %는 아래 오른쪽 작은 칸(「5일 +110%」) */
 .th .big .bk { font-size: var(--fs-1); font-weight: 600; color: var(--sub); }
 .th .dur b { font-weight: 700; }
@@ -130,7 +143,7 @@ details.nw.long .nw-t { padding-bottom: var(--sp-1); }
 .player { position: relative; aspect-ratio: 16 / 9; background: #050608; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .player .ln { position: absolute; left: 3%; top: 10%; width: 94%; height: 68%; overflow: visible; }
 .player .scrub { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: #3A3D46; }
-.player .scrub b { position: absolute; left: 0; top: 0; bottom: 0; background: var(--up); width: 100%; }
+.player .scrub b { position: absolute; left: 0; top: 0; bottom: 0; background: var(--sub); width: 100%; } /* 빨강은 오른 숫자에만(총정리 C10 — 내린 회사 위 빨간 띠였음) · 오름 · 내림 뜻은 선 색이 맡음 */
 .player .tip { position: absolute; left: 8px; bottom: 16px; font-size: var(--fs-1); background: rgba(0, 0, 0, .7); padding: 0 var(--sp-1); border-radius: 8px; }
 .player .cur { position: absolute; top: 6%; bottom: 8%; width: 2px; background: rgba(255, 255, 255, .55); display: none; }
 .player.scrubbing .cur { display: block; }
@@ -183,7 +196,7 @@ a.more { display: flex; align-items: center; justify-content: center; text-align
 .shorts { height: calc(100vh - var(--top) - var(--tabs)); height: calc(100svh - var(--top) - var(--tabs)); overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; }
 .shorts::-webkit-scrollbar { display: none; }
 /* 시황 칸(사장님 2026-10-18 [10] 5 ~ 9) — 글씨는 --fs 셋(17 · 21 · 48) · 간격은 --sp 만 · 보기 · 보내기는 글 아래 한 줄(옆 76px 자리 없앰) · 선 · 비율 막대 · 미국 막대가 남는 높이를 채워 빈 곳을 줄임 */
-.sh { position: relative; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; padding: var(--sp-3) var(--sp-2) var(--sp-2); display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--hair); }
+.sh { position: relative; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; padding: var(--sp-3) var(--sp-2) var(--sp-2); display: flex; flex-direction: column; justify-content: flex-start; border-bottom: 1px solid var(--hair); } /* 위부터 채움(총정리 C20 — 가운데 맞춤은 글이 칸보다 길면 위로도 넘쳐 작은 폰에서 날짜 줄이 칸 위로 잘렸음) · 자리가 남을 때만 아래 auto 여백으로 가운데 · 위 24px = 위 띠(20px) 밑 */
 .sh .k { color: var(--gold); font-size: var(--fs-1); letter-spacing: .04em; margin: 0; }
 .sh .l1 { font-size: var(--fs-3); font-weight: 700; margin: var(--sp-1) 0 0; }
 .sh .bg { font-size: var(--fs-6); font-weight: 900; line-height: 1.1; margin: var(--sp-1) 0; }
@@ -204,6 +217,7 @@ a.more { display: flex; align-items: center; justify-content: center; text-align
 .sbar i { flex: 1; height: 4px; border-radius: 2px; background: #3A3D46; }
 .sbar i.on { background: var(--ink); }
 .hint { text-align: center; color: var(--sub); font-size: var(--fs-1); margin: var(--sp-2) 0 0; }
+.sh > :first-child { margin-top: auto; } .sh > :last-child { margin-bottom: auto; } /* 남는 자리만 위아래로 나눔(가운데) · 넘치면 0 → 첫 줄(날짜)이 늘 칸 안 — 총정리 C20 */
 
 /* 채널 */
 .banner { height: 96px; background: linear-gradient(135deg, #2A2416, #101218); position: relative; }
@@ -241,6 +255,8 @@ html.f2 .chan.wl > a, html.f3 .chan.wl > a { flex: 1 1 100%; }
 .avs::-webkit-scrollbar { display: none; }
 .avs a { flex: none; width: 88px; display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); min-height: 44px; }
 .avs small { font-size: var(--fs-1); color: var(--sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 88px; text-align: center; }
+.avs small.av-g { display: flex; flex-direction: column; align-items: center; } .avs small.av-g > span { max-width: 88px; overflow: hidden; text-overflow: ellipsis; } /* 큰 업종 동그라미 — 이름 밑 「큰 업종」(같은 이름 업종 동그라미와 가름 · 총정리 C25) */
+details.sub-big { margin: var(--sp-1) 0 0; } /* 빈 관심 — 큰 업종 열은 접은 칸 안(총정리 C24 · 모양은 details.hm-more) */
 .row { display: flex; gap: var(--sp-1); overflow-x: auto; padding: 0 var(--sp-2) var(--sp-1); scrollbar-width: none; }
 .row::-webkit-scrollbar { display: none; }
 .row a { flex: none; width: 46%; }
@@ -256,6 +272,7 @@ html.f2 .chan.wl > a, html.f3 .chan.wl > a { flex: 1 1 100%; }
 .find input { width: 100%; min-height: 52px; border-radius: 14px; border: 1px solid var(--hair2); background: var(--card); color: var(--ink); font: inherit; font-size: var(--fs-3); padding: 0 var(--sp-2); }
 .hits a { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-1); min-height: 56px; padding: 0 var(--sp-2); border-bottom: 1px solid var(--hair); }
 .hits small { color: var(--sub); font-size: var(--fs-1); white-space: nowrap; text-align: right; } /* 오른쪽 끝에 붙은 꼬리 — 글 시작 줄을 늘리지 않게([10] 7) */
+.hits a.f-why { min-height: 48px; font-size: var(--fs-1); } .hits a.f-why > i { font-style: normal; color: var(--sub); font-size: var(--fs-3); } /* 찾은 맨 위 회사 줄 밑 「이 회사로 왜 사? ›」(총정리 B4) */
 .hits a.xo { flex-wrap: wrap; row-gap: 0; padding-top: var(--sp-1); padding-bottom: var(--sp-1); } .hits a.xo .nm { overflow-wrap: anywhere; } .hits a.xo small { white-space: normal; } /* 펀드 · 증권 이름은 길어 둘째 줄로 */
 html.f2 .hits a, html.f3 .hits a { flex-wrap: wrap; row-gap: 0; padding-top: var(--sp-1); padding-bottom: var(--sp-1); } html.f2 .hits small, html.f3 .hits small { white-space: normal; } /* 큰 글씨 — 이름 다음 줄로 설명(넘치지 않게) */
 .prem { display: flex; gap: var(--sp-2); padding: var(--sp-1) var(--sp-2) var(--sp-2); align-items: center; } /* 편지 여는 밤(첫 화면 「더 보기」 · [10] 5 · 8) */

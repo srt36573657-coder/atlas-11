@@ -32,7 +32,8 @@ html.f2 .wtabs, html.f3 .wtabs { grid-template-columns: repeat(2, minmax(0, 1fr)
 /* 단추 줄 · 「이 회사로 왜 사?」 · 업종 채널 · 같은 업종 다음 볼 것 — 글 가운데 또는 왼쪽 16px 한 줄 */
 .acts.cw { padding: 0 var(--sp-2); }
 .acts.cw .act { justify-content: center; gap: var(--sp-1); text-align: center; }
-.why-go.cw { margin: var(--sp-1) var(--sp-2) 0; border: 0; box-shadow: inset 0 0 0 1px var(--hair2); justify-content: center; gap: var(--sp-1); text-align: center; font-size: var(--fs-2); }
+.why-go.cw { margin: var(--sp-1) var(--sp-2); border: 0; outline: 1px solid var(--gold); outline-offset: -1px; justify-content: center; gap: var(--sp-1); text-align: center; font-size: var(--fs-2); } /* 단추 셋 앞(총정리 C11) — 위아래 8px(옛 자리 단추 셋 → 이 단추와 같은 높이) · 금빛 테는 outline(그림자 0 · 자리 안 차지) */
+.why-go.cw:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; } /* 누를 곳 표시는 다른 단추와 같게 */
 .why-go.cw i { font-size: var(--fs-3); }
 .chan.cw { gap: var(--sp-2); padding: var(--sp-2); }
 .chan.cw > a { gap: var(--sp-2); }
@@ -147,7 +148,8 @@ html.white .wtag { background: var(--bg); outline: 1px solid var(--hair2); outli
 html.white .wtag.pk { outline-color: var(--gold); }
 html.white .wtab { outline: 1px solid var(--hair2); outline-offset: -1px; }
 html.white .wtab:active, html.white .pco-next:active { background: var(--press); }
-html.white .why-go.cw { outline: 1px solid var(--hair2); outline-offset: -1px; }
+html.white .why-go.cw { outline: 1px solid var(--gold); outline-offset: -1px; } /* 사장님 금빛 #F2C46A 1px(총정리 C11) */
+html.white .why-go.cw:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 html.white .pco-tip, html.white .pco-chev { color: var(--bg); }
 html.white .pco-key .k-co { background: none; border-left: 12px solid var(--up); border-right: 12px solid var(--down); }
 html.white .pco-key .k-pick { background: var(--gold); background-clip: padding-box; border-left: 11px solid transparent; border-right: 11px solid transparent; }
