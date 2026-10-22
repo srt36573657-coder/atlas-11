@@ -13,6 +13,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
+import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {newRoomKey, open, fromAnnotations, FWD_SCHEMA, ID_RE} from './forward.mjs';
 
@@ -21,11 +22,16 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const gh = args => { const r = spawnSync('gh', args, {encoding: 'utf8', timeout: 120e3}); return {ok: r.status === 0, out: String(r.stdout ?? '').trim(), err: String(r.stderr ?? r.error?.message ?? '').trim()}; };
 const short = s => String(s ?? '').replace(/\s+/g, ' ').slice(0, 160);
 
-/** 방금 부른 작업 번호 — 부른 때(t0) 뒤에 생긴 것 가운데 가장 새것 */
-async function findRun(t0, {tries = 20} = {}) {
+/** 방금 부른 작업 번호 — 작업 이름 끝의 방 표시(tag)가 같은 것(두 방이 함께 불러도 섞이지 않음) · 부른 때(t0) 뒤 */
+export function pickRun(list, tag, t0) {
+  return (Array.isArray(list) ? list : []).filter(o => o?.event === 'workflow_dispatch' && Date.parse(o.createdAt) >= t0 && String(o.displayTitle ?? '').endsWith(' ' + tag))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0]?.databaseId ?? null;
+}
+export const newTag = () => crypto.randomBytes(5).toString('hex');
+async function findRun(t0, tag, {tries = 20} = {}) {
   for (let i = 0; i < tries; i++) {
-    const r = gh(['run', 'list', '-R', REPO, '--workflow', WORKFLOW, '-L', '5', '--json', 'databaseId,createdAt,status,conclusion,event']);
-    if (r.ok) { try { const x = JSON.parse(r.out).filter(o => o.event === 'workflow_dispatch' && Date.parse(o.createdAt) >= t0).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0]; if (x) return x.databaseId; } catch { /* 다시 */ } }
+    const r = gh(['run', 'list', '-R', REPO, '--workflow', WORKFLOW, '-L', '10', '--json', 'databaseId,createdAt,status,conclusion,event,displayTitle']);
+    if (r.ok) { try { const id = pickRun(JSON.parse(r.out), tag, t0); if (id) return id; } catch { /* 다시 */ } }
     await sleep(3000);
   }
   return null;
@@ -68,10 +74,10 @@ function streakNow() {
 const failed = o => ({...o, ok: false, streak: streakNow()});
 
 export async function fetchRoom({out = path.join(os.tmpdir(), 'help-forward.json')} = {}) {
-  const key = newRoomKey(), t0 = Date.now() - 15e3;
-  const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=fetch', '-f', `pub=${key.pub}`]);
+  const key = newRoomKey(), t0 = Date.now() - 15e3, tag = newTag();
+  const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=fetch', '-f', `pub=${key.pub}`, '-f', `tag=${tag}`]);
   if (!w.ok) return failed({why: '작업을 못 부름 ' + short(w.err)});
-  const run = await findRun(t0);
+  const run = await findRun(t0, tag);
   if (!run) return failed({why: '작업 번호를 못 찾음'});
   const c = await waitRun(run);
   if (c !== 'success') return failed({run, why: '작업이 ' + c});
@@ -84,10 +90,10 @@ export async function fetchRoom({out = path.join(os.tmpdir(), 'help-forward.json
 }
 export async function doneRoom({run, last}) {
   if (!ID_RE.test(String(last ?? ''))) return {ok: false, why: '글 번호 꼴이 틀림'};
-  const t0 = Date.now() - 15e3;
-  const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=ack', '-f', `ack_id=${last}`]);
+  const t0 = Date.now() - 15e3, tag = newTag();
+  const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=ack', '-f', `ack_id=${last}`, '-f', `tag=${tag}`]);
   if (!w.ok) return {ok: false, why: '보낸 표시 작업을 못 부름 ' + short(w.err)};
-  const ackRun = await findRun(t0), c = ackRun ? await waitRun(ackRun) : 'none';
+  const ackRun = await findRun(t0, tag), c = ackRun ? await waitRun(ackRun) : 'none';
   const del = run && /^\d+$/.test(String(run)) ? gh(['api', '-X', 'DELETE', `repos/${REPO}/actions/runs/${run}`]) : {ok: false};
   return {ok: c === 'success', ackRun, ack: c, deleted: del.ok};
 }

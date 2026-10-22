@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {pickNew, toMessages, whenKo, newRoomKey, seal, open, toAnnotations, fromAnnotations, fetchNew, fetchSealed, annParts, ack, startCursor, FWD_START, HELP_STORE, ID_RE, CURSOR_KEY, MSG_MAX, MAX_ITEMS, ANN_MAX} from '../../scripts/atlas11/help/forward.mjs';
 import {HELP_STORE as LIB_STORE, ID_RE as LIB_ID, handleHelp} from '../../lib/atlas11/help.mjs';
-import {failStreak} from '../../scripts/atlas11/help/room.mjs';
+import {failStreak, pickRun, newTag} from '../../scripts/atlas11/help/room.mjs';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
 
 const read = p => fs.readFileSync(new URL('../../' + p, import.meta.url), 'utf8');
@@ -121,6 +121,15 @@ test('연달아 막힌 수 — 새것부터 · 잘 된 것에서 멈춤 · 도�
   assert.equal(failStreak(null), 0);
 });
 
+test('내가 부른 작업 찾기 — 이름 끝 방 표시가 같은 것만(두 방이 함께 불러도 섞이지 않음)', () => {
+  const t0 = T0, at = s => new Date(T0 + s * 1000).toISOString(), a = newTag(), b = newTag();
+  assert.match(a, /^[0-9a-f]{10}$/); assert.notEqual(a, b);
+  const list = [{databaseId: 1, event: 'workflow_dispatch', createdAt: at(5), displayTitle: 'atlas11-help-forward fetch ' + b}, {databaseId: 2, event: 'workflow_dispatch', createdAt: at(3), displayTitle: 'atlas11-help-forward fetch ' + a}, {databaseId: 3, event: 'workflow_dispatch', createdAt: at(-60), displayTitle: 'atlas11-help-forward fetch ' + a}];
+  assert.equal(pickRun(list, a, t0), 2);
+  assert.equal(pickRun(list, b, t0), 1);
+  assert.equal(pickRun(list, 'nope', t0), null);
+});
+
 test('깃허브 작업 · 방 — 읽기 권한만 · 넷리파이 열쇠는 작업 비밀 · 글을 찍지 않음', () => {
   const y = read('.github/workflows/atlas11-help-forward.yml');
   assert.match(y, /permissions:\n {2}contents: read/);
@@ -129,6 +138,7 @@ test('깃허브 작업 · 방 — 읽기 권한만 · 넷리파이 열쇠는 작
   const f = read('scripts/atlas11/help/forward.mjs');
   assert.doesNotMatch(f, /console\.log\([^)]*(text|messages\[|\.messages\))/, '글을 기록 줄에 찍지 않음');
   const room = read('scripts/atlas11/help/room.mjs');
-  assert.match(room, /'-f', `pub=\$\{key\.pub\}`/);
+  assert.match(room, /'-f', `pub=\$\{key\.pub\}`, '-f', `tag=\$\{tag\}`/);
+  assert.match(y, /run-name: atlas11-help-forward \$\{\{ inputs\.mode \}\} \$\{\{ inputs\.tag \}\}/);
   assert.match(room, /mode: 0o600/);
 });

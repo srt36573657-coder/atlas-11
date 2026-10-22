@@ -5,9 +5,14 @@ name: atlas11-help-forward
 #   mode=ack:   방이 카톡을 다 보낸 뒤 「여기까지 보냄」(ack_id) — 앞으로만 옮김
 #   넷리파이 저장소에 쓰는 것은 「보낸 표시」(fwd/cursor) 하나뿐 · 처음(보낸 표시 없음)에는 사장님 말씀 때(07:48) 뒤 글부터
 #   하지 않는 일: 고객 글 고치기 · 사이트에 보내기 · 비밀 값 찍기 · 답 글 보내기(깃허브 권한은 읽기만 · 넷리파이 열쇠는 이 작업 안에서만)
+run-name: atlas11-help-forward ${{ inputs.mode }} ${{ inputs.tag }}
 on:
   workflow_dispatch:
     inputs:
+      tag:
+        description: '부른 방 표시(뜻 없는 짧은 글 — 방이 제가 부른 작업을 이 이름으로 찾음 · 두 방이 함께 불러도 섞이지 않게)'
+        required: false
+        default: ''
       mode:
         description: 'fetch(새 글 꺼내기) 또는 ack(여기까지 보냄)'
         required: true
