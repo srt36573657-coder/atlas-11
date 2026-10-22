@@ -1,5 +1,5 @@
 {
- "made": "2026-10-22T11:35:58.571Z",
+ "made": "2026-10-22T13:42:40.020Z",
  "base": "https://aaa7377.com",
  "files": [
   {
@@ -56,13 +56,13 @@
    "status": 200,
    "type": "application/json",
    "bytes": 6863,
-   "sha256": "f399045b9932b493b7172518b1fa1610281e661804c34f91da347315b5c6d6b9",
+   "sha256": "fb7e5b4ab9850b838787bcb8b1dcd8d7f87ef81a55e8df7eb214d4616a624f49",
    "has": {
     "\"rule\":\"home-v3\"": true,
     "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-22 20:06",
+     "kst": "2026-10-22 22:33",
      "alerts": []
     }
    },
@@ -72,8 +72,8 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 95269,
-   "sha256": "6b189c57a66bd3319c51b25a96eb149c1a20ab7c7a6ab34b9431e972323bd38b",
+   "bytes": 95125,
+   "sha256": "9bccf7b97905187525f3d5f49f37c1c0f03349d1ba6c36a2f9a76e05d65c2653",
    "has": {
     "home-v3": false
    },
@@ -110,15 +110,15 @@
    "path": "/next/data/theme-cal.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 10924,
-   "sha256": "05667233fecb944c925a21722c32a36ad554842799a8cf90dfe2a0de645d1e13",
+   "bytes": 10930,
+   "sha256": "9b4883a8b7159bce6c663e5c7738222bf9846c44f64570093dd1583017ee1f67",
    "has": {
     "\"schema\":\"dori-theme-1-cal\"": true,
     "\"keepFrom\":\"2026-10-22\"": true,
     "_cal": {
      "asOf": "2026-10-22",
      "days": 60,
-     "kept": 0,
+     "kept": 1,
      "done": 40,
      "hit1": 2,
      "all3": 120,
@@ -126,6 +126,7 @@
      "last": {
       "d": "2026-10-22",
       "s": 31,
+      "k": 1,
       "top": [
        {
         "n": "인터넷 플랫폼",
@@ -180,7 +181,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 5550,
-   "sha256": "ca5d0711567d08c909e9c7a76f719c4ded160c95be15307557a1bfb0d6b204f0",
+   "sha256": "20495f0b69cae27ebc6345b0a4402dedf6890bbf589ecade9006c4888e4c383a",
    "has": {
     "\"record\"": true,
     "_rec": {
@@ -258,7 +259,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 2090,
-   "sha256": "b001c51f73b274659924d8f8aef4fb742b05f66ad23743e9dcfb0d11572f288f",
+   "sha256": "822bda6cc189a61bdf1329a3ebef4e8fb2915795b40f72c1a3859bbfd98f78b7",
    "has": {
     "\"schema\":\"dori-theme-1-bloom\"": true,
     "\"record\"": true,
