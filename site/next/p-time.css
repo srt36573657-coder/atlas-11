@@ -29,7 +29,7 @@
 .ptime-key span { display: inline-flex; align-items: center; gap: var(--sp-1); }
 .ptime-key i { flex: none; display: inline-block; }
 .ptime-key .k-365 { width: 22px; height: 2px; border-radius: 1px; background: var(--ink); }
-.ptime-key .k-pool { width: 22px; height: 0; border-top: 2px solid #6F7782; }
+.ptime-key .k-pool { width: 22px; height: 0; border-top: 2px solid #4A6A58; }
 .ptime-key .k-seal { width: 0; height: 18px; border-left: 3px solid var(--gold); }
 .ptime-key .k-open { width: 0; height: 18px; border-left: 2px dashed var(--sub); }
 

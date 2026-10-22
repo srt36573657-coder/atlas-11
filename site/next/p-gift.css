@@ -30,7 +30,7 @@
 .gf-btn:focus-visible, .gf-sms:focus-visible, .gf-call:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 .gf-said { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--sub); }
 .gf-said:empty, .gf-left:empty { display: none; }
-.gf-uv { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; border-radius: 16px; background: #0B2716; cursor: pointer; }
+.gf-uv { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; border-radius: 16px; background: #DCEFE2; cursor: pointer; }
 /* 본 초 막대(총정리 D11) — 바탕은 가는 테만(속 비움 · 0초가 꽉 찬 막대로 보이지 않게) · 본 만큼만 금빛 */
 .gf-bar { -webkit-appearance: none; appearance: none; display: block; width: 100%; max-width: 360px; height: 10px; border: 1px solid var(--sub); border-radius: 5px; background: transparent; overflow: hidden; }
 .gf-bar::-webkit-progress-bar { background: transparent; border-radius: 4px; }
@@ -43,7 +43,7 @@
 .gf-thx { margin: 0; font-size: var(--fs-2); font-weight: 700; line-height: 1.45; color: var(--gold); }
 .gf-tel { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
 .gf-sms, .gf-call { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 0 var(--sp-3); box-sizing: border-box; border-radius: 24px; font-size: var(--fs-2); font-weight: 800; text-align: center; text-decoration: none; }
-.gf-sms { background: var(--gold); color: #0B2716; }
+.gf-sms { background: var(--gold); color: #FFFFFF; }
 .gf-call { border: 1px solid var(--gold); color: var(--gold); }
 .gf-num { margin: 0; font-size: var(--fs-1); color: var(--ink); }
 .gf-num b { color: var(--gold); font-weight: 800; }

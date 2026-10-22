@@ -8,42 +8,42 @@
 .th-hd { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); margin: var(--sp-1) 0 var(--sp-2); }
 .th-h1 { flex: 1; min-width: 0; margin: 0; font-size: var(--fs-5); font-weight: 800; line-height: 1.2; letter-spacing: -.02em; word-break: keep-all; }
 .th-art { flex: none; width: 96px; height: 77px; }
-.th-say { display: block; width: fit-content; max-width: 100%; box-sizing: border-box; margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #262626; border-radius: 22px 22px 22px 6px; background: #0E2E1B; font-size: var(--fs-2); line-height: 1.35; } /* 한 덩이 글(「돌이 |」 와 말이 줄 안에) — 글 시작 = 테 1 + 16([10] 7) */
-.th-who { display: inline; margin: 0 var(--sp-1) 0 0; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #3A3A3A; color: #A8C2B4; font-size: var(--fs-1); }
+.th-say { display: block; width: fit-content; max-width: 100%; box-sizing: border-box; margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #A9CDB6; border-radius: 22px 22px 22px 6px; background: #F3FAF5; font-size: var(--fs-2); line-height: 1.35; } /* 한 덩이 글(「돌이 |」 와 말이 줄 안에) — 글 시작 = 테 1 + 16([10] 7) */
+.th-who { display: inline; margin: 0 var(--sp-1) 0 0; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #A9CDB6; color: #4A6A58; font-size: var(--fs-1); }
 /* 시계 칸 */
 /* 답 · 세 칸 · 줄 */
-.th-asof, .th-cap2 { margin: var(--sp-1) 0 0; color: #A8C2B4; font-size: var(--fs-1); }
-.th-safe { margin: var(--sp-2) 0; color: #BDBDBD; font-size: var(--fs-1); }
+.th-asof, .th-cap2 { margin: var(--sp-1) 0 0; color: #4A6A58; font-size: var(--fs-1); }
+.th-safe { margin: var(--sp-2) 0; color: #2F4F3D; font-size: var(--fs-1); }
 /* 차례 줄 · 점 넷 · 상자 · 목록 */
 .th-h2 { margin: var(--sp-3) 0 var(--sp-1); font-size: var(--fs-3); font-weight: 800; }
 .th-steps { margin: 0 0 var(--sp-2); padding: 0; list-style: none; }
-.th-steps li { display: grid; grid-template-columns: 32px 1fr; column-gap: var(--sp-1); padding: var(--sp-1) 0; border-top: 1px solid #24503A; }
-.th-sn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #8AB09C; border-radius: 50%; font-size: var(--fs-1); text-align: center; }
+.th-steps li { display: grid; grid-template-columns: 32px 1fr; column-gap: var(--sp-1); padding: var(--sp-1) 0; border-top: 1px solid #A9CDB6; }
+.th-sn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #3F7358; border-radius: 50%; font-size: var(--fs-1); text-align: center; }
 .th-st { display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .th-st b { font-size: var(--fs-3); font-weight: 700; }
-.th-st span, .th-st .th-ckd { color: #D6D6D6; font-size: var(--fs-1); line-height: 1.5; }
-.th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #BDBDBD; }
-.th-ck { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; column-gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #24503A; } /* 글 시작 = 차례 줄과 같은 자리(16 + 32 + 8 · [10] 7) */
+.th-st span, .th-st .th-ckd { color: #2F4F3D; font-size: var(--fs-1); line-height: 1.5; }
+.th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #2F4F3D; }
+.th-ck { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; column-gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #A9CDB6; } /* 글 시작 = 차례 줄과 같은 자리(16 + 32 + 8 · [10] 7) */
 a.th-ck { color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; } /* ✓ 줄 = 근거 쪽 고리(2026-10-22 총정리 · 감사 A17) — 끝 ›(.th-go)는 오른쪽 맞춤 */
-a.th-ck:active { background: #0E2E1B; }
+a.th-ck:active { background: #F3FAF5; }
 .th-ck > b { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: var(--fs-2); text-align: center; }
-.th-ck > b.y { background: var(--up); color: #0B2716; }
-.th-ck > b.n { border: 2px solid #739C87; color: #BDBDBD; }
+.th-ck > b.y { background: var(--up-bg); color: #10291B; }
+.th-ck > b.n { border: 2px solid #5C8C72; color: #2F4F3D; }
 .th-ckt { color: var(--ink); font-size: var(--fs-3); }
-.th-box { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0; padding: var(--sp-2); border: 1px dashed #739C87; border-radius: 16px; }
+.th-box { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0; padding: var(--sp-2); border: 1px dashed #5C8C72; border-radius: 16px; }
 .th-box b { font-size: var(--fs-3); }
-.th-box span { color: #D6D6D6; font-size: var(--fs-1); }
+.th-box span { color: #2F4F3D; font-size: var(--fs-1); }
 .th-list { margin: 0 0 var(--sp-1); }
-.th-li, .th-cor { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #24503A; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
+.th-li, .th-cor { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #A9CDB6; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
 .th-li > span:first-child, .th-rn2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .th-li b, .th-cor b, .th-li > span:not(:first-child) { font-weight: 700; text-align: right; } /* 오른쪽 값 · 이름표(글 시작 왼쪽 줄 셈 밖 · [10] 7) */
 .th-li > span.th-cap2 { margin: 0; font-weight: 400; }
 .th-li.th-me > span:first-child { color: var(--gold); font-weight: 700; }
 /* 꽃 · 시듦 목록 줄 — 견본 flow36 5 · 6 쪽 그대로(이름 · 값 · 「한 달」 · 64px · 320 폭에서도 한 줄) */
-.th-srow { display: flex; align-items: center; gap: var(--sp-2); min-height: 64px; border-bottom: 1px solid #24503A; color: var(--ink); font-size: var(--fs-3); text-decoration: none; }
+.th-srow { display: flex; align-items: center; gap: var(--sp-2); min-height: 64px; border-bottom: 1px solid #A9CDB6; color: var(--ink); font-size: var(--fs-3); text-decoration: none; }
 .th-srow .th-rn { flex: 1; min-width: 0; font-size: var(--fs-3); font-weight: 800; } /* 종목이 잘 보이게(사장님 2026-10-22 23:31 지인 말씀) */
 .th-srow .th-sv { flex: none; font-weight: 700; text-align: right; }
-.th-srow .th-sk { flex: none; color: #A8C2B4; font-size: var(--fs-1); text-align: right; }
+.th-srow .th-sk { flex: none; color: #4A6A58; font-size: var(--fs-1); text-align: right; }
 .th-srow .th-z { flex: none; font-size: var(--fs-1); text-align: right; } /* 이웃 업종 줄의 자리 이름 · 오른쪽 셋은 글 시작 왼쪽 줄 셈 밖([10] 7) */
 .th-srow .th-sv2 { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 0; padding: var(--sp-1) 0; text-align: right; } /* 꽃 · 시듦 줄 오른쪽 = 큰 값(꽃 n일째 · 닷새) 위 · 한 달 작은 글 아래(2026-10-22 총정리 · 감사 A14 · A15 — 좁은 폭 영어에서도 이름 자리가 남게 두 줄) */
 .th-srow .th-sv2 .th-sv { font-weight: 700; line-height: 1.3; }
@@ -51,49 +51,49 @@ a.th-ck:active { background: #0E2E1B; }
 .th-sp { display: block; }
 .th-sp .th-spl { fill: none; stroke-width: 2; } .th-sp .th-spl.up, .th-sp .th-spd.up { stroke: var(--up); fill: none; } .th-sp .th-spd.up { fill: var(--up); } .th-sp .th-spl.dn { stroke: var(--down); } .th-sp .th-spd.dn { fill: var(--down); stroke: none; }
 .th-line { display: block; margin: 0 0 var(--sp-1); }
-.th-line .th-mid { stroke: #3A3A3A; stroke-dasharray: 3 4; } .th-line .th-l0 { fill: none; stroke: #739C87; stroke-width: 2.5; } .th-line .th-l1 { fill: none; stroke: var(--up); stroke-width: 3; } .th-line .th-l1d { fill: var(--up); }
+.th-line .th-mid { stroke: #A9CDB6; stroke-dasharray: 3 4; } .th-line .th-l0 { fill: none; stroke: #5C8C72; stroke-width: 2.5; } .th-line .th-l1 { fill: none; stroke: var(--up); stroke-width: 3; } .th-line .th-l1d { fill: var(--up); }
 .th-two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-1); margin: var(--sp-1) 0; }
-.th-two p { display: flex; flex-direction: column; align-items: center; margin: 0; padding: var(--sp-1); border: 1px solid #3A3A3A; border-radius: 12px; text-align: center; }
-.th-two span, .th-two small { color: #BDBDBD; font-size: var(--fs-1); }
+.th-two p { display: flex; flex-direction: column; align-items: center; margin: 0; padding: var(--sp-1); border: 1px solid #A9CDB6; border-radius: 12px; text-align: center; }
+.th-two span, .th-two small { color: #2F4F3D; font-size: var(--fs-1); }
 .th-two b { font-size: var(--fs-5); font-weight: 400; }
 .th-keep { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin: var(--sp-1) 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid var(--hair2); border-radius: 28px; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-3); font-weight: 700; line-height: 1.4; text-align: center; } /* 두 줄이 되어도 글이 테에 닿지 않게(새 눈 검사 2026-10-19 22시) */
 .th-keep[aria-pressed="true"] { border-color: var(--up); color: var(--up); }
 .th-watch[aria-pressed="true"] { border-color: var(--gold); color: var(--ink); } /* 관심 업종 담김 — 빨강은 숫자에만 */
 /* 알림 쪽(견본 26) — 줄마다 이름표(왼쪽) + 켜짐 단추(오른쪽 · 가운데 글) */
 .th-als { margin: 0 0 var(--sp-2); }
-.th-al { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-height: 64px; border-bottom: 1px solid #24503A; } /* 좁고 큰 글씨면 단추가 아래 줄 오른쪽으로(이름을 낱말 가운데서 끊지 않게) */
+.th-al { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-height: 64px; border-bottom: 1px solid #A9CDB6; } /* 좁고 큰 글씨면 단추가 아래 줄 오른쪽으로(이름을 낱말 가운데서 끊지 않게) */
 .th-al > :nth-child(2) { margin-left: auto; }
 .th-alt { display: flex; flex: 1 1 8em; align-items: center; min-width: 0; min-height: 48px; color: var(--ink); font-size: var(--fs-2); line-height: 1.4; text-decoration: none; overflow-wrap: normal; word-break: keep-all; } /* 이름 · 자리 · 단추가 한 높이(누름 칸 48 안 가운데) */
 .th-al .th-z { flex: none; font-size: var(--fs-1); text-align: right; }
-.th-sw { flex: none; min-width: 72px; min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #739C87; border-radius: 24px; background: transparent; color: #BDBDBD; font: inherit; font-size: var(--fs-1); font-weight: 700; text-align: center; }
+.th-sw { flex: none; min-width: 72px; min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #5C8C72; border-radius: 24px; background: transparent; color: #2F4F3D; font: inherit; font-size: var(--fs-1); font-weight: 700; text-align: center; }
 .th-sw[aria-checked="true"] { border-color: var(--gold); color: var(--ink); }
 .th-rbs { margin: 0 0 var(--sp-2); }
 .th-rb { display: grid; grid-template-columns: 96px 1fr 56px; align-items: center; gap: var(--sp-1); min-height: 40px; font-size: var(--fs-1); }
 .th-rb b { font-weight: 700; text-align: right; }
-.th-rb.all { border-top: 1px solid #24503A; color: #BDBDBD; }
-.th-rbk { color: #D6D6D6; }
+.th-rb.all { border-top: 1px solid #A9CDB6; color: #2F4F3D; }
+.th-rbk { color: #2F4F3D; }
 .th-rbar { display: block; }
-.th-rb.all .th-bar1 { fill: #8AB09C; }
-.th-fold { margin: var(--sp-2) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #3A3A3A; border-radius: 16px; color: #D6D6D6; font-size: var(--fs-1); }
+.th-rb.all .th-bar1 { fill: #3F7358; }
+.th-fold { margin: var(--sp-2) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #A9CDB6; border-radius: 16px; color: #2F4F3D; font-size: var(--fs-1); }
 .th-fold summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; list-style: none; }
 .th-fold summary::-webkit-details-marker { display: none; }
-.th-fold summary::after { content: "›"; flex: none; color: #BDBDBD; font-size: var(--fs-3); transition: transform .15s; } /* 접는 칸 표시 — 첫 화면 「숫자로 자세히 보기」(th-hfold)와 같은 꼴(2026-10-22 총정리 · 감사 A12 「글 상자처럼 보여 못 엶」) */
+.th-fold summary::after { content: "›"; flex: none; color: #2F4F3D; font-size: var(--fs-3); transition: transform .15s; } /* 접는 칸 표시 — 첫 화면 「숫자로 자세히 보기」(th-hfold)와 같은 꼴(2026-10-22 총정리 · 감사 A12 「글 상자처럼 보여 못 엶」) */
 .th-fold[open] summary::after { transform: rotate(90deg); }
 @media (prefers-reduced-motion: reduce) { .th-fold summary::after { transition: none; } }
 .th-sub.th-key { color: var(--ink); font-weight: 800; } /* 그 쪽의 결 한 줄(무엇을 보라 · 센 숫자 그대로의 결론) — 글씨 크기는 그대로(fs-2) */
 /* 돌이 인사(1/36) 맨 위 — 오늘 찾은 곳(싹 맨 앞 업종) 고리 한 칸(2026-10-22 총정리 · 감사 A10) · 글 시작 = 테 1 + 16 = 말풍선과 같은 자리([10] 7) */
-.th-found { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--sp-1); margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #739C87; border-radius: 16px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.th-found { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--sp-1); margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #5C8C72; border-radius: 16px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .th-found > .th-fk, .th-found > .th-fn, .th-found > .th-fd { grid-column: 1; min-width: 0; }
 .th-found > .th-go { grid-column: 2; grid-row: 1 / span 3; }
-.th-found .th-fk { color: #BDBDBD; font-size: var(--fs-1); line-height: 1.5; }
+.th-found .th-fk { color: #2F4F3D; font-size: var(--fs-1); line-height: 1.5; }
 .th-found .th-fn { font-size: var(--fs-5); font-weight: 800; line-height: 1.3; word-break: keep-all; }
 .th-found .th-fd { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); font-size: var(--fs-2); line-height: 1.5; }
 .th-found:active { border-color: var(--ink); }
 /* 18쪽 「사기 전에는 열한 질문을 먼저 해요」 → 열한 질문 고리(2026-10-22 총정리 · 감사 A21) — 「다음」(흰 단추)과 다른 꼴 · 글 시작 = 테 1 + 16([10] 7) */
-.th-why { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-2) 0 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #739C87; border-radius: 32px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
-.th-why .th-nx small { color: #BDBDBD; font-weight: 400; line-height: 1.5; }
+.th-why { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-2) 0 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #5C8C72; border-radius: 32px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.th-why .th-nx small { color: #2F4F3D; font-weight: 400; line-height: 1.5; }
 .th-why .th-nx b { white-space: normal; line-height: 1.3; }
-.th-why > i { flex: none; color: #BDBDBD; font-style: normal; font-size: var(--fs-4); text-align: right; }
+.th-why > i { flex: none; color: #2F4F3D; font-style: normal; font-size: var(--fs-4); text-align: right; }
 .th-why:active { border-color: var(--ink); }
 /* 회사 15쪽 「왜 그럴까?」 열한 걸음(why-chain.css 그대로 · 사장님 2026-10-22 08:53) — 테마 쪽 글 시작 왼쪽 줄 셋([10] 7)에 맞춤: 번호 · 끝 › 는 가운데 · 오른쪽 맞춤(셈 밖) · 갈래 이름은 테 없는 작은 글(카드 글 시작과 같은 자리) */
 .tc .wc-no { text-align: center; }
@@ -101,10 +101,10 @@ a.th-ck:active { background: #0E2E1B; }
 .tc .wc-tag { padding: 0; border: 0; }
 /* 싹 자리 전부 — 점 수 묶음 머리 · 점 없음 접는 칸(2026-10-22 총정리 · 감사 A13) · 머리 글 시작 = 쪽 왼쪽(16 · [10] 7) */
 .th-grp { margin: var(--sp-2) 0 0; }
-.th-gh { margin: 0; padding: var(--sp-1) 0; border-bottom: 1px solid #24503A; color: var(--ink); font-size: var(--fs-2); font-weight: 700; line-height: 1.5; }
-.th-gfold > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #24503A; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; list-style: none; }
+.th-gh { margin: 0; padding: var(--sp-1) 0; border-bottom: 1px solid #A9CDB6; color: var(--ink); font-size: var(--fs-2); font-weight: 700; line-height: 1.5; }
+.th-gfold > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #A9CDB6; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; list-style: none; }
 .th-gfold > summary::-webkit-details-marker { display: none; }
-.th-gfold > summary::after { content: "›"; flex: none; color: #BDBDBD; font-size: var(--fs-3); transition: transform .15s; }
+.th-gfold > summary::after { content: "›"; flex: none; color: #2F4F3D; font-size: var(--fs-3); transition: transform .15s; }
 .th-gfold[open] > summary::after { transform: rotate(90deg); }
 .th-gfold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .th-gfold > summary::after { transition: none; } }
@@ -120,7 +120,7 @@ a.th-ck:active { background: #0E2E1B; }
 .th-calg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
 .th-calw { text-align: center; color: var(--ink); font-size: var(--fs-2); font-weight: 700; }
 .th-calx { min-height: 84px; }
-.th-calc { all: unset; box-sizing: border-box; min-height: 84px; min-width: 0; padding: 6px 3px; border: 2px solid #3F6B54; border-radius: 10px; background: #0E2E1B; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; color: var(--ink); text-align: center; container-type: inline-size; }
+.th-calc { all: unset; box-sizing: border-box; min-height: 84px; min-width: 0; padding: 6px 3px; border: 2px solid #3F7358; border-radius: 10px; background: #F3FAF5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; color: var(--ink); text-align: center; container-type: inline-size; }
 .th-calc.kept { border-color: var(--gold-line, #E9B949); }
 .th-calc.on { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
 .th-calc:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
@@ -131,9 +131,9 @@ a.th-ck:active { background: #0E2E1B; }
 .th-calhow { margin: 0; color: var(--ink); font-size: var(--fs-2); line-height: 1.5; }
 .th-calm { display: flex; justify-content: center; align-items: center; gap: 3px; width: 100%; margin-top: auto; font-style: normal; font-size: 0; line-height: 0; }
 .th-calm i, .th-calkey i { flex: 0 1 16px; min-width: 8px; aspect-ratio: 1; box-sizing: border-box; border-radius: 50%; font-size: 0; line-height: 0; }
-.th-calm i.ok, .th-calkey i.ok { background: var(--up); }
+.th-calm i.ok, .th-calkey i.ok { background: var(--up-bg); }
 .th-calm i.no, .th-calkey i.no { border: 2px solid #E8ECF5; }
-.th-calm i.wait, .th-calkey i.wait { flex-basis: 6px; min-width: 6px; margin: 0 4px; background: #9CBBA9; }
+.th-calm i.wait, .th-calkey i.wait { flex-basis: 6px; min-width: 6px; margin: 0 4px; background: #7FA891; }
 .th-calkey i { display: inline-block; width: 18px; height: 18px; vertical-align: -2px; margin-right: 4px; }
 .th-calkey i.wait { width: 8px; height: 8px; vertical-align: 2px; }
 .th-calm i, .th-calkey i, .th-calhit i { font-style: normal; }
@@ -143,32 +143,32 @@ a.th-ck:active { background: #0E2E1B; }
 .th-calmo { margin-top: var(--sp-2); }
 
 /* 꽃 핀 업종 안의 싹 회사(#/t/pick · 사장님 2026-10-22 16:56 「싹에서 꽃이 되는 종목」 · 17:00 「어」) — 지난 기록 막대 둘 · 업종마다 회사 줄 */
-.th-pkrec { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #3F6B54; border-radius: 16px; background: #0E2E1B; }
+.th-pkrec { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #3F7358; border-radius: 16px; background: #F3FAF5; }
 .th-pkbar { display: grid; grid-template-columns: 1fr; gap: 4px; }
 .th-pkl { font-size: var(--fs-2); color: var(--ink); }
-.th-pkt { display: block; height: 18px; border-radius: 9px; background: #18402B; overflow: hidden; }
-.th-pkt i { display: block; height: 100%; border-radius: 9px; background: #9CBBA9; }
-.th-pkbar.pick .th-pkt i { background: var(--up); }
+.th-pkt { display: block; height: 18px; border-radius: 9px; background: #C3DFCC; overflow: hidden; }
+.th-pkt i { display: block; height: 100%; border-radius: 9px; background: #7FA891; }
+.th-pkbar.pick .th-pkt i { background: var(--up-bg); }
 .th-pkv { font-size: var(--fs-2); font-variant-numeric: tabular-nums; }
 .th-pkind { margin-top: var(--sp-3); }
 .th-pkind .th-h2 a { display: inline-flex; align-items: center; min-height: 48px; min-width: 44px; color: var(--ink); text-decoration: none; } /* 누르는 자리 44px 위(업종 쪽으로 가는 고리 — 처음 판은 25px 였음 · 2026-10-22 18:2x 이 쪽을 큰 검사에 넣으며 찾음) */
 .th-pkco { list-style: none; margin: var(--sp-1) 0 0; padding: 0; display: grid; gap: 0; }
-.th-pkrow { display: grid; grid-template-columns: 1fr auto auto; gap: var(--sp-1); align-items: center; min-height: 52px; border-bottom: 1px solid #24503A; color: var(--ink); text-decoration: none; font-size: var(--fs-2); }
+.th-pkrow { display: grid; grid-template-columns: 1fr auto auto; gap: var(--sp-1); align-items: center; min-height: 52px; border-bottom: 1px solid #A9CDB6; color: var(--ink); text-decoration: none; font-size: var(--fs-2); }
 .th-pkrow b { min-width: 0; overflow-wrap: anywhere; font-size: var(--fs-3); font-weight: 800; } /* 종목이 잘 보이게(사장님 2026-10-22 23:31 지인 말씀) */
 .th-pkrow span { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.th-pkrow i { font-style: normal; color: var(--sub, #B4BDD3); }
+.th-pkrow i { font-style: normal; color: var(--sub, #2F4F3D); }
 .th-pkwhy { margin-top: var(--sp-2); } /* 왜 싹이에요?(2026-10-22 17:59 「사람들이 왜? 이게 싹이고 … 근거를 지시해야」) */
 .th-pkhow { margin-top: var(--sp-3); } /* 이 숫자는 어떻게 나왔어요? — 여섯 걸음 */
 
 /* 기록 달력 · 꽃이 못 된 까닭 · 그래서 고쳐 본 것(사장님 2026-10-22 22:54 「그 기록을 한 달력이 … 정직하게 앞에」) */
-.th-pkcal { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #3F6B54; border-radius: 16px; background: #0E2E1B; min-width: 0; }
+.th-pkcal { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #3F7358; border-radius: 16px; background: #F3FAF5; min-width: 0; }
 .th-pkgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; min-width: 0; }
-.th-pkwd { text-align: center; font-size: var(--fs-1); color: #D6D6D6; }
-.th-pkc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; min-width: 0; min-height: 52px; padding: 4px 2px; border-radius: 8px; background: #18402B; font-size: var(--fs-1); line-height: 1.25; font-variant-numeric: tabular-nums; text-align: center; overflow-wrap: break-word; box-sizing: border-box; }
+.th-pkwd { text-align: center; font-size: var(--fs-1); color: #2F4F3D; }
+.th-pkc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; min-width: 0; min-height: 52px; padding: 4px 2px; border-radius: 8px; background: #C3DFCC; font-size: var(--fs-1); line-height: 1.25; font-variant-numeric: tabular-nums; text-align: center; overflow-wrap: break-word; box-sizing: border-box; }
 .th-pkc b { font-weight: 700; }
-.th-pkc.up { background: var(--up); color: #08180F; }
-.th-pkc.dn { background: var(--down); color: #08180F; }
-.th-pkc.w { background: transparent; border: 2px solid #9CBBA9; }
+.th-pkc.up { background: var(--up-bg); color: #10291B; }
+.th-pkc.dn { background: var(--down-bg); color: #10291B; }
+.th-pkc.w { background: transparent; border: 2px solid #5C8C72; }
 .th-pkc.e { background: transparent; }
 .th-pkwhy2, .th-pkfix { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; min-width: 0; }
-.th-pkwn { color: #D6D6D6; }
+.th-pkwn { color: #2F4F3D; }

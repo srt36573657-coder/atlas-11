@@ -1,9 +1,9 @@
 /* 지난 한 해 다시 보기 — 움직임 모양(theme-year.js 가 창 load 뒤에 붙임 · 첫 그림 가볍게 — 느린 4G 2.5초 · check_white ③) · 사장님 2026-10-21 10:44 · 11:07 「음 단추가 아니라 자동으로 보여주게해」
    칸 뼈대 모양(.th-yr · .th-yrg · 머리 줄 · 아래 글 · 시장 줄)은 theme-home.css · 글씨는 var(--fs-*) · 색은 판 색(var(--ink) · --sub · --mute · --up) */
-.th-yrg .th-yrb0 { stroke: #355E48; stroke-width: 1; stroke-dasharray: 3 4; } /* 한 해 전 = 100 */
-.th-yrg .th-yrgh { fill: none; stroke: #355E48; stroke-width: 1.5; stroke-linejoin: round; }
+.th-yrg .th-yrb0 { stroke: #7FA891; stroke-width: 1; stroke-dasharray: 3 4; } /* 한 해 전 = 100 */
+.th-yrg .th-yrgh { fill: none; stroke: #7FA891; stroke-width: 1.5; stroke-linejoin: round; }
 .th-yrg .th-yrli { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
-.th-yrg .th-yrhi { fill: var(--ink); stroke: #0B2716; stroke-width: 2; }
+.th-yrg .th-yrhi { fill: var(--ink); stroke: #DCEFE2; stroke-width: 2; }
 .th-yrg .th-yrhm { fill: var(--mute); }
 .th-yrg .th-yrv { fill: var(--ink); font-size: var(--fs-1); font-weight: 700; font-variant-numeric: tabular-nums; }
 .th-yrg .th-yrv.th-yrvm { fill: var(--sub); font-weight: 400; }

@@ -117,7 +117,7 @@ a.hd-name { text-decoration: underline; text-underline-offset: 3px; }
 .hd-lw .m4-letter .hpi .m4-bm { left: calc(50% - 125px); margin-left: 0; }
 .hd-lw .m4-letter .hpi .hpi-b { padding: 0 var(--sp-2); line-height: 1.7; } /* 말풍선 위 · 아래 4px → 0 + 줄 높이로(크기는 거의 그대로 — 가장 낮은 320×568 접힌 칸 안) */
 .hd-fold[data-open="false"] a.hello.m4-letter { max-height: 165px; max-height: calc(33.33vh - 48px); max-height: calc(33.33svh - 48px); } /* 여는 그림 칸(.hpi)은 이 높이를 따라 줄어듦 */
-.hd-fold[data-open="false"] a.hello.m4-letter::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 48px; background: linear-gradient(to bottom, rgba(19, 22, 28, 0), var(--m4-band, #13161C)); pointer-events: none; z-index: 4; }
+.hd-fold[data-open="false"] a.hello.m4-letter::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 48px; background: linear-gradient(to bottom, rgba(19, 22, 28, 0), var(--m4-band, #F3FAF5)); pointer-events: none; z-index: 4; }
 .hd-fold[data-open="false"] a.hello.m4-letter.intro::after { display: none; }
 .hd-fold[data-open="false"] .m4-msg { padding-bottom: 0; }
 .hd-fold[data-open="false"] .m4-msg .hml:nth-child(-n+3) { max-width: calc(100% - 96px); } /* 처음 석 줄 옆에 작은 보드리 자리(펼치면 아래로 내려감) */
