@@ -9,11 +9,11 @@
 .th-h1 { flex: 1; min-width: 0; margin: 0; font-size: var(--fs-5); font-weight: 800; line-height: 1.2; letter-spacing: -.02em; word-break: keep-all; }
 .th-art { flex: none; width: 96px; height: 77px; }
 .th-say { display: block; width: fit-content; max-width: 100%; box-sizing: border-box; margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #C9DCCF; border-radius: 22px 22px 22px 6px; background: #FFFFFF; font-size: var(--fs-2); line-height: 1.35; } /* 한 덩이 글(「돌이 |」 와 말이 줄 안에) — 글 시작 = 테 1 + 16([10] 7) */
-.th-who { display: inline; margin: 0 var(--sp-1) 0 0; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #C9DCCF; color: #33443A; font-size: var(--fs-1); }
+.th-who { display: inline; margin: 0 var(--sp-1) 0 0; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #C9DCCF; color: #222222; font-size: var(--fs-1); }
 /* 시계 칸 */
 /* 답 · 세 칸 · 줄 */
-.th-asof, .th-cap2 { margin: var(--sp-1) 0 0; color: #33443A; font-size: var(--fs-1); }
-.th-safe { margin: var(--sp-2) 0; color: #24342A; font-size: var(--fs-1); }
+.th-asof, .th-cap2 { margin: var(--sp-1) 0 0; color: #222222; font-size: var(--fs-1); }
+.th-safe { margin: var(--sp-2) 0; color: #111111; font-size: var(--fs-1); }
 /* 차례 줄 · 점 넷 · 상자 · 목록 */
 .th-h2 { margin: var(--sp-3) 0 var(--sp-1); font-size: var(--fs-3); font-weight: 800; }
 .th-steps { margin: 0 0 var(--sp-2); padding: 0; list-style: none; }
@@ -21,18 +21,18 @@
 .th-sn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid #3D5E4B; border-radius: 50%; font-size: var(--fs-1); text-align: center; }
 .th-st { display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .th-st b { font-size: var(--fs-3); font-weight: 700; }
-.th-st span, .th-st .th-ckd { color: #24342A; font-size: var(--fs-1); line-height: 1.5; }
-.th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #24342A; }
+.th-st span, .th-st .th-ckd { color: #111111; font-size: var(--fs-1); line-height: 1.5; }
+.th-z.S, .th-z.B { color: var(--ink); } .th-z.W, .th-z.Q { color: #111111; }
 .th-ck { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; column-gap: var(--sp-1); min-height: 64px; border-bottom: 1px solid #C9DCCF; } /* 글 시작 = 차례 줄과 같은 자리(16 + 32 + 8 · [10] 7) */
 a.th-ck { color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; } /* ✓ 줄 = 근거 쪽 고리(2026-10-22 총정리 · 감사 A17) — 끝 ›(.th-go)는 오른쪽 맞춤 */
 a.th-ck:active { background: #FFFFFF; }
 .th-ck > b { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: var(--fs-2); text-align: center; }
-.th-ck > b.y { background: var(--up-bg); color: #0A160E; }
-.th-ck > b.n { border: 2px solid #5E7F6C; color: #24342A; }
+.th-ck > b.y { background: var(--up-bg); color: #000000; }
+.th-ck > b.n { border: 2px solid #5E7F6C; color: #111111; }
 .th-ckt { color: var(--ink); font-size: var(--fs-3); }
 .th-box { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0; padding: var(--sp-2); border: 1px dashed #5E7F6C; border-radius: 16px; }
 .th-box b { font-size: var(--fs-3); }
-.th-box span { color: #24342A; font-size: var(--fs-1); }
+.th-box span { color: #111111; font-size: var(--fs-1); }
 .th-list { margin: 0 0 var(--sp-1); }
 .th-li, .th-cor { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
 .th-li > span:first-child, .th-rn2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -43,7 +43,7 @@ a.th-ck:active { background: #FFFFFF; }
 .th-srow { display: flex; align-items: center; gap: var(--sp-2); min-height: 64px; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-3); text-decoration: none; }
 .th-srow .th-rn { flex: 1; min-width: 0; font-size: var(--fs-3); font-weight: 800; } /* 종목이 잘 보이게(사장님 2026-10-22 23:31 지인 말씀) */
 .th-srow .th-sv { flex: none; font-weight: 700; text-align: right; }
-.th-srow .th-sk { flex: none; color: #33443A; font-size: var(--fs-1); text-align: right; }
+.th-srow .th-sk { flex: none; color: #222222; font-size: var(--fs-1); text-align: right; }
 .th-srow .th-z { flex: none; font-size: var(--fs-1); text-align: right; } /* 이웃 업종 줄의 자리 이름 · 오른쪽 셋은 글 시작 왼쪽 줄 셈 밖([10] 7) */
 .th-srow .th-sv2 { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 0; padding: var(--sp-1) 0; text-align: right; } /* 꽃 · 시듦 줄 오른쪽 = 큰 값(꽃 n일째 · 닷새) 위 · 한 달 작은 글 아래(2026-10-22 총정리 · 감사 A14 · A15 — 좁은 폭 영어에서도 이름 자리가 남게 두 줄) */
 .th-srow .th-sv2 .th-sv { font-weight: 700; line-height: 1.3; }
@@ -54,7 +54,7 @@ a.th-ck:active { background: #FFFFFF; }
 .th-line .th-mid { stroke: #C9DCCF; stroke-dasharray: 3 4; } .th-line .th-l0 { fill: none; stroke: #5E7F6C; stroke-width: 2.5; } .th-line .th-l1 { fill: none; stroke: var(--up); stroke-width: 3; } .th-line .th-l1d { fill: var(--up); }
 .th-two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-1); margin: var(--sp-1) 0; }
 .th-two p { display: flex; flex-direction: column; align-items: center; margin: 0; padding: var(--sp-1); border: 1px solid #C9DCCF; border-radius: 12px; text-align: center; }
-.th-two span, .th-two small { color: #24342A; font-size: var(--fs-1); }
+.th-two span, .th-two small { color: #111111; font-size: var(--fs-1); }
 .th-two b { font-size: var(--fs-5); font-weight: 400; }
 .th-keep { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin: var(--sp-1) 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid var(--hair2); border-radius: 28px; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-3); font-weight: 700; line-height: 1.4; text-align: center; } /* 두 줄이 되어도 글이 테에 닿지 않게(새 눈 검사 2026-10-19 22시) */
 .th-keep[aria-pressed="true"] { border-color: var(--up); color: var(--up); }
@@ -65,19 +65,19 @@ a.th-ck:active { background: #FFFFFF; }
 .th-al > :nth-child(2) { margin-left: auto; }
 .th-alt { display: flex; flex: 1 1 8em; align-items: center; min-width: 0; min-height: 48px; color: var(--ink); font-size: var(--fs-2); line-height: 1.4; text-decoration: none; overflow-wrap: normal; word-break: keep-all; } /* 이름 · 자리 · 단추가 한 높이(누름 칸 48 안 가운데) */
 .th-al .th-z { flex: none; font-size: var(--fs-1); text-align: right; }
-.th-sw { flex: none; min-width: 72px; min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #5E7F6C; border-radius: 24px; background: transparent; color: #24342A; font: inherit; font-size: var(--fs-1); font-weight: 700; text-align: center; }
+.th-sw { flex: none; min-width: 72px; min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #5E7F6C; border-radius: 24px; background: transparent; color: #111111; font: inherit; font-size: var(--fs-1); font-weight: 700; text-align: center; }
 .th-sw[aria-checked="true"] { border-color: var(--gold); color: var(--ink); }
 .th-rbs { margin: 0 0 var(--sp-2); }
 .th-rb { display: grid; grid-template-columns: 96px 1fr 56px; align-items: center; gap: var(--sp-1); min-height: 40px; font-size: var(--fs-1); }
 .th-rb b { font-weight: 700; text-align: right; }
-.th-rb.all { border-top: 1px solid #C9DCCF; color: #24342A; }
-.th-rbk { color: #24342A; }
+.th-rb.all { border-top: 1px solid #C9DCCF; color: #111111; }
+.th-rbk { color: #111111; }
 .th-rbar { display: block; }
 .th-rb.all .th-bar1 { fill: #3D5E4B; }
-.th-fold { margin: var(--sp-2) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #C9DCCF; border-radius: 16px; color: #24342A; font-size: var(--fs-1); }
+.th-fold { margin: var(--sp-2) 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #C9DCCF; border-radius: 16px; color: #111111; font-size: var(--fs-1); }
 .th-fold summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; list-style: none; }
 .th-fold summary::-webkit-details-marker { display: none; }
-.th-fold summary::after { content: "›"; flex: none; color: #24342A; font-size: var(--fs-3); transition: transform .15s; } /* 접는 칸 표시 — 첫 화면 「숫자로 자세히 보기」(th-hfold)와 같은 꼴(2026-10-22 총정리 · 감사 A12 「글 상자처럼 보여 못 엶」) */
+.th-fold summary::after { content: "›"; flex: none; color: #111111; font-size: var(--fs-3); transition: transform .15s; } /* 접는 칸 표시 — 첫 화면 「숫자로 자세히 보기」(th-hfold)와 같은 꼴(2026-10-22 총정리 · 감사 A12 「글 상자처럼 보여 못 엶」) */
 .th-fold[open] summary::after { transform: rotate(90deg); }
 @media (prefers-reduced-motion: reduce) { .th-fold summary::after { transition: none; } }
 .th-sub.th-key { color: var(--ink); font-weight: 800; } /* 그 쪽의 결 한 줄(무엇을 보라 · 센 숫자 그대로의 결론) — 글씨 크기는 그대로(fs-2) */
@@ -85,15 +85,15 @@ a.th-ck:active { background: #FFFFFF; }
 .th-found { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--sp-1); margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid #5E7F6C; border-radius: 16px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .th-found > .th-fk, .th-found > .th-fn, .th-found > .th-fd { grid-column: 1; min-width: 0; }
 .th-found > .th-go { grid-column: 2; grid-row: 1 / span 3; }
-.th-found .th-fk { color: #24342A; font-size: var(--fs-1); line-height: 1.5; }
+.th-found .th-fk { color: #111111; font-size: var(--fs-1); line-height: 1.5; }
 .th-found .th-fn { font-size: var(--fs-5); font-weight: 800; line-height: 1.3; word-break: keep-all; }
 .th-found .th-fd { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); font-size: var(--fs-2); line-height: 1.5; }
 .th-found:active { border-color: var(--ink); }
 /* 18쪽 「사기 전에는 열한 질문을 먼저 해요」 → 열한 질문 고리(2026-10-22 총정리 · 감사 A21) — 「다음」(흰 단추)과 다른 꼴 · 글 시작 = 테 1 + 16([10] 7) */
 .th-why { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-2) 0 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #5E7F6C; border-radius: 32px; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
-.th-why .th-nx small { color: #24342A; font-weight: 400; line-height: 1.5; }
+.th-why .th-nx small { color: #111111; font-weight: 400; line-height: 1.5; }
 .th-why .th-nx b { white-space: normal; line-height: 1.3; }
-.th-why > i { flex: none; color: #24342A; font-style: normal; font-size: var(--fs-4); text-align: right; }
+.th-why > i { flex: none; color: #111111; font-style: normal; font-size: var(--fs-4); text-align: right; }
 .th-why:active { border-color: var(--ink); }
 /* 회사 15쪽 「왜 그럴까?」 열한 걸음(why-chain.css 그대로 · 사장님 2026-10-22 08:53) — 테마 쪽 글 시작 왼쪽 줄 셋([10] 7)에 맞춤: 번호 · 끝 › 는 가운데 · 오른쪽 맞춤(셈 밖) · 갈래 이름은 테 없는 작은 글(카드 글 시작과 같은 자리) */
 .tc .wc-no { text-align: center; }
@@ -104,7 +104,7 @@ a.th-ck:active { background: #FFFFFF; }
 .th-gh { margin: 0; padding: var(--sp-1) 0; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-2); font-weight: 700; line-height: 1.5; }
 .th-gfold > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-2); font-weight: 700; cursor: pointer; list-style: none; }
 .th-gfold > summary::-webkit-details-marker { display: none; }
-.th-gfold > summary::after { content: "›"; flex: none; color: #24342A; font-size: var(--fs-3); transition: transform .15s; }
+.th-gfold > summary::after { content: "›"; flex: none; color: #111111; font-size: var(--fs-3); transition: transform .15s; }
 .th-gfold[open] > summary::after { transform: rotate(90deg); }
 .th-gfold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .th-gfold > summary::after { transition: none; } }
@@ -156,19 +156,19 @@ a.th-ck:active { background: #FFFFFF; }
 .th-pkrow { display: grid; grid-template-columns: 1fr auto auto; gap: var(--sp-1); align-items: center; min-height: 52px; border-bottom: 1px solid #C9DCCF; color: var(--ink); text-decoration: none; font-size: var(--fs-2); }
 .th-pkrow b { min-width: 0; overflow-wrap: anywhere; font-size: var(--fs-3); font-weight: 800; } /* 종목이 잘 보이게(사장님 2026-10-22 23:31 지인 말씀) */
 .th-pkrow span { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.th-pkrow i { font-style: normal; color: var(--sub, #24342A); }
+.th-pkrow i { font-style: normal; color: var(--sub, #111111); }
 .th-pkwhy { margin-top: var(--sp-2); } /* 왜 싹이에요?(2026-10-22 17:59 「사람들이 왜? 이게 싹이고 … 근거를 지시해야」) */
 .th-pkhow { margin-top: var(--sp-3); } /* 이 숫자는 어떻게 나왔어요? — 여섯 걸음 */
 
 /* 기록 달력 · 꽃이 못 된 까닭 · 그래서 고쳐 본 것(사장님 2026-10-22 22:54 「그 기록을 한 달력이 … 정직하게 앞에」) */
 .th-pkcal { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #3D5E4B; border-radius: 16px; background: #FFFFFF; min-width: 0; }
 .th-pkgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; min-width: 0; }
-.th-pkwd { text-align: center; font-size: var(--fs-1); color: #24342A; }
+.th-pkwd { text-align: center; font-size: var(--fs-1); color: #111111; }
 .th-pkc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; min-width: 0; min-height: 52px; padding: 4px 2px; border-radius: 8px; background: #DCE9E0; font-size: var(--fs-1); line-height: 1.25; font-variant-numeric: tabular-nums; text-align: center; overflow-wrap: break-word; box-sizing: border-box; }
 .th-pkc b { font-weight: 700; }
-.th-pkc.up { background: var(--up-bg); color: #0A160E; }
-.th-pkc.dn { background: var(--down-bg); color: #0A160E; }
+.th-pkc.up { background: var(--up-bg); color: #000000; }
+.th-pkc.dn { background: var(--down-bg); color: #000000; }
 .th-pkc.w { background: transparent; border: 2px solid #5E7F6C; }
 .th-pkc.e { background: transparent; }
 .th-pkwhy2, .th-pkfix { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; min-width: 0; }
-.th-pkwn { color: #24342A; }
+.th-pkwn { color: #111111; }

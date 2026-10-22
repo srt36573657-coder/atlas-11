@@ -7,8 +7,8 @@
 .th-clock .th-bl { stroke: var(--up); stroke-width: 2; stroke-dasharray: 4 4; }
 .th-clock .th-turn { fill: none; stroke: #5E7F6C; stroke-width: 2; }
 .th-clock .th-arw { fill: #5E7F6C; }
-.th-clock .th-tail { fill: none; stroke: #0A160E; stroke-width: 2; opacity: .5; } /* 지나온 길 = 행성이 지나온 궤도처럼 흰 선(2026-10-20 22:17 「주황색으로만」) */
-.th-clock .th-dot { fill: #33443A; stroke: #E6F5EB; stroke-width: 1.5; }
+.th-clock .th-tail { fill: none; stroke: #000000; stroke-width: 2; opacity: .5; } /* 지나온 길 = 행성이 지나온 궤도처럼 흰 선(2026-10-20 22:17 「주황색으로만」) */
+.th-clock .th-dot { fill: #222222; stroke: #E6F5EB; stroke-width: 1.5; }
 .th-clock .th-dot.on { fill: var(--up); }
 .th-clock .th-nb { fill: var(--up); stroke: #E6F5EB; stroke-width: 2; }
 .th-clock .th-nbt { fill: #E6F5EB; font-size: var(--fs-1); font-weight: 700; }
@@ -21,9 +21,9 @@
 .th-clock .th-lb, .th-clock .th-zl, .th-clock .th-bt { paint-order: stroke; stroke: #E6F5EB; stroke-width: 4px; stroke-linejoin: round; } /* 점 · 꽃 선 위에서도 글이 읽히게(새 눈 검사 11) */
 .th-clock .th-zl { fill: var(--ink); font-size: var(--fs-2); font-weight: 700; }
 .th-clock .th-zl.th-zs, .th-clock .th-bt { fill: var(--up); }
-.th-clock .th-zl.th-zq { fill: #33443A; }
+.th-clock .th-zl.th-zq { fill: #222222; }
 .th-clock .th-bt { font-size: var(--fs-1); }
-.th-cap { display: flex; flex-direction: column; gap: 0; margin: var(--sp-1) 0 0; color: #24342A; font-size: var(--fs-1); line-height: 1.5; }
+.th-cap { display: flex; flex-direction: column; gap: 0; margin: var(--sp-1) 0 0; color: #111111; font-size: var(--fs-1); line-height: 1.5; }
 .th-cap.th-cap1 { display: block; } /* 한 덩이 글 — 첫 그림의 가장 큰 글(느린 4G 2.5초 · check_white ③) */
 .th-ans { margin: var(--sp-2) 0 var(--sp-1); font-size: var(--fs-5); font-weight: 700; line-height: 1.3; word-break: keep-all; }
 .th-ans em { font-style: normal; color: var(--up); }
@@ -32,21 +32,21 @@
 .th-three { display: block; margin: 0 0 var(--sp-1); }
 .th-three a { display: flex; align-items: center; gap: var(--sp-1); min-height: 56px; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-2); text-decoration: none; -webkit-tap-highlight-color: transparent; }
 .th-three a span { flex: 1; min-width: 0; }
-.th-three a i { flex: none; color: #24342A; font-style: normal; font-size: var(--fs-3); text-align: right; }
+.th-three a i { flex: none; color: #111111; font-style: normal; font-size: var(--fs-3); text-align: right; }
 .th-three a:active { background: #FFFFFF; }
 .th-ansl { display: inline-flex; align-items: center; min-height: 48px; color: inherit; text-decoration: none; }
-.th-ansl i { margin: 0 0 0 var(--sp-1); color: #24342A; font-style: normal; font-size: var(--fs-3); }
+.th-ansl i { margin: 0 0 0 var(--sp-1); color: #111111; font-style: normal; font-size: var(--fs-3); }
 .th-three b { flex: none; color: var(--up); font-size: var(--fs-3); font-weight: 700; text-align: right; }
-.th-sub { margin: 0 0 var(--sp-2); color: #24342A; font-size: var(--fs-2); line-height: 1.5; word-break: keep-all; }
+.th-sub { margin: 0 0 var(--sp-2); color: #111111; font-size: var(--fs-2); line-height: 1.5; word-break: keep-all; }
 .th-rows { margin: 0 0 var(--sp-1); }
 .th-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 80px; border-bottom: 1px solid #C9DCCF; color: var(--ink); text-decoration: none; }
 html.white #view a[href].th-row { min-height: 80px; } /* 흰 화면 누름 칸 48(app.css)보다 앞 — 줄 높이 80 그대로(새 눈 검사 2026-10-19 22시) */
 .th-n { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #C9DCCF; color: var(--ink); font-size: var(--fs-1); font-weight: 700; text-align: center; }
-.th-n.th-top { background: var(--up-bg); color: #0A160E; }
+.th-n.th-top { background: var(--up-bg); color: #000000; }
 .th-mid2 { display: flex; flex: 1; flex-direction: column; gap: 0; min-width: 0; }
 .th-rn { overflow: hidden; font-size: var(--fs-4); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
 html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-break: keep-all; overflow-wrap: anywhere; line-height: 1.3; } /* 글씨 「크게 · 아주 크게」에서는 첫 화면 업종 이름을 두 줄로(이름이 「…」로 잘려 큰 글씨가 필요한 사람만 못 보던 것 · 2026-10-22 총정리 · 감사 A8) — 보통 글씨는 한 줄 그대로(320 그림 높이) */
-.th-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-width: 0; color: #24342A; font-size: var(--fs-1); line-height: 1.6; } /* 줄은 늘 셋 — 이름 · 며칠째 · 「꽃까지 ▬」(폭 · 글꼴 · 말이 바뀌어도 줄 높이가 같게 · 알약이 홀로 들여 쓰이지 않게 · 새 눈 검사 2026-10-19 22시) */
+.th-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-1); min-width: 0; color: #111111; font-size: var(--fs-1); line-height: 1.6; } /* 줄은 늘 셋 — 이름 · 며칠째 · 「꽃까지 ▬」(폭 · 글꼴 · 말이 바뀌어도 줄 높이가 같게 · 알약이 홀로 들여 쓰이지 않게 · 새 눈 검사 2026-10-19 22시) */
 .th-tg { flex: none; padding: 0 var(--sp-1); border: 1px solid #5E7F6C; border-radius: 8px; color: var(--ink); font-style: normal; line-height: 1.5; text-align: center; white-space: nowrap; } /* 알약 테 왼쪽 = 이름 글 시작([10] 7 · 알약 안 글은 가운데) */
 .th-tg.new { border-color: var(--up); color: var(--ink); }
 .th-bar { flex: none; width: 64px; height: 8px; } /* 막대 길이는 줄마다 같게(채운 비율을 견주게 · 새 눈 검사 11) */
@@ -56,26 +56,26 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-news { margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border: 1px solid var(--gold); border-radius: 16px; }
 .th-nh { margin: 0; color: var(--gold); font-size: var(--fs-2); font-weight: 700; line-height: 1.5; }
 .th-nl { display: block; padding: var(--sp-1) 0; color: var(--ink); font-size: var(--fs-2); line-height: 1.5; text-decoration: none; }
-.th-nm { margin: 0; padding: var(--sp-1) 0; color: #24342A; font-size: var(--fs-1); line-height: 1.5; }
-.th-hi { display: flex; align-items: center; justify-content: center; min-height: 48px; color: #24342A; font-size: var(--fs-1); text-align: center; text-decoration: underline; } /* 돌이 인사(1장)로 — 가운데 한 줄 */
+.th-nm { margin: 0; padding: var(--sp-1) 0; color: #111111; font-size: var(--fs-1); line-height: 1.5; }
+.th-hi { display: flex; align-items: center; justify-content: center; min-height: 48px; color: #111111; font-size: var(--fs-1); text-align: center; text-decoration: underline; } /* 돌이 인사(1장)로 — 가운데 한 줄 */
 .th-to .th-bar { flex: 0 1 64px; min-width: 32px; width: auto; } /* 늘 64 · 아주 좁고 큰 글씨 영어일 때만 줄마다 똑같이 줄어듦(이름표가 같은 말이라 막대 길이는 줄마다 같음) */
 .th-bar .th-bar0, .th-rbar .th-bar0 { fill: #C9DCCF; }
 .th-bar .th-bar1, .th-rbar .th-bar1 { fill: var(--up); }
 .th-dots { flex: none; }
 .th-dots .th-d { fill: none; stroke: var(--up); stroke-width: 2; }
 .th-dots .th-d.on { fill: var(--up); }
-.th-go { flex: none; color: #24342A; font-style: normal; font-size: var(--fs-3); text-align: right; } /* 오른쪽 끝 표시(글 시작 왼쪽 줄 셈 밖 · [10] 7) */
+.th-go { flex: none; color: #111111; font-style: normal; font-size: var(--fs-3); text-align: right; } /* 오른쪽 끝 표시(글 시작 왼쪽 줄 셈 밖 · [10] 7) */
 .th-more { display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #C9DCCF; color: var(--ink); font-size: var(--fs-2); text-decoration: none; }
 .th-more i { font-style: normal; text-align: right; }
-.th-rec { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0 var(--sp-1); padding: var(--sp-2); border: 1px dashed #5E7F6C; border-radius: 16px; color: #24342A; font-size: var(--fs-1); line-height: 1.5; }
+.th-rec { display: flex; flex-direction: column; gap: 0; margin: var(--sp-2) 0 var(--sp-1); padding: var(--sp-2); border: 1px dashed #5E7F6C; border-radius: 16px; color: #111111; font-size: var(--fs-1); line-height: 1.5; }
 .th-rec span:first-child { color: var(--ink); font-weight: 700; }
-.th-next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-3) 0 var(--sp-1); padding: 0 var(--sp-2); border: 1px solid #FFFFFF; border-radius: 32px; background: #0A160E; color: #FFFFFF; text-decoration: none; } /* 글 시작 = 테 1 + 16 = 말풍선 · 상자와 같은 자리([10] 7) */
+.th-next { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 64px; margin: var(--sp-3) 0 var(--sp-1); padding: 0 var(--sp-2); border: 1px solid #FFFFFF; border-radius: 32px; background: #000000; color: #FFFFFF; text-decoration: none; } /* 글 시작 = 테 1 + 16 = 말풍선 · 상자와 같은 자리([10] 7) */
 .th-nx { display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .th-nx small { color: #C9E6D4; font-size: var(--fs-1); font-weight: 600; } /* 짙은 「다음」 단추 안 작은 글 — 밝은 판에서 대비 4.5 넘게 */
 .th-nx b { overflow: hidden; font-size: var(--fs-3); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
 .th-next i { flex: none; font-style: normal; font-size: var(--fs-4); text-align: right; }
 .th-bars { display: block; margin: var(--sp-1) 0 0; }
-.th-bars .th-b0 { fill: #33443A; } .th-bars .th-b1 { fill: var(--up); }
+.th-bars .th-b0 { fill: #222222; } .th-bars .th-b1 { fill: var(--up); }
 .th-home .up { color: var(--up); } .th-home .dn { color: var(--down); } .th-home .fl { color: var(--flat); }
 /* 있는 쪽(관심 · 매매일지 · 보유종목 · 가짜 돈 · 진화) 맨 아래 「다음」 한 줄 — app.js flowFoot */
 .th-foot { margin: var(--sp-3) var(--sp-2) var(--sp-2); }
@@ -84,12 +84,12 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 /* 지난 한 해 다시 보기(2026-10-21 10:44 · 11:07 「단추가 아니라 자동으로 보여주게해」 — theme-home.js yearBox) — 궤도 위 움직이는 행성 + 그 아래 줄 그림 · 그림 칸 전체가 멈춤 · 이어 보기 단추 */
 /* 첫 화면 업종 줄 + 한 해 줄 그림(2026-10-21 18:22 「그랴」 — 18:11 「구글과 잡스라면」: 증권사 업종 시세 · 아이폰 주식 앱 꼴 · 행성 없음) — 카드 안 위 = 줄 셋 · 아래 = 줄 그림 */
 .th-lt { margin: 0; color: var(--ink); font-size: var(--fs-3); font-weight: 700; line-height: 1.4; text-wrap: balance; }
-.th-lc { margin: 0; color: #24342A; font-size: var(--fs-1); text-align: right; } /* 숫자 알약의 뜻(오른쪽 맞춤 — 글 시작 왼쪽 줄 셈 밖 · [10] 7) */
+.th-lc { margin: 0; color: #111111; font-size: var(--fs-1); text-align: right; } /* 숫자 알약의 뜻(오른쪽 맞춤 — 글 시작 왼쪽 줄 셈 밖 · [10] 7) */
 .th-map .th-rows { margin: 0; }
 #view .th-map a.th-row.th-row2, html.white #view .th-map a[href].th-row.th-row2 { min-height: 48px; padding: 0 0 0 var(--sp-1); border-left: 4px solid transparent; border-bottom-color: #C9DCCF; } /* 48 = 누름 칸 바닥(흰 판) — 작은 휴대폰 320 × 568 에서도 줄 그림이 한 화면 안(check_white ①) */
 .th-map.th-map2 { padding-top: var(--sp-1); } .th-map2 .th-yr { margin-top: 0; }
 #view .th-map a.th-row.th-row2.th-now, html.white #view .th-map a[href].th-row.th-row2.th-now { border-left-color: var(--up); } /* 지금 줄 그림의 업종 — 왼쪽 테 색만(크기 그대로 · 밀림 0 · 바탕은 그대로 — 흰 판 단추 테두리 잣대) */
-.th-pill { flex: none; min-width: 72px; padding: 0 var(--sp-1); border-radius: 8px; background: var(--up-bg); color: #0A160E; font-size: var(--fs-2); font-weight: 700; line-height: 32px; text-align: center; font-variant-numeric: tabular-nums; }
+.th-pill { flex: none; min-width: 72px; padding: 0 var(--sp-1); border-radius: 8px; background: var(--up-bg); color: #000000; font-size: var(--fs-2); font-weight: 700; line-height: 32px; text-align: center; font-variant-numeric: tabular-nums; }
 .th-pill.th-pdn { background: var(--down-bg); } /* 이름을 .up · .dn 과 따로(app.css 글 색 규칙이 알약 글을 바탕색으로 덮음) */
 .th-yr { display: block; width: 100%; margin: var(--sp-1) 0 0; padding: 0; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .th-yr:disabled { cursor: default; }
@@ -104,7 +104,7 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-hfold { margin: var(--sp-1) 0 0; border-bottom: 1px solid #C9DCCF; }
 .th-hfold > summary { display: flex; align-items: center; justify-content: space-between; min-height: 56px; color: var(--ink); font-size: var(--fs-2); cursor: pointer; list-style: none; }
 .th-hfold > summary::-webkit-details-marker { display: none; }
-.th-hfold > summary::after { content: "›"; color: #24342A; font-size: var(--fs-3); transition: transform .15s; }
+.th-hfold > summary::after { content: "›"; color: #111111; font-size: var(--fs-3); transition: transform .15s; }
 .th-hfold[open] > summary::after { transform: rotate(90deg); }
 .th-hfold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .th-hfold > summary::after { transition: none; } }
@@ -112,7 +112,7 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-pkhome { display: flex; flex-direction: column; gap: 6px; margin: 12px 0 4px; padding: 14px 14px 10px; border: 2px solid var(--hair); border-radius: 16px; background: #FFFFFF; color: var(--ink); text-decoration: none; }
 .th-pkhh { font-size: var(--fs-3); font-weight: 700; }
 .th-pkhl { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-2); line-height: 1.45; }
-.th-pkhl span + span { color: #24342A; }
+.th-pkhl span + span { color: #111111; }
 .th-pkhl .th-pkhk { color: var(--ink); font-weight: 700; }
 .th-pkhgo { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: var(--fs-2); color: var(--ink); border-top: 1px solid #C9DCCF; }
 .th-pkhgo i { font-style: normal; }
