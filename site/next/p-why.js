@@ -103,6 +103,8 @@ const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${pad(
 const ymd = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s ?? '')); return m ? `${+m[1]}년 ${+m[2]}월 ${+m[3]}일` : '?'; };
 const fmtDay = iso => { const d = new Date(iso); return isNaN(d) ? '?' : `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`; };
 const later = (p, ms) => Promise.race([p, new Promise(r => setTimeout(() => r(null), ms))]);
+/** 그날 값 날짜가 서울 오늘보다 며칠 앞인가(달력 날 · B12) · 못 읽으면 0 */
+const staleOf = d => (/^\d{4}-\d{2}-\d{2}$/.test(String(d ?? '')) ? Math.round((Date.parse(seoulDay(Date.now())) - Date.parse(d)) / 864e5) : 0);
 const icon = n => h('img', {src: '/media/makbi-icon.svg', alt: '', width: n, height: n});
 /** 색 점 — 읽어 주는 글을 함께([9] 8 · 🟢 좋음 · 🟡 주의 · 🔴 위험) · 고르기 전에는 빈 테두리(ring · 색 없음 — [5] 1) */
 const TONE = {g: '좋음', y: '주의', r: '위험'};
@@ -150,7 +152,7 @@ async function priceOf(code) {
 
 const PICK = -1, LINES = QS.length, RES = QS.length + 1;
 /** 매매일지 칸 — 종목 고르기 → 질문 열한 개 → 두 줄 → 결과 · code = 처음부터 고른 종목(#/why/<번호> · 친구가 연 보내기 쪽) · onDone(기록, 남겼나) = 결과를 보인 뒤 */
-export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
+export function whyCard(G, {page = false, code = null, onDone = null, autoFocus = true, onAgain = null} = {}) { // autoFocus = 찾기 칸에 바로 씀(물을 약속이 있으면 끔 · B17) · onAgain = 「다시 하기」를 누름(목록 접은 줄을 풂 · B15)
   const box = h('section', {class: 'wy' + (page ? ' page' : ''), 'aria-label': '친구야, 왜 사?'});
   const live = h('p', {class: 'wy-live', 'aria-live': 'polite'});
   const ans = new Array(QS.length).fill(null);
@@ -166,6 +168,7 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
       S.wait = null;
       if (x) { S.price = x.price; S.day = x.day; if (!S.name) S.name = x.name; }
       box.querySelector('.wy-stk')?.replaceWith(stockBar());
+      if (page && i === 0 && ans[0] == null && box.isConnected) keepQ(); // 값 줄이 두 줄로 늘어 1번 답이 밀리면 다시 화면 안으로(B9)
     });
   };
   const clearStock = () => Object.assign(S, {code: null, name: null, co: false, price: null, day: null, wait: null, touched: false, sell: '', half: ''});
@@ -186,8 +189,9 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     });
   };
 
-  const head = () => h('div', {class: 'wy-head'}, icon(40),
-    h('div', {}, h('h2', {class: 'wy-h', text: '친구야, 왜 사?'}), h('p', {class: 'wy-sub', text: `사기 전에 ${josa(NAME, '랑')} 내 이유를 확인해요.`})));
+  /** 칸 머리 — 부제는 종목 고르기 장에만(B9 · 2026-10-22 총정리: 좁은 폰에서 질문 장 · 결과 장의 답 · 판정을 밀어내지 않게) */
+  const head = sub => h('div', {class: 'wy-head'}, icon(40),
+    h('div', {}, h('h2', {class: 'wy-h', text: '친구야, 왜 사?'}), ...(sub ? [h('p', {class: 'wy-sub', text: `사기 전에 ${josa(NAME, '랑')} 내 이유를 확인해요.`})] : [])));
   /** 고른 종목 한 줄 — 이름 · 그날 값 · 그 날짜(값을 받는 동안 · 못 받으면 「?」) */
   const stockBar = () => {
     if (!S.code) return h('p', {class: 'wy-stk', hidden: true});
@@ -196,14 +200,16 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     return h('p', {class: 'wy-stk'}, h('span', {class: 'wy-stn', 'data-proper': '', text: S.name || S.code}), h('span', {class: 'wy-stv'}, ...v));
   };
   const btn = (cls, text, fn) => { const b = h('button', {class: cls, type: 'button', text}); b.addEventListener('click', fn); return b; };
-  const BACK = '‹ 앞 질문'; // [5] 4 — 「앞으로」는 거꾸로 읽힘
+  const BACK = '‹ 앞 질문', BACK1 = '‹ 종목 바꾸기'; // [5] 4 — 「앞으로」는 거꾸로 읽힘 · 1번은 앞 질문이 없어 종목 고르기로 감(B6 · 2026-10-22 총정리)
   const goBack = () => { if (busy) return; i--; err = ''; live.textContent = ''; focusSel = i === PICK ? '.wy-find' : '.wy-opt.on'; draw(); if (i === PICK) keepTop(); else keepQ(); };
   const keepTop = () => { const r = box.getBoundingClientRect(); if (r.top < 0) window.scrollBy(0, r.top - 70); }; // 길게 내려 본 뒤 다음 화면이 위에서 시작하게
   /** 답 셋이 화면 안에 오게([5] 3 — 한 번 누르면 다음 질문 · 위 막대와 아래 단추 줄을 피함) · 맨 위(앞 답 한마디 · 없으면 칸 머리)는 위 막대 밑까지만 올림 */
   const keepQ = () => {
     const topY = Math.max(0, document.querySelector('header.top')?.getBoundingClientRect().bottom ?? 0) + 8;
     const botY = Math.min(window.innerHeight, document.querySelector('nav.tabs')?.getBoundingClientRect().top ?? window.innerHeight) - 8;
-    const t = (box.querySelector('.wy-prev') ?? box).getBoundingClientRect().top, last = box.querySelector('.wy-opts > :last-child');
+    // 3번 「클 일이 있다」(질문 장에 「다음 ›」이 있음) — 한마디 · 날짜 칸 · 「다음 ›」까지 아래 단추 줄 위로 · 위는 고른 답까지만 올림(B8 · 2026-10-22 총정리 — 320 × 568 에서도 「다음 ›」이 보이게)
+    const nav = box.querySelector('.wy-opts') && box.querySelector('.wy-nav .wy-next') ? box.querySelector('.wy-nav') : null;
+    const t = (nav ? box.querySelector('.wy-opt.on') ?? box.querySelector('.wy-q') : box.querySelector('.wy-prev') ?? box).getBoundingClientRect().top, last = nav ?? box.querySelector('.wy-opts > :last-child');
     if (t < topY) { window.scrollBy(0, t - topY); return; }
     const over = last ? last.getBoundingClientRect().bottom - botY : 0;
     if (over > 0) window.scrollBy(0, Math.min(over, t - topY));
@@ -246,7 +252,8 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     run();
     const note = S.note?.nf ? [h('p', {class: 'wy-err', role: 'alert', text: '? 이 번호의 종목을 찾지 못했어요. 이름으로 찾아 줘.'})]
       : S.note ? [h('p', {class: 'wy-err', role: 'alert'}, h('span', {text: '? '}), h('span', {class: 'nm', 'data-proper': '', text: S.note.n}), h('span', {text: ' — ' + ONLY_CO})), ...(S.note.w ? [h('p', {class: 'wy-note wy-xw', text: S.note.w})] : [])] : [];
-    return [h('p', {class: 'wy-step', text: '종목 고르기'}), h('h3', {class: 'wy-q', text: '어떤 종목이야?'}), ...note, inp, hits];
+    return [h('p', {class: 'wy-intro', text: '열한 질문 · 1분쯤이에요. 끝나면 오늘 판정이 하나 나와요. 기록은 이 기기에만 남아요.'}), // 끝나면 무엇이 나오나 한 줄(B5 · 2026-10-22 총정리 — 판정 셋을 미리 늘어놓지 않음)
+      h('p', {class: 'wy-step', text: '종목 고르기'}), h('h3', {class: 'wy-q', text: '어떤 종목이야?'}), ...note, inp, hits];
   };
 
   /* ② 질문 하나 */
@@ -269,8 +276,8 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     if (busy) return;
     if (i === BIG_Q && ans[i] === BIG_A) {
       const v = S.bigDay;
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { err = '그 일이 언제인지 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); return; }
-      if (v < todayIso()) { err = '오늘이나 그 뒤 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); return; }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { err = '그 일이 언제인지 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); keepQ(); return; }
+      if (v < todayIso()) { err = '오늘이나 그 뒤 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); keepQ(); return; }
     }
     await advance();
   };
@@ -278,7 +285,7 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
   const pickAns = async k => {
     if (busy) return;
     const Q = QS[i]; ans[i] = k; err = ''; live.textContent = `${NAME}: ${Q.a[k][2]}`;
-    if (i === BIG_Q && k === BIG_A) { focusSel = S.bigDay ? '.wy-next' : '.wy-date'; draw(); return; }
+    if (i === BIG_Q && k === BIG_A) { focusSel = S.bigDay ? '.wy-next' : '.wy-date'; draw(); keepQ(); return; } // 날짜 칸 · 「다음 ›」을 화면 안으로(B8)
     await advance();
   };
   /** 고른 답의 한마디 — 고른 뒤라 색 점(+ 읽어 주는 글)을 보임 · 3번 「클 일이 있다」는 같은 장에서(날짜 칸 위) */
@@ -287,7 +294,8 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
   const prevBox = () => {
     const q = i - 1, k = q >= 0 ? ans[q] : null;
     if (k == null) return [];
-    return [h('div', {class: 'wy-prev'}, h('p', {class: 'wy-one'}, dot(QS[q].a[k][0]), h('span', {class: 'wy-onet', text: QS[q].a[k][2]})),
+    return [h('div', {class: 'wy-prev'}, h('p', {class: 'wy-prevk', text: `${q + 1}번 답에 ${NAME} 한마디`}), // 어느 답의 말인지 작은 이름표(B7 · 2026-10-22 총정리 — 한마디 · 격언 글은 그대로)
+      h('p', {class: 'wy-one'}, dot(QS[q].a[k][0]), h('span', {class: 'wy-onet', text: QS[q].a[k][2]})),
       h('p', {class: 'wy-say'}, h('span', {class: 'wy-sayk', text: '격언 '}), h('q', {'data-proper': '', text: QS[q].say})))];
   };
   const qView = () => {
@@ -302,7 +310,7 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     const nodes = [h('p', {class: 'wy-step num', text: `${i + 1} / ${QS.length}`}), h('h3', {class: 'wy-q', text: `${i + 1}. ${Q.q}`}), opts];
     if (big) nodes.push(oneLine(i, k0), dateRow());
     if (err) nodes.push(h('p', {class: 'wy-err', role: 'alert', text: err}));
-    nodes.push(h('div', {class: 'wy-nav'}, btn('wy-back', BACK, goBack), big ? btn('wy-next', '다음 ›', onNext) : null));
+    nodes.push(h('div', {class: 'wy-nav'}, btn('wy-back', i === 0 ? BACK1 : BACK, goBack), big ? btn('wy-next', '다음 ›', onNext) : null));
     return nodes;
   };
 
@@ -329,10 +337,12 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     };
     return [h('p', {class: 'wy-step', text: '마지막 두 줄'}),
       h('h3', {class: 'wy-q', text: '① 1년 뒤 반토막 났다면 왜?'}), why, quick,
+      h('p', {class: 'wy-prh', text: '내 약속 · 숫자는 내가 정해요'}), // 넣어 둔 숫자는 내가 고치는 보기(B12 · 2026-10-22 총정리 — 셈 · 기본값 그대로)
       h('h3', {class: 'wy-q', text: '② 팔 약속'}),
       h('p', {class: 'wy-pr'}, h('span', {class: 'wy-prn'}, h('span', {text: '만약'}), num('wy-sell', 'sell', '팔 선(원)'), h('span', {text: '원'})), h('span', {text: '아래로 가면 다 판다.'})),
       h('p', {class: 'wy-pr'}, h('span', {class: 'wy-prn'}, h('span', {text: '만약'}), num('wy-half', 'half', '절반 팔 선(원)'), h('span', {text: '원'})), h('span', {text: '위로 가면 절반 판다.'})),
       h('p', {class: 'wy-note', text: S.price ? `그날 값 ${won(S.price)}에서 열에 하나 내린 값과 열에 둘 오른 값이에요. 고쳐도 돼.` : '? 그날 값이 없어요. 두 숫자를 직접 적어 줘.'}),
+      ...(staleOf(S.price ? S.day : null) > 3 ? [h('p', {class: 'wy-note', text: `${NX.md(S.day)} 종가예요(${staleOf(S.day)}일 전). 오늘 값과 다를 수 있어요.`})] : []), // 그날 값이 서울 오늘보다 사흘 넘게 앞(B12)
       ...(err ? [h('p', {class: 'wy-err', role: 'alert', text: err})] : []),
       h('div', {class: 'wy-nav'}, btn('wy-back', BACK, goBack), btn('wy-next', '결과 보기 ›', submit))];
   };
@@ -355,9 +365,14 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
     const J = last, ready = readyOf(J), tone = VTONE[J.verdict];
     live.textContent = `${vShow(J.verdict)} · 준비 ${ready} / ${MAX}`;
     const tt = h('i', {class: 'wy-fill wy-' + tone}); tt.style.setProperty('width', Math.round(ready / MAX * 100) + '%');
+    // 결 → 기 → 승(B14 + B13 · 2026-10-22 총정리): 판정(가장 큼) → 쉬어 가는 답을 고른 까닭(고른 답 이름) → 한 번 더 볼 답(빨강 먼저 · 다음 노랑 · 셋까지 · 색 점 없이 글만)
+    const hit = REST_AT.filter(([q, k]) => k >= 0 && J.answers?.[q] === k), named = new Set(hit.map(([q]) => q));
+    const look = ['r', 'y'].flatMap(c => (J.answers ?? []).map((k, q) => [q, k]).filter(([q, k]) => !named.has(q) && QS[q]?.a[k]?.[0] === c)).slice(0, 3);
     return h('div', {class: 'wy-res'}, // [5] 2 — 판정 글이 가장 큼 · 준비는 그 밑에 작게
       h('p', {class: 'wy-verdict wy-v' + tone}, icon(32), h('b', {text: `「${vShow(J.verdict)}」`})),
-      ...(stopOf(J.answers) ? [h('p', {class: 'wy-stop', text: '빌린 돈이나 곧 쓸 돈이면 점수와 상관없이 쉬어 가요.'})] : []),
+      ...(stopOf(J.answers) ? [h('p', {class: 'wy-stop'}, ...hit.flatMap(([q, k]) => [h('span', {text: `${q + 1}번 「${QS[q].q}」에서 「${QS[q].a[k][1]}」 답을 골랐어요.`}), h('span', {text: ' '})]),
+        h('span', {text: '빌린 돈이나 곧 쓸 돈이면 점수와 상관없이 쉬어 가요.'}))] : []),
+      ...(look.length ? [h('p', {class: 'wy-look'}, h('span', {class: 'wy-lk', text: '한 번 더 볼 답'}), ...look.flatMap(([q, k]) => [h('span', {text: ' · '}), h('span', {text: `${q + 1}번 「${QS[q].a[k][1]}」`})]))] : []),
       h('p', {class: 'wy-score'}, h('span', {text: '준비 '}), h('b', {class: 'num', text: String(ready)}), h('span', {class: 'num', text: ` / ${MAX}`}),
         h('span', {class: 'wy-reds'}, h('span', {text: ' · '}), dot('r'), h('span', {class: 'num', text: ` ${J.reds}개`}))),
       h('span', {class: 'wy-track wy-tt', 'aria-hidden': 'true'}, tt),
@@ -365,19 +380,23 @@ export function whyCard(G, {page = false, code = null, onDone = null} = {}) {
       h('p', {class: 'wy-note', text: '막대가 짧은 묶음을 한 번 더 생각해 봐.'}),
       lines(J),
       h('p', {class: 'wy-note', text: saved ? (page ? '오늘 답을 아래 매매일지에 날짜와 함께 쌓았어요.' : '오늘 답을 매매일지에 날짜와 함께 쌓았어요.') : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
-      h('div', {class: 'wy-nav'}, btn('wy-next', '다시 하기', () => { start(); focusSel = i === PICK ? '.wy-find' : '.wy-opt'; draw(); keepTop(); }),
+      h('div', {class: 'wy-nav'}, btn('wy-next', '다시 하기', () => { start(); focusSel = i === PICK ? '.wy-find' : '.wy-opt'; draw(); if (i === PICK) keepTop(); else keepQ(); try { onAgain?.(); } catch (e) { console.error(e); } }),
         page ? null : h('a', {class: 'wy-link', href: '#/why', text: '매매일지 보기 ›'})));
   };
 
   const draw = () => {
-    const nodes = [head()];
+    const nodes = [head(i === PICK)];
     if (i === PICK) nodes.push(...pickView());
     else if (i < LINES) nodes.push(...prevBox(), stockBar(), ...qView()); // [5] 3 앞 답 한마디 = 머리 바로 밑(맨 위) · 읽어 주는 칸은 누른 때만 바꿈(앞 답 한마디가 다음 장에서도 읽히게)
     else if (i === LINES) nodes.push(...prevBox(), stockBar(), ...linesView());
     else nodes.push(stockBar(), resView());
     nodes.push(live);
     box.replaceChildren(...nodes);
-    if (first) { first = false; if (page && i === PICK) setTimeout(() => box.querySelector('.wy-find')?.focus({preventScroll: true}), 60); } // 매매일지 화면은 찾기 칸에 바로 씀
+    if (first) { // 매매일지 화면은 찾기 칸에 바로 씀(물을 약속이 맨 위에 있으면 쓰지 않음 · B17) · 종목을 정해 연 매매일지는 길이 맨 위로 올린 뒤 1번 답 셋을 화면 안으로(B9)
+      first = false;
+      if (page && i === PICK && autoFocus) setTimeout(() => box.querySelector('.wy-find')?.focus({preventScroll: true}), 60);
+      else if (page && i !== PICK && pre) { const fix = () => { if (box.isConnected && i === 0 && ans[0] == null) keepQ(); }; requestAnimationFrame(fix); document.fonts?.ready?.then(() => requestAnimationFrame(fix)).catch(() => {}); }
+    }
     else if (focusSel) box.querySelector(focusSel)?.focus({preventScroll: true});
     focusSel = null;
   };
@@ -394,13 +413,13 @@ function lines(r) {
 
 /** 쌓인 기록(새 것부터 · 서른 줄까지) — 종목 · 그날 값 · 두 줄 · 준비 · 막대 · 지우는 단추 없음
     한 달(장 스무 번) 지난 기록 = 「그날 정한 대로 했어?」 먼저([5] 8) → 답한 뒤 값([5] 9 — 시작 날 종가 → 스무 번째 장 날 종가 · 같은 때 코스피 · 모든 회사 가운데 값)
-    here = 매매일지 화면(위에 질문 칸이 있음) */
-function recBox(here) {
+    here = 매매일지 화면(위에 질문 칸이 있음) · fold = 방금 끝낸 기록(위 결과와 같은 첫 줄은 한 줄로 접음 — 지우지 않음 · 누르면 펼침 · B15 · 2026-10-22 총정리) */
+function recBox(here, fold = null) {
   const list = records().filter(r => r && typeof r === 'object'), box = h('section', {class: 'wy-me', 'aria-label': '왜 사? 기록'}); // 깨진 줄은 그리기에서만 건너뜀(지우지 않음)
   box.append(h('h2', {class: 'sec', text: `왜 사? 기록 ${list.length}번`}));
   if (!list.length) { box.append(h('p', {class: 'note', text: here ? '아직 기록이 없어요. 위 질문에 답하면 날짜와 함께 여기 쌓여요.' : '아직 기록이 없어요. 매매일지에서 「친구야, 왜 사?」에 답하면 날짜와 함께 여기 쌓여요.'})); return box; }
   box.append(h('p', {class: 'note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.'}));
-  for (const r of list.slice(0, 30)) {
+  for (const [n, r] of list.slice(0, 30).entries()) {
     const rd = readyOf(r);
     const row = h('div', {class: 'wy-rec'},
       h('p', {class: 'wy-rh'}, h('b', {text: fmtDay(r.at)}), h('span', {text: ' · '}), h('span', {class: 'num', text: rd == null ? '준비 ?' : `준비 ${rd} / ${MAX}`}), h('span', {class: 'wy-v' + (VTONE[r.verdict] ?? 'y'), text: ` · ${vShow(r.verdict)}`})));
@@ -412,7 +431,10 @@ function recBox(here) {
     row.append(bars(r.groups, true));
     if (r.why || r.promise || r.bigDay) row.append(lines(r));
     const out = h('div', {class: 'wy-later'}); row.append(out); laterBox(r, out);
-    box.append(row);
+    const t = Date.parse(r.at);
+    if (n === 0 && here && fold && r.at === fold.at && (r.code ?? null) === (fold.code ?? null)) box.append(h('details', {class: 'wy-fold'},
+      h('summary', {class: 'wy-fs'}, h('span', {}, h('span', {text: '방금 적음'}), h('span', {text: ' · '}), h('span', {text: Number.isFinite(t) ? NX.md(seoulDay(t)) : '?'}), h('span', {text: ' · '}), h('span', {text: vShow(r.verdict)}), h('span', {text: ' — '}), h('span', {text: '위 결과와 같아요'}))), row));
+    else box.append(row);
   }
   return box;
 }
@@ -467,11 +489,55 @@ function keep(r, yes) {
     all[k] = {...all[k], kept: v}; localStorage.setItem(KEY, JSON.stringify(all)); return true;
   } catch { return false; }
 }
-/** 한 달(장 스무 번) 지났나 — 날짜 줄(days.json)로 셈 · 날짜 줄을 못 받으면 달력 28일 · {due, W} */
+/** 한 달 지났나 — 날짜 줄(days.json)로 장 스무 번이 지났거나, 달력으로 서른 날이 지났으면(B20 · 2026-10-22 총정리: 사이트 자료가 멈춰도 물음은 옴 · 값은 자료가 오면 붙임) · {due, W} */
 async function dueOf(r) {
   let W = null; try { W = await windowOf(r); } catch (e) { console.error(e); }
-  const calOld = Number.isFinite(Date.parse(r.at)) && (Date.now() - Date.parse(r.at)) / 864e5 >= 28;
-  return {due: W ? !!W.e : calOld, W};
+  const cal = Number.isFinite(Date.parse(r.at)) && (Date.now() - Date.parse(r.at)) / 864e5 >= 30;
+  return {due: W?.e ? true : cal, W};
+}
+let keptHook = null; // 매매일지 화면 맨 위 「한 달 전 약속」 칸 — 기록 줄에서 답해도 그 칸을 다시 셈(두 번 묻지 않게 · B17)
+/** 한 달 지났고 아직 답하지 않은 기록(모든 기록 — 서른 줄 밖도 · 가장 오래된 것부터 · B17 + B18) */
+async function dueList() {
+  const out = [];
+  for (const r of records()) {
+    if (!fullRec(r) || r.kept?.a === 'yes' || r.kept?.a === 'no') continue;
+    try { if ((await dueOf(r)).due) out.push(r); } catch (e) { console.error(e); }
+  }
+  return out.sort((a, b) => (Date.parse(a.at) || 0) - (Date.parse(b.at) || 0));
+}
+/** 매매일지 맨 위 「한 달 전 약속」 칸(B17 · 2026-10-22 총정리 · 본질 ③) — 결: 머리(그날 · 종목) → 기: 그 기록의 두 줄 + 「그날 정한 대로 했어?」 → 승: 답하면 다음 약속 · 다 하면 한 줄 → 전: 남은 약속 수
+    답은 기록 줄과 같은 keep() · tally()(두 번 세지 않음) · 값은 아래 기록 줄에서(「먼저 묻고 값은 뒤」 그대로) · onKept = 답한 뒤(아래 목록을 다시 그림) */
+function dueSection(list0, onKept) {
+  const box = h('section', {class: 'wy-due', 'aria-label': '한 달 전 약속'});
+  let did = 0;
+  const paint = (L, focus) => {
+    if (!L.length) {
+      if (!did) { box.hidden = true; box.replaceChildren(); return; }
+      const done = h('p', {class: 'wy-kd', tabindex: '-1', text: '적었어요. 아래 기록에서 한 달 뒤 값을 봐요.'});
+      box.hidden = false; box.replaceChildren(done); if (focus) done.focus({preventScroll: true});
+      return;
+    }
+    const r = L[0], t = Date.parse(r.at), nm = r.name || r.code;
+    const b1 = h('button', {class: 'wy-kb', type: 'button', text: '했어'}), b2 = h('button', {class: 'wy-kb', type: 'button', text: '안 했어'});
+    const ask = yes => async () => {
+      if (b1.disabled) return; b1.disabled = b2.disabled = true; // 두 번 누름 — 한 번만 셈
+      keep(r, yes); tally(yes ? 'promise_yes' : 'promise'); did++;
+      await refresh(true);
+      try { onKept?.(); } catch (e) { console.error(e); }
+    };
+    b1.addEventListener('click', ask(true)); b2.addEventListener('click', ask(false));
+    box.hidden = false;
+    box.replaceChildren(
+      h('h2', {class: 'wy-dh'}, h('span', {text: '한 달 전 약속'}), h('span', {text: ' · '}), h('span', {text: Number.isFinite(t) ? NX.md(seoulDay(t)) : '?'}), ...(nm ? [h('span', {text: ' '}), h('span', {class: 'wy-stn', 'data-proper': '', text: String(nm)})] : [])),
+      ...(r.why || r.promise || r.bigDay ? [lines(r)] : []),
+      h('p', {class: 'wy-kq', text: '그날 정한 대로 했어?'}),
+      h('div', {class: 'wy-kbs', role: 'group', 'aria-label': '그날 정한 대로 했어?'}, b1, b2),
+      ...(L.length > 1 ? [h('p', {class: 'wy-note', text: `한 달 지난 약속이 ${L.length - 1}개 더 있어요.`})] : []));
+    if (focus) b1.focus({preventScroll: true});
+  };
+  const refresh = async focus => { let L = []; try { L = await dueList(); } catch (e) { console.error(e); } paint(L, focus && box.isConnected); };
+  paint(list0, false);
+  return {box, refresh};
 }
 /** 첫 화면 금빛 한 줄 「그날 정한 대로 했어?」(사장님 2026-10-19 02:03 [화면] 3) — 한 달 지났는데 아직 답하지 않은 기록이 하나라도 있나 · 셈은 매매일지 한 달 칸(laterBox)과 같음 */
 export async function monthDue() {
@@ -494,11 +560,12 @@ async function laterBox(r, out) {
     out.replaceChildren(kd, vb);
     if (focus) kd.focus({preventScroll: true}); // 누른 단추가 사라져도 읽는 자리가 이어지게
     let vals = null; try { vals = W?.e ? await laterVals(r, W) : null; } catch (e) { console.error(e); }
-    vb.replaceChildren(...(vals ?? [h('p', {class: 'note', text: '? 날짜 줄을 못 받아 값을 셈하지 못했어요.'})]));
+    const wait = W && !W.e && Array.isArray(W.D) && W.D.length && !(W.k < 0 && W.s == null) ? `? 값은 자료가 오면 붙여요(지금 ${NX.md(W.D[W.D.length - 1])}까지 받음)` : null; // 달력으로 한 달 · 날짜 줄은 아직(B20)
+    vb.replaceChildren(...(vals ?? [h('p', {class: 'note', text: wait ?? '? 날짜 줄을 못 받아 값을 셈하지 못했어요.'})]));
     busy(false);
   };
   if (r.kept?.a === 'yes' || r.kept?.a === 'no') { showVals(false); return; }
-  const ask = yes => () => { keep(r, yes); tally(yes ? 'promise_yes' : 'promise'); showVals(true); }; // 합계 칸 ② 약속(KD · [10] 1) — 답한 순간 한 번 · 「했어」면 promise_yes(= 답함 + 했어)
+  const ask = yes => () => { keep(r, yes); tally(yes ? 'promise_yes' : 'promise'); showVals(true); try { keptHook?.(); } catch (e) { console.error(e); } }; // 합계 칸 ② 약속(KD · [10] 1) — 답한 순간 한 번 · 「했어」면 promise_yes(= 답함 + 했어) · 맨 위 약속 칸도 다시 셈(B17)
   const b1 = h('button', {class: 'wy-kb', type: 'button', text: '했어'}), b2 = h('button', {class: 'wy-kb', type: 'button', text: '안 했어'});
   b1.addEventListener('click', ask(true)); b2.addEventListener('click', ask(false));
   out.replaceChildren(h('p', {class: 'wy-kq', text: '그날 정한 대로 했어?'}), h('div', {class: 'wy-kbs', role: 'group', 'aria-label': '그날 정한 대로 했어?'}, b1, b2));
@@ -510,7 +577,12 @@ export function meRecords() { return recBox(false); }
 export async function render(arg) {
   await Promise.all([NX.need?.('core'), NX.need?.('mkt')]); // 회사 이름 · 업종(종목 고르기 · 그날 값)
   const G = NX.gdr ? await NX.gdr() : null; // 고도리 칸 자료(/next/data/gdr.json) — 못 받으면 null
-  let list = recBox(true);
-  const card = whyCard(G, {page: true, code: String(arg ?? '').trim() || null, onDone: () => { const nl = recBox(true); list.replaceWith(nl); list = nl; }});
-  return {title: '매매일지', nodes: [h('h1', {class: 'h', text: '매매일지'}), card, list, h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};
+  let due0 = []; try { due0 = await dueList(); } catch (e) { console.error(e); } // 한 달 지난 약속(B17 — 모든 기록)
+  let list = recBox(true), fold = null;
+  const swap = f => { fold = f; const nl = recBox(true, fold); list.replaceWith(nl); list = nl; }; // 목록 다시 그림(f = 방금 끝낸 기록 — 첫 줄을 접음 · B15)
+  const due = dueSection(due0, () => swap(fold));
+  keptHook = () => { if (due.box.isConnected) due.refresh(false); };
+  const card = whyCard(G, {page: true, code: String(arg ?? '').trim() || null, autoFocus: !due0.length, onDone: rec => swap(rec), onAgain: () => { if (fold) swap(null); }});
+  // 차례: 제목 → 한 달 전 약속(있을 때만 · 결) → 질문 칸 → 기록 → 안전 문장
+  return {title: '매매일지', nodes: [h('h1', {class: 'h', text: '매매일지'}), due.box, card, list, h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};
 }
