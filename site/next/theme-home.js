@@ -156,7 +156,8 @@ export async function homeBlock() {
   box.append(h('div', {class: 'th-map th-map2'}, h('h2', {class: 'th-lt', text: '요즘 시장보다 힘이 붙은 곳'}), h('p', {class: 'th-lc', text: '닷새 동안 시장보다'}), h('div', {class: 'th-rows'}, rows),
     yearBox(TH, top, rows), h('p', {class: 'th-cap th-cap1', text: '지난 1년 동안 걸어온 길이에요. 위 줄은 점이 많이 찬 차례예요. 숫자는 닷새 동안 시장보다 더 오른 만큼이에요.'}))); // 그림 아래 글 = 뜻(지난 기록 · 줄 차례의 까닭 · 숫자의 뜻) — 움직임 설명 대신(2026-10-22 총정리 · 감사 A2 · A4 · 그림 아래라 320 높이 그대로)
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
-  box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'}))); // 첫 화면 계절 말 「봄」 = 테마 쪽 「싹」(감사 A6)
+  box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
+  box.append(h('a', {class: 'th-more th-calk', href: '#/t/cal'}, h('span', {text: '날마다 찾은 세 곳 달력'}), h('i', {'aria-hidden': 'true', text: '›'}))); // 싹 달력(사장님 2026-10-22 11:55 「제시만 해가지고 기록이 없으면 그건 하수야」) // 첫 화면 계절 말 「봄」 = 테마 쪽 「싹」(감사 A6)
   // 숫자는 접어 둠 — 주황 숫자(사장님 2026-10-20 09:46 — 진짜 싹 · 새로 들어옴 · 싹 자리)와 성적표는 「숫자로 자세히 보기」 안에 그대로
   // 2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A7): 맨 위 = 성적표 한 줄(가장 중요한 숫자) → 한 줄에 하나(진짜 싹 · 새로 들어옴 · 싹 자리 · 같은 고리 · 48px 넘게) → 점 넷 뜻
   //   테 두른 작은 네모 셋(지도 규칙 11 「작은 네모 판 금지」)과 같은 숫자를 두 번 쓰던 머리 줄은 지움

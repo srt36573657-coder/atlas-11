@@ -60,7 +60,7 @@ export function essenceFacts({siteDir = 'site', root = ROOT, now = new Date()} =
   return {coN: S.coN, fetchedAt: S.fetchedAt, fetchFile: S.fetchFile, updates7: u.updates7, fourADay: u.fourADay, records: recs.length, bytes};
 }
 
-export async function buildData({siteDir = 'site', verify = false, log = console.log} = {}) {
+export async function buildData({siteDir = 'site', verify = false, log = console.log, keepCal = false} = {}) { // keepCal = 싹 달력 지킨 기록을 씀(올리기 작업 package.mjs 만)
   const out = {};
   try {
     const r = homeSummary({siteDir, verify}); out.homeSummary = r;
@@ -76,10 +76,10 @@ export async function buildData({siteDir = 'site', verify = false, log = console
   }
   try { const r = await median20({siteDir}); out.median20 = r; log('한 달 가운데 값 ' + (typeof r === 'string' ? r : JSON.stringify(r))); }
   catch (e) { out.median20Error = e.message; log('한 달 가운데 값 못 만듦 — ' + e.message); }
-  try { const r = await themeBuild({siteDir}); out.theme = r; log('테마 시계 ' + r); }
+  try { const r = await themeBuild({siteDir, keepCal}); out.theme = r; log('테마 시계 ' + r); }
   catch (e) {
     out.themeError = e.message; log('테마 시계 못 만듦 — ' + e.message);
-    for (const f of ['theme.json', 'theme-more.json', 'theme-home.json', 'theme-co.json', 'theme-path.json']) fs.rmSync(path.join(siteDir, 'next', 'data', f), {force: true}); // 화면은 파일이 없으면 「?」 한 줄
+    for (const f of ['theme.json', 'theme-more.json', 'theme-home.json', 'theme-co.json', 'theme-path.json', 'theme-cal.json']) fs.rmSync(path.join(siteDir, 'next', 'data', f), {force: true}); // 화면은 파일이 없으면 「?」 한 줄
   }
   return out;
 }

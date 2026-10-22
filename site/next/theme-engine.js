@@ -59,7 +59,7 @@ export const sproutCmp = (a, b) => b.sc - a.sc || (b._y ?? b.y) - (a._y ?? a.y) 
  * 전체 셈 — {dates, closes: Map(code → number[N]), companies: {code: {n, i}}, industries: [{name, g}], groups: [{id, name}], rk: Map(code → 차례), provisional}
  * → {theme, more} (두 파일의 몸) · 결정표 1 ~ 6
  */
-export function computeTheme({dates, closes, companies, industries, groups = [], rk = new Map(), provisional = false, made = new Date().toISOString()}) {
+export function computeTheme({dates, closes, companies, industries, groups = [], rk = new Map(), provisional = false, made = new Date().toISOString(), kept = {}}) {
   const N = dates.length, T = N - 1;
   if (N < RULE.recFrom + RULE.recAhead + 2) throw Error('theme: 날짜가 너무 적음 ' + N);
   const codes = [...closes.keys()].filter(c => companies[c]).sort();
@@ -114,7 +114,30 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
   const cz = {}; let skip = 0;
   for (const c of codes) { const v = coZoneOf(closes.get(c), M, T); if (!v) { skip++; continue; } cz[c] = [r2(v.x), r2(v.y), v.z]; }
   const co = {schema: THEME_SCHEMA + '-co', made, asOf: dates[T], from20: dates[T - RULE.win], from5: dates[T - 5], provisional: !!provisional, n: Object.keys(cz).length, skip, co: cz};
-  return {theme, more, co, path: pathOf(U, M, dates, sprout.slice(0, 3).map(i => i.n), made)};
+  return {theme, more, co, path: pathOf(U, M, dates, sprout.slice(0, 3).map(i => i.n), made), cal: calOf(U, M, dates, made, CAL_DAYS, kept)};
+}
+
+/** 싹 달력(사장님 2026-10-22 11:55 「일 이 삼 찾아낸 것들 다 달력으로 … 제시만 해가지고 기록이 없으면 그건 하수야」 · 「구글 잡스라면」) — 지난 CAL_DAYS 거래일마다
+ *  그날까지의 값만으로 싹 앞 셋(결정표 4 차례 · 점 수 → 지난 닷새 · 첫 화면 1 · 2 · 3 과 같은 셈)과 한 달 뒤 꽃 선(성적표 결정표 6 과 같은 잣대 · 한 달이 안 지났으면 null)
+ *  날 t 의 셋은 t 뒤 값을 쓰지 않음(꽃 선만 t + 20) · 마지막 날 셋 = theme.order.S 앞 셋(시험 tests/atlas11/theme-cal.test.mjs) */
+export const CAL_DAYS = 60;
+export function calOf(U, M, dates, made, n = CAL_DAYS, kept = {}) {
+  const T = dates.length - 1, t0 = Math.max(RULE.win, T - n + 1), days = [], byName = new Map(U.map(u => [u.n, u]));
+  const hitAt = (u, t) => (t + RULE.recAhead <= T && u ? exOf(u.I, M, t + RULE.recAhead, RULE.win) >= RULE.bloomX / 100 : null);
+  for (let t = t0; t <= T; t++) {
+    const K = kept?.[dates[t]]; // 지킨 기록(그날 장 마감 때 처음 셈한 셋 · reports/atlas11/theme-cal/kept.json) — 셋은 그대로 · 한 달 뒤 꽃 선만 지금 값으로
+    if (K && Array.isArray(K.top)) { days.push({d: dates[t], s: Number.isInteger(K.s) ? K.s : null, k: 1, top: K.top.slice(0, 3).map(i => ({n: i.n, sc: i.sc, y: i.y, hit: hitAt(byName.get(i.n), t)}))}); continue; }
+    const S = [];
+    for (const u of U) {
+      const x = exOf(u.I, M, t, RULE.win) * 100, y = exOf(u.I, M, t, 5) * 100;
+      if (zoneOf(x, y) !== 'S') continue;
+      S.push({n: u.n, sc: dotsAt({I: u.I, M, cs: u.arr, big: u.big}, t).dots.filter(Boolean).length, _y: y, y, u});
+    }
+    S.sort(sproutCmp);
+    const later = t + RULE.recAhead <= T;
+    days.push({d: dates[t], s: S.length, top: S.slice(0, 3).map(i => ({n: i.n, sc: i.sc, y: r1(i.y), hit: later ? exOf(i.u.I, M, t + RULE.recAhead, RULE.win) >= RULE.bloomX / 100 : null}))});
+  }
+  return {schema: THEME_SCHEMA + '-cal', made, asOf: dates[T], ahead: RULE.recAhead, days};
 }
 
 /** 지난 한 해 길(사장님 2026-10-21 10:44 「1.2.3 번에 행성이 어떻게 움직었는지 지난 1년에 주식 변화를 그래프로도 이 우주안에서 동영상으로 … 1번 보여주고 그다음 2번 … 3번」 ·

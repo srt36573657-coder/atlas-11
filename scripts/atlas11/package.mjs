@@ -42,7 +42,7 @@ export async function buildDist() {
   //   깃허브 실행기에서만 종가를 받음 · 따로 세기 틀림 0 이고 새 거래일일 때만 바꿈 · 멈추면 저장된 자료 그대로(올리기는 멈추지 않음) — scripts/atlas11/t365/roll.mjs
   await rollAtlas({root, dist});
   // 고도리 첫 화면 요약 · 매매일지 한 달 가운데 값(사장님 2026-10-18 00:15 [9] 7 · [5] 9) — 굴린 dist 자료로 다시 셈 · 못 만들면 그 파일만 옛것 그대로(올리기는 멈추지 않음)
-  await (await import('./next/build_data.mjs')).buildData({siteDir: dist});
+  await (await import('./next/build_data.mjs')).buildData({siteDir: dist, keepCal: /\/atlas11-site\.yml@/.test(process.env.GITHUB_WORKFLOW_REF ?? '')}); // 싹 달력 지킨 기록(2026-10-22 11:55) — 올리기 작업(atlas11-site.yml)에서만 reports/atlas11/theme-cal/kept.json 에 새 날을 더함(그 작업이 reports/ 를 저장 · 검사 · 손 묶음은 읽기만)
   await copyDir(path.join(root, 'public/data/atlas11/view'), path.join(dist, 'data/atlas11/view'));
   // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에
   //   한국 매일·저녁 실행도 이 함수로 싸서 올리므로(사이트 전체를 바꿈) 미국 판을 여기서 함께 싸야 지워지지 않는다

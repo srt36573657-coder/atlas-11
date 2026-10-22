@@ -18,7 +18,23 @@ export function homeOf(theme) {
   return {schema: 'dori-theme-1-home', made: theme.made, asOf: theme.asOf, provisional: theme.provisional, recFrom: theme.recFrom, recTo: theme.recTo, count: theme.count, order: {S: top}, record: theme.record,
     inds: theme.inds.map(i => (top.includes(i.n) ? {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y, d: i.d, t: i.t, dots: i.dots, sc: i.sc} : {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y}))}; // g = 큰 업종 무리(시계 행성 사진 — 2026-10-20 22:17)
 }
-export async function build({siteDir = 'site', made = new Date().toISOString()} = {}) {
+/* 싹 달력 지킨 기록(사장님 2026-10-22 11:55 「제시만 해가지고 기록이 없으면 그건 하수야」) — 그날 장 마감 때 처음 셈한 세 곳을 날마다 한 줄 남김 · 한 번 적은 날은 바꾸지 않음
+   올리기 작업(atlas11-site.yml · package.mjs keepCal)만 씀 → 그 작업이 reports/ 를 저장소에 넣음 · 장중 값(provisional)인 마지막 날은 아직 안 적음 · 검사 · 시험 · 손 셈은 읽기만 */
+export const KEPT_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../reports/atlas11/theme-cal/kept.json');
+export const KEEP_FROM = '2026-10-22';
+const KEPT_SCHEMA = 'dori-theme-cal-kept-1';
+async function readKept(f) { try { const k = JSON.parse(await fs.readFile(f, 'utf8')); return k?.schema === KEPT_SCHEMA && k.days && typeof k.days === 'object' ? k.days : {}; } catch { return {}; } }
+/** 새로 적을 날 — KEEP_FROM 뒤 · 아직 안 적은 날 · 장 마감 값인 날(마지막 날이 장중이면 뺌) */
+export function keepNew(cal, kept, {provisional = false, made} = {}) {
+  const add = {};
+  for (const x of cal.days) {
+    if (x.d < KEEP_FROM || kept[x.d] || x.k) continue;
+    if (provisional && x.d === cal.asOf) continue;
+    add[x.d] = {s: x.s, top: x.top.map(({n, sc, y}) => ({n, sc, y})), at: made};
+  }
+  return add;
+}
+export async function build({siteDir = 'site', made = new Date().toISOString(), keepCal = false, keptFile = KEPT_FILE} = {}) {
   const dd = path.join(siteDir, 'atlas', 'data');
   const [days, mkt, core, cond] = await Promise.all(['days.json', 'mkt.json', 'core.json', 'cond.json'].map(f => J(path.join(dd, f))));
   const dates = days?.dates;
@@ -38,7 +54,17 @@ export async function build({siteDir = 'site', made = new Date().toISOString()} 
   if (closes.size < 100) throw Error('theme: 종가 파일이 너무 적음 ' + closes.size);
   const co = cond?.co, rk = new Map();
   if (co && Array.isArray(co.c) && Array.isArray(co.rk)) co.c.forEach((c, k) => { if (Number.isInteger(co.rk[k])) rk.set(c, co.rk[k]); });
-  const {theme, more, co: coz, path: yr} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, provisional: core?.provisional === true || cond?.provisional === true, made});
+  const kept = await readKept(keptFile);
+  const {theme, more, co: coz, path: yr, cal} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, provisional: core?.provisional === true || cond?.provisional === true, made, kept});
+  cal.keepFrom = KEEP_FROM;
+  if (keepCal) { // 올리기 작업만 — 새 날을 더하고 옛 날은 그대로
+    const add = keepNew(cal, kept, {provisional: theme.provisional, made});
+    if (Object.keys(add).length) {
+      const all = {...kept, ...add}, body = {schema: KEPT_SCHEMA, from: KEEP_FROM, rule: 'theme-engine calOf · 결정표 4 차례 · 그날 장 마감 값', days: Object.fromEntries(Object.keys(all).sort().map(d => [d, all[d]]))};
+      await fs.mkdir(path.dirname(keptFile), {recursive: true});
+      const tmp = keptFile + '.tmp' + process.pid; await fs.writeFile(tmp, JSON.stringify(body, null, 1) + '\n'); await fs.rename(tmp, keptFile);
+    }
+  }
   const out = path.join(siteDir, 'next', 'data');
   await fs.mkdir(out, {recursive: true});
   const a = JSON.stringify(theme), b = JSON.stringify(more), c = JSON.stringify(homeOf(theme));
@@ -47,6 +73,7 @@ export async function build({siteDir = 'site', made = new Date().toISOString()} 
   await put('theme-more.json', b);
   await put('theme-home.json', c); // 첫 화면 칸만(느린 4G 첫 그림 · check_white ③)
   await put('theme-co.json', JSON.stringify(coz)); // 회사 자리(결정표 9) — 회사 화면만 받음(첫 화면은 안 받음)
+  await put('theme-cal.json', JSON.stringify(cal)); // 싹 달력(2026-10-22 11:55 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」) — #/t/cal 만 받음
   await put('theme-path.json', JSON.stringify(yr)); // 1 · 2 · 3번 지난 한 해 길(2026-10-21 11:07 「자동으로 보여주게해」) — 첫 화면이 첫 그림 뒤에만 받음
   const R = theme.record;
   return `회사 자리 ${coz.n}곳(못 셈 ${coz.skip}) · 업종 ${theme.inds.length}곳 · 기준 ${theme.asOf} · 싹 ${theme.count.S} 꽃 ${theme.count.B} 시듦 ${theme.count.W} 잠잠 ${theme.count.Q} · 진짜 싹 ${theme.count.real} · 성적표 모든 날 ${R.all.p}%(${R.all.n}) 진짜 싹 ${R.real.p}%(${R.real.n}) 두 절반 ${R.more ? '모두 높음' : '차이 없음'} · ${Buffer.byteLength(a) + 1}+${Buffer.byteLength(b) + 1}바이트`;

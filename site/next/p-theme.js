@@ -304,6 +304,63 @@ async function pToday() {
     recordLine(TH), asOf(TH)])]};
 }
 
+/* ── 싹 달력(#/t/cal · 사장님 2026-10-22 11:55 「일 이 삼 찾아낸 것들 다 달력으로 … 제시만 해가지고 기록이 없으면 그건 하수야」 · 「구글 잡스라면」)
+   결론 먼저(맨 위 = 한 달이 지난 날 가운데 1번이 꽃 선을 넘은 날 수 · 아무 업종과 나란히) → 누른 날의 1, 2, 3번(처음 = 마지막 날) → 달마다 달력(월 ~ 금 · 칸 = 날짜 · 1번 이름 · 셋의 한 달 뒤 표 · 새 달이 위)
+   숫자는 /next/data/theme-cal.json 그대로(화면에서 다시 세지 않음 · 셈 = theme-engine.js calOf) · 앞날 말 없음 · 맞은 날도 못 맞은 날도 같은 크기로 ── */
+const calData = () => load('theme-cal.json');
+const HIT = {true: ['●', 'ok', '한 달 뒤 꽃 선을 넘었어요.'], false: ['○', 'no', '한 달 뒤 꽃 선을 못 넘었어요.'], null: ['·', 'wait', '아직 한 달이 안 지났어요.']};
+const hitOf = v => HIT[v === true ? 'true' : v === false ? 'false' : 'null'];
+const dowOf = d => new Date(d + 'T00:00:00Z').getUTCDay(); // 1 = 월 ~ 5 = 금(거래일만 있음)
+async function pCal() {
+  const [CAL, TH] = await Promise.all([calData(), themeData()]);
+  const title = '싹 달력';
+  const days = Array.isArray(CAL?.days) ? CAL.days.filter(x => typeof x?.d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x.d) && Array.isArray(x.top)) : [];
+  if (!days.length) return none(title, '싹 달력');
+  const done = days.filter(x => x.top.length && typeof x.top[0].hit === 'boolean'), hit1 = done.filter(x => x.top[0].hit).length;
+  const all3 = done.flatMap(x => x.top.filter(i => typeof i.hit === 'boolean')), hit3 = all3.filter(i => i.hit).length, base = TH?.record?.all?.p;
+  const head = h('div', {class: 'th-calsum'},
+    h('p', {class: 'th-key', text: done.length ? `한 달이 지난 ${num(done.length)}일 가운데 1번이 꽃 선을 넘은 날은 ${num(hit1)}일이에요.` : '아직 한 달이 지난 날이 없어요.'}),
+    done.length ? h('p', {class: 'th-sub', text: `세 곳 모두 세면 ${num(all3.length)}번 가운데 ${num(hit3)}번이에요.`}) : null,
+    Number.isFinite(base) ? h('p', {class: 'th-sub', text: `아무 업종은 100번 가운데 ${Math.round(base)}번이었어요.`}) : null);
+  const pick = h('div', {class: 'th-calpick', 'aria-live': 'polite'});
+  const btns = [];
+  const show = x => {
+    btns.forEach(b => { const on = b.dataset.d === x.d; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+    pick.replaceChildren(h('h2', {class: 'th-h2', text: `${md(x.d)} ${josa(NAME, '가')} 찾은 세 곳`}),
+      x.top.length ? h('ol', {class: 'th-steps th-calli'}, x.top.map((i, k) => { const [mk, c, t] = hitOf(i.hit); return h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}),
+        h('a', {class: 'th-st', href: '#/t/i/' + enc(i.n)}, h('b', {text: i.n}), h('span', {text: `닷새 동안 시장보다 ${pp(i.y)}%`}), h('span', {class: 'th-calhit ' + c}, h('i', {'aria-hidden': 'true', text: mk + ' '}), h('span', {text: t})))); }))
+        : h('p', {class: 'th-sub', text: '이날은 싹 자리가 비었어요.'}));
+  };
+  const months = [];
+  for (const x of days) { const m = x.d.slice(0, 7); if (!months.length || months.at(-1).m !== m) months.push({m, xs: []}); months.at(-1).xs.push(x); }
+  const grid = months.map(({m, xs}) => {
+    const cells = [];
+    const lead = Math.min(4, Math.max(0, dowOf(xs[0].d) - 1)); for (let k = 0; k < lead; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'}));
+    let prev = null;
+    for (const x of xs) {
+      const w = dowOf(x.d);
+      if (prev != null && w <= prev) { const pad = 5 - prev; for (let k = 0; k < pad; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'})); for (let k = 1; k < w; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'})); }
+      else if (prev != null) for (let k = prev + 1; k < w; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'}));
+      prev = w;
+      const b = h('button', {type: 'button', class: 'th-calc' + (x.k ? ' kept' : ''), 'data-d': x.d, 'aria-pressed': 'false', 'aria-label': x.top[0] ? `${md(x.d)} 1번 ${x.top[0].n}` : `${md(x.d)} 싹 자리 없음`},
+        h('b', {class: 'th-cald', text: String(+x.d.slice(8, 10))}), h('span', {class: 'th-caln', 'data-proper': '', text: x.top[0]?.n ?? '없음'}),
+        h('span', {class: 'th-calm', 'aria-hidden': 'true'}, x.top.map(i => { const [mk, c] = hitOf(i.hit); return h('i', {class: c, text: mk}); })));
+      b.addEventListener('click', () => show(x));
+      btns.push(b); cells.push(b);
+    }
+    return h('section', {class: 'th-calmo', 'aria-label': `${+m.slice(5, 7)}월`}, h('h2', {class: 'th-h2', text: `${+m.slice(0, 4)}년 ${+m.slice(5, 7)}월`}),
+      h('div', {class: 'th-calg', role: 'group'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-calw', 'aria-hidden': 'true', text: t})), ...cells));
+  });
+  const key = h('p', {class: 'th-calkey'}, h('span', {}, h('i', {class: 'ok', text: '●'}), h('span', {text: ' 넘음'})), h('span', {}, h('i', {class: 'no', text: '○'}), h('span', {text: ' 못 넘음'})), h('span', {}, h('i', {class: 'wait', text: '·'}), h('span', {text: ' 아직'})));
+  show(days.at(-1));
+  return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
+    h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
+    say(`날마다 ${josa(NAME, '가')} 찾은 세 곳을 남겨요.`), head, pick, key, ...grid.reverse(),
+    typeof CAL.keepFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(CAL.keepFrom) ? h('p', {class: 'th-sub th-calnote', text: `${md(CAL.keepFrom)}부터는 그날 장 마감 때 나온 세 곳을 바꾸지 않고 남겨요.`}) : null,
+    h('p', {class: 'th-sub th-calnote', text: '그 전 날은 그날까지의 값만으로 지금 규칙을 다시 돌린 셋이에요. 한 달 동안 시장보다 5% 넘게 더 오르면 꽃 선을 넘어요.'}),
+    TH ? asOf(TH) : null, nextBtn('시계 읽는 법', '#/t/how'), safe())]};
+}
+
 export async function render(arg = '') {
   const a = String(arg ?? ''), [k, x, y] = a.split('/');
   if (k === '' || k === 'hello') return pHello();
@@ -312,6 +369,7 @@ export async function render(arg = '') {
   if (k === 'bloom') return pZone('B');
   if (k === 'wilt') return pZone('W');
   if (k === 'today') return pToday();
+  if (k === 'cal') return pCal(); // 싹 달력(2026-10-22 11:55)
   if (k === 'alert') return pAlert();
   if (k === 'i' && x) return pInd(x, y ?? '');
   if (k === 'c' && /^[0-9A-Z]{6}$/.test(x ?? '')) return pCo(x, y ?? '');

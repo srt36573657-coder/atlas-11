@@ -113,3 +113,21 @@ a.th-ck:active { background: #161616; }
 /* 일곱 단 줄(app.js chaps · 사장님 2026-10-20 12:59 「7단 클릭구조 … 토스증권처럼」) — 테마 쪽 안에서는 쪽 여백(.tc)과 줄을 맞춤(칸 여백 두 번 겹치지 않게) */
 .tc .chaps { padding: 0; margin: var(--sp-1) 0 0; }
 .tc .chaps.row { scroll-padding: 0; }
+
+/* 싹 달력(#/t/cal · 2026-10-22 11:55) — 월 ~ 금 다섯 칸 · 칸 = 날짜 · 1번 이름 · 셋의 한 달 뒤 표(● 넘음 · ○ 못 넘음 · · 아직) · 누른 날 금빛 테 */
+.th-calsum { display: flex; flex-direction: column; gap: var(--sp-1); }
+.th-calg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.th-calw { text-align: center; color: var(--sub); font-size: var(--fs-1); }
+.th-calx { min-height: 80px; }
+.th-calc { all: unset; box-sizing: border-box; min-height: 80px; min-width: 0; padding: 4px; border: 1px solid #2A2A2A; border-radius: 8px; display: flex; flex-direction: column; gap: 2px; cursor: pointer; color: var(--ink); }
+.th-calc.kept { border-color: var(--gold-line, #E9B949); }
+.th-calc.on { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+.th-calc:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.th-cald { font-size: var(--fs-1); }
+.th-caln { font-size: var(--fs-1); line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.th-calm { display: flex; gap: 2px; font-style: normal; font-size: var(--fs-1); line-height: 1.2; }
+.th-calm i, .th-calkey i, .th-calhit i { font-style: normal; }
+.tc .ok { color: var(--up); } .tc .no { color: var(--sub); } .tc .wait { color: var(--sub); }
+.th-calkey { display: flex; gap: var(--sp-2); flex-wrap: wrap; color: var(--sub); font-size: var(--fs-1); }
+.th-calhit { display: block; font-size: var(--fs-1); }
+.th-calmo { margin-top: var(--sp-2); }
