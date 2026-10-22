@@ -492,7 +492,7 @@ html.white {
   --up-fill: rgba(0, 122, 53, .16); --down-fill: rgba(30, 79, 194, .16); --up-fade: rgba(0, 122, 53, .06); --down-fade: rgba(30, 79, 194, .06);
   --lacquer: #FFFFFF; --lacquer-ink: #000000; --lacquer-sub: #111111; --lacquer-gold: #6B2A8C;
   --moon: #000000; --moonrow: #F7F7F7;
-  --m4-band: #FFFFFF; --m4-line: #BBBBBB; --m4-soft: #8A8A8A; /* 칸 테 · 줄 — 흰 벽 위 대비 3 넘게(큰 검사 6/11 #/surge 칸 테 1.92) */ --m4-neu: #222222; --m4-line2: #EEEEEE;
+  --m4-band: #FFFFFF; --m4-line: #8A8A8A; --m4-soft: #8A8A8A; /* 칸 테 · 줄 — 흰 벽 위 대비 3 넘게(큰 검사 6/11 #/surge 칸 테 1.92) */ --m4-neu: #222222; --m4-line2: #EEEEEE;
   background: #FFFFFF;
 }
 html.white body { background: #FFFFFF; color: var(--ink); font-weight: 600; }
