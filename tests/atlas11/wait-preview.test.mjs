@@ -277,7 +277,7 @@ test('작업 파일 atlas11-site.yml — 비우면 예전 그대로 · 넣으면
   assert.equal(inputs.preview_sha.default, ''); assert.equal(inputs.preview_sha.required, false);
   assert.equal(inputs.reason.default, ''); // 예약 작업이 넣는 까닭 그대로
   assert.equal(job['timeout-minutes'], "${{ inputs.preview_sha != '' && 60 || 30 }}");
-  assert.deepEqual(steps, ['시작 시각 적기', '저장소 받기', '노드 준비', '준비물 설치', '파이썬 준비(36곳 셈 numpy)', '화면 묶음 만들기', '올리기 전 검사 기다리기', 'aaa7377.com 에 올리기', '열렸는지 확인', '열쇠 없음', '결과 한 줄(요약 칸)', '기록 남기기']);
+  assert.deepEqual(steps, ['시작 시각 적기', '저장소 받기', '노드 준비', '준비물 설치', '파이썬 준비(36곳 셈 numpy)', '화면 묶음 만들기', '올리기 전 검사 기다리기', 'aaa7377.com 에 올리기', '열렸는지 확인', '자동으로 산 기록 셈(가짜 돈)', '열쇠 없음', '결과 한 줄(요약 칸)', '기록 남기기']);
   const by = n => job.steps.find(s => s.name === n), gate = by('올리기 전 검사 기다리기'), up = by('aaa7377.com 에 올리기');
   assert.equal(gate.id, 'gate'); assert.equal(gate.if, "${{ inputs.preview_sha != '' }}"); assert.equal(gate['timeout-minutes'], 25);
   assert.equal(gate.env.NETLIFY_AUTH_TOKEN, ''); assert.equal(gate.env.NETLIFY_SITE_ID, '');
@@ -286,6 +286,10 @@ test('작업 파일 atlas11-site.yml — 비우면 예전 그대로 · 넣으면
   assert.doesNotMatch(String(up.if), /always\(\)|failure\(\)|cancelled\(\)/, '기다리기가 실패하면 올리기는 건너뜀');
   assert.equal(by('기록 남기기').if, "${{ always() && (inputs.preview_sha == '' || steps.gate.outcome == 'success') }}");
   assert.match(by('결과 한 줄(요약 칸)').run, /--deploy "\$\{\{ \(steps\.gate\.outcome == 'failure' \|\| steps\.gate\.outcome == 'cancelled'\) && 'gate' \|\| steps\.deploy\.outcome \}\}"/);
+  const au = by('자동으로 산 기록 셈(가짜 돈)'); // 2026-10-22 08:50 「가짜돈으로 해」 — 올라간 뒤에만 · 실패해도 기록은 그대로 · 열쇠 없음
+  assert.equal(au.if, "${{ steps.deploy.outcome == 'success' }}"); assert.equal(au['continue-on-error'], true); assert.ok(au['timeout-minutes'] <= 5);
+  assert.match(au.run.trim(), /^curl -fsS --max-time \d+ -X POST -H 'content-type: application\/json' --data '\{"op":"tick"\}' https:\/\/aaa7377\.com\/api\/auto$/);
+  assert.doesNotMatch(au.run + JSON.stringify(au.env ?? {}), /secrets|x-atlas-owner|TOKEN/i, '열쇠 없이 부름');
   assert.equal(job.concurrency, undefined); assert.equal(wf.concurrency.group, 'atlas11-daily');
   const al = spawnSync('actionlint', ['-no-color', WF], {encoding: 'utf8'});
   if (!al.error) assert.equal(al.status, 0, al.stdout + al.stderr);
