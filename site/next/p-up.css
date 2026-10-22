@@ -7,6 +7,14 @@
 .pup .q { color: var(--gold); }
 .pup .num { font-variant-numeric: tabular-nums; }
 .pup-tell { margin-bottom: 0; }
+/* 결 — 요즘 바뀐 것 셋(총정리 2026-10-22 D19) · 한 줄에 하나(날짜 · 사람이 쓴 제목) · 글 시작 16 */
+.pup-new .sec { margin-top: var(--sp-2); }
+ul.pup-newl { list-style: none; margin: 0 var(--sp-2); padding: 0; border-top: 1px solid var(--hair); }
+ul.pup-newl li { padding: var(--sp-1) 0; border-bottom: 1px solid var(--hair); font-size: var(--fs-2); line-height: 1.5; overflow-wrap: anywhere; }
+.pup-nd { font-weight: 800; font-variant-numeric: tabular-nums; }
+.pup-newq { margin: 0 var(--sp-2); font-size: var(--fs-2); line-height: 1.5; color: var(--sub); }
+.pup-newq.q { color: var(--gold); }
+.pup-nx + .pup-count { margin-top: var(--sp-2); } /* 다음 회차 줄을 위로 옮긴 뒤 — 마지막 회차 줄과 붙지 않게 */
 .pup-count { margin: 0 var(--sp-2) var(--sp-1); font-size: var(--fs-2); color: var(--ink); line-height: 1.5; }
 
 /* 그림 — 회차마다 들고 난 수 */

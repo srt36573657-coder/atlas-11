@@ -9054,6 +9054,11 @@
   "앵무새 {e}는 테마가 될 듯한 곳을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!": "{e} the parrot finds industries that could become a theme, using past records. Parrots only repeat what they hear!",
   "테마가 될 듯한 곳을, 지난 기록으로 찾아 줘요.": "Finds industries that could become a theme, from past records.",
   "이 영상은 {e} 소개예요. 상품권 영상은 아래 {q}이에요 ›": "This video introduces {e}. The gift-card video is {q} below ›",
-  "상품권 영상 · {e}의 우주 {n}분": "Gift-card video · {e}'s Universe, {n} min"
+  "상품권 영상 · {e}의 우주 {n}분": "Gift-card video · {e}'s Universe, {n} min",
+  "처음이면 {q}부터 보세요 ›": "New here? Start with {q} ›",
+  "이 쪽은 고른 곳을 어떻게 셌는지 적은 곳이에요. 지난 기록만 써요.": "This page shows how the picks were counted. It uses past records only.",
+  "요즘 바뀐 것": "Recent changes",
+  "? 바뀐 것 기록을 받지 못했어요": "? Couldn't load the change log",
+  "아직 바뀐 것 기록이 없어요.": "No changes recorded yet."
  }
 }

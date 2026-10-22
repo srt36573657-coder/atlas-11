@@ -89,14 +89,39 @@ function recLi(r, C) {
   return li;
 }
 
+/* 요즘 바뀐 것(총정리 2026-10-22 D19 · 사장님 04:09 「결과부터」) — 사람이 쓴 「바뀐 것」 기록(reports/atlas11/changelog → 올릴 때 /changelog.json · scripts/atlas11/package.mjs)의 최신 업데이트 셋
+   고객센터 「바뀐 것은 업데이트 기록에 남겨요」 약속이 닿는 곳 · 제목은 사람이 쓴 한국어 그대로(lang="ko") · 못 받으면 「?」 한 줄(멈추지 않음) */
+const NEW_N = 3;
+/** /changelog.json → 업데이트 줄(새것부터 · 미국 판 줄은 뺌) — 못 받거나 꼴이 다르면 null */
+export function recentOf(log, n = NEW_N) {
+  if (log?.schema !== 'atlas11-changelog-1' || !Array.isArray(log.entries)) return null;
+  const at = e => String(e.live ?? e.made ?? '');
+  return log.entries.filter(e => e?.kind === 'update' && e.place !== 'us' && typeof e.title === 'string' && e.title.trim() && /^\d{4}-\d{2}-\d{2}/.test(at(e)))
+    .sort((a, b) => (at(a) < at(b) ? 1 : at(a) > at(b) ? -1 : 0)).slice(0, n);
+}
+const getLog = () => fetch('/changelog.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null);
+function newBox(xs) {
+  const box = h('section', {class: 'pup-new', 'aria-labelledby': 'pup-newh'}, h('h2', {class: 'sec', id: 'pup-newh', text: '요즘 바뀐 것'}));
+  if (!xs) box.append(h('p', {class: 'pup-newq q', text: '? 바뀐 것 기록을 받지 못했어요'}));
+  else if (!xs.length) box.append(h('p', {class: 'pup-newq', text: '아직 바뀐 것 기록이 없어요.'}));
+  else box.append(h('ul', {class: 'pup-newl'}, ...xs.map(e => h('li', {}, h('b', {class: 'pup-nd', text: md(String(e.live ?? e.made).slice(0, 10))}), ' · ', h('span', {lang: 'ko', text: e.title.trim()})))));
+  return box;
+}
+
 const SHOW = 10; // 처음 보이는 회차 수 — 앞 회차는 접은 칸(긴 목록은 접음 · 규칙 53)
 export async function render() {
-  const [C, U] = await Promise.all([NX.need('core'), NX.getJson('updates.json'), NX.need('sum')]); // sum = 첫 화면 요약(fourADay — 못 받으면 참인 말)
+  const [C, U, , LOG] = await Promise.all([NX.need('core'), NX.getJson('updates.json'), NX.need('sum'), getLog()]); // sum = 첫 화면 요약(fourADay — 못 받으면 참인 말) · LOG = 요즘 바뀐 것
   if (!C || !U || !Array.isArray(U.records) || !Array.isArray(U.slots)) return {title: '업데이트 기록', nodes: NX.noData('업데이트 기록')};
   const R = U.records, last = R[0];
   const root = h('div', {class: 'pup', 'data-page': 'up'});
+  // 결 — 요즘 바뀐 것 · 다음 회차(아래에 있던 줄을 위로 · 글 그대로)
+  let nxEl = null;
+  { const k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), nx = U.slots.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m) ?? U.slots[0];
+    if (nx) nxEl = h('p', {class: 'pup-nx'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 40, height: 40, 'aria-hidden': 'true'}), h('span', {}, '다음 회차 ', h('b', {class: 'num', text: nx}),
+      `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 값과 봉인 뒤 값을 그때 다시 셉니다.`)); } // 보드리가 다음 회차를 알림
   root.append(h('h1', {class: 'wt', text: fourText(`업데이트 기록 — 하루 ${U.slots.length}번`, NX.D.sum)}),
     h('p', {class: 'ws pup-tell', text: fourText(`하루 ${U.slots.length}번 · ${U.slots.join(' · ')}(서울)`, NX.D.sum)}),
+    newBox(recentOf(LOG)), ...(nxEl ? [nxEl] : []),
     h('p', {class: 'pup-count', text: last ? `마지막 ${kstLabel(last.kst)} · ${RES_WORD[last.result] ?? last.result}` + (last.asOf ? ` · 고른 날 ${md(last.asOf)}` : '') : '아직 기록이 없습니다.'}));
   // 그림 한 장 — 최근 28회차(오른쪽이 최근)
   const rows = R.slice(0, 28).reverse(), host = h('div', {class: 'pup-chart'});
@@ -107,9 +132,6 @@ export async function render() {
   // 시장 판독(사장님 2026-10-12 12:41 「시장을 판독해서」) — 마지막 회차가 올린 자료로 · 지난 사실만(규칙 49)
   if (last?.market?.lines?.length) root.append(h('div', {class: 'pup-mread'}, h('p', {}, h('b', {text: '지금 시장 판독'}), ' — 지난 값만 · 앞날 맞히기 아님'), h('ul', {}, ...last.market.lines.map(t => h('li', {text: t})))));
   if (last?.inspect) root.append(last.inspect.fail ? warn('? ' + inspectLine(last.inspect, true)) : h('p', {class: 'pup-line'}, inspectLine(last.inspect, true)));
-  { const k = new Date(Date.now() + 9 * 36e5), m = k.getUTCHours() * 60 + k.getUTCMinutes(), nx = U.slots.find(x => +x.slice(0, 2) * 60 + +x.slice(3, 5) > m) ?? U.slots[0];
-    if (nx) root.append(h('p', {class: 'pup-nx'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 40, height: 40, 'aria-hidden': 'true'}), h('span', {}, '다음 회차 ', h('b', {class: 'num', text: nx}),
-      `(서울${U.slots.indexOf(nx) === 0 && +nx.slice(0, 2) * 60 + +nx.slice(3, 5) <= m ? ' · 내일' : ''}) — 새 종가가 있으면 값과 봉인 뒤 값을 그때 다시 셉니다.`))); } // 보드리가 다음 회차를 알림
   const h0 = [...R].reverse().find(r => r.version === C.rules?.version); // 이 규칙으로 처음 고른 회차(지난 기록에서 셈 · 날짜를 박지 않음)
   root.append(h('p', {class: 'note pup-how', text: `회차마다 값과 그림을 새로 셉니다 — ${pickName(C)}은 새 1년 성적표가 들어와야 바뀝니다(${h0 ? md(h0.kst.slice(0, 10)) + '부터' : '이번 회차부터'} 이 규칙 · 그 전 기록은 옛 규칙). 기준일은 늘 마지막 종가 날의 20거래일 전입니다. 회차마다 시장을 읽어 적고, 애플 · 구글 · 클로드 · CIA 네 눈으로 각각 111 번 점검합니다 — 하나라도 걸리면 새 자료를 올리지 않습니다. 기록은 지우지 않습니다.`})); // 네 눈 번 수 = 111(사장님 2026-10-18 「111번으로 바꿔라」 · roll.mjs b73b572e · 옛 1,000만 번)
   // 회차 기록 — 최근 10번은 펼침 · 앞 회차는 접은 칸(한 번 누르면 모두)
