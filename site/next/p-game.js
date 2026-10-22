@@ -99,7 +99,7 @@ function autoBox() {
           h('div', {class: 'gm-au-btns'}, sellBtn(c, 'all', '전부 팔기', false), sellBtn(c, 'half', '반 팔기', p.q < 2)));
       })) : h('p', {class: 'gm-t', text: '아직 가진 주식이 없어요.'}),
       h('h2', {text: '기록'}),
-      (() => { const rows = autoLog(A, nameOfC); return rows.length ? h('ul', {class: 'gm-au-log'}, ...rows.map(([, text, cls]) => h('li', {class: cls, text}))) : h('p', {class: 'gm-t', text: '아직 셈한 날이 없어요.'}); })(),
+      (() => { const rows = autoLog(A, nameOfC); return rows.length ? h('ul', {class: 'gm-au-log'}, ...rows.map(([, text, cls]) => h('li', {class: cls, text}))) : h('p', {class: 'gm-t', text: '아직 기록이 없어요.'}); })(),
       h('p', {class: 'gm-au-rule', text: `싹 1 ~ ${AUTO_TOP}번에 새 업종이 들어오면 그 업종에서 가장 큰 회사를 ${eok(S.buy ?? 3e7).replace(/ 원$/, '')} 원어치 사요. 파는 것은 사장님이 정해요.`}),
       h('p', {class: 'gm-t', text: '가짜 돈이에요. 진짜 돈은 오가지 않아요.'}),
       h('p', {class: 'gm-t', text: '사장님 휴대폰에서만 보여요.'})].filter(Boolean));

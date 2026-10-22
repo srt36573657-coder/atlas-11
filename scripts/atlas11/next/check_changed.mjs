@@ -29,7 +29,7 @@ export function checksFor(f) {
   let m;
   // 흰 첫 화면(사장님 2026-10-19 02:03 「구글과 잡스 판」 · 일꾼 C) — 첫 화면을 그리는 파일 · 흰 판 색 · 검사 · 문을 고치면 check_white(+ 정적 문 white_gate)도
   if (/^site\/next\/(app\.js|app\.css|home\.css|index\.html|p-why\.js|essence\.js)$|^scripts\/atlas11\/next\/(check_white|white_gate)\.mjs$/.test(f)) out.push('check_white', 'white-gate');
-  if (/^site\/next\/(p-admin\.(js|css)|p-game\.(js|css)|coupon-rule\.js|game-rule\.js)$|^lib\/atlas11\/(coupon|game|kakao|kakao-store)\.mjs$|^tests\/atlas11\/(coupon|game|kakao)\.test\.mjs$/.test(f)) { out.push('coupon-tests', 'modules'); if (/p-(admin|game)/.test(f)) out.push('next_check'); return out; } // 커피 쿠폰 · 관리자 화면(2026-10-19 13:54 · 쪽 검사 없음 — 사장님 열쇠 기기만 · 셈은 시험이 봄)
+  if (/^site\/next\/(p-admin\.(js|css)|p-game\.(js|css)|coupon-rule\.js|game-rule\.js)$|^lib\/atlas11\/(coupon|game|kakao|kakao-store|auto)\.mjs$|^tests\/atlas11\/(coupon|game|kakao|auto)\.test\.mjs$/.test(f)) { out.push('coupon-tests', 'modules'); if (/p-(admin|game)/.test(f)) out.push('next_check'); return out; } // 커피 쿠폰 · 관리자 화면(2026-10-19 13:54 · 쪽 검사 없음 — 사장님 열쇠 기기만 · 셈은 시험이 봄)
   if (/^site\/next\/theme-(engine|rule|home)\.js$|^scripts\/atlas11\/next\/build\/theme\.mjs$|^tests\/atlas11\/theme\.test\.mjs$|^site\/next\/data\/theme(-more|-home)?\.json$/.test(f)) { out.push('theme-tests', 'check_theme', 'modules', 'next_check', 'check_white'); return out; } // 테마 시계 셈 · 자료(사장님 2026-10-19 16:54 · 결정표 docs/design/theme-2026-10-19/theme-engine.md)
   if ((m = /^site\/next\/p-([a-z]+)\.(js|css)$/.exec(f))) { page(m[1]); out.push('next_check', 'modules', 'check_kakao'); } // 카톡 줄(사장님 2026-10-18 16:39 [6] 1 — 종목 줄마다 같은 단추 · 일꾼 KB2)
   else if (/^site\/next\/(app\.js|app\.css|home\.css|index\.html|brand\.js|words\.js)$/.test(f)) out.push('next_check', 'modules', 'check_why', 'check_gdr', 'check_hold', 'check_share', 'check_kakao');
@@ -50,7 +50,7 @@ const CMD = {
   modules: () => ['node', ['--test', 'tests/atlas11/next-modules.test.mjs']],
   'letter-tests': () => ['node', ['--test', 'tests/atlas11/letter.test.mjs', 'tests/atlas11/invite.test.mjs']],
   'theme-tests': () => ['node', ['--test', 'tests/atlas11/theme.test.mjs']],
-  'coupon-tests': () => ['node', ['--test', 'tests/atlas11/coupon.test.mjs', 'tests/atlas11/game.test.mjs', 'tests/atlas11/kakao.test.mjs', 'tests/atlas11/kakao-store.test.mjs']],
+  'coupon-tests': () => ['node', ['--test', 'tests/atlas11/coupon.test.mjs', 'tests/atlas11/game.test.mjs', 'tests/atlas11/auto.test.mjs', 'tests/atlas11/kakao.test.mjs', 'tests/atlas11/kakao-store.test.mjs']], // auto = 자동으로 산 기록(가짜 돈 · 2026-10-22 08:50 · game-rule.js ruleFor 를 같이 씀)
   'kakao-client': () => ['node', ['--test', 'tests/atlas11/kakao-client.test.mjs']],
   'jinhwa-tests': () => ['node', ['--test', 'tests/atlas11/jinhwa.test.mjs', 'tests/atlas11/tally.test.mjs']],
   // 고도리 칸 셈 v2 따로 세기(2026-10-18 · G4x) — 끝 코드 4 = 이 기계에 없는 입력으로 만든 파일이라 셀 수 없음 → 건너뜀(실패 아님)
