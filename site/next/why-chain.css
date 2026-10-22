@@ -20,8 +20,8 @@ a.wc-card { padding-right: var(--sp-3); }
 .wc-go { position: absolute; right: var(--sp-1); top: 50%; transform: translateY(-50%); color: var(--sub); font-size: var(--fs-3); }
 .wc-again { display: block; min-height: 48px; margin: var(--sp-2) auto 0; padding: 0 var(--sp-3); border: 1px solid var(--hair2); border-radius: 24px; background: none; color: var(--ink); font: inherit; font-size: var(--fs-1); }
 @media (prefers-reduced-motion: no-preference) {
-  .wc.play .wc-ln { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: wc-draw .55s ease-out forwards; animation-delay: calc(var(--i) * .7s - .45s); }
-  .wc.play .wc-dot, .wc.play .wc-n { animation: wc-in .45s ease-out both; animation-delay: calc(var(--i) * .7s); }
+  .wc.wc-play .wc-ln { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: wc-draw .55s ease-out forwards; animation-delay: calc(var(--i) * .7s - .45s); }
+  .wc.wc-play .wc-dot, .wc.wc-play .wc-n { animation: wc-in .45s ease-out both; animation-delay: calc(var(--i) * .7s); }
 }
 @keyframes wc-draw { to { stroke-dashoffset: 0; } }
 @keyframes wc-in { from { opacity: 0; } to { opacity: 1; } }

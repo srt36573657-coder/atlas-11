@@ -64,7 +64,7 @@ export function whyChain(steps, {title = ''} = {}) {
   });
   const again = h('button', {type: 'button', class: 'wc-again', text: L('다시 보기')});
   root.append(ol, again);
-  const play = () => { root.classList.remove('play'); void root.offsetWidth; root.classList.add('play'); }; // 다시 붙여 처음부터
+  const play = () => { root.classList.remove('wc-play'); void root.offsetWidth; root.classList.add('wc-play'); }; // 다시 붙여 처음부터 · 이름 wc-play(app.css 의 영상 단추 .play 와 겹치지 않게 — P1 이 찾음)
   again.addEventListener('click', play);
   root.play = play;
   return root;
