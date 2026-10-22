@@ -52,6 +52,9 @@ if (!QTEXT || ITEMS.length !== 5 || GATES.length !== 5 || Q3.length !== 3) { con
 const SHORT = ['산 이유', '문 색', '망할 이유', '팔 약속', '몫']; // 색 이름표에 쓰는 짧은 이름(① ~ ⑤ 차례)
 const SAY = {g: '좋음', y: '주의', r: '위험', u: '셀 수 없음', q: '모름'}; // 다섯 가지 줄 머리 색 점을 읽어 주는 글([9] 8 · 매매일지 TONE 과 같은 말)
 const ASK_N = 3; // 「살 거야 · 잘 모르겠어 · 안 살 거야」
+/** 점검 칸 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터」 · 총정리 1차-10 · C26) — 오늘 답하지 않은 카드 수 + 첫 질문(명령문 원문 QTEXT) · 다 답하면 한 줄 · 산 값 · 수익률 · 색 없음
+ *  글 = 굵은 「오늘 물을 것 n개」 + 제 줄 「「질문」」(textContent 로 이어 읽음) */
+const NOW_LINE = n => (n > 0 ? `오늘 물을 것 ${n}개「${QTEXT}」` : '오늘 물을 것은 다 했어요.');
 const KEY = 'atlas:godori-hold', WHY_KEY = 'atlas:godori-why';
 
 /* 꼴(화면과 같은 꼴 — 셈은 따로) */
@@ -210,7 +213,7 @@ const READH = sel => {
       mine: [...it.querySelectorAll('.hd-mine q[data-proper]')].map(q => q.textContent), langs: [...it.querySelectorAll('.hd-mine q[data-proper]')].map(q => q.getAttribute('lang')), tog: it.querySelector('.hd-tog')?.getAttribute('aria-pressed') ?? null, link: it.querySelector('.hd-link')?.getAttribute('href') ?? null}))}));
   const bars = [...s.querySelectorAll('.hd-pic .hd-bars')].map(b => [...b.querySelectorAll('.hd-bar')].map(r => [r.querySelector('.hd-bn')?.textContent ?? '', r.querySelector('b')?.textContent ?? '', !!r.querySelector('.hd-fill.over'), !!r.querySelector('.hd-third')]));
   const past = s.querySelector('details.hd-past');
-  return {cards, bars, empty: [...s.querySelectorAll(':scope > .hd-note')].map(x => x.textContent), mem: s.querySelector('.hd-q-note')?.textContent ?? null, leg: !!s.querySelector('details.hd-leg'), legText: s.querySelector('details.hd-leg')?.textContent ?? '', legLines: [...s.querySelectorAll('details.hd-leg > .hd-line')].map(x => x.textContent),
+  return {cards, bars, now: [...s.querySelectorAll(':scope > p.hd-now')].map(x => x.textContent), empty: [...s.querySelectorAll(':scope > .hd-note')].map(x => x.textContent), mem: s.querySelector('.hd-q-note')?.textContent ?? null, leg: !!s.querySelector('details.hd-leg'), legText: s.querySelector('details.hd-leg')?.textContent ?? '', legLines: [...s.querySelectorAll('details.hd-leg > .hd-line')].map(x => x.textContent),
     pastN: past?.querySelector('summary')?.textContent ?? null, pastOpen: !!past?.open, pastRows: [...(past?.querySelectorAll('.hd-prow') ?? [])].map(r => r.textContent), add: !!s.querySelector('button.hd-add-b'), form: !!s.querySelector('form.hd-add'), err: s.querySelector('.hd-err')?.textContent ?? ''};
 };
 /** 모양 — 옆 넘침 · 칸 밖 · 누르는 자리 · 글 크기 · 캔버스 · 쓰지 않을 말(내 글 · 남의 글 · 이름표 글) */
@@ -357,6 +360,7 @@ for (const s of SC) { const v = SH_A.by.get(s.X.code); if (isBig(v, SH_A.tot)) s
     let g = await p.evaluate(READH, SEL);
     const act = HOLDS.filter(o => !o.sold && !o.wrong);
     if (g.cards.length !== act.length) fail('카드 수 = 들고 있는 것(판 것 · 잘못 적은 것 빼고)', `${tag} ${g.cards.length} ≠ ${act.length}`);
+    if (!eq(g.now, [NOW_LINE(act.length)])) fail('맨 위 결 한 줄 — 답하기 전(총정리 1차-10)', `${tag} ${JSON.stringify(g.now)} ≠ 「${NOW_LINE(act.length)}」`); else bump('맨 위 결 한 줄');
     for (const o of act) checkAsk(cardOf(g, o.id), o, `${tag} ${o.id}`);
     // 몫 그림 — 종목 · 업종(큰 차례 · 위 여섯 · 넷 · 나머지는 「그 밖」) · 금빛 = 셋에 하나 넘음 · 점선
     const top = (m, k) => { const a = [...m].sort((x, y) => y[1] - x[1] || (x[0] < y[0] ? -1 : 1)); if (a.length <= k) return a; return [...a.slice(0, k - 1), [`그 밖 ${a.length - k + 1}곳`, a.slice(k - 1).reduce((s2, x) => s2 + x[1], 0)]]; };
@@ -390,6 +394,8 @@ for (const s of SC) { const v = SH_A.by.get(s.X.code); if (isBig(v, SH_A.tot)) s
       if (c?.badge?.c !== 'q' || c.badge.t !== '? 점검 못 함' || c.items.length || !c.lines.includes(`${XLABEL} — 회사 주식이 아니라 조건 다섯을 셀 수 없어요.`) || c.link !== '#/x/' + encodeURIComponent(XH.code) || /[+−]\d+(\.\d)?%/.test(c.ret ?? c.text)) fail('회사 주식 밖 — 점검 못 하는 까닭([5] 9)', `${tag} ${JSON.stringify(c).slice(0, 300)}`);
       else bump('회사 주식 밖 맞댐');
     }
+    g = await p.evaluate(READH, SEL);
+    if (!eq(g.now, [NOW_LINE(act.length - SC.length - (XH ? 1 : 0))])) fail('맨 위 결 한 줄 — 모두 답한 뒤(총정리 1차-10)', `${tag} ${JSON.stringify(g.now)}`); else bump('맨 위 결 한 줄');
     await layout(p, tag + ' 모두 답함');
     // 기억 — 오늘 답 · 참은 날 · 첫 문 색(g0) · 지난 보유 그대로
     const st = await store(p);
@@ -547,6 +553,7 @@ if (SC.length >= 2) {
     const g = await p.evaluate(READH, SEL);
     if (g.cards.length || g.bars.length || g.leg || !eq(g.empty, ['아직 적은 보유종목이 없어요.']) || !g.add) fail('빈 칸은 짧게(제목 · 한 줄 · 적기)', `${tag} ${JSON.stringify(g.empty)}`);
     if (EMPTY.h > 260) fail('빈 칸이 김(260px 넘음)', `${tag} ${EMPTY.h}px`);
+    if (g.now.length) fail('맨 위 결 한 줄 — 보유가 없으면 없음(총정리 1차-10)', `${tag} ${JSON.stringify(g.now)}`);
     await layout(p, tag); errsOf(p, tag); bump('빈 칸 판');
   } catch (e) { fail('빈 칸 판 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
   await p.context().close();

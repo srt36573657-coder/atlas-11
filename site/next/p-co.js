@@ -8,6 +8,7 @@
    옛 맺음 글의 「매수 · 매도」는 새 화면 금지 말이라 같은 뜻의 안전 문장으로 바꿈 · 사이트 맨 아래 고리(친구에게 소개하기 · 미국 판)는 새 화면 틀이 맡음
    보안 규칙(CSP) — 글은 textContent · 꾸밈은 p-co.css 와 CSSOM(setProperty)만 · 입체 · 바둑판 없음 · 검사 scripts/atlas11/next/check_co.mjs
    글씨 --fs-1 ~ --fs-5 · 간격 --sp-1 ~ --sp-3 · 글 시작 왼쪽 줄 16 · 32 · 48px 셋(p-co.css 머리말) */
+import {NAME, josa as nameJosa} from './brand.js'; // 이름 한 곳(규칙 76) — 「밖」 칸 맨 위 결 한 줄(총정리 C12) · 아래 josa(w, a, b)는 옛 판 셈 그대로 둠
 const NX = globalThis.NX;
 const {h, sv} = NX;
 
@@ -152,7 +153,8 @@ function whyBox(C, c) {
 }
 /** 고른 곳 밖 — 멈춘 자리 · 까닭(이름표) · 깔때기 두 가지(접은 칸) · 이름표는 늦게 받아 채움(받는 동안 「까닭을 받는 중…」) */
 function outBox(C, code) {
-  const box = h('div', {class: 'pco-box'}, h('h2', {class: 'sec', text: `왜 ${pickName(C)} 밖인가요?`}));
+  const box = h('div', {class: 'pco-box'}, h('h2', {class: 'sec', text: `왜 ${pickName(C)} 밖인가요?`}),
+    h('p', {class: 'pco-hon pco-outk', text: `${nameJosa(NAME, '가')} 미리 정한 조건 두 가지에 안 든 회사예요. 나쁜 회사란 뜻은 아니에요.`})); // 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터」 · 총정리 C12) — 「밖 = 나쁜 회사」로 읽히기 전에 · 꼴은 왜 들었나요? 칸의 정직 글(.pco-hon)과 같음
   const wait = h('p', {class: 'pco-q pco-p', text: '까닭을 받는 중…'}); box.append(wait);
   const no = () => { wait.remove(); box.append(h('p', {class: 'pco-q pco-p', text: '? 까닭을 못 읽었습니다'})); };
   nameRow(code).then(r => {
