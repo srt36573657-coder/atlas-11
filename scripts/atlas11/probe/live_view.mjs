@@ -518,6 +518,27 @@ await step('새 아틀란스 모든 쪽', async () => { // 사장님 2026-10-17 
   out.nextPages = {ready: [...NREADY], pages: got, ok: got.every(g => g.ok)};
   if (!out.nextPages.ok) out.errors.push('새 아틀란스 모든 쪽: ' + JSON.stringify(got.filter(g => !g.ok)).slice(0, 400));
 });
+await step('글꼴', async () => { // 사장님 2026-10-22 14:49 「구글과 잡스라면 어떤 폰트」 · 15:21 「최고를 선택해서 바로 작업해」 — 프리텐다드가 진짜 사이트에서 뜻대로 도나
+  //   처음 오신 분: load 전 글꼴 요청 0(첫 그림을 늦추지 않음) → load 8초 뒤 조각을 받아 두고 'dori-pf' 표 · 다시 오신 분: 처음부터 html.pf 로 프리텐다드
+  const url = B + '/?v=' + Date.now() + '#/';
+  const c1 = await b.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+  const p1 = await c1.newPage(), reqs = [];
+  p1.on('request', r => { if (/\/fonts\/pretendard\/|\/next\/font\.(css|js)/.test(r.url())) reqs.push(Date.now()); });
+  await p1.goto(url, {waitUntil: 'load', timeout: 60000});
+  const loadAt = Date.now(), before = reqs.filter(t => t < loadAt).length;
+  await p1.waitForTimeout(16000);
+  const cold = {before, after: reqs.length, keep: await p1.evaluate(() => localStorage.getItem('dori-pf')), pf: await p1.evaluate(() => document.documentElement.classList.contains('pf'))};
+  await c1.close();
+  const c2 = await b.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+  await c2.addInitScript(() => { try { localStorage.setItem('dori-pf', '1'); } catch { /* 저장 못 함 */ } });
+  const p2 = await c2.newPage();
+  await p2.goto(url, {waitUntil: 'load', timeout: 60000}); await p2.waitForTimeout(4000);
+  const warm = await p2.evaluate(async () => { await document.fonts.ready; const de = document.documentElement; return {pf: de.classList.contains('pf'), ff: getComputedStyle(document.body).fontFamily.slice(0, 40), check: document.fonts.check('16px "Pretendard Variable"', '돌이 가나다 123'), loaded: [...document.fonts].filter(f => f.family.includes('Pretendard') && f.status === 'loaded').length, sw: de.scrollWidth, cw: de.clientWidth}; });
+  await p2.screenshot({path: `${dir}/p6-font-warm.png`}); out.shots.push(`${dir}/p6-font-warm.png`);
+  await c2.close();
+  out.font = {cold, warm, ok: cold.before === 0 && cold.after > 0 && cold.keep === '1' && !cold.pf && warm.pf && warm.check && warm.loaded > 0 && /Pretendard/.test(warm.ff) && warm.sw <= warm.cw};
+  if (!out.font.ok) out.errors.push('글꼴: ' + JSON.stringify(out.font).slice(0, 300));
+});
 await b.close();
 out.ok = out.oldFound === 0 && out.errors.length === 0;
 await fs.writeFile(`${dir}/summary.json`, JSON.stringify(out, null, 1));
