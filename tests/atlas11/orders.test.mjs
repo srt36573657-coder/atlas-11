@@ -32,5 +32,7 @@ test('카톡 글 — 한 통 200자 안 · 첫 통은 수 · 모든 주문이 �
   assert.doesNotMatch(all.replace(/[가-힣\s\d.,?!「」·\-\[\]:]/g, ''), /[A-Za-z]{2,}/);
   assert.equal(when('2026-10-21T17:51+09:00'), '21일 오후 5시 51분');
   assert.equal(when('2026-10-22T01:00+09:00'), '22일 오전 1시');
-  assert.ok(digest(L, {only: '미완성'}).join('').includes('[미완성]'));
+  // 미완성이 하나라도 있으면 그 칸만 골라 보낼 수 있음(모두 끝났으면 고를 것이 없음 — 2026-10-22 10:2x 장부가 모두 완성 · 성공이 됨)
+  const open = L.orders.some(o => o.state === '미완성');
+  assert.equal(digest(L, {only: '미완성'}).join('').includes('[미완성]'), open);
 });
