@@ -94,7 +94,7 @@ function drawChart(wrap, {C, v, avg, label, kPick}) {
   svg.append(cx, dot);
   wrap.prepend(svg);
   const tip = h('div', {class: 'pco-tip num'}); tip.hidden = true; wrap.append(tip);
-  if (kPick != null) { const pick = h('span', {class: 'pco-yl', text: '고른 날'}); wrap.append(pick); const pw = pick.offsetWidth || 76; pick.style.setProperty('left', Math.max(0, Math.min(W - pw, X(kPick) - pw - 6)) + 'px'); } // 금빛 세로선 왼쪽 위 띠(선을 덮지 않게)
+  if (kPick != null) { const pick = h('span', {class: 'pco-yl', text: '고른 날'}), xp = X(kPick); wrap.append(pick); if (xp - 6 >= 90) pick.style.setProperty('right', Math.max(0, 100 - ((xp - 6) / W) * 100).toFixed(2) + '%'); else pick.style.setProperty('left', Math.min(100, ((xp + 6) / W) * 100).toFixed(2) + '%'); } // 금빛 세로선 왼쪽 위 띠 — 오른쪽 끝을 선에 맞춤(재 둔 폭으로 왼쪽을 정하면 글꼴이 늦게 와 넓어질 때 화면 밖으로 나감 · 2026-10-22 20:53 아주 크게 글씨 #/w/025540 10px) · 선이 왼쪽 끝 가까우면 선 오른쪽 // 금빛 세로선 왼쪽 위 띠(선을 덮지 않게)
   wrap.append(h('div', {class: 'pco-ax'}, h('span', {text: md(C.dates[0]) + ' = 100'}), h('span', {text: md(C.dates[n - 1])})));
   const mv = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width; let i = Math.round((x - 4) / ((W - 4 - padR) / (n - 1))); i = Math.max(0, Math.min(n - 1, i)); if (v[i] == null) return;
     cx.setAttribute('x1', X(i)); cx.setAttribute('x2', X(i)); cx.setAttribute('visibility', 'visible'); dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(v[i])); dot.setAttribute('visibility', 'visible');

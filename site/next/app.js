@@ -1340,7 +1340,7 @@ async function route(force) {
   catch (e) { console.error(e); out = {title: '?', nodes: [h('p', {class: 'empty', text: '? 화면을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})]}; }
   if (my !== seq) return; // 늦게 끝난 앞 화면
   whiteFor(k);
-  root.replaceChildren(...(Array.isArray(out?.nodes) ? out.nodes : []).filter(x => x != null && x !== false)); // 빈 칸(null · false)은 빼고 그림 — 큰 업종 채널(#/ch/g/)에 「null」 글자가 보이던 것(2026-10-22 20:42 고장 찾기)
+  const ns = out?.nodes; root.replaceChildren(...(ns != null && typeof ns[Symbol.iterator] === 'function' ? [...ns] : []).filter(x => x != null && x !== false)); // 빈 칸(null · false)은 빼고 그림 — 큰 업종 채널(#/ch/g/)에 「null」 글자가 보이던 것(2026-10-22 20:42 고장 찾기)
   stoneArt(k, a, root);
   const cp = k === 'why' && !a ? mod('admin').then(m => { if (my === seq && root.isConnected && !root.querySelector('.cp-card')) root.append(m.couponCard()); }).catch(() => {}) : Promise.resolve(); // 커피 쿠폰 칸 — 매매일지 쪽 맨 아래(위 칸을 밀지 않음 · 2026-10-19 13:54)
   cp.then(() => flowFoot(k, a, root, my)); // 서른여섯 장 흐름 — 있는 쪽 맨 아래 「다음」 한 줄(쿠폰 칸 뒤)
