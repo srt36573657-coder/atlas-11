@@ -265,7 +265,12 @@ for (const [w, font] of [[320, 0], [360, 0], [390, 0], [320, 2]]) { // 끝 = 320
   const end = await p.evaluate(readNew), d1 = await p.evaluate(() => [...document.querySelectorAll('.chx-d .pchx-ln')].map(x => x.getAttribute('d')));
   if (end.playing || !end.tell.includes('→') || JSON.stringify(d0) !== JSON.stringify(d1)) fail('그리는 중 누르면 끝으로', JSON.stringify({playing: end.playing, tell: end.tell, same: JSON.stringify(d0) === JSON.stringify(d1)}));
   if (!(await p.evaluate(() => location.hash)).startsWith('#/ch/g/')) fail('그리는 중 누름이 넘어감', await p.evaluate(() => location.hash));
+  // 소리 — 읽는 글을 잡아 맞댐(사장님 2026-10-22 04:09 총정리 C8): 머리 글 · 「n곳 중 m곳 오름 · k곳 내림」 두 마디만 · 「많이 오른 셋」 이름 · % 는 읽지 않음
+  await p.evaluate(() => { window.__said = []; const fake = {speak: u => window.__said.push(String(u?.text ?? '')), cancel: () => {}}; try { Object.defineProperty(window, 'speechSynthesis', {value: fake, configurable: true}); } catch { /* 못 바꿈 — 아래에서 걸림 */ } if (typeof window.SpeechSynthesisUtterance !== 'function') window.SpeechSynthesisUtterance = function (t) { this.text = t; }; });
   await p.click('#view .pchx-btns .pchx-ib:nth-child(2)'); await p.waitForTimeout(80); // 소리(소리 장치가 없어도 오류 없이)
+  const said = await p.evaluate(() => { const s = document.querySelector('#view > section.chx-d:not([data-stale])'), say = t => String(t).replace('−', '마이너스 ').replace('+', '플러스 ');
+    return {said: window.__said ?? [], want: [s?.querySelector('.pchx-head')?.textContent, s?.querySelector('.pchx-count')?.textContent].filter(Boolean).map(say).join('. ')}; });
+  if (said.said.length !== 1 || said.said[0] !== said.want || !said.want) fail('소리 글(머리 · 몇 곳만 — 총정리 C8)', JSON.stringify(said).slice(0, 300)); else bump('소리 글');
   errsOf(p, '누르기 갈래');
   await waitNew(p, big);
   await p.click('#view .pchx-rest > summary'); await setMode(p, '#view .pchx-seg button', 2);

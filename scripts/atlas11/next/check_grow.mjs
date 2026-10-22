@@ -117,6 +117,7 @@ const NEW_X = () => {
     chips: q('.pgrow-chip').map(e => e.className.replace('pgrow-chip', '').trim() + ':' + N(e.textContent)), below: q('.pgrow-below').length,
     marks: q('.pgrow-box .pgrow-m').map(e => e.textContent), teams: q('details.pgrow-more .pgrow-in ul.pgrow-chk .pgrow-m').map(e => e.textContent),
     links: q('.pgrow-facts a').map(a => a.getAttribute('href') + ' ' + N(a.textContent)), linkNew: q('.pgrow-facts a').every(a => a.target === '_blank' && /noopener/.test(a.rel)),
+    top: (() => { const t = v.querySelector('.pgrow-top'), ch = v.querySelector('.chaps'); return !t ? null : ch && (t.compareDocumentPosition(ch) & Node.DOCUMENT_POSITION_FOLLOWING) ? N(t.textContent) : '(챕터 줄 아래) ' + N(t.textContent); })(), nTop: q('.pgrow-top').length, // 「짐작」 표지(총정리 C16)
     h1: N(v.querySelector('h1')?.textContent), title: document.title, props: q('[data-proper]').map(e => N(e.textContent)).filter(Boolean),
     chaps: q('.chaps .cp').map(e => [e.tagName, e.getAttribute('href'), e.classList.contains('now') ? 'now' : '', e.getAttribute('aria-current') || '']),
     next: q('a.chap-next').map(a => a.getAttribute('href')), safe: q('p.safe').length,
@@ -169,8 +170,11 @@ function compare(tag, code, o, n, data) {
     if (!n.all.includes(`왜 이렇게 봤나요? — 세 팀 한 줄 · 근거 기사 ${(S.facts || []).length}개`)) fail('기사 수(자료)', tag);
     if (n.links.length !== (S.facts || []).length) fail('기사 고리 수(자료)', `${tag} ${n.links.length} ≠ ${(S.facts || []).length}`);
     if (!n.all.includes('범위는 「100번 중 80번쯤 이 안」으로 잡은 세 팀의 따짐이며, 맞힘이 아닙니다.')) fail('맞힘 아님 글', tag);
+    // 「짐작」 표지 = 쪽 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터」 · 총정리 C16) — 하나 · 챕터 줄 위 · 해마다 칸 이름(1 · 3 · 5 · 10년) 그대로
+    if (n.nTop !== 1 || n.top !== `아래 ${HZ.map(x => x[0]).join(' · ')}년은 세 팀의 짐작이에요. 맞힘이 아니에요.`) fail('「짐작」 표지(맨 위)', `${tag} ${n.nTop} 「${n.top}」`);
     bump('이야기 있는 회사');
   } else if (G) {
+    if (n.nTop) fail('「짐작」 표지 — 해마다 칸이 없는데 있음', tag); // 1 · 3 · 5 · 10년 칸이 없는 회사에는 표지도 없음(총정리 C16)
     if (!n.all.includes(gloss(NORM(storyNone(pk))))) fail('「조사 전」 · 「아직 없음」 글(자료)', tag);
     if (G.baseRev && !n.aria) fail('그림 없음', tag);
     if (!G.baseRev && !n.all.includes('? 마지막 결산 매출이 없어 그림을 못 그립니다')) fail('매출 없음 「?」', tag);

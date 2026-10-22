@@ -94,7 +94,7 @@ function rowEl(r, n, mode) {
   return kb ? h('div', {class: 'kkr pchx-kr', 'data-kkrow': 'chx.row'}, a, kb) : a;
 }
 
-/** 소리 — 지금 아틀란스 speak 와 같은 차례(머리 · 몇 곳 · 위 세 줄) */
+/** 소리 — 머리 · 몇 곳(지금 아틀란스 speak 의 「위 세 줄」은 뺌 · 총정리 C8 — 많이 오른 셋을 소리로 읽지 않음) */
 function speak(parts) {
   try { if (!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(parts.filter(Boolean).join('. ')); u.lang = 'ko-KR'; u.rate = 0.9; speechSynthesis.speak(u); } catch { /* 소리 없음 */ }
 }
@@ -150,8 +150,8 @@ function screen(X, spec) {
   const playB = h('button', {class: 'pchx-ib', type: 'button', 'aria-label': '선 다시 그리기', title: '다시 보기'}, playIcon());
   playB.addEventListener('click', play);
   const sayB = h('button', {class: 'pchx-ib', type: 'button', 'aria-label': '이 화면 소리로 듣기', text: '♪'});
-  sayB.addEventListener('click', () => { const top = rows.slice(0, 3).map(r => { const t = r.it.tr ? (MODE === 'cw' && r.it.trc ? r.it.trc : r.it.tr) : null; return r.it.name + ' ' + sayPct(NX.pct(r.d)) + (t ? ', ' + trText(t).replace(/[▲▼▶] /, '') : ''); });
-    speak([sayPct(head.textContent), sayPct(count.textContent), ...top]); });
+  // 소리는 머리 글 · 「n곳 중 m곳 오름 · k곳 내림」만(사장님 2026-10-22 04:09 총정리 C8 — 「많이 오른 셋」의 이름 · % 를 소리로 읽으면 급등 자랑 · 망치는 길) · 목록 차례 · 칸은 그대로
+  sayB.addEventListener('click', () => { speak([sayPct(head.textContent), sayPct(count.textContent)]); });
   words(MODE); drawList(MODE);
   const legend = h('p', {class: 'pchx-key'}, h('span', {}, '오름', h('i', {class: 'k-up'})), h('span', {}, '내림', h('i', {class: 'k-dn'})), h('span', {}, spec.legendName + ' 평균', h('i', {class: 'k-avg'})), h('span', {}, '기준일(' + md(C.base) + ') 값', h('i', {class: 'k-b0'})),
     spec.gold ? h('span', {}, '금빛 = 고른 곳', h('i', {class: 'k-pk'})) : null); // 글 다음에 줄 표(글 시작 줄 하나 · 2026-10-18 [10] 7)
