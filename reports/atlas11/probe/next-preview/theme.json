@@ -1,6 +1,6 @@
 {
- "ok": true,
- "at": "2026-10-22T06:03:49.012Z",
+ "ok": false,
+ "at": "2026-10-22T07:03:08.920Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "자료": 1,
@@ -11,6 +11,7 @@
   "숫자": 1,
   "폭": 22,
   "바꾼 자료 쪽": 110,
+  "fail": 99,
   "바꾼 자료 영어 쪽": 110,
   "관심 업종 알림": 11,
   "싹 줄 모양": 5,
@@ -20,5 +21,402 @@
   "일곱 단 걸음": 3,
   "일곱 단": 1
  },
- "fails": []
+ "fails": [
+  [
+   "영어 — 화면 밖",
+   "A #/ 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/hello 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/how 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/sprout 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/sprout/real 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/sprout/new 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/bloom 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/wilt 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/today 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/alert 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/path 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/spread 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/big 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/co 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/near 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/c/289220 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/c/289220/lead 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/c/289220/why 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "A #/t/c/289220/rank 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/ 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/hello 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/how 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/sprout 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/sprout/real 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/sprout/new 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/bloom 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/wilt 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/today 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/alert 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/path 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/spread 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/big 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/co 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/near 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/c/289220 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/c/289220/lead 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/c/289220/why 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "B #/t/c/289220/rank 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/ 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/hello 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/how 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/sprout 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/sprout/real 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/sprout/new 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/bloom 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/wilt 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/today 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/alert 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/path 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/spread 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/big 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/co 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/near 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/c/289220 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/c/289220/lead 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/c/289220/why 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "C #/t/c/289220/rank 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/ 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/hello 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/how 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/sprout 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/sprout/real 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/sprout/new 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/bloom 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/wilt 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/today 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/alert 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/path 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/spread 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/big 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/co 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/near 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/c/289220 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/c/289220/lead 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/c/289220/why 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "D #/t/c/289220/rank 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/ 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/hello 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/how 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/sprout 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/sprout/real 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/sprout/new 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/bloom 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/wilt 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/today 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/alert 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/path 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/spread 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/big 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/co 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/i/%EC%9D%B8%ED%84%B0%EB%84%B7%20%ED%94%8C%EB%9E%AB%ED%8F%BC/near 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/c/289220 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/c/289220/lead 9px "
+  ],
+  [
+   "영어 — 화면 밖",
+   "E #/t/c/289220/why 9px "
+  ]
+ ]
 }

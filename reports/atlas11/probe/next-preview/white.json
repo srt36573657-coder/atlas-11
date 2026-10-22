@@ -1,23 +1,26 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T06:01:32.464Z",
+ "at": "2026-10-22T07:01:01.857Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 421,
-  "fail": 0
+  "pass": 419,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  "320 × 568 테마 시계 그림 한 화면 안 — 그림 아래 517 > 아래 단추 500",
+  "③ 가장 큰 그림 2.5초 안(느린 4G) — 2504ms"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
-   "chars": 169,
+   "chars": 166,
    "blocks": {
-    "ess": 1141,
+    "ess": 1169,
     "find": 776,
-    "today": 1233,
-    "gdr": 1582,
-    "all": 1582
+    "today": 1261,
+    "gdr": 1610,
+    "all": 1610
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,10 +46,10 @@
     true,
     true
    ],
-   "themeChars": 135,
+   "themeChars": 136,
    "top": [
     [
-     35,
+     32,
      "ess p.ess-l",
      "사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아"
     ],
@@ -153,7 +156,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일 13:05"
+     "10월 22일"
     ],
     [
      2,
@@ -177,8 +180,8 @@
     ]
    ],
    "theme": {
-    "top": 232,
-    "clockBottom": 551
+    "top": 256,
+    "clockBottom": 575
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -198,11 +201,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 1018,
+    "ess": 1071,
     "find": 776,
-    "today": 1110,
-    "gdr": 1459,
-    "all": 1459
+    "today": 1163,
+    "gdr": 1511,
+    "all": 1511
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +231,7 @@
     true,
     true
    ],
-   "themeChars": 135,
+   "themeChars": 136,
    "top": [
     [
      24,
@@ -328,7 +331,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일 13:05"
+     "10월 22일"
     ],
     [
      2,
@@ -352,8 +355,8 @@
     ]
    ],
    "theme": {
-    "top": 232,
-    "clockBottom": 551
+    "top": 256,
+    "clockBottom": 575
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -679,15 +682,15 @@
    }
   },
   "speed": {
-   "lcp": 2472,
-   "inp": 24,
-   "cls": 0.004
+   "lcp": 2504,
+   "inp": 104,
+   "cls": 0.003
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
