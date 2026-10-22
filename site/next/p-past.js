@@ -96,6 +96,21 @@ const PERIODS = [['20d', '20거래일', 21], ['1y', '1년', 253], ['3y', '3년',
 let per = '1y'; // 고른 기간 — 옛 쪽 state.per 처럼 앱을 연 동안 기억(처음은 1년)
 const widthGuess = () => { const v = document.querySelector('#view'), z = parseFloat(v ? getComputedStyle(v).zoom : 1) || 1; return Math.min((document.documentElement.clientWidth || 360) / z, 720) - 32; }; // 화면에 붙기 전 어림(붙으면 실제 넓이로 다시)
 
+/** 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터 나오는 구조」 · 총정리 C14) — 오름과 내림을 한 문장에: 「1년 전 값 → 마지막 종가. 그사이 가장 높던 값보다 몇 % 아래」
+ *  큰 빨간 산(1년 %)과 「가장 깊이 빠짐」이 서로 틀린 숫자처럼 보이지 않게 · 기간 단추와 상관없이 늘 1년 선(처음 기간과 같은 셈) · 지난 값만
+ *  1년이 안 된 회사(「1년 전」이 아님) · 값을 못 읽으면 줄 없음 · 자리는 이 쪽 줄(.ppast-won)과 같은 간격 + 결이라 먹 글 · 한 단계 큰 글씨(CSSOM — 모양 파일 p-past.css 는 이번 판 다른 일꾼 몫)
+ *  .ppast-won 은 옛 쪽 두 줄(1주 값 · 100만 원어치)을 맞대는 자리라 쓰지 않음(check_past) */
+const Y1 = 253; // 1년 = 기간 단추 「1년」과 같은 날 수(PERIODS)
+function yearNow(dd, co, k0, nAll) {
+  if (nAll - Y1 < k0 || !Array.isArray(co?.close)) return null;
+  const from = nAll - Y1, cl = co.close.slice(from - k0), dates = dd.dates.slice(from), ok = x => x != null && x > 0;
+  const i0 = cl.findIndex(ok); let iL = -1; for (let i = cl.length - 1; i >= 0; i--) if (ok(cl[i])) { iL = i; break; }
+  if (i0 < 0 || iL <= i0 || !dates[iL]) return null;
+  const base = cl[i0], last = cl[iL], peak = Math.max(...cl.filter(ok)), dr = Math.round((1 - last / peak) * 100);
+  const tail = last >= peak ? '그사이 가장 높은 값이 바로 이 값이에요.' : dr < 1 ? `그사이 가장 높던 ${won(peak)}보다 조금 아래예요.` : `그사이 가장 높던 ${won(peak)}보다는 ${dr}% 아래예요.`;
+  return h('p', {class: 'ppast-now', css: {margin: 'var(--sp-2) var(--sp-2) 0', color: 'var(--ink)', 'font-size': 'var(--fs-2)', 'line-height': '1.55'}}, h('b', {text: `1년 전 ${won(base)} → ${md(dates[iL])} ${won(last)}.`}), ' ', h('span', {text: tail}));
+}
+
 export async function render(arg) {
   const code = String(arg ?? '').split('/')[0];
   const [core, mkt, comp, dd] = await Promise.all([NX.need('core'), NX.need('mkt'), NX.getJson('comp.json'), NX.getJson('days.json')]);
@@ -109,7 +124,7 @@ export async function render(arg) {
   }
   const C = core, nAll = dd.dates.length, k0 = co.k0 ?? 0, jumps = Array.isArray(co.jumps) ? co.jumps : [];
   const nodes = [];
-  nodes.push(h('h1', {class: 'wt', text: c.name + ' — 지나온 길'}), h('p', {class: 'ws', text: `1주 값 · ${md(dd.asOf)} 종가까지`}), NX.chaps(code, '4'),
+  nodes.push(h('h1', {class: 'wt', text: c.name + ' — 지나온 길'}), h('p', {class: 'ws', text: `1주 값 · ${md(dd.asOf)} 종가까지`}), yearNow(dd, co, k0, nAll), NX.chaps(code, '4'),
     h('p', {class: 'ppast-lv', text: '7단 중 4단 · 지나온 길 · 기록'})); // 앎의 종류(옛 쪽 7단 표시 그대로 — 이 단은 지난 기록 · 조사 · 판단 · 셈이 아님)
 
   // 기간 단추 → 그림 → 그림 이름 → 세 숫자 → 1주 값 · 100만 원어치 → 하루 30% 넘게 바뀐 날

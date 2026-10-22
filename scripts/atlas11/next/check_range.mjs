@@ -57,6 +57,8 @@ const hasSlots = Array.isArray(upd?.slots) && upd.slots.length > 0;
 const SAME_BUT = [
   ['특정 종목의 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다.', '특정 종목의 사고팔기 · 계속 갖고 있기 또는 시장 전망을 권하지 않습니다.'], // ③ 쓰지 않을 말
   ['「업데이트 기록」(도움말 ?)에 남습니다.', '「업데이트 기록」에 남습니다.'], // ② 새 화면에는 도움말 ? 단추가 없음 — 고리로
+  // ⑥ 정직 표지를 쪽 맨 위 쉬운 말로(사장님 2026-10-22 04:09 총정리 C17 — 「결과부터」 · 뜻 같음) — 숫자는 range.json window.days 그대로 · 표지가 그림 위인지는 ② modelFirst 가 그대로 봄
+  ['모형 가정 아래 추정 · 검증 전 — 지난 날들을 다시 뽑아 본 셈일 뿐, 앞날 값이 아닙니다.', range.window?.days ? `지난 ${N(range.window.days)}거래일을 다시 뽑아 본 셈이에요. 한 달 뒤를 맞히는 숫자가 아니에요.` : '지난 날들을 다시 뽑아 본 셈이에요. 한 달 뒤를 맞히는 숫자가 아니에요.'],
 ];
 const pathsFix = pk => (pk || range.spec?.others?.paths == null ? [] : [[`20일을 뽑아 ${N(range.spec.paths)}번`, `20일을 뽑아 ${N(range.spec.others.paths)}번`]]); // ① 고른 곳 밖은 따로 뽑은 수
 
@@ -220,6 +222,8 @@ const readNew = p => p.evaluate(() => {
     tone: [...v.querySelectorAll('ul.prange-chk span.prange-n:is(.up, .dn, .fl, .q)')].map(e => [...e.classList].find(x => ['up', 'dn', 'fl', 'q'].includes(x)) + ' ' + e.textContent),
     chaps: [...v.querySelectorAll('.chaps .cp')].map(e => ({a: e.tagName === 'A', href: e.getAttribute('href'), now: e.classList.contains('now'), t: norm(e.textContent)})),
     next: [...v.querySelectorAll('.chap-next')].map(a => [a.getAttribute('href'), norm(a.textContent)]),
+    ask: [...v.querySelectorAll('.prange-next > a')].map(a => [a.classList.contains('chap-next') ? 'next' : 'more', a.getAttribute('href'), norm(a.textContent)]), // 끝 칸 차례(총정리 C18 — 「왜 사?」가 먼저 · 다음 챕터 둘째)
+    modelTop: (() => { const m = v.querySelector('.prange-model'), ch = v.querySelector('.chaps'); return !!(m && ch && (m.compareDocumentPosition(ch) & Node.DOCUMENT_POSITION_FOLLOWING)); })(), // 정직 표지가 챕터 줄보다 위(제목 바로 밑 · 총정리 C17)
     hrefs: [...v.querySelectorAll('a[href]')].map(a => a.getAttribute('href')),
     modelFirst: !!(model && pic && (model.compareDocumentPosition(pic) & Node.DOCUMENT_POSITION_FOLLOWING)), hasPic: !!pic, bars, title: document.title};
 });
@@ -245,6 +249,7 @@ const layout = p => p.evaluate(async () => {
 const knownHref = (h, c) => {
   if (['#/', '#/time', '#/up', '#/find', 'https://kind.krx.co.kr', 'https://dart.fss.or.kr'].includes(h)) return true;
   let m = /^#\/w\/([^/]+)(?:\/(past|rivals|grow|range))?$/.exec(h); if (m) return decodeURIComponent(m[1]) === c && !!(CO[c] || PK[c]);
+  if ((m = /^#\/why\/([^/]+)$/.exec(h))) return decodeURIComponent(m[1]) === c && !!(CO[c] || PK[c]); // 7단 끝 「사기 전에 · 이 회사로 왜 사? ›」(총정리 C18) — 이 회사 번호로만
   if ((m = /^#\/ch\/([ig])\/(.+)$/.exec(h))) { const x = decodeURIComponent(m[2]); return m[1] === 'i' ? (core.industries || []).some(i => i.name === x) : (core.groups || []).some(g => g.id === x); }
   return false;
 };
@@ -284,6 +289,9 @@ function compare(c, o0, n, where, chart) {
     if (now.length !== 1 || !/^7범위/.test(now[0].t) || now[0].href !== '#/w/' + e + '/range') fail('지금 단(7 범위)', where + ' ' + JSON.stringify(now));
     if (n.next.length !== 1 || n.next[0][0] !== '#/w/' + e || n.next[0][1] !== '회사로 돌아가기 ›') fail('다음 챕터', where + ' ' + JSON.stringify(n.next));
     if (!n.hasPic || !n.modelFirst) fail('정직 표지가 그림 위', where);
+    if (!n.modelTop) fail('정직 표지가 맨 위(제목 바로 밑 · 챕터 줄 위 — 총정리 C17)', where);
+    // 7단 끝(총정리 C18) — 테마 길이 아닌 7단은 「사기 전에 · 이 회사로 왜 사? ›」(#/why/<번호> · a.more) 하나가 먼저, 「회사로 돌아가기 ›」(.chap-next) 하나가 둘째
+    if (JSON.stringify(n.ask) !== JSON.stringify([['more', '#/why/' + e, '사기 전에 · 이 회사로 왜 사? ›'], ['next', '#/w/' + e, '회사로 돌아가기 ›']])) fail('7단 끝 「왜 사?」 · 다음 챕터 차례', where + ' ' + JSON.stringify(n.ask));
     if (!n.text.includes('7단 중 7단 · 범위 · 확인 · 셈')) fail('앎의 종류 줄', where);
     for (const x of n.bars) if (UPDN.some(u => x.includes(u))) { fail('모형 막대에 오름 · 내림 색', where + ' ' + x.slice(0, 120)); break; }
     if (n.title !== nameOf(c) + ' — 범위 · 확인' + TITLE_TAIL) fail('창 제목', where + ' ' + n.title);

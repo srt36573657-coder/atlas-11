@@ -399,6 +399,15 @@ const legend = () => h('details', {class: 'hd-leg'}, h('summary', {text: '색은
   h('p', {class: 'hd-line', text: '참은 날: 🔴로 처음 본 날부터 센 날이에요. 이 기기에서 연 날로 셌어요.'}),
   h('p', {class: 'hd-line', text: '팔 약속은 네가 매매일지에 적은 숫자와만 맞대 봐요. 안 적었으면 「?」로 보여요.'}));
 
+/** 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터 나오는 구조」 · 총정리 1차-10 · C26) — 오늘 아직 답하지 않은 카드 수만 셈
+ *  산 값 · 수익률 · 색은 넣지 않음(첫 질문 문 [5] 3 그대로 — 답하기 전에는 본전 생각을 부르지 않게) · 보유가 없으면 줄 없음 */
+const QTEXT = '오늘 처음 봤다면 살 거야?';
+function nowLine(act, S) {
+  if (!act.length) return [];
+  const todo = act.filter(o => !(o.ask && o.ask.d === S.day && [0, 1, 2].includes(o.ask.a))).length;
+  return [h('p', {class: 'hd-now'}, ...(todo ? [h('b', {text: `오늘 물을 것 ${todo}개`}), h('span', {text: `「${QTEXT}」`})] : [h('b', {text: '오늘 물을 것은 다 했어요.'})]))]; // 물음은 제 줄에(좁은 폰에서 물음 끝만 한 줄로 떨어지지 않게)
+}
+
 export async function holdSection() {
   const [mkt, G] = await Promise.all([NX.need('mkt'), gatesJson()]);
   const L = load(), S = {all: L.all ?? [], mem: L.all === null, broken: L.broken, day: today(), px: new Map(), names: null, recs: journal(), add: false, sell: null, wrong: null, pick: null, focus: null, shares: null};
@@ -416,6 +425,7 @@ export async function holdSection() {
     box.replaceChildren(
       h('div', {class: 'hd-head'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 40, height: 40}),
         h('div', {}, h('h2', {class: 'hd-h', text: '보유종목 점검'}), subNote())),
+      ...nowLine(act, S),
       ...(S.mem ? [h('p', {class: 'hd-q-note'}, h('b', {class: 'gd', text: '? '}), h('span', {text: '이 기기는 기억을 못 해요. 적은 것은 이 화면을 떠나면 없어져요.'}))] : []),
       ...(act.length ? [sharePic(S)].filter(Boolean) : [h('p', {class: 'hd-note', text: '아직 적은 보유종목이 없어요.'})]), // 빈 칸은 짧게(제목 · 한 줄 · 적기) — 아래 사장님 편지가 첫 화면 가까이 오게
       ...act.map(o => cardOf(o, S, mkt, G, () => draw())),

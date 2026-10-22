@@ -17,6 +17,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {oldToNewDeep, NEW_NAME} from './rename.mjs'; // 이름 바꾸기(2026-10-17 아틀란스 → 보드리)
+import {josa as nameJosa} from '../../../site/next/brand.js'; // 이름 + 토씨(받침 따라) — 밖 칸 맨 위 결 한 줄(총정리 C12)
 import {fetchJSON, watch, settle, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 옛 쪽 · 새 쪽 시간(2026-10-17 고도리 명령문 [1] 8 · 9)
 import {shardOf} from './shard/part.mjs'; // --shard k/n = 한 번 다 돌 때의 일감(회사 · 빈 날 길 · 세 폭)을 n 몫으로 가른 k 번째만(깃허브 여러 대 · 합치기 shard/merge.mjs · 2026-10-18 고도리 길 1)
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
@@ -377,6 +378,8 @@ for (const code of SH.part('c', list)) {
   } else {
     const r = NAME.get(code);
     want('왜 밖인가 제목', nw.boxH, `왜 ${PN} 밖인가요?`);
+    // 밖 칸 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터」 · 총정리 C12) — 이름표를 받기 전에도 늘 · 이름은 brand.js 한 곳(받침 따라 이/가)
+    want('밖 칸 맨 위 결 한 줄', nw.hon, `${nameJosa(NEW_NAME, '가')} 미리 정한 조건 두 가지에 안 든 회사예요. 나쁜 회사란 뜻은 아니에요.`);
     if (!r) fail('이름표 없음(자료)', where);
     else {
       const stopSay = (core.funnel.groups ?? []).map(g => `${g.name}은 「${g.stopName?.[g.k === 'mg' ? r.sm : r.sl] ?? '고르기'}」에서`).join(', ') + ' 멈췄습니다';

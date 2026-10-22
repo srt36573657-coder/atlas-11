@@ -147,7 +147,9 @@ export async function render(arg) {
   if (!co) co = await NX.getJson('co/' + NX.enc(code) + '.json');
   const c = E.c, G = co?.grow, S = G?.story, name = c.name;
   const nodes = [h('h1', {class: 'wt pgrow-t', text: name + ' — 앞으로 클까?'}), h('p', {class: 'ws', text: '회사 크기(매출)만 봅니다 · 주가는 보지 않습니다'}),
-    NX.chaps(code, '6'), h('p', {class: 'pgrow-step'}, h('b', {text: '7단 중 6단'}), ' · 앞으로 클까? ', h('span', {text: '· 판단'}))];
+    // 「짐작」 표지 = 이 쪽의 결 — 제목 바로 밑(사장님 2026-10-22 04:09 「결과부터」 · 총정리 C16) · 1 · 3 · 5 · 10년 칸(세 팀 이야기)이 있는 회사만 — 칸 속 「아주 높다」가 맞힘으로 읽히기 전에
+    S ? h('p', {class: 'pgrow-top'}, h('b', {text: '아래 1 · 3 · 5 · 10년은 세 팀의 짐작이에요.'}), ' 맞힘이 아니에요.') : null,
+    NX.chaps(code, '6'), h('p', {class: 'pgrow-step'}, h('b', {text: '7단 중 6단'}), ' · 앞으로 클까? ', h('span', {text: '· 판단'}))].filter(Boolean);
   const foot = () => footOf(C);
   if (!G) { nodes.push(h('p', {class: 'q pgrow-none', text: '? 이 회사의 성장 자료를 못 읽었습니다'}), ...next7(code), ...foot()); return {title: name + ' — 앞으로 클까?', nodes}; }
   // ① 그림 한 장(위로)

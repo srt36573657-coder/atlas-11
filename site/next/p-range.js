@@ -15,6 +15,7 @@
    ④ 옛 「3단 회사로 · 처음 화면으로」 줄 → 다음 챕터 고리(회사로 돌아가기) · 아래 홈 단추 / 옛 맨 아래 꽃밭 · 친구 소개 · 미국 판 고리 → 새 화면 아래 단추
    ⑤ 자료를 못 받은 날: 회사 파일 → 「? 회사 자료를 받지 못했어요」(옛 쪽은 「없는 주소입니다」) · 범위 파일 → 이름 · 챕터 + 「? 범위 자료를 받지 못했어요」 ·
       바탕 · 고른 곳 파일 → 「? 자료를 받지 못했어요」(옛 쪽은 둘 다 「자료를 못 읽었습니다」 한 화면)
+   ⑥ 정직 표지(옛 「모형 가정 아래 추정 · 검증 전 — …」)는 쉬운 말로 쪽 맨 위(제목 바로 밑 · 사장님 2026-10-22 04:09 총정리 C17) · 7단 끝에 「사기 전에 · 이 회사로 왜 사? ›」(C18)
    검사 scripts/atlas11/next/check_range.mjs — 옛 쪽과 같은 회사로 글 · 숫자 · 막대 길이 · 가운데값 맞대기 · 세 폭 */
 const NX = globalThis.NX;
 const {h, r1} = NX;
@@ -179,12 +180,25 @@ async function missing(C, code) {
   return {title: head.textContent, nodes};
 }
 
+/** 정직 표지 — 쪽 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터 나오는 구조」 · 총정리 C17) · 숫자는 range.json window(지난 날 수) 그대로 · 못 읽으면 「지난 날들」
+ *  옛 「모형 가정 아래 추정 · 검증 전 — 지난 날들을 다시 뽑아 본 셈일 뿐, 앞날 값이 아닙니다.」를 쉬운 말로(뜻 같음 · 맞대기 check_range SAME_BUT) · 「10번 중 n~m번」 꼴 · 줄 차례 · 머리 글은 그대로 */
+function honest(K) {
+  const n = K?.window?.days;
+  return h('p', {class: 'prange-model', css: {'margin-top': 'var(--sp-1)'}}, h('b', {text: n ? `지난 ${fmt(n)}거래일을 다시 뽑아 본 셈이에요.` : '지난 날들을 다시 뽑아 본 셈이에요.'}), ' 한 달 뒤를 맞히는 숫자가 아니에요.');
+}
+/** 끝 칸 — 일곱 단을 다 읽은 사람에게 멈춤(본질 ② 「왜 사?」 열한 질문)을 먼저(총정리 C18) · 다음 챕터(회사로 돌아가기)는 그대로 둘째
+ *  테마 길로 온 때는 chapNext 가 이미 「다음 단 · 사기 전에 ›」(#/why/<번호>)라 더하지 않음 · 새 고리는 .chap-next 가 아닌 a.more(다음 챕터 수 그대로) */
+function nextBox(code) {
+  const nx = NX.chapNext(code, '7'), why = '#/why/' + NX.enc(code);
+  return h('div', {class: 'prange-next'}, nx?.getAttribute?.('href') === why ? null : h('a', {class: 'more prange-ask', href: why, text: '사기 전에 · 이 회사로 왜 사? ›', css: {'min-height': '52px', 'font-weight': '700'}}), nx);
+}
+
 export async function render(arg) {
   const code = String(arg ?? '').split('/')[0];
   const [C, , comp, K] = await Promise.all([NX.need('core'), NX.need('mkt'), NX.getJson('comp.json'), NX.getJson('range.json')]); // mkt = 챕터 일곱의 큰 업종 · 업종 고리(NX.ix)
   if (!C || !comp?.companies) return {title: '범위 · 확인', nodes: [h('h1', {class: 'wt prange-wt', text: '범위 · 확인'}), ...NX.noData()]};
   /** 회사인데 자료 한 조각을 못 받음 = 이름 · 챕터 · 「?」 줄(옛 쪽은 「없는 주소」 · 「자료를 못 읽었습니다」 한 화면) */
-  const qPage = (nm, what) => ({title: nm + ' — 범위 · 확인', nodes: [h('h1', {class: 'wt prange-wt', text: nm + ' — 범위 · 확인'}), NX.chaps(code, '7'), ...NX.noData(what), h('div', {class: 'prange-next'}, NX.chapNext(code, '7'))]});
+  const qPage = (nm, what) => ({title: nm + ' — 범위 · 확인', nodes: [h('h1', {class: 'wt prange-wt', text: nm + ' — 범위 · 확인'}), NX.chaps(code, '7'), ...NX.noData(what), nextBox(code)]});
   // 회사 하나 — 고른 곳 = comp.json · 고른 곳 밖 = co/<번호>.json 의 c(옛 coEntry 그대로 · c 와 line 이 있어야 회사)
   let E = null, co = null;
   if (comp.companies[code]) E = {c: comp.companies[code], pk: true};
@@ -201,10 +215,10 @@ export async function render(arg) {
   const nodes = [
     h('h1', {class: 'wt prange-wt', text: c.name + ' — 범위 · 확인'}),
     h('p', {class: 'ws prange-ws', text: `여기부터 다시 주가 · ${md(K.asOf)} 종가 · 한 달 뒤`}),
+    honest(K), // 정직 표지 = 이 쪽의 결 — 제목 바로 밑(총정리 C17 · 「한 달 뒤」 머리 글 바로 다음에 맞히는 숫자가 아님을 먼저)
     NX.chaps(code, '7'),
     h('p', {class: 'prange-lv'}, h('b', {text: '7단 중 7단'}), ' · 범위 · 확인 ', h('span', {text: '· 셈'})), // 앎의 종류 — 7단은 셈
     h('h2', {class: 'sec prange-sec', text: '시장이 이렇게 가면 — ' + K.dirs.length + '방향'}),
-    h('p', {class: 'prange-model'}, h('b', {text: '모형 가정 아래 추정 · 검증 전'}), ' — 지난 날들을 다시 뽑아 본 셈일 뿐, 앞날 값이 아닙니다.'), // 정직 표지 — 숫자 바로 위
   ];
   if (!ok) nodes.push(h('p', {class: 'prange-qline q', text: '? 셈 못 함 — 어느 한 방향에서 이 회사 값이 있는 날이 20일이 안 됩니다.'}));
   else nodes.push(summary(k), chart(K, k), inputs(C, K, E.pk), scoreBox(C, K, k, days, co2), pro(C, K, k, E.pk));
@@ -245,6 +259,6 @@ export async function render(arg) {
     h('li', {}, E.pk ? `이 회사가 조건을 이어 지키는지: 새 1년 성적표가 나오면 다시 셉니다 — 3단 「왜 ${pn}에 들었나요?」를 보세요 · 들고 난 곳은 ` : `이 회사가 조건에 드는지: 새 1년 성적표가 나오면 다시 셉니다 — 3단 「왜 ${pn} 밖인가요?」를 보세요 · 들고 난 곳은 `,
       inl('#/up', '「업데이트 기록」'), '에 남습니다.')))));
 
-  nodes.push(h('div', {class: 'prange-next'}, NX.chapNext(code, '7')), foot(C)); // 7단이 끝 단 — 「회사로 돌아가기 ›」
+  nodes.push(nextBox(code), foot(C)); // 7단이 끝 단 — 「사기 전에 · 이 회사로 왜 사? ›」 + 「회사로 돌아가기 ›」
   return {title: c.name + ' — 범위 · 확인', nodes};
 }

@@ -144,6 +144,7 @@ const NEW_X = () => {
     key: [...v.querySelectorAll('.ppast-key > span')].map(T),
     trio: [...v.querySelectorAll('.ppast-trio > div')].map(d => { const x = d.querySelector('b'); return [T(d.querySelector('span')), T(x), (x?.className.match(/\b(up|dn|fl|q)\b/) || [])[1] ?? '']; }),
     won: [...v.querySelectorAll('p.ppast-won')].map(T), jump: [...v.querySelectorAll('p.ppast-jump, .ppast-jump > .nw-t')].map(T),
+    now: [...v.querySelectorAll('p.ppast-now')].map(T), nowTop: (() => { const a = v.querySelector('p.ppast-now'), b = v.querySelector('.chaps'); return !a || !!(b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)); })(), // 맨 위 결 한 줄(총정리 C14) · 챕터 줄 위
     jc: svg ? svg.querySelectorAll('circle.ppast-jmp').length : 0, xc: svg ? svg.querySelectorAll('circle.ppast-ext').length : 0,
     finH: T([...v.querySelectorAll('h2.sec')].find(x => x.nextElementSibling === fin)),
     fin: fin ? [...fin.querySelectorAll('h3')].map(h3 => ({n: T(h3), rows: [...(h3.nextElementSibling?.querySelectorAll('li') ?? [])].map(li => { const f = li.querySelector('.ppast-fb'); return [T(li.querySelector('.ppast-y')), T(li.querySelector('.ppast-fv')), f?.style.width || '', f?.classList.contains('neg') ? 'neg' : 'pos']; })})) : [],
@@ -203,6 +204,29 @@ function compare(code, perName, o, n) {
   for (const w of BANNED) if (n.text.includes(w)) fail('쓰지 않을 말', at + ' 「' + w + '」');
 }
 
+/* 맨 위 결 한 줄(사장님 2026-10-22 04:09 「결과부터 나오는 구조」 · 총정리 C14) — 화면 코드를 쓰지 않고 자료(days.json · co/<번호>.json)에서 따로 셈해 맞댐
+   1년 선(253거래일 · 기간 단추 「1년」과 같은 날 수)의 첫 값 → 마지막 종가 · 그사이 가장 높던 값보다 몇 % 아래(반올림 · 1 밑이면 「조금」 · 꼭대기면 「바로 이 값」)
+   기간 단추를 눌러도 같은 줄 · 챕터 줄 위 · 상장 1년 안 · 값 없음 = 줄 없음 */
+const DAYS = await getJ('days.json').catch(() => null), coJ = new Map();
+const wonK = v => Math.round(v).toLocaleString('ko-KR') + '원';
+async function nowWant(code) {
+  if (!coJ.has(code)) coJ.set(code, await getJ('co/' + encodeURIComponent(code) + '.json').catch(() => null));
+  const c = coJ.get(code), nAll = DAYS?.dates?.length ?? 0, k0 = c?.k0 ?? 0, Y1 = 253;
+  if (!c || !Array.isArray(c.close) || !nAll || nAll - Y1 < k0) return [];
+  const cl = c.close.slice(nAll - Y1 - k0), ds = DAYS.dates.slice(nAll - Y1), ok = x => x != null && x > 0;
+  const i0 = cl.findIndex(ok); let iL = -1; for (let i = cl.length - 1; i >= 0; i--) if (ok(cl[i])) { iL = i; break; }
+  if (i0 < 0 || iL <= i0 || !ds[iL]) return [];
+  const a = cl[i0], z = cl[iL], top = Math.max(...cl.filter(ok)), dr = Math.round((1 - z / top) * 100), d = ds[iL];
+  const tail = z >= top ? '그사이 가장 높은 값이 바로 이 값이에요.' : dr < 1 ? `그사이 가장 높던 ${wonK(top)}보다 조금 아래예요.` : `그사이 가장 높던 ${wonK(top)}보다는 ${dr}% 아래예요.`;
+  return [`1년 전 ${wonK(a)} → ${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일 ${wonK(z)}. ${tail}`];
+}
+async function nowCheck(code, perName, n) {
+  if (!n) return;
+  const want = await nowWant(code); bump('맨 위 결 한 줄');
+  if (!eq(n.now, want)) fail('맨 위 결 한 줄(총정리 C14)', code + ' ' + perName + ' 새 ' + JSON.stringify(n.now).slice(0, 200) + ' · 자료 ' + JSON.stringify(want).slice(0, 200));
+  if (!n.nowTop) fail('맨 위 결 한 줄이 챕터 줄 위가 아님', code + ' ' + perName);
+}
+
 /* ① 맞대기 */
 const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
 {
@@ -255,7 +279,7 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
         }
       };
       const [o, n] = await Promise.all([oldRead(OLD_X).then(x => oldToNewDeep(x)), tm.new(() => pn.evaluate(NEW_X))]); // 옛 쪽 글은 이름만 새 이름으로(rename.mjs)
-      compare(code, name, o, n);
+      compare(code, name, o, n); await nowCheck(code, name, n);
       const [to, tn] = await Promise.all([oldRead(TIPS, ['#view > .vw .lc svg', '#view > .vw .lc .tip'], true), tm.new(() => pn.evaluate(TIPS, ['#view > .ppast .ppast-lc svg', '#view > .ppast .ppast-tip']))]);
       bump('선 누르기');
       if (!to || !tn || !eq(to, tn)) fail('선을 누른 날 값', code + ' ' + name + ' 옛 ' + JSON.stringify(to).slice(0, 200) + ' · 새 ' + JSON.stringify(tn).slice(0, 200));
