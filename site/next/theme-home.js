@@ -95,12 +95,14 @@ export const seasonAngle = (x, y) => Math.atan2(y, x - RULE.bloomX);
    18:22 「그랴」(구글과 잡스라면 — 위 업종 줄 셋 · 아래 줄 그림 하나 · 행성 없음)부터 궤도 위 움직임은 없고 줄 그림만 1번 → 2번 → 3번 차례로 · 지금 그려지는 업종 줄을 밝힘
    여기는 칸 뼈대만(첫 그림 가볍게 — 느린 4G 2.5초 · check_white ③) · 움직임과 자료(/next/data/theme-path.json)는 창 load 뒤 theme-year.js(+ theme-year.css) · 칸 자리는 처음부터 잡아 둠 · 날짜 글 없음([6] 2) */
 const afterLoad = f => { const go = () => (globalThis.requestIdleCallback ? requestIdleCallback(f, {timeout: 1500}) : setTimeout(f, 300)); if (document.readyState === 'complete') go(); else addEventListener('load', go, {once: true}); };
+/** 줄 그림 오른쪽 끝(그림 단위) — 그 오른쪽은 끝 숫자 이름표 자리(「업종 1년 +21%」 · 「시장 1년 +2%」 · 2026-10-22 총정리 · 감사 A3) · theme-year.js 가 같은 값을 받음 */
+export const YR_X1 = 196;
 function yearBox(TH, top, rows) {
   const svg = sv('svg', {class: 'th-yrg', viewBox: '0 0 326 112', width: '100%', 'aria-hidden': 'true', focusable: 'false'});
   const btn = h('button', {type: 'button', class: 'th-yr', 'aria-label': '멈춤', disabled: true}, svg);
   const tt = txt(24, 21, top[0] ? `1번 ${top[0].n}` : '', {class: 'th-yrt'});
-  svg.append(sv('line', {x1: 1, y1: 14, x2: 17, y2: 14, class: 'th-yrs'}), tt, txt(0, 106, '1년 전', {class: 'th-yra'}), txt(236, 106, '오늘', {class: 'th-yra', 'text-anchor': 'end'}), sv('line', {x1: 248, y1: 100, x2: 262, y2: 100, class: 'th-yrlm'}), txt(268, 106, '시장', {class: 'th-yra'}));
-  if (top.length) afterLoad(() => { if (btn.isConnected) import('./theme-year.js').then(m => m.run({TH, top, rows, btn, svg, tt})).catch(() => { if (btn.isConnected) svg.append(txt(0, 64, '? 한 해 길을 받지 못했어요.', {class: 'th-yra'})); }); });
+  svg.append(sv('line', {x1: 1, y1: 14, x2: 17, y2: 14, class: 'th-yrs'}), tt, txt(0, 106, '1년 전', {class: 'th-yra'}), txt(YR_X1, 106, '오늘', {class: 'th-yra', 'text-anchor': 'end'}), sv('line', {x1: 248, y1: 100, x2: 262, y2: 100, class: 'th-yrlm'}), txt(268, 106, '시장', {class: 'th-yra'}));
+  if (top.length) afterLoad(() => { if (btn.isConnected) import('./theme-year.js').then(m => m.run({TH, top, rows, btn, svg, tt, x1: YR_X1})).catch(() => { if (btn.isConnected) svg.append(txt(0, 64, '? 한 해 길을 받지 못했어요.', {class: 'th-yra'})); }); });
   return btn;
 }
 /** 첫 화면 업종 줄 — 번호 · 이름 · 닷새 동안 시장보다 더 오른 만큼(숫자 알약) · ›(2026-10-21 18:22 「그랴」 — 증권사 업종 시세 · 아이폰 주식 앱 꼴 · 행성 사진 없음) */
@@ -121,8 +123,14 @@ export function row(i, k, {num: showNum = true, meta = 'near'} = {}) {
       : h('span', {class: 'th-meta'}, h('em', {class: 'th-tg', text: tag}), h('span', {text: '한 달 시장보다'}), h('b', {class: cls(i.x), text: pp(i.x) + '%p'})));
   return h('a', {class: 'th-row', href: '#/t/i/' + enc(i.n)}, showNum ? h('span', {class: 'th-n' + (k < 3 ? ' th-top' : ''), text: String(k + 1)}) : null, mid, dots(i), h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}));
 }
-/** 꽃 · 시듦 목록 줄(견본 flow36 5 · 6 쪽 그대로) — 이름 · 한 달 동안 시장보다 더 오른 %p · 「한 달」 */
-export function simpleRow(i, {zone = false} = {}) {
+/** 꽃 · 시듦 목록 줄(견본 flow36 5 · 6 쪽) — 이름 · 한 달 동안 시장보다 더 오른 %p · 「한 달」(이웃 업종 쪽 그대로)
+ *  mode 'B'(꽃 자리) = 큰 값 「꽃 n일째」 · 한 달 값은 작은 글로(많이 오른 차례의 큰 주황 숫자가 급등 자랑처럼 읽히던 것 · 감사 A14 — 숫자는 숨기지 않음)
+ *  mode 'W'(시듦 자리) = 큰 값 = 지난 닷새(시듦의 까닭 · 줄 차례와 같은 값 · 내림은 파랑) · 한 달 값은 작은 글로(감사 A15) — 2026-10-22 총정리 */
+export function simpleRow(i, {zone = false, mode = null} = {}) {
+  if (mode === 'B' || mode === 'W') {
+    const big = mode === 'B' ? h('b', {class: 'th-sv', text: `꽃 ${num(i.d)}일째`}) : h('b', {class: 'th-sv ' + cls(i.y), text: pp(i.y) + '%p'});
+    return h('a', {class: 'th-srow', href: '#/t/i/' + enc(i.n)}, h('span', {class: 'th-rn', text: i.n}), h('span', {class: 'th-sv2'}, big, h('span', {class: 'th-sk', text: `한 달 ${pp(i.x)}%p`})));
+  }
   return h('a', {class: 'th-srow', href: '#/t/i/' + enc(i.n)}, h('span', {class: 'th-rn', text: i.n}), zone ? h('b', {class: 'th-z ' + i.z, text: ZONES[i.z] ?? '?'}) : null, h('b', {class: 'th-sv ' + cls(i.x), text: pp(i.x) + '%p'}), h('span', {class: 'th-sk', text: '한 달'}));
 }
 export const yearsOf = TH => { const a = Date.parse(TH.recFrom), b = Date.parse(TH.recTo); return Number.isFinite(a) && Number.isFinite(b) ? Math.max(1, Math.round((b - a) / (365.25 * 864e5))) : null; };
@@ -146,14 +154,16 @@ export async function homeBlock() {
   // 2026-10-21 18:22 「그랴」(18:11 「구글과 잡스라면 … 뭘 고를까?」의 답 — 13번 업종 시세판 위 · 1번 두 줄 견주기 아래) — 카드 안: 업종 줄 셋 → 한 해 줄 그림(저절로 1 · 2 · 3) → 모두 보기 → 숫자는 「자세히」 안(접음) → 시계 읽는 법 → 처음이세요?
   const rows = top.map((i, k) => seasonRow(i, k)); if (rows[0]) rows[0].classList.add('th-now'); // 지금 줄 그림의 업종(처음 = 1번)
   box.append(h('div', {class: 'th-map th-map2'}, h('h2', {class: 'th-lt', text: '요즘 시장보다 힘이 붙은 곳'}), h('p', {class: 'th-lc', text: '닷새 동안 시장보다'}), h('div', {class: 'th-rows'}, rows),
-    yearBox(TH, top, rows), h('p', {class: 'th-cap th-cap1', text: '1번, 2번, 3번 줄 그림이 차례로 그려져요.'})));
+    yearBox(TH, top, rows), h('p', {class: 'th-cap th-cap1', text: '지난 1년 동안 걸어온 길이에요. 위 줄은 점이 많이 찬 차례예요. 숫자는 닷새 동안 시장보다 더 오른 만큼이에요.'}))); // 그림 아래 글 = 뜻(지난 기록 · 줄 차례의 까닭 · 숫자의 뜻) — 움직임 설명 대신(2026-10-22 총정리 · 감사 A2 · A4 · 그림 아래라 320 높이 그대로)
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
-  box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄이 온 곳 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
-  // 숫자는 접어 둠 — 주황 숫자 넷(사장님 2026-10-20 09:46 — 진짜 싹 · 새로 들어옴 · 싹 자리)과 점 넷 · 성적표는 「숫자로 자세히 보기」 안에 그대로
+  box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'}))); // 첫 화면 계절 말 「봄」 = 테마 쪽 「싹」(감사 A6)
+  // 숫자는 접어 둠 — 주황 숫자(사장님 2026-10-20 09:46 — 진짜 싹 · 새로 들어옴 · 싹 자리)와 성적표는 「숫자로 자세히 보기」 안에 그대로
+  // 2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A7): 맨 위 = 성적표 한 줄(가장 중요한 숫자) → 한 줄에 하나(진짜 싹 · 새로 들어옴 · 싹 자리 · 같은 고리 · 48px 넘게) → 점 넷 뜻
+  //   테 두른 작은 네모 셋(지도 규칙 11 「작은 네모 판 금지」)과 같은 숫자를 두 번 쓰던 머리 줄은 지움
   const fold = h('details', {class: 'th-hfold'}, h('summary', {text: '숫자로 자세히 보기'}));
-  fold.append(TH.count.real ? h('h2', {class: 'th-ans'}, h('a', {class: 'th-ansl', href: '#/t/sprout/real'}, h('span', {text: '진짜 싹 '}), h('em', {'data-tr': '업종', text: num(TH.count.real) + '곳'}), h('i', {'aria-hidden': 'true', text: '›'}))) : h('h2', {class: 'th-ans', text: '지금은 진짜 싹이 없어요'})); // data-tr = 영어에서 「n곳」을 업종 수로(i18n.js 자리 표)
-  fold.append(h('div', {class: 'th-three', 'data-tr': '업종'}, ...[[TH.count.real, '진짜 싹', '#/t/sprout/real'], [TH.count.fresh, '새로 들어옴', '#/t/sprout/new'], [TH.count.S, '싹 자리', '#/t/sprout']].map(([n, t, href]) => h('a', {href}, h('b', {text: num(n) + '곳'}), h('span', {text: t})))));
-  fold.append(h('p', {class: 'th-sub', text: '점 넷이 다 차면 진짜 싹이에요. 점이 많이 찬 순서예요.'}), recordLine(TH)); // 싹 순서 = 점 수 → 지난 닷새(결정표 4)
+  fold.append(recordLine(TH));
+  fold.append(h('div', {class: 'th-three', 'data-tr': '업종'}, ...[[TH.count.real, '진짜 싹', '#/t/sprout/real'], [TH.count.fresh, '새로 들어옴', '#/t/sprout/new'], [TH.count.S, '싹 자리', '#/t/sprout']].map(([n, t, href]) => h('a', {href}, h('span', {text: t}), h('b', {text: num(n) + '곳'}), h('i', {'aria-hidden': 'true', text: '›'}))))); // data-tr = 영어에서 「n곳」을 업종 수로(i18n.js 자리 표)
+  fold.append(h('p', {class: 'th-sub', text: '점 넷이 다 차면 진짜 싹이에요.'})); // 싹 순서(점 수 → 지난 닷새 · 결정표 4)는 그림 아래 글에
   box.append(fold, nextBtn('시계 읽는 법', '#/t/how')); // 기준 날은 첫 화면에 안 씀(보이는 날짜는 띠에 한 번 — [6] 2 · next_check) · 테마 쪽마다 아래에 씀
   box.append(h('a', {class: 'th-hi', href: '#/t/hello', text: '처음이세요? 돌이 인사 ›'})); // 서른여섯 장의 1장(돌이 인사)으로 가는 고리 — 가운데 맞춘 한 줄(2026-10-19 사장님 「다해」 · 못 한 것 5)
   return box;
