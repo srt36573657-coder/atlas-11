@@ -1,0 +1,27 @@
+/* 「왜 그럴까?」 열한 걸음(why-chain.js · 사장님 2026-10-22 08:53 「11단계는 논리적으로 사방팔방으로 … 움직이는 도식화로」)
+   위 = 별자리(가운데에서 사방팔방 · 선이 차례로 그려짐) · 아래 = 같은 번호의 글 줄(글 시작 한 줄)
+   글씨 --fs-1 ~ 3 · 바깥 · 안 여백과 사이는 0 · auto · var(--sp-1 ~ 3)만 · 그림자 · 그러데이션 없음 · 금빛은 번호와 이어 묻는 말에만 · 누르는 자리 48px */
+.wc { width: 100%; box-sizing: border-box; margin: var(--sp-2) 0 0; }
+.wc-h { margin: 0 0 var(--sp-1); font-size: var(--fs-2); font-weight: 700; }
+.wc-lead { margin: 0; color: var(--sub); font-size: var(--fs-1); }
+.wc-sky { display: block; width: 100%; max-width: 360px; height: auto; margin: var(--sp-1) auto; }
+.wc-ln { stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; opacity: .75; }
+.wc-dot circle { fill: var(--bg); stroke: var(--gold); stroke-width: 1.6; }
+.wc-dot text { fill: var(--ink); font-size: var(--fs-1); font-weight: 700; }
+.wc-dot:first-of-type circle { fill: var(--gold-wash); }
+.wc-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.wc-n { display: flex; align-items: flex-start; gap: var(--sp-1); }
+.wc-no { flex: none; width: 32px; height: 32px; margin: var(--sp-1) 0 0; border: 1px solid var(--gold); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--gold); font-size: var(--fs-1); font-weight: 700; }
+.wc-card { position: relative; flex: 1 1 auto; min-width: 0; min-height: 48px; display: flex; flex-direction: column; gap: 0; padding: var(--sp-1) var(--sp-2); border: 1px solid var(--hair2); border-radius: 16px; background: var(--bg); color: inherit; text-decoration: none; box-sizing: border-box; }
+a.wc-card { padding-right: var(--sp-3); }
+.wc-q { color: var(--gold); font-size: var(--fs-1); }
+.wc-a { font-size: var(--fs-2); font-weight: 700; overflow-wrap: anywhere; }
+.wc-tag { align-self: flex-start; margin: var(--sp-1) 0 0; padding: 0 var(--sp-1); border: 1px solid var(--hair2); border-radius: 12px; color: var(--sub); font-size: var(--fs-1); }
+.wc-go { position: absolute; right: var(--sp-1); top: 50%; transform: translateY(-50%); color: var(--sub); font-size: var(--fs-3); }
+.wc-again { display: block; min-height: 48px; margin: var(--sp-2) auto 0; padding: 0 var(--sp-3); border: 1px solid var(--hair2); border-radius: 24px; background: none; color: var(--ink); font: inherit; font-size: var(--fs-1); }
+@media (prefers-reduced-motion: no-preference) {
+  .wc.play .wc-ln { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: wc-draw .55s ease-out forwards; animation-delay: calc(var(--i) * .7s - .45s); }
+  .wc.play .wc-dot, .wc.play .wc-n { animation: wc-in .45s ease-out both; animation-delay: calc(var(--i) * .7s); }
+}
+@keyframes wc-draw { to { stroke-dashoffset: 0; } }
+@keyframes wc-in { from { opacity: 0; } to { opacity: 1; } }
