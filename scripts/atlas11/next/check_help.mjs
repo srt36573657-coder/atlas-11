@@ -6,6 +6,7 @@
 //   ② 길(390): 열기만 하면 이 기기에 아무것도 안 남김 → 한마디(안 돼요) 보내기 → 앵무새 돌이가 들은 말을 그대로 따라 말함(2026-10-22 01:22 「사람들에게 감동을 줘」) → 연락처 꼴은 막음(서버에 안 감) → 물음 보내기 → 「내가 남긴 글」에 「답을 기다려요」
 //      → 사장님 열쇠로 답 · 모두에게 보이기 → 그 기기에 답 · 「많이 묻는 것」에 올라옴 → 지우기 두 번 → 서버에서 사라짐 → 곧은 말 단추 → 글이 곧은 말로 · 기억
 //      → 사장님 화면(#/admin)에 「고객센터 글」 · 열쇠 없는 기기는 /api/help/all 403
+//      · 총정리(2026-10-22) — 맨 위 결 단추 「답을 기다려요 · 1개 ›」 → 답이 오면 「답이 왔어요 · 1개 ›」 → 누르면 내 글로 · 다 지우면 단추 없음(D1) · 많이 묻는 것 첫 물음 = 본질 1(D4) · #/help/ask 로 바로 열면 그 문이 맨 위(D2)
 //   ③ 영어(?lang=en) — 쉬운 말 · 곧은 말 두 벌로 문 셋 · 안내 안 남은 한글 0(사람이 쓴 글 lang="ko" 빼고) · 맨 아래 「고객센터」 고리도 영어
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
@@ -110,6 +111,10 @@ try {
     await p.waitForFunction(t => [...document.querySelectorAll('#view .hp-item .hp-q')].some(e => e.textContent === t), qText, {timeout: 10000}).catch(() => {});
     const mine = await p.evaluate(t => { const li = [...document.querySelectorAll('#view .hp-item')].find(e => e.querySelector('.hp-q')?.textContent === t); return li ? {st: li.querySelector('.hp-st')?.textContent, when: li.querySelector('.hp-when')?.textContent, ko: li.querySelector('.hp-q')?.getAttribute('lang')} : null; }, qText);
     check(mine?.st === '답을 기다려요' && /^물어보기 · \d+월 \d+일$/.test(mine?.when ?? '') && mine?.ko === 'ko', '물음 → 내가 남긴 글 · 답을 기다려요', JSON.stringify(mine));
+    // 맨 위 결 단추(총정리 2026-10-22 D1 · 사장님 04:09 「결과부터」) — 제목 바로 밑 · 답을 기다리는 물음 수(한마디는 안 셈) · 48px
+    const ansTop = () => p.evaluate(() => { const b = document.querySelector('#view .hp-ans'); return b && !b.hidden ? {t: b.textContent, got: b.classList.contains('got'), first: b.previousElementSibling?.tagName === 'H1', h: Math.round(b.getBoundingClientRect().height)} : null; });
+    const a1 = await ansTop();
+    check(a1?.t === '답을 기다려요 · 1개 ›' && !a1.got && a1.first && a1.h >= 48, '맨 위 결 — 제목 바로 밑 「답을 기다려요 · 1개 ›」(한마디는 안 셈)', JSON.stringify(a1));
     const items = (await api('/api/help/mine', {headers: {'x-help-key': dev}})).j?.items ?? [];
     const qi = items.find(x => x.text === qText), ni = items.find(x => x.kind === 'note');
     check(!!qi && !!ni && ni.tone === 'broken' && ni.voice === 'easy', '서버 — 물음 · 한마디(안 돼요 · 쉬운 말)', JSON.stringify(items.map(x => [x.kind, x.tone, x.voice])));
@@ -125,6 +130,12 @@ try {
       const got = await p.evaluate(t => { const li = [...document.querySelectorAll('#view .hp-item')].find(e => e.querySelector('.hp-q')?.textContent === t); return {a: li?.querySelector('.hp-a p:last-child')?.textContent ?? null, faq: [...document.querySelectorAll('#view .hp-qa summary')].map(s => s.textContent)}; }, qText);
       check(got.a === '검사 답 — 관심 회사는 제한 없이 담을 수 있어요.', '물은 기기에 답이 옴', got.a);
       check(got.faq.includes('검사 — 관심 회사는 몇 개까지 담나요?'), '많이 묻는 것에 올라옴', got.faq.slice(-2).join(' | '));
+      check(got.faq[0] === josa(NAME, '는') + ' 무엇을 해 줘요?' && await p.evaluate(() => document.querySelector('#view details.hp-qa a.hp-qlink')?.getAttribute('href')) === '#/t/how', '많이 묻는 것 첫 물음 = 본질 1 · 답 밑 「시계 읽는 법 ›」(총정리 D4)', got.faq[0]);
+      const a2 = await ansTop();
+      check(a2?.t === '답이 왔어요 · 1개 ›' && a2.got, '맨 위 결 — 답이 오면 「답이 왔어요 · 1개 ›」(총정리 D1)', JSON.stringify(a2));
+      await p.evaluate(() => window.scrollTo(0, 0)); await p.click('#view .hp-ans'); await p.waitForTimeout(900);
+      const a3 = await p.evaluate(() => ({open: document.querySelector('#view .hp-door[aria-expanded="true"] .hp-dt b')?.textContent ?? null, top: Math.round(document.querySelector('#view .hp-mine')?.getBoundingClientRect().top ?? -1), vh: innerHeight}));
+      check(a3.open === '물어보기' && a3.top >= 0 && a3.top < a3.vh / 2, '맨 위 결을 누르면 물어보기 문이 열리고 내가 남긴 글로 내려감', JSON.stringify(a3));
       await api('/api/help', {method: 'POST', headers: {'content-type': 'application/json', 'x-atlas-owner': KEY}, body: JSON.stringify({op: 'drop', id: ni.id})}); // 한마디는 사장님이 지움(뒷정리)
     } else check(!KEY, '사장님 열쇠 길', '물음 없음');
     // 지우기 두 번 → 서버에서 사라짐
@@ -133,6 +144,8 @@ try {
     await p.click(delSel); await p.waitForTimeout(800);
     const left = (await api('/api/help/mine', {headers: {'x-help-key': dev}})).j?.items ?? [];
     check(armed === '한 번 더 누르면 지워요' && !left.some(x => x.text === qText), '지우기 두 번 → 서버에서 사라짐', `${armed} ${left.length}`);
+    const a4 = await ansTop();
+    check(a4 === null, '맨 위 결 — 기다리는 물음 · 답이 없으면 단추 없음', JSON.stringify(a4));
     check(!(await api('/api/help/faq')).j?.items?.some(x => x.q === '검사 — 관심 회사는 몇 개까지 담나요?'), '지운 물음은 많이 묻는 것에서도 사라짐');
     // 곧은 말
     await p.click('#view .hp-vb >> nth=1'); await p.waitForTimeout(200);
@@ -141,6 +154,10 @@ try {
     check(await p.evaluate(() => !!document.querySelector('#view h1 img.st-art')), '말투를 바꿔도 제목 돌 그림이 남음');
     await p.reload({waitUntil: 'load'}); await p.waitForSelector('#view .hp-door');
     check(await p.evaluate(() => document.querySelector('#view .hp-vb[aria-checked="true"]')?.textContent) === '곧은 말', '다시 열어도 곧은 말');
+    // #/help/ask 로 바로 열면 그 문을 화면 맨 위에(총정리 2026-10-22 D2 — 그린 뒤 맨 위로 올리는 app.js 보다 나중에)
+    await p.goto(URL_OF('#/help/ask'), {waitUntil: 'load'}); await p.waitForSelector('#view .hp-door'); await p.waitForTimeout(700);
+    const dl = await p.evaluate(() => { const d = document.querySelector('#hp-ask')?.previousElementSibling, r = d?.getBoundingClientRect(); return {exp: d?.getAttribute('aria-expanded') ?? null, top: r ? Math.round(r.top) : null, y: Math.round(scrollY)}; });
+    check(dl.exp === 'true' && dl.y > 0 && dl.top >= 0 && dl.top <= 120, '#/help/ask 로 바로 열면 물어보기 문이 맨 위', JSON.stringify(dl));
     check(!errs.length, '길 화면 오류 0', errs.slice(0, 2).join(' | '));
     // 사장님 화면
     if (KEY) {

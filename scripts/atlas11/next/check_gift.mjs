@@ -4,6 +4,7 @@
 //   03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 — order-0338.txt(모든 쪽 위 막대 금빛 선물 단추 → 앱 안 상품권 방)
 //   보는 것: ① 모든 쪽 위 막대에 금빛 선물 단추(48px · #/gift · 320 폭 넘침 0) → 누르면 상품권 방 ② 두 곳 처음 = 약속 알림 · 걸음 · 「상품권 받기」 · 번호 숨김 · 건너뛸 막대 없음 · 가로 넘침 없음 · 글씨 17px 위 · 단추 48px 위
 //            ③ 틀기 → 건너뛰기(50초로) 막힘 · 빨리 감기(4배) 막힘 ④ 끝까지 → 「상품권 받기」 · 번호 · 고마움 줄 · 이 기기 표시 ⑤ 다시 열면 바로 열림 · 다른 곳도 함께 열림 ⑥ 영어 팩이면 한글 없음
+//            총정리(2026-10-22 D6 · D7) — 상품권 방 약속 칸 바로 밑 「지금 할 일 · 친구 3명에게 소개해요 ↓」(48px · 320 × 568 첫 화면 안 · 누르면 「친구에게 보내기」에 초점) · 다 본 뒤 「영상을 끝까지 봤어요 · 상품권 받기 ↓」
 //   node scripts/atlas11/next/check_gift.mjs [--base http://127.0.0.1:8826] [--path /next/] [--pw /tmp/pw/] [--out 결과.json]  (scripts/atlas11/invite_dev.mjs --dir site 가 떠 있어야 함 · 깃허브 전체 검사도 이 꼴로 부름)
 import {createRequire} from 'node:module';
 
@@ -66,8 +67,14 @@ for (const [k, q] of Object.entries(P)) for (const [w, h] of [[390, 844], [320, 
   if (a.over) fail(`${q.name} ${w} 가로 넘침`);
   if (a.small.length) fail(`${q.name} ${w} 17px 아래 글`, a.small.join(', '));
   for (const t of a.taps) if (t.h < 48) fail(`${q.name} ${w} 단추 48px 아래`, `${t.t} ${t.h}px`);
+  if (k === 'app') { // 맨 위 결(총정리 2026-10-22 D6 · D7) — 약속 칸 바로 밑 「지금 할 일 · … ↓」 · 48px · 첫 화면 안(320 × 568 도) · 누르면 그 걸음 첫 단추에 초점
+    const nw = await p.evaluate(() => { const b = document.querySelector('#view .gf-now'); if (!b) return null; const r = b.getBoundingClientRect(), tabs = document.querySelector('.tabs')?.getBoundingClientRect().top ?? innerHeight;
+      return {t: b.textContent.trim(), afterVow: !!b.previousElementSibling?.classList.contains('gf-vow'), beforeSteps: !!b.nextElementSibling?.classList.contains('gf-steps'), h: Math.round(r.height), inFirst: r.bottom <= tabs + 0.5}; });
+    if (!nw || nw.t !== '지금 할 일 · 친구 3명에게 소개해요 ↓' || !nw.afterVow || !nw.beforeSteps || nw.h < 48 || !nw.inFirst) fail(`${q.name} ${w} 맨 위 결 「지금 할 일」 단추(약속 칸 바로 밑 · 48px · 첫 화면 안)`, JSON.stringify(nw));
+    else { await p.click('#view .gf-now'); await p.waitForTimeout(700); const f = await p.evaluate(() => document.activeElement?.textContent?.trim() ?? ''); if (f !== '친구에게 보내기') fail(`${q.name} ${w} 「지금 할 일」을 누르면 걸음 1 「친구에게 보내기」에 초점`, f); }
+  }
   if (p.errs.length) fail(`${q.name} ${w} 쪽 오류`, p.errs.join(' | '));
-  if (fails.length === n0) ok(`${q.name} ${w}×${h} 처음 모습(약속 · 걸음 ${q.steps} · 잠김 · 번호 숨김)`);
+  if (fails.length === n0) ok(`${q.name} ${w}×${h} 처음 모습(약속 · 걸음 ${q.steps} · 잠김 · 번호 숨김${k === 'app' ? ' · 맨 위 「지금 할 일」' : ''})`);
   await ctx.close();
 }
 
@@ -94,6 +101,7 @@ async function watch(k) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(end.key ?? '')) fail(`${q.name} 이 기기 표시(atlas:gift:seen)`, String(end.key));
   if (!(end.gift?.watched >= 58.5)) fail(`${q.name} 본 초`, JSON.stringify(end.gift));
   for (const t of end.taps) if (t.h < 48) fail(`${q.name} 끝난 뒤 단추 48px 아래`, `${t.t} ${t.h}px`);
+  if (k === 'app') { const nt = await p.evaluate(() => document.querySelector('#view .gf-now')?.textContent?.trim() ?? ''); if (nt !== '영상을 끝까지 봤어요 · 상품권 받기 ↓') fail(`${q.name} 끝난 뒤 맨 위 결 단추 글(총정리 D7)`, nt); }
   if (fails.length === n0) ok(`${q.name} 끝까지 본 뒤 열림(본 초 ${end.gift?.watched}) · 번호 · 「상품권 받기」 · 고마움 줄`);
   await p.reload({waitUntil: 'networkidle'}); await p.waitForTimeout(900);
   const again = await look(p, q);
