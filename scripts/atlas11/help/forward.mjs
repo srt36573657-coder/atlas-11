@@ -119,6 +119,18 @@ export async function fetchNew(store, {max = MAX_ITEMS, now = new Date()} = {}) 
   const messages = pick.items.flatMap(it => toMessages(it));
   return {schema: FWD_SCHEMA, at: now.toISOString(), cursor, n: pick.items.length, more: pick.more, last: pick.items.at(-1)?.id ?? null, items: pick.items, messages};
 }
+/** 알림 줄 조각 수(머리 줄 빼고) — toAnnotations 와 같은 셈 */
+export const annParts = box => Math.ceil(Buffer.from(JSON.stringify(box), 'utf8').toString('base64').length / ANN_CHUNK);
+/** 꺼내 잠그기 — 잠긴 묶음이 알림 줄 아홉 조각 안에 들 때까지 글 수를 줄임(10 → 5 → 2 → 1 · 남은 글은 다음 시간에)
+ *  아주 긴 글(그림 글자 500자 열 개 등)에 막혀 한 시간도 못 보내는 일이 없게 · 묶음에는 카톡 글만(글 목록은 빼 크기 절반) */
+export async function fetchSealed(store, pub, {steps = [MAX_ITEMS, 5, 2, 1], now, maxParts = ANN_MAX} = {}) {
+  for (const max of steps) {
+    const r = await fetchNew(store, {max, now});
+    const box = seal({schema: r.schema, at: r.at, n: r.n, more: r.more, last: r.last, messages: r.messages}, pub);
+    if (annParts(box) <= maxParts) return {r, box};
+  }
+  throw Error('글 하나도 알림 줄에 들지 않음');
+}
 /** 여기까지 보냄 — 앞으로만(뒤로 가지 않음) · 틀린 번호는 거절 */
 export async function ack(store, id, {now = new Date()} = {}) {
   if (typeof id !== 'string' || !ID_RE.test(id)) return {ok: false, why: '번호 꼴이 틀림'};
@@ -142,8 +154,8 @@ if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(file
     if (a.includes('--fetch')) {
       const pub = arg('--pub', ''), out = arg('--out', 'sealed.json');
       if (!/^[A-Za-z0-9+/=]{40,120}$/.test(pub) || !/^[\w.\-/]+\.json$/.test(out)) { console.error('쓰는 법: --fetch --pub <base64> --out 파일.json'); process.exit(2); }
-      const r = await fetchNew(await netlifyStore());
-      fs.writeFileSync(out, JSON.stringify(seal(r, pub)) + '\n');
+      const {r, box} = await fetchSealed(await netlifyStore(), pub);
+      fs.writeFileSync(out, JSON.stringify(box) + '\n');
       console.log(`새 글 ${r.n}개 · 카톡 ${r.messages.length}통 · 남은 글 ${r.more}개`); // 글은 찍지 않음(잠긴 묶음에만)
       process.exit(0);
     }

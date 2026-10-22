@@ -6,6 +6,7 @@
 //                       ② (n > 0 이면) 방이 file 의 messages 를 차례대로 카톡 「나에게 보내기」로 한 통씩 — 글은 고치지 않음
 //                       ③ node scripts/atlas11/help/room.mjs --done --run <번호> --last <글 번호> → 깃허브 작업(mode=ack)으로 「여기까지 보냄」 · 읽은 작업 기록은 지움(잠긴 글이지만 남기지 않음)
 //   카톡을 다 못 보냈으면 ③을 하지 않음 → 다음 시간에 같은 글부터 다시(빠뜨리지 않음 · 두 번 갈 수는 있음)
+//   ①이 막히면(ok false) 결과에 streak(연달아 막힌 수) — 꼭 3 일 때만 방이 카톡 한 통 「넘기기가 세 번 연달아 막혔어요」(조용히 멈추지 않게 · 매시 되풀이 안 함)
 //   Claude 예약 방의 길: gh workflow run · gh run list · gh api(REST)만 됨(GraphQL · 묶음 받기 · aaa7377.com 막힘 — scripts/atlas11/jinhwa/gh.mjs 머리)
 import fs from 'node:fs';
 import os from 'node:os';
@@ -49,18 +50,34 @@ async function annotations(id) {
   try { return fromAnnotations(JSON.parse(a.out)); } catch { return {ok: false, why: '알림 줄 꼴'}; }
 }
 
+/** 연달아 막힌 수 — 가장 새 작업부터 거꾸로 세어 처음 잘 된 작업에서 멈춤(돌던 것은 건너뜀) · 방은 이 수가 꼭 3 일 때 한 번만 사장님께 알림(조용히 멈추지 않게 · 매시 되풀이 안 함) */
+export function failStreak(runs) {
+  let n = 0;
+  for (const r of [...(Array.isArray(runs) ? runs : [])].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))) {
+    if (r?.status !== 'completed') continue;
+    if (r.conclusion === 'success') break;
+    n++;
+  }
+  return n;
+}
+function streakNow() {
+  const r = gh(['run', 'list', '-R', REPO, '--workflow', WORKFLOW, '-L', '12', '--json', 'status,conclusion,createdAt']);
+  try { return r.ok ? failStreak(JSON.parse(r.out)) : null; } catch { return null; }
+}
+const failed = o => ({...o, ok: false, streak: streakNow()});
+
 export async function fetchRoom({out = path.join(os.tmpdir(), 'help-forward.json')} = {}) {
   const key = newRoomKey(), t0 = Date.now() - 15e3;
   const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=fetch', '-f', `pub=${key.pub}`]);
-  if (!w.ok) return {ok: false, why: '작업을 못 부름 ' + short(w.err)};
+  if (!w.ok) return failed({why: '작업을 못 부름 ' + short(w.err)});
   const run = await findRun(t0);
-  if (!run) return {ok: false, why: '작업 번호를 못 찾음'};
+  if (!run) return failed({why: '작업 번호를 못 찾음'});
   const c = await waitRun(run);
-  if (c !== 'success') return {ok: false, run, why: '작업이 ' + c};
+  if (c !== 'success') return failed({run, why: '작업이 ' + c});
   const an = await annotations(run);
-  if (!an.ok) return {ok: false, run, why: an.why};
-  let r; try { r = open(an.box, key.priv); } catch (e) { return {ok: false, run, why: '잠긴 글을 못 풂 ' + short(e?.message)}; }
-  if (r?.schema !== FWD_SCHEMA || !Array.isArray(r.messages)) return {ok: false, run, why: '꼴이 틀림'};
+  if (!an.ok) return failed({run, why: an.why});
+  let r; try { r = open(an.box, key.priv); } catch (e) { return failed({run, why: '잠긴 글을 못 풂 ' + short(e?.message)}); }
+  if (r?.schema !== FWD_SCHEMA || !Array.isArray(r.messages)) return failed({run, why: '꼴이 틀림'});
   fs.writeFileSync(out, JSON.stringify({messages: r.messages, last: r.last, n: r.n, more: r.more}) + '\n', {mode: 0o600});
   return {ok: true, n: r.n, msgs: r.messages.length, more: r.more, last: r.last, run, file: out};
 }

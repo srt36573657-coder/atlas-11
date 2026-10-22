@@ -3,8 +3,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {pickNew, toMessages, whenKo, newRoomKey, seal, open, toAnnotations, fromAnnotations, fetchNew, ack, HELP_STORE, ID_RE, CURSOR_KEY, MSG_MAX, MAX_ITEMS} from '../../scripts/atlas11/help/forward.mjs';
+import {pickNew, toMessages, whenKo, newRoomKey, seal, open, toAnnotations, fromAnnotations, fetchNew, fetchSealed, annParts, ack, HELP_STORE, ID_RE, CURSOR_KEY, MSG_MAX, MAX_ITEMS, ANN_MAX} from '../../scripts/atlas11/help/forward.mjs';
 import {HELP_STORE as LIB_STORE, ID_RE as LIB_ID, handleHelp} from '../../lib/atlas11/help.mjs';
+import {failStreak} from '../../scripts/atlas11/help/room.mjs';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
 
 const read = p => fs.readFileSync(new URL('../../' + p, import.meta.url), 'utf8');
@@ -75,6 +76,35 @@ test('저장소 — 고객센터 서버가 쓴 글을 꺼냄 · 보낸 표시는
   assert.equal((await ack(store, a.id)).moved, false, '뒤로 가지 않음');
   assert.equal((await fetchNew(store)).n, 0);
   assert.equal((await ack(store, 'nope')).ok, false);
+});
+
+test('아주 긴 글 열 개(4바이트 글자 500자씩 · 마구잡이)도 막히지 않음 — 넘치면 글 수를 줄여 알림 줄 조각 안 · 남은 글은 다음 시간', async () => {
+  const store = memoryStore(), k = newRoomKey();
+  let seed = 7; const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  for (let i = 0; i < 10; i++) {
+    const text = Array.from({length: 500}, () => String.fromCodePoint(0x20000 + Math.floor(rnd() * 0xA6DF))).join('');
+    const it = {schema: 'atlas11-help-item-1', id: id(T0 + i * 1000, ('e' + i).padEnd(12, 'z')), kind: 'note', tone: 'good', text, page: 'home', at: new Date(T0 + i * 1000).toISOString(), dev: 'x', status: 'new'};
+    await store.setJSON('i/' + it.id, it);
+  }
+  assert.equal((await fetchNew(store)).n, 10);
+  const all = await fetchSealed(store, k.pub);
+  assert.ok(annParts(all.box) <= ANN_MAX && toAnnotations(all.box).length <= ANN_MAX + 1, '보통 한도 안');
+  assert.equal(all.r.n + all.r.more, 10);
+  const {r, box} = await fetchSealed(store, k.pub, {maxParts: 3}); // 한도를 좁혀 줄이는 길을 꼭 지나게
+  assert.ok(annParts(box) <= 3, String(annParts(box)));
+  assert.ok(r.n >= 1 && r.n < 10 && r.more === 10 - r.n, `${r.n} + ${r.more}`);
+  const got = open(box, k.priv);
+  assert.equal(got.n, r.n); assert.equal(got.last, r.last); assert.equal(got.items, undefined, '묶음에 글 목록은 없음(카톡 글만)');
+  assert.ok(got.messages.every(m => Array.from(m).length <= MSG_MAX));
+});
+
+test('연달아 막힌 수 — 새것부터 · 잘 된 것에서 멈춤 · 도는 것은 건너뜀(꼭 3 일 때 한 번 알림)', () => {
+  const at = m => new Date(T0 + m * 60e3).toISOString();
+  const runs = [{status: 'completed', conclusion: 'success', createdAt: at(0)}, {status: 'completed', conclusion: 'failure', createdAt: at(60)}, {status: 'completed', conclusion: 'cancelled', createdAt: at(120)}, {status: 'in_progress', conclusion: null, createdAt: at(121)}, {status: 'completed', conclusion: 'failure', createdAt: at(180)}];
+  assert.equal(failStreak(runs), 3);
+  assert.equal(failStreak(runs.slice(0, 3)), 2);
+  assert.equal(failStreak([...runs, {status: 'completed', conclusion: 'success', createdAt: at(240)}]), 0);
+  assert.equal(failStreak(null), 0);
 });
 
 test('깃허브 작업 · 방 — 읽기 권한만 · 넷리파이 열쇠는 작업 비밀 · 글을 찍지 않음', () => {
