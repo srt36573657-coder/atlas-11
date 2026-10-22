@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-22T03:42:29.857Z",
+ "at": "2026-10-22T05:43:07.482Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -16,10 +16,10 @@
  "modFiles": {
   "past": true,
   "rivals": true,
-  "grow": true,
   "range": true,
   "surge": true,
   "cal": true,
+  "grow": true,
   "cond": true,
   "talk": true,
   "up": true,
@@ -42,14 +42,14 @@
  "full": false,
  "units": {
   "total": 13495,
-  "hash": "3d57960b5929aee4",
+  "hash": "044b2cd9451c1bcb",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 427,
- "secondsSum": 2858,
+ "seconds": 420,
+ "secondsSum": 2758,
  "shards": [
   {
    "shard": "1/7",
@@ -58,10 +58,10 @@
    "routes": 1942,
    "screens": 1980,
    "mine": 1942,
-   "seconds": 422,
+   "seconds": 368,
    "secs": {
-    "open": 0.3,
-    "routes": 421.1
+    "open": 0.2,
+    "routes": 367
    }
   },
   {
@@ -71,10 +71,10 @@
    "routes": 1947,
    "screens": 1948,
    "mine": 1941,
-   "seconds": 374,
+   "seconds": 381,
    "secs": {
-    "open": 0.2,
-    "routes": 372
+    "open": 0.3,
+    "routes": 379.5
    }
   },
   {
@@ -87,7 +87,7 @@
    "seconds": 412,
    "secs": {
     "open": 0.3,
-    "routes": 410.8
+    "routes": 410.6
    }
   },
   {
@@ -97,10 +97,10 @@
    "routes": 1941,
    "screens": 1941,
    "mine": 1941,
-   "seconds": 396,
+   "seconds": 374,
    "secs": {
-    "open": 0.3,
-    "routes": 394.8
+    "open": 0.2,
+    "routes": 373.1
    }
   },
   {
@@ -110,10 +110,10 @@
    "routes": 1941,
    "screens": 1941,
    "mine": 1941,
-   "seconds": 427,
+   "seconds": 384,
    "secs": {
-    "open": 0.3,
-    "routes": 425.2
+    "open": 0.2,
+    "routes": 382.8
    }
   },
   {
@@ -123,11 +123,11 @@
    "routes": 1926,
    "screens": 1986,
    "mine": 1927,
-   "seconds": 411,
+   "seconds": 419,
    "secs": {
     "open": 0.3,
-    "routes": 407.7,
-    "newwin": 2.6
+    "routes": 414.4,
+    "newwin": 2.8
    }
   },
   {
@@ -137,11 +137,11 @@
    "routes": 1861,
    "screens": 1981,
    "mine": 1862,
-   "seconds": 416,
+   "seconds": 420,
    "secs": {
-    "open": 0.3,
-    "routes": 401.2,
-    "act": 7.8,
+    "open": 0.4,
+    "routes": 404.5,
+    "act": 7.6,
     "edge": 6.2,
     "grammar": 0
    }
