@@ -9123,6 +9123,8 @@
   "펀드 · 우선주는 열한 질문 밖이에요. 회사 이름을 골라 주세요.": "Funds and preferred shares are outside the 11 questions. Please pick a company name.",
   "한국어로 보기": "View in Korean",
   "영어로 보기": "View in English",
-  "? 이어 묻기를 열지 못했어요. 잠시 뒤 다시 눌러 주세요.": "? Could not open the follow-up questions. Please tap again in a moment."
+  "? 이어 묻기를 열지 못했어요. 잠시 뒤 다시 눌러 주세요.": "? Could not open the follow-up questions. Please tap again in a moment.",
+  "업종 {n}개 · 싹 자리부터 꽃 · 시듦 · 잠잠 차례": "{n} sectors · Sprout zone first, then Bloom · Fading · Quiet",
+  "업종마다 가장 큰 회사 {n}곳 · 싹 업종의 대장주부터": "{n} largest companies, one per sector · Leaders of sprout sectors first"
  }
 }

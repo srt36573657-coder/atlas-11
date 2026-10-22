@@ -711,6 +711,21 @@ function thInd(n) {
   const b = thFull()?.inds?.find(i => i?.n === n) ?? thHome()?.inds?.find(i => i?.n === n);
   return b && TH_ZONES[b.z] ? {z: b.z, sc: Number.isFinite(b.sc) ? b.sc : null, d: Number.isFinite(b.d) ? b.d : null} : null;
 }
+/** 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 — 업종 · 대장주 목록 · 업종 채널의 업종 탭) — 업종 이름 → 차례 번호(작을수록 앞)
+    자리 싹 → 꽃 → 시듦 → 잠잠 · 자리 안은 theme.json order(테마 시계 쪽과 같은 차례 — 싹 = 점이 많이 찬 순서 · theme-engine.js)
+    theme.json 을 못 받으면 theme-home.json 으로 같은 잣대(싹 = 앞 셋 order.S 다음 닷새 x · 꽃 = 한 달 큰 차례 · 시듦 = 닷새 작은 차례 · 잠잠 = 닷새 큰 차례 · 같으면 이름)
+    둘 다 없으면 빈 표(부르는 쪽이 옛 차례를 둠) · 오른 크기로는 줄 세우지 않음 — 테마 자료에 없는 업종만 맨 뒤(부르기 전 차례 그대로) */
+function sproutRank() {
+  const r = new Map(), F = thFull();
+  if (F?.order) { for (const z of TZ) for (const n of Array.isArray(F.order[z]) ? F.order[z] : []) if (typeof n === 'string' && !r.has(n)) r.set(n, r.size); if (r.size) return r; }
+  const Hm = thHome(); if (!Hm) return r;
+  const top = Array.isArray(Hm.order?.S) ? Hm.order.S : [], ti = n => (top.includes(n) ? top.indexOf(n) : 99), y = i => (Number.isFinite(i.y) ? i.y : 0), x = i => (Number.isFinite(i.x) ? i.x : 0);
+  const inZone = (a, b) => (a.z === 'S' ? ti(a.n) - ti(b.n) || y(b) - y(a) : a.z === 'B' ? x(b) - x(a) : a.z === 'W' ? y(a) - y(b) : y(b) - y(a));
+  Hm.inds.filter(i => TZ.includes(i?.z) && typeof i.n === 'string').sort((a, b) => TZ.indexOf(a.z) - TZ.indexOf(b.z) || inZone(a, b) || (a.n < b.n ? -1 : a.n > b.n ? 1 : 0)).forEach(i => { if (!r.has(i.n)) r.set(i.n, r.size); });
+  return r;
+}
+/** 목록을 싹 먼저 차례로(같은 자리 · 테마 자료에 없는 것은 지금 차례 그대로 — 안정 정렬) · 표가 비면 null(옛 차례를 그대로 쓰라는 뜻) */
+const bySprout = (xs, nameOf) => { const r = sproutRank(); if (!r.size) return null; const at = x => r.get(nameOf(x)) ?? 1e9; return [...xs].sort((p, q) => at(p) - at(q)); };
 /** 업종 이름들의 자리 수 — 「싹 5 · 꽃 3」(0인 자리는 뺌 · 모르는 업종은 「? n」) · 테마 자료가 없으면 null */
 function zoneCount(names) {
   if (!thHome() && !thFull()) return null;
@@ -730,7 +745,7 @@ function chZone(n) {
 const US_MEAN = {INX: '미국 큰 회사 500곳', IXIC: '기술 회사가 많은 미국 시장', DJI: '미국 큰 회사 30곳', SOX: '미국 반도체 회사들', VIX: '겁날 때 오르는 숫자'};
 /** 칩 쪽(#/f/…) — 칩마다 제 자료만 받음 · 맨 앞 하나만 큰 카드 + 한 줄 목록 10줄 + 「나머지 n곳 보기」([7] 5) · 급등은 반값 한 줄([6] 6) · 「1등」 말 · 보내기 없음([6] 5)
     총정리 2026-10-22 C1 ~ C6: 맨 위 결 한 줄(테마 시계 자리 · 뜻 · 지난 하루) 먼저 — 차례는 그대로(바꾸기는 사장님께 여쭘) */
-const CHIP_NEED = {rise: ['core', 'themeHome'], group: ['core', 'themeHome'], ind: ['core', 'themeHome'], us: ['home'], surge: ['surge', 'sum'], lead: ['cond', 'mkt', 'themeHome'], pick: ['home', 'mkt']};
+const CHIP_NEED = {rise: ['core', 'themeHome'], group: ['core', 'themeHome'], ind: ['core', 'themeHome', 'theme'], us: ['home'], surge: ['surge', 'sum'], lead: ['cond', 'mkt', 'themeHome', 'theme'], pick: ['home', 'mkt']}; // theme = 업종 쪽 자료(30KB · 싹 먼저 차례 — 업종 · 대장주 칩을 열 때만)
 async function vChip(chip) {
   await Promise.all(CHIP_NEED[chip].map(need));
   const T = CHIPS.find(c => c[0] === chip)[1], nodes = [chipsBar(chip)], none = t => ({title: T, nodes: [chipsBar(chip), ...noData(t)]});
@@ -755,9 +770,10 @@ async function vChip(chip) {
     nodes.push(...chipList(gs, groupCard, g => ({href: '#/ch/g/' + enc(g.id), name: g.name, x: g.chg, v: g.v}), '개'));
   } else if (chip === 'ind') {
     if (!core) return none();
-    const inds = [...(core.industries || [])].sort((p, q) => q.chg - p.chg), TH = thHome();
+    // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 — 옛 「한 달 평균으로 많이 오른 차례」를 바꿈) · 테마 자료를 못 받았을 때만 옛 차례 · 옛 글
+    const inds0 = [...(core.industries || [])].sort((p, q) => q.chg - p.chg), sp = bySprout(inds0, i => i.name), inds = sp ?? inds0, TH = thHome();
     if (TH) lead(md(TH.asOf) + ' 기록 — ' + TZ.map(z => TH_ZONES[z] + ' ' + num(TH.count[z] ?? TH.inds.filter(i => i.z === z).length)).join(' · ') + '곳', null, null, ['#/t/sprout', '싹 자리 모두 보기']);
-    note('업종 ' + inds.length + '개 · 한 달 평균으로 많이 오른 차례');
+    note(sp ? '업종 ' + inds.length + '개 · 싹 자리부터 꽃 · 시듦 · 잠잠 차례' : '업종 ' + inds.length + '개 · 한 달 평균으로 많이 오른 차례');
     nodes.push(...chipList(inds, i => card('#/ch/i/' + enc(i.name), dayThumb(i.v, '한 달', i.chg), i.name + ' 업종', '회사 ' + num(i.n) + '곳 · 큰 회사 기준 ' + pct(i.cwChg), first(i.name)),
       i => ({href: '#/ch/i/' + enc(i.name), name: i.name, x: i.chg, v: i.v}), '개'));
   } else if (chip === 'surge') {
@@ -771,10 +787,12 @@ async function vChip(chip) {
     nodes.push(h('a', {class: 'more', href: oldOr('surge', '#/surge'), text: '급등 다섯 칸 자세히 ›'}));
   } else if (chip === 'lead') {
     const C = condOf(), co = D.mkt?.companies; if (!C || !co) return none('회사 크기 자료');
-    const leads = [...C.entries()].filter(([c, o]) => o.rk === 1 && co[c] && Array.isArray(o.l5) && Number.isFinite(o.r5)).sort((a, b) => b[1].r5 - a[1].r5 || a[0].localeCompare(b[0]));
-    const zs = zoneCount(leads.map(([c, o]) => o.i || co[c]?.i)); // 그 대장주가 든 업종의 테마 시계 자리(「1등」 말 없음 — [6] 5 · [10] 1)
+    // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」) — 그 대장주가 든 업종의 자리 차례(업종 칩과 같은 표) · 같으면 종목 번호 · 테마 자료를 못 받았을 때만 옛 차례(5일 오른 차례) · 옛 글
+    const all = [...C.entries()].filter(([c, o]) => o.rk === 1 && co[c] && Array.isArray(o.l5) && Number.isFinite(o.r5)), rk = sproutRank(), indOf = ([c, o]) => o.i || co[c]?.i;
+    const leads = rk.size ? all.sort((a, b) => (rk.get(indOf(a)) ?? 1e9) - (rk.get(indOf(b)) ?? 1e9) || a[0].localeCompare(b[0])) : all.sort((a, b) => b[1].r5 - a[1].r5 || a[0].localeCompare(b[0]));
+    const zs = zoneCount(leads.map(indOf)); // 그 대장주가 든 업종의 테마 시계 자리(「1등」 말 없음 — [6] 5 · [10] 1)
     if (leads.length) lead('대장주는 업종마다 회사 크기가 가장 큰 곳이에요.', null, zs ? '대장주 ' + num(leads.length) + '곳이 든 업종 자리 — ' + zs : null);
-    note('업종마다 가장 큰 회사 ' + leads.length + '곳 · 5일 동안 많이 오른 차례');
+    note(rk.size ? '업종마다 가장 큰 회사 ' + leads.length + '곳 · 싹 업종의 대장주부터' : '업종마다 가장 큰 회사 ' + leads.length + '곳 · 5일 동안 많이 오른 차례');
     nodes.push(...chipList(leads, ([c, o]) => leadCard(c, o), ([c, o]) => ({href: '#/w/' + c, name: co[c].n, x: o.r5, v: o.l5, kk: {code: c, name: co[c].n, kind: 'share'}})));
   } else if (chip === 'pick') {
     const s3 = D.home?.s365, co = D.mkt?.companies || {}, picks = Array.isArray(s3?.list) ? s3.list.filter(([c]) => co[c]) : [];
@@ -980,7 +998,7 @@ async function vShorts(a) {
 
 /* 채널 — 업종(#/ch/i/<이름>) · 갈래(#/ch/g/<번호>) */
 async function vChannel(a) {
-  await Promise.all([need('core'), need('mkt'), need('cond'), ...(String(a || '').startsWith('i/') ? [need('themeHome'), need('theme')] : [])]); // 업종 채널은 테마 시계 자리 한 줄(총정리 C7)도 — 업종 쪽 자료(theme.json)가 날 수를 가짐
+  await Promise.all([need('core'), need('mkt'), need('cond'), need('themeHome'), need('theme')]); // 테마 자료 — 업종 채널 이름 밑 자리 한 줄(총정리 C7 · theme.json 이 날 수를 가짐) · 큰 업종 채널 「업종」 탭의 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」)
   const X = ix(); if (!X) return {title: '채널', nodes: noData()};
   const kind = (a || '').slice(0, 1), id = (a || '').slice(2), Cd = condOf();
   const ch = kind === 'i' ? X.ind.get(id) : kind === 'g' ? X.grp.get(id) : null;
@@ -1007,7 +1025,7 @@ async function vChannel(a) {
     more.addEventListener('click', fill); fill();
     pane.replaceChildren(h('p', {class: 'note', text: Cd ? '몸값 큰 차례예요.' : '번호 차례예요.'}), grid, more);
   };
-  const showInd = () => { pane.replaceChildren(...[...inds].sort((p, q) => q.chg - p.chg).map(i => card('#/ch/i/' + enc(i.name), thumb(i.v, '20일', {x: i.chg}), i.name + ' 업종, 20거래일 ' + pct(i.chg), '회사 ' + num(i.n) + '곳 · 큰 회사는 크게 ' + pct(i.cwChg), first(i.name)))); };
+  const showInd = () => { const i0 = [...inds].sort((p, q) => q.chg - p.chg); pane.replaceChildren(...(bySprout(i0, i => i.name) ?? i0).map(i => card('#/ch/i/' + enc(i.name), thumb(i.v, '20일', {x: i.chg}), i.name + ' 업종, 20거래일 ' + pct(i.chg), '회사 ' + num(i.n) + '곳 · 큰 회사는 크게 ' + pct(i.cwChg), first(i.name)))); }; // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 · 업종 칩과 같은 표) — 테마 자료가 없을 때만 옛 차례
   for (const [t, label] of tabs) {
     const b = h('button', {type: 'button', role: 'tab', 'aria-selected': String(t === 'co'), text: label});
     b.addEventListener('click', () => { for (const x of tabBar.children) x.setAttribute('aria-selected', String(x === b)); (t === 'co' ? showCo : showInd)(); });

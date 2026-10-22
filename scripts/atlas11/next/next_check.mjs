@@ -390,6 +390,13 @@ for (const w of [320, 360, 390]) {
    급등: 「1등」 0 · 보내기 0 · 「N곳 중 n곳이 지난 1년 안에 반값 아래로 …」 N = 목록 수 · n = 요약 chips.surge.half(요약이 그 급등 판으로 만든 때) · 회사 파일(/atlas/data/co/) 0 · 대장주 · 급등 3 화면 이하 */
 {
   const SUMJ = await fetchJSON(base + '/next/data/home-summary.json', 'home-summary.json').catch(() => null);
+  // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」 — 업종 · 대장주 칩은 「많이 오른 차례」 대신 테마 시계 자리 차례) — 이 검사가 theme.json order 로 따로 셈(app.js sproutRank 를 쓰지 않음)
+  const THJ = await fetchJSON(base + '/next/data/theme.json', 'theme.json').catch(() => null);
+  const SPR = new Map(); for (const zk of ['S', 'B', 'W', 'Q']) for (const n of THJ?.order?.[zk] ?? []) if (!SPR.has(n)) SPR.set(n, SPR.size);
+  const sprAt = n => SPR.get(n) ?? 1e9, zoneOfInd = n => THJ?.inds?.find(i => i.n === n)?.z ?? null;
+  const LEADS = (() => { const K = cond?.co; if (!K?.c || cond.asOf !== mkt.asOf) return null; const ls = K.c.map((k, j) => [k, j]).filter(([k, j]) => K.rk?.[j] === 1 && CO[k] && Array.isArray(K.l5?.[j]) && Number.isFinite(K.r5?.[j])), indOf = ([k, j]) => cond.ind?.[K.i?.[j]]?.n || CO[k].i;
+    return {indOf, ls: SPR.size ? ls.sort((p, q) => sprAt(indOf(p)) - sprAt(indOf(q)) || p[0].localeCompare(q[0])) : ls.sort((p, q) => K.r5[q[1]] - K.r5[p[1]] || p[0].localeCompare(q[0]))}; })();
+  const IND0 = SPR.size ? [...core.industries].sort((p, q) => q.chg - p.chg).sort((p, q) => sprAt(p.name) - sprAt(q.name))[0] : [...core.industries].sort((p, q) => q.chg - p.chg)[0];
   const z = await page(360, 640), zReq = []; z.on('request', r => zReq.push(r.url()));
   if (await first(z, base + '/next/#/f/rise') === false) fail('칩 쪽', '처음 열기');
   for (const id of ['rise', 'surge', 'lead', 'pick', 'group', 'ind', 'us']) {
@@ -397,17 +404,31 @@ for (const w of [320, 360, 390]) {
     const c = await z.evaluate(() => { const v = document.querySelector('#view'), li = [...v.querySelectorAll('ul.clist > li')], more = [...v.querySelectorAll('button.more')].map(b => b.textContent);
       return {cards: v.querySelectorAll('a.card, div.card').length, shown: li.filter(e => !e.hidden).length, hid: li.filter(e => e.hidden).length, all: li.length, more, t: v.innerText.replace(/\u00a0/g, ' '), H: Math.max(document.documentElement.scrollHeight, document.body.scrollHeight),
         share: [...v.querySelectorAll('button, a')].filter(e => /보내기|공유/.test(e.textContent)).length,
-        big: (v.querySelector('.card .th .big')?.innerText ?? '').replace(/\s+/g, ' '), bk: !!v.querySelector('.card .th .big .bk'), dur: v.querySelector('.card .th .dur')?.innerText ?? ''}; });
+        big: (v.querySelector('.card .th .big')?.innerText ?? '').replace(/\s+/g, ' '), bk: !!v.querySelector('.card .th .big .bk'), dur: v.querySelector('.card .th .dur')?.innerText ?? '', title: v.querySelector('.card .meta b')?.textContent ?? '', note: [...v.querySelectorAll('p.note')].map(p => p.textContent).join(' | ')}; });
     if (c.cards > 1) fail('칩 큰 카드는 하나([7] 5)', id + ' ' + c.cards);
     // [6] 8 「큰 숫자는 늘 마지막 날 하루 값 · 기간 숫자는 작게」 — 큰 카드 큰 숫자 = 맨 앞 줄의 마지막 날 하루(이 검사가 자료에서 따로 셈) · 기간 %는 아래 작은 칸
     if (id !== 'us') {
       const top = (xs, f) => [...xs].sort(f)[0], gs = id === 'group' ? core.groups : core.industries, miss = new Set(SUMJ?.chips?.surge?.miss || []);
       const want = id === 'rise' ? lineDay(core.rise?.list?.[0]?.v)
-        : id === 'group' || id === 'ind' ? lineDay(top(gs, (p, q) => q.chg - p.chg)?.v)
+        : id === 'ind' ? lineDay(IND0?.v) // 싹 먼저 차례 맨 앞 업종(사장님 2026-10-22 09:41 — 옛 기대: 한 달 많이 오른 맨 앞)
+        : id === 'group' ? lineDay(top(gs, (p, q) => q.chg - p.chg)?.v)
         : id === 'surge' ? top((surge?.members || []).filter(m => m && !miss.has(m.c) && Number.isFinite(m.r5)), (p, q) => q.r5 - p.r5)?.d1
         : id === 'pick' ? (home?.s365?.list || []).filter(([k]) => CO[k])[0]?.[1]
-        : (() => { const K = cond?.co; if (!K?.c || cond.asOf !== mkt.asOf) return null; const ls = K.c.map((k, j) => [k, j]).filter(([k, j]) => K.rk?.[j] === 1 && CO[k] && Array.isArray(K.l5?.[j]) && Number.isFinite(K.r5?.[j])).sort((p, q) => K.r5[q[1]] - K.r5[p[1]] || p[0].localeCompare(q[0])); return ls.length ? lineDay(CO[ls[0][0]].l) : null; })();
+        : LEADS?.ls?.length ? lineDay(CO[LEADS.ls[0][0]].l) : null; // 대장주 = 싹 먼저 차례 맨 앞(사장님 2026-10-22 09:41 — 옛 기대: 5일 많이 오른 맨 앞)
       if (!c.bk || !/[+−]?\d/.test(c.dur) || (want != null && !c.big.includes(P(want)))) fail('칩 큰 숫자 = 마지막 날 하루 · 기간은 작게([6] 8)', `${id} 큰 「${c.big}」 기대 ${want == null ? '?' : P(want)} · 작은 칸 「${c.dur}」`);
+    }
+    // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」) — 업종 칩 큰 카드 = theme.json order.S 맨 앞 · 대장주 칩 큰 카드 = 싹 업종에 대장주가 있으면 싹 업종의 대장주 · 쪽 글에 「많이 오른 차례」 없음
+    if (id === 'ind' && SPR.size) {
+      if (THJ.order?.S?.[0] && c.title !== THJ.order.S[0] + ' 업종') fail('업종 칩 싹 먼저 차례(2026-10-22 09:41)', `큰 카드 「${c.title}」 ≠ 「${THJ.order.S[0]} 업종」`);
+      if (!/싹 자리부터/.test(c.note) || /많이 오른 차례/.test(c.note)) fail('업종 칩 차례 글(싹 먼저)', c.note);
+      bump('싹 먼저 차례');
+    }
+    if (id === 'lead' && SPR.size && LEADS?.ls?.length) {
+      const [k0] = LEADS.ls[0], i0 = LEADS.indOf(LEADS.ls[0]), anyS = LEADS.ls.some(x => zoneOfInd(LEADS.indOf(x)) === 'S');
+      if (!c.title.startsWith(CO[k0].n + ', ')) fail('대장주 칩 싹 먼저 차례(2026-10-22 09:41)', `큰 카드 「${c.title}」 ≠ 「${CO[k0].n}, ${i0} 대장주」`);
+      if (anyS && zoneOfInd(i0) !== 'S') fail('대장주 칩 맨 앞 = 싹 업종의 대장주', `${CO[k0].n} · ${i0} 자리 ${zoneOfInd(i0)}`);
+      if (!/싹 업종의 대장주부터/.test(c.note) || /많이 오른 차례/.test(c.note)) fail('대장주 칩 차례 글(싹 먼저)', c.note);
+      bump('싹 먼저 차례');
     }
     if (c.shown > 10) fail('칩 한 줄 목록 10줄까지([7] 5)', id + ' ' + c.shown);
     if (c.hid && !c.more.some(t => t.includes('나머지 ' + N(c.hid)))) fail('「나머지 n곳 보기」([7] 5)', `${id} 숨김 ${c.hid} · ${c.more.join(' / ')}`);
