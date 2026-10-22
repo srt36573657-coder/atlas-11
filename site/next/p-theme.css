@@ -96,8 +96,6 @@ a.th-ck:active { background: #161616; }
 .th-why > i { flex: none; color: #BDBDBD; font-style: normal; font-size: var(--fs-4); text-align: right; }
 .th-why:active { border-color: var(--ink); }
 /* 회사 15쪽 「왜 그럴까?」 열한 걸음(why-chain.css 그대로 · 사장님 2026-10-22 08:53) — 테마 쪽 글 시작 왼쪽 줄 셋([10] 7)에 맞춤: 번호 · 끝 › 는 가운데 · 오른쪽 맞춤(셈 밖) · 갈래 이름은 테 없는 작은 글(카드 글 시작과 같은 자리) */
-.tc .wc.play { position: static; left: auto; top: auto; height: auto; transform: none; border: 0; border-radius: 0; background: none; pointer-events: auto; } /* why-chain.js 가 붙이는 「play」 이름이 app.css 의 영상 재생 단추 .play(가운데 56px 동그라미 · 누름 막음)와 부딪힘 — 테마 쪽에서는 되돌림(공용 파일 이름 바꾸기는 맡긴 사람 몫) */
-.tc .wc.play::after { content: none; }
 .tc .wc-no { text-align: center; }
 .tc .wc-go { text-align: right; }
 .tc .wc-tag { padding: 0; border: 0; }

@@ -12,14 +12,15 @@ const fin = Number.isFinite;
 const num = n => (fin(n) ? Math.round(n).toLocaleString('ko-KR') : '?');
 const enc = s => encodeURIComponent(s);
 
-/** {c 회사 줄(theme-more top · big) · ind 업종 이름 · I 업종(theme.json inds) · M 업종 더(theme-more inds[ind]) · inds 모든 업종(이웃 셈)} → 걸음 열하나(why-chain.js 꼴) */
-export function coSteps({c, ind, I = null, M = null, inds = []} = {}) {
+/** {c 회사 줄(theme-more top · big) · ind 업종 이름 · I 업종(theme.json inds) · M 업종 더(theme-more inds[ind]) · inds 모든 업종(이웃 셈) · past 이 회사 4단 지나온 길 주소(#/ 만)} → 걸음 열하나(why-chain.js 꼴)
+ *  걸음마다 누르면 그 근거 쪽(뉴스 걸음만 고리 없음 — 아직 확인 전) */
+export function coSteps({c, ind, I = null, M = null, inds = [], past = ''} = {}) {
   const S = [], name = c?.n ?? '?', code = c?.c ?? '';
   // 1 회사 — 열흘
-  S.push({a: fin(c?.d10) ? `${josa(name, '는')} 열흘 동안 ${pp(c.d10)}%예요` : `? ${name} 열흘 값을 못 받았어요`, tag: '회사'});
+  S.push({a: fin(c?.d10) ? `${josa(name, '는')} 열흘 동안 ${pp(c.d10)}%예요` : `? ${name} 열흘 값을 못 받았어요`, tag: '회사', href: code ? '#/t/c/' + enc(code) : ''});
   // 2 지난날 — 앞 닷새 · 뒤 닷새 가운데 어디에 몰렸나(14쪽 · 15쪽 옛 1번과 같은 셈)
   const has5 = fin(c?.a5) && fin(c?.b5), late = has5 && c.b5 >= c.a5, when = late ? '최근 닷새' : '앞 닷새';
-  S.push({q: '그 열흘 가운데 언제 몰렸을까?', a: has5 ? `${when}에 몰렸어요 · 앞 닷새 ${pp(c.a5)}% · 뒤 닷새 ${pp(c.b5)}%` : '? 닷새씩 못 견줬어요', tag: '지난날'});
+  S.push({q: '그 열흘 가운데 언제 몰렸을까?', a: has5 ? `${when}에 몰렸어요 · 앞 닷새 ${pp(c.a5)}% · 뒤 닷새 ${pp(c.b5)}%` : '? 닷새씩 못 견줬어요', tag: '지난날', href: typeof past === 'string' && past.startsWith('#/') ? past : ''});
   // 3 업종 — 먼저였나 뒤따랐나(14쪽 lead 셈 그대로 · 업종보다 더 오른 때가 앞 닷새면 먼저)
   const lead = has5 && I && fin(I.A5) && fin(I.B5) ? (c.a5 - I.A5) > (c.b5 - I.B5) : null;
   S.push({q: has5 ? `${when}에 몰렸으면 업종보다 먼저였을까?` : '업종보다 먼저였을까?', a: lead == null ? '? 아직 못 견줬어요' : lead ? '업종보다 먼저 움직였어요' : '업종을 뒤따라 움직였어요', tag: '업종', href: code ? '#/t/c/' + enc(code) + '/lead' : ''});
@@ -28,10 +29,10 @@ export function coSteps({c, ind, I = null, M = null, inds = []} = {}) {
   S.push({q: lead == null ? '업종 안에서는 몇 번째일까?' : lead ? '먼저 움직였으면 업종 안에서는 몇 번째일까?' : '뒤따랐으면 업종 안에서는 몇 번째일까?',
     a: rank && ranked ? `열흘 값으로 ${num(ranked)}곳 가운데 ${num(rank)}번째예요` : '업종에서 몸값이 큰 회사예요', tag: '업종', href: code ? '#/t/c/' + enc(code) + '/rank' : ''});
   // 5 업종 전체 — 열흘
-  S.push({q: rank && ranked ? `${num(ranked)}곳 가운데 ${num(rank)}번째면 업종 전체는?` : '몸값이 큰 회사면 업종 전체는?', a: fin(I?.m10) ? `${ind} · 업종 열흘 ${pp(I.m10)}%` : '? 업종 값을 못 받았어요', tag: '업종'});
+  S.push({q: rank && ranked ? `${num(ranked)}곳 가운데 ${num(rank)}번째면 업종 전체는?` : '몸값이 큰 회사면 업종 전체는?', a: fin(I?.m10) ? `${ind} · 업종 열흘 ${pp(I.m10)}%` : '? 업종 값을 못 받았어요', tag: '업종', href: ind ? '#/t/i/' + enc(ind) : ''});
   // 6 테마 시계 자리 — 자리 · 점 수(누르면 그 업종 쪽)
   const zn = I?.z && ZONES[I.z] ? ZONES[I.z] : null;
-  S.push({q: fin(I?.m10) ? `업종이 열흘 ${pp(I.m10)}%면 테마 시계 어디일까?` : '그 업종은 테마 시계 어디일까?', a: zn && fin(I?.sc) ? `${zn} 자리 · 점 넷 가운데 ${num(I.sc)}개` : '? 테마 시계 자료를 못 받았어요', tag: '테마 시계', href: ind ? '#/t/i/' + enc(ind) : ''});
+  S.push({q: fin(I?.m10) ? `업종이 열흘 ${pp(I.m10)}%면 테마 시계 어디일까?` : '그 업종은 테마 시계 어디일까?', a: zn && fin(I?.sc) ? `${zn} 자리 · 점 넷 가운데 ${num(I.sc)}개` : '? 테마 시계 자료를 못 받았어요', tag: '테마 시계', href: ind ? '#/t/i/' + enc(ind) + '/path' : ''}); // 지나온 길 쪽 = 테마 시계에 그 업종을 밝힌 그림
   // 7 큰 회사 — 이 회사가 아닌 가장 큰 회사의 열흘(없으면 큰 회사 셋 평균)
   const big = (M?.big ?? []).find(b => b && b.c !== code && fin(b.d10));
   const bigA = big ? `${big.n} · 열흘 동안 ${pp(big.d10)}%` : fin(I?.bigAvg) ? `가장 큰 회사 셋 평균 ${pp(I.bigAvg)}%` : '? 큰 회사 값을 못 받았어요';
