@@ -75,6 +75,14 @@ jobs:
         if: ${{ always() && env.NETLIFY_AUTH_TOKEN != '' }} # 올리기가 실패해도 사이트 상태(응답 코드)를 남김 — 2026-10-09 넷리파이 Forbidden 까닭 찾기
         continue-on-error: true
         run: node scripts/atlas11/netlify_status.mjs
+      - name: 자동으로 산 기록 셈(가짜 돈)
+        # 사장님 2026-10-22 08:35 「자동 매수 프로그램을 만들어라 …」 · 08:50 「가짜돈으로 해」 — 올라간 뒤 한 번 /api/auto 셈(lib/atlas11/auto.mjs tick)을 부름
+        #   싹 1 ~ 3번에 새로 든 업종의 대장주를 가짜 돈 3천만 원어치 · 같은 날 자료면 아무 일 없음 · 장 중 값이면 기다림 · 열쇠 없음 · 실패해도 올리기와 기록은 그대로
+        if: ${{ steps.deploy.outcome == 'success' }}
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          curl -fsS --max-time 40 -X POST -H 'content-type: application/json' --data '{"op":"tick"}' https://aaa7377.com/api/auto
       - name: 열쇠 없음
         if: ${{ env.NETLIFY_AUTH_TOKEN == '' }}
         run: echo "::warning::NETLIFY_AUTH_TOKEN 이 없어 올리지 못했습니다"
