@@ -56,7 +56,7 @@ details.ptoday-how > summary { color: var(--sub); font-size: var(--fs-1); }
 .ptoday-yl { font-size: var(--fs-1); } /* 눈금 글 크기 = 오른쪽 눈금 칸 넓이의 잣대(p-today.js padR = 글 크기 × 3.05) */
 .ptoday-yl span { position: absolute; right: 0; color: var(--mute); font-size: var(--fs-1); line-height: 1; white-space: nowrap; text-align: right; pointer-events: none; }
 .ptoday-ch .ptoday-lf { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-.ptoday-ch .ptoday-lg { fill: none; stroke: #5B6B61; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.ptoday-ch .ptoday-lg { fill: none; stroke: #33443A; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .ptoday-ch .ptoday-ag2 { fill: rgba(242, 239, 232, .045); }
 .ptoday-ch .ptoday-now { fill: var(--ink); } .ptoday-ch .ptoday-hd { fill: var(--ink); opacity: 0; } .ptoday-ch.ptoday-play .ptoday-hd { opacity: 1; }
 .ptoday-ch .ptoday-cur { stroke: var(--sub); stroke-width: 1; opacity: 0; } .ptoday-ch .ptoday-cd { fill: var(--ink); opacity: 0; }
@@ -68,7 +68,7 @@ details.ptoday-how > summary { color: var(--sub); font-size: var(--fs-1); }
 .ptoday-per button { flex: 1; min-height: 44px; border: 1px solid transparent; border-radius: 12px; background: var(--card2); color: var(--sub); font-size: var(--fs-2); }
 .ptoday-per button[aria-pressed="true"] { background: var(--card3); color: var(--ink); font-weight: 700; border-color: var(--hair2); }
 .ptoday-lgd { margin: var(--sp-2) 0 0; color: var(--sub); font-size: var(--fs-1); line-height: 1.6; }
-.ptoday-lgd span { margin-right: var(--sp-2); white-space: nowrap; } .ptoday-lgd i { display: inline-block; width: 24px; height: 0; margin-left: var(--sp-1); border-top: 2px solid var(--ink); vertical-align: middle; } .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #5B6B61; } /* 이름 먼저 · 선 표본은 뒤 — 글 시작 줄이 카드 글 줄(32) 하나로 */
+.ptoday-lgd span { margin-right: var(--sp-2); white-space: nowrap; } .ptoday-lgd i { display: inline-block; width: 24px; height: 0; margin-left: var(--sp-1); border-top: 2px solid var(--ink); vertical-align: middle; } .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #33443A; } /* 이름 먼저 · 선 표본은 뒤 — 글 시작 줄이 카드 글 줄(32) 하나로 */
 .ptoday-lgd b { font-weight: 600; } .ptoday-lgd .ptoday-z { color: var(--mute); } .ptoday-lgd.ptoday-one .ptoday-g2 { display: none; }
 .ptoday-pc { margin-top: var(--sp-1); }
 

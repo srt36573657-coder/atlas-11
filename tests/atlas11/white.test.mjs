@@ -53,7 +53,7 @@ test('정적 문이 망치는 길 · 옛 화면 남김을 잡음(가짜 폴더)'
     const d = path.join(tmp, 'dist'), n = path.join(d, 'next'); fs.mkdirSync(n, {recursive: true});
     const nav = '<nav class="tabs"><a href="#/">오늘 장</a><a href="#/m">시황</a><a href="#/why">매매일지</a><a href="#/s">관심</a><a href="#/me">보유종목</a></nav>';
     fs.writeFileSync(path.join(n, 'index.html'), `<link rel="stylesheet" href="/next/home.css">${nav}`);
-    fs.writeFileSync(path.join(n, 'app.css'), 'html.white{--bg:#E6F5EB;--ink:#102218;--gold:#7A5843;--up:#00702A;--down:#1E5BD8}'); // 가짜 폴더 색 = 지금 잣대 색 4 출발값(2026-10-20 20:27 우주 밤하늘 — 옛 #080808 · #F9D21C 그대로라 이 시험만 걸려 있었음)
+    fs.writeFileSync(path.join(n, 'app.css'), 'html.white{--bg:#E6F5EB;--ink:#0A160E;--gold:#7A5843;--up:#00702A;--down:#1E5BD8}'); // 가짜 폴더 색 = 지금 잣대 색 4 출발값(2026-10-20 20:27 우주 밤하늘 — 옛 #080808 · #F9D21C 그대로라 이 시험만 걸려 있었음)
     fs.writeFileSync(path.join(n, 'home.css'), '.x{color:red}');
     fs.writeFileSync(path.join(n, 'app.js'), `const a = "jhBtn data-ess data-w data-say data-fact"; document.documentElement.classList.toggle('white', true);`);
     fs.writeFileSync(path.join(d, '_headers'), '/next/*\n  X-Robots-Tag: noindex\n  Cache-Control: no-cache\n');

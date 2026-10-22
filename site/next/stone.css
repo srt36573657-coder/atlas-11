@@ -26,10 +26,10 @@ html.white .top .ibtn.tgift[aria-current="page"] { background: var(--gold-wash);
 
 /* ── 아래 단추 다섯: 먹 바탕 · 지금 쪽은 흰 글 · 가운데 단추도 노랑 칠 없음 ── */
 html.white .tabs { background: #E6F5EB; border-top: 1px solid #C9DCCF; }
-html.white .tabs a { color: #5B6B61; }
+html.white .tabs a { color: #33443A; }
 html.white .tabs a[aria-current="page"] { color: var(--ink); font-weight: 700; }
 html.white .tabs a.plus .ic, html.white .tabs a.plus svg { color: inherit; fill: none; stroke: currentColor; background: none; }
-html.white .tabs a.plus { color: #5B6B61; }
+html.white .tabs a.plus { color: #33443A; }
 html.white .tabs a.plus[aria-current="page"] { color: var(--ink); }
 
 /* ── 노랑 줄이기: 카톡 단추는 테 둥근 칸 + 작은 노란 말풍선 그림(칠한 큰 노랑 칸 없음) · 그림 칸 선은 가늘게 · 밑 칠은 아주 옅게 ── */
@@ -64,7 +64,7 @@ html.white.home .s-art { flex: none; width: 150px; height: 120px; }
 /* 돌이 물음 한 줄 — 말풍선 + 보내기 */
 html.white.home .w-say { display: flex; align-items: center; gap: var(--sp-1); margin: 0; }
 html.white.home .w-say p { display: inline-flex; align-items: center; gap: var(--sp-1); min-width: 0; margin: 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #C9DCCF; border-radius: 22px 22px 22px 6px; background: #FFFFFF; font-size: var(--fs-2); font-weight: 500; line-height: 1.3; }
-html.white.home .w-say .s-who { flex: none; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #C9DCCF; color: #5B6B61; font-size: var(--fs-1); }
+html.white.home .w-say .s-who { flex: none; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #C9DCCF; color: #33443A; font-size: var(--fs-1); }
 html.white.home .w-say .w-kk { margin: 0 0 0 auto; width: 48px; height: 48px; border-radius: 24px; border: 1px solid var(--hair2); background: transparent; color: var(--ink); }
 html.white.home .w-say .w-kk .ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -83,28 +83,28 @@ html.white.home section.w-ess { margin: 0; padding: 0; border: 0; border-radius:
 html.white.home .w-ess .ess-d > summary { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-1); min-height: 48px; padding: 0; font-size: var(--fs-2); font-weight: 500; line-height: 1.5; letter-spacing: -.015em; }
 html.white.home .w-ess .ess-d > summary::after { content: '⌄'; flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border: 1px solid #3D5E4B; border-radius: 24px; color: var(--ink); line-height: 1; }
 html.white.home .w-ess .ess-d[open] > summary::after { content: '⌃'; }
-html.white.home .w-ess .ess-l, html.white.home .w-ess .ess-l.q { padding: 0; color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .w-ess .ess-l, html.white.home .w-ess .ess-l.q { padding: 0; color: #24342A; font-size: var(--fs-1); }
 html.white.home .w-ess .ess-l.q { color: var(--gold); }
 html.white.home .w-ess .ess-d > .ess-l:last-child { padding-bottom: 0; }
 
 /* ② 지난 기록 — 오늘 장 한 줄 · 오른 곳 · 내린 곳 큰 숫자 · 사이 가는 막대 */
-html.white.home a.w-today { margin: 0; padding: 0; min-height: 48px; color: #4A5A50; font-size: var(--fs-1); }
-html.white.home a.w-today .hm-bd { color: #4A5A50; }
+html.white.home a.w-today { margin: 0; padding: 0; min-height: 48px; color: #24342A; font-size: var(--fs-1); }
+html.white.home a.w-today .hm-bd { color: #24342A; }
 html.white.home section.w-news { margin: 0; padding: 0; border: 0; }
 html.white.home .w-news .w-facts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-1); margin: 0; padding: 0; border: 0; }
 html.white.home .w-news .w-fl { display: flex; margin: 0; }
 html.white.home .w-news .w-f { display: flex; align-items: baseline; gap: var(--sp-1); }
-html.white.home .w-news .w-lb { min-width: 52px; color: #4A5A50; font-size: var(--fs-1); font-weight: 500; }
+html.white.home .w-news .w-lb { min-width: 52px; color: #24342A; font-size: var(--fs-1); font-weight: 500; }
 html.white.home .w-news .w-f b { font-size: var(--fs-5); font-weight: 300; line-height: 1.2; letter-spacing: -.03em; }
 html.white.home .w-news .w-why { min-height: 48px; padding: 0 var(--sp-2); border: 1px solid #3D5E4B; border-radius: 24px; background: transparent; color: var(--ink); font-size: var(--fs-1); font-weight: 500; white-space: nowrap; }
-html.white.home .w-news .w-qs { flex-basis: 100%; margin: 0 0 var(--sp-1); padding: 0; list-style: none; color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .w-news .w-qs { flex-basis: 100%; margin: 0 0 var(--sp-1); padding: 0; list-style: none; color: #24342A; font-size: var(--fs-1); }
 /* 물음 셋 — 누르면 바로 밑에 받은 자료로 센 지난 사실(app.js whyQ · 사장님 2026-10-19 13:27 「해결해」) */
 html.white.home .w-news .w-qs li { border-top: 1px solid #C9DCCF; }
 html.white.home .w-news button.w-q { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); width: 100%; min-height: 48px; margin: 0; padding: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-1); font-weight: 600; text-align: left; cursor: pointer; }
-html.white.home .w-news button.w-q i { font-style: normal; color: #4A5A50; transition: transform .15s; }
+html.white.home .w-news button.w-q i { font-style: normal; color: #24342A; transition: transform .15s; }
 html.white.home .w-news button.w-q[aria-expanded="true"] i { transform: rotate(90deg); }
 html.white.home .w-news .w-ans { margin: 0; padding: 0 0 var(--sp-1); }
-html.white.home .w-news .w-ans p { margin: 0; color: #4A5A50; font-size: var(--fs-1); line-height: 1.5; }
+html.white.home .w-news .w-ans p { margin: 0; color: #24342A; font-size: var(--fs-1); line-height: 1.5; }
 html.white.home .w-news .w-ans p.w-ah { margin: var(--sp-1) 0 0; color: var(--ink); font-weight: 700; }
 html.white.home #view:has(.w-qs:not([hidden])) .s-thumb { position: static; }
 html.white.home .w-news .w-ans a { display: inline-flex; align-items: center; min-height: 48px; color: var(--ink); font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; }
@@ -116,16 +116,16 @@ html.white.home .s-split .gd { background: var(--down-bg); }
 /* ③ 한 달 뒤 — 점선 말풍선 · 멈춤 · 약속 수 · 이 기기에만 */
 html.white.home a.s-ghost, html.white.home a.w-month { justify-self: start; display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 48px; margin: 0; padding: 0 var(--sp-2); border: 1px dashed #3D5E4B; border-radius: 6px 22px 22px 22px; background: transparent; color: var(--ink); font-size: var(--fs-2); font-weight: 500; text-decoration: none; }
 html.white.home a.w-month { border-style: solid; border-color: var(--gold); }
-html.white.home .s-mem { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-2); margin: 0; color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .s-mem { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-2); margin: 0; color: #24342A; font-size: var(--fs-1); }
 html.white.home .s-mem .w-cnt { display: flex; flex-wrap: wrap; gap: 0 var(--sp-2); min-width: 0; margin: 0; border-top: 0; }
-html.white.home .s-mem .w-n { flex: 0 1 auto; min-width: 0; flex-wrap: wrap; margin: 0; padding: 0; color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .s-mem .w-n { flex: 0 1 auto; min-width: 0; flex-wrap: wrap; margin: 0; padding: 0; color: #24342A; font-size: var(--fs-1); }
 html.white.home .s-mem .w-n b { color: var(--ink); font-size: var(--fs-3); font-weight: 700; }
 
 /* 진화 한 줄 */
-html.white.home a.s-evo { display: flex; align-items: center; gap: var(--sp-1); min-height: 48px; margin: 0; color: #4A5A50; font-size: var(--fs-1); text-decoration: none; }
+html.white.home a.s-evo { display: flex; align-items: center; gap: var(--sp-1); min-height: 48px; margin: 0; color: #24342A; font-size: var(--fs-1); text-decoration: none; }
 html.white.home a.s-evo b { color: var(--ink); font-size: var(--fs-3); font-weight: 700; letter-spacing: -.02em; white-space: nowrap; }
 html.white.home a.s-evo .when { flex: 1; }
-html.white.home a.s-evo i { font-style: normal; font-size: var(--fs-4); color: #4A5A50; }
+html.white.home a.s-evo i { font-style: normal; font-size: var(--fs-4); color: #24342A; }
 
 /* 엄지 자리 — 찾기 칸(흰 「시작」 하나) · 아래 단추 바로 위에 붙음(찾은 줄은 붙은 채로 위로 펼침 · 「왜 그럴까?」 물음이 열리면 풀림) */
 html.white.home .s-thumb { position: sticky; bottom: calc(var(--tabs) + env(safe-area-inset-bottom)); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; margin: auto 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #C9DCCF; background: #E6F5EB; }
@@ -136,16 +136,16 @@ html.white.home .s-thumb:has(details.w-all[open]) { position: static; }
 html.white.home .s-thumb .w-hits { top: auto; bottom: calc(100% + 4px); }
 html.white.home .s-thumb form.w-find { flex: 1 1 100%; min-width: 0; height: 56px; align-items: center; margin: 0; padding: 0 var(--sp-1) 0 0; border: 1px solid #5E7F6C; border-radius: 28px; background: #FFFFFF; }
 html.white.home .s-thumb .w-find .w-in { flex: 1 1 0; width: 0; height: 52px; padding: 0 var(--sp-2); border-radius: 28px 0 0 28px; background: transparent; color: var(--ink); font-size: var(--fs-2); }
-html.white.home .s-thumb .w-find .w-in::placeholder { color: #4A5A50; }
-html.white.home .s-thumb .w-find .w-go { width: auto; min-width: 72px; height: 48px; padding: 0 var(--sp-2); border-radius: 24px; background: #102218; color: #FFFFFF; font-size: var(--fs-1); font-weight: 700; }
+html.white.home .s-thumb .w-find .w-in::placeholder { color: #24342A; }
+html.white.home .s-thumb .w-find .w-go { width: auto; min-width: 72px; height: 48px; padding: 0 var(--sp-2); border-radius: 24px; background: #0A160E; color: #FFFFFF; font-size: var(--fs-1); font-weight: 700; }
 html.white.home .s-thumb .w-hits { background: #FFFFFF; border-color: #3D5E4B; }
 html.white.home .s-thumb nav.w-go4 { flex: 1 1 auto; min-width: 0; margin: 0; border: 0; }
-html.white.home .s-thumb .w-go4 a { min-width: 0; min-height: 48px; color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .s-thumb .w-go4 a { min-width: 0; min-height: 48px; color: #24342A; font-size: var(--fs-1); }
 html.white.home .s-thumb .w-go4 .ic { display: none; }
 html.white.home .s-thumb details.w-all { flex: none; min-width: 0; max-width: 100%; margin: 0; border: 0; }
 html.white.home .s-thumb nav.w-go4 { flex-wrap: wrap; }
 html.white.home .s-thumb details.w-all[open] { flex: 1 1 100%; }
-html.white.home .s-thumb details.w-all > summary { min-height: 48px; display: flex; align-items: center; padding: 0 var(--sp-1); color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .s-thumb details.w-all > summary { min-height: 48px; display: flex; align-items: center; padding: 0 var(--sp-1); color: #24342A; font-size: var(--fs-1); }
 /* 엄지 칸 한 줄 · 다시 나오는 칸(사장님 2026-10-21 02:11 · 02:29 「어」) — 아래로 읽으면 아래로 미끄러져 숨고(s-away) 위로 밀면 0.32초에 다시 · 화면을 밀지 않음(transform) */
 html.white.home .s-thumb { transition: transform .32s ease; will-change: transform; }
 html.white.home .s-thumb.s-away { transform: translateY(calc(100% + var(--tabs) + 16px + env(safe-area-inset-bottom))); pointer-events: none; }
@@ -153,11 +153,11 @@ html.white.home .s-thumb.s-away { transform: translateY(calc(100% + var(--tabs) 
 /* 바로 가기 넷 · 전부 보기 — 붙지 않고 화면 안 제자리(엄지 칸에서 내려옴 · 모양은 예전 엄지 칸 그대로) */
 html.white.home .s-short { display: flex; flex-wrap: wrap; align-items: center; margin: var(--sp-2) 0 0; padding: var(--sp-1) 0 0; border-top: 1px solid #C9DCCF; }
 html.white.home .s-short nav.w-go4 { flex: 1 1 auto; flex-wrap: wrap; min-width: 0; margin: 0; border: 0; }
-html.white.home .s-short .w-go4 a { min-width: 0; min-height: 48px; color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .s-short .w-go4 a { min-width: 0; min-height: 48px; color: #24342A; font-size: var(--fs-1); }
 html.white.home .s-short .w-go4 .ic { display: none; }
 html.white.home .s-short details.w-all { flex: none; min-width: 0; max-width: 100%; margin: 0; border: 0; }
 html.white.home .s-short details.w-all[open] { flex: 1 1 100%; }
-html.white.home .s-short details.w-all > summary { min-height: 48px; display: flex; align-items: center; padding: 0 var(--sp-1); color: #4A5A50; font-size: var(--fs-1); }
+html.white.home .s-short details.w-all > summary { min-height: 48px; display: flex; align-items: center; padding: 0 var(--sp-1); color: #24342A; font-size: var(--fs-1); }
 
 /* 좁은 폭(320) — 그림을 줄여 본질 · 찾기 칸이 한 화면에 들게 */
 @media (max-width: 349px) {
@@ -175,4 +175,4 @@ html.white .cp-card .cp-fill { display: block; width: 0; height: 100%; border-ra
 html.white .cp-card .cp-t { margin: 0 0 var(--sp-1); color: var(--sub); font-size: var(--fs-1); }
 html.white .cp-card .cp-q { color: var(--sub); }
 html.white .cp-card .cp-code { margin: 0 0 var(--sp-1); color: var(--ink); font-size: var(--fs-5); font-weight: 700; letter-spacing: .06em; }
-html.white .cp-card .cp-go { min-height: 48px; padding: 0 var(--sp-2); border: 0; border-radius: 24px; background: #102218; color: #FFFFFF; font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }
+html.white .cp-card .cp-go { min-height: 48px; padding: 0 var(--sp-2); border: 0; border-radius: 24px; background: #0A160E; color: #FFFFFF; font: inherit; font-size: var(--fs-1); font-weight: 700; cursor: pointer; }

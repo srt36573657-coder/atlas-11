@@ -13,7 +13,7 @@
   --ease: cubic-bezier(.2, .8, .2, 1);
   --top: 58px; --tabs: 68px;
   /* 글씨 크기 여섯 · 간격 셋(사장님 2026-10-18 [10] 5 · 6 · 8 — 17px 아래 없음 · 한 화면 여섯 가지까지 · 간격은 8 · 16 · 24 만 · 음수 없음 · 쓰는 곳은 docs/design/godori-2026-10-18/accept/S12.md) */
-  --fs-1: 17px; --fs-2: 19px; --fs-3: 21px; --fs-4: 24px; --fs-5: 30px; --fs-6: 48px; /* 작은 글 · 본문 · 칸 제목 · 화면 제목 · 큰 숫자 · 가장 큰 숫자 */
+  --fs-1: 18px; --fs-2: 20px; --fs-3: 22px; --fs-4: 24px; --fs-5: 30px; --fs-6: 48px; /* 2026-10-23 00:24 「글이 더 눈에더 보여야 해」 — 작은 글 · 본문 · 칸 제목 한 단씩(옛 17 · 19 · 21) */ /* 작은 글 · 본문 · 칸 제목 · 화면 제목 · 큰 숫자 · 가장 큰 숫자 */
   --sp-1: 8px; --sp-2: 16px; --sp-3: 24px;
 }
 * { box-sizing: border-box; }
@@ -481,20 +481,20 @@ html.white {
      ③ 글 대비 4.5 넘게(굵고 19px 넘는 글은 3) · 흐린 회색 글 없음 ④ 움직임 · 반짝임 없음(「빠르게 움직이거나 깜박이는 것은 어지러움을 부른다」) ⑤ 오름 · 내림은 색만이 아니라 「+ · −」 부호로도 앎
      옛 판: 맑은 연초록 #D6F2E0(00:09) · 숲 초록 #0B2716(2026-10-22 23:23) · 우주 밤하늘 #070B17(2026-10-20 20:27) · 돌 판 #080808(2026-10-19 10:31) */
   color-scheme: light;
-  --bg: #E6F5EB; --night: #E6F5EB; --band: #E6F5EB; --violet: #102218;
+  --bg: #E6F5EB; --night: #E6F5EB; --band: #E6F5EB; --violet: #0A160E;
   --card: #FFFFFF; --card2: #F2F8F4; --card3: #DDEFE3;
   --hair: #5E7F6C; --hair2: #3D5E4B; --line: #C9DCCF; --hair-soft: #DCE9E0; --seam: #DDEFE3; --press: #DDEFE3; --lift: #FFFFFF;
-  --ink: #102218; --ink-hi: #102218; --sub: #4A5A50; --mute: #5B6B61; --flat: #5B6B61;
-  --violet-ink: #102218; --violet-wash: #FFFFFF; --violet-line: #3D5E4B; --violet-glow: #F2F8F4;
+  --ink: #0A160E; --ink-hi: #0A160E; --sub: #24342A; --mute: #33443A; --flat: #33443A;
+  --violet-ink: #0A160E; --violet-wash: #FFFFFF; --violet-line: #3D5E4B; --violet-glow: #F2F8F4;
   --gold: #7A5843; --gold-wash: #F2F8F4; --gold-line: #7A5843;
   --up: #00702A; --down: #1E5BD8; --up-ink: #00702A; --down-ink: #1E5BD8; --up-bg: #D3F0DC; --down-bg: #DCE6FB; /* 오름 = 짙은 초록 글 · 맑은 초록 칸(00:07 「아니 노란빛 없이 맑은 녹색」) · 내림 = 파랑 글 · 연한 파랑 칸 */
   --up-fill: rgba(0, 112, 42, .16); --down-fill: rgba(30, 91, 216, .16); --up-fade: rgba(0, 112, 42, .06); --down-fade: rgba(30, 91, 216, .06);
-  --lacquer: #FFFFFF; --lacquer-ink: #102218; --lacquer-sub: #4A5A50; --lacquer-gold: #7A5843;
-  --moon: #102218; --moonrow: #F2F8F4;
-  --m4-band: #E6F5EB; --m4-line: #9DB7A7; --m4-soft: #9DB7A7; --m4-neu: #5B6B61; --m4-line2: #DCE9E0;
+  --lacquer: #FFFFFF; --lacquer-ink: #0A160E; --lacquer-sub: #24342A; --lacquer-gold: #7A5843;
+  --moon: #0A160E; --moonrow: #F2F8F4;
+  --m4-band: #E6F5EB; --m4-line: #9DB7A7; --m4-soft: #9DB7A7; --m4-neu: #33443A; --m4-line2: #DCE9E0;
   background: #E6F5EB;
 }
-html.white body { background: #E6F5EB; color: var(--ink); font-weight: 500; } /* 글씨 조금 진하게(사장님 2026-10-22 23:20 「글씨에 더 포인트가 갔으면 좋겠어요 · 글꼴진하게」) */
+html.white body { background: #E6F5EB; color: var(--ink); font-weight: 600; } /* 글씨 조금 진하게(사장님 2026-10-22 23:20 「글씨에 더 포인트가 갔으면 좋겠어요 · 글꼴진하게」) */
 /* 그림자 · 글 그림자는 흰 판 안 어디에도 없음(입체는 원래 없음)(테두리가 필요한 칸은 아래에서 outline · border 로 다시 그림) */
 html.white :is(.top, .tabs, #view, .foot, .trial, .toast),
 html.white :is(.top, .tabs, #view, .foot, .trial) * { box-shadow: none !important; text-shadow: none !important; }
