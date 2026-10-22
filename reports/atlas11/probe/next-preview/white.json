@@ -1,26 +1,23 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T07:10:58.972Z",
+ "at": "2026-10-22T08:31:05.828Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 419,
-  "fail": 2
+  "pass": 421,
+  "fail": 0
  },
- "fails": [
-  "320 × 568 테마 시계 그림 한 화면 안 — 그림 아래 517 > 아래 단추 500",
-  "③ 가장 큰 그림 2.5초 안(느린 4G) — 2512ms"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034637699048826634,
-   "chars": 169,
+   "chars": 166,
    "blocks": {
-    "ess": 1194,
+    "ess": 1164,
     "find": 776,
-    "today": 1286,
-    "gdr": 1634,
-    "all": 1634
+    "today": 1256,
+    "gdr": 1606,
+    "all": 1606
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -46,10 +43,10 @@
     true,
     true
    ],
-   "themeChars": 136,
+   "themeChars": 143,
    "top": [
     [
-     35,
+     32,
      "ess p.ess-l",
      "사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아"
     ],
@@ -180,8 +177,8 @@
     ]
    ],
    "theme": {
-    "top": 256,
-    "clockBottom": 575
+    "top": 232,
+    "clockBottom": 551
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -201,11 +198,11 @@
    "bodyLum": 0.0034637699048826634,
    "chars": 105,
    "blocks": {
-    "ess": 1071,
+    "ess": 1066,
     "find": 776,
-    "today": 1163,
-    "gdr": 1511,
-    "all": 1511
+    "today": 1158,
+    "gdr": 1507,
+    "all": 1507
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -231,7 +228,7 @@
     true,
     true
    ],
-   "themeChars": 136,
+   "themeChars": 143,
    "top": [
     [
      24,
@@ -355,8 +352,8 @@
     ]
    ],
    "theme": {
-    "top": 256,
-    "clockBottom": 575
+    "top": 232,
+    "clockBottom": 551
    },
    "bodyHex": "#070B17",
    "inkHex": "#FFFFFF",
@@ -682,15 +679,15 @@
    }
   },
   "speed": {
-   "lcp": 2512,
-   "inp": 104,
-   "cls": 0.003
+   "lcp": 2468,
+   "inp": 40,
+   "cls": 0.007
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
