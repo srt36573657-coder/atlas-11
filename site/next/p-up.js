@@ -4,6 +4,7 @@
    모양만 새 아틀란스: 제목 → 그림(회차마다 들고 난 수) → 시장 판독 · 네 눈 점검 → 회차 기록(최근 10번 · 앞 회차는 접은 칸) → 맨 아래 */
 import {warn} from '/next/warn.js'; // 노란 경고 글은 두 줄까지 — 길면 「?」 한 줄로 접힘(사장님 2026-10-18 [10] 10 · warn.js)
 import {fourText} from '/next/essence.js'; // 「하루 4번」 글은 지난 7일 기록이 맞을 때만(사장님 2026-10-18 16:39 [5] 4 · 요약 fourADay · 일꾼 KI) — 제목 · 밑 줄
+import {SCREEN} from '/next/words.js'; // 쓰지 않을 말 — 요즘 바뀐 것 제목 거르기(총정리 D19)
 const NX = globalThis.NX;
 const {h, sv} = NX;
 const NB = ' ';
@@ -92,11 +93,11 @@ function recLi(r, C) {
 /* 요즘 바뀐 것(총정리 2026-10-22 D19 · 사장님 04:09 「결과부터」) — 사람이 쓴 「바뀐 것」 기록(reports/atlas11/changelog → 올릴 때 /changelog.json · scripts/atlas11/package.mjs)의 최신 업데이트 셋
    고객센터 「바뀐 것은 업데이트 기록에 남겨요」 약속이 닿는 곳 · 제목은 사람이 쓴 한국어 그대로(lang="ko") · 못 받으면 「?」 한 줄(멈추지 않음) */
 const NEW_N = 3;
-/** /changelog.json → 업데이트 줄(새것부터 · 미국 판 줄은 뺌) — 못 받거나 꼴이 다르면 null */
+/** /changelog.json → 업데이트 줄(새것부터 · 미국 판 줄은 뺌 · 쓰지 않을 말(words.js SCREEN — 글자 그대로)이 든 제목은 건너뜀: 사람이 쓴 글이어도 화면 잣대는 같게) — 못 받거나 꼴이 다르면 null */
 export function recentOf(log, n = NEW_N) {
   if (log?.schema !== 'atlas11-changelog-1' || !Array.isArray(log.entries)) return null;
   const at = e => String(e.live ?? e.made ?? '');
-  return log.entries.filter(e => e?.kind === 'update' && e.place !== 'us' && typeof e.title === 'string' && e.title.trim() && /^\d{4}-\d{2}-\d{2}/.test(at(e)))
+  return log.entries.filter(e => e?.kind === 'update' && e.place !== 'us' && typeof e.title === 'string' && e.title.trim() && /^\d{4}-\d{2}-\d{2}/.test(at(e)) && !SCREEN.some(w => e.title.includes(w)))
     .sort((a, b) => (at(a) < at(b) ? 1 : at(a) > at(b) ? -1 : 0)).slice(0, n);
 }
 const getLog = () => fetch('/changelog.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).catch(() => null);
