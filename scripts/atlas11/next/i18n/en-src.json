@@ -9034,6 +9034,26 @@
   "문자를 보내면 보낸 전화번호가 운영자 휴대폰에 남아요.": "If you text us, your phone number stays on the operator's phone.",
   "보냈으면 보낸 화면을 찍어 두세요. {n}명이 되면 다음 걸음이에요.": "If you sent it, take a screenshot. At {n} friends, go to the next step.",
   "친구 {n}명 소개하고 우주 영상 {n}분 보기": "tell {n1} friends and watch a {n2}-minute universe video",
-  "하얀 비숑": "a white Bichon"
+  "하얀 비숑": "a white Bichon",
+  "답이 왔어요 · {n}개 ›": "Answers for you · {n} ›",
+  "답을 기다려요 · {n}개 ›": "Waiting for an answer · {n} ›",
+  "답변 {n}건 ›": "{n} {pl:answer|answers} ›",
+  "답변 대기 {n}건 ›": "{n} awaiting an answer ›",
+  "{e}는 무엇을 해 줘요?": "What does {e} do for me?",
+  "테마가 될 듯한 곳을 지난 기록으로 찾아 줘요. 앞날은 맞히지 않아요.": "It finds industries that could become a theme, using past records. It doesn't guess the future.",
+  "{e}는 무엇을 하나요?": "What does {e} do?",
+  "테마가 될 수 있는 업종을 지난 기록으로 찾습니다. 전망은 하지 않습니다.": "It finds industries that could become a theme from past records. No outlooks.",
+  "지금 할 일 · 친구 {n}명에게 소개해요 ↓": "Now · introduce us to {n} friends ↓",
+  "지금 할 일 · 우주 영상 {n}분 보기 ↓": "Now · watch the {n}-minute space video ↓",
+  "영상을 끝까지 봤어요 · 상품권 받기 ↓": "You watched to the end · get the gift card ↓",
+  "{n}명에게 보냈어요. {n}명 더 보내면 다음 걸음이에요.": "Sent to {n}. Send to {n} more for the next step.",
+  "{n}명에게 보냈어요. 이제 우주 영상 {n}분을 봐요.": "Sent to {n}. Now watch the {n}-minute space video.",
+  "화면 찍는 법": "How to take a screenshot",
+  "아이폰: 옆 단추와 소리 크게 단추를 함께 눌러요(홈 단추가 있으면 홈 단추와 옆 단추).": "iPhone: press the side button and volume up together (with a Home button: Home and side).",
+  "갤럭시: 옆 단추와 소리 작게 단추를 함께 눌러요.": "Galaxy: press the side button and volume down together.",
+  "앵무새 {e}는 테마가 될 듯한 곳을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!": "{e} the parrot finds industries that could become a theme, using past records. Parrots only repeat what they hear!",
+  "테마가 될 듯한 곳을, 지난 기록으로 찾아 줘요.": "Finds industries that could become a theme, from past records.",
+  "이 영상은 {e} 소개예요. 상품권 영상은 아래 {q}이에요 ›": "This video introduces {e}. The gift-card video is {q} below ›",
+  "상품권 영상 · {e}의 우주 {n}분": "Gift-card video · {e}'s Universe, {n} min"
  }
 }
