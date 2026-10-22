@@ -492,10 +492,14 @@ html.white {
   --up-fill: rgba(0, 122, 53, .16); --down-fill: rgba(30, 79, 194, .16); --up-fade: rgba(0, 122, 53, .06); --down-fade: rgba(30, 79, 194, .06);
   --lacquer: #FFFFFF; --lacquer-ink: #000000; --lacquer-sub: #111111; --lacquer-gold: #6B2A8C;
   --moon: #000000; --moonrow: #F7F7F7;
-  --m4-band: #FFFFFF; --m4-line: #BBBBBB; --m4-soft: #BBBBBB; --m4-neu: #222222; --m4-line2: #EEEEEE;
+  --m4-band: #FFFFFF; --m4-line: #BBBBBB; --m4-soft: #8A8A8A; /* 칸 테 · 줄 — 흰 벽 위 대비 3 넘게(큰 검사 6/11 #/surge 칸 테 1.92) */ --m4-neu: #222222; --m4-line2: #EEEEEE;
   background: #FFFFFF;
 }
-html.white body { background: #FFFFFF; color: var(--ink); font-weight: 600; } /* 글씨 조금 진하게(사장님 2026-10-22 23:20 「글씨에 더 포인트가 갔으면 좋겠어요 · 글꼴진하게」) */
+html.white body { background: #FFFFFF; color: var(--ink); font-weight: 600; }
+/* 영어 글은 굵기를 옛 그대로(라틴 글자는 굵을수록 넓어져 아주 큰 글씨 320 · 360 에서 7px 넘침 — 큰 검사 cal-2254 6/11 en · 한글은 굵어도 폭이 같음) */
+html.white[lang="en"] body { font-weight: 400; }
+html[lang="en"] .crow .cn { font-weight: 600; }
+html[lang="en"] .th-rn, html[lang="en"] .th-pkrow b, html[lang="en"] .th-sub.th-key, html[lang="en"] .th-h2 { font-weight: 700; } /* 글씨 조금 진하게(사장님 2026-10-22 23:20 「글씨에 더 포인트가 갔으면 좋겠어요 · 글꼴진하게」) */
 /* 그림자 · 글 그림자는 흰 판 안 어디에도 없음(입체는 원래 없음)(테두리가 필요한 칸은 아래에서 outline · border 로 다시 그림) */
 html.white :is(.top, .tabs, #view, .foot, .trial, .toast),
 html.white :is(.top, .tabs, #view, .foot, .trial) * { box-shadow: none !important; text-shadow: none !important; }
