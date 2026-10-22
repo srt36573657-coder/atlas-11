@@ -1,7 +1,7 @@
 /* 개인정보 처리방침 쪽(/privacy.html · 사장님 2026-10-18 00:15 [4] 3) — 색 · 글씨 · 간격은 /next/app.css :root 와 같은 값
    글씨 넷(17 · 19 · 21 · 24px — [10] 5 · 6) · 간격 8 · 16 · 24 만 · 음수 없음([10] 8) · 누르는 자리 44px 이상 · 360 폭 옆 넘침 없음 */
 :root{color-scheme:dark;--bg:#0C0E12;--card:#13161C;--hair:rgba(242,239,232,.12);--ink:#F2EFE8;--sub:#B0B5BD;--mute:#8E959F;--gold:#E9B949;
-  --sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",system-ui,"Noto Sans KR",sans-serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",'Pretendard Variable',Pretendard,system-ui,"Noto Sans KR",sans-serif;
   --fs-1:17px;--fs-2:19px;--fs-3:21px;--fs-4:24px;--sp-1:8px;--sp-2:16px;--sp-3:24px;--tabs:68px}
 *{box-sizing:border-box}
 html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-padding-top:var(--sp-2)}

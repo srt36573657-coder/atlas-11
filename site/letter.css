@@ -3,7 +3,7 @@
 :root{--bg:#07080B;--ink:#F2EFE8;--sub:#B0B5BD;--mute:#8E959F;--card:#13161C;--line:#272B34;--gold:#E9B949;--gold-hi:#FFE3A0;--up:#FF5A65;--down:#5B96FF;--paper:#FBF7EE;--paper2:#EFE6D5;--pen:#1A1712;--mint:#9FE0C8;--warn:#FFB547}
 *{box-sizing:border-box}
 html{font-size:21px;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif;line-height:1.5;word-break:keep-all;overflow-x:hidden;padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard Variable',Pretendard,'Noto Sans KR',system-ui,sans-serif;line-height:1.5;word-break:keep-all;overflow-x:hidden;padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
 .serif{font-family:'Gowun Batang','Nanum Myeongjo','AppleMyungjo','Noto Serif KR',serif}
 .lt-main{max-width:620px;margin:0 auto;padding:0 16px 24px}
 .loading{margin:0;padding:24px 0;color:var(--sub);text-align:center}
