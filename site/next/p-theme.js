@@ -8,8 +8,6 @@ import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
 import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON} from './theme-home.js';
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 import {NAME, josa} from './brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않음
-import {whyChain} from './why-chain.js'; // 「왜 그럴까?」 열한 걸음 그림(사장님 2026-10-22 08:53 · 15쪽)
-import {coSteps} from './why-co.js'; // 15쪽 걸음 글(지난 사실만)
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
 
 const nx = () => globalThis.NX;
@@ -248,10 +246,13 @@ async function pCo(code, sub) {
     // 2026-10-22 사장님 08:53 「… 원숭이 엉덩이는 빨개 빨가면 사과 … 11단계는 논리적으로 사방팔방으로 이야기 해야지 그 이야기를 움직이는 도식화로」(order-0853.txt)
     //   — 뻔한 셋 줄 대신 열한 걸음 이어 말하기(앞 걸음 끝말이 다음 물음 · 회사 → 지난날 → 업종 → 테마 시계 → 큰 회사 → 오른 회사 수 → 이웃 업종 → 뉴스 → 나) · 그림 = why-chain.js(별자리 선이 차례로) · 글 = why-co.js
     art = 'why'; sayT = '기록으로 찾은 것만 말해요.';
-    const wc = whyChain(coSteps({c, ind, I, M, inds: TH.inds ?? [], past: deep('past')}));
-    const go = (n = 0) => { if (wc.isConnected) wc.play(); else if (n < 120) requestAnimationFrame(() => go(n + 1)); }; // 쪽에 붙은 뒤 처음부터 움직임(움직임 줄이기 기기는 why-chain.css 가 멈춘 그림)
-    requestAnimationFrame(() => go());
-    body = [wc];
+    const mods = await Promise.all([import('./why-chain.js'), import('./why-co.js')]).catch(() => null); // 15쪽에서만 받음(다른 테마 쪽 첫 그림을 무겁게 하지 않게)
+    if (mods) {
+      const [{whyChain}, {coSteps}] = mods, wc = whyChain(coSteps({c, ind, I, M, inds: TH.inds ?? [], past: deep('past')}));
+      const go = (n = 0) => { if (wc.isConnected) wc.play(); else if (n < 120) requestAnimationFrame(() => go(n + 1)); }; // 쪽에 붙은 뒤 처음부터 움직임(움직임 줄이기 기기는 why-chain.css 가 멈춘 그림)
+      requestAnimationFrame(() => go());
+      body = [wc];
+    } else body = [h('p', {class: 'empty', text: '? 열한 걸음을 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})];
   } else if (sub === 'rank') {
     art = 'surge'; sayT = `${num(M.ranked)}곳 가운데 몇 번째일까?`;
     body = [h('h2', {class: 'th-ans'}, h('span', {text: '열흘 동안 '}), h('em', {text: c.rank ? num(c.rank) + '번째' : '?'})),
