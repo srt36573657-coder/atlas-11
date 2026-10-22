@@ -11,8 +11,6 @@ import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시
 import {homeBlock as themeHome} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
 import {stoneClock} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
-// 돌이 글꼴 = 프리텐다드(2026-10-22 14:49 · 15:21) — 설명 /next/font.js · route 듣는 줄보다 먼저
-try { const h = document.documentElement; if (localStorage.getItem('dori-pf') === '1') { h.classList.add('pf'); const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/font.css'; document.head.append(l); } else { addEventListener('hashchange', () => { if (globalThis.__pfReady) h.classList.add('pf'); }); addEventListener('load', () => setTimeout(() => import('/next/font.js'), 8000), {once: true}); } } catch { /* 기기 글꼴 그대로 */ }
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {

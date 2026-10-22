@@ -9,7 +9,7 @@
   --up: #FF5A65; --down: #5B96FF; --flat: #8E959F;
   /* 글꼴(사장님 2026-10-22 14:49 「getdesign.md · 구글과 잡스라면 어떤 폰트를 쓸건지 선택해서 돌이 기가막히게」) — 잡스 = 애플 기기에서는 애플 글꼴 그대로(SF Pro · Apple SD Gothic Neo — getdesign.md Apple 「SF Pro」 · apple.com/kr 도 SF Pro + 한글 애플 글꼴)
      · 구글 = 그 밖 기기는 프리텐다드(한글 = 구글 · 어도비가 만든 본고딕 Source Han Sans 바탕 · 영문 숫자 = Inter) — 프리텐다드 설명서의 「시스템 글꼴 쪽」 차례 그대로 · 애플 기기는 글꼴을 받지 않아 첫 그림이 빠르고 바뀜(깜빡임) 없음 */
-  --sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", sans-serif; /* 첫 방문 = 기기 글꼴(받을 것 없음) · 프리텐다드는 html.pf(아래 · font.js) */
+  --sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", 'Pretendard Variable', Pretendard, system-ui, "Noto Sans KR", sans-serif;
   --ease: cubic-bezier(.2, .8, .2, 1);
   --top: 58px; --tabs: 68px;
   /* 글씨 크기 여섯 · 간격 셋(사장님 2026-10-18 [10] 5 · 6 · 8 — 17px 아래 없음 · 한 화면 여섯 가지까지 · 간격은 8 · 16 · 24 만 · 음수 없음 · 쓰는 곳은 docs/design/godori-2026-10-18/accept/S12.md) */
@@ -24,9 +24,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 8px; }
 .up { color: var(--up); } .dn { color: var(--down); } .fl { color: var(--flat); } .gd { color: var(--gold); }
 .num { font-variant-numeric: tabular-nums; } /* 숫자는 자리 맞춤(구글 머티리얼 · 애플 주식 앱처럼 줄마다 숫자 폭이 같게 — 2026-10-22 14:49 글꼴) */
-/* 돌이 글꼴 = 프리텐다드 가변(사장님 2026-10-22 14:49 「구글과 잡스라면」 · 15:21 「최고를 선택해서 바로 작업해」) — 한글 본고딕(구글 · 어도비) + 영문 숫자 Inter · 어느 휴대폰에서나 같은 글씨
-   html.pf = font.js 가 붙임(받아 둔 뒤 다음 화면부터 · 다시 오시면 처음부터) · 글꼴 목록 /next/font.css · 파일 /fonts/pretendard/ */
-html.pf { --sans: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif; }
 
 /* 위 막대 */
 .top { position: sticky; top: 0; z-index: 20; height: var(--top); display: flex; align-items: center; gap: var(--sp-1); padding: 0 var(--sp-2); background: var(--bg); border-bottom: 1px solid var(--hair); }
@@ -315,7 +312,7 @@ html { font-size: 21px; } /* 옮긴 줄의 rem 이 지금 아틀란스와 같은
   --moon: #F2EFE8; --moonrow: rgba(242, 239, 232, .07);                   /* 달(제목 옆 둥근 창 테) · 달빛(1등 줄 — 옅게) */
   --m4-band: #13161C; --m4-line: #272B34; --m4-soft: #1C1F26; --m4-neu: #6F7782; --m4-line2: rgba(242, 239, 232, .08); /* 먹빛 판 가는 선 셋 · 그대로 색 */
   --m4-ease: cubic-bezier(.2, .7, .2, 1);
-  --sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif; /* 위 :root 와 같은 차례(이 칸이 뒤라 이것이 이김) · 첫 방문 = 기기 글꼴 · 프리텐다드는 html.pf */
+  --sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", 'Pretendard Variable', Pretendard, system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif; /* 위 :root 와 같은 차례(이 칸이 뒤라 이것이 이김 · 2026-10-22 14:49 글꼴 — 애플 기기 = 애플 글꼴 · 그 밖 = 프리텐다드) */
   --ease: cubic-bezier(.2, .8, .2, 1);
   --row: 2.1rem; --roww: 3.3rem; --row2: 3.2rem; --roww2: 4.7rem; /* 방향 · 세기 · 힘 한 줄이 붙은 줄(11:10 「이 화면에서 나와야 해」) */
 }

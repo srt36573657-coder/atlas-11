@@ -9,8 +9,8 @@ const T = [['/', ['atlas.js']], ['/atlas/', ['atlas.js']], ['/atlas/atlas.js', [
   ['/atlas/data/home.json', ['"rule":"home-v3"', '"why":']], ['/atlas/data/updates.json', ['home-v3']], ['/media/makbi-hello.svg', []], ['/media/makbi-moon.svg', []], ['/hello.html', []],
   // 싹 달력(사장님 2026-10-22 11:55 · 12:17 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」) — 자료 · 쪽 · 첫 화면 고리가 정말 올라갔나
   ['/next/data/theme-cal.json', ['"schema":"dori-theme-1-cal"', '"keepFrom":"2026-10-22"']], ['/next/p-theme.js', ['function pCal(', '싹 달력']], ['/next/theme-home.js', ["'#/t/cal'", '날마다 찾은 세 곳 달력']], ['/next/data/theme-home.json', ['"record"']],
-  // 싹 달력 잘 보이게(2026-10-22 14:28) · 글꼴(14:49 · 15:21 — 프리텐다드 가변을 실음 · 첫 방문은 기기 글꼴 뒤 받아 둠 · 다음 화면부터 html.pf) — 정말 올라갔나
-  ['/next/p-theme.css', ['.th-calhow', 'container-type: inline-size']], ['/next/app.css', ['html.pf { --sans: \'Pretendard Variable\'', '.num { font-variant-numeric: tabular-nums; }']], ['/next/font.css', ["font-family: 'Pretendard Variable'", 'url(/fonts/pretendard/PretendardVariable.subset.0.woff2)']], ['/next/font.js', ["'dori-pf'", "'/next/font.css'", 'globalThis.__pfReady = true']], ['/next/app.js', ["setTimeout(() => import('/next/font.js'), 8000)", "h.classList.add('pf')"]], ['/letter.css', ["font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard Variable'"]]];
+  // 싹 달력 잘 보이게(2026-10-22 14:28) · 글꼴(14:49 — 애플 기기 = 애플 글꼴 · 그 밖 = 프리텐다드) — 정말 올라갔나
+  ['/next/p-theme.css', ['.th-calhow', 'container-type: inline-size']], ['/next/app.css', ['--sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", \'Pretendard Variable\'', '.num { font-variant-numeric: tabular-nums; }']], ['/letter.css', ["font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard Variable'"]]];
 const out = [];
 for (const [p, marks] of T) {
   let status = 0, bytes = 0, sha = null, has = {}, err = null, type = '';
