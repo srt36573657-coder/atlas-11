@@ -1,5 +1,5 @@
 {
- "made": "2026-10-22T17:04:34.995Z",
+ "made": "2026-10-23T03:17:15.497Z",
  "base": "https://aaa7377.com",
  "files": [
   {
@@ -55,14 +55,14 @@
    "path": "/atlas/data/home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 6863,
-   "sha256": "12e99ef3095dbe4cedeeb8c49e2899f4b11749d361df8cd607c0a4576cdf9a49",
+   "bytes": 6876,
+   "sha256": "d186d2e59a01bb99a634b4cec943b764d665c67bb170910a003b9fecbbfd997c",
    "has": {
     "\"rule\":\"home-v3\"": true,
     "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-23 02:01",
+     "kst": "2026-10-23 12:13",
      "alerts": []
     }
    },
@@ -72,8 +72,8 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 93712,
-   "sha256": "afe1bc98b3cf8a313fddfd7e67f5d454c16fbf94b0c8dafa6ec24ba417570fad",
+   "bytes": 94416,
+   "sha256": "552828959695ac9f971cfd70c0eb261afdd888984007b654085206e398e2568f",
    "has": {
     "home-v3": false
    },
@@ -110,13 +110,13 @@
    "path": "/next/data/theme-cal.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 10930,
-   "sha256": "52054eab2016512c5d4711a47c8788c21f71a9122633fe0023968ce798cf78f3",
+   "bytes": 35858,
+   "sha256": "ac53f93ca75e699e2c51e3dba52a228cad70187b605857c67ca48f440b44e84b",
    "has": {
     "\"schema\":\"dori-theme-1-cal\"": true,
     "\"keepFrom\":\"2026-10-22\"": true,
     "_cal": {
-     "asOf": "2026-10-22",
+     "asOf": "2026-10-23",
      "days": 60,
      "kept": 1,
      "done": 40,
@@ -124,26 +124,25 @@
      "all3": 120,
      "hit3": 13,
      "last": {
-      "d": "2026-10-22",
-      "s": 31,
-      "k": 1,
+      "d": "2026-10-23",
+      "s": 30,
       "top": [
        {
-        "n": "인터넷 플랫폼",
+        "n": "건설 엔지니어링",
         "sc": 2,
-        "y": 6.6,
+        "y": 2.5,
         "hit": null
        },
        {
-        "n": "자동차",
-        "sc": 1,
-        "y": 4.8,
+        "n": "사업 서비스·광고",
+        "sc": 2,
+        "y": 2.2,
         "hit": null
        },
        {
-        "n": "신약 개발",
+        "n": "인터넷 플랫폼",
         "sc": 1,
-        "y": 4.4,
+        "y": 5.6,
         "hit": null
        }
       ]
@@ -156,8 +155,8 @@
    "path": "/next/p-theme.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 60416,
-   "sha256": "b9e1f84c38b373327082a74472eb4404588a513e348656ca6e5831034c4d2b5a",
+   "bytes": 66029,
+   "sha256": "03671f896be5be13ba34c4b2b91825dcd66819b78dda3d84d45316c601d619dc",
    "has": {
     "function pCal(": true,
     "싹 달력": true
@@ -180,14 +179,14 @@
    "path": "/next/data/theme-home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 5550,
-   "sha256": "c9f1dfc35203deec462785f2371670f7d148a8032630dd9028175f33b7a1d704",
+   "bytes": 5561,
+   "sha256": "9c217ca6429fbf4840f5a2a049a35d52fefe04d7ee31f809bf66c1c0fa9a1747",
    "has": {
     "\"record\"": true,
     "_rec": {
-     "asOf": "2026-10-22",
+     "asOf": "2026-10-23",
      "all": {
-      "n": 60522,
+      "n": 60599,
       "p": 15.8,
       "h": [
        14.3,
@@ -195,7 +194,7 @@
       ]
      },
      "sprout": {
-      "n": 20814,
+      "n": 20825,
       "p": 15.2,
       "h": [
        14.1,
@@ -206,14 +205,14 @@
       "n": 2035,
       "p": 22,
       "h": [
-       20.1,
-       23.3
+       20.2,
+       23.2
       ]
      },
      "top": [
-      "인터넷 플랫폼",
-      "자동차",
-      "신약 개발"
+      "건설 엔지니어링",
+      "사업 서비스·광고",
+      "인터넷 플랫폼"
      ]
     }
    },
@@ -223,8 +222,8 @@
    "path": "/next/p-theme.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 20285,
-   "sha256": "3325073d73397cd1d374dc0a4617d6de098c61c7d8c93f877f0ee4fb54ec63e0",
+   "bytes": 22597,
+   "sha256": "feea1e575e01bea3bb0381385a7d298deba99108a6e64774086b1864c49a00db",
    "has": {
     ".th-calhow": true,
     "container-type: inline-size": true
@@ -258,31 +257,34 @@
    "path": "/next/data/theme-bloom.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 8291,
-   "sha256": "0348ec20e7b3df90ad97bc97891af447c0298a9791af0340df32feaa1d120dce",
+   "bytes": 9766,
+   "sha256": "c5e576f478f2911acb0fe3a9f9b6c41deb286f90a829d2424c05a6696eea0f14",
    "has": {
     "\"schema\":\"dori-theme-1-bloom\"": true,
     "\"record\"": true,
     "_bloom": {
-     "asOf": "2026-10-22",
-     "provisional": false,
-     "today": 14,
+     "asOf": "2026-10-23",
+     "provisional": true,
+     "today": 52,
      "inds": [
-      "바이오 도구·서비스",
+      "방송",
       "연예 기획사",
-      "방송"
+      "의류·패션",
+      "콘텐츠 제작",
+      "가공식품",
+      "음료"
      ],
      "all": {
-      "n": 35717,
-      "base": 23.58,
-      "rate": 26.68,
-      "ex": 0.64,
+      "n": 35834,
+      "base": 23.59,
+      "rate": 26.64,
+      "ex": 0.61,
       "exBase": -0.44,
-      "fall": 35.49,
+      "fall": 35.58,
       "fallBase": 36.02,
-      "baseN": 1688980,
-      "plain": 22.63,
-      "plainN": 446106
+      "baseN": 1691440,
+      "plain": 22.64,
+      "plainN": 446603
      },
      "train": {
       "n": 15818,
@@ -297,16 +299,16 @@
       "plainN": 227786
      },
      "test": {
-      "n": 19899,
-      "base": 24.58,
-      "rate": 27.49,
-      "ex": 0.48,
+      "n": 20016,
+      "base": 24.59,
+      "rate": 27.4,
+      "ex": 0.43,
       "exBase": -0.55,
-      "fall": 38.67,
-      "fallBase": 38.65,
-      "baseN": 872927,
+      "fall": 38.8,
+      "fallBase": 38.64,
+      "baseN": 875387,
       "plain": 23.72,
-      "plainN": 218320
+      "plainN": 218817
      }
     }
    },
@@ -316,8 +318,8 @@
    "path": "/next/p-theme.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 60416,
-   "sha256": "b9e1f84c38b373327082a74472eb4404588a513e348656ca6e5831034c4d2b5a",
+   "bytes": 66029,
+   "sha256": "03671f896be5be13ba34c4b2b91825dcd66819b78dda3d84d45316c601d619dc",
    "has": {
     "async function pPick(": true,
     "꽃 핀 업종 안의 싹 회사": true
