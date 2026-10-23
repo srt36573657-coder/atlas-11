@@ -112,13 +112,29 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-pkhome { display: flex; flex-direction: column; gap: 6px; margin: 12px 0 4px; padding: 14px 14px 10px; border: 2px solid var(--hair); border-radius: 16px; background: #FFFFFF; color: var(--ink); text-decoration: none; }
 .th-pkhh { font-size: var(--fs-3); font-weight: 700; }
 .th-pkhl { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-2); line-height: 1.45; }
-.th-pkhl span + span { color: #111111; }
-.th-pkhl .th-pkhk { color: var(--ink); font-weight: 700; }
+.th-pkhl > span + span { color: #111111; }
+.th-pkhl .th-pkhk { display: flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 700; }
+.th-pkhl .th-pkhk > span { min-width: 0; }
+.th-pkhc { display: block; aspect-ratio: 300 / 64; max-width: 100%; } /* 꺾은선 자리(자료 오기 전 높이 · 2026-10-23 10:42 「막대가 아니라 꺽기 그래프로」) */
 .th-pkhgo { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: var(--fs-2); color: var(--ink); border-top: 1px solid #DDDDDD; }
 .th-pkhgo i { font-style: normal; }
 
-.th-pkhs { display: block; width: 100%; height: auto; max-width: 340px; padding: 4px 0; } /* 날마다 작은 네모(svg) — 주황 = 같은 날 아무 회사보다 많이 핀 날 · 파랑 = 적게 · 테만 = 아직 한 달이 안 됨 */
-.th-pkhs rect { fill: var(--hair-soft); }
-.th-pkhs rect.up { fill: var(--up); }
-.th-pkhs rect.dn { fill: var(--down); }
-.th-pkhs rect.w { fill: none; stroke: var(--hair2); stroke-width: 1.5; }
+/* 꺾은선 그래프(사장님 2026-10-23 10:09 「달력 싹달력 그랴프로 쉽게」 · 10:42 「그래프를 막대가 아니라 꺽기 그래프로 해야 해」 · theme-home.js lineChart)
+   초록 실선 = 고른 것 · 검은 점선 = 아무 것 · 옅은 칸 = 한 달을 기다리는 날 · 그림 안 글자 없음(글은 그림 밖) · 색만으로 말하지 않음(실선 · 점선 · 글 옆 견본) */
+.th-ln { position: relative; display: block; touch-action: pan-y; }
+.th-ln svg { display: block; width: 100%; height: auto; overflow: visible; }
+.th-ln .o, .th-lnk .o { fill: none; stroke: var(--up); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.th-ln .b, .th-lnk .b { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 5; vector-effect: non-scaling-stroke; }
+.th-ln .z { stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.th-ln .wz { fill: #EEEEEE; }
+.th-ln .sel { stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.th-ln .so { fill: var(--up); stroke: #FFFFFF; stroke-width: 2; }
+.th-ln .sb { fill: #FFFFFF; stroke: var(--ink); stroke-width: 2; }
+.th-ln[tabindex] { cursor: crosshair; border-radius: 10px; padding: 6px 0; }
+.th-ln[tabindex]:focus-visible { outline: 3px solid var(--down); outline-offset: 2px; }
+.th-lnk { flex: 0 0 auto; width: 28px; height: 10px; overflow: visible; }
+.th-lnl { display: flex; align-items: center; gap: 8px; }
+.th-lnl > span { min-width: 0; }
+.th-lnx { display: grid; gap: 2px; margin: 4px 0 6px; padding: 10px 12px; border: 2px solid var(--ink); border-radius: 14px; font-size: var(--fs-2); line-height: 1.45; min-height: 112px; }
+.th-lnx > span { display: flex; align-items: center; gap: 8px; }
+.th-lnx .th-sub { display: block; }

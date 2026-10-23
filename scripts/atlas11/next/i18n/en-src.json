@@ -9413,6 +9413,21 @@
   "노란 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.": "Yellow boxes: more bloomed than any company that day.",
   "날마다 오른 회사 수 · 진한 초록은 최근 엿새": "Rising companies each day · dark green = last 6 days",
   "회색은 앞 닷새, 진한 초록은 뒤 닷새예요.": "Gray is the first 5 days, dark green the last 5 days.",
-  "초록 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.": "Green boxes: more bloomed than any company that day."
+  "초록 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.": "Green boxes: more bloomed than any company that day.",
+  "줄은 그날까지 모아 센 비율이에요. 그래서 줄 끝이 위 숫자와 같아요.": "Each line is the running rate up to that day, so its end matches the numbers above.",
+  "오른쪽 옅은 칸은 아직 한 달이 안 지난 날이에요.": "The pale area on the right is days that are not yet a month old.",
+  "그래프를 손가락으로 쓸면 그날 숫자가 나와요.": "Slide a finger along the chart to see that day's numbers.",
+  "그래프를 손가락으로 쓸면 그날 세 곳이 나와요.": "Slide a finger along the chart to see that day's three.",
+  "날짜 칸으로 보기": "View as date boxes",
+  "{d}까지 모아 보면": "Counting everything up to {d}",
+  "고른 회사는 {n}곳에 {n}곳이 꽃이 됐어요.": "{n2} of every {n1} picked companies bloomed.",
+  "아무 회사는 {n}곳에 {n}곳이에요.": "For any company, it was {n2} of {n1}.",
+  "이날 하루는 {n}곳 가운데 {n}곳이 꽃이 됐어요.": "On this day alone, {n2} of {n1} bloomed.",
+  "이날은 셀 수 있는 고른 회사가 없었어요.": "No picked company could be counted on this day.",
+  "고른 회사 {n}곳이에요. 한 달이 지나야 알아요.": "Picked companies: {n}. We will know after a month.",
+  "이날까지는 한 달이 지난 날이 없어요.": "No day up to this one is a month old yet.",
+  "{d}까지 모아 보면 세 곳은 {n}번 가운데 {n}번 꽃 선을 넘었어요.": "Counting up to {d}, the three crossed the bloom line {n2} times out of {n1}.",
+  "고른 회사와 아무 회사를 견준 꺾은선 그래프": "Line chart comparing picked companies with any company",
+  "{e}가 고른 세 곳과 아무 업종을 견준 꺾은선 그래프": "Line chart comparing the three {e} picked with any sector"
  }
 }
