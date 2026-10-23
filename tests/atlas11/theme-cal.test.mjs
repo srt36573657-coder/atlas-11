@@ -100,3 +100,26 @@ test('싹 달력 지킨 기록 — 손 셈(keepCal 없음)은 파일을 쓰지 �
   else { const k = J(kf); assert.equal(k.schema, 'dori-theme-cal-kept-1'); assert.ok(Object.keys(k.days).every(d => d >= cal.keepFrom)); }
   fs.rmSync(tmp, {recursive: true, force: true});
 });
+
+// 고른 날부터 오늘까지(사장님 2026-10-23 11:18 · 11:28 「오늘 날짜까지 해야지」) — path 꼴 · 화면 셈((I[k] / I[j]) ÷ (M[k] / M[j]) − 1)이 엔진의 한 달 뒤 꽃 선과 같은 답을 내는지(따로 셈)
+test('싹 달력 path — 꼴 · 화면 셈이 꽃 선과 맞음', () => {
+  const f = path.join('site', 'next', 'data', 'theme-cal.json');
+  if (!fs.existsSync(f)) return;
+  const c = J(f), P = c.path;
+  assert.ok(P && Array.isArray(P.M) && P.I && typeof P.I === 'object', 'path 있음');
+  assert.equal(P.from, c.days[0].d, '첫 날 = 달력 첫 날');
+  assert.equal(P.M.length, c.days.length, '날 수 = 달력 날 수');
+  assert.equal(P.M[0], 100);
+  for (const x of c.days) for (const i of x.top) assert.ok(i.n in P.I, '달력에 든 업종마다 줄: ' + i.n);
+  let seen = 0;
+  c.days.forEach((x, j) => {
+    const k = j + c.ahead; if (k >= P.M.length) return;
+    for (const i of x.top) {
+      const a = P.I[i.n]; if (typeof i.hit !== 'boolean' || !Array.isArray(a) || !(a[j] > 0) || !(a[k] > 0)) continue;
+      const v = ((a[k] / a[j]) / (P.M[k] / P.M[j]) - 1) * 100;
+      if (Math.abs(v - RULE.bloomX) < 0.2) continue; // 줄은 소수 둘째 자리까지라 꽃 선 바로 옆은 셈 밖
+      assert.equal(v >= RULE.bloomX, i.hit, `${x.d} ${i.n} ${v.toFixed(2)}%`); seen++;
+    }
+  });
+  assert.ok(seen > 0, '맞대 본 수 > 0');
+});

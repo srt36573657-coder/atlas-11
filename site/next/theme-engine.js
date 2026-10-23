@@ -137,7 +137,12 @@ export function calOf(U, M, dates, made, n = CAL_DAYS, kept = {}) {
     const later = t + RULE.recAhead <= T;
     days.push({d: dates[t], s: S.length, top: S.slice(0, 3).map(i => ({n: i.n, sc: i.sc, y: r1(i.y), hit: later ? exOf(i.u.I, M, t + RULE.recAhead, RULE.win) >= RULE.bloomX / 100 : null}))});
   }
-  return {schema: THEME_SCHEMA + '-cal', made, asOf: dates[T], ahead: RULE.recAhead, days};
+  // 고른 날부터 오늘까지(사장님 2026-10-23 11:18 「1.2.3등을 골랐던 것이 날짜별로 그래프로 … 너가 알려준 날부터 항산 현재 까지」 · 11:28 「오늘 날짜까지 해야지」)
+  //   달력 첫 날 = 100 으로 맞춘 시장(M) · 달력에 든 업종(I)만 — 화면이 고른 날 j 에서 마지막 날까지 (I[k] / I[j]) ÷ (M[k] / M[j]) − 1 을 그림 · 마지막 날 = asOf
+  const rb = a => Array.from({length: T - t0 + 1}, (_, j) => (ok(a[t0]) && ok(a[t0 + j]) ? Math.round((a[t0 + j] / a[t0]) * 10000) / 100 : null));
+  const names = [...new Set(days.flatMap(x => x.top.map(i => i.n)))].sort();
+  const path = {from: dates[t0], M: rb(M), I: Object.fromEntries(names.map(nm => [nm, byName.has(nm) ? rb(byName.get(nm).I) : null]))};
+  return {schema: THEME_SCHEMA + '-cal', made, asOf: dates[T], ahead: RULE.recAhead, days, path};
 }
 
 /** 지난 한 해 길(사장님 2026-10-21 10:44 「1.2.3 번에 행성이 어떻게 움직었는지 지난 1년에 주식 변화를 그래프로도 이 우주안에서 동영상으로 … 1번 보여주고 그다음 2번 … 3번」 ·

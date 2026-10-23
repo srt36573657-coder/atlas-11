@@ -6,7 +6,6 @@
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
 import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON} from './theme-home.js';
-import {lineChart, lineKey, pickRows} from './theme-line.js'; // 꺾은선(사장님 2026-10-23 10:42 「막대가 아니라 꺽기 그래프로」)
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 import {NAME, josa} from './brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않음
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
@@ -312,6 +311,51 @@ const calData = () => load('theme-cal.json');
 const HIT = {true: ['●', 'ok', '한 달 뒤 꽃 선을 넘었어요.'], false: ['○', 'no', '한 달 뒤 꽃 선을 못 넘었어요.'], null: ['·', 'wait', '아직 한 달이 안 지났어요.']};
 const hitOf = v => HIT[v === true ? 'true' : v === false ? 'false' : 'null'];
 const dowOf = d => new Date(d + 'T00:00:00Z').getUTCDay(); // 1 = 월 ~ 5 = 금(거래일만 있음)
+/* 고른 날부터 오늘까지(사장님 2026-10-23 11:18 「너가 싹이라고 1.2.3등을 골랐던 것이 날짜별로 그래프로 저장되고 … 너가 알려준 날부터 항산 현재 까지 직관적으로 바로 알고 싶은 거야 지금은 너무 복잡해」 · 11:28 「대충 맞아 그런데 오늘 날짜까지 해야지」)
+   날을 고르면 그날 1 · 2 · 3번이 그날부터 마지막 날(asOf · 올릴 때마다 오늘 자료로 다시 셈)까지 시장보다 더 오른 %를 꺾은선 세 줄로 · 가운데 가로선 = 시장
+   줄 = 1번 초록 실선 · 2번 파랑 실선 · 3번 검은 점선(색만으로 말하지 않음 · 줄 옆 견본) · 숫자 = theme-cal.json path(엔진 calOf · 달력 첫 날 = 100)를 나눔 — (I[k] / I[j]) ÷ (M[k] / M[j]) − 1
+   맨 위 결론 = 모든 날 고른 곳 가운데 마지막 날 시장보다 위인 곳 수(그날 고른 곳은 셈 밖) · 앞날 말 없음 */
+const SIN_CLS = ['l0', 'l1', 'l2'];
+function sinceBox(CAL, days, TH, onDay) {
+  const P = CAL?.path, M = P?.M, I = P?.I;
+  if (!Array.isArray(M) || !I || typeof I !== 'object' || P.from !== days[0]?.d || M.length !== days.length) return null;
+  const L = M.length - 1;
+  const ser = (n, j) => { const a = I[n]; if (!Array.isArray(a) || !(a[j] > 0) || !(M[j] > 0)) return null; const s = []; for (let k = j; k <= L; k++) s.push(a[k] > 0 && M[k] > 0 ? ((a[k] / a[j]) / (M[k] / M[j]) - 1) * 100 : null); return s; };
+  let tot = 0, up = 0;
+  days.forEach((x, j) => { if (j >= L) return; for (const i of x.top) { const v = ser(i.n, j)?.at(-1); if (Number.isFinite(v)) { tot++; if (v > 0) up++; } } });
+  const head = h('div', {class: 'th-calsum'},
+    h('p', {class: 'th-key', text: tot ? `고른 날부터 오늘까지 시장보다 더 오른 곳은 ${num(tot)}곳 가운데 ${num(up)}곳이에요.` : '아직 하루도 지나지 않았어요.'}),
+    h('p', {class: 'th-sub', text: '줄이 가운데 선 위면 시장보다 더 오른 거예요.'}));
+  const title = h('h2', {class: 'th-h2', 'aria-live': 'polite'});
+  const rg = h('input', {type: 'range', class: 'th-sinrg', min: '0', max: String(Math.max(0, days.length - 1)), step: '1', value: '0', 'aria-label': '고른 날 옮기기'});
+  const prev = h('button', {type: 'button', text: '앞 날'}), next = h('button', {type: 'button', text: '뒷 날'});
+  const svg = sv('svg', {class: 'th-sinsvg', viewBox: '0 0 300 180', 'aria-hidden': 'true', focusable: 'false'});
+  const a0 = h('span'), a1 = h('span', {text: md(CAL.asOf)}), rows = h('div', {class: 'th-sinrows'});
+  const sample = k => { const s = sv('svg', {class: 'th-sink', viewBox: '0 0 30 10', 'aria-hidden': 'true', focusable: 'false'}); s.append(sv('line', {class: SIN_CLS[k], x1: 2, x2: 28, y1: 5, y2: 5})); return s; };
+  const draw = j => {
+    j = Math.max(0, Math.min(days.length - 1, j)); rg.value = String(j);
+    const x = days[j], ss = x.top.map(i => ser(i.n, j) ?? []);
+    title.textContent = `${md(x.d)}에 고른 세 곳`; a0.textContent = md(x.d);
+    const W = 300, H = 180, Pd = 8, n = Math.max(1, ...ss.map(s => s.length)), mx = Math.max(5, ...ss.flat().filter(Number.isFinite).map(Math.abs)) * 1.15;
+    const X = k => Pd + (n > 1 ? (k * (W - 2 * Pd)) / (n - 1) : 0), Y = v => H / 2 - (v / mx) * (H / 2 - Pd);
+    svg.replaceChildren(sv('line', {class: 'z', x1: Pd, x2: W - Pd, y1: H / 2, y2: H / 2}));
+    ss.forEach((s, k) => {
+      let d = '', on = false; s.forEach((v, q) => { if (Number.isFinite(v)) { d += `${on ? 'L' : 'M'}${X(q).toFixed(1)} ${Y(v).toFixed(1)}`; on = true; } else on = false; });
+      if (d) svg.append(sv('path', {class: SIN_CLS[k], d}));
+      const v = s.at(-1); if (Number.isFinite(v)) svg.append(sv('circle', {class: 'd' + k, cx: X(s.length - 1).toFixed(1), cy: Y(v).toFixed(1), r: 4.5}));
+    });
+    rows.replaceChildren(...(x.top.length ? x.top.map((i, k) => { const v = ss[k].at(-1); return h('a', {class: 'th-sinr', href: '#/t/i/' + enc(i.n)}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-sinn'}, sample(k), h('span', {'data-proper': '', text: i.n})), h('b', {class: 'th-sinv ' + cls(v), text: Number.isFinite(v) ? pp(v) + '%' : '?'})); }) : [h('p', {class: 'th-sub', text: '이날은 싹 자리가 비었어요.'})]));
+    prev.disabled = j === 0; next.disabled = j === days.length - 1;
+    onDay?.(x);
+  };
+  rg.addEventListener('input', () => draw(+rg.value));
+  prev.addEventListener('click', () => draw(+rg.value - 1)); next.addEventListener('click', () => draw(+rg.value + 1));
+  draw(0); // 처음 = 가장 앞 날(줄이 가장 김) — 밀거나 「뒷 날」로 오늘 쪽으로
+  const box = h('section', {class: 'th-since', 'aria-label': '고른 날부터 오늘까지'}, title, rg, h('div', {class: 'th-sinb'}, prev, next), svg,
+    h('div', {class: 'th-sinax', 'aria-hidden': 'true'}, a0, a1), h('p', {class: 'th-sub', text: '가운데 가로선은 시장과 같은 자리예요.'}), rows,
+    h('p', {class: 'th-sub th-calnote', text: TH?.provisional ? `${md(CAL.asOf)} 장중 값까지예요.` : `${md(CAL.asOf)} 장 마감 값까지예요.`}));
+  return {head, box, go: draw};
+}
 async function pCal() {
   const [CAL, TH] = await Promise.all([calData(), themeData()]);
   const title = '싹 달력';
@@ -319,27 +363,15 @@ async function pCal() {
   if (!days.length) return none(title, '싹 달력');
   const done = days.filter(x => x.top.length && typeof x.top[0].hit === 'boolean'), hit1 = done.filter(x => x.top[0].hit).length;
   const all3 = done.flatMap(x => x.top.filter(i => typeof i.hit === 'boolean')), hit3 = all3.filter(i => i.hit).length, base = TH?.record?.all?.p;
-  // 꺾은선(사장님 2026-10-23 10:09 「달력 싹달력 그랴프로 쉽게 · 잡스 구르이라면」 · 10:42 「막대가 아니라 꺽기 그래프로」) — 세 곳을 그날까지 모아 센 비율 · 아무 업종(지난 기록 모든 날)과 견줌 · 줄 끝 = 「세 곳 모두 세면」 숫자
-  let c3 = 0, k3 = 0;
-  const rowsC = days.map(x => {
-    const rs = x.top.filter(i => typeof i.hit === 'boolean');
-    if (!rs.length && x.top.length) return {d: x.d, w: true, x};
-    c3 += rs.length; k3 += rs.filter(i => i.hit).length;
-    return {d: x.d, o: c3 ? (k3 / c3) * 100 : null, b: c3 && Number.isFinite(base) ? base : null, c: c3, k: k3, x};
-  });
-  const hasLine = rowsC.some(r => Number.isFinite(r.o));
   const head = h('div', {class: 'th-calsum'},
     h('p', {class: 'th-key', text: done.length ? `한 달이 지난 ${num(done.length)}일 가운데 1번이 꽃 선을 넘은 날은 ${num(hit1)}일이에요.` : '아직 한 달이 지난 날이 없어요.'}),
-    done.length ? h('p', {class: 'th-sub th-lnl'}, hasLine ? lineKey('o') : null, h('span', {text: `세 곳 모두 세면 ${num(all3.length)}번 가운데 ${num(hit3)}번이에요.`})) : null,
-    Number.isFinite(base) ? h('p', {class: 'th-sub th-lnl'}, hasLine ? lineKey('b') : null, h('span', {text: `아무 업종은 100번 가운데 ${Math.round(base)}번이었어요.`})) : null);
+    done.length ? h('p', {class: 'th-sub', text: `세 곳 모두 세면 ${num(all3.length)}번 가운데 ${num(hit3)}번이에요.`}) : null,
+    Number.isFinite(base) ? h('p', {class: 'th-sub', text: `아무 업종은 100번 가운데 ${Math.round(base)}번이었어요.`}) : null);
   const pick = h('div', {class: 'th-calpick', 'aria-live': 'polite'});
   const btns = [];
-  let chartC = null; // 아래 날짜 칸을 눌러도 그래프의 그날이 같이 옮겨짐
   const show = (x, go = false) => {
     btns.forEach(b => { const on = b.dataset.d === x.d; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
-    const r = rowsC[days.indexOf(x)];
     pick.replaceChildren(h('h2', {class: 'th-h2', text: `${md(x.d)} ${josa(NAME, '가')} 찾은 세 곳`}),
-      ...(r && !r.w && Number.isFinite(r.o) ? [h('p', {class: 'th-sub th-lnl'}, lineKey('o'), h('span', {text: `${md(x.d)}까지 모아 보면 세 곳은 ${num(r.c)}번 가운데 ${num(r.k)}번 꽃 선을 넘었어요.`}))] : []), // 빈 값은 넣지 않음(replaceChildren 은 null 을 글 「null」로 넣음)
       x.top.length ? h('ol', {class: 'th-steps th-calli'}, x.top.map((i, k) => { const [mk, c, t] = hitOf(i.hit); return h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}),
         h('a', {class: 'th-st', href: '#/t/i/' + enc(i.n)}, h('b', {text: i.n}), h('span', {text: `닷새 동안 시장보다 ${pp(i.y)}%`}), h('span', {class: 'th-calhit ' + c}, h('i', {'aria-hidden': 'true', text: mk + ' '}), h('span', {text: t})))); }))
         : h('p', {class: 'th-sub', text: '이날은 싹 자리가 비었어요.'}));
@@ -359,7 +391,7 @@ async function pCal() {
       const b = h('button', {type: 'button', class: 'th-calc' + (x.k ? ' kept' : ''), 'data-d': x.d, 'aria-pressed': 'false', 'aria-label': x.top[0] ? `${md(x.d)} 1번 ${x.top[0].n}` : `${md(x.d)} 싹 자리 없음`},
         h('b', {class: 'th-cald', text: String(+x.d.slice(8, 10))}), h('span', {class: 'th-caln', 'data-proper': '', text: x.top[0]?.n ?? '없음'}),
         h('span', {class: 'th-calm', 'aria-hidden': 'true'}, x.top.map(i => { const [mk, c] = hitOf(i.hit); return h('i', {class: c, text: mk}); })));
-      b.addEventListener('click', () => { show(x, true); chartC?.pickAt(days.indexOf(x), false); });
+      b.addEventListener('click', () => { show(x, true); since?.go(days.indexOf(x)); }); // 날짜 칸을 눌러도 위 그래프가 그날로
       btns.push(b); cells.push(b);
     }
     return h('section', {class: 'th-calmo', 'aria-label': `${+m.slice(5, 7)}월`}, h('h2', {class: 'th-h2', text: `${+m.slice(0, 4)}년 ${+m.slice(5, 7)}월`}),
@@ -367,15 +399,12 @@ async function pCal() {
   });
   const how = [h('p', {class: 'th-calhow', text: '동그라미는 왼쪽부터 1번, 2번, 3번이에요.'}), h('p', {class: 'th-calhow', text: '날짜를 누르면 그날 세 곳이 위에 크게 나와요.'})];
   const key = h('p', {class: 'th-calkey'}, h('span', {}, h('i', {class: 'ok', text: '●'}), h('span', {text: ' 넘음'})), h('span', {}, h('i', {class: 'no', text: '○'}), h('span', {text: ' 못 넘음'})), h('span', {}, h('i', {class: 'wait', text: '·'}), h('span', {text: ' 아직'})));
-  chartC = hasLine ? lineChart({rows: rowsC, label: `${josa(NAME, '가')} 고른 세 곳과 아무 업종을 견준 꺾은선 그래프`, onPick: i => show(days[i]), start: days.length - 1}) : null; // 처음 = 마지막 날(오늘 세 곳)
-  if (!chartC) show(days.at(-1));
+  show(days.at(-1));
+  const since = sinceBox(CAL, days, TH, x => show(x)); // 고른 날부터 오늘까지(사장님 2026-10-23 11:18 · 11:28 「오늘 날짜까지 해야지」) — 맨 위 · 날짜 칸은 접음
   return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
-    say(`날마다 ${josa(NAME, '가')} 찾은 세 곳을 남겨요.`), head, chartC, pick,
-    chartC ? h('p', {class: 'th-sub th-calnote', text: '줄은 그날까지 모아 센 비율이에요. 그래서 줄 끝이 위 숫자와 같아요.'}) : null,
-    chartC ? h('p', {class: 'th-sub th-calnote', text: '오른쪽 옅은 칸은 아직 한 달이 안 지난 날이에요.'}) : null,
-    chartC ? h('p', {class: 'th-sub th-calnote', text: '그래프를 손가락으로 쓸면 그날 세 곳이 나와요.'}) : null,
-    ...(chartC ? [h('details', {class: 'th-hfold th-calfold'}, h('summary', {text: '날짜 칸으로 보기'}), key, ...how, ...grid.reverse())] : [key, ...how, ...grid.reverse()]),
+    say(`날마다 ${josa(NAME, '가')} 찾은 세 곳을 남겨요.`),
+    ...(since ? [since.head, since.box, h('details', {class: 'th-hfold th-calfold'}, h('summary', {text: '날짜 칸으로 보기'}), head, pick, key, ...how, ...grid.reverse())] : [head, pick, key, ...how, ...grid.reverse()]),
     typeof CAL.keepFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(CAL.keepFrom) ? h('p', {class: 'th-sub th-calnote', text: `${md(CAL.keepFrom)}부터는 그날 장 마감 때 나온 세 곳을 바꾸지 않고 남겨요.`}) : null,
     h('p', {class: 'th-sub th-calnote', text: '그 전 날은 그날까지의 값만으로 지금 규칙을 다시 돌린 셋이에요. 한 달 동안 시장보다 5% 넘게 더 오르면 꽃 선을 넘어요.'}),
     TH ? asOf(TH) : null, nextBtn('시계 읽는 법', '#/t/how'), safe())]};
@@ -430,34 +459,16 @@ async function pPick() {
   const wk = []; for (const d of days) { const wd = new Date(d.d + 'T00:00:00Z').getUTCDay(); if (wd < 1 || wd > 5) continue; if (!wk.length || wd <= wk.at(-1).last) wk.push({cells: Array(5).fill(null), last: 0}); const w = wk.at(-1); w.cells[wd - 1] = d; w.last = wd; }
   const cell = d => d == null ? h('span', {class: 'th-pkc e', 'aria-hidden': 'true'}) : h('span', {class: 'th-pkc ' + (d.wait ? 'w' : d.hit + d.miss === 0 ? 'z' : dayUp(d) ? 'up' : 'dn'), role: 'listitem'}, h('b', {text: `${+d.d.slice(5, 7)}.${+d.d.slice(8, 10)}`}), h('span', {text: d.wait ? String(d.n) : d.hit + d.miss ? `${d.hit}/\u200b${d.hit + d.miss}` : '-'})); // 좁은 칸에서 「/」 뒤에서만 줄바꿈(숫자가 갈라지지 않게)
   const verdict = cP == null || bP == null ? null : cP < bP ? '요즘은 아무 회사보다 적었어요.' : cP > bP ? '요즘은 아무 회사보다 많았어요.' : '요즘은 아무 회사와 비슷했어요.';
-  // 꺾은선(사장님 2026-10-23 10:09 「달력 싹달력 그랴프로 쉽게 · 잡스 구르이라면」 · 10:42 「막대가 아니라 꺽기 그래프로」) — 줄 = 그날까지 모아 센 비율 · 줄 끝 = 위 두 숫자 · 칸 달력은 접어 둠
-  const rowsA = pickRows(days); let lastA = -1; rowsA.forEach((r, i) => { if (Number.isFinite(r.o) && Number.isFinite(r.b)) lastA = i; });
-  const infoA = h('div', {class: 'th-lnx', 'aria-live': 'polite'});
-  const sayA = i => {
-    const r = rowsA[i], d = r.x, D = (Number(d.hit) || 0) + (Number(d.miss) || 0);
-    if (r.w) return infoA.replaceChildren(h('b', {text: md(r.d)}), h('span', {text: `고른 회사 ${num(d.n)}곳이에요. 한 달이 지나야 알아요.`}));
-    if (!Number.isFinite(r.o)) return infoA.replaceChildren(h('b', {text: md(r.d)}), h('span', {text: '이날까지는 한 달이 지난 날이 없어요.'}));
-    infoA.replaceChildren(...[h('b', {text: `${md(r.d)}까지 모아 보면`}),
-      h('span', {}, lineKey('o'), h('span', {text: `고른 회사는 100곳에 ${Math.round(r.o)}곳이 꽃이 됐어요.`})),
-      Number.isFinite(r.b) ? h('span', {}, lineKey('b'), h('span', {text: `아무 회사는 100곳에 ${Math.round(r.b)}곳이에요.`})) : null,
-      h('span', {class: 'th-sub', text: D ? `이날 하루는 ${num(D)}곳 가운데 ${num(d.hit)}곳이 꽃이 됐어요.` : '이날은 셀 수 있는 고른 회사가 없었어요.'})].filter(Boolean)); // 빈 값은 넣지 않음(replaceChildren 은 null 을 글로 넣음)
-  };
-  const chartA = rowsA.length && lastA >= 0 ? lineChart({rows: rowsA, label: '고른 회사와 아무 회사를 견준 꺾은선 그래프', onPick: sayA, start: lastA}) : null;
   const calSec = days.length ? h('section', {class: 'th-pkcal', 'aria-label': '기록 달력'},
     h('h2', {class: 'th-h2', text: '기록 달력'}),
-    cP != null ? h('p', {class: 'th-sub th-key th-lnl'}, chartA ? lineKey('o') : null, h('span', {text: `한 달이 지난 날만 보면 고른 회사는 100곳에 ${cP}곳이 꽃이 됐어요.`})) : h('p', {class: 'th-sub th-key', text: '? 한 달이 지난 날이 아직 없어요.'}),
-    bP != null ? h('p', {class: 'th-sub th-lnl'}, chartA ? lineKey('b') : null, h('span', {text: `같은 날 아무 회사는 100곳에 ${bP}곳이에요.`})) : null,
+    h('p', {class: 'th-sub th-key', text: cP != null ? `한 달이 지난 날만 보면 고른 회사는 100곳에 ${cP}곳이 꽃이 됐어요.` : '? 한 달이 지난 날이 아직 없어요.'}),
+    bP != null ? h('p', {class: 'th-sub', text: `같은 날 아무 회사는 100곳에 ${bP}곳이에요.`}) : null,
     verdict ? h('p', {class: 'th-sub th-key', text: verdict}) : null,
-    chartA, chartA ? infoA : null,
-    chartA ? h('p', {class: 'th-sub th-calnote', text: '줄은 그날까지 모아 센 비율이에요. 그래서 줄 끝이 위 숫자와 같아요.'}) : null,
-    chartA ? h('p', {class: 'th-sub th-calnote', text: '오른쪽 옅은 칸은 아직 한 달이 안 지난 날이에요.'}) : null,
-    chartA ? h('p', {class: 'th-sub th-calnote', text: '그래프를 손가락으로 쓸면 그날 숫자가 나와요.'}) : null,
-    h('details', {class: 'th-hfold th-pkfold'}, h('summary', {text: '날짜 칸으로 보기'}),
-      h('p', {class: 'th-sub', text: '칸마다 꽃이 된 수와 고른 수예요.'}),
-      h('div', {class: 'th-pkgrid', role: 'list', 'aria-label': '기록 달력'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-pkwd', 'aria-hidden': 'true', text: t})), ...wk.flatMap(w => w.cells.map(cell))),
-      h('p', {class: 'th-sub th-calnote', text: '초록 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.'}),
-      h('p', {class: 'th-sub th-calnote', text: '파란 칸은 아무 회사보다 적게 꽃이 된 날이에요.'}),
-      h('p', {class: 'th-sub th-calnote', text: '테두리 칸은 아직 한 달이 안 지나 고른 수만 적었어요.'}))) : null;
+    h('p', {class: 'th-sub', text: '칸마다 꽃이 된 수와 고른 수예요.'}),
+    h('div', {class: 'th-pkgrid', role: 'list', 'aria-label': '기록 달력'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-pkwd', 'aria-hidden': 'true', text: t})), ...wk.flatMap(w => w.cells.map(cell))),
+    h('p', {class: 'th-sub th-calnote', text: '초록 칸은 같은 날 아무 회사보다 많이 꽃이 된 날이에요.'}),
+    h('p', {class: 'th-sub th-calnote', text: '파란 칸은 아무 회사보다 적게 꽃이 된 날이에요.'}),
+    h('p', {class: 'th-sub th-calnote', text: '테두리 칸은 아직 한 달이 안 지나 고른 수만 적었어요.'})) : null;
   const names = Array.isArray(B.why?.names) ? B.why.names : [], whyNote = [`시장보다 더 올랐지만 ${RULE.bloomX}%는 못 넘었어요.`, '업종이 한 달 뒤 시장보다 덜 올랐어요.', '업종은 괜찮았는데 회사만 덜 올랐어요.'];
   const recentWhy = [0, 1, 2].map(i => sum(done, d => d.why?.[i])), recentMiss = sum(done, d => d.miss), W = B.why?.all;
   const top = xs => xs.indexOf(Math.max(...xs));

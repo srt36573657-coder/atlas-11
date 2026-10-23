@@ -172,3 +172,23 @@ a.th-ck:active { background: #FFFFFF; }
 .th-pkc.e { background: transparent; }
 .th-pkwhy2, .th-pkfix { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; min-width: 0; }
 .th-pkwn { color: #111111; }
+/* 고른 날부터 오늘까지(사장님 2026-10-23 11:18 「1.2.3등을 골랐던 것이 날짜별로 그래프로 … 너가 알려준 날부터 항산 현재 까지」 · 11:28 「오늘 날짜까지 해야지」 · #/t/cal 맨 위)
+   1번 초록 실선 · 2번 파랑 실선 · 3번 검은 점선 · 가운데 가로선 = 시장 · 글은 그림 밖 */
+.th-since { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #111111; border-radius: 16px; background: #FFFFFF; min-width: 0; }
+.th-sinrg { width: 100%; min-height: 44px; margin: 0; accent-color: var(--ink); }
+.th-sinb { display: flex; gap: 10px; }
+.th-sinb button { flex: 1; min-height: 48px; font: inherit; font-size: var(--fs-2); font-weight: 700; color: var(--ink); background: #FFFFFF; border: 2px solid var(--ink); border-radius: 12px; cursor: pointer; }
+.th-sinb button:disabled { color: #6B6B6B; border-color: #8A8A8A; cursor: default; }
+.th-sinb button:focus-visible, .th-sinrg:focus-visible { outline: 3px solid var(--down); outline-offset: 2px; }
+.th-sinsvg { display: block; width: 100%; height: auto; overflow: visible; }
+.th-sinsvg .z { stroke: var(--ink); stroke-width: 1.5; }
+.th-sinsvg .l0, .th-sink .l0 { fill: none; stroke: var(--up); stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+.th-sinsvg .l1, .th-sink .l1 { fill: none; stroke: var(--down); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.th-sinsvg .l2, .th-sink .l2 { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 6 4; stroke-linejoin: round; }
+.th-sinsvg .d0 { fill: var(--up); } .th-sinsvg .d1 { fill: var(--down); } .th-sinsvg .d2 { fill: var(--ink); }
+.th-sinax { display: flex; justify-content: space-between; gap: 8px; font-size: var(--fs-2); color: var(--ink); }
+.th-sinrows { display: grid; }
+.th-sinr { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 52px; padding: 6px 0; border-bottom: 1px solid #DDDDDD; color: var(--ink); text-decoration: none; }
+.th-sinn { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: var(--fs-2); font-weight: 700; }
+.th-sink { flex: 0 0 auto; width: 30px; height: 10px; overflow: visible; }
+.th-sinv { font-size: var(--fs-3); font-weight: 800; }
