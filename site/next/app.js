@@ -1413,7 +1413,10 @@ if (EN && !(EN_NEXT || DEV)) location.replace('/atlas/?lang=en' + (location.hash
 else {
   if (EN) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/en.css'; document.head.append(l); await startI18n(); }
   enPrivacy(); // 맨 아래 고리(쪽 밖)
-  route().then(langTip, langTip);
+  const r0 = route(); r0.then(langTip, langTip);
+  /* 카카오 모듈(가입 · 공유 · 조용한 로그인 · kakao.js 32KB — 예전엔 index.html 이 app.js 와 함께 받음) — 첫 화면 길은 첫 그림 뒤에(느린 4G 가장 큰 그림 2.5초 · 큰 검사 gift-kakao 4/11 2508ms · 2026-10-25) · 다른 길은 바로(보유종목 쪽 가입 꼴) */
+  { let kd = false; const kk = () => { if (kd) return; kd = true; import('/next/kakao.js').catch(e => console.error(e)); };
+    if (/^#?\/?$/.test(location.hash)) r0.finally(() => { requestAnimationFrame(() => setTimeout(kk, 0)); setTimeout(kk, 1500); }); else kk(); }
   /* 친구 소개 세기(사장님 2026-10-25 13:40 · gift-ref.js) — 다 그린 뒤 */
   afterLoad(() => import('/next/gift-ref.js').then(m => { GR = m; m.visit().catch(() => {}); m.ref().catch(() => {}); }).catch(() => {}));
 }
