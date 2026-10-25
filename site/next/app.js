@@ -1268,8 +1268,9 @@ const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'i
 function whiteFor(k) {
   const on = true; // 2026-10-19 둘째 올림 — 다른 쪽도 흰 판(사장님 02:03 「둘로 올려라 … ② 다른 쪽」)
   document.documentElement.classList.toggle('white', on);
+  document.documentElement.classList.add('clock'); // 돌 시계 청록 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」) — 흰 판 자리 규칙 위에 색만(site/next/clock.css)
   document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
-  $('meta[name="theme-color"]')?.setAttribute('content', on ? '#FFFFFF' : '#0C0E12'); // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
+  $('meta[name="theme-color"]')?.setAttribute('content', '#152D30'); // 청록 판 창 위 띠(2026-10-26) — 옛 흰 판 #FFFFFF // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
 }
 whiteFor(parse(location.hash || '#/').k);
 /** 글꼴 표 — 첫 화면을 그린 다음 그림 때에 한 번 붙임(그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap) */

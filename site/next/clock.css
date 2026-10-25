@@ -1,0 +1,340 @@
+/* 돌 시계 청록 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음)
+ * 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 08:23 「더 빠른 방식 찾아서 9시까지 모든 싸이트 되게 해」
+ * 읽은 파일 33개 · 바꾼 규칙 278개 · 바꾼 칸 341개 */
+html:where(.white.clock) i.play { border: 2px solid rgba(45, 57, 58, 0.8); }
+html:where(.white.clock) i.play::after { border-left: 18px solid #2D393A; }
+html:where(.white.clock) .m4-msg .m4-moon { border: 1px solid rgba(45, 57, 58, 0.12); outline: 1px solid rgba(37, 50, 51, 0.05); }
+html:where(.white.clock) .m4-letter .hpi .m4-bm { border: 1px solid rgba(45, 57, 58, 0.12); outline: 1px solid rgba(37, 50, 51, 0.05); }
+html:where(.white.clock) .m4-letter .hpi .hpi-b { border: 2px solid #1FB8CD; }
+html:where(.white.clock) .m4-seal { border: 1.5px solid rgba(45, 57, 58, 0.45); }
+html.white.clock body { background: #1C2627; }
+html:where(.white.clock) .kk-btn.kk-txt .kk-ic .kk-b { fill: #F2F3F3; }
+html:where(.white.clock) .kk-btn.kk-txt:active { background: #3C4E51; }
+html:where(.white.clock) .kk-btn.kk-row:active { background: #3C4E51; }
+html.white.clock .kk-gift { border: 1px solid #8CA3A7; background: #3C4E51; color: #F2F3F3; }
+html:where(.white.clock) .kk-gift:active { background: #3C4E51; }
+html:where(.white.clock) .kk-yel:active { background: #3C4E51; }
+html:where(.white.clock) .adm-go { background: #F2F3F3; color: #1C2627; }
+html:where(.white.clock) .pchx-key .k-up { color: #1C2627; }
+html:where(.white.clock) .pchx-key .k-dn { color: #1C2627; }
+html:where(.white.clock) .pchx-key .k-avg { border-top: 2px dashed rgba(45, 57, 58, 0.5); }
+html:where(.white.clock) .pchx-key .k-b0 { border-top: 1px dotted rgba(45, 57, 58, 0.6); }
+html:where(.white.clock) .gm-bar { background: #253233; }
+html:where(.white.clock) .gm-b { background: #F2F3F3; color: #1C2627; }
+html:where(.white.clock) .gf-uv { background: #1C2627; }
+html:where(.white.clock) .gf-sms { color: #1C2627; }
+html:where(.white.clock) .gf-claim { color: #1C2627; }
+html:where(.white.clock) .hp-vb[aria-checked="true"] { background: #F2F3F3; color: #1C2627; }
+html:where(.white.clock) .hp-go { background: #F2F3F3; color: #1C2627; }
+html:where(.white.clock) .hd-dot.hd-cu { border: 3px solid #3C4E51; }
+html.white.clock .hd-badge.hd-cr { outline-color: #4F666A; }
+html.white.clock .hd-badge.hd-cy { outline-color: #3C4E51; }
+html.white.clock .hd-badge.hd-cg { outline-color: #1FB8CD; }
+html.white.clock .hd-cg { background: #1FB8CD; }
+html.white.clock .hd-cy { background: #3C4E51; }
+html.white.clock .hd-cr { background: #4F666A; }
+html.white.clock .hd-dot.hd-cu { border-color: #3C4E51; }
+html.white.clock .hd-tog[aria-pressed="true"] { outline-color: #3C4E51; }
+html:where(.white.clock) details.nw.ppast-jump { box-shadow: inset 0 0 0 1px rgba(60, 78, 81, 0.5); }
+html:where(.white.clock) .ppast-fb { background: var(--m4-neu, #8CA3A7); }
+html:where(.white.clock) .prange-qline { outline: 1px solid rgba(60, 78, 81, 0.45); }
+html:where(.white.clock) .prange-b.prange-pos { background: repeating-linear-gradient(135deg, rgba(37, 50, 51, 0.62) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-sw.prange-pos { background: repeating-linear-gradient(135deg, rgba(37, 50, 51, 0.62) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-b.prange-neg { background: repeating-linear-gradient(135deg, rgba(60, 78, 81, 0.78) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-sw.prange-neg { background: repeating-linear-gradient(135deg, rgba(60, 78, 81, 0.78) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-no .prange-mk { outline: 1px solid rgba(60, 78, 81, 0.45); }
+html:where(.white.clock) .prange-q .prange-mk { outline: 1px solid rgba(60, 78, 81, 0.45); }
+html.white.clock :is(.prange-b, .prange-sw).prange-neg { background: rgba(60, 78, 81, 0.22); }
+html:where(.white.clock) .ps-dlg { --ps-bg: var(--card, #F2F3F3); --ps-bg2: var(--card2, #F2F3F3); --ps-hair: var(--hair2, rgba(45, 57, 58, 0.22)); --ps-ink: var(--ink, #253233); --ps-sub: var(--sub, #3C4E51); --ps-gold: var(--gold, #3C4E51); --ps-up: var(--up, #4F666A); --ps-dn: var(--down, #428189); }
+html:where(.white.clock) .ps-dlg::backdrop { background: rgba(242, 243, 243, 0.72); }
+html:where(.white.clock) .ps-dlg.ps-fb { outline: 100vmax solid rgba(242, 243, 243, 0.72); }
+html:where(.white.clock) .ps-go { background: var(--ps-gold, #3C4E51); }
+html:where(.white.clock) .ps-dlg :focus-visible { outline: 3px solid var(--ps-gold, #3C4E51); }
+html:where(.white.clock) .ps-land :focus-visible { outline: 3px solid var(--ps-gold, #3C4E51); }
+html:where(.white.clock) .ps-after :focus-visible { outline: 3px solid var(--ps-gold, #3C4E51); }
+html:where(.white.clock) .ps-step :focus-visible { outline: 3px solid var(--ps-gold, #3C4E51); }
+html:where(.white.clock) .ps-offer :focus-visible { outline: 3px solid var(--ps-gold, #3C4E51); }
+html:where(.white.clock) .ps-toast { background: var(--ink, #253233); }
+html:where(.white.clock) .ps-land { --ps-gold: var(--gold, #3C4E51); --ps-sub: var(--sub, #3C4E51); --ps-hair: var(--hair, rgba(45, 57, 58, 0.12)); }
+html:where(.white.clock) .ps-step { --ps-gold: var(--gold, #3C4E51); --ps-sub: var(--sub, #3C4E51); --ps-hair: var(--hair, rgba(45, 57, 58, 0.12)); }
+html:where(.white.clock) .ps-after { --ps-gold: var(--gold, #3C4E51); --ps-sub: var(--sub, #3C4E51); --ps-hair: var(--hair, rgba(45, 57, 58, 0.12)); }
+html:where(.white.clock) .ps-ln { stroke: var(--flat, #6A8184); }
+html:where(.white.clock) .ps-ln.up { stroke: var(--up, #4F666A); }
+html:where(.white.clock) .ps-ln.dn { stroke: var(--down, #AAC1C5); }
+html:where(.white.clock) .ps-end { fill: var(--flat, #6A8184); }
+html:where(.white.clock) .ps-end.up { fill: var(--up, #4F666A); }
+html:where(.white.clock) .ps-end.dn { fill: var(--down, #428189); }
+html:where(.white.clock) .ps-sent { stroke: var(--bg, #F2F3F3); }
+html:where(.white.clock) .ps-v { background: var(--card, #F2F3F3); }
+html:where(.white.clock) .ps-vn.up { color: var(--up, #E2E5E6); }
+html:where(.white.clock) .ps-vn.dn { color: var(--down, #AAC1C5); }
+html:where(.white.clock) .ps-cmp.up { color: var(--up, #E2E5E6); }
+html:where(.white.clock) .ps-cmp.dn { color: var(--down, #AAC1C5); }
+html:where(.white.clock) .ps-after .ps-t { border: 1px solid var(--hair2, rgba(45, 57, 58, 0.22)); background: var(--card2, #F2F3F3); color: var(--ink, #253233); }
+html:where(.white.clock) .ps-after .ps-qb { border: 1px solid var(--hair2, rgba(45, 57, 58, 0.22)); background: var(--card2, #F2F3F3); color: var(--ink, #253233); }
+html:where(.white.clock) .ps-lock { border: 1px dashed var(--hair2, rgba(45, 57, 58, 0.22)); }
+html:where(.white.clock) .ps-said { background: var(--card, #F2F3F3); }
+html:where(.white.clock) .ps-link { color: var(--ink, #253233); }
+html:where(.white.clock) .ps-offer { --ps-gold: var(--gold, #3C4E51); --ps-sub: var(--sub, #3C4E51); border: 1px solid var(--hair2, rgba(45, 57, 58, 0.22)); background: var(--card, #F2F3F3); color: var(--ink, #253233); }
+html:where(.white.clock) .psurge-lkey .psurge-ldot { color: #1C2627; }
+html:where(.white.clock) .psurge-key .psurge-kup { color: #1C2627; }
+html:where(.white.clock) .psurge-key .psurge-kdn { color: #1C2627; }
+html:where(.white.clock) .psurge-key .psurge-kb0 { border-top: 1px dashed rgba(45, 57, 58, 0.55); }
+html:where(.white.clock) .th-say { border: 1px solid #3E737A; background: #1C2627; }
+html:where(.white.clock) .th-who { border-right: 1px solid #3E737A; color: #E2E5E6; }
+html:where(.white.clock) .th-asof { color: #E2E5E6; }
+html:where(.white.clock) .th-cap2 { color: #E2E5E6; }
+html:where(.white.clock) .th-safe { color: #F2F3F3; }
+html:where(.white.clock) .th-steps li { border-top: 1px solid #3E737A; }
+html:where(.white.clock) .th-sn { border: 1px solid #8CA3A7; }
+html:where(.white.clock) .th-st span { color: #F2F3F3; }
+html:where(.white.clock) .th-st .th-ckd { color: #F2F3F3; }
+html:where(.white.clock) .th-z.W { color: #F2F3F3; }
+html:where(.white.clock) .th-z.Q { color: #F2F3F3; }
+html:where(.white.clock) .th-ck { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) a.th-ck:active { background: #1C2627; }
+html:where(.white.clock) .th-ck > b.y { color: #1C2627; }
+html:where(.white.clock) .th-ck > b.n { border: 2px solid #8CA3A7; color: #F2F3F3; }
+html:where(.white.clock) .th-box { border: 1px dashed #8CA3A7; }
+html:where(.white.clock) .th-box span { color: #F2F3F3; }
+html:where(.white.clock) .th-li { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-cor { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-srow { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-srow .th-sk { color: #E2E5E6; }
+html:where(.white.clock) .th-line .th-mid { stroke: #2D393A; }
+html:where(.white.clock) .th-line .th-l0 { stroke: #F2F3F3; }
+html:where(.white.clock) .th-two p { border: 1px solid #3E737A; }
+html:where(.white.clock) .th-two span { color: #F2F3F3; }
+html:where(.white.clock) .th-two small { color: #F2F3F3; }
+html:where(.white.clock) .th-al { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-sw { border: 1px solid #8CA3A7; color: #F2F3F3; }
+html:where(.white.clock) .th-rb.all { border-top: 1px solid #3E737A; color: #F2F3F3; }
+html:where(.white.clock) .th-rbk { color: #F2F3F3; }
+html:where(.white.clock) .th-rb.all .th-bar1 { fill: #F2F3F3; }
+html:where(.white.clock) .th-fold { border: 1px solid #3E737A; color: #F2F3F3; }
+html:where(.white.clock) .th-fold summary::after { color: #F2F3F3; }
+html:where(.white.clock) .th-found { border: 1px solid #8CA3A7; }
+html:where(.white.clock) .th-found .th-fk { color: #F2F3F3; }
+html:where(.white.clock) .th-why { border: 1px solid #8CA3A7; }
+html:where(.white.clock) .th-why .th-nx small { color: #F2F3F3; }
+html:where(.white.clock) .th-why > i { color: #F2F3F3; }
+html:where(.white.clock) .th-gh { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-gfold > summary { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-gfold > summary::after { color: #F2F3F3; }
+html:where(.white.clock) .th-calc { border: 2px solid #8CA3A7; background: #1C2627; }
+html:where(.white.clock) .th-calc.kept { border-color: var(--gold-line, #3C4E51); }
+html:where(.white.clock) .th-calm i.ok { color: #1C2627; }
+html:where(.white.clock) .th-calkey i.ok { color: #1C2627; }
+html:where(.white.clock) .th-calm i.no { border: 2px solid #AAC1C5; }
+html:where(.white.clock) .th-calkey i.no { border: 2px solid #AAC1C5; }
+html:where(.white.clock) .th-calm i.wait { background: #3C4E51; }
+html:where(.white.clock) .th-calkey i.wait { background: #3C4E51; }
+html:where(.white.clock) .th-pkrec { border: 2px solid #8CA3A7; background: #1C2627; }
+html:where(.white.clock) .th-pkt { background: #253233; }
+html:where(.white.clock) .th-pkt i { background: #3C4E51; }
+html:where(.white.clock) .th-pkbar.pick .th-pkt i { color: #1C2627; }
+html:where(.white.clock) .th-pkrow { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-pkrow i { color: var(--sub, #F2F3F3); }
+html:where(.white.clock) .th-pkcal { border: 2px solid #8CA3A7; background: #1C2627; }
+html:where(.white.clock) .th-pkwd { color: #F2F3F3; }
+html:where(.white.clock) .th-pkc { background: #253233; }
+html:where(.white.clock) .th-pkc.up { color: #1C2627; }
+html:where(.white.clock) .th-pkc.dn { color: #1C2627; }
+html:where(.white.clock) .th-pkc.w { border: 2px solid #8CA3A7; }
+html:where(.white.clock) .th-pkwn { color: #F2F3F3; }
+html:where(.white.clock) .th-day { border: 2px solid #8CA3A7; background: #1C2627; }
+html:where(.white.clock) .th-sinr { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-ch { border-top: 2px solid #8CA3A7; }
+html:where(.white.clock) .th-ch.th-chend { border: 2px solid #8CA3A7; }
+html:where(.white.clock) .th-chk { border: 2px solid #8CA3A7; }
+html:where(.white.clock) .th-chend .th-chk { background: #F2F3F3; border-color: #8CA3A7; color: #1C2627; }
+html:where(.white.clock) .th-chb { border: 2px solid #8CA3A7; background: #1C2627; color: #F2F3F3; }
+html:where(.white.clock) .th-chb:active { background: #253233; }
+html:where(.white.clock) .th-pkhowf { border-top: 1px solid #3E737A; }
+html:where(.white.clock) .ptime-key .k-pool { border-top: 2px solid #8CA3A7; }
+html:where(.white.clock) details.nw.ptoday-al { outline: 1px solid rgba(60, 78, 81, 0.6); }
+html:where(.white.clock) .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #8CA3A7; }
+html:where(.white.clock) .ptoday-bar .ptoday-bu { color: #1C2627; }
+html:where(.white.clock) .ptoday-bar .ptoday-bd { color: #1C2627; }
+html.white.clock .ptoday-ch .ptoday-ag2 { fill: rgba(242, 243, 243, 0.04); }
+html:where(.white.clock) .wy { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-opt { box-shadow: inset 0 0 0 1px var(--hair2, #171615); }
+html:where(.white.clock) .wy-find { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-why { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-hit { box-shadow: inset 0 0 0 1px var(--hair2, #171615); }
+html:where(.white.clock) .wy-xrow { outline: 1px dashed var(--hair2, #2D393A); }
+html:where(.white.clock) .wy-date { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-chip { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-num { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-vg b { color: #1FB8CD; }
+html:where(.white.clock) .wy-vy b { color: #F2F3F3; }
+html:where(.white.clock) .wy-vr b { color: #E2E5E6; }
+html:where(.white.clock) span.wy-vg { color: #1FB8CD; }
+html:where(.white.clock) span.wy-vy { color: #F2F3F3; }
+html:where(.white.clock) span.wy-vr { color: #E2E5E6; }
+html:where(.white.clock) .wy-rec { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-fold > summary { border: 1px solid var(--hair2, #3E737A); }
+html:where(.white.clock) .wy-kb { border: 1px solid var(--hair2, #3E737A); }
+html.white.clock .wy-g { background: #1FB8CD; }
+html.white.clock .wy-fill.wy-g { background: #1FB8CD; }
+html.white.clock .wy-y { background: #3C4E51; }
+html.white.clock .wy-fill.wy-y { background: #3C4E51; }
+html.white.clock .wy-r { background: #4F666A; }
+html.white.clock .wy-fill.wy-r { background: #4F666A; }
+html.white.clock .top { background: #1C2627; border-bottom: 1px solid #3E737A; }
+html.white.clock .top #jhBtn { border: 1px solid #8CA3A7; background: #1C2627; }
+html.white.clock .top .ibtn { background: #1C2627; border-top: 1px solid #8CA3A7; border-bottom: 1px solid #8CA3A7; }
+html.white.clock .top #langBtn { border-left: 1px solid #8CA3A7; }
+html.white.clock .top #findBtn { border-right: 1px solid #8CA3A7; }
+html.white.clock .tabs { background: #1C2627; border-top: 1px solid #3E737A; }
+html.white.clock .tabs a { color: #E2E5E6; }
+html.white.clock .tabs a.plus { color: #E2E5E6; }
+html.white.clock.home .w-say p { border: 1px solid #8CA3A7; background: #1C2627; }
+html.white.clock.home .w-say .s-who { border-right: 1px solid #8CA3A7; color: #F2F3F3; }
+html.white.clock.home .w-say .w-kk { border: 1px solid #8CA3A7; background: #F2F3F3; color: #1C2627; }
+html.white.clock.home ol.s-story::before { background: #253233; }
+html.white.clock.home .s-ch + .s-ch { border-top: 1px solid #3E737A; }
+html.white.clock.home .s-no { border: 1px solid #8CA3A7; background: #1C2627; }
+html.white.clock.home .w-ess .ess-d > summary::after { border: 1px solid #8CA3A7; }
+html.white.clock.home .w-ess .ess-l { color: #F2F3F3; }
+html.white.clock.home .w-ess .ess-l.q { color: #F2F3F3; }
+html.white.clock.home a.w-today { color: #F2F3F3; }
+html.white.clock.home a.w-today .hm-bd { color: #F2F3F3; }
+html.white.clock.home .w-news .w-lb { color: #F2F3F3; }
+html.white.clock.home .w-news .w-why { border: 1px solid #8CA3A7; }
+html.white.clock.home .w-news .w-qs { color: #F2F3F3; }
+html.white.clock.home .w-news .w-qs li { border-top: 1px solid #3E737A; }
+html.white.clock.home .w-news button.w-q i { color: #F2F3F3; }
+html.white.clock.home .w-news .w-ans p { color: #F2F3F3; }
+html.white.clock.home .s-split .gu { color: #1C2627; }
+html.white.clock.home .s-split .gd { color: #1C2627; }
+html.white.clock.home a.s-ghost { border: 1px dashed #8CA3A7; }
+html.white.clock.home a.w-month { border: 1px dashed #8CA3A7; }
+html.white.clock.home .s-mem { color: #F2F3F3; }
+html.white.clock.home .s-mem .w-n { color: #F2F3F3; }
+html.white.clock.home a.s-evo { color: #F2F3F3; }
+html.white.clock.home a.s-evo i { color: #F2F3F3; }
+html.white.clock.home .s-thumb { border-top: 1px solid #3E737A; background: #1C2627; }
+html.white.clock.home .s-thumb form.w-find { border: 1px solid #8CA3A7; background: #1C2627; }
+html.white.clock.home .s-thumb .w-find .w-in::placeholder { color: #F2F3F3; }
+html.white.clock.home .s-thumb .w-find .w-go { background: #F2F3F3; color: #1C2627; }
+html.white.clock.home .s-thumb .w-hits { background: #1C2627; border-color: #8CA3A7; }
+html.white.clock.home .s-thumb .w-go4 a { color: #F2F3F3; }
+html.white.clock.home .s-thumb details.w-all > summary { color: #F2F3F3; }
+html.white.clock.home .s-short { border-top: 1px solid #3E737A; }
+html.white.clock.home .s-short .w-go4 a { color: #F2F3F3; }
+html.white.clock.home .s-short details.w-all > summary { color: #F2F3F3; }
+html.white.clock .cp-card .cp-bar { background: #253233; }
+html.white.clock .cp-card .cp-go { background: #F2F3F3; color: #1C2627; }
+html:where(.white.clock) .th-clock .th-sz { fill: rgba(31, 184, 205, 0.1); }
+html:where(.white.clock) .th-clock .th-ax { stroke: #2D393A; }
+html:where(.white.clock) .th-clock .th-turn { stroke: #F2F3F3; }
+html:where(.white.clock) .th-clock .th-arw { fill: #F2F3F3; }
+html:where(.white.clock) .th-clock .th-tail { stroke: #F2F3F3; }
+html:where(.white.clock) .th-clock .th-dot { fill: #E2E5E6; stroke: #1C2627; }
+html:where(.white.clock) .th-clock .th-nb { stroke: #1C2627; }
+html:where(.white.clock) .th-clock .th-nbt { fill: #1C2627; }
+html:where(.white.clock) .th-clock .th-lb { stroke: #1C2627; }
+html:where(.white.clock) .th-clock .th-zl { stroke: #1C2627; }
+html:where(.white.clock) .th-clock .th-bt { stroke: #1C2627; }
+html:where(.white.clock) .th-clock .th-zl.th-zq { fill: #E2E5E6; }
+html:where(.white.clock) .th-cap { color: #F2F3F3; }
+html:where(.white.clock) .th-three a { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-three a i { color: #F2F3F3; }
+html:where(.white.clock) .th-three a:active { background: #1C2627; }
+html:where(.white.clock) .th-ansl i { color: #F2F3F3; }
+html:where(.white.clock) .th-sub { color: #F2F3F3; }
+html:where(.white.clock) .th-row { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-n { background: #2D393A; }
+html:where(.white.clock) .th-n.th-top { background: #3C4E51; color: #F2F3F3; }
+html:where(.white.clock) .th-meta { color: #F2F3F3; }
+html:where(.white.clock) .th-tg { border: 1px solid #8CA3A7; }
+html:where(.white.clock) .th-nm { color: #F2F3F3; }
+html:where(.white.clock) .th-hi { color: #F2F3F3; }
+html:where(.white.clock) .th-bar .th-bar0 { fill: #2D393A; }
+html:where(.white.clock) .th-rbar .th-bar0 { fill: #2D393A; }
+html:where(.white.clock) .th-go { color: #F2F3F3; }
+html:where(.white.clock) .th-more { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-rec { border: 1px dashed #8CA3A7; color: #F2F3F3; }
+html:where(.white.clock) .th-next { border: 1px solid #2D393A; background: #F2F3F3; color: #1C2627; }
+html:where(.white.clock) .th-nx small { color: #1FB8CD; }
+html:where(.white.clock) .th-bars .th-b0 { fill: #E2E5E6; }
+html:where(.white.clock) .th-lc { color: #F2F3F3; }
+html:where(.white.clock) #view .th-map a.th-row.th-row2 { border-bottom-color: #3E737A; }
+html.white.clock #view .th-map a[href].th-row.th-row2 { border-bottom-color: #3E737A; }
+html:where(.white.clock) .th-pill { color: #1C2627; }
+html:where(.white.clock) .th-pill.th-pdn { color: #1C2627; }
+html:where(.white.clock) .th-hfold { border-bottom: 1px solid #3E737A; }
+html:where(.white.clock) .th-hfold > summary::after { color: #F2F3F3; }
+html:where(.white.clock) .th-pkhome { background: #1C2627; }
+html:where(.white.clock) .th-pqt { background: #253233; }
+html:where(.white.clock) .th-pqf { background: #F2F3F3; }
+html:where(.white.clock) .th-pkhgo { border-top: 1px solid #3E737A; }
+html:where(.white.clock) .th-calgo { color: #1C2627; }
+html:where(.white.clock) .th-zc.th-zcS { color: #1C2627; }
+html:where(.white.clock) .th-zc.th-zcS:active { background: #F2F3F3; }
+html:where(.white.clock) .th-zc.th-zcS .th-zi { background: #1C2627; }
+html:where(.white.clock) .th-zc.th-zcS .th-zgo { background: #1C2627; }
+html:where(.white.clock) .th-yrg .th-yrb0 { stroke: #3C4E51; }
+html:where(.white.clock) .th-yrg .th-yrgh { stroke: #3C4E51; }
+html:where(.white.clock) .th-yrg .th-yrhi { stroke: #1C2627; }
+html:where(.white.clock) .th-yrg .th-yric { fill: rgba(28, 38, 39, 0.06); }
+html.white.clock.clock.clock { --bg: #1C2627; --night: #1C2627; --band: #1C2627; --violet: #F2F3F3; --card: #1C2627; --card2: #1C2627; --card3: #253233; --hair: #8CA3A7; --hair2: #8CA3A7; --line: #3E737A; --hair-soft: #2D393A; --seam: #2D393A; --press: #253233; --lift: #1C2627; --ink: #F2F3F3; --ink-hi: #F2F3F3; --sub: #F2F3F3; --mute: #E2E5E6; --flat: #E2E5E6; --violet-ink: #F2F3F3; --violet-wash: #1C2627; --violet-line: #8CA3A7; --violet-glow: #171615; --gold: #AAC1C5; --gold-wash: #3C4E51; --gold-line: #AAC1C5; --up: #1FB8CD; --down: #428189; --up-ink: #1FB8CD; --down-ink: #AAC1C5; --up-bg: #1FB8CD; --down-bg: #428189; --up-fill: rgba(31, 184, 205, 0.16); --down-fill: rgba(66, 129, 137, 0.16); --up-fade: rgba(31, 184, 205, 0.06); --down-fade: rgba(66, 129, 137, 0.06); --lacquer: #1C2627; --lacquer-ink: #F2F3F3; --lacquer-sub: #F2F3F3; --lacquer-gold: #AAC1C5; --moon: #F2F3F3; --moonrow: #1C2627; --m4-band: #1C2627; --m4-line: #6A8184; --m4-soft: #6A8184; --m4-neu: #E2E5E6; --m4-line2: #2D393A; }
+
+/* ── 손으로 쓴 판(clock_theme.py EXTRA) ── */
+html.white.clock.clock.clock {
+  color-scheme: dark;
+  --bg: #152D30; --night: #152D30; --band: #152D30; --violet: #F2F3F3;
+  --card: #1C2627; --card2: #203235; --card3: #2D393A;
+  --hair: #8CA3A7; --hair2: #8CA3A7; --line: #2D393A; --hair-soft: #253233; --seam: #2D393A; --press: #2D393A; --lift: #1C2627;
+  --ink: #F2F3F3; --ink-hi: #FFFFFF; --sub: #E2E5E6; --mute: #C8CDCE; --flat: #C8CDCE;
+  --violet-ink: #F2F3F3; --violet-wash: #1C2627; --violet-line: #8CA3A7; --violet-glow: #203235;
+  --gold: #1FB8CD; --gold-wash: #203235; --gold-line: #1FB8CD;
+  --up: #1FB8CD; --down: #AAC1C5; --up-ink: #1FB8CD; --down-ink: #AAC1C5; --up-bg: #1FB8CD; --down-bg: #428189;
+  --up-fill: rgba(31, 184, 205, .2); --down-fill: rgba(170, 193, 197, .18); --up-fade: rgba(31, 184, 205, .07); --down-fade: rgba(170, 193, 197, .06);
+  --lacquer: #152D30; --lacquer-ink: #F2F3F3; --lacquer-sub: #E2E5E6; --lacquer-gold: #1FB8CD;
+  --moon: #F2F3F3; --moonrow: #203235;
+  --m4-band: #1C2627; --m4-line: #6A8184; --m4-soft: #6A8184;
+  background: #152D30;
+}
+html.white.clock.clock.clock body { background: #152D30; color: #F2F3F3; isolation: isolate; } /* 몸이 쌓임 판이 되어야 망점 벽(body::after · z -1)이 몸 바탕 위 · 글 아래에 그려짐 */
+/* 망점 벽 — 어젯밤 돌 시계 판(docs/design/dori-new-2026-10-25/clock/parts.py .wall) 그대로 · 화면에 붙어 있음 */
+html.white.clock.clock.clock body::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(rgba(170, 193, 197, .09) 1.2px, transparent 1.65px) 0 0 / 8.6px 8.6px,
+    radial-gradient(ellipse 110vw 90vh at 50% 62%, #27666E 0%, #1D5962 22%, #1A4850 42%, #17363B 62%, #152D30 80%, #171615 100%); }
+/* 위 막대 — 짙은 청록 · 「돌이」 흰 큰 글 + 청록 그림자 · 단추는 흰 알약(검은 테 · 어긋난 그림자) */
+html.white.clock.clock.clock .top { background: rgba(21, 45, 48, .94); border-bottom: 1px solid rgba(242, 243, 243, .18); }
+html.white.clock.clock.clock .top .logo { color: #FFFFFF; font-weight: 900; text-shadow: 3px 3px 0 #4E99A3; }
+html.white.clock.clock.clock .top .logo img { display: none; }
+html.white.clock.clock.clock .top .tbtn, html.white.clock.clock.clock .top .ibtn { background: #F2F3F3; color: #171615; border: 2px solid #171615; box-shadow: 3px 3px 0 #171615; }
+html.white.clock.clock.clock .top .ibtn svg, html.white.clock.clock.clock .top .tbtn svg { color: #171615; stroke: currentColor; }
+html.white.clock.clock.clock .top #giftBtn { background: #AAC1C5; }
+/* 아래 단추 줄 — 밝은 회청 반투명 띠 · 흰 글 */
+html.white.clock.clock.clock .tabs { background: rgba(28, 38, 39, .96); border-top: 2px solid rgba(242, 243, 243, .3); }
+html.white.clock.clock.clock .tabs a { color: #F2F3F3; }
+html.white.clock.clock.clock .tabs a[aria-current="page"], html.white.clock.clock.clock .tabs a.on { color: #1FB8CD; }
+/* 첫 화면 네 칸 — 그림처럼 싹 하늘청록 · 꽃 밝은 회청 · 잠잠 짙은 청록 · 시듦 회색 · 검은 테 · 어긋난 그림자 · 망점 */
+html.white.clock.clock.clock .th-zc { border: 3px solid #171615; box-shadow: 5px 5px 0 #171615; isolation: isolate; overflow: hidden; }
+html.white.clock.clock.clock .th-zc::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: radial-gradient(circle, var(--zdot) 0 34%, transparent 39%); background-size: 9px 9px; opacity: .55; }
+html.white.clock.clock.clock .th-zc.th-zcS { --zdot: #F2F3F3; background: #1FB8CD; border-color: #171615; color: #152D30; box-shadow: 5px 5px 0 #171615, 9px 9px 0 #FFFFFF; }
+html.white.clock.clock.clock .th-zc.th-zcB { --zdot: #8CA3A7; background: #AAC1C5; color: #171615; }
+html.white.clock.clock.clock .th-zc.th-zcQ { --zdot: #356369; background: #284E53; color: #E2E5E6; border-color: #AAC1C5; } /* 짙은 칸은 밝은 테(짙은 바탕 위 테 대비 3 넘게 — check_white ②) */
+html.white.clock.clock.clock .th-zc.th-zcW { --zdot: #697779; background: #797F7F; color: #F2F3F3; }
+html.white.clock.clock.clock .th-zc .th-zi { background: #F2F3F3; color: #171615; border: 2px solid #171615; }
+html.white.clock.clock.clock .th-zc .th-zi svg, html.white.clock.clock.clock .th-zc.th-zcS .th-zi svg { color: #171615; }
+html.white.clock.clock.clock .th-zc .th-zi svg [stroke]:not([stroke="none"]) { stroke: #171615; }
+html.white.clock.clock.clock .th-zc .th-zi svg [fill]:not([fill="none"]) { fill: #171615; }
+html.white.clock.clock.clock .th-zc.th-zcS .th-zgo { background: #FFFFFF; color: #152D30; border: 2px solid #171615; }
+html.white.clock.clock.clock .th-zc:active { background: #2D393A; }
+/* 밝게 바뀐 단추(옛 검은 단추) 위 작은 강조 글은 짙게 — 하늘청록은 밝은 바탕 위 대비가 모자람 */
+html.white.clock.clock.clock .th-next small, html.white.clock.clock.clock .th-nx small { color: #152D30; }
+/* 편지 띠(보유종목 아래 「돌이 주식 격언」) — 짙은 띠라 밝은 테(단추 테 대비 3 · check_white ⑤) */
+html.white.clock.clock.clock a.hello.m4-letter { border: 2px solid #8CA3A7; }
+/* 그림 속 검은 · 흰 칠(svg 칠 속성) — 돌 시계 바늘은 그대로 */
+html.white.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *) { fill: #F2F3F3; }
+html.white.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *) { stroke: #F2F3F3; }
+html.white.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *) { fill: #1C2627; }
+html.white.clock.clock.clock :is([fill="#007A35"], [fill="#007a35"]) { fill: #1FB8CD; }
+html.white.clock.clock.clock :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #1FB8CD; }
+html.white.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #AAC1C5; }
+html.white.clock.clock.clock :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #AAC1C5; }
