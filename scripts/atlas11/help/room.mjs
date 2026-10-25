@@ -15,7 +15,7 @@ import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
-import {newRoomKey, open, fromAnnotations, FWD_SCHEMA, ID_RE} from './forward.mjs';
+import {newRoomKey, open, fromAnnotations, FWD_SCHEMA, splitLast} from './forward.mjs';
 
 export const REPO = 'srt36573657-coder/atlas-11', WORKFLOW = 'atlas11-help-forward.yml';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -89,7 +89,7 @@ export async function fetchRoom({out = path.join(os.tmpdir(), 'help-forward.json
   return {ok: true, n: r.n, msgs: r.messages.length, more: r.more, last: r.last, run, file: out};
 }
 export async function doneRoom({run, last}) {
-  if (!ID_RE.test(String(last ?? ''))) return {ok: false, why: '글 번호 꼴이 틀림'};
+  if (!splitLast(last)) return {ok: false, why: '글 번호 꼴이 틀림'}; // 고객센터 글 번호 · 또는 「고객센터 번호+선물 신청 번호」(선물 신청 알림 · 2026-10-25 15:37)
   const t0 = Date.now() - 15e3, tag = newTag();
   const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=ack', '-f', `ack_id=${last}`, '-f', `tag=${tag}`]);
   if (!w.ok) return {ok: false, why: '보낸 표시 작업을 못 부름 ' + short(w.err)};

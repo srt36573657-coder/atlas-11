@@ -7,6 +7,9 @@
 //   왜 이 길: Claude 예약 방은 aaa7377.com 과 깃허브 묶음 받기가 막힘(scripts/atlas11/jinhwa/read.mjs 머리 · 2026-10-18 확인) · 사장님 열쇠를 쓰지 않음
 //   지키는 것: 사람 글은 깃허브 기록에 맨글로 남지 않음(방마다 새 열쇠 X25519 → AES-256-GCM 으로 잠금 · 기록 줄에는 수만) · 기기 표시(해시) · 답 글은 보내지 않음
 //             · 글은 한 글자도 바꾸지 않음 · 한 번에 10개까지(남으면 다음 시간) · 카톡 한 통 190자 안(길면 나눔)
+//   선물 신청 알림도 같은 길로(사장님 2026-10-25(서울) 15:37 「어 오게 해」 — 물음 「새 신청이 오면 사장님 카톡으로도 알려 드릴까요?」) — 저장소 atlas11-gift-v1 의 새 신청 c/<번호>
+//     카톡에는 신청한 때 · 친구 수 · 카톡에서 연 수 · 전화번호 끝 네 자리만(전체 번호는 관리자 화면에서만 · 처리방침 #gift-kakao) · 보낸 표시는 저장소마다 따로(fwd/cursor)
+//     방에 돌려주는 last = 고객센터 글 번호(선물 신청이 없을 때 · 예전과 같음) 또는 「<고객센터 번호 또는 빈칸>+<선물 신청 번호>」 — --ack 가 둘을 따로 앞으로 옮김
 //   쓰는 법(깃허브 작업): node scripts/atlas11/help/forward.mjs --fetch --pub <방 공개 열쇠 base64> --out sealed.json  (환경 NETLIFY_SITE_ID · NETLIFY_AUTH_TOKEN)
 //                         node scripts/atlas11/help/forward.mjs --annotate sealed.json
 //                         node scripts/atlas11/help/forward.mjs --ack <글 번호>
@@ -114,6 +117,34 @@ export function fromAnnotations(list) {
 
 // ───────────── 저장소(넷리파이 Blobs — 시험은 메모리 저장소) ─────────────
 const getJ = (store, key) => store.get(key, {type: 'json'}).catch(() => null);
+
+// ───────────── 선물 신청 알림(사장님 2026-10-25 15:37 「어 오게 해」) ─────────────
+export const GIFT_STORE = 'atlas11-gift-v1'; // lib/atlas11/gift.mjs GIFT_STORE 와 같음(시험이 맞댐 · 신청 번호 꼴도 ID_RE 와 같음)
+/** 선물 신청 넘기기 시작 때 — 친구 셋 세기가 진짜 사이트에 오른 때(2026-10-25 15:02 서울) 바로 앞 · 그 뒤 신청부터 */
+export const GIFT_START = '2026-10-25T06:00:00.000Z';
+/** 신청 하나 → 카톡 한 통 — 때 · 친구 수 · 카톡에서 연 수 · 번호 끝 네 자리(전체 번호는 넣지 않음) */
+export function giftMessage(c) {
+  const n = Number.isInteger(c?.friends) ? c.friends : 0, kk = Number.isInteger(c?.kk) ? c.kk : 0;
+  const tail = /^\d{4}$/.test(String(c?.tail ?? '')) ? c.tail : '????';
+  return `[돌이 선물] 새 신청이 왔어요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n전화번호 끝 ${tail}\n관리자 화면에서 번호를 보고 카톡 선물을 보내 주세요.`;
+}
+/** 보낸 표시 뒤 새 신청 — {n 보낼 차례 수, more, last 꺼낸 마지막 번호(이미 보낸 신청도 지나감), messages} · 이미 「보냄」인 신청은 알리지 않음 */
+export async function fetchGift(store, {max = MAX_ITEMS, start = GIFT_START} = {}) {
+  const cur = await getJ(store, CURSOR_KEY), cursor = typeof cur?.id === 'string' && ID_RE.test(cur.id) ? cur.id : startCursor(start);
+  const ids = (((await store.list({prefix: 'c/'}))?.blobs) ?? []).map(b => b.key.slice(2)).filter(x => ID_RE.test(x) && x > cursor).sort();
+  const take = ids.slice(0, max), rows = (await Promise.all(take.map(x => getJ(store, 'c/' + x)))).filter(c => c?.id && ID_RE.test(c.id));
+  const wait = rows.filter(c => c.state === 'wait');
+  return {n: wait.length, more: Math.max(0, ids.length - max), last: take.at(-1) ?? null, messages: wait.map(giftMessage)};
+}
+/** 방에 돌려줄 번호 — 선물 신청이 없으면 고객센터 번호 그대로(예전과 같음) · 있으면 「고객센터 번호+선물 번호」 */
+export const pairLast = (help, gift) => (gift ? `${help ?? ''}+${gift}` : help ?? null);
+/** 방이 돌려준 번호 풀기 — {help, gift} · 꼴이 틀리면 null */
+export function splitLast(s) {
+  s = String(s ?? '');
+  if (ID_RE.test(s)) return {help: s, gift: null};
+  const m = /^([0-9a-z]{9}-[A-Za-z0-9_-]{12})?\+([0-9a-z]{9}-[A-Za-z0-9_-]{12})$/.exec(s);
+  return m ? {help: m[1] ?? null, gift: m[2]} : null;
+}
 /** 새 글 꺼내기 — {schema, at, cursor, n, more, last, items, messages} */
 export async function fetchNew(store, {max = MAX_ITEMS, now = new Date(), start = FWD_START} = {}) {
   const cur = await getJ(store, CURSOR_KEY), cursor = typeof cur?.id === 'string' && ID_RE.test(cur.id) ? cur.id : startCursor(start);
@@ -129,40 +160,56 @@ export async function fetchNew(store, {max = MAX_ITEMS, now = new Date(), start 
 export const annParts = box => Math.ceil(Buffer.from(JSON.stringify(box), 'utf8').toString('base64').length / ANN_CHUNK);
 /** 꺼내 잠그기 — 잠긴 묶음이 알림 줄 아홉 조각 안에 들 때까지 글 수를 줄임(10 → 5 → 2 → 1 · 남은 글은 다음 시간에)
  *  아주 긴 글(그림 글자 500자 열 개 등)에 막혀 한 시간도 못 보내는 일이 없게 · 묶음에는 카톡 글만(글 목록은 빼 크기 절반) */
-export async function fetchSealed(store, pub, {steps = [MAX_ITEMS, 5, 2, 1], now, start, maxParts = ANN_MAX} = {}) {
+export async function fetchSealed(store, pub, {steps = [MAX_ITEMS, 5, 2, 1], now, start, maxParts = ANN_MAX, giftStore = null, giftStart} = {}) {
+  const g = giftStore ? await fetchGift(giftStore, {start: giftStart}).catch(() => null) : null; // 선물 신청을 못 읽어도 고객센터 글은 그대로 감
   for (const max of steps) {
     const r = await fetchNew(store, {max, now, start});
-    const box = seal({schema: r.schema, at: r.at, n: r.n, more: r.more, last: r.last, messages: r.messages}, pub);
-    if (annParts(box) <= maxParts) return {r, box};
+    const box = g
+      ? seal({schema: r.schema, at: r.at, n: r.n + g.n, more: r.more + g.more, last: pairLast(r.last, g.last), messages: [...r.messages, ...g.messages], help: r.n, gift: g.n}, pub)
+      : seal({schema: r.schema, at: r.at, n: r.n, more: r.more, last: r.last, messages: r.messages}, pub);
+    if (annParts(box) <= maxParts) return {r, g, box};
   }
   throw Error('글 하나도 알림 줄에 들지 않음');
 }
 /** 여기까지 보냄 — 앞으로만(뒤로 가지 않음) · 틀린 번호는 거절 */
-export async function ack(store, id, {now = new Date()} = {}) {
-  if (typeof id !== 'string' || !ID_RE.test(id)) return {ok: false, why: '번호 꼴이 틀림'};
+async function ack1(store, id, now) {
   const cur = await getJ(store, CURSOR_KEY);
   if (typeof cur?.id === 'string' && cur.id >= id) return {ok: true, moved: false, cursor: cur.id};
   await store.setJSON(CURSOR_KEY, {id, at: now.toISOString()});
   return {ok: true, moved: true, cursor: id};
 }
-async function netlifyStore() {
+export async function ack(store, id, {now = new Date(), giftStore = null} = {}) {
+  const p = typeof id === 'string' ? splitLast(id) : null;
+  if (!p) return {ok: false, why: '번호 꼴이 틀림'};
+  if (p.gift && !giftStore) return {ok: false, why: '선물 저장소가 없음'};
+  const h = p.help ? await ack1(store, p.help, now) : {ok: true, moved: false, cursor: null};
+  if (!p.gift) return h;
+  return {...h, gift: await ack1(giftStore, p.gift, now)};
+}
+async function netlifyStore(name = HELP_STORE) {
   const siteID = process.env.NETLIFY_SITE_ID, token = process.env.NETLIFY_AUTH_TOKEN;
   if (!siteID || !token) throw Error('넷리파이 열쇠가 없음(작업 환경)');
   const {getStore} = await import('@netlify/blobs');
-  return getStore({name: HELP_STORE, siteID, token, consistency: 'strong'});
+  return getStore({name, siteID, token, consistency: 'strong'});
 }
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
   const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 && i + 1 < a.length ? a[i + 1] : d; };
   try {
     if (a.includes('--annotate')) { for (const l of toAnnotations(JSON.parse(fs.readFileSync(arg('--annotate', 'sealed.json'), 'utf8')))) console.log(l); process.exit(0); }
-    if (a.includes('--ack')) { const r = await ack(await netlifyStore(), arg('--ack', '')); console.log(r.ok ? `보낸 표시 ${r.moved ? '옮김' : '그대로'} — ${String(r.cursor).slice(0, 9)}` : '보낸 표시를 못 옮김 — ' + r.why); process.exit(r.ok ? 0 : 1); }
+    if (a.includes('--ack')) {
+      const r = await ack(await netlifyStore(), arg('--ack', ''), {giftStore: await netlifyStore(GIFT_STORE)});
+      console.log(r.ok ? `보낸 표시 ${r.moved ? '옮김' : '그대로'} — ${String(r.cursor).slice(0, 9)}${r.gift ? ` · 선물 신청 ${r.gift.moved ? '옮김' : '그대로'} — ${String(r.gift.cursor).slice(0, 9)}` : ''}` : '보낸 표시를 못 옮김 — ' + r.why);
+      process.exit(r.ok ? 0 : 1);
+    }
     if (a.includes('--fetch')) {
       const pub = arg('--pub', ''), out = arg('--out', 'sealed.json');
       if (!/^[A-Za-z0-9+/=]{40,120}$/.test(pub) || !/^[\w.\-/]+\.json$/.test(out)) { console.error('쓰는 법: --fetch --pub <base64> --out 파일.json'); process.exit(2); }
-      const {r, box} = await fetchSealed(await netlifyStore(), pub);
+      const giftStore = await netlifyStore(GIFT_STORE).catch(() => null);
+      const {r, g, box} = await fetchSealed(await netlifyStore(), pub, {giftStore});
       fs.writeFileSync(out, JSON.stringify(box) + '\n');
-      console.log(`새 글 ${r.n}개 · 카톡 ${r.messages.length}통 · 남은 글 ${r.more}개`); // 글은 찍지 않음(잠긴 묶음에만)
+      const kk = r.messages.length + (g ? g.messages.length : 0);
+      console.log(`새 글 ${r.n}개 · 선물 신청 ${g ? g.n + '개' : '못 읽음'} · 카톡 ${kk}통 · 남은 글 ${r.more}개`); // 글은 찍지 않음(잠긴 묶음에만)
       process.exit(0);
     }
     console.error('쓰는 법: forward.mjs --fetch --pub <base64> --out sealed.json | --annotate sealed.json | --ack <번호>'); process.exit(2);
