@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-25T03:51:46.247Z",
+ "at": "2026-10-25T04:24:24.801Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 115,
+ "seconds": 117,
  "counts": {
   "routes": 251,
-  "rows": 8361,
-  "btns": 8361,
-  "links": 10375,
+  "rows": 8341,
+  "btns": 8341,
+  "links": 10355,
   "clicks": 479,
   "fail": 0,
   "places": {
@@ -46,11 +46,11 @@
     "routes": 3
    },
    "surge.row": {
-    "rows": 36,
-    "btns": 36,
-    "surge": 36,
+    "rows": 16,
+    "btns": 16,
+    "surge": 16,
     "share": 0,
-    "routes": 5
+    "routes": 1
    },
    "surge.board": {
     "rows": 87,
@@ -235,34 +235,34 @@
    },
    {
     "route": "#/surge/10",
-    "rows": 227,
-    "btns": 227,
-    "links": 781,
-    "clicked": "surge.row",
+    "rows": 216,
+    "btns": 216,
+    "links": 770,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/20",
-    "rows": 99,
-    "btns": 99,
-    "links": 347,
-    "clicked": "surge.row",
+    "rows": 95,
+    "btns": 95,
+    "links": 343,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/30",
-    "rows": 55,
-    "btns": 55,
-    "links": 166,
-    "clicked": "surge.row",
+    "rows": 52,
+    "btns": 52,
+    "links": 163,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
     "route": "#/surge/40",
-    "rows": 31,
-    "btns": 31,
-    "links": 87,
-    "clicked": "surge.row",
+    "rows": 29,
+    "btns": 29,
+    "links": 85,
+    "clicked": "surge.board",
     "fail": 0
    },
    {
