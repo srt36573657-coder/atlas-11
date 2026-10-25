@@ -1,5 +1,5 @@
 {
- "made": "2026-10-23T03:17:15.497Z",
+ "made": "2026-10-25T04:06:13.388Z",
  "base": "https://aaa7377.com",
  "files": [
   {
@@ -55,14 +55,14 @@
    "path": "/atlas/data/home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 6876,
-   "sha256": "d186d2e59a01bb99a634b4cec943b764d665c67bb170910a003b9fecbbfd997c",
+   "bytes": 6935,
+   "sha256": "5173c98cb7d18899ba143485230ab0cd8dc5832cb1ab9389a6f2765d524e3010",
    "has": {
     "\"rule\":\"home-v3\"": true,
     "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-23 12:13",
+     "kst": "2026-10-25 13:03",
      "alerts": []
     }
    },
@@ -72,8 +72,8 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 94416,
-   "sha256": "552828959695ac9f971cfd70c0eb261afdd888984007b654085206e398e2568f",
+   "bytes": 94332,
+   "sha256": "2a261e2e6de3f1d1fe0367fd822cecd4e2167ec27a0ecd08d597325e39431aab",
    "has": {
     "home-v3": false
    },
@@ -110,39 +110,40 @@
    "path": "/next/data/theme-cal.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 35858,
-   "sha256": "ac53f93ca75e699e2c51e3dba52a228cad70187b605857c67ca48f440b44e84b",
+   "bytes": 35404,
+   "sha256": "8a42520ac73813b69b51e307fc8924fc27d30b2c2cd19a4af1f0db9e1a1fb50b",
    "has": {
     "\"schema\":\"dori-theme-1-cal\"": true,
     "\"keepFrom\":\"2026-10-22\"": true,
     "_cal": {
      "asOf": "2026-10-23",
      "days": 60,
-     "kept": 1,
+     "kept": 2,
      "done": 40,
      "hit1": 2,
      "all3": 120,
-     "hit3": 13,
+     "hit3": 12,
      "last": {
       "d": "2026-10-23",
-      "s": 30,
+      "s": 31,
+      "k": 1,
       "top": [
        {
-        "n": "건설 엔지니어링",
+        "n": "IT 시스템 통합",
         "sc": 2,
-        "y": 2.5,
+        "y": 4.8,
         "hit": null
        },
        {
-        "n": "사업 서비스·광고",
+        "n": "음료",
         "sc": 2,
         "y": 2.2,
         "hit": null
        },
        {
-        "n": "인터넷 플랫폼",
-        "sc": 1,
-        "y": 5.6,
+        "n": "건설 엔지니어링",
+        "sc": 2,
+        "y": 2.1,
         "hit": null
        }
       ]
@@ -155,8 +156,8 @@
    "path": "/next/p-theme.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 66029,
-   "sha256": "03671f896be5be13ba34c4b2b91825dcd66819b78dda3d84d45316c601d619dc",
+   "bytes": 59205,
+   "sha256": "993e59bd0df7ba129d0ebdcdd73437dda9629ad565fafc2c1793660588a6bf15",
    "has": {
     "function pCal(": true,
     "싹 달력": true
@@ -167,11 +168,10 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 25281,
-   "sha256": "aec644dd3b00aada08b05dac2c9b2b9ba032de00f4326c6be9ecea3a33a8cb6d",
+   "bytes": 26492,
+   "sha256": "f96549998696d58e20e089b493651c719a3409f9d527f87e7cee69a58f34d611",
    "has": {
-    "'#/t/cal'": true,
-    "날마다 찾은 세 곳 달력": true
+    "'#/t/cal'": true
    },
    "err": null
   },
@@ -179,8 +179,8 @@
    "path": "/next/data/theme-home.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 5561,
-   "sha256": "9c217ca6429fbf4840f5a2a049a35d52fefe04d7ee31f809bf66c1c0fa9a1747",
+   "bytes": 5570,
+   "sha256": "40a91b545b27af5182f30ee3f934ec9536385d541bfa70054ce71e09ed231115",
    "has": {
     "\"record\"": true,
     "_rec": {
@@ -202,19 +202,56 @@
       ]
      },
      "real": {
-      "n": 2035,
+      "n": 2031,
       "p": 22,
       "h": [
-       20.2,
-       23.2
+       20.3,
+       23.1
       ]
      },
      "top": [
-      "건설 엔지니어링",
-      "사업 서비스·광고",
-      "인터넷 플랫폼"
+      "IT 시스템 통합",
+      "음료",
+      "건설 엔지니어링"
      ]
     }
+   },
+   "err": null
+  },
+  {
+   "path": "/next/theme-home.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 26492,
+   "sha256": "f96549998696d58e20e089b493651c719a3409f9d527f87e7cee69a58f34d611",
+   "has": {
+    "싹 달력 보기": true,
+    "th-kkall": true,
+    "kakaoText(": true
+   },
+   "err": null
+  },
+  {
+   "path": "/next/p-theme.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 59205,
+   "sha256": "993e59bd0df7ba129d0ebdcdd73437dda9629ad565fafc2c1793660588a6bf15",
+   "has": {
+    "class: 'th-days'": true,
+    "function sinGraph(": true,
+    "kakaoText(": true
+   },
+   "err": null
+  },
+  {
+   "path": "/next/share-btn.js",
+   "status": 200,
+   "type": "application/javascript; charset=UTF-8",
+   "bytes": 8528,
+   "sha256": "29e87dc9331eae2246e64d5585a5e37a287abcfd90efea10af33acb7ef5c0f5c",
+   "has": {
+    "export function kakaoText(": true
    },
    "err": null
   },
@@ -222,8 +259,31 @@
    "path": "/next/p-theme.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 22597,
-   "sha256": "feea1e575e01bea3bb0381385a7d298deba99108a6e64774086b1864c49a00db",
+   "bytes": 22183,
+   "sha256": "45cfa36be76ed093e82a02f8c2cf763e42ae94c5dc4697ab9409dde5ef55c4eb",
+   "has": {
+    ".th-dayh": true,
+    ".th-sinsvg": true
+   },
+   "err": null
+  },
+  {
+   "path": "/next/app.css",
+   "status": 200,
+   "type": "text/css; charset=UTF-8",
+   "bytes": 68458,
+   "sha256": "1ed5510cef22f239bf264c831761bb90258d057fd463e04fff7ec4a5c3e182e4",
+   "has": {
+    ".kk-btn.kk-txt": true
+   },
+   "err": null
+  },
+  {
+   "path": "/next/p-theme.css",
+   "status": 200,
+   "type": "text/css; charset=UTF-8",
+   "bytes": 22183,
+   "sha256": "45cfa36be76ed093e82a02f8c2cf763e42ae94c5dc4697ab9409dde5ef55c4eb",
    "has": {
     ".th-calhow": true,
     "container-type: inline-size": true
@@ -234,8 +294,8 @@
    "path": "/next/app.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 67683,
-   "sha256": "6f8e73bc7523d3422b46874b98ae3c58f56728dd1a7a1e61f24d06bd37e9dff9",
+   "bytes": 68458,
+   "sha256": "1ed5510cef22f239bf264c831761bb90258d057fd463e04fff7ec4a5c3e182e4",
    "has": {
     "--sans: -apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", 'Pretendard Variable'": true,
     ".num { font-variant-numeric: tabular-nums; }": true
@@ -257,22 +317,18 @@
    "path": "/next/data/theme-bloom.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 9766,
-   "sha256": "c5e576f478f2911acb0fe3a9f9b6c41deb286f90a829d2424c05a6696eea0f14",
+   "bytes": 8562,
+   "sha256": "b498c6f4fb311218a3b5dbbbd664a56bb1b793241e3bbbb294dfe002823fc3b1",
    "has": {
     "\"schema\":\"dori-theme-1-bloom\"": true,
     "\"record\"": true,
     "_bloom": {
      "asOf": "2026-10-23",
-     "provisional": true,
-     "today": 52,
+     "provisional": false,
+     "today": 24,
      "inds": [
-      "방송",
       "연예 기획사",
-      "의류·패션",
-      "콘텐츠 제작",
-      "가공식품",
-      "음료"
+      "의류·패션"
      ],
      "all": {
       "n": 35834,
@@ -280,7 +336,7 @@
       "rate": 26.64,
       "ex": 0.61,
       "exBase": -0.44,
-      "fall": 35.58,
+      "fall": 35.57,
       "fallBase": 36.02,
       "baseN": 1691440,
       "plain": 22.64,
@@ -301,10 +357,10 @@
      "test": {
       "n": 20016,
       "base": 24.59,
-      "rate": 27.4,
-      "ex": 0.43,
+      "rate": 27.41,
+      "ex": 0.44,
       "exBase": -0.55,
-      "fall": 38.8,
+      "fall": 38.78,
       "fallBase": 38.64,
       "baseN": 875387,
       "plain": 23.72,
@@ -318,8 +374,8 @@
    "path": "/next/p-theme.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 66029,
-   "sha256": "03671f896be5be13ba34c4b2b91825dcd66819b78dda3d84d45316c601d619dc",
+   "bytes": 59205,
+   "sha256": "993e59bd0df7ba129d0ebdcdd73437dda9629ad565fafc2c1793660588a6bf15",
    "has": {
     "async function pPick(": true,
     "꽃 핀 업종 안의 싹 회사": true
@@ -330,8 +386,8 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 25281,
-   "sha256": "aec644dd3b00aada08b05dac2c9b2b9ba032de00f4326c6be9ecea3a33a8cb6d",
+   "bytes": 26492,
+   "sha256": "f96549998696d58e20e089b493651c719a3409f9d527f87e7cee69a58f34d611",
    "has": {
     "'#/t/pick'": true
    },
