@@ -130,3 +130,26 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-gorow { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; min-width: 0; } /* 싹 달력 보기 · 카톡 보내기 한 줄(2026-10-25 진짜 사이트 사진 — 390 × 844 에서 카톡 보내기가 찾기 칸 뒤로 숨음) */
 .th-gorow > .th-calgo, .th-gorow > .kk-btn.kk-txt.th-kkall, html.white .th-gorow > .kk-btn.kk-txt.th-kkall { flex: 1 1 150px; width: auto; margin: 0; }
 .th-gorow > .kk-gift.th-gift, html.white .th-gorow > .kk-gift.th-gift { flex: 1 1 100%; justify-content: center; min-height: 56px; border-radius: 14px; font-size: var(--fs-3); }
+/* 큰 네 칸(사장님 2026-10-25 22:52 「좋아 디자인 신경 더써서 세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」 · 고르신 판 best ① · theme-home.js zoneCells)
+   두 줄 두 칸 · 칸마다 그림 동그라미 · 자리 이름 · 큰 숫자 · 「›」 — 칸 전체가 고리(48px 넘게) · 싹만 초록 꽉 찬 면(마티스 판 「자라남」) · 테는 검은 선 · 그림자 · 광택 0(check_white ④)
+   글씨는 여섯 크기 안(이름 fs-4 · 숫자 fs-6) */
+.th-zones { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-1); margin: 0 0 var(--sp-2); }
+.th-zc { position: relative; display: grid; min-width: 0; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: var(--sp-1); row-gap: var(--sp-1); min-height: 128px; padding: var(--sp-2); box-sizing: border-box; border: 2px solid var(--hair); border-radius: 20px; background: var(--card); color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.th-zc:active { background: var(--press); }
+.th-zi { grid-column: 1; grid-row: 1; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; background: var(--card3); }
+.th-zic { display: block; width: 38px; height: 38px; }
+.th-zw { grid-column: 2; grid-row: 1; font-size: var(--fs-4); font-weight: 800; line-height: 1.1; }
+.th-zn { grid-column: 1 / -1; grid-row: 2; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 2px; padding-right: var(--sp-2); font-size: var(--fs-6); font-weight: 800; line-height: 1; letter-spacing: -.04em; }
+.th-zu { font-size: var(--fs-4); font-weight: 800; letter-spacing: 0; }
+.th-zgo { position: absolute; right: 14px; bottom: 12px; font-size: var(--fs-4); font-style: normal; font-weight: 800; line-height: 1; }
+.th-zc.th-zcS { background: var(--up); border-color: var(--up); color: #FFFFFF; }
+.th-zc.th-zcS:active { background: #000000; }
+.th-zc.th-zcS .th-zi { background: #FFFFFF; }
+@media (max-width: 359px) { /* 320 폭 — 칸 안쪽이 좁아 그림 동그라미 · 안쪽 여백을 줄임(글씨 크기는 그대로) */
+  .th-zc { padding: var(--sp-1); min-height: 116px; }
+  .th-zi { width: 40px; height: 40px; }
+  .th-zic { width: 30px; height: 30px; }
+  .th-zgo { right: 10px; bottom: 8px; }
+}
+html.en .th-zw { font-size: var(--fs-2); } /* 영어 낱말(Sprout · Fading)은 길어 한 단계 작게 */
+html.en .th-zu { flex-basis: 100%; font-size: var(--fs-1); } /* 「37」 위 · 「industries」 아래 — 숫자는 그대로 크게 · 낱말은 작게 · 네 칸 모두 같은 꼴 */

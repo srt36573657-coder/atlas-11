@@ -48,15 +48,19 @@ html.white .shorts > .st-abs { position: absolute; top: 24px; right: 0; width: 9
 
 /* ── 첫 화면(html.white.home · app.js vHomeAll 돌 판) ── */
 html.white.home #view { display: flex; flex-direction: column; min-height: calc(100vh - 128px); min-height: calc(100svh - 128px); padding: 0 var(--sp-2); }
-html.white.home .s-hd { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); }
-html.white.home .s-h1 { margin: 0; font-size: var(--fs-6); font-weight: 800; line-height: 1; letter-spacing: -.035em; color: var(--ink); }
-/* 큰 제목 돌리기(home-title.js · 사장님 2026-10-21 23:55 「어 섹시하게」) — 두 줄 자리 고정(밀림 0) · 옅어지며 살짝 오르고 · 새 말은 아래에서 살짝 올라옴(옮김 · 짙기만) */
-html.white.home .s-h1 { min-height: 2em; transition: opacity .5s var(--ease), transform .5s var(--ease); }
+html.white.home .s-hd { display: block; } /* 큰 제목 한 줄 · 돌 시계는 돌이 물음 아래 가운데 크게(.s-clk · 사장님 2026-10-25 22:54 「어 진짜 싸이트까지 바꿔」 · 고르신 판 best ① — 22:26 「돌시계을 중심으로 디자인 해야해」) */
+html.white.home .s-h1 { margin: 0; font-size: var(--fs-5); font-weight: 800; line-height: 1; letter-spacing: -.035em; color: var(--ink); }
+/* 큰 제목 돌리기(home-title.js · 사장님 2026-10-21 23:55 「어 섹시하게」) — 한 줄 자리 고정(넷 다 30px 한 줄 · 2026-10-25 돌 시계를 아래로 옮기며 두 줄 → 한 줄 · 밀림 0) · 옅어지며 살짝 오르고 · 새 말은 아래에서 살짝 올라옴(옮김 · 짙기만) */
+html.white.home .s-h1 { min-height: 1em; transition: opacity .5s var(--ease), transform .5s var(--ease); }
 html.white.home .s-h1.tt-out { opacity: 0; transform: translateY(-6px); }
 html.white.home .s-h1.tt-in { opacity: 0; transform: translateY(6px); transition: none; }
 @media (prefers-reduced-motion: reduce) { html.white.home .s-h1 { transition: none; } }
-html.white.home .s-art { flex: none; width: 150px; height: 120px; }
+html.white.home .s-clk { display: flex; justify-content: center; margin: var(--sp-1) 0; }
+html.white.home .s-art { flex: none; width: 240px; height: 192px; }
+@media (max-width: 359px) { html.white.home .s-art { width: 200px; height: 160px; } }
 /* 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」 · stone-clock.js) — 돌 그림 위에 바늘 그림을 겹침 · 칸 크기는 위 .s-art 그대로(밀림 0) */
+.s-boot { display: block; width: 240px; height: 192px; max-width: 100%; margin: var(--sp-3) auto 0; } /* 여는 동안 돌 시계(index.html) — 첫 화면 돌 시계와 같은 그림 · 같은 크기 */
+.s-boot img { display: block; width: 100%; height: 100%; }
 .s-clock { position: relative; display: block; }
 .s-clock img, .s-clock .s-hands { position: absolute; top: 0; left: 0; display: block; width: 100%; height: 100%; }
 .s-clock .s-hands { pointer-events: none; }
@@ -162,7 +166,7 @@ html.white.home .s-short details.w-all > summary { min-height: 48px; display: fl
 /* 좁은 폭(320) — 그림을 줄여 본질 · 찾기 칸이 한 화면에 들게 */
 @media (max-width: 349px) {
   html.white.home .s-h1 { font-size: var(--fs-5); }
-  html.white.home .s-art { width: 100px; height: 80px; }
+  html.white.home .s-art { width: 180px; height: 144px; }
   html.white.home .w-news .w-f b { font-size: var(--fs-4); }
 }
 

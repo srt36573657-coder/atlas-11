@@ -12,7 +12,7 @@
 //   잣대
 //     ① 390 × 844 · 처음 온 기기와 다시 온 기기 모두: 바탕 #FFFFFF · 다섯 칸이 아래 단추 위 한 화면 안 · 320 × 568 은 본질 카드와 찾기 칸까지
 //        ↳ 2026-10-19 다시 겨눔(사장님 16:06 「될듯 한걸 찾아주는거야 이게 돌이에 본질이야 … 이 본질이 중이이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」 · 원칙 85):
-//          맨 위 = 테마 시계(section.th-home) — 시계 그림이 한 화면 안(두 크기 모두) · 다섯 칸은 그 아래에 다 있어야 함 · 엄지 자리(찾기 칸 · 바로 가기 · 전부 보기)는 한 화면 안 그대로 → 2026-10-21 02:29 「어」부터 찾기 칸 한 줄만 한 화면 안(아래로 읽으면 숨고 위로 밀면 다시)
+//          맨 위 = 테마 시계(section.th-home) — 시계 그림이 한 화면 안(두 크기 모두 · 2026-10-25 22:54 「어 진짜 싸이트까지 바꿔」 뒤로는 돌 시계 아래 큰 네 칸 — 390 은 네 칸 모두 · 320 은 첫 줄이 찾기 줄 위) · 다섯 칸은 그 아래에 다 있어야 함 · 엄지 자리(찾기 칸 · 바로 가기 · 전부 보기)는 한 화면 안 그대로 → 2026-10-21 02:29 「어」부터 찾기 칸 한 줄만 한 화면 안(아래로 읽으면 숨고 위로 밀면 다시)
 //          ② 글자 수 기준은 예전 칸들만 셈(테마 시계 칸 밖) · 테마 시계 칸은 따로 THEME_CHARS 자 아래
 //        첫 화면 원칙: 오르는 것(급등 · 오르는 업종)은 처음 화면에 안 보이고 누름 2번에 닿음 · 「전부 보기」는 한 줄에 하나씩(네모 칸 깔기 · 바둑판 0)
 //        시황 [data-w="news"] = 오른 곳(.up)과 내린 곳(.dn)을 함께 · 사실마다([data-fact]) 「왜 그럴까?」 단추 · 한 달 된 기록이 있으면 「그날 정한 대로 했어?」 한 줄
@@ -65,7 +65,8 @@ const MEASURE = () => {
   out.top = []; // 글자 수를 이룬 글(테마 칸 밖 · 많은 차례) — 걸리면 어느 글이 늘었는지 보이게(2026-10-20 「다시 온 기기 ② 글자 수 107 > 105」 까닭을 이 방에서 못 봄)
   for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.closest('section.th-home')) out.themeChars += n; else { out.chars += n; if (n) out.top.push([n, (el.closest('[data-w]')?.getAttribute('data-w') ?? '-') + ' ' + el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className ? '.' + el.className.split(' ')[0] : ''), ownText(el).slice(0, 30)]); } }
   out.top.sort((x, y) => y[0] - x[0]); // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈) · 테마 시계 칸은 따로(2026-10-19)
-  { const tb = document.querySelector('#view section.th-home'), tc = tb?.querySelector('svg.th-yrg, svg.th-clock'); out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), clockBottom: tc ? Math.round(tc.getBoundingClientRect().bottom) : null} : null; } // 첫 화면 그림 = 한 해 줄 그림(2026-10-21 18:22 「그랴」 — 궤도 · 행성 지움 · 업종 줄 + 줄 그림) · 옛 판은 시계
+  { const tb = document.querySelector('#view section.th-home'), tz = tb?.querySelector('.th-zones'), tz1 = tz?.querySelector('.th-zc'), th = document.querySelector('.s-thumb'), thTop = th && vis(th) ? th.getBoundingClientRect().top : null;
+    out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), zonesBottom: tz && vis(tz) ? Math.round(tz.getBoundingClientRect().bottom) : null, rowBottom: tz1 && vis(tz1) ? Math.round(tz1.getBoundingClientRect().bottom) : null, thumbTop: thTop == null ? null : Math.round(thTop)} : null; } // 첫 화면 그림 = 돌 시계 아래 큰 네 칸(사장님 2026-10-25 22:52 「좋아 디자인 신경 더써서 세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」 — 고르신 판 best ①) · 한 해 줄 그림은 그 아래로 · 옛 잣대(2026-10-21 18:22 「그랴」 한 해 줄 그림 · 그 앞은 시계)는 svg.th-yrg 아래 · 이제는 떠 있는 찾기 줄(.s-thumb)에 가리지 않게 그 위까지 // 첫 화면 그림 = 한 해 줄 그림(2026-10-21 18:22 「그랴」 — 궤도 · 행성 지움 · 업종 줄 + 줄 그림) · 옛 판은 시계
   for (const el of all) {
     if (!vis(el)) continue;
     const cs = getComputedStyle(el), r = el.getBoundingClientRect(), t = ownText(el), tag = el.tagName.toLowerCase(), name = `${tag}.${String(el.className?.baseVal ?? el.className).split(' ')[0]}`;
@@ -113,7 +114,7 @@ function judge(m, tag, B) {
   check(!!m.news && m.news.facts > 0 && m.news.why === m.news.facts, `${tag} 시황 사실마다 「왜 그럴까?」 단추`, m.news ? `사실 ${m.news.facts} · 단추 ${m.news.why}` : '');
   for (const k of BLOCKS) check(m.blocks[k] != null, `${tag} ① 칸 ${k}`, '칸이 없음'); // 다섯 칸은 테마 시계 아래에 그대로(2026-10-19 16:54)
   for (const k of THUMB) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 엄지 자리 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
-  check(!!m.theme && m.theme.clockBottom != null && m.theme.clockBottom <= m.tabsTop + 0.5, `${tag} ① 테마 시계 그림 한 화면 안`, m.theme ? `그림 아래 ${m.theme.clockBottom} > 아래 단추 ${Math.round(m.tabsTop)}` : '테마 시계 칸(section.th-home)이 없음');
+  { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.theme && m.theme.zonesBottom != null && m.theme.zonesBottom <= lim + 0.5, `${tag} ① 테마 시계 네 칸 한 화면 안`, m.theme ? `네 칸 아래 ${m.theme.zonesBottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '테마 시계 칸(section.th-home)이 없음'); } // 2026-10-25 22:54 — 네 칸 전부가 찾기 줄 위에 보임
   check(m.themeChars <= THEME_CHARS, `${tag} ② 테마 시계 칸 글자 수`, `${m.themeChars}자 > ${THEME_CHARS}자`);
   if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'}) · 글 ${(m.top ?? []).map(x => x[0] + ' ' + x[1] + ' 「' + x[2] + '」').join(' / ')}`); }
   check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
@@ -188,7 +189,7 @@ try {
     {
       const ctx = await ctxOf(false, {viewport: {width: 320, height: 568}}), {p} = await open(ctx, HOME), m = await p.evaluate(MEASURE);
       for (const k of ['find']) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `320 × 568 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`); // 본질 카드는 테마 시계 아래로(2026-10-19 16:54 · 원칙 85)
-      check(!!m.theme && m.theme.clockBottom != null && m.theme.clockBottom <= m.tabsTop + 0.5, '320 × 568 테마 시계 그림 한 화면 안', m.theme ? `그림 아래 ${m.theme.clockBottom} > 아래 단추 ${Math.round(m.tabsTop)}` : '칸 없음');
+      { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.theme && m.theme.rowBottom != null && m.theme.rowBottom <= lim + 0.5, '320 × 568 테마 시계 네 칸 첫 줄 한 화면 안', m.theme ? `첫 줄 아래 ${m.theme.rowBottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '칸 없음'); } // 2026-10-25 22:54 — 작은 폰은 싹 · 꽃 첫 줄까지
       check(!m.small.length, '320 × 568 누르는 크기 48', m.small.slice(0, 3).join(' · '));
       check(await p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1), '320 × 568 옆 넘침 0', '');
       await ctx.close();

@@ -9455,6 +9455,14 @@
   "아직 선물 받을 사람이 없어요.": "No one is waiting for a gift yet.",
   "지금은 보낼 차례가 없어요.": "Nobody is waiting right now.",
   "보낼 차례 {n}명이에요. 번호로 카톡 선물을 보내고 「보냄 표시」를 누르세요.": "{n} waiting. Send a KakaoTalk gift to the number, then tap \"Mark as sent\".",
-  "번호 지움 · 끝 {n}": "Number erased · ends {n}"
+  "번호 지움 · 끝 {n}": "Number erased · ends {n}",
+  "싹 자리 업종 {n}곳 보기": "See the {n} {pl:industry|industries} in the Sprout zone",
+  "꽃 자리 업종 {n}곳 보기": "See the {n} {pl:industry|industries} in the Bloom zone",
+  "시듦 자리 업종 {n}곳 보기": "See the {n} {pl:industry|industries} in the Fading zone",
+  "잠잠 자리 뜻 보기": "What the Quiet zone means",
+  "칸을 누르면 그 업종들이 나와요": "Tap a box to see its industries",
+  "네 자리": "Four zones",
+  "업종|곳": "industries",
+  "업종1|곳": "industry"
  }
 }

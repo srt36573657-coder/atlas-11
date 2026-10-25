@@ -168,6 +168,41 @@ function pickCard() {
   return card;
 }
 
+/* ── 첫 화면 큰 네 칸(사장님 2026-10-25 22:52 「좋아 디자인 신경 더써서 세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」
+   — 고르신 판 docs/design/dori-new-2026-10-25/best ① · 22:39 「모량이 넘 추상적이야 직관적으로 해야 하고 글씨도 넘 보이질 않아」)
+   돌 시계 바로 아래 · 네 자리를 그림 + 낱말 + 큰 숫자로 · 놓는 자리 = 테마 시계 자리(위 왼쪽 싹 · 위 오른쪽 꽃 · 아래 왼쪽 잠잠 · 아래 오른쪽 시듦 — theme-rule.js zoneOf)
+   빛나는 곳은 싹 칸 하나(초록 꽉 찬 면 · 마티스 판 「자라남」) · 그림은 검은 선 · 그림자 · 광택 없음(check_white ④) · 잠잠은 따로 쪽이 없어 「시계 읽는 법」(네 자리 뜻)으로
+   글은 textContent 로만 · 숫자는 theme-home.json count 그대로(셈 없음) */
+const ZCELL = [['S', '#/t/sprout'], ['B', '#/t/bloom'], ['Q', '#/t/how'], ['W', '#/t/wilt']];
+function zIcon(z) {
+  const s = sv('svg', {class: 'th-zic', viewBox: '0 0 100 100', 'aria-hidden': 'true', focusable: 'false'});
+  const P = (d, a = {}) => s.append(sv('path', {d, fill: 'none', stroke: '#000000', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...a}));
+  if (z === 'S') { P('M20 84Q50 73 80 84'); P('M50 82V52'); P('M50 55C50 39 38 29 20 31C20 47 32 57 50 55Z', {fill: '#007A35'}); P('M50 48C50 31 62 21 81 23C81 40 69 50 50 48Z', {fill: '#007A35'}); }
+  else if (z === 'B') {
+    P('M50 92V56'); P('M50 76C42 67 31 67 26 73C33 81 43 82 50 76Z', {fill: '#FFFFFF', 'stroke-width': 5});
+    for (let k = 0; k < 5; k++) { const a = k * 72 * Math.PI / 180; s.append(sv('circle', {cx: (50 + 14.5 * Math.sin(a)).toFixed(1), cy: (35 - 14.5 * Math.cos(a)).toFixed(1), r: 10.5, fill: '#FFFFFF', stroke: '#000000', 'stroke-width': 5})); }
+    s.append(sv('circle', {cx: 50, cy: 35, r: 8, fill: '#000000'}));
+  } else if (z === 'Q') {
+    P('M58 15A36 36 0 1 0 87 70A29 29 0 0 1 58 15Z', {fill: '#EEEEEE', 'stroke-width': 5.5});
+    const star = (x, y, r) => P(`M${x} ${y - r}L${x + r * .3} ${y - r * .3}L${x + r} ${y}L${x + r * .3} ${y + r * .3}L${x} ${y + r}L${x - r * .3} ${y + r * .3}L${x - r} ${y}L${x - r * .3} ${y - r * .3}Z`, {fill: '#000000', 'stroke-width': 1.5});
+    star(79, 25, 8); star(68, 45, 5);
+  } else {
+    P('M40 92V61C40 41 55 31 67 39'); P('M67 39C80 42 86 57 80 70C70 63 64 51 67 39Z', {fill: '#DDDDDD', 'stroke-width': 5}); P('M40 69C30 61 19 63 16 70C24 77 33 77 40 69Z', {fill: '#DDDDDD', 'stroke-width': 5});
+  }
+  return s;
+}
+/** 큰 네 칸 — 한 칸 = 그림 동그라미 · 자리 이름 · 업종 수 · 「›」(칸 전체가 고리 · 48px 넘게) */
+/* 큰 숫자 + 작은 「곳」(고르신 판 best ① 꼴) — 숫자는 글자가 아니라 영어에서도 그대로 · 「곳」만 자리 표 data-tr 로 영어 낱말(업종 → industries · 하나면 업종1 → industry · i18n.js 자리 표) */
+function zoneCells(TH) {
+  const cell = ([z, href]) => {
+    const n = TH.count[z], w = ZONES[z];
+    return h('a', {class: 'th-zc th-zc' + z, href, 'aria-label': z === 'Q' ? '잠잠 자리 뜻 보기' : `${w} 자리 업종 ${num(n)}곳 보기`},
+      h('span', {class: 'th-zi'}, zIcon(z)), h('span', {class: 'th-zw', text: w}),
+      h('b', {class: 'th-zn'}, h('span', {text: num(n)}), h('small', {class: 'th-zu', 'data-tr': n === 1 ? '업종1' : '업종', text: '곳'})), h('i', {class: 'th-zgo', 'aria-hidden': 'true', text: '›'}));
+  };
+  return h('nav', {class: 'th-zones', 'aria-label': '네 자리'}, ZCELL.map(cell));
+}
+
 /* ── 첫 화면(#/) 맨 위 칸 — app.js vHomeAll 이 부름(본질 세 줄 · 찾기 칸 · 바로 가기 넷 · 전부 보기는 그 아래 그대로) ── */
 /** 관심 업종을 담은 기기인가(theme-watch.js 를 받기 전 · 저장소 한 칸만 봄) */
 const hasWatch = () => { try { const a = JSON.parse(localStorage.getItem('dori:watch-ind') ?? '[]'); return Array.isArray(a) && a.length > 0; } catch { return false; } };
@@ -176,6 +211,7 @@ export async function homeBlock() {
   const box = h('section', {class: 'th-home', 'data-w': 'theme', 'aria-label': '테마 시계'});
   if (!TH) { box.append(h('p', {class: 'empty', text: '? 테마 시계 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return box; }
   const S = TH.order.S.map(n => indOf(TH, n)).filter(Boolean), top = S.slice(0, 3);
+  box.append(zoneCells(TH)); // 큰 네 칸(2026-10-25 22:54 「어 진짜 싸이트까지 바꿔」) — 칸마다 「›」 · 안내 글은 뺌(테마 칸 글자 200자 안 · check_white ②) · 그 아래 업종 줄 · 한 해 줄 그림은 그대로
   // 2026-10-21 18:22 「그랴」(18:11 「구글과 잡스라면 … 뭘 고를까?」의 답 — 13번 업종 시세판 위 · 1번 두 줄 견주기 아래) — 카드 안: 업종 줄 셋 → 한 해 줄 그림(저절로 1 · 2 · 3) → 모두 보기 → 숫자는 「자세히」 안(접음) → 시계 읽는 법 → 처음이세요?
   const rows = top.map((i, k) => seasonRow(i, k)); if (rows[0]) rows[0].classList.add('th-now'); // 지금 줄 그림의 업종(처음 = 1번)
   const site = nx()?.absUrl ? nx().absUrl('#/') : location.origin + '/#/'; // 카톡 보내기(사장님 2026-10-25 「진짜모든곳에」 · 12:24 「어」) — 보내는 글 = 이름 · 주소만(오른 % 없음)

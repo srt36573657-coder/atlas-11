@@ -9,7 +9,7 @@ import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
 import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
 import {homeBlock as themeHome} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
-import {stoneClock} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
+import {stoneClock, clockDecoded} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -595,7 +595,9 @@ async function vHomeAll() {
   kk.addEventListener('click', () => share(NAME, absUrl('#/')));
   // 테마 시계(사장님 2026-10-19 16:06 「이 본질이 중심이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」) — 맨 위 = 테마 시계(p-theme.js homeBlock · 견본 flow36 둘째 장) · 그 아래 읽는 곳 셋 · 엄지 자리 · 진화는 그대로
   // 2026-10-21 00:51 「확임 했어 이기준에 스마트하게 만들어」(00:49 시안 「지금 봄이 온 곳」) — 큰 제목 · 돌이 물음을 계절 말로(셈 · 칸 차례는 그대로 · 물음은 다시 온 기기 첫 화면 글자 105자 아래에 맞게 짧게 — check_white ②)
-  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '지금 봄이 온 곳'}), stoneClock());
+  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '지금 봄이 온 곳'}));
+  // 돌 시계는 큰 제목 옆이 아니라 돌이 물음 아래 가운데 크게(사장님 2026-10-25 22:26 「돌시계을 중심으로 디자인 해야해」 · 22:52 「세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」 — 고르신 판 best ①) · 그 아래 네 칸(theme-home.js zoneCells)
+  const clock = h('div', {class: 's-clk'}, stoneClock()); // 같은 그림을 index.html 여는 화면이 먼저 받음 · 아래 return 앞에서 풀림을 기다림(clockDecoded)
   { const t = hd.firstChild, go = () => import('/next/home-title.js').then(m => m.rotateTitle(t)).catch(() => {}); // 큰 제목 돌리기(사장님 2026-10-21 23:55 「어 섹시하게」 · home-title.js) — 첫 그림 뒤 한가할 때
     const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(go, {timeout: 2500}) : setTimeout(go, 600));
     if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true}); }
@@ -613,7 +615,8 @@ async function vHomeAll() {
   //   아래로 읽을 때는 그 한 줄도 숨고, 조금 위로 밀면 다시 나옴(구글 · 닐슨 노먼 그룹 2021 「다시 나오는 칸」) — quickReturn
   const short = h('div', {class: 's-short'}, go4((C?.stop ?? 0) > 0), allBox(H, band));
   const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
-  const nodes = [hd, say, theme, story, thumb, short, evoLine()]; // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
+  const nodes = [hd, say, clock, theme, story, thumb, short, evoLine()];
+  await clockDecoded(clock, 300); // 돌 시계 그림이 풀린 뒤 한 번에 그림(길어야 0.3초 — 늦게 툭 나타남 0) // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
   return {title: '오늘 장', nodes};
 }
 
