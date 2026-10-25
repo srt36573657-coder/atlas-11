@@ -1,0 +1,283 @@
+#!/usr/bin/env python3
+# 2번(네 칸 판화)을 가운데 + 7번(아이폰 첫 화면) 단추를 합친 판 — 화면 넷(첫 화면 · 싹 업종 · 꽃 될 회사 · 회사 한 곳)
+# 사장님 2026-10-25 21:22 「그러면 2번을 중심으로 7번하고 조화롭게 효율적으로 다시 만들어봐」
+# 둘째 판 — 21:51 「그래 좋은디 카톡하고 선물하기가 안보여 그럿 까지 추가해서 다시 만들어봐」
+#   진짜 사이트에 이미 있는 것과 같게: 모든 쪽 맨 위 「카톡 보내기」 + 「선물 받기」(site/next/kk-all.js pageRow · app.js 위 막대 선물 단추)
+#   · 칸이 여럿인 쪽은 칸마다 「카톡 보내기」 하나 더(kk-all.js ② 칸) · 색은 고르신 100가지 안에서(카톡 노랑 · 선물 금빛은 그 안에 없음)
+import os, json, html
+D = os.path.dirname(os.path.abspath(__file__))
+
+SHARED = """
+.cb .phone{background:#152D30}
+.cb .phone .wall{position:absolute;inset:0;z-index:0;background:radial-gradient(rgba(170,193,197,.09) .3cqw,transparent .42cqw) 0 0/2.2cqw 2.2cqw,radial-gradient(ellipse 110cqw 90cqw at 50% 78%,#27666E 0%,#1D5962 22%,#1A4850 42%,#17363B 62%,#152D30 80%,#171615 100%)}
+.cb .phone .top{position:absolute;z-index:4;top:12cqw;left:4.6cqw;right:4cqw;display:flex;align-items:center;justify-content:space-between;gap:2cqw}
+.cb .phone .mark{font-size:8.4cqw;font-weight:900;line-height:1;letter-spacing:-.2cqw;color:#FFFFFF;text-shadow:.8cqw .8cqw 0 #4E99A3}
+.cb .phone .date{font-size:4cqw;font-weight:700;color:#AAC1C5}
+.cb .phone .back{font-size:4.2cqw;font-weight:800;color:#AAC1C5;white-space:nowrap}
+/* 맨 위 두 단추 — 카톡 보내기(흰색 · 제일 밝게) · 선물 받기(밝은 회청) */
+.cb .phone .tools{display:flex;gap:1.8cqw;flex:none}
+.cb .phone .tb{display:inline-flex;align-items:center;gap:1cqw;height:10cqw;margin:0;padding:0 2cqw 0 1.2cqw;border:.5cqw solid #171615;border-radius:5cqw;font:inherit;font-size:4.4cqw;font-weight:900;line-height:1;white-space:nowrap;color:#171615;box-shadow:.8cqw .8cqw 0 #171615;cursor:pointer}
+.cb .phone .tb svg{display:block;width:7cqw;height:7cqw;flex:none}
+.cb .phone .tb.kk{background:#FFFFFF}
+.cb .phone .tb.gift{background:#AAC1C5}
+.cb .phone .ttl{position:absolute;z-index:3;left:5cqw;right:5cqw;margin:0;font-weight:900;color:#FFFFFF;line-height:1.08;letter-spacing:-.2cqw}
+.cb .phone .sub{position:absolute;z-index:3;left:5cqw;right:5cqw;margin:0;font-size:4.2cqw;line-height:1.35;font-weight:700;color:#AAC1C5}
+/* 2번 네 칸 */
+.cb .phone .four{position:absolute;z-index:3;left:4cqw;right:4cqw;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2.6cqw}
+.cb .phone .p{position:relative;display:block;margin:0;padding:0;border:.6cqw solid #171615;border-radius:3.2cqw;font:inherit;text-align:left;background:var(--bg);color:var(--ink);box-shadow:1cqw 1cqw 0 #171615;isolation:isolate;overflow:hidden}
+.cb .phone .p::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(circle,var(--dot) 0 34%,transparent 39%);background-size:2.4cqw 2.4cqw;opacity:.55}
+.cb .phone .p .nm{position:absolute;left:3cqw;top:2.4cqw;font-size:7cqw;line-height:1;font-weight:900;letter-spacing:-.15cqw}
+.cb .phone .p .art{position:absolute;right:1.4cqw;top:1.6cqw;width:24cqw;height:24cqw;overflow:visible}
+.cb .phone .p .n{position:absolute;left:2.6cqw;bottom:2.4cqw;font-size:19cqw;line-height:.8;font-weight:900;letter-spacing:-1cqw;text-shadow:1cqw 1cqw 0 var(--off)}
+.cb .phone .p .n small{font-size:5.4cqw;letter-spacing:0;margin-left:.6cqw;text-shadow:.5cqw .5cqw 0 var(--off)}
+.cb .phone .p.on{box-shadow:1cqw 1cqw 0 #171615,2.2cqw 2.2cqw 0 #FFFFFF;z-index:1}
+.cb .phone .sway{transform-box:view-box;transform-origin:51.5% 24%;animation:cb-sway 3.2s ease-in-out infinite}
+@keyframes cb-sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@media (prefers-reduced-motion:reduce){.cb .phone .sway{animation:none}}
+/* 7번 그림 단추 */
+.cb .phone .apps{position:absolute;z-index:3;left:4cqw;right:4cqw;display:grid;grid-template-columns:repeat(4,1fr)}
+.cb .phone .app{display:flex;flex-direction:column;align-items:center;min-width:0;position:relative}
+.cb .phone .ic{position:relative;display:block;width:16.6cqw;height:16.6cqw;border-radius:4.2cqw;border:.6cqw solid #171615;background:var(--bg);box-shadow:.9cqw .9cqw 0 #171615;overflow:hidden}
+.cb .phone .ic svg{display:block;width:100%;height:100%}
+.cb .phone .ic.ht{background-image:radial-gradient(rgba(23,22,21,.16) 28%,transparent 33%);background-size:1.6cqw 1.6cqw}
+.cb .phone .lb{margin-top:1.6cqw;font-size:4cqw;font-weight:800;line-height:1.2;color:#F2F3F3;white-space:nowrap;text-shadow:0 .3cqw .8cqw #171615}
+.cb .phone .badge{position:absolute;top:-1.6cqw;right:1.2cqw;min-width:7.6cqw;height:7.6cqw;padding:0 1.2cqw;border-radius:3.8cqw;background:#FFFFFF;color:#152D30;border:.5cqw solid #171615;font-size:4.2cqw;font-weight:900;line-height:6.6cqw;text-align:center;z-index:2}
+.cb .phone .dock{position:absolute;z-index:2;left:0;right:0;bottom:0;height:33cqw;background:rgba(170,193,197,.16);border-top:.5cqw solid rgba(242,243,243,.3)}
+.cb .phone .dock .apps{top:4.2cqw}
+.cb .phone .g{fill:none;stroke:#171615;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.cb .phone .gf{fill:#171615;stroke:none}
+.cb .phone .hint{position:absolute;z-index:3;left:5cqw;right:5cqw;margin:0;font-size:4.4cqw;line-height:1.3;font-weight:800;color:#E2E5E6}
+"""
+
+# 싹 난 조약돌 얼굴 넷(2번에서 가져옴)
+PEB = 'M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z'
+LEAF = 'M51 25C45 13 33 10 26 15C31 24 41 29 51 25ZM52 23C57 10 69 6 77 10C72 21 62 26 52 23Z'
+def face_sprout(body='#F2F3F3', leaf='#284E53', sway=True):
+    g = f'<g class="sway">' if sway else '<g>'
+    return (f'<path d="{PEB}" fill="{body}" transform="translate(-4 3)"/>{g}<path d="{LEAF}" fill="{leaf}" transform="translate(3 -2.5)"/>'
+            f'<path d="{LEAF}" fill="none" stroke="#171615" stroke-width="3.4" stroke-linejoin="round"/></g>'
+            f'<g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round"><path d="{PEB}" stroke-width="4.4"/><path d="M50 36C50 31 50.5 27 51.5 23" stroke-width="4"/><path d="M44 72Q50 77 56 72" stroke-width="3.4"/></g>'
+            f'<g fill="#171615"><ellipse cx="38" cy="61" rx="3.6" ry="4.8"/><ellipse cx="61" cy="61" rx="3.6" ry="4.8"/></g>')
+FACE_BLOOM = (f'<path d="{PEB}" fill="#4E99A3" transform="translate(3.5 3)"/>'
+    '<path d="M50 31C44 25 37 25 33 28C37 33 44 34 50 31ZM50 29C56 23 63 23 67 26C63 31 56 32 50 29Z" fill="#315D62" transform="translate(-2 2)"/>'
+    '<g fill="#FFFFFF" transform="translate(-2.5 2)"><circle cx="50" cy="6" r="5.2"/><circle cx="56.7" cy="10.8" r="5.2"/><circle cx="54.1" cy="18.7" r="5.2"/><circle cx="45.9" cy="18.7" r="5.2"/><circle cx="43.3" cy="10.8" r="5.2"/></g>'
+    f'<g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round"><path d="{PEB}" stroke-width="4.4"/><path d="M50 36V20" stroke-width="3.6"/>'
+    '<path d="M50 31C44 25 37 25 33 28C37 33 44 34 50 31ZM50 29C56 23 63 23 67 26C63 31 56 32 50 29Z" stroke-width="3"/>'
+    '<g stroke-width="2.8"><circle cx="50" cy="6" r="5.2"/><circle cx="56.7" cy="10.8" r="5.2"/><circle cx="54.1" cy="18.7" r="5.2"/><circle cx="45.9" cy="18.7" r="5.2"/><circle cx="43.3" cy="10.8" r="5.2"/></g>'
+    '<path d="M33 63Q38 56.5 43 63M56 63Q61 56.5 66 63" stroke-width="3.4"/><path d="M42 70Q50 79 58 70" stroke-width="3.4"/></g><circle cx="50" cy="13" r="3.6" fill="#171615"/>')
+# 시든 얼굴 — 처진 잎을 크게(2번의 아쉬운 점: 작아서 안 보임)
+FACE_WILT = (f'<path d="{PEB}" fill="#D6D5D4" transform="translate(-3.5 3)"/>'
+    '<path d="M50 36C50 26 56 19 64 19C70 19 74 24 75 31C69 33 63 31 60 26C58 31 56 35 54 37Z" fill="#3C4E51" transform="translate(2.5 2.5)"/>'
+    f'<g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round"><path d="{PEB}" stroke-width="4.4"/>'
+    '<path d="M50 36C50 26 56 19 64 19C70 19 74 24 75 31C69 33 63 31 60 26C58 31 56 35 54 37Z" stroke-width="3.4"/>'
+    '<path d="M33 60L43 63M56 63L66 60" stroke-width="3.6"/><path d="M44 75Q50 69 56 75" stroke-width="3.4"/></g>')
+FACE_SLEEP = (f'<path d="{PEB}" fill="#AAC1C5" transform="translate(3 3)"/>'
+    '<g fill="#E2E5E6" transform="translate(-1.5 1.5)"><circle cx="74" cy="27" r="3"/><circle cx="82" cy="17" r="4"/><circle cx="91" cy="6" r="5"/></g>'
+    f'<g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round"><path d="{PEB}" stroke-width="4.4"/>'
+    '<path d="M33 60Q38 65.5 43 60M56 60Q61 65.5 66 60" stroke-width="3.4"/><path d="M47 72Q50 74.5 53 72" stroke-width="3.2"/>'
+    '<g stroke-width="2.6"><circle cx="74" cy="27" r="3"/><circle cx="82" cy="17" r="4"/><circle cx="91" cy="6" r="5"/></g></g>')
+
+def svg(inner, cls='art'):
+    return f'<svg class="{cls}" viewBox="0 0 100 100" aria-hidden="true">{inner}</svg>'
+
+# 그림 단추 글자 그림(독창 · 단순)
+GL = {
+ 'bloom': svg(face_sprout('#FFFFFF', '#315D62', False).replace('M44 72Q50 77 56 72', 'M42 70Q50 79 58 70'), ''),
+ 'search': '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="44" cy="44" r="20" fill="#F2F3F3" transform="translate(3 3)"/><circle class="g" cx="44" cy="44" r="20" style="stroke-width:6"/><path class="g" d="M59 59L76 76" style="stroke-width:8"/></svg>',
+ 'cal': '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="22" y="28" width="56" height="50" rx="6" fill="#F2F3F3" transform="translate(3 3)"/><rect class="g" x="22" y="28" width="56" height="50" rx="6" style="stroke-width:5"/><path class="g" d="M22 42H78M36 22V32M64 22V32" style="stroke-width:5"/><rect class="gf" x="31" y="50" width="9" height="9" rx="2"/><rect x="45.5" y="50" width="9" height="9" rx="2" fill="#1FB8CD" stroke="#171615" stroke-width="2"/><rect class="gf" x="60" y="50" width="9" height="9" rx="2"/><rect class="gf" x="31" y="63" width="9" height="9" rx="2"/></svg>',
+ 'gift': '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="24" y="42" width="52" height="36" rx="4" fill="#F2F3F3" transform="translate(3 3)"/><rect class="g" x="24" y="42" width="52" height="36" rx="4" style="stroke-width:5"/><rect class="g" x="20" y="32" width="60" height="12" rx="3" style="stroke-width:5"/><path class="g" d="M50 32V78" style="stroke-width:5"/><path class="g" d="M50 32C44 20 32 22 36 30C38 33 46 33 50 32ZM50 32C56 20 68 22 64 30C62 33 54 33 50 32Z" style="stroke-width:4"/></svg>',
+ 'why': '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="48" r="28" fill="#F2F3F3" transform="translate(3 3)"/><circle class="g" cx="50" cy="48" r="28" style="stroke-width:5"/><path class="g" d="M40 40C40 31 60 30 60 41C60 49 50 49 50 57" style="stroke-width:6.5"/><circle class="gf" cx="50" cy="67" r="4"/></svg>',
+ 'month': '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M32 22H68M32 78H68M36 22C36 40 64 42 64 50C64 58 36 60 36 78M64 22C64 40 36 42 36 50C36 58 64 60 64 78" fill="none" stroke="#F2F3F3" stroke-width="7" transform="translate(3 3)"/><path class="g" d="M32 22H68M32 78H68M36 22C36 40 64 42 64 50C64 58 36 60 36 78M64 22C64 40 36 42 36 50C36 58 64 60 64 78" style="stroke-width:5"/><path class="gf" d="M40 72Q50 62 60 72Z"/></svg>',
+ 'record': '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="24" y="22" width="52" height="58" rx="5" fill="#F2F3F3" transform="translate(3 3)"/><rect class="g" x="24" y="22" width="52" height="58" rx="5" style="stroke-width:5"/><path class="g" d="M33 64L44 52L53 58L67 38" style="stroke-width:5"/><circle class="gf" cx="67" cy="38" r="4"/><path class="g" d="M33 32H55" style="stroke-width:4"/></svg>',
+ 'dori': svg(face_sprout('#F2F3F3', '#284E53', False), ''),
+ 'help': '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M26 56V48C26 34 37 24 50 24C63 24 74 34 74 48V56" fill="none" stroke="#F2F3F3" stroke-width="7" transform="translate(3 3)"/><path class="g" d="M26 56V48C26 34 37 24 50 24C63 24 74 34 74 48V56" style="stroke-width:5.5"/><rect x="18" y="50" width="16" height="24" rx="6" fill="#F2F3F3" stroke="#171615" stroke-width="5"/><rect x="66" y="50" width="16" height="24" rx="6" fill="#F2F3F3" stroke="#171615" stroke-width="5"/><path class="g" d="M74 74C74 82 66 84 57 84" style="stroke-width:4.5"/><rect class="gf" x="45" y="80" width="13" height="8" rx="4"/></svg>',
+}
+# 카톡 말풍선(글 없이 모양만 · 색은 100가지 안)
+KK = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 16C27 16 9 30 9 48C9 60 17 70 29 75L25 90L42 79C44.6 79.4 47.3 79.6 50 79.6C73 79.6 91 65.6 91 48C91 30 73 16 50 16Z" fill="#171615"/></svg>'
+# 맨 위 두 단추 — 모든 화면 같은 자리(진짜 사이트의 「카톡 보내기」 · 「선물 받기」와 같은 이름)
+TOOLS = ('<span class="tools"><button class="tb kk" type="button" aria-label="이 화면을 카톡 친구에게 보내기">' + KK + '카톡 보내기</button>'
+         '<button class="tb gift" type="button" aria-label="선물 받기 방으로">' + GL['gift'] + '선물 받기</button></span>')
+# 칸 하나를 보내는 작은 카톡 단추(칸이 여럿인 화면)
+KKC = '<button class="kkc" type="button" aria-label="이 칸을 카톡 친구에게 보내기">' + KK + '카톡 보내기</button>'
+
+def app(label, glyph, bg, badge=None, ht=True):
+    b = f'<span class="badge">{badge}</span>' if badge else ''
+    return f'<div class="app">{b}<span class="ic{" ht" if ht else ""}" style="--bg:{bg}">{GL[glyph]}</span><span class="lb">{label}</span></div>'
+
+DOCK = ('<div class="dock"><div class="apps">' + app('왜 사?', 'why', '#4E99A3') + app('한 달 뒤', 'month', '#3E737A') +
+        app('지난 기록', 'record', '#356369') + app('돌이', 'dori', '#AAC1C5') + '</div></div>')
+FRAME_TOP = '<div class="wall"></div><div class="island"></div><div class="status"><span>9:41</span><span>●●●</span></div>'
+FRAME_END = '<div class="homebar"></div>'
+
+def head(n, name, lines):
+    return (f'<div class="head"><span class="no"><b>{n}</b>{name}</span>' +
+            ''.join(f'<p class="why"><em>{k}</em> {v}</p>' for k, v in lines) + '</div>')
+
+# ① 첫 화면
+c1 = f"""<section class="sample cb" id="c1"><style>
+#c1 .phone .trow{{position:absolute;z-index:3;top:24cqw;left:5cqw;right:5cqw;display:flex;justify-content:space-between;align-items:baseline;gap:2cqw}}
+#c1 .phone .trow .ttl{{position:static;font-size:6.6cqw;white-space:nowrap}}
+#c1 .phone .four{{top:34.6cqw;height:109.4cqw}}
+#c1 .phone .apps.mid{{top:152cqw}}
+</style>
+{head('①', '첫 화면', [('맨 위', '「카톡 보내기」와 「선물 받기」 — 모든 화면 같은 자리'), ('가운데', '2번 네 칸을 크게 — 업종 77곳이 지금 어디쯤인지 한눈에'), ('아래', '그림 단추 넷과 아래 단추 줄 넷 — 선물은 위로 올리고 그 자리에 고객센터'), ('빛나는 곳', '싹 칸 하나')])}
+<div class="phone">{FRAME_TOP}
+<div class="top"><span class="mark">돌이</span>{TOOLS}</div>
+<div class="trow"><h2 class="ttl">업종 77곳은 지금</h2><span class="date">10월 13일 기록</span></div>
+<div class="four">
+ <button class="p on" type="button" aria-label="싹 업종 37곳" style="--bg:#1FB8CD;--ink:#152D30;--off:#FFFFFF;--dot:#F2F3F3"><span class="nm">싹</span>{svg(face_sprout())}<span class="n">37<small>곳</small></span></button>
+ <button class="p" type="button" aria-label="꽃 업종 7곳" style="--bg:#AAC1C5;--ink:#171615;--off:#F2F3F3;--dot:#8CA3A7"><span class="nm">꽃</span>{svg(FACE_BLOOM)}<span class="n">7<small>곳</small></span></button>
+ <button class="p" type="button" aria-label="시듦 업종 4곳" style="--bg:#797F7F;--ink:#F2F3F3;--off:#3C4E51;--dot:#697779"><span class="nm">시듦</span>{svg(FACE_WILT)}<span class="n">4<small>곳</small></span></button>
+ <button class="p" type="button" aria-label="잠잠 업종 29곳" style="--bg:#284E53;--ink:#E2E5E6;--off:#152D30;--dot:#356369"><span class="nm">잠잠</span>{svg(FACE_SLEEP)}<span class="n">29<small>곳</small></span></button>
+</div>
+<div class="apps mid">{app('꽃 될 회사', 'bloom', '#E2E5E6', '31')}{app('회사 찾기', 'search', '#4B939D')}{app('싹 달력', 'cal', '#8CA3A7')}{app('고객센터', 'help', '#428189')}</div>
+{DOCK}{FRAME_END}</div></section>"""
+
+# ② 싹 칸을 누르면 — 싹 업종 37곳(맨 앞 셋 크게 · 나머지는 이름만)
+REST = ['가공식품', '가전·생활용품', '건설 엔지니어링', '건축자재', '게임', '교육', '디스플레이', '물류·운송', '방송', '보험', '비철금속', '소프트웨어', '식품', '자동차', '전력·가스', '제약']
+chips = ''.join(f'<span class="chip">{html.escape(x)}</span>' for x in REST) + '<span class="chip more">그 밖 18곳</span>'
+c2 = f"""<section class="sample cb" id="c2"><style>
+#c2 .phone .ttl{{top:24cqw;font-size:11cqw;text-shadow:1cqw 1cqw 0 #3E737A}}
+#c2 .phone .sub.s1{{top:38cqw}}
+#c2 .phone .lab{{position:absolute;z-index:3;left:5cqw;margin:0;font-size:4.4cqw;font-weight:900;color:#F2F3F3}}
+#c2 .phone .kkc{{position:absolute;z-index:3;right:4cqw;display:inline-flex;align-items:center;gap:.8cqw;height:8cqw;margin:0;padding:0 1.8cqw 0 1.2cqw;border:.4cqw solid #171615;border-radius:4cqw;background:#FFFFFF;color:#171615;font:inherit;font-size:4.2cqw;font-weight:900;line-height:1;white-space:nowrap;box-shadow:.6cqw .6cqw 0 #171615;cursor:pointer}}
+#c2 .phone .kkc svg{{display:block;width:5.4cqw;height:5.4cqw}}
+#c2 .phone .three{{position:absolute;z-index:3;top:56cqw;left:4cqw;right:4cqw;display:grid;grid-template-columns:repeat(3,1fr);gap:2.6cqw}}
+#c2 .phone .t{{position:relative;height:44cqw;border:.6cqw solid #171615;border-radius:3.2cqw;background:var(--bg);color:var(--ink);box-shadow:1cqw 1cqw 0 #171615;overflow:hidden}}
+#c2 .phone .t svg{{position:absolute;left:3cqw;top:2cqw;width:22cqw;height:22cqw}}
+#c2 .phone .t b{{position:absolute;left:2.4cqw;right:1.6cqw;bottom:2.4cqw;font-size:4.6cqw;line-height:1.15;font-weight:900}}
+#c2 .phone .t.on{{box-shadow:1cqw 1cqw 0 #171615,2cqw 2cqw 0 #FFFFFF}}
+#c2 .phone .real{{position:absolute;right:1.6cqw;top:1.6cqw;padding:.6cqw 1.6cqw;border-radius:2.4cqw;background:#FFFFFF;color:#152D30;border:.4cqw solid #171615;font-size:4cqw;font-weight:900}}
+#c2 .phone .chips{{position:absolute;z-index:3;top:115cqw;left:4cqw;right:4cqw;display:flex;flex-wrap:wrap;gap:2cqw}}
+#c2 .phone .chip{{padding:1.2cqw 2.6cqw;border-radius:3cqw;background:rgba(170,193,197,.16);border:.4cqw solid rgba(242,243,243,.25);font-size:4.2cqw;font-weight:800;color:#F2F3F3}}
+#c2 .phone .chip.more{{background:transparent;border-style:dashed;color:#AAC1C5}}
+#c2 .phone .hint{{top:176cqw}}
+</style>
+{head('②', '싹 칸을 누르면', [('보이는 것', '싹 자리에 있는 업종 37곳 — 맨 앞 셋은 크게'), ('칸마다', '「맨 앞 셋」과 「그 밖 34곳」에 카톡 보내기를 하나씩 더'), ('빛나는 곳', '네 가지가 다 맞은 「진짜 싹」 2차전지'), ('누르는 곳', '업종을 누르면 그 업종 회사로')])}
+<div class="phone">{FRAME_TOP}
+<div class="top"><span class="back">‹ 지금</span>{TOOLS}</div>
+<h2 class="ttl">싹 37곳</h2>
+<p class="sub s1">10월 13일 싹 자리에 있는 업종이에요</p>
+<p class="lab" style="top:47.6cqw">맨 앞 셋</p>{KKC.replace('class="kkc"', 'class="kkc" style="top:46cqw"', 1)}
+<div class="three">
+ <div class="t on" style="--bg:#1FB8CD;--ink:#152D30">{svg(face_sprout('#F2F3F3', '#284E53', True), '')}<span class="real">진짜 싹</span><b>2차전지</b></div>
+ <div class="t" style="--bg:#AAC1C5;--ink:#171615">{svg(face_sprout('#F2F3F3', '#315D62', False), '')}<b>콘텐츠 제작</b></div>
+ <div class="t" style="--bg:#4B939D;--ink:#171615">{svg(face_sprout('#E2E5E6', '#284E53', False), '')}<b>의류·패션</b></div>
+</div>
+<p class="lab" style="top:106.6cqw">그 밖 34곳</p>{KKC.replace('class="kkc"', 'class="kkc" style="top:105cqw"', 1)}
+<div class="chips">{chips}</div>
+<p class="hint">업종을 누르면 그 업종 회사가 나와요</p>
+{DOCK}{FRAME_END}</div></section>"""
+
+# ③ 「꽃 될 회사」 단추를 누르면 — 오늘 고른 31곳(업종 묶음 · 가장 큰 묶음 펼침)
+GROUPS = [('바이오 도구·서비스', 10, '#1FB8CD'), ('정밀화학', 7, '#AAC1C5'), ('전자부품', 6, '#8CA3A7'), ('디스플레이 장비', 5, '#4B939D'), ('2차전지 장비', 2, '#428189'), ('반도체 장비', 1, '#3E737A')]
+BIO = ['대한과학', '바이오인프라', '인트론바이오', '소마젠']
+rows = ''
+for i, (nm, k, bg) in enumerate(GROUPS):
+    if i == 0:
+        cos = ''.join(f'<span class="co{" on" if j == 0 else ""}">{c}</span>' for j, c in enumerate(BIO)) + '<span class="co more">외 6곳</span>'
+        rows += f'<div class="row open" style="--bg:{bg}"><div class="rh"><span class="mini">{svg(face_sprout("#F2F3F3", "#284E53", False), "")}</span><b>{nm}</b><span class="k">{k}곳</span></div><div class="cos">{cos}</div></div>'
+    else:
+        rows += f'<div class="row" style="--bg:{bg}"><div class="rh"><span class="mini">{svg(face_sprout("#F2F3F3", "#315D62", False), "")}</span><b>{nm}</b><span class="k">{k}곳</span></div></div>'
+c3 = f"""<section class="sample cb" id="c3"><style>
+#c3 .phone .ttl{{top:23.5cqw;font-size:8.4cqw;text-shadow:.9cqw .9cqw 0 #3E737A}}
+#c3 .phone .sub.s1{{top:42.5cqw}}
+#c3 .phone .list{{position:absolute;z-index:3;top:51cqw;left:4cqw;right:4cqw;display:flex;flex-direction:column;gap:1.8cqw}}
+#c3 .phone .row{{border:.6cqw solid #171615;border-radius:3.2cqw;background:var(--bg);box-shadow:.9cqw .9cqw 0 #171615;color:#171615;overflow:hidden}}
+#c3 .phone .rh{{display:flex;align-items:center;gap:2.2cqw;padding:1cqw 3cqw 1cqw 1.6cqw;min-height:11cqw}}
+#c3 .phone .mini svg{{display:block;width:9cqw;height:9cqw}}
+#c3 .phone .rh b{{flex:1;font-size:4.8cqw;font-weight:900}}
+#c3 .phone .rh .k{{font-size:5.6cqw;font-weight:900}}
+#c3 .phone .open{{box-shadow:.9cqw .9cqw 0 #171615,1.9cqw 1.9cqw 0 #FFFFFF}}
+#c3 .phone .open .rh b,#c3 .phone .open .rh .k{{color:#152D30}}
+#c3 .phone .cos{{display:flex;flex-wrap:wrap;gap:1.4cqw;padding:0 3cqw 2.6cqw}}
+#c3 .phone .co{{padding:.8cqw 2.2cqw;border-radius:2.6cqw;background:#FFFFFF;border:.4cqw solid #171615;font-size:4.2cqw;font-weight:800;color:#152D30}}
+#c3 .phone .co.on{{background:#152D30;color:#FFFFFF}}
+#c3 .phone .co.more{{background:transparent;border-style:dashed}}
+#c3 .phone .rec{{position:absolute;z-index:3;left:4cqw;right:4cqw;top:159cqw;margin:0;padding:2cqw 3cqw;border-left:1.2cqw solid #AAC1C5;font-size:4.1cqw;line-height:1.4;font-weight:700;color:#E2E5E6}}
+</style>
+{head('③', '「꽃 될 회사」를 누르면', [('보이는 것', '오늘 고른 31곳을 업종 여섯으로 — 가장 큰 묶음은 펼쳐서'), ('정직하게', '지난 기록 한 줄을 늘 같이'), ('누르는 곳', '회사 이름을 누르면 그 회사로')])}
+<div class="phone">{FRAME_TOP}
+<div class="top"><span class="back">‹ 지금</span>{TOOLS}</div>
+<h2 class="ttl">꽃이 될 듯한<br>회사 31곳</h2>
+<p class="sub s1">10월 13일에 지난 기록으로 골랐어요</p>
+<div class="list">{rows}</div>
+<p class="rec">지난 3년, 이렇게 고른 회사가 꽃이 된 것은 네 번에 한 번쯤이에요. 아무 회사와 큰 차이는 없어요.</p>
+{DOCK}{FRAME_END}</div></section>"""
+
+# ④ 회사를 누르면 — 대한과학 + 「왜 사?」(4번 큰 질문을 이어 붙임)
+c4 = f"""<section class="sample cb" id="c4"><style>
+#c4 .phone .ttl{{top:24cqw;font-size:11cqw;text-shadow:1cqw 1cqw 0 #3E737A}}
+#c4 .phone .sub.s1{{top:38cqw}}
+#c4 .phone .card{{position:absolute;z-index:3;top:49cqw;left:4cqw;right:4cqw;height:46cqw;border:.6cqw solid #171615;border-radius:3.4cqw;background:#AAC1C5;box-shadow:1cqw 1cqw 0 #171615;color:#171615;overflow:hidden}}
+#c4 .phone .card svg{{position:absolute;left:3cqw;top:5cqw;width:34cqw;height:34cqw}}
+#c4 .phone .card .st{{position:absolute;left:41cqw;top:6cqw;padding:.8cqw 2.4cqw;border-radius:2.6cqw;background:#152D30;color:#FFFFFF;font-size:4.2cqw;font-weight:900}}
+#c4 .phone .card p{{position:absolute;left:41cqw;right:3cqw;top:17cqw;margin:0;font-size:4.4cqw;line-height:1.35;font-weight:800}}
+#c4 .phone .whyb{{position:absolute;z-index:3;top:103cqw;left:4cqw;right:4cqw;height:46cqw;border:.6cqw solid #171615;border-radius:3.4cqw;background:#1FB8CD;box-shadow:1cqw 1cqw 0 #171615,2.2cqw 2.2cqw 0 #FFFFFF;color:#152D30;overflow:hidden}}
+#c4 .phone .whyb b{{position:absolute;left:4cqw;top:3cqw;font-size:16cqw;line-height:1;font-weight:900;letter-spacing:-.6cqw;color:#FFFFFF;-webkit-text-stroke:.5cqw #152D30;text-shadow:1.2cqw 1.2cqw 0 #152D30}}
+#c4 .phone .whyb span{{position:absolute;left:4cqw;right:4cqw;bottom:4cqw;font-size:4.6cqw;line-height:1.3;font-weight:900}}
+#c4 .phone .whyb i{{position:absolute;right:4cqw;top:5cqw;width:13cqw;height:13cqw;border-radius:50%;background:#FFFFFF;border:.6cqw solid #152D30;font-style:normal;font-size:7cqw;font-weight:900;line-height:11.6cqw;text-align:center;color:#152D30}}
+#c4 .phone .later{{position:absolute;z-index:3;top:156cqw;left:5cqw;right:5cqw;margin:0;font-size:4.2cqw;line-height:1.4;font-weight:700;color:#AAC1C5}}
+</style>
+{head('④', '회사를 누르면', [('보이는 것', '회사 한 곳과 4번 「왜 사?」 큰 단추'), ('멈춤', '사기 전에 열한 가지를 묻고, 한 달 뒤 다시 물어요'), ('세 번', '첫 화면에서 두 번 누르면 여기 · 세 번째가 「왜 사?」')])}
+<div class="phone">{FRAME_TOP}
+<div class="top"><span class="back">‹ 꽃 될 회사</span>{TOOLS}</div>
+<h2 class="ttl">대한과학</h2>
+<p class="sub s1">바이오 도구·서비스 · 10월 13일에 골랐어요</p>
+<div class="card">{svg(face_sprout('#F2F3F3', '#284E53', True), '')}<span class="st">싹 난 회사</span><p>고른 뒤 일은 날마다 싹 달력에 그대로 남아요</p></div>
+<div class="whyb"><b>왜 사?</b><i>›</i><span>사기 전에 열한 가지만 물어볼게요</span></div>
+<p class="later">한 달 뒤에는 「그날 정한 대로 했어?」 하고 다시 물어요</p>
+{DOCK}{FRAME_END}</div></section>"""
+
+FR = {'c1': c1, 'c2': c2, 'c3': c3, 'c4': c4}
+for k, v in FR.items():
+    # 검사기는 조각 하나씩 찍으므로 같이 쓰는 꾸밈을 조각마다 넣음
+    open(os.path.join(D, k + '.html'), 'w').write(v.replace('<style>', '<style>' + SHARED, 1))
+
+base = open(os.path.join(D, 'base.css')).read()
+pal = json.load(open(os.path.join(D, 'palette.json')))
+strip = ''.join(f'<i style="background:{h}"></i>' for h in pal)
+EXTRA = """
+.sample .why em{display:inline-block;margin-right:8px;padding:0 10px;border-radius:10px;background:#152D30;color:#FFFFFF;font-size:21px;line-height:1.5;font-weight:800}
+main>.intro{border:3px solid #000;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px}
+main>.intro h1{font-size:32px;line-height:1.25;margin:0;font-weight:900}
+main>.intro p{margin:0}
+.strip{display:flex;height:30px;border-radius:10px;overflow:hidden;border:1px solid #000}
+.strip i{flex:1 1 0;min-width:0}
+.path{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:21px;font-weight:800}
+.path span{padding:4px 12px;border:2px solid #000;border-radius:12px}
+.path b{font-size:24px}
+main>.note{border:1px solid #111;border-radius:18px;padding:16px}
+main>.note h2{font-size:25px;margin:0 0 8px;font-weight:800}
+main>.note ul{margin:4px 0;padding-left:28px}
+main>.asklast{border:3px solid #000;border-radius:18px;padding:16px;font-size:24px;font-weight:800}
+main>.footline{font-size:21px;color:#111;margin:0}
+main>details{font-size:21px;color:#111;word-break:break-all}
+main>details summary{cursor:pointer;min-height:48px}
+main>.intro .demo{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px;border-radius:16px;background:#152D30}
+main>.intro .demo .tb{display:inline-flex;align-items:center;gap:6px;height:52px;margin:0;padding:0 18px 0 10px;border:3px solid #171615;border-radius:26px;font:inherit;font-size:23px;font-weight:900;line-height:1;color:#171615;box-shadow:4px 4px 0 #171615}
+main>.intro .demo .tb svg{display:block;width:34px;height:34px}
+main>.intro .demo .tb.kk{background:#FFFFFF}
+main>.intro .demo .tb.gift{background:#AAC1C5}
+main>.intro .demo .g{fill:none;stroke:#171615;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+main>.intro .demo .gf{fill:#171615;stroke:none}
+"""
+NOT = ['진짜 사이트는 아직 그대로예요. 「응」 하시면 그때 만들어요.', '카톡 노란색과 선물 금빛은 고르신 색 100가지에 없어요. 그래서 흰색과 밝은 회청색으로 했어요.', '「왜 사?」를 누른 뒤 열한 질문 화면은 4번 샘플 그대로 쓸 생각이에요.', '숫자는 10월 13일 기록이라 오늘 값이 아니에요.']
+page = f"""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>돌이 합친 판 둘째</title><style>{base}{SHARED}{EXTRA}</style></head><body><main>
+<section class="intro"><h1>맨 위에 카톡과 선물을 더했어요</h1>
+<div class="demo">{TOOLS.replace('<span class="tools">', '').replace('</span>', '')}</div>
+<p>네 화면 모두 맨 위 같은 자리에 「카톡 보내기」와 「선물 받기」를 두었어요.</p>
+<p>칸이 여럿인 화면은 칸마다 「카톡 보내기」가 하나씩 더 있어요.</p>
+<p>첫 화면 그림 단추에 있던 선물은 맨 위로 올리고, 그 자리에 고객센터를 넣었어요.</p>
+<p>나머지는 앞의 합친 판 그대로예요. 2번 네 칸이 가운데, 빛나는 곳은 싹 칸 하나예요.</p>
+<div class="path"><span>첫 화면</span><b>›</b><span>꽃 될 회사</span><b>›</b><span>회사</span><b>›</b><span>왜 사?</span></div>
+<p>「꽃 될 회사」 길로 가면 세 번 만에 「왜 사?」에 닿아요.</p>
+<div class="strip">{strip}</div></section>
+{c1}{c2}{c3}{c4}
+<section class="note"><h2>못 한 것 {len(NOT)}가지</h2><ul>{''.join(f'<li>{x}</li>' for x in NOT)}</ul></section>
+<section class="asklast">이 모양으로 진짜 돌이를 만들까요?</section>
+<p class="footline">채점표: 화면 넷 모두 금지 말과 색과 글씨 크기를 기계로 검사했어요. 틀림 장부 116건 · 못 한 것 {len(NOT)}가지</p>
+<details><summary>근거 펼치기</summary><p>바탕: docs/design/dori-new-2026-10-25 의 2번 s02.html 네 칸 · 7번 s07.html 그림 단추 · 4번 s04.html 「왜 사?」</p><p>색: 사장님 사진 아래쪽 실제 색 100가지만 — docs/design/palette-2026-10-25/perplexity-bottom-100.json</p><p>내용: 10월 13일 기록 — site/next/data/theme-home.json(싹 37 · 꽃 7 · 시듦 4 · 잠잠 29 · 싹 업종 이름 · 진짜 싹 2차전지) · theme-bloom.json(고른 회사 31곳 · 업종별 수 · 회사 이름)</p><p>고친 점: 2번에서 작아 안 보이던 시든 잎을 크게 · 7번의 단추 스물을 열둘로 줄임</p><p>둘째 판: 진짜 사이트와 같은 이름과 자리 — site/next/kk-all.js(모든 쪽에 「카톡 보내기」와 「선물 받기」 · 칸마다 「카톡 보내기」) · site/next/app.js(모든 쪽 위 막대 선물 단추)</p></details>
+</main></body></html>"""
+open(os.path.join(D, 'combo.html'), 'w').write(page)
+print('ok', len(page))
