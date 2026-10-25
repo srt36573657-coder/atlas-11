@@ -1,58 +1,61 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-10-25T14:39:57.790Z",
+ "at": "2026-10-25T14:49:07.108Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "ref": "wip-total",
- "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
- "run": 40202878270,
- "wallSeconds": 257,
+ "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+ "run": 40203273452,
+ "wallSeconds": 540,
  "data": {
   "from": "live",
   "asOf": "2026-10-23",
   "built": "2026-10-25T14:06:36.527Z",
-  "seconds": 12
+  "seconds": 33
  },
  "pages": [
   {
    "name": "cal",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 125,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 25,
+   "data": "live 2026-10-23"
   },
   {
    "name": "chx",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 184,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 21,
+   "data": "live 2026-10-23"
   },
   {
    "name": "co",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 252,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 25,
+   "data": "live 2026-10-23"
   },
   {
    "name": "cond",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 45,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 29,
+   "data": "live 2026-10-23"
   },
   {
    "name": "en",
-   "code": 1,
-   "seconds": 0,
+   "code": 0,
+   "seconds": 362,
    "shards": 7,
    "codes": [
-    99,
-    99,
-    99,
-    99,
-    99,
-    99,
-    99
-   ],
-   "shardSeconds": [
     0,
     0,
     0,
@@ -60,33 +63,46 @@
     0,
     0,
     0
-   ]
+   ],
+   "shardSeconds": [
+    328,
+    357,
+    362,
+    351,
+    341,
+    336,
+    335
+   ],
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "data": "live 2026-10-23",
+   "build": 28
   },
   {
    "name": "essence",
    "code": 0,
    "seconds": 7,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 29,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 26,
    "data": "live 2026-10-23"
   },
   {
    "name": "gdr",
    "code": 0,
-   "seconds": 91,
+   "seconds": 108,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 22,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 29,
    "data": "live 2026-10-23"
   },
   {
    "name": "gift",
    "code": 0,
-   "seconds": 171,
+   "seconds": 173,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 21,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 25,
    "data": "live 2026-10-23"
   },
   {
@@ -94,126 +110,154 @@
    "code": 0,
    "seconds": 144,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 23,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 26,
    "data": "live 2026-10-23"
   },
   {
    "name": "help",
    "code": 0,
-   "seconds": 17,
+   "seconds": 15,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 29,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 21,
    "data": "live 2026-10-23"
   },
   {
    "name": "hold",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 79,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 29,
+   "data": "live 2026-10-23"
   },
   {
    "name": "jinhwa",
    "code": 0,
-   "seconds": 36,
+   "seconds": 31,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 45,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 20,
    "data": "live 2026-10-23"
   },
   {
    "name": "kakao",
    "code": 0,
-   "seconds": 120,
+   "seconds": 118,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 24,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 23,
    "data": "live 2026-10-23"
   },
   {
    "name": "misc",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 49,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 29,
+   "data": "live 2026-10-23"
   },
   {
    "name": "next",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 126,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 26,
+   "data": "live 2026-10-23"
   },
   {
    "name": "past",
-   "code": 1,
-   "seconds": 0,
+   "code": 0,
+   "seconds": 202,
    "shards": 2,
    "codes": [
-    99,
-    99
-   ],
-   "shardSeconds": [
     0,
     0
-   ]
+   ],
+   "shardSeconds": [
+    202,
+    202
+   ],
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "data": "live 2026-10-23",
+   "build": 26
   },
   {
    "name": "range",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 145,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 21,
+   "data": "live 2026-10-23"
   },
   {
    "name": "rivals",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 67,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 26,
+   "data": "live 2026-10-23"
   },
   {
    "name": "share",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 93,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 26,
+   "data": "live 2026-10-23"
   },
   {
    "name": "surge",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 87,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 25,
+   "data": "live 2026-10-23"
   },
   {
    "name": "theme",
    "code": 0,
    "seconds": 132,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 31,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 25,
    "data": "live 2026-10-23"
   },
   {
    "name": "today",
    "code": 0,
-   "seconds": 50,
+   "seconds": 57,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 22,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 29,
    "data": "live 2026-10-23"
   },
   {
    "name": "white",
    "code": 0,
-   "seconds": 48,
+   "seconds": 56,
    "mode": "local",
-   "sha": "8acc1e199a6c3ffdc33119cd695aec9afc2a7cda",
-   "build": 23,
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 24,
    "data": "live 2026-10-23"
   },
   {
    "name": "why",
-   "code": 99,
-   "seconds": 0,
-   "why": "결과 없음 — 작업이 끝나지 못함"
+   "code": 0,
+   "seconds": 34,
+   "mode": "local",
+   "sha": "c76e26212084f7158db55c8de525ae7f8dd70ca9",
+   "build": 29,
+   "data": "live 2026-10-23"
   }
  ],
- "ok": false
+ "ok": true
 }
