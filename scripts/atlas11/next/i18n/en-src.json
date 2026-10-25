@@ -9463,6 +9463,11 @@
   "칸을 누르면 그 업종들이 나와요": "Tap a box to see its industries",
   "네 자리": "Four zones",
   "업종|곳": "industries",
-  "업종1|곳": "industry"
+  "업종1|곳": "industry",
+  "돌이가 고른 {n}곳 가운데": "Out of {n} picked by Dori",
+  "아무거나 고른 {n}곳 가운데": "Out of {n} picked at random",
+  "돌이가 고른 회사": "Picked by Dori",
+  "아무거나 고른 회사": "Picked at random",
+  "{n}곳 가운데 꽃이 된 수예요": "How many bloomed out of {n}"
  }
 }

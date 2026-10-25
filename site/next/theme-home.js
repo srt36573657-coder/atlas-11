@@ -145,24 +145,24 @@ export function recordLine(TH) {
     h('span', {text: `아무 업종은 100번 가운데 ${Math.round(R.all.p)}번이었어요.`}));
 }
 
-/** 고른 싹 회사 기록 칸 — theme-bloom.json 의 달력(지난 60거래일) · 한 달이 지난 날의 꽃 된 수 · 지난 기록 · 누르면 #/t/pick */
+/** 고른 싹 회사 기록 칸 — theme-bloom.json 의 달력(지난 60거래일) 가운데 한 달이 지난 날만 셈 · 누르면 #/t/pick(기록 달력)
+ *  2026-10-26 사장님 03:20 「여기 이해가 가지도 않고 디자인도 맘에 들지 않아 잡스라면」 — 한 칸에 답 하나: 물음 → 막대 두 개(돌이가 고른 회사 · 아무거나 고른 회사)
+ *  날마다 작은 네모 줄(뜻 풀이 없이 파랑 · 초록 · 빈 네모)은 첫 화면에서 빼고 기록 달력 쪽(#/t/pick)에만 · 숫자는 100곳 가운데로 맞춤(앞 판과 같은 셈 — 꽃 된 수 ÷ 한 달 지난 수)
+ *  정직: 돌이가 더 적으면 막대도 더 짧게 그대로(감추지 않음 · 2026-10-22 22:54 「신빙성에대해 딱 정직하게 앞에」) · 글자는 테마 칸 200자 안(앞 판 43자 → 36자) */
 function pickCard() {
-  const lines = h('span', {class: 'th-pkhl'}, h('span', {text: '기록을 불러오는 중이에요.'}));
-  const strip = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); strip.setAttribute('class', 'th-pkhs'); strip.setAttribute('aria-hidden', 'true'); strip.setAttribute('focusable', 'false'); // 날마다 작은 네모 — 자료 그림(svg · 누르는 칸 아님 · 첫 화면 「바둑판 0」 잣대 밖)
-  const card = h('a', {class: 'th-pkhome', href: '#/t/pick'}, h('b', {class: 'th-pkhh', text: '고른 싹이 꽃이 됐을까?'}), lines, strip, h('span', {class: 'th-pkhgo'}, h('span', {text: '기록 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  const body = h('span', {class: 'th-pkb'}, h('span', {class: 'th-pkl', text: '기록을 불러오는 중이에요.'}));
+  const card = h('a', {class: 'th-pkhome', href: '#/t/pick'}, h('b', {class: 'th-pkhh', text: '고른 싹이 꽃이 됐을까?'}), body, h('span', {class: 'th-pkhgo'}, h('span', {text: '기록 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  const bar = v => { const fillEl = h('span', {class: 'th-pkf'}); fillEl.style.width = Math.max(0, Math.min(100, v)) + '%'; return h('span', {class: 'th-pkt', 'aria-hidden': 'true'}, fillEl); }; // 막대 = 바탕 칸 + 채운 칸(너비는 CSSOM — 글 속 style 없음)
+  const line = (who, v, c) => [h('span', {class: 'th-pkr ' + c}, h('span', {class: 'th-pkl', text: who}), h('b', {class: 'th-pkn', text: `${v}곳`})), bar(v)];
   const fill = B => {
-    const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string') : [], A = B?.record?.all;
+    const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string') : [];
     const done = days.filter(d => d.hit + d.miss > 0), sum = f => done.reduce((p, d) => p + (Number(f(d)) || 0), 0);
     const D = sum(d => d.hit + d.miss), N = sum(d => d.bn), P = D ? Math.round((sum(d => d.hit) / D) * 100) : null, Q = N ? Math.round((sum(d => d.bh) / N) * 100) : null;
-    const out = []; // 첫 화면 테마 시계 칸 글자 200자 안(check_white THEME_CHARS) — 두 줄만 · 나머지는 #/t/pick
-    if (P != null) out.push(h('span', {class: 'th-pkhk', text: `고른 회사 100곳에 ${P}곳이 꽃이 됐어요.`}));
-    if (P != null && Q != null) out.push(h('span', {class: 'th-pkhk', text: P < Q ? `아무 회사는 ${Q}곳이라 그보다 적었어요.` : P > Q ? `아무 회사는 ${Q}곳이라 그보다 많았어요.` : `아무 회사도 ${Q}곳이라 비슷했어요.`}));
-    if (!out.length) out.push(h('span', {text: '? 기록을 아직 못 받았어요.'}));
-    lines.replaceChildren(...out);
-    const up = d => (d.bn > 0 ? d.hit / (d.hit + d.miss) >= d.bh / d.bn : A && Number.isFinite(A.base) ? d.hit / (d.hit + d.miss) >= A.base / 100 : false);
-    const per = 30, rows = Math.max(1, Math.ceil(days.length / per));
-    strip.setAttribute('viewBox', `0 0 ${per * 11} ${rows * 11}`);
-    strip.replaceChildren(...days.map((d, i) => { const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect'); for (const [k, v] of Object.entries({x: (i % per) * 11 + 1, y: Math.floor(i / per) * 11 + 1, width: 9, height: 9, rx: 2.5, class: d.wait ? 'w' : d.hit + d.miss === 0 ? 'z' : up(d) ? 'up' : 'dn'})) r.setAttribute(k, String(v)); return r; }));
+    const out = [];
+    if (P != null) out.push(...line('돌이가 고른 회사', P, 'th-pkme'));
+    if (Q != null) out.push(...line('아무거나 고른 회사', Q, 'th-pkany'));
+    if (out.length) out.unshift(h('span', {class: 'th-pkx', text: '100곳 가운데 꽃이 된 수예요'})); else out.push(h('span', {class: 'th-pkl', text: '? 기록을 아직 못 받았어요.'})); // 단위 풀이를 물음 바로 아래에(뜻 먼저 · 숫자 다음)
+    body.replaceChildren(...out);
   };
   setTimeout(() => { fetch('/next/data/theme-bloom.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).then(j => fill(j && typeof j.schema === 'string' && j.schema.startsWith('dori-theme-1') ? j : null)).catch(() => fill(null)); }, 0);
   return card;
