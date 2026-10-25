@@ -28,7 +28,7 @@ li.privals-me .privals-pn { color: var(--ink); font-weight: 700; }
 @media (max-width: 419px) {
   html.en .privals-pr { grid-template-columns: minmax(0, 1fr) 16px; grid-template-areas: 'n c' 'v .' 'b b'; }
   html.en div.privals-pr { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'n' 'v' 'b'; }
-  html.en .privals-pv { text-align: left; }
+  html.en .privals-pv { text-align: left; white-space: normal; } /* 카톡 단추에 글자가 들어 넓어짐(2026-10-25 「진짜모든곳에」) — 값 글은 두 줄까지 */
 }
 .privals-pv { grid-area: v; font-size: var(--fs-2); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
 .privals-chev { grid-area: c; font-style: normal; font-size: var(--fs-3); line-height: 1; color: var(--mute); text-align: right; }

@@ -1310,10 +1310,10 @@ const scrollMem = new Map();
 /* 「카톡 보내기」 모든 곳(사장님 2026-10-25 06:06 · 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」 · kk-all.js) — 쪽마다 하나 · 칸마다 하나
    첫 화면 길(#/)은 기다리지 않고 그린 뒤 붙임(첫 그림 2.5초 · 첫 화면은 테마 칸 「카톡 보내기」가 이미 있음) · 다른 쪽은 그리기 전에 받아 두고 같은 때에 붙임(그린 뒤 밀림 0)
    달지 않는 길: 친구가 연 보낸 쪽(#/s/ · 질문에 다 답한 뒤에만 「나도 보내기」 [6] 9 — 쪽 · 칸 모두 0) · 첫 화면은 칸만(쪽 단추 0 · 테마 칸에 이미 있음)
-   매매일지(#/why …)는 쪽 단추 하나를 맨 아래에만(제목 바로 밑 = 「한 달 전 약속」 자리 B17 · 기록 칸은 「했어 · 안 했어」 말고 누르는 것 0 — 규칙 77) */
+   매매일지(#/why …)는 쪽 단추 하나를 맨 아래에만(제목 바로 밑 = 「한 달 전 약속」 자리 B17 · 기록 칸은 「했어 · 안 했어」 말고 누르는 것 0 — 규칙 77) · 보유종목도 쪽 단추는 맨 아래 */
 let KKM = null, kkStop = () => {};
 const kkMod = () => (KKM ??= import('/next/kk-all.js').catch(e => { console.error(e); KKM = null; return null; }));
-const kkMode = k => (k === 's' ? null : k === '' ? {page: false, boxes: true} : k === 'why' ? {page: 'end', boxes: false} : {page: 'top', boxes: true});
+const kkMode = k => (k === 's' ? null : k === '' ? {page: false, boxes: true} : k === 'why' ? {page: 'end', boxes: false} : ['me', 'jinhwa', 'up'].includes(k) ? {page: 'end', boxes: true} : {page: 'top', boxes: true}); // 보유종목 · 진화 · 업데이트도 쪽 단추는 맨 아래(편지 · 첫 카드 그림 · 「요즘 바뀐 것」이 제목 바로 밑 한 화면 안 — check_hold · check_jinhwa · check_misc)
 function parse(hash) {
   const m = /^#\/([a-z0-9]*)\/?(.*)$/.exec(hash || '#/'); if (!m) return {k: null};
   let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null, raw: m[2] ?? ''}; }
