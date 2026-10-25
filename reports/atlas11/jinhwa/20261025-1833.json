@@ -1,0 +1,66 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261025-1833",
+ "start": "2026-10-25T18:33:21+09:00",
+ "end": "2026-10-25T18:33:59+09:00",
+ "essence": {
+  "file": "docs/돌이_본질.md",
+  "sha256": "310157ea24b20ed025de5ec1c5e8887f6a0dbd93ef5c36924f56dcb2ac1a8653",
+  "first": "돌이의 본질: 싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다. 이 본질이 중심이자 시작이다. 세 번에서 다섯 번만 눌러도 왕초보도, 전문가도, 어린이도 알 수 있게 한다."
+ },
+ "main": "59bc19391c5191aa872942b0a69acdc7029d9a47",
+ "cutoff": "2026-10-25T18:30:00+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "make",
+  "retest": [],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [],
+ "debate": null,
+ "cards": [],
+ "retested": [],
+ "finished": [],
+ "dropped": [],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": null,
+  "at": "2026-10-20T16:38:17+09:00"
+ },
+ "factsNote": "모든 쪽 검사 결과가 이틀 넘게 묵음",
+ "tally": null,
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 1,
+  "waiting": [],
+  "errors": []
+ },
+ "owner": [
+  "이번 진화 회차는 바꾼 것이 없어요.",
+  "진화 칸에 기다리는 대안은 없어요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 0가지예요."
+ ],
+ "notice": "",
+ "notDone": [],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-10-25T18:33:59+09:00 시작 · 본질 310157ea · main 59bc193 · 할 일 넣기 없음 → make"
+ ]
+}
