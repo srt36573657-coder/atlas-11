@@ -1,0 +1,14 @@
+{
+ "schema": "golttori-check-help-1",
+ "at": "2026-10-25T14:36:52.287Z",
+ "base": "http://127.0.0.1:8826",
+ "counts": {
+  "pass": 122,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "en": []
+ },
+ "ok": true
+}

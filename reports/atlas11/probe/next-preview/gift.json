@@ -1,0 +1,6 @@
+{
+ "schema": "atlas11-check-gift-1",
+ "base": "http://127.0.0.1:8826",
+ "ok": true,
+ "fails": []
+}

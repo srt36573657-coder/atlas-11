@@ -1,0 +1,182 @@
+{
+ "schema": "kkolttori-check-jinhwa-1",
+ "at": "2026-10-25T14:37:56.929Z",
+ "base": "http://127.0.0.1:8826",
+ "mode": "local",
+ "all": true,
+ "offDeviceButtons": 0,
+ "publicOpens": "9/9",
+ "off": [
+  {
+   "name": "열쇠 없음",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 0
+  },
+  {
+   "name": "깊은 주소 #/jinhwa/x",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa/x",
+   "mod": 1,
+   "api": 0
+  },
+  {
+   "name": "짧은 열쇠",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 0
+  },
+  {
+   "name": "틀린 열쇠",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "서버가 아님(403)",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "서버에 길 없음(404)",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "서버 못 닿음",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "보유종목 바로 가기 · 열쇠 없음",
+   "view": false,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/me",
+   "mod": 0,
+   "api": 0
+  },
+  {
+   "name": "보유종목 바로 가기 · 틀린 열쇠",
+   "view": false,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/me",
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "보유종목 바로 가기 · 서버 못 닿음",
+   "view": false,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/me",
+   "mod": 1,
+   "api": 1
+  },
+  {
+   "name": "위 막대 「진화」 단추를 누름 · 열쇠 없음",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 0
+  },
+  {
+   "name": "위 막대 「진화」 단추를 누름 · 틀린 열쇠",
+   "view": true,
+   "btns": 0,
+   "row": 0,
+   "hash": "#/jinhwa",
+   "mod": 1,
+   "api": 1
+  }
+ ],
+ "key": {
+  "fold": {
+   "tabs": 572,
+   "ess": 212,
+   "n": 248.75,
+   "nav": 260,
+   "tag": 285.5,
+   "name": 312.09375,
+   "pics": 551.59375
+  }
+ },
+ "server": {
+  "noKey": 403,
+  "wrongKey": 403,
+  "unknown": 404,
+  "appliedConfirm": "applied",
+  "revertedRevert": "reverted",
+  "withdrawNever": "not_confirmed",
+  "statusKeys": [
+   "id,state,at"
+  ],
+  "tallyOk": 204,
+  "tallyBad": 400
+ },
+ "beacon": {
+  "visit": [
+   "visit"
+  ],
+  "rest": [
+   "stop_rest"
+  ],
+  "stop": [
+   "stop"
+  ],
+  "promise": [
+   "promise_yes",
+   "promise"
+  ],
+  "bot": 0
+ },
+ "en": {
+  "public": 0,
+  "owner": 0
+ },
+ "counts": {
+  "pass": 162,
+  "fail": 0
+ },
+ "fails": [],
+ "warn": [],
+ "public": {
+  "fold": {
+   "tabs": 572,
+   "ess": 212,
+   "n": 248.75,
+   "nav": 260,
+   "tag": 333.5,
+   "name": 360.09375,
+   "pics": 543.59375
+  }
+ },
+ "seconds": 35.8,
+ "ok": true
+}
