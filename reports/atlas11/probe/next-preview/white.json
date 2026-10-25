@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-25T14:41:06.386Z",
+ "at": "2026-10-25T16:55:31.984Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 169,
    "blocks": {
-    "ess": 1863,
+    "ess": 1905,
     "find": 776,
-    "today": 1955,
-    "gdr": 2305,
-    "all": 2305
+    "today": 1997,
+    "gdr": 2347,
+    "all": 2347
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -177,9 +177,9 @@
     ]
    ],
    "theme": {
-    "top": 350,
-    "zonesBottom": 646,
-    "rowBottom": 494,
+    "top": 376,
+    "zonesBottom": 688,
+    "rowBottom": 528,
     "thumbTop": 711
    },
    "bodyHex": "#FFFFFF",
@@ -200,11 +200,11 @@
    "bodyLum": 1,
    "chars": 105,
    "blocks": {
-    "ess": 1740,
+    "ess": 1782,
     "find": 776,
-    "today": 1832,
-    "gdr": 2182,
-    "all": 2182
+    "today": 1874,
+    "gdr": 2224,
+    "all": 2224
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -354,9 +354,9 @@
     ]
    ],
    "theme": {
-    "top": 350,
-    "zonesBottom": 646,
-    "rowBottom": 494,
+    "top": 376,
+    "zonesBottom": 688,
+    "rowBottom": 528,
     "thumbTop": 711
    },
    "bodyHex": "#FFFFFF",
@@ -683,7 +683,7 @@
    }
   },
   "speed": {
-   "lcp": 2020,
+   "lcp": 2084,
    "inp": 32,
    "cls": 0.014
   }
