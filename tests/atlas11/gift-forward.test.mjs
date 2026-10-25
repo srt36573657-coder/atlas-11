@@ -115,6 +115,10 @@ test('방 · 작업 · 처리방침 — 방은 두 꼴 번호를 받음 · 작�
   const f = read('scripts/atlas11/help/forward.mjs');
   assert.match(f, /giftStore: await netlifyStore\(GIFT_STORE\)/, '보낸 표시는 두 저장소');
   assert.doesNotMatch(f, /console\.log\([^)]*(text|messages\[|\.messages\)|phone)/, '글 · 번호를 기록 줄에 찍지 않음');
+  const y = read('.github/workflows/atlas11-help-forward.yml');
+  assert.match(y, /inputs\.mode == 'giftprobe'/, '시험 선물 신청 길(사장님 2026-10-25 17:12 「그래」)');
+  assert.match(y, /phone: '010-0000-0000'/, '시험 신청은 없는 번호');
+  assert.doesNotMatch(y, /console\.log\([^)]*(me\b|phone|key\(\))/, '열쇠 · 번호를 찍지 않음');
   const pv = read('site/privacy.html');
   assert.match(pv, /<li id="gift-kakao">[^<]*끝 네 자리[^<]*<\/li>/);
   assert.match(pv, /operator’s own KakaoTalk chat gets a short notice/);

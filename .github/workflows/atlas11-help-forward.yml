@@ -16,7 +16,7 @@ on:
         required: false
         default: ''
       mode:
-        description: 'fetch(새 글 꺼내기) · ack(여기까지 보냄) · probe(시험 글 하나 — 카톡까지 가는지 확인)'
+        description: 'fetch(새 글 꺼내기) · ack(여기까지 보냄) · probe(시험 글 하나 — 카톡까지 가는지 확인) · giftprobe(시험 선물 신청 하나 — 카톡까지 가는지 확인)'
         required: true
         default: 'fetch'
       pub:
@@ -63,6 +63,25 @@ jobs:
         run: |
           KEY=$(node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))")
           curl -fsS --max-time 30 -X POST https://aaa7377.com/api/help -H 'content-type: application/json' -H "x-help-key: $KEY" --data '{"op":"send","kind":"note","tone":"good","text":"[시험] 고객센터 글이 사장님 카톡으로 오는지 보는 시험 글이에요. 돌이 만드는 쪽이 보냈어요.","agree":true,"page":"help"}' | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{const j=JSON.parse(s);console.log('시험 글 ' + (j.ok ? '들어감' : '안 들어감 ' + (j.error ?? '')))}catch{console.log('시험 글 답 꼴이 아님');process.exit(1)}})"
+      - name: 시험 선물 신청 하나(giftprobe)
+        # 사장님 2026-10-25 17:12 「그래」(물음 「시험 신청 하나로 카톡이 오는지 확인해 볼까요?」) — 사이트 선물 문(/api/gift)으로 새 기기 넷(보내는 이 하나 · 친구 셋 · 둘은 카톡 안)이 열고 시험 신청 하나
+        #   번호는 없는 번호 010-0000-0000 · 관리자 화면에 「보낼 차례」로 남음(사장님이 「보냄 표시」를 누르면 지워짐) · 결과는 알림 줄 gift-probe 한 줄(번호 · 열쇠는 찍지 않음)
+        if: ${{ inputs.mode == 'giftprobe' }}
+        run: |
+          node --input-type=module -e "
+          import crypto from 'node:crypto';
+          const B = 'https://aaa7377.com/api/gift', key = () => crypto.randomBytes(16).toString('base64url');
+          const me = key(), r = crypto.createHash('sha256').update(me).digest('base64url').slice(0, 16);
+          const KK = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 KAKAOTALK 10.8.1';
+          for (let i = 0; i < 3; i++) {
+            const res = await fetch(B + '/visit', {method: 'POST', headers: {'content-type': 'application/json', 'x-gift-key': key(), 'user-agent': i < 2 ? KK : 'atlas11-probe'}, body: JSON.stringify({r})});
+            if (!res.ok) { console.log('::error title=gift-probe::친구 ' + (i + 1) + ' 못 셈 ' + res.status); process.exit(1); }
+          }
+          const c = await fetch(B + '/claim', {method: 'POST', headers: {'content-type': 'application/json', 'x-gift-key': me}, body: JSON.stringify({phone: '010-0000-0000', agree: true, watched: true})});
+          const j = await c.json().catch(() => ({}));
+          console.log(c.ok && j.ok ? '::notice title=gift-probe::시험 신청 들어감' : '::error title=gift-probe::시험 신청 안 들어감 ' + c.status + ' ' + (j.error ?? ''));
+          process.exit(c.ok && j.ok ? 0 : 1);
+          "
       - name: 여기까지 보냄(ack)
         if: ${{ inputs.mode == 'ack' }}
         env:
