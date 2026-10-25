@@ -117,7 +117,8 @@ test('방 · 작업 · 처리방침 — 방은 두 꼴 번호를 받음 · 작�
   assert.doesNotMatch(f, /console\.log\([^)]*(text|messages\[|\.messages\)|phone)/, '글 · 번호를 기록 줄에 찍지 않음');
   const y = read('.github/workflows/atlas11-help-forward.yml');
   assert.match(y, /inputs\.mode == 'giftprobe'/, '시험 선물 신청 길(사장님 2026-10-25 17:12 「그래」)');
-  assert.match(y, /phone: '010-0000-0000'/, '시험 신청은 없는 번호');
+  assert.match(y, /\? pd : '010-0000-0000'/, '시험 신청은 없는 번호(사장님이 번호를 주시면 그 번호 · 17:28)');
+  assert.match(y, /PROBE_PHONE: \$\{\{ inputs\.phone \}\}/, '번호는 작업 입력으로만');
   assert.doesNotMatch(y, /console\.log\([^)]*(me\b|phone|key\(\))/, '열쇠 · 번호를 찍지 않음');
   const pv = read('site/privacy.html');
   assert.match(pv, /<li id="gift-kakao">[^<]*끝 네 자리[^<]*<\/li>/);
