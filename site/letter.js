@@ -183,7 +183,7 @@ function mineCard() {
   return h('section', {class: 'card mine'}, env('sm'), h('h2', {text: '이번 주 편지는 봉인됐어요'}),
     h('p', {class: 'note', text: S.mine.what.name + ' · ' + md(S.mine.at) + '에 봉인'}), h('p', {class: 'serif quiet', text: '「' + S.mine.text + '」'}),
     h('p', {class: 'note', text: '지금은 나만 보여요. ' + md(S.opensAt) + ' 금요일 밤 8시에 모두에게 열려요.'}),
-    h('button', {class: 'ghost', type: 'button', text: '봉인 소식 친구에게 보내기', onclick: () => share('돌이에 편지를 봉인했어요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html')}));
+    h('button', {class: 'ghost', type: 'button', text: '봉인 소식 카톡 보내기', onclick: () => share('돌이에 편지를 봉인했어요. 금요일 밤 8시에 같이 열어요!', location.origin + '/letter.html')}));
 }
 /** 보내기 — 글상자부터(text = 같이 가는 편지 쪽 소개 한 줄 · 사람이 쓰는 말은 글상자) */
 function share(text, url) { return shareBox({kind: 'share', title: '돌이 편지', text, url}); }

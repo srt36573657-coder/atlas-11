@@ -585,3 +585,23 @@ html.white details.hm-more { border-top-color: var(--hair); }
 .kk-btn.kk-txt .kk-t { min-width: 0; overflow-wrap: anywhere; }
 .kk-btn.kk-txt .kk-ic .kk-b { fill: #191919; }
 .kk-btn.kk-txt:active { background: #F2D900; }
+/* 회사 줄 카톡 단추에도 글자(사장님 2026-10-25 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」 — share-btn.js KK_ROW) — 노란 바탕 · 진한 글 두 줄 「카톡 / 보내기」 ·
+   말풍선 그림은 숨김(줄 폭을 적게 · 노란 바탕이 카톡 표시) · 48px 넘게 · 글씨는 여섯 크기 잣대의 가장 작은 글(--fs-1) · 영어(Send on KakaoTalk)는 조금 넓게 */
+.kk-btn.kk-row, html.white .kk-btn.kk-row { width: auto; min-width: 48px; max-width: 4.4em; height: auto; min-height: 48px; padding: 0 8px; border-radius: 12px; background: #FEE500; color: #191919; border: 1px solid #191919; font-size: var(--fs-1); font-weight: 800; line-height: 1.12; word-break: keep-all; text-align: center; }
+.kk-btn.kk-row .kk-ic { display: none; }
+.kk-btn.kk-row:active { background: #F2D900; }
+html.en .kk-btn.kk-row { max-width: 6em; }
+.kkc > .card .meta, html.white .kkc > .card .meta { width: calc(100% - 92px); } /* 글이 단추 밑으로 가지 않게(글 단추 두 줄 폭 + 사이) */
+html.en .kkc > .card .meta { width: calc(100% - 124px); }
+/* 작은 칸(채널 회사 칸 · 본 기록 — 두 칸 한 줄)은 글 단추를 칸 밑에 폭 가득 한 줄로(이름 · 하루 % 가 좁아지지 않게 · 2026-10-25 en 검사 320 · 360 넘침) */
+.kkg > .kk-btn.kk-row, html.white .kkg > .kk-btn.kk-row { position: static; display: flex; width: 100%; max-width: none; margin-top: 8px; }
+.kkg > a > b, .kkg > a > small, html.white .kkg > a > b, html.white .kkg > a > small { width: auto; }
+/* 쪽 · 칸 「카톡 보내기」(kk-all.js) — 쪽 = 큰 제목 아래 왼쪽 · 칸 = 칸 끝 오른쪽 */
+.kk-btn.kk-pg { margin: 8px 0 16px; }
+.kk-pgw { padding: 8px var(--sp-2) 0; } .kk-pgw > .kk-btn.kk-pg { margin: 0 0 8px; }
+.kk-pgi { padding: 0 var(--sp-2); } /* 쪽 단추를 제목 왼쪽 줄에(채널 머리 칸처럼 쪽 칸에 옆 띄움이 없는 쪽) */
+.kk-box { display: flex; justify-content: flex-end; margin: 8px 0; min-width: 0; }
+.kk-box.kk-boxi { padding: 0 var(--sp-2); }
+/* 글 단추 「카톡 보내기」 노랑(회사 화면 · 시황 · 상품권 방 보내기 — 그 자리 단추 꼴은 그대로 · 바탕 · 글 · 테두리만) */
+.kk-yel, html.white .kk-yel, html.white .acts .act.kk-yel, .sh .side button.kk-yel, html.white .sh .side button.kk-yel { background: #FEE500; color: #191919; border-color: #191919; font-weight: 800; }
+.kk-yel:active { background: #F2D900; }

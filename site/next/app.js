@@ -887,7 +887,7 @@ async function vWatch(a) {
   const GM = await gdrM;
   /** 보내기 · 같이 따져 줘(2026-10-17 21:10 [4] 1 · 6 · 8) — 글상자(p-share)를 부름 · 그날 값과 날을 함께(친구가 열면 보낸 날 값 · 오늘 값) · 수익률 글 없음 */
   const sendBtn = (kind, text) => {
-    const b = h('button', {class: 'act', type: 'button', text});
+    const b = h('button', {class: kind === 'share' ? 'act kk-pgx kk-yel' : 'act', type: 'button', text}); // 보내기 = 「카톡 보내기」 노란 단추(사장님 2026-10-25 12:00 「진짜모든곳에」 · 12:24 「어」) · 이 쪽 보내기 단추라 kk-all.js 가 쪽 단추를 또 달지 않음(kk-pgx)
     b.addEventListener('pointerdown', () => { mod('share').catch(() => {}); }, {once: true}); // 누르기 시작할 때 글상자를 미리 받음
     b.addEventListener('click', () => { shareBox({kind, title: L(c.n + ' · ' + NAME), url: absUrl('#/w/' + a), code: a, name: c.n, price: okP ? pr : null, day: pDay}); });
     return b;
@@ -905,7 +905,7 @@ async function vWatch(a) {
     // 「이 회사로 왜 사?」가 단추 셋보다 먼저(총정리 2026-10-22 04:09 · C11 — 본질 ② 사기 전에 한 번 멈춤이 이 쪽에서 가장 먼저 누를 것 · 금빛 테 p-co.css) — 높이 · 업종 줄 자리는 그대로(선 끌기 틀림 장부 90)
     h('a', {class: 'why-go cw', href: '#/why/' + enc(a)}, h('b', {text: '이 회사로 왜 사?'}), h('i', {'aria-hidden': 'true', text: '›'})),
     // 관심 담기(첫 단추 — 검사가 .acts 첫 .act 를 누름) · 보내기 · 매매일지로(2026-10-17 21:10 [3] 2 · 규칙 1 「하나 넣으면 하나 뺀다」 — 넣은 「이 회사로 왜 사?」 자리에서 「편지 쓰기」를 뺌 · 편지 여는 밤은 보유종목 바로 가기에)
-    h('div', {class: 'acts cw'}, laterBtn(a, c.n), sendBtn('share', '보내기'), sendBtn('ask', '같이 따져 줘')),
+    h('div', {class: 'acts cw'}, laterBtn(a, c.n), sendBtn('share', '카톡 보내기'), sendBtn('ask', '같이 따져 줘')),
     h('div', {class: 'chan cw'}, h('a', {href: '#/ch/i/' + enc(c.i)}, h('span', {class: 'av', 'aria-hidden': 'true', text: first(c.i)}), h('div', {}, h('b', {text: (c.i || '?') + ' 업종'}), h('small', {text: '회사 ' + (I ? num(I.n) : '?') + '곳' + (g ? ' · 큰 업종 ' + g.short : '')}))), I ? subBtn('i:' + c.i, c.i + ' 업종') : null),
     // 테마 시계 자리 한 줄(결정표 9) — 업종 줄 아래 · 탭 · 관심 담기 · 업종 담기 단추를 아래로 밀지 않게
     //   (2026-10-20 23:2x 전체 검사 co-stage 2번째 next 「선 끌기」 실패 — 탭 아래에 두면 390×844 에서 업종 담기 단추가 첫 화면 밖으로 밀려 누를 때 화면이 내려감 · 틀림 장부 90)
@@ -971,7 +971,7 @@ async function vShorts(a) {
   const bar = h('div', {class: 'sbar', 'aria-hidden': 'true'}, fs.map(() => h('i', {})));
   const box = h('div', {class: 'shorts', tabindex: '0', 'aria-label': '시황 · 위로 밀면 다음 사실'}, bar);
   fs.forEach((f, i) => {
-    const sb = h('button', {type: 'button', text: '보내기'});
+    const sb = h('button', {class: 'kk-pgx kk-yel', type: 'button', text: '카톡 보내기'}); // 「카톡 보내기」(사장님 2026-10-25 「진짜모든곳에」) — 이 사실 보내기
     sb.addEventListener('pointerdown', () => { mod('share').catch(() => {}); }, {once: true});
     sb.addEventListener('click', () => shareBox({kind: 'share', title: L(f.st + ' · ' + NAME), url: absUrl('#/shorts/' + i)})); // 제목에 숫자 · 수익률 없음([4] 5)
     const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, sb);
@@ -1307,6 +1307,13 @@ function flowFoot(k, a, root, my) {
 }
 let seq = 0, curHash = null;
 const scrollMem = new Map();
+/* 「카톡 보내기」 모든 곳(사장님 2026-10-25 06:06 · 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」 · kk-all.js) — 쪽마다 하나 · 칸마다 하나
+   첫 화면 길(#/)은 기다리지 않고 그린 뒤 붙임(첫 그림 2.5초 · 첫 화면은 테마 칸 「카톡 보내기」가 이미 있음) · 다른 쪽은 그리기 전에 받아 두고 같은 때에 붙임(그린 뒤 밀림 0)
+   달지 않는 길: 친구가 연 보낸 쪽(#/s/ · 질문에 다 답한 뒤에만 「나도 보내기」 [6] 9 — 쪽 · 칸 모두 0) · 첫 화면은 칸만(쪽 단추 0 · 테마 칸에 이미 있음)
+   매매일지(#/why …)는 쪽 단추 하나를 맨 아래에만(제목 바로 밑 = 「한 달 전 약속」 자리 B17 · 기록 칸은 「했어 · 안 했어」 말고 누르는 것 0 — 규칙 77) */
+let KKM = null, kkStop = () => {};
+const kkMod = () => (KKM ??= import('/next/kk-all.js').catch(e => { console.error(e); KKM = null; return null; }));
+const kkMode = k => (k === 's' ? null : k === '' ? {page: false, boxes: true} : k === 'why' ? {page: 'end', boxes: false} : {page: 'top', boxes: true});
 function parse(hash) {
   const m = /^#\/([a-z0-9]*)\/?(.*)$/.exec(hash || '#/'); if (!m) return {k: null};
   let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null, raw: m[2] ?? ''}; }
@@ -1329,6 +1336,8 @@ async function route(force) {
   const view = k === 's' ? (() => page('share', raw)) : OLD_KINDS.has(k) ? (arg => page(k, arg)) : VIEWS[k];
   if (!view || (a == null && k !== 's')) { location.replace('#/'); return; }
   const my = ++seq, root = $('#view');
+  kkStop(); kkStop = () => {}; // 앞 쪽 지켜보기 끝
+  const kkM = kkMode(k), kkP = k === '' || !kkM ? null : kkMod(); // 첫 화면 밖 — 쪽을 받는 사이 같이 받음
   for (const t of document.querySelectorAll('.tabs a, #jhBtn, #giftBtn')) t.removeAttribute('aria-current');
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (k === 'gift') giftBtn.setAttribute('aria-current', 'page');
@@ -1339,8 +1348,13 @@ async function route(force) {
   try { out = await view(a); }
   catch (e) { console.error(e); out = {title: '?', nodes: [h('p', {class: 'empty', text: '? 화면을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})]}; }
   if (my !== seq) return; // 늦게 끝난 앞 화면
+  const kkm = kkP ? await kkP : null;
+  if (my !== seq) return;
   whiteFor(k);
   root.replaceChildren(...[...(out.nodes ?? [])].filter(x => x != null && x !== false)); // null 칸은 글자로 안 그림(2026-10-22 고장 찾기)
+  if (kkM) { const o = {title: out.title ?? '', url: absUrl(hash), ...kkM}; // 카톡 보내기 — 쪽 · 칸(그림과 같은 때) · 늦게 붙는 칸은 지켜봄
+    const run = m => { if (!m || my !== seq) return; try { m.sweep(root, o); kkStop = m.watch(root, o); } catch (e) { console.error(e); } };
+    if (kkm) run(kkm); else requestAnimationFrame(() => setTimeout(() => kkMod().then(run), 0)); }
   stoneArt(k, a, root);
   const cp = k === 'why' && !a ? mod('admin').then(m => { if (my === seq && root.isConnected && !root.querySelector('.cp-card')) root.append(m.couponCard()); }).catch(() => {}) : Promise.resolve(); // 커피 쿠폰 칸 — 매매일지 쪽 맨 아래(위 칸을 밀지 않음 · 2026-10-19 13:54)
   cp.then(() => flowFoot(k, a, root, my)); // 서른여섯 장 흐름 — 있는 쪽 맨 아래 「다음」 한 줄(쿠폰 칸 뒤)

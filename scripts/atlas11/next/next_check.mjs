@@ -403,7 +403,7 @@ for (const w of [320, 360, 390]) {
     zReq.length = 0; await go(z, '#/f/' + id); await z.waitForTimeout(80);
     const c = await z.evaluate(() => { const v = document.querySelector('#view'), li = [...v.querySelectorAll('ul.clist > li')], more = [...v.querySelectorAll('button.more')].map(b => b.textContent);
       return {cards: v.querySelectorAll('a.card, div.card').length, shown: li.filter(e => !e.hidden).length, hid: li.filter(e => e.hidden).length, all: li.length, more, t: v.innerText.replace(/\u00a0/g, ' '), H: Math.max(document.documentElement.scrollHeight, document.body.scrollHeight),
-        share: [...v.querySelectorAll('button, a')].filter(e => /보내기|공유/.test(e.textContent)).length,
+        share: [...v.querySelectorAll('button, a')].filter(e => !e.closest('.kk-btn') && /보내기|공유/.test(e.textContent)).length, // 카톡 단추(.kk-btn · 글자 「카톡 보내기」)는 셈 밖 — order-1639 [6] 8 이 급등 줄 카톡 단추를 되살림 · 2026-10-25 12:00 「진짜모든곳에」 글자로
         big: (v.querySelector('.card .th .big')?.innerText ?? '').replace(/\s+/g, ' '), bk: !!v.querySelector('.card .th .big .bk'), dur: v.querySelector('.card .th .dur')?.innerText ?? '', title: v.querySelector('.card .meta b')?.textContent ?? '', note: [...v.querySelectorAll('p.note')].map(p => p.textContent).join(' | ')}; });
     if (c.cards > 1) fail('칩 큰 카드는 하나([7] 5)', id + ' ' + c.cards);
     // [6] 8 「큰 숫자는 늘 마지막 날 하루 값 · 기간 숫자는 작게」 — 큰 카드 큰 숫자 = 맨 앞 줄의 마지막 날 하루(이 검사가 자료에서 따로 셈) · 기간 %는 아래 작은 칸

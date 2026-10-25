@@ -71,7 +71,7 @@ for (const [k, q] of Object.entries(P)) for (const [w, h] of [[390, 844], [320, 
     const nw = await p.evaluate(() => { const b = document.querySelector('#view .gf-now'); if (!b) return null; const r = b.getBoundingClientRect(), tabs = document.querySelector('.tabs')?.getBoundingClientRect().top ?? innerHeight;
       return {t: b.textContent.trim(), afterVow: !!b.previousElementSibling?.classList.contains('gf-vow'), beforeSteps: !!b.nextElementSibling?.classList.contains('gf-steps'), h: Math.round(r.height), inFirst: r.bottom <= tabs + 0.5}; });
     if (!nw || nw.t !== '지금 할 일 · 친구 3명에게 소개해요 ↓' || !nw.afterVow || !nw.beforeSteps || nw.h < 48 || !nw.inFirst) fail(`${q.name} ${w} 맨 위 결 「지금 할 일」 단추(약속 칸 바로 밑 · 48px · 첫 화면 안)`, JSON.stringify(nw));
-    else { await p.click('#view .gf-now'); await p.waitForTimeout(700); const f = await p.evaluate(() => document.activeElement?.textContent?.trim() ?? ''); if (f !== '친구에게 보내기') fail(`${q.name} ${w} 「지금 할 일」을 누르면 걸음 1 「친구에게 보내기」에 초점`, f); }
+    else { await p.click('#view .gf-now'); await p.waitForTimeout(700); const f = await p.evaluate(() => document.activeElement?.textContent?.trim() ?? ''); if (f !== '카톡 보내기') fail(`${q.name} ${w} 「지금 할 일」을 누르면 걸음 1 「카톡 보내기」에 초점(2026-10-25 「진짜모든곳에」 — 옛 「친구에게 보내기」)`, f); }
   }
   if (p.errs.length) fail(`${q.name} ${w} 쪽 오류`, p.errs.join(' | '));
   if (fails.length === n0) ok(`${q.name} ${w}×${h} 처음 모습(약속 · 걸음 ${q.steps} · 잠김 · 번호 숨김${k === 'app' ? ' · 맨 위 「지금 할 일」' : ''})`);

@@ -449,7 +449,19 @@ test('⑲ 보내기 단추 한 곳(사장님 2026-10-18 16:39 [6] 2) — shareBu
   assert.match(sb, /preventDefault\(\);\s*ev\.stopPropagation\(\)/, '누름은 줄 고리로 새지 않음');
   const m = await import('../../site/next/share-btn.js'), p = await import('../../site/next/p-share.js');
   assert.equal(p.shareButtons, m.shareButtons, '같은 함수(다시 내보냄)');
-  assert.equal(m.KK_CLASS, 'kk-btn'); assert.equal(m.KK_LABEL, '카톡으로 보내기');
+  assert.equal(m.KK_CLASS, 'kk-btn'); assert.equal(m.KK_LABEL, '카톡 보내기'); // 이름표 = 보이는 글 「카톡 보내기」를 품음(사장님 2026-10-25 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」)
+  { // 줄 단추에도 글자(옛 [6] 1 「글자 없음」을 갈음) — 노란 두 줄 「카톡 / 보내기」 · 이름표 「<이름> 카톡 보내기」 · 글 단추 kakaoText = 글상자(open)부터
+    const doc = {createElement: t => ({tag: t, cls: '', attrs: {}, kids: [], text: '', set className(v) { this.cls = v; }, get className() { return this.cls; }, set textContent(v) { this.text = v; }, get textContent() { return this.text + this.kids.map(k => k.textContent ?? '').join(''); }, setAttribute(k, v) { this.attrs[k] = v; }, getAttribute(k) { return this.attrs[k]; }, append(...k) { this.kids.push(...k); }, addEventListener() {}}), createElementNS: (ns, t) => doc.createElement(t)};
+    const old = globalThis.document; globalThis.document = doc;
+    try {
+      const b = m.shareButtons({code: '005930', name: '삼성전자'}, {kakao: true});
+      assert.match(b.cls, /\bkk-row\b/); assert.equal(b.attrs['aria-label'], '삼성전자 카톡 보내기'); assert.equal(b.textContent.trim(), '카톡 보내기');
+      const t = m.kakaoText({title: 't', text: 'x', url: 'https://aaa7377.com/#/'});
+      assert.match(t.cls, /\bkk-txt\b/); assert.equal(t.textContent.trim(), '카톡 보내기');
+    } finally { globalThis.document = old; }
+    assert.match(sb, /openBox\(\{kind: 'share', title: String\(o\?\.title/, 'kakaoText 도 다른 보내기와 같은 글상자부터([4])');
+    assert.match(read('site/next/app.css'), /\.kk-btn\.kk-row, html\.white \.kk-btn\.kk-row \{[^}]*background: #FEE500/, '줄 단추 = 노란 바탕');
+  }
   const css = read('site/next/app.css');
   const blk = /\.kk-btn \{[^}]*\}/.exec(css)?.[0] ?? '';
   assert.match(blk, /width: 44px/); assert.match(blk, /height: 44px/); assert.match(blk, /flex: none/);

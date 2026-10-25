@@ -358,7 +358,7 @@ async function companyBox(W_, H_, deep) {
   const tag = `${W_}×${H_} 회사 #/w/${CODE}`, p = await newPage(W_, H_);
   try {
     await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
-    const shareB = p.locator('#view .acts button', {hasText: /^보내기$/}), askB = p.locator('#view .acts button', {hasText: new RegExp('^' + ASK_BTN + '$')});
+    const shareB = p.locator('#view .acts button', {hasText: /^카톡 보내기$/}), askB = p.locator('#view .acts button', {hasText: new RegExp('^' + ASK_BTN + '$')});
     await shareB.first().waitFor({timeout: 30000});
     if (!(await askB.count())) fail('「같이 따져 줘」 단추 없음', tag);
     let s = await openBox(p, () => shareB.first().click(), tag + ' 보내기'); if (!s) return;
@@ -370,7 +370,7 @@ async function companyBox(W_, H_, deep) {
     bump('갇힌 차례');
     await p.keyboard.press('Escape');
     try { await p.waitForSelector(DLG, {state: 'detached', timeout: 4000}); } catch { fail('Esc 로 안 닫힘', tag); }
-    if ((await p.evaluate(() => document.activeElement?.textContent)) !== '보내기') fail('닫은 뒤 초점이 연 단추로 안 돌아옴', tag);
+    if ((await p.evaluate(() => document.activeElement?.textContent)) !== '카톡 보내기') fail('닫은 뒤 초점이 연 단추로 안 돌아옴', tag); // 회사 화면 보내기 = 「카톡 보내기」(2026-10-25)
     // 거르는 말 · 수익 숫자
     s = await openBox(p, () => shareB.first().click(), tag + ' 다시'); if (!s) return;
     const ta = p.locator(DLG + ' textarea.ps-t').first();
@@ -432,7 +432,7 @@ async function fallbacks(W_, H_) {
     const tag = `${W_}×${H_} ${mode === 'copy' ? '공유 창 없음 → 복사' : '복사도 막힘 → 보여 줌'}`, p = await newPage(W_, H_, {mode});
     try {
       await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
-      const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000});
+      const b = p.locator('#view .acts button', {hasText: /^카톡 보내기$/}); await b.first().waitFor({timeout: 30000});
       if (!(await openBox(p, () => b.first().click(), tag))) continue;
       await sendQuick(p, 0, tag);
       if (mode === 'copy') {
@@ -499,7 +499,7 @@ async function noDialogBox(W_, H_) {
   const tag = `${W_}×${H_} 대화창 없는 기계`, p = await newPage(W_, H_, {noDialog: true});
   try {
     await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
-    const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000});
+    const b = p.locator('#view .acts button', {hasText: /^카톡 보내기$/}); await b.first().waitFor({timeout: 30000});
     if (!(await openBox(p, () => b.first().click(), tag))) return;
     const kind = await p.evaluate(() => { const d = document.querySelector('.ps-dlg'); return d.tagName + ' ' + d.getAttribute('role') + ' ' + d.getAttribute('aria-modal'); });
     if (kind !== 'DIV dialog true') fail('옛 기계 글상자 꼴(div role=dialog aria-modal)', `${tag} ${kind}`);
@@ -521,7 +521,7 @@ async function otherEntries(W_, H_) {
   let tag = `${W_}×${H_} 시황 #/shorts`, p = await newPage(W_, H_);
   try {
     await p.goto(base + NEXT + '#/shorts', {waitUntil: 'domcontentloaded'});
-    const b = p.locator('#view button', {hasText: /^보내기$/});
+    const b = p.locator('#view button', {hasText: /^카톡 보내기$/});
     try { await b.first().waitFor({timeout: 30000}); } catch { fail('시황 보내기 단추 없음', tag); }
     if (await b.count()) {
       const sb = await openBox(p, () => b.first().click(), tag);
@@ -786,7 +786,7 @@ async function kakaoCard(W_, H_, deep) {
   let tag = `${W_}×${H_} 켜짐 · 카드 보내기`, p = await newPage(W_, H_, {kakao: 'on'});
   try {
     await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
-    const shareB = p.locator('#view .acts button', {hasText: /^보내기$/}), askB = p.locator('#view .acts button', {hasText: new RegExp('^' + ASK_BTN + '$')});
+    const shareB = p.locator('#view .acts button', {hasText: /^카톡 보내기$/}), askB = p.locator('#view .acts button', {hasText: new RegExp('^' + ASK_BTN + '$')});
     await shareB.first().waitFor({timeout: 30000}); await kkLoad(p); await p.waitForTimeout(400);
     if (p._kk.length) fail('처음 온 사람인데 쪽을 열자마자 카카오 요청이 나감([2] 10 — 건드리지 않음)', `${tag} ${p._kk.join(' | ')}`);
     const s = await openKk(p, () => shareB.first().click(), tag);
@@ -822,7 +822,7 @@ async function kakaoCard(W_, H_, deep) {
     tag = `${W_}×${H_} 켜짐 · 회원이 보냄(ref)`; p = await newPage(W_, H_, {kakao: 'on', kk: {member: true}});
     try {
       await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
-      const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
+      const b = p.locator('#view .acts button', {hasText: /^카톡 보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
       if (await openKk(p, () => b.first().click(), tag)) { await sendQuick(p, 0, tag); await checkCard(p, 0, {msg: QUICK[0], ref: 'ABCDEFGHIJKL'}, tag); }
       const bad = p._kk.filter(x => !/^(GET|PUT) \/api\/kakao\/(me|data)$/.test(x));
       if (bad.length) fail('회원이 보내는데 기록 맞추기 밖의 가입 길 요청이 나감', `${tag} ${bad.join(' | ')}`);
@@ -833,7 +833,7 @@ async function kakaoCard(W_, H_, deep) {
       tag = `${W_}×${H_} 켜짐 · ${nm} → 공유 창`; p = await newPage(W_, H_, {kakao: 'on', kk});
       try {
         await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
-        const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
+        const b = p.locator('#view .acts button', {hasText: /^카톡 보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
         if (!(await openBox(p, () => b.first().click(), tag))) continue;
         await p.waitForTimeout(900);
         if (kk.sdk === false && (await p.evaluate(KKUI)).kk) fail('카카오 도구가 없는데 카드 미리보기가 보임', tag);
@@ -846,7 +846,7 @@ async function kakaoCard(W_, H_, deep) {
     tag = `${W_}×${H_} 켜짐 · 종목 아닌 보내기(시황)는 카드 아님`; p = await newPage(W_, H_, {kakao: 'on'});
     try {
       await p.goto(base + NEXT + '#/shorts', {waitUntil: 'domcontentloaded'});
-      const b = p.locator('#view button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
+      const b = p.locator('#view button', {hasText: /^카톡 보내기$/}); await b.first().waitFor({timeout: 30000}); await kkLoad(p);
       if (await openBox(p, () => b.first().click(), tag)) {
         await p.waitForTimeout(700);
         if ((await p.evaluate(KKUI)).kk) fail('종목이 아닌데 카드 미리보기가 보임', tag);
@@ -976,7 +976,7 @@ async function kakaoOff(W_, H_, deep) {
     const tag = `${W_}×${H_} 카톡 꺼짐(${variant === 'none' ? 'NX.kakao 그대로' : '카카오 코드를 불러 둠'})`, p = await newPage(W_, H_, {kakao: variant === 'off' ? 'off' : 'none'});
     try {
       await p.goto(base + NEXT + '#/w/' + CODE, {waitUntil: 'domcontentloaded'});
-      const b = p.locator('#view .acts button', {hasText: /^보내기$/}); await b.first().waitFor({timeout: 30000});
+      const b = p.locator('#view .acts button', {hasText: /^카톡 보내기$/}); await b.first().waitFor({timeout: 30000});
       if (variant === 'off') {
         await kkLoad(p);
         const st = await p.evaluate(async () => { const K = NX.kakao; await K.ready(); return {on: K.on, member: K.member(), can: K.canSend(), sdk: await K.sdkReady(), start: K.start('#/s/x'), offer: await K.offer('journal'), wd: await K.withdraw()}; });
@@ -1041,7 +1041,7 @@ async function kkRow(p, o, id) {
     a.append(nm, b); li.append(a); ul.append(li); document.querySelector('#view').append(ul);
     b.scrollIntoView({block: 'center'});
     const r = b.getBoundingClientRect(), path = b.querySelector('svg.kk-ic .kk-b');
-    return {w: r.width, h: r.height, fill: path ? getComputedStyle(path).fill : null, label: b.getAttribute('aria-label'), kk: b.dataset.kk, kind: b.dataset.kind, text: b.textContent.trim(), tag: b.tagName, type: b.type, inLink: !!b.closest('a')};
+    return {w: r.width, h: r.height, fill: path ? getComputedStyle(path).fill : null, bg: getComputedStyle(b).backgroundColor, label: b.getAttribute('aria-label'), kk: b.dataset.kk, kind: b.dataset.kind, text: b.textContent.trim(), tag: b.tagName, type: b.type, inLink: !!b.closest('a')};
   }, [o, id, KK_NAV]);
 }
 /** 보던 자리 — 보던 줄(#kk-a)이 화면 어디에 있나 + 주소 · scrollY 는 참고만(2026-10-19 22시 전체 검사 share 걸림: 360×640 2911 → 2881)
@@ -1074,9 +1074,11 @@ async function kkButton(W_, H_) {
     const m = await kkRow(p, kkOf('share'), 'kk-a');
     if (!m) { fail('카톡 단추를 못 만듦(shareButtons → null)', tag); return; }
     const kkSide = await p.evaluate(() => document.documentElement.classList.contains('white')) ? 48 : 44; // 흰 판은 새 단추 48(사장님 2026-10-19 02:03 [검사] 5 「새 단추는 48px」 — [6] 1 의 44 보다 뒤 말씀)
-    if (Math.round(m.w) !== kkSide || Math.round(m.h) !== kkSide) fail(`카톡 단추 ${kkSide} × ${kkSide} 아님([6] 1 · 흰 판 48)`, `${tag} ${m.w}×${m.h}`);
-    if (m.fill !== 'rgb(254, 229, 0)') fail('노란 말풍선 아님([6] 1)', `${tag} ${m.fill}`);
-    if (m.label !== CO.c.name + ' 카톡으로 보내기' || m.kk !== CODE || m.kind !== 'share' || m.text || m.tag !== 'BUTTON' || m.type !== 'button' || !m.inLink) fail('카톡 단추 꼴(이름표 · 번호 · 글 없음 · button · 고리 안에 둠)', `${tag} ${JSON.stringify(m)}`);
+    // 줄 단추에도 글자(사장님 2026-10-25 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」 — 옛 [6] 1 「44 · 글자 없음 · 노란 말풍선」을 갈음):
+    //   누르는 자리 ${kkSide} 넘게 · 폭 100 아래(두 줄 「카톡 / 보내기」 · 줄 이름 칸을 적게 먹음) · 노란 바탕 · 보이는 글 「카톡 보내기」 · 이름표 「<이름> 카톡 보내기」
+    if (Math.round(m.w) < kkSide || Math.round(m.h) < kkSide || m.w > 100) fail(`카톡 단추 ${kkSide} 넘게 · 폭 100 아래 아님(흰 판 48 · 두 줄 글)`, `${tag} ${m.w}×${m.h}`);
+    if (m.bg !== 'rgb(254, 229, 0)') fail('카톡 단추 노란 바탕 아님(카카오 노랑)', `${tag} ${m.bg}`);
+    if (m.label !== CO.c.name + ' 카톡 보내기' || m.kk !== CODE || m.kind !== 'share' || m.text !== '카톡 보내기' || m.tag !== 'BUTTON' || m.type !== 'button' || !m.inLink) fail('카톡 단추 꼴(이름표 · 번호 · 글 「카톡 보내기」 · button · 고리 안에 둠)', `${tag} ${JSON.stringify(m)}`);
     await FONTS_DONE(p);
     const at0 = await p.evaluate(AT);
     // 누름 1 — 카톡 단추(손가락) → 글상자 · 쪽 그대로 · 아직 안 보냄 · 이름 · 오늘 값이 저절로

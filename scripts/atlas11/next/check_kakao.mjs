@@ -118,7 +118,7 @@ function scan({skip, nolink}) {
     out.rows.push(row);
     if (bs.length !== 1) { out.fails.push(['줄마다 단추 하나가 아님', `${place} 단추 ${bs.length}`]); continue; }
     if (nolink.includes(place)) {
-      const nm = String(bs[0].getAttribute('aria-label') ?? '').replace(/ 카톡으로 보내기$/, '');
+      const nm = String(bs[0].getAttribute('aria-label') ?? '').replace(/ 카톡(?:으로)? 보내기$/, '');
       if (links.length) out.fails.push(['고리 없는 줄인데 고리', place]);
       if (!nm || !r.textContent.includes(nm)) out.fails.push(['줄 글에 단추 이름 없음', `${place} ${nm}`]);
     } else if (links.length !== 1) out.fails.push(['줄마다 종목 고리 하나가 아님', `${place} ${row.code} 고리 ${links.length}`]);
@@ -224,7 +224,7 @@ for (const route of mine) {
       const rows = [...document.querySelectorAll('#view [data-kkrow]')].filter(r => { const b = r.querySelector('button.kk-btn[data-kk]'), x = b?.getBoundingClientRect(); return x && x.width > 0 && x.height > 0; });
       const r = rows[0]; if (!r) return null;
       const b = r.querySelector('button.kk-btn[data-kk]'); b.setAttribute('data-kkt', '1'); b.scrollIntoView({block: 'center'});
-      return {place: r.dataset.kkrow, code: b.dataset.kk, name: String(b.getAttribute('aria-label') ?? '').replace(/ 카톡으로 보내기$/, '')};
+      return {place: r.dataset.kkrow, code: b.dataset.kk, name: String(b.getAttribute('aria-label') ?? '').replace(/ 카톡(?:으로)? 보내기$/, '')};
     });
     const isOpen = () => { const d = document.querySelector('.ps-dlg'); return !!d && (d.tagName !== 'DIALOG' || d.open); };
     let pickBtn = await pick();

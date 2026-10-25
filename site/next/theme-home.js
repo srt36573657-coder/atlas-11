@@ -185,7 +185,7 @@ export async function homeBlock() {
   // 싹 달력 큰 단추(사장님 2026-10-23 13:33 「달력늘 클릭하면 1.2.3 찾아낸것을 날짜별로 정리하고 … 꺽기그래프로」 · 10-25 12:24 「어」) — 1 · 2 · 3번 칸 바로 아래 · 그 아래 「카톡 보내기」(세 곳 이름 · 주소 · 칸 폭 가득)
   const kkAll = kakaoText({title: `${josa(NAME, '가')} 찾은 1번 2번 3번`, text: top.length ? `${josa(NAME, '가')} 찾은 싹 1번 2번 3번 — ${top.map(i => i.n).join(', ')}` : `${NAME} 테마 시계`, url: site});
   kkAll.classList.add('th-kkall');
-  box.append(h('a', {class: 'th-calgo', href: '#/t/cal'}, h('span', {text: '싹 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), kkAll);
+  box.append(h('div', {class: 'th-gorow'}, h('a', {class: 'th-calgo', href: '#/t/cal'}, h('span', {text: '싹 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), kkAll)); // 한 줄에 둘(390 폭 첫 화면 안에 「카톡 보내기」도 보이게 · 좁으면 두 줄)
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
   box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
   box.append(pickCard()); // 고른 싹 회사 기록 달력(사장님 2026-10-22 22:54 「그 기록을 한 달력이 첫화면에 직관적으로 … 신빙성에대해 딱 정직하게 앞에」) — 자료는 첫 그림 뒤에 받음(느린 4G 첫 그림에 안 끼게)

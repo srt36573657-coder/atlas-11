@@ -175,16 +175,16 @@ a.th-ck:active { background: #FFFFFF; }
 /* 싹 달력 날짜별 칸(사장님 2026-10-23 13:33 「날짜별로 정리하고 그때 찾았던 날부터 현재까지 꺽기그래프로 · 다른건 필요 없다」 · 10-25 12:24 「어」 · #/t/cal)
    칸 = 날짜 · 「카톡 보내기」 · 세 곳 · 꺾은선(1번 초록 실선 · 2번 파랑 실선 · 3번 검은 점선 · 가운데 가로선 = 시장) · 글은 그림 밖 */
 .th-days { display: grid; gap: var(--sp-2); margin: var(--sp-2) 0; min-width: 0; }
-.th-day { display: grid; gap: 4px; padding: var(--sp-2); border: 2px solid #111111; border-radius: 16px; background: #FFFFFF; min-width: 0; }
-.th-dayh { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
+.th-day { display: grid; gap: var(--sp-1); padding: var(--sp-2); border: 2px solid #111111; border-radius: 16px; background: #FFFFFF; min-width: 0; }
+.th-dayh { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-width: 0; }
 .th-dayh .th-h2 { margin: 0; }
-.th-sinsvg { display: block; width: 100%; height: auto; margin-top: 4px; overflow: visible; }
+.th-sinsvg { display: block; width: 100%; height: auto; margin-top: var(--sp-1); overflow: visible; }
 .th-sinsvg .z { stroke: var(--ink); stroke-width: 1.5; }
 .th-sinsvg .l0, .th-sink .l0 { fill: none; stroke: var(--up); stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
 .th-sinsvg .l1, .th-sink .l1 { fill: none; stroke: var(--down); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
 .th-sinsvg .l2, .th-sink .l2 { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 6 4; stroke-linejoin: round; }
 .th-sinsvg .d0 { fill: var(--up); } .th-sinsvg .d1 { fill: var(--down); } .th-sinsvg .d2 { fill: var(--ink); }
-.th-sinr { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 48px; padding: 4px 0; border-bottom: 1px solid #DDDDDD; color: var(--ink); text-decoration: none; }
+.th-sinr { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--sp-1); min-height: 48px; padding: 0; border-bottom: 1px solid #DDDDDD; color: var(--ink); text-decoration: none; }
 .th-sinn { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: var(--fs-2); font-weight: 700; }
 .th-sink { flex: 0 0 auto; width: 30px; height: 10px; overflow: visible; }
 .th-sinv { font-size: var(--fs-2); font-weight: 800; white-space: nowrap; }

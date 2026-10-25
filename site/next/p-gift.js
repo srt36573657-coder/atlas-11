@@ -33,7 +33,7 @@ export function render() {
   const now = h('button', {type: 'button', class: 'gf-now'}); // 결 — 약속 칸 바로 밑 한 줄(지금 할 일)
   /* ① 소개 — 소개 쪽(/hello.html · 친구가 열면 우주 · 상품권 칸까지 있음)을 보내기 글상자로 · 보낸 수는 이 쪽을 연 동안만 셈(저장 0 · 폭죽 없음) */
   const said = h('p', {class: 'gf-said', role: 'status'});
-  const send = h('button', {type: 'button', class: 'gf-btn', text: '친구에게 보내기'});
+  const send = h('button', {type: 'button', class: 'gf-btn kk-pgx kk-yel', text: '카톡 보내기'}); // 「카톡 보내기」(사장님 2026-10-25 12:00 「진짜모든곳에」 · 12:24 「어」) — 이 쪽 보내기 단추라 kk-all.js 가 쪽 단추를 또 달지 않음
   let sent = 0;
   send.addEventListener('click', async () => {
     const r = await nx().shareBox({kind: 'share', title: L(josa(NAME, '를') + ' 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 싹에서 꽃이 되는 종목을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`), url: new URL('/hello.html', location.origin).href}).catch(() => null); // 보내는 글 = 본질 1(총정리 D14)

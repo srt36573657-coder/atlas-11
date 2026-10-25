@@ -123,7 +123,9 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-pkhs rect.dn { fill: var(--down); }
 .th-pkhs rect.w { fill: none; stroke: var(--hair2); stroke-width: 1.5; }
 /* 싹 달력 큰 단추 · 「카톡 보내기」 글 단추(사장님 2026-10-23 13:33 · 2026-10-25 06:06 · 12:00 「진짜모든곳에」 · 12:24 「어」) — 1년 줄 그림 아래(그림은 320 × 568 한 화면 안 그대로) */
-.th-calgo { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 56px; margin: 12px 0 8px; padding: 0 18px; border-radius: 14px; background: var(--ink); color: #FFFFFF; font-size: var(--fs-3); font-weight: 800; text-decoration: none; }
+.th-calgo { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 56px; margin: 16px 0 8px; padding: 0 16px; border-radius: 14px; background: var(--ink); color: #FFFFFF; font-size: var(--fs-3); font-weight: 800; text-decoration: none; }
 .th-calgo i { font-style: normal; }
-.kk-btn.kk-txt.th-kkall, html.white .kk-btn.kk-txt.th-kkall { display: flex; width: 100%; min-height: 56px; justify-content: center; margin: 0 0 12px; border-radius: 14px; font-size: var(--fs-3); }
+.kk-btn.kk-txt.th-kkall, html.white .kk-btn.kk-txt.th-kkall { display: flex; width: 100%; min-height: 56px; justify-content: center; margin: 0 0 16px; border-radius: 14px; font-size: var(--fs-3); }
 .th-calgo:focus-visible { outline: 3px solid var(--down); outline-offset: 2px; }
+.th-gorow { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; min-width: 0; } /* 싹 달력 보기 · 카톡 보내기 한 줄(2026-10-25 진짜 사이트 사진 — 390 × 844 에서 카톡 보내기가 찾기 칸 뒤로 숨음) */
+.th-gorow > .th-calgo, .th-gorow > .kk-btn.kk-txt.th-kkall, html.white .th-gorow > .kk-btn.kk-txt.th-kkall { flex: 1 1 150px; width: auto; margin: 0; }

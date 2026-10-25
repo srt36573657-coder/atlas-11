@@ -11,9 +11,10 @@
                n 은 글상자가 /next/data/half36.json {n, of} 에서 읽음 · 없거나 깨지면 그 줄을 뺌 · 짓지 않음 · 글은 p-share.js halfLine 한 곳)
      · half  = {n, of}(넘기면 그 값 · 안 넘기면 파일) · 수익률 · 오른 폭은 받지 않음(넣어도 보내지 않음)
    단추 꼴(모양 = site/next/app.css 「카톡 단추」 묶음 — 앱의 모든 쪽에 늘 붙어 있음 · 글 속 style 없음):
-     <button type="button" class="kk-btn" data-kk="<번호>" data-kind="share|surge" aria-label="<이름> 카톡으로 보내기">
-       <svg class="kk-ic" aria-hidden="true">노란 말풍선</svg></button>
-     · 44 × 44px · flex: none(줄이 좁아도 줄지 않음) · 글자 없음(그림 + aria-label — 영어는 엔진이 「Send {e} on KakaoTalk」)
+     <button type="button" class="kk-btn kk-row" data-kk="<번호>" data-kind="share|surge" aria-label="<이름> 카톡 보내기">
+       <svg class="kk-ic" aria-hidden="true">노란 말풍선</svg><span class="kk-t">카톡 보내기</span></button>
+     · 글자가 보임(사장님 2026-10-25 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」 — 옛 「글자 없음 44px」([6] 1)을 갈음) ·
+       노란 바탕 두 줄 「카톡 / 보내기」(줄 폭을 적게 · 말풍선 그림은 숨김) · 48px 넘게 · flex: none · 이름표 = 「<이름> 카톡 보내기」(보이는 글을 품음 · 영어는 엔진이 「Send {e} on KakaoTalk」)
      · 넓은 꼴 shareButtons(o, {kakao: true, text: '나도 보내기'}) → class="kk-btn kk-wide"(그림 + 글 · 높이 44px · 친구가 연 쪽)
      · 검사(KB2 check_kakao_rows.mjs)는 button.kk-btn[data-kk] 를 셈 — 종목 고리 수 = 이 단추 수
    누름: preventDefault + stopPropagation(줄 고리 · 줄 누름으로 가지 않음 · 쪽 이동 0) → NX.shareBox 가 있으면 그리로 · 없으면 p-share.js open 을 늦게 받아 엶
@@ -22,7 +23,7 @@
 const SVGNS = 'http://www.w3.org/2000/svg';
 const CODE_RE = /^[0-9A-Z]{6}$/;
 export const KK_CLASS = 'kk-btn', KK_WIDE = 'kk-wide', KK_ICON = 'kk-ic';
-export const KK_LABEL = '카톡으로 보내기'; // aria-label = 「<이름> 카톡으로 보내기」(이름이 없으면 이 말만)
+export const KK_LABEL = '카톡 보내기', KK_ROW = 'kk-row'; // aria-label = 「<이름> 카톡 보내기」(이름이 없으면 이 말만 · 보이는 글 「카톡 보내기」를 품음) · KK_ROW = 줄 단추 꼴(app.css)
 
 function el(tag, a = {}, ...kids) {
   const e = document.createElement(tag);
@@ -76,19 +77,20 @@ export function shareButtons(o, {kakao = false, text = null, cls = 'act', shareT
   const code = String(o?.code ?? '');
   if (!CODE_RE.test(code)) return null;
   const kind = o?.kind === 'surge' ? 'surge' : 'share', name = o?.name != null && String(o.name).trim() ? String(o.name).trim() : null;
-  const b = el('button', {class: KK_CLASS + (text ? ' ' + KK_WIDE : ''), type: 'button', 'data-kk': code, 'data-kind': kind,
-    'aria-label': text ? null : (name ? name + ' ' + KK_LABEL : KK_LABEL)}, bubble(), text ? el('span', {class: 'kk-t', text}) : null);
+  const b = el('button', {class: KK_CLASS + ' ' + (text ? KK_WIDE : KK_ROW), type: 'button', 'data-kk': code, 'data-kind': kind,
+    'aria-label': text ? null : (name ? name + ' ' + KK_LABEL : KK_LABEL)}, bubble(), el('span', {class: 'kk-t', text: text ?? KK_LABEL}), ' '); // 끝 빈칸 — 이어 붙은 글과 한 낱말로 읽히지 않게(「보내기」+「회사」 → 「기회」 · 단추 안 빈칸은 그려지지 않음)
   b.addEventListener('pointerdown', warm, {once: true});
   b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); openBox(pack(o, kind)); });
   return b;
 }
 /** 같은 것(이름만 짧게) — shareButtons(o, {kakao: true}) */
 export const kakaoButton = (o, opt = {}) => shareButtons(o, {...opt, kakao: true});
-/** 「카톡 보내기」 글 단추(사장님 2026-10-25 06:06 · 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」) — 종목이 아닌 칸(업종 · 날짜 · 쪽 묶음)
- *  o = {title, text, url} — 누르면 휴대폰 보내기 창(카톡이 그 안에 · NX.share) · 글자 「카톡 보내기」가 늘 보임 · 보내는 글에 수익률 · 오른 폭 숫자를 넣지 않음(쓰는 곳 몫)
- *  모양 = .kk-btn.kk-wide(app.css) · data-kk 없음(종목 단추 셈 KB2 밖) */
-export function kakaoText(o, label = '카톡 보내기') {
-  const b = el('button', {class: KK_CLASS + ' ' + KK_WIDE + ' kk-txt', type: 'button'}, bubble(), el('span', {class: 'kk-t', text: label}));
-  b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); const N = nx(); if (typeof N?.share === 'function') N.share(String(o?.title ?? ''), String(o?.url ?? ''), String(o?.text ?? '')); });
+/** 「카톡 보내기」 글 단추(사장님 2026-10-25 06:06 · 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」) — 종목이 아닌 칸(쪽 · 칸 · 업종 · 날짜 · 묶음)
+ *  o = {title, text, url} — 누르면 다른 보내기와 같은 글상자(「친구에게 무슨 말을 할래?」 · p-share open · 사장님 2026-10-17 21:10 [4])부터 · 글자 「카톡 보내기」가 늘 보임
+ *  보내는 글에 수익률 · 오른 폭 숫자를 넣지 않음(쓰는 곳 몫 · 글상자 noGain 이 한 번 더 거름) · 모양 = .kk-btn.kk-wide.kk-txt(app.css) · data-kk 없음(종목 단추 셈 KB2 밖) */
+export function kakaoText(o, label = KK_LABEL) {
+  const b = el('button', {class: KK_CLASS + ' ' + KK_WIDE + ' kk-txt', type: 'button'}, bubble(), el('span', {class: 'kk-t', text: label}), ' '); // 끝 빈칸(위와 같음)
+  b.addEventListener('pointerdown', warm, {once: true});
+  b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); openBox({kind: 'share', title: String(o?.title ?? ''), text: String(o?.text ?? ''), url: String(o?.url ?? '')}); });
   return b;
 }
