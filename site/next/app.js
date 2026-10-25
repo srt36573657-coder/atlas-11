@@ -8,7 +8,7 @@ import {NAME, VIDEO} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새
 import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026-10-18 [10] 1 · 2 — 갈래 → 큰 업종 …) · 그리는 곳 한 줄(route)
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
 import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
-import {homeBlock as themeHome} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
+import {homeBlock as themeHome, APP_ICON} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
 import {stoneClock, clockDecoded} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 const $ = (sel, r = document) => r.querySelector(sel);
@@ -615,9 +615,25 @@ async function vHomeAll() {
   //   아래로 읽을 때는 그 한 줄도 숨고, 조금 위로 밀면 다시 나옴(구글 · 닐슨 노먼 그룹 2021 「다시 나오는 칸」) — quickReturn
   const short = h('div', {class: 's-short'}, go4((C?.stop ?? 0) > 0), allBox(H, band));
   const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
-  const nodes = [hd, say, clock, theme, story, thumb, short, evoLine()];
+  // 돌 시계 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 어젯밤 22:03 돌 시계 판 ①) — 돌 시계를 네 칸 한가운데(위 싹 · 꽃 / 시계 / 아래 잠잠 · 시듦 · 시계 방향 화살 넷)
+  //   그 아래 그림 단추 넷(꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터) — 그 밑은 예전 그대로(본질 · 지난 기록 · 찾기 칸 · 바로 가기 · 진화)
+  const zn = theme.querySelector?.('.th-zones'); if (zn) { zn.append(clock); zn.after(homeApps()); } // 그림 단추는 고리 바로 아래(테마 시계 칸 안 · 첫 화면 글자는 테마 칸 200자 셈)
+  const nodes = [hd, say, ...(zn ? [] : [clock]), theme, story, thumb, short, evoLine()];
   await clockDecoded(clock, 300); // 돌 시계 그림이 풀린 뒤 한 번에 그림(길어야 0.3초 — 늦게 툭 나타남 0) // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
   return {title: '오늘 장', nodes};
+}
+
+/** 첫 화면 그림 단추 넷(돌 시계 판 · 2026-10-26) — 꽃 될 회사(오늘 고른 회사 수 · 첫 그림 뒤에 채움) · 회사 찾기 · 싹 달력 · 고객센터 */
+function homeApps() {
+  const badge = h('span', {class: 's-badge', hidden: true});
+  const app = (label, href, kind, bg, extra = null) => h('a', {class: 's-app', href, style: `--abg:${bg}`}, extra, h('span', {class: 's-apb'}, APP_ICON[kind]()), h('span', {class: 's-apl', text: label}));
+  const nav = h('nav', {class: 's-apps', 'aria-label': '바로 가기 넷'},
+    app('꽃 될 회사', '#/t/pick', 'bloom', '#E2E5E6', badge), app('회사 찾기', '#/find', 'search', '#4B939D'), app('싹 달력', '#/t/cal', 'cal', '#8CA3A7'), app('고객센터', '#/help', 'help', '#428189'));
+  setTimeout(() => { fetch('/next/data/theme-bloom.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).then(B => {
+    const n = Array.isArray(B?.today?.inds) ? B.today.inds.reduce((a, i) => a + (Array.isArray(i?.co) ? i.co.length : 0), 0) : 0;
+    if (n > 0) { badge.textContent = num(n); badge.hidden = false; }
+  }).catch(() => {}); }, 0);
+  return nav;
 }
 
 /* ── 화면 ── 하나마다 { title, nodes } 를 돌려줌 · 늦게 끝난 앞 화면은 버림 */

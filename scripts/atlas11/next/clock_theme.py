@@ -299,21 +299,74 @@ html.white.clock.clock.clock .th-zc::before { content: ""; position: absolute; i
 html.white.clock.clock.clock .th-zc.th-zcS { --zdot: #F2F3F3; background: #1FB8CD; border-color: #171615; color: #152D30; box-shadow: 5px 5px 0 #171615, 9px 9px 0 #FFFFFF; }
 html.white.clock.clock.clock .th-zc.th-zcB { --zdot: #8CA3A7; background: #AAC1C5; color: #171615; }
 html.white.clock.clock.clock .th-zc.th-zcQ { --zdot: #356369; background: #284E53; color: #E2E5E6; border-color: #AAC1C5; } /* 짙은 칸은 밝은 테(짙은 바탕 위 테 대비 3 넘게 — check_white ②) */
-html.white.clock.clock.clock .th-zc.th-zcW { --zdot: #697779; background: #797F7F; color: #F2F3F3; }
-html.white.clock.clock.clock .th-zc .th-zi { background: #F2F3F3; color: #171615; border: 2px solid #171615; }
-html.white.clock.clock.clock .th-zc .th-zi svg, html.white.clock.clock.clock .th-zc.th-zcS .th-zi svg { color: #171615; }
-html.white.clock.clock.clock .th-zc .th-zi svg [stroke]:not([stroke="none"]) { stroke: #171615; }
-html.white.clock.clock.clock .th-zc .th-zi svg [fill]:not([fill="none"]) { fill: #171615; }
-html.white.clock.clock.clock .th-zc.th-zcS .th-zgo { background: #FFFFFF; color: #152D30; border: 2px solid #171615; }
+html.white.clock.clock.clock .th-zc.th-zcW { --zdot: #757A7B; background: #606868; color: #F2F3F3; border-color: #AAC1C5; } /* 그림은 #797F7F — 작은 「곳」 글 대비 4.5 넘게(check_white ②) 한 단 짙게 */
 html.white.clock.clock.clock .th-zc:active { background: #2D393A; }
+/* ── 첫 화면 고리(사장님 2026-10-26 08:16 「디자인 이렇게 하라고」 · 어젯밤 돌 시계 판 ①) — 위 싹 · 꽃 / 돌 시계 / 아래 잠잠 · 시듦 · 시계 방향 화살 넷 ── */
+html.white.clock.clock.clock .th-zones { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "S B" "K K" "Q W"; column-gap: 16px; row-gap: 10px; }
+html.white.clock.clock.clock .th-zones .th-zcS { grid-area: S; }
+html.white.clock.clock.clock .th-zones .th-zcB { grid-area: B; }
+html.white.clock.clock.clock .th-zones .th-zcQ { grid-area: Q; }
+html.white.clock.clock.clock .th-zones .th-zcW { grid-area: W; }
+html.white.clock.clock.clock .th-zones .s-clk { grid-area: K; display: flex; justify-content: center; margin: 0; }
+html.white.clock.clock.clock .th-zones .th-zc { min-height: 96px; padding: 6px 10px 6px 4px; grid-template-columns: 72px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 4px; row-gap: 0; align-items: end; border-radius: 14px; }
+html.white.clock.clock.clock .th-zones .th-zi { grid-column: 1; grid-row: 1 / span 2; align-self: center; width: 72px; height: 72px; background: none; border: 0; border-radius: 0; }
+html.white.clock.clock.clock .th-zones .th-zic { width: 72px; height: 72px; overflow: visible; }
+html.white.clock.clock.clock .th-zones .th-zw { grid-column: 2; grid-row: 1; align-self: start; padding-top: 4px; font-size: 22px; font-weight: 900; letter-spacing: -.02em; }
+html.white.clock.clock.clock .th-zones .th-zn { grid-column: 2; grid-row: 2; padding: 0; font-size: 44px; font-weight: 900; letter-spacing: -.05em; text-shadow: 3px 3px 0 var(--zoff); }
+html.white.clock.clock.clock .th-zones .th-zu { font-size: 18px; text-shadow: none; }
+html.white.clock.clock.clock .th-zones .th-zgo { display: none; }
+html.white.clock.clock.clock .th-zc.th-zcS { --zoff: #FFFFFF; }
+html.white.clock.clock.clock .th-zc.th-zcB { --zoff: #F2F3F3; }
+html.white.clock.clock.clock .th-zc.th-zcQ { --zoff: #152D30; }
+html.white.clock.clock.clock .th-zc.th-zcW { --zoff: #3C4E51; }
+html.white.clock.clock.clock .th-sway { transform-box: view-box; transform-origin: 51.5% 24%; }
+@media (prefers-reduced-motion: no-preference) { html.white.clock.clock.clock .th-sway { animation: ck-sway 3.2s ease-in-out infinite; } }
+@keyframes ck-sway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+html.white.clock.clock.clock .th-ar { position: absolute; z-index: 2; width: 32px; height: 32px; border-radius: 50%; background: #FFFFFF; border: 2px solid #171615; box-shadow: 2px 2px 0 #171615; pointer-events: none; }
+html.white.clock.clock.clock .th-ar svg { display: block; width: 100%; height: 100%; }
+html.white.clock.clock.clock .th-ar-t { left: 50%; top: 32px; margin-left: -16px; }
+html.white.clock.clock.clock .th-ar-b { left: 50%; bottom: 32px; margin-left: -16px; }
+html.white.clock.clock.clock .th-ar-r { right: 2px; top: 50%; margin-top: -16px; }
+html.white.clock.clock.clock .th-ar-l { left: 2px; top: 50%; margin-top: -16px; }
+/* 그림 단추 넷 — 둥근 네모 · 검은 테 · 어긋난 그림자 · 망점(가상 칸이라 광택 검사 밖) · 「꽃 될 회사」 흰 숫자 딱지 */
+html.white.clock.clock.clock .s-apps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 18px 0 44px; }
+html.white.clock.clock.clock .s-app { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; min-height: 48px; color: #F2F3F3; text-decoration: none; }
+html.white.clock.clock.clock .s-apb { position: relative; display: block; width: 66px; height: 66px; border-radius: 16px; border: 2.5px solid #171615; background: var(--abg); box-shadow: 4px 4px 0 #171615; overflow: hidden; }
+html.white.clock.clock.clock .s-apb::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(23, 22, 21, .16) 28%, transparent 33%); background-size: 6px 6px; }
+html.white.clock.clock.clock .s-apb svg { position: relative; display: block; width: 100%; height: 100%; }
+html.white.clock.clock.clock .s-apl { font-size: 17px; font-weight: 800; line-height: 1.2; text-align: center; white-space: nowrap; color: #F2F3F3; text-shadow: 0 1px 3px #171615; }
+html.white.clock.clock.clock .s-badge { position: absolute; z-index: 1; top: -8px; left: 50%; margin-left: 18px; width: max-content; min-width: 30px; height: 30px; padding: 0 6px; box-sizing: border-box; white-space: nowrap; border-radius: 15px; background: #FFFFFF; color: #152D30; border: 2px solid #171615; font-size: 17px; font-weight: 900; line-height: 26px; text-align: center; }
+html.white.clock.clock.clock .s-app:active .s-apb { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #171615; }
+@media (max-width: 359px) {
+  html.white.clock.clock.clock .th-zones { column-gap: 12px; }
+  html.white.clock.clock.clock .th-zones .th-zc { min-height: 84px; grid-template-columns: 52px minmax(0, 1fr); padding: 4px 8px 4px 2px; }
+  html.white.clock.clock.clock .th-zones .th-zi, html.white.clock.clock.clock .th-zones .th-zic { width: 52px; height: 52px; }
+  html.white.clock.clock.clock .th-zones .th-zw { font-size: 19px; }
+  html.white.clock.clock.clock .th-zones .th-zn { font-size: 36px; }
+  html.white.clock.clock.clock .th-zones .th-zu { font-size: 17px; }
+  html.white.clock.clock.clock .th-ar { width: 28px; height: 28px; }
+  html.white.clock.clock.clock .th-ar-t { top: 28px; margin-left: -14px; } html.white.clock.clock.clock .th-ar-b { bottom: 28px; margin-left: -14px; }
+  html.white.clock.clock.clock .th-ar-r, html.white.clock.clock.clock .th-ar-l { margin-top: -14px; }
+  html.white.clock.clock.clock .s-apb { width: 56px; height: 56px; border-radius: 14px; }
+  html.white.clock.clock.clock .s-apl { white-space: normal; font-size: 17px; }
+  html.white.clock.clock.clock .s-badge { margin-left: 12px; }
+}
+/* 영어 — 「industries」가 한 낱말 그대로 숫자 아래 한 줄(가운데서 끊기지 않게) */
+html.white.clock.clock.clock.en .th-zones .th-zn { flex-direction: column; align-items: flex-start; row-gap: 0; }
+html.white.clock.clock.clock.en .th-zones .th-zu { display: block; white-space: nowrap; overflow-wrap: normal; word-break: normal; font-size: 17px; line-height: 1.1; }
+html.white.clock.clock.clock.en .th-zones .th-zw { font-size: 19px; }
+@media (max-width: 359px) { html.white.clock.clock.clock.en .th-zones .th-zc { grid-template-columns: 42px minmax(0, 1fr); } html.white.clock.clock.clock.en .th-zones .th-zi, html.white.clock.clock.clock.en .th-zones .th-zic { width: 42px; height: 42px; } }
+/* 여는 동안 돌 시계(index.html .s-boot)도 고리 가운데 시계 자리와 같게 — 다 그려져도 시계가 제자리(2026-10-26 이 방에서 잼: 390 · 375 = 242px · 320 = 227px) */
+html.white.clock.clock.clock .s-boot { margin-top: 178px; }
+@media (max-width: 359px) { html.white.clock.clock.clock .s-boot { margin-top: 163px; } }
 /* 밝게 바뀐 단추(옛 검은 단추) 위 작은 강조 글은 짙게 — 하늘청록은 밝은 바탕 위 대비가 모자람 */
 html.white.clock.clock.clock .th-next small, html.white.clock.clock.clock .th-nx small { color: #152D30; }
 /* 편지 띠(보유종목 아래 「돌이 주식 격언」) — 짙은 띠라 밝은 테(단추 테 대비 3 · check_white ⑤) */
 html.white.clock.clock.clock a.hello.m4-letter { border: 2px solid #8CA3A7; }
 /* 그림 속 검은 · 흰 칠(svg 칠 속성) — 돌 시계 바늘은 그대로 */
-html.white.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *) { fill: #F2F3F3; }
-html.white.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *) { stroke: #F2F3F3; }
-html.white.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *) { fill: #1C2627; }
+html.white.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { fill: #F2F3F3; }
+html.white.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { stroke: #F2F3F3; }
+html.white.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { fill: #1C2627; }
 html.white.clock.clock.clock :is([fill="#007A35"], [fill="#007a35"]) { fill: #1FB8CD; }
 html.white.clock.clock.clock :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #1FB8CD; }
 html.white.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #AAC1C5; }

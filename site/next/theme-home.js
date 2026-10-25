@@ -200,16 +200,69 @@ function zIcon(z) {
   }
   return s;
 }
+/* ── 돌 시계 판 그림(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 — 어젯밤 22:03 돌 시계 판 docs/design/dori-new-2026-10-25/clock/parts.py 그대로)
+   싹 난 조약돌 얼굴 넷 · 시계 방향 화살 · 첫 화면 그림 단추 넷 — 색은 고르신 청록 100가지 안 · 검은 선 #171615 · 판이 살짝 어긋난 겹침(워홀 기법만) ── */
+const PEB = 'M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z';
+const LEAF = 'M51 25C45 13 33 10 26 15C31 24 41 29 51 25ZM52 23C57 10 69 6 77 10C72 21 62 26 52 23Z';
+const KK = '#171615';
+/** 작은 그림 짓기 — spec = [태그, 속성, 아이들?] 목록 */
+function draw(cls, spec) {
+  const s = sv('svg', {class: cls, viewBox: '0 0 100 100', 'aria-hidden': 'true', focusable: 'false'});
+  const put = (par, [tag, a, kids]) => { const e = sv(tag, a); par.append(e); for (const k of kids ?? []) put(e, k); };
+  for (const x of spec) put(s, x);
+  return s;
+}
+const LN = {fill: 'none', stroke: KK, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'};
+const sprout = (body = '#F2F3F3', leaf = '#284E53', sway = true, mouth = 'M44 72Q50 77 56 72') => [
+  ['path', {d: PEB, fill: body, transform: 'translate(-4 3)'}],
+  ['g', sway ? {class: 'th-sway'} : {}, [['path', {d: LEAF, fill: leaf, transform: 'translate(3 -2.5)'}], ['path', {d: LEAF, fill: 'none', stroke: KK, 'stroke-width': 3.4, 'stroke-linejoin': 'round'}]]],
+  ['g', LN, [['path', {d: PEB, 'stroke-width': 4.4}], ['path', {d: 'M50 36C50 31 50.5 27 51.5 23', 'stroke-width': 4}], ['path', {d: mouth, 'stroke-width': 3.4}]]],
+  ['ellipse', {cx: 38, cy: 61, rx: 3.6, ry: 4.8, fill: KK}], ['ellipse', {cx: 61, cy: 61, rx: 3.6, ry: 4.8, fill: KK}]];
+const PET = [[50, 6], [56.7, 10.8], [54.1, 18.7], [45.9, 18.7], [43.3, 10.8]];
+const LEAF2 = 'M50 31C44 25 37 25 33 28C37 33 44 34 50 31ZM50 29C56 23 63 23 67 26C63 31 56 32 50 29Z';
+const BLOOM = [
+  ['path', {d: PEB, fill: '#4E99A3', transform: 'translate(3.5 3)'}], ['path', {d: LEAF2, fill: '#315D62', transform: 'translate(-2 2)'}],
+  ['g', {fill: '#FFFFFF', transform: 'translate(-2.5 2)'}, PET.map(([cx, cy]) => ['circle', {cx, cy, r: 5.2}])],
+  ['g', LN, [['path', {d: PEB, 'stroke-width': 4.4}], ['path', {d: 'M50 36V20', 'stroke-width': 3.6}], ['path', {d: LEAF2, 'stroke-width': 3}],
+    ['g', {'stroke-width': 2.8}, PET.map(([cx, cy]) => ['circle', {cx, cy, r: 5.2}])], ['path', {d: 'M33 63Q38 56.5 43 63M56 63Q61 56.5 66 63', 'stroke-width': 3.4}], ['path', {d: 'M42 70Q50 79 58 70', 'stroke-width': 3.4}]]],
+  ['circle', {cx: 50, cy: 13, r: 3.6, fill: KK}]];
+const ZZ = [[74, 27, 3], [82, 17, 4], [91, 6, 5]];
+const SLEEP = [
+  ['path', {d: PEB, fill: '#AAC1C5', transform: 'translate(3 3)'}], ['g', {fill: '#E2E5E6', transform: 'translate(-1.5 1.5)'}, ZZ.map(([cx, cy, r]) => ['circle', {cx, cy, r}])],
+  ['g', LN, [['path', {d: PEB, 'stroke-width': 4.4}], ['path', {d: 'M33 60Q38 65.5 43 60M56 60Q61 65.5 66 60', 'stroke-width': 3.4}], ['path', {d: 'M47 72Q50 74.5 53 72', 'stroke-width': 3.2}],
+    ['g', {'stroke-width': 2.6}, ZZ.map(([cx, cy, r]) => ['circle', {cx, cy, r}])]]]];
+const WLEAF = 'M50 36C50 26 56 19 64 19C70 19 74 24 75 31C69 33 63 31 60 26C58 31 56 35 54 37Z';
+const WILT = [
+  ['path', {d: PEB, fill: '#D6D5D4', transform: 'translate(-3.5 3)'}], ['path', {d: WLEAF, fill: '#3C4E51', transform: 'translate(2.5 2.5)'}],
+  ['g', LN, [['path', {d: PEB, 'stroke-width': 4.4}], ['path', {d: WLEAF, 'stroke-width': 3.4}], ['path', {d: 'M33 60L43 63M56 63L66 60', 'stroke-width': 3.6}], ['path', {d: 'M44 75Q50 69 56 75', 'stroke-width': 3.4}]]]];
+const FACE = {S: () => sprout(), B: () => BLOOM, Q: () => SLEEP, W: () => WILT};
+/** 시계 방향 화살(둘레 네 곳) — rot 0 = 오른쪽 */
+const arrow = rot => draw('th-arw', [['path', {d: 'M26 50H72M54 31L73 50L54 69', fill: 'none', stroke: KK, 'stroke-width': 11, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', transform: `rotate(${rot} 50 50)`}]]);
+const G = {fill: 'none', stroke: KK, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'};
+/** 첫 화면 그림 단추 그림 넷(꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터) */
+export const APP_ICON = {
+  bloom: () => draw('s-apic', sprout('#FFFFFF', '#315D62', false, 'M42 70Q50 79 58 70')),
+  search: () => draw('s-apic', [['circle', {cx: 44, cy: 44, r: 20, fill: '#F2F3F3', transform: 'translate(3 3)'}], ['circle', {cx: 44, cy: 44, r: 20, ...G, 'stroke-width': 6}], ['path', {d: 'M59 59L76 76', ...G, 'stroke-width': 8}]]),
+  cal: () => draw('s-apic', [['rect', {x: 22, y: 28, width: 56, height: 50, rx: 6, fill: '#F2F3F3', transform: 'translate(3 3)'}], ['rect', {x: 22, y: 28, width: 56, height: 50, rx: 6, ...G, 'stroke-width': 5}],
+    ['path', {d: 'M22 42H78M36 22V32M64 22V32', ...G, 'stroke-width': 5}], ['rect', {x: 31, y: 50, width: 9, height: 9, rx: 2, fill: KK}], ['rect', {x: 45.5, y: 50, width: 9, height: 9, rx: 2, fill: '#1FB8CD', stroke: KK, 'stroke-width': 2}],
+    ['rect', {x: 60, y: 50, width: 9, height: 9, rx: 2, fill: KK}], ['rect', {x: 31, y: 63, width: 9, height: 9, rx: 2, fill: KK}]]),
+  help: () => draw('s-apic', [['path', {d: 'M26 56V48C26 34 37 24 50 24C63 24 74 34 74 48V56', fill: 'none', stroke: '#F2F3F3', 'stroke-width': 7, transform: 'translate(3 3)'}],
+    ['path', {d: 'M26 56V48C26 34 37 24 50 24C63 24 74 34 74 48V56', ...G, 'stroke-width': 5.5}], ['rect', {x: 18, y: 50, width: 16, height: 24, rx: 6, fill: '#F2F3F3', stroke: KK, 'stroke-width': 5}],
+    ['rect', {x: 66, y: 50, width: 16, height: 24, rx: 6, fill: '#F2F3F3', stroke: KK, 'stroke-width': 5}], ['path', {d: 'M74 74C74 82 66 84 57 84', ...G, 'stroke-width': 4.5}], ['rect', {x: 45, y: 80, width: 13, height: 8, rx: 4, fill: KK}]]),
+};
+
 /** 큰 네 칸 — 한 칸 = 그림 동그라미 · 자리 이름 · 업종 수 · 「›」(칸 전체가 고리 · 48px 넘게) */
 /* 큰 숫자 + 작은 「곳」(고르신 판 best ① 꼴) — 숫자는 글자가 아니라 영어에서도 그대로 · 「곳」만 자리 표 data-tr 로 영어 낱말(업종 → industries · 하나면 업종1 → industry · i18n.js 자리 표) */
 function zoneCells(TH) {
   const cell = ([z, href]) => {
     const n = TH.count[z], w = ZONES[z];
     return h('a', {class: 'th-zc th-zc' + z, href, 'aria-label': z === 'Q' ? '잠잠 자리 뜻 보기' : `${w} 자리 업종 ${num(n)}곳 보기`},
-      h('span', {class: 'th-zi'}, zIcon(z)), h('span', {class: 'th-zw', text: w}),
+      h('span', {class: 'th-zi'}, draw('th-zic th-face', FACE[z]())), h('span', {class: 'th-zw', text: w}), // 얼굴(2026-10-26 돌 시계 판) — 옛 선 그림 zIcon 은 남겨 둠
       h('b', {class: 'th-zn'}, h('span', {text: num(n)}), h('small', {class: 'th-zu', 'data-tr': n === 1 ? '업종1' : '업종', text: '곳'})), h('i', {class: 'th-zgo', 'aria-hidden': 'true', text: '›'}));
   };
-  return h('nav', {class: 'th-zones', 'aria-label': '네 자리'}, ZCELL.map(cell));
+  // 시계 방향 화살 넷(싹 › 꽃 · 꽃 › 시듦 · 시듦 › 잠잠 · 잠잠 › 싹) — 돌 시계는 app.js 가 이 칸 가운데(.th-zones)에 넣음
+  const ar = (k, rot) => h('span', {class: 'th-ar th-ar-' + k, 'aria-hidden': 'true'}, arrow(rot));
+  return h('nav', {class: 'th-zones', 'aria-label': '네 자리'}, ZCELL.map(cell), ar('t', 0), ar('r', 90), ar('b', 180), ar('l', 270));
 }
 
 /* ── 첫 화면(#/) 맨 위 칸 — app.js vHomeAll 이 부름(본질 세 줄 · 찾기 칸 · 바로 가기 넷 · 전부 보기는 그 아래 그대로) ── */
