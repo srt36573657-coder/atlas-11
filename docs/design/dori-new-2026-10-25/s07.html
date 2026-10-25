@@ -1,0 +1,175 @@
+<section class="sample" id="s07">
+<style>
+#s07 .phone .wall{position:absolute;inset:0;z-index:0;background:radial-gradient(rgba(170,193,197,.09) 0.3cqw,transparent 0.42cqw) 0 0/2.2cqw 2.2cqw,radial-gradient(ellipse 96cqw 74cqw at 50% 72%,#27666E 0%,#1D5962 24%,#1A4850 44%,#17363B 64%,#152D30 82%,#171615 100%);}
+#s07 .phone .sig{display:flex;align-items:center;}
+#s07 .phone .sig svg{display:block;width:15cqw;height:4.2cqw;}
+#s07 .phone .sig .s{fill:#FFFFFF;stroke:none;}
+#s07 .phone .sig .o{fill:none;stroke:#FFFFFF;stroke-width:1.4;}
+#s07 .phone .grid{position:absolute;z-index:2;top:17cqw;left:3.5cqw;right:3.5cqw;display:grid;grid-template-columns:repeat(4,1fr);row-gap:6.4cqw;}
+#s07 .phone .app{display:flex;flex-direction:column;align-items:center;min-width:0;}
+#s07 .phone .ic{position:relative;display:block;width:18cqw;height:18cqw;border-radius:4.4cqw;border:0.6cqw solid #171615;background-color:var(--bg);box-shadow:0.9cqw 0.9cqw 0 #171615;overflow:hidden;}
+#s07 .phone .ic svg{display:block;width:100%;height:100%;}
+#s07 .phone .ht{background-image:radial-gradient(rgba(23,22,21,.16) 28%,transparent 33%);background-size:1.6cqw 1.6cqw;}
+#s07 .phone .lb{margin-top:1.8cqw;font-size:4cqw;font-weight:800;line-height:1.2;letter-spacing:-0.06cqw;color:#F2F3F3;text-shadow:0 0.3cqw 0.8cqw #171615;white-space:nowrap;}
+#s07 .phone .f{fill:var(--f);stroke:none;}
+#s07 .phone .f2{fill:var(--f2);stroke:none;}
+#s07 .phone .rg{fill:none;stroke:var(--f);stroke-width:7.4;}
+#s07 .phone .bd{fill:none;stroke:var(--f2);stroke-width:7.4;stroke-dasharray:7.854 7.854;}
+#s07 .phone .k{fill:none;stroke:#171615;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;}
+#s07 .phone .k .d{fill:#171615;stroke:none;}
+#s07 .phone .k .w{stroke-width:4;}
+#s07 .phone .k .t{stroke-width:1.4;}
+#s07 .phone .on .ic{box-shadow:0.9cqw 0.9cqw 0 #171615,0 0 0 1.1cqw rgba(31,184,205,.28),0 0 8cqw 1cqw rgba(31,184,205,.55);}
+#s07 .phone .sw{transform-box:view-box;transform-origin:50% 44%;animation:s07-sway 3.2s ease-in-out infinite alternate;}
+@keyframes s07-sway{from{transform:rotate(-6deg);}to{transform:rotate(6deg);}}
+@media (prefers-reduced-motion:reduce){#s07 .phone .sw{animation:none;}}
+#s07 .phone .peek{position:absolute;z-index:1;left:-10cqw;bottom:36cqw;width:120cqw;height:48cqw;}
+#s07 .phone .peek .pf{fill:#1D5962;}
+#s07 .phone .peek .pl{fill:#225258;}
+#s07 .phone .peek .pk{fill:none;stroke:#152D30;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round;}
+#s07 .phone .peek .pk .pe{fill:#152D30;stroke:none;}
+#s07 .phone .pg{position:absolute;z-index:2;left:0;right:0;bottom:41cqw;display:flex;justify-content:center;gap:2.4cqw;}
+#s07 .phone .pg i{display:block;width:1.9cqw;height:1.9cqw;border-radius:50%;background:#576E71;}
+#s07 .phone .pg i:first-child{background:#F2F3F3;}
+#s07 .phone .dock{position:absolute;z-index:1;left:0;right:0;bottom:0;height:36cqw;background:rgba(170,193,197,.16);border-top:0.5cqw solid rgba(242,243,243,.3);}
+#s07 .phone .dock .grid{top:4.6cqw;}
+</style>
+<div class="head">
+  <span class="no"><b>7</b>아이폰 첫 화면</span>
+  <p class="why"><em>워홀 방식</em> 같은 네모를 색만 바꿔 찍고, 판을 살짝 어긋나게</p>
+  <p class="why"><em>잡스 방식</em> 빛나는 건 「싹」 하나 — 처음 누를 곳이 바로 보임</p>
+  <p class="why"><em>누르는 곳</em> 「싹」을 누르면 싹 튼 업종 37곳 · 아래 넷은 늘 그 자리</p>
+</div>
+<div class="phone">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><span class="sig"><svg viewBox="0 0 44 12" aria-hidden="true"><rect class="s" x="0" y="8" width="3" height="4" rx="0.8"/><rect class="s" x="5" y="6" width="3" height="6" rx="0.8"/><rect class="s" x="10" y="4" width="3" height="8" rx="0.8"/><rect class="s" x="15" y="2" width="3" height="10" rx="0.8"/><rect class="o" x="22.5" y="1.7" width="17.5" height="8.6" rx="2.6"/><rect class="s" x="24.6" y="3.8" width="12.8" height="4.4" rx="1"/><rect class="s" x="41" y="4.4" width="1.9" height="3.2" rx="0.8"/></svg></span></div>
+  <div class="wall"></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <path id="s07-pb" d="M6.5,27.5 C6,20.5 12.5,17 20,17 C28,17 34,20.5 33.5,27.5 C33,33 27,35.5 20,35.5 C13,35.5 7,33 6.5,27.5 Z"/>
+    <path id="s07-ps" d="M3,9 C2.8,4.6 6.8,2.5 11,2.5 C15.5,2.5 19,4.6 18.8,9 C18.6,12.6 15,14.2 11,14.2 C7,14.2 3.2,12.6 3,9 Z"/>
+  </defs></svg>
+
+  <div class="grid">
+    <!-- 1 싹 (중심) -->
+    <div class="app on"><span class="ic" style="--bg:#1FB8CD;--f:#FFFFFF;--f2:#152D30"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><use href="#s07-pb"/></g>
+      <g transform="translate(-1.7 1.6)"><g class="f2 sw"><path d="M20,13.5 C17,8.5 11.5,8 9.5,10 C11,13.8 16,15 20,13.5 Z M20,12.5 C22.5,7 28,6 30.5,8 C29.5,12 24.5,14 20,12.5 Z"/></g></g>
+      <g class="k"><use href="#s07-pb"/><g class="sw"><path d="M20,17.5 L20,11.5"/><path d="M20,13.5 C17,8.5 11.5,8 9.5,10 C11,13.8 16,15 20,13.5 Z M20,12.5 C22.5,7 28,6 30.5,8 C29.5,12 24.5,14 20,12.5 Z"/></g><circle class="d" cx="15.5" cy="27" r="1.7"/><circle class="d" cx="24.5" cy="27" r="1.7"/></g>
+    </svg></span><span class="lb">싹</span></div>
+    <!-- 2 꽃 -->
+    <div class="app"><span class="ic ht" style="--bg:#AAC1C5;--f:#F2F3F3;--f2:#3E737A"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><use href="#s07-pb"/></g>
+      <g class="f2" transform="translate(-1.7 1.6)"><path d="M15.5,5 L18,7.5 L20,4 L22,7.5 L24.5,5 L24.5,9.5 C24.5,12.5 22.5,13.8 20,13.8 C17.5,13.8 15.5,12.5 15.5,9.5 Z"/></g>
+      <g class="k"><use href="#s07-pb"/><path d="M20,17.5 L20,13.8"/><path d="M15.5,5 L18,7.5 L20,4 L22,7.5 L24.5,5 L24.5,9.5 C24.5,12.5 22.5,13.8 20,13.8 C17.5,13.8 15.5,12.5 15.5,9.5 Z"/><circle class="d" cx="15.5" cy="27" r="1.7"/><circle class="d" cx="24.5" cy="27" r="1.7"/><path d="M17,30.2 C18.6,31.8 21.4,31.8 23,30.2"/></g>
+    </svg></span><span class="lb">꽃</span></div>
+    <!-- 3 시듦 -->
+    <div class="app"><span class="ic" style="--bg:#797F7F;--f:#C8CDCE;--f2:#505B5C"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><use href="#s07-pb"/></g>
+      <g class="f2" transform="translate(-1.7 1.6)"><path d="M30.8,15 C28.8,16.8 29.2,19.8 31.6,20.8 C33.2,18.4 33,16.2 30.8,15 Z"/></g>
+      <g class="k"><use href="#s07-pb"/><path d="M20,17.5 C20,11 23,8.5 27,9 C30.5,9.5 31.5,12.5 30.8,15"/><path d="M30.8,15 C28.8,16.8 29.2,19.8 31.6,20.8 C33.2,18.4 33,16.2 30.8,15 Z"/><path d="M13.8,27.4 L17.2,27.4 M22.8,27.4 L26.2,27.4"/></g>
+    </svg></span><span class="lb">시듦</span></div>
+    <!-- 4 잠잠 -->
+    <div class="app"><span class="ic" style="--bg:#3C4E51;--f:#8CA3A7;--f2:#D6D5D4"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><use href="#s07-pb"/></g>
+      <g class="f2" transform="translate(-1.7 1.6)"><path d="M28.5,5.5 C25,6.8 23.6,10.6 25,13.6 C26.4,16.4 30,17.1 32.8,15.6 C29.4,15.4 27.2,12.6 27.4,9.4 C27.5,7.9 27.9,6.6 28.5,5.5 Z"/></g>
+      <g class="k"><use href="#s07-pb"/><path d="M28.5,5.5 C25,6.8 23.6,10.6 25,13.6 C26.4,16.4 30,17.1 32.8,15.6 C29.4,15.4 27.2,12.6 27.4,9.4 C27.5,7.9 27.9,6.6 28.5,5.5 Z"/><path d="M13.6,26.6 C14.6,28.4 16.6,28.4 17.6,26.6 M22.4,26.6 C23.4,28.4 25.4,28.4 26.4,26.6"/></g>
+    </svg></span><span class="lb">잠잠</span></div>
+
+    <!-- 5 회사 찾기 -->
+    <div class="app"><span class="ic" style="--bg:#9FA8AA;--f:#E2E5E6"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><circle cx="17" cy="17" r="9.5"/></g>
+      <g class="k"><circle cx="17" cy="17" r="9.5"/><path class="w" d="M24.4,24.4 L32.4,32.4"/><path d="M12.4,15.2 C12.9,12.7 14.7,11.1 17,10.9"/></g>
+    </svg></span><span class="lb">회사 찾기</span></div>
+    <!-- 6 업종 -->
+    <div class="app"><span class="ic ht" style="--bg:#356369;--f:#AAC1C5"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><path d="M6,33 L6,19 L13,24 L13,19 L20,24 L20,19 L27,24 L27,10 L33,10 L33,33 Z"/></g>
+      <g class="k"><path d="M6,33 L6,19 L13,24 L13,19 L20,24 L20,19 L27,24 L27,10 L33,10 L33,33 Z"/><path d="M10,28.5 L12.5,28.5 M16,28.5 L18.5,28.5 M22,28.5 L24.5,28.5"/></g>
+    </svg></span><span class="lb">업종</span></div>
+    <!-- 7 싹 달력 -->
+    <div class="app"><span class="ic" style="--bg:#D6D5D4;--f:#F2F3F3"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><rect x="7" y="10" width="26" height="23" rx="3"/></g>
+      <g class="k"><path class="d" d="M7,16.5 L7,13 Q7,10 10,10 L30,10 Q33,10 33,13 L33,16.5 Z"/><rect x="7" y="10" width="26" height="23" rx="3"/><path d="M13.5,7 L13.5,12.5 M26.5,7 L26.5,12.5"/><path d="M20,29.5 L20,24.6"/><path d="M20,26 C18,22.6 14.6,22.4 13.4,23.6 C14.4,26 17.4,26.8 20,26 Z M20,25.2 C21.6,21.8 25,21.2 26.6,22.4 C25.8,24.8 22.8,26 20,25.2 Z"/></g>
+    </svg></span><span class="lb">싹 달력</span></div>
+    <!-- 8 테마 시계 -->
+    <div class="app"><span class="ic" style="--bg:#2D565B;--f:#8CA3A7"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><circle cx="20" cy="20" r="13.5"/></g>
+      <g class="k"><circle cx="20" cy="20" r="13.5"/><path class="t" d="M20,6.5 L20,33.5 M6.5,20 L33.5,20"/><path class="w" d="M20,20 L26.6,13.2"/><circle class="d" cx="20" cy="20" r="2.3"/></g>
+    </svg></span><span class="lb">테마 시계</span></div>
+
+    <!-- 9 오늘 장 -->
+    <div class="app"><span class="ic ht" style="--bg:#8CA3A7;--f:#F2F3F3"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><path d="M10.5,27 A9.5,9.5 0 0 1 29.5,27 Z"/></g>
+      <g class="k"><path d="M10.5,27 A9.5,9.5 0 0 1 29.5,27"/><path d="M5,27 L35,27 M9,32 L31,32"/><path d="M20,8.5 L20,13 M8.6,13.4 L11.6,16.4 M31.4,13.4 L28.4,16.4"/></g>
+    </svg></span><span class="lb">오늘 장</span></div>
+    <!-- 10 관심 -->
+    <div class="app"><span class="ic" style="--bg:#428189;--f:#E2E5E6"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><path d="M5,20.5 C11,12 29,12 35,20.5 C29,29 11,29 5,20.5 Z"/></g>
+      <g class="k"><path d="M5,20.5 C11,12 29,12 35,20.5 C29,29 11,29 5,20.5 Z"/><circle cx="20" cy="20.5" r="5.6"/><circle class="d" cx="20" cy="20.5" r="2.6"/></g>
+    </svg></span><span class="lb">관심</span></div>
+    <!-- 11 낱말 풀이 -->
+    <div class="app"><span class="ic" style="--bg:#C8CDCE;--f:#F2F3F3"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><path d="M20,12 C15,9.5 9.5,9.5 6,11 L6,31 C9.5,29.5 15,29.5 20,32 C25,29.5 30.5,29.5 34,31 L34,11 C30.5,9.5 25,9.5 20,12 Z"/></g>
+      <g class="k"><path d="M20,12 C15,9.5 9.5,9.5 6,11 L6,31 C9.5,29.5 15,29.5 20,32 C25,29.5 30.5,29.5 34,31 L34,11 C30.5,9.5 25,9.5 20,12 Z"/><path d="M20,12 L20,32"/><path class="t" d="M10,16 L16,16.6 M10,20.5 L16,21.1 M24,16.6 L30,16 M24,21.1 L30,20.5"/></g>
+    </svg></span><span class="lb">낱말 풀이</span></div>
+    <!-- 12 선물 -->
+    <div class="app"><span class="ic" style="--bg:#576E71;--f:#D6D5D4"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><path d="M20,19 C14,10 5.5,11.5 7.5,18.5 C9,23.5 15.5,22.5 20,19 Z M20,19 C26,10 34.5,11.5 32.5,18.5 C31,23.5 24.5,22.5 20,19 Z"/></g>
+      <g class="k"><path d="M20,19 C14,10 5.5,11.5 7.5,18.5 C9,23.5 15.5,22.5 20,19 Z M20,19 C26,10 34.5,11.5 32.5,18.5 C31,23.5 24.5,22.5 20,19 Z"/><path d="M18.6,21 L13.5,32 M21.4,21 L26.5,32"/><circle class="d" cx="20" cy="19.5" r="3"/></g>
+    </svg></span><span class="lb">선물</span></div>
+
+    <!-- 13 친구 -->
+    <div class="app"><span class="ic ht" style="--bg:#4E99A3;--f:#E2E5E6"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><use href="#s07-ps" x="1" y="17"/><use href="#s07-ps" x="17.5" y="15"/></g>
+      <g class="k"><use href="#s07-ps" x="1" y="17"/><use href="#s07-ps" x="17.5" y="15"/><circle class="d" cx="9" cy="26" r="1.3"/><circle class="d" cx="15" cy="26" r="1.3"/><circle class="d" cx="25.5" cy="24" r="1.3"/><circle class="d" cx="31.5" cy="24" r="1.3"/><path d="M28.5,17.6 L28.5,13.6"/><path d="M28.5,14.8 C27,12 24.2,11.8 23.2,12.8 C24,14.8 26.4,15.4 28.5,14.8 Z M28.5,14.2 C29.8,11.4 32.6,10.8 33.8,11.8 C33.2,13.8 30.8,14.8 28.5,14.2 Z"/></g>
+    </svg></span><span class="lb">친구</span></div>
+    <!-- 14 편지 -->
+    <div class="app"><span class="ic" style="--bg:#A5AEAF;--f:#F2F3F3"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><rect x="6" y="11" width="28" height="19" rx="2.5"/></g>
+      <g class="k"><rect x="6" y="11" width="28" height="19" rx="2.5"/><path d="M6.8,12.3 L20,22 L33.2,12.3"/></g>
+    </svg></span><span class="lb">편지</span></div>
+    <!-- 15 도움말 -->
+    <div class="app"><span class="ic" style="--bg:#3E737A;--f:#E2E5E6;--f2:#3C4E51"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g transform="translate(2.1 1.9)"><circle class="rg" cx="20" cy="20" r="10"/><circle class="bd" cx="20" cy="20" r="10" transform="rotate(22.5 20 20)"/></g>
+      <g class="k"><circle cx="20" cy="20" r="13.7"/><circle cx="20" cy="20" r="6.3"/></g>
+    </svg></span><span class="lb">도움말</span></div>
+    <!-- 16 고객센터 -->
+    <div class="app"><span class="ic" style="--bg:#697779;--f:#D6D5D4"><svg viewBox="0 0 40 40" aria-hidden="true">
+      <g class="f" transform="translate(2.1 1.9)"><rect x="6" y="20" width="7" height="11" rx="3"/><rect x="27" y="20" width="7" height="11" rx="3"/></g>
+      <g class="k"><path d="M9,21 C9,9.5 31,9.5 31,21"/><rect x="6" y="20" width="7" height="11" rx="3"/><rect x="27" y="20" width="7" height="11" rx="3"/><path d="M30.5,31 C30.5,34 27,35 23.4,35"/><circle class="d" cx="21.6" cy="35" r="1.9"/></g>
+    </svg></span><span class="lb">고객센터</span></div>
+  </div>
+
+  <svg class="peek" viewBox="0 0 120 48" aria-hidden="true">
+    <g class="pf" transform="translate(2.4 2)"><path d="M8,70 C6,42 32,25 60,25 C88,25 114,42 112,70 Z"/></g>
+    <g class="pl" transform="translate(-2 1.8)"><path d="M60,16 C54,6.5 43.5,5.5 39.5,9 C42.5,15.5 51,18.6 60,16 Z M60,14.6 C65,4.5 76,3 80.5,6.5 C78,13.8 69.5,17 60,14.6 Z"/></g>
+    <g class="pk"><path d="M8,70 C6,42 32,25 60,25 C88,25 114,42 112,70"/><path d="M60,25.5 L60,12.5"/><path d="M60,16 C54,6.5 43.5,5.5 39.5,9 C42.5,15.5 51,18.6 60,16 Z M60,14.6 C65,4.5 76,3 80.5,6.5 C78,13.8 69.5,17 60,14.6 Z"/><circle class="pe" cx="45" cy="40" r="3.3"/><circle class="pe" cx="75" cy="40" r="3.3"/></g>
+  </svg>
+
+  <div class="dock">
+    <div class="grid">
+      <!-- 왜 사? -->
+      <div class="app"><span class="ic" style="--bg:#E2E5E6;--f:#AAC1C5"><svg viewBox="0 0 40 40" aria-hidden="true">
+        <g class="f" transform="translate(2.1 1.9)"><path d="M14.3,5.5 L25.7,5.5 L33.8,13.6 L33.8,25 L25.7,33.1 L14.3,33.1 L6.2,25 L6.2,13.6 Z"/></g>
+        <g class="k"><path d="M14.3,5.5 L25.7,5.5 L33.8,13.6 L33.8,25 L25.7,33.1 L14.3,33.1 L6.2,25 L6.2,13.6 Z"/><path class="w" d="M15.6,15.6 C15.6,11.8 18,10 20.4,10 C23.4,10 25.2,12 25.2,14.6 C25.2,17.6 22.3,18.3 20.9,20 C20.3,20.8 20.2,21.6 20.2,23"/><circle class="d" cx="20.2" cy="28" r="2.3"/></g>
+      </svg></span><span class="lb">왜 사?</span></div>
+      <!-- 지난 기록 -->
+      <div class="app"><span class="ic ht" style="--bg:#AAC1C5;--f:#F2F3F3"><svg viewBox="0 0 40 40" aria-hidden="true">
+        <g class="f" transform="translate(2.1 1.9)"><rect x="8" y="6.5" width="24" height="27.5" rx="2.5"/></g>
+        <g class="k"><rect x="8" y="6.5" width="24" height="27.5" rx="2.5"/><path class="t" d="M12.5,6.5 L12.5,34"/><path class="d" d="M16,29 L16,23 L19,23 L19,29 Z M21,29 L21,17 L24,17 L24,29 Z M26,29 L26,21 L29,21 L29,29 Z"/></g>
+      </svg></span><span class="lb">지난 기록</span></div>
+      <!-- 한 달 뒤 -->
+      <div class="app"><span class="ic" style="--bg:#4B939D;--f:#E2E5E6"><svg viewBox="0 0 40 40" aria-hidden="true">
+        <g class="f" transform="translate(2.1 1.9)"><path d="M14,33 L26,33 C26,28.5 21,25.5 20,25.5 C19,25.5 14,28.5 14,33 Z M16,10 L24,10 C24,13 21,15.5 20,15.5 C19,15.5 16,13 16,10 Z"/></g>
+        <g class="k"><path d="M11,6.5 L29,6.5 M11,33.5 L29,33.5"/><path d="M13,6.5 C13,14.5 18.5,17 18.5,20 C18.5,23 13,25.5 13,33.5 M27,6.5 C27,14.5 21.5,17 21.5,20 C21.5,23 27,25.5 27,33.5"/></g>
+      </svg></span><span class="lb">한 달 뒤</span></div>
+      <!-- 돌이 -->
+      <div class="app"><span class="ic" style="--bg:#2D565B;--f:#F2F3F3;--f2:#AAC1C5"><svg viewBox="0 0 40 40" aria-hidden="true">
+        <g class="f" transform="translate(2.1 1.9)"><path d="M3,26 C2.5,17 11,12.5 20.5,12.5 C30.5,12.5 38,17 37.5,26 C37,33.5 29.5,37 20,37 C11,37 3.5,33.5 3,26 Z"/></g>
+        <g class="f2" transform="translate(-1.7 1.6)"><path d="M20.5,9.8 C18,5.6 13.6,5.2 12,6.8 C13.2,9.8 17.2,10.9 20.5,9.8 Z M20.5,9 C22.6,4.6 27,3.8 29,5.4 C28.2,8.6 24.2,10.2 20.5,9 Z"/></g>
+        <g class="k"><path d="M3,26 C2.5,17 11,12.5 20.5,12.5 C30.5,12.5 38,17 37.5,26 C37,33.5 29.5,37 20,37 C11,37 3.5,33.5 3,26 Z"/><path d="M20.5,13 L20.5,8"/><path d="M20.5,9.8 C18,5.6 13.6,5.2 12,6.8 C13.2,9.8 17.2,10.9 20.5,9.8 Z M20.5,9 C22.6,4.6 27,3.8 29,5.4 C28.2,8.6 24.2,10.2 20.5,9 Z"/><circle class="d" cx="14.5" cy="24.5" r="2.2"/><circle class="d" cx="26" cy="24.5" r="2.2"/><path d="M17,29.5 C19,31.6 22,31.6 24,29.5"/></g>
+      </svg></span><span class="lb">돌이</span></div>
+    </div>
+  </div>
+  <div class="homebar"></div>
+</div>
+</section>

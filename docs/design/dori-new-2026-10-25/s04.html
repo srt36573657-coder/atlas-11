@@ -1,0 +1,48 @@
+<section class="sample" id="s04">
+<style>
+#s04 .phone .bt{display:inline-flex;align-items:flex-end;gap:.7cqw;height:3cqw}
+#s04 .phone .bt i{display:block;width:.9cqw;background:#FFFFFF;border-radius:.3cqw}
+#s04 .phone .bt i:nth-child(1){height:1.3cqw}
+#s04 .phone .bt i:nth-child(2){height:2cqw}
+#s04 .phone .bt i:nth-child(3){height:2.8cqw}
+#s04 .phone .bt b{display:block;width:6.2cqw;height:3cqw;margin-left:1.2cqw;border:.35cqw solid #FFFFFF;border-radius:.9cqw;box-shadow:inset 0 0 0 .45cqw #191B1B,inset 4cqw 0 0 #FFFFFF}
+#s04 .phone .scr{position:absolute;inset:0;background:#191B1B;display:flex;flex-direction:column;padding:13cqw 0 7cqw;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif}
+#s04 .phone .stack{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center}
+#s04 .phone .r{position:relative;margin:0;font-size:30cqw;line-height:1;font-weight:900;letter-spacing:-.02em;white-space:nowrap;color:rgba(25,27,27,0);-webkit-text-stroke:.7cqw var(--c);transform:translateX(var(--x,0))}
+#s04 .phone .r.on{z-index:2;color:#1FB8CD;-webkit-text-stroke:0}
+#s04 .phone .r.on::after{content:attr(data-t);position:absolute;left:0;top:0;color:rgba(25,27,27,0);-webkit-text-stroke:.4cqw #F2F3F3;transform:translate(-1.2cqw,-1cqw)}
+#s04 .phone .act{display:flex;align-items:center;justify-content:space-between;gap:4cqw;padding:4cqw 7cqw 0}
+#s04 .phone .q{margin:0;font-size:6.2cqw;line-height:1.24;font-weight:800;color:#F2F3F3}
+#s04 .phone .go{flex:none;width:28cqw;height:28cqw;border-radius:50%;border:0;padding:0;background:#F2F3F3;color:#171615;font-family:inherit;font-weight:900;font-size:7.6cqw;line-height:1;letter-spacing:-.02em;box-shadow:1.6cqw 1.6cqw 0 #3E737A;cursor:pointer;transition:transform .12s,box-shadow .12s}
+#s04 .phone .go:active{transform:translate(1.4cqw,1.4cqw);box-shadow:.2cqw .2cqw 0 #3E737A}
+#s04 .phone .go:focus-visible{outline:.8cqw solid #AAC1C5;outline-offset:1.2cqw}
+#s04 .phone .quiet{margin:4.5cqw 7cqw 0;padding-top:3cqw;border-top:.4cqw solid #2D565B;font-size:4.6cqw;line-height:1.4;font-weight:700;color:#AAC1C5}
+@keyframes s04reg{to{transform:translate(-.3cqw,-.25cqw)}}
+@media (prefers-reduced-motion:no-preference){#s04 .phone .r.on::after{animation:s04reg 2.8s ease-in-out 1.2s infinite alternate}}
+</style>
+<div class="head">
+  <span class="no"><b>4</b>큰 질문</span>
+  <p class="why"><em>워홀 방식</em> 같은 물음, 다섯 가지 색</p>
+  <p class="why"><em>잡스 방식</em> 물음 하나, 단추 하나</p>
+  <p class="why"><em>누르는 곳</em> 「시작」 → 첫 물음</p>
+</div>
+<div class="phone">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><span class="bt" aria-hidden="true"><i></i><i></i><i></i><b></b></span></div>
+  <div class="scr">
+    <div class="stack">
+      <p class="r" style="--c:#284E53;--x:-1.5cqw" aria-hidden="true">왜 사?</p>
+      <p class="r" style="--c:#478B94;--x:1.2cqw" aria-hidden="true">왜 사?</p>
+      <p class="r" style="--c:#AAC1C5;--x:-.6cqw" aria-hidden="true">왜 사?</p>
+      <p class="r on" data-t="왜 사?">왜 사?</p>
+      <p class="r" style="--c:#4E99A3;--x:1.4cqw" aria-hidden="true">왜 사?</p>
+    </div>
+    <div class="act">
+      <p class="q">사기 전에<br>열한 가지만<br>물어볼게요</p>
+      <button class="go" type="button">시작</button>
+    </div>
+    <p class="quiet">한 달 뒤, 그날 정한 대로 했어?</p>
+  </div>
+  <div class="homebar"></div>
+</div>
+</section>

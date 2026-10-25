@@ -1,0 +1,67 @@
+<section class="sample" id="s11">
+<style>
+#s11 .phone .scr{position:absolute;inset:0;overflow:hidden;background:#F2F3F3}
+#s11 .phone .sig{display:inline-flex;align-items:center;gap:1.4cqw}
+#s11 .phone .sig svg{height:3.2cqw;width:auto;display:block}
+#s11 .phone .band{position:absolute;left:0;right:0;top:0;height:68cqw;background:#171615}
+#s11 .phone .band::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(60,78,81,.7) 0 .55cqw,transparent .62cqw);background-size:2.1cqw 2.1cqw;-webkit-mask-image:linear-gradient(215deg,#171615 0%,transparent 52%);mask-image:linear-gradient(215deg,#171615 0%,transparent 52%)}
+#s11 .phone .mon{position:absolute;left:6cqw;top:16cqw;margin:0;font-size:5cqw;line-height:1.2;font-weight:800;color:#AAC1C5;z-index:1}
+#s11 .phone .ttl{position:absolute;left:5cqw;top:22.5cqw;margin:0;font-size:22.5cqw;line-height:1;font-weight:900;letter-spacing:-.6cqw;color:#F2F3F3;isolation:isolate;z-index:1}
+#s11 .phone .ttl::before{content:"싹 달력";position:absolute;left:0;top:0;z-index:-1;transform:translate(2.2cqw,1.9cqw);color:transparent;background:radial-gradient(circle,#4E99A3 0 .66cqw,transparent .74cqw) 0 0/1.8cqw 1.8cqw;-webkit-background-clip:text;background-clip:text}
+#s11 .phone .note{position:absolute;left:6cqw;right:5cqw;top:52cqw;margin:0;font-size:4.4cqw;line-height:1.35;font-weight:700;color:#D6D5D4;z-index:1}
+#s11 .phone .wk,#s11 .phone .grid{position:absolute;left:4.5cqw;right:4.5cqw;display:grid;grid-template-columns:repeat(7,1fr);column-gap:2.4cqw}
+#s11 .phone .wk{top:75cqw;text-align:center;font-size:4.2cqw;line-height:1.2;font-weight:900;color:#3C4E51}
+#s11 .phone .grid{top:82cqw;row-gap:3.6cqw}
+#s11 .phone .d{position:relative;aspect-ratio:1;display:grid;place-items:center;font-size:4.8cqw;line-height:1;font-weight:900;color:#171615}
+#s11 .phone .d>span{position:relative;z-index:2}
+#s11 .phone .d.v1{background:#AAC1C5}
+#s11 .phone .d.v2{background:#4E99A3}
+#s11 .phone .d.v3{background:#3E737A;color:#F2F3F3}
+#s11 .phone .d.v4{background:#2D565B;color:#F2F3F3}
+#s11 .phone .d.v5{background:#17363B;color:#F2F3F3}
+#s11 .phone .d.v1::before,#s11 .phone .d.v2::before,#s11 .phone .d.v3::before,#s11 .phone .d.v4::before,#s11 .phone .d.v5::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(23,22,21,.2) 0 .4cqw,transparent .46cqw);background-size:1.6cqw 1.6cqw}
+#s11 .phone .d.v4::before,#s11 .phone .d.v5::before{background-image:radial-gradient(circle,rgba(242,243,243,.14) 0 .4cqw,transparent .46cqw)}
+#s11 .phone .d.v1::after,#s11 .phone .d.v2::after,#s11 .phone .d.v3::after,#s11 .phone .d.v4::after,#s11 .phone .d.v5::after{content:"";position:absolute;inset:0;border:.45cqw solid #171615;transform:translate(-.9cqw,-.9cqw);z-index:1}
+#s11 .phone .d.yet{border:.4cqw dashed #8CA3A7;color:#3C4E51}
+#s11 .phone .d.off{color:#5F6E70}
+#s11 .phone .d.now{z-index:5}
+#s11 .phone .d.now .big{position:absolute;inset:-2.6cqw;background:#1FB8CD;border:.8cqw solid #171615;box-shadow:1.4cqw 1.4cqw 0 #171615;transform:rotate(-4deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5cqw;animation:s11stamp 3s ease-in-out infinite alternate}
+@keyframes s11stamp{from{transform:rotate(-4deg)}to{transform:rotate(-2.4deg)}}
+#s11 .phone .d.now .n{font-size:7.6cqw;line-height:.95;font-weight:900;color:#171615}
+#s11 .phone .d.now .c{font-size:4.8cqw;line-height:1;font-weight:900;color:#171615}
+#s11 .phone .defs{position:absolute;width:0;height:0;overflow:hidden}
+#s11 .phone .key{position:absolute;left:0;right:0;top:165.5cqw;display:flex;justify-content:center;align-items:flex-end;gap:1.2cqw;font-size:4.4cqw;line-height:1.2;font-weight:800;color:#3C4E51}
+#s11 .phone .key svg{display:block;width:11cqw;height:10.4cqw;overflow:visible}
+#s11 .phone .key em{font-style:normal;margin:0 1.2cqw .8cqw}
+#s11 .phone .foot{position:absolute;left:0;right:0;bottom:0;height:27cqw;background:#171615;display:flex;justify-content:center;padding-top:6cqw;font-size:4.8cqw;line-height:1.3;font-weight:800;color:#F2F3F3}
+</style>
+<div class="head">
+  <span class="no"><b>11</b>달력 판화</span>
+  <p class="why"><em>워홀 방식</em> 같은 네모 · 같은 싹 난 조약돌을 짙기만 바꿔 되풀이 · 테두리 판이 살짝 어긋난 찍기 · 망점으로 찍은 제목</p>
+  <p class="why"><em>잡스 방식</em> 중심은 오늘 한 칸(13일) · 글은 제목과 한 줄뿐 · 센 숫자는 오늘 「31곳」 하나</p>
+  <p class="why"><em>누르는 곳</em> 날 한 칸 → 그날 고른 곳과 그 뒤 일(지난 기록만) · 오늘 칸 → 오늘 고른 31곳</p>
+</div>
+<div class="phone">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><span class="sig"><svg viewBox="0 0 34 22" aria-hidden="true"><rect x="0" y="14" width="6" height="8" rx="1.5" fill="currentColor"/><rect x="9" y="10" width="6" height="12" rx="1.5" fill="currentColor"/><rect x="18" y="5" width="6" height="17" rx="1.5" fill="currentColor"/><rect x="27" y="0" width="6" height="22" rx="1.5" fill="currentColor"/></svg><svg viewBox="0 0 50 24" aria-hidden="true"><rect x="1.5" y="1.5" width="42" height="21" rx="6" fill="none" stroke="currentColor" stroke-width="3" opacity=".6"/><rect x="5.5" y="5.5" width="30" height="13" rx="3" fill="currentColor"/><rect x="46" y="8" width="3.5" height="8" rx="1.5" fill="currentColor" opacity=".6"/></svg></span></div>
+  <div class="scr">
+    <div class="band"></div>
+    <p class="mon">2026년 10월 · 오늘은 13일</p>
+    <p class="ttl">싹 달력</p>
+    <p class="note">날마다 고른 곳과 그 뒤 일을 그대로 남겨요</p>
+    <div class="wk"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+    <div class="grid">
+      <i></i><i></i><i></i><i></i>
+      <span class="d v2"><span>1</span></span><span class="d v1"><span>2</span></span><span class="d off"><span>3</span></span>
+      <span class="d off"><span>4</span></span><span class="d off"><span>5</span></span><span class="d v1"><span>6</span></span><span class="d v3"><span>7</span></span><span class="d v2"><span>8</span></span><span class="d off"><span>9</span></span><span class="d off"><span>10</span></span>
+      <span class="d off"><span>11</span></span><span class="d v5"><span>12</span></span><span class="d now"><span class="big"><b class="n">13</b><b class="c">31곳</b></span></span><span class="d yet"><span>14</span></span><span class="d yet"><span>15</span></span><span class="d yet"><span>16</span></span><span class="d off"><span>17</span></span>
+      <span class="d off"><span>18</span></span><span class="d yet"><span>19</span></span><span class="d yet"><span>20</span></span><span class="d yet"><span>21</span></span><span class="d yet"><span>22</span></span><span class="d yet"><span>23</span></span><span class="d off"><span>24</span></span>
+      <span class="d off"><span>25</span></span><span class="d yet"><span>26</span></span><span class="d yet"><span>27</span></span><span class="d yet"><span>28</span></span><span class="d yet"><span>29</span></span><span class="d yet"><span>30</span></span><span class="d off"><span>31</span></span>
+    </div>
+    <svg class="defs" aria-hidden="true"><symbol id="s11-peb" viewBox="0 0 100 95"><path d="M8 72C6 58 20 48 41 46C63 44 86 48 93 62C98 74 87 86 61 88C35 90 10 86 8 72Z" fill="#171615" transform="translate(4 4)"/><path d="M8 72C6 58 20 48 41 46C63 44 86 48 93 62C98 74 87 86 61 88C35 90 10 86 8 72Z" stroke="#171615" stroke-width="5"/><path d="M50 47V31" fill="none" stroke="#171615" stroke-width="5" stroke-linecap="round"/><path d="M50 34C46 21 32 17 20 21C23 34 37 38 50 34Z" fill="#F2F3F3" stroke="#171615" stroke-width="4.5" stroke-linejoin="round"/><path d="M50 32C54 17 69 10 83 14C81 29 65 36 50 32Z" fill="#F2F3F3" stroke="#171615" stroke-width="4.5" stroke-linejoin="round"/></symbol></svg>
+    <div class="key"><em>적음</em><svg viewBox="0 0 100 95" aria-hidden="true"><use href="#s11-peb" fill="#AAC1C5"/></svg><svg viewBox="0 0 100 95" aria-hidden="true"><use href="#s11-peb" fill="#4E99A3"/></svg><svg viewBox="0 0 100 95" aria-hidden="true"><use href="#s11-peb" fill="#3E737A"/></svg><svg viewBox="0 0 100 95" aria-hidden="true"><use href="#s11-peb" fill="#2D565B"/></svg><svg viewBox="0 0 100 95" aria-hidden="true"><use href="#s11-peb" fill="#17363B"/></svg><em>많음</em></div>
+    <div class="foot">날을 누르면 그날 기록이 열려요</div>
+  </div>
+  <div class="homebar"></div>
+</div>
+</section>

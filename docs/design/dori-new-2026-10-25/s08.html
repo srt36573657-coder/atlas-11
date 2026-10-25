@@ -1,0 +1,121 @@
+<section class="sample" id="s08">
+<style>
+#s08 .phone .film{position:absolute;left:0;top:0;width:100cqw;height:220cqw;display:block;}
+#s08 .phone .k{fill:none;stroke:#171615;stroke-width:4.6;stroke-linejoin:round;stroke-linecap:round;}
+#s08 .phone .kt{fill:none;stroke:#171615;stroke-width:0.7;stroke-linejoin:round;stroke-linecap:round;}
+#s08 .phone .d{fill:#171615;stroke:none;}
+#s08 .phone .sw{transform-box:fill-box;transform-origin:50% 100%;animation:s08-sway 3.4s ease-in-out infinite alternate;}
+@keyframes s08-sway{from{transform:rotate(-5deg);}to{transform:rotate(5deg);}}
+@media (prefers-reduced-motion:reduce){#s08 .phone .sw{animation:none;}}
+#s08 .phone .fn{position:absolute;left:5.3cqw;width:6.7cqw;display:flex;flex-direction:column;align-items:center;gap:0.6cqw;font-size:4.6cqw;font-weight:900;line-height:1;color:#797F7F;}
+#s08 .phone .fn i{display:block;width:0;height:0;border-top:1.3cqw solid transparent;border-bottom:1.3cqw solid transparent;border-left:1.8cqw solid #797F7F;}
+#s08 .phone .fn.on{color:#FFFFFF;}
+#s08 .phone .fn.on i{border-left-color:#FFFFFF;}
+#s08 .phone .cap{position:absolute;left:47.5cqw;width:39.5cqw;height:36.6cqw;display:flex;flex-direction:column;justify-content:center;gap:1.4cqw;color:#FFFFFF;}
+#s08 .phone .cap b{display:block;font-size:7.4cqw;font-weight:900;line-height:1.08;letter-spacing:-0.2cqw;}
+#s08 .phone .cap span{display:block;font-size:4.5cqw;font-weight:700;line-height:1.3;color:#D6D5D4;}
+#s08 .phone .cap.on{color:#171615;}
+#s08 .phone .cap.on b{font-size:9.6cqw;}
+#s08 .phone .cap.on span{color:#152D30;}
+</style>
+<div class="head">
+  <span class="no"><b>8</b>필름 띠</span>
+  <p class="why"><em>워홀 방식</em> 같은 돌이를 색만 바꿔 다섯 칸에 찍은 필름</p>
+  <p class="why"><em>잡스 방식</em> 다섯 칸이 곧 쓰는 법 — 위에서 아래로 한 번씩</p>
+  <p class="why"><em>누르는 곳</em> 칸을 누르면 그 단계로 · 첫 칸 「싹 찾기」부터</p>
+</div>
+<div class="phone">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><span>●●●</span></div>
+  <svg class="film" viewBox="0 0 100 220" aria-hidden="true">
+    <defs>
+      <pattern id="s08-hole" x="0" y="0.6" width="100" height="6.2" patternUnits="userSpaceOnUse">
+        <rect x="1.5" y="1.5" width="3.8" height="3.2" rx="0.9" fill="#AAC1C5"/>
+        <rect x="94.7" y="1.5" width="3.8" height="3.2" rx="0.9" fill="#AAC1C5"/>
+      </pattern>
+      <pattern id="s08-ht" width="1.5" height="1.5" patternUnits="userSpaceOnUse"><circle cx="0.75" cy="0.75" r="0.3" fill="#171615" fill-opacity="0.16"/></pattern>
+      <pattern id="s08-hw" width="1.9" height="1.9" patternUnits="userSpaceOnUse"><circle cx="0.95" cy="0.95" r="0.62" fill="#FFFFFF" fill-opacity="0.75"/></pattern>
+      <path id="s08-mb" d="M14,68 C12,50 30,41 50,41 C71,41 88,50 86,68 C85,82 70,89 50,89 C30,89 15,82 14,68 Z"/>
+      <path id="s08-ml" d="M50,31 C43,18 30,17 25,22 C29,31 40,35 50,31 Z M50,29 C56,15 70,13 75,18 C72,28 61,33 50,29 Z"/>
+      <path id="s08-mt" d="M42.80,8.70 a7.2,7.2 0 1,0 14.4,0 a7.2,7.2 0 1,0 -14.4,0 Z M53.07,16.16 a7.2,7.2 0 1,0 14.4,0 a7.2,7.2 0 1,0 -14.4,0 Z M49.15,28.24 a7.2,7.2 0 1,0 14.4,0 a7.2,7.2 0 1,0 -14.4,0 Z M36.45,28.24 a7.2,7.2 0 1,0 14.4,0 a7.2,7.2 0 1,0 -14.4,0 Z M32.53,16.16 a7.2,7.2 0 1,0 14.4,0 a7.2,7.2 0 1,0 -14.4,0 Z"/>
+      <path id="s08-ms" d="M50,41.5 L50,27"/>
+      <path id="s08-mm" d="M44,73 C47,76.5 53,76.5 56,73"/>
+      <path id="s08-me" d="M35.4,64 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z M57.4,64 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z"/>
+    </defs>
+    <rect x="0" y="0" width="100" height="220" fill="#171615"/>
+    <rect x="0" y="0" width="100" height="220" fill="url(#s08-hole)"/>
+
+    <!-- 1 싹 찾기 (중심) -->
+    <rect x="12" y="15" width="76" height="36.6" rx="1.2" fill="#1FB8CD"/>
+    <rect x="12" y="15" width="76" height="36.6" rx="1.2" fill="url(#s08-ht)"/>
+    <circle cx="28.6" cy="33.6" r="15.2" fill="url(#s08-hw)"/>
+    <g transform="translate(13.4 17.4) scale(.32)">
+      <use href="#s08-mb" fill="#FFFFFF"/>
+    </g>
+    <g transform="translate(11.9 17) scale(.32)"><g class="sw"><use href="#s08-ml" fill="#152D30"/></g></g>
+    <g transform="translate(12.4 16.4) scale(.32)">
+      <use href="#s08-mb" class="k"/><g class="sw"><use href="#s08-ms" class="k"/><use href="#s08-ml" class="k"/></g><use href="#s08-mm" class="k"/><use href="#s08-me" class="d"/>
+    </g>
+
+    <!-- 2 회사 고르기 -->
+    <rect x="12" y="53.8" width="76" height="36.6" rx="1.2" fill="#3E737A"/>
+    <rect x="12" y="53.8" width="76" height="36.6" rx="1.2" fill="url(#s08-ht)"/>
+    <rect x="30.2" y="60.4" width="12.6" height="25.6" fill="#D6D5D4"/>
+    <g class="kt" style="stroke-width:1.2"><rect x="29.2" y="59.4" width="12.6" height="25.6"/></g>
+    <g class="d"><rect x="31.6" y="63" width="2.6" height="2.6"/><rect x="36.8" y="63" width="2.6" height="2.6"/><rect x="31.6" y="68.2" width="2.6" height="2.6"/><rect x="36.8" y="68.2" width="2.6" height="2.6"/><rect x="31.6" y="73.4" width="2.6" height="2.6"/><rect x="36.8" y="73.4" width="2.6" height="2.6"/></g>
+    <circle cx="41.6" cy="59.8" r="4.4" fill="#F2F3F3"/>
+    <g class="kt" style="stroke-width:1.2"><circle cx="40.8" cy="59.2" r="4.4"/><path d="M38.6,59.3 L40.3,61 L43.2,57.6"/></g>
+    <g transform="translate(11.6 63.6) scale(.24)"><use href="#s08-mb" fill="#E2E5E6"/></g>
+    <g transform="translate(9.9 63.3) scale(.24)"><use href="#s08-ml" fill="#AAC1C5"/></g>
+    <g transform="translate(10.6 62.6) scale(.24)"><use href="#s08-mb" class="k"/><use href="#s08-ms" class="k"/><use href="#s08-ml" class="k"/><use href="#s08-mm" class="k"/><use href="#s08-me" class="d"/></g>
+
+    <!-- 3 왜 사? -->
+    <rect x="12" y="92.6" width="76" height="36.6" rx="1.2" fill="#3C4E51"/>
+    <rect x="12" y="92.6" width="76" height="36.6" rx="1.2" fill="url(#s08-ht)"/>
+    <path d="M30,96 L41.2,96 Q43.2,96 43.2,98 L43.2,107.6 Q43.2,109.6 41.2,109.6 L34.4,109.6 L30,113.6 L31,109.6 L30,109.6 Q28,109.6 28,107.6 L28,98 Q28,96 30,96 Z" fill="#F2F3F3" transform="translate(0.9 0.8)"/>
+    <g class="kt" style="stroke-width:1.2"><path d="M30,96 L41.2,96 Q43.2,96 43.2,98 L43.2,107.6 Q43.2,109.6 41.2,109.6 L34.4,109.6 L30,113.6 L31,109.6 L30,109.6 Q28,109.6 28,107.6 L28,98 Q28,96 30,96 Z"/><path d="M33,100.6 C33,98.6 34.2,97.8 35.6,97.8 C37.2,97.8 38.2,98.8 38.2,100.2 C38.2,101.8 36.6,102.2 36,103.2 C35.8,103.6 35.7,104 35.7,104.6" style="stroke-width:1.5"/></g>
+    <circle class="d" cx="35.7" cy="107" r="0.95"/>
+    <g transform="translate(10.6 102.6) scale(.26)"><use href="#s08-mb" fill="#AAC1C5"/></g>
+    <g transform="translate(8.9 102.3) scale(.26)"><use href="#s08-ml" fill="#E2E5E6"/></g>
+    <g transform="translate(9.6 101.6) scale(.26)"><use href="#s08-mb" class="k"/><use href="#s08-ms" class="k"/><use href="#s08-ml" class="k"/><use href="#s08-me" class="d"/><path class="k" d="M45,74.5 C48,73 52,73 55,74.5"/></g>
+
+    <!-- 4 지난 기록 : 넷 중 하나만 꽃 -->
+    <rect x="12" y="131.4" width="76" height="36.6" rx="1.2" fill="#356369"/>
+    <rect x="12" y="131.4" width="76" height="36.6" rx="1.2" fill="url(#s08-ht)"/>
+    <g transform="translate(14.3 134.4) scale(.15)"><use href="#s08-mb" fill="#D6D5D4"/></g>
+    <g transform="translate(29.3 134.4) scale(.15)"><use href="#s08-mb" fill="#F2F3F3"/></g>
+    <g transform="translate(14.3 150.2) scale(.15)"><use href="#s08-mb" fill="#D6D5D4"/></g>
+    <g transform="translate(29.3 150.2) scale(.15)"><use href="#s08-mb" fill="#D6D5D4"/></g>
+    <g transform="translate(29.3 134.4) scale(.15)"><use href="#s08-mt" fill="#F2F3F3"/></g>
+    <g transform="translate(13.6 133.8) scale(.15)"><use href="#s08-mb" class="k"/><use href="#s08-ms" class="k"/><use href="#s08-ml" class="k"/><use href="#s08-me" class="d"/></g>
+    <g transform="translate(28.6 133.8) scale(.15)"><use href="#s08-mb" class="k"/><path class="k" d="M50,41.5 L50,36"/><use href="#s08-mt" class="k" style="stroke-width:3.4"/><circle class="d" cx="50" cy="19.5" r="4.6"/><use href="#s08-me" class="d"/><use href="#s08-mm" class="k"/></g>
+    <g transform="translate(13.6 149.6) scale(.15)"><use href="#s08-mb" class="k"/><use href="#s08-ms" class="k"/><use href="#s08-ml" class="k"/><use href="#s08-me" class="d"/></g>
+    <g transform="translate(28.6 149.6) scale(.15)"><use href="#s08-mb" class="k"/><use href="#s08-ms" class="k"/><use href="#s08-ml" class="k"/><use href="#s08-me" class="d"/></g>
+
+    <!-- 5 한 달 뒤 -->
+    <rect x="12" y="170.2" width="76" height="36.6" rx="1.2" fill="#2D565B"/>
+    <rect x="12" y="170.2" width="76" height="36.6" rx="1.2" fill="url(#s08-ht)"/>
+    <rect x="16" y="175.6" width="24" height="24" rx="2" fill="#E2E5E6" transform="translate(0.9 0.8)"/>
+    <path d="M15,180.6 L15,177 Q15,174.8 17.2,174.8 L36.8,174.8 Q39,174.8 39,177 L39,180.6 Z" fill="#171615"/>
+    <g class="kt" style="stroke-width:1.2"><rect x="15" y="174.8" width="24" height="24" rx="2"/><path d="M20.4,172.6 L20.4,176.8 M33.6,172.6 L33.6,176.8"/></g>
+    <g class="d"><circle cx="19.6" cy="184.6" r="0.9"/><circle cx="24.4" cy="184.6" r="0.9"/><circle cx="29.2" cy="184.6" r="0.9"/><circle cx="34" cy="184.6" r="0.9"/><circle cx="19.6" cy="189.4" r="0.9"/><circle cx="24.4" cy="189.4" r="0.9"/><circle cx="19.6" cy="194.2" r="0.9"/></g>
+    <g class="kt" style="stroke-width:1.1"><circle cx="24.4" cy="194.2" r="2.6"/></g>
+    <g transform="translate(26.4 183.4) scale(.2)"><use href="#s08-mb" fill="#8CA3A7"/></g>
+    <g transform="translate(25 183.2) scale(.2)"><use href="#s08-ml" fill="#D6D5D4"/></g>
+    <g transform="translate(25.6 182.6) scale(.2)"><use href="#s08-mb" class="k"/><use href="#s08-ms" class="k"/><use href="#s08-ml" class="k"/><use href="#s08-me" class="d"/><use href="#s08-mm" class="k"/></g>
+  </svg>
+
+  <div class="fn on" style="top:28.6cqw"><i></i>1</div>
+  <div class="fn" style="top:67.4cqw"><i></i>2</div>
+  <div class="fn" style="top:106.2cqw"><i></i>3</div>
+  <div class="fn" style="top:145cqw"><i></i>4</div>
+  <div class="fn" style="top:183.8cqw"><i></i>5</div>
+
+  <div class="cap on" style="top:15cqw"><b>싹 찾기</b><span>싹이 튼 업종 37곳</span></div>
+  <div class="cap" style="top:53.8cqw"><b>회사 고르기</b><span>오늘 고른 31곳</span></div>
+  <div class="cap" style="top:92.6cqw"><b>왜 사?</b><span>열한 질문에 답하기</span></div>
+  <div class="cap" style="top:131.4cqw"><b>지난 기록</b><span>네 번에 한 번쯤 꽃</span><span>아무 회사와 비슷</span></div>
+  <div class="cap" style="top:170.2cqw"><b>한 달 뒤</b><span>그날 정한 대로 했어?</span></div>
+  <div class="homebar"></div>
+</div>
+</section>

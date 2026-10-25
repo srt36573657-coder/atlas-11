@@ -1,0 +1,100 @@
+<section class="sample" id="s02">
+<style>
+#s02 .phone .scr{position:absolute;inset:0;background:#171615}
+#s02 .phone .ttl{position:absolute;left:5cqw;right:4cqw;top:15cqw;margin:0;font-size:9.4cqw;line-height:1.1;font-weight:900;letter-spacing:-.28cqw;color:#FFFFFF}
+#s02 .phone .day{position:absolute;left:5cqw;right:4cqw;top:26.4cqw;margin:0;font-size:4.2cqw;line-height:1.3;font-weight:700;color:#AAC1C5}
+#s02 .phone .grid{position:absolute;left:3.5cqw;right:3.5cqw;top:35cqw;height:158cqw;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2.6cqw}
+#s02 .phone .p{position:relative;display:block;margin:0;padding:0;border:0;font:inherit;text-align:left;background:var(--bg);color:var(--ink);cursor:pointer;isolation:isolate}
+#s02 .phone .p::before{content:"";position:absolute;left:1cqw;right:1cqw;top:9cqw;height:46cqw;z-index:-1;background-image:radial-gradient(circle,var(--dot) 0 36%,transparent 40%);background-size:2.6cqw 2.6cqw;-webkit-mask-image:radial-gradient(circle closest-side,#171615 35%,transparent 100%);mask-image:radial-gradient(circle closest-side,#171615 35%,transparent 100%)}
+#s02 .phone .nm{position:absolute;left:3.4cqw;top:2.8cqw;font-size:9cqw;line-height:1;font-weight:900;letter-spacing:-.18cqw}
+#s02 .phone .art{position:absolute;left:3.6cqw;top:13cqw;width:38cqw;height:38cqw;overflow:visible}
+#s02 .phone .n{position:absolute;left:3cqw;bottom:3cqw;font-size:25cqw;line-height:.78;font-weight:900;letter-spacing:-1.25cqw;text-shadow:1.2cqw 1.2cqw 0 var(--off)}
+#s02 .phone .n small{font-size:6.4cqw;letter-spacing:0;margin-left:.8cqw;text-shadow:.6cqw .6cqw 0 var(--off)}
+#s02 .phone .on{box-shadow:1.6cqw 1.6cqw 0 #FFFFFF;z-index:1}
+#s02 .phone .sway{transform-box:view-box;transform-origin:51.5% 24%;animation:s02-sway 3.2s ease-in-out infinite}
+@keyframes s02-sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@media (prefers-reduced-motion:reduce){#s02 .phone .sway{animation:none}}
+#s02 .phone .hint{position:absolute;left:5cqw;right:4cqw;top:197.5cqw;margin:0;font-size:4.4cqw;line-height:1.3;font-weight:800;color:#E2E5E6}
+</style>
+<div class="head">
+  <span class="no"><b>2</b>네 칸 판화</span>
+  <p class="why"><em>워홀 방식</em> 한 판을 네 번 찍고 칸마다 색과 싹 모양만 바꿨어요</p>
+  <p class="why"><em>잡스 방식</em> 큰 숫자 넷. 빛나는 싹 칸 하나가 중심이에요</p>
+  <p class="why"><em>누르는 곳</em> 칸을 누르면 그 자리에 있는 업종들이 나와요</p>
+</div>
+<div class="phone">
+  <div class="scr"></div>
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><span>●●●</span></div>
+  <h2 class="ttl">업종 77곳은 지금</h2>
+  <p class="day">10월 13일 기준</p>
+  <div class="grid">
+    <button class="p on" type="button" aria-label="싹 업종 37곳 보기" style="--bg:#1FB8CD;--ink:#152D30;--off:#FFFFFF;--dot:#F2F3F3">
+      <span class="nm">싹</span>
+      <svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" fill="#F2F3F3" transform="translate(-4 3)"/>
+        <g class="sway">
+          <path d="M51 25C45 13 33 10 26 15C31 24 41 29 51 25ZM52 23C57 10 69 6 77 10C72 21 62 26 52 23Z" fill="#284E53" transform="translate(3 -2.5)"/>
+          <path d="M51 25C45 13 33 10 26 15C31 24 41 29 51 25ZM52 23C57 10 69 6 77 10C72 21 62 26 52 23Z" fill="none" stroke="#171615" stroke-width="3.4" stroke-linejoin="round"/>
+        </g>
+        <g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" stroke-width="4.4"/>
+          <path d="M50 36C50 31 50.5 27 51.5 23" stroke-width="4"/>
+          <path d="M44 72Q50 77 56 72" stroke-width="3.4"/>
+        </g>
+        <g fill="#171615"><ellipse cx="38" cy="61" rx="3.6" ry="4.8"/><ellipse cx="61" cy="61" rx="3.6" ry="4.8"/></g>
+      </svg>
+      <span class="n">37<small>곳</small></span>
+    </button>
+    <button class="p" type="button" aria-label="꽃 업종 7곳 보기" style="--bg:#AAC1C5;--ink:#171615;--off:#F2F3F3;--dot:#8CA3A7">
+      <span class="nm">꽃</span>
+      <svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" fill="#4E99A3" transform="translate(3.5 3)"/>
+        <path d="M50 31C44 25 37 25 33 28C37 33 44 34 50 31ZM50 29C56 23 63 23 67 26C63 31 56 32 50 29Z" fill="#315D62" transform="translate(-2 2)"/>
+        <g fill="#FFFFFF" transform="translate(-2.5 2)"><circle cx="50" cy="6" r="5.2"/><circle cx="56.7" cy="10.8" r="5.2"/><circle cx="54.1" cy="18.7" r="5.2"/><circle cx="45.9" cy="18.7" r="5.2"/><circle cx="43.3" cy="10.8" r="5.2"/></g>
+        <g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" stroke-width="4.4"/>
+          <path d="M50 36V20" stroke-width="3.6"/>
+          <path d="M50 31C44 25 37 25 33 28C37 33 44 34 50 31ZM50 29C56 23 63 23 67 26C63 31 56 32 50 29Z" stroke-width="3"/>
+          <g stroke-width="2.8"><circle cx="50" cy="6" r="5.2"/><circle cx="56.7" cy="10.8" r="5.2"/><circle cx="54.1" cy="18.7" r="5.2"/><circle cx="45.9" cy="18.7" r="5.2"/><circle cx="43.3" cy="10.8" r="5.2"/></g>
+          <path d="M33 63Q38 56.5 43 63M56 63Q61 56.5 66 63" stroke-width="3.4"/>
+          <path d="M42 70Q50 79 58 70" stroke-width="3.4"/>
+        </g>
+        <circle cx="50" cy="13" r="3.6" fill="#171615"/>
+      </svg>
+      <span class="n">7<small>곳</small></span>
+    </button>
+    <button class="p" type="button" aria-label="시듦 업종 4곳 보기" style="--bg:#797F7F;--ink:#F2F3F3;--off:#3C4E51;--dot:#697779">
+      <span class="nm">시듦</span>
+      <svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" fill="#D6D5D4" transform="translate(-3.5 3)"/>
+        <path d="M66 20C72 22 76 28 76 36C70 34 66 28 66 20ZM66 20C62 25 61 32 63 39C68 35 69 27 66 20Z" fill="#3C4E51" transform="translate(2.5 2)"/>
+        <g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" stroke-width="4.4"/>
+          <path d="M50 36C50 24 57 17 66 20" stroke-width="3.8"/>
+          <path d="M66 20C72 22 76 28 76 36C70 34 66 28 66 20ZM66 20C62 25 61 32 63 39C68 35 69 27 66 20Z" stroke-width="3"/>
+          <path d="M33 62H43M56 62H66" stroke-width="3.6"/>
+          <path d="M45 74Q50 70 55 74" stroke-width="3.4"/>
+        </g>
+      </svg>
+      <span class="n">4<small>곳</small></span>
+    </button>
+    <button class="p" type="button" aria-label="잠잠 업종 29곳 보기" style="--bg:#284E53;--ink:#E2E5E6;--off:#152D30;--dot:#356369">
+      <span class="nm">잠잠</span>
+      <svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" fill="#AAC1C5" transform="translate(3 3)"/>
+        <g fill="#E2E5E6" transform="translate(-1.5 1.5)"><circle cx="74" cy="27" r="3"/><circle cx="82" cy="17" r="4"/><circle cx="91" cy="6" r="5"/></g>
+        <g fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 63C10 45 26 35 49 35C73 35 90 46 90 64C90 81 73 90 50 90C27 90 10 81 10 63Z" stroke-width="4.4"/>
+          <path d="M33 60Q38 65.5 43 60M56 60Q61 65.5 66 60" stroke-width="3.4"/>
+          <path d="M47 72Q50 74.5 53 72" stroke-width="3.2"/>
+          <g stroke-width="2.6"><circle cx="74" cy="27" r="3"/><circle cx="82" cy="17" r="4"/><circle cx="91" cy="6" r="5"/></g>
+        </g>
+      </svg>
+      <span class="n">29<small>곳</small></span>
+    </button>
+  </div>
+  <p class="hint">칸을 누르면 그 업종들이 나와요</p>
+  <div class="homebar"></div>
+</div>
+</section>
