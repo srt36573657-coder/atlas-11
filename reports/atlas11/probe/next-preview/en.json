@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-25T03:57:42.411Z",
+ "at": "2026-10-25T04:30:30.958Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,14 +14,14 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
-  "talk": true,
   "past": true,
-  "rivals": true,
   "grow": true,
   "range": true,
+  "rivals": true,
   "surge": true,
   "cal": true,
+  "talk": true,
+  "cond": true,
   "up": true,
   "time": true,
   "info": true,
@@ -31,8 +31,8 @@
   "today": true,
   "why": true,
   "gdr": true,
-  "share": true,
   "hold": true,
+  "share": true,
   "theme": true
  },
  "edge": true,
@@ -48,101 +48,101 @@
    "@newwin": 15
   }
  },
- "seconds": 357,
- "secondsSum": 2394,
+ "seconds": 362,
+ "secondsSum": 2454,
  "shards": [
   {
    "shard": "1/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 486,
    "routes": 1943,
    "screens": 1943,
    "mine": 1943,
-   "seconds": 340,
+   "seconds": 362,
    "secs": {
     "open": 0.3,
-    "routes": 338.7
+    "routes": 361.2
    }
   },
   {
    "shard": "2/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 492,
    "routes": 1949,
    "screens": 1949,
    "mine": 1943,
-   "seconds": 337,
+   "seconds": 338,
    "secs": {
     "open": 0.2,
-    "routes": 336.3
+    "routes": 336.1
    }
   },
   {
    "shard": "3/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 452,
    "routes": 1943,
    "screens": 1982,
    "mine": 1943,
-   "seconds": 354,
+   "seconds": 353,
    "secs": {
-    "open": 0.3,
-    "routes": 353.4
+    "open": 0.6,
+    "routes": 351.9
    }
   },
   {
    "shard": "4/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 512,
    "routes": 1942,
    "screens": 1980,
    "mine": 1942,
-   "seconds": 357,
+   "seconds": 348,
    "secs": {
     "open": 0.3,
-    "routes": 355.2
+    "routes": 347
    }
   },
   {
    "shard": "5/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 476,
    "routes": 1942,
    "screens": 1943,
    "mine": 1942,
-   "seconds": 332,
+   "seconds": 355,
    "secs": {
     "open": 0.3,
-    "routes": 330.8
+    "routes": 354.2
    }
   },
   {
    "shard": "6/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 502,
    "routes": 1928,
    "screens": 1949,
    "mine": 1929,
-   "seconds": 350,
+   "seconds": 357,
    "secs": {
     "open": 0.3,
-    "routes": 346.1,
-    "newwin": 2.5
+    "routes": 353.8,
+    "newwin": 2.6
    }
   },
   {
    "shard": "7/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 478,
    "routes": 1863,
    "screens": 1984,
    "mine": 1864,
-   "seconds": 324,
+   "seconds": 341,
    "secs": {
     "open": 0.2,
-    "routes": 312.5,
-    "act": 5.5,
-    "edge": 4.8,
+    "routes": 327.8,
+    "act": 6.2,
+    "edge": 5.6,
     "grammar": 0
    }
   }
@@ -169,10 +169,12 @@
  },
  "missing": 0,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "칸 안에서 넘친 글": 526
+ },
+ "fails": 526,
  "own": {
-  "fails": 0,
+  "fails": 526,
   "missing": 0,
   "leftover": 0
  },
@@ -182,8 +184,6847 @@
   "leftover": 0
  },
  "missingList": [],
- "all": [],
+ "all": [
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000070/rivals @320",
+    "#/w/0010F0/rivals @320",
+    "#/w/001530/rivals @320",
+    "#/w/003200/rivals @320",
+    "#/w/003720/rivals @320"
+   ],
+   "n": 137
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000070/rivals @320",
+    "#/w/000070/rivals @320",
+    "#/w/0010F0/rivals @320",
+    "#/w/0010F0/rivals @320",
+    "#/w/001530/rivals @320"
+   ],
+   "n": 214
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000070/rivals @320",
+    "#/w/0010F0/rivals @320",
+    "#/w/0010F0/rivals @320",
+    "#/w/003720/rivals @320",
+    "#/w/003720/rivals @320"
+   ],
+   "n": 154
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000070/rivals @360",
+    "#/w/0010F0/rivals @360",
+    "#/w/001530/rivals @360",
+    "#/w/003200/rivals @360",
+    "#/w/003720/rivals @360"
+   ],
+   "n": 137
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000070/rivals @360",
+    "#/w/000070/rivals @360",
+    "#/w/0010F0/rivals @360",
+    "#/w/0010F0/rivals @360",
+    "#/w/001530/rivals @360"
+   ],
+   "n": 214
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000070/rivals @360",
+    "#/w/0010F0/rivals @360",
+    "#/w/0010F0/rivals @360",
+    "#/w/003720/rivals @360",
+    "#/w/003720/rivals @360"
+   ],
+   "n": 154
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @320",
+    "#/w/000180/rivals @320",
+    "#/w/001440/rivals @320",
+    "#/w/004540/rivals @320",
+    "#/w/004540/rivals @320"
+   ],
+   "n": 128
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @320",
+    "#/w/003490/rivals @320",
+    "#/w/0035S0/rivals @320",
+    "#/w/004540/rivals @320",
+    "#/w/007660/rivals @320"
+   ],
+   "n": 268
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @320",
+    "#/w/004540/rivals @320",
+    "#/w/011280/rivals @320",
+    "#/w/025320/rivals @320",
+    "#/w/025320/rivals @320"
+   ],
+   "n": 208
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「855.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @320",
+    "#/w/004540/rivals @320",
+    "#/w/011280/rivals @320",
+    "#/w/034810/rivals @320",
+    "#/w/008730/rivals @320"
+   ],
+   "n": 36
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @360",
+    "#/w/000180/rivals @360",
+    "#/w/001440/rivals @360",
+    "#/w/004540/rivals @360",
+    "#/w/004540/rivals @360"
+   ],
+   "n": 128
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @360",
+    "#/w/003490/rivals @360",
+    "#/w/0035S0/rivals @360",
+    "#/w/004540/rivals @360",
+    "#/w/007660/rivals @360"
+   ],
+   "n": 268
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @360",
+    "#/w/004540/rivals @360",
+    "#/w/011280/rivals @360",
+    "#/w/025320/rivals @360",
+    "#/w/025320/rivals @360"
+   ],
+   "n": 208
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「855.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000180/rivals @360",
+    "#/w/004540/rivals @360",
+    "#/w/011280/rivals @360",
+    "#/w/034810/rivals @360",
+    "#/w/008730/rivals @360"
+   ],
+   "n": 36
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「186.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @320",
+    "#/w/151860/rivals @320",
+    "#/w/900140/rivals @320",
+    "#/w/003620/rivals @320",
+    "#/w/000040/rivals @320"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @320",
+    "#/w/052020/rivals @320",
+    "#/w/298020/rivals @320",
+    "#/w/900140/rivals @320",
+    "#/w/009810/rivals @320"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @320",
+    "#/w/002790/rivals @320",
+    "#/w/003350/rivals @320",
+    "#/w/0035S0/rivals @320",
+    "#/w/018290/rivals @320"
+   ],
+   "n": 209
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @320",
+    "#/w/001440/rivals @320",
+    "#/w/003060/rivals @320",
+    "#/w/0035S0/rivals @320",
+    "#/w/004720/rivals @320"
+   ],
+   "n": 305
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「186.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @360",
+    "#/w/151860/rivals @360",
+    "#/w/900140/rivals @360",
+    "#/w/003620/rivals @360",
+    "#/w/000040/rivals @360"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @360",
+    "#/w/052020/rivals @360",
+    "#/w/298020/rivals @360",
+    "#/w/900140/rivals @360",
+    "#/w/009810/rivals @360"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @360",
+    "#/w/002790/rivals @360",
+    "#/w/003350/rivals @360",
+    "#/w/0035S0/rivals @360",
+    "#/w/018290/rivals @360"
+   ],
+   "n": 209
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000270/rivals @360",
+    "#/w/001440/rivals @360",
+    "#/w/003060/rivals @360",
+    "#/w/0035S0/rivals @360",
+    "#/w/004720/rivals @360"
+   ],
+   "n": 305
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「122.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @320",
+    "#/w/126880/rivals @320",
+    "#/w/0001A0/rivals @320",
+    "#/w/002420/rivals @320",
+    "#/w/006120/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「80.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @320",
+    "#/w/126880/rivals @320",
+    "#/w/0001A0/rivals @320",
+    "#/w/002420/rivals @320",
+    "#/w/006120/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「34.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @320",
+    "#/w/126880/rivals @320",
+    "#/w/0001A0/rivals @320",
+    "#/w/002420/rivals @320",
+    "#/w/006120/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「25.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @320",
+    "#/w/091810/rivals @320",
+    "#/w/126880/rivals @320",
+    "#/w/0001A0/rivals @320",
+    "#/w/002420/rivals @320"
+   ],
+   "n": 19
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @320",
+    "#/w/126880/rivals @320",
+    "#/w/0001A0/rivals @320",
+    "#/w/002420/rivals @320",
+    "#/w/065420/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「122.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @360",
+    "#/w/126880/rivals @360",
+    "#/w/0001A0/rivals @360",
+    "#/w/002420/rivals @360",
+    "#/w/006120/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「80.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @360",
+    "#/w/126880/rivals @360",
+    "#/w/0001A0/rivals @360",
+    "#/w/002420/rivals @360",
+    "#/w/006120/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「34.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @360",
+    "#/w/126880/rivals @360",
+    "#/w/0001A0/rivals @360",
+    "#/w/002420/rivals @360",
+    "#/w/006120/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「25.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @360",
+    "#/w/091810/rivals @360",
+    "#/w/126880/rivals @360",
+    "#/w/0001A0/rivals @360",
+    "#/w/002420/rivals @360"
+   ],
+   "n": 19
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000440/rivals @360",
+    "#/w/126880/rivals @360",
+    "#/w/0001A0/rivals @360",
+    "#/w/002420/rivals @360",
+    "#/w/065420/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「69.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @320",
+    "#/w/001770/rivals @320",
+    "#/w/004890/rivals @320",
+    "#/w/005010/rivals @320",
+    "#/w/009190/rivals @320"
+   ],
+   "n": 52
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「22.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @320",
+    "#/w/001770/rivals @320",
+    "#/w/004890/rivals @320",
+    "#/w/005010/rivals @320",
+    "#/w/009190/rivals @320"
+   ],
+   "n": 52
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @320",
+    "#/w/000720/rivals @320",
+    "#/w/001770/rivals @320",
+    "#/w/001840/rivals @320",
+    "#/w/002290/rivals @320"
+   ],
+   "n": 137
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @320",
+    "#/w/001770/rivals @320",
+    "#/w/002900/rivals @320",
+    "#/w/004890/rivals @320",
+    "#/w/005010/rivals @320"
+   ],
+   "n": 184
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @320",
+    "#/w/001770/rivals @320",
+    "#/w/004370/rivals @320",
+    "#/w/004890/rivals @320",
+    "#/w/005010/rivals @320"
+   ],
+   "n": 103
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「69.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @360",
+    "#/w/001770/rivals @360",
+    "#/w/004890/rivals @360",
+    "#/w/005010/rivals @360",
+    "#/w/009190/rivals @360"
+   ],
+   "n": 52
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「22.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @360",
+    "#/w/001770/rivals @360",
+    "#/w/004890/rivals @360",
+    "#/w/005010/rivals @360",
+    "#/w/009190/rivals @360"
+   ],
+   "n": 52
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @360",
+    "#/w/000720/rivals @360",
+    "#/w/001770/rivals @360",
+    "#/w/001840/rivals @360",
+    "#/w/002290/rivals @360"
+   ],
+   "n": 137
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @360",
+    "#/w/001770/rivals @360",
+    "#/w/002900/rivals @360",
+    "#/w/004890/rivals @360",
+    "#/w/005010/rivals @360"
+   ],
+   "n": 184
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000590/rivals @360",
+    "#/w/001770/rivals @360",
+    "#/w/004370/rivals @360",
+    "#/w/004890/rivals @360",
+    "#/w/005010/rivals @360"
+   ],
+   "n": 103
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000720/rivals @320",
+    "#/w/001840/rivals @320",
+    "#/w/002290/rivals @320",
+    "#/w/002410/rivals @320",
+    "#/w/010780/rivals @320"
+   ],
+   "n": 45
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000720/rivals @320",
+    "#/w/001840/rivals @320",
+    "#/w/002290/rivals @320",
+    "#/w/002410/rivals @320",
+    "#/w/010780/rivals @320"
+   ],
+   "n": 59
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000720/rivals @320",
+    "#/w/001840/rivals @320",
+    "#/w/002290/rivals @320",
+    "#/w/002410/rivals @320",
+    "#/w/010780/rivals @320"
+   ],
+   "n": 45
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000720/rivals @360",
+    "#/w/001840/rivals @360",
+    "#/w/002290/rivals @360",
+    "#/w/002410/rivals @360",
+    "#/w/010780/rivals @360"
+   ],
+   "n": 45
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000720/rivals @360",
+    "#/w/001840/rivals @360",
+    "#/w/002290/rivals @360",
+    "#/w/002410/rivals @360",
+    "#/w/010780/rivals @360"
+   ],
+   "n": 59
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000720/rivals @360",
+    "#/w/001840/rivals @360",
+    "#/w/002290/rivals @360",
+    "#/w/002410/rivals @360",
+    "#/w/010780/rivals @360"
+   ],
+   "n": 45
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「45 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @320",
+    "#/w/005440/rivals @320",
+    "#/w/028260/rivals @320",
+    "#/w/004150/rivals @320",
+    "#/w/002020/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「40.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @320",
+    "#/w/005440/rivals @320",
+    "#/w/004150/rivals @320",
+    "#/w/002020/rivals @320",
+    "#/w/001040/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「19.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @320",
+    "#/w/005440/rivals @320",
+    "#/w/028260/rivals @320",
+    "#/w/004150/rivals @320",
+    "#/w/002020/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「15.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @320",
+    "#/w/005440/rivals @320",
+    "#/w/028260/rivals @320",
+    "#/w/004150/rivals @320",
+    "#/w/025770/rivals @320"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「45 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @360",
+    "#/w/005440/rivals @360",
+    "#/w/028260/rivals @360",
+    "#/w/004150/rivals @360",
+    "#/w/002020/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「40.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @360",
+    "#/w/005440/rivals @360",
+    "#/w/004150/rivals @360",
+    "#/w/002020/rivals @360",
+    "#/w/001040/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「19.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @360",
+    "#/w/005440/rivals @360",
+    "#/w/028260/rivals @360",
+    "#/w/004150/rivals @360",
+    "#/w/002020/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「15.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/000880/rivals @360",
+    "#/w/005440/rivals @360",
+    "#/w/028260/rivals @360",
+    "#/w/004150/rivals @360",
+    "#/w/025770/rivals @360"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @320",
+    "#/w/003350/rivals @320",
+    "#/w/007390/rivals @320",
+    "#/w/018290/rivals @320",
+    "#/w/018700/rivals @320"
+   ],
+   "n": 107
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @320",
+    "#/w/004370/rivals @320",
+    "#/w/007390/rivals @320",
+    "#/w/009780/rivals @320",
+    "#/w/049960/rivals @320"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「651.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @320",
+    "#/w/007390/rivals @320",
+    "#/w/049960/rivals @320",
+    "#/w/072020/rivals @320",
+    "#/w/207940/rivals @320"
+   ],
+   "n": 51
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「425.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @320",
+    "#/w/007390/rivals @320",
+    "#/w/049960/rivals @320",
+    "#/w/072020/rivals @320",
+    "#/w/207940/rivals @320"
+   ],
+   "n": 51
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「330.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @320",
+    "#/w/007390/rivals @320",
+    "#/w/049960/rivals @320",
+    "#/w/072020/rivals @320",
+    "#/w/207940/rivals @320"
+   ],
+   "n": 51
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @360",
+    "#/w/003350/rivals @360",
+    "#/w/007390/rivals @360",
+    "#/w/018290/rivals @360",
+    "#/w/018700/rivals @360"
+   ],
+   "n": 107
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @360",
+    "#/w/004370/rivals @360",
+    "#/w/007390/rivals @360",
+    "#/w/009780/rivals @360",
+    "#/w/049960/rivals @360"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「651.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @360",
+    "#/w/007390/rivals @360",
+    "#/w/049960/rivals @360",
+    "#/w/072020/rivals @360",
+    "#/w/207940/rivals @360"
+   ],
+   "n": 51
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「425.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @360",
+    "#/w/007390/rivals @360",
+    "#/w/049960/rivals @360",
+    "#/w/072020/rivals @360",
+    "#/w/207940/rivals @360"
+   ],
+   "n": 51
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「330.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0009K0/rivals @360",
+    "#/w/007390/rivals @360",
+    "#/w/049960/rivals @360",
+    "#/w/072020/rivals @360",
+    "#/w/207940/rivals @360"
+   ],
+   "n": 51
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @320",
+    "#/w/023590/rivals @320",
+    "#/w/030610/rivals @320",
+    "#/w/003460/rivals @320",
+    "#/w/003530/rivals @320"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「20.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @320",
+    "#/w/023590/rivals @320",
+    "#/w/030610/rivals @320",
+    "#/w/003460/rivals @320",
+    "#/w/003530/rivals @320"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「19.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @320",
+    "#/w/023590/rivals @320",
+    "#/w/030610/rivals @320",
+    "#/w/003460/rivals @320",
+    "#/w/003530/rivals @320"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「18.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @320",
+    "#/w/005830/rivals @320",
+    "#/w/023590/rivals @320",
+    "#/w/030610/rivals @320",
+    "#/w/032830/rivals @320"
+   ],
+   "n": 38
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「17.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @320",
+    "#/w/030610/rivals @320",
+    "#/w/003460/rivals @320",
+    "#/w/003530/rivals @320",
+    "#/w/003470/rivals @320"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @360",
+    "#/w/023590/rivals @360",
+    "#/w/030610/rivals @360",
+    "#/w/003460/rivals @360",
+    "#/w/003530/rivals @360"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「20.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @360",
+    "#/w/023590/rivals @360",
+    "#/w/030610/rivals @360",
+    "#/w/003460/rivals @360",
+    "#/w/003530/rivals @360"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「19.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @360",
+    "#/w/023590/rivals @360",
+    "#/w/030610/rivals @360",
+    "#/w/003460/rivals @360",
+    "#/w/003530/rivals @360"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「18.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @360",
+    "#/w/005830/rivals @360",
+    "#/w/023590/rivals @360",
+    "#/w/030610/rivals @360",
+    "#/w/032830/rivals @360"
+   ],
+   "n": 38
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「17.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001200/rivals @360",
+    "#/w/030610/rivals @360",
+    "#/w/003460/rivals @360",
+    "#/w/003530/rivals @360",
+    "#/w/003470/rivals @360"
+   ],
+   "n": 26
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「45.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @320",
+    "#/w/005950/rivals @320",
+    "#/w/006650/rivals @320",
+    "#/w/006890/rivals @320",
+    "#/w/012610/rivals @320"
+   ],
+   "n": 33
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「18.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @320",
+    "#/w/005950/rivals @320",
+    "#/w/006650/rivals @320",
+    "#/w/006890/rivals @320",
+    "#/w/012610/rivals @320"
+   ],
+   "n": 33
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「9.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @320",
+    "#/w/005950/rivals @320",
+    "#/w/006650/rivals @320",
+    "#/w/006890/rivals @320",
+    "#/w/012610/rivals @320"
+   ],
+   "n": 61
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @320",
+    "#/w/005950/rivals @320",
+    "#/w/006650/rivals @320",
+    "#/w/006890/rivals @320",
+    "#/w/012610/rivals @320"
+   ],
+   "n": 61
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @320",
+    "#/w/005950/rivals @320",
+    "#/w/006650/rivals @320",
+    "#/w/006890/rivals @320",
+    "#/w/012610/rivals @320"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「45.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @360",
+    "#/w/005950/rivals @360",
+    "#/w/006650/rivals @360",
+    "#/w/006890/rivals @360",
+    "#/w/012610/rivals @360"
+   ],
+   "n": 33
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「18.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @360",
+    "#/w/005950/rivals @360",
+    "#/w/006650/rivals @360",
+    "#/w/006890/rivals @360",
+    "#/w/012610/rivals @360"
+   ],
+   "n": 33
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「9.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @360",
+    "#/w/005950/rivals @360",
+    "#/w/006650/rivals @360",
+    "#/w/006890/rivals @360",
+    "#/w/012610/rivals @360"
+   ],
+   "n": 61
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @360",
+    "#/w/005950/rivals @360",
+    "#/w/006650/rivals @360",
+    "#/w/006890/rivals @360",
+    "#/w/012610/rivals @360"
+   ],
+   "n": 61
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001340/rivals @360",
+    "#/w/005950/rivals @360",
+    "#/w/006650/rivals @360",
+    "#/w/006890/rivals @360",
+    "#/w/012610/rivals @360"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「31.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001440/rivals @320",
+    "#/w/006340/rivals @320",
+    "#/w/126340/rivals @320",
+    "#/w/006910/rivals @320",
+    "#/w/229640/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「31.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001440/rivals @360",
+    "#/w/006340/rivals @360",
+    "#/w/126340/rivals @360",
+    "#/w/006910/rivals @360",
+    "#/w/229640/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001530/rivals @320",
+    "#/w/003200/rivals @320",
+    "#/w/0039P0/rivals @320",
+    "#/w/011080/rivals @320",
+    "#/w/0117P0/rivals @320"
+   ],
+   "n": 124
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001530/rivals @320",
+    "#/w/003200/rivals @320",
+    "#/w/011080/rivals @320",
+    "#/w/0117P0/rivals @320",
+    "#/w/016450/rivals @320"
+   ],
+   "n": 105
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001530/rivals @320",
+    "#/w/003200/rivals @320",
+    "#/w/011080/rivals @320",
+    "#/w/0117P0/rivals @320",
+    "#/w/014280/rivals @320"
+   ],
+   "n": 175
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001530/rivals @360",
+    "#/w/003200/rivals @360",
+    "#/w/0039P0/rivals @360",
+    "#/w/011080/rivals @360",
+    "#/w/0117P0/rivals @360"
+   ],
+   "n": 124
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001530/rivals @360",
+    "#/w/003200/rivals @360",
+    "#/w/011080/rivals @360",
+    "#/w/0117P0/rivals @360",
+    "#/w/016450/rivals @360"
+   ],
+   "n": 105
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001530/rivals @360",
+    "#/w/003200/rivals @360",
+    "#/w/011080/rivals @360",
+    "#/w/0117P0/rivals @360",
+    "#/w/014280/rivals @360"
+   ],
+   "n": 175
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「61.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @320",
+    "#/w/005710/rivals @320",
+    "#/w/009320/rivals @320",
+    "#/w/010100/rivals @320",
+    "#/w/012200/rivals @320"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「21.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @320",
+    "#/w/005710/rivals @320",
+    "#/w/009320/rivals @320",
+    "#/w/010100/rivals @320",
+    "#/w/012200/rivals @320"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @320",
+    "#/w/005710/rivals @320",
+    "#/w/009320/rivals @320",
+    "#/w/010100/rivals @320",
+    "#/w/012200/rivals @320"
+   ],
+   "n": 154
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「9.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @320",
+    "#/w/005710/rivals @320",
+    "#/w/009320/rivals @320",
+    "#/w/010100/rivals @320",
+    "#/w/012200/rivals @320"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @320",
+    "#/w/005710/rivals @320",
+    "#/w/009320/rivals @320",
+    "#/w/010100/rivals @320",
+    "#/w/012200/rivals @320"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「61.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @360",
+    "#/w/005710/rivals @360",
+    "#/w/009320/rivals @360",
+    "#/w/010100/rivals @360",
+    "#/w/012200/rivals @360"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「21.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @360",
+    "#/w/005710/rivals @360",
+    "#/w/009320/rivals @360",
+    "#/w/010100/rivals @360",
+    "#/w/012200/rivals @360"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @360",
+    "#/w/005710/rivals @360",
+    "#/w/009320/rivals @360",
+    "#/w/010100/rivals @360",
+    "#/w/012200/rivals @360"
+   ],
+   "n": 154
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「9.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @360",
+    "#/w/005710/rivals @360",
+    "#/w/009320/rivals @360",
+    "#/w/010100/rivals @360",
+    "#/w/012200/rivals @360"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0015S0/rivals @360",
+    "#/w/005710/rivals @360",
+    "#/w/009320/rivals @360",
+    "#/w/010100/rivals @360",
+    "#/w/012200/rivals @360"
+   ],
+   "n": 145
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「31.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001840/rivals @320",
+    "#/w/002290/rivals @320",
+    "#/w/002410/rivals @320",
+    "#/w/010780/rivals @320",
+    "#/w/013360/rivals @320"
+   ],
+   "n": 45
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「31.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001840/rivals @360",
+    "#/w/002290/rivals @360",
+    "#/w/002410/rivals @360",
+    "#/w/010780/rivals @360",
+    "#/w/013360/rivals @360"
+   ],
+   "n": 45
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「743.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002150/rivals @320",
+    "#/w/010400/rivals @320",
+    "#/w/039570/rivals @320",
+    "#/w/046940/rivals @320",
+    "#/w/418550/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「715.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002150/rivals @320",
+    "#/w/010400/rivals @320",
+    "#/w/039570/rivals @320",
+    "#/w/046940/rivals @320",
+    "#/w/418550/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「645.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002150/rivals @320",
+    "#/w/010400/rivals @320",
+    "#/w/046940/rivals @320",
+    "#/w/418550/rivals @320",
+    "#/w/011560/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「743.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002150/rivals @360",
+    "#/w/010400/rivals @360",
+    "#/w/039570/rivals @360",
+    "#/w/046940/rivals @360",
+    "#/w/418550/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「715.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002150/rivals @360",
+    "#/w/010400/rivals @360",
+    "#/w/039570/rivals @360",
+    "#/w/046940/rivals @360",
+    "#/w/418550/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「645.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002150/rivals @360",
+    "#/w/010400/rivals @360",
+    "#/w/046940/rivals @360",
+    "#/w/418550/rivals @360",
+    "#/w/011560/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @320",
+    "#/w/007160/rivals @320",
+    "#/w/084690/rivals @320",
+    "#/w/267980/rivals @320",
+    "#/w/453340/rivals @320"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「9.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @320",
+    "#/w/007160/rivals @320",
+    "#/w/084690/rivals @320",
+    "#/w/267980/rivals @320",
+    "#/w/453340/rivals @320"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @320",
+    "#/w/007160/rivals @320",
+    "#/w/267980/rivals @320",
+    "#/w/453340/rivals @320",
+    "#/w/900340/rivals @320"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @320",
+    "#/w/007160/rivals @320",
+    "#/w/009780/rivals @320",
+    "#/w/084690/rivals @320",
+    "#/w/267980/rivals @320"
+   ],
+   "n": 60
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @360",
+    "#/w/007160/rivals @360",
+    "#/w/084690/rivals @360",
+    "#/w/267980/rivals @360",
+    "#/w/453340/rivals @360"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「9.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @360",
+    "#/w/007160/rivals @360",
+    "#/w/084690/rivals @360",
+    "#/w/267980/rivals @360",
+    "#/w/453340/rivals @360"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @360",
+    "#/w/007160/rivals @360",
+    "#/w/267980/rivals @360",
+    "#/w/453340/rivals @360",
+    "#/w/900340/rivals @360"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002680/rivals @360",
+    "#/w/007160/rivals @360",
+    "#/w/009780/rivals @360",
+    "#/w/084690/rivals @360",
+    "#/w/267980/rivals @360"
+   ],
+   "n": 60
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002790/rivals @320",
+    "#/w/003350/rivals @320",
+    "#/w/018290/rivals @320",
+    "#/w/018700/rivals @320",
+    "#/w/175250/rivals @320"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002790/rivals @320",
+    "#/w/003350/rivals @320",
+    "#/w/018290/rivals @320",
+    "#/w/018700/rivals @320",
+    "#/w/175250/rivals @320"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002790/rivals @320",
+    "#/w/003350/rivals @320",
+    "#/w/018290/rivals @320",
+    "#/w/018700/rivals @320",
+    "#/w/175250/rivals @320"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002790/rivals @360",
+    "#/w/003350/rivals @360",
+    "#/w/018290/rivals @360",
+    "#/w/018700/rivals @360",
+    "#/w/175250/rivals @360"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002790/rivals @360",
+    "#/w/003350/rivals @360",
+    "#/w/018290/rivals @360",
+    "#/w/018700/rivals @360",
+    "#/w/175250/rivals @360"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002790/rivals @360",
+    "#/w/003350/rivals @360",
+    "#/w/018290/rivals @360",
+    "#/w/018700/rivals @360",
+    "#/w/175250/rivals @360"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002900/rivals @320",
+    "#/w/017550/rivals @320",
+    "#/w/033540/rivals @320",
+    "#/w/043220/rivals @320",
+    "#/w/056080/rivals @320"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002900/rivals @320",
+    "#/w/003490/rivals @320",
+    "#/w/017550/rivals @320",
+    "#/w/020760/rivals @320",
+    "#/w/033540/rivals @320"
+   ],
+   "n": 101
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/002900/rivals @320",
+    "#/w/006110/rivals @320",
+    "#/w/008700/rivals @320",
+    "#/w/008700/rivals @320",
+    "#/w/015890/rivals @320"
+   ],
+   "n": 447
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002900/rivals @360",
+    "#/w/017550/rivals @360",
+    "#/w/033540/rivals @360",
+    "#/w/043220/rivals @360",
+    "#/w/056080/rivals @360"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002900/rivals @360",
+    "#/w/003490/rivals @360",
+    "#/w/017550/rivals @360",
+    "#/w/020760/rivals @360",
+    "#/w/033540/rivals @360"
+   ],
+   "n": 101
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/002900/rivals @360",
+    "#/w/006110/rivals @360",
+    "#/w/008700/rivals @360",
+    "#/w/008700/rivals @360",
+    "#/w/015890/rivals @360"
+   ],
+   "n": 447
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003060/rivals @320",
+    "#/w/004720/rivals @320",
+    "#/w/0082N0/rivals @320",
+    "#/w/008930/rivals @320",
+    "#/w/012790/rivals @320"
+   ],
+   "n": 133
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003060/rivals @320",
+    "#/w/0039P0/rivals @320",
+    "#/w/004720/rivals @320",
+    "#/w/0082N0/rivals @320",
+    "#/w/008930/rivals @320"
+   ],
+   "n": 165
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003060/rivals @320",
+    "#/w/004720/rivals @320",
+    "#/w/006110/rivals @320",
+    "#/w/0082N0/rivals @320",
+    "#/w/008700/rivals @320"
+   ],
+   "n": 250
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003060/rivals @360",
+    "#/w/004720/rivals @360",
+    "#/w/0082N0/rivals @360",
+    "#/w/008930/rivals @360",
+    "#/w/012790/rivals @360"
+   ],
+   "n": 133
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003060/rivals @360",
+    "#/w/0039P0/rivals @360",
+    "#/w/004720/rivals @360",
+    "#/w/0082N0/rivals @360",
+    "#/w/008930/rivals @360"
+   ],
+   "n": 165
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003060/rivals @360",
+    "#/w/004720/rivals @360",
+    "#/w/006110/rivals @360",
+    "#/w/0082N0/rivals @360",
+    "#/w/008700/rivals @360"
+   ],
+   "n": 250
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003490/rivals @320",
+    "#/w/091810/rivals @320",
+    "#/w/089590/rivals @320",
+    "#/w/272450/rivals @320",
+    "#/w/180640/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/003490/rivals @320",
+    "#/w/011500/rivals @320",
+    "#/w/036690/rivals @320",
+    "#/w/109080/rivals @320",
+    "#/w/134380/rivals @320"
+   ],
+   "n": 103
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003490/rivals @360",
+    "#/w/091810/rivals @360",
+    "#/w/089590/rivals @360",
+    "#/w/272450/rivals @360",
+    "#/w/180640/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/003490/rivals @360",
+    "#/w/011500/rivals @360",
+    "#/w/036690/rivals @360",
+    "#/w/109080/rivals @360",
+    "#/w/134380/rivals @360"
+   ],
+   "n": 103
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0035S0/rivals @320",
+    "#/w/014280/rivals @320",
+    "#/w/025750/rivals @320",
+    "#/w/025900/rivals @320",
+    "#/w/033130/rivals @320"
+   ],
+   "n": 109
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0035S0/rivals @320",
+    "#/w/004140/rivals @320",
+    "#/w/006110/rivals @320",
+    "#/w/014280/rivals @320",
+    "#/w/015890/rivals @320"
+   ],
+   "n": 292
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0035S0/rivals @360",
+    "#/w/014280/rivals @360",
+    "#/w/025750/rivals @360",
+    "#/w/025900/rivals @360",
+    "#/w/033130/rivals @360"
+   ],
+   "n": 109
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0035S0/rivals @360",
+    "#/w/004140/rivals @360",
+    "#/w/006110/rivals @360",
+    "#/w/014280/rivals @360",
+    "#/w/015890/rivals @360"
+   ],
+   "n": 292
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0039P0/rivals @320",
+    "#/w/004140/rivals @320",
+    "#/w/030000/rivals @320",
+    "#/w/058860/rivals @320",
+    "#/w/060150/rivals @320"
+   ],
+   "n": 72
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/0039P0/rivals @320",
+    "#/w/004140/rivals @320",
+    "#/w/025320/rivals @320",
+    "#/w/030000/rivals @320",
+    "#/w/045970/rivals @320"
+   ],
+   "n": 171
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0039P0/rivals @360",
+    "#/w/004140/rivals @360",
+    "#/w/030000/rivals @360",
+    "#/w/058860/rivals @360",
+    "#/w/060150/rivals @360"
+   ],
+   "n": 72
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/0039P0/rivals @360",
+    "#/w/004140/rivals @360",
+    "#/w/025320/rivals @360",
+    "#/w/030000/rivals @360",
+    "#/w/045970/rivals @360"
+   ],
+   "n": 171
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004140/rivals @320",
+    "#/w/089860/rivals @320",
+    "#/w/095570/rivals @320",
+    "#/w/033290/rivals @320",
+    "#/w/121890/rivals @320"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004140/rivals @320",
+    "#/w/089860/rivals @320",
+    "#/w/095570/rivals @320",
+    "#/w/033290/rivals @320",
+    "#/w/121890/rivals @320"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004140/rivals @360",
+    "#/w/089860/rivals @360",
+    "#/w/095570/rivals @360",
+    "#/w/033290/rivals @360",
+    "#/w/121890/rivals @360"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004140/rivals @360",
+    "#/w/089860/rivals @360",
+    "#/w/095570/rivals @360",
+    "#/w/033290/rivals @360",
+    "#/w/121890/rivals @360"
+   ],
+   "n": 24
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「27.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004370/rivals @320",
+    "#/w/009780/rivals @320",
+    "#/w/260970/rivals @320",
+    "#/w/277410/rivals @320",
+    "#/w/003230/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/004370/rivals @320",
+    "#/w/009780/rivals @320",
+    "#/w/260970/rivals @320",
+    "#/w/277410/rivals @320",
+    "#/w/003230/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「27.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004370/rivals @360",
+    "#/w/009780/rivals @360",
+    "#/w/260970/rivals @360",
+    "#/w/277410/rivals @360",
+    "#/w/003230/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「4.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/004370/rivals @360",
+    "#/w/009780/rivals @360",
+    "#/w/260970/rivals @360",
+    "#/w/277410/rivals @360",
+    "#/w/003230/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「923.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @320",
+    "#/w/482630/rivals @320",
+    "#/w/102710/rivals @320",
+    "#/w/112290/rivals @320",
+    "#/w/317330/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「670.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @320",
+    "#/w/357780/rivals @320",
+    "#/w/482630/rivals @320",
+    "#/w/112290/rivals @320",
+    "#/w/317330/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「623 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @320",
+    "#/w/357780/rivals @320",
+    "#/w/482630/rivals @320",
+    "#/w/102710/rivals @320",
+    "#/w/112290/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「310.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @320",
+    "#/w/357780/rivals @320",
+    "#/w/482630/rivals @320",
+    "#/w/102710/rivals @320",
+    "#/w/112290/rivals @320"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「923.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @360",
+    "#/w/482630/rivals @360",
+    "#/w/102710/rivals @360",
+    "#/w/112290/rivals @360",
+    "#/w/317330/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「670.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @360",
+    "#/w/357780/rivals @360",
+    "#/w/482630/rivals @360",
+    "#/w/112290/rivals @360",
+    "#/w/317330/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「623 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @360",
+    "#/w/357780/rivals @360",
+    "#/w/482630/rivals @360",
+    "#/w/102710/rivals @360",
+    "#/w/112290/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「310.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005290/rivals @360",
+    "#/w/357780/rivals @360",
+    "#/w/482630/rivals @360",
+    "#/w/102710/rivals @360",
+    "#/w/112290/rivals @360"
+   ],
+   "n": 13
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「74.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005440/rivals @320",
+    "#/w/028260/rivals @320",
+    "#/w/004150/rivals @320",
+    "#/w/002020/rivals @320",
+    "#/w/001040/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「74.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005440/rivals @360",
+    "#/w/028260/rivals @360",
+    "#/w/004150/rivals @360",
+    "#/w/002020/rivals @360",
+    "#/w/001040/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「37.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005830/rivals @320",
+    "#/w/001450/rivals @320",
+    "#/w/244920/rivals @320",
+    "#/w/000370/rivals @320",
+    "#/w/031210/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「27.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005830/rivals @320",
+    "#/w/032830/rivals @320",
+    "#/w/001450/rivals @320",
+    "#/w/244920/rivals @320",
+    "#/w/000370/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「24.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/005830/rivals @320",
+    "#/w/032830/rivals @320",
+    "#/w/001450/rivals @320",
+    "#/w/244920/rivals @320",
+    "#/w/000370/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「37.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005830/rivals @360",
+    "#/w/001450/rivals @360",
+    "#/w/244920/rivals @360",
+    "#/w/000370/rivals @360",
+    "#/w/031210/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「27.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005830/rivals @360",
+    "#/w/032830/rivals @360",
+    "#/w/001450/rivals @360",
+    "#/w/244920/rivals @360",
+    "#/w/000370/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「24.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/005830/rivals @360",
+    "#/w/032830/rivals @360",
+    "#/w/001450/rivals @360",
+    "#/w/244920/rivals @360",
+    "#/w/000370/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「16.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/006110/rivals @320",
+    "#/w/015890/rivals @320",
+    "#/w/069460/rivals @320",
+    "#/w/081150/rivals @320",
+    "#/w/000480/rivals @320"
+   ],
+   "n": 35
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「16.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/006110/rivals @360",
+    "#/w/015890/rivals @360",
+    "#/w/069460/rivals @360",
+    "#/w/081150/rivals @360",
+    "#/w/000480/rivals @360"
+   ],
+   "n": 35
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/006340/rivals @320",
+    "#/w/126340/rivals @320",
+    "#/w/006910/rivals @320",
+    "#/w/229640/rivals @320",
+    "#/w/000500/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「3.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/006340/rivals @360",
+    "#/w/126340/rivals @360",
+    "#/w/006910/rivals @360",
+    "#/w/229640/rivals @360",
+    "#/w/000500/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「730 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007660/rivals @320",
+    "#/w/425420/rivals @320",
+    "#/w/033160/rivals @320",
+    "#/w/045300/rivals @320",
+    "#/w/098120/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「653.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007660/rivals @320",
+    "#/w/077500/rivals @320",
+    "#/w/363280/rivals @320",
+    "#/w/425420/rivals @320",
+    "#/w/033160/rivals @320"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「372.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007660/rivals @320",
+    "#/w/077500/rivals @320",
+    "#/w/425420/rivals @320",
+    "#/w/033160/rivals @320",
+    "#/w/045300/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「730 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007660/rivals @360",
+    "#/w/425420/rivals @360",
+    "#/w/033160/rivals @360",
+    "#/w/045300/rivals @360",
+    "#/w/098120/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「653.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007660/rivals @360",
+    "#/w/077500/rivals @360",
+    "#/w/363280/rivals @360",
+    "#/w/425420/rivals @360",
+    "#/w/033160/rivals @360"
+   ],
+   "n": 40
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「372.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007660/rivals @360",
+    "#/w/077500/rivals @360",
+    "#/w/425420/rivals @360",
+    "#/w/033160/rivals @360",
+    "#/w/045300/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「17.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @320",
+    "#/w/015590/rivals @320",
+    "#/w/036560/rivals @320",
+    "#/w/004380/rivals @320",
+    "#/w/025770/rivals @320"
+   ],
+   "n": 35
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「463.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @320",
+    "#/w/015590/rivals @320",
+    "#/w/034020/rivals @320",
+    "#/w/036560/rivals @320",
+    "#/w/004380/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「396.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @320",
+    "#/w/015590/rivals @320",
+    "#/w/034020/rivals @320",
+    "#/w/036560/rivals @320",
+    "#/w/004380/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「393.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @320",
+    "#/w/015590/rivals @320",
+    "#/w/034020/rivals @320",
+    "#/w/036560/rivals @320",
+    "#/w/004380/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「17.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @360",
+    "#/w/015590/rivals @360",
+    "#/w/036560/rivals @360",
+    "#/w/004380/rivals @360",
+    "#/w/025770/rivals @360"
+   ],
+   "n": 35
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「463.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @360",
+    "#/w/015590/rivals @360",
+    "#/w/034020/rivals @360",
+    "#/w/036560/rivals @360",
+    "#/w/004380/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「396.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @360",
+    "#/w/015590/rivals @360",
+    "#/w/034020/rivals @360",
+    "#/w/036560/rivals @360",
+    "#/w/004380/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「393.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/007820/rivals @360",
+    "#/w/015590/rivals @360",
+    "#/w/034020/rivals @360",
+    "#/w/036560/rivals @360",
+    "#/w/004380/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「89.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/008700/rivals @320",
+    "#/w/038950/rivals @320",
+    "#/w/042600/rivals @320",
+    "#/w/110020/rivals @320",
+    "#/w/317240/rivals @320"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「89.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/008700/rivals @360",
+    "#/w/038950/rivals @360",
+    "#/w/042600/rivals @360",
+    "#/w/110020/rivals @360",
+    "#/w/317240/rivals @360"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「698.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/010400/rivals @320",
+    "#/w/039570/rivals @320",
+    "#/w/046940/rivals @320",
+    "#/w/418550/rivals @320",
+    "#/w/011560/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「698.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/010400/rivals @360",
+    "#/w/039570/rivals @360",
+    "#/w/046940/rivals @360",
+    "#/w/418550/rivals @360",
+    "#/w/011560/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/011500/rivals @320",
+    "#/w/020760/rivals @320",
+    "#/w/044480/rivals @320",
+    "#/w/052460/rivals @320",
+    "#/w/054300/rivals @320"
+   ],
+   "n": 190
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「954.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/011500/rivals @320",
+    "#/w/134380/rivals @320",
+    "#/w/005070/rivals @320",
+    "#/w/220260/rivals @320",
+    "#/w/004430/rivals @320"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「664.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/011500/rivals @320",
+    "#/w/134380/rivals @320",
+    "#/w/005070/rivals @320",
+    "#/w/220260/rivals @320",
+    "#/w/004430/rivals @320"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「1.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/011500/rivals @360",
+    "#/w/020760/rivals @360",
+    "#/w/044480/rivals @360",
+    "#/w/052460/rivals @360",
+    "#/w/054300/rivals @360"
+   ],
+   "n": 190
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「954.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/011500/rivals @360",
+    "#/w/134380/rivals @360",
+    "#/w/005070/rivals @360",
+    "#/w/220260/rivals @360",
+    "#/w/004430/rivals @360"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「664.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/011500/rivals @360",
+    "#/w/134380/rivals @360",
+    "#/w/005070/rivals @360",
+    "#/w/220260/rivals @360",
+    "#/w/004430/rivals @360"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/014280/rivals @320",
+    "#/w/025750/rivals @320",
+    "#/w/025900/rivals @320",
+    "#/w/035200/rivals @320",
+    "#/w/344820/rivals @320"
+   ],
+   "n": 33
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/014280/rivals @360",
+    "#/w/025750/rivals @360",
+    "#/w/025900/rivals @360",
+    "#/w/035200/rivals @360",
+    "#/w/344820/rivals @360"
+   ],
+   "n": 33
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「501.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017040/rivals @320",
+    "#/w/010120/rivals @320",
+    "#/w/119850/rivals @320",
+    "#/w/189860/rivals @320",
+    "#/w/199820/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「262.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017040/rivals @320",
+    "#/w/062040/rivals @320",
+    "#/w/010120/rivals @320",
+    "#/w/189860/rivals @320",
+    "#/w/199820/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「501.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017040/rivals @360",
+    "#/w/010120/rivals @360",
+    "#/w/119850/rivals @360",
+    "#/w/189860/rivals @360",
+    "#/w/199820/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「262.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017040/rivals @360",
+    "#/w/062040/rivals @360",
+    "#/w/010120/rivals @360",
+    "#/w/189860/rivals @360",
+    "#/w/199820/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「929.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017550/rivals @320",
+    "#/w/033540/rivals @320",
+    "#/w/043220/rivals @320",
+    "#/w/056080/rivals @320",
+    "#/w/090360/rivals @320"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「929.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017550/rivals @360",
+    "#/w/033540/rivals @360",
+    "#/w/043220/rivals @360",
+    "#/w/056080/rivals @360",
+    "#/w/090360/rivals @360"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「908.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017900/rivals @320",
+    "#/w/057540/rivals @320",
+    "#/w/072990/rivals @320",
+    "#/w/089150/rivals @320",
+    "#/w/140860/rivals @320"
+   ],
+   "n": 84
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「637.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017900/rivals @320",
+    "#/w/054800/rivals @320",
+    "#/w/057540/rivals @320",
+    "#/w/072990/rivals @320",
+    "#/w/089150/rivals @320"
+   ],
+   "n": 84
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「468.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017900/rivals @320",
+    "#/w/054800/rivals @320",
+    "#/w/057540/rivals @320",
+    "#/w/072990/rivals @320",
+    "#/w/089150/rivals @320"
+   ],
+   "n": 84
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「908.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017900/rivals @360",
+    "#/w/057540/rivals @360",
+    "#/w/072990/rivals @360",
+    "#/w/089150/rivals @360",
+    "#/w/140860/rivals @360"
+   ],
+   "n": 84
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「637.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017900/rivals @360",
+    "#/w/054800/rivals @360",
+    "#/w/057540/rivals @360",
+    "#/w/072990/rivals @360",
+    "#/w/089150/rivals @360"
+   ],
+   "n": 84
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「468.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017900/rivals @360",
+    "#/w/054800/rivals @360",
+    "#/w/057540/rivals @360",
+    "#/w/072990/rivals @360",
+    "#/w/089150/rivals @360"
+   ],
+   "n": 84
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「25.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/020760/rivals @320",
+    "#/w/037400/rivals @320",
+    "#/w/063760/rivals @320",
+    "#/w/096870/rivals @320",
+    "#/w/121800/rivals @320"
+   ],
+   "n": 47
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「25.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/020760/rivals @360",
+    "#/w/037400/rivals @360",
+    "#/w/063760/rivals @360",
+    "#/w/096870/rivals @360",
+    "#/w/121800/rivals @360"
+   ],
+   "n": 47
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「143.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/023150/rivals @320",
+    "#/w/043650/rivals @320",
+    "#/w/405920/rivals @320",
+    "#/w/000080/rivals @320",
+    "#/w/000890/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「122.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/023150/rivals @320",
+    "#/w/043650/rivals @320",
+    "#/w/405920/rivals @320",
+    "#/w/000080/rivals @320",
+    "#/w/000890/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「143.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/023150/rivals @360",
+    "#/w/043650/rivals @360",
+    "#/w/405920/rivals @360",
+    "#/w/000080/rivals @360",
+    "#/w/000890/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「122.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/023150/rivals @360",
+    "#/w/043650/rivals @360",
+    "#/w/405920/rivals @360",
+    "#/w/000080/rivals @360",
+    "#/w/000890/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「852.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @320",
+    "#/w/105840/rivals @320",
+    "#/w/138070/rivals @320",
+    "#/w/160190/rivals @320",
+    "#/w/012210/rivals @320"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「639.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @320",
+    "#/w/105840/rivals @320",
+    "#/w/138070/rivals @320",
+    "#/w/160190/rivals @320",
+    "#/w/012210/rivals @320"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「346.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @320",
+    "#/w/105840/rivals @320",
+    "#/w/138070/rivals @320",
+    "#/w/160190/rivals @320",
+    "#/w/012210/rivals @320"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「297 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @320",
+    "#/w/105840/rivals @320",
+    "#/w/138070/rivals @320",
+    "#/w/160190/rivals @320",
+    "#/w/012210/rivals @320"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「852.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @360",
+    "#/w/105840/rivals @360",
+    "#/w/138070/rivals @360",
+    "#/w/160190/rivals @360",
+    "#/w/012210/rivals @360"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「639.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @360",
+    "#/w/105840/rivals @360",
+    "#/w/138070/rivals @360",
+    "#/w/160190/rivals @360",
+    "#/w/012210/rivals @360"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「346.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @360",
+    "#/w/105840/rivals @360",
+    "#/w/138070/rivals @360",
+    "#/w/160190/rivals @360",
+    "#/w/012210/rivals @360"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「297 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/024880/rivals @360",
+    "#/w/105840/rivals @360",
+    "#/w/138070/rivals @360",
+    "#/w/160190/rivals @360",
+    "#/w/012210/rivals @360"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「798.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/025320/rivals @320",
+    "#/w/045970/rivals @320",
+    "#/w/049070/rivals @320",
+    "#/w/049520/rivals @320",
+    "#/w/148150/rivals @320"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「798.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/025320/rivals @360",
+    "#/w/045970/rivals @360",
+    "#/w/049070/rivals @360",
+    "#/w/049520/rivals @360",
+    "#/w/148150/rivals @360"
+   ],
+   "n": 56
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「476.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/027710/rivals @320",
+    "#/w/073560/rivals @320",
+    "#/w/218150/rivals @320",
+    "#/w/016790/rivals @320",
+    "#/w/027740/rivals @320"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「476.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/027710/rivals @360",
+    "#/w/073560/rivals @360",
+    "#/w/218150/rivals @360",
+    "#/w/016790/rivals @360",
+    "#/w/027740/rivals @360"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「120.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @320",
+    "#/w/032850/rivals @320",
+    "#/w/384470/rivals @320",
+    "#/w/386380/rivals @320",
+    "#/w/458870/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「102.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @320",
+    "#/w/035610/rivals @320",
+    "#/w/032850/rivals @320",
+    "#/w/384470/rivals @320",
+    "#/w/386380/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「83.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @320",
+    "#/w/035610/rivals @320",
+    "#/w/032850/rivals @320",
+    "#/w/384470/rivals @320",
+    "#/w/386380/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「78.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @320",
+    "#/w/035610/rivals @320",
+    "#/w/032850/rivals @320",
+    "#/w/384470/rivals @320",
+    "#/w/386380/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「120.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @360",
+    "#/w/032850/rivals @360",
+    "#/w/384470/rivals @360",
+    "#/w/386380/rivals @360",
+    "#/w/458870/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「102.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @360",
+    "#/w/035610/rivals @360",
+    "#/w/032850/rivals @360",
+    "#/w/384470/rivals @360",
+    "#/w/386380/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「83.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @360",
+    "#/w/035610/rivals @360",
+    "#/w/032850/rivals @360",
+    "#/w/384470/rivals @360",
+    "#/w/386380/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「78.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032620/rivals @360",
+    "#/w/035610/rivals @360",
+    "#/w/032850/rivals @360",
+    "#/w/384470/rivals @360",
+    "#/w/386380/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「23 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032830/rivals @320",
+    "#/w/001450/rivals @320",
+    "#/w/244920/rivals @320",
+    "#/w/000370/rivals @320",
+    "#/w/031210/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「23 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032830/rivals @360",
+    "#/w/001450/rivals @360",
+    "#/w/244920/rivals @360",
+    "#/w/000370/rivals @360",
+    "#/w/031210/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「197.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/035610/rivals @320",
+    "#/w/032850/rivals @320",
+    "#/w/384470/rivals @320",
+    "#/w/386380/rivals @320",
+    "#/w/458870/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「197.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/035610/rivals @360",
+    "#/w/032850/rivals @360",
+    "#/w/384470/rivals @360",
+    "#/w/386380/rivals @360",
+    "#/w/458870/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「88.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @320",
+    "#/w/205470/rivals @320",
+    "#/w/215380/rivals @320",
+    "#/w/238120/rivals @320",
+    "#/w/383930/rivals @320"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「85.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @320",
+    "#/w/127710/rivals @320",
+    "#/w/016880/rivals @320",
+    "#/w/068290/rivals @320",
+    "#/w/432430/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「73.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @320",
+    "#/w/016880/rivals @320",
+    "#/w/068290/rivals @320",
+    "#/w/432430/rivals @320",
+    "#/w/418470/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「40.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @320",
+    "#/w/127710/rivals @320",
+    "#/w/016880/rivals @320",
+    "#/w/432430/rivals @320",
+    "#/w/418470/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「88.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @360",
+    "#/w/205470/rivals @360",
+    "#/w/215380/rivals @360",
+    "#/w/238120/rivals @360",
+    "#/w/383930/rivals @360"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「85.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @360",
+    "#/w/127710/rivals @360",
+    "#/w/016880/rivals @360",
+    "#/w/068290/rivals @360",
+    "#/w/432430/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「73.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @360",
+    "#/w/016880/rivals @360",
+    "#/w/068290/rivals @360",
+    "#/w/432430/rivals @360",
+    "#/w/418470/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「40.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036000/rivals @360",
+    "#/w/127710/rivals @360",
+    "#/w/016880/rivals @360",
+    "#/w/432430/rivals @360",
+    "#/w/418470/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「909.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @320",
+    "#/w/071280/rivals @320",
+    "#/w/079370/rivals @320",
+    "#/w/086390/rivals @320",
+    "#/w/306620/rivals @320"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「604.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @320",
+    "#/w/071280/rivals @320",
+    "#/w/079370/rivals @320",
+    "#/w/086390/rivals @320",
+    "#/w/306620/rivals @320"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「578 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @320",
+    "#/w/071280/rivals @320",
+    "#/w/079370/rivals @320",
+    "#/w/086390/rivals @320",
+    "#/w/306620/rivals @320"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「576.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @320",
+    "#/w/071280/rivals @320",
+    "#/w/079370/rivals @320",
+    "#/w/086390/rivals @320",
+    "#/w/306620/rivals @320"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「457.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @320",
+    "#/w/071280/rivals @320",
+    "#/w/079370/rivals @320",
+    "#/w/086390/rivals @320",
+    "#/w/306620/rivals @320"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「909.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @360",
+    "#/w/071280/rivals @360",
+    "#/w/079370/rivals @360",
+    "#/w/086390/rivals @360",
+    "#/w/306620/rivals @360"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「604.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @360",
+    "#/w/071280/rivals @360",
+    "#/w/079370/rivals @360",
+    "#/w/086390/rivals @360",
+    "#/w/306620/rivals @360"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「578 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @360",
+    "#/w/071280/rivals @360",
+    "#/w/079370/rivals @360",
+    "#/w/086390/rivals @360",
+    "#/w/306620/rivals @360"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「576.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @360",
+    "#/w/071280/rivals @360",
+    "#/w/079370/rivals @360",
+    "#/w/086390/rivals @360",
+    "#/w/306620/rivals @360"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「457.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036200/rivals @360",
+    "#/w/071280/rivals @360",
+    "#/w/079370/rivals @360",
+    "#/w/086390/rivals @360",
+    "#/w/306620/rivals @360"
+   ],
+   "n": 48
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「848.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036690/rivals @320",
+    "#/w/109080/rivals @320",
+    "#/w/340360/rivals @320",
+    "#/w/039010/rivals @320",
+    "#/w/049080/rivals @320"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「755.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036690/rivals @320",
+    "#/w/109080/rivals @320",
+    "#/w/340360/rivals @320",
+    "#/w/039010/rivals @320",
+    "#/w/049080/rivals @320"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「541.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/036690/rivals @320",
+    "#/w/109080/rivals @320",
+    "#/w/340360/rivals @320",
+    "#/w/039010/rivals @320",
+    "#/w/049080/rivals @320"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「848.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036690/rivals @360",
+    "#/w/109080/rivals @360",
+    "#/w/340360/rivals @360",
+    "#/w/039010/rivals @360",
+    "#/w/049080/rivals @360"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「755.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036690/rivals @360",
+    "#/w/109080/rivals @360",
+    "#/w/340360/rivals @360",
+    "#/w/039010/rivals @360",
+    "#/w/049080/rivals @360"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「541.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/036690/rivals @360",
+    "#/w/109080/rivals @360",
+    "#/w/340360/rivals @360",
+    "#/w/039010/rivals @360",
+    "#/w/049080/rivals @360"
+   ],
+   "n": 50
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「596.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @320",
+    "#/w/042110/rivals @320",
+    "#/w/058610/rivals @320",
+    "#/w/240600/rivals @320",
+    "#/w/313760/rivals @320"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「556.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @320",
+    "#/w/042110/rivals @320",
+    "#/w/058610/rivals @320",
+    "#/w/240600/rivals @320",
+    "#/w/313760/rivals @320"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「432.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @320",
+    "#/w/042110/rivals @320",
+    "#/w/058610/rivals @320",
+    "#/w/119830/rivals @320",
+    "#/w/240600/rivals @320"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「341.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @320",
+    "#/w/042110/rivals @320",
+    "#/w/240600/rivals @320",
+    "#/w/313760/rivals @320",
+    "#/w/416180/rivals @320"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「596.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @360",
+    "#/w/042110/rivals @360",
+    "#/w/058610/rivals @360",
+    "#/w/240600/rivals @360",
+    "#/w/313760/rivals @360"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「556.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @360",
+    "#/w/042110/rivals @360",
+    "#/w/058610/rivals @360",
+    "#/w/240600/rivals @360",
+    "#/w/313760/rivals @360"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「432.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @360",
+    "#/w/042110/rivals @360",
+    "#/w/058610/rivals @360",
+    "#/w/119830/rivals @360",
+    "#/w/240600/rivals @360"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「341.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/037030/rivals @360",
+    "#/w/042110/rivals @360",
+    "#/w/240600/rivals @360",
+    "#/w/313760/rivals @360",
+    "#/w/416180/rivals @360"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「908.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @320",
+    "#/w/073010/rivals @320",
+    "#/w/077970/rivals @320",
+    "#/w/096350/rivals @320",
+    "#/w/054540/rivals @320"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「789.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @320",
+    "#/w/073010/rivals @320",
+    "#/w/096350/rivals @320",
+    "#/w/017960/rivals @320",
+    "#/w/054540/rivals @320"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「402.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @320",
+    "#/w/073010/rivals @320",
+    "#/w/077970/rivals @320",
+    "#/w/096350/rivals @320",
+    "#/w/017960/rivals @320"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「207.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @320",
+    "#/w/073010/rivals @320",
+    "#/w/077970/rivals @320",
+    "#/w/096350/rivals @320",
+    "#/w/017960/rivals @320"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「908.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @360",
+    "#/w/073010/rivals @360",
+    "#/w/077970/rivals @360",
+    "#/w/096350/rivals @360",
+    "#/w/054540/rivals @360"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「789.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @360",
+    "#/w/073010/rivals @360",
+    "#/w/096350/rivals @360",
+    "#/w/017960/rivals @360",
+    "#/w/054540/rivals @360"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「402.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @360",
+    "#/w/073010/rivals @360",
+    "#/w/077970/rivals @360",
+    "#/w/096350/rivals @360",
+    "#/w/017960/rivals @360"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「207.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/038010/rivals @360",
+    "#/w/073010/rivals @360",
+    "#/w/077970/rivals @360",
+    "#/w/096350/rivals @360",
+    "#/w/017960/rivals @360"
+   ],
+   "n": 10
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「538.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @320",
+    "#/w/277070/rivals @320",
+    "#/w/019550/rivals @320",
+    "#/w/021880/rivals @320",
+    "#/w/100790/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「418.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @320",
+    "#/w/277070/rivals @320",
+    "#/w/019550/rivals @320",
+    "#/w/021880/rivals @320",
+    "#/w/100790/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「239.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @320",
+    "#/w/277070/rivals @320",
+    "#/w/019550/rivals @320",
+    "#/w/021880/rivals @320",
+    "#/w/289080/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「154.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @320",
+    "#/w/277070/rivals @320",
+    "#/w/019550/rivals @320",
+    "#/w/021880/rivals @320",
+    "#/w/100790/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「538.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @360",
+    "#/w/277070/rivals @360",
+    "#/w/019550/rivals @360",
+    "#/w/021880/rivals @360",
+    "#/w/100790/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「418.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @360",
+    "#/w/277070/rivals @360",
+    "#/w/019550/rivals @360",
+    "#/w/021880/rivals @360",
+    "#/w/100790/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「239.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @360",
+    "#/w/277070/rivals @360",
+    "#/w/019550/rivals @360",
+    "#/w/021880/rivals @360",
+    "#/w/289080/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「154.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041190/rivals @360",
+    "#/w/277070/rivals @360",
+    "#/w/019550/rivals @360",
+    "#/w/021880/rivals @360",
+    "#/w/100790/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「710.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @320",
+    "#/w/214610/rivals @320",
+    "#/w/303810/rivals @320",
+    "#/w/336570/rivals @320",
+    "#/w/056090/rivals @320"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「426.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @320",
+    "#/w/214610/rivals @320",
+    "#/w/303810/rivals @320",
+    "#/w/336570/rivals @320",
+    "#/w/056090/rivals @320"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「346.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @320",
+    "#/w/214610/rivals @320",
+    "#/w/303810/rivals @320",
+    "#/w/336570/rivals @320",
+    "#/w/056090/rivals @320"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「336.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @320",
+    "#/w/214610/rivals @320",
+    "#/w/303810/rivals @320",
+    "#/w/336570/rivals @320",
+    "#/w/056090/rivals @320"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「315.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @320",
+    "#/w/214610/rivals @320",
+    "#/w/303810/rivals @320",
+    "#/w/336570/rivals @320",
+    "#/w/056090/rivals @320"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「710.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @360",
+    "#/w/214610/rivals @360",
+    "#/w/303810/rivals @360",
+    "#/w/336570/rivals @360",
+    "#/w/056090/rivals @360"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「426.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @360",
+    "#/w/214610/rivals @360",
+    "#/w/303810/rivals @360",
+    "#/w/336570/rivals @360",
+    "#/w/056090/rivals @360"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「346.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @360",
+    "#/w/214610/rivals @360",
+    "#/w/303810/rivals @360",
+    "#/w/336570/rivals @360",
+    "#/w/056090/rivals @360"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「336.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @360",
+    "#/w/214610/rivals @360",
+    "#/w/303810/rivals @360",
+    "#/w/336570/rivals @360",
+    "#/w/056090/rivals @360"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「315.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/041830/rivals @360",
+    "#/w/214610/rivals @360",
+    "#/w/303810/rivals @360",
+    "#/w/336570/rivals @360",
+    "#/w/056090/rivals @360"
+   ],
+   "n": 71
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「447 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/042110/rivals @320",
+    "#/w/058610/rivals @320",
+    "#/w/240600/rivals @320",
+    "#/w/313760/rivals @320",
+    "#/w/416180/rivals @320"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「447 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/042110/rivals @360",
+    "#/w/058610/rivals @360",
+    "#/w/240600/rivals @360",
+    "#/w/313760/rivals @360",
+    "#/w/416180/rivals @360"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「530.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/044480/rivals @320",
+    "#/w/078860/rivals @320",
+    "#/w/310200/rivals @320",
+    "#/w/035620/rivals @320",
+    "#/w/040300/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「342.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/044480/rivals @320",
+    "#/w/078860/rivals @320",
+    "#/w/310200/rivals @320",
+    "#/w/035620/rivals @320",
+    "#/w/040300/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「302.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/044480/rivals @320",
+    "#/w/078860/rivals @320",
+    "#/w/310200/rivals @320",
+    "#/w/035620/rivals @320",
+    "#/w/040300/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「530.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/044480/rivals @360",
+    "#/w/078860/rivals @360",
+    "#/w/310200/rivals @360",
+    "#/w/035620/rivals @360",
+    "#/w/040300/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「342.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/044480/rivals @360",
+    "#/w/078860/rivals @360",
+    "#/w/310200/rivals @360",
+    "#/w/035620/rivals @360",
+    "#/w/040300/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「302.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/044480/rivals @360",
+    "#/w/078860/rivals @360",
+    "#/w/310200/rivals @360",
+    "#/w/035620/rivals @360",
+    "#/w/040300/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「333.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/045100/rivals @320",
+    "#/w/052900/rivals @320",
+    "#/w/092220/rivals @320",
+    "#/w/117670/rivals @320",
+    "#/w/200710/rivals @320"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「97.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/045100/rivals @320",
+    "#/w/052900/rivals @320",
+    "#/w/092220/rivals @320",
+    "#/w/117670/rivals @320",
+    "#/w/200710/rivals @320"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/045100/rivals @320",
+    "#/w/052900/rivals @320",
+    "#/w/092220/rivals @320",
+    "#/w/117670/rivals @320",
+    "#/w/200710/rivals @320"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「333.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/045100/rivals @360",
+    "#/w/052900/rivals @360",
+    "#/w/092220/rivals @360",
+    "#/w/117670/rivals @360",
+    "#/w/200710/rivals @360"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「97.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/045100/rivals @360",
+    "#/w/052900/rivals @360",
+    "#/w/092220/rivals @360",
+    "#/w/117670/rivals @360",
+    "#/w/200710/rivals @360"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/045100/rivals @360",
+    "#/w/052900/rivals @360",
+    "#/w/092220/rivals @360",
+    "#/w/117670/rivals @360",
+    "#/w/200710/rivals @360"
+   ],
+   "n": 67
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「771.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @320",
+    "#/w/050960/rivals @320",
+    "#/w/053580/rivals @320",
+    "#/w/053980/rivals @320",
+    "#/w/060850/rivals @320"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「587.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @320",
+    "#/w/050960/rivals @320",
+    "#/w/053580/rivals @320",
+    "#/w/053980/rivals @320",
+    "#/w/060850/rivals @320"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「326.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @320",
+    "#/w/050960/rivals @320",
+    "#/w/053580/rivals @320",
+    "#/w/053980/rivals @320",
+    "#/w/060850/rivals @320"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「267.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @320",
+    "#/w/050960/rivals @320",
+    "#/w/053580/rivals @320",
+    "#/w/053980/rivals @320",
+    "#/w/060850/rivals @320"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「223.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @320",
+    "#/w/050960/rivals @320",
+    "#/w/053580/rivals @320",
+    "#/w/053980/rivals @320",
+    "#/w/060850/rivals @320"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「771.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @360",
+    "#/w/050960/rivals @360",
+    "#/w/053580/rivals @360",
+    "#/w/053980/rivals @360",
+    "#/w/060850/rivals @360"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「587.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @360",
+    "#/w/050960/rivals @360",
+    "#/w/053580/rivals @360",
+    "#/w/053980/rivals @360",
+    "#/w/060850/rivals @360"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「326.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @360",
+    "#/w/050960/rivals @360",
+    "#/w/053580/rivals @360",
+    "#/w/053980/rivals @360",
+    "#/w/060850/rivals @360"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「267.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @360",
+    "#/w/050960/rivals @360",
+    "#/w/053580/rivals @360",
+    "#/w/053980/rivals @360",
+    "#/w/060850/rivals @360"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「223.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/047560/rivals @360",
+    "#/w/050960/rivals @360",
+    "#/w/053580/rivals @360",
+    "#/w/053980/rivals @360",
+    "#/w/060850/rivals @360"
+   ],
+   "n": 73
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/051500/rivals @320",
+    "#/w/069960/rivals @320",
+    "#/w/080420/rivals @320",
+    "#/w/178780/rivals @320",
+    "#/w/227840/rivals @320"
+   ],
+   "n": 28
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/051500/rivals @320",
+    "#/w/069960/rivals @320",
+    "#/w/080420/rivals @320",
+    "#/w/178780/rivals @320",
+    "#/w/227840/rivals @320"
+   ],
+   "n": 28
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/051500/rivals @320",
+    "#/w/069960/rivals @320",
+    "#/w/080420/rivals @320",
+    "#/w/178780/rivals @320",
+    "#/w/227840/rivals @320"
+   ],
+   "n": 42
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/051500/rivals @360",
+    "#/w/069960/rivals @360",
+    "#/w/080420/rivals @360",
+    "#/w/178780/rivals @360",
+    "#/w/227840/rivals @360"
+   ],
+   "n": 28
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/051500/rivals @360",
+    "#/w/069960/rivals @360",
+    "#/w/080420/rivals @360",
+    "#/w/178780/rivals @360",
+    "#/w/227840/rivals @360"
+   ],
+   "n": 28
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/051500/rivals @360",
+    "#/w/069960/rivals @360",
+    "#/w/080420/rivals @360",
+    "#/w/178780/rivals @360",
+    "#/w/227840/rivals @360"
+   ],
+   "n": 42
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「32.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052020/rivals @320",
+    "#/w/298020/rivals @320",
+    "#/w/009810/rivals @320",
+    "#/w/011810/rivals @320",
+    "#/w/064090/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「16.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052020/rivals @320",
+    "#/w/298020/rivals @320",
+    "#/w/009810/rivals @320",
+    "#/w/011810/rivals @320",
+    "#/w/064090/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052020/rivals @320",
+    "#/w/009810/rivals @320",
+    "#/w/011810/rivals @320",
+    "#/w/017940/rivals @320",
+    "#/w/051600/rivals @320"
+   ],
+   "n": 34
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「32.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052020/rivals @360",
+    "#/w/298020/rivals @360",
+    "#/w/009810/rivals @360",
+    "#/w/011810/rivals @360",
+    "#/w/064090/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「16.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052020/rivals @360",
+    "#/w/298020/rivals @360",
+    "#/w/009810/rivals @360",
+    "#/w/011810/rivals @360",
+    "#/w/064090/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「7.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052020/rivals @360",
+    "#/w/009810/rivals @360",
+    "#/w/011810/rivals @360",
+    "#/w/017940/rivals @360",
+    "#/w/051600/rivals @360"
+   ],
+   "n": 34
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052460/rivals @320",
+    "#/w/067730/rivals @320",
+    "#/w/328380/rivals @320",
+    "#/w/031820/rivals @320",
+    "#/w/286940/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052460/rivals @320",
+    "#/w/067730/rivals @320",
+    "#/w/328380/rivals @320",
+    "#/w/031820/rivals @320",
+    "#/w/286940/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/052460/rivals @320",
+    "#/w/067730/rivals @320",
+    "#/w/328380/rivals @320",
+    "#/w/031820/rivals @320",
+    "#/w/286940/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052460/rivals @360",
+    "#/w/067730/rivals @360",
+    "#/w/328380/rivals @360",
+    "#/w/031820/rivals @360",
+    "#/w/286940/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「8.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052460/rivals @360",
+    "#/w/067730/rivals @360",
+    "#/w/328380/rivals @360",
+    "#/w/031820/rivals @360",
+    "#/w/286940/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「6.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/052460/rivals @360",
+    "#/w/067730/rivals @360",
+    "#/w/328380/rivals @360",
+    "#/w/031820/rivals @360",
+    "#/w/286940/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/054300/rivals @320",
+    "#/w/129260/rivals @320",
+    "#/w/465770/rivals @320",
+    "#/w/124560/rivals @320",
+    "#/w/003280/rivals @320"
+   ],
+   "n": 9
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「709 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/054300/rivals @320",
+    "#/w/465770/rivals @320",
+    "#/w/028670/rivals @320",
+    "#/w/124560/rivals @320",
+    "#/w/003280/rivals @320"
+   ],
+   "n": 9
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/054300/rivals @360",
+    "#/w/129260/rivals @360",
+    "#/w/465770/rivals @360",
+    "#/w/124560/rivals @360",
+    "#/w/003280/rivals @360"
+   ],
+   "n": 9
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「709 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/054300/rivals @360",
+    "#/w/465770/rivals @360",
+    "#/w/028670/rivals @360",
+    "#/w/124560/rivals @360",
+    "#/w/003280/rivals @360"
+   ],
+   "n": 9
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「71.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @320",
+    "#/w/009540/rivals @320",
+    "#/w/042660/rivals @320",
+    "#/w/075580/rivals @320",
+    "#/w/099410/rivals @320"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @320",
+    "#/w/267250/rivals @320",
+    "#/w/042660/rivals @320",
+    "#/w/075580/rivals @320",
+    "#/w/099410/rivals @320"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「17.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @320",
+    "#/w/267250/rivals @320",
+    "#/w/009540/rivals @320",
+    "#/w/042660/rivals @320",
+    "#/w/075580/rivals @320"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @320",
+    "#/w/267250/rivals @320",
+    "#/w/009540/rivals @320",
+    "#/w/075580/rivals @320",
+    "#/w/099410/rivals @320"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @320",
+    "#/w/267250/rivals @320",
+    "#/w/009540/rivals @320",
+    "#/w/042660/rivals @320",
+    "#/w/075580/rivals @320"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「71.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @360",
+    "#/w/009540/rivals @360",
+    "#/w/042660/rivals @360",
+    "#/w/075580/rivals @360",
+    "#/w/099410/rivals @360"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @360",
+    "#/w/267250/rivals @360",
+    "#/w/042660/rivals @360",
+    "#/w/075580/rivals @360",
+    "#/w/099410/rivals @360"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「17.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @360",
+    "#/w/267250/rivals @360",
+    "#/w/009540/rivals @360",
+    "#/w/042660/rivals @360",
+    "#/w/075580/rivals @360"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「12.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @360",
+    "#/w/267250/rivals @360",
+    "#/w/009540/rivals @360",
+    "#/w/075580/rivals @360",
+    "#/w/099410/rivals @360"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/065570/rivals @360",
+    "#/w/267250/rivals @360",
+    "#/w/009540/rivals @360",
+    "#/w/042660/rivals @360",
+    "#/w/075580/rivals @360"
+   ],
+   "n": 18
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「23.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/066970/rivals @320",
+    "#/w/393890/rivals @320",
+    "#/w/247540/rivals @320",
+    "#/w/361610/rivals @320",
+    "#/w/458650/rivals @320"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/066970/rivals @320",
+    "#/w/098070/rivals @320",
+    "#/w/100090/rivals @320",
+    "#/w/282720/rivals @320",
+    "#/w/389260/rivals @320"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「23.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/066970/rivals @360",
+    "#/w/393890/rivals @360",
+    "#/w/247540/rivals @360",
+    "#/w/361610/rivals @360",
+    "#/w/458650/rivals @360"
+   ],
+   "n": 16
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「13.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/066970/rivals @360",
+    "#/w/098070/rivals @360",
+    "#/w/100090/rivals @360",
+    "#/w/282720/rivals @360",
+    "#/w/389260/rivals @360"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「884.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @320",
+    "#/w/068930/rivals @320",
+    "#/w/289010/rivals @320",
+    "#/w/373160/rivals @320",
+    "#/w/475580/rivals @320"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「797.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @320",
+    "#/w/068930/rivals @320",
+    "#/w/289010/rivals @320",
+    "#/w/373160/rivals @320",
+    "#/w/475580/rivals @320"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「650 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @320",
+    "#/w/068930/rivals @320",
+    "#/w/289010/rivals @320",
+    "#/w/373160/rivals @320",
+    "#/w/475580/rivals @320"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「268.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @320",
+    "#/w/068930/rivals @320",
+    "#/w/289010/rivals @320",
+    "#/w/373160/rivals @320",
+    "#/w/475580/rivals @320"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「884.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @360",
+    "#/w/068930/rivals @360",
+    "#/w/289010/rivals @360",
+    "#/w/373160/rivals @360",
+    "#/w/475580/rivals @360"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「797.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @360",
+    "#/w/068930/rivals @360",
+    "#/w/289010/rivals @360",
+    "#/w/373160/rivals @360",
+    "#/w/475580/rivals @360"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「650 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @360",
+    "#/w/068930/rivals @360",
+    "#/w/289010/rivals @360",
+    "#/w/373160/rivals @360",
+    "#/w/475580/rivals @360"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「268.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/067280/rivals @360",
+    "#/w/068930/rivals @360",
+    "#/w/289010/rivals @360",
+    "#/w/373160/rivals @360",
+    "#/w/475580/rivals @360"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「330.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/068930/rivals @320",
+    "#/w/289010/rivals @320",
+    "#/w/373160/rivals @320",
+    "#/w/475580/rivals @320",
+    "#/w/035290/rivals @320"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「330.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/068930/rivals @360",
+    "#/w/289010/rivals @360",
+    "#/w/373160/rivals @360",
+    "#/w/475580/rivals @360",
+    "#/w/035290/rivals @360"
+   ],
+   "n": 21
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「582.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @320",
+    "#/w/079950/rivals @320",
+    "#/w/083500/rivals @320",
+    "#/w/171090/rivals @320",
+    "#/w/137080/rivals @320"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「515.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @320",
+    "#/w/079950/rivals @320",
+    "#/w/083500/rivals @320",
+    "#/w/088130/rivals @320",
+    "#/w/137080/rivals @320"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「483 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @320",
+    "#/w/079950/rivals @320",
+    "#/w/083500/rivals @320",
+    "#/w/088130/rivals @320",
+    "#/w/171090/rivals @320"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「460.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @320",
+    "#/w/079950/rivals @320",
+    "#/w/083500/rivals @320",
+    "#/w/088130/rivals @320",
+    "#/w/171090/rivals @320"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「197 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @320",
+    "#/w/079950/rivals @320",
+    "#/w/083500/rivals @320",
+    "#/w/088130/rivals @320",
+    "#/w/171090/rivals @320"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「582.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @360",
+    "#/w/079950/rivals @360",
+    "#/w/083500/rivals @360",
+    "#/w/171090/rivals @360",
+    "#/w/137080/rivals @360"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「515.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @360",
+    "#/w/079950/rivals @360",
+    "#/w/083500/rivals @360",
+    "#/w/088130/rivals @360",
+    "#/w/137080/rivals @360"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「483 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @360",
+    "#/w/079950/rivals @360",
+    "#/w/083500/rivals @360",
+    "#/w/088130/rivals @360",
+    "#/w/171090/rivals @360"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「460.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @360",
+    "#/w/079950/rivals @360",
+    "#/w/083500/rivals @360",
+    "#/w/088130/rivals @360",
+    "#/w/171090/rivals @360"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「197 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/078150/rivals @360",
+    "#/w/079950/rivals @360",
+    "#/w/083500/rivals @360",
+    "#/w/088130/rivals @360",
+    "#/w/171090/rivals @360"
+   ],
+   "n": 22
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「645.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @320",
+    "#/w/246960/rivals @320",
+    "#/w/439580/rivals @320",
+    "#/w/043710/rivals @320",
+    "#/w/217330/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「574.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @320",
+    "#/w/246960/rivals @320",
+    "#/w/439580/rivals @320",
+    "#/w/043710/rivals @320",
+    "#/w/217330/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「404.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @320",
+    "#/w/246960/rivals @320",
+    "#/w/439580/rivals @320",
+    "#/w/043710/rivals @320",
+    "#/w/217330/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「287.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @320",
+    "#/w/246960/rivals @320",
+    "#/w/439580/rivals @320",
+    "#/w/043710/rivals @320",
+    "#/w/217330/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「645.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @360",
+    "#/w/246960/rivals @360",
+    "#/w/439580/rivals @360",
+    "#/w/043710/rivals @360",
+    "#/w/217330/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「574.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @360",
+    "#/w/246960/rivals @360",
+    "#/w/439580/rivals @360",
+    "#/w/043710/rivals @360",
+    "#/w/217330/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「404.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @360",
+    "#/w/246960/rivals @360",
+    "#/w/439580/rivals @360",
+    "#/w/043710/rivals @360",
+    "#/w/217330/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「287.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/085660/rivals @360",
+    "#/w/246960/rivals @360",
+    "#/w/439580/rivals @360",
+    "#/w/043710/rivals @360",
+    "#/w/217330/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/094860/rivals @320",
+    "#/w/112040/rivals @320",
+    "#/w/192080/rivals @320",
+    "#/w/217270/rivals @320",
+    "#/w/293490/rivals @320"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「719.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/094860/rivals @320",
+    "#/w/112040/rivals @320",
+    "#/w/217270/rivals @320",
+    "#/w/293490/rivals @320",
+    "#/w/036570/rivals @320"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「696.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/094860/rivals @320",
+    "#/w/112040/rivals @320",
+    "#/w/192080/rivals @320",
+    "#/w/217270/rivals @320",
+    "#/w/293490/rivals @320"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/094860/rivals @360",
+    "#/w/112040/rivals @360",
+    "#/w/192080/rivals @360",
+    "#/w/217270/rivals @360",
+    "#/w/293490/rivals @360"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「719.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/094860/rivals @360",
+    "#/w/112040/rivals @360",
+    "#/w/217270/rivals @360",
+    "#/w/293490/rivals @360",
+    "#/w/036570/rivals @360"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「696.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/094860/rivals @360",
+    "#/w/112040/rivals @360",
+    "#/w/192080/rivals @360",
+    "#/w/217270/rivals @360",
+    "#/w/293490/rivals @360"
+   ],
+   "n": 32
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「965.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/098070/rivals @320",
+    "#/w/282720/rivals @320",
+    "#/w/389260/rivals @320",
+    "#/w/044490/rivals @320",
+    "#/w/046120/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「774.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/098070/rivals @320",
+    "#/w/100090/rivals @320",
+    "#/w/282720/rivals @320",
+    "#/w/389260/rivals @320",
+    "#/w/044490/rivals @320"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「965.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/098070/rivals @360",
+    "#/w/282720/rivals @360",
+    "#/w/389260/rivals @360",
+    "#/w/044490/rivals @360",
+    "#/w/046120/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「774.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/098070/rivals @360",
+    "#/w/100090/rivals @360",
+    "#/w/282720/rivals @360",
+    "#/w/389260/rivals @360",
+    "#/w/044490/rivals @360"
+   ],
+   "n": 27
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「536.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @320",
+    "#/w/229000/rivals @320",
+    "#/w/028300/rivals @320",
+    "#/w/307280/rivals @320",
+    "#/w/376900/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「164.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @320",
+    "#/w/229000/rivals @320",
+    "#/w/028300/rivals @320",
+    "#/w/307280/rivals @320",
+    "#/w/376900/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「118.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @320",
+    "#/w/229000/rivals @320",
+    "#/w/028300/rivals @320",
+    "#/w/307280/rivals @320",
+    "#/w/376900/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「108.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @320",
+    "#/w/229000/rivals @320",
+    "#/w/028300/rivals @320",
+    "#/w/307280/rivals @320",
+    "#/w/376900/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「103 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @320",
+    "#/w/229000/rivals @320",
+    "#/w/028300/rivals @320",
+    "#/w/307280/rivals @320",
+    "#/w/376900/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「536.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @360",
+    "#/w/229000/rivals @360",
+    "#/w/028300/rivals @360",
+    "#/w/307280/rivals @360",
+    "#/w/376900/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「164.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @360",
+    "#/w/229000/rivals @360",
+    "#/w/028300/rivals @360",
+    "#/w/307280/rivals @360",
+    "#/w/376900/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「118.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @360",
+    "#/w/229000/rivals @360",
+    "#/w/028300/rivals @360",
+    "#/w/307280/rivals @360",
+    "#/w/376900/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「108.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @360",
+    "#/w/229000/rivals @360",
+    "#/w/028300/rivals @360",
+    "#/w/307280/rivals @360",
+    "#/w/376900/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「103 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/100700/rivals @360",
+    "#/w/229000/rivals @360",
+    "#/w/028300/rivals @360",
+    "#/w/307280/rivals @360",
+    "#/w/376900/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「743.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/105840/rivals @320",
+    "#/w/138070/rivals @320",
+    "#/w/160190/rivals @320",
+    "#/w/012210/rivals @320",
+    "#/w/023160/rivals @320"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「743.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/105840/rivals @360",
+    "#/w/138070/rivals @360",
+    "#/w/160190/rivals @360",
+    "#/w/012210/rivals @360",
+    "#/w/023160/rivals @360"
+   ],
+   "n": 29
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「797.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @320",
+    "#/w/348350/rivals @320",
+    "#/w/131970/rivals @320",
+    "#/w/041520/rivals @320",
+    "#/w/281820/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「428.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @320",
+    "#/w/348350/rivals @320",
+    "#/w/029460/rivals @320",
+    "#/w/131970/rivals @320",
+    "#/w/041520/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「382.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @320",
+    "#/w/348350/rivals @320",
+    "#/w/029460/rivals @320",
+    "#/w/131970/rivals @320",
+    "#/w/041520/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「303.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @320",
+    "#/w/348350/rivals @320",
+    "#/w/029460/rivals @320",
+    "#/w/041520/rivals @320",
+    "#/w/281820/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「797.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @360",
+    "#/w/348350/rivals @360",
+    "#/w/131970/rivals @360",
+    "#/w/041520/rivals @360",
+    "#/w/281820/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「428.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @360",
+    "#/w/348350/rivals @360",
+    "#/w/029460/rivals @360",
+    "#/w/131970/rivals @360",
+    "#/w/041520/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「382.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @360",
+    "#/w/348350/rivals @360",
+    "#/w/029460/rivals @360",
+    "#/w/131970/rivals @360",
+    "#/w/041520/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「303.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/119830/rivals @360",
+    "#/w/348350/rivals @360",
+    "#/w/029460/rivals @360",
+    "#/w/041520/rivals @360",
+    "#/w/281820/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.6 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/122870/rivals @320",
+    "#/w/361570/rivals @320",
+    "#/w/182360/rivals @320",
+    "#/w/041510/rivals @320",
+    "#/w/035900/rivals @320"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「821.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/122870/rivals @320",
+    "#/w/361570/rivals @320",
+    "#/w/182360/rivals @320",
+    "#/w/041510/rivals @320",
+    "#/w/352820/rivals @320"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「87.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/122870/rivals @320",
+    "#/w/361570/rivals @320",
+    "#/w/041510/rivals @320",
+    "#/w/352820/rivals @320",
+    "#/w/035900/rivals @320"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「2.6 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/122870/rivals @360",
+    "#/w/361570/rivals @360",
+    "#/w/182360/rivals @360",
+    "#/w/041510/rivals @360",
+    "#/w/035900/rivals @360"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「821.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/122870/rivals @360",
+    "#/w/361570/rivals @360",
+    "#/w/182360/rivals @360",
+    "#/w/041510/rivals @360",
+    "#/w/352820/rivals @360"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「87.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/122870/rivals @360",
+    "#/w/361570/rivals @360",
+    "#/w/041510/rivals @360",
+    "#/w/352820/rivals @360",
+    "#/w/035900/rivals @360"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「114.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/151860/rivals @320",
+    "#/w/900140/rivals @320",
+    "#/w/003620/rivals @320",
+    "#/w/005380/rivals @320",
+    "#/w/000040/rivals @320"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「114.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/151860/rivals @360",
+    "#/w/900140/rivals @360",
+    "#/w/003620/rivals @360",
+    "#/w/005380/rivals @360",
+    "#/w/000040/rivals @360"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「706.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @320",
+    "#/w/199800/rivals @320",
+    "#/w/321550/rivals @320",
+    "#/w/476830/rivals @320",
+    "#/w/950210/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「215.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @320",
+    "#/w/199800/rivals @320",
+    "#/w/321550/rivals @320",
+    "#/w/476830/rivals @320",
+    "#/w/950210/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「205.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @320",
+    "#/w/199800/rivals @320",
+    "#/w/321550/rivals @320",
+    "#/w/476830/rivals @320",
+    "#/w/950210/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「141.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @320",
+    "#/w/199800/rivals @320",
+    "#/w/321550/rivals @320",
+    "#/w/476830/rivals @320",
+    "#/w/950210/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「66.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @320",
+    "#/w/199800/rivals @320",
+    "#/w/321550/rivals @320",
+    "#/w/476830/rivals @320",
+    "#/w/950210/rivals @320"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「706.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @360",
+    "#/w/199800/rivals @360",
+    "#/w/321550/rivals @360",
+    "#/w/476830/rivals @360",
+    "#/w/950210/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「215.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @360",
+    "#/w/199800/rivals @360",
+    "#/w/321550/rivals @360",
+    "#/w/476830/rivals @360",
+    "#/w/950210/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「205.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @360",
+    "#/w/199800/rivals @360",
+    "#/w/321550/rivals @360",
+    "#/w/476830/rivals @360",
+    "#/w/950210/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「141.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @360",
+    "#/w/199800/rivals @360",
+    "#/w/321550/rivals @360",
+    "#/w/476830/rivals @360",
+    "#/w/950210/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「66.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/187660/rivals @360",
+    "#/w/199800/rivals @360",
+    "#/w/321550/rivals @360",
+    "#/w/476830/rivals @360",
+    "#/w/950210/rivals @360"
+   ],
+   "n": 39
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「474.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @320",
+    "#/w/215380/rivals @320",
+    "#/w/238120/rivals @320",
+    "#/w/383930/rivals @320",
+    "#/w/494120/rivals @320"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「195.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @320",
+    "#/w/215380/rivals @320",
+    "#/w/238120/rivals @320",
+    "#/w/383930/rivals @320",
+    "#/w/494120/rivals @320"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「162.1 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @320",
+    "#/w/215380/rivals @320",
+    "#/w/238120/rivals @320",
+    "#/w/383930/rivals @320",
+    "#/w/494120/rivals @320"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「128.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @320",
+    "#/w/215380/rivals @320",
+    "#/w/238120/rivals @320",
+    "#/w/383930/rivals @320",
+    "#/w/494120/rivals @320"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「474.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @360",
+    "#/w/215380/rivals @360",
+    "#/w/238120/rivals @360",
+    "#/w/383930/rivals @360",
+    "#/w/494120/rivals @360"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「195.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @360",
+    "#/w/215380/rivals @360",
+    "#/w/238120/rivals @360",
+    "#/w/383930/rivals @360",
+    "#/w/494120/rivals @360"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「162.1 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @360",
+    "#/w/215380/rivals @360",
+    "#/w/238120/rivals @360",
+    "#/w/383930/rivals @360",
+    "#/w/494120/rivals @360"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「128.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/205470/rivals @360",
+    "#/w/215380/rivals @360",
+    "#/w/238120/rivals @360",
+    "#/w/383930/rivals @360",
+    "#/w/494120/rivals @360"
+   ],
+   "n": 37
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「21.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/264850/rivals @320",
+    "#/w/353200/rivals @320",
+    "#/w/355690/rivals @320",
+    "#/w/004770/rivals @320",
+    "#/w/085670/rivals @320"
+   ],
+   "n": 31
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「11.3 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/264850/rivals @320",
+    "#/w/353200/rivals @320",
+    "#/w/355690/rivals @320",
+    "#/w/004770/rivals @320",
+    "#/w/085670/rivals @320"
+   ],
+   "n": 31
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「21.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/264850/rivals @360",
+    "#/w/353200/rivals @360",
+    "#/w/355690/rivals @360",
+    "#/w/004770/rivals @360",
+    "#/w/085670/rivals @360"
+   ],
+   "n": 31
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「11.3 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/264850/rivals @360",
+    "#/w/353200/rivals @360",
+    "#/w/355690/rivals @360",
+    "#/w/004770/rivals @360",
+    "#/w/085670/rivals @360"
+   ],
+   "n": 31
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「162.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/277070/rivals @320",
+    "#/w/019550/rivals @320",
+    "#/w/021880/rivals @320",
+    "#/w/100790/rivals @320",
+    "#/w/289080/rivals @320"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「162.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/277070/rivals @360",
+    "#/w/019550/rivals @360",
+    "#/w/021880/rivals @360",
+    "#/w/100790/rivals @360",
+    "#/w/289080/rivals @360"
+   ],
+   "n": 23
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「81.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @320",
+    "#/w/175330/rivals @320",
+    "#/w/323410/rivals @320",
+    "#/w/006220/rivals @320",
+    "#/w/138930/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「68.9 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @320",
+    "#/w/175330/rivals @320",
+    "#/w/323410/rivals @320",
+    "#/w/105560/rivals @320",
+    "#/w/006220/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「64.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @320",
+    "#/w/175330/rivals @320",
+    "#/w/323410/rivals @320",
+    "#/w/105560/rivals @320",
+    "#/w/006220/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「41.5 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @320",
+    "#/w/175330/rivals @320",
+    "#/w/323410/rivals @320",
+    "#/w/105560/rivals @320",
+    "#/w/006220/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @320",
+    "#/w/175330/rivals @320",
+    "#/w/323410/rivals @320",
+    "#/w/105560/rivals @320",
+    "#/w/006220/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「81.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @360",
+    "#/w/175330/rivals @360",
+    "#/w/323410/rivals @360",
+    "#/w/006220/rivals @360",
+    "#/w/138930/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「68.9 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @360",
+    "#/w/175330/rivals @360",
+    "#/w/323410/rivals @360",
+    "#/w/105560/rivals @360",
+    "#/w/006220/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「64.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @360",
+    "#/w/175330/rivals @360",
+    "#/w/323410/rivals @360",
+    "#/w/105560/rivals @360",
+    "#/w/006220/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「41.5 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @360",
+    "#/w/175330/rivals @360",
+    "#/w/323410/rivals @360",
+    "#/w/105560/rivals @360",
+    "#/w/006220/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「29.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/279570/rivals @360",
+    "#/w/175330/rivals @360",
+    "#/w/323410/rivals @360",
+    "#/w/105560/rivals @360",
+    "#/w/006220/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「545.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/361570/rivals @320",
+    "#/w/182360/rivals @320",
+    "#/w/041510/rivals @320",
+    "#/w/352820/rivals @320",
+    "#/w/035900/rivals @320"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「545.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/361570/rivals @360",
+    "#/w/182360/rivals @360",
+    "#/w/041510/rivals @360",
+    "#/w/352820/rivals @360",
+    "#/w/035900/rivals @360"
+   ],
+   "n": 5
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「586.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/363280/rivals @320",
+    "#/w/032350/rivals @320",
+    "#/w/035250/rivals @320",
+    "#/w/499790/rivals @320",
+    "#/w/006730/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「483.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/363280/rivals @320",
+    "#/w/032350/rivals @320",
+    "#/w/035250/rivals @320",
+    "#/w/499790/rivals @320",
+    "#/w/006730/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「586.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/363280/rivals @360",
+    "#/w/032350/rivals @360",
+    "#/w/035250/rivals @360",
+    "#/w/499790/rivals @360",
+    "#/w/006730/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「483.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/363280/rivals @360",
+    "#/w/032350/rivals @360",
+    "#/w/035250/rivals @360",
+    "#/w/499790/rivals @360",
+    "#/w/006730/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「744.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @320",
+    "#/w/469750/rivals @320",
+    "#/w/302430/rivals @320",
+    "#/w/412540/rivals @320",
+    "#/w/382840/rivals @320"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「407.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @320",
+    "#/w/469750/rivals @320",
+    "#/w/302430/rivals @320",
+    "#/w/412540/rivals @320",
+    "#/w/382840/rivals @320"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「392.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @320",
+    "#/w/469750/rivals @320",
+    "#/w/302430/rivals @320",
+    "#/w/412540/rivals @320",
+    "#/w/382840/rivals @320"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「390.7 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @320",
+    "#/w/469750/rivals @320",
+    "#/w/302430/rivals @320",
+    "#/w/412540/rivals @320",
+    "#/w/382840/rivals @320"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「184.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @320",
+    "#/w/469750/rivals @320",
+    "#/w/302430/rivals @320",
+    "#/w/412540/rivals @320",
+    "#/w/382840/rivals @320"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「744.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @360",
+    "#/w/469750/rivals @360",
+    "#/w/302430/rivals @360",
+    "#/w/412540/rivals @360",
+    "#/w/382840/rivals @360"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「407.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @360",
+    "#/w/469750/rivals @360",
+    "#/w/302430/rivals @360",
+    "#/w/412540/rivals @360",
+    "#/w/382840/rivals @360"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「392.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @360",
+    "#/w/469750/rivals @360",
+    "#/w/302430/rivals @360",
+    "#/w/412540/rivals @360",
+    "#/w/382840/rivals @360"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「390.7 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @360",
+    "#/w/469750/rivals @360",
+    "#/w/302430/rivals @360",
+    "#/w/412540/rivals @360",
+    "#/w/382840/rivals @360"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「184.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/382480/rivals @360",
+    "#/w/469750/rivals @360",
+    "#/w/302430/rivals @360",
+    "#/w/412540/rivals @360",
+    "#/w/382840/rivals @360"
+   ],
+   "n": 15
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「466.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/443250/rivals @320",
+    "#/w/020120/rivals @320",
+    "#/w/089230/rivals @320",
+    "#/w/134580/rivals @320",
+    "#/w/376300/rivals @320"
+   ],
+   "n": 14
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「272.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/443250/rivals @320",
+    "#/w/020120/rivals @320",
+    "#/w/089230/rivals @320",
+    "#/w/134580/rivals @320",
+    "#/w/376300/rivals @320"
+   ],
+   "n": 14
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「217.5 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/443250/rivals @320",
+    "#/w/089230/rivals @320",
+    "#/w/134580/rivals @320",
+    "#/w/376300/rivals @320",
+    "#/w/035720/rivals @320"
+   ],
+   "n": 14
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「466.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/443250/rivals @360",
+    "#/w/020120/rivals @360",
+    "#/w/089230/rivals @360",
+    "#/w/134580/rivals @360",
+    "#/w/376300/rivals @360"
+   ],
+   "n": 14
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「272.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/443250/rivals @360",
+    "#/w/020120/rivals @360",
+    "#/w/089230/rivals @360",
+    "#/w/134580/rivals @360",
+    "#/w/376300/rivals @360"
+   ],
+   "n": 14
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「217.5 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/443250/rivals @360",
+    "#/w/089230/rivals @360",
+    "#/w/134580/rivals @360",
+    "#/w/376300/rivals @360",
+    "#/w/035720/rivals @360"
+   ],
+   "n": 14
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「445.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @320",
+    "#/w/034830/rivals @320",
+    "#/w/088260/rivals @320",
+    "#/w/123890/rivals @320",
+    "#/w/005110/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「204.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @320",
+    "#/w/034830/rivals @320",
+    "#/w/088260/rivals @320",
+    "#/w/005110/rivals @320",
+    "#/w/015020/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「184.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @320",
+    "#/w/088260/rivals @320",
+    "#/w/123890/rivals @320",
+    "#/w/005110/rivals @320",
+    "#/w/015020/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「23.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @320",
+    "#/w/034830/rivals @320",
+    "#/w/123890/rivals @320",
+    "#/w/005110/rivals @320",
+    "#/w/015020/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「16.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @320",
+    "#/w/034830/rivals @320",
+    "#/w/088260/rivals @320",
+    "#/w/123890/rivals @320",
+    "#/w/005110/rivals @320"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「445.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @360",
+    "#/w/034830/rivals @360",
+    "#/w/088260/rivals @360",
+    "#/w/123890/rivals @360",
+    "#/w/005110/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「204.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @360",
+    "#/w/034830/rivals @360",
+    "#/w/088260/rivals @360",
+    "#/w/005110/rivals @360",
+    "#/w/015020/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「184.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @360",
+    "#/w/088260/rivals @360",
+    "#/w/123890/rivals @360",
+    "#/w/005110/rivals @360",
+    "#/w/015020/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「23.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @360",
+    "#/w/034830/rivals @360",
+    "#/w/123890/rivals @360",
+    "#/w/005110/rivals @360",
+    "#/w/015020/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「16.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/001000/rivals @360",
+    "#/w/034830/rivals @360",
+    "#/w/088260/rivals @360",
+    "#/w/123890/rivals @360",
+    "#/w/005110/rivals @360"
+   ],
+   "n": 6
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.8 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/010820/rivals @320",
+    "#/w/079550/rivals @320",
+    "#/w/417030/rivals @320",
+    "#/w/005870/rivals @320",
+    "#/w/065450/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「403.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/010820/rivals @320",
+    "#/w/079550/rivals @320",
+    "#/w/417030/rivals @320",
+    "#/w/005870/rivals @320",
+    "#/w/065450/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.8 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/010820/rivals @360",
+    "#/w/079550/rivals @360",
+    "#/w/417030/rivals @360",
+    "#/w/005870/rivals @360",
+    "#/w/065450/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「403.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/010820/rivals @360",
+    "#/w/079550/rivals @360",
+    "#/w/417030/rivals @360",
+    "#/w/005870/rivals @360",
+    "#/w/065450/rivals @360"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「97.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017940/rivals @320",
+    "#/w/051600/rivals @320",
+    "#/w/071320/rivals @320",
+    "#/w/453450/rivals @320",
+    "#/w/052690/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「35.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/017940/rivals @320",
+    "#/w/051600/rivals @320",
+    "#/w/071320/rivals @320",
+    "#/w/453450/rivals @320",
+    "#/w/052690/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「97.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017940/rivals @360",
+    "#/w/051600/rivals @360",
+    "#/w/071320/rivals @360",
+    "#/w/453450/rivals @360",
+    "#/w/052690/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「35.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/017940/rivals @360",
+    "#/w/051600/rivals @360",
+    "#/w/071320/rivals @360",
+    "#/w/453450/rivals @360",
+    "#/w/052690/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「28.2 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/025770/rivals @320",
+    "#/w/032640/rivals @320",
+    "#/w/052600/rivals @320",
+    "#/w/017670/rivals @320",
+    "#/w/036800/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「28.2 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/025770/rivals @360",
+    "#/w/032640/rivals @360",
+    "#/w/052600/rivals @360",
+    "#/w/017670/rivals @360",
+    "#/w/036800/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「836.3 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/032640/rivals @320",
+    "#/w/052600/rivals @320",
+    "#/w/017670/rivals @320",
+    "#/w/030200/rivals @320",
+    "#/w/036800/rivals @320"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「836.3 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/032640/rivals @360",
+    "#/w/052600/rivals @360",
+    "#/w/017670/rivals @360",
+    "#/w/030200/rivals @360",
+    "#/w/036800/rivals @360"
+   ],
+   "n": 12
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.1 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/034120/rivals @320",
+    "#/w/039340/rivals @320",
+    "#/w/037560/rivals @320",
+    "#/w/058400/rivals @320",
+    "#/w/066790/rivals @320"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「984.2 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/034120/rivals @320",
+    "#/w/039340/rivals @320",
+    "#/w/035760/rivals @320",
+    "#/w/037560/rivals @320",
+    "#/w/058400/rivals @320"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「75.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/034120/rivals @320",
+    "#/w/035760/rivals @320",
+    "#/w/037560/rivals @320",
+    "#/w/058400/rivals @320",
+    "#/w/066790/rivals @320"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「5.1 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/034120/rivals @360",
+    "#/w/039340/rivals @360",
+    "#/w/037560/rivals @360",
+    "#/w/058400/rivals @360",
+    "#/w/066790/rivals @360"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「984.2 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/034120/rivals @360",
+    "#/w/039340/rivals @360",
+    "#/w/035760/rivals @360",
+    "#/w/037560/rivals @360",
+    "#/w/058400/rivals @360"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「75.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/034120/rivals @360",
+    "#/w/035760/rivals @360",
+    "#/w/037560/rivals @360",
+    "#/w/058400/rivals @360",
+    "#/w/066790/rivals @360"
+   ],
+   "n": 7
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.4 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/051600/rivals @320",
+    "#/w/071320/rivals @320",
+    "#/w/453450/rivals @320",
+    "#/w/052690/rivals @320",
+    "#/w/053050/rivals @320"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「10.4 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/051600/rivals @360",
+    "#/w/071320/rivals @360",
+    "#/w/453450/rivals @360",
+    "#/w/052690/rivals @360",
+    "#/w/053050/rivals @360"
+   ],
+   "n": 17
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「26.7 trillion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @320",
+    "#/w/047810/rivals @320",
+    "#/w/274090/rivals @320",
+    "#/w/478340/rivals @320",
+    "#/w/221840/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「254.4 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @320",
+    "#/w/047810/rivals @320",
+    "#/w/274090/rivals @320",
+    "#/w/478340/rivals @320",
+    "#/w/221840/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「206.9 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @320",
+    "#/w/047810/rivals @320",
+    "#/w/274090/rivals @320",
+    "#/w/478340/rivals @320",
+    "#/w/221840/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「84.6 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @320",
+    "#/w/047810/rivals @320",
+    "#/w/274090/rivals @320",
+    "#/w/478340/rivals @320",
+    "#/w/288180/rivals @320"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「26.7 trillion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @360",
+    "#/w/047810/rivals @360",
+    "#/w/274090/rivals @360",
+    "#/w/478340/rivals @360",
+    "#/w/221840/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「254.4 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @360",
+    "#/w/047810/rivals @360",
+    "#/w/274090/rivals @360",
+    "#/w/478340/rivals @360",
+    "#/w/221840/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「206.9 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @360",
+    "#/w/047810/rivals @360",
+    "#/w/274090/rivals @360",
+    "#/w/478340/rivals @360",
+    "#/w/221840/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「84.6 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/462350/rivals @360",
+    "#/w/047810/rivals @360",
+    "#/w/274090/rivals @360",
+    "#/w/478340/rivals @360",
+    "#/w/288180/rivals @360"
+   ],
+   "n": 11
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「294.8 billion won」 @320",
+   "ex": null,
+   "at": [
+    "#/w/079550/rivals @320",
+    "#/w/417030/rivals @320",
+    "#/w/005870/rivals @320",
+    "#/w/065450/rivals @320",
+    "#/w/215090/rivals @320"
+   ],
+   "n": 20
+  },
+  {
+   "kind": "칸 안에서 넘친 글",
+   "what": ".privals-pv 「294.8 billion won」 @360",
+   "ex": null,
+   "at": [
+    "#/w/079550/rivals @360",
+    "#/w/417030/rivals @360",
+    "#/w/005870/rivals @360",
+    "#/w/065450/rivals @360",
+    "#/w/215090/rivals @360"
+   ],
+   "n": 20
+  }
+ ],
  "truncated": false,
  "problems": [],
- "ok": true
+ "ok": false
 }
