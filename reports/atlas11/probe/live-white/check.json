@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-25T14:58:41.437Z",
+ "at": "2026-10-25T17:20:27.300Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 169,
    "blocks": {
-    "ess": 1892,
+    "ess": 1962,
     "find": 776,
-    "today": 1984,
-    "gdr": 2334,
-    "all": 2334
+    "today": 2054,
+    "gdr": 2403,
+    "all": 2403
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 198,
+   "themeChars": 192,
    "top": [
     [
      35,
@@ -177,9 +177,9 @@
     ]
    ],
    "theme": {
-    "top": 350,
-    "zonesBottom": 646,
-    "rowBottom": 494,
+    "top": 376,
+    "zonesBottom": 688,
+    "rowBottom": 528,
     "thumbTop": 711
    },
    "bodyHex": "#FFFFFF",
@@ -200,11 +200,11 @@
    "bodyLum": 1,
    "chars": 105,
    "blocks": {
-    "ess": 1769,
+    "ess": 1811,
     "find": 776,
-    "today": 1861,
-    "gdr": 2211,
-    "all": 2211
+    "today": 1903,
+    "gdr": 2253,
+    "all": 2253
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -230,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 198,
+   "themeChars": 192,
    "top": [
     [
      24,
@@ -354,9 +354,9 @@
     ]
    ],
    "theme": {
-    "top": 350,
-    "zonesBottom": 646,
-    "rowBottom": 494,
+    "top": 376,
+    "zonesBottom": 688,
+    "rowBottom": 528,
     "thumbTop": 711
    },
    "bodyHex": "#FFFFFF",
@@ -683,14 +683,17 @@
    }
   },
   "speed": {
-   "lcp": 984,
-   "inp": 40,
+   "lcp": 1116,
+   "inp": 32,
    "cls": 0.004
   }
  },
  "net": {
-  "retry": 0,
-  "why": {}
+  "retry": 3,
+  "why": {
+   "HTTP 403": 1,
+   "열기 실패": 2
+  }
  },
  "ok": true,
  "enforced": true
