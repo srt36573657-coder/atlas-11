@@ -73,7 +73,7 @@ c1 = f"""<section class="sample cb" id="c1"><style>
 #c1 .phone .glow{{position:absolute;z-index:2;left:0;right:0;top:46cqw;height:84cqw;background:radial-gradient(closest-side,rgba(170,193,197,.2),rgba(170,193,197,.07) 60%,rgba(170,193,197,0))}}
 #c1 .phone .apps.mid{{top:151.4cqw}}
 </style>
-{head('①', '첫 화면', [('가운데', '진짜 사이트의 돌 시계 — 색만 고르신 100가지로'), ('둘레', '네 칸이 시계 방향으로 — 싹 › 꽃 › 시듦 › 잠잠'), ('맨 위', '「카톡 보내기」와 「선물 받기」 — 모든 화면 같은 자리'), ('빛나는 곳', '싹 칸과 초침')])}
+{head('①', '첫 화면', [('가운데', '진짜 사이트의 돌 시계 — 색만 고르신 100가지로'), ('둘레', '네 칸을 계절 차례로 — 싹 › 꽃 › 시듦 › 잠잠'), ('맨 위', '「카톡 보내기」와 「선물 받기」 — 모든 화면 같은 자리'), ('빛나는 곳', '싹 칸과 초침')])}
 <div class="phone">{FRAME_TOP}
 <div class="top"><span class="mark">돌이</span>{TOOLS}</div>
 <div class="trow"><h2 class="ttl">업종 77곳은 지금</h2><span class="date">10월 13일 기록</span></div>
@@ -225,8 +225,8 @@ page = f"""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name
 <section class="intro"><h1>돌 시계를 한가운데에 두었어요</h1>
 <div class="hero">{stone_clock('hero')}</div>
 <p>사장님이 고르신 돌 시계가 첫 화면의 주인공이에요.</p>
-<p>네 칸은 시계 둘레로 옮겼어요. 업종은 시계 방향으로 돌아요.</p>
-<div class="path"><span class="on">싹</span><b>›</b><span>꽃</span><b>›</b><span>시듦</span><b>›</b><span>잠잠</span><b>›</b><span>다시 싹</span></div>
+<p>네 칸은 시계 둘레에 계절 차례로 놓았어요. 싹은 봄, 꽃은 여름, 시듦은 가을, 잠잠은 겨울이에요.</p>
+<div class="path"><span class="on">싹 봄</span><b>›</b><span>꽃 여름</span><b>›</b><span>시듦 가을</span><b>›</b><span>잠잠 겨울</span></div>
 <p>맨 위에는 「카톡 보내기」와 「선물 받기」가 모든 화면에 있어요.</p>
 <p>다른 화면에는 작은 돌 시계가 지금 어디쯤인지 알려 줘요.</p>
 <div class="path"><span>첫 화면</span><b>›</b><span>꽃 될 회사</span><b>›</b><span>회사</span><b>›</b><span>왜 사?</span></div>
@@ -236,7 +236,7 @@ page = f"""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name
 <section class="note"><h2>못 한 것 {len(NOT)}가지</h2><ul>{''.join(f'<li>{x}</li>' for x in NOT)}</ul></section>
 <section class="asklast">이 모양으로 진짜 돌이를 만들까요?</section>
 <p class="footline">채점표: 화면 넷 모두 금지 말과 색과 글씨 크기를 기계로 검사했어요. 틀림 장부 117건 · 못 한 것 {len(NOT)}가지</p>
-<details><summary>근거 펼치기</summary><p>돌 시계: 진짜 사이트 site/media/stone/home-clock.svg 그림과 site/next/stone-clock.js 바늘을 그대로 따라 그리고 색만 고르신 100가지 가운데 가장 가까운 색으로 바꿈</p><p>네 자리 차례: site/next/theme-rule.js zoneOf — 오른쪽 위 꽃 · 오른쪽 아래 시듦 · 왼쪽 위 싹 · 왼쪽 아래 잠잠 → 시계 방향으로 싹 › 꽃 › 시듦 › 잠잠</p><p>카톡 보내기 · 선물 받기: site/next/kk-all.js · site/next/app.js 와 같은 이름과 자리</p><p>내용: 10월 13일 기록 — site/next/data/theme-home.json · theme-bloom.json</p><p>앞 판: docs/design/dori-new-2026-10-25 의 combo(2번 + 7번) · combo2(카톡 · 선물)</p></details>
+<details><summary>근거 펼치기</summary><p>돌 시계: 진짜 사이트 site/media/stone/home-clock.svg 그림과 site/next/stone-clock.js 바늘을 그대로 따라 그리고 색만 고르신 100가지 가운데 가장 가까운 색으로 바꿈</p><p>네 자리: site/next/theme-rule.js zoneOf — 오른쪽 위 꽃 · 오른쪽 아래 시듦 · 왼쪽 위 싹 · 왼쪽 아래 잠잠 · 계절 이름은 site/next/theme-home.js SEASON(싹 봄 · 꽃 여름 · 시듦 가을 · 잠잠 겨울) — 계절 차례로 놓으면 시계 방향</p><p>카톡 보내기 · 선물 받기: site/next/kk-all.js · site/next/app.js 와 같은 이름과 자리</p><p>내용: 10월 13일 기록 — site/next/data/theme-home.json · theme-bloom.json</p><p>앞 판: docs/design/dori-new-2026-10-25 의 combo(2번 + 7번) · combo2(카톡 · 선물)</p></details>
 </main></body></html>"""
 open(os.path.join(D, 'clock.html'), 'w').write(page)
 print('ok', len(page))
