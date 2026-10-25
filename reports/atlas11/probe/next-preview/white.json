@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-23T02:48:07.550Z",
+ "at": "2026-10-25T03:49:52.195Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 169,
    "blocks": {
-    "ess": 1365,
+    "ess": 1429,
     "find": 776,
-    "today": 1457,
-    "gdr": 1807,
-    "all": 1807
+    "today": 1521,
+    "gdr": 1871,
+    "all": 1871
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 187,
+   "themeChars": 184,
    "top": [
     [
      35,
@@ -153,7 +153,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 23일 11:05"
+     "10월 23일"
     ],
     [
      2,
@@ -198,11 +198,11 @@
    "bodyLum": 1,
    "chars": 105,
    "blocks": {
-    "ess": 1242,
+    "ess": 1306,
     "find": 776,
-    "today": 1334,
-    "gdr": 1684,
-    "all": 1684
+    "today": 1398,
+    "gdr": 1748,
+    "all": 1748
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +228,7 @@
     true,
     true
    ],
-   "themeChars": 187,
+   "themeChars": 184,
    "top": [
     [
      24,
@@ -328,7 +328,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 23일 11:05"
+     "10월 23일"
     ],
     [
      2,
@@ -679,9 +679,9 @@
    }
   },
   "speed": {
-   "lcp": 2444,
-   "inp": 48,
-   "cls": 0.032
+   "lcp": 2460,
+   "inp": 32,
+   "cls": 0.009
   }
  },
  "net": {
