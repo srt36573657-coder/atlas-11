@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-25T17:20:27.300Z",
+ "at": "2026-10-25T19:08:10.529Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 169,
    "blocks": {
-    "ess": 1962,
+    "ess": 2001,
     "find": 776,
-    "today": 2054,
-    "gdr": 2403,
-    "all": 2403
+    "today": 2093,
+    "gdr": 2442,
+    "all": 2442
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 192,
+   "themeChars": 197,
    "top": [
     [
      35,
@@ -200,11 +200,11 @@
    "bodyLum": 1,
    "chars": 105,
    "blocks": {
-    "ess": 1811,
+    "ess": 1907,
     "find": 776,
-    "today": 1903,
-    "gdr": 2253,
-    "all": 2253
+    "today": 1999,
+    "gdr": 2348,
+    "all": 2348
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -230,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 192,
+   "themeChars": 197,
    "top": [
     [
      24,
@@ -683,17 +683,14 @@
    }
   },
   "speed": {
-   "lcp": 1116,
-   "inp": 32,
-   "cls": 0.004
+   "lcp": 992,
+   "inp": 40,
+   "cls": 0.003
   }
  },
  "net": {
-  "retry": 3,
-  "why": {
-   "HTTP 403": 1,
-   "열기 실패": 2
-  }
+  "retry": 0,
+  "why": {}
  },
  "ok": true,
  "enforced": true
