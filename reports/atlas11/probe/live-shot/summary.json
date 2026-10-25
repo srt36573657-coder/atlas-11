@@ -1,5 +1,5 @@
 {
- "made": "2026-10-25T04:53:45.586Z",
+ "made": "2026-10-25T06:05:09.067Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -25,7 +25,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": true,
-    "height": 1940
+    "height": 1996
    },
    "err": null
   },
@@ -48,7 +48,7 @@
     "firstDay": "10월 23일",
     "graphs": 59,
     "calgo": false,
-    "height": 25501
+    "height": 25477
    },
    "err": null
   },
@@ -94,7 +94,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 3774
+    "height": 3846
    },
    "err": null
   },
@@ -117,7 +117,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 4902
+    "height": 4886
    },
    "err": null
   },
@@ -140,7 +140,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 5132
+    "height": 5124
    },
    "err": null
   }
