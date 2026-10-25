@@ -1,5 +1,5 @@
 {
- "made": "2026-10-25T04:06:37.594Z",
+ "made": "2026-10-25T04:53:45.586Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -19,11 +19,13 @@
     "title": "오늘 장 · 돌이",
     "h1": "지금 봄이 온 곳",
     "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": true,
-    "height": 1992
+    "height": 1940
    },
    "err": null
   },
@@ -39,12 +41,106 @@
     "hash": "#/t/cal",
     "title": "싹 달력 · 돌이",
     "h1": "싹 달력",
-    "kakaoText": 60,
+    "kakaoText": 61,
+    "kakaoRow": 0,
+    "kakaoAll": 61,
     "days": 60,
     "firstDay": "10월 23일",
     "graphs": 59,
     "calgo": false,
-    "height": 24217
+    "height": 25501
+   },
+   "err": null
+  },
+  {
+   "name": "surge",
+   "hash": "#/f/surge",
+   "files": [
+    "reports/atlas11/probe/live-shot/surge-390.png",
+    "reports/atlas11/probe/live-shot/surge-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/f/surge",
+    "title": "급등 · 돌이",
+    "h1": "",
+    "kakaoText": 1,
+    "kakaoRow": 36,
+    "kakaoAll": 37,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1508
+   },
+   "err": null
+  },
+  {
+   "name": "co",
+   "hash": "#/w/005930",
+   "files": [
+    "reports/atlas11/probe/live-shot/co-390.png",
+    "reports/atlas11/probe/live-shot/co-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/w/005930",
+    "title": "삼성전자 · 돌이",
+    "h1": "삼성전자",
+    "kakaoText": 3,
+    "kakaoRow": 6,
+    "kakaoAll": 10,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 3774
+   },
+   "err": null
+  },
+  {
+   "name": "today",
+   "hash": "#/today",
+   "files": [
+    "reports/atlas11/probe/live-shot/today-390.png",
+    "reports/atlas11/probe/live-shot/today-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/today",
+    "title": "오늘 시장 · 돌이",
+    "h1": "오늘 시장",
+    "kakaoText": 5,
+    "kakaoRow": 7,
+    "kakaoAll": 12,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 4902
+   },
+   "err": null
+  },
+  {
+   "name": "ind",
+   "hash": "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4",
+   "files": [
+    "reports/atlas11/probe/live-shot/ind-390.png",
+    "reports/atlas11/probe/live-shot/ind-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4",
+    "title": "반도체 업종 · 돌이",
+    "h1": "반도체 업종",
+    "kakaoText": 1,
+    "kakaoRow": 87,
+    "kakaoAll": 88,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 5132
    },
    "err": null
   }

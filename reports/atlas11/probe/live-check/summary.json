@@ -1,5 +1,5 @@
 {
- "made": "2026-10-25T04:06:13.388Z",
+ "made": "2026-10-25T04:53:29.786Z",
  "base": "https://aaa7377.com",
  "files": [
   {
@@ -56,13 +56,13 @@
    "status": 200,
    "type": "application/json",
    "bytes": 6935,
-   "sha256": "5173c98cb7d18899ba143485230ab0cd8dc5832cb1ab9389a6f2765d524e3010",
+   "sha256": "bf56710c0a4332e6cd23d88be93fede93f00cf7269aa1f586a634b4e789cbed5",
    "has": {
     "\"rule\":\"home-v3\"": true,
     "\"why\":": false,
     "_home": {
      "rule": "home-v3",
-     "kst": "2026-10-25 13:03",
+     "kst": "2026-10-25 13:50",
      "alerts": []
     }
    },
@@ -72,8 +72,8 @@
    "path": "/atlas/data/updates.json",
    "status": 200,
    "type": "application/json",
-   "bytes": 94332,
-   "sha256": "2a261e2e6de3f1d1fe0367fd822cecd4e2167ec27a0ecd08d597325e39431aab",
+   "bytes": 94124,
+   "sha256": "749950ddf4b85b36c7155e2a90c8636dc269a7b11cc42d5da587344ad234ed82",
    "has": {
     "home-v3": false
    },
@@ -101,8 +101,8 @@
    "path": "/hello.html",
    "status": 200,
    "type": "text/html; charset=UTF-8",
-   "bytes": 11146,
-   "sha256": "00f04af6f769029b4e4fe31621c7316e31a17b5473f862b69cd07516542502f0",
+   "bytes": 11140,
+   "sha256": "bd6e9c109ec3db21b9f5aae0c549bac6125fa809f14e74d0a94ee0250f54dda2",
    "has": {},
    "err": null
   },
@@ -111,7 +111,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 35404,
-   "sha256": "8a42520ac73813b69b51e307fc8924fc27d30b2c2cd19a4af1f0db9e1a1fb50b",
+   "sha256": "54a06f7c3c453659c76b6428d1db51e83d18e9716bec64a298b4e5c3dce4fa4c",
    "has": {
     "\"schema\":\"dori-theme-1-cal\"": true,
     "\"keepFrom\":\"2026-10-22\"": true,
@@ -168,8 +168,8 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 26492,
-   "sha256": "f96549998696d58e20e089b493651c719a3409f9d527f87e7cee69a58f34d611",
+   "bytes": 26625,
+   "sha256": "b5eb628724fab2cbe6d0c96f7e7d08a53af6acf0c507d98a11de28b3f011bdb3",
    "has": {
     "'#/t/cal'": true
    },
@@ -180,7 +180,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 5570,
-   "sha256": "40a91b545b27af5182f30ee3f934ec9536385d541bfa70054ce71e09ed231115",
+   "sha256": "d8a740bd788b45b78b5c66d3203b9441e2cda01a6ff6b6d8180ea52dd4683369",
    "has": {
     "\"record\"": true,
     "_rec": {
@@ -222,8 +222,8 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 26492,
-   "sha256": "f96549998696d58e20e089b493651c719a3409f9d527f87e7cee69a58f34d611",
+   "bytes": 26625,
+   "sha256": "b5eb628724fab2cbe6d0c96f7e7d08a53af6acf0c507d98a11de28b3f011bdb3",
    "has": {
     "싹 달력 보기": true,
     "th-kkall": true,
@@ -248,8 +248,8 @@
    "path": "/next/share-btn.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 8528,
-   "sha256": "29e87dc9331eae2246e64d5585a5e37a287abcfd90efea10af33acb7ef5c0f5c",
+   "bytes": 9336,
+   "sha256": "445a9898b099a2baf69f8f18f1cc7e4e4b272a25b76b50e60136ed3396b2480a",
    "has": {
     "export function kakaoText(": true
    },
@@ -259,8 +259,8 @@
    "path": "/next/p-theme.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 22183,
-   "sha256": "45cfa36be76ed093e82a02f8c2cf763e42ae94c5dc4697ab9409dde5ef55c4eb",
+   "bytes": 22209,
+   "sha256": "674d433139eea51696ee663b9900e2ba64531aa8fbad7809762cda160d935002",
    "has": {
     ".th-dayh": true,
     ".th-sinsvg": true
@@ -271,8 +271,8 @@
    "path": "/next/app.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 68458,
-   "sha256": "1ed5510cef22f239bf264c831761bb90258d057fd463e04fff7ec4a5c3e182e4",
+   "bytes": 70957,
+   "sha256": "ecb5529b96e2a19f36b47278e28d83273aa454c1c012eef4a32f1ffec371f50c",
    "has": {
     ".kk-btn.kk-txt": true
    },
@@ -282,8 +282,8 @@
    "path": "/next/p-theme.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 22183,
-   "sha256": "45cfa36be76ed093e82a02f8c2cf763e42ae94c5dc4697ab9409dde5ef55c4eb",
+   "bytes": 22209,
+   "sha256": "674d433139eea51696ee663b9900e2ba64531aa8fbad7809762cda160d935002",
    "has": {
     ".th-calhow": true,
     "container-type: inline-size": true
@@ -294,8 +294,8 @@
    "path": "/next/app.css",
    "status": 200,
    "type": "text/css; charset=UTF-8",
-   "bytes": 68458,
-   "sha256": "1ed5510cef22f239bf264c831761bb90258d057fd463e04fff7ec4a5c3e182e4",
+   "bytes": 70957,
+   "sha256": "ecb5529b96e2a19f36b47278e28d83273aa454c1c012eef4a32f1ffec371f50c",
    "has": {
     "--sans: -apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", 'Pretendard Variable'": true,
     ".num { font-variant-numeric: tabular-nums; }": true
@@ -318,7 +318,7 @@
    "status": 200,
    "type": "application/json",
    "bytes": 8562,
-   "sha256": "b498c6f4fb311218a3b5dbbbd664a56bb1b793241e3bbbb294dfe002823fc3b1",
+   "sha256": "13be5bbf594017f574dd498157836d7cc153cb29bff72f59e020afe96f9825db",
    "has": {
     "\"schema\":\"dori-theme-1-bloom\"": true,
     "\"record\"": true,
@@ -386,8 +386,8 @@
    "path": "/next/theme-home.js",
    "status": 200,
    "type": "application/javascript; charset=UTF-8",
-   "bytes": 26492,
-   "sha256": "f96549998696d58e20e089b493651c719a3409f9d527f87e7cee69a58f34d611",
+   "bytes": 26625,
+   "sha256": "b5eb628724fab2cbe6d0c96f7e7d08a53af6acf0c507d98a11de28b3f011bdb3",
    "has": {
     "'#/t/pick'": true
    },
