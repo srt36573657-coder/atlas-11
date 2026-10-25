@@ -5,7 +5,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {pickNew, toMessages, whenKo, newRoomKey, seal, open, toAnnotations, fromAnnotations, fetchNew, fetchSealed, annParts, ack, startCursor, FWD_START, HELP_STORE, ID_RE, CURSOR_KEY, MSG_MAX, MAX_ITEMS, ANN_MAX} from '../../scripts/atlas11/help/forward.mjs';
 import {HELP_STORE as LIB_STORE, ID_RE as LIB_ID, handleHelp} from '../../lib/atlas11/help.mjs';
-import {failStreak, pickRun, newTag} from '../../scripts/atlas11/help/room.mjs';
+import {failStreak, pickRun, newTag, checkSent, doneRoom} from '../../scripts/atlas11/help/room.mjs';
+import os from 'node:os';
+import path from 'node:path';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
 
 const read = p => fs.readFileSync(new URL('../../' + p, import.meta.url), 'utf8');
@@ -128,6 +130,32 @@ test('내가 부른 작업 찾기 — 이름 끝 방 표시가 같은 것만(두
   assert.equal(pickRun(list, a, t0), 2);
   assert.equal(pickRun(list, b, t0), 1);
   assert.equal(pickRun(list, 'nope', t0), null);
+});
+
+test('보낸 통 수 — 카톡 도구가 「성공」이라 답한 통 수를 넘겨야 보낸 표시 · 꺼낸 글 수와 같아야 함(2026-10-25 17:28 「오지 않랐어」)', async () => {
+  assert.equal(checkSent('', 1).ok, false, '수가 없으면 막음');
+  assert.equal(checkSent(undefined, null).ok, false);
+  assert.equal(checkSent('0', 1).ok, false, '0통은 보낸 것이 아님');
+  assert.equal(checkSent('x', 1).ok, false);
+  assert.equal(checkSent('1', 2).ok, false, '덜 보냄');
+  assert.equal(checkSent('3', 2).ok, false, '더 셈');
+  assert.deepEqual(checkSent('2', 2), {ok: true, sent: 2});
+  assert.deepEqual(checkSent(' 1 ', null), {ok: true, sent: 1}, '파일을 못 읽으면 수만 봄');
+  // 깃허브를 부르기 전에 막힘 — 꺼낸 파일에 글 둘인데 한 통만 보냈다고 하면 보낸 표시 없음
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'room-sent-')), file = path.join(dir, 'help-forward.json');
+  fs.writeFileSync(file, JSON.stringify({messages: ['[돌이 고객센터] 가', '[돌이 선물] 나'], last: '+' + id(T0), n: 2, more: 0}));
+  const r1 = await doneRoom({run: '1', last: '+' + id(T0), sent: '1', file});
+  assert.equal(r1.ok, false); assert.match(r1.why, /1\/2/);
+  const r0 = await doneRoom({run: '1', last: '+' + id(T0), file});
+  assert.equal(r0.ok, false); assert.match(r0.why, /--sent/);
+  fs.rmSync(dir, {recursive: true, force: true});
+  const room = read('scripts/atlas11/help/room.mjs');
+  assert.match(room, /tag = `\$\{newTag\(\)\}-s\$\{s\.sent\}`/, '보낸 표시 작업 이름 끝에 보낸 통 수');
+  assert.match(room, /messages: r\.messages\}/, '꺼낸 결과에 보낼 글을 실음(방이 파일을 따로 안 열어도 됨)');
+  assert.match(room, /sent: arg\('--sent', ''\)/);
+  // 이름 끝 표시로 찾기는 그대로 — 「-s1」이 붙어도 내 작업만
+  const t0 = Date.parse('2026-10-25T09:00:00Z'), tg = newTag() + '-s1';
+  assert.equal(pickRun([{databaseId: 7, event: 'workflow_dispatch', createdAt: '2026-10-25T09:00:05Z', displayTitle: 'atlas11-help-forward ack ' + tg}], tg, t0), 7);
 });
 
 test('깃허브 작업 · 방 — 읽기 권한만 · 넷리파이 열쇠는 작업 비밀 · 글을 찍지 않음', () => {

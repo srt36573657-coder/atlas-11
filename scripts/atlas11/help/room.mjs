@@ -6,6 +6,9 @@
 //                       ② (n > 0 이면) 방이 file 의 messages 를 차례대로 카톡 「나에게 보내기」로 한 통씩 — 글은 고치지 않음
 //                       ③ node scripts/atlas11/help/room.mjs --done --run <번호> --last <글 번호> → 깃허브 작업(mode=ack)으로 「여기까지 보냄」 · 읽은 작업 기록은 지움(잠긴 글이지만 남기지 않음)
 //   카톡을 다 못 보냈으면 ③을 하지 않음 → 다음 시간에 같은 글부터 다시(빠뜨리지 않음 · 두 번 갈 수는 있음)
+//   보낸 통 수(사장님 2026-10-25 17:28 「확인해봐 오지 않랐어」 — 선물 신청 알림이 카톡에 안 왔는데 보낸 표시만 남음):
+//     ①의 결과에 보낼 글(messages)을 그대로 실어 방이 파일을 따로 열지 않아도 됨 · ③은 --sent <카톡 도구가 「성공」이라 답한 통 수>가 있어야 하고
+//     꺼낸 글 수와 같아야 보낸 표시를 함(아니면 보낸 표시 없이 끝 → 다음 시간에 다시) · 보낸 표시 작업 이름 끝에 「-s<통 수>」가 남아 깃허브 목록에서 보임
 //   처음 켤 때: 사이트에 올린 직후 gh workflow run atlas11-help-forward.yml -f mode=ack -f ack_id=<올린 때 번호> 로 보낸 표시를 한 번 옮김(처리방침 줄 전 글은 안 감 · forward.mjs FWD_START)
 //   ①이 막히면(ok false) 결과에 streak(연달아 막힌 수) — 꼭 3 일 때만 방이 카톡 한 통 「넘기기가 세 번 연달아 막혔어요」(조용히 멈추지 않게 · 매시 되풀이 안 함)
 //   Claude 예약 방의 길: gh workflow run · gh run list · gh api(REST)만 됨(GraphQL · 묶음 받기 · aaa7377.com 막힘 — scripts/atlas11/jinhwa/gh.mjs 머리)
@@ -73,7 +76,17 @@ function streakNow() {
 }
 const failed = o => ({...o, ok: false, streak: streakNow()});
 
-export async function fetchRoom({out = path.join(os.tmpdir(), 'help-forward.json')} = {}) {
+export const OUT = path.join(os.tmpdir(), 'help-forward.json');
+/** 보낸 통 수 맞대기 — sent = 방이 카톡 도구로 보내 「성공」 답을 받은 통 수 · want = 꺼낸 글 수(파일을 못 읽으면 null) */
+export function checkSent(sent, want) {
+  const s = String(sent ?? '').trim();
+  if (!/^\d{1,2}$/.test(s) || Number(s) < 1) return {ok: false, why: '보낸 통 수(--sent)가 없음 — 카톡을 보낸 뒤 「성공」 답을 받은 통 수를 넘김'};
+  if (Number.isInteger(want) && Number(s) !== want) return {ok: false, why: `보낸 통 수가 꺼낸 글 수와 다름(${s}/${want}) — 보낸 표시 없이 끝 · 다음 시간에 다시`};
+  return {ok: true, sent: Number(s)};
+}
+const wantOf = file => { try { const j = JSON.parse(fs.readFileSync(file, 'utf8')); return Array.isArray(j?.messages) ? j.messages.length : null; } catch { return null; } };
+
+export async function fetchRoom({out = OUT} = {}) {
   const key = newRoomKey(), t0 = Date.now() - 15e3, tag = newTag();
   const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=fetch', '-f', `pub=${key.pub}`, '-f', `tag=${tag}`]);
   if (!w.ok) return failed({why: '작업을 못 부름 ' + short(w.err)});
@@ -86,21 +99,23 @@ export async function fetchRoom({out = path.join(os.tmpdir(), 'help-forward.json
   let r; try { r = open(an.box, key.priv); } catch (e) { return failed({run, why: '잠긴 글을 못 풂 ' + short(e?.message)}); }
   if (r?.schema !== FWD_SCHEMA || !Array.isArray(r.messages)) return failed({run, why: '꼴이 틀림'});
   fs.writeFileSync(out, JSON.stringify({messages: r.messages, last: r.last, n: r.n, more: r.more}) + '\n', {mode: 0o600});
-  return {ok: true, n: r.n, msgs: r.messages.length, more: r.more, last: r.last, run, file: out};
+  return {ok: true, n: r.n, msgs: r.messages.length, more: r.more, last: r.last, run, file: out, messages: r.messages};
 }
-export async function doneRoom({run, last}) {
+export async function doneRoom({run, last, sent, file = OUT}) {
   if (!splitLast(last)) return {ok: false, why: '글 번호 꼴이 틀림'}; // 고객센터 글 번호 · 또는 「고객센터 번호+선물 신청 번호」(선물 신청 알림 · 2026-10-25 15:37)
-  const t0 = Date.now() - 15e3, tag = newTag();
+  const s = checkSent(sent, wantOf(file));
+  if (!s.ok) return s;
+  const t0 = Date.now() - 15e3, tag = `${newTag()}-s${s.sent}`;
   const w = gh(['workflow', 'run', WORKFLOW, '-R', REPO, '--ref', 'main', '-f', 'mode=ack', '-f', `ack_id=${last}`, '-f', `tag=${tag}`]);
   if (!w.ok) return {ok: false, why: '보낸 표시 작업을 못 부름 ' + short(w.err)};
   const ackRun = await findRun(t0, tag), c = ackRun ? await waitRun(ackRun) : 'none';
   const del = run && /^\d+$/.test(String(run)) ? gh(['api', '-X', 'DELETE', `repos/${REPO}/actions/runs/${run}`]) : {ok: false};
-  return {ok: c === 'success', ackRun, ack: c, deleted: del.ok};
+  return {ok: c === 'success', ackRun, ack: c, deleted: del.ok, sent: s.sent};
 }
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
   const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 && i + 1 < a.length ? a[i + 1] : d; };
-  const r = a.includes('--done') ? await doneRoom({run: arg('--run', ''), last: arg('--last', '')}) : a.includes('--fetch') ? await fetchRoom({out: arg('--out', undefined)}) : {ok: false, why: '쓰는 법: room.mjs --fetch | --done --run <번호> --last <글 번호>'};
+  const r = a.includes('--done') ? await doneRoom({run: arg('--run', ''), last: arg('--last', ''), sent: arg('--sent', ''), file: arg('--file', OUT)}) : a.includes('--fetch') ? await fetchRoom({out: arg('--out', undefined)}) : {ok: false, why: '쓰는 법: room.mjs --fetch | --done --run <번호> --last <글 번호> --sent <보낸 통 수>'};
   console.log(JSON.stringify(r));
   process.exit(r.ok ? 0 : 1);
 }
