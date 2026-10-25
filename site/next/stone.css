@@ -59,8 +59,10 @@ html.white.home .s-clk { display: flex; justify-content: center; margin: var(--s
 html.white.home .s-art { flex: none; width: 240px; height: 192px; }
 @media (max-width: 359px) { html.white.home .s-art { width: 200px; height: 160px; } }
 /* 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」 · stone-clock.js) — 돌 그림 위에 바늘 그림을 겹침 · 칸 크기는 위 .s-art 그대로(밀림 0) */
-.s-boot { display: block; width: 240px; height: 192px; max-width: 100%; margin: var(--sp-3) auto 0; } /* 여는 동안 돌 시계(index.html) — 첫 화면 돌 시계와 같은 그림 · 같은 크기 */
+.s-boot { display: block; align-self: center; width: 240px; height: 192px; max-width: 100%; margin: 86px auto 0; } /* 여는 동안 돌 시계(index.html) — 첫 화면 돌 시계와 같은 그림 · 같은 크기 · 가운데(여는 동안은 html.white 가 아직 없어 --sp 값이 없음 → 숫자로) */
 .s-boot img { display: block; width: 100%; height: 100%; }
+@media (max-width: 359px) { .s-boot { width: 200px; height: 160px; } } /* 첫 화면 돌 시계와 같은 크기 · 같은 자리(제목 · 물음 아래) — 다 그려져도 시계는 제자리 */
+@media (max-width: 349px) { .s-boot { width: 180px; height: 144px; } }
 .s-clock { position: relative; display: block; }
 .s-clock img, .s-clock .s-hands { position: absolute; top: 0; left: 0; display: block; width: 100%; height: 100%; }
 .s-clock .s-hands { pointer-events: none; }
