@@ -15,19 +15,21 @@ export const clean = s => String(s ?? '').replace(GAIN, '').replace(/[?？]\s*$/
 const HAS = '.kk-txt, .kk-pgx'; // 이미 있는 글 단추(쪽 · 칸 · 회사 화면 「카톡 보내기」 · 시황)
 const SKIP = 'a, button, summary, nav, .ps-dlg, .kk-skip';
 
+/** 「선물 받기」 고리 — 글 끝 빈칸 하나(뒤 글과 붙어 「받기회…」 같은 엉뚱한 낱말이 생기지 않게 · 카톡 단추와 같음) */
+const giftA = () => { const g = document.createElement('a'); g.className = 'kk-gift'; g.href = '#/gift'; g.textContent = '선물 받기 '; return g; };
 /** 쪽 단추 줄 — 「카톡 보내기」 + 「선물 받기」(사장님 2026-10-25 13:40 「곳곳에 선물 받기를 다 집어넣어 놔」 · 상품권 방 #/gift — 그 쪽 안에서는 빼고) */
 function pageRow(title, url) {
   const t = clean(title) || NAME;
   const b = kakaoText({title: `${t} · ${NAME}`, text: `${NAME} — ${t}`, url});
   b.classList.add('kk-pg');
   const row = document.createElement('div'); row.className = 'kk-pgrow'; row.append(b);
-  if (!/^#\/gift(\/|$)/.test(typeof location !== 'undefined' ? location.hash : '')) { const g = document.createElement('a'); g.className = 'kk-gift'; g.href = '#/gift'; g.textContent = '선물 받기'; row.append(g); }
+  if (!/^#\/gift(\/|$)/.test(typeof location !== 'undefined' ? location.hash : '')) row.append(giftA());
   return {b, row};
 }
 /** ① 쪽 단추 자리 — 큰 제목 머리 칸(.th-hd = 제목 + 돌 그림 한 줄) 뒤 · 큰 제목 뒤 · 칩 줄 뒤 · 맨 위 */
 function pageBtn(root, title, url) {
-  const own = root.querySelector('.act.kk-pgx'); // 회사 쪽처럼 제 「카톡 보내기」가 이미 있는 쪽 — 그 단추 줄 바로 밑에 「선물 받기」만 하나(사장님 2026-10-25 13:40 「곳곳에」)
-  if (own && !root.querySelector('.kk-gift') && !/^#\/gift(\/|$)/.test(location.hash)) { const g = document.createElement('a'); g.className = 'kk-gift'; g.href = '#/gift'; g.textContent = '선물 받기'; const w = document.createElement('div'); w.className = 'kk-pgrow kk-pgw kk-gown'; w.append(g); own.parentElement.after(w); }
+  const own = root.querySelector('.act.kk-pgx'); // 회사 쪽처럼 제 「카톡 보내기」가 이미 있는 쪽 — 쪽 맨 끝에 「선물 받기」만 하나(사장님 2026-10-25 13:40 「곳곳에」 · 첫 화면 칸 자리는 그대로 — 단추 줄 밑에 두면 업종 「관심 담기」가 첫 화면 밖으로 밀림)
+  if (own && !root.querySelector('.kk-gift') && !/^#\/gift(\/|$)/.test(location.hash)) { const w = document.createElement('div'); w.className = 'kk-pgrow kk-pgw kk-gown'; w.append(giftA()); root.append(w); }
   if (root.querySelector('.kk-pg, .kk-pgx')) return null;
   const {b, row} = pageRow(title, url);
   const h1 = [...root.querySelectorAll('h1')].find(x => !x.closest(SKIP));
