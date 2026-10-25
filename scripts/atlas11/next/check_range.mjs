@@ -247,7 +247,7 @@ const layout = p => p.evaluate(async () => {
   return out;
 });
 const knownHref = (h, c) => {
-  if (['#/', '#/time', '#/up', '#/find', 'https://kind.krx.co.kr', 'https://dart.fss.or.kr'].includes(h)) return true;
+  if (['#/', '#/time', '#/up', '#/find', '#/gift', 'https://kind.krx.co.kr', 'https://dart.fss.or.kr'].includes(h)) return true; // #/gift — 쪽 단추 줄 「선물 받기」(사장님 2026-10-25 13:40 「곳곳에 선물 받기」)
   let m = /^#\/w\/([^/]+)(?:\/(past|rivals|grow|range))?$/.exec(h); if (m) return decodeURIComponent(m[1]) === c && !!(CO[c] || PK[c]);
   if ((m = /^#\/why\/([^/]+)$/.exec(h))) return decodeURIComponent(m[1]) === c && !!(CO[c] || PK[c]); // 7단 끝 「사기 전에 · 이 회사로 왜 사? ›」(총정리 C18) — 이 회사 번호로만
   if ((m = /^#\/ch\/([ig])\/(.+)$/.exec(h))) { const x = decodeURIComponent(m[2]); return m[1] === 'i' ? (core.industries || []).some(i => i.name === x) : (core.groups || []).some(g => g.id === x); }

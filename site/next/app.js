@@ -117,7 +117,7 @@ function card(href, th, title, meta, av) {
 }
 function toast(t) { const e = h('p', {class: 'toast', role: 'status', text: t}); document.body.append(e); setTimeout(() => e.remove(), 2400); }
 /** 옛 보내기(제목 · 주소만) — 보내기 글상자(p-share)를 못 받았을 때만 씀 */
-let GR = null; // gift-ref.js(첫 그림 뒤 받음) — 옛 보내기도 보낸 사람 표를 붙임
+let GR = null; // gift-ref.js
 async function share(title, url, text = '') { // text = 보낼 글(사장님 2026-10-25 「카톡 보내기」 글 단추 · share-btn.js kakaoText) — 없으면 예전 그대로(제목 · 주소)
   if (GR) url = GR.withRef(url);
   try { if (navigator.share) { await navigator.share(text ? {title, text, url} : {title, url}); return; } await navigator.clipboard.writeText(text ? text + '\n' + url : url); toast('주소를 담았어요. 붙여 넣어 보내세요.'); }
@@ -889,7 +889,7 @@ async function vWatch(a) {
   const GM = await gdrM;
   /** 보내기 · 같이 따져 줘(2026-10-17 21:10 [4] 1 · 6 · 8) — 글상자(p-share)를 부름 · 그날 값과 날을 함께(친구가 열면 보낸 날 값 · 오늘 값) · 수익률 글 없음 */
   const sendBtn = (kind, text) => {
-    const b = h('button', {class: kind === 'share' ? 'act kk-pgx kk-yel' : 'act', type: 'button', text}); // 보내기 = 「카톡 보내기」 노란 단추(사장님 2026-10-25 12:00 「진짜모든곳에」 · 12:24 「어」) · 이 쪽 보내기 단추라 kk-all.js 가 쪽 단추를 또 달지 않음(kk-pgx)
+    const b = h('button', {class: kind === 'share' ? 'act kk-pgx kk-yel' : 'act', type: 'button', text}); // 카톡 보내기(2026-10-25)
     b.addEventListener('pointerdown', () => { mod('share').catch(() => {}); }, {once: true}); // 누르기 시작할 때 글상자를 미리 받음
     b.addEventListener('click', () => { shareBox({kind, title: L(c.n + ' · ' + NAME), url: absUrl('#/w/' + a), code: a, name: c.n, price: okP ? pr : null, day: pDay}); });
     return b;
@@ -973,7 +973,7 @@ async function vShorts(a) {
   const bar = h('div', {class: 'sbar', 'aria-hidden': 'true'}, fs.map(() => h('i', {})));
   const box = h('div', {class: 'shorts', tabindex: '0', 'aria-label': '시황 · 위로 밀면 다음 사실'}, bar);
   fs.forEach((f, i) => {
-    const sb = h('button', {class: 'kk-pgx kk-yel', type: 'button', text: '카톡 보내기'}); // 「카톡 보내기」(사장님 2026-10-25 「진짜모든곳에」) — 이 사실 보내기
+    const sb = h('button', {class: 'kk-pgx kk-yel', type: 'button', text: '카톡 보내기'});
     sb.addEventListener('pointerdown', () => { mod('share').catch(() => {}); }, {once: true});
     sb.addEventListener('click', () => shareBox({kind: 'share', title: L(f.st + ' · ' + NAME), url: absUrl('#/shorts/' + i)})); // 제목에 숫자 · 수익률 없음([4] 5)
     const side = h('div', {class: 'side'}, f.go ? h('a', {href: f.go, text: '보기'}) : null, sb);
@@ -1309,11 +1309,9 @@ function flowFoot(k, a, root, my) {
 }
 let seq = 0, curHash = null;
 const scrollMem = new Map();
-/* 「카톡 보내기」 모든 곳(사장님 2026-10-25 06:06 · 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」 · kk-all.js) — 쪽마다 하나 · 칸마다 하나
-   첫 화면 길(#/)은 기다리지 않고 그린 뒤 붙임(첫 그림 2.5초 · 첫 화면은 테마 칸 「카톡 보내기」가 이미 있음) · 다른 쪽은 그리기 전에 받아 두고 같은 때에 붙임(그린 뒤 밀림 0)
-   달지 않는 길: 친구가 연 보낸 쪽(#/s/ · 질문에 다 답한 뒤에만 「나도 보내기」 [6] 9 — 쪽 · 칸 모두 0) · 첫 화면은 칸만(쪽 단추 0 · 테마 칸에 이미 있음)
-   매매일지(#/why …)는 쪽 단추 하나를 맨 아래에만(제목 바로 밑 = 「한 달 전 약속」 자리 B17 · 기록 칸은 「했어 · 안 했어」 말고 누르는 것 0 — 규칙 77) · 보유종목도 쪽 단추는 맨 아래 */
+/* 카톡 보내기 모든 곳(사장님 2026-10-25 06:06 · 12:00 「진짜모든곳에」 · kk-all.js) — 첫 화면은 다 그린 뒤 · 친구가 연 쪽 #/s/ 없음 · 매매일지는 맨 아래 하나 */
 let KKM = null, kkStop = () => {};
+const afterLoad = fn => { const go = () => (window.requestIdleCallback ? requestIdleCallback(fn, {timeout: 3000}) : setTimeout(fn, 800)); if (document.readyState === 'complete') go(); else addEventListener('load', go, {once: true}); };
 const kkMod = () => (KKM ??= import('/next/kk-all.js').catch(e => { console.error(e); KKM = null; return null; }));
 const kkMode = k => (k === 's' ? null : k === '' ? {page: false, boxes: true} : k === 'why' ? {page: 'end', boxes: false} : ['me', 'jinhwa', 'up'].includes(k) ? {page: 'end', boxes: true} : {page: 'top', boxes: true}); // 보유종목 · 진화 · 업데이트도 쪽 단추는 맨 아래(편지 · 첫 카드 그림 · 「요즘 바뀐 것」이 제목 바로 밑 한 화면 안 — check_hold · check_jinhwa · check_misc)
 function parse(hash) {
@@ -1338,8 +1336,8 @@ async function route(force) {
   const view = k === 's' ? (() => page('share', raw)) : OLD_KINDS.has(k) ? (arg => page(k, arg)) : VIEWS[k];
   if (!view || (a == null && k !== 's')) { location.replace('#/'); return; }
   const my = ++seq, root = $('#view');
-  kkStop(); kkStop = () => {}; // 앞 쪽 지켜보기 끝
-  const kkM = kkMode(k), kkP = k === '' || !kkM ? null : kkMod(); // 첫 화면 밖 — 쪽을 받는 사이 같이 받음
+  kkStop(); kkStop = () => {};
+  const kkM = kkMode(k), kkP = k === '' || !kkM ? null : kkMod();
   for (const t of document.querySelectorAll('.tabs a, #jhBtn, #giftBtn')) t.removeAttribute('aria-current');
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (k === 'gift') giftBtn.setAttribute('aria-current', 'page');
@@ -1354,9 +1352,9 @@ async function route(force) {
   if (my !== seq) return;
   whiteFor(k);
   root.replaceChildren(...[...(out.nodes ?? [])].filter(x => x != null && x !== false)); // null 칸은 글자로 안 그림(2026-10-22 고장 찾기)
-  if (kkM) { const o = {title: out.title ?? '', url: absUrl(hash), ...kkM}; // 카톡 보내기 — 쪽 · 칸(그림과 같은 때) · 늦게 붙는 칸은 지켜봄
+  if (kkM) { const o = {title: out.title ?? '', url: absUrl(hash), ...kkM};
     const run = m => { if (!m || my !== seq) return; try { m.sweep(root, o); kkStop = m.watch(root, o); } catch (e) { console.error(e); } };
-    if (kkm) run(kkm); else requestAnimationFrame(() => setTimeout(() => kkMod().then(run), 0)); }
+    if (kkm) run(kkm); else afterLoad(() => kkMod().then(run)); }
   stoneArt(k, a, root);
   const cp = k === 'why' && !a ? mod('admin').then(m => { if (my === seq && root.isConnected && !root.querySelector('.cp-card')) root.append(m.couponCard()); }).catch(() => {}) : Promise.resolve(); // 커피 쿠폰 칸 — 매매일지 쪽 맨 아래(위 칸을 밀지 않음 · 2026-10-19 13:54)
   cp.then(() => flowFoot(k, a, root, my)); // 서른여섯 장 흐름 — 있는 쪽 맨 아래 「다음」 한 줄(쿠폰 칸 뒤)
@@ -1416,9 +1414,6 @@ else {
   if (EN) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/en.css'; document.head.append(l); await startI18n(); }
   enPrivacy(); // 맨 아래 고리(쪽 밖)
   route().then(langTip, langTip);
-  /* 친구 소개 세기(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 · gift-ref.js) — 첫 그림 뒤 한가할 때
-     주소에 보낸 사람 표(r)가 있으면 한 번 세고 주소에서 지움 · 내 표를 미리 셈(카톡 보내기 주소에 붙음 — share-btn.js 가 이 기기에 적힌 표를 읽음) */
-  { const go = () => import('/next/gift-ref.js').then(m => { GR = m; m.visit().catch(() => {}); m.ref().catch(() => {}); }).catch(() => {});
-    const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(go, {timeout: 3000}) : setTimeout(go, 800));
-    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true}); }
+  /* 친구 소개 세기(사장님 2026-10-25 13:40 · gift-ref.js) — 다 그린 뒤 */
+  afterLoad(() => import('/next/gift-ref.js').then(m => { GR = m; m.visit().catch(() => {}); m.ref().catch(() => {}); }).catch(() => {}));
 }

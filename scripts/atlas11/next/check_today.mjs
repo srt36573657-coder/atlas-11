@@ -278,7 +278,7 @@ function compare(at, o, n, C) {
 function wordsCheck(at, n) {
   for (const x of BANNED) if (n.myText.includes(x)) fail('쓰지 않을 말', at + ' 「' + x + '」');
   for (const x of OLD_WORDS) { bump('옛 낱말 셈'); if (n.myText.includes(x)) fail('옛 낱말 남음([10] 1)', at + ' 「' + x + '」'); }
-  for (const h of n.hrefs) { bump('고리'); if (!/^#\/(w\/[0-9A-Z]{6}|ch\/[ig]\/[^/]+|time|f\/rise)$/.test(h) && h !== '/atlas/#/time') fail('모르는 고리', at + ' ' + h); }
+  for (const h of n.hrefs) { bump('고리'); if (!/^#\/(w\/[0-9A-Z]{6}|ch\/[ig]\/[^/]+|time|f\/rise|gift)$/.test(h) && h !== '/atlas/#/time') /* #/gift — 쪽 단추 줄 「선물 받기」(2026-10-25 13:40) */ fail('모르는 고리', at + ' ' + h); }
 }
 /** [6] 8 큰 숫자 = 고른 지수의 마지막 날 하루 바뀜 % — 파일에서 따로 셈 */
 function heroCheck(at, n, VH) {
