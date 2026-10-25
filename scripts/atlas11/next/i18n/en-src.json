@@ -9527,6 +9527,25 @@
   "고르는 법 {n}가지를 먼저 적었어요": "We first wrote down {n} {pl:way|ways} of picking",
   "고르는 법을 먼저 적었어요": "We first wrote down the ways of picking",
   "세어 보기 전에 적었어요.": "We wrote them down before counting.",
-  "{n}년에는 {n}번에 {n}번, 아무거나 고르면 {n}번이에요.": "In {n1}: {n3} out of {n2}; picking at random: {n4}."
+  "{n}년에는 {n}번에 {n}번, 아무거나 고르면 {n}번이에요.": "In {n1}: {n3} out of {n2}; picking at random: {n4}.",
+  "업종은 한 달 동안 시장보다 {n}% 더 올랐어요.": "Over a month, the industry beat the market by {n}%.",
+  "업종은 한 달 동안 시장보다 {n}% 덜 올랐어요.": "Over a month, the industry trailed the market by {n}%.",
+  "회사 옆 숫자는 지난 {n}일 동안 시장보다 더 오른 만큼이에요.": "The number next to each company is how much it beat the market over the last {n} days.",
+  "달력에서 꽃이 못 된 {n}번을 셋으로 나눴어요.": "We sorted the {n} calendar {pl:pick|picks} that did not bloom into three groups.",
+  "지난 기록에서 꽃이 못 된 {n}번을 셋으로 나눴어요.": "We sorted the {n} past {pl:pick|picks} that did not bloom into three groups.",
+  "옛 기록에서 {n}번에 {n}번도 더 늘지 않았어요.": "In the older record, it did not rise by even {n2} per {n1}.",
+  "옛 기록에서 {n}번에 {n}번은 더 늘고, 새 기록에서도 늘어야 통과해요.": "It passes only if it rises by at least {n2} per {n1} in the older record and also rises in the newer record.",
+  "고쳐 볼 것은 세어 보기 전에 먼저 적어요.": "We write down what to try before counting.",
+  "꽃이 못 된 날이 쌓이면 또 고쳐 보고 다시 재요.": "As more picks fail to bloom, we try new fixes and measure again.",
+  "오늘 돌이가 고른 회사는 {n}곳이에요.": "Dori picked {n} {pl:company|companies} today.",
+  "오늘은 돌이가 고른 회사가 없어요.": "Dori picked no companies today.",
+  "시장보다 {n}% 넘게 덜 오르면 크게 떨어진 거예요.": "Falling behind the market by more than {n}% counts as a big drop.",
+  "{n}일 동안 시장보다 {n}% 넘게 더 오른 회사는 빼요": "Leave out companies that beat the market by more than {n2}% in {n1} days",
+  "한 달 동안 시장보다 {n}% 넘게 덜 오른 회사는 빼요": "Leave out companies that trailed the market by more than {n}% over a month",
+  "업종이 {n}일 동안 시장보다 {n}%도 더 못 올랐으면 빼요": "Leave out if the industry did not beat the market by even {n2}% in {n1} days",
+  "업종이 꽃이 된 지 {n}일이 넘었으면 빼요": "Leave out if the industry bloomed more than {n} days ago",
+  "업종이 한 달 동안 시장보다 {n}% 넘게 더 올랐으면 빼요": "Leave out if the industry beat the market by more than {n}% over a month",
+  "업종이 식었어요": "The industry cooled",
+  "회사만 덜 올랐어요": "Only the company lagged"
  }
 }

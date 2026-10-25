@@ -383,9 +383,9 @@ async function pPick() {
   const n = inds.reduce((p, i) => p + i.co.length, 0);
   const list = inds.map(i => h('section', {class: 'th-pkind', 'aria-label': i.n},
     h('h2', {class: 'th-h2'}, h('a', {href: '#/t/i/' + enc(i.n)}, h('span', {'data-proper': '', text: i.n}))),
-    h('p', {class: 'th-sub', text: `업종 한 달 시장보다 ${pp(i.x)}%`}),
+    Number.isFinite(i.x) ? h('p', {class: 'th-sub', text: i.x >= 0 ? `업종은 한 달 동안 시장보다 ${Math.abs(i.x).toFixed(1)}% 더 올랐어요.` : `업종은 한 달 동안 시장보다 ${Math.abs(i.x).toFixed(1)}% 덜 올랐어요.`}) : null,
     h('ul', {class: 'th-pkco'}, i.co.filter(r => Array.isArray(r) && /^[0-9A-Z]{6}$/.test(r[0] ?? '')).map(([c, nm, , y]) => h('li', {},
-      h('a', {class: 'th-pkrow', href: '#/w/' + c}, h('b', {'data-proper': '', text: String(nm ?? c)}), h('span', {class: cls(y), text: `닷새 ${pp(y)}%`}), h('i', {'aria-hidden': 'true', text: '›'})))))));
+      h('a', {class: 'th-pkrow', href: '#/w/' + c}, h('b', {'data-proper': '', text: String(nm ?? c)}), h('span', {class: cls(y), text: `5일 ${pp(y)}%`}), h('i', {'aria-hidden': 'true', text: '›'})))))));
   const span = B.span ?? {};
   const yrs = Object.entries(R.years ?? {}).filter(([y, v]) => /^\d{4}$/.test(y) && ok2(v)).sort((p, q) => (p[0] < q[0] ? -1 : 1));
   const upY = yrs.filter(([, v]) => v.rate > v.base).length;
@@ -398,25 +398,27 @@ async function pPick() {
   const dayUp = d => (d.bn > 0 ? d.hit / (d.hit + d.miss) >= d.bh / d.bn : d.hit / (d.hit + d.miss) >= all.base / 100);
   const wk = []; for (const d of days) { const wd = new Date(d.d + 'T00:00:00Z').getUTCDay(); if (wd < 1 || wd > 5) continue; if (!wk.length || wd <= wk.at(-1).last) wk.push({cells: Array(5).fill(null), last: 0}); const w = wk.at(-1); w.cells[wd - 1] = d; w.last = wd; }
   const cell = d => d == null ? h('span', {class: 'th-pkc e', 'aria-hidden': 'true'}) : h('span', {class: 'th-pkc ' + (d.wait ? 'w' : d.hit + d.miss === 0 ? 'z' : dayUp(d) ? 'up' : 'dn'), role: 'listitem'}, h('b', {text: `${+d.d.slice(5, 7)}.${+d.d.slice(8, 10)}`}), h('span', {text: d.wait ? String(d.n) : d.hit + d.miss ? `${d.hit}/\u200b${d.hit + d.miss}` : '-'})); // 좁은 칸에서 「/」 뒤에서만 줄바꿈(숫자가 갈라지지 않게)
-  const names = Array.isArray(B.why?.names) ? B.why.names : [], whyNote = [`시장보다 더 올랐지만 ${RULE.bloomX}%까지는 못 갔어요.`, '업종이 한 달 뒤 시장보다 덜 올랐어요.', '업종은 괜찮았는데 회사만 덜 올랐어요.'];
+  const names = Array.isArray(B.why?.names) ? (B.why.names.length === 3 ? ['조금 모자랐어요', '업종이 식었어요', '회사만 덜 올랐어요'] : B.why.names) : [], // 쉬운 말(사장님 05:26) — 자료 이름과 같은 차례(가 · 나 · 다)
+    whyNote = [`시장보다 더 올랐지만 ${RULE.bloomX}%까지는 못 갔어요.`, '업종이 한 달 뒤 시장보다 덜 올랐어요.', '업종은 괜찮았는데 회사만 덜 올랐어요.'];
   const recentWhy = [0, 1, 2].map(i => sum(done, d => d.why?.[i])), recentMiss = sum(done, d => d.miss), W = B.why?.all;
   const top = xs => xs.indexOf(Math.max(...xs));
   const useRecent = recentMiss > 0, WM = useRecent ? recentMiss : W?.miss ?? 0, WW = useRecent ? recentWhy : W?.why ?? [0, 0, 0];
   const whySec = WM > 0 && names.length === 3 ? h('section', {class: 'th-pkwhy2', 'aria-label': '꽃이 못 된 까닭'},
     h('h2', {class: 'th-h2', text: '꽃이 못 된 까닭'}),
-    h('p', {class: 'th-sub', text: useRecent ? `달력에서 못 된 ${num(WM)}번을 셋으로 나눴어요.` : `지난 기록에서 못 된 ${num(WM)}번을 셋으로 나눴어요.`}),
+    h('p', {class: 'th-sub', text: useRecent ? `달력에서 꽃이 못 된 ${num(WM)}번을 셋으로 나눴어요.` : `지난 기록에서 꽃이 못 된 ${num(WM)}번을 셋으로 나눴어요.`}),
     ...[0, 1, 2].map(i => { const v = (WW[i] / WM) * 100, q = h('i'); q.style.width = Math.max(0, Math.min(100, v)) + '%'; return h('div', {class: 'th-pkbar ' + (i === top(WW) ? 'pick' : 'base')}, h('span', {class: 'th-pkl', text: names[i]}), h('span', {class: 'th-pkt', 'aria-hidden': 'true'}, q), h('b', {class: 'th-pkv', text: `100번에 ${Math.round(v)}번`}), h('span', {class: 'th-sub th-pkwn', text: whyNote[i]})); }),
     useRecent && W?.miss > 0 && Array.isArray(W.why) ? h('p', {class: 'th-sub', text: top(W.why) === top(WW) ? '지난 기록 전체에서도 가장 많은 까닭은 같아요.' : '지난 기록 전체에서는 가장 많은 까닭이 달라요.'}) : null) : null;
+  const FIX_SAY = {F1: '5일 동안 시장보다 10% 넘게 더 오른 회사는 빼요', F2: '한 달 동안 시장보다 10% 넘게 덜 오른 회사는 빼요', F3: '업종이 5일 동안 시장보다 1%도 더 못 올랐으면 빼요', G1: '업종이 꽃이 된 지 5일이 넘었으면 빼요', G2: '업종이 한 달 동안 시장보다 15% 넘게 더 올랐으면 빼요'}; // 쉬운 말(사장님 05:26) — theme-engine.js BLOOM_FIX 와 같은 셈 · 자료 label 은 그대로
   const fixes = Array.isArray(B.fix) ? B.fix.filter(f => f && typeof f.label === 'string' && f.train && Number.isFinite(f.train.rate)) : [], used = fixes.find(f => f.id === B.use);
-  const fixWhy = f => (f.pass ? '옛 기록과 새 기록 모두 늘어 통과했어요.' : ok2(tr) && Number.isFinite(tr.n) && f.train.n < tr.n / 2 ? '남은 회사가 너무 적었어요.' : ok2(tr) && f.train.rate - tr.rate < 1 ? '옛 기록에서 한 번도 더 늘지 않았어요.' : '새 기록에서 늘지 않았어요.');
+  const fixWhy = f => (f.pass ? '옛 기록과 새 기록 모두 늘어 통과했어요.' : ok2(tr) && Number.isFinite(tr.n) && f.train.n < tr.n / 2 ? '남은 회사가 너무 적었어요.' : ok2(tr) && f.train.rate - tr.rate < 1 ? '옛 기록에서 100번에 1번도 더 늘지 않았어요.' : '새 기록에서 늘지 않았어요.');
   const fixSec = fixes.length ? h('section', {class: 'th-pkfix', 'aria-label': '그래서 고쳐 본 것'},
     h('h2', {class: 'th-h2', text: '그래서 고쳐 본 것'}),
     h('p', {class: 'th-sub', text: '까닭을 보고 고르는 법을 고쳐 다시 셌어요.'}),
-    h('p', {class: 'th-sub', text: '옛 기록에서 한 번 넘게 늘고 새 기록에서도 늘어야 통과해요.'}),
-    h('ol', {class: 'th-steps'}, ...fixes.map((f, k) => step(k + 1, f.label, [ok2(tr) ? `고치면 옛 기록이 100번에 ${r0(f.train.rate)}번, 안 고치면 ${r0(tr.rate)}번이에요.` : null, fixWhy(f), f === used ? '이 법을 오늘 목록에 썼어요.' : null]))),
+    h('p', {class: 'th-sub', text: '옛 기록에서 100번에 1번은 더 늘고, 새 기록에서도 늘어야 통과해요.'}),
+    h('ol', {class: 'th-steps'}, ...fixes.map((f, k) => step(k + 1, FIX_SAY[f.id] ?? f.label, [ok2(tr) ? `고치면 옛 기록이 100번에 ${r0(f.train.rate)}번, 안 고치면 ${r0(tr.rate)}번이에요.` : null, fixWhy(f), f === used ? '이 법을 오늘 목록에 썼어요.' : null]))),
     h('p', {class: 'th-sub th-key', text: used ? '통과한 법 하나를 오늘 목록에 썼어요.' : '모두 통과하지 못해서 고르는 법은 그대로 둬요.'}),
-    h('p', {class: 'th-sub', text: '고쳐 볼 것은 셈하기 전에 먼저 적어요.'}),
-    h('p', {class: 'th-sub', text: '못 된 날이 쌓이면 또 고쳐 보고 다시 재요.'})) : null;
+    h('p', {class: 'th-sub', text: '고쳐 볼 것은 세어 보기 전에 먼저 적어요.'}),
+    h('p', {class: 'th-sub', text: '꽃이 못 된 날이 쌓이면 또 고쳐 보고 다시 재요.'})) : null;
   const how = h('section', {class: 'th-pkhow', 'aria-label': '이 숫자는 어떻게 나왔어요?'},
     h('h2', {class: 'th-h2', text: '이 숫자는 어떻게 나왔어요?'}),
     h('ol', {class: 'th-steps'},
@@ -453,7 +455,8 @@ async function pPick() {
   const whyBox = whySec ? h('div', {class: 'th-pkwhy2'}, ...[...whySec.childNodes].map(x => (x.tagName === 'H2' ? h('h3', {class: 'th-chs', text: x.textContent}) : x))) : null;
   const fixBox = fixSec ? h('div', {class: 'th-pkfix'}, ...[...fixSec.childNodes].filter(x => x.tagName !== 'H2')) : null;
   const todayBox = h('div', {class: 'th-pktoday'}, h('h3', {class: 'th-chs', text: '오늘 고른 회사'}),
-    h('p', {class: 'th-key', text: n ? `오늘 이 모습인 회사는 ${num(n)}곳이에요.` : '오늘은 이 모습인 회사가 없어요.'}), ...list,
+    h('p', {class: 'th-key', text: n ? `오늘 돌이가 고른 회사는 ${num(n)}곳이에요.` : '오늘은 돌이가 고른 회사가 없어요.'}),
+    n ? h('p', {class: 'th-sub', text: '회사 옆 숫자는 지난 5일 동안 시장보다 더 오른 만큼이에요.'}) : null, ...list,
     n ? h('p', {class: 'th-sub th-calnote', text: '회사는 이름 차례예요. 차례에는 뜻이 없어요.'}) : null);
   const howFold = h('details', {class: 'th-pkhowf'}, h('summary', {text: '이 숫자는 어떻게 나왔어요?'}), ...[...how.childNodes].filter(x => x.tagName !== 'H2'));
   return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
@@ -468,7 +471,7 @@ async function pPick() {
     chap('next', '이어서', '고른 날마다 한 달 뒤를 적었어요', calBox),
     chap('turn', '그런데', turnHead, recBox, whyBox),
     chap('so', '그래서', fixSec ? '그래서 고르는 법을 고쳐 보고 다시 재요' : '그래서 계속 적고 다시 재요', fixBox, todayBox, howFold),
-    h('p', {class: 'th-sub th-calnote', text: `${Math.abs(Number(B.rule?.fall ?? -5))}% 넘게 덜 오르면 크게 떨어진 거예요.`}),
+    h('p', {class: 'th-sub th-calnote', text: `시장보다 ${Math.abs(Number(B.rule?.fall ?? -5))}% 넘게 덜 오르면 크게 떨어진 거예요.`}),
     h('p', {class: 'th-sub th-calnote', text: '앞날을 맞히는 숫자가 아니에요.'}),
     h('p', {class: 'th-asof', text: md(B.asOf) + ' 장 마감 기준' + (B.provisional ? ' · 장중 값이 섞여 있어요' : '')}),
     nextBtn('싹 달력', '#/t/cal'), safe())]};
