@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-22T17:15:30.432Z",
+ "at": "2026-10-25T14:58:41.437Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 1,
    "chars": 169,
    "blocks": {
-    "ess": 1473,
+    "ess": 1892,
     "find": 776,
-    "today": 1565,
-    "gdr": 1915,
-    "all": 1915
+    "today": 1984,
+    "gdr": 2334,
+    "all": 2334
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 173,
+   "themeChars": 198,
    "top": [
     [
      35,
@@ -153,7 +153,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일"
+     "10월 23일"
     ],
     [
      2,
@@ -177,8 +177,10 @@
     ]
    ],
    "theme": {
-    "top": 256,
-    "clockBottom": 575
+    "top": 350,
+    "zonesBottom": 646,
+    "rowBottom": 494,
+    "thumbTop": 711
    },
    "bodyHex": "#FFFFFF",
    "inkHex": "#000000",
@@ -198,11 +200,11 @@
    "bodyLum": 1,
    "chars": 105,
    "blocks": {
-    "ess": 1242,
+    "ess": 1769,
     "find": 776,
-    "today": 1334,
-    "gdr": 1684,
-    "all": 1684
+    "today": 1861,
+    "gdr": 2211,
+    "all": 2211
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 179,
+   "themeChars": 198,
    "top": [
     [
      24,
@@ -328,7 +330,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 22일"
+     "10월 23일"
     ],
     [
      2,
@@ -352,8 +354,10 @@
     ]
    ],
    "theme": {
-    "top": 232,
-    "clockBottom": 551
+    "top": 350,
+    "zonesBottom": 646,
+    "rowBottom": 494,
+    "thumbTop": 711
    },
    "bodyHex": "#FFFFFF",
    "inkHex": "#000000",
@@ -679,17 +683,14 @@
    }
   },
   "speed": {
-   "lcp": 1080,
-   "inp": 32,
-   "cls": 0.01
+   "lcp": 984,
+   "inp": 40,
+   "cls": 0.004
   }
  },
  "net": {
-  "retry": 3,
-  "why": {
-   "HTTP 403": 1,
-   "열기 실패": 2
-  }
+  "retry": 0,
+  "why": {}
  },
  "ok": true,
  "enforced": true
