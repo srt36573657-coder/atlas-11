@@ -53,10 +53,10 @@ test('소개 쪽 — 약속을 먼저 알림 · 쉬운 네 걸음 · 영상 · �
   assert.match(sec, /<source src="\/media\/universe\.mp4" type="video\/mp4">\s*<source src="\/media\/universe\.webm" type="video\/webm">/);
   const got = sec.slice(sec.indexOf('<div class="hp-got"'), sec.indexOf('<p class="hp-pn">'));
   assert.match(got, /^<div class="hp-got" id="hp-got" hidden>/, '「상품권 받기」 칸은 처음에 숨김');
-  assert.match(got, /<a class="hp-sms" href="sms:01090117377">상품권 받기<\/a>/);
-  assert.match(got, /010-9011-7377/);
-  assert.ok(sec.indexOf('sms:') > sec.indexOf('<div class="hp-got"') && sec.indexOf('tel:') > sec.indexOf('<div class="hp-got"'), '문자 · 전화는 열린 칸 안에만');
-  assert.ok(!/010-9011-7377/.test(sec.slice(0, sec.indexOf('<div class="hp-got"'))), '번호는 다 본 뒤에만');
+  // 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 · 13:38 「내가 직접 보낼 거야」 — 화면 찍어 문자 보내기 대신 상품권 방(#/gift)에서 전화번호를 적음
+  assert.match(got, /<a class="hp-sms" href="\/#\/gift">상품권 받기<\/a>/);
+  assert.ok(!/sms:|tel:|010-9011-7377/.test(sec), '문자 · 전화 · 번호 없음(친구 수는 사이트가 셈)');
+  assert.match(sec, /<li>「상품권 받기」를 누르고 전화번호를 적어 주세요\.<\/li>/);
   assert.match(sec, /1분은 소중한 시간이에요\. 내어 주셔서 고마워요\./);
   assert.match(h, /<script type="module" src="\/hello-gift\.js"><\/script>/);
   for (const f of ['site/media/universe.mp4', 'site/media/universe.webm', 'site/media/universe-poster.jpg']) assert.ok(fs.statSync(new URL('../../' + f, import.meta.url)).size > 1000, f);
@@ -85,7 +85,11 @@ test('앱 안 상품권 방(#/gift) — 모든 쪽 위 막대 금빛 선물 단�
   assert.match(js, /상품권은 우주 영상 1분을 끝까지 본 분께만 드려요\. 이 약속은 꼭 지켜요\./);
   assert.equal((js.match(/step\(\d, /g) ?? []).length, 3, '걸음 셋');
   assert.match(js, /const got = h\('div', \{class: 'gf-got', hidden: true\}/, '받기 칸은 처음에 숨김');
-  assert.ok(js.indexOf("'sms:' + TEL") > js.indexOf("const got = h('div'"), '문자 고리는 받기 칸 안에만');
+  // 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 — 문자 고리 대신 받기 칸 안 전화번호 한 칸 + 동의 · 친구 수는 서버(gift-ref.js)
+  assert.doesNotMatch(js, /sms:|tel:|TEL_SHOW/, '문자 · 전화 고리 없음');
+  assert.ok(js.indexOf("const got = h('div'") > js.indexOf("const tel = h('input'"), '전화번호 칸은 받기 칸 안에만');
+  assert.match(js, /import \{ref, withRef, me, claim, PER\} from '\.\/gift-ref\.js';/);
+  assert.match(js, /상품권을 보내려고 이 번호를 사장님께만 보여 드려요\. 보내면 바로 지워요\. 동의해요\./, '동의 글');
   assert.doesNotMatch(js.replace(/^\/\*[\s\S]*?\*\//, ''), /'돌이/, '이름은 brand.js');
   const {cssRules} = await import('../../scripts/atlas11/next/page_rules.mjs');
   assert.deepEqual(cssRules('site/next/p-gift.css'), []);

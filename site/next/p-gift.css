@@ -53,3 +53,15 @@
 .gf-fine { margin: var(--sp-2) 0 0; font-size: var(--fs-1); line-height: 1.5; color: var(--mute); }
 .gf-fine a { display: inline-flex; align-items: center; min-height: 48px; color: var(--sub); text-decoration: underline; text-underline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .gf-btn, .gf-sms, .gf-call { transition: none; } }
+/* 친구 소개 세기 · 상품권 받기(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 · 13:38 「내가 직접 보낼 거야」)
+   친구 수 다시 보기(밑줄 글 단추) · 전화번호 한 칸 · 동의 한 줄(네모 + 글) · 상품권 받기(금빛) · 결과 한 줄 */
+.gf-again { align-self: flex-start; min-height: 48px; padding: 0; border: 0; background: none; color: var(--sub); font-size: var(--fs-1); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.gf-lab { display: block; margin: var(--sp-1) 0 0; font-size: var(--fs-2); font-weight: 700; color: var(--ink); }
+.gf-tel-in { width: 100%; max-width: 320px; min-height: 48px; padding: 0 var(--sp-2); box-sizing: border-box; border: 2px solid var(--ink); border-radius: 8px; background: var(--bg); color: var(--ink); font-size: var(--fs-2); }
+.gf-ok { display: flex; align-items: flex-start; gap: var(--sp-1); margin: var(--sp-1) 0; font-size: var(--fs-1); line-height: 1.5; color: var(--ink); cursor: pointer; }
+.gf-agree { flex: none; width: 44px; height: 44px; margin: 0; accent-color: var(--gold); } /* 누르는 자리 44px */
+.gf-claim { align-self: flex-start; background: var(--gold); border-color: var(--gold); color: #FFFFFF; }
+.gf-claim:disabled { opacity: .6; }
+.gf-res { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--ink); }
+.gf-res:empty { display: none; }
+.gf-tel-in:focus-visible, .gf-again:focus-visible, .gf-agree:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }

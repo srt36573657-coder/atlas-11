@@ -117,7 +117,9 @@ function card(href, th, title, meta, av) {
 }
 function toast(t) { const e = h('p', {class: 'toast', role: 'status', text: t}); document.body.append(e); setTimeout(() => e.remove(), 2400); }
 /** 옛 보내기(제목 · 주소만) — 보내기 글상자(p-share)를 못 받았을 때만 씀 */
+let GR = null; // gift-ref.js(첫 그림 뒤 받음) — 옛 보내기도 보낸 사람 표를 붙임
 async function share(title, url, text = '') { // text = 보낼 글(사장님 2026-10-25 「카톡 보내기」 글 단추 · share-btn.js kakaoText) — 없으면 예전 그대로(제목 · 주소)
+  if (GR) url = GR.withRef(url);
   try { if (navigator.share) { await navigator.share(text ? {title, text, url} : {title, url}); return; } await navigator.clipboard.writeText(text ? text + '\n' + url : url); toast('주소를 담았어요. 붙여 넣어 보내세요.'); }
   catch (e) { if (e?.name !== 'AbortError') toast('보내기를 열지 못했어요.'); }
 }
@@ -1414,4 +1416,9 @@ else {
   if (EN) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/en.css'; document.head.append(l); await startI18n(); }
   enPrivacy(); // 맨 아래 고리(쪽 밖)
   route().then(langTip, langTip);
+  /* 친구 소개 세기(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 · gift-ref.js) — 첫 그림 뒤 한가할 때
+     주소에 보낸 사람 표(r)가 있으면 한 번 세고 주소에서 지움 · 내 표를 미리 셈(카톡 보내기 주소에 붙음 — share-btn.js 가 이 기기에 적힌 표를 읽음) */
+  { const go = () => import('/next/gift-ref.js').then(m => { GR = m; m.visit().catch(() => {}); m.ref().catch(() => {}); }).catch(() => {});
+    const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(go, {timeout: 3000}) : setTimeout(go, 800));
+    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true}); }
 }

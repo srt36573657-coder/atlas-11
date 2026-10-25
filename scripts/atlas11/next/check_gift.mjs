@@ -3,7 +3,7 @@
 //   사람들에 1분 우리에게 투자하는것 서로 존중해야 잖아」 · 01:59 「맞아」 — docs/design/gift-2026-10-22/order-0149.txt
 //   03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 — order-0338.txt(모든 쪽 위 막대 금빛 선물 단추 → 앱 안 상품권 방)
 //   보는 것: ① 모든 쪽 위 막대에 금빛 선물 단추(48px · #/gift · 320 폭 넘침 0) → 누르면 상품권 방 ② 두 곳 처음 = 약속 알림 · 걸음 · 「상품권 받기」 · 번호 숨김 · 건너뛸 막대 없음 · 가로 넘침 없음 · 글씨 17px 위 · 단추 48px 위
-//            ③ 틀기 → 건너뛰기(50초로) 막힘 · 빨리 감기(4배) 막힘 ④ 끝까지 → 「상품권 받기」 · 번호 · 고마움 줄 · 이 기기 표시 ⑤ 다시 열면 바로 열림 · 다른 곳도 함께 열림 ⑥ 영어 팩이면 한글 없음
+//            ③ 틀기 → 건너뛰기(50초로) 막힘 · 빨리 감기(4배) 막힘 ④ 끝까지 → 「상품권 받기」 · 전화번호 칸(문자 · 전화 번호 없음) · 고마움 줄 · 이 기기 표시 ⑤ 다시 열면 바로 열림 · 다른 곳도 함께 열림 ⑥ 영어 팩이면 한글 없음
 //            총정리(2026-10-22 D6 · D7) — 상품권 방 약속 칸 바로 밑 「지금 할 일 · 친구 3명에게 소개해요 ↓」(48px · 320 × 568 첫 화면 안 · 누르면 「친구에게 보내기」에 초점) · 다 본 뒤 「영상을 끝까지 봤어요 · 상품권 받기 ↓」
 //   node scripts/atlas11/next/check_gift.mjs [--base http://127.0.0.1:8826] [--path /next/] [--pw /tmp/pw/] [--out 결과.json]  (scripts/atlas11/invite_dev.mjs --dir site 가 떠 있어야 함 · 깃허브 전체 검사도 이 꼴로 부름)
 import {createRequire} from 'node:module';
@@ -96,13 +96,17 @@ async function watch(k) {
   await p.waitForTimeout(400);
   const end = await look(p, q), n0 = fails.length;
   if (end.got !== false) fail(`${q.name} 끝까지 봤는데 「상품권 받기」가 안 나옴`, JSON.stringify(end.gift));
-  if (!/010-9011-7377/.test(end.text) || !/상품권 받기/.test(end.text)) fail(`${q.name} 끝난 뒤 번호 · 단추`, end.text.slice(-200));
+  // 끝난 뒤(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 세 명을 보냈다 라는 걸 알 수 있게끔」 · 13:38 「내가 직접 보낼 거야」) — 문자 · 전화 번호 대신 상품권 방 = 전화번호 칸 + 동의 + 「상품권 받기」 · 소개 쪽 = 「상품권 받기」 → /#/gift
+  const fin = k === 'app'
+    ? await p.evaluate(() => ({tel: !!document.querySelector('#view #gf-tel'), agree: !!document.querySelector('#view #gf-agree'), claim: document.querySelector('#view .gf-claim')?.textContent?.trim() ?? '', sms: document.querySelectorAll('#view a[href^="sms:"], #view a[href^="tel:"]').length}))
+    : await p.evaluate(() => ({go: document.querySelector('.hp-sms')?.getAttribute('href') ?? '', sms: document.querySelectorAll('a[href^="sms:"], a[href^="tel:"]').length}));
+  if (/010-9011-7377/.test(end.text) || !/상품권 받기/.test(end.text) || fin.sms || (k === 'app' ? !(fin.tel && fin.agree && fin.claim === '상품권 받기') : fin.go !== '/#/gift')) fail(`${q.name} 끝난 뒤 전화번호 칸 · 동의 · 「상품권 받기」(문자 · 전화 번호 없음)`, JSON.stringify(fin) + ' ' + end.text.slice(-160));
   if (!/끝까지 봐 주셔서 고마워요/.test(end.text)) fail(`${q.name} 끝난 뒤 고마움 줄`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(end.key ?? '')) fail(`${q.name} 이 기기 표시(atlas:gift:seen)`, String(end.key));
   if (!(end.gift?.watched >= 58.5)) fail(`${q.name} 본 초`, JSON.stringify(end.gift));
   for (const t of end.taps) if (t.h < 48) fail(`${q.name} 끝난 뒤 단추 48px 아래`, `${t.t} ${t.h}px`);
   if (k === 'app') { const nt = await p.evaluate(() => document.querySelector('#view .gf-now')?.textContent?.trim() ?? ''); if (nt !== '영상을 끝까지 봤어요 · 상품권 받기 ↓') fail(`${q.name} 끝난 뒤 맨 위 결 단추 글(총정리 D7)`, nt); }
-  if (fails.length === n0) ok(`${q.name} 끝까지 본 뒤 열림(본 초 ${end.gift?.watched}) · 번호 · 「상품권 받기」 · 고마움 줄`);
+  if (fails.length === n0) ok(`${q.name} 끝까지 본 뒤 열림(본 초 ${end.gift?.watched}) · ${k === 'app' ? '전화번호 칸 · 동의' : '상품권 방 고리'} · 「상품권 받기」 · 고마움 줄`);
   await p.reload({waitUntil: 'networkidle'}); await p.waitForTimeout(900);
   const again = await look(p, q);
   if (again.got !== false || !/이 휴대폰에서 영상을 끝까지 봤어요/.test(again.text)) fail(`${q.name} 다시 열면 바로 열려야 함`, String(again.text).slice(-200)); else ok(`${q.name} 다시 열면 바로 열림(또 보지 않음)`);

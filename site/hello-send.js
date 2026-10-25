@@ -22,3 +22,5 @@ const msg = document.getElementById('hp-msg');
 document.getElementById('hp-send')?.addEventListener('click', async () => { await ready; msg.textContent = shareSay(await shareHello()); });
 await ready;
 window.__helloShare = helloShare(); // 확인용(탐침이 보내는 글을 읽음 · 사전을 받은 뒤의 글)
+// 친구 소개 세기(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」) — 이 쪽 주소에 보낸 사람 표(r)가 있으면 한 번 세고 주소에서 지움(/next/gift-ref.js) · 없으면 아무것도 안 함
+import('/next/gift-ref.js').then(m => m.visit()).catch(() => {});

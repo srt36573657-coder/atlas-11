@@ -75,8 +75,33 @@ export async function renderAdmin() {
   const days = Array.isArray(D?.json?.days) ? D.json.days : null;
   const sum = days ? days.reduce((a, d) => a + (Number.isInteger(d.done) ? d.done : 0), 0) : null;
   root.append(h('section', {class: 'adm-sec'}, h('h2', {text: '가입한 사람'}), h('p', {text: sum == null ? (on ? '? 가입 수를 받지 못했어요.' : '카톡 가입이 켜지면 여기에 쌓여요.') : `지난 30일 동안 ${sum}명이 가입했어요.`})));
+  root.firstChild.after(await giftDesk()); // ⓪ 선물 받을 사람(사장님 2026-10-25 13:40 · 13:38 「내가 직접 보낼 거야」) — 제목 바로 밑(가장 먼저 볼 일)
   root.append(await helpDesk()); // ④ 고객센터 글(사장님 2026-10-21 22:54 · 22:55 · p-help.js)
   return {title: '관리자 화면', nodes: [root]};
+}
+/* ── 선물 받을 사람(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 · 13:38 「내가 직접 보낼 거야」 · /api/gift/list · lib/atlas11/gift.mjs) ──
+   친구 셋이 열고 영상을 다 본 사람이 적은 전화번호 · 연 친구 수 · 카톡에서 연 수 · 「보냄 표시」를 누르면 번호를 지움(끝 네 자리만 남김) · 글은 textContent 로만 */
+const postGift = async (path, body) => { try { const r = await fetch(path, {method: 'POST', headers: {'content-type': 'application/json', 'x-atlas-owner': ownerKey() ?? ''}, body: JSON.stringify(body), cache: 'no-store', credentials: 'same-origin'}); return r.status; } catch { return 0; } };
+const telShow = t => (/^\d{10,11}$/.test(t ?? '') ? t.replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1-$2-$3') : String(t ?? ''));
+async function giftDesk() {
+  const sec = h('section', {class: 'adm-sec adm-gift kk-skip'}, h('h2', {text: '선물 받을 사람'})); // kk-skip — 전화번호가 있는 칸이라 카톡 보내기를 달지 않음(kk-all.js)
+  const r = await getOwner('/api/gift/list'), items = Array.isArray(r.json?.items) ? r.json.items : null;
+  if (!items) { sec.append(h('p', {class: 'empty', text: r.status === 403 ? '? 사장님 휴대폰이 아니에요.' : '? 목록을 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return sec; }
+  let n = items.filter(x => x.state === 'wait').length;
+  const say = h('p', {});
+  const sayN = () => { say.textContent = n ? `보낼 차례 ${n}명이에요. 번호로 카톡 선물을 보내고 「보냄 표시」를 누르세요.` : '지금은 보낼 차례가 없어요.'; };
+  sayN(); sec.append(say);
+  if (items.length) sec.append(h('ul', {class: 'adm-list adm-glist'}, ...items.slice(0, 200).map(x => {
+    const mark = x.state === 'wait' ? h('b', {class: 'wait', text: x.phone ? telShow(x.phone) : `번호 지움 · 끝 ${x.tail ?? '????'}`}) : h('b', {class: 'ok', text: `보냄 · 끝 ${x.tail ?? '????'}`});
+    const li = h('li', {}, h('span', {text: `${mdOf(x.at)} · 친구 ${x.friends ?? 0}명 · 카톡에서 ${x.kk ?? 0}명`}), mark);
+    if (x.state === 'wait') {
+      const b = h('button', {type: 'button', class: 'adm-go', text: '보냄 표시'});
+      b.addEventListener('click', async () => { b.disabled = true; const st = await postGift('/api/gift/done', {id: x.id}); if (st === 200) { mark.replaceWith(h('b', {class: 'ok', text: `보냄 · 끝 ${x.tail ?? '????'}`})); b.remove(); n = Math.max(0, n - 1); sayN(); } else { b.disabled = false; toast('? 아직 못 적었어요. 다시 눌러 주세요.'); } });
+      li.append(b);
+    }
+    return li;
+  })));
+  return sec;
 }
 export const render = renderAdmin;
 

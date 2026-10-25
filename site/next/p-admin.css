@@ -23,3 +23,7 @@
 .adm-ck { width: 24px; height: 24px; }
 .adm-hb { margin: var(--sp-1) 0 0; flex-wrap: wrap; }
 .adm-del { min-height: 48px; padding: 0 var(--sp-2); border: 1px solid var(--hair2); border-radius: 24px; color: var(--sub); font-size: var(--fs-1); }
+
+/* 선물 받을 사람 — 번호는 한 줄(끊지 않음) · 좁으면 단추가 다음 줄로 */
+.adm-glist li { flex-wrap: wrap; gap: 8px; }
+.adm-glist b { white-space: nowrap; }

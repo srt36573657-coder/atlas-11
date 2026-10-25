@@ -597,9 +597,13 @@ html.en .kkc > .card .meta { width: calc(100% - 124px); }
 .kkg > .kk-btn.kk-row, html.white .kkg > .kk-btn.kk-row { position: static; display: flex; width: 100%; max-width: none; margin-top: 8px; }
 .kkg > a > b, .kkg > a > small, html.white .kkg > a > b, html.white .kkg > a > small { width: auto; }
 /* 쪽 · 칸 「카톡 보내기」(kk-all.js) — 쪽 = 큰 제목 아래 왼쪽 · 칸 = 칸 끝 오른쪽 */
-.kk-btn.kk-pg { margin: 8px 0 16px; }
-.kk-pgw { padding: 8px var(--sp-2) 0; } .kk-pgw > .kk-btn.kk-pg { margin: 0 0 8px; }
-.kk-pgi { padding: 0 var(--sp-2); } /* 쪽 단추를 제목 왼쪽 줄에(채널 머리 칸처럼 쪽 칸에 옆 띄움이 없는 쪽) */
+/* 쪽 단추 줄 = 「카톡 보내기」 + 「선물 받기」(사장님 2026-10-25 13:40 「곳곳에 선물 받기를 다 집어넣어 놔」 — 상품권 방 #/gift) */
+.kk-pgrow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); margin: var(--sp-1) 0 var(--sp-2); min-width: 0; }
+.kk-pgrow > .kk-btn.kk-pg { margin: 0; }
+.kk-pgrow.kk-pgw { padding: var(--sp-1) var(--sp-2) 0; margin-top: 0; }
+.kk-pgrow.kk-pgi { padding: 0 var(--sp-2); } /* 쪽 단추를 제목 왼쪽 줄에(채널 머리 칸처럼 쪽 칸에 옆 띄움이 없는 쪽) */
+.kk-gift, html.white .kk-gift { display: inline-flex; align-items: center; justify-content: center; text-align: center; min-height: 48px; padding: 0 var(--sp-2); border-radius: 8px; border: 1px solid #191919; background: #FFF1C2; color: #191919; font-size: var(--fs-2); font-weight: 800; text-decoration: none; }
+.kk-gift:active { background: #FFE58A; }
 .kk-box { display: flex; justify-content: flex-end; margin: 8px 0; min-width: 0; }
 .kk-box.kk-boxi { padding: 0 var(--sp-2); }
 /* 글 단추 「카톡 보내기」 노랑(회사 화면 · 시황 · 상품권 방 보내기 — 그 자리 단추 꼴은 그대로 · 바탕 · 글 · 테두리만) */

@@ -61,6 +61,11 @@ const au = await (async () => {
   const [{handleAuto, AUTO_STORE}, {getStore}, {OWNER_KEY_SHA256}] = await Promise.all([import('../../lib/atlas11/auto.mjs'), import('@netlify/blobs'), import('../../lib/atlas11/invite.mjs')]);
   return req => handleAuto(req, {store: getStore({name: AUTO_STORE, consistency: 'strong'}), ownerHash: process.env.ATLAS_INVITE_OWNER_SHA256 || OWNER_KEY_SHA256});
 })();
+// 친구 소개 세기 · 선물 받기(사장님 2026-10-25 13:40 「카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 · lib/atlas11/gift.mjs) — 함수 파일(functions/atlas11/gift.mjs)과 같은 셈 · 같은 열쇠 해시 · 같은 저장소 이름
+const gf = await (async () => {
+  const [{handleGift, GIFT_STORE}, {getStore}, {OWNER_KEY_SHA256}] = await Promise.all([import('../../lib/atlas11/gift.mjs'), import('@netlify/blobs'), import('../../lib/atlas11/invite.mjs')]);
+  return req => handleGift(req, {store: getStore({name: GIFT_STORE, consistency: 'strong'}), ownerHash: process.env.ATLAS_INVITE_OWNER_SHA256 || OWNER_KEY_SHA256});
+})();
 /** 함수 응답(Fetch Response) → node 응답 · Set-Cookie 여럿을 그대로(하나로 합치지 않음) */
 const sendFetch = async (res, r) => { const h = {}; for (const [k, v] of r.headers) if (k !== 'set-cookie') h[k] = v; const sc = r.headers.getSetCookie?.() ?? []; if (sc.length) h['set-cookie'] = sc; res.writeHead(r.status, h); res.end(Buffer.from(await r.arrayBuffer())); };
 const bodyOf = req => (req.method === 'POST' || req.method === 'PUT' ? new Promise(r => { let b = ''; req.on('data', d => { b += d; }); req.on('end', () => r(b)); }) : Promise.resolve(undefined));
@@ -93,6 +98,7 @@ const server = http.createServer(async (req, res) => {
     }
     if (kakao && url.pathname.startsWith('/__fake-kakao/')) { await sendFetch(res, await kakao.fake.handle(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
     if (url.pathname === '/api/jinhwa' || url.pathname.startsWith('/api/jinhwa/')) { await sendFetch(res, await jt.jinhwa(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
+    if (url.pathname === '/api/gift' || url.pathname.startsWith('/api/gift/')) { await sendFetch(res, await gf(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 친구 소개 세기 · 선물 받기
     if (url.pathname === '/api/help' || url.pathname.startsWith('/api/help/')) { await sendFetch(res, await hp(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 고객센터
     if (url.pathname === '/api/auto' || url.pathname.startsWith('/api/auto/')) { await sendFetch(res, await au(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 자동으로 산 기록(가짜 돈)
     if (url.pathname === '/api/tally' || url.pathname === '/api/tally/sum') { await sendFetch(res, await jt.tally(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }

@@ -129,3 +129,4 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-calgo:focus-visible { outline: 3px solid var(--down); outline-offset: 2px; }
 .th-gorow { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; min-width: 0; } /* 싹 달력 보기 · 카톡 보내기 한 줄(2026-10-25 진짜 사이트 사진 — 390 × 844 에서 카톡 보내기가 찾기 칸 뒤로 숨음) */
 .th-gorow > .th-calgo, .th-gorow > .kk-btn.kk-txt.th-kkall, html.white .th-gorow > .kk-btn.kk-txt.th-kkall { flex: 1 1 150px; width: auto; margin: 0; }
+.th-gorow > .kk-gift.th-gift, html.white .th-gorow > .kk-gift.th-gift { flex: 1 1 100%; justify-content: center; min-height: 56px; border-radius: 14px; font-size: var(--fs-3); }

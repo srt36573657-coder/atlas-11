@@ -88,9 +88,20 @@ export const kakaoButton = (o, opt = {}) => shareButtons(o, {...opt, kakao: true
 /** 「카톡 보내기」 글 단추(사장님 2026-10-25 06:06 · 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」) — 종목이 아닌 칸(쪽 · 칸 · 업종 · 날짜 · 묶음)
  *  o = {title, text, url} — 누르면 다른 보내기와 같은 글상자(「친구에게 무슨 말을 할래?」 · p-share open · 사장님 2026-10-17 21:10 [4])부터 · 글자 「카톡 보내기」가 늘 보임
  *  보내는 글에 수익률 · 오른 폭 숫자를 넣지 않음(쓰는 곳 몫 · 글상자 noGain 이 한 번 더 거름) · 모양 = .kk-btn.kk-wide.kk-txt(app.css) · data-kk 없음(종목 단추 셈 KB2 밖) */
+/** 보낸 사람 표(r)를 주소에 붙임 — gift-ref.js 가 이 기기에 적어 둔 표(localStorage atlas:gift:ref)만 읽음(이 파일은 모듈을 받지 않음) · 우리 사이트 주소만 · 친구가 열면 상품권 방이 셈(사장님 2026-10-25 13:40) */
+function withRef(url) {
+  try {
+    const r = localStorage.getItem('atlas:gift:ref');
+    if (!/^[A-Za-z0-9_-]{16}$/.test(r ?? '')) return url;
+    const u = new URL(url, location.origin);
+    if (u.origin !== location.origin) return url;
+    u.searchParams.set('r', r);
+    return u.href;
+  } catch { return url; }
+}
 export function kakaoText(o, label = KK_LABEL) {
   const b = el('button', {class: KK_CLASS + ' ' + KK_WIDE + ' kk-txt', type: 'button'}, bubble(), el('span', {class: 'kk-t', text: label}), ' '); // 끝 빈칸(위와 같음)
   b.addEventListener('pointerdown', warm, {once: true});
-  b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); openBox({kind: 'share', title: String(o?.title ?? ''), text: String(o?.text ?? ''), url: String(o?.url ?? '')}); });
+  b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); openBox({kind: 'share', title: String(o?.title ?? ''), text: String(o?.text ?? ''), url: withRef(String(o?.url ?? ''))}); });
   return b;
 }

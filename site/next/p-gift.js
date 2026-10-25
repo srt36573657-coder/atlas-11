@@ -9,10 +9,10 @@
 import {t as L} from './i18n.js';
 import {NAME, josa} from './brand.js';
 import {GIFT, playedOf, reachOf, done, clampSeek, sayLeft} from './gift-rule.js';
+import {ref, withRef, me, claim, PER} from './gift-ref.js'; // 친구 소개 세기(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 · 13:38 「내가 직접 보낼 거야」)
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
-const TEL = '01090117377', TEL_SHOW = '010-9011-7377';
 const seenDay = () => { try { return localStorage.getItem(GIFT.key) || ''; } catch { return ''; } };
 const markSeen = () => { try { localStorage.setItem(GIFT.key, new Date().toISOString().slice(0, 10)); } catch { /* 저장이 막힌 기기 — 이번에만 열림 */ } };
 
@@ -24,25 +24,25 @@ function step(n, title, line, ...rest) {
 
 /* 맨 위 결 단추 글(총정리 2026-10-22 D6 · D7) — 지금 금빛 걸음을 따라 바뀜 · 누르면 그 걸음으로 내려감(단추 · 약속 · 걸음 글은 그대로) */
 const NOW = {1: '지금 할 일 · 친구 3명에게 소개해요 ↓', 2: '지금 할 일 · 우주 영상 1분 보기 ↓', 3: '영상을 끝까지 봤어요 · 상품권 받기 ↓'};
-const GIFT_FRIENDS = 3;
-/** 보낸 수 글(총정리 D8) — 이 쪽을 연 동안만 셈(저장 0) · 3명이 되어야 다음 걸음 */
-export const sentLine = n => (n < GIFT_FRIENDS ? `${n}명에게 보냈어요. ${GIFT_FRIENDS - n}명 더 보내면 다음 걸음이에요.` : `${n}명에게 보냈어요. 이제 우주 영상 1분을 봐요.`);
+const GIFT_FRIENDS = PER;
+/** 친구 수 글 — 내 주소를 연 친구 수(서버가 셈 · /api/gift/me) · 3명마다 상품권 하나 */
+export const friendLine = (n, next = GIFT_FRIENDS) => (n < next ? `친구 ${n}명이 열었어요. ${next - n}명 더 열면 상품권을 받을 수 있어요.` : `친구 ${n}명이 열었어요. 상품권을 받을 수 있어요.`);
 
 export function render() {
   const root = h('div', {class: 'gf', 'data-page': 'gift'});
   const now = h('button', {type: 'button', class: 'gf-now'}); // 결 — 약속 칸 바로 밑 한 줄(지금 할 일)
-  /* ① 소개 — 소개 쪽(/hello.html · 친구가 열면 우주 · 상품권 칸까지 있음)을 보내기 글상자로 · 보낸 수는 이 쪽을 연 동안만 셈(저장 0 · 폭죽 없음) */
-  const said = h('p', {class: 'gf-said', role: 'status'});
+  /* ① 소개 — 소개 쪽(/hello.html · 친구가 열면 우주 · 상품권 칸까지 있음)을 보내기 글상자로 · 주소에 보낸 사람 표(r)가 붙음 · 친구가 열면 서버가 셈(화면 찍기 없음) */
+  const said = h('p', {class: 'gf-said', role: 'status', text: friendLine(0)});
+  let mine = null; // {friends, next, can, claims} — /api/gift/me
+  const count = async () => { const m = await me(); if (!m) { said.textContent = L('? 친구 수를 아직 못 받았어요. 잠시 뒤 다시 열어 주세요.'); return; } mine = m; said.textContent = L(friendLine(m.friends, m.next)); if (m.can && !opened) on(2); };
+  const again = h('button', {type: 'button', class: 'gf-again', text: '친구 수 다시 보기'});
+  again.addEventListener('click', () => { count(); });
   const send = h('button', {type: 'button', class: 'gf-btn kk-pgx kk-yel', text: '카톡 보내기'}); // 「카톡 보내기」(사장님 2026-10-25 12:00 「진짜모든곳에」 · 12:24 「어」) — 이 쪽 보내기 단추라 kk-all.js 가 쪽 단추를 또 달지 않음
-  let sent = 0;
   send.addEventListener('click', async () => {
-    const r = await nx().shareBox({kind: 'share', title: L(josa(NAME, '를') + ' 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 싹에서 꽃이 되는 종목을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`), url: new URL('/hello.html', location.origin).href}).catch(() => null); // 보내는 글 = 본질 1(총정리 D14)
-    if (r?.how === 'share' || r?.how === 'copy' || r?.how === 'show') { sent++; said.textContent = L(sentLine(sent)); if (sent >= GIFT_FRIENDS && !opened) on(2); }
+    await ref().catch(() => null); // 보낸 사람 표를 먼저 셈(주소에 붙임)
+    await nx().shareBox({kind: 'share', title: L(josa(NAME, '를') + ' 소개합니다'), text: L(`앵무새 ${josa(NAME, '는')} 싹에서 꽃이 되는 종목을 지난 기록으로 찾아 줘요. 앵무새는 들은 것만 말해요!`), url: withRef(new URL('/hello.html', location.origin).href)}).catch(() => null); // 보내는 글 = 본질 1(총정리 D14)
   });
-  /* 화면 찍는 법(접은 칸 · 총정리 D8) — 걸음 글 「보낸 화면을 찍어 두세요」를 할 수 있게 */
-  const shot = h('details', {class: 'gf-how'}, h('summary', {text: '화면 찍는 법'}),
-    h('p', {text: '아이폰: 옆 단추와 소리 크게 단추를 함께 눌러요(홈 단추가 있으면 홈 단추와 옆 단추).'}),
-    h('p', {text: '갤럭시: 옆 단추와 소리 작게 단추를 함께 눌러요.'}));
+  // 화면 찍는 법(옛 접은 칸)은 뺌 — 친구가 열면 서버가 셈(2026-10-25 13:40 「편지를 보내지 않아도」)
   /* ② 우주 영상 1분 — 기본 막대 없음(건너뛸 막대가 없게) · 큰 단추 하나로 보기 · 멈추기 */
   const v = h('video', {class: 'gf-uv', playsinline: true, preload: 'none', poster: '/media/universe-poster.jpg', width: 720, height: 1280,
     'aria-label': josa(NAME, '의') + ' 우주 1분 — 오로라 · 피터팬과 팅커벨 · 우주선 · 황룡과 청룡 · 천사 다섯 · 하얀 비숑 · 혜성과 별똥별 · 비행접시 · 앵무새 ' + NAME + ' · 하트 별자리'},
@@ -50,21 +50,34 @@ export function render() {
   const play = h('button', {type: 'button', class: 'gf-btn gf-play', 'aria-pressed': 'false', text: '우주 영상 보기'});
   const bar = h('progress', {class: 'gf-bar', max: String(GIFT.need), value: '0'});
   const left = h('p', {class: 'gf-left', role: 'status'});
-  /* ③ 받기 — 끝까지 본 뒤에만 문자 · 전화 · 번호 */
+  /* ③ 받기 — 끝까지 본 뒤에만 · 전화번호 한 칸 + 동의 · 서버가 친구 셋을 맞대 봄 · 사장님이 그 번호로 카톡 선물을 직접 보냄(13:38) */
   const lock = h('p', {class: 'gf-lock', text: '영상을 끝까지 보면 여기에 「상품권 받기」 단추가 나와요.'});
   const thx = h('p', {class: 'gf-thx'});
+  const tel = h('input', {id: 'gf-tel', class: 'gf-tel-in', type: 'tel', inputmode: 'numeric', autocomplete: 'tel', maxlength: '13', placeholder: '010-1234-5678'});
+  const agree = h('input', {id: 'gf-agree', class: 'gf-agree', type: 'checkbox'});
+  const ask = h('button', {type: 'button', class: 'gf-btn gf-claim', text: '상품권 받기'});
+  const res = h('p', {class: 'gf-res', role: 'status'});
   const got = h('div', {class: 'gf-got', hidden: true}, thx,
-    h('div', {class: 'gf-tel'}, h('a', {class: 'gf-sms', href: 'sms:' + TEL, text: '상품권 받기'}), h('a', {class: 'gf-call', href: 'tel:' + TEL, text: '전화'})),
-    h('p', {class: 'gf-num'}, '문자 번호 ', h('b', {text: TEL_SHOW})));
+    h('label', {class: 'gf-lab', for: 'gf-tel', text: '상품권 받을 전화번호'}), tel,
+    h('label', {class: 'gf-ok', for: 'gf-agree'}, agree, h('span', {text: '상품권을 보내려고 이 번호를 사장님께만 보여 드려요. 보내면 바로 지워요. 동의해요.'})),
+    ask, res);
+  ask.addEventListener('click', async () => {
+    if (!agree.checked) { res.textContent = L('동의에 표시해 주세요.'); agree.focus(); return; }
+    ask.disabled = true; res.textContent = L('보내는 중이에요.');
+    const r = await claim({phone: tel.value, agree: true, watched: true});
+    ask.disabled = false;
+    if (r.ok) { res.textContent = L('받았어요. 사장님이 이 번호로 카톡 선물을 보내 드려요.'); tel.value = ''; agree.checked = false; count(); return; }
+    res.textContent = L(r.error === 'phone' ? '전화번호를 다시 봐 주세요. 010으로 시작하는 번호예요.' : r.status === 409 ? friendLine(r.friends ?? mine?.friends ?? 0, r.next ?? mine?.next ?? GIFT_FRIENDS) : r.status === 429 ? '조금 뒤에 다시 눌러 주세요.' : '? 아직 못 보냈어요. 잠시 뒤 다시 눌러 주세요.');
+  });
   const steps = h('ol', {class: 'gf-steps'},
-    step(1, '친구 3명에게 소개해요', `카톡으로 ${josa(NAME, '를')} 보내고, 보낸 화면을 찍어 두세요.`, send, said, shot),
+    step(1, '친구 3명에게 소개해요', `카톡으로 ${josa(NAME, '를')} 보내요. 친구가 열면 여기서 저절로 세요.`, send, said, again),
     step(2, '우주 영상 1분을 끝까지 봐요', '우주선, 용, 오로라가 나와요.', v, play, bar, left),
-    step(3, '상품권 받기를 눌러요', '찍어 둔 화면을 문자로 보내 주세요.', lock, got));
+    step(3, '상품권 받기를 눌러요', '전화번호를 적으면 사장님이 카톡 선물로 보내 드려요.', lock, got));
   let opened = false, cur = 1;
   const on = n => { cur = n; for (const li of steps.children) li.classList.toggle('on', li.getAttribute('data-step') === String(n)); now.textContent = L(NOW[n]); };
   /* 결 단추를 누르면 — 지금 걸음(3 = 열린 받기 칸)으로 내려가 그 걸음의 첫 단추에 초점(보내기 · 영상 보기 · 상품권 받기) */
   now.addEventListener('click', () => {
-    const to = cur === 3 ? got : steps.querySelector('.gf-step.on'), first = cur === 1 ? send : cur === 2 ? play : got.querySelector('.gf-sms');
+    const to = cur === 3 ? got : steps.querySelector('.gf-step.on'), first = cur === 1 ? send : cur === 2 ? play : tel;
     to?.scrollIntoView({block: 'start', behavior: globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
     first?.focus({preventScroll: true});
   });
@@ -97,6 +110,7 @@ export function render() {
   });
   v.addEventListener('error', () => { left.textContent = L('영상이 아직 안 열렸어요. 잠시 뒤 다시 눌러 주세요.'); }, true);
   if (seenDay()) open(false); else { show(0); on(1); globalThis.__gift = {open: false, where: 'app'}; }
+  count(); // 내 주소를 연 친구 수(서버)
   label();
   root.append(
     h('h1', {class: 'gf-h1', text: '상품권'}),
@@ -105,6 +119,6 @@ export function render() {
     now,
     steps,
     h('div', {class: 'gf-pn'}, h('p', {text: '1분은 소중한 시간이에요. 내어 주셔서 고마워요.'}), h('p', {text: '3명마다 1만원씩, 여러 번 받을 수 있어요.'}), h('p', {text: '이벤트가 끝날 때는 이 자리에 먼저 알려 드려요.'})),
-    h('p', {class: 'gf-fine'}, '문자를 보내면 보낸 전화번호가 운영자 휴대폰에 남아요. ', h('a', {href: '/privacy.html', text: '개인정보 처리방침 ›'})));
+    h('p', {class: 'gf-fine'}, '적은 전화번호는 상품권을 보낼 때까지만 둬요. 보내면 바로 지워요. ', h('a', {href: '/privacy.html', text: '개인정보 처리방침 ›'})));
   return {title: '상품권', nodes: [root]};
 }

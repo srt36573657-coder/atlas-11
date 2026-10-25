@@ -15,25 +15,34 @@ export const clean = s => String(s ?? '').replace(GAIN, '').replace(/[?？]\s*$/
 const HAS = '.kk-txt, .kk-pgx'; // 이미 있는 글 단추(쪽 · 칸 · 회사 화면 「카톡 보내기」 · 시황)
 const SKIP = 'a, button, summary, nav, .ps-dlg, .kk-skip';
 
-/** ① 쪽 단추 자리 — 큰 제목 머리 칸(.th-hd = 제목 + 돌 그림 한 줄) 뒤 · 큰 제목 뒤 · 칩 줄 뒤 · 맨 위 */
-function pageBtn(root, title, url) {
-  if (root.querySelector('.kk-pg, .kk-pgx')) return null;
+/** 쪽 단추 줄 — 「카톡 보내기」 + 「선물 받기」(사장님 2026-10-25 13:40 「곳곳에 선물 받기를 다 집어넣어 놔」 · 상품권 방 #/gift — 그 쪽 안에서는 빼고) */
+function pageRow(title, url) {
   const t = clean(title) || NAME;
   const b = kakaoText({title: `${t} · ${NAME}`, text: `${NAME} — ${t}`, url});
   b.classList.add('kk-pg');
+  const row = document.createElement('div'); row.className = 'kk-pgrow'; row.append(b);
+  if (!/^#\/gift(\/|$)/.test(typeof location !== 'undefined' ? location.hash : '')) { const g = document.createElement('a'); g.className = 'kk-gift'; g.href = '#/gift'; g.textContent = '선물 받기'; row.append(g); }
+  return {b, row};
+}
+/** ① 쪽 단추 자리 — 큰 제목 머리 칸(.th-hd = 제목 + 돌 그림 한 줄) 뒤 · 큰 제목 뒤 · 칩 줄 뒤 · 맨 위 */
+function pageBtn(root, title, url) {
+  const own = root.querySelector('.act.kk-pgx'); // 회사 쪽처럼 제 「카톡 보내기」가 이미 있는 쪽 — 그 단추 줄 바로 밑에 「선물 받기」만 하나(사장님 2026-10-25 13:40 「곳곳에」)
+  if (own && !root.querySelector('.kk-gift') && !/^#\/gift(\/|$)/.test(location.hash)) { const g = document.createElement('a'); g.className = 'kk-gift'; g.href = '#/gift'; g.textContent = '선물 받기'; const w = document.createElement('div'); w.className = 'kk-pgrow kk-pgw kk-gown'; w.append(g); own.parentElement.after(w); }
+  if (root.querySelector('.kk-pg, .kk-pgx')) return null;
+  const {b, row} = pageRow(title, url);
   const h1 = [...root.querySelectorAll('h1')].find(x => !x.closest(SKIP));
   if (h1) { // 제목 바로 밑 설명 글(p · 두 줄까지)은 제목과 붙여 둠(「제목 + 설명」 짝 그대로 · check_hold 관심 머리 글) — 그 다음에 단추
     let at = h1; // 제목을 품은 머리 칸(제목 + 작은 글 + 동그라미 · 돌 그림 — 아이 셋까지)이면 그 칸 뒤(머리 칸 줄 안에 끼지 않게)
     while (at.parentElement && at.parentElement !== root && at.parentElement.children.length <= 3 && !at.parentElement.matches('section, article, details, main, [data-page], .tc')) at = at.parentElement;
     for (let k = 0; k < 2 && at.nextElementSibling?.matches('p'); k++) at = at.nextElementSibling;
-    at.after(b);
-    if (b.getBoundingClientRect().left < h1.getBoundingClientRect().left - 4) { const w = document.createElement('div'); w.className = 'kk-pgi'; b.before(w); w.append(b); } // 단추가 제목보다 왼쪽(쪽 가장자리)이면 제목 왼쪽 줄에 맞춤
+    at.after(row);
+    if (b.getBoundingClientRect().left < h1.getBoundingClientRect().left - 4) row.classList.add('kk-pgi'); // 단추가 제목보다 왼쪽(쪽 가장자리)이면 제목 왼쪽 줄에 맞춤
     return b;
   }
   const chips = root.querySelector('.chips');
   const top = chips ? [...root.children].find(c => c === chips || c.contains(chips)) : null;
-  const w = document.createElement('div'); w.className = 'kk-pgw'; w.append(b); // 제목 없는 쪽 — 쪽 글과 같은 옆 띄움(칩 줄 · 맨 위는 쪽 가장자리)
-  if (top) top.after(w); else root.prepend(w);
+  row.classList.add('kk-pgw'); // 제목 없는 쪽 — 쪽 글과 같은 옆 띄움(칩 줄 · 맨 위는 쪽 가장자리)
+  if (top) top.after(row); else root.prepend(row);
   return b;
 }
 /** ② 칸 — h2 하나만 품은 가장 가까운 덩이 → {box} · 없으면 형제 묶음 → {after} · 고리 · 단추 안이면 null */
@@ -67,10 +76,8 @@ function boxBtn(h2, root, page, url) {
 /** 쪽 맨 아래 쪽 단추(page = 'end') */
 function pageEnd(root, title, url) {
   if (root.querySelector('.kk-pg, .kk-pgx')) return null;
-  const t = clean(title) || NAME;
-  const b = kakaoText({title: `${t} · ${NAME}`, text: `${NAME} — ${t}`, url});
-  b.classList.add('kk-pg');
-  const w = document.createElement('div'); w.className = 'kk-pgw'; w.append(b); root.append(w);
+  const {b, row} = pageRow(title, url);
+  row.classList.add('kk-pgw'); root.append(row);
   return b;
 }
 /** 한 번 훑기 — 더한 단추 수 · boxes = 칸 단추를 달지(매매일지 기록 칸은 「했어 · 안 했어」 말고 누르는 것 0 — 규칙 77) */
@@ -87,7 +94,7 @@ export function watch(root, o) {
   let busy = false;
   // 지켜보기 알림은 그 바뀜 바로 뒤 · 그리기 전에 옴 — 늦게 붙는 칸과 그 칸의 단추가 같은 그림에 함께 나옴(단추만 따로 늦게 붙어 아래 글을 미는 일 0)
   const mo = new MutationObserver(list => {
-    if (busy || list.every(m => [...m.addedNodes].every(x => x.nodeType !== 1 || x.matches?.('.kk-box, .kk-pg, .kk-pgw, .kk-pgi, .kk-btn')))) return;
+    if (busy || list.every(m => [...m.addedNodes].every(x => x.nodeType !== 1 || x.matches?.('.kk-box, .kk-pg, .kk-pgrow, .kk-pgw, .kk-pgi, .kk-btn, .kk-gift')))) return;
     busy = true; try { sweep(root, {...o, page: false}); } catch (e) { console.error(e); } finally { mo.takeRecords(); busy = false; }
   });
   mo.observe(root, {childList: true, subtree: true});
