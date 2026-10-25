@@ -1,0 +1,60 @@
+<section class="sample pl2" id="c2"><style>
+.pl2 .phone{background:#F2F3F3;color:#171615;border-color:#BABCBC;box-shadow:0 0 0 1px #D6D5D4}
+.pl2 .phone .wall{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 95cqw 75cqw at 50% 28%,#FFFFFF 0%,#F2F3F3 62%,#E2E5E6 100%)}
+.pl2 .phone .homebar{background:#171615;opacity:.8}
+.pl2 .phone .status{font-size:5cqw}
+.pl2 .phone .top{position:absolute;z-index:6;top:12cqw;left:4.6cqw;right:4cqw;display:flex;align-items:center;justify-content:space-between;gap:2cqw}
+.pl2 .phone .mark{font-size:7.6cqw;font-weight:900;line-height:1;letter-spacing:-.2cqw;color:#171615}
+.pl2 .phone .back{font-size:5.2cqw;font-weight:900;color:#171615;white-space:nowrap}
+.pl2 .phone .tools{display:flex;gap:1.4cqw;flex:none}
+.pl2 .phone .tb{display:inline-flex;align-items:center;gap:1cqw;height:10.8cqw;margin:0;padding:0 1.6cqw 0 1cqw;border:.45cqw solid #171615;border-radius:5.4cqw;font:inherit;font-size:5cqw;font-weight:900;line-height:1;white-space:nowrap;color:#171615;background:#FFFFFF;box-shadow:0 .5cqw 1.2cqw rgba(23,22,21,.2);cursor:pointer}
+.pl2 .phone .tb svg{display:block;width:6cqw;height:6cqw;flex:none}
+.pl2 .phone .ttl{position:absolute;z-index:3;left:5cqw;right:5cqw;margin:0;font-weight:900;color:#171615;line-height:1.1;letter-spacing:-.2cqw}
+.pl2 .phone .sub{position:absolute;z-index:3;left:5cqw;right:5cqw;margin:0;font-size:6cqw;line-height:1.35;font-weight:800;color:#3C4E51}
+.pl2 .phone .big-ic{position:absolute;z-index:3;right:4cqw;width:19cqw;height:19cqw}
+.pl2 .phone .big-ic svg{display:block;width:100%;height:100%}
+/* 흰 판 — 시계판처럼 흰 바탕 · 은빛 테 · 부드러운 그림자 */
+.pl2 .phone .plate{background:linear-gradient(#FFFFFF,#F2F3F3);border:.5cqw solid #818C8E;border-radius:3.2cqw;box-shadow:0 .7cqw 1.8cqw rgba(23,22,21,.18)}
+.pl2 .phone .kkc{position:absolute;z-index:3;right:4cqw;display:inline-flex;align-items:center;gap:.8cqw;height:9.6cqw;margin:0;padding:0 2cqw 0 1.4cqw;border:.45cqw solid #171615;border-radius:4.8cqw;background:#FFFFFF;color:#171615;font:inherit;font-size:5cqw;font-weight:900;line-height:1;white-space:nowrap;box-shadow:0 .4cqw 1cqw rgba(23,22,21,.16);cursor:pointer}
+.pl2 .phone .kkc svg{display:block;width:5.6cqw;height:5.6cqw}
+.pl2 .phone .lab{position:absolute;z-index:3;left:5cqw;margin:0;font-size:6cqw;font-weight:900;color:#171615}
+.pl2 .phone .hint{position:absolute;z-index:3;left:3cqw;right:3cqw;margin:0;font-size:5.8cqw;line-height:1.35;font-weight:800;color:#3C4E51;text-align:center}
+.pl2 .phone .clockw{position:absolute;z-index:3}
+.pl2 .phone .clockw svg{display:block;width:100%;height:auto;overflow:visible}
+.pl2 .phone .sec{transform-box:view-box;animation:pl2-tick 60s steps(60) infinite}
+@keyframes pl2-tick{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.pl2 .phone .sec{animation:none}}
+/* 아래 줄 — 흰 바탕 · 큰 그림 · 지금 쪽은 하늘청록 짧은 줄 */
+.pl2 .phone .tabs{position:absolute;z-index:5;left:0;right:0;bottom:0;height:28cqw;display:grid;grid-template-columns:repeat(4,1fr);padding:2.2cqw 1cqw 0;background:#FFFFFF;border-top:.4cqw solid #D6D5D4}
+.pl2 .phone .tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:.4cqw;font-size:5cqw;font-weight:900;color:#171615;line-height:1.15;white-space:nowrap}
+.pl2 .phone .tab svg{display:block;width:9.6cqw;height:9.6cqw}
+.pl2 .phone .tab.on::after{content:"";display:block;width:7cqw;height:1cqw;border-radius:.5cqw;background:#1FB8CD}
+.pl2 .phone .tab .badge{position:absolute;top:-1.4cqw;left:56%;min-width:7.6cqw;height:7.6cqw;padding:0 1.2cqw;border-radius:3.8cqw;background:#1FB8CD;color:#152D30;border:.4cqw solid #152D30;font-size:5cqw;font-weight:900;line-height:6.8cqw;text-align:center}
+
+#c2 .phone .ttl{top:24cqw;right:30cqw;font-size:11cqw}
+#c2 .phone .big-ic{top:23.6cqw}
+#c2 .phone .sub.s1{top:38cqw;right:27cqw}
+#c2 .phone .rows{position:absolute;z-index:3;left:4cqw;right:4cqw;top:59.6cqw;display:flex;flex-direction:column;gap:2.2cqw}
+#c2 .phone .r{position:relative;display:flex;align-items:center;gap:3cqw;height:15cqw;padding:0 3cqw 0 2.4cqw}
+#c2 .phone .r .no{display:flex;align-items:center;justify-content:center;width:11cqw;height:11cqw;border-radius:50%;background:#FFFFFF;border:.6cqw solid #171615;font-size:6cqw;font-weight:900;color:#171615;flex:none}
+#c2 .phone .r b{flex:1;font-size:6.6cqw;font-weight:900}
+#c2 .phone .r.on{border-color:#152D30;box-shadow:0 .7cqw 1.8cqw rgba(23,22,21,.18),inset 1.6cqw 0 0 #1FB8CD}
+#c2 .phone .r.on .no{background:#1FB8CD;border-color:#152D30;color:#152D30}
+#c2 .phone .tag{padding:1cqw 2.2cqw;border-radius:2.6cqw;background:#1FB8CD;color:#152D30;border:.45cqw solid #152D30;font-size:5cqw;font-weight:900}
+#c2 .phone .chips{position:absolute;z-index:3;top:124cqw;left:4cqw;right:4cqw;display:flex;flex-wrap:wrap;gap:2cqw}
+#c2 .phone .chip{padding:1.2cqw 2.6cqw;border-radius:3cqw;background:#E2E5E6;border:.4cqw solid #818C8E;font-size:5.2cqw;font-weight:900;color:#171615}
+#c2 .phone .chip.more{background:#FFFFFF;border-style:dashed}
+#c2 .phone .hint{top:168cqw}
+</style>
+<div class="head"><span class="no"><b>②</b>싹 칸을 누르면</span><p class="why"><em>보이는 것</em> 싹 자리 업종 37곳 — 맨 앞 셋은 크게</p><p class="why"><em>빛나는 곳</em> 네 가지가 다 맞은 「진짜 싹」 2차전지</p><p class="why"><em>칸마다</em> 「맨 앞 셋」과 「그 밖」에 카톡 보내기</p><p class="why"><em>누르는 곳</em> 업종을 누르면 그 업종 회사로</p></div>
+<div class="phone"><div class="wall"></div><div class="island"></div><div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="top"><span class="back">‹ 뒤로</span><span class="tools"><button class="tb" type="button" aria-label="이 화면을 카톡 친구에게 보내기"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 16C27 16 9 30 9 48C9 60 17 70 29 75L25 90L42 79C44.6 79.4 47.3 79.6 50 79.6C73 79.6 91 65.6 91 48C91 30 73 16 50 16Z" fill="#171615"/></svg>카톡 보내기</button><button class="tb" type="button" aria-label="선물 받기 방으로"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#171615" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><rect x="20" y="44" width="60" height="38" rx="4"/><rect x="15" y="31" width="70" height="14" rx="3"/><path d="M50 31V82"/><path d="M50 31C43 17 29 19 33 28C35 32 45 32 50 31ZM50 31C57 17 71 19 67 28C65 32 55 32 50 31Z"/></g></svg>선물 받기</button></span></div>
+<h2 class="ttl">싹 37곳</h2>
+<span class="big-ic"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M18 84Q50 72 82 84" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/><path d="M50 81V50" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/><path d="M50 54C50 37 37 27 18 29C18 46 31 56 50 54Z" fill="#1FB8CD" stroke="#171615" stroke-width="5" stroke-linejoin="round"/><path d="M50 47C50 29 63 19 83 21C83 39 70 49 50 47Z" fill="#1FB8CD" stroke="#171615" stroke-width="5" stroke-linejoin="round"/></svg></span>
+<p class="sub s1">10월 13일 싹 자리예요</p>
+<p class="lab" style="top:50cqw">맨 앞 셋</p><button class="kkc" style="top:48.6cqw" type="button" aria-label="이 칸을 카톡 친구에게 보내기"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 16C27 16 9 30 9 48C9 60 17 70 29 75L25 90L42 79C44.6 79.4 47.3 79.6 50 79.6C73 79.6 91 65.6 91 48C91 30 73 16 50 16Z" fill="#171615"/></svg>카톡 보내기</button>
+<div class="rows"><div class="r plate on"><span class="no">1</span><b>2차전지</b><span class=tag>진짜 싹</span></div><div class="r plate"><span class="no">2</span><b>콘텐츠 제작</b></div><div class="r plate"><span class="no">3</span><b>의류·패션</b></div></div>
+<p class="lab" style="top:114.4cqw">그 밖 34곳</p><button class="kkc" style="top:113cqw" type="button" aria-label="이 칸을 카톡 친구에게 보내기"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 16C27 16 9 30 9 48C9 60 17 70 29 75L25 90L42 79C44.6 79.4 47.3 79.6 50 79.6C73 79.6 91 65.6 91 48C91 30 73 16 50 16Z" fill="#171615"/></svg>카톡 보내기</button>
+<div class="chips"><span class="chip">가공식품</span><span class="chip">가전·생활용품</span><span class="chip">건설 엔지니어링</span><span class="chip">건축자재</span><span class="chip">게임</span><span class="chip">교육</span><span class="chip more">그 밖 28곳</span></div>
+<p class="hint">업종을 누르면 그 업종 회사가 나와요</p>
+<nav class="tabs" aria-label="아래 줄"><span class="tab on"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="38" fill="#FFFFFF" stroke="#171615" stroke-width="6"/><path d="M50 26V50L66 60" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/></svg><span>첫 화면</span></span><span class="tab"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 93V56" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/><path d="M50 76C41 66 29 67 24 73C32 82 43 82 50 76Z" fill="#FFFFFF" stroke="#171615" stroke-width="4.5" stroke-linejoin="round"/><circle cx="50.0" cy="19.0" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="64.3" cy="29.4" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="58.8" cy="46.1" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="41.2" cy="46.1" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="35.7" cy="29.4" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="50" cy="34" r="8.5" fill="#171615" stroke="#171615" stroke-width="3"/></svg><span class=badge>31</span><span>꽃 될 회사</span></span><span class="tab"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="22" width="72" height="64" rx="9" fill="#FFFFFF" stroke="#171615" stroke-width="6"/><path d="M14 40H86" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/><path d="M33 13V29M67 13V29" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><path d="M50 78V62" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.5"/><path d="M50 65C50 56 43 51 34 52C34 61 41 66 50 65Z" fill="#1FB8CD" stroke="#171615" stroke-width="3.6" stroke-linejoin="round"/><path d="M50 61C50 51 57 46 66 47C66 56 59 61 50 61Z" fill="#1FB8CD" stroke="#171615" stroke-width="3.6" stroke-linejoin="round"/></svg><span>싹 달력</span></span><span class="tab"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="#FFFFFF" stroke="#171615" stroke-width="6"/><path d="M37 40C37 26 63 25 63 40C63 51 50 51 50 62" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="9"/><circle cx="50" cy="75" r="5.6" fill="#171615"/></svg><span>왜 사?</span></span></nav><div class="homebar"></div></div></section>

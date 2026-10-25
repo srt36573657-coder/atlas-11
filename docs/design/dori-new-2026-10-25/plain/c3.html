@@ -1,0 +1,57 @@
+<section class="sample pl2" id="c3"><style>
+.pl2 .phone{background:#F2F3F3;color:#171615;border-color:#BABCBC;box-shadow:0 0 0 1px #D6D5D4}
+.pl2 .phone .wall{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 95cqw 75cqw at 50% 28%,#FFFFFF 0%,#F2F3F3 62%,#E2E5E6 100%)}
+.pl2 .phone .homebar{background:#171615;opacity:.8}
+.pl2 .phone .status{font-size:5cqw}
+.pl2 .phone .top{position:absolute;z-index:6;top:12cqw;left:4.6cqw;right:4cqw;display:flex;align-items:center;justify-content:space-between;gap:2cqw}
+.pl2 .phone .mark{font-size:7.6cqw;font-weight:900;line-height:1;letter-spacing:-.2cqw;color:#171615}
+.pl2 .phone .back{font-size:5.2cqw;font-weight:900;color:#171615;white-space:nowrap}
+.pl2 .phone .tools{display:flex;gap:1.4cqw;flex:none}
+.pl2 .phone .tb{display:inline-flex;align-items:center;gap:1cqw;height:10.8cqw;margin:0;padding:0 1.6cqw 0 1cqw;border:.45cqw solid #171615;border-radius:5.4cqw;font:inherit;font-size:5cqw;font-weight:900;line-height:1;white-space:nowrap;color:#171615;background:#FFFFFF;box-shadow:0 .5cqw 1.2cqw rgba(23,22,21,.2);cursor:pointer}
+.pl2 .phone .tb svg{display:block;width:6cqw;height:6cqw;flex:none}
+.pl2 .phone .ttl{position:absolute;z-index:3;left:5cqw;right:5cqw;margin:0;font-weight:900;color:#171615;line-height:1.1;letter-spacing:-.2cqw}
+.pl2 .phone .sub{position:absolute;z-index:3;left:5cqw;right:5cqw;margin:0;font-size:6cqw;line-height:1.35;font-weight:800;color:#3C4E51}
+.pl2 .phone .big-ic{position:absolute;z-index:3;right:4cqw;width:19cqw;height:19cqw}
+.pl2 .phone .big-ic svg{display:block;width:100%;height:100%}
+/* 흰 판 — 시계판처럼 흰 바탕 · 은빛 테 · 부드러운 그림자 */
+.pl2 .phone .plate{background:linear-gradient(#FFFFFF,#F2F3F3);border:.5cqw solid #818C8E;border-radius:3.2cqw;box-shadow:0 .7cqw 1.8cqw rgba(23,22,21,.18)}
+.pl2 .phone .kkc{position:absolute;z-index:3;right:4cqw;display:inline-flex;align-items:center;gap:.8cqw;height:9.6cqw;margin:0;padding:0 2cqw 0 1.4cqw;border:.45cqw solid #171615;border-radius:4.8cqw;background:#FFFFFF;color:#171615;font:inherit;font-size:5cqw;font-weight:900;line-height:1;white-space:nowrap;box-shadow:0 .4cqw 1cqw rgba(23,22,21,.16);cursor:pointer}
+.pl2 .phone .kkc svg{display:block;width:5.6cqw;height:5.6cqw}
+.pl2 .phone .lab{position:absolute;z-index:3;left:5cqw;margin:0;font-size:6cqw;font-weight:900;color:#171615}
+.pl2 .phone .hint{position:absolute;z-index:3;left:3cqw;right:3cqw;margin:0;font-size:5.8cqw;line-height:1.35;font-weight:800;color:#3C4E51;text-align:center}
+.pl2 .phone .clockw{position:absolute;z-index:3}
+.pl2 .phone .clockw svg{display:block;width:100%;height:auto;overflow:visible}
+.pl2 .phone .sec{transform-box:view-box;animation:pl2-tick 60s steps(60) infinite}
+@keyframes pl2-tick{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.pl2 .phone .sec{animation:none}}
+/* 아래 줄 — 흰 바탕 · 큰 그림 · 지금 쪽은 하늘청록 짧은 줄 */
+.pl2 .phone .tabs{position:absolute;z-index:5;left:0;right:0;bottom:0;height:28cqw;display:grid;grid-template-columns:repeat(4,1fr);padding:2.2cqw 1cqw 0;background:#FFFFFF;border-top:.4cqw solid #D6D5D4}
+.pl2 .phone .tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:.4cqw;font-size:5cqw;font-weight:900;color:#171615;line-height:1.15;white-space:nowrap}
+.pl2 .phone .tab svg{display:block;width:9.6cqw;height:9.6cqw}
+.pl2 .phone .tab.on::after{content:"";display:block;width:7cqw;height:1cqw;border-radius:.5cqw;background:#1FB8CD}
+.pl2 .phone .tab .badge{position:absolute;top:-1.4cqw;left:56%;min-width:7.6cqw;height:7.6cqw;padding:0 1.2cqw;border-radius:3.8cqw;background:#1FB8CD;color:#152D30;border:.4cqw solid #152D30;font-size:5cqw;font-weight:900;line-height:6.8cqw;text-align:center}
+
+#c3 .phone .ttl{top:24cqw;right:26cqw;font-size:7.4cqw}
+#c3 .phone .big-ic{top:23.6cqw}
+#c3 .phone .sub.s1{top:41.8cqw;right:26cqw}
+#c3 .phone .list{position:absolute;z-index:3;top:51cqw;left:4cqw;right:4cqw;display:flex;flex-direction:column;gap:1.6cqw}
+#c3 .phone .row{color:#171615;overflow:hidden}
+#c3 .phone .rh{display:flex;align-items:center;gap:2.2cqw;padding:.4cqw 3cqw .4cqw 3.6cqw;min-height:11.6cqw}
+#c3 .phone .rh b{flex:1;font-size:6cqw;font-weight:900}
+#c3 .phone .rh .k{font-size:6.4cqw;font-weight:900}
+#c3 .phone .open{border-color:#152D30;box-shadow:0 .7cqw 1.8cqw rgba(23,22,21,.18),inset 1.6cqw 0 0 #1FB8CD}
+#c3 .phone .cos{display:flex;flex-wrap:wrap;gap:1.4cqw;padding:0 3cqw 2.4cqw 3.6cqw}
+#c3 .phone .co{padding:.8cqw 2.2cqw;border-radius:2.6cqw;background:#FFFFFF;border:.45cqw solid #171615;font-size:5cqw;font-weight:900;color:#171615}
+#c3 .phone .co.on{background:#171615;color:#FFFFFF}
+#c3 .phone .co.more{border-style:dashed}
+#c3 .phone .rec{position:absolute;z-index:3;left:4cqw;right:4cqw;top:156.4cqw;margin:0;padding:1cqw 2.6cqw;border-left:1.4cqw solid #171615;font-size:5.6cqw;line-height:1.34;font-weight:800;color:#171615}
+</style>
+<div class="head"><span class="no"><b>③</b>「꽃 될 회사」를 누르면</span><p class="why"><em>보이는 것</em> 꽃 핀 업종 여섯 안의 싹 회사 31곳</p><p class="why"><em>정직하게</em> 지난 기록 한 줄을 늘 같이</p><p class="why"><em>누르는 곳</em> 회사 이름을 누르면 그 회사로</p></div>
+<div class="phone"><div class="wall"></div><div class="island"></div><div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="top"><span class="back">‹ 뒤로</span><span class="tools"><button class="tb" type="button" aria-label="이 화면을 카톡 친구에게 보내기"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 16C27 16 9 30 9 48C9 60 17 70 29 75L25 90L42 79C44.6 79.4 47.3 79.6 50 79.6C73 79.6 91 65.6 91 48C91 30 73 16 50 16Z" fill="#171615"/></svg>카톡 보내기</button><button class="tb" type="button" aria-label="선물 받기 방으로"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#171615" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><rect x="20" y="44" width="60" height="38" rx="4"/><rect x="15" y="31" width="70" height="14" rx="3"/><path d="M50 31V82"/><path d="M50 31C43 17 29 19 33 28C35 32 45 32 50 31ZM50 31C57 17 71 19 67 28C65 32 55 32 50 31Z"/></g></svg>선물 받기</button></span></div>
+<h2 class="ttl">꽃 핀 업종 안의<br>싹 회사 31곳</h2>
+<span class="big-ic"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 93V56" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/><path d="M50 76C41 66 29 67 24 73C32 82 43 82 50 76Z" fill="#1FB8CD" stroke="#171615" stroke-width="4.5" stroke-linejoin="round"/><circle cx="50.0" cy="19.0" r="11" fill="#1FB8CD" stroke="#171615" stroke-width="4.5"/><circle cx="64.3" cy="29.4" r="11" fill="#1FB8CD" stroke="#171615" stroke-width="4.5"/><circle cx="58.8" cy="46.1" r="11" fill="#1FB8CD" stroke="#171615" stroke-width="4.5"/><circle cx="41.2" cy="46.1" r="11" fill="#1FB8CD" stroke="#171615" stroke-width="4.5"/><circle cx="35.7" cy="29.4" r="11" fill="#1FB8CD" stroke="#171615" stroke-width="4.5"/><circle cx="50" cy="34" r="8.5" fill="#171615" stroke="#171615" stroke-width="3"/></svg></span>
+<p class="sub s1">10월 13일에 골랐어요</p>
+<div class="list"><div class="row plate open"><div class="rh"><b>바이오 도구·서비스</b><span class="k">10곳</span></div><div class="cos"><span class="co on">대한과학</span><span class="co">바이오인프라</span><span class="co">인트론바이오</span><span class="co">소마젠</span><span class="co more">외 6곳</span></div></div><div class="row plate"><div class="rh"><b>정밀화학</b><span class="k">7곳</span></div></div><div class="row plate"><div class="rh"><b>전자부품</b><span class="k">6곳</span></div></div><div class="row plate"><div class="rh"><b>디스플레이 장비</b><span class="k">5곳</span></div></div><div class="row plate"><div class="rh"><b>2차전지 장비</b><span class="k">2곳</span></div></div><div class="row plate"><div class="rh"><b>반도체 장비</b><span class="k">1곳</span></div></div></div>
+<p class="rec">지난 3년, 이렇게 고른 회사가 꽃이 된 것은 네 번에 한 번쯤이에요. 아무 회사와 큰 차이는 없어요.</p>
+<nav class="tabs" aria-label="아래 줄"><span class="tab"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="38" fill="#FFFFFF" stroke="#171615" stroke-width="6"/><path d="M50 26V50L66 60" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/></svg><span>첫 화면</span></span><span class="tab on"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 93V56" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/><path d="M50 76C41 66 29 67 24 73C32 82 43 82 50 76Z" fill="#FFFFFF" stroke="#171615" stroke-width="4.5" stroke-linejoin="round"/><circle cx="50.0" cy="19.0" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="64.3" cy="29.4" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="58.8" cy="46.1" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="41.2" cy="46.1" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="35.7" cy="29.4" r="11" fill="#FFFFFF" stroke="#171615" stroke-width="4.5"/><circle cx="50" cy="34" r="8.5" fill="#171615" stroke="#171615" stroke-width="3"/></svg><span class=badge>31</span><span>꽃 될 회사</span></span><span class="tab"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="22" width="72" height="64" rx="9" fill="#FFFFFF" stroke="#171615" stroke-width="6"/><path d="M14 40H86" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/><path d="M33 13V29M67 13V29" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><path d="M50 78V62" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.5"/><path d="M50 65C50 56 43 51 34 52C34 61 41 66 50 65Z" fill="#1FB8CD" stroke="#171615" stroke-width="3.6" stroke-linejoin="round"/><path d="M50 61C50 51 57 46 66 47C66 56 59 61 50 61Z" fill="#1FB8CD" stroke="#171615" stroke-width="3.6" stroke-linejoin="round"/></svg><span>싹 달력</span></span><span class="tab"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="#FFFFFF" stroke="#171615" stroke-width="6"/><path d="M37 40C37 26 63 25 63 40C63 51 50 51 50 62" fill="none" stroke="#171615" stroke-linecap="round" stroke-linejoin="round" stroke-width="9"/><circle cx="50" cy="75" r="5.6" fill="#171615"/></svg><span>왜 사?</span></span></nav><div class="homebar"></div></div></section>
