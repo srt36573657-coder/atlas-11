@@ -1,0 +1,52 @@
+{
+ "made": "2026-10-25T04:06:37.594Z",
+ "base": "https://aaa7377.com",
+ "size": [
+  390,
+  844
+ ],
+ "shots": [
+  {
+   "name": "home",
+   "hash": "#/",
+   "files": [
+    "reports/atlas11/probe/live-shot/home-390.png",
+    "reports/atlas11/probe/live-shot/home-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/",
+    "title": "오늘 장 · 돌이",
+    "h1": "지금 봄이 온 곳",
+    "kakaoText": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": true,
+    "height": 1992
+   },
+   "err": null
+  },
+  {
+   "name": "cal",
+   "hash": "#/t/cal",
+   "files": [
+    "reports/atlas11/probe/live-shot/cal-390.png",
+    "reports/atlas11/probe/live-shot/cal-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/cal",
+    "title": "싹 달력 · 돌이",
+    "h1": "싹 달력",
+    "kakaoText": 60,
+    "days": 60,
+    "firstDay": "10월 23일",
+    "graphs": 59,
+    "calgo": false,
+    "height": 24217
+   },
+   "err": null
+  }
+ ]
+}
