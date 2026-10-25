@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-10-25T20:22:05.236Z",
+ "at": "2026-10-25T20:38:23.302Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "all": true,
@@ -161,10 +161,12 @@
   "owner": 0
  },
  "counts": {
-  "pass": 162,
-  "fail": 0
+  "pass": 161,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  "위 막대 320 영어 — 모든 단추 44 · 겹침 0 · 옆 넘침 0 — [\"logo 85~133 48×48\",\"jhBtn 8~85 77×48\",\"giftBtn 133~181 48×48\",\"langBtn 181~229 48×48\",\"fontBtn 229~277 48×48\",\"findBtn 277~325 48×48\"]"
+ ],
  "warn": [],
  "public": {
   "fold": {
@@ -177,6 +179,6 @@
    "pics": 543.59375
   }
  },
- "seconds": 33.2,
- "ok": true
+ "seconds": 36.1,
+ "ok": false
 }
