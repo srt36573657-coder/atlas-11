@@ -6,6 +6,7 @@
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
 import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON} from './theme-home.js';
+import {kakaoText} from './share-btn.js'; // 「카톡 보내기」 글 단추(사장님 2026-10-25 「진짜모든곳에」)
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 import {NAME, josa} from './brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않음
 export {nextBtn, footBtn, homeBlock}; // app.js flowFoot(mod('theme').footBtn) · 옛 길
@@ -304,109 +305,48 @@ async function pToday() {
     recordLine(TH), asOf(TH)])]};
 }
 
-/* ── 싹 달력(#/t/cal · 사장님 2026-10-22 11:55 「일 이 삼 찾아낸 것들 다 달력으로 … 제시만 해가지고 기록이 없으면 그건 하수야」 · 「구글 잡스라면」)
-   결론 먼저(맨 위 = 한 달이 지난 날 가운데 1번이 꽃 선을 넘은 날 수 · 아무 업종과 나란히) → 누른 날의 1, 2, 3번(처음 = 마지막 날) → 달마다 달력(월 ~ 금 · 칸 = 날짜 · 1번 이름 · 셋의 한 달 뒤 표 · 새 달이 위)
-   숫자는 /next/data/theme-cal.json 그대로(화면에서 다시 세지 않음 · 셈 = theme-engine.js calOf) · 앞날 말 없음 · 맞은 날도 못 맞은 날도 같은 크기로 ── */
+/* ── 싹 달력(#/t/cal · 처음 사장님 2026-10-22 11:55 「일 이 삼 찾아낸 것들 다 달력으로 … 제시만 해가지고 기록이 없으면 그건 하수야」 → 2026-10-23 13:33 「날짜별로 정리하고 그때 찾았던 날부터 현재까지 꺽기그래프로 · 다른건 필요 없다」 · 10-25 12:24 「어」)
+   날짜 칸 달력 · 맨 위 셈 · 날짜 밀기는 뺌 — 날마다 칸 하나(가장 최근 날이 위) · 숫자는 /next/data/theme-cal.json 그대로(셈 = theme-engine.js calOf) · 앞날 말 없음 ── */
 const calData = () => load('theme-cal.json');
-const HIT = {true: ['●', 'ok', '한 달 뒤 꽃 선을 넘었어요.'], false: ['○', 'no', '한 달 뒤 꽃 선을 못 넘었어요.'], null: ['·', 'wait', '아직 한 달이 안 지났어요.']};
-const hitOf = v => HIT[v === true ? 'true' : v === false ? 'false' : 'null'];
-const dowOf = d => new Date(d + 'T00:00:00Z').getUTCDay(); // 1 = 월 ~ 5 = 금(거래일만 있음)
-/* 고른 날부터 오늘까지(사장님 2026-10-23 11:18 「너가 싹이라고 1.2.3등을 골랐던 것이 날짜별로 그래프로 저장되고 … 너가 알려준 날부터 항산 현재 까지 직관적으로 바로 알고 싶은 거야 지금은 너무 복잡해」 · 11:28 「대충 맞아 그런데 오늘 날짜까지 해야지」)
-   날을 고르면 그날 1 · 2 · 3번이 그날부터 마지막 날(asOf · 올릴 때마다 오늘 자료로 다시 셈)까지 시장보다 더 오른 %를 꺾은선 세 줄로 · 가운데 가로선 = 시장
-   줄 = 1번 초록 실선 · 2번 파랑 실선 · 3번 검은 점선(색만으로 말하지 않음 · 줄 옆 견본) · 숫자 = theme-cal.json path(엔진 calOf · 달력 첫 날 = 100)를 나눔 — (I[k] / I[j]) ÷ (M[k] / M[j]) − 1
-   맨 위 결론 = 모든 날 고른 곳 가운데 마지막 날 시장보다 위인 곳 수(그날 고른 곳은 셈 밖) · 앞날 말 없음 */
+/* 날짜별 1번 · 2번 · 3번(사장님 2026-10-23 13:33 「달력늘 클릭하면 1.2.3 찾아낸것을 날짜별로 정리하고 그때 찾았던 날부터 현재까지 꺽기그래프로보여 달라는거야 다른건 필요 없다고」 · 2026-10-25 12:24 「어」)
+   가장 최근 날이 맨 위 · 날마다 칸 하나 = 날짜 · 「카톡 보내기」 · 세 곳(이름 고리 · 찾은 날부터 마지막 날까지 시장보다 더 오른 %) · 꺾은선 세 줄(가운데 가로선 = 시장)
+   줄 = 1번 초록 실선 · 2번 파랑 실선 · 3번 검은 점선(색만으로 말하지 않음 · 이름 옆 견본) · 숫자 = theme-cal.json path(엔진 calOf · 달력 첫 날 = 100)를 나눔 — (I[k] / I[j]) ÷ (M[k] / M[j]) − 1
+   카톡으로 보내는 글 = 날짜와 세 곳 이름 · 주소만(수익률 · 오른 폭 숫자 없음) · 앞날 말 없음 */
 const SIN_CLS = ['l0', 'l1', 'l2'];
-function sinceBox(CAL, days, TH, onDay) {
-  const P = CAL?.path, M = P?.M, I = P?.I;
-  if (!Array.isArray(M) || !I || typeof I !== 'object' || P.from !== days[0]?.d || M.length !== days.length) return null;
-  const L = M.length - 1;
-  const ser = (n, j) => { const a = I[n]; if (!Array.isArray(a) || !(a[j] > 0) || !(M[j] > 0)) return null; const s = []; for (let k = j; k <= L; k++) s.push(a[k] > 0 && M[k] > 0 ? ((a[k] / a[j]) / (M[k] / M[j]) - 1) * 100 : null); return s; };
-  let tot = 0, up = 0;
-  days.forEach((x, j) => { if (j >= L) return; for (const i of x.top) { const v = ser(i.n, j)?.at(-1); if (Number.isFinite(v)) { tot++; if (v > 0) up++; } } });
-  const head = h('div', {class: 'th-calsum'},
-    h('p', {class: 'th-key', text: tot ? `고른 날부터 오늘까지 시장보다 더 오른 곳은 ${num(tot)}곳 가운데 ${num(up)}곳이에요.` : '아직 하루도 지나지 않았어요.'}),
-    h('p', {class: 'th-sub', text: '줄이 가운데 선 위면 시장보다 더 오른 거예요.'}));
-  const title = h('h2', {class: 'th-h2', 'aria-live': 'polite'});
-  const rg = h('input', {type: 'range', class: 'th-sinrg', min: '0', max: String(Math.max(0, days.length - 1)), step: '1', value: '0', 'aria-label': '고른 날 옮기기'});
-  const prev = h('button', {type: 'button', text: '앞 날'}), next = h('button', {type: 'button', text: '뒷 날'});
-  const svg = sv('svg', {class: 'th-sinsvg', viewBox: '0 0 300 180', 'aria-hidden': 'true', focusable: 'false'});
-  const a0 = h('span'), a1 = h('span', {text: md(CAL.asOf)}), rows = h('div', {class: 'th-sinrows'});
-  const sample = k => { const s = sv('svg', {class: 'th-sink', viewBox: '0 0 30 10', 'aria-hidden': 'true', focusable: 'false'}); s.append(sv('line', {class: SIN_CLS[k], x1: 2, x2: 28, y1: 5, y2: 5})); return s; };
-  const draw = j => {
-    j = Math.max(0, Math.min(days.length - 1, j)); rg.value = String(j);
-    const x = days[j], ss = x.top.map(i => ser(i.n, j) ?? []);
-    title.textContent = `${md(x.d)}에 고른 세 곳`; a0.textContent = md(x.d);
-    const W = 300, H = 180, Pd = 8, n = Math.max(1, ...ss.map(s => s.length)), mx = Math.max(5, ...ss.flat().filter(Number.isFinite).map(Math.abs)) * 1.15;
-    const X = k => Pd + (n > 1 ? (k * (W - 2 * Pd)) / (n - 1) : 0), Y = v => H / 2 - (v / mx) * (H / 2 - Pd);
-    svg.replaceChildren(sv('line', {class: 'z', x1: Pd, x2: W - Pd, y1: H / 2, y2: H / 2}));
-    ss.forEach((s, k) => {
-      let d = '', on = false; s.forEach((v, q) => { if (Number.isFinite(v)) { d += `${on ? 'L' : 'M'}${X(q).toFixed(1)} ${Y(v).toFixed(1)}`; on = true; } else on = false; });
-      if (d) svg.append(sv('path', {class: SIN_CLS[k], d}));
-      const v = s.at(-1); if (Number.isFinite(v)) svg.append(sv('circle', {class: 'd' + k, cx: X(s.length - 1).toFixed(1), cy: Y(v).toFixed(1), r: 4.5}));
-    });
-    rows.replaceChildren(...(x.top.length ? x.top.map((i, k) => { const v = ss[k].at(-1); return h('a', {class: 'th-sinr', href: '#/t/i/' + enc(i.n)}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-sinn'}, sample(k), h('span', {'data-proper': '', text: i.n})), h('b', {class: 'th-sinv ' + cls(v), text: Number.isFinite(v) ? pp(v) + '%' : '?'})); }) : [h('p', {class: 'th-sub', text: '이날은 싹 자리가 비었어요.'})]));
-    prev.disabled = j === 0; next.disabled = j === days.length - 1;
-    onDay?.(x);
-  };
-  rg.addEventListener('input', () => draw(+rg.value));
-  prev.addEventListener('click', () => draw(+rg.value - 1)); next.addEventListener('click', () => draw(+rg.value + 1));
-  draw(0); // 처음 = 가장 앞 날(줄이 가장 김) — 밀거나 「뒷 날」로 오늘 쪽으로
-  const box = h('section', {class: 'th-since', 'aria-label': '고른 날부터 오늘까지'}, title, rg, h('div', {class: 'th-sinb'}, prev, next), svg,
-    h('div', {class: 'th-sinax', 'aria-hidden': 'true'}, a0, a1), h('p', {class: 'th-sub', text: '가운데 가로선은 시장과 같은 자리예요.'}), rows,
-    h('p', {class: 'th-sub th-calnote', text: TH?.provisional ? `${md(CAL.asOf)} 장중 값까지예요.` : `${md(CAL.asOf)} 장 마감 값까지예요.`}));
-  return {head, box, go: draw};
+const sinKey = k => { const s = sv('svg', {class: 'th-sink', viewBox: '0 0 30 10', 'aria-hidden': 'true', focusable: 'false'}); s.append(sv('line', {class: SIN_CLS[k], x1: 2, x2: 28, y1: 5, y2: 5})); return s; };
+function sinGraph(ss) {
+  const W = 300, H = 120, Pd = 6, n = Math.max(1, ...ss.map(s => s.length)), mx = Math.max(5, ...ss.flat().filter(Number.isFinite).map(Math.abs)) * 1.15;
+  const X = k => Pd + (n > 1 ? (k * (W - 2 * Pd)) / (n - 1) : 0), Y = v => H / 2 - (v / mx) * (H / 2 - Pd);
+  const svg = sv('svg', {class: 'th-sinsvg', viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true', focusable: 'false'});
+  svg.append(sv('line', {class: 'z', x1: Pd, x2: W - Pd, y1: H / 2, y2: H / 2}));
+  ss.forEach((s, k) => {
+    let d = '', on = false; s.forEach((v, q) => { if (Number.isFinite(v)) { d += `${on ? 'L' : 'M'}${X(q).toFixed(1)} ${Y(v).toFixed(1)}`; on = true; } else on = false; });
+    if (d) svg.append(sv('path', {class: SIN_CLS[k], d}));
+    const v = s.at(-1); if (s.length > 1 && Number.isFinite(v)) svg.append(sv('circle', {class: 'd' + k, cx: X(s.length - 1).toFixed(1), cy: Y(v).toFixed(1), r: 4}));
+  });
+  return svg;
 }
 async function pCal() {
   const [CAL, TH] = await Promise.all([calData(), themeData()]);
   const title = '싹 달력';
   const days = Array.isArray(CAL?.days) ? CAL.days.filter(x => typeof x?.d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x.d) && Array.isArray(x.top)) : [];
   if (!days.length) return none(title, '싹 달력');
-  const done = days.filter(x => x.top.length && typeof x.top[0].hit === 'boolean'), hit1 = done.filter(x => x.top[0].hit).length;
-  const all3 = done.flatMap(x => x.top.filter(i => typeof i.hit === 'boolean')), hit3 = all3.filter(i => i.hit).length, base = TH?.record?.all?.p;
-  const head = h('div', {class: 'th-calsum'},
-    h('p', {class: 'th-key', text: done.length ? `한 달이 지난 ${num(done.length)}일 가운데 1번이 꽃 선을 넘은 날은 ${num(hit1)}일이에요.` : '아직 한 달이 지난 날이 없어요.'}),
-    done.length ? h('p', {class: 'th-sub', text: `세 곳 모두 세면 ${num(all3.length)}번 가운데 ${num(hit3)}번이에요.`}) : null,
-    Number.isFinite(base) ? h('p', {class: 'th-sub', text: `아무 업종은 100번 가운데 ${Math.round(base)}번이었어요.`}) : null);
-  const pick = h('div', {class: 'th-calpick', 'aria-live': 'polite'});
-  const btns = [];
-  const show = (x, go = false) => {
-    btns.forEach(b => { const on = b.dataset.d === x.d; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
-    pick.replaceChildren(h('h2', {class: 'th-h2', text: `${md(x.d)} ${josa(NAME, '가')} 찾은 세 곳`}),
-      x.top.length ? h('ol', {class: 'th-steps th-calli'}, x.top.map((i, k) => { const [mk, c, t] = hitOf(i.hit); return h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}),
-        h('a', {class: 'th-st', href: '#/t/i/' + enc(i.n)}, h('b', {text: i.n}), h('span', {text: `닷새 동안 시장보다 ${pp(i.y)}%`}), h('span', {class: 'th-calhit ' + c}, h('i', {'aria-hidden': 'true', text: mk + ' '}), h('span', {text: t})))); }))
-        : h('p', {class: 'th-sub', text: '이날은 싹 자리가 비었어요.'}));
-    if (go) requestAnimationFrame(() => pick.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'})); // 아래 달의 날짜를 눌러도 그날 세 곳이 바로 보이게(2026-10-22 14:28 「잘 보이게 해」)
+  const P = CAL?.path, M = P?.M, I = P?.I, okPath = Array.isArray(M) && !!I && typeof I === 'object' && P.from === days[0].d && M.length === days.length, L = days.length - 1;
+  const ser = (n, j) => { const a = I?.[n]; if (!okPath || !Array.isArray(a) || !(a[j] > 0) || !(M[j] > 0)) return null; const s = []; for (let k = j; k <= L; k++) s.push(a[k] > 0 && M[k] > 0 ? ((a[k] / a[j]) / (M[k] / M[j]) - 1) * 100 : null); return s; };
+  const url = nx()?.absUrl ? nx().absUrl('#/t/cal') : location.origin + '/#/t/cal';
+  const card = (x, j) => {
+    const ss = x.top.map(i => ser(i.n, j) ?? []), long = ss.some(s => s.length > 1);
+    const head = h('div', {class: 'th-dayh'}, h('h2', {class: 'th-h2', text: md(x.d)}),
+      kakaoText({title: `${md(x.d)} ${josa(NAME, '가')} 찾은 세 곳`, text: x.top.length ? `${md(x.d)} ${josa(NAME, '가')} 찾은 싹 1번 2번 3번 — ${x.top.map(i => i.n).join(', ')}` : `${md(x.d)} 싹 자리가 비었어요.`, url}));
+    const rows = x.top.map((i, k) => { const v = ss[k].length > 1 ? ss[k].at(-1) : null; return h('a', {class: 'th-sinr', href: '#/t/i/' + enc(i.n)}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-sinn'}, sinKey(k), h('span', {'data-proper': '', text: i.n})), h('b', {class: 'th-sinv ' + cls(v), text: Number.isFinite(v) ? pp(v) + '%' : '새로 찾음'})); });
+    return h('section', {class: 'th-day', 'aria-label': md(x.d)}, head, ...(rows.length ? rows : [h('p', {class: 'th-sub', text: '이날은 싹 자리가 비었어요.'})]),
+      long ? sinGraph(ss) : x.top.length ? h('p', {class: 'th-sub', text: '이날 찾은 곳이라 다음 날부터 줄이 생겨요.'}) : null);
   };
-  const months = [];
-  for (const x of days) { const m = x.d.slice(0, 7); if (!months.length || months.at(-1).m !== m) months.push({m, xs: []}); months.at(-1).xs.push(x); }
-  const grid = months.map(({m, xs}) => {
-    const cells = [];
-    const lead = Math.min(4, Math.max(0, dowOf(xs[0].d) - 1)); for (let k = 0; k < lead; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'}));
-    let prev = null;
-    for (const x of xs) {
-      const w = dowOf(x.d);
-      if (prev != null && w <= prev) { const pad = 5 - prev; for (let k = 0; k < pad; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'})); for (let k = 1; k < w; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'})); }
-      else if (prev != null) for (let k = prev + 1; k < w; k++) cells.push(h('span', {class: 'th-calx', 'aria-hidden': 'true'}));
-      prev = w;
-      const b = h('button', {type: 'button', class: 'th-calc' + (x.k ? ' kept' : ''), 'data-d': x.d, 'aria-pressed': 'false', 'aria-label': x.top[0] ? `${md(x.d)} 1번 ${x.top[0].n}` : `${md(x.d)} 싹 자리 없음`},
-        h('b', {class: 'th-cald', text: String(+x.d.slice(8, 10))}), h('span', {class: 'th-caln', 'data-proper': '', text: x.top[0]?.n ?? '없음'}),
-        h('span', {class: 'th-calm', 'aria-hidden': 'true'}, x.top.map(i => { const [mk, c] = hitOf(i.hit); return h('i', {class: c, text: mk}); })));
-      b.addEventListener('click', () => { show(x, true); since?.go(days.indexOf(x)); }); // 날짜 칸을 눌러도 위 그래프가 그날로
-      btns.push(b); cells.push(b);
-    }
-    return h('section', {class: 'th-calmo', 'aria-label': `${+m.slice(5, 7)}월`}, h('h2', {class: 'th-h2', text: `${+m.slice(0, 4)}년 ${+m.slice(5, 7)}월`}),
-      h('div', {class: 'th-calg', role: 'group'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-calw', 'aria-hidden': 'true', text: t})), ...cells));
-  });
-  const how = [h('p', {class: 'th-calhow', text: '동그라미는 왼쪽부터 1번, 2번, 3번이에요.'}), h('p', {class: 'th-calhow', text: '날짜를 누르면 그날 세 곳이 위에 크게 나와요.'})];
-  const key = h('p', {class: 'th-calkey'}, h('span', {}, h('i', {class: 'ok', text: '●'}), h('span', {text: ' 넘음'})), h('span', {}, h('i', {class: 'no', text: '○'}), h('span', {text: ' 못 넘음'})), h('span', {}, h('i', {class: 'wait', text: '·'}), h('span', {text: ' 아직'})));
-  show(days.at(-1));
-  const since = sinceBox(CAL, days, TH, x => show(x)); // 고른 날부터 오늘까지(사장님 2026-10-23 11:18 · 11:28 「오늘 날짜까지 해야지」) — 맨 위 · 날짜 칸은 접음
   return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
-    say(`날마다 ${josa(NAME, '가')} 찾은 세 곳을 남겨요.`),
-    ...(since ? [since.head, since.box, h('details', {class: 'th-hfold th-calfold'}, h('summary', {text: '날짜 칸으로 보기'}), head, pick, key, ...how, ...grid.reverse())] : [head, pick, key, ...how, ...grid.reverse()]),
-    typeof CAL.keepFrom === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(CAL.keepFrom) ? h('p', {class: 'th-sub th-calnote', text: `${md(CAL.keepFrom)}부터는 그날 장 마감 때 나온 세 곳을 바꾸지 않고 남겨요.`}) : null,
-    h('p', {class: 'th-sub th-calnote', text: '그 전 날은 그날까지의 값만으로 지금 규칙을 다시 돌린 셋이에요. 한 달 동안 시장보다 5% 넘게 더 오르면 꽃 선을 넘어요.'}),
+    h('p', {class: 'th-sub', text: `날짜별로 ${josa(NAME, '가')} 찾은 1번 2번 3번이에요.`}),
+    okPath ? h('p', {class: 'th-sub', text: '줄이 가운데 선 위면 시장보다 더 오른 거예요.'}) : null,
+    h('div', {class: 'th-days'}, ...days.map((x, j) => card(x, j)).reverse()), // 가장 최근 날이 맨 위
     TH ? asOf(TH) : null, nextBtn('시계 읽는 법', '#/t/how'), safe())]};
 }
 

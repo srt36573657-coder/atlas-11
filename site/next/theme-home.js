@@ -3,6 +3,8 @@
    첫 그림이 가볍게(느린 4G 2.5초 · check_white ③): 이 파일 + theme-rule.js + theme-home.json(4KB 남짓)만 · 쪽들(p-theme.js)은 누를 때 받음
    글은 textContent 로만(보안 규칙) · 앞날 말 없음 · 사고팔기 권하지 않음 */
 import {ZONES, RULE, pp, nearBar} from './theme-rule.js';
+import {kakaoText} from './share-btn.js'; // 「카톡 보내기」 글 단추(사장님 2026-10-25 「진짜모든곳에」) — app.js 가 이미 받는 모듈(첫 그림 무게 0)
+import {NAME, josa} from './brand.js';
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -176,12 +178,18 @@ export async function homeBlock() {
   const S = TH.order.S.map(n => indOf(TH, n)).filter(Boolean), top = S.slice(0, 3);
   // 2026-10-21 18:22 「그랴」(18:11 「구글과 잡스라면 … 뭘 고를까?」의 답 — 13번 업종 시세판 위 · 1번 두 줄 견주기 아래) — 카드 안: 업종 줄 셋 → 한 해 줄 그림(저절로 1 · 2 · 3) → 모두 보기 → 숫자는 「자세히」 안(접음) → 시계 읽는 법 → 처음이세요?
   const rows = top.map((i, k) => seasonRow(i, k)); if (rows[0]) rows[0].classList.add('th-now'); // 지금 줄 그림의 업종(처음 = 1번)
+  const site = nx()?.absUrl ? nx().absUrl('#/') : location.origin + '/#/'; // 카톡 보내기(사장님 2026-10-25 「진짜모든곳에」 · 12:24 「어」) — 보내는 글 = 이름 · 주소만(오른 % 없음)
+  // 줄마다 「카톡 보내기」는 달지 않음(2026-10-25 짝 검사) — 줄 아래에 셋을 쌓으면 320 × 568 에서 1년 줄 그림이 화면 밖으로 밀림(그림 아래 499 → 661 · 한도 500 · check_white ①) · 칸 하나에 하나(아래 세 곳 함께 보내기)
   box.append(h('div', {class: 'th-map th-map2'}, h('h2', {class: 'th-lt', text: '요즘 시장보다 힘이 붙은 곳'}), h('p', {class: 'th-lc', text: '닷새 동안 시장보다'}), h('div', {class: 'th-rows'}, rows),
     yearBox(TH, top, rows), h('p', {class: 'th-cap th-cap1', text: '지난 1년 동안 걸어온 길이에요. 위 줄은 점이 많이 찬 차례예요. 숫자는 닷새 동안 시장보다 더 오른 만큼이에요.'}))); // 그림 아래 글 = 뜻(지난 기록 · 줄 차례의 까닭 · 숫자의 뜻) — 움직임 설명 대신(2026-10-22 총정리 · 감사 A2 · A4 · 그림 아래라 320 높이 그대로)
+  // 싹 달력 큰 단추(사장님 2026-10-23 13:33 「달력늘 클릭하면 1.2.3 찾아낸것을 날짜별로 정리하고 … 꺽기그래프로」 · 10-25 12:24 「어」) — 1 · 2 · 3번 칸 바로 아래 · 그 아래 「카톡 보내기」(세 곳 이름 · 주소 · 칸 폭 가득)
+  const kkAll = kakaoText({title: `${josa(NAME, '가')} 찾은 1번 2번 3번`, text: top.length ? `${josa(NAME, '가')} 찾은 싹 1번 2번 3번 — ${top.map(i => i.n).join(', ')}` : `${NAME} 테마 시계`, url: site});
+  kkAll.classList.add('th-kkall');
+  box.append(h('a', {class: 'th-calgo', href: '#/t/cal'}, h('span', {text: '싹 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), kkAll);
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
   box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
   box.append(pickCard()); // 고른 싹 회사 기록 달력(사장님 2026-10-22 22:54 「그 기록을 한 달력이 첫화면에 직관적으로 … 신빙성에대해 딱 정직하게 앞에」) — 자료는 첫 그림 뒤에 받음(느린 4G 첫 그림에 안 끼게)
-  box.append(h('a', {class: 'th-more th-calk', href: '#/t/cal'}, h('span', {text: '날마다 찾은 세 곳 달력'}), h('i', {'aria-hidden': 'true', text: '›'}))); // 싹 달력(사장님 2026-10-22 11:55 「제시만 해가지고 기록이 없으면 그건 하수야」) // 첫 화면 계절 말 「봄」 = 테마 쪽 「싹」(감사 A6)
+  // 「날마다 찾은 세 곳 달력」 작은 고리는 위 큰 「싹 달력 보기」로 옮김(2026-10-25)
   // 숫자는 접어 둠 — 주황 숫자(사장님 2026-10-20 09:46 — 진짜 싹 · 새로 들어옴 · 싹 자리)와 성적표는 「숫자로 자세히 보기」 안에 그대로
   // 2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A7): 맨 위 = 성적표 한 줄(가장 중요한 숫자) → 한 줄에 하나(진짜 싹 · 새로 들어옴 · 싹 자리 · 같은 고리 · 48px 넘게) → 점 넷 뜻
   //   테 두른 작은 네모 셋(지도 규칙 11 「작은 네모 판 금지」)과 같은 숫자를 두 번 쓰던 머리 줄은 지움

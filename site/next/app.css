@@ -580,3 +580,8 @@ html.white details.hm-more { border-top-color: var(--hair); }
 @media (max-width: 429px) { html.white.en .top .logo { font-size: var(--fs-1); width: 48px; min-width: 48px; overflow: hidden; justify-content: flex-start; gap: 24px; padding-left: 9px; } }
 /* 흰 판 좁은 폭 위 막대 — 단추가 48 이라 320 · 360 영어에서 1px 넘쳤음(모든 쪽 검사 2026-10-19 03:40) → 둘레 · 사이를 줄임 */
 @media (max-width: 379px) { html.white .top { padding: 0 var(--sp-1); gap: 4px; } }
+/* 「카톡 보내기」 글 단추(share-btn.js kakaoText · 사장님 2026-10-25 「진짜모든곳에」) — 카카오 노랑 바탕 · 진한 글 · 말풍선은 진한 색(노랑 위에서 보이게) · 테두리는 흰 바탕과 대비 3 넘게 */
+.kk-btn.kk-txt, html.white .kk-btn.kk-txt { background: #FEE500; color: #191919; border: 1px solid #191919; font-weight: 800; flex: 0 1 auto; max-width: 100%; text-align: center; line-height: 1.2; } /* 줄어들 수 있음 · 아주 큰 글씨 · 영어(Send on KakaoTalk)에서 칸 밖으로 안 나가게 글이 두 줄로(2026-10-25 en 검사 320 · 360) */
+.kk-btn.kk-txt .kk-t { min-width: 0; overflow-wrap: anywhere; }
+.kk-btn.kk-txt .kk-ic .kk-b { fill: #191919; }
+.kk-btn.kk-txt:active { background: #F2D900; }

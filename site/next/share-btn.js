@@ -84,3 +84,11 @@ export function shareButtons(o, {kakao = false, text = null, cls = 'act', shareT
 }
 /** 같은 것(이름만 짧게) — shareButtons(o, {kakao: true}) */
 export const kakaoButton = (o, opt = {}) => shareButtons(o, {...opt, kakao: true});
+/** 「카톡 보내기」 글 단추(사장님 2026-10-25 06:06 · 12:00 「못든곳에 카톡 보내기 다 표기한다 진짜모든곳에」 · 12:24 「어」) — 종목이 아닌 칸(업종 · 날짜 · 쪽 묶음)
+ *  o = {title, text, url} — 누르면 휴대폰 보내기 창(카톡이 그 안에 · NX.share) · 글자 「카톡 보내기」가 늘 보임 · 보내는 글에 수익률 · 오른 폭 숫자를 넣지 않음(쓰는 곳 몫)
+ *  모양 = .kk-btn.kk-wide(app.css) · data-kk 없음(종목 단추 셈 KB2 밖) */
+export function kakaoText(o, label = '카톡 보내기') {
+  const b = el('button', {class: KK_CLASS + ' ' + KK_WIDE + ' kk-txt', type: 'button'}, bubble(), el('span', {class: 'kk-t', text: label}));
+  b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); const N = nx(); if (typeof N?.share === 'function') N.share(String(o?.title ?? ''), String(o?.url ?? ''), String(o?.text ?? '')); });
+  return b;
+}

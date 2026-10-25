@@ -8,7 +8,9 @@ const B = 'https://aaa7377.com';
 const T = [['/', ['atlas.js']], ['/atlas/', ['atlas.js']], ['/atlas/atlas.js', ['function gauge(', 'function homeToday(', '평소와 견줌', '평소의 2.5배 넘게', "class: 'hstep'"]], ['/atlas/atlas.css', ['.gauge', '.hstep']],
   ['/atlas/data/home.json', ['"rule":"home-v3"', '"why":']], ['/atlas/data/updates.json', ['home-v3']], ['/media/makbi-hello.svg', []], ['/media/makbi-moon.svg', []], ['/hello.html', []],
   // 싹 달력(사장님 2026-10-22 11:55 · 12:17 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」) — 자료 · 쪽 · 첫 화면 고리가 정말 올라갔나
-  ['/next/data/theme-cal.json', ['"schema":"dori-theme-1-cal"', '"keepFrom":"2026-10-22"']], ['/next/p-theme.js', ['function pCal(', '싹 달력']], ['/next/theme-home.js', ["'#/t/cal'", '날마다 찾은 세 곳 달력']], ['/next/data/theme-home.json', ['"record"']],
+  ['/next/data/theme-cal.json', ['"schema":"dori-theme-1-cal"', '"keepFrom":"2026-10-22"']], ['/next/p-theme.js', ['function pCal(', '싹 달력']], ['/next/theme-home.js', ["'#/t/cal'"]], ['/next/data/theme-home.json', ['"record"']],
+  // 날짜별 싹 달력 · 「카톡 보내기」 글 단추(사장님 2026-10-23 13:33 「달력늘 클릭하면 1.2.3 … 날짜별로 … 꺽기그래프로」 · 2026-10-25 12:00 「진짜모든곳에」 · 12:24 「어」) — 정말 올라갔나
+  ['/next/theme-home.js', ['싹 달력 보기', 'th-kkall', 'kakaoText(']], ['/next/p-theme.js', ["class: 'th-days'", 'function sinGraph(', 'kakaoText(']], ['/next/share-btn.js', ['export function kakaoText(']], ['/next/p-theme.css', ['.th-dayh', '.th-sinsvg']], ['/next/app.css', ['.kk-btn.kk-txt']],
   // 싹 달력 잘 보이게(2026-10-22 14:28) · 글꼴(14:49 — 애플 기기 = 애플 글꼴 · 그 밖 = 프리텐다드) — 정말 올라갔나
   ['/next/p-theme.css', ['.th-calhow', 'container-type: inline-size']], ['/next/app.css', ['--sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", \'Pretendard Variable\'', '.num { font-variant-numeric: tabular-nums; }']], ['/letter.css', ["font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard Variable'"]],
   // 꽃 핀 업종 안의 싹 회사(사장님 2026-10-22 16:56 「싹에서 꽃이 되는 종목 · 엄선하고 검사해서 그것들만」) — 정말 올라갔나

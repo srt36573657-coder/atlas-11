@@ -9425,6 +9425,11 @@
   "{d} 장 마감 값까지예요.": "Up to the close on {d}.",
   "{d} 장중 값까지예요.": "Up to intraday prices on {d}.",
   "날짜 칸으로 보기": "View as date boxes",
-  "고른 날부터 오늘까지": "From the pick day until now"
+  "고른 날부터 오늘까지": "From the pick day until now",
+  "카톡 보내기": "Send on KakaoTalk",
+  "싹 달력 보기": "See the sprout calendar",
+  "날짜별로 {e}가 찾은 1번 2번 3번이에요.": "The No. 1, 2 and 3 that {e} found, by date.",
+  "새로 찾음": "Just found",
+  "이날 찾은 곳이라 다음 날부터 줄이 생겨요.": "Found on this day, so the lines start the next day."
  }
 }

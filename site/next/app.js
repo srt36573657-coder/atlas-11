@@ -117,8 +117,8 @@ function card(href, th, title, meta, av) {
 }
 function toast(t) { const e = h('p', {class: 'toast', role: 'status', text: t}); document.body.append(e); setTimeout(() => e.remove(), 2400); }
 /** 옛 보내기(제목 · 주소만) — 보내기 글상자(p-share)를 못 받았을 때만 씀 */
-async function share(title, url) {
-  try { if (navigator.share) { await navigator.share({title, url}); return; } await navigator.clipboard.writeText(url); toast('주소를 담았어요. 붙여 넣어 보내세요.'); }
+async function share(title, url, text = '') { // text = 보낼 글(사장님 2026-10-25 「카톡 보내기」 글 단추 · share-btn.js kakaoText) — 없으면 예전 그대로(제목 · 주소)
+  try { if (navigator.share) { await navigator.share(text ? {title, text, url} : {title, url}); return; } await navigator.clipboard.writeText(text ? text + '\n' + url : url); toast('주소를 담았어요. 붙여 넣어 보내세요.'); }
   catch (e) { if (e?.name !== 'AbortError') toast('보내기를 열지 못했어요.'); }
 }
 /** 보내기 글상자(사장님 2026-10-17 21:10 [4] — 「친구에게 무슨 말을 할래?」부터 · 수익률 글 없음) — 일꾼 C 의 p-share open(o) 을 부름
