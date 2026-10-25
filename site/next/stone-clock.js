@@ -32,20 +32,15 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) stop(
 
 // 돌 그림 — 2026-10-25 돌 시계가 240px 로 커져 첫 화면 가장 큰 그림이 됨(사장님 22:54 「어 진짜 싸이트까지 바꿔」)
 //   큰 SVG 를 그리는 데 느린 폰에서 0.3초쯤 더 걸려(check_white ③ 가장 큰 그림 2.5초 안 · 느린 4G) 같은 그림을 미리 찍은 WebP 세 크기로(1x · 2x · 3x — 폰 화면 촘촘함에 맞춰 하나만 받음)
-//   원본 = /media/stone/home-clock.svg(그림을 고치면 세 장을 다시 찍음 · 240 × 192 칸) · next/index.html 여는 화면(.s-boot)이 같은 그림을 먼저 보임
+//   원본 = /media/stone/home-clock.svg(그림을 고치면 세 장을 다시 찍음 · 2026-10-26 부터 272 × 218 칸 — 큰 폰 ① 한 뼘 더 크게) · next/index.html 여는 화면(.s-boot)이 같은 그림을 먼저 보임 · 바늘은 boot-clock.js 가 붙임
 const SRC = '/media/stone/home-clock-1x.webp', SET = '/media/stone/home-clock-1x.webp 1x, /media/stone/home-clock-2x.webp 2x, /media/stone/home-clock-3x.webp 3x';
 
 /** 돌 그림이 풀릴 때까지(길어야 ms) 기다림 — 첫 화면이 돌 시계와 글을 한 번에 그리게(늦게 툭 나타남 0 · 가장 큰 그림 = 첫 그림) */
 export const clockDecoded = (wrap, ms = 400) => Promise.race([wrap?.querySelector('img')?.decode?.().catch(() => {}) ?? Promise.resolve(), new Promise(r => setTimeout(r, ms))]);
 
-/** 돌 시계 하나 — 감싼 칸(.s-art .s-clock) 안에 돌 그림과 바늘 그림을 겹쳐 돌려줌 */
-export function stoneClock() {
-  const wrap = document.createElement('span');
-  wrap.className = 's-art s-clock';
-  wrap.setAttribute('aria-hidden', 'true');
-  const img = document.createElement('img');
-  for (const [k, v] of Object.entries({src: SRC, srcset: SET, alt: '', width: 240, height: 192, decoding: 'async'})) img.setAttribute(k, String(v));
-  const svg = sv('svg', {class: 's-hands', viewBox: '0 0 150 120', focusable: 'false'});
+/** 바늘 그림 — 감싼 칸(.s-clock) 안 돌 그림 위에 지금 시각 바늘을 겹치고 1초마다 돌림(첫 화면 돌 시계 · 여는 화면 돌 시계가 같이 씀) */
+export function addHands(wrap) {
+  const svg = sv('svg', {class: 's-hands', viewBox: '0 0 150 120', focusable: 'false', 'aria-hidden': 'true'});
   const g = sv('g', {transform: 'matrix(.9564 .0003 -.0324 .9856 6.68 1.14)'}, svg); // 돌 그림 안 판의 비틀림 그대로
   const hG = sv('g', {}, g);
   sv('path', {d: 'M75 63L73.1 60.4L75 42Z', fill: '#5C5955'}, hG); sv('path', {d: 'M75 63L76.9 60.4L75 42Z', fill: '#2B2927'}, hG);
@@ -56,9 +51,20 @@ export function stoneClock() {
   sv('path', {d: 'M75 66V27.2', stroke: '#F9D21C', 'stroke-width': 0.6, 'stroke-linecap': 'round'}, sG);
   sv('circle', {cx: 75, cy: 60, r: 2.5, fill: '#5C5955', stroke: '#2B2927', 'stroke-width': 0.45}, g);
   sv('circle', {cx: 75, cy: 60, r: 0.9, fill: '#2B2927'}, g);
-  wrap.append(img, svg);
+  wrap.append(svg);
   faces.add({svg, h: hG, m: mG, s: sG, on: false, born: Date.now()});
   stop(); start(); // 바로 한 번 맞추고(붙기 전이라도 바늘 자리는 그려 둠) 1초마다
   requestAnimationFrame(tick); // 화면에 붙은 뒤 한 번 더
   return wrap;
+}
+
+/** 돌 시계 하나 — 감싼 칸(.s-art .s-clock) 안에 돌 그림과 바늘 그림을 겹쳐 돌려줌 */
+export function stoneClock() {
+  const wrap = document.createElement('span');
+  wrap.className = 's-art s-clock';
+  wrap.setAttribute('aria-hidden', 'true');
+  const img = document.createElement('img');
+  for (const [k, v] of Object.entries({src: SRC, srcset: SET, alt: '', width: 272, height: 218, decoding: 'async'})) img.setAttribute(k, String(v));
+  wrap.append(img);
+  return addHands(wrap);
 }

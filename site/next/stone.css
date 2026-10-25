@@ -21,6 +21,7 @@ html.white .top .ibtn.tgift[aria-current="page"] { background: var(--gold-wash);
 @media (min-width: 360px) { .top .tgift { margin: 0 var(--sp-1); } }
 /* 영어 · 좁은 폰(349px 아래) — 「Evolve」가 「진화」보다 길어 선물 단추와 함께 오른쪽으로 넘침(334 > 320) → 진화 단추 안 여백만 줄임 · 누름 높이 48 그대로 */
 @media (max-width: 379px) { html.white.en .top #jhBtn { padding: 0 var(--sp-1); } } /* 2026-10-25 — 360 폭도 1px 넘침(361 > 360 · 선물 단추 옆 여백 8 이 360 부터 붙음 · 큰 검사 gift-kakao 2/11) → 379 까지 */
+@media (max-width: 349px) { html.white.en .top #jhBtn { padding: 0 6px; } } /* 작은 폰 ③ 영어 「Evolve」 단추가 길어 맨 위 줄이 1px 넘치던 것 — 옆 여백 8 → 6(사장님 2026-10-26 01:33 「잘된 것 11가지 … 큰 쪽에서 7개 작은 곳에서 4개」 · 01:42 「응」) */
 @media (max-width: 349px) { html.white .top .logo { font-size: var(--fs-1); letter-spacing: .04em; text-indent: 0; width: auto; min-width: 48px; overflow: visible; justify-content: center; gap: 0; padding-left: 0; } }
 @media (max-width: 429px) { html.white.en .top .logo { width: auto; overflow: visible; justify-content: center; gap: 0; padding-left: 0; letter-spacing: .04em; text-indent: 0; } }
 
@@ -56,22 +57,23 @@ html.white.home .s-h1.tt-out { opacity: 0; transform: translateY(-6px); }
 html.white.home .s-h1.tt-in { opacity: 0; transform: translateY(6px); transition: none; }
 @media (prefers-reduced-motion: reduce) { html.white.home .s-h1 { transition: none; } }
 html.white.home .s-clk { display: flex; justify-content: center; margin: var(--sp-1) 0; }
-html.white.home .s-art { flex: none; width: 240px; height: 192px; }
+html.white.home .s-art { flex: none; width: 272px; height: 218px; } /* 큰 폰 ① 돌 시계 한 뼘 더 크게(240 → 272 · 네 칸 아래와 찾기 줄 사이 빈자리 65px 를 씀 · 사장님 2026-10-26 01:33 「잘된 것 11가지 찾아서 더 잘하도록 하라 · 큰 쪽에서 7개 작은 곳에서 4개」 · 01:42 「응」) */
 @media (max-width: 359px) { html.white.home .s-art { width: 200px; height: 160px; } }
 /* 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」 · stone-clock.js) — 돌 그림 위에 바늘 그림을 겹침 · 칸 크기는 위 .s-art 그대로(밀림 0) */
-.s-boot { display: block; align-self: center; width: 240px; height: 192px; max-width: 100%; margin: 86px auto 0; } /* 여는 동안 돌 시계(index.html) — 첫 화면 돌 시계와 같은 그림 · 같은 크기 · 가운데(여는 동안은 html.white 가 아직 없어 --sp 값이 없음 → 숫자로) */
+.s-boot { display: block; align-self: center; width: 272px; height: 218px; max-width: 100%; margin: 86px auto 0; } /* 여는 동안 돌 시계(index.html) — 첫 화면 돌 시계와 같은 그림 · 같은 크기 · 가운데(여는 동안은 html.white 가 아직 없어 --sp 값이 없음 → 숫자로) */
 .s-boot img { display: block; width: 100%; height: 100%; }
 @media (max-width: 359px) { .s-boot { width: 200px; height: 160px; } } /* 첫 화면 돌 시계와 같은 크기 · 같은 자리(제목 · 물음 아래) — 다 그려져도 시계는 제자리 */
-@media (max-width: 349px) { .s-boot { width: 180px; height: 144px; } }
+@media (max-width: 349px) { .s-boot { width: 160px; height: 128px; margin-top: 78px; } } /* 작은 폰은 시계 위 여백 0 — 여는 화면도 같은 자리(150 → 142) */
 .s-clock { position: relative; display: block; }
 .s-clock img, .s-clock .s-hands { position: absolute; top: 0; left: 0; display: block; width: 100%; height: 100%; }
 .s-clock .s-hands { pointer-events: none; }
 
 /* 돌이 물음 한 줄 — 말풍선 + 보내기 */
 html.white.home .w-say { display: flex; align-items: center; gap: var(--sp-1); margin: 0; }
-html.white.home .w-say p { display: inline-flex; align-items: center; gap: var(--sp-1); min-width: 0; margin: 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #DDDDDD; border-radius: 22px 22px 22px 6px; background: #FFFFFF; font-size: var(--fs-2); font-weight: 500; line-height: 1.3; }
-html.white.home .w-say .s-who { flex: none; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #DDDDDD; color: #222222; font-size: var(--fs-1); }
-html.white.home .w-say .w-kk { margin: 0 0 0 auto; width: 48px; height: 48px; border-radius: 24px; border: 1px solid var(--hair2); background: transparent; color: var(--ink); }
+html.white.home .w-say p { display: inline-flex; align-items: center; gap: var(--sp-1); min-width: 0; margin: 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #000000; border-radius: 22px 22px 22px 6px; background: #FFFFFF; font-size: var(--fs-2); font-weight: 700; line-height: 1.3; } /* 큰 폰 ⑥ 돌이 물음 말풍선을 검은 선 · 굵은 글씨로 — 시계 바로 위 「어느 계절일까?」가 더 또렷하게(사장님 2026-10-26 01:33 「잘된 것 11가지 …」 · 01:42 「응」) */
+html.white.home .w-say .s-who { flex: none; padding: 0 var(--sp-1) 0 0; border-right: 1px solid #000000; color: #000000; font-weight: 500; font-size: var(--fs-1); }
+html.white.home .w-say .w-kk { margin: 0 0 0 auto; width: 48px; height: 48px; border-radius: 24px; border: 1px solid #000000; background: #000000; color: #FFFFFF; } /* 큰 폰 ⑦ 카톡 보내기를 검은 동그라미 흰 그림으로 — 한 번에 눌리는 단추가 더 눈에 띄게(사장님 2026-10-26 01:33 「잘된 것 11가지 찾아서 더 잘하도록 하라 · 큰 쪽에서 7개 작은 곳에서 4개」 · 01:42 「응」) */
+html.white.home .w-say .w-kk:active { background: var(--hair); }
 html.white.home .w-say .w-kk .ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* 읽는 곳 셋 — 왼쪽 번호 테 · 사이 가는 줄 */
@@ -168,7 +170,10 @@ html.white.home .s-short details.w-all > summary { min-height: 48px; display: fl
 /* 좁은 폭(320) — 그림을 줄여 본질 · 찾기 칸이 한 화면에 들게 */
 @media (max-width: 349px) {
   html.white.home .s-h1 { font-size: var(--fs-5); }
-  html.white.home .s-art { width: 180px; height: 144px; }
+  html.white.home .s-art { width: 160px; height: 128px; } /* 작은 폰 ① 둘째 줄(잠잠 · 시듦) 그림과 이름까지 찾기 줄 위에 보이게 — 시계 180 → 160 · 아래 여백 0(theme-home.css 칸도 줄임) */
+  html.white.home .s-clk { margin: 0; }
+  html.white.home .s-thumb .w-find .w-in { padding: 0 var(--sp-1) 0 var(--sp-2); font-size: var(--fs-1); } /* 작은 폰 ② 찾기 칸 안내 「친구야, 왜 사? 회사 이름」이 끝까지 보이게(19 → 17px · 오른쪽 안쪽 여백 16 → 8) */
+  html.en.white.home .w-say p { padding: var(--sp-1); font-size: var(--fs-1); } /* 작은 폰 ④ 영어 돌이 물음도 한 줄(두 줄이면 시계와 첫 줄이 밀려 찾기 줄에 가림) */
   html.white.home .w-news .w-f b { font-size: var(--fs-4); }
 }
 

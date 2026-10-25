@@ -135,9 +135,11 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
    글씨는 여섯 크기 안(이름 fs-4 · 숫자 fs-6) */
 .th-zones { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-1); margin: 0 0 var(--sp-2); }
 .th-zc { position: relative; display: grid; min-width: 0; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: var(--sp-1); row-gap: var(--sp-1); min-height: 128px; padding: var(--sp-2); box-sizing: border-box; border: 2px solid var(--hair); border-radius: 20px; background: var(--card); color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
-.th-zc:active { background: var(--press); }
-.th-zi { grid-column: 1; grid-row: 1; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; background: var(--card3); }
-.th-zic { display: block; width: 38px; height: 38px; }
+.th-zc:active { background: var(--press); transform: scale(.97); } /* 큰 폰 ④ 누르면 칸이 살짝 들어감(눌린 느낌 · 0.12초 · 움직임 줄이기면 없음) */
+@media (prefers-reduced-motion: no-preference) { .th-zc { transition: transform .12s ease; } }
+@media (prefers-reduced-motion: reduce) { .th-zc:active { transform: none; } }
+.th-zi { grid-column: 1; grid-row: 1; display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; background: var(--card3); } /* 큰 폰 ② 그림 동그라미 52 → 60 · 그림 38 → 46(그림만 보고도 무슨 칸인지) */
+.th-zic { display: block; width: 46px; height: 46px; }
 .th-zw { grid-column: 2; grid-row: 1; font-size: var(--fs-4); font-weight: 800; line-height: 1.1; }
 .th-zn { grid-column: 1 / -1; grid-row: 2; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 2px; padding-right: var(--sp-2); font-size: var(--fs-6); font-weight: 800; line-height: 1; letter-spacing: -.04em; }
 .th-zu { font-size: var(--fs-4); font-weight: 800; letter-spacing: 0; }
@@ -145,11 +147,15 @@ html.f2 .th-row2 .th-rn, html.f3 .th-row2 .th-rn { white-space: normal; word-bre
 .th-zc.th-zcS { background: var(--up); border-color: var(--up); color: #FFFFFF; }
 .th-zc.th-zcS:active { background: #000000; }
 .th-zc.th-zcS .th-zi { background: #FFFFFF; }
+.th-zc.th-zcS .th-zgo { display: flex; align-items: center; justify-content: center; right: 10px; bottom: 10px; width: 40px; height: 40px; border-radius: 50%; background: #FFFFFF; color: var(--up); } /* 큰 폰 ③ 싹 칸 「›」를 흰 동그라미 단추로 — 볼 곳 하나가 누를 곳으로도 또렷 */
 @media (max-width: 359px) { /* 320 폭 — 칸 안쪽이 좁아 그림 동그라미 · 안쪽 여백을 줄임(글씨 크기는 그대로) */
   .th-zc { padding: var(--sp-1); min-height: 116px; }
   .th-zi { width: 40px; height: 40px; }
   .th-zic { width: 30px; height: 30px; }
   .th-zgo { right: 10px; bottom: 8px; }
+  .th-zc.th-zcS .th-zgo { right: 8px; bottom: 8px; width: 36px; height: 36px; }
 }
+@media (max-width: 349px) { .th-zc { min-height: 0; row-gap: 0; } } /* 작은 폰 ① 칸 높이 116 → 104 — 둘째 줄 그림과 이름이 찾기 줄 위에 */
 html.en .th-zw { font-size: var(--fs-2); } /* 영어 낱말(Sprout · Fading)은 길어 한 단계 작게 */
+html.en .th-zc { row-gap: 0; } /* 영어는 「industries」 한 줄이 더 있어 칸이 17px 높음 — 그림과 숫자 사이를 붙여 큰 폰에서도 네 칸이 찾기 줄 위에 */
 html.en .th-zu { flex-basis: 100%; font-size: var(--fs-1); } /* 「37」 위 · 「industries」 아래 — 숫자는 그대로 크게 · 낱말은 작게 · 네 칸 모두 같은 꼴 */
