@@ -9548,6 +9548,9 @@
   "업종이 식었어요": "The industry cooled",
   "회사만 덜 올랐어요": "Only the company lagged",
   "꽃 될 회사": "Bloom picks",
-  "바로 가기 넷": "Four shortcuts"
+  "바로 가기 넷": "Four shortcuts",
+  "① 업종 값 모름": "① sector value unknown",
+  "② 몸값 · 성적표 모름": "② company size or report card unknown",
+  "③ 종가가 비었거나 하루에 {n}% 넘게 바뀐 날(주식 수 바뀜일 수 있음)": "③ missing close, or a day that moved over {n}% (the share count may have changed)"
  }
 }
