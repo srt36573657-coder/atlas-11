@@ -1,78 +1,4 @@
-{
- "sec": 79,
- "gatesSrc": "real",
- "scenes": 14,
- "empty360": {
-  "h": 210,
-  "top": 165,
-  "bottom": 375,
-  "letterTop": 399,
-  "vh": 640
- },
- "fold360": {
-  "folded": 213.3,
-  "unit": 213.3,
-  "btn": 48,
-  "open": 1081.6,
-  "natural": 1081.6,
-  "before": 1146
- },
- "css": {
-  "holdDecls": 519,
-  "appMine": 85,
-  "fontNotToken": 0,
-  "spacingNotToken": 0,
-  "negative": 0
- },
- "words": {
-  "literals": 887,
-  "oldWords": 0
- },
- "measure": [
-  {
-   "tag": "#/me 비었을 때(접힘) 360×640",
-   "px": 1505,
-   "sizes": [
-    17,
-    19,
-    21,
-    24,
-    30
-   ],
-   "letter": [
-    21
-   ],
-   "lefts": {
-    "16": 9,
-    "18": 2,
-    "32": 3
-   },
-   "ex": {
-    "16": "h1.h 「보유종목」",
-    "18": "span.hml 「돌이 주식 격언 열 가」",
-    "32": "h2.hd-h 「보유종목 점검」"
-   },
-   "spacingOff": 0,
-   "negative": 0
-  },
-  {
-   "tag": "#/me 보유 둘 · 답함(접힘) 360×640",
-   "px": 5080,
-   "sizes": [
-    17,
-    19,
-    21,
-    24,
-    30
-   ],
-   "letter": [
-    21
-   ],
-   "lefts": {
-    "16": 9,
-    "18": 2,
-    "32": 5,
-    "48": 58
+"48": 58
    },
    "ex": {
     "16": "h1.h 「보유종목」",
@@ -155,6 +81,7 @@
   "소식 판": 5,
   "소식 영어 판": 1,
   "접힌 칸 안 여는 그림 맞댐": 3,
+  "fail": 4,
   "편지 접기 판": 3,
   "기록 파일 맞댐": 1,
   "바로 가기 판": 6,
@@ -164,7 +91,6 @@
   "바로 가기 영어 판": 2,
   "관심 머리 글 판": 2,
   "글씨 · 간격 재기 판": 4,
-  "fail": 1,
   "⑮ 팔 약속 안 적은 「?」 줄 ko": 2,
   "⑮ 네가 적은 팔 선 줄 ko": 3,
   "⑮ 기억 그대로 맞댄 판": 2,
@@ -175,5 +101,8 @@
   "⑮ 팔 선 없음 판 en": 1
  }
 }
-실패 1건:
+실패 4건:
+ - 화면 오류 · 편지 접기 360×640 · Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless
+ - 화면 오류 · 편지 접기 390×844 · Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless
+ - 화면 오류 · 편지 접기 320×568 · Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless
  - 글 시작 왼쪽 줄 3 넘음([10] 7) · #/me 보유 둘 · 답함(접힘) 360×640 {"16":9,"18":2,"32":5,"48":58} {"16":"h1.h 「보유종목」","18":"span.hml 「돌이 주식 격언 열 가」","32":"h2.hd-h 「보유종목 점검」","48":"figcaption.hd-cap 「내 몫 그림 · 점선은」"}
