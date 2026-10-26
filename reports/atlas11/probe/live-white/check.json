@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-26T05:37:54.185Z",
+ "at": "2026-10-26T06:15:12.840Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 169,
    "blocks": {
-    "ess": 2072,
+    "ess": 2011,
     "find": 776,
-    "today": 2164,
-    "gdr": 2513,
-    "all": 2513
+    "today": 2103,
+    "gdr": 2453,
+    "all": 2453
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -30,11 +30,10 @@
    ],
    "numQ": [],
    "tabs": [
-    "오늘 장",
-    "시황",
-    "매매일지",
-    "관심",
-    "보유종목"
+    "왜 사?",
+    "한 달 뒤",
+    "지난 기록",
+    "돌이"
    ],
    "jh": true,
    "whyTab": true,
@@ -43,7 +42,7 @@
     true,
     true
    ],
-   "themeChars": 212,
+   "themeChars": 216,
    "top": [
     [
      35,
@@ -153,7 +152,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 26일 14:33"
+     "10월 26일 15:11"
     ],
     [
      2,
@@ -178,8 +177,8 @@
    ],
    "theme": {
     "top": 142,
-    "zonesBottom": 596,
-    "rowBottom": 250,
+    "zonesBottom": 560,
+    "rowBottom": 232,
     "thumbTop": 711
    },
    "bodyHex": "#152D30",
@@ -200,11 +199,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 105,
    "blocks": {
-    "ess": 1949,
+    "ess": 1917,
     "find": 776,
-    "today": 2041,
-    "gdr": 2390,
-    "all": 2390
+    "today": 2009,
+    "gdr": 2359,
+    "all": 2359
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -217,11 +216,10 @@
    ],
    "numQ": [],
    "tabs": [
-    "오늘 장",
-    "시황",
-    "매매일지",
-    "관심",
-    "보유종목"
+    "왜 사?",
+    "한 달 뒤",
+    "지난 기록",
+    "돌이"
    ],
    "jh": true,
    "whyTab": true,
@@ -230,7 +228,7 @@
     true,
     true
    ],
-   "themeChars": 212,
+   "themeChars": 210,
    "top": [
     [
      24,
@@ -330,7 +328,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 26일 14:33"
+     "10월 26일 15:11"
     ],
     [
      2,
@@ -355,8 +353,8 @@
    ],
    "theme": {
     "top": 142,
-    "zonesBottom": 596,
-    "rowBottom": 250,
+    "zonesBottom": 560,
+    "rowBottom": 232,
     "thumbTop": 711
    },
    "bodyHex": "#152D30",
@@ -683,17 +681,14 @@
    }
   },
   "speed": {
-   "lcp": 1132,
+   "lcp": 1120,
    "inp": 32,
    "cls": 0.003
   }
  },
  "net": {
-  "retry": 6,
-  "why": {
-   "HTTP 403": 2,
-   "열기 실패": 4
-  }
+  "retry": 0,
+  "why": {}
  },
  "ok": true,
  "enforced": true

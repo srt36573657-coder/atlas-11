@@ -1,5 +1,5 @@
 {
- "made": "2026-10-26T05:37:44.375Z",
+ "made": "2026-10-26T06:14:54.448Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -30,40 +30,17 @@
    "err": null
   },
   {
-   "name": "sprout",
-   "hash": "#/t/sprout",
+   "name": "dori",
+   "hash": "#/dori",
    "files": [
-    "reports/atlas11/probe/live-shot/sprout-390.png",
-    "reports/atlas11/probe/live-shot/sprout-390-long.png"
+    "reports/atlas11/probe/live-shot/dori-390.png",
+    "reports/atlas11/probe/live-shot/dori-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/t/sprout",
-    "title": "싹 자리 전부 · 돌이",
-    "h1": "싹 자리 전부",
-    "kakaoText": 3,
-    "kakaoRow": 0,
-    "kakaoAll": 3,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1778
-   },
-   "err": null
-  },
-  {
-   "name": "picks",
-   "hash": "#/t/picks",
-   "files": [
-    "reports/atlas11/probe/live-shot/picks-390.png",
-    "reports/atlas11/probe/live-shot/picks-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/t/picks",
-    "title": "꽃이 될 듯한 회사 · 돌이",
-    "h1": "꽃이 될 듯한 회사 76곳",
+    "hash": "#/dori",
+    "title": "돌이 · 돌이",
+    "h1": "돌이",
     "kakaoText": 1,
     "kakaoRow": 0,
     "kakaoAll": 1,
@@ -71,7 +48,30 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1507
+    "height": 1062
+   },
+   "err": null
+  },
+  {
+   "name": "later",
+   "hash": "#/why/later",
+   "files": [
+    "reports/atlas11/probe/live-shot/later-390.png",
+    "reports/atlas11/probe/live-shot/later-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/why/later",
+    "title": "한 달 뒤 · 돌이",
+    "h1": "한 달 뒤",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1062
    },
    "err": null
   }
