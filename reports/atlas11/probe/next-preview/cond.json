@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-10-26T05:27:24.255Z",
+ "at": "2026-10-26T05:58:51.333Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-26",
  "combos": 100,
@@ -12,15 +12,15 @@
   "widths"
  ],
  "full": true,
- "seconds": 46,
+ "seconds": 38,
  "time": {
-  "old": 14.3,
-  "new": 20.5,
-  "wall": 45.7,
+  "old": 11.6,
+  "new": 16,
+  "wall": 37.6,
   "opensOld": 654,
   "opensNew": 681,
-  "oldPct": 31.3,
-  "oldShare": 41.1
+  "oldPct": 30.9,
+  "oldShare": 42.1
  },
  "net": {
   "req": 3,
@@ -36,7 +36,7 @@
   }
  },
  "counts": {
-  "결과 줄": 28341,
+  "결과 줄": 28347,
   "? 줄": 284,
   "조건": 100,
   "고르기": 3,
