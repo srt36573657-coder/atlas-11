@@ -65,6 +65,10 @@ function measure({minText, minTap, vpw}) {
   const vw = window.innerWidth, cw = document.documentElement.clientWidth, ref = Math.min(vw, vpw || vw), sw = se.scrollWidth;
   const out = {hash: location.hash || '#/', title: document.title, sw, vw, cw, over: sw > ref + 1, who: [], small: [], smallN: 0, tap: [], tapN: 0,
     next: document.querySelectorAll('a.th-next').length, empty: view ? [...view.querySelectorAll('.empty')].map(e => e.textContent.trim().slice(0, 80)) : [], boot: !!view?.querySelector('.boot')};
+  // 첫 화면 그림 단추 넷(꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터)이 찾기 줄 위 한 화면 안인가(사장님 2026-10-27 00:17 「… 첫 화면에 한번에 보일 수 있는 글씨 크기로 줄여주고」) — 첫 화면에만 있음 · 다른 쪽은 null
+  { const lab = view ? [...view.querySelectorAll('.s-apps .s-apl')].map(e => e.getBoundingClientRect().bottom) : [], th = view?.querySelector('.s-thumb'), tabs = document.querySelector('.tabs');
+    const room = th && th.getBoundingClientRect().height > 0 ? th.getBoundingClientRect().top : (tabs ? tabs.getBoundingClientRect().top : window.innerHeight);
+    out.fold = lab.length ? {apps: Math.round(Math.max(...lab)), room: Math.round(room), vh: window.innerHeight, fit: Math.max(...lab) <= room + 0.5, clock: (() => { const c = view.querySelector('.th-zones .s-art'); if (!c) return null; const r = c.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; })()} : null; }
   if (out.over) { // 옆으로 튀어나온 칸 — 부모는 안 튀어나온 바깥 칸만(뿌리) · 가로로 넘기는 줄(overflow-x) 안은 뺌
     const sticks = e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.right > ref + 1; };
     for (const e of document.body.querySelectorAll('*')) {
@@ -168,7 +172,7 @@ async function runDevice(name, engine, end) {
         if (!(await waitView(page, 30000))) err('boot', '#view .boot still shown after 30s');
         await settle(page, 6000);
         const m = await page.evaluate(measure, {minText: MIN_TEXT, minTap: MIN_TAP, vpw: prof.viewport?.width});
-        Object.assign(row, {title: m.title, next: m.next, scrollWidth: m.sw, innerWidth: m.vw, small: m.smallN, tap: m.tapN});
+        Object.assign(row, {title: m.title, next: m.next, scrollWidth: m.sw, innerWidth: m.vw, small: m.smallN, tap: m.tapN, ...(m.fold ? {fold: m.fold} : {})});
         if (norm(m.hash) !== norm(hash)) { row.landed = show(m.hash); err('route', `landed on ${show(m.hash)}`); }
         if (m.over) D.overflow.push({route: cur, scrollWidth: m.sw, innerWidth: m.vw, clientWidth: m.cw, who: m.who});
         for (const s of m.small) group(G.small, s.sel + '|' + s.px, {sel: s.sel, px: s.px, text: s.text}, cur, s.n);
