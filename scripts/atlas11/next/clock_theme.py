@@ -415,6 +415,32 @@ html.white.clock.clock.clock.en .th-zones .th-zw { font-size: 19px; }
 /* 여는 동안 돌 시계(index.html .s-boot)도 고리 가운데 시계 자리와 같게 — 다 그려져도 시계가 제자리(2026-10-26 이 방에서 잼: 390 · 375 = 242px · 320 = 227px) */
 html.white.clock.clock.clock .s-boot { margin-top: 178px; }
 @media (max-width: 359px) { html.white.clock.clock.clock .s-boot { margin-top: 163px; } }
+/* 낮은 화면 — 그림 단추 넷(꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터)까지 첫 화면 한 번에
+ *   사장님 2026-10-27(서울) 00:17 「밑에 꽃될 회사 회사찾기 싹달력 고객센터 이화면이 첫 화면에 한번에 보일 수 있는 글씨 크기로 줄여주고」
+ *   높이 820 아래(아이폰 사파리 · 카톡 안 창 640 ~ 760) — 네 칸 두 줄 납작하게(그림 72 → 48 · 숫자 44 → 34 · 이름 22 → 19 · 글은 17 아래로 안 내림)
+ *   그림 단추 66 → 56 · 틈 18 → 10 · 돌 시계는 남은 높이만큼(가장 작은 화면 높이 100svh 에서 다른 칸 높이 합 --ckk 를 뺌 · 104 ~ 218)
+ *   여는 동안 돌 시계(.s-boot)도 같은 크기 · 같은 자리(다 그려져도 제자리) — 390 × 844 는 그대로(높이 820 위) */
+@media (max-height: 820px) {
+  html.white.clock.clock.clock { --ckk: 520px; --ckmax: 218px; --ckh: clamp(104px, calc(100vh - var(--ckk)), var(--ckmax)); }
+  html.white.clock.clock.clock .th-zones { row-gap: 8px; margin-bottom: 0; } /* 아래 여백 16 은 그림 단추 위 틈 10 과 겹쳐 16 이 됨 — 0 으로 */
+  html.white.clock.clock.clock .th-zones .th-zc { min-height: 0; padding: 3px 8px 3px 2px; grid-template-columns: 48px minmax(0, 1fr); }
+  html.white.clock.clock.clock .th-zones .th-zi, html.white.clock.clock.clock .th-zones .th-zic { width: 48px; height: 48px; }
+  html.white.clock.clock.clock .th-zones .th-zw { padding-top: 0; font-size: 19px; line-height: 1.1; }
+  html.white.clock.clock.clock .th-zones .th-zn { font-size: 34px; line-height: 1; text-shadow: 2px 2px 0 var(--zoff); }
+  html.white.clock.clock.clock .th-zones .th-zu { font-size: 17px; }
+  html.white.clock.clock.clock .th-zones .s-art, html.white.clock.clock.clock .s-boot { width: calc(var(--ckh) * 272 / 218); height: var(--ckh); }
+  html.white.clock.clock.clock .s-boot { margin-top: 153px; } /* 제목 30 + 돌이 물음 48 + 첫 줄 67 + 틈 8 */
+  html.white.clock.clock.clock .th-ar-t { top: 15px; } html.white.clock.clock.clock .th-ar-b { bottom: 15px; }
+  html.white.clock.clock.clock .s-apps { margin: 10px 0 44px; }
+  html.white.clock.clock.clock .s-app { gap: 4px; }
+  html.white.clock.clock.clock .s-apb { width: 56px; height: 56px; border-radius: 14px; }
+  html.white.clock.clock.clock .s-badge { margin-left: 12px; }
+}
+@media (max-height: 820px) and (max-width: 359px) { html.white.clock.clock.clock { --ckk: 542px; --ckmax: 160px; } } /* 좁은 폭은 그림 단추 이름이 두 줄(+21) */
+@media (max-height: 820px) and (max-width: 349px) { html.white.clock.clock.clock { --ckmax: 128px; } }
+@media (max-height: 820px) { html.white.clock.clock.clock.en { --ckk: 575px; } } /* 영어는 칸마다 「industries」 한 줄(+19 × 2) · 그림 단추 이름 두 줄(+17) */
+@media (max-height: 820px) and (max-width: 359px) { html.white.clock.clock.clock.en { --ckk: 580px; } }
+@supports (height: 1svh) { @media (max-height: 820px) { html.white.clock.clock.clock { --ckh: clamp(104px, calc(100svh - var(--ckk) - env(safe-area-inset-bottom, 0px)), var(--ckmax)); } } }
 /* 밝게 바뀐 단추(옛 검은 단추) 위 작은 강조 글은 짙게 — 하늘청록은 밝은 바탕 위 대비가 모자람 */
 html.white.clock.clock.clock .th-next small, html.white.clock.clock.clock .th-nx small { color: #152D30; }
 /* 편지 띠(보유종목 아래 「돌이 주식 격언」) — 짙은 띠라 밝은 테(단추 테 대비 3 · check_white ⑤) */
