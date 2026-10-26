@@ -1,0 +1,72 @@
+name: atlas11-gift-contact
+# 「상품권 주세요」 사장님 번호 넣기(사장님 2026-10-26(서울) 16:14 「… 내 카톡 아이디나 내 전화번호 남겨놓고 상푸권 주세요 버튼 만들어그렣게 반자동으로 해놓아」 · 16:16 「일단 내 번호 남겨」)
+#   번호는 코드 · 깃허브에 맨글로 남지 않음(이 저장소는 공개) — 두 번에 나눔:
+#     mode=key   → 새 열쇠 한 쌍(X25519 · scripts/atlas11/help/forward.mjs newRoomKey)을 만들어 비밀 열쇠는 넷리파이 저장소(atlas11-gift-v1 · cfg/contact-key)에만 · 공개 열쇠만 알림 줄(gift-contact-pub)
+#     mode=set   → box(그 공개 열쇠로 잠근 {phone} · forward.mjs seal 꼴 · base64)를 받아 저장소의 비밀 열쇠로 풀고 cfg/contact 에 넣은 뒤 비밀 열쇠를 지움 · 기록 줄에는 「넣었어요」만(번호 · 끝자리 없음)
+#     mode=check → cfg/contact 가 있나만(번호 없음)
+#   사이트는 lib/atlas11/gift.mjs 가 cfg/contact 를 읽어 친구 셋을 채운 기기에만 보여 줌 · 사이트 코드와 무관(이 파일 하나 · 깃허브 권한 읽기만)
+run-name: atlas11-gift-contact ${{ inputs.mode }}
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'key | set | check'
+        required: true
+        default: 'check'
+      box:
+        description: 'set 때 공개 열쇠로 잠근 번호(base64) — 맨 번호는 넣지 않음'
+        required: false
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: atlas11-gift-contact
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      MODE: ${{ inputs.mode }}
+      BOX: ${{ inputs.box }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/atlas11/help
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 넷리파이 저장소 준비(@netlify/blobs 하나만)
+        run: npm install --no-save --no-package-lock --no-audit --no-fund --ignore-scripts @netlify/blobs@11.1.1
+      - name: 번호 넣기
+        run: |
+          node --input-type=module -e "
+          import {getStore} from '@netlify/blobs';
+          import {newRoomKey, open} from './scripts/atlas11/help/forward.mjs';
+          const say = t => console.log('::notice title=gift-contact::' + t);
+          const bad = t => { console.log('::error title=gift-contact::' + t); process.exit(1); };
+          const store = getStore({name: 'atlas11-gift-v1', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_AUTH_TOKEN, consistency: 'strong'});
+          const mode = process.env.MODE;
+          if (mode === 'key') {
+            const k = newRoomKey();
+            await store.setJSON('cfg/contact-key', {priv: k.priv, at: new Date().toISOString()});
+            console.log('::notice title=gift-contact-pub::' + k.pub);
+            say('열쇠를 만들었어요');
+          } else if (mode === 'set') {
+            const kk = await store.get('cfg/contact-key', {type: 'json'}).catch(() => null);
+            if (!kk || !kk.priv) bad('열쇠가 없어요 — key 를 먼저');
+            let got = null;
+            try { got = open(JSON.parse(Buffer.from(String(process.env.BOX || ''), 'base64').toString('utf8')), kk.priv); } catch (e) { bad('잠근 번호를 못 풀었어요'); }
+            const phone = String((got && got.phone) || '').replace(/[^0-9]/g, '');
+            if (!/^01[016789][0-9]{7,8}$/.test(phone)) bad('번호 꼴이 아니에요');
+            await store.setJSON('cfg/contact', {phone, at: new Date().toISOString()});
+            await store.delete('cfg/contact-key');
+            say('번호를 넣었어요');
+          } else {
+            const c = await store.get('cfg/contact', {type: 'json'}).catch(() => null);
+            say(c && c.phone ? '번호가 있어요' : '번호가 없어요');
+          }
+          "
