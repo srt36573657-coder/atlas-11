@@ -351,6 +351,11 @@ html.white.clock.clock.clock .s-app:active .s-apb { transform: translate(2px, 2p
   html.white.clock.clock.clock .s-apl { white-space: normal; font-size: 17px; }
   html.white.clock.clock.clock .s-badge { margin-left: 12px; }
 }
+/* 쪽 제목 — 흰 큰 글 + 청록 어긋난 그림자(돌 시계 판 ② 「싹 37곳」 제목 꼴) */
+html.white.clock.clock.clock .th-hd .th-h1 { color: #FFFFFF; font-weight: 900; text-shadow: 3px 3px 0 #3E737A; }
+/* 다른 쪽 제목 옆 작은 돌 시계(stone-clock.js miniClock — 옛 돌 그림 자리 96 × 77 → 104 × 83) */
+html.white.clock.clock.clock .th-hd .th-mclk { flex: none; width: 104px; height: 83px; margin-left: 8px; }
+@media (max-width: 359px) { html.white.clock.clock.clock .th-hd .th-mclk { width: 84px; height: 67px; } }
 /* 영어 — 「industries」가 한 낱말 그대로 숫자 아래 한 줄(가운데서 끊기지 않게) */
 html.white.clock.clock.clock.en .th-zones .th-zn { flex-direction: column; align-items: flex-start; row-gap: 0; }
 html.white.clock.clock.clock.en .th-zones .th-zu { display: block; white-space: nowrap; overflow-wrap: normal; word-break: normal; font-size: 17px; line-height: 1.1; }

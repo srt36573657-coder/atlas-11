@@ -68,3 +68,39 @@ export function stoneClock() {
   wrap.append(img);
   return addHands(wrap);
 }
+
+/** 작은 돌 시계(다른 쪽 제목 옆 · 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 — 어젯밤 돌 시계 판 ②③④ 그대로)
+ *  지금 시각 바늘 위에 「지금 어디쯤」 표시 하나 — mark: 'S' 싹 · 'B' 꽃 · 'W' 시듦 · 'Q' 잠잠 = 그 자리 4분의 1을 하늘청록으로(판 위 자리 = 테마 시계 · theme-rule.js zoneOf)
+ *  'SB' = 싹에서 꽃으로 가는 화살(꽃 될 회사) · 'dS' 같은 'd' + 자리 = 그 자리에 점 하나(회사 업종) · null = 표시 없음 */
+export function miniClock(mark = null, label = '') {
+  const wrap = document.createElement('span');
+  wrap.className = 's-clock th-mclk';
+  if (label) { wrap.setAttribute('role', 'img'); wrap.setAttribute('aria-label', label); } else wrap.setAttribute('aria-hidden', 'true');
+  const img = document.createElement('img');
+  for (const [k, v] of Object.entries({src: SRC, srcset: SET, alt: '', width: 272, height: 218, decoding: 'async', loading: 'lazy'})) img.setAttribute(k, String(v));
+  wrap.append(img);
+  if (mark) {
+    const o = sv('svg', {class: 's-hands th-mark', viewBox: '0 0 150 120', focusable: 'false', 'aria-hidden': 'true'});
+    const g = sv('g', {transform: 'matrix(.9564 .0003 -.0324 .9856 6.68 1.14)'}, o);
+    const R = 31, C = [75, 60];
+    const SEC = {S: `M75 60L${75 - R} 60A${R} ${R} 0 0 1 75 ${60 - R}Z`, B: `M75 60L75 ${60 - R}A${R} ${R} 0 0 1 ${75 + R} 60Z`,
+      W: `M75 60L${75 + R} 60A${R} ${R} 0 0 1 75 ${60 + R}Z`, Q: `M75 60L75 ${60 + R}A${R} ${R} 0 0 1 ${75 - R} 60Z`};
+    const MID = {S: [-1, -1], B: [1, -1], W: [1, 1], Q: [-1, 1]};
+    if (SEC[mark]) sv('path', {d: SEC[mark], fill: 'rgba(31, 184, 205, .55)'}, g);
+    else if (mark === 'SB') {
+      const r = 21, k = .7071, sx = C[0] - r * k, sy = C[1] - r * k, ex = C[0] + r * k, ey = C[1] - r * k;
+      const arc = `M${sx.toFixed(1)} ${sy.toFixed(1)}A${r} ${r} 0 0 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      sv('path', {d: arc, fill: 'none', stroke: '#171615', 'stroke-width': 6, 'stroke-linecap': 'round'}, g);
+      sv('path', {d: arc, fill: 'none', stroke: '#1FB8CD', 'stroke-width': 3.4, 'stroke-linecap': 'round'}, g);
+      const tip = [ex + 5 * k, ey + 5 * k], b1 = [ex + 4.6 * k, ey - 4.6 * k], b2 = [ex - 4.6 * k, ey + 4.6 * k];
+      sv('path', {d: `M${tip[0].toFixed(1)} ${tip[1].toFixed(1)}L${b1[0].toFixed(1)} ${b1[1].toFixed(1)}L${b2[0].toFixed(1)} ${b2[1].toFixed(1)}Z`, fill: '#1FB8CD', stroke: '#171615', 'stroke-width': 1.2, 'stroke-linejoin': 'round'}, g);
+    } else if (mark[0] === 'd' && SEC[mark[1]]) {
+      sv('path', {d: SEC[mark[1]], fill: 'rgba(31, 184, 205, .3)'}, g);
+      const [dx, dy] = MID[mark[1]];
+      sv('circle', {cx: (75 + dx * 15 * .7071).toFixed(1), cy: (60 + dy * 15 * .7071).toFixed(1), r: 4.4, fill: '#1FB8CD', stroke: '#171615', 'stroke-width': 1.4}, g);
+    }
+    wrap.append(o);
+  }
+  return addHands(wrap);
+}
+
