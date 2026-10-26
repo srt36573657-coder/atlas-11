@@ -1,6 +1,6 @@
 {
  "schema": "godori-check-share-1",
- "at": "2026-10-26T17:08:18.938Z",
+ "at": "2026-10-26T17:35:09.544Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -43,7 +43,7 @@
   "taps": 2,
   "picker": true,
   "after": {
-   "y": 3084,
+   "y": 3012,
    "top": 550,
    "sameSpot": true,
    "fireworks": 0
