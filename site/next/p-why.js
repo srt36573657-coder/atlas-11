@@ -582,6 +582,8 @@ export async function render(arg) {
   const swap = f => { fold = f; const nl = recBox(true, fold); list.replaceWith(nl); list = nl; }; // 목록 다시 그림(f = 방금 끝낸 기록 — 첫 줄을 접음 · B15)
   const due = dueSection(due0, () => swap(fold));
   keptHook = () => { if (due.box.isConnected) due.refresh(false); };
+  if (String(arg ?? '').trim() === 'later') // 한 달 뒤(아래 단추 둘째 · 사장님 2026-10-26 14:40 「어 넣어」 · 돌 시계 판) — 한 달 지난 약속 「그날 정한 대로 했어?」 + 지난 기록 · 질문 칸은 「왜 사?」 단추 쪽
+    return {title: '한 달 뒤', nodes: [h('h1', {class: 'h', text: '한 달 뒤'}), due0.length ? due.box : h('p', {class: 'empty', text: '아직 한 달 지난 기록이 없어요.'}), list, h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};
   const card = whyCard(G, {page: true, code: String(arg ?? '').trim() || null, autoFocus: !due0.length, onDone: rec => swap(rec), onAgain: () => { if (fold) swap(null); }});
   // 차례: 제목 → 한 달 전 약속(있을 때만 · 결) → 질문 칸 → 기록 → 안전 문장
   return {title: '매매일지', nodes: [h('h1', {class: 'h', text: '매매일지'}), due.box, card, list, h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};

@@ -127,6 +127,7 @@ const knownHref = h => {
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
   if (h === '/privacy.html#en') return true; // 영어 화면의 처리방침 고리 = 그 쪽 영어 칸(총정리 2026-10-22 D23 — app.js enPrivacy · 한국어 화면은 아래 /privacy.html 그대로)
   if (h === '#/gift' || h === '/privacy.html' || h === 'sms:01090117377' || h === 'tel:01090117377') return true; // 상품권 방(사장님 2026-10-22 03:38 · 위 막대 금빛 선물 단추 · p-gift.js) · 그 쪽 맨 밑 개인정보 처리방침 고리 · 다 본 뒤 나오는 문자 · 전화(사장님 번호 — 소개 쪽 상품권 칸과 같음)
+  if (h === '#/dori' || h === '#/why/later') return true; // 돌이 단추 안 · 한 달 뒤(아래 단추 넷 · 2026-10-26 14:40 「어 넣어」)
   if (h === '#/help') return true; // 고객센터(p-help.js · VIEWS.help) — 첫 화면 그림 단추 「고객센터」(사장님 2026-10-26 08:16 「디자인 이렇게 하라고」 · 돌 시계 판)
   if (h === '#/admin' || h === '#/game') return true; // 가짜 돈 연습(2026-10-19 15:04) // 관리자 화면(사장님 열쇠 기기 보유종목 바로 가기 · 2026-10-19 13:54)
   if ((mm = /^#\/t\/(hello|how|sprout|sprout\/real|sprout\/new|bloom|wilt|today|alert|cal|pick|picks)$/.exec(h))) return true; // picks = 꽃 될 회사(돌 시계 판 ③ · 2026-10-26 「다 해」 · p-theme.js pPicks) // pick = 꽃 핀 업종 안의 싹 회사(사장님 2026-10-22 16:56 · p-theme.js pPick) // cal = 싹 달력(사장님 2026-10-22 11:55 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」 · p-theme.js pCal) // 테마 시계 쪽(사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js — check_theme 이 쪽마다 맞대 봄 · alert = 26 알림(관심 #/sub 다음 · 2026-10-19 20:40 「다해」))
@@ -454,18 +455,19 @@ for (const w of [320, 360, 390]) {
 /* ①-3 아래 단추 다섯(2026-10-17 21:10 [2] · 규칙 1 · 2) — 차례 · 이름(숫자 없음) · data-tab · 고리 · 창 제목 = 탭 이름 · 지금 탭 표시
    + 질문을 끝낸 기계(매매일지 기록 하나)에서 고도리 칸이 열린 꼴을 세 폭으로(첫 화면 · 고도리 칸 · 카드 하나 · 매매일지 · 보유종목) — [6] 1 두 꼴 모두 */
 {
-  const TABS = [['오늘 장', 'home', '#/'], ['시황', 'shorts', '#/shorts'], ['매매일지', 'why', '#/why'], ['관심', 'sub', '#/sub'], ['보유종목', 'me', '#/me']];
+  const TABS = [['왜 사?', 'why', '#/why'], ['한 달 뒤', 'later', '#/why/later'], ['지난 기록', 'rec', '#/t/pick'], ['돌이', 'dori', '#/dori']]; // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
   const q = await page(390, 844);
   if (await first(q, base + '/next/#/') === false) fail('여는 중 남음', '아래 단추 처음 열기');
   const t = await q.evaluate(() => [...document.querySelectorAll('.tabs a')].map(a => [a.textContent.trim(), a.dataset.tab ?? null, a.getAttribute('href')]));
-  if (JSON.stringify(t) !== JSON.stringify(TABS)) fail('아래 단추 다섯', JSON.stringify(t));
+  if (JSON.stringify(t) !== JSON.stringify(TABS)) fail('아래 단추 넷', JSON.stringify(t));
   for (const [nm] of t) if (/\d/.test(nm)) fail('탭 이름에 숫자(규칙 2)', nm);
-  for (const [hh, nm] of [['#/', '오늘 장'], ['#/shorts', '시황'], ['#/shorts/1', '시황'], ['#/why', '매매일지'], ['#/why/005930', '매매일지'], ['#/sub', '관심'], ['#/me', '보유종목']]) {
+  // 쪽 이름(창 제목 · 화면 제목) · 지금 단추 — 시황 · 관심 · 보유종목 · 고객센터는 돌이 단추 안(지금 단추 = 돌이) · 첫 화면은 지금 단추 없음
+  for (const [hh, nm, cur] of [['#/', '오늘 장', null], ['#/shorts', '시황', '돌이'], ['#/shorts/1', '시황', '돌이'], ['#/why', '매매일지', '왜 사?'], ['#/why/005930', '매매일지', '왜 사?'], ['#/why/later', '한 달 뒤', '한 달 뒤'], ['#/sub', '관심', '돌이'], ['#/me', '보유종목', '돌이'], ['#/dori', '돌이', '돌이']]) {
     await go(q, hh); await q.waitForTimeout(60);
     const x = await q.evaluate(() => ({title: document.title, cur: document.querySelector('.tabs a[aria-current="page"]')?.textContent.trim() ?? null, h1: document.querySelector('#view h1')?.textContent ?? null}));
-    if (x.title !== nm + TITLE_TAIL) fail('창 제목 = 탭 이름', hh + ' 「' + x.title + '」');
-    if (x.cur !== nm) fail('지금 탭', hh + ' ' + x.cur);
-    if (['#/why', '#/sub', '#/me'].includes(hh) && x.h1 !== nm) fail('화면 제목 = 탭 이름([2] 6)', hh + ' 「' + x.h1 + '」');
+    if (x.title !== nm + TITLE_TAIL) fail('창 제목 = 쪽 이름', hh + ' 「' + x.title + '」');
+    if (x.cur !== cur) fail('지금 단추', hh + ' ' + x.cur + ' ≠ ' + cur);
+    if (['#/why', '#/sub', '#/me', '#/why/later', '#/dori'].includes(hh) && x.h1 !== nm) fail('화면 제목 = 쪽 이름([2] 6)', hh + ' 「' + x.h1 + '」');
     bump('아래 단추 길');
   }
   await q.context().close();

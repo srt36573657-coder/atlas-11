@@ -4,7 +4,7 @@
    자료 = 지금 아틀란스 파일 그대로(/atlas/data/*.json) · 7단은 지금 아틀란스 화면으로 이어 줌(/#/g · /#/i · /#/c/<번호>/…) · 앞날 말 없음 · 사고팔기 권하지 않음
    보는 기계 기억(구독 · 본 기록 · 나중에 볼 것)은 이 기기에만(localStorage · 서버에 안 감) · 글은 textContent 로만(보안 규칙 안 — 안에 쓴 스크립트 · 꾸밈 없음) */
 import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; // 새 화면 제 영어 엔진 · 사전(/next/i18n/ — 2026-10-17 15:54 「예전 아트란스는 앞으로 어떠한 작업도 하지 말아라」로 /atlas/ 와 떼어 냄)
-import {NAME, VIDEO} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
+import {NAME, VIDEO, josa} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
 import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026-10-18 [10] 1 · 2 — 갈래 → 큰 업종 …) · 그리는 곳 한 줄(route)
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
 import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
@@ -1267,6 +1267,12 @@ const VIEWS = {'': () => vHome('all'), f: a => vHome(a), w: vWatch, shorts: vSho
 VIEWS.t = a => page('theme', a); // 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js)
 VIEWS.game = a => page('game', a); // 가짜 돈 연습(사장님 2026-10-19 15:02 · 15:04 「일단해」 · p-game.js — PUBLIC 전에는 사장님 열쇠 기기만)
 VIEWS.gift = a => page('gift', a); // 상품권 방(사장님 2026-10-22 03:38 「상품권 받는곳이 사용자자 이용많이 한 곳에 있어야 해 구글과 잡스라면 어떻개 하겠어 그렇게해」 · p-gift.js) — 모든 쪽 위 막대 금빛 선물 단추에서 한 번
+VIEWS.dori = async () => { // 돌이 단추(아래 줄 넷째 · 사장님 2026-10-26 14:40 「어 넣어」 — 물음 「없어지는 셋은 돌이 단추 안에 넣을까요?」) — 시황 · 관심 · 보유종목 + 오늘 장 · 돌이 인사 · 고객센터
+  const it = (label, href) => h('a', {class: 'dm-it', href}, h('b', {text: label}), h('i', {'aria-hidden': 'true', text: '›'}));
+  return {title: NAME, nodes: [h('h1', {class: 'h', text: NAME}), h('nav', {class: 'dm', 'aria-label': NAME},
+    it('오늘 장', '#/'), it('시황', '#/shorts'), it('관심', '#/sub'), it('보유종목', '#/me'), it(NAME + ' 인사', '#/t/hello'), it('고객센터', '#/help')),
+    h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};
+};
 VIEWS.help = a => page('help', a); // 고객센터(사장님 2026-10-21 22:54 · 22:55 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · 23:09 · p-help.js) — 모든 기기 · 맨 아래 고리
 VIEWS.admin = a => page('admin', a); // 관리자 화면(사장님 2026-10-19 13:54 「관리자 페이지도 있어야 해」 · 사장님 열쇠 기기만 · p-admin.js)
 VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 진화 쪽 길(사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」 · 일꾼 KM) — 모든 기기가 엶 · 단추는 p-jinhwa 가 사장님 열쇠 기기에서만 그림 · 합계 칸 참고 「연 수」 쪽마다 한 번(일꾼 KD)
@@ -1281,6 +1287,7 @@ jhBtn.after(giftBtn);
 /* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
 const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};
+const DOCK = {dori: 'dori', shorts: 'dori', sub: 'dori', me: 'dori', help: 'dori'}; // 아래 단추 넷(왜 사? · 한 달 뒤 · 지난 기록 · 돌이 — 돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」) · 창 제목은 위 TAB_NAME 그대로(쪽 이름)
 const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today', 'why', 'gdr']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
 /* 흰 판(사장님 2026-10-19 02:03 · 올리기 ① 「색과 첫 화면」) — html.white 는 첫 화면(#/ · 칩 없는 '' 길)에서만 · 다른 길은 뗌 · 창 위 띠 색(theme-color)도 같이
    index.html 이 white 로 시작(첫 그림이 늦지 않게) → 여기서 곧바로 길에 맞춤 → 화면을 바꿀 때마다 새 화면과 같은 순간에 바꿈 */
@@ -1364,8 +1371,7 @@ async function route(force) {
   for (const t of document.querySelectorAll('.tabs a, #jhBtn, #giftBtn')) t.removeAttribute('aria-current');
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (k === 'gift') giftBtn.setAttribute('aria-current', 'page');
-  if (TABS[k]) $('.tabs a[data-tab="' + TABS[k] + '"]')?.setAttribute('aria-current', 'page');
-  if (k === 't' || k === 'today') $('.tabs a[data-tab="home"]')?.setAttribute('aria-current', 'page'); // 테마 쪽 · 오늘 시장(#/today — 「오늘 장」 띠를 눌러 옴 · 총정리 C23)은 첫 단추 칸(창 제목은 그 쪽 이름 그대로)
+  { const dk = k === 'why' ? (a === 'later' ? 'later' : 'why') : k === 't' && /^pick(\/|$)/.test(a ?? '') ? 'rec' : DOCK[k]; if (dk) $('.tabs a[data-tab="' + dk + '"]')?.setAttribute('aria-current', 'page'); } // 아래 단추 넷(사장님 2026-10-26 14:40 「어 넣어」) — 시황 · 관심 · 보유종목은 돌이 단추 안
   root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'}));
   let out;
   try { out = await view(a); }
@@ -1384,7 +1390,7 @@ async function route(force) {
   if (k === '') holdEss(root); // 첫 화면 — 글꼴 표가 아직이면 본질 첫 줄 높이를 잡아 둠(글꼴이 바뀌어도 아래가 안 밀리게)
   fontsLater();
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
-  const tabName = k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름
+  const tabName = k === 'why' && a === 'later' ? '한 달 뒤' : k !== 'f' && TABS[k] ? TAB_NAME[TABS[k]] : null; // 탭 화면(오늘 장 · 시황 · 매매일지 · 관심 · 보유종목)은 창 제목 = 탭 이름(규칙 2) · 칩 화면은 칩 이름
   document.title = L((tabName ?? out.title) + ' · ' + NAME); // 영어면 창 제목도(엔진은 body 만 봄)
   glossView(root); // 낱말표(site/next/glossary.js) — 한국어면 이 화면 · 창 제목 · 뒤에 그려지는 칸의 옛 낱말을 바꿈 · 영어면 영어 엔진 뒤에 「20 trading days」만
   enPrivacy(); // 영어면 처리방침 고리를 영어 칸(#en)으로(총정리 D23)
