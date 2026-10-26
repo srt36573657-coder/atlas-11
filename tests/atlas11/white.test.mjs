@@ -16,7 +16,7 @@ test('검사 파일이 있고 잣대를 품음', () => {
   for (const k of ['ess', 'find', 'today', 'gdr', 'all']) assert.match(s, new RegExp(`'${k}'`), `칸 ${k}`);
   for (const c of ['#080808', '#FFFFFF']) assert.ok(s.includes(c), `색 ${c}`); // 돌 판(2026-10-19 10:31) 바탕 · 글
   for (const w of ['390', '844', '320', '568', '47.5', '16.95', '2500', '200', '0.1', '4.5', '0.6', '0.9']) assert.ok(s.includes(w), `숫자 ${w}`);
-  for (const w of ['왜 사?', '한 달 뒤', '지난 기록', '돌이', 'jhBtn', 'data-ess', '#/why', 'data-say', 'data-fact', '왜 그럴까\\?', '그날 정한 대로 했어\\?', 'q1', '급등', '그림자', '입체', '작은 빨간 점'])
+  for (const w of ['꽃 될 회사', '왜 사?', '지난 기록', '돌이', 'jhBtn', 'data-ess', '#/why', 'data-say', 'data-fact', '왜 그럴까\\?', '그날 정한 대로 했어\\?', 'q1', '급등', '그림자', '입체', '작은 빨간 점'])
     assert.ok(s.includes(w), `잣대 ${w}`);
   assert.match(s, /latency: 150/); assert.match(s, /rate: 4/);
 });
@@ -51,7 +51,7 @@ test('정적 문이 망치는 길 · 옛 화면 남김을 잡음(가짜 폴더)'
   try {
     fs.mkdirSync(path.join(tmp, 'site/next'), {recursive: true}); fs.writeFileSync(path.join(tmp, 'site/next/home.css'), '');
     const d = path.join(tmp, 'dist'), n = path.join(d, 'next'); fs.mkdirSync(n, {recursive: true});
-    const nav = '<nav class="tabs"><a href="#/why">왜 사?</a><a href="#/why/later">한 달 뒤</a><a href="#/t/pick">지난 기록</a><a href="#/dori">돌이</a></nav>'; // 아래 단추 넷(사장님 2026-10-26 14:40 「어 넣어」)
+    const nav = '<nav class="tabs"><a href="#/t/picks">꽃 될 회사</a><a href="#/t/pick">지난 기록</a><a href="#/why">왜 사?</a><a href="#/dori">돌이</a></nav>'; // 아래 단추 넷(사장님 2026-10-26 14:40 「어 넣어」)
     fs.writeFileSync(path.join(n, 'index.html'), `<link rel="stylesheet" href="/next/home.css">${nav}`);
     fs.writeFileSync(path.join(n, 'app.css'), 'html.white{--bg:#FFFFFF;--ink:#000000;--gold:#6B2A8C;--up:#007A35;--down:#1E4FC2}'); // 가짜 폴더 색 = 지금 잣대 색 4 출발값(2026-10-20 20:27 우주 밤하늘 — 옛 #080808 · #F9D21C 그대로라 이 시험만 걸려 있었음)
     fs.writeFileSync(path.join(n, 'home.css'), '.x{color:red}');

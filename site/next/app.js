@@ -1274,7 +1274,7 @@ VIEWS.gift = a => page('gift', a); // 상품권 방(사장님 2026-10-22 03:38 �
 VIEWS.dori = async () => { // 돌이 단추(아래 줄 넷째 · 사장님 2026-10-26 14:40 「어 넣어」 — 물음 「없어지는 셋은 돌이 단추 안에 넣을까요?」) — 시황 · 관심 · 보유종목 + 오늘 장 · 돌이 인사 · 고객센터
   const it = (label, href) => h('a', {class: 'dm-it', href}, h('b', {text: label}), h('i', {'aria-hidden': 'true', text: '›'}));
   return {title: NAME, nodes: [h('h1', {class: 'h', text: NAME}), h('nav', {class: 'dm', 'aria-label': NAME},
-    it('오늘 장', '#/'), it('시황', '#/shorts'), it('관심', '#/sub'), it('보유종목', '#/me'), it(NAME + ' 인사', '#/t/hello'), it('고객센터', '#/help')),
+    it('한 달 뒤', '#/why/later'), it('보유종목', '#/me'), it('관심', '#/sub'), it('오늘 장', '#/'), it('시황', '#/shorts'), it(NAME + ' 인사', '#/t/hello'), it('고객센터', '#/help')), // 결(사장님 2026-10-27 01:50 「중요순 · 기승전결」) — 한 달 뒤 → 내 것 → 시장 → 인사 · 고객센터
     h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};
 };
 VIEWS.help = a => page('help', a); // 고객센터(사장님 2026-10-21 22:54 · 22:55 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · 23:09 · p-help.js) — 모든 기기 · 맨 아래 고리
@@ -1291,7 +1291,7 @@ jhBtn.after(giftBtn);
 /* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
 const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};
-const DOCK = {dori: 'dori', shorts: 'dori', sub: 'dori', me: 'dori', help: 'dori'}; // 아래 단추 넷(왜 사? · 한 달 뒤 · 지난 기록 · 돌이 — 돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」) · 창 제목은 위 TAB_NAME 그대로(쪽 이름)
+const DOCK = {dori: 'dori', shorts: 'dori', sub: 'dori', me: 'dori', help: 'dori'}; // 아래 단추 넷(꽃 될 회사 · 지난 기록 · 왜 사? · 돌이 — 기승전결 · 사장님 2026-10-27 01:50 · 02:15 · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이) · 창 제목은 위 TAB_NAME 그대로(쪽 이름)
 const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today', 'why', 'gdr']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
 /* 흰 판(사장님 2026-10-19 02:03 · 올리기 ① 「색과 첫 화면」) — html.white 는 첫 화면(#/ · 칩 없는 '' 길)에서만 · 다른 길은 뗌 · 창 위 띠 색(theme-color)도 같이
    index.html 이 white 로 시작(첫 그림이 늦지 않게) → 여기서 곧바로 길에 맞춤 → 화면을 바꿀 때마다 새 화면과 같은 순간에 바꿈 */
@@ -1336,9 +1336,9 @@ function fontsLater() {
 if (parse(location.hash || '#/').k !== '') { fontsOn = true; fontsAdd(); }
 /* 서른여섯 장 흐름(사장님 2026-10-19 16:46 「클릭을 하면 물 흐르듯 … 다음다음다음이 제대로 이어지게」 · 견본 flow36) — 테마 쪽(#/t/…)은 p-theme.js 가 「다음」을 그림 ·
    있는 쪽은 여기서 맨 아래에 「다음」 한 줄만 더함(그 쪽 칸 · 차례는 그대로) · 질문 중(#/why/<번호>) · 시황(#/shorts · 한 화면 넘김)은 더하지 않음 */
-const FLOW_NEXT = {sub: ['알림', '#/t/alert'], why: ['보유종목', '#/me'], me: ['가짜 돈 연습', '#/game'], game: ['진화', '#/jinhwa'], jinhwa: ['오늘 정리', '#/t/today']};
+const FLOW_NEXT = {sub: ['알림', '#/t/alert'], why: ['한 달 뒤', '#/why/later'], 'why/later': ['돌이', '#/dori'], me: ['가짜 돈 연습', '#/game'], game: ['진화', '#/jinhwa'], jinhwa: ['오늘 정리', '#/t/today']}; // 기승전결 길(사장님 2026-10-27 01:50 · 02:15) — 꽃 될 회사 → 지난 기록 → 왜 사? → 한 달 뒤 → 돌이 · 옛 why → 보유종목
 function flowFoot(k, a, root, my) {
-  const n = a ? null : FLOW_NEXT[k]; if (!n) return;
+  const n = a ? (FLOW_NEXT[k + '/' + a] ?? null) : FLOW_NEXT[k]; if (!n) return;
   mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); if (my === seq && root.isConnected && !root.querySelector('.th-foot')) root.append(h('nav', {class: 'th-foot', 'aria-label': '다음 쪽'}, m.footBtn(n[0], n[1]))); }).catch(() => {});
 }
 let seq = 0, curHash = null;
@@ -1347,7 +1347,7 @@ const scrollMem = new Map();
 let KKM = null, kkStop = () => {};
 const afterLoad = fn => { const go = () => (window.requestIdleCallback ? requestIdleCallback(fn, {timeout: 3000}) : setTimeout(fn, 800)); if (document.readyState === 'complete') go(); else addEventListener('load', go, {once: true}); };
 const kkMod = () => (KKM ??= import('/next/kk-all.js').catch(e => { console.error(e); KKM = null; return null; }));
-const kkMode = k => (k === 's' ? null : k === '' ? {page: false, boxes: true} : k === 'why' ? {page: 'end', boxes: false} : ['me', 'jinhwa', 'up'].includes(k) ? {page: 'end', boxes: true} : {page: 'top', boxes: true}); // 보유종목 · 진화 · 업데이트도 쪽 단추는 맨 아래(편지 · 첫 카드 그림 · 「요즘 바뀐 것」이 제목 바로 밑 한 화면 안 — check_hold · check_jinhwa · check_misc)
+const kkMode = k => (k === 's' ? null : k === '' ? {page: false, boxes: true} : k === 'why' ? {page: 'end', boxes: false} : {page: 'end', boxes: true}); // 쪽 「카톡 보내기 · 선물 받기」 줄은 모든 쪽 맨 아래 = 결(사장님 2026-10-27 01:50 「중요순으로 해서 기승전결」 · 02:15 「첫호면부터 전체」 — 옛 제목 밑 'top') // 보유종목 · 진화 · 업데이트도 쪽 단추는 맨 아래(편지 · 첫 카드 그림 · 「요즘 바뀐 것」이 제목 바로 밑 한 화면 안 — check_hold · check_jinhwa · check_misc)
 function parse(hash) {
   const m = /^#\/([a-z0-9]*)\/?(.*)$/.exec(hash || '#/'); if (!m) return {k: null};
   let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null, raw: m[2] ?? ''}; }
@@ -1375,7 +1375,7 @@ async function route(force) {
   for (const t of document.querySelectorAll('.tabs a, #jhBtn, #giftBtn')) t.removeAttribute('aria-current');
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (k === 'gift') giftBtn.setAttribute('aria-current', 'page');
-  { const dk = k === 'why' ? (a === 'later' ? 'later' : 'why') : k === 't' && /^pick(\/|$)/.test(a ?? '') ? 'rec' : DOCK[k]; if (dk) $('.tabs a[data-tab="' + dk + '"]')?.setAttribute('aria-current', 'page'); } // 아래 단추 넷(사장님 2026-10-26 14:40 「어 넣어」) — 시황 · 관심 · 보유종목은 돌이 단추 안
+  { const dk = k === 'why' ? 'why' : k === 't' && /^picks(\/|$)/.test(a ?? '') ? 'bloom' : k === 't' && /^pick(\/|$)/.test(a ?? '') ? 'rec' : DOCK[k]; if (dk) $('.tabs a[data-tab="' + dk + '"]')?.setAttribute('aria-current', 'page'); } // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) — 꽃 될 회사(승) · 지난 기록(승) · 왜 사?(전 · 한 달 뒤 포함) · 돌이(결) · 시황 · 관심 · 보유종목은 돌이 단추 안
   root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'}));
   let out;
   try { out = await view(a); }

@@ -455,14 +455,14 @@ for (const w of [320, 360, 390]) {
 /* ①-3 아래 단추 다섯(2026-10-17 21:10 [2] · 규칙 1 · 2) — 차례 · 이름(숫자 없음) · data-tab · 고리 · 창 제목 = 탭 이름 · 지금 탭 표시
    + 질문을 끝낸 기계(매매일지 기록 하나)에서 고도리 칸이 열린 꼴을 세 폭으로(첫 화면 · 고도리 칸 · 카드 하나 · 매매일지 · 보유종목) — [6] 1 두 꼴 모두 */
 {
-  const TABS = [['왜 사?', 'why', '#/why'], ['한 달 뒤', 'later', '#/why/later'], ['지난 기록', 'rec', '#/t/pick'], ['돌이', 'dori', '#/dori']]; // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
+  const TABS = [['꽃 될 회사', 'bloom', '#/t/picks'], ['지난 기록', 'rec', '#/t/pick'], ['왜 사?', 'why', '#/why'], ['돌이', 'dori', '#/dori']]; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 한 달 뒤는 왜 사? 안 · 돌이 메뉴 맨 위 · // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
   const q = await page(390, 844);
   if (await first(q, base + '/next/#/') === false) fail('여는 중 남음', '아래 단추 처음 열기');
   const t = await q.evaluate(() => [...document.querySelectorAll('.tabs a')].map(a => [a.textContent.trim(), a.dataset.tab ?? null, a.getAttribute('href')]));
   if (JSON.stringify(t) !== JSON.stringify(TABS)) fail('아래 단추 넷', JSON.stringify(t));
   for (const [nm] of t) if (/\d/.test(nm)) fail('탭 이름에 숫자(규칙 2)', nm);
   // 쪽 이름(창 제목 · 화면 제목) · 지금 단추 — 시황 · 관심 · 보유종목 · 고객센터는 돌이 단추 안(지금 단추 = 돌이) · 첫 화면은 지금 단추 없음
-  for (const [hh, nm, cur] of [['#/', '오늘 장', null], ['#/shorts', '시황', '돌이'], ['#/shorts/1', '시황', '돌이'], ['#/why', '매매일지', '왜 사?'], ['#/why/005930', '매매일지', '왜 사?'], ['#/why/later', '한 달 뒤', '한 달 뒤'], ['#/sub', '관심', '돌이'], ['#/me', '보유종목', '돌이'], ['#/dori', '돌이', '돌이']]) {
+  for (const [hh, nm, cur] of [['#/', '오늘 장', null], ['#/shorts', '시황', '돌이'], ['#/shorts/1', '시황', '돌이'], ['#/why', '매매일지', '왜 사?'], ['#/why/005930', '매매일지', '왜 사?'], ['#/why/later', '한 달 뒤', '왜 사?'], ['#/sub', '관심', '돌이'], ['#/me', '보유종목', '돌이'], ['#/dori', '돌이', '돌이']]) {
     await go(q, hh); await q.waitForTimeout(60);
     const x = await q.evaluate(() => ({title: document.title, cur: document.querySelector('.tabs a[aria-current="page"]')?.textContent.trim() ?? null, h1: document.querySelector('#view h1')?.textContent ?? null}));
     if (x.title !== nm + TITLE_TAIL) fail('창 제목 = 쪽 이름', hh + ' 「' + x.title + '」');

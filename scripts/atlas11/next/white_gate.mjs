@@ -31,7 +31,7 @@ export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 /** 새 첫 화면 파일 — 이것이 저장소에 있으면 흰 첫 화면 문이 켜짐 */
 export const HOME_CSS = 'site/next/home.css';
 export const COLORS = Object.freeze(['#FFFFFF', '#000000', '#6B2A8C', '#007A35', '#1E4FC2']); // 맑은 연초록 판(사장님 2026-10-23 00:01 「맑은 은은한 녹색」) — 바탕 · 글 · 금빛 · 오름 · 내림 // 우주 밤하늘(사장님 2026-10-20 20:27 「올려  우주」 · 잣대 색 4) · // 돌 판(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」) — 바탕 · 글 · 금빛 · 오름 · 내림
-export const TABS = Object.freeze(['왜 사?', '한 달 뒤', '지난 기록', '돌이']); // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
+export const TABS = Object.freeze(['꽃 될 회사', '지난 기록', '왜 사?', '돌이']); // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」 — 꽃 될 회사 · 지난 기록 · 왜 사?(한 달 뒤 포함) · 돌이) · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이
 /** 스위치 한 곳 — 저장소에 site/next/home.css 가 있으면 켜짐 */
 export const whiteOn = (root = ROOT) => fs.existsSync(path.join(root, HOME_CSS));
 
