@@ -274,6 +274,11 @@ export async function homeBlock() {
   if (!TH) { box.append(h('p', {class: 'empty', text: '? 테마 시계 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return box; }
   const S = TH.order.S.map(n => indOf(TH, n)).filter(Boolean), top = S.slice(0, 3);
   box.append(zoneCells(TH)); // 큰 네 칸(2026-10-25 22:54 「어 진짜 싸이트까지 바꿔」) — 칸마다 「›」 · 안내 글은 뺌(테마 칸 글자 200자 안 · check_white ②) · 그 아래 업종 줄 · 한 해 줄 그림은 그대로
+  // 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해 · 샘플 180가지를 만든후 그중 3개를 선택해서 그 3갱에 장단점을 보완한 1개를 만들어」)
+  //   기 = 제목 · 계절 네 칸 · 돌 시계 · 그림 단추 넷(첫 화면) → 승 = 고른 싹이 꽃이 됐을까?(본질 1 · 지난 기록으로 정직하게 앞에) · 싹 자리 모두 보기
+  //   → 전 = ① 왜 사? ② 지난 기록 → 결 = ③ 한 달 뒤(app.js 가 이 둘 뒤에 본질 세 줄을 넣음) → 그 뒤 = 힘이 붙은 곳 · 싹 달력 · 카톡 · 선물 · 숫자 · 읽는 법 · 인사
+  box.append(pickCard()); // 승 ① 고른 싹 회사 기록 달력(사장님 2026-10-22 22:54 「그 기록을 한 달력이 첫화면에 직관적으로 … 신빙성에대해 딱 정직하게 앞에」) — 자료는 첫 그림 뒤에 받음(느린 4G 첫 그림에 안 끼게)
+  box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'}))); // 승 ②
   // 2026-10-21 18:22 「그랴」(18:11 「구글과 잡스라면 … 뭘 고를까?」의 답 — 13번 업종 시세판 위 · 1번 두 줄 견주기 아래) — 카드 안: 업종 줄 셋 → 한 해 줄 그림(저절로 1 · 2 · 3) → 모두 보기 → 숫자는 「자세히」 안(접음) → 시계 읽는 법 → 처음이세요?
   const rows = top.map((i, k) => seasonRow(i, k)); if (rows[0]) rows[0].classList.add('th-now'); // 지금 줄 그림의 업종(처음 = 1번)
   const site = nx()?.absUrl ? nx().absUrl('#/') : location.origin + '/#/'; // 카톡 보내기(사장님 2026-10-25 「진짜모든곳에」 · 12:24 「어」) — 보내는 글 = 이름 · 주소만(오른 % 없음)
@@ -286,8 +291,6 @@ export async function homeBlock() {
   box.append(h('div', {class: 'th-gorow'}, h('a', {class: 'th-calgo', href: '#/t/cal'}, h('span', {text: '싹 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})), kkAll,
     h('a', {class: 'kk-gift th-gift', href: '#/gift', text: '선물 받기'}))); // 한 줄에 둘(390 폭 첫 화면 안에 「카톡 보내기」도 보이게 · 좁으면 두 줄) · 그 밑 「선물 받기」(사장님 2026-10-25 13:40 「곳곳에 선물 받기를 다 집어넣어 놔」)
   if (hasWatch()) { try { const nb = (await import('./theme-watch.js')).noticeBox(TH); if (nb) box.append(nb); } catch { /* 소식 칸 없이 */ } } // 관심 업종 소식(사이트 안 알림 · 2026-10-19 「다해」) — 담은 기기만 받음
-  box.append(h('a', {class: 'th-more', href: '#/t/sprout'}, h('span', {text: `봄(싹) 자리 ${num(TH.count.S)}곳 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
-  box.append(pickCard()); // 고른 싹 회사 기록 달력(사장님 2026-10-22 22:54 「그 기록을 한 달력이 첫화면에 직관적으로 … 신빙성에대해 딱 정직하게 앞에」) — 자료는 첫 그림 뒤에 받음(느린 4G 첫 그림에 안 끼게)
   // 「날마다 찾은 세 곳 달력」 작은 고리는 위 큰 「싹 달력 보기」로 옮김(2026-10-25)
   // 숫자는 접어 둠 — 주황 숫자(사장님 2026-10-20 09:46 — 진짜 싹 · 새로 들어옴 · 싹 자리)와 성적표는 「숫자로 자세히 보기」 안에 그대로
   // 2026-10-22 총정리(사장님 04:09 「결과부터」 · 감사 A7): 맨 위 = 성적표 한 줄(가장 중요한 숫자) → 한 줄에 하나(진짜 싹 · 새로 들어옴 · 싹 자리 · 같은 고리 · 48px 넘게) → 점 넷 뜻

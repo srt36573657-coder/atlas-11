@@ -620,7 +620,11 @@ async function vHomeAll() {
   // 돌 시계 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 어젯밤 22:03 돌 시계 판 ①) — 돌 시계를 네 칸 한가운데(위 싹 · 꽃 / 시계 / 아래 잠잠 · 시듦 · 시계 방향 화살 넷)
   //   그 아래 그림 단추 넷(꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터) — 그 밑은 예전 그대로(본질 · 지난 기록 · 찾기 칸 · 바로 가기 · 진화)
   const zn = theme.querySelector?.('.th-zones'); if (zn) { zn.append(clock); zn.after(homeApps()); } // 그림 단추는 고리 바로 아래(테마 시계 칸 안 · 첫 화면 글자는 테마 칸 200자 셈)
-  const nodes = [hd, say, ...(zn ? [] : [clock]), theme, story, thumb, short, evoLine()];
+  // 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 본보기 180가지 → 셋 → 보완한 하나) — 본질 세 줄(전 ① 왜 사? ② 지난 기록 · 결 ③ 한 달 뒤)을
+  //   승(고른 싹이 꽃이 됐을까? · 싹 자리 모두 보기) 바로 뒤로 — 힘이 붙은 곳 · 싹 달력 · 카톡 · 선물 · 숫자 · 읽는 법 · 인사는 그 뒤(theme-home.js homeBlock 차례) · 칸이 없으면 예전 자리
+  const seung = theme.querySelector?.('a.th-more') ?? theme.querySelector?.('a.th-pkhome') ?? null;
+  if (seung) seung.after(story);
+  const nodes = [hd, say, ...(zn ? [] : [clock]), theme, ...(seung ? [] : [story]), thumb, short, evoLine()];
   await clockDecoded(clock, 300); // 돌 시계 그림이 풀린 뒤 한 번에 그림(길어야 0.3초 — 늦게 툭 나타남 0) // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
   return {title: '오늘 장', nodes};
 }
