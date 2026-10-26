@@ -377,6 +377,8 @@ html.white.clock.clock.clock .s-apb svg { position: relative; display: block; wi
 html.white.clock.clock.clock .s-apl { font-size: 17px; font-weight: 800; line-height: 1.2; text-align: center; white-space: nowrap; color: #F2F3F3; text-shadow: 0 1px 3px #171615; }
 html.white.clock.clock.clock .s-badge { position: absolute; z-index: 1; top: -8px; left: 50%; margin-left: 18px; width: max-content; min-width: 30px; height: 30px; padding: 0 6px; box-sizing: border-box; white-space: nowrap; border-radius: 15px; background: #FFFFFF; color: #152D30; border: 2px solid #171615; font-size: 17px; font-weight: 900; line-height: 26px; text-align: center; }
 html.white.clock.clock.clock .s-app:active .s-apb { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #171615; }
+/* 영어 이름은 넷 다 칸보다 길어 한 줄이면 서로 겹침(Find a company · Sprout calendar) — 낱말 사이에서 두 줄로 */
+html.white.clock.clock.clock.en .s-apl { white-space: normal; word-break: keep-all; overflow-wrap: normal; line-height: 1.1; }
 @media (max-width: 359px) {
   html.white.clock.clock.clock .th-zones { column-gap: 12px; }
   html.white.clock.clock.clock .th-zones .th-zc { min-height: 84px; grid-template-columns: 52px minmax(0, 1fr); padding: 4px 8px 4px 2px; }
