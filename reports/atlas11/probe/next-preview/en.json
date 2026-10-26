@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-26T03:12:03.690Z",
+ "at": "2026-10-26T03:24:21.345Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -15,21 +15,21 @@
  "modules": true,
  "modFiles": {
   "past": true,
-  "rivals": true,
-  "range": true,
   "grow": true,
-  "cal": true,
+  "range": true,
   "surge": true,
+  "cal": true,
+  "rivals": true,
   "cond": true,
   "talk": true,
   "up": true,
-  "info": true,
   "time": true,
+  "info": true,
   "x": true,
+  "co": true,
   "chx": true,
   "today": true,
   "why": true,
-  "co": true,
   "gdr": true,
   "share": true,
   "hold": true,
@@ -48,8 +48,8 @@
    "@newwin": 15
   }
  },
- "seconds": 373,
- "secondsSum": 2476,
+ "seconds": 358,
+ "secondsSum": 2450,
  "shards": [
   {
    "shard": "1/7",
@@ -58,10 +58,10 @@
    "routes": 1943,
    "screens": 1944,
    "mine": 1943,
-   "seconds": 341,
+   "seconds": 355,
    "secs": {
     "open": 0.2,
-    "routes": 340.6
+    "routes": 354
    }
   },
   {
@@ -71,10 +71,10 @@
    "routes": 1948,
    "screens": 1948,
    "mine": 1943,
-   "seconds": 373,
+   "seconds": 358,
    "secs": {
     "open": 0.3,
-    "routes": 371
+    "routes": 355.9
    }
   },
   {
@@ -84,10 +84,10 @@
    "routes": 1943,
    "screens": 1943,
    "mine": 1943,
-   "seconds": 348,
+   "seconds": 350,
    "secs": {
-    "open": 0.2,
-    "routes": 346.2
+    "open": 0.3,
+    "routes": 349.2
    }
   },
   {
@@ -97,23 +97,23 @@
    "routes": 1943,
    "screens": 1943,
    "mine": 1943,
-   "seconds": 351,
+   "seconds": 350,
    "secs": {
     "open": 0.3,
-    "routes": 348
+    "routes": 348.7
    }
   },
   {
    "shard": "5/7",
-   "ok": false,
-   "fails": 1,
+   "ok": true,
+   "fails": 0,
    "routes": 1943,
    "screens": 1982,
    "mine": 1943,
-   "seconds": 372,
+   "seconds": 354,
    "secs": {
-    "open": 0.3,
-    "routes": 371.3
+    "open": 0.2,
+    "routes": 353.5
    }
   },
   {
@@ -123,11 +123,11 @@
    "routes": 1928,
    "screens": 1950,
    "mine": 1929,
-   "seconds": 353,
+   "seconds": 346,
    "secs": {
     "open": 0.3,
-    "routes": 348.6,
-    "newwin": 2.6
+    "routes": 343.2,
+    "newwin": 2.4
    }
   },
   {
@@ -137,12 +137,12 @@
    "routes": 1863,
    "screens": 2021,
    "mine": 1864,
-   "seconds": 338,
+   "seconds": 337,
    "secs": {
     "open": 0.2,
-    "routes": 325.9,
-    "act": 5.7,
-    "edge": 5.6,
+    "routes": 323.7,
+    "act": 6,
+    "edge": 5.7,
     "grammar": 0
    }
   }
@@ -167,41 +167,23 @@
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412
  },
- "missing": 1,
+ "missing": 0,
  "avatarLetters": 0,
- "kinds": {
-  "사전에 없는 틀": 1
- },
- "fails": 1,
+ "kinds": {},
+ "fails": 0,
  "own": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
  "mod": {
-  "fails": 1,
-  "missing": 1,
+  "fails": 0,
+  "missing": 0,
   "leftover": 0
  },
- "missingList": [
-  {
-   "key": "③ 종가가 비었거나 하루에 {n}% 넘게 바뀐 날(주식 수 바뀜일 수 있음)",
-   "ex": "③ 종가가 비었거나 하루에 30% 넘게 바뀐 날(주식 수 바뀜일 수 있음)",
-   "at": "[모듈] #/cond"
-  }
- ],
- "all": [
-  {
-   "kind": "사전에 없는 틀",
-   "what": "③ 종가가 비었거나 하루에 {n}% 넘게 바뀐 날(주식 수 바뀜일 수 있음)  ← 「③ 종가가 비었거나 하루에 30% 넘게 바뀐 날(주식 수 바뀜일 수 있음)」",
-   "ex": null,
-   "at": [
-    "[모듈] #/cond"
-   ],
-   "n": 1
-  }
- ],
+ "missingList": [],
+ "all": [],
  "truncated": false,
  "problems": [],
- "ok": false
+ "ok": true
 }
