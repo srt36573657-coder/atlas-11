@@ -9546,6 +9546,8 @@
   "업종이 꽃이 된 지 {n}일이 넘었으면 빼요": "Leave out if the industry bloomed more than {n} days ago",
   "업종이 한 달 동안 시장보다 {n}% 넘게 더 올랐으면 빼요": "Leave out if the industry beat the market by more than {n}% over a month",
   "업종이 식었어요": "The industry cooled",
-  "회사만 덜 올랐어요": "Only the company lagged"
+  "회사만 덜 올랐어요": "Only the company lagged",
+  "꽃 될 회사": "Bloom picks",
+  "바로 가기 넷": "Four shortcuts"
  }
 }

@@ -9,7 +9,7 @@ import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
 import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
 import {homeBlock as themeHome, APP_ICON} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
-import {stoneClock, clockDecoded} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
+import {stoneClock, clockDecoded, miniClock} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -626,9 +626,10 @@ async function vHomeAll() {
 /** 첫 화면 그림 단추 넷(돌 시계 판 · 2026-10-26) — 꽃 될 회사(오늘 고른 회사 수 · 첫 그림 뒤에 채움) · 회사 찾기 · 싹 달력 · 고객센터 */
 function homeApps() {
   const badge = h('span', {class: 's-badge', hidden: true});
-  const app = (label, href, kind, bg, extra = null) => h('a', {class: 's-app', href, style: `--abg:${bg}`}, extra, h('span', {class: 's-apb'}, APP_ICON[kind]()), h('span', {class: 's-apl', text: label}));
+  // 색은 칸 이름(s-app-bloom …)으로 clock.css 에서 — 글 속 style 은 사이트 보안 규칙(CSP style-src 'self')이 막음(전체 검사 3/11 화면 오류 · 틀림 장부 124)
+  const app = (label, href, kind, extra = null) => h('a', {class: 's-app s-app-' + kind, href}, extra, h('span', {class: 's-apb'}, APP_ICON[kind]()), h('span', {class: 's-apl', text: label}));
   const nav = h('nav', {class: 's-apps', 'aria-label': '바로 가기 넷'},
-    app('꽃 될 회사', '#/t/pick', 'bloom', '#E2E5E6', badge), app('회사 찾기', '#/find', 'search', '#4B939D'), app('싹 달력', '#/t/cal', 'cal', '#8CA3A7'), app('고객센터', '#/help', 'help', '#428189'));
+    app('꽃 될 회사', '#/t/pick', 'bloom', badge), app('회사 찾기', '#/find', 'search'), app('싹 달력', '#/t/cal', 'cal'), app('고객센터', '#/help', 'help'));
   setTimeout(() => { fetch('/next/data/theme-bloom.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).then(B => {
     const n = Array.isArray(B?.today?.inds) ? B.today.inds.reduce((a, i) => a + (Array.isArray(i?.co) ? i.co.length : 0), 0) : 0;
     if (n > 0) { badge.textContent = num(n); badge.hidden = false; }
@@ -1397,6 +1398,9 @@ function stoneArt(k, a, root) {
   if (n === 'shorts') { const sh = root.querySelector('.shorts'); if (sh && !sh.querySelector('.st-art')) sh.append(h('img', {class: 'st-art st-abs', src: '/media/stone/shorts.svg', alt: '', width: 96, height: 77, decoding: 'async'})); return; } // 시황은 큰 제목이 없어 오른쪽 위 빈 자리에
   const t = n ? root.querySelector('h1') : null; if (!t || t.querySelector('.st-art')) return;
   t.classList.add('st-h'); if (k === 'why') t.classList.add('st-why'); if (k === 'why' || k === 'jinhwa') t.classList.add('st-sm'); // 작은 그림 — 매매일지 답 셋 · 진화 첫 카드 그림이 한 화면에 들게(check_why [5] 3 · check_jinhwa)
+  if (n === 'company') { // 회사 쪽은 작은 돌 시계 + 이 회사 업종 자리 점(사장님 2026-10-26 08:16 「디자인 이렇게 하라고」 · 돌 시계 판 ④) — 자리를 못 셌으면 점 없이
+    const z = root.querySelector('a.wz[data-z]')?.getAttribute('data-z'); const mc = miniClock(/^[SBWQ]$/.test(z ?? '') ? 'd' + z : null); mc.classList.add('st-art'); t.append(mc); return;
+  }
   t.append(h('img', {class: 'st-art', src: '/media/stone/' + n + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
 }
 window.addEventListener('hashchange', e => { try { globalThis.NX_FROM = new URL(e.oldURL).hash; } catch { /* 옛 주소 못 읽음 */ } }); // 바로 전 길 — 고객센터 한마디의 「보던 화면 이름」(p-help.js · 첫 마디만)

@@ -291,9 +291,25 @@ html.white.clock.clock.clock .top .tbtn, html.white.clock.clock.clock .top .ibtn
 html.white.clock.clock.clock .top .ibtn svg, html.white.clock.clock.clock .top .tbtn svg { color: #171615; stroke: currentColor; }
 html.white.clock.clock.clock .top #giftBtn { background: #AAC1C5; }
 /* 아래 단추 줄 — 밝은 회청 반투명 띠 · 흰 글 */
-html.white.clock.clock.clock .tabs { background: rgba(28, 38, 39, .96); border-top: 2px solid rgba(242, 243, 243, .3); }
+html.white.clock.clock.clock .tabs { background: #1C2627; border-top: 2px solid rgba(242, 243, 243, .3); }
 html.white.clock.clock.clock .tabs a { color: #F2F3F3; }
 html.white.clock.clock.clock .tabs a[aria-current="page"], html.white.clock.clock.clock .tabs a.on { color: #1FB8CD; }
+/* 아래 단추 줄 — 돌 시계 판 아래 줄처럼 그림을 둥근 네모(검은 테 · 어긋난 그림자 · 청록 단) 안에 · 지금 쪽은 하늘청록 */
+html.white.clock.clock.clock .tabs a { gap: 3px; color: #F2F3F3; }
+html.white.clock.clock.clock .tabs a .ic { width: 34px; height: 34px; padding: 5px; box-sizing: border-box; border-radius: 10px; border: 2px solid #171615; background: var(--tbg, #3E737A); color: #F2F3F3; box-shadow: 2px 2px 0 #171615; }
+html.white.clock.clock.clock .tabs a.plus .ic { width: 38px; height: 38px; padding: 6px; color: #F2F3F3; }
+html.white.clock.clock.clock .tabs a:nth-child(1) { --tbg: #4E99A3; }
+html.white.clock.clock.clock .tabs a:nth-child(2) { --tbg: #428189; }
+html.white.clock.clock.clock .tabs a:nth-child(3) { --tbg: #3E737A; }
+html.white.clock.clock.clock .tabs a:nth-child(4) { --tbg: #356369; }
+html.white.clock.clock.clock .tabs a:nth-child(5) { --tbg: #2D565B; }
+html.white.clock.clock.clock .tabs a[aria-current="page"] { color: #FFFFFF; font-weight: 800; }
+html.white.clock.clock.clock .tabs a[aria-current="page"] .ic { --tbg: #1FB8CD; color: #152D30; }
+html.white.clock.clock.clock .top .logo { font-weight: 900; letter-spacing: 0; }
+/* 회사 쪽 「이 회사로 왜 사?」 — 돌 시계 판 ④ 큰 하늘청록 단추(검은 테 · 어긋난 그림자 두 겹 · 큰 글) — 한 화면에 빛나는 곳 하나 */
+html.white.clock.clock.clock a.why-go.cw { border-radius: 16px; background: #1FB8CD; color: #152D30; outline: 3px solid #171615; outline-offset: -3px; box-shadow: 4px 4px 0 #171615, 8px 8px 0 #FFFFFF; } /* 크기 · 자리는 그대로(테 = outline · 그림자는 자리 안 먹음 — 아래 단추 자리가 바뀌면 next_check 선 끌기가 위 막대를 누름) */
+html.white.clock.clock.clock a.why-go.cw b { color: #152D30; font-weight: 900; }
+html.white.clock.clock.clock a.why-go.cw i { color: #152D30; font-weight: 900; }
 /* 첫 화면 네 칸 — 그림처럼 싹 하늘청록 · 꽃 밝은 회청 · 잠잠 짙은 청록 · 시듦 회색 · 검은 테 · 어긋난 그림자 · 망점 */
 html.white.clock.clock.clock .th-zc { border: 3px solid #171615; box-shadow: 5px 5px 0 #171615; isolation: isolate; overflow: hidden; }
 html.white.clock.clock.clock .th-zc::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: radial-gradient(circle, var(--zdot) 0 34%, transparent 39%); background-size: 9px 9px; opacity: .55; }
@@ -333,6 +349,10 @@ html.white.clock.clock.clock .th-ar-l { left: 2px; top: 50%; margin-top: -16px; 
 html.white.clock.clock.clock .s-apps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 18px 0 44px; }
 html.white.clock.clock.clock .s-app { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; min-height: 48px; color: #F2F3F3; text-decoration: none; }
 html.white.clock.clock.clock .s-apb { position: relative; display: block; width: 66px; height: 66px; border-radius: 16px; border: 2.5px solid #171615; background: var(--abg); box-shadow: 4px 4px 0 #171615; overflow: hidden; }
+html.white.clock.clock.clock .s-app-bloom { --abg: #E2E5E6; }
+html.white.clock.clock.clock .s-app-search { --abg: #4B939D; }
+html.white.clock.clock.clock .s-app-cal { --abg: #8CA3A7; }
+html.white.clock.clock.clock .s-app-help { --abg: #428189; }
 html.white.clock.clock.clock .s-apb::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(23, 22, 21, .16) 28%, transparent 33%); background-size: 6px 6px; }
 html.white.clock.clock.clock .s-apb svg { position: relative; display: block; width: 100%; height: 100%; }
 html.white.clock.clock.clock .s-apl { font-size: 17px; font-weight: 800; line-height: 1.2; text-align: center; white-space: nowrap; color: #F2F3F3; text-shadow: 0 1px 3px #171615; }
@@ -353,10 +373,12 @@ html.white.clock.clock.clock .s-app:active .s-apb { transform: translate(2px, 2p
   html.white.clock.clock.clock .s-badge { margin-left: 12px; }
 }
 /* 쪽 제목 — 흰 큰 글 + 청록 어긋난 그림자(돌 시계 판 ② 「싹 37곳」 제목 꼴) */
-html.white.clock.clock.clock .th-hd .th-h1 { color: #FFFFFF; font-weight: 900; text-shadow: 3px 3px 0 #3E737A; }
+html.white.clock.clock.clock .th-hd .th-h1, html.white.clock.clock.clock h1.st-h { color: #FFFFFF; font-weight: 900; text-shadow: 3px 3px 0 #3E737A; }
 /* 다른 쪽 제목 옆 작은 돌 시계(stone-clock.js miniClock — 옛 돌 그림 자리 96 × 77 → 104 × 83) */
 html.white.clock.clock.clock .th-hd .th-mclk { flex: none; width: 104px; height: 83px; margin-left: 8px; }
 @media (max-width: 359px) { html.white.clock.clock.clock .th-hd .th-mclk { width: 84px; height: 67px; } }
+html.white.clock.clock.clock .st-h .th-mclk.st-art { flex: none; width: 104px; height: 83px; }
+@media (max-width: 359px) { html.white.clock.clock.clock .st-h .th-mclk.st-art { width: 84px; height: 67px; } }
 /* 영어 — 「industries」가 한 낱말 그대로 숫자 아래 한 줄(가운데서 끊기지 않게) */
 html.white.clock.clock.clock.en .th-zones .th-zn { flex-direction: column; align-items: flex-start; row-gap: 0; }
 html.white.clock.clock.clock.en .th-zones .th-zu { display: block; white-space: nowrap; overflow-wrap: normal; word-break: normal; font-size: 17px; line-height: 1.1; }

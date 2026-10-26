@@ -127,6 +127,7 @@ const knownHref = h => {
   let mm = /^#\/(surge(?:\/(?:10|20|30|40))?|cal|cond(?:\/[a-z0-9]+-[a-z0-9]+-[a-z0-9]+)?|talk|up|time|info|today)$/.exec(h); if (mm) return READY.has(mm[1].split('/')[0]);
   if (h === '/privacy.html#en') return true; // 영어 화면의 처리방침 고리 = 그 쪽 영어 칸(총정리 2026-10-22 D23 — app.js enPrivacy · 한국어 화면은 아래 /privacy.html 그대로)
   if (h === '#/gift' || h === '/privacy.html' || h === 'sms:01090117377' || h === 'tel:01090117377') return true; // 상품권 방(사장님 2026-10-22 03:38 · 위 막대 금빛 선물 단추 · p-gift.js) · 그 쪽 맨 밑 개인정보 처리방침 고리 · 다 본 뒤 나오는 문자 · 전화(사장님 번호 — 소개 쪽 상품권 칸과 같음)
+  if (h === '#/help') return true; // 고객센터(p-help.js · VIEWS.help) — 첫 화면 그림 단추 「고객센터」(사장님 2026-10-26 08:16 「디자인 이렇게 하라고」 · 돌 시계 판)
   if (h === '#/admin' || h === '#/game') return true; // 가짜 돈 연습(2026-10-19 15:04) // 관리자 화면(사장님 열쇠 기기 보유종목 바로 가기 · 2026-10-19 13:54)
   if ((mm = /^#\/t\/(hello|how|sprout|sprout\/real|sprout\/new|bloom|wilt|today|alert|cal|pick)$/.exec(h))) return true; // pick = 꽃 핀 업종 안의 싹 회사(사장님 2026-10-22 16:56 · p-theme.js pPick) // cal = 싹 달력(사장님 2026-10-22 11:55 「1 · 2 · 3 … 달력으로 · 기록이 없으면 하수」 · p-theme.js pCal) // 테마 시계 쪽(사장님 2026-10-19 16:46 「36장」 · 16:54 「올려」 · p-theme.js — check_theme 이 쪽마다 맞대 봄 · alert = 26 알림(관심 #/sub 다음 · 2026-10-19 20:40 「다해」))
   if ((mm = /^#\/t\/i\/([^/]+)(?:\/(?:path|spread|big|co|near))?$/.exec(h))) { let nm = mm[1]; try { nm = decodeURIComponent(nm); } catch { return false; } return (core.industries ?? []).some(i => i.name === nm); } // 업종 여섯 쪽 — 업종 이름이 자료에 있어야
@@ -415,7 +416,9 @@ for (const w of [320, 360, 390]) {
         : id === 'surge' ? top((surge?.members || []).filter(m => m && !miss.has(m.c) && Number.isFinite(m.r5)), (p, q) => q.r5 - p.r5)?.d1
         : id === 'pick' ? (home?.s365?.list || []).filter(([k]) => CO[k])[0]?.[1]
         : LEADS?.ls?.length ? lineDay(CO[LEADS.ls[0][0]].l) : null; // 대장주 = 싹 먼저 차례 맨 앞(사장님 2026-10-22 09:41 — 옛 기대: 5일 많이 오른 맨 앞)
-      if (!c.bk || !/[+−]?\d/.test(c.dur) || (want != null && !c.big.includes(P(want)))) fail('칩 큰 숫자 = 마지막 날 하루 · 기간은 작게([6] 8)', `${id} 큰 「${c.big}」 기대 ${want == null ? '?' : P(want)} · 작은 칸 「${c.dur}」`);
+      // 닷새 동안 오른 업종이 하나도 없는 날(2026-10-26 월요일 아침 진짜 자료 — 전체 검사 3/11 rise 큰 「」)은 큰 카드 없이 빈 글 한 줄이 맞음(app.js chip 'rise' · 「닷새 동안 오른 업종이 없어요.」)
+      if (id === 'rise' && !(core.rise?.list?.length)) { if (c.cards || !/닷새 동안 오른 업종이 없어요/.test(c.t)) fail('오른 업종이 없는 날 = 큰 카드 없이 빈 글', `rise 카드 ${c.cards} · 빈 글 ${/닷새 동안 오른 업종이 없어요/.test(c.t)}`); }
+      else if (!c.bk || !/[+−]?\d/.test(c.dur) || (want != null && !c.big.includes(P(want)))) fail('칩 큰 숫자 = 마지막 날 하루 · 기간은 작게([6] 8)', `${id} 큰 「${c.big}」 기대 ${want == null ? '?' : P(want)} · 작은 칸 「${c.dur}」`);
     }
     // 싹 먼저 차례(사장님 2026-10-22 09:41 「어그래」) — 업종 칩 큰 카드 = theme.json order.S 맨 앞 · 대장주 칩 큰 카드 = 싹 업종에 대장주가 있으면 싹 업종의 대장주 · 쪽 글에 「많이 오른 차례」 없음
     if (id === 'ind' && SPR.size) {
