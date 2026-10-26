@@ -1,11 +1,34 @@
 {
- "made": "2026-10-26T06:14:54.448Z",
+ "made": "2026-10-26T14:38:17.195Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
   844
  ],
  "shots": [
+  {
+   "name": "gift",
+   "hash": "#/gift",
+   "files": [
+    "reports/atlas11/probe/live-shot/gift-390.png",
+    "reports/atlas11/probe/live-shot/gift-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/gift",
+    "title": "상품권 · 돌이",
+    "h1": "상품권",
+    "kakaoText": 0,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 2248
+   },
+   "err": null
+  },
   {
    "name": "home",
    "hash": "#/",
@@ -26,52 +49,6 @@
     "graphs": 0,
     "calgo": true,
     "height": 2574
-   },
-   "err": null
-  },
-  {
-   "name": "dori",
-   "hash": "#/dori",
-   "files": [
-    "reports/atlas11/probe/live-shot/dori-390.png",
-    "reports/atlas11/probe/live-shot/dori-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/dori",
-    "title": "돌이 · 돌이",
-    "h1": "돌이",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1062
-   },
-   "err": null
-  },
-  {
-   "name": "later",
-   "hash": "#/why/later",
-   "files": [
-    "reports/atlas11/probe/live-shot/later-390.png",
-    "reports/atlas11/probe/live-shot/later-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/why/later",
-    "title": "한 달 뒤 · 돌이",
-    "h1": "한 달 뒤",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1062
    },
    "err": null
   }
