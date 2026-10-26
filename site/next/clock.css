@@ -167,10 +167,10 @@ html:where(.white.clock) .wy-date { border: 1px solid var(--hair2, #3E737A); }
 html:where(.white.clock) .wy-chip { border: 1px solid var(--hair2, #3E737A); }
 html:where(.white.clock) .wy-num { border: 1px solid var(--hair2, #3E737A); }
 html:where(.white.clock) .wy-vg b { color: #1FB8CD; }
-html:where(.white.clock) .wy-vy b { color: #F2F3F3; }
+html:where(.white.clock) .wy-vy b { color: #D6D5D4; }
 html:where(.white.clock) .wy-vr b { color: #E2E5E6; }
 html:where(.white.clock) span.wy-vg { color: #1FB8CD; }
-html:where(.white.clock) span.wy-vy { color: #F2F3F3; }
+html:where(.white.clock) span.wy-vy { color: #D6D5D4; }
 html:where(.white.clock) span.wy-vr { color: #E2E5E6; }
 html:where(.white.clock) .wy-rec { border: 1px solid var(--hair2, #3E737A); }
 html:where(.white.clock) .wy-fold > summary { border: 1px solid var(--hair2, #3E737A); }
@@ -289,10 +289,10 @@ html.white.clock.clock.clock {
   --hair: #8CA3A7; --hair2: #8CA3A7; --line: #2D393A; --hair-soft: #253233; --seam: #2D393A; --press: #2D393A; --lift: #1C2627;
   --ink: #F2F3F3; --ink-hi: #FFFFFF; --sub: #E2E5E6; --mute: #C8CDCE; --flat: #C8CDCE;
   --violet-ink: #F2F3F3; --violet-wash: #1C2627; --violet-line: #8CA3A7; --violet-glow: #203235;
-  --gold: #1FB8CD; --gold-wash: #203235; --gold-line: #1FB8CD;
+  --gold: #D6D5D4; --gold-wash: #203235; --gold-line: #1FB8CD;
   --up: #1FB8CD; --down: #AAC1C5; --up-ink: #1FB8CD; --down-ink: #AAC1C5; --up-bg: #1FB8CD; --down-bg: #428189;
   --up-fill: rgba(31, 184, 205, .2); --down-fill: rgba(170, 193, 197, .18); --up-fade: rgba(31, 184, 205, .07); --down-fade: rgba(170, 193, 197, .06);
-  --lacquer: #152D30; --lacquer-ink: #F2F3F3; --lacquer-sub: #E2E5E6; --lacquer-gold: #1FB8CD;
+  --lacquer: #152D30; --lacquer-ink: #F2F3F3; --lacquer-sub: #E2E5E6; --lacquer-gold: #D6D5D4;
   --moon: #F2F3F3; --moonrow: #203235;
   --m4-band: #1C2627; --m4-line: #6A8184; --m4-soft: #6A8184;
   background: #152D30;
@@ -387,7 +387,7 @@ html.white.clock.clock.clock .s-boot { margin-top: 178px; }
 /* 밝게 바뀐 단추(옛 검은 단추) 위 작은 강조 글은 짙게 — 하늘청록은 밝은 바탕 위 대비가 모자람 */
 html.white.clock.clock.clock .th-next small, html.white.clock.clock.clock .th-nx small { color: #152D30; }
 /* 편지 띠(보유종목 아래 「돌이 주식 격언」) — 짙은 띠라 밝은 테(단추 테 대비 3 · check_white ⑤) */
-html.white.clock.clock.clock a.hello.m4-letter { border: 2px solid #8CA3A7; }
+html.white.clock.clock.clock a.hello.m4-letter { outline: 2px solid #8CA3A7; outline-offset: -2px; } /* 테(border)는 글 시작을 2px 밀어 왼쪽 줄이 늘어남(check_hold ⑭) — 자리를 안 먹는 outline 으로 */
 /* 그림 속 검은 · 흰 칠(svg 칠 속성) — 돌 시계 바늘은 그대로 */
 html.white.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { fill: #F2F3F3; }
 html.white.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { stroke: #F2F3F3; }

@@ -115,6 +115,7 @@ def fam(rgb):
 # 청록 판 색(고르신 100가지 안 · docs/design/palette-2026-10-25/perplexity-bottom-100.json)
 INK, INK2, SUB = '#F2F3F3', '#E2E5E6', '#AAC1C5'
 CYAN = '#1FB8CD'
+GOLD = '#D6D5D4'  # 금빛 글(뜻 있는 곳 · 「?」) — 고르신 100가지 안 · 오름(하늘청록) · 내림(#AAC1C5) · 보통 글(#F2F3F3)과 다른 색
 def gray_map(L, role):
     if role == 'shadow':
         return None if L < .5 else '#171615'
@@ -139,8 +140,8 @@ def map_one(rgb, role):
     if f == 'gray': return gray_map(lum(rgb), role)
     if f == 'green': return CYAN
     if f == 'blue': return SUB if role in ('text', 'border', 'stroke') else '#428189'
-    if f == 'purple': return '#FFFFFF' if role == 'text' else SUB
-    if f == 'yellow': return INK if role == 'text' else '#3C4E51'
+    if f == 'purple': return GOLD if role == 'text' else SUB  # 흰 판 금빛(보라) 글 = 청록 판 금빛(은빛 회색) — 오름 하늘청록 · 내림 밝은 회청과 다른 색(check_surge 색 가름)
+    if f == 'yellow': return GOLD if role == 'text' else '#3C4E51'
     return INK2 if role == 'text' else '#4F666A'  # 빨강 쪽(드묾)
 
 def fmt(hexc, a):
@@ -269,10 +270,10 @@ html.white.clock.clock.clock {
   --hair: #8CA3A7; --hair2: #8CA3A7; --line: #2D393A; --hair-soft: #253233; --seam: #2D393A; --press: #2D393A; --lift: #1C2627;
   --ink: #F2F3F3; --ink-hi: #FFFFFF; --sub: #E2E5E6; --mute: #C8CDCE; --flat: #C8CDCE;
   --violet-ink: #F2F3F3; --violet-wash: #1C2627; --violet-line: #8CA3A7; --violet-glow: #203235;
-  --gold: #1FB8CD; --gold-wash: #203235; --gold-line: #1FB8CD;
+  --gold: #D6D5D4; --gold-wash: #203235; --gold-line: #1FB8CD;
   --up: #1FB8CD; --down: #AAC1C5; --up-ink: #1FB8CD; --down-ink: #AAC1C5; --up-bg: #1FB8CD; --down-bg: #428189;
   --up-fill: rgba(31, 184, 205, .2); --down-fill: rgba(170, 193, 197, .18); --up-fade: rgba(31, 184, 205, .07); --down-fade: rgba(170, 193, 197, .06);
-  --lacquer: #152D30; --lacquer-ink: #F2F3F3; --lacquer-sub: #E2E5E6; --lacquer-gold: #1FB8CD;
+  --lacquer: #152D30; --lacquer-ink: #F2F3F3; --lacquer-sub: #E2E5E6; --lacquer-gold: #D6D5D4;
   --moon: #F2F3F3; --moonrow: #203235;
   --m4-band: #1C2627; --m4-line: #6A8184; --m4-soft: #6A8184;
   background: #152D30;
@@ -367,7 +368,7 @@ html.white.clock.clock.clock .s-boot { margin-top: 178px; }
 /* 밝게 바뀐 단추(옛 검은 단추) 위 작은 강조 글은 짙게 — 하늘청록은 밝은 바탕 위 대비가 모자람 */
 html.white.clock.clock.clock .th-next small, html.white.clock.clock.clock .th-nx small { color: #152D30; }
 /* 편지 띠(보유종목 아래 「돌이 주식 격언」) — 짙은 띠라 밝은 테(단추 테 대비 3 · check_white ⑤) */
-html.white.clock.clock.clock a.hello.m4-letter { border: 2px solid #8CA3A7; }
+html.white.clock.clock.clock a.hello.m4-letter { outline: 2px solid #8CA3A7; outline-offset: -2px; } /* 테(border)는 글 시작을 2px 밀어 왼쪽 줄이 늘어남(check_hold ⑭) — 자리를 안 먹는 outline 으로 */
 /* 그림 속 검은 · 흰 칠(svg 칠 속성) — 돌 시계 바늘은 그대로 */
 html.white.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { fill: #F2F3F3; }
 html.white.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { stroke: #F2F3F3; }
