@@ -13,6 +13,8 @@ const require = createRequire(String(arg('--pw', process.env.PW_DIR || '/opt/nod
 const {chromium} = require('playwright');
 const B = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, '');
 const NEXT = arg('--path', /127\.0\.0\.1|localhost/.test(B) ? '/next/' : '/'); // 시험 서버 = /next/ · 진짜 사이트 = /
+/** 화면에 전화번호가 보이나 — 예전 전화번호 칸 보기 글(010-1234-5678)은 셈 밖 · 진짜 번호를 이 파일에 적지 않음(사장님 2026-10-26 16:16 · 번호는 저장소 cfg/contact 에만) */
+const PHONE_SEEN = t => /01[016789]-?\d{3,4}-?\d{4}/.test(String(t ?? '').replace(/010-1234-5678/g, ''));
 const fails = [], fail = (m, x = '') => { fails.push(m + (x ? ' — ' + x : '')); console.log('✗ ' + m, x); }, ok = m => console.log('✓ ' + m);
 const EXE = process.env.PW_EXE || (process.env.PW_DIR ? null : '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell');
 const browser = await chromium.launch({...(EXE ? {executablePath: EXE} : {}), args: ['--autoplay-policy=user-gesture-required']});
@@ -59,7 +61,7 @@ for (const [k, q] of Object.entries(P)) for (const [w, h] of [[390, 844], [320, 
   const a = await look(p, q), n0 = fails.length;
   if (a.missing) { fail(`${q.name} ${w} 칸 없음`, a.missing.join(' ')); await ctx.close(); continue; }
   if (a.got !== true) fail(`${q.name} ${w} 처음엔 「상품권 받기」 칸이 숨어야 함`);
-  if (/010-9011-7377/.test(a.text)) fail(`${q.name} ${w} 처음엔 번호가 안 보여야 함`);
+  if (PHONE_SEEN(a.text)) fail(`${q.name} ${w} 처음엔 번호가 안 보여야 함`);
   if (!/먼저 알려 드려요/.test(a.text) || !/상품권은 우주 영상 1분을 끝까지 본 분께만 드려요/.test(a.text)) fail(`${q.name} ${w} 약속 알림`, a.text.slice(0, 120));
   if (!q.stepRe.test(a.text.replace(/\s+/g, ' '))) fail(`${q.name} ${w} 걸음 「영상을 끝까지」`);
   if (a.steps !== q.steps) fail(`${q.name} ${w} 걸음 수`, `${a.steps} ≠ ${q.steps}`);
@@ -101,7 +103,7 @@ async function watch(k) {
     ? await p.evaluate(() => ({claim: document.querySelector('#view .gf-claim')?.textContent?.trim() ?? '', formHidden: !!document.querySelector('#view .gf-form')?.hidden, callHidden: !!document.querySelector('#view .gf-callbox')?.hidden, sms: document.querySelectorAll('#view a[href^="sms:"], #view a[href^="tel:"]').length}))
     : await p.evaluate(() => ({go: document.querySelector('.hp-sms')?.getAttribute('href') ?? '', sms: document.querySelectorAll('a[href^="sms:"], a[href^="tel:"]').length}));
   // 2026-10-26 16:14 「… 상푸권 주세요 버튼 만들어그렣게 반자동으로 해놓아」 · 16:16 「일단 내 번호 남겨」 — 상품권 방 = 「상품권 주세요」 한 단추(번호 칸 · 예전 전화번호 칸은 숨김) · 친구가 모자란 기기는 눌러도 번호가 안 나옴
-  if (/010-9011-7377|010-0000-0000/.test(end.text) || !(k === 'app' ? /상품권 주세요/ : /상품권 받기/).test(end.text) || fin.sms || (k === 'app' ? !(fin.claim === '상품권 주세요' && fin.formHidden && fin.callHidden) : fin.go !== '/#/gift')) fail(`${q.name} 끝난 뒤 전화번호 칸 · 동의 · 「상품권 받기」(문자 · 전화 번호 없음)`, JSON.stringify(fin) + ' ' + end.text.slice(-160));
+  if (PHONE_SEEN(end.text) || !(k === 'app' ? /상품권 주세요/ : /상품권 받기/).test(end.text) || fin.sms || (k === 'app' ? !(fin.claim === '상품권 주세요' && fin.formHidden && fin.callHidden) : fin.go !== '/#/gift')) fail(`${q.name} 끝난 뒤 전화번호 칸 · 동의 · 「상품권 받기」(문자 · 전화 번호 없음)`, JSON.stringify(fin) + ' ' + end.text.slice(-160));
   if (!/끝까지 봐 주셔서 고마워요/.test(end.text)) fail(`${q.name} 끝난 뒤 고마움 줄`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(end.key ?? '')) fail(`${q.name} 이 기기 표시(atlas:gift:seen)`, String(end.key));
   if (!(end.gift?.watched >= 58.5)) fail(`${q.name} 본 초`, JSON.stringify(end.gift));
