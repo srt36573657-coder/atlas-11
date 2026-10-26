@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-26T17:43:59.974Z",
+ "at": "2026-10-26T18:08:38.650Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -11,13 +11,13 @@
  "m": {
   "first": {
    "bodyLum": 0.02249601955799633,
-   "chars": 166,
+   "chars": 169,
    "blocks": {
-    "ess": 1234,
+    "ess": 1259,
     "find": 776,
-    "today": 1326,
-    "gdr": 2412,
-    "all": 2412
+    "today": 1351,
+    "gdr": 2437,
+    "all": 2437
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -42,10 +42,10 @@
     true,
     true
    ],
-   "themeChars": 216,
+   "themeChars": 210,
    "top": [
     [
-     32,
+     35,
      "ess p.ess-l",
      "사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아"
     ],
@@ -682,7 +682,7 @@
   },
   "speed": {
    "lcp": 2364,
-   "inp": 40,
+   "inp": 32,
    "cls": 0.005
   }
  },
