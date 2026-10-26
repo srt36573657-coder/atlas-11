@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-26",
- "fetchedAt": "2026-10-26T14:14:11Z",
- "file": "reports/atlas11/context/2026-10-26/2026-10-26T14-14-11Z.json",
+ "fetchedAt": "2026-10-26T14:35:03Z",
+ "file": "reports/atlas11/context/2026-10-26/2026-10-26T14-35-03Z.json",
  "summary": {
   "day": "2026-10-26",
-  "fetchedAt": "2026-10-26T14:14:11Z",
+  "fetchedAt": "2026-10-26T14:35:03Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-26",
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-26",
-     "value": 1326.9,
-     "changePct": 0.07
+     "value": 1327.4,
+     "changePct": 0.11
     },
     "rows": 10
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-26",
-     "value": 1326.9,
+     "value": 1327.4,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
