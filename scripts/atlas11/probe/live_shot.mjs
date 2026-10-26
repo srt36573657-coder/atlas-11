@@ -15,22 +15,24 @@ const out = {made: new Date().toISOString(), base: B, size: [390, 844], shots: [
 const b = await chromium.launch();
 try {
   for (const [name, hash] of SHOTS) {
-    const ctx = await b.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 2, locale: 'ko-KR'});
+    const sz = /-(\d{3,4})x(\d{3,4})$/.exec(name), vp = sz ? {width: +sz[1], height: +sz[2]} : {width: 390, height: 844}, tag = sz ? '' : '-390'; // 이름 끝 「-390x664」 = 그 화면 크기(사장님 2026-10-27 00:17 「… 첫 화면에 한번에 보일 수 있는 …」 — 낮은 화면을 진짜 사이트에서 잼) · 없으면 390 × 844 그대로
+    const ctx = await b.newContext({viewport: vp, deviceScaleFactor: 2, locale: 'ko-KR'});
     await ctx.addInitScript(() => { try { localStorage.setItem('atlas:essence-seen', 'true'); localStorage.setItem('atlas:white-seen', 'true'); } catch { /* 저장 못 함 — 그대로 찍음 */ } });
     const p = await ctx.newPage(), errs = [];
     p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
-    const r = {name, hash, files: [], errs, info: null, err: null};
+    const r = {name, hash, size: [vp.width, vp.height], files: [], errs, info: null, err: null};
     try {
       await p.goto(B + P0 + '?v=' + Date.now() + hash, {waitUntil: 'networkidle', timeout: 60000});
       await p.waitForFunction(() => !!document.querySelector('#view') && !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => {});
       await p.waitForTimeout(2500);
-      const f1 = `${dir}/${name}-390.png`; await p.screenshot({path: f1}); r.files.push(f1);
+      const f1 = `${dir}/${name}${tag}.png`; await p.screenshot({path: f1}); r.files.push(f1);
       const hgt = await p.evaluate(() => document.documentElement.scrollHeight);
-      const f2 = `${dir}/${name}-390-long.png`; await p.screenshot({path: f2, fullPage: true, clip: {x: 0, y: 0, width: 390, height: Math.min(LONG, hgt)}}); r.files.push(f2);
+      const f2 = `${dir}/${name}${tag}-long.png`; await p.screenshot({path: f2, fullPage: true, clip: {x: 0, y: 0, width: vp.width, height: Math.min(LONG, hgt)}}); r.files.push(f2);
       r.info = await p.evaluate(() => ({hash: location.hash, title: document.title, h1: document.querySelector('#view h1')?.textContent ?? '', kakaoText: document.querySelectorAll('#view .kk-txt').length, kakaoRow: document.querySelectorAll('#view .kk-btn.kk-row').length, kakaoAll: [...document.querySelectorAll('#view .kk-btn, #view .kk-yel')].filter(b => /카톡 보내기/.test(b.textContent)).length,
         days: document.querySelectorAll('#view section.th-day').length, firstDay: document.querySelector('#view section.th-day h2')?.textContent ?? null, graphs: document.querySelectorAll('#view svg.th-sinsvg').length,
-        calgo: !!document.querySelector('#view a.th-calgo'), height: document.documentElement.scrollHeight}));
+        calgo: !!document.querySelector('#view a.th-calgo'), height: document.documentElement.scrollHeight,
+        fold: (() => { const lab = [...document.querySelectorAll('#view .s-apps .s-apl')].map(e => e.getBoundingClientRect().bottom), th = document.querySelector('#view .s-thumb'), tabs = document.querySelector('.tabs'); if (!lab.length) return null; const room = th && th.getBoundingClientRect().height > 0 ? th.getBoundingClientRect().top : (tabs ? tabs.getBoundingClientRect().top : innerHeight); const c = document.querySelector('#view .th-zones .s-art')?.getBoundingClientRect(); return {apps: Math.round(Math.max(...lab)), room: Math.round(room), vh: innerHeight, fit: Math.max(...lab) <= room + 0.5, clock: c ? [Math.round(c.width), Math.round(c.height)] : null}; })()})); // 첫 화면 그림 단추 넷 이름 아래 끝 ≤ 찾기 줄 위 = 한 화면 안
     } catch (e) { r.err = String(e?.message ?? e).split('\n')[0].slice(0, 200); }
     out.shots.push(r); await ctx.close();
   }
