@@ -345,6 +345,28 @@ html.white.clock.clock.clock .th-ar-t { left: 50%; top: 32px; margin-left: -16px
 html.white.clock.clock.clock .th-ar-b { left: 50%; bottom: 32px; margin-left: -16px; }
 html.white.clock.clock.clock .th-ar-r { right: 2px; top: 50%; margin-top: -16px; }
 html.white.clock.clock.clock .th-ar-l { left: 2px; top: 50%; margin-top: -16px; }
+/* 싹 자리 전부(#/t/sprout · 돌 시계 판 ②) — 맨 앞 셋 큰 판(첫째 하늘청록 · 둘째 밝은 회청 · 셋째 청록) · 그 밖 업종 알약(어두운 청록 · 밝은 테) */
+html.white.clock.clock.clock .th-tile { border: 3px solid #171615; background: #4B939D; color: #152D30; box-shadow: 4px 4px 0 #171615; }
+html.white.clock.clock.clock .th-tile0 { background: #1FB8CD; box-shadow: 4px 4px 0 #171615, 8px 8px 0 #FFFFFF; }
+html.white.clock.clock.clock .th-tile1 { background: #AAC1C5; }
+html.white.clock.clock.clock .th-tile2 { background: #8CA3A7; }
+html.white.clock.clock.clock .th-tn { color: #152D30; }
+html.white.clock.clock.clock .th-tbadge { border: 2px solid #171615; background: #FFFFFF; color: #152D30; }
+html.white.clock.clock.clock .th-chip { border: 2px solid #8CA3A7; background: #284E53; color: #F2F3F3; }
+html.white.clock.clock.clock .th-chipmore { border-style: dashed; background: transparent; color: #E2E5E6; }
+/* 꽃 될 회사(#/t/picks · 돌 시계 판 ③) — 묶음 줄마다 고르신 색 · 검은 테 · 어긋난 그림자 · 맨 위(가장 큰 묶음)는 하늘청록 · 어두운 줄은 흰 글 */
+html.white.clock.clock.clock .th-pki { border: 3px solid #171615; border-radius: 14px; background: var(--pkbg); color: var(--pkink); box-shadow: 4px 4px 0 #171615; }
+html.white.clock.clock.clock .th-pki0 { --pkbg: #1FB8CD; --pkink: #152D30; }
+html.white.clock.clock.clock .th-pki1 { --pkbg: #AAC1C5; --pkink: #152D30; }
+html.white.clock.clock.clock .th-pki2 { --pkbg: #8CA3A7; --pkink: #152D30; }
+html.white.clock.clock.clock .th-pki3 { --pkbg: #3E737A; --pkink: #FFFFFF; }
+html.white.clock.clock.clock .th-pki4 { --pkbg: #356369; --pkink: #FFFFFF; }
+html.white.clock.clock.clock .th-pki5 { --pkbg: #2D565B; --pkink: #FFFFFF; }
+html.white.clock.clock.clock .th-pkn, html.white.clock.clock.clock .th-pkk, html.white.clock.clock.clock .th-pkgo { color: var(--pkink); }
+html.white.clock.clock.clock .th-pkcp { border: 2px solid #171615; background: #FFFFFF; color: #152D30; }
+html.white.clock.clock.clock .th-pkmore { border-style: dashed; border-color: var(--pkink); background: transparent; color: var(--pkink); }
+html.white.clock.clock.clock .th-pkday { color: #E2E5E6; }
+html.white.clock.clock.clock .th-pkrec1 { border-left-color: #8CA3A7; color: #F2F3F3; }
 /* 그림 단추 넷 — 둥근 네모 · 검은 테 · 어긋난 그림자 · 망점(가상 칸이라 광택 검사 밖) · 「꽃 될 회사」 흰 숫자 딱지 */
 html.white.clock.clock.clock .s-apps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 18px 0 44px; }
 html.white.clock.clock.clock .s-app { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; min-height: 48px; color: #F2F3F3; text-decoration: none; }
@@ -394,9 +416,9 @@ html.white.clock.clock.clock .th-next small, html.white.clock.clock.clock .th-nx
 /* 편지 띠(보유종목 아래 「돌이 주식 격언」) — 짙은 띠라 밝은 테(단추 테 대비 3 · check_white ⑤) */
 html.white.clock.clock.clock a.hello.m4-letter { outline: 2px solid #8CA3A7; outline-offset: -2px; } /* 테(border)는 글 시작을 2px 밀어 왼쪽 줄이 늘어남(check_hold ⑭) — 자리를 안 먹는 outline 으로 */
 /* 그림 속 검은 · 흰 칠(svg 칠 속성) — 돌 시계 바늘은 그대로 */
-html.white.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { fill: #F2F3F3; }
-html.white.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { stroke: #F2F3F3; }
-html.white.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *) { fill: #1C2627; }
+html.white.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #F2F3F3; }
+html.white.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { stroke: #F2F3F3; }
+html.white.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #1C2627; }
 html.white.clock.clock.clock :is([fill="#007A35"], [fill="#007a35"]) { fill: #1FB8CD; }
 html.white.clock.clock.clock :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #1FB8CD; }
 html.white.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #AAC1C5; }

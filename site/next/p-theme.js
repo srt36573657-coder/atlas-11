@@ -5,7 +5,7 @@
    길: #/t/hello 1 · (#/ 2 = 첫 화면 homeBlock) · how 3 · sprout 4 · bloom 5 · wilt 6 · i/<업종>[/path|spread|big|co|near] 7 ~ 12 · c/<번호>[/lead|why|rank|unknown|keep] 13 ~ 18 · today 36
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
-import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON, pickBars} from './theme-home.js';
+import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON, pickBars, APP_ICON} from './theme-home.js';
 import {miniClock} from './stone-clock.js'; // 작은 돌 시계(2026-10-26 돌 시계 판 — 제목 옆 돌 그림 자리)
 import {kakaoText} from './share-btn.js'; // 「카톡 보내기」 글 단추(사장님 2026-10-25 「진짜모든곳에」)
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
@@ -121,16 +121,21 @@ async function pHow() {
 function rb(p) { const s = sv('svg', {class: 'th-rbar', viewBox: '0 0 100 12', width: '100%', height: 12, preserveAspectRatio: 'none', 'aria-hidden': 'true'}); s.append(sv('rect', {x: 0, y: 0, width: 100, height: 12, rx: 6, class: 'th-bar0'}), sv('rect', {x: 0, y: 0, width: Number.isFinite(p) ? Math.max(0, Math.min(100, p)) : 0, height: 12, rx: 6, class: 'th-bar1'})); return s; }
 /** 싹 목록 거르기(첫 화면 주황 숫자 — 2026-10-20 09:46) — real = 점 넷이 다 참(결정표 진짜 싹 · count.real) · new = 오늘 새로 들어옴(d 1 · count.fresh) */
 const SPROUT_F = {real: ['진짜 싹', i => i.sc === 4, '점 넷이 다 찬 곳이에요.', '오늘은 진짜 싹이 없어요.'], new: ['새로 들어온 싹', i => i.d === 1, '오늘 싹 자리에 새로 들어왔어요.', '오늘 새로 들어온 싹은 없어요.']};
-const DOT_WORD = ['없음', '하나', '둘', '셋', '넷'];
-/** 싹 자리 전부 — 점 수 묶음(진짜 싹 · 점 셋 · 둘 · 하나 · 점 없음은 접음) · 줄 차례 = order.S 그대로(이어진 같은 점 수끼리 묶음) · 번호는 전체 차례
- *  2026-10-22 총정리(사장님 04:09 · 감사 A13): 37곳이 한 줄로 여섯 화면 · 점 0개도 같은 「봄」이던 것 → 결론(진짜 싹)이 맨 위 · 점 없는 곳은 접어 둠(지우지 않음) */
-function sproutGroups(list) {
-  const runs = [];
-  list.forEach((i, k) => { const r = runs.at(-1); if (r && r.sc === i.sc) r.xs.push([i, k]); else runs.push({sc: i.sc, xs: [[i, k]]}); });
-  return runs.map(({sc, xs}) => {
-    const name = sc === 4 ? '진짜 싹 · 점 넷' : sc > 0 ? '점 ' + (DOT_WORD[sc] ?? sc) : '점 없음', label = `${name} · ${num(xs.length)}곳`, rows = h('div', {class: 'th-rows'}, xs.map(([i, k]) => row(i, k)));
-    return sc > 0 ? h('section', {class: 'th-grp'}, h('h2', {class: 'th-gh', 'data-tr': '업종', text: label}), rows) : h('details', {class: 'th-grp th-gfold'}, h('summary', {'data-tr': '업종', text: label}), rows);
-  });
+/** 싹 자리 전부(돌 시계 판 ② — 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 맨 앞 셋은 큰 판(진짜 싹이면 표) · 그 밖은 업종 알약 · 차례 = order.S 그대로
+ *  알약은 열일곱까지 보이고 「그 밖 n곳」을 누르면 모두 · 점 · 꽃까지는 업종 쪽(#/t/i/…)과 진짜 싹 · 새로 들어온 싹 목록(#/t/sprout/real · /new)에서 그대로 봄 */
+function sproutTiles(list) {
+  const top = list.slice(0, 3), rest = list.slice(3), SHOW = 17;
+  const tile = (i, k) => h('a', {class: 'th-tile th-tile' + k, href: '#/t/i/' + enc(i.n)},
+    i.sc === 4 ? h('span', {class: 'th-tbadge', text: '진짜 싹'}) : null,
+    h('span', {class: 'th-tf', 'aria-hidden': 'true'}, APP_ICON.bloom()),
+    h('b', {class: 'th-tn', 'data-proper': '', text: i.n}));
+  const chips = rest.map(i => h('a', {class: 'th-chip', href: '#/t/i/' + enc(i.n)}, h('span', {'data-proper': '', text: i.n})));
+  const more = chips.length - SHOW, moreBtn = more > 0 ? h('button', {class: 'th-chip th-chipmore', type: 'button', 'data-tr': '업종', text: `그 밖 ${num(more)}곳`}) : null;
+  if (moreBtn) { chips.slice(SHOW).forEach(x => { x.hidden = true; }); moreBtn.addEventListener('click', () => { chips.forEach(x => { x.hidden = false; }); moreBtn.remove(); }); }
+  return [
+    h('section', {class: 'th-grp th-top3'}, h('h2', {class: 'th-gh', text: '맨 앞 셋'}), h('div', {class: 'th-tiles'}, ...top.map(tile))),
+    rest.length ? h('section', {class: 'th-grp th-rest'}, h('h2', {class: 'th-gh', 'data-tr': '업종', text: `그 밖 ${num(rest.length)}곳`}), h('div', {class: 'th-chips'}, ...chips, moreBtn)) : null,
+    h('p', {class: 'th-sub', text: '업종을 누르면 그 업종 회사가 나와요.'})];
 }
 async function pZone(z, f = '') {
   const F = z === 'S' && f ? SPROUT_F[f] : null;
@@ -144,7 +149,7 @@ async function pZone(z, f = '') {
   if (z === 'B') body.push(h('p', {class: 'th-sub', text: '돌이는 꽃보다 싹을 먼저 봐요. 꽃은 이미 오른 곳이라 늦을 수 있어요.'}));
   if (z === 'W') body.push(h('p', {class: 'th-sub', text: '지난 닷새는 시장보다 덜 올랐어요. 다시 잠잠으로 갈까?'})); // 시듦의 까닭(닷새)을 머리 밑에(감사 A15)
   if (!list.length) body.push(h('p', {class: 'empty', text: F ? F[3] : '지금 이 자리에는 업종이 없어요.'}));
-  else if (z === 'S' && !F) body.push(...sproutGroups(list)); // 싹 자리 전부 = 점 수 묶음(감사 A13 · 차례 order.S 그대로)
+  else if (z === 'S' && !F) body.push(...sproutTiles(list)); // 싹 자리 전부 = 맨 앞 셋 큰 판 + 업종 알약(돌 시계 판 ② · 2026-10-26 「다 해」 — 옛 점 수 묶음 sproutGroups 는 쓰지 않음 · 차례 order.S 그대로)
   else body.push(h('div', {class: 'th-rows'}, list.map((i, k) => (z === 'S' ? row(i, k) : simpleRow(i, {mode: z})))));
   if (z === 'B' && list.length) body.push(h('p', {class: 'th-cap2', text: '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'}));
   if (z === 'W' && list.length) body.push(h('p', {class: 'th-cap2', text: '큰 숫자는 닷새, 작은 숫자는 한 달이에요.'}));
@@ -481,6 +486,34 @@ async function pPick() {
     nextBtn('싹 달력', '#/t/cal'), safe())]};
 }
 
+/** 꽃 될 회사(돌 시계 판 ③ — 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 오늘 고른 회사를 업종으로 묶어 큰 묶음부터 · 맨 위 하나만 펼침 · 끝에 지난 기록 한 줄
+ *  자료 = theme-bloom.json today(기록 쪽 #/t/pick 「오늘 고른 회사」와 같은 자료 · 같은 셈) · 회사는 받은 차례 그대로(차례에는 뜻이 없음) · 묶음마다 넷까지 보이고 「외 n곳」을 누르면 모두 */
+async function pPicks() {
+  const B = await pickData();
+  const inds = (Array.isArray(B?.today?.inds) ? B.today.inds : []).map(i => ({n: i?.n, co: (Array.isArray(i?.co) ? i.co : []).filter(r => Array.isArray(r) && /^[0-9A-Z]{6}$/.test(r[0] ?? ''))})).filter(i => typeof i.n === 'string' && i.n && i.co.length);
+  const n = inds.reduce((p, i) => p + i.co.length, 0), title = '꽃이 될 듯한 회사';
+  if (!B) return none(title, '이 쪽');
+  inds.sort((p, q) => q.co.length - p.co.length || (p.n < q.n ? -1 : p.n > q.n ? 1 : 0)); // 큰 묶음부터 · 같으면 이름 차례
+  const SHOW = 4;
+  const group = (i, k) => {
+    const chips = i.co.map(([c, nm]) => h('a', {class: 'th-pkcp', href: '#/w/' + c}, h('span', {'data-proper': '', text: String(nm ?? c)})));
+    const more = chips.length - SHOW, moreBtn = more > 0 ? h('button', {class: 'th-pkcp th-pkmore', type: 'button', text: `외 ${num(more)}곳`}) : null;
+    if (moreBtn) { chips.slice(SHOW).forEach(x => { x.hidden = true; }); moreBtn.addEventListener('click', () => { chips.forEach(x => { x.hidden = false; }); moreBtn.remove(); }); }
+    return h('details', {class: 'th-pki th-pki' + Math.min(k, 5), open: k === 0},
+      h('summary', {class: 'th-pks'}, h('span', {class: 'th-pkf', 'aria-hidden': 'true'}, APP_ICON.bloom()), h('span', {class: 'th-pkw'}, h('b', {class: 'th-pkn', 'data-proper': '', text: i.n}), h('span', {class: 'th-pkk', text: num(i.co.length) + '곳'}))), // 이름 · 수는 한 칸(좁거나 영어 · 큰 글씨면 수가 다음 줄로)
+      h('div', {class: 'th-pkcs'}, ...chips, moreBtn),
+      h('a', {class: 'th-pkgo', href: '#/t/i/' + enc(i.n), text: '업종 보기 ›'}));
+  };
+  const all = B.record?.all, rec = all && Number.isFinite(all.rate) && Number.isFinite(all.base)
+    ? h('p', {class: 'th-pkrec1'}, h('span', {text: `지난 기록으로 이렇게 고른 회사는 100번에 ${Math.round(all.rate)}번 꽃이 됐어요.`}), h('span', {text: ` 아무거나 고른 회사는 ${Math.round(all.base)}번이에요.`})) : null;
+  return {title, nodes: [h('div', {class: 'tc th-picks', 'data-page': 'theme'},
+    h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')),
+    hd(n ? `${title} ${num(n)}곳` : title, 'pick'),
+    h('p', {class: 'th-pkday', text: `${md(B.asOf)}에 지난 기록으로 골랐어요`}),
+    n ? h('div', {class: 'th-pkis'}, ...inds.map(group)) : h('p', {class: 'empty', text: '오늘은 돌이가 고른 회사가 없어요.'}),
+    rec, nextBtn('지난 기록', '#/t/pick'), safe())]};
+}
+
 export async function render(arg = '') {
   const a = String(arg ?? ''), [k, x, y] = a.split('/');
   if (k === '' || k === 'hello') return pHello();
@@ -491,6 +524,7 @@ export async function render(arg = '') {
   if (k === 'today') return pToday();
   if (k === 'cal') return pCal(); // 싹 달력(2026-10-22 11:55)
   if (k === 'pick') return pPick(); // 꽃 핀 업종 안의 싹 회사(2026-10-22 16:56 · 17:00)
+  if (k === 'picks') return pPicks(); // 꽃 될 회사(돌 시계 판 ③ · 2026-10-26 「다 해」)
   if (k === 'alert') return pAlert();
   if (k === 'i' && x) return pInd(x, y ?? '');
   if (k === 'c' && /^[0-9A-Z]{6}$/.test(x ?? '')) return pCo(x, y ?? '');

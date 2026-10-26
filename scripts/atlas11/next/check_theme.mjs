@@ -170,7 +170,8 @@ try {
     if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
     else {
       if (!g.afterSay || !g.beforeEss) fail('첫 화면 차례', '돌이 물음 → 테마 시계 → 본질 카드 차례가 아님');
-      if (!TITLES.some(x => x.t === g.h1.trim())) fail('첫 화면 제목', g.h1); // 2026-10-21 23:55 큰 제목 넷이 6초마다 돎(home-title.js — 첫 말은 그대로 「지금 봄이 온 곳」) // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
+      const H1 = `업종 ${Z.reduce((s, z) => s + TH.count[z], 0).toLocaleString('ko-KR')}곳은 지금`; // 돌 시계 판 ① 큰 제목(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 자료를 못 받았을 때만 예전 넷(TITLES)
+      if (g.h1.trim() !== H1) fail('첫 화면 제목', `${g.h1} ≠ ${H1}`); // 2026-10-21 23:55 큰 제목 넷이 6초마다 돎(home-title.js — 첫 말은 그대로 「지금 봄이 온 곳」) // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
       if (!g.fold) fail('첫 화면 숫자 접는 칸', '「숫자로 자세히 보기」(details.th-hfold)가 없음 — 진짜 싹 · 주황 숫자 셋 · 성적표는 그 안');
       // 2026-10-21 18:22 사장님 「그랴」(17:51 「이렇기 행성 나오는것 지우고 주싣쪽으로 표혐할수 있는 방법 모색해보 … 이건 주식에 본질에 맞지도 않고 장난스러워」 · 18:11 「구글과 잡스라면 … 뭘 고를까?」)
       //   첫 화면 = 카드 안 업종 줄 셋(번호 · 이름 · 닷새 동안 시장보다 숫자 알약) + 한 해 줄 그림 단추 하나 · 궤도 · 해 · 행성 사진 없음
@@ -352,9 +353,28 @@ try {
     }
     const lastToast = p => p.evaluate(() => [...document.querySelectorAll('p.toast')].pop()?.textContent ?? '');
     const homeNews = async p => { await p.waitForFunction(() => document.querySelector('#view section.th-home .th-row, #view section.th-home .empty'), null, {timeout: 20000}).catch(() => {}); return p.evaluate(() => ({nl: [...document.querySelectorAll('#view section.th-home .th-news a.th-nl')].map(a => a.textContent), nm: document.querySelector('#view section.th-home .th-news .th-nm')?.textContent ?? null})); };
-    // (가) 싹 줄 — 폭 · 글꼴 · 말이 바뀌어도 줄 높이 같음 · 며칠째 알약 테 왼쪽 = 꽃까지 = 이름 글 시작 · 막대 길이 하나
+    // (가0) 싹 자리 전부(돌 시계 판 ② · 2026-10-26 「다 해」) — 맨 앞 셋 큰 판 + 업종 알약 · 차례 = order.S · 큰 판 높이 같음 · 이름 안 넘침 · 「그 밖」을 누르면 모두 · 알약 44 위
     for (const [w, en, font] of [[390, false, 0], [360, false, 0], [320, false, 1], [320, true, 0], [320, true, 2]]) {
       const {p, ctx} = await openSeed('#/t/sprout', {}, {w, h: 800, en, font});
+      await p.evaluate(() => document.querySelector('#view .th-chipmore')?.click());
+      const t = await p.evaluate(() => ({tiles: [...document.querySelectorAll('#view .th-tiles a.th-tile')].map(a => { const b = a.getBoundingClientRect(), n = a.querySelector('.th-tn'); return {h: Math.round(b.height), href: a.getAttribute('href'), over: !n || n.scrollWidth > n.clientWidth + 1 || b.right > innerWidth + 1}; }),
+        chips: [...document.querySelectorAll('#view .th-chips a.th-chip')].map(a => ({h: Math.round(a.getBoundingClientRect().height), href: a.getAttribute('href'), hidden: a.hidden || !a.getClientRects().length}))}));
+      const tag = `싹 큰 판 @${w}${en ? ' 영어' : ''}${font ? ' 글씨' + font : ''}`, names = [...t.tiles, ...t.chips].map(x => decodeURIComponent(String(x.href ?? '').replace('#/t/i/', '')));
+      if (JSON.stringify(names) !== JSON.stringify(TH.order.S)) fail('큰 판 · 알약 차례 = 싹 자리 차례', `${tag} ${names.length} ≠ ${TH.order.S.length} 「${names.slice(0, 4).join(' · ')}」`);
+      if (t.tiles.length !== Math.min(3, TH.order.S.length)) fail('맨 앞 셋 큰 판 수', `${tag} ${t.tiles.length}`);
+      const ths = t.tiles.map(x => x.h);
+      if (ths.length && Math.max(...ths) - Math.min(...ths) > 2) fail('큰 판 높이 다름', tag + ' ' + [...new Set(ths)].join('/'));
+      if (t.tiles.some(x => x.over)) fail('큰 판 이름이 넘침', tag);
+      if (t.chips.some(x => x.hidden)) fail('「그 밖」을 눌러도 숨은 알약', tag);
+      if (t.chips.some(x => x.h < 44)) fail('알약 높이 44 아래', tag + ' ' + Math.min(...t.chips.map(x => x.h)));
+      if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
+      bump('싹 큰 판 · 알약'); await ctx.close();
+    }
+    // (가) 싹 줄 — 폭 · 글꼴 · 말이 바뀌어도 줄 높이 같음 · 며칠째 알약 테 왼쪽 = 꽃까지 = 이름 글 시작 · 막대 길이 하나 — 줄은 거른 목록(새로 들어온 싹 · 진짜 싹)에 그대로(싹 자리 전부는 위 큰 판 · 알약)
+    const rowRoute = TH.count.fresh > 0 ? '#/t/sprout/new' : TH.count.real > 0 ? '#/t/sprout/real' : null;
+    if (!rowRoute) bump('싹 줄 모양 — 거른 목록이 비어 잴 줄 없음');
+    else for (const [w, en, font] of [[390, false, 0], [360, false, 0], [320, false, 1], [320, true, 0], [320, true, 2]]) {
+      const {p, ctx} = await openSeed(rowRoute, {}, {w, h: 800, en, font});
       await p.evaluate(() => document.querySelectorAll('#view details').forEach(d => { d.open = true; })); // 2026-10-22 총정리(감사 A13): 「점 없음」 묶음은 접혀 있음 — 펼쳐서 모든 줄을 그대로 잼(잣대 그대로)
       const r = await p.evaluate(() => [...document.querySelectorAll('#view a.th-row')].map(a => { const q = s => a.querySelector(s)?.getBoundingClientRect(); const n = q('.th-rn'), t = q('.th-tg'), b = q('.th-to'), bar = q('.th-to .th-bar'); return {h: Math.round(a.getBoundingClientRect().height), nl: n?.left, tl: t?.left, tb: t?.bottom, bt: b?.top, bl: b?.left, bw: bar ? Math.round(bar.width) : null}; }));
       const tag = `싹 줄 @${w}${en ? ' 영어' : ''}${font ? ' 글씨' + font : ''}`, hs = r.map(x => x.h), bws = new Set(r.map(x => x.bw));
@@ -542,7 +562,7 @@ try {
         await p.locator(sel).first().click(); await settle(p);
         const hh = await p.evaluate(() => location.hash), want = wantB[k][0];
         if (hh !== want) { fail('주황 숫자 누르면 그 목록', `${tag} ${k} ${hh} ≠ ${want}`); continue; }
-        const L = await p.evaluate(() => ({h2: document.querySelector('#view .th-ans')?.textContent ?? '', rows: [...document.querySelectorAll('#view .th-rows a.th-row')].map(a => decodeURIComponent(a.getAttribute('href').replace('#/t/i/', ''))), empty: document.querySelector('#view .empty')?.textContent ?? ''}));
+        const L = await p.evaluate(() => ({h2: document.querySelector('#view .th-ans')?.textContent ?? '', rows: [...document.querySelectorAll('#view .th-rows a.th-row, #view .th-tiles a.th-tile, #view .th-chips a.th-chip')].map(a => decodeURIComponent(a.getAttribute('href').replace('#/t/i/', ''))), empty: document.querySelector('#view .empty')?.textContent ?? ''}));
         const wantRows = want === '#/t/sprout/real' ? wantReal : want === '#/t/sprout/new' ? wantNew : TH.order.S;
         if (JSON.stringify(L.rows) !== JSON.stringify(wantRows)) fail('거른 목록 업종', `${tag} ${want} ${L.rows.length} ≠ ${wantRows.length} 「${L.rows.slice(0, 3).join(' · ')}」`);
         if (!wantRows.length && !L.empty) fail('거른 목록 빈 글', `${tag} ${want}`);
