@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-25T21:11:58.083Z",
+ "at": "2026-10-26T01:26:42.342Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -10,14 +10,14 @@
  "fails": [],
  "m": {
   "first": {
-   "bodyLum": 1,
+   "bodyLum": 0.02249601955799633,
    "chars": 169,
    "blocks": {
-    "ess": 2030,
+    "ess": 2040,
     "find": 776,
-    "today": 2122,
-    "gdr": 2471,
-    "all": 2471
+    "today": 2132,
+    "gdr": 2482,
+    "all": 2482
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 197,
+   "themeChars": 208,
    "top": [
     [
      35,
@@ -153,7 +153,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 23일"
+     "10월 26일 10:22"
     ],
     [
      2,
@@ -177,13 +177,13 @@
     ]
    ],
    "theme": {
-    "top": 376,
-    "zonesBottom": 688,
-    "rowBottom": 528,
+    "top": 142,
+    "zonesBottom": 560,
+    "rowBottom": 232,
     "thumbTop": 711
    },
-   "bodyHex": "#FFFFFF",
-   "inkHex": "#000000",
+   "bodyHex": "#152D30",
+   "inkHex": "#F2F3F3",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -197,14 +197,14 @@
    "errs": []
   },
   "back": {
-   "bodyLum": 1,
+   "bodyLum": 0.02249601955799633,
    "chars": 105,
    "blocks": {
-    "ess": 1878,
+    "ess": 1888,
     "find": 776,
-    "today": 1970,
-    "gdr": 2319,
-    "all": 2319
+    "today": 1980,
+    "gdr": 2330,
+    "all": 2330
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -230,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 197,
+   "themeChars": 214,
    "top": [
     [
      24,
@@ -330,7 +330,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 23일"
+     "10월 26일 10:22"
     ],
     [
      2,
@@ -354,13 +354,13 @@
     ]
    ],
    "theme": {
-    "top": 376,
-    "zonesBottom": 688,
-    "rowBottom": 528,
+    "top": 142,
+    "zonesBottom": 560,
+    "rowBottom": 232,
     "thumbTop": 711
    },
-   "bodyHex": "#FFFFFF",
-   "inkHex": "#000000",
+   "bodyHex": "#152D30",
+   "inkHex": "#F2F3F3",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -683,7 +683,7 @@
    }
   },
   "speed": {
-   "lcp": 1128,
+   "lcp": 1064,
    "inp": 40,
    "cls": 0.003
   }
