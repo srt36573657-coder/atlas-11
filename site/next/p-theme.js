@@ -6,6 +6,7 @@
    19 ~ 35 는 있는 쪽(#/why/<번호> · #/sub · #/why · #/me · #/game · #/shorts · #/jinhwa)이 맡음 — 그 쪽 맨 아래 「다음」 한 줄은 app.js flowFoot */
 import {ZONES, DOT_TEXT, RULE, pp, zoneOf} from './theme-rule.js';
 import {clock, dots, bar, row, simpleRow, recordLine, yearsOf, nextBtn, footBtn, indOf, homeBlock, SEASON, pickBars} from './theme-home.js';
+import {miniClock} from './stone-clock.js'; // 작은 돌 시계(2026-10-26 돌 시계 판 — 제목 옆 돌 그림 자리)
 import {kakaoText} from './share-btn.js'; // 「카톡 보내기」 글 단추(사장님 2026-10-25 「진짜모든곳에」)
 import {watchBtn, alertSwitch, ALERTS, watchList, toggleWatch, SAVE_FAIL} from './theme-watch.js'; // 관심 업종 · 사이트 안 알림(2026-10-19 「다해」) // 그림 조각 · 첫 화면 칸은 theme-home.js 한 곳
 import {NAME, josa} from './brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않음
@@ -48,7 +49,10 @@ function pgBar(no, prev) {
 }
 const safe = () => h('p', {class: 'th-safe', text: '돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'});
 const say = t => h('p', {class: 'th-say'}, h('span', {class: 'th-who', text: '돌이'}), h('span', {text: t}));
-const hd = (t, art) => h('div', {class: 'th-hd'}, h('h1', {class: 'th-h1', text: t}), h('img', {class: 'th-art', src: '/media/stone/' + art + '.svg', alt: '', width: 96, height: 77, decoding: 'async'}));
+/* 쪽 머리 — 큰 제목 + 오른쪽 작은 돌 시계(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 어젯밤 돌 시계 판 ②③④ — 옛 돌 그림 art 는 표시가 없는 쪽의 이름표로만)
+   mark = 지금 이 쪽이 시계 어디쯤인지(stone-clock.js miniClock) — 못 정하면 표시 없이 시계만 */
+const MARK = {sprout: 'S', bloom: 'B', wilt: 'W', calm: 'Q', pick: 'SB'};
+const hd = (t, art, mark = MARK[art] ?? null) => h('div', {class: 'th-hd'}, h('h1', {class: 'th-h1', text: t}), miniClock(mark));
 const asOf = TH => h('p', {class: 'th-asof', text: md(TH.asOf) + ' 장 마감 기준' + (TH.provisional ? ' · 장중 값이 섞여 있어요' : '')});
 const none = (title, what = '테마 시계') => ({title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'}, hd(title, 'home'), h('p', {class: 'empty', text: '? ' + what + ' 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}), nextBtn('테마 시계', '#/', '처음으로'))]});
 /** 자료는 왔는데 이 업종이 없음(이름이 바뀌었거나 빠짐 · 담아 둔 옛 관심 업종) — 「잠시 뒤 다시」가 아님(새 눈 검사 2026-10-19 22시) */
@@ -73,8 +77,8 @@ function bigLine(l, w = 358, ht = 110) {
   return s;
 }
 /* ── 쪽들 ── */
-function shell(no, title, art, sayT, prev, next, body, {pageKey = 'theme'} = {}) {
-  return h('div', {class: 'tc', 'data-page': pageKey}, pgBar(no, prev), hd(title, art), sayT ? say(sayT) : null, ...body, next ? nextBtn(next[0], next[1], next[2]) : null, safe());
+function shell(no, title, art, sayT, prev, next, body, {pageKey = 'theme', mark} = {}) {
+  return h('div', {class: 'tc', 'data-page': pageKey}, pgBar(no, prev), hd(title, art, mark), sayT ? say(sayT) : null, ...body, next ? nextBtn(next[0], next[1], next[2]) : null, safe());
 }
 async function pHello() {
   // 2026-10-22 총정리(사장님 04:09 「결과부터 나오는 구조」 · 감사 A10): 맨 위 = 오늘 찾은 곳(싹 맨 앞 업종 · 점 수 · 누르면 그 업종 쪽) · 세 걸음 글은 첫 화면에 실제로 있는 것으로(「시계」 대신 줄 셋)
@@ -147,7 +151,7 @@ async function pZone(z, f = '') {
   if (z === 'S' && !F) { const R = TH.record, y = yearsOf(TH); if (y && Number.isFinite(R?.sprout?.p) && Number.isFinite(R?.all?.p)) body.push(h('p', {class: 'th-sub', text: `싹 자리 전체는 지난 ${y}년 100번 가운데 ${Math.round(R.sprout.p)}번, 아무 업종은 ${Math.round(R.all.p)}번 한 달 뒤 꽃 선을 넘었어요.`})); } // 센 숫자 그대로(판단 말 없음)
   if (z === 'W') body.push(h('p', {class: 'th-sub', text: `잠잠 자리는 ${num(TH.count.Q)}곳이에요.`}));
   body.push(asOf(TH));
-  return {title: T[0], nodes: [shell(T[1], T[0], T[2], T[3], prev, next, body)]};
+  return {title: T[0], nodes: [shell(T[1], T[0], T[2], T[3], prev, next, body, {mark: z})]};
 }
 /** 점 하나 줄 — href 가 있으면 그 근거 쪽 고리(줄 끝 ›) · 2026-10-22 총정리(감사 A17): ✓ 를 눌러도 근거로 안 가 「다음」을 두세 번 눌러야 했던 것 */
 const ckRow = (ok, t, d, href = null) => h(href ? 'a' : 'div', {class: 'th-ck', href}, h('b', {class: ok ? 'y' : 'n', 'aria-label': ok ? '참' : '아님', text: ok ? '✓' : '✗'}), h('span', {class: 'th-st'}, h('span', {class: 'th-ckt', text: t}), d ? h('span', {class: 'th-ckd', text: d}) : null), href ? h('i', {class: 'th-go', 'aria-hidden': 'true', text: '›'}) : null);
@@ -343,7 +347,7 @@ async function pCal() {
       long ? sinGraph(ss) : x.top.length ? h('p', {class: 'th-sub', text: '이날 찾은 곳이라 다음 날부터 줄이 생겨요.'}) : null);
   };
   return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
-    h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
+    h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today', 'S'),
     h('p', {class: 'th-sub', text: `날짜별로 ${josa(NAME, '가')} 찾은 1번 2번 3번이에요.`}),
     okPath ? h('p', {class: 'th-sub', text: '줄이 가운데 선 위면 시장보다 더 오른 거예요.'}) : null,
     h('div', {class: 'th-days'}, ...days.map((x, j) => card(x, j)).reverse()), // 가장 최근 날이 맨 위
@@ -460,7 +464,7 @@ async function pPick() {
     n ? h('p', {class: 'th-sub th-calnote', text: '회사는 이름 차례예요. 차례에는 뜻이 없어요.'}) : null);
   const howFold = h('details', {class: 'th-pkhowf'}, h('summary', {text: '이 숫자는 어떻게 나왔어요?'}), ...[...how.childNodes].filter(x => x.tagName !== 'H2'));
   return {title, nodes: [h('div', {class: 'tc', 'data-page': 'theme'},
-    h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today'),
+    h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today', 'SB'),
     hero, nav,
     chap('start', '처음', '돌이는 날마다 이런 회사를 골라요',
       say('업종은 꽃이 폈고, 회사는 이제 막 힘이 붙었어요.'),
