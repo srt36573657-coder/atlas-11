@@ -1,0 +1,56 @@
+name: atlas11-gift-peek
+# 친구 셋 선물 — 셈만 읽기(사장님 2026-10-26(서울) 11:47 「지인이 카톡 3명 보냈는데 내게 알람 오지 않았어 시스템 문제 있어 확인해」)
+#   넷리파이 저장소 atlas11-gift-v1 에서 수만 셈: 친구가 연 기록(오늘 · 정한 때 뒤) · 카톡 안에서 연 수 · 보낸 사람 표마다 연 수 · 신청 수(기다림 · 보냄)
+#   찍지 않는 것: 전화번호 · 보낸 사람 표 · 기기 열쇠 · 비밀 값(결과는 알림 줄 gift-peek 몇 줄 · 표는 차례 번호로만)
+#   저장소에 쓰지 않음(list · get 만) · 사이트 코드와 무관(이 파일 하나 · 깃허브 권한 읽기만)
+run-name: atlas11-gift-peek ${{ inputs.since }}
+on:
+  workflow_dispatch:
+    inputs:
+      since:
+        description: '이때 뒤 연 기록을 따로 셈(ISO · 예 2026-10-26T02:40:00Z) — 비우면 오늘(서울) 0시'
+        required: false
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: atlas11-gift-peek
+  cancel-in-progress: false
+jobs:
+  peek:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      SINCE: ${{ inputs.since }}
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 넷리파이 저장소 읽기 준비(@netlify/blobs 하나만)
+        run: npm install --no-save --no-package-lock --no-audit --no-fund --ignore-scripts @netlify/blobs@11.1.1
+      - name: 셈만 읽기
+        run: |
+          node --input-type=module -e "
+          import {getStore} from '@netlify/blobs';
+          const say = t => console.log('::notice title=gift-peek::' + t);
+          const store = getStore({name: 'atlas11-gift-v1', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_AUTH_TOKEN, consistency: 'strong'});
+          const KST = 9 * 3600e3, now = Date.now(), day = new Date(now + KST).toISOString().slice(0, 10);
+          const t0 = Date.parse(process.env.SINCE || '') || Date.parse(day + 'T00:00:00+09:00');
+          const kst = ms => new Date(ms + KST).toISOString().slice(5, 16).replace('T', ' ');
+          const keys = async p => ((await store.list({prefix: p}))?.blobs ?? []).map(b => b.key);
+          const getMany = async ks => { const out = []; for (let i = 0; i < ks.length; i += 20) out.push(...await Promise.all(ks.slice(i, i + 20).map(k => store.get(k, {type: 'json'}).catch(() => null)))); return out; };
+          const vk = await keys('v/'), rows = await getMany(vk), by = new Map();
+          vk.forEach((k, i) => { const ref = k.split('/')[1], r = rows[i]; if (!r) return; const t = Date.parse(r.at); if (!by.has(ref)) by.set(ref, []); by.get(ref).push({t, kk: r.kk === true}); });
+          const all = [...by.values()].flat(), today = all.filter(x => x.t >= Date.parse(day + 'T00:00:00+09:00')), after = all.filter(x => x.t >= t0);
+          say('지금 ' + kst(now) + ' 서울 · 연 기록 모두 ' + all.length + '개 · 보낸 사람 ' + by.size + '명');
+          say('오늘 연 기록 ' + today.length + '개(카톡 안 ' + today.filter(x => x.kk).length + ') · ' + kst(t0) + ' 뒤 ' + after.length + '개(카톡 안 ' + after.filter(x => x.kk).length + ')');
+          const q = await store.get('q/' + day + '/all', {type: 'json'}).catch(() => null);
+          say('오늘 셈 칸 ' + (Number.isFinite(q?.n) ? q.n : 0));
+          const recent = [...by.values()].map(xs => ({n: xs.length, kk: xs.filter(x => x.kk).length, last: Math.max(...xs.map(x => x.t)), first: Math.min(...xs.map(x => x.t)), after: xs.filter(x => x.t >= t0).length})).filter(o => o.last >= t0 - 864e5).sort((a, b) => b.last - a.last).slice(0, 8);
+          recent.forEach((o, i) => say('보낸 사람 ' + (i + 1) + ' · 친구 ' + o.n + '명(카톡 안 ' + o.kk + ') · 정한 때 뒤 ' + o.after + ' · 처음 ' + kst(o.first) + ' · 마지막 ' + kst(o.last)));
+          const ck = await keys('c/'), cs = (await getMany(ck)).filter(c => c?.id);
+          const wait = cs.filter(c => c.state === 'wait'), sent = cs.filter(c => c.state === 'sent'), newer = cs.filter(c => Date.parse(c.at) >= t0);
+          say('선물 신청 모두 ' + cs.length + '개 · 기다림 ' + wait.length + ' · 보냄 ' + sent.length + ' · 정한 때 뒤 ' + newer.length + '개' + (newer.length ? '(' + newer.map(c => kst(Date.parse(c.at)) + ' 친구 ' + c.friends).join(' · ') + ')' : ''));
+          "
