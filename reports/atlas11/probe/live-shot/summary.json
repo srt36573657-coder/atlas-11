@@ -1,5 +1,5 @@
 {
- "made": "2026-10-26T01:26:15.717Z",
+ "made": "2026-10-26T05:37:44.375Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -17,7 +17,7 @@
    "info": {
     "hash": "#/",
     "title": "오늘 장 · 돌이",
-    "h1": "지금 봄이 온 곳",
+    "h1": "업종 77곳은 지금",
     "kakaoText": 1,
     "kakaoRow": 0,
     "kakaoAll": 1,
@@ -48,30 +48,30 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 2709
+    "height": 1778
    },
    "err": null
   },
   {
-   "name": "co",
-   "hash": "#/w/005930",
+   "name": "picks",
+   "hash": "#/t/picks",
    "files": [
-    "reports/atlas11/probe/live-shot/co-390.png",
-    "reports/atlas11/probe/live-shot/co-390-long.png"
+    "reports/atlas11/probe/live-shot/picks-390.png",
+    "reports/atlas11/probe/live-shot/picks-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/w/005930",
-    "title": "삼성전자 · 돌이",
-    "h1": "삼성전자",
-    "kakaoText": 3,
-    "kakaoRow": 6,
-    "kakaoAll": 10,
+    "hash": "#/t/picks",
+    "title": "꽃이 될 듯한 회사 · 돌이",
+    "h1": "꽃이 될 듯한 회사 76곳",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 3902
+    "height": 1507
    },
    "err": null
   }
