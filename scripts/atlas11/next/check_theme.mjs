@@ -230,7 +230,7 @@ try {
     await ctx.close();
   }
   /* 있는 쪽 맨 아래 「다음」 한 줄 · 오늘 정리 */
-  for (const [from, to] of [['#/sub', '#/t/alert'], ['#/t/alert', '#/why'], ['#/why', '#/me'], ['#/me', '#/game'], ['#/game', '#/jinhwa'], ['#/jinhwa', '#/t/today'], ['#/t/today', '#/']]) {
+  for (const [from, to] of [['#/sub', '#/t/alert'], ['#/t/alert', '#/why'], ['#/why', '#/why/later'], ['#/why/later', '#/me'], ['#/me', '#/game'], ['#/game', '#/jinhwa'], ['#/jinhwa', '#/t/today'], ['#/t/today', '#/']]) {
     const {p, ctx} = await open(from);
     await p.waitForFunction(() => document.querySelector('#view a.th-next'), null, {timeout: 8000}).catch(() => {});
     const nx = await nextOf(p);
