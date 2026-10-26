@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-26T00:19:28.419Z",
+ "when": "2026-10-26T00:50:51.740Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -150,7 +150,7 @@
   }
  ],
  "only": [],
- "sec": 78,
+ "sec": 72,
  "counts": {
   "꾸민 보유": 14,
   "맨 위 결 한 줄": 2,
@@ -172,7 +172,6 @@
   "소식 판": 5,
   "소식 영어 판": 1,
   "접힌 칸 안 여는 그림 맞댐": 3,
-  "fail": 3,
   "편지 접기 판": 3,
   "기록 파일 맞댐": 1,
   "바로 가기 판": 6,
@@ -191,19 +190,6 @@
   "⑮ 네가 적은 팔 선 줄 en": 3,
   "⑮ 팔 선 없음 판 en": 1
  },
- "fails": [
-  [
-   "화면 오류",
-   "편지 접기 360×640 · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless"
-  ],
-  [
-   "화면 오류",
-   "편지 접기 390×844 · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless"
-  ],
-  [
-   "화면 오류",
-   "편지 접기 320×568 · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless"
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }

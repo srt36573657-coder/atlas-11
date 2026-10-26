@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-gdr-2",
- "when": "2026-10-26T00:17:13.089Z",
+ "when": "2026-10-26T00:48:52.173Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -8,7 +8,7 @@
  "version": "gdr-v2",
  "asOf": "2026-10-13",
  "picks": 3,
- "sec": 38,
+ "sec": 31,
  "counts": {
   "종가 날이 달라 안 맞댐": 3,
   "맞댄 자료 곳": 3,
@@ -37,8 +37,7 @@
   "없는 번호": 8,
   "저장소 기록 본 화면": 30,
   "내돈읽기": 0,
-  "본 요청": 1931,
-  "fail": 11,
+  "본 요청": 1916,
   "맞댄 오늘 점수 줄": 8,
   "맞댄 쉬어 가는 날": 6,
   "기록이 바뀐 길": 1,
@@ -50,51 +49,6 @@
   "맞댄 성적 카드": 12,
   "성적 판": 4
  },
- "fails": [
-  [
-   "화면 오류",
-   "360×640 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless th"
-  ],
-  [
-   "화면 오류",
-   "390×844 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless th"
-  ],
-  [
-   "화면 오류",
-   "오늘 오늘 점수 20(좋아) 360×640 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navig"
-  ],
-  [
-   "화면 오류",
-   "오늘 오늘 두 번 — 앞 쉬어 가자 · 뒤 좋아 390×844 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javasc"
-  ],
-  [
-   "화면 오류",
-   "오늘 쉬어 가자 #/ 360×640 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigatio"
-  ],
-  [
-   "화면 오류",
-   "오늘 기록이 바뀜 360×640 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations"
-  ],
-  [
-   "화면 오류",
-   "잠금 기록 없음 360×640 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations "
-  ],
-  [
-   "화면 오류",
-   "잠금 기록 없음 390×844 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations "
-  ],
-  [
-   "화면 오류",
-   "잠금 덜 끝낸 기록 360×640 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigation"
-  ],
-  [
-   "화면 오류",
-   "못 돌린 날 엿새 앞 390×844 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigatio"
-  ],
-  [
-   "화면 오류",
-   "회사 값 빠짐 390×844 #/ · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations u"
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }

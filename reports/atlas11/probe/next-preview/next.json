@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-10-26T00:20:38.793Z",
+ "at": "2026-10-26T00:55:15.635Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-26",
  "ready": [
@@ -29,11 +29,11 @@
  "oldNameAllow": [
   "아틀라스링크"
  ],
- "seconds": 125,
+ "seconds": 105,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 124.9,
+  "wall": 105.1,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
@@ -54,7 +54,6 @@
  },
  "counts": {
   "고리": 14423,
-  "fail": 17,
   "화면": 138,
   "옛 이름 본 화면": 2697,
   "큰 글씨 화면": 46,
@@ -74,75 +73,6 @@
   "찾기": 2557,
   "누르기": 1
  },
- "fails": [
-  [
-   "모르는 고리",
-   "320 #/ #/help"
-  ],
-  [
-   "화면 오류",
-   "320 #/ Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "모르는 고리",
-   "360 #/ #/help"
-  ],
-  [
-   "화면 오류",
-   "360 #/ Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "모르는 고리",
-   "390 #/ #/help"
-  ],
-  [
-   "화면 오류",
-   "390 #/ Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "화면 오류",
-   "질문 뒤 오늘 끝냄 Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "화면 오류",
-   "질문 뒤 오늘 쉬어 가자 Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "화면 오류",
-   "질문 뒤 어제만 끝냄 Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "칩 큰 숫자 = 마지막 날 하루 · 기간은 작게([6] 8)",
-   "rise 큰 「」 기대 ? · 작은 칸 「」"
-  ],
-  [
-   "모르는 고리",
-   "320 질문 뒤 #/ #/help"
-  ],
-  [
-   "화면 오류",
-   "320 질문 뒤 #/ Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "모르는 고리",
-   "360 질문 뒤 #/ #/help"
-  ],
-  [
-   "화면 오류",
-   "360 질문 뒤 #/ Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "모르는 고리",
-   "390 질문 뒤 #/ #/help"
-  ],
-  [
-   "화면 오류",
-   "390 질문 뒤 #/ Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ],
-  [
-   "화면 오류",
-   "100030 Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }
