@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-25T23:59:27.131Z",
+ "when": "2026-10-26T00:19:28.419Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -34,8 +34,8 @@
   "folded": 213.3,
   "unit": 213.3,
   "btn": 48,
-  "open": 1081.6,
-  "natural": 1081.6,
+  "open": 1078.6,
+  "natural": 1078.6,
   "before": 1146
  },
  "css": {
@@ -64,13 +64,11 @@
     21
    ],
    "lefts": {
-    "16": 9,
-    "18": 2,
+    "16": 11,
     "32": 3
    },
    "ex": {
     "16": "h1.h 「보유종목」",
-    "18": "span.hml 「돌이 주식 격언 열 가」",
     "32": "h2.hd-h 「보유종목 점검」"
    },
    "spacingOff": 0,
@@ -78,7 +76,7 @@
   },
   {
    "tag": "#/me 보유 둘 · 답함(접힘) 360×640",
-   "px": 5080,
+   "px": 5194,
    "sizes": [
     17,
     19,
@@ -90,14 +88,12 @@
     21
    ],
    "lefts": {
-    "16": 9,
-    "18": 2,
+    "16": 11,
     "32": 5,
-    "48": 58
+    "48": 60
    },
    "ex": {
     "16": "h1.h 「보유종목」",
-    "18": "span.hml 「돌이 주식 격언 열 가」",
     "32": "h2.hd-h 「보유종목 점검」",
     "48": "figcaption.hd-cap 「내 몫 그림 · 점선은」"
    },
@@ -106,7 +102,7 @@
   },
   {
    "tag": "#/me 펼침(편지 포함 · 안내만) 360×640",
-   "px": 2422,
+   "px": 2419,
    "sizes": [
     17,
     19,
@@ -118,13 +114,11 @@
     21
    ],
    "lefts": {
-    "16": 9,
-    "18": 11,
+    "16": 20,
     "32": 3
    },
    "ex": {
     "16": "h1.h 「보유종목」",
-    "18": "span.hml 「돌이 주식 격언 열 가」",
     "32": "h2.hd-h 「보유종목 점검」"
    },
    "spacingOff": 0,
@@ -148,7 +142,7 @@
    },
    "ex": {
     "16": "h1.h 「관심」",
-    "34": "b.big 「−8.9%」",
+    "34": "b.big 「−10.0%」",
     "72": "b. 「반도체 큰 업종, 한 」"
    },
    "spacingOff": 0,
@@ -156,7 +150,7 @@
   }
  ],
  "only": [],
- "sec": 79,
+ "sec": 78,
  "counts": {
   "꾸민 보유": 14,
   "맨 위 결 한 줄": 2,
@@ -178,7 +172,7 @@
   "소식 판": 5,
   "소식 영어 판": 1,
   "접힌 칸 안 여는 그림 맞댐": 3,
-  "fail": 4,
+  "fail": 3,
   "편지 접기 판": 3,
   "기록 파일 맞댐": 1,
   "바로 가기 판": 6,
@@ -209,10 +203,6 @@
   [
    "화면 오류",
    "편지 접기 320×568 · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless"
-  ],
-  [
-   "글 시작 왼쪽 줄 3 넘음([10] 7)",
-   "#/me 보유 둘 · 답함(접힘) 360×640 {\"16\":9,\"18\":2,\"32\":5,\"48\":58} {\"16\":\"h1.h 「보유종목」\",\"18\":\"span.hml 「돌이 주식 격언 열 가」\",\"32\":\"h2.hd-h 「보유종목 점검」\",\"48\":\"figcaption.hd-cap 「내 몫 그림 · 점선은」\"}"
   ]
  ],
  "ok": false
