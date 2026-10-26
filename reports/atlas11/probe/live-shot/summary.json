@@ -1,5 +1,5 @@
 {
- "made": "2026-10-26T14:38:17.195Z",
+ "made": "2026-10-26T16:44:00.131Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -7,31 +7,123 @@
  ],
  "shots": [
   {
-   "name": "gift",
-   "hash": "#/gift",
+   "name": "home-390x664",
+   "hash": "#/",
+   "size": [
+    390,
+    664
+   ],
    "files": [
-    "reports/atlas11/probe/live-shot/gift-390.png",
-    "reports/atlas11/probe/live-shot/gift-390-long.png"
+    "reports/atlas11/probe/live-shot/home-390x664.png",
+    "reports/atlas11/probe/live-shot/home-390x664-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/gift",
-    "title": "상품권 · 돌이",
-    "h1": "상품권",
-    "kakaoText": 0,
+    "hash": "#/",
+    "title": "오늘 장 · 돌이",
+    "h1": "업종 77곳은 지금",
+    "kakaoText": 1,
     "kakaoRow": 0,
     "kakaoAll": 1,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
-    "calgo": false,
-    "height": 2248
+    "calgo": true,
+    "height": 2429,
+    "fold": {
+     "apps": 526,
+     "room": 531,
+     "vh": 664,
+     "fit": true,
+     "clock": [
+      180,
+      144
+     ]
+    }
+   },
+   "err": null
+  },
+  {
+   "name": "home-375x667",
+   "hash": "#/",
+   "size": [
+    375,
+    667
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/home-375x667.png",
+    "reports/atlas11/probe/live-shot/home-375x667-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/",
+    "title": "오늘 장 · 돌이",
+    "h1": "업종 77곳은 지금",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": true,
+    "height": 2427,
+    "fold": {
+     "apps": 529,
+     "room": 534,
+     "vh": 667,
+     "fit": true,
+     "clock": [
+      183,
+      147
+     ]
+    }
+   },
+   "err": null
+  },
+  {
+   "name": "home-360x640",
+   "hash": "#/",
+   "size": [
+    360,
+    640
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/home-360x640.png",
+    "reports/atlas11/probe/live-shot/home-360x640-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/",
+    "title": "오늘 장 · 돌이",
+    "h1": "업종 77곳은 지금",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": true,
+    "height": 2395,
+    "fold": {
+     "apps": 502,
+     "room": 507,
+     "vh": 640,
+     "fit": true,
+     "clock": [
+      150,
+      120
+     ]
+    }
    },
    "err": null
   },
   {
    "name": "home",
    "hash": "#/",
+   "size": [
+    390,
+    844
+   ],
    "files": [
     "reports/atlas11/probe/live-shot/home-390.png",
     "reports/atlas11/probe/live-shot/home-390-long.png"
@@ -48,7 +140,17 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": true,
-    "height": 2574
+    "height": 2574,
+    "fold": {
+     "apps": 671,
+     "room": 711,
+     "vh": 844,
+     "fit": true,
+     "clock": [
+      272,
+      218
+     ]
+    }
    },
    "err": null
   }
