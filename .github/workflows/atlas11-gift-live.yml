@@ -2,10 +2,18 @@ name: atlas11-gift-live
 # 친구 셋 선물 — 진짜 사이트에서 화면으로 끝까지 시험(사장님 2026-10-26(서울) 11:47 「지인이 카톡 3명 보냈는데 내게 알람 오지 않았어 시스템 문제 있어 확인해」)
 #   보내는 사람(새 기기)이 회사 쪽 노란 「카톡 보내기」 → 글상자 「보내기」(휴대폰 공유 창은 가로채 주소만 봄) → 보낸 주소에 보낸 사람 표(r)가 있나
 #   → 새 기기 셋(둘은 카톡 안)이 그 주소를 엶 → 서버가 셈(/api/gift/visit) → 보낸 사람 화면 수(/api/gift/me)가 친구 3명인가
-#   신청은 하지 않음(전화번호 없음 · 사장님 카톡 알림 없음) · 진짜 저장소에 시험 연 기록 셋이 남음 · 결과는 알림 줄 gift-live 몇 줄(표 · 열쇠는 찍지 않음)
-run-name: atlas11-gift-live
+#   신청은 하지 않음(전화번호 없음) · 결과는 알림 줄 gift-live 몇 줄(표 · 열쇠는 찍지 않음)
+#   보낸 글 끝 선물 한 줄(사장님 2026-10-26 14:46 「… 3명 소개 시키면 상품권준다는 내용 담아서 보내도록 시스템 만들어」) — 「친구 셋이 열면 상품권을 드려요」가 있나
+#   friends = 연 친구 수(기본 0 = 보내기 글 · 주소만 봄) · 3 이면 진짜 저장소에 시험 연 기록 셋이 남고 다음 매시 4분에 사장님 카톡으로 「친구 3명이 열었어요」 알림이 감
+#   (2026-10-26 14:45 「카촉을 8명 보냈는데 내겐 오지 않아 / 너 해결해」 뒤 친구 셋 알림 — scripts/atlas11/help/forward.mjs markFriends) — 3 은 사장님께 미리 말씀드린 때만
+run-name: atlas11-gift-live ${{ inputs.friends }}
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      friends:
+        description: '연 친구 수 — 0(보내기만 봄) 또는 3(끝까지 · 사장님 카톡에 시험 알림이 감)'
+        required: false
+        default: '0'
 permissions:
   contents: read
 concurrency:
@@ -15,6 +23,8 @@ jobs:
   live:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      FRIENDS: ${{ inputs.friends }}
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -33,7 +43,7 @@ jobs:
           const b = await chromium.launch();
           const seed = c => c.addInitScript(() => { try { localStorage.setItem('atlas:essence-seen', 'true'); localStorage.setItem('atlas:white-seen', 'true'); } catch (e) {} });
           const A = await b.newContext({viewport: {width: 390, height: 844}}); await seed(A);
-          await A.addInitScript(() => { window.__shared = []; Object.defineProperty(Navigator.prototype, 'share', {configurable: true, value: async function (d) { window.__shared.push({url: d && d.url}); }}); });
+          await A.addInitScript(() => { window.__shared = []; Object.defineProperty(Navigator.prototype, 'share', {configurable: true, value: async function (d) { window.__shared.push({url: d && d.url, text: d && d.text}); }}); });
           const pa = await A.newPage();
           await pa.goto(B + '/#/w/005930', {waitUntil: 'domcontentloaded'});
           await pa.waitForSelector('#view .acts .kk-yel', {timeout: 30000});
@@ -49,7 +59,10 @@ jobs:
           let where = '?'; try { const u = new URL(url); where = u.pathname + ' ' + u.hash.slice(0, 4); } catch (e) {}
           if (!url || !r || r !== myRef) bad('보낸 주소에 보낸 사람 표가 없음 · ' + where);
           else say('보낸 주소에 보낸 사람 표 있음 · ' + where);
-          if (url) for (let i = 0; i < 3; i++) {
+          const lastLine = sh.length ? String(sh[sh.length - 1].text || '').split('\\n').pop() : '';
+          if (lastLine === '친구 셋이 열면 상품권을 드려요') say('보낸 글 끝에 선물 한 줄 있음'); else bad('보낸 글 끝에 선물 한 줄이 없음 · 끝 줄 「' + lastLine.slice(0, 40) + '」');
+          const NF = process.env.FRIENDS === '3' ? 3 : 0;
+          if (url) for (let i = 0; i < NF; i++) {
             const F = await b.newContext({viewport: {width: 390, height: 844}, userAgent: i < 2 ? KK : undefined}); await seed(F);
             const pf = await F.newPage(); let n = 0;
             pf.on('response', q => { if (q.url().includes('/api/gift/visit') && q.status() === 200) n++; });
@@ -59,7 +72,8 @@ jobs:
             await F.close();
           }
           const me = await pa.evaluate(async () => { const k = localStorage.getItem('atlas:gift:key'); const q = await fetch('/api/gift/me', {headers: {'x-gift-key': k}, cache: 'no-store'}); return q.ok ? q.json() : {status: q.status}; });
-          if (me && me.friends === 3) say('보낸 사람 화면 수 = 친구 ' + me.friends + '명 · 카톡 안 ' + me.kk + ' · 신청할 수 있음 ' + me.can);
+          if (!NF) say('친구 열기는 건너뜀(friends 0) · 지금 셈 친구 ' + (me && me.friends));
+          else if (me && me.friends === 3) say('보낸 사람 화면 수 = 친구 ' + me.friends + '명 · 카톡 안 ' + me.kk + ' · 신청할 수 있음 ' + me.can);
           else bad('보낸 사람 수가 3 이 아님 · ' + JSON.stringify(me).slice(0, 120));
           await b.close();
           "
