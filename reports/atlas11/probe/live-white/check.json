@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-26T01:26:42.342Z",
+ "at": "2026-10-26T05:37:54.185Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 169,
    "blocks": {
-    "ess": 2040,
+    "ess": 2072,
     "find": 776,
-    "today": 2132,
-    "gdr": 2482,
-    "all": 2482
+    "today": 2164,
+    "gdr": 2513,
+    "all": 2513
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 208,
+   "themeChars": 212,
    "top": [
     [
      35,
@@ -68,7 +68,7 @@
     [
      6,
      "- h1.s-h1",
-     "지금 봄이 온 곳"
+     "업종 77곳은 지금"
     ],
     [
      6,
@@ -153,7 +153,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 26일 10:22"
+     "10월 26일 14:33"
     ],
     [
      2,
@@ -178,8 +178,8 @@
    ],
    "theme": {
     "top": 142,
-    "zonesBottom": 560,
-    "rowBottom": 232,
+    "zonesBottom": 596,
+    "rowBottom": 250,
     "thumbTop": 711
    },
    "bodyHex": "#152D30",
@@ -200,11 +200,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 105,
    "blocks": {
-    "ess": 1888,
+    "ess": 1949,
     "find": 776,
-    "today": 1980,
-    "gdr": 2330,
-    "all": 2330
+    "today": 2041,
+    "gdr": 2390,
+    "all": 2390
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -230,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 214,
+   "themeChars": 212,
    "top": [
     [
      24,
@@ -245,7 +245,7 @@
     [
      6,
      "- h1.s-h1",
-     "지금 봄이 온 곳"
+     "업종 77곳은 지금"
     ],
     [
      6,
@@ -330,7 +330,7 @@
     [
      2,
      "today span.hm-bd",
-     "10월 26일 10:22"
+     "10월 26일 14:33"
     ],
     [
      2,
@@ -355,8 +355,8 @@
    ],
    "theme": {
     "top": 142,
-    "zonesBottom": 560,
-    "rowBottom": 232,
+    "zonesBottom": 596,
+    "rowBottom": 250,
     "thumbTop": 711
    },
    "bodyHex": "#152D30",
@@ -683,14 +683,17 @@
    }
   },
   "speed": {
-   "lcp": 1064,
-   "inp": 40,
+   "lcp": 1132,
+   "inp": 32,
    "cls": 0.003
   }
  },
  "net": {
-  "retry": 0,
-  "why": {}
+  "retry": 6,
+  "why": {
+   "HTTP 403": 2,
+   "열기 실패": 4
+  }
  },
  "ok": true,
  "enforced": true
