@@ -18,6 +18,7 @@ import {shareButtons, kakaoButton} from './share-btn.js'; // 보내기 단추 �
 import {NAME, josa, hasBatchim} from './brand.js';
 import {t as L} from './i18n.js'; // 보내는 글 속 붙박이 말(기본 말 · 「반토막 난다면」)은 지금 말로 — 화면 글은 엔진이 그려진 뒤 바꿈 · 한국어면 그대로
 import {tally} from './tally.js'; // 합계 칸 참고 신호(사장님 2026-10-18 16:39 [10] · 일꾼 KD tally.js) — 보내기를 마친 때 한 번 · 몸은 {k} 하나 · 보내고 잊음(일꾼 KI)
+import {ref as giftRef, refNow} from './gift-ref.js'; // 보낸 사람 표(친구 셋 선물) — 사장님 2026-10-26 11:47 「지인이 카톡 3명 보냈는데 내게 알람 오지 않았어 시스템 문제 있어 확인해」: 회사 주식 주소(stockUrl)에 표가 안 붙어 친구가 열어도 못 셌음
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const nx = () => globalThis.NX ?? null;
@@ -68,11 +69,13 @@ export function decMsg(b) {
     return cleanMsg(new TextDecoder('utf-8', {fatal: true}).decode(Uint8Array.from(bin, c => c.charCodeAt(0))));
   } catch { return null; }
 }
-/** 보내는 주소의 앞 — 지금 쪽 그대로(시험판 /next/?dev=1 은 그대로 이어 감 · ?lang= 같은 다른 물음은 뺌) */
+/** 보내는 주소의 앞 — 지금 쪽 그대로(시험판 /next/?dev=1 은 그대로 이어 감 · ?lang= 같은 다른 물음은 뺌) + 보낸 사람 표 r(친구가 열면 서버가 셈 · gift-ref.js) */
 function baseHref() {
   if (typeof location === 'undefined') return 'https://aaa7377.com/';
-  const dev = /[?&]dev=1(&|$)/.test(location.search) ? '?dev=1' : '';
-  return location.origin + (/^\/next\/?(index\.html)?$/.test(location.pathname) ? location.pathname : '/') + dev;
+  const q = [], r = refNow();
+  if (/[?&]dev=1(&|$)/.test(location.search)) q.push('dev=1');
+  if (/^[A-Za-z0-9_-]{16}$/.test(r ?? '')) q.push('r=' + r);
+  return location.origin + (/^\/next\/?(index\.html)?$/.test(location.pathname) ? location.pathname : '/') + (q.length ? '?' + q.join('&') : '');
 }
 /** 회사 주식 주소(명령문 [4] 6) — #/s/<번호>/<보낸 날>/<그날 값>/<s|a>[/<말>] */
 export function stockUrl({code, day, price, kind = 'share', msg = ''}, base = baseHref()) {
@@ -181,6 +184,7 @@ let CUR = null, SEQ = 0;
 /** 「친구에게 무슨 말을 할래?」 — 닫히면 {how: 'share' | 'copy' | 'show' | 'cancel' | 'close' | 'kakao', text, url} */
 export async function open(o = {}) {
   if (CUR) CUR.close('replace');
+  giftRef().catch(() => {}); // 보낸 사람 표를 미리 셈(앱 밖 쪽 · 첫 그림 전에 누른 때도 보낼 주소에 붙게) — 글상자가 그려지는 동안 끝남
   const my = ++SEQ, h0 = typeof location !== 'undefined' ? location.hash : ''; // 누른 쪽 — 모양 · 회사 자료를 받는 사이 다른 쪽으로 가면 열지 않음(아래)
   await css();
   const code = String(o.code ?? ''), stock = CODE_RE.test(code);

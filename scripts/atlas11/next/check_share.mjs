@@ -169,7 +169,8 @@ if (!CSP) fail('보안 머리말(CSP)을 site_headers.mjs 에서 못 읽음', 'H
 
 /* 주소 · 말 조각 — 이 검사가 따로 만들고 풂(UTF-8 base64url) */
 const b64 = s => Buffer.from(s, 'utf8').toString('base64url'), unb64 = s => Buffer.from(s, 'base64url').toString('utf8');
-const URL_RE = new RegExp('^' + (base + NEXT).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '#/s/([0-9A-Z]{6})/(\\d{4}-\\d{2}-\\d{2})/([1-9]\\d*)/([sa])(?:/([A-Za-z0-9_-]+))?$');
+// 보낸 사람 표 r(친구 셋 선물 · gift-ref.js)이 물음 끝에 붙을 수 있음 — 있으면 16자(사장님 2026-10-26 11:47 「지인이 카톡 3명 보냈는데 내게 알람 오지 않았어」 · 붙는지는 아래 「보낸 사람 표」가 따로 맞댐)
+const URL_RE = new RegExp('^' + (base + NEXT).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:[?&]r=[A-Za-z0-9_-]{16})?#/s/([0-9A-Z]{6})/(\\d{4}-\\d{2}-\\d{2})/([1-9]\\d*)/([sa])(?:/([A-Za-z0-9_-]+))?$');
 const num = n => Number(n).toLocaleString('ko-KR');
 const md = d => `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일`;
 const noGainPayload = (d, tag) => { const t = (d?.title ?? '') + '\n' + (d?.text ?? ''); if (/\d\s*(%|％|퍼센트|프로)/.test(t) || W.gainHits(t).length) fail('보낸 글에 수익 숫자', `${tag} 「${t.slice(0, 80)}」`); bump('보낸 글 수익 숫자 0'); };
@@ -402,6 +403,10 @@ async function companyBox(W_, H_, deep) {
         if (!m[5] || unb64(m[5]) !== QUICK[2]) fail('주소의 말 조각', `${tag} 「${m[5] ? unb64(m[5]) : ''}」`);
         if (m[5] && m[5].length > 200) fail('말 조각이 200자 넘음', tag);
       }
+      // 보낸 사람 표 — 이 기기 표(gift-ref.js 가 적어 둔 것)가 보낸 주소 물음에 붙어야 친구가 열 때 서버가 셈(빠지면 「친구 셋」 선물이 영영 안 셈 · 2026-10-25 15:02 ~ 2026-10-26 회사 주식 보내기)
+      const myRef = await p.evaluate(() => { try { return localStorage.getItem('atlas:gift:ref'); } catch { return null; } });
+      if (!/^[A-Za-z0-9_-]{16}$/.test(myRef ?? '') || new URL(d.url ?? 'x:/').searchParams.get('r') !== myRef) fail('보낸 주소에 보낸 사람 표(r)가 없음 — 친구가 열어도 못 셈', `${tag} 「${d.url}」 표 「${myRef}」`);
+      else bump('보낸 사람 표');
       const ln = lines(d);
       if (ln[0] !== HEADLINE()) fail('보낸 글 첫 줄 = 종목 이름 · 그날 값(저절로 · [6] 3)', `${tag} 「${ln[0]}」 ≠ 「${HEADLINE()}」`);
       if (ln[1] !== QUICK[2]) fail('공유 창에 글이 없음', `${tag} 「${d.text}」`);
