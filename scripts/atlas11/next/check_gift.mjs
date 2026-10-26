@@ -98,15 +98,22 @@ async function watch(k) {
   if (end.got !== false) fail(`${q.name} 끝까지 봤는데 「상품권 받기」가 안 나옴`, JSON.stringify(end.gift));
   // 끝난 뒤(사장님 2026-10-25 13:40 「편지를 보내지 않아도 … 세 명을 보냈다 라는 걸 알 수 있게끔」 · 13:38 「내가 직접 보낼 거야」) — 문자 · 전화 번호 대신 상품권 방 = 전화번호 칸 + 동의 + 「상품권 받기」 · 소개 쪽 = 「상품권 받기」 → /#/gift
   const fin = k === 'app'
-    ? await p.evaluate(() => ({tel: !!document.querySelector('#view #gf-tel'), agree: !!document.querySelector('#view #gf-agree'), claim: document.querySelector('#view .gf-claim')?.textContent?.trim() ?? '', sms: document.querySelectorAll('#view a[href^="sms:"], #view a[href^="tel:"]').length}))
+    ? await p.evaluate(() => ({claim: document.querySelector('#view .gf-claim')?.textContent?.trim() ?? '', formHidden: !!document.querySelector('#view .gf-form')?.hidden, callHidden: !!document.querySelector('#view .gf-callbox')?.hidden, sms: document.querySelectorAll('#view a[href^="sms:"], #view a[href^="tel:"]').length}))
     : await p.evaluate(() => ({go: document.querySelector('.hp-sms')?.getAttribute('href') ?? '', sms: document.querySelectorAll('a[href^="sms:"], a[href^="tel:"]').length}));
-  if (/010-9011-7377/.test(end.text) || !/상품권 받기/.test(end.text) || fin.sms || (k === 'app' ? !(fin.tel && fin.agree && fin.claim === '상품권 받기') : fin.go !== '/#/gift')) fail(`${q.name} 끝난 뒤 전화번호 칸 · 동의 · 「상품권 받기」(문자 · 전화 번호 없음)`, JSON.stringify(fin) + ' ' + end.text.slice(-160));
+  // 2026-10-26 16:14 「… 상푸권 주세요 버튼 만들어그렣게 반자동으로 해놓아」 · 16:16 「일단 내 번호 남겨」 — 상품권 방 = 「상품권 주세요」 한 단추(번호 칸 · 예전 전화번호 칸은 숨김) · 친구가 모자란 기기는 눌러도 번호가 안 나옴
+  if (/010-9011-7377|010-0000-0000/.test(end.text) || !(k === 'app' ? /상품권 주세요/ : /상품권 받기/).test(end.text) || fin.sms || (k === 'app' ? !(fin.claim === '상품권 주세요' && fin.formHidden && fin.callHidden) : fin.go !== '/#/gift')) fail(`${q.name} 끝난 뒤 전화번호 칸 · 동의 · 「상품권 받기」(문자 · 전화 번호 없음)`, JSON.stringify(fin) + ' ' + end.text.slice(-160));
   if (!/끝까지 봐 주셔서 고마워요/.test(end.text)) fail(`${q.name} 끝난 뒤 고마움 줄`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(end.key ?? '')) fail(`${q.name} 이 기기 표시(atlas:gift:seen)`, String(end.key));
   if (!(end.gift?.watched >= 58.5)) fail(`${q.name} 본 초`, JSON.stringify(end.gift));
   for (const t of end.taps) if (t.h < 48) fail(`${q.name} 끝난 뒤 단추 48px 아래`, `${t.t} ${t.h}px`);
-  if (k === 'app') { const nt = await p.evaluate(() => document.querySelector('#view .gf-now')?.textContent?.trim() ?? ''); if (nt !== '영상을 끝까지 봤어요 · 상품권 받기 ↓') fail(`${q.name} 끝난 뒤 맨 위 결 단추 글(총정리 D7)`, nt); }
-  if (fails.length === n0) ok(`${q.name} 끝까지 본 뒤 열림(본 초 ${end.gift?.watched}) · ${k === 'app' ? '전화번호 칸 · 동의' : '상품권 방 고리'} · 「상품권 받기」 · 고마움 줄`);
+  if (k === 'app') { // 친구가 없는 기기 — 「상품권 주세요」를 눌러도 번호 · 문자 고리가 안 나오고 「n명 더 열면」 한 줄만
+    await p.click('#view .gf-claim'); await p.waitForTimeout(1500);
+    const pr = await p.evaluate(() => ({res: document.querySelector('#view .gf-res')?.textContent?.trim() ?? '', call: !document.querySelector('#view .gf-callbox')?.hidden, sms: document.querySelectorAll('#view a[href^="sms:"]').length, text: document.querySelector('#view .gf')?.innerText ?? ''}));
+    if (pr.call || pr.sms || /010-\d{4}-\d{4}/.test(pr.text.replace('010-1234-5678', '')) || !/명 더 열면/.test(pr.res)) fail(`${q.name} 친구가 모자란 기기 — 「상품권 주세요」를 눌러도 번호가 안 나와야 함`, JSON.stringify({res: pr.res, call: pr.call, sms: pr.sms}));
+    else ok(`${q.name} 친구가 모자란 기기 — 눌러도 번호 숨김 · 「${pr.res}」`);
+  }
+  if (k === 'app') { const nt = await p.evaluate(() => document.querySelector('#view .gf-now')?.textContent?.trim() ?? ''); if (nt !== '영상을 끝까지 봤어요 · 상품권 주세요 ↓') fail(`${q.name} 끝난 뒤 맨 위 결 단추 글(총정리 D7)`, nt); }
+  if (fails.length === n0) ok(`${q.name} 끝까지 본 뒤 열림(본 초 ${end.gift?.watched}) · ${k === 'app' ? '「상품권 주세요」 · 번호 숨김' : '상품권 방 고리 · 「상품권 받기」'} · 고마움 줄`);
   await p.reload({waitUntil: 'networkidle'}); await p.waitForTimeout(900);
   const again = await look(p, q);
   if (again.got !== false || !/이 휴대폰에서 영상을 끝까지 봤어요/.test(again.text)) fail(`${q.name} 다시 열면 바로 열려야 함`, String(again.text).slice(-200)); else ok(`${q.name} 다시 열면 바로 열림(또 보지 않음)`);

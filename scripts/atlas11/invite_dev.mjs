@@ -66,6 +66,12 @@ const gf = await (async () => {
   const [{handleGift, GIFT_STORE}, {getStore}, {OWNER_KEY_SHA256}] = await Promise.all([import('../../lib/atlas11/gift.mjs'), import('@netlify/blobs'), import('../../lib/atlas11/invite.mjs')]);
   return req => handleGift(req, {store: getStore({name: GIFT_STORE, consistency: 'strong'}), ownerHash: process.env.ATLAS_INVITE_OWNER_SHA256 || OWNER_KEY_SHA256});
 })();
+// 「상품권 주세요」 시험(사장님 2026-10-26 16:16 「일단 내 번호 남겨」) — 시험 서버에만 없는 번호(010-0000-0000)를 사장님 번호 자리에 둠 · 진짜 번호는 진짜 저장소에만(코드 · 깃허브에 없음) · --no-gift-contact 면 비움(예전 전화번호 칸 길)
+if (!process.argv.includes('--no-gift-contact')) {
+  const [{getStore}, {GIFT_STORE, CONTACT_KEY}] = await Promise.all([import('@netlify/blobs'), import('../../lib/atlas11/gift.mjs')]);
+  const s = getStore({name: GIFT_STORE, consistency: 'strong'});
+  if (!(await s.get(CONTACT_KEY, {type: 'json'}).catch(() => null))) await s.setJSON(CONTACT_KEY, {phone: '01000000000', at: new Date().toISOString(), test: true});
+}
 /** 함수 응답(Fetch Response) → node 응답 · Set-Cookie 여럿을 그대로(하나로 합치지 않음) */
 const sendFetch = async (res, r) => { const h = {}; for (const [k, v] of r.headers) if (k !== 'set-cookie') h[k] = v; const sc = r.headers.getSetCookie?.() ?? []; if (sc.length) h['set-cookie'] = sc; res.writeHead(r.status, h); res.end(Buffer.from(await r.arrayBuffer())); };
 const bodyOf = req => (req.method === 'POST' || req.method === 'PUT' ? new Promise(r => { let b = ''; req.on('data', d => { b += d; }); req.on('end', () => r(b)); }) : Promise.resolve(undefined));

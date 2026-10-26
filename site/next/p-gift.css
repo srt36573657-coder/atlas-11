@@ -65,3 +65,13 @@
 .gf-res { margin: 0; font-size: var(--fs-1); line-height: 1.5; color: var(--ink); }
 .gf-res:empty { display: none; }
 .gf-tel-in:focus-visible, .gf-again:focus-visible, .gf-agree:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+/* 「상품권 주세요」 칸(사장님 2026-10-26 16:14 「… 내 전화번호 남겨놓고 상푸권 주세요 버튼 만들어그렣게 반자동으로 해놓아」 · 16:16 「일단 내 번호 남겨」)
+   사장님 번호 · 확인 번호 넷(큰 글씨) · 번호 복사 · 문자 보내기 — 친구 셋을 채운 기기에서 누른 뒤에만 보임 · 예전 전화번호 칸은 사장님 번호가 서버에 없을 때만 */
+.gf-callbox { align-self: stretch; display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-2); border: 2px solid var(--gold); border-radius: 16px; }
+.gf-callbox[hidden], .gf-form[hidden], .gf-claim[hidden] { display: none; }
+.gf-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1); margin: 0; font-size: var(--fs-1); color: var(--sub); }
+.gf-phone, .gf-code { font-size: var(--fs-4); font-weight: 800; letter-spacing: .02em; color: var(--ink); }
+.gf-code { color: var(--gold); }
+.gf-acts { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.gf-form { align-self: stretch; display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-1); }
+.gf-claim2 { background: var(--gold); border-color: var(--gold); color: #FFFFFF; }

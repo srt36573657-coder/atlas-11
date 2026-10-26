@@ -178,3 +178,10 @@ test('방 · 작업 · 처리방침 — 방은 두 꼴 번호를 받음 · 작�
   assert.match(pv, /<li id="gift-kakao">[^<]*끝 네 자리[^<]*<\/li>/);
   assert.match(pv, /operator’s own KakaoTalk chat gets a short notice/);
 });
+
+test('「상품권 주세요」 알림(사장님 2026-10-26 16:14 · 16:16) — 확인 번호 넷 · 받는 분 번호 없음 · 190자 안', () => {
+  const m = giftMessage({kind: 'ask', id: 'x', at: '2026-10-26T07:20:00.000Z', friends: 3, kk: 1, code: '0427', phone: null, tail: null, state: 'wait'});
+  assert.equal(m, '[돌이 선물] 상품권 주세요\n10월 26일 오후 4시 20분\n친구 3명이 열었어요 · 카톡에서 1명\n확인 번호 0427\n이 번호를 보내는 분께 상품권을 보내 주세요.');
+  assert.ok(Array.from(m).length <= MSG_MAX);
+  assert.ok(giftMessage({kind: 'ask', at: 'bad', code: '12'}).includes('확인 번호 ????'));
+});

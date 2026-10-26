@@ -89,14 +89,16 @@ async function giftDesk() {
   if (!items) { sec.append(h('p', {class: 'empty', text: r.status === 403 ? '? 사장님 휴대폰이 아니에요.' : '? 목록을 받지 못했어요. 잠시 뒤 다시 열어 주세요.'})); return sec; }
   let n = items.filter(x => x.state === 'wait').length;
   const say = h('p', {});
-  const sayN = () => { say.textContent = n ? `보낼 차례 ${n}명이에요. 번호로 카톡 선물을 보내고 「보냄 표시」를 누르세요.` : '지금은 보낼 차례가 없어요.'; };
+  const sayN = () => { say.textContent = n ? `보낼 차례 ${n}명이에요. 확인 번호를 보낸 분께 카톡 선물을 보내고 「보냄 표시」를 누르세요.` : '지금은 보낼 차례가 없어요.'; };
   sayN(); sec.append(say);
   if (items.length) sec.append(h('ul', {class: 'adm-list adm-glist'}, ...items.slice(0, 200).map(x => {
-    const mark = x.state === 'wait' ? h('b', {class: 'wait', text: x.phone ? telShow(x.phone) : `번호 지움 · 끝 ${x.tail ?? '????'}`}) : h('b', {class: 'ok', text: `보냄 · 끝 ${x.tail ?? '????'}`});
+    // 「상품권 주세요」(사장님 2026-10-26 16:14 · 16:16) — 받는 분 번호 대신 확인 번호 넷(그분이 사장님께 카톡 · 문자로 보낸 번호와 맞대 봄)
+    const done1 = x.kind === 'ask' ? `보냄 · 확인 번호 ${x.code ?? '????'}` : `보냄 · 끝 ${x.tail ?? '????'}`;
+    const mark = x.state === 'wait' ? h('b', {class: 'wait', text: x.kind === 'ask' ? `확인 번호 ${x.code ?? '????'}` : x.phone ? telShow(x.phone) : `번호 지움 · 끝 ${x.tail ?? '????'}`}) : h('b', {class: 'ok', text: done1});
     const li = h('li', {}, h('span', {text: `${mdOf(x.at)} · 친구 ${x.friends ?? 0}명 · 카톡에서 ${x.kk ?? 0}명`}), mark);
     if (x.state === 'wait') {
       const b = h('button', {type: 'button', class: 'adm-go', text: '보냄 표시'});
-      b.addEventListener('click', async () => { b.disabled = true; const st = await postGift('/api/gift/done', {id: x.id}); if (st === 200) { mark.replaceWith(h('b', {class: 'ok', text: `보냄 · 끝 ${x.tail ?? '????'}`})); b.remove(); n = Math.max(0, n - 1); sayN(); } else { b.disabled = false; toast('? 아직 못 적었어요. 다시 눌러 주세요.'); } });
+      b.addEventListener('click', async () => { b.disabled = true; const st = await postGift('/api/gift/done', {id: x.id}); if (st === 200) { mark.replaceWith(h('b', {class: 'ok', text: done1})); b.remove(); n = Math.max(0, n - 1); sayN(); } else { b.disabled = false; toast('? 아직 못 적었어요. 다시 눌러 주세요.'); } });
       li.append(b);
     }
     return li;

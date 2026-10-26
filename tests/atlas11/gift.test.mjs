@@ -86,9 +86,13 @@ test('앱 안 상품권 방(#/gift) — 모든 쪽 위 막대 금빛 선물 단�
   assert.equal((js.match(/step\(\d, /g) ?? []).length, 3, '걸음 셋');
   assert.match(js, /const got = h\('div', \{class: 'gf-got', hidden: true\}/, '받기 칸은 처음에 숨김');
   // 2026-10-25 13:40 「편지를 보내지 않아도 … 카톡 친구 세 명으로 세 명을 보냈다 라는 걸 알 수 있게끔」 — 문자 고리 대신 받기 칸 안 전화번호 한 칸 + 동의 · 친구 수는 서버(gift-ref.js)
-  assert.doesNotMatch(js, /sms:|tel:|TEL_SHOW/, '문자 · 전화 고리 없음');
+  assert.doesNotMatch(js.replace("placeholder: '010-1234-5678'", ''), /tel:|TEL_SHOW|01[016789]-?\d{3,4}-?\d{4}/, '전화 고리 · 박아 둔 전화번호 없음(예전 칸 보기 글은 셈 밖)');
+  // 2026-10-26 16:14 「… 상푸권 주세요 버튼 만들어그렣게 반자동으로 해놓아」 · 16:16 「일단 내 번호 남겨」 — 문자 고리는 서버가 준 사장님 번호로만(친구 셋을 채운 기기 · 코드에 번호 없음)
+  assert.equal((js.match(/sms:/g) ?? []).length, 1, '문자 고리는 한 곳');
+  assert.match(js, /function showCall\(r\) \{\n    const p = String\(r\?\.contact \?\? ''\)/, '번호는 서버 답에서만');
+  assert.match(js, /text: '상품권 주세요'/);
   assert.ok(js.indexOf("const got = h('div'") > js.indexOf("const tel = h('input'"), '전화번호 칸은 받기 칸 안에만');
-  assert.match(js, /import \{ref, withRef, me, claim, PER\} from '\.\/gift-ref\.js';/);
+  assert.match(js, /import \{ref, withRef, me, claim, askGift, PER\} from '\.\/gift-ref\.js';/);
   assert.match(js, /상품권을 보내려고 이 번호를 사장님께만 보여 드려요\. 보내면 바로 지워요\. 동의해요\./, '동의 글');
   assert.doesNotMatch(js.replace(/^\/\*[\s\S]*?\*\//, ''), /'돌이/, '이름은 brand.js');
   const {cssRules} = await import('../../scripts/atlas11/next/page_rules.mjs');

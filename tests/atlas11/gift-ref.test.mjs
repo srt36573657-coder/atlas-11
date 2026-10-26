@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import {createHash, randomBytes} from 'node:crypto';
-import {handleGift, refOf, RULE, GIFT_SCHEMA, GIFT_STORE} from '../../lib/atlas11/gift.mjs';
+import {handleGift, refOf, RULE, GIFT_SCHEMA, GIFT_STORE, CONTACT_KEY, askCode} from '../../lib/atlas11/gift.mjs';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
 
 const OWNER = 'test-owner-key-0123456789', OWNER_HASH = createHash('sha256').update(OWNER).digest('hex');
@@ -56,7 +56,7 @@ test('내 표(refOf) — SHA-256 → base64url → 앞 16자 · 화면(SubtleCry
 
 test('연 기록 — 한 기기는 한 번만 · 내 고리는 안 셈 · 카톡 안에서 연 것(KAKAOTALK) · 내 수', async () => {
   const store = memoryStore(), clock = {t: T0}, call = api(store, clock), a = devKey(), ref = refOf(a);
-  assert.deepEqual((await call('GET', '/me', null, {key: a})).body, {ref, friends: 0, kk: 0, per: 3, claims: [], next: 3, can: false});
+  assert.deepEqual((await call('GET', '/me', null, {key: a})).body, {ref, friends: 0, kk: 0, per: 3, claims: [], next: 3, can: false, pending: null});
   // 내 고리를 내가 엶 → 안 셈
   assert.deepEqual((await call('POST', '/visit', {r: ref}, {key: a, ua: KK_UA})).body, {ok: true, self: true});
   assert.equal((await call('GET', '/me', null, {key: a})).body.friends, 0);
@@ -70,7 +70,7 @@ test('연 기록 — 한 기기는 한 번만 · 내 고리는 안 셈 · 카톡
   await call('POST', '/visit', {r: ref}, {key: devKey(), ua: 'Mozilla/5.0 (Linux; Android 14) kakaotalk 10.8'});
   await call('POST', '/visit', {r: ref}, {key: devKey()});
   const m = (await call('GET', '/me', null, {key: a})).body;
-  assert.deepEqual(m, {ref, friends: 4, kk: 2, per: 3, claims: [], next: 3, can: true});
+  assert.deepEqual(m, {ref, friends: 4, kk: 2, per: 3, claims: [], next: 3, can: true, pending: null});
   const rec = [...store._map.entries()].filter(([k]) => k.startsWith(`v/${ref}/`)).map(([, v]) => JSON.parse(v));
   assert.equal(rec.length, 4);
   assert.ok(rec.some(r => r.at === iso(T0) && r.kk === true), 'b 의 첫 기록(카톡 · 처음 때)이 두 번째에 바뀌지 않음');
@@ -182,8 +182,8 @@ test('사장님 — 목록은 사장님 열쇠로만 · 기다림엔 번호 · �
   const l = (await call('GET', '/list', null, {owner: OWNER})).body;
   assert.deepEqual(Object.keys(l), ['items']);
   assert.deepEqual(l.items.map(x => x.id), [cb, ca], '새것부터');
-  assert.deepEqual(l.items[1], {id: ca, at: iso(T0), ref: refOf(a), friends: 3, kk: 3, phone: '01011112222', tail: '2222', state: 'wait', sentAt: null});
-  assert.deepEqual(l.items[0], {id: cb, at: iso(T0 + 60e3), ref: refOf(b), friends: 4, kk: 0, phone: '01033334444', tail: '4444', state: 'wait', sentAt: null});
+  assert.deepEqual(l.items[1], {id: ca, at: iso(T0), ref: refOf(a), friends: 3, kk: 3, phone: '01011112222', tail: '2222', state: 'wait', sentAt: null, kind: 'phone', code: null});
+  assert.deepEqual(l.items[0], {id: cb, at: iso(T0 + 60e3), ref: refOf(b), friends: 4, kk: 0, phone: '01033334444', tail: '4444', state: 'wait', sentAt: null, kind: 'phone', code: null});
   // 보냄 표시 — 사장님만 · 번호 꼴 · 없는 신청
   assert.equal((await call('POST', '/done', {id: ca})).status, 403);
   assert.equal((await call('POST', '/done', {id: ca}, {key: a})).status, 403);
@@ -194,7 +194,7 @@ test('사장님 — 목록은 사장님 열쇠로만 · 기다림엔 번호 · �
   const sentAt = iso(clock.t);
   assert.deepEqual((await call('POST', '/done', {id: ca}, {owner: OWNER})).body, {ok: true});
   const l2 = (await call('GET', '/list', null, {owner: OWNER})).body.items;
-  assert.deepEqual(l2.find(x => x.id === ca), {id: ca, at: iso(T0), ref: refOf(a), friends: 3, kk: 3, phone: null, tail: '2222', state: 'sent', sentAt});
+  assert.deepEqual(l2.find(x => x.id === ca), {id: ca, at: iso(T0), ref: refOf(a), friends: 3, kk: 3, phone: null, tail: '2222', state: 'sent', sentAt, kind: 'phone', code: null});
   assert.equal(l2.find(x => x.id === cb).phone, '01033334444', '보내지 않은 신청은 그대로');
   assert.equal(JSON.parse(store._map.get('c/' + ca)).phone, null);
   assert.ok(![...store._map.values()].some(v => v.includes('01011112222')), '보낸 번호는 저장소에서 사라짐');
@@ -279,7 +279,7 @@ test('넷리파이 함수 그대로(functions/atlas11/gift.mjs) + Blobs 로컬 �
     };
     for (let i = 0; i < 3; i++) assert.deepEqual((await send('POST', '/visit', {r: ref}, {'x-gift-key': devKey(), 'user-agent': i ? WEB_UA : KK_UA})).body, {ok: true});
     const m = (await send('GET', '/me', null, {'x-gift-key': a})).body;
-    assert.deepEqual(m, {ref, friends: 3, kk: 1, per: 3, claims: [], next: 3, can: true});
+    assert.deepEqual(m, {ref, friends: 3, kk: 1, per: 3, claims: [], next: 3, can: true, pending: null});
     const c = await send('POST', '/claim', {phone: '010-7777-8888', agree: true, watched: true}, {'x-gift-key': a});
     assert.equal(c.status, 200); assert.equal(c.body.next, 6);
     assert.equal((await send('GET', '/list')).status, 403);
@@ -292,4 +292,33 @@ test('넷리파이 함수 그대로(functions/atlas11/gift.mjs) + Blobs 로컬 �
     for (const [k, v] of [['NETLIFY_BLOBS_CONTEXT', prev.ctx], ['ATLAS_INVITE_OWNER_SHA256', prev.owner]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
     await server.stop(); await fs.rm(dir, {recursive: true, force: true});
   }
+});
+
+test('「상품권 주세요」(사장님 2026-10-26 16:14 · 16:16 「일단 내 번호 남겨」) — 사장님 번호는 저장소에만 · 친구 셋을 채운 기기만 번호와 확인 번호 · 다시 눌러도 같은 번호 · 목록 · 보냄 뒤 끝', async () => {
+  const store = memoryStore(), clock = {t: T0}, call = api(store, clock), a = devKey(), ref = refOf(a);
+  assert.equal((await call('POST', '/ask', {watched: true})).status, 401);
+  assert.deepEqual((await call('POST', '/ask', {watched: false}, {key: a})).body, {error: 'watched'});
+  const none = await call('POST', '/ask', {watched: true}, {key: a});
+  assert.equal(none.status, 503); assert.deepEqual(none.body, {error: 'contact'}, '번호가 없으면 503 — 화면은 예전 전화번호 칸');
+  await store.setJSON(CONTACT_KEY, {phone: '010-9999-0000', at: iso(T0)});
+  await friends(call, ref, 2);
+  const need = await call('POST', '/ask', {watched: true}, {key: a});
+  assert.equal(need.status, 409); assert.deepEqual(need.body, {error: 'need', friends: 2, next: 3}, '모자라면 번호를 안 줌');
+  assert.equal((await call('GET', '/me', undefined, {key: a})).body.pending, null);
+  await friends(call, ref, 1, KK_UA);
+  const r1 = await call('POST', '/ask', {watched: true}, {key: a});
+  assert.equal(r1.status, 200); assert.match(r1.body.code, /^\d{4}$/); assert.equal(r1.body.contact, '01099990000');
+  assert.equal(r1.body.code, askCode(r1.body.id));
+  const r2 = await call('POST', '/ask', {watched: true}, {key: a});
+  assert.equal(r2.body.code, r1.body.code); assert.equal(r2.body.again, true, '다시 눌러도 같은 확인 번호(새 신청 없음)');
+  assert.deepEqual((await call('GET', '/me', undefined, {key: a})).body.pending, {code: r1.body.code, contact: '01099990000'}, '다시 열어도 번호가 그대로');
+  const c = await store.get('c/' + r1.body.id, {type: 'json'});
+  assert.equal(c.kind, 'ask'); assert.equal(c.phone, null); assert.equal(c.friends, 3); assert.equal(c.kk, 1);
+  const it = (await call('GET', '/list', undefined, {owner: OWNER})).body.items.find(x => x.id === r1.body.id);
+  assert.equal(it.kind, 'ask'); assert.equal(it.code, r1.body.code); assert.equal(it.phone, null);
+  const b = devKey();
+  assert.equal((await call('POST', '/ask', {watched: true}, {key: b})).status, 409, '친구가 없는 기기는 번호를 못 받음');
+  assert.equal((await call('GET', '/me', undefined, {key: b})).body.pending, null);
+  assert.equal((await call('POST', '/done', {id: r1.body.id}, {owner: OWNER})).status, 200);
+  assert.equal((await call('GET', '/me', undefined, {key: a})).body.pending, null, '보냄 표시 뒤에는 기다림이 아님');
 });

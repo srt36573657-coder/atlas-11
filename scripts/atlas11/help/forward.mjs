@@ -125,6 +125,8 @@ export const GIFT_START = '2026-10-25T06:00:00.000Z';
 /** 신청 하나 → 카톡 한 통 — 때 · 친구 수 · 카톡에서 연 수 · 번호 끝 네 자리(전체 번호는 넣지 않음) */
 export function giftMessage(c) {
   const n = Number.isInteger(c?.friends) ? c.friends : 0, kk = Number.isInteger(c?.kk) ? c.kk : 0;
+  // 「상품권 주세요」(사장님 2026-10-26 16:14 · 16:16) — 받는 분 번호는 없음 · 그분이 사장님께 카톡 · 문자로 보낼 확인 번호 넷만
+  if (c?.kind === 'ask') return `[돌이 선물] 상품권 주세요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n확인 번호 ${/^\d{4}$/.test(String(c?.code ?? '')) ? c.code : '????'}\n이 번호를 보내는 분께 상품권을 보내 주세요.`;
   const tail = /^\d{4}$/.test(String(c?.tail ?? '')) ? c.tail : '????';
   return `[돌이 선물] 새 신청이 왔어요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n전화번호 끝 ${tail}\n관리자 화면에서 번호를 보고 카톡 선물을 보내 주세요.`;
 }

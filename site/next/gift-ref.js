@@ -70,3 +70,11 @@ export async function claim({phone, agree, watched}) {
     return {status: r.status, ...(j && typeof j === 'object' ? j : {})};
   } catch { return {status: 0}; }
 }
+/** 「상품권 주세요」(사장님 2026-10-26 16:14 · 16:16) — {watched} → {status, ok?, code?, contact?, error?} · 친구 셋을 채운 기기만 사장님 번호와 확인 번호를 받음 */
+export async function askGift({watched}) {
+  try {
+    const r = await fetch('/api/gift/ask', {method: 'POST', headers: {'content-type': 'application/json', 'x-gift-key': key()}, body: JSON.stringify({watched: watched === true}), cache: 'no-store', credentials: 'same-origin'});
+    let j = null; try { j = await r.json(); } catch { j = null; }
+    return {status: r.status, ...(j && typeof j === 'object' ? j : {})};
+  } catch { return {status: 0}; }
+}
