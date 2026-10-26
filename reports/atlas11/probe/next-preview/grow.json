@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-26T05:56:17.932Z",
+ "at": "2026-10-26T06:46:32.569Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-26",
  "companies": 2557,
@@ -12,7 +12,7 @@
  "units": {
   "total": 2569,
   "mine": 2569,
-  "hash": "114fe3ffadefa00e",
+  "hash": "22b726c064a08526",
   "kinds": {
    "c": {
     "total": 2557,
@@ -32,18 +32,18 @@
    }
   }
  },
- "seconds": 143,
+ "seconds": 145,
  "time": {
-  "old": 126,
-  "new": 126.5,
-  "wall": 142.6,
+  "old": 124.9,
+  "new": 127.5,
+  "wall": 144.7,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 88.4,
-  "oldShare": 49.9
+  "oldPct": 86.3,
+  "oldShare": 49.5
  },
  "net": {
-  "req": 5126,
+  "req": 2560,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -63,7 +63,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 2004개(/atlas/data/core.json · /atlas/data/lines.json · /atlas/data/comp.json)",
+   "why": "검사 · 브라우저 · 목록이 바뀜",
    "made": null,
    "inputs": 2566,
    "reads": 2557,
