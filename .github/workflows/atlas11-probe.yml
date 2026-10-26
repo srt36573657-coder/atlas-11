@@ -19,7 +19,7 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ inputs.which == 'liveen' && 45 || inputs.which == 'livephone' && 25 || 14 }}
+    timeout-minutes: ${{ inputs.which == 'liveen' && 45 || inputs.which == 'livephone' && 45 || 14 }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
