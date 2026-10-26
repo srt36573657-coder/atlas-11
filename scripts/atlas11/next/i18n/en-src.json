@@ -9582,6 +9582,8 @@
   "사장님 번호는 친구 셋이 연 분에게만 보여요.": "Only people whose link three friends opened see the owner’s number.",
   "확인 번호 {n}": "Check number {n}",
   "보냄 · 확인 번호 {n}": "Sent · check number {n}",
-  "보낼 차례 {n}명이에요. 확인 번호를 보낸 분께 카톡 선물을 보내고 「보냄 표시」를 누르세요.": "{n} waiting. Send a KakaoTalk gift to whoever sent the check number, then tap \"Mark as sent\"."
+  "보낼 차례 {n}명이에요. 확인 번호를 보낸 분께 카톡 선물을 보내고 「보냄 표시」를 누르세요.": "{n} waiting. Send a KakaoTalk gift to whoever sent the check number, then tap \"Mark as sent\".",
+  "문자 창을 열었어요. 보내기만 누르면 끝이에요.": "The text app is open. Just tap send.",
+  "누르면 문자 창이 열려요. 보내기만 누르면 끝이에요.": "Tap it and your text app opens. Just tap send."
  }
 }

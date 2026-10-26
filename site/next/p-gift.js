@@ -76,6 +76,9 @@ export function render() {
     sms.setAttribute('href', 'sms:' + p + '?&body=' + encodeURIComponent(`${NAME} 상품권 주세요. 확인 번호 ${c}`)); // 받는 사람 = 사장님(한국어 그대로)
     call.hidden = false; ask.hidden = true; res.textContent = L('확인 번호를 꼭 같이 보내 주세요.');
   }
+  /* 한 번에 문자 창(사장님 2026-10-26 22:44 「야 너 사용자 정말 쉽게 싱품 받게 기획해 100가지 알겠지 그중에ㅛㅓ 제일 쉬운거 세팅 해놓아」) —
+     「상품권 주세요」를 누르면 서버가 맞대 본 뒤 문자 창이 바로 열림(사장님 번호 · 확인 번호가 다 들어 있음 · 받는 분은 보내기만) · 안 열리면 아래 칸의 「문자 보내기」 */
+  const openSms = () => { const u = sms.getAttribute('href') ?? ''; if (!u.startsWith('sms:')) return; res.textContent = L('문자 창을 열었어요. 보내기만 누르면 끝이에요.'); try { location.href = u; } catch { /* 문자 창이 안 열리는 곳 — 아래 칸 단추로 */ } };
   copy.addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(shown); res.textContent = L('번호를 담았어요.'); }
     catch { const r = document.createRange(); r.selectNodeContents(num); const s = getSelection(); s.removeAllRanges(); s.addRange(r); res.textContent = L('번호를 길게 눌러 복사해 주세요.'); }
@@ -94,7 +97,7 @@ export function render() {
     ask.disabled = true; res.textContent = L('여는 중이에요…');
     const r = await askGift({watched: true});
     ask.disabled = false;
-    if (r.ok) { showCall(r); return; }
+    if (r.ok) { showCall(r); openSms(); return; }
     if (r.status === 503) { form.hidden = false; ask.hidden = true; res.textContent = L('전화번호를 적어 주시면 사장님이 보내 드려요.'); return; }
     res.textContent = L(bad(r));
   });
@@ -109,7 +112,7 @@ export function render() {
   const steps = h('ol', {class: 'gf-steps'},
     step(1, '친구 3명에게 소개해요', `카톡으로 ${josa(NAME, '를')} 보내요. 친구가 열면 여기서 저절로 세요.`, send, said, again),
     step(2, '우주 영상 1분을 끝까지 봐요', '우주선, 용, 오로라가 나와요.', v, play, bar, left),
-    step(3, '상품권 주세요를 눌러요', '사장님 번호와 확인 번호가 나와요. 카톡이나 문자로 보내 주세요.', lock, got));
+    step(3, '상품권 주세요를 눌러요', '누르면 문자 창이 열려요. 보내기만 누르면 끝이에요.', lock, got));
   let opened = false, cur = 1;
   const on = n => { cur = n; for (const li of steps.children) li.classList.toggle('on', li.getAttribute('data-step') === String(n)); now.textContent = L(NOW[n]); };
   /* 결 단추를 누르면 — 지금 걸음(3 = 열린 받기 칸)으로 내려가 그 걸음의 첫 단추에 초점(보내기 · 영상 보기 · 상품권 받기) */

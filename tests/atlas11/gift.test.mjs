@@ -91,6 +91,9 @@ test('앱 안 상품권 방(#/gift) — 모든 쪽 위 막대 금빛 선물 단�
   assert.equal((js.match(/sms:/g) ?? []).length, 1, '문자 고리는 한 곳');
   assert.match(js, /function showCall\(r\) \{\n    const p = String\(r\?\.contact \?\? ''\)/, '번호는 서버 답에서만');
   assert.match(js, /text: '상품권 주세요'/);
+  // 22:44 「… 제일 쉬운거 세팅 해놓아」 — 누르면 문자 창이 바로(서버가 맞대 본 뒤 · 번호 · 확인 번호가 다 들어 있음)
+  assert.match(js, /if \(r\.ok\) \{ showCall\(r\); openSms\(\); return; \}/);
+  assert.match(js, /const openSms = \(\) => \{ const u = sms\.getAttribute\('href'\) \?\? ''; if \(!u\.startsWith\('sms:'\)\) return;/, '문자 고리가 있을 때만');
   assert.ok(js.indexOf("const got = h('div'") > js.indexOf("const tel = h('input'"), '전화번호 칸은 받기 칸 안에만');
   assert.match(js, /import \{ref, withRef, me, claim, askGift, PER\} from '\.\/gift-ref\.js';/);
   assert.match(js, /상품권을 보내려고 이 번호를 사장님께만 보여 드려요\. 보내면 바로 지워요\. 동의해요\./, '동의 글');
