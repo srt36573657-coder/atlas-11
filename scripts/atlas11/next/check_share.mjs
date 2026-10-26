@@ -53,7 +53,7 @@ const MUTS = {
   'no-text': [[['await navigator.share({title, text, url});', 'await navigator.share({title, url});']], ['공유 창에 글이 없음'], 'p-share.js', 'co'],
   'no-lang': [[["lang: /[가-힣]/.test(txt) ? 'ko' : null", 'lang: null']], ['보낸 말(쓴 사람 글)에 lang="ko" 없음', '걸린 낱말(쓴 사람 글)에 lang="ko" 없음 — 엔진이 바꿈'], 'p-share.js', 'co,land'],
   // 카톡(켜짐) — 보낸 카드에 수익 숫자 · 단추 1 이 가입 길이 아님 · 값 칸이 질문보다 위 · 음수 간격 · 권유가 여러 번  ·  [[고칠 자리, 바꿀 글]], [기대하는 실패], 파일(기본 p-share.js), 묶음
-  'card-rate': [[["description: [...said, half, value].filter(Boolean).join('\\n')", "description: [...said, half, value, '+12% 올랐어'].filter(Boolean).join('\\n')"]], ['카드에 수익 숫자 · 퍼센트 · 1등 · 급등'], 'p-share.js', 'card'],
+  'card-rate': [[["description: [...said, half, gift, value].filter(Boolean).join('\\n')", "description: [...said, half, gift, value, '+12% 올랐어'].filter(Boolean).join('\\n')"]], ['카드에 수익 숫자 · 퍼센트 · 1등 · 급등'], 'p-share.js', 'card'],
   'card-start-skip': [[['const start = K && join ? origin + K.startUrl(see, {ref: K.ref()}) : null;', 'const start = K && join ? see : null;']], ['카드 단추 1 주소(가입 길)'], 'p-share.js', 'card'],
   'vals-first': [[['nodes: [top,\n', 'nodes: [top, valsBox,\n'], ['after, valsBox, SAFE()]', 'after, SAFE()]']], ['질문이 값 칸보다 아래([5] 10 — 질문이 맨 위 · 값 칸은 질문 뒤)'], 'p-share.js', 'land'],
   'neg-margin': [[['.ps-why { margin: 0; }', '.ps-why { margin: 0 -16px; }']], ['음수 간격(겹침)([10] 8 · 음수 간격 0)'], 'p-share.css', 'land'],
@@ -349,6 +349,9 @@ async function sendQuick(p, k, tag, {tap = false} = {}) {
 }
 /** 회사 주식 보낸 글 — 첫 줄 = 「이름 · 그날 값」(저절로 · [6] 3) · 둘째 줄 = 말 · 그 뒤 = 같이 가는 글 · 반값 한 줄 / 회사 주식이 아니면 첫 줄이 말 */
 const HEADLINE = () => `${CO.c.name} · ${md(CO.c.priceDate)} 값 ${num(CO.c.price)}원`;
+/** 선물 한 줄(사장님 2026-10-26 14:46 「그리고 친구에게 카톡보내면 3명 소개 시키면 상품권준다는 내용 담아서 보내도록 시스템 만들어」) — 보낸 주소에 보낸 사람 표 r 이 있으면 보낸 글 끝 · 카드 글 값 줄 바로 앞 */
+const GIFT = '친구 셋이 열면 상품권을 드려요';
+const hasRef = u => { try { return /^[A-Za-z0-9_-]{16}$/.test(new URL(String(u ?? '')).searchParams.get('r') ?? ''); } catch { return false; } };
 const lines = d => String((typeof d === 'string' ? d : d?.text) ?? '').split('\n');
 const EN_PAGE = new WeakSet(); // 영어(?lang=en)로 연 쪽 — 빠른 말 · 기본 말은 보이는 글(바뀐 글)과 맞댐
 const shared = p => p.evaluate(() => window.__shared), copied = p => p.evaluate(() => window.__copied);
@@ -410,6 +413,7 @@ async function companyBox(W_, H_, deep) {
       const ln = lines(d);
       if (ln[0] !== HEADLINE()) fail('보낸 글 첫 줄 = 종목 이름 · 그날 값(저절로 · [6] 3)', `${tag} 「${ln[0]}」 ≠ 「${HEADLINE()}」`);
       if (ln[1] !== QUICK[2]) fail('공유 창에 글이 없음', `${tag} 「${d.text}」`);
+      if (hasRef(d.url) && ln.at(-1) !== GIFT) fail('보낸 글 끝에 선물 한 줄이 없음(사장님 2026-10-26 14:46)', `${tag} 「${d.text}」`); else bump('선물 한 줄');
       noGainPayload(d, tag);
       bump('보낸 것');
     }
@@ -764,8 +768,8 @@ async function checkCard(p, n, {msg, kind = 's', ref = null}, tag) {
   }
   if (c.content?.link?.mobileWebUrl !== see) fail('카드 누르기 주소(웹 · 모바일)가 다름', tag);
   if (c.content?.title !== CO.c.name) fail('카드 제목 = 종목 이름', `${tag} 「${c.content?.title}」 ≠ 「${CO.c.name}」`);
-  const wantDesc = msg + '\n' + md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원';
-  if (c.content?.description !== wantDesc) fail('카드 글 = 보낸 사람 글 + 보낸 날 값', `${tag} 「${c.content?.description}」 ≠ 「${wantDesc}」`);
+  const wantDesc = [msg, hasRef(see) ? GIFT : '', md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원'].filter(Boolean).join('\n');
+  if (c.content?.description !== wantDesc) fail('카드 글 = 보낸 사람 글 + (선물 한 줄) + 보낸 날 값', `${tag} 「${c.content?.description}」 ≠ 「${wantDesc}」`);
   if (/[%％]|퍼센트|프로|1등|1위|급등/.test(blob.replace(/%2F|%3F|%23|%3D|%26|%[0-9A-F]{2}/g, '')) || W.gainHits(c.content?.title + '\n' + c.content?.description).length) fail('카드에 수익 숫자 · 퍼센트 · 1등 · 급등', `${tag} 「${c.content?.description}」`);
   if (!String(c.content?.imageUrl ?? '').startsWith(base + '/')) fail('카드 그림 주소(우리 사이트 것)', `${tag} 「${c.content?.imageUrl}」`);
   else { const r = await fetch(c.content.imageUrl).catch(() => null); if (!r?.ok) fail('카드 그림 파일을 못 받음', `${tag} ${c.content.imageUrl}`); }
@@ -1062,8 +1066,8 @@ function kkCard(c, msg, half, tag) {
   if (c.objectType !== 'feed') fail('카드 꼴(feed)', `${tag} ${c.objectType}`);
   if (!m || m[1] !== CODE || m[2] !== CO.c.priceDate || +m[3] !== Math.round(CO.c.price) || m[4] !== 's' || !m[5] || unb64(m[5]) !== msg) fail('카드 누르기 주소(#/s/ 종목 · 날 · 값 · 말)', `${tag} 「${see}」`);
   if (c.content?.title !== CO.c.name) fail('카드 제목 = 종목 이름([7] 5)', `${tag} 「${c.content?.title}」`);
-  const want = [msg, half, md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원'].filter(Boolean).join('\n');
-  if (c.content?.description !== want) fail('카드 글 = 보낸 사람 말 + (반값 한 줄) + 보낸 날 값([7] 5 · [6] 8)', `${tag} 「${c.content?.description}」 ≠ 「${want}」`);
+  const want = [msg, half, hasRef(see) ? GIFT : '', md(CO.c.priceDate) + ' 값 ' + num(Math.round(CO.c.price)) + '원'].filter(Boolean).join('\n');
+  if (c.content?.description !== want) fail('카드 글 = 보낸 사람 말 + (반값 한 줄) + (선물 한 줄) + 보낸 날 값([7] 5 · [6] 8 · 2026-10-26 14:46)', `${tag} 「${c.content?.description}」 ≠ 「${want}」`);
   const bs = c.buttons ?? [];
   if (!SIGNUP_ON && (bs.length !== 1 || bs[0]?.title !== OPEN_BTN || bs[0]?.link?.webUrl !== see || bs[0]?.link?.mobileWebUrl !== see)) fail('가입이 꺼졌을 때 카드 단추 = 「열어 보기」 하나 · 보낸 주소([7] 5)', `${tag} ${JSON.stringify(bs).slice(0, 200)}`);
   if (/[%％]|퍼센트|1등|1위|급등/.test(JSON.stringify(c).replace(/%[0-9A-F]{2}/g, '')) || W.gainHits(c.content?.title + '\n' + c.content?.description).length) fail('카드에 수익 숫자 · 퍼센트 · 1등 · 급등', `${tag} 「${c.content?.description}」`);

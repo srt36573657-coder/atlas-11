@@ -6,8 +6,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {randomBytes} from 'node:crypto';
-import {fetchGift, giftMessage, fetchSealed, fetchNew, ack, pairLast, splitLast, newRoomKey, open, GIFT_STORE, GIFT_START, ID_RE, MSG_MAX, CURSOR_KEY} from '../../scripts/atlas11/help/forward.mjs';
-import {handleGift, refOf, GIFT_STORE as LIB_GIFT_STORE} from '../../lib/atlas11/gift.mjs';
+import {fetchGift, giftMessage, fetchSealed, fetchNew, ack, pairLast, splitLast, newRoomKey, open, GIFT_STORE, GIFT_START, ID_RE, MSG_MAX, CURSOR_KEY,
+  friendsMessage, GIFT_PER, FRIENDS_KEY, FRIENDS_START} from '../../scripts/atlas11/help/forward.mjs';
+import {handleGift, refOf, GIFT_STORE as LIB_GIFT_STORE, RULE as LIB_RULE} from '../../lib/atlas11/gift.mjs';
 import {handleHelp} from '../../lib/atlas11/help.mjs';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
 
@@ -96,6 +97,59 @@ test('잠그기 — 고객센터 글 다음에 선물 신청 · n 은 둘을 더
   assert.deepEqual(splitLast(only.last), {help: null, gift: g2});
   const d2 = await ack(help, only.last, {giftStore: gift});
   assert.ok(d2.ok && !d2.moved && d2.gift.moved, '고객센터 표시는 그대로 · 선물 표시만');
+});
+
+// 친구 셋 알림(사장님 2026-10-26 14:45 「카촉을 8명 보냈는데 내겐 오지 않아 / 너 해결해」) — 신청 전이라도 친구 셋 · 여섯 …이 열면 한 통
+const T2 = Date.parse('2026-10-26T05:41:00Z'); // 서울 오후 2시 41분 — 친구 알림 시작 때(14:30 서울) 뒤
+async function opens(store, clock, r, n, {kkFirst = 0, gap = 20e3} = {}) {
+  const call = giftApi(store, clock);
+  for (let i = 0; i < n; i++) { assert.equal((await call('/visit', {r}, {key: devKey(), ua: i < kkFirst ? KK_UA : undefined})).status, 200); clock.t += gap; }
+}
+test('친구 알림 — 같은 셈(셋) · 카톡 한 통 꼴 · 190자 안 · 번호 · 표 없음', () => {
+  assert.equal(GIFT_PER, LIB_RULE.per);
+  assert.equal(FRIENDS_START, '2026-10-26T05:30:00.000Z');
+  const m = friendsMessage({at: '2026-10-26T05:42:10.000Z', friends: 4, kk: 0, step: 3, ref: 'AAAAAAAAAAAAAAAA'});
+  assert.equal(m, '[돌이 선물] 친구 3명이 열었어요\n10월 26일 오후 2시 42분\n한 분이 보낸 주소를 친구 4명이 열었어요 · 카톡에서 0명\n그분이 선물 받기에서 신청하면 번호가 함께 와요.');
+  assert.ok(Array.from(m).length <= MSG_MAX && !m.includes('AAAA'));
+});
+test('친구 알림 — 셋째가 열면 한 통 · 넷 · 다섯은 그대로 · 여섯째에 또 한 통 · 못 보내면 다시(새로 만들지 않음) · 보낸 뒤 0', async () => {
+  const store = memoryStore(), clock = {t: T2}, me = devKey(), r = refOf(me);
+  await opens(store, clock, r, 2, {kkFirst: 1});
+  assert.equal((await fetchGift(store, {now: new Date(clock.t)})).n, 0, '둘은 아직');
+  await opens(store, clock, r, 1);
+  const a = await fetchGift(store, {now: new Date(clock.t)});
+  assert.equal(a.n, 1); assert.match(a.messages[0], /^\[돌이 선물\] 친구 3명이 열었어요\n10월 26일 오후 2시 4\d분\n한 분이 보낸 주소를 친구 3명이 열었어요 · 카톡에서 1명/);
+  const again = await fetchGift(store, {now: new Date(clock.t + 3600e3)});
+  assert.equal(again.n, 1, '못 보냈으면 다음 시간에 같은 알림'); assert.equal(again.last, a.last, '알림을 새로 만들지 않음');
+  assert.equal(((await store.list({prefix: 'e/'})).blobs ?? []).length, 1);
+  assert.ok((await ack(memoryStore(), pairLast(null, a.last), {giftStore: store})).gift.moved);
+  await opens(store, clock, r, 2);
+  assert.equal((await fetchGift(store, {now: new Date(clock.t)})).n, 0, '넷 · 다섯은 알리지 않음');
+  await opens(store, clock, r, 1);
+  const b = await fetchGift(store, {now: new Date(clock.t)});
+  assert.equal(b.n, 1); assert.match(b.messages[0], /^\[돌이 선물\] 친구 6명이 열었어요\n/);
+  // 신청도 오면 번호(때)대로 섞임 — 친구 알림 다음에 신청
+  clock.t += 60e3;
+  const c = await giftApi(store, clock)('/claim', {phone: '010-5555-6666', agree: true, watched: true}, {key: me});
+  assert.equal(c.status, 200, JSON.stringify(c.body));
+  const d = await fetchGift(store, {now: new Date(clock.t)});
+  assert.equal(d.n, 2); assert.ok(d.messages[0].startsWith('[돌이 선물] 친구 6명') && d.messages[1].startsWith('[돌이 선물] 새 신청'), JSON.stringify(d.messages));
+  assert.equal(d.last, c.body.id);
+  assert.equal((await store.get(CURSOR_KEY, {type: 'json'})).id, a.last, '꺼내기는 보낸 표시를 옮기지 않음(ack 만)');
+});
+test('친구 알림 — 셋째가 시작 때 전에 열었으면(시험 기록) 알림 없이 적기만 · 내 고리를 내가 열면 안 셈 · 저장소가 막혀도 신청 알림은 감', async () => {
+  const store = memoryStore(), clock = {t: Date.parse(FRIENDS_START) - 30 * 60e3}, me = devKey(), r = refOf(me);
+  await opens(store, clock, r, 3, {kkFirst: 2});
+  const a = await fetchGift(store, {now: new Date(clock.t)});
+  assert.equal(a.n, 0); assert.equal(((await store.list({prefix: 'e/'})).blobs ?? []).length, 0);
+  assert.equal((await store.get(FRIENDS_KEY, {type: 'json'})).refs[r], 3, '알린 곳은 적음(다시 세지 않게)');
+  assert.equal((await giftApi(store, clock)('/visit', {r}, {key: me})).body.self, true);
+  // 연 기록 목록만 막힌 저장소 — 신청 알림은 그대로
+  const s2 = memoryStore(), c2 = {t: T2};
+  const id = await oneClaim(s2, c2);
+  const blocked = {...s2, list: async o => { if (o?.prefix === 'v/') throw Error('막힘'); return s2.list(o); }, get: (...x) => s2.get(...x), setJSON: (...x) => s2.setJSON(...x)};
+  const g = await fetchGift(blocked, {now: new Date(c2.t)});
+  assert.equal(g.n, 1); assert.equal(g.last, id); assert.ok(g.messages[0].startsWith('[돌이 선물] 새 신청'));
 });
 
 test('선물 저장소가 없거나 못 읽어도 고객센터 글은 예전과 같음 · 번호 꼴', async () => {

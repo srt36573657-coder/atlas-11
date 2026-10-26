@@ -431,6 +431,13 @@ test('⑱ 카드 — p-share cardOf 가 만든 카드를 kakao.js sendCard 가 �
   assert.ok(!/[%％]|퍼센트|1등|1위|급등/.test(ch.description), '반값 한 줄에도 수익 숫자 · 급등 낱말 0');
   // 보낸 말 + 같이 가는 글이 있으면 두 줄 · 값은 늘 마지막 줄
   assert.equal(card(t.K, {msg: '나는 이렇게 봤어', lead: '소개 한 줄'}).description, '나는 이렇게 봤어\n소개 한 줄\n10월 13일 값 234,000원');
+  // 선물 한 줄(사장님 2026-10-26 14:46) — 값 줄 바로 앞 · 보낸 주소에 보낸 사람 표 r 이 있을 때만(giftOn)
+  const {GIFT_LINE, giftOn} = await import('../../site/next/p-share.js');
+  assert.equal(GIFT_LINE, '친구 셋이 열면 상품권을 드려요');
+  const cg = card(so.K, {gift: GIFT_LINE}); assert.equal(cg.description, '이거 어때?\n친구 셋이 열면 상품권을 드려요\n10월 13일 값 234,000원'); assert.equal(cg.gift, GIFT_LINE);
+  assert.equal(card(so.K, {half: hl, gift: GIFT_LINE}).description, '이거 어때?\n' + hl + '\n친구 셋이 열면 상품권을 드려요\n10월 13일 값 234,000원');
+  assert.equal(giftOn('https://aaa7377.com/?r=AbCdEfGhIjKlMnOp#/s/005930/2026-10-13/234000/s'), true);
+  for (const u of ['https://aaa7377.com/#/s/005930/2026-10-13/234000/s', 'https://aaa7377.com/?r=short#/x', 'https://aaa7377.com/#/s?r=AbCdEfGhIjKlMnOp', '', null, 'nope']) assert.equal(giftOn(u), false, String(u));
   // 바깥 주소 · 단추 없음은 보내지 않음 · 켜져 있지 않으면 보내지 않음
   assert.equal(t.K.sendCard({...c, url: 'https://evil.example/x'}), false); assert.equal(t.K.sendCard({...c, buttons: [{title: 'x', url: 'https://evil.example/y'}]}), false); assert.equal(sent.length, 1);
   const off = mk({switchOn: false, kakao: fakeKakao([])}); assert.equal(off.K.sendCard(c), false);

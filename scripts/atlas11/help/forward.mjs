@@ -128,13 +128,58 @@ export function giftMessage(c) {
   const tail = /^\d{4}$/.test(String(c?.tail ?? '')) ? c.tail : '????';
   return `[돌이 선물] 새 신청이 왔어요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n전화번호 끝 ${tail}\n관리자 화면에서 번호를 보고 카톡 선물을 보내 주세요.`;
 }
-/** 보낸 표시 뒤 새 신청 — {n 보낼 차례 수, more, last 꺼낸 마지막 번호(이미 보낸 신청도 지나감), messages} · 이미 「보냄」인 신청은 알리지 않음 */
-export async function fetchGift(store, {max = MAX_ITEMS, start = GIFT_START} = {}) {
+// ───────────── 친구 셋 알림(사장님 2026-10-26(서울) 14:45 「카촉을 8명 보냈는데 내겐 오지 않아 / 너 해결해」) ─────────────
+//   신청 전이라도 한 분이 보낸 주소를 친구 셋 · 여섯 · 아홉 …이 처음 열면 사장님께 한 통(전에는 지인이 선물 받기에서 신청해야만 알림이 갔음)
+//   · 꺼낼 때(매시) 연 기록 v/<표>/<기기> 를 표마다 세어 알린 곳(fwd/friends)보다 높은 셋의 배수가 되면 알림 e/<번호> 를 하나 만듦(표마다 그 배수에 한 번)
+//   · 알림 번호는 신청 번호와 같은 꼴(만든 때 + 무작위) — 보낸 표시 fwd/cursor 하나로 신청과 함께 차례대로 보냄(못 보냈으면 다음 시간에 다시 · 알림은 다시 만들지 않음)
+//   · 카톡에는 때 · 친구 수 · 카톡에서 연 수만(누가 보냈는지 · 번호 · 표 없음)
+//   · 그 배수째 친구가 FRIENDS_START 전에 열었으면 알림 없이 알린 곳만 적음 — 그 전 셋은 제 시험 기록(10-25 17:30 · 17:54 · 18:19 · 10-26 14:08)
+export const GIFT_PER = 3; // lib/atlas11/gift.mjs RULE.per 와 같음(시험이 맞댐)
+export const FRIENDS_KEY = 'fwd/friends', FRIENDS_START = '2026-10-26T05:30:00.000Z';
+const V_RE = /^v\/([A-Za-z0-9_-]{16})\/[0-9a-f]{32}$/;
+const eventId = ms => Math.floor(ms).toString(36).padStart(9, '0') + '-' + crypto.randomBytes(9).toString('base64url');
+/** 친구 알림 하나 → 카톡 한 통 */
+export function friendsMessage(e) {
+  const n = Number.isInteger(e?.friends) ? e.friends : 0, kk = Number.isInteger(e?.kk) ? e.kk : 0, s = Number.isInteger(e?.step) && e.step > 0 ? e.step : GIFT_PER;
+  return `[돌이 선물] 친구 ${s}명이 열었어요\n${whenKo(e?.at)}\n한 분이 보낸 주소를 친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n그분이 선물 받기에서 신청하면 번호가 함께 와요.`;
+}
+/** 알림 만들기 — 만든 알림 번호들 · 연 기록을 다 못 읽은 표는 이번에 건너뜀(다음 시간에 다시) */
+export async function markFriends(store, {now = new Date(), start = FRIENDS_START, per = GIFT_PER} = {}) {
+  const by = new Map();
+  for (const b of ((await store.list({prefix: 'v/'}))?.blobs) ?? []) { const m = V_RE.exec(b.key ?? ''); if (m) by.set(m[1], [...(by.get(m[1]) ?? []), b.key]); }
+  const saved = await getJ(store, FRIENDS_KEY), marks = saved?.refs && typeof saved.refs === 'object' ? {...saved.refs} : {};
+  const made = [], t0 = Date.parse(start);
+  let t = now.getTime(), touched = false;
+  for (const [ref, keys] of [...by].sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))) {
+    const step = Math.floor(keys.length / per) * per, had = Number.isInteger(marks[ref]) ? marks[ref] : 0;
+    if (step < per || step <= had) continue;
+    const rows = (await Promise.all(keys.map(k => getJ(store, k)))).filter(r => r && Number.isFinite(Date.parse(r.at)));
+    if (rows.length !== keys.length) continue;
+    const at = rows.map(r => Date.parse(r.at)).sort((a, b) => a - b)[step - 1];
+    marks[ref] = step; touched = true;
+    if (!(at >= t0)) continue;
+    const id = eventId(t++);
+    await store.setJSON('e/' + id, {schema: 'atlas11-gift-event-1', kind: 'friends', id, ref, at: new Date(at).toISOString(), made: now.toISOString(), friends: keys.length, kk: rows.filter(r => r.kk === true).length, step});
+    made.push(id);
+  }
+  if (touched) await store.setJSON(FRIENDS_KEY, {schema: 'atlas11-gift-friends-1', at: now.toISOString(), refs: marks});
+  return made;
+}
+/** 보낸 표시 뒤 새 신청 · 친구 알림 — {n 보낼 차례 수, more, last 꺼낸 마지막 번호(이미 보낸 신청도 지나감), messages} · 이미 「보냄」인 신청은 알리지 않음
+ *  신청(c/)과 친구 알림(e/)은 번호(때)대로 섞어 보냄 · 친구 알림을 못 만들어도 신청 알림은 그대로 */
+export async function fetchGift(store, {max = MAX_ITEMS, start = GIFT_START, now = new Date(), friends = true, friendsStart} = {}) {
+  if (friends) await markFriends(store, {now, start: friendsStart}).catch(() => null);
   const cur = await getJ(store, CURSOR_KEY), cursor = typeof cur?.id === 'string' && ID_RE.test(cur.id) ? cur.id : startCursor(start);
-  const ids = (((await store.list({prefix: 'c/'}))?.blobs) ?? []).map(b => b.key.slice(2)).filter(x => ID_RE.test(x) && x > cursor).sort();
-  const take = ids.slice(0, max), rows = (await Promise.all(take.map(x => getJ(store, 'c/' + x)))).filter(c => c?.id && ID_RE.test(c.id));
-  const wait = rows.filter(c => c.state === 'wait');
-  return {n: wait.length, more: Math.max(0, ids.length - max), last: take.at(-1) ?? null, messages: wait.map(giftMessage)};
+  const idsOf = async p => (((await store.list({prefix: p}))?.blobs) ?? []).map(b => b.key.slice(2)).filter(x => ID_RE.test(x) && x > cursor).map(id => ({id, p}));
+  const all = [...(await idsOf('c/')), ...(await idsOf('e/'))].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const take = all.slice(0, max), rows = await Promise.all(take.map(x => getJ(store, x.p + x.id).then(v => ({p: x.p, v}))));
+  const messages = [];
+  for (const {p, v} of rows) {
+    if (!v?.id || !ID_RE.test(v.id)) continue;
+    if (p === 'c/' && v.state === 'wait') messages.push(giftMessage(v));
+    else if (p === 'e/' && v.kind === 'friends') messages.push(friendsMessage(v));
+  }
+  return {n: messages.length, more: Math.max(0, all.length - max), last: take.at(-1)?.id ?? null, messages};
 }
 /** 방에 돌려줄 번호 — 선물 신청이 없으면 고객센터 번호 그대로(예전과 같음) · 있으면 「고객센터 번호+선물 번호」 */
 export const pairLast = (help, gift) => (gift ? `${help ?? ''}+${gift}` : help ?? null);
@@ -209,7 +254,7 @@ if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(file
       const {r, g, box} = await fetchSealed(await netlifyStore(), pub, {giftStore});
       fs.writeFileSync(out, JSON.stringify(box) + '\n');
       const kk = r.messages.length + (g ? g.messages.length : 0);
-      console.log(`새 글 ${r.n}개 · 선물 신청 ${g ? g.n + '개' : '못 읽음'} · 카톡 ${kk}통 · 남은 글 ${r.more}개`); // 글은 찍지 않음(잠긴 묶음에만)
+      console.log(`새 글 ${r.n}개 · 선물 신청 · 친구 알림 ${g ? g.n + '개' : '못 읽음'} · 카톡 ${kk}통 · 남은 글 ${r.more}개`); // 글은 찍지 않음(잠긴 묶음에만)
       process.exit(0);
     }
     console.error('쓰는 법: forward.mjs --fetch --pub <base64> --out sealed.json | --annotate sealed.json | --ack <번호>'); process.exit(2);

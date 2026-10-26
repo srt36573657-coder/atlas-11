@@ -57,6 +57,7 @@ html.f3 .ps-dlg { --fs-1: 21.9px; --fs-2: 24.4px; --fs-3: 27px; --fs-4: 30.9px; 
 .ps-card-t { font-size: var(--fs-2, 19px); line-height: 1.35; }
 .ps-card-d { display: block; font-size: var(--fs-1, 17px); color: var(--ps-ink); }
 .ps-card-v { margin: 0; font-size: var(--fs-1, 17px); color: var(--ps-sub); }
+.ps-card-g, .ps-gift { margin: 0; font-size: var(--fs-1, 17px); font-weight: 700; color: var(--ps-ink); } /* 선물 한 줄(사장님 2026-10-26 14:46) */
 .ps-card-b { margin: 0; display: flex; flex-wrap: wrap; gap: var(--sp-1, 8px); }
 .ps-card-b span { padding: var(--sp-1, 8px) var(--sp-2, 16px); border: 1px solid var(--ps-hair); border-radius: 999px; font-size: var(--fs-1, 17px); color: var(--ps-ink); }
 .ps-card-b span:first-child { border-color: var(--ps-gold); }
