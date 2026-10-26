@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-live-phone-1",
- "at": "2026-10-20T06:00:25.384Z",
+ "at": "2026-10-26T16:47:38.040Z",
  "base": "https://aaa7377.com",
  "path": "/",
  "partial": false,
@@ -10,9 +10,9 @@
   "chain": 19
  },
  "data": {
-  "asOf": "2026-10-20",
-  "top": "연예 기획사",
-  "lead": "352820"
+  "asOf": "2026-10-26",
+  "top": "IT 시스템 통합",
+  "lead": "039980"
  },
  "routes": [
   "#/",
@@ -23,24 +23,24 @@
   "#/t/wilt",
   "#/t/today",
   "#/t/alert",
-  "#/t/i/연예 기획사",
-  "#/t/i/연예 기획사/path",
-  "#/t/i/연예 기획사/spread",
-  "#/t/i/연예 기획사/big",
-  "#/t/i/연예 기획사/co",
-  "#/t/i/연예 기획사/near",
-  "#/t/c/352820",
-  "#/t/c/352820/lead",
-  "#/t/c/352820/why",
-  "#/t/c/352820/rank",
-  "#/t/c/352820/unknown",
-  "#/t/c/352820/keep"
+  "#/t/i/IT 시스템 통합",
+  "#/t/i/IT 시스템 통합/path",
+  "#/t/i/IT 시스템 통합/spread",
+  "#/t/i/IT 시스템 통합/big",
+  "#/t/i/IT 시스템 통합/co",
+  "#/t/i/IT 시스템 통합/near",
+  "#/t/c/039980",
+  "#/t/c/039980/lead",
+  "#/t/c/039980/why",
+  "#/t/c/039980/rank",
+  "#/t/c/039980/unknown",
+  "#/t/c/039980/keep"
  ],
  "devices": [
   {
    "name": "iPhone SE",
    "engine": "webkit",
-   "ok": true,
+   "ok": false,
    "viewport": {
     "width": 320,
     "height": 568
@@ -60,7 +60,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 90
+      "ms": 142
      },
      {
       "k": 2,
@@ -68,7 +68,7 @@
       "href": "#/t/how",
       "to": "#/t/how",
       "ok": true,
-      "ms": 53
+      "ms": 79
      },
      {
       "k": 3,
@@ -76,7 +76,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 78
+      "ms": 53
      },
      {
       "k": 4,
@@ -84,7 +84,7 @@
       "href": "#/t/bloom",
       "to": "#/t/bloom",
       "ok": true,
-      "ms": 40
+      "ms": 47
      },
      {
       "k": 5,
@@ -92,115 +92,115 @@
       "href": "#/t/wilt",
       "to": "#/t/wilt",
       "ok": true,
-      "ms": 46
+      "ms": 44
      },
      {
       "k": 6,
       "from": "#/t/wilt",
-      "href": "#/t/i/연예 기획사",
-      "to": "#/t/i/연예 기획사",
+      "href": "#/t/i/IT 시스템 통합",
+      "to": "#/t/i/IT 시스템 통합",
       "ok": true,
-      "ms": 146
+      "ms": 145
      },
      {
       "k": 7,
-      "from": "#/t/i/연예 기획사",
-      "href": "#/t/i/연예 기획사/path",
-      "to": "#/t/i/연예 기획사/path",
+      "from": "#/t/i/IT 시스템 통합",
+      "href": "#/t/i/IT 시스템 통합/path",
+      "to": "#/t/i/IT 시스템 통합/path",
       "ok": true,
-      "ms": 59
+      "ms": 48
      },
      {
       "k": 8,
-      "from": "#/t/i/연예 기획사/path",
-      "href": "#/t/i/연예 기획사/spread",
-      "to": "#/t/i/연예 기획사/spread",
+      "from": "#/t/i/IT 시스템 통합/path",
+      "href": "#/t/i/IT 시스템 통합/spread",
+      "to": "#/t/i/IT 시스템 통합/spread",
       "ok": true,
-      "ms": 47
+      "ms": 44
      },
      {
       "k": 9,
-      "from": "#/t/i/연예 기획사/spread",
-      "href": "#/t/i/연예 기획사/big",
-      "to": "#/t/i/연예 기획사/big",
+      "from": "#/t/i/IT 시스템 통합/spread",
+      "href": "#/t/i/IT 시스템 통합/big",
+      "to": "#/t/i/IT 시스템 통합/big",
       "ok": true,
       "ms": 47
      },
      {
       "k": 10,
-      "from": "#/t/i/연예 기획사/big",
-      "href": "#/t/i/연예 기획사/co",
-      "to": "#/t/i/연예 기획사/co",
-      "ok": true,
-      "ms": 48
-     },
-     {
-      "k": 11,
-      "from": "#/t/i/연예 기획사/co",
-      "href": "#/t/i/연예 기획사/near",
-      "to": "#/t/i/연예 기획사/near",
-      "ok": true,
-      "ms": 49
-     },
-     {
-      "k": 12,
-      "from": "#/t/i/연예 기획사/near",
-      "href": "#/t/c/352820",
-      "to": "#/t/c/352820",
-      "ok": true,
-      "ms": 47
-     },
-     {
-      "k": 13,
-      "from": "#/t/c/352820",
-      "href": "#/t/c/352820/lead",
-      "to": "#/t/c/352820/lead",
+      "from": "#/t/i/IT 시스템 통합/big",
+      "href": "#/t/i/IT 시스템 통합/co",
+      "to": "#/t/i/IT 시스템 통합/co",
       "ok": true,
       "ms": 42
      },
      {
-      "k": 14,
-      "from": "#/t/c/352820/lead",
-      "href": "#/t/c/352820/why",
-      "to": "#/t/c/352820/why",
+      "k": 11,
+      "from": "#/t/i/IT 시스템 통합/co",
+      "href": "#/t/i/IT 시스템 통합/near",
+      "to": "#/t/i/IT 시스템 통합/near",
       "ok": true,
-      "ms": 43
+      "ms": 50
+     },
+     {
+      "k": 12,
+      "from": "#/t/i/IT 시스템 통합/near",
+      "href": "#/t/c/039980",
+      "to": "#/t/c/039980",
+      "ok": true,
+      "ms": 48
+     },
+     {
+      "k": 13,
+      "from": "#/t/c/039980",
+      "href": "#/t/c/039980/lead",
+      "to": "#/t/c/039980/lead",
+      "ok": true,
+      "ms": 41
+     },
+     {
+      "k": 14,
+      "from": "#/t/c/039980/lead",
+      "href": "#/t/c/039980/why",
+      "to": "#/t/c/039980/why",
+      "ok": true,
+      "ms": 138
      },
      {
       "k": 15,
-      "from": "#/t/c/352820/why",
-      "href": "#/t/c/352820/rank",
-      "to": "#/t/c/352820/rank",
+      "from": "#/t/c/039980/why",
+      "href": "#/t/c/039980/rank",
+      "to": "#/t/c/039980/rank",
       "ok": true,
-      "ms": 44
+      "ms": 58
      },
      {
       "k": 16,
-      "from": "#/t/c/352820/rank",
-      "href": "#/t/c/352820/unknown",
-      "to": "#/t/c/352820/unknown",
-      "ok": true,
-      "ms": 47
-     },
-     {
-      "k": 17,
-      "from": "#/t/c/352820/unknown",
-      "href": "#/t/c/352820/keep",
-      "to": "#/t/c/352820/keep",
+      "from": "#/t/c/039980/rank",
+      "href": "#/t/c/039980/unknown",
+      "to": "#/t/c/039980/unknown",
       "ok": true,
       "ms": 38
      },
      {
-      "k": 18,
-      "from": "#/t/c/352820/keep",
-      "href": "#/w/352820/past",
-      "to": "#/w/352820/past",
+      "k": 17,
+      "from": "#/t/c/039980/unknown",
+      "href": "#/t/c/039980/keep",
+      "to": "#/t/c/039980/keep",
       "ok": true,
-      "ms": 43
+      "ms": 39
+     },
+     {
+      "k": 18,
+      "from": "#/t/c/039980/keep",
+      "href": "#/w/039980/past",
+      "to": "#/w/039980/past",
+      "ok": true,
+      "ms": 41
      }
     ],
     "ok": true,
-    "end": "#/w/352820/past"
+    "end": "#/w/039980/past"
    },
    "routes": [
     {
@@ -211,7 +211,17 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 2231
+     "fold": {
+      "apps": 484,
+      "room": 435,
+      "vh": 568,
+      "fit": false,
+      "clock": [
+       130,
+       104
+      ]
+     },
+     "ms": 2884
     },
     {
      "route": "#/t/hello",
@@ -221,7 +231,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1041
+     "ms": 2271
     },
     {
      "route": "#/t/how",
@@ -231,7 +241,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1174
+     "ms": 1098
     },
     {
      "route": "#/t/sprout",
@@ -241,7 +251,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1216
+     "ms": 1174
     },
     {
      "route": "#/t/bloom",
@@ -251,7 +261,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1060
+     "ms": 1050
     },
     {
      "route": "#/t/wilt",
@@ -261,7 +271,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1061
+     "ms": 1022
     },
     {
      "route": "#/t/today",
@@ -271,7 +281,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1127
+     "ms": 1108
     },
     {
      "route": "#/t/alert",
@@ -281,158 +291,158 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1156
+     "ms": 1178
     },
     {
-     "route": "#/t/i/연예 기획사",
-     "title": "연예 기획사 · 돌이",
+     "route": "#/t/i/IT 시스템 통합",
+     "title": "IT 시스템 통합 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1146
+     "ms": 1860
     },
     {
-     "route": "#/t/i/연예 기획사/path",
+     "route": "#/t/i/IT 시스템 통합/path",
      "title": "지나온 길 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1088
+     "ms": 1094
     },
     {
-     "route": "#/t/i/연예 기획사/spread",
+     "route": "#/t/i/IT 시스템 통합/spread",
      "title": "번지는 중일까 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1129
+     "ms": 1729
     },
     {
-     "route": "#/t/i/연예 기획사/big",
+     "route": "#/t/i/IT 시스템 통합/big",
      "title": "큰 회사도 움직였을까 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1059
+     "ms": 1067
     },
     {
-     "route": "#/t/i/연예 기획사/co",
+     "route": "#/t/i/IT 시스템 통합/co",
      "title": "함께 움직인 회사 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1046
+     "ms": 1071
     },
     {
-     "route": "#/t/i/연예 기획사/near",
+     "route": "#/t/i/IT 시스템 통합/near",
      "title": "이웃 업종 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1020
+     "ms": 1086
     },
     {
-     "route": "#/t/c/352820",
-     "title": "하이브 · 돌이",
+     "route": "#/t/c/039980",
+     "title": "폴라리스AI · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1183
+     "ms": 1217
     },
     {
-     "route": "#/t/c/352820/lead",
+     "route": "#/t/c/039980/lead",
      "title": "먼저일까 뒤따름일까 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1085
+     "ms": 1074
     },
     {
-     "route": "#/t/c/352820/why",
+     "route": "#/t/c/039980/why",
      "title": "왜 그럴까? · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1068
+     "ms": 1767
     },
     {
-     "route": "#/t/c/352820/rank",
+     "route": "#/t/c/039980/rank",
      "title": "업종 안 자리 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1059
+     "ms": 1067
     },
     {
-     "route": "#/t/c/352820/unknown",
+     "route": "#/t/c/039980/unknown",
      "title": "아직 모르는 것 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1012
+     "ms": 1098
     },
     {
-     "route": "#/t/c/352820/keep",
+     "route": "#/t/c/039980/keep",
      "title": "관심 담기 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1016
+     "ms": 1064
     }
    ],
    "shots": [
     {
      "name": "home",
      "file": "iphone-se-home.png",
-     "bytes": 143265,
+     "bytes": 279696,
      "scale": "device"
     },
     {
      "name": "sprout",
      "file": "iphone-se-sprout.png",
-     "bytes": 115140,
+     "bytes": 222316,
      "scale": "device"
     },
     {
      "name": "alert",
      "file": "iphone-se-alert.png",
-     "bytes": 118045,
+     "bytes": 236562,
      "scale": "device"
     },
     {
      "name": "industry",
      "file": "iphone-se-industry.png",
-     "bytes": 111539,
+     "bytes": 244300,
      "scale": "device"
     },
     {
      "name": "company",
      "file": "iphone-se-company.png",
-     "bytes": 110338,
+     "bytes": 232902,
      "scale": "device"
     }
    ],
@@ -451,56 +461,47 @@
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     },
     {
-     "route": "#/t/i/연예 기획사",
+     "route": "#/t/i/IT 시스템 통합",
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     },
     {
-     "route": "#/t/c/352820",
+     "route": "#/t/c/039980",
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     }
    ],
    "taps": [
     {
      "name": "clock-1",
-     "want": "#/t/i/연예 기획사",
-     "to": "#/t/i/연예 기획사",
-     "ok": true,
-     "h2": "점 넷 가운데 4개"
+     "want": "#/t/i/IT 시스템 통합",
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "clock-sprout",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "box-real",
      "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-new",
      "want": "#/t/sprout/new",
-     "to": "#/t/sprout/new",
-     "ok": true,
-     "h2": "새로 들어온 싹 4곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-all",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
-    },
-    {
-     "name": "head-real",
-     "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     }
    ],
    "seven": {
@@ -508,53 +509,53 @@
      {
       "k": 4,
       "ok": true,
-      "to": "#/w/352820/past",
+      "to": "#/w/039980/past",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 5,
       "ok": true,
-      "to": "#/w/352820/rivals",
+      "to": "#/w/039980/rivals",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 6,
       "ok": true,
-      "to": "#/w/352820/grow",
+      "to": "#/w/039980/grow",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 7,
       "ok": true,
-      "to": "#/w/352820/range",
+      "to": "#/w/039980/range",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      }
     ],
     "ok": true,
-    "end": "#/why/352820"
+    "end": "#/why/039980"
    },
-   "ms": 43325
+   "ms": 78978
   },
   {
    "name": "iPhone 13",
    "engine": "webkit",
-   "ok": true,
+   "ok": false,
    "viewport": {
     "width": 390,
     "height": 664
@@ -574,7 +575,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 146
+      "ms": 253
      },
      {
       "k": 2,
@@ -582,7 +583,7 @@
       "href": "#/t/how",
       "to": "#/t/how",
       "ok": true,
-      "ms": 137
+      "ms": 136
      },
      {
       "k": 3,
@@ -590,7 +591,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 85
+      "ms": 49
      },
      {
       "k": 4,
@@ -598,7 +599,7 @@
       "href": "#/t/bloom",
       "to": "#/t/bloom",
       "ok": true,
-      "ms": 50
+      "ms": 96
      },
      {
       "k": 5,
@@ -606,115 +607,115 @@
       "href": "#/t/wilt",
       "to": "#/t/wilt",
       "ok": true,
-      "ms": 48
+      "ms": 45
      },
      {
       "k": 6,
       "from": "#/t/wilt",
-      "href": "#/t/i/연예 기획사",
-      "to": "#/t/i/연예 기획사",
+      "href": "#/t/i/IT 시스템 통합",
+      "to": "#/t/i/IT 시스템 통합",
       "ok": true,
       "ms": 134
      },
      {
       "k": 7,
-      "from": "#/t/i/연예 기획사",
-      "href": "#/t/i/연예 기획사/path",
-      "to": "#/t/i/연예 기획사/path",
+      "from": "#/t/i/IT 시스템 통합",
+      "href": "#/t/i/IT 시스템 통합/path",
+      "to": "#/t/i/IT 시스템 통합/path",
       "ok": true,
-      "ms": 53
+      "ms": 57
      },
      {
       "k": 8,
-      "from": "#/t/i/연예 기획사/path",
-      "href": "#/t/i/연예 기획사/spread",
-      "to": "#/t/i/연예 기획사/spread",
+      "from": "#/t/i/IT 시스템 통합/path",
+      "href": "#/t/i/IT 시스템 통합/spread",
+      "to": "#/t/i/IT 시스템 통합/spread",
       "ok": true,
-      "ms": 49
+      "ms": 43
      },
      {
       "k": 9,
-      "from": "#/t/i/연예 기획사/spread",
-      "href": "#/t/i/연예 기획사/big",
-      "to": "#/t/i/연예 기획사/big",
+      "from": "#/t/i/IT 시스템 통합/spread",
+      "href": "#/t/i/IT 시스템 통합/big",
+      "to": "#/t/i/IT 시스템 통합/big",
       "ok": true,
       "ms": 44
      },
      {
       "k": 10,
-      "from": "#/t/i/연예 기획사/big",
-      "href": "#/t/i/연예 기획사/co",
-      "to": "#/t/i/연예 기획사/co",
+      "from": "#/t/i/IT 시스템 통합/big",
+      "href": "#/t/i/IT 시스템 통합/co",
+      "to": "#/t/i/IT 시스템 통합/co",
       "ok": true,
-      "ms": 48
+      "ms": 35
      },
      {
       "k": 11,
-      "from": "#/t/i/연예 기획사/co",
-      "href": "#/t/i/연예 기획사/near",
-      "to": "#/t/i/연예 기획사/near",
+      "from": "#/t/i/IT 시스템 통합/co",
+      "href": "#/t/i/IT 시스템 통합/near",
+      "to": "#/t/i/IT 시스템 통합/near",
       "ok": true,
-      "ms": 292
+      "ms": 50
      },
      {
       "k": 12,
-      "from": "#/t/i/연예 기획사/near",
-      "href": "#/t/c/352820",
-      "to": "#/t/c/352820",
+      "from": "#/t/i/IT 시스템 통합/near",
+      "href": "#/t/c/039980",
+      "to": "#/t/c/039980",
       "ok": true,
-      "ms": 48
+      "ms": 50
      },
      {
       "k": 13,
-      "from": "#/t/c/352820",
-      "href": "#/t/c/352820/lead",
-      "to": "#/t/c/352820/lead",
+      "from": "#/t/c/039980",
+      "href": "#/t/c/039980/lead",
+      "to": "#/t/c/039980/lead",
       "ok": true,
-      "ms": 42
+      "ms": 39
      },
      {
       "k": 14,
-      "from": "#/t/c/352820/lead",
-      "href": "#/t/c/352820/why",
-      "to": "#/t/c/352820/why",
+      "from": "#/t/c/039980/lead",
+      "href": "#/t/c/039980/why",
+      "to": "#/t/c/039980/why",
       "ok": true,
-      "ms": 44
+      "ms": 142
      },
      {
       "k": 15,
-      "from": "#/t/c/352820/why",
-      "href": "#/t/c/352820/rank",
-      "to": "#/t/c/352820/rank",
+      "from": "#/t/c/039980/why",
+      "href": "#/t/c/039980/rank",
+      "to": "#/t/c/039980/rank",
       "ok": true,
-      "ms": 43
+      "ms": 110
      },
      {
       "k": 16,
-      "from": "#/t/c/352820/rank",
-      "href": "#/t/c/352820/unknown",
-      "to": "#/t/c/352820/unknown",
+      "from": "#/t/c/039980/rank",
+      "href": "#/t/c/039980/unknown",
+      "to": "#/t/c/039980/unknown",
       "ok": true,
       "ms": 33
      },
      {
       "k": 17,
-      "from": "#/t/c/352820/unknown",
-      "href": "#/t/c/352820/keep",
-      "to": "#/t/c/352820/keep",
+      "from": "#/t/c/039980/unknown",
+      "href": "#/t/c/039980/keep",
+      "to": "#/t/c/039980/keep",
       "ok": true,
-      "ms": 38
+      "ms": 43
      },
      {
       "k": 18,
-      "from": "#/t/c/352820/keep",
-      "href": "#/w/352820/past",
-      "to": "#/w/352820/past",
+      "from": "#/t/c/039980/keep",
+      "href": "#/w/039980/past",
+      "to": "#/w/039980/past",
       "ok": true,
       "ms": 31
      }
     ],
     "ok": true,
-    "end": "#/w/352820/past"
+    "end": "#/w/039980/past"
    },
    "routes": [
     {
@@ -725,7 +726,17 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 2098
+     "fold": {
+      "apps": 524,
+      "room": 531,
+      "vh": 664,
+      "fit": true,
+      "clock": [
+       180,
+       144
+      ]
+     },
+     "ms": 2748
     },
     {
      "route": "#/t/hello",
@@ -735,7 +746,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1041
+     "ms": 1127
     },
     {
      "route": "#/t/how",
@@ -745,7 +756,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1305
+     "ms": 1005
     },
     {
      "route": "#/t/sprout",
@@ -755,7 +766,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1321
+     "ms": 1301
     },
     {
      "route": "#/t/bloom",
@@ -765,7 +776,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1177
+     "ms": 1194
     },
     {
      "route": "#/t/wilt",
@@ -775,7 +786,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1074
+     "ms": 996
     },
     {
      "route": "#/t/today",
@@ -785,7 +796,7 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1143
+     "ms": 1026
     },
     {
      "route": "#/t/alert",
@@ -795,158 +806,158 @@
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1260
+     "ms": 1209
     },
     {
-     "route": "#/t/i/연예 기획사",
-     "title": "연예 기획사 · 돌이",
+     "route": "#/t/i/IT 시스템 통합",
+     "title": "IT 시스템 통합 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1219
+     "ms": 1309
     },
     {
-     "route": "#/t/i/연예 기획사/path",
+     "route": "#/t/i/IT 시스템 통합/path",
      "title": "지나온 길 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1094
+     "ms": 1060
     },
     {
-     "route": "#/t/i/연예 기획사/spread",
+     "route": "#/t/i/IT 시스템 통합/spread",
      "title": "번지는 중일까 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1063
+     "ms": 1053
     },
     {
-     "route": "#/t/i/연예 기획사/big",
+     "route": "#/t/i/IT 시스템 통합/big",
      "title": "큰 회사도 움직였을까 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1084
+     "ms": 1083
     },
     {
-     "route": "#/t/i/연예 기획사/co",
+     "route": "#/t/i/IT 시스템 통합/co",
      "title": "함께 움직인 회사 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1040
+     "ms": 1111
     },
     {
-     "route": "#/t/i/연예 기획사/near",
+     "route": "#/t/i/IT 시스템 통합/near",
      "title": "이웃 업종 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1048
+     "ms": 1057
     },
     {
-     "route": "#/t/c/352820",
-     "title": "하이브 · 돌이",
+     "route": "#/t/c/039980",
+     "title": "폴라리스AI · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1229
+     "ms": 1244
     },
     {
-     "route": "#/t/c/352820/lead",
+     "route": "#/t/c/039980/lead",
      "title": "먼저일까 뒤따름일까 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1041
+     "ms": 1045
     },
     {
-     "route": "#/t/c/352820/why",
+     "route": "#/t/c/039980/why",
      "title": "왜 그럴까? · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1079
+     "ms": 1131
     },
     {
-     "route": "#/t/c/352820/rank",
+     "route": "#/t/c/039980/rank",
      "title": "업종 안 자리 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1052
+     "ms": 1069
     },
     {
-     "route": "#/t/c/352820/unknown",
+     "route": "#/t/c/039980/unknown",
      "title": "아직 모르는 것 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1028
+     "ms": 1013
     },
     {
-     "route": "#/t/c/352820/keep",
+     "route": "#/t/c/039980/keep",
      "title": "관심 담기 · 돌이",
      "next": 1,
      "scrollWidth": 390,
      "innerWidth": 390,
      "small": 0,
      "tap": 0,
-     "ms": 1158
+     "ms": 1042
     }
    ],
    "shots": [
     {
      "name": "home",
      "file": "iphone-13-home.png",
-     "bytes": 332553,
+     "bytes": 638202,
      "scale": "device"
     },
     {
      "name": "sprout",
      "file": "iphone-13-sprout.png",
-     "bytes": 211464,
+     "bytes": 445162,
      "scale": "device"
     },
     {
      "name": "alert",
      "file": "iphone-13-alert.png",
-     "bytes": 211233,
+     "bytes": 504637,
      "scale": "device"
     },
     {
      "name": "industry",
      "file": "iphone-13-industry.png",
-     "bytes": 223201,
+     "bytes": 535671,
      "scale": "device"
     },
     {
      "name": "company",
      "file": "iphone-13-company.png",
-     "bytes": 210677,
+     "bytes": 507752,
      "scale": "device"
     }
    ],
@@ -965,56 +976,47 @@
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     },
     {
-     "route": "#/t/i/연예 기획사",
+     "route": "#/t/i/IT 시스템 통합",
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     },
     {
-     "route": "#/t/c/352820",
+     "route": "#/t/c/039980",
      "text": "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy."
     }
    ],
    "taps": [
     {
      "name": "clock-1",
-     "want": "#/t/i/연예 기획사",
-     "to": "#/t/i/연예 기획사",
-     "ok": true,
-     "h2": "점 넷 가운데 4개"
+     "want": "#/t/i/IT 시스템 통합",
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "clock-sprout",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "box-real",
      "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-new",
      "want": "#/t/sprout/new",
-     "to": "#/t/sprout/new",
-     "ok": true,
-     "h2": "새로 들어온 싹 4곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-all",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
-    },
-    {
-     "name": "head-real",
-     "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     }
    ],
    "seven": {
@@ -1022,53 +1024,53 @@
      {
       "k": 4,
       "ok": true,
-      "to": "#/w/352820/past",
+      "to": "#/w/039980/past",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 5,
       "ok": true,
-      "to": "#/w/352820/rivals",
+      "to": "#/w/039980/rivals",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 6,
       "ok": true,
-      "to": "#/w/352820/grow",
+      "to": "#/w/039980/grow",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 7,
       "ok": true,
-      "to": "#/w/352820/range",
+      "to": "#/w/039980/range",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      }
     ],
     "ok": true,
-    "end": "#/why/352820"
+    "end": "#/why/039980"
    },
-   "ms": 43151
+   "ms": 74968
   },
   {
    "name": "Galaxy S9+",
    "engine": "chromium",
-   "ok": true,
+   "ok": false,
    "viewport": {
     "width": 320,
     "height": 658
@@ -1088,7 +1090,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 224
+      "ms": 162
      },
      {
       "k": 2,
@@ -1096,7 +1098,7 @@
       "href": "#/t/how",
       "to": "#/t/how",
       "ok": true,
-      "ms": 137
+      "ms": 154
      },
      {
       "k": 3,
@@ -1104,7 +1106,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 136
+      "ms": 135
      },
      {
       "k": 4,
@@ -1112,7 +1114,7 @@
       "href": "#/t/bloom",
       "to": "#/t/bloom",
       "ok": true,
-      "ms": 136
+      "ms": 135
      },
      {
       "k": 5,
@@ -1120,115 +1122,115 @@
       "href": "#/t/wilt",
       "to": "#/t/wilt",
       "ok": true,
-      "ms": 134
+      "ms": 135
      },
      {
       "k": 6,
       "from": "#/t/wilt",
-      "href": "#/t/i/연예 기획사",
-      "to": "#/t/i/연예 기획사",
+      "href": "#/t/i/IT 시스템 통합",
+      "to": "#/t/i/IT 시스템 통합",
       "ok": true,
-      "ms": 136
+      "ms": 134
      },
      {
       "k": 7,
-      "from": "#/t/i/연예 기획사",
-      "href": "#/t/i/연예 기획사/path",
-      "to": "#/t/i/연예 기획사/path",
+      "from": "#/t/i/IT 시스템 통합",
+      "href": "#/t/i/IT 시스템 통합/path",
+      "to": "#/t/i/IT 시스템 통합/path",
       "ok": true,
-      "ms": 138
+      "ms": 135
      },
      {
       "k": 8,
-      "from": "#/t/i/연예 기획사/path",
-      "href": "#/t/i/연예 기획사/spread",
-      "to": "#/t/i/연예 기획사/spread",
+      "from": "#/t/i/IT 시스템 통합/path",
+      "href": "#/t/i/IT 시스템 통합/spread",
+      "to": "#/t/i/IT 시스템 통합/spread",
       "ok": true,
       "ms": 134
      },
      {
       "k": 9,
-      "from": "#/t/i/연예 기획사/spread",
-      "href": "#/t/i/연예 기획사/big",
-      "to": "#/t/i/연예 기획사/big",
+      "from": "#/t/i/IT 시스템 통합/spread",
+      "href": "#/t/i/IT 시스템 통합/big",
+      "to": "#/t/i/IT 시스템 통합/big",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 10,
-      "from": "#/t/i/연예 기획사/big",
-      "href": "#/t/i/연예 기획사/co",
-      "to": "#/t/i/연예 기획사/co",
+      "from": "#/t/i/IT 시스템 통합/big",
+      "href": "#/t/i/IT 시스템 통합/co",
+      "to": "#/t/i/IT 시스템 통합/co",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 11,
-      "from": "#/t/i/연예 기획사/co",
-      "href": "#/t/i/연예 기획사/near",
-      "to": "#/t/i/연예 기획사/near",
+      "from": "#/t/i/IT 시스템 통합/co",
+      "href": "#/t/i/IT 시스템 통합/near",
+      "to": "#/t/i/IT 시스템 통합/near",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 12,
-      "from": "#/t/i/연예 기획사/near",
-      "href": "#/t/c/352820",
-      "to": "#/t/c/352820",
+      "from": "#/t/i/IT 시스템 통합/near",
+      "href": "#/t/c/039980",
+      "to": "#/t/c/039980",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 13,
+      "from": "#/t/c/039980",
+      "href": "#/t/c/039980/lead",
+      "to": "#/t/c/039980/lead",
       "ok": true,
       "ms": 135
      },
      {
-      "k": 13,
-      "from": "#/t/c/352820",
-      "href": "#/t/c/352820/lead",
-      "to": "#/t/c/352820/lead",
-      "ok": true,
-      "ms": 134
-     },
-     {
       "k": 14,
-      "from": "#/t/c/352820/lead",
-      "href": "#/t/c/352820/why",
-      "to": "#/t/c/352820/why",
+      "from": "#/t/c/039980/lead",
+      "href": "#/t/c/039980/why",
+      "to": "#/t/c/039980/why",
       "ok": true,
-      "ms": 133
+      "ms": 137
      },
      {
       "k": 15,
-      "from": "#/t/c/352820/why",
-      "href": "#/t/c/352820/rank",
-      "to": "#/t/c/352820/rank",
+      "from": "#/t/c/039980/why",
+      "href": "#/t/c/039980/rank",
+      "to": "#/t/c/039980/rank",
       "ok": true,
-      "ms": 134
+      "ms": 152
      },
      {
       "k": 16,
-      "from": "#/t/c/352820/rank",
-      "href": "#/t/c/352820/unknown",
-      "to": "#/t/c/352820/unknown",
+      "from": "#/t/c/039980/rank",
+      "href": "#/t/c/039980/unknown",
+      "to": "#/t/c/039980/unknown",
       "ok": true,
-      "ms": 134
+      "ms": 135
      },
      {
       "k": 17,
-      "from": "#/t/c/352820/unknown",
-      "href": "#/t/c/352820/keep",
-      "to": "#/t/c/352820/keep",
+      "from": "#/t/c/039980/unknown",
+      "href": "#/t/c/039980/keep",
+      "to": "#/t/c/039980/keep",
       "ok": true,
-      "ms": 130
+      "ms": 135
      },
      {
       "k": 18,
-      "from": "#/t/c/352820/keep",
-      "href": "#/w/352820/past",
-      "to": "#/w/352820/past",
+      "from": "#/t/c/039980/keep",
+      "href": "#/w/039980/past",
+      "to": "#/w/039980/past",
       "ok": true,
-      "ms": 116
+      "ms": 33
      }
     ],
     "ok": true,
-    "end": "#/w/352820/past"
+    "end": "#/w/039980/past"
    },
    "routes": [
     {
@@ -1239,7 +1241,17 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1795
+     "fold": {
+      "apps": 519,
+      "room": 525,
+      "vh": 658,
+      "fit": true,
+      "clock": [
+       145,
+       116
+      ]
+     },
+     "ms": 2332
     },
     {
      "route": "#/t/hello",
@@ -1249,7 +1261,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1060
+     "ms": 1190
     },
     {
      "route": "#/t/how",
@@ -1259,7 +1271,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1200
+     "ms": 1000
     },
     {
      "route": "#/t/sprout",
@@ -1269,7 +1281,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1348
+     "ms": 1643
     },
     {
      "route": "#/t/bloom",
@@ -1279,7 +1291,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1034
+     "ms": 1373
     },
     {
      "route": "#/t/wilt",
@@ -1289,7 +1301,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1085
+     "ms": 1000
     },
     {
      "route": "#/t/today",
@@ -1299,7 +1311,7 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1183
+     "ms": 1050
     },
     {
      "route": "#/t/alert",
@@ -1309,204 +1321,195 @@
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1302
+     "ms": 1095
     },
     {
-     "route": "#/t/i/연예 기획사",
-     "title": "연예 기획사 · 돌이",
+     "route": "#/t/i/IT 시스템 통합",
+     "title": "IT 시스템 통합 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1291
+     "ms": 1235
     },
     {
-     "route": "#/t/i/연예 기획사/path",
+     "route": "#/t/i/IT 시스템 통합/path",
      "title": "지나온 길 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1106
+     "ms": 970
     },
     {
-     "route": "#/t/i/연예 기획사/spread",
+     "route": "#/t/i/IT 시스템 통합/spread",
      "title": "번지는 중일까 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1132
+     "ms": 1150
     },
     {
-     "route": "#/t/i/연예 기획사/big",
+     "route": "#/t/i/IT 시스템 통합/big",
      "title": "큰 회사도 움직였을까 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1083
+     "ms": 984
     },
     {
-     "route": "#/t/i/연예 기획사/co",
+     "route": "#/t/i/IT 시스템 통합/co",
      "title": "함께 움직인 회사 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1084
+     "ms": 966
     },
     {
-     "route": "#/t/i/연예 기획사/near",
+     "route": "#/t/i/IT 시스템 통합/near",
      "title": "이웃 업종 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1101
+     "ms": 984
     },
     {
-     "route": "#/t/c/352820",
-     "title": "하이브 · 돌이",
+     "route": "#/t/c/039980",
+     "title": "폴라리스AI · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1269
+     "ms": 1059
     },
     {
-     "route": "#/t/c/352820/lead",
+     "route": "#/t/c/039980/lead",
      "title": "먼저일까 뒤따름일까 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1014
+     "ms": 973
     },
     {
-     "route": "#/t/c/352820/why",
+     "route": "#/t/c/039980/why",
      "title": "왜 그럴까? · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1167
+     "ms": 1117
     },
     {
-     "route": "#/t/c/352820/rank",
+     "route": "#/t/c/039980/rank",
      "title": "업종 안 자리 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1099
+     "ms": 984
     },
     {
-     "route": "#/t/c/352820/unknown",
+     "route": "#/t/c/039980/unknown",
      "title": "아직 모르는 것 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1100
+     "ms": 999
     },
     {
-     "route": "#/t/c/352820/keep",
+     "route": "#/t/c/039980/keep",
      "title": "관심 담기 · 돌이",
      "next": 1,
      "scrollWidth": 320,
      "innerWidth": 320,
      "small": 0,
      "tap": 0,
-     "ms": 1150
+     "ms": 1034
     }
    ],
    "shots": [
     {
      "name": "home",
      "file": "galaxy-s9plus-home.png",
-     "bytes": 371498,
+     "bytes": 1475041,
      "scale": "device"
     },
     {
      "name": "sprout",
      "file": "galaxy-s9plus-sprout.png",
-     "bytes": 284569,
+     "bytes": 1394872,
      "scale": "device"
     },
     {
      "name": "alert",
      "file": "galaxy-s9plus-alert.png",
-     "bytes": 272934,
-     "scale": "device"
+     "bytes": 163747,
+     "scale": "css"
     },
     {
      "name": "industry",
      "file": "galaxy-s9plus-industry.png",
-     "bytes": 273906,
-     "scale": "device"
+     "bytes": 169890,
+     "scale": "css"
     },
     {
      "name": "company",
      "file": "galaxy-s9plus-company.png",
-     "bytes": 258678,
-     "scale": "device"
+     "bytes": 154485,
+     "scale": "css"
     }
    ],
    "version": "141.0.7390.37",
    "taps": [
     {
      "name": "clock-1",
-     "want": "#/t/i/연예 기획사",
-     "to": "#/t/i/연예 기획사",
-     "ok": true,
-     "h2": "점 넷 가운데 4개"
+     "want": "#/t/i/IT 시스템 통합",
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "clock-sprout",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "box-real",
      "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-new",
      "want": "#/t/sprout/new",
-     "to": "#/t/sprout/new",
-     "ok": true,
-     "h2": "새로 들어온 싹 4곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-all",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
-    },
-    {
-     "name": "head-real",
-     "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     }
    ],
    "seven": {
@@ -1514,53 +1517,53 @@
      {
       "k": 4,
       "ok": true,
-      "to": "#/w/352820/past",
+      "to": "#/w/039980/past",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 5,
       "ok": true,
-      "to": "#/w/352820/rivals",
+      "to": "#/w/039980/rivals",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 6,
       "ok": true,
-      "to": "#/w/352820/grow",
+      "to": "#/w/039980/grow",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 7,
       "ok": true,
-      "to": "#/w/352820/range",
+      "to": "#/w/039980/range",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      }
     ],
     "ok": true,
-    "end": "#/why/352820"
+    "end": "#/why/039980"
    },
-   "ms": 44258
+   "ms": 69366
   },
   {
    "name": "Pixel 7",
    "engine": "chromium",
-   "ok": true,
+   "ok": false,
    "viewport": {
     "width": 412,
     "height": 839
@@ -1580,7 +1583,7 @@
       "href": "#/",
       "to": "#/",
       "ok": true,
-      "ms": 171
+      "ms": 169
      },
      {
       "k": 2,
@@ -1588,7 +1591,7 @@
       "href": "#/t/how",
       "to": "#/t/how",
       "ok": true,
-      "ms": 137
+      "ms": 156
      },
      {
       "k": 3,
@@ -1596,7 +1599,7 @@
       "href": "#/t/sprout",
       "to": "#/t/sprout",
       "ok": true,
-      "ms": 137
+      "ms": 135
      },
      {
       "k": 4,
@@ -1604,7 +1607,7 @@
       "href": "#/t/bloom",
       "to": "#/t/bloom",
       "ok": true,
-      "ms": 138
+      "ms": 135
      },
      {
       "k": 5,
@@ -1612,115 +1615,115 @@
       "href": "#/t/wilt",
       "to": "#/t/wilt",
       "ok": true,
-      "ms": 201
+      "ms": 134
      },
      {
       "k": 6,
       "from": "#/t/wilt",
-      "href": "#/t/i/연예 기획사",
-      "to": "#/t/i/연예 기획사",
-      "ok": true,
-      "ms": 217
-     },
-     {
-      "k": 7,
-      "from": "#/t/i/연예 기획사",
-      "href": "#/t/i/연예 기획사/path",
-      "to": "#/t/i/연예 기획사/path",
-      "ok": true,
-      "ms": 136
-     },
-     {
-      "k": 8,
-      "from": "#/t/i/연예 기획사/path",
-      "href": "#/t/i/연예 기획사/spread",
-      "to": "#/t/i/연예 기획사/spread",
-      "ok": true,
-      "ms": 135
-     },
-     {
-      "k": 9,
-      "from": "#/t/i/연예 기획사/spread",
-      "href": "#/t/i/연예 기획사/big",
-      "to": "#/t/i/연예 기획사/big",
-      "ok": true,
-      "ms": 134
-     },
-     {
-      "k": 10,
-      "from": "#/t/i/연예 기획사/big",
-      "href": "#/t/i/연예 기획사/co",
-      "to": "#/t/i/연예 기획사/co",
+      "href": "#/t/i/IT 시스템 통합",
+      "to": "#/t/i/IT 시스템 통합",
       "ok": true,
       "ms": 133
      },
      {
-      "k": 11,
-      "from": "#/t/i/연예 기획사/co",
-      "href": "#/t/i/연예 기획사/near",
-      "to": "#/t/i/연예 기획사/near",
+      "k": 7,
+      "from": "#/t/i/IT 시스템 통합",
+      "href": "#/t/i/IT 시스템 통합/path",
+      "to": "#/t/i/IT 시스템 통합/path",
       "ok": true,
-      "ms": 135
+      "ms": 134
+     },
+     {
+      "k": 8,
+      "from": "#/t/i/IT 시스템 통합/path",
+      "href": "#/t/i/IT 시스템 통합/spread",
+      "to": "#/t/i/IT 시스템 통합/spread",
+      "ok": true,
+      "ms": 134
+     },
+     {
+      "k": 9,
+      "from": "#/t/i/IT 시스템 통합/spread",
+      "href": "#/t/i/IT 시스템 통합/big",
+      "to": "#/t/i/IT 시스템 통합/big",
+      "ok": true,
+      "ms": 218
+     },
+     {
+      "k": 10,
+      "from": "#/t/i/IT 시스템 통합/big",
+      "href": "#/t/i/IT 시스템 통합/co",
+      "to": "#/t/i/IT 시스템 통합/co",
+      "ok": true,
+      "ms": 218
+     },
+     {
+      "k": 11,
+      "from": "#/t/i/IT 시스템 통합/co",
+      "href": "#/t/i/IT 시스템 통합/near",
+      "to": "#/t/i/IT 시스템 통합/near",
+      "ok": true,
+      "ms": 134
      },
      {
       "k": 12,
-      "from": "#/t/i/연예 기획사/near",
-      "href": "#/t/c/352820",
-      "to": "#/t/c/352820",
+      "from": "#/t/i/IT 시스템 통합/near",
+      "href": "#/t/c/039980",
+      "to": "#/t/c/039980",
       "ok": true,
-      "ms": 135
+      "ms": 218
      },
      {
       "k": 13,
-      "from": "#/t/c/352820",
-      "href": "#/t/c/352820/lead",
-      "to": "#/t/c/352820/lead",
+      "from": "#/t/c/039980",
+      "href": "#/t/c/039980/lead",
+      "to": "#/t/c/039980/lead",
       "ok": true,
-      "ms": 135
+      "ms": 134
      },
      {
       "k": 14,
-      "from": "#/t/c/352820/lead",
-      "href": "#/t/c/352820/why",
-      "to": "#/t/c/352820/why",
+      "from": "#/t/c/039980/lead",
+      "href": "#/t/c/039980/why",
+      "to": "#/t/c/039980/why",
       "ok": true,
-      "ms": 134
+      "ms": 216
      },
      {
       "k": 15,
-      "from": "#/t/c/352820/why",
-      "href": "#/t/c/352820/rank",
-      "to": "#/t/c/352820/rank",
+      "from": "#/t/c/039980/why",
+      "href": "#/t/c/039980/rank",
+      "to": "#/t/c/039980/rank",
       "ok": true,
-      "ms": 134
+      "ms": 153
      },
      {
       "k": 16,
-      "from": "#/t/c/352820/rank",
-      "href": "#/t/c/352820/unknown",
-      "to": "#/t/c/352820/unknown",
+      "from": "#/t/c/039980/rank",
+      "href": "#/t/c/039980/unknown",
+      "to": "#/t/c/039980/unknown",
       "ok": true,
       "ms": 135
      },
      {
       "k": 17,
-      "from": "#/t/c/352820/unknown",
-      "href": "#/t/c/352820/keep",
-      "to": "#/t/c/352820/keep",
+      "from": "#/t/c/039980/unknown",
+      "href": "#/t/c/039980/keep",
+      "to": "#/t/c/039980/keep",
       "ok": true,
-      "ms": 134
+      "ms": 201
      },
      {
       "k": 18,
-      "from": "#/t/c/352820/keep",
-      "href": "#/w/352820/past",
-      "to": "#/w/352820/past",
+      "from": "#/t/c/039980/keep",
+      "href": "#/w/039980/past",
+      "to": "#/w/039980/past",
       "ok": true,
       "ms": 33
      }
     ],
     "ok": true,
-    "end": "#/w/352820/past"
+    "end": "#/w/039980/past"
    },
    "routes": [
     {
@@ -1731,7 +1734,17 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1744
+     "fold": {
+      "apps": 671,
+      "room": 706,
+      "vh": 839,
+      "fit": true,
+      "clock": [
+       272,
+       218
+      ]
+     },
+     "ms": 1671
     },
     {
      "route": "#/t/hello",
@@ -1741,7 +1754,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1080
+     "ms": 1094
     },
     {
      "route": "#/t/how",
@@ -1751,7 +1764,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1101
+     "ms": 983
     },
     {
      "route": "#/t/sprout",
@@ -1761,7 +1774,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1365
+     "ms": 1061
     },
     {
      "route": "#/t/bloom",
@@ -1771,7 +1784,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1034
+     "ms": 956
     },
     {
      "route": "#/t/wilt",
@@ -1781,7 +1794,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1083
+     "ms": 949
     },
     {
      "route": "#/t/today",
@@ -1791,7 +1804,7 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1067
+     "ms": 984
     },
     {
      "route": "#/t/alert",
@@ -1801,101 +1814,41 @@
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1211
+     "ms": 1109
     },
     {
-     "route": "#/t/i/연예 기획사",
-     "title": "연예 기획사 · 돌이",
+     "route": "#/t/i/IT 시스템 통합",
+     "title": "IT 시스템 통합 · 돌이",
      "next": 1,
      "scrollWidth": 412,
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1273
+     "ms": 1233
     },
     {
-     "route": "#/t/i/연예 기획사/path",
+     "route": "#/t/i/IT 시스템 통합/path",
      "title": "지나온 길 · 돌이",
      "next": 1,
      "scrollWidth": 412,
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1050
+     "ms": 1040
     },
     {
-     "route": "#/t/i/연예 기획사/spread",
+     "route": "#/t/i/IT 시스템 통합/spread",
      "title": "번지는 중일까 · 돌이",
      "next": 1,
      "scrollWidth": 412,
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1066
+     "ms": 1101
     },
     {
-     "route": "#/t/i/연예 기획사/big",
+     "route": "#/t/i/IT 시스템 통합/big",
      "title": "큰 회사도 움직였을까 · 돌이",
-     "next": 1,
-     "scrollWidth": 412,
-     "innerWidth": 412,
-     "small": 0,
-     "tap": 0,
-     "ms": 1083
-    },
-    {
-     "route": "#/t/i/연예 기획사/co",
-     "title": "함께 움직인 회사 · 돌이",
-     "next": 1,
-     "scrollWidth": 412,
-     "innerWidth": 412,
-     "small": 0,
-     "tap": 0,
-     "ms": 1150
-    },
-    {
-     "route": "#/t/i/연예 기획사/near",
-     "title": "이웃 업종 · 돌이",
-     "next": 1,
-     "scrollWidth": 412,
-     "innerWidth": 412,
-     "small": 0,
-     "tap": 0,
-     "ms": 1083
-    },
-    {
-     "route": "#/t/c/352820",
-     "title": "하이브 · 돌이",
-     "next": 1,
-     "scrollWidth": 412,
-     "innerWidth": 412,
-     "small": 0,
-     "tap": 0,
-     "ms": 1196
-    },
-    {
-     "route": "#/t/c/352820/lead",
-     "title": "먼저일까 뒤따름일까 · 돌이",
-     "next": 1,
-     "scrollWidth": 412,
-     "innerWidth": 412,
-     "small": 0,
-     "tap": 0,
-     "ms": 1121
-    },
-    {
-     "route": "#/t/c/352820/why",
-     "title": "왜 그럴까? · 돌이",
-     "next": 1,
-     "scrollWidth": 412,
-     "innerWidth": 412,
-     "small": 0,
-     "tap": 0,
-     "ms": 1033
-    },
-    {
-     "route": "#/t/c/352820/rank",
-     "title": "업종 안 자리 · 돌이",
      "next": 1,
      "scrollWidth": 412,
      "innerWidth": 412,
@@ -1904,101 +1857,152 @@
      "ms": 967
     },
     {
-     "route": "#/t/c/352820/unknown",
+     "route": "#/t/i/IT 시스템 통합/co",
+     "title": "함께 움직인 회사 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 966
+    },
+    {
+     "route": "#/t/i/IT 시스템 통합/near",
+     "title": "이웃 업종 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 934
+    },
+    {
+     "route": "#/t/c/039980",
+     "title": "폴라리스AI · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1073
+    },
+    {
+     "route": "#/t/c/039980/lead",
+     "title": "먼저일까 뒤따름일까 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 960
+    },
+    {
+     "route": "#/t/c/039980/why",
+     "title": "왜 그럴까? · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1150
+    },
+    {
+     "route": "#/t/c/039980/rank",
+     "title": "업종 안 자리 · 돌이",
+     "next": 1,
+     "scrollWidth": 412,
+     "innerWidth": 412,
+     "small": 0,
+     "tap": 0,
+     "ms": 1017
+    },
+    {
+     "route": "#/t/c/039980/unknown",
      "title": "아직 모르는 것 · 돌이",
      "next": 1,
      "scrollWidth": 412,
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1015
+     "ms": 983
     },
     {
-     "route": "#/t/c/352820/keep",
+     "route": "#/t/c/039980/keep",
      "title": "관심 담기 · 돌이",
      "next": 1,
      "scrollWidth": 412,
      "innerWidth": 412,
      "small": 0,
      "tap": 0,
-     "ms": 1118
+     "ms": 1000
     }
    ],
    "shots": [
     {
      "name": "home",
      "file": "pixel-7-home.png",
-     "bytes": 305001,
-     "scale": "device"
+     "bytes": 251714,
+     "scale": "css"
     },
     {
      "name": "sprout",
      "file": "pixel-7-sprout.png",
-     "bytes": 203175,
-     "scale": "device"
+     "bytes": 218655,
+     "scale": "css"
     },
     {
      "name": "alert",
      "file": "pixel-7-alert.png",
-     "bytes": 194204,
-     "scale": "device"
+     "bytes": 273212,
+     "scale": "css"
     },
     {
      "name": "industry",
      "file": "pixel-7-industry.png",
-     "bytes": 200473,
-     "scale": "device"
+     "bytes": 292886,
+     "scale": "css"
     },
     {
      "name": "company",
      "file": "pixel-7-company.png",
-     "bytes": 203619,
-     "scale": "device"
+     "bytes": 267453,
+     "scale": "css"
     }
    ],
    "version": "141.0.7390.37",
    "taps": [
     {
      "name": "clock-1",
-     "want": "#/t/i/연예 기획사",
-     "to": "#/t/i/연예 기획사",
-     "ok": true,
-     "h2": "점 넷 가운데 4개"
+     "want": "#/t/i/IT 시스템 통합",
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "clock-sprout",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
+     "ok": false,
+     "why": "target not found"
     },
     {
      "name": "box-real",
      "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-new",
      "want": "#/t/sprout/new",
-     "to": "#/t/sprout/new",
-     "ok": true,
-     "h2": "새로 들어온 싹 4곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     },
     {
      "name": "box-all",
      "want": "#/t/sprout",
-     "to": "#/t/sprout",
-     "ok": true,
-     "h2": "싹 자리 37곳"
-    },
-    {
-     "name": "head-real",
-     "want": "#/t/sprout/real",
-     "to": "#/t/sprout/real",
-     "ok": true,
-     "h2": "진짜 싹 1곳"
+     "to": "#/",
+     "ok": false,
+     "why": "hash did not change"
     }
    ],
    "seven": {
@@ -2006,51 +2010,51 @@
      {
       "k": 4,
       "ok": true,
-      "to": "#/w/352820/past",
+      "to": "#/w/039980/past",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 5,
       "ok": true,
-      "to": "#/w/352820/rivals",
+      "to": "#/w/039980/rivals",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 6,
       "ok": true,
-      "to": "#/w/352820/grow",
+      "to": "#/w/039980/grow",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      },
      {
       "k": 7,
       "ok": true,
-      "to": "#/w/352820/range",
+      "to": "#/w/039980/range",
       "head": [
        "#/",
-       "#/t/i/%EC%97%B0%EC%98%88%20%EA%B8%B0%ED%9A%8D%EC%82%AC",
-       "#/t/c/352820"
+       "#/t/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+       "#/t/c/039980"
       ]
      }
     ],
     "ok": true,
-    "end": "#/why/352820"
+    "end": "#/why/039980"
    },
-   "ms": 43165
+   "ms": 67428
   }
  ],
- "ok": true,
- "ms": 174735,
- "shotBytes": 4355512
+ "ok": false,
+ "ms": 291386,
+ "shotBytes": 8509155
 }
