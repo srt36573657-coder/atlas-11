@@ -59,7 +59,7 @@ export function render() {
   const res = h('p', {class: 'gf-res', role: 'status'});
   const num = h('b', {class: 'gf-phone'}), code = h('b', {class: 'gf-code'});
   const copy = h('button', {type: 'button', class: 'gf-btn gf-copy', text: '번호 복사'});
-  const sms = h('a', {class: 'gf-btn gf-sms', href: '#', text: '문자 보내기'});
+  const sms = h('a', {class: 'gf-btn gf-sms', text: '문자 보내기'}); // 고리 주소는 번호를 받은 뒤에만(showCall) — 그 전엔 고리가 아님
   const call = h('div', {class: 'gf-callbox', hidden: true},
     h('p', {class: 'gf-p', text: '사장님께 카톡이나 문자로 확인 번호를 보내 주세요.'}),
     h('p', {class: 'gf-row'}, h('span', {text: '사장님 번호'}), num),
