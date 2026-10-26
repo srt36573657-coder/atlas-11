@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-10-26T05:20:45.855Z",
+ "at": "2026-10-26T05:53:53.770Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "all": true,
@@ -177,6 +177,6 @@
    "pics": 543.59375
   }
  },
- "seconds": 37.4,
+ "seconds": 31.5,
  "ok": true
 }
