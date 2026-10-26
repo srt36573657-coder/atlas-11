@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-10-26T07:52:16Z",
+  "at": "2026-10-26T10:02:14Z",
   "dayKST": "2026-10-26",
   "status": "partial",
   "exitCode": 2,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-10-26T07:52:16.483Z",
+      "startedAt": "2026-10-26T10:02:14.542Z",
       "status": "ok",
-      "durationMs": 295,
+      "durationMs": 38,
       "session": true,
       "afterClose": true,
       "day": "2026-10-26",
@@ -17,35 +17,35 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-10-26T07:52:16.778Z",
+      "startedAt": "2026-10-26T10:02:14.580Z",
       "status": "ok",
-      "durationMs": 239229,
+      "durationMs": 11413,
       "attempted": true,
-      "observations": 358,
+      "observations": 0,
       "errors": 21,
-      "recordId": "collection-b0e3fff101c06939"
+      "recordId": "collection-182ba499de87d6e8"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-10-26T07:56:16.007Z",
+      "startedAt": "2026-10-26T10:02:25.993Z",
       "status": "ok",
-      "durationMs": 4041,
-      "changed": true,
+      "durationMs": 6193,
+      "changed": false,
       "confirmedToday": 358,
       "actualAsOf": "2026-10-01",
       "inputSnapshotSHA256": "4325efcadfe0a27e42a31b1bc5b31223f0bff1e963a956cdf254bc7c41f020ad"
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-10-26T07:56:20.049Z",
+      "startedAt": "2026-10-26T10:02:32.189Z",
       "view": {
-        "boardId": "board-2026-10-26-b8a57034",
+        "boardId": "board-2026-10-26-9920d909",
         "asOf": "2026-10-26",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2945589,
+        "bytes": 2944321,
         "similar": [
           "DB",
           "파인엠텍",
@@ -65,24 +65,20 @@
         },
         "market": {
           "file": "public/data/atlas11/market/KOSPI.json",
-          "added": [
-            "2026-10-26"
-          ],
+          "added": [],
           "mismatch": []
         },
         "changelog": {
-          "file": "reports/atlas11/changelog/data-kr/kr-20261026T165216.json",
-          "wrote": true,
-          "title": "10월 26일(월) 종가로 판을 새로 만듦"
+          "wrote": false,
+          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
         },
         "issue": {
-          "file": "reports/atlas11/changelog/data-kr/issue-kr-20261026T165216.json",
-          "wrote": true,
-          "title": "10월 26일(월) 한국 장 이슈"
+          "wrote": false,
+          "reason": "2026-10-26 이슈가 이미 있음"
         }
       },
       "status": "ok",
-      "durationMs": 887
+      "durationMs": 1399
     }
   ],
   "runtime": {
@@ -91,10 +87,10 @@
     "event": "workflow_dispatch",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "40288228264",
+    "runId": "40303869440",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/40288228264",
-    "commit": "d8d5cfb1ecc70f7e5fe477a4e431483202f850a0",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/40303869440",
+    "commit": "92abef1bab147847571f377cff47782b0f689758",
     "serverInstalled": true,
     "scheduledRun": false
   },
@@ -121,7 +117,7 @@
   "collection": {
     "attempted": true,
     "provider": "naver_minute_1530_closing_auction",
-    "observations": 358,
+    "observations": 0,
     "errors": [
       {
         "code": "REVIEWED_ROW_MISMATCH",
@@ -268,18 +264,18 @@
       "stocks": 365,
       "succeeded": 363,
       "failed": 2,
-      "finalizedToday": 358,
-      "crossChecked": 362,
-      "requests": 745,
-      "durationMs": 239213,
+      "finalizedToday": 0,
+      "crossChecked": 5,
+      "requests": 30,
+      "durationMs": 11396,
       "corporateActionAdjusted": []
     },
-    "durationMs": 239213
+    "durationMs": 11397
   },
-  "collectionRecordId": "collection-b0e3fff101c06939",
-  "inputChanged": true,
+  "collectionRecordId": "collection-182ba499de87d6e8",
+  "inputChanged": false,
   "actualAsOf": "2026-10-01",
-  "freshStocks": 358,
+  "freshStocks": 0,
   "confirmedTodayStocks": 358,
   "confirmedTodayCodes": [
     "000080",
@@ -653,5 +649,5 @@
   ],
   "expectedStocks": 365,
   "incompleteReason": "오늘(2026-10-26) 확정 종가 358/365 · 다음 시도에서 다시 받음",
-  "finishedAt": "2026-10-26T07:56:20.936Z"
+  "finishedAt": "2026-10-26T10:02:33.588Z"
 }

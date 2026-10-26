@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-26",
- "fetchedAt": "2026-10-26T07:51:15Z",
- "file": "reports/atlas11/context/2026-10-26/2026-10-26T07-51-15Z.json",
+ "fetchedAt": "2026-10-26T10:01:00Z",
+ "file": "reports/atlas11/context/2026-10-26/2026-10-26T10-01-00Z.json",
  "summary": {
   "day": "2026-10-26",
-  "fetchedAt": "2026-10-26T07:51:15Z",
+  "fetchedAt": "2026-10-26T10:01:00Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-26",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7207,
-   "distinct": 7151,
-   "republished": 56,
+   "distinct": 7153,
+   "republished": 54,
    "sameArticle": 0,
-   "stocksWithTodayNews": 181,
-   "todayDistinct": 1262
+   "stocksWithTodayNews": 191,
+   "todayDistinct": 1372
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 789
+   "corporateActions": 790
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-26",
-     "value": 1323.1,
-     "changePct": -0.22
+     "value": 1324.3,
+     "changePct": -0.13
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 254,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,14 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-10-26",
-   "corporateActions": 789,
+   "corporateActions": 790,
    "recentActions": [
+    {
+     "code": "003380",
+     "title": "(주)하림지주 회사분할 결정(종속회사의 주요경영사항)",
+     "publishedAt": "2026-10-26T17:38:40+09:00",
+     "word": "분할"
+    },
     {
      "code": "267270",
      "title": "에이치디건설기계(주) 주식 소각 결정",
@@ -305,12 +311,6 @@
      "title": "(주)하나금융지주 자기주식 취득 결정",
      "publishedAt": "2026-10-23T06:51:17+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "016360",
-     "title": "삼성증권(주) 상장지수증권 상장폐지(삼성 인버스 구리 선물 ETN(H))",
-     "publishedAt": "2026-10-23T06:51:15+09:00",
-     "word": "상장폐지"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-26",
-     "value": 1323.1,
+     "value": 1324.3,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
