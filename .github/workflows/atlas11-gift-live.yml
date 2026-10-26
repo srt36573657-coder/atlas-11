@@ -73,6 +73,11 @@ jobs:
           }
           const me = await pa.evaluate(async () => { const k = localStorage.getItem('atlas:gift:key'); const q = await fetch('/api/gift/me', {headers: {'x-gift-key': k}, cache: 'no-store'}); return q.ok ? q.json() : {status: q.status}; });
           if (!NF) say('친구 열기는 건너뜀(friends 0) · 지금 셈 친구 ' + (me && me.friends));
+          // 「상품권 주세요」(사장님 2026-10-26 16:14 · 16:16) — 친구가 모자란 기기는 사장님 번호를 못 받아야 함(409 · 번호 칸 없음) · friends 3 때는 부르지 않음(시험 신청이 생기지 않게)
+          if (!NF) {
+            const ak = await pa.evaluate(async () => { const k = localStorage.getItem('atlas:gift:key'); const q = await fetch('/api/gift/ask', {method: 'POST', headers: {'content-type': 'application/json', 'x-gift-key': k}, body: JSON.stringify({watched: true}), cache: 'no-store'}); let j = null; try { j = await q.json(); } catch (e) {} return {status: q.status, error: j && j.error, contact: !!(j && j.contact)}; });
+            if (ak.status === 409 && !ak.contact) say('상품권 주세요 — 친구가 모자란 기기는 번호를 못 받음(409)'); else bad('상품권 주세요 길이 이상함 · ' + JSON.stringify(ak));
+          }
           else if (me && me.friends === 3) say('보낸 사람 화면 수 = 친구 ' + me.friends + '명 · 카톡 안 ' + me.kk + ' · 신청할 수 있음 ' + me.can);
           else bad('보낸 사람 수가 3 이 아님 · ' + JSON.stringify(me).slice(0, 120));
           await b.close();
