@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-check-jinhwa-1",
- "at": "2026-10-25T23:37:52.319Z",
+ "at": "2026-10-25T23:54:10.674Z",
  "base": "http://127.0.0.1:8826",
  "mode": "local",
  "all": true,
@@ -161,10 +161,13 @@
   "owner": 0
  },
  "counts": {
-  "pass": 162,
-  "fail": 0
+  "pass": 160,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  "화면 오류 0 — 위 막대 「진화」 단추를 누름 · 열쇠 없음 console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has | console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has | console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has | console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has",
+  "화면 오류 0 — 위 막대 「진화」 단추를 누름 · 틀린 열쇠 console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has | console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has | console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has | console Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a has"
+ ],
  "warn": [],
  "public": {
   "fold": {
@@ -177,6 +180,6 @@
    "pics": 543.59375
   }
  },
- "seconds": 33.6,
- "ok": true
+ "seconds": 33.9,
+ "ok": false
 }

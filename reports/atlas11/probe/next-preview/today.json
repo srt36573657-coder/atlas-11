@@ -1,5 +1,5 @@
 {
- "made": "2026-10-25T23:40:36.900Z",
+ "made": "2026-10-25T23:58:07.546Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "variants": [
@@ -42,8 +42,9 @@
   "큰 숫자 크기": 8,
   "폭 화면": 8,
   "큰 숫자 읽음": 9,
-  "프레임 기록": 460,
+  "프레임 기록": 459,
   "첫 화면 맞댐": 1,
+  "fail": 1,
   "css 글씨 선언": 40,
   "css 간격 선언": 78,
   "쪽 코드 옛 낱말 셈": 7
@@ -358,28 +359,28 @@
   "hero": {
    "w": 360,
    "want": "+0.30%",
-   "frames": 460,
-   "playFrames": 371,
+   "frames": 459,
+   "playFrames": 370,
    "bigKinds": 1,
-   "lvKinds": 52,
+   "lvKinds": 56,
    "reads": [
     [
      [
-      154,
+      153,
       "+0.30%",
       "6,971.35",
       1,
       1
      ],
      [
-      604,
+      603,
       "+0.30%",
       "5,768.01",
       1,
       1
      ],
      [
-      1054,
+      1053,
       "+0.30%",
       "5,550.30",
       1,
@@ -411,21 +412,21 @@
     ],
     [
      [
-      153,
+      152,
       "+0.30%",
-      "6,358.95",
+      "6,257.45",
       1,
       1
      ],
      [
-      703,
+      702,
       "+0.30%",
       "6,971.35",
       1,
       1
      ],
      [
-      1253,
+      1252,
       "+0.30%",
       "5,735.66",
       1,
@@ -442,17 +443,22 @@
    }
   }
  },
- "fails": [],
+ "fails": [
+  [
+   "화면 오류",
+   "첫 화면 Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
+  ]
+ ],
  "warn": [],
- "sec": 57,
+ "sec": 58,
  "time": {
-  "old": 13.2,
-  "new": 44.6,
-  "wall": 57.2,
+  "old": 13.4,
+  "new": 44.7,
+  "wall": 57.5,
   "opensOld": 607,
   "opensNew": 804,
-  "oldPct": 23.1,
-  "oldShare": 22.9
+  "oldPct": 23.3,
+  "oldShare": 23.1
  },
  "net": {
   "req": 3,

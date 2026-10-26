@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-25T23:38:31.690Z",
+ "at": "2026-10-25T23:54:05.392Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 169,
    "blocks": {
-    "ess": 2005,
+    "ess": 2011,
     "find": 776,
-    "today": 2097,
-    "gdr": 2446,
-    "all": 2446
+    "today": 2103,
+    "gdr": 2453,
+    "all": 2453
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -43,7 +43,7 @@
     true,
     true
    ],
-   "themeChars": 197,
+   "themeChars": 206,
    "top": [
     [
      35,
@@ -177,9 +177,9 @@
     ]
    ],
    "theme": {
-    "top": 376,
-    "zonesBottom": 692,
-    "rowBottom": 530,
+    "top": 142,
+    "zonesBottom": 560,
+    "rowBottom": 232,
     "thumbTop": 711
    },
    "bodyHex": "#152D30",
@@ -200,11 +200,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 105,
    "blocks": {
-    "ess": 1882,
+    "ess": 1917,
     "find": 776,
-    "today": 1974,
-    "gdr": 2323,
-    "all": 2323
+    "today": 2009,
+    "gdr": 2359,
+    "all": 2359
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -230,7 +230,7 @@
     true,
     true
    ],
-   "themeChars": 197,
+   "themeChars": 206,
    "top": [
     [
      24,
@@ -354,9 +354,9 @@
     ]
    ],
    "theme": {
-    "top": 376,
-    "zonesBottom": 692,
-    "rowBottom": 530,
+    "top": 142,
+    "zonesBottom": 560,
+    "rowBottom": 232,
     "thumbTop": 711
    },
    "bodyHex": "#152D30",
@@ -683,9 +683,9 @@
    }
   },
   "speed": {
-   "lcp": 2220,
+   "lcp": 2284,
    "inp": 40,
-   "cls": 0.007
+   "cls": 0.014
   }
  },
  "net": {
