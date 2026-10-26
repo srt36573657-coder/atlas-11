@@ -37,4 +37,4 @@ rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
 통과 #/find/%EC%97%90%EC%8A%A4 · 줄 40 · 단추 40 · 종목 고리 40 · 누름 find.co
 곳 25 · chip.card 3 · chip.row 163 · surge.row 16 · surge.board 76 · surge.track 457 · surge.gone 3 · cal.alert 1 · cal.row 524 · cal.ev 1824 · cal.gone 1 · cond.row 1 · cond.q 1 · today.mv 5 · talk.card 1 · talk.fact 3 · hold.news 392 · sub.co 2 · hold.card 1 · me.hist 3 · why.rec 1 · find.co 92 · chx.row 2552 · ch.grid 1536 · watch.next 467 · rivals.peer 272
 뺀 꼴 그날 들고 난 이름 목록(이름 글 1224 · 종목 파일 쪽의 길 단추 「회사 보기 ›」(쪽 자체가 그 종목) 1 · 고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사) 112 · 7단 길 고리 750 · 글 속 이름(선을 못 그린 회사 5
-모두 통과 · 길 251 · 줄 8397 · 단추 8397 · 누름 479 · 120초
+모두 통과 · 길 251 · 줄 8397 · 단추 8397 · 누름 479 · 121초

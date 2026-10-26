@@ -1,7 +1,7 @@
 {
  "schema": "godori-kind-1",
- "asOf": "2026-10-24",
- "fetchedAt": "2026-10-23T15:50:30.023Z",
+ "asOf": "2026-10-27",
+ "fetchedAt": "2026-10-26T17:30:54.226Z",
  "lists": {
   "managed": [
    "000040",
@@ -182,6 +182,8 @@
    "418250",
    "418620",
    "465770",
+   "473000",
+   "474490",
    "474660",
    "474930",
    "475240",
@@ -206,7 +208,7 @@
   "halted": "NO_TABLE · naver NO_TABLE"
  },
  "n": {
-  "managed": 184,
+  "managed": 186,
   "warning": null,
   "danger": null,
   "halted": null
@@ -223,14 +225,14 @@
    "via": "kind",
    "url": "https://kind.krx.co.kr/investwarn/adminissue.do?method=searchAdminIssueSub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=1&forward=adminissue_down",
    "status": 200,
-   "bytes": 45426,
-   "sha": "bf5f66e105c533370d1dd2778db14d9c5334cb2edaa2389e5b9cc3b25a2c7e20",
+   "bytes": 45957,
+   "sha": "de16692aca3001a82d07dc3693084ebf6b00e74dc6a91b71ff4c61ee69722c82",
    "why": null
   },
   {
    "name": "warning",
    "via": "kind",
-   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=2&forward=invstattentwarnrisky_down&searchFromDate=2024-10-24&searchToDate=2026-10-24&etcVar=",
+   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=2&forward=invstattentwarnrisky_down&searchFromDate=2024-10-27&searchToDate=2026-10-27&etcVar=",
    "status": 200,
    "bytes": 1650,
    "sha": "42c2976acb7df0c9718b465c8c50d6c453875b6d2b82c0edc5f4388985caab33",
@@ -242,13 +244,13 @@
    "url": "https://finance.naver.com/sise/investment_alert.naver?type=warning",
    "status": 200,
    "bytes": 134225,
-   "sha": "898ffe51dcf1e7f38c02858aa6f28ee012ac579cc45805a17d37143dab1e5aa6",
+   "sha": "e0c03694edfc4a774fc00d5339be0ce16f84fa1d614e0181035903ade3dc9122",
    "why": null
   },
   {
    "name": "danger",
    "via": "kind",
-   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=3&forward=invstattentwarnrisky_down&searchFromDate=2024-10-24&searchToDate=2026-10-24&etcVar=",
+   "url": "https://kind.krx.co.kr/investwarn/investattentwarnrisky.do?method=investattentwarnriskySub&currentPageSize=5000&pageIndex=1&orderStat=D&searchMode=&searchCodeType=&searchCorpName=&repIsuSrtCd=&paxreq=&outsideCorpName=&marketType=&searchCorpNameTmp=&orderMode=3&menuIndex=3&forward=invstattentwarnrisky_down&searchFromDate=2024-10-27&searchToDate=2026-10-27&etcVar=",
    "status": 200,
    "bytes": 1650,
    "sha": "42c2976acb7df0c9718b465c8c50d6c453875b6d2b82c0edc5f4388985caab33",
@@ -260,7 +262,7 @@
    "url": "https://finance.naver.com/sise/investment_alert.naver?type=risk",
    "status": 200,
    "bytes": 134225,
-   "sha": "898ffe51dcf1e7f38c02858aa6f28ee012ac579cc45805a17d37143dab1e5aa6",
+   "sha": "e0c03694edfc4a774fc00d5339be0ce16f84fa1d614e0181035903ade3dc9122",
    "why": null
   },
   {
@@ -278,7 +280,7 @@
    "url": "https://finance.naver.com/sise/trading_halt.naver",
    "status": 200,
    "bytes": 134201,
-   "sha": "b01a73696ebe22e2d43f00b9e186c0ac47f535081a3a046a2efa17079c8194e5",
+   "sha": "97de1ecb8ccbd751f03a88b48cc3db4b70cec6303f38ae3437e75e55e7107508",
    "why": null
   }
  ]
