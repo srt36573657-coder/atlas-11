@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-26T15:40:21.671Z",
+ "at": "2026-10-26T17:02:16.779Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 169,
    "blocks": {
-    "ess": 2011,
+    "ess": 1259,
     "find": 776,
-    "today": 2103,
-    "gdr": 2453,
-    "all": 2453
+    "today": 1351,
+    "gdr": 2437,
+    "all": 2437
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -42,7 +42,7 @@
     true,
     true
    ],
-   "themeChars": 216,
+   "themeChars": 210,
    "top": [
     [
      35,
@@ -61,7 +61,7 @@
     ],
     [
      8,
-     "- span",
+     "theme span",
      "한 달 뒤 물어볼게요"
     ],
     [
@@ -76,12 +76,12 @@
     ],
     [
      5,
-     "- span.s-dev",
+     "theme span.s-dev",
      "이 기기에만"
     ],
     [
      4,
-     "- span.t",
+     "theme span.t",
      "지난 기록"
     ],
     [
@@ -126,12 +126,12 @@
     ],
     [
      3,
-     "- span",
+     "theme span",
      "번 멈춤"
     ],
     [
      3,
-     "- span",
+     "theme span",
      "번 약속"
     ],
     [
@@ -199,11 +199,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 105,
    "blocks": {
-    "ess": 1888,
+    "ess": 1136,
     "find": 776,
-    "today": 1980,
-    "gdr": 2330,
-    "all": 2330
+    "today": 1228,
+    "gdr": 2314,
+    "all": 2314
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -237,7 +237,7 @@
     ],
     [
      8,
-     "- span",
+     "theme span",
      "한 달 뒤 물어볼게요"
     ],
     [
@@ -252,12 +252,12 @@
     ],
     [
      5,
-     "- span.s-dev",
+     "theme span.s-dev",
      "이 기기에만"
     ],
     [
      4,
-     "- span.t",
+     "theme span.t",
      "지난 기록"
     ],
     [
@@ -302,12 +302,12 @@
     ],
     [
      3,
-     "- span",
+     "theme span",
      "번 멈춤"
     ],
     [
      3,
-     "- span",
+     "theme span",
      "번 약속"
     ],
     [
@@ -682,8 +682,8 @@
   },
   "speed": {
    "lcp": 2356,
-   "inp": 32,
-   "cls": 0.014
+   "inp": 40,
+   "cls": 0.005
   }
  },
  "net": {
