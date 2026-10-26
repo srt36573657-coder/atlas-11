@@ -595,10 +595,12 @@ async function vHomeAll() {
   kk.addEventListener('click', () => share(NAME, absUrl('#/')));
   // 테마 시계(사장님 2026-10-19 16:06 「이 본질이 중심이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」) — 맨 위 = 테마 시계(p-theme.js homeBlock · 견본 flow36 둘째 장) · 그 아래 읽는 곳 셋 · 엄지 자리 · 진화는 그대로
   // 2026-10-21 00:51 「확임 했어 이기준에 스마트하게 만들어」(00:49 시안 「지금 봄이 온 곳」) — 큰 제목 · 돌이 물음을 계절 말로(셈 · 칸 차례는 그대로 · 물음은 다시 온 기기 첫 화면 글자 105자 아래에 맞게 짧게 — check_white ②)
-  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: '지금 봄이 온 곳'}));
+  // 돌 시계 판 ①(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 큰 제목 「업종 n곳은 지금」(그림 c1) · 자료를 못 받으면 예전 제목 그대로
+  const TH0 = await need('themeHome').catch(() => null), cnt0 = TH0?.count, nInd = cnt0 ? ['S', 'B', 'Q', 'W'].reduce((p, z) => p + (Number.isFinite(cnt0[z]) ? cnt0[z] : 0), 0) : 0;
+  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: nInd > 0 ? `업종 ${num(nInd)}곳은 지금` : '지금 봄이 온 곳'})); // 그림의 「10월 13일 기록」 줄은 넣지 않음 — 보이는 날짜는 오늘 장 띠에 한 번([6] 2) · 다시 온 기기 첫 화면 글자 105자 안(check_white ②)
   // 돌 시계는 큰 제목 옆이 아니라 돌이 물음 아래 가운데 크게(사장님 2026-10-25 22:26 「돌시계을 중심으로 디자인 해야해」 · 22:52 「세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」 — 고르신 판 best ①) · 그 아래 네 칸(theme-home.js zoneCells)
   const clock = h('div', {class: 's-clk'}, stoneClock()); // 같은 그림을 index.html 여는 화면이 먼저 받음 · 아래 return 앞에서 풀림을 기다림(clockDecoded)
-  { const t = hd.firstChild, go = () => import('/next/home-title.js').then(m => m.rotateTitle(t)).catch(() => {}); // 큰 제목 돌리기(사장님 2026-10-21 23:55 「어 섹시하게」 · home-title.js) — 첫 그림 뒤 한가할 때
+  if (!nInd) { const t = hd.firstChild, go = () => import('/next/home-title.js').then(m => m.rotateTitle(t)).catch(() => {}); // 자료를 못 받았을 때만 예전 큰 제목 돌리기(2026-10-21 23:55 「어 섹시하게」) — 돌 시계 판 제목은 한 줄 그대로
     const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(go, {timeout: 2500}) : setTimeout(go, 600));
     if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true}); }
   const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '어느 계절일까?'})), kk);
@@ -629,7 +631,7 @@ function homeApps() {
   // 색은 칸 이름(s-app-bloom …)으로 clock.css 에서 — 글 속 style 은 사이트 보안 규칙(CSP style-src 'self')이 막음(전체 검사 3/11 화면 오류 · 틀림 장부 124)
   const app = (label, href, kind, extra = null) => h('a', {class: 's-app s-app-' + kind, href}, extra, h('span', {class: 's-apb'}, APP_ICON[kind]()), h('span', {class: 's-apl', text: label}));
   const nav = h('nav', {class: 's-apps', 'aria-label': '바로 가기 넷'},
-    app('꽃 될 회사', '#/t/pick', 'bloom', badge), app('회사 찾기', '#/find', 'search'), app('싹 달력', '#/t/cal', 'cal'), app('고객센터', '#/help', 'help'));
+    app('꽃 될 회사', '#/t/picks', 'bloom', badge), app('회사 찾기', '#/find', 'search'), app('싹 달력', '#/t/cal', 'cal'), app('고객센터', '#/help', 'help'));
   setTimeout(() => { fetch('/next/data/theme-bloom.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).then(B => {
     const n = Array.isArray(B?.today?.inds) ? B.today.inds.reduce((a, i) => a + (Array.isArray(i?.co) ? i.co.length : 0), 0) : 0;
     if (n > 0) { badge.textContent = num(n); badge.hidden = false; }
