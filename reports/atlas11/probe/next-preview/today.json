@@ -1,5 +1,5 @@
 {
- "made": "2026-10-26T00:18:09.977Z",
+ "made": "2026-10-26T00:49:40.039Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "variants": [
@@ -44,7 +44,6 @@
   "큰 숫자 읽음": 9,
   "프레임 기록": 459,
   "첫 화면 맞댐": 1,
-  "fail": 1,
   "css 글씨 선언": 40,
   "css 간격 선언": 78,
   "쪽 코드 옛 낱말 셈": 7
@@ -362,25 +361,25 @@
    "frames": 459,
    "playFrames": 370,
    "bigKinds": 1,
-   "lvKinds": 55,
+   "lvKinds": 57,
    "reads": [
     [
      [
-      153,
+      152,
       "−1.03%",
       "7,003.74",
       1,
       1
      ],
      [
-      603,
+      602,
       "−1.03%",
       "5,552.74",
       1,
       1
      ],
      [
-      1053,
+      1052,
       "−1.03%",
       "5,492.88",
       1,
@@ -443,22 +442,17 @@
    }
   }
  },
- "fails": [
-  [
-   "화면 오류",
-   "첫 화면 Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMU"
-  ]
- ],
+ "fails": [],
  "warn": [],
- "sec": 57,
+ "sec": 48,
  "time": {
-  "old": 13,
-  "new": 44.3,
-  "wall": 56.6,
+  "old": 9.6,
+  "new": 39.4,
+  "wall": 47.7,
   "opensOld": 607,
   "opensNew": 804,
-  "oldPct": 23.1,
-  "oldShare": 22.7
+  "oldPct": 20.1,
+  "oldShare": 19.6
  },
  "net": {
   "req": 3,

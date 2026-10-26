@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-3",
- "when": "2026-10-26T00:21:36.345Z",
+ "when": "2026-10-26T00:52:20.545Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -73,13 +73,13 @@
   "leftScreens": 94
  },
  "timing": {
-  "flowMs": 663,
+  "flowMs": 552,
   "taps": 14,
   "qTaps": 11,
   "qTapsBefore": 22,
   "typed": 4
  },
- "sec": 34,
+ "sec": 27,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "찾기와 같은 차례": 7,
@@ -135,14 +135,8 @@
   "meRecords 맞음": 1,
   "[2] 7 한 번 그대로": 1,
   "첫 화면에 매매일지 칸 없음(가운데 단추로만)": 1,
-  "fail": 1,
   "기억 · 자료 바꾼 길": 5
  },
- "fails": [
-  [
-   "화면 오류",
-   "390×844 #/ 첫 화면 · Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-NKF3Nh51X8VqCtezHt9Z07d6WFEMUDFkmyJIco7waG0='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unle"
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }
