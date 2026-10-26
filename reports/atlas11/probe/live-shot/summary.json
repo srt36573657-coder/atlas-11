@@ -1,34 +1,11 @@
 {
- "made": "2026-10-25T21:11:30.567Z",
+ "made": "2026-10-26T00:16:17.226Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
   844
  ],
  "shots": [
-  {
-   "name": "pick",
-   "hash": "#/t/pick",
-   "files": [
-    "reports/atlas11/probe/live-shot/pick-390.png",
-    "reports/atlas11/probe/live-shot/pick-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/t/pick",
-    "title": "돌이가 고른 회사 · 돌이",
-    "h1": "돌이가 고른 회사",
-    "kakaoText": 5,
-    "kakaoRow": 0,
-    "kakaoAll": 5,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 7578
-   },
-   "err": null
-  },
   {
    "name": "home",
    "hash": "#/",
@@ -48,7 +25,53 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": true,
-    "height": 2563
+    "height": 2567
+   },
+   "err": null
+  },
+  {
+   "name": "pick",
+   "hash": "#/t/pick",
+   "files": [
+    "reports/atlas11/probe/live-shot/pick-390.png",
+    "reports/atlas11/probe/live-shot/pick-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/pick",
+    "title": "돌이가 고른 회사 · 돌이",
+    "h1": "돌이가 고른 회사",
+    "kakaoText": 9,
+    "kakaoRow": 0,
+    "kakaoAll": 9,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 9942
+   },
+   "err": null
+  },
+  {
+   "name": "me",
+   "hash": "#/me",
+   "files": [
+    "reports/atlas11/probe/live-shot/me-390.png",
+    "reports/atlas11/probe/live-shot/me-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/me",
+    "title": "보유종목 · 돌이",
+    "h1": "보유종목",
+    "kakaoText": 2,
+    "kakaoRow": 0,
+    "kakaoAll": 2,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1548
    },
    "err": null
   }
