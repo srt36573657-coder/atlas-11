@@ -608,3 +608,8 @@ html.en .kkc > .card .meta { width: calc(100% - 124px); }
 /* 글 단추 「카톡 보내기」 노랑 */
 .kk-yel, html.white .kk-yel, html.white .acts .act.kk-yel, .sh .side button.kk-yel, html.white .sh .side button.kk-yel { background: #FEE500; color: #191919; border-color: #191919; font-weight: 800; }
 .kk-yel:active { background: #F2D900; }
+/* 돌이 단추 안(#/dori · 아래 단추 넷째 · 사장님 2026-10-26 14:40 「어 넣어」) — 시황 · 관심 · 보유종목 · 오늘 장 · 돌이 인사 · 고객센터 큰 줄 */
+.dm { display: grid; gap: var(--sp-1); margin: var(--sp-2); }
+.dm-it { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--sp-1); min-height: 56px; box-sizing: border-box; padding: 0 var(--sp-2); border: 1px solid #DDDDDD; border-radius: 14px; background: #FFFFFF; color: #111111; font-size: var(--fs-3); text-decoration: none; }
+.dm-it b { font-weight: 800; }
+.dm-it i { font-style: normal; font-weight: 800; }

@@ -345,6 +345,10 @@ html.white.clock.clock.clock .th-ar-t { left: 50%; top: 32px; margin-left: -16px
 html.white.clock.clock.clock .th-ar-b { left: 50%; bottom: 32px; margin-left: -16px; }
 html.white.clock.clock.clock .th-ar-r { right: 2px; top: 50%; margin-top: -16px; }
 html.white.clock.clock.clock .th-ar-l { left: 2px; top: 50%; margin-top: -16px; }
+/* 아래 단추 넷 영어 이름(one month later · Past record)은 칸보다 길어 — 낱말 사이 두 줄로(넘침 0) */
+html.white.clock.clock.clock.en .tabs a { white-space: normal; text-align: center; line-height: 1.1; overflow-wrap: anywhere; }
+/* 돌이 단추 안(#/dori) — 큰 줄 · 어두운 청록 · 밝은 테 · 어긋난 그림자 */
+html.white.clock.clock.clock .dm-it { border: 2px solid #8CA3A7; background: #284E53; color: #F2F3F3; box-shadow: 4px 4px 0 #171615; }
 /* 싹 자리 전부(#/t/sprout · 돌 시계 판 ②) — 맨 앞 셋 큰 판(첫째 하늘청록 · 둘째 밝은 회청 · 셋째 청록) · 그 밖 업종 알약(어두운 청록 · 밝은 테) */
 html.white.clock.clock.clock .th-tile { border: 3px solid #171615; background: #4B939D; color: #152D30; box-shadow: 4px 4px 0 #171615; }
 html.white.clock.clock.clock .th-tile0 { background: #1FB8CD; box-shadow: 4px 4px 0 #171615, 8px 8px 0 #FFFFFF; }

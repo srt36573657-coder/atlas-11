@@ -1,6 +1,6 @@
 /* 돌 시계 청록 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음)
  * 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 08:23 「더 빠른 방식 찾아서 9시까지 모든 싸이트 되게 해」
- * 읽은 파일 33개 · 바꾼 규칙 286개 · 바꾼 칸 359개 */
+ * 읽은 파일 33개 · 바꾼 규칙 287개 · 바꾼 칸 362개 */
 html:where(.white.clock) i.play { border: 2px solid rgba(45, 57, 58, 0.8); }
 html:where(.white.clock) i.play::after { border-left: 18px solid #2D393A; }
 html:where(.white.clock) .m4-msg .m4-moon { border: 1px solid rgba(45, 57, 58, 0.12); outline: 1px solid rgba(37, 50, 51, 0.05); }
@@ -14,6 +14,7 @@ html:where(.white.clock) .kk-btn.kk-row:active { background: #3C4E51; }
 html.white.clock .kk-gift { border: 1px solid #8CA3A7; background: #3C4E51; color: #F2F3F3; }
 html:where(.white.clock) .kk-gift:active { background: #3C4E51; }
 html:where(.white.clock) .kk-yel:active { background: #3C4E51; }
+html:where(.white.clock) .dm-it { border: 1px solid #3E737A; background: #1C2627; color: #F2F3F3; }
 html:where(.white.clock) .adm-go { background: #F2F3F3; color: #1C2627; }
 html:where(.white.clock) .pchx-key .k-up { color: #1C2627; }
 html:where(.white.clock) .pchx-key .k-dn { color: #1C2627; }
@@ -372,6 +373,10 @@ html.white.clock.clock.clock .th-ar-t { left: 50%; top: 32px; margin-left: -16px
 html.white.clock.clock.clock .th-ar-b { left: 50%; bottom: 32px; margin-left: -16px; }
 html.white.clock.clock.clock .th-ar-r { right: 2px; top: 50%; margin-top: -16px; }
 html.white.clock.clock.clock .th-ar-l { left: 2px; top: 50%; margin-top: -16px; }
+/* 아래 단추 넷 영어 이름(one month later · Past record)은 칸보다 길어 — 낱말 사이 두 줄로(넘침 0) */
+html.white.clock.clock.clock.en .tabs a { white-space: normal; text-align: center; line-height: 1.1; overflow-wrap: anywhere; }
+/* 돌이 단추 안(#/dori) — 큰 줄 · 어두운 청록 · 밝은 테 · 어긋난 그림자 */
+html.white.clock.clock.clock .dm-it { border: 2px solid #8CA3A7; background: #284E53; color: #F2F3F3; box-shadow: 4px 4px 0 #171615; }
 /* 싹 자리 전부(#/t/sprout · 돌 시계 판 ②) — 맨 앞 셋 큰 판(첫째 하늘청록 · 둘째 밝은 회청 · 셋째 청록) · 그 밖 업종 알약(어두운 청록 · 밝은 테) */
 html.white.clock.clock.clock .th-tile { border: 3px solid #171615; background: #4B939D; color: #152D30; box-shadow: 4px 4px 0 #171615; }
 html.white.clock.clock.clock .th-tile0 { background: #1FB8CD; box-shadow: 4px 4px 0 #171615, 8px 8px 0 #FFFFFF; }
