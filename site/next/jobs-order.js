@@ -117,7 +117,9 @@ const KEEP = ['.th-watch', '.th-sw', '.sub-btn', '.wy-next', '.wy-rec', '.wy-opt
 /** 그리기 바로 뒤(jobsOrder 다음) — 주인공 · 그림 · 단추 · 남길 칸 · 「자세히 보기」 · 맨 아래 줄 */
 export function jobsBold(k, a, view) {
   const s = BOLD[routeKey(k, a)]; if (!s || !view) return false;
-  const r = rootOf(view), kids = [...r.children], cnt = new Map(), id = new Map(), used = new Set();
+  const r = rootOf(view);
+  if (r.querySelector(':scope > .empty')) return false; // 빈 쪽(앞선 회사 줄에 없는 회사 등) — 「왜 비었는지」 한 줄이 주인공이라 접지 않음(16:55 진짜 사이트 사진에서 찾음)
+  const kids = [...r.children], cnt = new Map(), id = new Map(), used = new Set();
   for (const el of kids) { if (!vis(el)) continue; const t = tok(el), n = cnt.get(t) ?? 0; cnt.set(t, n + 1); id.set(t + ':' + n, el); }
   const get = x => { if (!x) return null; const el = id.get(x) ?? null; if (el) { used.add(el); id.delete(x); } return el; };
   const pre = s.pre.map(get).filter(Boolean), hero = get(s.hero), stick = get(s.stick), pic = get(s.vis);
@@ -148,7 +150,8 @@ export function jobsBold(k, a, view) {
 /** 늦게 붙는 칸 — 「다음」 한 줄(th-foot)이 단추 자리면 그 자리로 · 맨 아래 줄(안내 · 카톡 쪽 줄)은 늦게 붙은 칸 뒤로 */
 export function jobsBoldLate(k, a, view) {
   const s = BOLD[routeKey(k, a)]; if (!s || !view || !view.isConnected) return false;
-  const r = rootOf(view), slot = r.querySelector(':scope > i.jb-slot');
+  const r = rootOf(view); if (r.querySelector(':scope > .empty')) return false; // 빈 쪽은 그대로(jobsBold 와 같음)
+  const slot = r.querySelector(':scope > i.jb-slot');
   if (slot) { const el = [...r.children].find(c => tok(c) === slot.dataset.tok); if (el) { el.classList.add('jb-act'); slot.replaceWith(el); } }
   const small = new Set([...s.bottom.map(x => x.split(':')[0]), 'kk-pgrow']);
   const kids = [...r.children], last = kids.findLastIndex(el => !small.has(tok(el)) && !el.classList.contains('jb-slot'));
