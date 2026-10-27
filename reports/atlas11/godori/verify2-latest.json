@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-10-26T17:36:40Z",
+ "at": "2026-10-27T16:49:10Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "8d23fb09b15e7c5bf38307b954739e698444a7def00c6f43a7c5e5c30a104deb",
-   "last": "2026-10-26"
+   "sha256": "79212f48cb0c7ea25e8efe1a1074199603550f30965434d4dfb00ced5a9b8c62",
+   "last": "2026-10-27"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 848,
+   "n": 849,
    "first": "2023-04-28",
-   "last": "2026-10-26",
+   "last": "2026-10-27",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "7ce2292d680e048a17bf73da112e88a2af4d9856346e1914ae51e6b093a9aec2"
+   "sha256": "f06766370a48c098f53d999f8bbe0883e0fa740b36c75be71b36aa24df18e247"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "8184635758c281f8f64df4258faf594fdefc31014efc75b81496f4f83103dc56"
+   "sha256": "1d0332d7566887c3050a5a77e13cc4d971495f30dd80062d34bcd5a089c2033e"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "cc08b71ea6968d2d89cae45022401bdfabc306b3a0acc6d521ffebbdc6c90d6e"
+   "sha256": "439e02207f332aa30f08ea99eb254fd388de992ec3c2653214c2028d6c9090bd"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 847,
-  "day": "2026-10-26",
+  "k": 848,
+  "day": "2026-10-27",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1690,
-   "outThinQ": 17,
+   "outThin": 1695,
+   "outThinQ": 19,
    "outHalt": 4,
    "outList": 6,
-   "listQ": 857,
-   "afterOut": 857,
+   "listQ": 852,
+   "afterOut": 852,
    "g1": 258,
-   "g2": 713,
-   "g3": 37,
-   "g4": 695,
+   "g2": 685,
+   "g3": 53,
+   "g4": 683,
    "g5": 0,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 845,
+   "loss3": 840,
    "why": "lists"
   },
-  "loss3Years": 845,
+  "loss3Years": 840,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,69 +321,27 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-09-22",
-   "to": "2026-10-26",
-   "n": 3,
-   "counted": 3,
-   "up": 0,
-   "lo": 13,
-   "hi": 23,
+   "from": "2026-09-23",
+   "to": "2026-10-27",
+   "n": 1,
+   "counted": 1,
+   "up": 1,
+   "lo": 4,
+   "hi": 8,
    "rows": [
     {
-     "code": "014530",
-     "name": "극동유화",
+     "code": "150900",
+     "name": "파수AI",
      "lo": 4,
      "hi": 8,
-     "from": 3300,
-     "to": 3295,
-     "up": 0,
+     "from": 4025,
+     "to": 4245,
+     "up": 1,
      "mcCounts": [
-      862,
-      913,
-      1409,
-      989
-     ],
-     "mcEdges": [
-      0,
-      0,
-      0,
-      0
-     ]
-    },
-    {
-     "code": "298020",
-     "name": "효성티앤씨",
-     "lo": 4,
-     "hi": 7,
-     "from": 314000,
-     "to": 246000,
-     "up": 0,
-     "mcCounts": [
-      1081,
-      998,
-      1348,
-      964
-     ],
-     "mcEdges": [
-      0,
-      0,
-      0,
-      0
-     ]
-    },
-    {
-     "code": "001120",
-     "name": "LX인터내셔널",
-     "lo": 5,
-     "hi": 8,
-     "from": 41400,
-     "to": 41000,
-     "up": 0,
-     "mcCounts": [
-      1160,
-      1035,
-      1449,
-      1035
+      904,
+      934,
+      1419,
+      986
      ],
      "mcEdges": [
       0,
@@ -442,10 +400,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1690,
+    1695,
     4,
     6,
-    857,
+    852,
     2557
    ]
   },
@@ -459,35 +417,35 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1690,
-  "outThinQ": 17,
+  "outThin": 1695,
+  "outThinQ": 19,
   "outHalt": 4,
   "outList": 6,
-  "listQ": 857,
-  "afterOut": 857,
+  "listQ": 852,
+  "afterOut": 852,
   "g1": 258,
-  "g2": 713,
-  "g3": 37,
-  "g4": 695,
+  "g2": 685,
+  "g3": 53,
+  "g4": 683,
   "g5": 0,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 845,
+  "loss3": 840,
   "why": "lists"
  },
- "compared": 2714,
+ "compared": 2700,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 1.6,
+  "readBundle": 2.0,
   "build": 2.1,
-  "recount": 0.8,
-  "total": 4.6
+  "recount": 0.7,
+  "total": 4.9
  }
 }
