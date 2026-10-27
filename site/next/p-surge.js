@@ -301,7 +301,7 @@ function svTrack(v, tab, ok, K, back) {
       st(ph, {'min-height': hh + 'px'}); row.replaceWith(ph); drawTail(); try { undo.focus({preventScroll: true}); } catch { /* 초점 못 옮김 */ }
       say(`${t.n} 숨겼어요.${kept ? '' : ' 이 기계는 기억을 못 해 다시 열면 돌아와요.'}`);
     } else if (b.classList.contains('psurge-undo')) { hid.delete(c); hidePut(hid); b.closest('.psurge-ph').replaceWith(svTrRow(t)); drawTail(); say(`${t.n} 다시 보여요.`); }
-    else if (b.classList.contains('psurge-show')) { hid.delete(c); hidePut(hid); draw(); say(`${t.n} 다시 보여요.`); }
+    else if (b.classList.contains('psurge-show')) { hid.delete(c); hidePut(hid); open0 = new Set([...box.querySelectorAll('details.psurge-grp[open]')].map(x => x.dataset.d)); open0.add(t.d); draw(); say(`${t.n} 다시 보여요.`); } // 되돌린 줄이 든 묶음은 펼쳐 둠 — 그 날 묶음이 닫힌 채 다시 그려져 「다시 보여요」인데 안 보이던 것
   });
   trk.addEventListener('toggle', e => { const x = e.target; if (!(x instanceof HTMLDetailsElement)) return; // 펼친 묶음 · 숨긴 곳 칸 기억(회사를 보고 돌아올 때)
     if (x.classList.contains('psurge-grp')) rec(tab).open = [...box.querySelectorAll('details.psurge-grp')].filter(g => g.open).map(g => g.dataset.d);
