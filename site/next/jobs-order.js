@@ -83,7 +83,7 @@ export function jobsTail(k, a, view) {
    쪽마다 주인공 하나 크게(글 칸은 1.2~1.8배 · 그림 · 긴 목록은 그대로 크기) · 그림 하나 · 누를 단추 하나 · 나머지는 「자세히 보기」
    차례 표 = docs/design/jobs36-2026-10-27/bold.json(쪽마다 백팔십 판 · 목업 j36b) — 칸 열쇠는 위 잡스 차례(jobsOrder)를 한 뒤의 칸 차례로 셈
    첫 화면은 뺌(00:17 네 단추 한 화면 · 01:50 기승전결 차례) · 진화 본질 줄 · 안내 줄 · 관심 머리 글 · 보유종목 편지는 접지 않음 */
-export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 · 관심 · 짧은 영상은 뺌 — 편지 펼치기 · 머리 글 · 소식 길 · 영상 넘기기가 그 자리에 있어야 함(14:5x 이 기계 검사)
+export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 · 관심 · 짧은 영상 · 오늘 장(옛 칸 차례 맞춤) · 상품권(약속 밑 「지금 할 일」)은 뺌 — 편지 펼치기 · 머리 글 · 소식 길 · 영상 넘기기가 그 자리에 있어야 함(14:5x 이 기계 검사)
   't/picks': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-pkis:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-pkrec1:0"], "bottom": ["th-safe:0"]}, // 꽃 될 회사
   't/pick': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ch:0", "z": 1.3, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-ch:2", "th-ch:3", "th-ch:4"], "bottom": ["th-safe:0"]}, // 지난 기록
   'dori': {"pre": ["h:0"], "hero": "dm:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": null, "sec": [], "bottom": ["safe:0"]}, // 돌이
@@ -106,13 +106,11 @@ export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 �
   'w/*/past': {"pre": ["wt:0", "ws:0"], "hero": "ppast-now:0", "z": 1.7, "card": 1, "hide": 1, "stick": null, "vis": "ppast-chart:0", "act": "ppast-nx:0", "sec": [], "bottom": []}, // 회사 지나온 길
   'find': {"pre": [], "hero": "find:0", "z": 1.6, "card": 1, "hide": 1, "stick": null, "vis": null, "act": null, "sec": ["hits:0"], "bottom": []}, // 회사 찾기
   't/alert': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-wl:0", "z": 1.7, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-als:0"], "bottom": ["th-safe:0"]}, // 알림
-  'today': {"pre": ["wt:0"], "hero": null, "z": 1.4, "card": 2, "hide": 2, "stick": null, "vis": null, "act": null, "sec": ["ptoday-sec:0", "ptoday-sec:4", "ptoday-sec:1"], "bottom": ["safe:0"]}, // 오늘 장
   'game': {"pre": ["gm-h1:0"], "hero": "gm-box:0", "z": 1, "card": 2, "hide": 1, "stick": null, "vis": null, "act": null, "sec": [], "bottom": ["safe:0"]}, // 가짜 돈 연습
   'jinhwa': {"pre": ["jh-h1:0", "jh-ess:0", "jh-head:0"], "hero": "jh-rail:0", "z": 1, "card": 2, "hide": 1, "stick": null, "vis": null, "act": "jh-what:0", "sec": [], "bottom": []}, // 진화
   't/today': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-rec:0", "z": 1.7, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-steps:0"], "bottom": ["th-safe:0"]}, // 오늘 정리
   't/hello': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-steps:0", "z": 1.5, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-found:0", "sec": [], "bottom": ["th-safe:0"]}, // 돌이 인사
   't/how': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-map:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": [], "bottom": ["th-safe:0"]}, // 시계 읽는 법
-  'gift': {"pre": ["gf-h1:0", "gf-lead:0"], "hero": "gf-vow:0", "z": 1.8, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "gf-pn:0", "sec": ["gf-steps:0"], "bottom": []}, // 상품권
   'help': {"pre": ["hp-h1:0", "hp-voice:0"], "hero": "hp-note-card:0", "z": 1.5, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "hp-doors:0", "sec": [], "bottom": []}, // 고객센터
 };
 const LATE_TOK = new Set(['th-foot', 'kk-box', 'kk-pgrow', 'cp-card']);
