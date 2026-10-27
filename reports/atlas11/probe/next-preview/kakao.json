@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-27T03:44:30.456Z",
+ "at": "2026-10-27T04:07:32.420Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -22,7 +22,7 @@
    }
   }
  },
- "seconds": 122,
+ "seconds": 119,
  "counts": {
   "routes": 251,
   "rows": 8400,

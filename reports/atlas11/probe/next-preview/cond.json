@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-10-27T03:47:47.465Z",
+ "at": "2026-10-27T04:07:05.547Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-27",
  "combos": 100,
@@ -12,15 +12,15 @@
   "widths"
  ],
  "full": true,
- "seconds": 70,
+ "seconds": 45,
  "time": {
-  "old": 14.7,
-  "new": 18.3,
-  "wall": 69.7,
-  "opensOld": 653,
-  "opensNew": 680,
-  "oldPct": 21,
-  "oldShare": 44.5
+  "old": 15.9,
+  "new": 20.2,
+  "wall": 45.4,
+  "opensOld": 654,
+  "opensNew": 681,
+  "oldPct": 35.1,
+  "oldShare": 44
  },
  "net": {
   "req": 3,
@@ -45,19 +45,9 @@
   "더 보기": 1,
   "옛 쪽 화면 오류(참고)": 1,
   "oldErr": "자료 못 받음 Failed to load resource: the server responded with a status of 404 (Not Found)",
-  "둘레": 14,
-  "fail": 2,
+  "둘레": 15,
   "폭 화면": 27
  },
- "fails": [
-  [
-   "지난번과 견줌 글",
-   "\"10월 10일보다 새로 0곳 · 빠진 2곳\" ≠ \"10월 10일보다 새로 -30곳 · 빠진 2곳\""
-  ],
-  [
-   "둘레 지난번과 견줌",
-   "page.click: Timeout 30000ms exceeded."
-  ]
- ],
- "ok": false
+ "fails": [],
+ "ok": true
 }
