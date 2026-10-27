@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-27T12:40+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-27 11:39 「어 고쳐 빨리」 잡스 차례 고침",
+  "to": "2026-10-27 12:37 이 기계 next_check 다시 통과"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 134,
+   "when": "2026-10-27 12:10 ~ 12:36(서울)",
+   "what": "jobs-order.js 의 「더 보기」 글을 고치며 줄 가운데에 // 설명을 넣어 같은 줄 뒤 코드(det.append · out.push · 닫는 괄호)를 설명으로 덮음 — 그 판이면 돌이 화면이 모두 안 열림 · 올리기 전 이 기계 next_check 가 두 번 멈춰 찾음(옛 판으로 같은 검사를 돌려 내 고침 탓임을 가름)",
+   "found_by": "next_check 가 「Target page, context or browser has been closed」로 두 번 멈춤 · 옛 판은 같은 검사가 끝까지 감",
+   "fixed": "설명을 줄 끝으로 옮김 · node --check · next_check 404 말고 걸림 0(옛 판과 같음) · 서른여섯 쪽 목업 차례 같음 · 진짜 사이트에는 안 나감"
+  }
+ ]
+}

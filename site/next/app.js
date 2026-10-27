@@ -11,6 +11,7 @@ import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시
 import {homeBlock as themeHome, APP_ICON} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
 import {stoneClock, clockDecoded, miniClock} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
+import {jobsOrder, jobsTail} from '/next/jobs-order.js'; // 잡스 차례(사장님 2026-10-27 11:08 「직관적이면서도 중요한것을 전면에」 · 11:39 「어 고쳐 빨리」) — 쪽마다 칸 차례 · 덜 중요한 글 「더 보기」
 const $ = (sel, r = document) => r.querySelector(sel);
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -1385,12 +1386,14 @@ async function route(force) {
   if (my !== seq) return;
   whiteFor(k);
   root.replaceChildren(...[...(out.nodes ?? [])].filter(x => x != null && x !== false)); // null 칸은 글자로 안 그림(2026-10-22 고장 찾기)
+  try { jobsOrder(k, a, root); } catch (e) { console.error(e); } // 잡스 차례 — 카톡 단추를 달기 전에 칸만 옮김(jobs-order.js)
   if (kkM) { const o = {title: out.title ?? '', url: absUrl(hash), ...kkM};
     const run = m => { if (!m || my !== seq) return; try { m.sweep(root, o); kkStop = m.watch(root, o); } catch (e) { console.error(e); } };
     if (kkm) run(kkm); else afterLoad(() => kkMod().then(run)); }
   stoneArt(k, a, root);
   const cp = k === 'why' && !a ? mod('admin').then(m => { if (my === seq && root.isConnected && !root.querySelector('.cp-card')) root.append(m.couponCard()); }).catch(() => {}) : Promise.resolve(); // 커피 쿠폰 칸 — 매매일지 쪽 맨 아래(위 칸을 밀지 않음 · 2026-10-19 13:54)
   cp.then(() => flowFoot(k, a, root, my)); // 서른여섯 장 흐름 — 있는 쪽 맨 아래 「다음」 한 줄(쿠폰 칸 뒤)
+  for (const t of [500, 1600, 3600]) setTimeout(() => { if (my === seq) try { jobsTail(k, a, root); } catch (e) { console.error(e); } }, t); // 늦게 붙는 「다음」 한 줄 · 쿠폰 칸 뒤로 작은 줄(날짜 · 안내 · 카톡 쪽 줄)
   if (k === '') holdEss(root); // 첫 화면 — 글꼴 표가 아직이면 본질 첫 줄 높이를 잡아 둠(글꼴이 바뀌어도 아래가 안 밀리게)
   fontsLater();
   for (const r of root.querySelectorAll('.chaps.row')) { const n = r.querySelector('.now'); if (n) r.scrollLeft = Math.max(0, n.getBoundingClientRect().left - r.getBoundingClientRect().left + r.scrollLeft - 16); } // 4 ~ 7단 챕터 줄 — 지금 단이 보이게
