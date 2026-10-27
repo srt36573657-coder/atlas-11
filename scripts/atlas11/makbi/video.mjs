@@ -67,7 +67,7 @@ if (!/36곳/.test(FACT0) || !/ n곳/.test(FACT0)) stop('⑦ 반값 줄 꼴이 �
 const FACT = FACT0.replace('36곳', H36.of + '곳').replace(' n곳', ' ' + H36.n + '곳');
 const NJS = await rd('site/next/app.js');
 const PROMO_SRC = NJS.match(/const HELLO_PROMO = '([^']+)'/)?.[1] ?? stop('HELLO_PROMO(site/next/app.js) 못 찾음');
-const FR = Number(PROMO_SRC.match(/^(\d+)명만/)?.[1] ?? stop('친구 수 못 찾음: ' + PROMO_SRC));
+const FR = Number(PROMO_SRC.match(/^(\d+)명(?:만| 소개)/)?.[1] ?? stop('친구 수 못 찾음: ' + PROMO_SRC)); // 2026-10-22 01:49 상품권 줄이 「3명 소개하고 1분 영상 보면 …」으로 바뀜 — 옛 「3명만」 꼴도 받음(2026-10-27 21:50 둘이 이름으로 다시 구울 때 고침)
 if (!/스타벅스/.test(PROMO_SRC) || !/1만원/.test(PROMO_SRC)) stop('상품권 줄이 다름: ' + PROMO_SRC);
 if (!/^친구 \d+명마다 /.test(SC[8].q[1])) stop('⑨ 상품권 줄 꼴이 다름: ' + SC[8].q[1]);
 const PROMO = SC[8].q[1].replace(/^친구 \d+명마다 /, `친구 ${FR}명마다 `);
