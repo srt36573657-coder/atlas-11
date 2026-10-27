@@ -1,0 +1,4116 @@
+[
+ {
+  "no": 1,
+  "hs": "#/",
+  "name": "첫 화면",
+  "path": [
+   "#view",
+   "section.th-home"
+  ],
+  "rootTop": 142,
+  "blocks": [
+   {
+    "tag": "nav",
+    "cls": "th-zones",
+    "top": 142,
+    "h": 418,
+    "pic": true,
+    "links": 4,
+    "isA": true,
+    "text": "싹 37 곳 꽃 7 곳 잠잠 29 곳 시듦 4 곳"
+   },
+   {
+    "tag": "nav",
+    "cls": "s-apps",
+    "top": 578,
+    "h": 92,
+    "pic": true,
+    "links": 4,
+    "isA": true,
+    "text": "31 꽃 될 회사 회사 찾기 싹 달력 고객센터"
+   },
+   {
+    "tag": "a",
+    "cls": "th-pkhome",
+    "top": 715,
+    "h": 304,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "고른 싹이 꽃이 됐을까? 100곳 가운데 꽃이 된 수예요 돌이가 고른 회사 21곳 아무거나 고른 회사 25곳 기록 달력 보기 ›"
+   },
+   {
+    "tag": "a",
+    "cls": "th-more",
+    "top": 1023,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "봄(싹) 자리 37곳 모두 보기 ›"
+   },
+   {
+    "tag": "ol",
+    "cls": "s-story",
+    "top": 1079,
+    "h": 361,
+    "pic": false,
+    "links": 4,
+    "isA": false,
+    "text": "1 주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요. 2 지난 기록 ? 10월 12일 코스피 −3.28% 코스닥 −4.36% 오른 곳 766 왜"
+   },
+   {
+    "tag": "div",
+    "cls": "th-map.th-map2",
+    "top": 1439,
+    "h": 413,
+    "pic": true,
+    "links": 4,
+    "isA": false,
+    "text": "요즘 시장보다 힘이 붙은 곳 닷새 동안 시장보다 1 2차전지 +2.9% › 2 콘텐츠 제작 +4.5% › 3 의류·패션 +4.0% › 1번 2차전지 1년 전 오늘"
+   },
+   {
+    "tag": "div",
+    "cls": "th-gorow",
+    "top": 1868,
+    "h": 104,
+    "pic": true,
+    "links": 3,
+    "isA": false,
+    "text": "싹 달력 보기 › 카톡 보내기 선물 받기"
+   },
+   {
+    "tag": "details",
+    "cls": "th-hfold",
+    "top": 1988,
+    "h": 49,
+    "pic": false,
+    "links": 3,
+    "isA": false,
+    "text": "숫자로 자세히 보기"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 2061,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 시계 읽는 법 ›"
+   },
+   {
+    "tag": "a",
+    "cls": "th-hi",
+    "top": 2128,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "처음이세요? 돌이 인사 ›"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 2,
+  "hs": "#/t/picks",
+  "name": "꽃 될 회사",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 48,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 테마 시계"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 128,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "꽃이 될 듯한 회사 31곳"
+   },
+   {
+    "tag": "p",
+    "cls": "th-pkday",
+    "top": 227,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일에 지난 기록으로 골랐어요"
+   },
+   {
+    "tag": "div",
+    "cls": "th-pkis",
+    "top": 269,
+    "h": 580,
+    "pic": true,
+    "links": 41,
+    "isA": false,
+    "text": "바이오 도구·서비스 10곳 CJ 바이오사이언스 대한과학 바이오인프라 소마젠 외 6곳 업종 보기 › 정밀화학 7곳 전자부품 6곳 디스플레이 장비 5곳 2차전지 장비"
+   },
+   {
+    "tag": "p",
+    "cls": "th-pkrec1",
+    "top": 873,
+    "h": 99,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "지난 기록으로 이렇게 고른 회사는 100번에 27번 꽃이 됐어요. 아무거나 고른 회사는 24번이에요."
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 995,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 지난 기록 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 1070,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 3,
+  "hs": "#/t/pick",
+  "name": "지난 기록",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 48,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 테마 시계"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 128,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "돌이가 고른 회사"
+   },
+   {
+    "tag": "section",
+    "cls": "th-ch.th-chend",
+    "top": 227,
+    "h": 400,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "결론 요즘은 아무거나 고른 회사보다 꽃이 적게 됐어요 100곳 가운데 꽃이 된 수예요 돌이가 고른 회사 21곳 아무거나 고른 회사 25곳 한 달이 지난 날만 셌어"
+   },
+   {
+    "tag": "nav",
+    "cls": "th-chnav",
+    "top": 643,
+    "h": 48,
+    "pic": false,
+    "links": 4,
+    "isA": true,
+    "text": "처음 이어서 그런데 그래서"
+   },
+   {
+    "tag": "section",
+    "cls": "th-ch",
+    "top": 715,
+    "h": 534,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "처음 돌이는 날마다 이런 회사를 골라요 돌이업종은 꽃이 폈고, 회사는 이제 막 힘이 붙었어요. 1 회사는 이제 막 힘이 붙었어요 아직 꽃은 아니지만, 지난 5일 "
+   },
+   {
+    "tag": "section",
+    "cls": "th-ch",
+    "top": 1273,
+    "h": 1147,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "이어서 고른 날마다 한 달 뒤를 적었어요 많이 된 날 적게 된 날 기다리는 날 같은 날 아무거나 고른 회사와 견줬어요. 칸마다 꽃이 된 수와 고른 수예요. 월 화"
+   },
+   {
+    "tag": "section",
+    "cls": "th-ch",
+    "top": 2445,
+    "h": 1561,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "그런데 그런데 지난 기록에서는 아무거나 고른 것보다 많았어요 지난 기록 아무거나 고른 회사 100번에 24번 싹만 보고 고른 회사 100번에 23번 돌이가 고른 "
+   },
+   {
+    "tag": "section",
+    "cls": "th-ch",
+    "top": 4030,
+    "h": 4468,
+    "pic": true,
+    "links": 44,
+    "isA": false,
+    "text": "그래서 그래서 고르는 법을 고쳐 보고 다시 재요 까닭을 보고 고르는 법을 고쳐 다시 셌어요. 옛 기록에서 100번에 1번은 더 늘고, 새 기록에서도 늘어야 통과해"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub.th-calnote",
+    "top": 8498,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "시장보다 5% 넘게 덜 오르면 크게 떨어진 거예요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub.th-calnote",
+    "top": 8571,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "앞날을 맞히는 숫자가 아니에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 8616,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 8665,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 싹 달력 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 8740,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 4,
+  "hs": "#/why",
+  "name": "왜 사?",
+  "path": [
+   "#view"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "h.st-h.st-why",
+    "top": 80,
+    "h": 38,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "매매일지"
+   },
+   {
+    "tag": "section",
+    "cls": "wy.page",
+    "top": 134,
+    "h": 328,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "친구야, 왜 사? 사기 전에 돌이랑 내 이유를 확인해요. 열한 질문 · 1분쯤이에요. 끝나면 오늘 판정이 하나 나와요. 기록은 이 기기에만 남아요. 종목 고르기 "
+   },
+   {
+    "tag": "section",
+    "cls": "wy-me",
+    "top": 486,
+    "h": 91,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "왜 사? 기록 0번 아직 기록이 없어요. 위 질문에 답하면 날짜와 함께 여기 쌓여요."
+   },
+   {
+    "tag": "p",
+    "cls": "safe",
+    "top": 601,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-pgrow.kk-pgw",
+    "top": 660,
+    "h": 56,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "카톡 보내기 선물 받기"
+   },
+   {
+    "tag": "section",
+    "cls": "cp-card",
+    "top": 732,
+    "h": 238,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "커피 쿠폰까지 0 / 10 열한 질문을 끝까지 하면 하루에 1점이 쌓여요. 10점이면 커피 쿠폰 한 장이에요. 한 사람에 한 달 한 장이에요. 쿠폰 받기는 카톡 "
+   },
+   {
+    "tag": "nav",
+    "cls": "th-foot",
+    "top": 993,
+    "h": 48,
+    "pic": false,
+    "links": 1,
+    "isA": true,
+    "text": "다음 · 한 달 뒤 ›"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 5,
+  "hs": "#/dori",
+  "name": "돌이",
+  "path": [
+   "#view"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "h",
+    "top": 80,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이"
+   },
+   {
+    "tag": "nav",
+    "cls": "dm",
+    "top": 128,
+    "h": 384,
+    "pic": false,
+    "links": 7,
+    "isA": true,
+    "text": "한 달 뒤 › 보유종목 › 관심 › 오늘 장 › 시황 › 돌이 인사 › 고객센터 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "safe",
+    "top": 536,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-pgrow.kk-pgw",
+    "top": 595,
+    "h": 56,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "카톡 보내기 선물 받기"
+   }
+  ],
+  "sub": {
+   "at": 1,
+   "kids": [
+    {
+     "tag": "a",
+     "cls": "dm-it",
+     "top": 128,
+     "h": 48,
+     "pic": false,
+     "links": 0,
+     "isA": true,
+     "text": "한 달 뒤 ›"
+    },
+    {
+     "tag": "a",
+     "cls": "dm-it",
+     "top": 184,
+     "h": 48,
+     "pic": false,
+     "links": 0,
+     "isA": true,
+     "text": "보유종목 ›"
+    },
+    {
+     "tag": "a",
+     "cls": "dm-it",
+     "top": 240,
+     "h": 48,
+     "pic": false,
+     "links": 0,
+     "isA": true,
+     "text": "관심 ›"
+    },
+    {
+     "tag": "a",
+     "cls": "dm-it",
+     "top": 296,
+     "h": 48,
+     "pic": false,
+     "links": 0,
+     "isA": true,
+     "text": "오늘 장 ›"
+    },
+    {
+     "tag": "a",
+     "cls": "dm-it",
+     "top": 352,
+     "h": 48,
+     "pic": false,
+     "links": 0,
+     "isA": true,
+     "text": "시황 ›"
+    },
+    {
+     "tag": "a",
+     "cls": "dm-it",
+     "top": 408,
+     "h": 48,
+     "pic": false,
+     "links": 0,
+     "isA": true,
+     "text": "돌이 인사 ›"
+    },
+    {
+     "tag": "a",
+     "cls": "dm-it",
+     "top": 464,
+     "h": 48,
+     "pic": false,
+     "links": 0,
+     "isA": true,
+     "text": "고객센터 ›"
+    }
+   ]
+  }
+ },
+ {
+  "no": 6,
+  "hs": "#/why/later",
+  "name": "한 달 뒤",
+  "path": [
+   "#view"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "h.st-h.st-why",
+    "top": 80,
+    "h": 38,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "한 달 뒤"
+   },
+   {
+    "tag": "p",
+    "cls": "empty",
+    "top": 142,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "아직 한 달 지난 기록이 없어요."
+   },
+   {
+    "tag": "section",
+    "cls": "wy-me",
+    "top": 195,
+    "h": 91,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "왜 사? 기록 0번 아직 기록이 없어요. 위 질문에 답하면 날짜와 함께 여기 쌓여요."
+   },
+   {
+    "tag": "p",
+    "cls": "safe",
+    "top": 309,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-pgrow.kk-pgw",
+    "top": 368,
+    "h": 56,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "카톡 보내기 선물 받기"
+   },
+   {
+    "tag": "nav",
+    "cls": "th-foot",
+    "top": 448,
+    "h": 48,
+    "pic": false,
+    "links": 1,
+    "isA": true,
+    "text": "다음 · 보유종목 ›"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 7,
+  "hs": "#/t/sprout",
+  "name": "싹 자리",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 시계 읽는 법 테마 시계 4 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "싹 자리 전부"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 69,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이봄이 온 곳이 싹 자리예요. 점이 많이 찬 순서예요."
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 340,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "싹 자리 37곳"
+   },
+   {
+    "tag": "section",
+    "cls": "th-grp.th-top3",
+    "top": 395,
+    "h": 257,
+    "pic": true,
+    "links": 4,
+    "isA": false,
+    "text": "맨 앞 셋 진짜 싹 2차전지 콘텐츠 제작 의류·패션 카톡 보내기"
+   },
+   {
+    "tag": "section",
+    "cls": "th-grp.th-rest",
+    "top": 668,
+    "h": 438,
+    "pic": true,
+    "links": 36,
+    "isA": false,
+    "text": "그 밖 34곳 의료용품 시멘트 물류·운송 상사 식품 소프트웨어 석유화학 전자장비 디스플레이 보험 연예 기획사 방송 음료 비철금속 항공 교육 가공식품 그 밖 17곳"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 1113,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "업종을 누르면 그 업종 회사가 나와요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 1158,
+    "h": 86,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "싹 자리 전체는 지난 3년 100번 가운데 15번, 아무 업종은 16번 한 달 뒤 꽃 선을 넘었어요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 1259,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 1309,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 꽃 자리 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 1384,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 8,
+  "hs": "#/t/bloom",
+  "name": "꽃 자리",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 싹 자리 전부 테마 시계 5 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "꽃 자리"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이이미 테마가 된 곳이에요."
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "꽃 자리 7곳"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 361,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 꽃보다 싹을 먼저 봐요. 꽃은 이미 오른 곳이라 늦을 수 있어요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-rows",
+    "top": 434,
+    "h": 477,
+    "pic": false,
+    "links": 7,
+    "isA": false,
+    "text": "반도체 검사·측정 꽃 14일째 한 달 +30.9%p 반도체 장비 꽃 1일째 한 달 +23.4%p 전자부품 꽃 12일째 한 달 +11.4%p 디스플레이 장비 꽃 7"
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 919,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "숫자는 한 달 동안 시장보다 더 오른 만큼이에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 952,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 1002,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 시듦 자리 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 1077,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 1144,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 9,
+  "hs": "#/t/wilt",
+  "name": "시듦 자리",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 꽃 자리 테마 시계 6 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "시듦 자리"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이꽃이 지고 있는 곳이에요."
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "시듦 자리 4곳"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 361,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "지난 닷새는 시장보다 덜 올랐어요. 다시 잠잠으로 갈까?"
+   },
+   {
+    "tag": "div",
+    "cls": "th-rows",
+    "top": 434,
+    "h": 272,
+    "pic": false,
+    "links": 4,
+    "isA": false,
+    "text": "통신장비 −4.2%p 한 달 +5.2%p 반도체 −3.1%p 한 달 +13.3%p 반도체 부품 −1.5%p 한 달 +18.5%p 반도체 소재 −0.1%p 한 달 "
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 715,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "큰 숫자는 닷새, 작은 숫자는 한 달이에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 740,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "잠잠 자리는 29곳이에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 785,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 834,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 2차전지 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 909,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 976,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 10,
+  "hs": "#/t/cal",
+  "name": "싹 달력",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 48,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 테마 시계"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 128,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "싹 달력"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 227,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "날짜별로 돌이가 찾은 1번 2번 3번이에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 272,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "줄이 가운데 선 위면 시장보다 더 오른 거예요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-days",
+    "top": 345,
+    "h": 24660,
+    "pic": true,
+    "links": 240,
+    "isA": false,
+    "text": "10월 13일 카톡 보내기 1 2차전지 새로 찾음 2 콘텐츠 제작 새로 찾음 3 의류·패션 새로 찾음 이날 찾은 곳이라 다음 날부터 줄이 생겨요. 10월 12일 "
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 25020,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 25070,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 시계 읽는 법 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 25145,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 11,
+  "hs": "#/t/i/2%EC%B0%A8%EC%A0%84%EC%A7%80",
+  "name": "업종 한 곳",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 싹 자리 전부 업종 한 곳 7 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "2차전지"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이싹 자리에 새로 들어왔어요."
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "점 넷 가운데 4개"
+   },
+   {
+    "tag": "svg",
+    "cls": "th-dots",
+    "top": 361,
+    "h": 20,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": ""
+   },
+   {
+    "tag": "a",
+    "cls": "th-ck",
+    "top": 390,
+    "h": 52,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "✓ 시장보다 힘이 붙어요 지난 닷새 시장보다 +2.9%p ›"
+   },
+   {
+    "tag": "a",
+    "cls": "th-ck",
+    "top": 442,
+    "h": 52,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "✓ 오른 회사가 많아요 17곳 가운데 11곳이 2% 넘게 올랐어요 ›"
+   },
+   {
+    "tag": "a",
+    "cls": "th-ck",
+    "top": 494,
+    "h": 52,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "✓ 큰 회사도 움직여요 가장 큰 회사 셋 평균 +8.3% ›"
+   },
+   {
+    "tag": "a",
+    "cls": "th-ck",
+    "top": 546,
+    "h": 52,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "✓ 값이 진짜로 올라요 열흘 동안 +7.0% ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 598,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "진짜 싹이에요. 한 달 뒤 꽃 선을 넘을까?"
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 642,
+    "h": 77,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "지난 3년, 싹 자리에서 점이 4개였던 날은 100번 가운데 22번 한 달 뒤 꽃 선을 넘었어요. 아무 업종은 16번이었어요."
+   },
+   {
+    "tag": "div",
+    "cls": "chaps.row",
+    "top": 727,
+    "h": 52,
+    "pic": false,
+    "links": 7,
+    "isA": false,
+    "text": "1 테마 시계 2 업종 3 피노 4 지나온 길 5 누구와 다투나 6 앞으로 클까? 7 범위"
+   },
+   {
+    "tag": "button",
+    "cls": "th-keep.th-watch",
+    "top": 787,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "관심 업종에 담기"
+   },
+   {
+    "tag": "a",
+    "cls": "th-hi",
+    "top": 851,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "알림 설정 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 907,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 956,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 지나온 길 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 1031,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 1098,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 12,
+  "hs": "#/t/i/2%EC%B0%A8%EC%A0%84%EC%A7%80/path",
+  "name": "지나온 길",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 2차전지 업종 한 곳 8 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "지나온 길"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이닷새 동안 어디서 왔을까?"
+   },
+   {
+    "tag": "div",
+    "cls": "th-map",
+    "top": 314,
+    "h": 358,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "2차전지 싹 꽃 시듦 잠잠 꽃 선 닷새 전부터 오늘까지 지나온 길이에요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-list",
+    "top": 688,
+    "h": 336,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 2일 싹 한 달 +2.4%p 10월 6일 꽃 한 달 +5.4%p 10월 7일 싹 한 달 +1.8%p 10월 8일 꽃 한 달 +6.3%p 10월 12일 꽃 "
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 1032,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 1081,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 번지는 중일까 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 1156,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 13,
+  "hs": "#/t/i/2%EC%B0%A8%EC%A0%84%EC%A7%80/spread",
+  "name": "번지는 중일까",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 지나온 길 업종 한 곳 9 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "번지는 중일까"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이오른 회사가 늘고 있을까?"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "17곳 가운데 11곳"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 361,
+    "h": 86,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "열흘 전보다 2% 넘게 오른 회사 수예요. 닷새 전에는 11곳, 가장 많을 때는 17곳이었어요."
+   },
+   {
+    "tag": "svg",
+    "cls": "th-bars",
+    "top": 463,
+    "h": 96,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": ""
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 567,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "날마다 오른 회사 수 · 진한 초록은 최근 엿새"
+   },
+   {
+    "tag": "div",
+    "cls": "th-box",
+    "top": 608,
+    "h": 91,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "절반 이상 올랐어요 ✓ 절반 이상이면 넓게 번졌다고 봐요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 715,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 765,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 큰 회사도 움직였을까 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 840,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 907,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 14,
+  "hs": "#/t/i/2%EC%B0%A8%EC%A0%84%EC%A7%80/big",
+  "name": "큰 회사도 움직였을까",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 번지는 중일까 업종 한 곳 10 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "큰 회사도 움직였을까"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이큰 회사가 같이 가야 힘이 세요."
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "큰 회사 셋 +8.3%"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 361,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "업종에서 회사 크기가 가장 큰 회사 셋의 열흘 평균이에요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-list",
+    "top": 434,
+    "h": 144,
+    "pic": false,
+    "links": 3,
+    "isA": false,
+    "text": "1. LG에너지솔루션 +17.2% 열흘 2. 삼성SDI +8.5% 열흘 3. 포스코퓨처엠 −0.8% 열흘"
+   },
+   {
+    "tag": "div",
+    "cls": "th-box",
+    "top": 594,
+    "h": 117,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "큰 회사도 움직였어요 ✓ 셋 평균이 1% 넘게 올라야 움직였다고 봐요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 727,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 776,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 함께 움직인 회사 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 851,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 918,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 15,
+  "hs": "#/t/i/2%EC%B0%A8%EC%A0%84%EC%A7%80/co",
+  "name": "함께 움직인 회사",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 큰 회사도 움직였을까 업종 한 곳 11 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "함께 움직인 회사"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이누가 앞장섰을까?"
+   },
+   {
+    "tag": "div",
+    "cls": "th-list",
+    "top": 314,
+    "h": 384,
+    "pic": true,
+    "links": 8,
+    "isA": false,
+    "text": "피노 +25.3% 신흥에스이씨 +21.5% 상신이디피 +19.0% LG에너지솔루션 +17.2% 에코앤드림 +12.1% 삼성SDI +8.5% 에코프로비엠 +7.2%"
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 706,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "열흘 동안 · 17곳 가운데 많이 오른 차례"
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 740,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 789,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 이웃 업종 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 864,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 16,
+  "hs": "#/t/i/2%EC%B0%A8%EC%A0%84%EC%A7%80/near",
+  "name": "이웃 업종",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 함께 움직인 회사 업종 한 곳 12 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "이웃 업종"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이같은 무리 업종도 움직일까?"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "전력 · 에너지 · 2차전지 7곳"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 361,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "그 가운데 싹이나 꽃 자리가 4곳이에요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-rows",
+    "top": 406,
+    "h": 336,
+    "pic": false,
+    "links": 7,
+    "isA": false,
+    "text": "2차전지 장비 꽃 +5.8%p 한 달 전기 부품 싹 +3.6%p 한 달 전선·전기장비 잠잠 −0.9%p 한 달 정유·가스 싹 −1.8%p 한 달 전력·가스 싹 −"
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 750,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "숫자는 한 달 동안 시장보다 더 오른 만큼이에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 783,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 833,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 피노 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 908,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 975,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 17,
+  "hs": "#/t/c/033790",
+  "name": "회사 한 곳",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 함께 움직인 회사 회사 한 곳 13 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "피노"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이먼저 움직였을까, 뒤따랐을까?"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "업종보다 먼저 움직였어요"
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 361,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "2차전지 업종 회사예요."
+   },
+   {
+    "tag": "svg",
+    "cls": "th-line",
+    "top": 387,
+    "h": 110,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": ""
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 505,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "회색은 앞 닷새, 진한 초록은 뒤 닷새예요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 530,
+    "h": 29,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "열흘 동안 +25.3% · 17곳 가운데 1번째"
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 575,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-h2",
+    "top": 647,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "더 깊이 보기"
+   },
+   {
+    "tag": "p",
+    "cls": "th-cap2",
+    "top": 686,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "누르면 일곱 단까지 가요."
+   },
+   {
+    "tag": "div",
+    "cls": "chaps",
+    "top": 720,
+    "h": 232,
+    "pic": false,
+    "links": 7,
+    "isA": false,
+    "text": "1 테마 시계 2 업종 3 피노 4 지나온 길 5 누구와 다투나 6 앞으로 클까? 7 범위"
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 960,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 1009,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 먼저일까 뒤따름일까 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 1084,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 1151,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 18,
+  "hs": "#/t/c/033790/lead",
+  "name": "먼저일까 뒤따름일까",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 피노 회사 한 곳 14 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "먼저일까 뒤따름일까"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이앞 닷새와 뒤 닷새를 견줘요."
+   },
+   {
+    "tag": "svg",
+    "cls": "th-line",
+    "top": 314,
+    "h": 110,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": ""
+   },
+   {
+    "tag": "div",
+    "cls": "th-two",
+    "top": 432,
+    "h": 114,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "앞 닷새 +32.8% 업종 +8.3% 뒤 닷새 −5.7% 업종 −1.1%"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 562,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "업종보다 먼저 움직였어요"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 609,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "업종보다 더 오른 때가 앞 닷새면 먼저, 뒤 닷새면 뒤따름이에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 682,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 732,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 왜 그럴까? ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 807,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 874,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 19,
+  "hs": "#/t/c/033790/why",
+  "name": "왜 그럴까?",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 먼저일까 뒤따름일까 회사 한 곳 15 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "왜 그럴까?"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이기록으로 찾은 것만 말해요."
+   },
+   {
+    "tag": "section",
+    "cls": "wc.wc-play",
+    "top": 314,
+    "h": 1870,
+    "pic": true,
+    "links": 11,
+    "isA": false,
+    "text": "한 사실이 다음 물음을 불러요. 1 2 3 4 5 6 7 8 9 10 11 1 피노는 열흘 동안 +25.3%예요 회사 › 2 그 열흘 가운데 언제 몰렸을까? 앞 "
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 2193,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 2242,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 업종 안 자리 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 2317,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 20,
+  "hs": "#/t/c/033790/rank",
+  "name": "업종 안 자리",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 왜 그럴까? 회사 한 곳 16 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "업종 안 자리"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이17곳 가운데 몇 번째일까?"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "열흘 동안 1번째"
+   },
+   {
+    "tag": "div",
+    "cls": "th-list",
+    "top": 361,
+    "h": 384,
+    "pic": false,
+    "links": 8,
+    "isA": false,
+    "text": "1. 피노 +25.3% 2. 신흥에스이씨 +21.5% 3. 상신이디피 +19.0% 4. LG에너지솔루션 +17.2% 5. 에코앤드림 +12.1% 6. 삼성SDI "
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 753,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 803,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 아직 모르는 것 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 878,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 945,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 21,
+  "hs": "#/t/c/033790/unknown",
+  "name": "아직 모르는 것",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 업종 안 자리 회사 한 곳 17 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "아직 모르는 것"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이모르는 것도 꼭 말해요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-box",
+    "top": 314,
+    "h": 91,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "왜 올랐는지 뉴스를 아직 확인하지 않았어요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-box",
+    "top": 421,
+    "h": 91,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "계속 오를지 많이 오른 곳은 크게 내리기도 해요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-box",
+    "top": 528,
+    "h": 117,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "업종이 꽃이 될지 진짜 싹도 100번 가운데 78번은 한 달 뒤 꽃 선을 넘지 못했어요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 661,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 710,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 관심 담기 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 785,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 22,
+  "hs": "#/t/c/033790/keep",
+  "name": "관심 담기",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 아직 모르는 것 회사 한 곳 18 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "관심 담기"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이담아 두면 관심 칸에서 다시 봐요."
+   },
+   {
+    "tag": "h2",
+    "cls": "th-ans",
+    "top": 314,
+    "h": 39,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "피노"
+   },
+   {
+    "tag": "button",
+    "cls": "th-keep",
+    "top": 361,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "관심 담기"
+   },
+   {
+    "tag": "button",
+    "cls": "th-keep.th-watch",
+    "top": 425,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "2차전지 자리가 바뀌면 알림 받기"
+   },
+   {
+    "tag": "a",
+    "cls": "th-why",
+    "top": 489,
+    "h": 71,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "사기 전에는 열한 질문을 먼저 해요. 이 회사로 왜 사? ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 568,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 617,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 지나온 길 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 692,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 759,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 23,
+  "hs": "#/w/033790/past",
+  "name": "회사 지나온 길",
+  "path": [
+   "#view",
+   "div.ppast"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "wt",
+    "top": 80,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "피노 — 지나온 길"
+   },
+   {
+    "tag": "p",
+    "cls": "ws",
+    "top": 112,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1주 값 · 10월 13일 종가까지"
+   },
+   {
+    "tag": "p",
+    "cls": "ppast-now",
+    "top": 154,
+    "h": 88,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1년 전 4,085원 → 10월 13일 9,520원. 그사이 가장 높던 18,550원보다는 49% 아래예요."
+   },
+   {
+    "tag": "div",
+    "cls": "chaps.row",
+    "top": 242,
+    "h": 52,
+    "pic": false,
+    "links": 7,
+    "isA": false,
+    "text": "1 큰 업종 2 업종 3 회사 4 지나온 길 5 누구와 다투나 6 앞으로 클까? 7 범위"
+   },
+   {
+    "tag": "p",
+    "cls": "ppast-lv",
+    "top": 302,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "7단 중 4단 · 지나온 길 · 기록"
+   },
+   {
+    "tag": "div",
+    "cls": "ppast-seg",
+    "top": 344,
+    "h": 66,
+    "pic": false,
+    "links": 3,
+    "isA": false,
+    "text": "한 달 1년 3년"
+   },
+   {
+    "tag": "div",
+    "cls": "ppast-chart",
+    "top": 426,
+    "h": 315,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "선을 누르면 그날 값이 보여요 0% +200% 2025년 9월 24일 2026년 10월 13일 가장 높을 때 18,550원 · 가장 낮을 때 3,575원"
+   },
+   {
+    "tag": "div",
+    "cls": "ppast-key",
+    "top": 756,
+    "h": 82,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "피노 — 2025년 9월 24일보다 위 빨강 · 아래 파랑 56곳 평균(같은 날 같은 값에서 출발)"
+   },
+   {
+    "tag": "div",
+    "cls": "ppast-trio",
+    "top": 854,
+    "h": 210,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1년 +133% 가장 깊이 빠짐 −75.2% 꼭대기에서 지금 −48.7%"
+   },
+   {
+    "tag": "p",
+    "cls": "ppast-won",
+    "top": 1080,
+    "h": 53,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1주 2025년 9월 24일 4,085원 → 2026년 10월 13일 9,520원"
+   },
+   {
+    "tag": "p",
+    "cls": "ppast-won",
+    "top": 1148,
+    "h": 53,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "100만 원어치였다면 산 날보다 가장 낮을 때 88만 원 · 끝 233만 원"
+   },
+   {
+    "tag": "h2",
+    "cls": "sec",
+    "top": 1225,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "해마다 번 돈(결산 기록)"
+   },
+   {
+    "tag": "div",
+    "cls": "ppast-fin",
+    "top": 1265,
+    "h": 561,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "매출 2023년 70억 원 2024년 307억 원 2025년 2,648억 원 영업이익 2023년 −21억 원 2024년 0억 원 2025년 88억 원 순이익 20"
+   },
+   {
+    "tag": "details",
+    "cls": "ppast-more",
+    "top": 1849,
+    "h": 50,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "회사 크기 — 눌러서 보기"
+   },
+   {
+    "tag": "p",
+    "cls": "ppast-src",
+    "top": 1915,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "네이버 증권 · 결산 · 10월 10일 모음"
+   },
+   {
+    "tag": "p",
+    "cls": "ppast-nx",
+    "top": 1965,
+    "h": 52,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "5 누구와 다투나 이야기 조사 전 · 업종 안 매출 9번째"
+   },
+   {
+    "tag": "a",
+    "cls": "more.chap-next",
+    "top": 2025,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 단 · 5 누구와 다투나 ›"
+   },
+   {
+    "tag": "footer",
+    "cls": "ppast-foot",
+    "top": 2097,
+    "h": 236,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "자료: 네이버 증권 일봉 · 10월 14일 모음(10월 13일 종가까지) · 기준일 = 마지막 종가 날(10월 13일)의 한 달 전(9월 9일) · 멍거 · 린치"
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box.kk-boxi",
+    "top": 2340,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 24,
+  "hs": "#/find",
+  "name": "회사 찾기",
+  "path": [
+   "#view"
+  ],
+  "rootTop": 64,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "find",
+    "top": 64,
+    "h": 80,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": ""
+   },
+   {
+    "tag": "div",
+    "cls": "hits",
+    "top": 152,
+    "h": 110,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "회사 2,557곳 · 업종 77개 · 큰 업종 10개에서 찾아요. 이름 한 글자부터 찾아요. 첫 글자(ㅅㅅㅈㅈ)와 종목 번호도 돼요. 펀드 · 우선주까지 4,30"
+   },
+   {
+    "tag": "div",
+    "cls": "kk-pgrow.kk-pgw",
+    "top": 270,
+    "h": 56,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "카톡 보내기 선물 받기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 25,
+  "hs": "#/me",
+  "name": "보유종목",
+  "path": [
+   "#view"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "h.st-h",
+    "top": 80,
+    "h": 77,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "보유종목"
+   },
+   {
+    "tag": "section",
+    "cls": "hd",
+    "top": 165,
+    "h": 210,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "보유종목 점검 이 기기에만 남아요. 판 것도 지우지 않아요. 아직 적은 보유종목이 없어요. + 보유종목 적기"
+   },
+   {
+    "tag": "div",
+    "cls": "hd-fold",
+    "top": 399,
+    "h": 281,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "돌이! 돌이! 돌이! 펼치기"
+   },
+   {
+    "tag": "h2",
+    "cls": "sec",
+    "top": 704,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "바로 가기"
+   },
+   {
+    "tag": "div",
+    "cls": "lst.hd-sc",
+    "top": 743,
+    "h": 146,
+    "pic": false,
+    "links": 2,
+    "isA": false,
+    "text": "편지 여는 밤 › 아이폰은 7일 동안 안 열면 기록이 지워질 수 있어요. 기록 파일로 받기 ↓"
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box.kk-boxi",
+    "top": 913,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   },
+   {
+    "tag": "h2",
+    "cls": "sec",
+    "top": 985,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "본 기록"
+   },
+   {
+    "tag": "p",
+    "cls": "note.hd-keep",
+    "top": 1024,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "이 기기에만 남아요. 이름도 열쇠도 받지 않아요."
+   },
+   {
+    "tag": "p",
+    "cls": "note",
+    "top": 1058,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "아직 본 회사가 없어요. 오늘 장에서 카드를 눌러 보세요."
+   },
+   {
+    "tag": "p",
+    "cls": "safe",
+    "top": 1133,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-pgrow.kk-pgw",
+    "top": 1192,
+    "h": 56,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "카톡 보내기 선물 받기"
+   },
+   {
+    "tag": "nav",
+    "cls": "th-foot",
+    "top": 1272,
+    "h": 48,
+    "pic": false,
+    "links": 1,
+    "isA": true,
+    "text": "다음 · 가짜 돈 연습 ›"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 26,
+  "hs": "#/sub",
+  "name": "관심",
+  "path": [
+   "#view"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "h.st-h",
+    "top": 80,
+    "h": 77,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "관심"
+   },
+   {
+    "tag": "p",
+    "cls": "note",
+    "top": 165,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "회사 0곳 · 업종 · 큰 업종 0개 · 이 기기에만 남아요."
+   },
+   {
+    "tag": "h2",
+    "cls": "sec",
+    "top": 215,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "관심 회사"
+   },
+   {
+    "tag": "p",
+    "cls": "note",
+    "top": 254,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "회사 화면에서 「관심 담기」를 누르면 여기 모여요."
+   },
+   {
+    "tag": "h2",
+    "cls": "sec",
+    "top": 304,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "관심 업종 · 큰 업종"
+   },
+   {
+    "tag": "div",
+    "cls": "c-lead",
+    "top": 351,
+    "h": 55,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "담은 업종이 없어요. 지금 싹 자리 업종부터 볼까요?"
+   },
+   {
+    "tag": "div",
+    "cls": "chan",
+    "top": 406,
+    "h": 86,
+    "pic": false,
+    "links": 2,
+    "isA": false,
+    "text": "차 2차전지 업종 싹 자리 · 점 4개 관심 담기"
+   },
+   {
+    "tag": "div",
+    "cls": "chan",
+    "top": 492,
+    "h": 86,
+    "pic": false,
+    "links": 2,
+    "isA": false,
+    "text": "콘 콘텐츠 제작 업종 싹 자리 · 점 3개 관심 담기"
+   },
+   {
+    "tag": "div",
+    "cls": "chan",
+    "top": 578,
+    "h": 86,
+    "pic": false,
+    "links": 2,
+    "isA": false,
+    "text": "의 의류·패션 업종 싹 자리 · 점 3개 관심 담기"
+   },
+   {
+    "tag": "a",
+    "cls": "more",
+    "top": 672,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "싹이 뭐예요? ›"
+   },
+   {
+    "tag": "details",
+    "cls": "hm-more.sub-big",
+    "top": 736,
+    "h": 49,
+    "pic": false,
+    "links": 20,
+    "isA": false,
+    "text": "큰 업종에서 고르기"
+   },
+   {
+    "tag": "div",
+    "cls": "kk-pgrow.kk-pgw",
+    "top": 785,
+    "h": 56,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "카톡 보내기 선물 받기"
+   },
+   {
+    "tag": "nav",
+    "cls": "th-foot",
+    "top": 865,
+    "h": 48,
+    "pic": false,
+    "links": 1,
+    "isA": true,
+    "text": "다음 · 알림 ›"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 27,
+  "hs": "#/t/alert",
+  "name": "알림",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 관심 내 것 26 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "알림"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이자리가 바뀌면 알려요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-als",
+    "top": 314,
+    "h": 256,
+    "pic": false,
+    "links": 4,
+    "isA": false,
+    "text": "관심 업종이 싹에 들어오면 켜짐 관심 업종이 꽃 선을 넘으면 켜짐 관심 업종이 시듦으로 가면 켜짐 날마다 아침 한 줄 켜짐"
+   },
+   {
+    "tag": "div",
+    "cls": "th-wl",
+    "top": 586,
+    "h": 104,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "관심 업종 0곳 아직 담은 업종이 없어요. 업종 쪽에서 관심 업종에 담기를 눌러요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-box",
+    "top": 706,
+    "h": 117,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이를 열면 첫 화면에서 알려요 이 기기에만 담겨요. 카톡으로 받기는 아직 준비 중이에요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 839,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 888,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 매매일지 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 963,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 28,
+  "hs": "#/today",
+  "name": "오늘 장",
+  "path": [
+   "#view",
+   "div.ptoday"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "wt.st-h",
+    "top": 80,
+    "h": 77,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "오늘 시장"
+   },
+   {
+    "tag": "p",
+    "cls": "ws",
+    "top": 157,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "숫자는 네이버 증권에서 업데이트 때마다 새로 받아요."
+   },
+   {
+    "tag": "section",
+    "cls": "ptoday-sec",
+    "top": 232,
+    "h": 1052,
+    "pic": true,
+    "links": 6,
+    "isA": false,
+    "text": "시장 ? 10월 12일 오후 2:59 10월 12일 오후 2:59까지 코스피는 3.3% 내렸어요. 평소의 2.5배예요. 9월 2일 이후 가장 크게 내렸어요. 4거"
+   },
+   {
+    "tag": "section",
+    "cls": "ptoday-sec",
+    "top": 1308,
+    "h": 760,
+    "pic": true,
+    "links": 7,
+    "isA": false,
+    "text": "오른 곳과 내린 곳 ? 10월 12일 오후 2:59 10월 12일 오후 2:59까지 10곳 중 8곳이 내렸어요. 오름 405 그대로 231 내림 2,233 네이버"
+   },
+   {
+    "tag": "section",
+    "cls": "ptoday-sec",
+    "top": 2092,
+    "h": 434,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "사고팔기 ? 코스피, 10월 12일 오후 2:59 10월 12일 오후 2:59까지 코스피에서 외국인이 가장 많이 팔았어요. 개인 1조 2,616억 더 삼 외국인 "
+   },
+   {
+    "tag": "section",
+    "cls": "ptoday-sec",
+    "top": 2550,
+    "h": 289,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "미국 ? 10월 9일 장 끝 10월 9일에는 세 지수 모두 올랐어요. S&P 500 +0.59% 나스닥 +0.64% 다우 +0.83% 미국 불안 지수 14.84,"
+   },
+   {
+    "tag": "section",
+    "cls": "ptoday-sec",
+    "top": 2863,
+    "h": 959,
+    "pic": true,
+    "links": 23,
+    "isA": false,
+    "text": "고른 56곳 10월 13일 멍거 · 린치 조건: 멍거 조건 27곳 · 린치 조건 32곳 · 둘 다 3곳 10월 13일에는 15곳이 오르고 39곳이 내렸어요. 2곳"
+   },
+   {
+    "tag": "section",
+    "cls": "ptoday-sec",
+    "top": 3846,
+    "h": 829,
+    "pic": true,
+    "links": 12,
+    "isA": false,
+    "text": "큰 업종 10개 한 달 9월 9일부터 한 달 동안 가장 많이 오른 큰 업종은 반도체예요. 반도체 +17.4% 전자부품 +1.9% IT⁠·통신 +0.1% 바이오 −"
+   },
+   {
+    "tag": "p",
+    "cls": "safe",
+    "top": 4699,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 29,
+  "hs": "#/game",
+  "name": "가짜 돈 연습",
+  "path": [
+   "#view",
+   "div.gm"
+  ],
+  "rootTop": 80,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "gm-h1",
+    "top": 80,
+    "h": 45,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "가짜 돈 연습"
+   },
+   {
+    "tag": "div",
+    "cls": "gm-box",
+    "top": 133,
+    "h": 753,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "지금 합계 10억 원 목표 30억 원까지 20억 원 남았어요. 현금 10억 원 · 주식 0원 30억 원을 만들면 스타벅스 상품권 10만 원짜리 10장을 드려요. "
+   },
+   {
+    "tag": "p",
+    "cls": "safe",
+    "top": 910,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "가짜 돈이에요. 진짜 돈은 오가지 않아요. 값은 네이버 증권에서 받은 마지막 값이에요."
+   }
+  ],
+  "sub": {
+   "at": 1,
+   "kids": [
+    {
+     "tag": "section",
+     "cls": "gm-sum",
+     "top": 133,
+     "h": 196,
+     "pic": false,
+     "links": 0,
+     "isA": false,
+     "text": "지금 합계 10억 원 목표 30억 원까지 20억 원 남았어요. 현금 10억 원 · 주식 0원"
+    },
+    {
+     "tag": "section",
+     "cls": "gm-prize",
+     "top": 345,
+     "h": 192,
+     "pic": false,
+     "links": 0,
+     "isA": false,
+     "text": "30억 원을 만들면 스타벅스 상품권 10만 원짜리 10장을 드려요. 기간과 순위는 없어요. 상은 카톡으로 가입한 사람만 받아요. 지금은 이 기기에서 연습만 해요."
+    },
+    {
+     "tag": "section",
+     "cls": "gm-sec",
+     "top": 552,
+     "h": 186,
+     "pic": true,
+     "links": 1,
+     "isA": false,
+     "text": "회사 고르기 카톡 보내기"
+    },
+    {
+     "tag": "section",
+     "cls": "gm-sec",
+     "top": 754,
+     "h": 133,
+     "pic": false,
+     "links": 0,
+     "isA": false,
+     "text": "가진 주식 아직 가진 주식이 없어요. 위에서 회사를 골라 보세요."
+    }
+   ]
+  }
+ },
+ {
+  "no": 30,
+  "hs": "#/jinhwa",
+  "name": "진화",
+  "path": [
+   "#view",
+   "div.jh"
+  ],
+  "rootTop": 64,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "jh-h1.st-h.st-sm",
+    "top": 64,
+    "h": 38,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "돌이 진화"
+   },
+   {
+    "tag": "p",
+    "cls": "jh-ess",
+    "top": 110,
+    "h": 102,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이의 본질: 싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다. 이 본질이 중심이자 시작이다. 세 번에서 다섯 번만 눌러도 왕초보도, 전문가도, 어린이도"
+   },
+   {
+    "tag": "div",
+    "cls": "jh-head",
+    "top": 212,
+    "h": 48,
+    "pic": false,
+    "links": 2,
+    "isA": false,
+    "text": "진화 1번째 ‹ 1 / 1 ›"
+   },
+   {
+    "tag": "a",
+    "cls": "jh-what",
+    "top": 260,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "돌이를 만든 사람이 확인한 나아짐만 세요 · 다른 바뀐 것은 업데이트 기록 ›"
+   },
+   {
+    "tag": "div",
+    "cls": "jh-rail",
+    "top": 308,
+    "h": 413,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "10월 19일 들어감 첫 화면을 흰 바탕 한 장으로 다시 지음 전 → 후 어림 「친구야, 왜 사?」 찾기 칸이 맨 위에 있어 열한 질문을 끝낸 수가 공사 전 10"
+   },
+   {
+    "tag": "h2",
+    "cls": "sec",
+    "top": 745,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "고친 고장 0"
+   },
+   {
+    "tag": "p",
+    "cls": "note",
+    "top": 784,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "고친 고장이 없어요."
+   },
+   {
+    "tag": "details",
+    "cls": "jh-g",
+    "top": 827,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "숫자로 보기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 31,
+  "hs": "#/t/today",
+  "name": "오늘 정리",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 진화 돌이와 나 36 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "오늘 정리"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이시계는 날마다 또 돌아요."
+   },
+   {
+    "tag": "ol",
+    "cls": "th-steps",
+    "top": 314,
+    "h": 222,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1 진짜 싹 1곳 싹 자리 37곳 가운데 2 맨 앞 싹 2차전지 3 그 안에서 앞선 회사 피노 열흘 +25.3%"
+   },
+   {
+    "tag": "p",
+    "cls": "th-rec",
+    "top": 552,
+    "h": 136,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "지난 3년 기록 진짜 싹이었던 날, 100번 가운데 22번은 한 달 뒤 꽃 선을 넘었어요. 아무 업종은 100번 가운데 16번이었어요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 696,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 746,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "처음으로 테마 시계 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 821,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 32,
+  "hs": "#/t/hello",
+  "name": "돌이 인사",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "테마 시계 1 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "돌이"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 69,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이싹에서 꽃이 되는 종목을 찾아 줘요."
+   },
+   {
+    "tag": "a",
+    "cls": "th-found",
+    "top": 340,
+    "h": 111,
+    "pic": true,
+    "links": 0,
+    "isA": true,
+    "text": "오늘 돌이가 찾은 곳 2차전지 점 넷 가운데 4개 ›"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-h2",
+    "top": 475,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "세 번만 누르면 돼요"
+   },
+   {
+    "tag": "ol",
+    "cls": "th-steps",
+    "top": 514,
+    "h": 222,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1 첫 화면 줄 셋을 봐요 시장보다 힘이 붙은 업종이에요 2 업종 하나를 눌러요 점 넷이 다 차면 진짜 싹이에요 3 회사를 눌러요 먼저 움직였는지, 뒤따랐는지"
+   },
+   {
+    "tag": "p",
+    "cls": "th-asof",
+    "top": 752,
+    "h": 26,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "10월 13일 장 마감 기준"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 802,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 테마 시계 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 877,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 944,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 33,
+  "hs": "#/t/how",
+  "name": "시계 읽는 법",
+  "path": [
+   "#view",
+   "div.tc"
+  ],
+  "rootTop": 72,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "th-pg",
+    "top": 72,
+    "h": 76,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "‹ 테마 시계 테마 시계 3 / 36"
+   },
+   {
+    "tag": "div",
+    "cls": "th-hd",
+    "top": 156,
+    "h": 83,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "시계 읽는 법"
+   },
+   {
+    "tag": "p",
+    "cls": "th-say",
+    "top": 255,
+    "h": 44,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이네 자리만 알면 돼요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub.th-key",
+    "top": 314,
+    "h": 86,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "왼쪽 위 「싹」 칸을 돌이가 먼저 봐요. 아직 덜 올랐지만 지난 닷새는 시장보다 더 오른 곳이에요."
+   },
+   {
+    "tag": "div",
+    "cls": "th-map",
+    "top": 416,
+    "h": 460,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "싹 꽃 시듦 잠잠 꽃 선 가로는 한 달 동안 시장보다 더 오른 만큼이에요. 세로는 지난 닷새 동안 시장보다 더 오른 만큼이에요. 한 달 동안 시장보다 5% 넘게 "
+   },
+   {
+    "tag": "ol",
+    "cls": "th-steps",
+    "top": 891,
+    "h": 398,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1 잠잠 · 겨울 아직 꽃 선 전이고, 지난 닷새는 시장보다 덜 올랐어요. 2 싹 · 봄 아직 꽃 선 전이지만, 지난 닷새는 시장보다 더 올랐어요. 3 꽃 · 여"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-h2",
+    "top": 1313,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "점 넷"
+   },
+   {
+    "tag": "ol",
+    "cls": "th-steps",
+    "top": 1353,
+    "h": 347,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1 시장보다 힘이 붙어요 지난 닷새 시장보다 2% 넘게 더 올랐어요. 2 오른 회사가 많아요 열흘 동안 2% 넘게 오른 회사가 절반 이상이에요. 3 큰 회사도 움"
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 1716,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   },
+   {
+    "tag": "h2",
+    "cls": "th-h2",
+    "top": 1788,
+    "h": 32,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이 성적표"
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub.th-key",
+    "top": 1827,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "점 넷이 다 찬 날은 100번 가운데 22번, 아무 업종은 16번 한 달 뒤 꽃 선을 넘었어요."
+   },
+   {
+    "tag": "p",
+    "cls": "th-sub",
+    "top": 1900,
+    "h": 57,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "지난 3년 기록이에요. 싹 자리였던 날, 100번 가운데 몇 번이 한 달 뒤 꽃 선을 넘었을까?"
+   },
+   {
+    "tag": "div",
+    "cls": "th-rbs",
+    "top": 1973,
+    "h": 240,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "점 0개 14번 점 1개 15번 점 2개 14번 점 3개 16번 점 4개 22번 아무 업종 16번"
+   },
+   {
+    "tag": "details",
+    "cls": "th-fold",
+    "top": 2229,
+    "h": 66,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 이렇게 셉니다"
+   },
+   {
+    "tag": "a",
+    "cls": "th-next",
+    "top": 2319,
+    "h": 59,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "다음 싹 자리 전부 ›"
+   },
+   {
+    "tag": "p",
+    "cls": "th-safe",
+    "top": 2394,
+    "h": 51,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "돌이는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요."
+   },
+   {
+    "tag": "div",
+    "cls": "kk-box",
+    "top": 2461,
+    "h": 48,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "카톡 보내기"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 34,
+  "hs": "#/gift",
+  "name": "상품권",
+  "path": [
+   "#view",
+   "div.gf"
+  ],
+  "rootTop": 84,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "gf-h1.st-h",
+    "top": 84,
+    "h": 77,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "상품권"
+   },
+   {
+    "tag": "p",
+    "cls": "gf-lead",
+    "top": 181,
+    "h": 89,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "스타벅스 상품권 1만원 친구 3명에게 소개하고 우주 영상 1분을 보면 드려요."
+   },
+   {
+    "tag": "div",
+    "cls": "gf-vow",
+    "top": 286,
+    "h": 123,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "먼저 알려 드려요 상품권은 우주 영상 1분을 끝까지 본 분께만 드려요. 이 약속은 꼭 지켜요."
+   },
+   {
+    "tag": "button",
+    "cls": "gf-now",
+    "top": 433,
+    "h": 48,
+    "pic": false,
+    "links": 0,
+    "isA": true,
+    "text": "영상을 끝까지 봤어요 · 상품권 주세요 ↓"
+   },
+   {
+    "tag": "ol",
+    "cls": "gf-steps",
+    "top": 505,
+    "h": 1327,
+    "pic": true,
+    "links": 7,
+    "isA": false,
+    "text": "1 친구 3명에게 소개해요 카톡으로 돌이를 보내요. 친구가 열면 여기서 저절로 세요. 카톡 보내기 ? 친구 수를 아직 못 받았어요. 잠시 뒤 다시 열어 주세요. "
+   },
+   {
+    "tag": "div",
+    "cls": "gf-pn",
+    "top": 1856,
+    "h": 93,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "1분은 소중한 시간이에요. 내어 주셔서 고마워요. 3명마다 1만원씩, 여러 번 받을 수 있어요. 이벤트가 끝날 때는 이 자리에 먼저 알려 드려요."
+   },
+   {
+    "tag": "p",
+    "cls": "gf-fine",
+    "top": 1964,
+    "h": 74,
+    "pic": false,
+    "links": 1,
+    "isA": false,
+    "text": "사장님 번호는 친구 셋이 연 분에게만 보여요. 개인정보 처리방침 ›"
+   }
+  ],
+  "sub": null
+ },
+ {
+  "no": 35,
+  "hs": "#/help",
+  "name": "고객센터",
+  "path": [
+   "#view",
+   "div.hp"
+  ],
+  "rootTop": 84,
+  "blocks": [
+   {
+    "tag": "h1",
+    "cls": "hp-h1.st-h",
+    "top": 84,
+    "h": 77,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": "고객센터"
+   },
+   {
+    "tag": "div",
+    "cls": "hp-voice",
+    "top": 181,
+    "h": 50,
+    "pic": false,
+    "links": 2,
+    "isA": false,
+    "text": "쉬운 말 곧은 말"
+   },
+   {
+    "tag": "figure",
+    "cls": "hp-note-card",
+    "top": 247,
+    "h": 131,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": "남겨 주신 말은 한 줄도 빠짐없이 제가 직접 읽어요. 그 말들이 모여 돌이가 자라요. — 돌이를 만든 사람"
+   },
+   {
+    "tag": "div",
+    "cls": "hp-doors",
+    "top": 402,
+    "h": 322,
+    "pic": true,
+    "links": 3,
+    "isA": false,
+    "text": "한마디 남기기 좋았던 것, 바라는 것, 안 되는 것을 알려 주세요 물어보기 궁금한 것을 물으면 이 휴대폰에서 답을 받아요 고객센터 안내 연락할 곳과 돌이의 약속"
+   }
+  ],
+  "sub": {
+   "at": 3,
+   "kids": [
+    {
+     "tag": "button",
+     "cls": "hp-door",
+     "top": 403,
+     "h": 116,
+     "pic": true,
+     "links": 0,
+     "isA": true,
+     "text": "한마디 남기기 좋았던 것, 바라는 것, 안 되는 것을 알려 주세요"
+    },
+    {
+     "tag": "button",
+     "cls": "hp-door",
+     "top": 519,
+     "h": 116,
+     "pic": true,
+     "links": 0,
+     "isA": true,
+     "text": "물어보기 궁금한 것을 물으면 이 휴대폰에서 답을 받아요"
+    },
+    {
+     "tag": "button",
+     "cls": "hp-door",
+     "top": 634,
+     "h": 90,
+     "pic": true,
+     "links": 0,
+     "isA": true,
+     "text": "고객센터 안내 연락할 곳과 돌이의 약속"
+    }
+   ]
+  }
+ },
+ {
+  "no": 36,
+  "hs": "#/shorts",
+  "name": "짧은 영상",
+  "path": [
+   "#view",
+   "div.shorts"
+  ],
+  "rootTop": 64,
+  "blocks": [
+   {
+    "tag": "div",
+    "cls": "sbar",
+    "top": 64,
+    "h": 20,
+    "pic": false,
+    "links": 0,
+    "isA": false,
+    "text": ""
+   },
+   {
+    "tag": "section",
+    "cls": "sh",
+    "top": 64,
+    "h": 718,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "? 10월 12일 오후 2:59까지 코스피는 하루 −3.28% 코스닥은 −4.36%이에요 선은 코스피 한 달이에요 돌이는 지난 기록만 따라 말해요 보기 카톡 보내"
+   },
+   {
+    "tag": "section",
+    "cls": "sh",
+    "top": 782,
+    "h": 718,
+    "pic": true,
+    "links": 1,
+    "isA": false,
+    "text": "10월 13일 장 마감 모든 회사 2,551곳 가운데 1,632곳 내렸어요 오름 766 · 그대로 153 · 내림 1,632 돌이는 지난 기록만 따라 말해요 카톡"
+   },
+   {
+    "tag": "section",
+    "cls": "sh",
+    "top": 1500,
+    "h": 718,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "닷새 동안 · 10월 2일부터 반도체 검사·측정 +4.7% 닷새 동안 오른 업종 8개 가운데 가장 많이 올랐어요 선은 닷새예요 돌이는 지난 기록만 따라 말해요 보"
+   },
+   {
+    "tag": "section",
+    "cls": "sh",
+    "top": 2218,
+    "h": 718,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "한 달 · 9월 9일부터 반도체 큰 업종 +17.4% 큰 업종 10개 가운데 가장 많이 올랐어요 선은 한 달이에요 돌이는 지난 기록만 따라 말해요 보기 카톡 보내"
+   },
+   {
+    "tag": "section",
+    "cls": "sh",
+    "top": 2936,
+    "h": 718,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "한 달 · 9월 9일부터 금융 큰 업종 −7.0% 큰 업종 가운데 가장 많이 내렸어요 선은 한 달이에요 돌이는 지난 기록만 따라 말해요 보기 카톡 보내기"
+   },
+   {
+    "tag": "section",
+    "cls": "sh",
+    "top": 3654,
+    "h": 718,
+    "pic": true,
+    "links": 2,
+    "isA": false,
+    "text": "미국 · 10월 9일 S&P 500 +0.59% 나스닥 +0.64% · 다우 +0.83% S&P 500 +0.59% 나스닥 +0.64% 다우 +0.83% 돌이는 "
+   },
+   {
+    "tag": "img",
+    "cls": "st-art.st-abs",
+    "top": 68,
+    "h": 77,
+    "pic": true,
+    "links": 0,
+    "isA": false,
+    "text": ""
+   }
+  ],
+  "sub": null
+ }
+]
