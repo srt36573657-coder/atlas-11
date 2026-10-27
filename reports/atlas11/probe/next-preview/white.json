@@ -1,23 +1,26 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-27T10:00:14.120Z",
+ "at": "2026-10-27T11:35:16.211Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 421,
-  "fail": 0
+  "pass": 419,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  "처음 온 기기 ② 테마 시계 칸 글자 수 — 222자 > 220자",
+  "다시 온 기기 ② 테마 시계 칸 글자 수 — 228자 > 220자"
+ ],
  "m": {
   "first": {
    "bodyLum": 0.02249601955799633,
    "chars": 169,
    "blocks": {
-    "ess": 1259,
+    "ess": 1290,
     "find": 776,
-    "today": 1351,
-    "gdr": 2429,
-    "all": 2429
+    "today": 1382,
+    "gdr": 2460,
+    "all": 2460
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -42,7 +45,7 @@
     true,
     true
    ],
-   "themeChars": 210,
+   "themeChars": 222,
    "top": [
     [
      35,
@@ -199,11 +202,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 105,
    "blocks": {
-    "ess": 1136,
+    "ess": 1167,
     "find": 776,
-    "today": 1228,
-    "gdr": 2306,
-    "all": 2306
+    "today": 1259,
+    "gdr": 2337,
+    "all": 2337
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -228,7 +231,7 @@
     true,
     true
    ],
-   "themeChars": 210,
+   "themeChars": 228,
    "top": [
     [
      24,
@@ -681,8 +684,8 @@
    }
   },
   "speed": {
-   "lcp": 2372,
-   "inp": 40,
+   "lcp": 2380,
+   "inp": 32,
    "cls": 0.005
   }
  },
@@ -690,6 +693,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": true,
+ "ok": false,
  "enforced": true
 }
