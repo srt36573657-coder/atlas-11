@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-27T04:09:31.786Z",
+ "at": "2026-10-27T06:56:24.704Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -9,23 +9,23 @@
   360,
   390
  ],
- "routes": 13512,
+ "routes": 13522,
  "companies": 2557,
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
   "past": true,
   "rivals": true,
   "grow": true,
   "range": true,
-  "cal": true,
   "surge": true,
-  "talk": true,
+  "cal": true,
+  "cond": true,
   "up": true,
+  "talk": true,
   "time": true,
-  "x": true,
   "info": true,
+  "x": true,
   "co": true,
   "chx": true,
   "today": true,
@@ -41,126 +41,126 @@
  "shard": "all/7",
  "full": false,
  "units": {
-  "total": 13508,
-  "hash": "26b1fd75c3367077",
+  "total": 13518,
+  "hash": "cb72e721ae49d262",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 356,
- "secondsSum": 2437,
+ "seconds": 362,
+ "secondsSum": 2459,
  "shards": [
   {
    "shard": "1/7",
    "ok": true,
    "fails": 0,
-   "routes": 1943,
-   "screens": 1944,
-   "mine": 1943,
-   "seconds": 354,
+   "routes": 1945,
+   "screens": 1984,
+   "mine": 1945,
+   "seconds": 348,
    "secs": {
     "open": 0.3,
-    "routes": 353.2
+    "routes": 347.2
    }
   },
   {
    "shard": "2/7",
    "ok": true,
    "fails": 0,
-   "routes": 1949,
-   "screens": 1949,
-   "mine": 1943,
-   "seconds": 352,
+   "routes": 1950,
+   "screens": 1988,
+   "mine": 1944,
+   "seconds": 355,
    "secs": {
     "open": 0.3,
-    "routes": 350.1
+    "routes": 352.5
    }
   },
   {
    "shard": "3/7",
    "ok": true,
    "fails": 0,
-   "routes": 1943,
-   "screens": 1943,
-   "mine": 1943,
-   "seconds": 356,
+   "routes": 1944,
+   "screens": 1945,
+   "mine": 1944,
+   "seconds": 355,
    "secs": {
     "open": 0.3,
-    "routes": 354
+    "routes": 353.7
    }
   },
   {
    "shard": "4/7",
    "ok": true,
    "fails": 0,
-   "routes": 1943,
-   "screens": 1943,
-   "mine": 1943,
-   "seconds": 350,
+   "routes": 1944,
+   "screens": 1945,
+   "mine": 1944,
+   "seconds": 362,
    "secs": {
     "open": 0.3,
-    "routes": 348.9
+    "routes": 361.1
    }
   },
   {
    "shard": "5/7",
    "ok": true,
    "fails": 0,
-   "routes": 1943,
-   "screens": 1982,
-   "mine": 1943,
-   "seconds": 349,
+   "routes": 1944,
+   "screens": 1944,
+   "mine": 1944,
+   "seconds": 356,
    "secs": {
-    "open": 0.8,
-    "routes": 346.9
+    "open": 0.3,
+    "routes": 355.5
    }
   },
   {
    "shard": "6/7",
    "ok": true,
    "fails": 0,
-   "routes": 1928,
-   "screens": 1950,
-   "mine": 1929,
-   "seconds": 336,
+   "routes": 1930,
+   "screens": 1951,
+   "mine": 1931,
+   "seconds": 344,
    "secs": {
     "open": 0.3,
-    "routes": 333.4,
-    "newwin": 2.1
+    "routes": 340.5,
+    "newwin": 2.7
    }
   },
   {
    "shard": "7/7",
    "ok": true,
    "fails": 0,
-   "routes": 1863,
-   "screens": 2021,
-   "mine": 1864,
-   "seconds": 340,
+   "routes": 1865,
+   "screens": 1985,
+   "mine": 1866,
+   "seconds": 339,
    "secs": {
-    "open": 0.2,
-    "routes": 328.1,
-    "act": 5.6,
-    "edge": 5.9,
+    "open": 0.3,
+    "routes": 325.7,
+    "act": 5.8,
+    "edge": 6.2,
     "grammar": 0
    }
   }
  ],
  "counts": {
-  "화면": 13732,
+  "화면": 13742,
   "길 · home": 1,
   "길 · chips": 7,
   "길 · find": 9,
   "길 · watch": 2560,
   "길 · chan": 89,
-  "길 · mod": 10837,
-  "돌이 칸 잠김": 2,
+  "길 · mod": 10847,
+  "왜 사? 끝까지": 2,
   "쇼츠 장": 6,
   "길 · shorts": 7,
   "길 · sub": 1,
+  "돌이 칸 잠김": 2,
   "길 · me": 1,
-  "왜 사? 끝까지": 2,
   "새 창": 2,
   "보내기 글상자": 3,
   "누르기": 1,

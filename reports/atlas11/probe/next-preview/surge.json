@@ -1,7 +1,7 @@
 {
- "at": "2026-10-27T04:09:15.395Z",
+ "at": "2026-10-27T06:56:08.102Z",
  "base": "http://127.0.0.1:8826",
- "secs": 95,
+ "secs": 126,
  "scenarios": [
   "site",
   "rec-20261015T110206Z",
@@ -28,6 +28,7 @@
   "rec-20261025T050051Z",
   "rec-20261025T090058Z",
   "rec-20261026T010107Z",
+  "rec-20261027T050101Z",
   "edge-carry",
   "edge-late",
   "edge-empty",
@@ -36,13 +37,13 @@
   "edge-badcal"
  ],
  "time": {
-  "old": 28.2,
-  "new": 55.9,
-  "wall": 95.5,
-  "opensOld": 317,
-  "opensNew": 444,
-  "oldPct": 29.6,
-  "oldShare": 33.5
+  "old": 28.1,
+  "new": 56.4,
+  "wall": 126,
+  "opensOld": 327,
+  "opensNew": 454,
+  "oldPct": 22.3,
+  "oldShare": 33.3
  },
  "net": {
   "req": 4,
@@ -58,19 +59,24 @@
   }
  },
  "counts": {
-  "줄": 129952,
-  "숫자 낱말": 94517,
-  "이름": 14248,
-  "색 글": 19586,
-  "맞댄 칸": 155,
+  "줄": 140240,
+  "숫자 낱말": 102608,
+  "이름": 15978,
+  "색 글": 21021,
+  "맞댄 칸": 160,
   "폭 화면": 100,
   "금빛 ? 줄(옛 쪽은 회색에 덮임)": 20,
   "관심 없음 칸": 4,
-  "관심 없음 검사": 1,
+  "fail": 1,
   "돌아오기 검사": 1,
   "없는 주소": 3,
   "자료 못 받음": 10
  },
- "fail": 0,
- "fails": []
+ "fail": 1,
+ "fails": [
+  [
+   "관심 없음 검사 멈춤",
+   "locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('main#view .psurge-tr[data-c=\"101930\"] button.psurge-hide')\n    - locator resolved to <button type=\"button\" data-c=\"101930\" class=\"psurge-hide\">관심 없음</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20m"
+  ]
+ ]
 }
