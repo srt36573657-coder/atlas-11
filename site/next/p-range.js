@@ -253,7 +253,7 @@ export async function render(arg) {
   // 확인할 것 — 어디서 · 언제(접은 칸)
   const jn = C.facts?.jumpN, pn = pickName(C);
   nodes.push(h('details', {class: 'prange-more'}, h('summary', {text: '확인할 것 — 어디서 · 언제'}), h('div', {class: 'prange-in'}, h('ol', {},
-    h('li', {}, '거래정지 · 관리종목 · 투자경고: ', outA('https://kind.krx.co.kr', 'KIND(한국거래소)'), ' — 돌이는 아직 이 표시를 거르지 못합니다(?).'),
+    h('li', {}, '거래정지 · 관리종목 · 투자경고: ', outA('https://kind.krx.co.kr', 'KIND(한국거래소)'), ' — 둘이는 아직 이 표시를 거르지 못합니다(?).'),
     h('li', {}, '3분기 실제 이익: ', outA('https://dart.fss.or.kr', 'DART(전자공시)'), ' 분기보고서 — 11월 중순까지. 증권사 짐작과 견줘 보세요.'),
     h('li', {}, '주식 수 바뀜(쪼개기 · 증자): DART 주요사항보고서 — ', jn ? `한 달 선이 하루 30% 넘게 튄 곳 ${jn}곳(? 확인 못 함).` : '한 달 선이 하루 30% 넘게 튄 곳은 없었습니다.'),
     h('li', {}, E.pk ? `이 회사가 조건을 이어 지키는지: 새 1년 성적표가 나오면 다시 셉니다 — 3단 「왜 ${pn}에 들었나요?」를 보세요 · 들고 난 곳은 ` : `이 회사가 조건에 드는지: 새 1년 성적표가 나오면 다시 셉니다 — 3단 「왜 ${pn} 밖인가요?」를 보세요 · 들고 난 곳은 `,

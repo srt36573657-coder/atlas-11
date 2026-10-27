@@ -154,7 +154,7 @@ export function pickBars(P, Q, note = '100곳 가운데 꽃이 된 수예요') {
   const bar = v => { const f = h('span', {class: 'th-pqf'}); f.style.width = Math.max(0, Math.min(100, v)) + '%'; return h('span', {class: 'th-pqt', 'aria-hidden': 'true'}, f); }; // 너비는 CSSOM — 글 속 style 없음
   const line = (who, v, c) => [h('span', {class: 'th-pqr ' + c}, h('span', {class: 'th-pql', text: who}), h('b', {class: 'th-pqn', text: `${v}곳`})), bar(v)];
   const out = [];
-  if (P != null) out.push(...line('돌이가 고른 회사', P, 'th-pqme'));
+  if (P != null) out.push(...line('둘이가 고른 회사', P, 'th-pqme'));
   if (Q != null) out.push(...line('아무거나 고른 회사', Q, 'th-pqany'));
   if (out.length) out.unshift(h('span', {class: 'th-pqx', text: note}));
   return out;
@@ -311,6 +311,6 @@ export async function homeBlock() {
   fold.append(h('div', {class: 'th-three', 'data-tr': '업종'}, ...[[TH.count.real, '진짜 싹', '#/t/sprout/real'], [TH.count.fresh, '새로 들어옴', '#/t/sprout/new'], [TH.count.S, '싹 자리', '#/t/sprout']].map(([n, t, href]) => h('a', {href}, h('span', {text: t}), h('b', {text: num(n) + '곳'}), h('i', {'aria-hidden': 'true', text: '›'}))))); // data-tr = 영어에서 「n곳」을 업종 수로(i18n.js 자리 표)
   fold.append(h('p', {class: 'th-sub', text: '점 넷이 다 차면 진짜 싹이에요.'})); // 싹 순서(점 수 → 지난 닷새 · 결정표 4)는 그림 아래 글에
   box.append(fold, nextBtn('시계 읽는 법', '#/t/how')); // 기준 날은 첫 화면에 안 씀(보이는 날짜는 띠에 한 번 — [6] 2 · next_check) · 테마 쪽마다 아래에 씀
-  box.append(h('a', {class: 'th-hi', href: '#/t/hello', text: '처음이세요? 돌이 인사 ›'})); // 서른여섯 장의 1장(돌이 인사)으로 가는 고리 — 가운데 맞춘 한 줄(2026-10-19 사장님 「다해」 · 못 한 것 5)
+  box.append(h('a', {class: 'th-hi', href: '#/t/hello', text: '처음이세요? 둘이 인사 ›'})); // 서른여섯 장의 1장(돌이 인사)으로 가는 고리 — 가운데 맞춘 한 줄(2026-10-19 사장님 「다해」 · 못 한 것 5)
   return box;
 }

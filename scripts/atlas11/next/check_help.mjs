@@ -95,7 +95,7 @@ try {
     await p.fill('#view .hp-ta', noteText); await p.click('#view .hp-go');
     const echo = await p.waitForFunction(() => { const e = document.querySelector('#view .hp-echo'); return e ? {h: e.querySelector('.hp-echo-h')?.textContent, q: e.querySelector('.hp-echo-q')?.textContent, ko: e.querySelector('.hp-echo-q')?.getAttribute('lang'), s: e.querySelector('.hp-echo-s')?.textContent, up: e.querySelector('a.hp-echo-up')?.getAttribute('href'), img: e.querySelector('img.hp-parrot')?.getAttribute('src')} : null; }, null, {timeout: 10000}).then(x => x.jsonValue()).catch(() => null);
     check(echo?.h === josa(NAME, '가') + ' 들은 말' && echo?.q === '「' + noteText + '」' && echo?.ko === 'ko' && echo?.s === '한 글자도 바꾸지 않고 그대로 전했어요. 고마워요.' && echo?.up === '#/up' && echo?.img === '/media/makbi-hello.svg',
-      '한마디 보냄 — 앵무새 돌이가 들은 말을 한 글자도 바꾸지 않고 따라 말함', JSON.stringify(echo));
+      '한마디 보냄 — 앵무새 둘이가 들은 말을 한 글자도 바꾸지 않고 따라 말함', JSON.stringify(echo));
     const dev = await p.evaluate(() => localStorage.getItem('atlas:help:dev'));
     check(/^[A-Za-z0-9_-]{43}$/.test(dev ?? ''), '처음 보낼 때 이 기기 열쇠를 만듦', dev);
     // 연락처 꼴 — 화면이 막고 서버에도 안 감

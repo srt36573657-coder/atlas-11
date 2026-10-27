@@ -30,7 +30,7 @@ export function couponCard() {
     if (Number.isInteger(n)) bar.firstChild.style.width = Math.round(n / RULE.need * 100) + '%';
     const rows = [h('p', {class: 'cp-h'}, h('span', {text: '커피 쿠폰까지'}), h('b', {class: 'num', text: n == null ? '?' : `${n} / ${RULE.need}`})), bar,
       h('p', {class: 'cp-t', text: '열한 질문을 끝까지 하면 하루에 1점이 쌓여요. 10점이면 커피 쿠폰 한 장이에요. 한 사람에 한 달 한 장이에요.'})];
-    if (S?.code) rows.push(h('p', {class: 'cp-t', text: '이번 달 쿠폰 번호예요. 돌이를 알려 준 분께 이 번호를 카톡으로 보내 주세요. 확인한 뒤 커피 쿠폰을 보내 드려요.'}), h('p', {class: 'cp-code num', text: S.code}), sendCode('돌이 커피 쿠폰 번호 ' + S.code)); // 받을 곳 — 사장님 15:24 「너가 알아서 해」: 알려 준 분께 카톡으로(이름 · 전화를 받지 않음)
+    if (S?.code) rows.push(h('p', {class: 'cp-t', text: '이번 달 쿠폰 번호예요. 둘이를 알려 준 분께 이 번호를 카톡으로 보내 주세요. 확인한 뒤 커피 쿠폰을 보내 드려요.'}), h('p', {class: 'cp-code num', text: S.code}), sendCode('둘이 커피 쿠폰 번호 ' + S.code)); // 받을 곳 — 사장님 15:24 「너가 알아서 해」: 알려 준 분께 카톡으로(이름 · 전화를 받지 않음)
     else if (S?.wait) rows.push(h('p', {class: 'cp-t', text: '이번 달 쿠폰은 이미 받았어요. 다음 달에 다시 받을 수 있어요.'}));
     else if (!S && kakao?.on) rows.push(h('p', {class: 'cp-t', text: '쿠폰을 받으려면 카톡으로 가입해 주세요. 점수는 이 휴대폰 기록으로 세어 두었어요.'}), (() => { const b = h('button', {type: 'button', class: 'cp-go', text: '카톡으로 가입하기'}); b.addEventListener('click', () => kakao.start(location.hash || '#/why')); return b; })());
     else if (!S) rows.push(h('p', {class: 'cp-t cp-q', text: '쿠폰 받기는 카톡 가입이 열리면 시작해요. 점수는 이 휴대폰에 쌓여요.'}));
@@ -110,7 +110,7 @@ export const render = renderAdmin;
 /* ── 고객센터 글(사장님 2026-10-21 22:54 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · /api/help/all · lib/atlas11/help.mjs) ──
    새것부터 · 한마디는 「읽음」 · 물음은 답 칸 + 「모두에게 보이기」(물음 글은 다듬어 보일 수 있음) · 지우기는 두 번 눌러야 · 말투(쉬운 말 · 곧은 말)를 보여 줌 — 같은 말투로 답하게
    글은 textContent 로만 · 사람이 쓴 글은 lang="ko" */
-const PAGE_NAME = {home: '첫 화면', why: '매매일지', w: '회사', shorts: '시황', sub: '관심', me: '보유종목', t: '테마', jinhwa: '진화', find: '찾기', ch: '업종', surge: '급등', cal: '달력', cond: '조건', info: '도움말', up: '업데이트 기록', talk: '이야기', time: '봉인', today: '오늘 장', gdr: '돌이 칸', admin: '관리자 화면'};
+const PAGE_NAME = {home: '첫 화면', why: '매매일지', w: '회사', shorts: '시황', sub: '관심', me: '보유종목', t: '테마', jinhwa: '진화', find: '찾기', ch: '업종', surge: '급등', cal: '달력', cond: '조건', info: '도움말', up: '업데이트 기록', talk: '이야기', time: '봉인', today: '오늘 장', gdr: '둘이 칸', admin: '관리자 화면'};
 const TONE_NAME = {good: '좋았어요', want: '바라요', broken: '안 돼요'};
 const postOwner = async body => { try { const r = await fetch('/api/help', {method: 'POST', headers: {'content-type': 'application/json', 'x-atlas-owner': ownerKey() ?? ''}, body: JSON.stringify(body), cache: 'no-store', credentials: 'same-origin'}); return r.status; } catch { return 0; } };
 async function helpDesk() {

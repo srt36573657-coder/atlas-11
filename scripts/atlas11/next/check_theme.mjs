@@ -169,7 +169,7 @@ try {
     });
     if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
     else {
-      if (!g.afterSay || !g.beforeEss) fail('첫 화면 차례', '돌이 물음 → 테마 시계 → 본질 카드 차례가 아님');
+      if (!g.afterSay || !g.beforeEss) fail('첫 화면 차례', '둘이 물음 → 테마 시계 → 본질 카드 차례가 아님');
       const H1 = `업종 ${Z.reduce((s, z) => s + TH.count[z], 0).toLocaleString('ko-KR')}곳은 지금`; // 돌 시계 판 ① 큰 제목(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 자료를 못 받았을 때만 예전 넷(TITLES)
       if (g.h1.trim() !== H1) fail('첫 화면 제목', `${g.h1} ≠ ${H1}`); // 2026-10-21 23:55 큰 제목 넷이 6초마다 돎(home-title.js — 첫 말은 그대로 「지금 봄이 온 곳」) // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
       if (!g.fold) fail('첫 화면 숫자 접는 칸', '「숫자로 자세히 보기」(details.th-hfold)가 없음 — 진짜 싹 · 주황 숫자 셋 · 성적표는 그 안');
@@ -195,7 +195,7 @@ try {
       if (g.asof) fail('첫 화면 기준 날', '첫 화면에는 날짜를 띠에 한 번만([6] 2) — 테마 칸에 ' + g.asof);
       if (g.next !== '#/t/how') fail('첫 화면 다음', g.next);
       if (g.more !== '#/t/sprout') fail('싹 자리 모두 보기 고리', g.more);
-      if (g.hi !== '#/t/hello') fail('돌이 인사 고리', '첫 화면 테마 칸에 1장(#/t/hello)으로 가는 고리가 없음 — ' + g.hi);
+      if (g.hi !== '#/t/hello') fail('둘이 인사 고리', '첫 화면 테마 칸에 1장(#/t/hello)으로 가는 고리가 없음 — ' + g.hi);
     }
     await look('#/', p); bump('첫 화면'); await ctx.close();
   }

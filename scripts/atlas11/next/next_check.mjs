@@ -226,7 +226,7 @@ for (const w of [320, 360, 390]) {
       tk: document.querySelectorAll('#view > a.tk-entry, #view > .chips').length};
   }, HOME_ORDER);
   const ordWant = HOME_ORDER.filter(s => !['a.w-month', 'a.s-ghost'].includes(s) || g.order.includes(s)); // 한 달 된 기록 줄이나 「한 달 뒤」 줄 가운데 하나
-  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(돌 판 — 큰 제목 → 돌이 물음 → 테마 시계 → 본질 카드 → 오늘 장 → 시황 사실 → 한 달 뒤 → 찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화)', g.order.join(' → '));
+  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(돌 판 — 큰 제목 → 둘이 물음 → 테마 시계 → 본질 카드 → 오늘 장 → 시황 사실 → 한 달 뒤 → 찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화)', g.order.join(' → '));
   for (const k of ['ess', 'find', 'today', 'gdr', 'all', 'news']) if (!g.blocks.includes(k)) fail('첫 화면 칸 [data-w="' + k + '"]', g.blocks.join(' · '));
   if (g.tk) fail('첫 화면에 칩 줄 · 이야기 입구 띠가 남음(흰 첫 화면 — 전부 보기 안으로)', String(g.tk));
   /* 본질 세 줄(사장님 2026-10-18 16:39 [5] 1 ~ 3 · 5 · 8 · 일꾼 KC) — 처음 온 기기(새 칸 q)는 펼침 · 글 = essence.js 셈(요약이 새것일 때만 숫자 · 아니면 「?」) · 칸 안 날짜는 받은 때 하나까지(띠 날짜와 따로 셈)
@@ -455,14 +455,14 @@ for (const w of [320, 360, 390]) {
 /* ①-3 아래 단추 다섯(2026-10-17 21:10 [2] · 규칙 1 · 2) — 차례 · 이름(숫자 없음) · data-tab · 고리 · 창 제목 = 탭 이름 · 지금 탭 표시
    + 질문을 끝낸 기계(매매일지 기록 하나)에서 고도리 칸이 열린 꼴을 세 폭으로(첫 화면 · 고도리 칸 · 카드 하나 · 매매일지 · 보유종목) — [6] 1 두 꼴 모두 */
 {
-  const TABS = [['꽃 될 회사', 'bloom', '#/t/picks'], ['지난 기록', 'rec', '#/t/pick'], ['왜 사?', 'why', '#/why'], ['돌이', 'dori', '#/dori']]; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 한 달 뒤는 왜 사? 안 · 돌이 메뉴 맨 위 · // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
+  const TABS = [['꽃 될 회사', 'bloom', '#/t/picks'], ['지난 기록', 'rec', '#/t/pick'], ['왜 사?', 'why', '#/why'], ['둘이', 'dori', '#/dori']]; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 한 달 뒤는 왜 사? 안 · 돌이 메뉴 맨 위 · // 아래 단추 넷(돌 시계 판 · 사장님 2026-10-26 14:40 「어 넣어」 — 시황 · 관심 · 보유종목은 돌이 단추 안)
   const q = await page(390, 844);
   if (await first(q, base + '/next/#/') === false) fail('여는 중 남음', '아래 단추 처음 열기');
   const t = await q.evaluate(() => [...document.querySelectorAll('.tabs a')].map(a => [a.textContent.trim(), a.dataset.tab ?? null, a.getAttribute('href')]));
   if (JSON.stringify(t) !== JSON.stringify(TABS)) fail('아래 단추 넷', JSON.stringify(t));
   for (const [nm] of t) if (/\d/.test(nm)) fail('탭 이름에 숫자(규칙 2)', nm);
   // 쪽 이름(창 제목 · 화면 제목) · 지금 단추 — 시황 · 관심 · 보유종목 · 고객센터는 돌이 단추 안(지금 단추 = 돌이) · 첫 화면은 지금 단추 없음
-  for (const [hh, nm, cur] of [['#/', '오늘 장', null], ['#/shorts', '시황', '돌이'], ['#/shorts/1', '시황', '돌이'], ['#/why', '매매일지', '왜 사?'], ['#/why/005930', '매매일지', '왜 사?'], ['#/why/later', '한 달 뒤', '왜 사?'], ['#/sub', '관심', '돌이'], ['#/me', '보유종목', '돌이'], ['#/dori', '돌이', '돌이']]) {
+  for (const [hh, nm, cur] of [['#/', '오늘 장', null], ['#/shorts', '시황', '둘이'], ['#/shorts/1', '시황', '둘이'], ['#/why', '매매일지', '왜 사?'], ['#/why/005930', '매매일지', '왜 사?'], ['#/why/later', '한 달 뒤', '왜 사?'], ['#/sub', '관심', '둘이'], ['#/me', '보유종목', '둘이'], ['#/dori', '둘이', '둘이']]) {
     await go(q, hh); await q.waitForTimeout(60);
     const x = await q.evaluate(() => ({title: document.title, cur: document.querySelector('.tabs a[aria-current="page"]')?.textContent.trim() ?? null, h1: document.querySelector('#view h1')?.textContent ?? null}));
     if (x.title !== nm + TITLE_TAIL) fail('창 제목 = 쪽 이름', hh + ' 「' + x.title + '」');

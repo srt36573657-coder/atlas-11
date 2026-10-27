@@ -26,7 +26,7 @@ const SHAPE_SAY = {'혼자 앞섬': '사실상 혼자 앞서 있습니다. 이�
 const storyNone = (pk, C) => (pk ? '? 세 팀 이야기는 아직 없습니다 — 멍거 · 린치 조건에 새로 든 회사는 사람이 조사해 새 기록 파일로 채웁니다(정해진 날 없음). 지금은 숫자만 보입니다.'
   : `? 세 팀 이야기는 조사 전입니다 — 이야기는 ${pickName(C)}만 사람이 조사해 씁니다. 이 회사는 숫자만 보입니다.`);
 // 안전 문장 — 옛 맨 아래 「저는 투자 상담사가 아닙니다 · … 매수 · 매도 · 보유 또는 시장 전망을 권하지 않습니다」와 같은 뜻을 새 화면 말로(쓰지 않을 말 「매수 · 매도」 없이 · 3단 회사 쪽 p-co 와 같은 글)
-const SAFE = '저는 투자 상담사가 아니에요. 돌이는 지난 기록만 보여 줘요. 사고팔기나 들고 있기를 권하지 않고, 시장 앞날도 말하지 않아요.';
+const SAFE = '저는 투자 상담사가 아니에요. 둘이는 지난 기록만 보여 줘요. 사고팔기나 들고 있기를 권하지 않고, 시장 앞날도 말하지 않아요.';
 
 /** 맨 아래 — 자료 줄(지금 아틀란스 foot 의 출처 · 기준일 · 바탕 회사 줄 그대로) · 아직 바뀔 수 있는 값 「?」 · 안전 문장 */
 function foot(C) {
@@ -63,7 +63,7 @@ function peerBars(c, G, code, X, C) {
   if (kks) ul.classList.add('privals-kk');
   box.append(rows.length ? ul : h('p', {class: 'privals-q0', text: '? 막대로 견줄 매출 값이 없습니다'}));
   box.append(h('p', {class: 'privals-note', text: `${I.size === 'net' ? '매출이 없는 업종이라 순이익으로 셉니다 · ' : ''}이 회사 = 이 ${I.n}곳 매출 합의 ${I.share != null ? r1(I.share).toFixed(1) + '%' : '?'}(시장 점유율이 아님) · 매출이 절반 ~ 두 배인 비슷한 크기 ${I.near ?? '?'}곳 · 후보 밖 · 업종이 다르게 묶인 회사 · 나라 밖 경쟁 회사는 이 막대에 없습니다(아래 이름에만).`}));
-  box.append(h('p', {class: 'privals-src', text: '네이버 증권 결산 · 10월 10일 모음 · 돌이 업종으로 셈'}));
+  box.append(h('p', {class: 'privals-src', text: '네이버 증권 결산 · 10월 10일 모음 · 둘이 업종으로 셈'}));
   if (links) box.append(h('p', {class: 'privals-tap', text: '다른 회사 줄을 누르면 그 회사의 5단이 열려요.'}));
   return box;
 }

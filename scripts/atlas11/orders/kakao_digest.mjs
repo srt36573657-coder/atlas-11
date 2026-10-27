@@ -7,6 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {NAME} from '../../../site/next/brand.js'; // 이름 한 곳(규칙 76 · 2026-10-27 21:50 「돌이 를 둘이 로 변경해라」)
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
@@ -22,7 +23,7 @@ export function when(iso) {
 export function digest(L, {only = null} = {}) {
   const os = L.orders.filter(o => !only || o.state === only);
   const n = s => os.filter(o => o.state === s).length;
-  const out = [`돌이 주문 장부예요. 주문은 모두 ${os.length}건이에요.\n성공 ${n('성공')}건, 완성 ${n('완성')}건이에요. 미완성은 ${n('미완성')}건이에요.\n성공은 진짜 사이트에서 확인한 것이에요.\n완성은 만들어 올린 것이에요.\n미완성은 아직인 것이에요.`]; // 한 문장 숫자 셋까지(쉬운 말 문)
+  const out = [`${NAME} 주문 장부예요. 주문은 모두 ${os.length}건이에요.\n성공 ${n('성공')}건, 완성 ${n('완성')}건이에요. 미완성은 ${n('미완성')}건이에요.\n성공은 진짜 사이트에서 확인한 것이에요.\n완성은 만들어 올린 것이에요.\n미완성은 아직인 것이에요.`]; // 한 문장 숫자 셋까지(쉬운 말 문)
   const rows = [...os].sort((a, b) => ORDER.indexOf(a.state) - ORDER.indexOf(b.state) || String(a.at).localeCompare(String(b.at)))
     .map(o => `[${o.state}] ${when(o.at)}\n${o.short}`);
   let cur = '';
