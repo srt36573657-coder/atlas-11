@@ -1,5 +1,5 @@
 {
- "made": "2026-10-27T04:40:07.586Z",
+ "made": "2026-10-27T07:54:15.265Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -21,7 +21,7 @@
    "info": {
     "hash": "#/t/picks",
     "title": "꽃이 될 듯한 회사 · 돌이",
-    "h1": "꽃이 될 듯한 회사 20곳",
+    "h1": "꽃이 될 듯한 회사 33곳",
     "kakaoText": 1,
     "kakaoRow": 0,
     "kakaoAll": 1,
@@ -29,7 +29,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1268,
+    "height": 1330,
     "fold": null
    },
    "err": null
@@ -50,14 +50,14 @@
     "hash": "#/t/pick",
     "title": "돌이가 고른 회사 · 돌이",
     "h1": "돌이가 고른 회사",
-    "kakaoText": 6,
+    "kakaoText": 7,
     "kakaoRow": 0,
-    "kakaoAll": 6,
+    "kakaoAll": 7,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 7631,
+    "height": 7789,
     "fold": null
    },
    "err": null
@@ -85,7 +85,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1778,
+    "height": 1128,
     "fold": null
    },
    "err": null
@@ -113,7 +113,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 2806,
+    "height": 1243,
     "fold": null
    },
    "err": null
@@ -147,77 +147,21 @@
    "err": null
   },
   {
-   "name": "me",
-   "hash": "#/me",
+   "name": "dori",
+   "hash": "#/dori",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/me-390.png",
-    "reports/atlas11/probe/live-shot/me-390-long.png"
+    "reports/atlas11/probe/live-shot/dori-390.png",
+    "reports/atlas11/probe/live-shot/dori-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/me",
-    "title": "보유종목 · 돌이",
-    "h1": "보유종목",
-    "kakaoText": 2,
-    "kakaoRow": 0,
-    "kakaoAll": 2,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1548,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "sub",
-   "hash": "#/sub",
-   "size": [
-    390,
-    844
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/sub-390.png",
-    "reports/atlas11/probe/live-shot/sub-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/sub",
-    "title": "관심 · 돌이",
-    "h1": "관심",
-    "kakaoText": 2,
-    "kakaoRow": 0,
-    "kakaoAll": 2,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1205,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "jinhwa",
-   "hash": "#/jinhwa",
-   "size": [
-    390,
-    844
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/jinhwa-390.png",
-    "reports/atlas11/probe/live-shot/jinhwa-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/jinhwa",
-    "title": "진화 · 돌이",
-    "h1": "돌이 진화",
+    "hash": "#/dori",
+    "title": "돌이 · 돌이",
+    "h1": "돌이",
     "kakaoText": 1,
     "kakaoRow": 0,
     "kakaoAll": 1,
@@ -225,7 +169,63 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1255,
+    "height": 1062,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "find",
+   "hash": "#/find",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/find-390.png",
+    "reports/atlas11/probe/live-shot/find-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/find",
+    "title": "찾기 · 돌이",
+    "h1": "",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1046,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "cal",
+   "hash": "#/t/cal",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/cal-390.png",
+    "reports/atlas11/probe/live-shot/cal-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/cal",
+    "title": "싹 달력 · 돌이",
+    "h1": "싹 달력",
+    "kakaoText": 61,
+    "kakaoRow": 0,
+    "kakaoAll": 61,
+    "days": 60,
+    "firstDay": "10월 27일",
+    "graphs": 59,
+    "calgo": false,
+    "height": 25443,
     "fold": null
    },
    "err": null
