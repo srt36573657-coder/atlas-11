@@ -428,6 +428,23 @@ async function pPick() {
     h('p', {class: 'th-sub th-key', text: used ? '통과한 법 하나를 오늘 목록에 썼어요.' : '모두 통과하지 못해서 고르는 법은 그대로 둬요.'}),
     h('p', {class: 'th-sub', text: '고쳐 볼 것은 세어 보기 전에 먼저 적어요.'}),
     h('p', {class: 'th-sub', text: '꽃이 못 된 날이 쌓이면 또 고쳐 보고 다시 재요.'})) : null;
+  // 사장님 2026-10-27 17:34 「꽃이될 싹을 고르는 조건을 365가지 예비 후보를 만들어서 그중 37개를 선택한 다음 … 3개를 도입하고 … 1개로 만들어 돌이에게 적용 … 적용값을 페이지에 기록하여 이용자들이 볼수 있도록」
+  //   숫자는 theme-bloom.json pick(= theme-engine.js PICK365 = reports/atlas11/research/sprout365-2026-10-27.json · 시험이 맞댐) · 지금 조건 셈은 rule.hiWin · hiNear
+  const hiOn = Number.isInteger(B.rule?.hiWin) && Number.isFinite(B.rule?.hiNear);
+  const P = B.pick, okP = !!P && Number.isInteger(P.n) && Number.isInteger(P.ok) && Number.isInteger(P.short) && Array.isArray(P.three) && P.three.length === 3 && P.three.every(t => typeof t?.say === 'string' && Number.isFinite(t?.train?.rate)) && ok2(P.test) && Number.isFinite(P.test.old);
+  const nowN = Number.isInteger(B.today?.all) ? B.today.all : null;
+  const pickBox = hiOn && okP ? h('div', {class: 'th-pk365'},
+    h('h3', {class: 'th-chs', text: '지금 고르는 조건'}),
+    h('p', {class: 'th-key', text: '업종은 꽃이 폈고, 회사는 막 힘이 붙었고, 값은 반년 가장 높은 값 가까이예요.'}),
+    h('ol', {class: 'th-steps'},
+      step(1, `조건 후보 ${num(P.n)}가지를 먼저 적었어요`, ['세어 보기 전에 적었어요.', '지금까지 쓰던 조건도 그 안에 넣어 겨루게 했어요.']),
+      step(2, `옛 기록으로 ${num(P.short)}가지를 골랐어요`, [`${num(P.n)}가지 가운데 ${num(P.ok)}가지가 잣대를 넘었어요.`, '꽃이 된 수와 한 달 뒤 값을 함께 봤어요.']),
+      step(3, '더 깊이 재서 3가지를 골랐어요', P.three.map(t => `${t.say}. 옛 기록 100번에 ${r0(t.train.rate)}번이에요.`)),
+      step(4, '셋을 날카롭게 따져 하나로 했어요', ['둘이나 셋을 함께 쓰면 고를 회사가 너무 적었어요.', '그래서 옛 기록이 가장 단단한 하나를 골랐어요.']),
+      step(5, '고를 때 안 본 새 기록으로 맞춰 봤어요', [`새 기록은 100번에 ${r0(P.test.rate)}번이에요.`, `바꾸기 전 조건은 ${r0(P.test.old)}번, 아무거나 고르면 ${r0(P.test.base)}번이에요.`, P.test.from ? `새 기록은 ${ymd(P.test.from)}부터예요.` : null])),
+    h('p', {class: 'th-sub th-key', text: `그래서 ${md(P.date)}부터 이 조건으로 골라요.`}),
+    nowN != null ? h('p', {class: 'th-sub', text: `오늘 바꾸기 전 조건이면 ${num(nowN)}곳, 지금 조건은 ${num(n)}곳이에요.`}) : null,
+    h('p', {class: 'th-sub', text: '조건을 좁혀서 고르는 회사가 적어졌어요.'})) : null;
   const how = h('section', {class: 'th-pkhow', 'aria-label': '이 숫자는 어떻게 나왔어요?'},
     h('h2', {class: 'th-h2', text: '이 숫자는 어떻게 나왔어요?'}),
     h('ol', {class: 'th-steps'},
@@ -437,7 +454,7 @@ async function pPick() {
         ok2(tr) ? `옛 기록은 100번에 ${r0(tr.rate)}번, 아무거나 고르면 ${r0(tr.base)}번이에요.` : null,
         ok2(te) ? `새 기록은 100번에 ${r0(te.rate)}번, 아무거나 고르면 ${r0(te.base)}번이에요.` : null,
         span.test?.[0] ? `새 기록은 ${ymd(span.test[0])}부터예요. 고르는 법을 정할 때 안 본 기록이에요.` : null,
-        both && tried ? `${tried}가지 가운데 이 법만 두 번 다 통과했어요.` : both ? null : '두 기록 가운데 한 번은 아무거나 고른 것보다 적었어요.']),
+        hiOn && okP ? (both ? `${num(P.n)}가지 가운데 옛 기록으로 고른 하나만 새 기록에서 맞춰 봤어요.` : '두 기록 가운데 한 번은 아무거나 고른 것보다 적었어요.') : both && tried ? `${tried}가지 가운데 이 법만 두 번 다 통과했어요.` : both ? null : '두 기록 가운데 한 번은 아무거나 고른 것보다 적었어요.']),
       yrs.length ? step(4, upY === yrs.length ? '해마다 나눠 봐도 모든 해에 더 많았어요' : '해마다 나눠 보면 더 많은 해도 있고 적은 해도 있었어요', yrs.map(([y, v]) => `${y}년에는 100번에 ${r0(v.rate)}번, 아무거나 고르면 ${r0(v.base)}번이에요.`)) : null,
       step(yrs.length ? 5 : 4, '다른 방법으로 다시 셌어요', ['처음부터 따로 센 숫자와 같았어요.']),
       step(yrs.length ? 6 : 5, '거래가 멈춘 회사는 뺐어요', ['한 달 내내 값이 그대로인 회사예요.'])));
@@ -458,7 +475,7 @@ async function pPick() {
     h('p', {class: 'th-sub', text: '같은 날 아무거나 고른 회사와 견줬어요. 칸마다 꽃이 된 수와 고른 수예요.'}),
     h('div', {class: 'th-pkgrid', role: 'list', 'aria-label': '기록 달력'}, ...['월', '화', '수', '목', '금'].map(t => h('span', {class: 'th-pkwd', 'aria-hidden': 'true', text: t})), ...wk.flatMap(w => w.cells.map(cell)))) : h('p', {class: 'th-sub', text: '? 기록 달력을 아직 못 받았어요.'});
   const recBox = h('div', {class: 'th-pkrec'}, h('h3', {class: 'th-chs', text: '지난 기록'}),
-    bar('아무거나 고른 회사', all.base, 'base'), plain != null ? bar('싹만 보고 고른 회사', plain, 'plain') : null, bar('돌이가 고른 회사', all.rate, 'pick'),
+    bar('아무거나 고른 회사', all.base, 'base'), plain != null ? bar('싹만 보고 고른 회사', plain, 'plain') : null, hiOn && Number.isFinite(all.old) ? bar('바꾸기 전 조건', all.old, 'plain') : null, bar('돌이가 고른 회사', all.rate, 'pick'),
     h('p', {class: 'th-sub', text: '100번 골랐을 때 한 달 뒤 꽃이 된 횟수예요.'}), plainLine(), whyMore,
     h('p', {class: 'th-sub', text: both ? '옛 기록과 새 기록, 두 번 다 아무거나 고른 것보다 많았어요.' : '옛 기록과 새 기록 가운데 한 번은 아무거나 고른 것보다 적었어요.'}), gapLine, fallLine());
   const whyBox = whySec ? h('div', {class: 'th-pkwhy2'}, ...[...whySec.childNodes].map(x => (x.tagName === 'H2' ? h('h3', {class: 'th-chs', text: x.textContent}) : x))) : null;
@@ -472,14 +489,15 @@ async function pPick() {
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')), hd(title, 'today', 'SB'),
     hero, nav,
     chap('start', '처음', '돌이는 날마다 이런 회사를 골라요',
-      say('업종은 꽃이 폈고, 회사는 이제 막 힘이 붙었어요.'),
+      say(hiOn ? '업종은 꽃이 폈고, 회사는 막 힘이 붙었고, 값은 반년 가장 높은 값 가까이예요.' : '업종은 꽃이 폈고, 회사는 이제 막 힘이 붙었어요.'),
       h('ol', {class: 'th-steps'},
         step(1, '회사는 이제 막 힘이 붙었어요', ['아직 꽃은 아니지만, 지난 5일 동안 시장보다 더 올랐어요.']),
-        step(2, '그 업종은 이미 꽃이 폈어요', ['이미 꽃이고, 지난 5일 동안에도 시장보다 더 올랐어요.'])),
+        step(2, '그 업종은 이미 꽃이 폈어요', ['이미 꽃이고, 지난 5일 동안에도 시장보다 더 올랐어요.']),
+        hiOn ? step(3, '회사 값은 반년 가장 높은 값 가까이에 있어요', [`지난 ${num(B.rule.hiWin)}거래일 가운데 가장 높은 값보다 ${100 - B.rule.hiNear}% 넘게 낮지 않아요.`]) : null),
       h('p', {class: 'th-sub', text: `꽃은 한 달 동안 시장보다 ${RULE.bloomX}% 넘게 더 오른 것이에요.`})),
     chap('next', '이어서', '고른 날마다 한 달 뒤를 적었어요', calBox),
     chap('turn', '그런데', turnHead, recBox, whyBox),
-    chap('so', '그래서', fixSec ? '그래서 고르는 법을 고쳐 보고 다시 재요' : '그래서 계속 적고 다시 재요', fixBox, todayBox, howFold),
+    chap('so', '그래서', pickBox ? '그래서 고르는 조건 365가지를 다시 재서 바꿨어요' : fixSec ? '그래서 고르는 법을 고쳐 보고 다시 재요' : '그래서 계속 적고 다시 재요', pickBox ?? fixBox, todayBox, howFold),
     h('p', {class: 'th-sub th-calnote', text: `시장보다 ${Math.abs(Number(B.rule?.fall ?? -5))}% 넘게 덜 오르면 크게 떨어진 거예요.`}),
     h('p', {class: 'th-sub th-calnote', text: '앞날을 맞히는 숫자가 아니에요.'}),
     h('p', {class: 'th-asof', text: md(B.asOf) + ' 장 마감 기준' + (B.provisional ? ' · 장중 값이 섞여 있어요' : '')}),

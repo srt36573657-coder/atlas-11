@@ -523,8 +523,8 @@ for k in top37:
     s = res['candidates'][k]
     d = deep(MASK[k])
     rules = [d['blocksUp'] >= 3, s['fall'] <= s['fallBase'] + 2, d['topShare'] <= 0.35, d['cover'] >= 0.30 and d['perDay'] <= 60, s['rate'] > c3tr['rate']]
-    d['rules'] = rules
-    d['pass'] = all(rules)
+    d['rules'] = [bool(x) for x in rules]
+    d['pass'] = bool(all(rules))
     DEEP[k] = d
 res['deep'] = DEEP
 order3 = sorted(top37, key=lambda k: (-sum(DEEP[k]['rules']), -res['candidates'][k]['lo'], -res['candidates'][k]['n']))
