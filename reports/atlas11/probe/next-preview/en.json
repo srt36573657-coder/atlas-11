@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-27T06:42:55.413Z",
+ "at": "2026-10-27T06:56:24.704Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,26 +14,26 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
   "past": true,
+  "rivals": true,
   "grow": true,
   "range": true,
   "surge": true,
-  "rivals": true,
   "cal": true,
-  "talk": true,
+  "cond": true,
   "up": true,
+  "talk": true,
   "time": true,
   "info": true,
   "x": true,
+  "co": true,
   "chx": true,
   "today": true,
-  "co": true,
+  "why": true,
   "gdr": true,
   "share": true,
   "hold": true,
-  "theme": true,
-  "why": true
+  "theme": true
  },
  "edge": true,
  "only": null,
@@ -49,100 +49,100 @@
   }
  },
  "seconds": 362,
- "secondsSum": 2474,
+ "secondsSum": 2459,
  "shards": [
   {
    "shard": "1/7",
-   "ok": false,
-   "fails": 1,
+   "ok": true,
+   "fails": 0,
    "routes": 1945,
    "screens": 1984,
    "mine": 1945,
-   "seconds": 361,
+   "seconds": 348,
    "secs": {
     "open": 0.3,
-    "routes": 359.7
+    "routes": 347.2
    }
   },
   {
    "shard": "2/7",
-   "ok": false,
-   "fails": 1,
+   "ok": true,
+   "fails": 0,
    "routes": 1950,
    "screens": 1988,
    "mine": 1944,
-   "seconds": 358,
+   "seconds": 355,
    "secs": {
     "open": 0.3,
-    "routes": 356.2
+    "routes": 352.5
    }
   },
   {
    "shard": "3/7",
-   "ok": false,
-   "fails": 1,
+   "ok": true,
+   "fails": 0,
+   "routes": 1944,
+   "screens": 1945,
+   "mine": 1944,
+   "seconds": 355,
+   "secs": {
+    "open": 0.3,
+    "routes": 353.7
+   }
+  },
+  {
+   "shard": "4/7",
+   "ok": true,
+   "fails": 0,
    "routes": 1944,
    "screens": 1945,
    "mine": 1944,
    "seconds": 362,
    "secs": {
     "open": 0.3,
-    "routes": 360.4
-   }
-  },
-  {
-   "shard": "4/7",
-   "ok": false,
-   "fails": 1,
-   "routes": 1944,
-   "screens": 1945,
-   "mine": 1944,
-   "seconds": 356,
-   "secs": {
-    "open": 0.3,
-    "routes": 354.5
+    "routes": 361.1
    }
   },
   {
    "shard": "5/7",
-   "ok": false,
-   "fails": 1,
+   "ok": true,
+   "fails": 0,
    "routes": 1944,
    "screens": 1944,
    "mine": 1944,
-   "seconds": 351,
+   "seconds": 356,
    "secs": {
     "open": 0.3,
-    "routes": 350.1
+    "routes": 355.5
    }
   },
   {
    "shard": "6/7",
-   "ok": false,
-   "fails": 1,
+   "ok": true,
+   "fails": 0,
    "routes": 1930,
    "screens": 1951,
    "mine": 1931,
-   "seconds": 350,
+   "seconds": 344,
    "secs": {
     "open": 0.3,
-    "routes": 346,
+    "routes": 340.5,
     "newwin": 2.7
    }
   },
   {
    "shard": "7/7",
-   "ok": false,
-   "fails": 1,
+   "ok": true,
+   "fails": 0,
    "routes": 1865,
    "screens": 1985,
    "mine": 1866,
-   "seconds": 336,
+   "seconds": 339,
    "secs": {
-    "open": 0.2,
-    "routes": 323.8,
-    "act": 5.6,
-    "edge": 5.6,
+    "open": 0.3,
+    "routes": 325.7,
+    "act": 5.8,
+    "edge": 6.2,
     "grammar": 0
    }
   }
@@ -169,12 +169,10 @@
  },
  "missing": 0,
  "avatarLetters": 0,
- "kinds": {
-  "화면 밖으로 나간 칸": 1
- },
- "fails": 1,
+ "kinds": {},
+ "fails": 0,
  "own": {
-  "fails": 1,
+  "fails": 0,
   "missing": 0,
   "leftover": 0
  },
@@ -184,22 +182,8 @@
   "leftover": 0
  },
  "missingList": [],
- "all": [
-  {
-   "kind": "화면 밖으로 나간 칸",
-   "what": ".more 「Next step · 5 Rivals ›」 @320",
-   "ex": null,
-   "at": [
-    "#/w/000050/past @320",
-    "#/w/000180/past @320",
-    "#/w/000270/past @320",
-    "#/w/000440/past @320",
-    "#/w/000590/past @320"
-   ],
-   "n": 2557
-  }
- ],
+ "all": [],
  "truncated": false,
  "problems": [],
- "ok": false
+ "ok": true
 }

@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-essence-render-1",
- "at": "2026-10-27T06:34:52.108Z",
+ "at": "2026-10-27T06:47:04.871Z",
  "base": "http://127.0.0.1:8826",
  "shard": "1/1",
  "units": [
@@ -66,5 +66,5 @@
    }
   }
  ],
- "seconds": 6
+ "seconds": 6.5
 }
