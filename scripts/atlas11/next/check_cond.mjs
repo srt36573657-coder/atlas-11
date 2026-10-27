@@ -275,9 +275,10 @@ await edgePair('0곳', '#/cond/big-pick-nos', {cond: x => { x.co.p = x.co.p.map(
   const [a, b] = await Promise.all([read(po, 'old'), read(pn, 'new')]); same('0곳 → ② 풀기', a, b, HEAD);
 });
 { // 지난번과 견줌 — 같은 조건 · 다른 날 기록이 있으면 「…보다 새로 n곳 · 빠진 n곳」 · 더 보기(다시 그림) 뒤 사라짐
-  const key = 'up-all-all', x = run(cond, key), prev = [...x.codes.slice(0, 30), '999998', '999999'];
+  // 열쇠 = 서른 곳보다 많이 나오는 조건(오늘 자료에 「한 달 오름」이 0곳인 날 — 2026-10-27 전체 검사 jobs36 1/11 「새로 -30곳」 · 「더 보기」 없음으로 누르기가 멈춤)
+  const key = ['up-all-all', 'all-all-all'].find(k => run(cond, k).codes.length > 31) ?? 'up-all-all', x = run(cond, key), prev = [...x.codes.slice(0, 30), '999998', '999999'];
   await edgePair('지난번과 견줌', '#/cond/' + key, {ls: {'atlas:cond-seen': J({sig: key, asOf: '2026-10-10', codes: prev})}}, async (po, pn, ho, hn) => {
-    const want = '10월 10일보다 새로 ' + (x.codes.length - 30) + '곳 · 빠진 2곳';
+    const want = '10월 10일보다 새로 ' + Math.max(0, x.codes.length - 30) + '곳 · 빠진 2곳'; // 지난번 = 앞 서른 곳 + 없는 두 곳 → 새로 = 서른 넘는 만큼(0 아래 없음)
     if (hn.diff !== want) fail('지난번과 견줌 글', J(hn.diff) + ' ≠ ' + J(want));
     await Promise.all([po.click('#view .cd-more'), pn.click('#view .pcond-more')]); await pn.waitForTimeout(80);
     const [a, b] = await Promise.all([read(po, 'old'), read(pn, 'new')]); same('견줌 → 더 보기', a, b, HEAD);

@@ -4,7 +4,7 @@
    칸 열쇠 = 「첫 class:보이는 같은 이름 칸 가운데 몇째」(같은 이름 설명 글이 여럿이어도 목업 차례 그대로)
    그리기 바로 뒤 · 카톡 단추를 달기 전에 한 번(jobsOrder) — 늦게 붙는 줄(다음 한 줄 · 쿠폰 칸) 뒤로 작은 줄만 한 번 더(jobsTail)
    칸마다 카톡 단추(kk-box)는 옮기지 않음 — 2026-10-25 06:06 「모든 쪽과 칸에 카톡」대로 그 칸 밑에 그대로 */
-export const SPEC = {
+export const SPEC = { // 진화 쪽은 뺌 — 본질 줄(jh-ess)은 첫 화면에 늘 있어야 함(진화 쪽 검사 · 전체 검사 1/11)
   '': {o: ["th-zones:0", "s-apps:0", "th-pkhome:0", "th-more:0", "s-story:0", "th-map:0", "th-gorow:0", "th-next:0", "th-hi:0"], f: [], t: ["th-hfold:0"]}, // 첫 화면
   't/picks': {o: ["th-pg:0", "th-hd:0", "th-pkrec1:0", "th-pkis:0", "th-next:0"], f: ["th-pkday:0"], t: ["th-safe:0"]}, // 꽃 될 회사
   't/pick': {o: ["th-pg:0", "th-hd:0", "th-ch:0", "th-ch:1", "th-ch:2", "th-ch:3", "th-ch:4", "th-chnav:0", "th-sub:0", "th-sub:1", "th-next:0"], f: [], t: ["th-asof:0", "th-safe:0"]}, // 지난 기록
@@ -27,10 +27,9 @@ export const SPEC = {
   't/c/*/unknown': {o: ["th-pg:0", "th-hd:0", "th-say:0", "th-box:0", "th-box:1", "th-box:2", "th-next:0"], f: [], t: ["th-asof:0", "th-safe:0"]}, // 아직 모르는 것
   't/c/*/keep': {o: ["th-pg:0", "th-hd:0", "th-say:0", "th-ans:0", "th-keep:0", "th-keep:1", "th-why:0", "th-next:0"], f: [], t: ["th-asof:0", "th-safe:0", "kk-box:0"]}, // 관심 담기
   'w/*/past': {o: ["wt:0", "ws:0", "ppast-now:0", "more:0", "ppast-won:0", "ppast-seg:0", "ppast-chart:0", "ppast-key:0", "sec:0", "ppast-fin:0", "ppast-lv:0", "ppast-won:1", "chaps:0", "ppast-trio:0", "ppast-nx:0"], f: [], t: ["ppast-more:0", "ppast-src:0", "ppast-foot:0", "kk-box:0"]}, // 회사 지나온 길
-  'me': {o: ["h:0", "hd:0", "sec:0", "lst:0", "sec:1", "note:0", "note:1", "th-foot:0"], f: [], t: ["hd-fold:0", "kk-box:0", "safe:0", "kk-pgrow:0"]}, // 보유종목
-  'sub': {o: ["h:0", "sec:1", "c-lead:0", "more:0", "chan:0", "chan:1", "chan:2", "sec:0", "note:1", "th-foot:0"], f: ["note:0"], t: ["hm-more:0", "kk-pgrow:0"]}, // 관심
+  'me': {o: ["h:0", "hd:0", "hd-fold:0", "sec:0", "lst:0", "sec:1", "note:0", "note:1", "th-foot:0"], f: [], t: ["kk-box:0", "safe:0", "kk-pgrow:0"]}, // 보유종목 — 돌이 편지(hd-fold)는 점검 칸 바로 밑 그대로(펼치기 검사 · 2026-10-27 전체 검사 1/11)
+  'sub': {o: ["h:0", "note:0", "sec:1", "c-lead:0", "more:0", "chan:0", "chan:1", "chan:2", "sec:0", "note:1", "th-foot:0"], f: [], t: ["hm-more:0", "kk-pgrow:0"]}, // 관심 — 머리 글(「이 기기에만 남아요」 · 가입하면 「카카오로 지켜요」)은 제목 밑 그대로 · 접지 않음
   't/alert': {o: ["th-pg:0", "th-hd:0", "th-say:0", "th-als:0", "th-wl:0", "th-next:0"], f: ["th-box:0"], t: ["th-asof:0", "th-safe:0"]}, // 알림
-  'jinhwa': {o: ["jh-h1:0", "jh-head:0", "jh-what:0", "jh-rail:0", "sec:0", "note:0"], f: ["jh-ess:0"], t: ["jh-g:0"]}, // 진화
   't/today': {o: ["th-pg:0", "th-hd:0", "th-say:0", "th-steps:0", "th-rec:0", "th-next:0"], f: [], t: ["th-asof:0", "th-safe:0"]}, // 오늘 정리
   't/hello': {o: ["th-pg:0", "th-hd:0", "th-say:0", "th-found:0", "th-h2:0", "th-steps:0", "th-next:0"], f: [], t: ["th-asof:0", "th-safe:0", "kk-box:0"]}, // 돌이 인사
   't/how': {o: ["th-pg:0", "th-hd:0", "th-say:0", "th-map:0", "th-steps:0", "th-h2:0", "th-steps:1", "th-h2:1", "th-sub:1", "th-sub:2", "th-rbs:0", "th-next:0"], f: ["th-sub:0"], t: ["kk-box:0", "th-fold:0", "th-safe:0", "kk-box:1"]}, // 시계 읽는 법
