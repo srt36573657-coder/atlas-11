@@ -159,10 +159,10 @@ html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-
 /* ───── 그림 판(사장님 2026-10-27 22:09 「지금까지 너가 만든거 이 시안을 토대로 만들어줘」 · 22:16 「이시안 화법으로만들어줘」) ─────
    그림 일곱 화면의 모양: 밝은 크림 칸 · 짙은 청록 시작 화면 · 분홍 단추 · 청록 막대 · 답마다 그림과 작은 풀이 · 「왜 이런 질문을 하나요?」 노란 칸
    이 칸 안에서만 색 이름을 다시 정해 옛 규칙(.wy-*)이 밝은 판으로 그대로 따라옴 · 글씨 --fs-* · 간격 --sp-* 만 */
-.wy { --card: #FBF6EE; --card2: #F3ECE0; --card3: #FFFFFF; --ink: #1E2B2A; --sub: #4A5754; --mute: #6B7673; --hair2: #E6DCCB; --bg: #FFFFFF;
-  --wl-teal: #1F8A7E; --wl-deep: #173F3E; --wl-mint: #8FE3CF; --wl-pink: #F38BA0; --wl-pink2: #F9B4C1; --wl-plum: #4A1424; --wl-sun: #FFF3DC; --wl-sunl: #F3DDB2;
+.wy { --card: #FBF6EE; --card2: #F3ECE0; --card3: #FFFFFF; --ink: #1E2B2A; --sub: #4A5754; --mute: #5F6A67; --hair2: #8A7F6E; --bg: #FFFFFF;
+  --wl-teal: #1F8A7E; --wl-deep: #173F3E; --wl-mint: #8FE3CF; --wl-pink: #F38BA0; --wl-pink2: #F9B4C1; --wl-plum: #4A1424; --wl-sun: #FFF3DC; --wl-sunl: #F3DDB2; --wl-tealt: #17746A; --wl-rim: #C2416A;
   background: var(--card); color: var(--ink); border: 0; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 32px rgba(0,0,0,.18); }
-.wy-hero { display: grid; gap: var(--sp-1); margin: 0 0 var(--sp-2); padding: var(--sp-2); border-radius: 16px; background: radial-gradient(120% 90% at 50% 0%, #24605E 0%, var(--wl-deep) 70%); color: #FFFFFF; text-align: center; flex-direction: column; }
+.wy-hero { display: grid; gap: var(--sp-1); margin: 0 0 var(--sp-2); padding: var(--sp-2); border-radius: 16px; background: var(--wl-deep); color: #FFFFFF; text-align: center; flex-direction: column; }
 .wy-hero .wy-h { order: 0; font-size: var(--fs-1); color: var(--wl-mint); font-weight: 700; }
 .wy-hh { margin: 0; font-size: var(--fs-5); line-height: 1.25; font-weight: 800; color: #FFFFFF; }
 .wy-hh em { font-style: normal; color: var(--wl-mint); }
@@ -172,16 +172,16 @@ html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-
 .wy-hl { list-style: none; margin: 0; padding: var(--sp-1) var(--sp-2); display: grid; gap: var(--sp-1); border-radius: 14px; background: rgba(255,255,255,.08); text-align: left; }
 .wy-hl li { display: flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-1); color: #FFFFFF; }
 .wy-hl .wl-ic { flex: none; color: var(--wl-deep); background: var(--wl-mint); border-radius: 50%; padding: 0; }
-.wy-go, .wy .wy-next { background: linear-gradient(180deg, var(--wl-pink2), var(--wl-pink)); color: var(--wl-plum); font-weight: 800; box-shadow: 0 6px 16px rgba(243,139,160,.35); }
+.wy .wy-go, .wy.wy .wy-next { background: var(--wl-pink); color: var(--wl-plum); font-weight: 800; outline: 2px solid var(--wl-rim); outline-offset: -2px; }
 .wy-go { display: block; width: 100%; min-height: 52px; margin: var(--sp-1) 0 0; border: 0; border-radius: 16px; font: inherit; font-size: var(--fs-2); cursor: pointer; }
-.wy-go:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.wy .wy-go:focus-visible, .wy.wy .wy-next:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .wy-time { margin: var(--sp-1) 0 0; text-align: center; font-size: var(--fs-1); color: var(--mute); }
 .wy .wy-back { background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--hair2); }
 .wy-pg { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-1); margin: var(--sp-1) 0 0; }
 .wy-pg .wy-step { margin: 0; flex: none; text-align: right; }
 .wy-prog { display: block; height: 8px; margin: 0 0 var(--sp-1); border-radius: 999px; background: #E7DFD1; overflow: hidden; }
 .wy-prog i { display: block; height: 100%; border-radius: 999px; background: var(--wl-teal); }
-.wy .wy-q { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--wl-teal); font-weight: 700; }
+.wy .wy-q { margin: var(--sp-1) 0 0; font-size: var(--fs-1); color: var(--wl-tealt); font-weight: 700; }
 .wy-lead { margin: 0 0 var(--sp-1); font-size: var(--fs-4); line-height: 1.3; font-weight: 800; color: var(--ink); }
 .wy .wy-opt { background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--hair2); align-items: center; text-align: left; }
 .wy .wy-opt.on { background: #FFF1F4; box-shadow: inset 0 0 0 2px var(--wl-pink); }
@@ -195,7 +195,7 @@ html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-
 .wy-whyt { margin: 0; font-size: var(--fs-1); color: var(--sub); line-height: 1.45; }
 .wy .wy-prev { background: var(--wl-sun); box-shadow: inset 0 0 0 1px var(--wl-sunl); }
 .wy-sumk { margin: var(--sp-1) 0 0; text-align: center; font-size: var(--fs-2); color: var(--sub); }
-.wy .wy-verdict { justify-content: center; text-align: center; color: var(--wl-teal); }
+.wy .wy-verdict { justify-content: center; text-align: center; color: var(--wl-tealt); }
 .wy-type { margin: 0 0 var(--sp-1); text-align: center; font-size: var(--fs-2); color: var(--sub); }
 .wy-type b { color: var(--ink); }
 .wy-card { margin: var(--sp-2) 0 0; padding: var(--sp-2); border-radius: 16px; background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--hair2); }
@@ -210,13 +210,14 @@ html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-
 .wy-mt { margin: 0; font-size: var(--fs-1); color: var(--sub); }
 .wy-det { margin: var(--sp-2) 0 0; }
 .wy-detb { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 16px; list-style: none; cursor: pointer; font-size: var(--fs-2); font-weight: 800;
-  background: linear-gradient(180deg, var(--wl-pink2), var(--wl-pink)); color: var(--wl-plum); box-shadow: 0 6px 16px rgba(243,139,160,.35); }
+  background: var(--wl-pink); color: var(--wl-plum); outline: 2px solid var(--wl-rim); outline-offset: -2px; }
 .wy-detb::-webkit-details-marker { display: none; }
-.wy-det[open] .wy-detb { background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--hair2); color: var(--sub); }
+.wy-det[open] .wy-detb { background: #FFFFFF; outline: 1px solid var(--hair2); outline-offset: -1px; color: var(--sub); }
+.wy-det .wy-detb:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .wy-dtitle { margin: var(--sp-2) 0 var(--sp-1); text-align: center; font-size: var(--fs-3); font-weight: 800; }
 .wy-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-1); padding: 0 0 var(--sp-1); } /* 넷을 두 줄로(좁은 폭에서 칸 밖으로 나가지 않게) */
-.wy-tab { min-width: 0; min-height: 44px; padding: 0 var(--sp-2); border: 0; border-radius: 999px; background: var(--card2); color: var(--sub); font: inherit; font-size: var(--fs-1); cursor: pointer; }
-.wy-tab.on { background: var(--wl-deep); color: #FFFFFF; font-weight: 700; }
+.wy-tab { min-width: 0; min-height: 44px; padding: 0 var(--sp-2); border: 0; border-radius: 999px; background: var(--card2); color: var(--sub); font: inherit; font-size: var(--fs-1); cursor: pointer; outline: 1px solid var(--hair2); outline-offset: -1px; }
+.wy-tab.on { background: var(--wl-deep); color: #FFFFFF; font-weight: 700; outline-color: var(--wl-deep); }
 .wy-tab:focus-visible, .wy-mood:focus-visible, .wy-copy:focus-visible, .wy-row:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .wy-dbody { display: grid; gap: var(--sp-1); padding: var(--sp-2); border-radius: 16px; background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--hair2); }
 .wy-dh { margin: 0; font-size: var(--fs-2); font-weight: 800; }
@@ -242,11 +243,12 @@ html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-
 .wy-moodc { display: grid; gap: var(--sp-1); }
 .wy-mq { margin: 0; font-size: var(--fs-1); color: var(--sub); }
 .wy-moods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-1); }
-.wy-mood { display: grid; justify-items: center; gap: 0; min-height: 72px; padding: var(--sp-1) 0; border: 0; border-radius: 14px; background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-1); cursor: pointer; }
+.wy-mood { display: grid; justify-items: center; gap: 0; min-height: 72px; padding: var(--sp-1) 0; border: 0; border-radius: 14px; background: var(--card2); color: var(--ink); font: inherit; font-size: var(--fs-1); cursor: pointer; outline: 1px solid var(--hair2); outline-offset: -1px; }
 .wy-mood[data-m="calm"] .wl-ic { color: #2E9E6B; } .wy-mood[data-m="soso"] .wl-ic { color: #C58500; } .wy-mood[data-m="worry"] .wl-ic { color: #D9622B; } .wy-mood[data-m="rush"] .wl-ic { color: #D2405F; }
-.wy-mood.on { background: #FFF1F4; box-shadow: inset 0 0 0 2px var(--wl-pink); }
+.wy-mood.on { background: #FFF1F4; outline: 2px solid var(--wl-rim); outline-offset: -2px; }
+.wy .wy-mood:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .wy-said:empty { display: none; }
-.wy-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 56px; padding: var(--sp-1); border-radius: 14px; background: var(--card2); color: var(--ink); text-decoration: none; }
+.wy-row { display: flex; align-items: center; gap: var(--sp-1); min-height: 56px; padding: var(--sp-1); border-radius: 14px; background: var(--card2); color: var(--ink); text-decoration: none; outline: 1px solid var(--hair2); outline-offset: -1px; }
 .wy-row .wl-ic { flex: none; color: var(--wl-teal); }
 .wy-rowt { flex: 1 1 auto; min-width: 0; display: grid; }
 .wy-rowt b { font-size: var(--fs-1); } .wy-rowt small { font-size: var(--fs-1); color: var(--sub); }
@@ -261,3 +263,8 @@ html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-
   .wy .wy-q { margin: 0; }
   .wy .wy-opt { min-height: 44px; padding: 0 var(--sp-1); }
 }
+/* 흰 판 검사(check_white ② · ④ — 2026-10-27 23:00 전체 검사 duri-why 1/11 실패 8)를 지키는 줄 — 광택(그러데이션) 0 · 글 대비 4.5 · 누르는 것 테두리 3
+   시작 화면은 짙은 청록 한 빛 · 분홍 단추는 한 빛 + 짙은 분홍 테 · 답 · 탭 · 마음 · 줄 단추는 테 #8A7F6E(크림 3.6 · 흰 3.9) · 작은 글 회색 #5F6A67 · 청록 글 #17746A
+   색 점 속 읽어 주는 글(눈에는 안 보임)도 점 위 대비 4.5 — 밝은 하늘 점은 짙은 글 · 짙은 점은 흰 글 */
+html.white .wy .wy-dot .wy-sr { color: #FFFFFF; }
+html.white.clock .wy .wy-dot.wy-g .wy-sr { color: #152D30; }
