@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-27T08:10:35.315Z",
+ "at": "2026-10-27T09:05:36.398Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-27",
  "companies": 2557,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 140,
+ "seconds": 145,
  "time": {
-  "old": 125.5,
-  "new": 125.4,
-  "wall": 140.5,
+  "old": 125,
+  "new": 126.8,
+  "wall": 144.5,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 89.3,
-  "oldShare": 50
+  "oldPct": 86.5,
+  "oldShare": 49.6
  },
  "net": {
   "req": 5126,
@@ -63,7 +63,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 2239개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
+   "why": "바뀐 파일 1510개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
    "made": null,
    "inputs": 2566,
    "reads": 2557,
