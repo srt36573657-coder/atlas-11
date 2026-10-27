@@ -197,7 +197,7 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
     h('p', {class: 'wy-sub', text: `사기 전에 ${josa(NAME, '랑')} 내 이유를 확인해요.`}),
     h('div', {class: 'wy-art'}, h('img', {src: '/media/makbi-hello.svg', alt: '', width: 120, height: 150})),
     h('ul', {class: 'wy-hl'}, ...['열한 개의 질문으로 간단하게', '내 마음과 사는 습관을 함께 봐요', '나에게 맞는 길잡이를 드려요'].map(t => h('li', {}, lookIcon('check', 18), h('span', {text: t})))))
-    : h('div', {class: 'wy-head'}, icon(32), h('div', {}, h('h2', {class: 'wy-h', text: '친구야, 왜 사?'}))));
+    : h('div', {class: 'wy-head wy-topbar'}, stockBar())); // 그림 2 · 3 · 4 — 질문 · 두 줄 · 결과 장 맨 위는 고른 종목 한 줄뿐(사장님 2026-10-28 02:01 「과감하게 해」 · 칸 이름은 section aria-label)
   /** 고른 종목 한 줄 — 이름 · 그날 값 · 그 날짜(값을 받는 동안 · 못 받으면 「?」) */
   const stockBar = () => {
     if (!S.code) return h('p', {class: 'wy-stk', hidden: true});
@@ -316,7 +316,7 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
     });
     const big = i === BIG_Q && k0 === BIG_A;
     const prog = h('span', {class: 'wy-prog', 'aria-hidden': 'true'}, h('i')); prog.firstChild.style.setProperty('width', Math.round((i + 1) / QS.length * 100) + '%');
-    const nodes = [h('div', {class: 'wy-pg'}, h('h3', {class: 'wy-q', text: `${i + 1}. ${Q.q}`}), h('p', {class: 'wy-step num', text: `${i + 1} / ${QS.length}`})), prog, // 그림 2 — 질문 이름 · 몇 번째 한 줄 + 진행 막대
+    const nodes = [h('div', {class: 'wy-pg'}, prog, h('p', {class: 'wy-step num', text: `${i + 1} / ${QS.length}`})), h('h3', {class: 'wy-q', text: `${i + 1}. ${Q.q}`}), // 그림 2 — 맨 위 진행 막대 · 몇 번째 → 작은 질문 이름 → 큰 질문(2026-10-28 과감하게)
       LOOK[i]?.lead ? h('p', {class: 'wy-lead', text: LOOK[i].lead}) : null, opts,
       LOOK[i]?.why && !(i === BIG_Q && k0 === BIG_A) ? h('div', {class: 'wy-whyq'}, h('p', {class: 'wy-whyk'}, lookIcon('ask', 18), h('b', {text: '왜 이런 질문을 하나요?'})), h('p', {class: 'wy-whyt', text: LOOK[i].why})) : null].filter(Boolean);
     if (big) nodes.push(oneLine(i, k0), dateRow());
@@ -381,14 +381,15 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
     const look = ['r', 'y'].flatMap(c => (J.answers ?? []).map((k, q) => [q, k]).filter(([q, k]) => !named.has(q) && QS[q]?.a[k]?.[0] === c)).slice(0, 3);
     const T = TYPE_OF[J.verdict] ?? null;
     return h('div', {class: 'wy-res'}, // [5] 2 — 판정 글이 가장 큼 · 준비는 그 밑에 작게 · 그림 4 결과 요약(지금 나는 · 판정 · 한 줄 · 그림)
-      h('p', {class: 'wy-verdict wy-v' + tone}, icon(32), h('b', {text: `「${vShow(J.verdict)}」`})),
+      h('p', {class: 'wy-verdict wy-v' + tone}, h('span', {class: 'wy-vk', text: '오늘 나의 판정'}), h('b', {text: `「${vShow(J.verdict)}」`})), // 그림 4 — 「당신은」 자리에 작은 이름표 · 판정이 가운데 가장 큰 글(2026-10-28 과감하게)
       T ? h('p', {class: 'wy-type'}, h('b', {text: T[0]}), h('span', {text: ' ' + T[1]})) : null,
+      h('div', {class: 'wy-rart'}, h('img', {src: '/media/makbi-hello.svg', alt: '', width: 96, height: 120})),
       ...(stopOf(J.answers) ? [h('p', {class: 'wy-stop'}, ...hit.flatMap(([q, k]) => [h('span', {text: `${q + 1}번 「${QS[q].q}」에서 「${QS[q].a[k][1]}」 답을 골랐어요.`}), h('span', {text: ' '})]),
         h('span', {text: '빌린 돈이나 곧 쓸 돈이면 점수와 상관없이 쉬어 가요.'}))] : []),
       ...(look.length ? [h('p', {class: 'wy-look'}, h('span', {class: 'wy-lk', text: '한 번 더 볼 답'}), ...look.flatMap(([q, k]) => [h('span', {text: ' · '}), h('span', {text: `${q + 1}번 「${QS[q].a[k][1]}」`})]))] : []),
       h('p', {class: 'wy-score'}, h('span', {text: '준비 '}), h('b', {class: 'num', text: String(ready)}), h('span', {class: 'num', text: ` / ${MAX}`}),
         h('span', {class: 'wy-reds'}, h('span', {text: ' · '}), dot('r'), h('span', {class: 'num', text: ` ${J.reds}개`}))),
-      h('span', {class: 'wy-track wy-tt', 'aria-hidden': 'true'}, tt),
+      h('div', {class: 'wy-ttw'}, h('span', {class: 'wy-track wy-tt', 'aria-hidden': 'true'}, tt)), // 가운데 막대(그림 4) — 너비 300 까지(반올림 % 가 그린 길이와 1.5px 안 · [5] 5)
       h('div', {class: 'wy-card wy-sumc'}, h('p', {class: 'wy-ck', text: '준비 정도 요약'}), bars(J.groups), h('p', {class: 'wy-note', text: '막대가 짧은 묶음을 한 번 더 생각해 봐.'})),
       mindCard(J),
       lines(J),
@@ -402,9 +403,9 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
   const draw = () => {
     const nodes = [head(i === PICK)];
     if (i === PICK) nodes.push(...pickView());
-    else if (i < LINES) nodes.push(...prevBox(), stockBar(), ...qView()); // [5] 3 앞 답 한마디 = 머리 바로 밑(맨 위) · 읽어 주는 칸은 누른 때만 바꿈(앞 답 한마디가 다음 장에서도 읽히게)
-    else if (i === LINES) nodes.push(...prevBox(), stockBar(), ...linesView());
-    else nodes.push(stockBar(), resView());
+    else if (i < LINES) nodes.push(...prevBox(), ...qView()); // 고른 종목 한 줄은 머리(위 줄) 안 // [5] 3 앞 답 한마디 = 머리 바로 밑(맨 위) · 읽어 주는 칸은 누른 때만 바꿈(앞 답 한마디가 다음 장에서도 읽히게)
+    else if (i === LINES) nodes.push(...prevBox(), ...linesView());
+    else nodes.push(resView());
     nodes.push(live);
     box.replaceChildren(...nodes);
     if (first) { // 매매일지 화면은 찾기 칸에 바로 씀(물을 약속이 맨 위에 있으면 쓰지 않음 · B17) · 종목을 정해 연 매매일지는 길이 맨 위로 올린 뒤 1번 답 셋을 화면 안으로(B9)

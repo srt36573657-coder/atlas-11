@@ -268,3 +268,39 @@ html.white :is(.top, .tabs, #view) .wy-opt.wy-opt { min-height: 56px; } /* 2026-
    색 점 속 읽어 주는 글(눈에는 안 보임)도 점 위 대비 4.5 — 밝은 하늘 점은 짙은 글 · 짙은 점은 흰 글 */
 html.white .wy .wy-dot .wy-sr { color: #FFFFFF; }
 html.white.clock .wy .wy-dot.wy-g .wy-sr { color: #152D30; }
+
+/* ───── 밝은 앱 판(사장님 2026-10-28 02:01 「변경 안돼잖아 과감하게 해」 · 그림 일곱 장 다시) ─────
+   「왜 사?」 쪽(#/why · #/why/<번호> · 한 달 뒤) 화면 전체를 그림처럼 밝은 크림 바탕으로 — 어두운 판 테두리를 걷음 · 글과 칸 색 이름을 이 쪽에서만 다시 정함(app.js whiteFor 가 html.pg-why)
+   질문 장 = 맨 위 고른 종목 한 줄 → 앞 답 한마디 → 진행 막대와 몇 번째 → 작은 질문 이름 → 큰 질문 → 답 칸 · 결과 장 = 가운데 큰 판정과 그림 */
+html.pg-why #view { display: flow-root; background: #FBF6EE; color: #1E2B2A; color-scheme: light;
+  --ink: #1E2B2A; --ink-hi: #1E2B2A; --sub: #4A5754; --mute: #5F6A67; --flat: #5F6A67; --bg: #FFFFFF;
+  --card: #FFFFFF; --card2: #F3ECE0; --card3: #FFFFFF; --hair: #D9CDB8; --hair2: #8A7F6E; --hair-soft: #E7DFD1; --line: #E6DCCB; --seam: #E6DCCB; --press: #F3ECE0; --lift: #FFFFFF;
+  --gold: #8A5A00; --gold-line: #8A5A00; --gold-wash: #FFF3DC; --up: #0B6E7A; --down: #5F6A67; --up-ink: #0B6E7A; --down-ink: #5F6A67; }
+html.pg-why.white.clock #view h1.st-h { color: var(--ink); font-size: var(--fs-3); }
+html.pg-why.white #view h1.st-h .st-art { display: none; }
+html.pg-why .wy.page { margin: 0; border: 0; border-radius: 0; background: transparent; }
+.wy .wy-topbar { display: block; }
+.wy .wy-topbar .wy-stk { margin: 0; background: #FFFFFF; }
+.wy .wy-prev { margin: var(--sp-1) 0 0; background: #EAF6F1; }
+.wy .wy-pg { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); margin: var(--sp-2) 0 0; }
+.wy .wy-pg .wy-prog { flex: 1 1 auto; margin: 0; }
+.wy .wy-pg .wy-step { margin: 0; flex: none; font-size: var(--fs-1); color: var(--mute); }
+.wy .wy-q { margin: var(--sp-2) 0 0; }
+.wy .wy-verdict { flex-direction: column; align-items: center; justify-content: center; gap: 0; margin: var(--sp-2) 0 0; text-align: center; }
+.wy .wy-res .wy-verdict b { color: var(--wl-tealt); }
+.wy-vk { font-size: var(--fs-2); font-weight: 700; color: var(--sub); }
+.wy .wy-type { text-align: center; }
+.wy-rart { display: flex; justify-content: center; margin: var(--sp-1) 0; }
+.wy-rart img { flex: none; width: 96px; height: 120px; }
+.wy .wy-res > .wy-score, .wy .wy-res > .wy-stop, .wy .wy-res > .wy-look { text-align: center; }
+html.white .wy .wy-opt.on { outline: 2px solid var(--wl-rim); outline-offset: -2px; background: #FFF1F4; }
+html.pg-why .wy .wy-fill.wy-fill.wy-g { background: var(--wl-teal); } /* 그림 4 막대 = 청록(돌 시계 판 하늘색 대신 · 이 쪽만) */
+.wy-ttw { display: flex; justify-content: center; }
+.wy-ttw .wy-tt { flex: 1 1 auto; max-width: 300px; }
+html.pg-why :is(.wy-due, .wy-rec, .wy-fold > summary, .cp-card) { border: 0; outline: 1px solid var(--hair2); outline-offset: -1px; } /* 테두리 대신 선(자리를 안 먹음) — 칸 안 글 시작이 16 · 32 · 48 세 줄에 맞게([10] 7) */
+html.pg-why .wy-due.wy-due { outline-color: var(--gold); } /* 한 달 전 약속 칸은 금빛 선 그대로 */
+@media (max-height: 760px) {
+  .wy .wy-pg { margin: 0; }
+  .wy .wy-q { margin: 0; }
+  .wy-rart img { width: 72px; height: 90px; }
+}
