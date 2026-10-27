@@ -1,5 +1,5 @@
 {
- "made": "2026-10-27T16:41:24.687Z",
+ "made": "2026-10-27T18:41:22.796Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -70,7 +70,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1794,
+    "height": 1776,
     "fold": null
    },
    "err": null,
@@ -99,7 +99,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1322,
+    "height": 1198,
     "fold": null
    },
    "err": null,
@@ -128,7 +128,36 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1213,
+    "height": 1097,
+    "fold": null
+   },
+   "err": null,
+   "parts": {}
+  },
+  {
+   "name": "whylater",
+   "hash": "#/why/later",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/whylater-390.png",
+    "reports/atlas11/probe/live-shot/whylater-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/why/later",
+    "title": "한 달 뒤 · 둘이",
+    "h1": "한 달 뒤",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1046,
     "fold": null
    },
    "err": null,
