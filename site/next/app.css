@@ -617,3 +617,16 @@ html.en .kkc > .card .meta { width: calc(100% - 124px); }
 .jb-more { margin: 16px 0; padding: 4px 16px; border: 1px solid #DDDDDD; border-radius: 16px; }
 .jb-more > summary { display: flex; align-items: center; min-height: 48px; font-weight: 700; cursor: pointer; list-style: none; }
 .jb-more > summary::-webkit-details-marker { display: none; }
+/* 대범한 잡스 판(jobs-order.js jobsBold · 사장님 2026-10-27 14:49 「고쳐라 대담하게」) — 주인공 크게 · 금빛 테두리 · 단추 하나 */
+.jb-hero { zoom: var(--jbz, 1); }
+@media (max-width: 379px) { .jb-hero { zoom: var(--jbzs, 1); } }
+.jb-card1 { outline: 3px solid #F2B84B; outline-offset: 8px; border-radius: 16px; background: rgba(242, 184, 75, .10); } /* 테두리는 바깥 선(outline) — 글 시작 왼쪽 줄이 늘지 않게([10] 7) */
+.jb-card2 { position: relative; }
+.jb-card2::before { content: ''; position: absolute; left: -12px; top: 0; bottom: 0; width: 6px; border-radius: 3px; background: #F2B84B; } /* 왼쪽 금빛 막대 — 글을 밀지 않음 */
+.jb-act { box-shadow: 0 0 0 3px #F2B84B; border-radius: 16px; } /* 키우지 않고 금빛 테두리만 — 글 시작 줄 그대로 */
+.jb-bold { padding: 0; border: 0; } /* 「자세히」 줄은 쪽 글과 같은 왼쪽 줄 */
+.jb-bold > summary { padding-left: 0; padding-right: 0; list-style: none; display: flex; align-items: center; justify-content: space-between; min-height: 48px; font-weight: 700; cursor: pointer; }
+.jb-bold > summary::-webkit-details-marker { display: none; }
+.jb-bold > summary::after { content: '›'; font-size: 1.2em; }
+.jb-bold[open] > summary::after { content: '⌄'; }
+.jb-hide-no .th-no { display: none; }
