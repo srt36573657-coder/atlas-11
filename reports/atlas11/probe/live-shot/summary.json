@@ -1,5 +1,5 @@
 {
- "made": "2026-10-27T08:39:14.876Z",
+ "made": "2026-10-27T09:05:11.677Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -7,57 +7,29 @@
  ],
  "shots": [
   {
-   "name": "coe",
-   "hash": "#/t/c/033790",
+   "name": "pick",
+   "hash": "#/t/pick",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/coe-390.png",
-    "reports/atlas11/probe/live-shot/coe-390-long.png"
+    "reports/atlas11/probe/live-shot/pick-390.png",
+    "reports/atlas11/probe/live-shot/pick-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/t/c/033790",
-    "title": "회사 · 돌이",
-    "h1": "회사",
-    "kakaoText": 1,
+    "hash": "#/t/pick",
+    "title": "돌이가 고른 회사 · 돌이",
+    "h1": "돌이가 고른 회사",
+    "kakaoText": 6,
     "kakaoRow": 0,
-    "kakaoAll": 1,
+    "kakaoAll": 6,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1054,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "co",
-   "hash": "#/t/c/079160",
-   "size": [
-    390,
-    844
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/co-390.png",
-    "reports/atlas11/probe/live-shot/co-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/t/c/079160",
-    "title": "CJ CGV · 돌이",
-    "h1": "CJ CGV",
-    "kakaoText": 2,
-    "kakaoRow": 0,
-    "kakaoAll": 2,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1346,
+    "height": 7080,
     "fold": null
    },
    "err": null
@@ -91,58 +63,39 @@
    "err": null
   },
   {
-   "name": "sprout",
-   "hash": "#/t/sprout",
+   "name": "home",
+   "hash": "#/",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/sprout-390.png",
-    "reports/atlas11/probe/live-shot/sprout-390-long.png"
+    "reports/atlas11/probe/live-shot/home-390.png",
+    "reports/atlas11/probe/live-shot/home-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/t/sprout",
-    "title": "싹 자리 전부 · 돌이",
-    "h1": "싹 자리 전부",
-    "kakaoText": 3,
-    "kakaoRow": 0,
-    "kakaoAll": 3,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1128,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "ind",
-   "hash": "#/t/i/%EC%97%86%EB%8A%94%EC%97%85%EC%A2%85",
-   "size": [
-    390,
-    844
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/ind-390.png",
-    "reports/atlas11/probe/live-shot/ind-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/t/i/%EC%97%86%EB%8A%94%EC%97%85%EC%A2%85",
-    "title": "없는업종 · 돌이",
-    "h1": "없는업종",
+    "hash": "#/",
+    "title": "오늘 장 · 돌이",
+    "h1": "업종 77곳은 지금",
     "kakaoText": 1,
     "kakaoRow": 0,
     "kakaoAll": 1,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
-    "calgo": false,
-    "height": 1054,
-    "fold": null
+    "calgo": true,
+    "height": 2550,
+    "fold": {
+     "apps": 671,
+     "room": 711,
+     "vh": 844,
+     "fit": true,
+     "clock": [
+      272,
+      218
+     ]
+    }
    },
    "err": null
   }
