@@ -1,109 +1,113 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-10-26T14:36:07Z",
-  "dayKST": "2026-10-26",
+  "at": "2026-10-27T07:54:46Z",
+  "dayKST": "2026-10-27",
   "status": "partial",
   "exitCode": 2,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-10-26T14:36:08.122Z",
+      "startedAt": "2026-10-27T07:54:46.693Z",
       "status": "ok",
-      "durationMs": 25,
+      "durationMs": 224,
       "session": true,
       "afterClose": true,
-      "day": "2026-10-26",
-      "cutoff": "2026-10-26"
+      "day": "2026-10-27",
+      "cutoff": "2026-10-27"
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-10-26T14:36:08.147Z",
+      "startedAt": "2026-10-27T07:54:46.917Z",
       "status": "ok",
-      "durationMs": 10316,
+      "durationMs": 220005,
       "attempted": true,
-      "observations": 0,
-      "errors": 21,
-      "recordId": "collection-b9f28b2c5b8f5de7"
+      "observations": 359,
+      "errors": 20,
+      "recordId": "collection-67135a6a2cf099a0"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-10-26T14:36:18.463Z",
+      "startedAt": "2026-10-27T07:58:26.922Z",
       "status": "ok",
-      "durationMs": 3558,
-      "changed": false,
-      "confirmedToday": 358,
+      "durationMs": 6972,
+      "changed": true,
+      "confirmedToday": 359,
       "actualAsOf": "2026-10-01",
-      "inputSnapshotSHA256": "4325efcadfe0a27e42a31b1bc5b31223f0bff1e963a956cdf254bc7c41f020ad"
+      "inputSnapshotSHA256": "85a8ec60c8bffc087dc408dfd3ab45d4a3864cc482cff5310ec7cfad0ed740a8"
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-10-26T14:36:22.022Z",
+      "startedAt": "2026-10-27T07:58:33.896Z",
       "view": {
-        "boardId": "board-2026-10-26-a5bb2b35",
-        "asOf": "2026-10-26",
+        "boardId": "board-2026-10-27-2684e0ff",
+        "asOf": "2026-10-27",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2952949,
+        "bytes": 2944207,
         "similar": [
           "DB",
-          "파인엠텍",
+          "삼성E&A",
+          "선익시스템",
           "아스플로",
           "디어유",
-          "선익시스템",
-          "삼성E&A",
-          "펌텍코리아"
+          "파인엠텍",
+          "제주항공"
         ],
         "moves": "2026-10-23 → 2026-10-26",
         "evening": null,
         "lead6": {
           "groups": 15,
           "companies": 74,
-          "both": 35,
-          "index": "코스피 2026-10-26 -40.0%"
+          "both": 39,
+          "index": "코스피 2026-10-27 -38.1%"
         },
         "market": {
           "file": "public/data/atlas11/market/KOSPI.json",
-          "added": [],
+          "added": [
+            "2026-10-27"
+          ],
           "mismatch": []
         },
         "changelog": {
-          "wrote": false,
-          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
+          "file": "reports/atlas11/changelog/data-kr/kr-20261027T165446.json",
+          "wrote": true,
+          "title": "10월 27일(화) 종가로 판을 새로 만듦"
         },
         "issue": {
-          "wrote": false,
-          "reason": "2026-10-26 이슈가 이미 있음"
+          "file": "reports/atlas11/changelog/data-kr/issue-kr-20261027T165446.json",
+          "wrote": true,
+          "title": "10월 27일(화) 한국 장 이슈"
         }
       },
       "status": "ok",
-      "durationMs": 891
+      "durationMs": 1528
     }
   ],
   "runtime": {
     "host": "github-actions",
     "runner": "Linux ubuntu24",
-    "event": "schedule",
+    "event": "workflow_dispatch",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "40340262664",
+    "runId": "40469388600",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/40340262664",
-    "commit": "1c00523f35c42e67c25d4a9cf09afe2991b4c49a",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/40469388600",
+    "commit": "1d3bae5f3de10d72708ac29e0facc3912d5bbdf7",
     "serverInstalled": true,
-    "scheduledRun": true
+    "scheduledRun": false
   },
   "serverInstalled": true,
-  "scheduledRunInstalled": true,
+  "scheduledRunInstalled": false,
   "prediction": "off",
   "warnings": [],
   "universeId": "u2-n365-v1-2026-10-05",
-  "day": "2026-10-26",
+  "day": "2026-10-27",
   "session": true,
   "afterClose": true,
   "calendarGate": {
-    "day": "2026-10-26",
+    "day": "2026-10-27",
     "status": "await_final_provider_close",
     "regularClose": "15:30",
     "mayCollectFinalClose": true,
@@ -111,13 +115,13 @@
     "targetDeadline": "16:00",
     "beforeTargetDeadline": false
   },
-  "cutoff": "2026-10-26",
+  "cutoff": "2026-10-27",
   "deadlineKST": "16:00",
   "previousActualAsOf": "2026-10-01",
   "collection": {
     "attempted": true,
     "provider": "naver_minute_1530_closing_auction",
-    "observations": 0,
+    "observations": 359,
     "errors": [
       {
         "code": "REVIEWED_ROW_MISMATCH",
@@ -130,19 +134,7 @@
       {
         "code": "DAY_MISSING",
         "stockCode": "078930",
-        "day": "2026-10-20",
-        "message": "15:30 봉 없음"
-      },
-      {
-        "code": "TODAY_NOT_FINAL",
-        "stockCode": "078930",
         "day": "2026-10-26",
-        "message": "15:30 종가 단일가 봉이 아직 없음"
-      },
-      {
-        "code": "DAY_MISSING",
-        "stockCode": "066410",
-        "day": "2026-10-20",
         "message": "15:30 봉 없음"
       },
       {
@@ -164,16 +156,16 @@
         "message": "15:30 봉 없음"
       },
       {
-        "code": "TODAY_NOT_FINAL",
+        "code": "DAY_MISSING",
         "stockCode": "066410",
         "day": "2026-10-26",
-        "message": "15:30 종가 단일가 봉이 아직 없음"
+        "message": "15:30 봉 없음"
       },
       {
-        "code": "DAY_MISSING",
-        "stockCode": "182400",
-        "day": "2026-10-20",
-        "message": "15:30 봉 없음"
+        "code": "TODAY_NOT_FINAL",
+        "stockCode": "066410",
+        "day": "2026-10-27",
+        "message": "15:30 종가 단일가 봉이 아직 없음"
       },
       {
         "code": "DAY_MISSING",
@@ -194,16 +186,16 @@
         "message": "15:30 봉 없음"
       },
       {
-        "code": "TODAY_NOT_FINAL",
+        "code": "DAY_MISSING",
         "stockCode": "182400",
         "day": "2026-10-26",
-        "message": "15:30 종가 단일가 봉이 아직 없음"
+        "message": "15:30 봉 없음"
       },
       {
-        "code": "DAY_MISSING",
-        "stockCode": "036030",
-        "day": "2026-10-20",
-        "message": "15:30 봉 없음"
+        "code": "TODAY_NOT_FINAL",
+        "stockCode": "182400",
+        "day": "2026-10-27",
+        "message": "15:30 종가 단일가 봉이 아직 없음"
       },
       {
         "code": "REVIEWED_ROW_MISMATCH",
@@ -223,16 +215,16 @@
         }
       },
       {
-        "code": "TODAY_NOT_FINAL",
+        "code": "DAY_MISSING",
         "stockCode": "441270",
         "day": "2026-10-26",
-        "message": "15:30 종가 단일가 봉이 아직 없음"
+        "message": "15:30 봉 없음"
       },
       {
-        "code": "DAY_MISSING",
-        "stockCode": "066790",
-        "day": "2026-10-20",
-        "message": "15:30 봉 없음"
+        "code": "TODAY_NOT_FINAL",
+        "stockCode": "035610",
+        "day": "2026-10-27",
+        "message": "15:30 종가 단일가 봉이 아직 없음"
       },
       {
         "code": "DAY_MISSING",
@@ -253,9 +245,15 @@
         "message": "15:30 봉 없음"
       },
       {
-        "code": "TODAY_NOT_FINAL",
+        "code": "DAY_MISSING",
         "stockCode": "066790",
         "day": "2026-10-26",
+        "message": "15:30 봉 없음"
+      },
+      {
+        "code": "TODAY_NOT_FINAL",
+        "stockCode": "066790",
+        "day": "2026-10-27",
         "message": "15:30 종가 단일가 봉이 아직 없음"
       }
     ],
@@ -264,19 +262,19 @@
       "stocks": 365,
       "succeeded": 363,
       "failed": 2,
-      "finalizedToday": 0,
-      "crossChecked": 5,
-      "requests": 30,
-      "durationMs": 10304,
+      "finalizedToday": 359,
+      "crossChecked": 362,
+      "requests": 746,
+      "durationMs": 219971,
       "corporateActionAdjusted": []
     },
-    "durationMs": 10304
+    "durationMs": 219971
   },
-  "collectionRecordId": "collection-b9f28b2c5b8f5de7",
-  "inputChanged": false,
+  "collectionRecordId": "collection-67135a6a2cf099a0",
+  "inputChanged": true,
   "actualAsOf": "2026-10-01",
-  "freshStocks": 0,
-  "confirmedTodayStocks": 358,
+  "freshStocks": 359,
+  "confirmedTodayStocks": 359,
   "confirmedTodayCodes": [
     "000080",
     "000100",
@@ -420,7 +418,6 @@
     "035250",
     "035420",
     "035510",
-    "035610",
     "035720",
     "035760",
     "035890",
@@ -474,6 +471,7 @@
     "071970",
     "077970",
     "078150",
+    "078930",
     "079160",
     "079550",
     "081660",
@@ -632,22 +630,22 @@
     "417200",
     "419530",
     "440110",
+    "441270",
     "445680",
     "454910",
     "475150",
     "900290"
   ],
-  "inputSnapshotSHA256": "4325efcadfe0a27e42a31b1bc5b31223f0bff1e963a956cdf254bc7c41f020ad",
+  "inputSnapshotSHA256": "85a8ec60c8bffc087dc408dfd3ab45d4a3864cc482cff5310ec7cfad0ed740a8",
   "unconfirmedCodes": [
     "207940",
-    "078930",
     "066410",
     "182400",
     "290650",
-    "441270",
+    "035610",
     "066790"
   ],
   "expectedStocks": 365,
-  "incompleteReason": "오늘(2026-10-26) 확정 종가 358/365 · 다음 시도에서 다시 받음",
-  "finishedAt": "2026-10-26T14:36:22.913Z"
+  "incompleteReason": "오늘(2026-10-27) 확정 종가 359/365 · 다음 시도에서 다시 받음",
+  "finishedAt": "2026-10-27T07:58:35.424Z"
 }
