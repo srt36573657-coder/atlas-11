@@ -11,6 +11,7 @@ import {fetchGift, giftMessage, fetchSealed, fetchNew, ack, pairLast, splitLast,
 import {handleGift, refOf, GIFT_STORE as LIB_GIFT_STORE, RULE as LIB_RULE} from '../../lib/atlas11/gift.mjs';
 import {handleHelp} from '../../lib/atlas11/help.mjs';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
+import {NAME} from '../../site/next/brand.js'; // 이름 한 곳(2026-10-27 21:50 둘이)
 
 const read = p => fs.readFileSync(new URL('../../' + p, import.meta.url), 'utf8');
 const devKey = () => randomBytes(16).toString('base64url');
@@ -43,7 +44,7 @@ test('같은 저장소 이름 · 같은 번호 꼴(선물 서버와 맞댐) · �
 
 test('카톡 한 통 — 때 · 친구 수 · 카톡에서 연 수 · 번호 끝 네 자리만 · 190자 안', () => {
   const m = giftMessage({id: 'x', at: '2026-10-25T07:20:00.000Z', friends: 3, kk: 2, phone: '01012345678', tail: '5678', state: 'wait'});
-  assert.equal(m, '[돌이 선물] 새 신청이 왔어요\n10월 25일 오후 4시 20분\n친구 3명이 열었어요 · 카톡에서 2명\n전화번호 끝 5678\n관리자 화면에서 번호를 보고 카톡 선물을 보내 주세요.');
+  assert.equal(m, `[${NAME} 선물] 새 신청이 왔어요\n10월 25일 오후 4시 20분\n친구 3명이 열었어요 · 카톡에서 2명\n전화번호 끝 5678\n관리자 화면에서 번호를 보고 카톡 선물을 보내 주세요.`);
   assert.ok(!m.includes('01012345678') && !m.includes('1234'), '전체 번호는 넣지 않음');
   assert.ok(Array.from(m).length <= MSG_MAX);
   assert.ok(giftMessage({at: 'bad', tail: '12'}).includes('전화번호 끝 ????'), '꼴이 틀린 끝 번호는 숨김');
@@ -84,7 +85,7 @@ test('잠그기 — 고객센터 글 다음에 선물 신청 · n 은 둘을 더
   const got = open(box, k.priv);
   assert.equal(got.n, 2); assert.equal(got.help, 1); assert.equal(got.gift, 1);
   assert.equal(got.last, h.id + '+' + g);
-  assert.ok(got.messages[0].startsWith('[돌이 고객센터]') && got.messages.at(-1).startsWith('[돌이 선물]'));
+  assert.ok(got.messages[0].startsWith(`[${NAME} 고객센터]`) && got.messages.at(-1).startsWith(`[${NAME} 선물]`));
   assert.deepEqual(splitLast(got.last), {help: h.id, gift: g});
   const done = await ack(help, got.last, {giftStore: gift});
   assert.ok(done.ok && done.moved && done.gift.moved, JSON.stringify(done));
@@ -109,7 +110,7 @@ test('친구 알림 — 같은 셈(셋) · 카톡 한 통 꼴 · 190자 안 · �
   assert.equal(GIFT_PER, LIB_RULE.per);
   assert.equal(FRIENDS_START, '2026-10-26T05:30:00.000Z');
   const m = friendsMessage({at: '2026-10-26T05:42:10.000Z', friends: 4, kk: 0, step: 3, ref: 'AAAAAAAAAAAAAAAA'});
-  assert.equal(m, '[돌이 선물] 친구 3명이 열었어요\n10월 26일 오후 2시 42분\n한 분이 보낸 주소를 친구 4명이 열었어요 · 카톡에서 0명\n그분이 선물 받기에서 신청하면 번호가 함께 와요.');
+  assert.equal(m, `[${NAME} 선물] 친구 3명이 열었어요\n10월 26일 오후 2시 42분\n한 분이 보낸 주소를 친구 4명이 열었어요 · 카톡에서 0명\n그분이 선물 받기에서 신청하면 번호가 함께 와요.`);
   assert.ok(Array.from(m).length <= MSG_MAX && !m.includes('AAAA'));
 });
 test('친구 알림 — 셋째가 열면 한 통 · 넷 · 다섯은 그대로 · 여섯째에 또 한 통 · 못 보내면 다시(새로 만들지 않음) · 보낸 뒤 0', async () => {
@@ -118,7 +119,7 @@ test('친구 알림 — 셋째가 열면 한 통 · 넷 · 다섯은 그대로 �
   assert.equal((await fetchGift(store, {now: new Date(clock.t)})).n, 0, '둘은 아직');
   await opens(store, clock, r, 1);
   const a = await fetchGift(store, {now: new Date(clock.t)});
-  assert.equal(a.n, 1); assert.match(a.messages[0], /^\[돌이 선물\] 친구 3명이 열었어요\n10월 26일 오후 2시 4\d분\n한 분이 보낸 주소를 친구 3명이 열었어요 · 카톡에서 1명/);
+  assert.equal(a.n, 1); assert.match(a.messages[0], /^\[둘이 선물\] 친구 3명이 열었어요\n10월 26일 오후 2시 4\d분\n한 분이 보낸 주소를 친구 3명이 열었어요 · 카톡에서 1명/);
   const again = await fetchGift(store, {now: new Date(clock.t + 3600e3)});
   assert.equal(again.n, 1, '못 보냈으면 다음 시간에 같은 알림'); assert.equal(again.last, a.last, '알림을 새로 만들지 않음');
   assert.equal(((await store.list({prefix: 'e/'})).blobs ?? []).length, 1);
@@ -127,13 +128,13 @@ test('친구 알림 — 셋째가 열면 한 통 · 넷 · 다섯은 그대로 �
   assert.equal((await fetchGift(store, {now: new Date(clock.t)})).n, 0, '넷 · 다섯은 알리지 않음');
   await opens(store, clock, r, 1);
   const b = await fetchGift(store, {now: new Date(clock.t)});
-  assert.equal(b.n, 1); assert.match(b.messages[0], /^\[돌이 선물\] 친구 6명이 열었어요\n/);
+  assert.equal(b.n, 1); assert.match(b.messages[0], /^\[둘이 선물\] 친구 6명이 열었어요\n/);
   // 신청도 오면 번호(때)대로 섞임 — 친구 알림 다음에 신청
   clock.t += 60e3;
   const c = await giftApi(store, clock)('/claim', {phone: '010-5555-6666', agree: true, watched: true}, {key: me});
   assert.equal(c.status, 200, JSON.stringify(c.body));
   const d = await fetchGift(store, {now: new Date(clock.t)});
-  assert.equal(d.n, 2); assert.ok(d.messages[0].startsWith('[돌이 선물] 친구 6명') && d.messages[1].startsWith('[돌이 선물] 새 신청'), JSON.stringify(d.messages));
+  assert.equal(d.n, 2); assert.ok(d.messages[0].startsWith(`[${NAME} 선물] 친구 6명`) && d.messages[1].startsWith(`[${NAME} 선물] 새 신청`), JSON.stringify(d.messages));
   assert.equal(d.last, c.body.id);
   assert.equal((await store.get(CURSOR_KEY, {type: 'json'})).id, a.last, '꺼내기는 보낸 표시를 옮기지 않음(ack 만)');
 });
@@ -149,7 +150,7 @@ test('친구 알림 — 셋째가 시작 때 전에 열었으면(시험 기록) 
   const id = await oneClaim(s2, c2);
   const blocked = {...s2, list: async o => { if (o?.prefix === 'v/') throw Error('막힘'); return s2.list(o); }, get: (...x) => s2.get(...x), setJSON: (...x) => s2.setJSON(...x)};
   const g = await fetchGift(blocked, {now: new Date(c2.t)});
-  assert.equal(g.n, 1); assert.equal(g.last, id); assert.ok(g.messages[0].startsWith('[돌이 선물] 새 신청'));
+  assert.equal(g.n, 1); assert.equal(g.last, id); assert.ok(g.messages[0].startsWith(`[${NAME} 선물] 새 신청`));
 });
 
 test('선물 저장소가 없거나 못 읽어도 고객센터 글은 예전과 같음 · 번호 꼴', async () => {
@@ -181,7 +182,7 @@ test('방 · 작업 · 처리방침 — 방은 두 꼴 번호를 받음 · 작�
 
 test('「상품권 주세요」 알림(사장님 2026-10-26 16:14 · 16:16) — 확인 번호 넷 · 받는 분 번호 없음 · 190자 안', () => {
   const m = giftMessage({kind: 'ask', id: 'x', at: '2026-10-26T07:20:00.000Z', friends: 3, kk: 1, code: '0427', phone: null, tail: null, state: 'wait'});
-  assert.equal(m, '[돌이 선물] 상품권 주세요\n10월 26일 오후 4시 20분\n친구 3명이 열었어요 · 카톡에서 1명\n확인 번호 0427\n이 번호를 보내는 분께 상품권을 보내 주세요.');
+  assert.equal(m, `[${NAME} 선물] 상품권 주세요\n10월 26일 오후 4시 20분\n친구 3명이 열었어요 · 카톡에서 1명\n확인 번호 0427\n이 번호를 보내는 분께 상품권을 보내 주세요.`);
   assert.ok(Array.from(m).length <= MSG_MAX);
   assert.ok(giftMessage({kind: 'ask', at: 'bad', code: '12'}).includes('확인 번호 ????'));
 });

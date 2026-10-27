@@ -9,6 +9,7 @@ import {failStreak, pickRun, newTag, checkSent, doneRoom} from '../../scripts/at
 import os from 'node:os';
 import path from 'node:path';
 import {memoryStore} from '../../lib/atlas11/letter.mjs';
+import {NAME} from '../../site/next/brand.js'; // 이름 한 곳(2026-10-27 21:50 둘이)
 
 const read = p => fs.readFileSync(new URL('../../' + p, import.meta.url), 'utf8');
 const id = (t, r = 'aaaaaaaaaaaa') => Math.floor(t).toString(36).padStart(9, '0') + '-' + r;
@@ -36,20 +37,20 @@ test('카톡 글 — 머리 · 때 · 보던 화면 · 한 통 190자 안 · 길
   assert.equal(whenKo('2026-10-22T06:00:00Z'), '10월 22일 오후 3시');
   const one = toMessages({kind: 'note', tone: 'want', page: 'gift', at: '2026-10-21T22:47:00Z', text: '상품권 받는 법을 더 크게 써 주세요'});
   assert.equal(one.length, 1);
-  assert.match(one[0], /^\[돌이 고객센터\] 한마디 · 바라요\n10월 22일 오전 7시 47분 · 보던 화면 상품권 방\n\n상품권 받는 법을 더 크게 써 주세요$/);
+  assert.match(one[0], /^\[둘이 고객센터\] 한마디 · 바라요\n10월 22일 오전 7시 47분 · 보던 화면 상품권 방\n\n상품권 받는 법을 더 크게 써 주세요$/);
   const long = 'ㄱ'.repeat(470) + '끝';
   const many = toMessages({kind: 'ask', at: '2026-10-21T22:47:00Z', text: long});
   assert.ok(many.length >= 3, '나눔');
   assert.ok(many.every(m => Array.from(m).length <= MSG_MAX), many.map(m => Array.from(m).length).join(','));
-  assert.match(many[0], /^\[돌이 고객센터\] 물음\n/);
-  assert.match(many[1], /^\[돌이 고객센터 · 이어서 2\/\d\]\n/);
+  assert.match(many[0], /^\[둘이 고객센터\] 물음\n/);
+  assert.match(many[1], /^\[둘이 고객센터 · 이어서 2\/\d\]\n/);
   const back = many.map((m, i) => (i === 0 ? m.split('\n\n').slice(1).join('\n\n').replace(/ \(1\/\d+\)$/, '') : m.split('\n').slice(1).join('\n'))).join('');
   assert.equal(back, long, '글 한 글자도 안 바뀜');
 });
 
 test('잠그기 — 방 열쇠로만 풀림 · 알림 줄로 갔다 와도 같음 · 다른 열쇠는 못 풂', () => {
   const k = newRoomKey(), other = newRoomKey();
-  const obj = {schema: 'x', messages: ['[돌이 고객센터] 한마디\n비밀 글'], last: id(T0)};
+  const obj = {schema: 'x', messages: [`[${NAME} 고객센터] 한마디\n비밀 글`], last: id(T0)};
   const box = seal(obj, k.pub);
   assert.ok(!JSON.stringify(box).includes('비밀'), '맨글 없음');
   const lines = toAnnotations(box);
@@ -143,7 +144,7 @@ test('보낸 통 수 — 카톡 도구가 「성공」이라 답한 통 수를 �
   assert.deepEqual(checkSent(' 1 ', null), {ok: true, sent: 1}, '파일을 못 읽으면 수만 봄');
   // 깃허브를 부르기 전에 막힘 — 꺼낸 파일에 글 둘인데 한 통만 보냈다고 하면 보낸 표시 없음
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'room-sent-')), file = path.join(dir, 'help-forward.json');
-  fs.writeFileSync(file, JSON.stringify({messages: ['[돌이 고객센터] 가', '[돌이 선물] 나'], last: '+' + id(T0), n: 2, more: 0}));
+  fs.writeFileSync(file, JSON.stringify({messages: [`[${NAME} 고객센터] 가`, `[${NAME} 선물] 나`], last: '+' + id(T0), n: 2, more: 0}));
   const r1 = await doneRoom({run: '1', last: '+' + id(T0), sent: '1', file});
   assert.equal(r1.ok, false); assert.match(r1.why, /1\/2/);
   const r0 = await doneRoom({run: '1', last: '+' + id(T0), file});

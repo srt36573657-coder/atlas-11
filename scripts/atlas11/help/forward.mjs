@@ -17,6 +17,7 @@ import fs from 'node:fs';
 import zlib from 'node:zlib';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {NAME} from '../../../site/next/brand.js'; // 이름 한 곳(규칙 76 · 2026-10-27 21:50 「돌이 를 둘이 로 변경해라」)
 
 export const FWD_SCHEMA = 'atlas11-help-forward-1';
 export const HELP_STORE = 'atlas11-help-v1'; // lib/atlas11/help.mjs HELP_STORE 와 같음(이 파일은 따로 돎 — 시험이 맞댐)
@@ -31,7 +32,7 @@ export const ID_RE = /^[0-9a-z]{9}-[A-Za-z0-9_-]{12}$/; // site/next/help-rule.j
 export const MAX_ITEMS = 10, MSG_MAX = 190;
 
 const TONE = {good: '좋았어요', want: '바라요', broken: '안 돼요'};
-const PAGE = {home: '첫 화면', f: '첫 화면 목록', why: '매매일지', gdr: '돌이 칸', w: '회사 화면', t: '테마 시계', shorts: '시황', sub: '관심', me: '보유종목', find: '찾기', today: '오늘 시장', gift: '상품권 방', jinhwa: '진화', info: '도움말', up: '업데이트 기록', ch: '업종 채널', i: '업종', s: '받은 카드', cal: '달력', cond: '조건 찾기', surge: '급등'};
+const PAGE = {home: '첫 화면', f: '첫 화면 목록', why: '매매일지', gdr: NAME + ' 칸', w: '회사 화면', t: '테마 시계', shorts: '시황', sub: '관심', me: '보유종목', find: '찾기', today: '오늘 시장', gift: '상품권 방', jinhwa: '진화', info: '도움말', up: '업데이트 기록', ch: '업종 채널', i: '업종', s: '받은 카드', cal: '달력', cond: '조건 찾기', surge: '급등'};
 const KST = 9 * 3600e3;
 /** 「10월 22일 오전 7시 47분」 — 서울 때 */
 export function whenKo(iso) {
@@ -43,14 +44,14 @@ export function whenKo(iso) {
 export function toMessages(it, {max = MSG_MAX} = {}) {
   const kind = it.kind === 'ask' ? '물음' : '한마디' + (TONE[it.tone] ? ' · ' + TONE[it.tone] : '');
   const page = PAGE[it.page] ?? (it.page ? it.page : '');
-  const head = `[돌이 고객센터] ${kind}\n${[whenKo(it.at), page ? '보던 화면 ' + page : ''].filter(Boolean).join(' · ')}\n\n`;
+  const head = `[${NAME} 고객센터] ${kind}\n${[whenKo(it.at), page ? '보던 화면 ' + page : ''].filter(Boolean).join(' · ')}\n\n`;
   const text = Array.from(String(it.text ?? ''));
   const whole = Array.from(head).length + text.length <= max;
   const first = whole ? text.length : Math.max(20, max - Array.from(head).length - 8); // 나뉘면 끝에 「 (1/n)」 자리
   const parts = [text.slice(0, first).join('')];
   for (let i = first; i < text.length;) { const room = max - 22; parts.push(text.slice(i, i + room).join('')); i += room; }
   if (parts.length === 1) return [head + parts[0]];
-  return parts.map((p, i) => (i === 0 ? head + p + ` (1/${parts.length})` : `[돌이 고객센터 · 이어서 ${i + 1}/${parts.length}]\n${p}`));
+  return parts.map((p, i) => (i === 0 ? head + p + ` (1/${parts.length})` : `[${NAME} 고객센터 · 이어서 ${i + 1}/${parts.length}]\n${p}`));
 }
 /** 보낸 표시 뒤 새 글만 — 번호 차례(번호 앞 9자 = 때) · 많아야 max 개 · 기기 표시 · 답은 뺌 */
 export function pickNew(items, cursor, {max = MAX_ITEMS} = {}) {
@@ -126,9 +127,9 @@ export const GIFT_START = '2026-10-25T06:00:00.000Z';
 export function giftMessage(c) {
   const n = Number.isInteger(c?.friends) ? c.friends : 0, kk = Number.isInteger(c?.kk) ? c.kk : 0;
   // 「상품권 주세요」(사장님 2026-10-26 16:14 · 16:16) — 받는 분 번호는 없음 · 그분이 사장님께 카톡 · 문자로 보낼 확인 번호 넷만
-  if (c?.kind === 'ask') return `[돌이 선물] 상품권 주세요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n확인 번호 ${/^\d{4}$/.test(String(c?.code ?? '')) ? c.code : '????'}\n이 번호를 보내는 분께 상품권을 보내 주세요.`;
+  if (c?.kind === 'ask') return `[${NAME} 선물] 상품권 주세요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n확인 번호 ${/^\d{4}$/.test(String(c?.code ?? '')) ? c.code : '????'}\n이 번호를 보내는 분께 상품권을 보내 주세요.`;
   const tail = /^\d{4}$/.test(String(c?.tail ?? '')) ? c.tail : '????';
-  return `[돌이 선물] 새 신청이 왔어요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n전화번호 끝 ${tail}\n관리자 화면에서 번호를 보고 카톡 선물을 보내 주세요.`;
+  return `[${NAME} 선물] 새 신청이 왔어요\n${whenKo(c?.at)}\n친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n전화번호 끝 ${tail}\n관리자 화면에서 번호를 보고 카톡 선물을 보내 주세요.`;
 }
 // ───────────── 친구 셋 알림(사장님 2026-10-26(서울) 14:45 「카촉을 8명 보냈는데 내겐 오지 않아 / 너 해결해」) ─────────────
 //   신청 전이라도 한 분이 보낸 주소를 친구 셋 · 여섯 · 아홉 …이 처음 열면 사장님께 한 통(전에는 지인이 선물 받기에서 신청해야만 알림이 갔음)
@@ -143,7 +144,7 @@ const eventId = ms => Math.floor(ms).toString(36).padStart(9, '0') + '-' + crypt
 /** 친구 알림 하나 → 카톡 한 통 */
 export function friendsMessage(e) {
   const n = Number.isInteger(e?.friends) ? e.friends : 0, kk = Number.isInteger(e?.kk) ? e.kk : 0, s = Number.isInteger(e?.step) && e.step > 0 ? e.step : GIFT_PER;
-  return `[돌이 선물] 친구 ${s}명이 열었어요\n${whenKo(e?.at)}\n한 분이 보낸 주소를 친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n그분이 선물 받기에서 신청하면 번호가 함께 와요.`;
+  return `[${NAME} 선물] 친구 ${s}명이 열었어요\n${whenKo(e?.at)}\n한 분이 보낸 주소를 친구 ${n}명이 열었어요 · 카톡에서 ${kk}명\n그분이 선물 받기에서 신청하면 번호가 함께 와요.`;
 }
 /** 알림 만들기 — 만든 알림 번호들 · 연 기록을 다 못 읽은 표는 이번에 건너뜀(다음 시간에 다시) */
 export async function markFriends(store, {now = new Date(), start = FRIENDS_START, per = GIFT_PER} = {}) {

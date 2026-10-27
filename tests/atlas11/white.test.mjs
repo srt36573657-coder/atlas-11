@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {NAME} from '../../site/next/brand.js'; // 넷째 단추 = 이름 한 곳(2026-10-27 21:50 둘이)
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -51,7 +52,7 @@ test('정적 문이 망치는 길 · 옛 화면 남김을 잡음(가짜 폴더)'
   try {
     fs.mkdirSync(path.join(tmp, 'site/next'), {recursive: true}); fs.writeFileSync(path.join(tmp, 'site/next/home.css'), '');
     const d = path.join(tmp, 'dist'), n = path.join(d, 'next'); fs.mkdirSync(n, {recursive: true});
-    const nav = '<nav class="tabs"><a href="#/t/picks">꽃 될 회사</a><a href="#/t/pick">지난 기록</a><a href="#/why">왜 사?</a><a href="#/dori">돌이</a></nav>'; // 아래 단추 넷(사장님 2026-10-26 14:40 「어 넣어」)
+    const nav = `<nav class="tabs"><a href="#/t/picks">꽃 될 회사</a><a href="#/t/pick">지난 기록</a><a href="#/why">왜 사?</a><a href="#/dori">${NAME}</a></nav>`; // 아래 단추 넷(사장님 2026-10-26 14:40 「어 넣어」)
     fs.writeFileSync(path.join(n, 'index.html'), `<link rel="stylesheet" href="/next/home.css">${nav}`);
     fs.writeFileSync(path.join(n, 'app.css'), 'html.white{--bg:#FFFFFF;--ink:#000000;--gold:#6B2A8C;--up:#007A35;--down:#1E4FC2}'); // 가짜 폴더 색 = 지금 잣대 색 4 출발값(2026-10-20 20:27 우주 밤하늘 — 옛 #080808 · #F9D21C 그대로라 이 시험만 걸려 있었음)
     fs.writeFileSync(path.join(n, 'home.css'), '.x{color:red}');

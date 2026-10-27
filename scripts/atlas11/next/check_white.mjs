@@ -29,6 +29,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {whiteOn, HOME_CSS} from './white_gate.mjs';
+import {TABS as GATE_TABS} from './white_gate.mjs'; // 아래 단추 넷 = 문과 같은 한 곳(넷째 = brand.js 이름 · 2026-10-27 21:50 둘이)
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const argv = process.argv.slice(2);
@@ -40,7 +41,7 @@ const BASEFILE = path.join(ROOT, 'config/atlas11/white-baseline.json');
 /* 돌 판(사장님 2026-10-19(싱가포르) 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3) — 바탕 먹 #080808 · 글 흰색 · 돌 그림(/media/stone/)은 허락한 그림(입체 · 그림자는 그 그림 파일 안에만 · 10:12 「다써」) */
 const BG = '#152D30', INK = '#F2F3F3'; // 돌 시계 청록 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · site/next/clock.css) — 옛 흰 판 #FFFFFF · #000000(2026-10-23) // 숲 초록(사장님 2026-10-22 23:23 「배경색을 그린색으로 바꿔주세요」) · 옛 우주 밤하늘 #070B17(2026-10-20 20:27)
 const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'], THUMB = ['find'], THEME_CHARS = 220; // 200 → 220(2026-10-26 돌 시계 판 — 사장님 08:16 「디자인 이렇게 하라고」 그림의 그림 단추 넷 「꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터」 15자가 테마 칸 안 고리 바로 아래에 붙음) // THUMB = 엄지 자리(한 화면 안) — 2026-10-21 02:29 사장님 「어」(02:11 「친구야  왜? 사 이창 … 너무 불편해」): 붙어 있는 것은 찾기 칸 한 줄만 · 바로 가기(gdr) · 전부 보기(all)는 화면 안 제자리(칸이 있는지는 BLOCKS 가 그대로 잼) · THEME_CHARS = 테마 시계 칸 글자 한도(2026-10-19 잰 값 172자)
-const TABS = ['꽃 될 회사', '지난 기록', '왜 사?', '둘이']; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이
+const TABS = [...GATE_TABS]; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이
 const R = {schema: 'golttori-check-white-1', at: new Date().toISOString(), base: MOCK ? null : base, mock: MOCK, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const fail = (what, why) => { R.counts.fail++; R.fails.push(`${what} — ${why}`); console.log('실패 ' + what + ' — ' + why); };
 const check = (ok, what, why = '') => (ok ? R.counts.pass++ : fail(what, why));
