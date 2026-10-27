@@ -9613,8 +9613,6 @@
   "{n}가지 가운데 옛 기록으로 고른 하나만 새 기록에서 맞춰 봤어요.": "Of the {n}, only the one chosen with the older record was checked against the newer record.",
   "회사 값은 반년 가장 높은 값 가까이에 있어요": "The company's price is near its six-month high",
   "지난 {n}거래일 가운데 가장 높은 값보다 {n}% 넘게 낮지 않아요.": "It is not more than {n2}% below its highest price of the last {n1} trading days.",
-  "지난 기록 {n}곳 가운데 꽃이 된 수예요": "How many of {n} past picks bloomed",
-  "요즘 두 달은 고른 회사 {n}곳, 아무거나 {n}곳이에요.": "Last two months: picked {n1}, random {n2}.",
   "지난 기록에서는 아무거나 고른 회사보다 꽃이 많이 됐어요": "In the past record, more bloomed than random picks",
   "지난 기록에서는 아무거나 고른 회사보다 꽃이 적게 됐어요": "In the past record, fewer bloomed than random picks",
   "지난 기록에서는 아무거나 고른 회사와 꽃이 된 수가 같아요": "In the past record, as many bloomed as random picks",
@@ -9622,6 +9620,8 @@
   "그런데 요즘 두 달은 아무거나 고른 것보다 적었어요": "But in the last two months, fewer than random picks",
   "요즘 두 달도 아무거나 고른 것보다 많았어요": "In the last two months too, more than random picks",
   "요즘 두 달은 아무거나 고른 것과 같았어요": "In the last two months, the same as random picks",
-  "요즘 두 달 {n}곳 가운데 꽃이 된 수예요": "How many of {n} picks bloomed in the last two months"
+  "지난 기록 {n}곳 중 꽃이 된 수예요": "How many of {n} past picks bloomed",
+  "요즘 두 달 {n}곳 중 꽃이 된 수예요": "How many of {n} picks bloomed in the last two months",
+  "요즘 두 달은 {n}곳 대 {n}곳이에요.": "Last two months: {n1} vs {n2}."
  }
 }
