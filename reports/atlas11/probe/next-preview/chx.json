@@ -1,24 +1,24 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-10-27T13:42:10.203Z",
+ "at": "2026-10-27T14:14:32.189Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-27",
  "pages": 87,
  "of": 87,
  "widthPages": 87,
  "full": true,
- "seconds": 193,
+ "seconds": 29,
  "time": {
-  "old": 160.2,
-  "new": 24,
-  "wall": 193.1,
-  "opensOld": 698,
+  "old": 0,
+  "new": 21.7,
+  "wall": 29.3,
+  "opensOld": 1,
   "opensNew": 703,
-  "oldPct": 82.9,
-  "oldShare": 87
+  "oldPct": 0.1,
+  "oldShare": 0.2
  },
  "net": {
-  "req": 2,
+  "req": 13,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -39,12 +39,12 @@
   "자체 시험": 8,
   "맞댄 화면": 174,
   "oldSnap": {
-   "use": false,
-   "why": "기준값 파일 없음",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-10-27T13:41:53.820Z",
    "inputs": 11,
    "reads": 174,
-   "note": "기준값 새로 씀(파일 11개 · 값 174개)"
+   "note": "기준값 다시 씀"
   },
   "세 폭 화면": 265,
   "소리 글": 1,
