@@ -9622,6 +9622,8 @@
   "요즘 두 달은 아무거나 고른 것과 같았어요": "In the last two months, the same as random picks",
   "지난 기록 {n}곳 중 꽃이 된 수예요": "How many of {n} past picks bloomed",
   "요즘 두 달 {n}곳 중 꽃이 된 수예요": "How many of {n} picks bloomed in the last two months",
-  "요즘 두 달은 {n}곳 대 {n}곳이에요.": "Last two months: {n1} vs {n2}."
+  "요즘 두 달은 {n}곳 대 {n}곳이에요.": "Last two months: {n1} vs {n2}.",
+  "지난 기록 {n}곳 중": "Past record, out of {n}",
+  "요즘 두 달 {n} 대 {n}": "Last two months: {n1} vs {n2}"
  }
 }

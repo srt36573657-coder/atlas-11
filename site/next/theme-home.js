@@ -164,10 +164,10 @@ export function pickLong(B) {
   const a = B?.record?.all;
   return Number.isFinite(a?.rate) && Number.isFinite(a?.base) ? {P: Math.round(a.rate), Q: Math.round(a.base)} : {P: null, Q: null};
 }
-/** 요즘 두 달 한 줄(기록 달력 가운데 한 달이 지난 날 — pickPQ) — 큰 막대 아래 작은 글(감추지 않음) */
+/** 요즘 두 달 한 줄(기록 달력 가운데 한 달이 지난 날 — pickPQ) — 큰 막대 아래 작은 글(감추지 않음) · 첫 화면 테마 칸 글자 한도(check_white 220자) 안 — 진짜 자료 10-27 에서 「…중 꽃이 된 수예요」 · 「…곳이에요.」 판이 228자로 걸려(전체 검사 3/11) 글자를 줄임 · 숫자는 글자 셈 밖 */
 export function recentLine(B) {
   const {P, Q} = pickPQ(B);
-  return P != null && Q != null ? h('span', {class: 'th-pqx', text: `요즘 두 달은 ${P}곳 대 ${Q}곳이에요.`}) : null;
+  return P != null && Q != null ? h('span', {class: 'th-pqx', text: `요즘 두 달 ${P} 대 ${Q}`}) : null;
 }
 /** 기록 달력(지난 60거래일) 가운데 한 달이 지난 날만 — P = 돌이가 고른 회사 · Q = 같은 날 아무 회사(100곳 가운데) */
 export function pickPQ(B) {
@@ -180,7 +180,7 @@ function pickCard() {
   const body = h('span', {class: 'th-pqb'}, h('span', {class: 'th-pql', text: '기록을 불러오는 중이에요.'}));
   const card = h('a', {class: 'th-pkhome', href: '#/t/pick'}, h('b', {class: 'th-pkhh', text: '고른 싹이 꽃이 됐을까?'}), body, h('span', {class: 'th-pkhgo'}, h('span', {text: '기록 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
   const fill = B => {
-    const {P, Q} = pickLong(B), out = pickBars(P, Q, '지난 기록 100곳 중 꽃이 된 수예요'), r = out.length ? recentLine(B) : null;
+    const {P, Q} = pickLong(B), out = pickBars(P, Q, '지난 기록 100곳 중'), r = out.length ? recentLine(B) : null;
     if (r) out.push(r);
     body.replaceChildren(...(out.length ? out : [h('span', {class: 'th-pql', text: '? 기록을 아직 못 받았어요.'})]));
   };
