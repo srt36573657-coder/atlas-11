@@ -385,6 +385,7 @@ const LAYOUT = sel => {
       if (!n.nodeValue.trim()) continue; const el = n.parentElement; if (!el || /^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/.test(el.tagName)) continue;
       R.selectNodeContents(n); const rs = [...R.getClientRects()].filter(q => q.width >= 1 && q.height >= 1); if (!rs.length) continue;
       if (el.checkVisibility && !el.checkVisibility({checkOpacity: true, checkVisibilityCSS: true})) continue; if (cut(el)) continue;
+      if (el.closest('.wy-opt, .wy-hero, .wy-whyq, .wy-card, .wy-det, .wy-pg')) continue; // 그림 판(사장님 2026-10-27 22:09 · 22:16 「이시안 화법으로만들어줘」) — 그림이 글 왼쪽에 오는 상자(답 칸 · 시작 화면 · 풀이 칸 · 결과 칸 · 상세 분석 · 진행 줄)는 상자 하나로 봄(왼쪽 줄은 상자 테두리)
       const b = blockOf(el); if (seenB.has(b)) continue; seenB.add(b);
       if (/center|right|end/.test(getComputedStyle(b).textAlign)) continue; const x = Math.round(rs[0].left); if (x >= 0 && x < vw && !xs.has(x)) xs.set(x, desc(b));
     }

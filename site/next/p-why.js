@@ -316,9 +316,9 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
     });
     const big = i === BIG_Q && k0 === BIG_A;
     const prog = h('span', {class: 'wy-prog', 'aria-hidden': 'true'}, h('i')); prog.firstChild.style.setProperty('width', Math.round((i + 1) / QS.length * 100) + '%');
-    const nodes = [h('div', {class: 'wy-pg'}, prog, h('p', {class: 'wy-step num', text: `${i + 1} / ${QS.length}`})), h('h3', {class: 'wy-q', text: `${i + 1}. ${Q.q}`}),
+    const nodes = [h('div', {class: 'wy-pg'}, h('h3', {class: 'wy-q', text: `${i + 1}. ${Q.q}`}), h('p', {class: 'wy-step num', text: `${i + 1} / ${QS.length}`})), prog, // 그림 2 — 질문 이름 · 몇 번째 한 줄 + 진행 막대
       LOOK[i]?.lead ? h('p', {class: 'wy-lead', text: LOOK[i].lead}) : null, opts,
-      LOOK[i]?.why ? h('div', {class: 'wy-whyq'}, h('p', {class: 'wy-whyk'}, lookIcon('ask', 18), h('b', {text: '왜 이런 질문을 하나요?'})), h('p', {class: 'wy-whyt', text: LOOK[i].why})) : null].filter(Boolean);
+      LOOK[i]?.why && !(i === BIG_Q && k0 === BIG_A) ? h('div', {class: 'wy-whyq'}, h('p', {class: 'wy-whyk'}, lookIcon('ask', 18), h('b', {text: '왜 이런 질문을 하나요?'})), h('p', {class: 'wy-whyt', text: LOOK[i].why})) : null].filter(Boolean);
     if (big) nodes.push(oneLine(i, k0), dateRow());
     if (err) nodes.push(h('p', {class: 'wy-err', role: 'alert', text: err}));
     nodes.push(h('div', {class: 'wy-nav'}, btn('wy-back', i === 0 ? BACK1 : BACK, goBack), big ? btn('wy-next', '다음 ›', onNext) : null));
@@ -381,7 +381,6 @@ export function whyCard(G, {page = false, code = null, onDone = null, autoFocus 
     const look = ['r', 'y'].flatMap(c => (J.answers ?? []).map((k, q) => [q, k]).filter(([q, k]) => !named.has(q) && QS[q]?.a[k]?.[0] === c)).slice(0, 3);
     const T = TYPE_OF[J.verdict] ?? null;
     return h('div', {class: 'wy-res'}, // [5] 2 — 판정 글이 가장 큼 · 준비는 그 밑에 작게 · 그림 4 결과 요약(지금 나는 · 판정 · 한 줄 · 그림)
-      h('p', {class: 'wy-sumk', text: '지금 나는'}),
       h('p', {class: 'wy-verdict wy-v' + tone}, icon(32), h('b', {text: `「${vShow(J.verdict)}」`})),
       T ? h('p', {class: 'wy-type'}, h('b', {text: T[0]}), h('span', {text: ' ' + T[1]})) : null,
       ...(stopOf(J.answers) ? [h('p', {class: 'wy-stop'}, ...hit.flatMap(([q, k]) => [h('span', {text: `${q + 1}번 「${QS[q].q}」에서 「${QS[q].a[k][1]}」 답을 골랐어요.`}), h('span', {text: ' '})]),
@@ -430,15 +429,15 @@ function mindCard(J) {
 function detailBox(J) {
   const ans = J?.answers ?? [];
   const row = q => { const k = ans[q]; if (!Number.isInteger(k) || !QS[q]?.a[k]) return null; const [c, t, one] = QS[q].a[k];
-    return h('li', {class: 'wy-dr'}, dot(c), h('div', {}, h('p', {class: 'wy-drq', text: `${q + 1}. ${QS[q].q} ${t}`}), h('p', {class: 'wy-dro', text: one}))); };
+    return h('li', {class: 'wy-dr'}, dot(c), h('div', {}, h('p', {class: 'wy-drq'}, h('span', {class: 'num', text: `${q + 1}. `}), h('span', {text: QS[q].q}), h('span', {text: ' '}), h('b', {text: t})), h('p', {class: 'wy-dro', text: one}))); };
   const byC = c => ans.map((k, q) => [q, k]).filter(([q, k]) => Number.isInteger(k) && QS[q]?.a[k]?.[0] === c);
   const good = byC('g').slice(0, 3), bad = byC('r').slice(0, 3);
   const mind = J?.groups?.['마음'] ?? 0;
   const mindT = mind <= 1 ? '값이 흔들려도 정해 둔 대로 하려는 편일까요?' : mind <= 3 ? '차분하지만 가끔 마음이 앞설 수 있을까요?' : '마음이 급해지기 쉬운 때일까요? 숨을 고르고 봐요.';
   const weak = GROUPS.filter(([n]) => n !== '마음').map(([n, qs]) => [n, (J?.groups?.[n] ?? 0) / (qs.length * 2)]).sort((a, b) => b[1] - a[1])[0];
-  const habitT = weak && weak[1] > 0 ? `이유, 돈, 때 가운데 「${weak[0]}」 막대가 가장 짧아요.` : '이유, 돈, 때 모두 막대가 가득 찼어요.';
+  const habitT = weak && weak[1] > 0 ? [h('span', {text: '가장 짧은 막대는'}), h('span', {text: ' '}), h('b', {text: weak[0]}), h('span', {text: ' '}), h('span', {text: '묶음이에요.'})] : [h('span', {text: '이유, 돈, 때 막대가 모두 가득 찼어요.'})];
   const card = (cls, ic, title, items, empty) => h('div', {class: 'wy-pc ' + cls}, h('p', {class: 'wy-pk'}, lookIcon(ic, 20), h('b', {text: title})),
-    items.length ? h('ul', {}, ...items.map(([q, k]) => h('li', {text: `${q + 1}번 ${QS[q].a[k][1]}`}))) : h('p', {class: 'wy-pe', text: empty}));
+    items.length ? h('ul', {}, ...items.map(([q, k]) => h('li', {}, h('span', {class: 'num', text: `${q + 1}. `}), h('span', {text: QS[q].a[k][1]})))) : h('p', {class: 'wy-pe', text: empty}));
   const acts = [];
   for (const [q] of [...byC('r'), ...byC('y')]) { const a = LOOK[q]?.act; if (a && !acts.some(x => x[0] === a[0])) acts.push(a); }
   for (const a of ACT_MORE) if (acts.length < 3 && !acts.some(x => x[0] === a[0])) acts.push(a);
@@ -446,7 +445,7 @@ function detailBox(J) {
   const panels = {
     all: [h('h4', {class: 'wy-dh', text: '1. 나의 투자 마음'}), h('p', {class: 'wy-dp', text: mindT}),
       h('div', {class: 'wy-pcs'}, card('good', 'heart', '강점', good, '초록 답이 아직 없어요.'), card('warn', 'warn', '주의할 점', bad, '빨간 답이 없어요.')),
-      h('h4', {class: 'wy-dh', text: '2. 나의 사는 습관'}), h('p', {class: 'wy-dp', text: habitT})],
+      h('h4', {class: 'wy-dh', text: '2. 나의 사는 습관'}), h('p', {class: 'wy-dp'}, ...habitT)],
     mind: [h('ul', {class: 'wy-dl2'}, ...[6, 7, 9].map(row).filter(Boolean))],
     habit: [h('ul', {class: 'wy-dl2'}, ...[0, 1, 2, 3, 4, 5, 8, 10].map(row).filter(Boolean))],
     guide: [h('h4', {class: 'wy-dh', text: '지금 나에게 필요한 세 가지'}),
@@ -475,7 +474,7 @@ function moodCard() {
   for (const [k, t] of MOODS) {
     const b = h('button', {class: 'wy-mood', type: 'button', 'data-m': k}, lookIcon(k, 30), h('span', {text: t}));
     b.addEventListener('click', () => {
-      try { const all = JSON.parse(localStorage.getItem(MOOD_KEY) || '[]'); all.unshift({at: new Date().toISOString(), m: k}); localStorage.setItem(MOOD_KEY, JSON.stringify(all.slice(0, 100))); said.textContent = `오늘 마음 「${t}」${josa(t, '을').slice(t.length)} 이 기기에 적었어요.`; } catch { said.textContent = '이 기기는 적을 수 없어요.'; }
+      try { const all = JSON.parse(localStorage.getItem(MOOD_KEY) || '[]'); all.unshift({at: new Date().toISOString(), m: k}); localStorage.setItem(MOOD_KEY, JSON.stringify(all.slice(0, 100))); said.textContent = '오늘 마음을 이 기기에 적었어요.'; } catch { said.textContent = '이 기기는 적을 수 없어요.'; }
       for (const x of row.children) x.classList.toggle('on', x === b);
     });
     row.append(b);
