@@ -83,7 +83,7 @@ export function jobsTail(k, a, view) {
    쪽마다 주인공 하나 크게(글 칸은 1.2~1.8배 · 그림 · 긴 목록은 그대로 크기) · 그림 하나 · 누를 단추 하나 · 나머지는 「자세히 보기」
    차례 표 = docs/design/jobs36-2026-10-27/bold.json(쪽마다 백팔십 판 · 목업 j36b) — 칸 열쇠는 위 잡스 차례(jobsOrder)를 한 뒤의 칸 차례로 셈
    첫 화면은 뺌(00:17 네 단추 한 화면 · 01:50 기승전결 차례) · 진화 본질 줄 · 안내 줄 · 관심 머리 글 · 보유종목 편지는 접지 않음 */
-export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 · 관심 · 짧은 영상 · 오늘 장(옛 칸 차례 맞춤) · 상품권(약속 밑 「지금 할 일」)은 뺌 — 편지 펼치기 · 머리 글 · 소식 길 · 영상 넘기기가 그 자리에 있어야 함(14:5x 이 기계 검사)
+export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 · 관심 · 짧은 영상 · 오늘 장(옛 칸 차례 맞춤) · 상품권(약속 밑 「지금 할 일」) · 회사 지나온 길(영어 320 「다음 단」 줄 넘침)은 뺌 — 편지 펼치기 · 머리 글 · 소식 길 · 영상 넘기기가 그 자리에 있어야 함(14:5x 이 기계 검사)
   't/picks': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-pkis:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-pkrec1:0"], "bottom": ["th-safe:0"]}, // 꽃 될 회사
   't/pick': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ch:0", "z": 1.3, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-ch:2", "th-ch:3", "th-ch:4"], "bottom": ["th-safe:0"]}, // 지난 기록
   'dori': {"pre": ["h:0"], "hero": "dm:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": null, "sec": [], "bottom": ["safe:0"]}, // 돌이
@@ -103,7 +103,6 @@ export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 �
   't/c/*/rank': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ans:0", "z": 1.7, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-list:0"], "bottom": ["th-safe:0"]}, // 업종 안 자리
   't/c/*/unknown': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-box:0", "z": 1.8, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-box:1"], "bottom": ["th-safe:0"]}, // 아직 모르는 것
   't/c/*/keep': {"pre": ["th-pg:0", "th-hd:0", "th-say:0"], "hero": "th-ans:0", "z": 1.6, "card": 2, "hide": 1, "stick": null, "vis": null, "act": "th-keep:0", "sec": [], "bottom": ["th-safe:0"]}, // 관심 담기
-  'w/*/past': {"pre": ["wt:0", "ws:0"], "hero": "ppast-now:0", "z": 1.7, "card": 1, "hide": 1, "stick": null, "vis": "ppast-chart:0", "act": "ppast-nx:0", "sec": [], "bottom": []}, // 회사 지나온 길
   'find': {"pre": [], "hero": "find:0", "z": 1.6, "card": 1, "hide": 1, "stick": null, "vis": null, "act": null, "sec": ["hits:0"], "bottom": []}, // 회사 찾기
   't/alert': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-wl:0", "z": 1.7, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-als:0"], "bottom": ["th-safe:0"]}, // 알림
   'game': {"pre": ["gm-h1:0"], "hero": "gm-box:0", "z": 1, "card": 2, "hide": 1, "stick": null, "vis": null, "act": null, "sec": [], "bottom": ["safe:0"]}, // 가짜 돈 연습
