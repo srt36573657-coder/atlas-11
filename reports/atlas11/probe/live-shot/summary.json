@@ -1,5 +1,5 @@
 {
- "made": "2026-10-26T18:26:55.592Z",
+ "made": "2026-10-27T04:40:07.586Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -7,160 +7,226 @@
  ],
  "shots": [
   {
-   "name": "home-390x664",
-   "hash": "#/",
-   "size": [
-    390,
-    664
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/home-390x664.png",
-    "reports/atlas11/probe/live-shot/home-390x664-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/",
-    "title": "오늘 장 · 돌이",
-    "h1": "업종 77곳은 지금",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": true,
-    "height": 2413,
-    "fold": {
-     "apps": 526,
-     "room": 531,
-     "vh": 664,
-     "fit": true,
-     "clock": [
-      180,
-      144
-     ]
-    }
-   },
-   "err": null
-  },
-  {
-   "name": "picks-390x664",
+   "name": "picks",
    "hash": "#/t/picks",
-   "size": [
-    390,
-    664
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/picks-390x664.png",
-    "reports/atlas11/probe/live-shot/picks-390x664-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/t/picks",
-    "title": "꽃이 될 듯한 회사 · 돌이",
-    "h1": "꽃이 될 듯한 회사 84곳",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1655,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "dori-390x664",
-   "hash": "#/dori",
-   "size": [
-    390,
-    664
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/dori-390x664.png",
-    "reports/atlas11/probe/live-shot/dori-390x664-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/dori",
-    "title": "돌이 · 돌이",
-    "h1": "돌이",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 882,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "why-390x664",
-   "hash": "#/why",
-   "size": [
-    390,
-    664
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/why-390x664.png",
-    "reports/atlas11/probe/live-shot/why-390x664-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/why",
-    "title": "매매일지 · 돌이",
-    "h1": "매매일지",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1317,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "home",
-   "hash": "#/",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/home-390.png",
-    "reports/atlas11/probe/live-shot/home-390-long.png"
+    "reports/atlas11/probe/live-shot/picks-390.png",
+    "reports/atlas11/probe/live-shot/picks-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/",
-    "title": "오늘 장 · 돌이",
-    "h1": "업종 77곳은 지금",
+    "hash": "#/t/picks",
+    "title": "꽃이 될 듯한 회사 · 돌이",
+    "h1": "꽃이 될 듯한 회사 20곳",
     "kakaoText": 1,
     "kakaoRow": 0,
     "kakaoAll": 1,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
-    "calgo": true,
-    "height": 2558,
-    "fold": {
-     "apps": 671,
-     "room": 711,
-     "vh": 844,
-     "fit": true,
-     "clock": [
-      272,
-      218
-     ]
-    }
+    "calgo": false,
+    "height": 1268,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "pick",
+   "hash": "#/t/pick",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/pick-390.png",
+    "reports/atlas11/probe/live-shot/pick-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/pick",
+    "title": "돌이가 고른 회사 · 돌이",
+    "h1": "돌이가 고른 회사",
+    "kakaoText": 6,
+    "kakaoRow": 0,
+    "kakaoAll": 6,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 7631,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "sprout",
+   "hash": "#/t/sprout",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/sprout-390.png",
+    "reports/atlas11/probe/live-shot/sprout-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/sprout",
+    "title": "싹 자리 전부 · 돌이",
+    "h1": "싹 자리 전부",
+    "kakaoText": 3,
+    "kakaoRow": 0,
+    "kakaoAll": 3,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1778,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "how",
+   "hash": "#/t/how",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/how-390.png",
+    "reports/atlas11/probe/live-shot/how-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/how",
+    "title": "시계 읽는 법 · 돌이",
+    "h1": "시계 읽는 법",
+    "kakaoText": 3,
+    "kakaoRow": 0,
+    "kakaoAll": 3,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 2806,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "co",
+   "hash": "#/t/c/033790",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/co-390.png",
+    "reports/atlas11/probe/live-shot/co-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/c/033790",
+    "title": "회사 · 돌이",
+    "h1": "회사",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1054,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "me",
+   "hash": "#/me",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/me-390.png",
+    "reports/atlas11/probe/live-shot/me-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/me",
+    "title": "보유종목 · 돌이",
+    "h1": "보유종목",
+    "kakaoText": 2,
+    "kakaoRow": 0,
+    "kakaoAll": 2,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1548,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "sub",
+   "hash": "#/sub",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/sub-390.png",
+    "reports/atlas11/probe/live-shot/sub-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/sub",
+    "title": "관심 · 돌이",
+    "h1": "관심",
+    "kakaoText": 2,
+    "kakaoRow": 0,
+    "kakaoAll": 2,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1205,
+    "fold": null
+   },
+   "err": null
+  },
+  {
+   "name": "jinhwa",
+   "hash": "#/jinhwa",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/jinhwa-390.png",
+    "reports/atlas11/probe/live-shot/jinhwa-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/jinhwa",
+    "title": "진화 · 돌이",
+    "h1": "돌이 진화",
+    "kakaoText": 1,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 1255,
+    "fold": null
    },
    "err": null
   }
