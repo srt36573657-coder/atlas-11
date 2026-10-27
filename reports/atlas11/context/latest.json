@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-27",
- "fetchedAt": "2026-10-27T08:16:39Z",
- "file": "reports/atlas11/context/2026-10-27/2026-10-27T08-16-39Z.json",
+ "fetchedAt": "2026-10-27T10:00:39Z",
+ "file": "reports/atlas11/context/2026-10-27/2026-10-27T10-00-39Z.json",
  "summary": {
   "day": "2026-10-27",
-  "fetchedAt": "2026-10-27T08:16:39Z",
+  "fetchedAt": "2026-10-27T10:00:39Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-27",
@@ -31,17 +31,17 @@
   },
   "news": {
    "stocks": 365,
-   "raw": 7208,
-   "distinct": 7157,
-   "republished": 51,
+   "raw": 7209,
+   "distinct": 7159,
+   "republished": 50,
    "sameArticle": 0,
-   "stocksWithTodayNews": 185,
-   "todayDistinct": 1371
+   "stocksWithTodayNews": 190,
+   "todayDistinct": 1435
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 789
+   "corporateActions": 791
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-27",
-     "value": 1326.7,
-     "changePct": -0.02
+     "value": 1327.2,
+     "changePct": 0.02
     },
     "rows": 10
    },
@@ -238,8 +238,32 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-10-27",
-   "corporateActions": 789,
+   "corporateActions": 791,
    "recentActions": [
+    {
+     "code": "008930",
+     "title": "한미사이언스(주) 주식 소각 결정",
+     "publishedAt": "2026-10-27T18:00:53+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "008930",
+     "title": "한미사이언스(주) 주식 소각 결정(자회사의 주요경영사항)",
+     "publishedAt": "2026-10-27T17:40:22+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "050890",
+     "title": "(주)쏠리드 감자 결정(종속회사의 주요경영사항)",
+     "publishedAt": "2026-10-27T17:39:48+09:00",
+     "word": "감자"
+    },
+    {
+     "code": "128940",
+     "title": "한미약품(주) 주식 소각 결정",
+     "publishedAt": "2026-10-27T17:38:52+09:00",
+     "word": "소각"
+    },
     {
      "code": "352820",
      "title": "(주)하이브 유상증자결정(종속회사의 주요경영사항)",
@@ -287,30 +311,6 @@
      "title": "에스케이하이닉스(주) (정정)주식 소각 결정",
      "publishedAt": "2026-10-26T06:51:38+09:00",
      "word": "소각"
-    },
-    {
-     "code": "247540",
-     "title": "(주)에코프로비엠 전환사채(해외전환사채포함)발행후만기전사채취득",
-     "publishedAt": "2026-10-26T06:51:11+09:00",
-     "word": "전환사채"
-    },
-    {
-     "code": "030200",
-     "title": "(주)케이티 중간(분기)배당락 기준가격 안내",
-     "publishedAt": "2026-10-26T06:51:10+09:00",
-     "word": "배당락"
-    },
-    {
-     "code": "068270",
-     "title": "(주)셀트리온 자기주식 취득 결정",
-     "publishedAt": "2026-10-26T06:50:44+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "290650",
-     "title": "(주)엘앤씨바이오 권리락(무상증자)",
-     "publishedAt": "2026-10-23T06:52:06+09:00",
-     "word": "권리락"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-27",
-     "value": 1326.7,
+     "value": 1327.2,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
