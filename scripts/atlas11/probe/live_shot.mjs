@@ -29,6 +29,13 @@ try {
       const f1 = `${dir}/${name}${tag}.png`; await p.screenshot({path: f1}); r.files.push(f1);
       const hgt = await p.evaluate(() => document.documentElement.scrollHeight);
       const f2 = `${dir}/${name}${tag}-long.png`; await p.screenshot({path: f2, fullPage: true, clip: {x: 0, y: 0, width: vp.width, height: Math.min(LONG, hgt)}}); r.files.push(f2);
+      r.parts = {}; // 칸 하나씩 — 첫 화면 「고른 싹이 꽃이 됐을까?」 칸 · 「돌이가 고른 회사」 결론 · 「그런데」(사장님 2026-10-27 19:52 「돌이가 고른 회사 이제 이거 아니잖라 수정해야지」 — 긴 그림은 붙는 줄이 칸을 가려 칸만 따로 찍고 글도 남김)
+      for (const [k, sel] of [['card', '#view a.th-pkhome'], ['end', '#view #pk-end'], ['turn', '#view #pk-turn']]) {
+        const el = await p.$(sel); if (!el) continue;
+        await el.evaluate(e => e.scrollIntoView({block: 'center'})); await p.waitForTimeout(400);
+        const f3 = `${dir}/${name}${tag}-${k}.png`; await el.screenshot({path: f3}).then(() => r.files.push(f3)).catch(() => {});
+        r.parts[k] = (await el.innerText().catch(() => '')).replace(/\s+/g, ' ').trim().slice(0, 400);
+      }
       r.info = await p.evaluate(() => ({hash: location.hash, title: document.title, h1: document.querySelector('#view h1')?.textContent ?? '', kakaoText: document.querySelectorAll('#view .kk-txt').length, kakaoRow: document.querySelectorAll('#view .kk-btn.kk-row').length, kakaoAll: [...document.querySelectorAll('#view .kk-btn, #view .kk-yel')].filter(b => /카톡 보내기/.test(b.textContent)).length,
         days: document.querySelectorAll('#view section.th-day').length, firstDay: document.querySelector('#view section.th-day h2')?.textContent ?? null, graphs: document.querySelectorAll('#view svg.th-sinsvg').length,
         calgo: !!document.querySelector('#view a.th-calgo'), height: document.documentElement.scrollHeight,
