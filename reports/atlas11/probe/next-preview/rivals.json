@@ -1,21 +1,21 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-27T16:17:16.722Z",
+ "at": "2026-10-27T17:54:24.218Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-27",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 50,
+ "seconds": 65,
  "time": {
-  "old": 40.2,
-  "new": 34.7,
-  "wall": 49.5,
+  "old": 49.1,
+  "new": 49.1,
+  "wall": 65.1,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 81.1,
-  "oldShare": 53.7
+  "oldPct": 75.5,
+  "oldShare": 50
  },
  "net": {
   "req": 5129,
@@ -33,7 +33,7 @@
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 47
+   "compare": 61
   },
   "글 마디": 51562,
   "숫자 낱말": 51367,
