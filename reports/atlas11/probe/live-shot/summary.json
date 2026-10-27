@@ -1,67 +1,11 @@
 {
- "made": "2026-10-27T10:16:18.800Z",
+ "made": "2026-10-27T12:31:22.532Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
   844
  ],
  "shots": [
-  {
-   "name": "pick",
-   "hash": "#/t/pick",
-   "size": [
-    390,
-    844
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/pick-390.png",
-    "reports/atlas11/probe/live-shot/pick-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/t/pick",
-    "title": "돌이가 고른 회사 · 돌이",
-    "h1": "돌이가 고른 회사",
-    "kakaoText": 3,
-    "kakaoRow": 0,
-    "kakaoAll": 3,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 5324,
-    "fold": null
-   },
-   "err": null
-  },
-  {
-   "name": "picks",
-   "hash": "#/t/picks",
-   "size": [
-    390,
-    844
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/picks-390.png",
-    "reports/atlas11/probe/live-shot/picks-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/t/picks",
-    "title": "꽃이 될 듯한 회사 · 돌이",
-    "h1": "꽃이 될 듯한 회사",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1054,
-    "fold": null
-   },
-   "err": null
-  },
   {
    "name": "home",
    "hash": "#/",
@@ -71,7 +15,8 @@
    ],
    "files": [
     "reports/atlas11/probe/live-shot/home-390.png",
-    "reports/atlas11/probe/live-shot/home-390-long.png"
+    "reports/atlas11/probe/live-shot/home-390-long.png",
+    "reports/atlas11/probe/live-shot/home-390-card.png"
    ],
    "errs": [],
    "info": {
@@ -85,10 +30,10 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": true,
-    "height": 2550,
+    "height": 2581,
     "fold": {
-     "apps": 671,
-     "room": 711,
+     "apps": 211,
+     "room": 860,
      "vh": 844,
      "fit": true,
      "clock": [
@@ -97,7 +42,44 @@
      ]
     }
    },
-   "err": null
+   "err": null,
+   "parts": {
+    "card": "고른 싹이 꽃이 됐을까? 지난 기록 100곳 중 돌이가 고른 회사 31곳 아무거나 고른 회사 24곳 요즘 두 달 21 대 25 기록 달력 보기 ›"
+   }
+  },
+  {
+   "name": "pick",
+   "hash": "#/t/pick",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/pick-390.png",
+    "reports/atlas11/probe/live-shot/pick-390-long.png",
+    "reports/atlas11/probe/live-shot/pick-390-end.png",
+    "reports/atlas11/probe/live-shot/pick-390-turn.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/t/pick",
+    "title": "돌이가 고른 회사 · 돌이",
+    "h1": "돌이가 고른 회사",
+    "kakaoText": 3,
+    "kakaoRow": 0,
+    "kakaoAll": 3,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 5594,
+    "fold": null
+   },
+   "err": null,
+   "parts": {
+    "end": "결론 지난 기록에서는 아무거나 고른 회사보다 꽃이 많이 됐어요 지난 기록 100곳 중 꽃이 된 수예요 돌이가 고른 회사 31곳 아무거나 고른 회사 24곳 요즘 두 달은 21곳 대 25곳이에요.",
+    "turn": "그런데 그런데 요즘 두 달은 아무거나 고른 것보다 적었어요 요즘 두 달 100곳 중 꽃이 된 수예요 돌이가 고른 회사 21곳 아무거나 고른 회사 25곳 한 달이 지난 날만 셌어요. 지난 기록 아무거나 고른 회사 100번에 24번 싹만 보고 고른 회사 100번에 23번 바꾸기 전 조건 100번에 27번 돌이가 고른 회사 100번에 31번 100번 골랐을 때 한 달 뒤 꽃이 된 횟수예요. 싹만 보고 고르면 아무거나 고른 것보다 오히려 적었어요. 그래서 돌이는 싹과 함께 업종도 봐요. 옛 기록과 새 기록, 두 번 다 아무거나 고른 것보다 많았어요. 100번에 8번쯤 더 많은 정도예요. 크게 떨어진 일은 100번에 28번으로 아무거나 고른 것보다 적어요. 꽃이 못 된 까닭 달력에서 꽃이 못 된 41번을 셋으로 나눴"
+   }
   }
  ]
 }
