@@ -150,14 +150,24 @@ export function recordLine(TH) {
  *  날마다 작은 네모 줄(뜻 풀이 없이 파랑 · 초록 · 빈 네모)은 첫 화면에서 빼고 기록 달력 쪽(#/t/pick)에만 · 숫자는 100곳 가운데로 맞춤(앞 판과 같은 셈 — 꽃 된 수 ÷ 한 달 지난 수)
  *  정직: 돌이가 더 적으면 막대도 더 짧게 그대로(감추지 않음 · 2026-10-22 22:54 「신빙성에대해 딱 정직하게 앞에」) · 글자는 테마 칸 200자 안(앞 판 43자 → 36자) */
 /** 막대 둘 — 돌이가 고른 회사 · 아무거나 고른 회사(100곳 가운데 꽃이 된 수) · 첫 화면 칸과 기록 쪽(#/t/pick 결론)이 같이 씀 */
-export function pickBars(P, Q) {
+export function pickBars(P, Q, note = '100곳 가운데 꽃이 된 수예요') {
   const bar = v => { const f = h('span', {class: 'th-pqf'}); f.style.width = Math.max(0, Math.min(100, v)) + '%'; return h('span', {class: 'th-pqt', 'aria-hidden': 'true'}, f); }; // 너비는 CSSOM — 글 속 style 없음
   const line = (who, v, c) => [h('span', {class: 'th-pqr ' + c}, h('span', {class: 'th-pql', text: who}), h('b', {class: 'th-pqn', text: `${v}곳`})), bar(v)];
   const out = [];
   if (P != null) out.push(...line('돌이가 고른 회사', P, 'th-pqme'));
   if (Q != null) out.push(...line('아무거나 고른 회사', Q, 'th-pqany'));
-  if (out.length) out.unshift(h('span', {class: 'th-pqx', text: '100곳 가운데 꽃이 된 수예요'}));
+  if (out.length) out.unshift(h('span', {class: 'th-pqx', text: note}));
   return out;
+}
+/** 지난 기록 전체(theme-bloom.json record.all — 지금 고르는 조건 · 100곳 가운데) — 사장님 2026-10-27 19:52 「돌이가 고른 회사 이제 이거 아니잖아 수정해야지」 · 19:54 「맞아」(첫 화면 칸은 새 조건 성적을 크게 · 요즘 두 달은 아래 작은 글) */
+export function pickLong(B) {
+  const a = B?.record?.all;
+  return Number.isFinite(a?.rate) && Number.isFinite(a?.base) ? {P: Math.round(a.rate), Q: Math.round(a.base)} : {P: null, Q: null};
+}
+/** 요즘 두 달 한 줄(기록 달력 가운데 한 달이 지난 날 — pickPQ) — 큰 막대 아래 작은 글(감추지 않음) */
+export function recentLine(B) {
+  const {P, Q} = pickPQ(B);
+  return P != null && Q != null ? h('span', {class: 'th-pqx', text: `요즘 두 달은 고른 회사 ${P}곳, 아무거나 ${Q}곳이에요.`}) : null;
 }
 /** 기록 달력(지난 60거래일) 가운데 한 달이 지난 날만 — P = 돌이가 고른 회사 · Q = 같은 날 아무 회사(100곳 가운데) */
 export function pickPQ(B) {
@@ -170,7 +180,8 @@ function pickCard() {
   const body = h('span', {class: 'th-pqb'}, h('span', {class: 'th-pql', text: '기록을 불러오는 중이에요.'}));
   const card = h('a', {class: 'th-pkhome', href: '#/t/pick'}, h('b', {class: 'th-pkhh', text: '고른 싹이 꽃이 됐을까?'}), body, h('span', {class: 'th-pkhgo'}, h('span', {text: '기록 달력 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
   const fill = B => {
-    const {P, Q} = pickPQ(B), out = pickBars(P, Q);
+    const {P, Q} = pickLong(B), out = pickBars(P, Q, '지난 기록 100곳 가운데 꽃이 된 수예요'), r = out.length ? recentLine(B) : null;
+    if (r) out.push(r);
     body.replaceChildren(...(out.length ? out : [h('span', {class: 'th-pql', text: '? 기록을 아직 못 받았어요.'})]));
   };
   setTimeout(() => { fetch('/next/data/theme-bloom.json', {cache: 'no-cache'}).then(r => (r.ok ? r.json() : null)).then(j => fill(j && typeof j.schema === 'string' && j.schema.startsWith('dori-theme-1') ? j : null)).catch(() => fill(null)); }, 0);

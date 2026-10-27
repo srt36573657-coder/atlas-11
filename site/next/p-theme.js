@@ -461,15 +461,16 @@ async function pPick() {
   // 결론 먼저 · 그다음 처음 → 이어서 → 그런데 → 그래서(사장님 2026-10-26 05:14 「기승전결로 화면 배치를 하라 결론이 항상 먼저 나오고 그다음 기승전결이다 혁신적인 방법이어야 한다 잡스라면」)
   //   결론 = 큰 한 줄 + 막대 둘(첫 화면 칸과 같은 그림) · 그 아래 넷 차례 단추(누르면 그 칸으로) · 칸마다 머리 표와 큰 한 줄 · 숫자 만든 법은 접어 둠
   //   셈은 앞 판 그대로(기록 달력 cP · bP · 지난 기록 all · 까닭 · 고침) — 차례만 바꿈
-  const head = cP == null || bP == null ? '아직 한 달이 지난 날이 없어요' : cP < bP ? '요즘은 아무거나 고른 회사보다 꽃이 적게 됐어요' : cP > bP ? '요즘은 아무거나 고른 회사보다 꽃이 많이 됐어요' : '요즘은 아무거나 고른 회사와 꽃이 된 수가 같아요';
-  const longMore = all.rate - all.base >= 0.5;
-  const turnHead = longMore ? (cP != null && bP != null && cP < bP ? '그런데 지난 기록에서는 아무거나 고른 것보다 많았어요' : '지난 기록에서도 아무거나 고른 것보다 많았어요') : '지난 기록에서도 아무거나 고른 것과 거의 같았어요';
+  // 사장님 2026-10-27 19:52 「돌이가 고른 회사 이제 이거 아니잖아 수정해야지」 · 19:54 「맞아」 — 결론 칸은 지금 조건의 지난 기록(record.all)을 크게 · 요즘 두 달(기록 달력 cP · bP)은 그 아래 작은 글과 「그런데」 칸에 그대로(감추지 않음)
+  const lP = Math.round(all.rate), lQ = Math.round(all.base);
+  const head = lP > lQ ? '지난 기록에서는 아무거나 고른 회사보다 꽃이 많이 됐어요' : lP < lQ ? '지난 기록에서는 아무거나 고른 회사보다 꽃이 적게 됐어요' : '지난 기록에서는 아무거나 고른 회사와 꽃이 된 수가 같아요';
+  const turnHead = cP == null || bP == null ? '요즘 두 달은 아직 한 달이 지난 날이 없어요' : cP < bP ? '그런데 요즘 두 달은 아무거나 고른 것보다 적었어요' : cP > bP ? '요즘 두 달도 아무거나 고른 것보다 많았어요' : '요즘 두 달은 아무거나 고른 것과 같았어요';
   const CH = [['start', '처음'], ['next', '이어서'], ['turn', '그런데'], ['so', '그래서']];
   const still = () => !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   const nav = h('nav', {class: 'th-chnav', 'aria-label': '이 결론이 나온 차례'}, ...CH.map(([id, t]) => { const b = h('button', {type: 'button', class: 'th-chb', text: t}); b.addEventListener('click', () => document.getElementById('pk-' + id)?.scrollIntoView({behavior: still() ? 'auto' : 'smooth', block: 'start'})); return b; }));
   const chap = (id, label, title2, ...kids) => h('section', {class: 'th-ch', id: 'pk-' + id, 'aria-label': label}, h('p', {class: 'th-chl'}, h('span', {class: 'th-chk', text: label})), h('h2', {class: 'th-chh', text: title2}), ...kids.filter(Boolean));
   const hero = h('section', {class: 'th-ch th-chend', id: 'pk-end', 'aria-label': '결론'}, h('p', {class: 'th-chl'}, h('span', {class: 'th-chk', text: '결론'})), h('h2', {class: 'th-chh th-chbig', text: head}),
-    h('div', {class: 'th-pqb'}, ...pickBars(cP, bP)), cP != null ? h('p', {class: 'th-sub', text: '한 달이 지난 날만 셌어요.'}) : null);
+    h('div', {class: 'th-pqb'}, ...pickBars(lP, lQ, '지난 기록 100곳 가운데 꽃이 된 수예요')), cP != null && bP != null ? h('p', {class: 'th-sub', text: `요즘 두 달은 고른 회사 ${cP}곳, 아무거나 ${bP}곳이에요.`}) : null);
   const legend = h('div', {class: 'th-lg', 'aria-hidden': 'true'}, ...[['up', '많이 된 날'], ['dn', '적게 된 날'], ['w', '기다리는 날']].map(([c, t]) => h('span', {class: 'th-lgi'}, h('i', {class: 'th-pkc ' + c}), h('span', {text: t}))));
   const calBox = days.length ? h('div', {class: 'th-pkcal', 'aria-label': '기록 달력'}, legend,
     h('p', {class: 'th-sub', text: '같은 날 아무거나 고른 회사와 견줬어요. 칸마다 꽃이 된 수와 고른 수예요.'}),
@@ -496,7 +497,7 @@ async function pPick() {
         hiOn ? step(3, '회사 값은 반년 가장 높은 값 가까이에 있어요', [`지난 ${num(B.rule.hiWin)}거래일 가운데 가장 높은 값보다 ${100 - B.rule.hiNear}% 넘게 낮지 않아요.`]) : null),
       h('p', {class: 'th-sub', text: `꽃은 한 달 동안 시장보다 ${RULE.bloomX}% 넘게 더 오른 것이에요.`})),
     chap('next', '이어서', '고른 날마다 한 달 뒤를 적었어요', calBox),
-    chap('turn', '그런데', turnHead, recBox, whyBox),
+    chap('turn', '그런데', turnHead, cP != null && bP != null ? h('div', {class: 'th-pqb'}, ...pickBars(cP, bP, '요즘 두 달 100곳 가운데 꽃이 된 수예요')) : null, cP != null ? h('p', {class: 'th-sub', text: '한 달이 지난 날만 셌어요.'}) : null, recBox, whyBox),
     chap('so', '그래서', pickBox ? '그래서 고르는 조건 365가지를 다시 재서 바꿨어요' : fixSec ? '그래서 고르는 법을 고쳐 보고 다시 재요' : '그래서 계속 적고 다시 재요', pickBox ?? fixBox, todayBox, howFold),
     h('p', {class: 'th-sub th-calnote', text: `시장보다 ${Math.abs(Number(B.rule?.fall ?? -5))}% 넘게 덜 오르면 크게 떨어진 거예요.`}),
     h('p', {class: 'th-sub th-calnote', text: '앞날을 맞히는 숫자가 아니에요.'}),
