@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-10-28T14:12:52Z",
+  "at": "2026-10-28T14:31:02Z",
   "dayKST": "2026-10-28",
   "status": "partial",
   "exitCode": 2,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-10-28T14:12:53.053Z",
+      "startedAt": "2026-10-28T14:31:02.412Z",
       "status": "ok",
-      "durationMs": 28,
+      "durationMs": 18,
       "session": true,
       "afterClose": true,
       "day": "2026-10-28",
@@ -17,19 +17,19 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-10-28T14:12:53.081Z",
+      "startedAt": "2026-10-28T14:31:02.430Z",
       "status": "ok",
-      "durationMs": 11374,
+      "durationMs": 12782,
       "attempted": true,
       "observations": 0,
       "errors": 22,
-      "recordId": "collection-328f7a8fad1d6baa"
+      "recordId": "collection-b5367707b8ccd919"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-10-28T14:13:04.455Z",
+      "startedAt": "2026-10-28T14:31:15.212Z",
       "status": "ok",
-      "durationMs": 4105,
+      "durationMs": 5910,
       "changed": false,
       "confirmedToday": 358,
       "actualAsOf": "2026-10-01",
@@ -37,23 +37,23 @@
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-10-28T14:13:08.564Z",
+      "startedAt": "2026-10-28T14:31:21.126Z",
       "view": {
-        "boardId": "board-2026-10-28-449e2c9e",
+        "boardId": "board-2026-10-28-de2591a9",
         "asOf": "2026-10-28",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2968712,
+        "bytes": 2968651,
         "similar": [
-          "삼성E&A",
-          "펌텍코리아",
-          "아스플로",
-          "IPARK현대산업개발",
           "루닛",
           "큐리옥스바이오시스템즈",
-          "제주항공"
+          "제주항공",
+          "선익시스템",
+          "디어유",
+          "펌텍코리아",
+          "고영"
         ],
         "moves": "2026-10-27 → 2026-10-28",
         "evening": null,
@@ -78,24 +78,24 @@
         }
       },
       "status": "ok",
-      "durationMs": 1194
+      "durationMs": 1449
     }
   ],
   "runtime": {
     "host": "github-actions",
     "runner": "Linux ubuntu24",
-    "event": "workflow_dispatch",
+    "event": "schedule",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "40703373793",
+    "runId": "40705526704",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/40703373793",
-    "commit": "3617d5f81a1b0d9f0870ca739ab9836bd1743cbc",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/40705526704",
+    "commit": "9f2b7c4d7f747f0e449afeccfe09b98a3a0df2b4",
     "serverInstalled": true,
-    "scheduledRun": false
+    "scheduledRun": true
   },
   "serverInstalled": true,
-  "scheduledRunInstalled": false,
+  "scheduledRunInstalled": true,
   "prediction": "off",
   "warnings": [],
   "universeId": "u2-n365-v1-2026-10-05",
@@ -273,12 +273,12 @@
       "finalizedToday": 0,
       "crossChecked": 6,
       "requests": 34,
-      "durationMs": 11354,
+      "durationMs": 12761,
       "corporateActionAdjusted": []
     },
-    "durationMs": 11354
+    "durationMs": 12761
   },
-  "collectionRecordId": "collection-328f7a8fad1d6baa",
+  "collectionRecordId": "collection-b5367707b8ccd919",
   "inputChanged": false,
   "actualAsOf": "2026-10-01",
   "freshStocks": 0,
@@ -655,5 +655,5 @@
   ],
   "expectedStocks": 365,
   "incompleteReason": "오늘(2026-10-28) 확정 종가 358/365 · 다음 시도에서 다시 받음",
-  "finishedAt": "2026-10-28T14:13:09.758Z"
+  "finishedAt": "2026-10-28T14:31:22.575Z"
 }
