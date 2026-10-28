@@ -17,7 +17,7 @@ if (isHome && v && boot) {
   const h2 = el('h2', 'nh-h1'); h2.append(el('span', null, '주식을 사기 전에,'), ' ', el('span', 'nh-acc', '지난 기록으로 2분만 확인하세요'));
   // 네 걸음(home-new.js PARTS · pathBox 와 같은 글 · 같은 높이 — 다 그려질 때 소개 칸이 밀리지 않게)
   const path = el('nav', 'nh-path'); path.setAttribute('aria-label', '네 걸음'); const ol = el('ol');
-  for (const [n, k, c] of [['1', '찾기', '회사 이름'], ['2', '보기', '지난 기록'], ['3', '묻기', '질문 11개'], ['4', '돌아보기', '한 달 뒤']]) {
+  for (const [n, k, c] of [['1', '찾기', '사려는 회사'], ['2', '보기', '지난 기록'], ['3', '묻기', '질문 11개'], ['4', '돌아보기', '한 달 뒤']]) {
     const b = el('button', 'nh-pt'); b.type = 'button'; const i = el('i', null, n); i.setAttribute('aria-hidden', 'true'); b.append(i, el('b', null, k), el('small', null, c));
     const li = el('li'); li.append(b); ol.append(li);
   }

@@ -418,3 +418,9 @@ html.white.clock.clock.clock.home #view .nh-part a.w-month { border: 1px dashed 
 html.white.clock.clock.clock.home #view .nh-part .nh-link { color: #A31F70; }
 @media (max-width: 380px) { html.home #view .nh-pt b { font-size: 18px; letter-spacing: -0.03em; } html.home #view .nh-pt small { white-space: normal; word-break: keep-all; text-align: center; } } /* 360 폭 — 작은 풀이는 두 줄로(칸 넘침 0) */
 @media (max-width: 359px) { html.home #view .nh-pt i { width: 40px; height: 40px; font-size: 19px; } html.home #view .nh-path ol::before { top: 18px; } html.home #view .nh-pt b { font-size: 17px; letter-spacing: -0.05em; } }
+/* ① 찾기 칸이 첫 한 화면을 채움(2026-10-29 큰 검사 1/11 ③ 「가장 큰 그림 3.4초 · 밀림 0.176」 — 소개 칸이 짧아져 ② 보기 머리가 첫 화면 안에 들어오자
+   글꼴이 바뀔 때 그 칸이 통째로 밀리고 더 큰 그림으로 잡힘) — 소개 칸 높이를 찾기 줄 위까지(390 × 844 에서 아래 698 · 찾기 줄 711) · 안내 한 줄은 칸 맨 아래
+   옛 첫 화면도 소개 칸과 「왜 사?」 단추가 첫 화면을 채워 ② 마디는 화면 밖이었음 · 여는 동안 칸(boot-home.js)도 같은 칸 이름이라 같은 높이 */
+html.home #view .nh-hero { min-height: calc(100vh - 210px); grid-template-rows: repeat(4, auto) 1fr; align-content: start; }
+html.home #view .nh-hero > .nh-no { align-self: end; }
+html.home #view #nh-p2 { margin-top: 64px; } /* ② 보기 머리는 첫 화면(찾기 줄 · 아래 단추 자리) 밖에서 시작 — 글꼴이 바뀌어도 첫 화면 안에서 밀리지 않게 */

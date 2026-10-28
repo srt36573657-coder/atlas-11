@@ -24,7 +24,7 @@ test('여는 동안 소개 칸 글 = 다 그린 소개 칸 글', () => {
 
 test('네 걸음(2026-10-29 01:48 「이 36이 둘리를 다 함께 아주 직관적으로」) — 여는 동안 칸과 다 그린 칸이 같은 낱말 · 차례', () => {
   const boot = read('site/next/boot-home.js'), src = read('site/next/home-new.js');
-  for (const k of ['찾기', '보기', '묻기', '돌아보기', '회사 이름', '지난 기록', '질문 11개', '한 달 뒤', '네 걸음']) { assert.ok(src.includes(`'${k}'`), `home-new.js 네 걸음에 「${k}」 없음`); assert.ok(boot.includes(`'${k}'`), `boot-home.js 에 「${k}」 없음`); }
+  for (const k of ['찾기', '보기', '묻기', '돌아보기', '사려는 회사', '지난 기록', '질문 11개', '한 달 뒤', '네 걸음']) { assert.ok(src.includes(`'${k}'`), `home-new.js 네 걸음에 「${k}」 없음`); assert.ok(boot.includes(`'${k}'`), `boot-home.js 에 「${k}」 없음`); }
   for (const k of ['결론', '근거', '할 일']) assert.ok(!boot.includes(`'${k}'`), `boot-home.js 에 옛 네 마디 낱말 「${k}」이 남음`);
   assert.match(read('site/next/app.js'), /\[hero, partWhy\(B\), recordBox\(B\), partToday\(TH, H\?\.idx\?\.KOSPI\), mapBox\(TH, news\), mktBox\(band\.el, newsBox\(H\), H\), partDo\(B\),/, '첫 화면 차례가 네 걸음이 아님');
   assert.match(read('site/next/app.js'), /whyBox\(\{done: \(C\?\.stop \?\? 0\) > 0\}\), backBox\(\{month\}\), thumb/, '③ 묻기 뒤에 ④ 돌아보기가 없음');
