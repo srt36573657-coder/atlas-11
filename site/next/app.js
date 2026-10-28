@@ -1294,8 +1294,11 @@ const fontsAdd = () => { if (document.querySelector('link[href="/atlas/fonts.css
  *  처음 그린 높이를 아래 한도로 잡아 둠 · 그 줄 글꼴이 다 왔고 그 줄이 화면 아래 밖일 때만 놓음 — 놓을 때 움직이는 것은 화면 밖뿐
  *  재기는 첫 그림 다음(그리기 길에 강제 배치를 더하지 않음 · 가장 큰 그림 2.5초) — fontsLater 보다 먼저 불러서 글꼴 표가 붙기 전에 잼 */
 function holdEss(root) {
-  const t = root.querySelector('.w-ess .ess-t'); if (!t || document.querySelector('link[href="/atlas/fonts.css"]')?.sheet) return;
-  requestAnimationFrame(() => setTimeout(() => { if (t.isConnected && !document.querySelector('link[href="/atlas/fonts.css"]')?.sheet) hold(t); }, 0));
+  /* 2026-10-29 네 걸음(사장님 01:48 「이 36이 둘리를 다 함께 아주 직관적으로」) — 큰 검사 wise36-home 2/11 ③ 밀림 0.160: 글꼴 표가 붙은 뒤 받은 글꼴로 지난 기록 칸 −87px ·
+     ④ 돌아보기 −33px 줄어(이 방 셈) 맨 아래 「모든 화면 보기」를 보던 화면이 위로 밀림 → 본질 첫 줄처럼 첫 화면 칸들(소개 · 걸음 머리 · 밝은 카드)도 처음 높이를 아래 한도로 잡아 둠(화면 아래 밖일 때만 놓음) */
+  const t = root.querySelector('.w-ess .ess-t'), blocks = [...root.querySelectorAll(':scope > .nh-hero, :scope > .nh-part, :scope > .nh-sec')];
+  if (document.querySelector('link[href="/atlas/fonts.css"]')?.sheet || (!t && !blocks.length)) return;
+  requestAnimationFrame(() => setTimeout(() => { if (document.querySelector('link[href="/atlas/fonts.css"]')?.sheet) return; for (const e of [t, ...blocks]) if (e?.isConnected) hold(e); }, 0));
 }
 function hold(t) {
   t.style.minHeight = Math.ceil(t.getBoundingClientRect().height) + 'px';

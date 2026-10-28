@@ -360,7 +360,7 @@ export function whyBox({done = false} = {}) {
 /** ④ 돌아보기(2026-10-29 네 걸음 · 본질 「한 달 뒤 그날 정한 대로 했어?로 돌아보게 한다」) — 마르쿠스 아우렐리우스 「날마다 돌아봄」 · 다윈 「어긋난 사실을 바로 적음」 · 사마천 「있는 그대로」
    한 달 된 기록이 있는 기기만 「한 달 전에 정한 대로 했나요?」 줄(app.js monthLine · a.w-month) · 한 달 뒤 쪽 고리 #/why/later */
 export function backBox({month = null} = {}) {
-  const head = partHead({n: '4', k: '돌아보기', line: '한 달 뒤, 정한 대로 했는지 봐요', cap: '틀린 것도 지우지 않아요.'});
+  const head = partHead({n: '4', k: '돌아보기', line: '정한 대로 했는지 봐요', cap: '한 달 뒤에 묻고, 틀린 것도 지우지 않아요.'}); // 두 글꼴 모두 한 줄(글꼴이 와도 칸 안이 안 밀리게)
   if (month) head.append(month);
   head.append(h('a', {class: 'nh-link', href: '#/why/later'}, h('span', {text: '한 달 뒤 기록 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
   return head;
