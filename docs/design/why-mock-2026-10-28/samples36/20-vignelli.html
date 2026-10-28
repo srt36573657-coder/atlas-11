@@ -1,0 +1,157 @@
+<!-- 마시모 비녤리 · 격자 하나, 글자 크기 네 단계, 글꼴 둘 — 꾸밈이 아니라 질서로 말한다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 · 지난 기록</title>
+<style>
+/* 글자 크기는 넷뿐: 17 · 24 · 44 · 104 / 글꼴은 둘뿐: 고딕(말) · 보도니(숫자) */
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--rose:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0;
+ --sans:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+ --didone:"Bodoni 72","Bodoni MT","Didot","Noto Serif KR","AppleMyungjo",serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:17px/1.5 var(--sans);word-break:keep-all;overflow-wrap:anywhere}
+.sheet{max-width:390px;margin:0 auto;background:var(--card)}
+.band{background:var(--wine);color:#F7D4DE;padding:18px 16px 26px}
+.mast{display:flex;justify-content:space-between;border-bottom:2px solid #F7D4DE;padding-bottom:10px;margin-bottom:22px;font-weight:700;letter-spacing:.5px}
+.band h1{font-size:44px;line-height:1.12;font-weight:800;letter-spacing:-1px}
+.band p{margin-top:14px}
+.today{display:flex;justify-content:space-between;align-items:baseline;padding:12px 16px;border-bottom:6px solid var(--wine)}
+.today b{font-family:var(--didone);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+.s{padding:26px 16px 30px;border-bottom:6px solid var(--wine)}
+.s h2{font-size:24px;line-height:1.3;font-weight:800;letter-spacing:-.3px}
+.g2{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;margin-top:18px}
+.g2>div{border-top:2px solid var(--ink);padding-top:6px}
+.huge{font-family:var(--didone);font-size:104px;line-height:.95;font-weight:700;letter-spacing:-3px;font-variant-numeric:lining-nums}
+.huge small{font-size:44px;letter-spacing:0}
+.c-rose{color:var(--rose)}.c-sub{color:var(--sub)}
+.lbl{font-weight:700;margin-top:6px}
+.money{margin-top:18px}
+.money>div{display:grid;grid-template-columns:1fr auto;align-items:baseline;border-top:2px solid var(--ink);padding:8px 0}
+.big{font-family:var(--didone);font-size:44px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;text-align:right}
+.up{color:var(--up)}.down{color:var(--down)}
+.fine{color:var(--sub);margin-top:10px}
+.mini{margin-top:26px}
+.mini h3{font-size:17px;font-weight:800;border-top:2px solid var(--ink);padding-top:8px;margin-bottom:10px}
+.yr{display:grid;grid-template-columns:84px 1fr 78px;align-items:center;column-gap:10px;min-height:44px;border-bottom:1px solid var(--bg)}
+.yr svg{display:block;width:100%;height:24px}
+.yr .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.yr.hot{background:var(--bg)}
+.yr.hot span{font-weight:800}
+.key{display:flex;gap:18px;margin-top:8px;color:var(--sub)}
+.key i{display:inline-block;width:22px;height:8px;margin-right:6px;vertical-align:3px}
+/* 지하철 노선도처럼 — 조건을 정한 길 */
+.line{position:relative;margin:6px 0 0 6px;padding-left:34px}
+.line::before{content:"";position:absolute;left:11px;top:22px;bottom:22px;width:8px;background:var(--rose)}
+.line li{list-style:none;position:relative;min-height:48px;display:flex;align-items:center;gap:10px}
+.line li::before{content:"";position:absolute;left:-33px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--card);border:4px solid var(--wine)}
+.line li.end::before{background:var(--wine)}
+.line b{font-family:var(--didone);font-size:24px;font-weight:700;min-width:46px;font-variant-numeric:tabular-nums}
+.seg{display:block;width:100%;height:28px;margin:4px 0 8px}
+.segk{display:grid;grid-template-columns:repeat(3,1fr);column-gap:8px}
+.segk div{border-top:6px solid;padding-top:4px}
+.end-band{background:var(--wine);color:#F7D4DE;padding:26px 16px 24px}
+.end-band h2{font-size:24px;line-height:1.3;font-weight:800}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);column-gap:10px;margin:18px 0 20px}
+.steps div{border-top:2px solid #F7D4DE;padding-top:6px}
+.steps b{display:block;font-family:var(--didone);font-size:44px;line-height:1.05;font-weight:700}
+.btn{display:flex;align-items:center;justify-content:space-between;min-height:64px;padding:0 20px;background:#F7D4DE;color:var(--wine);font-size:24px;font-weight:800;text-decoration:none}
+.btn:focus-visible{outline:3px solid #FFF7F9;outline-offset:3px}
+.end-band p{margin-top:14px}
+.legal{padding:18px 16px 30px;color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="band">
+    <div class="mast"><span>둘이</span><span>주식 지난 기록</span></div>
+    <h1>사기 전에,<br>지난 3년을<br>봅니다.</h1>
+    <p>코스피와 코스닥 2,557곳 · 업종 77개<br>2023년 10월부터 2026년 9월까지</p>
+  </header>
+
+  <div class="today"><span>오늘 코스피 · 오후 2시 14분 장 중</span><span><b>6,007.04</b> <b class="up">+6.54%</b></span></div>
+
+  <!-- 결론 먼저 -->
+  <section class="s">
+    <h2>조건으로 고른 회사는 한 달 뒤 시장보다 5% 넘게 더 오른 때가 더 많았습니다.</h2>
+    <div class="g2">
+      <div><div class="huge c-rose">32<small>%</small></div><p class="lbl">조건으로 고른 회사</p></div>
+      <div><div class="huge c-sub">24<small>%</small></div><p class="lbl">모든 회사</p></div>
+    </div>
+  </section>
+
+  <!-- 근거 -->
+  <section class="s">
+    <h2>100만 원어치라면, 한 달 뒤 시장보다 평균 이만큼 달랐습니다.</h2>
+    <div class="money">
+      <div><span class="lbl">조건으로 고른 회사</span><span class="big up">+25,000원</span></div>
+      <div><span class="lbl">모든 회사</span><span class="big down">−4,400원</span></div>
+      <div><span class="lbl">5% 넘게 뒤처진 비율 · 고른 회사</span><span class="big">28%</span></div>
+      <div><span class="lbl">5% 넘게 뒤처진 비율 · 모든 회사</span><span class="big">36%</span></div>
+    </div>
+    <p class="fine">고른 날부터 한 달 뒤를 4,002번 센 평균입니다. 같은 결과가 다시 나온다는 뜻은 아닙니다.</p>
+  </section>
+
+  <!-- 더 깊이 -->
+  <section class="s">
+    <h2>최근 두 달은 모든 회사보다 못했습니다.</h2>
+    <div class="g2">
+      <div><div class="huge c-rose">14<small>%</small></div><p class="lbl">고른 회사</p></div>
+      <div><div class="huge c-sub">25<small>%</small></div><p class="lbl">모든 회사</p></div>
+    </div>
+
+    <div class="mini">
+      <h3>해마다, 5% 넘게 더 오른 비율</h3>
+      <div class="yr"><span>2023년</span><svg viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><rect y="2" width="35" height="8" fill="#A31F70"/><rect y="14" width="52.5" height="8" fill="#5E3446"/></svg><span class="v">14 대 21</span></div>
+      <div class="yr"><span>2024년</span><svg viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><rect y="2" width="77.5" height="8" fill="#A31F70"/><rect y="14" width="57.5" height="8" fill="#5E3446"/></svg><span class="v">31 대 23</span></div>
+      <div class="yr"><span>2025년</span><svg viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><rect y="2" width="72.5" height="8" fill="#A31F70"/><rect y="14" width="55" height="8" fill="#5E3446"/></svg><span class="v">29 대 22</span></div>
+      <div class="yr"><span>2026년</span><svg viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><rect y="2" width="90" height="8" fill="#A31F70"/><rect y="14" width="67.5" height="8" fill="#5E3446"/></svg><span class="v">36 대 27</span></div>
+      <div class="yr hot"><span>최근 두 달</span><svg viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><rect y="2" width="35" height="8" fill="#A31F70"/><rect y="14" width="62.5" height="8" fill="#5E3446"/></svg><span class="v">14 대 25</span></div>
+      <div class="key"><span><i style="background:#A31F70"></i>고른 회사</span><span><i style="background:#5E3446"></i>모든 회사</span></div>
+    </div>
+
+    <div class="mini">
+      <h3>고르는 조건을 정한 길</h3>
+      <ol class="line">
+        <li><b>365</b><span>가지 후보</span></li>
+        <li><b>88</b><span>남김</span></li>
+        <li><b>37</b><span>남김</span></li>
+        <li><b>3</b><span>남김</span></li>
+        <li class="end"><b>1</b><span>지금 쓰는 조건</span></li>
+      </ol>
+    </div>
+
+    <div class="mini">
+      <h3>5% 못 넘은 2,741번의 까닭</h3>
+      <svg class="seg" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true">
+        <rect x="0" width="46.5" height="28" fill="#3D1028"/><rect x="47.5" width="26" height="28" fill="#A31F70"/><rect x="74.5" width="25.5" height="28" fill="#5E3446"/>
+      </svg>
+      <div class="segk">
+        <div style="border-color:#3D1028"><b>47%</b><br>업종이 통째로 식음</div>
+        <div style="border-color:#A31F70"><b>27%</b><br>조금 모자람</div>
+        <div style="border-color:#5E3446"><b>26%</b><br>회사만 처짐</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 할 일 하나 -->
+  <section class="end-band">
+    <h2>사려는 회사 이름을 넣고, 질문 11개에 답합니다. 약 2분.</h2>
+    <div class="steps">
+      <div><b>1</b>회사 이름</div>
+      <div><b>11</b>질문</div>
+      <div><b>2</b>분쯤</div>
+    </div>
+    <a class="btn" href="#"><span>왜 사? 시작하기</span><span aria-hidden="true">→</span></a>
+    <p>답은 이 기기에만 남습니다. 한 달 뒤, 정한 대로 했는지 다시 봅니다.</p>
+  </section>
+
+  <footer class="legal">
+    <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+    <p>이 사이트는 투자 자문이 아닙니다.</p>
+  </footer>
+</div>
+</body>
+</html>

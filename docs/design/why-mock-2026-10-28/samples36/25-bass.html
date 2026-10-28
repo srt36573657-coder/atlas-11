@@ -1,0 +1,160 @@
+<!-- 25 솔 바스 · 굵은 그림 하나가 전부를 말한다 — 줄이고 줄여 상징 하나만 남기고, 장마다 그림 하나 · 문장 하나 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 — 솔 바스 판</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--rose:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--wine)}
+body{max-width:390px;margin:0 auto;background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;font-size:17px;line-height:1.5;word-break:keep-all;overflow-x:hidden}
+b{font-weight:900}
+.num{font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}
+header,section,footer{position:relative;overflow:hidden}
+h2{font-size:36px;line-height:1.14;font-weight:900;letter-spacing:-.02em}
+.cap{font-size:19px;font-weight:700;color:var(--sub);margin-top:14px}
+.line{font-size:20px;font-weight:700;line-height:1.45;margin-top:20px}
+.small{color:var(--sub);margin-top:12px}
+
+/* 첫 장 — 물음표 하나. 주가 선이 굽어 물음표가 된다 */
+.f1{background:var(--wine);color:var(--bg);padding:20px 16px 36px}
+.brand{font-size:20px;font-weight:900;letter-spacing:.12em;color:var(--card)}
+.q{display:block;width:270px;height:320px;margin:-8px -26px 0 auto}
+.f1 h1{font-size:38px;line-height:1.16;font-weight:900;color:var(--card);letter-spacing:-.02em;margin-top:4px}
+.f1 .say{font-size:21px;font-weight:700;line-height:1.42;margin-top:16px}
+.f1 .who{margin-top:12px}
+.ticket{background:var(--card);color:var(--ink);margin-top:28px;padding:26px 22px 24px;clip-path:polygon(0 7px,14% 0,41% 6px,72% 0,100% 5px,99% 52%,100% 100%,66% 95%,31% 100%,0 96%,1% 48%)}
+.ticket .t{font-weight:700;color:var(--sub)}
+.ticket .v{font-size:34px;line-height:1.2;margin:4px 0 6px}
+.ticket .r{color:var(--sub)}
+
+/* 둘째 장 — 두 기둥 */
+.f2{background:var(--bg);padding:48px 16px 52px}
+.towers{display:block;width:100%;height:auto;margin-top:18px}
+.tlab{display:grid;grid-template-columns:164px 1fr;padding-left:34px;margin-top:10px}
+.tlab b{display:block;font-size:46px;line-height:1.05}
+.tlab span{display:block;font-weight:700;color:var(--sub)}
+.tlab .a b{color:var(--wine)}
+.tlab .c b{color:var(--rose)}
+.money{background:var(--card);margin-top:30px;padding:26px 20px 22px;clip-path:polygon(0 0,100% 7px,99% 100%,1% 95%)}
+.money .h{font-size:19px;font-weight:800}
+.mrow{display:flex;justify-content:space-between;align-items:baseline;border-top:3px solid var(--ink);margin-top:12px;padding-top:10px}
+.mrow span{font-weight:700;color:var(--sub)}
+.mrow b{font-size:32px}
+
+/* 셋째 장 — 부러진 기둥 · 줄어드는 원 · 77개 중 하나 */
+.f3{background:var(--card);padding:48px 16px 52px}
+.f3 h3{font-size:30px;font-weight:900;margin-top:56px;letter-spacing:-.02em}
+.funnel{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;margin-top:14px;text-align:center}
+.funnel svg{display:block;width:66px;height:66px;margin:0 auto}
+.funnel b{display:block;font-size:24px;margin-top:6px}
+.funnel .last b{color:var(--rose)}
+.tally{display:block;width:100%;height:auto;margin-top:18px}
+
+/* 넷째 장 — 다시 물음표 */
+.f4{background:var(--rose);color:var(--card);padding:44px 16px 44px}
+.f4 .top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.f4 h2{font-size:68px;line-height:1;color:var(--card)}
+.q2{width:100px;height:119px;flex:none}
+.f4 p{font-size:21px;font-weight:700;line-height:1.45;margin-top:20px}
+.go{display:block;width:100%;min-height:68px;margin-top:30px;border:0;background:var(--card);color:var(--wine);font:inherit;font-size:22px;font-weight:900;cursor:pointer;clip-path:polygon(0 5px,100% 0,99% 100%,1% 95%)}
+footer{background:var(--wine);color:var(--bg);padding:28px 16px 40px}
+footer p+p{margin-top:6px}
+</style>
+</head>
+<body>
+
+<header class="f1">
+  <p class="brand">둘이</p>
+  <svg class="q" viewBox="0 0 320 380" aria-hidden="true">
+    <polyline points="58,156 74,118 88,128 100,90 118,100 134,62 152,74 172,44 192,58 212,40 234,64 250,58 266,98 254,110 262,142 240,152 236,180 210,188 200,216 186,222 186,288" fill="none" stroke="#F7D4DE" stroke-width="26" stroke-linejoin="miter" stroke-miterlimit="2"/>
+    <circle cx="186" cy="340" r="25" fill="#FFF7F9"/>
+  </svg>
+  <h1>사기 전에,<br>지난 기록에 묻는다.</h1>
+  <p class="say">조건으로 고른 회사는 한 달 뒤 시장을 더 자주 앞섰다. 다만 최근 두 달은 아니었다.</p>
+  <p class="who">주식을 사려는 사람에게. 코스피·코스닥 2,557곳, 업종 77개, 3년 치 기록.</p>
+  <div class="ticket">
+    <p class="t">오늘 코스피 · 10월 28일 오후 2시 14분 장 중</p>
+    <p class="v num"><b>6,007.04</b> <b class="up">+6.54%</b></p>
+    <p class="r">석 달 사이 낮은 값 5,469 · 높은 값 7,081</p>
+  </div>
+</header>
+
+<section class="f2">
+  <h2>고른 회사가<br>더 자주 앞섰다.</h2>
+  <p class="cap">한 달 뒤, 시장보다 5% 넘게 더 오른 적</p>
+  <svg class="towers" viewBox="0 0 358 280" aria-hidden="true">
+    <polygon points="34,272 36,16 160,22 158,272" fill="#3D1028"/>
+    <polygon points="198,272 200,82 322,78 324,272" fill="#A31F70"/>
+    <rect x="0" y="272" width="358" height="8" fill="#2A1420"/>
+  </svg>
+  <div class="tlab">
+    <div class="a"><b class="num">32%</b><span>조건으로 고른 회사</span></div>
+    <div class="c"><b class="num">24%</b><span>모든 회사</span></div>
+  </div>
+  <p class="line">5% 넘게 뒤처진 적은 거꾸로 적었다. 28% 대 36%.</p>
+  <div class="money">
+    <p class="h">100만 원어치라면, 한 달 뒤 시장보다 평균</p>
+    <div class="mrow"><span>고른 회사</span><b class="up num">+25,000원</b></div>
+    <div class="mrow"><span>모든 회사</span><b class="down num">−4,400원</b></div>
+    <p class="small">평균이다. 같은 결과가 다시 나온다는 뜻은 아니다.</p>
+  </div>
+  <p class="small">2023년 10월부터 2026년 9월까지 4,002번을 셌다.</p>
+</section>
+
+<section class="f3">
+  <h2>최근 두 달은<br>못했다.</h2>
+  <p class="cap">최근 두 달, 시장보다 5% 넘게 더 오른 적</p>
+  <svg class="towers" viewBox="0 0 358 230" aria-hidden="true">
+    <polygon points="34,220 34,114 56,102 74,120 96,98 118,116 138,102 160,112 160,220" fill="#3D1028"/>
+    <polygon points="198,220 199,22 323,18 324,220" fill="#A31F70"/>
+    <rect x="0" y="220" width="358" height="8" fill="#2A1420"/>
+  </svg>
+  <div class="tlab">
+    <div class="a"><b class="num">14%</b><span>조건으로 고른 회사</span></div>
+    <div class="c"><b class="num">25%</b><span>모든 회사</span></div>
+  </div>
+  <p class="line">이 두 달은 고른 회사가 모든 회사보다 낮았다.</p>
+
+  <h3>365에서 하나로.</h3>
+  <div class="funnel">
+    <div><svg viewBox="0 0 104 104" aria-hidden="true"><circle cx="52" cy="52" r="50" fill="#3D1028"/></svg><b class="num">365</b></div>
+    <div><svg viewBox="0 0 104 104" aria-hidden="true"><circle cx="52" cy="52" r="24.6" fill="#3D1028"/></svg><b class="num">88</b></div>
+    <div><svg viewBox="0 0 104 104" aria-hidden="true"><circle cx="52" cy="52" r="15.9" fill="#3D1028"/></svg><b class="num">37</b></div>
+    <div><svg viewBox="0 0 104 104" aria-hidden="true"><circle cx="52" cy="52" r="4.5" fill="#3D1028"/></svg><b class="num">3</b></div>
+    <div class="last"><svg viewBox="0 0 104 104" aria-hidden="true"><circle cx="52" cy="52" r="14" fill="none" stroke="#A31F70" stroke-width="5"/><circle cx="52" cy="52" r="2.6" fill="#A31F70"/></svg><b class="num">1</b></div>
+  </div>
+  <p class="line">고르는 조건은 후보 365가지를 줄이고 줄여 하나만 남겼다.</p>
+
+  <h3>77개 중 하나.</h3>
+  <svg class="tally" id="tally" viewBox="0 0 358 100" aria-hidden="true"></svg>
+  <p class="line">오늘 업종 77개 가운데 네 조건을 다 채운 곳은 1개. 반도체 검사·측정.</p>
+  <p class="small">막 오르기 시작 37 · 한 달 내내 강함 7 · 조용함 29 · 강하다 꺾임 4. 최근 20거래일과 5거래일을 시장과 견줬다.</p>
+</section>
+
+<section class="f4">
+  <div class="top">
+    <h2>왜 사?</h2>
+    <svg class="q2" viewBox="0 0 320 380" aria-hidden="true">
+      <polyline points="58,156 74,118 88,128 100,90 118,100 134,62 152,74 172,44 192,58 212,40 234,64 250,58 266,98 254,110 262,142 240,152 236,180 210,188 200,216 186,222 186,288" fill="none" stroke="#F7D4DE" stroke-width="30" stroke-linejoin="miter" stroke-miterlimit="2"/>
+      <circle cx="186" cy="340" r="27" fill="#FFF7F9"/>
+    </svg>
+  </div>
+  <p>사려는 회사 이름을 넣는다.<br>질문 11개에 답한다. 약 2분.</p>
+  <p>답은 이 기기에만 남는다.<br>한 달 뒤, 정한 대로 했는지 다시 본다.</p>
+  <button type="button" class="go">질문 11개 시작</button>
+</section>
+
+<footer>
+  <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+  <p>이 사이트는 투자 자문이 아닙니다.</p>
+</footer>
+
+<script>
+(function(){var s=document.getElementById('tally'),h='';for(var i=0;i<77;i++){var t=i===51,hh=t?96:34;h+='<rect x="'+(3+i*4.6).toFixed(1)+'" y="'+(100-hh)+'" width="2.8" height="'+hh+'" fill="'+(t?'#A31F70':'#3D1028')+'"/>';}s.innerHTML=h;})();
+</script>
+</body>
+</html>

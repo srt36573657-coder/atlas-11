@@ -1,0 +1,148 @@
+<!-- 17 리처드 탈러 · 넛지 — 바라는 길을 가장 쉬운 길로 만들고 좋은 기본값을 미리 정해 둔다 · 고르는 길 자체를 설계한다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 · 사기 전 2분</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--acc:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;font-size:19px;line-height:1.55;max-width:390px;margin:0 auto;padding:0 16px 120px;word-break:keep-all;overflow-wrap:break-word;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+svg{display:block}
+.band{height:56px;display:flex;align-items:center}
+.band b{font-size:24px;font-weight:900;color:var(--wine)}
+.kick{font-size:17px;color:var(--sub);line-height:1.5}
+.kick strong{font-size:21px;color:var(--ink);font-weight:800}
+.kick .up{font-size:21px;color:var(--up);font-weight:900}
+h1{font-size:36px;line-height:1.22;font-weight:900;letter-spacing:-.8px;margin-top:14px}
+h2{font-size:26px;line-height:1.35;font-weight:900;letter-spacing:-.4px}
+h3{font-size:20px;line-height:1.35;font-weight:900}
+.lead{margin-top:10px;color:var(--sub)}
+.sec{padding-top:34px}
+.card{background:var(--card);border-radius:18px;padding:16px;margin-top:16px}
+.q{font-size:20px;font-weight:800;line-height:1.45}
+.mrow{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font-size:18px;font-weight:700}
+.mrow b{font-size:28px;font-weight:900}
+.up{color:var(--up)}
+.down{color:var(--down)}
+.mbar{width:100%;height:auto;margin-top:4px}
+.axis{display:flex;justify-content:space-between;font-size:17px;color:var(--sub);margin-top:6px}
+.note{font-size:17px;color:var(--sub);margin-top:10px;line-height:1.5}
+.fork{width:100%;height:auto;margin-top:10px}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.path{background:var(--card);border-radius:16px;padding:14px 12px;border:2px solid var(--wine)}
+.path .s{font-size:17px;color:var(--sub)}
+.path .r{margin-top:10px}
+.path .r span{display:block;font-size:17px;color:var(--sub);line-height:1.35}
+.path .r b{display:block;font-size:30px;font-weight:900;line-height:1.15}
+.honest{margin-top:12px;background:var(--card);border-left:6px solid var(--acc);border-radius:0 14px 14px 0;padding:12px 14px;line-height:1.5}
+.honest b{color:var(--acc)}
+.honest strong{font-size:22px;font-weight:900}
+.fun{margin:0 auto;border-radius:14px;padding:12px 14px;text-align:center;line-height:1.4}
+.fun b{display:block;font-size:28px;font-weight:900}
+.fun span{display:block;font-size:17px}
+.f1{width:100%;background:var(--card);border:2px solid var(--wine)}
+.f2{width:82%;background:var(--card);border:2px solid var(--wine)}
+.f3{width:64%;background:var(--acc);color:var(--card)}
+.chev{width:28px;height:18px;margin:6px auto}
+.act{scroll-margin-top:16px}
+.field{display:block;margin-top:4px}
+.field span{display:block;font-size:18px;font-weight:800;margin-bottom:6px}
+.field input{width:100%;min-height:56px;font:inherit;font-size:19px;padding:0 14px;border:2px solid var(--wine);border-radius:12px;background:#FFF7F9;color:var(--ink)}
+.field input::placeholder{color:#5E3446;opacity:1}
+.dh{font-size:17px;font-weight:800;color:var(--sub);margin-top:16px}
+.opt{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 12px;margin-top:8px;border:2px solid var(--wine);border-radius:12px;background:var(--card);font-size:18px;font-weight:700}
+.opt input{width:28px;height:28px;margin:10px;accent-color:#A31F70;flex:none}
+.opt em{margin-left:auto;font-style:normal;font-size:17px;font-weight:900;color:var(--acc)}
+.opt svg{flex:none}
+.cta{display:flex;align-items:center;justify-content:center;min-height:60px;margin-top:16px;background:var(--acc);color:var(--card);font-size:22px;font-weight:900;border-radius:14px;text-decoration:none}
+.foot{margin-top:28px;padding-top:14px;border-top:2px solid var(--wine);font-size:17px;color:var(--sub);line-height:1.6}
+.dock{position:fixed;left:0;right:0;bottom:0;background:var(--wine);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.dock a{display:flex;max-width:358px;margin:0 auto;min-height:56px;align-items:center;justify-content:center;background:var(--acc);color:var(--card);font-size:21px;font-weight:900;border-radius:12px;text-decoration:none}
+</style>
+</head>
+<body>
+<header class="band"><b>둘이</b></header>
+
+<!-- 상황과 결론 -->
+<p class="kick">오늘 코스피 <strong>6,007.04</strong> <span class="up">+6.54%</span><br>10월 28일 오후 2시 14분 · 장 중</p>
+<h1>크게 오른 날에도,<br>사기 전 2분.</h1>
+<p class="lead">주식을 사려는 사람이, 사기 전에 지난 기록을 보는 곳입니다.</p>
+<div class="card">
+  <p class="q">100만 원어치를 샀다면, 한 달 뒤 시장보다 평균</p>
+  <div class="mrow"><span>조건으로 고른 회사</span><b class="up">+25,000원</b></div>
+  <svg class="mbar" viewBox="0 0 326 30" aria-hidden="true">
+    <rect x="120" y="5" width="200" height="20" fill="#A31F70"/>
+    <line x1="120" y1="0" x2="120" y2="30" stroke="#2A1420" stroke-width="2"/>
+  </svg>
+  <div class="mrow"><span>모든 회사</span><b class="down">−4,400원</b></div>
+  <svg class="mbar" viewBox="0 0 326 30" aria-hidden="true">
+    <rect x="84.8" y="5" width="35.2" height="20" fill="#5E3446"/>
+    <line x1="120" y1="0" x2="120" y2="30" stroke="#2A1420" stroke-width="2"/>
+  </svg>
+  <div class="axis"><span>← 시장보다 덜</span><span>시장보다 더 →</span></div>
+  <p class="note">조건으로 고른 4,002번의 평균입니다. 같은 결과가 다시 나온다는 뜻이 아닙니다.</p>
+</div>
+
+<!-- 근거 -->
+<section class="sec">
+  <h2>같은 한 달, 두 갈래 길.</h2>
+  <p class="lead">아무 회사나 고른 길과 조건으로 고른 길을, 고른 날부터 한 달 뒤 시장과 비교했습니다.</p>
+  <svg class="fork" viewBox="0 0 326 64" aria-hidden="true">
+    <circle cx="163" cy="10" r="8" fill="#3D1028"/>
+    <path d="M163 18 C163 40 84 36 84 62" fill="none" stroke="#3D1028" stroke-width="3"/>
+    <path d="M163 18 C163 40 242 36 242 62" fill="none" stroke="#3D1028" stroke-width="3"/>
+  </svg>
+  <div class="paths">
+    <div class="path">
+      <h3>아무 회사나</h3><p class="s">모든 회사</p>
+      <div class="r"><span>시장보다 5% 넘게 더 오름</span><b>24%</b></div>
+      <div class="r"><span>시장보다 5% 넘게 뒤처짐</span><b>36%</b></div>
+    </div>
+    <div class="path">
+      <h3>조건으로 고름</h3><p class="s">고른 회사</p>
+      <div class="r"><span>시장보다 5% 넘게 더 오름</span><b>32%</b></div>
+      <div class="r"><span>시장보다 5% 넘게 뒤처짐</span><b>28%</b></div>
+    </div>
+  </div>
+  <div class="honest"><b>최근 두 달은 반대였습니다.</b> 시장보다 5% 넘게 더 오른 비율이 고른 회사 <strong>14%</strong>, 모든 회사 <strong>25%</strong>였습니다.</div>
+</section>
+
+<!-- 더 깊이 -->
+<section class="sec">
+  <h2>고를 것을 미리 줄여 둡니다.</h2>
+  <p class="lead">2,557곳을 하나하나 볼 수는 없습니다. 오늘 기준으로 줄이면 이렇습니다.</p>
+  <div style="margin-top:16px">
+    <div class="fun f1"><b>2,557곳</b><span>코스피·코스닥 회사</span></div>
+    <svg class="chev" viewBox="0 0 28 18" aria-hidden="true"><path d="M3 3 L14 14 L25 3" fill="none" stroke="#3D1028" stroke-width="3" stroke-linecap="round"/></svg>
+    <div class="fun f2"><b>업종 77개</b><span>오늘: 막 오르기 시작 37 · 한 달 내내 강함 7 · 조용함 29 · 강하다 꺾임 4</span></div>
+    <svg class="chev" viewBox="0 0 28 18" aria-hidden="true"><path d="M3 3 L14 14 L25 3" fill="none" stroke="#3D1028" stroke-width="3" stroke-linecap="round"/></svg>
+    <div class="fun f3"><b>1개</b><span>조건 4개를 다 채운 업종<br>반도체 검사·측정</span></div>
+  </div>
+  <p class="note">이름을 보여 드릴 뿐, 사라는 뜻이 아닙니다. 고르는 조건은 후보 365가지에서 88, 37, 3을 거쳐 1가지로 정했습니다.</p>
+</section>
+
+<!-- 할 일 -->
+<section class="sec act" id="wae">
+  <h2>사는 까닭을 미리 적어 둡니다.</h2>
+  <p class="lead">지금의 나와 한 달 뒤의 나를 잇는 2분입니다.</p>
+  <div class="card">
+    <label class="field"><span>사려는 회사 이름</span><input type="text" placeholder="회사 이름을 넣으세요" autocomplete="off"></label>
+    <p class="dh">미리 정해 둔 것</p>
+    <label class="opt"><input type="checkbox" checked><span>한 달 뒤 다시 보기</span><em>켜 둠</em></label>
+    <div class="opt"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 15 L12 21 L23 8" fill="none" stroke="#A31F70" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>답은 이 기기에만 남습니다</span></div>
+    <div class="opt"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 15 L12 21 L23 8" fill="none" stroke="#A31F70" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>질문 11개 · 약 2분</span></div>
+    <a class="cta" href="#">「왜 사?」 시작</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+  <p>이 사이트는 투자 자문이 아닙니다.</p>
+</footer>
+
+<nav class="dock"><a href="#wae">「왜 사?」 사기 전 2분</a></nav>
+</body>
+</html>

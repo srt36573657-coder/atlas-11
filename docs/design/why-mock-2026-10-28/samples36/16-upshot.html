@@ -1,0 +1,204 @@
+<!-- 16 뉴욕타임스 업샷 · 아만다 콕스 · 먼저 짐작해 보게 한 뒤 진짜 값을 보여 주고, 그림 위에 바로 붙인 설명 글로 풀어 준다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 · 먼저 짐작해 보기</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--acc:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;font-size:19px;line-height:1.6;max-width:390px;margin:0 auto;padding:0 16px 40px;word-break:keep-all;overflow-wrap:break-word;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+svg{display:block;width:100%;height:auto}
+.band{height:56px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--ink)}
+.band b{font-size:24px;font-weight:900;color:var(--wine);letter-spacing:2px}
+.dateline{font-size:17px;color:var(--sub);margin-top:16px;line-height:1.5}
+.dateline strong{color:var(--ink);font-weight:800}
+.dateline .up{color:var(--up);font-weight:900}
+h1,h2{font-family:"AppleMyungjo","Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo","Batang",serif;font-weight:800;letter-spacing:-.5px}
+h1{font-size:30px;line-height:1.32;margin-top:12px}
+h2{font-size:26px;line-height:1.36}
+.lead{margin-top:12px;color:var(--sub)}
+.sec{padding-top:34px}
+.card{background:var(--card);border-radius:4px;padding:16px;margin-top:16px;border-top:4px solid var(--ink)}
+.qq{font-size:21px;font-weight:800;line-height:1.45}
+.qq b{color:var(--acc)}
+.opts{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+.opts.three{grid-template-columns:1fr}
+button{font:inherit;color:inherit;cursor:pointer}
+.opts button{white-space:nowrap;min-height:56px;min-width:48px;border:2px solid var(--wine);background:var(--card);border-radius:8px;font-size:19px;font-weight:800;padding:0 6px}
+.opts button[aria-pressed="true"]{background:var(--wine);color:var(--card)}
+.opts.three button{text-align:left;padding:0 16px}
+.skip{display:block;width:100%;min-height:52px;margin-top:10px;border:0;background:transparent;color:var(--acc);font-size:18px;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.reveal{margin-top:14px;padding-top:12px;border-top:1px dashed var(--sub)}
+.ann{font-size:20px;font-weight:800;margin-top:10px;line-height:1.5}
+.ann .acc{color:var(--acc)}
+.key{display:flex;gap:16px;flex-wrap:wrap;font-size:17px;color:var(--sub);margin-bottom:8px}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.key i{display:inline-block;width:16px;height:16px}
+.small{font-size:17px;color:var(--sub);margin-top:10px;line-height:1.55}
+.cta{display:flex;align-items:center;justify-content:center;min-height:60px;margin-top:18px;background:var(--acc);color:var(--card);font-size:22px;font-weight:900;border-radius:8px;text-decoration:none}
+.foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--ink);font-size:17px;color:var(--sub);line-height:1.6}
+</style>
+</head>
+<body>
+<header class="band"><b>둘이</b></header>
+<p class="dateline">10월 28일 오후 2시 14분 · 오늘 코스피 <strong>6,007.04</strong> <span class="up">+6.54%</span> (장 중)</p>
+
+<!-- 상황과 결론 -->
+<h1>조건으로 고른 회사는 한 달 뒤 시장을 더 자주 앞섰습니다. 얼마나 자주였을까요?</h1>
+<p class="lead">주식을 사려는 사람을 위해, 코스피·코스닥 2,557곳에서 조건으로 고른 회사를 고른 날부터 한 달 뒤 시장과 비교했습니다. 약 3년, 4,002번입니다.</p>
+
+<div class="card" id="q1">
+  <p class="qq">100번 중 몇 번이나 시장보다 <b>5% 넘게</b> 더 올랐을까요? 먼저 짐작해 보세요. (숫자 = 100번 중 몇 번)</p>
+  <div class="opts" role="group" aria-label="짐작 고르기">
+    <button type="button" data-g="10" aria-pressed="false">10</button>
+    <button type="button" data-g="20" aria-pressed="false">20</button>
+    <button type="button" data-g="30" aria-pressed="false">30</button>
+    <button type="button" data-g="40" aria-pressed="false">40</button>
+    <button type="button" data-g="50" aria-pressed="false">50</button>
+  </div>
+  <button type="button" class="skip" data-g="0">짐작 없이 바로 보기</button>
+  <div class="reveal" id="rv1" hidden>
+    <svg id="r1" viewBox="0 0 326 176" role="img" aria-label="고른 회사 32번, 모든 회사 24번"></svg>
+    <p class="ann" id="a1"></p>
+  </div>
+</div>
+
+<!-- 근거 -->
+<section class="sec">
+  <h2>2024년부터는 해마다 앞섰습니다. 최근 두 달은 아니었습니다.</h2>
+  <p class="lead">2023년은 기록이 71번뿐이었고, 그해에는 뒤처졌습니다.</p>
+  <div class="card">
+    <p class="key"><span><i style="background:#A31F70"></i>고른 회사</span><span><i style="border:2.5px solid #5E3446"></i>모든 회사</span><span>시장보다 5% 넘게 더 오른 비율</span></p>
+    <svg viewBox="0 0 326 264" role="img" aria-label="2023년 14 대 21, 2024년 31 대 23, 2025년 29 대 22, 2026년 36 대 27, 최근 두 달 14 대 25">
+      <line x1="0" y1="220" x2="326" y2="220" stroke="#2A1420" stroke-width="1.5"/>
+      <line x1="264" y1="40" x2="264" y2="220" stroke="#3D1028" stroke-width="1.5" stroke-dasharray="3 4"/>
+      <g fill="#A31F70">
+        <rect x="16" y="164" width="22" height="56"/><rect x="80" y="96" width="22" height="124"/><rect x="144" y="104" width="22" height="116"/><rect x="208" y="76" width="22" height="144"/><rect x="272" y="164" width="22" height="56"/>
+      </g>
+      <g fill="none" stroke="#5E3446" stroke-width="2.5">
+        <rect x="43.25" y="137.25" width="19.5" height="81.5"/><rect x="107.25" y="129.25" width="19.5" height="89.5"/><rect x="171.25" y="133.25" width="19.5" height="85.5"/><rect x="235.25" y="113.25" width="19.5" height="105.5"/><rect x="299.25" y="121.25" width="19.5" height="97.5"/>
+      </g>
+      <g font-size="17" font-weight="800" text-anchor="middle">
+        <text x="27" y="158" fill="#A31F70">14</text><text x="53" y="130" fill="#2A1420">21</text>
+        <text x="91" y="90" fill="#A31F70">31</text><text x="117" y="122" fill="#2A1420">23</text>
+        <text x="155" y="98" fill="#A31F70">29</text><text x="181" y="126" fill="#2A1420">22</text>
+        <text x="219" y="70" fill="#A31F70">36</text><text x="245" y="106" fill="#2A1420">27</text>
+        <text x="283" y="158" fill="#A31F70">14</text><text x="309" y="114" fill="#2A1420">25</text>
+      </g>
+      <text x="40" y="104" text-anchor="middle" font-size="17" fill="#2A1420">71번뿐</text>
+      <path d="M80 34 V26 H252 V34" fill="none" stroke="#2A1420" stroke-width="1.5"/>
+      <text x="166" y="18" text-anchor="middle" font-size="17" font-weight="800" fill="#2A1420">해마다 앞섬</text>
+      <text x="326" y="56" text-anchor="end" font-size="17" font-weight="800" fill="#A31F70">두 달은</text>
+      <text x="326" y="76" text-anchor="end" font-size="17" font-weight="800" fill="#A31F70">뒤처짐</text>
+      <line x1="296" y1="82" x2="296" y2="98" stroke="#A31F70" stroke-width="1.5"/>
+      <g font-size="17" fill="#5E3446" text-anchor="middle">
+        <text x="40" y="244">2023</text><text x="104" y="244">2024</text><text x="168" y="244">2025</text><text x="232" y="244">2026</text>
+        <text x="296" y="240">최근</text><text x="296" y="260">두 달</text>
+      </g>
+    </svg>
+    <p class="small">시험 횟수: 2024년 1,019번 · 2025년 1,822번 · 2026년 1,090번. 100만 원어치라면 한 달 뒤 시장보다 평균 <b style="color:#B4123A">+25,000원</b>, 모든 회사는 <b style="color:#1A55B0">−4,400원</b>이었습니다. 평균일 뿐, 같은 결과가 다시 나온다는 뜻은 아닙니다.</p>
+  </div>
+</section>
+
+<!-- 더 깊이 -->
+<section class="sec">
+  <h2>5%를 못 넘은 2,741번. 가장 큰 까닭은 무엇이었을까요?</h2>
+  <div class="card" id="q2">
+    <p class="qq">하나를 골라 짐작해 보세요.</p>
+    <div class="opts three" role="group" aria-label="까닭 고르기">
+      <button type="button" data-h="sector" aria-pressed="false">업종 전체가 식어서</button>
+      <button type="button" data-h="short" aria-pressed="false">5%에 조금 모자라서</button>
+      <button type="button" data-h="alone" aria-pressed="false">그 회사만 처져서</button>
+    </div>
+    <button type="button" class="skip" data-h="none">짐작 없이 바로 보기</button>
+    <div class="reveal" id="rv2" hidden>
+      <svg viewBox="0 0 326 122" role="img" aria-label="업종이 통째로 식음 47%, 조금 모자람 27%, 회사만 처짐 26%">
+        <text x="0" y="34" font-size="17" font-weight="800" fill="#A31F70">업종이 통째로 식음 47%</text>
+        <text x="326" y="34" text-anchor="end" font-size="17" font-weight="800" fill="#2A1420">회사만 처짐 26%</text>
+        <line x1="20" y1="40" x2="20" y2="50" stroke="#A31F70" stroke-width="1.5"/>
+        <line x1="306" y1="40" x2="306" y2="50" stroke="#2A1420" stroke-width="1.5"/>
+        <rect x="0" y="50" width="152.2" height="36" fill="#A31F70"/>
+        <rect x="154.2" y="50" width="87" height="36" fill="#FFF7F9" stroke="#3D1028" stroke-width="2.5"/>
+        <rect x="243.2" y="50" width="82.8" height="36" fill="#5E3446"/>
+        <line x1="166" y1="86" x2="166" y2="96" stroke="#2A1420" stroke-width="1.5"/>
+        <text x="156" y="114" font-size="17" font-weight="800" fill="#2A1420">조금 모자람 27%</text>
+      </svg>
+      <p class="ann" id="a2"></p>
+      <p class="small">고르는 조건은 후보 365가지에서 88, 37, 3을 거쳐 1가지로 정했습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 할 일 -->
+<section class="sec">
+  <h2>이제 내 회사 차례입니다.</h2>
+  <p class="lead">사기 전에 사려는 회사 이름을 넣고, 질문 11개에 답해 둡니다. 약 2분입니다. 한 달 뒤, 정한 대로 했는지 다시 봅니다.</p>
+  <div class="card">
+    <svg viewBox="0 0 326 96" role="img" aria-label="지금 적어 두고, 한 달 뒤 펼쳐 보기">
+      <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2A1420"/></marker></defs>
+      <rect x="1.5" y="14.5" width="128" height="66" rx="6" fill="#FFF7F9" stroke="#2A1420" stroke-width="2.5"/>
+      <text x="65.5" y="42" text-anchor="middle" font-size="18" font-weight="800" fill="#2A1420">지금</text>
+      <text x="65.5" y="66" text-anchor="middle" font-size="17" fill="#5E3446">적어 두기</text>
+      <line x1="138" y1="48" x2="186" y2="48" stroke="#2A1420" stroke-width="3" marker-end="url(#ar3)"/>
+      <rect x="196.5" y="14.5" width="128" height="66" rx="6" fill="#A31F70"/>
+      <text x="260.5" y="42" text-anchor="middle" font-size="18" font-weight="800" fill="#FFF7F9">한 달 뒤</text>
+      <text x="260.5" y="66" text-anchor="middle" font-size="17" fill="#FFF7F9">펼쳐 보기</text>
+    </svg>
+  </div>
+  <a class="cta" href="#">「왜 사?」 시작하기</a>
+  <p class="small">답은 이 기기에만 남습니다.</p>
+</section>
+
+<footer class="foot">
+  <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+  <p>이 사이트는 투자 자문이 아닙니다.</p>
+</footer>
+
+<script>
+(function(){
+  var ns='http://www.w3.org/2000/svg';
+  function el(t,a,txt){var e=document.createElementNS(ns,t);for(var k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e;}
+  function X(v){return 8+v*6.2;}
+  var q1=document.getElementById('q1');
+  var b1=q1.querySelectorAll('button[data-g]');
+  Array.prototype.forEach.call(b1,function(b){b.addEventListener('click',function(){
+    var g=+b.getAttribute('data-g');
+    Array.prototype.forEach.call(b1,function(x){if(x.hasAttribute('aria-pressed'))x.setAttribute('aria-pressed',x===b?'true':'false');});
+    var s=document.getElementById('r1'); while(s.firstChild)s.removeChild(s.firstChild);
+    s.appendChild(el('text',{x:8,y:30,'font-size':17,'font-weight':800,fill:'#2A1420'},'조건으로 고른 회사'));
+    s.appendChild(el('rect',{x:8,y:40,width:X(32)-8,height:30,fill:'#A31F70'}));
+    s.appendChild(el('text',{x:X(32)+8,y:62,'font-size':20,'font-weight':900,fill:'#A31F70',stroke:'#FFF7F9','stroke-width':5,'paint-order':'stroke'},'32번'));
+    s.appendChild(el('text',{x:8,y:104,'font-size':17,'font-weight':800,fill:'#2A1420'},'모든 회사'));
+    s.appendChild(el('rect',{x:9.25,y:113.25,width:X(24)-10.5,height:27.5,fill:'none',stroke:'#5E3446','stroke-width':2.5}));
+    s.appendChild(el('text',{x:X(24)+8,y:134,'font-size':20,'font-weight':900,fill:'#2A1420',stroke:'#FFF7F9','stroke-width':5,'paint-order':'stroke'},'24번'));
+    if(g>0){
+      var x=X(g);
+      s.appendChild(el('line',{x1:x,y1:36,x2:x,y2:74,stroke:'#3D1028','stroke-width':3,'stroke-dasharray':'5 4'}));
+      s.appendChild(el('line',{x1:x,y1:110,x2:x,y2:146,stroke:'#3D1028','stroke-width':3,'stroke-dasharray':'5 4'}));
+      var anc=g>=45?'end':(g<=10?'start':'middle');
+      s.appendChild(el('text',{x:anc==='start'?x-4:x,y:170,'text-anchor':anc,'font-size':17,'font-weight':800,fill:'#3D1028'},'내 짐작 '+g+'번'));
+    }
+    var a=document.getElementById('a1'), d=32-g;
+    if(g===0){a.innerHTML='실제는 <span class="acc">100번에 32번</span>. 모든 회사는 24번이었습니다.';}
+    else{a.innerHTML='실제는 <span class="acc">100번에 32번</span>. 짐작보다 '+Math.abs(d)+'번 '+(d>0?'많았습니다':'적었습니다')+'. 모든 회사는 24번이었습니다.';}
+    document.getElementById('rv1').hidden=false;
+  });});
+  var q2=document.getElementById('q2');
+  var b2=q2.querySelectorAll('button[data-h]');
+  Array.prototype.forEach.call(b2,function(b){b.addEventListener('click',function(){
+    var h=b.getAttribute('data-h');
+    Array.prototype.forEach.call(b2,function(x){if(x.hasAttribute('aria-pressed'))x.setAttribute('aria-pressed',x===b?'true':'false');});
+    var a=document.getElementById('a2');
+    if(h==='sector')a.innerHTML='짐작대로입니다. <span class="acc">절반 가까이(47%)</span>는 업종 전체가 식은 때였습니다.';
+    else if(h==='none')a.innerHTML='<span class="acc">절반 가까이(47%)</span>는 업종 전체가 식은 때였습니다.';
+    else a.innerHTML='짐작과 달랐습니다. <span class="acc">절반 가까이(47%)</span>는 업종 전체가 식은 때였습니다.';
+    document.getElementById('rv2').hidden=false;
+  });});
+})();
+</script>
+</body>
+</html>

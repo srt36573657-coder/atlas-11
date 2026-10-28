@@ -1,0 +1,203 @@
+<!-- 18 리처드 파인만 · 아이에게 설명하듯 쉬운 비유 하나로 풀고, 첫째 원칙은 자기 자신을 속이지 않는 것이다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 · 쉽게 말하면</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--acc:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;font-size:19px;line-height:1.6;max-width:390px;margin:0 auto;padding:0 16px 40px;word-break:keep-all;overflow-wrap:break-word;-webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
+svg{display:block;width:100%;height:auto}
+.band{height:56px;display:flex;align-items:center}
+.band b{font-size:24px;font-weight:900;color:var(--wine)}
+.today{font-size:17px;color:var(--sub);line-height:1.5}
+.today strong{font-size:20px;color:var(--ink);font-weight:800}
+.today .up{font-size:20px;color:var(--up);font-weight:900}
+.board{background:var(--wine);color:var(--card);border-radius:10px;padding:18px 10px;margin-top:14px;border:6px solid #5E3446}
+.board .s{font-size:19px;color:var(--bg);padding:0 6px}
+.board h1,.board .nums,.board .keymap{margin-left:6px;margin-right:6px}
+.board h1{font-size:29px;line-height:1.33;font-weight:900;margin-top:6px;letter-spacing:-.4px}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 8px}
+.nums div{border:2px dashed var(--bg);border-radius:10px;padding:10px 12px}
+.nums b{display:block;font-size:40px;font-weight:900;line-height:1.1;color:var(--card)}
+.nums span{display:block;font-size:17px;color:var(--bg);line-height:1.4;margin-top:4px}
+.keymap{list-style:none;margin-top:10px;border-top:2px dashed var(--bg);padding-top:10px}
+.keymap li{display:flex;justify-content:space-between;gap:10px;font-size:18px;line-height:1.5;color:var(--bg)}
+.keymap li b{color:var(--card)}
+.real{background:var(--card);border-radius:10px;padding:14px 16px;margin-top:12px;line-height:1.55}
+.real b{color:var(--acc)}
+.real small{display:block;font-size:17px;color:var(--sub);margin-top:4px}
+.sec{padding-top:34px}
+h2{font-size:26px;line-height:1.35;font-weight:900;letter-spacing:-.4px}
+h3{font-size:21px;line-height:1.4;font-weight:900}
+.lead{margin-top:10px;color:var(--sub)}
+.note{background:var(--card);border-left:4px solid var(--acc);border-radius:0 10px 10px 0;padding:6px 16px 12px 14px;margin-top:16px}
+.nrow{display:grid;grid-template-columns:70px 1fr auto 34px;align-items:center;gap:8px;min-height:54px;border-bottom:1px solid #5E3446}
+.nrow .y{font-weight:900}
+.nrow .c{font-size:17px;color:var(--sub)}
+.nrow .v{font-size:19px;font-weight:800}
+.nrow .v b{color:var(--acc)}
+.nrow svg{width:30px;height:30px}
+.nhead{display:grid;grid-template-columns:70px 1fr auto 34px;gap:8px;font-size:17px;color:var(--sub);padding:8px 0 4px;border-bottom:2px solid var(--wine)}
+.money{margin-top:12px;font-size:18px;line-height:1.55}
+.money .up{color:var(--up);font-weight:900}
+.money .down{color:var(--down);font-weight:900}
+.money small{display:block;font-size:17px;color:var(--sub);margin-top:4px}
+.quote{margin-top:10px;font-size:21px;font-weight:800;color:var(--acc);line-height:1.45;border-left:4px solid var(--acc);padding-left:12px}
+.fact{background:var(--card);border-radius:10px;padding:16px;margin-top:14px;border:2px solid var(--wine)}
+.fact .n{display:inline-block;font-size:17px;font-weight:900;color:var(--card);background:var(--wine);border-radius:6px;padding:2px 10px;margin-bottom:8px}
+.fact .big{font-size:36px;font-weight:900;line-height:1.2;margin-top:6px}
+.fact .big b{color:var(--acc)}
+.fact p{margin-top:6px;color:var(--sub);line-height:1.55}
+.why3{margin-top:10px}
+.w{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;padding:10px 0;border-top:1px dashed #5E3446}
+.w svg{width:96px;height:72px}
+.w b{display:block;font-size:26px;font-weight:900;color:var(--acc);line-height:1.1}
+.w span{display:block;font-size:18px;font-weight:800;line-height:1.35}
+.w small{display:block;font-size:17px;color:var(--sub);line-height:1.35}
+.pathline{font-size:21px;font-weight:900;margin-top:8px;letter-spacing:.5px}
+.pathline b{color:var(--acc)}
+.cta{display:flex;align-items:center;justify-content:center;min-height:60px;margin-top:16px;background:var(--acc);color:var(--card);font-size:22px;font-weight:900;border-radius:12px;text-decoration:none}
+.small{font-size:17px;color:var(--sub);margin-top:10px;line-height:1.55}
+.foot{margin-top:30px;padding-top:14px;border-top:2px dashed var(--wine);font-size:17px;color:var(--sub);line-height:1.6}
+</style>
+</head>
+<body>
+<header class="band"><b>둘이</b></header>
+<p class="today">오늘 코스피 <strong>6,007.04</strong> <span class="up">+6.54%</span> · 10월 28일 오후 2시 14분 · 장 중</p>
+
+<!-- 상황과 결론 -->
+<section class="board">
+  <p class="s">주식 시장을 큰 학교라고 해 봅시다.</p>
+  <h1>미리 고른 학생은, 한 달 뒤 평균보다 크게 앞선 일이 더 많았습니다.</h1>
+  <div class="nums">
+    <div><b>32명</b><span>조건으로 고른 학생 100명 중</span></div>
+    <div><b>24명</b><span>아무나 고른 학생 100명 중</span></div>
+  </div>
+  <svg viewBox="0 0 326 226" role="img" aria-label="학교 그림: 학년 전체는 시장, 반은 업종, 학생은 회사">
+    <text x="14" y="24" font-size="18" font-weight="800" fill="#FFF7F9">학년 전체 = 시장</text>
+    <path d="M12 40 C110 34 220 42 314 36 C318 92 316 150 316 196 C214 200 112 194 10 198 C8 140 11 90 12 40 Z" fill="none" stroke="#F7D4DE" stroke-width="2.5" stroke-linejoin="round"/>
+    <text x="26" y="64" font-size="17" fill="#F7D4DE">반 = 업종, 77개</text>
+    <g fill="none" stroke="#F7D4DE" stroke-width="2" stroke-linejoin="round">
+      <path d="M26 76 C50 73 80 78 104 75 C106 110 104 150 105 182 C80 184 50 180 25 183 C24 150 27 110 26 76 Z"/>
+      <path d="M124 76 C148 73 178 78 202 75 C204 110 202 150 203 182 C178 184 148 180 123 183 C122 150 125 110 124 76 Z"/>
+      <path d="M222 76 C246 73 276 78 300 75 C302 110 300 150 301 182 C276 184 246 180 221 183 C220 150 223 110 222 76 Z"/>
+    </g>
+    <g fill="#F7D4DE">
+      <circle cx="52" cy="102" r="6"/><circle cx="78" cy="102" r="6"/><circle cx="52" cy="130" r="6"/><circle cx="78" cy="130" r="6"/><circle cx="52" cy="158" r="6"/><circle cx="78" cy="158" r="6"/>
+      <circle cx="176" cy="102" r="6"/><circle cx="150" cy="130" r="6"/><circle cx="176" cy="130" r="6"/><circle cx="150" cy="158" r="6"/><circle cx="176" cy="158" r="6"/>
+      <circle cx="248" cy="102" r="6"/><circle cx="274" cy="102" r="6"/><circle cx="248" cy="130" r="6"/><circle cx="274" cy="130" r="6"/><circle cx="248" cy="158" r="6"/><circle cx="274" cy="158" r="6"/>
+    </g>
+    <circle cx="150" cy="102" r="7" fill="#FFF7F9"/>
+    <circle cx="150" cy="102" r="13" fill="none" stroke="#FFF7F9" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="14" y="220" font-size="17" fill="#F7D4DE">학생 = 회사, 2,557곳</text>
+  </svg>
+  <ul class="keymap">
+    <li><span>동그라미 친 학생</span><b>조건으로 고른 회사</b></li>
+    <li><span>한 달 뒤 시험</span><b>고른 날부터 한 달 뒤</b></li>
+    <li><span>평균보다 5점 넘게 앞섬</span><b>시장보다 5% 넘게 더 오름</b></li>
+  </ul>
+</section>
+<div class="real">진짜 말로 하면, 조건으로 고른 회사의 <b>32%</b>가 고른 날부터 한 달 뒤 시장보다 5% 넘게 더 올랐습니다. 모든 회사는 <b>24%</b>입니다.<small>코스피·코스닥 2,557곳 · 업종 77개 · 2023년 10월 ~ 2026년 9월. 주식을 사려는 사람이 사기 전에 봅니다.</small></div>
+
+<!-- 근거 -->
+<section class="sec">
+  <h2>한 번이 아니라, 4,002번 해 봤습니다.</h2>
+  <p class="lead">해마다 적은 실험 노트입니다. 시장보다 5% 넘게 더 오른 비율을 고른 회사와 모든 회사로 나란히 적었습니다.</p>
+  <div class="note">
+    <div class="nhead"><span>해</span><span>몇 번</span><span>고른 대 모든</span><span></span></div>
+    <div class="nrow"><span class="y">2023년</span><span class="c">71번</span><span class="v"><b>14</b> 대 21</span>
+      <svg viewBox="0 0 30 30" role="img" aria-label="뒤처짐"><path d="M8 8 L22 22 M22 8 L8 22" fill="none" stroke="#3D1028" stroke-width="3.5" stroke-linecap="round"/></svg></div>
+    <div class="nrow"><span class="y">2024년</span><span class="c">1,019번</span><span class="v"><b>31</b> 대 23</span>
+      <svg viewBox="0 0 30 30" role="img" aria-label="앞섬"><path d="M6 16 L12 22 L24 8" fill="none" stroke="#A31F70" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nrow"><span class="y">2025년</span><span class="c">1,822번</span><span class="v"><b>29</b> 대 22</span>
+      <svg viewBox="0 0 30 30" role="img" aria-label="앞섬"><path d="M6 16 L12 22 L24 8" fill="none" stroke="#A31F70" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nrow"><span class="y">2026년</span><span class="c">1,090번</span><span class="v"><b>36</b> 대 27</span>
+      <svg viewBox="0 0 30 30" role="img" aria-label="앞섬"><path d="M6 16 L12 22 L24 8" fill="none" stroke="#A31F70" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <p class="money">돈으로 하면, 100만 원어치마다 한 달 뒤 시장보다 평균 <span class="up">+25,000원</span>. 아무 회사나 고르면 <span class="down">−4,400원</span>.<small>평균일 뿐입니다. 다시 그렇게 된다는 뜻이 아닙니다.</small></p>
+  </div>
+</section>
+
+<!-- 더 깊이 -->
+<section class="sec">
+  <h2>첫째 원칙, 나 자신을 속이지 않기.</h2>
+  <p class="quote">가장 속이기 쉬운 사람은 바로 나 자신입니다.</p>
+
+  <div class="fact">
+    <span class="n">하나</span>
+    <h3>최근 두 달은 졌습니다.</h3>
+    <p class="big"><b>14%</b> 대 25%</p>
+    <p>시장보다 5% 넘게 더 오른 비율이 고른 회사가 모든 회사보다 낮았습니다. 숨기지 않습니다.</p>
+  </div>
+
+  <div class="fact">
+    <span class="n">둘</span>
+    <h3>못 넘은 2,741번, 절반 가까이는 반 전체가 식어서였습니다.</h3>
+    <div class="why3">
+      <div class="w">
+        <svg viewBox="0 0 96 72" aria-hidden="true">
+          <rect x="6" y="12" width="54" height="48" rx="6" fill="none" stroke="#3D1028" stroke-width="2.5"/>
+          <g fill="#5E3446"><circle cx="22" cy="28" r="5"/><circle cx="44" cy="28" r="5"/><circle cx="22" cy="46" r="5"/><circle cx="44" cy="46" r="5"/></g>
+          <path d="M80 10 V58 M70 48 L80 60 L90 48" fill="none" stroke="#A31F70" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div><b>47%</b><span>반 전체가 식음</span><small>진짜로는 업종이 통째로 식음</small></div>
+      </div>
+      <div class="w">
+        <svg viewBox="0 0 96 72" aria-hidden="true">
+          <line x1="6" y1="26" x2="90" y2="26" stroke="#3D1028" stroke-width="2.5" stroke-dasharray="6 5"/>
+          <circle cx="48" cy="40" r="7" fill="#A31F70"/>
+          <path d="M48 31 V29" stroke="#A31F70" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div><b>27%</b><span>5점에 조금 모자람</span><small>진짜로는 5%에 조금 못 미침</small></div>
+      </div>
+      <div class="w">
+        <svg viewBox="0 0 96 72" aria-hidden="true">
+          <g fill="#5E3446"><circle cx="12" cy="18" r="5"/><circle cx="30" cy="18" r="5"/><circle cx="66" cy="18" r="5"/><circle cx="84" cy="18" r="5"/></g>
+          <circle cx="48" cy="18" r="5" fill="none" stroke="#5E3446" stroke-width="1.5" stroke-dasharray="2 2"/>
+          <path d="M48 26 V54" stroke="#A31F70" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="48" cy="60" r="6" fill="#A31F70"/>
+        </svg>
+        <div><b>26%</b><span>그 학생만 떨어짐</span><small>진짜로는 그 회사만 처짐</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fact">
+    <span class="n">셋</span>
+    <h3>365가지를 시험해 하나를 골랐습니다.</h3>
+    <p class="pathline">365 → 88 → 37 → 3 → <b>1</b></p>
+    <p>많이 시험하면, 우연히 잘 맞은 것을 고를 수 있습니다. 그래서 위의 나쁜 기록을 같이 봅니다.</p>
+  </div>
+</section>
+
+<!-- 할 일 -->
+<section class="sec">
+  <h2>실험 전에, 노트부터 씁니다.</h2>
+  <p class="lead">사기 전에 사는 까닭을 적어 두면, 한 달 뒤의 내가 지금의 나를 확인할 수 있습니다.</p>
+  <div class="note" style="padding:14px 14px 14px 12px">
+    <svg viewBox="0 0 324 124" role="img" aria-label="오늘 왜 사 노트를 쓰고, 한 달 뒤 정한 대로 했는지 본다">
+      <defs><marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3D1028"/></marker></defs>
+      <rect x="2" y="8" width="132" height="108" rx="8" fill="#FFF7F9" stroke="#3D1028" stroke-width="2.5"/>
+      <text x="68" y="36" text-anchor="middle" font-size="18" font-weight="900" fill="#2A1420">오늘</text>
+      <text x="68" y="60" text-anchor="middle" font-size="17" fill="#A31F70" font-weight="800">왜 사?</text>
+      <g stroke="#5E3446" stroke-width="1.5"><line x1="18" y1="78" x2="118" y2="78"/><line x1="18" y1="92" x2="118" y2="92"/><line x1="18" y1="106" x2="96" y2="106"/></g>
+      <line x1="142" y1="62" x2="182" y2="62" stroke="#3D1028" stroke-width="3" marker-end="url(#ar4)"/>
+      <rect x="190" y="8" width="132" height="108" rx="8" fill="#FFF7F9" stroke="#3D1028" stroke-width="2.5"/>
+      <text x="256" y="36" text-anchor="middle" font-size="18" font-weight="900" fill="#2A1420">한 달 뒤</text>
+      <text x="256" y="60" text-anchor="middle" font-size="17" fill="#2A1420">정한 대로 했나?</text>
+      <path d="M232 88 L248 104 L282 72" fill="none" stroke="#A31F70" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <a class="cta" href="#">「왜 사?」 노트 쓰기</a>
+  <p class="small">사려는 회사 이름을 넣고 질문 11개에 답합니다. 약 2분. 답은 이 기기에만 남습니다.</p>
+</section>
+
+<footer class="foot">
+  <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+  <p>이 사이트는 투자 자문이 아닙니다.</p>
+</footer>
+</body>
+</html>

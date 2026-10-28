@@ -1,0 +1,198 @@
+<!-- 26 앙리 마티스 · 가위로 그린다 — 오려 붙인 색종이, 꽉 찬 색 면이 이어지고 모양의 크기가 곧 숫자다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 — 마티스 판</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--rose:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{max-width:390px;margin:0 auto;background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;font-size:17px;line-height:1.55;word-break:keep-all;overflow-x:hidden}
+.num{font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}
+.field{position:relative;padding:34px 16px 40px;overflow:hidden}
+.pink{background:var(--bg)}.paper{background:var(--card)}.rosef{background:var(--rose);color:var(--card)}.winef{background:var(--wine);color:var(--bg)}
+.wave{height:40px}.wave svg{display:block;width:100%;height:40px}
+.brand{font-size:22px;font-weight:800;color:var(--rose)}
+.eyebrow{font-weight:700;color:var(--sub);margin-top:12px}
+h1{font-size:36px;line-height:1.2;font-weight:800;color:var(--wine);margin-top:6px;letter-spacing:-.01em}
+h2{font-size:30px;line-height:1.24;font-weight:800;letter-spacing:-.01em}
+.paper h2,.pink h2{color:var(--wine)}
+h3{font-size:22px;font-weight:800;margin-top:40px;color:var(--wine)}
+.deco{position:absolute;right:-26px;top:-18px;width:120px;height:120px;transform:rotate(38deg)}
+.collage{position:relative;height:312px;margin:14px -16px 0;overflow:hidden}
+.collage svg{position:absolute}
+.lt{position:absolute;text-align:center;font-weight:800;line-height:1.1;color:var(--card)}
+.lt b{display:block;font-size:52px;font-weight:800}
+.lt span{display:block;font-size:17px;margin-top:6px}
+.line{font-size:19px;font-weight:700;line-height:1.5;margin-top:14px}
+.today{background:var(--card);margin-top:24px;padding:20px 22px;border-radius:38% 62% 46% 54% / 22% 30% 24% 28%}
+.today .tl{color:var(--sub);font-weight:600}
+.today .tv{font-size:34px;font-weight:800;line-height:1.25}
+.key{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-weight:700}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.sw{display:inline-block;width:20px;height:20px;border-radius:40% 60% 50% 50%}
+.sw.o{background:var(--card);border:3px solid var(--wine)}
+.yr{display:grid;grid-template-columns:70px 1fr 50px;gap:8px;align-items:center;margin-top:16px}
+.yr p b{display:block;font-size:18px;font-weight:800}
+.yr p span{display:block;color:var(--sub)}
+.yr svg{display:block;width:100%;height:auto}
+.vals b{display:block;font-size:17px;line-height:26px;font-weight:800;text-align:right}
+.vals .w{color:var(--wine)}.vals .r{color:var(--rose)}
+.note{color:var(--sub);margin-top:14px}
+.money{background:var(--bg);margin-top:30px;padding:28px 24px;border-radius:44% 56% 52% 48% / 18% 16% 22% 18%}
+.money .mh{font-weight:800;font-size:19px;color:var(--wine)}
+.mr{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px}
+.mr span{font-weight:700;color:var(--sub)}
+.mr b{font-size:30px;font-weight:800}
+.money .mn{color:var(--sub);margin-top:10px}
+.torn{display:block;width:100%;height:auto;margin-top:14px}
+.why{list-style:none;margin-top:10px}
+.why li{display:flex;align-items:center;gap:10px;min-height:34px;font-weight:700}
+.why b{margin-left:auto;font-size:20px;color:var(--wine)}
+.fall{display:grid;grid-template-columns:repeat(5,1fr);margin-top:12px;text-align:center}
+.fall div:nth-child(2){margin-top:16px}.fall div:nth-child(3){margin-top:32px}.fall div:nth-child(4){margin-top:48px}.fall div:nth-child(5){margin-top:64px}
+.fall svg{display:block;width:66px;height:66px;margin:0 auto}
+.fall b{display:block;font-size:22px;font-weight:800;color:var(--wine)}
+.rosef h2{color:var(--card)}
+#snail{display:block;width:100%;height:auto;margin-top:16px}
+.legend{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:14px}
+.legend li{display:flex;align-items:center;gap:8px;font-weight:700}
+.legend svg{width:24px;height:24px;flex:none}
+.one{background:var(--card);color:var(--wine);text-align:center;margin-top:22px;padding:30px 24px;border-radius:58% 42% 54% 46% / 46% 52% 48% 54%}
+.one .ot{font-weight:700;color:var(--sub)}
+.one .on{font-size:30px;font-weight:800;line-height:1.25;margin-top:4px}
+.rosef .small{margin-top:16px}
+.winef h2.big{font-size:60px;color:var(--card);line-height:1.05}
+.winef p{font-size:20px;font-weight:700;line-height:1.5;margin-top:16px}
+.go{display:block;width:100%;min-height:76px;margin-top:28px;border:0;background:var(--card);color:var(--wine);font:inherit;font-size:21px;font-weight:800;cursor:pointer;border-radius:46% 54% 50% 50% / 60% 50% 50% 40%}
+.legal{font-size:17px!important;font-weight:400!important;margin-top:28px!important}
+</style>
+</head>
+<body>
+
+<section class="field pink">
+  <svg class="deco" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2C78 28 78 72 50 98C22 72 22 28 50 2Z" fill="#A31F70"/></svg>
+  <p class="brand">둘이</p>
+  <p class="eyebrow">주식을 사려는 분께 · 사기 전에 보는 지난 기록</p>
+  <h1>고른 회사는<br>한 달 뒤<br>더 자주 앞섰습니다.</h1>
+  <div class="collage">
+    <svg style="left:-6px;top:6px;width:232px;height:232px" viewBox="0 0 200 200" aria-hidden="true"><path d="M98 4C116 22 138 8 150 30C160 50 190 50 192 78C194 102 176 112 190 136C200 158 176 176 154 176C138 176 130 196 106 194C84 190 74 198 56 186C38 172 14 176 10 150C6 128 22 116 12 94C4 70 16 48 38 44C58 40 66 10 98 4Z" fill="#3D1028"/></svg>
+    <div class="lt" style="left:28px;top:80px;width:164px"><b class="num">32%</b><span>조건으로 고른 회사</span></div>
+    <svg style="left:198px;top:104px;width:200px;height:200px" viewBox="0 0 200 200" aria-hidden="true"><path d="M104 6C124 16 132 4 154 18C172 32 168 52 186 66C198 80 194 104 182 118C170 132 192 152 174 172C158 188 134 178 118 192C100 198 82 186 64 186C42 186 24 176 20 154C16 134 2 122 8 100C16 80 6 60 22 42C38 24 58 30 72 18C84 8 92 2 104 6Z" fill="#A31F70"/></svg>
+    <div class="lt" style="left:226px;top:166px;width:146px"><b class="num" style="font-size:44px">24%</b><span>모든 회사</span></div>
+  </div>
+  <p class="line">한 달 뒤 시장보다 5% 넘게 더 오른 적입니다. 코스피·코스닥 2,557곳, 업종 77개를 3년 동안 4,002번 셌습니다.</p>
+  <div class="today">
+    <p class="tl">오늘 코스피 · 10월 28일 오후 2시 14분 장 중</p>
+    <p class="tv num">6,007.04 <span class="up">+6.54%</span></p>
+    <p class="tl">석 달 사이 낮은 값 5,469 · 높은 값 7,081</p>
+  </div>
+</section>
+
+<div class="wave" style="background:#F7D4DE"><svg viewBox="0 0 390 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22C46 4 92 34 150 18C206 2 252 30 300 16C340 4 370 22 390 12V40H0Z" fill="#FFF7F9"/></svg></div>
+
+<section class="field paper">
+  <h2>네 해 가운데<br>세 해는 더 자주 앞섰습니다.</h2>
+  <div class="key"><span><i class="sw" style="background:#3D1028"></i>조건으로 고른 회사</span><span><i class="sw" style="background:#A31F70"></i>모든 회사</span></div>
+  <div class="yr"><p><b>2023년</b><span>71번</span></p>
+    <svg viewBox="0 0 220 52" aria-hidden="true"><polygon points="0,5 86,3 83,24 0,22" fill="#3D1028"/><polygon points="0,31 128,29 131,50 0,49" fill="#A31F70"/></svg>
+    <p class="vals"><b class="w">14%</b><b class="r">21%</b></p></div>
+  <div class="yr"><p><b>2024년</b><span>1,019번</span></p>
+    <svg viewBox="0 0 220 52" aria-hidden="true"><polygon points="0,5 189,3 186,24 0,22" fill="#3D1028"/><polygon points="0,31 141,29 144,50 0,49" fill="#A31F70"/></svg>
+    <p class="vals"><b class="w">31%</b><b class="r">23%</b></p></div>
+  <div class="yr"><p><b>2025년</b><span>1,822번</span></p>
+    <svg viewBox="0 0 220 52" aria-hidden="true"><polygon points="0,5 177,3 174,24 0,22" fill="#3D1028"/><polygon points="0,31 134,29 137,50 0,49" fill="#A31F70"/></svg>
+    <p class="vals"><b class="w">29%</b><b class="r">22%</b></p></div>
+  <div class="yr"><p><b>2026년</b><span>1,090번</span></p>
+    <svg viewBox="0 0 220 52" aria-hidden="true"><polygon points="0,5 220,3 217,24 0,22" fill="#3D1028"/><polygon points="0,31 165,29 168,50 0,49" fill="#A31F70"/></svg>
+    <p class="vals"><b class="w">36%</b><b class="r">27%</b></p></div>
+  <p class="note">2023년은 71번뿐이고, 이해만 고른 회사가 낮았습니다.</p>
+  <div class="money">
+    <p class="mh">100만 원어치라면, 한 달 뒤 시장보다 평균</p>
+    <div class="mr"><span>조건으로 고른 회사</span><b class="up num">+25,000원</b></div>
+    <div class="mr"><span>모든 회사</span><b class="down num">−4,400원</b></div>
+    <p class="mn">평균입니다. 같은 결과가 다시 나온다는 뜻이 아닙니다.</p>
+  </div>
+  <p class="line">시장보다 5% 넘게 뒤처진 적은 고른 회사 28%, 모든 회사 36%였습니다.</p>
+</section>
+
+<div class="wave" style="background:#FFF7F9"><svg viewBox="0 0 390 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 14C40 30 96 6 160 20C222 34 270 4 330 18C356 24 376 16 390 22V40H0Z" fill="#F7D4DE"/></svg></div>
+
+<section class="field pink">
+  <h2>최근 두 달은<br>달랐습니다.</h2>
+  <div class="collage" style="height:296px">
+    <svg style="left:2px;top:4px;width:212px;height:212px" viewBox="0 0 200 200" aria-hidden="true"><path d="M104 6C124 16 132 4 154 18C172 32 168 52 186 66C198 80 194 104 182 118C170 132 192 152 174 172C158 188 134 178 118 192C100 198 82 186 64 186C42 186 24 176 20 154C16 134 2 122 8 100C16 80 6 60 22 42C38 24 58 30 72 18C84 8 92 2 104 6Z" fill="#A31F70"/></svg>
+    <div class="lt" style="left:30px;top:66px;width:156px"><b class="num">25%</b><span>모든 회사</span></div>
+    <svg style="left:214px;top:128px;width:158px;height:158px" viewBox="0 0 200 200" aria-hidden="true"><path d="M98 4C116 22 138 8 150 30C160 50 190 50 192 78C194 102 176 112 190 136C200 158 176 176 154 176C138 176 130 196 106 194C84 190 74 198 56 186C38 172 14 176 10 150C6 128 22 116 12 94C4 70 16 48 38 44C58 40 66 10 98 4Z" fill="#3D1028"/></svg>
+    <div class="lt" style="left:226px;top:170px;width:134px"><b class="num" style="font-size:40px">14%</b><span>고른 회사</span></div>
+  </div>
+  <p class="line">최근 두 달은 고른 회사가 모든 회사보다 덜 앞섰습니다. 시장보다 5% 넘게 더 오른 적이 14%와 25%였습니다.</p>
+
+  <h3>5% 못 넘은 2,741번은 왜 그랬나</h3>
+  <svg class="torn" viewBox="0 0 358 64" aria-hidden="true">
+    <polygon points="0,4 163,0 160,62 0,60" fill="#3D1028"/>
+    <polygon points="169,3 262,6 259,61 167,64" fill="#A31F70"/>
+    <polygon points="269,2 355,5 356,60 266,58" fill="#FFF7F9" stroke="#3D1028" stroke-width="3"/>
+  </svg>
+  <ul class="why">
+    <li><i class="sw" style="background:#3D1028"></i>업종이 통째로 식음<b class="num">47%</b></li>
+    <li><i class="sw" style="background:#A31F70"></i>조금 모자람<b class="num">27%</b></li>
+    <li><i class="sw o"></i>회사만 처짐<b class="num">26%</b></li>
+  </ul>
+
+  <h3>조건 하나를 고르기까지</h3>
+  <div class="fall">
+    <div><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2C78 28 78 72 50 98C22 72 22 28 50 2Z" fill="#3D1028" transform="rotate(-24 50 50)"/></svg><b class="num">365</b></div>
+    <div><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2C78 28 78 72 50 98C22 72 22 28 50 2Z" fill="#3D1028" transform="translate(50 50) scale(.49) rotate(22) translate(-50 -50)"/></svg><b class="num">88</b></div>
+    <div><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2C78 28 78 72 50 98C22 72 22 28 50 2Z" fill="#3D1028" transform="translate(50 50) scale(.32) rotate(-20) translate(-50 -50)"/></svg><b class="num">37</b></div>
+    <div><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2C78 28 78 72 50 98C22 72 22 28 50 2Z" fill="#3D1028" transform="translate(50 50) scale(.09) translate(-50 -50)"/></svg><b class="num">3</b></div>
+    <div><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="16" fill="none" stroke="#A31F70" stroke-width="5"/><path d="M50 2C78 28 78 72 50 98C22 72 22 28 50 2Z" fill="#A31F70" transform="translate(50 50) scale(.06) translate(-50 -50)"/></svg><b class="num" style="color:#A31F70">1</b></div>
+  </div>
+  <p class="line">후보 365가지를 88, 37, 3으로 줄여 조건 하나를 정했습니다.</p>
+</section>
+
+<div class="wave" style="background:#F7D4DE"><svg viewBox="0 0 390 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20C52 2 100 32 168 16C226 4 280 30 330 14C360 6 378 16 390 10V40H0Z" fill="#A31F70"/></svg></div>
+
+<section class="field rosef">
+  <h2>오늘 업종 77개 중<br>네 조건을 다 채운 곳은<br>한 곳입니다.</h2>
+  <svg id="snail" viewBox="0 0 358 358" aria-hidden="true"></svg>
+  <ul class="legend">
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#FFF7F9"/></svg>막 오르기 시작 <b>37</b></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" fill="#FFF7F9"/></svg>한 달 내내 강함 <b>7</b></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" fill="#F7D4DE"/></svg>조용함 <b>29</b></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" fill="none" stroke="#FFF7F9" stroke-width="3"/></svg>강하다 꺾임 <b>4</b></li>
+  </ul>
+  <div class="one"><p class="ot">네 조건을 다 채운 업종</p><p class="on">반도체 검사·측정</p></div>
+  <p class="small">최근 20거래일과 5거래일을 시장과 견주어 나눴습니다.</p>
+</section>
+
+<div class="wave" style="background:#A31F70"><svg viewBox="0 0 390 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 16C60 34 118 4 186 20C246 34 300 6 352 18C370 22 382 18 390 14V40H0Z" fill="#3D1028"/></svg></div>
+
+<section class="field winef">
+  <h2 class="big">왜 사?</h2>
+  <p>사려는 회사 이름을 넣고<br>질문 11개에 답합니다. 약 2분이면 됩니다.</p>
+  <p>답은 이 기기에만 남습니다.<br>한 달 뒤, 정한 대로 했는지 다시 봅니다.</p>
+  <button type="button" class="go">질문 11개 시작하기</button>
+  <p class="legal">앞날을 맞히거나 사고팔기를 권하지 않습니다.<br>이 사이트는 투자 자문이 아닙니다.</p>
+</section>
+
+<script>
+(function(){
+  var s=document.getElementById('snail'),o=[],i,h='';
+  for(i=0;i<7;i++)o.push(0);for(i=0;i<37;i++)o.push(1);for(i=0;i<4;i++)o.push(2);for(i=0;i<29;i++)o.push(3);
+  o.forEach(function(k,i){
+    var r=19*Math.sqrt(i+.5),a=i*2.39996,x=179+r*Math.cos(a),y=179+r*Math.sin(a),t=(i*37%40)-20,g='<g transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+t+')">';
+    if(k===0)g+='<rect x="-12" y="-12" width="24" height="24" fill="#FFF7F9"/>';
+    else if(k===1)g+='<circle r="10" fill="#FFF7F9"/>';
+    else if(k===2)g+='<rect x="-9" y="-9" width="18" height="18" fill="none" stroke="#FFF7F9" stroke-width="3"/>';
+    else g+='<rect x="-7" y="-7" width="14" height="14" fill="#F7D4DE"/>';
+    h+=g+'</g>';
+  });
+  s.innerHTML=h;
+})();
+</script>
+</body>
+</html>

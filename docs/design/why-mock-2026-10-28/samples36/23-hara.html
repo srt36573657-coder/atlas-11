@@ -1,0 +1,129 @@
+<!-- 하라 켄야 · 비움 — 채우지 않은 그릇이 보는 사람의 생각을 받아 담는다(지평선 하나, 말 하나) -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 · 사기 전에</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--rose:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0;
+ --serif:"Noto Serif KR","AppleMyungjo","Nanum Myeongjo","Batang",serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:17px/1.75 var(--serif);word-break:keep-all;overflow-wrap:anywhere}
+main{max-width:390px;margin:0 auto;background:var(--card);padding:28px 24px 40px}
+.name{font-size:17px;letter-spacing:6px;color:var(--sub)}
+.room{padding:64px 0 72px;border-bottom:1px solid var(--bg)}
+.room:first-of-type{padding-top:72px}
+.room:last-of-type{border-bottom:0}
+h1{font-size:28px;line-height:1.5;font-weight:400;letter-spacing:-.2px}
+h2{font-size:24px;line-height:1.55;font-weight:400}
+.q{color:var(--sub);margin-top:18px}
+.q b{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+.c-rose{color:var(--rose)!important}.c-sub{color:var(--sub)!important}
+.up{color:var(--up)!important}.down{color:var(--down)!important}
+/* 지평선 — 위는 더 오름, 물에 비친 아래는 뒤처짐 */
+.horizon{position:relative;width:100%;aspect-ratio:342/330;margin:40px 0 8px}
+.horizon svg{position:absolute;inset:0;width:100%;height:100%}
+.lab{position:absolute;transform:translate(-50%,-100%);font-variant-numeric:tabular-nums;font-size:32px;white-space:nowrap;line-height:1.15}
+.lab.dn{transform:translate(-50%,4px)}
+.who{position:absolute;transform:translate(10px,-110%);font-size:17px;white-space:nowrap;line-height:1.3;color:var(--sub)}
+.axis{display:flex;justify-content:space-between;color:var(--sub)}
+.big{font-size:64px;line-height:1.1;font-weight:400;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.big small{font-size:24px;letter-spacing:0;margin-left:4px}
+.pair{display:flex;gap:28px;margin-top:22px}
+.pair div{display:flex;flex-direction:column}
+.pair .v{font-size:44px;line-height:1.1;font-variant-numeric:tabular-nums}
+.ticks{display:grid;grid-template-columns:repeat(5,1fr);margin-top:36px;text-align:center;color:var(--sub);line-height:1.35}
+.ticks svg{display:block;width:100%;height:70px}
+.ticks .v{color:var(--ink);font-variant-numeric:tabular-nums}
+.vessel{margin-top:36px}
+.vessel label{display:block;color:var(--sub);margin-bottom:10px}
+.vessel input{width:100%;min-height:60px;border:0;border-bottom:2px solid var(--wine);background:transparent;font:24px/1.3 var(--serif);color:var(--ink);padding:8px 2px;border-radius:0}
+.vessel input::placeholder{color:var(--sub);opacity:1}
+.vessel input:focus{outline:none;border-bottom-color:var(--rose)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:60px;margin-top:22px;border:2px solid var(--wine);background:transparent;color:var(--wine);font:21px/1 var(--serif);letter-spacing:2px;cursor:pointer;text-decoration:none}
+.btn:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+.legal{color:var(--sub);margin-top:56px;line-height:1.6}
+</style>
+</head>
+<body>
+<main>
+  <p class="name">둘이</p>
+
+  <!-- 결론 -->
+  <section class="room">
+    <h1>주식을 사기 전에,<br>지난 기록을 한 번.</h1>
+    <div class="horizon">
+      <svg viewBox="0 0 342 330" aria-hidden="true">
+        <line x1="0" y1="160" x2="342" y2="160" stroke="#3D1028" stroke-width="1.5"/>
+        <!-- 조그만 사람 하나 -->
+        <circle cx="34" cy="142" r="3.2" fill="#3D1028"/>
+        <path d="M34 146v8M34 154l-3 6M34 154l3 6M34 148l-3.5 4M34 148l3.5 4" stroke="#3D1028" stroke-width="1.6" fill="none"/>
+        <!-- 고른 회사: 위 32 · 아래 28 -->
+        <rect x="123" y="51.2" width="6" height="108.8" fill="#A31F70"/>
+        <rect x="124.5" y="160" width="3" height="95.2" fill="#A31F70"/>
+        <!-- 모든 회사: 위 24 · 아래 36 -->
+        <rect x="243" y="78.4" width="6" height="81.6" fill="#5E3446"/>
+        <rect x="244.5" y="160" width="3" height="122.4" fill="#5E3446"/>
+      </svg>
+      <span class="lab c-rose" style="left:36.8%;top:15.5%">32%</span>
+      <span class="lab c-sub" style="left:71.9%;top:23.8%">24%</span>
+      <span class="lab dn c-rose" style="left:36.8%;top:77.3%">28%</span>
+      <span class="lab dn c-sub" style="left:71.9%;top:85.6%">36%</span>
+      <span class="who" style="left:37.7%;top:48.5%">고른 회사</span>
+      <span class="who" style="left:72.8%;top:48.5%">모든 회사</span>
+    </div>
+    <p class="q">선 위 굵은 줄은 한 달 뒤 시장보다 5% 넘게 더 오른 비율, 물에 비친 듯한 아래 가는 줄은 5% 넘게 뒤처진 비율입니다.</p>
+    <h2 style="margin-top:28px">조건으로 고른 회사는 <b class="c-rose" style="font-weight:700">32%</b>, 모든 회사는 <b class="c-sub" style="font-weight:700">24%</b>였습니다.</h2>
+  </section>
+
+  <!-- 근거 -->
+  <section class="room">
+    <p class="big">4,002<small>번</small></p>
+    <p class="q">2023년 10월부터 2026년 9월까지 3년, 코스피와 코스닥 <b>2,557곳</b>, 업종 <b>77개</b>에서 조건으로 고른 날부터 한 달 뒤를 셌습니다.</p>
+    <h2 style="margin-top:40px">100만 원어치라면, 한 달 뒤 시장보다 평균</h2>
+    <div class="pair">
+      <div><span class="v up">+25,000원</span><span class="c-sub">고른 회사</span></div>
+    </div>
+    <div class="pair" style="margin-top:12px">
+      <div><span class="v down">−4,400원</span><span class="c-sub">모든 회사</span></div>
+    </div>
+    <p class="q">평균입니다. 같은 결과가 다시 나온다는 뜻은 아닙니다.</p>
+  </section>
+
+  <!-- 더 깊이 -->
+  <section class="room">
+    <h2>늘 그렇지는 않았습니다.<br>최근 두 달은 모든 회사보다 못했습니다.</h2>
+    <div class="pair">
+      <div><span class="v c-rose">14%</span><span class="c-sub">고른 회사</span></div>
+      <div><span class="v c-sub">25%</span><span class="c-sub">모든 회사</span></div>
+    </div>
+    <div class="ticks">
+      <div><svg viewBox="0 0 60 70" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="69" x2="60" y2="69" stroke="#3D1028" stroke-width="1.5"/><rect x="22" y="42" width="4" height="27" fill="#A31F70"/><rect x="34" y="28.5" width="4" height="40.5" fill="#5E3446"/></svg>2023<br><span class="v">14 · 21</span></div>
+      <div><svg viewBox="0 0 60 70" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="69" x2="60" y2="69" stroke="#3D1028" stroke-width="1.5"/><rect x="22" y="9.2" width="4" height="59.8" fill="#A31F70"/><rect x="34" y="24.6" width="4" height="44.4" fill="#5E3446"/></svg>2024<br><span class="v">31 · 23</span></div>
+      <div><svg viewBox="0 0 60 70" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="69" x2="60" y2="69" stroke="#3D1028" stroke-width="1.5"/><rect x="22" y="13" width="4" height="56" fill="#A31F70"/><rect x="34" y="26.5" width="4" height="42.5" fill="#5E3446"/></svg>2025<br><span class="v">29 · 22</span></div>
+      <div><svg viewBox="0 0 60 70" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="69" x2="60" y2="69" stroke="#3D1028" stroke-width="1.5"/><rect x="22" y="0.5" width="4" height="68.5" fill="#A31F70"/><rect x="34" y="16.9" width="4" height="52.1" fill="#5E3446"/></svg>2026<br><span class="v">36 · 27</span></div>
+      <div><svg viewBox="0 0 60 70" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="69" x2="60" y2="69" stroke="#3D1028" stroke-width="1.5"/><rect x="22" y="42" width="4" height="27" fill="#A31F70"/><rect x="34" y="20.7" width="4" height="48.3" fill="#5E3446"/></svg>두 달<br><span class="v">14 · 25</span></div>
+    </div>
+    <p class="q" style="margin-top:36px">5% 못 넘은 <b>2,741번</b> 가운데 업종이 통째로 식은 때가 <b>47%</b>, 조금 모자란 때가 <b>27%</b>, 회사만 처진 때가 <b>26%</b>였습니다.</p>
+    <p class="q">고르는 조건은 후보 <b>365가지</b>에서 88, 37, 3을 거쳐 <b>하나</b>로 좁혔습니다.</p>
+  </section>
+
+  <!-- 할 일 하나 · 빈 그릇 -->
+  <section class="room">
+    <h2>왜 사는지,<br>질문 11개에 스스로 답합니다.<br>약 2분.</h2>
+    <form class="vessel" action="#" onsubmit="return false">
+      <label for="co">사려는 회사 이름</label>
+      <input id="co" name="co" type="text" placeholder="여기에 적습니다" autocomplete="off">
+      <button class="btn" type="submit">왜 사? 시작하기</button>
+    </form>
+    <p class="q">답은 이 기기에만 남습니다.<br>한 달 뒤, 정한 대로 했는지 다시 봅니다.</p>
+    <div class="legal">
+      <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+      <p>이 사이트는 투자 자문이 아닙니다.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

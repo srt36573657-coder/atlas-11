@@ -1,0 +1,215 @@
+<!-- 28 애플 화면 지침 · 또렷함 · 내용에 자리를 내줌 · 깊이 — 꾸밈을 빼 내용이 화면을 채우고, 자세한 것은 접어 두며, 할 일은 겹친 판으로 맨 위에 올린다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 — 애플 판</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--rose:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{max-width:390px;margin:0 auto;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;font-size:17px;line-height:1.45;word-break:keep-all;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}
+.nav{padding:14px 20px 4px}
+.nav .date{color:var(--sub);font-weight:600}
+.nav h1{font-size:34px;font-weight:800;line-height:1.2;margin-top:2px}
+.nav .tag{color:var(--sub);margin-top:2px}
+.sh{font-size:22px;font-weight:700;margin:26px 20px 10px;line-height:1.3}
+.card{background:var(--card);border-radius:14px;margin:0 16px;padding:18px 16px}
+.card+.card{margin-top:12px}
+.kind{display:flex;align-items:center;gap:8px;color:var(--rose);font-weight:700}
+.kind svg{width:24px;height:24px;flex:none}
+.say{font-size:22px;font-weight:700;line-height:1.36;margin-top:10px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg);border-radius:12px;padding:4px;margin-top:16px}
+.seg button{min-height:48px;border:0;border-radius:9px;background:transparent;color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--wine);color:var(--card)}
+.lab{color:var(--sub);margin-top:14px}
+.cr{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px}
+.cr span{color:var(--sub);font-weight:600}
+.cr b{font-size:30px;font-weight:800}
+.br{display:block;width:100%;height:12px;margin-top:4px}
+.foot{color:var(--sub);margin-top:16px;padding-top:12px;border-top:1px solid var(--bg)}
+.mk{display:flex;justify-content:space-between;align-items:flex-start}
+.mk .n{font-size:20px;font-weight:700}
+.mk .s{color:var(--sub)}
+.mk .v{text-align:right}
+.mk .v b{display:block;font-size:22px;font-weight:700}
+.range{display:block;width:100%;height:24px;margin-top:16px}
+.rg{display:flex;justify-content:space-between;color:var(--sub);margin-top:4px}
+.group{background:var(--card);border-radius:14px;margin:0 16px;overflow:hidden}
+.cell{display:flex;justify-content:space-between;align-items:center;min-height:56px;padding:0 16px}
+.cell+.cell{border-top:1px solid var(--bg)}
+.cell b{font-size:24px;font-weight:700}
+.note{color:var(--sub);margin:8px 32px 0}
+details+details{border-top:1px solid var(--bg)}
+summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary .l{flex:1;font-weight:600}
+summary .p{color:var(--sub)}
+summary .ch{width:14px;height:14px;flex:none;transition:transform .2s}
+details[open] summary .ch{transform:rotate(90deg)}
+.dd{padding:2px 16px 18px}
+.yr{display:flex;justify-content:space-between;margin-top:12px}
+.yr span{color:var(--sub)}
+.leg{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:12px;color:var(--sub)}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.dot{display:inline-block;width:12px;height:12px;border-radius:3px}
+.lr{display:flex;justify-content:space-between;min-height:34px;align-items:center}
+.lr span{display:inline-flex;align-items:center;gap:8px}
+.stack{margin-top:40px}
+.back{height:12px;margin:0 30px;background:var(--wine);border-radius:12px 12px 0 0}
+.sheet{background:var(--card);border-radius:18px 18px 0 0;padding:10px 20px 40px}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--sub);margin:0 auto 18px}
+.sheet h2{font-size:32px;font-weight:800;line-height:1.2}
+.sheet .lead{font-size:19px;margin-top:8px}
+.facts{list-style:none;margin-top:14px}
+.facts li{display:flex;align-items:center;gap:12px;min-height:48px}
+.facts svg{width:28px;height:28px;flex:none}
+.primary{display:block;width:100%;min-height:56px;border:0;border-radius:14px;background:var(--rose);color:var(--card);font:inherit;font-size:19px;font-weight:700;margin-top:18px;cursor:pointer}
+.legal{color:var(--sub);margin-top:24px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <p class="date">10월 28일 오후 2시 14분</p>
+  <h1>둘이</h1>
+  <p class="tag">주식을 사려는 사람이 사기 전에 보는 지난 기록</p>
+</header>
+
+<h2 class="sh">요약</h2>
+<article class="card">
+  <p class="kind"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1" fill="#A31F70"/><rect x="10" y="7" width="4" height="14" rx="1" fill="#A31F70"/><rect x="17" y="3" width="4" height="18" rx="1" fill="#A31F70"/></svg>한 달 뒤 기록</p>
+  <p class="say" id="say">조건으로 고른 회사가<br>시장을 5% 넘게 앞선 적이<br>더 많았습니다.</p>
+  <div class="seg" role="tablist">
+    <button type="button" role="tab" aria-selected="true" data-k="a">더 오른 적</button>
+    <button type="button" role="tab" aria-selected="false" data-k="b">뒤처진 적</button>
+  </div>
+  <p class="lab" id="lab">한 달 뒤 시장보다 5% 넘게 더 오른 적</p>
+  <div class="cr"><span>조건으로 고른 회사</span><b class="num" id="v1" style="color:#A31F70">32%</b></div>
+  <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="326" height="12" rx="6" fill="#F7D4DE"/><rect id="b1" width="260.8" height="12" rx="6" fill="#A31F70"/></svg>
+  <div class="cr"><span>모든 회사</span><b class="num" id="v2">24%</b></div>
+  <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="326" height="12" rx="6" fill="#F7D4DE"/><rect id="b2" width="195.6" height="12" rx="6" fill="#5E3446"/></svg>
+  <p class="foot">코스피·코스닥 2,557곳 · 업종 77개 · 2023년 10월부터 2026년 9월까지 4,002번</p>
+</article>
+
+<article class="card">
+  <div class="mk">
+    <div><p class="n">코스피</p><p class="s">장 중 · 오후 2시 14분</p></div>
+    <div class="v num"><b>6,007.04</b><b class="up">+6.54%</b></div>
+  </div>
+  <svg class="range" viewBox="0 0 326 24" aria-hidden="true"><rect x="0" y="10" width="326" height="4" rx="2" fill="#5E3446"/><circle cx="108.8" cy="12" r="9" fill="#A31F70" stroke="#FFF7F9" stroke-width="3"/></svg>
+  <div class="rg num"><span>석 달 낮은 값 5,469</span><span>높은 값 7,081</span></div>
+</article>
+
+<h2 class="sh">100만 원어치였다면, 한 달 뒤</h2>
+<div class="group">
+  <div class="cell"><span>조건으로 고른 회사</span><b class="num up">+25,000원</b></div>
+  <div class="cell"><span>모든 회사</span><b class="num down">−4,400원</b></div>
+</div>
+<p class="note">시장보다 평균 이만큼 달랐습니다. 평균일 뿐, 같은 결과가 다시 나온다는 뜻은 아닙니다.</p>
+
+<h2 class="sh">최근 두 달은 낮았습니다</h2>
+<article class="card">
+  <p class="kind"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L22 20H2z" fill="#A31F70"/><path d="M12 9v5" stroke="#FFF7F9" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17" r="1.4" fill="#FFF7F9"/></svg>최근 두 달</p>
+  <p class="say">고른 회사가 모든 회사보다<br>덜 앞섰습니다.</p>
+  <div class="cr"><span>조건으로 고른 회사</span><b class="num" style="color:#A31F70">14%</b></div>
+  <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="326" height="12" rx="6" fill="#F7D4DE"/><rect width="114.1" height="12" rx="6" fill="#A31F70"/></svg>
+  <div class="cr"><span>모든 회사</span><b class="num">25%</b></div>
+  <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="326" height="12" rx="6" fill="#F7D4DE"/><rect width="203.8" height="12" rx="6" fill="#5E3446"/></svg>
+  <p class="foot">한 달 뒤 시장보다 5% 넘게 더 오른 적</p>
+</article>
+
+<h2 class="sh">더 자세히</h2>
+<div class="group">
+  <details open>
+    <summary><span class="l">해마다</span><span class="p">네 해 중 세 해 앞섬</span><svg class="ch" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 1l6 6-6 6" fill="none" stroke="#5E3446" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+    <div class="dd">
+      <div class="leg"><span><i class="dot" style="background:#A31F70"></i>고른 회사</span><span><i class="dot" style="background:#5E3446"></i>모든 회사</span></div>
+      <div class="yr num"><b>2023년</b><span>71번 · 14% 대 21%</span></div>
+      <svg class="br" style="height:20px" viewBox="0 0 326 20" preserveAspectRatio="none" aria-hidden="true"><rect width="114.1" height="8" rx="4" fill="#A31F70"/><rect y="11" width="171.2" height="8" rx="4" fill="#5E3446"/></svg>
+      <div class="yr num"><b>2024년</b><span>1,019번 · 31% 대 23%</span></div>
+      <svg class="br" style="height:20px" viewBox="0 0 326 20" preserveAspectRatio="none" aria-hidden="true"><rect width="252.7" height="8" rx="4" fill="#A31F70"/><rect y="11" width="187.5" height="8" rx="4" fill="#5E3446"/></svg>
+      <div class="yr num"><b>2025년</b><span>1,822번 · 29% 대 22%</span></div>
+      <svg class="br" style="height:20px" viewBox="0 0 326 20" preserveAspectRatio="none" aria-hidden="true"><rect width="236.4" height="8" rx="4" fill="#A31F70"/><rect y="11" width="179.3" height="8" rx="4" fill="#5E3446"/></svg>
+      <div class="yr num"><b>2026년</b><span>1,090번 · 36% 대 27%</span></div>
+      <svg class="br" style="height:20px" viewBox="0 0 326 20" preserveAspectRatio="none" aria-hidden="true"><rect width="293.4" height="8" rx="4" fill="#A31F70"/><rect y="11" width="220.1" height="8" rx="4" fill="#5E3446"/></svg>
+    </div>
+  </details>
+  <details>
+    <summary><span class="l">5% 못 넘은 2,741번의 까닭</span><span class="p">47%</span><svg class="ch" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 1l6 6-6 6" fill="none" stroke="#5E3446" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+    <div class="dd">
+      <svg class="br" style="height:16px;margin-top:8px" viewBox="0 0 326 16" preserveAspectRatio="none" aria-hidden="true"><rect width="150.4" height="16" rx="4" fill="#A31F70"/><rect x="153.4" width="86.4" height="16" rx="4" fill="#3D1028"/><rect x="242.8" width="83.2" height="16" rx="4" fill="#5E3446"/></svg>
+      <div class="lr" style="margin-top:8px"><span><i class="dot" style="background:#A31F70"></i>업종이 통째로 식음</span><b class="num">47%</b></div>
+      <div class="lr"><span><i class="dot" style="background:#3D1028"></i>조금 모자람</span><b class="num">27%</b></div>
+      <div class="lr"><span><i class="dot" style="background:#5E3446"></i>회사만 처짐</span><b class="num">26%</b></div>
+    </div>
+  </details>
+  <details>
+    <summary><span class="l">조건을 정한 길</span><span class="p num">365 → 1</span><svg class="ch" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 1l6 6-6 6" fill="none" stroke="#5E3446" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+    <div class="dd">
+      <div class="lr num"><span>후보</span><b>365가지</b></div>
+      <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="326" height="12" rx="3" fill="#5E3446"/></svg>
+      <div class="lr num"><span>다음</span><b>88가지</b></div>
+      <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="78.6" height="12" rx="3" fill="#5E3446"/></svg>
+      <div class="lr num"><span>다음</span><b>37가지</b></div>
+      <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="33" height="12" rx="3" fill="#5E3446"/></svg>
+      <div class="lr num"><span>다음</span><b>3가지</b></div>
+      <svg class="br" viewBox="0 0 326 12" preserveAspectRatio="none" aria-hidden="true"><rect width="3" height="12" rx="1" fill="#5E3446"/></svg>
+      <div class="lr num"><span>정한 조건</span><b style="color:#A31F70">1가지</b></div>
+    </div>
+  </details>
+  <details>
+    <summary><span class="l">오늘 업종 77개</span><span class="p">네 조건 1곳</span><svg class="ch" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 1l6 6-6 6" fill="none" stroke="#5E3446" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+    <div class="dd">
+      <svg class="br" style="height:16px;margin-top:8px" viewBox="0 0 326 16" preserveAspectRatio="none" aria-hidden="true"><rect width="152.3" height="16" rx="3" fill="#A31F70"/><rect x="155.3" width="28.8" height="16" rx="3" fill="#3D1028"/><rect x="187.1" y="1" width="119.4" height="14" rx="3" fill="#FFF7F9" stroke="#5E3446" stroke-width="2"/><rect x="309.5" width="16.5" height="16" rx="3" fill="#5E3446"/></svg>
+      <div class="lr" style="margin-top:8px"><span><i class="dot" style="background:#A31F70"></i>막 오르기 시작</span><b class="num">37</b></div>
+      <div class="lr"><span><i class="dot" style="background:#3D1028"></i>한 달 내내 강함</span><b class="num">7</b></div>
+      <div class="lr"><span><i class="dot" style="background:#FFF7F9;border:2px solid #5E3446"></i>조용함</span><b class="num">29</b></div>
+      <div class="lr"><span><i class="dot" style="background:#5E3446"></i>강하다 꺾임</span><b class="num">4</b></div>
+      <div class="lr" style="margin-top:6px"><span>네 조건을 다 채운 곳</span><b>반도체 검사·측정</b></div>
+      <p class="foot">최근 20거래일과 5거래일을 시장과 견줬습니다.</p>
+    </div>
+  </details>
+</div>
+
+<section class="stack">
+  <div class="back"></div>
+  <div class="sheet">
+    <div class="grab"></div>
+    <h2>왜 사?</h2>
+    <p class="lead">사려는 회사 이름을 넣고 질문 11개에 답합니다.</p>
+    <ul class="facts">
+      <li><svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="#A31F70" stroke-width="2.6"/><path d="M14 8v6l4 3" fill="none" stroke="#A31F70" stroke-width="2.6" stroke-linecap="round"/></svg>약 2분</li>
+      <li><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="6" y="12" width="16" height="12" rx="3" fill="#A31F70"/><path d="M9.5 12V9a4.5 4.5 0 0 1 9 0v3" fill="none" stroke="#A31F70" stroke-width="2.6"/></svg>답은 이 기기에만 남습니다</li>
+      <li><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="4" y="6" width="20" height="18" rx="3" fill="none" stroke="#A31F70" stroke-width="2.6"/><path d="M4 11h20M9 3v5M19 3v5" stroke="#A31F70" stroke-width="2.6" stroke-linecap="round"/></svg>한 달 뒤, 정한 대로 했는지 다시 봅니다</li>
+    </ul>
+    <button type="button" class="primary">질문 11개 시작</button>
+    <div class="legal">
+      <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+      <p>이 사이트는 투자 자문이 아닙니다.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var D={a:{s:'조건으로 고른 회사가<br>시장을 5% 넘게 앞선 적이<br>더 많았습니다.',l:'한 달 뒤 시장보다 5% 넘게 더 오른 적',v:[32,24]},
+         b:{s:'시장보다 5% 넘게<br>뒤처진 적은<br>더 적었습니다.',l:'한 달 뒤 시장보다 5% 넘게 뒤처진 적',v:[28,36]}};
+  var bs=document.querySelectorAll('.seg button');
+  bs.forEach(function(b){b.addEventListener('click',function(){
+    bs.forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false')});
+    var d=D[b.getAttribute('data-k')];
+    document.getElementById('say').innerHTML=d.s;
+    document.getElementById('lab').textContent=d.l;
+    document.getElementById('v1').textContent=d.v[0]+'%';
+    document.getElementById('v2').textContent=d.v[1]+'%';
+    document.getElementById('b1').setAttribute('width',(d.v[0]/40*326).toFixed(1));
+    document.getElementById('b2').setAttribute('width',(d.v[1]/40*326).toFixed(1));
+  });});
+})();
+</script>
+</body>
+</html>

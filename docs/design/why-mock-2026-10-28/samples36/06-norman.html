@@ -1,0 +1,192 @@
+<!-- 06 돈 노먼 · 사람 머릿속 그림에 맞추고, 누를 곳이 눈에 보이게, 다음에 할 일과 그 결과를 미리 분명하게 보인다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 · 사기 전 확인 길잡이</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--rose:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{max-width:390px;margin:0 auto;padding:0 16px 120px;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;font-size:19px;line-height:1.5;word-break:keep-all;-webkit-text-size-adjust:100%}
+.up{color:var(--up)}.down{color:var(--down)}.rose{color:var(--rose)}
+.top{padding:18px 0 4px}
+.top b{font-size:21px}
+.top p{font-size:17px;color:var(--sub)}
+h1{font-size:29px;font-weight:800;line-height:1.3;margin:12px 0 16px}
+.map{background:var(--card);border:2px solid var(--wine);border-radius:20px;padding:18px 10px 16px;margin-bottom:14px}
+.map ol{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);position:relative}
+.map ol::before{content:"";position:absolute;left:16.6%;right:16.6%;top:18px;border-top:3px solid var(--wine)}
+.map li{text-align:center;position:relative;font-size:17px;font-weight:700;line-height:1.35}
+.map .c{display:block;width:38px;height:38px;margin:0 auto 8px;border-radius:50%;border:3px solid var(--wine);background:var(--card);line-height:32px;font-size:18px;font-weight:800}
+.map .now .c{background:var(--rose);border-color:var(--rose);color:#fff}
+.here{display:inline-block;margin-top:6px;padding:1px 10px;border-radius:999px;background:var(--rose);color:#fff;font-size:17px}
+.card{background:var(--card);border-radius:20px;padding:20px 16px;margin-bottom:14px}
+.ttl{font-size:17px;font-weight:800;color:var(--rose);margin-bottom:4px}
+h2{font-size:23px;font-weight:800;line-height:1.32;margin-bottom:12px}
+.dir{flex:none;display:inline-block;font-size:17px;font-weight:800;padding:2px 10px;border-radius:999px;border:2px solid var(--wine);white-space:nowrap}
+.big2{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end;margin:6px 0 8px}
+.bn{font-size:52px;font-weight:800;line-height:1}
+.bc{font-size:17px;font-weight:700;color:var(--sub);margin-top:4px}
+.warn{margin-top:12px;padding:12px 14px;border-radius:14px;border:2px solid var(--wine);font-size:19px}
+.small{font-size:17px;color:var(--sub);margin-top:10px}
+.today{font-size:18px;margin:0 2px 14px}
+.metric{padding:14px 0;border-top:1px solid #E3BCCB}
+.metric:first-of-type{border-top:0;padding-top:4px}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.mname{font-size:18px;font-weight:700}
+.brow{display:grid;grid-template-columns:76px 1fr 100px;align-items:center;gap:8px;margin:6px 0}
+.brow.wide{grid-template-columns:120px 1fr 56px;margin:10px 0}
+.bl{font-size:17px;line-height:1.3}
+.track{height:20px;background:#F3DCE4;border-radius:5px;overflow:hidden}
+.fill{display:block;height:100%}
+.bv{font-size:20px;text-align:right}
+.dtrack{display:grid;grid-template-columns:1fr 1fr;height:20px;background:#F3DCE4;border-radius:5px;overflow:hidden}
+.dtrack .neg{display:flex;justify-content:flex-end;border-right:2px solid var(--ink)}
+.meaning{font-size:18px;font-weight:700;color:var(--rose);margin-top:6px}
+.flow{list-style:none;margin-top:4px}
+.flow li{border:2px solid var(--wine);border-radius:12px;padding:10px 14px;font-size:18px;position:relative;margin-bottom:26px}
+.flow li::after{content:"↓";position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);font-size:19px;font-weight:800;line-height:24px}
+.flow li:last-child{margin-bottom:0;background:var(--rose);border-color:var(--rose);color:#fff}
+.flow li:last-child::after{content:none}
+.flow b{display:inline-block;min-width:92px}
+table.yt{width:100%;border-collapse:collapse}
+.yt th,.yt td{padding:9px 4px;text-align:right;border-top:1px solid #E3BCCB;font-size:19px}
+.yt thead th{border-top:0;font-size:17px;color:var(--sub)}
+.yt th:first-child,.yt td:first-child{text-align:left}
+.yt td small{display:block;font-size:17px;color:var(--sub)}
+.yt .good{font-weight:800;color:var(--rose)}
+.yt .bad{font-weight:800}
+.yt tr.hl td{border-top:2px solid var(--wine)}
+.dd h3{font-size:19px;font-weight:800;margin:10px 0 6px}
+.dd ul{list-style:none}
+.dd li{font-size:18px;padding:6px 0 6px 30px;position:relative}
+.dd li::before{position:absolute;left:0;top:6px;font-weight:800}
+.dd .yes li::before{content:"○";color:var(--rose)}
+.dd .no li::before{content:"✕";color:var(--ink)}
+.steps{list-style:none;margin:6px 0 16px}
+.steps li{display:flex;align-items:center;gap:12px;font-size:18px;padding:8px 0}
+.sn{flex:none;width:34px;height:34px;border-radius:50%;background:var(--wine);color:var(--card);font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:60px;border-radius:16px;background:var(--rose);color:#fff;font-size:20px;font-weight:800;text-decoration:none;border:3px solid var(--wine)}
+.btn:focus-visible{outline:3px solid var(--wine);outline-offset:3px}
+.dock{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:390px;background:var(--bg);border-top:2px solid var(--wine);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.dock .btn{min-height:56px;font-size:19px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <b>둘이</b>
+  <p>주식을 사려는 분이, 사기 전에 지난 기록을 확인하는 곳</p>
+</header>
+
+<h1>사려는 회사가 있나요?<br>사기 전에 2분, 지난 기록과 내 이유를 맞춰 봅니다.</h1>
+
+<nav class="map" aria-label="지금 어디쯤인지">
+  <ol>
+    <li class="now"><span class="c">1</span>사기 전<br><span class="here">지금 여기</span></li>
+    <li><span class="c">2</span>질문 11개<br>약 2분</li>
+    <li><span class="c">3</span>한 달 뒤<br>다시 보기</li>
+  </ol>
+</nav>
+
+<section class="card" aria-label="결론">
+  <p class="ttl">지난 3년의 결론</p>
+  <h2>조건으로 고른 회사가 한 달 뒤 시장보다 5% 넘게 더 오른 경우가 더 많았습니다.</h2>
+  <div class="big2">
+    <div><p class="bn rose">32%</p><p class="bc">조건으로 고른 회사</p></div>
+    <div><p class="bn">24%</p><p class="bc">모든 회사</p></div>
+  </div>
+  <span class="dir">높을수록 좋음 ↑</span>
+  <p class="warn"><b>최근 두 달은 반대였습니다.</b> 고른 회사 14% · 모든 회사 25%.</p>
+  <p class="small">4,002번 · 고른 날부터 한 달 뒤 · 코스피 · 코스닥 2,557곳 · 2023년 10월 ~ 2026년 9월</p>
+</section>
+
+<p class="today">오늘 코스피 <b>6,007.04</b> <b class="up">+6.54%</b> · 10월 28일 오후 2시 14분 장 중</p>
+
+<section class="card" aria-label="근거 읽는 법">
+  <p class="ttl">왜 확인할 만한가</p>
+  <h2>숫자 셋, 읽는 법과 함께</h2>
+  <div class="metric">
+    <div class="mhead"><p class="mname">시장보다 5% 넘게 더 오름</p><span class="dir">높을수록 좋음 ↑</span></div>
+    <div class="brow"><span class="bl">고른 회사</span><span class="track"><i class="fill" style="width:32%;background:#A31F70"></i></span><b class="bv">32%</b></div>
+    <div class="brow"><span class="bl">모든 회사</span><span class="track"><i class="fill" style="width:24%;background:#5E3446"></i></span><b class="bv">24%</b></div>
+    <p class="meaning">→ 100번으로 치면 8번 더 많았습니다.</p>
+  </div>
+  <div class="metric">
+    <div class="mhead"><p class="mname">시장보다 5% 넘게 뒤처짐</p><span class="dir">낮을수록 좋음 ↓</span></div>
+    <div class="brow"><span class="bl">고른 회사</span><span class="track"><i class="fill" style="width:28%;background:#A31F70"></i></span><b class="bv">28%</b></div>
+    <div class="brow"><span class="bl">모든 회사</span><span class="track"><i class="fill" style="width:36%;background:#5E3446"></i></span><b class="bv">36%</b></div>
+    <p class="meaning">→ 100번으로 치면 8번 더 적었습니다.</p>
+  </div>
+  <div class="metric">
+    <div class="mhead"><p class="mname">100만 원어치, 한 달 뒤 시장보다 평균</p><span class="dir">클수록 좋음 →</span></div>
+    <div class="brow"><span class="bl">고른 회사</span><span class="dtrack"><span class="neg"></span><span><i class="fill" style="width:100%;background:#A31F70"></i></span></span><b class="bv up">+25,000원</b></div>
+    <div class="brow"><span class="bl">모든 회사</span><span class="dtrack"><span class="neg"><i class="fill" style="width:17.6%;background:#5E3446"></i></span><span></span></span><b class="bv down">−4,400원</b></div>
+    <p class="meaning">→ 평균입니다. 같은 결과가 다시 나온다는 뜻이 아닙니다.</p>
+  </div>
+</section>
+
+<section class="card" aria-label="해마다">
+  <p class="ttl">해마다 보면</p>
+  <h2>네 해 중 세 해는 나았고, 최근 두 달은 못했습니다</h2>
+  <table class="yt">
+    <thead><tr><th>때</th><th>고른 회사</th><th>모든 회사</th><th>결과</th></tr></thead>
+    <tbody>
+      <tr><td>2023년<small>71번</small></td><td>14%</td><td>21%</td><td class="bad">✕ 못함</td></tr>
+      <tr><td>2024년<small>1,019번</small></td><td>31%</td><td>23%</td><td class="good">○ 나음</td></tr>
+      <tr><td>2025년<small>1,822번</small></td><td>29%</td><td>22%</td><td class="good">○ 나음</td></tr>
+      <tr><td>2026년<small>1,090번</small></td><td>36%</td><td>27%</td><td class="good">○ 나음</td></tr>
+      <tr class="hl"><td>최근 두 달</td><td>14%</td><td>25%</td><td class="bad">✕ 못함</td></tr>
+    </tbody>
+  </table>
+  <p class="small">5% 넘게 더 오른 비율입니다. 높을수록 좋습니다.</p>
+</section>
+
+<section class="card" aria-label="오늘 업종을 보는 길">
+  <p class="ttl">둘이는 오늘 업종을 이렇게 봅니다</p>
+  <h2>2,557곳에서 업종 하나까지</h2>
+  <ol class="flow">
+    <li><b>2,557곳</b>코스피 · 코스닥 회사</li>
+    <li><b>77개</b>업종으로 묶어 봄</li>
+    <li><b>20일 · 5일</b>최근 장이 열린 날, 시장과 견줌</li>
+    <li><b>조건 4개</b>모두 채웠는지 봄</li>
+    <li><b>오늘 1개</b>반도체 검사·측정</li>
+  </ol>
+  <p class="small">오늘 77개: 막 오르기 시작 37 · 한 달 내내 강함 7 · 조용함 29 · 강하다 꺾임 4</p>
+  <p class="small">조건은 후보 365가지 → 88 → 37 → 3 → 1로 줄여 정했습니다.</p>
+</section>
+
+<section class="card" aria-label="못 넘은 까닭">
+  <p class="ttl">5% 넘게 못 오른 2,741번은 왜?</p>
+  <h2>업종 전체가 식은 경우가 가장 많았습니다</h2>
+  <div class="brow wide"><span class="bl">업종이 통째로 식음</span><span class="track"><i class="fill" style="width:47%;background:#A31F70"></i></span><b class="bv">47%</b></div>
+  <div class="brow wide"><span class="bl">조금 모자람</span><span class="track"><i class="fill" style="width:27%;background:#5E3446"></i></span><b class="bv">27%</b></div>
+  <div class="brow wide"><span class="bl">회사만 처짐</span><span class="track"><i class="fill" style="width:26%;background:#5E3446"></i></span><b class="bv">26%</b></div>
+</section>
+
+<section class="card dd" aria-label="하는 일과 하지 않는 일">
+  <p class="ttl">둘이가 하는 일과 하지 않는 일</p>
+  <h3>합니다</h3>
+  <ul class="yes"><li>지난 기록을 보여 줍니다</li><li>사는 이유를 적도록 돕습니다</li><li>한 달 뒤 다시 보게 합니다</li></ul>
+  <h3>하지 않습니다</h3>
+  <ul class="no"><li>앞날을 맞히거나 사고팔기를 권하지 않습니다.</li><li>이 사이트는 투자 자문이 아닙니다.</li></ul>
+</section>
+
+<section class="card" id="next" aria-label="다음 할 일">
+  <p class="ttl">다음 할 일은 하나</p>
+  <h2>누르면 이렇게 됩니다</h2>
+  <ol class="steps">
+    <li><span class="sn">1</span>사려는 회사 이름 넣기</li>
+    <li><span class="sn">2</span>질문 11개에 답하기 · 약 2분</li>
+    <li><span class="sn">3</span>답은 이 기기에만 저장</li>
+    <li><span class="sn">4</span>한 달 뒤, 정한 대로 했는지 다시 보기</li>
+  </ol>
+  <a class="btn" href="#" role="button">「왜 사?」 시작하기 <span aria-hidden="true">→</span></a>
+</section>
+
+<div class="dock"><a class="btn" href="#next">「왜 사?」 질문 11개 · 약 2분 <span aria-hidden="true">→</span></a></div>
+
+</body>
+</html>

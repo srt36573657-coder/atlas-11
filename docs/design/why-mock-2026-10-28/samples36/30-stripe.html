@@ -1,0 +1,189 @@
+<!-- 30 스트라이프 콜리슨 형제 · 숫자는 정확히, 글은 설명서처럼 — 먼저 결과를 적고, 낱말을 정의하고, 센 횟수와 때를 숫자마다 붙인다 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>둘이 — 스트라이프 판</title>
+<style>
+:root{--bg:#F7D4DE;--card:#FFF7F9;--ink:#2A1420;--sub:#5E3446;--rose:#A31F70;--wine:#3D1028;--up:#B4123A;--down:#1A55B0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{max-width:390px;margin:0 auto;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;font-size:17px;line-height:1.6;word-break:keep-all}
+.num,table{font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+.brand{font-weight:800;font-size:20px}
+.ver{color:var(--sub)}
+.doc{background:var(--card);margin:0 12px 24px;border-radius:10px;padding:24px 20px 28px}
+.kick{color:var(--rose);font-weight:700}
+h1{font-size:27px;line-height:1.32;font-weight:800;margin-top:6px;letter-spacing:-.01em}
+.lead{font-size:18px;margin-top:12px}
+.today{margin-top:16px;padding:12px 14px;border-left:4px solid var(--wine);background:var(--bg)}
+.today b{font-size:20px}
+.today p+p{color:var(--sub)}
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+.toc a{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 12px;border:1px solid var(--sub);border-radius:8px;color:var(--ink);text-decoration:none;font-weight:600}
+.toc a i{font-style:normal;color:var(--rose);font-weight:800}
+h2{font-size:22px;line-height:1.38;font-weight:800;margin-top:36px;padding-top:20px;border-top:1px solid var(--bg);scroll-margin-top:12px}
+h2 .no{color:var(--rose);margin-right:6px}
+.code{background:var(--bg);border-radius:8px;padding:4px 14px 8px;margin-top:14px}
+.code .cap{color:var(--sub);font-weight:700;padding-top:10px}
+table{width:100%;border-collapse:collapse;margin-top:6px}
+th,td{padding:11px 4px;border-bottom:1px solid var(--card);text-align:right;font-size:17px;vertical-align:middle}
+.doc>table th,.doc>table td{border-bottom:1px solid var(--bg)}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+thead th{color:var(--sub);font-weight:700;border-bottom:2px solid var(--ink)!important}
+tbody td b{font-size:20px}
+tfoot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:0}
+.note{color:var(--sub);margin-top:10px}
+.warn{margin-top:22px;border-left:4px solid var(--rose);background:var(--bg);padding:14px}
+.warn .wt{font-weight:800;font-size:19px}
+.wbar{display:grid;grid-template-columns:86px 1fr 44px;gap:8px;align-items:center;margin-top:8px}
+.wbar svg{display:block;width:100%;height:14px}
+.wbar b{text-align:right}
+dl{margin-top:12px}
+dt{font-weight:800;margin-top:12px}
+dd{color:var(--sub)}
+.fig{margin-top:16px}
+.dr{display:grid;grid-template-columns:60px 1fr;align-items:center;min-height:36px}
+.dr svg{display:block;width:100%;height:28px}
+.axis{position:relative;height:26px;margin-left:60px;color:var(--sub)}
+.axis span{position:absolute;top:0;transform:translateX(-50%)}
+.leg{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:10px;color:var(--sub)}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.stk{display:block;width:100%;height:18px;margin-top:14px}
+.fb{display:block;width:100%;height:12px}
+.steps{list-style:none;margin-top:14px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:center;min-height:52px;border-bottom:1px solid var(--bg)}
+.steps li::before{content:counter(s);display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--wine);color:var(--card);font-weight:800}
+.cta{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:56px;padding:0 20px;border:0;border-radius:8px;background:var(--rose);color:var(--card);font:inherit;font-size:19px;font-weight:700;margin-top:18px;cursor:pointer}
+.fn{color:var(--sub);margin-top:26px;padding-top:14px;border-top:1px solid var(--bg)}
+.fn p+p{margin-top:4px}
+</style>
+</head>
+<body>
+
+<header class="top"><p class="brand">둘이</p><p class="ver">자료 기준 2026년 10월 28일</p></header>
+
+<article class="doc">
+  <p class="kick">지난 기록 설명서</p>
+  <h1>조건으로 고른 회사는 한 달 뒤 시장보다 5% 넘게 더 오른 적이 32%였습니다</h1>
+  <p class="lead">주식을 사려는 사람이 사기 전에 확인하는 지난 기록입니다. 코스피·코스닥 2,557곳과 업종 77개를 2023년 10월부터 2026년 9월까지 4,002번 셌습니다. 같은 때 모든 회사는 24%였습니다.</p>
+  <div class="today">
+    <p>오늘 코스피 <b class="num">6,007.04</b> <b class="up num">+6.54%</b></p>
+    <p>10월 28일 오후 2시 14분 장 중 · 석 달(7월 28일 ~ 10월 28일) 낮은 값 5,469 · 높은 값 7,081</p>
+  </div>
+
+  <nav class="toc">
+    <a href="#r"><i>1</i>결과</a>
+    <a href="#m"><i>2</i>최근 두 달</a>
+    <a href="#y"><i>3</i>해마다</a>
+    <a href="#w"><i>4</i>못 넘은 까닭</a>
+    <a href="#f"><i>5</i>조건을 정한 길</a>
+    <a href="#s"><i>6</i>오늘 업종</a>
+    <a href="#go" style="grid-column:1/-1"><i>7</i>시작하기 · 질문 11개 · 약 2분</a>
+  </nav>
+
+  <h2 id="r"><span class="no">1</span>더 오른 적은 많고, 뒤처진 적은 적었습니다</h2>
+  <div class="code">
+    <p class="cap">고른 날부터 한 달 뒤 · 같은 기간 시장과 견줌 · 4,002번</p>
+    <table>
+      <thead><tr><th></th><th>고른 회사</th><th>모든 회사</th></tr></thead>
+      <tbody>
+        <tr><td>5% 넘게 더 오름</td><td><b>32%</b></td><td>24%</td></tr>
+        <tr><td>5% 넘게 뒤처짐</td><td><b>28%</b></td><td>36%</td></tr>
+        <tr><td>100만 원어치 평균</td><td><b class="up">+25,000원</b></td><td class="down">−4,400원</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">100만 원 줄은 평균입니다. 같은 결과가 다시 나온다는 뜻이 아닙니다.</p>
+  <dl>
+    <dt>고른 회사</dt><dd>정해 둔 조건에 맞아 고른 회사입니다.</dd>
+    <dt>한 달 뒤</dt><dd>고른 날부터 한 달이 지난 때입니다.</dd>
+    <dt>5% 넘게 더 오름</dt><dd>같은 한 달 동안 시장보다 5% 넘게 더 오른 경우입니다.</dd>
+  </dl>
+
+  <h2 id="m"><span class="no">2</span>최근 두 달은 모든 회사보다 못했습니다</h2>
+  <aside class="warn">
+    <p class="wt">5% 넘게 더 오른 적 · 최근 두 달</p>
+    <div class="wbar"><span>고른 회사</span><svg viewBox="0 0 160 14" preserveAspectRatio="none" aria-hidden="true"><rect width="160" height="14" fill="#FFF7F9"/><rect width="56" height="14" fill="#A31F70"/></svg><b class="num">14%</b></div>
+    <div class="wbar"><span>모든 회사</span><svg viewBox="0 0 160 14" preserveAspectRatio="none" aria-hidden="true"><rect width="160" height="14" fill="#FFF7F9"/><rect width="100" height="14" fill="#3D1028"/></svg><b class="num">25%</b></div>
+    <p class="note">3년 전체 32% 대 24%와 거꾸로입니다.</p>
+  </aside>
+
+  <h2 id="y"><span class="no">3</span>네 해 중 세 해는 더 자주 앞섰습니다</h2>
+  <div class="fig">
+    <div class="dr"><span class="num">2023년</span><svg viewBox="0 0 266 28" aria-hidden="true"><path d="M8 14H258M70.5 4v20M133 4v20M195.5 4v20" stroke="#F7D4DE" stroke-width="1.5"/><path d="M95.5 14H139.3" stroke="#5E3446" stroke-width="2.5"/><circle cx="139.3" cy="14" r="6" fill="#FFF7F9" stroke="#3D1028" stroke-width="3"/><circle cx="95.5" cy="14" r="7" fill="#A31F70"/></svg></div>
+    <div class="dr"><span class="num">2024년</span><svg viewBox="0 0 266 28" aria-hidden="true"><path d="M8 14H258M70.5 4v20M133 4v20M195.5 4v20" stroke="#F7D4DE" stroke-width="1.5"/><path d="M151.8 14H201.8" stroke="#5E3446" stroke-width="2.5"/><circle cx="151.8" cy="14" r="6" fill="#FFF7F9" stroke="#3D1028" stroke-width="3"/><circle cx="201.8" cy="14" r="7" fill="#A31F70"/></svg></div>
+    <div class="dr"><span class="num">2025년</span><svg viewBox="0 0 266 28" aria-hidden="true"><path d="M8 14H258M70.5 4v20M133 4v20M195.5 4v20" stroke="#F7D4DE" stroke-width="1.5"/><path d="M145.5 14H189.3" stroke="#5E3446" stroke-width="2.5"/><circle cx="145.5" cy="14" r="6" fill="#FFF7F9" stroke="#3D1028" stroke-width="3"/><circle cx="189.3" cy="14" r="7" fill="#A31F70"/></svg></div>
+    <div class="dr"><span class="num">2026년</span><svg viewBox="0 0 266 28" aria-hidden="true"><path d="M8 14H258M70.5 4v20M133 4v20M195.5 4v20" stroke="#F7D4DE" stroke-width="1.5"/><path d="M176.8 14H233" stroke="#5E3446" stroke-width="2.5"/><circle cx="176.8" cy="14" r="6" fill="#FFF7F9" stroke="#3D1028" stroke-width="3"/><circle cx="233" cy="14" r="7" fill="#A31F70"/></svg></div>
+    <div class="axis num"><span style="left:3%">0%</span><span style="left:26.5%">10%</span><span style="left:50%">20%</span><span style="left:73.5%">30%</span><span style="left:97%">40%</span></div>
+    <div class="leg"><span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#A31F70"/></svg>고른 회사</span><span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="#FFF7F9" stroke="#3D1028" stroke-width="3"/></svg>모든 회사</span></div>
+  </div>
+  <table>
+    <thead><tr><th>해</th><th>고른 회사</th><th>모든 회사</th><th>횟수</th></tr></thead>
+    <tbody>
+      <tr><td>2023년</td><td>14%</td><td>21%</td><td>71</td></tr>
+      <tr><td>2024년</td><td>31%</td><td>23%</td><td>1,019</td></tr>
+      <tr><td>2025년</td><td>29%</td><td>22%</td><td>1,822</td></tr>
+      <tr><td>2026년</td><td>36%</td><td>27%</td><td>1,090</td></tr>
+    </tbody>
+    <tfoot><tr><td>합계</td><td></td><td></td><td>4,002</td></tr></tfoot>
+  </table>
+  <p class="note">2023년은 71번뿐입니다.</p>
+
+  <h2 id="w"><span class="no">4</span>5% 못 넘은 2,741번 중 47%는 업종이 통째로 식었습니다</h2>
+  <svg class="stk" viewBox="0 0 326 18" preserveAspectRatio="none" aria-hidden="true"><rect width="152.2" height="18" fill="#A31F70"/><rect x="154.2" width="87.5" height="18" fill="#3D1028"/><rect x="243.7" y="1" width="81.3" height="16" fill="#FFF7F9" stroke="#5E3446" stroke-width="2"/></svg>
+  <table>
+    <thead><tr><th>까닭</th><th>비율</th></tr></thead>
+    <tbody>
+      <tr><td>업종이 통째로 식음</td><td>47%</td></tr>
+      <tr><td>조금 모자람</td><td>27%</td></tr>
+      <tr><td>회사만 처짐</td><td>26%</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="f"><span class="no">5</span>고르는 조건은 후보 365가지에서 1가지로 줄였습니다</h2>
+  <table>
+    <thead><tr><th>단계</th><th>남은 수</th><th style="width:46%"></th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>365</td><td><svg class="fb" viewBox="0 0 140 12" preserveAspectRatio="none" aria-hidden="true"><rect width="140" height="12" fill="#3D1028"/></svg></td></tr>
+      <tr><td>2</td><td>88</td><td><svg class="fb" viewBox="0 0 140 12" preserveAspectRatio="none" aria-hidden="true"><rect x="106.2" width="33.8" height="12" fill="#3D1028"/></svg></td></tr>
+      <tr><td>3</td><td>37</td><td><svg class="fb" viewBox="0 0 140 12" preserveAspectRatio="none" aria-hidden="true"><rect x="125.8" width="14.2" height="12" fill="#3D1028"/></svg></td></tr>
+      <tr><td>4</td><td>3</td><td><svg class="fb" viewBox="0 0 140 12" preserveAspectRatio="none" aria-hidden="true"><rect x="138" width="2" height="12" fill="#3D1028"/></svg></td></tr>
+      <tr><td>5</td><td><b style="color:#A31F70">1</b></td><td><svg class="fb" viewBox="0 0 140 12" preserveAspectRatio="none" aria-hidden="true"><rect x="138" width="2" height="12" fill="#A31F70"/></svg></td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="s"><span class="no">6</span>오늘 업종 77개 중 네 조건을 다 채운 곳은 반도체 검사·측정 1개입니다</h2>
+  <p class="note">최근 20거래일과 5거래일을 시장과 견주어 나눔</p>
+  <table>
+    <thead><tr><th>무리</th><th>업종 수</th></tr></thead>
+    <tbody>
+      <tr><td>막 오르기 시작</td><td>37</td></tr>
+      <tr><td>한 달 내내 강함</td><td>7</td></tr>
+      <tr><td>조용함</td><td>29</td></tr>
+      <tr><td>강하다 꺾임</td><td>4</td></tr>
+    </tbody>
+    <tfoot><tr><td>합계</td><td>77</td></tr></tfoot>
+  </table>
+  <div class="today" style="border-left-color:#A31F70"><p><b>반도체 검사·측정</b></p><p>네 조건을 다 채운 업종 · 1개</p></div>
+
+  <h2 id="go"><span class="no">7</span>사기 전에, 질문 11개 · 약 2분</h2>
+  <ol class="steps">
+    <li>사려는 회사 이름을 넣습니다.</li>
+    <li>「왜 사?」 질문 11개에 답합니다.</li>
+    <li>답은 이 기기에만 남습니다.</li>
+    <li>한 달 뒤, 정한 대로 했는지 다시 봅니다.</li>
+  </ol>
+  <button type="button" class="cta"><span>왜 사? 질문 11개 시작</span><span aria-hidden="true">→</span></button>
+
+  <div class="fn">
+    <p>앞날을 맞히거나 사고팔기를 권하지 않습니다.</p>
+    <p>이 사이트는 투자 자문이 아닙니다.</p>
+    <p>자료: 코스피·코스닥 2,557곳 · 2023년 10월 ~ 2026년 9월 · 기준 2026년 10월 28일</p>
+  </div>
+</article>
+</body>
+</html>
