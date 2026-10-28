@@ -216,7 +216,7 @@ for (const w of [320, 360, 390]) {
      소개(section.nh-hero) → 업종 점 그림(section.nh-map · 그림 날짜 하나) → 조건으로 고른 회사 지난 기록(section.nh-rec) → 오늘 시장(a.hm-band → section.w-news)
      → 사기 전에 확인하기(section.nh-why = [data-w="gdr"] · 첫 고리 질문 전 #/why · 질문 뒤 #/gdr — 본질 문 ④ 그대로 · 한 달 된 기록이면 그 안 a.w-month) → 찾기 칸(form.w-find) → 모든 화면 보기(details.w-all) → 안내 칸 안 본질 세 줄(section.ess)
      뺀 것: 큰 제목 s-hd · 둘이 물음 줄 w-say(물음은 업종 칸 제목 data-say) · 테마 시계 th-home · 바로 가기 넷 nav.w-go4(그 몫 = [data-w="gdr"]) · 진화 줄 s-evo · 「한 달 뒤 물어볼게요」 s-ghost */
-  const HOME_ORDER = ['section.nh-hero', 'section.nh-map', 'section.nh-rec', 'a.hm-band', 'section.w-news', 'section.nh-why', 'a.w-month', 'form.w-find', 'details.w-all', 'section.ess'];
+  const HOME_ORDER = ['section.nh-hero', 'section.nh-rec', 'section.nh-map', 'a.hm-band', 'section.w-news', 'section.nh-why', 'a.w-month', 'form.w-find', 'details.w-all', 'section.ess'];
   const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk'), '#/game']; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
   const g = await q.evaluate(ord => {
     const kids = [...document.querySelectorAll('#view *')].filter(e => ord.some(s => e.matches(s)) && !e.closest('.w-allin')), gd = document.querySelector('#view section.gdr');

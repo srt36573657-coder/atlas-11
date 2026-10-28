@@ -58,13 +58,47 @@ function idxCard(x, name, big = false) {
 export function heroBox({coN = null, indN = null, years = null, kospi = null} = {}) {
   const fact = (v, label) => h('div', {class: 'nh-fact'}, h('b', {class: 'num', text: v == null ? '?' : num(v)}), h('span', {text: label})); // 큰 숫자는 숫자만(320 폭 한 줄 · 영어 엔진이 단위를 두 번 쓰지 않게)
   return h('section', {class: 'nh-hero', 'aria-label': '이 사이트 소개'},
-    h('p', {class: 'nh-kick', text: '주식 지난 기록 확인'}),
     h('h2', {class: 'nh-h1'}, h('span', {text: '주식을 사기 전에,'}), ' ', h('span', {class: 'nh-acc', text: '지난 기록으로 한 번 더 확인하세요'})), // 한 줄 통째(영어 엔진이 문장을 나누지 않게)
     h('p', {class: 'nh-sub', text: '코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여 드립니다.'}),
     h('div', {class: 'nh-facts', 'data-num': ''}, fact(coN, '회사'), fact(indN, '업종'), fact(years, '년 기록')),
     kospi ? idxCard(kospi, '코스피', true) : null,
     h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}));
 }
+
+/** 네 마디(사장님 2026-10-28 14:45 「추상적이다 명확한 구조로 하라 육하원칙 기승전결 구조 · 내부는 육하원칙이나 보여지는 것은 선명하고 명확」
+   · 샘플 36개(머리글 셋 × 마디 표시 셋 × 그림 둘 × 할 일 단추 둘)에서 1등 34(큰 숫자 머리글 · 네 마디 줄 · 그림 모두 · 첫 마디 할 일 단추) 위에 다른 샘플 장점을 더함 — docs/design/why-mock-2026-10-28/order-1445.txt)
+   ① 결론(기 — 무엇을 하는 곳 · 오늘 코스피) ② 근거(승 — 왜 지난 기록인가 · 고른 회사 대 모든 회사) ③ 오늘(전 — 업종 · 시장 · 고르는 기준) ④ 할 일(결 — 질문 11개)
+   마디 머리 안은 누가 · 무엇 · 언제 · 어디 · 왜 · 어떻게를 다 채우되 보이는 것은 마디 이름 · 큰 숫자 · 결론 한 줄뿐 */
+export const PARTS = Object.freeze([['1', '결론'], ['2', '근거'], ['3', '오늘'], ['4', '할 일']]);
+export function railBox() { // 누르면 그 마디로 내려감(주소 # 는 그대로 — 길 바꾸기 없음) · 여는 동안 칸(boot-home.js)도 같은 글 · 같은 높이
+  return h('nav', {class: 'nh-rail', 'aria-label': '첫 화면 네 마디'}, ...PARTS.map(([n, k], i) => h('button', {type: 'button', class: 'nh-rb' + (i ? '' : ' on'), onclick: () => document.getElementById('nh-p' + n)?.scrollIntoView({behavior: 'smooth', block: 'start'})}, h('i', {'aria-hidden': 'true', text: n}), h('span', {text: k}))));
+}
+/** 마디 머리 — 동그라미 번호 · 마디 이름 · 큰 숫자 줄 · 결론 한 줄 · 작은 풀이 한 줄 */
+export function partHead({n, k, big = [], line = '', cap = ''}) {
+  return h('div', {class: 'nh-part', id: 'nh-p' + n},
+    h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: n}), h('span', {text: k})),
+    big.length ? h('p', {class: 'nh-pb', 'data-num': ''}, ...big) : null,
+    line ? h('h2', {class: 'nh-pl', text: line}) : null,
+    cap ? h('p', {class: 'nh-pc', text: cap}) : null);
+}
+/** ② 근거 머리 — 고른 회사 대 모든 회사(100번 가운데 한 달 뒤 시장보다 5% 넘게 더 오른 수) */
+export function partWhy(B) {
+  const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base), a = ok ? Math.round(R.rate) : null, b = ok ? Math.round(R.base) : null;
+  return partHead({n: '2', k: '근거', big: ok ? [h('b', {class: 'num', text: String(a)}), h('span', {text: '대'}), h('b', {class: 'num nh-pb2', text: String(b)})] : [],
+    line: !ok ? '조건으로 고른 회사의 지난 기록이에요' : a > b ? '조건으로 고른 회사가 더 자주 올랐어요' : a < b ? '조건으로 고른 회사가 덜 올랐어요' : '조건으로 고른 회사와 모든 회사가 같았어요',
+    cap: ok ? '고른 회사 대 모든 회사 · 100번 가운데 한 달 뒤 시장보다 5% 넘게 더 오른 수' : ''});
+}
+/** ③ 오늘 머리 — 오늘 코스피 · 조건 4개를 다 채운 업종 수 */
+export function partToday(TH, kospi) {
+  const d = kospi?.day, c = fin(d) ? (Math.round(d * 100) === 0 ? 'fl' : d > 0 ? 'up' : 'dn') : '', inds = TH?.inds ?? [], n4 = inds.filter(i => i.sc === 4).length;
+  return partHead({n: '3', k: '오늘', big: fin(d) ? [h('b', {class: 'num ' + c, text: p2(d)}), h('span', {text: '오늘 코스피'})] : [],
+    line: !inds.length ? '오늘 업종과 시장이에요' : n4 ? `업종 ${num(inds.length)}개 중 ${num(n4)}개가 조건 4개를 다 채웠어요` : `업종 ${num(inds.length)}개 중 조건 4개를 다 채운 곳은 오늘 없어요`,
+    cap: '점 하나가 업종 하나 · 오른쪽 위일수록 시장보다 강해요'});
+}
+/** ④ 할 일 머리 — 질문 11개 */
+export const partDo = () => partHead({n: '4', k: '할 일', big: [h('b', {class: 'num', text: '11'}), h('span', {text: '개 질문'})], line: '사기 전에 한 번 더 확인하세요', cap: '약 2분 · 답은 이 기기에만 남아요'});
+/** ① 결론 아래 할 일 단추 — 끝까지 내리지 않아도 바로(샘플 36개 중 첫 마디 단추가 있는 쪽이 할 일까지 거리 6분의 1) */
+export const goFirst = () => h('a', {class: 'nh-go nh-go1', href: '#/why'}, h('span', {text: '「왜 사?」 시작하기'}), h('i', {'aria-hidden': 'true', text: '›'}));
 
 /** 업종 점 그림 — 점 하나 = 업종 하나 · 가로 = 최근 20거래일 시장보다 더 오른 정도(%p) · 세로 = 최근 5거래일 · 기준선 가로 RULE.bloomX · 세로 0 · 축 화살표와 뜻은 그림 안에 */
 function plot(TH) {

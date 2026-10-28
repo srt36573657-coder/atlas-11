@@ -9,7 +9,7 @@ import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
 import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
 import {homeBlock as themeHome, APP_ICON} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
-import {heroBox, mapBox, recordBox, mktBox, whyBox, footBox} from '/next/home-new.js'; // 새 첫 화면 칸들(사장님 2026-10-28 11:12 「어」 — 처음 보는 사람 눈높이 · docs/design/why-mock-2026-10-28/order-1112.txt)
+import {heroBox, mapBox, recordBox, mktBox, whyBox, footBox, railBox, partWhy, partToday, partDo, goFirst} from '/next/home-new.js'; // 새 첫 화면 칸들(사장님 2026-10-28 11:12 「어」 — 처음 보는 사람 눈높이 · docs/design/why-mock-2026-10-28/order-1112.txt)
 import {stoneClock, clockDecoded, miniClock} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 import {jobsOrder, jobsTail, jobsBold, jobsBoldLate} from '/next/jobs-order.js'; // 잡스 차례(사장님 2026-10-27 11:08 「직관적이면서도 중요한것을 전면에」 · 11:39 「어 고쳐 빨리」) — 쪽마다 칸 차례 · 덜 중요한 글 「더 보기」
@@ -605,7 +605,9 @@ async function vHomeAll() {
   const news = watched && TH ? await import('/next/theme-watch.js').then(m => m.noticeBox(TH)).catch(() => null) : null;
   const ess = essenceBox(false); ess.classList.add('w-ess'); ess.setAttribute('data-w', 'ess'); // 본질 세 줄 그대로(essence.js · 본질 문 ②) — 맨 아래 공식 안내 칸 안
   const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
-  const nodes = [heroBox({coN, indN: TH?.inds?.length || null, years: Number.isFinite(yrs) ? yrs : null, kospi: H?.idx?.KOSPI ?? null}), mapBox(TH, news), recordBox(B), mktBox(band.el, newsBox(H), H), // 그림 많이(12:09 「글보다는 주식 도식화로 … 대범하게」) — 코스피 · 코스닥 석 달 · 사고판 돈은 home.json
+  const hero = heroBox({coN, indN: TH?.inds?.length || null, years: Number.isFinite(yrs) ? yrs : null, kospi: H?.idx?.KOSPI ?? null}); hero.id = 'nh-p1';
+  // 네 마디 기승전결(사장님 2026-10-28 14:45 · order-1445.txt) — ① 결론 소개 + 할 일 단추 → ② 근거 지난 기록 → ③ 오늘 업종 · 시장 → ④ 할 일 질문 11개
+  const nodes = [railBox(), hero, goFirst(), partWhy(B), recordBox(B), partToday(TH, H?.idx?.KOSPI), mapBox(TH, news), mktBox(band.el, newsBox(H), H), partDo(), // 그림 많이(12:09 「글보다는 주식 도식화로 … 대범하게」) — 코스피 · 코스닥 석 달 · 사고판 돈은 home.json
     whyBox({done: (C?.stop ?? 0) > 0, month}), thumb, h('div', {class: 's-short nh-short'}, allBox(H, band)), footBox(ess)];
   return {title: '첫 화면', nodes};
 }
