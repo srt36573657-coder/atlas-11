@@ -1,0 +1,20 @@
+{
+ "schema": "atlas11-trust-misses-1",
+ "made": "2026-10-28T15:46+09:00",
+ "why": "틀림 장부 — 새 파일만",
+ "rules": 1,
+ "scope": {
+  "from": "2026-10-28 15:35 틀림 147 적은 뒤",
+  "to": "2026-10-28 15:45 큰 검사 home-4part 4/11 걸림을 본 뒤"
+ },
+ "count": 1,
+ "items": [
+  {
+   "n": 148,
+   "when": "2026-10-28 15:26 ~ 15:34(서울)",
+   "what": "첫 화면 근거 칸에 쓰지 않을 말 「확률」(site/next/words.js SCREEN)을 넣은 「앞날의 확률이 아니라 이미 일어난 횟수예요」를 씀 — 이 방에서는 흰 첫 화면 검사만 돌리고 쓰지 않을 말을 재는 next_check · check_theme 를 돌리지 않아 놓침",
+   "found_by": "큰 검사 home-4part 4/11 next 6 · theme 9 걸림 https://github.com/srt36573657-coder/atlas-11/actions/runs/40644650857",
+   "fixed": "「앞날을 맞히는 숫자가 아니라 이미 일어난 횟수예요」로 바꿈 · 새 글은 올리기 전에 SCREEN 낱말을 직접 대조함 · 5/11 다시"
+  }
+ ]
+}
