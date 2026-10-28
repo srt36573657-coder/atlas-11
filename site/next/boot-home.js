@@ -13,9 +13,10 @@ if (isHome && v && boot) {
   const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
   const fact = label => { const d = el('div', 'nh-fact'); d.append(el('b', 'num', '…'), el('span', null, label)); return d; };
   const sec = el('section', 'nh-hero'); sec.setAttribute('aria-label', '이 사이트 소개');
-  const h2 = el('h2', 'nh-h1'); h2.append(el('span', null, '주식을 사기 전에,'), ' ', el('span', 'nh-acc', '지난 기록으로 한 번 더 확인하세요'));
+  const h2 = el('h2', 'nh-h1'); h2.append(el('span', null, '주식을 사기 전에,'), ' ', el('span', 'nh-acc', '지난 기록으로 2분만 확인하세요'));
   const facts = el('div', 'nh-facts'); facts.append(fact('회사'), fact('업종'), fact('년 기록'));
-  sec.append(h2, el('p', 'nh-sub', '코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여 드립니다.'), facts, el('p', 'nh-no', '앞날을 맞히거나 사고팔기를 권하지 않습니다.'));
+  const kt = el('p', 'nh-kt'); kt.append(el('span', null, '오늘 코스피'), el('b', 'num', '…'), el('b', 'num', '…')); // 오늘 코스피 한 줄(heroBox todayLine 과 같은 자리)
+  sec.append(el('p', 'nh-q', '나도 살까 싶을 때'), h2, el('p', 'nh-sub', '코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여 드립니다.'), facts, kt, el('p', 'nh-no', '앞날을 맞히거나 사고팔기를 권하지 않습니다.'));
   // 네 마디 줄(2026-10-28 14:45 기승전결 · home-new.js railBox 와 같은 글 · 같은 높이 — 다 그려질 때 소개 칸이 밀리지 않게)
   const rail = el('nav', 'nh-rail'); rail.setAttribute('aria-label', '첫 화면 네 마디');
   for (const [n, k] of [['1', '결론'], ['2', '근거'], ['3', '오늘'], ['4', '할 일']]) { const b = el('button', 'nh-rb' + (n === '1' ? ' on' : '')); b.type = 'button'; const i = el('i', null, n); i.setAttribute('aria-hidden', 'true'); b.append(i, el('span', null, k)); rail.append(b); }

@@ -338,3 +338,26 @@ html.home #view .nh-pc { margin: 0; font-size: 17px; line-height: 1.45; color: #
 html.home #view .nh-go1 { margin: 14px 16px 0; }
 @media (max-width: 359px) { html.home #view .nh-rb { gap: 4px; font-size: 17px; } html.home #view .nh-rb i { width: 22px; height: 22px; } html.home #view .nh-pb b { font-size: 38px; } html.home #view .nh-part { margin-left: 10px; margin-right: 10px; } }
 html.home.en #view .nh-rb { flex-direction: column; gap: 2px; white-space: normal; line-height: 1.05; text-align: center; } /* 영어 낱말(Evidence · Summary)은 칸보다 길어 번호 아래로(320 넘침 0) */
+html.home #view .nh-kt { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 12px 14px; border-radius: 16px; background: #FFF7F9; border: 1px solid #EBC0CE; }
+html.home #view .nh-kt span { font-size: 17px; font-weight: 700; color: #5E3446; }
+html.home #view .nh-kt b { font-size: 26px; font-weight: 900; color: #2A1420; letter-spacing: -.02em; }
+html.home #view .nh-kt b.up { color: #B4123A; } html.home #view .nh-kt b.dn { color: #1A55B0; } html.home #view .nh-kt b.fl { color: #5E3446; }
+html.home #view details.nh-fold { margin-top: 4px; border: 1px solid #EBC0CE; background: #FFF7F9; padding: 0 12px; }
+html.home #view details.nh-fold > summary { font-size: 18px; }
+html.home #view details.nh-fold[open] { padding-bottom: 12px; }
+/* ② 근거 — 100칸 그림 둘 · 최근 두 달 반대 줄(샘플 21 · 31 · 19 · 20 · 32) */
+html.home #view .nh-wafs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 8px; }
+html.home #view .nh-wf { margin: 0; display: grid; justify-items: start; gap: 6px; min-width: 0; }
+html.home #view .nh-waf { display: block; width: 100%; max-width: 150px; height: auto; }
+html.home #view .nh-waf rect.off { fill: #FFF7F9; stroke: #E3B6C5; stroke-width: 1; }
+html.home #view .nh-waf.me rect.on { fill: #A31F70; } html.home #view .nh-waf.all rect.on { fill: #8E7380; }
+html.home #view .nh-wf figcaption { display: grid; gap: 0; }
+html.home #view .nh-wf figcaption b { font-size: 32px; font-weight: 900; line-height: 1.1; color: #2A1420; letter-spacing: -.02em; }
+html.home #view .nh-wf figcaption span { font-size: 17px; font-weight: 700; color: #5E3446; }
+html.home #view .nh-honest { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 8px 0 0; padding: 10px 14px; border-left: 4px solid #A31F70; border-radius: 0 12px 12px 0; background: #FFF7F9; }
+html.home #view .nh-honest span { font-size: 18px; font-weight: 800; color: #2A1420; }
+html.home #view .nh-honest b { font-size: 22px; font-weight: 900; color: #A31F70; }
+/* 마디 사이 길 표시(샘플 22 오틀 아이허 — 길 찾기 화살표) — 꾸밈 칸(글 아님) */
+html.home #view .nh-part::before { content: ""; justify-self: center; width: 0; height: 0; margin: -22px 0 8px; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 12px solid #C98AA3; }
+/* 기 — 보는 사람의 마음 한 줄(말풍선 꼴 · 샘플 34) */
+html.home #view .nh-q { justify-self: start; margin: 0; padding: 6px 14px; border-radius: 18px 18px 18px 4px; background: #FFF7F9; border: 1px solid #C98AA3; font-size: 18px; font-weight: 800; color: #A31F70; }

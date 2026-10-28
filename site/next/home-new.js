@@ -24,6 +24,9 @@ const svgBox = (cls, W, H, label) => sv('svg', {class: 'nh-svg ' + cls, viewBox:
 /** 「읽는 법」 접은 칸 — 긴 풀이 글은 여기(처음에는 닫힘 · 그림이 먼저) */
 const more = (...kids) => h('details', {class: 'nh-more'}, h('summary', {}, h('span', {text: '읽는 법'}), h('i', {'aria-hidden': 'true', text: '›'})), h('div', {class: 'nh-mbody'}, ...kids));
 
+/** 그림 더 보기 접은 칸 — 샘플 36개 장점(19 마에다 「+」 접음 · 20 비녤리 · 쪽을 짧게 · 결론 숫자는 밖에) — 깊은 그림은 여기(처음에는 닫힘) */
+const fold = (title, ...kids) => h('details', {class: 'nh-more nh-fold'}, h('summary', {}, h('span', {text: title}), h('i', {'aria-hidden': 'true', text: '›'})), h('div', {class: 'nh-mbody'}, ...kids));
+
 /** 네 자리 쉬운 이름(예전 이름은 「읽는 법」 한 줄로만) — 놓는 자리는 theme-rule.js zoneOf 그대로(가로 RULE.bloomX · 세로 0) */
 export const ZNAME = Object.freeze({S: '막 오르기 시작', B: '한 달 내내 강함', W: '강하다 꺾임', Q: '조용함'});
 const ZOLD = Object.freeze({S: '싹', B: '꽃', W: '시듦', Q: '잠잠'});
@@ -54,14 +57,21 @@ function idxCard(x, name, big = false) {
     h('div', {class: 'nh-ih'}, h('span', {class: 'nh-in', text: name + ' 석 달'}), h('b', {class: 'num nh-iv', text: fin(x.close) ? num(Math.round(x.close * 100) / 100) : '?'}), h('b', {class: 'num nh-ic ' + c, text: fin(x.day) ? p2(x.day) : '?'})), g);
 }
 
+/** 오늘 코스피 한 줄(샘플 19 · 20 — 맨 위는 한 줄 · 석 달 그림은 ③ 오늘 시장에) */
+function todayLine(x) {
+  const c = fin(x?.day) ? (Math.round(x.day * 100) === 0 ? 'fl' : x.day > 0 ? 'up' : 'dn') : '';
+  return h('p', {class: 'nh-kt', 'data-num': ''}, h('span', {text: '오늘 코스피'}), h('b', {class: 'num', text: fin(x?.close) ? num(Math.round(x.close * 100) / 100) : '?'}), h('b', {class: 'num ' + c, text: fin(x?.day) ? p2(x.day) : '?'}));
+}
+
 /** 맨 위 소개 — 무엇을 하는 곳인지 · 숫자 셋 · 코스피 석 달 그림 · 권하지 않음 */
 export function heroBox({coN = null, indN = null, years = null, kospi = null} = {}) {
   const fact = (v, label) => h('div', {class: 'nh-fact'}, h('b', {class: 'num', text: v == null ? '?' : num(v)}), h('span', {text: label})); // 큰 숫자는 숫자만(320 폭 한 줄 · 영어 엔진이 단위를 두 번 쓰지 않게)
   return h('section', {class: 'nh-hero', 'aria-label': '이 사이트 소개'},
-    h('h2', {class: 'nh-h1'}, h('span', {text: '주식을 사기 전에,'}), ' ', h('span', {class: 'nh-acc', text: '지난 기록으로 한 번 더 확인하세요'})), // 한 줄 통째(영어 엔진이 문장을 나누지 않게)
+    h('p', {class: 'nh-q', text: '나도 살까 싶을 때'}), // 기 — 보는 사람의 지금 마음에서 시작(샘플 34 네 칸 만화 첫 칸 「나도 살까?」)
+    h('h2', {class: 'nh-h1'}, h('span', {text: '주식을 사기 전에,'}), ' ', h('span', {class: 'nh-acc', text: '지난 기록으로 2분만 확인하세요'})), // 한 줄 통째(영어 엔진이 문장을 나누지 않게)
     h('p', {class: 'nh-sub', text: '코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여 드립니다.'}),
     h('div', {class: 'nh-facts', 'data-num': ''}, fact(coN, '회사'), fact(indN, '업종'), fact(years, '년 기록')),
-    kospi ? idxCard(kospi, '코스피', true) : null,
+    todayLine(kospi),
     h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}));
 }
 
@@ -81,12 +91,20 @@ export function partHead({n, k, big = [], line = '', cap = ''}) {
     line ? h('h2', {class: 'nh-pl', text: line}) : null,
     cap ? h('p', {class: 'nh-pc', text: cap}) : null);
 }
-/** ② 근거 머리 — 고른 회사 대 모든 회사(100번 가운데 한 달 뒤 시장보다 5% 넘게 더 오른 수) */
+/** ② 근거 머리 — 100번 고르면 몇 번(자연 빈도 · 샘플 21 뮐러브로크만 · 32 닐슨) · 100칸 그림 둘(21 · 31 블룸버그) · 최근 두 달 반대를 바로 옆에(19 · 20 · 21 · 31 · 32 — 숨기지 않음) */
+function waffle(n, cls, label) { // 10 × 10 칸 — 칠한 칸 = 100번 가운데 n번
+  const s = svgBox('nh-waf ' + cls, 120, 120, `${label} 100번 중 ${n}번`);
+  for (let i = 0; i < 100; i++) s.append(sv('rect', {class: i < n ? 'on' : 'off', x: (i % 10) * 12 + 1, y: Math.floor(i / 10) * 12 + 1, width: 10, height: 10, rx: 2}));
+  return s;
+}
 export function partWhy(B) {
-  const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base), a = ok ? Math.round(R.rate) : null, b = ok ? Math.round(R.base) : null;
-  return partHead({n: '2', k: '근거', big: ok ? [h('b', {class: 'num', text: String(a)}), h('span', {text: '대'}), h('b', {class: 'num nh-pb2', text: String(b)})] : [],
-    line: !ok ? '조건으로 고른 회사의 지난 기록이에요' : a > b ? '조건으로 고른 회사가 더 자주 올랐어요' : a < b ? '조건으로 고른 회사가 덜 올랐어요' : '조건으로 고른 회사와 모든 회사가 같았어요',
-    cap: ok ? '고른 회사 대 모든 회사 · 100번 가운데 한 달 뒤 시장보다 5% 넘게 더 오른 수' : ''});
+  const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base), a = ok ? Math.round(R.rate) : null, b = ok ? Math.round(R.base) : null, rc = recent(B);
+  const head = partHead({n: '2', k: '근거', line: ok ? `100번 고르면 ${a}번, 시장보다 5% 넘게 더 올랐어요` : '조건으로 고른 회사의 지난 기록이에요', cap: ok ? (fin(R.fall) && fin(R.fallBase) ? `모든 회사는 ${b}번 · 크게 뒤처진 일은 ${Math.round(R.fall)}번 대 ${Math.round(R.fallBase)}번으로 적었어요` : `모든 회사는 100번 중 ${b}번이었어요`) : ''}); // 더 오른 일은 많고 뒤처진 일은 적었다(샘플 33 아리스토텔레스 · 23 하라 켄야 물 위 · 아래)
+  if (ok) head.append(h('div', {class: 'nh-wafs'},
+    h('figure', {class: 'nh-wf'}, waffle(a, 'me', '조건으로 고른 회사'), h('figcaption', {}, h('b', {class: 'num', text: a + '번'}), h('span', {text: '조건으로 고른 회사'}))),
+    h('figure', {class: 'nh-wf'}, waffle(b, 'all', '모든 회사'), h('figcaption', {}, h('b', {class: 'num', text: b + '번'}), h('span', {text: '모든 회사'})))));
+  if (rc.P != null && rc.Q != null && rc.P < rc.Q) head.append(h('p', {class: 'nh-honest', 'data-num': ''}, h('span', {text: '그런데 최근 두 달은 반대였어요'}), h('b', {class: 'num', text: `${rc.P}% 대 ${rc.Q}%`})));
+  return head;
 }
 /** ③ 오늘 머리 — 오늘 코스피 · 조건 4개를 다 채운 업종 수 */
 export function partToday(TH, kospi) {
@@ -249,20 +267,22 @@ export function recordBox(B) {
   box.append(h('p', {class: 'nh-d', text: `${ym(B.span?.from)}부터 ${ym(B.span?.to)}까지 ${num(R.n)}번 · 고른 날부터 한 달 뒤`}));
   box.append(h('div', {class: 'nh-c2w'}, cols2('시장보다 5% 넘게 더 오름', R.rate, R.base, 'up'), fin(R.fall) && fin(R.fallBase) ? cols2('시장보다 5% 넘게 뒤처짐', R.fall, R.fallBase, 'dn') : null));
   if (fin(R.ex) && fin(R.exBase)) box.append(h('div', {class: 'nh-chart nh-wonw'}, h('p', {class: 'nh-ck', text: '100만 원어치라면 한 달 뒤 시장보다'}), wonBars(R.ex * 10000, R.exBase * 10000), h('p', {class: 'nh-cap', text: '평균입니다 · 같은 결과가 다시 나온다는 뜻이 아닙니다'})));
+  const deep = []; // 해마다 · 못 넘은 까닭 · 날마다 · 조건을 정한 길 — 그림 더 보기 안(정직 칸 「최근 두 달」은 밖에 그대로)
   const yc = yearsChart(B.record?.years);
-  if (yc) box.append(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '해마다 · 시장보다 5% 넘게 더 오른 비율'}), yc, legend2()));
+  if (yc) deep.push(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '해마다 · 시장보다 5% 넘게 더 오른 비율'}), yc, legend2()));
   if (Number.isInteger(Wy?.miss) && Wy.miss > 0 && Array.isArray(Wy.why) && Wy.why.length === 3) {
     const [w0, w1, w2] = Wy.why, p = v => Math.round((v / Wy.miss) * 100);
-    box.append(h('div', {class: 'nh-chart nh-missw'}, h('p', {class: 'nh-ck', text: '5% 못 넘은 까닭'}),
+    deep.push(h('div', {class: 'nh-chart nh-missw'}, h('p', {class: 'nh-ck', text: '5% 못 넘은 까닭'}),
       h('div', {class: 'nh-miss2'}, donut(Wy), h('ul', {class: 'nh-ml'}, ...[['nh-w1', '업종째 식음', w1], ['nh-w0', '조금 모자람', w0], ['nh-w2', '회사만 처짐', w2]].map(([c, t, v]) => h('li', {class: c}, h('i', {'aria-hidden': 'true'}), h('span', {class: 'nh-mt', text: t}), h('b', {class: 'num nh-mp', text: p(v) + '%'})))))));
   }
   const rc = recent(B), ds = dayStrip(B.cal?.days);
-  if (ds) box.append(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '최근 60거래일 · 날마다 고른 수'}), ds,
+  if (ds) deep.push(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '최근 60거래일 · 날마다 고른 수'}), ds,
     h('ul', {class: 'nh-lg3', 'aria-hidden': 'true'}, h('li', {class: 'nh-l-sh'}, h('i'), h('span', {text: '꽃이 됨'})), h('li', {class: 'nh-l-sm'}, h('i'), h('span', {text: '못 됨'})), h('li', {class: 'nh-l-sw'}, h('i'), h('span', {text: '아직'})))));
   if (rc.P != null && rc.Q != null) box.append(h('div', {class: 'nh-warn' + (rc.P < rc.Q ? ' nh-worse' : '')}, h('p', {class: 'nh-wt', text: rc.P < rc.Q ? '최근 두 달은 모든 회사보다 못했습니다.' : '최근 두 달 기록입니다.'}),
     h('div', {class: 'nh-vs', 'data-num': ''}, h('span', {class: 'nh-vsa'}, h('b', {class: 'num', text: rc.P + '%'}), h('small', {text: '고른 회사'})), h('span', {class: 'nh-vsx', text: '대'}), h('span', {class: 'nh-vsb'}, h('b', {class: 'num', text: rc.Q + '%'}), h('small', {text: '모든 회사'})))));
   const fu = funnel(B.pick);
-  if (fu) box.append(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '고르는 조건은 이렇게 정했습니다'}), fu));
+  if (fu) deep.push(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '고르는 조건은 이렇게 정했습니다'}), fu));
+  if (deep.length) box.append(fold('그림 더 보기 · 해마다 · 못 넘은 까닭 · 조건을 정한 길', ...deep));
   box.append(more(
     h('p', {class: 'nh-how', text: '고르는 조건: 업종은 한 달 내내 강하고, 회사는 막 힘이 붙었고, 회사 값은 반년 가장 높은 값 가까이일 때 고릅니다.'}),
     h('p', {class: 'nh-p', text: '「시장보다 5% 넘게 더 오름」은 고른 날부터 한 달 뒤 값을 시장과 견준 것입니다.'}),
@@ -293,8 +313,8 @@ function flowBars(F) {
 }
 /** 오늘 시장 — app.js 가 만든 띠(data-w=today)와 시황 사실(data-w=news) · 코스닥 석 달 · 사고판 돈 */
 export function mktBox(band, news, H = null) {
-  const kq = H?.idx?.KOSDAQ ? idxCard(H.idx.KOSDAQ, '코스닥') : null, fl = flowBars(H?.flows);
-  return h('section', {class: 'nh-sec nh-mkt', 'aria-label': '오늘 시장'}, h('h2', {class: 'nh-h2', text: '오늘 시장'}), band, kq, news,
+  const kp = H?.idx?.KOSPI ? idxCard(H.idx.KOSPI, '코스피', true) : null, kq = H?.idx?.KOSDAQ ? idxCard(H.idx.KOSDAQ, '코스닥') : null, fl = flowBars(H?.flows);
+  return h('section', {class: 'nh-sec nh-mkt', 'aria-label': '오늘 시장'}, h('h2', {class: 'nh-h2', text: '오늘 시장'}), band, kp, kq, news,
     fl ? h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '코스피 · 누가 더 사고 팔았나'}), fl, h('ul', {class: 'nh-lg3', 'aria-hidden': 'true'}, h('li', {class: 'nh-l-buy'}, h('i'), h('span', {text: '더 산 돈'})), h('li', {class: 'nh-l-sell'}, h('i'), h('span', {text: '더 판 돈'})))) : null);
 }
 
