@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-10-27T16:49:10Z",
+ "at": "2026-10-28T17:21:25Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "79212f48cb0c7ea25e8efe1a1074199603550f30965434d4dfb00ced5a9b8c62",
-   "last": "2026-10-27"
+   "sha256": "261bca40874029f48cebc25cfeee33e7eabd2699f2b0e63ad5978328b15d02dc",
+   "last": "2026-10-28"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 849,
+   "n": 850,
    "first": "2023-04-28",
-   "last": "2026-10-27",
+   "last": "2026-10-28",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "f06766370a48c098f53d999f8bbe0883e0fa740b36c75be71b36aa24df18e247"
+   "sha256": "a041713e4da97a255bde22edda2d4f2fc6d35f9f4b2edbe60babd31c74825c88"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "1d0332d7566887c3050a5a77e13cc4d971495f30dd80062d34bcd5a089c2033e"
+   "sha256": "efd5a5a70837edd9be338cecf56bd4005e0c692e7d8ebc7c3a0b7aaaa4e5c854"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "439e02207f332aa30f08ea99eb254fd388de992ec3c2653214c2028d6c9090bd"
+   "sha256": "68bd24b04da02c7af5349c32a1558e73ef4901248d36bdf76215245691fa0de4"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,24 +80,24 @@
   }
  },
  "k": {
-  "k": 848,
-  "day": "2026-10-27",
+  "k": 849,
+  "day": "2026-10-28",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1695,
-   "outThinQ": 19,
+   "outThin": 1694,
+   "outThinQ": 18,
    "outHalt": 4,
-   "outList": 6,
+   "outList": 7,
    "listQ": 852,
    "afterOut": 852,
-   "g1": 258,
-   "g2": 685,
-   "g3": 53,
-   "g4": 683,
+   "g1": 259,
+   "g2": 681,
+   "g3": 57,
+   "g4": 667,
    "g5": 0,
    "passAll": 0,
    "cutInd": 0,
@@ -321,27 +321,48 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-09-23",
-   "to": "2026-10-27",
-   "n": 1,
-   "counted": 1,
+   "from": "2026-09-28",
+   "to": "2026-10-28",
+   "n": 2,
+   "counted": 2,
    "up": 1,
-   "lo": 4,
-   "hi": 8,
+   "lo": 8,
+   "hi": 15,
    "rows": [
+    {
+     "code": "014530",
+     "name": "극동유화",
+     "lo": 4,
+     "hi": 8,
+     "from": 3380,
+     "to": 3260,
+     "up": 0,
+     "mcCounts": [
+      912,
+      951,
+      1454,
+      957
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
     {
      "code": "150900",
      "name": "파수AI",
      "lo": 4,
-     "hi": 8,
-     "from": 4025,
-     "to": 4245,
+     "hi": 7,
+     "from": 4000,
+     "to": 4530,
      "up": 1,
      "mcCounts": [
-      904,
-      934,
-      1419,
-      986
+      880,
+      948,
+      1365,
+      987
      ],
      "mcEdges": [
       0,
@@ -400,9 +421,9 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1695,
+    1694,
     4,
-    6,
+    7,
     852,
     2557
    ]
@@ -417,16 +438,16 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1695,
-  "outThinQ": 19,
+  "outThin": 1694,
+  "outThinQ": 18,
   "outHalt": 4,
-  "outList": 6,
+  "outList": 7,
   "listQ": 852,
   "afterOut": 852,
-  "g1": 258,
-  "g2": 685,
-  "g3": 53,
-  "g4": 683,
+  "g1": 259,
+  "g2": 681,
+  "g3": 57,
+  "g4": 667,
   "g5": 0,
   "passAll": 0,
   "cutInd": 0,
@@ -436,16 +457,16 @@
   "loss3": 840,
   "why": "lists"
  },
- "compared": 2700,
+ "compared": 2707,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.0,
+  "readBundle": 2.1,
   "build": 2.1,
-  "recount": 0.7,
-  "total": 4.9
+  "recount": 0.8,
+  "total": 5.0
  }
 }
