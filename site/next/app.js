@@ -9,6 +9,7 @@ import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
 import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
 import {homeBlock as themeHome, APP_ICON} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
+import {heroBox, mapBox, recordBox, mktBox, whyBox, footBox} from '/next/home-new.js'; // 새 첫 화면 칸들(사장님 2026-10-28 11:12 「어」 — 처음 보는 사람 눈높이 · docs/design/why-mock-2026-10-28/order-1112.txt)
 import {stoneClock, clockDecoded, miniClock} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
 import {essenceData, essenceLines, fourADay} from '/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 글 틀 · 셈은 essence.js 한 곳(본질 문이 같은 셈으로 맞댐)
 import {jobsOrder, jobsTail, jobsBold, jobsBoldLate} from '/next/jobs-order.js'; // 잡스 차례(사장님 2026-10-27 11:08 「직관적이면서도 중요한것을 전면에」 · 11:39 「어 고쳐 빨리」) — 쪽마다 칸 차례 · 덜 중요한 글 「더 보기」
@@ -57,7 +58,7 @@ function odd(l) {
 }
 
 /* 자료 — 못 받으면 null(화면은 「?」) · 15초 뒤 다시 받아 봄 */
-const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json', themeHome: '/next/data/theme-home.json', themeCo: '/next/data/theme-co.json', themePath: '/next/data/theme-path.json'}; // theme = 테마 쪽 자료 · themeHome = 첫 화면 칸 자료(올릴 때 셈 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
+const FILES = {core: 'core.json', mkt: 'mkt.json', home: 'home.json', surge: 'surge.json', cond: 'cond.json', sum: '/next/data/home-summary.json', theme: '/next/data/theme.json', themeHome: '/next/data/theme-home.json', bloom: '/next/data/theme-bloom.json', themeCo: '/next/data/theme-co.json', themePath: '/next/data/theme-path.json'}; // theme = 테마 쪽 자료 · themeHome = 첫 화면 칸 자료(올릴 때 셈 · 2026-10-19) // sum = 첫 화면 요약(S2c · [9] 7 · 몇 KB) — / 로 시작하면 그 길 그대로
 const D = {}, failAt = {}, inflight = {};
 function need(k) {
   if (D[k] != null) return Promise.resolve(D[k]);
@@ -339,9 +340,9 @@ function homeBand(H, short = false) { // short = 흰 첫 화면 한 줄(날짜 �
   const K = fromSum(H?.idx?.KOSPI, 'KOSPI'), Q = fromSum(H?.idx?.KOSDAQ, 'KOSDAQ'), X0 = K ?? Q, a = h('a', {class: 'hm-band', href: '#/today'}), chev = h('i', {class: 'hm-chev', 'aria-hidden': 'true', text: '›'});
   if (!X0 || !isDay(X0.date)) { a.append(h('span', {class: 'hm-row'}, h('span', {class: 'hm-bd', text: '? 오늘 시장 값을 못 받았어요'}), chev)); return {el: a, day: null}; }
   const w = whenOf(H, 'idx', X0.live), d = String(X0.date).slice(0, 10);
-  const when = short ? (w.now ? `${mdN(d)} ${isTime(w.t) ? w.t.slice(11, 16) : '장 중'}` : mdN(d)) : w.now ? `${mdN(d)} ${ampm(w.t)} 장 중` : w.intra && isTime(w.t) ? `${mdN(w.t.slice(0, 10))} ${ampm(w.t)}까지` : `${mdN(d)} 마감`; // 흰 첫 화면 장 중 = 받은 시각 숫자(글자 수 잣대 밖) — 사장님 2026-10-20 09:45 「응」 첫 화면 글 두 자 줄이기(장 중 두 자 때문에 107 > 105)
+  const when = short ? (w.now ? `${mdN(d)} ${isTime(w.t) ? w.t.slice(11, 16) : ''} 장 중`.replace('  ', ' ') : `${mdN(d)} 종가 기준`) : w.now ? `${mdN(d)} ${ampm(w.t)} 장 중` : w.intra && isTime(w.t) ? `${mdN(w.t.slice(0, 10))} ${ampm(w.t)}까지` : `${mdN(d)} 마감`; // 흰 첫 화면 장 중 = 받은 시각 숫자(글자 수 잣대 밖) — 사장님 2026-10-20 09:45 「응」 첫 화면 글 두 자 줄이기(장 중 두 자 때문에 107 > 105)
   const ixs = [[K, '코스피'], [Q, '코스닥']].filter(([x]) => x).flatMap(([x, nm], i) => [i ? (short ? ' ' : ' · ') : null, h('span', {class: 'hm-ix'}, h('span', {text: nm}), ' ', h('b', {class: 'num ' + cls(x.day), text: p2(x.day)}))]);
-  a.append(h('span', {class: 'hm-row'}, w.stale ? [h('b', {class: 'hm-q', 'aria-hidden': 'true', text: '?'}), ' '] : null, h('span', {class: 'hm-bd', text: when}), chev), h('span', {class: 'hm-ixs'}, ...ixs)); // 날짜 줄 · 숫자 줄(늘 같은 두 줄 · 글 흐름 — 읽어 주기도 「코스피 −3.28% · 코스닥 −4.36%」)
+  a.append(h('span', {class: 'hm-row'}, w.stale && !short ? [h('b', {class: 'hm-q', 'aria-hidden': 'true', text: '?'}), ' '] : null, h('span', {class: 'hm-bd', text: when + (w.stale && short ? ' · 늦게 받은 값' : '')}), chev), h('span', {class: 'hm-ixs'}, ...ixs)); // 날짜 줄 · 숫자 줄(늘 같은 두 줄 · 글 흐름 — 읽어 주기도 「코스피 −3.28% · 코스닥 −4.36%」)
   if (idxOk(K) || idxOk(Q)) { const al = idxAlerts(H); // 큰 날 금빛 「!」 = 띠 안(명령문 [6] 1)
     if (short && al.length) a.append(h('p', {class: 'm4-al', text: '! 크게 움직인 날'})); // 흰 첫 화면 = 짧은 꼴(글자 수 잣대 · 자세한 글은 누르면 #/today)
     else a.append(...al); }
@@ -430,7 +431,7 @@ function myCounts() {
 async function monthLine(C) {
   const cand = (C?.list ?? []).some(r => !r.kept && Number.isFinite(Date.parse(r.at)) && (Date.now() - Date.parse(r.at)) / 864e5 >= 28);
   if (!cand) return null;
-  const el = h('a', {class: 'w-month', href: '#/why'}, h('span', {text: '그날 정한 대로 했어?'}), h('i', {'aria-hidden': 'true', text: '›'}));
+  const el = h('a', {class: 'w-month', href: '#/why'}, h('span', {text: '한 달 전에 정한 대로 했나요?'}), h('i', {'aria-hidden': 'true', text: '›'}));
   const due = mod('why').then(W => W.monthDue()).catch(() => true); // 모듈을 못 받으면 달력 셈대로 둠
   const r = await Promise.race([due, new Promise(f => setTimeout(() => f('late'), 800))]);
   if (r === 'late') { due.then(x => { if (!x) el.remove(); }); return el; }
@@ -448,9 +449,9 @@ function essCard(box, C) {
 let findQ = '';
 const findWarm = () => { Promise.all([need('core'), need('mkt')]).then(() => findReady()).catch(() => {}); };
 function findBox() {
-  const inp = h('input', {type: 'search', class: 'w-in', value: findQ, placeholder: '친구야, 왜 사? 회사 이름', 'aria-label': '친구야, 왜 사? 회사 이름', autocomplete: 'off', enterkeyhint: 'go'});
+  const inp = h('input', {type: 'search', class: 'w-in', value: findQ, placeholder: '사려는 회사 이름으로 찾기', 'aria-label': '사려는 회사 이름으로 찾기', autocomplete: 'off', enterkeyhint: 'go'});
   const hits = h('div', {class: 'w-hits', role: 'list', hidden: true});
-  const go = h('button', {class: 'w-go', type: 'submit', 'aria-label': '열한 질문 시작', text: '시작'}); // 돌 판 — 흰 「시작」 하나(시안 platform3/home)
+  const go = h('button', {class: 'w-go', type: 'submit', 'aria-label': '찾은 회사로 「왜 사?」 시작', text: '찾기'}); // 돌 판 — 흰 「시작」 하나(시안 platform3/home)
   const form = h('form', {class: 'w-find', 'data-w': 'find', role: 'search'}, inp, go, hits);
   let seq = 0, top = null;
   const run = async () => {
@@ -488,7 +489,7 @@ function go4(open) {
 /** 「전부 보기」 — 한 줄에 하나(네모 칸 없음) · 오르는 것(오르는 업종 · 급등)은 여기서만 · 처음 펼 때 오늘 시장 세 줄 · homeRest(요약 파일로) */
 const ALL_ROWS = () => [['#/f/rise', '오르는 업종'], [oldOr('surge', '#/surge'), '급등'], ['#/f/group', '큰 업종'], ['#/f/ind', '업종'], ['#/f/us', '미국'], ['#/f/pick', '고른 곳'], [oldOr('talk', '#/talk'), '오늘의 이야기'], ['#/game', '가짜 돈 연습']]; // 가짜 돈 연습(2026-10-19 15:47 변호사 확인 뒤 공개)
 function allBox(H, band) {
-  const body = h('div', {class: 'w-allin'}), sum = h('summary', {'data-w': 'all', text: '전부 보기'}), d = h('details', {class: 'w-all'}, sum, body);
+  const body = h('div', {class: 'w-allin'}), sum = h('summary', {'data-w': 'all', text: '모든 화면 보기'}), d = h('details', {class: 'w-all'}, sum, body);
   let rowsIn = false, restIn = false;
   /* 두 번에 나눠 채움(2026-10-21 전체 검사 thumb 1/11 ③ 밀림 0.140) — 바로 가기 넷 옆 제자리(맨 아래)에서 펼치면 그 아래 진화 줄 · 맨 아래 줄이 화면 안에 있음
      ① 누름 그 자리: 가벼운 줄 목록만 → 펼친 첫 그림에 줄이 있어 그 아래가 그때 함께 화면 밖으로 밀림(누른 뒤 0.5초 안 = 밀림 셈 밖)
@@ -521,7 +522,7 @@ function newsBox(H) {
   /* 돌 판(2026-10-19 10:31 · 시안 platform3/home) — 사실 두 줄(오른 곳 · 내린 곳)마다 「왜 그럴까?」 · 사이에 가는 막대 한 줄(길이 = 곳 수) */
   const fact = (c, t, n) => {
     const wrap = h('div', {class: 'w-chain', hidden: true}); // 열한 걸음 칸(옛 ul.w-qs 자리 · 누르기 전에는 비어 있음)
-    const b = h('button', {type: 'button', class: 'w-why', 'aria-expanded': 'false', text: '왜 그럴까?'});
+    const b = h('button', {type: 'button', class: 'w-why', 'aria-expanded': 'false', text: '왜 그런지 보기'}); // 물음 단추 → 무엇이 열리는지 말하는 단추(2026-10-28 order-1112 · 옛 「왜 그럴까?」)
     let el = null, busy = false;
     b.addEventListener('click', async () => {
       if (!wrap.hidden) { wrap.hidden = true; b.setAttribute('aria-expanded', 'false'); return; }
@@ -540,7 +541,7 @@ function newsBox(H) {
   };
   const bar = h('div', {class: 's-split', 'aria-hidden': 'true'}), gu = h('i', {class: 'gu'}), gd = h('i', {class: 'gd'});
   if (Number.isFinite(v.up) && Number.isFinite(v.dn) && v.up + v.dn > 0) { gu.style.flexGrow = String(v.up); gd.style.flexGrow = String(v.dn); bar.append(gu, gd); }
-  box.append(fact('up', '오른 곳', v.up), bar, fact('dn', '내린 곳', v.dn));
+  box.append(fact('up', '오른 회사', v.up), bar, fact('dn', '내린 회사', v.dn));
   return box;
 }
 /** 노란 말풍선(share-btn.js 와 같은 모양 · 색은 app.css .kk-ic .kk-b) */
@@ -587,47 +588,26 @@ function quickReturn(el) {
   return el;
 }
 async function vHomeAll() {
-  /* 돌 판 첫 화면(사장님 2026-10-19 10:21 「1번으로 하자 그래서 전체 디자인을 해봐 … 돌이야」 · 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3/home)
-     위에서 아래: 큰 제목 「왜 사?」 + 돌 그림 → 돌이 물음 한 줄 → 읽는 곳 셋(① 본질 ② 지난 기록 = 오늘 장 + 오른 곳 · 내린 곳 ③ 한 달 뒤 물어볼게요) → 진화 한 줄
-     → 엄지 자리(「친구야, 왜 사?」 찾기 칸 + 바로 가기 넷 + 「전부 보기」) → 안전 한 줄 · 표시(data-w · data-ess · data-say · data-fact · data-num · data-path)는 흰 판과 같음 */
+  /* 새 첫 화면(사장님 2026-10-28(서울) 10:55 처음 본 사람의 말 「이게 오빠만의 언어로 해석이 되고 있다」 · 11:12 「어」 — 첫 화면부터 처음 보는 사람 눈높이로 · 11:21 「5배빨리해」)
+     명령문 docs/design/why-mock-2026-10-28/order-1112.txt · 칸은 home-new.js — 위에서 아래:
+     소개(무엇을 하는 곳 · 회사 · 업종 · 기록 햇수 · 권하지 않음) → 업종 점 그림(둘이 물음 data-say · 가로 · 세로 기준 숫자 · 예전 이름 풀이 · 조건 넷)
+     → 조건으로 고른 회사의 지난 기록(비율 둘 · 100만 원 · 틀린 까닭 · 최근 두 달) → 오늘 시장(띠 data-w=today · 시황 사실 data-w=news)
+     → 사기 전에 확인하기(data-w=gdr — 첫 고리 #/why · 다 답한 기기 #/gdr · 본질 문 ④) → 찾기 칸(data-w=find · 아래에 붙음) → 모든 화면 보기(data-w=all) → 공식 안내(본질 세 줄 data-w=ess)
+     뺀 것: 돌 시계 · 화살표 · 계절 이름 · 그림 단추 넷 · 카톡 · 선물 큰 단추 · 멈춤 · 약속 수 · 진화 줄(위 진화 단추는 그대로) — 다단계처럼 보이거나 안쪽에서만 쓰는 말 */
   const H = homeSrc(), band = homeBand(H, true), C = myCounts();
   band.el.setAttribute('data-w', 'today'); band.el.setAttribute('data-num', ''); band.el.classList.add('w-today');
-  const kk = h('button', {class: 'kk-btn w-kk', type: 'button', 'aria-label': NAME + ' 주소를 카톡으로 친구에게 보내기'}, icon('share')); // 이 곳 주소만(종목 · 숫자 · 답 없음) — 휴대폰 보내기 창(카톡이 그 안에)
-  kk.addEventListener('click', () => share(NAME, absUrl('#/')));
-  // 테마 시계(사장님 2026-10-19 16:06 「이 본질이 중심이자 시작」 · 16:54 「이제 aaa7377.com에 올려 … 큰 구조는 건들이지 말고」) — 맨 위 = 테마 시계(p-theme.js homeBlock · 견본 flow36 둘째 장) · 그 아래 읽는 곳 셋 · 엄지 자리 · 진화는 그대로
-  // 2026-10-21 00:51 「확임 했어 이기준에 스마트하게 만들어」(00:49 시안 「지금 봄이 온 곳」) — 큰 제목 · 돌이 물음을 계절 말로(셈 · 칸 차례는 그대로 · 물음은 다시 온 기기 첫 화면 글자 105자 아래에 맞게 짧게 — check_white ②)
-  // 돌 시계 판 ①(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 큰 제목 「업종 n곳은 지금」(그림 c1) · 자료를 못 받으면 예전 제목 그대로
-  const TH0 = await need('themeHome').catch(() => null), cnt0 = TH0?.count, nInd = cnt0 ? ['S', 'B', 'Q', 'W'].reduce((p, z) => p + (Number.isFinite(cnt0[z]) ? cnt0[z] : 0), 0) : 0;
-  const hd = h('div', {class: 's-hd'}, h('h1', {class: 's-h1', text: nInd > 0 ? `업종 ${num(nInd)}곳은 지금` : '지금 봄이 온 곳'})); // 그림의 「10월 13일 기록」 줄은 넣지 않음 — 보이는 날짜는 오늘 장 띠에 한 번([6] 2) · 다시 온 기기 첫 화면 글자 105자 안(check_white ②)
-  // 돌 시계는 큰 제목 옆이 아니라 돌이 물음 아래 가운데 크게(사장님 2026-10-25 22:26 「돌시계을 중심으로 디자인 해야해」 · 22:52 「세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」 — 고르신 판 best ①) · 그 아래 네 칸(theme-home.js zoneCells)
-  const clock = h('div', {class: 's-clk'}, stoneClock()); // 같은 그림을 index.html 여는 화면이 먼저 받음 · 아래 return 앞에서 풀림을 기다림(clockDecoded)
-  if (!nInd) { const t = hd.firstChild, go = () => import('/next/home-title.js').then(m => m.rotateTitle(t)).catch(() => {}); // 자료를 못 받았을 때만 예전 큰 제목 돌리기(2026-10-21 23:55 「어 섹시하게」) — 돌 시계 판 제목은 한 줄 그대로
-    const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(go, {timeout: 2500}) : setTimeout(go, 600));
-    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, {once: true}); }
-  const say = h('div', {class: 'w-say'}, h('p', {}, h('span', {class: 's-who', text: NAME}), h('span', {'data-say': '', text: '어느 계절일까?'})), kk);
-  const theme = await themeHome().catch(() => h('p', {class: 'empty', text: '? 테마 시계를 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})); // 자료(need theme)는 vHome 이 home · 요약과 같이 받음
-  const ch = (n, ...xs) => h('li', {class: 's-ch'}, h('span', {class: 's-no', 'aria-hidden': 'true', text: String(n)}), ...xs);
+  const late = ms => new Promise(f => setTimeout(() => f(null), ms));
+  const [TH, B] = await Promise.all([need('themeHome').catch(() => null), Promise.race([need('bloom').catch(() => null), late(2000)])]); // 지난 기록(8KB 남짓 · index.html 이 미리 받음) — 늦으면 「?」 줄
+  const S = sumOk(), coN = Number.isInteger(S?.coN) && S.coN > 0 ? S.coN : Number.isInteger(B?.companies) && B.companies > 0 ? B.companies : null;
+  const sp = B?.span, yrs = sp?.from && sp?.to ? Math.max(1, Math.round((Date.parse(sp.to) - Date.parse(sp.from)) / (365.25 * 864e5))) : null;
   const month = await monthLine(C);
-  const ess = essCard(essenceBox(false), C); // 멈춤 · 약속 수(w-cnt)는 ③ 줄로 옮김(한 화면에 들게)
-  const story = h('ol', {class: 's-story'},
-    ch(1, ess),
-    ch(2, h('p', {class: 's-lbl'}, h('span', {class: 't', text: '지난 기록'})), band.el, newsBox(H)),
-    ch(3, month ?? h('a', {class: 's-ghost', href: '#/why'}, h('span', {text: '한 달 뒤 물어볼게요'})), h('div', {class: 's-mem'}, ess.querySelector('.w-cnt'), h('span', {class: 's-dev', text: '이 기기에만'}))));
-  // 엄지 자리(사장님 2026-10-21 02:11 「친구야  왜? 사 이창 있잖아 너무 불편해 구글과 잡스라면 어떻게 개선할거야」 · 02:29 「어」) —
-  //   붙어 있는 것은 「친구야, 왜 사?」 한 줄만(잡스 · 하나만) · 바로 가기 넷 · 전부 보기는 화면 안 제자리(붙지 않음)
-  //   아래로 읽을 때는 그 한 줄도 숨고, 조금 위로 밀면 다시 나옴(구글 · 닐슨 노먼 그룹 2021 「다시 나오는 칸」) — quickReturn
-  const short = h('div', {class: 's-short'}, go4((C?.stop ?? 0) > 0), allBox(H, band));
+  const watched = (() => { try { const x = JSON.parse(localStorage.getItem('dori:watch-ind') ?? '[]'); return Array.isArray(x) && x.length > 0; } catch { return false; } })(); // 관심 업종을 담은 기기만 소식 칸(theme-watch.js · 옛 테마 칸과 같은 셈 — 「자리가 바뀌면 첫 화면에서 알려요」 약속)
+  const news = watched && TH ? await import('/next/theme-watch.js').then(m => m.noticeBox(TH)).catch(() => null) : null;
+  const ess = essenceBox(false); ess.classList.add('w-ess'); ess.setAttribute('data-w', 'ess'); // 본질 세 줄 그대로(essence.js · 본질 문 ②) — 맨 아래 공식 안내 칸 안
   const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
-  // 돌 시계 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 어젯밤 22:03 돌 시계 판 ①) — 돌 시계를 네 칸 한가운데(위 싹 · 꽃 / 시계 / 아래 잠잠 · 시듦 · 시계 방향 화살 넷)
-  //   그 아래 그림 단추 넷(꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터) — 그 밑은 예전 그대로(본질 · 지난 기록 · 찾기 칸 · 바로 가기 · 진화)
-  const zn = theme.querySelector?.('.th-zones'); if (zn) { zn.append(clock); zn.after(homeApps()); } // 그림 단추는 고리 바로 아래(테마 시계 칸 안 · 첫 화면 글자는 테마 칸 200자 셈)
-  // 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 본보기 180가지 → 셋 → 보완한 하나) — 본질 세 줄(전 ① 왜 사? ② 지난 기록 · 결 ③ 한 달 뒤)을
-  //   승(고른 싹이 꽃이 됐을까? · 싹 자리 모두 보기) 바로 뒤로 — 힘이 붙은 곳 · 싹 달력 · 카톡 · 선물 · 숫자 · 읽는 법 · 인사는 그 뒤(theme-home.js homeBlock 차례) · 칸이 없으면 예전 자리
-  const seung = theme.querySelector?.('a.th-more') ?? theme.querySelector?.('a.th-pkhome') ?? null;
-  if (seung) seung.after(story);
-  const nodes = [hd, say, ...(zn ? [] : [clock]), theme, ...(seung ? [] : [story]), thumb, short, evoLine()];
-  await clockDecoded(clock, 300); // 돌 시계 그림이 풀린 뒤 한 번에 그림(길어야 0.3초 — 늦게 툭 나타남 0) // 차례 그대로(찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화 — next_check 첫 화면 차례) // 안전 글은 본질 세 줄(① 둘째 · 셋째 줄)에 있음 — 같은 말을 두 번 쓰지 않음(글자 수 잣대)
-  return {title: '오늘 장', nodes};
+  const nodes = [heroBox({coN, indN: TH?.inds?.length || null, years: Number.isFinite(yrs) ? yrs : null, kospi: H?.idx?.KOSPI ?? null}), mapBox(TH, news), recordBox(B), mktBox(band.el, newsBox(H), H), // 그림 많이(12:09 「글보다는 주식 도식화로 … 대범하게」) — 코스피 · 코스닥 석 달 · 사고판 돈은 home.json
+    whyBox({done: (C?.stop ?? 0) > 0, month}), thumb, h('div', {class: 's-short nh-short'}, allBox(H, band)), footBox(ess)];
+  return {title: '첫 화면', nodes};
 }
 
 /** 첫 화면 그림 단추 넷(돌 시계 판 · 2026-10-26) — 꽃 될 회사(오늘 고른 회사 수 · 첫 그림 뒤에 채움) · 회사 찾기 · 싹 달력 · 고객센터 */
@@ -1302,7 +1282,7 @@ function whiteFor(k) {
   document.documentElement.classList.add('clock'); // 돌 시계 청록 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」) — 흰 판 자리 규칙 위에 색만(site/next/clock.css)
   document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
   document.documentElement.classList.toggle('pg-why', k === 'why'); // 「왜 사?」 쪽은 밝은 앱 판(사장님 2026-10-28 02:01 「변경 안돼잖아 과감하게 해」 · 그림 일곱 장 · p-why.css html.pg-why)
-  $('meta[name="theme-color"]')?.setAttribute('content', '#152D30'); // 청록 판 창 위 띠(2026-10-26) — 옛 흰 판 #FFFFFF // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
+  $('meta[name="theme-color"]')?.setAttribute('content', k === '' ? '#3D1028' : '#152D30'); // 첫 화면 = 최고급 핑크 판의 포도주 빛 막대(2026-10-28 12:00) // 청록 판 창 위 띠(2026-10-26) — 옛 흰 판 #FFFFFF // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
 }
 whiteFor(parse(location.hash || '#/').k);
 /** 글꼴 표 — 첫 화면을 그린 다음 그림 때에 한 번 붙임(그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap) */
@@ -1349,7 +1329,7 @@ const scrollMem = new Map();
 let KKM = null, kkStop = () => {};
 const afterLoad = fn => { const go = () => (window.requestIdleCallback ? requestIdleCallback(fn, {timeout: 3000}) : setTimeout(fn, 800)); if (document.readyState === 'complete') go(); else addEventListener('load', go, {once: true}); };
 const kkMod = () => (KKM ??= import('/next/kk-all.js').catch(e => { console.error(e); KKM = null; return null; }));
-const kkMode = k => (k === 's' ? null : k === '' ? {page: false, boxes: true} : k === 'why' ? {page: 'end', boxes: false} : {page: 'end', boxes: true}); // 쪽 「카톡 보내기 · 선물 받기」 줄은 모든 쪽 맨 아래 = 결(사장님 2026-10-27 01:50 「중요순으로 해서 기승전결」 · 02:15 「첫호면부터 전체」 — 옛 제목 밑 'top') // 보유종목 · 진화 · 업데이트도 쪽 단추는 맨 아래(편지 · 첫 카드 그림 · 「요즘 바뀐 것」이 제목 바로 밑 한 화면 안 — check_hold · check_jinhwa · check_misc)
+const kkMode = k => (k === 's' || k === '' ? null : k === 'why' ? {page: 'end', boxes: false} : {page: 'end', boxes: true}); // 쪽 「카톡 보내기 · 선물 받기」 줄은 모든 쪽 맨 아래 = 결(사장님 2026-10-27 01:50 「중요순으로 해서 기승전결」 · 02:15 「첫호면부터 전체」 — 옛 제목 밑 'top') // 보유종목 · 진화 · 업데이트도 쪽 단추는 맨 아래(편지 · 첫 카드 그림 · 「요즘 바뀐 것」이 제목 바로 밑 한 화면 안 — check_hold · check_jinhwa · check_misc)
 function parse(hash) {
   const m = /^#\/([a-z0-9]*)\/?(.*)$/.exec(hash || '#/'); if (!m) return {k: null};
   let a = m[2] ?? ''; try { a = decodeURIComponent(a); } catch { return {k: m[1], a: null, raw: m[2] ?? ''}; }
@@ -1378,7 +1358,7 @@ async function route(force) {
   if (k === 'jinhwa') jhBtn.setAttribute('aria-current', 'page');
   if (k === 'gift') giftBtn.setAttribute('aria-current', 'page');
   { const dk = k === 'why' ? 'why' : k === 't' && /^picks(\/|$)/.test(a ?? '') ? 'bloom' : k === 't' && /^pick(\/|$)/.test(a ?? '') ? 'rec' : DOCK[k]; if (dk) $('.tabs a[data-tab="' + dk + '"]')?.setAttribute('aria-current', 'page'); } // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) — 꽃 될 회사(승) · 지난 기록(승) · 왜 사?(전 · 한 달 뒤 포함) · 돌이(결) · 시황 · 관심 · 보유종목은 돌이 단추 안
-  root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'}));
+  if (!(k === '' && root.querySelector(':scope > .nh-bootw'))) root.replaceChildren(h('p', {class: 'boot', text: '여는 중이에요…'})); // 첫 화면 처음 열 때는 여는 동안 소개 칸(boot-home.js)을 그대로 둠 — 다 그리면 같은 자리 · 같은 크기로 바뀜(밀림 0)
   let out;
   try { out = await view(a); }
   catch (e) { console.error(e); out = {title: '?', nodes: [h('p', {class: 'empty', text: '? 화면을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'})]}; }

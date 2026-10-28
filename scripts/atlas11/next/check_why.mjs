@@ -518,7 +518,7 @@ function checkStart(s, T, {page = true, st = null} = {}) {
   if (sp(s.h) !== sp(START_H) || s.em !== '지금은') fail('시작 큰 제목 두 줄(「지금은」만 강조)', `${T} 「${s.h}」 「${s.em}」`);
   if (sp(s.sub) !== sp(START_SUB)) fail('시작 풀이 두 줄', `${T} 「${s.sub}」`);
   if (!eq(s.hl, START_HL)) fail('시작 세 줄', `${T} ${JSON.stringify(s.hl)}`);
-  if (!s.scene || s.sceneImg !== '/media/makbi-hello.svg') fail('시작 장면 그림(aria-hidden · 둘이 그림)', `${T} ${s.scene} ${s.sceneImg}`);
+  if (!s.scene || s.sceneImg !== '/media/makbi-hello.svg') fail('시작 장면 그림(aria-hidden · ' + NEW_NAME + ' 그림)', `${T} ${s.scene} ${s.sceneImg}`);
   if (s.go !== '시작하기 ›' || s.time !== START_TIME) fail('「시작하기 ›」 · 「' + START_TIME + '」', `${T} 「${s.go}」 「${s.time}」`);
   if (page ? !(s.up?.tag === 'A' && s.up.href === '#/' && s.up.label === '첫 화면으로') : !!s.up) fail('시작 ← 「첫 화면으로」(매매일지 쪽만)', `${T} ${JSON.stringify(s.up)}`);
   if (s.find || s.stk || s.opts) fail('시작 화면에 종목 찾기 칸 · 종목 줄 · 답이 남음(order-1011 6)', `${T} 찾기 ${s.find} · 종목 줄 ${s.stk} · 답 ${s.opts}`);

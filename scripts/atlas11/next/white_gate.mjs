@@ -62,7 +62,7 @@ export function ruinIn(css, {onlyWhite = false} = {}) {
 export function whiteGate({dist = path.join(ROOT, 'site'), root = ROOT} = {}) {
   if (!whiteOn(root)) return {on: false, ok: true, lines: [`흰 첫 화면 문 꺼짐 — 저장소에 ${HOME_CSS} 가 아직 없음(새 첫 화면이 들어오면 저절로 켜짐)`]};
   const bad = [], rd = f => { try { return fs.readFileSync(path.join(dist, f), 'utf8'); } catch { return null; } };
-  const home = rd('next/home.css'), app = rd('next/app.css'), html = rd('next/index.html'), js = rd('next/app.js');
+  const home = rd('next/home.css'), app = rd('next/app.css'), html = rd('next/index.html'), js = rd('next/app.js'), jsNew = rd('next/home-new.js') ?? ''; // jsNew = 새 첫 화면 칸들(2026-10-28 order-1112 — 둘이 물음 data-say 는 그 파일)
   if (home == null) bad.push('㉠ 올리는 폴더에 next/home.css 가 없음 — 새 첫 화면이 묶음에서 빠짐');
   if (html == null) bad.push('㉠ next/index.html 이 없음');
   else if (!/home\.css/.test(html)) bad.push('㉠ next/index.html 이 home.css 를 부르지 않음');
@@ -81,7 +81,7 @@ export function whiteGate({dist = path.join(ROOT, 'site'), root = ROOT} = {}) {
   else {
     if (!/jhBtn/.test(js)) bad.push('㉣ 진화 단추(jhBtn)가 없음');
     if (!/data-ess/.test(js)) bad.push('㉣ 본질 세 줄(data-ess)이 없음');
-    for (const [k, why] of [['data-w', '첫 화면 칸 표시'], ['data-say', '골똘이 말 표시'], ['data-fact', '시황 사실 표시'], ['white', '흰 판 붙이기']]) if (!js.includes(k)) bad.push(`㉤ app.js 에 ${why}(${k})가 없음`);
+    for (const [k, why] of [['data-w', '첫 화면 칸 표시'], ['data-say', '골똘이 말 표시'], ['data-fact', '시황 사실 표시'], ['white', '흰 판 붙이기']]) if (!(js + '\n' + jsNew).includes(k)) bad.push(`㉤ app.js · home-new.js 에 ${why}(${k})가 없음`);
     if (/serviceWorker/.test(js)) bad.push('㉥ app.js 가 서비스 워커를 붙임 — 폰에 옛 화면이 남을 수 있음');
   }
   const hdr = rd('_headers'); // 묶은 폴더(dist)에만 있음 — 소스 폴더(site)로 볼 때는 건너뜀

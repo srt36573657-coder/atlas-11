@@ -16,7 +16,7 @@ const NEXT = String(env.LIVE_PATH || '/').replace(/^\/*/, '/').replace(/\/*$/, '
 const OUT = env.OUT_DIR || 'reports/atlas11/probe/live-phone';
 const DEADLINE = T0 + Math.max(60, Number(env.PHONE_BUDGET_S) || 840) * 1000; // 바깥 timeout(900초)보다 먼저 끝내고 적음
 const SHOT_CAP = Math.max(500, Number(env.PHONE_SHOT_KB) || 6000) * 1024; // 사진 합이 넘으면 다음 사진부터 화면 점 하나 = 1px(scale css)
-const MIN_TEXT = 16.95, MIN_TAP = 43.5, CHAIN_MAX = 19, STAMP = T0.toString(36);
+const MIN_TEXT = 16.95, MIN_TAP = 43.5, CHAIN_MAX = 19, STAMP = T0.toString(36), HOME_NEXT = '#/t/how'; // HOME_NEXT = 테마 흐름에서 첫 화면 다음 쪽(새 첫 화면에는 「다음」 단추가 없어 주소로 — 2026-10-28 order-1112)
 const DEVICES = [['iPhone SE', 'webkit'], ['iPhone 13', 'webkit'], ['Galaxy S9+', 'chromium'], ['Pixel 7', 'chromium']];
 
 const line1 = e => (String(e?.message ?? e).split('\n').find(l => l.trim()) ?? '').trim().slice(0, 240);
@@ -68,6 +68,7 @@ function measure({minText, minTap, vpw}) {
   // 첫 화면 그림 단추 넷(꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터)이 찾기 줄 위 한 화면 안인가(사장님 2026-10-27 00:17 「… 첫 화면에 한번에 보일 수 있는 글씨 크기로 줄여주고」) — 첫 화면에만 있음 · 다른 쪽은 null
   { const lab = view ? [...view.querySelectorAll('.s-apps .s-apl')].map(e => e.getBoundingClientRect().bottom) : [], th = view?.querySelector('.s-thumb'), tabs = document.querySelector('.tabs');
     const room = th && th.getBoundingClientRect().height > 0 ? th.getBoundingClientRect().top : (tabs ? tabs.getBoundingClientRect().top : window.innerHeight);
+    { const hr = view?.querySelector('section.nh-hero'); out.hero = hr ? {bottom: Math.round(hr.getBoundingClientRect().bottom), room: Math.round(room), vh: window.innerHeight, fit: hr.getBoundingClientRect().bottom <= room + 0.5} : null; } // 새 첫 화면 소개 칸(2026-10-28 order-1112)이 찾기 줄 위 한 화면 안
     out.fold = lab.length ? {apps: Math.round(Math.max(...lab)), room: Math.round(room), vh: window.innerHeight, fit: Math.max(...lab) <= room + 0.5, clock: (() => { const c = view.querySelector('.th-zones .s-art'); if (!c) return null; const r = c.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; })()} : null; }
   if (out.over) { // 옆으로 튀어나온 칸 — 부모는 안 튀어나온 바깥 칸만(뿌리) · 가로로 넘기는 줄(overflow-x) 안은 뺌
     const sticks = e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.right > ref + 1; };
@@ -172,7 +173,7 @@ async function runDevice(name, engine, end) {
         if (!(await waitView(page, 30000))) err('boot', '#view .boot still shown after 30s');
         await settle(page, 6000);
         const m = await page.evaluate(measure, {minText: MIN_TEXT, minTap: MIN_TAP, vpw: prof.viewport?.width});
-        Object.assign(row, {title: m.title, next: m.next, scrollWidth: m.sw, innerWidth: m.vw, small: m.smallN, tap: m.tapN, ...(m.fold ? {fold: m.fold} : {})});
+        Object.assign(row, {title: m.title, next: m.next, scrollWidth: m.sw, innerWidth: m.vw, small: m.smallN, tap: m.tapN, ...(m.fold ? {fold: m.fold} : {}), ...(m.hero ? {hero: m.hero} : {})});
         if (norm(m.hash) !== norm(hash)) { row.landed = show(m.hash); err('route', `landed on ${show(m.hash)}`); }
         if (m.over) D.overflow.push({route: cur, scrollWidth: m.sw, innerWidth: m.vw, clientWidth: m.cw, who: m.who});
         for (const s of m.small) group(G.small, s.sel + '|' + s.px, {sel: s.sel, px: s.px, text: s.text}, cur, s.n);
@@ -189,9 +190,10 @@ async function runDevice(name, engine, end) {
       row.ms = Date.now() - t; D.routes.push(row);
     }
 
-    /* 1b) 첫 화면 누르기(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 손가락으로: 시계 번호 ① · 싹 칸 · 주황 숫자 칸 셋 → 주소가 그 쪽으로(「진짜 싹 n곳」 머리는 2026-10-22 총정리에서 없어져 뺌) */
+    /* 1b) 첫 화면 누르기(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 손가락으로 누르면 주소가 그 쪽으로 · 다 그려지고 머리 글이 있음
+       2026-10-28 새 첫 화면(사장님 11:12 「어」 · docs/design/why-mock-2026-10-28/order-1112.txt): 옛 시계 번호 · 싹 칸 · 주황 숫자 칸은 빠짐 → 업종 모두 보기 · 날짜별 기록 · 오늘 조건에 맞은 회사 · 「왜 사?」 시작하기 */
     D.taps = [];
-    for (const [name, sel, want] of [['clock-1', 'section.th-home svg.th-clock a.th-tapn', TOP ? '#/t/i/' + TOP : null], ['clock-sprout', 'section.th-home svg.th-clock a.th-tapz', '#/t/sprout'], ['box-real', 'section.th-home .th-three a >> nth=0', '#/t/sprout/real'], ['box-new', 'section.th-home .th-three a >> nth=1', '#/t/sprout/new'], ['box-all', 'section.th-home .th-three a >> nth=2', '#/t/sprout']]) {
+    for (const [name, sel, want] of [['map-all', 'section.nh-map a.nh-link', '#/f/ind'], ['rec-log', 'section.nh-rec a.nh-link >> nth=0', '#/t/pick'], ['rec-today', 'section.nh-rec a.nh-link >> nth=1', '#/t/picks'], ['why-go', 'section.nh-why a.nh-go', '#/why']]) {
       if (Date.now() > end) break;
       const T = {name, want}; D.taps.push(T); cur = 'tap ' + name;
       try {
@@ -259,11 +261,17 @@ async function runDevice(name, engine, end) {
       if (Date.now() > end) { C.cut = 'time'; break; }
       const from = norm(await page.evaluate(() => location.hash || '#/'));
       cur = 'chain ' + from;
-      const loc = (from === '#/' ? page.locator('section.th-home a.th-next') : page.locator('a.th-next')).last();
+      const loc = page.locator('#view a.th-next').last();
       const step = {k: s, from};
       C.steps.push(step);
       await loc.waitFor({state: 'attached', timeout: 5000}).catch(() => {});
-      if (!(await loc.count())) { step.ok = false; step.why = from === '#/' ? 'no section.th-home a.th-next' : 'no a.th-next'; break; }
+      if (!(await loc.count()) && from === '#/') { // 2026-10-28 새 첫 화면(order-1112)에는 「다음」 단추가 없음 — 테마 흐름은 첫 화면 다음 쪽(HOME_NEXT)을 주소로 이어 엶(나머지 사슬은 그대로 손가락으로 잼)
+        step.via = 'address'; step.href = HOME_NEXT;
+        await page.goto(urlOf(HOME_NEXT, 'chain-home'), {waitUntil: 'domcontentloaded', timeout: 45000});
+        if (!(await waitView(page, 30000))) { step.ok = false; step.why = HOME_NEXT + ' not drawn'; break; }
+        step.ok = true; step.to = HOME_NEXT; await settle(page, 0); continue;
+      }
+      if (!(await loc.count())) { step.ok = false; step.why = 'no a.th-next'; break; }
       const href = await loc.getAttribute('href'); step.href = show(href ?? '');
       await page.evaluate(() => { for (const c of document.querySelector('#view')?.children ?? []) c.setAttribute('data-probe-old', '1'); }); // 앞 화면 표시(새 화면이 그려졌는지 가림)
       const t = Date.now();

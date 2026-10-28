@@ -16,8 +16,8 @@ test('검사 파일이 있고 잣대를 품음', () => {
   const s = read(CHECK);
   for (const k of ['ess', 'find', 'today', 'gdr', 'all']) assert.match(s, new RegExp(`'${k}'`), `칸 ${k}`);
   for (const c of ['#080808', '#FFFFFF']) assert.ok(s.includes(c), `색 ${c}`); // 돌 판(2026-10-19 10:31) 바탕 · 글
-  for (const w of ['390', '844', '320', '568', '47.5', '16.95', '2500', '200', '0.1', '4.5', '0.6', '0.9']) assert.ok(s.includes(w), `숫자 ${w}`);
-  for (const w of ['꽃 될 회사', '왜 사?', '지난 기록', '돌이', 'jhBtn', 'data-ess', '#/why', 'data-say', 'data-fact', '왜 그럴까\\?', '그날 정한 대로 했어\\?', 'q1', '급등', '그림자', '입체', '작은 빨간 점'])
+  for (const w of ['390', '844', '320', '568', '47.5', '16.95', '2500', '200', '0.1', '4.5', '0.9']) assert.ok(s.includes(w), `숫자 ${w}`); // 0.6(다시 온 기기 60%)은 뺌 — 새 첫 화면은 첫 한 화면 글만 · 두 기기 같은 90%(사장님 2026-10-28 11:12 「어」 · docs/design/why-mock-2026-10-28/order-1112.txt)
+  for (const w of ['꽃 될 회사', '왜 사?', '지난 기록', '돌이', 'jhBtn', 'data-ess', '#/why', 'data-say', 'data-fact', '왜 그런지 보기', '한 달 전에 정한 대로 했나요\\?', 'nh-hero', 'q1', '급등', '그림자', '입체', '작은 빨간 점']) // 시황 단추 · 한 달 된 기록 줄은 공식 안내 말투(2026-10-28 order-1112 — 옛 「왜 그럴까?」 · 「그날 정한 대로 했어?」) · 맨 위 소개 칸 nh-hero
     assert.ok(s.includes(w), `잣대 ${w}`);
   assert.match(s, /latency: 150/); assert.match(s, /rate: 4/);
 });

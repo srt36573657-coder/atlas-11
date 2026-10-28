@@ -212,25 +212,29 @@ for (const w of [320, 360, 390]) {
      옛 잣대 → 새 자리: 칩 줄 「달력」 「조건 찾기」 → 바로 가기 · 이야기 입구 → 전부 보기 줄 · 질문 칸(section.wy) → 찾기 칸(회사를 치면 #/why/<번호>) · 칸 자리(section.gdr) → 바로 가기 + #/gdr · 칩 줄 끝 흐림(마스크) → 칩 줄이 없어 뺌 */
   /* 돌 판 첫 화면(사장님 2026-10-19 10:31 「이제 실제로 만들어 이기준으로」 · 시안 platform3/home · 규칙 82) — 큰 제목 + 돌 그림 → 돌이 물음 → 읽는 곳 셋(① 본질 카드 ② 오늘 장 한 줄 + 시황 사실 ③ 한 달 된 기록 금빛 줄 또는 「한 달 뒤 물어볼게요」)
      → 엄지 자리(찾기 칸 · 바로 가기 넷 · 전부 보기) → 진화 한 줄 · 차례는 #view 안 칸을 문서 차례로 셈(칸이 읽는 곳 · 엄지 자리 안에 듦) · 안전 글은 본질 세 줄 안 */
-  const HOME_ORDER = ['div.s-hd', 'div.w-say', 'section.th-home', 'section.ess', 'a.hm-band', 'section.w-news', 'a.w-month', 'a.s-ghost', 'form.w-find', 'nav.w-go4', 'details.w-all', 'a.s-evo'];
+  /* 새 첫 화면(사장님 2026-10-28(서울) 11:12 「어」 — 첫 화면부터 처음 보는 사람 눈높이로 · docs/design/why-mock-2026-10-28/order-1112.txt · 칸은 site/next/home-new.js)
+     소개(section.nh-hero) → 업종 점 그림(section.nh-map · 그림 날짜 하나) → 조건으로 고른 회사 지난 기록(section.nh-rec) → 오늘 시장(a.hm-band → section.w-news)
+     → 사기 전에 확인하기(section.nh-why = [data-w="gdr"] · 첫 고리 질문 전 #/why · 질문 뒤 #/gdr — 본질 문 ④ 그대로 · 한 달 된 기록이면 그 안 a.w-month) → 찾기 칸(form.w-find) → 모든 화면 보기(details.w-all) → 안내 칸 안 본질 세 줄(section.ess)
+     뺀 것: 큰 제목 s-hd · 둘이 물음 줄 w-say(물음은 업종 칸 제목 data-say) · 테마 시계 th-home · 바로 가기 넷 nav.w-go4(그 몫 = [data-w="gdr"]) · 진화 줄 s-evo · 「한 달 뒤 물어볼게요」 s-ghost */
+  const HOME_ORDER = ['section.nh-hero', 'section.nh-map', 'section.nh-rec', 'a.hm-band', 'section.w-news', 'section.nh-why', 'a.w-month', 'form.w-find', 'details.w-all', 'section.ess'];
   const ALL_WANT = ['#/f/rise', oldOr('surge', '#/surge'), '#/f/group', '#/f/ind', '#/f/us', '#/f/pick', oldOr('talk', '#/talk'), '#/game']; // 「전부 보기」 줄(app.js ALL_ROWS 와 따로 적음 — 사장님 [화면] 7 · brief-build 7)
   const g = await q.evaluate(ord => {
     const kids = [...document.querySelectorAll('#view *')].filter(e => ord.some(s => e.matches(s)) && !e.closest('.w-allin')), gd = document.querySelector('#view section.gdr');
-    const band = document.querySelector('#view a.hm-band.w-today'), more = document.querySelector('#view details.w-all'), go4 = document.querySelector('#view nav.w-go4'), fi = document.querySelector('#view form.w-find input');
+    const band = document.querySelector('#view a.hm-band.w-today'), more = document.querySelector('#view details.w-all'), go4 = document.querySelector('#view [data-w="gdr"]'), fi = document.querySelector('#view form.w-find input'); // go4 = 둘이 칸 바로 가기 자리(2026-10-28 — 옛 nav.w-go4 · 이제 사기 전에 확인하기 칸)
     return {order: kids.map(e => ord.find(s => e.matches(s)) ?? e.tagName.toLowerCase() + '.' + e.className), blocks: [...document.querySelectorAll('#view [data-w]')].map(e => e.getAttribute('data-w')),
       today: document.querySelectorAll('#view .today, #view .today-d, #view .ptoday, #view .ptoday-home').length, surgeCards: [...document.querySelectorAll('#view a.card')].filter(a => /급등/.test(a.textContent)).length,
       al: [...document.querySelectorAll('#view .m4-al')].map(e => ({t: e.textContent, inBand: !!e.closest('a.hm-band')})), top: document.querySelectorAll('#view .m4-top').length,
       band: band ? {href: band.getAttribute('href'), t: band.innerText.replace(/ /g, ' ')} : null, moreOpen: !!more?.open,
-      dates: (() => { const sp = t => t.replace(/\u00a0/g, ' '), all = sp(document.querySelector('#view')?.innerText ?? '').match(/\d{1,2}월 \d{1,2}일/g) || [], es = sp(document.querySelector('#view section.ess')?.innerText ?? '').match(/\d{1,2}월 \d{1,2}일/g) || []; for (const d of es) { const j = all.indexOf(d); if (j >= 0) all.splice(j, 1); } return all; })(), // 돌 판 — 본질 칸이 읽는 곳 안에 들어 #view 글에서 본질 칸 날짜만 뺌(닫힌 「전부 보기」 안 글은 innerText 에 없음)
+      dates: (() => { const sp = t => t.replace(/\u00a0/g, ' '), all = sp(document.querySelector('#view')?.innerText ?? '').match(/\d{1,2}월 \d{1,2}일/g) || [], es = [...document.querySelectorAll('#view section.ess, #view section.nh-map')].flatMap(e => sp(e.innerText ?? '').match(/\d{1,2}월 \d{1,2}일/g) || []); for (const d of es) { const j = all.indexOf(d); if (j >= 0) all.splice(j, 1); } return all; })(), // 2026-10-28 — 업종 점 그림의 「○월 ○일 종가 기준」(그림 자료 날짜)도 본질 칸처럼 뺌 · 띠 날짜는 그대로 한 번 // 돌 판 — 본질 칸이 읽는 곳 안에 들어 #view 글에서 본질 칸 날짜만 뺌(닫힌 「전부 보기」 안 글은 innerText 에 없음)
       ess: (() => { const s = document.querySelector('#view section.ess'), d = s?.querySelector('details'); return s ? {open: !!d?.open, lines: [...s.querySelectorAll('[data-ess]')].map(e => e.textContent), shown: [...s.querySelectorAll('[data-ess]')].map(e => e.checkVisibility()),
         dates: (d?.innerText ?? s.innerText).match(/\d{1,2}월\s\d{1,2}일/g) || [], v: s.querySelector('a.ess-v')?.textContent ?? null} : null; })(), // 본질 세 줄(2026-10-18 16:39 [5] · 일꾼 KC)
-      go4: go4 ? [...go4.querySelectorAll('a')].map(a => a.getAttribute('href')) : [], letter: document.querySelectorAll('#view .m4-letter, #view .hpi').length,
+      go4: go4 ? [...go4.querySelectorAll('a[href]')].map(a => a.getAttribute('href')) : [], letter: document.querySelectorAll('#view .m4-letter, #view .hpi').length,
       findTop: fi ? Math.round(fi.getBoundingClientRect().top + scrollY) : null, findPh: fi?.getAttribute('placeholder') ?? null, vh: innerHeight, wy: document.querySelectorAll('#view section.wy').length,
       gdrBox: !!gd, gdrLinks: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')).filter(x => /^#\/gdr(\/|$)/.test(x ?? '')),
       tk: document.querySelectorAll('#view > a.tk-entry, #view > .chips').length};
   }, HOME_ORDER);
-  const ordWant = HOME_ORDER.filter(s => !['a.w-month', 'a.s-ghost'].includes(s) || g.order.includes(s)); // 한 달 된 기록 줄이나 「한 달 뒤」 줄 가운데 하나
-  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(돌 판 — 큰 제목 → 둘이 물음 → 테마 시계 → 본질 카드 → 오늘 장 → 시황 사실 → 한 달 뒤 → 찾기 칸 → 바로 가기 넷 → 전부 보기 → 진화)', g.order.join(' → '));
+  const ordWant = HOME_ORDER.filter(s => s !== 'a.w-month' || g.order.includes(s)); // 한 달 된 기록 줄은 있을 때만(2026-10-28 — 「한 달 뒤 물어볼게요」 줄은 뺌)
+  if (g.order.join(' → ') !== ordWant.join(' → ')) fail('첫 화면 차례(2026-10-28 새 첫 화면 — 소개 → 업종 점 그림 → 지난 기록 → 오늘 장 → 시황 사실 → 사기 전에 확인하기 → 찾기 칸 → 모든 화면 보기 → 안내 · 본질 세 줄)', g.order.join(' → '));
   for (const k of ['ess', 'find', 'today', 'gdr', 'all', 'news']) if (!g.blocks.includes(k)) fail('첫 화면 칸 [data-w="' + k + '"]', g.blocks.join(' · '));
   if (g.tk) fail('첫 화면에 칩 줄 · 이야기 입구 띠가 남음(흰 첫 화면 — 전부 보기 안으로)', String(g.tk));
   /* 본질 세 줄(사장님 2026-10-18 16:39 [5] 1 ~ 3 · 5 · 8 · 일꾼 KC) — 처음 온 기기(새 칸 q)는 펼침 · 글 = essence.js 셈(요약이 새것일 때만 숫자 · 아니면 「?」) · 칸 안 날짜는 받은 때 하나까지(띠 날짜와 따로 셈)
@@ -260,8 +264,8 @@ for (const w of [320, 360, 390]) {
   const wantAl = ['big', 'usual'].filter(w => (home?.alerts ?? []).some(a => a.kind === 'idx' && (a.why ?? 'usual') === w)).length;
   // 흰 첫 화면은 큰 날 줄을 하나로 줄여 「! 크게 움직인 날」(읽어 주기 · 자세한 글은 #/today) — 있으면 한 줄 · 없으면 0
   if (g.al.length !== Math.min(wantAl, 1) || g.al.some(a => !a.inBand || !a.t.startsWith('!')) || g.top) fail('큰 날 「!」 = 띠 안([6] 1)', JSON.stringify({n: g.al.length, want: wantAl, out: g.al.filter(a => !a.inBand).length, top: g.top}));
-  // 바로 가기 넷(옛 칩 「달력」 「조건 찾기」 자리 · [6] 7) — 골똘이 칸(질문 전 #/why) · 달력 · 조건 찾기 · 대장주
-  if (JSON.stringify(g.go4) !== JSON.stringify(['#/why', oldOr('cal', '#/cal'), oldOr('cond', '#/cond'), '#/f/lead'])) fail('바로 가기 넷(질문 전 = #/why · 달력 · 조건 찾기 · 대장주)', g.go4.join(' '));
+  // 둘이 칸 바로 가기(옛 바로 가기 넷 nav.w-go4 · [6] 7) — 2026-10-28 새 첫 화면: 사기 전에 확인하기 칸([data-w="gdr"])의 고리 = 질문 전 「「왜 사?」 시작하기」 #/why 하나(달력 · 조건 찾기 · 대장주는 「모든 화면 보기」 · 위 단추로 — 안쪽에서만 쓰는 말이라 첫 화면에서 뺌 · order-1112)
+  if (JSON.stringify(g.go4) !== JSON.stringify(['#/why'])) fail(NEW_NAME + ' 칸 바로 가기(질문 전 = 「왜 사?」 시작하기 #/why 하나)', g.go4.join(' '));
   // 「전부 보기」 열기 — 한 줄에 하나(오르는 업종 · 급등 · … · 이야기) + 옛 「더 보기」 그대로: 세 줄 · 큰 숫자 하나 + 까닭 한 줄 · #/today 고리 · 띠 숫자 되풀이 없음 · 봉인 줄 · 약속 · 자료 요청(mkt · cond 0 — 요약이 새것일 때)
   await q.click('#view summary[data-w="all"]').catch(e => fail('「전부 보기」 누름', e.message));
   await q.waitForFunction(() => !!document.querySelector('#view .w-allin .m4-seal-box, #view .w-allin .empty'), null, {timeout: 15000}).catch(() => fail('「전부 보기」 안', '15초 안에 안 그려짐'));
@@ -306,7 +310,7 @@ for (const w of [320, 360, 390]) {
   // ⑨ 첫 화면 앞쪽 — 찾기 칸이 첫 화면(390×844) 안 · 편지 없음 · 회사를 치면 열한 질문(#/why/<번호>)
   if (g.letter) fail('첫 화면에 편지가 남음(명령 1 — 「나」 칸으로)', String(g.letter));
   if (g.findTop == null || g.findTop >= g.vh) fail('찾기 칸이 첫 화면 밖', `${g.findTop} ≥ ${g.vh}`);
-  if (g.findPh !== '친구야, 왜 사? 회사 이름') fail('찾기 칸 자리 글 「친구야, 왜 사? 회사 이름」', String(g.findPh));
+  if (g.findPh !== '사려는 회사 이름으로 찾기') fail('찾기 칸 자리 글 「사려는 회사 이름으로 찾기」(2026-10-28 공식 안내 말투 — 옛 「친구야, 왜 사? 회사 이름」)', String(g.findPh));
   if (g.wy) fail('첫 화면에 큰 질문 칸(section.wy)이 남음(흰 첫 화면 — 찾기 칸 하나)', String(g.wy));
   { await q.fill('#view form.w-find input', '삼성전자').catch(e => fail('찾기 칸 치기', e.message));
     const hit = await q.waitForFunction(() => document.querySelector('#view form.w-find a[data-path~="q1"]')?.getAttribute('href') ?? false, null, {timeout: 15000}).then(x => x.jsonValue()).catch(() => null);
@@ -321,12 +325,12 @@ for (const w of [320, 360, 390]) {
   }
   // 질문을 끝낸 기록 하나(답 열한 개 · 매매일지 기록 꼴)를 이 기기에 두고 다시 열면 — 첫 화면 바로 가기 = #/gdr · 그것을 누르면 열린 칸(칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)
   await q.evaluate(([k, r]) => localStorage.setItem(k, JSON.stringify([r])), [WHY_KEY, whyRec(0)]);
-  if (await first(q, base + '/next/?seed=1#/', () => !!document.querySelector('#view nav.w-go4') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 바로 가기(질문 뒤)', '20초 안에 안 나옴'); // 다른 주소로 새로 엶(같은 주소 goto 는 # 만 같아 새로 열리지 않음)
+  if (await first(q, base + '/next/?seed=1#/', () => !!document.querySelector('#view [data-w="gdr"] a[href]') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 바로 가기(질문 뒤)', '20초 안에 안 나옴'); // 다른 주소로 새로 엶(같은 주소 goto 는 # 만 같아 새로 열리지 않음)
   const openBox = r => Array.isArray(GDR?.picks) ? !(r.lock || r.one || r.rest) && r.cells === GDR.picks.length + 1 && r.sum.startsWith('비중 합 100%') : true;
-  const go2 = await q.evaluate(() => document.querySelector('#view nav.w-go4 a')?.getAttribute('href') ?? null);
+  const go2 = await q.evaluate(() => document.querySelector('#view [data-w="gdr"] a[href]')?.getAttribute('href') ?? null); // 2026-10-28 — 사기 전에 확인하기 칸 첫 고리(질문 뒤 「지난 답 돌아보기」 #/gdr)
   if (READY.has('gdr') && go2 !== '#/gdr') fail(NEW_NAME + ' 바로 가기(질문 뒤 = #/gdr)', String(go2));
   if (READY.has('gdr')) {
-    await q.click('#view nav.w-go4 a[href="#/gdr"]').catch(() => q.evaluate(() => { location.hash = '#/gdr'; }));
+    await q.click('#view [data-w="gdr"] a[href="#/gdr"]').catch(() => q.evaluate(() => { location.hash = '#/gdr'; }));
     await q.waitForFunction(() => location.hash === '#/gdr' && !!document.querySelector('#view section.gdr.page'), null, {timeout: 8000}).catch(() => {}); await q.waitForTimeout(300);
     const g3 = await gdrRead(q);
     if (!openBox(g3)) fail(NEW_NAME + ' 칸(질문 뒤 바로 가기 → #/gdr · 칸 수 = 고른 곳 + 쉬는 돈 · 비중 합 100%)', `${g3.lock ? '잠김 · ' : ''}${g3.rest ? '쉬어 가는 날 · ' : ''}${g3.cells} · 「${g3.sum}」`);
@@ -338,8 +342,8 @@ for (const w of [320, 360, 390]) {
     await ctx.addInitScript(([k, r]) => { try { localStorage.setItem(k, JSON.stringify([r])); } catch { /* 기억 못 함 */ } }, [WHY_KEY, rec]);
     const z = watch(await ctx.newPage(), base); z._errs = [];
     z.on('pageerror', e => z._errs.push(e.message)); z.on('console', m => { if (m.type() === 'error') z._errs.push(m.text()); });
-    if (await first(z, base + '/next/#/', () => !!document.querySelector('#view nav.w-go4') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 바로 가기(질문 뒤 · ' + nm + ')', '20초 안에 안 나옴');
-    const zg = await z.evaluate(() => ({go: document.querySelector('#view nav.w-go4 a')?.getAttribute('href') ?? null, box: !!document.querySelector('#view section.gdr')}));
+    if (await first(z, base + '/next/#/', () => !!document.querySelector('#view [data-w="gdr"] a[href]') && !document.querySelector('#view .boot')) === false) fail(NEW_NAME + ' 바로 가기(질문 뒤 · ' + nm + ')', '20초 안에 안 나옴');
+    const zg = await z.evaluate(() => ({go: document.querySelector('#view [data-w="gdr"] a[href]')?.getAttribute('href') ?? null, box: !!document.querySelector('#view section.gdr')}));
     if (READY.has('gdr') && (zg.go !== '#/gdr' || zg.box)) fail(NEW_NAME + ' 바로 가기(질문 뒤 · ' + nm + ' — #/gdr · 첫 화면 큰 칸 0)', JSON.stringify(zg));
     if (READY.has('gdr')) {
       for (const hh of ['#/gdr', '#/me']) { await z.evaluate(x => { location.hash = x; }, hh); await z.waitForTimeout(700); } // 보유종목까지 한 번 더 돌며 콘솔 오류(404 포함) 0

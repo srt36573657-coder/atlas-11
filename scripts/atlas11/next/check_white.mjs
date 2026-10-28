@@ -23,6 +23,12 @@
 //     ④ 망치는 길 그림 0: 그림자 · 광택(그러데이션) · 입체 · 작은 빨간 점 · 얼굴 그림(허락한 그림 밖 <img>) · 숫자 아닌 빨간 글
 //        └ 「왜 사?」 칸(section.wy) 안은 그림대로 그림자 · 광택 · 그림자 거름 · 옅은 테(대비 3 셈 밖) 허락 — 사장님 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 1 · 7)
 //        골똘이 말은 「?」로 끝남 · 숫자 줄 「?」는 맨 앞뿐 · 그대로 둘 것: 아래 단추 다섯 · 본질 세 줄 · 진화 단추 · 잠금 #/why
+//   ★ 2026-10-28 새 첫 화면(사장님 10:55 처음 본 사람의 말 · 11:12 「어」 — 첫 화면부터 처음 보는 사람 눈높이로 · docs/design/why-mock-2026-10-28/order-1112.txt):
+//     돌 시계 · 테마 시계 네 칸(section.th-home)은 빠지고 맨 위 = 소개 칸(section.nh-hero · 무엇을 하는 곳 · 권하지 않음) → 업종 점 그림(section.nh-map · 둘이 물음 data-say) → 지난 기록 → 오늘 시장 → 사기 전 확인(data-w=gdr) → 찾기 칸 → 모든 화면 → 안내(data-w=ess)
+//     ① 「테마 시계 네 칸 한 화면 안」 → 「소개 칸 한 화면 안」(320 은 소개 제목) · ② 「테마 칸 글자 수」 → 「업종 점 그림 · 네 자리 수」
+//     ② 글자 수 = 첫 한 화면(찾기 줄 · 아래 단추 위)에 보이는 글만 · 기준 처음 온 기기 지금의 90%(설명을 늘린 새 첫 화면 — 아래로 내리면 읽는 설명은 셈 밖)
+//     시황 단추 「왜 그럴까?」 → 「왜 그런지 보기」 · 한 달 된 기록 줄 「그날 정한 대로 했어?」 → 「한 달 전에 정한 대로 했나요?」(공식 안내 말투)
+//     ③ 카톡 보내기 2번 안 → 첫 화면 카톡 단추 0(다단계처럼 보임 — 카톡은 다른 쪽 맨 아래 그대로)
 //   실패가 하나라도 있으면 끝 코드 1 — 단 저장소에 site/next/home.css(새 첫 화면)가 생기기 전에는 알림만(끝 코드 0 · enforced false · 스위치 한 곳 white_gate.mjs whiteOn)
 //   올리기 직전 정적 문 = white_gate.mjs(deploy_netlify.mjs 본질 문 곁) · 잣대 한 장 = docs/골똘이_화면잣대.md
 import fs from 'node:fs';
@@ -40,8 +46,8 @@ const {chromium} = require('playwright');
 const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), NEXT = arg('--path', '/next/?dev=1'), OUT = arg('--out', null), MOCK = arg('--mock', null);
 const BASEFILE = path.join(ROOT, 'config/atlas11/white-baseline.json');
 /* 돌 판(사장님 2026-10-19(싱가포르) 10:31 「이제 실제로 만들어 이기준으로」 · 시안 docs/design/kakao-2026-10-19/platform3) — 바탕 먹 #080808 · 글 흰색 · 돌 그림(/media/stone/)은 허락한 그림(입체 · 그림자는 그 그림 파일 안에만 · 10:12 「다써」) */
-const BG = '#152D30', INK = '#F2F3F3'; // 돌 시계 청록 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · site/next/clock.css) — 옛 흰 판 #FFFFFF · #000000(2026-10-23) // 숲 초록(사장님 2026-10-22 23:23 「배경색을 그린색으로 바꿔주세요」) · 옛 우주 밤하늘 #070B17(2026-10-20 20:27)
-const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'], THUMB = ['find'], THEME_CHARS = 220; // 200 → 220(2026-10-26 돌 시계 판 — 사장님 08:16 「디자인 이렇게 하라고」 그림의 그림 단추 넷 「꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터」 15자가 테마 칸 안 고리 바로 아래에 붙음) // THUMB = 엄지 자리(한 화면 안) — 2026-10-21 02:29 사장님 「어」(02:11 「친구야  왜? 사 이창 … 너무 불편해」): 붙어 있는 것은 찾기 칸 한 줄만 · 바로 가기(gdr) · 전부 보기(all)는 화면 안 제자리(칸이 있는지는 BLOCKS 가 그대로 잼) · THEME_CHARS = 테마 시계 칸 글자 한도(2026-10-19 잰 값 172자)
+const BG = '#152D30', INK = '#F2F3F3', BG_HOME = '#F7D4DE', INK_HOME = '#2A1420'; // 첫 화면만 최고급 핑크 판(사장님 2026-10-28 12:00 「안돼 배경을 최고급 핑크로 해」 · order-1200.txt) — 다른 쪽은 청록 판 그대로(사장님 답을 기다림) // 돌 시계 청록 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · site/next/clock.css) — 옛 흰 판 #FFFFFF · #000000(2026-10-23) // 숲 초록(사장님 2026-10-22 23:23 「배경색을 그린색으로 바꿔주세요」) · 옛 우주 밤하늘 #070B17(2026-10-20 20:27)
+const W = 390, H = 844, BLOCKS = ['ess', 'find', 'today', 'gdr', 'all'], THUMB = ['find'], THEME_CHARS = 220, MAP_N = 4; // MAP_N = 업종 점 그림 네 자리 줄(2026-10-28 새 첫 화면) // 200 → 220(2026-10-26 돌 시계 판 — 사장님 08:16 「디자인 이렇게 하라고」 그림의 그림 단추 넷 「꽃 될 회사 · 회사 찾기 · 싹 달력 · 고객센터」 15자가 테마 칸 안 고리 바로 아래에 붙음) // THUMB = 엄지 자리(한 화면 안) — 2026-10-21 02:29 사장님 「어」(02:11 「친구야  왜? 사 이창 … 너무 불편해」): 붙어 있는 것은 찾기 칸 한 줄만 · 바로 가기(gdr) · 전부 보기(all)는 화면 안 제자리(칸이 있는지는 BLOCKS 가 그대로 잼) · THEME_CHARS = 테마 시계 칸 글자 한도(2026-10-19 잰 값 172자)
 const TABS = [...GATE_TABS]; // 아래 단추 넷 = 기승전결(사장님 2026-10-27 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 02:15 「첫호면부터 전체」) · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이
 const R = {schema: 'golttori-check-white-1', at: new Date().toISOString(), base: MOCK ? null : base, mock: MOCK, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const fail = (what, why) => { R.counts.fail++; R.fails.push(`${what} — ${why}`); console.log('실패 ' + what + ' — ' + why); };
@@ -65,8 +71,12 @@ const MEASURE = () => {
   out.tabs = tabs ? [...tabs.querySelectorAll('a')].map(a => a.textContent.trim()) : [];
   out.themeChars = 0;
   out.top = []; // 글자 수를 이룬 글(테마 칸 밖 · 많은 차례) — 걸리면 어느 글이 늘었는지 보이게(2026-10-20 「다시 온 기기 ② 글자 수 107 > 105」 까닭을 이 방에서 못 봄)
-  for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.closest('section.th-home') && !el.closest('ol.s-story')) out.themeChars += n; else { out.chars += n; if (n) out.top.push([n, (el.closest('[data-w]')?.getAttribute('data-w') ?? '-') + ' ' + el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className ? '.' + el.className.split(' ')[0] : ''), ownText(el).slice(0, 30)]); } }
+  const thumbEl = document.querySelector('.s-thumb'), foldY = Math.min(out.tabsTop, thumbEl && vis(thumbEl) ? thumbEl.getBoundingClientRect().top : Infinity); // 첫 한 화면 = 찾기 줄 · 아래 단추 위(2026-10-28 새 첫 화면)
+  for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.getBoundingClientRect().top >= foldY || el.closest('.s-thumb')) continue; if (el.closest('section.th-home') && !el.closest('ol.s-story')) out.themeChars += n; else { out.chars += n; if (n) out.top.push([n, (el.closest('[data-w]')?.getAttribute('data-w') ?? '-') + ' ' + el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className ? '.' + el.className.split(' ')[0] : ''), ownText(el).slice(0, 30)]); } }
   out.top.sort((x, y) => y[0] - x[0]); // 본질 세 줄(ol.s-story)은 2026-10-27 기승전결로 테마 칸 안(승 뒤)에 들어갔지만 글자 셈은 예전처럼 테마 밖(사장님 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 잣대는 그대로) // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈) · 테마 시계 칸은 따로(2026-10-19)
+  { const hr = document.querySelector('#view section.nh-hero'), hh = hr?.querySelector('.nh-h1'), mp = document.querySelector('#view section.nh-map');
+    out.hero = hr && vis(hr) ? {bottom: Math.round(hr.getBoundingClientRect().bottom), h1Bottom: hh && vis(hh) ? Math.round(hh.getBoundingClientRect().bottom) : null, no: /사고팔기를 권하지 않습니다/.test(hr.textContent)} : null;
+    out.map = mp && vis(mp) ? {svg: !!mp.querySelector('svg.nh-plot circle'), rows: mp.querySelectorAll('.nh-leg li').length, ask: !!mp.querySelector('[data-say]')} : null; }
   { const tb = document.querySelector('#view section.th-home'), tz = tb?.querySelector('.th-zones'), tz1 = tz?.querySelector('.th-zc'), th = document.querySelector('.s-thumb'), thTop = th && vis(th) ? th.getBoundingClientRect().top : null;
     out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), zonesBottom: tz && vis(tz) ? Math.round(tz.getBoundingClientRect().bottom) : null, rowBottom: tz1 && vis(tz1) ? Math.round(tz1.getBoundingClientRect().bottom) : null, thumbTop: thTop == null ? null : Math.round(thTop)} : null; } // 첫 화면 그림 = 돌 시계 아래 큰 네 칸(사장님 2026-10-25 22:52 「좋아 디자인 신경 더써서 세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」 — 고르신 판 best ①) · 한 해 줄 그림은 그 아래로 · 옛 잣대(2026-10-21 18:22 「그랴」 한 해 줄 그림 · 그 앞은 시계)는 svg.th-yrg 아래 · 이제는 떠 있는 찾기 줄(.s-thumb)에 가리지 않게 그 위까지 // 첫 화면 그림 = 한 해 줄 그림(2026-10-21 18:22 「그랴」 — 궤도 · 행성 지움 · 업종 줄 + 줄 그림) · 옛 판은 시계
   for (const el of all) {
@@ -100,26 +110,27 @@ const MEASURE = () => {
   out.findInput = !!document.querySelector('[data-w="find"] input');
   out.riseShown = [...root.querySelectorAll('*')].filter(e => vis(e) && (/급등|오르는 업종/.test(ownText(e)) || /#\/(f\/rise|f\/surge|surge)(\b|$)/.test(e.getAttribute?.('href') || ''))).map(e => (ownText(e) || e.getAttribute('href')).slice(0, 16));
   out.grid = []; for (const el of root.querySelectorAll('*')) { if (!vis(el) || el instanceof SVGElement) continue; const kids = [...el.children].filter(k => k instanceof HTMLElement && vis(k)); /* 바둑판 = 누르는 작은 네모 칸(HTML) — 그림(svg) 속 점은 자료 그림이라 셈 밖(2026-10-19 테마 시계 점 77개) */ if (kids.length < 20) continue; const sq = kids.filter(k => { const r = k.getBoundingClientRect(); return r.width <= 44 && r.height <= 44; }); if (sq.length >= 20) out.grid.push(String(el.className).split(' ')[0] || el.tagName); }
-  const nw = document.querySelector('[data-w="news"]'); out.news = nw ? {up: !!nw.querySelector('.up'), dn: !!nw.querySelector('.dn'), facts: [...nw.querySelectorAll('[data-fact]')].length, why: [...nw.querySelectorAll('[data-fact]')].filter(f => [...f.querySelectorAll('button')].some(b => /왜 그럴까\?/.test(b.textContent))).length} : null;
-  out.monthLine = /그날 정한 대로 했어\?/.test(root.innerText || '');
+  const nw = document.querySelector('[data-w="news"]'); out.news = nw ? {up: !!nw.querySelector('.up'), dn: !!nw.querySelector('.dn'), facts: [...nw.querySelectorAll('[data-fact]')].length, why: [...nw.querySelectorAll('[data-fact]')].filter(f => [...f.querySelectorAll('button')].some(b => /왜 그런지 보기/.test(b.textContent))).length} : null;
+  out.monthLine = /한 달 전에 정한 대로 했나요\?/.test(root.innerText || ''); // 2026-10-28 공식 안내 말투(옛 「그날 정한 대로 했어?」)
   for (const el of root.querySelectorAll('[data-say]')) if (vis(el)) { const t = el.textContent.replace(/\s+/g, ' ').trim(); out.says.push(t); }
   for (const el of root.querySelectorAll('[data-num]')) if (vis(el)) { const t = el.textContent.replace(/\s+/g, ' ').trim(); if (t.includes('?') && !/^\?/.test(t.replace(/^[^\w가-힣?]+/, ''))) out.numQ.push(t.slice(0, 30)); }
   return out;
 };
 
 function judge(m, tag, B) {
-  check(m.bodyHex === BG, `${tag} ① 바탕 ${BG}`, `바탕 ${m.bodyHex}`);
-  check(m.inkHex === INK, `${tag} 글 ${INK}`, `글 ${m.inkHex}`);
+  check(m.bodyHex === BG_HOME, `${tag} ① 바탕 ${BG_HOME}(최고급 핑크)`, `바탕 ${m.bodyHex}`);
+  check(m.inkHex === INK_HOME, `${tag} 글 ${INK_HOME}`, `글 ${m.inkHex}`);
   check(m.findInput, `${tag} 「친구야, 왜 사?」 찾기 칸`, '[data-w="find"] 안에 글 칸이 없음');
   check(!m.riseShown.length, `${tag} 첫 화면 원칙 1 · 오르는 것은 한 번 더 눌러야`, m.riseShown.slice(0, 3).join(' | '));
   check(!m.grid.length, `${tag} 바둑판 0`, m.grid.slice(0, 3).join(' | '));
   check(!!m.news && m.news.up && m.news.dn, `${tag} 시황 = 오른 곳과 내린 곳 함께`, m.news ? `오름 ${m.news.up} · 내림 ${m.news.dn}` : '[data-w="news"] 가 없음');
-  check(!!m.news && m.news.facts > 0 && m.news.why === m.news.facts, `${tag} 시황 사실마다 「왜 그럴까?」 단추`, m.news ? `사실 ${m.news.facts} · 단추 ${m.news.why}` : '');
+  check(!!m.news && m.news.facts > 0 && m.news.why === m.news.facts, `${tag} 시황 사실마다 「왜 그런지 보기」 단추`, m.news ? `사실 ${m.news.facts} · 단추 ${m.news.why}` : '');
   for (const k of BLOCKS) check(m.blocks[k] != null, `${tag} ① 칸 ${k}`, '칸이 없음'); // 다섯 칸은 테마 시계 아래에 그대로(2026-10-19 16:54)
   for (const k of THUMB) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 엄지 자리 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
-  { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.theme && m.theme.zonesBottom != null && m.theme.zonesBottom <= lim + 0.5, `${tag} ① 테마 시계 네 칸 한 화면 안`, m.theme ? `네 칸 아래 ${m.theme.zonesBottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '테마 시계 칸(section.th-home)이 없음'); } // 2026-10-25 22:54 — 네 칸 전부가 찾기 줄 위에 보임
-  check(m.themeChars <= THEME_CHARS, `${tag} ② 테마 시계 칸 글자 수`, `${m.themeChars}자 > ${THEME_CHARS}자`);
-  if (B) { const lim = Math.floor((tag.includes('처음') ? 0.9 * B.first : 0.6 * B.back)); check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(기준 ${tag.includes('처음') ? B.first + '의 90%' : B.back + '의 60%'}) · 글 ${(m.top ?? []).map(x => x[0] + ' ' + x[1] + ' 「' + x[2] + '」').join(' / ')}`); }
+  { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.hero && m.hero.bottom <= lim + 0.5, `${tag} ① 소개 칸 한 화면 안(무엇을 하는 곳 · 권하지 않음)`, m.hero ? `소개 칸 아래 ${m.hero.bottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '소개 칸(section.nh-hero)이 없음'); } // 2026-10-28 새 첫 화면 — 옛 「테마 시계 네 칸 한 화면 안」
+  check(!!m.hero?.no, `${tag} ① 소개 칸 「사고팔기를 권하지 않습니다」`, '소개 칸에 그 줄이 없음');
+  check(!!m.map && m.map.svg && m.map.rows === MAP_N && m.map.ask, `${tag} ② 업종 점 그림 · 네 자리 수 · 둘이 물음`, m.map ? `점 ${m.map.svg} · 줄 ${m.map.rows} · 물음 ${m.map.ask}` : '업종 칸(section.nh-map)이 없음'); // 2026-10-28 — 옛 「테마 시계 칸 글자 수」
+  if (B) { const lim = Math.floor(0.9 * B.first); /* 2026-10-28 — 첫 한 화면 글만 셈 · 처음 온 기기 · 다시 온 기기 같은 기준(옛: 다시 온 기기는 60%) */ check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(첫 한 화면 · 기준 ${B.first}의 90%) · 글 ${(m.top ?? []).map(x => x[0] + ' ' + x[1] + ' 「' + x[2] + '」').join(' / ')}`); }
   check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
   check(!m.uiContrast.length, `${tag} ② 단추 테두리 대비 3`, `${m.uiContrast.length}곳 · ${m.uiContrast.slice(0, 3).join(' · ')}`);
   check(!m.tiny.length, `${tag} ② 글씨 17px 아래 0`, `${m.tiny.length}곳 · ${m.tiny.slice(0, 3).join(' · ')}`);
@@ -192,7 +203,7 @@ try {
     {
       const ctx = await ctxOf(false, {viewport: {width: 320, height: 568}}), {p} = await open(ctx, HOME), m = await p.evaluate(MEASURE);
       for (const k of ['find']) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `320 × 568 한 화면 칸 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`); // 본질 카드는 테마 시계 아래로(2026-10-19 16:54 · 원칙 85)
-      { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.theme && m.theme.rowBottom != null && m.theme.rowBottom <= lim + 0.5, '320 × 568 테마 시계 네 칸 첫 줄 한 화면 안', m.theme ? `첫 줄 아래 ${m.theme.rowBottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '칸 없음'); } // 2026-10-25 22:54 — 작은 폰은 싹 · 꽃 첫 줄까지
+      { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.hero && m.hero.h1Bottom != null && m.hero.h1Bottom <= lim + 0.5, '320 × 568 소개 제목 한 화면 안', m.hero ? `제목 아래 ${m.hero.h1Bottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '소개 칸 없음'); } // 2026-10-28 — 옛 「테마 시계 네 칸 첫 줄」
       check(!m.small.length, '320 × 568 누르는 크기 48', m.small.slice(0, 3).join(' · '));
       check(await p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1), '320 × 568 옆 넘침 0', '');
       await ctx.close();
@@ -202,7 +213,7 @@ try {
       const ctx = await ctxOf(false), old = new Date(Date.now() - 40 * 864e5);
       await ctx.addInitScript(at => { try { if (localStorage.getItem('atlas:godori-why')) return; localStorage.setItem('atlas:godori-why', JSON.stringify([{at, asOf: at.slice(0, 10), code: '005930', name: '삼성전자', price: 70000, day: at.slice(0, 10), answers: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], score: 20, reds: 0, verdict: '좋아', groups: [], bigDay: null, why: '이익이 늘어서', promise: {sell: 63000, half: 84000, text: '만약 63,000원 아래로 가면 다 판다. 만약 84,000원 위로 가면 절반 판다.'}, picks: []}])); } catch { /* 없음 */ } }, old.toISOString());
       const {p} = await open(ctx, HOME); await p.waitForTimeout(800); const m = await p.evaluate(MEASURE);
-      check(m.monthLine, '한 달 된 기록 · 「그날 정한 대로 했어?」 한 줄', '첫 화면에 그 줄이 없음'); await ctx.close();
+      check(m.monthLine, '한 달 된 기록 · 「한 달 전에 정한 대로 했나요?」 한 줄', '첫 화면에 그 줄이 없음'); await ctx.close();
     }
     // 「전부 보기」 — 한 줄에 하나씩 · 오르는 것은 누름 2번
     {
@@ -232,10 +243,9 @@ try {
       await p.goto(HOME); await settle(p);
       const rec = await p.locator('a[href="#/why"]:visible').count(); check(rec > 0, '③ 기록까지 누름 1번', '보이는 #/why 고리 없음'); R.m.taps.record = rec > 0 ? 1 : null;
       const jh = await p.locator('#jhBtn:visible').count(); check(jh > 0, '③ 진화까지 누름 1번', '보이는 진화 단추 없음'); R.m.taps.jinhwa = jh > 0 ? 1 : null;
-      let kk = null; const b = p.locator('#view .kk-btn:visible').first();
-      if (await b.count()) { await b.click(); await p.waitForTimeout(800); let sent = await p.evaluate(() => window.__kk.length);
-        if (!sent) { const k2 = p.locator('button:visible, a:visible').filter({hasText: /카톡/}).first(); if (await k2.count()) { await k2.click().catch(() => {}); await p.waitForTimeout(800); sent = await p.evaluate(() => window.__kk.length); kk = sent ? 2 : null; } } else kk = 1; }
-      R.m.taps.kakao = kk; check(kk != null && kk <= 2, '③ 카톡 보내기 누름 2번 안', kk == null ? '첫 화면에서 2번 안에 카톡 보내기가 안 됨' : '');
+      { await p.evaluate(() => { const i = document.querySelector('#view [data-w="find"] input'); if (i) { i.value = ''; i.dispatchEvent(new Event('input')); } }); await p.waitForTimeout(300); // 찾은 회사 줄의 카톡 단추(그 회사 보내기 · 2026-10-25 「모든 곳에」)는 쳐서 뜬 줄 — 첫 화면 칸 셈 밖
+        const kkN = await p.locator('#view .kk-btn:visible, #view .kk-box:visible, #view [data-kkrow]:visible').count(), kkT = await p.locator('#view button:visible, #view a:visible').filter({hasText: /카톡/}).count(); R.m.taps.kakao = 0; // 2026-10-28 order-1112 — 첫 화면 카톡 단추 0(다단계처럼 보임) · 옛 「카톡 보내기 누름 2번 안」
+        check(kkN === 0 && kkT === 0, '③ 첫 화면 카톡 단추 0(다단계처럼 보임 · 다른 쪽 맨 아래 그대로)', `단추 ${kkN} · 카톡 글 ${kkT}`); }
       await ctx.close();
     }
     // ⑤ 다른 쪽도 흰 판(둘째 올림 · 실패할 길 1 「옛 쪽 글이 흰 바탕에 안 보임」을 막는 줄) — 쪽마다 흰 바탕 · 글 대비 · 단추 테두리 · 누름 48 · 망치는 길 0 · 옆 넘침 0(390 · 320)

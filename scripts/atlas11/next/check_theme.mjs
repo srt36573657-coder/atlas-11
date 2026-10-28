@@ -13,6 +13,10 @@
 //      · 영어 업종 수 = 「industries」(「companies」 아님 · i18n.js 자리 표 data-tr)
 //   ⑧ 글줄 · 글씨 · 간격([10] 5 · 6 · 7 · 8 — check_hold ⑭ 와 같은 셈 · 그림 <svg> 속 글은 셈 밖): 열아홉 쪽 390(③ 차례) · 320(⑦ A 판) — 글 시작 왼쪽 줄 3 이하 · 17px 아래 0 · 글씨 6가지 · 토큰 · 간격 0 · 8 · 16 · 24 · 음수 0
 //      사장님 2026-10-19 20:40 「다해」(못 한 것 4 — 테마 쪽은 견본 모양 그대로라 왼쪽 줄이 6 ~ 18) → 16 · 33 · 56 세 줄
+//   ★ 2026-10-28 새 첫 화면(사장님 11:12 「어」 — 첫 화면부터 처음 보는 사람 눈높이로 · docs/design/why-mock-2026-10-28/order-1112.txt · site/next/home-new.js)
+//     첫 화면 테마 칸(section.th-home · 시계 · 줄 셋 · 주황 숫자 · 접는 칸 · 「다음」)은 빠짐 → ② 는 업종 점 그림 칸(section.nh-map)을 자료와 맞댐 · ⑪ 는 새 첫 화면 고리(모두 보기 · 지난 기록 · 「왜 사?」 시작)
+//     ⑫ 거른 목록(진짜 싹 · 새로 들어옴 · 싹 자리)은 첫 화면 칸이 없어 주소로 바로 엶 · ③ 「다음」 사슬의 첫 화면 칸은 주소로 넘어감(새 첫 화면에 「다음」 단추가 없음)
+//     ⑨ ⑩ 관심 업종 소식(section.th-news)은 첫 화면 어디에 있든 셈(옛: 테마 칸 안)
 //   실패가 하나라도 있으면 끝 코드 1
 import fs from 'node:fs/promises';
 import fss from 'node:fs';
@@ -20,6 +24,7 @@ import {createRequire} from 'node:module';
 import {screenHits} from '../../../site/next/words.js';
 import {pp} from '../../../site/next/theme-engine.js';
 import {isRemote} from './net.mjs';
+import * as HN from '../../../site/next/home-new.js'; // 새 첫 화면 칸(2026-10-28) — 네 자리 쉬운 이름(ZNAME) 한 곳
 import {TITLES} from '../../../site/next/home-title.js'; // 큰 제목 넷(사장님 2026-10-21 23:55 「어 섹시하게」 — 23:21 물음 「이 넷을 차례로 돌려 보일까요?」의 답)
 
 const argv = process.argv.slice(2);
@@ -156,46 +161,33 @@ const prevOf = p => p.evaluate(() => document.querySelector('#view a.th-back')?.
 const noOf = p => p.evaluate(() => document.querySelector('#view .th-no b')?.textContent ?? null);
 
 try {
-  /* ② 첫 화면 칸 */
+  /* ② 첫 화면 업종 칸 — 2026-10-28 새 첫 화면(사장님 11:12 「어」 · order-1112): 옛 테마 칸(section.th-home · 시계 · 줄 셋 · 주황 숫자 · 접는 칸 · 「다음」 · 둘이 인사)은 빠지고
+     업종 점 그림 칸(section.nh-map)이 소개 칸(section.nh-hero) 뒤 · 본질 세 줄(section.ess) 앞 — 둘이 물음(data-say · 「?」로 끝남) · 그림 날짜 = 자료 기준 날 · 점 수 = 업종 수
+     · 네 자리 이름과 수 = 자료 count 그대로(theme-home.json — 첫 화면이 받는 자료) · 조건 넷을 모두 채운 업종(점 넷 sc 4) = 굵은 점 · 그 이름 글 · 「업종 n개 모두 보기」 → #/f/ind · 옛 시계 그림 0 */
   {
     const {p, ctx} = await open('#/');
-    await p.waitForFunction(() => document.querySelector('#view section.th-home .th-row, #view section.th-home .empty'), null, {timeout: 20000}).catch(() => {});
+    await p.waitForFunction(() => document.querySelector('#view section.nh-map svg.nh-plot circle, #view section.nh-map .nh-p'), null, {timeout: 20000}).catch(() => {});
     const g = await p.evaluate(() => {
-      const v = document.querySelector('#view'), box = v.querySelector('section.th-home'), say = v.querySelector('div.w-say'), ess = v.querySelector('section.ess');
-      return {box: !!box, afterSay: !!(box && say && (say.compareDocumentPosition(box) & Node.DOCUMENT_POSITION_FOLLOWING)), beforeEss: !!(box && ess && (box.compareDocumentPosition(ess) & Node.DOCUMENT_POSITION_FOLLOWING)),
-        rows: [...(box?.querySelectorAll('a.th-row') ?? [])].map(a => ({href: a.getAttribute('href'), name: a.querySelector('.th-rn')?.textContent})), ans: box?.querySelector('.th-ans')?.textContent ?? null, foldFirst: box?.querySelector('details.th-hfold > summary')?.nextElementSibling?.className ?? null, // 2026-10-22 총정리(감사 A7): 접는 칸 맨 위 = 성적표 한 줄 · 같은 숫자를 두 번 쓰던 머리 줄(h2.th-ans)은 지움
-        three: [...(box?.querySelectorAll('.th-three a, .th-three p') ?? [])].map(x => [x.querySelector('span')?.textContent ?? null, x.querySelector('b')?.textContent ?? null, x.getAttribute('href')]), rec: box?.querySelector('.th-rec')?.textContent ?? '', asof: box?.querySelector('.th-asof')?.textContent ?? '',
-        fold: !!box?.querySelector('details.th-hfold > summary') && (box?.querySelector('details.th-hfold > summary')?.textContent ?? '') === '숫자로 자세히 보기' && !!box?.querySelector('details.th-hfold .th-three'), orbit: !!box?.querySelector('svg.th-orbit'), planets: [...(box?.querySelectorAll('image, img') ?? [])].filter(e => /\/media\/planet\//.test(e.getAttribute('href') ?? e.getAttribute('src') ?? '')).length, pills: [...(box?.querySelectorAll('.th-map a.th-row .th-pill') ?? [])].map(e => e.textContent), title: box?.querySelector('.th-map .th-lt')?.textContent ?? '', year: !!box?.querySelector('.th-map button.th-yr svg.th-yrg'), next: box?.querySelector('a.th-next')?.getAttribute('href') ?? null, hi: box?.querySelector('a.th-hi')?.getAttribute('href') ?? null, more: box?.querySelector('a.th-more')?.getAttribute('href') ?? null, clock: !!box?.querySelector('svg.th-clock, svg.th-yrg'), h1: v.querySelector('h1')?.textContent ?? ''};
+      const v = document.querySelector('#view'), box = v.querySelector('section.nh-map'), hero = v.querySelector('section.nh-hero'), ess = v.querySelector('section.ess'), a = box?.querySelector('a.nh-link');
+      return {box: !!box, afterHero: !!(box && hero && (hero.compareDocumentPosition(box) & Node.DOCUMENT_POSITION_FOLLOWING)), beforeEss: !!(box && ess && (box.compareDocumentPosition(ess) & Node.DOCUMENT_POSITION_FOLLOWING)),
+        ask: box?.querySelector('h2[data-say]')?.textContent ?? null, d: box?.querySelector('.nh-d')?.textContent ?? '', dots: box?.querySelectorAll('svg.nh-plot circle.nh-dot').length ?? 0, dots4: box?.querySelectorAll('svg.nh-plot circle.nh-dot4').length ?? 0,
+        leg: [...(box?.querySelectorAll('.nh-leg li') ?? [])].map(li => [li.querySelector('span')?.textContent ?? '', li.querySelector('b')?.textContent ?? '']), rt: box?.querySelector('.nh-real')?.textContent ?? '',
+        all: a ? {href: a.getAttribute('href'), t: a.textContent.replace(/\s+/g, ' ').trim(), h: Math.round(a.getBoundingClientRect().height)} : null, old: !!v.querySelector('section.th-home, svg.th-clock, .th-zones, .s-clk, .s-apps')};
     });
-    if (!g.box) fail('첫 화면', '테마 시계 칸(section.th-home)이 없음');
+    const HMx = HM ?? {inds: TH.inds, count: TH.count, asOf: TH.asOf}, n = HMx.inds.length, ZN = HN.ZNAME ?? {S: '막 오르기 시작', B: '한 달 내내 강함', W: '강하다 꺾임', Q: '조용함'};
+    if (!g.box) fail('첫 화면', '업종 점 그림 칸(section.nh-map)이 없음(2026-10-28 새 첫 화면)');
     else {
-      if (!g.afterSay || !g.beforeEss) fail('첫 화면 차례', '둘이 물음 → 테마 시계 → 본질 카드 차례가 아님');
-      const H1 = `업종 ${Z.reduce((s, z) => s + TH.count[z], 0).toLocaleString('ko-KR')}곳은 지금`; // 돌 시계 판 ① 큰 제목(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 자료를 못 받았을 때만 예전 넷(TITLES)
-      if (g.h1.trim() !== H1) fail('첫 화면 제목', `${g.h1} ≠ ${H1}`); // 2026-10-21 23:55 큰 제목 넷이 6초마다 돎(home-title.js — 첫 말은 그대로 「지금 봄이 온 곳」) // 2026-10-21 00:51 사장님 「확임 했어 이기준에 스마트하게 만들어」 · 00:59 「나 신대근이 지시한거야」 — 계절 판 첫 화면(옛 「테마 시계」)
-      if (!g.fold) fail('첫 화면 숫자 접는 칸', '「숫자로 자세히 보기」(details.th-hfold)가 없음 — 진짜 싹 · 주황 숫자 셋 · 성적표는 그 안');
-      // 2026-10-21 18:22 사장님 「그랴」(17:51 「이렇기 행성 나오는것 지우고 주싣쪽으로 표혐할수 있는 방법 모색해보 … 이건 주식에 본질에 맞지도 않고 장난스러워」 · 18:11 「구글과 잡스라면 … 뭘 고를까?」)
-      //   첫 화면 = 카드 안 업종 줄 셋(번호 · 이름 · 닷새 동안 시장보다 숫자 알약) + 한 해 줄 그림 단추 하나 · 궤도 · 해 · 행성 사진 없음
-      if (g.orbit) fail('첫 화면 궤도', '궤도 그림(svg.th-orbit)이 남음 — 2026-10-21 18:22 지움');
-      if (g.planets) fail('첫 화면 행성 사진', g.planets + '개 — 2026-10-21 18:22 지움');
-      if (g.title !== '요즘 시장보다 힘이 붙은 곳') fail('첫 화면 업종 줄 머리', g.title || '없음');
-      if (g.pills.length !== Math.min(3, TH.order.S.length) || g.pills.some(t => !/^([+−]?\d+\.\d%|\?)$/.test(t))) fail('첫 화면 숫자 알약', g.pills.join(' | ') || '없음');
-      if (!g.year) fail('첫 화면 한 해 줄 그림', '카드 안 button.th-yr svg.th-yrg 가 없음');
-      if (!g.clock) fail('첫 화면 시계 그림', '없음');
-      const want = TH.order.S.slice(0, 3);
-      if (JSON.stringify(g.rows.map(r => r.name)) !== JSON.stringify(want)) fail('첫 화면 줄 셋', g.rows.map(r => r.name).join(' · ') + ' ≠ ' + want.join(' · '));
-      if (g.rows.some(r => r.href !== '#/t/i/' + enc(r.name))) fail('첫 화면 줄 고리', g.rows.map(r => r.href).join(' '));
-      // 2026-10-22 총정리(감사 A7): 접는 칸 = 성적표 한 줄(맨 위) → 한 줄에 하나(이름 · 수 · 고리) — 머리 줄 「진짜 싹 n곳」은 첫 줄과 같은 숫자 · 같은 고리라 지움(진짜 싹이 0 이어도 「진짜 싹 0곳」 줄)
-      if (g.ans != null) fail('첫 화면 숫자 머리 줄', '접는 칸에 같은 숫자를 두 번 쓰던 머리(.th-ans)가 남음 — ' + g.ans);
-      if (g.foldFirst !== 'th-rec') fail('첫 화면 접는 칸 맨 위', '성적표 한 줄(p.th-rec)이 맨 위가 아님 — ' + g.foldFirst);
-      const tw = [['진짜 싹', num(TH.count.real) + '곳', '#/t/sprout/real'], ['새로 들어옴', num(TH.count.fresh) + '곳', '#/t/sprout/new'], ['싹 자리', num(TH.count.S) + '곳', '#/t/sprout']];
-      if (JSON.stringify(g.three) !== JSON.stringify(tw)) fail('첫 화면 세 줄', JSON.stringify(g.three));
-      const R = TH.record;
-      if (R.more && !(g.rec.includes(`100번 가운데 ${Math.round(R.real.p)}번`) && g.rec.includes(`100번 가운데 ${Math.round(R.all.p)}번이었어요`))) fail('성적표 숫자', g.rec);
-      if (!R.more && !g.rec.includes('차이가 없었어요')) fail('성적표 차이 없음 글', g.rec);
-      if (g.asof) fail('첫 화면 기준 날', '첫 화면에는 날짜를 띠에 한 번만([6] 2) — 테마 칸에 ' + g.asof);
-      if (g.next !== '#/t/how') fail('첫 화면 다음', g.next);
-      if (g.more !== '#/t/sprout') fail('싹 자리 모두 보기 고리', g.more);
-      if (g.hi !== '#/t/hello') fail('둘이 인사 고리', '첫 화면 테마 칸에 1장(#/t/hello)으로 가는 고리가 없음 — ' + g.hi);
+      if (!g.afterHero || !g.beforeEss) fail('첫 화면 차례', '소개 칸 → 업종 점 그림 → 본질 세 줄 차례가 아님');
+      if (g.ask !== `지금 업종 ${num(n)}개는 어디쯤 있나요?`) fail('첫 화면 업종 칸 물음', `${g.ask} ≠ 지금 업종 ${num(n)}개는 어디쯤 있나요?`);
+      if (!g.d.includes(MD(HMx.asOf) + ' 종가 기준')) fail('첫 화면 업종 칸 기준 날', `「${g.d}」 에 ${MD(HMx.asOf)} 종가 기준 없음`);
+      if (g.dots !== n) fail('첫 화면 점 수 = 업종 수', `${g.dots} ≠ ${n}`);
+      const real = HMx.inds.filter(i => i.sc === 4).map(i => i.n);
+      if (g.dots4 !== real.length) fail('조건 넷 업종 = 굵은 점', `${g.dots4} ≠ ${real.length}`);
+      if (real.length ? !real.every(x => g.rt.includes(x)) : !/없습니다/.test(g.rt)) fail('조건 넷을 채운 업종 글', `「${g.rt}」 · 자료 ${real.join(', ') || '없음'}`);
+      const wantLeg = ['S', 'B', 'Q', 'W'].map(z => [ZN[z], Number.isFinite(HMx.count?.[z]) ? HMx.count[z] + '개' : '?']);
+      if (JSON.stringify(g.leg) !== JSON.stringify(wantLeg)) fail('네 자리 이름과 수 = 자료 count', JSON.stringify(g.leg) + ' ≠ ' + JSON.stringify(wantLeg));
+      if (!g.all || g.all.href !== '#/f/ind' || !g.all.t.startsWith(`업종 ${num(n)}개 모두 보기`) || g.all.h < 48) fail('업종 모두 보기 고리', JSON.stringify(g.all));
+      if (g.old) fail('첫 화면 옛 테마 칸', '테마 시계 · 네 칸 · 그림 단추가 남음 — 2026-10-28 새 첫 화면(order-1112)에서 뺌');
     }
     await look('#/', p); bump('첫 화면'); await ctx.close();
   }
@@ -220,7 +212,7 @@ try {
         await look(here, p); await rules(here + ' @390', p);
       }
       const want = CHAIN[k + 1];
-      await p.evaluate(h => { const a = location.hash === '#/' || location.hash === '' ? document.querySelector('#view section.th-home a.th-next') : [...document.querySelectorAll('#view a.th-next')].at(-1); if (a) a.click(); else location.hash = h; }, want);
+      await p.evaluate(h => { const a = [...document.querySelectorAll('#view a.th-next')].at(-1); if (a) a.click(); else location.hash = h; }, want); // 새 첫 화면(2026-10-28 order-1112)에는 「다음」 단추가 없어 첫 화면 칸은 주소로 넘어감
       await p.waitForFunction(w => location.hash === w || decodeURIComponent(location.hash) === decodeURIComponent(w), want, {timeout: 8000}).catch(() => {});
       await settle(p);
       const at = await p.evaluate(() => location.hash);
@@ -296,7 +288,7 @@ try {
         if (hsh !== hs[0]) { await p.evaluate(x => { location.hash = x; }, hsh); await settle(p); }
         if (!en) {
           await look(V + ' ' + hsh + ' @320', p); bump('바꾼 자료 쪽'); if (V === 'A' && hsh !== '#/') await rules(V + ' ' + hsh + ' @320', p);
-          if (hsh === '#/') { const nb = await p.evaluate(() => { const s = document.querySelector('#view section.th-home svg.th-clock'); if (!s) return null; const vb = s.viewBox.baseVal; return [...s.querySelectorAll('circle.th-nb')].map(c => [+c.getAttribute('cx'), +c.getAttribute('cy'), +c.getAttribute('r')]).filter(([x, y, r]) => x - r < 0 || y - r < 0 || x + r > vb.width || y + r > vb.height); }); if (nb?.length) fail('첫 화면 시계 번호가 그림 밖', V + ' ' + JSON.stringify(nb)); } // 2026-10-19 실제 사이트 첫 화면 ① 이 잘림
+          if (hsh === '#/') { const nb = await p.evaluate(() => { const s = document.querySelector('#view section.nh-map svg.nh-plot'); if (!s) return null; const vb = s.viewBox.baseVal; return [...s.querySelectorAll('circle.nh-dot')].map(c => [+c.getAttribute('cx'), +c.getAttribute('cy'), +c.getAttribute('r')]).filter(([x, y, r]) => x - r < 0 || y - r < 0 || x + r > vb.width || y + r > vb.height); }); if (nb == null) fail('첫 화면 업종 점 그림', V + ' svg.nh-plot 없음'); else if (nb.length) fail('첫 화면 업종 점이 그림 밖', V + ' ' + JSON.stringify(nb)); } // 2026-10-28 새 첫 화면 — 자료가 바뀌어도 점이 그림 안(옛: 시계 번호 · 2026-10-19 실제 사이트 첫 화면 ① 이 잘림)
           continue;
         }
         await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(150);
@@ -333,8 +325,8 @@ try {
       await c.addInitScript(([n, oz, s]) => { try { localStorage.setItem('dori:watch-ind', JSON.stringify([n])); localStorage.setItem('dori:watch-seen', JSON.stringify({asOf: '2000-01-01', zones: {[n]: oz}, news: []})); localStorage.setItem('dori:alert-set', JSON.stringify(s)); } catch { /* 없음 */ } }, [TOP, other, set]);
       const p = await c.newPage(); p._errs = []; p.on('pageerror', e => p._errs.push(String(e.message)));
       await p.goto(PAGE + '#/', {waitUntil: 'domcontentloaded'}); await settle(p);
-      await p.waitForFunction(() => document.querySelector('#view section.th-home .th-row, #view section.th-home .empty'), null, {timeout: 20000}).catch(() => {});
-      const n = await p.evaluate(() => { const b = document.querySelector('#view section.th-home .th-news'); return b ? {links: [...b.querySelectorAll('a.th-nl')].map(a => [a.getAttribute('href'), a.textContent]), set: b.querySelector('a.th-hi')?.getAttribute('href')} : null; });
+      await p.waitForFunction(() => document.querySelector('#view section.nh-map, #view section.th-home'), null, {timeout: 20000}).catch(() => {}); await p.waitForTimeout(400); // 2026-10-28 새 첫 화면 — 소식 칸은 늦게 붙을 수 있음(모듈을 받은 뒤)
+      const n = await p.evaluate(() => { const b = document.querySelector('#view section.th-news'); return b ? {links: [...b.querySelectorAll('a.th-nl')].map(a => [a.getAttribute('href'), a.textContent]), set: b.querySelector('a.th-hi')?.getAttribute('href')} : null; });
       if (expect && !(n && n.links.some(([href, tx]) => href === '#/t/i/' + enc(TOP) && tx.includes(want)) && n.set === '#/t/alert')) fail('첫 화면 관심 업종 소식(' + tag + ')', JSON.stringify(n) + ' 바람 「' + TOP + ' ' + want + '」');
       if (!expect && n) fail('첫 화면 관심 업종 소식(' + tag + ')', '알림을 모두 꺼도 소식 칸이 보임 ' + JSON.stringify(n));
       if (p._errs.length) fail('화면 오류', '관심 소식 ' + p._errs[0]);
@@ -352,7 +344,7 @@ try {
       return {p, ctx};
     }
     const lastToast = p => p.evaluate(() => [...document.querySelectorAll('p.toast')].pop()?.textContent ?? '');
-    const homeNews = async p => { await p.waitForFunction(() => document.querySelector('#view section.th-home .th-row, #view section.th-home .empty'), null, {timeout: 20000}).catch(() => {}); return p.evaluate(() => ({nl: [...document.querySelectorAll('#view section.th-home .th-news a.th-nl')].map(a => a.textContent), nm: document.querySelector('#view section.th-home .th-news .th-nm')?.textContent ?? null})); };
+    const homeNews = async p => { await p.waitForFunction(() => document.querySelector('#view section.nh-map, #view section.th-home'), null, {timeout: 20000}).catch(() => {}); await p.waitForTimeout(400); return p.evaluate(() => ({nl: [...document.querySelectorAll('#view section.th-news a.th-nl')].map(a => a.textContent), nm: document.querySelector('#view section.th-news .th-nm')?.textContent ?? null})); }; // 2026-10-28 새 첫 화면 — 소식 칸(section.th-news)은 첫 화면 어디에 있든 셈
     // (가0) 싹 자리 전부(돌 시계 판 ② · 2026-10-26 「다 해」) — 맨 앞 셋 큰 판 + 업종 알약 · 차례 = order.S · 큰 판 높이 같음 · 이름 안 넘침 · 「그 밖」을 누르면 모두 · 알약 44 위
     for (const [w, en, font] of [[390, false, 0], [360, false, 0], [320, false, 1], [320, true, 0], [320, true, 2]]) {
       const {p, ctx} = await openSeed('#/t/sprout', {}, {w, h: 800, en, font});
@@ -493,46 +485,33 @@ try {
       }
     }
   }
-  /* ⑪ 첫 화면 누르는 곳(사장님 2026-10-20 07:05 「여기 주황색 있는 4곳 클릭하면 해당페이지로 넘어가게」 · 07:08 「응」)
-     2026-10-21 18:22 「그랴」(구글과 잡스라면 — 업종 줄 셋 + 한 해 줄 그림 · 궤도 · 행성 없음)부터 주황 번호 셋은 카드 안 업종 줄(줄 전체가 그 업종 쪽 고리) · 싹 자리 전부 = 「모두 보기」
-     — 줄 셋 = 싹 앞 셋 차례 · 번호 1 · 2 · 3 · 누르는 자리 48 넘게 · ① 줄을 누르면 그 업종 쪽 · 모두 보기를 누르면 싹 자리 전부 · 한 해 줄 그림 단추는 고리가 아님(멈춤 단추) */
+  /* ⑪ 첫 화면 누르는 곳 — 2026-10-28 새 첫 화면(사장님 11:12 「어」 · order-1112): 옛 테마 칸 업종 줄 셋 · 싹 자리 모두 보기 · 한 해 줄 그림 단추는 빠짐(옛 잣대 2026-10-20 07:05 · 2026-10-21 18:22)
+     → 새 첫 화면 고리 넷: 업종 모두 보기(#/f/ind) · 날짜별 기록과 고르는 법(#/t/pick) · 오늘 조건에 맞은 회사(#/t/picks) · 「왜 사?」 시작하기(#/why) — 누르는 자리 48 넘게 · 390 한국어는 눌러서 그 쪽으로 감 */
   for (const [w, en] of [[390, false], [320, false], [320, true]]) {
     const {p, ctx} = await open((en ? '?lang=en' : '') + '#/', {w, h: 844});
     if (en) { await p.waitForFunction(() => document.documentElement.lang === 'en', null, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(200); }
-    await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-map a.th-row').length > 0, null, {timeout: 20000}).catch(() => {});
+    await p.waitForFunction(() => !!document.querySelector('#view section.nh-why a.nh-go') && !!document.querySelector('#view section.nh-map a.nh-link'), null, {timeout: 20000}).catch(() => {});
     const tag = `첫 화면 누르는 곳 @${w}${en ? ' 영어' : ''}`;
-    const r = await p.evaluate(() => {
-      const box = document.querySelector('#view section.th-home'); if (!box) return null;
-      const rows = [...box.querySelectorAll('.th-map a.th-row')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), n: a.querySelector('.th-n')?.textContent ?? null, w: Math.round(b.width), h: Math.round(b.height)}; });
-      const more = box.querySelector('a.th-more'), mb = more?.getBoundingClientRect();
-      return {rows, more: more ? {href: more.getAttribute('href'), h: Math.round(mb.height)} : null, clockTaps: box.querySelectorAll('svg.th-clock a.th-tap').length, yr: box.querySelector('.th-map button.th-yr')?.tagName ?? null};
-    });
-    if (!r) { fail('첫 화면 누르는 곳', tag + ' 테마 칸 없음'); await ctx.close(); continue; }
-    const want = TH.order.S.slice(0, 3).map(n => '#/t/i/' + enc(n));
-    if (JSON.stringify(r.rows.map(x => x.href)) !== JSON.stringify(want)) fail('업종 줄 고리 = 싹 앞 셋 차례', tag + ' ' + JSON.stringify(r.rows.map(x => x.href)) + ' ≠ ' + JSON.stringify(want));
-    if (r.rows.some((x, k) => x.n !== String(k + 1))) fail('업종 줄 번호 1 · 2 · 3', tag + ' ' + JSON.stringify(r.rows.map(x => x.n)));
-    const small = r.rows.filter(x => x.w < 48 || x.h < 48); if (small.length) fail('업종 줄 누르는 자리 48px 아래', tag + ' ' + JSON.stringify(small));
-    if (!r.more || r.more.href !== '#/t/sprout' || r.more.h < 48) fail('싹 자리 모두 보기 고리', tag + ' ' + JSON.stringify(r.more));
-    if (r.clockTaps) fail('첫 화면 그림 위 고리', tag + ' 궤도 · 시계 누르는 곳 ' + r.clockTaps + '개가 남음 — 2026-10-21 18:22 지움');
-    if (r.yr !== 'BUTTON') fail('한 해 줄 그림 단추', tag + ' ' + r.yr);
-    if (!en) {
-      const one = p.locator('#view section.th-home .th-map a.th-row').first();
-      if (await one.count()) {
-        await one.click(); await settle(p);
-        const h1 = await p.evaluate(() => location.hash);
-        if (h1 !== want[0]) fail('① 줄 누르면 그 업종 쪽', `${tag} ${h1} ≠ ${want[0]}`);
-        await p.evaluate(() => { location.hash = '#/'; }); await settle(p);
-        await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-map a.th-row').length > 0, null, {timeout: 20000}).catch(() => {});
-      } else fail('① 업종 줄 없음', tag);
-      const more = p.locator('#view section.th-home a.th-more').first();
-      if (await more.count()) { await more.click(); await settle(p); const h2 = await p.evaluate(() => location.hash); if (h2 !== '#/t/sprout') fail('모두 보기 누르면 싹 자리 전부', `${tag} ${h2}`); }
-      if (w === 390) { await p.evaluate(() => { location.hash = '#/'; }); await settle(p); await look(tag + ' 첫 화면', p); }
+    const SEL = ['#view section.nh-map a.nh-link', '#view section.nh-rec a.nh-link', '#view section.nh-why a.nh-go'], WANT = ['#/f/ind', '#/t/pick', '#/t/picks', '#/why'];
+    const r = await p.evaluate(sel => sel.flatMap(q => [...document.querySelectorAll(q)].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(b.width), h: Math.round(b.height)}; })), SEL);
+    if (JSON.stringify(r.map(x => x.href)) !== JSON.stringify(WANT)) fail('새 첫 화면 고리 넷', tag + ' ' + JSON.stringify(r.map(x => x.href)) + ' ≠ ' + JSON.stringify(WANT));
+    const small = r.filter(x => x.w < 48 || x.h < 48); if (small.length) fail('새 첫 화면 고리 누르는 자리 48px 아래', tag + ' ' + JSON.stringify(small));
+    if (!en && w === 390) for (const [k, want] of WANT.entries()) {
+      const loc = k === 0 ? p.locator(SEL[0]).first() : k === 3 ? p.locator(SEL[2]).first() : p.locator(SEL[1]).nth(k - 1);
+      if (!(await loc.count())) { fail('새 첫 화면 고리 없음', `${tag} ${want}`); continue; }
+      await loc.click(); await settle(p);
+      const hh = await p.evaluate(() => location.hash);
+      if (decodeURIComponent(hh) !== want) fail('새 첫 화면 고리 누르면 그 쪽', `${tag} ${hh} ≠ ${want}`);
+      await p.evaluate(() => { location.hash = '#/'; }); await settle(p);
+      await p.waitForFunction(() => !!document.querySelector('#view section.nh-why a.nh-go'), null, {timeout: 20000}).catch(() => {});
     }
+    if (w === 390 && !en) await look(tag + ' 첫 화면', p);
     if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
     bump('첫 화면 누르는 곳'); await ctx.close();
   }
-  /* ⑫ 첫 화면 주황 숫자 넷(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」) — 「진짜 싹 n곳」 머리 · 칸 셋(진짜 싹 · 새로 들어옴 · 싹 자리)을 누르면 그 목록
-     — 고리 · 누르는 자리 48 · 목록 업종 = 자료 거르기(진짜 = 점 넷 · 새로 = d 1) · 수 = 첫 화면 숫자 · 없는 거르기는 「?」 */
+  /* ⑫ 거른 목록(사장님 2026-10-20 09:46 「주황색 클릭 해봤는데 않돼」 · 옛 첫 화면 주황 숫자 칸 셋 — 진짜 싹 · 새로 들어옴 · 싹 자리)
+     2026-10-28 새 첫 화면(order-1112)에는 주황 숫자 칸이 없어 목록 쪽을 주소로 바로 엶 — 목록 업종 = 자료 거르기(진짜 = 점 넷 · 새로 = d 1) · 빈 목록 글 · 머리 · 없는 거르기는 「?」
+     (네 자리 수는 ② 가 첫 화면 업종 칸 네 줄과 자료 count 를 맞댐) */
   /* 실제 사이트는 매시 새 자료로 올라감 — 검사가 처음 받은 자료와 화면이 받은 자료가 다른 때일 수 있음
      (2026-10-20 seven 9/11 theme 「새로 들어옴 화면 5곳 · 검사 자료 4곳 · 싹 자리 38 · 37」 — 화면 숫자와 목록은 서로 같았음)
      → 셀 때마다 자료를 새로 받고, 걸리면 자료를 다시 받아 화면을 새로 열어 한 번 더 셈 · 그 결과만 남김 · 진짜 다름은 두 번째에도 걸림 */
@@ -540,41 +519,29 @@ try {
     const REMOTE = isRemote(base);
     for (const w of [390, 320]) for (let again = 0; ; again++) {
       const [TH, HM] = await Promise.all([getJ('/next/data/theme.json'), getJ('/next/data/theme-home.json')]);
-      if (!TH || !HM) { fail('주황 숫자 자료', `@${w} 다시 못 받음`); break; }
-      if (process.env.THEME_STALE_TEST && again === 0) HM.count.fresh += 1; // 검사 자체 시험 — 처음 받은 자료만 한 곳 많게(자료가 바뀐 사이 흉내 · 실제 사이트 쪽은 다시 세어 통과 · 이 방은 걸림)
+      if (!TH || !HM) { fail('거른 목록 자료', `@${w} 다시 못 받음`); break; }
       const ind = new Map(TH.inds.map(i => [i.n, i]));
       const wantReal = TH.order.S.filter(n => ind.get(n)?.sc === 4), wantNew = TH.order.S.filter(n => ind.get(n)?.d === 1);
       sink = REMOTE && again === 0 ? [] : null;
       try {
-      const {p, ctx} = await open('#/', {w, h: 844}), tag = `주황 숫자 @${w}`;
-      await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-three a').length === 3, null, {timeout: 20000}).catch(() => {});
-      const openFold = () => p.evaluate(() => { const d = document.querySelector('#view section.th-home details.th-hfold'); if (d) d.open = true; return !!d; }); // 계절 판(2026-10-21 00:51) — 주황 숫자는 「숫자로 자세히 보기」 안 · 펼친 뒤 똑같이 잼
-      if (!await openFold()) fail('주황 숫자 접는 칸', `@${w} details.th-hfold 없음`);
-      const r = await p.evaluate(() => ({head: (() => { const a = document.querySelector('#view section.th-home h2.th-ans a.th-ansl'); if (!a) return null; const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), w: Math.round(b.width), h: Math.round(b.height)}; })(), boxes: [...document.querySelectorAll('#view section.th-home .th-three a')].map(a => { const b = a.getBoundingClientRect(); return {href: a.getAttribute('href'), n: a.querySelector('b')?.textContent, t: a.querySelector('span')?.textContent, w: Math.round(b.width), h: Math.round(b.height)}; })}));
-      const wantB = [['#/t/sprout/real', num(HM.count.real) + '곳', '진짜 싹'], ['#/t/sprout/new', num(HM.count.fresh) + '곳', '새로 들어옴'], ['#/t/sprout', num(HM.count.S) + '곳', '싹 자리']];
-      if (JSON.stringify(r.boxes.map(b => [b.href, b.n, b.t])) !== JSON.stringify(wantB)) fail('주황 숫자 칸 고리', tag + ' ' + JSON.stringify(r.boxes));
-      if (r.head) fail('「진짜 싹 n곳」 머리 줄이 남음', tag + ' ' + JSON.stringify(r.head) + ' — 2026-10-22 총정리(감사 A7): 첫 줄 「진짜 싹 · n곳 ›」과 같은 숫자 · 같은 고리라 지움'); // 머리를 누르던 길(#/t/sprout/real)은 아래 첫 줄 누르기가 그대로 잼
-      const small = r.boxes.filter(b => b && (b.w < 48 || b.h < 48)); if (small.length) fail('주황 숫자 누르는 자리 48 아래', tag + ' ' + JSON.stringify(small));
-      if (w === 390) for (const [k, sel] of [[0, '#view section.th-home .th-three a >> nth=0'], [1, '#view section.th-home .th-three a >> nth=1'], [2, '#view section.th-home .th-three a >> nth=2']]) {
-        await p.evaluate(() => { location.hash = '#/'; }); await settle(p);
-        await p.waitForFunction(() => document.querySelectorAll('#view section.th-home .th-three a').length === 3, null, {timeout: 20000}).catch(() => {});
-        await openFold();
-        await p.locator(sel).first().click(); await settle(p);
-        const hh = await p.evaluate(() => location.hash), want = wantB[k][0];
-        if (hh !== want) { fail('주황 숫자 누르면 그 목록', `${tag} ${k} ${hh} ≠ ${want}`); continue; }
-        const L = await p.evaluate(() => ({h2: document.querySelector('#view .th-ans')?.textContent ?? '', rows: [...document.querySelectorAll('#view .th-rows a.th-row, #view .th-tiles a.th-tile, #view .th-chips a.th-chip')].map(a => decodeURIComponent(a.getAttribute('href').replace('#/t/i/', ''))), empty: document.querySelector('#view .empty')?.textContent ?? ''}));
-        const wantRows = want === '#/t/sprout/real' ? wantReal : want === '#/t/sprout/new' ? wantNew : TH.order.S;
-        if (JSON.stringify(L.rows) !== JSON.stringify(wantRows)) fail('거른 목록 업종', `${tag} ${want} ${L.rows.length} ≠ ${wantRows.length} 「${L.rows.slice(0, 3).join(' · ')}」`);
-        if (!wantRows.length && !L.empty) fail('거른 목록 빈 글', `${tag} ${want}`);
-        if (want !== '#/t/sprout' && !L.h2.startsWith(want.endsWith('real') ? '진짜 싹 ' : '새로 들어온 싹 ')) fail('거른 목록 머리', `${tag} ${want} 「${L.h2}」`);
-        await look(tag + ' ' + want, p); if (want !== '#/t/sprout') await rules(tag + ' ' + want, p);
-      }
-      if (p._errs.length) fail('화면 오류', tag + ' ' + p._errs[0]);
-      bump('주황 숫자'); await ctx.close();
+        const tag = `거른 목록 @${w}`;
+        for (const want of ['#/t/sprout/real', '#/t/sprout/new', '#/t/sprout']) {
+          const {p, ctx} = await open(want, {w, h: 844});
+          await p.waitForFunction(() => !!document.querySelector('#view .th-ans, #view .empty'), null, {timeout: 20000}).catch(() => {});
+          const L = await p.evaluate(() => ({h2: document.querySelector('#view .th-ans')?.textContent ?? '', rows: [...document.querySelectorAll('#view .th-rows a.th-row, #view .th-tiles a.th-tile, #view .th-chips a.th-chip')].map(a => decodeURIComponent(a.getAttribute('href').replace('#/t/i/', ''))), empty: document.querySelector('#view .empty')?.textContent ?? ''}));
+          const wantRows = want === '#/t/sprout/real' ? wantReal : want === '#/t/sprout/new' ? wantNew : TH.order.S;
+          if (JSON.stringify(L.rows) !== JSON.stringify(wantRows)) fail('거른 목록 업종', `${tag} ${want} ${L.rows.length} ≠ ${wantRows.length} 「${L.rows.slice(0, 3).join(' · ')}」`);
+          if (!wantRows.length && !L.empty) fail('거른 목록 빈 글', `${tag} ${want}`);
+          if (want !== '#/t/sprout' && !L.h2.startsWith(want.endsWith('real') ? '진짜 싹 ' : '새로 들어온 싹 ')) fail('거른 목록 머리', `${tag} ${want} 「${L.h2}」`);
+          await look(tag + ' ' + want, p); if (want !== '#/t/sprout') await rules(tag + ' ' + want, p);
+          if (p._errs.length) fail('화면 오류', tag + ' ' + want + ' ' + p._errs[0]);
+          await ctx.close();
+        }
+        bump('거른 목록');
       } catch (e) { const g = sink; sink = null; for (const [k, x] of g ?? []) fail(k, x); throw e; }
       const got = sink; sink = null;
       if (!got || !got.length) break;
-      bump('자료가 바뀌어 다시 셈'); console.log(`자료가 바뀌어 다시 셈 — 주황 숫자 @${w} ${got.length}건 · 첫 줄 ${got[0][0]} ${String(got[0][1]).slice(0, 160)}`); // 숨기지 않고 남김
+      bump('자료가 바뀌어 다시 셈'); console.log(`자료가 바뀌어 다시 셈 — 거른 목록 @${w} ${got.length}건 · 첫 줄 ${got[0][0]} ${String(got[0][1]).slice(0, 160)}`); // 숨기지 않고 남김
     }
     const b = await open('#/t/sprout/zzz');
     const t = await b.p.evaluate(() => document.querySelector('#view .empty')?.textContent ?? '');
@@ -585,8 +552,9 @@ try {
   {
     const no = [['**/next/data/theme*.json*', r => r.fulfill({status: 404, body: 'x'})]];
     const a = await open('#/', {routes: no});
-    const t = await a.p.evaluate(() => document.querySelector('#view section.th-home')?.textContent ?? '');
-    if (!/^\? 테마 시계 자료를 받지 못했어요/.test(t.trim())) fail('자료 없을 때 첫 화면', t.slice(0, 60));
+    await a.p.waitForFunction(() => !!document.querySelector('#view section.nh-map'), null, {timeout: 20000}).catch(() => {});
+    const t = await a.p.evaluate(() => document.querySelector('#view section.nh-map .nh-p')?.textContent ?? '');
+    if (!/^\? 업종 자료를/.test(t.trim())) fail('자료 없을 때 첫 화면', '업종 칸 「? 업종 자료를 …」 줄이 아님 — ' + t.slice(0, 60)); // 2026-10-28 새 첫 화면(옛 테마 칸 「? 테마 시계 자료를 받지 못했어요」)
     if (a.p._errs.length) fail('자료 없을 때 화면 오류', a.p._errs[0]);
     await a.ctx.close();
     const b = await open('#/t/how', {routes: no});

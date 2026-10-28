@@ -1,0 +1,318 @@
+/* 새 첫 화면 모양(사장님 2026-10-28(서울) 11:12 「어」 — 첫 화면부터 처음 보는 사람 눈높이로 · 11:21 「5배빨리해」 · 칸은 home-new.js)
+   바탕은 청록 판 그대로(#152D30 · check_white ①) — 소개 · 오늘 시장 · 안내는 청록 위 흰 글 · 업종 · 지난 기록 · 사기 전 확인은 밝은 카드
+   그림자 · 광택(그러데이션) · 입체 없음(check_white ④) · 글 17px 이상 · 누르는 것 48 이상 · 단추 테두리나 바탕은 둘레와 3 이상 */
+html.home #view { --nh-card: #FDFAF6; --nh-ink: #1E2B2A; --nh-sub: #44514E; --nh-line: #E3DACD; --nh-go: #1F6F57; --nh-link: #17614B;
+  --nh-S: #1E9C7B; --nh-B: #D24B6E; --nh-W: #B26F27; --nh-Q: #7D8885; --nh-zS: #E3F3EC; --nh-zB: #FBE6EB; --nh-zW: #F7ECDD; --nh-zQ: #ECEFEE; }
+html.home #view .nh-hero, html.home #view .nh-sec, html.home #view .nh-foot, html.home #view .nh-short { margin: 0 16px; }
+html.home #view .nh-bootw { margin: 0; text-align: start; color: inherit; min-height: 100vh; } /* 여는 동안 소개 칸(boot-home.js) — 다 그린 첫 화면 소개 칸과 같은 자리 */
+html.home #view .nh-hero { display: grid; gap: 12px; padding: 8px 4px 22px; color: #FFFFFF; }
+html.home #view .nh-kick { margin: 0; justify-self: start; padding: 3px 12px; border-radius: 999px; border: 1px solid #5FBFA6; color: #9FE6D2; font-size: 17px; font-weight: 700; }
+html.home #view .nh-h1 { margin: 0; font-size: 29px; line-height: 1.32; font-weight: 800; color: #FFFFFF; letter-spacing: -0.01em; text-wrap: balance; }
+html.home #view .nh-h1 > span { display: block; }
+html.home #view .nh-h1 .nh-acc { color: #6FDDBC; }
+html.home #view .nh-sub { margin: 0; font-size: 18px; line-height: 1.5; color: #D6E4E1; }
+html.home #view .nh-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+html.home #view .nh-fact { display: grid; justify-items: center; gap: 2px; padding: 10px 4px; border-radius: 14px; background: #1F3D40; }
+html.home #view .nh-fact b { font-size: 22px; line-height: 1.2; color: #FFFFFF; }
+html.home #view .nh-fact span { font-size: 17px; color: #C9DAD6; }
+html.home #view .nh-no { margin: 0; font-size: 17px; line-height: 1.45; color: #C9DAD6; }
+
+/* 밝은 카드 */
+html.home #view .nh-sec { display: grid; gap: 12px; margin-top: 16px; padding: 20px 16px; border-radius: 22px; background: var(--nh-card); color: var(--nh-ink); border: 1px solid var(--nh-line); }
+html.home #view .nh-h2 { margin: 0; font-size: 23px; line-height: 1.35; font-weight: 800; color: var(--nh-ink); text-wrap: balance; }
+html.home #view .nh-d, html.home #view .nh-p, html.home #view .nh-how { margin: 0; font-size: 17px; line-height: 1.5; color: var(--nh-sub); }
+html.home #view .nh-p { color: var(--nh-ink); font-size: 18px; }
+html.home #view .nh-how { padding: 10px 12px; border-radius: 14px; background: #F1ECE4; color: var(--nh-ink); }
+html.home #view .nh-link { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; padding: 0 4px; color: var(--nh-link); font-size: 18px; font-weight: 800; text-decoration: none; }
+html.home #view .nh-link::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--nh-line); } /* 나눔 줄(누르는 테두리 아님 — 단추 테두리 대비 셈 밖) */
+html.home #view .nh-link i { font-style: normal; font-size: 22px; }
+html.home #view .nh-links { display: grid; }
+
+/* 업종 점 그림 */
+html.home #view .nh-plotw { margin: 0 -4px; }
+html.home #view .nh-plot { display: block; width: 100%; height: auto; max-width: 100%; }
+html.home #view .nh-zq-S { fill: var(--nh-zS); } html.home #view .nh-zq-B { fill: var(--nh-zB); } html.home #view .nh-zq-W { fill: var(--nh-zW); } html.home #view .nh-zq-Q { fill: var(--nh-zQ); }
+html.home #view .nh-zline { stroke: #5B6764; stroke-width: 1; stroke-dasharray: 4 4; }
+html.home #view .nh-dot { stroke: #FEFEFE; stroke-width: 1.5; }
+html.home #view .nh-dot-S { fill: var(--nh-S); } html.home #view .nh-dot-B { fill: var(--nh-B); } html.home #view .nh-dot-W { fill: var(--nh-W); } html.home #view .nh-dot-Q { fill: var(--nh-Q); }
+html.home #view .nh-dot4 { stroke: #1E2B2A; stroke-width: 2.5; }
+html.home #view .nh-zl, html.home #view .nh-dl, html.home #view .nh-tick { paint-order: stroke; stroke: #FDFAF6; stroke-width: 4px; stroke-linejoin: round; }
+html.home #view .nh-zl { font-size: 14px; font-weight: 800; }
+html.home #view .nh-zl-S { fill: #12664F; } html.home #view .nh-zl-B { fill: #A9304F; } html.home #view .nh-zl-W { fill: #7E4E10; } html.home #view .nh-zl-Q { fill: #44514E; }
+html.home #view .nh-tick { font-size: 13px; fill: #44514E; }
+html.home #view .nh-dl { font-size: 15px; font-weight: 800; fill: #1E2B2A; }
+html.home #view .nh-leg { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; margin: 0; padding: 0; list-style: none; }
+html.home #view .nh-lg { display: flex; align-items: center; gap: 8px; padding: 2px 0; border-bottom: 1px solid #EFE8DE; font-size: 17px; color: var(--nh-ink); min-width: 0; }
+html.home #view .nh-lg i { flex: none; width: 12px; height: 12px; border-radius: 50%; }
+html.home #view .nh-lg-S i { background: var(--nh-S); } html.home #view .nh-lg-B i { background: var(--nh-B); } html.home #view .nh-lg-W i { background: var(--nh-W); } html.home #view .nh-lg-Q i { background: var(--nh-Q); }
+html.home #view .nh-lg b { margin-left: auto; font-size: 17px; }
+html.home #view .nh-ax { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+html.home #view .nh-ax li { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 8px; font-size: 17px; line-height: 1.45; color: var(--nh-sub); }
+html.home #view .nh-ax b { color: var(--nh-ink); }
+html.home #view .nh-old { margin: 0; font-size: 17px; line-height: 1.45; color: var(--nh-sub); }
+html.home #view .nh-rule { display: grid; gap: 6px; padding: 12px 14px; border-radius: 16px; background: #F1ECE4; }
+html.home #view .nh-rt { margin: 0; font-size: 17px; font-weight: 800; color: var(--nh-ink); }
+html.home #view .nh-rl { margin: 0; padding-left: 22px; display: grid; gap: 4px; font-size: 17px; line-height: 1.45; color: var(--nh-ink); }
+
+/* 지난 기록 */
+html.home #view .nh-cmp { display: grid; gap: 6px; }
+html.home #view .nh-ck { margin: 0; font-size: 18px; font-weight: 800; color: var(--nh-ink); }
+html.home #view .nh-br { display: grid; grid-template-columns: 8.4em minmax(0, 1fr) 2.8em; align-items: center; gap: 8px; }
+html.home #view .nh-bn { font-size: 17px; color: var(--nh-sub); }
+html.home #view .nh-bt { height: 14px; border-radius: 999px; background: #E9E3DA; overflow: hidden; }
+html.home #view .nh-bf { display: block; height: 100%; border-radius: 999px; }
+html.home #view .nh-cmp-up .nh-me { background: #1E9C7B; } html.home #view .nh-cmp-up .nh-all { background: #9AA6A3; }
+html.home #view .nh-cmp-dn .nh-me { background: #C2583A; } html.home #view .nh-cmp-dn .nh-all { background: #C9A99E; }
+html.home #view .nh-bv { justify-self: end; font-size: 18px; color: var(--nh-ink); }
+html.home #view .nh-won { display: grid; gap: 4px; padding: 12px 14px; border-radius: 16px; background: #E6F3EE; }
+html.home #view .nh-wk { margin: 0; font-size: 18px; font-weight: 800; color: var(--nh-ink); }
+html.home #view .nh-wl { margin: 0; font-size: 17px; line-height: 1.5; color: var(--nh-ink); }
+html.home #view .nh-wl b { font-size: 18px; }
+html.home #view .nh-wn { margin: 0; font-size: 17px; line-height: 1.45; color: var(--nh-sub); }
+html.home #view .nh-miss { display: grid; gap: 8px; }
+html.home #view .nh-stack { display: flex; gap: 2px; height: 16px; border-radius: 999px; overflow: hidden; }
+html.home #view .nh-stack i { display: block; flex-basis: 0; min-width: 4px; }
+html.home #view .nh-w1 i, html.home #view .nh-stack .nh-w1 { background: #B26F27; }
+html.home #view .nh-w0 i, html.home #view .nh-stack .nh-w0 { background: #DDB066; }
+html.home #view .nh-w2 i, html.home #view .nh-stack .nh-w2 { background: #8A9592; }
+html.home #view .nh-ml { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+html.home #view .nh-ml li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; align-items: start; gap: 8px; }
+html.home #view .nh-ml li > i { width: 12px; height: 12px; margin-top: 7px; border-radius: 3px; }
+html.home #view .nh-mt { display: grid; font-size: 17px; line-height: 1.45; color: var(--nh-sub); }
+html.home #view .nh-mt b { color: var(--nh-ink); }
+html.home #view .nh-mp { font-size: 18px; color: var(--nh-ink); }
+html.home #view .nh-warn { display: grid; gap: 4px; padding: 12px 14px; border-radius: 16px; background: #F1ECE4; }
+html.home #view .nh-warn.nh-worse { background: #FBE9EC; }
+html.home #view .nh-wt { margin: 0; font-size: 18px; font-weight: 800; color: #7A1F37; }
+html.home #view .nh-warn:not(.nh-worse) .nh-wt { color: var(--nh-ink); }
+html.home #view .nh-wd { margin: 0; font-size: 17px; line-height: 1.5; color: var(--nh-ink); }
+
+/* 오늘 시장 — 청록 위(띠 · 시황 사실은 예전 모양 그대로) */
+html.home #view .nh-sec.nh-mkt { background: transparent; border-color: #3E5F62; color: #F2F3F3; }
+html.home #view .nh-mkt .nh-h2 { color: #FFFFFF; }
+
+/* 사기 전에 확인하기 */
+html.home #view .nh-go { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; border-radius: 16px; background: var(--nh-go); color: #FFFFFF; font-size: 20px; font-weight: 800; text-decoration: none; }
+html.home #view .nh-go i { font-style: normal; font-size: 24px; }
+html.home #view .nh-why .w-month { color: var(--nh-ink); }
+
+/* 모든 화면 보기 · 안내 */
+html.home #view .nh-short { margin-top: 16px; }
+html.home #view .nh-foot { display: grid; gap: 8px; margin-top: 20px; margin-bottom: 24px; padding: 4px 4px 0; color: #D6E4E1; }
+html.home #view .nh-fh { margin: 0; font-size: 19px; font-weight: 800; color: #FFFFFF; }
+html.home #view .nh-fp { margin: 0; font-size: 17px; line-height: 1.5; color: #C9DAD6; }
+@media (max-width: 359px) {
+  html.home #view .nh-hero, html.home #view .nh-sec, html.home #view .nh-foot, html.home #view .nh-short { margin-left: 10px; margin-right: 10px; }
+  html.home #view .nh-sec { padding: 16px 12px; }
+  html.home #view .nh-h1 { font-size: 26px; }
+  html.home #view .nh-br { grid-template-columns: 7.6em minmax(0, 1fr) 2.6em; }
+}
+
+/* ── 최고급 핑크 판(사장님 2026-10-28 11:56 「과감하게 대담하게 해」 · 12:00 「안돼 배경을 최고급 핑크로 해」 · docs/design/why-mock-2026-10-28/order-1200.txt) ──
+   첫 화면만(다른 쪽은 사장님 답을 기다림) · 바탕 = 장미 빛 핑크 · 글 = 짙은 자주 · 강조 = 짙은 자홍 장미(#A31F70 — 빨강은 오른 숫자에만이라 빨강 쪽을 피함 · check_white ④) · 위 · 아래 막대 = 짙은 포도주 빛
+   청록 판(clock.css html.white.clock.clock.clock)보다 한 단 위(.home)에서 값만 바꿈 — 칸 자리 · 크기는 그대로 */
+html.white.clock.clock.clock.home {
+  color-scheme: light;
+  --pk-bg: #F7D4DE; --pk-card: #FFF7F9; --pk-tint: #FBE8EE; --pk-line: #EBC0CE; --pk-ink: #2A1420; --pk-sub: #5E3446; --pk-acc: #A31F70; --pk-wine: #3D1028;
+  --bg: #F7D4DE; --night: #F7D4DE; --band: #F7D4DE; --violet: #2A1420;
+  --card: #FFF7F9; --card2: #FBE8EE; --card3: #F4D9E1;
+  --hair: #B9748F; --hair2: #B9748F; --line: #EBC0CE; --hair-soft: #F0CBD6; --seam: #EBC0CE; --press: #F4D9E1; --lift: #FFF7F9;
+  --ink: #2A1420; --ink-hi: #1A0B13; --sub: #5E3446; --mute: #6B3F52; --flat: #6B3F52;
+  --violet-ink: #2A1420; --violet-wash: #FBE8EE; --violet-line: #B9748F; --violet-glow: #FBE8EE;
+  --gold: #8C4A12; --gold-wash: #FBE8EE; --gold-line: #A31F70;
+  --up: #B4123A; --down: #1F5FBF; --up-ink: #B4123A; --down-ink: #1F5FBF; --up-bg: #B4123A; --down-bg: #1F5FBF;
+  --up-fill: rgba(180, 18, 58, .16); --down-fill: rgba(31, 95, 191, .14); --up-fade: rgba(180, 18, 58, .06); --down-fade: rgba(31, 95, 191, .05);
+  --lacquer: #3D1028; --lacquer-ink: #FFFFFF; --lacquer-sub: #F7D4DE; --lacquer-gold: #F2B8C9;
+  --moon: #2A1420; --moonrow: #FBE8EE; --m4-band: #FFF7F9; --m4-line: #B9748F; --m4-soft: #B9748F;
+  background: #F7D4DE;
+}
+html.white.clock.clock.clock.home body { background: #F7D4DE; color: #2A1420; }
+html.white.clock.clock.clock.home body::after { background: radial-gradient(ellipse 120vw 70vh at 50% 0%, #FCEAF0 0%, #F7D4DE 58%, #F1C4D2 100%); } /* 위에서 비치는 은은한 빛(그림자 · 광택 칸이 아닌 바탕 한 장) */
+/* 위 · 아래 막대 — 짙은 포도주 빛 · 흰 글 */
+html.white.clock.clock.clock.home .top { background: rgba(61, 16, 40, .97); border-bottom: 1px solid rgba(255, 255, 255, .2); }
+html.white.clock.clock.clock.home .top .logo { color: #FFFFFF; text-shadow: none; }
+html.white.clock.clock.clock.home .top #giftBtn { background: #F2B8C9; }
+html.white.clock.clock.clock.home .tabs { background: #3D1028; border-top: 2px solid rgba(255, 255, 255, .22); }
+html.white.clock.clock.clock.home .tabs a { color: #FFFFFF; }
+html.white.clock.clock.clock.home .tabs a:nth-child(1) { --tbg: #B2456F; } html.white.clock.clock.clock.home .tabs a:nth-child(2) { --tbg: #9C3A62; }
+html.white.clock.clock.clock.home .tabs a:nth-child(3) { --tbg: #873055; } html.white.clock.clock.clock.home .tabs a:nth-child(4) { --tbg: #722748; }
+html.white.clock.clock.clock.home .tabs a[aria-current="page"] .ic { --tbg: #F7D4DE; color: #3D1028; }
+html.white.clock.clock.clock.home footer.foot a { color: #4A2333; }
+/* 칸 색 — 밝은 카드 · 짙은 자주 글 · 짙은 장미 강조 */
+html.white.clock.clock.clock.home #view { --nh-card: #FFF7F9; --nh-ink: #2A1420; --nh-sub: #5E3446; --nh-line: #EBC0CE; --nh-go: #A31F70; --nh-link: #A31F70; }
+html.white.clock.clock.clock.home #view .nh-hero { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-kick { border-color: #A31F70; color: #A31F70; background: #FFF7F9; }
+html.white.clock.clock.clock.home #view .nh-h1 { color: #2A1420; font-size: 32px; }
+html.white.clock.clock.clock.home #view .nh-h1 .nh-acc { color: #A31F70; }
+html.white.clock.clock.clock.home #view .nh-sub { color: #4A2333; }
+html.white.clock.clock.clock.home #view .nh-fact { background: #FFF7F9; border: 1px solid #EBC0CE; }
+html.white.clock.clock.clock.home #view .nh-fact b { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-fact span, html.white.clock.clock.clock.home #view .nh-no { color: #5E3446; }
+html.white.clock.clock.clock.home #view .nh-how, html.white.clock.clock.clock.home #view .nh-rule, html.white.clock.clock.clock.home #view .nh-warn { background: #FBE8EE; }
+html.white.clock.clock.clock.home #view .nh-won { background: #F6EEE4; }
+html.white.clock.clock.clock.home #view .nh-warn.nh-worse { background: #F9DCE5; }
+html.white.clock.clock.clock.home #view .nh-wt { color: #7A1238; }
+html.white.clock.clock.clock.home #view .nh-zl, html.white.clock.clock.clock.home #view .nh-dl, html.white.clock.clock.clock.home #view .nh-tick { stroke: #FFF7F9; }
+html.white.clock.clock.clock.home #view .nh-bt { background: #F1DDE4; }
+html.white.clock.clock.clock.home #view .nh-cmp-up .nh-me { background: #A31F70; } html.white.clock.clock.clock.home #view .nh-cmp-up .nh-all { background: #B7A3AB; }
+html.white.clock.clock.clock.home #view .nh-cmp-dn .nh-me { background: #3E6FB8; } html.white.clock.clock.clock.home #view .nh-cmp-dn .nh-all { background: #A9B7CC; }
+html.white.clock.clock.clock.home #view .nh-lg { border-bottom-color: #F3DCE4; }
+/* 오늘 시장 — 청록 위 칸이던 것을 밝은 카드로(띠 · 시황 사실 글색을 짙은 자주로) */
+html.white.clock.clock.clock.home #view .nh-sec.nh-mkt { background: #FFF7F9; border-color: #EBC0CE; color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-mkt .nh-h2 { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-mkt a.hm-band, html.white.clock.clock.clock.home #view .nh-mkt a.hm-band * { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-mkt a.hm-band .dn, html.white.clock.clock.clock.home #view .nh-mkt .w-news .dn { color: #1F5FBF; }
+html.white.clock.clock.clock.home #view .nh-mkt a.hm-band .up, html.white.clock.clock.clock.home #view .nh-mkt .w-news .up { color: #B4123A; }
+html.white.clock.clock.clock.home #view .nh-mkt .w-news .w-lb, html.white.clock.clock.clock.home #view .nh-mkt .w-news .w-ans p { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-mkt .w-news .w-why { border: 1px solid #A31F70; color: #A31F70; background: #FFF7F9; }
+html.white.clock.clock.clock.home #view .nh-mkt .s-split .gu { background: #B4123A; } html.white.clock.clock.clock.home #view .nh-mkt .s-split .gd { background: #1F5FBF; }
+html.white.clock.clock.clock.home #view .nh-why a.w-month { border: 1px dashed #A31F70; color: #2A1420; }
+/* 찾기 칸(아래에 붙음) — 포도주 빛 띠 · 밝은 칸 · 장미 단추 */
+html.white.clock.clock.clock.home .s-thumb { border-top: 1px solid rgba(255, 255, 255, .2); background: #3D1028; }
+html.white.clock.clock.clock.home .s-thumb form.w-find { border: 1px solid #FFFFFF; background: #FFF7F9; }
+html.white.clock.clock.clock.home .s-thumb .w-find .w-in { color: #2A1420; }
+html.white.clock.clock.clock.home .s-thumb .w-find .w-in::placeholder { color: #5E3446; }
+html.white.clock.clock.clock.home .s-thumb .w-find .w-go { background: #A31F70; color: #FFFFFF; }
+html.white.clock.clock.clock.home .s-thumb .w-hits { background: #FFF7F9; border-color: #B9748F; color: #2A1420; }
+/* 모든 화면 보기 · 안내 */
+html.white.clock.clock.clock.home .s-short details.w-all > summary { color: #2A1420; }
+html.white.clock.clock.clock.home #view .w-all .w-rows a, html.white.clock.clock.clock.home #view .w-all .w-rows a * { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-foot { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-fh { color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-fp { color: #4A2333; }
+html.white.clock.clock.clock.home #view .w-ess .ess-t, html.white.clock.clock.clock.home #view .w-ess .ess-l, html.white.clock.clock.clock.home #view .w-ess .ess-l.q { color: #2A1420; }
+html.white.clock.clock.clock.home #view .w-ess .ess-d > summary::after { border: 1px solid #A31F70; color: #A31F70; }
+html.white.clock.clock.clock.home .top #jhBtn { border: 1px solid #FFFFFF; background: #FFF7F9; color: #3D1028; } /* 진화 단추 — 포도주 빛 막대 위 밝은 알약(청록 판의 짙은 알약 · 짙은 글이 핑크 글색에 묻히지 않게) */
+
+/* ── 그림 많이 판(사장님 2026-10-28 12:09 「글보다는 주식 도식화로 표현을 정말 많이해 대범하게 해」 · order-1209.txt) ──
+   그림은 svg(바둑판 셈 밖 · 글자 크기 잣대 밖) — 그래도 그림 속 글은 14px 안팎 · 색은 칸마다 같은 뜻(고른 회사 = 자홍 · 모든 회사 = 회색 · 오른 = 빨강 · 내린 = 파랑) */
+html.white.clock.clock.clock.home #view {
+  --c-me: #A31F70; --c-all: #B7A3AB; --c-up: #B4123A; --c-dn: #1F5FBF; --c-ink: #2A1420; --c-sub: #5E3446; --c-wine: #3D1028; --c-soft: #E7A9C0; --c-pale: #F6DCE6;
+}
+html.home #view .nh-svg { display: block; width: 100%; height: auto; max-width: 100%; overflow: visible; }
+html.white.clock.clock.clock.home #view .nh-svg text { font-family: inherit; paint-order: stroke; stroke: #FFF7F9; stroke-width: 3px; stroke-linejoin: round; }
+/* 지수 석 달 */
+html.white.clock.clock.clock.home #view .nh-idx { display: grid; gap: 4px; padding: 12px 12px 8px; border-radius: 18px; background: #FFF7F9; border: 1px solid #EBC0CE; }
+html.white.clock.clock.clock.home #view .nh-ih { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+html.white.clock.clock.clock.home #view .nh-in { font-size: 17px; font-weight: 700; color: var(--c-sub); }
+html.white.clock.clock.clock.home #view .nh-iv { font-size: 26px; font-weight: 800; color: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-idx-big .nh-iv { font-size: 30px; }
+html.white.clock.clock.clock.home #view .nh-ic { font-size: 19px; font-weight: 800; }
+html.white.clock.clock.clock.home #view .nh-ic.up { color: var(--c-up); } html.white.clock.clock.clock.home #view .nh-ic.dn { color: var(--c-dn); } html.white.clock.clock.clock.home #view .nh-ic.fl { color: var(--c-sub); }
+html.white.clock.clock.clock.home #view .nh-ka { fill: rgba(163, 31, 112, .13); stroke: none; }
+html.white.clock.clock.clock.home #view .nh-kl { fill: none; stroke: var(--c-me); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+html.white.clock.clock.clock.home #view .nh-km { fill: var(--c-wine); }
+html.white.clock.clock.clock.home #view .nh-klast { fill: var(--c-me); stroke: #FFF7F9; stroke-width: 2.5; }
+html.white.clock.clock.clock.home #view .nh-kt { font-size: 14px; font-weight: 800; fill: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-kd { font-size: 13px; fill: var(--c-sub); }
+/* 업종 점 그림 덧붙임 */
+html.white.clock.clock.clock.home #view .nh-trail { fill: none; stroke: var(--c-wine); stroke-width: 1.6; stroke-dasharray: 3 3; opacity: .55; }
+html.white.clock.clock.clock.home #view .nh-trail0 { fill: var(--c-wine); opacity: .45; }
+html.white.clock.clock.clock.home #view .nh-axl { stroke: var(--c-sub); stroke-width: 1.4; }
+html.white.clock.clock.clock.home #view .nh-axh { fill: none; stroke: var(--c-sub); stroke-width: 1.6; }
+html.white.clock.clock.clock.home #view .nh-axt { font-size: 13px; font-weight: 800; fill: var(--c-sub); }
+html.white.clock.clock.clock.home #view .nh-zl { font-size: 15px; }
+html.white.clock.clock.clock.home #view .nh-dl { font-size: 16px; }
+/* 네 자리 수 막대 */
+html.home #view .nh-cnt { display: flex; gap: 3px; height: 54px; border-radius: 14px; overflow: hidden; }
+html.home #view .nh-cz { display: flex; align-items: center; justify-content: center; min-width: 0; flex-basis: 0; }
+html.home #view .nh-cz small { display: none; }
+html.white.clock.clock.clock.home #view .nh-cz b { font-size: 22px; font-weight: 900; color: #FFFFFF; }
+html.white.clock.clock.clock.home #view .nh-cz-S { background: #1C7A62; } html.white.clock.clock.clock.home #view .nh-cz-B { background: #A31F70; }
+html.white.clock.clock.clock.home #view .nh-cz-W { background: #8A520F; } html.white.clock.clock.clock.home #view .nh-cz-Q { background: #66716E; }
+html.white.clock.clock.clock.home #view .nh-leg { grid-template-columns: minmax(0, 1fr); gap: 2px; } /* 이름 · 수 한 줄씩(둘씩이면 「막 오르기 시작 37개」가 세 줄로 갈라짐) */
+html.white.clock.clock.clock.home #view .nh-lg { border-bottom: 0; padding: 0; }
+html.white.clock.clock.clock.home #view .nh-lg b { margin-left: auto; font-size: 17px; color: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-lg-S i { background: #1C7A62; } html.white.clock.clock.clock.home #view .nh-lg-B i { background: #A31F70; }
+html.white.clock.clock.clock.home #view .nh-lg-W i { background: #8A520F; } html.white.clock.clock.clock.home #view .nh-lg-Q i { background: #66716E; }
+html.white.clock.clock.clock.home #view .nh-real { display: grid; gap: 2px; margin: 0; padding: 12px 14px; border-radius: 16px; background: var(--c-wine); }
+html.white.clock.clock.clock.home #view .nh-rk { font-size: 17px; color: #F7D4DE; }
+html.white.clock.clock.clock.home #view .nh-real b { font-size: 24px; font-weight: 900; color: #FFFFFF; }
+/* 조건 수별 막대 */
+html.white.clock.clock.clock.home #view .nh-db { fill: var(--c-soft); } html.white.clock.clock.clock.home #view .nh-db4 { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-dball { fill: var(--c-all); }
+html.white.clock.clock.clock.home #view .nh-dv { font-size: 15px; font-weight: 800; fill: var(--c-ink); } html.white.clock.clock.clock.home #view .nh-dv4 { font-size: 19px; fill: var(--c-me); }
+html.white.clock.clock.clock.home #view .nh-dk { font-size: 14px; font-weight: 700; fill: var(--c-sub); }
+/* 그림 칸 공통 */
+html.home #view .nh-chart { display: grid; gap: 6px; margin: 0; padding: 12px; border-radius: 18px; }
+html.white.clock.clock.clock.home #view .nh-chart { background: #FFFFFF; border: 1px solid #F0D3DD; }
+html.white.clock.clock.clock.home #view .nh-ck { font-size: 18px; font-weight: 800; color: var(--c-ink); }
+html.home #view .nh-cap { margin: 0; font-size: 17px; line-height: 1.4; }
+html.white.clock.clock.clock.home #view .nh-cap { color: var(--c-sub); }
+/* 기둥 둘 */
+html.home #view .nh-c2w { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+html.home #view .nh-fig { display: grid; gap: 4px; margin: 0; padding: 10px 8px; border-radius: 18px; }
+html.white.clock.clock.clock.home #view .nh-fig { background: #FFFFFF; border: 1px solid #F0D3DD; }
+html.white.clock.clock.clock.home #view .nh-fig figcaption { font-size: 17px; font-weight: 800; line-height: 1.3; color: var(--c-ink); text-align: center; }
+html.white.clock.clock.clock.home #view .nh-cb.nh-me { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-cb.nh-all { fill: var(--c-all); }
+html.white.clock.clock.clock.home #view .nh-cv { font-size: 21px; font-weight: 900; } html.white.clock.clock.clock.home #view .nh-cv.nh-me { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-cv.nh-all { fill: var(--c-sub); }
+html.white.clock.clock.clock.home #view .nh-cl { font-size: 14px; font-weight: 700; fill: var(--c-ink); }
+/* 100만 원 · 사고판 돈 막대 */
+html.white.clock.clock.clock.home #view .nh-wz { stroke: var(--c-ink); stroke-width: 1.5; }
+html.white.clock.clock.clock.home #view .nh-wb.nh-me { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-wb.nh-all { fill: var(--c-all); }
+html.white.clock.clock.clock.home #view .nh-wv { font-size: 18px; font-weight: 900; } html.white.clock.clock.clock.home #view .nh-wv.nh-me { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-wv.nh-all { fill: var(--c-sub); }
+html.white.clock.clock.clock.home #view .nh-wl { font-size: 14px; font-weight: 700; fill: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-fbar.nh-buy { fill: var(--c-up); } html.white.clock.clock.clock.home #view .nh-fbar.nh-sell { fill: var(--c-dn); }
+html.white.clock.clock.clock.home #view .nh-fvv { font-size: 16px; font-weight: 900; } html.white.clock.clock.clock.home #view .nh-fvv.nh-buy { fill: var(--c-up); } html.white.clock.clock.clock.home #view .nh-fvv.nh-sell { fill: var(--c-dn); }
+/* 해마다 */
+html.white.clock.clock.clock.home #view .nh-yb.nh-me { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-yb.nh-all { fill: var(--c-all); }
+html.white.clock.clock.clock.home #view .nh-yb.nh-few { opacity: .45; }
+html.white.clock.clock.clock.home #view .nh-yv { font-size: 13px; font-weight: 800; } html.white.clock.clock.clock.home #view .nh-yv.nh-me { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-yv.nh-all { fill: var(--c-sub); }
+html.white.clock.clock.clock.home #view .nh-yk { font-size: 14px; font-weight: 800; fill: var(--c-ink); } html.white.clock.clock.clock.home #view .nh-yn { font-size: 12px; fill: var(--c-sub); }
+/* 범례 */
+html.home #view .nh-lg3 { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; padding: 0; list-style: none; }
+html.home #view .nh-lg3 li { display: flex; align-items: center; gap: 6px; font-size: 17px; }
+html.home #view .nh-lg3 i { width: 14px; height: 14px; border-radius: 4px; flex: none; }
+html.white.clock.clock.clock.home #view .nh-lg3 li { color: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-l-me i, html.white.clock.clock.clock.home #view .nh-l-sh i { background: var(--c-me); }
+html.white.clock.clock.clock.home #view .nh-l-all i, html.white.clock.clock.clock.home #view .nh-l-sm i { background: var(--c-all); }
+html.white.clock.clock.clock.home #view .nh-l-sw i { background: var(--c-pale); border: 2px solid var(--c-me); box-sizing: border-box; }
+/* 틀린 까닭 고리 */
+html.home #view .nh-miss2 { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 10px; } /* 고리 가운데 · 이름은 그 밑 한 줄씩(좁은 칸에서 글이 세 줄로 갈라지던 것) */
+html.home #view .nh-miss2 .nh-donut { width: 170px; }
+html.home #view .nh-miss2 .nh-ml { justify-self: stretch; }
+html.white.clock.clock.clock.home #view .nh-dn { fill: none; stroke-width: 24; }
+html.white.clock.clock.clock.home #view .nh-dn.nh-w1 { stroke: var(--c-wine); } html.white.clock.clock.clock.home #view .nh-dn.nh-w0 { stroke: #D27AA0; } html.white.clock.clock.clock.home #view .nh-dn.nh-w2 { stroke: var(--c-all); }
+html.white.clock.clock.clock.home #view .nh-ml li.nh-w1 > i { background: var(--c-wine); } html.white.clock.clock.clock.home #view .nh-ml li.nh-w0 > i { background: #D27AA0; } html.white.clock.clock.clock.home #view .nh-ml li.nh-w2 > i { background: var(--c-all); }
+html.white.clock.clock.clock.home #view .nh-missw .nh-ml li { grid-template-columns: 14px minmax(0, 1fr) auto; align-items: center; }
+html.white.clock.clock.clock.home #view .nh-missw .nh-ml li > i { margin-top: 0; width: 14px; height: 14px; }
+html.white.clock.clock.clock.home #view .nh-missw .nh-mt { font-size: 17px; font-weight: 700; color: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-missw .nh-mp { font-size: 22px; font-weight: 900; color: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-dnv { font-size: 24px; font-weight: 900; fill: var(--c-ink); } html.white.clock.clock.clock.home #view .nh-dnk { font-size: 14px; fill: var(--c-sub); }
+/* 날마다 */
+html.white.clock.clock.clock.home #view .nh-sb.nh-sh { fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-sb.nh-sm { fill: var(--c-all); } html.white.clock.clock.clock.home #view .nh-sb.nh-sw { fill: var(--c-pale); }
+html.white.clock.clock.clock.home #view .nh-s0 { fill: #E9DDE2; }
+/* 최근 두 달 큰 숫자 */
+html.home #view .nh-vs { display: flex; align-items: center; justify-content: center; gap: 18px; }
+html.home #view .nh-vs > span:not(.nh-vsx) { display: grid; justify-items: center; }
+html.white.clock.clock.clock.home #view .nh-vs b { font-size: 36px; font-weight: 900; line-height: 1.1; }
+html.white.clock.clock.clock.home #view .nh-vsa b { color: var(--c-me); } html.white.clock.clock.clock.home #view .nh-vsb b { color: var(--c-sub); }
+html.white.clock.clock.clock.home #view .nh-vs small { font-size: 17px; color: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-vsx { font-size: 18px; font-weight: 800; color: var(--c-sub); }
+/* 고른 길 깔때기 */
+html.white.clock.clock.clock.home #view .nh-fb { fill: var(--c-soft); } html.white.clock.clock.clock.home #view .nh-fb1 { fill: var(--c-me); }
+html.white.clock.clock.clock.home #view .nh-fv { font-size: 16px; font-weight: 900; fill: var(--c-ink); } html.white.clock.clock.clock.home #view .nh-fv1 { fill: #FFFFFF; stroke: none; }
+html.white.clock.clock.clock.home #view .nh-fl { font-size: 14px; font-weight: 700; fill: var(--c-ink); }
+/* 네 걸음 */
+html.white.clock.clock.clock.home #view .nh-sc { fill: #FFF7F9; stroke: var(--c-me); stroke-width: 3; } html.white.clock.clock.clock.home #view .nh-sc1 { fill: var(--c-me); }
+html.white.clock.clock.clock.home #view .nh-sk { font-size: 20px; font-weight: 900; fill: var(--c-me); } html.white.clock.clock.clock.home #view .nh-sk1 { fill: #FFFFFF; stroke: none; }
+html.white.clock.clock.clock.home #view .nh-st { font-size: 14px; font-weight: 800; fill: var(--c-ink); }
+html.white.clock.clock.clock.home #view .nh-sarr { fill: none; stroke: var(--c-me); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+/* 읽는 법(접은 칸) */
+html.home #view details.nh-more { border-radius: 16px; }
+html.home #view details.nh-more > summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 0 4px; list-style: none; cursor: pointer; font-size: 18px; font-weight: 800; }
+html.home #view details.nh-more > summary::-webkit-details-marker { display: none; }
+html.home #view details.nh-more[open] > summary i { transform: rotate(90deg); }
+html.home #view details.nh-more > summary i { font-style: normal; font-size: 22px; transition: transform .15s; }
+html.home #view .nh-mbody { display: grid; gap: 10px; padding: 4px 4px 8px; }
+html.white.clock.clock.clock.home #view details.nh-more > summary { color: var(--c-me); }
+html.white.clock.clock.clock.home #view .nh-mbody .nh-rl, html.white.clock.clock.clock.home #view .nh-mbody .nh-old { color: var(--c-ink); }
+
+html.white.clock.clock.clock.home #view .nh-l-buy i { background: var(--c-up); } html.white.clock.clock.clock.home #view .nh-l-sell i { background: var(--c-dn); }
+
+/* 그림 속 글도 17px 이상(check_theme 글씨 잣대 — 그림 글도 잼 · 사장님 눈 · 2026-10-28) */
+html.white.clock.clock.clock.home #view :is(.nh-kt, .nh-kd, .nh-tick, .nh-zl, .nh-dl, .nh-axt, .nh-dv, .nh-dk, .nh-cl, .nh-wl, .nh-yv, .nh-yk, .nh-yn, .nh-dnk, .nh-fl, .nh-fv, .nh-st, .nh-fvv) { font-size: 17px; }
+/* 관심 업종 소식(theme-watch.js noticeBox · 담은 기기만) — 핑크 카드 안 */
+html.white.clock.clock.clock.home #view .nh-map .th-news { display: grid; gap: 4px; margin: 0; padding: 12px 14px; border-radius: 16px; background: #FBE8EE; border: 1px solid #EBC0CE; }
+html.white.clock.clock.clock.home #view .nh-map .th-news :is(.th-nh, .th-nm, .th-nl, .th-nl *) { color: #2A1420; font-size: 17px; }
+html.white.clock.clock.clock.home #view .nh-map .th-news a { display: flex; align-items: center; min-height: 48px; text-decoration: none; }
+html.white.clock.clock.clock.home #view .nh-map .th-news a.th-hi { color: #A31F70; font-weight: 800; }
