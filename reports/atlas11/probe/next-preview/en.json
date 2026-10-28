@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-28T06:07:15.257Z",
+ "at": "2026-10-28T06:32:27.003Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,15 +14,15 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
-  "talk": true,
   "past": true,
   "rivals": true,
   "grow": true,
   "range": true,
-  "surge": true,
   "cal": true,
+  "surge": true,
+  "cond": true,
   "up": true,
+  "talk": true,
   "time": true,
   "info": true,
   "x": true,
@@ -48,101 +48,101 @@
    "@newwin": 15
   }
  },
- "seconds": 381,
- "secondsSum": 2482,
+ "seconds": 380,
+ "secondsSum": 2494,
  "shards": [
   {
    "shard": "1/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 4,
    "routes": 1947,
    "screens": 1990,
    "mine": 1947,
-   "seconds": 345,
+   "seconds": 361,
    "secs": {
     "open": 0.3,
-    "routes": 344.3
+    "routes": 359.9
    }
   },
   {
    "shard": "2/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1952,
    "screens": 1953,
    "mine": 1946,
-   "seconds": 352,
+   "seconds": 350,
    "secs": {
     "open": 0.4,
-    "routes": 350.2
+    "routes": 348.5
    }
   },
   {
    "shard": "3/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1946,
    "screens": 1947,
    "mine": 1946,
-   "seconds": 381,
+   "seconds": 380,
    "secs": {
     "open": 0.4,
-    "routes": 379.7
+    "routes": 378.6
    }
   },
   {
    "shard": "4/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1946,
    "screens": 1946,
    "mine": 1946,
-   "seconds": 361,
+   "seconds": 343,
    "secs": {
-    "open": 0.4,
-    "routes": 357.9
+    "open": 0.3,
+    "routes": 342.5
    }
   },
   {
    "shard": "5/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 2,
    "routes": 1946,
    "screens": 1946,
    "mine": 1946,
-   "seconds": 352,
+   "seconds": 369,
    "secs": {
-    "open": 0.3,
-    "routes": 351.6
+    "open": 0.4,
+    "routes": 368.1
    }
   },
   {
    "shard": "6/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 4,
    "routes": 1931,
    "screens": 1995,
    "mine": 1932,
-   "seconds": 339,
+   "seconds": 343,
    "secs": {
-    "open": 0.2,
-    "routes": 335.9,
-    "newwin": 2.5
+    "open": 0.3,
+    "routes": 339.8,
+    "newwin": 2.7
    }
   },
   {
    "shard": "7/7",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 4,
    "routes": 1867,
    "screens": 1987,
    "mine": 1868,
-   "seconds": 352,
+   "seconds": 348,
    "secs": {
     "open": 0.4,
-    "routes": 334.8,
-    "act": 7.2,
-    "edge": 8.5,
+    "routes": 331.9,
+    "act": 7.1,
+    "edge": 8.3,
     "grammar": 0
    }
   }
@@ -167,23 +167,82 @@
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412
  },
- "missing": 0,
+ "missing": 2,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "한글 남음(속성)": 2,
+  "사전에 없는 틀": 2
+ },
+ "fails": 4,
  "own": {
-  "fails": 0,
-  "missing": 0,
-  "leftover": 0
+  "fails": 4,
+  "missing": 2,
+  "leftover": 2
  },
  "mod": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
- "missingList": [],
- "all": [],
+ "missingList": [
+  {
+   "key": "조건으로 고른 회사 {n}번 중 {n}번",
+   "ex": "조건으로 고른 회사 100번 중 31번",
+   "at": "#/"
+  },
+  {
+   "key": "모든 회사 {n}번 중 {n}번",
+   "ex": "모든 회사 100번 중 24번",
+   "at": "#/"
+  }
+ ],
+ "all": [
+  {
+   "kind": "한글 남음(속성)",
+   "what": "@aria-label 조건으로 고른 회사 {n}번 중 {n}번",
+   "ex": "조건으로 고른 회사 100번 중 31번",
+   "at": [
+    "#/",
+    "새 창 · 몸값 · 급등 · 첫 화면 · 둘이 칸 자료 못 받음 #/",
+    "새 창 · 모든 자료 못 받음 #/",
+    "아주 큰 글씨 · #/",
+    "바꿔치기 · 오늘 한 줄 날짜 · 마감 0"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "한글 남음(속성)",
+   "what": "@aria-label 모든 회사 {n}번 중 {n}번",
+   "ex": "모든 회사 100번 중 24번",
+   "at": [
+    "#/",
+    "새 창 · 몸값 · 급등 · 첫 화면 · 둘이 칸 자료 못 받음 #/",
+    "새 창 · 모든 자료 못 받음 #/",
+    "아주 큰 글씨 · #/",
+    "바꿔치기 · 오늘 한 줄 날짜 · 마감 0"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "조건으로 고른 회사 {n}번 중 {n}번  ← 「조건으로 고른 회사 100번 중 31번」",
+   "ex": null,
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "모든 회사 {n}번 중 {n}번  ← 「모든 회사 100번 중 24번」",
+   "ex": null,
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  }
+ ],
  "truncated": false,
  "problems": [],
- "ok": true
+ "ok": false
 }
