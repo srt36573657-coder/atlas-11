@@ -9728,6 +9728,7 @@
   "복사했어요": "Copied",
   "복사하지 못했어요": "Couldn't copy",
   "마음 상태 체크": "Mood check",
+  "지난 {n}거래일 동안 {e} 업종 {n}곳은 평균 {n}%인데, 그 안에서 {e}은(는) {n}%예요.": "Over the last {n} trading days, the {e} industry ({n} companies) averaged {n}%, while {e} moved {n}%.",
   "서로 다른 업종에 분산 투자": "spread across different industries",
   "업종이 다르거나 비슷할 수 있음": "industries may differ or be alike",
   "거의 한 종목에 집중 투자": "almost all in one stock",
