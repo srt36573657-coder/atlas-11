@@ -105,8 +105,8 @@ const priceOf = async c => { if (!coCache.has(c)) coCache.set(c, await getJ('/at
 const used = new Set(), usedInd = new Set();
 const CODES = Object.keys(MKT.companies).sort();
 /* 「적기 · 팔기」에서 손으로 치는 산 값 — 오늘 삼성전자 값과 같으면 「질문 앞에 산 값이 보임」이 오늘 값 글에 걸림(2026-10-28 장 중 240,000원 — 전체 검사 home-new 1/11)
-   그래서 오늘 값과 다른 값으로(기본 240,000 · 같으면 1,000원씩 올림) · 판 값은 이 값 ± 10,000 */
-const BUYX = (() => { const t = Math.round(MKT.companies['005930']?.p ?? 0); let b = 240000; while (b === t || b + 10000 === t || b - 10000 === t) b += 1000; return b; })(), SELLUP = BUYX + 10000, SELLDN = BUYX - 10000;
+   그래서 실제 값이 될 수 없는 값으로(240,123 — 호가 단위 밖) · 판 값은 이 값 ± 10,000 */
+const BUYX = 240123, SELLUP = BUYX + 10000, SELLDN = BUYX - 10000; // 호가 단위(20만 원대 500원)에 없는 값 — 오늘 값 · 장 중 값과 겹칠 수 없음(mkt.json 값은 어제 값이라 겹침을 못 막았음 · 2/11)
 /** 회사 하나 고르기 — 문 조건 · 값 조건 · 업종은 서로 다르게(몫이 셋에 하나를 넘지 않게) */
 async function pick(pred, extra = () => true) {
   for (const c of CODES) {

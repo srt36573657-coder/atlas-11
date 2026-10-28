@@ -22,6 +22,7 @@ html.white .top .ibtn.tgift[aria-current="page"] { background: var(--gold-wash);
 /* 영어 · 좁은 폰(349px 아래) — 「Evolve」가 「진화」보다 길어 선물 단추와 함께 오른쪽으로 넘침(334 > 320) → 진화 단추 안 여백만 줄임 · 누름 높이 48 그대로 */
 @media (max-width: 379px) { html.white.en .top #jhBtn { padding: 0 var(--sp-1); } } /* 2026-10-25 — 360 폭도 1px 넘침(361 > 360 · 선물 단추 옆 여백 8 이 360 부터 붙음 · 큰 검사 gift-kakao 2/11) → 379 까지 */
 @media (max-width: 349px) { html.white.en .top #jhBtn { padding: 0 6px; } } /* 작은 폰 ③ 영어 「Evolve」 단추가 길어 맨 위 줄이 1px 넘치던 것 — 옆 여백 8 → 6(사장님 2026-10-26 01:33 「잘된 것 11가지 … 큰 쪽에서 7개 작은 곳에서 4개」 · 01:42 「응」) */
+@media (max-width: 349px) { html.white.en .top { padding-left: 4px; } html.white.en .top #jhBtn { padding: 0 3px; } } /* 2026-10-28 큰 검사 home-new 2/11 — 받은 글꼴로 그리면 「Evolve」 77px 이라 맨 위 줄이 5px 넘침(325 > 320 · 기기 글꼴 69px 일 때만 통과하던 것) → 왼쪽 여백 8 → 4 · 단추 안 여백 6 → 3 */
 @media (max-width: 349px) { html.white .top .logo { font-size: var(--fs-1); letter-spacing: .04em; text-indent: 0; width: auto; min-width: 48px; overflow: visible; justify-content: center; gap: 0; padding-left: 0; } }
 @media (max-width: 429px) { html.white.en .top .logo { width: auto; overflow: visible; justify-content: center; gap: 0; padding-left: 0; letter-spacing: .04em; text-indent: 0; } }
 
