@@ -393,3 +393,28 @@ html.home #view .nh-rng .nh-rd { fill: #A31F70; stroke: #FFFFFF; stroke-width: 3
 html.home #view .nh-rc { display: flex; justify-content: space-between; gap: 8px; margin: 0; font-size: 17px; color: #5E3446; }
 html.home #view .nh-3h { font-size: 17px; font-weight: 700; color: #6B3F52; }
 html.home #view .nh-3how { font-weight: 800; color: #2A1420; }
+/* ── 네 걸음(사장님 2026-10-29(서울) 01:48 「자 이 36이 둘리를 다 함께 아주 직관적으로 만든다면」 · docs/design/wise36-2026-10-29/order-0148.txt) ──
+   제갈량 「판 전체를 먼저 그린다」 · 데카르트 「쉬운 것부터 차례로」 · 이황 「어려운 공부를 그림으로」 — 동그라미 넷을 한 줄로 잇고 아래에 하는 일 낱말 · 작은 풀이
+   동그라미 둘레(바탕색 띠)가 잇는 줄을 끊어 걸음이 또렷하게 · 그림자 · 광택 없음(check_white ④) · 글 17px 이상 · 누르는 칸 48 이상 */
+html.home #view .nh-path ol { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; margin: 2px 0 0; padding: 0; list-style: none; }
+html.home #view .nh-path ol::before { content: ""; position: absolute; left: 12.5%; right: 12.5%; top: 21px; height: 4px; border-radius: 2px; background: #E3B6C5; }
+html.home #view .nh-path li { position: relative; min-width: 0; }
+html.home #view .nh-pt { display: grid; justify-items: center; gap: 2px; width: 100%; min-height: 48px; padding: 0 0 2px; border: 0; background: transparent; font: inherit; color: #2A1420; cursor: pointer; }
+html.home #view .nh-pt i { display: inline-grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; border: 4px solid #F7D4DE; background: #A31F70; color: #FFFFFF; font-style: normal; font-size: 21px; font-weight: 900; }
+html.home #view .nh-pt b { font-size: 20px; line-height: 1.2; font-weight: 900; color: #2A1420; white-space: nowrap; }
+html.home #view .nh-pt small { font-size: 17px; line-height: 1.25; font-weight: 700; color: #5E3446; white-space: nowrap; }
+html.home.en #view .nh-pt b { white-space: normal; text-align: center; } /* 영어(Look back)는 두 줄 · 낱말 가운데서 끊지 않음 */
+html.home.en #view .nh-pt small { display: none; } /* 영어 작은 풀이(Company name · one month later)는 칸보다 길어 세 줄 — 소개 칸이 찾기 줄 아래로 밀려 뺌(하는 일 낱말 넷은 그대로) */
+/* ① 찾기 — 단추 하나(세종 「쉽게」 · 왕양명 「하는 것」) + 고른 회사 고리 한 줄 */
+html.home #view .nh-door { display: grid; gap: 2px; }
+html.home #view .nh-gofind { width: 100%; border: 0; font: inherit; font-size: 21px; font-weight: 800; cursor: pointer; }
+html.white.clock.clock.clock.home #view .nh-golist { color: #A31F70; }
+/* ② 보기 · 오늘 자리 — 같은 걸음 안 작은 마디(번호 그대로 · 이름 옆 작은 글) */
+html.home #view .nh-part.nh-psub { margin-top: 30px; }
+html.home #view .nh-pm small { font-size: 19px; font-weight: 800; color: #5E3446; }
+html.home #view .nh-psub .nh-ktw { margin: 6px 0 4px; }
+/* ④ 돌아보기 — 한 달 된 기록 줄 · 한 달 뒤 쪽 고리 */
+html.white.clock.clock.clock.home #view .nh-part a.w-month { border: 1px dashed #A31F70; color: #2A1420; }
+html.white.clock.clock.clock.home #view .nh-part .nh-link { color: #A31F70; }
+@media (max-width: 380px) { html.home #view .nh-pt b { font-size: 18px; letter-spacing: -0.03em; } html.home #view .nh-pt small { white-space: normal; word-break: keep-all; text-align: center; } } /* 360 폭 — 작은 풀이는 두 줄로(칸 넘침 0) */
+@media (max-width: 359px) { html.home #view .nh-pt i { width: 40px; height: 40px; font-size: 19px; } html.home #view .nh-path ol::before { top: 18px; } html.home #view .nh-pt b { font-size: 17px; letter-spacing: -0.05em; } }

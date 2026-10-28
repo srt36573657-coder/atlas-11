@@ -15,16 +15,19 @@ test('여는 동안 소개 칸 글 = 다 그린 소개 칸 글', () => {
   const src = read('site/next/home-new.js'), i = src.indexOf('export function heroBox'), j = src.indexOf('\n}\n', i);
   assert.ok(i >= 0 && j > i, 'home-new.js 에 heroBox 가 없음');
   const hero = quoted(src.slice(i, j));
-  for (const t of ['나도 살까 싶을 때', '주식을 사기 전에,', '지난 기록으로 2분만 확인하세요', '코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여 드립니다.', '앞날을 맞히거나 사고팔기를 권하지 않습니다.', '회사', '업종', '년 기록', '이 사이트 소개']) {
+  for (const t of ['나도 살까 싶을 때', '주식을 사기 전에,', '지난 기록으로 2분만 확인하세요', '회사 이름 넣기', '지난 기록으로 고른 회사 보기', '앞날을 맞히거나 사고팔기를 권하지 않습니다.', '이 사이트 소개']) { // 2026-10-29 01:48 네 걸음 — 숫자 셋 · 풀이 줄 · 오늘 코스피 줄은 ② 보기로
     assert.ok(hero.has(t), `heroBox 에 「${t}」 없음`);
     assert.ok(boot.has(t), `boot-home.js 에 「${t}」 없음 — 여는 동안 글과 다름`);
   }
+  assert.ok(src.slice(i, j).includes("'#/t/picks'") && read('site/next/boot-home.js').includes("'#/t/picks'"), '지난 기록으로 고른 회사 고리 #/t/picks 가 두 곳에 같이 없음');
 });
 
-test('네 마디 줄(2026-10-28 14:45 기승전결) — 여는 동안 칸과 다 그린 칸이 같은 네 낱말', () => {
+test('네 걸음(2026-10-29 01:48 「이 36이 둘리를 다 함께 아주 직관적으로」) — 여는 동안 칸과 다 그린 칸이 같은 낱말 · 차례', () => {
   const boot = read('site/next/boot-home.js'), src = read('site/next/home-new.js');
-  for (const k of ['결론', '근거', '오늘', '할 일']) { assert.ok(src.includes(`'${k}'`), `home-new.js PARTS 에 「${k}」 없음`); assert.ok(boot.includes(`'${k}'`), `boot-home.js 에 「${k}」 없음`); }
-  assert.match(read('site/next/app.js'), /railBox\(\), hero, goFirst\(\), partWhy\(B\), recordBox\(B\), partToday\(TH, H\?\.idx\?\.KOSPI\), mapBox\(TH, news\)/, '첫 화면 차례가 네 마디가 아님');
+  for (const k of ['찾기', '보기', '묻기', '돌아보기', '회사 이름', '지난 기록', '질문 11개', '한 달 뒤', '네 걸음']) { assert.ok(src.includes(`'${k}'`), `home-new.js 네 걸음에 「${k}」 없음`); assert.ok(boot.includes(`'${k}'`), `boot-home.js 에 「${k}」 없음`); }
+  for (const k of ['결론', '근거', '할 일']) assert.ok(!boot.includes(`'${k}'`), `boot-home.js 에 옛 네 마디 낱말 「${k}」이 남음`);
+  assert.match(read('site/next/app.js'), /\[hero, partWhy\(B\), recordBox\(B\), partToday\(TH, H\?\.idx\?\.KOSPI\), mapBox\(TH, news\), mktBox\(band\.el, newsBox\(H\), H\), partDo\(B\),/, '첫 화면 차례가 네 걸음이 아님');
+  assert.match(read('site/next/app.js'), /whyBox\(\{done: \(C\?\.stop \?\? 0\) > 0\}\), backBox\(\{month\}\), thumb/, '③ 묻기 뒤에 ④ 돌아보기가 없음');
 });
 
 test('index.html 이 boot-home.js 를 app.js 보다 먼저 부름 · 새 첫 화면 모양을 받음', () => {

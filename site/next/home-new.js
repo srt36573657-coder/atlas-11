@@ -1,7 +1,8 @@
 /* 새 첫 화면 칸들(사장님 2026-10-28(서울) 10:55 처음 본 사람의 말 · 11:12 「어」 — 첫 화면부터 처음 보는 사람 눈높이로 다시 짜기 · 11:21 「5배빨리해」
    · 12:00 「배경을 최고급 핑크로」 · 12:09 「글보다는 주식 도식화로 표현을 정말 많이해 대범하게 해」)
    명령문 docs/design/why-mock-2026-10-28/order-1055.txt · order-1112.txt · order-1200.txt · order-1209.txt — 글은 짧게 · 숫자는 그림으로 · 긴 풀이는 「읽는 법」 안에
-   위에서 아래: 소개(코스피 석 달 그림) → 업종 지도(점 그림 · 네 자리 막대 · 조건 수별 막대) → 조건으로 고른 회사(기둥 둘 · 100만 원 막대 · 해마다 · 틀린 까닭 고리 · 날마다 · 고른 길 깔때기)
+   2026-10-29 01:48 「이 36이 둘이를 다 함께 아주 직관적으로」(order-0148.txt) — 네 걸음 ① 찾기(소개) ② 보기(지난 기록 · 오늘 자리) ③ 묻기(질문 11개) ④ 돌아보기(한 달 뒤)
+   옛 차례: 소개(코스피 석 달 그림) → 업종 지도(점 그림 · 네 자리 막대 · 조건 수별 막대) → 조건으로 고른 회사(기둥 둘 · 100만 원 막대 · 해마다 · 틀린 까닭 고리 · 날마다 · 고른 길 깔때기)
    → 오늘 시장(코스닥 석 달 · 오른 · 내린 회사 · 사고판 돈) → 사기 전 확인(네 걸음 그림) → 공식 안내
    숫자는 자료 그대로(home.json · theme-home.json · theme-bloom.json · 요약 파일) — 지어 채우지 않음 · 못 받으면 「?」
    글은 textContent 로만 · 색은 home-new.css(글 속 style 없음 · 너비만 CSSOM) · 그림은 svg(바둑판 셈 밖) · 앞날 말 없음 · 사고팔기 권하지 않음 */
@@ -69,29 +70,34 @@ function todayLine(x) {
   return h('div', {class: 'nh-ktw'}, line, s, h('p', {class: 'nh-rc', 'data-num': ''}, h('span', {text: `석 달 낮은 값 ${num(r0(lo))}`}), h('span', {text: `높은 값 ${num(r0(hi))}`})));
 }
 
-/** 맨 위 소개 — 무엇을 하는 곳인지 · 숫자 셋 · 코스피 석 달 그림 · 권하지 않음 */
-export function heroBox({coN = null, indN = null, years = null, kospi = null} = {}) {
-  const fact = (v, label) => h('div', {class: 'nh-fact'}, h('b', {class: 'num', text: v == null ? '?' : num(v)}), h('span', {text: label})); // 큰 숫자는 숫자만(320 폭 한 줄 · 영어 엔진이 단위를 두 번 쓰지 않게)
+/** 맨 위 소개 = ① 찾기(사장님 2026-10-29(서울) 01:48 「자 이 36이 둘리를 다 함께 아주 직관적으로 만든다면 질문하지 말고 따지지도 말고 만들어」 · docs/design/wise36-2026-10-29/order-0148.txt)
+   현명한 서른여섯 명(wise36.json)의 잣대를 한 화면에 — 소크라테스 · 장자 「보는 사람의 물음에서 시작」(마음 한 줄) · 제갈량 「판 전체를 먼저 그린다」 · 데카르트 「쉬운 것부터 차례로」(네 걸음 그림)
+   · 왕양명 「아는 것과 하는 것은 하나」 · 세종 「쉽게」(누르면 바로 찾기 칸 · 단추 하나) · 노자 · 파스칼 · 링컨 「덜어 내고 짧게」(숫자 셋 · 풀이 줄 · 오늘 코스피 줄은 ② 보기로 옮김)
+   · 맹자 · 한비자 「권하지 않음을 먼저 밝힘」 — 글은 home-new.js 와 boot-home.js 가 같음(tests/atlas11/home-new.test.mjs) */
+const focusFind = () => { const i = document.querySelector('#view form.w-find input'); if (!i) return; i.scrollIntoView({block: 'nearest'}); i.focus(); }; // 찾기 칸(아래 붙은 줄 · data-w=find)에 바로 글을 넣게
+export function heroBox() {
   return h('section', {class: 'nh-hero', 'aria-label': '이 사이트 소개'},
-    h('p', {class: 'nh-q', text: '나도 살까 싶을 때'}), // 기 — 보는 사람의 지금 마음에서 시작(샘플 34 네 칸 만화 첫 칸 「나도 살까?」)
+    h('p', {class: 'nh-q', text: '나도 살까 싶을 때'}), // 보는 사람의 지금 마음(샘플 34 네 칸 만화 첫 칸 · 소크라테스 「물음에서 시작」)
     h('h2', {class: 'nh-h1'}, h('span', {text: '주식을 사기 전에,'}), ' ', h('span', {class: 'nh-acc', text: '지난 기록으로 2분만 확인하세요'})), // 한 줄 통째(영어 엔진이 문장을 나누지 않게)
-    h('p', {class: 'nh-sub', text: '코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여 드립니다.'}),
-    h('div', {class: 'nh-facts', 'data-num': ''}, fact(coN, '회사'), fact(indN, '업종'), fact(years, '년 기록')),
-    todayLine(kospi),
+    pathBox(),
+    h('div', {class: 'nh-door'},
+      h('button', {type: 'button', class: 'nh-go nh-gofind', onclick: focusFind}, h('span', {text: '회사 이름 넣기'}), h('i', {'aria-hidden': 'true', text: '›'})),
+      h('a', {class: 'nh-link nh-golist', href: '#/t/picks'}, h('span', {text: '지난 기록으로 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))),
     h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}));
 }
 
-/** 네 마디(사장님 2026-10-28 14:45 「추상적이다 명확한 구조로 하라 육하원칙 기승전결 구조 · 내부는 육하원칙이나 보여지는 것은 선명하고 명확」
-   · 샘플 36개(머리글 셋 × 마디 표시 셋 × 그림 둘 × 할 일 단추 둘)에서 1등 34(큰 숫자 머리글 · 네 마디 줄 · 그림 모두 · 첫 마디 할 일 단추) 위에 다른 샘플 장점을 더함 — docs/design/why-mock-2026-10-28/order-1445.txt)
-   ① 결론(기 — 무엇을 하는 곳 · 오늘 코스피) ② 근거(승 — 왜 지난 기록인가 · 고른 회사 대 모든 회사) ③ 오늘(전 — 업종 · 시장 · 고르는 기준) ④ 할 일(결 — 질문 11개)
-   마디 머리 안은 누가 · 무엇 · 언제 · 어디 · 왜 · 어떻게를 다 채우되 보이는 것은 마디 이름 · 큰 숫자 · 결론 한 줄뿐 */
-export const PARTS = Object.freeze([['1', '결론'], ['2', '근거'], ['3', '오늘'], ['4', '할 일']]);
-export function railBox() { // 누르면 그 마디로 내려감(주소 # 는 그대로 — 길 바꾸기 없음) · 여는 동안 칸(boot-home.js)도 같은 글 · 같은 높이
-  return h('nav', {class: 'nh-rail', 'aria-label': '첫 화면 네 마디'}, ...PARTS.map(([n, k], i) => h('button', {type: 'button', class: 'nh-rb' + (i ? '' : ' on'), onclick: () => document.getElementById('nh-p' + n)?.scrollIntoView({behavior: 'smooth', block: 'start'})}, h('i', {'aria-hidden': 'true', text: n}), h('span', {text: k}))));
+/** 네 걸음(사장님 2026-10-29 01:48 · 옛 네 마디 「결론 · 근거 · 오늘 · 할 일」(2026-10-28 14:45 기승전결)을 하는 일 낱말로 — 기 찾기 · 승 보기 · 전 묻기 · 결 돌아보기)
+   ① 찾기(회사 이름 · 지난 기록으로 고른 회사) → ② 보기(지난 기록 · 오늘 자리) → ③ 묻기(질문 11개) → ④ 돌아보기(한 달 뒤) — 이황 「어려운 공부를 그림으로」 · 공자 「이름을 바로 세움」(마디 이름 = 하는 일)
+   누르면 ①은 찾기 칸에 글자를 넣게 · ② ~ ④는 그 걸음으로 내려감(주소 # 는 그대로) · 여는 동안 칸(boot-home.js)도 같은 글 · 같은 높이 */
+export const PARTS = Object.freeze([['1', '찾기', '회사 이름'], ['2', '보기', '지난 기록'], ['3', '묻기', '질문 11개'], ['4', '돌아보기', '한 달 뒤']]);
+export function pathBox() {
+  return h('nav', {class: 'nh-path', 'aria-label': '네 걸음'}, h('ol', {}, ...PARTS.map(([n, k, c]) => h('li', {},
+    h('button', {type: 'button', class: 'nh-pt', onclick: () => (n === '1' ? focusFind() : document.getElementById('nh-p' + n)?.scrollIntoView({behavior: 'smooth', block: 'start'}))},
+      h('i', {'aria-hidden': 'true', text: n}), h('b', {text: k}), h('small', {text: c}))))));
 }
 /** 마디 머리 — 동그라미 번호 · 마디 이름 · 큰 숫자 줄 · 결론 한 줄 · 작은 풀이 한 줄 */
-export function partHead({n, k, big = [], line = '', cap = ''}) {
-  return h('div', {class: 'nh-part', id: 'nh-p' + n},
+export function partHead({n, k, big = [], line = '', cap = '', id = 'nh-p' + n}) {
+  return h('div', {class: 'nh-part', id},
     h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: n}), h('span', {text: k})),
     big.length ? h('p', {class: 'nh-pb', 'data-num': ''}, ...big) : null,
     line ? h('h2', {class: 'nh-pl', text: line}) : null,
@@ -107,7 +113,7 @@ const card3 = (n, v, t, warn = false, how = '') => h('li', {class: 'nh-3c' + (wa
 export function partWhy(B) { // 답 먼저 + 겹치지 않는 근거 셋(샘플 07 민토 피라미드 · 01 잡스 「세 가지 숫자」 · 19 마에다 「세 줄」) — 셋째는 나쁜 숫자(19 · 25 · 34 · 35 — 숨기지 않음)
   const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base), a = ok ? Math.round(R.rate) : null, b = ok ? Math.round(R.base) : null, rc = recent(B);
   const fa = ok && fin(R.fall) && fin(R.fallBase) ? [Math.round(R.fall), Math.round(R.fallBase)] : null;
-  const head = partHead({n: '2', k: '근거', line: ok ? `100번 고르면 ${a}번, 시장보다 5% 넘게 더 올랐어요` : '조건으로 고른 회사의 지난 기록이에요', cap: ok ? '더 나았어요. 늘은 아니에요. 근거는 셋이에요.' : ''});
+  const head = partHead({n: '2', k: '보기', line: ok ? `100번 고르면 ${a}번, 시장보다 5% 넘게 더 올랐어요` : '조건으로 고른 회사의 지난 기록이에요', cap: ok ? '더 나았어요. 늘은 아니에요. 근거는 셋이에요.' : ''});
   if (!ok) return head;
   head.append(h('div', {class: 'nh-wafs'},
     h('figure', {class: 'nh-wf'}, waffle(a, 'me', '조건으로 고른 회사'), h('figcaption', {}, h('b', {class: 'num', text: a + '번'}), h('span', {text: '조건으로 고른 회사'}))),
@@ -118,16 +124,18 @@ export function partWhy(B) { // 답 먼저 + 겹치지 않는 근거 셋(샘플 
   head.append(h('p', {class: 'nh-pc', text: '고른 회사 대 모든 회사 · 100번 가운데 · 한 달 뒤 시장보다 5% 넘게'}), h('p', {class: 'nh-pc nh-pc2', text: '앞날을 맞히는 숫자가 아니라 이미 일어난 횟수예요.'})); // 샘플 14 네이트 실버
   return head;
 }
-/** ③ 오늘 머리 — 오늘 코스피 · 조건 4개를 다 채운 업종 수 */
+/** ② 보기 · 오늘 자리(옛 ③ 오늘 · 2026-10-29 네 걸음) — 오늘 코스피 한 줄과 석 달 자리 막대(소개 칸에서 옮김 · 갈릴레이 「재고 또 잼」) · 조건 4개를 다 채운 업종 수 */
 export function partToday(TH, kospi) {
-  const d = kospi?.day, c = fin(d) ? (Math.round(d * 100) === 0 ? 'fl' : d > 0 ? 'up' : 'dn') : '', inds = TH?.inds ?? [], n4 = inds.filter(i => i.sc === 4).length;
-  return partHead({n: '3', k: '오늘', big: fin(d) ? [h('b', {class: 'num ' + c, text: p2(d)}), h('span', {text: '오늘 코스피'})] : [],
-    line: !inds.length ? '오늘 업종과 시장이에요' : n4 ? `업종 ${num(inds.length)}개 중 ${num(n4)}개가 조건 4개를 다 채웠어요` : `업종 ${num(inds.length)}개 중 조건 4개를 다 채운 곳은 오늘 없어요`,
-    cap: '점 하나가 업종 하나 · 오른쪽 위일수록 시장보다 강해요'});
+  const inds = TH?.inds ?? [], n4 = inds.filter(i => i.sc === 4).length;
+  return h('div', {class: 'nh-part nh-psub', id: 'nh-p2t'},
+    h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '2'}), h('span', {text: '보기'}), h('small', {text: '오늘 자리'})),
+    todayLine(kospi),
+    h('h2', {class: 'nh-pl', text: !inds.length ? '오늘 업종과 시장이에요' : n4 ? `업종 ${num(inds.length)}개 중 ${num(n4)}개가 조건 4개를 다 채웠어요` : `업종 ${num(inds.length)}개 중 조건 4개를 다 채운 곳은 오늘 없어요`}),
+    h('p', {class: 'nh-pc', text: '점 하나가 업종 하나 · 오른쪽 위일수록 시장보다 강해요'}));
 }
-/** ④ 할 일 머리 — 질문 11개 */
+/** ③ 묻기 머리 — 질문 11개(소크라테스 「계속 물어 스스로 답을 찾게」 · 프랭클린 「점검표」) */
 export function partDo(B) { // 지는 길을 뒤집으면 점검표(샘플 10 멍거) — 5% 못 넘은 까닭 셋을 사기 전 물음 셋으로 · 물음 끝은 「?」
-  const head = partHead({n: '4', k: '할 일', big: [h('b', {class: 'num', text: '11'}), h('span', {text: '개 질문'})], line: '사기 전에 한 번 더 확인하세요', cap: '약 2분 · 답은 이 기기에만 남아요'});
+  const head = partHead({n: '3', k: '묻기', big: [h('b', {class: 'num', text: '11'}), h('span', {text: '개 질문'})], line: '사기 전에 한 번 더 확인하세요', cap: '약 2분 · 답은 이 기기에만 남아요'});
   const Wy = B?.why?.all;
   if (Number.isInteger(Wy?.miss) && Wy.miss > 0 && Array.isArray(Wy.why) && Wy.why.length === 3) {
     const p = v => Math.round((v / Wy.miss) * 100), [w0, w1, w2] = Wy.why;
@@ -137,8 +145,6 @@ export function partDo(B) { // 지는 길을 뒤집으면 점검표(샘플 10 �
   }
   return head;
 }
-/** ① 결론 아래 할 일 단추 — 끝까지 내리지 않아도 바로(샘플 36개 중 첫 마디 단추가 있는 쪽이 할 일까지 거리 6분의 1) */
-export const goFirst = () => h('a', {class: 'nh-go nh-go1', href: '#/why'}, h('span', {text: '「왜 사?」 시작하기'}), h('i', {'aria-hidden': 'true', text: '›'}));
 
 /** 업종 점 그림 — 점 하나 = 업종 하나 · 가로 = 최근 20거래일 시장보다 더 오른 정도(%p) · 세로 = 최근 5거래일 · 기준선 가로 RULE.bloomX · 세로 0 · 축 화살표와 뜻은 그림 안에 */
 function plot(TH) {
@@ -343,23 +349,21 @@ export function mktBox(band, news, H = null) {
     fl ? h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '코스피 · 누가 더 사고 팔았나'}), fl, h('ul', {class: 'nh-lg3', 'aria-hidden': 'true'}, h('li', {class: 'nh-l-buy'}, h('i'), h('span', {text: '더 산 돈'})), h('li', {class: 'nh-l-sell'}, h('i'), h('span', {text: '더 판 돈'})))) : null);
 }
 
-/** 사기 전에 확인하기 — 네 걸음 그림 · 첫 고리는 열한 질문 전 #/why · 다 답한 기기 #/gdr(본질 문 ④ — data-w=gdr 첫 고리) */
-function steps4() {
-  const st = [['1', '회사 고르기'], ['11', '질문 11개'], ['✓', '내 결과'], ['30', '한 달 뒤']], W = 340, H = 104, gw = W / st.length;
-  const s = svgBox('nh-steps', W, H, '네 걸음 · ' + st.map(x => x[1]).join(' · '));
-  st.forEach(([k, t], i) => { const cx = gw * i + gw / 2;
-    if (i) s.append(sv('path', {class: 'nh-sarr', d: `M${(cx - gw + 30).toFixed(1)},34 L${(cx - 30).toFixed(1)},34 M${(cx - 37).toFixed(1)},28 L${(cx - 30).toFixed(1)},34 L${(cx - 37).toFixed(1)},40`}));
-    s.append(sv('circle', {class: 'nh-sc' + (i === 1 ? ' nh-sc1' : ''), cx: cx.toFixed(1), cy: 34, r: 25}));
-    T(s, cx, 41, k, 'nh-sk' + (i === 1 ? ' nh-sk1' : ''), 'middle'); T(s, cx, 88, t, 'nh-st', 'middle'); });
-  return s;
-}
-export function whyBox({done = false, month = null} = {}) {
+/** 사기 전에 확인하기(③ 묻기 · data-w=gdr) — 첫 고리 #/why · 다 답한 기기 #/gdr(본질 문 ④) · 네 걸음 그림은 맨 위 한 곳(2026-10-29 · 같은 그림 두 번 뺌 — 노자 「덜어 냄」) */
+export function whyBox({done = false} = {}) {
   const go = h('a', {class: 'nh-go', href: '#/why'}, h('span', {text: '「왜 사?」 시작하기'}), h('i', {'aria-hidden': 'true', text: '›'}));
   const back = done ? h('a', {class: 'nh-link', href: '#/gdr'}, h('span', {text: '지난 답 돌아보기'}), h('i', {'aria-hidden': 'true', text: '›'})) : null;
   return h('section', {class: 'nh-sec nh-why', 'data-w': 'gdr', 'aria-label': '사기 전에 확인하기'},
-    h('h2', {class: 'nh-h2', text: '사기 전에 확인하기'}), steps4(),
-    h('p', {class: 'nh-d', text: '약 2분 걸립니다. 답은 이 기기에만 남습니다.'}),
-    back, go, month);
+    h('h2', {class: 'nh-h2', text: '사기 전에 확인하기'}),
+    h('p', {class: 'nh-d', text: '약 2분 걸립니다. 답은 이 기기에만 남습니다.'}), back, go);
+}
+/** ④ 돌아보기(2026-10-29 네 걸음 · 본질 「한 달 뒤 그날 정한 대로 했어?로 돌아보게 한다」) — 마르쿠스 아우렐리우스 「날마다 돌아봄」 · 다윈 「어긋난 사실을 바로 적음」 · 사마천 「있는 그대로」
+   한 달 된 기록이 있는 기기만 「한 달 전에 정한 대로 했나요?」 줄(app.js monthLine · a.w-month) · 한 달 뒤 쪽 고리 #/why/later */
+export function backBox({month = null} = {}) {
+  const head = partHead({n: '4', k: '돌아보기', line: '한 달 뒤, 정한 대로 했는지 봐요', cap: '틀린 것도 지우지 않아요.'});
+  if (month) head.append(month);
+  head.append(h('a', {class: 'nh-link', href: '#/why/later'}, h('span', {text: '한 달 뒤 기록 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  return head;
 }
 
 /** 맨 아래 공식 안내 — 본질 세 줄 칸(app.js essenceBox · data-w=ess)과 안내 두 줄 */
