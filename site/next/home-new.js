@@ -115,7 +115,7 @@ export function partWhy(B) { // 답 먼저 + 겹치지 않는 근거 셋(샘플 
   head.append(h('ol', {class: 'nh-3', 'aria-label': '근거 셋'}, card3('1', `${a} 대 ${b}`, '더 자주 올랐어요'), fa ? card3('2', `${fa[0]} 대 ${fa[1]}`, '덜 자주 뒤처졌어요') : null,
     rc.P != null && rc.Q != null ? card3('3', `${rc.P} 대 ${rc.Q}`, rc.P < rc.Q ? '최근 두 달은 졌어요' : '최근 두 달도 앞섰어요', rc.P < rc.Q) : null));
   if (fa) head.append(h('p', {class: 'nh-pc nh-3how', text: '①과 ③은 높을수록 좋고 ②는 낮을수록 좋아요'})); // 읽는 법 한 줄(샘플 06 노먼 「높을수록 좋음 ↑ · 낮을수록 좋음 ↓」)
-  head.append(h('p', {class: 'nh-pc', text: '고른 회사 대 모든 회사 · 100번 가운데 · 한 달 뒤 시장보다 5% 넘게'}), h('p', {class: 'nh-pc nh-pc2', text: '앞날의 확률이 아니라 이미 일어난 횟수예요.'})); // 샘플 14 네이트 실버
+  head.append(h('p', {class: 'nh-pc', text: '고른 회사 대 모든 회사 · 100번 가운데 · 한 달 뒤 시장보다 5% 넘게'}), h('p', {class: 'nh-pc nh-pc2', text: '앞날을 맞히는 숫자가 아니라 이미 일어난 횟수예요.'})); // 샘플 14 네이트 실버
   return head;
 }
 /** ③ 오늘 머리 — 오늘 코스피 · 조건 4개를 다 채운 업종 수 */

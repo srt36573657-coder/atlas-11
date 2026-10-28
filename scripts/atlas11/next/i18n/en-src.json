@@ -9740,7 +9740,7 @@
   "그 업종이 통째로 식고 있지 않나요?": "Is the whole sector cooling off?",
   "기대만큼 더 오를 까닭이 있나요?": "Is there a reason it can rise as much as you expect?",
   "업종은 괜찮은데 그 회사만 처지지 않나요?": "Is only that company lagging while its sector is fine?",
-  "앞날의 확률이 아니라 이미 일어난 횟수예요.": "These are counts of what already happened, not odds for the future.",
+  "앞날을 맞히는 숫자가 아니라 이미 일어난 횟수예요.": "These are counts of what already happened, not a forecast.",
   "더 나았어요. 늘은 아니에요. 근거는 셋이에요.": "Better, but not always. Three reasons.",
   "{n} 대 {n}": "{n1} vs {n2}",
   "더 자주 올랐어요": "Rose more often",
