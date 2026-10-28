@@ -9728,6 +9728,7 @@
   "복사했어요": "Copied",
   "복사하지 못했어요": "Couldn't copy",
   "마음 상태 체크": "Mood check",
+  "{d} {t} 장 중": "{d} {t}, during trading",
   "조건 {n}개를 다 채운 업종은 오늘 없습니다.": "No industry meets all {n} conditions today.",
   "{e} 석 달": "{e}, 3 months",
   "{d}부터 {d}까지": "{d1} to {d2}",

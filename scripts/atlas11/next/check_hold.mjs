@@ -104,6 +104,9 @@ const coCache = new Map();
 const priceOf = async c => { if (!coCache.has(c)) coCache.set(c, await getJ('/atlas/data/co/' + c + '.json').then(j => (j?.c?.price > 0 ? {p: j.c.price, d: j.c.priceDate} : null)).catch(() => null)); return coCache.get(c); };
 const used = new Set(), usedInd = new Set();
 const CODES = Object.keys(MKT.companies).sort();
+/* 「적기 · 팔기」에서 손으로 치는 산 값 — 오늘 삼성전자 값과 같으면 「질문 앞에 산 값이 보임」이 오늘 값 글에 걸림(2026-10-28 장 중 240,000원 — 전체 검사 home-new 1/11)
+   그래서 오늘 값과 다른 값으로(기본 240,000 · 같으면 1,000원씩 올림) · 판 값은 이 값 ± 10,000 */
+const BUYX = (() => { const t = Math.round(MKT.companies['005930']?.p ?? 0); let b = 240000; while (b === t || b + 10000 === t || b - 10000 === t) b += 1000; return b; })(), SELLUP = BUYX + 10000, SELLDN = BUYX - 10000;
 /** 회사 하나 고르기 — 문 조건 · 값 조건 · 업종은 서로 다르게(몫이 셋에 하나를 넘지 않게) */
 async function pick(pred, extra = () => true) {
   for (const c of CODES) {
@@ -584,7 +587,7 @@ const errText = p => p.locator(`${SEL} .hd-err`).first().textContent().catch(() 
     await layout(p, tag + ' 적기 칸');
     await addOne(p, tag, '삼성전자', '삼성전자', 'abc', '3');
     if ((await errText(p)) !== '산 값을 숫자로 적어 줘.') fail('틀린 입력 글(산 값)', `${tag} 「${await errText(p)}」`);
-    await p.locator(`${SEL} form.hd-add input.hd-in-n`).nth(0).fill('240,000'); await p.locator(`${SEL} form.hd-add input.hd-in-n`).nth(1).fill('');
+    await p.locator(`${SEL} form.hd-add input.hd-in-n`).nth(0).fill(comma(BUYX)); await p.locator(`${SEL} form.hd-add input.hd-in-n`).nth(1).fill('');
     await p.locator(`${SEL} form.hd-add button.hd-go`).click();
     if ((await errText(p)) !== '수량을 숫자로 적어 줘.') fail('틀린 입력 글(수량)', `${tag} 「${await errText(p)}」`);
     await p.locator(`${SEL} form.hd-add input.hd-in-n`).nth(1).fill('3'); await p.locator(`${SEL} form.hd-add input.hd-in-d`).fill(addD(TODAY, 1));
@@ -594,30 +597,30 @@ const errText = p => p.locator(`${SEL} .hd-err`).first().textContent().catch(() 
     await p.waitForFunction(s => document.querySelectorAll(s + ' article.hd-card').length === 1, SEL, {timeout: 15000});
     let st = await store(p), n0 = st?.length ?? 0;
     const o = st?.[0];
-    if (!(n0 === 1 && o.code === '005930' && o.buy === 240000 && o.qty === 3 && o.day === TODAY)) fail('적은 것 기억(종목 · 산 값 · 수량 · 산 날)', `${tag} ${JSON.stringify(st)}`);
-    g = await p.evaluate(READH, SEL); checkAsk(g.cards[0], {buy: 240000}, tag + ' 새로 적은 것');
+    if (!(n0 === 1 && o.code === '005930' && o.buy === BUYX && o.qty === 3 && o.day === TODAY)) fail('적은 것 기억(종목 · 산 값 · 수량 · 산 날)', `${tag} ${JSON.stringify(st)}`);
+    g = await p.evaluate(READH, SEL); checkAsk(g.cards[0], {buy: BUYX}, tag + ' 새로 적은 것');
     await p.locator(`${SEL} article.hd-card button.hd-opt`).first().click(); await p.waitForSelector(`${SEL} article.hd-card .hd-ret`, {timeout: 10000});
     // 나눠 팖 — 3주 가운데 1주(판 몫은 지난 보유 · 남은 2주는 그대로)
     await p.locator(`${SEL} article.hd-card button.hd-sold`).click();
     const sf = p.locator(`${SEL} article.hd-card form.hd-form`), sIn = sf.locator('input.hd-in-n');
-    await sf.locator('input.hd-in-d').fill(TODAY); await sIn.nth(0).fill('250,000'); await sIn.nth(1).fill('5'); await sf.locator('button.hd-go').click();
+    await sf.locator('input.hd-in-d').fill(TODAY); await sIn.nth(0).fill(comma(SELLUP)); await sIn.nth(1).fill('5'); await sf.locator('button.hd-go').click();
     if ((await sf.locator('.hd-err').textContent()) !== '판 수량은 0보다 크고 3주 이하여야 해.') fail('틀린 입력 글(판 수량)', `${tag} 「${await sf.locator('.hd-err').textContent()}」`);
     await sIn.nth(1).fill('1'); await sf.locator('button.hd-go').click();
     await p.waitForFunction(s => !!document.querySelector(s + ' details.hd-past'), SEL, {timeout: 10000});
     st = await store(p);
     const live = st.filter(x => !x.sold && !x.wrong), gone = st.filter(x => x.sold);
-    if (st.length !== 2 || live.length !== 1 || live[0].qty !== 2 || gone.length !== 1 || gone[0].qty !== 1 || gone[0].sold.price !== 250000 || gone[0].sold.day !== TODAY || gone[0].buy !== 240000) fail('나눠 팖 기억(지우지 않음)', `${tag} ${JSON.stringify(st)}`);
+    if (st.length !== 2 || live.length !== 1 || live[0].qty !== 2 || gone.length !== 1 || gone[0].qty !== 1 || gone[0].sold.price !== SELLUP || gone[0].sold.day !== TODAY || gone[0].buy !== BUYX) fail('나눠 팖 기억(지우지 않음)', `${tag} ${JSON.stringify(st)}`);
     g = await p.evaluate(READH, SEL);
     if (g.pastN !== '지난 보유 1곳') fail('지난 보유 수', `${tag} 「${g.pastN}」`);
     // 다 팖 — 남은 2주
     await p.locator(`${SEL} article.hd-card button.hd-sold`).click();
     const sf2 = p.locator(`${SEL} article.hd-card form.hd-form`);
-    await sf2.locator('input.hd-in-d').fill(TODAY); await sf2.locator('input.hd-in-n').nth(0).fill('230000'); await sf2.locator('input.hd-in-n').nth(1).fill('2'); await sf2.locator('button.hd-go').click();
+    await sf2.locator('input.hd-in-d').fill(TODAY); await sf2.locator('input.hd-in-n').nth(0).fill(String(SELLDN)); await sf2.locator('input.hd-in-n').nth(1).fill('2'); await sf2.locator('button.hd-go').click();
     await p.waitForFunction(s => !document.querySelector(s + ' article.hd-card'), SEL, {timeout: 10000});
     st = await store(p);
     if (st.length !== 2 || st.some(x => !x.sold)) fail('다 팖 → 지난 보유(줄 수 그대로)', `${tag} ${JSON.stringify(st)}`);
     await p.locator(`${SEL} details.hd-past > summary`).click(); g = await p.evaluate(READH, SEL);
-    if (g.pastN !== '지난 보유 2곳' || !g.pastRows.some(t => t.includes(`산 값 240,000원 → 판 값 250,000원 ${pct((250000 / 240000 - 1) * 100)}`)) || !g.pastRows.some(t => t.includes(`산 값 240,000원 → 판 값 230,000원 ${pct((230000 / 240000 - 1) * 100)}`))) fail('지난 보유 줄(판 값 · 수익률)', `${tag} ${JSON.stringify(g.pastRows)}`);
+    if (g.pastN !== '지난 보유 2곳' || !g.pastRows.some(t => t.includes(`산 값 ${won(BUYX)} → 판 값 ${won(SELLUP)} ${pct((SELLUP / BUYX - 1) * 100)}`)) || !g.pastRows.some(t => t.includes(`산 값 ${won(BUYX)} → 판 값 ${won(SELLDN)} ${pct((SELLDN / BUYX - 1) * 100)}`))) fail('지난 보유 줄(판 값 · 수익률)', `${tag} ${JSON.stringify(g.pastRows)}`);
     await layout(p, tag + ' 지난 보유');
     // 잘못 적었어 — 번호로 찾아 적고 「맞아, 옮겨 줘」 → 지난 보유 「잘못 적음」(지우지 않음)
     if (XH) {
@@ -642,9 +645,9 @@ const errText = p => p.locator(`${SEL} .hd-err`).first().textContent().catch(() 
     await open(p);
     let g = await p.evaluate(READH, SEL);
     if (!g.mem?.includes('이 기기는 기억을 못 해요')) fail('기억 못 함 「?」 줄', `${tag} 「${g.mem}」`);
-    await addOne(p, tag, '삼성전자', '삼성전자', '240000', '1');
+    await addOne(p, tag, '삼성전자', '삼성전자', String(BUYX), '1');
     await p.waitForFunction(s => document.querySelectorAll(s + ' article.hd-card').length === 1, SEL, {timeout: 15000});
-    g = await p.evaluate(READH, SEL); checkAsk(g.cards[0], {buy: 240000}, tag + ' 이 화면에만 적힘');
+    g = await p.evaluate(READH, SEL); checkAsk(g.cards[0], {buy: BUYX}, tag + ' 이 화면에만 적힘');
     await layout(p, tag); errsOf(p, tag); bump('자료 바꾼 길');
   } catch (e) { fail('바꾼 길 멈춤', `${tag}: ${e.message.split('\n')[0]}`); }
   await p.context().close();
