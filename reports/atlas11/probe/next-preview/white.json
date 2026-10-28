@@ -1,16 +1,13 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-28T02:10:03.828Z",
+ "at": "2026-10-28T02:21:42.570Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 419,
-  "fail": 2
+  "pass": 421,
+  "fail": 0
  },
- "fails": [
-  "다른 쪽 #/why 390 단추 테두리 대비 3 — button.cp-go 1.06 「카톡으로 가입하기」",
-  "다른 쪽 #/why 320 단추 테두리 대비 3 — button.cp-go 1.06 「카톡으로 가입하기」"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.02249601955799633,
@@ -45,7 +42,7 @@
     true,
     true
    ],
-   "themeChars": 211,
+   "themeChars": 205,
    "top": [
     [
      32,
@@ -202,11 +199,11 @@
    "bodyLum": 0.02249601955799633,
    "chars": 105,
    "blocks": {
-    "ess": 1196,
+    "ess": 1167,
     "find": 776,
-    "today": 1288,
-    "gdr": 2366,
-    "all": 2366
+    "today": 1259,
+    "gdr": 2337,
+    "all": 2337
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -231,7 +228,7 @@
     true,
     true
    ],
-   "themeChars": 205,
+   "themeChars": 211,
    "top": [
     [
      24,
@@ -396,7 +393,7 @@
    },
    "#/why 390": {
     "low": 0,
-    "ui": 1,
+    "ui": 0,
     "small": 0,
     "ruin": 0
    },
@@ -546,7 +543,7 @@
    },
    "#/why 320": {
     "low": 0,
-    "ui": 1,
+    "ui": 0,
     "small": 0,
     "ruin": 0
    },
@@ -684,15 +681,15 @@
    }
   },
   "speed": {
-   "lcp": 2380,
-   "inp": 40,
-   "cls": 0.005
+   "lcp": 2372,
+   "inp": 24,
+   "cls": 0.004
   }
  },
  "net": {
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
