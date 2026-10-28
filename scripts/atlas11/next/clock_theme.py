@@ -8,10 +8,16 @@
 #   - 색 바꾸기 = 밝기를 뒤집어 청록 100가지 안으로(흰 바탕 → 짙은 청록 · 검은 글 → 흰빛) · 초록(오름 · 싹) → 하늘청록 · 파랑(내림) → 밝은 회청 · 보라(강조) → 흰색
 #   - 카톡 노랑 칸은 그대로(사람들이 아는 카톡 색 · 그 칸 글도 그대로)
 # 짓기: python3 scripts/atlas11/next/clock_theme.py → site/next/clock.css(손으로 고치지 않음 — 이 파일과 EXTRA 를 고쳐 다시 짓는다)
-import os, re, glob, colorsys
+# ★ 2026-10-28 최고급 핑크 판(사장님 12:00 「안돼 배경을 최고급 핑크로 해」 · 13:16 「속도빨리해서 얼른 만들엉」) — 이제 기본은 핑크(PAL='pink')
+#   핑크 판은 밝은 판이라 밝기를 뒤집지 않음(흰 바탕 → 밝은 카드 · 검은 글 → 짙은 자주) · 청록 판 손 규칙(EXTRA)의 자리 · 크기는 그대로 두고
+#   색만 한 단 위(html.white.clock.clock.clock.clock)의 EXTRA_PINK 가 덮음 · 첫 화면 핑크 칸(home-new.css)은 그보다 뒤에 읽혀 같은 무게에서 이김
+#   옛 청록 판으로 되돌리기: python3 scripts/atlas11/next/clock_theme.py --teal
+#   home-new.css(이미 핑크) · p-why.css(「왜 사?」 그림 판 — 제 색 이름을 가짐 · EXTRA_PINK 가 짙은 자리만 바꿈)는 셈 밖 · 선택자에 clock 이 든 규칙도 셈 밖(이미 판 위 규칙)
+import os, re, sys, glob, colorsys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
-SRC = sorted(f for f in glob.glob(os.path.join(ROOT, 'site/next/*.css')) if not f.endswith('/clock.css'))
+SRC = sorted(f for f in glob.glob(os.path.join(ROOT, 'site/next/*.css')) if not f.endswith(('/clock.css', '/home-new.css', '/p-why.css')))
+PAL = 'teal' if '--teal' in sys.argv[1:] else 'pink'
 OUT = os.path.join(ROOT, 'site/next/clock.css')
 
 # ── css 읽기(주석 · 따옴표 · 괄호 · 겹친 @media 를 앎) ──
@@ -135,7 +141,7 @@ def gray_map(L, role):
     if L >= .015: return INK2
     return INK
 
-def map_one(rgb, role):
+def map_teal(rgb, role):
     f = fam(rgb)
     if f == 'gray': return gray_map(lum(rgb), role)
     if f == 'green': return CYAN
@@ -143,6 +149,55 @@ def map_one(rgb, role):
     if f == 'purple': return GOLD if role == 'text' else SUB  # 흰 판 금빛(보라) 글 = 청록 판 금빛(은빛 회색) — 오름 하늘청록 · 내림 밝은 회청과 다른 색(check_surge 색 가름)
     if f == 'yellow': return GOLD if role == 'text' else '#3C4E51'
     return INK2 if role == 'text' else '#4F666A'  # 빨강 쪽(드묾)
+
+# ── 최고급 핑크 판 색(첫 화면 home-new.css 와 같은 색) — 밝기를 뒤집지 않음 ──
+P_CARD, P_TINT, P_CARD3, P_LINE = '#FFF7F9', '#FBE8EE', '#F4D9E1', '#EBC0CE'
+P_HAIR = '#9E5A78'  # 단추 · 칸 테 — 바탕 #F7D4DE 위 3.7 · 카드 위 4.8(check_white 테 대비 3)
+P_INK, P_INK2, P_SUB, P_MUTE = '#2A1420', '#4A2333', '#5E3446', '#6B3F52'  # 글 — 바탕 위 16 · 11 · 7.5 · 6.3
+P_ACC, P_WINE, P_UP, P_DN, P_BROWN = '#A31F70', '#3D1028', '#B4123A', '#1A55B0', '#8C4A12'  # 내림 파랑은 핑크 바탕 위 5.2(첫 화면 #1F5FBF 는 카드 위라 5.8 · 바탕 위는 4.47 — check_white 1차 #/shorts · #/w/005930)
+def gray_pink(L, role):
+    if role == 'shadow': return None
+    if role == 'border':
+        if L < .45: return P_HAIR
+        if L < .7: return '#C98AA3'
+        return '#E9BCCB'
+    if role == 'text':
+        if L >= .93: return '#FFFFFF'
+        if L >= .6: return P_CARD  # 밝은 글(짙은 칸 위)
+        if L >= .12: return P_MUTE
+        if L >= .05: return P_SUB
+        if L >= .015: return P_INK2
+        return P_INK
+    if L >= .93: return P_CARD  # 바탕 · 칠 · 선
+    if L >= .8: return P_TINT
+    if L >= .6: return P_CARD3
+    if L >= .4: return '#E7A9C0'
+    if L >= .22: return '#B9748F'
+    if L >= .12: return '#8A4A66'
+    if L >= .05: return P_SUB
+    if L >= .015: return P_WINE
+    return P_INK
+
+def map_pink(rgb, role):
+    f = fam(rgb); L = lum(rgb)
+    if f == 'gray': return gray_pink(L, role)
+    if role == 'shadow': return None
+    if f == 'blue':
+        if role == 'bg': return P_DN if L < .3 else '#DCE6F7'
+        return P_DN if L < .5 or role == 'text' else '#C9D6EE'
+    if f == 'red':
+        if role == 'bg': return P_UP if L < .35 else '#F9DCE5'
+        return P_UP
+    if f == 'yellow':
+        if role == 'text': return P_INK if L < .2 else P_BROWN
+        if role == 'bg': return '#FCEBD5' if L >= .45 else P_BROWN
+        return P_ACC  # 금빛 테 · 선 → 짙은 장미
+    # 초록(흰 판 오름 · 자라남) · 보라(흰 판 금빛 · 뜻 표시) → 짙은 장미(빨강 쪽이 아니라 숫자 아닌 글에도 씀 · check_white ④)
+    if role == 'bg': return P_ACC if L < .3 else '#F2B8C9'
+    return P_ACC
+
+def map_one(rgb, role):
+    return (map_pink if PAL == 'pink' else map_teal)(rgb, role)
 
 def fmt(hexc, a):
     if a >= .999: return hexc
@@ -228,7 +283,7 @@ for wrap, pre, body in rules:
     ds = decls_of(body)
     if any(KAKAO_YELLOW.search(v) for _, v in ds): continue  # 카톡 노랑 칸은 통째로 그대로
     for sel in sels:
-        if SKIP_SEL.match(sel) or sel.startswith(':root') or 'html.clock' in sel: continue
+        if SKIP_SEL.match(sel) or sel.startswith(':root') or 'clock' in sel: continue  # clock 이 든 규칙(첫 화면 핑크 칸 등)은 이미 판 위 규칙
         # 무게(특정성): 흰 판 규칙 · html.○○ 규칙의 복제본은 원래보다 (0,1,0) · 맨 규칙의 복제본은 (0,0,1) 만 무겁게
         #   → 복제본이 제 원래를 이기면서도, 원래 이기던 흰 판 규칙(복제가 없는 var() 규칙 포함)을 맨 규칙 복제본이 넘지 않음
         if sel.startswith('html') and not WHITE_RE.match(sel):  # html.en … 같은 것
@@ -455,15 +510,115 @@ html.white.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { strok
 html.white.clock.clock.clock :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #AAC1C5; }
 """
 
+EXTRA_PINK = r'''
+/* ── 최고급 핑크 판(사장님 2026-10-28 12:00 「안돼 배경을 최고급 핑크로 해」 · 13:16 「속도빨리해서 얼른 만들엉」 · clock_theme.py EXTRA_PINK) ──
+   모든 쪽 = 첫 화면(home-new.css)과 같은 색 · 바로 위 청록 손 규칙(EXTRA)의 자리 · 크기는 그대로 두고 색만 한 단 위(.clock 하나 더)에서 덮음
+   바탕 장미 빛 핑크 #F7D4DE · 카드 #FFF7F9 · 글 짙은 자주 #2A1420 · 강조 짙은 장미 #A31F70 · 위 · 아래 막대 포도주 빛 #3D1028 · 오름 #B4123A(숫자만) · 내림 #1A55B0 */
+html.white.clock.clock.clock.clock {
+  color-scheme: light;
+  --bg: #F7D4DE; --night: #F7D4DE; --band: #F7D4DE; --violet: #2A1420;
+  --card: #FFF7F9; --card2: #FBE8EE; --card3: #F4D9E1;
+  --hair: #9E5A78; --hair2: #9E5A78; --line: #EBC0CE; --hair-soft: #F0CBD6; --seam: #EBC0CE; --press: #F4D9E1; --lift: #FFF7F9;
+  --ink: #2A1420; --ink-hi: #1A0B13; --sub: #5E3446; --mute: #6B3F52; --flat: #6B3F52;
+  --violet-ink: #2A1420; --violet-wash: #FBE8EE; --violet-line: #9E5A78; --violet-glow: #FBE8EE;
+  --gold: #A31F70; --gold-wash: #FBE8EE; --gold-line: #A31F70;
+  --up: #B4123A; --down: #1A55B0; --up-ink: #B4123A; --down-ink: #1A55B0; --up-bg: #B4123A; --down-bg: #1A55B0;
+  --up-fill: rgba(180, 18, 58, .16); --down-fill: rgba(26, 85, 176, .14); --up-fade: rgba(180, 18, 58, .06); --down-fade: rgba(26, 85, 176, .05);
+  --lacquer: #3D1028; --lacquer-ink: #FFFFFF; --lacquer-sub: #F7D4DE; --lacquer-gold: #F2B8C9;
+  --moon: #2A1420; --moonrow: #FBE8EE;
+  --m4-band: #FFF7F9; --m4-line: #9E5A78; --m4-soft: #9E5A78; --m4-neu: #4A2333; --m4-line2: #F0CBD6;
+  background: #F7D4DE;
+}
+html.white.clock.clock.clock.clock body { background: #F7D4DE; color: #2A1420; }
+html.white.clock.clock.clock.clock body::after { background: radial-gradient(ellipse 120vw 70vh at 50% 0%, #FCEAF0 0%, #F7D4DE 58%, #F1C4D2 100%); } /* 위에서 비치는 은은한 빛(바탕 한 장 · 검사 칸 밖) */
+/* 위 막대 — 포도주 빛 · 흰 이름 · 밝은 알약 단추 */
+html.white.clock.clock.clock.clock .top { background: rgba(61, 16, 40, .97); border-bottom: 1px solid rgba(255, 255, 255, .2); }
+html.white.clock.clock.clock.clock .top .logo { color: #FFFFFF; text-shadow: none; }
+html.white.clock.clock.clock.clock .top .tbtn, html.white.clock.clock.clock.clock .top .ibtn { background: #FFF7F9; color: #3D1028; border: 2px solid #FFFFFF; box-shadow: none; }
+html.white.clock.clock.clock.clock .top .ibtn svg, html.white.clock.clock.clock.clock .top .tbtn svg { color: #3D1028; }
+html.white.clock.clock.clock.clock .top #giftBtn { background: #F2B8C9; }
+html.white.clock.clock.clock.clock .top #jhBtn { border: 1px solid #FFFFFF; background: #FFF7F9; color: #3D1028; }
+/* 아래 단추 줄 — 포도주 빛 띠 · 장미 빛 그림 칸 · 지금 쪽은 밝은 핑크 칸 */
+html.white.clock.clock.clock.clock .tabs { background: #3D1028; border-top: 2px solid rgba(255, 255, 255, .22); }
+html.white.clock.clock.clock.clock .tabs a, html.white.clock.clock.clock.clock .tabs a[aria-current="page"], html.white.clock.clock.clock.clock .tabs a.on { color: #FFFFFF; }
+html.white.clock.clock.clock.clock .tabs a .ic { border-color: #1A0B13; background: var(--tbg, #873055); color: #FFFFFF; box-shadow: none; }
+html.white.clock.clock.clock.clock .tabs a:nth-child(1) { --tbg: #B2456F; } html.white.clock.clock.clock.clock .tabs a:nth-child(2) { --tbg: #9C3A62; } html.white.clock.clock.clock.clock .tabs a:nth-child(3) { --tbg: #873055; }
+html.white.clock.clock.clock.clock .tabs a:nth-child(4) { --tbg: #722748; } html.white.clock.clock.clock.clock .tabs a:nth-child(5) { --tbg: #5E1F3C; }
+html.white.clock.clock.clock.clock .tabs a[aria-current="page"] .ic { --tbg: #F7D4DE; color: #3D1028; }
+html.white.clock.clock.clock.clock footer.foot a { color: #4A2333; }
+/* 회사 쪽 「이 회사로 왜 사?」 큰 단추 — 짙은 장미 · 흰 글 */
+html.white.clock.clock.clock.clock a.why-go.cw { background: #A31F70; color: #FFFFFF; outline-color: #3D1028; box-shadow: none; }
+html.white.clock.clock.clock.clock a.why-go.cw b, html.white.clock.clock.clock.clock a.why-go.cw i { color: #FFFFFF; }
+/* 옛 첫 화면 네 칸(테마 시계 — 새 첫 화면에는 없음) */
+html.white.clock.clock.clock.clock .th-zc { border-color: #3D1028; box-shadow: none; }
+html.white.clock.clock.clock.clock .th-zc.th-zcS { --zdot: #D98DAB; --zoff: #FFF7F9; background: #E7A9C0; border-color: #3D1028; color: #2A1420; box-shadow: none; }
+html.white.clock.clock.clock.clock .th-zc.th-zcB { --zdot: #E7A9C0; --zoff: #FFF7F9; background: #F2B8C9; color: #2A1420; }
+html.white.clock.clock.clock.clock .th-zc.th-zcQ { --zdot: #F0CBD6; --zoff: #F7D4DE; background: #FFF7F9; color: #2A1420; border-color: #9E5A78; }
+html.white.clock.clock.clock.clock .th-zc.th-zcW { --zdot: #D9C6CE; --zoff: #FFFFFF; background: #ECDDE3; color: #2A1420; border-color: #9E5A78; }
+html.white.clock.clock.clock.clock .th-zc:active { background: #F4D9E1; }
+html.white.clock.clock.clock.clock .th-ar { background: #FFFFFF; border-color: #3D1028; box-shadow: none; }
+/* 돌이 단추 안 */
+html.white.clock.clock.clock.clock .dm-it { border-color: #9E5A78; background: #FFF7F9; color: #2A1420; box-shadow: none; }
+/* 싹 자리 전부(#/t/sprout) — 맨 앞 셋 큰 판(짙은 장미 → 옅은 장미) · 업종 알약(밝은 카드) · 글은 모두 짙은 자주 */
+html.white.clock.clock.clock.clock .th-tile { border-color: #3D1028; background: #FBE8EE; color: #2A1420; box-shadow: none; }
+html.white.clock.clock.clock.clock .th-tile0 { background: #E7A9C0; box-shadow: none; }
+html.white.clock.clock.clock.clock .th-tile1 { background: #F2B8C9; }
+html.white.clock.clock.clock.clock .th-tile2 { background: #F7CAD8; }
+html.white.clock.clock.clock.clock .th-tn { color: #2A1420; }
+html.white.clock.clock.clock.clock .th-tbadge { border-color: #3D1028; background: #FFFFFF; color: #2A1420; }
+html.white.clock.clock.clock.clock .th-chip { border-color: #9E5A78; background: #FFF7F9; color: #2A1420; }
+html.white.clock.clock.clock.clock .th-chipmore { border-color: #9E5A78; background: transparent; color: #5E3446; }
+/* 꽃 될 회사(#/t/picks) — 묶음 줄마다 짙은 장미에서 옅은 장미로 · 글은 짙은 자주 */
+html.white.clock.clock.clock.clock .th-pki { border-color: #3D1028; box-shadow: none; }
+html.white.clock.clock.clock.clock .th-pki0 { --pkbg: #E7A9C0; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki1 { --pkbg: #EDB4C7; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki2 { --pkbg: #F2BFCF; --pkink: #2A1420; }
+html.white.clock.clock.clock.clock .th-pki3 { --pkbg: #F6CBD8; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki4 { --pkbg: #F9D7E1; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki5 { --pkbg: #FBE3EA; --pkink: #2A1420; }
+html.white.clock.clock.clock.clock .th-pkcp { border-color: #3D1028; background: #FFFFFF; color: #2A1420; }
+html.white.clock.clock.clock.clock .th-pkday { color: #5E3446; }
+html.white.clock.clock.clock.clock .th-pkrec1 { border-left-color: #9E5A78; color: #2A1420; }
+/* 옛 첫 화면 그림 단추 넷 */
+html.white.clock.clock.clock.clock .s-app, html.white.clock.clock.clock.clock .s-apl { color: #2A1420; text-shadow: none; }
+html.white.clock.clock.clock.clock .s-apb { border-color: #3D1028; box-shadow: none; }
+html.white.clock.clock.clock.clock .s-app-bloom { --abg: #F2B8C9; } html.white.clock.clock.clock.clock .s-app-search { --abg: #E7A9C0; } html.white.clock.clock.clock.clock .s-app-cal { --abg: #F7CAD8; } html.white.clock.clock.clock.clock .s-app-help { --abg: #D99AB2; }
+html.white.clock.clock.clock.clock .s-apb::before { background-image: radial-gradient(rgba(61, 16, 40, .12) 28%, transparent 33%); }
+html.white.clock.clock.clock.clock .s-badge { background: #FFFFFF; color: #2A1420; border-color: #3D1028; }
+/* 쪽 제목 — 짙은 자주 큰 글(그림자 없음) */
+html.white.clock.clock.clock.clock .th-hd .th-h1, html.white.clock.clock.clock.clock h1.st-h { color: #2A1420; text-shadow: none; }
+html.white.clock.clock.clock.clock .th-next small, html.white.clock.clock.clock.clock .th-nx small { color: inherit; }
+html.white.clock.clock.clock.clock a.hello.m4-letter { outline-color: #9E5A78; }
+/* 그림 속 칠(svg 칠 속성) — 검정 = 짙은 자주 · 흰색 = 카드 빛 · 초록(옛 오름 · 자라남) = 짙은 장미 · 파랑 = 내림 파랑 */
+html.white.clock.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #2A1420; }
+html.white.clock.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { stroke: #2A1420; }
+html.white.clock.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #FFF7F9; }
+html.white.clock.clock.clock.clock :is([fill="#007A35"], [fill="#007a35"]) { fill: #A31F70; }
+html.white.clock.clock.clock.clock :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #A31F70; }
+html.white.clock.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #1A55B0; }
+html.white.clock.clock.clock.clock :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #1A55B0; }
+/* 「왜 사?」(p-why.css 그림 판 — 크림 카드 · 분홍 단추는 그대로) — 짙은 청록 자리 = 포도주 빛 · 민트 강조 = 옅은 장미 · 진행 = 짙은 장미 */
+html.white.clock.clock.clock.clock .wy { --wm-dark: #3D1028; --wm-mint: #F2B8C9; --wm-tab: #5A1A3C; --wm-prog: #A31F70; --wm-teal: #A31F70; }
+html.white.clock.clock.clock.clock .wy[data-step="start"] { background: #3D1028 radial-gradient(120% 60% at 50% 40%, rgba(242, 184, 201, .18), rgba(242, 184, 201, 0) 70%); }
+html.white.clock.clock.clock.clock .wy-sub { color: #F2D5DE; }
+html.white.clock.clock.clock.clock .wy-hl .wl-ic { color: #3D1028; }
+html.white.clock.clock.clock.clock .wy-rhead { background: #3D1028 linear-gradient(180deg, #2A0B1C, #5A1A3C); }
+html.white.clock.clock.clock.clock .wy-tend .wy-ck { border-left-color: #A31F70; }
+html.white.clock.clock.clock.clock .wy-tf { background: #A31F70; } html.white.clock.clock.clock.clock .wy-tf.t1, html.white.clock.clock.clock.clock .wy-tf.t2 { background: #C2457F; } html.white.clock.clock.clock.clock .wy-tf.t3 { background: #8A1B5E; }
+html.white.clock.clock.clock.clock .wy-tn, html.white.clock.clock.clock.clock .wy-pg .wy-step { color: #4A2333; }
+html.pg-why.white.clock.clock.clock.clock .wy.page:is([data-step="q"], [data-step="det"]) { border-top-color: #3D1028;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M0 0H28A28 28 0 0 0 0 28Z' fill='%233D1028'/%3E%3C/svg%3E") left top / 28px 28px no-repeat padding-box,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M28 0H0A28 28 0 0 1 28 28Z' fill='%233D1028'/%3E%3C/svg%3E") right top / 28px 28px no-repeat padding-box, var(--wm-cream); }
+html.pg-why.white.clock.clock.clock.clock #view .cp-card .cp-go { background: #5A1A3C; }
+'''
+
 def block(wrap, lines):
     s = '\n'.join(lines)
     for w in reversed(wrap):
         s = f'{w} {{\n{s}\n}}'
     return s
 
-head = ('/* 돌 시계 청록 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음)\n'
-        ' * 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 08:23 「더 빠른 방식 찾아서 9시까지 모든 싸이트 되게 해」\n'
-        f' * 읽은 파일 {len(SRC)}개 · 바꾼 규칙 {nrule}개 · 바꾼 칸 {ndecl}개 */\n')
+head = ((('/* 최고급 핑크 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음 · 옛 청록 판은 --teal)\n'
+          ' * 사장님 2026-10-28 12:00 「안돼 배경을 최고급 핑크로 해」 · 13:16 「속도빨리해서 얼른 만들엉」 — 첫 화면(home-new.css)과 같은 색을 모든 쪽에\n') if PAL == 'pink' else
+         '/* 돌 시계 청록 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음)\n')
+        + ' * 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 08:23 「더 빠른 방식 찾아서 9시까지 모든 싸이트 되게 해」\n'
+        + f' * 읽은 파일 {len(SRC)}개 · 바꾼 규칙 {nrule}개 · 바꾼 칸 {ndecl}개 */\n')
 body = '\n'.join(block(w, ls) for w, ls in out_blocks.items())
-open(OUT, 'w', encoding='utf-8').write(head + body + '\n' + TOKENS + EXTRA)
-print('files', len(SRC), 'rules', nrule, 'decls', ndecl, 'bytes', len(head + body + EXTRA))
+open(OUT, 'w', encoding='utf-8').write(head + body + '\n' + TOKENS + EXTRA + (EXTRA_PINK if PAL == 'pink' else ''))
+print('palette', PAL, 'files', len(SRC), 'rules', nrule, 'decls', ndecl, 'bytes', len(head + body + EXTRA))

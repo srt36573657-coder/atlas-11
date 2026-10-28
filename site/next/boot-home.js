@@ -4,7 +4,7 @@
    감싼 칸은 .boot 그대로(검사 · 맨 아래 고리 숨김이 「아직 여는 중」으로 봄) · app.js 가 첫 화면을 다 그리면 같은 자리 · 같은 크기로 통째로 바뀜
    index.html 이 app.js 보다 먼저 부름(모듈은 문서 차례로 돎 — app.js 를 늦추지 않음) · 다른 길은 아무것도 안 함 */
 const hs = location.hash || '#/', isHome = /^#\/?$/.test(hs);
-// 최고급 핑크 판(2026-10-28 12:00)은 html.home 에 달림 — index.html 이 home 으로 시작하므로 다른 길은 여기서 곧바로 뗌(첫 화면이 아닌 쪽에 핑크가 비치지 않게) · 첫 화면은 창 위 띠도 포도주 빛
+// 첫 화면 모양(home.css · home-new.css 의 html.home 규칙)은 첫 화면에서만 — index.html 이 home 으로 시작하므로 다른 길은 여기서 곧바로 뗌 · 핑크 바탕은 모든 쪽(clock.css · 2026-10-28 13:16) · 창 위 띠는 모든 쪽 포도주 빛
 if (!isHome) document.documentElement.classList.remove('home');
 else document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#3D1028');
 const v = document.querySelector('#view'), boot = v?.querySelector(':scope > p.boot');

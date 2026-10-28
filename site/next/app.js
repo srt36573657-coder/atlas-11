@@ -1282,7 +1282,7 @@ function whiteFor(k) {
   document.documentElement.classList.add('clock'); // 돌 시계 청록 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」) — 흰 판 자리 규칙 위에 색만(site/next/clock.css)
   document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
   document.documentElement.classList.toggle('pg-why', k === 'why'); // 「왜 사?」 쪽은 밝은 앱 판(사장님 2026-10-28 02:01 「변경 안돼잖아 과감하게 해」 · 그림 일곱 장 · p-why.css html.pg-why)
-  $('meta[name="theme-color"]')?.setAttribute('content', k === '' ? '#3D1028' : '#152D30'); // 첫 화면 = 최고급 핑크 판의 포도주 빛 막대(2026-10-28 12:00) // 청록 판 창 위 띠(2026-10-26) — 옛 흰 판 #FFFFFF // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
+  $('meta[name="theme-color"]')?.setAttribute('content', '#3D1028'); // 첫 화면 = 최고급 핑크 판의 포도주 빛 막대(2026-10-28 12:00) // 청록 판 창 위 띠(2026-10-26) — 옛 흰 판 #FFFFFF // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
 }
 whiteFor(parse(location.hash || '#/').k);
 /** 글꼴 표 — 첫 화면을 그린 다음 그림 때에 한 번 붙임(그 전에는 기기 글꼴 · 받으면 바뀜 font-display: swap) */
