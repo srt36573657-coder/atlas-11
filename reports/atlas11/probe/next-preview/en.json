@@ -1,248 +1,55 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-28T06:32:27.003Z",
- "base": "http://127.0.0.1:8826",
- "page": "http://127.0.0.1:8826/next/?lang=en",
+ "at": "2026-10-28T06:35:15.028Z",
+ "base": null,
+ "page": null,
  "lang": "en",
- "widths": [
-  320,
-  360,
-  390
- ],
- "routes": 13535,
- "companies": 2557,
- "allCompanies": true,
- "modules": true,
- "modFiles": {
-  "past": true,
-  "rivals": true,
-  "grow": true,
-  "range": true,
-  "cal": true,
-  "surge": true,
-  "cond": true,
-  "up": true,
-  "talk": true,
-  "time": true,
-  "info": true,
-  "x": true,
-  "co": true,
-  "chx": true,
-  "today": true,
-  "why": true,
-  "gdr": true,
-  "share": true,
-  "hold": true,
-  "theme": true
- },
- "edge": true,
+ "widths": null,
+ "routes": 0,
+ "companies": null,
+ "allCompanies": null,
+ "modules": null,
+ "modFiles": null,
+ "edge": null,
  "only": null,
  "appFile": null,
  "shard": "all/7",
  "full": false,
  "units": {
-  "total": 13531,
-  "hash": "7e6f554f992722f8",
-  "w": {
-   "@tail": 80,
-   "@newwin": 15
-  }
+  "total": 0,
+  "hash": null,
+  "w": null
  },
- "seconds": 380,
- "secondsSum": 2494,
- "shards": [
-  {
-   "shard": "1/7",
-   "ok": false,
-   "fails": 4,
-   "routes": 1947,
-   "screens": 1990,
-   "mine": 1947,
-   "seconds": 361,
-   "secs": {
-    "open": 0.3,
-    "routes": 359.9
-   }
-  },
-  {
-   "shard": "2/7",
-   "ok": false,
-   "fails": 2,
-   "routes": 1952,
-   "screens": 1953,
-   "mine": 1946,
-   "seconds": 350,
-   "secs": {
-    "open": 0.4,
-    "routes": 348.5
-   }
-  },
-  {
-   "shard": "3/7",
-   "ok": false,
-   "fails": 2,
-   "routes": 1946,
-   "screens": 1947,
-   "mine": 1946,
-   "seconds": 380,
-   "secs": {
-    "open": 0.4,
-    "routes": 378.6
-   }
-  },
-  {
-   "shard": "4/7",
-   "ok": false,
-   "fails": 2,
-   "routes": 1946,
-   "screens": 1946,
-   "mine": 1946,
-   "seconds": 343,
-   "secs": {
-    "open": 0.3,
-    "routes": 342.5
-   }
-  },
-  {
-   "shard": "5/7",
-   "ok": false,
-   "fails": 2,
-   "routes": 1946,
-   "screens": 1946,
-   "mine": 1946,
-   "seconds": 369,
-   "secs": {
-    "open": 0.4,
-    "routes": 368.1
-   }
-  },
-  {
-   "shard": "6/7",
-   "ok": false,
-   "fails": 4,
-   "routes": 1931,
-   "screens": 1995,
-   "mine": 1932,
-   "seconds": 343,
-   "secs": {
-    "open": 0.3,
-    "routes": 339.8,
-    "newwin": 2.7
-   }
-  },
-  {
-   "shard": "7/7",
-   "ok": false,
-   "fails": 4,
-   "routes": 1867,
-   "screens": 1987,
-   "mine": 1868,
-   "seconds": 348,
-   "secs": {
-    "open": 0.4,
-    "routes": 331.9,
-    "act": 7.1,
-    "edge": 8.3,
-    "grammar": 0
-   }
-  }
- ],
- "counts": {
-  "화면": 13764,
-  "길 · home": 1,
-  "길 · chips": 7,
-  "길 · find": 9,
-  "길 · watch": 2560,
-  "길 · chan": 89,
-  "길 · mod": 10860,
-  "왜 사? 끝까지": 2,
-  "쇼츠 장": 6,
-  "길 · shorts": 7,
-  "둘이 칸 잠김": 2,
-  "길 · sub": 1,
-  "길 · me": 1,
-  "새 창": 2,
-  "보내기 글상자": 3,
-  "누르기": 1,
-  "바꿔치기": 1,
-  "오늘 한 줄 문장": 412
- },
- "missing": 2,
+ "seconds": 0,
+ "secondsSum": 0,
+ "shards": [],
+ "counts": {},
+ "missing": 0,
  "avatarLetters": 0,
- "kinds": {
-  "한글 남음(속성)": 2,
-  "사전에 없는 틀": 2
- },
- "fails": 4,
+ "kinds": {},
+ "fails": 0,
  "own": {
-  "fails": 4,
-  "missing": 2,
-  "leftover": 2
+  "fails": 0,
+  "missing": 0,
+  "leftover": 0
  },
  "mod": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
- "missingList": [
-  {
-   "key": "조건으로 고른 회사 {n}번 중 {n}번",
-   "ex": "조건으로 고른 회사 100번 중 31번",
-   "at": "#/"
-  },
-  {
-   "key": "모든 회사 {n}번 중 {n}번",
-   "ex": "모든 회사 100번 중 24번",
-   "at": "#/"
-  }
- ],
- "all": [
-  {
-   "kind": "한글 남음(속성)",
-   "what": "@aria-label 조건으로 고른 회사 {n}번 중 {n}번",
-   "ex": "조건으로 고른 회사 100번 중 31번",
-   "at": [
-    "#/",
-    "새 창 · 몸값 · 급등 · 첫 화면 · 둘이 칸 자료 못 받음 #/",
-    "새 창 · 모든 자료 못 받음 #/",
-    "아주 큰 글씨 · #/",
-    "바꿔치기 · 오늘 한 줄 날짜 · 마감 0"
-   ],
-   "n": 43
-  },
-  {
-   "kind": "한글 남음(속성)",
-   "what": "@aria-label 모든 회사 {n}번 중 {n}번",
-   "ex": "모든 회사 100번 중 24번",
-   "at": [
-    "#/",
-    "새 창 · 몸값 · 급등 · 첫 화면 · 둘이 칸 자료 못 받음 #/",
-    "새 창 · 모든 자료 못 받음 #/",
-    "아주 큰 글씨 · #/",
-    "바꿔치기 · 오늘 한 줄 날짜 · 마감 0"
-   ],
-   "n": 43
-  },
-  {
-   "kind": "사전에 없는 틀",
-   "what": "조건으로 고른 회사 {n}번 중 {n}번  ← 「조건으로 고른 회사 100번 중 31번」",
-   "ex": null,
-   "at": [
-    "#/"
-   ],
-   "n": 1
-  },
-  {
-   "kind": "사전에 없는 틀",
-   "what": "모든 회사 {n}번 중 {n}번  ← 「모든 회사 100번 중 24번」",
-   "ex": null,
-   "at": [
-    "#/"
-   ],
-   "n": 1
-  }
- ],
+ "missingList": [],
+ "all": [],
  "truncated": false,
- "problems": [],
+ "problems": [
+  "몫 결과가 하나도 없음",
+  "1/7 몫 결과 없음",
+  "2/7 몫 결과 없음",
+  "3/7 몫 결과 없음",
+  "4/7 몫 결과 없음",
+  "5/7 몫 결과 없음",
+  "6/7 몫 결과 없음",
+  "7/7 몫 결과 없음"
+ ],
  "ok": false
 }
