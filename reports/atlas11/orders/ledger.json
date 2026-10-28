@@ -615,11 +615,11 @@
    "id": "1316",
    "at": "2026-10-28T13:16+09:00",
    "words": "속도빨리해서 얼른 만들엉",
-   "then": "13:19 「이렇게 이해했어요 · 다른 쪽들도 고급 핑크로 빨리 바꿔요 · 첫 화면과 「왜 사?」는 「올려」 하시면 바로 올려요」 · 색을 짓는 셈(clock_theme.py)에 핑크 판을 더해 모든 쪽 색을 한 번에 다시 지음",
+   "then": "13:19 「이렇게 이해했어요 · 다른 쪽들도 고급 핑크로 빨리 바꿔요 · 첫 화면과 「왜 사?」는 「올려」 하시면 바로 올려요」 · 색을 짓는 셈(clock_theme.py)에 핑크 판을 더해 모든 쪽 색을 한 번에 다시 지음 · 13:3x 이 방 흰 첫 화면 검사 419 통과 4 걸림(내림 파랑 대비 4.47) → 내림 파랑 #1A55B0 · 업종 · 급등 검사 실패 0 · 13:45 큰 검사 pink-all 1/11 통과(2dc45ef9b · 24쪽 실패 0) · 「첫 화면과 「왜 사?」, 핑크 바탕을 함께 올릴까요?」 여쭘",
    "did": "모든 쪽 바탕 최고급 핑크 · 위 · 아래 포도주 빛 막대 · 「왜 사?」 짙은 청록 자리를 포도주 빛으로 · 검사 바탕 잣대 핑크로",
    "state": "미완성",
-   "proof": "docs/design/why-mock-2026-10-28/order-1316.txt · scripts/atlas11/next/clock_theme.py · site/next/clock.css",
-   "short": "모든 쪽을 고급 핑크로 바꾸는 중이에요."
+   "proof": "docs/design/why-mock-2026-10-28/order-1316.txt · scripts/atlas11/next/clock_theme.py · site/next/clock.css · 큰 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/40633175488",
+   "short": "모든 쪽을 고급 핑크로 바꿨고 큰 검사도 통과했어요."
   }
  ],
  "open": [
