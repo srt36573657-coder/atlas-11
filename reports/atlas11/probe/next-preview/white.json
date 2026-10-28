@@ -1,23 +1,23 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-28T02:21:42.570Z",
+ "at": "2026-10-28T03:33:53.195Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 421,
+  "pass": 423,
   "fail": 0
  },
  "fails": [],
  "m": {
   "first": {
-   "bodyLum": 0.02249601955799633,
-   "chars": 166,
+   "bodyLum": 0.7213505032434002,
+   "chars": 90,
    "blocks": {
-    "ess": 1265,
+    "ess": 5313,
     "find": 776,
-    "today": 1357,
-    "gdr": 2435,
-    "all": 2435
+    "today": 4040,
+    "gdr": 4930,
+    "all": 5068
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -26,7 +26,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "어느 계절일까?"
+    "지금 업종 77개는 어디쯤 있나요?"
    ],
    "numQ": [],
    "tabs": [
@@ -42,147 +42,77 @@
     true,
     true
    ],
-   "themeChars": 205,
+   "themeChars": 0,
    "top": [
     [
-     32,
-     "ess p.ess-l",
-     "사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아"
+     26,
+     "- p.nh-sub",
+     "코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여"
     ],
     [
-     29,
-     "ess p.ess-l",
-     "앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557"
+     19,
+     "- p.nh-no",
+     "앞날을 맞히거나 사고팔기를 권하지 않습니다."
     ],
     [
-     24,
-     "ess span.ess-t",
-     "주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부"
+     14,
+     "- span.nh-acc",
+     "지난 기록으로 한 번 더 확인하세요"
     ],
     [
      8,
-     "theme span",
-     "한 달 뒤 물어볼게요"
+     "- p.nh-kick",
+     "주식 지난 기록 확인"
     ],
     [
-     6,
-     "- h1.s-h1",
-     "업종 77곳은 지금"
-    ],
-    [
-     6,
+     7,
      "- span",
-     "어느 계절일까?"
+     "주식을 사기 전에,"
     ],
     [
      5,
-     "theme span.s-dev",
-     "이 기기에만"
-    ],
-    [
-     4,
-     "theme span.t",
-     "지난 기록"
-    ],
-    [
-     4,
-     "news button.w-why",
-     "왜 그럴까?"
-    ],
-    [
-     4,
-     "news button.w-why",
-     "왜 그럴까?"
-    ],
-    [
-     4,
-     "all summary",
-     "전부 보기"
-    ],
-    [
-     4,
-     "- b",
-     "진화 1번째"
+     "- span.nh-in",
+     "코스피 석 달"
     ],
     [
      3,
-     "today span",
-     "코스피"
-    ],
-    [
-     3,
-     "today span",
-     "코스닥"
-    ],
-    [
-     3,
-     "news span.w-lb",
-     "오른 곳"
-    ],
-    [
-     3,
-     "news span.w-lb",
-     "내린 곳"
-    ],
-    [
-     3,
-     "theme span",
-     "번 멈춤"
-    ],
-    [
-     3,
-     "theme span",
-     "번 약속"
-    ],
-    [
-     3,
-     "gdr span",
-     "대장주"
-    ],
-    [
-     3,
-     "- span.when",
-     "채점 전"
+     "- span",
+     "년 기록"
     ],
     [
      2,
-     "- span.s-who",
-     "둘이"
+     "- span",
+     "회사"
     ],
     [
      2,
-     "today span.hm-bd",
-     "10월 28일 10:06"
+     "- span",
+     "업종"
     ],
     [
      2,
-     "find button.w-go",
-     "시작"
+     "- text",
+     "높은 7,081"
     ],
     [
      2,
-     "gdr span",
-     "둘이"
-    ],
-    [
-     2,
-     "gdr span",
-     "달력"
-    ],
-    [
-     2,
-     "gdr span",
-     "조건"
+     "- text",
+     "낮은 5,469"
     ]
    ],
-   "theme": {
-    "top": 142,
-    "zonesBottom": 560,
-    "rowBottom": 232,
-    "thumbTop": 711
+   "hero": {
+    "bottom": 723,
+    "h1Bottom": 244,
+    "no": true
    },
-   "bodyHex": "#152D30",
-   "inkHex": "#F2F3F3",
+   "map": {
+    "svg": true,
+    "rows": 4,
+    "ask": true
+   },
+   "theme": null,
+   "bodyHex": "#F7D4DE",
+   "inkHex": "#2A1420",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -196,14 +126,14 @@
    "errs": []
   },
   "back": {
-   "bodyLum": 0.02249601955799633,
-   "chars": 105,
+   "bodyLum": 0.7213505032434002,
+   "chars": 90,
    "blocks": {
-    "ess": 1167,
+    "ess": 5214,
     "find": 776,
-    "today": 1259,
-    "gdr": 2337,
-    "all": 2337
+    "today": 4040,
+    "gdr": 4930,
+    "all": 5068
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -212,7 +142,7 @@
    "small": [],
    "ruin": [],
    "says": [
-    "어느 계절일까?"
+    "지금 업종 77개는 어디쯤 있나요?"
    ],
    "numQ": [],
    "tabs": [
@@ -228,137 +158,77 @@
     true,
     true
    ],
-   "themeChars": 211,
+   "themeChars": 0,
    "top": [
     [
-     24,
-     "ess span.ess-t",
-     "주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부"
+     26,
+     "- p.nh-sub",
+     "코스피와 코스닥 회사, 업종의 지난 기록을 숫자로 보여"
+    ],
+    [
+     19,
+     "- p.nh-no",
+     "앞날을 맞히거나 사고팔기를 권하지 않습니다."
+    ],
+    [
+     14,
+     "- span.nh-acc",
+     "지난 기록으로 한 번 더 확인하세요"
     ],
     [
      8,
-     "theme span",
-     "한 달 뒤 물어볼게요"
+     "- p.nh-kick",
+     "주식 지난 기록 확인"
     ],
     [
-     6,
-     "- h1.s-h1",
-     "업종 77곳은 지금"
-    ],
-    [
-     6,
+     7,
      "- span",
-     "어느 계절일까?"
+     "주식을 사기 전에,"
     ],
     [
      5,
-     "theme span.s-dev",
-     "이 기기에만"
-    ],
-    [
-     4,
-     "theme span.t",
-     "지난 기록"
-    ],
-    [
-     4,
-     "news button.w-why",
-     "왜 그럴까?"
-    ],
-    [
-     4,
-     "news button.w-why",
-     "왜 그럴까?"
-    ],
-    [
-     4,
-     "all summary",
-     "전부 보기"
-    ],
-    [
-     4,
-     "- b",
-     "진화 1번째"
+     "- span.nh-in",
+     "코스피 석 달"
     ],
     [
      3,
-     "today span",
-     "코스피"
-    ],
-    [
-     3,
-     "today span",
-     "코스닥"
-    ],
-    [
-     3,
-     "news span.w-lb",
-     "오른 곳"
-    ],
-    [
-     3,
-     "news span.w-lb",
-     "내린 곳"
-    ],
-    [
-     3,
-     "theme span",
-     "번 멈춤"
-    ],
-    [
-     3,
-     "theme span",
-     "번 약속"
-    ],
-    [
-     3,
-     "gdr span",
-     "대장주"
-    ],
-    [
-     3,
-     "- span.when",
-     "채점 전"
+     "- span",
+     "년 기록"
     ],
     [
      2,
-     "- span.s-who",
-     "둘이"
+     "- span",
+     "회사"
     ],
     [
      2,
-     "today span.hm-bd",
-     "10월 28일 10:06"
+     "- span",
+     "업종"
     ],
     [
      2,
-     "find button.w-go",
-     "시작"
+     "- text",
+     "높은 7,081"
     ],
     [
      2,
-     "gdr span",
-     "둘이"
-    ],
-    [
-     2,
-     "gdr span",
-     "달력"
-    ],
-    [
-     2,
-     "gdr span",
-     "조건"
+     "- text",
+     "낮은 5,469"
     ]
    ],
-   "theme": {
-    "top": 142,
-    "zonesBottom": 560,
-    "rowBottom": 232,
-    "thumbTop": 711
+   "hero": {
+    "bottom": 723,
+    "h1Bottom": 244,
+    "no": true
    },
-   "bodyHex": "#152D30",
-   "inkHex": "#F2F3F3",
+   "map": {
+    "svg": true,
+    "rows": 4,
+    "ask": true
+   },
+   "theme": null,
+   "bodyHex": "#F7D4DE",
+   "inkHex": "#2A1420",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -376,7 +246,7 @@
    "q1": 2,
    "record": 1,
    "jinhwa": 1,
-   "kakao": 1
+   "kakao": 0
   },
   "pages": {
    "#/today 390": {
@@ -681,9 +551,9 @@
    }
   },
   "speed": {
-   "lcp": 2372,
-   "inp": 24,
-   "cls": 0.004
+   "lcp": 2128,
+   "inp": 32,
+   "cls": 0.045
   }
  },
  "net": {

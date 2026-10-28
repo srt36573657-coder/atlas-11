@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-28T02:24:10.428Z",
+ "at": "2026-10-28T03:36:08.447Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-28",
  "companies": 2557,
@@ -12,7 +12,7 @@
  "units": {
   "total": 2569,
   "mine": 2569,
-  "hash": "22b726c064a08526",
+  "hash": "114fe3ffadefa00e",
   "kinds": {
    "c": {
     "total": 2557,
@@ -32,18 +32,18 @@
    }
   }
  },
- "seconds": 141,
+ "seconds": 142,
  "time": {
-  "old": 2.3,
-  "new": 129.3,
-  "wall": 140.5,
-  "opensOld": 11,
+  "old": 123.4,
+  "new": 125.1,
+  "wall": 142.3,
+  "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 1.7,
-  "oldShare": 1.8
+  "oldPct": 86.7,
+  "oldShare": 49.7
  },
  "net": {
-  "req": 5126,
+  "req": 2560,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -62,12 +62,12 @@
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": true,
-   "why": "",
-   "made": "2026-10-28T02:12:17.852Z",
+   "use": false,
+   "why": "기준값 파일 없음",
+   "made": null,
    "inputs": 2566,
    "reads": 2557,
-   "note": "기준값 다시 씀"
+   "note": "기준값 새로 씀(파일 2566개 · 값 2557개)"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
