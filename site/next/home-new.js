@@ -60,7 +60,13 @@ function idxCard(x, name, big = false) {
 /** 오늘 코스피 한 줄(샘플 19 · 20 — 맨 위는 한 줄 · 석 달 그림은 ③ 오늘 시장에) */
 function todayLine(x) {
   const c = fin(x?.day) ? (Math.round(x.day * 100) === 0 ? 'fl' : x.day > 0 ? 'up' : 'dn') : '';
-  return h('p', {class: 'nh-kt', 'data-num': ''}, h('span', {text: '오늘 코스피'}), h('b', {class: 'num', text: fin(x?.close) ? num(Math.round(x.close * 100) / 100) : '?'}), h('b', {class: 'num ' + c, text: fin(x?.day) ? p2(x.day) : '?'}));
+  const line = h('p', {class: 'nh-kt', 'data-num': ''}, h('span', {text: '오늘 코스피'}), h('b', {class: 'num', text: fin(x?.close) ? num(Math.round(x.close * 100) / 100) : '?'}), h('b', {class: 'num ' + c, text: fin(x?.day) ? p2(x.day) : '?'}));
+  const vs = (Array.isArray(x?.rows) ? x.rows : []).filter(r => Array.isArray(r) && fin(r[1])).map(r => r[1]);
+  if (vs.length < 2 || !fin(x?.close)) return line;
+  const lo = Math.min(...vs), hi = Math.max(...vs), at = hi > lo ? Math.min(1, Math.max(0, (x.close - lo) / (hi - lo))) : 0.5, W = 340, X = 10 + at * (W - 20); // 석 달 사이 어디쯤(낮은 값 · 높은 값 · 오늘 점)
+  const s = svgBox('nh-rng', W, 26, `코스피 석 달 사이 · 낮은 값 ${num(r0(lo))} · 높은 값 ${num(r0(hi))} · 오늘 ${num(r0(x.close))}`);
+  s.append(sv('line', {class: 'nh-rl0', x1: 10, y1: 13, x2: W - 10, y2: 13}), sv('line', {class: 'nh-rt', x1: 10, y1: 6, x2: 10, y2: 20}), sv('line', {class: 'nh-rt', x1: W - 10, y1: 6, x2: W - 10, y2: 20}), sv('circle', {class: 'nh-rd', cx: X.toFixed(1), cy: 13, r: 8}));
+  return h('div', {class: 'nh-ktw'}, line, s, h('p', {class: 'nh-rc', 'data-num': ''}, h('span', {text: `석 달 낮은 값 ${num(r0(lo))}`}), h('span', {text: `높은 값 ${num(r0(hi))}`})));
 }
 
 /** 맨 위 소개 — 무엇을 하는 곳인지 · 숫자 셋 · 코스피 석 달 그림 · 권하지 않음 */
@@ -97,13 +103,19 @@ function waffle(n, cls, label) { // 10 × 10 칸 — 칠한 칸 = 100번 가운�
   for (let i = 0; i < 100; i++) s.append(sv('rect', {class: i < n ? 'on' : 'off', x: (i % 10) * 12 + 1, y: Math.floor(i / 10) * 12 + 1, width: 10, height: 10, rx: 2}));
   return s;
 }
-export function partWhy(B) {
+const card3 = (n, v, t, warn = false, how = '') => h('li', {class: 'nh-3c' + (warn ? ' nh-3w' : '')}, h('i', {'aria-hidden': 'true', text: n}), h('b', {class: 'num', text: v}), h('span', {text: t}), how ? h('small', {class: 'nh-3h', text: how}) : null); // 읽는 법(샘플 06 노먼)
+export function partWhy(B) { // 답 먼저 + 겹치지 않는 근거 셋(샘플 07 민토 피라미드 · 01 잡스 「세 가지 숫자」 · 19 마에다 「세 줄」) — 셋째는 나쁜 숫자(19 · 25 · 34 · 35 — 숨기지 않음)
   const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base), a = ok ? Math.round(R.rate) : null, b = ok ? Math.round(R.base) : null, rc = recent(B);
-  const head = partHead({n: '2', k: '근거', line: ok ? `100번 고르면 ${a}번, 시장보다 5% 넘게 더 올랐어요` : '조건으로 고른 회사의 지난 기록이에요', cap: ok ? (fin(R.fall) && fin(R.fallBase) ? `모든 회사는 ${b}번 · 크게 뒤처진 일은 ${Math.round(R.fall)}번 대 ${Math.round(R.fallBase)}번으로 적었어요` : `모든 회사는 100번 중 ${b}번이었어요`) : ''}); // 더 오른 일은 많고 뒤처진 일은 적었다(샘플 33 아리스토텔레스 · 23 하라 켄야 물 위 · 아래)
-  if (ok) head.append(h('div', {class: 'nh-wafs'},
+  const fa = ok && fin(R.fall) && fin(R.fallBase) ? [Math.round(R.fall), Math.round(R.fallBase)] : null;
+  const head = partHead({n: '2', k: '근거', line: ok ? `100번 고르면 ${a}번, 시장보다 5% 넘게 더 올랐어요` : '조건으로 고른 회사의 지난 기록이에요', cap: ok ? '더 나았어요. 늘은 아니에요. 근거는 셋이에요.' : ''});
+  if (!ok) return head;
+  head.append(h('div', {class: 'nh-wafs'},
     h('figure', {class: 'nh-wf'}, waffle(a, 'me', '조건으로 고른 회사'), h('figcaption', {}, h('b', {class: 'num', text: a + '번'}), h('span', {text: '조건으로 고른 회사'}))),
     h('figure', {class: 'nh-wf'}, waffle(b, 'all', '모든 회사'), h('figcaption', {}, h('b', {class: 'num', text: b + '번'}), h('span', {text: '모든 회사'})))));
-  if (rc.P != null && rc.Q != null && rc.P < rc.Q) head.append(h('p', {class: 'nh-honest', 'data-num': ''}, h('span', {text: '그런데 최근 두 달은 반대였어요'}), h('b', {class: 'num', text: `${rc.P}% 대 ${rc.Q}%`})));
+  head.append(h('ol', {class: 'nh-3', 'aria-label': '근거 셋'}, card3('1', `${a} 대 ${b}`, '더 자주 올랐어요'), fa ? card3('2', `${fa[0]} 대 ${fa[1]}`, '덜 자주 뒤처졌어요') : null,
+    rc.P != null && rc.Q != null ? card3('3', `${rc.P} 대 ${rc.Q}`, rc.P < rc.Q ? '최근 두 달은 졌어요' : '최근 두 달도 앞섰어요', rc.P < rc.Q) : null));
+  if (fa) head.append(h('p', {class: 'nh-pc nh-3how', text: '①과 ③은 높을수록 좋고 ②는 낮을수록 좋아요'})); // 읽는 법 한 줄(샘플 06 노먼 「높을수록 좋음 ↑ · 낮을수록 좋음 ↓」)
+  head.append(h('p', {class: 'nh-pc', text: '고른 회사 대 모든 회사 · 100번 가운데 · 한 달 뒤 시장보다 5% 넘게'}), h('p', {class: 'nh-pc nh-pc2', text: '앞날의 확률이 아니라 이미 일어난 횟수예요.'})); // 샘플 14 네이트 실버
   return head;
 }
 /** ③ 오늘 머리 — 오늘 코스피 · 조건 4개를 다 채운 업종 수 */
@@ -114,7 +126,17 @@ export function partToday(TH, kospi) {
     cap: '점 하나가 업종 하나 · 오른쪽 위일수록 시장보다 강해요'});
 }
 /** ④ 할 일 머리 — 질문 11개 */
-export const partDo = () => partHead({n: '4', k: '할 일', big: [h('b', {class: 'num', text: '11'}), h('span', {text: '개 질문'})], line: '사기 전에 한 번 더 확인하세요', cap: '약 2분 · 답은 이 기기에만 남아요'});
+export function partDo(B) { // 지는 길을 뒤집으면 점검표(샘플 10 멍거) — 5% 못 넘은 까닭 셋을 사기 전 물음 셋으로 · 물음 끝은 「?」
+  const head = partHead({n: '4', k: '할 일', big: [h('b', {class: 'num', text: '11'}), h('span', {text: '개 질문'})], line: '사기 전에 한 번 더 확인하세요', cap: '약 2분 · 답은 이 기기에만 남아요'});
+  const Wy = B?.why?.all;
+  if (Number.isInteger(Wy?.miss) && Wy.miss > 0 && Array.isArray(Wy.why) && Wy.why.length === 3) {
+    const p = v => Math.round((v / Wy.miss) * 100), [w0, w1, w2] = Wy.why;
+    head.append(h('div', {class: 'nh-chk'}, h('p', {class: 'nh-chkh', text: `사기 전 점검 셋 · 지난 기록이 못 넘은 ${num(Wy.miss)}번에서 뽑았어요`}),
+      h('ul', {}, ...[['그 업종이 통째로 식고 있지 않나요?', w1], ['기대만큼 더 오를 까닭이 있나요?', w0], ['업종은 괜찮은데 그 회사만 처지지 않나요?', w2]].sort((x, y) => y[1] - x[1])
+        .map(([t, v]) => h('li', {}, h('i', {'aria-hidden': 'true'}), h('span', {class: 'nh-chkt', text: t}), h('b', {class: 'num', text: p(v) + '%'}))))));
+  }
+  return head;
+}
 /** ① 결론 아래 할 일 단추 — 끝까지 내리지 않아도 바로(샘플 36개 중 첫 마디 단추가 있는 쪽이 할 일까지 거리 6분의 1) */
 export const goFirst = () => h('a', {class: 'nh-go nh-go1', href: '#/why'}, h('span', {text: '「왜 사?」 시작하기'}), h('i', {'aria-hidden': 'true', text: '›'}));
 
@@ -282,6 +304,9 @@ export function recordBox(B) {
     h('div', {class: 'nh-vs', 'data-num': ''}, h('span', {class: 'nh-vsa'}, h('b', {class: 'num', text: rc.P + '%'}), h('small', {text: '고른 회사'})), h('span', {class: 'nh-vsx', text: '대'}), h('span', {class: 'nh-vsb'}, h('b', {class: 'num', text: rc.Q + '%'}), h('small', {text: '모든 회사'})))));
   const fu = funnel(B.pick);
   if (fu) deep.push(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '고르는 조건은 이렇게 정했습니다'}), fu));
+  { const Y = B.record?.years ?? {}, ys = Object.keys(Y).filter(k => /^\d{4}$/.test(k) && fin(Y[k]?.rate) && fin(Y[k]?.base)), win = ys.filter(k => Y[k].rate > Y[k].base).length; // 해마다 한 줄(샘플 36 나이팅게일 「네 해 중 세 해는 컸고, 최근 두 달은 작았습니다」)
+    const lose = ys.filter(k => !(Y[k].rate > Y[k].base)), few = lose.length === 1 && Number.isInteger(Y[lose[0]]?.n) && Y[lose[0]].n < 200; // 횟수가 적은 해는 가볍게(샘플 13 달리오 「믿을 만한 정도만큼 무게를」)
+    if (ys.length >= 2) box.append(h('p', {class: 'nh-yrsum', 'data-num': ''}, h('span', {text: `${ys.length}년 중 ${win}년은 고른 회사가 앞섰어요` + (few ? ` · 진 ${lose[0]}년은 ${Y[lose[0]].n}번뿐이에요` : '')}))); }
   if (deep.length) box.append(fold('그림 더 보기 · 해마다 · 못 넘은 까닭 · 조건을 정한 길', ...deep));
   box.append(more(
     h('p', {class: 'nh-how', text: '고르는 조건: 업종은 한 달 내내 강하고, 회사는 막 힘이 붙었고, 회사 값은 반년 가장 높은 값 가까이일 때 고릅니다.'}),

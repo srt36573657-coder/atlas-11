@@ -361,3 +361,35 @@ html.home #view .nh-honest b { font-size: 22px; font-weight: 900; color: #A31F70
 html.home #view .nh-part::before { content: ""; justify-self: center; width: 0; height: 0; margin: -22px 0 8px; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 12px solid #C98AA3; }
 /* 기 — 보는 사람의 마음 한 줄(말풍선 꼴 · 샘플 34) */
 html.home #view .nh-q { justify-self: start; margin: 0; padding: 6px 14px; border-radius: 18px 18px 18px 4px; background: #FFF7F9; border: 1px solid #C98AA3; font-size: 18px; font-weight: 800; color: #A31F70; }
+html.home #view .nh-yrsum { margin: 4px 0 0; font-size: 19px; font-weight: 800; color: #2A1420; }
+/* 근거 셋(샘플 07 민토 · 01 잡스 · 19 마에다) — 셋째(나쁜 숫자)는 테로 눈에 띄게 */
+html.home #view .nh-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+html.home #view .nh-3c { display: grid; align-content: start; gap: 4px; min-width: 0; padding: 10px 8px; border-radius: 14px; background: #FFF7F9; border: 1px solid #EBC0CE; }
+html.home #view .nh-3c i { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #A31F70; color: #FFFFFF; font-style: normal; font-size: 17px; font-weight: 900; }
+html.home #view .nh-3c b { font-size: 22px; line-height: 1.15; font-weight: 900; color: #2A1420; letter-spacing: -.02em; }
+html.home #view .nh-3c span { font-size: 17px; line-height: 1.3; font-weight: 700; color: #5E3446; }
+html.home #view .nh-3w { border: 2px solid #A31F70; }
+html.home #view .nh-3w b { color: #A31F70; }
+@media (max-width: 359px) { html.home #view .nh-3 { gap: 6px; } html.home #view .nh-3c { padding: 8px 6px; } html.home #view .nh-3c b { font-size: 19px; } }
+html.home #view .nh-3c b { white-space: nowrap; font-size: 21px; }
+html.home #view .nh-3c span { word-break: keep-all; }
+@media (max-width: 359px) { html.home #view .nh-3c b { font-size: 18px; } }
+/* ④ 할 일 — 사기 전 점검 셋(샘플 10 멍거 「지는 길을 뒤집으면 점검표」) */
+html.home #view .nh-chk { display: grid; gap: 8px; margin-top: 10px; padding: 12px 14px; border-radius: 16px; background: #FFF7F9; border: 1px solid #EBC0CE; }
+html.home #view .nh-chkh { margin: 0; font-size: 17px; font-weight: 800; color: #5E3446; }
+html.home #view .nh-chk ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+html.home #view .nh-chk li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+html.home #view .nh-chk li i { width: 24px; height: 24px; border: 2px solid #A31F70; border-radius: 6px; background: #FFFFFF; }
+html.home #view .nh-chkt { font-size: 18px; line-height: 1.35; font-weight: 800; color: #2A1420; word-break: keep-all; }
+html.home #view .nh-chk li b { font-size: 18px; font-weight: 900; color: #A31F70; }
+html.home #view .nh-pc2 { font-weight: 800; color: #2A1420; }
+/* 오늘 코스피 석 달 자리(샘플 03 · 04 · 14 · 25 · 28 · 31) */
+html.home #view .nh-ktw { display: grid; gap: 4px; padding: 12px 14px 10px; border-radius: 16px; background: #FFF7F9; border: 1px solid #EBC0CE; }
+html.home #view .nh-ktw .nh-kt { padding: 0; border: 0; background: transparent; }
+html.home #view .nh-rng { display: block; width: 100%; height: auto; }
+html.home #view .nh-rng .nh-rl0 { stroke: #C98AA3; stroke-width: 4; stroke-linecap: round; }
+html.home #view .nh-rng .nh-rt { stroke: #9E5A78; stroke-width: 2; }
+html.home #view .nh-rng .nh-rd { fill: #A31F70; stroke: #FFFFFF; stroke-width: 3; }
+html.home #view .nh-rc { display: flex; justify-content: space-between; gap: 8px; margin: 0; font-size: 17px; color: #5E3446; }
+html.home #view .nh-3h { font-size: 17px; font-weight: 700; color: #6B3F52; }
+html.home #view .nh-3how { font-weight: 800; color: #2A1420; }

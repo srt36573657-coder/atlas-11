@@ -607,7 +607,7 @@ async function vHomeAll() {
   const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
   const hero = heroBox({coN, indN: TH?.inds?.length || null, years: Number.isFinite(yrs) ? yrs : null, kospi: H?.idx?.KOSPI ?? null}); hero.id = 'nh-p1';
   // 네 마디 기승전결(사장님 2026-10-28 14:45 · order-1445.txt) — ① 결론 소개 + 할 일 단추 → ② 근거 지난 기록 → ③ 오늘 업종 · 시장 → ④ 할 일 질문 11개
-  const nodes = [railBox(), hero, goFirst(), partWhy(B), recordBox(B), partToday(TH, H?.idx?.KOSPI), mapBox(TH, news), mktBox(band.el, newsBox(H), H), partDo(), // 그림 많이(12:09 「글보다는 주식 도식화로 … 대범하게」) — 코스피 · 코스닥 석 달 · 사고판 돈은 home.json
+  const nodes = [railBox(), hero, goFirst(), partWhy(B), recordBox(B), partToday(TH, H?.idx?.KOSPI), mapBox(TH, news), mktBox(band.el, newsBox(H), H), partDo(B), // 그림 많이(12:09 「글보다는 주식 도식화로 … 대범하게」) — 코스피 · 코스닥 석 달 · 사고판 돈은 home.json
     whyBox({done: (C?.stop ?? 0) > 0, month}), thumb, h('div', {class: 's-short nh-short'}, allBox(H, band)), footBox(ess)];
   return {title: '첫 화면', nodes};
 }
