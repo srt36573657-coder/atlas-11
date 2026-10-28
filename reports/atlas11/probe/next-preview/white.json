@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-28T06:37:04.762Z",
+ "at": "2026-10-28T06:48:27.392Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.7213505032434002,
    "chars": 100,
    "blocks": {
-    "ess": 6478,
+    "ess": 6136,
     "find": 776,
-    "today": 4376,
-    "gdr": 6071,
-    "all": 6209
+    "today": 4133,
+    "gdr": 5758,
+    "all": 5896
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -121,7 +121,7 @@
     ]
    ],
    "hero": {
-    "bottom": 714,
+    "bottom": 690,
     "h1Bottom": 304,
     "no": true
    },
@@ -149,11 +149,11 @@
    "bodyLum": 0.7213505032434002,
    "chars": 100,
    "blocks": {
-    "ess": 6355,
+    "ess": 6042,
     "find": 776,
-    "today": 4376,
-    "gdr": 6071,
-    "all": 6209
+    "today": 4133,
+    "gdr": 5758,
+    "all": 5896
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -257,7 +257,7 @@
     ]
    ],
    "hero": {
-    "bottom": 714,
+    "bottom": 690,
     "h1Bottom": 304,
     "no": true
    },
@@ -591,9 +591,9 @@
    }
   },
   "speed": {
-   "lcp": 2208,
-   "inp": 72,
-   "cls": 0.029
+   "lcp": 2188,
+   "inp": 48,
+   "cls": 0.023
   }
  },
  "net": {
