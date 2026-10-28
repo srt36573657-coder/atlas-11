@@ -863,24 +863,24 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
         const {p, ctx} = await page();
         try {
           await go(p, `#/s/${code}/${day}/${price}/s/${b64}`);
-          await p.waitForFunction(() => document.querySelectorAll('#view .wy-opt').length >= 2, null, {timeout}).catch(() => {});
+          await p.waitForFunction(() => document.querySelectorAll('#view .wy-opt').length >= 2 || !!document.querySelector('#view .wy .wy-go'), null, {timeout}).catch(() => {}); // 「왜 사?」 칸은 시작 화면(「시작하기 ›」 .wy-go)부터 — order-1011(docs/design/why-mock-2026-10-28)
           const s0 = await p.evaluate(m => {
             const v = document.querySelector('#view'), q = v?.querySelector('.wy, .ps-why'), a = v?.querySelector('.ps-after');
             const order = q && a ? !!(q.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING) : null;
             const again = [...(v?.querySelectorAll('button') ?? [])].some(b => /나도\s*(친구에게\s*)?보내기/.test(b.textContent || '') || (b.getAttribute('aria-label') || '').includes('나도'));
-            return {q: !!q, opts: v?.querySelectorAll('.wy-opt').length ?? 0, order, msg: (document.body.textContent || '').includes(m), again, lock: !!v?.querySelector('.ps-lock')};
+            return {q: !!q, opts: v?.querySelectorAll('.wy-opt, .wy .wy-go').length ?? 0, order, msg: (document.body.textContent || '').includes(m), again, lock: !!v?.querySelector('.ps-lock')}; // 답 단추 또는 시작 단추(order-1011)
           }, MSG);
           if (!s0.q || !s0.opts) bad(c, '친구가 연 쪽에 질문(왜 사?)이 없음');
           if (s0.order === false) bad(c, '친구 말 칸이 질문보다 위');
           if (s0.msg) bad(c, '다 답하기 전에 친구 말이 화면에 있음');
           if (s0.again) bad(c, '다 답하기 전에 「나도 보내기」 단추가 보임');
-          for (let k = 0; k < 40; k++) { // 끝까지 답함(check_share finishWhy 와 같은 길)
-            const st = await p.evaluate(() => { const w = document.querySelector('#view .ps-why .wy'); if (!w) return 'none'; if (!document.querySelector('#view .ps-lock')) return 'open'; if (w.querySelector('.wy-res')) return 'res'; if (w.querySelector('.wy-why')) return 'lines'; if (w.querySelector('.wy-opt')) return w.querySelector('.wy-opt[aria-pressed="true"]') ? 'next' : 'pick'; return 'wait'; });
+          for (let k = 0; k < 40; k++) { // 끝까지 답함(check_share finishWhy 와 같은 길) — 새 꼴(order-1011 「어 그렇게 해」): 시작하기 → 답 고르기 → 「다음으로 ›」 · 11번 「결과 보기 ›」 → 결과(마지막 두 줄 없음)
+            const st = await p.evaluate(() => { const w = document.querySelector('#view .ps-why .wy'); if (!w) return 'none'; if (!document.querySelector('#view .ps-lock')) return 'open'; if (w.querySelector('.wy-res')) return 'res'; if (w.querySelector('.wy-opt')) return w.querySelector('.wy-opt[aria-pressed="true"]') ? 'next' : 'pick'; if (w.querySelector('.wy-go')) return 'start'; return 'wait'; });
             if (st === 'open' || st === 'none' || st === 'res') break;
             if (st === 'wait') { await p.waitForTimeout(150); continue; }
-            if (st === 'pick') await p.locator('#view .ps-why .wy-opt').first().click();
-            else if (st === 'next') await p.locator('#view .ps-why .wy-next').first().click();
-            else { await p.locator('#view .ps-why .wy-why').fill('본질 문 시험'); for (const [s1, v1] of [['.wy-sell', '1000'], ['.wy-half', '2000']]) { const x = p.locator('#view .ps-why ' + s1); if ((await x.count()) && !(await x.inputValue())) await x.fill(v1); } await p.locator('#view .ps-why .wy-next').last().click(); }
+            if (st === 'start') await p.locator('#view .ps-why .wy-go').first().click();
+            else if (st === 'pick') await p.locator('#view .ps-why .wy-opt').first().click();
+            else await p.locator('#view .ps-why .wy-nav .wy-next').first().click();
             await p.waitForTimeout(60);
           }
           await p.waitForFunction(m => (document.body.textContent || '').includes(m), MSG, {timeout: 6000}).catch(() => {});

@@ -24,7 +24,7 @@
  *  · 첫 화면(#/) 덧붙임: 0 ≤ y < 640 · 0 ≤ x < 360 에 보이고(elementFromPoint 로 위 띠 · 아래 단추에 가리지 않음) 맨 위에 있는 숫자 낱말
  *    (%, 원, 쉼표나 소수점이 든 수 · 날짜 「10월 13일」 · 시각 「15:30」 · 쉼표 없는 정수는 안 셈 · 목록을 남김) · #view 바로 아래 칸마다 높이 ·
  *    급등 카드(a.card 글에 「급등」)가 있나 · 카드 종류마다 높이 최소 · 최대(a.card · a.prem).
- *  · #/why 누름: 새 기기에서 「삼성전자」를 쳐 넣고(치기는 누름 아님) 엔터 → 질문마다 첫 답 → 「다음」 … → 결과가 나올 때까지 스크립트가 누른 수(누름 + 엔터).
+ *  · #/why 누름: 새 기기에서 「시작하기 ›」 → 질문마다 첫 답 → 「다음으로 ›」 … 「결과 보기 ›」 → 결과가 나올 때까지 스크립트가 누른 수(2026-10-28 order-1011 그림 그대로 판 · 옛 판은 「삼성전자」 + 엔터 · 답 한 번 = 다음).
  *  · #/me: 편지 칸(.m4-letter)과 그것을 품은 #view 바로 아래 칸의 높이. /letter.html: 아래 단추 줄(nav.tabs 또는 화면 아래 붙박이 고리 셋 이상)이 있나 · 돌아가는 고리 높이.
  *  · #/shorts: 빈 곳 = 보이는 글 · 그림(img · svg · video · canvas · input) 상자를 y 로 합친 뒤 이웃한 덩이 사이 48px 넘는 빈 높이(잉크 빈 곳) · 그리고 #view 바로 아래 칸 사이 48px 넘는 틈.
  *  · 영어 390×640(?lang=en): 길이 · 화면 수 · 17px 아래만.
@@ -194,7 +194,7 @@ async function measureScreen(scr, {en = false} = {}) {
   return r;
 }
 
-/** #/why — 새 기기 · 「삼성전자」 · 첫 답만 · 결과까지 누른 수 */
+/** #/why — 새 기기 · 시작하기 · 첫 답만 · 다음으로 · 결과까지 누른 수(order-1011 · 옛 판의 찾기 길은 그 칸이 있을 때만 · 남겨 둠) */
 async function whyTaps() {
   const p = await fresh(VW), steps = []; let taps = 0, typed = 0, result = false, err = null;
   const press = (what) => { taps++; steps.push(what); };
@@ -205,11 +205,12 @@ async function whyTaps() {
         const v = document.querySelector('#view section.wy') || document.querySelector('#view');
         const vis = s => { const e = v.querySelector(s); if (!e) return false; const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
         const date = v.querySelector('.wy-date');
-        return {res: vis('.wy-res'), find: vis('.wy-find'), findVal: v.querySelector('.wy-find')?.value || '', hits: v.querySelectorAll('.wy-hit').length, opts: v.querySelectorAll('.wy-opt').length,
+        return {res: vis('.wy-res'), go: vis('.wy-go'), find: vis('.wy-find'), findVal: v.querySelector('.wy-find')?.value || '', hits: v.querySelectorAll('.wy-hit').length, opts: v.querySelectorAll('.wy-opt').length,
           optOn: v.querySelectorAll('.wy-opt.on').length, next: vis('.wy-next'), nextText: v.querySelector('.wy-next')?.textContent || '', dateNeed: !!date && !date.value,
           why: vis('.wy-why'), whyVal: v.querySelector('.wy-why')?.value || '', err: v.querySelector('.wy-err')?.textContent || '', q: v.querySelector('.wy-q')?.textContent || '', step: v.querySelector('.wy-step')?.textContent || ''};
       });
       if (st.res) { result = true; break; }
+      if (st.go && !st.opts) { await p.click('#view .wy-go'); press('누름(시작하기)'); await p.waitForTimeout(250); continue; } // 시작 화면 「시작하기 ›」(사장님 2026-10-28 10:11 「어 그렇게 해」 order-1011 — 종목 찾기 칸 없음 · 답 고르기 → 「다음으로 ›」)
       if (st.find) {
         if (st.findVal !== '삼성전자') { await p.fill('#view .wy-find', '삼성전자'); typed++; await p.waitForTimeout(250); continue; }
         if (!steps.includes('엔터(찾기)')) { await p.press('#view .wy-find', 'Enter'); press('엔터(찾기)'); await p.waitForTimeout(400); continue; }

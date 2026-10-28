@@ -35,7 +35,7 @@ import path from 'node:path';
 import {spawn, spawnSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
-import {screenHits} from '../../../site/next/words.js';
+import {screenHits, WHY_OK} from '../../../site/next/words.js'; // WHY_OK = 「왜 사?」 칸(section.wy) 안에서만 허락한 말(사장님 2026-10-28 10:11 · docs/design/why-mock-2026-10-28/order-1011.txt 2)
 import {BRAND} from '../../../site/next/brand.js';
 import {nameScan, oldNamesIn, allowFromData, OLD_NAMES} from './rename.mjs';
 
@@ -143,7 +143,8 @@ function inPage({en}) {
     if (rc.height < 43.5 || rc.width < 43.5) r.small.push(sh(e) + desc(e) + ' ' + Math.round(rc.width) + '×' + Math.round(rc.height));
   }
   const root = document.querySelector('#view') || document.body, cl = root.cloneNode(true);
-  cl.querySelectorAll('[data-proper], [lang="ko"], script, style, noscript, template').forEach(x => x.remove()); r.text = cl.textContent;
+  cl.querySelectorAll('[data-proper], [lang="ko"], script, style, noscript, template').forEach(x => x.remove());
+  r.wyText = [...cl.querySelectorAll('section.wy')].map(x => x.textContent).join('\n'); cl.querySelectorAll('section.wy').forEach(x => x.remove()); r.text = cl.textContent; // 「왜 사?」 칸 글은 따로 셈(order-1011.txt 2 — 칸 안에서만 「매수」 허락)
   if (en) {
     const OUT = 'body [lang="ko"], body [data-proper], script, style, noscript, template, [hidden]';
     const vis = el => { const s = cs(el); if (s.visibility === 'hidden' || s.display === 'none' || !el.getClientRects().length) return false; return !el.closest('details:not([open]) > :not(summary)'); };
@@ -182,7 +183,8 @@ async function rules(r, scan, {en, allow = null}) {
   if (r.broke) f.push(['화면을 못 그림', '「? 화면을 그리지 못했어요」']);
   if (r.sw > r.vw) f.push(['가로 넘침', r.sw + 'px > ' + r.vw + 'px']);
   add('화면 밖으로 나간 칸', r.out); add('칸 안에서 넘친 글', r.box); add('17px 아래 글', r.tiny); add('누르는 자리 44px 안 됨', r.small);
-  add('쓰지 않을 말', [...screenHits(r.text), ...OLD36.filter(w => r.text.includes(w))].map(w => '「' + w + '」'));
+  add('쓰지 않을 말', [...screenHits(r.text), ...OLD36.filter(w => r.text.includes(w)),
+    ...screenHits(r.wyText ?? '').filter(w => !WHY_OK.includes(w)), ...OLD36.filter(w => (r.wyText ?? '').includes(w))].map(w => '「' + w + '」')); // 칸 안 = WHY_OK 만 빼고 그대로(order-1011.txt 2)
   const flatAll = [scan.title, scan.text, ...scan.attrs, ...scan.meta].join('\n');
   if (OLD_NAMES.some(n => flatAll.includes(n))) {
     const al = allow ?? await allowList();

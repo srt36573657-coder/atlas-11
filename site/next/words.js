@@ -162,6 +162,9 @@ export function sendHits(text) { const a = hits(text); return [...a, ...gainHits
 
 /** 화면 글(검사가 셈 · 이름 · 남의 글 data-proper 는 미리 뺌)에 남은 쓰지 않을 말 — 낱말 목록 · 글자 그대로(「TOP」 은 앞뒤가 영어 글자가 아닐 때만) */
 export const SCREEN_OK = Object.freeze(['공매도', ...OKW]); // 「공매도」 = 빌려 판 주식(사실 말 · 권하는 말 아님)
+/** 「왜 사?」 칸(section.wy) 안에서만 허락한 화면 말 — 사장님 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt · 그림 글 그대로)
+    화면 셈은 그대로(screenHits 는 이 낱말도 셈) — 검사가 section.wy 안 글에서만 걸린 낱말 가운데 이것을 뺌 · 칸 밖 글 · 사람이 쓴 글(hits · sendHits)은 예전 그대로 막음 */
+export const WHY_OK = Object.freeze(['매수']);
 export function screenHits(text) {
   let t = String(text ?? '');
   for (const w of SCREEN_OK) t = t.split(w).join('');

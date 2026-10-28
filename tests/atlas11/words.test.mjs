@@ -5,7 +5,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {BLOCK, OKW, hits, badWord, sendHits, gainHits, screenHits, filterForms} from '../../site/next/words.js';
+import {BLOCK, OKW, hits, badWord, sendHits, gainHits, screenHits, filterForms, WHY_OK, SCREEN} from '../../site/next/words.js';
 
 const word = s => badWord(s)?.[1] ?? null;
 
@@ -65,6 +65,15 @@ test('예외 — 「공매도」는 화면 셈(screenHits)에서 그대로 지�
   assert.deepEqual(screenHits('공매도 늘었어요'), []);
   assert.deepEqual(screenHits('수익률 · 확실 · 보장 · 담아 · 텔레'), []);
   assert.deepEqual(screenHits('사라져요 공매도 STOP'), []);
+});
+
+test('「왜 사?」 칸 허락 말(WHY_OK) — 「매수」 하나뿐 · 화면 셈 · 사람이 쓴 글 거르기는 그대로 막음(order-1011.txt)', () => {
+  assert.deepEqual([...WHY_OK], ['매수']); // docs/design/why-mock-2026-10-28/order-1011.txt — section.wy 안에서만 검사가 뺌
+  assert.ok(WHY_OK.every(w => SCREEN.includes(w)), '허락 말은 쓰지 않을 말 목록 안의 낱말이어야 함');
+  assert.deepEqual(screenHits('매수 전 체크리스트 사용하기'), ['매수']); // 화면 셈 자체는 그대로 셈 — 칸 밖 글은 걸림
+  assert.deepEqual(screenHits('매수 전 체크리스트 사용하기').filter(w => !WHY_OK.includes(w)), []); // 칸 안 글 = 검사가 허락 말만 뺌
+  assert.deepEqual(screenHits('지금이 기회 · 추천').filter(w => !WHY_OK.includes(w)), ['추천', '기회']); // 다른 쓰지 않을 말은 칸 안에서도 그대로 걸림
+  assert.equal(word('오늘 매수 하세요'), '매수'); // 사람이 쓴 글 거르기는 그대로
 });
 
 test('예외 — 편지 맺음말 「마음을 담아」 · 회사 이름(SK텔레콤 · 텔레칩스) · 텔레비전 · 「2010년」', () => {

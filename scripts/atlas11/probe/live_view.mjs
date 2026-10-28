@@ -429,13 +429,13 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   await goHash('#/shorts'); await page.waitForTimeout(500); await shot('p43-next-shorts');
   const shorts = await page.evaluate(() => ({n: document.querySelectorAll('#view .sh').length, surge: /급등/.test(document.querySelector('#view')?.innerText ?? '')}));
   await look('#/shorts');
-  // ⑦ 매매일지 — 제목 · 「친구야, 왜 사?」는 종목 고르기부터 · 그 밑에 기록 · #/why/<번호> 는 그 회사를 고른 채 1번 질문
+  // ⑦ 매매일지 — 제목 · 「친구야, 왜 사?」는 시작 화면(「시작하기 ›」)부터 · 그 밑에 기록 · #/why/<번호> 도 시작 화면부터(번호는 기록에만 · 종목 찾기 칸 · 종목 줄 없음) — 사장님 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt)
   await goHash('#/why'); await page.waitForTimeout(400); await shot('p46-next-why');
   const why = await page.evaluate(() => { const v = document.querySelector('#view'), s = v?.querySelector('section.wy');
-    return {h1: v?.querySelector('h1')?.textContent ?? '', find: !!s?.querySelector('input.wy-find'), q: s?.querySelector('.wy-q')?.textContent ?? '', opts: s?.querySelectorAll('.wy-opt').length ?? -1, recAfter: !!s?.nextElementSibling?.matches('section.wy-me'), recH: v?.querySelector('section.wy-me h2')?.textContent ?? ''}; });
+    return {h1: v?.querySelector('h1')?.textContent ?? '', step: s?.dataset.step ?? null, go: !!s?.querySelector('button.wy-go'), find: !!s?.querySelector('input.wy-find'), q: s?.querySelector('.wy-q')?.textContent ?? '', opts: s?.querySelectorAll('.wy-opt').length ?? -1, recAfter: !!s?.nextElementSibling?.matches('section.wy-me'), recH: v?.querySelector('section.wy-me h2')?.textContent ?? ''}; }); // step · go = 시작 화면(order-1011)
   await look('#/why');
   await goHash('#/why/005930'); await page.waitForTimeout(400);
-  const whyCo = await page.evaluate(() => { const s = document.querySelector('#view section.wy'); return {q: s?.querySelector('.wy-q')?.textContent ?? '', opts: s?.querySelectorAll('.wy-opt').length ?? 0, stock: s?.querySelector('.wy-stn')?.textContent ?? '', find: !!s?.querySelector('input.wy-find')}; });
+  const whyCo = await page.evaluate(() => { const s = document.querySelector('#view section.wy'); return {step: s?.dataset.step ?? null, go: !!s?.querySelector('button.wy-go'), q: s?.querySelector('.wy-q')?.textContent ?? '', opts: s?.querySelectorAll('.wy-opt').length ?? 0, stock: s?.querySelector('.wy-stn')?.textContent ?? '', find: !!s?.querySelector('input.wy-find')}; }); // order-1011 — #/why/<번호> 도 시작 화면 · 종목 줄 없음
   await look('#/why/005930');
   // ⑧ 열한 질문을 끝낸 기계 — 끝낸 기록 한 줄(p-why.js 기록 꼴 · 답 열한 개 0 ~ 2)을 넣고 다시 엶 → 고도리 칸 열림 · 「어떻게 골랐나」 · 카드마다 「틀린다면 이유」(gdr.json wrong) · 끝에 기록을 지워 처음 기계로 되돌림
   //    2026-10-18 첫 번째 묶음 — 첫 화면 칸 자리: 오늘 끝낸 기록이면 한 줄(section.gdr.today1 · 「오늘 점수 준비 n / 22」→ #/gdr · 「다시 하기 ›」→ #/why) · 오늘 쉬어 가자면 닫는 한 줄(rest1) · 어제만 끝냈으면 옛 그대로 열린 칸(칸 수 = 고른 곳 + 쉬는 돈) · 열린 칸은 #/gdr 에서도
@@ -480,7 +480,7 @@ await step('새 아틀란스 첫 화면', async () => { // 규칙 74 · 77 — �
   const okMe = me.h1 === '보유종목' && me.order.slice(0, 3).join(',') === 'h1,hold,letter' && me.order.indexOf('h2:바로 가기') > 2 && me.order.indexOf('h2:본 기록') > me.order.indexOf('h2:바로 가기') && !me.rec && me.clear && me.landed
     && MSG[0] === LETTER_TITLE && JSON.stringify(me.letter) === JSON.stringify(MSG) && me.promo === PROMO;
   const okShorts = want.length >= 1 && shorts.n === want.length && !shorts.surge;
-  const okWhy = why.h1 === '매매일지' && why.find && why.q === '어떤 종목이야?' && why.opts === 0 && why.recAfter && why.recH === '왜 사? 기록 0번' && /^1\. /.test(whyCo.q) && whyCo.opts === 3 && whyCo.stock === watch.h1 && !whyCo.find;
+  const okWhy = why.h1 === '매매일지' && why.step === 'start' && why.go && !why.find && why.opts === 0 && why.recAfter && why.recH === '왜 사? 기록 0번' && whyCo.step === 'start' && whyCo.go && whyCo.opts === 0 && !whyCo.stock && !whyCo.find; // 그림 그대로 판(order-1011): 둘 다 시작 화면부터 · 종목 찾기 칸 · 종목 줄 없음
   const okOpen = !!G && homeOne?.lock === false && !homeOne.rest && homeOne.today?.href === '#/why' && /^오늘 점수 준비 (\d+|\?) \/ 22 · 다시 하기 ›$/.test(homeOne.today.t) && homeOne.cells === G.picks.length + 1
     && homeRest?.rest === true && homeRest.text === '오늘은 담는 칸을 닫아 둘게' && homeRest.cells === 0 && !homeRest.lock && !homeRest.one
     && homeOpen?.lock === false && !homeOpen.one && !homeOpen.rest && !homeOpen.today && homeOpen.cells === G.picks.length + 1 && homeOpen.sum.startsWith('비중 합 100%') && !gOpen.lock && gOpen.fun && gOpen.cells === G.picks.length + 1 && wrong.length >= Math.min(1, G.picks.length) && wrong.every(x => x.ok) && whyRec === '왜 사? 기록 1번'; // 카드(틀린다면 이유)는 고른 곳이 있을 때만 — 고른 곳 0 이면 칸 하나(현금으로 둠)뿐
@@ -503,7 +503,7 @@ await step('새 아틀란스 모든 쪽', async () => { // 사장님 2026-10-17 
   const done = () => page.waitForFunction(() => !document.querySelector('#view .boot'), null, {timeout: 30000}).catch(() => {});
   const R = [['co', '#/w/005930', '.co-d'], ['past', '#/w/005930/past', '.chaps .cp.now'], ['rivals', '#/w/005930/rivals', '.chaps .cp.now'], ['grow', '#/w/005930/grow', '.chaps .cp.now'], ['range', '#/w/005930/range', '.chaps .cp.now'],
     ['chx', '#/ch/g/' + 'semi', '.chx-d'], ['surge', '#/surge', null], ['surge', '#/surge/20', null], ['cal', '#/cal', null], ['cond', '#/cond', null], ['talk', '#/talk', null], ['up', '#/up', null], ['time', '#/time', null], ['info', '#/info', null], ['today', '#/today', null],
-    ['why', '#/why', 'section.wy input.wy-find', 60], ['why', '#/why/005930', 'section.wy .wy-opt', 60], ['gdr', '#/gdr', 'section.gdr.lock1 a.gdr-l1[href="#/why"]', 60]].filter(([k]) => NREADY.has(k)); // why · gdr = 고도리 한 장 명령문(2026-10-17 17:54) · 매매일지는 종목 고르기부터(#/why/<번호> 는 1번 질문) · 처음 기계의 고도리 칸은 잠금(21:10 [6] 1) · 넷째 = 글 길이 하한
+    ['why', '#/why', 'section.wy button.wy-go', 60], ['why', '#/why/005930', 'section.wy button.wy-go', 60], ['gdr', '#/gdr', 'section.gdr.lock1 a.gdr-l1[href="#/why"]', 60]].filter(([k]) => NREADY.has(k)); // why · gdr = 고도리 한 장 명령문(2026-10-17 17:54) · 매매일지는 시작 화면부터(#/why/<번호> 도 · order-1011 「어 그렇게 해」) · 처음 기계의 고도리 칸은 잠금(21:10 [6] 1) · 넷째 = 글 길이 하한
   const got = [], allow = await nameAllow();
   await page.goto(B + '/?v=' + Date.now() + '#/', {waitUntil: 'networkidle', timeout: 60000}); await done();
   await page.evaluate(k => localStorage.removeItem(k), WHY_KEY); // 처음 기계(매매일지 기록 없음) — 고도리 칸 잠금을 봄(열린 칸은 「새 아틀란스 첫 화면」 ⑧)

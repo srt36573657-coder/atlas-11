@@ -408,22 +408,21 @@ else {
   const tap = async p => { const got = []; await p.route(/\/api\/tally(\?|$)/, r => { const q = r.request(); got.push({body: q.postData(), cookie: q.headers().cookie ?? null, ref: q.headers().referer ?? null, method: q.method()}); r.fulfill({status: 204, body: ''}); }); return got; };
   const ks = got => got.map(g => { try { const o = JSON.parse(g.body); return Object.keys(o).length === 1 ? o.k : 'bad'; } catch { return 'bad'; } });
   const code = await (async () => { const m = (await getJ('/atlas/data/mkt.json')).body?.companies ?? {}; return m['005930'] ? '005930' : Object.keys(m)[0]; })();
-  /** 매매일지 끝까지 — 답 k 번째(0 = 모두 초록 · 2 = 모두 빨강 → 「오늘은 쉬어 가자」) */
+  /** 매매일지 끝까지 — 답 k 번째(0 = 모두 초록 · 2 = 모두 빨강 → 「오늘은 쉬어 가자」)
+      새 꼴(docs/design/why-mock-2026-10-28/order-1011.txt 「어 그렇게 해」 · brief.md): 시작 「시작하기 ›」(.wy-go) → 질문마다 답 누름(고르기만) → 「다음으로 ›」 · 11번 「결과 보기 ›」(.wy-next) → 결과(.wy-res)
+      종목 줄(.wy-stk) · 마지막 두 줄(.wy-why · .wy-sell · .wy-half)은 없음 · 판정 = p.wy-verdict[data-v] (go · wait · rest) · 돌려줌 {text, v} */
   async function journal(p, k) {
     await p.goto(url('#/why/' + code), {waitUntil: 'domcontentloaded'});
-    await p.waitForFunction(() => { const e = document.querySelector('#view .wy-stk:not([hidden])'); return !!e && !/받는 중/.test(e.textContent) && !!document.querySelector('#view .wy-opt'); }, null, {timeout: 20000});
+    await p.waitForFunction(() => !!document.querySelector('#view section.wy .wy-go'), null, {timeout: 20000}); // order-1011 — 시작 화면부터
+    await p.locator('#view section.wy .wy-go').click({timeout: 8000});
     for (let q = 0; q < 11; q++) {
-      const step = (await p.textContent('#view .wy-step'))?.trim();
-      await p.locator('#view .wy-opt').nth(k).click({timeout: 8000});
-      await p.waitForFunction(s => { const e = document.querySelector('#view .wy-step'); return !!document.querySelector('#view .wy-why') || (e && e.textContent.trim() !== s); }, step, {timeout: 8000});
+      await p.waitForFunction(n => { const e = document.querySelector('#view section.wy .wy-step'); return !!e && e.textContent.replace(/\s+/g, '').startsWith(n + '/'); }, q + 1, {timeout: 8000}); // order-1011 — 「n / 11」 장
+      await p.locator('#view section.wy .wy-opt').nth(k).click({timeout: 8000}); // 고르기만(넘어가지 않음 · order-1011 3)
+      await p.locator('#view section.wy .wy-nav .wy-next').click({timeout: 8000}); // 「다음으로 ›」 · 11번 「결과 보기 ›」
     }
-    await p.waitForSelector('#view .wy-why', {timeout: 15000});
-    await p.fill('#view .wy-why', '이익이 반으로 줄어서');
-    if (!(await p.inputValue('#view .wy-sell')) || !(await p.inputValue('#view .wy-half'))) { await p.fill('#view .wy-sell', '50000'); await p.fill('#view .wy-half', '90000'); }
-    await p.locator('#view .wy-nav .wy-next').click();
     await p.waitForSelector('#view .wy-res', {timeout: 15000});
     await sleep(500);
-    return (await p.textContent('#view .wy-res'))?.trim() ?? '';
+    return {text: (await p.textContent('#view .wy-res'))?.trim() ?? '', v: await p.getAttribute('#view .wy-res .wy-verdict', 'data-v').catch(() => null)};
   }
   try {
     let ctx = await ctxOf({test: true}), p = await pageOf(ctx), got = await tap(p);
@@ -435,12 +434,12 @@ else {
     got.length = 0;
     const res1 = await journal(p, 2);
     B.rest = ks(got).filter(k => k !== 'visit');
-    check(/오늘은 쉬어 (가자|갈까\?)/.test(res1) && JSON.stringify(B.rest) === '["stop_rest"]', '[10] 1 매매일지를 끝냄 · 「오늘은 쉬어 가자」 → stop_rest 한 번', `${JSON.stringify(B.rest)} 「${res1.slice(0, 30)}」`);
+    check(res1.v === 'rest' && JSON.stringify(B.rest) === '["stop_rest"]', '[10] 1 매매일지를 끝냄 · 「오늘은 쉬어 가자」 → stop_rest 한 번', `${JSON.stringify(B.rest)} 판정 ${res1.v} 「${res1.text.slice(0, 30)}」`); // 판정 = data-v(order-1011 — 화면 글은 「오늘은 쉬어 갈 투자자예요」)
     await ctx.close();
     ctx = await ctxOf({test: true}); p = await pageOf(ctx); got = await tap(p);
     const res2 = await journal(p, 0);
     B.stop = ks(got).filter(k => k !== 'visit');
-    check(!/오늘은 쉬어 (가자|갈까\?)/.test(res2) && JSON.stringify(B.stop) === '["stop"]', '[10] 1 매매일지를 끝냄(쉬어 가자 아님) → stop 한 번', `${JSON.stringify(B.stop)} 「${res2.slice(0, 30)}」`);
+    check((res2.v === 'go' || res2.v === 'wait') && JSON.stringify(B.stop) === '["stop"]', '[10] 1 매매일지를 끝냄(쉬어 가자 아님) → stop 한 번', `${JSON.stringify(B.stop)} 판정 ${res2.v} 「${res2.text.slice(0, 30)}」`); // order-1011 — data-v
     await ctx.close();
     // 한 달 답 — 한 달(장 스무 번) 지난 기록 둘(옛 꼴 · 종목 없음)
     const D = (await getJ('/atlas/data/days.json')).body?.dates ?? [], s = D[D.length - 30];

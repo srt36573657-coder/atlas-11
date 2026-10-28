@@ -22,7 +22,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {nameScan, oldNamesIn, allowFromData, selfTest as renameSelfTest, LETTER_TITLE, TITLE_TAIL, OLD_NAME_FAIL, OLD_NAME_RE, NEW_NAME} from './rename.mjs';
 import {gloss} from '../../../site/next/glossary.js'; // 낱말표(2026-10-18 [10] 1) — 화면 글은 새 낱말(갈래 → 큰 업종 …)
-import {screenHits, SCREEN} from '../../../site/next/words.js'; // 쓰지 않을 말 한 곳(명령문 [4] 4 · [7] 6 · 「사라」 · 「팔아라」 포함 · 「공매도」 · 「사라지다」 꼴은 셈 밖 — words.js screenHits)
+import {screenHits, SCREEN, WHY_OK} from '../../../site/next/words.js'; // 쓰지 않을 말 한 곳(명령문 [4] 4 · [7] 6 · 「사라」 · 「팔아라」 포함 · 「공매도」 · 「사라지다」 꼴은 셈 밖 — words.js screenHits)
 import {fetchJSON, watch, settle, stylesReady, timer, netSummary} from './net.mjs'; // 망 탈에만 다시 받기 · 다시 열기 · 모양 파일 기다림(2026-10-17 고도리 명령문 [1] 8 — 지금 사이트 검사 #/info 누르는 자리 23px)
 import {essenceData, essenceLines} from '../../../site/next/essence.js'; // 첫 화면 본질 세 줄(사장님 2026-10-18 16:39 [5] · 일꾼 KC) — 화면과 같은 셈으로 맞댐
 import {VIDEO} from '../../../site/next/brand.js'; // 「… 1분 보기 ›」 줄은 새 영상이 오른 뒤(ready)에만([5] 5)
@@ -61,6 +61,8 @@ if (!OLD36.length) { console.error('OLD36_TEXT 를 못 읽음'); process.exit(1)
 if (SCREEN.length < 16) { console.error('words.js SCREEN 이 모자람', SCREEN.length); process.exit(1); }
 /** 화면 글의 쓰지 않을 말 — words.js screenHits(낱말 열여섯) + 지운 36곳 화면 글(글자 그대로) */
 const banned = t => [...screenHits(t), ...OLD36.filter(w => t.includes(w))];
+/** 「왜 사?」 칸(section.wy) 안 글 — WHY_OK(「매수」)만 뺌 · 다른 쓰지 않을 말 · 지운 36곳 글은 그대로(사장님 2026-10-28 10:11 · docs/design/why-mock-2026-10-28/order-1011.txt) */
+const bannedWhy = t => [...screenHits(t).filter(w => !WHY_OK.includes(w)), ...OLD36.filter(w => t.includes(w))];
 // 새 화면으로 옮긴 쪽(app.js READY) — 옮긴 쪽은 새 주소(#/…), 아직이면 지금 아틀란스(/atlas/#/…)를 기대함(2026-10-17 04:23 「에이전트 총 동원해」)
 const READY = new Set(((/const READY = new Set\(\[([^\]]*)\]\);/.exec(await fs.readFile(path.join(ROOT, 'site/next/app.js'), 'utf8')) || [, ''])[1].match(/'([a-z]+)'/g) || []).map(x => x.slice(1, -1)));
 const oldOr = (k, h) => (READY.has(k) ? h : '/atlas/' + h);
@@ -117,8 +119,9 @@ const scan = p => p.evaluate(() => {
     if (r.height < 43.5 || r.width < 43.5) small.push((e.textContent || e.getAttribute('aria-label') || e.className).trim().slice(0, 30) + ' ' + Math.round(r.width) + '×' + Math.round(r.height));
   }
   const cl = view?.cloneNode(true); cl?.querySelectorAll('[data-proper], [lang="ko"]').forEach(e => e.remove()); // 이름 · 남의 글(원문)은 쓰지 않을 말 셈에서 뺌 — 「코스피 양매도 ETN」 같은 상품 이름
+  const wyText = [...(cl?.querySelectorAll('section.wy') ?? [])].map(e => e.textContent).join('\n'); cl?.querySelectorAll('section.wy').forEach(e => e.remove()); // 「왜 사?」 칸 글은 따로 셈(order-1011.txt — 칸 안에서만 「매수」 허락)
   const sw0 = document.documentElement.scrollWidth, wide = sw0 > vw ? [...document.querySelectorAll('#view *')].filter(e => e.getBoundingClientRect().right > vw + 0.5).slice(0, 3).map(e => e.tagName.toLowerCase() + '.' + String(typeof e.className === 'string' ? e.className : e.className?.baseVal ?? '').split(' ')[0] + ' ' + Math.round(e.getBoundingClientRect().right)) : []; // 넘친 칸 이름(실제 사이트에서만 흔들린 #/today 까닭 찾기 · 2026-10-18)
-  return {wide, sw: document.documentElement.scrollWidth, vw, text: cl?.textContent ?? '', hrefs: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')), small: small.slice(0, 8), title: document.title};
+  return {wide, sw: document.documentElement.scrollWidth, vw, text: cl?.textContent ?? '', wyText, hrefs: [...document.querySelectorAll('#view a[href]')].map(a => a.getAttribute('href')), small: small.slice(0, 8), title: document.title};
 });
 const knownHref = h => {
   if (h === '/' || h === '/letter.html' || h === '/hello.html' || h === '/us/') return true; // /us/ = 미국 판(규칙 54 그대로)
@@ -153,6 +156,7 @@ const knownHref = h => {
 function checkScan(where, s, p) {
   if (s.sw > s.vw) fail('가로 넘침', where + ' ' + s.sw + '>' + s.vw + (s.wide?.length ? ' · ' + s.wide.join(' · ') : ''));
   for (const w of banned(s.text)) fail('쓰지 않을 말', where + ' 「' + w + '」'); // 「공매도」(빌려 판 주식 — 사실 말) · 「사라져」는 words.js 가 셈 밖으로
+  for (const w of bannedWhy(s.wyText ?? '')) fail('쓰지 않을 말', where + ' 「왜 사?」 칸 「' + w + '」'); // order-1011.txt — 칸 안은 「매수」만 허락
   for (const x of s.small) fail('누르는 자리 44px 안 됨', where + ' ' + x);
   for (const hr of s.hrefs) { bump('고리'); if (!knownHref(hr)) fail('모르는 고리', where + ' ' + hr); }
   if (p._errs.length) { fail('화면 오류', where + ' ' + p._errs.join(' | ').slice(0, 200)); p._errs.length = 0; }

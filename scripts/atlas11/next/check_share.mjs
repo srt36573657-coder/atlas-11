@@ -9,13 +9,13 @@
 //   ③ 거르는 말 → 그 말을 짚어 알림 · 보내기 막힘(공유 창 안 열림) → 고치면 풀림 · 수익 숫자(+30% 벌었어 · 30퍼 먹었다 · 2배 올랐어) 막힘
 //   ④ 공유 창(가짜) = 글 + 주소 함께 · 주소 꼴 · 말 조각을 풀면 보낸 말 · 같이 따져 줘 = a · 보낸 글 · 제목에 수익 숫자 없음
 //   ⑤ 공유 창 없음 → 글 + 주소 함께 복사 · 알림 · 복사도 막힘 → 글을 보여 줌 · 대화창(dialog)을 못 쓰는 옛 기계 → 칸으로 열림(갇힌 차례 · Esc · 보내기)
-//   ⑥ 친구 주소: 보낸 날 값 · 오늘 값(자료와 맞댐) · 그림(선 · 보낸 날 금빛 점) · 질문이 먼저 · 다 답하기 전엔 보낸 말이 화면에 없음 → 다 답한 뒤 보낸 말 ·
+//   ⑥ 친구 주소: 보낸 날 값 · 오늘 값(자료와 맞댐) · 그림(선 · 보낸 날 금빛 점) · 질문이 먼저(「왜 사?」 칸 = 시작하기 → 답 고르기 → 「다음으로 ›」 · 2026-10-28 order-1011.txt) · 다 답하기 전엔 보낸 말이 화면에 없음 → 다 답한 뒤 보낸 말 ·
 //      같이 따져 줘 = 「반토막 난다면 왜일까?」 + 내 생각 · 기록과 다른 값 「?」 · 깨진 말 · 거르는 말이 든 주소 · 이상한 주소
 //   ⑧ 영어로 본 사람 — 빠른 말 · 기본 말 = 보이는 글(바뀐 글) · 쓴 사람 글(걸린 낱말 · 보낸 말 · 내 생각)은 한글이면 lang="ko"(엔진이 안 바꿈)
 //   ⑦ 모양 — 옆 넘침 0 · 칸 밖 0 · 누르는 자리 44px · 글 17px · 쓰지 않을 말 0(남의 글 data-proper 밖) · 캔버스 0 · 화면 오류 0 ·
 //      글씨 크기는 이름표(--fs-1 ~ 6) 안 · 한 칸 가짓수 6 이하 · 간격은 0 · 8 · 16 · 24 만 · 음수 간격 0(사장님 2026-10-18 [10] 5 · 6 · 8)
 //   ⑥-2 친구 주소 차례([5] 10): 종목 이름 한 줄 → 질문 → 친구 말 칸 → 값 칸(그림 · 두 값) → 안전 문장 — 질문이 값 칸보다 위(두 폭)
-//   ⑥-3 친구 쪽 첫 화면(독립 점검 VJ 2026-10-18): 360×640 · 390×844 에서 첫 질문의 답 셋이 아래 탭(고정)보다 위에 다 보임 — 짧은 이름 · 같이 따져 줘 · 이름 9 ~ 10자 · 11 ~ 13자 회사(자료 mkt.json 에서 고름) ·
+//   ⑥-3 친구 쪽 첫 화면(독립 점검 VJ 2026-10-18 · 2026-10-28 order-1011.txt 로 시작 화면 → 「시작하기 ›」 뒤): 360×640 · 390×844 에서 첫 질문의 답 셋이 아래 탭(고정)보다 위에 다 보임 — 짧은 이름 · 같이 따져 줘 · 이름 9 ~ 10자 · 11 ~ 13자 회사(자료 mkt.json 에서 고름) ·
 //      폭 320×568 은 답 둘까지(셋째는 질문 칸 자체가 길어 이 쪽 몫이 아님 — 위 질문 칸 머리 · 종목 줄이 줄면 셋 다 됨)
 //   ⑨ 카톡 꺼짐(사장님 2026-10-18 [2] · [12] 2): NX.kakao 없음 · 있어도 on false 둘 다 — 글상자 · 친구 주소 · 매매일지 끝에 「카카오」 글 0 · 카카오 요청 0 · 카카오 도구(script) 0 · 공유 창(글 + 주소) 그대로 · 기록 파일은 요청 0
 //   ⑩ 카톡 켜짐(가짜 서버 · 가짜 도구): 글상자에 카드 미리보기 · 보내기 = 카드 한 장(feed · 단추 정확히 둘 「카카오로 시작하기」 · 「그냥 보기」 · 종목 이름 · 보낸 사람 글 · 보낸 날 값 · 수익률 0) ·
@@ -264,7 +264,7 @@ const done = async p => { try { await p.context().close(); } catch {} };
 const LAYOUT = arg => {
   const sel = typeof arg === 'string' ? arg : arg.sel, skip = typeof arg === 'string' ? null : arg.skip; // skip = 다른 일꾼 칸(질문 칸 .wy)은 글씨 · 간격 이름표 셈에서 뺌
   const vw = document.documentElement.clientWidth, root = document.querySelector(sel);
-  const out = {sw: document.documentElement.scrollWidth, vw, wide: [], small: [], tiny: [], canvas: 0, text: '', attrs: [], missing: !root, fs: {}, fsAll: {}, neg: [], sp: []};
+  const out = {sw: document.documentElement.scrollWidth, vw, wide: [], small: [], tiny: [], canvas: 0, text: '', attrs: [], wyText: '', wyAttrs: [], missing: !root, fs: {}, fsAll: {}, neg: [], sp: []};
   if (!root) return out;
   const desc = e => e.tagName.toLowerCase() + (typeof e.className === 'string' && e.className.trim() ? '.' + e.className.trim().split(/\s+/).join('.') : '') + ' 「' + (e.textContent || '').trim().slice(0, 24) + '」';
   for (const e of [root, ...root.querySelectorAll('*')]) {
@@ -287,8 +287,11 @@ const LAYOUT = arg => {
   }
   for (const e of root.querySelectorAll('a[href], button, input, select, textarea, summary, [role="button"]')) { if (e.closest('[hidden]')) continue; const r = e.getBoundingClientRect(); if (!r.width || !r.height) continue; if (r.height < 43.5 || r.width < 43.5) out.small.push(desc(e) + ' ' + Math.round(r.width) + '×' + Math.round(r.height)); }
   out.canvas = root.querySelectorAll('canvas').length;
-  const c = root.cloneNode(true); c.querySelectorAll('[data-proper]').forEach(x => x.remove()); out.text = c.textContent;
-  for (const e of [c, ...c.querySelectorAll('*')]) for (const a of ['aria-label', 'title', 'alt', 'placeholder']) { const v = e.getAttribute?.(a); if (v) out.attrs.push(v); }
+  const c = root.cloneNode(true); c.querySelectorAll('[data-proper]').forEach(x => x.remove());
+  // 「왜 사?」 칸(section.wy) 안 글 · 이름표는 따로 셈 — 칸 안에서만 WHY_OK(「매수」)를 허락(사장님 2026-10-28 10:11 「어 그렇게 해」 · docs/design/why-mock-2026-10-28/order-1011.txt 2)
+  const ATTRS = ['aria-label', 'title', 'alt', 'placeholder'], inWy = !!root.closest('section.wy'), wys = inWy ? [c] : [...c.querySelectorAll('section.wy')];
+  for (const w of wys) { out.wyText += w.textContent + '\n'; for (const e of [w, ...w.querySelectorAll('*')]) for (const a of ATTRS) { const v = e.getAttribute?.(a); if (v) out.wyAttrs.push(v); } }
+  if (!inWy) { wys.forEach(x => x.remove()); out.text = c.textContent; for (const e of [c, ...c.querySelectorAll('*')]) for (const a of ATTRS) { const v = e.getAttribute?.(a); if (v) out.attrs.push(v); } }
   return out;
 };
 const FS_TOKENS = [17, 19, 21, 24, 30, 48]; // app.css --fs-1 ~ 6(글씨 크기 보통 칸)
@@ -302,6 +305,7 @@ async function layout(p, sel, tag, skip = null) {
   for (const x of s.tiny.slice(0, 3)) fail('글 17px 밑', `${tag}: ${x}`);
   if (s.canvas) fail('캔버스(입체 없음 규칙 50)', tag);
   for (const w of W.screenHits(s.text + '\n' + s.attrs.join('\n'))) fail('쓰지 않을 말', `${tag} 「${w}」`);
+  for (const w of W.screenHits(s.wyText + '\n' + s.wyAttrs.join('\n')).filter(x => !W.WHY_OK.includes(x))) fail('쓰지 않을 말', `${tag} 「왜 사?」 칸 「${w}」`); // order-1011.txt 2 — 칸 안은 「매수」만 허락 · 다른 말은 그대로 막음
   const sizes = Object.keys(s.fs).map(Number).sort((a, b) => a - b);
   for (const f of sizes) if (!FS_TOKENS.some(t => Math.abs(t - f) < 0.2)) fail('글씨 크기가 이름표(--fs-1 ~ 6)에 없음([10] 6)', `${tag}: ${f}px`);
   if (sizes.length > 6) fail('한 칸 글씨 크기 6가지 넘음([10] 6)', `${tag}: ${sizes.join(' · ')}`);
@@ -603,38 +607,36 @@ const READL = () => {
     line: !!vals?.querySelector('svg .ps-ln'), dot: !!vals?.querySelector('svg .ps-sent'), why: !!why, whyFirst: !!(why && after && (why.compareDocumentPosition(after) & Node.DOCUMENT_POSITION_FOLLOWING)),
     lock: !!v.querySelector('.ps-lock'), said: v.querySelector('.ps-said')?.textContent ?? null, askq: v.querySelector('.ps-askq')?.textContent ?? null, mine: v.querySelector('.ps-mine')?.textContent ?? null,
     askline: v.querySelector('.ps-askline')?.textContent ?? null, afterText: after?.textContent ?? '', safe: v.querySelector('.ps-safe')?.textContent ?? null, body: document.body.innerText,
-    saidLang: v.querySelector('.ps-said [data-proper]')?.getAttribute('lang') ?? null, mineLang: v.querySelector('.ps-mine [data-proper]')?.getAttribute('lang') ?? null};
+    saidLang: v.querySelector('.ps-said [data-proper]')?.getAttribute('lang') ?? null, mineLang: v.querySelector('.ps-mine [data-proper]')?.getAttribute('lang') ?? null,
+    askTa: (t => (t ? {v: t.value, ro: t.readOnly} : null))(v.querySelector('.ps-after textarea#ps-ask'))}; // 같이 따져 줘 — 친구 쪽에서 적은 「내 생각」(order-1011.txt 6 · 두 줄이 없어진 뒤)
 };
 /** 친구 쪽 「나도 보내기」 단추(넓은 카톡 단추 · share-btn.js) — 수 · 종목 번호 · 말풍선 그림 · 글 · 높이 */
 const AGAINS = () => {
   const bs = [...document.querySelectorAll('#view .kk-btn.kk-wide')], b = bs[0], r = b?.getBoundingClientRect();
   return {n: bs.length, code: b?.dataset.kk ?? null, kk: !!b?.querySelector('svg.kk-ic'), text: b?.textContent?.trim() ?? null, h: r ? Math.round(r.height) : 0};
 };
-/** 왜 사? 칸을 끝까지(첫 답 · 다음 · 두 줄 · 결과 보기) — 모양은 그 칸 검사(check_why)가 봄 */
-async function finishWhy(p, why, tag) {
-  // 실제 사이트(2026-10-19 · 10-18): 자료(core · mkt)가 늦으면 칸이 마지막 질문에서 기다림(aria-busy · 누름은 버림) → 끝나면 저절로 「마지막 두 줄」로 감.
-  //   그 사이 누른 답 단추가 사라져 click 이 30초 기다리다 멈췄음 → 기다리는 동안은 누르지 않고(기다림은 40번 셈 밖 · 모두 30초 안) · 누르기는 5초까지 — 못 누르면 상태를 다시 읽음(끝내 못 열면 아래 「안 열림」 실패)
+/** 왜 사? 칸을 끝까지 — 「시작하기 ›」 → 질문마다 답 고르기(누름 = 고르기만) → 「다음으로 ›」 · 11번 「결과 보기 ›」 — 모양은 그 칸 검사(check_why)가 봄
+    2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 3 · 6 · brief.md) — 시작 화면(그림 1)이 생김 · 답 한 번 = 다음이 아님 · 마지막 두 줄(반토막 · 팔 약속) 없음 */
+async function finishWhy(p, tag) {
+  // 실제 사이트(2026-10-19 · 10-18): 자료(core · mkt)가 늦으면 칸이 마지막 질문에서 기다림(aria-busy · 누름은 버림) → 끝나면 저절로 결과로 감.
+  //   그 사이 누른 단추가 사라져 click 이 30초 기다리다 멈췄음 → 기다리는 동안은 누르지 않고(기다림은 누름 셈 밖 · 모두 30초 안) · 누르기는 5초까지 — 못 누르면 상태를 다시 읽음(끝내 못 열면 아래 「안 열림」 실패)
   const until = Date.now() + 30000, tap = l => l.click({timeout: 5000}).catch(e => { if (!/Timeout \d+ms exceeded/.test(String(e?.message))) throw e; });
-  for (let k = 0; k < 40 && Date.now() < until; k++) {
+  for (let k = 0; k < 60 && Date.now() < until; k++) { // 누름 = 시작 1 + (답 1 + 다음 1) × 11 = 23 · 남는 것은 다시 읽기
     const st = await p.evaluate(() => {
       const c = document.querySelector('#view .ps-why .wy'); if (!c) return 'none';
       if (!document.querySelector('#view .ps-lock')) return 'open';
       if (c.getAttribute('aria-busy') === 'true') return 'busy';
       if (c.querySelector('.wy-res')) return 'res';
-      if (c.querySelector('.wy-why')) return 'lines';
+      if (c.querySelector('.wy-go')) return 'start';
       if (c.querySelector('.wy-opt')) return c.querySelector('.wy-opt[aria-pressed="true"]') ? 'next' : 'pick';
       return 'wait';
     });
     if (st === 'open') return true;
     if (st === 'none' || st === 'res') break;
     if (st === 'wait' || st === 'busy') { await p.waitForTimeout(150); if (st === 'busy') k--; continue; }
-    if (st === 'pick') await tap(p.locator('#view .ps-why .wy-opt').first());
-    else if (st === 'next') await tap(p.locator('#view .ps-why .wy-next').first());
-    else {
-      await p.locator('#view .ps-why .wy-why').fill(why);
-      for (const [c, v] of [['.wy-sell', '1000'], ['.wy-half', '2000']]) { const x = p.locator('#view .ps-why ' + c); if ((await x.count()) && !(await x.inputValue())) await x.fill(v); }
-      await tap(p.locator('#view .ps-why .wy-next').last());
-    }
+    if (st === 'start') await tap(p.locator('#view .ps-why .wy-go').first());
+    else if (st === 'pick') await tap(p.locator('#view .ps-why .wy-opt').first());
+    else await tap(p.locator('#view .ps-why .wy-nav .wy-next').first()); // 「다음으로 ›」 · 11번 「결과 보기 ›」(「‹ 이전」은 .wy-back)
     await p.waitForTimeout(60);
   }
   try { await p.waitForFunction(() => !document.querySelector('#view .ps-lock'), null, {timeout: 4000}); return true; } catch { fail('질문을 다 답했는데 보낸 말이 안 열림', tag); return false; }
@@ -670,7 +672,15 @@ async function landing(W_, H_, cases) {
       const ag0 = await p.evaluate(AGAINS);
       if (ag0.n) fail('「나도 보내기」가 다 답하기 전에 보임([6] 9)', `${tag} ${ag0.n}개`);
       await layout(p, '#view', tag + ' 처음', '.wy');
-      if (!(await finishWhy(p, C.why ?? '이익이 줄어서', tag))) continue;
+      if (!(await finishWhy(p, tag))) continue;
+      if (C.kind === 'a') { // 같이 따져 줘 — 「왜 사?」 칸에 마지막 두 줄이 없어(order-1011.txt 6) 기록에 「반토막 난다면」 답(why)이 없음 → 친구 쪽 칸(p-share.js askPart)이 그 자리에서 한 줄 받음
+        const ta = p.locator('#view .ps-after textarea#ps-ask');
+        if (!(await ta.count())) fail('같이 따져 줘 — 질문 뒤 「내 생각」 적는 칸이 없음(기록에 두 줄 답이 없는데)', tag);
+        else {
+          await ta.fill(C.why ?? '이익이 줄어서'); await p.locator('#view .ps-after .ps-go').first().click();
+          await p.waitForFunction(() => !!document.querySelector('#view .ps-after .ps-rest .ps-acts'), null, {timeout: 5000}).catch(() => fail('같이 따져 줘 — 「다 적었어」 뒤 친구 말 · 나도 보내기가 안 열림', tag));
+        }
+      }
       s = await p.evaluate(READL);
       const ag = await p.evaluate(AGAINS);
       if (ag.n !== 1) fail('다 답한 뒤 「나도 보내기」가 하나가 아님([6] 9)', `${tag} ${ag.n}개`);
@@ -689,8 +699,10 @@ async function landing(W_, H_, cases) {
       if (C.hide) { if (s.said != null || (C.text && s.body.includes(C.text))) fail('거르는 말 · 깨진 말을 보여 줌', `${tag} 「${s.said}」`); if (!new RegExp(C.hide).test(s.afterText)) fail('못 보여 주는 까닭', `${tag} 「${s.afterText.slice(0, 80)}」`); }
       if (C.kind === 'a') {
         if (s.askq !== ASK_Q) fail('같이 따져 줘 「반토막 난다면 왜일까?」', `${tag} 「${s.askq}」`);
-        if (!(s.mine ?? '').includes(C.why ?? '이익이 줄어서')) fail('같이 따져 줘 — 내 생각(두 줄 ① 답)', `${tag} 「${s.mine}」`);
-        if (s.mineLang !== 'ko') fail('내 생각(쓴 사람 글)에 lang="ko" 없음', `${tag} ${s.mineLang}`);
+        const mine = s.mine ?? s.askTa?.v ?? ''; // 기록에 두 줄 답이 있으면 .ps-mine · 없으면 친구 쪽에서 적은 칸(order-1011.txt 6)
+        if (!mine.includes(C.why ?? '이익이 줄어서')) fail('같이 따져 줘 — 내 생각(친구 쪽에서 적은 한 줄)', `${tag} 「${mine}」`);
+        if (s.mine != null && s.mineLang !== 'ko') fail('내 생각(쓴 사람 글)에 lang="ko" 없음', `${tag} ${s.mineLang}`);
+        if (s.mine == null && !s.askTa?.ro) fail('같이 따져 줘 — 「다 적었어」 뒤 내 생각 칸이 잠기지 않음', `${tag} ${JSON.stringify(s.askTa)}`);
       }
       await layout(p, '#view', tag + ' 다 답한 뒤', '.wy');
       bump('친구 주소');
@@ -700,7 +712,7 @@ async function landing(W_, H_, cases) {
 }
 
 
-/* ⑥-3 친구 쪽 첫 화면 — 첫 질문의 답 셋이 아래 탭(고정)보다 위에 다 보임([5] 10 · 독립 점검 VJ 2026-10-18 「답 셋이 481~665px 인데 아래 탭이 572px 부터 덮음」)
+/* ⑥-3 친구 쪽 첫 화면 — 「왜 사?」 칸이 첫 화면 탭 위 · 「시작하기 ›」 뒤 첫 질문의 답 셋이 아래 탭(고정)보다 위에 다 보임(2026-10-28 order-1011.txt — 시작 화면이 생김)([5] 10 · 독립 점검 VJ 2026-10-18 「답 셋이 481~665px 인데 아래 탭이 572px 부터 덮음」)
    이름이 긴 회사까지 — 이름 줄이 두 줄이 돼도 답 셋이 탭 위에 있어야 함(자료 mkt.json 에서 9 ~ 10자 · 11 ~ 13자 이름을 하나씩 고름) */
 const MK = await getJ('/atlas/data/mkt.json').then(j => j?.companies ?? {}).catch(() => ({}));
 const longOf = (lo, hi) => Object.entries(MK).find(([k, v]) => /^[0-9A-Z]{6}$/.test(k) && !/[()]/.test(String(v?.n ?? '')) && [...String(v?.n ?? '')].length >= lo && [...String(v?.n ?? '')].length <= hi);
@@ -714,14 +726,21 @@ async function firstView(W_, H_, {min = 3, only = 0} = {}) {
     const tag = `${W_}×${H_} 첫 화면 ${label}`, p = await newPage(W_, H_);
     try {
       await p.goto(base + NEXT + `#/s/${code}/${SENT_DAY}/${SENT_PRICE}/${kind}/` + b64(kind === 'a' ? '같이 따져 줘' : '이거 어때?'), {waitUntil: 'domcontentloaded'});
-      try { await p.waitForFunction(() => document.querySelectorAll('#view .ps-why .wy-opt').length >= 3 && !document.querySelector('#view .boot'), null, {timeout: 30000}); } catch { fail('첫 화면에 질문 답이 안 뜸', tag); continue; }
+      // 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 3 · 6 · brief.md ①) — 「왜 사?」 칸은 시작 화면(그림 1)부터 열림:
+      //   처음 = 칸이 이름 한 줄 바로 밑 · 탭 위에 보임(질문이 맨 위 · 내려 보기 0) → 「시작하기 ›」 한 번 → 첫 질문의 답이 위 막대 밑 · 아래 탭 위에 다 보임(칸이 스스로 맨 위로 올림)
+      try { await p.waitForFunction(() => !!document.querySelector('#view .ps-why .wy-go, #view .ps-why .wy-opt') && !document.querySelector('#view .boot'), null, {timeout: 30000}); } catch { fail('첫 화면에 「왜 사?」 칸이 안 뜸', tag); continue; }
       await p.waitForTimeout(500);
-      const fv = await p.evaluate(() => {
-        const tab = document.querySelector('nav.tabs'), t = tab && getComputedStyle(tab).position === 'fixed' ? tab.getBoundingClientRect().top : innerHeight;
-        return {tab: Math.round(t), scrolled: Math.round(scrollY), bottoms: [...document.querySelectorAll('#view .ps-why .wy-opt')].map(e => Math.round(e.getBoundingClientRect().bottom))};
-      });
-      const seen = fv.bottoms.filter(b => b <= fv.tab).length;
-      if (fv.scrolled !== 0 || seen < Math.min(min, fv.bottoms.length)) fail('첫 질문의 답이 아래 탭에 가려짐([5] 10 · 질문이 맨 위)', `${tag} 탭 ${fv.tab}px · 답 아래끝 ${fv.bottoms.join('/')} · 보이는 답 ${seen}/${fv.bottoms.length}`);
+      const TABTOP = () => { const tab = document.querySelector('nav.tabs'), t = tab && getComputedStyle(tab).position === 'fixed' ? tab.getBoundingClientRect().top : innerHeight, hd = document.querySelector('header.top'); return {tab: Math.round(t), head: Math.round(Math.max(0, hd && getComputedStyle(hd).position !== 'static' ? hd.getBoundingClientRect().bottom : 0)), scrolled: Math.round(scrollY)}; };
+      const f0 = await p.evaluate(TABTOP), c0 = await p.evaluate(() => { const c = document.querySelector('#view .ps-why .wy'), r = c?.getBoundingClientRect(); return {top: r ? Math.round(r.top) : null, start: !!c?.querySelector('.wy-go')}; });
+      if (f0.scrolled !== 0 || c0.top == null || c0.top >= f0.tab) fail('「왜 사?」 칸이 첫 화면 탭 위에 안 보임([5] 10 · 질문이 맨 위)', `${tag} 탭 ${f0.tab}px · 칸 위끝 ${c0.top} · 내려 봄 ${f0.scrolled}`);
+      if (c0.start) {
+        await p.locator('#view .ps-why .wy-go').first().click();
+        await p.waitForFunction(() => document.querySelectorAll('#view .ps-why .wy-opt').length >= 3, null, {timeout: 8000}).catch(() => fail('「시작하기 ›」를 눌러도 첫 질문 답이 안 뜸', tag));
+        await p.waitForTimeout(500);
+      }
+      const fv = {...(await p.evaluate(TABTOP)), opts: await p.evaluate(() => [...document.querySelectorAll('#view .ps-why .wy-opt')].map(e => { const r = e.getBoundingClientRect(); return [Math.round(r.top), Math.round(r.bottom)]; }))};
+      const seen = fv.opts.filter(([t, b]) => t >= fv.head - 1 && b <= fv.tab).length;
+      if (seen < Math.min(min, fv.opts.length)) fail('첫 질문의 답이 위 막대 · 아래 탭에 가려짐([5] 10 · 시작하기 뒤)', `${tag} 위 ${fv.head}px · 탭 ${fv.tab}px · 답 ${fv.opts.map(x => x.join('~')).join(' / ')} · 보이는 답 ${seen}/${fv.opts.length}`);
       bump('첫 질문 답 보임');
       errsOf(p, tag);
     } finally { await done(p); }
@@ -879,7 +898,7 @@ async function kakaoOffer(W_, H_, {en = false} = {}) {
     const pre = await p.evaluate(() => ({links: document.querySelectorAll('a[href*="/api/kakao"]').length, offer: document.querySelectorAll('.ps-offer').length, signup: [...document.querySelectorAll('button')].filter(b => /카카오로 시작하기|Start with Kakao/.test(b.textContent)).length, calls: window.__offerCalls.length}));
     if (pre.links || pre.offer || pre.signup) fail('「그냥 보기」 쪽에 가입 고리 · 단추 · 권유 칸이 있음([2] 6)', `${tag} ${JSON.stringify(pre)}`);
     if (pre.calls) fail('매매일지를 끝내기 전에 offer 가 불림([2] 7)', tag);
-    if (!(await finishWhy(p, '이익이 줄어서', tag))) return;
+    if (!(await finishWhy(p, tag))) return;
     try { await p.waitForSelector('.ps-offer', {timeout: 8000}); } catch { fail('매매일지를 끝냈는데 권유 칸이 안 뜸([2] 7)', tag); return; }
     const o = await p.evaluate(READO);
     if (o.n !== 1) fail('권유 칸이 한 장이 아님', `${tag} ${o.n}`);
@@ -1026,7 +1045,7 @@ async function kakaoOff(W_, H_, deep) {
     await p.goto(base + NEXT + CASE0(), {waitUntil: 'domcontentloaded'});
     await p.waitForFunction(() => !!document.querySelector('#view .ps-top') && !document.querySelector('#view .boot'), null, {timeout: 30000});
     await kkLoad(p); await spyOffer(p);
-    if (!(await finishWhy(p, '이익이 줄어서', tag))) return;
+    if (!(await finishWhy(p, tag))) return;
     await p.waitForTimeout(900);
     const ui = await p.evaluate(KKUI), calls = await p.evaluate(() => window.__offerCalls);
     if (ui.kk || ui.offer || ui.link || ui.btn) fail('꺼짐인데 매매일지 끝에 카카오 칸', `${tag} ${JSON.stringify(ui)}`);

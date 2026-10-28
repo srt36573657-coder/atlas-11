@@ -3,6 +3,8 @@
 //   만든 쪽의 검사(check_why.mjs) · 모듈(p-why.js)의 셈은 쓰지 않음 — 화면에서 보이는 것 · 눌러서 되는 것 · 저장된 기록 · 자료 파일(days · co/<번호> · home · median20)만 봄
 //   쓰는 법: node scripts/atlas11/next/verify/vj.mjs [--base http://127.0.0.1:8826] [--pw /opt/node-tools/] [--out 결과.json] [--only 1,3,7] [--no-en]
 //   브라우저는 한 번에 하나 · 끝나면 닫음(2 CPU 공용 기계) · 실패가 하나라도 있으면 끝 코드 1
+//   2026-10-28 사장님 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt · brief.md) — 그림 그대로 판: 시작 화면 → 답 고르기 + 「다음으로 ›」 → 결과(종목 찾기 · 앞 답 한마디 칸 · 마지막 두 줄 없음)
+//     이 따로 재기는 아무 일터도 부르지 않음 — 길(openWhy · pickStock · answer · finish)만 새 꼴로 걷게 고침 · [5] 3(답 한 번 = 다음) 같은 옛 잣대 줄은 그대로라 새 꼴에서는 걸릴 수 있음(잣대는 brief.md)
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
@@ -186,10 +188,11 @@ const settle = async (page, en) => { if (en) await sleep(350); else await sleep(
 const openWhy = async (page, en, first = true) => {
   if (first) await page.goto(url(en, '#/why'), {waitUntil: 'load'});
   else { await page.evaluate(() => { location.hash = '#/find'; }); await sleep(250); await page.evaluate(() => { location.hash = '#/why'; }); }
-  await page.waitForSelector('.wy-find', {timeout: 25000});
+  await page.waitForSelector('.wy-go, .wy-find', {timeout: 25000}); // order-1011 — 시작 화면(「시작하기 ›」)
   await settle(page, en);
 };
-const pickStock = async (page, en, mode = 'click') => {
+const pickStock = async (page, en, mode = 'click') => { // order-1011 — 종목 찾기 칸 없음 · 「시작하기 ›」를 눌러 1번 질문(옛 찾기 칸이 있으면 옛 길)
+  if (await page.$('#view .wy-go')) { await page.click('#view .wy-go'); await page.waitForSelector('.wy-opt', {timeout: 25000}); await settle(page, en); return; }
   await page.fill('.wy-find', en ? '005930' : '삼성전자');
   await page.waitForSelector('.wy-hit', {timeout: 25000});
   if (mode === 'enter') await page.press('.wy-find', 'Enter'); else await page.click('.wy-hit >> nth=0');
@@ -198,16 +201,19 @@ const pickStock = async (page, en, mode = 'click') => {
 };
 const qHead = page => page.evaluate(() => document.querySelector('#view .wy-q')?.textContent ?? '');
 /** 답 하나를 누르고 다음 질문이 뜰 때까지 — 눌린 횟수(더 눌러야 하면 「다음」을 눌러 셈) */
-const answer = async (page, k, en) => {
+const answer = async (page, k, en) => { // order-1011(docs/design/why-mock-2026-10-28) — 답은 고르기만 · 「클 일이 있다」면 날짜 칸 → 「다음으로 ›」 · 11번 「결과 보기 ›」
   const before = await qHead(page), c0 = await clicks(page);
   await page.click(`.wy-opt >> nth=${k}`);
-  let moved = await page.waitForFunction(b => (document.querySelector('#view .wy-q')?.textContent ?? '') !== b, before, {timeout: 3500}).then(() => true, () => false);
-  let extra = 0;
-  if (!moved) { const nx = await page.$('#view .wy-next'); if (nx) { await nx.click(); extra++; moved = await page.waitForFunction(b => (document.querySelector('#view .wy-q')?.textContent ?? '') !== b, before, {timeout: 3500}).then(() => true, () => false); } }
+  const d = await page.$('#view .wy-date');
+  if (d && !(await d.inputValue())) await d.fill(new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10));
+  let moved = false, extra = 0;
+  const nx = await page.$('#view .wy-nav .wy-next');
+  if (nx) { await nx.click(); extra++; moved = await page.waitForFunction(b => !!document.querySelector('#view .wy-res') || (document.querySelector('#view .wy-q')?.textContent ?? '') !== b, before, {timeout: 3500}).then(() => true, () => false); }
   await settle(page, en);
   return {taps: (await clicks(page)) - c0, moved, extra};
 };
 const finish = async (page, en, why = 'chip') => {
+  if (await page.$('#view .wy-verdict')) { await settle(page, en); return 0; } // order-1011 — 마지막 두 줄 없음 · 11번 「결과 보기 ›」 뒤 바로 결과
   await page.waitForSelector('.wy-chip, .wy-why', {timeout: 15000});
   const c0 = await clicks(page);
   if (why === 'chip') await page.click('.wy-chip >> nth=0'); else await page.fill('.wy-why', 'my reason');
@@ -266,11 +272,10 @@ const exitCode = await (async () => {
       const tag = en ? 'EN' : 'KO'; const {ctx, page} = await newCtx(en);
       const out = {tag, per: [], lat: [], pre: [], prev: [], backs: [], order: [], two: null, totalTaps: 0, stockTaps: 0, result: null, errs: page.__errs};
       try {
-        await page.goto(url(en, '#/why'), {waitUntil: 'load'}); await page.waitForSelector('.wy-find'); await settle(page, en);
+        await page.goto(url(en, '#/why'), {waitUntil: 'load'}); await page.waitForSelector('.wy-go, .wy-find'); await settle(page, en); // order-1011 — 시작 화면(종목 찾기 칸 없음)
         addScan(await scan(page, 'finder', {en}), tag);
         const c0 = await clicks(page);
-        await page.fill('.wy-find', en ? '005930' : '삼성전자'); await page.waitForSelector('.wy-hit');
-        const cs = await clicks(page); await page.click('.wy-hit >> nth=0'); await page.waitForSelector('.wy-opt'); await settle(page, en);
+        const cs = await clicks(page); await pickStock(page, en); // 「시작하기 ›」(옛 찾기 칸이 있으면 옛 길)
         out.stockTaps = (await clicks(page)) - cs;
         const green = OWN.map(Q => Math.max(0, Q.a.findIndex(a => a[0] === 'g')));
         for (let q = 0; q < 11; q++) {
@@ -305,10 +310,13 @@ const exitCode = await (async () => {
           if (q === 1 && !en && want(1)) { try { out.ctrlPx = await chroma(await page.locator('#view .wy-prev').screenshot()); } catch (e) { out.ctrlPx = {err: String(e).slice(0, 80)}; } }
           const a = await answer(page, green[q], en); out.per.push(a.taps); out.lat.push(a.moved ? 1 : 0);
         }
-        /* 마지막 두 줄 */
-        addScan(await scan(page, '마지막 두 줄', {en}), tag);
-        out.two = await page.evaluate(() => ({hasBack: [...document.querySelectorAll('#view .wy-back')].map(b => b.textContent.trim()), chips: document.querySelectorAll('#view .wy-chip').length, step: document.querySelector('#view .wy-step')?.textContent ?? null}));
-        const c1 = await clicks(page); await page.click('.wy-chip >> nth=0'); await page.click('.wy-next'); await page.waitForSelector('.wy-verdict'); await settle(page, en);
+        /* 마지막 두 줄 — order-1011 로 없음(11번 「결과 보기 ›」 뒤 바로 결과) · 옛 판 칸이 있을 때만 */
+        const c1 = await clicks(page);
+        if (!(await page.$('#view .wy-verdict'))) {
+          addScan(await scan(page, '마지막 두 줄', {en}), tag);
+          out.two = await page.evaluate(() => ({hasBack: [...document.querySelectorAll('#view .wy-back')].map(b => b.textContent.trim()), chips: document.querySelectorAll('#view .wy-chip').length, step: document.querySelector('#view .wy-step')?.textContent ?? null}));
+          await page.click('.wy-chip >> nth=0'); await page.click('.wy-next'); await page.waitForSelector('.wy-verdict'); await settle(page, en);
+        } else out.two = {none: 'order-1011'};
         out.lastTaps = (await clicks(page)) - c1;
         out.totalTaps = (await clicks(page)) - c0;
         const sc = await scan(page, '결과(초록 길)', {en, all: true}); addScan(sc, tag); out.result = {...(await readResult(page)), fonts: sc.fonts};
@@ -641,10 +649,11 @@ const exitCode = await (async () => {
         });
         addScan(await scan(page, '친구 쪽 첫 장', {en}), tag);
         const c0 = await clicks(page);
+        if (await page.$('#view .wy-go')) { await page.click('#view .wy-go'); await page.waitForSelector('.wy-opt', {timeout: 25000}); await settle(page, en); } // order-1011 — 친구 쪽 칸도 시작 화면부터
         for (let q = 0; q < 11; q++) await answer(page, Math.max(0, OWN[q].a.findIndex(a => a[0] === 'g')), en);
         o.taps = (await clicks(page)) - c0;
         o.afterAnswers = await page.evaluate(() => { const v = document.querySelector('#view'); const vals = v.querySelector('.ps-vals'), step = v.querySelector('.wy-step'); return {hasTwo: !!step && /두 줄|two lines|Last two/i.test(step.textContent), valsTop: vals ? Math.round(vals.getBoundingClientRect().top + scrollY) : null, stepTop: step ? Math.round(step.getBoundingClientRect().top + scrollY) : null}; });
-        const c1 = await clicks(page); await page.click('.wy-chip >> nth=0'); await page.click('.wy-next'); await page.waitForSelector('.wy-verdict', {timeout: 20000}); await sleep(en ? 500 : 250);
+        const c1 = await clicks(page); if (!(await page.$('#view .wy-verdict'))) { await page.click('.wy-chip >> nth=0'); await page.click('.wy-next'); } await page.waitForSelector('.wy-verdict', {timeout: 20000}); await sleep(en ? 500 : 250); // order-1011 — 두 줄 없으면 바로 결과
         o.lastTaps = (await clicks(page)) - c1;
         o.end = await page.evaluate(() => { const v = document.querySelector('#view'); const t = v.innerText; const note = [...v.querySelectorAll('*')].find(e => e.children.length === 0 && /이거 어때\?/.test(e.textContent)); const vals = v.querySelector('.ps-vals'), res = v.querySelector('.wy-res'); return {sender: !!note, senderTop: note ? Math.round(note.getBoundingClientRect().top + scrollY) : null, valsTop: vals ? Math.round(vals.getBoundingClientRect().top + scrollY) : null, resTop: res ? Math.round(res.getBoundingClientRect().top + scrollY) : null, snippet: t.replace(/\s+/g, ' ').slice(0, 200)}; });
         addScan(await scan(page, '친구 쪽 결과', {en, all: false}), tag);

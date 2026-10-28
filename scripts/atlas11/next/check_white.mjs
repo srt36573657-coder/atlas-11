@@ -18,9 +18,10 @@
 //        시황 [data-w="news"] = 오른 곳(.up)과 내린 곳(.dn)을 함께 · 사실마다([data-fact]) 「왜 그럴까?」 단추 · 한 달 된 기록이 있으면 「그날 정한 대로 했어?」 한 줄
 //     ② 글자 수 = 다시 온 기기 지금의 60% 이하 · 처음 온 기기 지금의 90% 이하(기준 = white-baseline.json)
 //        대비: 글 4.5 이상(큰 글 24px · 굵은 19px 이상은 3) · 단추 · 칸 테두리나 바탕은 둘레와 3 이상 · 누르는 것 48 × 48 이상
-//     ③ 누름(처음 온 기기): 첫 질문(「1 / 11」) 2번 안 · 기록(#/why) 1번 · 진화(#jhBtn) 1번 · 오르는 것 2번 · 카톡 보내기 2번 안
+//     ③ 누름(처음 온 기기): 첫 질문(「1 / 11」) 2번 안(회사 줄 → 「왜 사?」 시작하기 · 2026-10-28) · 기록(#/why) 1번 · 진화(#jhBtn) 1번 · 오르는 것 2번 · 카톡 보내기 2번 안
 //        빠르기(느린 4G 150ms · 1.6Mbps · 처리 4배 느림): 가장 큰 그림 2.5초 안 · 누른 뒤 그려짐 0.2초 안 · 밀림 0.1 아래
 //     ④ 망치는 길 그림 0: 그림자 · 광택(그러데이션) · 입체 · 작은 빨간 점 · 얼굴 그림(허락한 그림 밖 <img>) · 숫자 아닌 빨간 글
+//        └ 「왜 사?」 칸(section.wy) 안은 그림대로 그림자 · 광택 · 그림자 거름 · 옅은 테(대비 3 셈 밖) 허락 — 사장님 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 1 · 7)
 //        골똘이 말은 「?」로 끝남 · 숫자 줄 「?」는 맨 앞뿐 · 그대로 둘 것: 아래 단추 다섯 · 본질 세 줄 · 진화 단추 · 잠금 #/why
 //   실패가 하나라도 있으면 끝 코드 1 — 단 저장소에 site/next/home.css(새 첫 화면)가 생기기 전에는 알림만(끝 코드 0 · enforced false · 스위치 한 곳 white_gate.mjs whiteOn)
 //   올리기 직전 정적 문 = white_gate.mjs(deploy_netlify.mjs 본질 문 곁) · 잣대 한 장 = docs/골똘이_화면잣대.md
@@ -78,17 +79,18 @@ const MEASURE = () => {
       // 빨강(오름)은 숫자에만
       if (fg && fg.r > 150 && fg.g < 110 && fg.b < 110 && !/\d/.test(t)) out.ruin.push(`숫자 아닌 빨간 글 ${name} 「${t.slice(0, 12)}」`);
     }
+    const inWy = !!el.closest('section.wy'); // 「왜 사?」 칸 — 그림대로 그림자 · 옅게 바뀌는 빛 · 옅은 테를 허락(사장님 2026-10-28 10:11 「어 그렇게 해」 · docs/design/why-mock-2026-10-28/order-1011.txt 1 · 7) — 글 대비 · 누르는 크기 · 글 17px · 입체 · 허락 밖 그림 · 작은 빨간 점은 그대로 잼
     if (el.matches('a[href], button, summary, input, select, textarea, [role="button"]')) {
       if (r.height < 47.5 || r.width < 47.5) out.small.push(`${name} ${Math.round(r.width)}×${Math.round(r.height)} 「${el.textContent.trim().slice(0, 14)}」`);
       const own = rgb(cs.backgroundColor), bd = parseFloat(cs.borderTopWidth) > 0 ? rgb(cs.borderTopColor) : null, around = bgOf(el.parentElement || document.body);
       const ol = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 ? rgb(cs.outlineColor) : null; // 테 대신 그린 outline 도 보이는 테(돌 판 2026-10-19)
       const edges = [own && own.a > 0 ? ratio(mix(own, around), around) : 0, bd && bd.a > 0 ? ratio(mix(bd, around), around) : 0, ol && ol.a > 0 ? ratio(mix(ol, around), around) : 0];
-      if ((own && own.a > 0 && ratio(mix(own, around), around) > 1.05) || (bd && bd.a > 0)) { if (Math.max(...edges) < 3) out.uiContrast.push(`${name} ${Math.max(...edges).toFixed(2)} 「${el.textContent.trim().slice(0, 14)}」`); }
+      if (!inWy && ((own && own.a > 0 && ratio(mix(own, around), around) > 1.05) || (bd && bd.a > 0))) { if (Math.max(...edges) < 3) out.uiContrast.push(`${name} ${Math.max(...edges).toFixed(2)} 「${el.textContent.trim().slice(0, 14)}」`); }
     }
-    if (cs.boxShadow !== 'none') out.ruin.push(`그림자 ${name}`);
+    if (cs.boxShadow !== 'none' && !inWy) out.ruin.push(`그림자 ${name}`); // order-1011.txt 1 — 「왜 사?」 칸 안 그림자는 허락
     if (cs.textShadow !== 'none') out.ruin.push(`글 그림자 ${name}`);
-    if (/gradient/.test(cs.backgroundImage)) out.ruin.push(`광택(그러데이션) ${name}`);
-    if (/drop-shadow|blur/.test(cs.filter)) out.ruin.push(`그림자 거름 ${name}`);
+    if (/gradient/.test(cs.backgroundImage) && !inWy) out.ruin.push(`광택(그러데이션) ${name}`); // order-1011.txt 1 — 칸 안 옅게 바뀌는 빛은 허락
+    if (/drop-shadow|blur/.test(cs.filter) && !inWy) out.ruin.push(`그림자 거름 ${name}`); // order-1011.txt 1 — 칸 안 그림자 거름은 허락
     if (cs.perspective !== 'none' || cs.transformStyle === 'preserve-3d' || /matrix3d|rotate[XY]|perspective/.test(cs.transform)) out.ruin.push(`입체 ${name}`);
     const red = rgb(cs.backgroundColor); if (red && red.a > 0.5 && red.r > 180 && red.g < 90 && red.b < 90 && r.width <= 16 && r.height <= 16) out.ruin.push(`작은 빨간 점 ${name}`);
     if (tag === 'img' && !/\/media\/makbi-|\/media\/stone\/|\/media\/planet\/|\/next\/data\/|data:image\/svg/.test(el.getAttribute('src') || '')) out.ruin.push(`허락 밖 그림 ${el.getAttribute('src')}`); // /media/planet/ = 화면 잣대 색 4 「행성 사진 파일 안에만」(사장님 2026-10-20 22:17 · 미국 항공우주국 진짜 사진) — 2026-10-21 00:51 계절 판 첫 화면 줄의 행성
@@ -223,7 +225,8 @@ try {
       if (await fi.count()) { await fi.fill('삼성전자'); await p.waitForTimeout(1500); }
       // 누른 뒤 그 쪽이 다 열릴 때까지(8초 안) 기다린 다음 셈 — settle 만 쓰면 주소가 바뀌기 전에 끝나 0.4초 안에 못 연 쪽을 「못 감」으로 셌음
       // (2026-10-21 04:3x 진짜 사이트 두 번 「1번 눌러도 1 / 11 이 안 보임」 · 탐침 live_q1 = 누름 · 주소 바뀜은 맞고 그 0.4초에 「여는 중이에요…」 · 올린 직후 지나서는 세 번 모두 1번) · 재는 것은 누름 수 그대로(빠르기는 ③ 가장 큰 그림 · 누른 뒤 그려짐이 잼)
-      while (n < 2 && !(await seen(p))) { const t = p.locator('#view [data-path~="q1"]:visible').first(); if (!(await t.count())) break; await t.click({timeout: 5000}); n++; await p.waitForFunction(() => /(^|\s)1\s*\/\s*11(\s|$)/.test(document.querySelector('#view')?.innerText || ''), null, {timeout: 8000}).catch(() => {}); await settle(p); }
+      // 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 6) — 「왜 사?」 칸이 시작 화면(그림 1)부터 열려 회사 줄 → 「시작하기 ›」 = 2번 · 시작 단추도 누를 것으로 셈(누름 2번 안 잣대는 그대로)
+      while (n < 2 && !(await seen(p))) { const t = p.locator('#view [data-path~="q1"]:visible, #view section.wy[data-step="start"] button.wy-go:visible').first(); if (!(await t.count())) break; await t.click({timeout: 5000}); n++; await p.waitForFunction(() => /(^|\s)1\s*\/\s*11(\s|$)/.test(document.querySelector('#view')?.innerText || ''), null, {timeout: 8000}).catch(() => {}); await settle(p); }
       const q1 = await seen(p); R.m.taps = {...(R.m.taps || {}), q1: q1 ? n : null};
       check(q1 && n <= 2, '③ 첫 질문까지 누름 2번 안', q1 ? `${n}번` : `${n}번 눌러도 「1 / 11」이 안 보임`);
       await p.goto(HOME); await settle(p);

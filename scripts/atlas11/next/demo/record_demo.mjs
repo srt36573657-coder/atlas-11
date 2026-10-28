@@ -89,28 +89,32 @@ async function rectOf(fr, sel, nth = 0) {
     return {x, y, w: r.width, h: r.height, moved, ok: !!hit && (el === hit || el.contains(hit)), hit: hit ? (hit.className || hit.tagName).toString().slice(0, 40) : null};
   }, {sel, nth});
 }
-/** 매매일지 한 판 — 질문 열한 개(답 한 번씩) → 마지막 두 줄(말 칩 + 결과 보기) → 결과. tap(sel, nth, kind) 이 실제 누름 · phase(name) 은 알림 */
+/** 매매일지 한 판 — 시작하기 → 질문 열한 개(답 고르기 + 「다음으로 ›」 · 11번 「결과 보기 ›」) → 결과(사장님 2026-10-28 10:11 「어 그렇게 해」 order-1011 · 옛 「마지막 두 줄」 없음)
+    tap(sel, nth, kind) 이 실제 누름 · phase(name) 은 알림 · taps.q = 답 누름 · taps.lines = 시작 · 다음 누름(옛 두 줄 자리) */
 async function walkJournal(fr, tap, phase = async () => {}) {
   const taps = {q: 0, lines: 0};
-  for (let guard = 0; guard < 60; guard++) {
+  for (let guard = 0; guard < 80; guard++) {
     step('journal 상태 읽기');
-    const st = await fr.evaluate(() => ({res: !!document.querySelector('.wy-res'), why: !!document.querySelector('.wy-why'), step: document.querySelector('.wy-step')?.textContent ?? '',
-      opts: [...document.querySelectorAll('.wy-opt .wy-ot')].map(e => e.textContent.trim()), date: !!document.querySelector('.wy-date'), chips: document.querySelectorAll('.wy-chip').length}));
+    const st = await fr.evaluate(() => ({res: !!document.querySelector('.wy-res'), go: !!document.querySelector('.wy-go'), step: document.querySelector('.wy-step')?.textContent ?? '',
+      opts: [...document.querySelectorAll('.wy-opt .wy-ot')].map(e => e.textContent.trim()), on: document.querySelectorAll('.wy-opt.on').length, date: !!document.querySelector('.wy-date')}));
     if (st.res) break;
-    if (st.opts.length) {
-      if (st.date) fail('3번 「클 일이 있다」 날짜 칸이 열렸어요 — 이 시연은 그 답을 고르지 않아요');
+    if (st.go && !st.opts.length) { await tap('.wy-go', 0, 'lines'); taps.lines++; await fr.waitForSelector('.wy-opt', {timeout: 10000}); continue; }
+    if (st.opts.length && !st.on) {
       let k = st.opts.indexOf(ANSWERS[taps.q]); if (k < 0) k = 0;
       if (taps.q === 0) await phase('q');
       await tap('.wy-opt', k, 'q'); taps.q++;
+      await fr.waitForFunction(() => !!document.querySelector('.wy-opt.on'), null, {timeout: 10000});
+      continue;
+    }
+    if (st.opts.length) {
+      if (st.date) fail('3번 「클 일이 있다」 날짜 칸이 열렸어요 — 이 시연은 그 답을 고르지 않아요');
+      if (taps.q === 11) await phase('lines');
       step('journal 다음 쪽 기다림');
-      await fr.waitForFunction(prev => document.querySelector('.wy-res') || document.querySelector('.wy-why') || ((document.querySelector('.wy-step')?.textContent ?? '') !== prev), st.step, {timeout: 10000});
-    } else if (st.why) {
-      await phase('lines');
-      if (!st.chips) fail('마지막 두 줄 말 칩이 없어요');
-      await tap('.wy-chip', 0, 'lines'); taps.lines++;
-      await tap('.wy-next', 0, 'lines'); taps.lines++;
-      await fr.waitForSelector('.wy-res', {timeout: 10000});
-    } else await sleep(150);
+      await tap('.wy-nav .wy-next', 0, 'lines'); taps.lines++;
+      await fr.waitForFunction(prev => document.querySelector('.wy-res') || ((document.querySelector('.wy-step')?.textContent ?? '') !== prev), st.step, {timeout: 10000});
+      continue;
+    }
+    await sleep(150);
   }
   return taps;
 }
@@ -312,7 +316,7 @@ ${sc}
 
 ## 누름 수(찍을 때 센 것 · 영상 아래 「누름 N」 칸과 같음)
 - 가입: 카드 단추 ${rep.taps.card} + 카카오 동의 ${rep.taps.consent} = ${rep.taps.card + rep.taps.consent}번
-- 매매일지 질문 ${rep.taps.q}번(질문마다 한 번) + 마지막 두 줄 ${rep.taps.lines}번(말 칩 하나 + 「결과 보기」)
+- 매매일지 질문 ${rep.taps.q}번(질문마다 한 번) + 시작 · 다음 ${rep.taps.lines}번(「시작하기」 하나 + 「다음으로」 · 「결과 보기」 — order-1011)
 - 첫 화면: ${rep.taps.home}번(아래 「오늘 장」)
 - 합계 ${rep.total}번 — 카드에서 첫 화면까지(우리 화면에서 더 누른 것 0)
 - 카카오 동의 화면 안의 누름 수는 가짜 화면으로는 못 잼 → 진짜 카카오는 사장님 폰에서 셈(order [11] 3)

@@ -14,11 +14,14 @@
      ⑧ 한 달(장 스무 번) 지난 기록 = 「그날 정한 대로 했어?」 먼저 · 답은 그 기록에 kept {a: yes · no, at} 로 남김(지우지 않음) · 값은 답한 뒤
      ⑨ 값 = 시작 날 종가 → 스무 번째 장 날 종가(날짜 박음 · co/<번호>.json close + k0 를 days.json 날짜 줄에 맞춤) · 같은 때 코스피(home.json) · 모든 회사 가운데 값(/next/data/median20.json) · 없으면 「?」
      [9] 8 색 점마다 읽어 주는 글(좋음 · 주의 · 위험) · [2] 7 결과가 처음 보인 뒤 NX.kakao.offer('journal') 한 번(offerOnce — 이 화면을 연 동안 한 번 · NX.kakao 가 없거나 꺼져 있으면 부르지 않음)
-     [10] 글씨 = --fs-1 ~ --fs-5 · 간격 = --sp-1 ~ --sp-3(p-why.css) */
+     [10] 글씨 = --fs-1 ~ --fs-5 · 간격 = --sp-1 ~ --sp-3(p-why.css)
+   ★ 2026-10-28 그림 그대로 판(사장님 09:46 「360가지 분석해 먼저」 · 10:11 「어 그렇게 해」 — docs/design/why-mock-2026-10-28/brief.md): 위 흐름 가운데 ① 종목 고르기 · ③ 두 줄 · 앞 답 한마디 칸 · 「답 한 번 = 다음」 · 판정 물음 꼴은 풂
+     지금 흐름 = 시작(그림 1) → 질문 열한 개(답을 고르고 「다음으로 ›」 · 11번 「‹ 이전」 + 「결과 보기 ›」 · 그림 2 · 3) → 결과(「당신은 / ○○ 투자자예요」 · 성향 넷 · 심리 상태 · 더 보기 · 그림 4 · 7) → 상세 분석(탭 넷 · 그림 5 · 6)
+     #/why/<번호> 의 종목은 화면에 안 보이고 기록에만 남음(한 달 뒤 값) · 셈(judge) · 기록 꼴 · 한 달 뒤 · 카톡 권유 · 합계 신호는 그대로 */
 import {NAME, josa} from './brand.js';
 import {tally} from './tally.js'; // 합계 칸 신호 셋(일꾼 KD · 2026-10-18 16:39 [10] 1) — 끝냄(stop · stop_rest) · 한 달 답(promise · promise_yes) · 보내고 기다리지 않음
 import {shareButtons} from './share-btn.js';
-import {LOOK, ACT_MORE, MOODS, TYPE_OF, MIND_OF, lookIcon} from './why-look.js'; // 그림 판(사장님 2026-10-27 22:09 · 22:16 「이시안 화법으로만들어줘」) — 풀이 글 · 그림만(질문 · 답 · 격언은 QS 그대로) // 카톡 단추 한 곳(KB1) — 기록 줄의 종목(일꾼 KB2)
+import {LOOK, ACT_MORE, MOODS, TYPE_OF, MIND_OF, lookIcon, faceIcon, sceneNodes} from './why-look.js'; // 그림 판(사장님 2026-10-27 22:09 · 22:16 「이시안 화법으로만들어줘」) — 풀이 글 · 그림만(질문 · 답 · 격언은 QS 그대로) // 카톡 단추 한 곳(KB1) — 기록 줄의 종목(일꾼 KB2)
 const NX = globalThis.NX;
 const {h} = NX;
 const PT = {g: 0, y: 1, r: 2};
@@ -92,31 +95,19 @@ export function todayResult() {
 const CODE = /^[0-9][0-9A-Z]{5}$/;
 const normCode = a => { const s = String(a ?? '').trim().toUpperCase(); return CODE.test(s) ? s : null; };
 const won = n => Math.floor(n).toLocaleString('ko-KR') + '원';
-const fmtN = n => Math.floor(n).toLocaleString('ko-KR');
-/** 적은 값 → 원(쉼표 · 「원」 · 빈칸 뺌 · 「9만」 = 90,000 · 「1억 2000만」 = 120,000,000) · 못 읽으면 0 */
-const toInt = s => {
-  const t = String(s ?? '').replace(/[,\s원]/g, '');
-  const m = /^(?:(\d+)억)?(?:(\d+)만)?(\d*)$/.exec(t), v = m && /[억만]/.test(t) ? (+m[1] || 0) * 1e8 + (+m[2] || 0) * 1e4 + (+m[3] || 0) : Number(t.replace(/[^0-9]/g, ''));
-  return Number.isSafeInteger(v) && v > 0 ? v : 0;
-};
 const pad = n => String(n).padStart(2, '0');
 const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }; // 보는 기계 날짜(날짜 고르기 칸과 같은 자)
 const ymd = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s ?? '')); return m ? `${+m[1]}년 ${+m[2]}월 ${+m[3]}일` : '?'; };
 const fmtDay = iso => { const d = new Date(iso); return isNaN(d) ? '?' : `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`; };
 const later = (p, ms) => Promise.race([p, new Promise(r => setTimeout(() => r(null), ms))]);
-/** 그날 값 날짜가 서울 오늘보다 며칠 앞인가(달력 날 · B12) · 못 읽으면 0 */
-const staleOf = d => (/^\d{4}-\d{2}-\d{2}$/.test(String(d ?? '')) ? Math.round((Date.parse(seoulDay(Date.now())) - Date.parse(d)) / 864e5) : 0);
-const icon = n => h('img', {src: '/media/makbi-icon.svg', alt: '', width: n, height: n});
 /** 색 점 — 읽어 주는 글을 함께([9] 8 · 🟢 좋음 · 🟡 주의 · 🔴 위험) · 고르기 전에는 빈 테두리(ring · 색 없음 — [5] 1) */
 const TONE = {g: '좋음', y: '주의', r: '위험'};
 const dot = c => h('span', {class: 'wy-dot wy-' + c}, h('span', {class: 'wy-sr', text: TONE[c]}));
-const ring = () => h('span', {class: 'wy-dot wy-n', 'aria-hidden': 'true'});
 /** 내가 쓴 글 — 남의 글(쓰지 않을 말 셈 밖 · 영어로 바꾸지 않음) */
 const mine = t => h('q', {class: 'wy-mine', 'data-proper': '', lang: /[가-힣]/.test(t) ? 'ko' : null, text: t});
 const VTONE = {'좋아, 정해 둔 대로만': 'g', '반만 준비됐어': 'y', '오늘은 쉬어 가자': 'r'};
-/** 보이는 판정 글(사장님 2026-10-19 02:03 [화면] 4 「골똘이 말(… 판정 글)은 물음으로 끝내라」) — 기록에 적는 값 · V_CODE · VTONE · 신호(tally) 셈은 위 그대로 · 화면에만 이 글 */
-const VSHOW = {'좋아, 정해 둔 대로만': '좋아, 정해 둔 대로만 할까?', '반만 준비됐어': '반만 준비됐을까?', '오늘은 쉬어 가자': '오늘은 쉬어 갈까?'};
-const vShow = v => VSHOW[v] ?? String(v ?? '?');
+/** 보이는 판정 글 — 2026-10-28 10:11 「어 그렇게 해」(docs/design/why-mock-2026-10-28/order-1011.txt 5)로 그림처럼 단정 · 사장님 판정 글 그대로(옛 10-19 [화면] 4 물음 꼴은 이 칸에서 풂) */
+const vShow = v => String(v ?? '?');
 /** 묶음 막대 넷 — 묶음 준비 ÷ 묶음 최대([5] 5 · 준비된 만큼 참 · 색은 그 묶음 점수로) */
 function bars(groups, small) {
   return h('div', {class: 'wy-bars' + (small ? ' sm' : '')}, ...GROUPS.map(([n, qs]) => {
@@ -151,338 +142,259 @@ async function priceOf(code) {
   return c && Number.isFinite(c.price) && c.price > 0 ? {price: c.price, day: typeof c.priceDate === 'string' ? c.priceDate : null, name: typeof c.name === 'string' ? c.name : null} : null;
 }
 
-const PICK = -1, LINES = QS.length, RES = QS.length + 1;
-/** 매매일지 칸 — 종목 고르기 → 질문 열한 개 → 두 줄 → 결과 · code = 처음부터 고른 종목(#/why/<번호> · 친구가 연 보내기 쪽) · onDone(기록, 남겼나) = 결과를 보인 뒤 */
-export function whyCard(G, {page = false, code = null, onDone = null, autoFocus = true, onAgain = null} = {}) { // autoFocus = 찾기 칸에 바로 씀(물을 약속이 있으면 끔 · B17) · onAgain = 「다시 하기」를 누름(목록 접은 줄을 풂 · B15)
+const START = -1, RES = QS.length, DET = QS.length + 1;
+/** 매매일지 칸(2026-10-28 그림 그대로 · docs/design/why-mock-2026-10-28/brief.md) — 시작 → 질문 열한 개(고르고 「다음으로 ›」) → 결과 → 상세 분석
+    code = 처음부터 정한 종목(#/why/<번호> · 보내기 쪽) — 화면엔 안 보이고 기록에만(이름 · 그날 값 · 날짜 → 한 달 뒤 값) · onDone(기록, 남겼나) = 결과를 보인 뒤
+    autoFocus = 옛 찾기 칸 자리(이제 쓰지 않음 · 부르는 쪽 그대로 받음) · onAgain = 「다시 하기」를 누름(목록 접은 줄을 풂 · B15) */
+export function whyCard(G, {page = false, code = null, onDone = null, autoFocus = true, onAgain = null} = {}) { // eslint-disable-line no-unused-vars
   const box = h('section', {class: 'wy' + (page ? ' page' : ''), 'aria-label': '친구야, 왜 사?'});
   const live = h('p', {class: 'wy-live', 'aria-live': 'polite'});
   const ans = new Array(QS.length).fill(null);
-  const S = {code: null, name: null, co: false, price: null, day: null, wait: null, why: '', sell: '', half: '', touched: false, bigDay: '', q: '', note: null};
-  const pre = normCode(code), badPre = code != null && String(code).trim() !== '' && !pre;
-  let i = PICK, err = '', last = null, saved = false, focusSel = null, first = true, busy = false;
+  const S = {code: null, name: null, price: null, day: null, wait: null, bigDay: ''};
+  const pre = normCode(code);
+  let i = START, err = '', last = null, saved = false, focusSel = null, busy = false, tab = 'all';
 
-  const setStock = (c, n, co) => {
-    Object.assign(S, {code: c, name: n, co, price: null, day: null, wait: null, note: null, touched: false, sell: '', half: ''});
-    if (!co) return;
+  /** 정한 종목을 조용히 기억(그날 값은 뒤에서 받음 · 못 받으면 null) */
+  const setStock = (c, n) => {
+    Object.assign(S, {code: c, name: n, price: null, day: null});
     const p = S.wait = later(priceOf(c).catch(() => null), 6000).then(x => {
-      if (S.wait !== p) return; // 그새 다른 종목을 고름
+      if (S.wait !== p) return;
       S.wait = null;
       if (x) { S.price = x.price; S.day = x.day; if (!S.name) S.name = x.name; }
-      box.querySelector('.wy-stk')?.replaceWith(stockBar());
-      if (page && i === 0 && ans[0] == null && box.isConnected) keepQ(); // 값 줄이 두 줄로 늘어 1번 답이 밀리면 다시 화면 안으로(B9)
     });
   };
-  const clearStock = () => Object.assign(S, {code: null, name: null, co: false, price: null, day: null, wait: null, touched: false, sell: '', half: ''});
   const start = () => {
-    ans.fill(null); Object.assign(S, {why: '', bigDay: '', q: '', note: null}); err = ''; last = null; saved = false; live.textContent = '';
-    clearStock();
-    if (!pre) { i = PICK; if (badPre) S.note = {nf: true}; return; }
+    ans.fill(null); S.bigDay = ''; err = ''; last = null; saved = false; live.textContent = ''; i = START; tab = 'all';
+    if (!pre || S.code === pre) return; // 다시 하기 — 정한 종목 그대로
     const o = coOf(pre);
-    if (o) { setStock(pre, o.n, true); i = 0; return; }
-    const known = !!NX.ix?.(); // 사이트 자료가 왔는데 회사 주식에 없음 = 펀드 · 우선주 … 또는 없는 번호 → 질문 대신 종목 고르기(까닭은 찾으면 붙임)
-    i = known ? PICK : 0; if (!known) S.code = pre; // 자료가 아직이면 1번을 「받는 중」으로 열어 두고 찾음
-    const p = S.wait = lookup(pre).catch(() => null).then(r => {
-      if (S.wait !== p) return; // 그새 다른 종목을 고름
-      S.wait = null;
-      // 자료가 늦게 와도 답하던 자리 그대로 — 종목 줄만 바꿈 · 1번으로 되돌리는 것은 종목 고르기 칸(PICK)에 있을 때만(2026-10-19 실제 사이트: 5번까지 답한 뒤 자료가 오자 1번으로 튐 · 「다음」 단추 없는 장)
-      if (r?.co) { setStock(r.c, r.n, true); if (i === PICK) { i = 0; focusSel = '.wy-opt'; draw(); } else box.querySelector('.wy-stk')?.replaceWith(stockBar()); return; }
-      clearStock(); i = PICK; S.note = r ? {n: r.n, w: r.w} : {nf: true}; focusSel = '.wy-find'; draw();
-    });
+    if (o) { setStock(pre, o.n); return; }
+    lookup(pre).catch(() => null).then(r => { if (r?.co && !S.code) setStock(r.c, r.n); }); // 회사 주식이 아니거나 없는 번호 — 조용히 빼고 감
   };
 
-  /** 칸 머리 — 부제는 종목 고르기 장에만(B9 · 2026-10-22 총정리: 좁은 폰에서 질문 장 · 결과 장의 답 · 판정을 밀어내지 않게) */
-  const head = sub => (sub ? h('div', {class: 'wy-head wy-hero'}, // 그림 1 시작 화면 — 큰 제목 · 그림 · 세 줄 · 시작하기(종목 찾기 칸이 곧 시작)
-    h('h2', {class: 'wy-h', text: '친구야, 왜 사?'}),
-    h('p', {class: 'wy-hh'}, h('span', {text: '나의 투자 마음,'}), h('br'), h('em', {text: '지금은 어떤 상태일까?'})),
-    h('p', {class: 'wy-sub', text: `사기 전에 ${josa(NAME, '랑')} 내 이유를 확인해요.`}),
-    h('div', {class: 'wy-art'}, h('img', {src: '/media/makbi-hello.svg', alt: '', width: 120, height: 150})),
-    h('ul', {class: 'wy-hl'}, ...['열한 개의 질문으로 간단하게', '내 마음과 사는 습관을 함께 봐요', '나에게 맞는 길잡이를 드려요'].map(t => h('li', {}, lookIcon('check', 18), h('span', {text: t})))))
-    : h('div', {class: 'wy-head wy-topbar'}, stockBar())); // 그림 2 · 3 · 4 — 질문 · 두 줄 · 결과 장 맨 위는 고른 종목 한 줄뿐(사장님 2026-10-28 02:01 「과감하게 해」 · 칸 이름은 section aria-label)
-  /** 고른 종목 한 줄 — 이름 · 그날 값 · 그 날짜(값을 받는 동안 · 못 받으면 「?」) */
-  const stockBar = () => {
-    if (!S.code) return h('p', {class: 'wy-stk', hidden: true});
-    const v = S.price != null ? [h('b', {class: 'num', text: won(S.price)}), h('span', {text: ` · ${NX.md(S.day)} 종가`})]
-      : [h('span', {class: 'wy-qm', text: S.wait ? '그날 값 받는 중…' : '? 그날 값 없음'})];
-    return h('p', {class: 'wy-stk'}, h('span', {class: 'wy-stn', 'data-proper': '', text: S.name || S.code}), h('span', {class: 'wy-stv'}, ...v));
-  };
   const btn = (cls, text, fn) => { const b = h('button', {class: cls, type: 'button', text}); b.addEventListener('click', fn); return b; };
-  const BACK = '‹ 앞 질문', BACK1 = '‹ 종목 바꾸기'; // [5] 4 — 「앞으로」는 거꾸로 읽힘 · 1번은 앞 질문이 없어 종목 고르기로 감(B6 · 2026-10-22 총정리)
-  const goBack = () => { if (busy) return; i--; err = ''; live.textContent = ''; focusSel = i === PICK ? '.wy-find' : '.wy-opt.on'; draw(); if (i === PICK) keepTop(); else keepQ(); };
-  const keepTop = () => { const r = box.getBoundingClientRect(); if (r.top < 0) window.scrollBy(0, r.top - 70); }; // 길게 내려 본 뒤 다음 화면이 위에서 시작하게
-  /** 답 셋이 화면 안에 오게([5] 3 — 한 번 누르면 다음 질문 · 위 막대와 아래 단추 줄을 피함) · 맨 위(앞 답 한마디 · 없으면 칸 머리)는 위 막대 밑까지만 올림 */
-  const keepQ = () => {
-    const topY = Math.max(0, document.querySelector('header.top')?.getBoundingClientRect().bottom ?? 0) + 8;
-    const botY = Math.min(window.innerHeight, document.querySelector('nav.tabs')?.getBoundingClientRect().top ?? window.innerHeight) - 8;
-    // 3번 「클 일이 있다」(질문 장에 「다음 ›」이 있음) — 한마디 · 날짜 칸 · 「다음 ›」까지 아래 단추 줄 위로 · 위는 고른 답까지만 올림(B8 · 2026-10-22 총정리 — 320 × 568 에서도 「다음 ›」이 보이게)
-    const nav = box.querySelector('.wy-opts') && box.querySelector('.wy-nav .wy-next') ? box.querySelector('.wy-nav') : null;
-    const t = (nav ? box.querySelector('.wy-opt.on') ?? box.querySelector('.wy-q') : box.querySelector('.wy-prev') ?? box).getBoundingClientRect().top, last = nav ?? box.querySelector('.wy-opts > :last-child');
-    if (t < topY) { window.scrollBy(0, t - topY); return; }
-    const over = last ? last.getBoundingClientRect().bottom - botY : 0;
-    if (over > 0) window.scrollBy(0, Math.min(over, t - topY));
+  const upBtn = (label, fn) => { const b = h('button', {class: 'wy-up', type: 'button', 'aria-label': label}, lookIcon('back', 24)); b.addEventListener('click', fn); return b; };
+  /** 칸 맨 위를 위 막대 바로 밑으로(장이 바뀔 때 — 한 화면에 한 가지) */
+  const keepTop = () => {
+    const topY = Math.max(0, document.querySelector('header.top')?.getBoundingClientRect().bottom ?? 0), r = box.getBoundingClientRect();
+    if (Math.abs(r.top - topY) > 1) window.scrollBy(0, r.top - topY);
+  };
+  const goBack = () => {
+    if (busy) return;
+    err = ''; live.textContent = '';
+    if (i === DET) { i = RES; focusSel = '.wy-detb'; } else { i--; focusSel = i === START ? '.wy-go' : '.wy-q'; }
+    draw(); keepTop();
   };
 
-  /* ① 종목 고르기 */
-  const ONLY_CO = '회사 주식만 매매일지에 적어요.';
-  /** 찾은 줄 하나 — 회사 주식은 누르면 질문으로 · 펀드 · 우선주 …는 누르지 않고 까닭 한 줄(찾기와 같은 글 w) */
-  const hitRow = x => {
-    if (!isCo(x.c, x.k)) return h('div', {class: 'wy-xrow', 'data-code': x.c}, h('span', {class: 'nm', 'data-proper': '', text: x.n}), h('small', {text: x.w || ONLY_CO}));
-    const o = coOf(x.c);
-    const b = h('button', {class: 'wy-hit', type: 'button', 'data-code': x.c}, h('span', {class: 'nm', 'data-proper': '', text: x.n}), h('small', {text: `${o?.i || '?'} · ${x.c}`}));
-    b.addEventListener('click', () => choose(x));
-    return b;
-  };
-  const choose = x => { setStock(x.c, x.n, true); i = 0; err = ''; S.note = null; focusSel = '.wy-opt'; draw(); keepQ(); };
-  const recent = () => {
-    const X = NX.ix?.(), hist = (NX.store?.get('atlas:new:hist', []) ?? []).filter(c => typeof c === 'string' && X?.co?.[c]).slice(0, 3);
-    if (!hist.length) return [h('p', {class: 'wy-note', text: '이름 한 글자부터 찾아요. 첫 글자(ㅅㅅㅈㅈ)와 번호도 돼요.'})];
-    return [h('p', {class: 'wy-note', text: '최근 본 회사'}), ...hist.map(c => hitRow({c, n: X.co[c].n, k: 'c'}))];
-  };
-  const pickView = () => {
-    const inp = h('input', {class: 'wy-find', type: 'search', value: S.q, placeholder: '회사 이름이나 번호', 'aria-label': '종목 찾기', autocomplete: 'off', enterkeyhint: 'go'});
-    const hits = h('div', {class: 'wy-hits'});
-    let seq = 0;
-    const run = async () => {
-      const q = inp.value.trim(), my = ++seq; S.q = inp.value;
-      if (!q) { hits.replaceChildren(...recent()); hits.dataset.q = ''; return; }
-      const all = await match(q); if (my !== seq) return;
-      const top = all.slice(0, 6), xs = top.some(x => !isCo(x.c, x.k));
-      hits.replaceChildren(...(top.length ? [...top.map(hitRow), ...(xs ? [h('p', {class: 'wy-note', text: ONLY_CO})] : [])] : [h('p', {class: 'wy-note', text: `「${q}」 — 찾는 종목이 없어요. 첫 글자(ㅅㅅㅈㅈ)나 번호로도 찾아보세요.`})]));
-      hits.dataset.q = q; // 이 줄들이 어느 말로 찾은 것인지(늦게 온 앞 결과와 섞이지 않게)
-    };
-    inp.addEventListener('input', run);
-    inp.addEventListener('keydown', async e => { // 엔터 = 맨 위 줄이 회사 주식이면 그 종목(누름 하나 줄임)
-      if (e.key !== 'Enter' || e.isComposing) return;
-      e.preventDefault(); const q = inp.value.trim(); if (!q) return;
-      const top = (await match(q))[0]; if (top && isCo(top.c, top.k) && i === PICK) choose(top);
-    });
-    run();
-    const note = S.note?.nf ? [h('p', {class: 'wy-err', role: 'alert', text: '? 이 번호의 종목을 찾지 못했어요. 이름으로 찾아 줘.'})]
-      : S.note ? [h('p', {class: 'wy-err', role: 'alert'}, h('span', {text: '? '}), h('span', {class: 'nm', 'data-proper': '', text: S.note.n}), h('span', {text: ' — ' + ONLY_CO})), ...(S.note.w ? [h('p', {class: 'wy-note wy-xw', text: S.note.w})] : [])] : [];
-    const go = btn('wy-go', '시작하기 ›', async () => { const q = inp.value.trim(); if (!q) { inp.focus({preventScroll: false}); return; } const top = (await match(q))[0]; if (top && isCo(top.c, top.k) && i === PICK) choose(top); else inp.focus(); }); // 그림 1 「시작하기」 — 회사를 고르면 1번 질문
-    return [h('p', {class: 'wy-intro', text: '열한 질문 · 1분쯤이에요. 끝나면 오늘 판정이 하나 나와요. 기록은 이 기기에만 남아요.'}), // 끝나면 무엇이 나오나 한 줄(B5 · 2026-10-22 총정리 — 판정 셋을 미리 늘어놓지 않음)
-      h('p', {class: 'wy-step', text: '종목 고르기'}), h('h3', {class: 'wy-q', text: '어떤 종목이야?'}), ...note, inp, go, h('p', {class: 'wy-time', text: '약 2분 걸려요'}), hits];
-  };
+  /* ① 시작(그림 1) */
+  const startView = () => [h('div', {class: 'wy-head wy-hero'},
+    page ? h('a', {class: 'wy-up', href: '#/', 'aria-label': '첫 화면으로'}, lookIcon('back', 24)) : null,
+    h('h2', {class: 'wy-h'}, h('span', {text: '나의 투자 성향,'}), h('br'), h('em', {text: '지금은'}), h('span', {text: ' '}), h('span', {text: '어떤 상태일까?'})),
+    h('p', {class: 'wy-sub'}, h('span', {text: '투자 심리와 실제 매매 습관을 함께 분석해'}), h('span', {text: ' '}), h('span', {text: '나에게 맞는 투자 가이드를 드려요.'})), // 두 줄(좁으면 고르게 나눔)
+    sceneArt(),
+    h('ul', {class: 'wy-hl'}, ...['11개의 질문으로 간단하게', '투자 심리 + 실제 매매 습관 분석', '나에게 맞는 행동 가이드 제공'].map(t => h('li', {}, lookIcon('check', 18), h('span', {text: t}))))),
+    btn('wy-go', '시작하기 ›', () => { if (busy) return; i = 0; err = ''; focusSel = '.wy-q'; draw(); keepTop(); }),
+    h('p', {class: 'wy-time', text: '약 2분 소요 · 기록은 이 기기에만 남아요'})];
 
-  /* ② 질문 하나 */
+  /* ② 질문 하나(그림 2 · 3) — 답 누름 = 고르기만 · 「다음으로 ›」 = 다음(order-1011 3) */
   const dateRow = () => {
     const d = h('input', {class: 'wy-date', type: 'date', min: todayIso(), value: S.bigDay, required: true});
     const set = () => { S.bigDay = d.value; if (err) { err = ''; box.querySelector('.wy-err')?.remove(); } };
     d.addEventListener('input', set); d.addEventListener('change', set);
     return h('label', {class: 'wy-dl'}, h('span', {text: '그 일이 언제야?'}), d);
   };
-  /** 다음 장으로([5] 3 — 답 한 번이면 넘어감) · 마지막 답 뒤에는 「마지막 두 줄」(팔 선 기본값은 그날 값으로 — 값을 받는 중이면 기다림) */
-  const advance = async () => {
-    if (i === QS.length - 1 && S.wait) { busy = true; box.setAttribute('aria-busy', 'true'); try { await S.wait; } finally { busy = false; box.removeAttribute('aria-busy'); } }
-    i++; err = '';
-    if (i === LINES && !S.touched) { S.sell = S.price ? fmtN(sellOf(S.price)) : ''; S.half = S.price ? fmtN(halfOf(S.price)) : ''; }
-    focusSel = i === LINES ? '.wy-why' : ans[i] != null ? '.wy-opt.on' : '.wy-opt';
-    draw(); keepQ();
+  const pickAns = k => {
+    if (busy) return;
+    ans[i] = k; err = ''; live.textContent = `${NAME}: ${QS[i].a[k][2]}`; // 한마디는 읽어 주는 칸에(order-1011 4)
+    focusSel = i === BIG_Q && k === BIG_A && !S.bigDay ? '.wy-date' : '.wy-opt.on';
+    draw();
+    if (i === BIG_Q && k === BIG_A) keepIn('.wy-dl');
   };
-  /** 3번 「클 일이 있다」의 다음 — 날짜를 받아야 넘어감([3] 3) */
+  /** 한 칸이 위 막대와 아래 단추 줄 사이에 보이게(질문 머리 위로는 안 올림) */
+  const keepIn = sel => {
+    const e = box.querySelector(sel); if (!e) return;
+    const topY = Math.max(0, document.querySelector('header.top')?.getBoundingClientRect().bottom ?? 0) + 8;
+    const botY = Math.min(window.innerHeight, document.querySelector('nav.tabs')?.getBoundingClientRect().top ?? window.innerHeight) - 88; // 붙어 있는 「다음으로」 자리
+    const r = e.getBoundingClientRect(), q = box.querySelector('.wy-q')?.getBoundingClientRect().top ?? topY;
+    if (r.bottom > botY) window.scrollBy(0, Math.min(r.bottom - botY, Math.max(0, q - topY)));
+  };
   const onNext = async () => {
     if (busy) return;
-    if (i === BIG_Q && ans[i] === BIG_A) {
+    if (ans[i] == null) { err = '답을 하나 골라 줘.'; focusSel = '.wy-opt'; draw(); return; }
+    if (i === BIG_Q && ans[i] === BIG_A) { // 3번 「클 일이 있다」 — 날짜를 받아야 넘어감([3] 3)
       const v = S.bigDay;
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { err = '그 일이 언제인지 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); keepQ(); return; }
-      if (v < todayIso()) { err = '오늘이나 그 뒤 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); keepQ(); return; }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { err = '그 일이 언제인지 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); return; }
+      if (v < todayIso()) { err = '오늘이나 그 뒤 날짜를 적어 줘.'; focusSel = '.wy-date'; draw(); return; }
     }
-    await advance();
-  };
-  /** 답 하나를 누름 — 한마디는 읽어 주는 칸에 · 3번 「클 일이 있다」면 이 장에 남아 날짜 칸 · 그 밖은 바로 다음 장 */
-  const pickAns = async k => {
-    if (busy) return;
-    const Q = QS[i]; ans[i] = k; err = ''; live.textContent = `${NAME}: ${Q.a[k][2]}`;
-    if (i === BIG_Q && k === BIG_A) { focusSel = S.bigDay ? '.wy-next' : '.wy-date'; draw(); keepQ(); return; } // 날짜 칸 · 「다음 ›」을 화면 안으로(B8)
-    await advance();
-  };
-  /** 고른 답의 한마디 — 고른 뒤라 색 점(+ 읽어 주는 글)을 보임 · 3번 「클 일이 있다」는 같은 장에서(날짜 칸 위) */
-  const oneLine = (q, k) => h('p', {class: 'wy-one'}, icon(28), dot(QS[q].a[k][0]), h('span', {class: 'wy-onet', text: QS[q].a[k][2]}));
-  /** 앞 답의 한마디 + 격언 — 다음 장 맨 위(머리 바로 밑 · [5] 3) · 머리에 그림이 있어 한 칸에 점 · 글만(좁은 화면에서 줄이 덜 늘게) */
-  const prevBox = () => {
-    const q = i - 1, k = q >= 0 ? ans[q] : null;
-    if (k == null) return [];
-    return [h('div', {class: 'wy-prev'}, h('p', {class: 'wy-prevk', text: `${q + 1}번 답에 ${NAME} 한마디`}), // 어느 답의 말인지 작은 이름표(B7 · 2026-10-22 총정리 — 한마디 · 격언 글은 그대로)
-      h('p', {class: 'wy-one'}, dot(QS[q].a[k][0]), h('span', {class: 'wy-onet', text: QS[q].a[k][2]})),
-      h('p', {class: 'wy-say'}, h('span', {class: 'wy-sayk', text: '격언 '}), h('q', {'data-proper': '', text: QS[q].say})))];
+    if (i === QS.length - 1) {
+      if (S.wait) { busy = true; box.setAttribute('aria-busy', 'true'); try { await S.wait; } finally { busy = false; box.removeAttribute('aria-busy'); } } // 정한 종목의 그날 값을 받는 중이면 기다림
+      finish(); return;
+    }
+    i++; err = ''; focusSel = '.wy-q'; draw(); keepTop();
   };
   const qView = () => {
-    const Q = QS[i], k0 = ans[i];
-    const opts = h('div', {class: 'wy-opts', role: 'group', 'aria-label': Q.q});
-    Q.a.forEach(([c, t], k) => { // [5] 1 — 고르기 전에는 색을 숨김(빈 테두리) · 고른 답(앞 질문으로 돌아왔을 때)만 색
-      const L = LOOK[i], b = h('button', {class: 'wy-opt' + (k0 === k ? ' on' : ''), type: 'button', 'aria-pressed': String(k0 === k)}, k0 === k ? dot(c) : ring(),
-        h('span', {class: 'wy-oi'}, lookIcon(L?.ic?.[k] ?? 'ask', 22)), h('span', {class: 'wy-ob'}, h('span', {class: 'wy-ot', text: t}), L?.sub?.[k] ? h('small', {class: 'wy-os', text: L.sub[k]}) : null)); // 그림 2 · 3 — 그림 · 답 · 작은 풀이 · 오른쪽 동그라미
+    const Q = QS[i], L = LOOK[i] ?? {}, k0 = ans[i], lastQ = i === QS.length - 1;
+    const prog = h('span', {class: 'wy-prog', 'aria-hidden': 'true'}, h('i')); prog.firstChild.style.setProperty('width', Math.round((i + 1) / QS.length * 100) + '%');
+    const opts = h('div', {class: 'wy-opts', role: 'group', 'aria-label': Q.q}); // 사장님 질문 글 그대로(읽어 주는 이름)
+    Q.a.forEach(([, t], k) => {
+      const on = k0 === k, b = h('button', {class: 'wy-opt' + (on ? ' on' : ''), type: 'button', 'aria-pressed': String(on)},
+        h('span', {class: 'wy-oi'}, lookIcon(L.ic?.[k] ?? 'ask', 24)),
+        h('span', {class: 'wy-ob'}, h('span', {class: 'wy-ot', text: t}), L.sub?.[k] ? h('small', {class: 'wy-os', text: L.sub[k]}) : null),
+        h('span', {class: 'wy-radio', 'aria-hidden': 'true'}));
       b.addEventListener('click', () => pickAns(k));
       opts.append(b);
     });
-    const big = i === BIG_Q && k0 === BIG_A;
-    const prog = h('span', {class: 'wy-prog', 'aria-hidden': 'true'}, h('i')); prog.firstChild.style.setProperty('width', Math.round((i + 1) / QS.length * 100) + '%');
-    const nodes = [h('div', {class: 'wy-pg'}, prog, h('p', {class: 'wy-step num', text: `${i + 1} / ${QS.length}`})), h('h3', {class: 'wy-q', text: `${i + 1}. ${Q.q}`}), // 그림 2 — 맨 위 진행 막대 · 몇 번째 → 작은 질문 이름 → 큰 질문(2026-10-28 과감하게)
-      LOOK[i]?.lead ? h('p', {class: 'wy-lead', text: LOOK[i].lead}) : null, opts,
-      LOOK[i]?.why && !(i === BIG_Q && k0 === BIG_A) ? h('div', {class: 'wy-whyq'}, h('p', {class: 'wy-whyk'}, lookIcon('ask', 18), h('b', {text: '왜 이런 질문을 하나요?'})), h('p', {class: 'wy-whyt', text: LOOK[i].why})) : null].filter(Boolean);
-    if (big) nodes.push(oneLine(i, k0), dateRow());
-    if (err) nodes.push(h('p', {class: 'wy-err', role: 'alert', text: err}));
-    nodes.push(h('div', {class: 'wy-nav'}, btn('wy-back', i === 0 ? BACK1 : BACK, goBack), big ? btn('wy-next', '다음 ›', onNext) : null));
-    return nodes;
+    return [h('div', {class: 'wy-head wy-pg'}, upBtn(i === 0 ? '처음으로' : '앞 질문', goBack), prog, h('p', {class: 'wy-step num', text: `${i + 1} / ${QS.length}`})),
+      h('h3', {class: 'wy-q', tabindex: '-1', text: L.lead ?? Q.q}),
+      L.hint ? h('p', {class: 'wy-hint', text: L.hint}) : null,
+      opts,
+      i === BIG_Q && k0 === BIG_A ? dateRow() : null,
+      h('div', {class: 'wy-whyq'}, h('p', {class: 'wy-whyk'}, lookIcon('bulb', 22), h('b', {text: lastQ ? '이런 점을 확인해요' : '왜 이런 질문을 하나요?'})),
+        L.why ? h('p', {class: 'wy-whyt', text: L.why}) : null,
+        h('p', {class: 'wy-say'}, h('span', {class: 'wy-sayk', text: '격언 '}), h('q', {'data-proper': '', text: Q.say}))), // 격언은 노란 칸 맨 아래 한 줄(order-1011 4)
+      err ? h('p', {class: 'wy-err', role: 'alert', text: err}) : null,
+      h('div', {class: 'wy-nav'}, lastQ ? btn('wy-back', '‹ 이전', goBack) : null, btn('wy-next', lastQ ? '결과 보기 ›' : '다음으로 ›', onNext))].filter(Boolean);
   };
 
-  /* ③ 두 줄 — ① 1년 뒤 반토막 났다면 왜? ② 팔 약속(만약 ~이면 ~한다) */
-  const quickWords = () => [['이익이 줄어서', '클 일이 안 일어나서', '그냥 산 거라서'][ans[BIG_Q]] ?? '이익이 줄어서', '업종이 식어서', '시장 전체가 내려서'];
-  const submit = () => {
-    const why = S.why.trim(), sell = toInt(S.sell), half = toInt(S.half);
-    if (!why) { err = '① 한 줄만 적어 줘. 아래 말을 눌러도 돼.'; focusSel = '.wy-why'; draw(); return; }
-    if (!sell || !half) { err = '② 팔 선 두 숫자를 적어 줘.'; focusSel = sell ? '.wy-half' : '.wy-sell'; draw(); return; }
-    if (sell >= half) { err = '② 앞 숫자가 뒤 숫자보다 작아야 해.'; focusSel = '.wy-sell'; draw(); return; }
-    finish(why, sell, half);
-  };
-  const linesView = () => {
-    const why = h('input', {class: 'wy-why', type: 'text', value: S.why, maxlength: '60', placeholder: '한 줄로 적어 봐', 'aria-label': '1년 뒤 반토막 났다면 왜?', autocomplete: 'off', enterkeyhint: 'done'});
-    why.addEventListener('input', () => { S.why = why.value; });
-    why.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); submit(); } });
-    const quick = h('div', {class: 'wy-quick'}, ...quickWords().map(t => btn('wy-chip', t, ev => { const v = ev.currentTarget.textContent || t; S.why = v; why.value = v; why.focus({preventScroll: true}); }))); // 보이는 글 그대로(영어로 볼 때는 영어)
-    const num = (cls, key, label) => {
-      const x = h('input', {class: 'wy-num num ' + cls, type: 'text', inputmode: 'numeric', maxlength: '13', value: S[key], autocomplete: 'off', 'aria-label': label});
-      x.addEventListener('input', () => { S[key] = x.value; S.touched = true; });
-      x.addEventListener('blur', () => { const v = toInt(x.value); if (v) { x.value = fmtN(v); S[key] = x.value; } });
-      x.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
-      return x;
-    };
-    return [h('p', {class: 'wy-step', text: '마지막 두 줄'}),
-      h('h3', {class: 'wy-q', text: '① 1년 뒤 반토막 났다면 왜?'}), why, quick,
-      h('p', {class: 'wy-prh', text: '내 약속 · 숫자는 내가 정해요'}), // 넣어 둔 숫자는 내가 고치는 보기(B12 · 2026-10-22 총정리 — 셈 · 기본값 그대로)
-      h('h3', {class: 'wy-q', text: '② 팔 약속'}),
-      h('p', {class: 'wy-pr'}, h('span', {class: 'wy-prn'}, h('span', {text: '만약'}), num('wy-sell', 'sell', '팔 선(원)'), h('span', {text: '원'})), h('span', {text: '아래로 가면 다 판다.'})),
-      h('p', {class: 'wy-pr'}, h('span', {class: 'wy-prn'}, h('span', {text: '만약'}), num('wy-half', 'half', '절반 팔 선(원)'), h('span', {text: '원'})), h('span', {text: '위로 가면 절반 판다.'})),
-      h('p', {class: 'wy-note', text: S.price ? `그날 값 ${won(S.price)}에서 열에 하나 내린 값과 열에 둘 오른 값이에요. 고쳐도 돼.` : '? 그날 값이 없어요. 두 숫자를 직접 적어 줘.'}),
-      ...(staleOf(S.price ? S.day : null) > 3 ? [h('p', {class: 'wy-note', text: `${NX.md(S.day)} 종가예요(${staleOf(S.day)}일 전). 오늘 값과 다를 수 있어요.`})] : []), // 그날 값이 서울 오늘보다 사흘 넘게 앞(B12)
-      ...(err ? [h('p', {class: 'wy-err', role: 'alert', text: err})] : []),
-      h('div', {class: 'wy-nav'}, btn('wy-back', BACK, goBack), btn('wy-next', '결과 보기 ›', submit))];
-  };
-
-  /* ④ 결과 · 기록 */
-  const finish = (why, sell, half) => {
+  /* ③ 결과(그림 4 + 그림 7) */
+  const finish = () => {
     const J = judge(ans);
     last = {at: new Date().toISOString(), asOf: G?.asOf ?? null, code: S.code, name: S.name, price: S.price, day: S.day,
       answers: [...ans], score: J.score, reds: J.reds, verdict: J.verdict, groups: J.groups,
-      bigDay: ans[BIG_Q] === BIG_A ? S.bigDay : null, why,
-      promise: {sell, half, text: `만약 ${won(sell)} 아래로 가면 다 판다. 만약 ${won(half)} 위로 가면 절반 판다.`},
+      bigDay: ans[BIG_Q] === BIG_A ? S.bigDay : null, why: null, promise: null, // 마지막 두 줄은 그림에 없어 뺌(order-1011 6) — 열쇠는 그대로
       picks: (G?.picks ?? []).map(p => ({code: p.code, name: p.name, price: p.price, w: p.w}))};
     saved = save(last); doneNow = true; lastRec = last;
-    i = RES; err = ''; draw(); keepTop();
+    i = RES; err = ''; focusSel = '.wy-verdict'; draw(); keepTop();
     if (typeof onDone === 'function') { try { onDone(last, saved); } catch (e) { console.error(e); } }
-    offerOnce(); // [2] 7 — 결과가 처음 보인 뒤 한 번(일꾼 K2c 의 NX.kakao · 꺼져 있거나 없으면 아무 일 없음)
-    tally(V_CODE[J.verdict] === 'rest' ? 'stop_rest' : 'stop'); // 합계 칸 ① 멈춤(KD · [10] 1) — 끝낸 순간 한 번 · 「오늘은 쉬어 가자」면 stop_rest(= 끝냄 + 쉬어 가자)
+    offerOnce(); // [2] 7 — 결과가 처음 보인 뒤 한 번
+    tally(V_CODE[J.verdict] === 'rest' ? 'stop_rest' : 'stop'); // 합계 칸 ① 멈춤(KD · [10] 1)
   };
   const resView = () => {
-    const J = last, ready = readyOf(J), tone = VTONE[J.verdict];
-    live.textContent = `${vShow(J.verdict)} · 준비 ${ready} / ${MAX}`;
-    const tt = h('i', {class: 'wy-fill wy-' + tone}); tt.style.setProperty('width', Math.round(ready / MAX * 100) + '%');
-    // 결 → 기 → 승(B14 + B13 · 2026-10-22 총정리): 판정(가장 큼) → 쉬어 가는 답을 고른 까닭(고른 답 이름) → 한 번 더 볼 답(빨강 먼저 · 다음 노랑 · 셋까지 · 색 점 없이 글만)
-    const hit = REST_AT.filter(([q, k]) => k >= 0 && J.answers?.[q] === k), named = new Set(hit.map(([q]) => q));
-    const look = ['r', 'y'].flatMap(c => (J.answers ?? []).map((k, q) => [q, k]).filter(([q, k]) => !named.has(q) && QS[q]?.a[k]?.[0] === c)).slice(0, 3);
-    const T = TYPE_OF[J.verdict] ?? null;
-    return h('div', {class: 'wy-res'}, // [5] 2 — 판정 글이 가장 큼 · 준비는 그 밑에 작게 · 그림 4 결과 요약(지금 나는 · 판정 · 한 줄 · 그림)
-      h('p', {class: 'wy-verdict wy-v' + tone}, h('span', {class: 'wy-vk', text: '오늘 나의 판정'}), h('b', {text: `「${vShow(J.verdict)}」`})), // 그림 4 — 「당신은」 자리에 작은 이름표 · 판정이 가운데 가장 큰 글(2026-10-28 과감하게)
-      T ? h('p', {class: 'wy-type'}, h('b', {text: T[0]}), h('span', {text: ' ' + T[1]})) : null,
-      h('div', {class: 'wy-rart'}, h('img', {src: '/media/makbi-hello.svg', alt: '', width: 96, height: 120})),
-      ...(stopOf(J.answers) ? [h('p', {class: 'wy-stop'}, ...hit.flatMap(([q, k]) => [h('span', {text: `${q + 1}번 「${QS[q].q}」에서 「${QS[q].a[k][1]}」 답을 골랐어요.`}), h('span', {text: ' '})]),
-        h('span', {text: '빌린 돈이나 곧 쓸 돈이면 점수와 상관없이 쉬어 가요.'}))] : []),
-      ...(look.length ? [h('p', {class: 'wy-look'}, h('span', {class: 'wy-lk', text: '한 번 더 볼 답'}), ...look.flatMap(([q, k]) => [h('span', {text: ' · '}), h('span', {text: `${q + 1}번 「${QS[q].a[k][1]}」`})]))] : []),
-      h('p', {class: 'wy-score'}, h('span', {text: '준비 '}), h('b', {class: 'num', text: String(ready)}), h('span', {class: 'num', text: ` / ${MAX}`}),
-        h('span', {class: 'wy-reds'}, h('span', {text: ' · '}), dot('r'), h('span', {class: 'num', text: ` ${J.reds}개`}))),
-      h('div', {class: 'wy-ttw'}, h('span', {class: 'wy-track wy-tt', 'aria-hidden': 'true'}, tt)), // 가운데 막대(그림 4) — 너비 300 까지(반올림 % 가 그린 길이와 1.5px 안 · [5] 5)
-      h('div', {class: 'wy-card wy-sumc'}, h('p', {class: 'wy-ck', text: '준비 정도 요약'}), bars(J.groups), h('p', {class: 'wy-note', text: '막대가 짧은 묶음을 한 번 더 생각해 봐.'})),
-      mindCard(J),
-      lines(J),
-      detailBox(J),
-      moodCard(),
-      h('p', {class: 'wy-note', text: saved ? (page ? '오늘 답을 아래 매매일지에 날짜와 함께 쌓았어요.' : '오늘 답을 매매일지에 날짜와 함께 쌓았어요.') : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
-      h('div', {class: 'wy-nav'}, btn('wy-next', '다시 하기', () => { start(); focusSel = i === PICK ? '.wy-find' : '.wy-opt'; draw(); if (i === PICK) keepTop(); else keepQ(); try { onAgain?.(); } catch (e) { console.error(e); } }),
-        page ? null : h('a', {class: 'wy-link', href: '#/why', text: '매매일지 보기 ›'})));
+    const J = last, v = V_CODE[J.verdict] ?? 'wait', T = TYPE_OF[v], quote = v === 'rest' && stopOf(J.answers) ? T.stopQ : T.q;
+    live.textContent = vShow(J.verdict);
+    const share = h('button', {class: 'wy-share', type: 'button'}, lookIcon('share', 20), h('span', {text: '공유하기'}));
+    share.addEventListener('click', () => shareRes(share, T.name, quote));
+    const detb = btn('wy-detb', '내 분석 자세히 보기 ›', () => { i = DET; tab = 'all'; focusSel = '.wy-dtitle'; draw(); keepTop(); });
+    const again = btn('wy-again', '다시 하기', () => { start(); focusSel = '.wy-go'; draw(); keepTop(); try { onAgain?.(); } catch (e) { console.error(e); } });
+    return h('div', {class: 'wy-res'},
+      h('div', {class: 'wy-rhead'}, share,
+        h('p', {class: 'wy-verdict', 'data-v': v, tabindex: '-1'}, h('span', {class: 'wy-vk', text: '당신은'}), h('b', {}, h('span', {class: 'wy-vt', text: T.name}), h('span', {class: 'wy-ve', text: '예요'}))), // 화면에서 가장 큰 글([5] 2)
+        h('p', {class: 'wy-type'}, h('span', {text: '“'}), h('span', {text: quote}), h('span', {text: '”'})),
+        sceneArt(true)),
+      h('div', {class: 'wy-sheet'}, tendCard(J), mindCard(J), detb, ...hubNodes(page),
+        h('p', {class: 'wy-note', text: saved ? (page ? '오늘 답을 아래 매매일지에 날짜와 함께 쌓았어요.' : '오늘 답을 매매일지에 날짜와 함께 쌓았어요.') : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
+        h('div', {class: 'wy-nav'}, again, page ? null : h('a', {class: 'wy-link', href: '#/why', text: '매매일지 보기 ›'}))));
+  };
+
+  /* ④ 상세 분석(그림 5 · 6) — 탭 넷 한 줄 · 맞춤 가이드 탭이면 머리 글도 「맞춤 가이드」 */
+  const detView = () => {
+    const D = detailParts(last), tabs = h('div', {class: 'wy-tabs', role: 'tablist', 'aria-label': '상세 분석'});
+    for (const [k, t] of DET_TABS) {
+      const on = k === tab, b = h('button', {class: 'wy-tab' + (on ? ' on' : ''), type: 'button', role: 'tab', 'data-k': k, 'aria-selected': String(on), text: t});
+      b.addEventListener('click', () => { if (tab === k) return; tab = k; focusSel = `.wy-tab[data-k="${k}"]`; draw(); });
+      tabs.append(b);
+    }
+    return [h('div', {class: 'wy-head wy-dtop'}, upBtn('결과로', goBack), h('h3', {class: 'wy-dtitle', tabindex: '-1', text: tab === 'guide' ? '맞춤 가이드' : '상세 분석 결과'})),
+      tabs, h('div', {class: 'wy-dbody', role: 'tabpanel'}, ...D[tab])];
   };
 
   const draw = () => {
-    const nodes = [head(i === PICK)];
-    if (i === PICK) nodes.push(...pickView());
-    else if (i < LINES) nodes.push(...prevBox(), ...qView()); // 고른 종목 한 줄은 머리(위 줄) 안 // [5] 3 앞 답 한마디 = 머리 바로 밑(맨 위) · 읽어 주는 칸은 누른 때만 바꿈(앞 답 한마디가 다음 장에서도 읽히게)
-    else if (i === LINES) nodes.push(...prevBox(), ...linesView());
-    else nodes.push(resView());
-    nodes.push(live);
-    box.replaceChildren(...nodes);
-    if (first) { // 매매일지 화면은 찾기 칸에 바로 씀(물을 약속이 맨 위에 있으면 쓰지 않음 · B17) · 종목을 정해 연 매매일지는 길이 맨 위로 올린 뒤 1번 답 셋을 화면 안으로(B9)
-      first = false;
-      if (page && i === PICK && autoFocus) setTimeout(() => box.querySelector('.wy-find')?.focus({preventScroll: true}), 60);
-      else if (page && i !== PICK && pre) { const fix = () => { if (box.isConnected && i === 0 && ans[0] == null) keepQ(); }; requestAnimationFrame(fix); document.fonts?.ready?.then(() => requestAnimationFrame(fix)).catch(() => {}); }
-    }
-    else if (focusSel) box.querySelector(focusSel)?.focus({preventScroll: true});
+    box.dataset.step = i === START ? 'start' : i < RES ? 'q' : i === RES ? 'res' : 'det';
+    const nodes = i === START ? startView() : i < RES ? qView() : i === RES ? [resView()] : detView();
+    box.replaceChildren(...nodes, live);
+    if (focusSel) box.querySelector(focusSel)?.focus({preventScroll: true});
     focusSel = null;
   };
   start(); draw();
   return box;
 }
+/** 장면 그림(그림 1 · 4) — 뒤 화면 · 나무 그림자 + 둘이(+ 시작은 책상 · 태블릿 · 커피) */
+function sceneArt(res = false) {
+  const [bg, fg] = sceneNodes(res);
+  return h('div', {class: 'wy-scene' + (res ? ' res' : ''), 'aria-hidden': 'true'}, bg, h('img', {class: 'wy-scch', src: '/media/makbi-hello.svg', alt: '', width: 120, height: 150}), fg ?? null);
+}
+/** 그림 4 「투자 성향 요약」 — 답으로 셈한 100점 넷(신중함 · 감정적 매매 · 위험 선호도 · 장기 투자 성향) · 초록 답일수록 신중 · 장기 높음 · 빨강 답일수록 감정 · 위험 높음 */
+export function tendOf(answers) {
+  const pt = (q, k) => ({g: 2, y: 1, r: 0})[QS[q]?.a[k]?.[0]] ?? 0;
+  const avg = (qs, inv) => { let a = 0, n = 0; for (const q of qs) { const k = answers?.[q]; if (!Number.isInteger(k) || !QS[q]?.a[k]) continue; const v = pt(q, k); a += inv ? 2 - v : v; n += 2; } return n ? Math.round(a / n * 100) : 0; };
+  return [['신중함', avg([1, 2, 6, 7])], ['감정적 매매', avg([0, 4, 9], true)], ['위험 선호도', avg([3, 5, 10], true)], ['장기 투자 성향', avg([8, 2])]];
+}
+function tendCard(J) {
+  const rows = tendOf(J?.answers).map(([n, v], k) => { const f = h('i', {class: 'wy-tf t' + k}); f.style.setProperty('width', v + '%');
+    return h('div', {class: 'wy-trow'}, h('span', {class: 'wy-tn', text: n}), h('span', {class: 'wy-tt2', 'aria-hidden': 'true'}, f), h('b', {class: 'num', text: String(v)})); });
+  return h('div', {class: 'wy-card wy-tend'}, h('p', {class: 'wy-ck', text: '투자 성향 요약'}), ...rows);
+}
 /** 그림 4 「현재 심리 상태」 — 10번 「마음은?」 답으로(차분 · 놓칠까 급함 · 본전 생각) */
 function mindCard(J) {
   const k = J?.answers?.[9], m = Number.isInteger(k) ? MIND_OF[k] : null;
   if (!m) return null;
-  return h('div', {class: 'wy-card wy-mind'}, h('span', {class: 'wy-mi'}, lookIcon(['calm', 'rush', 'worry'][k] ?? 'soso', 30)),
-    h('div', {}, h('p', {class: 'wy-ck', text: '지금 마음 상태'}), h('p', {class: 'wy-mv', text: m[0]}), h('p', {class: 'wy-mt', text: m[1]})));
+  return h('div', {class: 'wy-card wy-mind'}, h('span', {class: 'wy-mi'}, faceIcon(['calm', 'rush', 'worry'][k] ?? 'soso', 40)),
+    h('div', {class: 'wy-mb'}, h('p', {class: 'wy-ck', text: '현재 심리 상태'}), h('p', {class: 'wy-mv', text: m[0]}), h('p', {class: 'wy-mt', text: m[1]})));
 }
-/** 그림 5 · 6 — 상세 분석(종합 · 마음 · 사는 습관 · 맞춤 길잡이) · 눌러야 열림 */
-function detailBox(J) {
+/** 결과 보내기(그림 4 「공유하기」) — 휴대폰 보내기 창 · 없으면 글 복사(가입 · 모음 없음) */
+function shareRes(b, name, quote) {
+  const say = t => { const s = b.querySelector('span'); if (s) s.textContent = t; };
+  const text = `「친구야, 왜 사?」 결과 — 나는 「${name}」래요. ${quote}`, url = location.origin + '/next/#/why';
+  try { if (typeof navigator.share === 'function') { navigator.share({title: '친구야, 왜 사?', text, url}).catch(() => {}); return; } } catch { /* 아래 복사로 */ }
+  try { const p = navigator.clipboard?.writeText(`${text} ${url}`); if (p) p.then(() => say('복사했어요'), () => say('복사하지 못했어요')); else say('복사하지 못했어요'); } catch { say('복사하지 못했어요'); }
+}
+const DET_TABS = [['all', '종합 분석'], ['mind', '심리 분석'], ['habit', '매매 습관'], ['guide', '맞춤 가이드']]; // 그림 5 탭 넷 한 줄
+/** 그림 5 · 6 — 상세 분석 탭마다 그릴 것(종합 분석 · 심리 분석 · 매매 습관 · 맞춤 가이드) */
+function detailParts(J) {
   const ans = J?.answers ?? [];
   const row = q => { const k = ans[q]; if (!Number.isInteger(k) || !QS[q]?.a[k]) return null; const [c, t, one] = QS[q].a[k];
     return h('li', {class: 'wy-dr'}, dot(c), h('div', {}, h('p', {class: 'wy-drq'}, h('span', {class: 'num', text: `${q + 1}. `}), h('span', {text: QS[q].q}), h('span', {text: ' '}), h('b', {text: t})), h('p', {class: 'wy-dro', text: one}))); };
   const byC = c => ans.map((k, q) => [q, k]).filter(([q, k]) => Number.isInteger(k) && QS[q]?.a[k]?.[0] === c);
   const good = byC('g').slice(0, 3), bad = byC('r').slice(0, 3);
   const mind = J?.groups?.['마음'] ?? 0;
-  const mindT = mind <= 1 ? '값이 흔들려도 정해 둔 대로 하려는 편일까요?' : mind <= 3 ? '차분하지만 가끔 마음이 앞설 수 있을까요?' : '마음이 급해지기 쉬운 때일까요? 숨을 고르고 봐요.';
+  const mindT = mind <= 1 ? '값이 흔들려도 정해 둔 대로 하려는 편이에요.' : mind <= 3 ? '차분하지만 가끔 마음이 앞설 때가 있어요.' : '마음이 급해지기 쉬운 때예요. 숨을 고르고 봐요.'; // 단정(order-1011 5)
   const weak = GROUPS.filter(([n]) => n !== '마음').map(([n, qs]) => [n, (J?.groups?.[n] ?? 0) / (qs.length * 2)]).sort((a, b) => b[1] - a[1])[0];
-  const habitT = weak && weak[1] > 0 ? [h('span', {text: '가장 짧은 막대는'}), h('span', {text: ' '}), h('b', {text: weak[0]}), h('span', {text: ' '}), h('span', {text: '묶음이에요.'})] : [h('span', {text: '이유, 돈, 때 막대가 모두 가득 찼어요.'})];
-  const card = (cls, ic, title, items, empty) => h('div', {class: 'wy-pc ' + cls}, h('p', {class: 'wy-pk'}, lookIcon(ic, 20), h('b', {text: title})),
+  const habitT = weak && weak[1] > 0 ? [h('span', {text: '가장 덜 준비된 곳은'}), h('span', {text: ' '}), h('b', {text: weak[0]}), h('span', {text: ' '}), h('span', {text: '묶음이에요.'})] : [h('span', {text: '이유, 돈, 때가 모두 잘 준비된 편이에요.'})];
+  const card = (cls, ic, title, items, empty) => h('div', {class: 'wy-pc ' + cls}, h('p', {class: 'wy-pk'}, h('span', {class: 'wy-pki'}, lookIcon(ic, 22)), h('b', {text: title})),
     items.length ? h('ul', {}, ...items.map(([q, k]) => h('li', {}, h('span', {class: 'num', text: `${q + 1}. `}), h('span', {text: QS[q].a[k][1]})))) : h('p', {class: 'wy-pe', text: empty}));
   const acts = [];
   for (const [q] of [...byC('r'), ...byC('y')]) { const a = LOOK[q]?.act; if (a && !acts.some(x => x[0] === a[0])) acts.push(a); }
   for (const a of ACT_MORE) if (acts.length < 3 && !acts.some(x => x[0] === a[0])) acts.push(a);
   const three = acts.slice(0, 3);
-  const panels = {
-    all: [h('h4', {class: 'wy-dh', text: '1. 나의 투자 마음'}), h('p', {class: 'wy-dp', text: mindT}),
-      h('div', {class: 'wy-pcs'}, card('good', 'heart', '강점', good, '초록 답이 아직 없어요.'), card('warn', 'warn', '주의할 점', bad, '빨간 답이 없어요.')),
-      h('h4', {class: 'wy-dh', text: '2. 나의 사는 습관'}), h('p', {class: 'wy-dp'}, ...habitT)],
-    mind: [h('ul', {class: 'wy-dl2'}, ...[6, 7, 9].map(row).filter(Boolean))],
-    habit: [h('ul', {class: 'wy-dl2'}, ...[0, 1, 2, 3, 4, 5, 8, 10].map(row).filter(Boolean))],
-    guide: [h('h4', {class: 'wy-dh', text: '지금 나에게 필요한 세 가지'}),
-      h('ol', {class: 'wy-gl'}, ...three.map(([t, d], n) => h('li', {}, h('b', {class: 'wy-gn num', text: String(n + 1)}), h('div', {}, h('p', {class: 'wy-gt', text: t}), h('p', {class: 'wy-gd', text: d}))))),
+  const dcard = (ic, title, ...kids) => h('div', {class: 'wy-card wy-dcard'}, h('div', {class: 'wy-dch'}, h('span', {class: 'wy-dci ic-' + ic}, lookIcon(ic, 26)), h('h4', {class: 'wy-dh', text: title})), ...kids); // 그림 5 — 카드 둘 · 제목 왼쪽 그림
+  return {
+    all: [dcard('brain', '1. 나의 투자 심리', h('p', {class: 'wy-dp', text: mindT}),
+      h('div', {class: 'wy-pcs'}, card('good', 'thumb', '강점', good, '초록 답이 아직 없어요.'), card('warn', 'warn', '주의할 점', bad, '빨간 답이 없어요.'))),
+      dcard('bars', '2. 나의 매매 습관', h('p', {class: 'wy-dp'}, ...habitT))],
+    mind: [h('ul', {class: 'wy-card wy-dl2'}, ...[6, 7, 9].map(row).filter(Boolean))],
+    habit: [h('ul', {class: 'wy-card wy-dl2'}, ...[0, 1, 2, 3, 4, 5, 8, 10].map(row).filter(Boolean))],
+    guide: [h('h4', {class: 'wy-dh wy-gh', text: '지금 나에게 필요한 3가지'}),
+      h('ol', {class: 'wy-card wy-gl'}, ...three.map(([t, d], n) => h('li', {}, h('b', {class: 'wy-gn num', text: String(n + 1)}), h('div', {class: 'wy-gb'}, h('p', {class: 'wy-gt', text: t}), h('p', {class: 'wy-gd', text: d})), h('span', {class: 'wy-gi'}, lookIcon(['clip', 'pie', 'memo'][n] ?? 'note', 28))))), // 그림 6 — 오른쪽 흐린 그림
       copyBtn(three)],
   };
-  const TABS = [['all', '종합 분석'], ['mind', '마음 분석'], ['habit', '사는 습관'], ['guide', '맞춤 길잡이']];
-  const body = h('div', {class: 'wy-dbody'}), tabs = h('div', {class: 'wy-tabs', role: 'tablist', 'aria-label': '상세 분석'});
-  const show = key => { body.replaceChildren(...panels[key]); for (const b of tabs.children) { const on = b.dataset.k === key; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); } };
-  for (const [k, t] of TABS) { const b = h('button', {class: 'wy-tab', type: 'button', role: 'tab', 'data-k': k, text: t}); b.addEventListener('click', () => show(k)); tabs.append(b); }
-  show('all');
-  return h('details', {class: 'wy-det'}, h('summary', {class: 'wy-detb', text: '내 분석 자세히 보기 ›'}), h('p', {class: 'wy-dtitle', text: '상세 분석 결과'}), tabs, body);
 }
-/** 그림 6 「나만의 체크리스트 받기」 — 글로 복사(파일을 만들지 않음) */
+/** 그림 6 「나만의 투자 체크리스트 받기」 — 글로 복사(파일을 만들지 않음) */
 function copyBtn(three) {
-  const txt = ['내 체크리스트', ...three.map(([t, d], n) => `${n + 1}. ${t}: ${d}`)].join('\n');
-  const b = h('button', {class: 'wy-copy', type: 'button', text: '내 체크리스트 복사하기'});
-  b.addEventListener('click', () => { const no = () => { b.textContent = '복사하지 못했어요'; }; try { const p = navigator.clipboard?.writeText(txt); if (p) p.then(() => { b.textContent = '복사했어요'; }, no); else no(); } catch { no(); } });
+  const txt = ['나만의 투자 체크리스트', ...three.map(([t, d], n) => `${n + 1}. ${t}: ${d}`)].join('\n');
+  const b = h('button', {class: 'wy-copy', type: 'button'}, h('span', {text: '나만의 투자 체크리스트 받기'}), lookIcon('down2', 22));
+  const say = t => { const s = b.querySelector('span'); if (s) s.textContent = t; };
+  b.addEventListener('click', () => { try { const p = navigator.clipboard?.writeText(txt); if (p) p.then(() => say('복사했어요'), () => say('복사하지 못했어요')); else say('복사하지 못했어요'); } catch { say('복사하지 못했어요'); } });
   return b;
 }
-/** 그림 7 추가 기능 — 마음 상태 체크(이 기기에만) · 매매일지 · 한 달 뒤 돌아보기 */
+/** 그림 7 더 보기 — 인사 줄 · 감정 상태 체크(이 기기에만) · 투자 일지(아래 기록) · 나의 성장 리포트(한 달 뒤) */
 const MOOD_KEY = 'atlas:why-mood';
-function moodCard() {
+function hubNodes(page) {
   const said = h('p', {class: 'wy-note wy-said', 'aria-live': 'polite'});
-  const row = h('div', {class: 'wy-moods', role: 'group', 'aria-label': '지금 내 투자 마음은 어떤가요?'});
+  const row = h('div', {class: 'wy-moods', role: 'group', 'aria-label': '지금 내 투자 심리는 어떤가요?'});
   for (const [k, t] of MOODS) {
-    const b = h('button', {class: 'wy-mood', type: 'button', 'data-m': k}, lookIcon(k, 30), h('span', {text: t}));
+    const b = h('button', {class: 'wy-mood', type: 'button', 'data-m': k, 'aria-pressed': 'false'}, faceIcon(k, 40), h('span', {text: t})); // 그림 7 — 채운 얼굴
     b.addEventListener('click', () => {
       try { const all = JSON.parse(localStorage.getItem(MOOD_KEY) || '[]'); all.unshift({at: new Date().toISOString(), m: k}); localStorage.setItem(MOOD_KEY, JSON.stringify(all.slice(0, 100))); said.textContent = '오늘 마음을 이 기기에 적었어요.'; } catch { said.textContent = '이 기기는 적을 수 없어요.'; }
-      for (const x of row.children) x.classList.toggle('on', x === b);
+      for (const x of row.children) { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on)); }
     });
     row.append(b);
   }
-  const go = (ic, t, s, href) => h('a', {class: 'wy-row', href}, lookIcon(ic, 22), h('span', {class: 'wy-rowt'}, h('b', {text: t}), h('small', {text: s})), h('i', {'aria-hidden': 'true', text: '›'}));
-  return h('div', {class: 'wy-card wy-moodc'}, h('p', {class: 'wy-ck'}, lookIcon('heart', 20), h('b', {text: '마음 상태 체크'})), h('p', {class: 'wy-mq', text: '지금 내 투자 마음은 어떤가요?'}), row, said,
-    go('note', '매매일지', '오늘 산 까닭을 날짜와 함께 쌓아요.', '#/why'), go('grow', '한 달 뒤 돌아보기', `한 달 뒤 ${josa(NAME, '가')} 그날 정한 대로 했는지 물어요.`, '#/why'));
+  const rowIn = (ic, t, s) => [h('span', {class: 'wy-rti ic-' + ic}, lookIcon(ic, 26)), h('span', {class: 'wy-rowt'}, h('b', {text: t}), h('small', {text: s})), h('i', {'aria-hidden': 'true', text: '›'})];
+  const log = h('button', {class: 'wy-row', type: 'button', 'data-go': 'log'}, ...rowIn('note', '투자 일지', '오늘의 매매를 기록해보세요.'));
+  log.addEventListener('click', () => { const L = page ? document.querySelector('#view section.wy-me') : null; if (L) L.scrollIntoView({behavior: 'smooth', block: 'start'}); else location.hash = '#/why/later'; }); // 기록 목록이 없는 칸(보내기 쪽)은 한 달 뒤 쪽 목록으로(brief ③)
+  return [h('div', {class: 'wy-card wy-hi'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 56, height: 56}), h('p', {class: 'wy-hit2', text: '오늘도 좋은 투자 하세요!'})), // 그림 7 맨 위 인사 줄
+    h('div', {class: 'wy-card wy-moodc'}, h('div', {class: 'wy-mh'}, h('span', {class: 'wy-mhi'}, lookIcon('loop', 26)), h('div', {}, h('p', {class: 'wy-ck', text: '감정 상태 체크'}), h('p', {class: 'wy-mq', text: '지금 내 투자 심리는 어떤가요?'}))), row, said),
+    h('div', {class: 'wy-card wy-rowc'}, log),
+    h('div', {class: 'wy-card wy-rowc'}, h('a', {class: 'wy-row', href: '#/why/later'}, ...rowIn('grow', '나의 성장 리포트', '한 달 후 다시 점검해보세요.')))];
 }
 /** 결과 · 기록의 두 줄(반토막 난다면 · 팔 약속 · 클 일 날짜) */
 function lines(r) {

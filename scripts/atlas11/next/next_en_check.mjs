@@ -125,7 +125,7 @@ if (MODULES && on('mod')) {
     cond: ['#/cond', '#/cond/rise-top3-spike', '#/cond/up-f3-loss', '#/cond/dn-pick-all', '#/cond/all-all-all'],
     talk: ['#/talk'], up: ['#/up'], time: ['#/time'], info: ['#/info'],
     x: (names?.rows ?? []).filter(r => r.k).slice(0, ALL ? 40 : 6).map(r => '#/x/' + r.c),
-    why: ['#/why', '#/why/005930'], gdr: ['#/gdr', '#/gdr/1'], // 매매일지(처음 = 종목 고르기 · 회사 화면 「이 회사로 왜 사?」 = 그 종목으로 시작 — [3] 1 · 2)
+    why: ['#/why', '#/why/005930'], gdr: ['#/gdr', '#/gdr/1'], // 매매일지(둘 다 시작 화면부터 — 종목 찾기 칸 없음 · <번호>는 조용히 기록에만 · order-1011 「어 그렇게 해」)
     theme: await (async () => { // 테마 시계 열아홉 쪽 — 싹 첫 업종 · 그 업종 앞선 회사(자료를 못 받으면 업종 · 회사 없는 쪽만)
       const th = await fetchRetry(base + '/next/data/theme.json').then(r => (r.ok ? r.json() : null)).catch(() => null), tm = await fetchRetry(base + '/next/data/theme-more.json').then(r => (r.ok ? r.json() : null)).catch(() => null);
       const top = th?.order?.S?.[0] ?? th?.inds?.[0]?.n, lead = top ? tm?.inds?.[top]?.top?.[0]?.c : null, ib = top ? '#/t/i/' + enc(top) : null;
@@ -298,55 +298,77 @@ async function seedWhy(q, where) {
   }, WHY_KEY);
   if (r) fail('누르기', where, '「나」 칸 왜 사? 기록을 못 심음 — ' + r.slice(0, 120));
 }
-/** 매매일지(왜 사?) — ① 종목 고르기(#/why 만 — 없는 말 · 회사 이름 · 엔터) → 질문마다 답 단추를 모두 눌러 봄 …
- *  → ③ 마지막 두 줄(빈 칸 알림 · 빠른 말 · 팔 선 두 숫자) → 결과 — 2026-10-17 21:10 [3] 1 · 3 · 4 · #/why/<번호> 는 그 종목으로 바로 1번
- *  2026-10-18 0015 [5] 3(일꾼 S1c): 답 한 번 = 다음 질문(「다음 ›」 없음 — 3번 「클 일이 있다」 날짜 칸만 「다음 ›」) · 앞 답 한마디 + 격언은 다음 장 맨 위
- *    → 답마다: 누름 → (「클 일」이면 그 장 · 날짜 · 다음 ›) → 다음 장(앞 답 한마디)을 봄 → 「‹ 앞 질문」으로 돌아와 다음 답 · 마지막 답은 그대로 넘어감 */
+/** 매매일지(왜 사?) — 그림 그대로 판(사장님 2026-10-28 10:11 「어 그렇게 해」 · docs/design/why-mock-2026-10-28/order-1011.txt · brief.md)
+ *  ① 시작 화면(종목 찾기 칸 없음 · 「시작하기 ›」 .wy-go) → ② 질문마다: 고르기 전 · 답 없이 「다음으로 ›」(알림) · 답 단추를 모두 눌러 봄(고르기만 · 넘어가지 않음 · 「클 일이 있다」면 날짜 칸)
+ *  → 「다음으로 ›」(.wy-next) · 2번에서 ←(.wy-up)로 1번에 돌아갔다 옴 · 11번 「‹ 이전」(.wy-back)으로 10번에 갔다 옴 · 「결과 보기 ›」 → ③ 결과(.wy-res)
+ *  → ④ 「내 분석 자세히 보기 ›」(.wy-detb) → 상세 분석 탭 넷(.wy-tab) → ←(결과로) → ⑤ 감정 상태 체크(.wy-mood) 하나 눌러 봄
+ *  옛 길(종목 찾기 · 답 한 번 = 다음 · 앞 답 한마디 칸 · 마지막 두 줄)은 order-1011 로 없어짐 */
 async function whyWalk(q, where) {
   const keep = await keepKey(q, WHY_KEY);
+  const W = sel => q.locator('#view .wy ' + sel);
   try {
-    const inp = q.locator('#view .wy .wy-find');
-    if (where === '#/why') {
-      if (!(await inp.count())) { fail('누르기', where, '매매일지 첫 칸에 종목 찾기(.wy-find)가 없음'); return; }
-      await inp.fill('zzqqxx'); // 영어 판에서 사람이 칠 만한 없는 말(한글을 치면 그 말이 알림에 그대로 나옴) await q.waitForTimeout(150); await judge(q, where + ' · 종목 찾기 없는 말', {widths: false});
-      await inp.fill(CO['005930']?.n ?? '005930'); await q.waitForTimeout(150); await judge(q, where + ' · 종목 찾기', {widths: true});
-      await inp.press('Enter');
-    }
+    await q.waitForSelector('#view .wy .wy-go', {timeout: 8000}).catch(() => {}); // order-1011 — 시작 화면부터(#/why · #/why/<번호> 모두)
+    if (!(await W('.wy-go').count())) { fail('누르기', where, '매매일지 첫 화면에 「시작하기」(.wy-go)가 없음'); return; }
+    await judge(q, where + ' · 시작 화면', {widths: true});
+    await W('.wy-go').first().click(); await settle(q);
     await q.waitForSelector('#view .wy .wy-opt', {timeout: 8000}).catch(() => {});
     const later = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10);
-    const step = () => q.locator('#view .wy .wy-step').first().textContent().catch(() => null);
+    const step = () => W('.wy-step').first().textContent().catch(() => null);
+    const nextQ = async (i, here) => { // 「다음으로 ›」 → 다음 장(또는 11번 뒤 결과)
+      await W('.wy-nav .wy-next').first().click(); await settle(q);
+      if (i < 10 && (await step()) === here) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에서 「다음으로」를 눌러도 다음 장으로 안 넘어감`); return false; }
+      return true;
+    };
     for (let i = 0; i < 11; i++) {
-      const opts = q.locator('#view .wy .wy-opt'), n = await opts.count();
+      const opts = W('.wy-opt'), n = await opts.count();
       if (!n) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 답 단추가 없음`); return; }
       const here = await step(); // 이 질문의 차례 글(「i / 11」 — 숫자라 영어로도 같음)
-      if (i === 0) await judge(q, `${where} · 1번 고르기 전`, {widths: false});
-      for (let k = 0; k < n; k++) {
-        await q.locator('#view .wy .wy-opt').nth(k).click(); await settle(q);
-        const d = q.locator('#view .wy .wy-date');
-        if (await d.count()) { // 「클 일이 있다」 = 그 장에 남아 날짜를 받음([3] 3) → 다음 ›
-          await judge(q, `${where} · ${i + 1}번 답 ${k + 1}(날짜 칸)`, {widths: false});
-          await d.fill(later); await settle(q);
-          const nx = q.locator('#view .wy .wy-next');
-          if (!(await nx.count())) { fail('누르기', where, `왜 사? ${i + 1}번째 질문 「클 일이 있다」 날짜 칸에 다음 단추가 없음`); return; }
-          await nx.first().click(); await settle(q);
-        }
-        if ((await step()) === here) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에서 답을 눌러도 다음 장으로 안 넘어감([5] 3)`); return; }
-        await judge(q, `${where} · ${i + 1}번 답 ${k + 1}`, {widths: i === 0 && k === n - 1}); // 다음 장 맨 위 = 이 답의 한마디
-        if (k === n - 1) break; // 마지막 답은 그대로 넘어감
-        const back = q.locator('#view .wy .wy-back');
-        if (!(await back.count())) { fail('누르기', where, `왜 사? ${i + 2}번째 장에 「‹ 앞 질문」 단추가 없음`); return; }
-        await back.first().click(); await settle(q);
-        if ((await step()) !== here) { fail('누르기', where, `왜 사? 「‹ 앞 질문」으로 ${i + 1}번째 질문에 안 돌아감`); return; }
+      if (!(await W('.wy-nav .wy-next').count())) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에 「다음으로」(.wy-next)가 없음`); return; }
+      if (i === 0) {
+        await judge(q, `${where} · 1번 고르기 전`, {widths: false});
+        await W('.wy-nav .wy-next').first().click(); await settle(q); // 답 없이 다음 → 막고 알림(영어 알림 글을 봄)
+        if ((await step()) !== here) { fail('누르기', where, '왜 사? 답 없이 「다음으로」를 눌렀는데 다음 장으로 넘어감'); return; }
+        await judge(q, `${where} · 1번 답 없이 다음(알림)`, {widths: false});
       }
+      for (let k = 0; k < n; k++) {
+        await W('.wy-opt').nth(k).click(); await settle(q);
+        if ((await step()) !== here) { fail('누르기', where, `왜 사? ${i + 1}번째 질문에서 답을 누르자 넘어감(고르기만 해야 함 · order-1011)`); return; }
+        const d = W('.wy-date');
+        if (await d.count()) { await d.fill(later); await settle(q); } // 「클 일이 있다」 = 그 장에 날짜 칸([3] 3)
+        await judge(q, `${where} · ${i + 1}번 답 ${k + 1}${(await d.count()) ? '(날짜 칸)' : ''}`, {widths: i === 0 && k === n - 1});
+      }
+      if (i === 1) { // ← 앞 질문 → 1번 → 다음으로 → 2번
+        const up = W('.wy-up');
+        if (!(await up.count())) { fail('누르기', where, '왜 사? 2번째 질문에 ←(.wy-up)이 없음'); return; }
+        await up.first().click(); await settle(q);
+        const back1 = await step();
+        if (back1 === here) { fail('누르기', where, '왜 사? ←으로 1번째 질문에 안 돌아감'); return; }
+        await judge(q, `${where} · ←으로 1번(고른 답 남음)`, {widths: false});
+        if (!(await nextQ(0, back1))) return;
+        if ((await step()) !== here) { fail('누르기', where, '왜 사? 1번에서 「다음으로」로 2번에 안 돌아옴'); return; }
+      }
+      if (i === 10) { // 11번 = 「‹ 이전」 + 「결과 보기 ›」
+        const back = W('.wy-nav .wy-back');
+        if (!(await back.count())) { fail('누르기', where, '왜 사? 11번째 장에 「‹ 이전」(.wy-back)이 없음'); return; }
+        await back.first().click(); await settle(q);
+        const at10 = await step();
+        if (at10 === here) { fail('누르기', where, '왜 사? 「‹ 이전」으로 10번째 질문에 안 돌아감'); return; }
+        if (!(await nextQ(9, at10))) return;
+      }
+      if (!(await nextQ(i, here))) return;
     }
-    if (!(await q.locator('#view .wy .wy-why').count())) { fail('누르기', where, '왜 사? 열한 번째 뒤에 마지막 두 줄이 안 나옴'); return; }
-    await judge(q, where + ' · 마지막 두 줄', {widths: true});
-    await q.locator('#view .wy .wy-next').first().click(); await settle(q); await judge(q, where + ' · 두 줄 빈 칸 알림', {widths: false});
-    await q.locator('#view .wy .wy-chip').first().click(); await settle(q);
-    for (const [sel, v] of [['.wy-sell', '60000'], ['.wy-half', '90000']]) { const x = q.locator('#view .wy ' + sel); if (await x.count() && !(await x.inputValue())) await x.fill(v); }
-    await q.locator('#view .wy .wy-next').first().click(); await settle(q);
-    if (!(await q.locator('#view .wy .wy-res').count())) { fail('누르기', where, '왜 사? 두 줄 뒤에 결과가 안 나옴'); return; }
+    await q.waitForSelector('#view .wy .wy-res', {timeout: 8000}).catch(() => {});
+    if (!(await W('.wy-res').count())) { fail('누르기', where, '왜 사? 「결과 보기」 뒤에 결과가 안 나옴'); return; }
     await judge(q, where + ' · 결과', {widths: true}); bump('왜 사? 끝까지');
+    const det = W('.wy-detb');
+    if (!(await det.count())) { fail('누르기', where, '왜 사? 결과에 「내 분석 자세히 보기」(.wy-detb)가 없음'); return; }
+    await det.first().click(); await settle(q);
+    const tabs = W('.wy-tab'), tn = await tabs.count();
+    if (tn !== 4) fail('누르기', where, `왜 사? 상세 분석 탭이 넷이 아님(${tn})`);
+    for (let t = 0; t < tn; t++) { await W('.wy-tab').nth(t).click(); await settle(q); await judge(q, `${where} · 상세 분석 탭 ${t + 1}`, {widths: t === 0 || t === tn - 1}); }
+    if (await W('.wy-up').count()) { await W('.wy-up').first().click(); await settle(q); } // ← 결과로
+    if (!(await W('.wy-res').count())) { fail('누르기', where, '왜 사? 상세 분석에서 ←으로 결과에 안 돌아감'); return; }
+    if (await W('.wy-mood').count()) { await W('.wy-mood').nth(1).click(); await settle(q); await judge(q, where + ' · 감정 상태 체크', {widths: false}); }
   } finally { await putKey(q, WHY_KEY, keep); }
 }
 /** 고도리 칸 잠김(질문 전 · [6] 1) — 새 창(기록 없음 · 이 창에서 질문을 끝낸 적 없음 — p-why 는 끝낸 것을 창이 닫힐 때까지 기억)에서 그 길을 엶 → 잠긴 칸 글 · #/why 고리 · 칸 없음
