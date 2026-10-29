@@ -4,7 +4,9 @@
    뼈대 = 프랙털 기승전결 — 쪽 전체가 네 걸음(① 묻기 「정말 알아?」 → ② 보기 「직접 봤어?」 → ③ 따지기 「틀릴 수 있어?」 → ④ 지키기 「정한 대로 했어?」)이고
    한 사람 카드도 네 줄(기 누가 · 언제 · 어디서 → 승 왜 → 전 무엇을 · 어떻게 → 결 오늘 나라면)이라 육하원칙 여섯 칸이 네 줄 안에 다 듦
    자료 = /next/data/sage39.json(build.py — 남긴 말은 표시 넷: 글 그대로 옮김 · 글을 줄여 옮김 · 뜻을 풀어 씀 · 뒷사람이 적은 이야기 · 원문 · 출처)
-   영어 화면은 자료의 영어 글을 바로 그림(사전 틀 없이 같은 질) · 앞날 말 · 사고팔기 말 없음 · 그림은 꾸밈(aria-hidden) — 글 설명이 같은 뜻을 말함 */
+   영어 화면은 자료의 영어 글을 바로 그림(사전 틀 없이 같은 질) · 앞날 말 · 사고팔기 말 없음 · 그림은 꾸밈(aria-hidden) — 글 설명이 같은 뜻을 말함
+   읽는 종이 판(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · docs/design/read-2026-10-30/order-0003.txt)
+   — 밝은 종이 바탕 · 본문 글꼴 하나 · 큰 글씨 · 검정 글은 p-sage.css 와 app.js whiteFor(html.pg-sage) */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN, josa} from './brand.js'; // 이름은 한 곳(규칙 76)
 
@@ -113,7 +115,10 @@ function index(d, note = '') {
 function card(d, i) {
   const p = d.people[i], n = d.people.length, s = d.steps[p.step - 1], t = p[L];
   const prev = d.people[(i - 1 + n) % n], next = d.people[(i + 1) % n];
-  const beat = (k, label, text) => h('li', {class: 'sg-b b' + (k + 1)}, h('span', {class: 'sg-sp', 'aria-hidden': 'true', text: T.spine[k]}), h('div', {class: 'sg-bt'}, h('b', {class: 'sg-bl', text: label}), h('p', {text})));
+  // 한 줄 = 머리(기 · 승 · 전 · 결 동그라미 + 이름표) 아래에 글 — 글이 쪽 너비를 다 씀(2026-10-30 00:03 읽는 종이 판 · 글 24px 이 한 줄에 열넷 자쯤)
+  const beat = (k, label, text) => h('li', {class: 'sg-b b' + (k + 1)},
+    h('p', {class: 'sg-bh'}, h('span', {class: 'sg-sp', 'aria-hidden': 'true', text: T.spine[k]}), h('b', {class: 'sg-bl', text: label})),
+    h('div', {class: 'sg-bt'}, h('p', {text})));
   const showOrig = p.orig && !(EN && p.olang === 'en'); // 영어 화면에서 영어 원문은 남긴 말과 같아 뺌
   return {title: `${t.name} · ${T.title}`, nodes: [h('article', {class: `sg sg-card s${p.step}`, 'aria-labelledby': 'sg-name'},
     h('p', {class: 'sg-top'}, h('a', {class: `sg-chip s${p.step}`, href: '#/sage'}, glyph(p.step), h('span', {text: `${T.step(p.step)} · ${s[L].v} · ${s[L].q}`})), h('span', {class: 'sg-pos', text: T.pos(i + 1, n)})),
@@ -128,8 +133,8 @@ function card(d, i) {
     h('a', {class: `sg-go s${p.step}`, href: s.href}, h('span', {class: 'sg-gol', text: T.tryIt}), h('b', {text: s[L].go}), h('i', {'aria-hidden': 'true', text: '›'})),
     h('nav', {class: 'sg-nav', 'aria-label': T.people},
       h('a', {class: 'sg-nb prev', href: '#/sage/' + prev.id, rel: 'prev'}, h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: prev[L].short})),
-      h('a', {class: 'sg-nb all', href: '#/sage'}, h('span', {text: T.all})),
-      h('a', {class: 'sg-nb next', href: '#/sage/' + next.id, rel: 'next'}, h('span', {text: next[L].short}), h('i', {'aria-hidden': 'true', text: '›'}))))]};
+      h('a', {class: 'sg-nb next', href: '#/sage/' + next.id, rel: 'next'}, h('span', {text: next[L].short}), h('i', {'aria-hidden': 'true', text: '›'})),
+      h('a', {class: 'sg-nb all', href: '#/sage'}, h('span', {text: T.all}))))]};
 }
 
 export async function render(arg) {

@@ -12,6 +12,10 @@
 //      · 320 폭 · 아주 크게에서 넘침 0(긴 이름 다섯)
 //   ④ 영어(?lang=en) — 첫 쪽 + 서른아홉 사람 · 남은 한글 0(원문 lang="ko" 빼고) · 영어 글이 자료 그대로 · 창 제목 영어
 //   ⑤ 길 — 첫 화면 스승 줄(a.nh-sage)을 누르면 그 사람 한 장 · 둘이 단추 안 「서른아홉 스승」 · 없는 이름은 첫 쪽(알림 한 줄) · 자료를 못 받으면 「?」 한 줄(오류 0)
+//      · 읽는 종이 판은 이 쪽에서만 켜지고 다른 쪽으로 가면 꺼짐(html.pg-sage · #view 바탕)
+//   ⑥ 읽기(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · docs/design/read-2026-10-30/order-0003.txt)
+//      — 위 ② ③ ④ 에서 재는 모든 화면마다: 바탕체 0(글씨체 하나) · 글 19px 넘게 · 이야기 넷 · 남긴 말 24px 넘게 · 모든 글이 제 바탕과 대비 7 넘게
+//      · 누르는 것의 테(또는 칸 빛)가 둘레와 대비 3 넘게 · 쪽 바탕이 밝은 종이 #FDF9F5
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -99,10 +103,27 @@ function measureInPage() {
   const vis = e => { const r = e.getBoundingClientRect(); if (!r.width || !r.height) return false; for (let x = e; x && x !== document.body; x = x.parentElement) { const s = getComputedStyle(x); if (s.display === 'none' || s.visibility === 'hidden') return false; } return true; };
   for (const e of v.querySelectorAll('.sg a[href], .sg button')) { if (!vis(e)) continue; const r = e.getBoundingClientRect(); if (r.width < 47.5 || r.height < 47.5) out.small.push(`${e.className} ${Math.round(r.width)}×${Math.round(r.height)} 「${e.textContent.trim().slice(0, 14)}」`); if (r.right > W + 0.5 || r.left < -0.5) out.over.push(`${e.className} ${Math.round(r.left)}~${Math.round(r.right)}`); }
   const z = parseFloat(getComputedStyle(v).zoom) || 1;
+  // ⑥ 읽기 — 글씨체 · 크기 · 대비(바탕은 조상을 거슬러 올라가 처음 칠한 빛을 겹쳐 셈 · check_white 와 같은 셈)
+  const rgb = x => { const m = /rgba?\(([^)]+)\)/.exec(x || ''); if (!m) return null; const q = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return {r: q[0], g: q[1], b: q[2], a: q.length > 3 ? q[3] : 1}; };
+  const lin = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  const lum = c => 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const mix = (top, under) => ({r: top.r * top.a + under.r * (1 - top.a), g: top.g * top.a + under.g * (1 - top.a), b: top.b * top.a + under.b * (1 - top.a), a: 1});
+  const bgOf = el => { const st = []; for (let e = el; e; e = e.parentElement) { const c = rgb(getComputedStyle(e).backgroundColor); if (c && c.a > 0) { st.push(c); if (c.a >= 1) break; } } let c = {r: 255, g: 255, b: 255, a: 1}; for (const x of st.reverse()) c = mix(x, c); return c; };
+  out.ser = []; out.lt19 = []; out.low7 = []; out.ui3 = []; out.big = [];
+  out.paper = getComputedStyle(v).backgroundColor; out.pg = document.documentElement.classList.contains('pg-sage');
+  for (const e of v.querySelectorAll('.sg a[href], .sg button')) { if (!vis(e)) continue; const cs = getComputedStyle(e), own = rgb(cs.backgroundColor), around = bgOf(e.parentElement), bd = parseFloat(cs.borderTopWidth) > 0 ? rgb(cs.borderTopColor) : null;
+    const edge = Math.max(own && own.a > 0 ? ratio(mix(own, around), around) : 0, bd && bd.a > 0 ? ratio(mix(bd, around), around) : 0);
+    if (((own && own.a > 0 && ratio(mix(own, around), around) > 1.05) || (bd && bd.a > 0)) && edge < 3) out.ui3.push(`${e.className} ${edge.toFixed(2)} 「${e.textContent.trim().slice(0, 14)}」`); }
+  for (const e of v.querySelectorAll('.sg-story .sg-bt p, .sg-q p')) { const f = parseFloat(getComputedStyle(e).fontSize) * z; if (f < 23.9) out.big.push(`${e.textContent.trim().slice(0, 12)} ${f}px`); }
   const w = document.createTreeWalker(v, NodeFilter.SHOW_TEXT);
   for (let n = w.nextNode(); n; n = w.nextNode()) {
     const el = n.parentElement, t = n.nodeValue.trim(); if (!t || !el || !el.closest('.sg') || !vis(el)) continue;
     const fs = parseFloat(getComputedStyle(el).fontSize) * z; if (fs < 16.9) out.tiny.push(`${t.slice(0, 16)} ${fs}px`);
+    { const cs = getComputedStyle(el), fam = cs.fontFamily, fg = rgb(cs.color), bg = bgOf(el), first = fam.split(',')[0].trim().replace(/["']/g, '');
+      if (/gowun|batang|바탕/i.test(fam) || /^serif$/i.test(first)) out.ser.push(`${t.slice(0, 12)} ${first}`);
+      if (fs < 18.9) out.lt19.push(`${t.slice(0, 16)} ${fs}px`);
+      if (fg) { const c = ratio(mix(fg, bg), bg); if (c < 7) out.low7.push(`${el.className || el.tagName} ${c.toFixed(2)} 「${t.slice(0, 14)}」`); } }
     if (!el.closest('[lang]:not([lang="en"])')) out.text.push(t);
     if (/[가-힣ㄱ-ㅎㅏ-ㅣ]/.test(t) && !el.closest('[lang="ko"]')) out.han.push(t.slice(0, 40));
     const cs = getComputedStyle(el); if (el.scrollWidth > el.clientWidth + 1 && cs.overflowX === 'visible' && cs.display !== 'inline') out.over.push(`${el.className || el.tagName} 「${t.slice(0, 16)}」 ${el.scrollWidth}>${el.clientWidth}`);
@@ -116,6 +137,12 @@ const judge = (tag, m, {en = false} = {}) => {
   check(!m.small.length, `${tag} 누르는 것 48 넘게`, m.small.slice(0, 3).join(' | '));
   check(!m.tiny.length, `${tag} 글 17px 넘게`, m.tiny.slice(0, 3).join(' | '));
   check(!m.over.length, `${tag} 칸 밖 · 칸 안 넘친 글 0`, m.over.slice(0, 3).join(' | '));
+  check(!m.ser.length, `${tag} ⑥ 바탕체 0 · 글씨체 하나`, m.ser.slice(0, 3).join(' | '));
+  check(!m.lt19.length, `${tag} ⑥ 글 19px 넘게`, m.lt19.slice(0, 3).join(' | '));
+  check(!m.big.length, `${tag} ⑥ 이야기 · 남긴 말 24px 넘게`, m.big.slice(0, 3).join(' | '));
+  check(!m.low7.length, `${tag} ⑥ 글 대비 7 넘게`, m.low7.slice(0, 3).join(' | '));
+  check(!m.ui3.length, `${tag} ⑥ 누르는 것 테 대비 3 넘게`, m.ui3.slice(0, 3).join(' | '));
+  check(m.pg && /^rgb\(253, 249, 245\)$/.test(m.paper), `${tag} ⑥ 밝은 종이 바탕`, `${m.pg} ${m.paper}`);
   if (!en) { const hit = screenHits(m.text.join('\n')); check(!hit.length, `${tag} 쓰지 않을 말 0`, hit.join(' ')); }
   else check(!m.han.length, `${tag} 남은 한글 0`, m.han.slice(0, 3).join(' | '));
 };
@@ -225,6 +252,10 @@ try {
     if (dm) { await p.locator('#view .dm a[href="#/sage"]').click(); check(await p.waitForFunction(() => document.querySelectorAll('#view .sg-tile').length === 39, null, {timeout: 8000}).then(() => true, () => false), '⑤ 둘이 단추 안 → 첫 쪽'); }
     const tab = await p.evaluate(() => document.querySelector('.tabs a[data-tab="dori"]')?.getAttribute('aria-current'));
     check(tab === 'page', '⑤ 아래 단추 「둘이」가 지금 쪽', tab);
+    const paper = () => p.evaluate(() => ({pg: document.documentElement.classList.contains('pg-sage'), bg: getComputedStyle(document.querySelector('#view')).backgroundColor}));
+    const on = await paper(); check(on.pg && on.bg === 'rgb(253, 249, 245)', '⑤ 서른아홉 스승에서 종이 판 켜짐', JSON.stringify(on));
+    await go(p, '#/dori'); await p.waitForFunction(() => !!document.querySelector('#view .dm'), null, {timeout: 8000}).catch(() => {});
+    const off = await paper(); check(!off.pg && off.bg !== 'rgb(253, 249, 245)', '⑤ 다른 쪽(#/dori)으로 가면 종이 판 꺼짐', JSON.stringify(off));
     await go(p, '#/sage/nobody'); await p.waitForTimeout(100);
     const nb = await p.evaluate(() => ({note: document.querySelector('#view .sg-hero .sg-note[role="status"]')?.textContent.trim(), tiles: document.querySelectorAll('#view .sg-tile').length}));
     check(nb.tiles === 39 && /그런 사람은 없어요/.test(nb.note ?? ''), '⑤ 없는 이름 → 첫 쪽 · 알림 한 줄', JSON.stringify(nb));

@@ -1289,6 +1289,7 @@ function whiteFor(k) {
   document.documentElement.classList.add('clock'); // 돌 시계 청록 판(사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」) — 흰 판 자리 규칙 위에 색만(site/next/clock.css)
   document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
   document.documentElement.classList.toggle('pg-why', k === 'why'); // 「왜 사?」 쪽은 밝은 앱 판(사장님 2026-10-28 02:01 「변경 안돼잖아 과감하게 해」 · 그림 일곱 장 · p-why.css html.pg-why)
+  document.documentElement.classList.toggle('pg-sage', k === 'sage'); // 서른아홉 스승은 읽는 종이 판(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · p-sage.css html.pg-sage)
   $('meta[name="theme-color"]')?.setAttribute('content', '#070514'); // 밤 무대 판 막대(2026-10-29 16:57 무대 사진 · clock.css) // 최고급 핑크 판의 포도주 빛 막대 #3D1028(2026-10-28 12:00) // 청록 판 창 위 띠(2026-10-26) — 옛 흰 판 #FFFFFF // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
 }
 whiteFor(parse(location.hash || '#/').k);
