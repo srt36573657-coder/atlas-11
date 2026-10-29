@@ -1,21 +1,21 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-28T18:04:00.490Z",
+ "at": "2026-10-29T05:19:28.130Z",
  "base": "http://127.0.0.1:8826",
- "asOf": "2026-10-28",
+ "asOf": "2026-10-29",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 48,
+ "seconds": 47,
  "time": {
-  "old": 0.8,
-  "new": 43.9,
-  "wall": 48,
+  "old": 0.9,
+  "new": 43.5,
+  "wall": 47.5,
   "opensOld": 1,
   "opensNew": 5195,
-  "oldPct": 1.6,
-  "oldShare": 1.8
+  "oldPct": 1.8,
+  "oldShare": 2
  },
  "net": {
   "req": 5129,
@@ -33,10 +33,10 @@
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 45
+   "compare": 44
   },
-  "글 마디": 51562,
-  "숫자 낱말": 48804,
+  "글 마디": 54126,
+  "숫자 낱말": 51365,
   "막대 줄": 14892,
   "회사": 2557,
   "경쟁 회사": 163,
@@ -45,7 +45,7 @@
   "oldSnap": {
    "use": true,
    "why": "",
-   "made": "2026-10-28T17:23:28.115Z",
+   "made": "2026-10-29T05:06:14.462Z",
    "inputs": 2568,
    "reads": 2564,
    "note": "기준값 다시 씀"
