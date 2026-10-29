@@ -1,7 +1,10 @@
 /* 새 첫 화면 칸들(사장님 2026-10-28(서울) 10:55 처음 본 사람의 말 · 11:12 「어」 — 첫 화면부터 처음 보는 사람 눈높이로 다시 짜기 · 11:21 「5배빨리해」
    · 12:00 「배경을 최고급 핑크로」 · 12:09 「글보다는 주식 도식화로 표현을 정말 많이해 대범하게 해」)
-   명령문 docs/design/why-mock-2026-10-28/order-1055.txt · order-1112.txt · order-1200.txt · order-1209.txt — 글은 짧게 · 숫자는 그림으로 · 긴 풀이는 「읽는 법」 안에
+   명령문 docs/design/why-mock-2026-10-28/order-1055.txt · order-1112.txt · order-1200.txt · order-1209.txt — 글은 짧게 · 숫자는 그림으로
    2026-10-29 01:48 「이 36이 둘이를 다 함께 아주 직관적으로」(order-0148.txt) — 네 걸음 ① 찾기(소개) ② 보기(지난 기록 · 오늘 자리) ③ 묻기(질문 11개) ④ 돌아보기(한 달 뒤)
+   2026-10-29 12:45 ~ 13:33 「바보도 … 요즘 주식판을 한눈에 · 헷갈리게 글을 적는 것 모두 빼 · 분명한 이야기만」(docs/design/babo-2026-10-29/order-1245.txt · brief.md) —
+   ① 돈 흐름(맨 위 · 돈이 몰린 곳 셋 · 빠진 곳 셋) ② 고른 회사(오늘 맞은 회사 · 100곳 중 몇 곳 · 최근 두 달) · 업종 점 그림 · 오늘 시장 ③ 묻기(질문 11개) ④ 돌아보기 · 칸마다 스승 한 줄(서른여섯 + 셋)
+   뺀 것: 네 걸음 단추 줄 · 근거 셋 카드 · 오늘 자리 줄 · 기둥 둘 · 100만 원 막대 · 해마다 · 틀린 까닭 고리 · 날마다 · 고른 길 깔때기 · 조건 수별 막대 · 네 칸 막대 · 「읽는 법」 · 점검 셋 퍼센트
    옛 차례: 소개(코스피 석 달 그림) → 업종 지도(점 그림 · 네 자리 막대 · 조건 수별 막대) → 조건으로 고른 회사(기둥 둘 · 100만 원 막대 · 해마다 · 틀린 까닭 고리 · 날마다 · 고른 길 깔때기)
    → 오늘 시장(코스닥 석 달 · 오른 · 내린 회사 · 사고판 돈) → 사기 전 확인(네 걸음 그림) → 공식 안내
    숫자는 자료 그대로(home.json · theme-home.json · theme-bloom.json · 요약 파일) — 지어 채우지 않음 · 못 받으면 「?」
@@ -16,21 +19,12 @@ const fin = v => typeof v === 'number' && Number.isFinite(v);
 const r0 = v => Math.round(v);
 const md = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d ?? '')); return m ? `${+m[2]}월 ${+m[3]}일` : '?'; };
 const mdS = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d ?? '')); return m ? `${+m[2]}.${+m[3]}` : '?'; };
-const ym = d => { const m = /^(\d{4})-(\d{2})/.exec(String(d ?? '')); return m ? `${m[1]}년 ${+m[2]}월` : '?'; };
-const won = v => num(Math.abs(Math.round(v))) + '원';
 const sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '');
 const p2 = v => sgn(v) + Math.abs(v).toFixed(2) + '%';
 const T = (s, x, y, t, cls, anchor = 'start') => { const e = sv('text', {class: cls, x: (+x).toFixed(1), y: (+y).toFixed(1), 'text-anchor': anchor}); e.textContent = t; s.append(e); return e; };
 const svgBox = (cls, W, H, label) => sv('svg', {class: 'nh-svg ' + cls, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label});
-/** 「읽는 법」 접은 칸 — 긴 풀이 글은 여기(처음에는 닫힘 · 그림이 먼저) */
-const more = (...kids) => h('details', {class: 'nh-more'}, h('summary', {}, h('span', {text: '읽는 법'}), h('i', {'aria-hidden': 'true', text: '›'})), h('div', {class: 'nh-mbody'}, ...kids));
-
-/** 그림 더 보기 접은 칸 — 샘플 36개 장점(19 마에다 「+」 접음 · 20 비녤리 · 쪽을 짧게 · 결론 숫자는 밖에) — 깊은 그림은 여기(처음에는 닫힘) */
-const fold = (title, ...kids) => h('details', {class: 'nh-more nh-fold'}, h('summary', {}, h('span', {text: title}), h('i', {'aria-hidden': 'true', text: '›'})), h('div', {class: 'nh-mbody'}, ...kids));
-
-/** 네 자리 쉬운 이름(예전 이름은 「읽는 법」 한 줄로만) — 놓는 자리는 theme-rule.js zoneOf 그대로(가로 RULE.bloomX · 세로 0) */
+/** 네 자리 쉬운 이름 — 놓는 자리는 theme-rule.js zoneOf 그대로(가로 RULE.bloomX · 세로 0) */
 export const ZNAME = Object.freeze({S: '막 오르기 시작', B: '한 달 내내 강함', W: '강하다 꺾임', Q: '조용함'});
-const ZOLD = Object.freeze({S: '싹', B: '꽃', W: '시듦', Q: '잠잠'});
 const ZORDER = ['S', 'B', 'Q', 'W']; // 위 왼쪽 · 위 오른쪽 · 아래 왼쪽 · 아래 오른쪽
 
 /** 석 달 선 그림(지수 · 날마다 마감 값) — 칠한 넓이(한 색 · 옅게) · 가장 높은 · 낮은 날 점 · 마지막 값 */
@@ -58,42 +52,38 @@ function idxCard(x, name, big = false) {
     h('div', {class: 'nh-ih'}, h('span', {class: 'nh-in', text: name + ' 석 달'}), h('b', {class: 'num nh-iv', text: fin(x.close) ? num(Math.round(x.close * 100) / 100) : '?'}), h('b', {class: 'num nh-ic ' + c, text: fin(x.day) ? p2(x.day) : '?'})), g);
 }
 
-/** 오늘 코스피 한 줄(샘플 19 · 20 — 맨 위는 한 줄 · 석 달 그림은 ③ 오늘 시장에) */
-function todayLine(x) {
-  const c = fin(x?.day) ? (Math.round(x.day * 100) === 0 ? 'fl' : x.day > 0 ? 'up' : 'dn') : '';
-  const line = h('p', {class: 'nh-kt', 'data-num': ''}, h('span', {text: '오늘 코스피'}), h('b', {class: 'num', text: fin(x?.close) ? num(Math.round(x.close * 100) / 100) : '?'}), h('b', {class: 'num ' + c, text: fin(x?.day) ? p2(x.day) : '?'}));
-  const vs = (Array.isArray(x?.rows) ? x.rows : []).filter(r => Array.isArray(r) && fin(r[1])).map(r => r[1]);
-  if (vs.length < 2 || !fin(x?.close)) return line;
-  const lo = Math.min(...vs), hi = Math.max(...vs), at = hi > lo ? Math.min(1, Math.max(0, (x.close - lo) / (hi - lo))) : 0.5, W = 340, X = 10 + at * (W - 20); // 석 달 사이 어디쯤(낮은 값 · 높은 값 · 오늘 점)
-  const s = svgBox('nh-rng', W, 26, `코스피 석 달 사이 · 낮은 값 ${num(r0(lo))} · 높은 값 ${num(r0(hi))} · 오늘 ${num(r0(x.close))}`);
-  s.append(sv('line', {class: 'nh-rl0', x1: 10, y1: 13, x2: W - 10, y2: 13}), sv('line', {class: 'nh-rt', x1: 10, y1: 6, x2: 10, y2: 20}), sv('line', {class: 'nh-rt', x1: W - 10, y1: 6, x2: W - 10, y2: 20}), sv('circle', {class: 'nh-rd', cx: X.toFixed(1), cy: 13, r: 8}));
-  return h('div', {class: 'nh-ktw'}, line, s, h('p', {class: 'nh-rc', 'data-num': ''}, h('span', {text: `석 달 낮은 값 ${num(r0(lo))}`}), h('span', {text: `높은 값 ${num(r0(hi))}`})));
-}
 
-/** 맨 위 소개 = ① 찾기(사장님 2026-10-29(서울) 01:48 「자 이 36이 둘리를 다 함께 아주 직관적으로 만든다면 질문하지 말고 따지지도 말고 만들어」 · docs/design/wise36-2026-10-29/order-0148.txt)
-   현명한 서른여섯 명(wise36.json)의 잣대를 한 화면에 — 소크라테스 · 장자 「보는 사람의 물음에서 시작」(마음 한 줄) · 제갈량 「판 전체를 먼저 그린다」 · 데카르트 「쉬운 것부터 차례로」(네 걸음 그림)
-   · 왕양명 「아는 것과 하는 것은 하나」 · 세종 「쉽게」(누르면 바로 찾기 칸 · 단추 하나) · 노자 · 파스칼 · 링컨 「덜어 내고 짧게」(숫자 셋 · 풀이 줄 · 오늘 코스피 줄은 ② 보기로 옮김)
-   · 맹자 · 한비자 「권하지 않음을 먼저 밝힘」 — 글은 home-new.js 와 boot-home.js 가 같음(tests/atlas11/home-new.test.mjs) */
-const focusFind = () => { const i = document.querySelector('#view form.w-find input'); if (!i) return; i.scrollIntoView({block: 'nearest'}); i.focus(); }; // 찾기 칸(아래 붙은 줄 · data-w=find)에 바로 글을 넣게
-export function heroBox() {
-  return h('section', {class: 'nh-hero', 'aria-label': '이 사이트 소개'},
-    h('p', {class: 'nh-q', text: '나도 살까 싶을 때'}), // 보는 사람의 지금 마음(샘플 34 네 칸 만화 첫 칸 · 소크라테스 「물음에서 시작」)
-    h('h2', {class: 'nh-h1'}, h('span', {text: '주식을 사기 전에,'}), ' ', h('span', {class: 'nh-acc', text: '지난 기록으로 2분만 확인하세요'})), // 한 줄 통째(영어 엔진이 문장을 나누지 않게)
-    pathBox(),
-    h('div', {class: 'nh-door'},
-      h('button', {type: 'button', class: 'nh-go nh-gofind', onclick: focusFind}, h('span', {text: '회사 이름 넣기'}), h('i', {'aria-hidden': 'true', text: '›'})),
-      h('a', {class: 'nh-link nh-golist', href: '#/t/picks'}, h('span', {text: '지난 기록으로 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))),
+/** 맨 위 = ① 돈 흐름(사장님 2026-10-29(서울) 12:45 「바보가 있어 바보를 주식하게」 · 12:51 「요즘 주식판을 한눈에 … 돈이 이렇게 흘러서」 · 13:33 「헷갈리게 글을 적는 것 모두 빼 · 분명한 이야기만」
+   · docs/design/babo-2026-10-29/order-1245.txt) — 한 달(20거래일) 동안 시장보다 가장 더 오른 업종 셋 · 가장 덜 오른 업종 셋(theme-home.json inds x = 업종이 오른 비율에서 시장이 오른 비율을 뺀 값)
+   막대 길이 = 그 값(여섯 가운데 가장 큰 값이 끝) · 끝 글 「8% 더」 「19% 덜」 · 순위 번호 없음(망치는 길 「수익 순위」 아님 — 오른 곳과 내린 곳을 함께) · 빨간 글은 숫자 글만(check_white ④)
+   스승 한 줄 = 애덤 스미스(국부론 1편 7장 — 사려는 사람이 많으면 값이 시장 값보다 오름) · 여는 동안 칸(boot-home.js)은 같은 틀 · 같은 높이(빈 줄 여섯) — 글은 tests/atlas11/home-new.test.mjs 가 맞댐 */
+export const FLOW_N = 3;
+export function flowRows(TH) {
+  const s = (TH?.inds ?? []).filter(i => fin(i?.x) && typeof i?.n === 'string').sort((a, b) => b.x - a.x);
+  return {up: s.filter(i => i.x > 0).slice(0, FLOW_N), dn: s.filter(i => i.x < 0).slice(-FLOW_N).reverse()};
+}
+const amt = v => { const a = Math.abs(v); return a < 1 ? a.toFixed(1) : String(Math.round(a)); };
+/** 스승 한 줄 — 동그라미 첫 글자 · 이름 · 한 문장(지어낸 따옴말이 아니라 그 사람 생각을 쉬운 말로 · docs/design/babo-2026-10-29/brief.md 출처) */
+export const sage = (who, say) => h('p', {class: 'nh-sage'}, h('i', {'aria-hidden': 'true', text: '“'}), h('b', {text: who}), ' ', h('span', {text: say}));
+function flowMap(TH) {
+  const {up, dn} = flowRows(TH), max = Math.max(1, ...[...up, ...dn].map(i => Math.abs(i.x)));
+  const row = (i, k) => { const bar = h('i', {class: 'nh-fbar', 'aria-hidden': 'true'}); bar.style.width = Math.max(8, (Math.abs(i.x) / max) * 100).toFixed(1) + '%'; // 줄 안을 채운 막대(이름 · 값 글은 막대 위)
+    return h('li', {class: 'nh-fr'}, bar, h('span', {class: 'nh-fn', 'data-proper': '', text: i.n}), h('b', {class: 'num', text: amt(i.x) + (k === 'up' ? '% 더' : '% 덜')})); };
+  const list = (k, xs) => h('ol', {class: 'nh-fl nh-fl-' + k}, ...Array.from({length: FLOW_N}, (_, j) => (xs[j] ? row(xs[j], k) : h('li', {class: 'nh-fr nh-f0'}))));
+  return h('div', {class: 'nh-fm', role: 'group', 'aria-label': '한 달 동안 시장보다 더 오른 업종과 덜 오른 업종'},
+    h('p', {class: 'nh-fk nh-fk-up'}, h('i', {'aria-hidden': 'true'}), h('span', {text: '돈이 몰린 곳'})), list('up', up),
+    h('p', {class: 'nh-fk nh-fk-dn'}, h('i', {'aria-hidden': 'true'}), h('span', {text: '돈이 빠진 곳'})), list('dn', dn),
+    h('p', {class: 'nh-fc', text: up.length || dn.length ? '한 달 동안 시장과 견준 값이에요.' : '? 업종 자료를 아직 못 받았어요.'}),
+    sage('애덤 스미스', '사려는 사람이 많으면 값이 올라요.'));
+}
+const goPick = () => document.getElementById('nh-p2')?.scrollIntoView({behavior: 'smooth', block: 'start'}); // ② 고른 회사 칸으로(주소 # 는 그대로)
+export function heroBox(TH = null) {
+  return h('section', {class: 'nh-hero', 'aria-label': '요즘 돈 흐름'},
+    h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '1'}), h('span', {text: '돈 흐름'})),
+    h('h2', {class: 'nh-h1'}, h('span', {text: '요즘 돈은'}), ' ', h('span', {class: 'nh-acc', text: '여기로 몰렸어요'})), // 한 줄 통째(영어 엔진이 문장을 나누지 않게)
+    flowMap(TH),
+    h('div', {class: 'nh-door'}, h('button', {type: 'button', class: 'nh-go nh-gopick', onclick: goPick}, h('span', {text: '지난 기록으로 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))),
     h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}));
-}
-
-/** 네 걸음(사장님 2026-10-29 01:48 · 옛 네 마디 「결론 · 근거 · 오늘 · 할 일」(2026-10-28 14:45 기승전결)을 하는 일 낱말로 — 기 찾기 · 승 보기 · 전 묻기 · 결 돌아보기)
-   ① 찾기(사려는 회사 · 지난 기록으로 고른 회사) → ② 보기(지난 기록 · 오늘 자리) → ③ 묻기(질문 11개) → ④ 돌아보기(한 달 뒤) — 이황 「어려운 공부를 그림으로」 · 공자 「이름을 바로 세움」(마디 이름 = 하는 일)
-   누르면 ①은 찾기 칸에 글자를 넣게 · ② ~ ④는 그 걸음으로 내려감(주소 # 는 그대로) · 여는 동안 칸(boot-home.js)도 같은 글 · 같은 높이 */
-export const PARTS = Object.freeze([['1', '찾기', '사려는 회사'], ['2', '보기', '지난 기록'], ['3', '묻기', '질문 11개'], ['4', '돌아보기', '한 달 뒤']]);
-export function pathBox() {
-  return h('nav', {class: 'nh-path', 'aria-label': '네 걸음'}, h('ol', {}, ...PARTS.map(([n, k, c]) => h('li', {},
-    h('button', {type: 'button', class: 'nh-pt', onclick: () => (n === '1' ? focusFind() : document.getElementById('nh-p' + n)?.scrollIntoView({behavior: 'smooth', block: 'start'}))},
-      h('i', {'aria-hidden': 'true', text: n}), h('b', {text: k}), h('small', {text: c}))))));
 }
 /** 마디 머리 — 동그라미 번호 · 마디 이름 · 큰 숫자 줄 · 결론 한 줄 · 작은 풀이 한 줄 */
 export function partHead({n, k, big = [], line = '', cap = '', id = 'nh-p' + n}) {
@@ -103,46 +93,16 @@ export function partHead({n, k, big = [], line = '', cap = '', id = 'nh-p' + n})
     line ? h('h2', {class: 'nh-pl', text: line}) : null,
     cap ? h('p', {class: 'nh-pc', text: cap}) : null);
 }
-/** ② 근거 머리 — 100번 고르면 몇 번(자연 빈도 · 샘플 21 뮐러브로크만 · 32 닐슨) · 100칸 그림 둘(21 · 31 블룸버그) · 최근 두 달 반대를 바로 옆에(19 · 20 · 21 · 31 · 32 — 숨기지 않음) */
-function waffle(n, cls, label) { // 10 × 10 칸 — 칠한 칸 = 100번 가운데 n번
-  const s = svgBox('nh-waf ' + cls, 120, 120, `${label} 100번 중 ${n}번`);
+/** 100칸 그림 — 칠한 칸 = 100곳 가운데 n곳(자연 빈도 · 샘플 21 뮐러브로크만 · 32 닐슨) */
+function waffle(n, cls, label) { // 10 × 10 칸
+  const s = svgBox('nh-waf ' + cls, 120, 120, `${label} 100곳 중 ${n}곳`);
   for (let i = 0; i < 100; i++) s.append(sv('rect', {class: i < n ? 'on' : 'off', x: (i % 10) * 12 + 1, y: Math.floor(i / 10) * 12 + 1, width: 10, height: 10, rx: 2}));
   return s;
 }
-const card3 = (n, v, t, warn = false, how = '') => h('li', {class: 'nh-3c' + (warn ? ' nh-3w' : '')}, h('i', {'aria-hidden': 'true', text: n}), h('b', {class: 'num', text: v}), h('span', {text: t}), how ? h('small', {class: 'nh-3h', text: how}) : null); // 읽는 법(샘플 06 노먼)
-export function partWhy(B) { // 답 먼저 + 겹치지 않는 근거 셋(샘플 07 민토 피라미드 · 01 잡스 「세 가지 숫자」 · 19 마에다 「세 줄」) — 셋째는 나쁜 숫자(19 · 25 · 34 · 35 — 숨기지 않음)
-  const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base), a = ok ? Math.round(R.rate) : null, b = ok ? Math.round(R.base) : null, rc = recent(B);
-  const fa = ok && fin(R.fall) && fin(R.fallBase) ? [Math.round(R.fall), Math.round(R.fallBase)] : null;
-  const head = partHead({n: '2', k: '보기', line: ok ? `100번 고르면 ${a}번, 시장보다 5% 넘게 더 올랐어요` : '조건으로 고른 회사의 지난 기록이에요', cap: ok ? '더 나았어요. 늘은 아니에요. 근거는 셋이에요.' : ''});
-  if (!ok) return head;
-  head.append(h('div', {class: 'nh-wafs'},
-    h('figure', {class: 'nh-wf'}, waffle(a, 'me', '조건으로 고른 회사'), h('figcaption', {}, h('b', {class: 'num', text: a + '번'}), h('span', {text: '조건으로 고른 회사'}))),
-    h('figure', {class: 'nh-wf'}, waffle(b, 'all', '모든 회사'), h('figcaption', {}, h('b', {class: 'num', text: b + '번'}), h('span', {text: '모든 회사'})))));
-  head.append(h('ol', {class: 'nh-3', 'aria-label': '근거 셋'}, card3('1', `${a} 대 ${b}`, '더 자주 올랐어요'), fa ? card3('2', `${fa[0]} 대 ${fa[1]}`, '덜 자주 뒤처졌어요') : null,
-    rc.P != null && rc.Q != null ? card3('3', `${rc.P} 대 ${rc.Q}`, rc.P < rc.Q ? '최근 두 달은 졌어요' : '최근 두 달도 앞섰어요', rc.P < rc.Q) : null));
-  if (fa) head.append(h('p', {class: 'nh-pc nh-3how', text: '①과 ③은 높을수록 좋고 ②는 낮을수록 좋아요'})); // 읽는 법 한 줄(샘플 06 노먼 「높을수록 좋음 ↑ · 낮을수록 좋음 ↓」)
-  head.append(h('p', {class: 'nh-pc', text: '고른 회사 대 모든 회사 · 100번 가운데 · 한 달 뒤 시장보다 5% 넘게'}), h('p', {class: 'nh-pc nh-pc2', text: '앞날을 맞히는 숫자가 아니라 이미 일어난 횟수예요.'})); // 샘플 14 네이트 실버
-  return head;
-}
-/** ② 보기 · 오늘 자리(옛 ③ 오늘 · 2026-10-29 네 걸음) — 오늘 코스피 한 줄과 석 달 자리 막대(소개 칸에서 옮김 · 갈릴레이 「재고 또 잼」) · 조건 4개를 다 채운 업종 수 */
-export function partToday(TH, kospi) {
-  const inds = TH?.inds ?? [], n4 = inds.filter(i => i.sc === 4).length;
-  return h('div', {class: 'nh-part nh-psub', id: 'nh-p2t'},
-    h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '2'}), h('span', {text: '보기'}), h('small', {text: '오늘 자리'})),
-    todayLine(kospi),
-    h('h2', {class: 'nh-pl', text: !inds.length ? '오늘 업종과 시장이에요' : n4 ? `업종 ${num(inds.length)}개 중 ${num(n4)}개가 조건 4개를 다 채웠어요` : `업종 ${num(inds.length)}개 중 조건 4개를 다 채운 곳은 오늘 없어요`}),
-    h('p', {class: 'nh-pc', text: '점 하나가 업종 하나 · 오른쪽 위일수록 시장보다 강해요'}));
-}
-/** ③ 묻기 머리 — 질문 11개(소크라테스 「계속 물어 스스로 답을 찾게」 · 프랭클린 「점검표」) */
-export function partDo(B) { // 지는 길을 뒤집으면 점검표(샘플 10 멍거) — 5% 못 넘은 까닭 셋을 사기 전 물음 셋으로 · 물음 끝은 「?」
+/** ③ 묻기 머리 — 질문 11개 · 스승 둘(소크라테스 「돌아보지 않는 삶은 살 가치가 없다」(변론 38a) · 리콴유 「정한 규칙은 지킨다」) — 옛 점검 셋 퍼센트 · 「못 넘은 2,741번」 줄은 뺌(13:33 「헷갈리게 글을 적는 것 모두 빼」) */
+export function partDo() {
   const head = partHead({n: '3', k: '묻기', big: [h('b', {class: 'num', text: '11'}), h('span', {text: '개 질문'})], line: '사기 전에 한 번 더 확인하세요', cap: '약 2분 · 답은 이 기기에만 남아요'});
-  const Wy = B?.why?.all;
-  if (Number.isInteger(Wy?.miss) && Wy.miss > 0 && Array.isArray(Wy.why) && Wy.why.length === 3) {
-    const p = v => Math.round((v / Wy.miss) * 100), [w0, w1, w2] = Wy.why;
-    head.append(h('div', {class: 'nh-chk'}, h('p', {class: 'nh-chkh', text: `사기 전 점검 셋 · 지난 기록이 못 넘은 ${num(Wy.miss)}번에서 뽑았어요`}),
-      h('ul', {}, ...[['그 업종이 통째로 식고 있지 않나요?', w1], ['기대만큼 더 오를 까닭이 있나요?', w0], ['업종은 괜찮은데 그 회사만 처지지 않나요?', w2]].sort((x, y) => y[1] - x[1])
-        .map(([t, v]) => h('li', {}, h('i', {'aria-hidden': 'true'}), h('span', {class: 'nh-chkt', text: t}), h('b', {class: 'num', text: p(v) + '%'}))))));
-  }
+  head.append(sage('소크라테스', '왜 사는지 스스로 물어봐요.'), sage('리콴유', '정한 규칙은 꼭 지켜요.'));
   return head;
 }
 
@@ -168,117 +128,27 @@ function plot(TH) {
   for (const i of lab) { const x = sx(i.x), y = sy(i.y), right = x < L + pw * 0.62; T(s, right ? x + 11 : x - 11, y + 5, i.n, 'nh-dl', right ? 'start' : 'end'); }
   // 축 — 화살표와 기준 숫자를 그림 안에(글 풀이 대신)
   s.append(sv('line', {class: 'nh-axl', x1: L, y1: H - 22, x2: L + pw, y2: H - 22}), sv('path', {class: 'nh-axh', d: `M${L + pw - 7},${H - 26} L${L + pw},${H - 22} L${L + pw - 7},${H - 18}`}));
-  T(s, L + pw - 10, H - 28, '한 달 동안 시장보다 더 오름', 'nh-axt', 'end'); T(s, qx, H - 3, `+${RULE.bloomX}%p`, 'nh-tick', 'middle');
+  T(s, L + pw - 10, H - 28, '한 달 동안 시장보다 더 오름', 'nh-axt', 'end'); // 「+5%p」 · 「0」 눈금 글은 뺌(2026-10-29 13:33 「헷갈리게 글을 적는 것 모두 빼」 — 줄은 그대로)
   s.append(sv('line', {class: 'nh-axl', x1: 10, y1: Tp + ph, x2: 10, y2: Tp}), sv('path', {class: 'nh-axh', d: `M6,${Tp + 7} L10,${Tp} L14,${Tp + 7}`}));
-  T(s, 20, Tp + ph * 0.26, '닷새 동안 더 오름', 'nh-axt nh-axv', 'middle').setAttribute('transform', `rotate(-90 20 ${(Tp + ph * 0.26).toFixed(1)})`); T(s, L - 4, qy + 4, '0', 'nh-tick', 'end');
+  T(s, 20, Tp + ph * 0.26, '닷새 동안 더 오름', 'nh-axt nh-axv', 'middle').setAttribute('transform', `rotate(-90 20 ${(Tp + ph * 0.26).toFixed(1)})`);
   return {svg: s, n: I.length};
 }
-/** 네 자리 수 막대 — 한 줄 막대를 네 칸으로(이름 · 수) */
-function zoneBar(cnt) {
-  const tot = ZORDER.reduce((a, z) => a + (fin(cnt?.[z]) ? cnt[z] : 0), 0); if (!tot) return null;
-  return h('div', {class: 'nh-cnt', role: 'img', 'aria-label': '네 자리 업종 수 · ' + ZORDER.map(z => `${ZNAME[z]} ${fin(cnt[z]) ? cnt[z] : 0}개`).join(' · ')},
-    ...ZORDER.map(z => { const v = fin(cnt[z]) ? cnt[z] : 0, e = h('span', {class: 'nh-cz nh-cz-' + z}, h('b', {class: 'num', text: String(v)}), h('small', {text: ZNAME[z]})); e.style.flexGrow = String(Math.max(v, tot * 0.12)); return e; }));
-}
-/** 조건 수별 — 막 오르기 시작한 업종이 조건을 몇 개 채웠을 때 한 달 뒤 강해졌나(theme-engine.js recordOf byDots · 100번 가운데) */
-function dotsChart(R) {
-  const rows = (R?.byDots ?? []).map((b, k) => [k, b?.p]).filter(([, p]) => fin(p)); if (rows.length < 2 || !fin(R?.all?.p)) return null;
-  const W = 340, H = 206, L = 8, B = 46, Tp = 28, cols = [...rows, ['all', R.all.p]], bw = (W - L * 2) / cols.length, max = Math.max(...cols.map(c => c[1])) * 1.15;
-  const s = svgBox('nh-dots', W, H, '조건 수별 한 달 뒤 강해진 비율 · ' + cols.map(([k, p]) => `${k === 'all' ? '모든 업종' : '조건 ' + k + '개'} ${r0(p)}%`).join(' · '));
-  cols.forEach(([k, p], i) => { const x = L + i * bw + bw * 0.18, w = bw * 0.64, hh = (p / max) * (H - Tp - B), y = H - B - hh;
-    s.append(sv('rect', {class: 'nh-db ' + (k === 4 ? 'nh-db4' : k === 'all' ? 'nh-dball' : ''), x: x.toFixed(1), y: y.toFixed(1), width: w.toFixed(1), height: hh.toFixed(1), rx: 4}));
-    T(s, x + w / 2, y - 6, r0(p) + '%', 'nh-dv' + (k === 4 ? ' nh-dv4' : ''), 'middle');
-    T(s, x + w / 2, H - B + 20, k === 'all' ? '모든' : k + '개', 'nh-dk', 'middle'); if (k === 'all') T(s, x + w / 2, H - B + 40, '업종', 'nh-dk', 'middle'); });
-  return s;
-}
 
-/** 업종 칸 — 둘이 물음(「?」로 끝남 · data-say) · 날짜 · 점 그림 · 네 자리 막대 · 조건 수별 막대 · 읽는 법 */
+/** 업종 칸 — 둘이 물음(「?」로 끝남 · data-say) · 날짜 · 점 그림 · 한 문장 · 네 자리 이름과 수 · 힘이 고르게 붙은 업종(조건 넷 · sc 4) · 업종 모두 보기
+   2026-10-29 13:33 「헷갈리게 글을 적는 것 모두 빼 · 분명한 이야기만」 — 네 칸 막대(이름 · 수가 아래 줄과 겹침) · 조건 수별 막대 · 「읽는 법」(%p · 거래일 풀이)은 뺌 */
 export function mapBox(TH, news = null) {
   if (!TH?.inds?.length) return h('section', {class: 'nh-sec nh-map', 'data-w': 'theme'}, h('h2', {class: 'nh-h2', 'data-say': '', text: '지금 업종은 어디쯤 있나요?'}), h('p', {class: 'nh-p', text: '? 업종 자료를 아직 못 받았습니다. 잠시 뒤 다시 열어 주세요.'}));
-  const {svg, n} = plot(TH), cnt = TH.count ?? {}, real = TH.inds.filter(i => i.sc === 4).map(i => i.n), dc = dotsChart(TH.record);
-  const ax = (k, t) => h('li', {}, h('b', {text: k}), h('span', {text: t}));
+  const {svg, n} = plot(TH), cnt = TH.count ?? {}, real = TH.inds.filter(i => i.sc === 4).map(i => i.n);
   return h('section', {class: 'nh-sec nh-map', 'data-w': 'theme', 'aria-label': '업종 점 그림'},
     h('h2', {class: 'nh-h2', 'data-say': '', text: `지금 업종 ${num(n)}개는 어디쯤 있나요?`}),
     h('p', {class: 'nh-d', text: `${md(TH.asOf)} 종가 기준 · 점 하나가 업종 하나`}), news,
-    h('div', {class: 'nh-plotw'}, svg), zoneBar(cnt),
+    h('div', {class: 'nh-plotw'}, svg),
+    h('p', {class: 'nh-say', text: '오른쪽 위로 갈수록 요즘 돈이 더 몰린 업종이에요.'}),
     h('ul', {class: 'nh-leg', 'aria-label': '네 자리 이름과 업종 수'}, ...ZORDER.map(z => h('li', {class: 'nh-lg nh-lg-' + z}, h('i', {'aria-hidden': 'true'}), h('span', {text: ZNAME[z]}), h('b', {class: 'num', text: fin(cnt[z]) ? cnt[z] + '개' : '?'})))),
-    real.length ? h('p', {class: 'nh-real'}, h('span', {class: 'nh-rk', text: '조건 4개를 다 채운 업종'}), h('b', {text: real.join(', ')})) : h('p', {class: 'nh-real nh-real0'}, h('span', {class: 'nh-rk', text: '조건 4개를 다 채운 업종은 오늘 없습니다.'})),
-    dc ? h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '조건을 많이 채울수록 한 달 뒤 강해졌나요?'}), dc, h('p', {class: 'nh-cap', text: '막 오르기 시작한 업종 · 100번 가운데'})) : null,
-    more(
-      h('ul', {class: 'nh-ax'},
-        ax('가로', `최근 20거래일 동안 시장보다 더 오른 정도입니다. ${RULE.bloomX}%p를 넘으면 오른쪽입니다.`),
-        ax('세로', '최근 5거래일 동안 시장보다 더 오른 정도입니다. 0을 넘으면 위쪽입니다.'),
-        ax('%p', '업종이 오른 비율에서 시장이 오른 비율을 뺀 값입니다.')),
-      h('p', {class: 'nh-old', text: '예전 이름: ' + ZORDER.map(z => `${ZOLD[z]} = ${ZNAME[z]}`).join(', ')}),
-      h('ol', {class: 'nh-rl'},
-        h('li', {text: '최근 5거래일 동안 시장보다 2%p 넘게 더 올랐습니다.'}),
-        h('li', {text: '업종 회사 절반 넘게 최근 10거래일 동안 2% 넘게 올랐습니다.'}),
-        h('li', {text: '업종에서 가장 큰 회사 3곳도 10거래일 평균 1% 넘게 올랐습니다.'}),
-        h('li', {text: '업종 지수가 10거래일 전보다 높습니다.'}))),
+    real.length ? h('p', {class: 'nh-real'}, h('span', {class: 'nh-rk', text: '힘이 고르게 붙은 업종'}), h('b', {'data-proper': '', text: real.join(', ')})) : h('p', {class: 'nh-real nh-real0'}, h('span', {class: 'nh-rk', text: '힘이 고르게 붙은 업종은 오늘 없습니다.'})),
     h('a', {class: 'nh-link', href: '#/f/ind'}, h('span', {text: `업종 ${num(n)}개 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
 }
 
-/** 기둥 둘 — 고른 회사 · 모든 회사(같은 날 고를 수 있던 회사 전부) · 큰 숫자 위에 */
-function cols2(title, a, b, kind) {
-  const W = 160, H = 176, Tp = 32, B = 30, max = Math.max(a, b, 1) * 1.08, bw = 46;
-  const s = svgBox('nh-c2 nh-c2-' + kind, W, H, `${title} · 조건으로 고른 회사 ${r0(a)}% · 모든 회사 ${r0(b)}%`);
-  [[a, 'nh-me', '고른 회사'], [b, 'nh-all', '모든 회사']].forEach(([v, c, lb], i) => { const x = 18 + i * (bw + 30), hh = (v / max) * (H - Tp - B), y = H - B - hh;
-    s.append(sv('rect', {class: 'nh-cb ' + c, x, y: y.toFixed(1), width: bw, height: hh.toFixed(1), rx: 6}));
-    T(s, x + bw / 2, y - 8, r0(v) + '%', 'nh-cv ' + c, 'middle'); T(s, x + bw / 2, H - 7, lb, 'nh-cl', 'middle'); });
-  return h('figure', {class: 'nh-fig'}, h('figcaption', {text: title}), s);
-}
-/** 100만 원 막대 — 가운데 0 에서 오른쪽 = 시장보다 더 · 왼쪽 = 덜 */
-function wonBars(a, b) {
-  const W = 340, H = 120, mid = 150, sc = 110 / Math.max(Math.abs(a), Math.abs(b), 1); // 가장 긴 막대 110 — 끝 글(+25,000원)이 그림 안에
-  const s = svgBox('nh-won2', W, H, `100만 원어치 한 달 뒤 시장보다 · 조건으로 고른 회사 ${sgn(a)}${won(a)} · 모든 회사 ${sgn(b)}${won(b)}`);
-  s.append(sv('line', {class: 'nh-wz', x1: mid, y1: 8, x2: mid, y2: H - 8}));
-  [[a, 'nh-me', '고른 회사', 30], [b, 'nh-all', '모든 회사', 84]].forEach(([v, c, lb, y]) => { const w = Math.max(3, Math.abs(v) * sc), x = v >= 0 ? mid : mid - w;
-    s.append(sv('rect', {class: 'nh-wb ' + c, x: x.toFixed(1), y: y - 14, width: w.toFixed(1), height: 28, rx: 5}));
-    T(s, v >= 0 ? mid + w + 6 : mid - w - 6, y + 6, `${sgn(v)}${won(v)}`, 'nh-wv ' + c, v >= 0 ? 'start' : 'end'); T(s, v >= 0 ? mid - 8 : mid + 8, y + 6, lb, 'nh-wl', v >= 0 ? 'end' : 'start'); });
-  return s;
-}
-/** 해마다 — 고른 회사 · 모든 회사 짝 기둥(시장보다 5% 넘게 더 오른 비율) · 고른 수가 적은 해는 옅게 */
-function yearsChart(Y) {
-  const ys = Object.keys(Y ?? {}).filter(k => /^\d{4}$/.test(k) && fin(Y[k]?.rate) && fin(Y[k]?.base)).sort(); if (ys.length < 2) return null;
-  const W = 340, H = 200, Tp = 28, B = 46, gw = (W - 16) / ys.length, max = Math.max(...ys.flatMap(k => [Y[k].rate, Y[k].base])) * 1.15;
-  const s = svgBox('nh-yrs', W, H, '해마다 시장보다 5% 넘게 더 오른 비율 · ' + ys.map(k => `${k}년 고른 회사 ${r0(Y[k].rate)}% 모든 회사 ${r0(Y[k].base)}%`).join(' · '));
-  ys.forEach((k, i) => { const x0 = 8 + i * gw, bw = gw * 0.32, few = (Y[k].n ?? 0) < 200;
-    [[Y[k].rate, 'nh-me'], [Y[k].base, 'nh-all']].forEach(([v, c], j) => { const x = x0 + gw * 0.12 + j * (bw + 6), hh = (v / max) * (H - Tp - B), y = H - B - hh;
-      s.append(sv('rect', {class: 'nh-yb ' + c + (few ? ' nh-few' : ''), x: x.toFixed(1), y: y.toFixed(1), width: bw.toFixed(1), height: hh.toFixed(1), rx: 3}));
-      T(s, x + bw / 2, y - 5, String(r0(v)), 'nh-yv ' + c, 'middle'); });
-    T(s, x0 + gw / 2, H - B + 20, k + '년', 'nh-yk', 'middle'); T(s, x0 + gw / 2, H - B + 40, num(Y[k].n ?? 0) + '번', 'nh-yn', 'middle'); });
-  return s;
-}
-/** 틀린 까닭 고리 — 셋(업종째 식음 · 조금 모자람 · 회사만 처짐) · 가운데 틀린 수 */
-function donut(Wy) {
-  const [w0, w1, w2] = Wy.why, tot = Wy.miss, parts = [[w1, 'nh-w1'], [w0, 'nh-w0'], [w2, 'nh-w2']], W = 150, c = 75, r = 54, L2 = 2 * Math.PI * r;
-  const s = svgBox('nh-donut', W, W, `틀린 ${num(tot)}번의 까닭 · 업종째 식음 ${r0(w1 / tot * 100)}% · 조금 모자람 ${r0(w0 / tot * 100)}% · 회사만 처짐 ${r0(w2 / tot * 100)}%`);
-  let off = 0;
-  for (const [v, cls] of parts) { const len = (v / tot) * L2; s.append(sv('circle', {class: 'nh-dn ' + cls, cx: c, cy: c, r, 'stroke-dasharray': `${Math.max(0, len - 2).toFixed(1)} ${(L2 - Math.max(0, len - 2)).toFixed(1)}`, 'stroke-dashoffset': (-off).toFixed(1), transform: `rotate(-90 ${c} ${c})`})); off += len; }
-  T(s, c, c - 2, num(tot), 'nh-dnv', 'middle'); T(s, c, c + 20, '번', 'nh-dnk', 'middle');
-  return s;
-}
-/** 날마다 — 최근 60거래일 날마다 고른 수(기둥 높이) · 한 달 뒤 꽃이 됨 · 못 됨 · 아직 한 달 안 됨 */
-function dayStrip(days) {
-  const D = (Array.isArray(days) ? days : []).filter(d => d && typeof d.d === 'string'); if (D.length < 5) return null;
-  const W = 340, H = 126, Tp = 8, B = 26, bw = (W - 8) / D.length, max = Math.max(1, ...D.map(d => d.n ?? 0));
-  const s = svgBox('nh-days', W, H, `최근 ${D.length}거래일 날마다 고른 수 · 꽃이 됨 ${D.reduce((a, d) => a + (d.hit ?? 0), 0)}번 · 못 됨 ${D.reduce((a, d) => a + (d.miss ?? 0), 0)}번 · 아직 ${D.reduce((a, d) => a + (d.wait ?? 0), 0)}번`);
-  const u = (H - Tp - B) / max;
-  D.forEach((d, i) => { let y = H - B; const x = 4 + i * bw + 0.6, w = Math.max(1.5, bw - 1.2);
-    for (const [v, cls] of [[d.hit, 'nh-sh'], [d.miss, 'nh-sm'], [d.wait, 'nh-sw']]) { if (!(v > 0)) continue; const hh = v * u; y -= hh; s.append(sv('rect', {class: 'nh-sb ' + cls, x: x.toFixed(1), y: y.toFixed(1), width: w.toFixed(1), height: hh.toFixed(1)})); }
-    if (!(d.n > 0)) s.append(sv('rect', {class: 'nh-s0', x: x.toFixed(1), y: H - B - 2, width: w.toFixed(1), height: 2})); });
-  T(s, 4, H - 4, mdS(D[0].d), 'nh-kd'); T(s, W - 4, H - 4, mdS(D[D.length - 1].d), 'nh-kd', 'end');
-  return s;
-}
-/** 고른 길 깔때기 — 조건 후보 → 옛 기록 잣대를 넘은 것 → 추린 것 → 깊이 잰 셋 → 쓰는 하나(theme-bloom.json pick) */
-function funnel(P) {
-  if (!P || !Number.isInteger(P.n) || !Number.isInteger(P.ok) || !Number.isInteger(P.short) || !Array.isArray(P.three)) return null;
-  const st = [[P.n, '후보'], [P.ok, '잣대 넘음'], [P.short, '추림'], [P.three.length, '깊이 잼'], [1, '지금 씀']], W = 340, rowH = 34, H = st.length * rowH + 4;
-  const s = svgBox('nh-fun', W, H, '고르는 조건을 정한 길 · ' + st.map(([v, t]) => `${t} ${v}`).join(' · '));
-  st.forEach(([v, t], i) => { const w = 54 + (W - 160) * Math.sqrt(v / P.n), x = (W - 96 - w) / 2, y = 2 + i * rowH;
-    s.append(sv('rect', {class: 'nh-fb' + (i === st.length - 1 ? ' nh-fb1' : ''), x: x.toFixed(1), y, width: w.toFixed(1), height: rowH - 6, rx: 6}));
-    T(s, x + w / 2, y + rowH / 2 + 2, num(v), 'nh-fv' + (i === st.length - 1 ? ' nh-fv1' : ''), 'middle'); T(s, W - 88, y + rowH / 2 + 4, t, 'nh-fl'); });
-  return s;
-}
 /** 최근 두 달(기록 달력 가운데 한 달이 지난 날 — theme-home.js pickPQ 와 같은 셈) */
 function recent(B) {
   const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string') : [];
@@ -287,47 +157,36 @@ function recent(B) {
   return {P: D ? Math.round((sum(d => d.hit) / D) * 100) : null, Q: N ? Math.round((sum(d => d.bh) / N) * 100) : null, n: D};
 }
 
-/** 조건으로 고른 회사의 지난 기록 — 기둥 둘 둘 · 100만 원 막대 · 해마다 · 틀린 까닭 고리 · 날마다 · 고른 길 · 읽는 법 · 기록 쪽 고리 */
+/** ② 고른 회사(본질 1 「싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다」 · 2 ② 「지난 기록만 보여 준다」) — 사장님 2026-10-29 13:30 「이거 사라는 못넣어도 이게 확율이 좋은듯해 수익성이 이렇다는 할수 있잖아」
+   · 13:33 「모든 회사는 스물네 번이었어요 … 일예로 이론 거야 분명한 이야기만 해」 — 주어가 분명한 문장 둘(「이렇게 고른 회사 100곳 중 n곳 …」 · 「같은 날 아무 회사나 골랐다면 100곳 중 n곳」)
+   · 오늘 조건에 맞은 회사(theme-bloom.json today — 이름만 · 「사라」 말 없음) · 100칸 그림 둘 · 최근 두 달(지면 진 대로 · 손실 숨기기 없음 — 다윈 「내 생각과 어긋난 사실은 바로 적는다」(자서전))
+   · 덩샤오핑 「흰 고양이든 검은 고양이든 쥐를 잡으면 좋은 고양이」(1962 — 말보다 결과) · 고리 둘(#/t/pick · #/t/picks — check_theme ⑪ 차례 그대로) */
+function todayPicks(B) {
+  if (!B?.today) return h('p', {class: 'nh-tp nh-tp0', text: '? 오늘 고른 회사를 아직 못 받았어요.'});
+  const list = (Array.isArray(B.today.inds) ? B.today.inds : []).flatMap(i => (Array.isArray(i?.co) ? i.co : []).map(c => ({n: c?.[1], i: i?.n}))).filter(x => typeof x.n === 'string' && x.n);
+  if (!list.length) return h('p', {class: 'nh-tp nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'});
+  return h('div', {class: 'nh-tp'}, h('p', {class: 'nh-tpk', text: `오늘 조건에 맞은 회사 ${num(list.length)}곳`}),
+    h('ul', {class: 'nh-tpl'}, ...list.slice(0, 5).map(x => h('li', {}, h('b', {'data-proper': '', text: x.n}), typeof x.i === 'string' ? h('small', {'data-proper': '', text: x.i}) : null))));
+}
+const wfig = (n, cls, label) => h('figure', {class: 'nh-wf'}, waffle(n, cls, label), h('figcaption', {}, h('b', {class: 'num', text: n + '곳'}), h('span', {text: label})));
 export function recordBox(B) {
-  const R = B?.record?.all, Wy = B?.why?.all;
-  const box = h('section', {class: 'nh-sec nh-rec', 'data-w': 'record', 'aria-label': '조건으로 고른 회사의 지난 기록'}, h('h2', {class: 'nh-h2', text: '조건으로 고른 회사, 지난 기록'}));
-  if (!R || !fin(R.rate) || !fin(R.base) || !Number.isInteger(R.n)) { box.append(h('p', {class: 'nh-p', text: '? 지난 기록을 아직 못 받았습니다. 잠시 뒤 다시 열어 주세요.'}), recLinks()); return box; }
-  box.append(h('p', {class: 'nh-d', text: `${ym(B.span?.from)}부터 ${ym(B.span?.to)}까지 ${num(R.n)}번 · 고른 날부터 한 달 뒤`}));
-  box.append(h('div', {class: 'nh-c2w'}, cols2('시장보다 5% 넘게 더 오름', R.rate, R.base, 'up'), fin(R.fall) && fin(R.fallBase) ? cols2('시장보다 5% 넘게 뒤처짐', R.fall, R.fallBase, 'dn') : null));
-  if (fin(R.ex) && fin(R.exBase)) box.append(h('div', {class: 'nh-chart nh-wonw'}, h('p', {class: 'nh-ck', text: '100만 원어치라면 한 달 뒤 시장보다'}), wonBars(R.ex * 10000, R.exBase * 10000), h('p', {class: 'nh-cap', text: '평균입니다 · 같은 결과가 다시 나온다는 뜻이 아닙니다'})));
-  const deep = []; // 해마다 · 못 넘은 까닭 · 날마다 · 조건을 정한 길 — 그림 더 보기 안(정직 칸 「최근 두 달」은 밖에 그대로)
-  const yc = yearsChart(B.record?.years);
-  if (yc) deep.push(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '해마다 · 시장보다 5% 넘게 더 오른 비율'}), yc, legend2()));
-  if (Number.isInteger(Wy?.miss) && Wy.miss > 0 && Array.isArray(Wy.why) && Wy.why.length === 3) {
-    const [w0, w1, w2] = Wy.why, p = v => Math.round((v / Wy.miss) * 100);
-    deep.push(h('div', {class: 'nh-chart nh-missw'}, h('p', {class: 'nh-ck', text: '5% 못 넘은 까닭'}),
-      h('div', {class: 'nh-miss2'}, donut(Wy), h('ul', {class: 'nh-ml'}, ...[['nh-w1', '업종째 식음', w1], ['nh-w0', '조금 모자람', w0], ['nh-w2', '회사만 처짐', w2]].map(([c, t, v]) => h('li', {class: c}, h('i', {'aria-hidden': 'true'}), h('span', {class: 'nh-mt', text: t}), h('b', {class: 'num nh-mp', text: p(v) + '%'})))))));
-  }
-  const rc = recent(B), ds = dayStrip(B.cal?.days);
-  if (ds) deep.push(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '최근 60거래일 · 날마다 고른 수'}), ds,
-    h('ul', {class: 'nh-lg3', 'aria-hidden': 'true'}, h('li', {class: 'nh-l-sh'}, h('i'), h('span', {text: '꽃이 됨'})), h('li', {class: 'nh-l-sm'}, h('i'), h('span', {text: '못 됨'})), h('li', {class: 'nh-l-sw'}, h('i'), h('span', {text: '아직'})))));
-  if (rc.P != null && rc.Q != null) box.append(h('div', {class: 'nh-warn' + (rc.P < rc.Q ? ' nh-worse' : '')}, h('p', {class: 'nh-wt', text: rc.P < rc.Q ? '최근 두 달은 모든 회사보다 못했습니다.' : '최근 두 달 기록입니다.'}),
-    h('div', {class: 'nh-vs', 'data-num': ''}, h('span', {class: 'nh-vsa'}, h('b', {class: 'num', text: rc.P + '%'}), h('small', {text: '고른 회사'})), h('span', {class: 'nh-vsx', text: '대'}), h('span', {class: 'nh-vsb'}, h('b', {class: 'num', text: rc.Q + '%'}), h('small', {text: '모든 회사'})))));
-  const fu = funnel(B.pick);
-  if (fu) deep.push(h('div', {class: 'nh-chart'}, h('p', {class: 'nh-ck', text: '고르는 조건은 이렇게 정했습니다'}), fu));
-  { const Y = B.record?.years ?? {}, ys = Object.keys(Y).filter(k => /^\d{4}$/.test(k) && fin(Y[k]?.rate) && fin(Y[k]?.base)), win = ys.filter(k => Y[k].rate > Y[k].base).length; // 해마다 한 줄(샘플 36 나이팅게일 「네 해 중 세 해는 컸고, 최근 두 달은 작았습니다」)
-    const lose = ys.filter(k => !(Y[k].rate > Y[k].base)), few = lose.length === 1 && Number.isInteger(Y[lose[0]]?.n) && Y[lose[0]].n < 200; // 횟수가 적은 해는 가볍게(샘플 13 달리오 「믿을 만한 정도만큼 무게를」)
-    if (ys.length >= 2) box.append(h('p', {class: 'nh-yrsum', 'data-num': ''}, h('span', {text: `${ys.length}년 중 ${win}년은 고른 회사가 앞섰어요` + (few ? ` · 진 ${lose[0]}년은 ${Y[lose[0]].n}번뿐이에요` : '')}))); }
-  if (deep.length) box.append(fold('그림 더 보기 · 해마다 · 못 넘은 까닭 · 조건을 정한 길', ...deep));
-  box.append(more(
-    h('p', {class: 'nh-how', text: '고르는 조건: 업종은 한 달 내내 강하고, 회사는 막 힘이 붙었고, 회사 값은 반년 가장 높은 값 가까이일 때 고릅니다.'}),
-    h('p', {class: 'nh-p', text: '「시장보다 5% 넘게 더 오름」은 고른 날부터 한 달 뒤 값을 시장과 견준 것입니다.'}),
-    h('ul', {class: 'nh-ml nh-ml2'},
-      h('li', {class: 'nh-w1'}, h('i', {'aria-hidden': 'true'}), h('span', {class: 'nh-mt', text: '업종째 식음: 회사도 업종도 시장보다 덜 올랐습니다.'})),
-      h('li', {class: 'nh-w0'}, h('i', {'aria-hidden': 'true'}), h('span', {class: 'nh-mt', text: '조금 모자람: 시장보다는 더 올랐지만 5%를 못 넘었습니다.'})),
-      h('li', {class: 'nh-w2'}, h('i', {'aria-hidden': 'true'}), h('span', {class: 'nh-mt', text: '회사만 처짐: 업종은 괜찮았는데 회사만 시장보다 덜 올랐습니다.'})))));
-  box.append(recLinks());
+  const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base) && Number.isInteger(R.n);
+  const box = h('section', {class: 'nh-sec nh-rec', id: 'nh-p2', 'data-w': 'record', 'aria-label': '지난 기록으로 고른 회사'},
+    h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '2'}), h('span', {text: '고른 회사'})),
+    h('h2', {class: 'nh-pl', text: '돈이 몰린 업종에서 지난 기록으로 골라요'}), todayPicks(B));
+  if (!ok) { box.append(h('p', {class: 'nh-p', text: '? 지난 기록을 아직 못 받았어요. 잠시 뒤 다시 열어 주세요.'}), recLinks()); return box; }
+  const a = Math.round(R.rate), b = Math.round(R.base), rc = recent(B);
+  box.append(h('div', {class: 'nh-wafs'}, wfig(a, 'me', '이렇게 고른 회사'), wfig(b, 'all', '아무 회사나')),
+    h('p', {class: 'nh-say', text: `이렇게 고른 회사 100곳 중 ${a}곳이 한 달 뒤 시장보다 5% 넘게 더 올랐어요.`}),
+    h('p', {class: 'nh-say', text: `같은 날 아무 회사나 골랐다면 100곳 중 ${b}곳이었어요.`}));
+  if (rc.P != null && rc.Q != null) box.append(h('div', {class: 'nh-warn' + (rc.P < rc.Q ? ' nh-worse' : '')},
+    h('p', {class: 'nh-wt', text: rc.P < rc.Q ? `최근 두 달은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : `최근 두 달은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.`}), sage('다윈', '내 생각과 다른 기록도 바로 적어요.')));
+  box.append(sage('덩샤오핑', '말보다 결과를 봐요.'), recLinks());
   return box;
 }
-const legend2 = () => h('ul', {class: 'nh-lg3', 'aria-hidden': 'true'}, h('li', {class: 'nh-l-me'}, h('i'), h('span', {text: '조건으로 고른 회사'})), h('li', {class: 'nh-l-all'}, h('i'), h('span', {text: '모든 회사'})));
 const recLinks = () => h('div', {class: 'nh-links'},
-  h('a', {class: 'nh-link', href: '#/t/pick'}, h('span', {text: '날짜별 기록과 고르는 법 보기'}), h('i', {'aria-hidden': 'true', text: '›'})),
-  h('a', {class: 'nh-link', href: '#/t/picks'}, h('span', {text: '오늘 조건에 맞은 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  h('a', {class: 'nh-link', href: '#/t/pick'}, h('span', {text: '날짜별 기록 보기'}), h('i', {'aria-hidden': 'true', text: '›'})),
+  h('a', {class: 'nh-link', href: '#/t/picks'}, h('span', {text: '고른 회사 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
 
 /** 사고판 돈 — 개인 · 외국인 · 기관 한 줄씩(이름 · 막대 길이 = 크기 · 빨강 = 더 산 돈 · 파랑 = 더 판 돈 · 값 글) — 억 원 */
 function flowBars(F) {
@@ -353,14 +212,13 @@ export function mktBox(band, news, H = null) {
 export function whyBox({done = false} = {}) {
   const go = h('a', {class: 'nh-go', href: '#/why'}, h('span', {text: '「왜 사?」 시작하기'}), h('i', {'aria-hidden': 'true', text: '›'}));
   const back = done ? h('a', {class: 'nh-link', href: '#/gdr'}, h('span', {text: '지난 답 돌아보기'}), h('i', {'aria-hidden': 'true', text: '›'})) : null;
-  return h('section', {class: 'nh-sec nh-why', 'data-w': 'gdr', 'aria-label': '사기 전에 확인하기'},
-    h('h2', {class: 'nh-h2', text: '사기 전에 확인하기'}),
-    h('p', {class: 'nh-d', text: '약 2분 걸립니다. 답은 이 기기에만 남습니다.'}), back, go);
+  return h('section', {class: 'nh-sec nh-why', 'data-w': 'gdr', 'aria-label': '사기 전에 확인하기'}, back, go); // 제목 · 「약 2분」 줄은 ③ 묻기 머리에 한 번만(2026-10-29 13:33 같은 말 두 번 뺌)
 }
 /** ④ 돌아보기(2026-10-29 네 걸음 · 본질 「한 달 뒤 그날 정한 대로 했어?로 돌아보게 한다」) — 마르쿠스 아우렐리우스 「날마다 돌아봄」 · 다윈 「어긋난 사실을 바로 적음」 · 사마천 「있는 그대로」
    한 달 된 기록이 있는 기기만 「한 달 전에 정한 대로 했나요?」 줄(app.js monthLine · a.w-month) · 한 달 뒤 쪽 고리 #/why/later */
 export function backBox({month = null} = {}) {
   const head = partHead({n: '4', k: '돌아보기', line: '정한 대로 했는지 봐요', cap: '한 달 뒤에 묻고, 틀린 것도 지우지 않아요.'}); // 두 글꼴 모두 한 줄(글꼴이 와도 칸 안이 안 밀리게)
+  head.append(sage('퍼스', '해 본 결과로 맞았는지 봐요.')); // 퍼스 「생각의 뜻은 해 본 결과에 있다」(1878 「생각을 어떻게 또렷하게 할까」)
   if (month) head.append(month);
   head.append(h('a', {class: 'nh-link', href: '#/why/later'}, h('span', {text: '한 달 뒤 기록 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
   return head;
