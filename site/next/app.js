@@ -746,10 +746,15 @@ function zoneCount(names) {
 /** 칩 쪽 맨 위 결 한 줄(총정리 C1 ~ C6) — 굵은 글 한 줄(문장 한두 개) + 작은 글 한 줄 + 고리 한 줄(48px) · note() 앞 · 차례 · 목록은 그대로 */
 const chipLead = (t1, t2 = null, sub = null, go = null) => h('div', {class: 'c-lead'}, h('p', {class: 'c-lt'}, h('span', {text: t1}), t2 ? [' ', h('span', {text: t2})] : null),
   sub ? h('p', {class: 'c-ls', text: sub}) : null, go ? h('a', {class: 'c-go', href: go[0]}, h('span', {text: go[1]}), h('i', {'aria-hidden': 'true', text: '›'})) : null);
-/** 업종 채널 이름 밑 결 한 줄(총정리 C7) — 「테마 시계로 보면 지금 시듦 자리 2일째예요 ›」 → 테마 업종 쪽(#/t/i/<업종>) · 자료가 없으면 null(줄 없음) */
+/** 업종 채널 이름 밑 결 한 줄(총정리 C7) — 사장님 2026-10-29 19:10 「이것도 하고 다해!」(물음 「다음은 업종 쪽 글도 쉽게 바꿀까요?」 · docs/design/plain-2026-10-29/order-1910.txt)
+ *  옛 「테마 시계로 보면 지금 시듦 자리 2일째예요 ›」 → 회사 쪽(wZone)과 같은 쉬운 말 두 줄 「한 달 동안 시장보다 12% 더 올랐어요」 · 작은 글 「지난 닷새는 시장보다 3% 덜 올랐어요」 ›
+ *  누르면 그 업종의 테마 쪽(#/t/i/<업종>) 그대로 · 자리(data-z)는 꼬리표로만 · 자료가 없거나 한 달 값이 비면 null(줄 없음) · 지난 기록만(앞날 말 없음) */
 function chZone(n) {
-  const I = thInd(n); if (!I) return null;
-  return h('a', {class: 'ch-z', href: '#/t/i/' + enc(n)}, h('span', {class: 'ch-zt'}, h('span', {text: '테마 시계로 보면 지금'}), ' ', h('b', {text: TH_ZONES[I.z]}), ' ', h('span', {text: I.d ? '자리 ' + num(I.d) + '일째예요' : '자리예요'})), h('i', {'aria-hidden': 'true', text: '›'}));
+  const b = thFull()?.inds?.find(i => i?.n === n) ?? thHome()?.inds?.find(i => i?.n === n);
+  if (!b || !Number.isFinite(b.x)) return null;
+  return h('a', {class: 'ch-z', href: '#/t/i/' + enc(n), 'data-z': TH_ZONES[b.z] ? b.z : null},
+    h('span', {class: 'ch-zt'}, h('span', {class: 'ch-zm', text: vsMkt(b.x, '한 달 동안')}), Number.isFinite(b.y) ? h('small', {class: 'ch-zn', text: vsMkt(b.y, '지난 닷새는')}) : null),
+    h('i', {'aria-hidden': 'true', text: '›'}));
 }
 /** 미국 지수 이름 밑 작은 뜻 글(총정리 C6 — 이름만으로는 무엇인지 모름) */
 const US_MEAN = {INX: '미국 큰 회사 500곳', IXIC: '기술 회사가 많은 미국 시장', DJI: '미국 큰 회사 30곳', SOX: '미국 반도체 회사들', VIX: '겁날 때 오르는 숫자'};
@@ -1256,9 +1261,10 @@ VIEWS.gift = a => page('gift', a); // 상품권 방(사장님 2026-10-22 03:38 �
 VIEWS.dori = async () => { // 돌이 단추(아래 줄 넷째 · 사장님 2026-10-26 14:40 「어 넣어」 — 물음 「없어지는 셋은 돌이 단추 안에 넣을까요?」) — 시황 · 관심 · 보유종목 + 오늘 장 · 돌이 인사 · 고객센터
   const it = (label, href) => h('a', {class: 'dm-it', href}, h('b', {text: label}), h('i', {'aria-hidden': 'true', text: '›'}));
   return {title: NAME, nodes: [h('h1', {class: 'h', text: NAME}), h('nav', {class: 'dm', 'aria-label': NAME},
-    it('한 달 뒤', '#/why/later'), it('보유종목', '#/me'), it('관심', '#/sub'), it('오늘 장', '#/'), it('시황', '#/shorts'), it(NAME + ' 인사', '#/t/hello'), it('고객센터', '#/help')), // 결(사장님 2026-10-27 01:50 「중요순 · 기승전결」) — 한 달 뒤 → 내 것 → 시장 → 인사 · 고객센터
+    it('한 달 뒤', '#/why/later'), it('보유종목', '#/me'), it('관심', '#/sub'), it('오늘 장', '#/'), it('시황', '#/shorts'), it('서른아홉 스승', '#/sage'), it(NAME + ' 인사', '#/t/hello'), it('고객센터', '#/help')), // 서른아홉 스승 = 생각 공부(2026-10-29 19:14) — 시장 다음 · 인사 앞 // 결(사장님 2026-10-27 01:50 「중요순 · 기승전결」) — 한 달 뒤 → 내 것 → 시장 → 인사 · 고객센터
     h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};
 };
+VIEWS.sage = a => page('sage', a); // 서른아홉 스승(사장님 2026-10-29 19:14 「…예술적인 걸작을 만들어 봐라 퍼음 부처 끝까지」 · p-sage.js · docs/design/wise39-2026-10-29) — 둘이 단추 안 · 첫 화면 스승 줄에서
 VIEWS.help = a => page('help', a); // 고객센터(사장님 2026-10-21 22:54 · 22:55 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · 23:09 · p-help.js) — 모든 기기 · 맨 아래 고리
 VIEWS.admin = a => page('admin', a); // 관리자 화면(사장님 2026-10-19 13:54 「관리자 페이지도 있어야 해」 · 사장님 열쇠 기기만 · p-admin.js)
 VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 진화 쪽 길(사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」 · 일꾼 KM) — 모든 기기가 엶 · 단추는 p-jinhwa 가 사장님 열쇠 기기에서만 그림 · 합계 칸 참고 「연 수」 쪽마다 한 번(일꾼 KD)
@@ -1273,7 +1279,7 @@ jhBtn.after(giftBtn);
 /* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
 const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};
-const DOCK = {dori: 'dori', shorts: 'dori', sub: 'dori', me: 'dori', help: 'dori'}; // 아래 단추 넷(꽃 될 회사 · 지난 기록 · 왜 사? · 돌이 — 기승전결 · 사장님 2026-10-27 01:50 · 02:15 · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이) · 창 제목은 위 TAB_NAME 그대로(쪽 이름)
+const DOCK = {dori: 'dori', shorts: 'dori', sub: 'dori', me: 'dori', help: 'dori', sage: 'dori'}; // 아래 단추 넷(꽃 될 회사 · 지난 기록 · 왜 사? · 돌이 — 기승전결 · 사장님 2026-10-27 01:50 · 02:15 · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이) · 창 제목은 위 TAB_NAME 그대로(쪽 이름)
 const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today', 'why', 'gdr']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
 /* 흰 판(사장님 2026-10-19 02:03 · 올리기 ① 「색과 첫 화면」) — html.white 는 첫 화면(#/ · 칩 없는 '' 길)에서만 · 다른 길은 뗌 · 창 위 띠 색(theme-color)도 같이
    index.html 이 white 로 시작(첫 그림이 늦지 않게) → 여기서 곧바로 길에 맞춤 → 화면을 바꿀 때마다 새 화면과 같은 순간에 바꿈 */

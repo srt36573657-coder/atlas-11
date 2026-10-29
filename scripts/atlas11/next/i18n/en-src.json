@@ -10166,6 +10166,7 @@
   "{n}거래일 중 가장 크게 내린 폭 {n}%": "Largest drop within {n1} trading days {n2}%",
   "{d}보다 ?": "? vs {d}",
   "한 달 중 가장 크게 내린 폭 ?": "Largest drop within a month ?",
-  "{n}거래일 중 가장 크게 내린 폭 ?": "Largest drop within {n} trading days ?"
+  "{n}거래일 중 가장 크게 내린 폭 ?": "Largest drop within {n} trading days ?",
+  "서른아홉 스승": "39 Masters"
  }
 }

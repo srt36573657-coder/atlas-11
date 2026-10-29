@@ -20,7 +20,7 @@ if (isHome && v && boot) {
   const fm = el('div', 'nh-fm'); fm.setAttribute('role', 'group'); fm.setAttribute('aria-label', '한 달 동안 시장보다 더 오른 업종과 덜 오른 업종');
   const key = (k, t) => { const p = el('p', 'nh-fk nh-fk-' + k); p.append(hid(el('i')), el('span', null, t)); return p; };
   const rows = k => { const ol = el('ol', 'nh-fl nh-fl-' + k); for (let j = 0; j < 3; j++) ol.append(el('li', 'nh-fr nh-f0')); return ol; };
-  const sage = el('p', 'nh-sage'); sage.append(hid(el('i', null, '“')), el('b', null, '애덤 스미스'), ' ', el('span', null, '사려는 사람이 많으면 값이 올라요.'));
+  const sage = el('a', 'nh-sage'); sage.href = '#/sage/adamsmith'; sage.append(hid(el('i', null, '“')), el('b', null, '애덤 스미스'), ' ', el('span', null, '사려는 사람이 많으면 값이 올라요.')); // 다 그린 뒤(home-new.js sage)와 같은 고리 · 같은 높이
   fm.append(key('up', '돈이 몰린 곳'), rows('up'), key('dn', '돈이 빠진 곳'), rows('dn'), el('p', 'nh-fc', '한 달 동안 시장과 견준 값이에요.'), sage);
   const go = el('button', 'nh-go nh-gopick'); go.type = 'button'; go.append(el('span', null, '지난 기록으로 고른 회사 보기'), hid(el('i', null, '›')));
   const door = el('div', 'nh-door'); door.append(go);

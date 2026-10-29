@@ -455,6 +455,7 @@ html.home #view .nh-sage { display: grid; grid-template-columns: 34px minmax(0, 
 html.home #view .nh-sage i { grid-row: 1 / span 2; align-self: start; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #F7D4DE; color: #7A1238; font-style: normal; font-size: 17px; font-weight: 900; }
 html.home #view .nh-sage b { grid-column: 2; font-size: 17px; font-weight: 900; color: #7A1238; }
 html.home #view .nh-sage span { grid-column: 2; }
+html.home #view a.nh-sage b::after { content: ' ›'; } /* 누르면 그 스승 한 장(#/sage/<이름> · 2026-10-29 19:14) — 이름 뒤 작은 화살 하나만(크기 · 자리는 그대로) */
 /* ② 고른 회사 — 오늘 맞은 회사 · 분명한 문장 둘 · 최근 두 달 */
 html.home #view .nh-rec { scroll-margin-top: 76px; }
 html.home #view .nh-rec > .nh-pm, html.home #view .nh-rec > .nh-pl { margin: 0; }

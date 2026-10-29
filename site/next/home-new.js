@@ -64,7 +64,9 @@ export function flowRows(TH) {
 }
 const amt = v => { const a = Math.abs(v); return a < 1 ? a.toFixed(1) : String(Math.round(a)); };
 /** 스승 한 줄 — 동그라미 첫 글자 · 이름 · 한 문장(지어낸 따옴말이 아니라 그 사람 생각을 쉬운 말로 · docs/design/babo-2026-10-29/brief.md 출처) */
-export const sage = (who, say) => h('p', {class: 'nh-sage'}, h('i', {'aria-hidden': 'true', text: '“'}), h('b', {text: who}), ' ', h('span', {text: say}));
+/** 스승 이름 → 서른아홉 스승 카드(#/sage/<이름> · p-sage.js · 사장님 2026-10-29 19:14 「정말 정말 쉽기 이용하고 따딱딱」) — 누르면 그 사람 한 장 · 모양 · 크기는 그대로(누르는 자리 48px) */
+export const SAGE_ID = Object.freeze({'애덤 스미스': 'adamsmith', '소크라테스': 'socrates', '리콴유': 'leekuanyew', '다윈': 'darwin', '덩샤오핑': 'dengxiaoping', '퍼스': 'peirce'});
+export const sage = (who, say) => h(SAGE_ID[who] ? 'a' : 'p', {class: 'nh-sage', href: SAGE_ID[who] ? '#/sage/' + SAGE_ID[who] : null}, h('i', {'aria-hidden': 'true', text: '“'}), h('b', {text: who}), ' ', h('span', {text: say}));
 function flowMap(TH) {
   const {up, dn} = flowRows(TH), max = Math.max(1, ...[...up, ...dn].map(i => Math.abs(i.x)));
   const row = (i, k) => { const bar = h('i', {class: 'nh-fbar', 'aria-hidden': 'true'}); bar.style.width = Math.max(8, (Math.abs(i.x) / max) * 100).toFixed(1) + '%'; // 줄 안을 채운 막대(이름 · 값 글은 막대 위)

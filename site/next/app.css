@@ -133,7 +133,9 @@ html.white.home .w-news .w-chain[hidden] { display: none; }
 html.white.home #view:has(.w-chain:not([hidden])) .s-thumb { position: static; }
 /* 업종 채널 이름 밑 테마 시계 자리 한 줄(총정리 C7) — 글 시작은 이름과 같은 16px · 누르는 자리 48px */
 .ch-z { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-1); min-height: 48px; margin: var(--sp-1) var(--sp-2) 0; color: var(--ink); font-size: var(--fs-1); line-height: 1.4; }
-.ch-zt { min-width: 0; text-decoration: underline; text-decoration-color: var(--hair2); text-underline-offset: 4px; }
+.ch-zt { display: grid; min-width: 0; } /* 두 줄(한 달 · 닷새 — 2026-10-29 19:10 「업종 쪽 글도 쉽게」) · 같은 왼쪽 줄 */
+.ch-zm { text-decoration: underline; text-decoration-color: var(--hair2); text-underline-offset: 4px; }
+.ch-zn { color: var(--sub); font-size: var(--fs-1); }
 .ch-zt b { font-weight: 800; }
 /* 큰 카드 그림([6] 8) — 큰 숫자 = 마지막 날 하루(앞에 작은 「하루」) · 기간 %는 아래 오른쪽 작은 칸(「5일 +110%」) */
 .th .big .bk { font-size: var(--fs-1); font-weight: 600; color: var(--sub); }

@@ -20,7 +20,7 @@
 import os, re, sys, glob, colorsys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
-SRC = sorted(f for f in glob.glob(os.path.join(ROOT, 'site/next/*.css')) if not f.endswith(('/clock.css', '/home-new.css', '/p-why.css')))
+SRC = sorted(f for f in glob.glob(os.path.join(ROOT, 'site/next/*.css')) if not f.endswith(('/clock.css', '/home-new.css', '/p-why.css', '/p-sage.css')))  # p-sage.css(서른아홉 스승 · 2026-10-29 19:14)는 판 색 이름(var(--card) …)만 쓰고 제 걸음 빛 넷을 가짐 — 셈 밖
 PAL = 'teal' if '--teal' in sys.argv[1:] else 'pink' if '--pink' in sys.argv[1:] else 'neon'  # 기본 = 밤 무대 판(2026-10-29 16:57) · 옛 핑크 --pink · 옛 청록 --teal
 OUT = os.path.join(ROOT, 'site/next/clock.css')
 

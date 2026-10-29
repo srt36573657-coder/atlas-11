@@ -68,6 +68,7 @@ const READY = new Set(((/const READY = new Set\(\[([^\]]*)\]\);/.exec(await fs.r
 const oldOr = (k, h) => (READY.has(k) ? h : '/atlas/' + h);
 // 고도리 칸 자료(/next/data/gdr.json — 2026-10-17 17:54 「고도리 만들기 · 한 장 명령문」) — #/gdr/<번호> 고리 · 첫 화면 칸 수에 씀(못 받으면 첫 화면은 「?」 줄)
 const GDR = await fetchJSON(base + '/next/data/gdr.json', 'gdr.json').catch(() => null);
+const SAGE = await fetchJSON(base + '/next/data/sage39.json', 'sage39.json').catch(() => null); // 서른아홉 스승(#/sage · 2026-10-29 19:14) — 사람 이름(id)이 자료에 있어야 아는 고리
 if (READY.has('gdr') && !Array.isArray(GDR?.picks)) fail('자료', '/next/data/gdr.json 을 못 받음');
 /** 매매일지 기록 한 줄(p-why 꼴 — 답 열한 개가 다 있으면 「질문을 끝낸」 기록 · 고도리 칸이 열림) — daysAgo = 며칠 전 */
 const WHY_KEY = 'atlas:godori-why';
@@ -137,6 +138,8 @@ const knownHref = h => {
   if ((mm = /^#\/t\/i\/([^/]+)(?:\/(?:path|spread|big|co|near))?$/.exec(h))) { let nm = mm[1]; try { nm = decodeURIComponent(nm); } catch { return false; } return (core.industries ?? []).some(i => i.name === nm); } // 업종 여섯 쪽 — 업종 이름이 자료에 있어야
   if ((mm = /^#\/t\/c\/([0-9A-Z]{6})(?:\/(?:lead|why|rank|unknown|keep))?$/.exec(h))) return !!CO[mm[1]]; // 회사 여섯 쪽
   if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)
+  if (h === '#/sage') return true; // 서른아홉 스승 첫 쪽(둘이 단추 안 · p-sage.js)
+  if ((mm = /^#\/sage\/([a-z]+)$/.exec(h))) return !!SAGE?.people?.some(x => x.id === mm[1]); // 한 사람(첫 화면 스승 줄 · 앞 · 다음) — 이름이 sage39.json 에 있어야
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)
   if ((mm = /^#\/why\/([0-9A-Z]{6})$/.exec(h))) return READY.has('why') && !!CO[mm[1]]; // 「이 회사로 왜 사?」(회사 화면 a.why-go · 보유종목 「이 회사로 왜 사? 적기」 — [3] 2)
   if ((mm = /^#\/gdr(?:\/(\d+))?$/.exec(h))) return READY.has('gdr') && (mm[1] == null || !!GDR?.picks?.some(x => String(x.no) === mm[1])); // 고도리 칸 · 카드 하나(번호는 gdr.json 에 있어야)
@@ -169,6 +172,7 @@ const MODR = {surge: ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/su
   why: ['#/why', '#/why/005930', '#/why/' + firstCo], gdr: ['#/gdr', ...(GDR?.picks?.length ? ['#/gdr/' + GDR.picks[0].no] : [])]}; // 고도리 한 장 명령문 — 매매일지(종목을 고르고 연 길 포함) · 고도리 칸 · 카드 하나 열린 길
 // 친구가 연 보내기(#/s/<번호>/<보낸 날>/<그날 값>/<s|a> — [4] 6 · 7 · 8 · p-share) · 깨진 주소
 ROUTES.push('#/gift'); // 상품권 방(2026-10-22 03:38) — 세 폭 · 쓰지 않을 말 · 44px · 고리
+ROUTES.push('#/sage', '#/sage/socrates', '#/sage/marcus', '#/sage/lincoln'); // 서른아홉 스승(2026-10-29 19:14) — 첫 쪽 · 첫 사람 줄 · 긴 이름 · 끝 사람(다음 = 처음) · 서른아홉 모두는 check_sage
 ROUTES.push('#/s/005930/' + mkt.base + '/70000/s', '#/s/005930/' + mkt.base + '/70000/a', '#/s/ZZZZZZ/2026-13-40/0/s');
 for (const [k, rs] of Object.entries(MODR)) if (READY.has(k)) ROUTES.push(...rs); // 옮긴 쪽도 세 폭 · 쓰지 않을 말 · 44px · 고리
 for (const w of [320, 360, 390]) {
