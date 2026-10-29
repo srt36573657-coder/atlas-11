@@ -1,0 +1,20 @@
+{
+ "schema": "duri-check-sage-1",
+ "at": "2026-10-29T21:58:02.848Z",
+ "base": "https://aaa7377.com",
+ "counts": {
+  "pass": 1481,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "people": 39,
+  "steps": [
+   10,
+   10,
+   10,
+   9
+  ]
+ },
+ "brand": "둘이"
+}
