@@ -1,5 +1,5 @@
 {
- "made": "2026-10-29T12:19:25.480Z",
+ "made": "2026-10-29T16:05:31.488Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -29,7 +29,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 5065,
+    "height": 8209,
     "fold": null,
     "hero": null
    },
@@ -59,7 +59,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1872,
+    "height": 2066,
     "fold": null,
     "hero": null
    },
@@ -89,7 +89,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1898,
+    "height": 2209,
     "fold": null,
     "hero": null
    },
@@ -97,29 +97,29 @@
    "parts": {}
   },
   {
-   "name": "ind",
-   "hash": "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4",
+   "name": "dori",
+   "hash": "#/dori",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/ind-390.png",
-    "reports/atlas11/probe/live-shot/ind-390-long.png"
+    "reports/atlas11/probe/live-shot/dori-390.png",
+    "reports/atlas11/probe/live-shot/dori-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4",
-    "title": "반도체 업종 · 둘이",
-    "h1": "반도체 업종",
+    "hash": "#/dori",
+    "title": "둘이 · 둘이",
+    "h1": "둘이",
     "kakaoText": 1,
-    "kakaoRow": 88,
-    "kakaoAll": 89,
+    "kakaoRow": 0,
+    "kakaoAll": 1,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 4943,
+    "height": 1062,
     "fold": null,
     "hero": null
    },
@@ -157,7 +157,7 @@
     "fold": null,
     "hero": {
      "bottom": -2837,
-     "room": 845,
+     "room": 859,
      "vh": 844,
      "fit": true
     }
@@ -169,36 +169,6 @@
     "rec": "2 고른 회사 돈이 몰린 업종에서 지난 기록으로 골라요 오늘은 조건에 맞은 회사가 없어요. 31곳 이렇게 고른 회사 24곳 아무 회사나 이렇게 고른 회사 100곳 중 31곳이 한 달 뒤 시장보다 5% 넘게 더 올랐어요. 같은 날 아무 회사나 골랐다면 100곳 중 24곳이었어요. 최근 두 달은 100곳 중 21곳 대 25곳으로 졌어요. “ 다윈 내 생각과 다른 기록도 바로 적어요. “ 덩샤오핑 말보다 결과를 봐요. 날짜별 기록 보기 › 고른 회사 모두 보기 ›",
     "why": "「왜 사?」 시작하기 ›"
    }
-  },
-  {
-   "name": "dori",
-   "hash": "#/dori",
-   "size": [
-    390,
-    844
-   ],
-   "files": [
-    "reports/atlas11/probe/live-shot/dori-390.png",
-    "reports/atlas11/probe/live-shot/dori-390-long.png"
-   ],
-   "errs": [],
-   "info": {
-    "hash": "#/dori",
-    "title": "둘이 · 둘이",
-    "h1": "둘이",
-    "kakaoText": 1,
-    "kakaoRow": 0,
-    "kakaoAll": 1,
-    "days": 0,
-    "firstDay": null,
-    "graphs": 0,
-    "calgo": false,
-    "height": 1062,
-    "fold": null,
-    "hero": null
-   },
-   "err": null,
-   "parts": {}
   }
  ]
 }
