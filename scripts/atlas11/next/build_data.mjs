@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // 새 화면(/next/) 작은 자료 만들기 — 올릴 때 한 번(사장님 2026-10-18 [9] 7 「첫 화면용 작은 요약 파일(몇 KB)을 만들고 …」 · [5] 9 한 달 뒤 가운데 값)
 //   부르는 것: build/home_summary.mjs(첫 화면 요약 · 8KB 아래) · build/median20.mjs(매매일지 · 모든 회사 한 달 가운데 값) · essenceFacts(아래 · 첫 화면 본질 세 줄) · build/theme.mjs(테마 시계 · theme.json · theme-more.json)
+//             · build/flow_why.mjs(① 돈 흐름 까닭 열한 가지 · flow-why.json — 따로 다시 세기 verify/flow_why_verify.py 가 맞을 때만 · 2026-10-30)
 //   읽음: <site>/atlas/data/*.json · co/*.json · 저장소 업데이트 기록 reports/atlas11/t365/updates/*.json — 쓰는 곳: <site>/next/data/{home-summary,median20}.json(사이트 자료는 바꾸지 않음)
 //   쓰는 법: node scripts/atlas11/next/build_data.mjs [--site site|dist] [--verify]
 //            import {buildData} from './next/build_data.mjs'; await buildData({siteDir: dist})   ← package.mjs 가 rollAtlas 뒤에 부름(dist 의 굴린 자료로 셈 · 업데이트 기록은 rollAtlas 가 막 적은 것까지)
@@ -17,11 +18,13 @@
 //   fourADay  = 7일 가운데 평일(월 ~ 금)마다 n = 4 이고 slots = 4 일 때만 true(평일이 하나도 없으면 false) — 화면은 이것이 true 일 때만 「하루 4번」
 //   받은 기록 = served 'rolled'(새로 굴린 자료를 올림) · fetch.ok > 0(네이버 일봉을 받음) · result 가 「실패」 아님 — 손 올림(stored · 받지 않음) · 지금 사이트 자료를 다시 올린 것(live)은 셈 밖
 import fs from 'node:fs';
+import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {build as homeSummary} from './build/home_summary.mjs';
 import {build as median20} from './build/median20.mjs';
 import {build as themeBuild} from './build/theme.mjs'; // 테마 시계(사장님 2026-10-19 16:54 · 결정표 docs/design/theme-2026-10-19/theme-engine.md) — 못 만들면 옛 파일을 지움(지난 판 자리를 오늘 것처럼 보이지 않게)
+import {build as flowWhy} from './build/flow_why.mjs'; // ① 돈 흐름 몰린 곳 까닭 열한 가지(사장님 2026-10-30 04:27 · 05:03 「응」 · 결정표 docs/design/why11-2026-10-30/decision.md) — 테마 막대를 새로 쓴 때만 · 따로 다시 세기(파이썬)가 맞을 때만 둠
 import {coCount} from '../../../site/next/essence.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -81,11 +84,22 @@ export async function buildData({siteDir = 'site', verify = false, log = console
     out.themeError = e.message; log('테마 시계 못 만듦 — ' + e.message);
     for (const f of ['theme.json', 'theme-more.json', 'theme-home.json', 'theme-co.json', 'theme-path.json', 'theme-cal.json', 'theme-bloom.json']) fs.rmSync(path.join(siteDir, 'next', 'data', f), {force: true}); // 화면은 파일이 없으면 「?」 한 줄
   }
+  // 까닭 열한 가지 — 막대(theme-home.json)를 이번에 새로 쓴 때만 그 몰린 곳 셋으로 셈 · 따로 다시 세기(scripts/atlas11/verify/flow_why_verify.py)가 틀림 0 일 때만 둠
+  //   못 만들거나 다르면 파일을 지움(화면은 「왜? 아직 못 셌어요.」 · 불빛 모두 「?」 — 같은 높이) · 지난 판 까닭을 오늘 막대에 붙이지 않게
+  const whyFile = path.join(siteDir, 'next', 'data', 'flow-why.json');
+  if (out.theme) {
+    try {
+      const r = await flowWhy({siteDir, viewDir: path.join(ROOT, 'public/data/atlas11/view')});
+      const v = spawnSync('python3', ['-I', path.join(ROOT, 'scripts/atlas11/verify/flow_why_verify.py'), '--site', siteDir, '--view', path.join(ROOT, 'public/data/atlas11/view'), '--file', whyFile], {encoding: 'utf8', timeout: 180000});
+      if (v.status !== 0) throw Error('따로 다시 세기 다름 — ' + String((v.stdout || '') + (v.stderr || '') || v.error?.message || '').trim().split('\n').slice(-3).join(' / ').slice(0, 400));
+      out.why = r.line + ' · ' + String(v.stdout).trim(); log('까닭 열한 가지 ' + out.why);
+    } catch (e) { out.whyError = e.message; log('까닭 열한 가지 못 만듦 — ' + e.message); fs.rmSync(whyFile, {force: true}); }
+  } else fs.rmSync(whyFile, {force: true});
   return out;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const a = process.argv.slice(2), si = a.indexOf('--site');
   const r = await buildData({siteDir: si >= 0 ? a[si + 1] : 'site', verify: a.includes('--verify')});
-  if (r.homeSummaryError || r.median20Error || r.essenceError || r.themeError) process.exit(1);
+  if (r.homeSummaryError || r.median20Error || r.essenceError || r.themeError || r.whyError) process.exit(1);
 }

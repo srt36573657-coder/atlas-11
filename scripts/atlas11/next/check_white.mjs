@@ -29,6 +29,8 @@
 //     ② 글자 수 = 첫 한 화면(찾기 줄 · 아래 단추 위)에 보이는 글만 · 기준 처음 온 기기 지금의 90%(설명을 늘린 새 첫 화면 — 아래로 내리면 읽는 설명은 셈 밖)
 //     시황 단추 「왜 그럴까?」 → 「왜 그런지 보기」 · 한 달 된 기록 줄 「그날 정한 대로 했어?」 → 「한 달 전에 정한 대로 했나요?」(공식 안내 말투)
 //     ③ 카톡 보내기 2번 안 → 첫 화면 카톡 단추 0(다단계처럼 보임 — 카톡은 다른 쪽 맨 아래 그대로)
+//   ★ 2026-10-30 까닭 열한 가지(사장님 04:27 · 05:03 「응」 · docs/design/why11-2026-10-30): ① 「소개 칸 한 화면 안」 → 「머리 · 권하지 않음 · 첫 몰린 곳 「왜?」 줄이 찾기 줄 위」
+//     (몰린 곳마다 「왜?」 · 불빛 열하나로 칸이 한 화면보다 길어짐 · 칸 속 검사는 check_why11.mjs)
 //   실패가 하나라도 있으면 끝 코드 1 — 단 저장소에 site/next/home.css(새 첫 화면)가 생기기 전에는 알림만(끝 코드 0 · enforced false · 스위치 한 곳 white_gate.mjs whiteOn)
 //   올리기 직전 정적 문 = white_gate.mjs(deploy_netlify.mjs 본질 문 곁) · 잣대 한 장 = docs/골똘이_화면잣대.md
 import fs from 'node:fs';
@@ -72,10 +74,13 @@ const MEASURE = () => {
   out.themeChars = 0;
   out.top = []; // 글자 수를 이룬 글(테마 칸 밖 · 많은 차례) — 걸리면 어느 글이 늘었는지 보이게(2026-10-20 「다시 온 기기 ② 글자 수 107 > 105」 까닭을 이 방에서 못 봄)
   const thumbEl = document.querySelector('.s-thumb'), foldY = Math.min(out.tabsTop, thumbEl && vis(thumbEl) ? thumbEl.getBoundingClientRect().top : Infinity); // 첫 한 화면 = 찾기 줄 · 아래 단추 위(2026-10-28 새 첫 화면)
+  out.thumbTop = Number.isFinite(foldY) ? Math.round(foldY) : null; // ① 칸 머리 잣대의 한 화면 끝(2026-10-30 — 떠 있는 찾기 줄이 가리는 자리)
   for (const el of root.querySelectorAll('*')) if (vis(el)) { const n = (ownText(el).match(/[가-힣ㄱ-ㅎA-Za-z]/g) || []).length; if (el.getBoundingClientRect().top >= foldY || el.closest('.s-thumb')) continue; if (el.closest('section.th-home') && !el.closest('ol.s-story')) out.themeChars += n; else { out.chars += n; if (n) out.top.push([n, (el.closest('[data-w]')?.getAttribute('data-w') ?? '-') + ' ' + el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className ? '.' + el.className.split(' ')[0] : ''), ownText(el).slice(0, 30)]); } }
   out.top.sort((x, y) => y[0] - x[0]); // 본질 세 줄(ol.s-story)은 2026-10-27 기승전결로 테마 칸 안(승 뒤)에 들어갔지만 글자 셈은 예전처럼 테마 밖(사장님 01:50 「돌이가 중요순으로 해서 기승전결이 되게해」 · 잣대는 그대로) // 글자 = 한글 · 로마자(숫자 · 기호는 자료라 날마다 길이가 바뀜 — 기준과 같은 셈) · 테마 시계 칸은 따로(2026-10-19)
   { const hr = document.querySelector('#view section.nh-hero'), hh = hr?.querySelector('.nh-h1'), mp = document.querySelector('#view section.nh-map');
-    out.hero = hr && vis(hr) ? {bottom: Math.round(hr.getBoundingClientRect().bottom), h1Bottom: hh && vis(hh) ? Math.round(hh.getBoundingClientRect().bottom) : null, no: /사고팔기를 권하지 않습니다/.test(hr.textContent)} : null;
+    const no = hr?.querySelector('.nh-no'), w1 = hr?.querySelector('ol.nh-fl-up > li .y11-l'); // 2026-10-30 까닭 열한 가지 — 권하지 않습니다 줄 · 첫 몰린 곳 「왜?」 줄
+    out.hero = hr && vis(hr) ? {bottom: Math.round(hr.getBoundingClientRect().bottom), h1Bottom: hh && vis(hh) ? Math.round(hh.getBoundingClientRect().bottom) : null, no: /사고팔기를 권하지 않습니다/.test(hr.textContent),
+      noBottom: no && vis(no) ? Math.round(no.getBoundingClientRect().bottom) : null, why1Bottom: w1 && vis(w1) ? Math.round(w1.getBoundingClientRect().bottom) : null} : null;
     out.map = mp && vis(mp) ? {svg: !!mp.querySelector('svg.nh-plot circle'), rows: mp.querySelectorAll('.nh-leg li').length, ask: !!mp.querySelector('[data-say]')} : null; }
   { const tb = document.querySelector('#view section.th-home'), tz = tb?.querySelector('.th-zones'), tz1 = tz?.querySelector('.th-zc'), th = document.querySelector('.s-thumb'), thTop = th && vis(th) ? th.getBoundingClientRect().top : null;
     out.theme = tb && vis(tb) ? {top: Math.round(tb.getBoundingClientRect().top), zonesBottom: tz && vis(tz) ? Math.round(tz.getBoundingClientRect().bottom) : null, rowBottom: tz1 && vis(tz1) ? Math.round(tz1.getBoundingClientRect().bottom) : null, thumbTop: thTop == null ? null : Math.round(thTop)} : null; } // 첫 화면 그림 = 돌 시계 아래 큰 네 칸(사장님 2026-10-25 22:52 「좋아 디자인 신경 더써서 세계 최고로 만들어봐」 · 22:54 「어 진짜 싸이트까지 바꿔」 — 고르신 판 best ①) · 한 해 줄 그림은 그 아래로 · 옛 잣대(2026-10-21 18:22 「그랴」 한 해 줄 그림 · 그 앞은 시계)는 svg.th-yrg 아래 · 이제는 떠 있는 찾기 줄(.s-thumb)에 가리지 않게 그 위까지 // 첫 화면 그림 = 한 해 줄 그림(2026-10-21 18:22 「그랴」 — 궤도 · 행성 지움 · 업종 줄 + 줄 그림) · 옛 판은 시계
@@ -127,7 +132,11 @@ function judge(m, tag, B) {
   check(!!m.news && m.news.facts > 0 && m.news.why === m.news.facts, `${tag} 시황 사실마다 「왜 그런지 보기」 단추`, m.news ? `사실 ${m.news.facts} · 단추 ${m.news.why}` : '');
   for (const k of BLOCKS) check(m.blocks[k] != null, `${tag} ① 칸 ${k}`, '칸이 없음'); // 다섯 칸은 테마 시계 아래에 그대로(2026-10-19 16:54)
   for (const k of THUMB) check(m.blocks[k] != null && m.blocks[k] <= m.tabsTop + 0.5, `${tag} ① 한 화면 엄지 자리 ${k}`, m.blocks[k] == null ? '칸이 없음' : `아래 ${m.blocks[k]} > 아래 단추 ${Math.round(m.tabsTop)}`);
-  { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.hero && m.hero.bottom <= lim + 0.5, `${tag} ① 소개 칸 한 화면 안(무엇을 하는 곳 · 권하지 않음)`, m.hero ? `소개 칸 아래 ${m.hero.bottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '소개 칸(section.nh-hero)이 없음'); } // 2026-10-28 새 첫 화면 — 옛 「테마 시계 네 칸 한 화면 안」
+  { // 2026-10-28 새 첫 화면 — 옛 「테마 시계 네 칸 한 화면 안」 → 「소개 칸 한 화면 안」
+    // 2026-10-30 사장님 04:27 「왜 몰리는지 이유를 11 가지를 거기다 적어놔야 돼」 · 05:03 「응」(docs/design/why11-2026-10-30) — 몰린 곳마다 「왜?」 · 불빛 열하나가 ① 칸에 들어가 칸이 한 화면보다 길어짐
+    //   → 한 화면 안에 둘 것 = 머리 · 「권하지 않습니다」(머리 밑으로 옮김) · 첫 몰린 곳 「왜?」 줄 — 나머지는 내려서 읽음(② 보기 머리는 그대로 첫 화면 밖 · 밀림 0)
+    const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity, m.thumbTop ?? Infinity), hb = m.hero ? Math.max(m.hero.h1Bottom ?? Infinity, m.hero.noBottom ?? Infinity, m.hero.why1Bottom ?? 0) : Infinity;
+    check(!!m.hero && hb <= lim + 0.5, `${tag} ① 소개 칸 머리 · 권하지 않음 · 첫 몰린 곳 「왜?」 한 화면 안`, m.hero ? `머리 ${m.hero.h1Bottom} · 권하지 않음 ${m.hero.noBottom} · 첫 「왜?」 ${m.hero.why1Bottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '소개 칸(section.nh-hero)이 없음'); }
   check(!!m.hero?.no, `${tag} ① 소개 칸 「사고팔기를 권하지 않습니다」`, '소개 칸에 그 줄이 없음');
   check(!!m.map && m.map.svg && m.map.rows === MAP_N && m.map.ask, `${tag} ② 업종 점 그림 · 네 자리 수 · 둘이 물음`, m.map ? `점 ${m.map.svg} · 줄 ${m.map.rows} · 물음 ${m.map.ask}` : '업종 칸(section.nh-map)이 없음'); // 2026-10-28 — 옛 「테마 시계 칸 글자 수」
   if (B) { const lim = Math.floor(0.9 * B.first); /* 2026-10-28 — 첫 한 화면 글만 셈 · 처음 온 기기 · 다시 온 기기 같은 기준(옛: 다시 온 기기는 60%) */ check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(첫 한 화면 · 기준 ${B.first}의 90%) · 글 ${(m.top ?? []).map(x => x[0] + ' ' + x[1] + ' 「' + x[2] + '」').join(' / ')}`); }

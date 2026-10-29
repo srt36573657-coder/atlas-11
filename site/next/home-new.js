@@ -10,6 +10,7 @@
    숫자는 자료 그대로(home.json · theme-home.json · theme-bloom.json · 요약 파일) — 지어 채우지 않음 · 못 받으면 「?」
    글은 textContent 로만 · 색은 home-new.css(글 속 style 없음 · 너비만 CSSOM) · 그림은 svg(바둑판 셈 밖) · 앞날 말 없음 · 사고팔기 권하지 않음 */
 import {RULE} from './theme-rule.js';
+import {ON as EN} from './i18n.js'; // 영어 판이면 까닭 열한 가지 글은 자료 파일의 영어 글을 그대로(flow-why.json en) — 한국어 판은 아무것도 안 바뀜
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -67,25 +68,87 @@ const amt = v => { const a = Math.abs(v); return a < 1 ? a.toFixed(1) : String(M
 /** 스승 이름 → 서른아홉 스승 카드(#/sage/<이름> · p-sage.js · 사장님 2026-10-29 19:14 「정말 정말 쉽기 이용하고 따딱딱」) — 누르면 그 사람 한 장 · 모양 · 크기는 그대로(누르는 자리 48px) */
 export const SAGE_ID = Object.freeze({'애덤 스미스': 'adamsmith', '소크라테스': 'socrates', '리콴유': 'leekuanyew', '다윈': 'darwin', '덩샤오핑': 'dengxiaoping', '퍼스': 'peirce'});
 export const sage = (who, say) => h(SAGE_ID[who] ? 'a' : 'p', {class: 'nh-sage', href: SAGE_ID[who] ? '#/sage/' + SAGE_ID[who] : null}, h('i', {'aria-hidden': 'true', text: '“'}), h('b', {text: who}), ' ', h('span', {text: say}));
-function flowMap(TH) {
-  const {up, dn} = flowRows(TH), max = Math.max(1, ...[...up, ...dn].map(i => Math.abs(i.x)));
-  const row = (i, k) => { const bar = h('i', {class: 'nh-fbar', 'aria-hidden': 'true'}); bar.style.width = Math.max(8, (Math.abs(i.x) / max) * 100).toFixed(1) + '%'; // 줄 안을 채운 막대(이름 · 값 글은 막대 위)
-    return h('li', {class: 'nh-fr'}, bar, h('span', {class: 'nh-fn', 'data-proper': '', text: i.n}), h('b', {class: 'num', text: amt(i.x) + (k === 'up' ? '% 더' : '% 덜')})); };
-  const list = (k, xs) => h('ol', {class: 'nh-fl nh-fl-' + k}, ...Array.from({length: FLOW_N}, (_, j) => (xs[j] ? row(xs[j], k) : h('li', {class: 'nh-fr nh-f0'}))));
+/* 몰린 곳마다 까닭 열한 가지(사장님 2026-10-30(서울) 04:27 「그 돈이 몰리는 이유를 … 왜 몰리는지 이유를 11 가지를 거기다 적어놔야 돼 … 잡스라면 어떻게 표현 할 것인지 … 돈 · 상황 · 정치 여러 가지 각도」
+   · 05:03 「응」 — 그림 시안 「한 줄 결론, 불빛 열한 개, 누르면 자세히. 모르는 것은 「?」 그대로」 · 결정표 docs/design/why11-2026-10-30/decision.md · 말씀 원문 order-0427.txt)
+   자료 = /next/data/flow-why.json(올릴 때 한 번 · scripts/atlas11/next/build/flow_why.mjs · 따로 다시 세기 scripts/atlas11/verify/flow_why_verify.py — 틀림 0 일 때만 둠)
+   줄 하나 = 누르는 칸(details · summary) 하나: 막대 줄 → 「왜?」 한 줄(마디마다 한 줄 · 늘 두 줄 자리) → 불빛 열한 개(돈 · 회사 · 상황 · 정치) · 펼치면 열한 가지 글과 기록 출처
+   자료가 없거나 기준 날이 막대(theme-home.json)와 다르면 「왜? 아직 못 셌어요.」 · 불빛은 모두 「?」(같은 높이 — 여는 동안 칸 boot-home.js 와 같은 자리 · 밀림 0)
+   시장이 내린 달(몰린 곳 가운데 한 곳이라도 실제로 내림)은 머리 「시장이 n% 내릴 때 · 여기는 버텼어요」 · 칸 이름 「덜 내린 곳」 「더 내린 곳」(자료 head — 결정표 4)
+   앞날 말 · 사고팔기 말 없음 · 기사 제목은 그대로 옮기고 신문 · 날짜를 붙임(까닭이라고 단정하지 않음) */
+export const WHY_SCHEMA = 'dori-flow-why-1';
+const WG = [['돈', 'Money', [1, 2, 3]], ['회사', 'Firms', [4, 5, 6]], ['상황', 'Market', [7, 8, 9]], ['정치', 'Politics', [10, 11]]]; // 불빛 무리(자료가 없을 때도 같은 틀 · flow_why.mjs GROUPS 와 같음)
+/** 까닭 자료가 첫 화면 막대와 같은 날 것인가 */
+export const whyOk = (TH, W) => !!(W && W.schema === WHY_SCHEMA && typeof TH?.asOf === 'string' && W.asOf === TH.asOf && Array.isArray(W.inds));
+const DOT = 15, DG = 3;
+/** 불빛 — 켜짐(on · 기록으로 맞음) 칠한 동그라미 · 꺼짐(off · 아님) 빈 동그라미 · 모름(q) 점선 동그라미 안 「?」 모양
+ *  「?」는 글자가 아니라 선 그림(갈고리 + 점) — 글 크기 잣대(17px)는 글에만(check_theme 큰 검사 1/11 「17px 아래 글 ? 10」 · 2026-10-30) */
+function dots(ss) {
+  const w = ss.length * DOT + (ss.length - 1) * DG, s = sv('svg', {class: 'y11-dots', viewBox: `0 0 ${w} ${DOT}`, width: w, height: DOT, 'aria-hidden': 'true'});
+  ss.forEach((st, j) => {
+    const cx = j * (DOT + DG) + DOT / 2, k = st === 'on' || st === 'off' ? st : 'q', f = v => (+v).toFixed(2);
+    s.append(sv('circle', {class: 'y11-' + (k === 'q' ? 'qd' : k), cx, cy: DOT / 2, r: DOT / 2 - 1}));
+    if (k === 'q') s.append(sv('path', {class: 'y11-qt', d: `M${f(cx - 2)} 5.6A2 2 0 1 1 ${f(cx + 1.41)} 7.01L${f(cx)} 8.3V9.3`}), sv('circle', {class: 'y11-qdot', cx: f(cx), cy: 11.2, r: 0.95}));
+  });
+  return s;
+}
+const lightsLabel = ls => { const n = st => ls.filter(x => x === st).length; return EN ? `Of 11 reasons: ${n('on')} yes, ${n('off')} no, ${n('q')} unknown` : `까닭 열한 가지 가운데 맞음 ${n('on')} · 아님 ${n('off')} · 모름 ${n('q')}`; };
+/** 불빛 줄 — 무리 넷(불빛 · 이름) */
+function lightRow(ls) {
+  const all = Array.from({length: 11}, (_, j) => (ls?.[j] === 'on' || ls?.[j] === 'off' ? ls[j] : 'q'));
+  return h('div', {class: 'y11-lt', role: 'img', 'aria-label': lightsLabel(all)}, ...WG.map(([ko, en, ks]) => h('span', {class: 'y11-g'}, dots(ks.map(k => all[k - 1])), h('i', {text: EN ? en : ko}))));
+}
+/** 「열한 가지 보기 ›」 — 늘 한 줄(그림 시안 04:4x 그대로 · 좁은 폭에서도 같은 높이) · 펼치면 화살이 아래로 */
+const moreLine = () => h('div', {class: 'y11-m'}, h('span', {text: EN ? 'See all 11' : '열한 가지 보기'}), h('i', {'aria-hidden': 'true', text: '›'}));
+/** 「왜?」 한 줄 — 마디마다 한 줄(block) · 자료가 없으면 「아직 못 셌어요.」 */
+const whyLine = lines => h('div', {class: 'y11-l'}, h('b', {class: 'y11-q', text: EN ? 'Why?' : '왜?'}),
+  h('span', {class: 'y11-t'}, ...(Array.isArray(lines) && lines.length ? lines : [EN ? 'Not counted yet.' : '아직 못 셌어요.']).map(t => h('span', {text: t}))));
+/** 펼친 칸 — 불빛 뜻 · 무리 넷(이름 · 물음) · 열한 가지(번호 · 이름 · 기록 한 줄 · 출처 한 줄) · 대표 회사 기록이라는 말 */
+function whyList(w, W) {
+  const L = o => (EN ? o?.en : o?.ko), key = (st, ko, en) => h('span', {class: 'y11-k'}, dots([st]), h('span', {text: EN ? en : ko}));
+  const groups = Array.isArray(W.groups) && W.groups.length ? W.groups : WG.map(([ko, en, ks]) => ({ko, en, ks}));
+  return h('div', {class: 'y11-x'},
+    h('p', {class: 'y11-key'}, key('on', '기록으로 맞음', 'Yes by the record'), key('off', '아님', 'No'), key('q', '아직 모름', 'Not known yet')),
+    ...groups.map(g => h('div', {class: 'y11-gr'},
+      h('p', {class: 'y11-gh'}, h('b', {text: EN ? g.en : g.ko}), L(g.q) ? h('span', {text: L(g.q)}) : null),
+      h('ol', {class: 'y11-ol'}, ...(g.ks ?? []).map(k => {
+        const it = (w.items ?? []).find(x => x?.k === k), st = it?.s === 'on' || it?.s === 'off' ? it.s : 'q', tx = L(it);
+        return h('li', {class: 'y11-li', 'data-s': st}, dots([st]), h('div', {class: 'y11-tx'},
+          h('p', {class: 'y11-nm'}, h('b', {class: 'num', text: String(k)}), h('span', {text: L(W.names?.[k]) ?? ''})),
+          h('p', {class: 'y11-tt', text: tx?.t ?? '?'}),
+          tx?.sub ? h('p', {class: 'y11-sub', text: tx.sub}) : null));
+      })))),
+    L(W.note) ? h('p', {class: 'y11-note', text: L(W.note)}) : null);
+}
+/** 몰린 곳 한 줄 — 막대 줄 + 「왜?」 + 불빛(자료가 있으면 누르는 칸 · 없으면 같은 모양 「?」) */
+function upItem(bar, w, W) {
+  if (!w) return h('li', {class: 'y11-i'}, h('div', {class: 'y11-box y11-none'}, h('div', {class: 'y11-s'}, bar, whyLine(null), lightRow(null), moreLine())));
+  return h('li', {class: 'y11-i'}, h('details', {class: 'y11-box'}, h('summary', {class: 'y11-s'}, bar, whyLine(EN ? w.why?.en : w.why?.ko), lightRow(w.lights), moreLine()), whyList(w, W)));
+}
+/** 빈 자리(몰린 곳이 셋보다 적은 날) — 여는 동안 칸과 같은 높이 */
+const upEmpty = () => h('li', {class: 'y11-i y11-e'}, h('div', {class: 'y11-box'}, h('div', {class: 'y11-s'}, h('div', {class: 'nh-fr nh-f0'}), h('div', {class: 'y11-l'}), h('div', {class: 'y11-lt'}), h('div', {class: 'y11-m'}))));
+function flowMap(TH, W = null) {
+  const {up, dn} = flowRows(TH), max = Math.max(1, ...[...up, ...dn].map(i => Math.abs(i.x))), ok = whyOk(TH, W), head = ok && W.head ? W.head : null;
+  const keys = head ? (EN ? head.keys?.en : head.keys?.ko) ?? [] : [];
+  const bar = (i, k, tag) => { const b = h('i', {class: 'nh-fbar', 'aria-hidden': 'true'}); b.style.width = Math.max(8, (Math.abs(i.x) / max) * 100).toFixed(1) + '%'; // 줄 안을 채운 막대(이름 · 값 글은 막대 위)
+    return h(tag, {class: 'nh-fr'}, b, h('span', {class: 'nh-fn', 'data-proper': '', text: i.n}), h('b', {class: 'num', text: amt(i.x) + (k === 'up' ? '% 더' : '% 덜')})); };
+  const upList = h('ol', {class: 'nh-fl nh-fl-up'}, ...Array.from({length: FLOW_N}, (_, j) => (up[j] ? upItem(bar(up[j], 'up', 'div'), ok ? W.inds.find(x => x?.n === up[j].n && Array.isArray(x.items)) ?? null : null, W) : upEmpty())));
+  const dnList = h('ol', {class: 'nh-fl nh-fl-dn'}, ...Array.from({length: FLOW_N}, (_, j) => (dn[j] ? bar(dn[j], 'dn', 'li') : h('li', {class: 'nh-fr nh-f0'}))));
   return h('div', {class: 'nh-fm', role: 'group', 'aria-label': '한 달 동안 시장보다 더 오른 업종과 덜 오른 업종'},
-    h('p', {class: 'nh-fk nh-fk-up'}, h('i', {'aria-hidden': 'true'}), h('span', {text: '돈이 몰린 곳'})), list('up', up),
-    h('p', {class: 'nh-fk nh-fk-dn'}, h('i', {'aria-hidden': 'true'}), h('span', {text: '돈이 빠진 곳'})), list('dn', dn),
+    h('p', {class: 'nh-fk nh-fk-up'}, h('i', {'aria-hidden': 'true'}), h('span', {text: keys[0] ?? '돈이 몰린 곳'})), upList,
+    h('p', {class: 'nh-fk nh-fk-dn'}, h('i', {'aria-hidden': 'true'}), h('span', {text: keys[1] ?? '돈이 빠진 곳'})), dnList,
     h('p', {class: 'nh-fc', text: up.length || dn.length ? '한 달 동안 시장과 견준 값이에요.' : '? 업종 자료를 아직 못 받았어요.'}),
     sage('애덤 스미스', '사려는 사람이 많으면 값이 올라요.'));
 }
 const goPick = () => document.getElementById('nh-p2')?.scrollIntoView({behavior: 'smooth', block: 'start'}); // ② 고른 회사 칸으로(주소 # 는 그대로)
-export function heroBox(TH = null) {
+/** ① 돈 흐름 — 머리(늘 두 줄) · 「권하지 않습니다」(첫 한 화면 안 — 까닭 열한 가지로 칸이 길어져 맨 아래에서 머리 밑으로 · 2026-10-30) · 돈 흐름 판 · ② 로 내려가는 단추 */
+export function heroBox(TH = null, W = null) {
+  const head = whyOk(TH, W) && W.head ? W.head : null, hl = head ? (EN ? head.en : head.ko) : null;
   return h('section', {class: 'nh-hero', 'aria-label': '요즘 돈 흐름'},
     h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '1'}), h('span', {text: '돈 흐름'})),
-    h('h2', {class: 'nh-h1'}, h('span', {text: '요즘 돈은'}), ' ', h('span', {class: 'nh-acc', text: '여기로 몰렸어요'})), // 한 줄 통째(영어 엔진이 문장을 나누지 않게)
-    flowMap(TH),
-    h('div', {class: 'nh-door'}, h('button', {type: 'button', class: 'nh-go nh-gopick', onclick: goPick}, h('span', {text: '지난 기록으로 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))),
-    h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}));
+    h('h2', {class: 'nh-h1'}, h('span', {text: hl?.[0] ?? '요즘 돈은'}), ' ', h('span', {class: 'nh-acc', text: hl?.[1] ?? '여기로 몰렸어요'})), // 늘 두 줄(여는 동안 칸과 같은 높이 · 영어 엔진이 문장을 나누지 않게 줄마다 한 덩이)
+    h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}),
+    flowMap(TH, W),
+    h('div', {class: 'nh-door'}, h('button', {type: 'button', class: 'nh-go nh-gopick', onclick: goPick}, h('span', {text: '지난 기록으로 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))));
 }
 /** 마디 머리 — 동그라미 번호 · 마디 이름 · 큰 숫자 줄 · 결론 한 줄 · 작은 풀이 한 줄 */
 export function partHead({n, k, big = [], line = '', cap = '', id = 'nh-p' + n}) {

@@ -31,6 +31,8 @@ export function checksFor(f) {
   if (/^site\/next\/(app\.js|app\.css|home\.css|home-new\.(js|css)|boot-home\.js|index\.html|p-why\.js|essence\.js)$|^scripts\/atlas11\/next\/(check_white|white_gate)\.mjs$/.test(f)) out.push('check_white', 'white-gate'); // home-new · boot-home = 새 첫 화면(사장님 2026-10-28 11:12 「어」 · docs/design/why-mock-2026-10-28/order-1112.txt)
   if (/^site\/next\/(p-admin\.(js|css)|p-game\.(js|css)|coupon-rule\.js|game-rule\.js)$|^lib\/atlas11\/(coupon|game|kakao|kakao-store|auto)\.mjs$|^tests\/atlas11\/(coupon|game|kakao|auto)\.test\.mjs$/.test(f)) { out.push('coupon-tests', 'modules'); if (/p-(admin|game)/.test(f)) out.push('next_check'); return out; } // 커피 쿠폰 · 관리자 화면(2026-10-19 13:54 · 쪽 검사 없음 — 사장님 열쇠 기기만 · 셈은 시험이 봄)
   if (/^site\/next\/theme-(engine|rule|home)\.js$|^scripts\/atlas11\/next\/build\/theme\.mjs$|^tests\/atlas11\/theme\.test\.mjs$|^site\/next\/data\/theme(-more|-home)?\.json$/.test(f)) { out.push('theme-tests', 'check_theme', 'modules', 'next_check', 'check_white'); return out; } // 테마 시계 셈 · 자료(사장님 2026-10-19 16:54 · 결정표 docs/design/theme-2026-10-19/theme-engine.md)
+  // ① 돈 흐름 까닭 열한 가지(사장님 2026-10-30 04:27 · 05:03 「응」 · docs/design/why11-2026-10-30) — 셈 · 따로 다시 세기 · 자료 · 결정표 · 첫 화면 파일 → 셈 시험 · 칸 검사
+  if (/^scripts\/atlas11\/next\/build\/flow_why\.mjs$|^scripts\/atlas11\/verify\/flow_why_verify\.py$|^site\/next\/data\/flow-why\.json$|^tests\/atlas11\/(flow-why|home-new)\.test\.mjs$|^docs\/design\/why11-2026-10-30\/|^site\/next\/(home-new\.(js|css)|boot-home\.js|app\.js|clock\.css|index\.html)$/.test(f)) out.push('why11-tests', 'check_why11');
   if ((m = /^site\/next\/p-([a-z]+)\.(js|css)$/.exec(f))) { page(m[1]); out.push('next_check', 'modules', 'check_kakao'); } // 카톡 줄(사장님 2026-10-18 16:39 [6] 1 — 종목 줄마다 같은 단추 · 일꾼 KB2)
   else if (/^site\/next\/(app\.js|app\.css|home\.css|home-new\.(js|css)|boot-home\.js|index\.html|brand\.js|words\.js)$/.test(f)) out.push('next_check', 'modules', 'check_why', 'check_gdr', 'check_hold', 'check_share', 'check_kakao', ...(/home-new|boot-home/.test(f) ? ['check_theme', 'check_essence'] : [])); // 새 첫 화면 칸(2026-10-28 order-1112) — 업종 점 그림 · 본질 세 줄도 맞댐
   else if (/^site\/next\/(i18n\.js|i18n\/|en\.css)/.test(f) || /^scripts\/atlas11\/next\/(i18n\/|i18n_build\.mjs)/.test(f)) out.push('en');
@@ -51,6 +53,7 @@ const CMD = {
   modules: () => ['node', ['--test', 'tests/atlas11/next-modules.test.mjs']],
   'letter-tests': () => ['node', ['--test', 'tests/atlas11/letter.test.mjs', 'tests/atlas11/invite.test.mjs']],
   'theme-tests': () => ['node', ['--test', 'tests/atlas11/theme.test.mjs']],
+  'why11-tests': () => ['node', ['--test', 'tests/atlas11/flow-why.test.mjs', 'tests/atlas11/home-new.test.mjs']], // 까닭 열한 가지 셈 · 여는 동안 칸 짝(2026-10-30)
   'coupon-tests': () => ['node', ['--test', 'tests/atlas11/coupon.test.mjs', 'tests/atlas11/game.test.mjs', 'tests/atlas11/auto.test.mjs', 'tests/atlas11/kakao.test.mjs', 'tests/atlas11/kakao-store.test.mjs']], // auto = 자동으로 산 기록(가짜 돈 · 2026-10-22 08:50 · game-rule.js ruleFor 를 같이 씀)
   'kakao-client': () => ['node', ['--test', 'tests/atlas11/kakao-client.test.mjs']],
   'jinhwa-tests': () => ['node', ['--test', 'tests/atlas11/jinhwa.test.mjs', 'tests/atlas11/tally.test.mjs']],
@@ -64,7 +67,7 @@ const cmdOf = k => (CMD[k] ? CMD[k]() : ['node', ['scripts/atlas11/next/' + k + 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const files = arg('--files', null)?.split(',').filter(Boolean) ?? changedFiles();
   const want = [...new Set(files.flatMap(checksFor))].filter(k => CMD[k] || fs.existsSync(path.join(ROOT, 'scripts/atlas11/next', k + '.mjs')));
-  const order = ['modules', 'verify', 'letter-tests', 'kakao-client', 'coupon-tests', 'theme-tests', 'jinhwa-tests', 'white-gate', ...want.filter(k => /^check_/.test(k)).sort(), 'next_check', 'en'].filter(k => want.includes(k));
+  const order = ['modules', 'verify', 'letter-tests', 'kakao-client', 'coupon-tests', 'theme-tests', 'why11-tests', 'jinhwa-tests', 'white-gate', ...want.filter(k => /^check_/.test(k)).sort(), 'next_check', 'en'].filter(k => want.includes(k));
   console.log(`바뀐 파일 ${files.length}개 → 짝 검사 ${order.length}개: ${order.join(' · ') || '없음'}`);
   if (DRY || !order.length) process.exit(0);
   const t0 = Date.now(), rows = [];
