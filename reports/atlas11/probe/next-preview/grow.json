@@ -1,0 +1,78 @@
+{
+ "schema": "atlas11-next-grow-check-1",
+ "at": "2026-10-29T06:35:22.298Z",
+ "base": "http://127.0.0.1:8826",
+ "asOf": "2026-10-29",
+ "companies": 2557,
+ "of": 2557,
+ "all": true,
+ "limit": null,
+ "wide": 10,
+ "shard": null,
+ "units": {
+  "total": 2569,
+  "mine": 2569,
+  "hash": "22b726c064a08526",
+  "kinds": {
+   "c": {
+    "total": 2557,
+    "mine": 2557
+   },
+   "w": {
+    "total": 3,
+    "mine": 3
+   },
+   "v": {
+    "total": 5,
+    "mine": 5
+   },
+   "e": {
+    "total": 4,
+    "mine": 4
+   }
+  }
+ },
+ "seconds": 150,
+ "time": {
+  "old": 129.2,
+  "new": 130.4,
+  "wall": 150.1,
+  "opensOld": 7682,
+  "opensNew": 10286,
+  "oldPct": 86,
+  "oldShare": 49.8
+ },
+ "net": {
+  "req": 5126,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
+  "cut": 0,
+  "page": {
+   "retry": 0,
+   "waitSec": 0,
+   "blocked": 0,
+   "why": {}
+  }
+ },
+ "counts": {
+  "맞댄 글 낱낱": 45948,
+  "맞댄 숫자 낱말": 90312,
+  "이야기 있는 회사": 61,
+  "손가락 이름표": 8477,
+  "회사": 2557,
+  "oldSnap": {
+   "use": false,
+   "why": "바뀐 파일 2315개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
+   "made": null,
+   "inputs": 2566,
+   "reads": 2557,
+   "note": "기준값 새로 씀(파일 2566개 · 값 2557개)"
+  },
+  "아주 크게": 9,
+  "세 폭 화면": 30,
+  "둘레": 9
+ },
+ "fails": [],
+ "ok": true
+}
