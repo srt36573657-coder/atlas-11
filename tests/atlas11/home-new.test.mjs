@@ -23,9 +23,26 @@ test('여는 동안 소개 칸 글 = 다 그린 소개 칸 글(① 돈 흐름 ·
   assert.match(src, /export const FLOW_N = 3;/); assert.match(read('site/next/boot-home.js'), /j < 3/, '여는 동안 빈 줄 수가 FLOW_N(3)과 다름');
 });
 
+test('① 돈 흐름 까닭 열한 가지(2026-10-30 04:27 · 05:03 「응」) — 여는 동안 몰린 곳 자리 = 다 그린 자리(같은 틀 · 같은 높이) · 권하지 않습니다는 머리 밑', () => {
+  const boot = read('site/next/boot-home.js'), src = read('site/next/home-new.js'), css = read('site/next/home-new.css');
+  // 여는 동안 칸: 빈 막대 줄 + 「왜?」 자리 + 불빛 줄 자리 + 「열한 가지 보기」 자리 — home-new.js upEmpty · upItem 과 같은 칸 이름 · 같은 차례
+  assert.match(boot, /el\('li', 'y11-i y11-e'\), w = el\('div', 'y11-box'\), ws = el\('div', 'y11-s'\); ws\.append\(el\('div', 'nh-fr nh-f0'\), el\('div', 'y11-l'\), el\('div', 'y11-lt'\), el\('div', 'y11-m'\)\)/);
+  assert.match(src, /h\('div', \{class: 'y11-s'\}, h\('div', \{class: 'nh-fr nh-f0'\}\), h\('div', \{class: 'y11-l'\}\), h\('div', \{class: 'y11-lt'\}\), h\('div', \{class: 'y11-m'\}\)\)/);
+  assert.match(src, /h\('summary', \{class: 'y11-s'\}, bar, whyLine\(EN \? w\.why\?\.en : w\.why\?\.ko\), lightRow\(w\.lights\), moreLine\(\)\)/);
+  assert.match(src, /h\('div', \{class: 'y11-s'\}, bar, whyLine\(null\), lightRow\(null\), moreLine\(\)\)/, '자료가 없을 때도 같은 틀(「?」)');
+  // 높이를 정하는 칸(두 줄 자리 · 불빛 줄 · 보기 줄) — 여는 동안과 같게
+  for (const re of [/\.y11-l \{[^}]*min-height: 48px;[^}]*line-height: 24px;/, /\.y11-lt \{[^}]*min-height: 38px;/, /\.y11-m \{[^}]*min-height: 24px;/, /\.y11-t > span \{ display: block; \}/, /\.nh-hero \.nh-h1 > span \{ display: block; \}/]) assert.match(css, re);
+  // 「권하지 않습니다」는 머리 밑(첫 한 화면 안) — 여는 동안 · 다 그린 칸 같은 자리
+  assert.match(boot, /sec\.append\(pm, h2, el\('p', 'nh-no', '앞날을 맞히거나 사고팔기를 권하지 않습니다\.'\), fm, door\);/);
+  assert.ok(src.indexOf("h('p', {class: 'nh-no'") > src.indexOf("h('h2', {class: 'nh-h1'}") && src.indexOf("h('p', {class: 'nh-no'") < src.indexOf('flowMap(TH, W),'), 'heroBox 에서 권하지 않습니다가 머리 밑이 아님');
+  // 앞날 말 · 사고팔기 말 없음
+  const strs = [...quoted(src.slice(src.indexOf('/* 몰린 곳마다 까닭 열한 가지'), src.indexOf('/** 마디 머리')))];
+  assert.ok(!strs.some(x => /오를 것|내릴 것|사세요|파세요|추천|매수|매도/.test(x)), '까닭 칸에 앞날 · 사고팔기 말');
+});
+
 test('첫 화면 차례(2026-10-29 바보도 한눈에) — ① 돈 흐름 → ② 고른 회사 → 업종 점 그림 → 오늘 시장 → ③ 묻기 → ④ 돌아보기', () => {
   const app = read('site/next/app.js'), src = read('site/next/home-new.js');
-  assert.match(app, /const hero = heroBox\(TH\); hero\.id = 'nh-p1';/);
+  assert.match(app, /const hero = heroBox\(TH, W\); hero\.id = 'nh-p1';/); // W = 까닭 열한 가지(2026-10-30 04:27)
   assert.match(app, /\[hero, recordBox\(B\), mapBox\(TH, news\), mktBox\(band\.el, newsBox\(H\), H\), partDo\(\),/, '첫 화면 차례가 바뀜');
   assert.match(app, /whyBox\(\{done: \(C\?\.stop \?\? 0\) > 0\}\), backBox\(\{month\}\), thumb/, '③ 묻기 뒤에 ④ 돌아보기가 없음');
   for (const k of ['고른 회사', '묻기', '돌아보기', '이렇게 고른 회사', '아무 회사나', '오늘은 조건에 맞은 회사가 없어요.', "'#/t/pick'", "'#/t/picks'"]) assert.ok(src.includes(k.startsWith("'") ? k : `'${k}'`) || src.includes(k), `home-new.js 에 「${k}」 없음`);

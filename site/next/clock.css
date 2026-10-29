@@ -722,5 +722,23 @@ html.white.clock.clock.clock.clock.home #view .nh-tpl b { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-tpl small { color: #CFC4E0; }
 html.white.clock.clock.clock.clock.home #view .nh-say { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-part .nh-sage > i { background: #241540; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .y11-l { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-q { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-t { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-g > i { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-on { fill: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .y11-off { fill: #241540; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-qd { fill: #160E2B; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-qt { fill: #B6A8CB; }
+html.white.clock.clock.clock.clock.home #view .y11-m { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-x { background: #1C1136; border: 1px solid #3A2756; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-key { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-gh { border-bottom: 1px solid #3A2756; color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-gh b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-nm { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-nm b { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-tt { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-sub { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-note { color: #CFC4E0; }
 /* 업종 점 그림 네 자리 색 — 짙은 칸 위 색약 검사(dataviz validate_palette --mode dark --surface #241540 --pairs all) 실패 0 · 경고 0 · 싹 청록 · 꽃 장미 · 시듦 호박 · 잠잠 보라 · 칸 바탕은 그 색 20% */
 html.white.clock.clock.clock.clock.home #view { --nh-S: #0097B3; --nh-B: #C6367D; --nh-W: #C0851F; --nh-Q: #7260BD; --nh-zS: #1D2F57; --nh-zB: #441C4C; --nh-zW: #432B39; --nh-zQ: #342459; }
