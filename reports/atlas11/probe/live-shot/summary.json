@@ -1,5 +1,5 @@
 {
- "made": "2026-10-29T05:44:39.263Z",
+ "made": "2026-10-29T07:51:54.884Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -7,48 +7,64 @@
  ],
  "shots": [
   {
-   "name": "home",
-   "hash": "#/",
+   "name": "co",
+   "hash": "#/w/005930",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/home-390.png",
-    "reports/atlas11/probe/live-shot/home-390-long.png",
-    "reports/atlas11/probe/live-shot/home-390-hero.png",
-    "reports/atlas11/probe/live-shot/home-390-map.png",
-    "reports/atlas11/probe/live-shot/home-390-rec.png",
-    "reports/atlas11/probe/live-shot/home-390-why.png"
+    "reports/atlas11/probe/live-shot/co-390.png",
+    "reports/atlas11/probe/live-shot/co-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/",
-    "title": "오늘 장 · 둘이",
-    "h1": "",
-    "kakaoText": 0,
-    "kakaoRow": 0,
-    "kakaoAll": 0,
+    "hash": "#/w/005930",
+    "title": "삼성전자 · 둘이",
+    "h1": "삼성전자",
+    "kakaoText": 3,
+    "kakaoRow": 6,
+    "kakaoAll": 10,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 4832,
+    "height": 3341,
     "fold": null,
-    "hero": {
-     "bottom": -2801,
-     "room": 850,
-     "vh": 844,
-     "fit": true
-    }
+    "hero": null
    },
    "err": null,
-   "parts": {
-    "hero": "1 돈 흐름 요즘 돈은 여기로 몰렸어요 돈이 몰린 곳 음료 8% 더 바이오 도구·서비스 7% 더 물류·운송 7% 더 돈이 빠진 곳 항공·우주 18% 덜 조선 14% 덜 에너지 장비 14% 덜 한 달 동안 시장과 견준 값이에요. “ 애덤 스미스 사려는 사람이 많으면 값이 올라요. 지난 기록으로 고른 회사 보기 › 앞날을 맞히거나 사고팔기를 권하지 않습니다.",
-    "map": "지금 업종 77개는 어디쯤 있나요? 10월 29일 종가 기준 · 점 하나가 업종 하나 막 오르기 시작 28 한 달 내내 강함 3 조용함 45 강하다 꺾임 1 반도체 부품 헬스케어 기술 음료 한 달 동안 시장보다 더 오름 닷새 동안 더 오름 오른쪽 위로 갈수록 요즘 돈이 더 몰린 업종이에요. 막 오르기 시작 28개 한 달 내내 강함 3개 조용함 45개 강하다 꺾임 1개 힘이 고르게 붙은 업종 반도체 부품, 헬스케어 기술 업종 77개 모두 보기 ›",
-    "rec": "2 고른 회사 돈이 몰린 업종에서 지난 기록으로 골라요 오늘은 조건에 맞은 회사가 없어요. 31곳 이렇게 고른 회사 24곳 아무 회사나 이렇게 고른 회사 100곳 중 31곳이 한 달 뒤 시장보다 5% 넘게 더 올랐어요. 같은 날 아무 회사나 골랐다면 100곳 중 24곳이었어요. 최근 두 달은 100곳 중 21곳 대 25곳으로 졌어요. “ 다윈 내 생각과 다른 기록도 바로 적어요. “ 덩샤오핑 말보다 결과를 봐요. 날짜별 기록 보기 › 고른 회사 모두 보기 ›",
-    "why": "「왜 사?」 시작하기 ›"
-   }
+   "parts": {}
+  },
+  {
+   "name": "pk",
+   "hash": "#/w/278470",
+   "size": [
+    390,
+    844
+   ],
+   "files": [
+    "reports/atlas11/probe/live-shot/pk-390.png",
+    "reports/atlas11/probe/live-shot/pk-390-long.png"
+   ],
+   "errs": [],
+   "info": {
+    "hash": "#/w/278470",
+    "title": "에이피알 · 둘이",
+    "h1": "에이피알",
+    "kakaoText": 3,
+    "kakaoRow": 6,
+    "kakaoAll": 10,
+    "days": 0,
+    "firstDay": null,
+    "graphs": 0,
+    "calgo": false,
+    "height": 3721,
+    "fold": null,
+    "hero": null
+   },
+   "err": null,
+   "parts": {}
   }
  ]
 }
