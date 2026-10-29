@@ -10142,6 +10142,9 @@
   "리콴유": "Lee Kuan Yew",
   "정한 규칙은 꼭 지켜요.": "Keep the rules you set.",
   "퍼스": "Peirce",
-  "해 본 결과로 맞았는지 봐요.": "Check if you were right by the results."
+  "해 본 결과로 맞았는지 봐요.": "Check if you were right by the results.",
+  "이렇게 고른 회사 {n}곳 중 {n}곳": "Picked this way: {n2} of {n1}",
+  "아무 회사나 {n}곳 중 {n}곳": "Any company: {n2} of {n1}",
+  "마지막 날 값 없는 {n}곳은 앞 값": "{n} without a last-day price use the previous price"
  }
 }

@@ -442,7 +442,7 @@ html.home #view .nh-fk-dn { margin-top: 4px; }
 html.home #view .nh-fl { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 html.home #view .nh-fr { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 30px; padding: 0 10px; border-radius: 8px; overflow: hidden; background: #FBF2F5; }
 html.home #view .nh-fbar { position: absolute; top: 0; bottom: 0; left: 0; display: block; }
-html.home #view .nh-fl-up .nh-fbar { background: #F7C9D4; border-left: 4px solid #B4123A; }
+html.home #view .nh-fl-up .nh-fbar { background: #FAD9E1; border-left: 4px solid #B4123A; }
 html.home #view .nh-fl-dn .nh-fbar { background: #D3E1F6; border-left: 4px solid #1A55B0; }
 html.home #view .nh-fn { position: relative; min-width: 0; font-size: 17px; font-weight: 800; line-height: 30px; color: #2A1420; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 html.home #view .nh-fr > b { position: relative; flex: none; font-size: 17px; font-weight: 900; line-height: 30px; white-space: nowrap; }
@@ -473,3 +473,4 @@ html.home #view .nh-sage > i { font-size: 24px; line-height: 1; padding-top: 8px
 html.home #view .nh-part .nh-sage > i { background: #FFFFFF; border: 1px solid #E3B6C5; }
 html.home.en #view .nh-hero .nh-sage { display: none; } /* 영어 글이 길어 소개 칸이 찾기 줄 아래로 밀려 맨 위 스승 한 줄만 뺌(한국어는 그대로) */
 html.home #view svg.nh-waf { padding: 0; } /* 다른 쪽 「.me」 칸 안쪽 여백이 왼쪽 100칸 그림에 붙어 작아 보이던 것 */
+@media (max-width: 380px) { html.white.clock.clock.clock.home #view .nh-hero .nh-h1 { font-size: 24px; } } /* 375 폭에서 대신 글꼴이 칸 끝에 닿아 두 줄로 바뀌지 않게(390 폭은 26px 한 줄) */
