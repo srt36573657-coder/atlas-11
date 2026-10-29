@@ -11,6 +11,7 @@ html.pg-sage #view { display: flow-root; background: #FDF9F5; color: #1D1726; co
   --ink: #1D1726; --ink-hi: #1D1726; --sub: #4A4356; --mute: #4A4356; --flat: #4A4356; --bg: #FDF9F5;
   --card: #FFFFFF; --card2: #F6F0EA; --card3: #F1E8DF; --hair: #8C8291; --hair2: #8C8291; --line: #E2D7CC; --hair-soft: #E2D7CC; --seam: #E2D7CC; --press: #F6F0EA; --lift: #FFFFFF;
   --gold: #8E1A5C; --gold-line: #8E1A5C; --gold-wash: #FBF0F5; }
+html.pg-sage #view :focus-visible { outline-color: var(--gold); } /* 판 전체 초점 테 하늘빛 #94BFDB 는 밝은 종이 위에서 대비 1.9 — 이 쪽만 짙은 포도주(8.2) */
 .sg { --sg1: #018EAE; --sg2: #9D6D1C; --sg3: #5A30B9; --sg4: #8D2A59; --sg-c: var(--gold); display: grid; gap: var(--sp-3); margin: 0 var(--sp-2); padding-bottom: var(--sp-3); color: var(--ink); font-family: var(--sans); }
 .sg .s1, .sg.s1 { --sg-c: var(--sg1); }
 .sg .s2, .sg.s2 { --sg-c: var(--sg2); }

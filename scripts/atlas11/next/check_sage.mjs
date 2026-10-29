@@ -164,7 +164,20 @@ try {
     check(s.safe === SAFE, `${tag} 안전 문장`, s.safe);
     check(s.title === '서른아홉 스승 · ' + NEW_NAME, `${tag} 창 제목`, s.title);
     judge(tag, await MEASURE(p));
-    if (w === 390 && !font) { // 걸음 단추 → 그 걸음이 화면 위에
+    if (w === 390 && !font) { // ⑥ 초점 테 — 글판 안 누르개까지 Tab 으로 가면 테 빛이 둘레와 대비 3 넘게(판 전체 하늘빛 테는 밝은 종이 위 1.9)
+      for (let i = 0; i < 40; i++) { await p.keyboard.press('Tab'); if (await p.evaluate(() => !!document.activeElement?.closest('#view .sg'))) break; }
+      const fr = await p.evaluate(() => {
+        const e = document.activeElement; if (!e?.closest('#view .sg')) return {ok: false, why: '글판 안에 초점이 안 감 ' + (e?.tagName ?? '')};
+        const rgb = x => { const m = /rgba?\(([^)]+)\)/.exec(x || ''); if (!m) return null; const q = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return {r: q[0], g: q[1], b: q[2], a: q.length > 3 ? q[3] : 1}; };
+        const lin = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }, lum = c => 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
+        let bg = null; for (let x = e.parentElement; x; x = x.parentElement) { const c = rgb(getComputedStyle(x).backgroundColor); if (c && c.a >= 1) { bg = c; break; } }
+        const cs = getComputedStyle(e), oc = rgb(cs.outlineColor), on = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0;
+        if (!on || !oc || !bg) return {ok: false, why: `테 없음 ${cs.outlineStyle} ${cs.outlineWidth}`};
+        const a = lum(oc), b = lum(bg), r = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+        return {ok: r >= 3, why: `${e.className} 테 ${cs.outlineColor} · 둘레 ${getComputedStyle(e.parentElement).backgroundColor} · ${r.toFixed(2)}`};
+      });
+      check(fr.ok, `${tag} ⑥ 초점 테 대비 3 넘게`, fr.why);
+      // 걸음 단추 → 그 걸음이 화면 위에
       await p.locator('#view .sg-jump.s3').click(); await p.waitForTimeout(700);
       const top = await p.evaluate(() => document.getElementById('sg-s3')?.getBoundingClientRect().top);
       check(top != null && top >= 0 && top < 200, `${tag} 걸음 단추 → ③ 따지기가 화면 위`, top);
