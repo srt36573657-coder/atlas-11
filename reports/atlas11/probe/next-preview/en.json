@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-29T15:52:38.929Z",
+ "at": "2026-10-29T21:25:12.874Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -17,14 +17,14 @@
   "past": true,
   "rivals": true,
   "grow": true,
+  "range": true,
   "surge": true,
   "cal": true,
-  "range": true,
   "cond": true,
   "talk": true,
   "up": true,
-  "info": true,
   "time": true,
+  "info": true,
   "x": true,
   "co": true,
   "chx": true,
@@ -49,8 +49,8 @@
    "@newwin": 15
   }
  },
- "seconds": 436,
- "secondsSum": 2509,
+ "seconds": 458,
+ "secondsSum": 2538,
  "shards": [
   {
    "shard": "1/6",
@@ -59,10 +59,10 @@
    "routes": 2278,
    "screens": 2279,
    "mine": 2278,
-   "seconds": 403,
+   "seconds": 421,
    "secs": {
-    "open": 0.3,
-    "routes": 402
+    "open": 0.4,
+    "routes": 420.1
    }
   },
   {
@@ -72,10 +72,10 @@
    "routes": 2277,
    "screens": 2277,
    "mine": 2277,
-   "seconds": 398,
+   "seconds": 417,
    "secs": {
-    "open": 0.3,
-    "routes": 396.9
+    "open": 0.4,
+    "routes": 412.9
    }
   },
   {
@@ -85,10 +85,10 @@
    "routes": 2283,
    "screens": 2283,
    "mine": 2277,
-   "seconds": 422,
+   "seconds": 458,
    "secs": {
-    "open": 0.3,
-    "routes": 420
+    "open": 0.4,
+    "routes": 456.5
    }
   },
   {
@@ -100,8 +100,8 @@
    "mine": 2277,
    "seconds": 432,
    "secs": {
-    "open": 0.3,
-    "routes": 430.5
+    "open": 0.4,
+    "routes": 431.4
    }
   },
   {
@@ -111,11 +111,11 @@
    "routes": 2262,
    "screens": 2284,
    "mine": 2263,
-   "seconds": 418,
+   "seconds": 401,
    "secs": {
-    "open": 0.4,
-    "routes": 414.1,
-    "newwin": 2.9
+    "open": 0.3,
+    "routes": 396.3,
+    "newwin": 2.8
    }
   },
   {
@@ -125,12 +125,12 @@
    "routes": 2198,
    "screens": 2361,
    "mine": 2199,
-   "seconds": 436,
+   "seconds": 409,
    "secs": {
-    "open": 0.4,
-    "routes": 420.7,
-    "act": 7.1,
-    "edge": 7.1,
+    "open": 0.3,
+    "routes": 394.4,
+    "act": 6.4,
+    "edge": 7,
     "grammar": 0
    }
   }
