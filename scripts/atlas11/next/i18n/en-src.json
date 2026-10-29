@@ -10163,6 +10163,9 @@
   "그보다 낮아진 적 없이 마지막 날": "never below that; on the last day",
   "{d}보다 {n}%": "{n}% vs {d}",
   "한 달 중 가장 크게 내린 폭 {n}%": "Largest drop within a month {n}%",
-  "{n}거래일 중 가장 크게 내린 폭 {n}%": "Largest drop within {n1} trading days {n2}%"
+  "{n}거래일 중 가장 크게 내린 폭 {n}%": "Largest drop within {n1} trading days {n2}%",
+  "{d}보다 ?": "? vs {d}",
+  "한 달 중 가장 크게 내린 폭 ?": "Largest drop within a month ?",
+  "{n}거래일 중 가장 크게 내린 폭 ?": "Largest drop within {n} trading days ?"
  }
 }
