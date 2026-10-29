@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-10-28T17:21:25Z",
+ "at": "2026-10-29T17:31:45Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "261bca40874029f48cebc25cfeee33e7eabd2699f2b0e63ad5978328b15d02dc",
-   "last": "2026-10-28"
+   "sha256": "8515d2ef2175c304892eb08d6c70ebf13abbfaa17ff4605c1e0ba7815a8761d4",
+   "last": "2026-10-29"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 850,
+   "n": 851,
    "first": "2023-04-28",
-   "last": "2026-10-28",
+   "last": "2026-10-29",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "a041713e4da97a255bde22edda2d4f2fc6d35f9f4b2edbe60babd31c74825c88"
+   "sha256": "6b23727ee6dcc2544fc74231361fff7cafd9776e6d176154f0727da84e38dd83"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "efd5a5a70837edd9be338cecf56bd4005e0c692e7d8ebc7c3a0b7aaaa4e5c854"
+   "sha256": "f2eb00179f4cb11dc1724ceec06c84ec7221512d39106f9051838873ba1a41bd"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "68bd24b04da02c7af5349c32a1558e73ef4901248d36bdf76215245691fa0de4"
+   "sha256": "422a346939c5d02c36549d39d858a49cc70929afbc4772527e052a003704f092"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 849,
-  "day": "2026-10-28",
+  "k": 850,
+  "day": "2026-10-29",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1694,
+   "outThin": 1696,
    "outThinQ": 18,
-   "outHalt": 4,
+   "outHalt": 6,
    "outList": 7,
-   "listQ": 852,
-   "afterOut": 852,
-   "g1": 259,
-   "g2": 681,
-   "g3": 57,
-   "g4": 667,
+   "listQ": 848,
+   "afterOut": 848,
+   "g1": 260,
+   "g2": 679,
+   "g3": 50,
+   "g4": 682,
    "g5": 0,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 840,
+   "loss3": 835,
    "why": "lists"
   },
-  "loss3Years": 840,
+  "loss3Years": 835,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,48 +321,27 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-09-28",
-   "to": "2026-10-28",
-   "n": 2,
-   "counted": 2,
-   "up": 1,
-   "lo": 8,
-   "hi": 15,
+   "from": "2026-09-29",
+   "to": "2026-10-29",
+   "n": 1,
+   "counted": 1,
+   "up": 0,
+   "lo": 4,
+   "hi": 7,
    "rows": [
     {
      "code": "014530",
      "name": "극동유화",
      "lo": 4,
-     "hi": 8,
-     "from": 3380,
-     "to": 3260,
+     "hi": 7,
+     "from": 3340,
+     "to": 3240,
      "up": 0,
      "mcCounts": [
-      912,
-      951,
-      1454,
-      957
-     ],
-     "mcEdges": [
-      0,
-      0,
-      0,
-      0
-     ]
-    },
-    {
-     "code": "150900",
-     "name": "파수AI",
-     "lo": 4,
-     "hi": 7,
-     "from": 4000,
-     "to": 4530,
-     "up": 1,
-     "mcCounts": [
-      880,
-      948,
-      1365,
-      987
+      921,
+      902,
+      1318,
+      975
      ],
      "mcEdges": [
       0,
@@ -421,10 +400,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1694,
-    4,
+    1696,
+    6,
     7,
-    852,
+    848,
     2557
    ]
   },
@@ -438,35 +417,35 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1694,
+  "outThin": 1696,
   "outThinQ": 18,
-  "outHalt": 4,
+  "outHalt": 6,
   "outList": 7,
-  "listQ": 852,
-  "afterOut": 852,
-  "g1": 259,
-  "g2": 681,
-  "g3": 57,
-  "g4": 667,
+  "listQ": 848,
+  "afterOut": 848,
+  "g1": 260,
+  "g2": 679,
+  "g3": 50,
+  "g4": 682,
   "g5": 0,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 840,
+  "loss3": 835,
   "why": "lists"
  },
- "compared": 2707,
+ "compared": 2700,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.1,
-  "build": 2.1,
-  "recount": 0.8,
-  "total": 5.0
+  "readBundle": 3.1,
+  "build": 2.2,
+  "recount": 1.0,
+  "total": 6.3
  }
 }
