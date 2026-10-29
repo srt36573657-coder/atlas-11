@@ -7,7 +7,7 @@
 const hs = location.hash || '#/', isHome = /^#\/?$/.test(hs);
 // 첫 화면 모양(home.css · home-new.css 의 html.home 규칙)은 첫 화면에서만 — index.html 이 home 으로 시작하므로 다른 길은 여기서 곧바로 뗌 · 핑크 바탕은 모든 쪽(clock.css · 2026-10-28 13:16) · 창 위 띠는 모든 쪽 포도주 빛
 if (!isHome) document.documentElement.classList.remove('home');
-else document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#3D1028');
+else document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#070514'); // 밤 무대 판 막대(2026-10-29 · 옛 핑크 #3D1028)
 const v = document.querySelector('#view'), boot = v?.querySelector(':scope > p.boot');
 if (isHome && v && boot) {
   document.documentElement.classList.add('home');

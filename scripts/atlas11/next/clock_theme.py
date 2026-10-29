@@ -8,6 +8,10 @@
 #   - 색 바꾸기 = 밝기를 뒤집어 청록 100가지 안으로(흰 바탕 → 짙은 청록 · 검은 글 → 흰빛) · 초록(오름 · 싹) → 하늘청록 · 파랑(내림) → 밝은 회청 · 보라(강조) → 흰색
 #   - 카톡 노랑 칸은 그대로(사람들이 아는 카톡 색 · 그 칸 글도 그대로)
 # 짓기: python3 scripts/atlas11/next/clock_theme.py → site/next/clock.css(손으로 고치지 않음 — 이 파일과 EXTRA 를 고쳐 다시 짓는다)
+# ★ 2026-10-29 밤 무대 판(사장님 16:57 「이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜」 · 무대 사진 — docs/design/neon-2026-10-29/)
+#   기본은 밤 무대(PAL='neon') — 바탕 짙은 남보라 #0C081D · 글 #F2EFF9 · 강조 분홍 빛 줄 #F06FCB · 위 · 아래 막대 #070514 · 오름 #FF5A65 · 내림 #5B96FF(숫자만)
+#   흰 판 색은 밝기를 뒤집어(청록 판처럼) 밤 색 안으로 · 핑크 판 손 규칙(EXTRA_PINK)과 첫 화면 home-new.css 는 핑크 → 밤 색 표(PN_*)로 옮겨 한 단 위(.clock 하나 더 · 첫 화면은 .home 까지)에서 덮음
+#   칸마다 바탕 · 글이 함께 있으면 글 대비 4.5 아래일 때 밝은 글 · 짙은 글 가운데 대비가 큰 쪽으로(fix_contrast) · 옛 핑크 판으로 되돌리기: --pink
 # ★ 2026-10-28 최고급 핑크 판(사장님 12:00 「안돼 배경을 최고급 핑크로 해」 · 13:16 「속도빨리해서 얼른 만들엉」) — 이제 기본은 핑크(PAL='pink')
 #   핑크 판은 밝은 판이라 밝기를 뒤집지 않음(흰 바탕 → 밝은 카드 · 검은 글 → 짙은 자주) · 청록 판 손 규칙(EXTRA)의 자리 · 크기는 그대로 두고
 #   색만 한 단 위(html.white.clock.clock.clock.clock)의 EXTRA_PINK 가 덮음 · 첫 화면 핑크 칸(home-new.css)은 그보다 뒤에 읽혀 같은 무게에서 이김
@@ -17,7 +21,7 @@ import os, re, sys, glob, colorsys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
 SRC = sorted(f for f in glob.glob(os.path.join(ROOT, 'site/next/*.css')) if not f.endswith(('/clock.css', '/home-new.css', '/p-why.css')))
-PAL = 'teal' if '--teal' in sys.argv[1:] else 'pink'
+PAL = 'teal' if '--teal' in sys.argv[1:] else 'pink' if '--pink' in sys.argv[1:] else 'neon'  # 기본 = 밤 무대 판(2026-10-29 16:57) · 옛 핑크 --pink · 옛 청록 --teal
 OUT = os.path.join(ROOT, 'site/next/clock.css')
 
 # ── css 읽기(주석 · 따옴표 · 괄호 · 겹친 @media 를 앎) ──
@@ -196,8 +200,122 @@ def map_pink(rgb, role):
     if role == 'bg': return P_ACC if L < .3 else '#F2B8C9'
     return P_ACC
 
+# ── 밤 무대 판 색(사장님 2026-10-29 16:57 · 사진에서 잰 색 docs/design/neon-2026-10-29/palette.json — 글 대비 38쌍 모두 기준 넘음) ──
+N_BG, N_BAR, N_CARD, N_CARD2, N_CARD3, N_PLUM = '#0C081D', '#070514', '#1C1136', '#241540', '#2E1A4A', '#412649'
+N_LINE, N_HAIR = '#3A2756', '#A58BC2'  # 옅은 나눔 줄 · 단추 · 칸 테(바탕 · 칸 위 대비 3 넘게)
+N_INK, N_INK2, N_SUB, N_MUTE = '#F2EFF9', '#E4DDF0', '#CFC4E0', '#B6A8CB'
+N_ACC, N_NEON, N_SMOKE, N_CYAN, N_UP, N_DN = '#F06FCB', '#C767B1', '#8B477B', '#94BFDB', '#FF5A65', '#5B96FF'
+N_WASH, N_UPW, N_DNW = '#2A1440', '#3A1630', '#1E2C5A'  # 옅은 강조 면 · 옅은 오름 면 · 옅은 내림 면
+N_ACC_BG = '#C42F98'  # 큰 단추 · 번호 동그라미 바탕(흰 글 대비 5.0 · 바탕 위 4.1) — 밝은 강조 #F06FCB 는 글 · 선에만(흰 글이 2.7 이라)
+def gray_neon(L, role):  # 흰 판 회색 — 밝기를 뒤집음(흰 바탕 → 짙은 칸 · 검은 글 → 밝은 글 · 검은 단추 → 밝은 알약)
+    if role == 'shadow': return None if L < .5 else N_BAR
+    if role == 'border':
+        if L < .2: return N_HAIR
+        if L < .5: return '#8E78AE'
+        if L < .8: return '#5E4A7E'
+        return N_LINE
+    if role == 'text':
+        if L >= .93: return N_BG
+        if L >= .6: return N_CARD3
+        if L >= .3: return '#9A88B8'
+        if L >= .12: return N_MUTE
+        if L >= .05: return N_SUB
+        if L >= .015: return N_INK2
+        return N_INK
+    if L >= .93: return N_CARD
+    if L >= .8: return N_CARD2
+    if L >= .6: return N_CARD3
+    if L >= .4: return N_PLUM
+    if L >= .22: return '#7F587D'
+    if L >= .12: return '#9A88B8'
+    if L >= .05: return N_SUB
+    if L >= .015: return N_INK2
+    return N_INK
+
+def map_neon(rgb, role):
+    f = fam(rgb); L = lum(rgb)
+    if f == 'gray': return gray_neon(L, role)
+    if role == 'shadow': return None
+    if f == 'blue':
+        if role == 'bg': return N_DN if L < .3 else N_DNW
+        return N_DN
+    if f == 'red':
+        if role == 'bg': return N_UP if L < .35 else N_UPW
+        return N_UP
+    if role == 'bg': return N_ACC_BG if L < .3 else N_WASH  # 초록(흰 판 오름 · 자라남) · 보라(흰 판 금빛 · 뜻) · 노랑(금빛) → 분홍 빛 줄 강조
+    return N_ACC
+
+# 핑크 판 색 → 밤 색(손 규칙 EXTRA_PINK · 첫 화면 home-new.css) — 표에 없으면 극 없는 셈(neon_free): 바탕은 늘 짙게 · 글은 늘 밝게
+PN_BG = {'#F7D4DE': N_BG, '#FFF7F9': N_CARD, '#FBE8EE': N_CARD2, '#F4D9E1': N_CARD3, '#EBC0CE': N_LINE, '#F0CBD6': N_CARD3, '#FFFFFF': N_CARD2, '#FEFEFE': N_CARD2,
+         '#E7A9C0': '#7A3A79', '#F2B8C9': N_SMOKE, '#F7CAD8': '#67325F', '#D99AB2': '#9F4D87', '#ECDDE3': N_CARD3, '#D98DAB': '#7F587D', '#D9C6CE': N_LINE,
+         '#EDB4C7': '#7A3A79', '#F2BFCF': '#67325F', '#F6CBD8': '#4F2A5C', '#F9D7E1': '#3A2556', '#FBE3EA': N_CARD3, '#FCEAF0': N_CARD2, '#F1C4D2': N_CARD3,
+         '#3D1028': N_BAR, '#2A0B1C': N_BAR, '#1A0B13': N_BAR, '#5A1A3C': N_CARD2, '#A31F70': N_ACC_BG, '#C2457F': '#B23A8E', '#8A1B5E': '#8E2C78', '#7A1238': N_ACC_BG,
+         '#B2456F': '#9F4D87', '#9C3A62': '#8B477B', '#873055': '#7A3A79', '#722748': '#67325F', '#5E1F3C': '#4F2A5C',
+         '#FAD9E1': '#4A1830', '#D3E1F6': '#1E2C5A', '#DCE6F7': '#1E2C5A', '#C9D6EE': '#1E2C5A', '#F9DCE5': '#3A1630', '#FBF2F5': '#160E2B', '#FCEBD5': N_WASH,
+         '#E3B6C5': N_LINE, '#C98AA3': '#5E4A7E', '#B9748F': '#7F587D', '#F0D3DD': N_CARD3, '#FBE9EC': N_CARD2, '#FBE6EB': N_CARD2, '#F2D5DE': N_CARD2,
+         '#B4123A': N_UP, '#1A55B0': N_DN, '#1F5FBF': N_DN, '#2A1420': N_INK, '#4A2333': N_INK2, '#5E3446': N_SUB, '#6B3F52': N_MUTE, '#9E5A78': N_HAIR, '#8C4A12': N_ACC}
+PN_TEXT = {'#2A1420': N_INK, '#1A0B13': '#FFFFFF', '#4A2333': N_INK2, '#5E3446': N_SUB, '#6B3F52': N_MUTE, '#3D1028': N_INK, '#A31F70': N_ACC, '#7A1238': N_ACC,
+           '#8C4A12': N_ACC, '#FFFFFF': '#FFFFFF', '#FFF7F9': N_INK, '#F7D4DE': N_INK2, '#F2D5DE': N_INK2, '#F2B8C9': N_ACC, '#B4123A': N_UP, '#1A55B0': N_DN, '#1F5FBF': N_DN,
+           '#9E5A78': N_MUTE, '#B9748F': N_MUTE}
+PN_LINE = {'#9E5A78': N_HAIR, '#3D1028': N_HAIR, '#1A0B13': N_BAR, '#FFFFFF': N_HAIR, '#A31F70': N_ACC, '#EBC0CE': N_LINE, '#F0CBD6': N_LINE, '#E9BCCB': N_LINE,
+           '#E3B6C5': N_LINE, '#C98AA3': '#8E78AE', '#B9748F': '#8E78AE', '#F7D4DE': N_BG, '#2A1420': N_INK, '#B4123A': N_UP, '#1A55B0': N_DN, '#1F5FBF': N_DN}
+
+def neon_free(rgb, role):  # 극 없는 셈(맥락을 모르는 핑크 · 청록 때 색) — 바탕 · 칠은 늘 짙게 · 글은 늘 밝게 · 테는 라벤더
+    f = fam(rgb); L = lum(rgb)
+    if role == 'shadow': return None
+    if f == 'blue': return N_DN if role != 'bg' else (N_DN if L < .3 else N_DNW)
+    if f == 'red': return N_UP if role != 'bg' else (N_UP if L < .35 else N_UPW)
+    if f in ('green', 'purple', 'yellow'):
+        if role == 'bg': return N_ACC_BG if L < .3 else N_WASH
+        return N_ACC
+    if role == 'text':
+        if L >= .6 or L < .015: return N_INK
+        if L < .05: return N_INK2
+        if L < .2: return N_SUB
+        return N_MUTE
+    if role in ('border', 'stroke'): return N_HAIR if (L < .5) else N_LINE
+    if L >= .93: return N_CARD
+    if L >= .8: return N_CARD2
+    if L >= .6: return N_CARD3
+    if L >= .3: return N_PLUM
+    if L >= .05: return N_CARD3
+    return N_CARD
+
+def map_pn(rgb, role):
+    h = '#%02X%02X%02X' % tuple(rgb)
+    if role == 'text' and h in PN_TEXT: return PN_TEXT[h]
+    if role in ('border', 'stroke') and h in PN_LINE: return PN_LINE[h]
+    if role == 'bg' and h in PN_BG: return PN_BG[h]
+    if role == 'shadow': return None
+    return neon_free(rgb, role)
+
 def map_one(rgb, role):
-    return (map_pink if PAL == 'pink' else map_teal)(rgb, role)
+    return {'pink': map_pink, 'teal': map_teal, 'neon': map_neon}[PAL](rgb, role)
+
+def first_color(v):
+    m = COLRE.search(v or '')
+    if not m: return None
+    try:
+        rgb, a = parse_color(m.group(0))
+    except Exception: return None
+    return rgb if a >= .6 else None
+
+def cratio(a, b):
+    x, y = lum(a), lum(b); return (max(x, y) + .05) / (min(x, y) + .05)
+
+def fix_contrast(decls):
+    """[(이름, 값)] — 같은 칸에 바탕과 글이 함께 있고 글 대비가 4.5 아래면 밝은 글 · 짙은 글 가운데 대비가 큰 쪽으로(밤 판에서만)"""
+    bg = next((first_color(v) for k, v in decls if k.lower() in ('background', 'background-color') and first_color(v)), None)
+    if bg is None: return decls
+    out = []
+    for k, v in decls:
+        if k.lower() == 'color':
+            fg = first_color(v)
+            if fg is not None and cratio(fg, bg) < 4.5 and 'var(' not in v:
+                best = max((N_INK, N_BG, '#FFFFFF'), key=lambda c: cratio(hexrgb(c), bg))
+                v = best + (' !important' if v.lower().endswith('!important') else '')
+        out.append((k, v))
+    return out
 
 def fmt(hexc, a):
     if a >= .999: return hexc
@@ -293,14 +411,16 @@ for wrap, pre, body in rules:
             new = WHITE_RE.sub('html.white.clock', sel, 1); pref = True
         else:
             new = 'html:where(.white.clock) ' + sel; pref = False
-        lines = []
+        lines = []; got = []
         for k, v in ds:
             role = role_of(k)
             if role is None: continue
             if not pref and (sel, k.lower()) in covered: continue
             imp = v.lower().endswith('!important')
             nv, ch = map_value(v, role)
-            if ch: lines.append(f'{k}: {nv}')
+            if ch: got.append((k, nv))
+        if PAL == 'neon' and got: got = fix_contrast(got)
+        lines = [f'{k}: {nv}' for k, nv in got]
         if lines:
             out_blocks.setdefault(wrap, []).append(f'{new} {{ ' + '; '.join(lines) + '; }')
             nrule += 1; ndecl += len(lines)
@@ -608,6 +728,114 @@ html.pg-why.white.clock.clock.clock.clock .wy.page:is([data-step="q"], [data-ste
 html.pg-why.white.clock.clock.clock.clock #view .cp-card .cp-go { background: #5A1A3C; }
 '''
 
+# ── 밤 무대 판 손 규칙(EXTRA_NEON) · 첫 화면 밤 칸(HOME_NEON) ──
+NEON_TOKENS = (f"color-scheme: dark; --bg: {N_BG}; --night: {N_BG}; --band: {N_BG}; --violet: {N_INK}; "
+  f"--card: {N_CARD}; --card2: {N_CARD2}; --card3: {N_CARD3}; "
+  f"--hair: {N_HAIR}; --hair2: {N_HAIR}; --line: {N_LINE}; --hair-soft: {N_LINE}; --seam: {N_LINE}; --press: {N_CARD3}; --lift: {N_CARD}; "
+  f"--ink: {N_INK}; --ink-hi: #FFFFFF; --sub: {N_SUB}; --mute: {N_MUTE}; --flat: {N_MUTE}; "
+  f"--violet-ink: {N_INK}; --violet-wash: {N_CARD2}; --violet-line: {N_HAIR}; --violet-glow: {N_CARD2}; "
+  f"--gold: {N_ACC}; --gold-wash: {N_WASH}; --gold-line: {N_ACC}; "
+  f"--up: {N_UP}; --down: {N_DN}; --up-ink: {N_UP}; --down-ink: {N_DN}; --up-bg: {N_UP}; --down-bg: {N_DN}; "
+  "--up-fill: rgba(255, 90, 101, .22); --down-fill: rgba(91, 150, 255, .22); --up-fade: rgba(255, 90, 101, .07); --down-fade: rgba(91, 150, 255, .07); "
+  f"--lacquer: {N_BAR}; --lacquer-ink: #FFFFFF; --lacquer-sub: {N_SUB}; --lacquer-gold: {N_ACC}; "
+  f"--moon: {N_INK}; --moonrow: {N_CARD2}; --m4-band: {N_CARD}; --m4-line: {N_HAIR}; --m4-soft: {N_HAIR}; --m4-neu: {N_MUTE}; --m4-line2: {N_LINE}; "
+  f"--pk-bg: {N_BG}; --pk-card: {N_CARD}; --pk-tint: {N_CARD2}; --pk-line: {N_LINE}; --pk-ink: {N_INK}; --pk-sub: {N_SUB}; --pk-acc: {N_ACC}; --pk-wine: {N_BAR}; "
+  f"background: {N_BG};")
+NEON_GLOW = (f"radial-gradient(ellipse 80vw 42vh at 50% -6%, rgba(148, 191, 219, .14) 0%, rgba(148, 191, 219, 0) 72%), "
+             f"radial-gradient(ellipse 130vw 52vh at 50% 108%, rgba(199, 103, 177, .22) 0%, rgba(199, 103, 177, 0) 74%), {N_BG}")
+N4 = 'html.white.clock.clock.clock.clock'
+NEON_HEAD = f"""
+/* ── 밤 무대 판(사장님 2026-10-29 16:57 「이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜」 · clock_theme.py EXTRA_NEON) ──
+   보내신 무대 사진을 잰 색(docs/design/neon-2026-10-29 — 180가지 · palette.json) · 바로 위 핑크 손 규칙의 자리 그대로 · 색만 핑크 → 밤 색 표(PN_*)로 옮김
+   바탕 {N_BG}(천장 · 왼쪽 빛벽 남보라) · 칸 {N_CARD} · 글 {N_INK} · 강조 {N_ACC}(분홍 빛 줄) · 위 · 아래 막대 {N_BAR} · 오름 {N_UP} · 내림 {N_DN}(숫자만) · 테 {N_HAIR} */
+{N4} {{ {NEON_TOKENS} }}
+{N4} body {{ background: {N_BG}; color: {N_INK}; }}
+{N4} body::after {{ background: {NEON_GLOW}; }} /* 무대 빛 — 위 하늘빛 조명 · 아래 분홍 연기(바탕 한 장 · 글 칸 밖 · 아주 옅게) */
+"""
+NEON_TAIL = f"""
+/* 밤 무대 판 마무리 — 위 · 아래 막대 끝줄은 분홍 빛 줄(사진 바닥 줄) · 누를 때 둘레는 하늘색 조명 */
+{N4} .top {{ background: rgba(7, 5, 20, .97); border-bottom: 1px solid rgba(240, 111, 203, .55); }}
+{N4} .top .logo {{ color: #FFFFFF; }}
+{N4} .top .tbtn, {N4} .top .ibtn {{ background: {N_CARD2}; color: {N_INK}; border: 2px solid {N_HAIR}; }}
+{N4} .top .ibtn svg, {N4} .top .tbtn svg {{ color: {N_INK}; }}
+{N4} .top #giftBtn {{ background: {N_SMOKE}; color: #FFFFFF; }}
+{N4} .top #jhBtn {{ border: 1px solid {N_HAIR}; background: {N_CARD2}; color: {N_INK}; }}
+{N4} .tabs {{ background: {N_BAR}; border-top: 2px solid rgba(240, 111, 203, .6); }}
+{N4} .tabs a .ic {{ border-color: {N_BAR}; color: #FFFFFF; }}
+{N4} .tabs a[aria-current="page"] .ic {{ --tbg: {N_ACC}; color: {N_BG}; }}
+{N4} :focus-visible {{ outline-color: {N_CYAN}; }}
+{N4} a.why-go.cw {{ background: {N_ACC_BG}; color: #FFFFFF; outline-color: {N_ACC_BG}; }}
+{N4} a.why-go.cw b, {N4} a.why-go.cw i {{ color: #FFFFFF; }}
+"""
+SKIP_NEON = re.compile(r'^html\.white\.clock\.clock\.clock\.clock(?:\s+body(?:::after)?)?$')
+
+def neon_var_role(k):
+    p = k.lower()
+    if re.search(r'(ink|fg|text|txt|col|fore|sub|mute|link|acc|gold|moon$)', p): return 'text'  # --nh-go(단추 바탕)는 바탕 쪽
+    if re.search(r'(line|hair|bd|border|rule|seam)', p): return 'border'
+    return 'bg'
+
+def neon_decls(ds, skip_vars=False):
+    got = []
+    for k, v in ds:
+        if k.startswith('--'):
+            if skip_vars: continue
+            role = neon_var_role(k)
+        else:
+            role = role_of(k)
+        if role is None: continue
+        def rep(m):
+            t = m.group(0)
+            try: rgb, a = parse_color(t)
+            except Exception: return t
+            if a == 0: return t
+            nc = map_pn(rgb, 'stroke' if role == 'stroke' else role)
+            return t if nc is None else fmt(nc, a)
+        nv = COLRE.sub(rep, v)
+        if nv != v: got.append((k, nv))
+    return fix_contrast(got) if got else got
+
+def neon_pink_rules():
+    """EXTRA_PINK(핑크 손 규칙)을 밤 색으로 — 토큰 칸 · 몸 바탕 · 몸 뒤 빛은 NEON_HEAD 가 맡음"""
+    out = []
+    nodes, _ = parse(strip_comments(EXTRA_PINK))
+    rs = []; walk(nodes, [], rs)
+    for wrap, pre, body in rs:
+        sels = [x for x in split_top(pre, ',') if not SKIP_NEON.match(x)]
+        if not sels: continue
+        ds = neon_decls(decls_of(body))
+        if ds: out.append((wrap, ', '.join(sels) + ' { ' + '; '.join(f'{k}: {v}' for k, v in ds) + '; }'))
+    return out
+
+HOME_PINK, HOME_NEON_SEL = 'html.white.clock.clock.clock.home', 'html.white.clock.clock.clock.clock.home'
+def neon_home_rules():
+    """첫 화면(home-new.css — 청록 때 맨 칸 html.home · 핑크 칸 html.white.clock.clock.clock.home)을 한 단 위 밤 칸으로 — 핑크 칸이 덮은 맨 칸 값은 건너뜀(지금 보이는 값만)"""
+    nodes, _ = parse(strip_comments(open(os.path.join(ROOT, 'site/next/home-new.css'), encoding='utf-8').read()))
+    rs = []; walk(nodes, [], rs)
+    covered = set()
+    for wrap, pre, body in rs:
+        for sel in split_top(pre, ','):
+            if sel.startswith(HOME_PINK):
+                for k, _ in decls_of(body): covered.add((wrap, sel[len(HOME_PINK):], k.lower()))
+    out = [((), f"{HOME_NEON_SEL} {{ {NEON_TOKENS} }}"), ((), f"{HOME_NEON_SEL} body {{ background: {N_BG}; color: {N_INK}; }}"),
+           ((), f"{HOME_NEON_SEL} body::after {{ background: {NEON_GLOW}; }}")]
+    for wrap, pre, body in rs:
+        ds0 = decls_of(body)
+        for sel in split_top(pre, ','):
+            if sel.startswith(HOME_PINK): rest, pink = sel[len(HOME_PINK):], True
+            elif re.match(r'^html\.home(?![\w-])', sel): rest, pink = sel[len('html.home'):], False
+            else: continue
+            if rest.strip() in ('', 'body', 'body::after'): continue  # 토큰 · 몸 바탕 · 몸 뒤 빛은 위 세 줄이 맡음
+            ds = [(k, v) for k, v in ds0 if pink or (wrap, rest, k.lower()) not in covered]
+            ds = neon_decls(ds)
+            if ds: out.append((wrap, f"{HOME_NEON_SEL}{rest} {{ " + '; '.join(f'{k}: {v}' for k, v in ds) + '; }'))
+    return out
+
+def emit(rules):
+    by = {}
+    for w, r in rules: by.setdefault(w, []).append(r)
+    return '\n'.join(block(w, ls) for w, ls in by.items()) + '\n'
+
 def block(wrap, lines):
     s = '\n'.join(lines)
     for w in reversed(wrap):
@@ -620,5 +848,14 @@ head = ((('/* 최고급 핑크 판 — scripts/atlas11/next/clock_theme.py 가 �
         + ' * 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 08:23 「더 빠른 방식 찾아서 9시까지 모든 싸이트 되게 해」\n'
         + f' * 읽은 파일 {len(SRC)}개 · 바꾼 규칙 {nrule}개 · 바꾼 칸 {ndecl}개 */\n')
 body = '\n'.join(block(w, ls) for w, ls in out_blocks.items())
-open(OUT, 'w', encoding='utf-8').write(head + body + '\n' + TOKENS + EXTRA + (EXTRA_PINK if PAL == 'pink' else ''))
+if PAL == 'neon':
+    head = ('/* 밤 무대 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음 · 옛 핑크 판 --pink · 옛 청록 판 --teal)\n'
+            ' * 사장님 2026-10-29 16:57 「이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜」 — 무대 사진 색(docs/design/neon-2026-10-29)을 모든 쪽 바탕 · 글씨에\n'
+            + f' * 읽은 파일 {len(SRC)}개 · 바꾼 규칙 {nrule}개 · 바꾼 칸 {ndecl}개 */\n')
+    zone = (f"/* 업종 점 그림 네 자리 색 — 짙은 칸 위 색약 검사(dataviz validate_palette --mode dark --surface #241540 --pairs all) 실패 0 · 경고 0 · 싹 청록 · 꽃 장미 · 시듦 호박 · 잠잠 보라 · 칸 바탕은 그 색 20% */\n"
+            f"{HOME_NEON_SEL} #view {{ --nh-S: #0097B3; --nh-B: #C6367D; --nh-W: #C0851F; --nh-Q: #7260BD; --nh-zS: #1D2F57; --nh-zB: #441C4C; --nh-zW: #432B39; --nh-zQ: #342459; }}\n")
+    tail = NEON_HEAD + emit(neon_pink_rules()) + NEON_TAIL + '/* 첫 화면 밤 칸(home-new.css 를 한 단 위 html.white.clock.clock.clock.clock.home 에서 덮음) */\n' + emit(neon_home_rules()) + zone
+    open(OUT, 'w', encoding='utf-8').write(head + body + '\n' + TOKENS + EXTRA + tail)
+else:
+    open(OUT, 'w', encoding='utf-8').write(head + body + '\n' + TOKENS + EXTRA + (EXTRA_PINK if PAL == 'pink' else ''))
 print('palette', PAL, 'files', len(SRC), 'rules', nrule, 'decls', ndecl, 'bytes', len(head + body + EXTRA))

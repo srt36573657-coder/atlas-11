@@ -1,240 +1,254 @@
-/* 최고급 핑크 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음 · 옛 청록 판은 --teal)
- * 사장님 2026-10-28 12:00 「안돼 배경을 최고급 핑크로 해」 · 13:16 「속도빨리해서 얼른 만들엉」 — 첫 화면(home-new.css)과 같은 색을 모든 쪽에
- * 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 08:23 「더 빠른 방식 찾아서 9시까지 모든 싸이트 되게 해」
- * 읽은 파일 32개 · 바꾼 규칙 232개 · 바꾼 칸 298개 */
-html:where(.white.clock) i.play { border: 2px solid rgba(233, 188, 203, 0.8); }
-html:where(.white.clock) i.play::after { border-left: 18px solid #E9BCCB; }
-html:where(.white.clock) .m4-msg .m4-moon { border: 1px solid rgba(233, 188, 203, 0.12); outline: 1px solid rgba(251, 232, 238, 0.05); }
-html:where(.white.clock) .m4-letter .hpi .m4-bm { border: 1px solid rgba(233, 188, 203, 0.12); outline: 1px solid rgba(251, 232, 238, 0.05); }
-html:where(.white.clock) .m4-letter .hpi .hpi-b { border: 2px solid #A31F70; }
-html:where(.white.clock) .m4-seal { border: 1.5px solid rgba(233, 188, 203, 0.45); }
-html.white.clock body { background: #FFF7F9; }
-html:where(.white.clock) .kk-btn.kk-txt .kk-ic .kk-b { fill: #2A1420; }
-html:where(.white.clock) .kk-btn.kk-txt:active { background: #FCEBD5; }
-html:where(.white.clock) .kk-btn.kk-row:active { background: #FCEBD5; }
-html.white.clock .kk-gift { border: 1px solid #9E5A78; background: #FCEBD5; color: #2A1420; }
-html:where(.white.clock) .kk-gift:active { background: #FCEBD5; }
-html:where(.white.clock) .kk-yel:active { background: #FCEBD5; }
-html:where(.white.clock) .dm-it { border: 1px solid #E9BCCB; background: #FFF7F9; color: #2A1420; }
-html:where(.white.clock) .jb-more { border: 1px solid #E9BCCB; }
-html:where(.white.clock) .jb-card1 { outline: 3px solid #A31F70; background: rgba(252, 235, 213, 0.1); }
-html:where(.white.clock) .jb-card2::before { background: #FCEBD5; }
-html:where(.white.clock) .adm-go { background: #2A1420; }
-html:where(.white.clock) .pchx-key .k-avg { border-top: 2px dashed rgba(233, 188, 203, 0.5); }
-html:where(.white.clock) .pchx-key .k-b0 { border-top: 1px dotted rgba(233, 188, 203, 0.6); }
-html:where(.white.clock) .gm-bar { background: #FBE8EE; }
-html:where(.white.clock) .gm-b { background: #2A1420; }
-html:where(.white.clock) .gf-uv { background: #FFF7F9; }
-html:where(.white.clock) .hp-vb[aria-checked="true"] { background: #2A1420; }
-html:where(.white.clock) .hp-go { background: #2A1420; }
-html:where(.white.clock) .hd-dot.hd-cu { border: 3px solid #A31F70; }
-html.white.clock .hd-badge.hd-cr { outline-color: #B4123A; }
-html.white.clock .hd-badge.hd-cy { outline-color: #A31F70; }
-html.white.clock .hd-badge.hd-cg { outline-color: #A31F70; }
-html.white.clock .hd-cg { background: #A31F70; }
-html.white.clock .hd-cy { background: #8C4A12; }
-html.white.clock .hd-cr { background: #B4123A; }
-html.white.clock .hd-dot.hd-cu { border-color: #A31F70; }
-html.white.clock .hd-tog[aria-pressed="true"] { outline-color: #A31F70; }
-html:where(.white.clock) .ppast-fb { background: var(--m4-neu, #8A4A66); }
-html:where(.white.clock) .prange-qline { outline: 1px solid rgba(163, 31, 112, 0.45); }
-html:where(.white.clock) .prange-b.prange-pos { background: repeating-linear-gradient(135deg, rgba(251, 232, 238, 0.62) 0 2px, transparent 2px 6px); }
-html:where(.white.clock) .prange-sw.prange-pos { background: repeating-linear-gradient(135deg, rgba(251, 232, 238, 0.62) 0 2px, transparent 2px 6px); }
-html:where(.white.clock) .prange-b.prange-neg { background: repeating-linear-gradient(135deg, rgba(252, 235, 213, 0.78) 0 2px, transparent 2px 6px); }
-html:where(.white.clock) .prange-sw.prange-neg { background: repeating-linear-gradient(135deg, rgba(252, 235, 213, 0.78) 0 2px, transparent 2px 6px); }
-html:where(.white.clock) .prange-no .prange-mk { outline: 1px solid rgba(163, 31, 112, 0.45); }
-html:where(.white.clock) .prange-q .prange-mk { outline: 1px solid rgba(163, 31, 112, 0.45); }
-html.white.clock :is(.prange-b, .prange-sw).prange-neg { background: rgba(140, 74, 18, 0.22); }
-html:where(.white.clock) .ps-dlg { --ps-bg: var(--card, #2A1420); --ps-bg2: var(--card2, #2A1420); --ps-hair: var(--hair2, rgba(233, 188, 203, 0.22)); --ps-ink: var(--ink, #FFF7F9); --ps-sub: var(--sub, #E7A9C0); --ps-gold: var(--gold, #FCEBD5); --ps-up: var(--up, #B4123A); --ps-dn: var(--down, #DCE6F7); }
-html:where(.white.clock) .ps-dlg::backdrop { background: rgba(42, 20, 32, 0.72); }
-html:where(.white.clock) .ps-dlg.ps-fb { outline: 100vmax solid rgba(42, 20, 32, 0.72); }
-html:where(.white.clock) .ps-go { background: var(--ps-gold, #FCEBD5); }
-html:where(.white.clock) .ps-dlg :focus-visible { outline: 3px solid var(--ps-gold, #A31F70); }
-html:where(.white.clock) .ps-land :focus-visible { outline: 3px solid var(--ps-gold, #A31F70); }
-html:where(.white.clock) .ps-after :focus-visible { outline: 3px solid var(--ps-gold, #A31F70); }
-html:where(.white.clock) .ps-step :focus-visible { outline: 3px solid var(--ps-gold, #A31F70); }
-html:where(.white.clock) .ps-offer :focus-visible { outline: 3px solid var(--ps-gold, #A31F70); }
-html:where(.white.clock) .ps-toast { background: var(--ink, #FBE8EE); }
-html:where(.white.clock) .ps-land { --ps-gold: var(--gold, #FCEBD5); --ps-sub: var(--sub, #E7A9C0); --ps-hair: var(--hair, rgba(233, 188, 203, 0.12)); }
-html:where(.white.clock) .ps-step { --ps-gold: var(--gold, #FCEBD5); --ps-sub: var(--sub, #E7A9C0); --ps-hair: var(--hair, rgba(233, 188, 203, 0.12)); }
-html:where(.white.clock) .ps-after { --ps-gold: var(--gold, #FCEBD5); --ps-sub: var(--sub, #E7A9C0); --ps-hair: var(--hair, rgba(233, 188, 203, 0.12)); }
-html:where(.white.clock) .ps-ln { stroke: var(--flat, #B9748F); }
-html:where(.white.clock) .ps-ln.up { stroke: var(--up, #B4123A); }
-html:where(.white.clock) .ps-ln.dn { stroke: var(--down, #1A55B0); }
-html:where(.white.clock) .ps-end { fill: var(--flat, #B9748F); }
-html:where(.white.clock) .ps-end.up { fill: var(--up, #B4123A); }
-html:where(.white.clock) .ps-end.dn { fill: var(--down, #DCE6F7); }
-html:where(.white.clock) .ps-sent { stroke: var(--bg, #2A1420); }
-html:where(.white.clock) .ps-v { background: var(--card, #2A1420); }
-html:where(.white.clock) .ps-vn.up { color: var(--up, #B4123A); }
-html:where(.white.clock) .ps-vn.dn { color: var(--down, #1A55B0); }
-html:where(.white.clock) .ps-cmp.up { color: var(--up, #B4123A); }
-html:where(.white.clock) .ps-cmp.dn { color: var(--down, #1A55B0); }
-html:where(.white.clock) .ps-after .ps-t { border: 1px solid var(--hair2, rgba(233, 188, 203, 0.22)); background: var(--card2, #2A1420); color: var(--ink, #FFF7F9); }
-html:where(.white.clock) .ps-after .ps-qb { border: 1px solid var(--hair2, rgba(233, 188, 203, 0.22)); background: var(--card2, #2A1420); color: var(--ink, #FFF7F9); }
-html:where(.white.clock) .ps-lock { border: 1px dashed var(--hair2, rgba(233, 188, 203, 0.22)); }
-html:where(.white.clock) .ps-said { background: var(--card, #2A1420); }
-html:where(.white.clock) .ps-link { color: var(--ink, #FFF7F9); }
-html:where(.white.clock) .ps-offer { --ps-gold: var(--gold, #FCEBD5); --ps-sub: var(--sub, #E7A9C0); border: 1px solid var(--hair2, rgba(233, 188, 203, 0.22)); background: var(--card, #2A1420); color: var(--ink, #FFF7F9); }
-html:where(.white.clock) .psurge-key .psurge-kb0 { border-top: 1px dashed rgba(233, 188, 203, 0.55); }
-html:where(.white.clock) .th-say { border: 1px solid #E9BCCB; background: #FFF7F9; }
-html:where(.white.clock) .th-who { border-right: 1px solid #E9BCCB; color: #4A2333; }
-html:where(.white.clock) .th-asof { color: #4A2333; }
-html:where(.white.clock) .th-cap2 { color: #4A2333; }
-html:where(.white.clock) .th-safe { color: #2A1420; }
-html:where(.white.clock) .th-steps li { border-top: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-sn { border: 1px solid #9E5A78; }
-html:where(.white.clock) .th-st span { color: #2A1420; }
-html:where(.white.clock) .th-st .th-ckd { color: #2A1420; }
-html:where(.white.clock) .th-z.W { color: #2A1420; }
-html:where(.white.clock) .th-z.Q { color: #2A1420; }
-html:where(.white.clock) .th-ck { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) a.th-ck:active { background: #FFF7F9; }
-html:where(.white.clock) .th-ck > b.n { border: 2px solid #9E5A78; color: #2A1420; }
-html:where(.white.clock) .th-box { border: 1px dashed #9E5A78; }
-html:where(.white.clock) .th-box span { color: #2A1420; }
-html:where(.white.clock) .th-li { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-cor { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-srow { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-srow .th-sk { color: #4A2333; }
-html:where(.white.clock) .th-line .th-mid { stroke: #F4D9E1; }
-html:where(.white.clock) .th-line .th-l0 { stroke: #2A1420; }
-html:where(.white.clock) .th-two p { border: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-two span { color: #2A1420; }
-html:where(.white.clock) .th-two small { color: #2A1420; }
-html:where(.white.clock) .th-al { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-sw { border: 1px solid #9E5A78; color: #2A1420; }
-html:where(.white.clock) .th-rb.all { border-top: 1px solid #E9BCCB; color: #2A1420; }
-html:where(.white.clock) .th-rbk { color: #2A1420; }
-html:where(.white.clock) .th-rb.all .th-bar1 { fill: #2A1420; }
-html:where(.white.clock) .th-fold { border: 1px solid #E9BCCB; color: #2A1420; }
-html:where(.white.clock) .th-fold summary::after { color: #2A1420; }
-html:where(.white.clock) .th-found { border: 1px solid #9E5A78; }
-html:where(.white.clock) .th-found .th-fk { color: #2A1420; }
-html:where(.white.clock) .th-why { border: 1px solid #9E5A78; }
-html:where(.white.clock) .th-why .th-nx small { color: #2A1420; }
-html:where(.white.clock) .th-why > i { color: #2A1420; }
-html:where(.white.clock) .th-gh { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-gfold > summary { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-gfold > summary::after { color: #2A1420; }
-html:where(.white.clock) .th-calc { border: 2px solid #9E5A78; background: #FFF7F9; }
-html:where(.white.clock) .th-calc.kept { border-color: var(--gold-line, #A31F70); }
-html:where(.white.clock) .th-calm i.no { border: 2px solid #C9D6EE; }
-html:where(.white.clock) .th-calkey i.no { border: 2px solid #C9D6EE; }
-html:where(.white.clock) .th-calm i.wait { background: #E7A9C0; }
-html:where(.white.clock) .th-calkey i.wait { background: #E7A9C0; }
-html:where(.white.clock) .th-pkrec { border: 2px solid #9E5A78; background: #FFF7F9; }
-html:where(.white.clock) .th-pkt { background: #FBE8EE; }
-html:where(.white.clock) .th-pkt i { background: #E7A9C0; }
-html:where(.white.clock) .th-pkrow { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-pkrow i { color: var(--sub, #2A1420); }
-html:where(.white.clock) .th-pkcal { border: 2px solid #9E5A78; background: #FFF7F9; }
-html:where(.white.clock) .th-pkwd { color: #2A1420; }
-html:where(.white.clock) .th-pkc { background: #FBE8EE; }
-html:where(.white.clock) .th-pkc.w { border: 2px solid #9E5A78; }
-html:where(.white.clock) .th-pkwn { color: #2A1420; }
-html:where(.white.clock) .th-day { border: 2px solid #9E5A78; background: #FFF7F9; }
-html:where(.white.clock) .th-sinr { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-ch { border-top: 2px solid #9E5A78; }
-html:where(.white.clock) .th-ch.th-chend { border: 2px solid #9E5A78; }
-html:where(.white.clock) .th-chk { border: 2px solid #9E5A78; }
-html:where(.white.clock) .th-chend .th-chk { background: #2A1420; border-color: #9E5A78; }
-html:where(.white.clock) .th-chb { border: 2px solid #9E5A78; background: #FFF7F9; color: #2A1420; }
-html:where(.white.clock) .th-chb:active { background: #FBE8EE; }
-html:where(.white.clock) .th-pkhowf { border-top: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-pkday { color: #4A2333; }
-html:where(.white.clock) .th-pki { border: 1px solid #E9BCCB; background: #FFF7F9; }
-html:where(.white.clock) .th-pkcp { border: 1px solid #9E5A78; background: #FFF7F9; color: #2A1420; }
-html:where(.white.clock) .th-pkgo { color: #2A1420; }
-html:where(.white.clock) .th-pkrec1 { border-left: 4px solid #E9BCCB; color: #4A2333; }
-html:where(.white.clock) .th-tile { border: 1px solid #E9BCCB; background: #FFF7F9; color: #2A1420; }
-html:where(.white.clock) .th-tbadge { border: 1px solid #9E5A78; background: #FFF7F9; color: #2A1420; }
-html:where(.white.clock) .th-chip { border: 1px solid #E9BCCB; background: #FFF7F9; color: #2A1420; }
-html:where(.white.clock) .ptime-key .k-pool { border-top: 2px solid #9E5A78; }
-html:where(.white.clock) details.nw.ptoday-al { outline: 1px solid rgba(163, 31, 112, 0.6); }
-html:where(.white.clock) .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #9E5A78; }
-html.white.clock .ptoday-ch .ptoday-ag2 { fill: rgba(42, 20, 32, 0.04); }
-html.white.clock .top { background: #FFF7F9; border-bottom: 1px solid #E9BCCB; }
-html.white.clock .top #jhBtn { border: 1px solid #9E5A78; background: #FFF7F9; }
-html.white.clock .top .ibtn { background: #FFF7F9; border-top: 1px solid #9E5A78; border-bottom: 1px solid #9E5A78; }
-html.white.clock .top #langBtn { border-left: 1px solid #9E5A78; }
-html.white.clock .top #findBtn { border-right: 1px solid #9E5A78; }
-html.white.clock .tabs { background: #FFF7F9; border-top: 1px solid #E9BCCB; }
-html.white.clock .tabs a { color: #4A2333; }
-html.white.clock .tabs a.plus { color: #4A2333; }
-html.white.clock.home .w-say p { border: 1px solid #9E5A78; background: #FFF7F9; }
-html.white.clock.home .w-say .s-who { border-right: 1px solid #9E5A78; color: #2A1420; }
-html.white.clock.home .w-say .w-kk { border: 1px solid #9E5A78; background: #2A1420; }
-html.white.clock.home ol.s-story::before { background: #FBE8EE; }
-html.white.clock.home .s-ch + .s-ch { border-top: 1px solid #E9BCCB; }
-html.white.clock.home .s-no { border: 1px solid #9E5A78; background: #FFF7F9; }
-html.white.clock.home .w-ess .ess-d > summary::after { border: 1px solid #9E5A78; }
-html.white.clock.home .w-ess .ess-l { color: #2A1420; }
-html.white.clock.home .w-ess .ess-l.q { color: #2A1420; }
-html.white.clock.home a.w-today { color: #2A1420; }
-html.white.clock.home a.w-today .hm-bd { color: #2A1420; }
-html.white.clock.home .w-news .w-lb { color: #2A1420; }
-html.white.clock.home .w-news .w-why { border: 1px solid #9E5A78; }
-html.white.clock.home .w-news .w-qs { color: #2A1420; }
-html.white.clock.home .w-news .w-qs li { border-top: 1px solid #E9BCCB; }
-html.white.clock.home .w-news button.w-q i { color: #2A1420; }
-html.white.clock.home .w-news .w-ans p { color: #2A1420; }
-html.white.clock.home a.s-ghost { border: 1px dashed #9E5A78; }
-html.white.clock.home a.w-month { border: 1px dashed #9E5A78; }
-html.white.clock.home .s-mem { color: #2A1420; }
-html.white.clock.home .s-mem .w-n { color: #2A1420; }
-html.white.clock.home a.s-evo { color: #2A1420; }
-html.white.clock.home a.s-evo i { color: #2A1420; }
-html.white.clock.home .s-thumb { border-top: 1px solid #E9BCCB; background: #FFF7F9; }
-html.white.clock.home .s-thumb form.w-find { border: 1px solid #9E5A78; background: #FFF7F9; }
-html.white.clock.home .s-thumb .w-find .w-in::placeholder { color: #2A1420; }
-html.white.clock.home .s-thumb .w-find .w-go { background: #2A1420; }
-html.white.clock.home .s-thumb .w-hits { background: #FFF7F9; border-color: #9E5A78; }
-html.white.clock.home .s-thumb .w-go4 a { color: #2A1420; }
-html.white.clock.home .s-thumb details.w-all > summary { color: #2A1420; }
-html.white.clock.home .s-short { border-top: 1px solid #E9BCCB; }
-html.white.clock.home .s-short .w-go4 a { color: #2A1420; }
-html.white.clock.home .s-short details.w-all > summary { color: #2A1420; }
-html.white.clock .cp-card .cp-bar { background: #FBE8EE; }
-html.white.clock .cp-card .cp-go { background: #2A1420; }
-html:where(.white.clock) .th-cap { color: #2A1420; }
-html:where(.white.clock) .th-three a { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-three a i { color: #2A1420; }
-html:where(.white.clock) .th-three a:active { background: #FFF7F9; }
-html:where(.white.clock) .th-ansl i { color: #2A1420; }
-html:where(.white.clock) .th-sub { color: #2A1420; }
-html:where(.white.clock) .th-row { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-n { background: #F4D9E1; }
-html:where(.white.clock) .th-n.th-top { background: #FCEBD5; color: #2A1420; }
-html:where(.white.clock) .th-meta { color: #2A1420; }
-html:where(.white.clock) .th-tg { border: 1px solid #9E5A78; }
-html:where(.white.clock) .th-nm { color: #2A1420; }
-html:where(.white.clock) .th-hi { color: #2A1420; }
-html:where(.white.clock) .th-bar .th-bar0 { fill: #F4D9E1; }
-html:where(.white.clock) .th-rbar .th-bar0 { fill: #F4D9E1; }
-html:where(.white.clock) .th-go { color: #2A1420; }
-html:where(.white.clock) .th-more { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-rec { border: 1px dashed #9E5A78; color: #2A1420; }
-html:where(.white.clock) .th-next { border: 1px solid #E9BCCB; background: #2A1420; }
-html:where(.white.clock) .th-nx small { color: #A31F70; }
-html:where(.white.clock) .th-bars .th-b0 { fill: #3D1028; }
-html:where(.white.clock) .th-lc { color: #2A1420; }
-html:where(.white.clock) #view .th-map a.th-row.th-row2 { border-bottom-color: #E9BCCB; }
-html.white.clock #view .th-map a[href].th-row.th-row2 { border-bottom-color: #E9BCCB; }
-html:where(.white.clock) .th-hfold { border-bottom: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-hfold > summary::after { color: #2A1420; }
-html:where(.white.clock) .th-pkhome { background: #FFF7F9; }
-html:where(.white.clock) .th-pqt { background: #FBE8EE; }
-html:where(.white.clock) .th-pqf { background: #2A1420; }
-html:where(.white.clock) .th-pkhgo { border-top: 1px solid #E9BCCB; }
-html:where(.white.clock) .th-zc.th-zcS:active { background: #2A1420; }
-html:where(.white.clock) .th-zc.th-zcS .th-zi { background: #FFF7F9; }
-html:where(.white.clock) .th-zc.th-zcS .th-zgo { background: #FFF7F9; }
-html:where(.white.clock) .th-yrg .th-yrb0 { stroke: #E7A9C0; }
-html:where(.white.clock) .th-yrg .th-yrgh { stroke: #E7A9C0; }
-html:where(.white.clock) .th-yrg .th-yrhi { stroke: #FFF7F9; }
-html:where(.white.clock) .th-yrg .th-yric { fill: rgba(255, 247, 249, 0.06); }
-html.white.clock.clock.clock { --bg: #FFF7F9; --night: #FFF7F9; --band: #FFF7F9; --violet: #2A1420; --card: #FFF7F9; --card2: #FFF7F9; --card3: #FBE8EE; --hair: #9E5A78; --hair2: #9E5A78; --line: #E9BCCB; --hair-soft: #E9BCCB; --seam: #E9BCCB; --press: #FBE8EE; --lift: #FFF7F9; --ink: #2A1420; --ink-hi: #2A1420; --sub: #2A1420; --mute: #3D1028; --flat: #3D1028; --violet-ink: #2A1420; --violet-wash: #FFF7F9; --violet-line: #9E5A78; --gold: #A31F70; --gold-wash: #FCEBD5; --gold-line: #A31F70; --up: #A31F70; --down: #1A55B0; --up-ink: #A31F70; --down-ink: #1A55B0; --up-bg: #A31F70; --down-bg: #1A55B0; --up-fill: rgba(163, 31, 112, 0.16); --down-fill: rgba(26, 85, 176, 0.16); --up-fade: rgba(163, 31, 112, 0.06); --down-fade: rgba(26, 85, 176, 0.06); --lacquer: #FFF7F9; --lacquer-ink: #2A1420; --lacquer-sub: #2A1420; --lacquer-gold: #A31F70; --moon: #2A1420; --moonrow: #FFF7F9; --m4-band: #FFF7F9; --m4-line: #9E5A78; --m4-soft: #B9748F; --m4-neu: #3D1028; --m4-line2: #E9BCCB; }
+/* 밤 무대 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음 · 옛 핑크 판 --pink · 옛 청록 판 --teal)
+ * 사장님 2026-10-29 16:57 「이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜」 — 무대 사진 색(docs/design/neon-2026-10-29)을 모든 쪽 바탕 · 글씨에
+ * 읽은 파일 32개 · 바꾼 규칙 247개 · 바꾼 칸 321개 */
+html:where(.white.clock) i.play { border: 2px solid rgba(58, 39, 86, 0.8); }
+html:where(.white.clock) i.play::after { border-left: 18px solid #3A2756; }
+html:where(.white.clock) .m4-msg .m4-moon { border: 1px solid rgba(58, 39, 86, 0.12); outline: 1px solid rgba(36, 21, 64, 0.05); }
+html:where(.white.clock) .m4-letter .hpi .m4-bm { border: 1px solid rgba(58, 39, 86, 0.12); outline: 1px solid rgba(36, 21, 64, 0.05); }
+html:where(.white.clock) .m4-letter .hpi .hpi-b { border: 2px solid #F06FCB; }
+html:where(.white.clock) .m4-seal { border: 1.5px solid rgba(58, 39, 86, 0.45); }
+html.white.clock body { background: #1C1136; }
+html:where(.white.clock) .kk-btn.kk-txt .kk-ic .kk-b { fill: #F2EFF9; }
+html:where(.white.clock) .kk-btn.kk-txt:active { background: #2A1440; }
+html:where(.white.clock) .kk-btn.kk-row:active { background: #2A1440; }
+html.white.clock .kk-gift { border: 1px solid #A58BC2; background: #2A1440; color: #F2EFF9; }
+html:where(.white.clock) .kk-gift:active { background: #2A1440; }
+html:where(.white.clock) .kk-yel:active { background: #2A1440; }
+html:where(.white.clock) .dm-it { border: 1px solid #5E4A7E; background: #1C1136; color: #F2EFF9; }
+html:where(.white.clock) .jb-more { border: 1px solid #5E4A7E; }
+html:where(.white.clock) .jb-card1 { outline: 3px solid #F06FCB; background: rgba(42, 20, 64, 0.1); }
+html:where(.white.clock) .jb-card2::before { background: #2A1440; }
+html:where(.white.clock) .adm-go { background: #F2EFF9; color: #0C081D; }
+html:where(.white.clock) .pchx-key .k-up { color: #0C081D; }
+html:where(.white.clock) .pchx-key .k-dn { color: #0C081D; }
+html:where(.white.clock) .pchx-key .k-avg { border-top: 2px dashed rgba(58, 39, 86, 0.5); }
+html:where(.white.clock) .pchx-key .k-b0 { border-top: 1px dotted rgba(58, 39, 86, 0.6); }
+html:where(.white.clock) .gm-bar { background: #241540; }
+html:where(.white.clock) .gm-b { background: #F2EFF9; color: #0C081D; }
+html:where(.white.clock) .gf-uv { background: #1C1136; }
+html:where(.white.clock) .gf-sms { color: #0C081D; }
+html:where(.white.clock) .gf-claim { color: #0C081D; }
+html:where(.white.clock) .gf-claim2 { color: #0C081D; }
+html:where(.white.clock) .hp-vb[aria-checked="true"] { background: #F2EFF9; color: #0C081D; }
+html:where(.white.clock) .hp-go { background: #F2EFF9; color: #0C081D; }
+html:where(.white.clock) .hd-dot.hd-cu { border: 3px solid #F06FCB; }
+html.white.clock .hd-badge.hd-cr { outline-color: #FF5A65; }
+html.white.clock .hd-badge.hd-cy { outline-color: #F06FCB; }
+html.white.clock .hd-badge.hd-cg { outline-color: #F06FCB; }
+html.white.clock .hd-cg { background: #C42F98; }
+html.white.clock .hd-cy { background: #C42F98; }
+html.white.clock .hd-cr { background: #FF5A65; }
+html.white.clock .hd-dot.hd-cu { border-color: #F06FCB; }
+html.white.clock .hd-tog[aria-pressed="true"] { outline-color: #F06FCB; }
+html:where(.white.clock) .ppast-fb { background: var(--m4-neu, #9A88B8); }
+html:where(.white.clock) .prange-qline { outline: 1px solid rgba(240, 111, 203, 0.45); }
+html:where(.white.clock) .prange-b.prange-pos { background: repeating-linear-gradient(135deg, rgba(36, 21, 64, 0.62) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-sw.prange-pos { background: repeating-linear-gradient(135deg, rgba(36, 21, 64, 0.62) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-b.prange-neg { background: repeating-linear-gradient(135deg, rgba(42, 20, 64, 0.78) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-sw.prange-neg { background: repeating-linear-gradient(135deg, rgba(42, 20, 64, 0.78) 0 2px, transparent 2px 6px); }
+html:where(.white.clock) .prange-no .prange-mk { outline: 1px solid rgba(240, 111, 203, 0.45); }
+html:where(.white.clock) .prange-q .prange-mk { outline: 1px solid rgba(240, 111, 203, 0.45); }
+html.white.clock :is(.prange-b, .prange-sw).prange-neg { background: rgba(196, 47, 152, 0.22); }
+html:where(.white.clock) .ps-dlg { --ps-bg: var(--card, #F2EFF9); --ps-bg2: var(--card2, #F2EFF9); --ps-hair: var(--hair2, rgba(58, 39, 86, 0.22)); --ps-ink: var(--ink, #2E1A4A); --ps-sub: var(--sub, #412649); --ps-gold: var(--gold, #2A1440); --ps-dn: var(--down, #1E2C5A); }
+html:where(.white.clock) .ps-dlg::backdrop { background: rgba(242, 239, 249, 0.72); }
+html:where(.white.clock) .ps-dlg.ps-fb { outline: 100vmax solid rgba(242, 239, 249, 0.72); }
+html:where(.white.clock) .ps-go { background: var(--ps-gold, #2A1440); }
+html:where(.white.clock) .ps-dlg :focus-visible { outline: 3px solid var(--ps-gold, #F06FCB); }
+html:where(.white.clock) .ps-land :focus-visible { outline: 3px solid var(--ps-gold, #F06FCB); }
+html:where(.white.clock) .ps-after :focus-visible { outline: 3px solid var(--ps-gold, #F06FCB); }
+html:where(.white.clock) .ps-step :focus-visible { outline: 3px solid var(--ps-gold, #F06FCB); }
+html:where(.white.clock) .ps-offer :focus-visible { outline: 3px solid var(--ps-gold, #F06FCB); }
+html:where(.white.clock) .ps-toast { background: var(--ink, #241540); }
+html:where(.white.clock) .ps-land { --ps-gold: var(--gold, #2A1440); --ps-sub: var(--sub, #412649); --ps-hair: var(--hair, rgba(58, 39, 86, 0.12)); }
+html:where(.white.clock) .ps-step { --ps-gold: var(--gold, #2A1440); --ps-sub: var(--sub, #412649); --ps-hair: var(--hair, rgba(58, 39, 86, 0.12)); }
+html:where(.white.clock) .ps-after { --ps-gold: var(--gold, #2A1440); --ps-sub: var(--sub, #412649); --ps-hair: var(--hair, rgba(58, 39, 86, 0.12)); }
+html:where(.white.clock) .ps-ln { stroke: var(--flat, #7F587D); }
+html:where(.white.clock) .ps-end { fill: var(--flat, #7F587D); }
+html:where(.white.clock) .ps-end.dn { fill: var(--down, #1E2C5A); }
+html:where(.white.clock) .ps-sent { stroke: var(--bg, #F2EFF9); }
+html:where(.white.clock) .ps-v { background: var(--card, #F2EFF9); }
+html:where(.white.clock) .ps-after .ps-t { border: 1px solid var(--hair2, rgba(58, 39, 86, 0.22)); background: var(--card2, #F2EFF9); color: var(--ink, #2E1A4A); }
+html:where(.white.clock) .ps-after .ps-qb { border: 1px solid var(--hair2, rgba(58, 39, 86, 0.22)); background: var(--card2, #F2EFF9); color: var(--ink, #2E1A4A); }
+html:where(.white.clock) .ps-lock { border: 1px dashed var(--hair2, rgba(58, 39, 86, 0.22)); }
+html:where(.white.clock) .ps-said { background: var(--card, #F2EFF9); }
+html:where(.white.clock) .ps-link { color: var(--ink, #2E1A4A); }
+html:where(.white.clock) .ps-offer { --ps-gold: var(--gold, #2A1440); --ps-sub: var(--sub, #412649); border: 1px solid var(--hair2, rgba(58, 39, 86, 0.22)); background: var(--card, #F2EFF9); color: var(--ink, #2E1A4A); }
+html:where(.white.clock) .psurge-lkey .psurge-ldot { color: #0C081D; }
+html:where(.white.clock) .psurge-key .psurge-kup { color: #0C081D; }
+html:where(.white.clock) .psurge-key .psurge-kdn { color: #0C081D; }
+html:where(.white.clock) .psurge-key .psurge-kb0 { border-top: 1px dashed rgba(58, 39, 86, 0.55); }
+html:where(.white.clock) .th-say { border: 1px solid #5E4A7E; background: #1C1136; }
+html:where(.white.clock) .th-who { border-right: 1px solid #5E4A7E; color: #E4DDF0; }
+html:where(.white.clock) .th-asof { color: #E4DDF0; }
+html:where(.white.clock) .th-cap2 { color: #E4DDF0; }
+html:where(.white.clock) .th-safe { color: #F2EFF9; }
+html:where(.white.clock) .th-steps li { border-top: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-sn { border: 1px solid #A58BC2; }
+html:where(.white.clock) .th-st span { color: #F2EFF9; }
+html:where(.white.clock) .th-st .th-ckd { color: #F2EFF9; }
+html:where(.white.clock) .th-z.W { color: #F2EFF9; }
+html:where(.white.clock) .th-z.Q { color: #F2EFF9; }
+html:where(.white.clock) .th-ck { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) a.th-ck:active { background: #1C1136; }
+html:where(.white.clock) .th-ck > b.y { color: #0C081D; }
+html:where(.white.clock) .th-ck > b.n { border: 2px solid #A58BC2; color: #F2EFF9; }
+html:where(.white.clock) .th-box { border: 1px dashed #A58BC2; }
+html:where(.white.clock) .th-box span { color: #F2EFF9; }
+html:where(.white.clock) .th-li { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-cor { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-srow { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-srow .th-sk { color: #E4DDF0; }
+html:where(.white.clock) .th-line .th-mid { stroke: #2E1A4A; }
+html:where(.white.clock) .th-line .th-l0 { stroke: #F2EFF9; }
+html:where(.white.clock) .th-two p { border: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-two span { color: #F2EFF9; }
+html:where(.white.clock) .th-two small { color: #F2EFF9; }
+html:where(.white.clock) .th-al { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-sw { border: 1px solid #A58BC2; color: #F2EFF9; }
+html:where(.white.clock) .th-rb.all { border-top: 1px solid #5E4A7E; color: #F2EFF9; }
+html:where(.white.clock) .th-rbk { color: #F2EFF9; }
+html:where(.white.clock) .th-rb.all .th-bar1 { fill: #F2EFF9; }
+html:where(.white.clock) .th-fold { border: 1px solid #5E4A7E; color: #F2EFF9; }
+html:where(.white.clock) .th-fold summary::after { color: #F2EFF9; }
+html:where(.white.clock) .th-found { border: 1px solid #A58BC2; }
+html:where(.white.clock) .th-found .th-fk { color: #F2EFF9; }
+html:where(.white.clock) .th-why { border: 1px solid #A58BC2; }
+html:where(.white.clock) .th-why .th-nx small { color: #F2EFF9; }
+html:where(.white.clock) .th-why > i { color: #F2EFF9; }
+html:where(.white.clock) .th-gh { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-gfold > summary { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-gfold > summary::after { color: #F2EFF9; }
+html:where(.white.clock) .th-calc { border: 2px solid #A58BC2; background: #1C1136; }
+html:where(.white.clock) .th-calc.kept { border-color: var(--gold-line, #F06FCB); }
+html:where(.white.clock) .th-calm i.ok { color: #0C081D; }
+html:where(.white.clock) .th-calkey i.ok { color: #0C081D; }
+html:where(.white.clock) .th-calm i.no { border: 2px solid #5B96FF; }
+html:where(.white.clock) .th-calkey i.no { border: 2px solid #5B96FF; }
+html:where(.white.clock) .th-calm i.wait { background: #412649; }
+html:where(.white.clock) .th-calkey i.wait { background: #412649; }
+html:where(.white.clock) .th-pkrec { border: 2px solid #A58BC2; background: #1C1136; }
+html:where(.white.clock) .th-pkt { background: #241540; }
+html:where(.white.clock) .th-pkt i { background: #412649; }
+html:where(.white.clock) .th-pkbar.pick .th-pkt i { color: #0C081D; }
+html:where(.white.clock) .th-pkrow { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-pkrow i { color: var(--sub, #F2EFF9); }
+html:where(.white.clock) .th-pkcal { border: 2px solid #A58BC2; background: #1C1136; }
+html:where(.white.clock) .th-pkwd { color: #F2EFF9; }
+html:where(.white.clock) .th-pkc { background: #241540; }
+html:where(.white.clock) .th-pkc.up { color: #0C081D; }
+html:where(.white.clock) .th-pkc.dn { color: #0C081D; }
+html:where(.white.clock) .th-pkc.w { border: 2px solid #A58BC2; }
+html:where(.white.clock) .th-pkwn { color: #F2EFF9; }
+html:where(.white.clock) .th-day { border: 2px solid #A58BC2; background: #1C1136; }
+html:where(.white.clock) .th-sinr { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-ch { border-top: 2px solid #A58BC2; }
+html:where(.white.clock) .th-ch.th-chend { border: 2px solid #A58BC2; }
+html:where(.white.clock) .th-chk { border: 2px solid #A58BC2; }
+html:where(.white.clock) .th-chend .th-chk { background: #F2EFF9; border-color: #A58BC2; color: #0C081D; }
+html:where(.white.clock) .th-chb { border: 2px solid #A58BC2; background: #1C1136; color: #F2EFF9; }
+html:where(.white.clock) .th-chb:active { background: #241540; }
+html:where(.white.clock) .th-pkhowf { border-top: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-pkday { color: #E4DDF0; }
+html:where(.white.clock) .th-pki { border: 1px solid #5E4A7E; background: #1C1136; }
+html:where(.white.clock) .th-pkcp { border: 1px solid #A58BC2; background: #1C1136; color: #F2EFF9; }
+html:where(.white.clock) .th-pkgo { color: #F2EFF9; }
+html:where(.white.clock) .th-pkrec1 { border-left: 4px solid #5E4A7E; color: #E4DDF0; }
+html:where(.white.clock) .th-tile { border: 1px solid #5E4A7E; background: #1C1136; color: #F2EFF9; }
+html:where(.white.clock) .th-tbadge { border: 1px solid #A58BC2; background: #1C1136; color: #F2EFF9; }
+html:where(.white.clock) .th-chip { border: 1px solid #5E4A7E; background: #1C1136; color: #F2EFF9; }
+html:where(.white.clock) .ptime-key .k-pool { border-top: 2px solid #A58BC2; }
+html:where(.white.clock) details.nw.ptoday-al { outline: 1px solid rgba(240, 111, 203, 0.6); }
+html:where(.white.clock) .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #A58BC2; }
+html:where(.white.clock) .ptoday-bar .ptoday-bu { color: #0C081D; }
+html:where(.white.clock) .ptoday-bar .ptoday-bd { color: #0C081D; }
+html.white.clock .ptoday-ch .ptoday-ag2 { fill: rgba(242, 239, 249, 0.04); }
+html.white.clock .top { background: #1C1136; border-bottom: 1px solid #5E4A7E; }
+html.white.clock .top #jhBtn { border: 1px solid #A58BC2; background: #1C1136; }
+html.white.clock .top .ibtn { background: #1C1136; border-top: 1px solid #A58BC2; border-bottom: 1px solid #A58BC2; }
+html.white.clock .top #langBtn { border-left: 1px solid #A58BC2; }
+html.white.clock .top #findBtn { border-right: 1px solid #A58BC2; }
+html.white.clock .tabs { background: #1C1136; border-top: 1px solid #5E4A7E; }
+html.white.clock .tabs a { color: #E4DDF0; }
+html.white.clock .tabs a.plus { color: #E4DDF0; }
+html.white.clock.home .w-say p { border: 1px solid #A58BC2; background: #1C1136; }
+html.white.clock.home .w-say .s-who { border-right: 1px solid #A58BC2; color: #F2EFF9; }
+html.white.clock.home .w-say .w-kk { border: 1px solid #A58BC2; background: #F2EFF9; color: #0C081D; }
+html.white.clock.home ol.s-story::before { background: #241540; }
+html.white.clock.home .s-ch + .s-ch { border-top: 1px solid #5E4A7E; }
+html.white.clock.home .s-no { border: 1px solid #A58BC2; background: #1C1136; }
+html.white.clock.home .w-ess .ess-d > summary::after { border: 1px solid #A58BC2; }
+html.white.clock.home .w-ess .ess-l { color: #F2EFF9; }
+html.white.clock.home .w-ess .ess-l.q { color: #F2EFF9; }
+html.white.clock.home a.w-today { color: #F2EFF9; }
+html.white.clock.home a.w-today .hm-bd { color: #F2EFF9; }
+html.white.clock.home .w-news .w-lb { color: #F2EFF9; }
+html.white.clock.home .w-news .w-why { border: 1px solid #A58BC2; }
+html.white.clock.home .w-news .w-qs { color: #F2EFF9; }
+html.white.clock.home .w-news .w-qs li { border-top: 1px solid #5E4A7E; }
+html.white.clock.home .w-news button.w-q i { color: #F2EFF9; }
+html.white.clock.home .w-news .w-ans p { color: #F2EFF9; }
+html.white.clock.home .s-split .gu { color: #0C081D; }
+html.white.clock.home .s-split .gd { color: #0C081D; }
+html.white.clock.home a.s-ghost { border: 1px dashed #A58BC2; }
+html.white.clock.home a.w-month { border: 1px dashed #A58BC2; }
+html.white.clock.home .s-mem { color: #F2EFF9; }
+html.white.clock.home .s-mem .w-n { color: #F2EFF9; }
+html.white.clock.home a.s-evo { color: #F2EFF9; }
+html.white.clock.home a.s-evo i { color: #F2EFF9; }
+html.white.clock.home .s-thumb { border-top: 1px solid #5E4A7E; background: #1C1136; }
+html.white.clock.home .s-thumb form.w-find { border: 1px solid #A58BC2; background: #1C1136; }
+html.white.clock.home .s-thumb .w-find .w-in::placeholder { color: #F2EFF9; }
+html.white.clock.home .s-thumb .w-find .w-go { background: #F2EFF9; color: #0C081D; }
+html.white.clock.home .s-thumb .w-hits { background: #1C1136; border-color: #A58BC2; }
+html.white.clock.home .s-thumb .w-go4 a { color: #F2EFF9; }
+html.white.clock.home .s-thumb details.w-all > summary { color: #F2EFF9; }
+html.white.clock.home .s-short { border-top: 1px solid #5E4A7E; }
+html.white.clock.home .s-short .w-go4 a { color: #F2EFF9; }
+html.white.clock.home .s-short details.w-all > summary { color: #F2EFF9; }
+html.white.clock .cp-card .cp-bar { background: #241540; }
+html.white.clock .cp-card .cp-go { background: #F2EFF9; color: #0C081D; }
+html:where(.white.clock) .th-cap { color: #F2EFF9; }
+html:where(.white.clock) .th-three a { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-three a i { color: #F2EFF9; }
+html:where(.white.clock) .th-three a:active { background: #1C1136; }
+html:where(.white.clock) .th-ansl i { color: #F2EFF9; }
+html:where(.white.clock) .th-sub { color: #F2EFF9; }
+html:where(.white.clock) .th-row { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-n { background: #2E1A4A; }
+html:where(.white.clock) .th-n.th-top { background: #2A1440; color: #F2EFF9; }
+html:where(.white.clock) .th-meta { color: #F2EFF9; }
+html:where(.white.clock) .th-tg { border: 1px solid #A58BC2; }
+html:where(.white.clock) .th-nm { color: #F2EFF9; }
+html:where(.white.clock) .th-hi { color: #F2EFF9; }
+html:where(.white.clock) .th-bar .th-bar0 { fill: #2E1A4A; }
+html:where(.white.clock) .th-rbar .th-bar0 { fill: #2E1A4A; }
+html:where(.white.clock) .th-go { color: #F2EFF9; }
+html:where(.white.clock) .th-more { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-rec { border: 1px dashed #A58BC2; color: #F2EFF9; }
+html:where(.white.clock) .th-next { border: 1px solid #3A2756; background: #F2EFF9; color: #0C081D; }
+html:where(.white.clock) .th-nx small { color: #F06FCB; }
+html:where(.white.clock) .th-bars .th-b0 { fill: #E4DDF0; }
+html:where(.white.clock) .th-lc { color: #F2EFF9; }
+html:where(.white.clock) #view .th-map a.th-row.th-row2 { border-bottom-color: #5E4A7E; }
+html.white.clock #view .th-map a[href].th-row.th-row2 { border-bottom-color: #5E4A7E; }
+html:where(.white.clock) .th-pill { color: #0C081D; }
+html:where(.white.clock) .th-pill.th-pdn { color: #0C081D; }
+html:where(.white.clock) .th-hfold { border-bottom: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-hfold > summary::after { color: #F2EFF9; }
+html:where(.white.clock) .th-pkhome { background: #1C1136; }
+html:where(.white.clock) .th-pqt { background: #241540; }
+html:where(.white.clock) .th-pqf { background: #F2EFF9; }
+html:where(.white.clock) .th-pkhgo { border-top: 1px solid #5E4A7E; }
+html:where(.white.clock) .th-calgo { color: #0C081D; }
+html:where(.white.clock) .th-zc.th-zcS { color: #0C081D; }
+html:where(.white.clock) .th-zc.th-zcS:active { background: #F2EFF9; }
+html:where(.white.clock) .th-zc.th-zcS .th-zi { background: #1C1136; }
+html:where(.white.clock) .th-zc.th-zcS .th-zgo { background: #1C1136; }
+html:where(.white.clock) .th-yrg .th-yrb0 { stroke: #412649; }
+html:where(.white.clock) .th-yrg .th-yrgh { stroke: #412649; }
+html:where(.white.clock) .th-yrg .th-yrhi { stroke: #1C1136; }
+html:where(.white.clock) .th-yrg .th-yric { fill: rgba(28, 17, 54, 0.06); }
+html.white.clock.clock.clock { --bg: #1C1136; --night: #1C1136; --band: #1C1136; --violet: #F2EFF9; --card: #1C1136; --card2: #1C1136; --card3: #241540; --hair: #A58BC2; --hair2: #A58BC2; --line: #5E4A7E; --hair-soft: #3A2756; --seam: #3A2756; --press: #241540; --lift: #1C1136; --ink: #F2EFF9; --ink-hi: #F2EFF9; --sub: #F2EFF9; --mute: #E4DDF0; --flat: #E4DDF0; --violet-ink: #F2EFF9; --violet-wash: #1C1136; --violet-line: #A58BC2; --violet-glow: #070514; --gold: #C42F98; --gold-wash: #2A1440; --gold-line: #F06FCB; --up: #C42F98; --down: #5B96FF; --up-ink: #F06FCB; --down-ink: #5B96FF; --up-bg: #C42F98; --down-bg: #5B96FF; --up-fill: rgba(196, 47, 152, 0.16); --down-fill: rgba(91, 150, 255, 0.16); --up-fade: rgba(196, 47, 152, 0.06); --down-fade: rgba(91, 150, 255, 0.06); --lacquer: #1C1136; --lacquer-ink: #F2EFF9; --lacquer-sub: #F2EFF9; --lacquer-gold: #C42F98; --moon: #F2EFF9; --moonrow: #1C1136; --m4-band: #1C1136; --m4-line: #8E78AE; --m4-soft: #7F587D; --m4-neu: #E4DDF0; --m4-line2: #3A2756; }
 
 /* ── 손으로 쓴 판(clock_theme.py EXTRA) ── */
 html.white.clock.clock.clock {
@@ -428,98 +442,285 @@ html.white.clock.clock.clock :is([stroke="#007A35"], [stroke="#007a35"]) { strok
 html.white.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #AAC1C5; }
 html.white.clock.clock.clock :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #AAC1C5; }
 
-/* ── 최고급 핑크 판(사장님 2026-10-28 12:00 「안돼 배경을 최고급 핑크로 해」 · 13:16 「속도빨리해서 얼른 만들엉」 · clock_theme.py EXTRA_PINK) ──
-   모든 쪽 = 첫 화면(home-new.css)과 같은 색 · 바로 위 청록 손 규칙(EXTRA)의 자리 · 크기는 그대로 두고 색만 한 단 위(.clock 하나 더)에서 덮음
-   바탕 장미 빛 핑크 #F7D4DE · 카드 #FFF7F9 · 글 짙은 자주 #2A1420 · 강조 짙은 장미 #A31F70 · 위 · 아래 막대 포도주 빛 #3D1028 · 오름 #B4123A(숫자만) · 내림 #1A55B0 */
-html.white.clock.clock.clock.clock {
-  color-scheme: light;
-  --bg: #F7D4DE; --night: #F7D4DE; --band: #F7D4DE; --violet: #2A1420;
-  --card: #FFF7F9; --card2: #FBE8EE; --card3: #F4D9E1;
-  --hair: #9E5A78; --hair2: #9E5A78; --line: #EBC0CE; --hair-soft: #F0CBD6; --seam: #EBC0CE; --press: #F4D9E1; --lift: #FFF7F9;
-  --ink: #2A1420; --ink-hi: #1A0B13; --sub: #5E3446; --mute: #6B3F52; --flat: #6B3F52;
-  --violet-ink: #2A1420; --violet-wash: #FBE8EE; --violet-line: #9E5A78; --violet-glow: #FBE8EE;
-  --gold: #A31F70; --gold-wash: #FBE8EE; --gold-line: #A31F70;
-  --up: #B4123A; --down: #1A55B0; --up-ink: #B4123A; --down-ink: #1A55B0; --up-bg: #B4123A; --down-bg: #1A55B0;
-  --up-fill: rgba(180, 18, 58, .16); --down-fill: rgba(26, 85, 176, .14); --up-fade: rgba(180, 18, 58, .06); --down-fade: rgba(26, 85, 176, .05);
-  --lacquer: #3D1028; --lacquer-ink: #FFFFFF; --lacquer-sub: #F7D4DE; --lacquer-gold: #F2B8C9;
-  --moon: #2A1420; --moonrow: #FBE8EE;
-  --m4-band: #FFF7F9; --m4-line: #9E5A78; --m4-soft: #9E5A78; --m4-neu: #4A2333; --m4-line2: #F0CBD6;
-  background: #F7D4DE;
-}
-html.white.clock.clock.clock.clock body { background: #F7D4DE; color: #2A1420; }
-html.white.clock.clock.clock.clock body::after { background: radial-gradient(ellipse 120vw 70vh at 50% 0%, #FCEAF0 0%, #F7D4DE 58%, #F1C4D2 100%); } /* 위에서 비치는 은은한 빛(바탕 한 장 · 검사 칸 밖) */
-/* 위 막대 — 포도주 빛 · 흰 이름 · 밝은 알약 단추 */
-html.white.clock.clock.clock.clock .top { background: rgba(61, 16, 40, .97); border-bottom: 1px solid rgba(255, 255, 255, .2); }
-html.white.clock.clock.clock.clock .top .logo { color: #FFFFFF; text-shadow: none; }
-html.white.clock.clock.clock.clock .top .tbtn, html.white.clock.clock.clock.clock .top .ibtn { background: #FFF7F9; color: #3D1028; border: 2px solid #FFFFFF; box-shadow: none; }
-html.white.clock.clock.clock.clock .top .ibtn svg, html.white.clock.clock.clock.clock .top .tbtn svg { color: #3D1028; }
-html.white.clock.clock.clock.clock .top #giftBtn { background: #F2B8C9; }
-html.white.clock.clock.clock.clock .top #jhBtn { border: 1px solid #FFFFFF; background: #FFF7F9; color: #3D1028; }
-/* 아래 단추 줄 — 포도주 빛 띠 · 장미 빛 그림 칸 · 지금 쪽은 밝은 핑크 칸 */
-html.white.clock.clock.clock.clock .tabs { background: #3D1028; border-top: 2px solid rgba(255, 255, 255, .22); }
-html.white.clock.clock.clock.clock .tabs a, html.white.clock.clock.clock.clock .tabs a[aria-current="page"], html.white.clock.clock.clock.clock .tabs a.on { color: #FFFFFF; }
-html.white.clock.clock.clock.clock .tabs a .ic { border-color: #1A0B13; background: var(--tbg, #873055); color: #FFFFFF; box-shadow: none; }
-html.white.clock.clock.clock.clock .tabs a:nth-child(1) { --tbg: #B2456F; } html.white.clock.clock.clock.clock .tabs a:nth-child(2) { --tbg: #9C3A62; } html.white.clock.clock.clock.clock .tabs a:nth-child(3) { --tbg: #873055; }
-html.white.clock.clock.clock.clock .tabs a:nth-child(4) { --tbg: #722748; } html.white.clock.clock.clock.clock .tabs a:nth-child(5) { --tbg: #5E1F3C; }
-html.white.clock.clock.clock.clock .tabs a[aria-current="page"] .ic { --tbg: #F7D4DE; color: #3D1028; }
-html.white.clock.clock.clock.clock footer.foot a { color: #4A2333; }
-/* 회사 쪽 「이 회사로 왜 사?」 큰 단추 — 짙은 장미 · 흰 글 */
-html.white.clock.clock.clock.clock a.why-go.cw { background: #A31F70; color: #FFFFFF; outline-color: #3D1028; box-shadow: none; }
+/* ── 밤 무대 판(사장님 2026-10-29 16:57 「이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜」 · clock_theme.py EXTRA_NEON) ──
+   보내신 무대 사진을 잰 색(docs/design/neon-2026-10-29 — 180가지 · palette.json) · 바로 위 핑크 손 규칙의 자리 그대로 · 색만 핑크 → 밤 색 표(PN_*)로 옮김
+   바탕 #0C081D(천장 · 왼쪽 빛벽 남보라) · 칸 #1C1136 · 글 #F2EFF9 · 강조 #F06FCB(분홍 빛 줄) · 위 · 아래 막대 #070514 · 오름 #FF5A65 · 내림 #5B96FF(숫자만) · 테 #A58BC2 */
+html.white.clock.clock.clock.clock { color-scheme: dark; --bg: #0C081D; --night: #0C081D; --band: #0C081D; --violet: #F2EFF9; --card: #1C1136; --card2: #241540; --card3: #2E1A4A; --hair: #A58BC2; --hair2: #A58BC2; --line: #3A2756; --hair-soft: #3A2756; --seam: #3A2756; --press: #2E1A4A; --lift: #1C1136; --ink: #F2EFF9; --ink-hi: #FFFFFF; --sub: #CFC4E0; --mute: #B6A8CB; --flat: #B6A8CB; --violet-ink: #F2EFF9; --violet-wash: #241540; --violet-line: #A58BC2; --violet-glow: #241540; --gold: #F06FCB; --gold-wash: #2A1440; --gold-line: #F06FCB; --up: #FF5A65; --down: #5B96FF; --up-ink: #FF5A65; --down-ink: #5B96FF; --up-bg: #FF5A65; --down-bg: #5B96FF; --up-fill: rgba(255, 90, 101, .22); --down-fill: rgba(91, 150, 255, .22); --up-fade: rgba(255, 90, 101, .07); --down-fade: rgba(91, 150, 255, .07); --lacquer: #070514; --lacquer-ink: #FFFFFF; --lacquer-sub: #CFC4E0; --lacquer-gold: #F06FCB; --moon: #F2EFF9; --moonrow: #241540; --m4-band: #1C1136; --m4-line: #A58BC2; --m4-soft: #A58BC2; --m4-neu: #B6A8CB; --m4-line2: #3A2756; --pk-bg: #0C081D; --pk-card: #1C1136; --pk-tint: #241540; --pk-line: #3A2756; --pk-ink: #F2EFF9; --pk-sub: #CFC4E0; --pk-acc: #F06FCB; --pk-wine: #070514; background: #0C081D; }
+html.white.clock.clock.clock.clock body { background: #0C081D; color: #F2EFF9; }
+html.white.clock.clock.clock.clock body::after { background: radial-gradient(ellipse 80vw 42vh at 50% -6%, rgba(148, 191, 219, .14) 0%, rgba(148, 191, 219, 0) 72%), radial-gradient(ellipse 130vw 52vh at 50% 108%, rgba(199, 103, 177, .22) 0%, rgba(199, 103, 177, 0) 74%), #0C081D; } /* 무대 빛 — 위 하늘빛 조명 · 아래 분홍 연기(바탕 한 장 · 글 칸 밖 · 아주 옅게) */
+html.white.clock.clock.clock.clock .top { background: rgba(7, 5, 20, 0.97); border-bottom: 1px solid rgba(165, 139, 194, 0.2); }
+html.white.clock.clock.clock.clock .top .tbtn, html.white.clock.clock.clock.clock .top .ibtn { background: #1C1136; color: #F2EFF9; border: 2px solid #A58BC2; }
+html.white.clock.clock.clock.clock .top .ibtn svg, html.white.clock.clock.clock.clock .top .tbtn svg { color: #F2EFF9; }
+html.white.clock.clock.clock.clock .top #giftBtn { background: #8B477B; }
+html.white.clock.clock.clock.clock .top #jhBtn { border: 1px solid #A58BC2; background: #1C1136; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .tabs { background: #070514; border-top: 2px solid rgba(165, 139, 194, 0.22); }
+html.white.clock.clock.clock.clock .tabs a .ic { border-color: #070514; background: var(--tbg, #7A3A79); }
+html.white.clock.clock.clock.clock .tabs a:nth-child(1) { --tbg: #9F4D87; }
+html.white.clock.clock.clock.clock .tabs a:nth-child(2) { --tbg: #8B477B; }
+html.white.clock.clock.clock.clock .tabs a:nth-child(3) { --tbg: #7A3A79; }
+html.white.clock.clock.clock.clock .tabs a:nth-child(4) { --tbg: #67325F; }
+html.white.clock.clock.clock.clock .tabs a:nth-child(5) { --tbg: #4F2A5C; }
+html.white.clock.clock.clock.clock .tabs a[aria-current="page"] .ic { --tbg: #0C081D; color: #F2EFF9; }
+html.white.clock.clock.clock.clock footer.foot a { color: #E4DDF0; }
+html.white.clock.clock.clock.clock a.why-go.cw { background: #C42F98; outline-color: #A58BC2; }
+html.white.clock.clock.clock.clock .th-zc { border-color: #A58BC2; }
+html.white.clock.clock.clock.clock .th-zc.th-zcS { --zdot: #7F587D; --zoff: #1C1136; background: #7A3A79; border-color: #A58BC2; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-zc.th-zcB { --zdot: #7A3A79; --zoff: #1C1136; background: #8B477B; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-zc.th-zcQ { --zdot: #2E1A4A; --zoff: #0C081D; background: #1C1136; color: #F2EFF9; border-color: #A58BC2; }
+html.white.clock.clock.clock.clock .th-zc.th-zcW { --zdot: #3A2756; --zoff: #241540; background: #2E1A4A; color: #F2EFF9; border-color: #A58BC2; }
+html.white.clock.clock.clock.clock .th-zc:active { background: #2E1A4A; }
+html.white.clock.clock.clock.clock .th-ar { background: #241540; border-color: #A58BC2; }
+html.white.clock.clock.clock.clock .dm-it { border-color: #A58BC2; background: #1C1136; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-tile { border-color: #A58BC2; background: #241540; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-tile0 { background: #7A3A79; }
+html.white.clock.clock.clock.clock .th-tile1 { background: #8B477B; }
+html.white.clock.clock.clock.clock .th-tile2 { background: #67325F; }
+html.white.clock.clock.clock.clock .th-tn { color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-tbadge { border-color: #A58BC2; background: #241540; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-chip { border-color: #A58BC2; background: #1C1136; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-chipmore { border-color: #A58BC2; color: #CFC4E0; }
+html.white.clock.clock.clock.clock .th-pki { border-color: #A58BC2; }
+html.white.clock.clock.clock.clock .th-pki0 { --pkbg: #7A3A79; --pkink: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-pki1 { --pkbg: #7A3A79; --pkink: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-pki2 { --pkbg: #67325F; --pkink: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-pki3 { --pkbg: #4F2A5C; --pkink: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-pki4 { --pkbg: #3A2556; --pkink: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-pki5 { --pkbg: #2E1A4A; --pkink: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-pkcp { border-color: #A58BC2; background: #241540; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .th-pkday { color: #CFC4E0; }
+html.white.clock.clock.clock.clock .th-pkrec1 { border-left-color: #A58BC2; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .s-app, html.white.clock.clock.clock.clock .s-apl { color: #F2EFF9; }
+html.white.clock.clock.clock.clock .s-apb { border-color: #A58BC2; }
+html.white.clock.clock.clock.clock .s-app-bloom { --abg: #8B477B; }
+html.white.clock.clock.clock.clock .s-app-search { --abg: #7A3A79; }
+html.white.clock.clock.clock.clock .s-app-cal { --abg: #67325F; }
+html.white.clock.clock.clock.clock .s-app-help { --abg: #9F4D87; }
+html.white.clock.clock.clock.clock .s-apb::before { background-image: radial-gradient(rgba(7, 5, 20, 0.12) 28%, transparent 33%); }
+html.white.clock.clock.clock.clock .s-badge { background: #241540; color: #F2EFF9; border-color: #A58BC2; }
+html.white.clock.clock.clock.clock .th-hd .th-h1, html.white.clock.clock.clock.clock h1.st-h { color: #F2EFF9; }
+html.white.clock.clock.clock.clock a.hello.m4-letter { outline-color: #A58BC2; }
+html.white.clock.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #F2EFF9; }
+html.white.clock.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { stroke: #F2EFF9; }
+html.white.clock.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #1C1136; }
+html.white.clock.clock.clock.clock :is([fill="#007A35"], [fill="#007a35"]) { fill: #C42F98; }
+html.white.clock.clock.clock.clock :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #F06FCB; }
+html.white.clock.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #5B96FF; }
+html.white.clock.clock.clock.clock :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #5B96FF; }
+html.white.clock.clock.clock.clock .wy { --wm-dark: #070514; --wm-mint: #8B477B; --wm-tab: #241540; --wm-prog: #C42F98; --wm-teal: #C42F98; }
+html.white.clock.clock.clock.clock .wy[data-step="start"] { background: #070514 radial-gradient(120% 60% at 50% 40%, rgba(139, 71, 123, 0.18), rgba(242, 184, 201, 0) 70%); }
+html.white.clock.clock.clock.clock .wy-sub { color: #E4DDF0; }
+html.white.clock.clock.clock.clock .wy-hl .wl-ic { color: #F2EFF9; }
+html.white.clock.clock.clock.clock .wy-rhead { background: #070514 linear-gradient(180deg, #070514, #241540); }
+html.white.clock.clock.clock.clock .wy-tend .wy-ck { border-left-color: #F06FCB; }
+html.white.clock.clock.clock.clock .wy-tf { background: #C42F98; }
+html.white.clock.clock.clock.clock .wy-tf.t1, html.white.clock.clock.clock.clock .wy-tf.t2 { background: #B23A8E; }
+html.white.clock.clock.clock.clock .wy-tf.t3 { background: #8E2C78; }
+html.white.clock.clock.clock.clock .wy-tn, html.white.clock.clock.clock.clock .wy-pg .wy-step { color: #E4DDF0; }
+html.pg-why.white.clock.clock.clock.clock .wy.page:is([data-step="q"], [data-step="det"]) { border-top-color: #A58BC2; }
+html.pg-why.white.clock.clock.clock.clock #view .cp-card .cp-go { background: #241540; }
+
+/* 밤 무대 판 마무리 — 위 · 아래 막대 끝줄은 분홍 빛 줄(사진 바닥 줄) · 누를 때 둘레는 하늘색 조명 */
+html.white.clock.clock.clock.clock .top { background: rgba(7, 5, 20, .97); border-bottom: 1px solid rgba(240, 111, 203, .55); }
+html.white.clock.clock.clock.clock .top .logo { color: #FFFFFF; }
+html.white.clock.clock.clock.clock .top .tbtn, html.white.clock.clock.clock.clock .top .ibtn { background: #241540; color: #F2EFF9; border: 2px solid #A58BC2; }
+html.white.clock.clock.clock.clock .top .ibtn svg, html.white.clock.clock.clock.clock .top .tbtn svg { color: #F2EFF9; }
+html.white.clock.clock.clock.clock .top #giftBtn { background: #8B477B; color: #FFFFFF; }
+html.white.clock.clock.clock.clock .top #jhBtn { border: 1px solid #A58BC2; background: #241540; color: #F2EFF9; }
+html.white.clock.clock.clock.clock .tabs { background: #070514; border-top: 2px solid rgba(240, 111, 203, .6); }
+html.white.clock.clock.clock.clock .tabs a .ic { border-color: #070514; color: #FFFFFF; }
+html.white.clock.clock.clock.clock .tabs a[aria-current="page"] .ic { --tbg: #F06FCB; color: #0C081D; }
+html.white.clock.clock.clock.clock :focus-visible { outline-color: #94BFDB; }
+html.white.clock.clock.clock.clock a.why-go.cw { background: #C42F98; color: #FFFFFF; outline-color: #C42F98; }
 html.white.clock.clock.clock.clock a.why-go.cw b, html.white.clock.clock.clock.clock a.why-go.cw i { color: #FFFFFF; }
-/* 옛 첫 화면 네 칸(테마 시계 — 새 첫 화면에는 없음) */
-html.white.clock.clock.clock.clock .th-zc { border-color: #3D1028; box-shadow: none; }
-html.white.clock.clock.clock.clock .th-zc.th-zcS { --zdot: #D98DAB; --zoff: #FFF7F9; background: #E7A9C0; border-color: #3D1028; color: #2A1420; box-shadow: none; }
-html.white.clock.clock.clock.clock .th-zc.th-zcB { --zdot: #E7A9C0; --zoff: #FFF7F9; background: #F2B8C9; color: #2A1420; }
-html.white.clock.clock.clock.clock .th-zc.th-zcQ { --zdot: #F0CBD6; --zoff: #F7D4DE; background: #FFF7F9; color: #2A1420; border-color: #9E5A78; }
-html.white.clock.clock.clock.clock .th-zc.th-zcW { --zdot: #D9C6CE; --zoff: #FFFFFF; background: #ECDDE3; color: #2A1420; border-color: #9E5A78; }
-html.white.clock.clock.clock.clock .th-zc:active { background: #F4D9E1; }
-html.white.clock.clock.clock.clock .th-ar { background: #FFFFFF; border-color: #3D1028; box-shadow: none; }
-/* 돌이 단추 안 */
-html.white.clock.clock.clock.clock .dm-it { border-color: #9E5A78; background: #FFF7F9; color: #2A1420; box-shadow: none; }
-/* 싹 자리 전부(#/t/sprout) — 맨 앞 셋 큰 판(짙은 장미 → 옅은 장미) · 업종 알약(밝은 카드) · 글은 모두 짙은 자주 */
-html.white.clock.clock.clock.clock .th-tile { border-color: #3D1028; background: #FBE8EE; color: #2A1420; box-shadow: none; }
-html.white.clock.clock.clock.clock .th-tile0 { background: #E7A9C0; box-shadow: none; }
-html.white.clock.clock.clock.clock .th-tile1 { background: #F2B8C9; }
-html.white.clock.clock.clock.clock .th-tile2 { background: #F7CAD8; }
-html.white.clock.clock.clock.clock .th-tn { color: #2A1420; }
-html.white.clock.clock.clock.clock .th-tbadge { border-color: #3D1028; background: #FFFFFF; color: #2A1420; }
-html.white.clock.clock.clock.clock .th-chip { border-color: #9E5A78; background: #FFF7F9; color: #2A1420; }
-html.white.clock.clock.clock.clock .th-chipmore { border-color: #9E5A78; background: transparent; color: #5E3446; }
-/* 꽃 될 회사(#/t/picks) — 묶음 줄마다 짙은 장미에서 옅은 장미로 · 글은 짙은 자주 */
-html.white.clock.clock.clock.clock .th-pki { border-color: #3D1028; box-shadow: none; }
-html.white.clock.clock.clock.clock .th-pki0 { --pkbg: #E7A9C0; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki1 { --pkbg: #EDB4C7; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki2 { --pkbg: #F2BFCF; --pkink: #2A1420; }
-html.white.clock.clock.clock.clock .th-pki3 { --pkbg: #F6CBD8; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki4 { --pkbg: #F9D7E1; --pkink: #2A1420; } html.white.clock.clock.clock.clock .th-pki5 { --pkbg: #FBE3EA; --pkink: #2A1420; }
-html.white.clock.clock.clock.clock .th-pkcp { border-color: #3D1028; background: #FFFFFF; color: #2A1420; }
-html.white.clock.clock.clock.clock .th-pkday { color: #5E3446; }
-html.white.clock.clock.clock.clock .th-pkrec1 { border-left-color: #9E5A78; color: #2A1420; }
-/* 옛 첫 화면 그림 단추 넷 */
-html.white.clock.clock.clock.clock .s-app, html.white.clock.clock.clock.clock .s-apl { color: #2A1420; text-shadow: none; }
-html.white.clock.clock.clock.clock .s-apb { border-color: #3D1028; box-shadow: none; }
-html.white.clock.clock.clock.clock .s-app-bloom { --abg: #F2B8C9; } html.white.clock.clock.clock.clock .s-app-search { --abg: #E7A9C0; } html.white.clock.clock.clock.clock .s-app-cal { --abg: #F7CAD8; } html.white.clock.clock.clock.clock .s-app-help { --abg: #D99AB2; }
-html.white.clock.clock.clock.clock .s-apb::before { background-image: radial-gradient(rgba(61, 16, 40, .12) 28%, transparent 33%); }
-html.white.clock.clock.clock.clock .s-badge { background: #FFFFFF; color: #2A1420; border-color: #3D1028; }
-/* 쪽 제목 — 짙은 자주 큰 글(그림자 없음) */
-html.white.clock.clock.clock.clock .th-hd .th-h1, html.white.clock.clock.clock.clock h1.st-h { color: #2A1420; text-shadow: none; }
-html.white.clock.clock.clock.clock .th-next small, html.white.clock.clock.clock.clock .th-nx small { color: inherit; }
-html.white.clock.clock.clock.clock a.hello.m4-letter { outline-color: #9E5A78; }
-/* 그림 속 칠(svg 칠 속성) — 검정 = 짙은 자주 · 흰색 = 카드 빛 · 초록(옛 오름 · 자라남) = 짙은 장미 · 파랑 = 내림 파랑 */
-html.white.clock.clock.clock.clock :is([fill="#000"], [fill="#000000"], [fill="black"], [fill="#111"], [fill="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #2A1420; }
-html.white.clock.clock.clock.clock :is([stroke="#000"], [stroke="#000000"], [stroke="black"], [stroke="#111"], [stroke="#111111"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { stroke: #2A1420; }
-html.white.clock.clock.clock.clock :is([fill="#fff"], [fill="#FFF"], [fill="#ffffff"], [fill="#FFFFFF"], [fill="white"]):not(.s-hands *):not(.s-art *):not(.s-boot *):not(.th-zi *):not(.s-apb *):not(.th-pkf *):not(.th-tf *) { fill: #FFF7F9; }
-html.white.clock.clock.clock.clock :is([fill="#007A35"], [fill="#007a35"]) { fill: #A31F70; }
-html.white.clock.clock.clock.clock :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #A31F70; }
-html.white.clock.clock.clock.clock :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #1A55B0; }
-html.white.clock.clock.clock.clock :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #1A55B0; }
-/* 「왜 사?」(p-why.css 그림 판 — 크림 카드 · 분홍 단추는 그대로) — 짙은 청록 자리 = 포도주 빛 · 민트 강조 = 옅은 장미 · 진행 = 짙은 장미 */
-html.white.clock.clock.clock.clock .wy { --wm-dark: #3D1028; --wm-mint: #F2B8C9; --wm-tab: #5A1A3C; --wm-prog: #A31F70; --wm-teal: #A31F70; }
-html.white.clock.clock.clock.clock .wy[data-step="start"] { background: #3D1028 radial-gradient(120% 60% at 50% 40%, rgba(242, 184, 201, .18), rgba(242, 184, 201, 0) 70%); }
-html.white.clock.clock.clock.clock .wy-sub { color: #F2D5DE; }
-html.white.clock.clock.clock.clock .wy-hl .wl-ic { color: #3D1028; }
-html.white.clock.clock.clock.clock .wy-rhead { background: #3D1028 linear-gradient(180deg, #2A0B1C, #5A1A3C); }
-html.white.clock.clock.clock.clock .wy-tend .wy-ck { border-left-color: #A31F70; }
-html.white.clock.clock.clock.clock .wy-tf { background: #A31F70; } html.white.clock.clock.clock.clock .wy-tf.t1, html.white.clock.clock.clock.clock .wy-tf.t2 { background: #C2457F; } html.white.clock.clock.clock.clock .wy-tf.t3 { background: #8A1B5E; }
-html.white.clock.clock.clock.clock .wy-tn, html.white.clock.clock.clock.clock .wy-pg .wy-step { color: #4A2333; }
-html.pg-why.white.clock.clock.clock.clock .wy.page:is([data-step="q"], [data-step="det"]) { border-top-color: #3D1028;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M0 0H28A28 28 0 0 0 0 28Z' fill='%233D1028'/%3E%3C/svg%3E") left top / 28px 28px no-repeat padding-box,
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M28 0H0A28 28 0 0 1 28 28Z' fill='%233D1028'/%3E%3C/svg%3E") right top / 28px 28px no-repeat padding-box, var(--wm-cream); }
-html.pg-why.white.clock.clock.clock.clock #view .cp-card .cp-go { background: #5A1A3C; }
+/* 첫 화면 밤 칸(home-new.css 를 한 단 위 html.white.clock.clock.clock.clock.home 에서 덮음) */
+html.white.clock.clock.clock.clock.home { color-scheme: dark; --bg: #0C081D; --night: #0C081D; --band: #0C081D; --violet: #F2EFF9; --card: #1C1136; --card2: #241540; --card3: #2E1A4A; --hair: #A58BC2; --hair2: #A58BC2; --line: #3A2756; --hair-soft: #3A2756; --seam: #3A2756; --press: #2E1A4A; --lift: #1C1136; --ink: #F2EFF9; --ink-hi: #FFFFFF; --sub: #CFC4E0; --mute: #B6A8CB; --flat: #B6A8CB; --violet-ink: #F2EFF9; --violet-wash: #241540; --violet-line: #A58BC2; --violet-glow: #241540; --gold: #F06FCB; --gold-wash: #2A1440; --gold-line: #F06FCB; --up: #FF5A65; --down: #5B96FF; --up-ink: #FF5A65; --down-ink: #5B96FF; --up-bg: #FF5A65; --down-bg: #5B96FF; --up-fill: rgba(255, 90, 101, .22); --down-fill: rgba(91, 150, 255, .22); --up-fade: rgba(255, 90, 101, .07); --down-fade: rgba(91, 150, 255, .07); --lacquer: #070514; --lacquer-ink: #FFFFFF; --lacquer-sub: #CFC4E0; --lacquer-gold: #F06FCB; --moon: #F2EFF9; --moonrow: #241540; --m4-band: #1C1136; --m4-line: #A58BC2; --m4-soft: #A58BC2; --m4-neu: #B6A8CB; --m4-line2: #3A2756; --pk-bg: #0C081D; --pk-card: #1C1136; --pk-tint: #241540; --pk-line: #3A2756; --pk-ink: #F2EFF9; --pk-sub: #CFC4E0; --pk-acc: #F06FCB; --pk-wine: #070514; background: #0C081D; }
+html.white.clock.clock.clock.clock.home body { background: #0C081D; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home body::after { background: radial-gradient(ellipse 80vw 42vh at 50% -6%, rgba(148, 191, 219, .14) 0%, rgba(148, 191, 219, 0) 72%), radial-gradient(ellipse 130vw 52vh at 50% 108%, rgba(199, 103, 177, .22) 0%, rgba(199, 103, 177, 0) 74%), #0C081D; }
+html.white.clock.clock.clock.clock.home #view { --nh-S: #C42F98; --nh-B: #FF5A65; --nh-W: #FF5A65; --nh-Q: #2E1A4A; --nh-zS: #2A1440; --nh-zB: #241540; --nh-zW: #3A1630; --nh-zQ: #241540; }
+html.white.clock.clock.clock.clock.home #view .nh-kick { border: 1px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-zline { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .nh-dot { stroke: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-dot4 { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .nh-zl-S { fill: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-zl-B { fill: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-zl-W { fill: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-zl-Q { fill: #2E1A4A; }
+html.white.clock.clock.clock.clock.home #view .nh-tick { fill: #2E1A4A; }
+html.white.clock.clock.clock.clock.home #view .nh-dl { fill: #1C1136; }
+html.white.clock.clock.clock.clock.home #view .nh-w1 i { background: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-stack .nh-w1 { background: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-w0 i { background: #3A1630; }
+html.white.clock.clock.clock.clock.home #view .nh-stack .nh-w0 { background: #3A1630; }
+html.white.clock.clock.clock.clock.home #view .nh-w2 i { background: #2E1A4A; }
+html.white.clock.clock.clock.clock.home #view .nh-stack .nh-w2 { background: #2E1A4A; }
+html.white.clock.clock.clock.clock.home .top { background: rgba(7, 5, 20, 0.97); border-bottom: 1px solid rgba(165, 139, 194, 0.2); }
+html.white.clock.clock.clock.clock.home .top #giftBtn { background: #8B477B; }
+html.white.clock.clock.clock.clock.home .tabs { background: #070514; border-top: 2px solid rgba(165, 139, 194, 0.22); }
+html.white.clock.clock.clock.clock.home .tabs a:nth-child(1) { --tbg: #9F4D87; }
+html.white.clock.clock.clock.clock.home .tabs a:nth-child(2) { --tbg: #8B477B; }
+html.white.clock.clock.clock.clock.home .tabs a:nth-child(3) { --tbg: #7A3A79; }
+html.white.clock.clock.clock.clock.home .tabs a:nth-child(4) { --tbg: #67325F; }
+html.white.clock.clock.clock.clock.home .tabs a[aria-current="page"] .ic { --tbg: #0C081D; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home footer.foot a { color: #E4DDF0; }
+html.white.clock.clock.clock.clock.home #view { --nh-card: #1C1136; --nh-ink: #F2EFF9; --nh-sub: #CFC4E0; --nh-line: #3A2756; --nh-go: #C42F98; --nh-link: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-hero { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-kick { border-color: #F06FCB; color: #F06FCB; background: #1C1136; }
+html.white.clock.clock.clock.clock.home #view .nh-h1 { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-h1 .nh-acc { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-sub { color: #E4DDF0; }
+html.white.clock.clock.clock.clock.home #view .nh-fact { background: #1C1136; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-fact b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-fact span { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-no { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-how { background: #241540; }
+html.white.clock.clock.clock.clock.home #view .nh-rule { background: #241540; }
+html.white.clock.clock.clock.clock.home #view .nh-warn { background: #241540; }
+html.white.clock.clock.clock.clock.home #view .nh-won { background: #3A1630; }
+html.white.clock.clock.clock.clock.home #view .nh-warn.nh-worse { background: #3A1630; }
+html.white.clock.clock.clock.clock.home #view .nh-wt { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-zl { stroke: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-dl { stroke: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-tick { stroke: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-bt { background: #3A1630; }
+html.white.clock.clock.clock.clock.home #view .nh-cmp-up .nh-me { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-cmp-up .nh-all { background: #412649; }
+html.white.clock.clock.clock.clock.home #view .nh-cmp-dn .nh-me { background: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-cmp-dn .nh-all { background: #412649; }
+html.white.clock.clock.clock.clock.home #view .nh-lg { border-bottom-color: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-sec.nh-mkt { background: #1C1136; border-color: #3A2756; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .nh-h2 { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt a.hm-band { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt a.hm-band * { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt a.hm-band .dn { color: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .w-news .dn { color: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt a.hm-band .up { color: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .w-news .up { color: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .w-news .w-lb { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .w-news .w-ans p { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .w-news .w-why { border: 1px solid #F06FCB; color: #F06FCB; background: #1C1136; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .s-split .gu { background: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-mkt .s-split .gd { background: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-why a.w-month { border: 1px dashed #F06FCB; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home .s-thumb { border-top: 1px solid rgba(165, 139, 194, 0.2); background: #070514; }
+html.white.clock.clock.clock.clock.home .s-thumb form.w-find { border: 1px solid #A58BC2; background: #1C1136; }
+html.white.clock.clock.clock.clock.home .s-thumb .w-find .w-in { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home .s-thumb .w-find .w-in::placeholder { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home .s-thumb .w-find .w-go { background: #C42F98; }
+html.white.clock.clock.clock.clock.home .s-thumb .w-hits { background: #1C1136; border-color: #8E78AE; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home .s-short details.w-all > summary { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .w-all .w-rows a { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .w-all .w-rows a * { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-foot { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-fh { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-fp { color: #E4DDF0; }
+html.white.clock.clock.clock.clock.home #view .w-ess .ess-t { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .w-ess .ess-l { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .w-ess .ess-l.q { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .w-ess .ess-d > summary::after { border: 1px solid #F06FCB; color: #F06FCB; }
+html.white.clock.clock.clock.clock.home .top #jhBtn { border: 1px solid #A58BC2; background: #1C1136; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view { --c-me: #C42F98; --c-all: #412649; --c-up: #FF5A65; --c-dn: #5B96FF; --c-ink: #F2EFF9; --c-sub: #CFC4E0; --c-wine: #070514; --c-soft: #7A3A79; --c-pale: #3A1630; }
+html.white.clock.clock.clock.clock.home #view .nh-svg text { stroke: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-idx { background: #1C1136; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-ka { fill: rgba(196, 47, 152, 0.13); }
+html.white.clock.clock.clock.clock.home #view .nh-klast { stroke: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-cz-S { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-cz-B { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-cz-W { background: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-cz-Q { background: #2E1A4A; }
+html.white.clock.clock.clock.clock.home #view .nh-lg-S i { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-lg-B i { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-lg-W i { background: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-lg-Q i { background: #2E1A4A; }
+html.white.clock.clock.clock.clock.home #view .nh-rk { color: #E4DDF0; }
+html.white.clock.clock.clock.clock.home #view .nh-chart { background: #241540; border: 1px solid #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-fig { background: #241540; border: 1px solid #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-dn.nh-w0 { stroke: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-ml li.nh-w0 > i { background: #2A1440; }
+html.white.clock.clock.clock.clock.home #view .nh-s0 { fill: #2E1A4A; }
+html.white.clock.clock.clock.clock.home #view .nh-fv1 { fill: #241540; }
+html.white.clock.clock.clock.clock.home #view .nh-sc { fill: #1C1136; }
+html.white.clock.clock.clock.clock.home #view .nh-sk1 { fill: #241540; }
+html.white.clock.clock.clock.clock.home #view .nh-map .th-news { background: #241540; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-map .th-news :is(.th-nh, .th-nm, .th-nl, .th-nl *) { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-map .th-news a.th-hi { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-rb { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-rb i { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-rb.on span { text-decoration-color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-pm { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-pm i { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-pb b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-pb b.nh-pb2 { color: #B6A8CB; }
+html.white.clock.clock.clock.clock.home #view .nh-pb b.up { color: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-pb b.dn { color: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-pb span { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-pl { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-pc { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-kt { background: #1C1136; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-kt span { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-kt b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-kt b.up { color: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-kt b.dn { color: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-kt b.fl { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view details.nh-fold { border: 1px solid #3A2756; background: #1C1136; }
+html.white.clock.clock.clock.clock.home #view .nh-waf rect.off { fill: #1C1136; stroke: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-waf.me rect.on { fill: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-waf.all rect.on { fill: #2E1A4A; }
+html.white.clock.clock.clock.clock.home #view .nh-wf figcaption b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-wf figcaption span { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-honest { border-left: 4px solid #F06FCB; background: #1C1136; }
+html.white.clock.clock.clock.clock.home #view .nh-honest span { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-honest b { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-part::before { border-top: 12px solid #8E78AE; }
+html.white.clock.clock.clock.clock.home #view .nh-q { background: #1C1136; border: 1px solid #8E78AE; color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-yrsum { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-3c { background: #1C1136; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-3c i { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-3c b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-3c span { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-3w { border: 2px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-3w b { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-chk { background: #1C1136; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-chkh { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-chk li i { border: 2px solid #F06FCB; background: #241540; }
+html.white.clock.clock.clock.clock.home #view .nh-chkt { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-chk li b { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-pc2 { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-ktw { background: #1C1136; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-rng .nh-rl0 { stroke: #8E78AE; }
+html.white.clock.clock.clock.clock.home #view .nh-rng .nh-rt { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .nh-rng .nh-rd { fill: #C42F98; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .nh-rc { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-3h { color: #B6A8CB; }
+html.white.clock.clock.clock.clock.home #view .nh-3how { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-path ol::before { background: #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-pt { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-pt i { border: 4px solid #0C081D; background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-pt b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-pt small { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-golist { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-pm small { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-part a.w-month { border: 1px dashed #F06FCB; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-part .nh-link { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-fm { background: #241540; border: 1px solid #3A2756; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-fk { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-fk-up i { border-bottom: 12px solid #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-fk-dn i { border-top: 12px solid #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-fr { background: #160E2B; }
+html.white.clock.clock.clock.clock.home #view .nh-fl-up .nh-fbar { background: #4A1830; border-left: 4px solid #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-fl-dn .nh-fbar { background: #1E2C5A; border-left: 4px solid #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-fn { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-fl-up .nh-fr > b { color: #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-fl-dn .nh-fr > b { color: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .nh-fc { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-sage { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-sage i { background: #0C081D; color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-sage b { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-tp { background: #1C1136; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view p.nh-tp.nh-tp0 { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-tpk { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-tpl b { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-tpl small { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-say { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-part .nh-sage > i { background: #241540; border: 1px solid #3A2756; }
+/* 업종 점 그림 네 자리 색 — 짙은 칸 위 색약 검사(dataviz validate_palette --mode dark --surface #241540 --pairs all) 실패 0 · 경고 0 · 싹 청록 · 꽃 장미 · 시듦 호박 · 잠잠 보라 · 칸 바탕은 그 색 20% */
+html.white.clock.clock.clock.clock.home #view { --nh-S: #0097B3; --nh-B: #C6367D; --nh-W: #C0851F; --nh-Q: #7260BD; --nh-zS: #1D2F57; --nh-zB: #441C4C; --nh-zW: #432B39; --nh-zQ: #342459; }

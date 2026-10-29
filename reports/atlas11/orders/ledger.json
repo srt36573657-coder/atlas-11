@@ -695,16 +695,25 @@
    "id": "1508",
    "at": "2026-10-29T15:08+09:00",
    "words": "응 그리고 가 마치고만내게 보고해 중긴에 보고 하지마 (15:02 무렵 여쭘 「다음은 회사 쪽 글도 이렇게 쉽게 바꿀까요?」에 대한 답)",
-   "then": "15:08 받음 · 중간 보고 없이 일함 · 회사 쪽 글을 쉽게 고침(머리 한 줄 · 뺀 줄 둘 · 그림 눈금 % · 범례 · 세 숫자 이름 · 밖인 까닭 접은 칸 하나 · 다음 단 · 자료 줄) · 15:27 전체 검사 1/11 은 실행기 탈(ubuntu-latest 가 우분투 26 으로 옮겨 가는 중 · page 일이 0초에 끝남 · 틀림 155) → 24.04 고정 · 15:41 2/11 실패 0(c445cd69c · https://github.com/srt36573657-coder/atlas-11/actions/runs/40829726577) · 15:42 진짜 사이트 올리기를 자동 문지기가 막음(올리기는 사장님 「응」을 따로 받아야 함 — 올리지 않음) · 이 컴퓨터 전 · 후 그림에서 눈금 「+20%」 「+150%」 글이 선 끝과 겹친 것을 찾아 눈금 칸 48 → 64px · 100만 원 줄 「끝」 → 「마지막 날」 · 그림 소리 이름 쉬운 말 · 15:58 3/11 영어 18건(값 없는 회사 「9월 29일보다 ?」 틀 없음 · 틀림 156) · 고쳐 16:12 4/11 실패 0(148f9fe1c · 회사 2,557곳 · 영어 13,764화면 · https://github.com/srt36573657-coder/atlas-11/actions/runs/40832962416) · 끝 보고에서 올릴지 여쭘",
+   "then": "15:08 받음 · 중간 보고 없이 일함 · 회사 쪽 글을 쉽게 고침(머리 한 줄 · 뺀 줄 둘 · 그림 눈금 % · 범례 · 세 숫자 이름 · 밖인 까닭 접은 칸 하나 · 다음 단 · 자료 줄) · 15:27 전체 검사 1/11 은 실행기 탈(ubuntu-latest 가 우분투 26 으로 옮겨 가는 중 · page 일이 0초에 끝남 · 틀림 155) → 24.04 고정 · 15:41 2/11 실패 0(c445cd69c · https://github.com/srt36573657-coder/atlas-11/actions/runs/40829726577) · 15:42 진짜 사이트 올리기를 자동 문지기가 막음(올리기는 사장님 「응」을 따로 받아야 함 — 올리지 않음) · 이 컴퓨터 전 · 후 그림에서 눈금 「+20%」 「+150%」 글이 선 끝과 겹친 것을 찾아 눈금 칸 48 → 64px · 100만 원 줄 「끝」 → 「마지막 날」 · 그림 소리 이름 쉬운 말 · 15:58 3/11 영어 18건(값 없는 회사 「9월 29일보다 ?」 틀 없음 · 틀림 156) · 고쳐 16:12 4/11 실패 0(148f9fe1c · 회사 2,557곳 · 영어 13,764화면 · https://github.com/srt36573657-coder/atlas-11/actions/runs/40832962416) · 끝 보고에서 올릴지 여쭘 · 16:42 사장님 「응」(진짜 사이트에 올릴까요?) · 16:43 올림(main 코드 = 검사한 판 148f9fe1c · https://github.com/srt36573657-coder/atlas-11/actions/runs/40837186022 · 16:50 끝남) · 16:52 진짜 사이트 사진 둘(삼성전자 · 에이피알 — 눈금 0% · −10% · −20% · 「9월 29일보다 오르면 빨강, 내리면 파랑」 · 「한 달 중 가장 크게 내린 폭」 · 「마지막 날 83만 원」 보임) · 17:04 진짜 사이트 전체 검사 138화면 실패 0 · 고리 16,165 · 회사 2,557곳(reports/atlas11/probe/live-next/summary.json · 가지 wip-pink1 6cd313e89)",
    "did": "회사 쪽 글 쉽게(wip-pink1 148f9fe1c · 진짜 사이트에는 아직 안 올림) — 「한 달 동안 시장보다 12% 덜 올랐어요」 · 「지난 닷새는 …」 · 「7단 중 3단」 줄과 밖 회사 이름표 줄 뺌 · 고른 곳 줄 「… 든 회사예요. 두 사람이 직접 고른 것은 아니에요.」 · 그림 눈금 「0% · +10% · −10%」(첫날보다 몇 %) · 「9월 9일보다 오르면 빨강, 내리면 파랑」 · 「한 달 중 가장 크게 내린 폭」 · 밖인 까닭은 「어디서 멈췄는지 보기」 한 칸 · 「지나온 길」 · 자료 줄은 출처만 · 100만 원 줄 「마지막 날」 · 전체 검사 실행기 24.04 고정 · 영어 틀 21",
+   "state": "성공",
+   "proof": "docs/design/babo-2026-10-29/order-1508.txt · site/next/app.js · site/next/p-co.js · site/next/p-co.css · scripts/atlas11/next/check_co.mjs · .github/workflows/atlas11-next-full.yml · reports/atlas11/full-runs/babo-co-2026-10-29.jsonl · reports/atlas11/probe/next-preview/summary.json(148f9fe1c ok · 24 검사 실패 0) · reports/atlas11/trust/misses-2026-10-29-e.json · reports/atlas11/probe/live-shot/summary.json(16:51 co · pk 사진) · reports/atlas11/probe/live-next/summary.json(138화면 실패 0)",
+   "short": "회사 쪽 쉬운 글을 올리고 진짜 사이트 138화면 검사 실패 0을 확인했어요."
+  },
+  {
+   "id": "1657",
+   "at": "2026-10-29T16:57+09:00",
+   "words": "이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜 (무대 사진 한 장 — 어두운 무대 · 분홍 빛 줄 · 분홍 연기 · 분홍 오토바이)",
+   "then": "16:57 받음 · 회사 쪽(1508) 진짜 사이트 검사를 마저 마침 · 사진을 잼(analyze.py — 대표 색 15 · 자리 15 · 밝기 · 선명함 · 색 고리 · 빛 · 천장 조명 분홍 6 하늘 1) · 180가지(items.md) · 색 판(palette.json — 글 대비 38쌍 기준 넘음) · clock_theme.py 밤 판 · 첫 화면 밤 칸 · 업종 점 색은 색약 검사 실패 0",
+   "did": "둘이 모든 쪽 바탕 #0C081D 짙은 남보라 · 글 #F2EFF9 · 칸 #1C1136 · 강조 #F06FCB 분홍 빛 줄 · 큰 단추 #C42F98 흰 글 · 위 · 아래 막대 #070514 · 막대 끝줄 분홍 빛 · 바탕 빛 위 하늘 · 아래 분홍 연기(옅게) · 오름 #FF5A65 · 내림 #5B96FF(숫자만) · 이 컴퓨터 흰 첫 화면 검사 통과 423 실패 0 · 진짜 사이트에는 아직 안 올림",
    "state": "미완성",
-   "proof": "docs/design/babo-2026-10-29/order-1508.txt · site/next/app.js · site/next/p-co.js · site/next/p-co.css · scripts/atlas11/next/check_co.mjs · .github/workflows/atlas11-next-full.yml · reports/atlas11/full-runs/babo-co-2026-10-29.jsonl · reports/atlas11/probe/next-preview/summary.json(148f9fe1c ok · 24 검사 실패 0) · reports/atlas11/trust/misses-2026-10-29-e.json",
-   "short": "회사 쪽 글을 쉽게 바꿨어요. 검사는 통과했고 올리기만 남았어요."
+   "proof": "docs/design/neon-2026-10-29/order-1657.txt · docs/design/neon-2026-10-29/items.md · docs/design/neon-2026-10-29/palette.json · docs/design/neon-2026-10-29/measure.json · scripts/atlas11/next/clock_theme.py · site/next/clock.css",
+   "short": "무대 사진 색으로 둘이 바탕과 글씨를 바꾸는 중이에요. 아직 안 올렸어요."
   }
  ],
  "open": [
   "업종 쪽 글은 아직 「테마 시계」 말 그대로예요",
-  "회사 쪽 쉬운 글은 검사를 마쳤지만 진짜 사이트에는 아직 안 올렸어요",
   "관리자 화면에 시험 신청 넷이 「보낼 차례」로 남아 있어요. 끝 0000 셋과 사장님 번호 하나예요. 「보냄 표시」를 누르면 지워져요",
   "고객센터 글이 고친 알림 방으로 카톡에 오는지는 아직 시험 안 했어요",
   "5시 15분과 5시 31분 알림이 왜 안 왔는지는 그 방 안을 볼 수 없어 짐작이에요",

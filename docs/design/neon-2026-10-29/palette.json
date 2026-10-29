@@ -1,0 +1,385 @@
+{
+ "made": "2026-10-29",
+ "order": "사장님 2026-10-29 16:57 「이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜」",
+ "tokens": {
+  "bg": {
+   "hex": "#0C081D",
+   "why": "사진 대표 색 둘째(12.5%) — 천장 · 왼쪽 빛벽의 짙은 남보라"
+  },
+  "bar": {
+   "hex": "#070514",
+   "why": "사진 가장 짙은 색(10.2%) — 위 · 아래 막대"
+  },
+  "card": {
+   "hex": "#1C1136",
+   "why": "사진 대표 색(6.6%) — 칸 바탕"
+  },
+  "card2": {
+   "hex": "#241540",
+   "why": "가운데 위 조명 둘레 — 둘째 칸 바탕"
+  },
+  "card3": {
+   "hex": "#2E1A4A",
+   "why": "칸 바탕 셋째 — #241540 과 자두 빛 #412649 사이"
+  },
+  "plum": {
+   "hex": "#412649",
+   "why": "사진 대표 색 넷째(9.3%) — 자두 빛 면"
+  },
+  "line": {
+   "hex": "#3A2756",
+   "why": "옅은 나눔 줄"
+  },
+  "hair": {
+   "hex": "#A58BC2",
+   "why": "단추 · 칸 테 — 라벤더(바탕 · 칸 위 대비 3 넘게)"
+  },
+  "ink": {
+   "hex": "#F2EFF9",
+   "why": "사진 가장 밝은 곳 #E8F3FA 를 보라 쪽으로 — 본문 글"
+  },
+  "ink2": {
+   "hex": "#E4DDF0",
+   "why": "둘째 글"
+  },
+  "sub": {
+   "hex": "#CFC4E0",
+   "why": "보조 글"
+  },
+  "mute": {
+   "hex": "#B6A8CB",
+   "why": "작은 글 · 그대로 색"
+  },
+  "acc": {
+   "hex": "#F06FCB",
+   "why": "분홍 빛 줄 #C767B1 을 밝게 — 강조 글 · 큰 단추"
+  },
+  "neon": {
+   "hex": "#C767B1",
+   "why": "분홍 빛 줄 가운데 값 — 선 · 테"
+  },
+  "smoke": {
+   "hex": "#8B477B",
+   "why": "분홍 연기 — 밝은 강조 칸 바탕"
+  },
+  "cyan": {
+   "hex": "#94BFDB",
+   "why": "가운데 하늘색 조명 — 지금 쪽 표시"
+  },
+  "up": {
+   "hex": "#FF5A65",
+   "why": "오름 빨강(숫자만) — 짙은 바탕 위 옛 먹빛 판 값"
+  },
+  "down": {
+   "hex": "#5B96FF",
+   "why": "내림 파랑(숫자만) — 짙은 바탕 위 옛 먹빛 판 값"
+  }
+ },
+ "contrast": [
+  {
+   "fg": "ink",
+   "bg": "bg",
+   "ratio": 17.31,
+   "need": 4.5,
+   "ok": true,
+   "what": "본문 글"
+  },
+  {
+   "fg": "ink",
+   "bg": "card",
+   "ratio": 15.63,
+   "need": 4.5,
+   "ok": true,
+   "what": "본문 글"
+  },
+  {
+   "fg": "ink",
+   "bg": "card2",
+   "ratio": 14.72,
+   "need": 4.5,
+   "ok": true,
+   "what": "본문 글"
+  },
+  {
+   "fg": "ink",
+   "bg": "card3",
+   "ratio": 13.57,
+   "need": 4.5,
+   "ok": true,
+   "what": "본문 글"
+  },
+  {
+   "fg": "ink",
+   "bg": "plum",
+   "ratio": 11.57,
+   "need": 4.5,
+   "ok": true,
+   "what": "본문 글"
+  },
+  {
+   "fg": "ink",
+   "bg": "bar",
+   "ratio": 17.76,
+   "need": 4.5,
+   "ok": true,
+   "what": "본문 글"
+  },
+  {
+   "fg": "ink2",
+   "bg": "bg",
+   "ratio": 14.89,
+   "need": 4.5,
+   "ok": true,
+   "what": "둘째 글"
+  },
+  {
+   "fg": "ink2",
+   "bg": "card",
+   "ratio": 13.44,
+   "need": 4.5,
+   "ok": true,
+   "what": "둘째 글"
+  },
+  {
+   "fg": "ink2",
+   "bg": "card2",
+   "ratio": 12.66,
+   "need": 4.5,
+   "ok": true,
+   "what": "둘째 글"
+  },
+  {
+   "fg": "ink2",
+   "bg": "card3",
+   "ratio": 11.67,
+   "need": 4.5,
+   "ok": true,
+   "what": "둘째 글"
+  },
+  {
+   "fg": "sub",
+   "bg": "bg",
+   "ratio": 11.82,
+   "need": 4.5,
+   "ok": true,
+   "what": "보조 글"
+  },
+  {
+   "fg": "sub",
+   "bg": "card",
+   "ratio": 10.67,
+   "need": 4.5,
+   "ok": true,
+   "what": "보조 글"
+  },
+  {
+   "fg": "sub",
+   "bg": "card2",
+   "ratio": 10.05,
+   "need": 4.5,
+   "ok": true,
+   "what": "보조 글"
+  },
+  {
+   "fg": "sub",
+   "bg": "card3",
+   "ratio": 9.26,
+   "need": 4.5,
+   "ok": true,
+   "what": "보조 글"
+  },
+  {
+   "fg": "mute",
+   "bg": "bg",
+   "ratio": 8.85,
+   "need": 4.5,
+   "ok": true,
+   "what": "작은 글"
+  },
+  {
+   "fg": "mute",
+   "bg": "card",
+   "ratio": 7.99,
+   "need": 4.5,
+   "ok": true,
+   "what": "작은 글"
+  },
+  {
+   "fg": "mute",
+   "bg": "card2",
+   "ratio": 7.52,
+   "need": 4.5,
+   "ok": true,
+   "what": "작은 글"
+  },
+  {
+   "fg": "mute",
+   "bg": "card3",
+   "ratio": 6.94,
+   "need": 4.5,
+   "ok": true,
+   "what": "작은 글"
+  },
+  {
+   "fg": "acc",
+   "bg": "bg",
+   "ratio": 7.34,
+   "need": 4.5,
+   "ok": true,
+   "what": "강조 글"
+  },
+  {
+   "fg": "acc",
+   "bg": "card",
+   "ratio": 6.63,
+   "need": 4.5,
+   "ok": true,
+   "what": "강조 글"
+  },
+  {
+   "fg": "acc",
+   "bg": "card2",
+   "ratio": 6.24,
+   "need": 4.5,
+   "ok": true,
+   "what": "강조 글"
+  },
+  {
+   "fg": "acc",
+   "bg": "card3",
+   "ratio": 5.75,
+   "need": 4.5,
+   "ok": true,
+   "what": "강조 글"
+  },
+  {
+   "fg": "acc",
+   "bg": "bar",
+   "ratio": 7.53,
+   "need": 4.5,
+   "ok": true,
+   "what": "강조 글"
+  },
+  {
+   "fg": "up",
+   "bg": "bg",
+   "ratio": 6.46,
+   "need": 4.5,
+   "ok": true,
+   "what": "오름 숫자"
+  },
+  {
+   "fg": "up",
+   "bg": "card",
+   "ratio": 5.84,
+   "need": 4.5,
+   "ok": true,
+   "what": "오름 숫자"
+  },
+  {
+   "fg": "up",
+   "bg": "card2",
+   "ratio": 5.49,
+   "need": 4.5,
+   "ok": true,
+   "what": "오름 숫자"
+  },
+  {
+   "fg": "down",
+   "bg": "bg",
+   "ratio": 6.79,
+   "need": 4.5,
+   "ok": true,
+   "what": "내림 숫자"
+  },
+  {
+   "fg": "down",
+   "bg": "card",
+   "ratio": 6.13,
+   "need": 4.5,
+   "ok": true,
+   "what": "내림 숫자"
+  },
+  {
+   "fg": "down",
+   "bg": "card2",
+   "ratio": 5.77,
+   "need": 4.5,
+   "ok": true,
+   "what": "내림 숫자"
+  },
+  {
+   "fg": "hair",
+   "bg": "bg",
+   "ratio": 6.62,
+   "need": 3,
+   "ok": true,
+   "what": "단추 · 칸 테"
+  },
+  {
+   "fg": "hair",
+   "bg": "card",
+   "ratio": 5.98,
+   "need": 3,
+   "ok": true,
+   "what": "단추 · 칸 테"
+  },
+  {
+   "fg": "hair",
+   "bg": "card2",
+   "ratio": 5.63,
+   "need": 3,
+   "ok": true,
+   "what": "단추 · 칸 테"
+  },
+  {
+   "fg": "hair",
+   "bg": "card3",
+   "ratio": 5.19,
+   "need": 3,
+   "ok": true,
+   "what": "단추 · 칸 테"
+  },
+  {
+   "fg": "bg",
+   "bg": "acc",
+   "ratio": 7.34,
+   "need": 4.5,
+   "ok": true,
+   "what": "큰 단추 위 짙은 글"
+  },
+  {
+   "fg": "ink",
+   "bg": "smoke",
+   "ratio": 5.63,
+   "need": 4.5,
+   "ok": true,
+   "what": "연기 칸 위 글"
+  },
+  {
+   "fg": "acc",
+   "bg": "bg",
+   "ratio": 7.34,
+   "need": 3,
+   "ok": true,
+   "what": "큰 단추 바탕 대 둘레"
+  },
+  {
+   "fg": "cyan",
+   "bg": "bar",
+   "ratio": 10.31,
+   "need": 4.5,
+   "ok": true,
+   "what": "지금 쪽 표시 글"
+  },
+  {
+   "fg": "cyan",
+   "bg": "bg",
+   "ratio": 10.05,
+   "need": 4.5,
+   "ok": true,
+   "what": "지금 쪽 표시 글"
+  }
+ ],
+ "all_ok": true
+}
