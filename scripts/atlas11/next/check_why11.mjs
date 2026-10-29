@@ -93,7 +93,7 @@ function heroInPage() {
     items: [...hero.querySelectorAll('ol.nh-fl-up > li')].map(li => {
       const sum = li.querySelector('details.y11-box > summary'), m = li.querySelector('.y11-m');
       return {cls: li.className, details: !!li.querySelector('details.y11-box'), name: li.querySelector('.nh-fn')?.textContent.trim() ?? null, r: rc(li), sum: rc(sum), lR: rc(li.querySelector('.y11-l')),
-        q: li.querySelector('.y11-q')?.textContent.trim() ?? null, why: [...li.querySelectorAll('.y11-t > span')].map(s => s.textContent.trim()),
+        q: li.querySelector('.y11-q')?.textContent.trim() ?? null, why: [...li.querySelectorAll('.y11-t > span')].map(s => s.textContent.trim()), whyH: [...li.querySelectorAll('.y11-t > span')].map(s => Math.round(s.getBoundingClientRect().height)),
         dots: [...li.querySelectorAll('.y11-lt circle:is(.y11-on, .y11-off, .y11-qd)')].map(c => c.getAttribute('class')), qtext: li.querySelectorAll('.y11-lt svg text').length, groups: [...li.querySelectorAll('.y11-g > i')].map(i => i.textContent.trim()),
         more: m ? m.textContent.replace(/\s+/g, ' ').trim() : null, moreVis: m ? getComputedStyle(m).visibility === 'visible' && m.getBoundingClientRect().height > 0 : false, label: li.querySelector('.y11-lt')?.getAttribute('aria-label') ?? null};
     })};
@@ -172,6 +172,7 @@ try {
       check(JSON.stringify(x.why) === JSON.stringify(en ? u.why.en : u.why.ko), `${t} 결론 마디 = 자료`, x.why.join(' / '));
       check(x.dots.length === 11 && x.dots.every((c, j) => c === 'y11-' + ({on: 'on', off: 'off', q: 'qd'})[u.lights[j]]), `${t} 불빛 열하나 = 자료`, x.dots.join(','));
       check(x.qtext === 0, `${t} 불빛 속 글자 0(「?」는 선 그림 — 17px 잣대 밖)`, x.qtext);
+      if (!en) check(x.whyH.every(hh => hh <= 26), `${t} 결론 마디마다 한 줄(두 줄 자리 안 · 밀림 0)`, x.whyH.join(','));
       check(JSON.stringify(x.groups) === JSON.stringify(en ? GROUP_EN : GROUP_KO), `${t} 무리 넷`, x.groups.join(','));
       check(x.moreVis && String(x.more).replace(/\s+/g, '') === (en ? 'Seeall11›' : '열한가지보기›'), `${t} 「열한 가지 보기 ›」`, x.more);
       const n = s => u.lights.filter(v => v === s).length;

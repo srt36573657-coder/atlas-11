@@ -48,8 +48,10 @@ export const ABROAD = Object.freeze(['관세', '공습', '미사일', '휴전', 
 const ALONE = new Set(['이란', '중동']);
 /** 정한 말 하나가 제목에 드는가 */
 export const hasWord = (t, w) => (ALONE.has(w) ? new RegExp(`(?<![가-힣])${w}(?![가-힣])`).test(t) : t.includes(w));
-/** 한 줄 결론 차례(결정표 3) */
-export const ORDER = Object.freeze([7, 1, 2, 3, 4, 5, 6, 10, 11]);
+/** 한 줄 결론 차례(결정표 3) — 돈(1 · 2 · 3 을 한 마디로) → 4 → 5 → 6 → 10 → 11 · 7(시장 날씨)은 몰린 곳이면 늘 켜져 줄마다 같은 말이라 다른 까닭이 없을 때만
+ *  (큰 검사 1/11 진짜 자료 10월 29일: 세 줄이 모두 「시장보다 덜 내렸고, 외국인이 샀어요.」 — 머리 「시장이 8% 내릴 때 여기는 버텼어요」와 같은 말을 세 번) */
+export const ORDER = Object.freeze([1, 2, 3, 4, 5, 6, 10, 11]);
+export const WHY_FALLBACK = 7;
 
 /** 토씨 — 한글 끝은 brand.js josa · 로마자 · 숫자 끝은 읽는 소리로(L 엘 · M 엠 · N 엔 · R 알 · 0 영 · 1 일 · 3 삼 · 6 육 · 7 칠 · 8 팔 = 받침) */
 const PAIRS = {이: ['이', '가'], 은: ['은', '는'], 을: ['을', '를'], 과: ['과', '와']};
@@ -179,18 +181,24 @@ export function itemsOf({money, good, lead, breadth, mi, pol, abr, reps}) {
   return Object.keys(NAMES).map(Number).map(k => ({k, ...it[k]}));
 }
 
-/** 한 줄 결론(결정표 3) — 켜진 것 가운데 차례로 앞 둘 · 마디마다 한 줄(화면은 마디를 한 줄씩 — 줄마다 작은 글 덩이라 첫 화면 가장 큰 그림이 늦게 그린 이 줄로 바뀌지 않음) */
+/** 한 줄 결론(결정표 3) — 켜진 까닭 가운데 줄마다 다른 것 앞 둘 · 마디마다 한 줄(화면은 마디를 한 줄씩 — 줄마다 작은 글 덩이라 첫 화면 가장 큰 그림이 늦게 그린 이 줄로 바뀌지 않음)
+ *  돈 셋은 한 마디로 묶음(「외국인과 기관이 샀고」) · 다른 까닭이 하나도 없으면 시장 날씨(7) 한 마디 */
 export function whyOf(items, {m, i}, lead) {
   const on = new Set(items.filter(x => x.s === 'on').map(x => x.k));
   const P = {
     7: m < 0 ? (i < 0 ? ['시장보다 덜 내렸고', '시장보다 덜 내렸어요', 'fell less than the market'] : ['시장이 내릴 때 올랐고', '시장이 내릴 때 올랐어요', 'rose as the market fell']) : ['시장보다 더 올랐고', '시장보다 더 올랐어요', 'beat the market'],
-    1: ['외국인이 샀고', '외국인이 샀어요', 'foreigners bought'], 2: ['기관이 샀고', '기관이 샀어요', 'institutions bought'], 3: ['개인이 샀고', '개인이 샀어요', 'individuals bought'],
     4: ['좋은 소식이 있었고', '좋은 소식이 있었어요', 'good news came out'],
-    5: lead ? [`${jo(lead.name, '이')} 끌었고`, `${jo(lead.name, '이')} 끌었어요`, `${lead.en} led`] : null,
+    5: lead ? (n => [`${jo(n, '이')} 끌었고`, `${jo(n, '이')} 끌었어요`, `${lead.en} led`])([...String(lead.name)].length > 9 ? '대장 회사' : lead.name) : null, // 긴 이름은 「대장 회사」(마디 한 줄 — 이름은 펼친 칸 5번에)
     6: ['여러 곳이 같이 올랐고', '여러 곳이 같이 올랐어요', 'many rose together'],
     10: ['정부 정책 기사가 있었고', '정부 정책 기사가 있었어요', 'policy news came out'], 11: ['나라 사이 기사가 있었고', '나라 사이 기사가 있었어요', 'world news came out'],
   };
-  const pick = ORDER.filter(k => on.has(k) && P[k]).slice(0, 2).map(k => P[k]);
+  const KO = {1: '외국인', 2: '기관', 3: '개인'}, EN = {1: 'foreigners', 2: 'funds', 3: 'retail'};
+  const money = [1, 2, 3].filter(k => on.has(k)), pick = [];
+  if (money.length === 1) { const w = jo(KO[money[0]], '이'); pick.push([`${w} 샀고`, `${w} 샀어요`, `${EN[money[0]]} bought`]); }
+  else if (money.length === 2) { const w = `${jo(KO[money[0]], '과')} ${jo(KO[money[1]], '이')}`; pick.push([`${w} 샀고`, `${w} 샀어요`, `${EN[money[0]]} and ${EN[money[1]]} bought`]); }
+  else if (money.length === 3) pick.push(['외국인, 기관, 개인이 모두 샀고', '외국인, 기관, 개인이 모두 샀어요', 'all three groups bought']);
+  for (const k of ORDER) if (k > 3 && pick.length < 2 && on.has(k) && P[k]) pick.push(P[k]);
+  if (!pick.length && on.has(WHY_FALLBACK)) pick.push(P[WHY_FALLBACK]);
   if (!pick.length) return null;
   const cap = s => s[0].toUpperCase() + s.slice(1);
   return pick.length === 2 ? {ko: [`${pick[0][0]},`, `${pick[1][1]}.`], en: [`${cap(pick[0][2])},`, `and ${pick[1][2]}.`]} : {ko: [`${pick[0][1]}.`], en: [`${cap(pick[0][2])}.`]};

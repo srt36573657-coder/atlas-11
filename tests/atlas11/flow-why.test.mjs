@@ -17,7 +17,7 @@ test('열한 가지 · 무리 넷 · 결론 차례가 결정표대로', () => {
   assert.deepEqual(GROUPS.map(g => [g.ko, g.ks]), [['돈', [1, 2, 3]], ['회사', [4, 5, 6]], ['상황', [7, 8, 9]], ['정치', [10, 11]]]);
   assert.deepEqual(GROUPS.map(g => g.q.ko), ['누가 샀나', '무엇이 달라졌나', '세상 날씨', '나라 일']); // 그림 시안(04:4x) 무리 머리
   for (const g of GROUPS) assert.ok(g.en.length <= 8, `영어 무리 이름이 김 ${g.en}`); // 불빛 줄 한 줄(390 폭)
-  assert.deepEqual([...ORDER], [7, 1, 2, 3, 4, 5, 6, 10, 11]);
+  assert.deepEqual([...ORDER], [1, 2, 3, 4, 5, 6, 10, 11]); // 7 은 다른 까닭이 없을 때만(줄마다 같은 말 — 큰 검사 1/11 진짜 자료)
   assert.equal(WHY_SCHEMA, 'dori-flow-why-1');
 });
 
@@ -90,7 +90,12 @@ test('열한 가지 글 — 켜짐 · 꺼짐 · 모름 글과 영어 · 한 줄 
   assert.equal(by[7].ko.t, '시장이 9.9% 내릴 때 3.7%만 내렸어요.'); assert.equal(by[7].en.t, 'The market fell 9.9%; this fell only 3.7%.');
   assert.equal(by[10].ko.t, '정부 정책 기사는 없었어요.'); assert.equal(by[11].ko.t, '기사 기록이 없어요.');
   for (const x of it) assert.doesNotMatch(x.en.t + (x.en.sub ?? ''), /[가-힣]/, `영어 글에 한글 ${x.k}`);
-  assert.deepEqual(whyOf(it, {m: -0.099, i: -0.037}, null), {ko: ['시장보다 덜 내렸고,', '외국인이 샀어요.'], en: ['Fell less than the market,', 'and foreigners bought.']});
+  assert.deepEqual(whyOf(it, {m: -0.099, i: -0.037}, null), {ko: ['외국인이 샀고,', '좋은 소식이 있었어요.'], en: ['Foreigners bought,', 'and good news came out.']}); // 시장 날씨(7)는 줄마다 같은 말이라 뺌
+  const set = (ks, on) => it.map(x => ({...x, s: on.includes(x.k) ? 'on' : x.k === 7 ? 'on' : 'off'}));
+  assert.deepEqual(whyOf(set([], [1, 2]), {m: -0.099, i: -0.037}, null).ko, ['외국인과 기관이 샀어요.']);
+  assert.deepEqual(whyOf(set([], [1, 2, 3, 6]), {m: -0.099, i: -0.037}, null), {ko: ['외국인, 기관, 개인이 모두 샀고,', '여러 곳이 같이 올랐어요.'], en: ['All three groups bought,', 'and many rose together.']});
+  assert.deepEqual(whyOf(set([], [2, 3]), {m: 0.02, i: 0.05}, null).en, ['Funds and retail bought.']);
+  assert.deepEqual(whyOf(set([], [10, 11, 4]), {m: 0.02, i: 0.05}, null).ko, ['좋은 소식이 있었고,', '정부 정책 기사가 있었어요.']);
   assert.deepEqual(whyOf(it.map(x => (x.k === 7 || x.k === 1 ? x : {...x, s: 'off'})).map(x => (x.k === 1 ? {...x, s: 'off'} : x)), {m: 0.02, i: 0.05}, null), {ko: ['시장보다 더 올랐어요.'], en: ['Beat the market.']});
   assert.equal(whyOf(it.map(x => ({...x, s: 'off'})), {m: -0.1, i: -0.05}, null), null);
   // 기사 · 대장 켜짐 글
@@ -100,7 +105,9 @@ test('열한 가지 글 — 켜짐 · 꺼짐 · 모름 글과 영어 · 한 줄 
   assert.equal(b2[5].ko.t, 'HMM이 한 달 동안 25.0% 올라 끌었어요.'); assert.equal(b2[6].s, 'on');
   assert.equal(b2[7].ko.t, '시장이 10.0% 내릴 때 2.0% 올랐어요.');
   assert.equal(b2[10].ko.sub, '「정부, 물류 보조금 늘린다」 연합뉴스, 10월 27일'); assert.equal(b2[10].en.sub, 'Ga news, Oct 27');
-  assert.deepEqual(whyOf(it2, {m: -0.1, i: 0.02}, {name: 'HMM', en: 'HMM'}), {ko: ['시장이 내릴 때 올랐고,', 'HMM이 끌었어요.'], en: ['Rose as the market fell,', 'and HMM led.']});
+  assert.deepEqual(whyOf(it2, {m: -0.1, i: 0.02}, {name: 'HMM', en: 'HMM'}), {ko: ['HMM이 끌었고,', '여러 곳이 같이 올랐어요.'], en: ['HMM led,', 'and many rose together.']});
+  assert.deepEqual(whyOf(it2.map(x => (x.k === 7 ? x : {...x, s: 'off'})), {m: -0.1, i: 0.02}, null).ko, ['시장이 내릴 때 올랐어요.']); // 다른 까닭이 없을 때만 시장 날씨
+  assert.deepEqual(whyOf(it2, {m: -0.1, i: 0.02}, {name: '한국항공우주산업주식회사', en: 'KAI'}).ko, ['대장 회사가 끌었고,', '여러 곳이 같이 올랐어요.']); // 긴 이름은 「대장 회사」(마디 한 줄)
   // 머리 글 — 한 곳이라도 실제로 내렸을 때만
   assert.equal(headOf(-0.099, [{i: 5}, {i: 1}, {i: 2}]), null);
   assert.deepEqual(headOf(-0.099, [{i: -3.7}, {i: -0.4}, {i: 1}]).ko, ['시장이 10% 내릴 때', '여기는 버텼어요']);
