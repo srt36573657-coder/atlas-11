@@ -1,0 +1,20 @@
+{
+  "schema": "atlas11-trust-misses-1",
+  "made": "2026-10-29T21:22+09:00",
+  "why": "틀림 장부 — 새 파일만",
+  "rules": 1,
+  "scope": {
+    "from": "2026-10-29 20:56 「어 올려요 올릴때 내게 묻지 말고 시작부터 끝까지 하세요」 받은 뒤",
+    "to": "2026-10-29 21:2x"
+  },
+  "count": 1,
+  "items": [
+    {
+      "n": 159,
+      "when": "2026-10-29 21:06(서울)",
+      "what": "진짜 사이트 탐침 셋(livesage · livenext · liveshot)을 같은 가지에 한꺼번에 부름 — 셋 모두 끝에 같은 가지로 결과를 올리는데, 사진 탐침이 올리기 단계에서 부딪혀 사진을 못 남기고 실패(https://github.com/srt36573657-coder/atlas-11/actions/runs/40870521094)",
+      "found_by": "사진 탐침 끝 상태 failure · 단계 「git config user.name atlas11-bot」(올리기)만 실패 · 가지의 사진 요약이 09:22 옛것 그대로",
+      "fixed": "다른 둘이 끝난 뒤 사진 탐침만 다시 돌려 여섯 쪽 오류 0(https://github.com/srt36573657-coder/atlas-11/actions/runs/40872154979) · 결과를 같은 가지에 올리는 탐침은 하나씩 차례로 부른다"
+    }
+  ]
+}
