@@ -47,7 +47,7 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 956,
+  "flowMs": 958,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
