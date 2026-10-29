@@ -1,0 +1,286 @@
+{
+ "schema": "atlas11-probe-fxrate-1",
+ "at": "2026-10-29T23:51:08.426Z",
+ "sizes": [
+  {
+   "name": "fxApi",
+   "pageSize": 100,
+   "status": 400,
+   "ms": 1249,
+   "rows": null,
+   "first": null,
+   "last": null,
+   "err": null,
+   "head": "getExchangeClosingPrices.pageSize: must be less than or equal to 60"
+  },
+  {
+   "name": "fxApi",
+   "pageSize": 60,
+   "status": 200,
+   "ms": 762,
+   "rows": 60,
+   "first": "2026-08-03",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "fxApi",
+   "pageSize": 50,
+   "status": 200,
+   "ms": 201,
+   "rows": 50,
+   "first": "2026-08-18",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "fxApi",
+   "pageSize": 20,
+   "status": 200,
+   "ms": 197,
+   "rows": 20,
+   "first": "2026-10-01",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "fxApi",
+   "pageSize": 10,
+   "status": 200,
+   "ms": 193,
+   "rows": 10,
+   "first": "2026-10-19",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "fxM",
+   "pageSize": 100,
+   "status": 400,
+   "ms": 1147,
+   "rows": null,
+   "first": null,
+   "last": null,
+   "err": null,
+   "head": "{\"detailCode\":\"\",\"message\":\"Request failed with status code 400\",\"result\":\"getExchangeClosingPrices.pageSize: must be less than or equal to 60\"}"
+  },
+  {
+   "name": "fxM",
+   "pageSize": 60,
+   "status": 200,
+   "ms": 749,
+   "rows": 60,
+   "first": "2026-08-03",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "fxM",
+   "pageSize": 50,
+   "status": 200,
+   "ms": 212,
+   "rows": 50,
+   "first": "2026-08-18",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "fxM",
+   "pageSize": 20,
+   "status": 200,
+   "ms": 212,
+   "rows": 20,
+   "first": "2026-10-01",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "fxM",
+   "pageSize": 10,
+   "status": 200,
+   "ms": 204,
+   "rows": 10,
+   "first": "2026-10-19",
+   "last": "2026-10-30",
+   "err": null
+  },
+  {
+   "name": "kr3yM",
+   "pageSize": 100,
+   "status": 400,
+   "ms": 210,
+   "rows": null,
+   "first": null,
+   "last": null,
+   "err": null,
+   "head": "{\"detailCode\":\"\",\"message\":\"Request failed with status code 400\",\"result\":\"getBondClosingPrices.pageSize: must be less than or equal to 60\"}"
+  },
+  {
+   "name": "kr3yM",
+   "pageSize": 60,
+   "status": 200,
+   "ms": 204,
+   "rows": 60,
+   "first": "2026-07-31",
+   "last": "2026-10-29",
+   "err": null
+  },
+  {
+   "name": "kr3yM",
+   "pageSize": 50,
+   "status": 200,
+   "ms": 219,
+   "rows": 50,
+   "first": "2026-08-14",
+   "last": "2026-10-29",
+   "err": null
+  },
+  {
+   "name": "kr3yM",
+   "pageSize": 20,
+   "status": 200,
+   "ms": 217,
+   "rows": 20,
+   "first": "2026-09-30",
+   "last": "2026-10-29",
+   "err": null
+  },
+  {
+   "name": "kr3yM",
+   "pageSize": 10,
+   "status": 200,
+   "ms": 214,
+   "rows": 10,
+   "first": "2026-10-16",
+   "last": "2026-10-29",
+   "err": null
+  },
+  {
+   "name": "kr3yApi",
+   "pageSize": 100,
+   "status": 400,
+   "ms": 193,
+   "rows": null,
+   "first": null,
+   "last": null,
+   "err": null,
+   "head": "getBondClosingPrices.pageSize: must be less than or equal to 60"
+  },
+  {
+   "name": "kr3yApi",
+   "pageSize": 60,
+   "status": 200,
+   "ms": 768,
+   "rows": 60,
+   "first": "2026-07-31",
+   "last": "2026-10-29",
+   "err": null
+  },
+  {
+   "name": "kr3yApi",
+   "pageSize": 50,
+   "status": 200,
+   "ms": 204,
+   "rows": 50,
+   "first": "2026-08-14",
+   "last": "2026-10-29",
+   "err": null
+  },
+  {
+   "name": "kr3yApi",
+   "pageSize": 20,
+   "status": 200,
+   "ms": 208,
+   "rows": 20,
+   "first": "2026-09-30",
+   "last": "2026-10-29",
+   "err": null
+  },
+  {
+   "name": "kr3yApi",
+   "pageSize": 10,
+   "status": 200,
+   "ms": 199,
+   "rows": 10,
+   "first": "2026-10-16",
+   "last": "2026-10-29",
+   "err": null
+  }
+ ],
+ "charts": [
+  {
+   "url": "https://api.stock.naver.com/chart/marketindex/exchange/FX_USDKRW/day?startDateTime=202501010000&endDateTime=202610312359",
+   "status": 404,
+   "ms": 274,
+   "bytes": 161,
+   "head": "{\"timestamp\":\"2026-10-29T23:51:16.363+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/chart/marketindex/exchange/FX_USDKRW/day\"}"
+  },
+  {
+   "url": "https://api.stock.naver.com/chart/marketindex/FX_USDKRW/day?startDateTime=202501010000&endDateTime=202610312359",
+   "status": 404,
+   "ms": 270,
+   "bytes": 152,
+   "head": "{\"timestamp\":\"2026-10-29T23:51:16.633+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/chart/marketindex/FX_USDKRW/day\"}"
+  },
+  {
+   "url": "https://m.stock.naver.com/front-api/chart/pricesByPeriod?reutersCode=FX_USDKRW&category=exchange&chartInfoType=marketindex&scriptChartType=day",
+   "status": 200,
+   "ms": 255,
+   "bytes": 114529,
+   "head": "{\"isSuccess\":true,\"detailCode\":\"\",\"message\":\"\",\"result\":{\"code\":\"FX_USDKRW\",\"infoType\":\"marketindex\",\"periodType\":\"day\",\"openPrice\":1335.3,\"lastClosePrice\":1340.5,\"tradeBaseAt\":\"20261030\",\"lastTradeBaseAt\":\"20261029\",\"localDateTimeNow\":\"20261030085000\",\"priceInfos\":[{\"localDateTime\":\"20261030082422\""
+  },
+  {
+   "url": "https://api.stock.naver.com/chart/marketindex/bond/KR3YT=RR/day?startDateTime=202501010000&endDateTime=202610312359",
+   "status": 404,
+   "ms": 267,
+   "bytes": 156,
+   "head": "{\"timestamp\":\"2026-10-29T23:51:17.155+0000\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/chart/marketindex/bond/KR3YT=RR/day\"}"
+  }
+ ],
+ "full": {
+  "fxApi": {
+   "name": "fxApi",
+   "ok": true,
+   "pageSize": 60,
+   "pages": 6,
+   "ms": 1210,
+   "lastStatus": 200,
+   "rows": 360,
+   "first": "2025-05-13",
+   "last": "2026-10-30"
+  },
+  "fxM": {
+   "name": "fxM",
+   "ok": true,
+   "pageSize": 60,
+   "pages": 6,
+   "ms": 1262,
+   "lastStatus": 200,
+   "rows": 360,
+   "first": "2025-05-13",
+   "last": "2026-10-30"
+  },
+  "kr3yM": {
+   "name": "kr3yM",
+   "ok": true,
+   "pageSize": 60,
+   "pages": 6,
+   "ms": 1288,
+   "lastStatus": 200,
+   "rows": 360,
+   "first": "2025-05-12",
+   "last": "2026-10-29"
+  },
+  "kr3yApi": {
+   "name": "kr3yApi",
+   "ok": true,
+   "pageSize": 60,
+   "pages": 6,
+   "ms": 1253,
+   "lastStatus": 200,
+   "rows": 360,
+   "first": "2025-05-12",
+   "last": "2026-10-29"
+  }
+ }
+}
