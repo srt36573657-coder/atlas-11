@@ -729,7 +729,8 @@ html.white.clock.clock.clock.clock.home #view .y11-g > i { color: #CFC4E0; }
 html.white.clock.clock.clock.clock.home #view .y11-on { fill: #C42F98; }
 html.white.clock.clock.clock.clock.home #view .y11-off { fill: #241540; stroke: #A58BC2; }
 html.white.clock.clock.clock.clock.home #view .y11-qd { fill: #160E2B; stroke: #A58BC2; }
-html.white.clock.clock.clock.clock.home #view .y11-qt { fill: #B6A8CB; }
+html.white.clock.clock.clock.clock.home #view .y11-qt { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-qdot { fill: #B6A8CB; }
 html.white.clock.clock.clock.clock.home #view .y11-m { color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .y11-x { background: #1C1136; border: 1px solid #3A2756; color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .y11-key { color: #CFC4E0; }

@@ -80,10 +80,15 @@ const WG = [['돈', 'Money', [1, 2, 3]], ['회사', 'Firms', [4, 5, 6]], ['상�
 /** 까닭 자료가 첫 화면 막대와 같은 날 것인가 */
 export const whyOk = (TH, W) => !!(W && W.schema === WHY_SCHEMA && typeof TH?.asOf === 'string' && W.asOf === TH.asOf && Array.isArray(W.inds));
 const DOT = 15, DG = 3;
-/** 불빛 — 켜짐(on · 기록으로 맞음) 칠한 동그라미 · 꺼짐(off · 아님) 빈 동그라미 · 모름(q) 점선 동그라미 안 「?」(그림 — 글 셈 밖) */
+/** 불빛 — 켜짐(on · 기록으로 맞음) 칠한 동그라미 · 꺼짐(off · 아님) 빈 동그라미 · 모름(q) 점선 동그라미 안 「?」 모양
+ *  「?」는 글자가 아니라 선 그림(갈고리 + 점) — 글 크기 잣대(17px)는 글에만(check_theme 큰 검사 1/11 「17px 아래 글 ? 10」 · 2026-10-30) */
 function dots(ss) {
   const w = ss.length * DOT + (ss.length - 1) * DG, s = sv('svg', {class: 'y11-dots', viewBox: `0 0 ${w} ${DOT}`, width: w, height: DOT, 'aria-hidden': 'true'});
-  ss.forEach((st, j) => { const cx = j * (DOT + DG) + DOT / 2, k = st === 'on' || st === 'off' ? st : 'q'; s.append(sv('circle', {class: 'y11-' + (k === 'q' ? 'qd' : k), cx, cy: DOT / 2, r: DOT / 2 - 1})); if (k === 'q') T(s, cx, DOT / 2 + 3.6, '?', 'y11-qt', 'middle'); });
+  ss.forEach((st, j) => {
+    const cx = j * (DOT + DG) + DOT / 2, k = st === 'on' || st === 'off' ? st : 'q', f = v => (+v).toFixed(2);
+    s.append(sv('circle', {class: 'y11-' + (k === 'q' ? 'qd' : k), cx, cy: DOT / 2, r: DOT / 2 - 1}));
+    if (k === 'q') s.append(sv('path', {class: 'y11-qt', d: `M${f(cx - 2)} 5.6A2 2 0 1 1 ${f(cx + 1.41)} 7.01L${f(cx)} 8.3V9.3`}), sv('circle', {class: 'y11-qdot', cx: f(cx), cy: 11.2, r: 0.95}));
+  });
   return s;
 }
 const lightsLabel = ls => { const n = st => ls.filter(x => x === st).length; return EN ? `Of 11 reasons: ${n('on')} yes, ${n('off')} no, ${n('q')} unknown` : `까닭 열한 가지 가운데 맞음 ${n('on')} · 아님 ${n('off')} · 모름 ${n('q')}`; };

@@ -500,7 +500,8 @@ html.home #view .y11-dots { display: block; overflow: visible; }
 html.home #view .y11-on { fill: #A31F70; }
 html.home #view .y11-off { fill: #FFFFFF; stroke: #9E5A78; stroke-width: 1.5; }
 html.home #view .y11-qd { fill: #FBF2F5; stroke: #9E5A78; stroke-width: 1.2; stroke-dasharray: 2.2 2; }
-html.home #view .y11-qt { font-size: 10px; font-weight: 900; fill: #6B3F52; }
+html.home #view .y11-qt { fill: none; stroke: #6B3F52; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+html.home #view .y11-qdot { fill: #6B3F52; }
 html.home #view .y11-m { display: flex; justify-content: flex-end; align-items: center; gap: 4px; min-height: 24px; padding: 0 4px 0 10px; font-size: 17px; line-height: 24px; font-weight: 800; color: #A31F70; white-space: nowrap; }
 html.home #view .y11-m > i { font-style: normal; font-size: 22px; line-height: 1; transition: transform .15s; }
 html.home #view .y11-box[open] .y11-m > i { transform: rotate(90deg); }
