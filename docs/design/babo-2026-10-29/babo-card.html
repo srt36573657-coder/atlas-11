@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>바보도 한눈에 둘이</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#FFF5F8;--card:#FFFFFF;--ink:#33142B;--ink2:#5E3A52;--acc:#A31F70;--soft:#F7D4DE;--line:#EBC3D2;--up:#D2334C;--upS:#FBE1E5;--dn:#2E66B8;--dnS:#E0EAF8;--gold:#E9A93A;color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 22px/1.5 "IBM Plex Sans KR","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+.card{max-width:440px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-right,0px)) 28px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px}
+header .kick{margin:0;display:inline-block;background:var(--soft);color:var(--acc);font-weight:700;font-size:21px;padding:4px 14px;border-radius:999px}
+h1{margin:8px 0 0;font-size:31px;line-height:1.25;text-wrap:balance}
+h1 em{font-style:normal;color:var(--acc)}
+.blk{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px}
+h2{margin:0;font-size:26px;line-height:1.3;display:flex;align-items:center;gap:10px}
+.no{flex:none;width:40px;height:40px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:700;border:4px solid var(--soft)}
+.sub,.note{margin:0;color:var(--ink2);font-size:21px}
+/* 돈 흐름 */
+.flowpic{display:block;width:100%;height:auto;max-width:100%}
+.grp{display:flex;flex-direction:column;gap:8px}
+.tag{margin:4px 0 0;font-weight:700;font-size:22px;display:flex;align-items:center;gap:8px}
+.tag.up{color:var(--up)}.tag.dn{color:var(--dn)}
+.tag i{font-style:normal;font-size:24px}
+.row{display:flex;flex-direction:column;gap:3px}
+.nm{font-weight:600;font-size:22px}
+.bar{display:block;height:24px;border-radius:0 12px 12px 0;width:var(--w);min-width:12px}
+.up .bar{background:linear-gradient(90deg,var(--up),#F0627A)}
+.dn .bar{background:linear-gradient(90deg,var(--dn),#6E9BDD)}
+.track{background:linear-gradient(90deg,var(--soft) 0 2px,transparent 2px);padding-left:0}
+/* 스승 */
+.say{display:flex;gap:12px;align-items:flex-start}
+.av{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:26px;color:#fff}
+.a1{background:#C0392B}.a2{background:#1F7A6B}.a3{background:#5B4AA8}
+.say p{margin:0;background:var(--bg);border:2px solid var(--line);border-radius:4px 18px 18px 18px;padding:8px 14px;font-size:22px;flex:1;min-width:0}
+.say b{display:block;color:var(--acc);font-size:21px}
+.many{display:flex;align-items:center;gap:10px}
+.dots{display:flex}
+.dots i{width:30px;height:30px;border-radius:50%;border:3px solid #fff;margin-left:-8px;background:var(--soft)}
+.dots i:first-child{margin-left:0}
+.dots i:nth-child(2){background:#F2B9CB}.dots i:nth-child(3){background:#E890AE}.dots i:nth-child(4){background:#D86A93}
+/* 친구에게 */
+.friend{background:linear-gradient(180deg,#FFFFFF, #FFF0F5)}
+.pair2{display:flex;align-items:flex-end;gap:10px}
+.kid{flex:none}
+.bub{position:relative;flex:1;background:var(--acc);color:#fff;border-radius:20px;padding:12px 16px;font-size:24px;font-weight:700;line-height:1.45}
+.bub:after{content:"";position:absolute;left:-10px;bottom:16px;border:10px solid transparent;border-right-color:var(--acc);border-left:0}
+/* 멈춤 */
+.stop{border-color:var(--up);background:#FFF7F8}
+.stamp{align-self:flex-start;transform:rotate(-3deg);border:4px solid var(--up);color:var(--up);border-radius:14px;padding:4px 14px;font-weight:700;font-size:28px}
+.big{margin:0;font-size:30px;font-weight:700}
+.rec{display:flex;flex-direction:column;gap:12px}
+.rr{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:end}
+.rk{font-weight:700;font-size:22px;grid-column:1/-1}
+.cols{display:flex;align-items:flex-end;gap:10px;height:134px}
+.col{display:flex;flex-direction:column;align-items:center;gap:2px}
+.col b{font-size:22px}
+.col s{display:block;width:54px;border-radius:8px 8px 0 0;text-decoration:none}
+.col small{font-size:21px;color:var(--ink2)}
+.me s{background:var(--acc)}.al s{background:#B9A7B2}
+.res{font-weight:700;font-size:24px;padding:4px 12px;border-radius:12px}
+.win{background:var(--upS);color:var(--up)}.lose{background:var(--dnS);color:var(--dn)}
+/* 물음 */
+.ask{background:var(--acc);color:#fff;border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.ask .q{margin:0;font-size:27px;font-weight:700;line-height:1.35}
+.ask .yes{margin:0;align-self:flex-start;background:#fff;color:var(--acc);font-weight:700;font-size:24px;border-radius:999px;padding:6px 22px}
+.foot{text-align:center;font-weight:700;font-size:21px;color:var(--ink2);background:var(--soft);border-radius:14px;padding:8px}
+details{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:10px 14px;font-size:21px}
+summary{font-weight:700;cursor:pointer}
+details ul,details ol{margin:6px 0;padding-left:24px}
+details li{margin:4px 0}
+details a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main class="card">
+<header>
+  <p class="kick">사장님 말씀 넷을 한 장에</p>
+  <h1>바보도 <em>한눈에</em> 아는 둘이</h1>
+</header>
+
+<section class="blk flow">
+  <h2><span class="no">1</span>요즘 돈이 몰린 곳</h2>
+  <svg class="flowpic" viewBox="0 0 360 120" role="img" aria-label="시장 돈이 위로는 많이 들어가고 아래로는 빠져나가는 그림">
+    <defs>
+      <marker id="hu" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D2334C"/></marker>
+      <marker id="hd" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2E66B8"/></marker>
+    </defs>
+    <circle cx="58" cy="60" r="44" fill="#E9A93A"/>
+    <circle cx="58" cy="60" r="34" fill="none" stroke="#FFF1C9" stroke-width="5"/>
+    <path d="M40 46l9 30 9-24 9 24 9-30" fill="none" stroke="#FFF7E2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38 58h40M38 66h40" stroke="#FFF7E2" stroke-width="5" stroke-linecap="round"/>
+    <path d="M108 50C170 20 230 18 300 22" fill="none" stroke="#D2334C" stroke-width="14" stroke-linecap="round" marker-end="url(#hu)"/>
+    <path d="M300 98C230 102 170 96 108 74" fill="none" stroke="#2E66B8" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 10" marker-end="url(#hd)"/>
+    <rect x="312" y="6" width="40" height="34" rx="10" fill="#FBE1E5"/><path d="M332 34V14M323 22l9-9 9 9" fill="none" stroke="#D2334C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="312" y="80" width="40" height="34" rx="10" fill="#E0EAF8"/><path d="M332 86v20M323 98l9 9 9-9" fill="none" stroke="#2E66B8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <p class="sub">한 달쯤 시장보다 더 오른 곳이에요.</p>
+  <div class="grp up">
+    <p class="tag up"><i>▲</i>많이 몰림</p>
+    <div class="row"><span class="nm">바이오 도구와 서비스</span><span class="bar" style="--w:41%"></span></div>
+    <div class="row"><span class="nm">음료</span><span class="bar" style="--w:40%"></span></div>
+    <div class="row"><span class="nm">물류와 운송</span><span class="bar" style="--w:36%"></span></div>
+  </div>
+  <div class="grp dn">
+    <p class="tag dn"><i>▼</i>많이 빠짐</p>
+    <div class="row"><span class="nm">항공과 우주</span><span class="bar" style="--w:100%"></span></div>
+    <div class="row"><span class="nm">조선</span><span class="bar" style="--w:74%"></span></div>
+    <div class="row"><span class="nm">에너지 장비</span><span class="bar" style="--w:71%"></span></div>
+  </div>
+  <p class="note">오늘 아침 둘이 업종 77개 자료예요.</p>
+</section>
+
+<section class="blk wise">
+  <h2><span class="no">2</span>스승이 바보에게</h2>
+  <div class="say"><i class="av a1">덩</i><p><b>덩샤오핑 방식</b>조금만 해 보고, 되면 늘려요.</p></div>
+  <div class="say"><i class="av a2">리</i><p><b>리콴유 방식</b>규칙을 먼저 적고, 꼭 지켜요.</p></div>
+  <div class="say"><i class="av a3">퍼</i><p><b>퍼스 방식</b>한 달 뒤 결과로 맞았는지 봐요.</p></div>
+  <div class="many"><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span><p class="note">서른여섯 스승도 이렇게 한 줄씩 거들어요.</p></div>
+</section>
+
+<section class="blk friend">
+  <h2><span class="no">3</span>바보가 친구에게</h2>
+  <div class="pair2">
+    <svg class="kid" width="64" height="84" viewBox="0 0 64 84" aria-hidden="true"><circle cx="32" cy="24" r="20" fill="#F6C9A8"/><circle cx="25" cy="22" r="3" fill="#33142B"/><circle cx="39" cy="22" r="3" fill="#33142B"/><path d="M24 31q8 7 16 0" fill="none" stroke="#33142B" stroke-width="3" stroke-linecap="round"/><path d="M12 12q20-18 40 0" fill="#33142B"/><rect x="14" y="46" width="36" height="36" rx="14" fill="#A31F70"/></svg>
+    <p class="bub">돈 몰린 곳을 봐.<br>산다면 조금만.<br>한 달 뒤엔 꼭 돌아봐.</p>
+  </div>
+</section>
+
+<section class="blk stop">
+  <p class="stamp">이거 사면 번다?</p>
+  <p class="big">아무도 몰라요.</p>
+  <div class="rec">
+    <div class="rr">
+      <span class="rk">지난 3년 둘이 기록</span>
+      <div class="cols">
+        <div class="col me"><b>31</b><s style="height:62px"></s><small>둘이</small></div>
+        <div class="col al"><b>24</b><s style="height:48px"></s><small>모두</small></div>
+      </div>
+      <span class="res win">앞섬</span>
+    </div>
+    <div class="rr">
+      <span class="rk">최근 두 달 둘이 기록</span>
+      <div class="cols">
+        <div class="col me"><b>23</b><s style="height:46px"></s><small>둘이</small></div>
+        <div class="col al"><b>25</b><s style="height:50px"></s><small>모두</small></div>
+      </div>
+      <span class="res lose">졌음</span>
+    </div>
+  </div>
+  <p class="note">100번 중 한 달 뒤 크게 더 오른 횟수예요.</p>
+</section>
+
+<section class="ask">
+  <p class="q">「사라」는 말만 빼고 둘이를 크게 바꿀까요?</p>
+  <p class="yes">「응」 한 마디면 돼요</p>
+</section>
+
+<p class="foot">틀림 장부 152건 · 못 한 것 4가지</p>
+
+<details>
+  <summary>자세히 보기</summary>
+  <p><b>못 한 것 4가지</b></p>
+  <ol>
+    <li>돈을 꼭 벌게 하는 약속은 못 해요. 아무도 앞날을 몰라요.</li>
+    <li>「제일 수익 좋은 것을 사게」는 안 했어요. 둘이 본질의 하지 않는 일과 부딪혀요.</li>
+    <li>사이트는 아직 안 바꿨어요. 사장님 「응」을 기다려요.</li>
+    <li>긴 일에 쓰라신 뫼비우스 기술이 이 방에 없어요.</li>
+  </ol>
+  <p><b>바로잡음</b> 12시 47분쯤 「권하면 법으로 등록이 필요할 수도」라고 한 말은 틀렸어요. 돈을 받고 여러 사람에게 투자 조언을 하면 금융위원회에 「신고」해야 해요. 출처를 찾기 전에 말했어요.</p>
+  <p><b>숫자 그대로</b> 한 달쯤 = 최근 20거래일. 시장보다 더 오른 정도: 바이오 도구·서비스 +8.01, 음료 +7.83, 물류·운송 +7.05, 항공·우주 −19.37, 조선 −14.28, 에너지 장비 −13.72 (단위 %p). 막대 길이는 가장 큰 값 19.37을 끝으로 맞춤.</p>
+  <p><b>둘이 기록</b> 조건으로 고른 회사 대 모든 회사, 고른 날부터 한 달 뒤 시장보다 5% 넘게 더 오른 비율. 2023년 10월 ~ 2026년 9월 4,033번: 31% 대 24%. 최근 두 달: 23% 대 25%.</p>
+  <p><b>출처</b></p>
+  <ul>
+    <li>둘이 업종 자료 — https://aaa7377.com/next/data/theme-home.json (made 2026-10-29T00:49:57Z · inds 77개)</li>
+    <li>둘이 첫 화면 사진 — 오늘 09:55 진짜 사이트 (31 대 24 · 23 대 25)</li>
+    <li>유사투자자문업 뜻 — https://www.lawtalk.co.kr/posts/34923 (조윤상 변호사 · 자본시장법 101조)</li>
+    <li>둘이 본질 — docs/둘이_본질.md 「하지 않는 일 둘」 · 「망치는 길」</li>
+    <li>사장님 말씀 원문 — docs/design/babo-2026-10-29/order-1245.txt</li>
+  </ul>
+</details>
+</main>
+</body>
+</html>
