@@ -51,10 +51,10 @@ const TSTEP = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 25, 50, 100, 200, 500, 1000, 2000
 function niceTicks(lo, hi, max = 4) { let s = TSTEP.at(-1); for (const x of TSTEP) if ((hi - lo) / x <= max) { s = x; break; } const t = []; for (let a = Math.ceil(lo / s - 1e-9) * s; a <= hi + 1e-9; a += s) t.push(Math.round(a * 1000) / 1000); return t; }
 /** 눈금 글 — 첫날(100)보다 몇 %(+10% · 0% · −5% · 소수는 한 자리) */
 export const tickPct = t => { const d = Math.round((t - 100) * 10) / 10; return d === 0 ? '0%' : (d > 0 ? '+' : '−') + (Number.isInteger(d) ? String(Math.abs(d)) : Math.abs(d).toFixed(1)) + '%'; };
-const AXW = 48, LBL = 17; // 눈금 칸 넓이(p-co.css .pco-ax 셋째 칸과 같음) · 눈금 글 크기(--fs-1 = 17px) · 겹치는 눈금 글 빼기는 옛 그림과 같은 24px(같은 눈금 수)
+const AXW = 64, LBL = 17; // 눈금 칸 넓이(p-co.css .pco-ax 셋째 칸과 같음 · 2026-10-29 48 → 64: 「+20%」 「−2.5%」 「+150%」 글이 옛 「120」보다 넓음 — 다섯 글자까지 선 끝과 떨어짐) · 눈금 글 크기(--fs-1 = 17px) · 겹치는 눈금 글 빼기는 옛 그림과 같은 24px(같은 눈금 수)
 function gutterAxis(svg, wrap, {ticks, Y, x0, x1, base, fmt}) {
   const T = tok(), lab = h('div', {class: 'pco-yr', 'aria-hidden': 'true'}), seen = new Set();
-  const one = (t, b) => { const y = Y(t); svg.append(sv('line', {x1: x0, x2: x1 + 6, y1: y.toFixed(1), y2: y.toFixed(1), stroke: b ? T.mute : T['m4-soft'], 'stroke-width': 1, 'stroke-dasharray': b ? '2 4' : null}));
+  const one = (t, b) => { const y = Y(t); svg.append(sv('line', {x1: x0, x2: x1, y1: y.toFixed(1), y2: y.toFixed(1), stroke: b ? T.mute : T['m4-soft'], 'stroke-width': 1, 'stroke-dasharray': b ? '2 4' : null}));
     const key = Math.round(y); if ([...seen].some(k => Math.abs(k - key) < 24)) return; seen.add(key); lab.append(h('span', {class: 'num', text: fmt(t), css: {top: (y - LBL / 2).toFixed(1) + 'px'}})); };
   if (base != null) one(base, true); // 기준선은 늘 그림(눈금 글이 겹치면 기준 글을 남김)
   for (const t of ticks) if (base == null || Math.abs(t - base) > 1e-9) one(t, false);

@@ -63,13 +63,13 @@ html.f2 .wtabs, html.f3 .wtabs { grid-template-columns: repeat(2, minmax(0, 1fr)
 .pco-badge { color: var(--gold); font-weight: 700; white-space: nowrap; }
 .pco-tag { color: var(--ink); font-weight: 700; }
 
-/* 그림 — 눈금 글은 오른쪽 칸(48px · 오른쪽 맞춤) · 때 글은 그림 밑 · 「고른 날」은 금빛 세로선 왼쪽 위 띠 */
+/* 그림 — 눈금 글은 오른쪽 칸(64px · 오른쪽 맞춤 · 2026-10-29 「+20%」 꼴로 넓힘) · 때 글은 그림 밑 · 「고른 날」은 금빛 세로선 왼쪽 위 띠 */
 .pco-lc { position: relative; margin: var(--sp-2) var(--sp-2) 0; }
 .pco-lc svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
 .pco-lc > .pco-q { margin: var(--sp-1) 0; font-size: var(--fs-2); }
 .pco-yr span { position: absolute; right: 0; color: var(--mute); font-size: var(--fs-1); line-height: 1; text-align: right; white-space: nowrap; pointer-events: none; }
 .pco-yl { position: absolute; top: 0; color: var(--gold); font-size: var(--fs-1); line-height: 1.2; text-align: right; white-space: nowrap; pointer-events: none; }
-.pco-ax { display: grid; grid-template-columns: minmax(0, 1fr) auto 48px; column-gap: var(--sp-1); margin-top: var(--sp-1); color: var(--mute); font-size: var(--fs-1); font-variant-numeric: tabular-nums; }
+.pco-ax { display: grid; grid-template-columns: minmax(0, 1fr) auto 64px; column-gap: var(--sp-1); margin-top: var(--sp-1); color: var(--mute); font-size: var(--fs-1); font-variant-numeric: tabular-nums; }
 .pco-ax::after { content: ''; }
 .pco-ax span:last-of-type { text-align: right; }
 .pco-tip { position: absolute; top: 0; transform: translateX(-50%); padding: 0 var(--sp-1); border-radius: 8px; background: var(--ink); color: #0C0E12; font-size: var(--fs-1); font-weight: 700; text-align: center; white-space: nowrap; pointer-events: none; }
