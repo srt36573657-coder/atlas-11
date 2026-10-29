@@ -171,3 +171,14 @@ test('깃허브 작업 · 방 — 읽기 권한만 · 넷리파이 열쇠는 작
   assert.match(y, /run-name: atlas11-help-forward \$\{\{ inputs\.mode \}\} \$\{\{ inputs\.tag \}\}/);
   assert.match(room, /mode: 0o600/);
 });
+
+test('작업이 받는 파일 — forward.mjs 가 들이는 저장소 파일이 모두 sparse-checkout 안(2026-10-28 02시 ~ 10-30 01시 고객센터 옮기기 멈춤 · 틀림 장부 161)', () => {
+  const y = read('.github/workflows/atlas11-help-forward.yml');
+  const blk = /sparse-checkout: \|\n((?: {12}\S[^\n]*\n)+)/.exec(y);
+  assert.ok(blk, 'sparse-checkout 목록');
+  const pats = blk[1].split('\n').map(l => l.trim()).filter(Boolean);
+  const f = read('scripts/atlas11/help/forward.mjs');
+  const deps = [...f.matchAll(/from '(\.{1,2}\/[^']+)'/g)].map(m => path.posix.normalize(path.posix.join('scripts/atlas11/help', m[1])));
+  assert.ok(deps.includes('site/next/brand.js'), JSON.stringify(deps));
+  for (const d of deps) assert.ok(pats.some(p => d === p || d.startsWith(p.replace(/\/$/, '') + '/')), `${d} 가 작업 목록(${pats.join(', ')})에 없음`);
+});
