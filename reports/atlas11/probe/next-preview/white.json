@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-29T11:37:07.975Z",
+ "at": "2026-10-29T15:43:10.151Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.0034053699055348395,
    "chars": 118,
    "blocks": {
-    "ess": 4780,
+    "ess": 4630,
     "find": 776,
-    "today": 2774,
-    "gdr": 4099,
-    "all": 4535
+    "today": 2736,
+    "gdr": 4002,
+    "all": 4413
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -184,11 +184,11 @@
    "bodyLum": 0.0034053699055348395,
    "chars": 118,
    "blocks": {
-    "ess": 4682,
+    "ess": 4531,
     "find": 776,
-    "today": 2774,
-    "gdr": 4099,
-    "all": 4535
+    "today": 2736,
+    "gdr": 4002,
+    "all": 4413
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -661,8 +661,8 @@
    }
   },
   "speed": {
-   "lcp": 2228,
-   "inp": 64,
+   "lcp": 2196,
+   "inp": 48,
    "cls": 0.006
   }
  },

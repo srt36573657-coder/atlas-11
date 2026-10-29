@@ -1,21 +1,21 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-29T11:42:14.067Z",
+ "at": "2026-10-29T15:50:21.317Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-29",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 50,
+ "seconds": 55,
  "time": {
-  "old": 1.3,
-  "new": 44.9,
-  "wall": 50.3,
-  "opensOld": 1,
+  "old": 42.4,
+  "new": 41.1,
+  "wall": 55.2,
+  "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 2.6,
-  "oldShare": 2.8
+  "oldPct": 76.7,
+  "oldShare": 50.7
  },
  "net": {
   "req": 5129,
@@ -33,22 +33,22 @@
  "counts": {
   "sec": {
    "pick": 0,
-   "compare": 46
+   "compare": 52
   },
-  "글 마디": 54126,
-  "숫자 낱말": 51365,
+  "글 마디": 51562,
+  "숫자 낱말": 48802,
   "막대 줄": 14892,
   "회사": 2557,
   "경쟁 회사": 163,
   "없는 번호": 7,
   "옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)": 7,
   "oldSnap": {
-   "use": true,
-   "why": "",
-   "made": "2026-10-29T11:34:42.341Z",
+   "use": false,
+   "why": "바뀐 파일 1714개(/atlas/data/core.json · /atlas/data/home.json · /atlas/data/comp.json)",
+   "made": null,
    "inputs": 2568,
    "reads": 2564,
-   "note": "기준값 다시 씀"
+   "note": "기준값 새로 씀(파일 2568개 · 값 2564개)"
   },
   "세 폭 화면": 30,
   "못 받은 파일 길": 6
