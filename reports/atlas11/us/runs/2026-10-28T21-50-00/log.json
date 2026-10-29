@@ -1,0 +1,92 @@
+{
+ "startedAt": "2026-10-28T21:50:00.460Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-10-28T21:50:00.561Z",
+   "mode": "update",
+   "run": "reports/atlas11/us/runs/2026-10-28T21-50-00",
+   "newYork": {
+    "date": "2026-10-28",
+    "hm": "17:50",
+    "weekday": 3
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-10-28T21:50:01.737Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day"
+  },
+  {
+   "name": "일봉(지금 365곳)",
+   "at": "2026-10-28T21:50:20.879Z",
+   "asked": 365,
+   "got": 361,
+   "latest": "2026-10-28"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-28T21:50:21.083Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/AMD.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-10-28T21:50:36.788Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-10-28T21:50:37.191Z",
+   "news": 365,
+   "newsItems": 5842,
+   "index": [
+    "S&P 500 2026-10-28",
+    "나스닥 종합 2026-10-28",
+    "다우존스 2026-10-28"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-10-28T21:50:37.446Z",
+   "assets": 365,
+   "asOf": "2026-10-28",
+   "late": 4,
+   "sessions": 297,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-10-28T21-50-00/input.json.gz",
+    "sha256": "268c14b905257ff968c580f91e25ca069d95c9f5f71969528cce8fe3cc2886f1",
+    "bytes": 659099
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/AVGO.O/day?startDateTime=202508240000&endDateTime=202610282359",
+   "status": 200,
+   "ms": 1119
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/WBD.O?periodType=dayCandle",
+   "status": 200,
+   "ms": 194
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/AMD.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 202
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202610080000&endDateTime=202610282359",
+   "status": 200,
+   "ms": 188
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-10-28T21:50:37.446Z"
+}
