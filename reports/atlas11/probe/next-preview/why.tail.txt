@@ -1,5 +1,5 @@
 {
- "sec": 45,
+ "sec": 51,
  "quick": false,
  "accept": {
   "css": {
@@ -10,7 +10,7 @@
    "coFiles": 2557,
    "coMissing": 0,
    "rowsChecked": 9,
-   "fileRows": 830
+   "fileRows": 831
   },
   "taps": {
    "모두 초록": 23,
@@ -47,7 +47,7 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 836,
+  "flowMs": 956,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
