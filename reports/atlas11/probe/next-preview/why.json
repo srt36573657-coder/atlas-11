@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-4",
- "when": "2026-10-29T06:58:06.146Z",
+ "when": "2026-10-29T07:10:20.907Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -71,12 +71,12 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 982,
+  "flowMs": 841,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
  },
- "sec": 54,
+ "sec": 46,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "맞댄 시작 화면": 62,
