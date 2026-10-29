@@ -46,7 +46,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: scripts/atlas11/help
+          # forward.mjs 가 이름 한 곳(site/next/brand.js)을 들임(2026-10-27 22:01 5cb612d59) — 이 파일이 빠져 10-28 02시부터 fetch 가 모두 실패했음(틀림 장부 161 · 2026-10-30 고침)
+          #   forward.mjs 가 새 파일을 들이면 여기에도 더함(tests/atlas11/help-forward.test.mjs 가 맞댐)
+          sparse-checkout: |
+            scripts/atlas11/help
+            site/next/brand.js
           sparse-checkout-cone-mode: false
       - uses: actions/setup-node@v4
         with:
