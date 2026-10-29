@@ -1,104 +1,20 @@
 {
- "base": "http://127.0.0.1:8826",
- "path": "/next/?dev=1",
- "mode": "all",
- "companies": 2557,
- "wide": [
-  "005930",
-  "950260",
-  "003060",
-  "0010S0",
-  "0001A0",
-  "0007C0",
-  "002350",
-  "000370",
-  "323280",
-  "000040"
- ],
- "made": "2026-10-29T05:21:29.039Z",
  "shard": "all/2",
  "units": {
-  "total": 2562,
-  "mine": 2562,
-  "hash": "1876294baef63f85",
-  "kinds": {
-   "c": {
-    "total": 2557,
-    "mine": 2557
-   },
-   "x": {
-    "total": 1,
-    "mine": 1
-   },
-   "w": {
-    "total": 4,
-    "mine": 4
-   }
-  }
+  "total": 0,
+  "mine": 0,
+  "hash": null,
+  "kinds": {}
  },
- "sec": 204,
- "secondsSum": 408,
- "time": {
-  "old": 116.8,
-  "new": 306.9,
-  "wall": 204.5,
-  "wallSum": 408.1,
-  "opensOld": 25572,
-  "opensNew": 33283,
-  "oldPct": 28.6,
-  "oldShare": 27.6
- },
- "net": {
-  "req": 2563,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
-  "cut": 0,
-  "page": {
-   "retry": 0,
-   "waitSec": 0,
-   "blocked": 0,
-   "why": {}
-  }
- },
- "counts": {
-  "맞댄 칸": 191775,
-  "숫자 낱말": 409885,
-  "맨 위 결 한 줄": 7671,
-  "선 누르기": 7671,
-  "화면(기간)": 7671,
-  "회사": 2557,
-  "폭 화면": 120,
-  "없는 번호": 1
- },
+ "seconds": 0,
+ "secondsSum": 0,
+ "counts": {},
  "fails": [],
- "warn": [],
- "shards": [
-  {
-   "shard": "1/2",
-   "ok": true,
-   "fails": 0,
-   "seconds": 204,
-   "mine": 1281,
-   "kinds": {
-    "c": 1279,
-    "x": 0,
-    "w": 2
-   }
-  },
-  {
-   "shard": "2/2",
-   "ok": true,
-   "fails": 0,
-   "seconds": 204,
-   "mine": 1281,
-   "kinds": {
-    "c": 1278,
-    "x": 1,
-    "w": 2
-   }
-  }
+ "shards": [],
+ "problems": [
+  "몫 결과가 하나도 없음",
+  "1/2 몫 결과 없음",
+  "2/2 몫 결과 없음"
  ],
- "problems": [],
- "ok": true
+ "ok": false
 }
