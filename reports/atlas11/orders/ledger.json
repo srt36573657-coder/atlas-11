@@ -705,14 +705,15 @@
    "id": "1657",
    "at": "2026-10-29T16:57+09:00",
    "words": "이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜 (무대 사진 한 장 — 어두운 무대 · 분홍 빛 줄 · 분홍 연기 · 분홍 오토바이)",
-   "then": "16:57 받음 · 회사 쪽(1508) 진짜 사이트 검사를 마저 마침 · 사진을 잼(analyze.py — 대표 색 15 · 자리 15 · 밝기 · 선명함 · 색 고리 · 빛 · 천장 조명 분홍 6 하늘 1) · 180가지(items.md) · 색 판(palette.json — 글 대비 38쌍 기준 넘음) · clock_theme.py 밤 판 · 첫 화면 밤 칸 · 업종 점 색은 색약 검사 실패 0",
-   "did": "둘이 모든 쪽 바탕 #0C081D 짙은 남보라 · 글 #F2EFF9 · 칸 #1C1136 · 강조 #F06FCB 분홍 빛 줄 · 큰 단추 #C42F98 흰 글 · 위 · 아래 막대 #070514 · 막대 끝줄 분홍 빛 · 바탕 빛 위 하늘 · 아래 분홍 연기(옅게) · 오름 #FF5A65 · 내림 #5B96FF(숫자만) · 이 컴퓨터 흰 첫 화면 검사 통과 423 실패 0 · 진짜 사이트에는 아직 안 올림",
+   "then": "16:57 받음 · 회사 쪽(1508) 진짜 사이트 검사를 마저 마침 · 사진을 잼(analyze.py — 대표 색 15 · 자리 15 · 밝기 · 선명함 · 색 고리 · 빛 · 천장 조명 분홍 6 하늘 1) · 180가지(items.md) · 색 판(palette.json — 글 대비 38쌍 기준 넘음) · clock_theme.py 밤 판 · 첫 화면 밤 칸 · 업종 점 색은 색약 검사 실패 0 · 17:2x 큰 검사 neon 1/11 실패 0(cb11f67a6 · 24 검사 · 진짜 사이트 자료 10월 29일 · https://github.com/srt36573657-coder/atlas-11/actions/runs/40842078503) · 17:36 진짜 사이트 올리기를 자동 문지기가 막음(사장님 「응」을 따로 받아야 함 — 올리지 않음) · 끝 보고에서 올릴지 여쭘",
+   "did": "둘이 모든 쪽 바탕 #0C081D 짙은 남보라 · 글 #F2EFF9 · 칸 #1C1136 · 강조 #F06FCB 분홍 빛 줄 · 큰 단추 #C42F98 흰 글 · 위 · 아래 막대 #070514 · 막대 끝줄 분홍 빛 · 바탕 빛 위 하늘 · 아래 분홍 연기(옅게) · 오름 #FF5A65 · 내림 #5B96FF(숫자만) · 이 컴퓨터 흰 첫 화면 검사 통과 423 실패 0 · 큰 검사 1/11 실패 0 · 진짜 사이트에는 아직 안 올림",
    "state": "미완성",
-   "proof": "docs/design/neon-2026-10-29/order-1657.txt · docs/design/neon-2026-10-29/items.md · docs/design/neon-2026-10-29/palette.json · docs/design/neon-2026-10-29/measure.json · scripts/atlas11/next/clock_theme.py · site/next/clock.css",
-   "short": "무대 사진 색으로 둘이 바탕과 글씨를 바꾸는 중이에요. 아직 안 올렸어요."
+   "proof": "docs/design/neon-2026-10-29/order-1657.txt · docs/design/neon-2026-10-29/items.md · docs/design/neon-2026-10-29/palette.json · docs/design/neon-2026-10-29/measure.json · scripts/atlas11/next/clock_theme.py · site/next/clock.css · reports/atlas11/full-runs/neon-2026-10-29.jsonl · reports/atlas11/probe/next-preview/summary.json(cb11f67a6 ok)",
+   "short": "무대 사진 색으로 둘이를 바꿨고 검사도 통과했어요. 올리기만 남았어요."
   }
  ],
  "open": [
+  "밤 무대 색은 검사를 마쳤지만 진짜 사이트에는 아직 안 올렸어요",
   "업종 쪽 글은 아직 「테마 시계」 말 그대로예요",
   "관리자 화면에 시험 신청 넷이 「보낼 차례」로 남아 있어요. 끝 0000 셋과 사장님 번호 하나예요. 「보냄 표시」를 누르면 지워져요",
   "고객센터 글이 고친 알림 방으로 카톡에 오는지는 아직 시험 안 했어요",
@@ -1097,6 +1098,12 @@
   },
   {
    "at": "2026-10-29T16:16+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 31,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs"
+  },
+  {
+   "at": "2026-10-29T17:39+09:00",
    "to": "카톡 나에게 보내기",
    "messages": 31,
    "how": "node scripts/atlas11/orders/kakao_digest.mjs"
