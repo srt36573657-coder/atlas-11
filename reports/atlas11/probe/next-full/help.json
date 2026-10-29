@@ -1,0 +1,14 @@
+{
+ "schema": "golttori-check-help-1",
+ "at": "2026-10-29T21:58:16.011Z",
+ "base": "https://aaa7377.com",
+ "counts": {
+  "pass": 115,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "en": []
+ },
+ "ok": true
+}
