@@ -76,6 +76,8 @@ const REWORD = [
   [/^가장 깊이 빠짐\((.+)\)$/, '$1 중 가장 크게 내린 폭'],
   [/^4단 지나온 길$/, '지나온 길'],
   [/^(자료: .+?) · 기준일 = .*$/, '$1'],
+  [/^(.+에 100만 원어치였다면 가장 낮을 때 .+) · 끝 (.+)$/, '$1 · 마지막 날 $2'],
+  [/^(.+에 100만 원어치였다면 )그보다 낮아진 적 없이 끝 (.+)$/, '$1그보다 낮아진 적 없이 마지막 날 $2'],
 ];
 const reword = t => t.split('\n').map(raw => { const l = norm(raw); for (const [re, to] of REWORD) if (re.test(l)) return l.replace(re, to); return raw; }).join('\n');
 /** 그림 눈금 글 — 옛 지수 눈금(첫날 = 100)을 첫날보다 몇 %로(+10% · 0% · −2.5% — 소수는 한 자리 · 앱 코드를 쓰지 않음) */
@@ -367,7 +369,7 @@ for (const code of SH.part('c', list)) {
   want('세 숫자', JSON.stringify(nw.trio.map(x => [x[0], x[1]])), JSON.stringify(trioW));
   nw.trio.forEach((x, k) => { const v = [c.chg, c.r1y, c.mdd][k], cl = v == null || !Number.isFinite(v) ? 'q' : R1(v) > 0 ? 'up' : R1(v) < 0 ? 'dn' : 'fl'; if (!x[2].split(' ').includes(cl)) fail('세 숫자 색', where + ' ' + x[0] + ' ' + x[2] + ' ≠ ' + cl); });
   const lv = line.filter(x => x != null).map(x => x / 100), low = lv.length ? Math.min(...lv) : null, last = lv.length ? lv[lv.length - 1] : null, MAN = x => N(Math.round(x)) + '만 원';
-  want('100만 원 줄', nw.won, low == null ? '? 값을 못 읽었습니다' : low < 100 ? `${MD(core.base)}에 100만 원어치였다면 가장 낮을 때 ${MAN(low)} · 끝 ${MAN(last)}` : `${MD(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${MAN(last)}`);
+  want('100만 원 줄', nw.won, low == null ? '? 값을 못 읽었습니다' : low < 100 ? `${MD(core.base)}에 100만 원어치였다면 가장 낮을 때 ${MAN(low)} · 마지막 날 ${MAN(last)}` : `${MD(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 마지막 날 ${MAN(last)}`); // 옛 「끝」 → 「마지막 날」(2026-10-29 15:08)
   want('출처 줄', nw.src, `네이버 증권 · ${MD(c.priceDate || core.asOf)} 종가 · ${NEW_NAME} 셈`);
   const multi = (I?.n ?? 1) > 1, pickLine = pk && core.kPick != null;
   want('범례', JSON.stringify(nw.key), JSON.stringify([`${c.name} · ${MD(core.base)}보다 오르면 빨강, 내리면 파랑`, ...(multi ? [I.name + ' 평균'] : []), ...(pickLine ? [`고른 날 ${MD(core.pickAsOf)}`] : [])]));

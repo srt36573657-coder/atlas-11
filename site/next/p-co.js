@@ -198,7 +198,7 @@ export async function render(arg) {
   root.append(h('p', {class: 'pco-meta', text: `${c.market === 'KOSPI' ? '코스피' : '코스닥'} · ${code} · 1주 ${won(c.price)}`}));
   if (E.pk) root.append(h('p', {class: 'pco-chip pk'}, h('span', {class: 'pco-badge', text: '고른 곳'}), ` ${pickName(C)}에 든 회사예요. 두 사람이 직접 고른 것은 아니에요.`)); // 밖인 회사는 이 줄 없이 아래 「왜 … 밖인가요?」 칸이 맡음(2026-10-29 15:08 「쉽게」)
   // 그림 → 범례 → 세 숫자 → 100만 원 줄 → 출처(옛 3단 차례 그대로)
-  root.append(chartBox({C, v: line, avg: multi ? I.v : null, kPick, label: `${c.name} ${SPAN(C)} 선 — 기준일 ${md(C.base)} = 100에서 ${pct(c.chg)} · 가장 깊이 빠짐 ${pct(c.mdd)}`}));
+  root.append(chartBox({C, v: line, avg: multi ? I.v : null, kPick, label: `${c.name} ${SPAN(C)} 선 — ${md(C.base)}보다 ${pct(c.chg)} · ${SPAN(C)} 중 가장 크게 내린 폭 ${pct(c.mdd)}`}));
   root.append(h('p', {class: 'pco-key'}, h('span', {}, h('i', {class: 'k-co', 'aria-hidden': 'true'}), `${c.name} · ${md(C.base)}보다 오르면 빨강, 내리면 파랑`), multi ? h('span', {}, h('i', {class: 'k-avg', 'aria-hidden': 'true'}), I.name + ' 평균') : null,
     kPick != null ? h('span', {}, h('i', {class: 'k-pick', 'aria-hidden': 'true'}), `고른 날 ${md(C.pickAsOf)}`) : null));
   root.append(h('div', {class: 'pco-trio'},
@@ -208,7 +208,7 @@ export async function render(arg) {
   // 100만 원 줄 — 4단과 같은 뜻(산 날 = 기준일)
   const lv = line.filter(x => x != null), low = lv.length ? Math.min(...lv) : null, last = lv.length ? lv.at(-1) : null, man = x => h('span', {class: 'pco-nw', text: Math.round(x).toLocaleString('ko-KR') + '만 원'}); // 「81만 / 원」으로 갈리지 않게
   root.append(low == null ? h('p', {class: 'pco-won pco-q', text: '? 값을 못 읽었습니다'})
-    : h('p', {class: 'pco-won'}, `${md(C.base)}에 100만 원어치였다면 `, ...(low < 100 ? ['가장 낮을 때 ', man(low), ' · 끝 ', man(last)] : ['그보다 낮아진 적 없이 끝 ', man(last)])));
+    : h('p', {class: 'pco-won'}, `${md(C.base)}에 100만 원어치였다면 `, ...(low < 100 ? ['가장 낮을 때 ', man(low), ' · 마지막 날 ', man(last)] : ['그보다 낮아진 적 없이 마지막 날 ', man(last)]))); // 2026-10-29 15:08 「쉽게」 — 옛 「끝」은 무엇의 끝인지 흐림 → 「마지막 날」(그림 오른쪽 끝 날)
   root.append(h('p', {class: 'pco-src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · 둘이 셈`}));
   root.append(E.pk ? whyBox(C, c) : outBox(C, code));
   root.append(nextChap(code), ...foot(C).filter(Boolean));
