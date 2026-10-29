@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-29T07:04:34.163Z",
+ "at": "2026-10-29T08:27:23.472Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -10,14 +10,14 @@
  "fails": [],
  "m": {
   "first": {
-   "bodyLum": 0.7213505032434002,
+   "bodyLum": 0.0034053699055348395,
    "chars": 118,
    "blocks": {
-    "ess": 4617,
+    "ess": 4628,
     "find": 776,
-    "today": 2700,
-    "gdr": 3966,
-    "all": 4376
+    "today": 2736,
+    "gdr": 4002,
+    "all": 4412
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -142,12 +142,12 @@
     [
      1,
      "- b.num",
-     "18% 덜"
+     "19% 덜"
     ],
     [
      1,
      "- b.num",
-     "14% 덜"
+     "15% 덜"
     ],
     [
      1,
@@ -166,8 +166,8 @@
     "ask": true
    },
    "theme": null,
-   "bodyHex": "#F7D4DE",
-   "inkHex": "#2A1420",
+   "bodyHex": "#0C081D",
+   "inkHex": "#F2EFF9",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -181,14 +181,14 @@
    "errs": []
   },
   "back": {
-   "bodyLum": 0.7213505032434002,
+   "bodyLum": 0.0034053699055348395,
    "chars": 118,
    "blocks": {
-    "ess": 4494,
+    "ess": 4681,
     "find": 776,
-    "today": 2700,
-    "gdr": 3966,
-    "all": 4376
+    "today": 2774,
+    "gdr": 4098,
+    "all": 4534
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -313,12 +313,12 @@
     [
      1,
      "- b.num",
-     "18% 덜"
+     "19% 덜"
     ],
     [
      1,
      "- b.num",
-     "14% 덜"
+     "15% 덜"
     ],
     [
      1,
@@ -337,8 +337,8 @@
     "ask": true
    },
    "theme": null,
-   "bodyHex": "#F7D4DE",
-   "inkHex": "#2A1420",
+   "bodyHex": "#0C081D",
+   "inkHex": "#F2EFF9",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -661,8 +661,8 @@
    }
   },
   "speed": {
-   "lcp": 2128,
-   "inp": 48,
+   "lcp": 2284,
+   "inp": 40,
    "cls": 0.006
   }
  },
