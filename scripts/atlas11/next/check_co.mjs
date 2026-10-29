@@ -9,6 +9,9 @@
 //   ⑤ 머리(2026-10-18 [7] 1 ~ 4 · [10] 1 · 2 · 일꾼 S3p) — 길 표시(큰 업종 › 업종 · 고리 둘) · 이름 · 오늘 값 · 하루 %(자료에서 따로 셈) · 날 줄 · 든 목록 꼬리표(고도리 칸 n번 · 급등 칸 ·
 //      급등 n%대 칸 · 고른 곳 — gdr.json · surge.json · mkt p 로 따로 셈) · 탭 넷(4 ~ 7단) · 큰 선 ▶ 없음 · 옛 일곱 칸(.chaps) 없음 · 「챕터」 0 · 옛 낱말(갈래 · 몸값 · 20거래일 …) 0(글 · aria-label · title · alt · 창 제목)
 //      옛 3단 글은 낱말표(OLDMAP)로 바꿔 견줌: 20거래일 → 한 달 · 멍거 · 린치 갈래 → 조건 · 몸값 → 회사 크기
+//      + 쉬운 말 줄표(REWORD · 사장님 2026-10-29 15:08 「응」 「회사 쪽 글도 이렇게 쉽게」 · docs/design/babo-2026-10-29/order-1508.txt): 「7단 중 3단 · 회사 · 기록」 · 밖 회사 「… 7단까지 볼 수 있습니다」 뺌 ·
+//        「9월 9일 = 100」 → 「9월 9일」 · 범례 「위 빨강 · 아래 파랑」 → 「오르면 빨강, 내리면 파랑」 · 「가장 깊이 빠짐(한 달)」 → 「한 달 중 가장 크게 내린 폭」 · 「4단 지나온 길」 → 「지나온 길」 ·
+//        자료 줄은 출처만 · 그림 눈금은 첫날보다 몇 %(옛 110 → +10%) · 머리 한 줄 「테마 시계로 보면 지금 ○ 자리예요 · …%p」 → 「한 달 동안 시장보다 n% 더/덜 올랐어요」
 //   ③ 세 폭 — 가로 넘침 0 · .pco 안 글 17px 넘게 · 누르는 자리 44px 넘게 · 쓰지 않을 말 0 · 캔버스 0 · 화면 오류 0
 //      + 한 화면 모든 칸([10] 5 ~ 10 · measure_type.mjs 와 같은 자): 글씨 가짓수 ≤ 6(17 · 19 · 21 · 24 · 30 · 48) · 17px 아래 0 · 글 시작 왼쪽 줄 ≤ 3 · 간격 0 · 8 · 16 · 24만 · 음수 0 · 같은 꼴 카드 높이 · 금빛 경고 두 줄 · 첫 화면(640)에 오늘 값 · 탭 넷 한 줄
 //      + 아주 큰 글씨(320 · html.f2): 가로 넘침 0 · 탭 넷 화면 안
@@ -35,8 +38,6 @@ const R1 = x => Math.sign(x) * Math.floor(Math.abs(x) * 10 + 0.5 + 1e-7) / 10;
 function P(x) { if (x == null || !Number.isFinite(x)) return '?'; const r = Math.floor(Math.abs(x) * 10 + 0.5 + 1e-7) / 10; if (r === 0) return '0.0%'; return (x > 0 ? '+' : '−') + (r >= 100 ? Math.floor(r + 0.5 + 1e-7).toLocaleString('ko-KR') : r.toFixed(1)) + '%'; }
 const MD = d => (/^\d{4}-\d{2}-\d{2}/.test(String(d)) ? (+d.slice(5, 7)) + '월 ' + (+d.slice(8, 10)) + '일' : '?');
 const N = n => Number(n).toLocaleString('ko-KR');
-const PP = v => { if (!Number.isFinite(v)) return '?'; const r = Math.floor(Math.abs(v) * 10 + 0.5 + 1e-7) / 10; return (r === 0 ? '' : v > 0 ? '+' : '−') + r.toFixed(1); }; // %p 첫째 자리(테마 시계 글 꼴 — 부호는 반올림한 값으로)
-const ZN = {B: '꽃', W: '시듦', S: '싹', Q: '잠잠'}; // 결정표 2 자리 이름
 const WON = v => (v == null ? '?' : N(Math.round(v)) + '원');
 const EOK = v => { if (v == null) return '?'; const s = v < 0 ? '−' : '', a = Math.abs(v); return a >= 10000 ? s + R1(a / 10000).toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '조 원' : s + N(Math.round(a)) + '억 원'; };
 const JOSA = w => { const k = String(w).trim().slice(-1).charCodeAt(0) - 0xAC00; return k < 0 || k > 11171 ? w + '은(는)' : w + (k % 28 ? '은' : '는'); };
@@ -61,10 +62,26 @@ const NAME = new Map(names.rows.map(r => [r.c, r]));
 const PN = `${core.rules?.name ?? '고른'} ${core.funnel?.picked ?? '?'}곳`;
 const SPAN = core.days === 20 ? '한 달' : `${core.days}거래일`; // 사장님 2026-10-18 [10] 1 「20거래일 → 한 달」(자료가 20일이 아니면 옛 말 그대로 — p-co.js SPAN 과 같은 뜻을 따로 셈)
 const HOW = `멍거 조건은 3년 성적표만, 린치 조건은 3년 성적표와 ${core.rules?.lyDay ? MD(core.rules.lyDay) : '모음 날'} 값으로 골랐습니다`;
-const FOOT = `자료: ${core.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${MD(core.asOf)})의 ${SPAN} 전(${MD(core.base)}) · ${PN} — ${HOW}(그 뒤 주가는 안 씀).`;
+const FOOT = `자료: ${core.sources?.price ?? '?'}`; // 2026-10-29 15:08 「쉽게」 — 출처만(기준일은 그림 아래 날짜 · 고른 때는 「왜 … 들었나요? · 어디서 멈췄는지」 칸)
 // 옛 3단 글 → 새 낱말(같은 표로 바꿔 견줌 · 사장님 [10] 1: 20거래일 → 한 달 · 멍거 갈래 · 린치 갈래(큰 업종이 아님) → 멍거 조건 · 린치 조건 · 몸값 → 회사 크기 · 토씨는 받침에 맞춤 갈래는 → 조건은)
 const OLDMAP = [[`${core.days}거래일`, SPAN], ['멍거 갈래는', '멍거 조건은'], ['린치 갈래는', '린치 조건은'], ['깔때기 두 갈래', '깔때기 두 가지'], ['몸값', '회사 크기']];
 const mapOld = t => OLDMAP.reduce((x, [a, b]) => x.split(a).join(b), t);
+// 쉬운 말 줄표(2026-10-29 15:08 「응」 · order-1508.txt) — 옛 줄을 새 쪽의 쉬운 꼴로 바꿔 견줌('' = 뺀 줄) · 숫자 낱말도 바꾼 뒤 셈(뺀 「7단 · 3단 · 4단 · = 100 · 기준일」 숫자는 안 셈)
+const REWORD = [
+  [/^7단 중 3단 · 회사 · 기록$/, ''],
+  [/^.+ 밖 이 회사도 7단까지 볼 수 있습니다$/, ''],
+  [/^고른 곳 (.+)에 든 회사입니다 — 두 사람이 고른 목록은 아닙니다$/, '고른 곳 $1에 든 회사예요. 두 사람이 직접 고른 것은 아니에요.'],
+  [/^(\d{1,2}월 \d{1,2}일) = 100$/, '$1'],
+  [/^(.+) — (\d{1,2}월 \d{1,2}일)보다 위 빨강 · 아래 파랑$/, '$1 · $2보다 오르면 빨강, 내리면 파랑'],
+  [/^가장 깊이 빠짐\((.+)\)$/, '$1 중 가장 크게 내린 폭'],
+  [/^4단 지나온 길$/, '지나온 길'],
+  [/^(자료: .+?) · 기준일 = .*$/, '$1'],
+];
+const reword = t => t.split('\n').map(raw => { const l = norm(raw); for (const [re, to] of REWORD) if (re.test(l)) return l.replace(re, to); return raw; }).join('\n');
+/** 그림 눈금 글 — 옛 지수 눈금(첫날 = 100)을 첫날보다 몇 %로(+10% · 0% · −2.5% — 소수는 한 자리 · 앱 코드를 쓰지 않음) */
+const TP = s => { const t = Number(String(s).replace(/,/g, '')); if (!Number.isFinite(t)) return '?'; const d = Math.round((t - 100) * 10) / 10; if (d === 0) return '0%'; const a = Math.abs(d); return (d > 0 ? '+' : '−') + (a % 1 === 0 ? String(a) : a.toFixed(1)) + '%'; };
+/** 시장과 견준 한 줄(머리) — theme-co.json 의 한 달 · 닷새 값(시장보다 몇 % · 첫 화면 ① 돈 흐름과 같은 말) */
+const MV = (v, span) => { const a = Math.abs(v); if (a < 0.05) return `${span} 시장과 거의 같았어요`; return `${span} 시장보다 ${a < 1 ? a.toFixed(1) : String(Math.floor(a + 0.5))}% ${v > 0 ? '더' : '덜'} 올랐어요`; };
 
 /* 표본 — 모자란 자료 먼저 · 고른 곳 모두 · 나머지는 고르게 */
 const isPk = c => !!COMP[c];
@@ -210,10 +227,10 @@ function headCheck(nw, code, o, c, where) {
   H.tabs.forEach((x, k) => { bump('머리 셈'); const st = STEPS[k]?.[0]; if (!st || (x[1] !== '#/w/' + code + '/' + st && x[1] !== '/atlas/#/c/' + code + '/' + st)) fail('탭 고리', where + ' ' + x[0] + ' ' + x[1]); });
   // 테마 시계 자리 한 줄(결정표 9 · 2026-10-20) — theme-co.json 값 그대로(자리 이름 · %p 첫째 자리 · 시계 읽는 법 고리 · 탭 아래) · 셀 수 없으면 「?」 줄 · 파일이 없으면 줄 없음
   const zv = TCO?.co?.[code];
-  if (!TCO) w('테마 시계 자리 줄(자료 없음 → 줄 없음)', H.wz, null);
-  else if (Array.isArray(zv)) w('테마 시계 자리 줄', H.wz && [H.wz.tag, H.wz.t, H.wz.n, H.wz.href, H.wz.z, H.wz.after], ['a', `테마 시계로 보면 지금 ${ZN[zv[2]] ?? '?'} 자리예요`, [`한 달 시장보다 ${PP(zv[0])}%p`, `지난 닷새 시장보다 ${PP(zv[1])}%p`], '#/t/how', zv[2], true]);
-  else w('테마 시계 자리 줄(못 셈)', H.wz && [H.wz.tag, H.wz.t, H.wz.q, H.wz.after], ['p', '? 테마 시계 자리를 못 셌어요', '한 달 사이 값이 비었거나 크게 튄 날이 있어요.', true]);
-  if (H.wz && H.wz.h < 47.5) fail('테마 시계 자리 줄 높이 48px 밑', where + ' ' + H.wz.h);
+  if (!TCO) w('시장과 견준 줄(자료 없음 → 줄 없음)', H.wz, null);
+  else if (Array.isArray(zv)) w('시장과 견준 줄', H.wz && [H.wz.tag, H.wz.t, H.wz.n, H.wz.href, H.wz.z, H.wz.after], ['a', MV(zv[0], '한 달 동안'), [MV(zv[1], '지난 닷새는')], '#/t/how', zv[2], true]); // 2026-10-29 15:08 「쉽게」(옛 「테마 시계로 보면 지금 ○ 자리예요 · …%p」)
+  else w('시장과 견준 줄(못 셈)', H.wz && [H.wz.tag, H.wz.t, H.wz.q, H.wz.after], ['p', '? 시장과 견준 값을 못 셌어요', '한 달 사이 값이 비었거나 크게 튄 날이 있어요.', true]);
+  if (H.wz && H.wz.h < 47.5) fail('시장과 견준 줄 높이 48px 밑', where + ' ' + H.wz.h);
   if (H.play) fail('큰 선 ▶ 표시 남음', where + ' ' + H.play);
   if (H.chapsOld) fail('옛 일곱 칸(.chaps) 남음', where + ' ' + H.chapsOld);
   w('머리 차례(탭 넷이 꼬리표보다 먼저)', H.order, ['div.player', 'nav.wpath', 'h1.wt', 'p.wnow', 'p.ws', 'nav.wtabs', ...(dateNote ? ['p.wsd'] : []), ...(wantTags(code, o).length ? ['div.wtags'] : [])]);
@@ -330,36 +347,37 @@ for (const code of SH.part('c', list)) {
   const where = code + ' ' + o.n;
   // ① 옛 글 줄 → 새 글
   const NT = norm(nw.text);
-  const OT = mapOld(old.text); // 옛 글을 새 낱말로(OLDMAP) 바꾼 뒤 견줌
+  const OT = reword(mapOld(old.text)); // 옛 글을 새 낱말로(OLDMAP) · 쉬운 말 줄로(REWORD) 바꾼 뒤 견줌
   // 장 중 값 경고(옛 쪽은 펼친 한 줄 · 새 쪽은 「? 아직 바뀔 수 있는 값이에요 ›」 접은 칸)는 위 「장 중 값 「?」 펼친 글」 · 「접힘 한 줄」이 따로 맞댐 — 여기서 또 세면 장 중 자료 날마다 회사 수만큼 걸림(2026-10-19 낮 main 검사 400건)
   const PROV = /값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다/;
   for (const raw of OT.split('\n')) { const l = norm(raw); if (!l || /^[›‹·]$/.test(l)) continue; if (PROV.test(l) && nw.warn0) continue; bump('줄'); if (!NT.includes(l)) fail('옛 줄 빠짐', where + ' 「' + l.slice(0, 90) + '」'); }
   const oc = tokCount(OT), nc = tokCount(nw.text);
   for (const [k, n] of oc) { bump('숫자 낱말', n); if ((nc.get(k) || 0) < n) fail('숫자 낱말 모자람', where + ' 「' + k + '」 옛 ' + n + ' · 새 ' + (nc.get(k) || 0)); }
   for (const x of old.crumb) { const t = norm(x).replace(/\(1곳\)$/, ''); if (t && t !== '›' && t !== '한눈에' && !NT.includes(t)) fail('위치 줄(갈래 · 업종) 빠짐', where + ' ' + t); }
-  if (JSON.stringify(old.ticks) !== JSON.stringify(nw.ticks)) fail('그림 눈금', where + ' 옛 ' + old.ticks.join(',') + ' · 새 ' + nw.ticks.join(','));
+  if (JSON.stringify(old.ticks.map(TP)) !== JSON.stringify(nw.ticks)) fail('그림 눈금', where + ' 옛 ' + old.ticks.join(',') + ' → ' + old.ticks.map(TP).join(',') + ' · 새 ' + nw.ticks.join(','));
   if (old.disc && !(nw.safe?.includes('투자 상담사가 아니에요') && nw.safe.includes('사고팔기') && nw.safe.includes('시장 앞날'))) fail('안전 문장', where + ' ' + nw.safe);
   // ② 자료로 따로 셈
   const want = (k, got, exp) => { bump('따로 셈'); if (norm(got) !== norm(exp)) fail(k, where + ' 「' + norm(got).slice(0, 120) + '」 ≠ 「' + norm(exp).slice(0, 120) + '」'); };
-  want('7단 중 3단', nw.kind, '7단 중 3단 · 회사 · 기록');
+  if (nw.kind !== null) fail('「7단 중 3단」 줄 남음(뺌)', where + ' ' + nw.kind);
   want('시장 · 번호 · 1주 값', nw.meta, `${c.market === 'KOSPI' ? '코스피' : '코스닥'} · ${code} · 1주 ${WON(c.price)}`);
-  want('고른 곳 줄', nw.chip, pk ? `고른 곳 ${PN}에 든 회사입니다 — 두 사람이 고른 목록은 아닙니다` : `${PN} 밖 이 회사도 7단까지 볼 수 있습니다`);
+  if (pk) want('고른 곳 줄', nw.chip, `고른 곳 ${PN}에 든 회사예요. 두 사람이 직접 고른 것은 아니에요.`);
+  else if (nw.chip !== null) fail('밖 회사 이름표 줄 남음(뺌)', where + ' ' + nw.chip);
   if (nw.chipPk !== pk) fail('고른 곳 금빛 이름표', where);
-  const trioW = [[SPAN, P(c.chg)], ['1년', P(c.r1y)], [`가장 깊이 빠짐(${SPAN})`, P(c.mdd)]];
+  const trioW = [[SPAN, P(c.chg)], ['1년', P(c.r1y)], [`${SPAN} 중 가장 크게 내린 폭`, P(c.mdd)]];
   want('세 숫자', JSON.stringify(nw.trio.map(x => [x[0], x[1]])), JSON.stringify(trioW));
   nw.trio.forEach((x, k) => { const v = [c.chg, c.r1y, c.mdd][k], cl = v == null || !Number.isFinite(v) ? 'q' : R1(v) > 0 ? 'up' : R1(v) < 0 ? 'dn' : 'fl'; if (!x[2].split(' ').includes(cl)) fail('세 숫자 색', where + ' ' + x[0] + ' ' + x[2] + ' ≠ ' + cl); });
   const lv = line.filter(x => x != null).map(x => x / 100), low = lv.length ? Math.min(...lv) : null, last = lv.length ? lv[lv.length - 1] : null, MAN = x => N(Math.round(x)) + '만 원';
   want('100만 원 줄', nw.won, low == null ? '? 값을 못 읽었습니다' : low < 100 ? `${MD(core.base)}에 100만 원어치였다면 가장 낮을 때 ${MAN(low)} · 끝 ${MAN(last)}` : `${MD(core.base)}에 100만 원어치였다면 그보다 낮아진 적 없이 끝 ${MAN(last)}`);
   want('출처 줄', nw.src, `네이버 증권 · ${MD(c.priceDate || core.asOf)} 종가 · ${NEW_NAME} 셈`);
   const multi = (I?.n ?? 1) > 1, pickLine = pk && core.kPick != null;
-  want('범례', JSON.stringify(nw.key), JSON.stringify([`${c.name} — ${MD(core.base)}보다 위 빨강 · 아래 파랑`, ...(multi ? [I.name + ' 평균'] : []), ...(pickLine ? [`고른 날 ${MD(core.pickAsOf)}`] : [])]));
+  want('범례', JSON.stringify(nw.key), JSON.stringify([`${c.name} · ${MD(core.base)}보다 오르면 빨강, 내리면 파랑`, ...(multi ? [I.name + ' 평균'] : []), ...(pickLine ? [`고른 날 ${MD(core.pickAsOf)}`] : [])]));
   if (low == null) want('값 없는 그림', nw.lcq, `? 이 회사 ${SPAN} 값을 못 읽었습니다`);
   else {
     bump('그림');
     if (nw.gold !== (pickLine ? 1 : 0) || (pickLine ? nw.yl !== '고른 날' : nw.yl !== null)) fail('고른 날 금빛 세로선', where + ' 선 ' + nw.gold + ' · 글 ' + nw.yl);
     if (nw.avg !== (multi ? 1 : 0)) fail('업종 평균 점선', where + ' ' + nw.avg);
     if (nw.coPath !== 2) fail('회사 선', where + ' ' + nw.coPath);
-    want('그림 날짜', JSON.stringify(nw.ax), JSON.stringify([MD(core.dates[0]) + ' = 100', MD(core.dates[core.dates.length - 1])]));
+    want('그림 날짜', JSON.stringify(nw.ax), JSON.stringify([MD(core.dates[0]), MD(core.dates[core.dates.length - 1])])); // 첫날 = 0% 눈금(옛 「= 100」 뺌)
   }
   if (pk) {
     const p = c.pick, R = core.rules;
@@ -390,11 +408,11 @@ for (const code of SH.part('c', list)) {
         return g.steps.map((s, ix) => [stop ? (ix < at ? 'past' : ix === at ? 'stop' : 'no') : '', N(s.n) + '곳', s.t]); });
       want('깔때기', JSON.stringify(nw.funnel), JSON.stringify(fx));
       want('다시 셈 줄', nw.small?.[0], `${HOW} — 새 1년 성적표가 나오면 다시 셉니다.`);
-      want('깔때기 접은 칸 이름', JSON.stringify(nw.sums), JSON.stringify(['깔때기 두 가지 — 어디서 멈췄나 보기']));
+      want('접은 칸 이름', JSON.stringify(nw.sums), JSON.stringify(['어디서 멈췄는지 보기'])); // 멈춘 자리 · 까닭 · 깔때기 두 가지 · 고른 때를 한 칸에(2026-10-29 15:08 「쉽게」)
     }
   }
   const nextOk = nw.next[0] === '#/w/' + code + '/past' || nw.next[0] === '/atlas/#/c/' + code + '/past';
-  if (!nextOk || !norm(nw.next[1]).includes('4단 지나온 길') || !norm(nw.next[1]).includes('1년 · 3년 주가 · 해마다 번 돈 · 회사 크기') || !norm(nw.next[1]).startsWith('다음')) fail('다음 단', where + ' ' + JSON.stringify(nw.next));
+  if (!nextOk || !norm(nw.next[1]).includes('지나온 길') || /\d단/.test(norm(nw.next[1])) || !norm(nw.next[1]).includes('1년 · 3년 주가 · 해마다 번 돈 · 회사 크기') || !norm(nw.next[1]).startsWith('다음')) fail('다음 단', where + ' ' + JSON.stringify(nw.next));
   want('자료 줄', nw.foot[0], FOOT);
   if (core.provisional) warnCheck(nw, where); // 장 중 값: 「?」 한 줄 + 누르면 펼침
   else if (nw.foot.length !== 1 || nw.warn) fail('자료 줄 수', where + ' ' + nw.foot.length);

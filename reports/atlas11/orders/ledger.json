@@ -690,6 +690,16 @@
    "state": "성공",
    "proof": "docs/design/babo-2026-10-29/order-1245.txt · docs/design/babo-2026-10-29/brief.md · docs/design/babo-2026-10-29/babo-card.html · site/next/home-new.js · site/next/boot-home.js · reports/atlas11/full-runs/babo-home-2026-10-29.jsonl · reports/atlas11/trust/misses-2026-10-29-b.json · reports/atlas11/trust/misses-2026-10-29-c.json · reports/atlas11/probe/next-preview/summary.json(08349b4e3 ok) · reports/atlas11/probe/live-shot/summary.json(14:44 진짜 사이트 첫 화면 글) · reports/atlas11/probe/live-next/summary.json(138쪽 실패 0) · reports/atlas11/trust/misses-2026-10-29-d.json",
    "short": "바보도 한눈에 아는 첫 화면을 올리고 진짜 사이트 138쪽 검사 실패 0을 확인했어요."
+  },
+  {
+   "id": "1508",
+   "at": "2026-10-29T15:08+09:00",
+   "words": "응 그리고 가 마치고만내게 보고해 중긴에 보고 하지마 (15:02 무렵 여쭘 「다음은 회사 쪽 글도 이렇게 쉽게 바꿀까요?」에 대한 답)",
+   "then": "15:08 받음 · 중간 보고 없이 일함 · 회사 쪽 글을 쉽게(머리 한 줄 · 뺀 줄 둘 · 그림 눈금 % · 범례 · 세 숫자 이름 · 밖인 까닭 접은 칸 하나 · 다음 단 · 자료 줄) · 검사 check_co 쉬운 꼴로 고침 · 영어 틀 13",
+   "did": "회사 쪽 글 쉽게 — 「한 달 동안 시장보다 12% 덜 올랐어요」 · 「7단 중 3단」 뺌 · 눈금 「0% · +10%」 · 「9월 9일보다 오르면 빨강, 내리면 파랑」 · 「한 달 중 가장 크게 내린 폭」 · 밖인 까닭은 「어디서 멈췄는지 보기」 한 칸 · 자료 줄은 출처만 · 진짜 사이트에는 아직 안 올림",
+   "state": "미완성",
+   "proof": "docs/design/babo-2026-10-29/order-1508.txt · site/next/app.js · site/next/p-co.js · scripts/atlas11/next/check_co.mjs",
+   "short": "회사 쪽 글을 쉽게 바꾸는 중이에요. 아직 안 올렸어요."
   }
  ],
  "open": [

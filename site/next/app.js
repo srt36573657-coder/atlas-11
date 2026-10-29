@@ -7,7 +7,7 @@ import {ON as EN, startI18n, switchLang, nameEn, t as L} from '/next/i18n.js'; /
 import {NAME, VIDEO, josa} from '/next/brand.js'; // 이름 한 곳(규칙 76) — 새로 쓰는 글은 이름을 박지 않고 여기서 읽음
 import {glossView} from '/next/glossary.js'; // 낱말표 한 곳(사장님 2026-10-18 [10] 1 · 2 — 갈래 → 큰 업종 …) · 그리는 곳 한 줄(route)
 import {shareButtons} from '/next/share-btn.js'; // 카톡 단추 한 곳(사장님 2026-10-18 16:39 [6] 2 · 일꾼 KB1) — 종목 줄 · 카드가 부름(kkWrap · 일꾼 KB2)
-import {ZONES as TH_ZONES, pp as thPp} from '/next/theme-rule.js'; // 테마 시계 자리 이름 · %p 글 꼴(회사 화면 자리 한 줄 wZone · 첫 화면 칸이 이미 받는 파일)
+import {ZONES as TH_ZONES} from '/next/theme-rule.js'; // 테마 시계 자리 이름(업종 줄 · 회사 화면 한 줄 wZone 의 자리 확인 · 첫 화면 칸이 이미 받는 파일)
 import {homeBlock as themeHome, APP_ICON} from '/next/theme-home.js'; // 테마 시계 첫 화면 칸(사장님 2026-10-19 16:54 · 원칙 85) — 첫 그림에 같이 그림(모듈 · 모양 · 자료는 index.html 이 미리 받음)
 import {heroBox, mapBox, recordBox, mktBox, whyBox, footBox, partDo, backBox} from '/next/home-new.js'; // 새 첫 화면 칸들(사장님 2026-10-28 11:12 「어」 — 처음 보는 사람 눈높이 · docs/design/why-mock-2026-10-28/order-1112.txt)
 import {stoneClock, clockDecoded, miniClock} from '/next/stone-clock.js'; // 돌 시계(사장님 2026-10-21 21:21 「시계있는거 현재신ㅇ로 해놓아」) — 첫 화면 돌 그림 바늘판이 지금 시각
@@ -862,17 +862,17 @@ function wTags(a, X, open = false) { // open = 열한 질문을 끝낸 기기(p-
 function wTabs(a) { return h('nav', {class: 'wtabs', 'aria-label': '7단 중 4 ~ 7단'}, ...chapList(a).slice(3).map(([k, t, href]) => h('a', {class: 'wtab', href, 'data-step': k, text: t}))); }
 /** 모양 파일이 붙을 때까지(늦으면 3초 뒤 그냥 그림) — 회사 머리 모양이 p-co.css 에 있음 */
 function sheetReady(href) { const l = [...document.querySelectorAll('link[rel="stylesheet"]')].find(x => x.getAttribute('href') === href); return !l || l.sheet ? Promise.resolve() : new Promise(r => { l.addEventListener('load', r, {once: true}); l.addEventListener('error', r, {once: true}); setTimeout(r, 3000); }); }
-/** 테마 시계 자리 한 줄 — 회사 한 곳을 업종 시계와 같은 잣대로(결정표 9 · 사장님 2026-10-20 21:56 「맞아 정말 맞아」 — 박승혁 님 「삼성전자를 치면 이게 지금 꽃을 피운 단계에 있는 건지 시듦의 단계인건지도」)
- *  자료(theme-co.json)를 못 받으면 줄 없음 · 셀 수 없는 회사(값 빔 · 크게 튄 날)는 「?」 한 줄 · 누르면 시계 읽는 법(#/t/how) · 지난 한 달 · 닷새 기록만(앞날 말 없음) */
+/** 회사 한 곳의 돈 흐름 한 줄(결정표 9 · 2026-10-20 박승혁 님 생각 · 사장님 2026-10-29 15:08 「응」(「회사 쪽 글도 이렇게 쉽게 바꿀까요?」) — docs/design/babo-2026-10-29/order-1508.txt)
+ *  옛 「테마 시계로 보면 지금 ○ 자리예요 · 한 달 시장보다 −12.1%p」 → 첫 화면 ① 돈 흐름과 같은 말 「한 달 동안 시장보다 12% 덜 올랐어요」 · 「지난 닷새는 …」
+ *  자료(theme-co.json [한 달 %p, 닷새 %p, 자리])를 못 받으면 줄 없음 · 셀 수 없는 회사(값 빔 · 크게 튄 날)는 「?」 한 줄 · 누르면 시계 읽는 법(#/t/how) · 지난 기록만(앞날 말 없음) */
+const vsMkt = (v, span) => { const a = Math.abs(v); if (a < 0.05) return `${span} 시장과 거의 같았어요`; return `${span} 시장보다 ${a < 1 ? a.toFixed(1) : String(Math.round(a))}% ${v > 0 ? '더' : '덜'} 올랐어요`; }; // 숫자 꼴 = 첫 화면 ① 돈 흐름(home-new.js amt)
 function wZone(a, TC) {
   if (!TC || typeof TC.co !== 'object' || !TC.co) return null;
   const v = TC.co[a];
-  if (!Array.isArray(v) || !Number.isFinite(v[0]) || !Number.isFinite(v[1]) || !TH_ZONES[v[2]]) return h('p', {class: 'wz wz-q cw'}, h('span', {class: 'wz-t', text: '? 테마 시계 자리를 못 셌어요'}), h('small', {class: 'wz-n', text: '한 달 사이 값이 비었거나 크게 튄 날이 있어요.'}));
+  if (!Array.isArray(v) || !Number.isFinite(v[0]) || !Number.isFinite(v[1]) || !TH_ZONES[v[2]]) return h('p', {class: 'wz wz-q cw'}, h('span', {class: 'wz-t', text: '? 시장과 견준 값을 못 셌어요'}), h('small', {class: 'wz-n', text: '한 달 사이 값이 비었거나 크게 튄 날이 있어요.'}));
   const [x, y, z] = v;
   return h('a', {class: 'wz cw', href: '#/t/how', 'data-z': z},
-    h('span', {class: 'wz-b'},
-      h('span', {class: 'wz-t'}, h('span', {text: '테마 시계로 보면 지금'}), ' ', h('b', {class: 'wz-z ' + z, text: TH_ZONES[z]}), ' ', h('span', {text: '자리예요'})),
-      h('small', {class: 'wz-n'}, h('span', {text: '한 달 시장보다 ' + thPp(x) + '%p'}), h('span', {text: '지난 닷새 시장보다 ' + thPp(y) + '%p'}))), // 두 줄(한 줄에 붙이면 390 폭에서 숫자가 끊겨 넘어감)
+    h('span', {class: 'wz-b'}, h('span', {class: 'wz-t', text: vsMkt(x, '한 달 동안')}), h('small', {class: 'wz-n'}, h('span', {text: vsMkt(y, '지난 닷새는')}))), // 두 줄(한 달 · 닷새)
     h('i', {'aria-hidden': 'true', text: '›'}));
 }
 async function vWatch(a) {

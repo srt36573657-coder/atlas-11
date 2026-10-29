@@ -10145,6 +10145,19 @@
   "해 본 결과로 맞았는지 봐요.": "Check if you were right by the results.",
   "이렇게 고른 회사 {n}곳 중 {n}곳": "Picked this way: {n2} of {n1}",
   "아무 회사나 {n}곳 중 {n}곳": "Any company: {n2} of {n1}",
-  "마지막 날 값 없는 {n}곳은 앞 값": "{n} without a last-day price use the previous price"
+  "마지막 날 값 없는 {n}곳은 앞 값": "{n} without a last-day price use the previous price",
+  "한 달 동안 시장보다 {n}% 더 올랐어요": "Over a month, it beat the market by {n}%",
+  "한 달 동안 시장보다 {n}% 덜 올랐어요": "Over a month, it trailed the market by {n}%",
+  "지난 닷새는 시장보다 {n}% 더 올랐어요": "Over the last 5 days, it beat the market by {n}%",
+  "지난 닷새는 시장보다 {n}% 덜 올랐어요": "Over the last 5 days, it trailed the market by {n}%",
+  "한 달 동안 시장과 거의 같았어요": "Over a month, about the same as the market",
+  "지난 닷새는 시장과 거의 같았어요": "Over the last 5 days, about the same as the market",
+  "? 시장과 견준 값을 못 셌어요": "? Couldn't compare it with the market",
+  "시장과 견준 값을 못 셌어요": "Couldn't compare it with the market",
+  "{d}보다 오르면 빨강, 내리면 파랑": "red when above {d}, blue when below",
+  "{e} 조건 {n}곳에 든 회사예요. 두 사람이 직접 고른 것은 아니에요.": "{e} criteria: one of the {n} {pl:company|companies}. Not picked by the two of them.",
+  "한 달 중 가장 크게 내린 폭": "Largest drop within a month",
+  "{n}거래일 중 가장 크게 내린 폭": "Largest drop within {n} trading days",
+  "어디서 멈췄는지 보기": "See where it stopped"
  }
 }
