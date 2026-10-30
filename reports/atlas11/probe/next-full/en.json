@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-10-29T22:25:18.640Z",
+ "at": "2026-10-30T01:20:19.072Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -14,27 +14,27 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "theme": true,
-  "rivals": true,
-  "time": true,
-  "grow": true,
-  "range": true,
-  "past": true,
-  "surge": true,
-  "talk": true,
-  "cal": true,
-  "up": true,
-  "co": true,
   "gdr": true,
-  "today": true,
-  "info": true,
-  "x": true,
-  "why": true,
-  "hold": true,
-  "share": true,
-  "chx": true,
   "sage": true,
-  "cond": true
+  "why": true,
+  "range": true,
+  "grow": true,
+  "past": true,
+  "up": true,
+  "time": true,
+  "theme": true,
+  "info": true,
+  "share": true,
+  "today": true,
+  "rivals": true,
+  "hold": true,
+  "cond": true,
+  "chx": true,
+  "x": true,
+  "surge": true,
+  "cal": true,
+  "talk": true,
+  "co": true
  },
  "edge": true,
  "only": null,
@@ -43,14 +43,14 @@
  "full": false,
  "units": {
   "total": 13571,
-  "hash": "f78e68171afe6abe",
+  "hash": "e378fc5a14488482",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 1082,
- "secondsSum": 3060,
+ "seconds": 1203,
+ "secondsSum": 3377,
  "shards": [
   {
    "shard": "1/3",
@@ -59,10 +59,10 @@
    "routes": 4555,
    "screens": 4599,
    "mine": 4555,
-   "seconds": 997,
+   "seconds": 1203,
    "secs": {
-    "open": 0.5,
-    "routes": 974.4
+    "open": 0.8,
+    "routes": 1197
    }
   },
   {
@@ -72,11 +72,11 @@
    "routes": 4539,
    "screens": 4561,
    "mine": 4540,
-   "seconds": 1082,
+   "seconds": 1129,
    "secs": {
-    "open": 0.9,
-    "routes": 1075,
-    "newwin": 4.5
+    "open": 0.6,
+    "routes": 1121.1,
+    "newwin": 4.6
    }
   },
   {
@@ -86,11 +86,11 @@
    "routes": 4481,
    "screens": 4644,
    "mine": 4476,
-   "seconds": 981,
+   "seconds": 1045,
    "secs": {
-    "open": 0.5,
-    "routes": 964.7,
-    "act": 6.6,
+    "open": 0.7,
+    "routes": 1029.2,
+    "act": 6.4,
     "edge": 7.2,
     "grammar": 0
    }

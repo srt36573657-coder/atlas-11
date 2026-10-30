@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-4",
- "when": "2026-10-29T22:22:38.730Z",
+ "when": "2026-10-30T01:17:36.525Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
@@ -17,12 +17,12 @@
  },
  "laterDays": {
   "in": [
-   "2026-09-29",
-   "2026-10-29"
+   "2026-09-30",
+   "2026-10-30"
   ],
   "out": [
-   "2026-07-28",
-   "2026-08-26"
+   "2026-07-29",
+   "2026-08-27"
   ]
  },
  "accept": {
@@ -34,7 +34,7 @@
    "coFiles": 2557,
    "coMissing": 0,
    "rowsChecked": 9,
-   "fileRows": 831
+   "fileRows": 832
   },
   "taps": {
    "모두 초록": 23,
@@ -71,12 +71,12 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 929,
+  "flowMs": 930,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
  },
- "sec": 113,
+ "sec": 79,
  "counts": {
   "gdr-v2 — 공개 파일에 팔 선 없음([9] 1) · gdr.json 팔 선 맞대기 건너뜀": 1,
   "맞댄 시작 화면": 62,
