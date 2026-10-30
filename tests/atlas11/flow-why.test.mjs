@@ -5,7 +5,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {pickUp, moneyOf, goodOf, memberChanges, newsOf, itemsOf, whyOf, headOf, hasWord, jo, POLICY, ABROAD, NAMES, GROUPS, ORDER, daysKo, pct1, WHY_SCHEMA} from '../../scripts/atlas11/next/build/flow_why.mjs';
+import {pickUp, moneyOf, goodOf, memberChanges, newsOf, itemsOf, whyOf, headOf, hasWord, jo, POLICY, ABROAD, NAMES, GROUPS, ORDER, daysKo, pct1, WHY_SCHEMA,
+  partOf, light8, text8, usOf, light9, text9, US_MAP, FX, rnd, dayGap, lastLE, seriesOk} from '../../scripts/atlas11/next/build/flow_why.mjs';
+import {rowsOf, seriesOf} from '../../scripts/atlas11/next/build/fx_rate.mjs';
 import {FLOW_N, flowRows} from '../../site/next/home-new.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -17,7 +19,7 @@ test('열한 가지 · 무리 넷 · 결론 차례가 결정표대로', () => {
   assert.deepEqual(GROUPS.map(g => [g.ko, g.ks]), [['돈', [1, 2, 3]], ['회사', [4, 5, 6]], ['상황', [7, 8, 9]], ['정치', [10, 11]]]);
   assert.deepEqual(GROUPS.map(g => g.q.ko), ['누가 샀나', '무엇이 달라졌나', '세상 날씨', '나라 일']); // 그림 시안(04:4x) 무리 머리
   for (const g of GROUPS) assert.ok(g.en.length <= 8, `영어 무리 이름이 김 ${g.en}`); // 불빛 줄 한 줄(390 폭)
-  assert.deepEqual([...ORDER], [1, 2, 3, 4, 5, 6, 10, 11]); // 7 은 다른 까닭이 없을 때만(줄마다 같은 말 — 큰 검사 1/11 진짜 자료)
+  assert.deepEqual([...ORDER], [1, 2, 3, 4, 5, 6, 9, 8, 10, 11]); // 7 은 다른 까닭이 없을 때만(줄마다 같은 말 — 큰 검사 1/11 진짜 자료) · v2 9 · 8 은 6 과 10 사이
   assert.equal(WHY_SCHEMA, 'dori-flow-why-1');
 });
 
@@ -119,6 +121,101 @@ test('열한 가지 글 — 켜짐 · 꺼짐 · 모름 글과 영어 · 한 줄 
   assert.equal(headOf(0.02, [{i: -1}]), null);
   assert.equal(jo('HMM', '이'), 'HMM이'); assert.equal(jo('SK하이닉스', '이'), 'SK하이닉스가'); assert.equal(jo('LG', '이'), 'LG가'); assert.equal(jo('KT&G', '은'), 'KT&G는'); assert.equal(jo('S-Oil', '이'), 'S-Oil이'); assert.equal(jo('외국인', '은'), '외국인은');
   assert.equal(daysKo(5), '닷새'); assert.equal(daysKo(1), '하루'); assert.equal(pct1(-0.0994), '9.9');
+});
+
+/* ── v2 · 8 환율과 금리 · 9 다른 나라(사장님 2026-10-30 08:28 「어 그렇게 해」 · 결정표 2-2 · 2-3) ── */
+/** 시험 자료 — 평일 300날 · 시장 M 은 그대로(100) · 업종 I 는 달러 값 하루 변화의 0.5 배 + 작은 흔들림 · 창(F 뒤) 달러 값 +2% · 금리 +0.05%p */
+function fxWorld({fxWin = 0.02, rateWin = 0.05, beta = 0.5} = {}) {
+  let seed = 7; const rnd01 = () => { seed = (seed + 0x6D2B79F5) | 0; let z = Math.imul(seed ^ (seed >>> 15), 1 | seed); z = (z + Math.imul(z ^ (z >>> 7), 61 | z)) ^ z; return ((z ^ (z >>> 14)) >>> 0) / 4294967296; }; // mulberry32(이웃한 수끼리 얽히지 않게)
+  const dates = []; for (let d = new Date(Date.UTC(2025, 6, 1)); dates.length < 300; d = new Date(+d + 864e5)) if (d.getUTCDay() % 6) dates.push(d.toISOString().slice(0, 10));
+  const N = dates.length, T = N - 1, F = T - 20, I = new Float64Array(N), M = new Float64Array(N).fill(100), fx = [[dates[0], 1300]], rate = [[dates[0], 3]];
+  I[0] = 100;
+  for (let t = 1; t <= T; t++) {
+    if (t <= F) {
+      const f = (rnd01() - 0.5), g = (rnd01() - 0.5) * 0.06, n = (rnd01() - 0.5) * 0.4;
+      fx.push([dates[t], fx[t - 1][1] * (1 + f / 100)]); rate.push([dates[t], rate[t - 1][1] + g]); I[t] = I[t - 1] * (1 + (beta * f + n) / 100);
+    } else { fx.push([dates[t], fx[F][1] * (1 + fxWin * (t - F) / 20)]); rate.push([dates[t], rate[F][1] + rateWin * (t - F) / 20]); I[t] = I[t - 1]; }
+  }
+  return {dates, N, T, F, I, M, fx, rate};
+}
+
+test('8 환율과 금리 — 지난 1년 기울기 · 뚜렷함(|t| ≥ 2) · 이번 달 움직임(1% · 0.1%p) · 맞음 · 불빛 · 글', () => {
+  const w = fxWorld(), fx = partOf(w.fx, 'fx', w.dates, w.I, w.M, w.F, w.T), rate = partOf(w.rate, 'rate', w.dates, w.I, w.M, w.F, w.T);
+  assert.equal(fx.n, 240); assert.ok(Math.abs(fx.beta - 0.5) < 0.05, `기울기 ${fx.beta}`); assert.ok(fx.t > 10);
+  assert.equal(fx.da, w.dates[w.F]); assert.equal(fx.db, w.dates[w.T]); assert.equal(fx.move, 2); assert.deepEqual([fx.clear, fx.moved, fx.aligned], [true, true, true]);
+  assert.equal(rate.move, 0.05); assert.equal(rate.moved, false); assert.equal(rate.aligned, false); assert.ok(Math.abs(rate.t) < 2, `금리는 업종과 따로(t ${rate.t})`);
+  assert.equal(light8(fx, rate), 'on'); assert.equal(light8({...fx, aligned: false}, rate), 'off'); assert.equal(light8({...fx, aligned: false}, null), 'q'); assert.equal(light8(fx, null), 'on'); assert.equal(light8(null, null), 'q');
+  const a = text8(fx, rate), A = Math.round(w.fx[w.F][1]).toLocaleString('en-US'), B = Math.round(w.fx[w.T][1]).toLocaleString('en-US');
+  assert.equal(a.s, 'on'); assert.equal(a.ko.t, `달러 값이 ${A}원에서 ${B}원으로 올랐어요.`); assert.equal(a.ko.sub, '지난 1년, 달러 값이 오를수록 이 업종이 시장보다 잘했어요.');
+  assert.equal(a.en.t, `The dollar went from ₩${A} to ₩${B}.`); assert.equal(a.en.sub, 'Over the past year, this industry beat the market more when the dollar rose.');
+  // 달러 값이 내린 달 = 기록과 반대 → 꺼짐(금리는 알고 아님)
+  const w2 = fxWorld({fxWin: -0.02}), fx2 = partOf(w2.fx, 'fx', w2.dates, w2.I, w2.M, w2.F, w2.T), r2 = partOf(w2.rate, 'rate', w2.dates, w2.I, w2.M, w2.F, w2.T);
+  assert.equal(fx2.move, -2); assert.equal(fx2.aligned, false); const b = text8(fx2, r2);
+  assert.equal(b.s, 'off'); assert.match(b.ko.t, /^달러 값이 [\d,]+원에서 [\d,]+원으로 내렸어요\.$/); assert.equal(b.ko.sub, '지난 1년, 달러 값이 오를수록 이 업종이 시장보다 잘했어요.');
+  // 둘 다 움직임 · 금리는 따로 움직임 → 두 문장 + 숫자 괄호
+  const w3 = fxWorld({rateWin: 0.2}), f3 = partOf(w3.fx, 'fx', w3.dates, w3.I, w3.M, w3.F, w3.T), r3 = partOf(w3.rate, 'rate', w3.dates, w3.I, w3.M, w3.F, w3.T), c = text8(f3, r3);
+  assert.equal(r3.moved, true); assert.equal(c.s, 'on'); assert.equal(c.ko.t, '달러 값이 오르고 금리가 올랐어요.');
+  assert.match(c.ko.sub, /^지난 1년, 달러 값이 오를수록 이 업종이 시장보다 잘했어요\. 금리와는 따로 움직였어요\. \(1달러 [\d,]+원 → [\d,]+원 · 3년 국채 금리 \d\.\d\d% → \d\.\d\d%\)$/);
+  assert.match(c.en.sub, /^Over the past year, this industry beat the market more when the dollar rose\. It moved apart from rates\. \(₩[\d,]+ → ₩[\d,]+ per dollar; 3-year bond yield \d\.\d\d% → \d\.\d\d%\)$/);
+  // 하나도 안 움직임 · 금리 기록 없음 · 모두 없음
+  const w4 = fxWorld({fxWin: 0.005}), f4 = partOf(w4.fx, 'fx', w4.dates, w4.I, w4.M, w4.F, w4.T), d = text8(f4, partOf(w4.rate, 'rate', w4.dates, w4.I, w4.M, w4.F, w4.T));
+  assert.equal(d.s, 'off'); assert.equal(d.ko.t, '달러 값과 금리가 거의 그대로였어요.'); assert.match(d.ko.sub, /^1달러 [\d,]+원 → [\d,]+원 · 3년 국채 금리 /);
+  const e = text8(f4, null); assert.equal(e.s, 'q'); assert.equal(e.ko.t, '달러 값이 거의 그대로였어요.'); assert.match(e.ko.sub, / 금리 기록은 없어요\.$/); assert.match(e.en.sub, / No rate record\.$/);
+  assert.deepEqual(text8(null, null), {s: 'q', ko: {t: '환율과 금리 기록이 없어요.', sub: null}, en: {t: 'No currency or rate record.', sub: null}});
+  // 날 수 120 아래 · 자료가 7날 넘게 앞 → 모름
+  assert.equal(partOf(w.fx.slice(-110), 'fx', w.dates, w.I, w.M, w.F, w.T), null, '지난 1년 날이 모자람');
+  assert.equal(partOf(w.fx.slice(0, -8), 'fx', w.dates, w.I, w.M, w.F, w.T), null, '끝 값이 7날 넘게 앞');
+  assert.equal(partOf(null, 'fx', w.dates, w.I, w.M, w.F, w.T), null);
+  // 결론 마디 — 맞은 쪽(달러 값 먼저)
+  const items = itemsOf({money: {1: null, 2: null, 3: null}, good: [], lead: null, breadth: {up: 0, tot: 0}, mi: {m: 0.01, i: 0.05}, pol: {hit: null}, abr: {hit: null}, fx, rate});
+  assert.equal(items[7].s, 'on'); assert.deepEqual(whyOf(items, {m: 0.01, i: 0.05}, null, {fx, rate}), {ko: ['달러 값이 올랐어요.'], en: ['The dollar rose.']});
+  assert.deepEqual(whyOf(items, {m: 0.01, i: 0.05}, null, {fx: null, rate: {...rate, aligned: true, move: -0.2}}).ko, ['금리가 내렸어요.']);
+  // 작은 셈 도구
+  assert.equal(dayGap('2026-10-23', '2026-10-30'), 7); assert.deepEqual(lastLE([['2026-10-01', 1], ['2026-10-05', 2]], '2026-10-04'), ['2026-10-01', 1]); assert.equal(lastLE([['2026-10-05', 2]], '2026-10-04'), null);
+  assert.ok(seriesOk([['2026-10-01', 1], ['2026-10-02', 2]])); assert.ok(!seriesOk([['2026-10-02', 1], ['2026-10-01', 2]])); assert.ok(!seriesOk([['2026-10-01', '1']])); assert.ok(!seriesOk([]));
+  assert.equal(rnd(1.005 * 100, 0), Math.round(100.49999999999999)); assert.equal(rnd(-0.0565, 3), -0.056); assert.equal(FX.L, 240);
+  // 받은 줄 읽기(네이버 꼴 둘)
+  assert.deepEqual(rowsOf([{localTradedAt: '2026-09-29', closePrice: '1,353.00'}, {localTradedAt: 'x', closePrice: '1'}]), [['2026-09-29', 1353]]);
+  assert.deepEqual(rowsOf({result: [{localTradedAt: '2026-09-29T15:50:00+09:00', closePrice: '4.0720'}]}), [['2026-09-29', 4.072]]);
+  assert.equal(rowsOf({}), null);
+  assert.deepEqual(seriesOf([['2026-10-02', 2], ['2026-10-01', 1], ['2026-10-02', 9]]), [['2026-10-01', 1], ['2026-10-02', 2]]);
+});
+
+test('9 미국 같은 업종 — 짝 표 · 같은 무게 지수 ÷ S&P 500 · 오래된 기록 · 회사 3곳 아래 · 글', () => {
+  const ds = ['2026-10-01', '2026-10-02', '2026-10-05', '2026-10-06', '2026-10-07'];
+  const co = (base, f = (k => base * 1.01 ** k)) => new Map(ds.map((d, k) => [d, f(k)]));
+  const usData = {byInd: new Map([['반도체', [co(100), co(50), co(10)]], ['항공사', [co(10), co(20)]]]), inx: ds.map((d, k) => [d, k === ds.length - 1 ? 1010 : 1000 + k])};
+  const u = usOf('반도체', usData, '2026-10-01', '2026-10-07');
+  assert.deepEqual({...u, raw: undefined}, {ind: ['반도체'], b: '2026-10-01', e: '2026-10-07', n: 3, i: 4.06, m: 1, x: 3.03, raw: undefined, why: null, ko: '반도체', en: 'semiconductors'});
+  assert.equal(light9(u), 'on');
+  const t = text9(u);
+  assert.equal(t.ko.t, '미국에서도 같은 업종이 시장보다 잘했어요.'); assert.equal(t.ko.sub, '미국 반도체 3곳이 4.1% 오를 때 S&P 500은 1.0% 올랐어요. (10월 1일 ~ 10월 7일)');
+  assert.equal(t.en.sub, 'US semiconductors (3 firms) rose 4.1% while the S&P 500 rose 1.0% (Oct 1–Oct 7).');
+  // 하루 ±35% 넘게 튄 회사는 그날 뺌
+  const jumpy = {...usData, byInd: new Map([['반도체', [co(100), co(50), co(10), co(5, k => (k >= 2 ? 10 : 5))]]])};
+  const uj = usOf('반도체', jumpy, '2026-10-01', '2026-10-07'); // 넷째 회사: 0% · +100%(튐 — 그날만 뺌) · 0% · 0%
+  assert.equal(uj.i, Math.round((1.0075 * 1.01 * 1.0075 * 1.0075 - 1) * 10000) / 100, '튄 날은 그 회사를 그날만 뺌'); assert.equal(uj.n, 4);
+  // 미국이 못함 · 짝 없음 · 오래됨 · 적음 · 자료 없음
+  const down = {...usData, byInd: new Map([['반도체', [co(100, k => 100 - k), co(50, k => 50 - k), co(10, k => 10 - k * 0.1)]]])}, ud = usOf('반도체', down, '2026-10-01', '2026-10-07');
+  assert.equal(light9(ud), 'off'); assert.equal(text9(ud).ko.t, '미국에서는 같은 업종이 시장보다 못했어요.'); assert.match(text9(ud).ko.sub, /^미국 반도체 3곳이 \d+\.\d% 내릴 때 S&P 500은 1\.0% 올랐어요\./);
+  assert.equal(usOf('조선', usData, '2026-10-01', '2026-10-07'), null); assert.equal(text9(null).ko.t, '미국에는 같은 업종 기록이 없어요.'); assert.equal(light9(null), 'q');
+  const old = usOf('반도체', usData, '2026-10-01', '2026-10-15'); assert.equal(old.why, 'old'); assert.equal(old.x, null); assert.equal(text9(old).ko.t, '미국 기록이 오래돼 못 쟀어요.'); assert.equal(light9(old), 'q');
+  const few = usOf('항공', usData, '2026-10-01', '2026-10-07'); assert.equal(few.n, 2); assert.equal(few.why, 'few'); assert.equal(text9(few).ko.t, '미국 같은 업종 회사가 너무 적어요.');
+  const none = usOf('반도체', null, '2026-10-01', '2026-10-07'); assert.equal(none.why, 'none'); assert.equal(text9(none).ko.t, '미국 기록이 없어요.'); assert.equal(light9(none), 'q');
+  // 결론 마디 · 차례(9 가 8 보다 앞)
+  const items = itemsOf({money: {1: {eok: 30, days: 5, top: {name: '가', en: 'Ga', eok: 30}}, 2: null, 3: null}, good: [], lead: null, breadth: {up: 0, tot: 0}, mi: {m: 0.01, i: 0.05}, pol: {hit: null}, abr: {hit: null}, us: u, fx: {aligned: true, move: 2}, rate: null});
+  assert.equal(items[8].s, 'on'); assert.deepEqual(whyOf(items, {m: 0.01, i: 0.05}, null, {fx: {aligned: true, move: 2}}), {ko: ['외국인이 샀고,', '미국에서도 잘했어요.'], en: ['Foreigners bought,', 'and US peers did well too.']});
+});
+
+test('9 짝 표 — 한국 업종 · 미국 업종 이름이 진짜 자료에 있음 · 영어 이름에 한글 없음', () => {
+  const kr = new Set(Object.values(JSON.parse(fs.readFileSync(path.join(ROOT, 'site/atlas/data/mkt.json'), 'utf8')).companies).map(c => c.i));
+  const us = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/atlas11/us/input.json'), 'utf8')).assets.map(a => a.industry));
+  for (const [k, v] of Object.entries(US_MAP)) {
+    assert.ok(kr.has(k), `한국 업종 이름이 자료에 없음 「${k}」`);
+    for (const u of v.us) assert.ok(us.has(u), `미국 업종 이름이 자료에 없음 「${u}」(${k})`);
+    assert.doesNotMatch(v.en, /[가-힣]/); assert.ok(v.ko && v.en);
+  }
+  assert.ok(Object.keys(US_MAP).length >= 40);
 });
 
 test('저장소의 flow-why.json — 꼴 · 기준 날이 첫 화면 자료와 같음 · 열한 가지 · 앞날 말 없음', () => {

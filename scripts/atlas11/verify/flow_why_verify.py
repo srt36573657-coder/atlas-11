@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """둘이 · 「돈 흐름 칸 · 까닭 열한 가지」 따로 세기(파이썬 · 표준 라이브러리만)
   flow_why.mjs 코드는 보지 않고 결정표 글과 원자료만 보고 처음부터 다시 센다 — 그래서 JS 셈에 잘못이 있으면 여기서 어긋난다
-  결정표: docs/design/why11-2026-10-30/decision.md 의 0 · 1 · 2 · 2-1 · 4
+  결정표: docs/design/why11-2026-10-30/decision.md 의 0 · 1 · 2 · 2-1 · 2-2 · 2-3 · 4
           지수 셈: docs/design/theme-2026-10-19/theme-engine.md 의 「들어오는 자료」 · 「1. 지수」
   읽는 것(읽기만):
     <site>/atlas/data/days.json(dates) · mkt.json(companies[번호] = {n 이름, i 업종}) · co/<번호>.json(close · k0)
     <site>/next/data/theme-home.json(asOf · inds[] = {n, x})
     <view>/board.json(asOf · companies[]) · <view>/stocks/<번호>.json(context.flows · context.news · closes60)
     <view>/agenda.json(byCode[번호].disclosures — 없으면 좋은 소식은 「모름」)
+    <site>/next/data/fx-rate.json(schema dori-fx-rate-1 · fx · rate = [날짜, 값] 줄 — 없거나 꼴이 다르면 8 은 「모름」)
+    <us>/input.json(assets[] = {industry, prices[] = {date, close}}) · <us>/market/INX.json(rows[] = {date, close} · S&P 500)
+      — 없거나 못 읽으면 짝이 있는 업종도 9 는 「모름」
     맞대는 파일: <site>/next/data/flow-why.json
   다시 세는 것:
     ① 몰린 곳 셋 = theme-home 에서 x > 0 인 업종을 x 큰 차례로 셋(같으면 파일 차례) · 이름 · 차례 · x 가 같아야
@@ -16,15 +19,26 @@
        시장 m · 업종 i(% 두 자리) · 다시 센 x 와 막대 x 차이 0.011 안 · 업종 회사 5곳 이상(어긋나면 파일이 없어야 맞음 — 결정표 2 · 7 · 2026-10-30 글 바로잡음)
     ④ 대표 수 · 돈 셋(외국인 · 기관 · 개인 — 대표마다 마지막 다섯 날 · 주식 수 × 그날 종가 · 억 원 반올림 · 날 수 · 처음 날 · 끝 날 · 적는 대표)
     ⑤ 좋은 소식 공시 · 대장 회사 · 같이 오른 수 · 정부 정책 기사 · 나라 사이 기사 · 불빛 열하나(items 의 s 도) · 머리 글
+    ⑥ 8 환율과 금리(결정표 2-2) — 쪽마다(달러 값 fx · 금리 rate) 지난 1년(창 앞 240 거래일) 「업종이 그날 시장보다 앞선 %」와
+       그 쪽 하루 움직임의 기울기 β · t · 쓴 날 n, 이번 달 처음 · 끝(da · db · a · b) · 움직임 move, 가름(clear · moved · aligned)
+       → calc.fx · calc.rate(모름이면 null) · 불빛 8
+       9 다른 나라(결정표 2-3) — 짝 표(결정표 표를 아래 PAIRS 에 따로 옮겨 적음)의 미국 업종 회사 같은 무게 지수 ÷ S&P 500(b ~ e)
+       → calc.us = {ind, b, e, n, i, m, x}(짝 없음 null) · 불빛 9
   반올림 = JS Math.round 와 같음(.5 는 위로 · 파이썬 round 는 짝수 쪽이라 쓰지 않음)
   % 두 자리는 다시 센 값(셈 그대로)을 두 자리로 반올림한 값이어야 맞음 — 꼭 .5 에 걸린 값만 위 · 아래 둘 다 받음
+  8 · 9 의 move · beta · t · i · m · x 도 같은 잣대(바르게 반올림한 값이면 맞음 · 반 칸 + 1e-9 안)
+  8 · 9 의 가름(clear · moved · aligned · 불빛)은 결정표대로 반올림한 값으로 다시 가름 — 파일 값이 바르게 반올림한 값이면
+       그 값으로 가름(꼭 가운데에 걸린 값에서 JS 와 갈리지 않게) · 아니면 다시 센 값으로
   쓰는 법(저장소 맨 위에서):
-    python3 -I scripts/atlas11/verify/flow_why_verify.py [--site site] [--view public/data/atlas11/view] [--file <site>/next/data/flow-why.json] [--quiet]
+    python3 -I scripts/atlas11/verify/flow_why_verify.py [--site site] [--view public/data/atlas11/view] [--us public/data/atlas11/us]
+      [--file <site>/next/data/flow-why.json] [--quiet]
   결과: 모두 맞으면 끝값 0 과 한 줄(--quiet 면 아무것도 안 찍음)
         · 다른 칸이 있으면 칸마다 「다시 센 값 · 파일 값」을 찍고 끝값 1 · 입력 파일이 없거나 못 읽으면 끝값 2
         · 앞날 말 없음(지난 기록만 셈)
 """
 import argparse, json, math, os, re, sys
+from bisect import bisect_right
+from datetime import date
 from pathlib import Path
 
 WIN = 20     # 창(한 달) = 20 거래일 — 테마와 같음
@@ -44,6 +58,59 @@ POL = ['정부', '국회', '법안', '예산', '규제', '보조금', '세법', 
 ABR = ['관세', '공습', '미사일', '휴전', '제재', '무역', '협정', '트럼프', '시진핑', '푸틴', '중동', '이란', '이스라엘',
        '우크라이나', '러시아', '북한', '미중']
 EDGE = ('이란', '중동')  # 앞뒤 글자가 한글(가 ~ 힣)이 아닐 때만 맞음
+# 8 환율과 금리(결정표 2-2)
+FX_SCHEMA = 'dori-fx-rate-1'
+YEAR, YEAR_MIN = 240, 120  # 지난 1년 = 창 앞 240 거래일(L) · 쓴 날이 120 보다 적으면 그 쪽은 모름
+FX_OLD = 7                 # 처음 · 끝 값의 날이 D[F] · D[T] 보다 7날(달력) 넘게 앞이면 그 쪽은 모름
+FX_PLACES = {'fx': 2, 'rate': 3}  # move 자리 — 달러 값 % 두 자리 · 금리 %p 세 자리(움직임 잣대 1.00 · 0.100 = 둘 다 100칸)
+FX_KEYS = ('da', 'db', 'a', 'b', 'move', 'n', 'beta', 't', 'clear', 'moved', 'aligned')
+# 9 다른 나라(결정표 2-3)
+US_OLD, US_MIN = 5, 3      # b · e 가 D[F] · D[T] 보다 5날(달력) 넘게 앞이면 · b · e 종가가 다 있는 회사가 3곳보다 적으면 모름
+# 짝 표 — 결정표 2-3 표(한국 업종 → 미국 업종 · input.json industry)를 표 차례 그대로 따로 옮겨 적음
+# 「 · 」(앞뒤 띄어쓰기)는 이름 나눔 · 붙어 쓴 「·」(검사·측정 · 항공·우주 …)와 쉼표(의료 장비, 물품 및 유통 …)는 이름 안 글자
+PAIRS = [
+    ('반도체', '반도체'),
+    ('반도체 장비 · 반도체 검사·측정', '반도체 장비 및 테스트'),
+    ('전자부품 · 전자장비 · 휴대폰 부품', '전자 장비 및 부품'),
+    ('통신장비', '통신 및 네트워킹'),
+    ('통신', '통합 통신 서비스 · 무선 통신 서비스'),
+    ('소프트웨어', '소프트웨어'),
+    ('IT서비스 · IT 시스템 통합', 'IT 서비스 및 컨설팅'),
+    ('인터넷 플랫폼', '온라인 서비스'),
+    ('제약', '제약'),
+    ('바이오 의약품 · 신약 개발', '생명 공학 및 의학 연구'),
+    ('의료기기', '첨단 의료 장비 및 기술 · 의료 장비, 물품 및 유통'),
+    ('의료용품', '의료 장비, 물품 및 유통'),
+    ('병원·헬스 서비스', '의료 시설 및 서비스'),
+    ('은행·카드', '은행 · 소비자 대출'),
+    ('증권', '투자 은행 및 중개 서비스'),
+    ('보험', '손해보험 · 생명 및 건강 보험 · 복합보험 및 중개인'),
+    ('자동차', '자동차 및 트럭 제조'),
+    ('방산 · 항공·우주', '항공우주 및 방위'),
+    ('항공', '항공사'),
+    ('물류·운송', '지상 화물 및 물류'),
+    ('로봇·건설기계', '중장비 및 차량'),
+    ('일반 기계 · 기계 부품', '산업용 기계 및 장비'),
+    ('전기 부품 · 전선·전기장비 · 전력기기', '전기 부품 및 장비'),
+    ('에너지 장비', '재생 가능 에너지 장비 및 서비스'),
+    ('전력·가스', '전력 유틸리티 · 천연가스 유틸리티 · 복합 유틸리티'),
+    ('정유·가스', '오일, 가스 정제 및 마케팅'),
+    ('화학 · 석유화학', '상품 화학'),
+    ('철강', '철 및 강철'),
+    ('시멘트', '건설 자재'),
+    ('건축자재', '건설 자재 및 비품'),
+    ('건설', '건설 및 엔지니어링 · 주택 건설'),
+    ('건설 엔지니어링', '건설 및 엔지니어링'),
+    ('부동산', '부동산 서비스'),
+    ('유통', '백화점 · 할인점 · 식품 소매 및 유통'),
+    ('호텔·레저', '호텔, 모텔 및 크루즈 라인 · 여가 및 오락시설 · 카지노 및 도박'),
+    ('화장품', '개인 생활 필수 용품'),
+    ('음료', '무알콜 음료'),
+    ('방송', '방송'),
+    ('콘텐츠 제작 · 연예 기획사', '엔터테인먼트 제작'),
+    ('복합기업', '소비재 대기업'),
+]
+US_OF = {k: us.split(' · ') for kr, us in PAIRS for k in kr.split(' · ')}  # 표에 없는 업종 = 짝 없음(calc.us null · 불빛 9 모름)
 
 
 class InputError(Exception):
@@ -237,6 +304,184 @@ def news_of(reps, words, frm, as_of):
     return '' if best is None else f'{best[1]}|{best[2]}|{best[3]}'
 
 
+# ---------- 8 환율과 금리(결정표 2-2) ----------
+
+def day_no(s):
+    """'YYYY-MM-DD' → 달력 날 번호 · 꼴이 다르면 None"""
+    if not (isinstance(s, str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}', s)):
+        return None
+    try:
+        return date.fromisoformat(s).toordinal()
+    except ValueError:
+        return None
+
+
+def fx_rate_of(path):
+    """fx-rate.json → ({'fx' · 'rate': (날짜 줄, 값 줄, 날짜 → 값)}, None) · 없거나 꼴이 다르면 (None, 까닭) = 두 쪽 모두 모름
+       꼴 = schema 'dori-fx-rate-1' · fx · rate 가 [날짜(YYYY-MM-DD), 값(수 · 달러 값은 > 0)] 줄 · 날짜 차례 · 같은 날은 한 줄
+       — 줄 하나라도 꼴이 다르면 파일 꼴이 다른 것으로 봄(결정표 2-2 「꼴이 다르면 두 쪽 모두 모름」)"""
+    try:
+        j = load(path, need=False)
+    except InputError as e:
+        return None, f'{e} — 환율과 금리는 모름'
+    if j is None:
+        return None, 'fx-rate.json 없음(환율과 금리는 모름)'
+    if not isinstance(j, dict) or j.get('schema') != FX_SCHEMA:
+        return None, f'fx-rate.json 꼴이 다름(schema 가 {FX_SCHEMA} 아님 · 환율과 금리는 모름)'
+    out = {}
+    for side in FX_PLACES:
+        arr, ds, vs = j.get(side), [], []
+        if not isinstance(arr, list):
+            return None, f'fx-rate.json 꼴이 다름({side} 줄 없음 · 환율과 금리는 모름)'
+        for row in arr:
+            if not (isinstance(row, list) and len(row) == 2 and day_no(row[0]) is not None and num(row[1])
+                    and (side == 'rate' or row[1] > 0) and (not ds or row[0] > ds[-1])):
+                return None, f'fx-rate.json 꼴이 다름({side} 줄 {json.dumps(row, ensure_ascii=False)} · 환율과 금리는 모름)'
+            ds.append(row[0])
+            vs.append(row[1])
+        out[side] = (ds, vs, dict(zip(ds, vs)))
+    return out, None
+
+
+def fx_side(side, ser, D, I, M, F, T):
+    """8 한 쪽(달러 값 fx · 금리 rate)의 셈 그대로 값(반올림 전) · 모름이면 None
+       지난 1년 t = F − 239 … F 가운데 D[t − 1] · D[t] 가 둘 다 그 쪽 자료 날짜에 그대로 있는 날만:
+         e = ((I[t] ÷ I[t − 1]) ÷ (M[t] ÷ M[t − 1]) − 1) × 100(업종이 그날 시장보다 앞선 %)
+         x = 달러 값 (fx[D[t]] ÷ fx[D[t − 1]] − 1) × 100(%) · 금리 rate[D[t]] − rate[D[t − 1]](%p)
+       최소 제곱 β · t = β ÷ √(s² ÷ Sxx) — n < 120 · Sxx = 0 · s² = 0 이면 모름
+       이번 달 처음 · 끝 = 그 쪽 자료에서 날짜 ≤ D[F] · ≤ D[T] 인 마지막 날(da · db) 값(a · b) — 없거나 7날(달력) 넘게 앞이면 모름
+       move = 달러 값 (b ÷ a − 1) × 100(%) · 금리 b − a(%p)"""
+    ds, vs, by = ser
+    xs, es = [], []
+    for t in range(max(1, F - YEAR + 1), F + 1):  # 날짜 줄이 짧으면 t ≥ 1 만(지금 자료는 F − 239 ≥ 1)
+        p, q = by.get(D[t - 1]), by.get(D[t])
+        if p is None or q is None:
+            continue
+        es.append(((I[t] / I[t - 1]) / (M[t] / M[t - 1]) - 1) * 100)
+        xs.append((q / p - 1) * 100 if side == 'fx' else q - p)
+    n = len(xs)
+    if n < YEAR_MIN:
+        return None
+    xm, em = math.fsum(xs) / n, math.fsum(es) / n
+    sxx = math.fsum((x - xm) ** 2 for x in xs)
+    if sxx == 0:
+        return None
+    beta = math.fsum((x - xm) * (y - em) for x, y in zip(xs, es)) / sxx
+    s2 = math.fsum((y - em - beta * (x - xm)) ** 2 for x, y in zip(xs, es)) / (n - 2)
+    if s2 == 0:
+        return None
+    ka, kb = bisect_right(ds, D[F]) - 1, bisect_right(ds, D[T]) - 1  # ka ≤ kb
+    if ka < 0 or day_no(D[F]) - day_no(ds[ka]) > FX_OLD or day_no(D[T]) - day_no(ds[kb]) > FX_OLD:
+        return None
+    a, b = vs[ka], vs[kb]
+    return {'da': ds[ka], 'db': ds[kb], 'a': a, 'b': b, 'move': (b / a - 1) * 100 if side == 'fx' else b - a,
+            'n': n, 'beta': beta, 't': beta / math.sqrt(s2 / sxx)}
+
+
+def fx_file(side, r, g=None):
+    """8 한 쪽의 파일 꼴(calc.fx · calc.rate) — 모름 None · 아니면 {da, db, a, b, move, n, beta(네 자리), t(두 자리), clear, moved, aligned}
+       가름은 반올림한 값으로(결정표 2-2 4.): clear = |t| ≥ 2 · moved = |move| ≥ 1.00(달러 값 %) · 0.100(금리 %p)
+       · aligned = clear 이고 moved 이고 β 와 move 의 부호가 같음
+       g(파일 칸)의 move · beta · t 가 바르게 반올림한 값이면 가름은 그 값으로(꼭 가운데에서 갈리지 않게) · 적는 수는 늘 다시 센 값의 반올림"""
+    if r is None:
+        return None
+    g = g if isinstance(g, dict) else {}
+    km = 10 ** FX_PLACES[side]
+    um, ub, ut = r['move'] * km, r['beta'] * 10000, r['t'] * 100
+    mu, bu, tu = snap(um, km, g.get('move')), snap(ub, 10000, g.get('beta')), snap(ut, 100, g.get('t'))
+    clear, moved = abs(tu) >= 200, abs(mu) >= 100
+    return {'da': r['da'], 'db': r['db'], 'a': r['a'], 'b': r['b'], 'move': js_round(um) / km, 'n': r['n'],
+            'beta': js_round(ub) / 10000, 't': js_round(ut) / 100,
+            'clear': clear, 'moved': moved, 'aligned': clear and moved and sgn(bu) == sgn(mu)}
+
+
+def light_fx(fx, rate):
+    """불빛 8 — 두 쪽 가운데 하나라도 맞음 = 켜짐 · 두 쪽 다 셈이 되고 둘 다 맞음이 아님 = 꺼짐 · 그 밖 = 모름"""
+    if any(s is not None and s['aligned'] for s in (fx, rate)):
+        return 'on'
+    return 'off' if fx is not None and rate is not None else 'q'
+
+
+# ---------- 9 다른 나라(결정표 2-3) ----------
+
+def us_of(us_dir):
+    """미국 자료 → ((미국 날 줄, 날짜 → S&P 500 종가, 미국 업종 → [회사마다 날짜 → 종가]), 까닭 줄)
+       미국 날 = INX rows 가운데 날짜(YYYY-MM-DD)와 종가(> 0)가 있는 줄의 날짜(차례) · 회사마다 날짜 → 종가(> 0)
+       파일이 없거나 못 읽거나 꼴이 다르면 그 쪽은 빈 것 → 짝이 있는 업종도 9 는 모름(멈추지 않음)"""
+    notes = []
+
+    def rows_of(p, key, what):
+        try:
+            j = load(p, need=False)
+        except InputError as e:
+            notes.append(f'{e} — 다른 나라는 모름')
+            return []
+        arr = j.get(key) if isinstance(j, dict) else None
+        if j is None:
+            notes.append(f'{what} 없음(다른 나라는 모름)')
+        elif not isinstance(arr, list):
+            notes.append(f'{what} 꼴이 다름({key} 없음 · 다른 나라는 모름)')
+        return arr if isinstance(arr, list) else []
+
+    inx = {}
+    for row in rows_of(us_dir / 'market' / 'INX.json', 'rows', 'us/market/INX.json'):
+        if isinstance(row, dict) and day_no(row.get('date')) is not None and pos(row.get('close')):
+            inx.setdefault(row['date'], row['close'])
+    by_ind = {}
+    for asset in rows_of(us_dir / 'input.json', 'assets', 'us/input.json'):
+        if not (isinstance(asset, dict) and isinstance(asset.get('industry'), str)):
+            continue
+        cl = {}
+        for p in asset.get('prices') if isinstance(asset.get('prices'), list) else []:
+            if isinstance(p, dict) and isinstance(p.get('date'), str) and pos(p.get('close')):
+                cl.setdefault(p['date'], p['close'])
+        by_ind.setdefault(asset['industry'], []).append(cl)
+    return (sorted(inx), inx, by_ind), notes
+
+
+def us_side(name, us, D, F, T):
+    """9 — 짝 없음 None · 아니면 {ind, b, e, n, i, m, x}(i · m · x = 셈 그대로 비율 · 모름이면 None)
+       b · e = 날짜 ≤ D[F] · ≤ D[T] 인 마지막 미국 날(못 찾으면 None) — 없거나 5날(달력) 넘게 앞이면 모름
+       회사 = industry 가 짝 미국 업종 가운데 하나인 회사 모두 · n = b · e 종가가 다 있는 회사 수(날을 못 찾으면 0) · n < 3 이면 모름
+       지수 = b ~ e 미국 날 이웃한 두 날마다 두 날 종가가 다 있는 회사의 r = 뒤 ÷ 앞 − 1(|r| ≥ 0.35 면 그날 그 회사 뺌) 평균(없으면 0)을
+       이어 곱함 → 1 + i · m = INX(e) ÷ INX(b) − 1 · x = (1 + i) ÷ (1 + m) − 1"""
+    inds = US_OF.get(name)
+    if inds is None:
+        return None
+    days, inx, by_ind = us
+    kb, ke = bisect_right(days, D[F]) - 1, bisect_right(days, D[T]) - 1
+    b, e = (days[kb] if kb >= 0 else None), (days[ke] if ke >= 0 else None)
+    comps = [cl for u in inds for cl in by_ind.get(u, [])]
+    n = sum(1 for cl in comps if b in cl and e in cl)  # 날을 못 찾으면(None) 0
+    out = {'ind': list(inds), 'b': b, 'e': e, 'n': n, 'i': None, 'm': None, 'x': None}
+    if (b is None or e is None or day_no(D[F]) - day_no(b) > US_OLD or day_no(D[T]) - day_no(e) > US_OLD
+            or n < US_MIN):
+        return out
+    idx, S = 1.0, days[kb:ke + 1]
+    for d0, d1 in zip(S, S[1:]):
+        rs = [r for r in (cl[d1] / cl[d0] - 1 for cl in comps if d0 in cl and d1 in cl) if abs(r) < JUMP]
+        idx *= 1 + (math.fsum(rs) / len(rs) if rs else 0.0)
+    i, m = idx - 1, inx[e] / inx[b] - 1
+    out.update(i=i, m=m, x=(1 + i) / (1 + m) - 1)
+    return out
+
+
+def us_file(r):
+    """9 의 파일 꼴(calc.us) — 짝 없음 None · 아니면 {ind, b, e, n, i, m, x}(i · m · x = % 두 자리 · 모름이면 None)"""
+    if r is None:
+        return None
+    return {'ind': r['ind'], 'b': r['b'], 'e': r['e'], 'n': r['n'],
+            **{f: None if r[f] is None else pct2(r[f]) for f in ('i', 'm', 'x')}}
+
+
+def light_us(r, g=None):
+    """불빛 9 — x(% 두 자리) > 0 = 켜짐 · 아니면 꺼짐 · 짝 없음 · 모름 = 모름
+       g(파일 calc.us)의 x 가 바르게 반올림한 값이면 그 값으로 가름(꼭 가운데에서 갈리지 않게)"""
+    if r is None or r['x'] is None:
+        return 'q'
+    return 'on' if snap(r['x'] * 10000, 100, g.get('x') if isinstance(g, dict) else None) > 0 else 'off'
+
+
 # ---------- 맞대기 ----------
 
 def same(a, b):
@@ -259,6 +504,23 @@ def pct_ok(raw, got):
     return abs(g - round(g)) < 1e-6 and abs(g - raw * 10000) <= 0.5 + 1e-6
 
 
+def near(u, got, k):
+    """파일 값 got 이 1/k 칸 꼴이고 셈 그대로 값(u = 값 × k)에서 반 칸(+ 1e-9) 안 — 바르게 반올림한 값(꼭 가운데면 둘 다)"""
+    if not num(got):
+        return False
+    g = got * k
+    return abs(g - round(g)) < 1e-6 and abs(g - u) <= 0.5 + 1e-9
+
+
+def snap(u, k, got):
+    """가름에 쓰는 반올림 값(1/k 칸 정수) — 파일 값이 바르게 반올림한 값이면 그 값 · 아니면 다시 센 값(u)의 JS 반올림"""
+    return round(got * k) if near(u, got, k) else js_round(u)
+
+
+def sgn(v):
+    return (v > 0) - (v < 0)
+
+
 class Cmp:
     def __init__(self):
         self.bad, self.n = [], 0
@@ -273,6 +535,10 @@ class Cmp:
 
     def pct(self, field, raw, got):
         self.check(field, None if raw is None else pct2(raw), got, got is None if raw is None else pct_ok(raw, got))
+
+    def rnd(self, field, u, k, got):
+        """반올림 칸(8 · 9) — u = 셈 그대로 값 × k · 파일 값이 1/k 칸으로 바르게 반올림한 값이면 맞음"""
+        self.check(field, js_round(u) / k, got, near(u, got, k))
 
 
 def light_money(mo):
@@ -300,6 +566,8 @@ def run(a):
     n = len(dates)
     T, F = n - 1, n - 1 - WIN
     as_of, frm = dates[T], dates[F]
+    if day_no(as_of) is None or day_no(frm) is None:  # 8 · 9 는 달력 날 차이를 셈
+        raise InputError(f'날짜 줄(dates) 꼴이 다름(YYYY-MM-DD 아님 · {frm} · {as_of}) — {data / "days.json"}')
 
     mkt = load(data / 'mkt.json')
     comps = mkt.get('companies') if isinstance(mkt, dict) else None
@@ -334,6 +602,12 @@ def run(a):
     if not isinstance(bcomps, list):
         raise InputError(f'board.json 에 companies 없음 — {view / "board.json"}')
     agenda = load(view / 'agenda.json', need=False)
+    notes = [] if agenda is not None else ['agenda.json 없음(좋은 소식은 모름)']
+    fxr, why = fx_rate_of(site / 'next' / 'data' / 'fx-rate.json')  # 8 — 없거나 꼴이 다르면 None(두 쪽 모두 모름)
+    notes += [why] if why else []
+    us, why = us_of(Path(a.us))                                      # 9 — 없으면 빈 것(짝 있는 업종도 모름)
+    notes += why
+    dump = [] if a.dump else None
 
     got = load(fpath)
     cmp = Cmp()
@@ -362,13 +636,12 @@ def run(a):
         if abs(x_re - row['x']) > 0.011 or len(members) < 5:
             dropped.append(f'{name}(다시 센 x {x_re:.4f} · 막대 x {row["x"]} · 회사 {len(members)}곳)')
             continue
-        exp.append({'n': name, 'x': row['x'], 'i_raw': i_raw, 'members': members})
+        exp.append({'n': name, 'x': row['x'], 'i_raw': i_raw, 'members': members, 'I': I})  # I = 8 에도 씀
     if dropped:  # 결정표 2 · 7 — 확인이 어긋나면 파일을 만들지 않음(flow_why.mjs 는 던지고 build_data.mjs 가 파일을 지움 · 화면은 「왜? 아직 못 셌어요.」)
         cmp.check('x 확인 · 회사 수(어긋나면 파일이 없어야)', '파일 없음', dropped, False)
     f_inds = got.get('inds') if isinstance(got.get('inds'), list) else []
     cmp.eq('inds[].n', [e['n'] for e in exp], [r.get('n') if isinstance(r, dict) else r for r in f_inds])
 
-    notes = [] if agenda is not None else ['agenda.json 없음(좋은 소식은 모름)']
     for k, e in enumerate(exp):
         name = e['n']
         fr = next((r for r in f_inds if isinstance(r, dict) and r.get('n') == name), None)
@@ -423,12 +696,53 @@ def run(a):
         cmp.eq(f'{tag} · calc.pol', pol, calc.get('pol'))
         cmp.eq(f'{tag} · calc.abr', abr, calc.get('abr'))
 
+        # ⑥ 8 환율과 금리 — 쪽마다 calc.fx · calc.rate(모름 null)
+        fx_raw = {s: fx_side(s, fxr[s], dates, e['I'], M, F, T) if fxr else None for s in FX_PLACES}
+        fxw = {}
+        for s, r in fx_raw.items():
+            g = calc.get(s)
+            want = fxw[s] = fx_file(s, r, g)
+            if want is None or not isinstance(g, dict):
+                cmp.eq(f'{tag} · calc.{s}', want, g)
+                continue
+            cmp.eq(f'{tag} · calc.{s} 칸 이름', sorted(FX_KEYS), sorted(g))
+            for f in ('da', 'db', 'a', 'b', 'n', 'clear', 'moved', 'aligned'):
+                cmp.eq(f'{tag} · calc.{s}.{f}', want[f], g.get(f))
+            km = 10 ** FX_PLACES[s]
+            cmp.rnd(f'{tag} · calc.{s}.move', r['move'] * km, km, g.get('move'))
+            cmp.rnd(f'{tag} · calc.{s}.beta', r['beta'] * 10000, 10000, g.get('beta'))
+            cmp.rnd(f'{tag} · calc.{s}.t', r['t'] * 100, 100, g.get('t'))
+
+        # ⑥ 9 다른 나라 — calc.us(짝 없음 null · 모름이면 i · m · x null)
+        us_raw = us_side(name, us, dates, F, T)
+        gu, want = calc.get('us'), us_file(us_raw)
+        if want is None or not isinstance(gu, dict):
+            cmp.eq(f'{tag} · calc.us', want, gu)
+        else:
+            cmp.eq(f'{tag} · calc.us 칸 이름', sorted(want), sorted(gu))
+            for f in ('ind', 'b', 'e', 'n'):
+                cmp.eq(f'{tag} · calc.us.{f}', want[f], gu.get(f))
+            for f in ('i', 'm', 'x'):
+                if us_raw[f] is None:
+                    cmp.eq(f'{tag} · calc.us.{f}', None, gu.get(f))
+                else:
+                    cmp.rnd(f'{tag} · calc.us.{f}', us_raw[f] * 10000, 100, gu.get(f))
+
         lights = [light_money(money['1']), light_money(money['2']), light_money(money['3']),
                   'q' if good is None else ('on' if good else 'off'),
                   'q' if best is None else ('on' if best[1] > 0 else 'off'),
                   'q' if breadth['tot'] == 0 else ('on' if breadth['up'] * 2 >= breadth['tot'] else 'off'),
-                  'on' if e['i_raw'] > m_raw else 'off', 'q', 'q', light_hit(pol), light_hit(abr)]
+                  'on' if e['i_raw'] > m_raw else 'off', light_fx(fxw['fx'], fxw['rate']), light_us(us_raw, gu),
+                  light_hit(pol), light_hit(abr)]
         cmp.eq(f'{tag} · lights', lights, fr.get('lights'))
+        if dump is not None:  # 숨은 --dump — 파일 값을 보지 않은 다시 센 값만(반올림 · 가름 모두 다시 센 값으로)
+            own = {s: fx_file(s, r) for s, r in fx_raw.items()}
+            dump.append({'n': name,
+                         'lights': lights[:7] + [light_fx(own['fx'], own['rate']), light_us(us_raw)] + lights[9:],
+                         'calc': {**own, 'us': us_file(us_raw)},
+                         'raw': {**{s: None if r is None else {f: r[f] for f in ('move', 'beta', 't')}
+                                    for s, r in fx_raw.items()},
+                                 'us': None if us_raw is None else {f: us_raw[f] for f in ('i', 'm', 'x')}}})
         for it in fr.get('items') if isinstance(fr.get('items'), list) else []:
             kk = it.get('k') if isinstance(it, dict) else None
             if isinstance(kk, int) and not isinstance(kk, bool) and 1 <= kk <= 11:
@@ -443,30 +757,36 @@ def run(a):
         cmp.check('head.ko[0]', want[0], first, first in want)
     else:
         cmp.eq('head', None, head)
-    return cmp, as_of, len(exp), notes
+    return cmp, as_of, len(exp), notes, None if dump is None else {'asOf': as_of, 'from': frm, 'inds': dump}
 
 
 def main():
     ap = argparse.ArgumentParser(description='돈 흐름 칸 · 까닭 열한 가지 따로 세기 — flow-why.json 과 맞댐')
     ap.add_argument('--site', default='site', help='사이트 폴더(기본 site)')
     ap.add_argument('--view', default='public/data/atlas11/view', help='판 자료 폴더(기본 public/data/atlas11/view)')
+    ap.add_argument('--us', default='public/data/atlas11/us', help='미국 자료 폴더(기본 public/data/atlas11/us · input.json · market/INX.json)')
     ap.add_argument('--file', help='맞댈 파일(기본 <site>/next/data/flow-why.json)')
     ap.add_argument('--quiet', action='store_true', help='모두 맞으면 아무것도 안 찍음')
+    # 숨은 칸 — 파일에 있는 업종마다 다시 센 calc.fx · calc.rate · calc.us · 불빛(과 반올림 전 값)을 JSON 으로 stdout 에(맞대기 글은 stderr 로)
+    ap.add_argument('--dump', action='store_true', help=argparse.SUPPRESS)
     a = ap.parse_args()
     try:
-        cmp, as_of, k, notes = run(a)
+        cmp, as_of, k, notes, dump = run(a)
     except InputError as e:
         print(f'flow_why_verify: 입력 문제 — {e}', file=sys.stderr)
         sys.exit(2)
     show = lambda v: json.dumps(v, ensure_ascii=False)
+    out = sys.stderr if a.dump else sys.stdout
+    if dump is not None:
+        print(json.dumps(dump, ensure_ascii=False, indent=1))
     note = ''.join(f' · {x}' for x in notes)
     if cmp.bad:
         for field, exp, got in cmp.bad:
-            print(f'틀림 · {field} · 다시 센 값 {show(exp)} · 파일 값 {show(got)}')
-        print(f'flow_why_verify: 틀림 {len(cmp.bad)}곳 · {as_of} · 업종 {k} · 셈 칸 {cmp.n}{note}')
+            print(f'틀림 · {field} · 다시 센 값 {show(exp)} · 파일 값 {show(got)}', file=out)
+        print(f'flow_why_verify: 틀림 {len(cmp.bad)}곳 · {as_of} · 업종 {k} · 셈 칸 {cmp.n}{note}', file=out)
         sys.exit(1)
     if not a.quiet:
-        print(f'flow_why_verify: 맞음 · {as_of} · 업종 {k} · 셈 칸 {cmp.n}{note}')
+        print(f'flow_why_verify: 맞음 · {as_of} · 업종 {k} · 셈 칸 {cmp.n}{note}', file=out)
     sys.exit(0)
 
 

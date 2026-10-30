@@ -4,6 +4,7 @@
 //   쓰는 법: node scripts/atlas11/next/check_why11.mjs --base http://127.0.0.1:8826 [--pw /opt/node-tools/] [--out 결과.json] [--all]
 //     다른 쪽 검사와 같은 꼴(--all · --limit · --shard 를 받음 — 이 검사는 늘 모두 돎) · 자료는 시험 서버가 내보내는 파일(올릴 자료 그대로)
 //   ① 자료 — 꼴 · 기준 날 = 첫 화면 막대(theme-home.json) · 몰린 곳 셋 = 화면 flowRows · 열한 가지 · 불빛 = 글 · 시장 날씨 늘 켜짐 · 결론 마디 한두 개(마디 18자 안)
+//      · v2(2026-10-30 08:28 「어 그렇게 해」) 8 환율과 금리 · 9 다른 나라 불빛 = 파일 셈(calc.fx · calc.rate · calc.us)의 잣대(결정표 2-2 · 2-3)
 //      · 머리(시장이 내린 달) 잣대 · 영어 글 한글 0 · 쓰지 않을 말 0 · 망치는 길 낱말 0 · 앞날 · 사고팔기 말 0
 //   ② 첫 화면 390(한국어) — 머리 · 칸 이름 = 자료 · 몰린 곳 줄마다 누르는 칸(48 넘게) · 「왜?」 마디 = 자료 · 불빛 열하나 = 자료 · 무리 넷 · 「열한 가지 보기」
 //      · 「권하지 않습니다」와 첫 몰린 곳 「왜?」가 첫 한 화면 안 · 펼치면 열한 가지(번호 · 이름 · 글 · 출처 = 자료) · 무리 머리 · 대표 회사 말 · 다시 누르면 접힘
@@ -47,7 +48,12 @@ if (W && TH) {
     if (!Array.isArray(u.items) || u.items.length !== 11 || u.items.some((x, j) => x?.k !== j + 1)) { bad.push(`${u.n} 열한 가지 꼴`); continue; }
     if (JSON.stringify(u.lights) !== JSON.stringify(u.items.map(x => x.s)) || u.items.some(x => !['on', 'off', 'q'].includes(x.s))) bad.push(`${u.n} 불빛 ≠ 글`);
     if (u.items[6].s !== 'on') bad.push(`${u.n} 시장 날씨가 꺼짐(몰린 곳은 늘 켜짐)`);
-    if (u.items[7].s !== 'q' || u.items[8].s !== 'q') bad.push(`${u.n} 8 · 9 는 아직 「?」`);
+    { // v2(2026-10-30 08:28 「어 그렇게 해」 · 결정표 2-2 · 2-3) — 8 · 9 불빛 = 파일 셈(calc)의 잣대 · 8 이 모름이면 셈도 모름 쪽
+      const c = u.calc ?? {}, al = p => !!p && p.aligned === true, w8 = al(c.fx) || al(c.rate) ? 'on' : c.fx && c.rate ? 'off' : 'q', w9 = c.us == null || c.us.x == null ? 'q' : c.us.x > 0 ? 'on' : 'off';
+      if (u.items[7].s !== w8) bad.push(`${u.n} 8 불빛 ${u.items[7].s} ≠ 셈 ${w8}`);
+      if (u.items[8].s !== w9) bad.push(`${u.n} 9 불빛 ${u.items[8].s} ≠ 셈 ${w9}`);
+      for (const p of [c.fx, c.rate]) if (p && !(Number.isInteger(p.n) && p.n >= 120 && typeof p.clear === 'boolean' && typeof p.moved === 'boolean' && p.aligned === (p.clear && p.moved && Math.sign(p.beta) === Math.sign(p.move)))) bad.push(`${u.n} 8 셈 꼴 ${JSON.stringify(p)}`);
+    }
     if (!Array.isArray(u.why?.ko) || !u.why.ko.length || u.why.ko.length > 2 || u.why.en?.length !== u.why.ko.length || u.why.ko.some(c => [...c].length > 18)) bad.push(`${u.n} 결론 마디 ${JSON.stringify(u.why)}`);
     for (const x of u.items) { if (!x.ko?.t || !x.en?.t) bad.push(`${u.n} ${x.k} 빈 글`); ko.push(x.ko?.t ?? '', x.ko?.sub ?? ''); en.push(x.en?.t ?? '', x.en?.sub ?? ''); }
     ko.push(...(u.why?.ko ?? [])); en.push(...(u.why?.en ?? []));
@@ -65,7 +71,8 @@ if (W && TH) {
   const ruin = []; for (const r of RUIN) { for (const w of r.ko) if (k2.includes(w)) ruin.push(r.key + ' 「' + w + '」'); for (const w of r.en) if (new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(E)) ruin.push(r.key + ' 「' + w + '」'); }
   check(!ruin.length, '① 망치는 길 낱말 0', ruin.join(' | '));
   check(!FORE.test(K + '\n' + E), '① 앞날 · 사고팔기 말 0', (K + E).match(FORE)?.[0]);
-  R.m.data = {asOf: W.asOf, m, head: W.head?.ko ?? null, inds: (W.inds ?? []).map(u => ({n: u.n, x: u.x, i: u.i, why: u.why?.ko ?? null, lights: (u.lights ?? []).join(' ')}))}; // 깃허브 결과 파일에 남김(올리기 전 진짜 자료 결론을 봄)
+  R.m.data = {asOf: W.asOf, m, head: W.head?.ko ?? null, inds: (W.inds ?? []).map(u => ({n: u.n, x: u.x, i: u.i, why: u.why?.ko ?? null, lights: (u.lights ?? []).join(' '),
+    c8: [u.calc?.fx, u.calc?.rate].map(p => (p ? `${p.move} t${p.t} ${p.aligned ? '맞음' : '아님'}` : null)), t8: u.items?.[7]?.ko?.t ?? null, c9: u.calc?.us ?? null, t9: u.items?.[8]?.ko?.sub ?? u.items?.[8]?.ko?.t ?? null}))}; // 깃허브 결과 파일에 남김(올리기 전 진짜 자료 결론을 봄) · v2 8 · 9 셈도
 }
 
 /* ── 브라우저 ── */
@@ -199,6 +206,8 @@ try {
       check(JSON.stringify(o.gh.map(ns)) === JSON.stringify((W.groups ?? []).map(g => ns(g[L] + (g.q?.[L] ?? '')))), `${t} 무리 머리 넷`, o.gh.join(' | '));
       check(o.note === W.note?.[L], `${t} 대표 회사 기록 말`, o.note);
       check(ns(o.key) === ns(en ? 'Yes by the record No Not known yet' : '기록으로 맞음 아님 아직 모름'), `${t} 불빛 뜻`, o.key);
+      // 상황 무리(7 시장 날씨 · 8 환율과 금리 · 9 다른 나라) 사진 — 결과 폴더에 업종마다 한 장(v2 2026-10-30 08:28 · 진짜 자료 글을 그림으로 봄) · 못 찍어도 검사는 그대로
+      if (!en && OUT) await p.locator('#view section.nh-hero ol.nh-fl-up > li').nth(k).locator('details.y11-box .y11-gr').nth(2).screenshot({path: path.join(path.dirname(OUT), `why11-sit-${k + 1}.jpg`), type: 'jpeg', quality: 70}).catch(() => {});
     }
     judgeRead(`${tag} 세 칸 펼침`, await READ(p), {en});
     // 다시 누르면 접힘
