@@ -482,7 +482,7 @@ html.home #view svg.nh-waf { padding: 0; } /* 다른 쪽 「.me」 칸 안쪽 �
    · 글씨 17px 위 · 누르는 칸 48px 위 · 빨간 글은 숫자만(불빛은 그림 · 짙은 자주) · 그림자 · 그러데이션 없음 · 밤 무대 색은 clock_theme.py 가 이 규칙에서 지음 */
 html.home #view .nh-hero { grid-template-rows: none; }
 html.home #view .nh-hero .nh-h1 > span { display: block; }
-html.home #view .nh-hero > .nh-no { align-self: start; margin-top: -2px; }
+html.home #view .nh-hero > .nh-no { align-self: start; margin-top: -2px; min-height: 2.9em; } /* 늘 두 줄 자리(2 × 1.45) — 글꼴(Pretendard)이 늦게 와 이 줄이 두 줄 → 한 줄로 바뀌어도 아래 칸이 25px 밀리지 않게 · 여는 동안 칸(기기 글꼴)과 다 그린 칸 자리가 같게(2026-10-30 큰 검사 talk11 1/11 why11 ⑦ 285 ≠ 260 · 옛 why11-89 5/11 같은 걸림) */
 html.home #view .y11-i { list-style: none; }
 html.home #view .y11-box { display: block; border-radius: 10px; }
 html.home #view .y11-box > summary { list-style: none; cursor: pointer; border-radius: 10px; }

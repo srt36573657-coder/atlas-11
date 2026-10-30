@@ -336,7 +336,7 @@ try {
       const fin = R.m.hero390;
       check(JSON.stringify(B.h1) === JSON.stringify(DEF.h1) && B.order.slice(0, 4).join() === 'nh-pm,nh-h1,nh-no,nh-fm', `${tag} 머리 · 차례`, B.h1.join(' / ') + ' · ' + B.order.join());
       check(B.items.length === FLOW_N && B.items.every(x => x.cls.includes('y11-i')), `${tag} 몰린 곳 자리 ${FLOW_N}`, B.items.map(x => x.cls).join(','));
-      check(fin && near(B.noR?.t, fin.no?.t) && B.items.every((x, k) => near(x.r?.t, fin.items[k]?.[1]) && near(x.r?.h, fin.items[k]?.[2])), `${tag} 자리 = 다 그린 칸(1px 안 · 밀림 0)`, `${B.noR?.t}/${fin?.no?.t} · ${B.items.map(x => `${x.r?.t}+${x.r?.h}`)} · ${fin?.items.map(x => `${x[1]}+${x[2]}`)}`);
+      check(fin && near(B.noR?.t, fin.no?.t) && B.items.every((x, k) => near(x.r?.t, fin.items[k]?.[1]) && near(x.r?.h, fin.items[k]?.[2])), `${tag} 자리 = 다 그린 칸(1px 안 · 밀림 0)`, `${B.noR?.t}+${B.noR?.h}/${fin?.no?.t}+${fin?.no?.h} · ${B.items.map(x => `${x.r?.t}+${x.r?.h}`)} · ${fin?.items.map(x => `${x[1]}+${x[2]}`)}`);
     }
     await ctx.close();
   }
