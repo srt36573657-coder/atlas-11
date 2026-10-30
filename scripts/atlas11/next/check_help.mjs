@@ -156,6 +156,8 @@ try {
     check(await p.evaluate(() => document.querySelector('#view .hp-vb[aria-checked="true"]')?.textContent) === '곧은 말', '다시 열어도 곧은 말');
     // #/help/ask 로 바로 열면 그 문을 화면 맨 위에(총정리 2026-10-22 D2 — 그린 뒤 맨 위로 올리는 app.js 보다 나중에)
     await p.goto(URL_OF('#/help/ask'), {waitUntil: 'load'}); await p.waitForSelector('#view .hp-door'); await p.waitForTimeout(700);
+    // 맨 위로 올림이 700ms 보다 늦을 때가 있음(2026-10-30 진짜 사이트 큰 검사 4/11 — {"top":463,"y":0} · 2/11 · 3/11 은 통과) — 5초까지 기다린 뒤 잼(같은 잣대)
+    await p.waitForFunction(() => { const d = document.querySelector('#hp-ask')?.previousElementSibling, r = d?.getBoundingClientRect(); return d?.getAttribute('aria-expanded') === 'true' && scrollY > 0 && !!r && r.top >= 0 && r.top <= 120; }, null, {timeout: 5000}).catch(() => {});
     const dl = await p.evaluate(() => { const d = document.querySelector('#hp-ask')?.previousElementSibling, r = d?.getBoundingClientRect(); return {exp: d?.getAttribute('aria-expanded') ?? null, top: r ? Math.round(r.top) : null, y: Math.round(scrollY)}; });
     check(dl.exp === 'true' && dl.y > 0 && dl.top >= 0 && dl.top <= 120, '#/help/ask 로 바로 열면 물어보기 문이 맨 위', JSON.stringify(dl));
     check(!errs.length, '길 화면 오류 0', errs.slice(0, 2).join(' | '));
