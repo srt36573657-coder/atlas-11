@@ -800,6 +800,16 @@
    "state": "성공",
    "proof": "커밋 47a9a914d · 6ae70bfdb · main 77c3d3a53 · 큰 검사 2/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/41026612523 · 올리기 https://github.com/srt36573657-coder/atlas-11/actions/runs/41027893242 · 진짜 사이트 큰 검사 3/11 실패 0 https://github.com/srt36573657-coder/atlas-11/actions/runs/41028840696 · 사진 reports/atlas11/probe/next-full/why11-talk-1-8.jpg · 말씀 원문 docs/design/why11-2026-10-30/order-1615.txt",
    "short": "첫 화면 불빛을 누르면 그 불빛이 말풍선으로 답해요. 진짜 사이트에서 확인했어요."
+  },
+  {
+   "id": "0349",
+   "at": "2026-10-31T03:49+09:00",
+   "words": "이제는 로마신화에  72명 먼저 선정해",
+   "then": "03:49(서울) 받음 · 현명한 서른여섯 명(10-29 01:17 「선정 먼저」)과 같은 꼴로 알아들음 · 이해 보고와 끝 시각(사장님 시계 3시 50분) 보냄 · 여섯 무리 × 열둘로 고름(열두 큰 신 · 로마 토박이 신 · 물과 땅과 때의 신 · 집과 마음과 저승의 신 · 좋은 것을 모신 신 · 로마를 세운 이야기 속 사람) · 다른 일꾼이 72명을 한 명씩 웹 출처와 맞댐(사실 틀림 0 · 다듬은 곳 다섯 고침)",
+   "did": "로마 신화에서 일흔두 명을 먼저 골라 한 명마다 누구인지 한 줄로 적은 한 장 · 라틴 이름과 출처 · 그리스 이야기에만 있는 이름은 뺌 · 다음 일(한 명마다 가르침)은 여쭘으로 남김",
+   "state": "완성",
+   "proof": "자료 docs/design/roman72-2026-10-31/roman72.json · 맞대 본 기록 docs/design/roman72-2026-10-31/check.md · 말씀 원문 docs/design/roman72-2026-10-31/order-0349.txt · 그림 /home/claude/turn/roman72.html",
+   "short": "로마 신화에서 신과 영웅 일흔두 명을 여섯 무리로 골라 드렸어요."
   }
  ],
  "open": [
