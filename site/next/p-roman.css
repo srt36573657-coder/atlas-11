@@ -1,0 +1,68 @@
+/* 로마 신 72(#/roman · p-roman.js) — 사장님 2026-10-30(+03) 22:23 「그냥재미삼아 적절한곳에 배치해봐 둘리에」(docs/design/roman72-site-2026-10-31/order-0423.txt)
+   읽는 종이 판 = 서른아홉 스승과 같은 판(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · p-sage.css 와 같은 빛)
+   ① 글씨체 하나(var(--sans)) ② 가장 작은 글 19px(fs-2) · 신 이름 24px(fs-4) ③ 바탕 = 이 쪽만 밝은 종이 #FDF9F5(html.pg-roman = app.js whiteFor) · 카드 흰색
+   ④ 글씨색 거의 검정 #1D1726 · 둘째 글 #4A4356 · 강조 짙은 포도주 #8E1A5C — 모든 글이 제 바탕과 7:1 넘게(check_roman 이 잼)
+   여섯 무리 빛은 점에만(글에는 안 씀) · 누르는 것 = 테 #8C8291(바탕과 3:1 넘게) · 48px 넘게 · 글씨 = var(--fs-n) · 여백 = var(--sp-n) 만(page_rules cssRules)
+   그림자 없음 · 입체 없음 · 이 파일은 판 만드는 기계(clock_theme.py) 셈 밖 */
+html.pg-roman #view { display: flow-root; background: #FDF9F5; color: #1D1726; color-scheme: light;
+  --ink: #1D1726; --ink-hi: #1D1726; --sub: #4A4356; --mute: #4A4356; --flat: #4A4356; --bg: #FDF9F5;
+  --card: #FFFFFF; --card2: #F6F0EA; --card3: #F1E8DF; --hair: #8C8291; --hair2: #8C8291; --line: #E2D7CC; --hair-soft: #E2D7CC; --seam: #E2D7CC; --press: #F6F0EA; --lift: #FFFFFF;
+  --gold: #8E1A5C; --gold-line: #8E1A5C; --gold-wash: #FBF0F5; }
+html.pg-roman #view :focus-visible { outline-color: var(--gold); } /* 판 전체 초점 테 하늘빛은 밝은 종이 위에서 흐림 — 이 쪽만 짙은 포도주 */
+.rm { --g1: #8E1A5C; --g2: #9D6D1C; --g3: #0F7A5C; --g4: #5A30B9; --g5: #B4451F; --g6: #1F5FA8; --rm-g: var(--gold);
+  display: grid; gap: var(--sp-3); margin: 0 var(--sp-2); padding-bottom: var(--sp-3); color: var(--ink); font-family: var(--sans); }
+.rm .g1 { --rm-g: var(--g1); } .rm .g2 { --rm-g: var(--g2); } .rm .g3 { --rm-g: var(--g3); }
+.rm .g4 { --rm-g: var(--g4); } .rm .g5 { --rm-g: var(--g5); } .rm .g6 { --rm-g: var(--g6); }
+.rm p, .rm h1, .rm h2, .rm ul { margin: 0; }
+
+/* ── 머리 ── */
+.rm-hero { display: grid; gap: var(--sp-2); padding-top: var(--sp-3); }
+#view h1.rm-h1 { margin: 0; font-size: var(--fs-5); line-height: 1.25; font-weight: 800; letter-spacing: -.01em; color: var(--ink); text-wrap: balance; }
+.rm-lead { font-size: var(--fs-4); line-height: 1.55; color: var(--ink); text-wrap: pretty; }
+.rm-note { font-size: var(--fs-3); line-height: 1.6; color: var(--sub); }
+
+/* ── 여덟 곳 단추 ── */
+.rm-jumps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--sp-1); } /* 휴대폰 = 한 줄에 하나(두 칸이면 긴 이름이 세 줄로 꺾임 — 390 사진) */
+.rm-jump { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; column-gap: var(--sp-1); align-items: center; min-height: 56px;
+  padding: var(--sp-1) var(--sp-2); border: 1px solid var(--hair); border-radius: 14px; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.rm-jn { display: inline-grid; place-items: center; width: 36px; height: 36px; border: 3px solid var(--gold); border-radius: 50%; font-size: var(--fs-2); line-height: 1; font-weight: 800; color: var(--ink); }
+.rm-jump b { min-width: 0; font-size: var(--fs-3); line-height: 1.3; font-weight: 800; }
+.rm-jc { font-size: var(--fs-2); line-height: 1.35; color: var(--sub); font-weight: 700; white-space: nowrap; }
+
+/* ── 자리 무리 ── */
+.rm-zone { display: grid; gap: var(--sp-2); padding-top: var(--sp-3); border-top: 4px solid var(--gold); scroll-margin-top: calc(var(--top) + 8px); }
+.rm-zh { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); font-size: var(--fs-4); line-height: 1.3; font-weight: 800; }
+.rm-zn { display: inline-grid; place-items: center; width: 44px; height: 44px; flex: none; border: 3px solid var(--gold); border-radius: 50%; background: var(--card); font-size: var(--fs-3); font-weight: 800; }
+.rm-zt { min-width: 0; text-wrap: balance; }
+.rm-zp { font-size: var(--fs-3); line-height: 1.6; color: var(--sub); text-wrap: pretty; }
+.rm-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: var(--sp-1); }
+.rm-grid li { display: grid; min-width: 0; }
+
+/* ── 카드 ── 자리(포도주) → 신 이름 · 라틴 이름 → 누구 → 왜 여기(옅은 포도주 칸) → 무리(빛 점) · 고리면 오른쪽 › */
+.rm-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-1); row-gap: var(--sp-1); align-content: start; min-height: 48px; padding: var(--sp-2);
+  border: 1px solid var(--hair); border-radius: 16px; background: var(--card); color: var(--ink); text-decoration: none; }
+.rm-card > :not(.rm-go) { grid-column: 1; min-width: 0; }
+.rm-card.rm-here { border-color: var(--line); background: var(--card2); }
+.rm-spot { font-size: var(--fs-2); line-height: 1.4; font-weight: 800; color: var(--gold); }
+.rm-god { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-1); }
+.rm-gn { font-size: var(--fs-4); line-height: 1.3; font-weight: 800; color: var(--ink); }
+.rm-la { font-size: var(--fs-2); line-height: 1.35; font-style: italic; color: var(--sub); }
+.rm-one { font-size: var(--fs-3); line-height: 1.55; color: var(--ink); text-wrap: pretty; }
+.rm-why { display: block; padding: var(--sp-1) var(--sp-2); border-radius: 12px; background: var(--gold-wash); font-size: var(--fs-3); line-height: 1.55; color: var(--ink); text-wrap: pretty; }
+.rm-here .rm-why { background: var(--card); }
+.rm-wl { margin-right: var(--sp-1); font-weight: 800; color: var(--gold); }
+.rm-grp { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-2); line-height: 1.35; color: var(--sub); font-weight: 700; }
+.rm-grp i { width: 12px; height: 12px; flex: none; border-radius: 50%; background: var(--rm-g); }
+.rm-go { grid-column: 2; grid-row: 1 / span 5; align-self: center; font-style: normal; font-size: var(--fs-5); line-height: 1; color: var(--gold); }
+.rm-no { font-size: var(--fs-2); line-height: 1.35; color: var(--sub); }
+
+/* ── 끝 ── */
+.rm-end { display: grid; gap: var(--sp-1); padding: var(--sp-3) var(--sp-2); border: 1px solid var(--line); border-radius: 20px; background: var(--card); text-align: center; }
+.rm-e1 { font-size: var(--fs-4); line-height: 1.4; font-weight: 800; color: var(--gold); text-wrap: balance; }
+.rm-e2 { font-size: var(--fs-3); line-height: 1.6; color: var(--sub); }
+.rm .safe { margin: 0; font-size: var(--fs-2); line-height: 1.6; color: var(--sub); }
+@media (hover: hover) { .rm-jump:hover, a.rm-card:hover { background: var(--card3); } }
+/* 아주 크게(html.f3 · #view 128.6%) — 320 폭에서 카드 글 칸이 좁아 옆 여백만 줄임(글씨는 그대로) */
+html.f3 #view .rm { margin: 0 var(--sp-1); }
+html.f3 #view .rm-card { padding: var(--sp-2) var(--sp-1); }
+html.f3 #view .rm-why { padding: var(--sp-1); }

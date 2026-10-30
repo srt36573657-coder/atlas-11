@@ -113,7 +113,7 @@ add('chan', '#/ch/i/' + enc('없는업종')); add('chan', '#/ch/g/zz');
 /* 옮긴 쪽(--modules) — 모듈 파일(/next/p-<이름>.js)이 없으면 「모듈 없음」 실패
    · 2026-10-17 고도리(규칙 77): why = 「친구야, 왜 사?」 질문 열한 개(#/why — 답 단추를 모두 눌러 보고 다음 › 으로 결과까지) · gdr = 고도리 칸(#/gdr · #/gdr/1 — 내 돈을 바꾸고 칸 하나를 엶)
    · --mods why,gdr = 그 쪽만(고치는 동안 빨리 — full 이 아님) */
-const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today', 'why', 'gdr', 'share', 'hold', 'theme', 'sage']; // theme = 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:54 · p-theme.js) // share = 친구가 연 보내기(#/s/…) · hold = 보유종목 점검(#/me 맨 위) — 2026-10-17 21:10 [4] · [5]
+const MODS = ['past', 'rivals', 'grow', 'range', 'surge', 'cal', 'cond', 'talk', 'up', 'time', 'info', 'x', 'co', 'chx', 'today', 'why', 'gdr', 'share', 'hold', 'theme', 'sage', 'roman']; // theme = 테마 시계 쪽(#/t/… · 사장님 2026-10-19 16:54 · p-theme.js) // share = 친구가 연 보내기(#/s/…) · hold = 보유종목 점검(#/me 맨 위) — 2026-10-17 21:10 [4] · [5]
 const MODS_ONLY = arg('--mods', null)?.split(',').map(s => s.trim()).filter(Boolean) ?? null;
 const modHave = {};
 if (MODULES || DEV) await Promise.all(MODS.map(async m => { try { const r = await fetchRetry(base + '/next/p-' + m + '.js', {method: 'HEAD'}); modHave[m] = r.ok; } catch { modHave[m] = false; } })); // 잠깐 막힘에 「모듈 없음」이 되면 몫마다 일감 목록이 달라짐 — 다시 받기
@@ -135,7 +135,8 @@ if (MODULES && on('mod')) {
     sage: await (async () => { // 서른아홉 스승(2026-10-29 19:14 · p-sage.js — 영어 글은 자료 sage39.json 의 en 을 바로 그림) · --all 이면 서른아홉 모두
       const ids = await fetchRetry(base + '/next/data/sage39.json').then(r => (r.ok ? r.json() : null)).catch(() => null).then(j => (j?.people ?? []).map(x => x.id));
       return ['#/sage', ...(ALL ? ids : ['socrates', 'marcus', 'lincoln'].filter(i => ids.includes(i))).map(i => '#/sage/' + i)];
-    })()}; // 친구가 연 보내기 · 같이 따져 줘 · 깨진 주소([4] 6 ~ 8)
+    })(),
+    roman: ['#/roman']}; // 로마 신 72(사장님 2026-10-30(+03) 22:23 · p-roman.js — 영어 글은 자료 roman72.js 의 영어를 바로 그림 · 일흔둘 모두 한 쪽) // 친구가 연 보내기 · 같이 따져 줘 · 깨진 주소([4] 6 ~ 8)
   for (const [m, rs] of Object.entries(R)) { if (MODS_ONLY && !MODS_ONLY.includes(m)) continue; if (!modHave[m]) { fail('모듈 없음', 'p-' + m + '.js', '옮긴 쪽 파일이 아직 없음 — 길 ' + rs.length + '개를 못 봄'); continue; } for (const r of rs) routes.push({kind: 'mod', r, mod: m}); }
 }
 

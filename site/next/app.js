@@ -1261,10 +1261,11 @@ VIEWS.gift = a => page('gift', a); // 상품권 방(사장님 2026-10-22 03:38 �
 VIEWS.dori = async () => { // 돌이 단추(아래 줄 넷째 · 사장님 2026-10-26 14:40 「어 넣어」 — 물음 「없어지는 셋은 돌이 단추 안에 넣을까요?」) — 시황 · 관심 · 보유종목 + 오늘 장 · 돌이 인사 · 고객센터
   const it = (label, href) => h('a', {class: 'dm-it', href}, h('b', {text: label}), h('i', {'aria-hidden': 'true', text: '›'}));
   return {title: NAME, nodes: [h('h1', {class: 'h', text: NAME}), h('nav', {class: 'dm', 'aria-label': NAME},
-    it('한 달 뒤', '#/why/later'), it('보유종목', '#/me'), it('관심', '#/sub'), it('오늘 장', '#/'), it('시황', '#/shorts'), it('서른아홉 스승', '#/sage'), it(NAME + ' 인사', '#/t/hello'), it('고객센터', '#/help')), // 서른아홉 스승 = 생각 공부(2026-10-29 19:14) — 시장 다음 · 인사 앞 // 결(사장님 2026-10-27 01:50 「중요순 · 기승전결」) — 한 달 뒤 → 내 것 → 시장 → 인사 · 고객센터
+    it('한 달 뒤', '#/why/later'), it('보유종목', '#/me'), it('관심', '#/sub'), it('오늘 장', '#/'), it('시황', '#/shorts'), it('서른아홉 스승', '#/sage'), it('로마 신 72', '#/roman'), it(NAME + ' 인사', '#/t/hello'), it('고객센터', '#/help')), // 서른아홉 스승 = 생각 공부(2026-10-29 19:14) — 시장 다음 · 인사 앞 // 결(사장님 2026-10-27 01:50 「중요순 · 기승전결」) — 한 달 뒤 → 내 것 → 시장 → 인사 · 고객센터
     h('p', {class: 'safe', text: josa(NAME, '는') + ' 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'})]};
 };
 VIEWS.sage = a => page('sage', a); // 서른아홉 스승(사장님 2026-10-29 19:14 「…예술적인 걸작을 만들어 봐라 퍼음 부처 끝까지」 · p-sage.js · docs/design/wise39-2026-10-29) — 둘이 단추 안 · 첫 화면 스승 줄에서
+VIEWS.roman = a => page('roman', a); // 로마 신 72(사장님 2026-10-30(+03) 22:23 「그냥재미삼아 적절한곳에 배치해봐 둘리에」 · p-roman.js · 자료 roman72.js · docs/design/roman72-site-2026-10-31) — 둘이 단추 안 · 서른아홉 스승 다음
 VIEWS.help = a => page('help', a); // 고객센터(사장님 2026-10-21 22:54 · 22:55 「피드백 남기는 공간이랑 QA남기는공간 고객센터 안내 공간」 · 23:09 · p-help.js) — 모든 기기 · 맨 아래 고리
 VIEWS.admin = a => page('admin', a); // 관리자 화면(사장님 2026-10-19 13:54 「관리자 페이지도 있어야 해」 · 사장님 열쇠 기기만 · p-admin.js)
 VIEWS.jinhwa = a => page('jinhwa', a); import('/next/tally.js').then(m => m.tally('visit')).catch(() => {}); // 진화 쪽 길(사장님 2026-10-18 22:45 「진화 탭을 상단에 만들어」 · 22:46 「모든 사람들」 · 일꾼 KM) — 모든 기기가 엶 · 단추는 p-jinhwa 가 사장님 열쇠 기기에서만 그림 · 합계 칸 참고 「연 수」 쪽마다 한 번(일꾼 KD)
@@ -1279,7 +1280,7 @@ jhBtn.after(giftBtn);
 /* 아래 단추 다섯(사장님 2026-10-17 21:10 [2] · 규칙 2 「탭 이름 = 화면 제목 · 숫자 없음」) — data-tab 값 → 그 탭 이름(창 제목) */
 const TABS = {'': 'home', f: 'home', shorts: 'shorts', why: 'why', sub: 'sub', me: 'me'};
 const TAB_NAME = {home: '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목'};
-const DOCK = {dori: 'dori', shorts: 'dori', sub: 'dori', me: 'dori', help: 'dori', sage: 'dori'}; // 아래 단추 넷(꽃 될 회사 · 지난 기록 · 왜 사? · 돌이 — 기승전결 · 사장님 2026-10-27 01:50 · 02:15 · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이) · 창 제목은 위 TAB_NAME 그대로(쪽 이름)
+const DOCK = {dori: 'dori', shorts: 'dori', sub: 'dori', me: 'dori', help: 'dori', sage: 'dori', roman: 'dori'}; // 아래 단추 넷(꽃 될 회사 · 지난 기록 · 왜 사? · 돌이 — 기승전결 · 사장님 2026-10-27 01:50 · 02:15 · 옛 넷 2026-10-26 14:40 왜 사? · 한 달 뒤 · 지난 기록 · 돌이) · 창 제목은 위 TAB_NAME 그대로(쪽 이름)
 const OLD_KINDS = new Set(['surge', 'cal', 'cond', 'talk', 'up', 'time', 'x', 'info', 'today', 'why', 'gdr']); // 아직 지금 아틀란스(/atlas/)에서 여는 쪽
 /* 흰 판(사장님 2026-10-19 02:03 · 올리기 ① 「색과 첫 화면」) — html.white 는 첫 화면(#/ · 칩 없는 '' 길)에서만 · 다른 길은 뗌 · 창 위 띠 색(theme-color)도 같이
    index.html 이 white 로 시작(첫 그림이 늦지 않게) → 여기서 곧바로 길에 맞춤 → 화면을 바꿀 때마다 새 화면과 같은 순간에 바꿈 */
@@ -1290,6 +1291,7 @@ function whiteFor(k) {
   document.documentElement.classList.toggle('home', k === ''); // 첫 화면 모양(home.css)은 첫 화면 길에서만
   document.documentElement.classList.toggle('pg-why', k === 'why'); // 「왜 사?」 쪽은 밝은 앱 판(사장님 2026-10-28 02:01 「변경 안돼잖아 과감하게 해」 · 그림 일곱 장 · p-why.css html.pg-why)
   document.documentElement.classList.toggle('pg-sage', k === 'sage'); // 서른아홉 스승은 읽는 종이 판(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · p-sage.css html.pg-sage)
+  document.documentElement.classList.toggle('pg-roman', k === 'roman'); // 로마 신 72도 같은 읽는 종이 판(p-roman.css html.pg-roman · 서른아홉 스승과 같은 빛)
   $('meta[name="theme-color"]')?.setAttribute('content', '#070514'); // 밤 무대 판 막대(2026-10-29 16:57 무대 사진 · clock.css) // 최고급 핑크 판의 포도주 빛 막대 #3D1028(2026-10-28 12:00) // 청록 판 창 위 띠(2026-10-26) — 옛 흰 판 #FFFFFF // 맑은 연초록(2026-10-23 00:01 「맑은 은은한 녹색」) — 옛 숲 초록(2026-10-22 23:23) · 우주 밤하늘(2026-10-20 20:27)
 }
 whiteFor(parse(location.hash || '#/').k);

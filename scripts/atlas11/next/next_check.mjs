@@ -139,6 +139,7 @@ const knownHref = h => {
   if ((mm = /^#\/t\/c\/([0-9A-Z]{6})(?:\/(?:lead|why|rank|unknown|keep))?$/.exec(h))) return !!CO[mm[1]]; // 회사 여섯 쪽
   if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)
   if (h === '#/sage') return true; // 서른아홉 스승 첫 쪽(둘이 단추 안 · p-sage.js)
+  if (h === '#/roman') return true; // 로마 신 72(둘이 단추 안 · p-roman.js · 사장님 2026-10-30(+03) 22:23)
   if ((mm = /^#\/sage\/([a-z]+)$/.exec(h))) return !!SAGE?.people?.some(x => x.id === mm[1]); // 한 사람(첫 화면 스승 줄 · 앞 · 다음) — 이름이 sage39.json 에 있어야
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)
   if ((mm = /^#\/why\/([0-9A-Z]{6})$/.exec(h))) return READY.has('why') && !!CO[mm[1]]; // 「이 회사로 왜 사?」(회사 화면 a.why-go · 보유종목 「이 회사로 왜 사? 적기」 — [3] 2)
@@ -173,6 +174,7 @@ const MODR = {surge: ['#/surge', '#/surge/10', '#/surge/20', '#/surge/30', '#/su
 // 친구가 연 보내기(#/s/<번호>/<보낸 날>/<그날 값>/<s|a> — [4] 6 · 7 · 8 · p-share) · 깨진 주소
 ROUTES.push('#/gift'); // 상품권 방(2026-10-22 03:38) — 세 폭 · 쓰지 않을 말 · 44px · 고리
 ROUTES.push('#/sage', '#/sage/socrates', '#/sage/marcus', '#/sage/lincoln'); // 서른아홉 스승(2026-10-29 19:14) — 첫 쪽 · 첫 사람 줄 · 긴 이름 · 끝 사람(다음 = 처음) · 서른아홉 모두는 check_sage
+ROUTES.push('#/roman'); // 로마 신 72(사장님 2026-10-30(+03) 22:23) — 세 폭 · 쓰지 않을 말 · 44px · 고리(카드 일흔둘이 가는 길 모두) · 자리 · 글 맞대기는 check_roman
 ROUTES.push('#/s/005930/' + mkt.base + '/70000/s', '#/s/005930/' + mkt.base + '/70000/a', '#/s/ZZZZZZ/2026-13-40/0/s');
 for (const [k, rs] of Object.entries(MODR)) if (READY.has(k)) ROUTES.push(...rs); // 옮긴 쪽도 세 폭 · 쓰지 않을 말 · 44px · 고리
 for (const w of [320, 360, 390]) {
