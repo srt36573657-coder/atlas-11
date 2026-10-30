@@ -102,29 +102,26 @@ const moreLine = () => h('div', {class: 'y11-m'}, h('span', {text: EN ? 'See all
 /** 「왜?」 한 줄 — 마디마다 한 줄(block) · 자료가 없으면 「아직 못 셌어요.」 */
 const whyLine = lines => h('div', {class: 'y11-l'}, h('b', {class: 'y11-q', text: EN ? 'Why?' : '왜?'}),
   h('span', {class: 'y11-t'}, ...(Array.isArray(lines) && lines.length ? lines : [EN ? 'Not counted yet.' : '아직 못 셌어요.']).map(t => h('span', {text: t}))));
-/** 펼친 칸 — 불빛 뜻 · 무리 넷(이름 · 물음) · 열한 가지(번호 · 이름 · 기록 한 줄 · 출처 한 줄) · 대표 회사 기록이라는 말 */
-function whyList(w, W) {
-  const L = o => (EN ? o?.en : o?.ko), key = (st, ko, en) => h('span', {class: 'y11-k'}, dots([st]), h('span', {text: EN ? en : ko}));
-  const groups = Array.isArray(W.groups) && W.groups.length ? W.groups : WG.map(([ko, en, ks]) => ({ko, en, ks}));
-  return h('div', {class: 'y11-x'},
-    h('p', {class: 'y11-key'}, key('on', '기록으로 맞음', 'Yes by the record'), key('off', '아님', 'No'), key('q', '아직 모름', 'Not known yet')),
-    ...groups.map(g => h('div', {class: 'y11-gr'},
-      h('p', {class: 'y11-gh'}, h('b', {text: EN ? g.en : g.ko}), L(g.q) ? h('span', {text: L(g.q)}) : null),
-      h('ol', {class: 'y11-ol'}, ...(g.ks ?? []).map(k => {
-        const it = (w.items ?? []).find(x => x?.k === k), st = it?.s === 'on' || it?.s === 'off' ? it.s : 'q', tx = L(it);
-        return h('li', {class: 'y11-li', 'data-s': st}, dots([st]), h('div', {class: 'y11-tx'},
-          h('p', {class: 'y11-nm'}, h('b', {class: 'num', text: String(k)}), h('span', {text: L(W.names?.[k]) ?? ''})),
-          h('p', {class: 'y11-tt', text: tx?.t ?? '?'}),
-          tx?.sub ? h('p', {class: 'y11-sub', text: tx.sub}) : null));
-      })))),
-    L(W.note) ? h('p', {class: 'y11-note', text: L(W.note)}) : null);
-}
-/** 몰린 곳 한 줄 — 막대 줄 + 「왜?」 + 불빛(자료가 있으면 누르는 칸 · 없으면 같은 모양 「?」) */
+/* 펼친 칸 = 말하는 불빛(사장님 2026-10-30 15:15(+08) 「응」 · docs/design/why11-2026-10-30/order-1615.txt · 결정표 6) — 코드 site/next/home-talk.js · 모양 site/next/home-talk.css
+   칸을 처음 열 때(누르기 시작할 때 미리) 두 파일을 받아 채움 — 첫 화면 파일에 넣으면 느린 4G 가장 큰 그림이 2.5초 선을 넘음(2413ms → 2575ms) · 받는 동안 「불빛 판을 여는 중이에요.」 · 못 받으면 다시 누르게 */
+let talkP = null;
+const talkCss = () => new Promise(res => {
+  if (document.querySelector('link[data-y11-talk]')) return res();
+  const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/next/home-talk.css'; l.setAttribute('data-y11-talk', '');
+  l.addEventListener('load', () => res()); l.addEventListener('error', () => res()); setTimeout(res, 4000); document.head.append(l);
+});
+const loadTalk = () => (talkP ??= Promise.all([import('./home-talk.js'), talkCss()]).then(([m]) => m).catch(e => { talkP = null; throw e; }));
+const talkWait = () => h('p', {class: 'y11-wt', text: EN ? 'Opening the light board…' : '불빛 판을 여는 중이에요.'});
+/** 몰린 곳 한 줄 — 막대 줄 + 「왜?」 + 불빛(자료가 있으면 누르는 칸 · 펼치면 말하는 불빛 · 없으면 같은 모양 「?」) */
 function upItem(bar, w, W) {
   if (!w) return h('li', {class: 'y11-i'}, h('div', {class: 'y11-box y11-none'}, h('div', {class: 'y11-s'}, bar, whyLine(null), lightRow(null), moreLine())));
-  return h('li', {class: 'y11-i'}, h('details', {class: 'y11-box'}, h('summary', {class: 'y11-s'}, bar, whyLine(EN ? w.why?.en : w.why?.ko), lightRow(w.lights), moreLine()), whyList(w, W)));
+  const x = h('div', {class: 'y11-x y11-wait'}, talkWait());
+  const go = () => loadTalk().then(m => { if (x.classList.contains('y11-wait')) m.talkFill(x, w, W, WG); requestAnimationFrame(() => m.placeTail(x)); })
+    .catch(() => { x.replaceChildren(h('p', {class: 'y11-wt', text: EN ? "Couldn't open it. Please tap again." : '불빛 판을 못 열었어요. 다시 눌러 주세요.'})); });
+  const sm = h('summary', {class: 'y11-s'}, bar, whyLine(EN ? w.why?.en : w.why?.ko), lightRow(w.lights), moreLine());
+  sm.addEventListener('pointerdown', () => { loadTalk().catch(() => {}); }, {once: true}); // 누르기 시작할 때 미리 받기
+  return h('li', {class: 'y11-i'}, h('details', {class: 'y11-box', ontoggle: e => { if (e.currentTarget.open) go(); }}, sm, x));
 }
-/** 빈 자리(몰린 곳이 셋보다 적은 날) — 여는 동안 칸과 같은 높이 */
 const upEmpty = () => h('li', {class: 'y11-i y11-e'}, h('div', {class: 'y11-box'}, h('div', {class: 'y11-s'}, h('div', {class: 'nh-fr nh-f0'}), h('div', {class: 'y11-l'}), h('div', {class: 'y11-lt'}), h('div', {class: 'y11-m'}))));
 function flowMap(TH, W = null) {
   const {up, dn} = flowRows(TH), max = Math.max(1, ...[...up, ...dn].map(i => Math.abs(i.x))), ok = whyOk(TH, W), head = ok && W.head ? W.head : null;

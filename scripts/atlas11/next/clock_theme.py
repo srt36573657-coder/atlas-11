@@ -20,7 +20,7 @@
 import os, re, sys, glob, colorsys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
-SRC = sorted(f for f in glob.glob(os.path.join(ROOT, 'site/next/*.css')) if not f.endswith(('/clock.css', '/home-new.css', '/p-why.css', '/p-sage.css')))  # p-sage.css(서른아홉 스승 · 2026-10-29 19:14)는 판 색 이름(var(--card) …)만 쓰고 제 걸음 빛 넷을 가짐 — 셈 밖
+SRC = sorted(f for f in glob.glob(os.path.join(ROOT, 'site/next/*.css')) if not f.endswith(('/clock.css', '/home-new.css', '/home-talk.css', '/p-why.css', '/p-sage.css')))  # p-sage.css(서른아홉 스승 · 2026-10-29 19:14)는 판 색 이름(var(--card) …)만 쓰고 제 걸음 빛 넷을 가짐 — 셈 밖
 PAL = 'teal' if '--teal' in sys.argv[1:] else 'pink' if '--pink' in sys.argv[1:] else 'neon'  # 기본 = 밤 무대 판(2026-10-29 16:57) · 옛 핑크 --pink · 옛 청록 --teal
 OUT = os.path.join(ROOT, 'site/next/clock.css')
 
@@ -859,3 +859,24 @@ if PAL == 'neon':
 else:
     open(OUT, 'w', encoding='utf-8').write(head + body + '\n' + TOKENS + EXTRA + (EXTRA_PINK if PAL == 'pink' else ''))
 print('palette', PAL, 'files', len(SRC), 'rules', nrule, 'decls', ndecl, 'bytes', len(head + body + EXTRA))
+
+# 말하는 불빛 칸(site/next/home-talk.css · 칸을 처음 열 때 받는 파일 — 사장님 2026-10-30 15:15(+08) 「응」 · docs/design/why11-2026-10-30/order-1615.txt)
+#   표시 줄 위 = 핑크 판 규칙(손으로 씀) · 표시 줄 밑 = 그 규칙을 밤 무대 색으로 옮긴 것(여기서 지음 · 첫 화면 home-new.css 와 같은 셈 map_pn · 같은 선택자 머리)
+TALK, TALK_MARK = os.path.join(ROOT, 'site/next/home-talk.css'), '/* ── 밤 무대 판(아래는 scripts/atlas11/next/clock_theme.py 가 지음 · 손으로 고치지 않음) ── */'
+def neon_talk_rules(text):
+    nodes, _ = parse(strip_comments(text))
+    rs = []; walk(nodes, [], rs)
+    out = []
+    for wrap, pre, body in rs:
+        sels = [HOME_NEON_SEL + sel[len('html.home'):] for sel in split_top(pre, ',') if re.match(r'^html\.home(?![\w-])', sel)]
+        if not sels: continue
+        ds = neon_decls(decls_of(body))
+        if ds: out.append((wrap, ', '.join(sels) + ' { ' + '; '.join(f'{k}: {v}' for k, v in ds) + '; }'))
+    return out
+if PAL == 'neon' and os.path.exists(TALK):
+    t = open(TALK, encoding='utf-8').read()
+    if TALK_MARK not in t: raise SystemExit('home-talk.css 에 밤 무대 표시 줄이 없음')
+    top = t.split(TALK_MARK)[0].rstrip() + '\n\n'
+    rules = neon_talk_rules(top)
+    open(TALK, 'w', encoding='utf-8').write(top + TALK_MARK + '\n' + emit(rules))
+    print('home-talk.css 밤 규칙', len(rules))

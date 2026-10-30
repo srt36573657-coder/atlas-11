@@ -7,7 +7,7 @@
 //      · v2(2026-10-30 08:28 「어 그렇게 해」) 8 환율과 금리 · 9 다른 나라 불빛 = 파일 셈(calc.fx · calc.rate · calc.us)의 잣대(결정표 2-2 · 2-3)
 //      · 머리(시장이 내린 달) 잣대 · 영어 글 한글 0 · 쓰지 않을 말 0 · 망치는 길 낱말 0 · 앞날 · 사고팔기 말 0
 //   ② 첫 화면 390(한국어) — 머리 · 칸 이름 = 자료 · 몰린 곳 줄마다 누르는 칸(48 넘게) · 「왜?」 마디 = 자료 · 불빛 열하나 = 자료 · 무리 넷 · 「열한 가지 보기」
-//      · 「권하지 않습니다」와 첫 몰린 곳 「왜?」가 첫 한 화면 안 · 펼치면 열한 가지(번호 · 이름 · 글 · 출처 = 자료) · 무리 머리 · 대표 회사 말 · 다시 누르면 접힘
+//      · 「권하지 않습니다」와 첫 몰린 곳 「왜?」가 첫 한 화면 안 · 펼치면 말하는 불빛(2026-10-30 15:15(+08) 「응」 — 불빛 판 열하나 = 자료 · 처음 고른 불빛 = 처음 켜진 것 · 누를 때마다 말풍선(번호 · 이름 · 답 · 물음 · 글 · 출처 · 쉬운 말) = 자료 · 8 · 9 그림 = 자료 셈 · 꼬리 = 고른 불빛 · 앞 · 다음 · 소리) · 대표 회사 말 · 다시 누르면 접힘
 //      · 펼친 칸 모두: 글 17px 넘게 · 글 대비 4.5(큰 글 3) · 가로 넘침 0 · 화면 오류 0
 //   ③ 320 · 320 「아주 크게」 — 세 칸 모두 펼쳐 가로 넘침 0 · 글 17px 넘게 · 누르는 것 48 넘게
 //   ④ 영어(?lang=en) — 결론 · 불빛 무리 · 펼친 글이 자료 영어 그대로 · 남은 한글 0(원문 lang="ko" 빼고)
@@ -21,6 +21,7 @@ import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 import {screenHits, RUIN, RUIN_OK} from '../../../site/next/words.js';
 import {flowRows, FLOW_N, WHY_SCHEMA} from '../../../site/next/home-new.js';
+import {TALK_Q, TALK_A} from '../../../site/next/home-talk.js'; // 말하는 불빛(칸을 처음 열 때 받는 파일 · 2026-10-30 15:15(+08) 「응」)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -105,13 +106,22 @@ function heroInPage() {
         more: m ? m.textContent.replace(/\s+/g, ' ').trim() : null, moreVis: m ? getComputedStyle(m).visibility === 'visible' && m.getBoundingClientRect().height > 0 : false, label: li.querySelector('.y11-lt')?.getAttribute('aria-label') ?? null};
     })};
 }
-/** 펼친 칸 재기 — k 번째 몰린 곳 */
+/** 펼친 칸 재기 — k 번째 몰린 곳(말하는 불빛: 불빛 판 · 말풍선 · 그림 · 단추 · 꼬리) */
 function openInPage(k) {
   const d = document.querySelectorAll('#view section.nh-hero ol.nh-fl-up > li')[k]?.querySelector('details.y11-box'); if (!d) return null;
-  const tx = e => e?.textContent.replace(/\s+/g, ' ').trim() ?? null;
-  // 불빛 뜻 = 그림 속 「?」를 뺀 뜻 글만
-  return {open: d.open, key: [...d.querySelectorAll('.y11-key .y11-k > span')].map(tx).join(' '), gh: [...d.querySelectorAll('.y11-gh')].map(tx), note: tx(d.querySelector('.y11-note')),
-    li: [...d.querySelectorAll('.y11-li')].map(li => ({s: li.dataset.s, dot: li.querySelector('circle')?.getAttribute('class'), nm: tx(li.querySelector('.y11-nm')), t: tx(li.querySelector('.y11-tt')), sub: tx(li.querySelector('.y11-sub'))}))};
+  const tx = e => (e ? e.textContent.replace(/\s+/g, ' ').trim() : null), x = d.querySelector(':scope > .y11-x');
+  if (!x) return {open: d.open, none: true};
+  const bub = x.querySelector('.y11-bub'), lamp = x.querySelector('.y11-bd .y11-lamp[aria-pressed="true"]'), sc = x.querySelector('.y11-bb .y11-sc'), svg = sc?.querySelector('svg'), snd = x.querySelector('.y11-snd');
+  const tail = (() => { const v = parseFloat(bub?.style.getPropertyValue('--tail')); if (!lamp || !bub || !Number.isFinite(v)) return null; const r = lamp.getBoundingClientRect(), q = bub.getBoundingClientRect(); return {pct: v, dx: Math.round(q.left + (q.width * v) / 100 - (r.left + r.width / 2))}; })();
+  return {open: d.open, hint: tx(x.querySelector('.y11-hint')), key: [...x.querySelectorAll('.y11-key .y11-k > span:last-child')].map(tx).join(' '), keyC: [...x.querySelectorAll('.y11-key .y11-k > .y11-c')].map(e => e.className),
+    groups: [...x.querySelectorAll('.y11-bd .y11-bg > .y11-bn')].map(tx),
+    lamps: [...x.querySelectorAll('.y11-bd .y11-lamp')].map(b => ({k: +b.dataset.k, s: b.dataset.s, p: b.getAttribute('aria-pressed'), c: b.querySelector('.y11-c')?.className ?? null, l: b.getAttribute('aria-label'), q: tx(b)})),
+    bk: tx(x.querySelector('.y11-bk')), ans: tx(x.querySelector('.y11-ans')), ansC: x.querySelector('.y11-ans')?.className ?? null, bq: tx(x.querySelector('.y11-bq')), cap: tx(x.querySelector('.y11-cap')),
+    tt: tx(x.querySelector('.y11-bb .y11-tt')), sub: tx(x.querySelector('.y11-bb .y11-sub')), ez: tx(x.querySelector('.y11-ez')),
+    scene: sc ? {id: sc.dataset.scene ?? null, role: svg?.getAttribute('role') ?? null, label: svg?.getAttribute('aria-label') ?? '', text: sc.querySelectorAll('svg text').length, rain: sc.querySelectorAll('.y11-rain line').length, sun: !!sc.querySelector('.y11-sun'),
+      signs: [...sc.querySelectorAll('.y11-sl')].map(e => e.getAttribute('class')), qbox: !!sc.querySelector('.y11-qbox'), labels: [...sc.querySelectorAll('.y11-s9l > span')].map(tx)} : null,
+    live: bub?.getAttribute('aria-live') ?? null, pv: tx(x.querySelector('.y11-pv')), nx: tx(x.querySelector('.y11-nx')), snd: snd ? {p: snd.getAttribute('aria-pressed'), t: tx(snd)} : null,
+    canSay: typeof speechSynthesis !== 'undefined' && typeof SpeechSynthesisUtterance === 'function', note: tx(x.querySelector('.y11-note')), nullText: /\bnull\b|\bundefined\b|NaN/.test(x.textContent), all: tx(x), tail};
 }
 /** 읽기 재기 — ① 칸(펼친 칸 포함) 글 크기 · 대비 · 넘침 · 누르는 크기 · 남은 한글(영어) */
 function readInPage() {
@@ -147,7 +157,12 @@ const judgeRead = (tag, m, {en = false} = {}) => {
   check(!m.over.length, `${tag} 칸 안 넘친 글 0`, m.over.slice(0, 3).join(' | '));
   if (en) check(!m.han.length, `${tag} 남은 한글 0(원문 lang="ko" 빼고)`, m.han.slice(0, 3).join(' | '));
 };
-const openAll = async p => { for (const s of await p.locator('#view section.nh-hero details.y11-box > summary').all()) { await s.scrollIntoViewIfNeeded(); await s.click(); } await p.waitForTimeout(150); };
+const openAll = async p => { for (const s of await p.locator('#view section.nh-hero details.y11-box > summary').all()) { await s.scrollIntoViewIfNeeded(); await s.click(); }
+  await p.waitForFunction(() => { const d = [...document.querySelectorAll('#view section.nh-hero details.y11-box')]; return d.every(x => x.querySelector(':scope > .y11-x .y11-bd')); }, null, {timeout: 15000}).catch(() => {}); await p.waitForTimeout(150); };
+/** 말하는 불빛 판이 들 때까지(칸을 처음 열 때 home-talk.js · home-talk.css 를 받음) */
+const talkReady = (li, ms = 15000) => li.locator('details.y11-box > .y11-x .y11-bd').waitFor({state: 'attached', timeout: ms}).then(() => true, () => false);
+/** 늦게 받기 — 첫 화면을 그릴 때는 말하는 불빛 파일을 받지 않음(느린 4G 가장 큰 그림 길) */
+const talkLoaded = p => p.evaluate(() => performance.getEntriesByType('resource').map(e => e.name).filter(n => /\/next\/home-talk\.(js|css)/.test(n)).length);
 const near = (a, b) => a != null && b != null && Math.abs(a - b) <= 1;
 
 try {
@@ -185,30 +200,85 @@ try {
       const n = s => u.lights.filter(v => v === s).length;
       check(x.label === (en ? `Of 11 reasons: ${n('on')} yes, ${n('off')} no, ${n('q')} unknown` : `까닭 열한 가지 가운데 맞음 ${n('on')} · 아님 ${n('off')} · 모름 ${n('q')}`), `${t} 불빛 읽는 글(aria-label)`, x.label);
     });
-    // 펼치기 — 열한 가지 = 자료
+    // 펼치기 — 말하는 불빛(사장님 2026-10-30 14:48(+08) 그림 「말하는 불빛」 · 15:15(+08) 「응」): 판 = 자료 · 누를 때마다 말풍선 = 자료 · 8 · 9 그림 = 자료 셈 · 앞 · 다음 · 소리
+    const said = [];
+    check(await talkLoaded(p) === 0 && !(await p.locator('#view section.nh-hero .y11-bd').count()), `${tag} 늦게 받기 — 펼치기 전에는 말하는 불빛 파일을 안 받음(첫 화면 가장 큰 그림 길)`, String(await talkLoaded(p)));
     for (let k = 0; k < H.items.length && k < want.length; k++) {
-      const u = want[k], t = `${tag} ${k + 1}번 펼침`, sum = p.locator('#view section.nh-hero ol.nh-fl-up > li').nth(k).locator('details.y11-box > summary');
+      const u = want[k], t = `${tag} ${k + 1}번 펼침`, li = p.locator('#view section.nh-hero ol.nh-fl-up > li').nth(k), sum = li.locator('details.y11-box > summary');
       if (!await sum.count()) continue;
-      await sum.scrollIntoViewIfNeeded(); await sum.click(); await p.waitForTimeout(120);
+      await sum.scrollIntoViewIfNeeded(); await sum.click();
+      check(await talkReady(li), `${t} 말하는 불빛 판이 들어옴(펼친 뒤 15초 안)`); await p.waitForTimeout(150);
       const o = await p.evaluate(openInPage, k);
-      check(o?.open, `${t} 열림`, JSON.stringify(o)?.slice(0, 80));
-      if (!o?.open) continue;
-      const L = en ? 'en' : 'ko', ks = (W.groups ?? []).flatMap(g => g.ks);
-      check(o.li.length === 11 && JSON.stringify(ks) === JSON.stringify([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]), `${t} 열한 줄`, o.li.length);
-      const bad = [];
-      o.li.forEach((li, j) => { const it = u.items[j]; if (!it) return bad.push(`${j + 1} 자료 없음`);
-        if (li.s !== it.s || li.dot !== 'y11-' + ({on: 'on', off: 'off', q: 'qd'})[it.s]) bad.push(`${j + 1} 불빛 ${li.s}/${li.dot} ≠ ${it.s}`);
-        if (String(li.nm).replace(/\s+/g, '') !== `${it.k}${W.names?.[it.k]?.[L]}`.replace(/\s+/g, '')) bad.push(`${j + 1} 이름 「${li.nm}」`);
-        if (li.t !== it[L].t) bad.push(`${j + 1} 글 「${li.t}」 ≠ 「${it[L].t}」`);
-        if ((li.sub ?? null) !== (it[L].sub ?? null)) bad.push(`${j + 1} 출처 「${li.sub}」 ≠ 「${it[L].sub}」`); });
-      check(!bad.length, `${t} 번호 · 이름 · 글 · 출처 = 자료`, bad.slice(0, 4).join(' | '));
-      const ns = x => String(x ?? '').replace(/\s+/g, ''); // 칸 사이 띄움은 글이 아니라 모양(gap) — 띄어쓰기는 빼고 맞댐
-      check(JSON.stringify(o.gh.map(ns)) === JSON.stringify((W.groups ?? []).map(g => ns(g[L] + (g.q?.[L] ?? '')))), `${t} 무리 머리 넷`, o.gh.join(' | '));
-      check(o.note === W.note?.[L], `${t} 대표 회사 기록 말`, o.note);
-      check(ns(o.key) === ns(en ? 'Yes by the record No Not known yet' : '기록으로 맞음 아님 아직 모름'), `${t} 불빛 뜻`, o.key);
-      // 상황 무리(7 시장 날씨 · 8 환율과 금리 · 9 다른 나라) 사진 — 결과 폴더에 업종마다 한 장(v2 2026-10-30 08:28 · 진짜 자료 글을 그림으로 봄) · 못 찍어도 검사는 그대로
-      if (!en && OUT) await p.locator('#view section.nh-hero ol.nh-fl-up > li').nth(k).locator('details.y11-box .y11-gr').nth(2).screenshot({path: path.join(path.dirname(OUT), `why11-sit-${k + 1}.jpg`), type: 'jpeg', quality: 70}).catch(() => {});
+      check(o?.open && !o.none, `${t} 열림 · 말하는 불빛 칸`, JSON.stringify(o)?.slice(0, 80));
+      if (!o?.open || o.none) continue;
+      const L = en ? 'en' : 'ko', ks = (W.groups ?? []).flatMap(g => g.ks), A = st => TALK_A[st][en ? 1 : 0];
+      check(o.hint === (en ? 'Tap a light and it answers.' : '불빛을 누르면 그 불빛이 답해요.') && o.key === (en ? "Yes No Don't know" : '네 아니요 몰라요') && JSON.stringify(o.keyC) === JSON.stringify(['y11-c y11-c-on', 'y11-c y11-c-off', 'y11-c y11-c-q']), `${t} 뜻 줄(누르면 답해요 · 네 · 아니요 · 몰라요)`, `${o.hint} · ${o.key} · ${o.keyC}`);
+      check(JSON.stringify(o.groups) === JSON.stringify(en ? GROUP_EN : GROUP_KO), `${t} 판 무리 넷`, o.groups.join(','));
+      const lb = [];
+      if (o.lamps.length !== 11 || JSON.stringify(o.lamps.map(x => x.k)) !== JSON.stringify(ks) || JSON.stringify(ks) !== JSON.stringify([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])) lb.push(`차례 ${o.lamps.map(x => x.k)}`);
+      o.lamps.forEach(x => { const it = u.items[x.k - 1]; if (!it) return lb.push(`${x.k} 자료 없음`);
+        if (x.s !== it.s || x.c !== 'y11-c y11-c-' + it.s) lb.push(`${x.k} 불빛 ${x.s}/${x.c} ≠ ${it.s}`);
+        if (x.q !== (it.s === 'q' ? '?' : '')) lb.push(`${x.k} 불빛 속 글 「${x.q}」`);
+        if (x.l !== (en ? `${x.k} ${W.names?.[x.k]?.en}: ${A(it.s)}` : `${x.k}번 ${W.names?.[x.k]?.ko}, ${A(it.s)}`)) lb.push(`${x.k} 읽는 글 「${x.l}」`); });
+      check(!lb.length, `${t} 불빛 열하나 = 자료(켜짐 · 꺼짐 · 「?」 · 읽는 글)`, lb.slice(0, 4).join(' | '));
+      const first = ks.find(j => u.items[j - 1]?.s === 'on') ?? ks[0];
+      check(o.lamps.filter(x => x.p === 'true').map(x => x.k).join() === String(first), `${t} 처음 고른 불빛 = 처음 켜진 것(${first})`, o.lamps.filter(x => x.p === 'true').map(x => x.k).join());
+      /** 말풍선 = 자료 — j 번 불빛 */
+      const bubBad = (b, j) => {
+        const it = u.items[j - 1], st = it?.s, nm = W.names?.[j]?.[L], c = u.calc ?? {}, bad = [];
+        if (!it) return [`${j} 자료 없음`];
+        if (b.lamps.filter(x => x.p === 'true').map(x => x.k).join() !== String(j)) bad.push(`${j} 고른 불빛 ${b.lamps.filter(x => x.p === 'true').map(x => x.k)}`);
+        if (b.bk !== (en ? `${j} · ${nm}` : `${j}번 ${nm}`)) bad.push(`${j} 이름 「${b.bk}」`);
+        if (b.ans !== A(st) || b.ansC !== `y11-ans y11-a-${st}`) bad.push(`${j} 답 「${b.ans}」 ${b.ansC}`);
+        if (b.bq !== TALK_Q[j][en ? 1 : 0]) bad.push(`${j} 물음 「${b.bq}」`);
+        if (b.tt !== it[L].t) bad.push(`${j} 글 「${b.tt}」 ≠ 「${it[L].t}」`);
+        if ((b.sub ?? null) !== (it[L].sub ?? null)) bad.push(`${j} 출처 「${b.sub}」 ≠ 「${it[L].sub}」`);
+        if (String(b.ez).replace(/\s+/g, '') !== `${en ? 'Plain words' : '쉬운 말'}${TALK_Q[j][en ? 3 : 2]}`.replace(/\s+/g, '')) bad.push(`${j} 쉬운 말 「${b.ez}」`);
+        if (b.nullText) bad.push(`${j} 「null · undefined · NaN」 글`);
+        const sc = b.scene;
+        if (j === 8) { // 그림 모양 = 자료 셈(결정표 2-2 · 켜짐 = 비 · 불 켜짐 / 꺼짐 = 달러 값이나 금리가 움직였으면 비 · 불 꺼짐, 아니면 해 / 모름 = 비 · 해 없음 · 「?」 불)
+          const w8 = st === 'q' ? 'q' : st === 'on' ? 'on' : c.fx?.moved || c.rate?.moved ? 'rain' : 'sun';
+          if (!sc) bad.push('8 그림 없음');
+          else { if (sc.id !== '8-' + w8) bad.push(`8 그림 ${sc.id} ≠ 8-${w8}`);
+            if ((sc.rain > 0) !== (w8 === 'on' || w8 === 'rain') || sc.sun !== (w8 === 'sun')) bad.push(`8 비 ${sc.rain} · 해 ${sc.sun} ≠ ${w8}`);
+            if (sc.signs.length !== 1 || !sc.signs[0].split(' ').includes('y11-sl-' + (w8 === 'on' ? 'on' : w8 === 'q' ? 'q' : 'off'))) bad.push(`8 간판 불 ${sc.signs}`); }
+          if (!b.cap) bad.push('8 그림 말 없음');
+        } else if (j === 9) { // 왼쪽 우리나라 가게 = 늘 켜짐(돈이 몰린 곳) · 오른쪽 미국 같은 업종 = 9 불빛(모름 = 점선 네모 「?」)
+          if (!sc) bad.push('9 그림 없음');
+          else { if (sc.id !== '9-' + st) bad.push(`9 그림 ${sc.id} ≠ 9-${st}`);
+            const kr = sc.signs[0]?.split(' ').includes('y11-sl-on'), us = st === 'q' ? sc.qbox && sc.signs.length === 1 : !sc.qbox && sc.signs.length === 2 && sc.signs[1].split(' ').includes('y11-sl-' + st);
+            if (!kr || !us) bad.push(`9 가게 불 ${sc.signs} · 네모 ${sc.qbox}`);
+            if (JSON.stringify(sc.labels) !== JSON.stringify(en ? ['Korea', 'US'] : ['우리나라', '미국'])) bad.push(`9 가게 이름 ${sc.labels}`); }
+          if (!b.cap) bad.push('9 그림 말 없음');
+        } else if (sc || b.cap) bad.push(`${j} 그림 · 그림 말이 있음(8 · 9 만)`);
+        if (sc && (sc.role !== 'img' || !sc.label || sc.text)) bad.push(`${j} 그림 꼴(role img · 이름 · 글자 0) ${sc.role} ${sc.label} ${sc.text}`);
+        if (en && HAN.test(b.all ?? '')) bad.push(`${j} 영어 판 한글 「${(b.all.match(/[가-힣]+/) ?? [''])[0]}」`);
+        if (b.tail && Math.abs(b.tail.dx) > 3 && b.tail.pct > 6.5 && b.tail.pct < 93.5) bad.push(`${j} 꼬리 ${b.tail.dx}px 어긋남`);
+        if (!b.tail) bad.push(`${j} 꼬리 없음`);
+        return bad;
+      };
+      const bb = bubBad(o, first), sc89 = {};
+      for (const j of ks) { await li.locator(`.y11-bd .y11-lamp[data-k="${j}"]`).click(); await p.waitForTimeout(60); const b = await p.evaluate(openInPage, k); bb.push(...bubBad(b, j)); said.push(b.all ?? ''); if (j === 8 || j === 9) sc89[j] = b.scene?.id ?? null;
+        if (!en && OUT && (j === 8 || j === 9)) await li.locator('.y11-bub').screenshot({path: path.join(path.dirname(OUT), `why11-talk-${k + 1}-${j}.jpg`), type: 'jpeg', quality: 70}).catch(() => {}); }
+      check(!bb.length, `${t} 불빛마다 말풍선 = 자료(이름 · 답 · 물음 · 글 · 출처 · 쉬운 말 · 8 · 9 그림 · 꼬리)`, bb.slice(0, 4).join(' | '));
+      check(o.live === 'polite' && o.note === W.note?.[L], `${t} 말풍선 읽어 줌(aria-live) · 대표 회사 기록 말`, `${o.live} · ${o.note}`);
+      // 앞 · 다음 — 11 에서 다음 = 1 · 1 에서 앞 = 11(빙 돎)
+      await li.locator('.y11-nx').click(); await p.waitForTimeout(60); const n1 = await p.evaluate(openInPage, k);
+      await li.locator('.y11-pv').click(); await p.waitForTimeout(60); const p1 = await p.evaluate(openInPage, k);
+      check(n1?.bk === (en ? `1 · ${W.names?.[1]?.en}` : `1번 ${W.names?.[1]?.ko}`) && p1?.bk === (en ? `11 · ${W.names?.[11]?.en}` : `11번 ${W.names?.[11]?.ko}`) && o.pv === (en ? '‹ Back' : '‹ 앞 불빛') && o.nx === (en ? 'Next ›' : '다음 불빛 ›'), `${t} 앞 · 다음 불빛(빙 돎)`, `${n1?.bk} · ${p1?.bk} · ${o.pv} · ${o.nx}`);
+      // 소리 — 읽어 주는 기능이 있는 폰만 단추 · 누르면 「소리 끄기」 · 다시 누르면 「소리로 듣기」
+      if (o.canSay) {
+        const on0 = o.snd; await li.locator('.y11-snd').click(); await p.waitForTimeout(60); const s1 = (await p.evaluate(openInPage, k))?.snd; await li.locator('.y11-snd').click(); await p.waitForTimeout(60); const s2 = (await p.evaluate(openInPage, k))?.snd;
+        check(on0?.p === 'false' && on0?.t === (en ? 'Listen' : '소리로 듣기') && s1?.p === 'true' && s1?.t === (en ? 'Stop sound' : '소리 끄기') && s2?.p === 'false', `${t} 소리로 듣기 단추(켬 · 끔)`, JSON.stringify([on0, s1, s2]));
+      } else check(o.snd == null, `${t} 소리 기능이 없으면 단추 없음`, JSON.stringify(o.snd));
+      // 다음 판(세 칸 펼침 읽기)은 9 를 고른 채로 — 그림 · 가게 이름 · 긴 출처 글이 보이게
+      await li.locator('.y11-bd .y11-lamp[data-k="9"]').click(); await p.waitForTimeout(60);
+      if (!en && OUT) await li.locator('.y11-x').screenshot({path: path.join(path.dirname(OUT), `why11-talk-${k + 1}.jpg`), type: 'jpeg', quality: 65}).catch(() => {});
+      R.m.talk = R.m.talk ?? {}; R.m.talk[`${en ? 'en' : 'ko'}${k + 1}`] = {n: u.n, first, scene8: sc89[8], scene9: sc89[9]}; // 깃허브 결과 파일에 남김(진짜 자료로 그린 그림 모양)
     }
+    { const K2 = said.join('\n').replace(/「[^」]*」/g, '「」'); // 우리 글만(기사 제목은 원문)
+      if (!en) check(!screenHits(K2).length, `${tag} 말풍선 쓰지 않을 말 0`, screenHits(K2).join(' '));
+      check(!FORE.test(K2), `${tag} 말풍선 앞날 · 사고팔기 말 0`, K2.match(FORE)?.[0]); }
     judgeRead(`${tag} 세 칸 펼침`, await READ(p), {en});
     // 다시 누르면 접힘
     const s0 = p.locator('#view section.nh-hero details.y11-box > summary').first();
@@ -221,6 +291,10 @@ try {
     await p.goto(URL_OF('&lang=ko'), {waitUntil: 'load', timeout: 60000});
     if (!await ready(p)) { check(false, `${tag} 첫 화면`, '안 그려짐'); await ctx.close(); continue; }
     await openAll(p); judgeRead(tag, await READ(p));
+    for (const j of [8, 9]) { // 그림이 있는 불빛을 고른 채로 한 번 더(그림 · 그림 말 · 가게 이름)
+      for (const b of await p.locator(`#view section.nh-hero details.y11-box .y11-bd .y11-lamp[data-k="${j}"]`).all()) { await b.scrollIntoViewIfNeeded(); await b.click(); }
+      await p.waitForTimeout(100); judgeRead(`${tag} ${j}번 고름`, await READ(p));
+    }
     check(!errs.length, `${tag} 화면 오류 0`, errs.join(' | ')); await ctx.close();
   }
   // ⑤ 시장이 내린 달 · ⑥ 못 받음 · 날이 다름
