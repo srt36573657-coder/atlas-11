@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-30",
- "fetchedAt": "2026-10-30T07:51:21Z",
- "file": "reports/atlas11/context/2026-10-30/2026-10-30T07-51-21Z.json",
+ "fetchedAt": "2026-10-30T10:00:30Z",
+ "file": "reports/atlas11/context/2026-10-30/2026-10-30T10-00-30Z.json",
  "summary": {
   "day": "2026-10-30",
-  "fetchedAt": "2026-10-30T07:51:21Z",
+  "fetchedAt": "2026-10-30T10:00:30Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-30",
@@ -35,8 +35,8 @@
    "distinct": 7166,
    "republished": 46,
    "sameArticle": 0,
-   "stocksWithTodayNews": 187,
-   "todayDistinct": 1255
+   "stocksWithTodayNews": 193,
+   "todayDistinct": 1351
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-30",
-     "value": 1334,
-     "changePct": -0.48
+     "value": 1335.2,
+     "changePct": -0.4
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 255,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -240,6 +240,12 @@
    "latestObservation": "2026-10-30",
    "corporateActions": 774,
    "recentActions": [
+    {
+     "code": "012630",
+     "title": "에이치디씨(주) 변경상장(주식소각)",
+     "publishedAt": "2026-10-30T17:00:49+09:00",
+     "word": "소각"
+    },
     {
      "code": "182360",
      "title": "(주)큐브엔터테인먼트 (정정)유상증자결정(제3자배정)",
@@ -305,12 +311,6 @@
      "title": "현대자동차(주) 자기주식 처분 결정",
      "publishedAt": "2026-10-29T06:50:48+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "005810",
-     "title": "(주)풍산홀딩스 주식 소각 결정",
-     "publishedAt": "2026-10-28T06:53:10+09:00",
-     "word": "소각"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-30",
-     "value": 1334,
+     "value": 1335.2,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
