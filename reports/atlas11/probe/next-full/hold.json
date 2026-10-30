@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-30T01:14:39.079Z",
+ "when": "2026-10-30T01:53:15.608Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
@@ -150,7 +150,7 @@
   }
  ],
  "only": [],
- "sec": 91,
+ "sec": 86,
  "counts": {
   "꾸민 보유": 14,
   "맨 위 결 한 줄": 2,
