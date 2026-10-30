@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-10-30",
- "fetchedAt": "2026-10-30T12:10:35Z",
- "file": "reports/atlas11/context/2026-10-30/2026-10-30T12-10-35Z.json",
+ "fetchedAt": "2026-10-30T13:52:55Z",
+ "file": "reports/atlas11/context/2026-10-30/2026-10-30T13-52-55Z.json",
  "summary": {
   "day": "2026-10-30",
-  "fetchedAt": "2026-10-30T12:10:35Z",
+  "fetchedAt": "2026-10-30T13:52:55Z",
   "index": {
    "KOSPI": {
     "date": "2026-10-30",
@@ -35,8 +35,8 @@
    "distinct": 7166,
    "republished": 46,
    "sameArticle": 0,
-   "stocksWithTodayNews": 193,
-   "todayDistinct": 1358
+   "stocksWithTodayNews": 194,
+   "todayDistinct": 1363
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-10-30",
-     "value": 1334.1,
-     "changePct": -0.48
+     "value": 1333.7,
+     "changePct": -0.51
     },
     "rows": 10
    },
@@ -101,8 +101,8 @@
     "label": "VIX 종가(Cboe)",
     "factorId": "F10",
     "latest": {
-     "date": "2026-10-28",
-     "value": 16.91
+     "date": "2026-10-29",
+     "value": 17.2
     },
     "rows": 60
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-10-30",
-     "value": 1334.1,
+     "value": 1333.7,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -392,14 +392,14 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-10-28",
-   "calendarLagDays": 2,
+   "latestObservation": "2026-10-29",
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "VIXCLS",
      "label": "VIX 종가(Cboe)",
-     "latestObservation": "2026-10-28",
-     "value": 16.91,
+     "latestObservation": "2026-10-29",
+     "value": 17.2,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=2026-07-02"
     }
