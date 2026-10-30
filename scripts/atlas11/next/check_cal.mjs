@@ -327,14 +327,25 @@ const store = (p, k) => p.evaluate(k => { try { return JSON.parse(localStorage.g
   // ④-5 종목 파일에서 돌아오면 칸 · 펼친 칸 그대로 · 다른 곳에서 오면 처음 꼴
   await nav(np, '#/me'); await nav(np, '#/cal');
   let fk = null, dk = null; // 접은 칸이 있는 칸 하나(30% 먼저)
-  for (const k of ['3', '2', '1', '4']) { await np.click(`main#view .pcal-chips button[data-f="${k}"]`); dk = await np.$eval('main#view .pcal-list details[data-k]', d => { d.open = true; return d.dataset.k; }).catch(() => null); if (dk) { fk = k; break; } }
-  if (!dk) fail('④ 펼칠 칸 없음', '네 칸 모두');
-  await clickNav(np, 'main#view .pcal-list a.pcal-row', '줄 누름');
-  if (!/^#\/cal\/[0-9A-Z]{6}$/.test(await np.evaluate(() => location.hash))) fail('④ 줄 누름', await np.evaluate(() => location.hash));
-  await back(np);
+  // 칸 = 접은 칸이 있고 · 그 칸을 펼친 뒤 누를 줄이 보이는 칸(2026-10-30 진짜 사이트 큰 검사 — 장중 자료에서 30% 칸의 새 다섯 날이 모두 「새로 뽑힌 곳은 없어요」라
+  //   줄이 모두 접힌 「지난 날 보기」 안에 있어 첫 줄 누르기가 1분 동안 기다리다 멈춤 · 화면 잘못이 아니라 검사가 첫 줄을 늘 보인다고 여긴 것 — 그런 칸은 건너 다음 칸)
+  for (const k of ['3', '2', '1', '4']) {
+    await np.click(`main#view .pcal-chips button[data-f="${k}"]`);
+    dk = await np.$eval('main#view .pcal-list details[data-k]', d => { d.open = true; return d.dataset.k; }).catch(() => null);
+    if (dk && await np.locator('main#view .pcal-list a.pcal-row:visible').count()) { fk = k; break; }
+    dk = null;
+  }
+  if (!dk) fail('④ 펼칠 칸 없음', '네 칸 모두(접은 칸과 보이는 줄이 함께 있는 칸)');
+  // 누를 줄 = 보이는 줄 가운데 첫 줄
   const st = async () => np.evaluate(() => ({f: [...document.querySelectorAll('main#view .pcal-chips button[aria-pressed="true"]')].map(b => b.dataset.f).join(), open: [...document.querySelectorAll('main#view details[data-k]')].filter(d => d.open).map(d => d.dataset.k)}));
-  let s1 = await st();
-  if (s1.f !== fk || s1.open.join() !== dk) fail('④ 돌아오면 그대로', JSON.stringify(s1) + ` 바람 ${fk} · ${dk}`);
+  let s1;
+  if (await np.locator('main#view .pcal-list a.pcal-row:visible').count()) {
+    await clickNav(np, 'main#view .pcal-list a.pcal-row:visible', '줄 누름');
+    if (!/^#\/cal\/[0-9A-Z]{6}$/.test(await np.evaluate(() => location.hash))) fail('④ 줄 누름', await np.evaluate(() => location.hash));
+    await back(np);
+    s1 = await st();
+    if (s1.f !== fk || s1.open.join() !== dk) fail('④ 돌아오면 그대로', JSON.stringify(s1) + ` 바람 ${fk} · ${dk}`);
+  } else fail('④ 누를 줄 없음', `칸 ${fk} · 펼친 칸 ${dk} — 보이는 줄 0`);
   await nav(np, '#/me'); await nav(np, '#/cal');
   s1 = await st();
   if (s1.f !== 'all' || s1.open.length) fail('④ 다른 곳에서 오면 처음 꼴', JSON.stringify(s1));
