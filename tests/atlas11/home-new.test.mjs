@@ -62,3 +62,40 @@ test('index.html 이 boot-home.js 를 app.js 보다 먼저 부름 · 새 첫 화
   assert.match(html, /href="\/next\/home-new\.css"/);
   assert.doesNotMatch(html, /s-boot s-clock/, '여는 동안 돌 시계 그림이 남음(새 첫 화면에는 돌 시계가 없음)');
 });
+
+test('말하는 불빛(사장님 2026-10-30 15:15(+08) 「응」 · docs/design/why11-2026-10-30/order-1615.txt) — 물음 · 쉬운 말 열하나 · 영어 판 한글 0 · 그림 모양 = 자료 셈 · 쓰지 않을 말 0', async () => {
+  const {TALK_Q, TALK_A, sceneKind} = await import('../../site/next/home-talk.js');
+  const {screenHits} = await import('../../site/next/words.js');
+  assert.deepEqual(Object.keys(TALK_Q).map(Number), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], '물음 열하나');
+  for (const [k, row] of Object.entries(TALK_Q)) {
+    assert.equal(row.length, 4, `${k} 물음 · 영어 물음 · 쉬운 말 · 영어 쉬운 말`);
+    assert.ok(row.every(t => typeof t === 'string' && t.trim()), `${k} 빈 글`);
+    assert.ok(/\?$/.test(row[0]) && /\?$/.test(row[1]), `${k} 물음은 물음표로 끝남`);
+    assert.ok(!/[가-힣]/.test(row[1] + row[3]), `${k} 영어 글에 한글`);
+    assert.deepEqual(screenHits(row[0] + ' ' + row[2]), [], `${k} 쓰지 않을 말`);
+    assert.ok(!/오를 것|내릴 것|사세요|파세요|추천|매수|매도|will rise|will fall/i.test(row.join(' ')), `${k} 앞날 · 사고팔기 말`);
+  }
+  assert.deepEqual(TALK_A, {on: ['네', 'Yes'], off: ['아니요', 'No'], q: ['몰라요', "Don't know"]});
+  // 8 그림: 켜짐 = 비 · 불 켜짐 / 꺼짐 + 움직임 = 비 · 불 꺼짐 / 꺼짐 + 거의 그대로 = 해 / 모름 = 날씨 없음(결정표 6)
+  assert.equal(sceneKind(8, 'on', {fx: {moved: true}}), 'on');
+  assert.equal(sceneKind(8, 'off', {fx: {moved: false}, rate: {moved: true}}), 'rain');
+  assert.equal(sceneKind(8, 'off', {fx: {moved: false}, rate: {moved: false}}), 'sun');
+  assert.equal(sceneKind(8, 'q', null), 'q');
+  for (const st of ['on', 'off', 'q']) assert.equal(sceneKind(9, st, {}), st);
+  for (const k of [1, 2, 3, 4, 5, 6, 7, 10, 11]) assert.equal(sceneKind(k, 'on', {}), null, `${k} 그림 없음(8 · 9 만)`);
+  // 화면 글은 textContent 로만 · 그림은 글자 없는 선 그림(svg text 0) · 칸 글(따옴표 안)에 쓰지 않을 말 · 앞날 · 사고팔기 말 0
+  const part = read('site/next/home-talk.js');
+  assert.ok(part.length > 1000 && !/innerHTML|insertAdjacentHTML|sv\('text'|\.style\.cssText|setAttribute\('style'/.test(part), '말하는 불빛 칸이 글 그림 · 글 속 style 을 씀');
+  const strs = [...quoted(part)];
+  assert.deepEqual(strs.flatMap(x => screenHits(x)), [], '말하는 불빛 칸 글에 쓰지 않을 말');
+  assert.ok(!strs.some(x => /오를 것|내릴 것|사세요|파세요|추천|매수|매도/.test(x)), '말하는 불빛 칸 글에 앞날 · 사고팔기 말');
+  // 늦게 받기(첫 화면 가장 큰 그림 2.5초 길에서 뺌 — 2026-10-30 느린 4G 2413ms → 2575ms 를 막음): 칸을 열 때만 import · 첫 화면 파일 목록에 없음
+  const src = read('site/next/home-new.js'), html = read('site/next/index.html'), tcss = read('site/next/home-talk.css'), ncss = read('site/next/home-new.css');
+  assert.match(src, /import\('\.\/home-talk\.js'\)/, 'home-new.js 가 칸을 열 때 home-talk.js 를 부르지 않음');
+  assert.doesNotMatch(src, /^import [^\n]*home-talk/m, 'home-new.js 가 home-talk.js 를 처음부터 부름(첫 화면 길이 무거워짐)');
+  assert.doesNotMatch(html, /home-talk/, 'index.html 이 home-talk 를 처음부터 받음');
+  assert.doesNotMatch(ncss, /\.y11-(bd|bub|lamp|scn|sky)\b/, 'home-new.css 에 말하는 불빛 칸 모양이 남음(첫 화면 길이 무거워짐)');
+  const [top, night] = tcss.split('/* ── 밤 무대 판(아래는 scripts/atlas11/next/clock_theme.py 가 지음 · 손으로 고치지 않음) ── */');
+  assert.ok(top && night && /html\.white\.clock\.clock\.clock\.clock\.home #view \.y11-bub \{/.test(night), 'home-talk.css 에 밤 무대 색 규칙이 없음(clock_theme.py 를 다시 돌림)');
+  assert.doesNotMatch(tcss, /box-shadow|text-shadow|gradient\(|drop-shadow|blur\(/, '말하는 불빛 칸에 그림자 · 그러데이션');
+});

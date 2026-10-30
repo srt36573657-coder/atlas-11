@@ -1,0 +1,161 @@
+/* 말하는 불빛 모양 — 첫 화면 ① 돈 흐름 · 몰린 곳 칸을 펼치면(site/next/home-talk.js) · 칸을 처음 열 때 site/next/home-new.js 가 이 파일을 붙임
+   사장님 2026-10-30 15:15(+08) 「응」(그림 「말하는 불빛」을 사이트 첫 화면에) · docs/design/why11-2026-10-30/order-1615.txt · 결정표 decision.md 6
+   위 = 핑크 판 색(home-new.css 와 같은 표) · 아래 표시 줄 밑 = 밤 무대 색(scripts/atlas11/next/clock_theme.py 가 지음 · 손으로 고치지 않음) */
+/* 펼친 칸 = 말하는 불빛(사장님 2026-10-30 14:48(+08) 「애매한 도식화 정말 쉽게 재밌게 분명하게 … 잡스라면」 → 그림 「말하는 불빛」 · 15:15(+08) 「응」 — 첫 화면에)
+   뜻 줄 → 불빛 판(무리 넷 · 누르는 불빛 48px) → 말풍선(꼬리 = 고른 불빛 · 번호 이름 · 네 / 아니요 / 몰라요 · 물음 · 8 · 9 그림 · 기록 글 · 쉬운 말 · 앞 · 다음 · 소리) → 대표 회사 기록 말
+   그림자 · 그러데이션 없음(켜진 불빛 둘레 빛 = 옅은 테) · 누르는 것 테 대비 3 위 · 움직임은 「움직임 줄이기」를 켜지 않은 폰에서만(비 · 김 · 간판 불 · 바다 건너는 점선) */
+html.home #view .y11-hint { margin: 0; font-size: 17px; line-height: 1.4; font-weight: 800; color: #A31F70; }
+html.home #view .y11-key { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; font-size: 17px; line-height: 1.4; font-weight: 700; color: #5E3446; }
+html.home #view .y11-k { display: inline-flex; align-items: center; gap: 6px; }
+html.home #view .y11-k > .y11-c { width: 24px; height: 24px; font-size: 17px; border-width: 2px; }
+html.home #view .y11-bd { display: grid; gap: 0; padding: 4px 6px; border-radius: 12px; background: #FBF2F5; }
+html.home #view .y11-bg { display: flex; flex-wrap: wrap; align-items: center; column-gap: 6px; }
+html.home #view .y11-bn { flex: none; width: 2.6em; font-size: 17px; line-height: 22px; font-weight: 800; color: #5E3446; }
+html.home.en #view .y11-bn { width: 4.4em; }
+html.home #view .y11-br { display: flex; flex-wrap: wrap; }
+html.home #view .y11-lamp { appearance: none; -webkit-appearance: none; margin: 0; padding: 0; border: 0; background: none; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
+html.home #view .y11-c { box-sizing: border-box; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; font-style: normal; font-size: 19px; line-height: 1; font-weight: 900; color: #6B3F52; }
+html.home #view .y11-c-on { background: #A31F70; border: 3px solid #F0CBD6; }
+html.home #view .y11-c-off { background: #FFFFFF; border: 2.5px solid #9E5A78; }
+html.home #view .y11-c-q { background: #FBF2F5; border: 2.5px dashed #9E5A78; }
+html.home #view .y11-lamp[aria-pressed="true"] > .y11-c { outline: 3px solid #2A1420; outline-offset: 2px; transform: scale(1.06); }
+html.home #view .y11-lamp:focus-visible { outline: 3px solid #A31F70; outline-offset: 0; }
+html.home.f3 #view .y11-x { padding-left: 4px; padding-right: 4px; } /* 아주 큰 글씨(zoom 1.286) · 좁은 폰 — 불빛(48px · app.css 잣대 그대로) 셋이 한 줄에 들게 칸 옆 여백만 줄임 */
+html.home.f3 #view .y11-bd { padding-left: 0; padding-right: 0; }
+html.home #view .y11-bub { position: relative; display: grid; gap: 10px; margin-top: 6px; padding: 12px 10px; border-radius: 14px; background: #FFFFFF; border: 2px solid #E3B6C5; }
+html.home #view .y11-bub::before { content: ""; position: absolute; top: -10px; left: var(--tail, 50%); width: 16px; height: 16px; background: #FFFFFF; border-left: 2px solid #E3B6C5; border-top: 2px solid #E3B6C5; transform: translateX(-50%) rotate(45deg); }
+html.home #view .y11-bb { display: grid; gap: 8px; min-width: 0; }
+html.home #view .y11-bh { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+html.home #view .y11-bk { font-size: 19px; line-height: 1.3; font-weight: 900; color: #2A1420; }
+html.home #view .y11-ans { margin-left: auto; padding: 1px 12px; border-radius: 999px; font-size: 17px; line-height: 26px; font-weight: 900; } /* 글 색은 칸(.y11-x)에서 물려받음 — 켜짐 알약만 흰 글(밤 판도 흰 글 · 대비 5) */
+html.home #view .y11-a-on { background: #A31F70; color: #FFFFFF; }
+html.home #view .y11-a-off { border: 2px solid #9E5A78; }
+html.home #view .y11-a-q { border: 2px dashed #9E5A78; }
+html.home #view .y11-bq { margin: 0; font-size: 21px; line-height: 1.35; font-weight: 900; color: #2A1420; text-wrap: balance; }
+html.home #view .y11-cap { margin: 0; font-size: 19px; line-height: 1.4; font-weight: 800; color: #A31F70; }
+html.home #view .y11-tt { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 700; color: #2A1420; overflow-wrap: anywhere; }
+html.home #view .y11-sub { margin: 0; font-size: 17px; line-height: 1.45; color: #5E3446; overflow-wrap: anywhere; }
+html.home #view .y11-ez { margin: 0; padding: 8px 10px; border-radius: 10px; background: #FBF2F5; font-size: 17px; line-height: 1.45; color: #5E3446; }
+html.home #view .y11-ez > b { margin-right: 8px; font-weight: 900; color: #A31F70; }
+html.home #view .y11-ctl { display: flex; flex-wrap: wrap; gap: 8px; }
+html.home #view .y11-ctl > button { appearance: none; -webkit-appearance: none; margin: 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; min-width: 48px; padding: 6px 14px; border-radius: 12px; border: 2px solid #9E5A78; background: #FFF7F9; color: inherit; font: inherit; font-size: 17px; line-height: 1.3; font-weight: 800; cursor: pointer; }
+html.home #view .y11-ctl > .y11-nx { background: #A31F70; border-color: #A31F70; color: #FFFFFF; }
+html.home #view .y11-ctl > .y11-snd[aria-pressed="true"] { background: #FBE8EE; border-color: #A31F70; }
+html.home #view .y11-ctl > button:focus-visible { outline: 3px solid #2A1420; outline-offset: 2px; }
+html.home #view .y11-snd > svg { display: block; flex: none; }
+html.home #view .y11-spk { fill: currentColor; }
+html.home #view .y11-spw { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+html.home #view .y11-note { margin: 0; font-size: 17px; line-height: 1.45; color: #5E3446; }
+/* 8 · 9 그림 — 색은 핑크 판 표 색(clock_theme.py PN_* 이 밤 색으로 옮김) · 글자 없음 */
+html.home #view .y11-sc { border-radius: 12px; overflow: hidden; background: #D3E1F6; }
+html.home #view .y11-scn { display: block; width: 100%; height: auto; }
+html.home #view .y11-sky { fill: #D3E1F6; }
+html.home #view .y11-gnd { fill: #D99AB2; }
+html.home #view .y11-sun { fill: #F2B8C9; }
+html.home #view .y11-ray { stroke: #9E5A78; stroke-width: 2.5; stroke-linecap: round; }
+html.home #view .y11-cld { fill: #9E5A78; }
+html.home #view .y11-rain { stroke: #1F5FBF; stroke-width: 3; stroke-linecap: round; }
+html.home #view .y11-umb { fill: #A31F70; }
+html.home #view .y11-bod { fill: #5E3446; }
+html.home #view .y11-ln { stroke: #3D1028; stroke-width: 2.5; stroke-linecap: round; }
+html.home #view .y11-wal { fill: #FFF7F9; stroke: #3D1028; stroke-width: 2; }
+html.home #view .y11-aw1 { fill: #A31F70; }
+html.home #view .y11-aw2 { fill: #FFFFFF; }
+html.home #view .y11-aw3 { fill: #1F5FBF; }
+html.home #view .y11-awo { fill: none; stroke: #3D1028; stroke-width: 2; }
+html.home #view .y11-gls { fill: #FBE8EE; stroke: #3D1028; stroke-width: 2; }
+html.home #view .y11-knb { fill: #3D1028; }
+html.home #view .y11-pan { fill: #3D1028; }
+html.home #view .y11-cak { fill: #F2B8C9; }
+html.home #view .y11-oni { fill: none; stroke: #A31F70; stroke-width: 2; stroke-linecap: round; }
+html.home #view .y11-stm { fill: none; stroke: #9E5A78; stroke-width: 2; stroke-linecap: round; }
+html.home #view .y11-dor { fill: #E7A9C0; stroke: #3D1028; stroke-width: 2; }
+html.home #view .y11-glo { fill: #F7CAD8; opacity: 0; }
+html.home #view .y11-lit > .y11-glo { opacity: 1; }
+html.home #view .y11-sl { stroke-width: 3; }
+html.home #view .y11-sl-on { fill: #A31F70; stroke: #A31F70; }
+html.home #view .y11-sl-off { fill: #FFFFFF; stroke: #9E5A78; }
+html.home #view .y11-sl-q { fill: #FBF2F5; stroke: #9E5A78; stroke-dasharray: 4 3; }
+html.home #view .y11-sq { fill: none; stroke: #6B3F52; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+html.home #view .y11-sqb { stroke-width: 5; }
+html.home #view .y11-sqd { fill: #6B3F52; }
+html.home #view .y11-sea { fill: #1F5FBF; }
+html.home #view .y11-arc { fill: none; stroke: #9E5A78; stroke-width: 2.5; stroke-dasharray: 6 7; stroke-linecap: round; }
+html.home #view .y11-qbox { fill: none; stroke: #9E5A78; stroke-width: 3; stroke-dasharray: 7 6; }
+html.home #view .y11-s9l { display: grid; grid-template-columns: 1fr 1fr; margin: 0; padding: 4px 8px 6px; background: #FFF7F9; text-align: center; font-size: 17px; line-height: 1.35; font-weight: 800; color: #2A1420; }
+@media (prefers-reduced-motion: no-preference) {
+  html.home #view .y11-rain > line { animation: y11-fall 1.1s linear infinite; }
+  html.home #view .y11-rain > line:nth-child(3n+2) { animation-delay: .37s; }
+  html.home #view .y11-rain > line:nth-child(3n) { animation-delay: .74s; }
+  html.home #view .y11-stm > path { animation: y11-steam 2.4s ease-in-out infinite; }
+  html.home #view .y11-stm > path:nth-child(2) { animation-delay: .8s; }
+  html.home #view .y11-stm > path:nth-child(3) { animation-delay: 1.6s; }
+  html.home #view .y11-lit > .y11-glo { animation: y11-glow .6s .4s both; }
+  html.home #view .y11-arc { animation: y11-hop 1.3s linear infinite; }
+  html.home #view .y11-c { transition: transform .15s; }
+}
+@keyframes y11-fall { 0% { transform: translateY(-10px); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(26px); opacity: 0; } }
+@keyframes y11-steam { 0% { transform: translateY(4px); opacity: 0; } 40% { opacity: .9; } 100% { transform: translateY(-10px); opacity: 0; } }
+@keyframes y11-glow { from { opacity: 0; } to { opacity: 1; } }
+@keyframes y11-hop { to { stroke-dashoffset: -26; } }
+
+/* ── 밤 무대 판(아래는 scripts/atlas11/next/clock_theme.py 가 지음 · 손으로 고치지 않음) ── */
+html.white.clock.clock.clock.clock.home #view .y11-hint { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-key { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-bd { background: #160E2B; }
+html.white.clock.clock.clock.clock.home #view .y11-bn { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-c { color: #B6A8CB; }
+html.white.clock.clock.clock.clock.home #view .y11-c-on { background: #C42F98; border: 3px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .y11-c-off { background: #241540; border: 2.5px solid #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-c-q { background: #160E2B; border: 2.5px dashed #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-lamp[aria-pressed="true"] > .y11-c { outline: 3px solid #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-lamp:focus-visible { outline: 3px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-bub { background: #241540; border: 2px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .y11-bub::before { background: #241540; border-left: 2px solid #3A2756; border-top: 2px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .y11-bk { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-a-on { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .y11-a-off { border: 2px solid #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-a-q { border: 2px dashed #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-bq { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-cap { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-tt { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-sub { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-ez { background: #160E2B; color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-ez > b { color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-ctl > button { border: 2px solid #A58BC2; background: #1C1136; }
+html.white.clock.clock.clock.clock.home #view .y11-ctl > .y11-nx { background: #C42F98; border-color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-ctl > .y11-snd[aria-pressed="true"] { background: #241540; border-color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-ctl > button:focus-visible { outline: 3px solid #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-note { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-sc { background: #1E2C5A; }
+html.white.clock.clock.clock.clock.home #view .y11-sky { fill: #1E2C5A; }
+html.white.clock.clock.clock.clock.home #view .y11-gnd { fill: #9F4D87; }
+html.white.clock.clock.clock.clock.home #view .y11-sun { fill: #8B477B; }
+html.white.clock.clock.clock.clock.home #view .y11-ray { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-cld { fill: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-rain { stroke: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .y11-umb { fill: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .y11-bod { fill: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .y11-ln { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-wal { fill: #1C1136; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-aw1 { fill: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .y11-aw2 { fill: #241540; }
+html.white.clock.clock.clock.clock.home #view .y11-aw3 { fill: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .y11-awo { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-gls { fill: #241540; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-knb { fill: #070514; }
+html.white.clock.clock.clock.clock.home #view .y11-pan { fill: #070514; }
+html.white.clock.clock.clock.clock.home #view .y11-cak { fill: #8B477B; }
+html.white.clock.clock.clock.clock.home #view .y11-oni { stroke: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-stm { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-dor { fill: #7A3A79; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-glo { fill: #67325F; }
+html.white.clock.clock.clock.clock.home #view .y11-sl-on { fill: #C42F98; stroke: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-sl-off { fill: #241540; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-sl-q { fill: #160E2B; stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-sq { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-sqd { fill: #B6A8CB; }
+html.white.clock.clock.clock.clock.home #view .y11-sea { fill: #5B96FF; }
+html.white.clock.clock.clock.clock.home #view .y11-arc { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-qbox { stroke: #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-s9l { background: #1C1136; color: #F2EFF9; }

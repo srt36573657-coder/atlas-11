@@ -482,7 +482,7 @@ html.home #view svg.nh-waf { padding: 0; } /* 다른 쪽 「.me」 칸 안쪽 �
    · 글씨 17px 위 · 누르는 칸 48px 위 · 빨간 글은 숫자만(불빛은 그림 · 짙은 자주) · 그림자 · 그러데이션 없음 · 밤 무대 색은 clock_theme.py 가 이 규칙에서 지음 */
 html.home #view .nh-hero { grid-template-rows: none; }
 html.home #view .nh-hero .nh-h1 > span { display: block; }
-html.home #view .nh-hero > .nh-no { align-self: start; margin-top: -2px; }
+html.home #view .nh-hero > .nh-no { align-self: start; margin-top: -2px; min-height: 2.9em; } /* 늘 두 줄 자리(2 × 1.45) — 글꼴(Pretendard)이 늦게 와 이 줄이 두 줄 → 한 줄로 바뀌어도 아래 칸이 25px 밀리지 않게 · 여는 동안 칸(기기 글꼴)과 다 그린 칸 자리가 같게(2026-10-30 큰 검사 talk11 1/11 why11 ⑦ 285 ≠ 260 · 옛 why11-89 5/11 같은 걸림) */
 html.home #view .y11-i { list-style: none; }
 html.home #view .y11-box { display: block; border-radius: 10px; }
 html.home #view .y11-box > summary { list-style: none; cursor: pointer; border-radius: 10px; }
@@ -506,20 +506,7 @@ html.home #view .y11-m { display: flex; justify-content: flex-end; align-items: 
 html.home #view .y11-m > i { font-style: normal; font-size: 22px; line-height: 1; transition: transform .15s; }
 html.home #view .y11-box[open] .y11-m > i { transform: rotate(90deg); }
 html.home #view .y11-none .y11-m { visibility: hidden; }
-/* 펼친 칸 — 불빛 뜻 · 무리 넷(이름 · 물음) · 열한 가지(번호 · 이름 · 기록 한 줄 · 출처 한 줄) · 대표 회사 기록이라는 말 */
-html.home #view .y11-x { display: grid; gap: 12px; margin: 2px 0 8px; padding: 12px 12px 10px; border-radius: 12px; background: #FFF7F9; border: 1px solid #E3B6C5; color: #2A1420; }
-html.home #view .y11-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; font-size: 17px; line-height: 1.4; color: #5E3446; }
-html.home #view .y11-k { display: inline-flex; align-items: center; gap: 6px; }
-html.home #view .y11-gr { display: grid; gap: 6px; }
-html.home #view .y11-gh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin: 0; padding-bottom: 4px; border-bottom: 1px solid #E3B6C5; font-size: 17px; color: #5E3446; }
-html.home #view .y11-gh b { font-size: 19px; font-weight: 900; color: #2A1420; }
-html.home #view .y11-ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-html.home #view .y11-li { display: grid; grid-template-columns: 15px minmax(0, 1fr); column-gap: 10px; align-items: start; }
-html.home #view .y11-li > .y11-dots { margin-top: 5px; }
-html.home #view .y11-tx { display: grid; gap: 1px; min-width: 0; }
-html.home #view .y11-tx p { margin: 0; font-size: 17px; line-height: 1.45; overflow-wrap: anywhere; }
-html.home #view .y11-nm { display: flex; gap: 6px; font-weight: 800; color: #5E3446; }
-html.home #view .y11-nm b { font-weight: 900; color: #A31F70; }
-html.home #view .y11-tt { font-weight: 700; color: #2A1420; }
-html.home #view .y11-sub { color: #5E3446; }
-html.home #view .y11-note { margin: 0; font-size: 17px; line-height: 1.45; color: #5E3446; }
+/* 펼친 칸 = 말하는 불빛(사장님 2026-10-30 15:15(+08) 「응」 · docs/design/why11-2026-10-30/order-1615.txt) — 칸 모양은 site/next/home-talk.css(칸을 처음 열 때 받음 · 첫 화면 가장 큰 그림 길에서 뺌)
+   여기는 빈 칸 틀과 「불빛 판을 여는 중이에요.」 글만 */
+html.home #view .y11-x { display: grid; gap: 10px; margin: 2px 0 8px; padding: 12px 10px; border-radius: 14px; background: #FFF7F9; border: 1px solid #E3B6C5; color: #2A1420; }
+html.home #view .y11-wt { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 700; color: #5E3446; }
