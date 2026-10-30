@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-essence-render-1",
- "at": "2026-10-30T01:35:20.679Z",
+ "at": "2026-10-30T03:01:02.620Z",
  "base": "https://aaa7377.com",
  "shard": "1/1",
  "units": [
@@ -62,9 +62,9 @@
    "reasons": [],
    "notes": [],
    "counts": {
-    "old": "지막으로 받은 때: ? 9월 30일 10시."
+    "old": "지막으로 받은 때: ? 9월 30일 12시."
    }
   }
  ],
- "seconds": 10.6
+ "seconds": 11.9
 }
