@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-10-29T17:31:45Z",
+ "at": "2026-10-30T17:07:18Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "8515d2ef2175c304892eb08d6c70ebf13abbfaa17ff4605c1e0ba7815a8761d4",
-   "last": "2026-10-29"
+   "sha256": "f66df5a835c58c15b6cb494d5d9a9f2df529b7214958e6352954e9d176e6e037",
+   "last": "2026-10-30"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 851,
+   "n": 852,
    "first": "2023-04-28",
-   "last": "2026-10-29",
+   "last": "2026-10-30",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "6b23727ee6dcc2544fc74231361fff7cafd9776e6d176154f0727da84e38dd83"
+   "sha256": "5d1e95edeba4bf1005c80c08f630d5b58b60f0b3335387d2abddac8114fd49ea"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "f2eb00179f4cb11dc1724ceec06c84ec7221512d39106f9051838873ba1a41bd"
+   "sha256": "34af8507556619f95df5fa99980932d225f4c6a9dd12563aaeb723224e137532"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "422a346939c5d02c36549d39d858a49cc70929afbc4772527e052a003704f092"
+   "sha256": "afa1dcaeb221eec40b58214da0a063df1b869cc715fdab47b049cb4244a75ca7"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 850,
-  "day": "2026-10-29",
+  "k": 851,
+  "day": "2026-10-30",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1696,
+   "outThin": 1697,
    "outThinQ": 18,
    "outHalt": 6,
    "outList": 7,
-   "listQ": 848,
-   "afterOut": 848,
-   "g1": 260,
-   "g2": 679,
-   "g3": 50,
-   "g4": 682,
+   "listQ": 847,
+   "afterOut": 847,
+   "g1": 259,
+   "g2": 694,
+   "g3": 42,
+   "g4": 692,
    "g5": 0,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 835,
+   "loss3": 834,
    "why": "lists"
   },
-  "loss3Years": 835,
+  "loss3Years": 834,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,27 +321,69 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-09-29",
-   "to": "2026-10-29",
-   "n": 1,
-   "counted": 1,
+   "from": "2026-09-30",
+   "to": "2026-10-30",
+   "n": 3,
+   "counted": 3,
    "up": 0,
-   "lo": 4,
-   "hi": 7,
+   "lo": 12,
+   "hi": 22,
    "rows": [
     {
-     "code": "014530",
-     "name": "극동유화",
+     "code": "306200",
+     "name": "세아제강",
      "lo": 4,
-     "hi": 7,
-     "from": 3340,
-     "to": 3240,
+     "hi": 8,
+     "from": 156000,
+     "to": 117100,
      "up": 0,
      "mcCounts": [
-      921,
-      902,
-      1318,
-      975
+      1113,
+      986,
+      1495,
+      987
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "code": "001230",
+     "name": "동국홀딩스",
+     "lo": 4,
+     "hi": 7,
+     "from": 2035,
+     "to": 1844,
+     "up": 0,
+     "mcCounts": [
+      1115,
+      1058,
+      1397,
+      959
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "code": "053300",
+     "name": "한국정보인증",
+     "lo": 4,
+     "hi": 7,
+     "from": 5100,
+     "to": 5100,
+     "up": 0,
+     "mcCounts": [
+      823,
+      945,
+      1304,
+      959
      ],
      "mcEdges": [
       0,
@@ -400,10 +442,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1696,
+    1697,
     6,
     7,
-    848,
+    847,
     2557
    ]
   },
@@ -417,26 +459,26 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1696,
+  "outThin": 1697,
   "outThinQ": 18,
   "outHalt": 6,
   "outList": 7,
-  "listQ": 848,
-  "afterOut": 848,
-  "g1": 260,
-  "g2": 679,
-  "g3": 50,
-  "g4": 682,
+  "listQ": 847,
+  "afterOut": 847,
+  "g1": 259,
+  "g2": 694,
+  "g3": 42,
+  "g4": 692,
   "g5": 0,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 835,
+  "loss3": 834,
   "why": "lists"
  },
- "compared": 2700,
+ "compared": 2714,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
@@ -445,7 +487,7 @@
  "secs": {
   "readBundle": 3.1,
   "build": 2.2,
-  "recount": 1.0,
-  "total": 6.3
+  "recount": 1.3,
+  "total": 6.6
  }
 }

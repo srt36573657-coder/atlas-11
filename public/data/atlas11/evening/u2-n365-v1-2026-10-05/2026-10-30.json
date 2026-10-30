@@ -1,0 +1,425 @@
+{
+ "schema": "atlas11-evening-1",
+ "universe": "u2-n365-v1-2026-10-05",
+ "asOf": "2026-10-30",
+ "recordedAt": "2026-10-30T10:11:14.314Z",
+ "run": "evening",
+ "boardId": "board-2026-10-30-1815d05e",
+ "cand": [
+  {
+   "rank": 1,
+   "code": "181710",
+   "name": "NHN",
+   "g": "i395e4aea",
+   "close": 46600,
+   "date": "2026-10-30",
+   "status": "met",
+   "reason": "1년 추세 +109.9%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +57.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 — 지난 2년 초입 7곳은 석 달 뒤 평균을 이긴 날 100번 중 60번(그물 전체 85번)",
+   "gap": 0.9205093857304174,
+   "r20": -15.272727272727272,
+   "grow": {
+    "m12": 109.92,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "IT서비스",
+    "sectorRank": null,
+    "fi": 30,
+    "power": 0.163,
+    "rank": 87,
+    "fomo": 75
+   }
+  },
+  {
+   "rank": 2,
+   "code": "124500",
+   "name": "아이티센글로벌",
+   "g": "ifd7313ac",
+   "close": 20500,
+   "date": "2026-10-30",
+   "status": "wait",
+   "reason": "1년 추세 +53.6%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +57.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "그물 밖으로 나감 — 1년 추세가 상위 20% 기준선 아래 · 석 달 동안은 그대로 두고 다음 담는 날에 정리",
+   "gap": -12.37819191297088,
+   "r20": -28.57142857142857,
+   "grow": {
+    "m12": 53.64,
+    "plantedAt": "2026-10-08",
+    "inNet": false
+   },
+   "flow": {
+    "sector": "IT 시스템 통합",
+    "sectorRank": null,
+    "fi": 12,
+    "power": 0.1695,
+    "rank": 85,
+    "fomo": 76
+   }
+  },
+  {
+   "rank": 3,
+   "code": "103590",
+   "name": "일진전기",
+   "g": "if5c9be18",
+   "close": 52700,
+   "date": "2026-10-30",
+   "status": "met",
+   "reason": "1년 추세 +81.1%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +57.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 — 지난 2년 초입 7곳은 석 달 뒤 평균을 이긴 날 100번 중 60번(그물 전체 85번)",
+   "gap": -19.92797546275443,
+   "r20": -36.12121212121212,
+   "grow": {
+    "m12": 81.12,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "전선·전기장비",
+    "sectorRank": null,
+    "fi": -264,
+    "power": -0.6447,
+    "rank": 328,
+    "fomo": 7
+   }
+  },
+  {
+   "rank": 4,
+   "code": "039030",
+   "name": "이오테크닉스",
+   "g": "iafb9068f",
+   "close": 388500,
+   "date": "2026-10-30",
+   "status": "met",
+   "reason": "1년 추세 +115.8%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +57.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 — 지난 2년 초입 7곳은 석 달 뒤 평균을 이긴 날 100번 중 60번(그물 전체 85번)",
+   "gap": -9.095224880003848,
+   "r20": -25.288461538461537,
+   "grow": {
+    "m12": 115.77,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "반도체 장비",
+    "sectorRank": null,
+    "fi": -123,
+    "power": -0.1864,
+    "rank": 280,
+    "fomo": 21
+   }
+  },
+  {
+   "rank": 5,
+   "code": "088350",
+   "name": "한화생명",
+   "g": "i15189549",
+   "close": 4115,
+   "date": "2026-10-30",
+   "status": "met",
+   "reason": "1년 추세 +67.9%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +57.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "희석 공시 — 9월 30일 「유상증자결정(종속회사의 주요경영사항)」 · 주식 수가 늘 수 있음",
+   "gap": -6.6022605272833985,
+   "r20": -22.795497185741088,
+   "grow": {
+    "m12": 67.87,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "보험",
+    "sectorRank": 3,
+    "fi": -109,
+    "power": -0.2361,
+    "rank": 290,
+    "fomo": 18
+   }
+  },
+  {
+   "rank": 6,
+   "code": "161890",
+   "name": "한국콜마",
+   "g": "i9af5b434",
+   "close": 112500,
+   "date": "2026-10-30",
+   "status": "met",
+   "reason": "1년 추세 +91.6%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +57.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "한 곳만 보면 흔들림이 큼 — 지난 2년 초입 7곳은 석 달 뒤 평균을 이긴 날 100번 중 60번(그물 전체 85번)",
+   "gap": -6.751968820994367,
+   "r20": -22.945205479452056,
+   "grow": {
+    "m12": 91.6,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "화장품",
+    "sectorRank": null,
+    "fi": 151,
+    "power": 0.4678,
+    "rank": 30,
+    "fomo": 92
+   }
+  },
+  {
+   "rank": 7,
+   "code": "001450",
+   "name": "현대해상",
+   "g": "i15189549",
+   "close": 43950,
+   "date": "2026-10-30",
+   "status": "met",
+   "reason": "1년 추세 +75.6%(마지막 20거래일 뺌) · 365곳 가운데 상위 20% 그물(기준선 +57.2%) · 10월 8일 그물에 새로 든 초입",
+   "risk": "같은 업종 후보 2곳 — 같은 사건에 함께 흔들릴 수 있음",
+   "gap": 8.042766439021953,
+   "r20": -8.150470219435736,
+   "grow": {
+    "m12": 75.6,
+    "plantedAt": "2026-10-08",
+    "inNet": true
+   },
+   "flow": {
+    "sector": "보험",
+    "sectorRank": 3,
+    "fi": 54,
+    "power": 0.1335,
+    "rank": 101,
+    "fomo": 72
+   }
+  }
+ ],
+ "candRules": "cand-rules-5",
+ "candPool": {
+  "universe": 365,
+  "valid": 357,
+  "net": 72,
+  "netElig": 62,
+  "newc": 11,
+  "data": 357,
+  "profit": 297,
+  "risk": 287
+ },
+ "hot": [
+  {
+   "id": "id9b6b5c7",
+   "label": "식품",
+   "change20": 0.05232
+  },
+  {
+   "id": "i729f38fe",
+   "label": "헬스케어 기술",
+   "change20": 0.036772
+  },
+  {
+   "id": "i5d55c4dc",
+   "label": "의료기기",
+   "change20": 0.022855
+  },
+  {
+   "id": "i11f4d132",
+   "label": "정밀화학",
+   "change20": 0.011318
+  },
+  {
+   "id": "i9eca8833",
+   "label": "사업 서비스·광고",
+   "change20": 0.011194
+  },
+  {
+   "id": "ib275142c",
+   "label": "음료",
+   "change20": 0.010073
+  }
+ ],
+ "similar": [
+  {
+   "code": "053800",
+   "name": "안랩",
+   "groupId": "ibaad6b46",
+   "groupLabel": "소프트웨어",
+   "matched": 3
+  },
+  {
+   "code": "028050",
+   "name": "삼성E&A",
+   "groupId": "i0462d6e6",
+   "groupLabel": "건설 엔지니어링",
+   "matched": 3
+  },
+  {
+   "code": "030530",
+   "name": "원익홀딩스",
+   "groupId": "i2f453d90",
+   "groupLabel": "반도체 소재",
+   "matched": 3
+  },
+  {
+   "code": "035760",
+   "name": "CJ ENM",
+   "groupId": "i75fe8fc8",
+   "groupLabel": "방송",
+   "matched": 3
+  },
+  {
+   "code": "271560",
+   "name": "오리온",
+   "groupId": "ib626e94b",
+   "groupLabel": "가공식품",
+   "matched": 3
+  },
+  {
+   "code": "003160",
+   "name": "디아이",
+   "groupId": "i3b897314",
+   "groupLabel": "반도체 검사·측정",
+   "matched": 3
+  },
+  {
+   "code": "263750",
+   "name": "펄어비스",
+   "groupId": "id7fa83fc",
+   "groupLabel": "게임",
+   "matched": 3
+  }
+ ],
+ "common": [
+  "ups",
+  "r5",
+  "r20"
+ ],
+ "next": [
+  {
+   "code": "053800",
+   "name": "안랩",
+   "groupId": "ibaad6b46",
+   "groupLabel": "소프트웨어"
+  },
+  {
+   "code": "093320",
+   "name": "케이아이엔엑스",
+   "groupId": "i395e4aea",
+   "groupLabel": "IT서비스"
+  },
+  {
+   "code": "028050",
+   "name": "삼성E&A",
+   "groupId": "i0462d6e6",
+   "groupLabel": "건설 엔지니어링"
+  },
+  {
+   "code": "012030",
+   "name": "DB",
+   "groupId": "ifd7313ac",
+   "groupLabel": "IT 시스템 통합"
+  },
+  {
+   "code": "089590",
+   "name": "제주항공",
+   "groupId": "idbce9b07",
+   "groupLabel": "항공"
+  },
+  {
+   "code": "171090",
+   "name": "선익시스템",
+   "groupId": "i548c4f0c",
+   "groupLabel": "디스플레이 장비"
+  },
+  {
+   "code": "253450",
+   "name": "스튜디오드래곤",
+   "groupId": "if16069cc",
+   "groupLabel": "콘텐츠 제작"
+  },
+  {
+   "code": "046890",
+   "name": "서울반도체",
+   "groupId": "ia6242bda",
+   "groupLabel": "디스플레이"
+  },
+  {
+   "code": "011200",
+   "name": "HMM",
+   "groupId": "i40ac49cb",
+   "groupLabel": "해운"
+  },
+  {
+   "code": "030530",
+   "name": "원익홀딩스",
+   "groupId": "i2f453d90",
+   "groupLabel": "반도체 소재"
+  },
+  {
+   "code": "000250",
+   "name": "삼천당제약",
+   "groupId": "i1f7e7302",
+   "groupLabel": "제약"
+  },
+  {
+   "code": "035760",
+   "name": "CJ ENM",
+   "groupId": "i75fe8fc8",
+   "groupLabel": "방송"
+  },
+  {
+   "code": "159010",
+   "name": "아스플로",
+   "groupId": "id486d496",
+   "groupLabel": "일반 기계"
+  },
+  {
+   "code": "068270",
+   "name": "셀트리온",
+   "groupId": "i829a5180",
+   "groupLabel": "바이오 의약품"
+  },
+  {
+   "code": "290550",
+   "name": "디케이티",
+   "groupId": "ia84fa0e7",
+   "groupLabel": "휴대폰 부품"
+  },
+  {
+   "code": "271560",
+   "name": "오리온",
+   "groupId": "ib626e94b",
+   "groupLabel": "가공식품"
+  },
+  {
+   "code": "003160",
+   "name": "디아이",
+   "groupId": "i3b897314",
+   "groupLabel": "반도체 검사·측정"
+  },
+  {
+   "code": "263750",
+   "name": "펄어비스",
+   "groupId": "id7fa83fc",
+   "groupLabel": "게임"
+  },
+  {
+   "code": "006730",
+   "name": "서부T&D",
+   "groupId": "i90fe36a6",
+   "groupLabel": "호텔·레저"
+  },
+  {
+   "code": "138040",
+   "name": "메리츠금융지주",
+   "groupId": "i200aab05",
+   "groupLabel": "증권"
+  },
+  {
+   "code": "006400",
+   "name": "삼성SDI",
+   "groupId": "ie21045c7",
+   "groupLabel": "2차전지"
+  },
+  {
+   "code": "035900",
+   "name": "JYP Ent.",
+   "groupId": "ia322e43a",
+   "groupLabel": "연예 기획사"
+  }
+ ]
+}
