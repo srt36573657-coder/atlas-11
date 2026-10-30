@@ -206,6 +206,8 @@ try {
       check(JSON.stringify(o.gh.map(ns)) === JSON.stringify((W.groups ?? []).map(g => ns(g[L] + (g.q?.[L] ?? '')))), `${t} 무리 머리 넷`, o.gh.join(' | '));
       check(o.note === W.note?.[L], `${t} 대표 회사 기록 말`, o.note);
       check(ns(o.key) === ns(en ? 'Yes by the record No Not known yet' : '기록으로 맞음 아님 아직 모름'), `${t} 불빛 뜻`, o.key);
+      // 상황 무리(7 시장 날씨 · 8 환율과 금리 · 9 다른 나라) 사진 — 결과 폴더에 업종마다 한 장(v2 2026-10-30 08:28 · 진짜 자료 글을 그림으로 봄) · 못 찍어도 검사는 그대로
+      if (!en && OUT) await p.locator('#view section.nh-hero ol.nh-fl-up > li').nth(k).locator('details.y11-box .y11-gr').nth(2).screenshot({path: path.join(path.dirname(OUT), `why11-sit-${k + 1}.jpg`), type: 'jpeg', quality: 70}).catch(() => {});
     }
     judgeRead(`${tag} 세 칸 펼침`, await READ(p), {en});
     // 다시 누르면 접힘
