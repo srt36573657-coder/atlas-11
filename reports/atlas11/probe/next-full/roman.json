@@ -1,13 +1,14 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-10-30T20:46:36.772Z",
+ "at": "2026-10-31T03:47:15.467Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 244,
+  "pass": 471,
   "fail": 0
  },
  "fails": [],
  "m": {
+  "rooms": 37,
   "seats": 72,
   "zones": [
    10,
