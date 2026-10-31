@@ -1,17 +1,12 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-10-31T05:46:51.436Z",
+ "at": "2026-10-31T06:23:18.649Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 600,
-  "fail": 1
+  "pass": 601,
+  "fail": 0
  },
- "fails": [
-  [
-   "⑦ 서버가 그림 일흔둘을 그림 꼴(image/svg+xml)로 줌",
-   "10 apiRequestContext.get: Timeout 30000ms exceeded.\nCall log:\n  - → GET https://aaa7377.com/next/roman-art/10.svg\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,"
-  ]
- ],
+ "fails": [],
  "m": {
   "rooms": 37,
   "art": {

@@ -1,11 +1,11 @@
 {
  "schema": "godori-check-share-1",
- "at": "2026-10-31T06:10:25.116Z",
+ "at": "2026-10-31T06:43:03.248Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
  "code": "005930",
- "secs": 81,
+ "secs": 73,
  "counts": {
   "거르기 맞댐": 33,
   "모양 파일 글씨 크기 줄": 39,

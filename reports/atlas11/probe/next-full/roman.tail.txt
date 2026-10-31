@@ -1,7 +1,1 @@
-실패 ⑦ 서버가 그림 일흔둘을 그림 꼴(image/svg+xml)로 줌 — 10 apiRequestContext.get: Timeout 30000ms exceeded.
-Call log:
-  - → GET https://aaa7377.com/next/roman-art/10.svg
-    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36
-    - accept: */*
-    - accept-encoding: gzip,deflate,
-로마 신 72 검사 — 통과 600 · 실패 1
+로마 신 72 검사 — 통과 601 · 실패 0
