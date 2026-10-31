@@ -431,6 +431,10 @@ html.home #view #nh-p2 { margin-top: 64px; } /* ② 보기 머리는 첫 화면(
 html.home #view .nh-hero { gap: 8px; }
 html.home #view .nh-hero > .nh-pm { margin: 0; font-size: 18px; }
 html.home #view .nh-hero > .nh-pm i { width: 30px; height: 30px; font-size: 17px; }
+/* 만수르(사장님 2026-10-31 23:14(+04) 「…첫화면에 바로 갈수 있데 배치해 이름은 만수르」 · docs/design/mansour-2026-11-01/order-0414.txt) — 머리 줄 오른쪽 알약
+   48px · 문 단추(.nh-go)와 같은 빛(--nh-go 바탕 · 흰 글 — 판마다 같이 바뀜) · 여는 동안 칸(boot-home.js)과 같은 꼴 */
+html.home #view .nh-hero > .nh-pm .nh-mans { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 16px; border-radius: 999px; background: var(--nh-go); color: #FFFFFF; font-size: 19px; font-weight: 800; line-height: 1.2; text-decoration: none; }
+html.home #view .nh-hero > .nh-pm .nh-mgo { font-size: 22px; line-height: 1; }
 html.white.clock.clock.clock.home #view .nh-hero .nh-h1 { font-size: 26px; line-height: 1.3; }
 html.home #view .nh-hero .nh-h1 > span { display: inline; } /* 한 줄(390 폭) · 좁으면 저절로 두 줄 */
 html.home #view .nh-fm { display: grid; gap: 4px; padding: 12px 14px; border-radius: 18px; background: #FFFFFF; border: 1px solid #E3B6C5; color: #2A1420; }

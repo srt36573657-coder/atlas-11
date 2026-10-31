@@ -137,11 +137,16 @@ function flowMap(TH, W = null) {
     sage('애덤 스미스', '사려는 사람이 많으면 값이 올라요.'));
 }
 const goPick = () => document.getElementById('nh-p2')?.scrollIntoView({behavior: 'smooth', block: 'start'}); // ② 고른 회사 칸으로(주소 # 는 그대로)
+/** 만수르(사장님 2026-10-31 23:14(+04) 「https://shin-yxy.gino.im 이거 첫화면에 바로 갈수 있데 배치해 이름은 만수르」 · docs/design/mansour-2026-11-01/order-0414.txt)
+    ① 돈 흐름 머리 줄 오른쪽 알약 — 첫 화면을 열자마자 보임(결론 머리는 그대로 맨 위 큰 글) · 누르면 그 주소를 새 창으로(둘이 첫 화면은 그대로 남음)
+    여는 동안 칸(boot-home.js)에도 같은 단추 — 다 그린 뒤 머리가 밀리지 않게(tests/atlas11/home-new.test.mjs 가 둘을 맞댐) */
+export const MANSOUR = 'https://shin-yxy.gino.im/';
+const mansour = () => h('a', {class: 'nh-mans', href: MANSOUR, target: '_blank', rel: 'noopener noreferrer'}, h('span', {text: EN ? 'Mansour' : '만수르'}), h('span', {class: 'nh-mgo', 'aria-hidden': 'true', text: '›'}));
 /** ① 돈 흐름 — 머리(늘 두 줄) · 「권하지 않습니다」(첫 한 화면 안 — 까닭 열한 가지로 칸이 길어져 맨 아래에서 머리 밑으로 · 2026-10-30) · 돈 흐름 판 · ② 로 내려가는 단추 */
 export function heroBox(TH = null, W = null) {
   const head = whyOk(TH, W) && W.head ? W.head : null, hl = head ? (EN ? head.en : head.ko) : null;
   return h('section', {class: 'nh-hero', 'aria-label': '요즘 돈 흐름'},
-    h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '1'}), h('span', {text: '돈 흐름'})),
+    h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '1'}), h('span', {text: '돈 흐름'}), mansour()), // 만수르(order-0414) — 머리 줄 오른쪽
     h('h2', {class: 'nh-h1'}, h('span', {text: hl?.[0] ?? '요즘 돈은'}), ' ', h('span', {class: 'nh-acc', text: hl?.[1] ?? '여기로 몰렸어요'})), // 늘 두 줄(여는 동안 칸과 같은 높이 · 영어 엔진이 문장을 나누지 않게 줄마다 한 덩이)
     h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}),
     flowMap(TH, W),

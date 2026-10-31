@@ -99,3 +99,19 @@ test('말하는 불빛(사장님 2026-10-30 15:15(+08) 「응」 · docs/design/
   assert.ok(top && night && /html\.white\.clock\.clock\.clock\.clock\.home #view \.y11-bub \{/.test(night), 'home-talk.css 에 밤 무대 색 규칙이 없음(clock_theme.py 를 다시 돌림)');
   assert.doesNotMatch(tcss, /box-shadow|text-shadow|gradient\(|drop-shadow|blur\(/, '말하는 불빛 칸에 그림자 · 그러데이션');
 });
+
+test('만수르(사장님 2026-10-31 23:14(+04) · docs/design/mansour-2026-11-01/order-0414.txt) — 여는 동안 칸 = 다 그린 칸 · ① 머리 줄 · 그 주소 · 새 창', () => {
+  const boot = read('site/next/boot-home.js'), src = read('site/next/home-new.js'), css = read('site/next/home-new.css'), URL = 'https://shin-yxy.gino.im/';
+  // 다 그린 소개 칸 — 머리 줄(nh-pm) 안 「1 · 돈 흐름」 다음에 단추 하나 · 주소 한 곳(MANSOUR) · 새 창 · noopener
+  assert.match(src, /export const MANSOUR = 'https:\/\/shin-yxy\.gino\.im\/';/);
+  assert.match(src, /h\('a', \{class: 'nh-mans', href: MANSOUR, target: '_blank', rel: 'noopener noreferrer'\}, h\('span', \{text: EN \? 'Mansour' : '만수르'\}\), h\('span', \{class: 'nh-mgo', 'aria-hidden': 'true', text: '›'\}\)\)/);
+  assert.match(src, /h\('p', \{class: 'nh-pm'\}, h\('i', \{'aria-hidden': 'true', text: '1'\}\), h\('span', \{text: '돈 흐름'\}\), mansour\(\)\)/, '머리 줄에 만수르 단추가 없음');
+  // 여는 동안 칸 — 같은 글 · 같은 주소 · 같은 꼴(다 그린 뒤 머리가 밀리지 않게)
+  assert.ok(boot.includes(`ms.href = '${URL}'`) && boot.includes("ms.target = '_blank'") && boot.includes("ms.rel = 'noopener noreferrer'"), '여는 동안 칸 만수르 주소 · 새 창이 다름');
+  assert.match(boot, /const ms = el\('a', 'nh-mans'\);[^\n]*ms\.append\(el\('span', null, '만수르'\), hid\(el\('span', 'nh-mgo', '›'\)\)\); pm\.append\(ms\);/);
+  assert.ok(boot.indexOf('pm.append(ms)') > boot.indexOf("const pm = el('p', 'nh-pm')") && boot.indexOf('pm.append(ms)') < boot.indexOf('sec.append(pm, h2'), '여는 동안 칸 머리 줄 차례가 다름');
+  // 모양 — 48px · 문 단추와 같은 빛 · 그림자 · 그러데이션 없음
+  const rule = /html\.home #view \.nh-hero > \.nh-pm \.nh-mans \{([^}]*)\}/.exec(css)?.[1] ?? '';
+  assert.ok(/min-height: 48px;/.test(rule) && /background: var\(--nh-go\);/.test(rule) && /color: #FFFFFF;/.test(rule) && /margin-left: auto;/.test(rule), '만수르 모양(48px · --nh-go · 흰 글 · 오른쪽)');
+  assert.doesNotMatch(rule, /shadow|gradient/, '만수르 단추에 그림자 · 그러데이션');
+});
