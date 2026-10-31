@@ -28,6 +28,9 @@
 //      — 가짜 소리 줄(넣은 차례대로 하나씩 읽음)로 맞댐: 말하는 불빛 칸 맨 위(한 줄 아래 · 카드 위) 단추 하나 · 48px · 17px · 누름 → 열하나가 카드 차례대로 소리 줄에
 //      · 읽는 말 = 「n번 불빛, 자리. 이름. 누구. 왜 여기」(카드 글 그대로 · 따로 셈) · 읽는 카드 테 · 얼굴 눌림 · 글상자 「지금 …」 · 다음 카드로 옮겨 감(화면 안)
 //      · 다시 누름 = 멈춤 · 다른 얼굴 = 차례 멈추고 그 신만 · 지금 읽는 얼굴 = 모두 멈춤 · 끝까지 = 처음 모습 · 쪽 옮김 = 멈춤 · 영어 · 소리 없는 휴대폰 = 단추 없음 · 아주 크게 320 넘침 0
+//   ⑩ 여덟 곳 차례로 듣기(사장님 2026-10-31 14:20(+04) 「응」 — 물음 「다른 일곱 곳 신 이야기에도 「차례로 듣기」 단추를 달아 드릴까요?」 · order-1920.txt)
+//      — 곳마다 맨 위(한 줄 아래 · 카드 위)에 단추 하나 · 글 = 그곳 신 수(「열 신 · 열한 신 · 여섯 신 …」 따로 셈) · 56px · 곳마다 누름 → 그곳 카드 차례대로 소리 줄
+//      · 다른 곳을 누르면 앞 곳은 처음 모습 · 여덟 곳 합쳐 일흔둘 모두 한 번씩 · 영어 글 · 아주 크게 320 여덟 단추 화면 안
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -533,7 +536,8 @@ try {
     const storyKo = n => { const g = GODS[n], s = SEATS.find(x => x[4] === n); return `${g[0]}. ${g[3]} ${fillKo(s[5])}`; }; // 카드 글 그대로(따로 셈)
     const storyEn = n => { const g = GODS[n], s = SEATS.find(x => x[4] === n); return `${g[2]}. ${g[4]} ${fillEn(s[6])}`; };
     const TALK = SEATS.filter(s => s[0] === 'talk');
-    const lineKo = s => `${fillKo(s[1]).split(' · ').join(', ')}. ${storyKo(s[4])}`, lineEn = s => `${fillEn(s[2]).split(' · ').join(', ')}. ${storyEn(s[4])}`;
+    const CIRC = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳', sayK = t => [...t].map(ch => CIRC.includes(ch) ? `${CIRC.indexOf(ch) + 1}번 ` : ch).join('').replace(/번  /g, '번 '), sayE = t => [...t].map(ch => CIRC.includes(ch) ? `Number ${CIRC.indexOf(ch) + 1}, ` : ch).join('').replace(/,  /g, ', '); // 동그라미 숫자는 소리로 「1번」 · 「Number 1,」(order-1920 · 따로 셈)
+    const lineKo = s => `${sayK(fillKo(s[1]).split(' · ').join(', '))}. ${storyKo(s[4])}`, lineEn = s => `${sayE(fillEn(s[2]).split(' · ').join(', '))}. ${storyEn(s[4])}`;
     const capKo = s => `지금 ${fillKo(s[1])} · ${GODS[s[4]][0]}`, capEn = s => `Now: ${fillEn(s[2])} · ${GODS[s[4]][2]}`;
     const FAKEQ = () => { // 가짜 소리 줄 — 넣은 차례대로 하나씩 읽음(시작 · 끝 소식) · 한 이야기 window.__dur 밀리초 · 멈추면 줄 비움(읽던 것은 「끊김」)
       const said = []; window.__said = said; window.__q = []; window.__cancel = 0; window.__dur = 900;
@@ -561,7 +565,7 @@ try {
     else {
       const bar = await p.evaluate(() => { const z = document.querySelector('#view #rm-z-talk'), b = z?.querySelector('.rm-allb'), r = b?.getBoundingClientRect();
         return {all: document.querySelectorAll('#view .rm-allb').length, kids: z ? [...z.children].map(x => x.className || x.tagName).join('|') : '', h: r ? Math.round(r.height) : 0, fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0, t: b?.textContent ?? null, capHid: z?.querySelector('.rm-allc')?.hidden ?? null}; });
-      check(bar.all === 1 && bar.kids.startsWith('rm-zh|rm-zp|rm-all|rm-grid') && bar.h >= 55 && bar.fs >= 16.9 && bar.t === '열한 신 차례로 듣기' && bar.capHid === true, '⑨ 말하는 불빛 칸 맨 위(한 줄 아래 · 카드 위)에 「열한 신 차례로 듣기」 하나 · 56px · 17px · 글상자 숨김', JSON.stringify(bar));
+      check(bar.all === 8 && bar.kids.startsWith('rm-zh|rm-zp|rm-all|rm-grid') && bar.h >= 55 && bar.fs >= 16.9 && bar.t === '열한 신 차례로 듣기' && bar.capHid === true, '⑨ 말하는 불빛 칸 맨 위(한 줄 아래 · 카드 위)에 「열한 신 차례로 듣기」 · 56px · 17px · 글상자 숨김(단추는 여덟 곳에 하나씩 — ⑩)', JSON.stringify(bar));
       const want = TALK.map(lineKo);
       await tap(p, BTN); const S1 = await ST(p), Q = await p.evaluate(() => window.__q.map(x => ({...x})));
       const qBad = Q.length === 11 ? Q.findIndex((x, i) => !voiceOk(x, want[i], 'ko-KR')) : -2;
@@ -611,6 +615,55 @@ try {
       check(m.bl >= 0 && m.br <= m.vw + 0.5 && m.bh >= 48 && m.cl >= 0 && m.cr <= m.vw + 0.5 && m.ch > 0 && m.tw <= 1 && m.sw <= m.vw, '⑨ 아주 크게 320 — 단추 · 글상자 화면 안 · 글 잘림 0 · 넘침 0', JSON.stringify(m));
     } else check(false, '⑨ 아주 크게 320 로마 신 쪽', '안 그려짐');
     check(!e4.length, '⑨ 아주 크게 320 화면 오류 0', e4.join(' | ')); await c4.close();
+    // ⑩ 여덟 곳 차례로 듣기(order-1920) — 곳마다 단추 하나 · 그곳 신 수 글 · 그곳 카드 차례 · 한 번에 한 곳
+    const KO_N = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열', '열한', '열두', '열세', '열네', '열다섯', '열여섯', '열일곱', '열여덟', '열아홉', '스무'];
+    const EN_N = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+    const zoneSeats = id => SEATS.filter(s => s[0] === id), labKo = id => `${KO_N[zoneSeats(id).length]} 신 차례로 듣기`, labEn = id => `Hear all ${EN_N[zoneSeats(id).length]} in order`;
+    const STZ = (q, id) => q.evaluate(id => { const z = document.querySelector(`#view #rm-z-${id}`), b = z?.querySelector('.rm-allb'), c = z?.querySelector('.rm-allc');
+      return {q: window.__q?.length ?? 0, label: b?.textContent ?? null, on: b?.classList.contains('rm-allon') ?? null, cap: c?.textContent ?? null, capHid: c?.hidden ?? null, ring: [...document.querySelectorAll('#view .rm-card.rm-say')].map(x => +x.dataset.n)}; }, id);
+    const BARS = q => q.evaluate(() => [...document.querySelectorAll('#view section.rm-zone')].map(z => { const b = z.querySelector('.rm-allb'), r = b?.getBoundingClientRect();
+      return {id: z.id.replace('rm-z-', ''), n: z.querySelectorAll('.rm-allb').length, kids: [...z.children].slice(0, 4).map(x => x.className || x.tagName).join('|'), t: b?.textContent ?? null, h: r ? Math.round(r.height) : 0, l: r ? Math.round(r.left) : -1, rt: r ? Math.round(r.right) : 9999, cards: z.querySelectorAll('.rm-card').length}; }));
+    const c5 = await qCtx(390), r5 = await c5.newPage(), e5 = errsOf(r5);
+    await r5.goto(URL_OF('#/roman'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r5)) {
+      const bars = await BARS(r5), badBars = bars.filter(b => b.n !== 1 || b.kids !== 'rm-zh|rm-zp|rm-all|rm-grid' || b.t !== labKo(b.id) || b.h < 55 || b.cards !== zoneSeats(b.id).length);
+      check(bars.length === 8 && ZONES.every((z, i) => bars[i]?.id === z.id) && !badBars.length, '⑩ 여덟 곳 모두 맨 위(한 줄 아래 · 카드 위)에 단추 하나 · 글 = 그곳 신 수(「열 신 · 열한 신 · 여섯 신 …」) · 56px · 카드 수 맞음', JSON.stringify(badBars.length ? badBars : bars.map(b => b.t)));
+      const joined = await r5.evaluate(() => document.querySelector('#view')?.cloneNode(true).textContent ?? ''), hits = screenHits(joined);
+      check(!hits.length, '⑩ 쪽 글을 이어 붙여도 쓰지 않을 말 0(「…듣기」 + 첫 카드 「회사 한 장」 = 「기회」 막음 · next_check 와 같은 셈)', JSON.stringify(hits));
+      await r5.evaluate(() => { window.__dur = 5000; }); // 첫 이야기에 머무는 동안 봄
+      const got = [], bad = []; let prev = null;
+      for (const z of ZONES) {
+        const seats = zoneSeats(z.id), want = seats.map(lineKo), q0 = (await STZ(r5, z.id)).q;
+        await tap(r5, `#view #rm-z-${z.id} .rm-allb`);
+        const S = await STZ(r5, z.id), Q = await r5.evaluate(n => window.__q.slice(n).map(x => ({...x})), q0), P = prev ? await STZ(r5, prev) : null;
+        const qb = Q.length === want.length ? Q.findIndex((x, i) => !voiceOk(x, want[i], 'ko-KR')) : -2;
+        const prevOk = !P || (!P.on && P.label === labKo(prev) && P.capHid === true);
+        if (!(qb === -1 && S.on && S.label === '멈추기' && S.ring.join() === String(seats[0][4]) && S.cap === `지금 ${fillKo(seats[0][1])} · ${GODS[seats[0][4]][0]}` && S.capHid === false && prevOk)) bad.push({z: z.id, qb, n: Q.length, S, P});
+        got.push(...Q.map(x => x.text)); prev = z.id;
+      }
+      await tap(r5, `#view #rm-z-${prev} .rm-allb`); const SE = await STZ(r5, prev);
+      const want72 = ZONES.flatMap(z => zoneSeats(z.id).map(lineKo));
+      check(!bad.length && got.length === 72 && got.join('\n') === want72.join('\n') && new Set(got).size === 72 && !SE.on && !SE.ring.length && SE.label === labKo(prev),
+        '⑩ 곳마다 누름 → 그곳 카드 차례대로 소리 줄(카드 글 그대로 · ko-KR · 0.9 · 1 · 0.96) · 첫 카드 테 · 글상자 · 다른 곳을 누르면 앞 곳은 처음 모습 · 여덟 곳 합쳐 일흔둘 한 번씩 · 마지막 다시 누름 = 멈춤', JSON.stringify({bad: bad.slice(0, 2), n: got.length, SE}).slice(0, 400));
+    } else check(false, '⑩ 로마 신 쪽', '안 그려짐');
+    check(!e5.length, '⑩ 화면 오류 0', e5.join(' | ')); await c5.close();
+    const c6 = await qCtx(390, {en: true}), r6 = await c6.newPage(), e6 = errsOf(r6);
+    await r6.goto(URL_OF('#/roman', '&lang=en'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r6)) {
+      const bars = await BARS(r6), badL = bars.filter(b => b.t !== labEn(b.id) || HAN.test(b.t ?? ''));
+      await tap(r6, '#view #rm-z-more .rm-allb'); const Q = await r6.evaluate(() => window.__q.map(x => ({...x}))), want = zoneSeats('more').map(lineEn);
+      const qb = Q.length === want.length ? Q.findIndex((x, i) => !voiceOk(x, want[i], 'en-US') || HAN.test(x.text)) : -2;
+      check(bars.length === 8 && !badL.length && qb === -1, '⑩ 영어 — 여덟 곳 단추 글 「Hear all … in order」 · 다른 쪽 곳 누름 → 영어 이야기 · en-US', JSON.stringify({badL, qb, n: Q.length, q0: Q[0]?.text?.slice(0, 40)}));
+    } else check(false, '⑩ 영어 로마 신 쪽', '안 그려짐');
+    check(!e6.length, '⑩ 영어 화면 오류 0', e6.join(' | ')); await c6.close();
+    const c7 = await qCtx(320, {font: 2}), r7 = await c7.newPage(), e7 = errsOf(r7);
+    await r7.goto(URL_OF('#/roman'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r7)) {
+      const bars = await BARS(r7), vw = await r7.evaluate(() => ({vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth}));
+      const out = bars.filter(b => b.l < 0 || b.rt > vw.vw + 0.5 || b.h < 48);
+      check(bars.length === 8 && !out.length && vw.sw <= vw.vw, '⑩ 아주 크게 320 — 여덟 단추 화면 안 · 48px · 넘침 0', JSON.stringify({out, vw}));
+    } else check(false, '⑩ 아주 크게 320 로마 신 쪽', '안 그려짐');
+    check(!e7.length, '⑩ 아주 크게 320 화면 오류 0', e7.join(' | ')); await c7.close();
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();
