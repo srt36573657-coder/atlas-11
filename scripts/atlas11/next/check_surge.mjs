@@ -174,7 +174,7 @@ function compare(sc, box, o, n, names) {
   // 고리 — 회사는 #/w/<번호> · 옛 회사 고리(#/c/ · #/x/)는 없음 · 다섯 칸 · 바깥 공시 둘
   const oc = o.hrefs.filter(x => /^#\/(c|x)\//.test(x)).map(x => x.slice(4)), ncs = n.hrefs.filter(x => /^#\/w\//.test(x)).map(x => decodeURIComponent(x.slice(4)));
   const ob = bag(oc), nb = bag(ncs); for (const [k, c] of ob) if ((nb.get(k) || 0) < c) fail('회사 고리 모자람', `${at} — ${k} 옛 ${c} · 새 ${nb.get(k) || 0}`);
-  for (const x of n.hrefs) if (!/^(#\/w\/[0-9A-Z]{6}|#\/surge(\/(10|20|30|40))?|#\/|#\/gift|https:\/\/kind\.krx\.co\.kr\/|https:\/\/dart\.fss\.or\.kr\/)$/.test(x)) fail('모르는 고리', `${at} — ${x}`);
+  for (const x of n.hrefs) if (!/^(#\/w\/[0-9A-Z]{6}|#\/surge(\/(10|20|30|40))?|#\/|#\/gift|#\/roman\/([1-9]|[1-6]\d|7[0-2])|https:\/\/kind\.krx\.co\.kr\/|https:\/\/dart\.fss\.or\.kr\/)$/.test(x)) fail('모르는 고리', `${at} — ${x}`); // #/roman/<1~72> = 방 지킴이 이름표(roman-tag.js · 2026-10-31 05:51(+03) 「응」)
   if (n.hrefs.some(x => /^#\/(c|x)\//.test(x))) fail('옛 회사 고리 남음', at);
   const plain = names.reduce((s, x) => s.split(x).join(' '), norm(n.text)).split('공매도').join(' '); // 「공매도」(옛 「?」 줄 — 못 보는 것)는 「매도」 권함이 아님
   for (const w of BANNED) if (plain.includes(w)) fail('쓰지 않을 말', `${at} — ${w}`);
