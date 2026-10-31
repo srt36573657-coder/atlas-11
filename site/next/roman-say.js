@@ -6,7 +6,8 @@
    글은 textContent 로만 · 그림은 글자 없는 svg · 글 속 style 없음
    차례로 듣기(사장님 2026-10-31 12:23(+04) 「응」 — 물음 「말하는 불빛 열한 신 이야기를 차례로 이어서 들려 드릴까요?」 · order-1723.txt) = sayAll
      로마 신 72 쪽 곳마다 단추(p-roman.js — 말하는 불빛 칸 order-1723 → 여덟 곳 모두 14:20(+04) 「응」 order-1920.txt)가 그곳 카드 차례대로 넘김 · 누른 그 순간에 휴대폰 소리 줄에 모두 넣음(이어 읽기 · 아이폰도 누를 때만 소리) · 다른 곳 단추를 누르면 앞 곳은 처음 모습
-     읽는 카드에 테 · 그 카드가 화면 밖이면 가운데로(움직임 줄이기면 바로) · 다시 누름 · 다른 얼굴 누름 · 지금 읽는 얼굴 누름 · 쪽 옮김 = 멈춤 · 다 읽으면 처음 모습 */
+     읽는 카드에 테 · 그 카드가 화면 밖이면 가운데로(움직임 줄이기면 바로) · 다시 누름 · 다른 얼굴 누름 · 지금 읽는 얼굴 누름 · 쪽 옮김 = 멈춤 · 다 읽으면 처음 모습
+     첫 화면 말하는 불빛 차례로 듣기(16:23(+04) 「응」 · order-2123.txt · home-talk.js) — 카드 대신 go(그 불빛을 고름 · 말풍선이 글상자) · view(말풍선 머리가 화면 밖이면 위로 당김) */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN} from './brand.js';
 import {GODS, SEATS, artOf} from './roman72.js';
@@ -31,11 +32,14 @@ function mark(r, i) {
   if (run !== r || i < 0 || i >= r.items.length || r.i === i) return;
   if (r.i >= 0) unmark(r.items[r.i]);
   r.i = i; const it = r.items[i];
-  it.face?.setAttribute('aria-pressed', 'true'); it.card?.classList.add('rm-say');
+  it.face?.setAttribute('aria-pressed', 'true'); it.card?.classList.add('rm-say'); it.go?.();
   if (r.cap) { r.cap.textContent = it.label; r.cap.hidden = false; }
-  const b = it.card?.getBoundingClientRect();
-  if (b && (b.top < 72 || b.bottom > innerHeight - 72)) it.card.scrollIntoView({block: 'center', behavior: still() ? 'auto' : 'smooth'});
+  const how = still() ? 'auto' : 'smooth', b = it.card?.getBoundingClientRect(), v = !it.card ? it.view?.getBoundingClientRect() : null;
+  if (b && (b.top < 72 || b.bottom > innerHeight - 72)) it.card.scrollIntoView({block: 'center', behavior: how});
+  else if (v && v.height && (v.top < 72 || v.top > innerHeight * 0.55)) scrollBy({top: v.top - 84, behavior: how}); // 말풍선(첫 화면) — 머리가 위쪽에 오게
 }
+/** 이 단추가 지금 차례로 읽는 중인가(첫 화면 불빛 · 앞 · 다음 · 소리 단추가 먼저 멈춤) */
+export const playing = btn => !!run && run.btn === btn;
 function endRun() { const r = run; run = null; if (!r) return; if (r.i >= 0) unmark(r.items[r.i]); r.set?.(false); if (r.cap) { r.cap.hidden = true; r.cap.textContent = ''; } }
 /** 멈춤 — 소리 끄기 · 눌림 풂 · 차례로 듣기도 처음 모습 */
 export function stop() { quiet(); endRun(); try { if (canSay()) speechSynthesis.cancel(); } catch { /* 소리 없음 */ } }
@@ -61,7 +65,7 @@ export function say(n, btn) {
   } catch { if (cur === me) quiet(); }
 }
 /** 차례로 듣기 — items 를 차례대로 이어 읽음(누른 그 순간에 소리 줄에 모두 넣음) · 같은 단추를 다시 누르면 멈춤
-    items = [{text 읽을 말, label 글상자 글, card 카드, face 얼굴 단추}] · cap = 글상자 · set(on) = 단추 모양(읽는 중 / 처음) */
+    items = [{text 읽을 말, label 글상자 글, card 카드, face 얼굴 단추, go 시작할 때 부름, view 화면에 둘 칸}] · cap = 글상자 · set(on) = 단추 모양(읽는 중 / 처음) */
 export function sayAll(items, btn, {cap = null, set = null} = {}) {
   if (!btn) return;
   hook();

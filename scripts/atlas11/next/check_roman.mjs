@@ -31,6 +31,9 @@
 //   ⑩ 여덟 곳 차례로 듣기(사장님 2026-10-31 14:20(+04) 「응」 — 물음 「다른 일곱 곳 신 이야기에도 「차례로 듣기」 단추를 달아 드릴까요?」 · order-1920.txt)
 //      — 곳마다 맨 위(한 줄 아래 · 카드 위)에 단추 하나 · 글 = 그곳 신 수(「열 신 · 열한 신 · 여섯 신 …」 따로 셈) · 56px · 곳마다 누름 → 그곳 카드 차례대로 소리 줄
 //      · 다른 곳을 누르면 앞 곳은 처음 모습 · 여덟 곳 합쳐 일흔둘 모두 한 번씩 · 영어 글 · 아주 크게 320 여덟 단추 화면 안
+//   ⑪ 첫 화면 말하는 불빛 차례로 듣기(사장님 2026-10-31 16:23(+04) 「응」 — 물음 「첫 화면 말하는 불빛도 차례로 이어서 들려 드릴까요?」 · order-2123.txt · home-talk.js)
+//      — 뜻 줄 아래 · 불빛 판 위 단추 하나 「열한 불빛 차례로 듣기」 · 48px · 17px · 누름 → 열하나가 불빛 판 차례대로 소리 줄에 · 말 = 「소리로 듣기」가 그 불빛에서 읽는 말 그대로(따로 받아 맞댐)
+//      · 읽는 불빛을 고름(말풍선이 따라 바뀜) · 불빛 · 다음 불빛 = 멈춤 · 칸 접음 = 멈춤 · 끝까지 = 마지막 불빛 · 영어 · 소리 없는 휴대폰 = 단추 없음 · 아주 크게 320 넘침 0
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -664,6 +667,65 @@ try {
       check(bars.length === 8 && !out.length && vw.sw <= vw.vw, '⑩ 아주 크게 320 — 여덟 단추 화면 안 · 48px · 넘침 0', JSON.stringify({out, vw}));
     } else check(false, '⑩ 아주 크게 320 로마 신 쪽', '안 그려짐');
     check(!e7.length, '⑩ 아주 크게 320 화면 오류 0', e7.join(' | ')); await c7.close();
+    // ⑪ 첫 화면 말하는 불빛 차례로 듣기(order-2123) — 단추 · 「소리로 듣기」와 같은 말 · 불빛 판 차례 · 말풍선 따라 바뀜 · 손으로 고르면 · 칸 접으면 멈춤
+    const X = '#view section.nh-hero details.y11-box[open] > .y11-x';
+    const openT = async q => { const sm = q.locator('#view section.nh-hero details.y11-box > summary').first(); if (!await sm.count()) return false; await sm.scrollIntoViewIfNeeded(); await sm.click();
+      return q.locator(X + ' .y11-bd').first().waitFor({state: 'attached', timeout: 15000}).then(() => true, () => false); };
+    const HS = q => q.evaluate(X => { const x = document.querySelector(X), b = x?.querySelector('.y11-all'), r = b?.getBoundingClientRect();
+      return {kids: x ? [...x.children].map(e => String(e.className).split(' ')[0]).join('|') : '', label: b?.textContent ?? null, on: b?.classList.contains('y11-allon') ?? null, h: r ? Math.round(r.height) : 0, l: r ? Math.round(r.left) : -1, rt: r ? Math.round(r.right) : 9999,
+        fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0, pressed: x?.querySelector('.y11-lamp[aria-pressed="true"]')?.dataset.k ?? null, head: x?.querySelector('.y11-bk')?.textContent ?? null, order: x ? [...x.querySelectorAll('.y11-lamp')].map(l => l.dataset.k) : [],
+        q: window.__q?.length ?? 0, said: window.__said?.length ?? 0, cancel: window.__cancel ?? 0, vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth}; }, X);
+    const c8 = await qCtx(390), r8 = await c8.newPage(), e8 = errsOf(r8);
+    await r8.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); await r8.waitForTimeout(800);
+    if (!await openT(r8)) check(false, '⑪ 첫 화면 말하는 불빛 판', '안 열림');
+    else {
+      const H0 = await HS(r8), order = H0.order;
+      check(H0.kids.startsWith('y11-hint|y11-all|y11-key|y11-bd|y11-bub') && H0.label === '열한 불빛 차례로 듣기' && H0.h >= 48 && H0.fs >= 16.9 && order.length === 11 && order.join() === '1,2,3,4,5,6,7,8,9,10,11',
+        '⑪ 뜻 줄 아래 · 불빛 판 위에 「열한 불빛 차례로 듣기」 · 48px · 17px · 불빛 판 차례 1 → 11', JSON.stringify(H0));
+      const ref = {}; await tap(r8, X + ' .y11-snd'); // 맞댈 말 — 「소리로 듣기」를 켜고 불빛마다 눌러 읽는 말을 받음
+      for (const k of order) { await tap(r8, `${X} .y11-lamp[data-k="${k}"]`); ref[k] = await r8.evaluate(() => window.__q.at(-1)?.text ?? null); }
+      await tap(r8, X + ' .y11-snd');
+      const HDUR = 2000; await r8.evaluate(d => { window.__dur = d; }, HDUR); // 첫 화면은 말풍선 그림이 무거워 누름이 늦게 끝남 — 한 말을 길게 잡아 차례를 봄
+      const q0 = (await HS(r8)).q; await tap(r8, X + ' .y11-all');
+      const H1 = await HS(r8), Q = await r8.evaluate(n => window.__q.slice(n).map(x => ({...x})), q0);
+      const qb = Q.length === 11 ? Q.findIndex((x, i) => !voiceOk(x, ref[order[i]], 'ko-KR') || !x.text?.startsWith(`${order[i]}번 `)) : -2;
+      check(qb === -1 && H1.label === '멈추기' && H1.on && H1.pressed === order[0] && H1.head?.startsWith(`${order[0]}번`), '⑪ 누름 → 열하나가 불빛 판 차례대로 소리 줄에(「소리로 듣기」와 같은 말 · ko-KR · 0.9 · 1 · 0.96) · 첫 불빛을 고름 · 말풍선 · 단추 「멈추기」', JSON.stringify({qb, n: Q.length, H1: {...H1, order: undefined}, q0: Q[0]?.text?.slice(0, 30)}));
+      await r8.waitForTimeout(HDUR + 300); const H2 = await HS(r8);
+      check(H2.pressed === order[1] && H2.head?.startsWith(`${order[1]}번`) && H2.said === H1.said + 1, '⑪ 앞 불빛 말이 끝나면 다음 불빛을 고름 · 말풍선이 따라 바뀜', JSON.stringify({p: H2.pressed, head: H2.head, said: [H1.said, H2.said]}));
+      await tap(r8, `${X} .y11-lamp[data-k="${order[5]}"]`); const H3 = await HS(r8); await r8.waitForTimeout(DUR * 2); const H3b = await HS(r8);
+      check(H3.cancel > H2.cancel && !H3.on && H3.label === '열한 불빛 차례로 듣기' && H3.pressed === order[5] && H3b.said === H3.said, '⑪ 차례로 듣는 중 불빛을 누르면 — 멈춤 · 그 불빛 · 뒤 불빛 안 읽음', JSON.stringify({H3: {on: H3.on, p: H3.pressed, c: [H2.cancel, H3.cancel]}, said: [H3.said, H3b.said]}));
+      await tap(r8, X + ' .y11-all'); await tap(r8, X + ' .y11-nx'); const H4 = await HS(r8);
+      check(!H4.on && H4.label === '열한 불빛 차례로 듣기' && H4.pressed === order[1], '⑪ 차례로 듣는 중 「다음 불빛」 — 멈춤 · 다음 불빛', JSON.stringify({on: H4.on, p: H4.pressed}));
+      await tap(r8, X + ' .y11-all'); const c0 = (await HS(r8)).cancel; await r8.locator('#view section.nh-hero details.y11-box[open] > summary').first().click(); await r8.waitForTimeout(300);
+      const H5c = await r8.evaluate(() => window.__cancel);
+      check(H5c > c0, '⑪ 차례로 듣는 중 칸을 접으면 멈춤', `${c0} → ${H5c}`);
+      if (await openT(r8)) {
+        await r8.evaluate(() => { window.__dur = 120; }); await tap(r8, X + ' .y11-all'); await r8.waitForTimeout(120 * 11 + 1500);
+        const H6 = await HS(r8), tail = await r8.evaluate(() => window.__said.slice(-11).map(x => x.text));
+        check(tail.join('\n') === order.map(k => ref[k]).join('\n') && !H6.on && H6.label === '열한 불빛 차례로 듣기' && H6.pressed === order[10], '⑪ 끝까지 듣기 — 열하나를 차례대로 다 읽음 · 끝나면 단추 처음 모습 · 마지막 불빛에 머묾', JSON.stringify({p: H6.pressed, on: H6.on, n: tail.length}));
+        await r8.evaluate(d => { window.__dur = d; }, DUR);
+      } else check(false, '⑪ 칸 다시 열기', '안 열림');
+      const joined = await r8.evaluate(() => document.querySelector('#view')?.cloneNode(true).textContent ?? ''), hits = screenHits(joined);
+      check(!hits.length, '⑪ 첫 화면 글을 이어 붙여도 쓰지 않을 말 0', JSON.stringify(hits));
+    }
+    check(!e8.length, '⑪ 화면 오류 0', e8.join(' | ')); await c8.close();
+    const c9 = await qCtx(390, {en: true}), r9 = await c9.newPage(), e9 = errsOf(r9);
+    await r9.goto(URL_OF('#/', '&lang=en'), {waitUntil: 'load', timeout: 60000}); await r9.waitForTimeout(800);
+    if (await openT(r9)) {
+      const t0 = (await HS(r9)).label, q0 = (await HS(r9)).q; await tap(r9, X + ' .y11-all');
+      const Q = await r9.evaluate(n => window.__q.slice(n).map(x => ({...x})), q0), H = await HS(r9);
+      const bad = Q.length === 11 ? Q.findIndex(x => x.lang !== 'en-US' || HAN.test(x.text) || Math.abs(x.rate - 0.9) > 1e-9) : -2;
+      check(t0 === 'Hear all eleven lights in order' && bad === -1 && Q[0]?.text?.startsWith('1. ') && H.label === 'Stop', '⑪ 영어 — 「Hear all eleven lights in order」 · 영어 말 열하나 · en-US · 「Stop」', JSON.stringify({t0, bad, n: Q.length, q0: Q[0]?.text?.slice(0, 40), label: H.label}));
+    } else check(false, '⑪ 영어 말하는 불빛 판', '안 열림');
+    check(!e9.length, '⑪ 영어 화면 오류 0', e9.join(' | ')); await c9.close();
+    for (const [w, font, fake, tagT] of [[390, 0, false, '소리 없는 휴대폰'], [320, 2, true, '320 아주 크게']]) {
+      const cA = await qCtx(w, {font, fake}), rA = await cA.newPage(), eA = errsOf(rA);
+      await rA.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); await rA.waitForTimeout(800);
+      if (!await openT(rA)) { check(false, `⑪ ${tagT} 말하는 불빛 판`, '안 열림'); await cA.close(); continue; }
+      const H = await HS(rA), n = await rA.evaluate(X => document.querySelectorAll(X + ' .y11-all').length, X);
+      check(fake ? n === 1 && H.l >= 0 && H.rt <= H.vw + 0.5 && H.h >= 48 && H.sw <= H.vw : n === 0, `⑪ ${tagT} — ${fake ? '단추 화면 안 · 48px · 넘침 0' : '단추 없음'}`, JSON.stringify({n, l: H.l, rt: H.rt, vw: H.vw, sw: H.sw, h: H.h}));
+      check(!eA.length, `⑪ ${tagT} 화면 오류 0`, eA.join(' | ')); await cA.close();
+    }
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();
