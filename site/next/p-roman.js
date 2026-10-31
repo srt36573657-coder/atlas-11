@@ -5,11 +5,12 @@
    얼굴을 누르면 그 신 이야기를 소리로(roman-say.js · order-1558) · 「가 보기 ›」를 누르면 그 자리로 감(제 주소가 없는 단추 · 쪽은 「제 쪽이 따로 없어요」) · 영어 화면은 자료의 영어 글을 바로 그림
    곳마다 맨 위 「(그곳 신 수) 신 차례로 듣기」(말하는 불빛 칸 order-1723 → 여덟 곳 모두 order-1920) — 그곳 카드 차례대로 이어 읽음 · 읽는 카드에 테 · 다시 누르면 멈춤 · 한 번에 한 곳 · 소리를 못 내는 휴대폰은 단추 없음
    쪽 맨 위 「일흔두 신 모두 듣기」(사장님 2026-10-31 19:41(+04) 「응」 · docs/design/roman72-site-2026-11-01/order-0041.txt) — 여덟 곳 카드 차례 그대로 일흔둘을 이어 읽음 · 곳 단추와 같은 말 · 한 번에 하나
+   멈춘 신부터 이어 듣기(20:54(+04) 「응」 · order-0154.txt) — 멈추면 읽던 신 번호를 이 휴대폰에만(atlas:roman-at) · 다시 오면 「멈춘 신부터 이어 듣기」 + 「처음부터」 · 끝까지 들으면 지움
    읽는 종이 판(서른아홉 스승과 같은 판 — p-roman.css · app.js whiteFor html.pg-roman) · 앞날 말 · 사고팔기 말 없음 */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN, josa} from './brand.js'; // 이름은 한 곳(규칙 76)
 import {GROUPS, GODS, ZONES, SEATS} from './roman72.js';
-import {faceBtn, sayAll, storyOf, canSpeak} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(사장님 2026-10-31 10:58(+04) 「응」 · order-1558.txt) · 차례로 듣기(12:23(+04) 「응」 · order-1723.txt)
+import {faceBtn, sayAll, storyOf, canSpeak, playing, stop as hush} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(사장님 2026-10-31 10:58(+04) 「응」 · order-1558.txt) · 차례로 듣기(12:23(+04) 「응」 · order-1723.txt)
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -25,11 +26,13 @@ const T = EN ? {
   zones: 'Eight places', seats: n => `${n} seats`, why: 'Why here?', go: 'Go there', here: 'No page of its own',
   end: 'The god stories come from old Roman writings and myths.', end2: 'Each god has one seat. No god sits twice.',
   all: n => `Hear all ${EN_N[n] ?? n} in order`, stop: 'Stop', now: x => `Now: ${x}`, every: 'Hear all seventy-two in order',
+  resume: 'Resume where I stopped', again: 'From the start', stopped: x => `Stopped at: ${x}`,
 } : {
   title: '로마 신 72', lead: `${NAME} 안 일흔두 자리에 로마 신이 한 명씩 앉았어요.`, lead2: '재미로 앉힌 자리예요. 얼굴을 누르면 그 신 이야기를 들려줘요.',
   zones: '여덟 곳', seats: n => `${n}자리`, why: '왜 여기?', go: '가 보기', here: '제 쪽이 따로 없어요',
   end: '신 이야기는 로마 옛 글과 신화에서 왔어요.', end2: '신 하나에 자리 하나예요. 두 번 앉은 신은 없어요.',
   all: n => `${KO_N[n] ?? n} 신 차례로 듣기`, stop: '멈추기', now: x => `지금 ${x}`, every: '일흔두 신 모두 듣기',
+  resume: '멈춘 신부터 이어 듣기', again: '처음부터', stopped: x => `멈춘 곳: ${x}`,
 };
 const SAFE = `${josa(NAME, '는')} 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.`; // 둘이 안전 문장(둘이 단추 안 · 서른아홉 스승과 같은 글 — 영어 화면은 엔진 사전이 바꿈)
 
@@ -61,7 +64,7 @@ function playIcon(on) { // 처음 = 세모(듣기) · 읽는 중 = 네모(멈추
 const sayable = t => t.replace(/([\u2460-\u2473])\s*/g, (_, c) => { const n = c.charCodeAt(0) - 0x245F; return EN ? `Number ${n}, ` : `${n}번 `; });
 const itemsIn = sel => [...document.querySelectorAll(sel)].map(c => {
   const n = +c.dataset.n, story = storyOf(n), spot = c.querySelector('.rm-spot')?.textContent ?? '', name = c.querySelector('.rm-gn')?.textContent ?? '';
-  return story ? {text: `${sayable(spot.split(' · ').join(', '))}. ${story}`, label: T.now(`${spot} · ${name}`), card: c, face: c.querySelector('button.rms-face')} : null;
+  return story ? {n, who: `${spot} · ${name}`, text: `${sayable(spot.split(' · ').join(', '))}. ${story}`, label: T.now(`${spot} · ${name}`), card: c, face: c.querySelector('button.rms-face')} : null;
 }).filter(Boolean);
 /** 차례로 듣기 단추 + 글상자 — sel = 읽을 카드들(곳 하나 · 쪽 전체) · label = 단추 글 */
 function allBar(sel, label) {
@@ -71,6 +74,40 @@ function allBar(sel, label) {
   const set = on => { t.textContent = on ? T.stop : label; b.classList.toggle('rm-allon', on); const x = playIcon(on); ic.replaceWith(x); ic = x; };
   const b = h('button', {type: 'button', class: 'rm-allb', onclick: () => sayAll(itemsIn(sel), b, {cap, set})}, ic, t);
   return h('div', {class: 'rm-all'}, b, cap);
+}
+
+/** 멈춘 신(이 휴대폰에만 · order-0154) — {n 신 번호, at 때} · 못 읽거나 없는 신이면 없음 */
+const AT_KEY = 'atlas:roman-at';
+const atLoad = () => { try { const v = JSON.parse(localStorage.getItem(AT_KEY) ?? 'null'); return v && GODS[v.n] ? v.n : null; } catch { return null; } };
+const atSave = n => { try { if (n) localStorage.setItem(AT_KEY, JSON.stringify({n, at: Date.now()})); else localStorage.removeItem(AT_KEY); } catch { /* 기억 못 하는 휴대폰 — 늘 처음부터 */ } };
+/** 일흔두 신 모두 듣기(order-0041) + 멈춘 신부터 이어 듣기(order-0154) — 쪽 카드 차례 그대로 · 멈추면 읽던 신을 기억 · 끝까지 들으면 지움
+    처음 = 「일흔두 신 모두 듣기」 · 멈춘 신이 있으면 「멈춘 신부터 이어 듣기」 + 「처음부터」 · 글상자 「멈춘 곳: …」 · 읽는 중 = 「멈추기」 · 글상자 「지금 …」 */
+function everyBar() {
+  if (!canSpeak()) return null;
+  const SEL = '#view .rm-zone .rm-card';
+  const t = h('span', {class: 'rm-allt', text: T.every}), cap = h('p', {class: 'rm-allc', 'aria-live': 'polite', hidden: true});
+  let ic = playIcon(false);
+  const idle = () => { // 멈춘 신이 쪽에 있으면 이어 듣기 모양
+    const n = atLoad(), it = n ? itemsIn(SEL).find(x => x.n === n) : null;
+    t.textContent = it ? T.resume : T.every; re.hidden = !it;
+    if (it) { cap.textContent = T.stopped(it.who); cap.hidden = false; } else { cap.textContent = ''; cap.hidden = true; }
+  };
+  const set = (on, info) => {
+    b.classList.toggle('rm-allon', on); const x = playIcon(on); ic.replaceWith(x); ic = x;
+    if (on) { t.textContent = T.stop; re.hidden = true; return; }
+    if (info?.done) atSave(null); else if (info?.item?.n) atSave(info.item.n); // 끝까지 = 지움 · 중간에 멈춤 = 읽던 신
+    idle();
+  };
+  const play = fromStart => {
+    if (playing(b)) { hush(); return; } // 읽는 중 = 멈춤(멈춘 신은 set 이 적음)
+    if (fromStart) atSave(null);
+    const list = itemsIn(SEL), n = atLoad(), k = n ? Math.max(0, list.findIndex(x => x.n === n)) : 0;
+    sayAll(list.slice(k), b, {cap, set});
+  };
+  const b = h('button', {type: 'button', class: 'rm-allb', onclick: () => play(false)}, ic, t);
+  const re = h('button', {type: 'button', class: 'rm-allr', hidden: true, onclick: () => play(true), text: T.again});
+  requestAnimationFrame(idle); // 카드가 쪽에 붙은 뒤 멈춘 신을 찾음
+  return h('div', {class: 'rm-all rm-every'}, h('div', {class: 'rm-allrow'}, b, re), cap);
 }
 
 /** 자리 무리 하나 — 번호 동그라미 · 이름 · 한 줄 · 차례로 듣기(그곳 신 수) · 카드들 */
@@ -101,7 +138,7 @@ export async function render(arg) {
     h('span', {class: 'rm-jn', 'aria-hidden': 'true', text: String(k + 1)}), h('b', {text: fill(z.name[L])}), h('span', {class: 'rm-jc', text: T.seats(SEATS.filter(s => s[0] === z.id).length)}));
   return {title: T.title, nodes: [h('div', {class: 'rm'},
     h('header', {class: 'rm-hero'}, h('h1', {class: 'h rm-h1', text: T.title}), h('p', {class: 'rm-lead', text: T.lead}), h('p', {class: 'rm-note', text: T.lead2}),
-      allBar('#view .rm-zone .rm-card', T.every), '\n'), // 일흔두 신 모두 듣기(order-0041) — 여덟 곳 카드 차례 그대로 · 빈 줄 = 쪽 글을 이어 읽을 때 옆 글과 붙지 않게
+      everyBar(), '\n'), // 일흔두 신 모두 듣기(order-0041) — 여덟 곳 카드 차례 그대로 · 빈 줄 = 쪽 글을 이어 읽을 때 옆 글과 붙지 않게
     h('nav', {class: 'rm-jumps', 'aria-label': T.zones}, ZONES.map(jump)),
     ...ZONES.map(zone),
     h('section', {class: 'rm-end', 'aria-label': T.end}, h('p', {class: 'rm-e1', text: T.end2}), h('p', {class: 'rm-e2', text: T.end})),
