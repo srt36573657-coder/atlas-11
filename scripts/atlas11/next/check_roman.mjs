@@ -337,13 +337,13 @@ try {
     await p.goto(URL_OF('#/dori'), {waitUntil: 'load', timeout: 60000});
     await p.waitForFunction(() => !!document.querySelector('#view .dm a[href="#/roman"]'), null, {timeout: 15000}).catch(() => {});
     const dm = await p.evaluate(() => { const a = [...document.querySelectorAll('#view .dm a')]; const i = a.findIndex(x => x.getAttribute('href') === '#/roman'); return {i, text: a[i]?.textContent.trim(), prev: a[i - 1]?.getAttribute('href'), h: a[i]?.getBoundingClientRect().height}; });
-    check(dm.i >= 0 && dm.text?.startsWith('로마 신 72'), '⑤ 둘이 단추 안 「로마 신 72」', JSON.stringify(dm));
+    check(dm.i >= 0 && dm.text?.startsWith('로마 신 72'), '⑤ 수르 단추 안 「로마 신 72」', JSON.stringify(dm));
     check(dm.prev === '#/sage', '⑤ 서른아홉 스승 다음 줄', dm.prev);
     check(dm.h >= 47.5, '⑤ 줄 높이 48 넘게', dm.h);
-    if (dm.i >= 0) { await p.locator('#view .dm a[href="#/roman"]').click(); check(await p.waitForFunction(() => document.querySelectorAll('#view .rm-card').length === 72, null, {timeout: 10000}).then(() => true, () => false), '⑤ 둘이 단추 안 → 로마 신 72'); }
+    if (dm.i >= 0) { await p.locator('#view .dm a[href="#/roman"]').click(); check(await p.waitForFunction(() => document.querySelectorAll('#view .rm-card').length === 72, null, {timeout: 10000}).then(() => true, () => false), '⑤ 수르 단추 안 → 로마 신 72'); }
     if (OUT) { await go(p, '#/dori'); await p.waitForTimeout(200); await p.screenshot({path: path.join(path.dirname(OUT), 'roman-dori.jpg'), type: 'jpeg', quality: 70}).catch(() => {}); await go(p, '#/roman'); }
     const tab = await p.evaluate(() => document.querySelector('.tabs a[data-tab="dori"]')?.getAttribute('aria-current'));
-    check(tab === 'page', '⑤ 아래 단추 「둘이」가 지금 쪽', tab);
+    check(tab === 'page', '⑤ 아래 단추 「수르」가 지금 쪽', tab);
     const paper = () => p.evaluate(() => ({pg: document.documentElement.classList.contains('pg-roman'), sage: document.documentElement.classList.contains('pg-sage'), bg: getComputedStyle(document.querySelector('#view')).backgroundColor}));
     const on = await paper(); check(on.pg && !on.sage && on.bg === 'rgb(253, 249, 245)', '⑤ 로마 신 72에서 종이 판 켜짐', JSON.stringify(on));
     await go(p, '#/dori'); await p.waitForFunction(() => !!document.querySelector('#view .dm'), null, {timeout: 8000}).catch(() => {});
@@ -355,7 +355,7 @@ try {
     await q.goto(URL_OF('#/dori', '&lang=en'), {waitUntil: 'load', timeout: 60000});
     await q.waitForFunction(() => !!document.querySelector('#view .dm a[href="#/roman"]'), null, {timeout: 15000}).catch(() => {}); await q.waitForTimeout(300);
     const en = await q.evaluate(() => document.querySelector('#view .dm a[href="#/roman"]')?.textContent.trim());
-    check(en?.startsWith('72 Roman Gods') && !HAN.test(en), '⑤ 영어 둘이 단추 안 「72 Roman Gods」', en);
+    check(en?.startsWith('72 Roman Gods') && !HAN.test(en), '⑤ 영어 수르 단추 안 「72 Roman Gods」', en);
     check(!e2.length, '⑤ 영어 화면 오류 0', e2.join(' | ')); await c2.close();
   }
 
