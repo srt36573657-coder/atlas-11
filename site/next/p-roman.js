@@ -6,7 +6,7 @@
    읽는 종이 판(서른아홉 스승과 같은 판 — p-roman.css · app.js whiteFor html.pg-roman) · 앞날 말 · 사고팔기 말 없음 */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN, josa} from './brand.js'; // 이름은 한 곳(규칙 76)
-import {GROUPS, GODS, ZONES, SEATS} from './roman72.js';
+import {GROUPS, GODS, ZONES, SEATS, artOf} from './roman72.js';
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -25,13 +25,15 @@ const T = EN ? {
 };
 const SAFE = `${josa(NAME, '는')} 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.`; // 둘이 안전 문장(둘이 단추 안 · 서른아홉 스승과 같은 글 — 영어 화면은 엔진 사전이 바꿈)
 
-/** 카드 하나 — 자리 · 신 이름(+ 라틴 이름) · 누구 · 왜 여기 · 무리 · 고리면 › */
+/** 카드 하나 — 자리 · 신 얼굴(캐릭터 그림 · 사장님 2026-10-31 07:32(+03) 「이미지도 캐릭터화해서 해」 · order-1332.txt) + 신 이름(+ 라틴 이름) · 누구 · 왜 여기 · 무리 · 고리면 ›
+    얼굴은 이름 바로 옆이라 그림 이름을 비움(alt="") · 72장이라 화면 가까이 올 때 받음(loading=lazy · 자리 64px 미리 잡음 — 밀림 0) */
 function card(s, i) {
   const [, spKo, spEn, href, gn, whyKo, whyEn] = s, g = GODS[gn], grp = g[5];
   const name = EN ? g[2] : g[0], showLa = !EN || g[1] !== g[2];
   const kids = [
     h('span', {class: 'rm-spot', text: fill(EN ? spEn : spKo)}),
-    h('span', {class: 'rm-god'}, h('b', {class: 'rm-gn', text: name}), showLa ? h('span', {class: 'rm-la', lang: 'la', text: g[1]}) : null),
+    h('span', {class: 'rm-god'}, h('img', {class: 'rm-av', src: artOf(gn), alt: '', width: 64, height: 64, loading: 'lazy', decoding: 'async'}),
+      h('span', {class: 'rm-gt'}, h('b', {class: 'rm-gn', text: name}), showLa ? h('span', {class: 'rm-la', lang: 'la', text: g[1]}) : null)),
     h('span', {class: 'rm-one', text: EN ? g[4] : g[3]}),
     h('span', {class: 'rm-why'}, h('b', {class: 'rm-wl', text: T.why}), h('span', {class: 'rm-wt', text: fill(EN ? whyEn : whyKo)})),
     h('span', {class: 'rm-grp g' + grp}, h('i', {'aria-hidden': 'true'}), h('span', {text: GROUPS[grp - 1][L]})),
