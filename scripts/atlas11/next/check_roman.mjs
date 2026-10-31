@@ -628,6 +628,8 @@ try {
     if (await ready(r5)) {
       const bars = await BARS(r5), badBars = bars.filter(b => b.n !== 1 || b.kids !== 'rm-zh|rm-zp|rm-all|rm-grid' || b.t !== labKo(b.id) || b.h < 55 || b.cards !== zoneSeats(b.id).length);
       check(bars.length === 8 && ZONES.every((z, i) => bars[i]?.id === z.id) && !badBars.length, '⑩ 여덟 곳 모두 맨 위(한 줄 아래 · 카드 위)에 단추 하나 · 글 = 그곳 신 수(「열 신 · 열한 신 · 여섯 신 …」) · 56px · 카드 수 맞음', JSON.stringify(badBars.length ? badBars : bars.map(b => b.t)));
+      const joined = await r5.evaluate(() => document.querySelector('#view')?.cloneNode(true).textContent ?? ''), hits = screenHits(joined);
+      check(!hits.length, '⑩ 쪽 글을 이어 붙여도 쓰지 않을 말 0(「…듣기」 + 첫 카드 「회사 한 장」 = 「기회」 막음 · next_check 와 같은 셈)', JSON.stringify(hits));
       await r5.evaluate(() => { window.__dur = 5000; }); // 첫 이야기에 머무는 동안 봄
       const got = [], bad = []; let prev = null;
       for (const z of ZONES) {

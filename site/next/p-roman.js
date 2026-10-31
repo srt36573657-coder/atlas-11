@@ -77,7 +77,7 @@ function zone(z, k) {
   return h('section', {class: 'rm-zone', id: 'rm-z-' + z.id, 'aria-labelledby': 'rm-h-' + z.id},
     h('h2', {class: 'rm-zh', id: 'rm-h-' + z.id}, h('span', {class: 'rm-zn', 'aria-hidden': 'true', text: String(k + 1)}), h('span', {class: 'rm-zt', text: fill(z.name[L])})),
     h('p', {class: 'rm-zp', text: fill(z.note[L])}),
-    allBar(z.id, rows.length),
+    allBar(z.id, rows.length), '\n', // 단추와 카드 사이 빈 줄 — 글을 이어 읽을 때 「…듣기」와 첫 카드 「회사 한 장」이 붙어 「기회」로 읽히지 않게(next_check 쓰지 않을 말 · 칸 판에서는 안 보임)
     h('ul', {class: 'rm-grid'}, rows.map(([s, i]) => card(s, i))));
 }
 
