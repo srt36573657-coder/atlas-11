@@ -1,6 +1,6 @@
 {
  "schema": "kkolttori-essence-render-1",
- "at": "2026-10-31T11:11:40.517Z",
+ "at": "2026-10-31T11:43:17.766Z",
  "base": "https://aaa7377.com",
  "shard": "1/1",
  "units": [
@@ -21,16 +21,13 @@
   "r5-friend",
   "r7-old"
  ],
- "ok": false,
+ "ok": true,
  "checks": [
   {
    "no": 2,
    "name": "첫 화면 세 줄과 숫자",
-   "status": "fail",
-   "reasons": [
-    "처음 연 자료에 받은 때가 없는데 화면이 10월 31일 20시를 보임",
-    "다시 연 자료에 받은 때가 없는데 화면이 10월 31일 20시를 보임"
-   ],
+   "status": "pass",
+   "reasons": [],
    "notes": [],
    "counts": {
     "first": "주식을 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: 10월 31일 20시.",
@@ -61,13 +58,13 @@
   {
    "no": 7,
    "name": "오래된 날짜에 「?」",
-   "status": "cant",
-   "reasons": [
-    "보지 못함 — home.json · 요약 파일을 못 받음"
-   ],
+   "status": "pass",
+   "reasons": [],
    "notes": [],
-   "counts": {}
+   "counts": {
+    "old": "지막으로 받은 때: ? 10월 1일 20시."
+   }
   }
  ],
- "seconds": 20.4
+ "seconds": 13.7
 }

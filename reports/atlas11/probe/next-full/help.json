@@ -1,19 +1,14 @@
 {
  "schema": "golttori-check-help-1",
- "at": "2026-10-31T11:11:09.960Z",
+ "at": "2026-10-31T11:42:58.335Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 114,
-  "fail": 1
+  "pass": 115,
+  "fail": 0
  },
- "fails": [
-  [
-   "#/help/ask 로 바로 열면 물어보기 문이 맨 위",
-   "{\"exp\":\"true\",\"top\":463,\"y\":0}"
-  ]
- ],
+ "fails": [],
  "m": {
   "en": []
  },
- "ok": false
+ "ok": true
 }
