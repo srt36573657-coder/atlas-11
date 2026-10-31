@@ -11,7 +11,7 @@
 export const BRAND = Object.freeze({
   ko: '수르', en: 'Sur',
   was: Object.freeze([ // 옛 이름(새 것부터) — 검사가 화면에 남았는지 봄 · 옛 쪽(/atlas/)과 맞댈 때 새 이름으로 바꿔 맞댐
-    Object.freeze({ko: '둘이', en: 'Duri', until: '2026-11-01'}),
+    Object.freeze({ko: '둘이', en: 'Duri', until: '2026-11-01', plain: true}), // plain = 보통 말이기도 함(둘이서 · 일흔둘이 · 멤버 둘이) — 옛 쪽 글 맞대기에서는 바꾸지 않음(rename.mjs)
     Object.freeze({ko: '돌이', en: 'Dori', until: '2026-10-27'}),
     Object.freeze({ko: '골똘이', en: 'Golttori', until: '2026-10-19'}),
     Object.freeze({ko: '꼴똘이', en: 'Kkolttori', until: '2026-10-18'}),

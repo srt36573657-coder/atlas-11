@@ -32,7 +32,9 @@ const RULES = [
   [/아틀란스/g, NEW_NAME], // 토씨는 그대로(아틀란스 · 보드리 둘 다 받침 없음)
   [/ATLAS ?(는|가|를|의|와|도|로|에서|에|만)(?![가-힣])/g, NEW_NAME + '$1'], // 「ATLAS 는 어떻게 셌나요」 → 「보드리는 어떻게 셌나요」(우리말 이름은 토씨를 붙여 씀)
   [/ATLAS/g, NEW_NAME], // 맨 위 글자 · 「ATLAS 셈」 · 「ATLAS 업종」 · 창 제목 「… · ATLAS」
-  ...BRAND.was.filter(w => !['아틀란스', 'ATLAS'].includes(w.ko)).flatMap(w => [[new RegExp(escRe(w.ko) + '(이에요|예요|으로|은|는|이|가|을|를|과|와|로|아|야)?', 'g'), (m, p) => (p ? josa(NEW_NAME, p) : NEW_NAME)], [new RegExp('\\b' + escRe(w.en) + '\\b', 'g'), BRAND.en]]), // 옛 쪽(/atlas/)의 앵무새 이름 보드리 · Bodri → 지금 이름(토씨 맞춤)
+  // 2026-11-01 이름 수르(order-0420) — 옛 이름 가운데 보통 말이기도 한 것(plain · 「둘이」)은 옛 쪽(/atlas/ · 10-17 에 멈춤) 글에 이름으로 나온 적이 없어 바꾸지 않음(「트와이스 멤버 둘이」 같은 자료 글이 그대로 맞대지게) ·
+  // 나머지 옛 이름도 낱말 하나로 선 것만(앞이 한글이 아니고 뒤가 토씨 · 한글 아님 — 「돌이켜」 · 「일흔둘이」는 그대로)
+  ...BRAND.was.filter(w => !['아틀란스', 'ATLAS'].includes(w.ko) && !w.plain).flatMap(w => [[new RegExp('(?<![가-힣])' + escRe(w.ko) + '(?:(이에요|예요|으로|은|는|이|가|을|를|과|와|로|아|야)(?![가-힣])|(?![가-힣]))', 'g'), (m, p) => (p ? josa(NEW_NAME, p) : NEW_NAME)], [new RegExp('\\b' + escRe(w.en) + '\\b', 'g'), BRAND.en]]), // 옛 쪽(/atlas/)의 앵무새 이름 보드리 · Bodri → 지금 이름(토씨 맞춤)
 ];
 const HOLD = '\u0000';
 /** 옛 쪽 글 → 새 이름 글 · keep = 바꾸지 않을 글(자료 원문 — 옛 쪽 · 새 쪽 모두 글자 그대로 보이는 것) */
