@@ -16,6 +16,11 @@
 //   ⑥ 읽기(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · docs/design/read-2026-10-30/order-0003.txt)
 //      — 위 ② ③ ④ 에서 재는 모든 화면마다: 바탕체 0(글씨체 하나) · 글 19px 넘게 · 이야기 넷 · 남긴 말 24px 넘게 · 모든 글이 제 바탕과 대비 7 넘게
 //      · 누르는 것의 테(또는 칸 빛)가 둘레와 대비 3 넘게 · 쪽 바탕이 밝은 종이 #FDF9F5
+//   ⑦ 듣기(사장님 2026-10-31 22:40(+04) 「응」 · 22:41 「그냥 신 처럼 끝까지 다해」 · docs/design/sage-say-2026-11-01/order-0340.txt) — 가짜 소리 줄(넣은 차례대로 · __next 로 손으로 넘김)
+//      — 첫 쪽 맨 위 「서른아홉 스승 모두 듣기」 · 네 걸음 「열 스승 차례로 듣기」(넷째 「아홉 스승」) · 읽는 말 = 쪽 글 그대로 다섯 줄씩(백아흔다섯 · ko-KR · 0.9 · 1 · 0.96)
+//      · 읽는 칸 테 · 쪽 아래 글상자 = 듣는 줄(아래 막대 위 · 칸을 안 가림) · 멈추면 읽던 사람을 이 휴대폰에(atlas:sage-at) · 「멈춘 스승부터 이어 듣기」 + 「처음부터」 · 「멈춘 곳: …」
+//      · 다시 열어도 그대로 · 이어 듣기 · 걸음 단추로 바꿈 · 쪽 옮김 멈춤 · 끝까지 들으면 지움 · 이 방 지킴이 얼굴(같은 소리 줄) · 쪽 글을 이어 붙여도 쓰지 않을 말 0
+//      · 한 사람 쪽 「이야기 듣기」 — 다섯 줄 · 머리 → 네 줄 테 · 멈춤 · 다음 사람으로 가면 멈춤 · 끝까지 · 영어 · 소리 없는 휴대폰(단추 없음) · 아주 크게 320
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -279,6 +284,169 @@ try {
     const em = await q.evaluate(() => document.querySelector('#view .empty')?.textContent.trim());
     check(/^\?/.test(em ?? ''), '⑤ 자료를 못 받으면 「?」 한 줄', em);
     check(!e3.length, '⑤ 자료 못 받음 화면 오류 0', e3.join(' | ')); await ctx3.close();
+  }
+
+  // ⑦ 듣기(order-0340) — 로마 신 72 쪽 듣기 넷을 그대로 · 가짜 소리 줄로 맞댐(읽는 말은 자료에서 따로 셈)
+  {
+    const dotT = s => (/[.?!]$/.test(s) ? s : s + '.');
+    const linesK = x => [`${dotT(x.ko.name)} ${dotT(x.ko.key)}`, x.ko.gi, x.ko.seung, x.ko.jeon, x.ko.today], linesE = x => [`${dotT(x.en.name)} ${dotT(x.en.key)}`, x.en.gi, x.en.seung, x.en.jeon, x.en.today];
+    const ALLK = PEOPLE.flatMap(linesK), ALLE = PEOPLE.flatMap(linesE), stepPeople = k => PEOPLE.filter(x => x.step === k), whoK = x => `${x.step}걸음 · ${x.ko.name}`;
+    const FAKEQ = () => { // 가짜 소리 줄 — 넣은 차례대로 하나씩 읽음(시작 · 끝 소식) · 한 줄 window.__dur 밀리초 · 멈추면 줄 비움 · __next = 지금 줄을 바로 끝내고 다음으로
+      const said = []; window.__said = said; window.__q = []; window.__cancel = 0; window.__dur = 600000;
+      class U { constructor(t) { this.text = t; this.lang = ''; this.rate = 1; this.pitch = 1; this.volume = 1; this.onstart = null; this.onend = null; this.onerror = null; } }
+      const q = []; let cur = null;
+      const next = () => { cur = q.shift() ?? null; if (!cur) return; const u = cur; said.push({text: u.text, lang: u.lang}); u.onstart?.({}); u.__t = setTimeout(() => { if (cur === u) { cur = null; u.onend?.({}); next(); } }, window.__dur); };
+      const ss = {get speaking() { return !!cur; }, get pending() { return q.length > 0; }, paused: false, getVoices() { return []; },
+        speak(u) { window.__q.push({text: u.text, lang: u.lang, rate: u.rate, pitch: u.pitch, volume: u.volume}); q.push(u); if (!cur) next(); },
+        cancel() { window.__cancel++; q.length = 0; const u = cur; cur = null; if (u) { clearTimeout(u.__t); u.onerror?.({error: 'interrupted'}); } }};
+      window.__next = () => { const u = cur; if (!u) return; clearTimeout(u.__t); cur = null; u.onend?.({}); next(); };
+      Object.defineProperty(window, 'speechSynthesis', {value: ss, configurable: true});
+      Object.defineProperty(window, 'SpeechSynthesisUtterance', {value: U, configurable: true, writable: true});
+    };
+    const NOSAY = () => { Object.defineProperty(window, 'speechSynthesis', {value: undefined, configurable: true}); Object.defineProperty(window, 'SpeechSynthesisUtterance', {value: undefined, configurable: true, writable: true}); };
+    const qCtx = async (w, o = {}) => { const c = await ctxOf(w, o); await c.addInitScript(o.fake === false ? NOSAY : FAKEQ); return c; };
+    const voiceOk = (x, text, lang) => !!x && x.text === text && x.lang === lang && Math.abs(x.rate - 0.9) < 1e-9 && x.pitch === 1 && Math.abs(x.volume - 0.96) < 1e-9;
+    const tap = async (q, sel) => { const b = q.locator(sel).first(); await b.scrollIntoViewIfNeeded(); await b.click(); await q.waitForTimeout(150); };
+    const TOP = '#view .sg-hero .sg-allb', RE = '#view .sg-hero .sg-allr', STEP = k => `#view #sg-s${k} .sg-allb`, STORY = '#view .sg-storyb';
+    const SI = q => q.evaluate(() => { // 첫 쪽 모습 — 맨 위 단추 · 처음부터 · 멈춘 곳 · 쪽 아래 글상자 · 테 · 걸음 단추 · 소리 줄 · 기억
+      const top = document.querySelector('#view .sg-hero .sg-allb'), re = document.querySelector('#view .sg-hero .sg-allr'), c = document.querySelector('#view .sg-hero .sg-allc'), now = document.querySelector('#view .sg-now');
+      const nr = now && !now.hidden ? now.getBoundingClientRect() : null, tabs = document.querySelector('.tabs')?.getBoundingClientRect(), ring = [...document.querySelectorAll('#view .rm-say')], rr = ring[0]?.getBoundingClientRect();
+      let at = null; try { at = JSON.parse(localStorage.getItem('atlas:sage-at') ?? 'null')?.id ?? null; } catch { at = 'x'; }
+      return {label: top?.textContent ?? null, on: top?.classList.contains('sg-allon') ?? null, re: re ? {hid: re.hidden, t: re.textContent, h: Math.round(re.getBoundingClientRect().height)} : null,
+        cap: c && !c.hidden ? c.textContent : null, now: now && !now.hidden ? now.textContent : null, nowTop: nr ? nr.top : null, nowBot: nr ? nr.bottom : null, tabsTop: tabs ? tabs.top : innerHeight,
+        ring: ring.map(x => x.dataset.id ?? x.className), ringTop: rr ? rr.top : null, ringBot: rr ? rr.bottom : null,
+        steps: [...document.querySelectorAll('#view .sg-step .sg-allb')].map(x => x.textContent), stepOn: document.querySelectorAll('#view .sg-step .sg-allb.sg-allon').length,
+        q: window.__q?.length ?? 0, said: window.__said?.length ?? 0, cancel: window.__cancel ?? 0, at, hash: location.hash, vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth}; });
+    const PS = q => q.evaluate(() => { // 한 사람 쪽 모습
+      const b = document.querySelector('#view .sg-storyb'), r = b?.getBoundingClientRect(), ring = [...document.querySelectorAll('#view .rm-say')], rr = ring[0]?.getBoundingClientRect(), tabs = document.querySelector('.tabs')?.getBoundingClientRect();
+      return {n: document.querySelectorAll('#view .sg-storyb').length, kids: [...(document.querySelector('#view .sg-card')?.children ?? [])].map(x => String(x.className).split(' ')[0]).join('|'),
+        label: b?.textContent ?? null, on: b?.classList.contains('sg-allon') ?? null, h: r ? Math.round(r.height) : 0, fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0,
+        ring: ring.map(x => String(x.className).split(' ').filter(k => k !== 'rm-say').join('.')), ringTop: rr ? rr.top : null, ringBot: rr ? rr.bottom : null, tabsTop: tabs ? tabs.top : innerHeight,
+        now: document.querySelectorAll('#view .sg-now').length, q: window.__q?.length ?? 0, said: window.__said?.length ?? 0, cancel: window.__cancel ?? 0, hash: location.hash}; });
+    const joinedHits = async q => screenHits(await q.evaluate(() => document.querySelector('#view')?.cloneNode(true).textContent ?? ''));
+    const c1 = await qCtx(390), p = await c1.newPage(), e1 = errsOf(p);
+    await p.goto(URL_OF('#/sage'), {waitUntil: 'load', timeout: 60000});
+    if (!await ready(p)) check(false, '⑦ 첫 쪽', '안 그려짐');
+    else {
+      await p.waitForTimeout(200);
+      const lay = await p.evaluate(() => { const hero = document.querySelector('#view .sg-hero'), b = hero?.querySelector('.sg-allb'), r = b?.getBoundingClientRect();
+        return {hero: [...(hero?.children ?? [])].map(x => String(x.className).split(' ')[0] || x.tagName).join('|'), h: r ? Math.round(r.height) : 0, fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0,
+          secs: [...document.querySelectorAll('#view .sg-step')].map(s => [...s.children].map(x => String(x.className).split(' ')[0]).join('|')),
+          stepH: [...document.querySelectorAll('#view .sg-step .sg-allb')].map(x => Math.round(x.getBoundingClientRect().height)), now: document.querySelectorAll('#view .sg-now').length}; });
+      const S0 = await SI(p);
+      check(lay.hero.startsWith('h|sg-lead|sg-all') && lay.h >= 55 && lay.fs >= 20.9 && S0.label === '서른아홉 스승 모두 듣기' && S0.re?.hid === true && S0.cap === null && S0.now === null && S0.at === null && lay.now === 1,
+        '⑦ 첫 쪽 맨 위(머리 글 아래 · 별 띠 위) 「서른아홉 스승 모두 듣기」 · 56px · 21px · 「처음부터」 숨김 · 글상자 숨김 · 기억 없음', JSON.stringify({lay, S0}));
+      check(lay.secs.length === 4 && lay.secs.every(s => s.startsWith('sg-sh|sg-st|sg-when|sg-all|sg-grid')) && S0.steps.join('|') === '열 스승 차례로 듣기|열 스승 차례로 듣기|열 스승 차례로 듣기|아홉 스승 차례로 듣기' && lay.stepH.every(x => x >= 55),
+        '⑦ 네 걸음마다 「이럴 때」 아래 · 사람 칸 위 「열 스승 차례로 듣기」(넷째 「아홉 스승」) · 56px', JSON.stringify({secs: lay.secs, steps: S0.steps, h: lay.stepH}));
+      await tap(p, TOP); const S1 = await SI(p), Q = await p.evaluate(() => window.__q.map(x => ({...x})));
+      const qb = Q.length === 195 ? Q.findIndex((x, i) => !voiceOk(x, ALLK[i], 'ko-KR')) : -2;
+      check(qb === -1 && S1.on && S1.label === '멈추기' && S1.ring.join() === PEOPLE[0].id && S1.now === ALLK[0] && S1.nowBot != null && S1.nowBot <= S1.tabsTop + 0.5 && S1.nowTop >= 0 && S1.cap === null && S1.hash === '#/sage',
+        '⑦ 누름 → 서른아홉 사람 다섯 줄씩(백아흔다섯 줄 · 쪽 글 그대로 · ko-KR · 0.9 · 1 · 0.96) · 첫 칸 테 · 쪽 아래 글상자 = 듣는 줄(아래 막대 위) · 「멈추기」', JSON.stringify({qb, n: Q.length, q0: Q[0]?.text, S1}));
+      for (let j = 0; j < 7; j++) await p.evaluate(() => window.__next());
+      await p.waitForTimeout(500); const S2 = await SI(p);
+      check(S2.ring.join() === PEOPLE[1].id && S2.now === ALLK[7] && S2.ringTop >= 57 && S2.ringBot <= S2.nowTop + 0.5 && S2.said === S1.said + 7,
+        '⑦ 줄이 끝나면 다음 줄 — 둘째 사람 칸으로 테 · 글상자가 듣는 줄로 · 칸이 위 막대 · 글상자에 안 가림', JSON.stringify(S2));
+      await tap(p, TOP); const S3 = await SI(p); await p.waitForTimeout(300); const S3b = await SI(p);
+      check(S3.cancel > S2.cancel && !S3.on && S3.label === '멈춘 스승부터 이어 듣기' && S3.re?.hid === false && S3.re?.t === '처음부터' && S3.re?.h >= 47.5 && S3.cap === `멈춘 곳: ${whoK(PEOPLE[1])}` && S3.at === PEOPLE[1].id && S3.now === null && !S3.ring.length && S3b.said === S3.said,
+        '⑦ 다시 누르면 멈춤 — 소리 끔 · 읽던 사람을 이 휴대폰에 · 「멈춘 스승부터 이어 듣기」 + 「처음부터」 48px · 「멈춘 곳: …」 · 글상자 · 테 풂 · 뒤 줄 안 읽음', JSON.stringify(S3));
+      const h1 = await joinedHits(p); check(!h1.length, '⑦ 쪽 글을 이어 붙여도 쓰지 않을 말 0(이어 듣기 모양)', JSON.stringify(h1));
+      await p.reload({waitUntil: 'load'}); await ready(p); await p.waitForTimeout(300); const S4 = await SI(p);
+      check(S4.label === '멈춘 스승부터 이어 듣기' && S4.re?.hid === false && S4.cap === `멈춘 곳: ${whoK(PEOPLE[1])}` && S4.at === PEOPLE[1].id, '⑦ 쪽을 다시 열어도 이어 듣기 모양 그대로', JSON.stringify(S4));
+      await tap(p, TOP); const S5 = await SI(p), Q5 = await p.evaluate(() => window.__q.map(x => x.text));
+      check(S5.on && Q5.length === 190 && Q5.join('\n') === ALLK.slice(5).join('\n') && S5.ring.join() === PEOPLE[1].id && S5.re?.hid === true && S5.cap === null && S5.now === ALLK[5],
+        '⑦ 이어 듣기 — 멈춘 사람 첫 줄부터 끝까지(백아흔 줄) · 그 칸 테 · 「처음부터」 · 「멈춘 곳」 숨김', JSON.stringify({n: Q5.length, S5}));
+      const s3 = stepPeople(3); await tap(p, STEP(3)); const S6 = await SI(p), Q6 = await p.evaluate(n => window.__q.slice(n).map(x => x.text), S5.q);
+      check(!S6.on && S6.label === '멈춘 스승부터 이어 듣기' && S6.at === PEOPLE[1].id && S6.stepOn === 1 && S6.steps[2] === '멈추기' && Q6.join('\n') === s3.flatMap(linesK).join('\n') && S6.ring.join() === s3[0].id && S6.now === linesK(s3[0])[0],
+        '⑦ 모두 듣는 중 걸음 단추 — 모두 듣기는 멈춤(읽던 사람 기억) · 그 걸음 열 사람 쉰 줄 · 첫 칸 테 · 글상자', JSON.stringify({n: Q6.length, S6}));
+      await tap(p, STEP(3)); const S7 = await SI(p);
+      check(S7.stepOn === 0 && S7.steps[2] === '열 스승 차례로 듣기' && S7.now === null && !S7.ring.length && S7.at === PEOPLE[1].id, '⑦ 걸음 단추를 다시 누르면 멈춤 — 처음 모습 · 모두 듣기 기억은 그대로', JSON.stringify(S7));
+      await tap(p, TOP); for (let j = 0; j < 6; j++) await p.evaluate(() => window.__next());
+      const c8 = (await SI(p)).cancel;
+      await p.evaluate(() => { location.hash = '#/sage/plato'; }); await p.waitForTimeout(500);
+      const away = await p.evaluate(() => { try { return JSON.parse(localStorage.getItem('atlas:sage-at') ?? 'null')?.id ?? null; } catch { return 'x'; } }), c8b = (await SI(p)).cancel;
+      await go(p, '#/sage'); await p.waitForTimeout(300); const S8 = await SI(p);
+      check(c8b > c8 && away === PEOPLE[2].id && S8.label === '멈춘 스승부터 이어 듣기' && S8.cap === `멈춘 곳: ${whoK(PEOPLE[2])}`, '⑦ 듣는 중 쪽을 옮기면 멈춤 · 읽던 사람 기억 · 돌아오면 그 사람', JSON.stringify({c8, c8b, away, S8}));
+      await tap(p, RE); const S9 = await SI(p), Q9 = await p.evaluate(n => window.__q.slice(n).map(x => x.text), S8.q);
+      check(S9.on && Q9.length === 195 && Q9.join('\n') === ALLK.join('\n') && S9.at === null && S9.ring.join() === PEOPLE[0].id, '⑦ 「처음부터」 — 첫 사람부터 백아흔다섯 줄 · 기억 지움', JSON.stringify({n: Q9.length, S9}));
+      await p.evaluate(() => { window.__dur = 15; window.__next(); }); await p.waitForTimeout(15 * 195 + 5000);
+      const S10 = await SI(p), tail = await p.evaluate(() => window.__said.slice(-195).map(x => x.text));
+      check(tail.join('\n') === ALLK.join('\n') && !S10.on && S10.at === null && S10.label === '서른아홉 스승 모두 듣기' && S10.re?.hid === true && S10.cap === null && S10.now === null && !S10.ring.length,
+        '⑦ 끝까지 — 백아흔다섯 줄을 쪽 차례대로 다 읽음 · 기억 지움 · 처음 모습', JSON.stringify({n: tail.length, t0: tail[0], S10}));
+      const h2 = await joinedHits(p); check(!h2.length, '⑦ 쪽 글을 이어 붙여도 쓰지 않을 말 0(처음 모습)', JSON.stringify(h2));
+      const s4 = stepPeople(4); await tap(p, STEP(4)); await p.waitForTimeout(15 * 45 + 3000);
+      const S11 = await SI(p), tail4 = await p.evaluate(() => window.__said.slice(-45).map(x => x.text));
+      check(tail4.join('\n') === s4.flatMap(linesK).join('\n') && S11.stepOn === 0 && S11.steps[3] === '아홉 스승 차례로 듣기' && S11.now === null && S11.at === null, '⑦ 넷째 걸음 끝까지 — 아홉 사람 마흔다섯 줄 · 처음 모습 · 모두 듣기 기억 없음', JSON.stringify({n: tail4.length, S11}));
+      await p.evaluate(() => { window.__dur = 600000; }); await tap(p, STEP(1));
+      const face = p.locator('.rmt button.rms-face').first();
+      if (await face.count()) {
+        const g0 = await SI(p); await face.scrollIntoViewIfNeeded(); await face.click(); await p.waitForTimeout(200); const S12 = await SI(p), last = await p.evaluate(() => window.__said.at(-1)?.text ?? '');
+        check(g0.stepOn === 1 && S12.stepOn === 0 && S12.now === null && !S12.ring.length && S12.cancel > g0.cancel && /^아폴로\./.test(last), '⑦ 걸음 듣는 중 이 방 지킴이(아폴로) 얼굴을 누르면 — 스승 듣기 멈춤 · 지킴이 이야기만(같은 소리 줄)', JSON.stringify({g0: g0.stepOn, S12, last: last.slice(0, 20)}));
+        await face.click(); await p.waitForTimeout(150);
+      } else check(false, '⑦ 이 방 지킴이 얼굴', '쪽에 없음');
+      // 한 사람 쪽 「이야기 듣기」
+      const X = PEOPLE.find(x => x.id === 'socrates'), Y = PEOPLE[(PEOPLE.indexOf(X) + 1) % PEOPLE.length];
+      await go(p, '#/sage/' + X.id); await p.waitForFunction(n => document.querySelector('#view #sg-name')?.textContent === n, X.ko.name, {timeout: 8000}).catch(() => {}); await p.waitForTimeout(200);
+      const P0 = await PS(p);
+      check(P0.n === 1 && P0.kids.startsWith('sg-top|sg-head|sg-all|sg-band|sg-story') && P0.label === '이야기 듣기' && P0.h >= 55 && P0.fs >= 20.9 && P0.now === 0, '⑦ 한 사람 쪽 이름 아래(별 띠 위) 「이야기 듣기」 · 56px · 글상자 없음(글이 쪽에 있음)', JSON.stringify(P0));
+      await tap(p, STORY); const P1 = await PS(p), PQ = await p.evaluate(n => window.__q.slice(n).map(x => ({...x})), P0.q), wantP = linesK(X);
+      const pb = PQ.length === 5 ? PQ.findIndex((x, i) => !voiceOk(x, wantP[i], 'ko-KR')) : -2;
+      check(pb === -1 && P1.on && P1.label === '멈추기' && P1.ring.join() === 'sg-head', '⑦ 누름 → 「이름. 큰 낱말.」 · 기 · 승 · 전 · 결 다섯 줄(쪽 글 그대로 · ko-KR) · 머리에 테 · 「멈추기」', JSON.stringify({pb, n: PQ.length, q0: PQ[0]?.text, P1}));
+      for (let j = 0; j < 3; j++) await p.evaluate(() => window.__next());
+      await p.waitForTimeout(300); const P2 = await PS(p);
+      check(P2.ring.join() === 'sg-b.b3' && P2.ringTop >= 57 && P2.ringBot <= P2.tabsTop + 0.5, '⑦ 줄마다 그 줄에 테 — 셋째 줄(전 · 무엇을 · 어떻게) · 화면 안', JSON.stringify(P2));
+      await tap(p, STORY); const P3 = await PS(p);
+      check(!P3.on && P3.label === '이야기 듣기' && !P3.ring.length && P3.cancel > P2.cancel, '⑦ 다시 누르면 멈춤 — 처음 모습', JSON.stringify(P3));
+      await tap(p, STORY); const c13 = (await PS(p)).cancel; await tap(p, '#view .sg-nav a.next'); await p.waitForTimeout(400); const P4 = await PS(p);
+      check(P4.cancel > c13 && P4.hash === '#/sage/' + Y.id && P4.label === '이야기 듣기' && !P4.on && !P4.ring.length, '⑦ 듣는 중 다음 사람으로 가면 멈춤 · 새 쪽은 처음 모습', JSON.stringify(P4));
+      await p.evaluate(() => { window.__dur = 15; }); await tap(p, STORY); await p.waitForTimeout(15 * 5 + 2000);
+      const P5 = await PS(p), t5 = await p.evaluate(() => window.__said.slice(-5).map(x => x.text));
+      check(t5.join('\n') === linesK(Y).join('\n') && !P5.on && P5.label === '이야기 듣기' && !P5.ring.length, '⑦ 끝까지 — 다섯 줄 다 읽고 처음 모습', JSON.stringify({t5: t5.map(s => s.slice(0, 12)), P5}));
+      const h3 = await joinedHits(p); check(!h3.length, '⑦ 한 사람 쪽 글을 이어 붙여도 쓰지 않을 말 0', JSON.stringify(h3));
+    }
+    check(!e1.length, '⑦ 화면 오류 0', e1.join(' | ')); await c1.close();
+    // 영어
+    const c2 = await qCtx(390, {en: true}), r2 = await c2.newPage(), e2 = errsOf(r2);
+    await r2.goto(URL_OF('#/sage', '&lang=en'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r2)) {
+      await r2.waitForTimeout(200); const E0 = await SI(r2);
+      await tap(r2, TOP); const EQ = await r2.evaluate(() => window.__q.map(x => ({...x}))), E1 = await SI(r2);
+      const eb = EQ.length === 195 ? EQ.findIndex((x, i) => !voiceOk(x, ALLE[i], 'en-US') || HAN.test(x.text)) : -2;
+      await r2.evaluate(() => window.__next()); await r2.waitForTimeout(100); await tap(r2, TOP); const E2 = await SI(r2);
+      check(E0.label === 'Hear all thirty-nine in order' && E0.steps.join('|') === 'Hear all ten in order|Hear all ten in order|Hear all ten in order|Hear all nine in order' && eb === -1 && E1.label === 'Stop' && E1.now === ALLE[0]
+        && E2.label === 'Resume where I stopped' && E2.re?.t === 'From the start' && E2.cap === `Stopped at: Step ${PEOPLE[0].step} · ${PEOPLE[0].en.name}` && !HAN.test(`${E2.label}${E2.re?.t}${E2.cap}`),
+        '⑦ 영어 — 단추 글 · 영어 백아흔다섯 줄 en-US · 「Stop」 · 「Resume where I stopped」 · 「From the start」 · 「Stopped at: …」', JSON.stringify({E0: {label: E0.label, steps: E0.steps}, eb, n: EQ.length, q0: EQ[0]?.text, E1: {label: E1.label, now: E1.now}, E2}));
+      await go(r2, '#/sage/' + PEOPLE[0].id); await r2.waitForTimeout(200); const pq = await r2.evaluate(() => window.__q.length), lb = await r2.evaluate(() => document.querySelector('#view .sg-storyb')?.textContent ?? null);
+      await tap(r2, STORY); const EQ2 = await r2.evaluate(n => window.__q.slice(n).map(x => ({...x})), pq);
+      const eb2 = EQ2.length === 5 ? EQ2.findIndex((x, i) => !voiceOk(x, linesE(PEOPLE[0])[i], 'en-US')) : -2;
+      check(lb === 'Hear the story' && eb2 === -1, '⑦ 영어 한 사람 쪽 — 「Hear the story」 · 다섯 줄 en-US', JSON.stringify({lb, eb2, n: EQ2.length}));
+    } else check(false, '⑦ 영어 첫 쪽', '안 그려짐');
+    check(!e2.length, '⑦ 영어 화면 오류 0', e2.join(' | ')); await c2.close();
+    // 소리 없는 휴대폰 — 단추 · 글상자 없음 · 칸 · 네 줄 그대로
+    const c3 = await qCtx(390, {fake: false}), r3 = await c3.newPage(), e3 = errsOf(r3);
+    await r3.goto(URL_OF('#/sage'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r3)) {
+      const m1 = await r3.evaluate(() => ({b: document.querySelectorAll('#view .sg-allb, #view .sg-allr').length, now: document.querySelectorAll('#view .sg-now').length, tiles: document.querySelectorAll('#view .sg-tile').length}));
+      await go(r3, '#/sage/kant'); await r3.waitForTimeout(100);
+      const m2 = await r3.evaluate(() => ({b: document.querySelectorAll('#view .sg-allb').length, beats: document.querySelectorAll('#view .sg-story .sg-b').length}));
+      check(m1.b === 0 && m1.now === 0 && m1.tiles === 39 && m2.b === 0 && m2.beats === 4, '⑦ 소리 없는 휴대폰 — 듣기 단추 · 글상자 없음 · 칸 서른아홉 · 네 줄 그대로', JSON.stringify({m1, m2}));
+    } else check(false, '⑦ 소리 없는 휴대폰 첫 쪽', '안 그려짐');
+    check(!e3.length, '⑦ 소리 없는 휴대폰 화면 오류 0', e3.join(' | ')); await c3.close();
+    // 아주 크게 320
+    const c4 = await qCtx(320, {font: 2}), r4 = await c4.newPage(), e4 = errsOf(r4);
+    await r4.goto(URL_OF('#/sage'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r4)) {
+      await r4.waitForTimeout(200);
+      const B = await r4.evaluate(() => [...document.querySelectorAll('#view .sg-allb')].map(b => { const r = b.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.right), Math.round(r.height)]; }));
+      await tap(r4, TOP); for (let j = 0; j < 12; j++) await r4.evaluate(() => window.__next());
+      await r4.waitForTimeout(400); const S = await SI(r4);
+      check(B.length === 5 && B.every(([l, rt, hh]) => l >= 0 && rt <= S.vw + 0.5 && hh >= 48) && S.sw <= S.vw && S.now === ALLK[12] && S.nowTop >= 0 && S.nowBot <= S.tabsTop + 0.5 && S.ringTop >= 57 && S.ringBot <= S.nowTop + 0.5,
+        '⑦ 아주 크게 320 — 단추 다섯 화면 안 · 48px · 넘침 0 · 듣는 중 글상자 아래 막대 위 · 읽는 칸이 글상자에 안 가림', JSON.stringify({B, S}));
+      await tap(r4, TOP);
+      await go(r4, '#/sage/descartes'); await r4.waitForTimeout(200);
+      const PB = await r4.evaluate(() => { const b = document.querySelector('#view .sg-storyb'), r = b?.getBoundingClientRect(); return r ? [Math.round(r.left), Math.round(r.right), Math.round(r.height), document.documentElement.scrollWidth, document.documentElement.clientWidth] : null; });
+      check(!!PB && PB[0] >= 0 && PB[1] <= PB[4] + 0.5 && PB[2] >= 48 && PB[3] <= PB[4], '⑦ 아주 크게 320 한 사람 쪽 — 「이야기 듣기」 화면 안 · 48px · 넘침 0', JSON.stringify(PB));
+    } else check(false, '⑦ 아주 크게 320 첫 쪽', '안 그려짐');
+    check(!e4.length, '⑦ 아주 크게 320 화면 오류 0', e4.join(' | ')); await c4.close();
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();

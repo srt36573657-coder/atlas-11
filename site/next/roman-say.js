@@ -8,7 +8,8 @@
      로마 신 72 쪽 곳마다 단추(p-roman.js — 말하는 불빛 칸 order-1723 → 여덟 곳 모두 14:20(+04) 「응」 order-1920.txt)가 그곳 카드 차례대로 넘김 · 누른 그 순간에 휴대폰 소리 줄에 모두 넣음(이어 읽기 · 아이폰도 누를 때만 소리) · 다른 곳 단추를 누르면 앞 곳은 처음 모습
      읽는 카드에 테 · 그 카드가 화면 밖이면 가운데로(움직임 줄이기면 바로) · 다시 누름 · 다른 얼굴 누름 · 지금 읽는 얼굴 누름 · 쪽 옮김 = 멈춤 · 다 읽으면 처음 모습
      첫 화면 말하는 불빛 차례로 듣기(16:23(+04) 「응」 · order-2123.txt · home-talk.js) — 카드 대신 go(그 불빛을 고름 · 말풍선이 글상자) · view(말풍선 머리가 화면 밖이면 위로 당김)
-     끝 소식(20:54(+04) 「응」 · docs/design/roman72-site-2026-11-01/order-0154.txt) — set(false, {done, item}) · 일흔두 신 모두 듣기가 멈춘 신을 이 휴대폰에 기억해 이어 듣기 */
+     끝 소식(20:54(+04) 「응」 · docs/design/roman72-site-2026-11-01/order-0154.txt) — set(false, {done, item}) · 일흔두 신 모두 듣기가 멈춘 신을 이 휴대폰에 기억해 이어 듣기
+     서른아홉 스승 쪽(22:40(+04) 「응」 · 22:41 「그냥 신 처럼 끝까지 다해」 · docs/design/sage-say-2026-11-01/order-0340.txt · p-sage.js)도 이 줄 — own(화면에 두기는 그 줄의 go 가 함) */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN} from './brand.js';
 import {GODS, SEATS, artOf} from './roman72.js';
@@ -35,6 +36,7 @@ function mark(r, i) {
   r.i = i; const it = r.items[i];
   it.face?.setAttribute('aria-pressed', 'true'); it.card?.classList.add('rm-say'); it.go?.();
   if (r.cap) { r.cap.textContent = it.label; r.cap.hidden = false; }
+  if (it.own) return; // 화면에 두기는 go 가 함(서른아홉 스승 첫 쪽 — 읽는 칸을 쪽 아래 글상자 위에 둠 · order-0340)
   const how = still() ? 'auto' : 'smooth', b = it.card?.getBoundingClientRect(), v = !it.card ? it.view?.getBoundingClientRect() : null;
   if (b && (b.top < 72 || b.bottom > innerHeight - 72)) it.card.scrollIntoView({block: 'center', behavior: how});
   else if (v && v.height && (v.top < 72 || v.top > innerHeight * 0.55)) scrollBy({top: v.top - 84, behavior: how}); // 말풍선(첫 화면) — 머리가 위쪽에 오게
@@ -67,7 +69,7 @@ export function say(n, btn) {
   } catch { if (cur === me) quiet(); }
 }
 /** 차례로 듣기 — items 를 차례대로 이어 읽음(누른 그 순간에 소리 줄에 모두 넣음) · 같은 단추를 다시 누르면 멈춤
-    items = [{text 읽을 말, label 글상자 글, card 카드, face 얼굴 단추, go 시작할 때 부름, view 화면에 둘 칸}] · cap = 글상자 · set(on) = 단추 모양(읽는 중 / 처음) */
+    items = [{text 읽을 말, label 글상자 글, card 카드, face 얼굴 단추, go 시작할 때 부름, view 화면에 둘 칸, own 화면에 두기를 go 가 함}] · cap = 글상자 · set(on) = 단추 모양(읽는 중 / 처음) */
 export function sayAll(items, btn, {cap = null, set = null} = {}) {
   if (!btn) return;
   hook();

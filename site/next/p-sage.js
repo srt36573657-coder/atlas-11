@@ -6,15 +6,23 @@
    자료 = /next/data/sage39.json(build.py — 남긴 말은 표시 넷: 글 그대로 옮김 · 글을 줄여 옮김 · 뜻을 풀어 씀 · 뒷사람이 적은 이야기 · 원문 · 출처)
    영어 화면은 자료의 영어 글을 바로 그림(사전 틀 없이 같은 질) · 앞날 말 · 사고팔기 말 없음 · 그림은 꾸밈(aria-hidden) — 글 설명이 같은 뜻을 말함
    읽는 종이 판(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · docs/design/read-2026-10-30/order-0003.txt)
-   — 밝은 종이 바탕 · 본문 글꼴 하나 · 큰 글씨 · 검정 글은 p-sage.css 와 app.js whiteFor(html.pg-sage) */
+   — 밝은 종이 바탕 · 본문 글꼴 하나 · 큰 글씨 · 검정 글은 p-sage.css 와 app.js whiteFor(html.pg-sage)
+   듣기(사장님 2026-10-31 22:40(+04) 「응」 — 물음 「서른아홉 스승 쪽도 스승 이야기를 차례로 들려 드릴까요?」 · 22:41 「그냥 신 처럼 끝까지 다해」 · docs/design/sage-say-2026-11-01/order-0340.txt)
+   — 로마 신 72 쪽 듣기 넷을 그대로: 한 사람 쪽 「이야기 듣기」 · 네 걸음마다 「열 스승 차례로 듣기」 · 맨 위 「서른아홉 스승 모두 듣기」 · 멈춘 스승부터 이어 듣기 + 「처음부터」
+   읽는 말 = 쪽에 적힌 글 그대로(이름 · 큰 낱말 → 기 · 승 · 전 · 결 — 한 줄씩) · 소리 줄은 로마 신 쪽과 하나(roman-say.js sayAll — 한 번에 하나 · 누를 때만 · 쪽을 옮기면 멈춤)
+   한 사람 쪽 = 읽는 줄에 테(글이 쪽에 있음) · 첫 쪽 = 읽는 칸에 테 + 쪽 아래 글상자(.sg-now — 칸에는 이름 · 낱말만 있어 지금 읽는 줄을 그대로 보임) */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN, josa} from './brand.js'; // 이름은 한 곳(규칙 76)
+import {sayAll, canSpeak, playing, stop as hush} from './roman-say.js'; // 듣기(order-0340) — 로마 신 쪽과 같은 소리 줄(이 쪽 방 지킴이 아폴로 얼굴도 이 줄 · 하나가 말하면 다른 것은 멈춤)
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
 const SVGNS = 'http://www.w3.org/2000/svg';
 const S = (tag, attrs = {}, ...kids) => { const e = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, String(v)); for (const k of kids.flat()) if (k) e.append(k); return e; };
 
+/** 걸음마다 사람 수를 말로(차례로 듣기 단추 글 — 「열 스승」 · 「Hear all ten」 · 로마 신 쪽과 같은 셈) */
+const KO_N = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열', '열한', '열두', '열세', '열네', '열다섯', '열여섯', '열일곱', '열여덟', '열아홉', '스무'];
+const EN_N = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
 /** 화면 말(자료 밖) — 한국어 · 영어 두 벌 */
 const T = EN ? {
   title: '39 Masters', lead: 'Ways of thinking found by 39 people in the East and West over 2,500 years.', lead2: 'Put together, they make four steps.',
@@ -26,6 +34,8 @@ const T = EN ? {
   orig: 'Original', src: 'Source', tryIt: `Try it on ${NAME_EN}`, all: 'All 39', ago: n => `${n.toLocaleString('en-US')} years ago`,
   miss: '? Could not load the masters. Please open it again in a moment.', none: 'There is no such person. Here are all 39.',
   q: s => `“${s}”`, people: '39 people',
+  story: 'Hear the story', stop: 'Stop', all: n => `Hear all ${EN_N[n] ?? n} in order`, every: 'Hear all thirty-nine in order',
+  resume: 'Resume where I stopped', again: 'From the start', stopped: x => `Stopped at: ${x}`,
 } : {
   title: '서른아홉 스승', lead: '2,500년 동안 동양과 서양의 서른아홉 사람이 찾은 생각하는 법을 모았어요.', lead2: '모아 보니 네 걸음이에요.',
   band: '점 하나가 한 사람이에요. 왼쪽이 오래전, 오른쪽이 요즘이에요. 위는 동양, 아래는 서양이에요.', east: '동양', west: '서양', axis: ['2,500년 전', '지금'],
@@ -36,6 +46,8 @@ const T = EN ? {
   orig: '원문', src: '출처', tryIt: `${NAME}에서 해 보기`, all: '모두 보기', ago: n => `${n.toLocaleString('en-US')}년 전`,
   miss: '? 스승 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.', none: '그런 사람은 없어요. 서른아홉 사람을 모두 보여 드려요.',
   q: s => `「${s}」`, people: '서른아홉 사람',
+  story: '이야기 듣기', stop: '멈추기', all: n => `${KO_N[n] ?? n} 스승 차례로 듣기`, every: '서른아홉 스승 모두 듣기',
+  resume: '멈춘 스승부터 이어 듣기', again: '처음부터', stopped: x => `멈춘 곳: ${x}`,
 };
 const L = EN ? 'en' : 'ko';
 const SAFE = `${josa(NAME, '는')} 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.`; // 둘이 안전 문장(돌이 단추 안과 같은 글 — 영어 화면은 엔진 사전이 바꿈)
@@ -87,11 +99,90 @@ function band(d, hi = null) {
 }
 const legend = d => h('ul', {class: 'sg-legend', 'aria-label': T.steps}, d.steps.map(s => h('li', {class: `s${s.k}`}, h('i', {'aria-hidden': 'true'}), h('span', {text: s[L].v}))));
 
+/* ── 듣기(order-0340) ── 로마 신 72 쪽과 같은 단추 · 같은 소리 줄 */
+const dot = s => (/[.?!]$/.test(s) ? s : s + '.');
+/** 한 사람 이야기 — 쪽에 적힌 글 그대로 다섯 줄(「이름. 큰 낱말.」 · 기 · 승 · 전 · 결) · 한 줄씩 소리 줄에(긴 말 하나는 휴대폰이 중간에 끊기도 함) */
+const linesOf = p => { const t = p[L]; return [`${dot(t.name)} ${dot(t.key)}`, t.gi, t.seung, t.jeon, t.today]; };
+const whoOf = p => `${T.step(p.step)} · ${p[L].name}`;
+const still = () => !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+/** 읽는 칸을 위 막대 아래 · 쪽 아래 글상자 위에 둠 — 글상자에 듣는 줄을 먼저 넣고 그 높이를 잼(긴 줄 · 아주 크게면 글상자가 큼) · 가리거나 화면 밖이면 그 사이 가운데로 */
+const keep = (a, now, text) => {
+  if (now) { now.textContent = text; now.hidden = false; }
+  const r = a.getBoundingClientRect(), lim = now ? now.getBoundingClientRect().top - 8 : innerHeight - 80;
+  if (r.top >= 72 && r.bottom <= lim) return;
+  scrollBy({top: r.top + r.height / 2 - (72 + lim) / 2, behavior: still() ? 'auto' : 'smooth'});
+};
+/** 첫 쪽 — 사람 칸(sel) 차례대로 한 사람 다섯 줄씩 · 칸 = 테 · 글상자 = 듣는 줄 그대로 · 화면에 두기는 keep(own — roman-say.js 는 안 굴림) */
+const itemsOf = (d, sel, now) => [...document.querySelectorAll(sel)].flatMap(a => {
+  const p = d.people.find(x => x.id === a.dataset.id); if (!p) return [];
+  return linesOf(p).map(text => ({id: p.id, who: whoOf(p), text, label: text, card: a, own: true, go: () => keep(a, now, text)}));
+});
+const SVG_ICON = {viewBox: '0 0 24 24', width: 28, height: 28, 'aria-hidden': 'true', focusable: 'false', fill: 'currentColor'};
+/** 처음 = 세모(듣기) · 읽는 중 = 네모(멈추기) · 글자 없는 그림 */
+const playIcon = on => S('svg', SVG_ICON, on ? S('rect', {x: 6, y: 6, width: 12, height: 12, rx: 2}) : S('path', {d: 'M8 5.5v13l10.5-6.5z'}));
+/** 듣기 단추 하나 — label = 처음 글 · run(b, set) = 누르면 · set(on) 이 단추 모양(읽는 중 「멈추기」 · 네모) */
+function listenBtn(label, run, extra = '') {
+  const t = h('span', {class: 'sg-allt', text: label});
+  let ic = playIcon(false);
+  const look = on => { b.classList.toggle('sg-allon', on); const x = playIcon(on); ic.replaceWith(x); ic = x; };
+  const b = h('button', {type: 'button', class: 'sg-allb' + (extra ? ' ' + extra : ''), onclick: () => run(b)}, ic, t);
+  return {b, t, look};
+}
+/** 걸음 하나 차례로 듣기 — 그 걸음 사람 칸 차례대로 · now = 쪽 아래 글상자 */
+function stepBar(d, k, n, now) {
+  if (!canSpeak()) return null; // 소리를 못 내는 휴대폰 — 단추 없음(칸은 그대로)
+  const label = T.all(n);
+  const {b, t, look} = listenBtn(label, btn => sayAll(itemsOf(d, `#view #sg-s${k} .sg-tile`, now), btn, {cap: now, set}));
+  const set = on => { look(on); t.textContent = on ? T.stop : label; };
+  return h('div', {class: 'sg-all'}, b);
+}
+/** 멈춘 스승(이 휴대폰에만) — {id 이름, at 때} · 못 읽거나 자료에 없는 이름이면 없음 */
+const AT_KEY = 'atlas:sage-at';
+const atLoad = d => { try { const v = JSON.parse(localStorage.getItem(AT_KEY) ?? 'null'); return v && d.people.some(p => p.id === v.id) ? v.id : null; } catch { return null; } };
+const atSave = id => { try { if (id) localStorage.setItem(AT_KEY, JSON.stringify({id, at: Date.now()})); else localStorage.removeItem(AT_KEY); } catch { /* 기억 못 하는 휴대폰 — 늘 처음부터 */ } };
+/** 서른아홉 스승 모두 듣기 + 멈춘 스승부터 이어 듣기 — 쪽 칸 차례 그대로 · 멈추면 읽던 사람을 기억 · 끝까지 들으면 지움
+    처음 = 「서른아홉 스승 모두 듣기」 · 멈춘 사람이 있으면 「멈춘 스승부터 이어 듣기」 + 「처음부터」 · 단추 아래 「멈춘 곳: …」 · 읽는 중 = 「멈추기」 · 쪽 아래 글상자 = 듣는 줄 */
+function everyBar(d, now) {
+  if (!canSpeak()) return null;
+  const SEL = '#view .sg-step .sg-tile';
+  const cap = h('p', {class: 'sg-allc', 'aria-live': 'polite', hidden: true});
+  const play = (btn, fromStart) => {
+    if (playing(btn)) { hush(); return; } // 읽는 중 = 멈춤(멈춘 사람은 set 이 적음)
+    if (fromStart) atSave(null);
+    const list = itemsOf(d, SEL, now), id = atLoad(d), k = id ? Math.max(0, list.findIndex(x => x.id === id)) : 0;
+    sayAll(list.slice(k), btn, {cap: now, set});
+  };
+  const {b, t, look} = listenBtn(T.every, btn => play(btn, false));
+  const re = h('button', {type: 'button', class: 'sg-allr', hidden: true, onclick: () => play(b, true), text: T.again});
+  const idle = () => { // 멈춘 사람이 있으면 이어 듣기 모양
+    const id = atLoad(d), p = id ? d.people.find(x => x.id === id) : null;
+    t.textContent = p ? T.resume : T.every; re.hidden = !p;
+    if (p) { cap.textContent = T.stopped(whoOf(p)); cap.hidden = false; } else { cap.textContent = ''; cap.hidden = true; }
+  };
+  const set = (on, info) => {
+    look(on);
+    if (on) { t.textContent = T.stop; re.hidden = true; cap.hidden = true; return; }
+    if (info?.done) atSave(null); else if (info?.item?.id) atSave(info.item.id); // 끝까지 = 지움 · 중간에 멈춤 = 읽던 사람
+    idle();
+  };
+  idle();
+  return h('div', {class: 'sg-all sg-every'}, h('div', {class: 'sg-allrow'}, b, re), cap);
+}
+/** 한 사람 쪽 「이야기 듣기」 — 머리(이름 · 큰 낱말) → 기 · 승 · 전 · 결 · 읽는 칸에 테(글이 쪽에 있어 글상자 없음 · 로마 신 카드와 같음) */
+function storyBar(p) {
+  if (!canSpeak()) return null;
+  const items = () => { const v = document.querySelector('#view .sg-card'); if (!v) return []; const at = [v.querySelector('.sg-head'), ...v.querySelectorAll('.sg-story .sg-b')]; return linesOf(p).map((text, i) => ({id: p.id, who: whoOf(p), text, label: text, card: at[i] ?? null})); };
+  const {b, t, look} = listenBtn(T.story, btn => sayAll(items(), btn, {set}), 'sg-storyb');
+  const set = on => { look(on); t.textContent = on ? T.stop : T.story; };
+  return h('div', {class: 'sg-all'}, b);
+}
+
 /* ── 첫 쪽(#/sage) ── 기 큰 제목 · 별자리 → 승 네 걸음 단추 → 전 걸음마다 사람 카드 → 결 한목소리 · 안전 문장 */
 function index(d, note = '') {
+  const now = canSpeak() ? h('p', {class: 'sg-now', 'aria-live': 'polite', hidden: true}) : null; // 듣는 줄 그대로(order-0340) — 쪽 맨 끝에 두고 아래 막대 위에 붙임(어느 칸을 읽어도 보임)
   const jump = s => h('button', {type: 'button', class: `sg-jump s${s.k}`, onclick: () => document.getElementById('sg-s' + s.k)?.scrollIntoView({behavior: 'smooth', block: 'start'})},
     glyph(s.k), h('span', {class: 'sg-jn', text: T.step(s.k)}), h('b', {text: s[L].v}), h('span', {class: 'sg-jq', text: s[L].q}));
-  const tile = p => h('li', {}, h('a', {class: `sg-tile s${p.step}`, href: '#/sage/' + p.id},
+  const tile = p => h('li', {}, h('a', {class: `sg-tile s${p.step}`, href: '#/sage/' + p.id, 'data-id': p.id},
     glyph(p.step), h('b', {class: 'sg-tn', text: p[L].name}), h('span', {class: 'sg-tk2', text: p[L].key}), h('span', {class: 'sg-ta', text: T.ago(p.ago)}), h('i', {class: 'sg-tgo', 'aria-hidden': 'true', text: '›'})));
   const sec = s => {
     const ps = d.people.filter(p => p.step === s.k);
@@ -99,16 +190,18 @@ function index(d, note = '') {
       h('h2', {class: 'sg-sh', id: 'sg-h' + s.k}, h('span', {class: 'sg-sn', 'aria-hidden': 'true', text: String(s.k)}), h('span', {class: 'sg-sv', text: s[L].v}), h('span', {class: 'sg-sq', text: s[L].q})),
       h('p', {class: 'sg-st', text: s[L].t}),
       h('p', {class: 'sg-when'}, h('b', {text: T.when}), h('span', {text: s[L].when})),
+      stepBar(d, s.k, ps.length, now), '\n', // 그 걸음 차례로 듣기(order-0340) · 빈 줄 = 쪽 글을 이어 읽을 때 「…듣기」와 첫 칸 글이 붙지 않게(next_check 쓰지 않을 말 · 칸 판에서는 안 보임)
       h('ul', {class: 'sg-grid'}, ps.map(tile)));
   };
   return {title: T.title, nodes: [h('div', {class: 'sg sg-index'},
-    h('header', {class: 'sg-hero'}, h('h1', {class: 'h sg-h1', text: T.title}), h('p', {class: 'sg-lead', text: T.lead}), note ? h('p', {class: 'sg-note', role: 'status', text: note}) : null),
+    h('header', {class: 'sg-hero'}, h('h1', {class: 'h sg-h1', text: T.title}), h('p', {class: 'sg-lead', text: T.lead}), note ? h('p', {class: 'sg-note', role: 'status', text: note}) : null,
+      everyBar(d, now), '\n'), // 서른아홉 스승 모두 듣기 · 멈춘 스승부터 이어 듣기(order-0340)
     h('figure', {class: 'sg-band'}, band(d), h('figcaption', {}, h('span', {class: 'sg-cap', text: T.band}), legend(d))),
     h('p', {class: 'sg-lead2', text: T.lead2}),
     h('nav', {class: 'sg-jumps', 'aria-label': T.steps}, d.steps.map(jump)),
     ...d.steps.map(sec),
     h('section', {class: 'sg-end', 'aria-labelledby': 'sg-hend'}, h('h2', {class: 'sg-eh', id: 'sg-hend', text: T.one}), h('p', {class: 'sg-one', text: T.oneLine}), h('p', {class: 'sg-note', text: T.note})),
-    h('p', {class: 'safe', text: SAFE}))]};
+    h('p', {class: 'safe', text: SAFE}), now)]};
 }
 
 /* ── 한 사람(#/sage/<이름>) ── 걸음 표 → 큰 낱말 · 이름 → 별자리에서 그 사람 자리 → 기승전결 네 줄 → 남긴 말 · 원문 · 출처 → 둘이에서 해 보기 → 앞 · 모두 · 다음 */
@@ -123,6 +216,7 @@ function card(d, i) {
   return {title: `${t.name} · ${T.title}`, nodes: [h('article', {class: `sg sg-card s${p.step}`, 'aria-labelledby': 'sg-name'},
     h('p', {class: 'sg-top'}, h('a', {class: `sg-chip s${p.step}`, href: '#/sage'}, glyph(p.step), h('span', {text: `${T.step(p.step)} · ${s[L].v} · ${s[L].q}`})), h('span', {class: 'sg-pos', text: T.pos(i + 1, n)})),
     h('header', {class: 'sg-head'}, h('p', {class: 'sg-key', text: t.key}), h('h1', {class: 'h sg-name', id: 'sg-name', text: t.name}), h('p', {class: 'sg-meta', text: `${t.life} · ${t.place}`})),
+    storyBar(p), '\n', // 이야기 듣기(order-0340) — 머리 → 네 줄 차례로 · 빈 줄 = 쪽 글을 이어 읽을 때 옆 글과 붙지 않게
     h('figure', {class: 'sg-band sg-band-sm'}, band(d, p.id), h('figcaption', {}, h('span', {class: 'sg-cap', text: `${T.ago(p.ago)} · ${p.east ? T.east : T.west}`}))),
     h('ol', {class: 'sg-story'}, beat(0, T.beats[0], t.gi), beat(1, T.beats[1], t.seung), beat(2, T.beats[2], t.jeon), beat(3, T.beats[3], t.today)),
     h('figure', {class: 'sg-say'},
