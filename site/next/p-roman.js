@@ -3,11 +3,12 @@
    자료 = site/next/roman72.js(자리 · 신 · 왜 여기 — 검사 scripts/atlas11/next/check_roman.mjs 가 고른 목록과 맞댐)
    쪽 = 큰 제목 → 자리 무리 여덟 단추 → 무리마다 카드(자리 · 신 이름 · 라틴 이름 · 누구 · 왜 여기 · 무리) → 끝 한 줄 · 안전 문장
    얼굴을 누르면 그 신 이야기를 소리로(roman-say.js · order-1558) · 「가 보기 ›」를 누르면 그 자리로 감(제 주소가 없는 단추 · 쪽은 「제 쪽이 따로 없어요」) · 영어 화면은 자료의 영어 글을 바로 그림
+   말하는 불빛 칸 맨 위 「열한 신 차례로 듣기」(order-1723) — 그 칸 카드 차례대로 이어 읽음 · 읽는 카드에 테 · 다시 누르면 멈춤 · 소리를 못 내는 휴대폰은 단추 없음
    읽는 종이 판(서른아홉 스승과 같은 판 — p-roman.css · app.js whiteFor html.pg-roman) · 앞날 말 · 사고팔기 말 없음 */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN, josa} from './brand.js'; // 이름은 한 곳(규칙 76)
 import {GROUPS, GODS, ZONES, SEATS} from './roman72.js';
-import {faceBtn} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(사장님 2026-10-31 10:58(+04) 「응」 · order-1558.txt)
+import {faceBtn, sayAll, storyOf, canSpeak} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(사장님 2026-10-31 10:58(+04) 「응」 · order-1558.txt) · 차례로 듣기(12:23(+04) 「응」 · order-1723.txt)
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -19,10 +20,12 @@ const T = EN ? {
   title: '72 Roman Gods', lead: `Seventy-two Roman gods each take one seat in ${NAME_EN}.`, lead2: 'The seats are just for fun. Tap a face to hear that god’s story.',
   zones: 'Eight places', seats: n => `${n} seats`, why: 'Why here?', go: 'Go there', here: 'No page of its own',
   end: 'The god stories come from old Roman writings and myths.', end2: 'Each god has one seat. No god sits twice.',
+  all: 'Hear all eleven in order', stop: 'Stop', now: x => `Now: ${x}`,
 } : {
   title: '로마 신 72', lead: `${NAME} 안 일흔두 자리에 로마 신이 한 명씩 앉았어요.`, lead2: '재미로 앉힌 자리예요. 얼굴을 누르면 그 신 이야기를 들려줘요.',
   zones: '여덟 곳', seats: n => `${n}자리`, why: '왜 여기?', go: '가 보기', here: '제 쪽이 따로 없어요',
   end: '신 이야기는 로마 옛 글과 신화에서 왔어요.', end2: '신 하나에 자리 하나예요. 두 번 앉은 신은 없어요.',
+  all: '열한 신 차례로 듣기', stop: '멈추기', now: x => `지금 ${x}`,
 };
 const SAFE = `${josa(NAME, '는')} 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.`; // 둘이 안전 문장(둘이 단추 안 · 서른아홉 스승과 같은 글 — 영어 화면은 엔진 사전이 바꿈)
 
@@ -41,12 +44,35 @@ function card(s, i) {
     href ? h('a', {class: 'rm-goa', href}, h('span', {text: T.go}), h('i', {'aria-hidden': 'true', text: '›'})) : h('span', {class: 'rm-no', text: T.here})));
 }
 
-/** 자리 무리 하나 — 번호 동그라미 · 이름 · 한 줄 · 카드들 */
+/** 차례로 듣기(사장님 2026-10-31 12:23(+04) 「응」 · order-1723.txt) — 말하는 불빛 칸 카드 차례대로 이어 읽음
+    읽는 말 = 카드 글 그대로 「n번 불빛, 자리 이름. 신 이름. 누구. 왜 여기」(자리 글은 카드에서 · 이야기는 roman-say.js storyOf) · 글상자 = 「지금 (자리) · (신 이름)」 */
+const SVGNS = 'http://www.w3.org/2000/svg';
+function playIcon(on) { // 처음 = 세모(듣기) · 읽는 중 = 네모(멈추기) · 글자 없는 그림
+  const s = document.createElementNS(SVGNS, 'svg'); for (const [k, v] of Object.entries({viewBox: '0 0 24 24', width: 28, height: 28, 'aria-hidden': 'true', focusable: 'false', fill: 'currentColor'})) s.setAttribute(k, String(v));
+  const d = document.createElementNS(SVGNS, on ? 'rect' : 'path');
+  for (const [k, v] of Object.entries(on ? {x: 6, y: 6, width: 12, height: 12, rx: 2} : {d: 'M8 5.5v13l10.5-6.5z'})) d.setAttribute(k, String(v));
+  s.append(d); return s;
+}
+const talkItems = () => [...document.querySelectorAll('#view #rm-z-talk .rm-card')].map(c => {
+  const n = +c.dataset.n, story = storyOf(n), spot = c.querySelector('.rm-spot')?.textContent ?? '', name = c.querySelector('.rm-gn')?.textContent ?? '';
+  return story ? {text: `${spot.split(' · ').join(', ')}. ${story}`, label: T.now(`${spot} · ${name}`), card: c, face: c.querySelector('button.rms-face')} : null;
+}).filter(Boolean);
+function allBar() {
+  if (!canSpeak()) return null; // 소리를 못 내는 휴대폰 — 단추 없음(카드 글은 그대로)
+  const t = h('span', {class: 'rm-allt', text: T.all}), cap = h('p', {class: 'rm-allc', 'aria-live': 'polite', hidden: true});
+  let ic = playIcon(false);
+  const set = on => { t.textContent = on ? T.stop : T.all; b.classList.toggle('rm-allon', on); const x = playIcon(on); ic.replaceWith(x); ic = x; };
+  const b = h('button', {type: 'button', class: 'rm-allb', onclick: () => sayAll(talkItems(), b, {cap, set})}, ic, t);
+  return h('div', {class: 'rm-all'}, b, cap);
+}
+
+/** 자리 무리 하나 — 번호 동그라미 · 이름 · 한 줄 · (말하는 불빛 칸만 차례로 듣기) · 카드들 */
 function zone(z, k) {
   const rows = SEATS.map((s, i) => [s, i]).filter(([s]) => s[0] === z.id);
   return h('section', {class: 'rm-zone', id: 'rm-z-' + z.id, 'aria-labelledby': 'rm-h-' + z.id},
     h('h2', {class: 'rm-zh', id: 'rm-h-' + z.id}, h('span', {class: 'rm-zn', 'aria-hidden': 'true', text: String(k + 1)}), h('span', {class: 'rm-zt', text: fill(z.name[L])})),
     h('p', {class: 'rm-zp', text: fill(z.note[L])}),
+    z.id === 'talk' ? allBar() : null,
     h('ul', {class: 'rm-grid'}, rows.map(([s, i]) => card(s, i))));
 }
 
