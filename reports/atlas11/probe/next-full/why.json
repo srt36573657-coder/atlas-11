@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-why-4",
- "when": "2026-10-31T16:43:03.017Z",
+ "when": "2026-10-31T17:49:51.363Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "all": true,
@@ -71,7 +71,7 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 977,
+  "flowMs": 984,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
