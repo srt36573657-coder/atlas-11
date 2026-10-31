@@ -5,7 +5,7 @@
    글은 textContent 로만 · 그림은 글자 없는 svg · 글 속 style 없음(꼬리 자리만 CSSOM --tail) */
 import {ON as EN} from './i18n.js';
 import {GODS, LIGHTS} from './roman72.js'; // 불빛마다 지킴이 신(사장님 2026-10-31 07:32(+03) 「어 달면서 신들에 / 이미지도 캐릭터화해서 해」 · docs/design/roman72-site-2026-10-31/order-1332.txt)
-import {faceBtn, capBox} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(2026-10-31 10:58(+04) 「응」 · order-1558.txt)
+import {faceBtn, capBox, sayAll, stop as hush, playing} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(2026-10-31 10:58(+04) 「응」 · order-1558.txt) · 열한 불빛 차례로 듣기(16:23(+04) 「응」 · order-2123.txt)
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -112,7 +112,14 @@ export function godOf(k) {
       h('a', {class: 'y11-gk', href: '#/roman/' + n}, h('span', {class: 'y11-gl', text: EN ? 'Guardian' : '지킴이'}), ' ', h('b', {class: 'y11-gn', text: EN ? g[2] : g[0]}), ' ', h('i', {class: 'y11-gg', 'aria-hidden': 'true', text: '›'}))),
     capBox());
 }
-/** 펼친 칸 채우기 — 뜻 줄 · 불빛 판 · 말풍선(누른 불빛이 답함) · 앞 · 다음 · 소리 · 대표 회사 기록이라는 말(panel = home-new.js 가 만든 빈 칸 .y11-x) */
+/** 차례로 듣기 단추 글 — 불빛 수를 말로(「열한 불빛 차례로 듣기」 · 「Hear all eleven lights in order」) · 그림 = 세모(듣기) / 네모(멈추기) */
+const KO_N = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열', '열한', '열두'];
+const EN_N = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const allText = (n, on) => (on ? (EN ? 'Stop' : '멈추기') : EN ? `Hear all ${EN_N[n] ?? n} lights in order` : `${KO_N[n] ?? n} 불빛 차례로 듣기`);
+const allIcon = on => { const s = sv('svg', {width: 24, height: 24, viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false', fill: 'currentColor'}); s.append(on ? sR('y11-alls', 6, 6, 12, 12, 2) : sP('y11-allp', 'M8 5.5v13l10.5-6.5z')); return s; };
+/** 펼친 칸 채우기 — 뜻 줄 · 차례로 듣기 · 불빛 판 · 말풍선(누른 불빛이 답함) · 앞 · 다음 · 소리 · 대표 회사 기록이라는 말(panel = home-new.js 가 만든 빈 칸 .y11-x)
+    차례로 듣기(사장님 2026-10-31 16:23(+04) 「응」 · docs/design/roman72-site-2026-10-31/order-2123.txt) — 불빛 판 차례대로 「소리로 듣기」와 같은 말(lineOf)을 이어 읽음 ·
+    읽는 불빛을 고름(말풍선 = 글상자) · 단추 다시 누름 · 불빛 · 앞 · 다음 · 소리 · 지킴이 얼굴 · 칸 접음 · 쪽 옮김 = 멈춤(roman-say.js sayAll) · 소리를 못 내는 휴대폰은 단추 없음 */
 export function talkFill(panel, w, W, WG = []) {
   const L = o => (EN ? o?.en : o?.ko), it = k => (w.items ?? []).find(x => x?.k === k) ?? null, nameOf = k => L(W.names?.[k]) ?? '';
   const groups = Array.isArray(W.groups) && W.groups.length ? W.groups : WG.map(([ko, en, ks]) => ({ko, en, ks}));
@@ -138,23 +145,30 @@ export function talkFill(panel, w, W, WG = []) {
     cur = k; for (const [kk, b] of lamps) b.setAttribute('aria-pressed', String(kk === k));
     fill(k); placeTail(panel); if (said && talk.on) sayIt(lineOf(k));
   }
-  const step = d => { const i = order.indexOf(cur); pick(order[(i + d + order.length) % order.length], true); };
+  let all = null; const quiet = () => { if (all && playing(all)) hush(); }; // 손으로 고르면 차례로 듣기는 멈춤
+  const step = d => { quiet(); const i = order.indexOf(cur); pick(order[(i + d + order.length) % order.length], true); };
   const board = h('div', {class: 'y11-bd', role: 'group', 'aria-label': EN ? 'Eleven lights' : '불빛 열한 개'}, ...groups.map(g => h('div', {class: 'y11-bg'},
     h('b', {class: 'y11-bn', text: EN ? g.en : g.ko}), // 무리 이름 왼쪽 · 불빛 오른쪽(줄 넷) — 좁으면 불빛이 이름 아래로
     h('div', {class: 'y11-br'}, ...(g.ks ?? []).map(k => { const st = stOf(it(k));
-      const b = h('button', {type: 'button', class: 'y11-lamp', 'data-k': String(k), 'data-s': st, 'aria-pressed': String(k === cur), 'aria-label': EN ? `${k} ${nameOf(k)}: ${tl(TALK_A[st])}` : `${k}번 ${nameOf(k)}, ${tl(TALK_A[st])}`, onclick: () => pick(k, true)}, lampDot(st));
+      const b = h('button', {type: 'button', class: 'y11-lamp', 'data-k': String(k), 'data-s': st, 'aria-pressed': String(k === cur), 'aria-label': EN ? `${k} ${nameOf(k)}: ${tl(TALK_A[st])}` : `${k}번 ${nameOf(k)}, ${tl(TALK_A[st])}`, onclick: () => { quiet(); pick(k, true); }}, lampDot(st));
       lamps.set(k, b); return b; })))));
   const snd = canSay() ? h('button', {type: 'button', class: 'y11-snd', 'aria-pressed': String(talk.on), onclick: () => {
-    talk.on = !talk.on;
+    quiet(); talk.on = !talk.on;
     for (const b of document.querySelectorAll('#view .y11-snd')) { b.setAttribute('aria-pressed', String(talk.on)); const t = b.querySelector('span'); if (t) t.textContent = talk.on ? (EN ? 'Stop sound' : '소리 끄기') : (EN ? 'Listen' : '소리로 듣기'); }
     sayIt(talk.on ? lineOf(cur) : null);
   }}, sndIcon(), h('span', {text: talk.on ? (EN ? 'Stop sound' : '소리 끄기') : (EN ? 'Listen' : '소리로 듣기')})) : null;
   fill(cur);
-  panel.classList.remove('y11-wait'); panel.replaceChildren(...[h('p', {class: 'y11-hint', text: EN ? 'Tap a light and it answers.' : '불빛을 누르면 그 불빛이 답해요.'}),
-    h('p', {class: 'y11-key'}, key('on'), key('off'), key('q')), board,
-    h('div', {class: 'y11-bub', 'aria-live': 'polite'}, body, h('div', {class: 'y11-ctl'},
+  const bub = h('div', {class: 'y11-bub', 'aria-live': 'polite'}, body, h('div', {class: 'y11-ctl'},
       h('button', {type: 'button', class: 'y11-pv', onclick: () => step(-1)}, EN ? '‹ Back' : '‹ 앞 불빛'),
-      h('button', {type: 'button', class: 'y11-nx', onclick: () => step(1)}, EN ? 'Next ›' : '다음 불빛 ›'), snd)),
+      h('button', {type: 'button', class: 'y11-nx', onclick: () => step(1)}, EN ? 'Next ›' : '다음 불빛 ›'), snd));
+  if (canSay()) { // 차례로 듣기 — 누른 그 순간 열하나를 소리 줄에 · 시작할 때마다 그 불빛을 고름(소리 없이 — 소리는 줄이 읽음)
+    let ic = allIcon(false); const t = h('span', {text: allText(order.length, false)});
+    const set = on => { t.textContent = allText(order.length, on); all.classList.toggle('y11-allon', on); const x = allIcon(on); ic.replaceWith(x); ic = x; };
+    all = h('button', {type: 'button', class: 'y11-all', onclick: () => sayAll(order.map(k => ({text: lineOf(k), label: '', go: () => pick(k, false), view: bub})), all, {set})}, ic, t);
+    const box = panel.closest('details'); if (box && !box.dataset.y11All) { box.dataset.y11All = '1'; box.addEventListener('toggle', () => { if (!box.open && all && playing(all)) hush(); }); } // 칸을 접으면 멈춤
+  }
+  panel.classList.remove('y11-wait'); panel.replaceChildren(...[h('p', {class: 'y11-hint', text: EN ? 'Tap a light and it answers.' : '불빛을 누르면 그 불빛이 답해요.'}), all, '\n', // 빈 줄 — 쪽 글을 이어 읽을 때 단추 글이 옆 글과 붙지 않게(칸 판에서는 안 보임)
+    h('p', {class: 'y11-key'}, key('on'), key('off'), key('q')), board, bub,
     L(W.note) ? h('p', {class: 'y11-note', text: L(W.note)}) : null].filter(Boolean)); // 빈 자리(null)는 빼고
   if (!talk.rz) { talk.rz = true; addEventListener('resize', () => { for (const x of document.querySelectorAll('#view details.y11-box[open] > .y11-x')) placeTail(x); }); }
   return panel;

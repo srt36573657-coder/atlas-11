@@ -116,6 +116,12 @@ html.home #view .y11-s9l { display: grid; grid-template-columns: 1fr 1fr; margin
 @keyframes y11-glow { from { opacity: 0; } to { opacity: 1; } }
 @keyframes y11-hop { to { stroke-dashoffset: -26; } }
 
+/* 차례로 듣기(사장님 2026-10-31 16:23(+04) 「응」 · order-2123.txt · home-talk.js) — 뜻 줄 아래 · 불빛 판 위 · 포도주 알약(읽는 중 = 연한 바탕 「멈추기」) · 48px 넘게 · 17px */
+html.home #view .y11-all { appearance: none; -webkit-appearance: none; justify-self: start; margin: 0; display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-height: 52px; min-width: 48px; padding: 6px 18px 6px 12px; border-radius: 999px; border: 2px solid #A31F70; background: #A31F70; color: #FFFFFF; font: inherit; font-size: 17px; line-height: 1.3; font-weight: 800; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html.home #view .y11-all > svg { display: block; flex: none; width: 24px; height: 24px; }
+html.home #view .y11-all.y11-allon { background: #FFF7F9; color: #A31F70; }
+html.home #view .y11-all:focus-visible { outline: 3px solid #2A1420; outline-offset: 2px; }
+
 /* ── 밤 무대 판(아래는 scripts/atlas11/next/clock_theme.py 가 지음 · 손으로 고치지 않음) ── */
 html.white.clock.clock.clock.clock.home #view .y11-hint { color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .y11-key { color: #CFC4E0; }
@@ -185,3 +191,6 @@ html.white.clock.clock.clock.clock.home #view .y11-sea { fill: #5B96FF; }
 html.white.clock.clock.clock.clock.home #view .y11-arc { stroke: #A58BC2; }
 html.white.clock.clock.clock.clock.home #view .y11-qbox { stroke: #A58BC2; }
 html.white.clock.clock.clock.clock.home #view .y11-s9l { background: #1C1136; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .y11-all { border: 2px solid #F06FCB; background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .y11-all.y11-allon { background: #1C1136; color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-all:focus-visible { outline: 3px solid #F2EFF9; }
