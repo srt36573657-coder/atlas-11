@@ -24,6 +24,10 @@
 //      — 가짜 소리(speechSynthesis 바꿔 끼움)로 읽은 글을 맞댐: 이야기 = 「이름. 누구. 왜 여기」(카드 글 그대로 · 따로 셈) · ko-KR / en-US · 빠르기 0.9 · 높이 1 · 크기 0.96
 //      · 로마 신 카드 얼굴 — 눌림 · 카드 테 · 다시 누르면 멈춤 · 다른 얼굴로 바꿈 · 끝나면 풂 · 주소 그대로 · 방 이름표 얼굴 — 글상자 = 듣는 말 · 쪽을 옮기면 멈춤
 //      · 불빛 지킴이 얼굴 — 글상자 = 듣는 말 · 영어 · 소리 없는 휴대폰 = 글상자만(화면 오류 0) · 아주 크게 320 글상자 넘침 0
+//   ⑨ 차례로 듣기(사장님 2026-10-31 12:23(+04) 「응」 — 물음 「말하는 불빛 열한 신 이야기를 차례로 이어서 들려 드릴까요?」 · order-1723.txt · roman-say.js sayAll · p-roman.js)
+//      — 가짜 소리 줄(넣은 차례대로 하나씩 읽음)로 맞댐: 말하는 불빛 칸 맨 위(한 줄 아래 · 카드 위) 단추 하나 · 48px · 17px · 누름 → 열하나가 카드 차례대로 소리 줄에
+//      · 읽는 말 = 「n번 불빛, 자리. 이름. 누구. 왜 여기」(카드 글 그대로 · 따로 셈) · 읽는 카드 테 · 얼굴 눌림 · 글상자 「지금 …」 · 다음 카드로 옮겨 감(화면 안)
+//      · 다시 누름 = 멈춤 · 다른 얼굴 = 차례 멈추고 그 신만 · 지금 읽는 얼굴 = 모두 멈춤 · 끝까지 = 처음 모습 · 쪽 옮김 = 멈춤 · 영어 · 소리 없는 휴대폰 = 단추 없음 · 아주 크게 320 넘침 0
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -523,6 +527,90 @@ try {
       check(m.t === storyKo(ROOMS.sage) && m.vis && m.l >= 0 && m.rt <= m.vw + 0.5 && m.sw <= m.vw && (fake || m.p === 'false'), `⑧ ${tagT} — 글상자 = 이야기 · 화면 안 · 넘침 0${fake ? '' : ' · 눌림 없음'}`, JSON.stringify({...m, t: m.t?.slice(0, 30)}));
       check(!e5.length, `⑧ ${tagT} 화면 오류 0`, e5.join(' | ')); await c5.close();
     }
+  }
+  // ⑨ 차례로 듣기(order-1723) — 말하는 불빛 칸 「열한 신 차례로 듣기」 · 가짜 소리 줄로 맞댐
+  {
+    const storyKo = n => { const g = GODS[n], s = SEATS.find(x => x[4] === n); return `${g[0]}. ${g[3]} ${fillKo(s[5])}`; }; // 카드 글 그대로(따로 셈)
+    const storyEn = n => { const g = GODS[n], s = SEATS.find(x => x[4] === n); return `${g[2]}. ${g[4]} ${fillEn(s[6])}`; };
+    const TALK = SEATS.filter(s => s[0] === 'talk');
+    const lineKo = s => `${fillKo(s[1]).split(' · ').join(', ')}. ${storyKo(s[4])}`, lineEn = s => `${fillEn(s[2]).split(' · ').join(', ')}. ${storyEn(s[4])}`;
+    const capKo = s => `지금 ${fillKo(s[1])} · ${GODS[s[4]][0]}`, capEn = s => `Now: ${fillEn(s[2])} · ${GODS[s[4]][2]}`;
+    const FAKEQ = () => { // 가짜 소리 줄 — 넣은 차례대로 하나씩 읽음(시작 · 끝 소식) · 한 이야기 window.__dur 밀리초 · 멈추면 줄 비움(읽던 것은 「끊김」)
+      const said = []; window.__said = said; window.__q = []; window.__cancel = 0; window.__dur = 900;
+      class U { constructor(t) { this.text = t; this.lang = ''; this.rate = 1; this.pitch = 1; this.volume = 1; this.onstart = null; this.onend = null; this.onerror = null; } }
+      const q = []; let cur = null;
+      const next = () => { cur = q.shift() ?? null; if (!cur) return; const u = cur; said.push({text: u.text, lang: u.lang}); u.onstart?.({}); u.__t = setTimeout(() => { if (cur === u) { cur = null; u.onend?.({}); next(); } }, window.__dur); };
+      const ss = {get speaking() { return !!cur; }, get pending() { return q.length > 0; }, paused: false, getVoices() { return []; },
+        speak(u) { window.__q.push({text: u.text, lang: u.lang, rate: u.rate, pitch: u.pitch, volume: u.volume}); q.push(u); if (!cur) next(); },
+        cancel() { window.__cancel++; q.length = 0; const u = cur; cur = null; if (u) { clearTimeout(u.__t); u.onerror?.({error: 'interrupted'}); } }};
+      Object.defineProperty(window, 'speechSynthesis', {value: ss, configurable: true});
+      Object.defineProperty(window, 'SpeechSynthesisUtterance', {value: U, configurable: true, writable: true});
+    };
+    const NOSAY = () => { Object.defineProperty(window, 'speechSynthesis', {value: undefined, configurable: true}); Object.defineProperty(window, 'SpeechSynthesisUtterance', {value: undefined, configurable: true, writable: true}); };
+    const qCtx = async (w, {font = 0, en = false, fake = true} = {}) => { const c = await ctxOf(w, {font, en}); await c.addInitScript(fake ? FAKEQ : NOSAY); return c; };
+    const voiceOk = (x, text, lang) => !!x && x.text === text && x.lang === lang && Math.abs(x.rate - 0.9) < 1e-9 && x.pitch === 1 && Math.abs(x.volume - 0.96) < 1e-9;
+    const tap = async (q, sel) => { const b = q.locator(sel).first(); await b.scrollIntoViewIfNeeded(); await b.click(); await q.waitForTimeout(150); };
+    const ST = q => q.evaluate(() => { const b = document.querySelector('#view #rm-z-talk .rm-allb'), c = document.querySelector('#view #rm-z-talk .rm-allc');
+      return {said: window.__said?.length ?? 0, lastSaid: window.__said?.at(-1)?.text ?? null, q: window.__q?.length ?? 0, cancel: window.__cancel ?? 0,
+        ring: [...document.querySelectorAll('#view .rm-card.rm-say')].map(x => +x.dataset.n), pressed: [...document.querySelectorAll('#view .rm-card button.rm-av[aria-pressed="true"]')].map(x => +x.dataset.n),
+        label: b?.textContent ?? null, on: b?.classList.contains('rm-allon') ?? null, cap: c?.textContent ?? null, capHid: c?.hidden ?? null, hash: location.hash}; });
+    const BTN = '#view #rm-z-talk .rm-allb', DUR = 900, faceOf = n => `#view .rm-card[data-n="${n}"] button.rm-av`;
+    const c1 = await qCtx(390), p = await c1.newPage(), e1 = errsOf(p);
+    await p.goto(URL_OF('#/roman'), {waitUntil: 'load', timeout: 60000});
+    if (!await ready(p)) check(false, '⑨ 로마 신 쪽', '안 그려짐');
+    else {
+      const bar = await p.evaluate(() => { const z = document.querySelector('#view #rm-z-talk'), b = z?.querySelector('.rm-allb'), r = b?.getBoundingClientRect();
+        return {all: document.querySelectorAll('#view .rm-allb').length, kids: z ? [...z.children].map(x => x.className || x.tagName).join('|') : '', h: r ? Math.round(r.height) : 0, fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0, t: b?.textContent ?? null, capHid: z?.querySelector('.rm-allc')?.hidden ?? null}; });
+      check(bar.all === 1 && bar.kids.startsWith('rm-zh|rm-zp|rm-all|rm-grid') && bar.h >= 55 && bar.fs >= 16.9 && bar.t === '열한 신 차례로 듣기' && bar.capHid === true, '⑨ 말하는 불빛 칸 맨 위(한 줄 아래 · 카드 위)에 「열한 신 차례로 듣기」 하나 · 56px · 17px · 글상자 숨김', JSON.stringify(bar));
+      const want = TALK.map(lineKo);
+      await tap(p, BTN); const S1 = await ST(p), Q = await p.evaluate(() => window.__q.map(x => ({...x})));
+      const qBad = Q.length === 11 ? Q.findIndex((x, i) => !voiceOk(x, want[i], 'ko-KR')) : -2;
+      check(qBad === -1 && S1.ring.join() === String(TALK[0][4]) && S1.pressed.join() === String(TALK[0][4]) && S1.label === '멈추기' && S1.on && S1.cap === capKo(TALK[0]) && S1.capHid === false && S1.hash === '#/roman',
+        '⑨ 누름 → 열한 신 이야기가 카드 차례대로 소리 줄에(「n번 불빛, 자리. 이름. 누구. 왜 여기」 · ko-KR · 0.9 · 1 · 0.96) · 첫 카드 테 · 얼굴 눌림 · 단추 「멈추기」 · 글상자 「지금 …」 · 주소 그대로', JSON.stringify({S1, n: Q.length, qBad, q0: Q[0]?.text?.slice(0, 40)}));
+      await p.waitForTimeout(DUR + 250);
+      const S2 = await ST(p), inView = await p.evaluate(n => { const r = document.querySelector(`#view .rm-card[data-n="${n}"]`)?.getBoundingClientRect(); return !!r && r.top >= 0 && r.top < innerHeight - 40 && r.bottom > 40; }, TALK[1][4]);
+      check(S2.ring.join() === String(TALK[1][4]) && S2.pressed.join() === String(TALK[1][4]) && S2.cap === capKo(TALK[1]) && S2.said === S1.said + 1 && inView, '⑨ 앞 이야기가 끝나면 다음 카드로 — 테 · 얼굴 눌림 · 글상자가 옮겨 감 · 그 카드가 화면 안', JSON.stringify({S2, inView}));
+      await tap(p, BTN); const S3 = await ST(p); await p.waitForTimeout(DUR * 2); const S3b = await ST(p);
+      check(S3.cancel > S2.cancel && !S3.ring.length && !S3.pressed.length && S3.label === '열한 신 차례로 듣기' && !S3.on && S3.capHid === true && S3b.said === S3.said, '⑨ 단추를 다시 누르면 멈춤 — 소리 끔 · 테 · 눌림 풂 · 단추 처음 모습 · 글상자 숨김 · 뒤 이야기 안 읽음', JSON.stringify({S3, after: S3b.said}));
+      const five = TALK[4][4];
+      await tap(p, BTN); await tap(p, faceOf(five)); const S4 = await ST(p);
+      check(S4.lastSaid === storyKo(five) && S4.ring.join() === String(five) && S4.pressed.join() === String(five) && S4.label === '열한 신 차례로 듣기' && !S4.on && S4.capHid === true, '⑨ 차례로 듣는 중 다른 얼굴을 누르면 — 차례 멈춤 · 그 신 이야기만', JSON.stringify(S4));
+      await tap(p, BTN); const S5a = await ST(p); await tap(p, faceOf(TALK[0][4])); const S5 = await ST(p);
+      check(S5a.on && S5a.ring.join() === String(TALK[0][4]) && S5.q === S5a.q && S5.said === S5a.said && !S5.ring.length && !S5.pressed.length && !S5.on && S5.capHid === true, '⑨ 지금 읽는 얼굴을 누르면 모두 멈춤(새로 읽지 않음)', JSON.stringify({S5a, S5}));
+      await p.evaluate(() => { window.__dur = 120; }); await tap(p, BTN); const q0 = (await ST(p)).q;
+      await p.waitForTimeout(120 * 11 + 1500); const S6 = await ST(p), tail = await p.evaluate(() => window.__said.slice(-11).map(x => x.text));
+      check(tail.join('\n') === want.join('\n') && !S6.ring.length && !S6.pressed.length && !S6.on && S6.label === '열한 신 차례로 듣기' && S6.capHid === true && S6.q === q0, '⑨ 끝까지 듣기 — 열하나를 차례대로 다 읽음 · 끝나면 처음 모습', JSON.stringify({S6, t0: tail[0]?.slice(0, 20), n: tail.length}));
+      await p.evaluate(d => { window.__dur = d; }, DUR); await tap(p, BTN); const c0 = (await ST(p)).cancel;
+      await p.evaluate(() => { location.hash = '#/dori'; }); await p.waitForTimeout(400);
+      check((await ST(p)).cancel > c0, '⑨ 차례로 듣는 중 쪽을 옮기면 멈춤', String(c0));
+    }
+    check(!e1.length, '⑨ 화면 오류 0', e1.join(' | ')); await c1.close();
+    // 영어
+    const c2 = await qCtx(390, {en: true}), r2 = await c2.newPage(), e2 = errsOf(r2);
+    await r2.goto(URL_OF('#/roman', '&lang=en'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r2)) {
+      const t0 = await r2.evaluate(() => document.querySelector('#view #rm-z-talk .rm-allb')?.textContent ?? null);
+      await tap(r2, BTN); const Q2 = await r2.evaluate(() => window.__q.map(x => ({...x}))), S = await ST(r2), wantEn = TALK.map(lineEn);
+      const bad = Q2.length === 11 ? Q2.findIndex((x, i) => !voiceOk(x, wantEn[i], 'en-US') || HAN.test(x.text)) : -2;
+      check(t0 === 'Hear all eleven in order' && bad === -1 && S.label === 'Stop' && S.cap === capEn(TALK[0]) && !HAN.test(S.cap ?? ''), '⑨ 영어 — 「Hear all eleven in order」 · 영어 이야기 열하나 · en-US · 「Stop」 · 글상자 영어', JSON.stringify({t0, bad, n: Q2.length, q0: Q2[0]?.text?.slice(0, 50), S}));
+    } else check(false, '⑨ 영어 로마 신 쪽', '안 그려짐');
+    check(!e2.length, '⑨ 영어 화면 오류 0', e2.join(' | ')); await c2.close();
+    // 소리 없는 휴대폰 — 단추 없음 · 카드 그대로
+    const c3 = await qCtx(390, {fake: false}), r3 = await c3.newPage(), e3 = errsOf(r3);
+    await r3.goto(URL_OF('#/roman'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r3)) { const m = await r3.evaluate(() => ({b: document.querySelectorAll('#view .rm-allb').length, cards: document.querySelectorAll('#view #rm-z-talk .rm-card').length})); check(m.b === 0 && m.cards === 11, '⑨ 소리 없는 휴대폰 — 단추 없음 · 말하는 불빛 카드 열하나 그대로', JSON.stringify(m)); }
+    else check(false, '⑨ 소리 없는 휴대폰 로마 신 쪽', '안 그려짐');
+    check(!e3.length, '⑨ 소리 없는 휴대폰 화면 오류 0', e3.join(' | ')); await c3.close();
+    // 아주 크게 320 — 단추 · 글상자 화면 안 · 넘침 0
+    const c4 = await qCtx(320, {font: 2}), r4 = await c4.newPage(), e4 = errsOf(r4);
+    await r4.goto(URL_OF('#/roman'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r4)) {
+      await tap(r4, BTN);
+      const m = await r4.evaluate(() => { const b = document.querySelector('#view #rm-z-talk .rm-allb')?.getBoundingClientRect(), c = document.querySelector('#view #rm-z-talk .rm-allc')?.getBoundingClientRect(), t = document.querySelector('#view #rm-z-talk .rm-allt');
+        return {bl: b ? Math.round(b.left) : -1, br: b ? Math.round(b.right) : 9999, bh: b ? Math.round(b.height) : 0, cl: c ? Math.round(c.left) : -1, cr: c ? Math.round(c.right) : 9999, ch: c ? Math.round(c.height) : 0, tw: t ? t.scrollWidth - t.clientWidth : 99, vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth}; });
+      check(m.bl >= 0 && m.br <= m.vw + 0.5 && m.bh >= 48 && m.cl >= 0 && m.cr <= m.vw + 0.5 && m.ch > 0 && m.tw <= 1 && m.sw <= m.vw, '⑨ 아주 크게 320 — 단추 · 글상자 화면 안 · 글 잘림 0 · 넘침 0', JSON.stringify(m));
+    } else check(false, '⑨ 아주 크게 320 로마 신 쪽', '안 그려짐');
+    check(!e4.length, '⑨ 아주 크게 320 화면 오류 0', e4.join(' | ')); await c4.close();
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();
