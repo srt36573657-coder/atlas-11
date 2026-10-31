@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-10-31T07:35:17.322Z",
+ "at": "2026-10-31T09:47:54.983Z",
  "base": "https://aaa7377.com",
  "all": true,
  "limit": null,
@@ -14,7 +14,7 @@
  "units": {
   "total": 251,
   "mine": 251,
-  "hash": "b6fefad45049e902",
+  "hash": "e2970017ff0b7ebd",
   "kinds": {
    "r": {
     "total": 251,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 146,
+ "seconds": 151,
  "counts": {
   "routes": 251,
-  "rows": 8442,
-  "btns": 8442,
-  "links": 10777,
+  "rows": 8561,
+  "btns": 8561,
+  "links": 11028,
   "clicks": 479,
   "fail": 0,
   "places": {
@@ -39,32 +39,39 @@
     "routes": 3
    },
    "chip.row": {
-    "rows": 165,
-    "btns": 165,
-    "surge": 35,
+    "rows": 164,
+    "btns": 164,
+    "surge": 34,
     "share": 130,
     "routes": 3
    },
    "surge.row": {
-    "rows": 19,
-    "btns": 19,
-    "surge": 19,
+    "rows": 81,
+    "btns": 81,
+    "surge": 81,
     "share": 0,
-    "routes": 1
+    "routes": 5
    },
    "surge.board": {
-    "rows": 98,
-    "btns": 98,
-    "surge": 98,
+    "rows": 90,
+    "btns": 90,
+    "surge": 90,
     "share": 0,
     "routes": 5
    },
    "surge.track": {
-    "rows": 523,
-    "btns": 523,
-    "surge": 523,
+    "rows": 571,
+    "btns": 571,
+    "surge": 571,
     "share": 0,
     "routes": 5
+   },
+   "surge.gone": {
+    "rows": 3,
+    "btns": 3,
+    "surge": 3,
+    "share": 0,
+    "routes": 3
    },
    "cal.alert": {
     "rows": 3,
@@ -73,17 +80,17 @@
     "share": 0,
     "routes": 1
    },
-   "cal.ev": {
-    "rows": 2076,
-    "btns": 2076,
-    "surge": 2076,
+   "cal.row": {
+    "rows": 560,
+    "btns": 560,
+    "surge": 560,
     "share": 0,
     "routes": 1
    },
-   "cal.row": {
-    "rows": 547,
-    "btns": 547,
-    "surge": 547,
+   "cal.ev": {
+    "rows": 2078,
+    "btns": 2078,
+    "surge": 2078,
     "share": 0,
     "routes": 1
    },
@@ -201,7 +208,7 @@
    }
   },
   "skipped": {
-   "그날 들고 난 이름 목록(이름 글 — 줄 · 카드 아님)": 1472,
+   "그날 들고 난 이름 목록(이름 글 — 줄 · 카드 아님)": 1604,
    "종목 파일 쪽의 길 단추 「회사 보기 ›」(쪽 자체가 그 종목)": 1,
    "고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사)": 112,
    "7단 길 고리 — 그 회사 쪽끼리 오가는 길(줄 · 카드 아님)": 750,
@@ -210,9 +217,9 @@
   "list": [
    {
     "route": "#/f/surge",
-    "rows": 36,
-    "btns": 36,
-    "links": 36,
+    "rows": 35,
+    "btns": 35,
+    "links": 35,
     "clicked": "chip.card",
     "fail": 0
    },
@@ -234,54 +241,54 @@
    },
    {
     "route": "#/surge",
-    "rows": 174,
-    "btns": 174,
-    "links": 418,
+    "rows": 203,
+    "btns": 203,
+    "links": 490,
     "clicked": "surge.row",
     "fail": 0
    },
    {
     "route": "#/surge/10",
-    "rows": 253,
-    "btns": 253,
-    "links": 959,
-    "clicked": "surge.board",
+    "rows": 297,
+    "btns": 297,
+    "links": 1053,
+    "clicked": "surge.row",
     "fail": 0
    },
    {
     "route": "#/surge/20",
-    "rows": 127,
-    "btns": 127,
-    "links": 437,
-    "clicked": "surge.board",
+    "rows": 141,
+    "btns": 141,
+    "links": 471,
+    "clicked": "surge.row",
     "fail": 0
    },
    {
     "route": "#/surge/30",
-    "rows": 56,
-    "btns": 56,
-    "links": 201,
-    "clicked": "surge.board",
+    "rows": 72,
+    "btns": 72,
+    "links": 232,
+    "clicked": "surge.row",
     "fail": 0
    },
    {
     "route": "#/surge/40",
-    "rows": 30,
-    "btns": 30,
-    "links": 97,
-    "clicked": "surge.board",
+    "rows": 32,
+    "btns": 32,
+    "links": 103,
+    "clicked": "surge.row",
     "fail": 0
    },
    {
     "route": "#/cal",
-    "rows": 2627,
-    "btns": 2627,
-    "links": 2627,
+    "rows": 2642,
+    "btns": 2642,
+    "links": 2642,
     "clicked": "cal.alert",
     "fail": 0
    },
    {
-    "route": "#/cal/079940",
+    "route": "#/cal/046890",
     "rows": 0,
     "btns": 0,
     "links": 1,
