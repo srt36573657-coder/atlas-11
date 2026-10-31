@@ -233,10 +233,12 @@ try {
     check(s.kk === 8, `${tag} 무리마다 카톡 단추 하나`, s.kk);
     judge(tag, await MEASURE(p));
     if (w === 390 && !font) { // ⑦ 얼굴 일흔둘 — 서버가 그림 꼴로 줌 · 내려 보면 모두 그려짐(화면 가까이 올 때 받음 · 사진 찍기 전에)
-      const srv = await Promise.all(Array.from({length: 72}, (_, i) => p.request.get(base + artOf(i + 1)).then(r => (r.ok() && /image\/svg\+xml/.test(r.headers()['content-type'] ?? '') ? null : `${i + 1} ${r.status()} ${r.headers()['content-type']}`), e => `${i + 1} ${e.message}`)));
+      // 한 번에 여섯 장씩 · 장마다 세 번까지(진짜 사이트 큰 검사 3/11 — 일흔두 장을 한꺼번에 부르니 한 장이 30초 넘게 안 옴 · 2026-10-31 15:17)
+      const getArt = async k => { let last = ''; for (let t = 0; t < 3; t++) { try { const r = await p.request.get(base + artOf(k), {timeout: 30000}); if (r.ok() && /image\/svg\+xml/.test(r.headers()['content-type'] ?? '')) return null; last = `${k} ${r.status()} ${r.headers()['content-type']}`; } catch (e) { last = `${k} ${String(e.message).split('\n')[0]}`; } await new Promise(r => setTimeout(r, 1500)); } return last; };
+      const srv = []; for (let i = 0; i < 72; i += 6) srv.push(...await Promise.all(Array.from({length: Math.min(6, 72 - i)}, (_, j) => getArt(i + j + 1))));
       check(!srv.filter(Boolean).length, '⑦ 서버가 그림 일흔둘을 그림 꼴(image/svg+xml)로 줌', srv.filter(Boolean).slice(0, 3).join(' | '));
       const im = await p.evaluate(async () => { for (let y = 0, H = document.documentElement.scrollHeight; y < H; y += 500) { scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); }
-        const a = [...document.querySelectorAll('#view img.rm-av')]; for (let i = 0; i < 40 && a.some(x => !(x.complete && x.naturalWidth > 0)); i++) await new Promise(r => setTimeout(r, 100));
+        const a = [...document.querySelectorAll('#view img.rm-av')]; for (let i = 0; i < 100 && a.some(x => !(x.complete && x.naturalWidth > 0)); i++) await new Promise(r => setTimeout(r, 100));
         scrollTo(0, 0); return {n: a.length, ok: a.filter(x => x.complete && x.naturalWidth > 0).length, w: [...new Set(a.map(x => Math.round(x.getBoundingClientRect().width)))]}; });
       check(im.n === 72 && im.ok === 72 && im.w.join() === '64', '⑦ 내려 보면 얼굴 일흔둘이 모두 그려짐(64px)', JSON.stringify(im));
     }
