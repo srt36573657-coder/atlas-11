@@ -1,0 +1,26 @@
+{
+ "schema": "duri-check-roman-1",
+ "at": "2026-10-30T20:46:36.772Z",
+ "base": "https://aaa7377.com",
+ "counts": {
+  "pass": 244,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "seats": 72,
+  "zones": [
+   10,
+   11,
+   11,
+   11,
+   6,
+   7,
+   5,
+   11
+  ],
+  "links": 37,
+  "linkPages": 37
+ },
+ "brand": "둘이"
+}
