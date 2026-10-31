@@ -1,20 +1,20 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-10-30T22:01:12.947Z",
- "kst": "2026-10-31 07:01",
+ "at": "2026-10-31T03:39:37.048Z",
+ "kst": "2026-10-31 12:39",
  "slot": null,
- "reason": "07:00 회차",
+ "reason": "방마다 로마 신 지킴이 이름표(roman-tag.js · 사장님 2026-10-31 05:51(+03) 「응」)",
  "ci": true,
  "version": "ml-v1",
  "result": "그대로",
  "served": "rolled",
  "why": "새 값 없음 — 앞 회차와 같은 값으로 다시 만듦",
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-BdwGIZ/closes/20261030T220113Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-MZsaRZ/closes/20261031T033937Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261030",
-  "sec": 181,
+  "sec": 164,
   "firstErrors": []
  },
  "asOf": "2026-10-30",
@@ -127,7 +127,7 @@
   "nEach": 111,
   "fail": 0,
   "ok": true,
-  "ms": 540,
+  "ms": 533,
   "lenses": [
    {
     "key": "apple",
@@ -165,7 +165,7 @@
  },
  "home": {
   "ok": true,
-  "kst": "2026-10-31 07:05",
+  "kst": "2026-10-31 12:43",
   "live": false,
   "idx": true,
   "flows": true,
@@ -216,7 +216,7 @@
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 180.7
+   "sec": 164.2
   },
   {
    "name": "후보 표",
@@ -246,22 +246,22 @@
   {
    "name": "사이트 자료 따로 세기",
    "code": 0,
-   "sec": 3.5
+   "sec": 3.6
   },
   {
    "name": "7단 범위 셈",
    "code": 0,
-   "sec": 26.4
+   "sec": 27.3
   },
   {
    "name": "7단 범위 따로 세기",
    "code": 0,
-   "sec": 33.5
+   "sec": 33.7
   },
   {
    "name": "첫 화면 원문 받기",
    "code": 0,
-   "sec": 3.2
+   "sec": 2.9
   },
   {
    "name": "첫 화면 자료",
