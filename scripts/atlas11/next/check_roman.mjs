@@ -20,6 +20,10 @@
 //      — ① 그림 일흔둘 = 기계가 그린 것 그대로 · 글자 · 글 속 style · 스크립트 · 바깥 고리 0 · 한 장 12KB 안 · 서로 다름 · 무리 테 빛 · 불빛 지킴이 표(LIGHTS) = SEATS 「talk」 차례
 //      · ② 카드마다 얼굴(그 신 그림 · 이름 비움) · 서버가 일흔둘을 그림 꼴로 줌 · 내려 보면 일흔둘 모두 그려짐 · ⑥ 이름표 얼굴 = 그 방 신 그림(그려짐)
 //      · 첫 화면 말하는 불빛 열하나 — 누를 때마다 말풍선 맨 위 「(얼굴) 지킴이 · 신 이름 ›」 = 그 불빛 자리 신 · 48px · 17px · 화면 안 · 누름 → 로마 신 72 그 신 카드 · 영어 · 아주 크게 320
+//   ⑧ 얼굴 듣기(사장님 2026-10-31 10:58(+04) 「응」 — 물음 「신 얼굴을 누르면 그 신 이야기를 소리로 들려 드릴까요?」 · order-1558.txt · site/next/roman-say.js)
+//      — 가짜 소리(speechSynthesis 바꿔 끼움)로 읽은 글을 맞댐: 이야기 = 「이름. 누구. 왜 여기」(카드 글 그대로 · 따로 셈) · ko-KR / en-US · 빠르기 0.9 · 높이 1 · 크기 0.96
+//      · 로마 신 카드 얼굴 — 눌림 · 카드 테 · 다시 누르면 멈춤 · 다른 얼굴로 바꿈 · 끝나면 풂 · 주소 그대로 · 방 이름표 얼굴 — 글상자 = 듣는 말 · 쪽을 옮기면 멈춤
+//      · 불빛 지킴이 얼굴 — 글상자 = 듣는 말 · 영어 · 소리 없는 휴대폰 = 글상자만(화면 오류 0) · 아주 크게 320 글상자 넘침 0
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -191,11 +195,12 @@ const judge = (tag, m, {en = false} = {}) => {
 };
 /** 카드 일흔둘 읽기(화면 안) */
 const readCards = p => p.evaluate(() => [...document.querySelectorAll('#view .rm-card')].map(c => ({
-  tag: c.tagName.toLowerCase(), href: c.getAttribute('href'), n: +c.dataset.n, zone: c.closest('section.rm-zone')?.id ?? null,
+  tag: c.tagName.toLowerCase(), href: c.querySelector('a.rm-goa')?.getAttribute('href') ?? null, goT: c.querySelector('a.rm-goa')?.textContent.replace(/\s+/g, '') ?? null, no: c.querySelector('.rm-no')?.textContent.trim() ?? null, links: c.querySelectorAll('a').length, n: +c.dataset.n, zone: c.closest('section.rm-zone')?.id ?? null,
   spot: c.querySelector('.rm-spot')?.textContent.trim(), name: c.querySelector('.rm-gn')?.textContent.trim(), la: c.querySelector('.rm-la')?.textContent.trim() ?? null,
   laLang: c.querySelector('.rm-la')?.getAttribute('lang') ?? null, one: c.querySelector('.rm-one')?.textContent.trim(), wl: c.querySelector('.rm-wl')?.textContent.trim(),
   why: c.querySelector('.rm-wt')?.textContent.trim(), grp: c.querySelector('.rm-grp')?.textContent.trim(),
-  av: c.querySelector('.rm-god > img.rm-av')?.getAttribute('src') ?? null, avAlt: c.querySelector('.rm-god > img.rm-av')?.getAttribute('alt') ?? null})));
+  av: c.querySelector('.rm-god > button.rm-av > img')?.getAttribute('src') ?? null, avAlt: c.querySelector('.rm-god > button.rm-av > img')?.getAttribute('alt') ?? null,
+  avL: c.querySelector('.rm-god > button.rm-av')?.getAttribute('aria-label') ?? null, avP: c.querySelector('.rm-god > button.rm-av')?.getAttribute('aria-pressed') ?? null, nest: !!c.querySelector('a button, button a')})));
 const cardsOk = (cards, en) => {
   const bad = [];
   if (cards.length !== 72) bad.push('카드 ' + cards.length);
@@ -207,9 +212,10 @@ const cardsOk = (cards, en) => {
     for (const [k, v] of Object.entries(want)) if (c[k] !== v) bad.push(`${i + 1} ${k} 「${c[k]}」 ≠ 「${v}」`);
     if (c.n !== s[4]) bad.push(`${i + 1} 신 번호 ${c.n} ≠ ${s[4]}`);
     if (c.zone !== 'rm-z-' + s[0]) bad.push(`${i + 1} 무리 ${c.zone}`);
-    if (s[3] ? (c.tag !== 'a' || c.href !== s[3]) : (c.tag !== 'div' || c.href !== null)) bad.push(`${i + 1} 고리 ${c.tag} ${c.href} ≠ ${s[3]}`);
+    if (c.tag !== 'div' || c.nest || (s[3] ? (c.href !== s[3] || c.links !== 1 || c.goT !== (en ? 'Gothere›' : '가보기›')) : (c.href !== null || c.links !== 0 || c.no !== (en ? 'No page of its own' : '제 쪽이 따로 없어요')))) bad.push(`${i + 1} 고리 ${c.tag} ${c.href} 「${c.goT}」 「${c.no}」 ≠ ${s[3]}`); // 카드 = 칸 · 고리는 「가 보기 ›」 하나(order-1558 — 얼굴 단추와 나눔)
     if (c.la !== null && c.laLang !== 'la') bad.push(`${i + 1} 라틴 이름 말(lang)`);
     if (c.av !== artOf(s[4]) || c.avAlt !== '') bad.push(`${i + 1} 얼굴 ${c.av} · 이름 「${c.avAlt}」`); // 신 캐릭터 그림(order-1332) — 이름이 바로 옆이라 그림 이름은 비움
+    if (c.avL !== (en ? `Hear ${g[2]}’s story` : `${g[0]} 이야기 듣기`) || c.avP !== 'false') bad.push(`${i + 1} 얼굴 단추 읽는 이름 「${c.avL}」 · 눌림 ${c.avP}`); // 얼굴 = 듣기 단추(order-1558)
   });
   return bad;
 };
@@ -238,7 +244,7 @@ try {
       const srv = []; for (let i = 0; i < 72; i += 6) srv.push(...await Promise.all(Array.from({length: Math.min(6, 72 - i)}, (_, j) => getArt(i + j + 1))));
       check(!srv.filter(Boolean).length, '⑦ 서버가 그림 일흔둘을 그림 꼴(image/svg+xml)로 줌', srv.filter(Boolean).slice(0, 3).join(' | '));
       const im = await p.evaluate(async () => { for (let y = 0, H = document.documentElement.scrollHeight; y < H; y += 500) { scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); }
-        const a = [...document.querySelectorAll('#view img.rm-av')]; for (let i = 0; i < 100 && a.some(x => !(x.complete && x.naturalWidth > 0)); i++) await new Promise(r => setTimeout(r, 100));
+        const a = [...document.querySelectorAll('#view .rm-av img')]; for (let i = 0; i < 100 && a.some(x => !(x.complete && x.naturalWidth > 0)); i++) await new Promise(r => setTimeout(r, 100));
         scrollTo(0, 0); return {n: a.length, ok: a.filter(x => x.complete && x.naturalWidth > 0).length, w: [...new Set(a.map(x => Math.round(x.getBoundingClientRect().width)))]}; });
       check(im.n === 72 && im.ok === 72 && im.w.join() === '64', '⑦ 내려 보면 얼굴 일흔둘이 모두 그려짐(64px)', JSON.stringify(im));
     }
@@ -286,8 +292,8 @@ try {
     check(!errs.length, '③ 고리 화면 오류 0', errs.join(' | '));
     // 카드 누름 — 서른아홉 스승 카드 → #/sage
     await p.evaluate(() => { location.hash = '#/roman'; }); await ready(p);
-    const card = p.locator('#view a.rm-card[href="#/sage"]'); await card.scrollIntoViewIfNeeded(); await card.click();
-    check(await p.waitForFunction(() => location.hash === '#/sage' && document.querySelectorAll('#view .sg-tile').length > 0, null, {timeout: 10000}).then(() => true, () => false), '③ 서른아홉 스승 카드 누름 → 그 쪽');
+    const card = p.locator('#view .rm-card a.rm-goa[href="#/sage"]'); await card.scrollIntoViewIfNeeded(); await card.click(); // 「가 보기 ›」(order-1558 — 카드 전체 고리 대신)
+    check(await p.waitForFunction(() => location.hash === '#/sage' && document.querySelectorAll('#view .sg-tile').length > 0, null, {timeout: 10000}).then(() => true, () => false), '③ 서른아홉 스승 카드 「가 보기」 누름 → 그 쪽');
     R.m.linkPages = hrefs.length; await ctx.close();
   }
 
@@ -341,14 +347,16 @@ try {
   {
     const routeOf = key => (key === '' ? '#/' : key === 's' ? '#/s/ZZZZZZ/2026-13-40/0/s' : key === 'w/*' ? '#/w/005930' : key.startsWith('w/*/') ? '#/w/005930/' + key.slice(4) : '#/' + key);
     const readTag = q => q.evaluate(() => {
-      const e = document.querySelector('#view > a.rmt'); if (!e) return null;
-      const r = e.getBoundingClientRect(), kk = document.querySelector('#view > .kk-pgrow'), z = parseFloat(getComputedStyle(document.querySelector('#view')).zoom) || 1;
-      return {n: document.querySelectorAll('#view .rmt').length, href: e.getAttribute('href'), label: e.querySelector('.rmt-l')?.textContent.trim(), name: e.querySelector('.rmt-n')?.textContent.trim(),
-        im: e.querySelector('img.rmt-a')?.getAttribute('src') ?? null, imAlt: e.querySelector('img.rmt-a')?.getAttribute('alt') ?? null,
+      const e = document.querySelector('#view > .rmt'); if (!e) return null;
+      const pill = e.querySelector('.rmt-p'), k = e.querySelector('a.rmt-k'), f = e.querySelector('button.rms-face'), fr = f?.getBoundingClientRect(), kr = k?.getBoundingClientRect();
+      const r = (pill ?? e).getBoundingClientRect(), kk = document.querySelector('#view > .kk-pgrow'), z = parseFloat(getComputedStyle(document.querySelector('#view')).zoom) || 1;
+      return {n: document.querySelectorAll('#view .rmt').length, href: k?.getAttribute('href') ?? null, label: e.querySelector('.rmt-l')?.textContent.trim(), name: e.querySelector('.rmt-n')?.textContent.trim(),
+        im: f?.querySelector('img')?.getAttribute('src') ?? null, imAlt: f?.querySelector('img')?.getAttribute('alt') ?? null, faceL: f?.getAttribute('aria-label') ?? null, faceH: fr ? Math.round(Math.min(fr.width, fr.height)) : 0, linkH: kr ? Math.round(kr.height) : 0, linkW: kr ? Math.round(kr.width) : 0,
+        cap: e.querySelector('.rms-cap')?.hidden ?? null, nest: !!e.querySelector('a button, button a'),
         h: Math.round(r.height), left: Math.round(r.left), right: Math.round(r.right), vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth,
         fs: Math.min(...[...e.querySelectorAll('span, b')].map(x => parseFloat(getComputedStyle(x).fontSize) * z)), kkAfter: kk ? !!(e.compareDocumentPosition(kk) & Node.DOCUMENT_POSITION_FOLLOWING) : null};
     });
-    const waitTag = (q, n) => q.waitForFunction(n => document.querySelector('#view > a.rmt')?.dataset.n === String(n), n, {timeout: 15000}).then(() => true, () => false);
+    const waitTag = (q, n) => q.waitForFunction(n => document.querySelector('#view > .rmt')?.dataset.n === String(n), n, {timeout: 15000}).then(() => true, () => false);
     const tagOk = (tag, s, n, en = false) => {
       check(!!s, `${tag} 이름표 있음`, 'null');
       if (!s) return;
@@ -357,8 +365,9 @@ try {
       check(s.h >= 47.5 && s.fs >= 16.9 && s.left >= 0 && s.right <= s.vw + 0.5 && s.sw <= s.vw, `${tag} 48px · 17px · 화면 안`, JSON.stringify(s));
       check(s.kkAfter !== false, `${tag} 카톡 쪽 줄 위`, s.kkAfter);
       check(s.im === artOf(n) && s.imAlt === '', `${tag} 얼굴 = 그 방 신 그림(이름 비움 · order-1332)`, `${s.im} 「${s.imAlt}」`);
+      check(s.faceL === (en ? `Hear ${GODS[n][2]}’s story` : `${GODS[n][0]} 이야기 듣기`) && s.faceH >= 47.5 && s.linkH >= 47.5 && s.linkW >= 47.5 && s.cap === true && !s.nest, `${tag} 얼굴 = 듣기 단추 · 이름 고리 48px · 글상자 숨김 · 단추와 고리 나눔(order-1558)`, `${s.faceL} ${s.faceH} ${s.linkH}×${s.linkW} 글상자 ${s.cap} 겹침 ${s.nest}`);
     };
-    const tagImg = q => q.evaluate(async () => { const e = document.querySelector('#view > a.rmt'); e?.scrollIntoView({block: 'center'}); const im = e?.querySelector('img.rmt-a'); for (let i = 0; i < 40 && im && !(im.complete && im.naturalWidth > 0); i++) await new Promise(r => setTimeout(r, 100)); return !!im && im.complete && im.naturalWidth > 0; });
+    const tagImg = q => q.evaluate(async () => { const e = document.querySelector('#view > .rmt'); e?.scrollIntoView({block: 'center'}); const im = e?.querySelector('button.rms-face img'); for (let i = 0; i < 40 && im && !(im.complete && im.naturalWidth > 0); i++) await new Promise(r => setTimeout(r, 100)); return !!im && im.complete && im.naturalWidth > 0; });
     const ctx = await ctxOf(390), p = await ctx.newPage(), errs = errsOf(p);
     await p.goto(URL_OF('#/dori'), {waitUntil: 'load', timeout: 60000}); await p.waitForTimeout(300);
     for (const [key, n] of Object.entries(ROOMS)) {
@@ -373,7 +382,7 @@ try {
     }
     // 누름 — 서른아홉 스승 이름표 → #/roman/6 · 그 카드가 화면 안 · 테
     await p.evaluate(() => { location.hash = '#/sage'; }); await waitTag(p, ROOMS.sage);
-    await p.locator('#view > a.rmt').scrollIntoViewIfNeeded(); await p.locator('#view > a.rmt').click();
+    await p.locator('#view > .rmt a.rmt-k').scrollIntoViewIfNeeded(); await p.locator('#view > .rmt a.rmt-k').click(); // 이름 고리(얼굴은 듣기 단추 — order-1558)
     const ok = await p.waitForFunction(n => { const c = document.querySelector(`#view .rm-card[data-n="${n}"]`); if (!c || !c.classList.contains('rm-on')) return false; const r = c.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }, ROOMS.sage, {timeout: 8000}).then(() => true, () => false);
     check(ok && await p.evaluate(() => location.hash) === '#/roman/' + ROOMS.sage, '⑥ 이름표 누름 → 로마 신 72 그 신 카드(화면 안 · 테)', await p.evaluate(() => location.hash));
     check(!errs.length, '⑥ 화면 오류 0', errs.join(' | ')); await ctx.close();
@@ -399,13 +408,13 @@ try {
   // ⑦ 첫 화면 말하는 불빛 지킴이(order-1332) — 불빛 열하나 · 누름 → 그 신 카드 · 영어 · 아주 크게 320
   {
     const readGod = q => q.evaluate(() => {
-      const x = document.querySelector('#view section.nh-hero details.y11-box[open] > .y11-x'), g = x?.querySelector('.y11-bub .y11-god'); if (!g) return null;
-      const r = g.getBoundingClientRect(), im = g.querySelector('img.y11-gi'), z = parseFloat(getComputedStyle(document.querySelector('#view')).zoom) || 1;
-      return {href: g.getAttribute('href'), n: g.dataset.n, label: g.querySelector('.y11-gl')?.textContent.trim(), name: g.querySelector('.y11-gn')?.textContent.trim(), src: im?.getAttribute('src') ?? null, alt: im?.getAttribute('alt') ?? null,
+      const x = document.querySelector('#view section.nh-hero details.y11-box[open] > .y11-x'), w = x?.querySelector('.y11-bub .y11-gw'), g = w?.querySelector('.y11-god'), k = g?.querySelector('a.y11-gk'), f = g?.querySelector('button.rms-face'); if (!g || !k) return null;
+      const r = k.getBoundingClientRect(), fr = f?.getBoundingClientRect(), im = f?.querySelector('img'), z = parseFloat(getComputedStyle(document.querySelector('#view')).zoom) || 1;
+      return {href: k.getAttribute('href'), n: w.dataset.n, faceL: f?.getAttribute('aria-label') ?? null, faceH: fr ? Math.round(Math.min(fr.width, fr.height)) : 0, cap: w.querySelector('.rms-cap')?.hidden ?? null, nest: !!w.querySelector('a button, button a'), label: g.querySelector('.y11-gl')?.textContent.trim(), name: g.querySelector('.y11-gn')?.textContent.trim(), src: im?.getAttribute('src') ?? null, alt: im?.getAttribute('alt') ?? null,
         h: Math.round(r.height), w: Math.round(r.width), left: Math.round(r.left), right: Math.round(r.right), vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth,
-        fs: Math.min(...[...g.querySelectorAll('span, b')].map(e => parseFloat(getComputedStyle(e).fontSize) * z)), first: x.querySelector('.y11-bb')?.firstElementChild === g, pressed: x.querySelector('.y11-lamp[aria-pressed="true"]')?.dataset.k ?? null};
+        fs: Math.min(...[...g.querySelectorAll('span, b')].map(e => parseFloat(getComputedStyle(e).fontSize) * z)), first: x.querySelector('.y11-bb')?.firstElementChild === w, pressed: x.querySelector('.y11-lamp[aria-pressed="true"]')?.dataset.k ?? null};
     });
-    const godImg = q => q.evaluate(async () => { const im = document.querySelector('#view details.y11-box[open] .y11-god img.y11-gi'); im?.scrollIntoView({block: 'center'}); for (let i = 0; i < 40 && im && !(im.complete && im.naturalWidth > 0); i++) await new Promise(r => setTimeout(r, 100)); return !!im && im.complete && im.naturalWidth > 0; });
+    const godImg = q => q.evaluate(async () => { const im = document.querySelector('#view details.y11-box[open] .y11-god button.rms-face img'); im?.scrollIntoView({block: 'center'}); for (let i = 0; i < 40 && im && !(im.complete && im.naturalWidth > 0); i++) await new Promise(r => setTimeout(r, 100)); return !!im && im.complete && im.naturalWidth > 0; });
     const openTalk = async q => { const s = q.locator('#view section.nh-hero details.y11-box > summary').first(); if (!await s.count()) return false; await s.scrollIntoViewIfNeeded(); await s.click();
       return q.locator('#view section.nh-hero details.y11-box[open] > .y11-x .y11-bd').first().waitFor({state: 'attached', timeout: 15000}).then(() => true, () => false); };
     const press = async (q, k) => { const b = q.locator(`#view section.nh-hero details.y11-box[open] > .y11-x .y11-lamp[data-k="${k}"]`).first(); await b.scrollIntoViewIfNeeded(); await b.click(); await q.waitForTimeout(120); };
@@ -416,6 +425,7 @@ try {
       check(g.src === artOf(n) && g.alt === '' && g.first, `${tag} 얼굴 = 그 신 그림 · 말풍선 맨 위`, `${g.src} 「${g.alt}」 ${g.first}`);
       check(g.h >= 47.5 && g.w >= 47.5 && g.fs >= 16.9 && g.left >= 0 && g.right <= g.vw + 0.5 && g.sw <= g.vw, `${tag} 48px · 17px · 화면 안`, JSON.stringify(g));
       if (en) check(!HAN.test(`${g.label}${g.name}`), `${tag} 영어 한글 0`, `${g.label} ${g.name}`);
+      check(g.faceL === (en ? `Hear ${GODS[n][2]}’s story` : `${GODS[n][0]} 이야기 듣기`) && g.faceH >= 47.5 && g.cap === true && !g.nest, `${tag} 얼굴 = 듣기 단추 · 글상자 숨김 · 단추와 고리 나눔(order-1558)`, `${g.faceL} ${g.faceH} 글상자 ${g.cap} 겹침 ${g.nest}`);
     };
     const ctx = await ctxOf(390), p = await ctx.newPage(), errs = errsOf(p);
     await p.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); await p.waitForTimeout(800);
@@ -424,7 +434,7 @@ try {
       for (let k = 1; k <= 11; k++) { await press(p, k); godOk(`⑦ 불빛 ${k}`, await readGod(p), k); }
       check(await godImg(p), '⑦ 불빛 지킴이 얼굴 그림이 그려짐');
       if (OUT) { await p.waitForTimeout(250); await p.screenshot({path: path.join(path.dirname(OUT), 'roman-light.jpg'), type: 'jpeg', quality: 70}).catch(() => {}); }
-      const n = LIGHTS[11]; await p.locator('#view details.y11-box[open] .y11-god').first().click(); // 마지막에 고른 11번 불빛 지킴이
+      const n = LIGHTS[11]; await p.locator('#view details.y11-box[open] .y11-god a.y11-gk').first().click(); // 마지막에 고른 11번 불빛 지킴이 이름 고리(얼굴은 듣기 단추 — order-1558)
       const ok = await p.waitForFunction(n => { const c = document.querySelector(`#view .rm-card[data-n="${n}"]`); if (!c || !c.classList.contains('rm-on')) return false; const r = c.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }, n, {timeout: 8000}).then(() => true, () => false);
       check(ok && await p.evaluate(() => location.hash) === '#/roman/' + n, '⑦ 지킴이 누름 → 로마 신 72 그 신 카드(화면 안 · 테)', await p.evaluate(() => location.hash));
     }
@@ -435,6 +445,83 @@ try {
       if (!await openTalk(q5)) { check(false, `${tag} 말하는 불빛 판`, '안 열림'); await c5.close(); continue; }
       for (const k of [1, 8, 10]) { await press(q5, k); godOk(`${tag} 불빛 ${k}`, await readGod(q5), k, en); }
       check(!e5.length, `${tag} 화면 오류 0`, e5.join(' | ')); await c5.close();
+    }
+  }
+  // ⑧ 얼굴 듣기(order-1558) — 가짜 소리로 읽은 글 · 글상자 · 멈춤 · 영어 · 소리 없는 휴대폰
+  {
+    const storyKo = n => { const g = GODS[n], s = SEATS.find(x => x[4] === n); return `${g[0]}. ${g[3]} ${fillKo(s[5])}`; }; // 카드 글 그대로(따로 셈 — roman-say.js storyOf 와 맞댐)
+    const storyEn = n => { const g = GODS[n], s = SEATS.find(x => x[4] === n); return `${g[2]}. ${g[4]} ${fillEn(s[6])}`; };
+    const FAKE = () => { // 가짜 소리 — 읽은 글 · 말 · 빠르기 · 높이 · 크기를 적음 · 2.5초 뒤 끝 · cancel 수
+      const said = []; window.__said = said; window.__cancel = 0;
+      class U { constructor(t) { this.text = t; this.lang = ''; this.rate = 1; this.pitch = 1; this.volume = 1; this.onend = null; this.onerror = null; } }
+      const ss = {c: null, speaking: false, pending: false, paused: false, getVoices() { return []; },
+        speak(u) { said.push({text: u.text, lang: u.lang, rate: u.rate, pitch: u.pitch, volume: u.volume}); ss.c = u; setTimeout(() => { if (ss.c === u) { ss.c = null; u.onend?.({}); } }, 2500); },
+        cancel() { window.__cancel++; const u = ss.c; ss.c = null; if (u) u.onend?.({}); }};
+      Object.defineProperty(window, 'speechSynthesis', {value: ss, configurable: true});
+      Object.defineProperty(window, 'SpeechSynthesisUtterance', {value: U, configurable: true, writable: true});
+    };
+    const NOSAY = () => { Object.defineProperty(window, 'speechSynthesis', {value: undefined, configurable: true}); Object.defineProperty(window, 'SpeechSynthesisUtterance', {value: undefined, configurable: true, writable: true}); };
+    const sayCtx = async (w, {font = 0, en = false, fake = true} = {}) => { const c = await ctxOf(w, {font, en}); await c.addInitScript(fake ? FAKE : NOSAY); return c; };
+    const last = q => q.evaluate(() => ({s: window.__said?.at(-1) ?? null, n: window.__said?.length ?? 0, cancel: window.__cancel ?? 0, hash: location.hash}));
+    const voiceOk = (x, text, lang) => !!x && x.text === text && x.lang === lang && Math.abs(x.rate - 0.9) < 1e-9 && x.pitch === 1 && Math.abs(x.volume - 0.96) < 1e-9;
+    const tap = async (q, sel) => { const b = q.locator(sel).first(); await b.scrollIntoViewIfNeeded(); await b.click(); await q.waitForTimeout(150); };
+    // 로마 신 카드 얼굴(한국어 390)
+    const c1 = await sayCtx(390), p = await c1.newPage(), e1 = errsOf(p);
+    await p.goto(URL_OF('#/roman'), {waitUntil: 'load', timeout: 60000});
+    if (!await ready(p)) check(false, '⑧ 로마 신 쪽', '안 그려짐');
+    else {
+      const face = n => `#view .rm-card[data-n="${n}"] button.rm-av`, st = n => p.evaluate(n => { const c = document.querySelector(`#view .rm-card[data-n="${n}"]`); return {p: c?.querySelector('button.rm-av')?.getAttribute('aria-pressed'), say: c?.classList.contains('rm-say')}; }, n);
+      await tap(p, face(1)); let L1 = await last(p), S1 = await st(1);
+      check(voiceOk(L1.s, storyKo(1), 'ko-KR') && S1.p === 'true' && S1.say && L1.hash === '#/roman', '⑧ 카드 얼굴 누름 → 그 신 이야기(카드 글 그대로 · ko-KR · 0.9 · 1 · 0.96) · 눌림 · 카드 테 · 주소 그대로', JSON.stringify({L1, S1}).slice(0, 300));
+      await tap(p, face(1)); const L2 = await last(p), S2 = await st(1);
+      check(L2.cancel > L1.cancel && L2.n === L1.n && S2.p === 'false' && !S2.say, '⑧ 같은 얼굴 다시 누름 → 멈춤 · 풂', JSON.stringify({L2, S2}));
+      await tap(p, face(6)); await tap(p, face(13)); const L3 = await last(p), A = await st(6), B = await st(13);
+      check(voiceOk(L3.s, storyKo(13), 'ko-KR') && A.p === 'false' && !A.say && B.p === 'true' && B.say, '⑧ 다른 얼굴로 바꿈 → 앞 얼굴 풂 · 새 얼굴 이야기', JSON.stringify({L3: L3.s?.text?.slice(0, 30), A, B}));
+      await p.waitForTimeout(2800); const B2 = await st(13);
+      check(B2.p === 'false' && !B2.say, '⑧ 이야기가 끝나면 눌림 풂', JSON.stringify(B2));
+      const all = await p.evaluate(() => [...document.querySelectorAll('#view .rm-card')].filter(c => !c.querySelector('button.rm-av[aria-pressed]')).length);
+      check(all === 0, '⑧ 카드 일흔둘 모두 얼굴 듣기 단추', all);
+    }
+    check(!e1.length, '⑧ 로마 신 쪽 화면 오류 0', e1.join(' | ')); await c1.close();
+    // 방 이름표 얼굴(서른아홉 스승 · 한국어 390) — 글상자 · 쪽 옮기면 멈춤
+    const c2 = await sayCtx(390), q = await c2.newPage(), e2 = errsOf(q);
+    await q.goto(URL_OF('#/sage'), {waitUntil: 'load', timeout: 60000});
+    if (!await q.waitForFunction(n => document.querySelector('#view > .rmt')?.dataset.n === String(n), ROOMS.sage, {timeout: 15000}).then(() => true, () => false)) check(false, '⑧ 서른아홉 스승 이름표', '안 붙음');
+    else {
+      await tap(q, '#view > .rmt button.rms-face'); const T1 = await last(q);
+      const cap = await q.evaluate(() => { const c = document.querySelector('#view > .rmt .rms-cap'), f = document.querySelector('#view > .rmt button.rms-face'); return {t: c?.textContent ?? null, hid: c?.hidden ?? null, vis: !!c && c.getBoundingClientRect().height > 0, p: f?.getAttribute('aria-pressed'), fs: c ? parseFloat(getComputedStyle(c).fontSize) : 0}; });
+      check(voiceOk(T1.s, storyKo(ROOMS.sage), 'ko-KR') && cap.t === storyKo(ROOMS.sage) && !cap.hid && cap.vis && cap.p === 'true' && cap.fs >= 16.9 && T1.hash === '#/sage', '⑧ 이름표 얼굴 → 그 방 신 이야기 · 글상자 = 듣는 말 · 주소 그대로', JSON.stringify({T1: T1.s?.text?.slice(0, 40), cap}));
+      const c0 = (await last(q)).cancel; await q.evaluate(() => { location.hash = '#/dori'; }); await q.waitForTimeout(400);
+      check((await last(q)).cancel > c0, '⑧ 쪽을 옮기면 소리 멈춤', `${c0}`);
+    }
+    check(!e2.length, '⑧ 이름표 화면 오류 0', e2.join(' | ')); await c2.close();
+    // 불빛 지킴이 얼굴(첫 화면 · 8번 날씨)
+    const c3 = await sayCtx(390), r3 = await c3.newPage(), e3 = errsOf(r3);
+    await r3.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); await r3.waitForTimeout(800);
+    const s3 = r3.locator('#view section.nh-hero details.y11-box > summary').first();
+    if (!await s3.count()) check(false, '⑧ 첫 화면 말하는 불빛', '칸 없음');
+    else {
+      await s3.scrollIntoViewIfNeeded(); await s3.click(); await r3.locator('#view section.nh-hero details.y11-box[open] > .y11-x .y11-bd').first().waitFor({state: 'attached', timeout: 15000}).catch(() => {});
+      await tap(r3, '#view section.nh-hero details.y11-box[open] > .y11-x .y11-lamp[data-k="8"]'); await tap(r3, '#view details.y11-box[open] .y11-gw button.rms-face'); const G1 = await last(r3);
+      const gc = await r3.evaluate(() => { const c = document.querySelector('#view details.y11-box[open] .y11-gw .rms-cap'); return {t: c?.textContent ?? null, hid: c?.hidden ?? null, vis: !!c && c.getBoundingClientRect().height > 0}; });
+      check(voiceOk(G1.s, storyKo(LIGHTS[8]), 'ko-KR') && gc.t === storyKo(LIGHTS[8]) && !gc.hid && gc.vis && G1.hash === '#/', '⑧ 불빛 지킴이 얼굴 → 그 신 이야기 · 글상자 = 듣는 말 · 주소 그대로', JSON.stringify({G1: G1.s?.text?.slice(0, 40), gc: {...gc, t: gc.t?.slice(0, 40)}, hash: G1.hash}));
+    }
+    check(!e3.length, '⑧ 첫 화면 화면 오류 0', e3.join(' | ')); await c3.close();
+    // 영어 — 로마 신 카드 얼굴(넵투누스)
+    const c4 = await sayCtx(390, {en: true}), r4 = await c4.newPage(), e4 = errsOf(r4);
+    await r4.goto(URL_OF('#/roman', '&lang=en'), {waitUntil: 'load', timeout: 60000});
+    if (await ready(r4)) { await tap(r4, '#view .rm-card[data-n="9"] button.rm-av'); const E1 = await last(r4); check(voiceOk(E1.s, storyEn(9), 'en-US') && !HAN.test(E1.s?.text ?? ''), '⑧ 영어 — 영어 이야기 · en-US', JSON.stringify(E1.s).slice(0, 200)); }
+    else check(false, '⑧ 영어 로마 신 쪽', '안 그려짐');
+    check(!e4.length, '⑧ 영어 화면 오류 0', e4.join(' | ')); await c4.close();
+    // 소리 없는 휴대폰 · 아주 크게 320 — 글상자만 · 넘침 0
+    for (const [w, font, fake, tagT] of [[390, 0, false, '소리 없는 휴대폰'], [320, 2, true, '320 아주 크게']]) {
+      const c5 = await sayCtx(w, {font, fake}), r5 = await c5.newPage(), e5 = errsOf(r5);
+      await r5.goto(URL_OF('#/sage'), {waitUntil: 'load', timeout: 60000});
+      if (!await r5.waitForFunction(() => !!document.querySelector('#view > .rmt'), null, {timeout: 15000}).then(() => true, () => false)) { check(false, `⑧ ${tagT} 이름표`, '안 붙음'); await c5.close(); continue; }
+      await tap(r5, '#view > .rmt button.rms-face');
+      const m = await r5.evaluate(() => { const c = document.querySelector('#view > .rmt .rms-cap'), f = document.querySelector('#view > .rmt button.rms-face'), r = c?.getBoundingClientRect(); return {t: c?.textContent ?? null, vis: !!r && r.height > 0, l: r ? Math.round(r.left) : -1, rt: r ? Math.round(r.right) : 9999, vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth, p: f?.getAttribute('aria-pressed')}; });
+      check(m.t === storyKo(ROOMS.sage) && m.vis && m.l >= 0 && m.rt <= m.vw + 0.5 && m.sw <= m.vw && (fake || m.p === 'false'), `⑧ ${tagT} — 글상자 = 이야기 · 화면 안 · 넘침 0${fake ? '' : ' · 눌림 없음'}`, JSON.stringify({...m, t: m.t?.slice(0, 30)}));
+      check(!e5.length, `⑧ ${tagT} 화면 오류 0`, e5.join(' | ')); await c5.close();
     }
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }

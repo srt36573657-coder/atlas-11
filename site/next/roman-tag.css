@@ -4,12 +4,21 @@
    이 파일은 판 만드는 기계(clock_theme.py) 셈 밖 */
 /* 한 덩이 글줄(display: block · 안쪽 inline · 가운데 맞춤) — 칸이 여럿(flex)이면 글 시작 왼쪽 줄 잣대(measure_type · check_why [10] 7 「셋까지」)에 줄 셋이 더해짐(로컬 check_why 8건 · 2026-10-31)
    가운데 맞춤 칸은 그 잣대 셈 밖 · 높이 = 글줄(얼굴 그림 44px) + 위아래 8px + 테 = 62px(2026-10-31 order-1332 — 얼굴 전 52px) */
-#view > a.rmt { display: block; width: fit-content; max-width: calc(100% - 32px); box-sizing: border-box;
-  margin: var(--sp-3) var(--sp-2) var(--sp-1); padding: var(--sp-1) var(--sp-2); border: 1px solid #8C8291; border-radius: 999px;
-  background: #1E1428; color: #F4EEF6; font-size: var(--fs-1); line-height: 34px; text-align: center; text-decoration: none; overflow-wrap: anywhere; }
-#view > a.rmt .rmt-a { display: inline-block; width: 44px; height: 44px; margin-right: var(--sp-1); vertical-align: middle; } /* 신 얼굴(roman-art · 제 동그라미 판 — 밤 · 밝은 판 어디서나 같은 그림) · 줄 높이 44 → 이름표 62px */
-#view > a.rmt .rmt-l { color: #D9CFE3; font-weight: 700; }
-#view > a.rmt .rmt-n { color: #F2C46B; font-weight: 800; }
-#view > a.rmt i { font-style: normal; color: #F2C46B; font-weight: 800; }
-#view > a.rmt:focus-visible { outline: 3px solid #F2C46B; outline-offset: 2px; }
-@media (hover: hover) { #view > a.rmt:hover { background: #2C1F3A; } }
+/* 2026-10-31 order-1558 「응」(얼굴을 누르면 그 신 이야기를 소리로) — 묶음 칸(.rmt) = 알약(.rmt-p · 얼굴 단추 + 이름 고리) + 글상자(.rms-cap · 처음엔 숨김)
+   얼굴 단추 52px(그림 44px · 오른쪽 아래 소리 표) · 이름 고리 48px 높이 · 알약 높이 54px · 글상자 = 듣는 말 그대로(가운데 맞춤 — 왼쪽 줄 잣대 셈 밖) */
+#view > .rmt { display: block; box-sizing: border-box; margin: var(--sp-3) var(--sp-2) var(--sp-1); }
+#view > .rmt .rmt-p { display: inline-flex; align-items: center; gap: var(--sp-1); max-width: 100%; box-sizing: border-box; padding: 0 var(--sp-2) 0 0; border: 1px solid #8C8291; border-radius: 999px;
+  background: #1E1428; color: #F4EEF6; font-size: var(--fs-1); vertical-align: top; }
+#view > .rmt .rms-face { position: relative; flex: none; display: grid; place-items: center; width: 52px; height: 52px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+#view > .rmt .rms-face img { display: block; width: 44px; height: 44px; border-radius: 50%; }
+#view > .rmt .rms-spk { position: absolute; right: 0; bottom: 0; width: 20px; height: 20px; }
+#view > .rmt .rms-face[aria-pressed="true"] img { outline: 3px solid #F2C46B; outline-offset: 1px; }
+#view > .rmt .rms-face:focus-visible { outline: 3px solid #F2C46B; outline-offset: 2px; }
+#view > .rmt a.rmt-k { display: block; min-width: 0; min-height: 48px; box-sizing: border-box; padding: var(--sp-1) 0; line-height: 32px; color: #F4EEF6; text-align: center; text-decoration: none; overflow-wrap: anywhere; }
+#view > .rmt .rmt-l { color: #D9CFE3; font-weight: 700; }
+#view > .rmt .rmt-n { color: #F2C46B; font-weight: 800; }
+#view > .rmt a.rmt-k i { font-style: normal; color: #F2C46B; font-weight: 800; }
+#view > .rmt a.rmt-k:focus-visible { outline: 3px solid #F2C46B; outline-offset: 2px; }
+#view > .rmt .rms-cap { margin: var(--sp-1) 0 0; padding: var(--sp-1) var(--sp-2); border: 1px solid #8C8291; border-radius: 16px; background: #1E1428; color: #F4EEF6; font-size: var(--fs-1); line-height: 1.55; text-align: center; overflow-wrap: anywhere; }
+#view > .rmt .rms-cap[hidden] { display: none; }
+@media (hover: hover) { #view > .rmt a.rmt-k:hover .rmt-n { text-decoration: underline; } #view > .rmt .rms-face:hover img { outline: 2px solid #F2C46B; outline-offset: 1px; } }

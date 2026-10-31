@@ -4,7 +4,8 @@
    app.js route 가 쪽을 그린 뒤 이 모듈을 받아 place 를 부름(첫 화면은 다 그린 뒤 · 가장 큰 그림을 늦추지 않게) · 모양은 roman-tag.css(받은 뒤에 붙임 — 모양 없는 한순간 0)
    쪽 차례 기계(jobs-order.js jobsTail · jobsBoldLate)는 이 이름표(.rmt)를 맨 아래 작은 줄로 셈 — 이름표 때문에 다른 칸이 옮겨지지 않음 */
 import {ON as EN} from './i18n.js';
-import {GODS, roomOf, artOf} from './roman72.js';
+import {GODS, roomOf} from './roman72.js';
+import {faceBtn, capBox} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(사장님 2026-10-31 10:58(+04) 「응」 · order-1558.txt)
 
 const CSS = '/next/roman-tag.css';
 let cssP = null;
@@ -17,17 +18,20 @@ const css = () => (cssP ??= new Promise(res => {
   l.addEventListener('load', done, {once: true}); l.addEventListener('error', done, {once: true});
 }));
 
-/** 이름표 하나 — 「(얼굴) 이 방 지킴이 · 신 이름 ›」 · 얼굴 = 신 캐릭터 그림(사장님 2026-10-31 07:32(+03) 「이미지도 캐릭터화해서 해」 · order-1332.txt) — 이름이 바로 옆이라 그림 이름은 비움(alt="") */
+/** 이름표 하나 — 「(얼굴) 이 방 지킴이 · 신 이름 ›」 · 얼굴 = 신 캐릭터 그림(order-1332) — 누르면 그 신 이야기를 소리로 · 글상자(order-1558)
+    얼굴 단추와 이름 고리를 나눔(단추 안에 고리를 넣지 않음) — 이름 · ›를 누르면 로마 신 72 그 신 카드 · 묶음 칸(.rmt) 안 = 알약(.rmt-p) + 글상자(.rms-cap · 처음엔 숨김) */
 export function tagOf(n) {
   const g = GODS[n]; if (!g) return null;
-  const a = document.createElement('a'), im = document.createElement('img'), l = document.createElement('span'), b = document.createElement('b'), i = document.createElement('i');
-  im.className = 'rmt-a'; im.alt = ''; im.width = 44; im.height = 44; im.decoding = 'async'; im.src = artOf(n); // 곧바로 받음(늦게 받기 없음) — 쪽을 그린 뒤 단 한 번 · 단 뒤 누름에 그림 요청이 끼지 않게(check_hold 「기록 파일 누를 때 망 요청 0」)
-  a.className = 'rmt'; a.href = '#/roman/' + n; a.dataset.n = String(n);
+  const box = document.createElement('div'), pill = document.createElement('div'), a = document.createElement('a'), l = document.createElement('span'), b = document.createElement('b'), i = document.createElement('i');
+  box.className = 'rmt'; box.dataset.n = String(n); pill.className = 'rmt-p';
+  const face = faceBtn(n, {size: 44, cls: 'rmt-s'}); // 곧바로 받음(늦게 받기 없음) — 단 뒤 누름에 그림 요청이 끼지 않게(check_hold 「기록 파일 누를 때 망 요청 0」)
+  a.className = 'rmt-k'; a.href = '#/roman/' + n;
   l.className = 'rmt-l'; l.textContent = EN ? 'Room guardian' : '이 방 지킴이';
   b.className = 'rmt-n'; b.textContent = EN ? g[2] : g[0];
   i.setAttribute('aria-hidden', 'true'); i.textContent = '›';
-  a.append(im, l, ' ', b, ' ', i); // 한 글줄(안쪽은 inline) — 글 시작 왼쪽 줄 잣대(measure_type · check_why [10] 7)에 칸 셋이 따로 잡히지 않게 · 가운데 맞춤 한 덩이
-  return a;
+  a.append(l, ' ', b, ' ', i); // 한 글줄 — 가운데 맞춤 칸(글 시작 왼쪽 줄 잣대 셈 밖)
+  pill.append(face, a); box.append(pill, capBox());
+  return box;
 }
 
 /** 쪽에 이름표 달기 — k · a = app.js parse 꼴 · root = #view · alive() = 아직 같은 쪽인지 · 돌려줌 = 단 이름표(없으면 null) */
