@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-31T03:34:00.245Z",
+ "at": "2026-10-31T05:32:06.738Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-30",
  "companies": 2557,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 141,
+ "seconds": 138,
  "time": {
-  "old": 3,
-  "new": 130,
-  "wall": 140.7,
+  "old": 1.9,
+  "new": 128.3,
+  "wall": 138.2,
   "opensOld": 11,
   "opensNew": 10286,
-  "oldPct": 2.1,
-  "oldShare": 2.3
+  "oldPct": 1.4,
+  "oldShare": 1.5
  },
  "net": {
   "req": 5126,
@@ -64,7 +64,7 @@
   "oldSnap": {
    "use": true,
    "why": "",
-   "made": "2026-10-31T03:19:45.587Z",
+   "made": "2026-10-31T05:20:57.494Z",
    "inputs": 2566,
    "reads": 2557,
    "note": "기준값 다시 씀"
