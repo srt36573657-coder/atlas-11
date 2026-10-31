@@ -6,12 +6,12 @@
  "took_s": 146,
  "time": {
   "old": 29.1,
-  "new": 100.4,
-  "wall": 145.9,
+  "new": 100.5,
+  "wall": 145.6,
   "opensOld": 1176,
   "opensNew": 2882,
   "oldPct": 20,
-  "oldShare": 22.5
+  "oldShare": 22.4
  },
  "net": {
   "req": 5,
