@@ -1,6 +1,6 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-10-31T20:11:44.733Z",
+ "at": "2026-10-31T21:34:12.899Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 737,
@@ -27,5 +27,5 @@
   "links": 37,
   "linkPages": 37
  },
- "brand": "둘이"
+ "brand": "수르"
 }

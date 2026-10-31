@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-hold-1",
- "when": "2026-10-31T20:17:58.154Z",
+ "when": "2026-10-31T21:40:21.697Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
