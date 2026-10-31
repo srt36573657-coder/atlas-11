@@ -1,21 +1,21 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-10-31T04:08:36.427Z",
+ "at": "2026-10-31T06:04:21.548Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-30",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 546,
+ "seconds": 382,
  "time": {
-  "old": 361.9,
-  "new": 422.1,
-  "wall": 545.8,
+  "old": 354.3,
+  "new": 262.1,
+  "wall": 382.2,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 66.3,
-  "oldShare": 46.2
+  "oldPct": 92.7,
+  "oldShare": 57.5
  },
  "net": {
   "req": 5129,
@@ -24,18 +24,16 @@
   "why": {},
   "cut": 0,
   "page": {
-   "retry": 1,
-   "waitSec": 2,
+   "retry": 0,
+   "waitSec": 0,
    "blocked": 0,
-   "why": {
-    "답 없는 요청": 1
-   }
+   "why": {}
   }
  },
  "counts": {
   "sec": {
-   "pick": 1,
-   "compare": 534
+   "pick": 0,
+   "compare": 372
   },
   "글 마디": 51562,
   "숫자 낱말": 48802,
@@ -48,9 +46,9 @@
    "use": false,
    "why": "바뀐 파일 2개(/atlas/data/core.json · /atlas/data/home.json)",
    "made": null,
-   "inputs": 2567,
+   "inputs": 2568,
    "reads": 2564,
-   "note": "옛 화면 파일 몸을 다 못 읽어 기준값을 쓰지 않음"
+   "note": "기준값 새로 씀(파일 2568개 · 값 2564개)"
   },
   "세 폭 화면": 30,
   "못 받은 파일 길": 6
