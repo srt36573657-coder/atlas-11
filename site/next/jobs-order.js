@@ -71,7 +71,7 @@ export function jobsOrder(k, a, view) {
 export function jobsTail(k, a, view) {
   const s = SPEC[routeKey(k, a)]; if (!s || !view || !view.isConnected) return false;
   const r = rootOf(view), small = new Set(s.t.map(x => x.split(':')[0]).filter(t => t !== 'kk-box'));
-  const isSmall = el => small.has(tok(el)) || el.classList.contains('jb-more'); // 「더 보기」도 늦게 붙는 「다음」 한 줄 뒤로
+  const isSmall = el => small.has(tok(el)) || el.classList.contains('jb-more') || el.classList.contains('rmt'); // 「더 보기」도 늦게 붙는 「다음」 한 줄 뒤로 · 방 지킴이 이름표(roman-tag.js · 2026-10-31)도 작은 줄 — 이름표 때문에 다른 칸이 옮겨지지 않음
   const kids = [...r.children], last = kids.findLastIndex(el => !isSmall(el));
   const move = kids.filter((el, i) => i < last && isSmall(el));
   if (!move.length) return false;
@@ -153,9 +153,9 @@ export function jobsBoldLate(k, a, view) {
   const r = rootOf(view); if (r.querySelector(':scope > .empty')) return false; // 빈 쪽은 그대로(jobsBold 와 같음)
   const slot = r.querySelector(':scope > i.jb-slot');
   if (slot) { const el = [...r.children].find(c => tok(c) === slot.dataset.tok); if (el) { el.classList.add('jb-act'); slot.replaceWith(el); } }
-  const small = new Set([...s.bottom.map(x => x.split(':')[0]), 'kk-pgrow']);
-  const kids = [...r.children], last = kids.findLastIndex(el => !small.has(tok(el)) && !el.classList.contains('jb-slot'));
-  const move = kids.filter((el, i) => i < last && small.has(tok(el)));
+  const small = new Set([...s.bottom.map(x => x.split(':')[0]), 'kk-pgrow']), isSm = el => small.has(tok(el)) || el.classList.contains('rmt'); // 방 지킴이 이름표(roman-tag.js · 2026-10-31)도 맨 아래 작은 줄
+  const kids = [...r.children], last = kids.findLastIndex(el => !isSm(el) && !el.classList.contains('jb-slot'));
+  const move = kids.filter((el, i) => i < last && isSm(el));
   if (move.length) r.append(...move);
   return true;
 }

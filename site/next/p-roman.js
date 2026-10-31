@@ -51,7 +51,20 @@ function zone(z, k) {
     h('ul', {class: 'rm-grid'}, rows.map(([s, i]) => card(s, i))));
 }
 
-export async function render() {
+/** #/roman/<번호> — 방 지킴이 이름표(roman-tag.js)에서 온 길 · 그 신 카드를 화면 가운데로 · 테로 표시(쪽을 그린 뒤 · 쪽 길이 맨 위로 돌린 뒤에도 한 번 더) */
+function focusCard(n) {
+  const at = Date.now(), card = () => document.querySelector(`#view .rm-card[data-n="${n}"]`);
+  const go = () => {
+    const c = card(); if (!c) { if (Date.now() - at < 4000) setTimeout(go, 120); return; }
+    c.classList.add('rm-on');
+    const r = c.getBoundingClientRect(); if (r.top < 60 || r.bottom > innerHeight - 60) c.scrollIntoView({block: 'center'});
+  };
+  for (const t of [150, 700, 1500]) setTimeout(go, t);
+}
+
+export async function render(arg) {
+  const n = /^\d{1,2}$/.test(String(arg ?? '')) && GODS[+arg] ? +arg : null;
+  if (n) focusCard(n);
   const jump = (z, k) => h('button', {type: 'button', class: 'rm-jump', 'data-z': z.id, onclick: () => document.getElementById('rm-z-' + z.id)?.scrollIntoView({behavior: 'smooth', block: 'start'})},
     h('span', {class: 'rm-jn', 'aria-hidden': 'true', text: String(k + 1)}), h('b', {text: fill(z.name[L])}), h('span', {class: 'rm-jc', text: T.seats(SEATS.filter(s => s[0] === z.id).length)}));
   return {title: T.title, nodes: [h('div', {class: 'rm'},
