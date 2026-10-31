@@ -1,14 +1,18 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-10-31T03:28:31.291Z",
+ "at": "2026-10-31T05:15:34.657Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 471,
+  "pass": 601,
   "fail": 0
  },
  "fails": [],
  "m": {
   "rooms": 37,
+  "art": {
+   "n": 72,
+   "bytes": 245728
+  },
   "seats": 72,
   "zones": [
    10,
