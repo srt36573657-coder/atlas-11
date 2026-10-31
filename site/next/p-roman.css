@@ -45,7 +45,9 @@ html.pg-roman #view :focus-visible { outline-color: var(--gold); } /* 판 전체
 .rm-card.rm-here { border-color: var(--line); background: var(--card2); }
 .rm-card.rm-on { border-color: var(--gold); outline: 3px solid var(--gold); outline-offset: 2px; } /* 방 지킴이 이름표에서 온 신(#/roman/<번호>) */
 .rm-spot { font-size: var(--fs-2); line-height: 1.4; font-weight: 800; color: var(--gold); }
-.rm-god { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-1); }
+.rm-god { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; column-gap: var(--sp-2); } /* 신 얼굴(roman-art 캐릭터 그림 · 2026-10-31 order-1332) + 이름 */
+.rm-av { display: block; width: 64px; height: 64px; }
+.rm-gt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-1); min-width: 0; }
 .rm-gn { font-size: var(--fs-4); line-height: 1.3; font-weight: 800; color: var(--ink); }
 .rm-la { font-size: var(--fs-2); line-height: 1.35; font-style: italic; color: var(--sub); }
 .rm-one { font-size: var(--fs-3); line-height: 1.55; color: var(--ink); text-wrap: pretty; }

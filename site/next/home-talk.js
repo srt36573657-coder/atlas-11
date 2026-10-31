@@ -4,6 +4,7 @@
    따로 받는 까닭: 이 칸 코드 · 모양을 첫 화면 파일에 넣으니 느린 4G 가장 큰 그림이 2413ms → 2575ms(2.5초 선 넘음) — 칸을 열 때만 받음
    글은 textContent 로만 · 그림은 글자 없는 svg · 글 속 style 없음(꼬리 자리만 CSSOM --tail) */
 import {ON as EN} from './i18n.js';
+import {GODS, LIGHTS, artOf} from './roman72.js'; // 불빛마다 지킴이 신(사장님 2026-10-31 07:32(+03) 「어 달면서 신들에 / 이미지도 캐릭터화해서 해」 · docs/design/roman72-site-2026-10-31/order-1332.txt)
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -100,6 +101,13 @@ function sayIt(text) {
   try { if (!canSay()) return; speechSynthesis.cancel(); if (!text) return; const u = new SpeechSynthesisUtterance(text); u.lang = EN ? 'en-US' : 'ko-KR'; u.rate = 0.9; speechSynthesis.speak(u); } catch { /* 소리 없음 */ }
 }
 const sndIcon = () => { const s = sv('svg', {width: 22, height: 22, viewBox: '0 0 24 24', 'aria-hidden': 'true'}); s.append(sP('y11-spk', 'M3 9h4l5-4v14l-5-4H3z'), sP('y11-spw', 'M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13')); return s; };
+/** 말풍선 머리 위 지킴이 — 「(신 얼굴) 지킴이 · 신 이름 ›」 · 누르면 로마 신 72 쪽 그 신 카드(#/roman/<번호>) · 불빛 판(켜짐 · 꺼짐 · 모름)은 그대로(뜻이 섞이지 않게)
+    얼굴 = 신 캐릭터 그림(site/next/roman-art · 이름이 바로 옆이라 그림 이름은 비움) · 신 = roman72.js LIGHTS(SEATS 「talk」 무리 차례) */
+export function godOf(k) {
+  const n = LIGHTS[k], g = GODS[n]; if (!g) return null;
+  return h('a', {class: 'y11-god', href: '#/roman/' + n, 'data-n': String(n)}, h('img', {class: 'y11-gi', src: artOf(n), alt: '', width: 52, height: 52, decoding: 'async'}),
+    h('span', {class: 'y11-gt'}, h('span', {class: 'y11-gl', text: EN ? 'Guardian' : '지킴이'}), ' ', h('b', {class: 'y11-gn', text: EN ? g[2] : g[0]})), h('i', {class: 'y11-gg', 'aria-hidden': 'true', text: '›'}));
+}
 /** 펼친 칸 채우기 — 뜻 줄 · 불빛 판 · 말풍선(누른 불빛이 답함) · 앞 · 다음 · 소리 · 대표 회사 기록이라는 말(panel = home-new.js 가 만든 빈 칸 .y11-x) */
 export function talkFill(panel, w, W, WG = []) {
   const L = o => (EN ? o?.en : o?.ko), it = k => (w.items ?? []).find(x => x?.k === k) ?? null, nameOf = k => L(W.names?.[k]) ?? '';
@@ -113,6 +121,7 @@ export function talkFill(panel, w, W, WG = []) {
   function fill(k) {
     const x = it(k), st = stOf(x), tx = L(x), q = TALK_Q[k] ?? ['?', '?', '', ''], kind = sceneKind(k, st, w.calc);
     body.replaceChildren(...[
+      godOf(k),
       h('div', {class: 'y11-bh'}, h('b', {class: 'y11-bk', text: EN ? `${k} · ${nameOf(k)}` : `${k}번 ${nameOf(k)}`}), h('span', {class: 'y11-ans y11-a-' + st, text: tl(TALK_A[st])})),
       h('p', {class: 'y11-bq', text: EN ? q[1] : q[0]}),
       kind ? (k === 8 ? scene8(kind) : scene9(kind)) : null,

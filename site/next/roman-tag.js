@@ -4,7 +4,7 @@
    app.js route 가 쪽을 그린 뒤 이 모듈을 받아 place 를 부름(첫 화면은 다 그린 뒤 · 가장 큰 그림을 늦추지 않게) · 모양은 roman-tag.css(받은 뒤에 붙임 — 모양 없는 한순간 0)
    쪽 차례 기계(jobs-order.js jobsTail · jobsBoldLate)는 이 이름표(.rmt)를 맨 아래 작은 줄로 셈 — 이름표 때문에 다른 칸이 옮겨지지 않음 */
 import {ON as EN} from './i18n.js';
-import {GODS, roomOf} from './roman72.js';
+import {GODS, roomOf, artOf} from './roman72.js';
 
 const CSS = '/next/roman-tag.css';
 let cssP = null;
@@ -17,15 +17,16 @@ const css = () => (cssP ??= new Promise(res => {
   l.addEventListener('load', done, {once: true}); l.addEventListener('error', done, {once: true});
 }));
 
-/** 이름표 하나 — 「이 방 지킴이 · 신 이름 ›」 */
+/** 이름표 하나 — 「(얼굴) 이 방 지킴이 · 신 이름 ›」 · 얼굴 = 신 캐릭터 그림(사장님 2026-10-31 07:32(+03) 「이미지도 캐릭터화해서 해」 · order-1332.txt) — 이름이 바로 옆이라 그림 이름은 비움(alt="") */
 export function tagOf(n) {
   const g = GODS[n]; if (!g) return null;
-  const a = document.createElement('a'), l = document.createElement('span'), b = document.createElement('b'), i = document.createElement('i');
+  const a = document.createElement('a'), im = document.createElement('img'), l = document.createElement('span'), b = document.createElement('b'), i = document.createElement('i');
+  im.className = 'rmt-a'; im.src = artOf(n); im.alt = ''; im.width = 44; im.height = 44; im.decoding = 'async'; im.loading = 'lazy';
   a.className = 'rmt'; a.href = '#/roman/' + n; a.dataset.n = String(n);
   l.className = 'rmt-l'; l.textContent = EN ? 'Room guardian' : '이 방 지킴이';
   b.className = 'rmt-n'; b.textContent = EN ? g[2] : g[0];
   i.setAttribute('aria-hidden', 'true'); i.textContent = '›';
-  a.append(l, ' ', b, ' ', i); // 한 글줄(안쪽은 inline) — 글 시작 왼쪽 줄 잣대(measure_type · check_why [10] 7)에 칸 셋이 따로 잡히지 않게 · 가운데 맞춤 한 덩이
+  a.append(im, l, ' ', b, ' ', i); // 한 글줄(안쪽은 inline) — 글 시작 왼쪽 줄 잣대(measure_type · check_why [10] 7)에 칸 셋이 따로 잡히지 않게 · 가운데 맞춤 한 덩이
   return a;
 }
 

@@ -16,6 +16,10 @@
 //   ⑥ 방 지킴이 이름표(사장님 2026-10-31 05:51(+03) 「응」 — 물음 「방마다 그 신 이름표도 달아 볼까요?」 · site/next/roman-tag.js · roman72.js ROOMS)
 //      — 방마다 하나 · 그 방 지킴이 신 이름 · #/roman/<번호> · 쪽 맨 아래 카톡 줄 위 · 48px · 17px · 화면 안 · 이름표 없는 쪽(로마 신 72 · 시황 · 칩) 0
 //      · 이름표 누름 → 로마 신 72 쪽 그 신 카드가 화면 안 · 테 · 영어 이름표 · 아주 크게 320 · 자료 짝(지킴이 신의 자리 고리가 그 방)
+//   ⑦ 신 캐릭터 그림 · 불빛 지킴이(사장님 2026-10-31 07:32(+03) 「어 달면서 신들에 / 이미지도 캐릭터화해서 해」 · order-1332.txt · 그림 기계 scripts/atlas11/next/roman_art.mjs)
+//      — ① 그림 일흔둘 = 기계가 그린 것 그대로 · 글자 · 글 속 style · 스크립트 · 바깥 고리 0 · 한 장 12KB 안 · 서로 다름 · 무리 테 빛 · 불빛 지킴이 표(LIGHTS) = SEATS 「talk」 차례
+//      · ② 카드마다 얼굴(그 신 그림 · 이름 비움) · 서버가 일흔둘을 그림 꼴로 줌 · 내려 보면 일흔둘 모두 그려짐 · ⑥ 이름표 얼굴 = 그 방 신 그림(그려짐)
+//      · 첫 화면 말하는 불빛 열하나 — 누를 때마다 말풍선 맨 위 「(얼굴) 지킴이 · 신 이름 ›」 = 그 불빛 자리 신 · 48px · 17px · 화면 안 · 누름 → 로마 신 72 그 신 카드 · 영어 · 아주 크게 320
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -25,7 +29,8 @@ import {screenHits, RUIN, RUIN_OK} from '../../../site/next/words.js';
 import {OLD_NAME_RE, NEW_NAME} from './rename.mjs';
 import {cssRules} from './page_rules.mjs';
 import {BRAND, josa} from '../../../site/next/brand.js';
-import {GROUPS, GODS, ZONES, SEATS, ONE_FIX, ROOMS, roomOf} from '../../../site/next/roman72.js';
+import {GROUPS, GODS, ZONES, SEATS, ONE_FIX, ROOMS, roomOf, LIGHTS, artOf} from '../../../site/next/roman72.js';
+import {svgOf, ART, GROUP_BG} from './roman_art.mjs';
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -103,6 +108,25 @@ const LIST = JSON.parse(await fs.readFile(path.join(ROOT, 'docs/design/roman72-2
     const tcss = cssRules('site/next/roman-tag.css'); check(!tcss.length, '① 이름표 모양 규칙(글씨 · 여백 잣대)', tcss.slice(0, 4).join(' | '));
     R.m.rooms = vals.length;
   }
+  { // ⑦ 신 캐릭터 그림(site/next/roman-art · roman_art.mjs) · 불빛 지킴이 표(LIGHTS)
+    const files = [], bad = [];
+    for (let n = 1; n <= 72; n++) {
+      let f = null; try { f = await fs.readFile(path.join(ROOT, 'site/next/roman-art', n + '.svg'), 'utf8'); } catch { bad.push(`${n} 파일 없음`); continue; }
+      files.push(f);
+      if (f !== svgOf(n)) bad.push(`${n} 기계가 그린 것과 다름(node scripts/atlas11/next/roman_art.mjs)`);
+      if (/<script|<style|style=|<text|<image|<foreignObject|\son[a-z]+=|href=/i.test(f) || /http/i.test(f.replace('xmlns="http://www.w3.org/2000/svg"', ''))) bad.push(`${n} 글자 · style · 스크립트 · 바깥 고리`);
+      if (Buffer.byteLength(f) > 12000) bad.push(`${n} ${Buffer.byteLength(f)}바이트(12KB 넘음)`);
+      if (!f.includes(`stroke="${GROUP_BG[GODS[n][5]][1]}"`) || !f.startsWith('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"')) bad.push(`${n} 무리 테 빛 · 그림 틀`);
+      if (artOf(n) !== `/next/roman-art/${n}.svg`) bad.push(`${n} 주소 ${artOf(n)}`);
+    }
+    check(!bad.length && files.length === 72 && Object.keys(ART).length === 72, '⑦ 그림 일흔둘 = 기계 그림 · 글자 · style · 스크립트 · 바깥 고리 0 · 12KB 안 · 무리 테', bad.slice(0, 5).join(' | '));
+    check(new Set(files).size === 72, '⑦ 그림 일흔둘이 서로 다름', 72 - new Set(files).size);
+    const talk = SEATS.filter(x => x[0] === 'talk'), lb = [];
+    if (Object.keys(LIGHTS).length !== 11) lb.push('불빛 ' + Object.keys(LIGHTS).length);
+    talk.forEach((x, i) => { if (LIGHTS[i + 1] !== x[4] || !x[1].startsWith(`${i + 1}번 불빛`) || !GODS[x[4]]) lb.push(`${i + 1} → ${LIGHTS[i + 1]} · 자리 ${x[1]} · 신 ${x[4]}`); });
+    check(!lb.length, '⑦ 불빛 지킴이 표 = SEATS 「talk」 차례(n번 불빛 → 그 자리 신)', lb.slice(0, 4).join(' | '));
+    R.m.art = {n: files.length, bytes: files.reduce((a, f) => a + Buffer.byteLength(f), 0)};
+  }
   R.m.seats = SEATS.length; R.m.zones = cnt; R.m.links = new Set(SEATS.map(s => s[3]).filter(Boolean)).size;
 }
 
@@ -170,7 +194,8 @@ const readCards = p => p.evaluate(() => [...document.querySelectorAll('#view .rm
   tag: c.tagName.toLowerCase(), href: c.getAttribute('href'), n: +c.dataset.n, zone: c.closest('section.rm-zone')?.id ?? null,
   spot: c.querySelector('.rm-spot')?.textContent.trim(), name: c.querySelector('.rm-gn')?.textContent.trim(), la: c.querySelector('.rm-la')?.textContent.trim() ?? null,
   laLang: c.querySelector('.rm-la')?.getAttribute('lang') ?? null, one: c.querySelector('.rm-one')?.textContent.trim(), wl: c.querySelector('.rm-wl')?.textContent.trim(),
-  why: c.querySelector('.rm-wt')?.textContent.trim(), grp: c.querySelector('.rm-grp')?.textContent.trim()})));
+  why: c.querySelector('.rm-wt')?.textContent.trim(), grp: c.querySelector('.rm-grp')?.textContent.trim(),
+  av: c.querySelector('.rm-god > img.rm-av')?.getAttribute('src') ?? null, avAlt: c.querySelector('.rm-god > img.rm-av')?.getAttribute('alt') ?? null})));
 const cardsOk = (cards, en) => {
   const bad = [];
   if (cards.length !== 72) bad.push('카드 ' + cards.length);
@@ -184,6 +209,7 @@ const cardsOk = (cards, en) => {
     if (c.zone !== 'rm-z-' + s[0]) bad.push(`${i + 1} 무리 ${c.zone}`);
     if (s[3] ? (c.tag !== 'a' || c.href !== s[3]) : (c.tag !== 'div' || c.href !== null)) bad.push(`${i + 1} 고리 ${c.tag} ${c.href} ≠ ${s[3]}`);
     if (c.la !== null && c.laLang !== 'la') bad.push(`${i + 1} 라틴 이름 말(lang)`);
+    if (c.av !== artOf(s[4]) || c.avAlt !== '') bad.push(`${i + 1} 얼굴 ${c.av} · 이름 「${c.avAlt}」`); // 신 캐릭터 그림(order-1332) — 이름이 바로 옆이라 그림 이름은 비움
   });
   return bad;
 };
@@ -206,6 +232,14 @@ try {
     check(s.title === '로마 신 72 · ' + NEW_NAME, `${tag} 창 제목`, s.title);
     check(s.kk === 8, `${tag} 무리마다 카톡 단추 하나`, s.kk);
     judge(tag, await MEASURE(p));
+    if (w === 390 && !font) { // ⑦ 얼굴 일흔둘 — 서버가 그림 꼴로 줌 · 내려 보면 모두 그려짐(화면 가까이 올 때 받음 · 사진 찍기 전에)
+      const srv = await Promise.all(Array.from({length: 72}, (_, i) => p.request.get(base + artOf(i + 1)).then(r => (r.ok() && /image\/svg\+xml/.test(r.headers()['content-type'] ?? '') ? null : `${i + 1} ${r.status()} ${r.headers()['content-type']}`), e => `${i + 1} ${e.message}`)));
+      check(!srv.filter(Boolean).length, '⑦ 서버가 그림 일흔둘을 그림 꼴(image/svg+xml)로 줌', srv.filter(Boolean).slice(0, 3).join(' | '));
+      const im = await p.evaluate(async () => { for (let y = 0, H = document.documentElement.scrollHeight; y < H; y += 500) { scrollTo(0, y); await new Promise(r => setTimeout(r, 80)); }
+        const a = [...document.querySelectorAll('#view img.rm-av')]; for (let i = 0; i < 40 && a.some(x => !(x.complete && x.naturalWidth > 0)); i++) await new Promise(r => setTimeout(r, 100));
+        scrollTo(0, 0); return {n: a.length, ok: a.filter(x => x.complete && x.naturalWidth > 0).length, w: [...new Set(a.map(x => Math.round(x.getBoundingClientRect().width)))]}; });
+      check(im.n === 72 && im.ok === 72 && im.w.join() === '64', '⑦ 내려 보면 얼굴 일흔둘이 모두 그려짐(64px)', JSON.stringify(im));
+    }
     if (w === 390 && !font && OUT) { // 결과 폴더에 사진 셋(깃허브 결과와 함께 main 에 남음 — 끝 보고 그림) — 머리 · 말하는 불빛 무리 · 다른 쪽 무리
       const shot = async (name, sel) => { if (sel) await p.evaluate(q => { const e = document.querySelector(q); if (e) window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - 70); }, sel); await p.waitForTimeout(250); await p.screenshot({path: path.join(path.dirname(OUT), name), type: 'jpeg', quality: 70}).catch(() => {}); };
       await shot('roman-top.jpg', null); await shot('roman-talk.jpg', '#rm-z-talk'); await shot('roman-more.jpg', '#rm-z-more .rm-grid'); await p.evaluate(() => window.scrollTo(0, 0));
@@ -308,6 +342,7 @@ try {
       const e = document.querySelector('#view > a.rmt'); if (!e) return null;
       const r = e.getBoundingClientRect(), kk = document.querySelector('#view > .kk-pgrow'), z = parseFloat(getComputedStyle(document.querySelector('#view')).zoom) || 1;
       return {n: document.querySelectorAll('#view .rmt').length, href: e.getAttribute('href'), label: e.querySelector('.rmt-l')?.textContent.trim(), name: e.querySelector('.rmt-n')?.textContent.trim(),
+        im: e.querySelector('img.rmt-a')?.getAttribute('src') ?? null, imAlt: e.querySelector('img.rmt-a')?.getAttribute('alt') ?? null,
         h: Math.round(r.height), left: Math.round(r.left), right: Math.round(r.right), vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth,
         fs: Math.min(...[...e.querySelectorAll('span, b')].map(x => parseFloat(getComputedStyle(x).fontSize) * z)), kkAfter: kk ? !!(e.compareDocumentPosition(kk) & Node.DOCUMENT_POSITION_FOLLOWING) : null};
     });
@@ -319,7 +354,9 @@ try {
       check(s.href === '#/roman/' + n && s.label === (en ? 'Room guardian' : '이 방 지킴이') && s.name === (en ? GODS[n][2] : GODS[n][0]), `${tag} 이름 · 고리 = 자료`, `${s.label} · ${s.name} · ${s.href}`);
       check(s.h >= 47.5 && s.fs >= 16.9 && s.left >= 0 && s.right <= s.vw + 0.5 && s.sw <= s.vw, `${tag} 48px · 17px · 화면 안`, JSON.stringify(s));
       check(s.kkAfter !== false, `${tag} 카톡 쪽 줄 위`, s.kkAfter);
+      check(s.im === artOf(n) && s.imAlt === '', `${tag} 얼굴 = 그 방 신 그림(이름 비움 · order-1332)`, `${s.im} 「${s.imAlt}」`);
     };
+    const tagImg = q => q.evaluate(async () => { const e = document.querySelector('#view > a.rmt'); e?.scrollIntoView({block: 'center'}); const im = e?.querySelector('img.rmt-a'); for (let i = 0; i < 40 && im && !(im.complete && im.naturalWidth > 0); i++) await new Promise(r => setTimeout(r, 100)); return !!im && im.complete && im.naturalWidth > 0; });
     const ctx = await ctxOf(390), p = await ctx.newPage(), errs = errsOf(p);
     await p.goto(URL_OF('#/dori'), {waitUntil: 'load', timeout: 60000}); await p.waitForTimeout(300);
     for (const [key, n] of Object.entries(ROOMS)) {
@@ -352,8 +389,50 @@ try {
         const hr = routeOf(key), n = ROOMS[key];
         await q4.evaluate(h => { location.hash = h; }, hr); const okk = await waitTag(q4, n); await q4.waitForTimeout(okk ? 1200 : 0);
         tagOk(`⑥ ${en ? '영어' : `${w} 아주 크게`} ${hr}`, await readTag(q4), n, en);
+        check(await tagImg(q4), `⑥ ${en ? '영어' : `${w} 아주 크게`} ${hr} 얼굴 그림이 그려짐`);
       }
       check(!e4.length, `⑥ ${en ? '영어' : '아주 크게'} 화면 오류 0`, e4.join(' | ')); await c4.close();
+    }
+  }
+  // ⑦ 첫 화면 말하는 불빛 지킴이(order-1332) — 불빛 열하나 · 누름 → 그 신 카드 · 영어 · 아주 크게 320
+  {
+    const readGod = q => q.evaluate(() => {
+      const x = document.querySelector('#view section.nh-hero details.y11-box[open] > .y11-x'), g = x?.querySelector('.y11-bub .y11-god'); if (!g) return null;
+      const r = g.getBoundingClientRect(), im = g.querySelector('img.y11-gi'), z = parseFloat(getComputedStyle(document.querySelector('#view')).zoom) || 1;
+      return {href: g.getAttribute('href'), n: g.dataset.n, label: g.querySelector('.y11-gl')?.textContent.trim(), name: g.querySelector('.y11-gn')?.textContent.trim(), src: im?.getAttribute('src') ?? null, alt: im?.getAttribute('alt') ?? null,
+        h: Math.round(r.height), w: Math.round(r.width), left: Math.round(r.left), right: Math.round(r.right), vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth,
+        fs: Math.min(...[...g.querySelectorAll('span, b')].map(e => parseFloat(getComputedStyle(e).fontSize) * z)), first: x.querySelector('.y11-bb')?.firstElementChild === g, pressed: x.querySelector('.y11-lamp[aria-pressed="true"]')?.dataset.k ?? null};
+    });
+    const godImg = q => q.evaluate(async () => { const im = document.querySelector('#view details.y11-box[open] .y11-god img.y11-gi'); im?.scrollIntoView({block: 'center'}); for (let i = 0; i < 40 && im && !(im.complete && im.naturalWidth > 0); i++) await new Promise(r => setTimeout(r, 100)); return !!im && im.complete && im.naturalWidth > 0; });
+    const openTalk = async q => { const s = q.locator('#view section.nh-hero details.y11-box > summary').first(); if (!await s.count()) return false; await s.scrollIntoViewIfNeeded(); await s.click();
+      return q.locator('#view section.nh-hero details.y11-box[open] > .y11-x .y11-bd').first().waitFor({state: 'attached', timeout: 15000}).then(() => true, () => false); };
+    const press = async (q, k) => { const b = q.locator(`#view section.nh-hero details.y11-box[open] > .y11-x .y11-lamp[data-k="${k}"]`).first(); await b.scrollIntoViewIfNeeded(); await b.click(); await q.waitForTimeout(120); };
+    const godOk = (tag, g, k, en = false) => {
+      const n = LIGHTS[k];
+      check(!!g, `${tag} 지킴이 있음`, 'null'); if (!g) return;
+      check(g.pressed === String(k) && g.href === '#/roman/' + n && g.n === String(n) && g.label === (en ? 'Guardian' : '지킴이') && g.name === (en ? GODS[n][2] : GODS[n][0]), `${tag} 지킴이 = 그 불빛 자리 신`, `${g.pressed} · ${g.label} · ${g.name} · ${g.href}`);
+      check(g.src === artOf(n) && g.alt === '' && g.first, `${tag} 얼굴 = 그 신 그림 · 말풍선 맨 위`, `${g.src} 「${g.alt}」 ${g.first}`);
+      check(g.h >= 47.5 && g.w >= 47.5 && g.fs >= 16.9 && g.left >= 0 && g.right <= g.vw + 0.5 && g.sw <= g.vw, `${tag} 48px · 17px · 화면 안`, JSON.stringify(g));
+      if (en) check(!HAN.test(`${g.label}${g.name}`), `${tag} 영어 한글 0`, `${g.label} ${g.name}`);
+    };
+    const ctx = await ctxOf(390), p = await ctx.newPage(), errs = errsOf(p);
+    await p.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); await p.waitForTimeout(800);
+    if (!await openTalk(p)) check(false, '⑦ 첫 화면 말하는 불빛 판', '안 열림');
+    else {
+      for (let k = 1; k <= 11; k++) { await press(p, k); godOk(`⑦ 불빛 ${k}`, await readGod(p), k); }
+      check(await godImg(p), '⑦ 불빛 지킴이 얼굴 그림이 그려짐');
+      if (OUT) { await p.waitForTimeout(250); await p.screenshot({path: path.join(path.dirname(OUT), 'roman-light.jpg'), type: 'jpeg', quality: 70}).catch(() => {}); }
+      const n = LIGHTS[11]; await p.locator('#view details.y11-box[open] .y11-god').first().click(); // 마지막에 고른 11번 불빛 지킴이
+      const ok = await p.waitForFunction(n => { const c = document.querySelector(`#view .rm-card[data-n="${n}"]`); if (!c || !c.classList.contains('rm-on')) return false; const r = c.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }, n, {timeout: 8000}).then(() => true, () => false);
+      check(ok && await p.evaluate(() => location.hash) === '#/roman/' + n, '⑦ 지킴이 누름 → 로마 신 72 그 신 카드(화면 안 · 테)', await p.evaluate(() => location.hash));
+    }
+    check(!errs.length, '⑦ 화면 오류 0', errs.join(' | ')); await ctx.close();
+    for (const [w, font, en] of [[390, 0, true], [320, 2, false]]) {
+      const c5 = await ctxOf(w, {font, en}), q5 = await c5.newPage(), e5 = errsOf(q5), tag = `⑦ ${en ? '영어' : `${w} 아주 크게`}`;
+      await q5.goto(URL_OF('#/', en ? '&lang=en' : ''), {waitUntil: 'load', timeout: 60000}); await q5.waitForTimeout(800);
+      if (!await openTalk(q5)) { check(false, `${tag} 말하는 불빛 판`, '안 열림'); await c5.close(); continue; }
+      for (const k of [1, 8, 10]) { await press(q5, k); godOk(`${tag} 불빛 ${k}`, await readGod(q5), k, en); }
+      check(!e5.length, `${tag} 화면 오류 0`, e5.join(' | ')); await c5.close();
     }
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }

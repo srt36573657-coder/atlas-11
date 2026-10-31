@@ -212,3 +212,10 @@ export function roomOf(k, a) {
   if (k === 'f') return ROOMS['f/' + s[0]] ?? null;
   return Object.hasOwn(ROOMS, k) ? ROOMS[k] : null;
 }
+
+/* 말하는 불빛 지킴이(사장님 2026-10-31 07:32(+03) 「어 달면서 신들에 / 이미지도 캐릭터화해서 해」 · docs/design/roman72-site-2026-10-31/order-1332.txt)
+   첫 화면 말하는 불빛 번호(1 ~ 11) → 그 자리 신 = SEATS 「talk」 무리 차례 그대로(자리 이름 「n번 불빛 · …」 — 검사가 맞댐) · home-talk.js 말풍선 머리에 얼굴과 이름 */
+export const LIGHTS = Object.freeze(Object.fromEntries(SEATS.filter(s => s[0] === 'talk').map((s, i) => [i + 1, s[4]])));
+
+/** 신 캐릭터 그림 주소 — site/next/roman-art/<번호>.svg(scripts/atlas11/next/roman_art.mjs 가 그림 · 글자 없는 그림 · 그림마다 무리 색 동그라미 판) */
+export const artOf = n => (GODS[n] ? `/next/roman-art/${n}.svg` : null);
