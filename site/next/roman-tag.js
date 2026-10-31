@@ -21,7 +21,7 @@ const css = () => (cssP ??= new Promise(res => {
 export function tagOf(n) {
   const g = GODS[n]; if (!g) return null;
   const a = document.createElement('a'), im = document.createElement('img'), l = document.createElement('span'), b = document.createElement('b'), i = document.createElement('i');
-  im.className = 'rmt-a'; im.src = artOf(n); im.alt = ''; im.width = 44; im.height = 44; im.decoding = 'async'; im.loading = 'lazy';
+  im.className = 'rmt-a'; im.alt = ''; im.width = 44; im.height = 44; im.decoding = 'async'; im.src = artOf(n); // 곧바로 받음(늦게 받기 없음) — 쪽을 그린 뒤 단 한 번 · 단 뒤 누름에 그림 요청이 끼지 않게(check_hold 「기록 파일 누를 때 망 요청 0」)
   a.className = 'rmt'; a.href = '#/roman/' + n; a.dataset.n = String(n);
   l.className = 'rmt-l'; l.textContent = EN ? 'Room guardian' : '이 방 지킴이';
   b.className = 'rmt-n'; b.textContent = EN ? g[2] : g[0];
@@ -33,9 +33,10 @@ export function tagOf(n) {
 /** 쪽에 이름표 달기 — k · a = app.js parse 꼴 · root = #view · alive() = 아직 같은 쪽인지 · 돌려줌 = 단 이름표(없으면 null) */
 export async function place(k, a, root, alive = () => true) {
   const n = roomOf(k, a); if (!n || !root) return null;
-  await css();
-  if (!alive() || !root.isConnected || root.querySelector(':scope > .rmt')) return null;
   const tag = tagOf(n); if (!tag) return null;
+  const im = tag.querySelector('img'), seen = im ? Promise.race([im.decode().catch(() => {}), new Promise(r => setTimeout(r, 3000))]) : null; // 얼굴 그림을 먼저 받아 둠(늦어도 3초) — 단 때 이미 그려진 그림
+  await Promise.all([css(), seen]);
+  if (!alive() || !root.isConnected || root.querySelector(':scope > .rmt')) return null;
   const kk = root.querySelector(':scope > .kk-pgrow'); // 카톡 쪽 줄(맨 아래)이 이미 있으면 그 위 · 아직 없으면 끝(카톡 줄은 뒤에 붙음)
   if (kk) kk.before(tag); else root.append(tag);
   return tag;
