@@ -139,7 +139,7 @@ function judge(m, tag, B) {
     const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity, m.thumbTop ?? Infinity), hb = m.hero ? Math.max(m.hero.h1Bottom ?? Infinity, m.hero.noBottom ?? Infinity, m.hero.why1Bottom ?? 0) : Infinity;
     check(!!m.hero && hb <= lim + 0.5, `${tag} ① 소개 칸 머리 · 권하지 않음 · 첫 몰린 곳 「왜?」 한 화면 안`, m.hero ? `머리 ${m.hero.h1Bottom} · 권하지 않음 ${m.hero.noBottom} · 첫 「왜?」 ${m.hero.why1Bottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '소개 칸(section.nh-hero)이 없음'); }
   check(!!m.hero?.no, `${tag} ① 소개 칸 「사고팔기를 권하지 않습니다」`, '소개 칸에 그 줄이 없음');
-  check(!!m.map && m.map.svg && m.map.rows === MAP_N && m.map.ask, `${tag} ② 업종 점 그림 · 네 자리 수 · 둘이 물음`, m.map ? `점 ${m.map.svg} · 줄 ${m.map.rows} · 물음 ${m.map.ask}` : '업종 칸(section.nh-map)이 없음'); // 2026-10-28 — 옛 「테마 시계 칸 글자 수」
+  check(!!m.map && m.map.svg && m.map.rows === MAP_N && m.map.ask, `${tag} ② 업종 점 그림 · 네 자리 수 · 수르 물음`, m.map ? `점 ${m.map.svg} · 줄 ${m.map.rows} · 물음 ${m.map.ask}` : '업종 칸(section.nh-map)이 없음'); // 2026-10-28 — 옛 「테마 시계 칸 글자 수」
   if (B) { const lim = Math.floor(0.9 * B.first); /* 2026-10-28 — 첫 한 화면 글만 셈 · 처음 온 기기 · 다시 온 기기 같은 기준(옛: 다시 온 기기는 60%) */ check(m.chars <= lim, `${tag} ② 글자 수`, `${m.chars}자 > ${lim}자(첫 한 화면 · 기준 ${B.first}의 90%) · 글 ${(m.top ?? []).map(x => x[0] + ' ' + x[1] + ' 「' + x[2] + '」').join(' / ')}`); }
   check(!m.lowContrast.length, `${tag} ② 글 대비`, `${m.lowContrast.length}곳 · ${m.lowContrast.slice(0, 3).join(' · ')}`);
   check(!m.uiContrast.length, `${tag} ② 단추 테두리 대비 3`, `${m.uiContrast.length}곳 · ${m.uiContrast.slice(0, 3).join(' · ')}`);
@@ -147,7 +147,7 @@ function judge(m, tag, B) {
   check(!m.small.length, `${tag} ② 누르는 크기 48`, `${m.small.length}곳 · ${m.small.slice(0, 3).join(' · ')}`);
   check(!m.ruin.length, `${tag} ④ 망치는 길 그림 0`, `${m.ruin.length}곳 · ${[...new Set(m.ruin)].slice(0, 4).join(' · ')}`);
   const badSay = m.says.filter(t => !/\?$/.test(t));
-  check(m.says.length > 0 && !badSay.length, `${tag} ④ 둘이 말은 「?」로 끝남`, m.says.length ? badSay.slice(0, 3).join(' | ') : '둘이 말([data-say])이 없음');
+  check(m.says.length > 0 && !badSay.length, `${tag} ④ 수르 말은 「?」로 끝남`, m.says.length ? badSay.slice(0, 3).join(' | ') : '수르 말([data-say])이 없음');
   check(!m.numQ.length, `${tag} ④ 숫자 줄 「?」는 맨 앞뿐`, m.numQ.slice(0, 3).join(' | '));
 }
 function keep(m, tag) {
@@ -232,7 +232,7 @@ try {
         `${vw} × ${vh} 만수르 — ① 머리 줄 단추 하나 · 그 주소 · 새 창 · 48px · 첫 한 화면 안`, JSON.stringify(ms));
       if (ms) {
         const [pop] = await Promise.all([ctx.waitForEvent('page', {timeout: 10000}).catch(() => null), p.locator('#view a.nh-mans').first().click()]);
-        check(!!pop && pop.url().startsWith('https://shin-yxy.gino.im/') && /#\/$/.test(p.url()), `${vw} × ${vh} 만수르 누름 → 새 창이 그 주소 · 둘이 첫 화면은 그대로`, `${pop ? pop.url() : '새 창 없음'} · ${p.url()}`);
+        check(!!pop && pop.url().startsWith('https://shin-yxy.gino.im/') && /#\/$/.test(p.url()), `${vw} × ${vh} 만수르 누름 → 새 창이 그 주소 · 수르 첫 화면은 그대로`, `${pop ? pop.url() : '새 창 없음'} · ${p.url()}`);
       }
       await ctx.close();
     }

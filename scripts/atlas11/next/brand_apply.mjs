@@ -29,15 +29,23 @@ export const FILES = [
 ].filter(f => fs.existsSync(path.join(ROOT, f)));
 
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const PART = ['이에요', '예요', '이라면', '라면', '이랑', '랑', '으로', '은', '는', '이', '가', '을', '를', '과', '와', '로', '아', '야']; // 긴 토씨 먼저
-const KO_RE = new RegExp(esc(FROM) + '(' + PART.join('|') + ')?', 'g');
+/* 2026-10-31 23:20(+04) 「둘리 이름름 경수르로 변경해」 · 23:46 「경수르가 아니라 수르! 수르!」(docs/design/mansour-2026-11-01/order-0420.txt) — 옛 이름 「둘이」는 보통 말이기도 함
+   → 낱말 하나로 선 이름만 바꿈(앞이 한글이 아니고 · 뒤가 한글이 아니거나 토씨 하나 뒤 한글이 아님 — 일흔둘이 · 둘이서 · 둘이나 · 앞뒤 둘이에요는 그대로)
+   · 토씨 더함(의 · 에 · 에서 · 에게 · 한테 · 도 · 만 · 처럼 · 까지 · 부터 · 보다) · --keep 「글」 = 이름처럼 보이는 보통 말(예: 「트와이스 멤버 둘이」)은 그대로 */
+const PART = ['이에요', '예요', '이라면', '라면', '이랑', '랑', '으로', '에서', '에게', '한테', '처럼', '까지', '부터', '보다', '은', '는', '이', '가', '을', '를', '과', '와', '의', '에', '로', '아', '야', '도', '만']; // 긴 토씨 먼저
+const KO_RE = new RegExp('(?<![가-힣])' + esc(FROM) + '(?:(' + PART.join('|') + ')(?![가-힣])|(?![가-힣]))', 'g');
 const EN_RE = FROM_EN ? new RegExp('\\b' + esc(FROM_EN) + '\\b', 'g') : null;
+const KEEP = process.argv.flatMap((a, i, all) => (a === '--keep' && all[i + 1] ? [all[i + 1]] : []));
+const HOLD = '\u0000';
+const hold = s => { const held = []; let t = s; for (const k of KEEP) if (t.includes(k)) { t = t.split(k).join(HOLD + held.length + HOLD); held.push(k); } return [t, held]; };
+const unhold = (t, held) => t.replace(/\u0000(\d+)\u0000/g, (_, i) => held[+i]);
 /** 글 한 조각 바꾸기 — 돌려줌 [새 글, 바꾼 수] */
 export function swap(s) {
   let n = 0;
-  let t = s.replace(KO_RE, (m, p) => { n++; return p ? josa(TO, p) : TO; });
+  const [h, held] = hold(s);
+  let t = h.replace(KO_RE, (m, p) => { n++; return p ? josa(TO, p) : TO; });
   if (EN_RE) t = t.replace(EN_RE, () => { n++; return TO_EN; });
-  return [t, n];
+  return [unhold(t, held), n];
 }
 /** 범위 목록([시작, 끝]) 안만 바꿈 — 뒤에서부터 */
 function swapRanges(src, ranges) {
@@ -57,7 +65,8 @@ function textRanges(file, src) {
 /** 남은 옛 이름(대상 글 안) */
 export function leftovers(file, src) {
   const hits = [];
-  for (const [a, b] of textRanges(file, src)) { const s = src.slice(a, b); if (s.includes(FROM) || (EN_RE && new RegExp('\\b' + esc(FROM_EN) + '\\b').test(s))) hits.push(`${file}:${src.slice(0, a).split('\n').length} 「${s.slice(0, 80)}」`); }
+  const ko = new RegExp(KO_RE.source); // 낱말 하나로 선 이름만(보통 말 「일흔둘이」 · 「둘이서」 · --keep 글은 셈 밖 — swap 과 같은 잣대)
+  for (const [a, b] of textRanges(file, src)) { const s = hold(src.slice(a, b))[0]; if (ko.test(s) || (EN_RE && new RegExp('\\b' + esc(FROM_EN) + '\\b').test(s))) hits.push(`${file}:${src.slice(0, a).split('\n').length} 「${s.slice(0, 80)}」`); }
   return hits;
 }
 
