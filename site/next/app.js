@@ -1332,6 +1332,12 @@ if (parse(location.hash || '#/').k !== '') { fontsOn = true; fontsAdd(); }
 /* 서른여섯 장 흐름(사장님 2026-10-19 16:46 「클릭을 하면 물 흐르듯 … 다음다음다음이 제대로 이어지게」 · 견본 flow36) — 테마 쪽(#/t/…)은 p-theme.js 가 「다음」을 그림 ·
    있는 쪽은 여기서 맨 아래에 「다음」 한 줄만 더함(그 쪽 칸 · 차례는 그대로) · 질문 중(#/why/<번호>) · 시황(#/shorts · 한 화면 넘김)은 더하지 않음 */
 const FLOW_NEXT = {sub: ['알림', '#/t/alert'], why: ['한 달 뒤', '#/why/later'], 'why/later': ['보유종목', '#/me'], me: ['가짜 돈 연습', '#/game'], game: ['진화', '#/jinhwa'], jinhwa: ['오늘 정리', '#/t/today']}; // 기승전결 길(사장님 2026-10-27 01:50 · 02:15) — 왜 사?(전) → 한 달 뒤(결) → 보유종목 · 서른여섯 장 흐름은 그대로(한 달 뒤를 그 사이에 끼움) · 옛 why → 보유종목
+/** 방 지킴이 이름표(사장님 2026-10-31 05:51(+03) 「응」 — 물음 「방마다 그 신 이름표도 달아 볼까요?」 · docs/design/roman72-site-2026-10-31/order-1151.txt)
+ *  그 방 지킴이 신(roman72.js ROOMS)이 있는 쪽만 · 모듈은 그 쪽을 연 뒤 받음 — 첫 화면은 다 그린 뒤(가장 큰 그림 2.5초를 늦추지 않게) · 늦게 끝난 앞 쪽은 버림 */
+function roomTag(k, a, root, my) {
+  const go = () => import('/next/roman-tag.js').then(m => m.place(k, a, root, () => my === seq)).catch(e => console.error(e));
+  if (k === '') afterLoad(go); else go();
+}
 function flowFoot(k, a, root, my) {
   const n = a ? (FLOW_NEXT[k + '/' + a] ?? null) : FLOW_NEXT[k]; if (!n) return;
   mod('theme').then(async m => { await sheetReady('/next/p-theme.css'); if (my === seq && root.isConnected && !root.querySelector('.th-foot')) root.append(h('nav', {class: 'th-foot', 'aria-label': '다음 쪽'}, m.footBtn(n[0], n[1]))); }).catch(() => {});
@@ -1382,6 +1388,7 @@ async function route(force) {
   root.replaceChildren(...[...(out.nodes ?? [])].filter(x => x != null && x !== false)); // null 칸은 글자로 안 그림(2026-10-22 고장 찾기)
   try { jobsOrder(k, a, root); } catch (e) { console.error(e); } // 잡스 차례 — 카톡 단추를 달기 전에 칸만 옮김(jobs-order.js)
   try { jobsBold(k, a, root); } catch (e) { console.error(e); } // 대범한 잡스 판(14:49 「고쳐라 대담하게」) — 주인공 크게 · 그림 · 단추 하나 · 나머지 「자세히 보기」
+  if (!out.noScroll && k !== 'roman') roomTag(k, a, root, my); // 로마 신 72 방 지킴이 이름표(사장님 2026-10-31 05:51(+03) 「응」 · roman-tag.js) — 쪽 맨 아래 · 카톡 줄 위 · 한 화면 넘김 쪽(시황)은 없음
   if (kkM) { const o = {title: out.title ?? '', url: absUrl(hash), ...kkM};
     const run = m => { if (!m || my !== seq) return; try { m.sweep(root, o); kkStop = m.watch(root, o); } catch (e) { console.error(e); } };
     if (kkm) run(kkm); else afterLoad(() => kkMod().then(run)); }

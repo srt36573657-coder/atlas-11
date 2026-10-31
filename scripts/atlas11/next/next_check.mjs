@@ -139,7 +139,7 @@ const knownHref = h => {
   if ((mm = /^#\/t\/c\/([0-9A-Z]{6})(?:\/(?:lead|why|rank|unknown|keep))?$/.exec(h))) return !!CO[mm[1]]; // 회사 여섯 쪽
   if (h === '#/jinhwa') return true; // 진화(위 막대 진화 단추와 같은 쪽 · 돌 판 첫 화면 「진화 n번째」 한 줄 — 2026-10-19 규칙 82)
   if (h === '#/sage') return true; // 서른아홉 스승 첫 쪽(둘이 단추 안 · p-sage.js)
-  if (h === '#/roman') return true; // 로마 신 72(둘이 단추 안 · p-roman.js · 사장님 2026-10-30(+03) 22:23)
+  if (/^#\/roman(\/([1-9]|[1-6]\d|7[0-2]))?$/.test(h)) return true; // 로마 신 72(둘이 단추 안 · p-roman.js · 사장님 2026-10-30(+03) 22:23) · #/roman/<1~72> = 방 지킴이 이름표가 가는 그 신 카드(roman-tag.js · 2026-10-31 05:51(+03) 「응」)
   if ((mm = /^#\/sage\/([a-z]+)$/.exec(h))) return !!SAGE?.people?.some(x => x.id === mm[1]); // 한 사람(첫 화면 스승 줄 · 앞 · 다음) — 이름이 sage39.json 에 있어야
   if (h === '#/why') return READY.has('why'); // 매매일지(왜 사? 열한 질문 — 가운데 단추)
   if ((mm = /^#\/why\/([0-9A-Z]{6})$/.exec(h))) return READY.has('why') && !!CO[mm[1]]; // 「이 회사로 왜 사?」(회사 화면 a.why-go · 보유종목 「이 회사로 왜 사? 적기」 — [3] 2)

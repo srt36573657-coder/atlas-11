@@ -13,6 +13,9 @@
 //   ③ 고리 — 카드가 가는 길마다 열어 봄(쪽이 그려짐 · 주소가 바뀌지 않음 · 화면 오류 0 · 종이 판 꺼짐) · 카드를 누르면 그 자리로 감
 //   ④ 영어(?lang=en) — 제목 · html lang · 창 제목 영어 · 카드 영어 글 = 자료 · 남은 한글 0 · 같은 재기
 //   ⑤ 길 — 둘이 단추 안 「로마 신 72」(서른아홉 스승 다음 줄) → 쪽 · 아래 단추 「둘이」가 지금 쪽 · 종이 판 켜짐 · 다른 쪽이면 꺼짐 · 영어 둘이 단추 안 이름 · 모르는 꼬리 주소도 같은 쪽
+//   ⑥ 방 지킴이 이름표(사장님 2026-10-31 05:51(+03) 「응」 — 물음 「방마다 그 신 이름표도 달아 볼까요?」 · site/next/roman-tag.js · roman72.js ROOMS)
+//      — 방마다 하나 · 그 방 지킴이 신 이름 · #/roman/<번호> · 쪽 맨 아래 카톡 줄 위 · 48px · 17px · 화면 안 · 이름표 없는 쪽(로마 신 72 · 시황 · 칩) 0
+//      · 이름표 누름 → 로마 신 72 쪽 그 신 카드가 화면 안 · 테 · 영어 이름표 · 아주 크게 320 · 자료 짝(지킴이 신의 자리 고리가 그 방)
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -22,7 +25,7 @@ import {screenHits, RUIN, RUIN_OK} from '../../../site/next/words.js';
 import {OLD_NAME_RE, NEW_NAME} from './rename.mjs';
 import {cssRules} from './page_rules.mjs';
 import {BRAND, josa} from '../../../site/next/brand.js';
-import {GROUPS, GODS, ZONES, SEATS, ONE_FIX} from '../../../site/next/roman72.js';
+import {GROUPS, GODS, ZONES, SEATS, ONE_FIX, ROOMS, roomOf} from '../../../site/next/roman72.js';
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -86,6 +89,20 @@ const LIST = JSON.parse(await fs.readFile(path.join(ROOT, 'docs/design/roman72-2
   check(SEATS.filter(s => s[3] === null).length <= 6, '① 고리 없는 자리 여섯 이하(제 주소가 없는 단추 · 쪽만)', SEATS.filter(s => s[3] === null).length);
   check(SEATS.every(s => /요\.$/.test(s[5]) && /[.?”]$/.test(s[6])), '① 왜 여기 = 끝난 문장(…요. · 영어 마침표)', SEATS.filter(s => !(/요\.$/.test(s[5]) && /[.?”]$/.test(s[6]))).map(s => s[4]).join(','));
   const css = cssRules('site/next/p-roman.css'); check(!css.length, '① 모양 규칙(글씨 · 여백 잣대)', css.slice(0, 4).join(' | '));
+  { // 방 지킴이 표(ROOMS) — 신마다 한 방 · 그 신의 자리 고리가 그 방 · 주소 → 신 셈(roomOf)
+    const vals = Object.values(ROOMS), bad = [];
+    for (const [key, n] of Object.entries(ROOMS)) {
+      const seat = SEATS.find(x => x[4] === n); if (!seat) { bad.push(`${key} 신 ${n} 자리 없음`); continue; }
+      const want = key === 's' ? null : key === 'w/*' ? /^#\/w\/[0-9A-Z]{6}$/ : key.startsWith('w/*/') ? new RegExp('^#\\/w\\/[0-9A-Z]{6}\\/' + key.slice(4) + '$') : new RegExp('^#\\/' + key.replace(/\//g, '\\/') + '$');
+      if (want === null ? seat[3] !== null : !want.test(seat[3] ?? '')) bad.push(`${key} → ${n} 자리 고리 ${seat[3]}`);
+    }
+    check(!bad.length && new Set(vals).size === vals.length && vals.every(n => GODS[n]), '① 방 지킴이 표 = 자리 고리 · 신마다 한 방', bad.slice(0, 4).join(' | '));
+    const cases = [['', '', 21], ['why', '', 43], ['why', '005930', 43], ['why', 'later', 36], ['t', '', 69], ['t', 'sprout/real', 34], ['t', 'i/x', null], ['w', '005930', 39], ['w', '005930/range', 18], ['f', 'ind', 17], ['f', 'rise', null], ['shorts', '', null], ['roman', '', null], ['s', 'x', 28], ['sage', 'socrates', 6]];
+    const miss = cases.filter(([k, a, n]) => roomOf(k, a) !== n);
+    check(!miss.length, '① 주소 → 방 지킴이 셈(roomOf)', JSON.stringify(miss));
+    const tcss = cssRules('site/next/roman-tag.css'); check(!tcss.length, '① 이름표 모양 규칙(글씨 · 여백 잣대)', tcss.slice(0, 4).join(' | '));
+    R.m.rooms = vals.length;
+  }
   R.m.seats = SEATS.length; R.m.zones = cnt; R.m.links = new Set(SEATS.map(s => s[3]).filter(Boolean)).size;
 }
 
@@ -282,6 +299,62 @@ try {
     const en = await q.evaluate(() => document.querySelector('#view .dm a[href="#/roman"]')?.textContent.trim());
     check(en?.startsWith('72 Roman Gods') && !HAN.test(en), '⑤ 영어 둘이 단추 안 「72 Roman Gods」', en);
     check(!e2.length, '⑤ 영어 화면 오류 0', e2.join(' | ')); await c2.close();
+  }
+
+  // ⑥ 방 지킴이 이름표 — 방마다(390) · 없는 쪽 · 누름 → 그 신 카드 · 영어 · 아주 크게 320
+  {
+    const routeOf = key => (key === '' ? '#/' : key === 's' ? '#/s/ZZZZZZ/2026-13-40/0/s' : key === 'w/*' ? '#/w/005930' : key.startsWith('w/*/') ? '#/w/005930/' + key.slice(4) : '#/' + key);
+    const readTag = q => q.evaluate(() => {
+      const e = document.querySelector('#view > a.rmt'); if (!e) return null;
+      const r = e.getBoundingClientRect(), kk = document.querySelector('#view > .kk-pgrow'), z = parseFloat(getComputedStyle(document.querySelector('#view')).zoom) || 1;
+      return {n: document.querySelectorAll('#view .rmt').length, href: e.getAttribute('href'), label: e.querySelector('.rmt-l')?.textContent.trim(), name: e.querySelector('.rmt-n')?.textContent.trim(),
+        h: Math.round(r.height), left: Math.round(r.left), right: Math.round(r.right), vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth,
+        fs: Math.min(...[...e.querySelectorAll('span, b')].map(x => parseFloat(getComputedStyle(x).fontSize) * z)), kkAfter: kk ? !!(e.compareDocumentPosition(kk) & Node.DOCUMENT_POSITION_FOLLOWING) : null};
+    });
+    const waitTag = (q, n) => q.waitForFunction(n => document.querySelector('#view > a.rmt')?.dataset.n === String(n), n, {timeout: 15000}).then(() => true, () => false);
+    const tagOk = (tag, s, n, en = false) => {
+      check(!!s, `${tag} 이름표 있음`, 'null');
+      if (!s) return;
+      check(s.n === 1, `${tag} 이름표 하나`, s.n);
+      check(s.href === '#/roman/' + n && s.label === (en ? 'Room guardian' : '이 방 지킴이') && s.name === (en ? GODS[n][2] : GODS[n][0]), `${tag} 이름 · 고리 = 자료`, `${s.label} · ${s.name} · ${s.href}`);
+      check(s.h >= 47.5 && s.fs >= 16.9 && s.left >= 0 && s.right <= s.vw + 0.5 && s.sw <= s.vw, `${tag} 48px · 17px · 화면 안`, JSON.stringify(s));
+      check(s.kkAfter !== false, `${tag} 카톡 쪽 줄 위`, s.kkAfter);
+    };
+    const ctx = await ctxOf(390), p = await ctx.newPage(), errs = errsOf(p);
+    await p.goto(URL_OF('#/dori'), {waitUntil: 'load', timeout: 60000}); await p.waitForTimeout(300);
+    for (const [key, n] of Object.entries(ROOMS)) {
+      const hr = routeOf(key), tag = `⑥ ${hr}`;
+      await p.evaluate(h => { location.hash = h; }, hr);
+      const ok = await waitTag(p, n); await p.waitForTimeout(ok ? 1700 : 0); // 늦게 붙는 줄(다음 한 줄 · 카톡 줄 · 쿠폰 칸)이 다 붙은 뒤 자리를 봄
+      tagOk(tag, await readTag(p), n);
+    }
+    for (const hr of ['#/roman', '#/shorts', '#/f/rise']) {
+      await p.evaluate(h => { location.hash = h; }, hr); await p.waitForTimeout(2500);
+      check(await p.evaluate(() => document.querySelectorAll('#view .rmt').length) === 0, `⑥ ${hr} 이름표 없음(지킴이 없는 쪽)`);
+    }
+    // 누름 — 서른아홉 스승 이름표 → #/roman/6 · 그 카드가 화면 안 · 테
+    await p.evaluate(() => { location.hash = '#/sage'; }); await waitTag(p, ROOMS.sage);
+    await p.locator('#view > a.rmt').scrollIntoViewIfNeeded(); await p.locator('#view > a.rmt').click();
+    const ok = await p.waitForFunction(n => { const c = document.querySelector(`#view .rm-card[data-n="${n}"]`); if (!c || !c.classList.contains('rm-on')) return false; const r = c.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }, ROOMS.sage, {timeout: 8000}).then(() => true, () => false);
+    check(ok && await p.evaluate(() => location.hash) === '#/roman/' + ROOMS.sage, '⑥ 이름표 누름 → 로마 신 72 그 신 카드(화면 안 · 테)', await p.evaluate(() => location.hash));
+    check(!errs.length, '⑥ 화면 오류 0', errs.join(' | ')); await ctx.close();
+    // 바로 연 #/roman/<번호> — 첫 화면 문 지킴이(포르투누스) 카드
+    const c3 = await ctxOf(390), q3 = await c3.newPage(), e3 = errsOf(q3);
+    await q3.goto(URL_OF('#/roman/' + ROOMS['']), {waitUntil: 'load', timeout: 60000}); await ready(q3);
+    const ok3 = await q3.waitForFunction(n => { const c = document.querySelector(`#view .rm-card[data-n="${n}"]`); if (!c || !c.classList.contains('rm-on')) return false; const r = c.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }, ROOMS[''], {timeout: 8000}).then(() => true, () => false);
+    check(ok3, '⑥ 바로 연 #/roman/<번호> — 그 신 카드가 화면 안 · 테');
+    check(!e3.length, '⑥ 바로 연 쪽 화면 오류 0', e3.join(' | ')); await c3.close();
+    // 영어 · 아주 크게 320 — 세 쪽
+    for (const [w, font, en] of [[390, 0, true], [320, 2, false]]) {
+      const c4 = await ctxOf(w, {font, en}), q4 = await c4.newPage(), e4 = errsOf(q4);
+      await q4.goto(URL_OF('#/dori', en ? '&lang=en' : ''), {waitUntil: 'load', timeout: 60000}); await q4.waitForTimeout(300);
+      for (const key of ['sage', 'w/*/past', 't/picks']) {
+        const hr = routeOf(key), n = ROOMS[key];
+        await q4.evaluate(h => { location.hash = h; }, hr); const okk = await waitTag(q4, n); await q4.waitForTimeout(okk ? 1200 : 0);
+        tagOk(`⑥ ${en ? '영어' : `${w} 아주 크게`} ${hr}`, await readTag(q4), n, en);
+      }
+      check(!e4.length, `⑥ ${en ? '영어' : '아주 크게'} 화면 오류 0`, e4.join(' | ')); await c4.close();
+    }
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();

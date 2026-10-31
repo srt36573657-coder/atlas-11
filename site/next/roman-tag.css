@@ -1,0 +1,14 @@
+/* 방 지킴이 이름표(roman-tag.js · 사장님 2026-10-31 05:51(+03) 「응」 · docs/design/roman72-site-2026-10-31/order-1151.txt)
+   쪽 맨 아래 · 카톡 줄 위 — 돌 판 이름표 하나(제 바탕 · 제 테라 밤 무대 · 밝은 종이 · 밝은 앱 판 어디서나 같은 대비)
+   왼쪽 줄 = 카톡 쪽 줄 단추와 같은 16px(app.css .kk-pgrow.kk-pgw) · 글 17px(fs-1) · 누르는 자리 48px 넘게 · 그림자 · 입체 없음
+   이 파일은 판 만드는 기계(clock_theme.py) 셈 밖 */
+/* 한 덩이 글줄(display: block · 안쪽 inline · 가운데 맞춤) — 칸이 여럿(flex)이면 글 시작 왼쪽 줄 잣대(measure_type · check_why [10] 7 「셋까지」)에 줄 셋이 더해짐(로컬 check_why 8건 · 2026-10-31)
+   가운데 맞춤 칸은 그 잣대 셈 밖 · 높이 = 글줄 34px + 위아래 8px + 테 = 52px */
+#view > a.rmt { display: block; width: fit-content; max-width: calc(100% - 32px); box-sizing: border-box;
+  margin: var(--sp-3) var(--sp-2) var(--sp-1); padding: var(--sp-1) var(--sp-2); border: 1px solid #8C8291; border-radius: 999px;
+  background: #1E1428; color: #F4EEF6; font-size: var(--fs-1); line-height: 34px; text-align: center; text-decoration: none; overflow-wrap: anywhere; }
+#view > a.rmt .rmt-l { color: #D9CFE3; font-weight: 700; }
+#view > a.rmt .rmt-n { color: #F2C46B; font-weight: 800; }
+#view > a.rmt i { font-style: normal; color: #F2C46B; font-weight: 800; }
+#view > a.rmt:focus-visible { outline: 3px solid #F2C46B; outline-offset: 2px; }
+@media (hover: hover) { #view > a.rmt:hover { background: #2C1F3A; } }

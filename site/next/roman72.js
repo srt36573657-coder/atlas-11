@@ -192,3 +192,23 @@ export const SEATS = Object.freeze([
   ['more', '친구가 연 보내기 쪽', 'A page a friend opened', null, 28, '잔을 나누듯 친구와 나눠 보는 쪽을 맡아요.', 'Like sharing a cup, he looks after pages shared with friends.'],
   ['more', '길 잃은 주소', 'A lost address', null, 41, '떠도는 넋이라 길 잃은 주소를 맡아요. 없는 주소는 첫 화면으로 보내요.', 'As wandering spirits, they look after lost addresses. A missing address goes back to the home page.'],
 ].map(s => Object.freeze(s)));
+
+/* 방 지킴이(사장님 2026-10-31 05:51(+03) 「응」 — 물음 「방마다 그 신 이름표도 달아 볼까요?」 · docs/design/roman72-site-2026-10-31/order-1151.txt)
+   쪽(방) 하나 = 지킴이 신 하나 — 그 쪽 자체가 자리인 신(쪽 안 칸 자리 — 불빛 · 물음 — 은 그 쪽 지킴이가 아님) · 이름표는 roman-tag.js 가 쪽 맨 아래 · 카톡 줄 위에 닮
+   열쇠 = 주소 꼴(w/* = 아무 회사 · t/<쪽> · f/<칩>) · 시황(#/shorts)은 한 화면 넘김 쪽이라 이름표 없음 · s = 친구가 연 보내기 쪽(#/s/…) */
+export const ROOMS = Object.freeze({
+  '': 21, why: 43, 'why/later': 36, 't/picks': 25, 't/pick': 40, dori: 70, me: 38, sub: 5, sage: 6, 't/hello': 69, help: 42,
+  jinhwa: 47, gift: 55, find: 24,
+  't/sprout': 34, 't/bloom': 56, 't/wilt': 45, 't/how': 27, 't/today': 54, 't/cal': 19, 't/alert': 8,
+  'w/*': 39, 'w/*/past': 62, 'w/*/rivals': 66, 'w/*/grow': 63, 'w/*/range': 18,
+  today: 52, surge: 59, cal: 13, cond: 29, talk: 67, up: 10, time: 44, info: 68, gdr: 71, 'f/ind': 17, s: 28,
+});
+/** 주소(k · a — app.js parse 꼴) → 그 방 지킴이 신 번호 · 없으면 null */
+export function roomOf(k, a) {
+  const s = String(a ?? '').split('/');
+  if (k === 'w') return s[0] ? ROOMS['w/*' + (s[1] ? '/' + s[1] : '')] ?? null : null;
+  if (k === 't') return ROOMS['t/' + (s[0] || 'hello')] ?? null; // #/t = 둘이 인사 · #/t/sprout/real → 싹 자리 · 업종 · 회사 쪽(t/i · t/c)은 없음
+  if (k === 'why') return s[0] === 'later' ? ROOMS['why/later'] : ROOMS.why; // #/why/<번호> = 그 회사로 쓰는 매매일지(같은 방)
+  if (k === 'f') return ROOMS['f/' + s[0]] ?? null;
+  return Object.hasOwn(ROOMS, k) ? ROOMS[k] : null;
+}

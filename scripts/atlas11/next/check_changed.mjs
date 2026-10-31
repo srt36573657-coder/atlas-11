@@ -37,7 +37,7 @@ export function checksFor(f) {
   else if (/^site\/next\/(app\.js|app\.css|home\.css|home-new\.(js|css)|home-talk\.(js|css)|boot-home\.js|index\.html|brand\.js|words\.js)$/.test(f)) out.push('next_check', 'modules', 'check_why', 'check_gdr', 'check_hold', 'check_share', 'check_kakao', ...(/home-new|home-talk|boot-home/.test(f) ? ['check_theme', 'check_essence'] : [])); // 새 첫 화면 칸(2026-10-28 order-1112) — 업종 점 그림 · 본질 세 줄도 맞댐
   else if (/^site\/next\/(i18n\.js|i18n\/|en\.css)/.test(f) || /^scripts\/atlas11\/next\/(i18n\/|i18n_build\.mjs)/.test(f)) out.push('en');
   else if (/^site\/next\/data\/sage39\.json$|^docs\/design\/wise39-2026-10-29\/build\.py$/.test(f)) out.push('check_sage', 'next_check'); // 서른아홉 스승 자료(2026-10-29 19:14 · build.py → sage39.json)
-  else if (/^site\/next\/roman72\.js$|^docs\/design\/roman72-2026-10-31\/roman72\.json$/.test(f)) out.push('check_roman', 'next_check', 'en'); // 로마 신 72 자료(사장님 2026-10-30(+03) 22:23 · 고른 목록 roman72.json 과 맞댐)
+  else if (/^site\/next\/(roman72|roman-tag)\.(js|css)$|^docs\/design\/roman72-2026-10-31\/roman72\.json$/.test(f)) out.push('check_roman', 'next_check', 'en', 'modules'); // 로마 신 72 자료(사장님 2026-10-30(+03) 22:23 · 고른 목록 roman72.json 과 맞댐)
   else if (/^site\/next\/data\/|^scripts\/atlas11\/next\/gdr\//.test(f)) out.push('verify', 'check_gdr', 'check_hold');
   else if (/^site\/(letter|invite)\.|^lib\/atlas11\/(letter|invite)\.mjs$|^functions\/atlas11\//.test(f)) out.push('letter-tests');
   else if (/^lib\/atlas11\/(jinhwa|tally)\.mjs$|^tests\/atlas11\/(jinhwa|tally)\.test\.mjs$|^site\/next\/p-jinhwa\./.test(f)) out.push('jinhwa-tests', 'check_jinhwa', 'letter-tests'); // 진화 칸 · 합계 칸(사장님 2026-10-18 16:39 [9] · [10] · 일꾼 KD)
