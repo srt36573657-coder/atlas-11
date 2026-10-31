@@ -31,6 +31,7 @@
 //     ③ 카톡 보내기 2번 안 → 첫 화면 카톡 단추 0(다단계처럼 보임 — 카톡은 다른 쪽 맨 아래 그대로)
 //   ★ 2026-10-30 까닭 열한 가지(사장님 04:27 · 05:03 「응」 · docs/design/why11-2026-10-30): ① 「소개 칸 한 화면 안」 → 「머리 · 권하지 않음 · 첫 몰린 곳 「왜?」 줄이 찾기 줄 위」
 //     (몰린 곳마다 「왜?」 · 불빛 열하나로 칸이 한 화면보다 길어짐 · 칸 속 검사는 check_why11.mjs)
+//   ★ 2026-10-31 23:14(+04) 만수르(docs/design/mansour-2026-11-01/order-0414.txt) — ① 머리 줄 오른쪽 단추 · 그 주소(https://shin-yxy.gino.im/) · 새 창 · 48px · 첫 한 화면 안(390 × 844 · 320 × 568) · 누르면 새 창
 //   실패가 하나라도 있으면 끝 코드 1 — 단 저장소에 site/next/home.css(새 첫 화면)가 생기기 전에는 알림만(끝 코드 0 · enforced false · 스위치 한 곳 white_gate.mjs whiteOn)
 //   올리기 직전 정적 문 = white_gate.mjs(deploy_netlify.mjs 본질 문 곁) · 잣대 한 장 = docs/골똘이_화면잣대.md
 import fs from 'node:fs';
@@ -215,6 +216,24 @@ try {
       { const lim = Math.min(m.tabsTop, m.theme?.thumbTop ?? Infinity); check(!!m.hero && m.hero.h1Bottom != null && m.hero.h1Bottom <= lim + 0.5, '320 × 568 소개 제목 한 화면 안', m.hero ? `제목 아래 ${m.hero.h1Bottom} > 찾기 줄 · 아래 단추 ${Math.round(lim)}` : '소개 칸 없음'); } // 2026-10-28 — 옛 「테마 시계 네 칸 첫 줄」
       check(!m.small.length, '320 × 568 누르는 크기 48', m.small.slice(0, 3).join(' · '));
       check(await p.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth + 1), '320 × 568 옆 넘침 0', '');
+      await ctx.close();
+    }
+    // 만수르(사장님 2026-10-31 23:14(+04) 「https://shin-yxy.gino.im 이거 첫화면에 바로 갈수 있데 배치해 이름은 만수르」 · docs/design/mansour-2026-11-01/order-0414.txt)
+    //   ① 머리 줄 오른쪽 단추 하나 · 그 주소 · 새 창 · 48px · 첫 한 화면 안(찾기 줄 · 아래 단추 위) · 누르면 새 창이 그 주소로 열리고 둘이 첫 화면은 그대로
+    for (const [vw, vh] of [[390, 844], [320, 568]]) {
+      const ctx = await ctxOf(false, {viewport: {width: vw, height: vh}});
+      await ctx.route('https://shin-yxy.gino.im/**', r => r.fulfill({status: 200, contentType: 'text/html', body: '<!doctype html><title>shin-yxy</title>'})); // 바깥 사이트는 두드리지 않음(새 창이 그 주소로 열리는지만 봄)
+      const {p} = await open(ctx, HOME);
+      const ms = await p.evaluate(() => { const a = document.querySelector('#view section.nh-hero > .nh-pm a.nh-mans'), th = document.querySelector('.s-thumb'), tb = document.querySelector('.tabs'), r = a?.getBoundingClientRect();
+        const fold = Math.min(tb ? tb.getBoundingClientRect().top : innerHeight, th ? th.getBoundingClientRect().top : Infinity);
+        return a ? {n: document.querySelectorAll('#view a.nh-mans').length, t: a.textContent.replace('›', '').trim(), href: a.getAttribute('href'), target: a.getAttribute('target'), rel: a.getAttribute('rel'),
+          w: Math.round(r.width), h: Math.round(r.height), l: Math.round(r.left), rt: Math.round(r.right), top: Math.round(r.top), bot: Math.round(r.bottom), fold: Math.round(fold), vw: document.documentElement.clientWidth} : null; });
+      check(!!ms && ms.n === 1 && ms.t === '만수르' && ms.href === 'https://shin-yxy.gino.im/' && ms.target === '_blank' && /noopener/.test(ms.rel ?? '') && ms.h >= 47.5 && ms.w >= 47.5 && ms.l >= 0 && ms.rt <= ms.vw + 0.5 && ms.top >= 0 && ms.bot <= ms.fold + 0.5,
+        `${vw} × ${vh} 만수르 — ① 머리 줄 단추 하나 · 그 주소 · 새 창 · 48px · 첫 한 화면 안`, JSON.stringify(ms));
+      if (ms) {
+        const [pop] = await Promise.all([ctx.waitForEvent('page', {timeout: 10000}).catch(() => null), p.locator('#view a.nh-mans').first().click()]);
+        check(!!pop && pop.url().startsWith('https://shin-yxy.gino.im/') && /#\/$/.test(p.url()), `${vw} × ${vh} 만수르 누름 → 새 창이 그 주소 · 둘이 첫 화면은 그대로`, `${pop ? pop.url() : '새 창 없음'} · ${p.url()}`);
+      }
       await ctx.close();
     }
     // 한 달 된 기록 → 카드 밑 「그날 정한 대로 했어?」
