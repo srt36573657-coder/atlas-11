@@ -825,11 +825,11 @@
    "id": "1151",
    "at": "2026-10-31T11:51+09:00",
    "words": "응 (물음 「이제 방마다 그 신의 이름표도 달아 볼까요? 「응」 한 마디면 돼요.」의 답)",
-   "then": "11:51(서울) 받음 · 이해 보고와 끝 시각(사장님 시계 아침 9시) 보냄 · 방 서른일곱마다 지킴이 신 하나(그 쪽 자체가 자리인 신) · 쪽 맨 아래 카톡 줄 위 이름표 · 누르면 로마 신 72 그 신 카드 · 로컬 check_roman 471 통과 · 로컬 check_why 「글 시작 왼쪽 줄 셋까지」 8건(이름표가 칸 셋) → 가운데 맞춤 한 글줄로 고쳐 0 · 큰 검사 1/11 범위 · 급등 검사가 이름표 고리를 몰라 걸림 → 두 검사에 고리 더함 · 큰 검사 2/11 부름",
+   "then": "11:51(서울) 받음 · 이해 보고와 끝 시각(사장님 시계 아침 9시) 보냄 · 방 서른일곱마다 지킴이 신 하나(그 쪽 자체가 자리인 신) · 쪽 맨 아래 카톡 줄 위 이름표 · 누르면 로마 신 72 그 신 카드 · 로컬 check_roman 471 통과 · 로컬 check_why 「글 시작 왼쪽 줄 셋까지」 8건(이름표가 칸 셋) → 가운데 맞춤 한 글줄로 고쳐 0 · 큰 검사 1/11 범위 · 급등 검사가 이름표 고리를 몰라 걸림 → 두 검사에 고리 더함 · 큰 검사 2/11 27쪽 실패 0 · main 70f830b63 · 12:45(서울) 올림 · 진짜 사이트 큰 검사 3/11 27쪽 실패 0(로마 신 72 검사 471 통과 · 진짜 사이트 방 서른일곱 이름표 모두 봄)",
    "did": "방마다 맨 아래, 카톡 단추 위에 「이 방 지킴이 · 신 이름 ›」 이름표 · 누르면 로마 신 72 쪽 그 신 카드가 화면 가운데에 테로 보임 · 영어 화면은 영어 이름 · 시황 쪽과 단추 셋은 이름표 없음",
-   "state": "미완성",
-   "proof": "커밋 3b4c7146b · 967a780d1 · 이름표 site/next/roman-tag.js · 방 표 site/next/roman72.js ROOMS · 검사 scripts/atlas11/next/check_roman.mjs ⑥ · 말씀 원문 docs/design/roman72-site-2026-10-31/order-1151.txt",
-   "short": "방마다 그 방을 지키는 로마 신 이름표를 달았어요."
+   "state": "성공",
+   "proof": "커밋 3b4c7146b · 967a780d1 · main 70f830b63 · 큰 검사 2/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/41164416918 · 올리기 https://github.com/srt36573657-coder/atlas-11/actions/runs/41165255568 · 진짜 사이트 큰 검사 3/11 실패 0 https://github.com/srt36573657-coder/atlas-11/actions/runs/41165789270 · 이름표 site/next/roman-tag.js · 방 표 site/next/roman72.js ROOMS · 검사 scripts/atlas11/next/check_roman.mjs ⑥ · 말씀 원문 docs/design/roman72-site-2026-10-31/order-1151.txt",
+   "short": "방마다 그 방을 지키는 로마 신 이름표를 달았어요. 진짜 사이트에서 확인했어요."
   }
  ],
  "open": [
@@ -1298,6 +1298,12 @@
    "at": "2026-10-31T06:27+09:00",
    "to": "카톡 나에게 보내기",
    "messages": 36,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs"
+  },
+  {
+   "at": "2026-10-31T13:27+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 37,
    "how": "node scripts/atlas11/orders/kakao_digest.mjs"
   }
  ]
