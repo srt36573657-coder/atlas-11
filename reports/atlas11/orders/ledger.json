@@ -840,6 +840,16 @@
    "state": "성공",
    "proof": "커밋 33ed618f6 · 9ce52ac0e · 99ca881ae · main 093dcd7dc · e137b77df · 큰 검사 1/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/41171760946 · 2/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/41172567345 · 올리기 https://github.com/srt36573657-coder/atlas-11/actions/runs/41173310505 · 진짜 사이트 3/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/41173883312 · 4/11 로마 601 통과 https://github.com/srt36573657-coder/atlas-11/actions/runs/41176327250 · 그림 기계 scripts/atlas11/next/roman_art.mjs · 그림 site/next/roman-art · 불빛 지킴이 site/next/home-talk.js · 검사 scripts/atlas11/next/check_roman.mjs ⑦ · 말씀 원문 docs/design/roman72-site-2026-10-31/order-1332.txt",
    "short": "불빛마다 지킴이 신 얼굴을 달고 신 일흔둘을 캐릭터로 그렸어요. 진짜 사이트에서 확인했어요."
+  },
+  {
+   "id": "1558",
+   "at": "2026-10-31T15:58+09:00",
+   "words": "응 (물음 「신 얼굴을 누르면 그 신 이야기를 소리로 들려 드릴까요? 「응」 한 마디면 돼요.」의 답)",
+   "then": "15:58(서울) 받음 · 이해 보고와 끝 시각(사장님 시계 오후 2시 반) 보냄 · 얼굴 세 곳(로마 신 카드 · 방 이름표 · 불빛 지킴이)을 듣기 단추로 · 이야기 = 카드 글 그대로 · 글상자",
+   "did": "만드는 중 — 얼굴을 누르면 그 신 이야기를 소리로 · 글상자",
+   "state": "미완성",
+   "proof": "말씀 원문 docs/design/roman72-site-2026-10-31/order-1558.txt",
+   "short": "신 얼굴을 누르면 그 신 이야기를 소리로 들려주게 만드는 중이에요."
   }
  ],
  "open": [
