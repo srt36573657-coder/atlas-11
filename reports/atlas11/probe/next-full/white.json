@@ -1,23 +1,23 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-31T19:24:32.262Z",
+ "at": "2026-10-31T20:40:05.642Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
-  "pass": 423,
+  "pass": 427,
   "fail": 0
  },
  "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034053699055348395,
-   "chars": 138,
+   "chars": 141,
    "blocks": {
-    "ess": 5177,
+    "ess": 5195,
     "find": 776,
-    "today": 3134,
-    "gdr": 4471,
-    "all": 4907
+    "today": 3152,
+    "gdr": 4489,
+    "all": 4925
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -120,6 +120,11 @@
      "돈 흐름"
     ],
     [
+     3,
+     "- span",
+     "만수르"
+    ],
+    [
      2,
      "- span.nh-fn",
      "음료"
@@ -197,11 +202,11 @@
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1119,
-    "h1Bottom": 178,
+    "bottom": 1137,
+    "h1Bottom": 196,
     "no": true,
-    "noBottom": 233,
-    "why1Bottom": 367
+    "noBottom": 251,
+    "why1Bottom": 385
    },
    "map": {
     "svg": true,
@@ -225,13 +230,13 @@
   },
   "back": {
    "bodyLum": 0.0034053699055348395,
-   "chars": 138,
+   "chars": 141,
    "blocks": {
-    "ess": 5054,
+    "ess": 5072,
     "find": 776,
-    "today": 3134,
-    "gdr": 4471,
-    "all": 4907
+    "today": 3152,
+    "gdr": 4489,
+    "all": 4925
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -334,6 +339,11 @@
      "돈 흐름"
     ],
     [
+     3,
+     "- span",
+     "만수르"
+    ],
+    [
      2,
      "- span.nh-fn",
      "음료"
@@ -411,11 +421,11 @@
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1119,
-    "h1Bottom": 178,
+    "bottom": 1137,
+    "h1Bottom": 196,
     "no": true,
-    "noBottom": 233,
-    "why1Bottom": 367
+    "noBottom": 251,
+    "why1Bottom": 385
    },
    "map": {
     "svg": true,
@@ -747,8 +757,8 @@
    }
   },
   "speed": {
-   "lcp": 1280,
-   "inp": 64,
+   "lcp": 1236,
+   "inp": 72,
    "cls": 0.003
   }
  },
