@@ -1,5 +1,5 @@
 {
- "made": "2026-10-31T10:04:20.246Z",
+ "made": "2026-10-31T12:03:42.308Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "variants": [
@@ -361,7 +361,7 @@
    "frames": 458,
    "playFrames": 370,
    "bigKinds": 1,
-   "lvKinds": 56,
+   "lvKinds": 57,
    "reads": [
     [
      [
@@ -444,15 +444,15 @@
  },
  "fails": [],
  "warn": [],
- "sec": 72,
+ "sec": 71,
  "time": {
-  "old": 18.2,
-  "new": 55.3,
-  "wall": 72.2,
+  "old": 18.3,
+  "new": 53.3,
+  "wall": 70.9,
   "opensOld": 607,
   "opensNew": 804,
-  "oldPct": 25.2,
-  "oldShare": 24.7
+  "oldPct": 25.8,
+  "oldShare": 25.5
  },
  "net": {
   "req": 3,

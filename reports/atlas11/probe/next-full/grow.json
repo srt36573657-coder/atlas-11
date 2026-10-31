@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-10-31T10:05:38.246Z",
+ "at": "2026-10-31T12:01:54.388Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-30",
  "companies": 2557,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 304,
+ "seconds": 406,
  "time": {
-  "old": 21,
-  "new": 201.6,
-  "wall": 304.3,
+  "old": 31.6,
+  "new": 252,
+  "wall": 405.7,
   "opensOld": 11,
   "opensNew": 10286,
-  "oldPct": 6.9,
-  "oldShare": 9.4
+  "oldPct": 7.8,
+  "oldShare": 11.1
  },
  "net": {
   "req": 5126,
@@ -64,7 +64,7 @@
   "oldSnap": {
    "use": true,
    "why": "",
-   "made": "2026-10-31T09:42:45.297Z",
+   "made": "2026-10-31T11:32:59.861Z",
    "inputs": 2566,
    "reads": 2557,
    "note": "기준값 다시 씀"
