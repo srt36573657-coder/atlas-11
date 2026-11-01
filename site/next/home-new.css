@@ -494,10 +494,17 @@ html.home #view .nh-sage.nh-sfw > .nh-scap[hidden] { display: none; }
 html.home #view .nh-sage.nh-sfw.rm-say { outline: 3px solid #A31F70; outline-offset: 4px; border-radius: 12px; }
 @media (hover: hover) { html.home #view .nh-sage.nh-sfw > button.nh-sf:hover img { outline: 2px solid #A31F70; outline-offset: 1px; } }
 /* 스승 여섯 차례로 듣기(order-1948) — 맨 위 스승 줄 바로 아래 알약(말하는 불빛 「차례로 듣기」와 같은 꼴 · 세모 듣기 · 네모 멈추기) · 여는 동안 칸도 같은 자리 */
-html.home #view .nh-sall { appearance: none; -webkit-appearance: none; justify-self: start; margin: 6px 0 0; display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-height: 52px; min-width: 48px; padding: 6px 18px 6px 12px; border-radius: 999px; border: 2px solid #A31F70; background: #A31F70; color: #FFFFFF; font: inherit; font-size: 17px; line-height: 1.3; font-weight: 800; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html.home #view .nh-sall { appearance: none; -webkit-appearance: none; margin: 0; display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-height: 52px; min-width: 48px; padding: 6px 18px 6px 12px; border-radius: 999px; border: 2px solid #A31F70; background: #A31F70; color: #FFFFFF; font: inherit; font-size: 17px; line-height: 1.3; font-weight: 800; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 html.home #view .nh-sall > svg { display: block; flex: none; width: 24px; height: 24px; }
 html.home #view .nh-sall.nh-sallon { background: #FFF7F9; color: #A31F70; }
 html.home #view .nh-sall:focus-visible { outline: 3px solid #2A1420; outline-offset: 2px; }
+/* 멈춘 스승부터 이어 듣기(order-2122) — 묶음(.nh-sallw) = 단추 줄(차례로 듣기 · 처음부터) + 「멈춘 곳: (이름)」(멈춘 스승이 있을 때만) · 여는 동안 칸도 같은 모양 */
+html.home #view .nh-sallw { display: grid; justify-items: start; gap: 6px; margin: 6px 0 0; }
+html.home #view .nh-sallrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; max-width: 100%; }
+html.home #view .nh-sallr { appearance: none; -webkit-appearance: none; margin: 0; display: inline-flex; align-items: center; min-height: 48px; box-sizing: border-box; padding: 0 16px; border: 2px solid #A31F70; border-radius: 999px; background: #FFF7F9; color: #A31F70; font: inherit; font-size: 17px; line-height: 1.3; font-weight: 800; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html.home #view .nh-sallr:focus-visible { outline: 3px solid #2A1420; outline-offset: 2px; }
+html.home #view .nh-sallc { margin: 0; padding: 6px 12px; border-radius: 12px; background: #FBF2F5; border: 2px solid #E3B6C5; font-size: 17px; line-height: 1.5; font-weight: 700; color: #2A1420; overflow-wrap: anywhere; }
+html.home #view .nh-sallr[hidden], html.home #view .nh-sallc[hidden] { display: none; }
 html.home.en #view .nh-hero .nh-sage { display: none; } /* 영어 글이 길어 소개 칸이 찾기 줄 아래로 밀려 맨 위 스승 한 줄만 뺌(한국어는 그대로) */
 html.home #view svg.nh-waf { padding: 0; } /* 다른 쪽 「.me」 칸 안쪽 여백이 왼쪽 100칸 그림에 붙어 작아 보이던 것 */
 @media (max-width: 380px) { html.white.clock.clock.clock.home #view .nh-hero .nh-h1 { font-size: 24px; } } /* 375 폭에서 대신 글꼴이 칸 끝에 닿아 두 줄로 바뀌지 않게(390 폭은 26px 한 줄) */

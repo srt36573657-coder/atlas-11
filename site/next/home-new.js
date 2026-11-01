@@ -105,18 +105,35 @@ const showCap = cap => requestAnimationFrame(() => {
 });
 const SAY_OF = new WeakMap(); // 스승 줄 → {읽을 말 · 얼굴 단추 · 그 줄 글상자}(차례로 듣기가 읽음)
 /** 스승 여섯 차례로 듣기(사장님 2026-11-01 14:48(+04) 「응」 · order-1948) — 첫 화면 스승 줄을 위에서부터 이어 읽음(얼굴을 누를 때와 같은 말) · 읽는 줄 테 · 그 줄 글상자
-    · 화면 밖이면 가운데로 · 다시 누르면 · 얼굴 · 쪽 옮김 = 멈춤(roman-say.js sayAll) · 숨은 줄(영어 판 맨 위 줄)은 건너뜀 · 소리 없는 휴대폰은 단추 없음 · 여는 동안 칸과 같은 글 */
-const allLabel = on => (on ? (EN ? 'Stop' : '멈추기') : EN ? 'Hear the masters in order' : '스승 여섯 차례로 듣기');
+    · 화면 밖이면 가운데로 · 다시 누르면 · 얼굴 · 쪽 옮김 = 멈춤(roman-say.js sayAll) · 숨은 줄(영어 판 맨 위 줄)은 건너뜀 · 소리 없는 휴대폰은 단추 없음 · 여는 동안 칸과 같은 글
+    멈춘 스승부터 이어 듣기(16:22(+04) 「응」 · order-2122) — 중간에 멈추면 읽던 스승을 이 휴대폰에 기억(HOME_AT) · 「멈춘 스승부터 이어 듣기」 + 「처음부터」 · 「멈춘 곳: (이름)」 · 끝까지 들으면 지움 */
+export const HOME_AT = 'atlas:home-sage-at';
+const atLoad = () => { try { const v = JSON.parse(localStorage.getItem(HOME_AT) ?? 'null'); return v && SAGE_SAY[v.id] && !(EN && v.id === SAGE_ID['애덤 스미스']) ? v.id : null; } catch { return null; } }; // 영어 판은 맨 위 줄이 숨어 그 이름이면 없음
+const atSave = id => { try { if (id) localStorage.setItem(HOME_AT, JSON.stringify({id, at: Date.now()})); else localStorage.removeItem(HOME_AT); } catch { /* 기억 못 하는 휴대폰 — 늘 처음부터 */ } };
+const nameOf = id => (EN ? SAGE_SAY[id]?.enName : Object.keys(SAGE_ID).find(k => SAGE_ID[k] === id)) ?? id;
+const ALL = EN ? {every: 'Hear the masters in order', resume: 'Resume where I stopped', again: 'From the start', stop: 'Stop', at: n => `Stopped at: ${n}`}
+  : {every: '스승 여섯 차례로 듣기', resume: '멈춘 스승부터 이어 듣기', again: '처음부터', stop: '멈추기', at: n => `멈춘 곳: ${n}`};
 const allIcon = on => { const s = sv('svg', {width: 24, height: 24, viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false', fill: 'currentColor'}); s.append(on ? sv('rect', {x: 6, y: 6, width: 12, height: 12, rx: 2}) : sv('path', {d: 'M8 5.5v13l10.5-6.5z'})); return s; };
 export function sageAll() {
   if (!canSay()) return null;
   warmSay();
-  let ic = allIcon(false); const t = h('span', {text: allLabel(false)});
-  const set = on => { t.textContent = allLabel(on); b.classList.toggle('nh-sallon', !!on); const x = allIcon(!!on); ic.replaceWith(x); ic = x; };
-  const items = () => [...document.querySelectorAll('#view .nh-sage.nh-sfw')].filter(l => SAY_OF.has(l) && l.getClientRects().length).map(l => { const x = SAY_OF.get(l); return {text: x.text, label: x.text, card: l, face: x.face, cap: x.cap}; });
-  const b = h('button', {type: 'button', class: 'nh-sall', onpointerdown: () => { loadSay().catch(() => {}); },
-    onclick: e => { e.preventDefault(); const go = m => m.sayAll(items(), b, {set}); if (sayM) go(sayM); else loadSay().then(go, () => {}); }}, ic, t);
-  return b;
+  let ic = allIcon(false); const t = h('span');
+  const note = h('p', {class: 'nh-sallc', hidden: true, 'aria-live': 'polite'});
+  const idle = () => { const id = atLoad(); t.textContent = id ? ALL.resume : ALL.every; re.hidden = !id; note.hidden = !id; note.textContent = id ? ALL.at(nameOf(id)) : ''; }; // 멈춘 스승이 있으면 이어 듣기 모양
+  const set = (on, info) => {
+    b.classList.toggle('nh-sallon', !!on); const x = allIcon(!!on); ic.replaceWith(x); ic = x;
+    if (on) { t.textContent = ALL.stop; re.hidden = true; note.hidden = true; return; }
+    if (info?.done) atSave(null); else if (info?.item?.id) atSave(info.item.id); // 끝까지 = 지움 · 중간에 멈춤 = 읽던 스승
+    idle();
+  };
+  const items = () => [...document.querySelectorAll('#view .nh-sage.nh-sfw')].filter(l => SAY_OF.has(l) && l.getClientRects().length).map(l => { const x = SAY_OF.get(l); return {id: l.dataset.id, text: x.text, label: x.text, card: l, face: x.face, cap: x.cap}; });
+  const play = fromStart => { const go = m => { if (m.playing(b)) { m.stop(); return; } if (fromStart) atSave(null); const list = items(), id = atLoad(), k = id ? Math.max(0, list.findIndex(x => x.id === id)) : 0; m.sayAll(list.slice(k), b, {set}); };
+    if (sayM) go(sayM); else loadSay().then(go, () => {}); };
+  const warm = () => { loadSay().catch(() => {}); };
+  const b = h('button', {type: 'button', class: 'nh-sall', onpointerdown: warm, onclick: e => { e.preventDefault(); play(false); }}, ic, t);
+  const re = h('button', {type: 'button', class: 'nh-sallr', hidden: true, onpointerdown: warm, onclick: e => { e.preventDefault(); play(true); }, text: ALL.again});
+  idle();
+  return h('div', {class: 'nh-sallw'}, h('div', {class: 'nh-sallrow'}, b, re), note);
 }
 /** 스승 줄 = 얼굴 단추(누르면 남긴 말 · 다시 누르면 멈춤 · roman-say.js sayText) + 이름과 말 고리(그 스승 한 장) + 글상자 · 소리 없는 휴대폰은 얼굴 그림만 · 자료에 없는 이름은 따옴표 */
 export function sage(who, say) {
