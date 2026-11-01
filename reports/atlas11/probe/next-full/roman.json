@@ -1,17 +1,12 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-11-01T03:19:02.277Z",
+ "at": "2026-11-01T03:57:51.696Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 736,
-  "fail": 1
+  "pass": 737,
+  "fail": 0
  },
- "fails": [
-  [
-   "⑬ 쪽을 다시 열어도 — 이어 듣기 모양 그대로",
-   "{\"label\":\"일흔두 신 모두 듣기\",\"on\":false,\"re\":{\"hid\":true,\"t\":\"처음부터\",\"h\":0},\"cap\":\"\",\"capHid\":true,\"at\":7,\"q\":0,\"ring\":[]}"
-  ]
- ],
+ "fails": [],
  "m": {
   "rooms": 37,
   "art": {
