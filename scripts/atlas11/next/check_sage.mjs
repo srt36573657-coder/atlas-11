@@ -198,8 +198,8 @@ try {
       });
       check(fr.ok, `${tag} ⑥ 초점 테 대비 3 넘게`, fr.why);
       // 걸음 단추 → 그 걸음이 화면 위에
-      await p.locator('#view .sg-jump.s3').click(); await p.waitForTimeout(700);
-      const top = await p.evaluate(() => document.getElementById('sg-s3')?.getBoundingClientRect().top);
+      await p.locator('#view .sg-jump.s3').click(); await p.waitForTimeout(300); // 옮김이 멈출 때까지(3초까지) 기다려 잼 — 쪽이 길면 부드럽게 옮기는 데 오래 걸림
+      const top = await p.evaluate(async () => { let a = null; for (let i = 0; i < 30; i++) { const t = document.getElementById('sg-s3')?.getBoundingClientRect().top; if (t != null && a != null && Math.abs(t - a) < 0.5) return t; a = t; await new Promise(r => setTimeout(r, 100)); } return a; });
       check(top != null && top >= 0 && top < 200, `${tag} 걸음 단추 → ③ 따지기가 화면 위`, top);
     }
     check(!errs.length, `${tag} 화면 오류 0`, errs.join(' | ')); await ctx.close();

@@ -198,7 +198,8 @@ function storyBar(p) {
 /* ── 첫 쪽(#/sage) ── 기 큰 제목 · 별자리 → 승 네 걸음 단추 → 전 걸음마다 사람 카드 → 결 한목소리 · 안전 문장 */
 function index(d, note = '') {
   const now = canSpeak() ? h('p', {class: 'sg-now', 'aria-live': 'polite', hidden: true}) : null; // 듣는 줄 그대로(order-0340) — 쪽 맨 끝에 두고 아래 막대 위에 붙임(어느 칸을 읽어도 보임)
-  const jump = s => h('button', {type: 'button', class: `sg-jump s${s.k}`, onclick: () => document.getElementById('sg-s' + s.k)?.scrollIntoView({behavior: 'smooth', block: 'start'})},
+  // 걸음 단추 — 그 걸음으로 옮김(움직임 줄이기면 바로 · 2026-11-01 진짜 사이트 큰 검사 41271127432 — 얼굴 칸으로 쪽이 길어져 부드럽게 옮기는 동안 검사가 먼저 잼)
+  const jump = s => h('button', {type: 'button', class: `sg-jump s${s.k}`, onclick: () => document.getElementById('sg-s' + s.k)?.scrollIntoView({behavior: still() ? 'auto' : 'smooth', block: 'start'})},
     glyph(s.k), h('span', {class: 'sg-jn', text: T.step(s.k)}), h('b', {text: s[L].v}), h('span', {class: 'sg-jq', text: s[L].q}));
   // 사람 칸 = 칸(div) — 얼굴 단추(누르면 남긴 말 · order-1046)와 한 사람 쪽 고리를 나눔(단추를 고리 안에 넣지 않음 · 로마 신 카드와 같음) · 얼굴은 화면 가까이 올 때 받음
   const tile = p => { const t = h('div', {class: `sg-tile s${p.step}`, 'data-id': p.id});
