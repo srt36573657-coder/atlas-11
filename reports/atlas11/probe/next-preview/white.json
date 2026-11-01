@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-01T09:14:57.632Z",
+ "at": "2026-11-01T11:27:02.452Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -13,11 +13,11 @@
    "bodyLum": 0.0034053699055348395,
    "chars": 141,
    "blocks": {
-    "ess": 5195,
+    "ess": 5253,
     "find": 776,
-    "today": 3164,
-    "gdr": 4489,
-    "all": 4925
+    "today": 3222,
+    "gdr": 4547,
+    "all": 4983
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -202,7 +202,7 @@
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1137,
+    "bottom": 1195,
     "h1Bottom": 196,
     "no": true,
     "noBottom": 251,
@@ -232,11 +232,11 @@
    "bodyLum": 0.0034053699055348395,
    "chars": 141,
    "blocks": {
-    "ess": 5072,
+    "ess": 5130,
     "find": 776,
-    "today": 3164,
-    "gdr": 4489,
-    "all": 4925
+    "today": 3222,
+    "gdr": 4547,
+    "all": 4983
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -421,7 +421,7 @@
    ],
    "thumbTop": 711,
    "hero": {
-    "bottom": 1137,
+    "bottom": 1195,
     "h1Bottom": 196,
     "no": true,
     "noBottom": 251,
@@ -757,8 +757,8 @@
    }
   },
   "speed": {
-   "lcp": 2416,
-   "inp": 48,
+   "lcp": 2300,
+   "inp": 80,
    "cls": 0.006
   }
  },
