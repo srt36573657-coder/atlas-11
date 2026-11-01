@@ -649,8 +649,8 @@ try {
     await rN.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000});
     if (await homeReady(rN, HOME_IDS.length)) {
       await rN.waitForTimeout(300); const N0 = await HS(rN), nb = await rN.evaluate(() => ({btn: document.querySelectorAll('#view .nh-sage button').length, cap: document.querySelectorAll('#view .nh-scap').length, spk: document.querySelectorAll('#view .nh-sage .rms-spk').length}));
-      check(N0.lines.length === HOME_IDS.length && N0.lines.every(l => l.fimg === 1 && l.ah >= 47.5 && l.ax === 50 && (!H0 || l.lh === LN(H0, l.id).lh)) && !nb.btn && !nb.cap && !nb.spk,
-        '⑨ 소리 없는 휴대폰 — 얼굴은 그림만(단추 · 소리 표 · 글상자 0) · 고리 그대로 · 글 시작 50px · 줄 높이 같음', JSON.stringify({nb, lines: N0.lines.map(l => [l.id, l.fimg, Math.round(l.ah), l.ax, l.lh, H0 ? LN(H0, l.id).lh : null])}));
+      check(N0.lines.length === HOME_IDS.length && N0.lines.every(l => l.fimg === 1 && l.ah >= 47.5 && l.lh >= 47.5 && l.ax === 50) && !nb.btn && !nb.cap && !nb.spk,
+        '⑨ 소리 없는 휴대폰 — 얼굴은 그림만(단추 · 소리 표 · 글상자 0) · 고리 그대로 · 글 시작 50px(얼굴 칸 같음) · 줄 · 고리 48 넘게(줄 높이 맞대기는 뺌 — 두 휴대폰의 받은 글꼴 때가 달라 줄 바뀜이 갈림 · 진짜 사이트 talk-face 2/11 41322851402)', JSON.stringify({nb, lines: N0.lines.map(l => [l.id, l.fimg, Math.round(l.ah), l.ax, l.lh, H0 ? LN(H0, l.id).lh : null])}));
     } else check(false, '⑨ 소리 없는 휴대폰 첫 화면', '안 그려짐');
     check(!eN.length, '⑨ 소리 없는 휴대폰 화면 오류 0', eN.join(' | ')); await cN.close();
     // 여는 동안 칸(boot-home.js) — app.js 를 받지 않으면 여는 동안 칸이 남음 → 맨 위 스승 줄이 다 그린 줄과 같은 꼴 · 같은 높이
