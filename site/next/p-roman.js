@@ -106,7 +106,9 @@ function everyBar() {
   };
   const b = h('button', {type: 'button', class: 'rm-allb', onclick: () => play(false)}, ic, t);
   const re = h('button', {type: 'button', class: 'rm-allr', hidden: true, onclick: () => play(true), text: T.again});
-  requestAnimationFrame(idle); // 카드가 쪽에 붙은 뒤 멈춘 신을 찾음
+  // 카드가 쪽에 붙은 뒤 멈춘 신을 찾음 — 늦게 붙으면 다음 그림 때 다시(5초까지 · 그사이 듣기를 누르면 그대로) · 2026-11-01 진짜 사이트 큰 검사 41268622186 — 다시 열 때 카드가 늦게 붙어 「멈춘 신부터 이어 듣기」가 안 나온 적 있음
+  const whenCards = (k = 0) => { if (playing(b)) return; if (document.querySelector(SEL) || k >= 300) idle(); else requestAnimationFrame(() => whenCards(k + 1)); };
+  requestAnimationFrame(() => whenCards());
   return h('div', {class: 'rm-all rm-every'}, h('div', {class: 'rm-allrow'}, b, re), cap);
 }
 
