@@ -20,6 +20,15 @@ html.home #view .y11-c-off { background: #FFFFFF; border: 2.5px solid #9E5A78; }
 html.home #view .y11-c-q { background: #FBF2F5; border: 2.5px dashed #9E5A78; }
 html.home #view .y11-lamp[aria-pressed="true"] > .y11-c { outline: 3px solid #2A1420; outline-offset: 2px; transform: scale(1.06); }
 html.home #view .y11-lamp:focus-visible { outline: 3px solid #A31F70; outline-offset: 0; }
+/* 판 불빛 지킴이 얼굴(order-2356) — 얼굴 40px(켜짐 밝게 · 테 / 꺼짐 · 모름 흐리게) + 오른쪽 아래 뜻 동그라미 24px(뜻 줄과 같은 모양) · 고른 불빛 테는 얼굴에 */
+html.home #view .y11-lamp.y11-lampf { position: relative; width: 52px; height: 52px; }
+html.home #view .y11-lamp.y11-lampf > .y11-lf { display: block; box-sizing: border-box; width: 40px; height: 40px; border-radius: 50%; border: 3px solid #A31F70; }
+html.home #view .y11-lamp.y11-lampf[data-s="off"] > .y11-lf { border: 2px solid #9E5A78; filter: grayscale(1); opacity: .55; }
+html.home #view .y11-lamp.y11-lampf[data-s="q"] > .y11-lf { border: 2px dashed #9E5A78; filter: grayscale(1); opacity: .55; }
+html.home #view .y11-lamp.y11-lampf > .y11-c { position: absolute; right: 0; bottom: 0; width: 24px; height: 24px; font-size: 17px; border-width: 2px; }
+html.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-c { outline: 0; transform: none; }
+html.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-lf { outline: 3px solid #2A1420; outline-offset: 2px; opacity: 1; } /* 고른 불빛 테가 옅어지지 않게 — 꺼짐 · 모름 얼굴은 색을 뺀 채로 */
+html.white.clock.clock.clock.clock.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-c { outline: 0; transform: none; } /* 밤 무대 판 「고른 불빛 테」(아래 지은 규칙)를 뜻 동그라미에서 뺌 — 테는 얼굴에만(지은 규칙보다 한 단 위 · clock 이 든 선택자라 셈 밖) */
 html.home.f3 #view .y11-x { padding-left: 4px; padding-right: 4px; } /* 아주 큰 글씨(zoom 1.286) · 좁은 폰 — 불빛(48px · app.css 잣대 그대로) 셋이 한 줄에 들게 칸 옆 여백만 줄임 */
 html.home.f3 #view .y11-bd { padding-left: 0; padding-right: 0; }
 html.home #view .y11-bub { position: relative; display: grid; gap: 10px; margin-top: 6px; padding: 12px 10px; border-radius: 14px; background: #FFFFFF; border: 2px solid #E3B6C5; }
@@ -133,6 +142,10 @@ html.white.clock.clock.clock.clock.home #view .y11-c-off { background: #241540; 
 html.white.clock.clock.clock.clock.home #view .y11-c-q { background: #160E2B; border: 2.5px dashed #A58BC2; }
 html.white.clock.clock.clock.clock.home #view .y11-lamp[aria-pressed="true"] > .y11-c { outline: 3px solid #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .y11-lamp:focus-visible { outline: 3px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-lamp.y11-lampf > .y11-lf { border: 3px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .y11-lamp.y11-lampf[data-s="off"] > .y11-lf { border: 2px solid #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-lamp.y11-lampf[data-s="q"] > .y11-lf { border: 2px dashed #A58BC2; }
+html.white.clock.clock.clock.clock.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-lf { outline: 3px solid #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .y11-bub { background: #241540; border: 2px solid #3A2756; }
 html.white.clock.clock.clock.clock.home #view .y11-bub::before { background: #241540; border-left: 2px solid #3A2756; border-top: 2px solid #3A2756; }
 html.white.clock.clock.clock.clock.home #view .y11-god { background: #160E2B; border: 2px solid #3A2756; color: #CFC4E0; }

@@ -4,7 +4,7 @@
    따로 받는 까닭: 이 칸 코드 · 모양을 첫 화면 파일에 넣으니 느린 4G 가장 큰 그림이 2413ms → 2575ms(2.5초 선 넘음) — 칸을 열 때만 받음
    글은 textContent 로만 · 그림은 글자 없는 svg · 글 속 style 없음(꼬리 자리만 CSSOM --tail) */
 import {ON as EN} from './i18n.js';
-import {GODS, LIGHTS} from './roman72.js'; // 불빛마다 지킴이 신(사장님 2026-10-31 07:32(+03) 「어 달면서 신들에 / 이미지도 캐릭터화해서 해」 · docs/design/roman72-site-2026-10-31/order-1332.txt)
+import {GODS, LIGHTS, artOf} from './roman72.js'; // 불빛마다 지킴이 신(사장님 2026-10-31 07:32(+03) 「어 달면서 신들에 / 이미지도 캐릭터화해서 해」 · docs/design/roman72-site-2026-10-31/order-1332.txt)
 import {faceBtn, capBox, sayAll, stop as hush, playing} from './roman-say.js'; // 얼굴을 누르면 그 신 이야기를 소리로(2026-10-31 10:58(+04) 「응」 · order-1558.txt) · 열한 불빛 차례로 듣기(16:23(+04) 「응」 · order-2123.txt)
 
 const nx = () => globalThis.NX;
@@ -51,6 +51,10 @@ const SCENE_LABEL = Object.freeze({
 });
 /** 큰 불빛(판 · 말풍선 머리 · 뜻 줄) — 켜짐 칠한 동그라미 · 꺼짐 빈 동그라미 · 모름 점선 동그라미 안 「?」(HTML 글 · 17px 넘게) */
 const lampDot = st => h('span', {class: 'y11-c y11-c-' + st, 'aria-hidden': 'true', text: st === 'q' ? '?' : null});
+/** 판 불빛 지킴이 얼굴(사장님 2026-11-01 18:56(+04) 「응」 — 물음 「말하는 불빛 동그라미에도 신 얼굴을 달아 드릴까요?」 · docs/design/talk-face-2026-11-01/order-2356.txt)
+    판 불빛마다 그 불빛 지킴이 신 얼굴(roman72.js LIGHTS · 말풍선 머리 얼굴과 같은 그림 · 꾸밈 — 읽는 글은 그대로) · 켜짐 = 밝게 · 테 / 꺼짐 · 모름 = 흐리게(색 빼고 옅게)
+    뜻(네 · 아니요 · 몰라요)은 얼굴 옆 작은 동그라미(.y11-c — 뜻 줄과 같은 모양 · 같은 24px)가 그대로 맡음(order-1332 「뜻이 섞이지 않게」) · 자리를 미리 잡음(밀림 0) */
+const lampFace = k => { const n = LIGHTS[k], src = artOf(n); return src ? h('img', {class: 'y11-lf', alt: '', width: 40, height: 40, decoding: 'async', src}) : null; };
 /* 그림 도구(svg · 글자 없음) */
 const sG = (cls, ...kids) => { const g = sv('g', {class: cls}); g.append(...kids); return g; };
 const sR = (cls, x, y, w, hh, rx) => sv('rect', {class: cls, x, y, width: w, height: hh, rx});
@@ -150,7 +154,7 @@ export function talkFill(panel, w, W, WG = []) {
   const board = h('div', {class: 'y11-bd', role: 'group', 'aria-label': EN ? 'Eleven lights' : '불빛 열한 개'}, ...groups.map(g => h('div', {class: 'y11-bg'},
     h('b', {class: 'y11-bn', text: EN ? g.en : g.ko}), // 무리 이름 왼쪽 · 불빛 오른쪽(줄 넷) — 좁으면 불빛이 이름 아래로
     h('div', {class: 'y11-br'}, ...(g.ks ?? []).map(k => { const st = stOf(it(k));
-      const b = h('button', {type: 'button', class: 'y11-lamp', 'data-k': String(k), 'data-s': st, 'aria-pressed': String(k === cur), 'aria-label': EN ? `${k} ${nameOf(k)}: ${tl(TALK_A[st])}` : `${k}번 ${nameOf(k)}, ${tl(TALK_A[st])}`, onclick: () => { quiet(); pick(k, true); }}, lampDot(st));
+      const f = lampFace(k), b = h('button', {type: 'button', class: 'y11-lamp' + (f ? ' y11-lampf' : ''), 'data-k': String(k), 'data-s': st, 'aria-pressed': String(k === cur), 'aria-label': EN ? `${k} ${nameOf(k)}: ${tl(TALK_A[st])}` : `${k}번 ${nameOf(k)}, ${tl(TALK_A[st])}`, onclick: () => { quiet(); pick(k, true); }}, f, lampDot(st)); // 지킴이 얼굴 + 뜻 동그라미(order-2356)
       lamps.set(k, b); return b; })))));
   const snd = canSay() ? h('button', {type: 'button', class: 'y11-snd', 'aria-pressed': String(talk.on), onclick: () => {
     quiet(); talk.on = !talk.on;

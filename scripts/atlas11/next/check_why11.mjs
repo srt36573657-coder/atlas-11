@@ -14,6 +14,8 @@
 //   ⑤ 시장이 내린 달(자료를 바꿔 넣음) — 머리 「시장이 n% 내릴 때 · 여기는 버텼어요」 · 칸 이름 「덜 내린 곳 · 더 내린 곳」(한국어 · 영어) · 높이 그대로
 //   ⑥ 자료를 못 받음 · 날이 다름 — 줄마다 「왜? 아직 못 셌어요.」 · 불빛 모두 「?」 · 누르는 칸 없음 · 「열한 가지 보기」 숨김 · 높이 그대로(밀림 0) · 화면 오류 0
 //   ⑦ 여는 동안 칸(boot-home.js · app.js 를 막아 그대로 둠) — 머리 · 「권하지 않습니다」 · 몰린 곳 줄 자리가 다 그린 칸과 같은 높이(1px 안)
+//   ⑧ 판 불빛 지킴이 얼굴(사장님 2026-11-01 18:56(+04) 「응」 · docs/design/talk-face-2026-11-01/order-2356.txt) — 펼칠 때마다(③ · ④) 불빛마다 그 지킴이 신 얼굴(roman72 LIGHTS)
+//      · 켜짐 밝게 · 꺼짐 · 모름 흐리게 · 뜻 동그라미 24px(뜻 줄과 같은 크기) 오른쪽 아래 · 누르는 자리 48 넘게 · 고른 불빛 테는 얼굴에
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -22,6 +24,7 @@ import {createRequire} from 'node:module';
 import {screenHits, RUIN, RUIN_OK} from '../../../site/next/words.js';
 import {flowRows, FLOW_N, WHY_SCHEMA} from '../../../site/next/home-new.js';
 import {TALK_Q, TALK_A} from '../../../site/next/home-talk.js'; // 말하는 불빛(칸을 처음 열 때 받는 파일 · 2026-10-30 15:15(+08) 「응」)
+import {LIGHTS, artOf} from '../../../site/next/roman72.js'; // 판 불빛마다 지킴이 신 얼굴(order-2356)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -221,6 +224,19 @@ try {
         if (x.q !== (it.s === 'q' ? '?' : '')) lb.push(`${x.k} 불빛 속 글 「${x.q}」`);
         if (x.l !== (en ? `${x.k} ${W.names?.[x.k]?.en}: ${A(it.s)}` : `${x.k}번 ${W.names?.[x.k]?.ko}, ${A(it.s)}`)) lb.push(`${x.k} 읽는 글 「${x.l}」`); });
       check(!lb.length, `${t} 불빛 열하나 = 자료(켜짐 · 꺼짐 · 「?」 · 읽는 글)`, lb.slice(0, 4).join(' | '));
+      // 판 불빛 지킴이 얼굴(사장님 2026-11-01 18:56(+04) 「응」 · docs/design/talk-face-2026-11-01/order-2356.txt) — 불빛마다 그 지킴이 신 얼굴(roman72 LIGHTS · 꾸밈 · 그려짐 · 40px)
+      //   · 켜짐 밝게 / 꺼짐 · 모름 흐리게(색 빼고 옅게) · 뜻 동그라미 24px = 뜻 줄 동그라미와 같은 크기 · 오른쪽 아래 · 누르는 자리 48 넘게 · 고른 불빛 테는 얼굴에
+      const FB = await p.evaluate(async kk => {
+        const d = document.querySelectorAll('#view section.nh-hero ol.nh-fl-up > li')[kk]?.querySelector('details.y11-box'), bd = d?.querySelector('.y11-bd'); if (!bd) return null;
+        for (const im of bd.querySelectorAll('img.y11-lf')) { try { await im.decode(); } catch { /* 못 그림 */ } }
+        const key = d.querySelector('.y11-key .y11-k > .y11-c')?.getBoundingClientRect();
+        return {keyW: key ? Math.round(key.width) : 0, lamps: [...bd.querySelectorAll('.y11-lamp')].map(b => { const f = b.querySelector(':scope > img.y11-lf'), c = b.querySelector(':scope > .y11-c'), br = b.getBoundingClientRect(), fr = f?.getBoundingClientRect(), cr = c?.getBoundingClientRect(), fs = f ? getComputedStyle(f) : null, cs = c ? getComputedStyle(c) : null;
+          return {k: +b.dataset.k, s: b.dataset.s, p: b.getAttribute('aria-pressed'), src: f?.getAttribute('src') ?? null, alt: f?.getAttribute('alt') ?? null, fw: fr ? Math.round(fr.width) : 0, nw: f?.naturalWidth ?? 0,
+            dim: fs ? /grayscale/.test(fs.filter) && (b.getAttribute('aria-pressed') === 'true' || parseFloat(fs.opacity) < 1) : null, op: fs ? parseFloat(fs.opacity) : null, fo: fs?.outlineStyle ?? null, co: cs?.outlineStyle ?? null, bw: Math.round(br.width), bh: Math.round(br.height), cw: cr ? Math.round(cr.width) : 0,
+            cRB: cr ? cr.left >= br.left + br.width / 2 - 0.5 && cr.top >= br.top + br.height / 2 - 0.5 && cr.right <= br.right + 0.5 && cr.bottom <= br.bottom + 0.5 : false}; })};
+      }, k);
+      const fBad = (FB?.lamps ?? []).filter(x => x.src !== artOf(LIGHTS[x.k]) || x.alt !== '' || x.fw !== 40 || !(x.nw > 0) || x.dim !== (x.s !== 'on') || (x.p === 'true' && x.op !== 1) || x.bw < 47.5 || x.bh < 47.5 || x.cw !== FB.keyW || !x.cRB || (x.p === 'true' ? x.fo === 'none' || x.co !== 'none' : x.fo !== 'none'));
+      check(!!FB && FB.lamps.length === 11 && FB.keyW === 24 && !fBad.length, `${t} 판 불빛마다 지킴이 신 얼굴(그려짐 · 40px · 켜짐 밝게 · 꺼짐 · 모름 흐리게) · 뜻 동그라미 = 뜻 줄과 같은 24px · 오른쪽 아래 · 고른 불빛 테는 얼굴에(order-2356)`, JSON.stringify(fBad.slice(0, 2)));
       const first = ks.find(j => u.items[j - 1]?.s === 'on') ?? ks[0];
       check(o.lamps.filter(x => x.p === 'true').map(x => x.k).join() === String(first), `${t} 처음 고른 불빛 = 처음 켜진 것(${first})`, o.lamps.filter(x => x.p === 'true').map(x => x.k).join());
       /** 말풍선 = 자료 — j 번 불빛 */
