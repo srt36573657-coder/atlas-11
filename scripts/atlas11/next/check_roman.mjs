@@ -40,6 +40,10 @@
 //   ⑬ 멈춘 신부터 이어 듣기(사장님 2026-10-31 20:54(+04) 「응」 — 물음 「듣다가 멈춘 신부터 이어서 들을 수 있게 해 드릴까요?」 · docs/design/roman72-site-2026-11-01/order-0154.txt)
 //      — 가짜 소리 줄을 손으로 넘김(__next): 멈추면 읽던 신 번호를 이 휴대폰에(atlas:roman-at) · 단추 「멈춘 신부터 이어 듣기」 + 「처음부터」 · 글상자 「멈춘 곳: …」
 //      · 다시 열어도 그대로 · 이어 듣기 = 그 신부터 소리 줄 · 곳 단추 · 쪽 옮김으로 멈춰도 기억 · 「처음부터」 = 첫 신부터 · 끝까지 들으면 지움 · 영어 글
+//   ⑭ 첫 화면 말하는 불빛 멈춘 불빛부터 이어 듣기(사장님 2026-11-01 23:19(+04) 「응」 — 물음 「말하는 불빛 열하나 듣기도 멈춘 불빛부터 이어 듣게 해 드릴까요?」 · docs/design/talk-resume-2026-11-02/order-0419.txt)
+//      — 가짜 소리 줄을 손으로 넘김(__next): 멈추면 그 업종 · 읽던 불빛을 이 휴대폰에(atlas:talk-at) · 단추 「멈춘 불빛부터 이어 듣기」 + 「처음부터」(48px · 17px) · 「멈춘 곳: n번 …」
+//      · 다시 열어 펼쳐도 그대로 · 이어 듣기 = 그 불빛부터 끝까지(처음 들을 때와 같은 말) · 칸 접음 · 쪽 옮김으로 멈춰도 기억 · 「처음부터」 = 기억 지우고 열하나 · 끝까지 들으면 지움
+//      · 다른 업종 칸 = 처음 모습(기억은 하나 · 그 칸에서 멈추면 옮겨 감 · 앞 칸을 끝까지 들어도 다른 칸 기억은 그대로) · 망가진 기억 넷 = 처음 모습 · 영어 글 · 320 아주 크게 화면 안 · 소리 없는 휴대폰 = 단추 없음
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -687,7 +691,7 @@ try {
     if (!await openT(r8)) check(false, '⑪ 첫 화면 말하는 불빛 판', '안 열림');
     else {
       const H0 = await HS(r8), order = H0.order;
-      check(H0.kids.startsWith('y11-hint|y11-all|y11-key|y11-bd|y11-bub') && H0.label === '열한 불빛 차례로 듣기' && H0.h >= 48 && H0.fs >= 16.9 && order.length === 11 && order.join() === '1,2,3,4,5,6,7,8,9,10,11',
+      check(H0.kids.startsWith('y11-hint|y11-allw|y11-key|y11-bd|y11-bub') && H0.label === '열한 불빛 차례로 듣기' && H0.h >= 48 && H0.fs >= 16.9 && order.length === 11 && order.join() === '1,2,3,4,5,6,7,8,9,10,11',
         '⑪ 뜻 줄 아래 · 불빛 판 위에 「열한 불빛 차례로 듣기」 · 48px · 17px · 불빛 판 차례 1 → 11', JSON.stringify(H0));
       const ref = {}; await tap(r8, X + ' .y11-snd'); // 맞댈 말 — 「소리로 듣기」를 켜고 불빛마다 눌러 읽는 말을 받음
       for (const k of order) { await tap(r8, `${X} .y11-lamp[data-k="${k}"]`); ref[k] = await r8.evaluate(() => window.__q.at(-1)?.text ?? null); }
@@ -700,9 +704,9 @@ try {
       await r8.waitForTimeout(HDUR + 300); const H2 = await HS(r8);
       check(H2.pressed === order[1] && H2.head?.startsWith(`${order[1]}번`) && H2.said === H1.said + 1, '⑪ 앞 불빛 말이 끝나면 다음 불빛을 고름 · 말풍선이 따라 바뀜', JSON.stringify({p: H2.pressed, head: H2.head, said: [H1.said, H2.said]}));
       await tap(r8, `${X} .y11-lamp[data-k="${order[5]}"]`); const H3 = await HS(r8); await r8.waitForTimeout(DUR * 2); const H3b = await HS(r8);
-      check(H3.cancel > H2.cancel && !H3.on && H3.label === '열한 불빛 차례로 듣기' && H3.pressed === order[5] && H3b.said === H3.said, '⑪ 차례로 듣는 중 불빛을 누르면 — 멈춤 · 그 불빛 · 뒤 불빛 안 읽음', JSON.stringify({H3: {on: H3.on, p: H3.pressed, c: [H2.cancel, H3.cancel]}, said: [H3.said, H3b.said]}));
-      await tap(r8, X + ' .y11-all'); await tap(r8, X + ' .y11-nx'); const H4 = await HS(r8);
-      check(!H4.on && H4.label === '열한 불빛 차례로 듣기' && H4.pressed === order[1], '⑪ 차례로 듣는 중 「다음 불빛」 — 멈춤 · 다음 불빛', JSON.stringify({on: H4.on, p: H4.pressed}));
+      check(H3.cancel > H2.cancel && !H3.on && H3.label === '멈춘 불빛부터 이어 듣기' && H3.pressed === order[5] && H3b.said === H3.said, '⑪ 차례로 듣는 중 불빛을 누르면 — 멈춤 · 그 불빛 · 뒤 불빛 안 읽음 · 단추는 「멈춘 불빛부터 이어 듣기」(order-0419)', JSON.stringify({H3: {on: H3.on, p: H3.pressed, label: H3.label, c: [H2.cancel, H3.cancel]}, said: [H3.said, H3b.said]}));
+      await tap(r8, X + ' .y11-allr'); await tap(r8, X + ' .y11-nx'); const H4 = await HS(r8); // 「처음부터」(order-0419) — 첫 불빛부터 듣다가 「다음 불빛」
+      check(!H4.on && H4.label === '멈춘 불빛부터 이어 듣기' && H4.pressed === order[1], '⑪ 차례로 듣는 중 「다음 불빛」 — 멈춤 · 다음 불빛', JSON.stringify({on: H4.on, p: H4.pressed, label: H4.label}));
       await tap(r8, X + ' .y11-all'); const c0 = (await HS(r8)).cancel; await r8.locator('#view section.nh-hero details.y11-box[open] > summary').first().click(); await r8.waitForTimeout(300);
       const H5c = await r8.evaluate(() => window.__cancel);
       check(H5c > c0, '⑪ 차례로 듣는 중 칸을 접으면 멈춤', `${c0} → ${H5c}`);
@@ -817,6 +821,92 @@ try {
       check(F1.label === 'Resume where I stopped' && F1.re?.t === 'From the start' && F1.cap === `Stopped at: ${whoEn(ALL72[1])}` && !HAN.test(`${F1.label}${F1.re?.t}${F1.cap}`), '⑬ 영어 — 「Resume where I stopped」 · 「From the start」 · 「Stopped at: …」', JSON.stringify(F1));
     } else check(false, '⑬ 영어 로마 신 쪽', '안 그려짐');
     check(!eF.length, '⑬ 영어 화면 오류 0', eF.join(' | ')); await cF.close();
+    // ⑭ 첫 화면 말하는 불빛 멈춘 불빛부터 이어 듣기(order-0419) — 멈추면 그 업종 · 읽던 불빛을 이 휴대폰에(atlas:talk-at) · 이어 듣기 · 처음부터 · 끝까지 들으면 지움 · 다른 업종 칸 · 망가진 기억 · 영어 · 아주 크게 · 소리 없는 휴대폰
+    const TX = '#view section.nh-hero details.y11-box', TAT = 'atlas:talk-at';
+    const memo = q => q.evaluate(K => { try { return JSON.parse(localStorage.getItem(K) ?? 'null'); } catch { return 'x'; } }, TAT);
+    const TS2 = (q, j = 0) => q.evaluate(([D, j, K]) => { const d = document.querySelectorAll(D)[j], x = d?.querySelector(':scope > .y11-x'), b = x?.querySelector('.y11-all'), re = x?.querySelector('.y11-allr'), c = x?.querySelector('.y11-allc');
+      const rb = b?.getBoundingClientRect(), rr = re?.getBoundingClientRect(), rc = c?.getBoundingClientRect(); let at = null; try { at = JSON.parse(localStorage.getItem(K) ?? 'null'); } catch { at = 'x'; }
+      return {open: !!d?.open, sec: d?.querySelector(':scope > summary .nh-fn')?.textContent ?? null, w: x ? x.querySelectorAll('.y11-allw').length : -1, label: b?.textContent ?? null, on: b?.classList.contains('y11-allon') ?? null,
+        bh: rb ? Math.round(rb.height * 10) / 10 : 0, bl: rb ? Math.round(rb.left) : -1, brt: rb ? Math.round(rb.right) : 9999, fs: b ? parseFloat(getComputedStyle(b).fontSize) : 0,
+        re: re ? {hid: re.hidden, t: re.textContent, h: Math.round(rr.height * 10) / 10, l: Math.round(rr.left), rt: Math.round(rr.right), fs: parseFloat(getComputedStyle(re).fontSize)} : null,
+        cap: c?.textContent ?? null, capHid: c?.hidden ?? null, capR: rc && rc.width ? {l: Math.round(rc.left), rt: Math.round(rc.right), fs: parseFloat(getComputedStyle(c).fontSize)} : null, at,
+        pressed: x?.querySelector('.y11-lamp[aria-pressed="true"]')?.dataset.k ?? null, head: x?.querySelector('.y11-bk')?.textContent ?? null, q: window.__q?.length ?? 0,
+        vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth}; }, [TX, j, TAT]);
+    const openN = async (q, j = 0) => { const sm = q.locator(TX + ' > summary').nth(j); if (!await sm.waitFor({state: 'attached', timeout: 15000}).then(() => true, () => false)) return false;
+      if (!await q.locator(TX).nth(j).evaluate(e => e.open)) { await sm.scrollIntoViewIfNeeded(); await sm.click(); }
+      return q.locator(TX).nth(j).locator('.y11-bd').first().waitFor({state: 'attached', timeout: 15000}).then(() => true, () => false); };
+    const press = async (q, j, cls) => { const b = q.locator(TX).nth(j).locator(cls).first(); await b.scrollIntoViewIfNeeded(); await b.click(); await q.waitForTimeout(150); };
+    const cG = await qCtx(390), rG = await cG.newPage(), eG = errsOf(rG);
+    await rG.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); await rG.waitForTimeout(800);
+    if (await openN(rG)) {
+      const ord = (await HS(rG)).order, G0 = await TS2(rG);
+      check(G0.w === 1 && G0.label === '열한 불빛 차례로 듣기' && G0.re?.hid === true && G0.re?.t === '처음부터' && G0.capHid === true && G0.at === null && !!G0.sec && ord.length === 11, '⑭ 처음 — 「열한 불빛 차례로 듣기」 · 「처음부터」 · 「멈춘 곳」 숨김 · 기억 없음', JSON.stringify(G0));
+      await rG.evaluate(() => { window.__dur = 600000; }); await press(rG, 0, '.y11-all');
+      const Q11 = await rG.evaluate(n => window.__q.slice(n).map(x => x.text), G0.q);
+      for (let j = 0; j < 3; j++) await rG.evaluate(() => window.__next());
+      await rG.waitForTimeout(200); const G1 = await TS2(rG);
+      await press(rG, 0, '.y11-all'); const G2 = await TS2(rG);
+      check(Q11.length === 11 && G1.on && G1.pressed === ord[3] && G1.head?.startsWith(`${ord[3]}번 `) && !G2.on && G2.at?.n === G0.sec && G2.at?.k === +ord[3] && G2.label === '멈춘 불빛부터 이어 듣기' && G2.re?.hid === false && G2.re?.t === '처음부터' && G2.re?.h >= 47.5 && G2.re?.fs >= 16.9 && G2.cap === `멈춘 곳: ${G1.head}` && G2.capHid === false && G2.capR?.fs >= 16.9,
+        '⑭ 넷째 불빛을 읽다 멈춤 — 그 업종 · 불빛을 이 휴대폰에 · 「멈춘 불빛부터 이어 듣기」 + 「처음부터」(48px · 17px) · 「멈춘 곳: 4번 …」', JSON.stringify({n: Q11.length, G1: {on: G1.on, p: G1.pressed, head: G1.head}, G2}));
+      await rG.reload({waitUntil: 'load'}); await rG.waitForTimeout(800); const okR = await openN(rG), G3 = await TS2(rG);
+      check(okR && G3.label === '멈춘 불빛부터 이어 듣기' && G3.re?.hid === false && G3.cap === G2.cap && G3.capHid === false && G3.at?.k === +ord[3], '⑭ 첫 화면을 다시 열어 그 칸을 펼쳐도 — 이어 듣기 모양 그대로', JSON.stringify(G3));
+      await rG.evaluate(() => { window.__dur = 600000; }); await press(rG, 0, '.y11-all');
+      const G4 = await TS2(rG), Q4 = await rG.evaluate(n => window.__q.slice(n).map(x => x.text), G3.q);
+      check(G4.on && G4.label === '멈추기' && Q4.length === 8 && Q4.join('\n') === Q11.slice(3).join('\n') && G4.pressed === ord[3] && G4.head === G1.head && G4.re?.hid === true && G4.capHid === true,
+        '⑭ 이어 듣기 — 멈춘 불빛부터 끝까지 소리 줄에(여덟 · 처음 들을 때와 같은 말) · 그 불빛을 고름 · 「처음부터」 · 「멈춘 곳」 숨김', JSON.stringify({n: Q4.length, q0: Q4[0]?.slice(0, 24), p: G4.pressed, label: G4.label}));
+      for (let j = 0; j < 2; j++) await rG.evaluate(() => window.__next());
+      await rG.waitForTimeout(150); const G5a = await TS2(rG);
+      await rG.locator(TX + ' > summary').first().click(); await rG.waitForTimeout(300); const atC = await memo(rG);
+      await openN(rG); const G5 = await TS2(rG);
+      check(G5a.pressed === ord[5] && atC?.k === +ord[5] && G5.label === '멈춘 불빛부터 이어 듣기' && G5.cap === `멈춘 곳: ${G5a.head}`, '⑭ 칸을 접어 멈춰도 읽던 불빛을 기억 · 다시 펼치면 그 불빛', JSON.stringify({p: G5a.pressed, atC, cap: G5.cap}));
+      await press(rG, 0, '.y11-all'); await rG.evaluate(() => window.__next()); await rG.waitForTimeout(150); const G6a = await TS2(rG);
+      await rG.evaluate(() => { location.hash = '#/dori'; }); await rG.waitForTimeout(600); const atAway = await memo(rG);
+      await rG.evaluate(() => { location.hash = '#/'; }); await rG.waitForTimeout(800); await openN(rG); const G6 = await TS2(rG);
+      check(G6a.pressed === ord[6] && atAway?.k === +ord[6] && atAway?.n === G0.sec && G6.label === '멈춘 불빛부터 이어 듣기' && G6.cap === `멈춘 곳: ${G6a.head}`, '⑭ 쪽을 옮겨 멈춰도 읽던 불빛을 기억 · 돌아와 펼치면 그 불빛', JSON.stringify({p: G6a.pressed, atAway, cap: G6.cap}));
+      await rG.evaluate(() => { window.__dur = 600000; }); await press(rG, 0, '.y11-allr');
+      const G7 = await TS2(rG), Q7 = await rG.evaluate(n => window.__q.slice(n).map(x => x.text), G6.q);
+      check(G7.on && Q7.length === 11 && Q7.join('\n') === Q11.join('\n') && G7.at === null && G7.pressed === ord[0], '⑭ 「처음부터」 — 기억을 지우고 첫 불빛부터 열하나', JSON.stringify({n: Q7.length, at: G7.at, p: G7.pressed}));
+      await rG.evaluate(() => { window.__dur = 30; window.__next(); }); await rG.waitForTimeout(30 * 11 + 2500); const G8 = await TS2(rG);
+      check(!G8.on && G8.at === null && G8.label === '열한 불빛 차례로 듣기' && G8.re?.hid === true && G8.capHid === true && G8.pressed === ord[10], '⑭ 끝까지 들으면 — 기억 지움 · 처음 모습', JSON.stringify(G8));
+      if (await rG.locator(TX).count() >= 2 && await openN(rG, 1)) { // 다른 업종 칸 — 기억은 하나(마지막에 멈춘 곳)
+        await rG.evaluate(() => { window.__dur = 600000; }); await press(rG, 0, '.y11-all'); await rG.evaluate(() => window.__next()); await press(rG, 0, '.y11-all');
+        const A0 = await TS2(rG, 0), B0 = await TS2(rG, 1);
+        await press(rG, 1, '.y11-all'); await rG.evaluate(() => window.__next()); await press(rG, 1, '.y11-all');
+        const A1 = await TS2(rG, 0), B1 = await TS2(rG, 1);
+        check(A0.label === '멈춘 불빛부터 이어 듣기' && B0.label === '열한 불빛 차례로 듣기' && B0.re?.hid === true && B0.capHid === true && B1.label === '멈춘 불빛부터 이어 듣기' && B1.at?.n === B1.sec && B1.sec !== A1.sec && B1.at?.k === +ord[1] && B1.cap?.startsWith(`멈춘 곳: ${ord[1]}번 `) && A1.label === '열한 불빛 차례로 듣기' && A1.re?.hid === true && A1.capHid === true,
+          '⑭ 다른 업종 칸 — 앞 칸 기억이 있어도 처음 모습 · 거기서 멈추면 기억이 그 칸으로(앞 칸은 처음 모습 · 기억은 하나)', JSON.stringify({A0: A0.label, B0: B0.label, A1: {label: A1.label, sec: A1.sec}, B1: {label: B1.label, at: B1.at, sec: B1.sec, cap: B1.cap}}));
+        await rG.evaluate(() => { window.__dur = 30; }); await press(rG, 0, '.y11-all'); await rG.waitForTimeout(30 * 11 + 2500);
+        const A2 = await TS2(rG, 0), B2 = await TS2(rG, 1);
+        check(!A2.on && A2.label === '열한 불빛 차례로 듣기' && B2.at?.n === B1.sec && B2.at?.k === +ord[1] && B2.label === '멈춘 불빛부터 이어 듣기', '⑭ 앞 칸을 끝까지 들어도 다른 칸 기억은 그대로', JSON.stringify({A2: A2.label, B2: {label: B2.label, at: B2.at}}));
+      }
+      for (const [bad, why] of [['{bad', '망가진 글'], [JSON.stringify({n: G0.sec, k: 99}), '없는 불빛'], [JSON.stringify({n: '없는 업종', k: 3}), '없는 업종'], [JSON.stringify({n: G0.sec}), '불빛 번호 없음']]) {
+        await rG.evaluate(([K, v]) => localStorage.setItem(K, v), [TAT, bad]); await rG.reload({waitUntil: 'load'}); await rG.waitForTimeout(800);
+        const ok = await openN(rG), Z = await TS2(rG);
+        check(ok && Z.label === '열한 불빛 차례로 듣기' && Z.re?.hid === true && Z.capHid === true, `⑭ 기억이 ${why}이면 — 처음 모습(화면 오류 없이)`, JSON.stringify({label: Z.label, re: Z.re?.hid, cap: Z.capHid}));
+      }
+    } else check(false, '⑭ 첫 화면 말하는 불빛 판', '안 열림');
+    check(!eG.length, '⑭ 화면 오류 0', eG.join(' | ')); await cG.close();
+    const cH = await qCtx(390, {en: true}), rH = await cH.newPage(), eH = errsOf(rH);
+    await rH.goto(URL_OF('#/', '&lang=en'), {waitUntil: 'load', timeout: 60000}); await rH.waitForTimeout(800);
+    if (await openN(rH)) {
+      const H0e = await TS2(rH); await rH.evaluate(() => { window.__dur = 600000; }); await press(rH, 0, '.y11-all'); await rH.evaluate(() => window.__next()); await rH.waitForTimeout(150);
+      const H1e = await TS2(rH); await press(rH, 0, '.y11-all'); const H2e = await TS2(rH);
+      check(H0e.label === 'Hear all eleven lights in order' && H2e.label === 'Resume where I stopped' && H2e.re?.hid === false && H2e.re?.t === 'From the start' && H2e.cap === `Stopped at: ${H1e.head}` && !HAN.test(`${H2e.label}${H2e.re?.t}${H2e.cap}`),
+        '⑭ 영어 — 「Resume where I stopped」 · 「From the start」 · 「Stopped at: 2 · …」', JSON.stringify({H0: H0e.label, head: H1e.head, H2e}));
+    } else check(false, '⑭ 영어 말하는 불빛 판', '안 열림');
+    check(!eH.length, '⑭ 영어 화면 오류 0', eH.join(' | ')); await cH.close();
+    for (const [w, font, fake, tagT] of [[320, 2, true, '320 아주 크게'], [390, 0, false, '소리 없는 휴대폰']]) {
+      const cI = await qCtx(w, {font, fake}), rI = await cI.newPage(), eI = errsOf(rI);
+      await rI.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); await rI.waitForTimeout(800);
+      const sec = await rI.locator(TX + ' > summary .nh-fn').first().textContent({timeout: 15000}).catch(() => null);
+      await rI.evaluate(([K, v]) => localStorage.setItem(K, v), [TAT, JSON.stringify({n: sec, k: 5})]); await rI.reload({waitUntil: 'load'}); await rI.waitForTimeout(800);
+      if (!sec || !await openN(rI)) { check(false, `⑭ ${tagT} 말하는 불빛 판`, '안 열림'); await cI.close(); continue; }
+      const I = await TS2(rI);
+      if (fake) check(I.label === '멈춘 불빛부터 이어 듣기' && I.re?.hid === false && I.bl >= 0 && I.brt <= I.vw + 0.5 && I.bh >= 48 && I.re.l >= 0 && I.re.rt <= I.vw + 0.5 && I.re.h >= 47.5 && I.capR && I.capR.l >= 0 && I.capR.rt <= I.vw + 0.5 && I.sw <= I.vw,
+        `⑭ ${tagT} — 이어 듣기 · 처음부터 · 멈춘 곳 모두 화면 안 · 48px · 넘침 0`, JSON.stringify({bl: I.bl, brt: I.brt, bh: I.bh, re: I.re, capR: I.capR, vw: I.vw, sw: I.sw}));
+      else check(I.w === 0 && I.label === null && I.re === null && I.cap === null, `⑭ ${tagT} — 기억이 있어도 단추 · 멈춘 곳 없음`, JSON.stringify({w: I.w, label: I.label}));
+      check(!eI.length, `⑭ ${tagT} 화면 오류 0`, eI.join(' | ')); await cI.close();
+    }
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();
