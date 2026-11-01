@@ -26,9 +26,11 @@ if (isHome && v && boot) {
   // 몰린 곳 줄 = 빈 막대 줄 + 「왜?」 두 줄 자리 + 불빛 줄 자리(home-new.js upEmpty 와 같은 틀 · 같은 높이) · 빠진 곳 줄 = 빈 막대 줄
   const slot = () => { const li = el('li', 'y11-i y11-e'), w = el('div', 'y11-box'), ws = el('div', 'y11-s'); ws.append(el('div', 'nh-fr nh-f0'), el('div', 'y11-l'), el('div', 'y11-lt'), el('div', 'y11-m')); w.append(ws); li.append(w); return li; };
   const rows = k => { const ol = el('ol', 'nh-fl nh-fl-' + k); for (let j = 0; j < 3; j++) ol.append(k === 'up' ? slot() : el('li', 'nh-fr nh-f0')); return ol; };
-  // 스승 얼굴(사장님 2026-11-01 10:25(+04) 「응」 · order-1525) — 다 그린 첫 화면(home-new.js sage)과 같은 얼굴 · 같은 40px 자리
+  // 스승 얼굴(사장님 2026-11-01 10:25(+04) 「응」 · order-1525) · 얼굴을 누르면 남긴 말(12:30(+04) 「응」 · order-1730) — 다 그린 첫 화면(home-new.js sage)과 같은 꼴 · 같은 높이
+  //   = 얼굴 칸 48px(그림 40px) + 이름과 말 고리(.nh-sl) · 여는 동안은 얼굴이 그림만(누르는 단추 · 소리 표 · 글상자는 다 그린 첫 화면이 담 — 소리 모듈은 다 그린 뒤 받음)
   const sf = hid(el('i', 'nh-sf')), sfi = document.createElement('img'); sfi.alt = ''; sfi.width = 40; sfi.height = 40; sfi.decoding = 'async'; sfi.src = '/next/sage-art/adamsmith.svg'; sf.append(sfi);
-  const sage = el('a', 'nh-sage nh-sfw'); sage.href = '#/sage/adamsmith'; sage.append(sf, el('b', null, '애덤 스미스'), ' ', el('span', null, '사려는 사람이 많으면 값이 올라요.')); // 다 그린 뒤(home-new.js sage)와 같은 고리 · 같은 높이
+  const sl = el('a', 'nh-sl'); sl.href = '#/sage/adamsmith'; sl.append(el('b', null, '애덤 스미스'), ' ', el('span', null, '사려는 사람이 많으면 값이 올라요.'));
+  const sage = el('div', 'nh-sage nh-sfw'); sage.dataset.id = 'adamsmith'; sage.append(sf, sl); // 다 그린 뒤(home-new.js sage)와 같은 고리 · 같은 높이
   fm.append(key('up', '돈이 몰린 곳'), rows('up'), key('dn', '돈이 빠진 곳'), rows('dn'), el('p', 'nh-fc', '한 달 동안 시장과 견준 값이에요.'), sage);
   const go = el('button', 'nh-go nh-gopick'); go.type = 'button'; go.append(el('span', null, '지난 기록으로 고른 회사 보기'), hid(el('i', null, '›')));
   const door = el('div', 'nh-door'); door.append(go);
