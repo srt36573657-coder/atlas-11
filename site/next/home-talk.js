@@ -121,6 +121,16 @@ const KO_N = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여
 const EN_N = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
 const allText = (n, on) => (on ? (EN ? 'Stop' : '멈추기') : EN ? `Hear all ${EN_N[n] ?? n} lights in order` : `${KO_N[n] ?? n} 불빛 차례로 듣기`);
 const allIcon = on => { const s = sv('svg', {width: 24, height: 24, viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false', fill: 'currentColor'}); s.append(on ? sR('y11-alls', 6, 6, 12, 12, 2) : sP('y11-allp', 'M8 5.5v13l10.5-6.5z')); return s; };
+/** 멈춘 불빛부터 이어 듣기(사장님 2026-11-01 23:19(+04) 「응」 — 물음 「말하는 불빛 열하나 듣기도 멈춘 불빛부터 이어 듣게 해 드릴까요?」 · docs/design/talk-resume-2026-11-02/order-0419.txt)
+    차례로 듣기를 중간에 멈추면(단추 · 불빛 · 앞 · 다음 · 소리 · 지킴이 얼굴 · 칸 접음 · 쪽 옮김) 그 업종 · 읽던 불빛을 이 휴대폰에 기억(TALK_AT — 로마 신 72 order-0154 · 첫 화면 스승 order-2122 와 같은 꼴)
+    그 업종 칸 = 「멈춘 불빛부터 이어 듣기」 + 「처음부터」 · 「멈춘 곳: (번호 · 이름)」 · 이어 듣기 = 그 불빛부터 끝까지 · 처음부터 = 기억을 지우고 첫 불빛부터 · 끝까지 들으면 그 업종 기억을 지움
+    기억은 하나(마지막에 멈춘 곳) — 다른 업종 칸은 처음 모습 · 기억이 바뀌면 그려진 칸 모두 다시 맞춤 · 기억 못 하는 휴대폰은 늘 처음부터 */
+export const TALK_AT = 'atlas:talk-at';
+const atLoad = () => { try { const v = JSON.parse(localStorage.getItem(TALK_AT) ?? 'null'); return v && typeof v.n === 'string' && Number.isInteger(v.k) ? {n: v.n, k: v.k} : null; } catch { return null; } };
+const atSave = v => { try { if (v) localStorage.setItem(TALK_AT, JSON.stringify({n: v.n, k: v.k, at: Date.now()})); else localStorage.removeItem(TALK_AT); } catch { /* 기억 못 하는 휴대폰 — 늘 처음부터 */ } };
+const RESUME = EN ? {resume: 'Resume where I stopped', again: 'From the start', at: (k, n) => `Stopped at: ${k} · ${n}`} : {resume: '멈춘 불빛부터 이어 듣기', again: '처음부터', at: (k, n) => `멈춘 곳: ${k}번 ${n}`};
+const IDLE = new WeakMap(); // 칸 묶음(.y11-allw) → 처음 모습 다시 맞추기
+const idleAll = () => { for (const e of document.querySelectorAll('#view .y11-allw')) IDLE.get(e)?.(); };
 /** 펼친 칸 채우기 — 뜻 줄 · 차례로 듣기 · 불빛 판 · 말풍선(누른 불빛이 답함) · 앞 · 다음 · 소리 · 대표 회사 기록이라는 말(panel = home-new.js 가 만든 빈 칸 .y11-x)
     차례로 듣기(사장님 2026-10-31 16:23(+04) 「응」 · docs/design/roman72-site-2026-10-31/order-2123.txt) — 불빛 판 차례대로 「소리로 듣기」와 같은 말(lineOf)을 이어 읽음 ·
     읽는 불빛을 고름(말풍선 = 글상자) · 단추 다시 누름 · 불빛 · 앞 · 다음 · 소리 · 지킴이 얼굴 · 칸 접음 · 쪽 옮김 = 멈춤(roman-say.js sayAll) · 소리를 못 내는 휴대폰은 단추 없음 */
@@ -165,13 +175,31 @@ export function talkFill(panel, w, W, WG = []) {
   const bub = h('div', {class: 'y11-bub', 'aria-live': 'polite'}, body, h('div', {class: 'y11-ctl'},
       h('button', {type: 'button', class: 'y11-pv', onclick: () => step(-1)}, EN ? '‹ Back' : '‹ 앞 불빛'),
       h('button', {type: 'button', class: 'y11-nx', onclick: () => step(1)}, EN ? 'Next ›' : '다음 불빛 ›'), snd));
-  if (canSay()) { // 차례로 듣기 — 누른 그 순간 열하나를 소리 줄에 · 시작할 때마다 그 불빛을 고름(소리 없이 — 소리는 줄이 읽음)
-    let ic = allIcon(false); const t = h('span', {text: allText(order.length, false)});
-    const set = on => { t.textContent = allText(order.length, on); all.classList.toggle('y11-allon', on); const x = allIcon(on); ic.replaceWith(x); ic = x; };
-    all = h('button', {type: 'button', class: 'y11-all', onclick: () => sayAll(order.map(k => ({text: lineOf(k), label: '', go: () => pick(k, false), view: bub})), all, {set})}, ic, t);
-    const box = panel.closest('details'); if (box && !box.dataset.y11All) { box.dataset.y11All = '1'; box.addEventListener('toggle', () => { if (!box.open && all && playing(all)) hush(); }); } // 칸을 접으면 멈춤
+  let allw = null;
+  if (canSay()) { // 차례로 듣기 — 누른 그 순간 남은 불빛을 소리 줄에 · 시작할 때마다 그 불빛을 고름(소리 없이 — 소리는 줄이 읽음) · 멈춘 불빛부터 이어 듣기(order-0419)
+    let ic = allIcon(false); const t = h('span');
+    const note = h('p', {class: 'y11-allc', hidden: true, 'aria-live': 'polite'});
+    const re = h('button', {type: 'button', class: 'y11-allr', hidden: true, onclick: () => play(true), text: RESUME.again});
+    const mine = () => { const v = atLoad(); return v && v.n === w.n && order.includes(v.k) ? v : null; }; // 이 업종 칸에서 멈춘 불빛
+    const idle = () => { const v = mine(); t.textContent = v ? RESUME.resume : allText(order.length, false); re.hidden = !v; note.hidden = !v; note.textContent = v ? RESUME.at(v.k, nameOf(v.k)) : ''; };
+    const set = (on, info) => {
+      all.classList.toggle('y11-allon', !!on); const x = allIcon(!!on); ic.replaceWith(x); ic = x;
+      if (on) { t.textContent = allText(order.length, true); re.hidden = true; note.hidden = true; return; }
+      if (info?.done) { if (atLoad()?.n === w.n) atSave(null); } else if (info?.item?.k) atSave({n: w.n, k: info.item.k}); // 끝까지 = 이 업종 기억 지움 · 중간에 멈춤 = 읽던 불빛
+      idleAll(); // 다른 업종 칸도 맞춤(기억은 하나)
+    };
+    const play = fromStart => {
+      if (playing(all)) { hush(); return; }
+      if (fromStart) atSave(null);
+      const v = mine(), k0 = v ? order.indexOf(v.k) : 0;
+      sayAll(order.slice(k0).map(k => ({k, text: lineOf(k), label: '', go: () => pick(k, false), view: bub})), all, {set});
+    };
+    all = h('button', {type: 'button', class: 'y11-all', onclick: () => play(false)}, ic, t);
+    allw = h('div', {class: 'y11-allw'}, h('div', {class: 'y11-allrow'}, all, '\n', re), '\n', note); // 빈 줄 — 글을 이어 붙여도 단추 글끼리 붙지 않게(판에서는 안 보임)
+    IDLE.set(allw, idle); idle();
+    const box = panel.closest('details'); if (box && !box.dataset.y11All) { box.dataset.y11All = '1'; box.addEventListener('toggle', () => { if (!box.open && all && playing(all)) hush(); }); } // 칸을 접으면 멈춤(읽던 불빛을 기억)
   }
-  panel.classList.remove('y11-wait'); panel.replaceChildren(...[h('p', {class: 'y11-hint', text: EN ? 'Tap a light and it answers.' : '불빛을 누르면 그 불빛이 답해요.'}), all, '\n', // 빈 줄 — 쪽 글을 이어 읽을 때 단추 글이 옆 글과 붙지 않게(칸 판에서는 안 보임)
+  panel.classList.remove('y11-wait'); panel.replaceChildren(...[h('p', {class: 'y11-hint', text: EN ? 'Tap a light and it answers.' : '불빛을 누르면 그 불빛이 답해요.'}), allw, '\n', // 빈 줄 — 쪽 글을 이어 읽을 때 단추 글이 옆 글과 붙지 않게(칸 판에서는 안 보임)
     h('p', {class: 'y11-key'}, key('on'), key('off'), key('q')), board, bub,
     L(W.note) ? h('p', {class: 'y11-note', text: L(W.note)}) : null].filter(Boolean)); // 빈 자리(null)는 빼고
   if (!talk.rz) { talk.rz = true; addEventListener('resize', () => { for (const x of document.querySelectorAll('#view details.y11-box[open] > .y11-x')) placeTail(x); }); }
