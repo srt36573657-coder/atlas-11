@@ -1,7 +1,7 @@
 {
- "at": "2026-11-01T10:07:57.163Z",
+ "at": "2026-11-01T12:10:56.324Z",
  "base": "https://aaa7377.com",
- "secs": 106,
+ "secs": 142,
  "scenarios": [
   "site",
   "rec-20261015T110206Z",
@@ -40,12 +40,12 @@
   "edge-badcal"
  ],
  "time": {
-  "old": 33.3,
-  "new": 62.9,
-  "wall": 106.2,
+  "old": 43.7,
+  "new": 82.8,
+  "wall": 141.7,
   "opensOld": 357,
   "opensNew": 484,
-  "oldPct": 31.4,
+  "oldPct": 30.8,
   "oldShare": 34.6
  },
  "net": {
