@@ -412,6 +412,9 @@ export function svgOf(n) {
     + el('circle', {cx: 60, cy: 60, r: 57, fill: 'none', stroke: ring, 'stroke-width': 3.5}) + '</svg>\n';
 }
 
+/** 그리는 손 묶음 — 서른아홉 스승 그림 기계(sage_art.mjs · 사장님 2026-11-01 05:46(+04) 「응 캐릭터 만들어서」 · order-1046)가 같은 손 · 같은 꼴로 그리게 · 이 파일이 그리는 신 그림은 한 글자도 안 바뀜(--check) */
+export const KIT = Object.freeze({INK, SKIN, GOLD, WOOD, METAL, LEAF, WHITE, BLK, DBR, BRN, AUB, GLD, BLD, WHT, GRY, SEA, RED, r1, el, TH, NS, P, C, E, R, LN, OL, MIR, ROT, arc, star, flower, drop, hand, ear, laurel, band, brimHat, HAIR, BEARD, MUST, HW, BACK, IT, EX, body, ears});
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const check = process.argv.includes('--check');
   let bad = 0;
