@@ -476,6 +476,10 @@ html.home #view .nh-warn .nh-sage { margin-top: 6px; }
 @media (max-width: 360px) { html.home #view .nh-fm { padding: 10px 10px; } html.home #view .nh-fr { padding: 0 8px; } }
 html.home #view .nh-sage > i { font-size: 24px; line-height: 1; padding-top: 8px; font-family: Georgia, 'Times New Roman', serif; }
 html.home #view .nh-part .nh-sage > i { background: #FFFFFF; border: 1px solid #E3B6C5; }
+/* 스승 얼굴(사장님 2026-11-01 10:25(+04) 「응」 · order-1525) — 따옴표 동그라미 자리에 그 스승 캐릭터 얼굴 40px(/next/sage-art/<이름>.svg) · 바탕 · 테 · 글자 없음(그림 동그라미가 곧 테) */
+html.home #view .nh-sage.nh-sfw { grid-template-columns: 40px minmax(0, 1fr); }
+html.home #view .nh-sage.nh-sfw > i.nh-sf { width: 40px; height: 40px; padding: 0; border: 0; background: transparent; overflow: hidden; }
+html.home #view .nh-sage.nh-sfw > i.nh-sf img { display: block; width: 40px; height: 40px; border-radius: 50%; }
 html.home.en #view .nh-hero .nh-sage { display: none; } /* 영어 글이 길어 소개 칸이 찾기 줄 아래로 밀려 맨 위 스승 한 줄만 뺌(한국어는 그대로) */
 html.home #view svg.nh-waf { padding: 0; } /* 다른 쪽 「.me」 칸 안쪽 여백이 왼쪽 100칸 그림에 붙어 작아 보이던 것 */
 @media (max-width: 380px) { html.white.clock.clock.clock.home #view .nh-hero .nh-h1 { font-size: 24px; } } /* 375 폭에서 대신 글꼴이 칸 끝에 닿아 두 줄로 바뀌지 않게(390 폭은 26px 한 줄) */
