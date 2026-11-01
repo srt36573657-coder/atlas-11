@@ -11,7 +11,7 @@
 //   ③ 한 사람 서른아홉(390) — 이름 · 네 줄(기승전결)이 자료 글 그대로 · 남긴 말 · 표시 · 원문(말 lang) · 출처 · 둘이 고리(걸음마다) · 앞 · 다음(끝은 처음으로) · n / 39 · 별 띠 밝은 점 하나
 //      · 320 폭 · 아주 크게에서 넘침 0(긴 이름 다섯)
 //   ④ 영어(?lang=en) — 첫 쪽 + 서른아홉 사람 · 남은 한글 0(원문 lang="ko" 빼고) · 영어 글이 자료 그대로 · 창 제목 영어
-//   ⑤ 길 — 첫 화면 스승 줄(a.nh-sage)을 누르면 그 사람 한 장 · 둘이 단추 안 「서른아홉 스승」 · 없는 이름은 첫 쪽(알림 한 줄) · 자료를 못 받으면 「?」 한 줄(오류 0)
+//   ⑤ 길 — 첫 화면 스승 줄(a.nh-sage · 줄마다 그 스승 얼굴 40px order-1525)을 누르면 그 사람 한 장 · 둘이 단추 안 「서른아홉 스승」 · 없는 이름은 첫 쪽(알림 한 줄) · 자료를 못 받으면 「?」 한 줄(오류 0)
 //      · 읽는 종이 판은 이 쪽에서만 켜지고 다른 쪽으로 가면 꺼짐(html.pg-sage · #view 바탕)
 //   ⑥ 읽기(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · docs/design/read-2026-10-30/order-0003.txt)
 //      — 위 ② ③ ④ 에서 재는 모든 화면마다: 바탕체 0(글씨체 하나) · 글 19px 넘게 · 이야기 넷 · 남긴 말 24px 넘게 · 모든 글이 제 바탕과 대비 7 넘게
@@ -272,6 +272,11 @@ try {
     check(links.length >= 1, '⑤ 첫 화면 스승 줄이 고리', links.length);
     check(links.every(l => { const id = (/^#\/sage\/([a-z]+)$/.exec(l.href) || [])[1]; const x = PEOPLE.find(q => q.id === id); return x && (x.ko.name === l.who || x.ko.short === l.who || x.ko.name.endsWith(l.who)); }), '⑤ 스승 줄 고리 = 그 사람', JSON.stringify(links.map(l => [l.who, l.href])));
     check(links.every(l => l.h >= 47.5 && l.w >= 47.5), '⑤ 스승 줄 누르는 자리 48 넘게', JSON.stringify(links.map(l => [l.who, Math.round(l.w), Math.round(l.h)])));
+    // 첫 화면 스승 줄 얼굴(사장님 2026-11-01 10:25(+04) 「응」 · docs/design/sage-face-home-2026-11-01/order-1525.txt) — 줄마다 그 스승 캐릭터 얼굴 40px · 꾸밈 · 실제로 그려짐 · 따옴표 없음
+    const faces = await p.evaluate(async () => Promise.all([...document.querySelectorAll('#view a.nh-sage')].map(async a => { const i = a.querySelector(':scope > i.nh-sf'), im = i?.querySelector('img'); if (im) { im.scrollIntoView({block: 'center'}); try { await im.decode(); } catch { /* 못 그림 */ } } const r = im?.getBoundingClientRect();
+      return {href: a.getAttribute('href'), src: im?.getAttribute('src') ?? null, alt: im?.getAttribute('alt') ?? null, hid: i?.getAttribute('aria-hidden') ?? null, w: r ? Math.round(r.width) : 0, h: r ? Math.round(r.height) : 0, nw: im?.naturalWidth ?? 0, quote: (a.querySelector(':scope > i')?.textContent ?? '').trim()}; })));
+    check(faces.length === links.length && faces.length >= 6 && faces.every(f => f.src === '/next/sage-art/' + (f.href ?? '').split('/').pop() + '.svg' && f.alt === '' && f.hid === 'true' && f.w === 40 && f.h === 40 && f.nw > 0 && f.quote === ''),
+      '⑤ 첫 화면 스승 줄마다 그 스승 얼굴(40px · 꾸밈 · 그려짐 · 따옴표 대신 · order-1525)', JSON.stringify(faces.filter(f => !(f.src === '/next/sage-art/' + (f.href ?? '').split('/').pop() + '.svg' && f.w === 40 && f.nw > 0)).slice(0, 3)));
     if (links.length) {
       const first = links[0], id = first.href.split('/').pop(), x = PEOPLE.find(q => q.id === id);
       await p.locator('#view a.nh-sage').first().scrollIntoViewIfNeeded(); await p.locator('#view a.nh-sage').first().click();

@@ -67,7 +67,12 @@ const amt = v => { const a = Math.abs(v); return a < 1 ? a.toFixed(1) : String(M
 /** 스승 한 줄 — 동그라미 첫 글자 · 이름 · 한 문장(지어낸 따옴말이 아니라 그 사람 생각을 쉬운 말로 · docs/design/babo-2026-10-29/brief.md 출처) */
 /** 스승 이름 → 서른아홉 스승 카드(#/sage/<이름> · p-sage.js · 사장님 2026-10-29 19:14 「정말 정말 쉽기 이용하고 따딱딱」) — 누르면 그 사람 한 장 · 모양 · 크기는 그대로(누르는 자리 48px) */
 export const SAGE_ID = Object.freeze({'애덤 스미스': 'adamsmith', '소크라테스': 'socrates', '리콴유': 'leekuanyew', '다윈': 'darwin', '덩샤오핑': 'dengxiaoping', '퍼스': 'peirce'});
-export const sage = (who, say) => h(SAGE_ID[who] ? 'a' : 'p', {class: 'nh-sage', href: SAGE_ID[who] ? '#/sage/' + SAGE_ID[who] : null}, h('i', {'aria-hidden': 'true', text: '“'}), h('b', {text: who}), ' ', h('span', {text: say}));
+/** 스승 얼굴(사장님 2026-11-01 10:25(+04) 「응」 — 물음 「첫 화면 스승 줄에도 스승 얼굴을 달아 드릴까요?」의 답 · docs/design/sage-face-home-2026-11-01/order-1525.txt)
+    따옴표 동그라미 자리에 그 스승 캐릭터 얼굴(/next/sage-art/<이름>.svg · order-1046) — 꾸밈(이름이 곁에 있음 · 줄 전체가 그 스승 한 장 고리 그대로) · 40px 자리를 미리 잡음(밀림 0)
+    여는 동안 칸(boot-home.js)의 맨 위 스승 줄과 같은 꼴 · 자료에 없는 이름은 전처럼 따옴표 */
+export const SAGE_FACE = 40;
+const sageMark = id => (id ? h('i', {class: 'nh-sf', 'aria-hidden': 'true'}, h('img', {alt: '', width: SAGE_FACE, height: SAGE_FACE, decoding: 'async', src: `/next/sage-art/${id}.svg`})) : h('i', {'aria-hidden': 'true', text: '“'}));
+export const sage = (who, say) => h(SAGE_ID[who] ? 'a' : 'p', {class: 'nh-sage' + (SAGE_ID[who] ? ' nh-sfw' : ''), href: SAGE_ID[who] ? '#/sage/' + SAGE_ID[who] : null}, sageMark(SAGE_ID[who]), h('b', {text: who}), ' ', h('span', {text: say}));
 /* 몰린 곳마다 까닭 열한 가지(사장님 2026-10-30(서울) 04:27 「그 돈이 몰리는 이유를 … 왜 몰리는지 이유를 11 가지를 거기다 적어놔야 돼 … 잡스라면 어떻게 표현 할 것인지 … 돈 · 상황 · 정치 여러 가지 각도」
    · 05:03 「응」 — 그림 시안 「한 줄 결론, 불빛 열한 개, 누르면 자세히. 모르는 것은 「?」 그대로」 · 결정표 docs/design/why11-2026-10-30/decision.md · 말씀 원문 order-0427.txt)
    자료 = /next/data/flow-why.json(올릴 때 한 번 · scripts/atlas11/next/build/flow_why.mjs · 따로 다시 세기 scripts/atlas11/verify/flow_why_verify.py — 틀림 0 일 때만 둠)
