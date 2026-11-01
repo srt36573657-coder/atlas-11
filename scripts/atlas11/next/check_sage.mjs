@@ -776,12 +776,13 @@ try {
     // 여는 동안 칸 — 멈춘 스승이 있으면 같은 모양 · 같은 높이(320 · 다 그린 칸과 맞댐)
     const seedAt = async c => c.addInitScript(k => { try { localStorage.setItem(k, JSON.stringify({id: 'darwin', at: 1})); } catch { /* 기억 못 함 */ } }, KEY);
     const WH = q => q.evaluate(() => { const w = document.querySelector('#view .nh-fm > .nh-sallw'), r = w?.getBoundingClientRect(); return w ? {h: Math.round(r.height), label: w.querySelector('.nh-sall')?.textContent ?? null, re: w.querySelector('.nh-sallr:not([hidden])')?.textContent ?? null, note: w.querySelector('.nh-sallc:not([hidden])')?.textContent ?? null} : null; });
-    const cF = await qCtx(320), rF = await cF.newPage(); await seedAt(cF);
+    const noFont = c => c.route(/\.woff2?(\?|$)/, r => r.abort()); // 같은 글꼴로 잼 — 여는 동안 칸은 받은 글꼴 표가 붙기 전(app.js 가 붙임)이라 다 그린 칸도 기기 글꼴로(진짜 사이트 큰 검사 2/11 41309821653 — 받은 글꼴이 좁아 다 그린 칸만 한 줄 · 12px 차이)
+    const cF = await qCtx(320), rF = await cF.newPage(); await seedAt(cF); await noFont(cF);
     await rF.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); const FW = (await homeReady(rF, HOME_IDS.length)) ? (await rF.waitForTimeout(300), await WH(rF)) : null; await cF.close();
-    const cB2 = await qCtx(320), rB2 = await cB2.newPage(); await seedAt(cB2); await rB2.route('**/next/app.js*', r => r.abort());
+    const cB2 = await qCtx(320), rB2 = await cB2.newPage(); await seedAt(cB2); await noFont(cB2); await rB2.route('**/next/app.js*', r => r.abort());
     await rB2.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000}); const BW = await rB2.waitForFunction(() => !!document.querySelector('#view .boot .nh-sallw'), null, {timeout: 10000}).then(() => WH(rB2), () => null); await cB2.close();
     check(!!FW && !!BW && FW.label === '멈춘 스승부터 이어 듣기' && FW.re === '처음부터' && FW.note === '멈춘 곳: 다윈' && BW.label === FW.label && BW.re === FW.re && BW.note === FW.note && Math.abs(BW.h - FW.h) <= 1,
-      '⑪ 여는 동안 칸도 멈춘 스승이 있으면 같은 모양 · 같은 높이(320 · 이어 듣기 · 처음부터 · 멈춘 곳)', JSON.stringify({FW, BW}));
+      '⑪ 여는 동안 칸도 멈춘 스승이 있으면 같은 모양 · 같은 높이(320 · 같은 글꼴 · 이어 듣기 · 처음부터 · 멈춘 곳)', JSON.stringify({FW, BW}));
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();
