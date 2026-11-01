@@ -36,7 +36,14 @@ if (isHome && v && boot) {
   if (typeof globalThis.speechSynthesis !== 'undefined' && typeof globalThis.SpeechSynthesisUtterance === 'function') {
     const all = el('button', 'nh-sall'), ic = document.createElementNS('http://www.w3.org/2000/svg', 'svg'), tri = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     all.type = 'button'; for (const [k, x] of [['width', 24], ['height', 24], ['viewBox', '0 0 24 24'], ['aria-hidden', 'true'], ['focusable', 'false'], ['fill', 'currentColor']]) ic.setAttribute(k, x);
-    tri.setAttribute('d', 'M8 5.5v13l10.5-6.5z'); ic.append(tri); all.append(ic, el('span', null, '스승 여섯 차례로 듣기')); fm.append(all);
+    // 멈춘 스승부터 이어 듣기(16:22(+04) 「응」 · order-2122) — 이 휴대폰에 멈춘 스승이 있으면 다 그린 칸(home-new.js sageAll)과 같은 모양 · 같은 높이(이어 듣기 글 · 처음부터 · 멈춘 곳)
+    const SN = {adamsmith: '애덤 스미스', socrates: '소크라테스', leekuanyew: '리콴유', darwin: '다윈', dengxiaoping: '덩샤오핑', peirce: '퍼스'};
+    let at = null; try { at = JSON.parse(localStorage.getItem('atlas:home-sage-at') ?? 'null')?.id ?? null; } catch { at = null; }
+    if (!Object.hasOwn(SN, at ?? '')) at = null;
+    tri.setAttribute('d', 'M8 5.5v13l10.5-6.5z'); ic.append(tri); all.append(ic, el('span', null, at ? '멈춘 스승부터 이어 듣기' : '스승 여섯 차례로 듣기'));
+    const row = el('div', 'nh-sallrow'), wrap = el('div', 'nh-sallw'); row.append(all); wrap.append(row);
+    if (at) { const re = el('button', 'nh-sallr', '처음부터'); re.type = 'button'; row.append(re); wrap.append(el('p', 'nh-sallc', '멈춘 곳: ' + SN[at])); }
+    fm.append(wrap);
   }
   const go = el('button', 'nh-go nh-gopick'); go.type = 'button'; go.append(el('span', null, '지난 기록으로 고른 회사 보기'), hid(el('i', null, '›')));
   const door = el('div', 'nh-door'); door.append(go);

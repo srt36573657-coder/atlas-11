@@ -119,7 +119,17 @@ test('만수르(사장님 2026-10-31 23:14(+04) · docs/design/mansour-2026-11-0
 test('스승 여섯 차례로 듣기(사장님 2026-11-01 14:48(+04) 「응」 · order-1948) — 여는 동안 칸과 같은 글 · 같은 자리(맨 위 스승 줄 바로 아래 알약)', () => {
   const boot = read('site/next/boot-home.js'), src = read('site/next/home-new.js'), css = read('site/next/home-new.css');
   assert.ok(boot.includes("'스승 여섯 차례로 듣기'") && src.includes("'스승 여섯 차례로 듣기'"), '단추 글이 여는 동안 칸과 다름');
-  assert.match(boot, /el\('p', 'nh-fc', '한 달 동안 시장과 견준 값이에요\.'\), sage\);[\s\S]*?el\('button', 'nh-sall'\)[\s\S]*?fm\.append\(all\)/, '여는 동안 칸 — 맨 위 스승 줄 바로 아래가 아님');
+  assert.match(boot, /el\('p', 'nh-fc', '한 달 동안 시장과 견준 값이에요\.'\), sage\);[\s\S]*?el\('button', 'nh-sall'\)[\s\S]*?fm\.append\(wrap\)/, '여는 동안 칸 — 맨 위 스승 줄 바로 아래가 아님');
   assert.match(src, /sage\('애덤 스미스', '사려는 사람이 많으면 값이 올라요\.'\), sageAll\(\)\)/, '다 그린 칸 — 맨 위 스승 줄 바로 아래가 아님');
   assert.match(css, /html\.home #view \.nh-sall \{/, '단추 꼴(home-new.css)이 없음');
+});
+
+test('멈춘 스승부터 이어 듣기(사장님 2026-11-01 16:22(+04) 「응」 · order-2122) — 여는 동안 칸이 같은 기억 · 같은 글 · 같은 이름', () => {
+  const boot = read('site/next/boot-home.js'), src = read('site/next/home-new.js');
+  assert.ok(src.includes("export const HOME_AT = 'atlas:home-sage-at';") && boot.includes("localStorage.getItem('atlas:home-sage-at')"), '여는 동안 칸과 다른 기억 열쇠');
+  for (const t of ["'멈춘 스승부터 이어 듣기'", "'처음부터'", "`멈춘 곳: ${n}`"]) assert.ok(src.includes(t), `home-new.js 에 ${t} 없음`);
+  for (const t of ["'멈춘 스승부터 이어 듣기'", "'처음부터'", "'멈춘 곳: '"]) assert.ok(boot.includes(t), `boot-home.js 에 ${t} 없음`);
+  const ids = Object.fromEntries([...(/export const SAGE_ID = Object\.freeze\(\{([^}]*)\}\)/.exec(src) || [])[1].matchAll(/'([^']+)':\s*'([a-z]+)'/g)].map(m => [m[2], m[1]]));
+  const sn = Object.fromEntries([...(/const SN = \{([^}]*)\}/.exec(boot) || [])[1].matchAll(/([a-z]+):\s*'([^']+)'/g)].map(m => [m[1], m[2]]));
+  assert.deepEqual(sn, ids, '여는 동안 칸 스승 이름 = home-new.js SAGE_ID');
 });

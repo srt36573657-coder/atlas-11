@@ -730,6 +730,9 @@ html.white.clock.clock.clock.clock.home #view .nh-sage.nh-sfw.rm-say { outline: 
 html.white.clock.clock.clock.clock.home #view .nh-sall { border: 2px solid #F06FCB; background: #C42F98; }
 html.white.clock.clock.clock.clock.home #view .nh-sall.nh-sallon { background: #1C1136; color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .nh-sall:focus-visible { outline: 3px solid #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-sallr { border: 2px solid #F06FCB; background: #1C1136; color: #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-sallr:focus-visible { outline: 3px solid #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-sallc { background: #160E2B; border: 2px solid #3A2756; color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .y11-l { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .y11-q { color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .y11-t { color: #F2EFF9; }
