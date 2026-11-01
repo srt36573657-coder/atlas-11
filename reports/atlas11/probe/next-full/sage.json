@@ -1,17 +1,12 @@
 {
  "schema": "duri-check-sage-1",
- "at": "2026-11-01T03:58:48.854Z",
+ "at": "2026-11-01T04:57:03.508Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1534,
-  "fail": 1
+  "pass": 1535,
+  "fail": 0
  },
- "fails": [
-  [
-   "② 390 걸음 단추 → ③ 따지기가 화면 위",
-   "1106.71875"
-  ]
- ],
+ "fails": [],
  "m": {
   "people": 39,
   "steps": [
