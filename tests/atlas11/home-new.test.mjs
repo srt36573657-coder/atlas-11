@@ -115,3 +115,11 @@ test('만수르(사장님 2026-10-31 23:14(+04) · docs/design/mansour-2026-11-0
   assert.ok(/min-height: 48px;/.test(rule) && /background: var\(--nh-go\);/.test(rule) && /color: #FFFFFF;/.test(rule) && /margin-left: auto;/.test(rule), '만수르 모양(48px · --nh-go · 흰 글 · 오른쪽)');
   assert.doesNotMatch(rule, /shadow|gradient/, '만수르 단추에 그림자 · 그러데이션');
 });
+
+test('스승 여섯 차례로 듣기(사장님 2026-11-01 14:48(+04) 「응」 · order-1948) — 여는 동안 칸과 같은 글 · 같은 자리(맨 위 스승 줄 바로 아래 알약)', () => {
+  const boot = read('site/next/boot-home.js'), src = read('site/next/home-new.js'), css = read('site/next/home-new.css');
+  assert.ok(boot.includes("'스승 여섯 차례로 듣기'") && src.includes("'스승 여섯 차례로 듣기'"), '단추 글이 여는 동안 칸과 다름');
+  assert.match(boot, /el\('p', 'nh-fc', '한 달 동안 시장과 견준 값이에요\.'\), sage\);[\s\S]*?el\('button', 'nh-sall'\)[\s\S]*?fm\.append\(all\)/, '여는 동안 칸 — 맨 위 스승 줄 바로 아래가 아님');
+  assert.match(src, /sage\('애덤 스미스', '사려는 사람이 많으면 값이 올라요\.'\), sageAll\(\)\)/, '다 그린 칸 — 맨 위 스승 줄 바로 아래가 아님');
+  assert.match(css, /html\.home #view \.nh-sall \{/, '단추 꼴(home-new.css)이 없음');
+});

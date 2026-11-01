@@ -103,6 +103,21 @@ const showCap = cap => requestAnimationFrame(() => {
   const r = cap.getBoundingClientRect(), t = document.querySelector('.tabs')?.getBoundingClientRect(), edge = t && t.height ? Math.min(t.top, innerHeight) : innerHeight;
   if (r.bottom > edge - 8) scrollBy({top: r.bottom - edge + 16, behavior: stillMove() ? 'auto' : 'smooth'});
 });
+const SAY_OF = new WeakMap(); // 스승 줄 → {읽을 말 · 얼굴 단추 · 그 줄 글상자}(차례로 듣기가 읽음)
+/** 스승 여섯 차례로 듣기(사장님 2026-11-01 14:48(+04) 「응」 · order-1948) — 첫 화면 스승 줄을 위에서부터 이어 읽음(얼굴을 누를 때와 같은 말) · 읽는 줄 테 · 그 줄 글상자
+    · 화면 밖이면 가운데로 · 다시 누르면 · 얼굴 · 쪽 옮김 = 멈춤(roman-say.js sayAll) · 숨은 줄(영어 판 맨 위 줄)은 건너뜀 · 소리 없는 휴대폰은 단추 없음 · 여는 동안 칸과 같은 글 */
+const allLabel = on => (on ? (EN ? 'Stop' : '멈추기') : EN ? 'Hear the masters in order' : '스승 여섯 차례로 듣기');
+const allIcon = on => { const s = sv('svg', {width: 24, height: 24, viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false', fill: 'currentColor'}); s.append(on ? sv('rect', {x: 6, y: 6, width: 12, height: 12, rx: 2}) : sv('path', {d: 'M8 5.5v13l10.5-6.5z'})); return s; };
+export function sageAll() {
+  if (!canSay()) return null;
+  warmSay();
+  let ic = allIcon(false); const t = h('span', {text: allLabel(false)});
+  const set = on => { t.textContent = allLabel(on); b.classList.toggle('nh-sallon', !!on); const x = allIcon(!!on); ic.replaceWith(x); ic = x; };
+  const items = () => [...document.querySelectorAll('#view .nh-sage.nh-sfw')].filter(l => SAY_OF.has(l) && l.getClientRects().length).map(l => { const x = SAY_OF.get(l); return {text: x.text, label: x.text, card: l, face: x.face, cap: x.cap}; });
+  const b = h('button', {type: 'button', class: 'nh-sall', onpointerdown: () => { loadSay().catch(() => {}); },
+    onclick: e => { e.preventDefault(); const go = m => m.sayAll(items(), b, {set}); if (sayM) go(sayM); else loadSay().then(go, () => {}); }}, ic, t);
+  return b;
+}
 /** 스승 줄 = 얼굴 단추(누르면 남긴 말 · 다시 누르면 멈춤 · roman-say.js sayText) + 이름과 말 고리(그 스승 한 장) + 글상자 · 소리 없는 휴대폰은 얼굴 그림만 · 자료에 없는 이름은 따옴표 */
 export function sage(who, say) {
   const id = SAGE_ID[who];
@@ -117,7 +132,7 @@ export function sage(who, say) {
   const b = h('button', {type: 'button', class: 'nh-sf', 'aria-pressed': 'false', 'aria-label': EN ? `Hear ${SAGE_SAY[id].enName}’s words` : `${who} 남긴 말 듣기`,
     onpointerdown: () => { loadSay().catch(() => {}); },
     onclick: e => { e.preventDefault(); e.stopPropagation(); if (sayM) speak(sayM); else loadSay().then(speak, () => {}); }}, im, spkMark());
-  line.append(b, link, cap);
+  line.append(b, link, cap); SAY_OF.set(line, {text, face: b, cap});
   return line;
 }
 /* 몰린 곳마다 까닭 열한 가지(사장님 2026-10-30(서울) 04:27 「그 돈이 몰리는 이유를 … 왜 몰리는지 이유를 11 가지를 거기다 적어놔야 돼 … 잡스라면 어떻게 표현 할 것인지 … 돈 · 상황 · 정치 여러 가지 각도」
@@ -186,7 +201,7 @@ function flowMap(TH, W = null) {
     h('p', {class: 'nh-fk nh-fk-up'}, h('i', {'aria-hidden': 'true'}), h('span', {text: keys[0] ?? '돈이 몰린 곳'})), upList,
     h('p', {class: 'nh-fk nh-fk-dn'}, h('i', {'aria-hidden': 'true'}), h('span', {text: keys[1] ?? '돈이 빠진 곳'})), dnList,
     h('p', {class: 'nh-fc', text: up.length || dn.length ? '한 달 동안 시장과 견준 값이에요.' : '? 업종 자료를 아직 못 받았어요.'}),
-    sage('애덤 스미스', '사려는 사람이 많으면 값이 올라요.'));
+    sage('애덤 스미스', '사려는 사람이 많으면 값이 올라요.'), sageAll()); // 스승 여섯 차례로 듣기(order-1948) — 맨 위 스승 줄 바로 아래
 }
 const goPick = () => document.getElementById('nh-p2')?.scrollIntoView({behavior: 'smooth', block: 'start'}); // ② 고른 회사 칸으로(주소 # 는 그대로)
 /** 만수르(사장님 2026-10-31 23:14(+04) 「https://shin-yxy.gino.im 이거 첫화면에 바로 갈수 있데 배치해 이름은 만수르」 · docs/design/mansour-2026-11-01/order-0414.txt)

@@ -28,7 +28,7 @@ export const canSpeak = () => canSay();
 let cur = null; // 지금 말하는 얼굴 {btn, card}
 let run = null; // 차례로 듣는 중 {btn, cap, set, items:[{text, label, card, face}], us, i}
 function quiet() { const c = cur; cur = null; if (!c) return; c.btn.setAttribute('aria-pressed', 'false'); c.card?.classList.remove('rm-say'); if (c.cap) { c.cap.hidden = true; c.cap.textContent = ''; } } // cap = 스승 얼굴 글상자(끝나면 숨김 · 신 얼굴은 cap 을 안 넘겨 그대로)
-function unmark(it) { it.face?.setAttribute('aria-pressed', 'false'); it.card?.classList.remove('rm-say'); }
+function unmark(it) { it.face?.setAttribute('aria-pressed', 'false'); it.card?.classList.remove('rm-say'); if (it.cap) { it.cap.hidden = true; it.cap.textContent = ''; } } // it.cap = 그 줄 글상자(첫 화면 스승 여섯 차례로 듣기 · order-1948)
 const still = () => !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 /** 차례로 듣기 — i번째 카드를 읽는 중으로(테 · 얼굴 눌림 · 글상자 · 화면 밖이면 가운데로) · 같은 번호면 그대로 */
 function mark(r, i) {
@@ -37,6 +37,7 @@ function mark(r, i) {
   r.i = i; const it = r.items[i];
   it.face?.setAttribute('aria-pressed', 'true'); it.card?.classList.add('rm-say'); it.go?.();
   if (r.cap) { r.cap.textContent = it.label; r.cap.hidden = false; }
+  if (it.cap) { it.cap.textContent = it.label; it.cap.hidden = false; } // 그 줄 글상자(읽는 줄 아래 · 화면 가운데로 옮기기 전에 펼쳐 둠)
   if (it.own) return; // 화면에 두기는 go 가 함(서른아홉 스승 첫 쪽 — 읽는 칸을 쪽 아래 글상자 위에 둠 · order-0340)
   const how = still() ? 'auto' : 'smooth', b = it.card?.getBoundingClientRect(), v = !it.card ? it.view?.getBoundingClientRect() : null;
   if (b && (b.top < 72 || b.bottom > innerHeight - 72)) it.card.scrollIntoView({block: 'center', behavior: how});
@@ -88,7 +89,7 @@ export function sayText(text, btn, {card = null, cap = null} = {}) {
   } catch { if (cur === me) quiet(); }
 }
 /** 차례로 듣기 — items 를 차례대로 이어 읽음(누른 그 순간에 소리 줄에 모두 넣음) · 같은 단추를 다시 누르면 멈춤
-    items = [{text 읽을 말, label 글상자 글, card 카드, face 얼굴 단추, go 시작할 때 부름, view 화면에 둘 칸, own 화면에 두기를 go 가 함}] · cap = 글상자 · set(on) = 단추 모양(읽는 중 / 처음) */
+    items = [{text 읽을 말, label 글상자 글, card 카드, face 얼굴 단추, cap 그 줄 글상자, go 시작할 때 부름, view 화면에 둘 칸, own 화면에 두기를 go 가 함}] · cap = 글상자 · set(on) = 단추 모양(읽는 중 / 처음) */
 export function sayAll(items, btn, {cap = null, set = null} = {}) {
   if (!btn) return;
   hook();
