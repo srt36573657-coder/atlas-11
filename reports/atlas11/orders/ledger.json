@@ -960,6 +960,16 @@
    "state": "성공",
    "proof": "큰 검사 1/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/41292169193 · 올림 https://github.com/srt36573657-coder/atlas-11/actions/runs/41293163550 · 진짜 사이트 큰 검사 2/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/41293682290 · 말씀 원문 docs/design/sage-face-say-2026-11-01/order-1730.txt",
    "short": "첫 화면 스승 얼굴을 누르면 남긴 말을 들려줘요. 진짜 사이트에서 확인했어요."
+  },
+  {
+   "id": "1948",
+   "at": "2026-11-01T19:48+09:00",
+   "words": "응 (물음 「첫 화면 스승 여섯 명의 남긴 말을 차례로 이어서 들려 드릴까요? 「응」 한 마디면 돼요.」의 답)",
+   "then": "19:48(서울) 받음 · 이해 보고와 끝 시각(사장님 시계 오후 5시) 보냄 · 첫 화면 맨 위 스승 줄 아래 「스승 여섯 차례로 듣기」 단추 · 위에서부터 이어서 · 읽는 줄 테 · 줄 아래 글상자 · 다시 누르면 멈춤",
+   "did": "만드는 중 — 첫 화면 스승 여섯 남긴 말 차례로 듣기",
+   "state": "미완성",
+   "proof": "말씀 원문 docs/design/sage-face-all-2026-11-01/order-1948.txt",
+   "short": "첫 화면 스승 여섯 남긴 말을 차례로 들려주게 만드는 중이에요."
   }
  ],
  "open": [

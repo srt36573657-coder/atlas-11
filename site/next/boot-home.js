@@ -32,6 +32,12 @@ if (isHome && v && boot) {
   const sl = el('a', 'nh-sl'); sl.href = '#/sage/adamsmith'; sl.append(el('b', null, '애덤 스미스'), ' ', el('span', null, '사려는 사람이 많으면 값이 올라요.'));
   const sage = el('div', 'nh-sage nh-sfw'); sage.dataset.id = 'adamsmith'; sage.append(sf, sl); // 다 그린 뒤(home-new.js sage)와 같은 고리 · 같은 높이
   fm.append(key('up', '돈이 몰린 곳'), rows('up'), key('dn', '돈이 빠진 곳'), rows('dn'), el('p', 'nh-fc', '한 달 동안 시장과 견준 값이에요.'), sage);
+  // 스승 여섯 차례로 듣기(사장님 2026-11-01 14:48(+04) 「응」 · order-1948) — 다 그린 첫 화면(home-new.js sageAll)과 같은 알약 · 같은 자리(맨 위 스승 줄 바로 아래) · 소리를 못 내는 휴대폰은 없음
+  if (typeof globalThis.speechSynthesis !== 'undefined' && typeof globalThis.SpeechSynthesisUtterance === 'function') {
+    const all = el('button', 'nh-sall'), ic = document.createElementNS('http://www.w3.org/2000/svg', 'svg'), tri = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    all.type = 'button'; for (const [k, x] of [['width', 24], ['height', 24], ['viewBox', '0 0 24 24'], ['aria-hidden', 'true'], ['focusable', 'false'], ['fill', 'currentColor']]) ic.setAttribute(k, x);
+    tri.setAttribute('d', 'M8 5.5v13l10.5-6.5z'); ic.append(tri); all.append(ic, el('span', null, '스승 여섯 차례로 듣기')); fm.append(all);
+  }
   const go = el('button', 'nh-go nh-gopick'); go.type = 'button'; go.append(el('span', null, '지난 기록으로 고른 회사 보기'), hid(el('i', null, '›')));
   const door = el('div', 'nh-door'); door.append(go);
   sec.append(pm, h2, el('p', 'nh-no', '앞날을 맞히거나 사고팔기를 권하지 않습니다.'), fm, door);
