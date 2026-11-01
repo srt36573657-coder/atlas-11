@@ -1,45 +1,45 @@
 {
  "schema": "atlas11-next-full-1",
- "at": "2026-11-01T04:27:30.491Z",
+ "at": "2026-11-01T05:28:48.570Z",
  "base": "https://aaa7377.com",
  "mode": "live",
  "ref": "main",
- "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1",
- "run": 41271127432,
- "wallSeconds": 1836,
+ "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0",
+ "run": 41274918555,
+ "wallSeconds": 2001,
  "pages": [
   {
    "name": "cal",
    "code": 0,
-   "seconds": 141,
+   "seconds": 145,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "chx",
    "code": 0,
-   "seconds": 35,
+   "seconds": 191,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "co",
    "code": 0,
-   "seconds": 934,
+   "seconds": 811,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "cond",
    "code": 0,
    "seconds": 45,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "en",
    "code": 0,
-   "seconds": 1188,
+   "seconds": 1006,
    "shards": 3,
    "codes": [
     0,
@@ -47,167 +47,167 @@
     0
    ],
    "shardSeconds": [
-    976,
-    1188,
-    1018
+    1006,
+    938,
+    983
    ],
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "essence",
    "code": 0,
-   "seconds": 13,
+   "seconds": 12,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "gdr",
    "code": 0,
-   "seconds": 146,
+   "seconds": 149,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "gift",
    "code": 0,
-   "seconds": 101,
+   "seconds": 105,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "grow",
    "code": 0,
-   "seconds": 642,
+   "seconds": 564,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "help",
    "code": 0,
-   "seconds": 19,
+   "seconds": 17,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "hold",
    "code": 0,
-   "seconds": 94,
+   "seconds": 100,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "jinhwa",
    "code": 0,
-   "seconds": 38,
+   "seconds": 35,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "kakao",
    "code": 0,
-   "seconds": 141,
+   "seconds": 144,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "misc",
    "code": 0,
    "seconds": 58,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "next",
    "code": 0,
-   "seconds": 352,
+   "seconds": 361,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "past",
    "code": 0,
-   "seconds": 774,
+   "seconds": 859,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "range",
    "code": 0,
-   "seconds": 541,
+   "seconds": 611,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "rivals",
    "code": 0,
-   "seconds": 319,
+   "seconds": 375,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "roman",
    "code": 0,
-   "seconds": 259,
+   "seconds": 239,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "sage",
-   "code": 1,
-   "seconds": 70,
+   "code": 0,
+   "seconds": 67,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "share",
    "code": 0,
-   "seconds": 81,
+   "seconds": 83,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "surge",
    "code": 0,
-   "seconds": 119,
+   "seconds": 116,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "theme",
    "code": 0,
-   "seconds": 187,
+   "seconds": 184,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "today",
    "code": 0,
-   "seconds": 69,
+   "seconds": 72,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "white",
    "code": 0,
-   "seconds": 208,
+   "seconds": 200,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "why",
    "code": 0,
    "seconds": 114,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   },
   {
    "name": "why11",
    "code": 0,
-   "seconds": 55,
+   "seconds": 69,
    "mode": "live",
-   "sha": "08c0d0f29f3ccee334addde4733f5c75df7dc3c1"
+   "sha": "d8020e5566c2a13f6f99259610b50113701ad9a0"
   }
  ],
- "ok": false
+ "ok": true
 }

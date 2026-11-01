@@ -1,5 +1,5 @@
 {
- "made": "2026-11-01T02:31:49.778Z",
+ "made": "2026-11-01T04:44:05.031Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "variants": [
@@ -361,7 +361,7 @@
    "frames": 458,
    "playFrames": 370,
    "bigKinds": 1,
-   "lvKinds": 58,
+   "lvKinds": 56,
    "reads": [
     [
      [
@@ -444,15 +444,15 @@
  },
  "fails": [],
  "warn": [],
- "sec": 51,
+ "sec": 49,
  "time": {
-  "old": 10.7,
-  "new": 41.4,
-  "wall": 50.6,
+  "old": 10.2,
+  "new": 40.4,
+  "wall": 49,
   "opensOld": 607,
   "opensNew": 804,
-  "oldPct": 21.1,
-  "oldShare": 20.5
+  "oldPct": 20.8,
+  "oldShare": 20.1
  },
  "net": {
   "req": 3,
