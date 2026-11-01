@@ -1,12 +1,17 @@
 {
  "schema": "duri-check-sage-1",
- "at": "2026-10-31T21:53:56.263Z",
+ "at": "2026-11-01T02:45:22.356Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1513,
-  "fail": 0
+  "pass": 1512,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "⑦ 첫 쪽",
+   "안 그려짐"
+  ]
+ ],
  "m": {
   "people": 39,
   "steps": [

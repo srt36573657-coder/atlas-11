@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-10-31T21:54:44.571Z",
+ "at": "2026-11-01T02:45:33.497Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -234,7 +234,7 @@
    "blocks": {
     "ess": 5072,
     "find": 776,
-    "today": 3152,
+    "today": 3164,
     "gdr": 4489,
     "all": 4925
    },
@@ -757,9 +757,9 @@
    }
   },
   "speed": {
-   "lcp": 1316,
-   "inp": 40,
-   "cls": 0.003
+   "lcp": 1216,
+   "inp": 48,
+   "cls": 0.006
   }
  },
  "net": {
