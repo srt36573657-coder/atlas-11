@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-01T15:31:22.927Z",
+ "at": "2026-11-01T19:44:34.649Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-10-30",
  "companies": 2557,
@@ -34,13 +34,13 @@
  },
  "seconds": 139,
  "time": {
-  "old": 123.9,
-  "new": 123.6,
-  "wall": 139.2,
+  "old": 124.4,
+  "new": 124.7,
+  "wall": 139.1,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 89,
-  "oldShare": 50.1
+  "oldPct": 89.5,
+  "oldShare": 49.9
  },
  "net": {
   "req": 5126,

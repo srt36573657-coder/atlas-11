@@ -1,9 +1,9 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-11-01T15:26:13.258Z",
+ "at": "2026-11-01T19:39:50.522Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 737,
+  "pass": 758,
   "fail": 0
  },
  "fails": [],
