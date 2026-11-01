@@ -9,7 +9,8 @@
      읽는 카드에 테 · 그 카드가 화면 밖이면 가운데로(움직임 줄이기면 바로) · 다시 누름 · 다른 얼굴 누름 · 지금 읽는 얼굴 누름 · 쪽 옮김 = 멈춤 · 다 읽으면 처음 모습
      첫 화면 말하는 불빛 차례로 듣기(16:23(+04) 「응」 · order-2123.txt · home-talk.js) — 카드 대신 go(그 불빛을 고름 · 말풍선이 글상자) · view(말풍선 머리가 화면 밖이면 위로 당김)
      끝 소식(20:54(+04) 「응」 · docs/design/roman72-site-2026-11-01/order-0154.txt) — set(false, {done, item}) · 일흔두 신 모두 듣기가 멈춘 신을 이 휴대폰에 기억해 이어 듣기
-     서른아홉 스승 쪽(22:40(+04) 「응」 · 22:41 「그냥 신 처럼 끝까지 다해」 · docs/design/sage-say-2026-11-01/order-0340.txt · p-sage.js)도 이 줄 — own(화면에 두기는 그 줄의 go 가 함) */
+     서른아홉 스승 쪽(22:40(+04) 「응」 · 22:41 「그냥 신 처럼 끝까지 다해」 · docs/design/sage-say-2026-11-01/order-0340.txt · p-sage.js)도 이 줄 — own(화면에 두기는 그 줄의 go 가 함)
+   스승 얼굴(사장님 2026-11-01 05:46(+04) 「응 캐릭터 만들어서」 · docs/design/sage-art-2026-11-01/order-1046.txt) = sayText — 얼굴을 누르면 그 스승이 남긴 말(쪽 글 그대로) · 같은 줄 · 글상자는 끝나면 숨김 */
 import {ON as EN} from './i18n.js';
 import {NAME, NAME_EN} from './brand.js';
 import {GODS, SEATS, artOf} from './roman72.js';
@@ -26,7 +27,7 @@ const canSay = () => typeof globalThis.speechSynthesis !== 'undefined' && typeof
 export const canSpeak = () => canSay();
 let cur = null; // 지금 말하는 얼굴 {btn, card}
 let run = null; // 차례로 듣는 중 {btn, cap, set, items:[{text, label, card, face}], us, i}
-function quiet() { const c = cur; cur = null; if (!c) return; c.btn.setAttribute('aria-pressed', 'false'); c.card?.classList.remove('rm-say'); }
+function quiet() { const c = cur; cur = null; if (!c) return; c.btn.setAttribute('aria-pressed', 'false'); c.card?.classList.remove('rm-say'); if (c.cap) { c.cap.hidden = true; c.cap.textContent = ''; } } // cap = 스승 얼굴 글상자(끝나면 숨김 · 신 얼굴은 cap 을 안 넘겨 그대로)
 function unmark(it) { it.face?.setAttribute('aria-pressed', 'false'); it.card?.classList.remove('rm-say'); }
 const still = () => !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 /** 차례로 듣기 — i번째 카드를 읽는 중으로(테 · 얼굴 눌림 · 글상자 · 화면 밖이면 가운데로) · 같은 번호면 그대로 */
@@ -68,6 +69,24 @@ export function say(n, btn) {
     speechSynthesis.speak(u);
   } catch { if (cur === me) quiet(); }
 }
+/** 글 하나를 읽음(스승 얼굴 · order-1046) — 같은 단추를 다시 누르면 멈춤 · 차례로 듣는 중 지금 읽는 얼굴이면 모두 멈춤 · 아니면 앞 소리를 끄고 이것만
+    card = 읽는 동안 테 · cap = 글상자(듣는 말 그대로 · 끝나거나 멈추면 숨김) · 소리를 못 내는 휴대폰은 부르지 않음(얼굴이 단추가 아님 — p-sage.js) */
+export function sayText(text, btn, {card = null, cap = null} = {}) {
+  if (!text || !btn) return;
+  hook();
+  if (cur && cur.btn === btn) { stop(); return; }
+  if (run && run.items[run.i]?.face === btn) { stop(); return; }
+  stop();
+  if (!canSay()) return;
+  const me = cur = {btn, card, cap};
+  btn.setAttribute('aria-pressed', 'true'); card?.classList.add('rm-say');
+  if (cap) { cap.textContent = text; cap.hidden = false; }
+  try {
+    const u = utter(text);
+    u.onend = u.onerror = () => { if (cur === me) quiet(); };
+    speechSynthesis.speak(u);
+  } catch { if (cur === me) quiet(); }
+}
 /** 차례로 듣기 — items 를 차례대로 이어 읽음(누른 그 순간에 소리 줄에 모두 넣음) · 같은 단추를 다시 누르면 멈춤
     items = [{text 읽을 말, label 글상자 글, card 카드, face 얼굴 단추, go 시작할 때 부름, view 화면에 둘 칸, own 화면에 두기를 go 가 함}] · cap = 글상자 · set(on) = 단추 모양(읽는 중 / 처음) */
 export function sayAll(items, btn, {cap = null, set = null} = {}) {
@@ -92,7 +111,8 @@ export function sayAll(items, btn, {cap = null, set = null} = {}) {
 }
 const SVGNS = 'http://www.w3.org/2000/svg';
 const sv = (tag, at) => { const e = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(at)) e.setAttribute(k, String(v)); return e; };
-/** 소리 표 — 얼굴 오른쪽 아래 작은 동그라미 확성기(글자 없음) */
+/** 소리 표 — 얼굴 오른쪽 아래 작은 동그라미 확성기(글자 없음) · 스승 얼굴도 같은 표(spkMark) */
+export function spkMark() { return spk(); }
 function spk() {
   const s = sv('svg', {class: 'rms-spk', viewBox: '0 0 24 24', width: 22, height: 22, 'aria-hidden': 'true', focusable: 'false'});
   s.append(sv('circle', {cx: 12, cy: 12, r: 11, fill: '#1E1428', stroke: '#F2C46B', 'stroke-width': 1.6}), sv('path', {d: 'M6 10h3l4-3v10l-4-3H6z', fill: '#F2C46B'}), sv('path', {d: 'M15.5 9.2a4 4 0 0 1 0 5.6', fill: 'none', stroke: '#F2C46B', 'stroke-width': 1.8, 'stroke-linecap': 'round'}));

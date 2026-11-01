@@ -57,12 +57,13 @@ html.pg-sage #view :focus-visible { outline-color: var(--gold); } /* 판 전체 
 .sg-when b { font-size: var(--fs-2); color: var(--sub); font-weight: 800; }
 .sg-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: var(--sp-1); }
 .sg-grid li { display: grid; min-width: 0; }
-.sg-tile { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; column-gap: var(--sp-2); row-gap: 0; align-items: center; align-content: center; min-height: 104px; padding: var(--sp-2); border: 1px solid var(--hair); border-left: 6px solid var(--sg-c); border-radius: 16px; background: var(--card); color: var(--ink); }
-.sg-tile .sg-gl { grid-row: 1 / span 3; align-self: start; }
-.sg-tn { grid-column: 2; font-size: var(--fs-4); line-height: 1.3; font-weight: 800; }
-.sg-tk2 { grid-column: 2; font-size: var(--fs-3); line-height: 1.4; color: var(--gold); font-weight: 800; }
-.sg-ta { grid-column: 2; font-size: var(--fs-2); line-height: 1.4; color: var(--sub); }
-.sg-tgo { grid-column: 3; grid-row: 1 / span 3; align-self: center; font-style: normal; font-size: var(--fs-5); line-height: 1; color: var(--gold); }
+/* 사람 칸 = 얼굴 단추(64px · order-1046) + 한 사람 쪽 고리(이름 · 큰 낱말 · 몇 년 전 · ›) — 단추와 고리를 나눔 */
+.sg-tile { display: grid; grid-template-columns: 64px minmax(0, 1fr); column-gap: var(--sp-2); align-items: center; min-height: 104px; padding: var(--sp-2); border: 1px solid var(--hair); border-left: 6px solid var(--sg-c); border-radius: 16px; background: var(--card); color: var(--ink); }
+.sg-tl { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-1); row-gap: 0; align-items: center; align-content: center; min-width: 0; min-height: 64px; color: var(--ink); text-decoration: none; }
+.sg-tn { grid-column: 1; font-size: var(--fs-4); line-height: 1.3; font-weight: 800; }
+.sg-tk2 { grid-column: 1; font-size: var(--fs-3); line-height: 1.4; color: var(--gold); font-weight: 800; }
+.sg-ta { grid-column: 1; font-size: var(--fs-2); line-height: 1.4; color: var(--sub); }
+.sg-tgo { grid-column: 2; grid-row: 1 / span 3; align-self: center; font-style: normal; font-size: var(--fs-5); line-height: 1; color: var(--gold); }
 .sg-end { display: grid; gap: var(--sp-1); padding: var(--sp-3) var(--sp-2); border: 1px solid var(--line); border-radius: 20px; background: var(--card); text-align: center; }
 .sg-eh { font-size: var(--fs-3); line-height: 1.4; color: var(--sub); font-weight: 800; }
 .sg-one { font-size: var(--fs-5); line-height: 1.35; font-weight: 800; color: var(--gold); text-wrap: balance; }
@@ -73,7 +74,12 @@ html.pg-sage #view :focus-visible { outline-color: var(--gold); } /* 판 전체 
 .sg-chip { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 48px; padding: 0 var(--sp-2); border: 2px solid var(--sg-c); border-radius: 999px; background: var(--card); font-size: var(--fs-2); line-height: 1.3; font-weight: 800; color: var(--ink); }
 .sg-chip .sg-gl { width: 22px; height: 22px; }
 .sg-pos { font-size: var(--fs-2); color: var(--sub); font-weight: 700; font-variant-numeric: tabular-nums; }
-.sg-head { display: grid; gap: var(--sp-1); }
+/* 머리 = 얼굴(96px · order-1046) + 큰 낱말 · 이름 · 때 · 곳 — 좁으면(아주 크게) 얼굴 아래로 내림 · 글상자(.sg-fcap)는 그 아래 한 줄 */
+.sg-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); }
+.sg-head > .sg-face { width: 96px; height: 96px; }
+.sg-ht { flex: 1 1 11em; min-width: 0; display: grid; gap: var(--sp-1); }
+.sg-fcap { flex: 1 1 100%; padding: var(--sp-2); border: 2px solid var(--gold); border-radius: 16px; background: var(--gold-wash); font-size: var(--fs-3); line-height: 1.55; font-weight: 700; color: var(--ink); text-wrap: pretty; }
+.sg-fcap[hidden] { display: none; }
 .sg-key { font-size: var(--fs-5); line-height: 1.25; font-weight: 800; letter-spacing: -.01em; color: var(--gold); text-wrap: balance; }
 #view h1.sg-name { margin: 0; font-size: var(--fs-4); line-height: 1.3; font-weight: 800; color: var(--ink); }
 .sg-meta { font-size: var(--fs-3); line-height: 1.5; color: var(--sub); }
@@ -121,4 +127,13 @@ html.pg-sage #view .sg .sg-allb { min-height: 56px; } /* 판 전체 누름 48px 
   background: var(--gold-wash); font-size: var(--fs-3); line-height: 1.55; font-weight: 700; color: var(--ink); text-wrap: pretty; }
 .sg-allr[hidden], .sg-allc[hidden], .sg-now[hidden] { display: none; }
 .sg .rm-say { outline: 4px solid var(--sg-c); outline-offset: 4px; border-radius: 16px; }
-@media (hover: hover) { .sg-jump:hover, .sg-tile:hover, .sg-nb:hover, .sg-go:hover, .sg-allr:hover, .sg-allb.sg-allon:hover { background: var(--card3); } .sg-allb:not(.sg-allon):hover { border-color: var(--ink); } }
+/* ── 스승 얼굴(사장님 2026-11-01 05:46(+04) 「응 캐릭터 만들어서」 · docs/design/sage-art-2026-11-01/order-1046.txt) ──
+   그림 = /next/sage-art/<이름>.svg(sage_art.mjs) · 단추 = 테 · 바탕 없음(그림 동그라미가 곧 단추) · 오른쪽 아래 소리 표(.rms-spk — 로마 신 얼굴과 같음) · 읽는 중 = 걸음 빛 테 */
+.sg-face { position: relative; flex: none; display: block; width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.sg-face img { display: block; width: 100%; height: 100%; border-radius: 50%; }
+.sg-face .rms-spk { position: absolute; right: -2px; bottom: -2px; width: 24px; height: 24px; }
+.sg-face[aria-pressed="true"] img { outline: 3px solid var(--sg-c); outline-offset: 2px; }
+.sg-face:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.sg-fimg { cursor: default; }
+.sg-hint { font-size: var(--fs-3); line-height: 1.55; color: var(--sub); }
+@media (hover: hover) { .sg-face:hover img { outline: 2px solid var(--sg-c); outline-offset: 2px; } .sg-jump:hover, .sg-tile:hover, .sg-nb:hover, .sg-go:hover, .sg-allr:hover, .sg-allb.sg-allon:hover { background: var(--card3); } .sg-allb:not(.sg-allon):hover { border-color: var(--ink); } }
