@@ -1,14 +1,1 @@
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-
-page.goto: Timeout 30000ms exceeded.
-Call log:
-  - navigating to "https://aaa7377.com/next/#/", waiting until "domcontentloaded"
-
-    at open (/home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_theme.mjs:61:11)
-    at async file:///home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_theme.mjs:278:22 {
-  name: 'TimeoutError'
-}
-
-Node.js v22.23.4
+통과 · 자료 1 · 첫 화면 1 · 글줄 · 글씨 · 간격 쪽 44 · 다음 차례 18 · 있는 쪽 다음 8 · 숫자 1 · 폭 24 · 바꾼 자료 쪽 110 · 바꾼 자료 영어 쪽 110 · 관심 업종 알림 11 · 싹 큰 판 · 알약 5 · 싹 줄 모양 5 · 첫 화면 누르는 곳 3 · 거른 목록 2 · 자료 없음 1 · 일곱 단 걸음 3 · 일곱 단 1 · 191초
