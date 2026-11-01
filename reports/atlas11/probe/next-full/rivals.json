@@ -1,28 +1,28 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-11-01T20:22:42.205Z",
+ "at": "2026-11-01T21:29:25.504Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-10-30",
  "companies": 2557,
  "missing": 7,
  "all": true,
  "limit": null,
- "seconds": 443,
+ "seconds": 350,
  "time": {
-  "old": 403.1,
-  "new": 213.3,
-  "wall": 442.6,
-  "opensOld": 5130,
+  "old": 54.1,
+  "new": 269.4,
+  "wall": 349.8,
+  "opensOld": 1,
   "opensNew": 5195,
-  "oldPct": 91.1,
-  "oldShare": 65.4
+  "oldPct": 15.5,
+  "oldShare": 16.7
  },
  "net": {
-  "req": 5130,
-  "retry": 1,
-  "waitSec": 1,
+  "req": 5131,
+  "retry": 2,
+  "waitSec": 2,
   "why": {
-   "ECONNRESET": 1
+   "TimeoutError": 2
   },
   "cut": 0,
   "page": {
@@ -34,8 +34,8 @@
  },
  "counts": {
   "sec": {
-   "pick": 2,
-   "compare": 430
+   "pick": 0,
+   "compare": 340
   },
   "글 마디": 51562,
   "숫자 낱말": 48802,
@@ -45,12 +45,12 @@
   "없는 번호": 7,
   "옛 쪽 화면 오류(참고 · 없는 번호의 회사 파일 404 등)": 7,
   "oldSnap": {
-   "use": false,
-   "why": "바뀐 파일 2개(/atlas/data/core.json · /atlas/data/home.json)",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-11-01T20:22:32.015Z",
    "inputs": 2568,
    "reads": 2564,
-   "note": "기준값 새로 씀(파일 2568개 · 값 2564개)"
+   "note": "기준값 다시 씀"
   },
   "세 폭 화면": 30,
   "못 받은 파일 길": 6
