@@ -11,7 +11,7 @@
 //   ③ 한 사람 서른아홉(390) — 이름 · 네 줄(기승전결)이 자료 글 그대로 · 남긴 말 · 표시 · 원문(말 lang) · 출처 · 둘이 고리(걸음마다) · 앞 · 다음(끝은 처음으로) · n / 39 · 별 띠 밝은 점 하나
 //      · 320 폭 · 아주 크게에서 넘침 0(긴 이름 다섯)
 //   ④ 영어(?lang=en) — 첫 쪽 + 서른아홉 사람 · 남은 한글 0(원문 lang="ko" 빼고) · 영어 글이 자료 그대로 · 창 제목 영어
-//   ⑤ 길 — 첫 화면 스승 줄(a.nh-sage · 줄마다 그 스승 얼굴 40px order-1525)을 누르면 그 사람 한 장 · 둘이 단추 안 「서른아홉 스승」 · 없는 이름은 첫 쪽(알림 한 줄) · 자료를 못 받으면 「?」 한 줄(오류 0)
+//   ⑤ 길 — 첫 화면 스승 줄의 이름과 말 고리(.nh-sage > a.nh-sl · 줄마다 그 스승 얼굴 40px order-1525 · 얼굴은 고리 밖 order-1730)를 누르면 그 사람 한 장 · 둘이 단추 안 「서른아홉 스승」 · 없는 이름은 첫 쪽(알림 한 줄) · 자료를 못 받으면 「?」 한 줄(오류 0)
 //      · 읽는 종이 판은 이 쪽에서만 켜지고 다른 쪽으로 가면 꺼짐(html.pg-sage · #view 바탕)
 //   ⑥ 읽기(사장님 2026-10-30 00:03 「그게아니라 글씨체랑 글씨크기랑 배경색이랑 글씨색이 가독성이 떨어진다고」 · docs/design/read-2026-10-30/order-0003.txt)
 //      — 위 ② ③ ④ 에서 재는 모든 화면마다: 바탕체 0(글씨체 하나) · 글 19px 넘게 · 이야기 넷 · 남긴 말 24px 넘게 · 모든 글이 제 바탕과 대비 7 넘게
@@ -26,6 +26,11 @@
 //      · 첫 쪽 칸마다 얼굴 단추(64px · 읽는 이름 「(이름) 남긴 말 듣기」 · 그림 주소) · 누르면 「(이름)이 남긴 말. …」 한 줄(ko-KR · 0.9 · 1 · 0.96) · 그 칸 테 · 쪽 아래 글상자 · 다시 누르면 멈춤
 //      · 모두 듣는 중 얼굴 = 모두 듣기 멈추고 그 말만 · 읽는 사람 얼굴은 눌림 · 한 사람 쪽 머리 얼굴(96px) → 남긴 말 칸 테 · 머리 아래 글상자 · 끝나면 숨김
 //      · 영어 · 소리 없는 휴대폰(얼굴은 그림만 · 단추 0) · 아주 크게 320(머리 얼굴 · 칸 넘침 0)
+//   ⑨ 첫 화면 얼굴(사장님 2026-11-01 12:30(+04) 「응」 — 물음 「첫 화면에서도 얼굴을 누르면 남긴 말을 들려 드릴까요?」 · docs/design/sage-face-say-2026-11-01/order-1730.txt)
+//      · 첫 화면이 품은 남긴 말(home-new.js SAGE_SAY)이 자료와 한 글자까지 같음(①) · 줄마다 얼굴 단추(48px · 그림 40px · 「(이름) 남긴 말 듣기」 · 소리 표 = 스승 쪽 표 · 고리 밖)
+//      · 누르면 「(이름)이 남긴 말. …」 한 줄(ko-KR · 0.9 · 1 · 0.96) · 줄 아래 글상자 = 듣는 말 · 그 줄 테 · 얼굴 눌림 · 다른 줄 그대로 · 쪽 그대로 · 다시 누르면 멈춤 · 끝나면 처음 모습
+//      · 다른 얼굴 = 앞 말 멈추고 그 말만 · 이름과 말 고리 = 그 스승 한 장(소리 멈춤) · 아래 막대에 가린 글상자는 보일 만큼 올림 · 소리 모듈을 다 받기 전에 눌러도 받은 뒤 읽음
+//      · 글 시작 자리 = 줄 왼쪽 + 50px(옛 그림 40 + 틈 10 — 줄 바뀜 그대로) · 세 폭 + 아주 크게 320 넘침 0 · 영어 · 소리 없는 휴대폰(얼굴은 그림만 · 단추 · 글상자 0)
 //   실패가 하나라도 있으면 끝 코드 1(결과 파일은 --out 을 줄 때만)
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -36,6 +41,7 @@ import {OLD_NAME_RE, NEW_NAME} from './rename.mjs';
 import {cssRules} from './page_rules.mjs';
 import {BRAND, josa} from '../../../site/next/brand.js';
 import {svgOf, ART as SAGE_ART} from './sage_art.mjs'; // 스승 얼굴 그림 기계(order-1046)
+import {SAGE_SAY, SAGE_ID as HOME_SAGE} from '../../../site/next/home-new.js'; // 첫 화면 스승 줄 · 얼굴을 누르면 읽는 남긴 말(order-1730)
 
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -93,6 +99,12 @@ const PEOPLE = D.people ?? [], STEPS = D.steps ?? [];
   const home = await fs.readFile(path.join(ROOT, 'site/next/home-new.js'), 'utf8');
   const map = Object.fromEntries([...((/export const SAGE_ID = Object\.freeze\(\{([^}]*)\}\)/.exec(home) || [])[1] ?? '').matchAll(/'([^']+)':\s*'([a-z]+)'/g)].map(m => [m[1], m[2]]));
   check(Object.keys(map).length >= 6 && Object.entries(map).every(([nm, id]) => PEOPLE.some(p => p.id === id && (p.ko.name === nm || p.ko.short === nm || p.ko.name.endsWith(nm)))), '① 첫 화면 스승 줄 이름 → 자료', JSON.stringify(map));
+  // ⑨ 첫 화면이 품은 남긴 말(order-1730) — 첫 화면은 자료를 받지 않고 home-new.js 에 같이 둔 글을 읽음 → 자료 남긴 말 · 짧은 이름과 한 글자까지 같아야 함
+  const sayBad = Object.entries(HOME_SAGE).flatMap(([nm, id]) => {
+    const x = PEOPLE.find(q => q.id === id), s = SAGE_SAY[id]; if (!x || !s) return [`${nm} 자료 · 글 없음`];
+    return [s.ko !== x.ko.say && `${id} 한국어 말`, s.en !== x.en.say && `${id} 영어 말`, s.enName !== (x.en.short ?? x.en.name) && `${id} 영어 이름`, nm !== (x.ko.short ?? x.ko.name) && `${id} 줄 이름`].filter(Boolean);
+  });
+  check(!sayBad.length && Object.keys(SAGE_SAY).length === Object.keys(HOME_SAGE).length, '⑨ 첫 화면 스승이 남긴 말(home-new.js SAGE_SAY) = 자료 남긴 말 · 짧은 이름(한국어 · 영어)', sayBad.join(' | '));
   R.m.people = PEOPLE.length; R.m.steps = cnt;
   // ⑧ 얼굴 그림 — 자료 이름마다 하나 · 저장소 파일 = 그림 기계 · 글자 · 스크립트 · style · 바깥 그림 없음
   check(Object.keys(SAGE_ART).length === PEOPLE.length && PEOPLE.every(p => SAGE_ART[p.id]), '⑧ 얼굴 그림 서른아홉 = 자료 이름', Object.keys(SAGE_ART).filter(k => !PEOPLE.some(p => p.id === k)).join(','));
@@ -267,19 +279,21 @@ try {
   {
     const ctx = await ctxOf(390), p = await ctx.newPage(), errs = errsOf(p);
     await p.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000});
-    await p.waitForFunction(() => !document.querySelector('#view .boot') && document.querySelectorAll('#view a.nh-sage').length > 0, null, {timeout: 20000}).catch(() => {});
-    const links = await p.evaluate(() => [...document.querySelectorAll('#view a.nh-sage')].map(a => { const r = a.getBoundingClientRect(); return {href: a.getAttribute('href'), who: a.querySelector('b')?.textContent.trim(), w: r.width, h: r.height}; }));
-    check(links.length >= 1, '⑤ 첫 화면 스승 줄이 고리', links.length);
+    await p.waitForFunction(() => !document.querySelector('#view .boot') && document.querySelectorAll('#view .nh-sage > a.nh-sl').length > 0, null, {timeout: 20000}).catch(() => {});
+    // 줄 = 얼굴 칸(.nh-sf) + 이름과 말 고리(a.nh-sl — 그 스승 한 장) + 글상자(order-1730) · 고리는 이름과 말 칸 하나
+    const links = await p.evaluate(() => [...document.querySelectorAll('#view .nh-sage > a.nh-sl')].map(a => { const r = a.getBoundingClientRect(); return {href: a.getAttribute('href'), who: a.querySelector('b')?.textContent.trim(), w: r.width, h: r.height, line: a.parentElement.classList.contains('nh-sfw')}; }));
+    check(links.length >= 1 && links.every(l => l.line), '⑤ 첫 화면 스승 줄이 고리(이름과 말 칸 · 줄마다 하나)', links.length);
     check(links.every(l => { const id = (/^#\/sage\/([a-z]+)$/.exec(l.href) || [])[1]; const x = PEOPLE.find(q => q.id === id); return x && (x.ko.name === l.who || x.ko.short === l.who || x.ko.name.endsWith(l.who)); }), '⑤ 스승 줄 고리 = 그 사람', JSON.stringify(links.map(l => [l.who, l.href])));
     check(links.every(l => l.h >= 47.5 && l.w >= 47.5), '⑤ 스승 줄 누르는 자리 48 넘게', JSON.stringify(links.map(l => [l.who, Math.round(l.w), Math.round(l.h)])));
-    // 첫 화면 스승 줄 얼굴(사장님 2026-11-01 10:25(+04) 「응」 · docs/design/sage-face-home-2026-11-01/order-1525.txt) — 줄마다 그 스승 캐릭터 얼굴 40px · 꾸밈 · 실제로 그려짐 · 따옴표 없음
-    const faces = await p.evaluate(async () => Promise.all([...document.querySelectorAll('#view a.nh-sage')].map(async a => { const i = a.querySelector(':scope > i.nh-sf'), im = i?.querySelector('img'); if (im) { im.scrollIntoView({block: 'center'}); try { await im.decode(); } catch { /* 못 그림 */ } } const r = im?.getBoundingClientRect();
-      return {href: a.getAttribute('href'), src: im?.getAttribute('src') ?? null, alt: im?.getAttribute('alt') ?? null, hid: i?.getAttribute('aria-hidden') ?? null, w: r ? Math.round(r.width) : 0, h: r ? Math.round(r.height) : 0, nw: im?.naturalWidth ?? 0, quote: (a.querySelector(':scope > i')?.textContent ?? '').trim()}; })));
-    check(faces.length === links.length && faces.length >= 6 && faces.every(f => f.src === '/next/sage-art/' + (f.href ?? '').split('/').pop() + '.svg' && f.alt === '' && f.hid === 'true' && f.w === 40 && f.h === 40 && f.nw > 0 && f.quote === ''),
-      '⑤ 첫 화면 스승 줄마다 그 스승 얼굴(40px · 꾸밈 · 그려짐 · 따옴표 대신 · order-1525)', JSON.stringify(faces.filter(f => !(f.src === '/next/sage-art/' + (f.href ?? '').split('/').pop() + '.svg' && f.w === 40 && f.nw > 0)).slice(0, 3)));
+    // 첫 화면 스승 줄 얼굴(사장님 2026-11-01 10:25(+04) 「응」 · docs/design/sage-face-home-2026-11-01/order-1525.txt) — 줄마다 그 스승 캐릭터 얼굴 40px · 실제로 그려짐 · 따옴표 없음 · 고리 밖(order-1730)
+    const faces = await p.evaluate(async () => Promise.all([...document.querySelectorAll('#view .nh-sage.nh-sfw')].map(async l => { const f = l.querySelector(':scope > .nh-sf'), im = f?.querySelector('img'); if (im) { im.scrollIntoView({block: 'center'}); try { await im.decode(); } catch { /* 못 그림 */ } } const r = im?.getBoundingClientRect();
+      return {href: l.querySelector(':scope > a.nh-sl')?.getAttribute('href') ?? null, id: l.dataset.id ?? null, src: im?.getAttribute('src') ?? null, alt: im?.getAttribute('alt') ?? null, tag: f?.tagName ?? null, hid: f?.getAttribute('aria-hidden') ?? null, inA: !!f?.closest('a'), w: r ? Math.round(r.width) : 0, h: r ? Math.round(r.height) : 0, nw: im?.naturalWidth ?? 0, quote: (f?.textContent ?? '').trim()}; })));
+    const faceOk = f => f.src === '/next/sage-art/' + (f.href ?? '').split('/').pop() + '.svg' && f.id === (f.href ?? '').split('/').pop() && f.alt === '' && (f.tag === 'BUTTON' || (f.tag === 'I' && f.hid === 'true')) && !f.inA && f.w === 40 && f.h === 40 && f.nw > 0 && f.quote === '';
+    check(faces.length === links.length && faces.length >= 6 && faces.every(faceOk),
+      '⑤ 첫 화면 스승 줄마다 그 스승 얼굴(40px · 그려짐 · 따옴표 대신 · 고리 밖 · 단추 또는 꾸밈 그림)', JSON.stringify(faces.filter(f => !faceOk(f)).slice(0, 3)));
     if (links.length) {
       const first = links[0], id = first.href.split('/').pop(), x = PEOPLE.find(q => q.id === id);
-      await p.locator('#view a.nh-sage').first().scrollIntoViewIfNeeded(); await p.locator('#view a.nh-sage').first().click();
+      await p.locator('#view .nh-sage > a.nh-sl').first().scrollIntoViewIfNeeded(); await p.locator('#view .nh-sage > a.nh-sl').first().click();
       const ok = await p.waitForFunction(n => document.querySelector('#view #sg-name')?.textContent.trim() === n, x?.ko.name, {timeout: 8000}).then(() => true, () => false);
       check(ok, `⑤ 스승 줄 누름 → ${id} 한 장`, await p.evaluate(() => location.hash));
     }
@@ -542,6 +556,108 @@ try {
       check(n1.btn === 0 && n1.img === 39 && n1.hint === 0 && n2.btn === 0 && n2.img === 1 && n2.cap === 0, '⑧ 소리 없는 휴대폰 — 얼굴은 그림만(단추 0) · 안내 · 글상자 없음', JSON.stringify({n1, n2}));
     } else check(false, '⑧ 소리 없는 휴대폰', '안 그려짐');
     check(!e7.length, '⑧ 소리 없는 휴대폰 화면 오류 0', e7.join(' | ')); await c7.close();
+
+    // ⑨ 첫 화면 얼굴(order-1730) — 얼굴을 누르면 남긴 말 · 줄 아래 글상자 · 그 줄 테 · 다시 누름 · 끝 · 다른 얼굴 · 고리 · 아래 막대 · 늦게 받은 소리 모듈 · 넓이 · 영어 · 소리 없는 휴대폰 · 여는 동안 칸
+    const HOME_IDS = Object.values(HOME_SAGE), shortK = x => x.ko.short ?? x.ko.name, shortE = x => x.en.short ?? x.en.name;
+    const homeK = x => `${josa(shortK(x), '이')} 남긴 말. ${x.ko.say}`, homeE = x => `In ${shortE(x)}’s words. ${x.en.say}`; // 읽는 말은 자료에서 따로 셈(첫 화면 글을 믿지 않음)
+    const HF = id => `#view .nh-sage.nh-sfw[data-id="${id}"] > button.nh-sf`, HA = id => `#view .nh-sage.nh-sfw[data-id="${id}"] > a.nh-sl`;
+    const homeReady = (q, n) => q.waitForFunction(k => !document.querySelector('#view .boot') && document.querySelectorAll('#view .nh-sage.nh-sfw').length >= k, n, {timeout: 20000}).then(() => true, () => false);
+    const HS = q => q.evaluate(() => { // 첫 화면 스승 줄 모습 — 얼굴 단추 · 고리 · 글상자 · 테 · 소리 줄
+      const t = document.querySelector('.tabs')?.getBoundingClientRect();
+      return {lines: [...document.querySelectorAll('#view .nh-sage.nh-sfw')].map(l => {
+        const b = l.querySelector(':scope > button.nh-sf'), c = l.querySelector(':scope > .nh-scap'), a = l.querySelector(':scope > a.nh-sl'), lr = l.getBoundingClientRect(), br = b?.getBoundingClientRect(), ar = a?.getBoundingClientRect(), cr = c && !c.hidden ? c.getBoundingClientRect() : null;
+        return {id: l.dataset.id ?? null, vis: lr.width > 0 && lr.height > 0, lh: Math.round(lr.height * 10) / 10, who: a?.querySelector('b')?.textContent ?? null, label: b?.getAttribute('aria-label') ?? null, pressed: b?.getAttribute('aria-pressed') ?? null,
+          bw: br ? Math.round(br.width) : 0, bh: br ? Math.round(br.height) : 0, inA: !!b?.closest('a'), spk: b?.querySelector(':scope > svg.rms-spk')?.outerHTML ?? null, img: b?.querySelector(':scope > img')?.getAttribute('src') ?? null, fimg: l.querySelectorAll(':scope > i.nh-sf > img').length,
+          aw: ar ? ar.width : 0, ah: ar ? ar.height : 0, ax: ar ? Math.round((ar.left - lr.left) * 10) / 10 : null, cap: cr ? c.textContent : null, capN: l.querySelectorAll('.nh-scap').length, live: c?.getAttribute('aria-live') ?? null,
+          capTop: cr ? cr.top : null, capBot: cr ? cr.bottom : null, capL: cr ? cr.left : null, capR: cr ? cr.right : null, ring: l.classList.contains('rm-say')}; }),
+        rings: document.querySelectorAll('#view .rm-say').length, tabsTop: t && t.height ? Math.min(t.top, innerHeight) : innerHeight, q: window.__q?.length ?? 0, said: window.__said?.length ?? 0, cancel: window.__cancel ?? 0,
+        hash: location.hash, vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth}; });
+    const LN = (S, id) => S.lines.find(l => l.id === id) ?? {};
+    const others = (S, id) => S.lines.filter(l => l.id !== id).every(l => !l.ring && l.cap === null && l.pressed !== 'true'); // 다른 줄 그대로
+    const tapQ = async (q, sel, n0) => { await tap(q, sel); await q.waitForFunction(n => (window.__q?.length ?? 0) > n, n0, {timeout: 6000}).catch(() => {}); await q.waitForTimeout(80); }; // 누르고 소리 줄에 들 때까지
+    const c8 = await qCtx(390), r8 = await c8.newPage(), e8 = errsOf(r8);
+    await r8.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000});
+    let H0 = null;
+    if (await homeReady(r8, HOME_IDS.length)) {
+      await r8.waitForTimeout(300);
+      H0 = await HS(r8); const spkRef = await r8.evaluate(async () => (await import('/next/roman-say.js')).spkMark().outerHTML);
+      const hBad = H0.lines.filter(l => { const x = PEOPLE.find(q => q.id === l.id); return !x || l.who !== shortK(x) || l.label !== `${shortK(x)} 남긴 말 듣기` || l.pressed !== 'false' || l.bw !== 48 || l.bh !== 48 || l.inA || l.spk !== spkRef
+        || l.img !== `/next/sage-art/${l.id}.svg` || l.cap !== null || l.capN !== 1 || l.live !== 'polite' || l.ring || l.ah < 47.5 || l.aw < 47.5 || l.ax !== 50; });
+      check(H0.lines.length === HOME_IDS.length && HOME_IDS.every(id => H0.lines.some(l => l.id === id)) && !hBad.length && !H0.rings,
+        '⑨ 첫 화면 스승 줄마다 얼굴 단추(48px · 그림 40px · 「(이름) 남긴 말 듣기」 · 소리 표 = 스승 쪽 표 · 고리 밖) · 이름과 말 고리 48 넘게 · 글 시작 = 줄 왼쪽 + 50px · 글상자 숨김', JSON.stringify({n: H0.lines.length, hBad: hBad.slice(0, 2)}));
+      const X = PEOPLE.find(q => q.id === 'socrates'), Y = PEOPLE.find(q => q.id === 'leekuanyew'), Z = PEOPLE.find(q => q.id === 'peirce');
+      const s0 = await HS(r8); await tapQ(r8, HF(X.id), s0.q); const s1 = await HS(r8), sq = await r8.evaluate(n => window.__q.slice(n).map(x => ({...x})), s0.q), L1 = LN(s1, X.id);
+      check(sq.length === 1 && voiceOk(sq[0], homeK(X), 'ko-KR') && L1.cap === homeK(X) && L1.ring && L1.pressed === 'true' && s1.rings === 1 && others(s1, X.id) && L1.capBot <= s1.tabsTop + 0.5 && L1.capL >= -0.5 && L1.capR <= s1.vw + 0.5 && s1.hash === s0.hash && s1.sw <= s1.vw,
+        '⑨ 얼굴을 누르면 「(이름)이 남긴 말. …」 한 줄(그 스승 쪽 글 그대로 · ko-KR · 0.9 · 1 · 0.96) · 줄 아래 글상자 = 듣는 말(화면 안) · 그 줄 테 · 얼굴 눌림 · 다른 줄 그대로 · 쪽 그대로', JSON.stringify({sq, L1, hash: [s0.hash, s1.hash]}));
+      await tap(r8, HF(X.id)); const s2 = await HS(r8), L2 = LN(s2, X.id);
+      check(s2.cancel > s1.cancel && L2.cap === null && !L2.ring && L2.pressed === 'false' && !s2.rings, '⑨ 같은 얼굴을 다시 누르면 멈춤 — 소리 끔 · 테 · 눌림 · 글상자 숨김', JSON.stringify(L2));
+      await tapQ(r8, HF(X.id), s2.q); await r8.evaluate(() => window.__next()); await r8.waitForTimeout(200); const s3 = await HS(r8), L3 = LN(s3, X.id);
+      check(L3.cap === null && !L3.ring && L3.pressed === 'false' && !s3.rings, '⑨ 말이 끝나면 처음 모습(글상자 숨김)', JSON.stringify(L3));
+      await tapQ(r8, HF(X.id), s3.q); const s4 = await HS(r8); await tapQ(r8, HF(Y.id), s4.q); const s5 = await HS(r8), lastY = await r8.evaluate(() => window.__said.at(-1)?.text ?? ''), LY = LN(s5, Y.id);
+      check(s5.cancel > s4.cancel && lastY === homeK(Y) && LY.cap === homeK(Y) && LY.ring && LY.pressed === 'true' && others(s5, Y.id) && s5.rings === 1,
+        '⑨ 다른 얼굴을 누르면 앞 말 멈추고 그 스승 말만 · 그 줄 테 · 글상자', JSON.stringify({LY, last: lastY.slice(0, 24)}));
+      await tap(r8, HA(Y.id)); const okY = await r8.waitForFunction(n => document.querySelector('#view #sg-name')?.textContent.trim() === n, Y.ko.name, {timeout: 8000}).then(() => true, () => false);
+      const s6 = await r8.evaluate(() => ({cancel: window.__cancel, hash: location.hash}));
+      check(okY && s6.hash === '#/sage/' + Y.id && s6.cancel > s5.cancel, '⑨ 듣는 중 이름과 말을 누르면 그 스승 한 장 · 소리 멈춤', JSON.stringify({okY, s6}));
+      await r8.evaluate(() => { location.hash = '#/'; }); await homeReady(r8, HOME_IDS.length); await r8.waitForTimeout(300);
+      await r8.evaluate(id => { const l = document.querySelector(`#view .nh-sage.nh-sfw[data-id="${id}"]`), t = document.querySelector('.tabs')?.getBoundingClientRect(), edge = t && t.height ? Math.min(t.top, innerHeight) : innerHeight; scrollBy(0, l.getBoundingClientRect().bottom - edge + 4); }, Z.id);
+      await r8.waitForTimeout(150); const s7 = await HS(r8), Lz0 = LN(s7, Z.id); await tapQ(r8, HF(Z.id), s7.q); await r8.waitForTimeout(250); const s8 = await HS(r8), Lz = LN(s8, Z.id);
+      check(Lz.cap === homeK(Z) && Lz.ring && Lz.capTop >= 0 && Lz.capBot <= s8.tabsTop + 0.5, '⑨ 아래 막대에 가린 글상자는 보일 만큼 올림', JSON.stringify({before: Lz0.vis, Lz: {cap: Lz.cap?.slice(0, 20), capTop: Lz.capTop, capBot: Lz.capBot}, tabsTop: s8.tabsTop}));
+      await tap(r8, HF(Z.id));
+    } else check(false, '⑨ 첫 화면', '안 그려짐');
+    check(!e8.length, '⑨ 화면 오류 0', e8.join(' | ')); await c8.close();
+    // 소리 모듈을 늦게 받음(5초) — 다 받기 전에 누르면 받은 뒤 그 말을 읽음
+    const c9 = await qCtx(390), r9 = await c9.newPage(), e9 = errsOf(r9); let held = 0;
+    await r9.route('**/next/roman-say.js*', async r => { held++; await new Promise(z => setTimeout(z, 5000)); await r.continue().catch(() => {}); });
+    await r9.goto(URL_OF('#/'), {waitUntil: 'domcontentloaded', timeout: 60000});
+    if (await homeReady(r9, HOME_IDS.length)) {
+      const t0 = await HS(r9), A = PEOPLE.find(q => q.id === 'adamsmith'), early = await r9.evaluate(() => performance.getEntriesByType('resource').some(e => /\/next\/roman-say\.js/.test(e.name)));
+      await tap(r9, HF(A.id)); await r9.waitForFunction(n => (window.__q?.length ?? 0) > n, t0.q, {timeout: 15000}).catch(() => {}); await r9.waitForTimeout(100);
+      const t1 = await HS(r9), tq = await r9.evaluate(n => window.__q.slice(n).map(x => ({...x})), t0.q);
+      check(held >= 1 && !early && tq.length === 1 && voiceOk(tq[0], homeK(A), 'ko-KR') && LN(t1, A.id).cap === homeK(A) && LN(t1, A.id).ring, '⑨ 소리 모듈을 다 받기 전에 눌러도 받은 뒤 그 말을 읽음(글상자 · 테 같이)', JSON.stringify({held, early, tq, cap: LN(t1, A.id).cap}));
+    } else check(false, '⑨ 늦게 받는 소리 모듈', '첫 화면 안 그려짐');
+    check(!e9.length, '⑨ 늦게 받는 소리 모듈 화면 오류 0', e9.join(' | ')); await c9.close();
+    // 넓이 — 320 · 360 · 320 아주 크게(가장 긴 남긴 말 다윈 · ② 고른 회사 칸)
+    let top320 = null; // 320 맨 위 스승 줄(애덤 스미스) 높이 — 여는 동안 칸과 맞댐(320 은 어느 글꼴로도 두 줄)
+    for (const [w, font] of [[320, 0], [360, 0], [320, 2]]) {
+      const cw = await qCtx(w, {font}), rw = await cw.newPage(), ew = errsOf(rw), tag = `⑨ ${w}${font ? ' 아주 크게' : ''}`;
+      await rw.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000});
+      if (await homeReady(rw, HOME_IDS.length)) {
+        await rw.waitForTimeout(300); const D = PEOPLE.find(q => q.id === 'darwin'), w0 = await HS(rw); if (w === 320 && !font) top320 = LN(w0, 'adamsmith').lh ?? null; await tapQ(rw, HF(D.id), w0.q); await rw.waitForTimeout(200); const w1 = await HS(rw), LD = LN(w1, D.id);
+        const bad = w1.lines.filter(l => l.vis && (l.bw < 47.5 || l.bh < 47.5 || l.ah < 47.5 || l.aw < 47.5 || (!font && l.ax !== 50)));
+        check(LD.cap === homeK(D) && LD.capL >= -0.5 && LD.capR <= w1.vw + 0.5 && LD.capBot <= w1.tabsTop + 0.5 && w1.sw <= w1.vw && !bad.length, `${tag} — 얼굴 · 고리 48 넘게 · 글 시작 50px · 누른 뒤 글상자 화면 안 · 넘침 0`,
+          JSON.stringify({LD: {cap: LD.cap?.slice(0, 16), capL: LD.capL, capR: LD.capR, capBot: LD.capBot}, tabsTop: w1.tabsTop, sw: w1.sw, vw: w1.vw, bad: bad.slice(0, 2)}));
+      } else check(false, tag, '첫 화면 안 그려짐');
+      check(!ew.length, `${tag} 화면 오류 0`, ew.join(' | ')); await cw.close();
+    }
+    // 영어(맨 위 소개 칸 스승 줄은 영어 판에서 숨김 — 다른 줄로)
+    const cE = await qCtx(390, {en: true}), rE = await cE.newPage(), eE = errsOf(rE);
+    await rE.goto(URL_OF('#/', '&lang=en'), {waitUntil: 'load', timeout: 60000});
+    if (await homeReady(rE, HOME_IDS.length)) {
+      await rE.waitForTimeout(300); const X = PEOPLE.find(q => q.id === 'socrates'), E0 = await HS(rE);
+      const eBad = E0.lines.filter(l => { const x = PEOPLE.find(q => q.id === l.id); return !x || l.label !== `Hear ${shortE(x)}’s words` || (l.vis && l.who !== shortE(x)); });
+      await tapQ(rE, HF(X.id), E0.q); const E1 = await HS(rE), eq = await rE.evaluate(n => window.__q.slice(n).map(x => ({...x})), E0.q), LE = LN(E1, X.id);
+      check(!eBad.length && eq.length === 1 && voiceOk(eq[0], homeE(X), 'en-US') && !HAN.test(eq[0].text) && LE.cap === homeE(X) && LE.ring, '⑨ 영어 — 「Hear …’s words」 · 줄 이름 = 영어 짧은 이름 · 「In …’s words. …」 en-US · 글상자', JSON.stringify({eBad: eBad.slice(0, 2), eq, cap: LE.cap}));
+    } else check(false, '⑨ 영어 첫 화면', '안 그려짐');
+    check(!eE.length, '⑨ 영어 화면 오류 0', eE.join(' | ')); await cE.close();
+    // 소리 없는 휴대폰 — 얼굴은 그림만(같은 자리 · 같은 높이)
+    const cN = await qCtx(390, {fake: false}), rN = await cN.newPage(), eN = errsOf(rN);
+    await rN.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000});
+    if (await homeReady(rN, HOME_IDS.length)) {
+      await rN.waitForTimeout(300); const N0 = await HS(rN), nb = await rN.evaluate(() => ({btn: document.querySelectorAll('#view .nh-sage button').length, cap: document.querySelectorAll('#view .nh-scap').length, spk: document.querySelectorAll('#view .nh-sage .rms-spk').length}));
+      check(N0.lines.length === HOME_IDS.length && N0.lines.every(l => l.fimg === 1 && l.ah >= 47.5 && l.ax === 50 && (!H0 || l.lh === LN(H0, l.id).lh)) && !nb.btn && !nb.cap && !nb.spk,
+        '⑨ 소리 없는 휴대폰 — 얼굴은 그림만(단추 · 소리 표 · 글상자 0) · 고리 그대로 · 글 시작 50px · 줄 높이 같음', JSON.stringify({nb, lines: N0.lines.map(l => [l.id, l.fimg, Math.round(l.ah), l.ax, l.lh, H0 ? LN(H0, l.id).lh : null])}));
+    } else check(false, '⑨ 소리 없는 휴대폰 첫 화면', '안 그려짐');
+    check(!eN.length, '⑨ 소리 없는 휴대폰 화면 오류 0', eN.join(' | ')); await cN.close();
+    // 여는 동안 칸(boot-home.js) — app.js 를 받지 않으면 여는 동안 칸이 남음 → 맨 위 스승 줄이 다 그린 줄과 같은 꼴 · 같은 높이
+    const cB = await qCtx(320), rB = await cB.newPage();
+    await rB.route('**/next/app.js*', r => r.abort());
+    await rB.goto(URL_OF('#/'), {waitUntil: 'load', timeout: 60000});
+    const B0 = await rB.waitForFunction(() => !!document.querySelector('#view .boot .nh-sage.nh-sfw'), null, {timeout: 10000}).then(() => rB.evaluate(() => {
+      const l = document.querySelector('#view .boot .nh-sage.nh-sfw'), lr = l.getBoundingClientRect(), a = l.querySelector(':scope > a.nh-sl'), ar = a?.getBoundingClientRect(), im = l.querySelector(':scope > i.nh-sf > img')?.getBoundingClientRect();
+      return {id: l.dataset.id ?? null, lh: Math.round(lr.height * 10) / 10, ax: ar ? Math.round((ar.left - lr.left) * 10) / 10 : null, href: a?.getAttribute('href') ?? null, img: im ? [Math.round(im.left - lr.left), Math.round(im.top - lr.top), Math.round(im.width)] : null, btn: l.querySelectorAll('button').length}; }), () => null);
+    check(!!B0 && B0.id === 'adamsmith' && B0.href === '#/sage/adamsmith' && B0.ax === 50 && B0.lh === top320 && B0.img?.join() === '0,0,40' && !B0.btn, '⑨ 여는 동안 칸 스승 줄 = 다 그린 줄과 같은 꼴 · 같은 높이(320 · 얼굴 그림 40px · 고리 · 글 시작 50px)', JSON.stringify({B0, fin: top320}));
+    await cB.close();
   }
 } catch (e) { check(false, '검사 멈춤', e.stack || e.message); }
 await browser.close();

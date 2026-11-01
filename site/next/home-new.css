@@ -459,7 +459,7 @@ html.home #view .nh-sage { display: grid; grid-template-columns: 34px minmax(0, 
 html.home #view .nh-sage i { grid-row: 1 / span 2; align-self: start; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #F7D4DE; color: #7A1238; font-style: normal; font-size: 17px; font-weight: 900; }
 html.home #view .nh-sage b { grid-column: 2; font-size: 17px; font-weight: 900; color: #7A1238; }
 html.home #view .nh-sage span { grid-column: 2; }
-html.home #view a.nh-sage b::after { content: ' ›'; } /* 누르면 그 스승 한 장(#/sage/<이름> · 2026-10-29 19:14) — 이름 뒤 작은 화살 하나만(크기 · 자리는 그대로) */
+html.home #view a.nh-sl b::after { content: ' ›'; } /* 누르면 그 스승 한 장(#/sage/<이름> · 2026-10-29 19:14) — 이름 뒤 작은 화살 하나만(크기 · 자리는 그대로) */
 /* ② 고른 회사 — 오늘 맞은 회사 · 분명한 문장 둘 · 최근 두 달 */
 html.home #view .nh-rec { scroll-margin-top: 76px; }
 html.home #view .nh-rec > .nh-pm, html.home #view .nh-rec > .nh-pl { margin: 0; }
@@ -477,9 +477,22 @@ html.home #view .nh-warn .nh-sage { margin-top: 6px; }
 html.home #view .nh-sage > i { font-size: 24px; line-height: 1; padding-top: 8px; font-family: Georgia, 'Times New Roman', serif; }
 html.home #view .nh-part .nh-sage > i { background: #FFFFFF; border: 1px solid #E3B6C5; }
 /* 스승 얼굴(사장님 2026-11-01 10:25(+04) 「응」 · order-1525) — 따옴표 동그라미 자리에 그 스승 캐릭터 얼굴 40px(/next/sage-art/<이름>.svg) · 바탕 · 테 · 글자 없음(그림 동그라미가 곧 테) */
-html.home #view .nh-sage.nh-sfw { grid-template-columns: 40px minmax(0, 1fr); }
+/* 얼굴을 누르면 남긴 말(order-1730) — 얼굴 칸 48 + 틈 2 = 옛 40 + 10(글 자리 그대로) · 글상자 · 테(.rm-say) · 소리 없는 휴대폰 · 여는 동안은 그림만 */
+html.home #view .nh-sage.nh-sfw { grid-template-columns: 48px minmax(0, 1fr); column-gap: 2px; align-items: start; }
+html.home #view .nh-sage.nh-sfw > .nh-sf { grid-row: 1; grid-column: 1; align-self: start; }
 html.home #view .nh-sage.nh-sfw > i.nh-sf { width: 40px; height: 40px; padding: 0; border: 0; background: transparent; overflow: hidden; }
 html.home #view .nh-sage.nh-sfw > i.nh-sf img { display: block; width: 40px; height: 40px; border-radius: 50%; }
+html.home #view .nh-sage.nh-sfw > button.nh-sf { position: relative; display: flex; align-items: flex-start; justify-content: flex-start; width: 48px; height: 48px; margin: 0; padding: 0; border: 0; border-radius: 12px; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html.home #view .nh-sage.nh-sfw > button.nh-sf img { display: block; width: 40px; height: 40px; border-radius: 50%; }
+html.home #view .nh-sage.nh-sfw > button.nh-sf .rms-spk { position: absolute; left: 25px; top: 25px; width: 20px; height: 20px; }
+html.home #view .nh-sage.nh-sfw > button.nh-sf[aria-pressed="true"] img { outline: 3px solid #A31F70; outline-offset: 1px; }
+html.home #view .nh-sage.nh-sfw > button.nh-sf:focus-visible { outline: 3px solid #A31F70; outline-offset: 2px; }
+html.home #view .nh-sage.nh-sfw > a.nh-sl { grid-row: 1; grid-column: 2; display: flex; flex-direction: column; min-width: 0; }
+html.home #view .nh-sage.nh-sfw > a.nh-sl:focus-visible { outline: 3px solid #A31F70; outline-offset: 2px; }
+html.home #view .nh-sage.nh-sfw > .nh-scap { grid-row: 2; grid-column: 1 / -1; margin: 6px 0 0; padding: 8px 12px; border-radius: 12px; background: #FBF2F5; border: 2px solid #E3B6C5; font-size: 17px; line-height: 1.5; font-weight: 700; color: #2A1420; overflow-wrap: anywhere; }
+html.home #view .nh-sage.nh-sfw > .nh-scap[hidden] { display: none; }
+html.home #view .nh-sage.nh-sfw.rm-say { outline: 3px solid #A31F70; outline-offset: 4px; border-radius: 12px; }
+@media (hover: hover) { html.home #view .nh-sage.nh-sfw > button.nh-sf:hover img { outline: 2px solid #A31F70; outline-offset: 1px; } }
 html.home.en #view .nh-hero .nh-sage { display: none; } /* 영어 글이 길어 소개 칸이 찾기 줄 아래로 밀려 맨 위 스승 한 줄만 뺌(한국어는 그대로) */
 html.home #view svg.nh-waf { padding: 0; } /* 다른 쪽 「.me」 칸 안쪽 여백이 왼쪽 100칸 그림에 붙어 작아 보이던 것 */
 @media (max-width: 380px) { html.white.clock.clock.clock.home #view .nh-hero .nh-h1 { font-size: 24px; } } /* 375 폭에서 대신 글꼴이 칸 끝에 닿아 두 줄로 바뀌지 않게(390 폭은 26px 한 줄) */

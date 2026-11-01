@@ -11,6 +11,7 @@
    글은 textContent 로만 · 색은 home-new.css(글 속 style 없음 · 너비만 CSSOM) · 그림은 svg(바둑판 셈 밖) · 앞날 말 없음 · 사고팔기 권하지 않음 */
 import {RULE} from './theme-rule.js';
 import {ON as EN} from './i18n.js'; // 영어 판이면 까닭 열한 가지 글은 자료 파일의 영어 글을 그대로(flow-why.json en) — 한국어 판은 아무것도 안 바뀜
+import {josa} from './brand.js'; // 남긴 말 토씨(order-1730)
 
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -71,8 +72,54 @@ export const SAGE_ID = Object.freeze({'애덤 스미스': 'adamsmith', '소크�
     따옴표 동그라미 자리에 그 스승 캐릭터 얼굴(/next/sage-art/<이름>.svg · order-1046) — 꾸밈(이름이 곁에 있음 · 줄 전체가 그 스승 한 장 고리 그대로) · 40px 자리를 미리 잡음(밀림 0)
     여는 동안 칸(boot-home.js)의 맨 위 스승 줄과 같은 꼴 · 자료에 없는 이름은 전처럼 따옴표 */
 export const SAGE_FACE = 40;
-const sageMark = id => (id ? h('i', {class: 'nh-sf', 'aria-hidden': 'true'}, h('img', {alt: '', width: SAGE_FACE, height: SAGE_FACE, decoding: 'async', src: `/next/sage-art/${id}.svg`})) : h('i', {'aria-hidden': 'true', text: '“'}));
-export const sage = (who, say) => h(SAGE_ID[who] ? 'a' : 'p', {class: 'nh-sage' + (SAGE_ID[who] ? ' nh-sfw' : ''), href: SAGE_ID[who] ? '#/sage/' + SAGE_ID[who] : null}, sageMark(SAGE_ID[who]), h('b', {text: who}), ' ', h('span', {text: say}));
+/** 스승이 남긴 말(order-1730) — 그 스승 한 장 자료(sage39.json)의 say 그대로 · enName = 영어 짧은 이름(check_sage 가 자료와 맞댐) */
+export const SAGE_SAY = Object.freeze({
+  adamsmith: Object.freeze({ko: '시장에 나온 양이 바라는 양에 못 미치면, 시장 값은 자연 값보다 올라요.', en: 'When the quantity brought to market falls short of the effectual demand, the market price goes above the natural price.', enName: 'Adam Smith'}),
+  socrates: Object.freeze({ko: '돌아보지 않는 삶은 사람이 살 만한 삶이 아니에요.', en: 'The unexamined life is not worth living for a human being.', enName: 'Socrates'}),
+  leekuanyew: Object.freeze({ko: '우리의 시험은 하나였어요. 이게 되는가?', en: 'Our test was: does it work?', enName: 'Lee Kuan Yew'}),
+  darwin: Object.freeze({ko: '내 결론과 어긋나는 사실을 보면 곧바로 적어 두었어요. 그런 사실은 반가운 것보다 훨씬 쉽게 잊히거든요.', en: 'Whenever a fact or thought came across me which was opposed to my general results, I made a note of it at once; for such facts were far more apt to escape from the memory than favourable ones.', enName: 'Darwin'}),
+  dengxiaoping: Object.freeze({ko: '누런 고양이든 검은 고양이든 쥐를 잡으면 좋은 고양이예요.', en: 'Yellow cat or black cat, as long as it catches mice, it is a good cat.', enName: 'Deng Xiaoping'}),
+  peirce: Object.freeze({ko: '알아보는 길을 막지 마세요.', en: 'Do not block the way of inquiry.', enName: 'Peirce'}),
+});
+/** 얼굴을 누르면 읽는 말(스승 쪽 얼굴과 같은 꼴) · 글상자에 같은 글 */
+export const sageLine = (who, id) => { const s = SAGE_SAY[id]; return !s ? null : EN ? `In ${s.enName}’s words. ${s.en}` : `${josa(who, '이')} 남긴 말. ${s.ko}`; };
+const canSay = () => typeof globalThis.speechSynthesis !== 'undefined' && typeof globalThis.SpeechSynthesisUtterance === 'function'; // roman-say.js canSpeak 와 같음
+/* 소리 모듈(roman-say.js)은 다 그린 뒤 받음(가장 큰 그림을 늦추지 않게) · 누르기 시작하면 곧바로 · 다 받기 전에 누르면 받은 뒤 읽음 */
+let sayM = null, sayP = null, sayWarm = false;
+const loadSay = () => (sayP ??= import('./roman-say.js').then(m => (sayM = m)).catch(e => { sayP = null; throw e; }));
+const warmSay = () => {
+  if (sayWarm) return; sayWarm = true;
+  const go = () => { const f = () => loadSay().catch(() => {}); if (globalThis.requestIdleCallback) requestIdleCallback(f, {timeout: 3000}); else setTimeout(f, 800); };
+  if (document.readyState === 'complete') go(); else addEventListener('load', go, {once: true});
+};
+/** 소리 표(roman-say.js spkMark 와 같은 그림) */
+const spkMark = () => { const s = sv('svg', {class: 'rms-spk', viewBox: '0 0 24 24', width: 22, height: 22, 'aria-hidden': 'true', focusable: 'false'});
+  s.append(sv('circle', {cx: 12, cy: 12, r: 11, fill: '#1E1428', stroke: '#F2C46B', 'stroke-width': 1.6}), sv('path', {d: 'M6 10h3l4-3v10l-4-3H6z', fill: '#F2C46B'}), sv('path', {d: 'M15.5 9.2a4 4 0 0 1 0 5.6', fill: 'none', stroke: '#F2C46B', 'stroke-width': 1.8, 'stroke-linecap': 'round'}));
+  return s; };
+const stillMove = () => !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+/** 글상자가 아래 막대에 가리면 보일 만큼 올림 */
+const showCap = cap => requestAnimationFrame(() => {
+  if (cap.hidden || !cap.isConnected) return;
+  const r = cap.getBoundingClientRect(), t = document.querySelector('.tabs')?.getBoundingClientRect(), edge = t && t.height ? Math.min(t.top, innerHeight) : innerHeight;
+  if (r.bottom > edge - 8) scrollBy({top: r.bottom - edge + 16, behavior: stillMove() ? 'auto' : 'smooth'});
+});
+/** 스승 줄 = 얼굴 단추(누르면 남긴 말 · 다시 누르면 멈춤 · roman-say.js sayText) + 이름과 말 고리(그 스승 한 장) + 글상자 · 소리 없는 휴대폰은 얼굴 그림만 · 자료에 없는 이름은 따옴표 */
+export function sage(who, say) {
+  const id = SAGE_ID[who];
+  if (!id) return h('p', {class: 'nh-sage'}, h('i', {'aria-hidden': 'true', text: '“'}), h('b', {text: who}), ' ', h('span', {text: say}));
+  const im = h('img', {alt: '', width: SAGE_FACE, height: SAGE_FACE, decoding: 'async', src: `/next/sage-art/${id}.svg`});
+  const link = h('a', {class: 'nh-sl', href: '#/sage/' + id}, h('b', {text: who}), ' ', h('span', {text: say}));
+  const line = h('div', {class: 'nh-sage nh-sfw', 'data-id': id}), text = sageLine(who, id);
+  if (!canSay() || !text) { line.append(h('i', {class: 'nh-sf', 'aria-hidden': 'true'}, im), link); return line; }
+  warmSay();
+  const cap = h('p', {class: 'nh-scap', hidden: true, 'aria-live': 'polite'});
+  const speak = m => { m.sayText(text, b, {card: line, cap}); showCap(cap); };
+  const b = h('button', {type: 'button', class: 'nh-sf', 'aria-pressed': 'false', 'aria-label': EN ? `Hear ${SAGE_SAY[id].enName}’s words` : `${who} 남긴 말 듣기`,
+    onpointerdown: () => { loadSay().catch(() => {}); },
+    onclick: e => { e.preventDefault(); e.stopPropagation(); if (sayM) speak(sayM); else loadSay().then(speak, () => {}); }}, im, spkMark());
+  line.append(b, link, cap);
+  return line;
+}
 /* 몰린 곳마다 까닭 열한 가지(사장님 2026-10-30(서울) 04:27 「그 돈이 몰리는 이유를 … 왜 몰리는지 이유를 11 가지를 거기다 적어놔야 돼 … 잡스라면 어떻게 표현 할 것인지 … 돈 · 상황 · 정치 여러 가지 각도」
    · 05:03 「응」 — 그림 시안 「한 줄 결론, 불빛 열한 개, 누르면 자세히. 모르는 것은 「?」 그대로」 · 결정표 docs/design/why11-2026-10-30/decision.md · 말씀 원문 order-0427.txt)
    자료 = /next/data/flow-why.json(올릴 때 한 번 · scripts/atlas11/next/build/flow_why.mjs · 따로 다시 세기 scripts/atlas11/verify/flow_why_verify.py — 틀림 0 일 때만 둠)

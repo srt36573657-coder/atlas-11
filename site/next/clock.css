@@ -722,6 +722,11 @@ html.white.clock.clock.clock.clock.home #view .nh-tpl b { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-tpl small { color: #CFC4E0; }
 html.white.clock.clock.clock.clock.home #view .nh-say { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-part .nh-sage > i { background: #241540; border: 1px solid #3A2756; }
+html.white.clock.clock.clock.clock.home #view .nh-sage.nh-sfw > button.nh-sf[aria-pressed="true"] img { outline: 3px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-sage.nh-sfw > button.nh-sf:focus-visible { outline: 3px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-sage.nh-sfw > a.nh-sl:focus-visible { outline: 3px solid #F06FCB; }
+html.white.clock.clock.clock.clock.home #view .nh-sage.nh-sfw > .nh-scap { background: #160E2B; border: 2px solid #3A2756; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-sage.nh-sfw.rm-say { outline: 3px solid #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .y11-l { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .y11-q { color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .y11-t { color: #F2EFF9; }
@@ -734,5 +739,8 @@ html.white.clock.clock.clock.clock.home #view .y11-qdot { fill: #B6A8CB; }
 html.white.clock.clock.clock.clock.home #view .y11-m { color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .y11-x { background: #1C1136; border: 1px solid #3A2756; color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .y11-wt { color: #CFC4E0; }
+@media (hover: hover) {
+html.white.clock.clock.clock.clock.home #view .nh-sage.nh-sfw > button.nh-sf:hover img { outline: 2px solid #F06FCB; }
+}
 /* 업종 점 그림 네 자리 색 — 짙은 칸 위 색약 검사(dataviz validate_palette --mode dark --surface #241540 --pairs all) 실패 0 · 경고 0 · 싹 청록 · 꽃 장미 · 시듦 호박 · 잠잠 보라 · 칸 바탕은 그 색 20% */
 html.white.clock.clock.clock.clock.home #view { --nh-S: #0097B3; --nh-B: #C6367D; --nh-W: #C0851F; --nh-Q: #7260BD; --nh-zS: #1D2F57; --nh-zB: #441C4C; --nh-zW: #432B39; --nh-zQ: #342459; }
