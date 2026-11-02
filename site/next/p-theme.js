@@ -577,8 +577,14 @@ async function pPick() {
 
 /** 꽃 될 회사(돌 시계 판 ③ — 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 오늘 고른 회사를 업종으로 묶어 큰 묶음부터 · 맨 위 하나만 펼침 · 끝에 지난 기록 한 줄
  *  자료 = theme-bloom.json today(기록 쪽 #/t/pick 「오늘 고른 회사」와 같은 자료 · 같은 셈) · 회사는 받은 차례 그대로(차례에는 뜻이 없음) · 묶음마다 넷까지 보이고 「외 n곳」을 누르면 모두 */
+/** 오늘 고른 회사가 없을 때 막다른 길이 되지 않게 — 한 달 동안 시장보다 가장 많이 오른 업종(조건에 가장 가까운 곳)으로 이어 줌 · 업종 쪽에서 회사 쪽으로(숫자는 theme.json 그대로) */
+function nearInd(TH) {
+  const I = (Array.isArray(TH?.inds) ? TH.inds : []).filter(i => typeof i?.n === 'string' && i.n && Number.isFinite(i.x)).sort((p, q) => q.x - p.x);
+  if (!I.length) return null;
+  return h('a', {class: 'th-pkgo th-pknear', href: '#/t/i/' + enc(I[0].n)}, h('span', {text: '조건에 가장 가까운 업종'}), ' ', h('b', {'data-proper': '', text: I[0].n}), ' ', h('i', {'aria-hidden': 'true', text: '›'}));
+}
 async function pPicks() {
-  const B = await pickData();
+  const [B, TH] = await Promise.all([pickData(), themeData()]);
   const inds = (Array.isArray(B?.today?.inds) ? B.today.inds : []).map(i => ({n: i?.n, x: i?.x, co: (Array.isArray(i?.co) ? i.co : []).filter(r => Array.isArray(r) && /^[0-9A-Z]{6}$/.test(r[0] ?? ''))})).filter(i => typeof i.n === 'string' && i.n && i.co.length);
   const n = inds.reduce((p, i) => p + i.co.length, 0), title = '꽃이 될 듯한 회사';
   if (!B) return none(title, '이 쪽');
@@ -614,6 +620,7 @@ async function pPicks() {
     hd(n ? `${title} ${num(n)}곳` : title, 'pick'),
     h('p', {class: 'th-pkday', text: `${md(B.asOf)}에 지난 기록으로 골랐어요`}),
     n ? h('div', {class: 'th-pkis'}, ...inds.map(group)) : h('p', {class: 'empty', text: '오늘은 수르가 고른 회사가 없어요.'}),
+    n ? null : nearInd(TH),
     n ? null : dayShare, why, n ? dayShare : null, rec, nextBtn('지난 기록', '#/t/pick'), safe())]};
 }
 
