@@ -61,6 +61,10 @@ export function realDeps({root = ROOT, run = process.env.JINHWA_RUN || path.join
     previewResult: o => G.previewResult(root, {...o, codePaths: CODE_PATHS}),
     shoot: async o => (await import('./shots.mjs')).shoot(o),
     liveData: dir => G.liveData(dir, {top: true}),
+    // 지금 사이트 자료(주문 0224) — 깃허브 일 atlas11-jinhwa-data.yml 이 받아 둔 가지 jinhwa-data 를 꺼냄 · 일 폴더 자료를 그 판으로(올릴 때와 같은 셈)
+    siteData: dir => G.siteDataBranch(root, {dir, say: s => process.stderr.write(s + '\n')}),
+    freshen: (dir, live) => G.freshen(dir, live),
+    unfreshen: (dir, o) => G.unfreshen(dir, o),
   };
 }
 
@@ -152,8 +156,38 @@ export async function cmdBegin(a, D) {
   if (!st.status.ok) notDone(st, `확인 상태를 못 읽음(${st.status.why}) — 넣기 · 되돌리기 없음`);
   note(st, `시작 · 본질 ${ess.sha.slice(0, 8)} · main ${st.main0.slice(0, 7)} · 할 일 ${st.plan.change ? st.plan.change.kind + ' ' + st.plan.change.id : '넣기 없음'} → ${st.plan.next}`);
   save(D, st);
+  // ⑦ 지금 사이트 자료(사장님 2026-11-03 02:24(서울) 「응」 · 주문 0224) — 저장소 사본(site/atlas/data)은 10월 14일 뒤 안 바뀜 · 진짜 사이트는 올릴 때마다 다시 셈
+  //   → 살펴보기(회차를 연 폴더 — 4-1 이 읽는 곳)와 전 그림 · 검사(main 일 폴더)가 진짜 사이트와 같은 자료를 쓰게 · 넣기 · 되돌리기 · 만들기 · 다시 시험 회차만
+  if (D.siteData && (st.plan.change || ['make', 'retest'].includes(st.plan.next))) await freshBegin(D, st);
   return {id, essence: {file: ess.file, sha: ess.sha.slice(0, 8), first: ess.first}, main: st.main0.slice(0, 7), facts: st.facts,
-    status: {ok: st.status.ok, items: st.status.items.length, why: st.status.why}, plan: st.plan};
+    status: {ok: st.status.ok, items: st.status.items.length, why: st.status.why}, plan: st.plan,
+    fresh: st.fresh ? {ok: st.fresh.ok, lastDay: st.fresh.lastDay ?? null, how: st.fresh.how ?? null, why: st.fresh.why ?? ''} : null};
+}
+
+// ───────────── 지금 사이트 자료(주문 0224) ─────────────
+/** build_data(새 화면 작은 자료 셈)가 읽는 코드 — 이것을 고친 대안은 그 코드로 자료를 다시 셈 */
+export const BUILD_INPUTS = Object.freeze([/^scripts\/atlas11\/next\/build(_data\.mjs|\/)/, /^site\/next\/(theme-engine|essence|brand|i18n)\.js$/]);
+/** begin — 가지 jinhwa-data 를 받아(깃허브 일로 새로) main 일 폴더 · 회차를 연 폴더의 자료를 그 판으로 · 못 하면 저장소 자료 그대로(못 한 것에 적음 · 회차는 이어 감) */
+async function freshBegin(D, st) {
+  const fd = path.join(D.run, 'site-data');
+  const r = await D.siteData(fd);
+  if (!r.ok) { st.fresh = {ok: false, why: r.why}; notDone(st, `지금 사이트 자료를 못 받음(${G.short(r.why, 120)}) — 저장소 자료(낡음)로 살펴보고 검사함`); save(D, st); return; }
+  const m = D.freshen(st.wt.main, fd);
+  if (!m.ok) { st.fresh = {ok: false, why: m.why}; notDone(st, `main 일 폴더 자료를 지금 사이트 판으로 못 바꿈(${G.short(m.why, 100)}) — 저장소 자료로 검사함`); save(D, st); return; }
+  st.fresh = {ok: true, dir: fd, asOf: r.info?.asOf ?? null, lastDay: r.info?.lastDay ?? null, builtAt: r.info?.builtAt ?? null, how: r.how, run: r.run ?? null, why: [r.why, m.why].filter(Boolean).join(' · '), root: null};
+  save(D, st); // 아래에서 막혀도 end 가 되돌릴 수 있게
+  const top = D.freshen(D.root, fd);
+  if (top.ok) st.fresh.root = {changed: top.changed, added: top.added};
+  else notDone(st, `회차를 연 폴더 자료를 지금 사이트 판으로 못 바꿈(${G.short(top.why, 100)}) — 살펴보기는 저장소 자료`);
+  note(st, `지금 사이트 자료 마지막 날 ${st.fresh.lastDay}(${r.how === 'new' ? '깃허브 일로 새로 받음' : '가지에 있던 판'}) · main 일 폴더 ${m.changed.length}개 · 회차를 연 폴더 ${top.ok ? top.changed.length : 0}개`);
+  save(D, st);
+}
+/** 일 폴더 자료를 지금 사이트 판으로(begin 이 받은 것) — 대안 · 다시 시험 · 넣기 · 되돌리기 · 고장 고침 일 폴더 · 못 하면 저장소 자료 그대로(못 한 것에 적음) */
+function freshDir(D, st, dir, what) {
+  if (!st.fresh?.ok || !D.freshen) return false;
+  const r = D.freshen(dir, st.fresh.dir);
+  if (!r.ok) notDone(st, `${what} 일 폴더 자료를 지금 사이트 판으로 못 바꿈(${G.short(r.why, 100)}) — 저장소 자료로 검사함`);
+  return r.ok;
 }
 
 // ───────────── 넣기 · 되돌리기 · 고장 고침 공통 ─────────────
@@ -237,6 +271,7 @@ export async function cmdApply(a, D) {
   const msg = `${W.name} 진화 ${id} 들어감 — ${w.title}\n\n사장님 확인 ${it.at ?? '?'} · 진화 회차 ${st.id} · 가지 ${L.branchOf(id)} · 지문 ${g.changeHash}\n([8] 2 확인된 대안 하나 · 다섯 파일 안 · 바뀐 쪽 검사 · 모든 쪽 미리 검사 0)\n\njinhwa: apply ${id} ${g.changeHash}`;
   const ap = G.applyOnto(st.wt.apply, tip, base, msg);
   if (!ap.ok) fail(ap.why);
+  freshDir(D, st, st.wt.apply, '넣기'); // 검사 · 본질 문이 지금 사이트 자료로(커밋은 위에서 끝남 · 주문 0224)
   const gt = gate(D, {base, head: ap.sha, cwd: st.wt.apply, expectHash: g.changeHash});
   if (!gt.ok) fail(gt.why.join(' · '));
   const sg = staticGate(D, st, st.wt.apply);
@@ -284,6 +319,7 @@ export async function cmdRevert(a, D) {
   if (!rv.ok) { G.git(st.wt.revert, ['revert', '--abort']); fail('되돌리면 부딪힘 — 손으로 봐야 함'); }
   const c = G.git(st.wt.revert, ['commit', '-q', '--no-verify', '-m', msg]);
   if (!c.ok) fail('되돌림 커밋을 못 만듦');
+  freshDir(D, st, st.wt.revert, '되돌리기'); // 주문 0224
   const head = G.revParse(st.wt.revert, 'HEAD');
   const gt = gate(D, {base, head, cwd: st.wt.revert, allowDelete: true, onlyFiles: g.files ?? []});
   if (!gt.ok) fail(gt.why.join(' · '));
@@ -314,6 +350,7 @@ export async function cmdFixStart(a, D) {
   const id = `${st.id}-f1`, dir = path.join(D.run, 'wt', 'fix');
   const w = G.worktreeAdd(D.root, dir, st.main0, {branch: L.fixBranchOf(id)});
   if (!w.ok) stop(w.why);
+  freshDir(D, st, dir, '고장 고침'); // 고치는 사람이 지금 사이트 자료를 봄 · 자료는 커밋에 안 들어감(주문 0224)
   st.fixing = {id, dir}; st.wt.fix = dir; save(D, st);
   return {id, dir, branch: L.fixBranchOf(id), base: st.main0.slice(0, 7)};
 }
@@ -366,8 +403,9 @@ export async function cmdAltStart(a, D) {
   const id = altId(st, n), dir = path.join(D.run, 'wt', 'alt-' + n);
   const w = G.worktreeAdd(D.root, dir, st.main0, {branch: L.branchOf(id)});
   if (!w.ok) stop(w.why);
+  const fresh = freshDir(D, st, dir, `대안 ${n}`); // 고치는 사람 · 바뀐 쪽 검사 · 후 그림이 지금 사이트 자료로 · 자료는 커밋에 안 들어감(skip-worktree · 주문 0224)
   st.wt['alt' + n] = dir; save(D, st);
-  return {id, dir, branch: L.branchOf(id), base: st.main0.slice(0, 7), max: L.MAX_FILES};
+  return {id, dir, branch: L.branchOf(id), base: st.main0.slice(0, 7), max: L.MAX_FILES, fresh: fresh ? st.fresh.lastDay : false};
 }
 export async function cmdAlt(a, D) {
   const st = load(D), n = Number(a.n), route = String(a.route ?? '#/'), steps = stepsArg(a.steps);
@@ -396,6 +434,8 @@ export async function cmdAlt(a, D) {
   if (!made.why.length) { const e = D.essenceDiff(st.main0, head); if (!e.ok) made.why.push(e.why); }
   if (!made.why.length) { const sg = staticGate(D, st, dir); if (!sg.ok) made.why.push(sg.why); }
   if (made.why.length) return done();
+  // 새 화면 작은 자료를 셈하는 코드를 고친 대안 — 그 코드로 지금 사이트 자료를 다시 셈(검사 · 후 그림이 고친 셈을 보게 · 주문 0224)
+  if (st.fresh?.ok && made.files.some(f => BUILD_INPUTS.some(re => re.test(f)))) freshDir(D, st, dir, `대안 ${n}(자료 셈 고침)`);
   D.say(`대안 ${n} — 바뀐 쪽 검사(${made.files.join(', ')})`);
   const cc = await D.changedCheck(dir, made.files);
   made.changed = {fails: cc.fails, tail: cc.ok ? '' : cc.tail};
@@ -469,6 +509,7 @@ export async function enGaps(root, dir, patch) {
 }
 /** 지금 사이트 자료 — 회차에 한 번만(전후 그림이 같은 자료를 씀 · 못 받으면 저장소 자료 그대로 · 기록에 적음) */
 async function liveOnce(D, st) {
+  if (st.fresh?.ok) return st.fresh.dir; // begin 이 받은 지금 사이트 자료(가지 jinhwa-data · 주문 0224) — 일 폴더도 이미 그 판
   if (st.live === undefined) {
     const dir = path.join(D.run, 'live');
     const r = await D.liveData(dir);
@@ -563,6 +604,7 @@ export async function cmdRetest(a, D) {
     if (!G.worktreeAdd(D.root, dir, st.main0).ok) { r.why.push('일 폴더를 못 만듦'); notDone(st, `다시 시험 ${id} — 일 폴더를 못 만듦`); st.retested.push(r); out.push(r); continue; }
     const ap = G.applyOnto(dir, g.commit, st.main0, `진화 대안 ${id} 다시 시험(회차 ${st.id})`);
     if (!ap.ok) { drop(ap.why); st.retested.push(r); out.push(r); continue; }
+    freshDir(D, st, dir, `다시 시험 ${id}`); // 「새 자료로 다시 시험」이 정말 지금 사이트 자료로(주문 0224)
     const gt = gate(D, {base: st.main0, head: ap.sha, cwd: D.root, expectHash: g.changeHash});
     if (!gt.ok) { drop(gt.why.join(' · ')); st.retested.push(r); out.push(r); continue; }
     const sg = staticGate(D, st, dir);
@@ -770,6 +812,8 @@ export async function cmdEnd(a, D) {
     else if (n.why) notDone(st, `막힘 글을 main 에 못 올림(${n.why})`);
     save(D, st);
   }
+  // ⓪-1 회차를 연 폴더 자료를 저장소 판으로 되돌림(begin 이 지금 사이트 판으로 바꾼 것 · 주문 0224)
+  if (st.fresh?.root && !st.fresh.rootBack && D.unfreshen) { const u = D.unfreshen(D.root, st.fresh.root); st.fresh.rootBack = u.ok ? 'ok' : u.why; if (!u.ok) notDone(st, `회차를 연 폴더 자료를 못 되돌림(${u.why})`); save(D, st); }
   if (st.lock?.sha) { const r = G.lockRelease(D.root, {sha: st.lock.sha, now: D.now()}); st.lockReleased = r.ok ? r.how : null; if (!r.ok) notDone(st, `회차 잠금을 못 풂(${r.why}) — 100분 뒤 다음 회차가 묵은 잠금으로 가져감`); }
   for (const w of Object.values(st.wt ?? {})) if (typeof w === 'string') G.worktreeRemove(D.root, w);
   for (const b of Object.keys(st.wt ?? {}).filter(k => /^alt\d$/.test(k))) G.git(D.root, ['branch', '-D', L.branchOf(`${st.id}-${b.slice(3)}`)]); // 이 기계의 가지만(원격 가지는 기록 단계가 정리)

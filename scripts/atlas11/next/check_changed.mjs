@@ -62,6 +62,8 @@ const CMD = {
   'jinhwa-tests': () => ['node', ['--test', 'tests/atlas11/jinhwa.test.mjs', 'tests/atlas11/tally.test.mjs']],
   // 고도리 칸 셈 v2 따로 세기(2026-10-18 · G4x) — 끝 코드 4 = 이 기계에 없는 입력으로 만든 파일이라 셀 수 없음 → 건너뜀(실패 아님)
   'white-gate': () => ['node', ['scripts/atlas11/next/white_gate.mjs', '--dist', 'site']], // 흰 첫 화면 정적 문(올리기 직전 문과 같은 셈 · 소스 폴더로)
+  // 본질 문 화면 층 — --all 이 있어야 돎(없으면 쓰는 법만 찍고 0.1초에 실패 · 첫 화면을 고친 바뀐 쪽 검사가 늘 실패하던 까닭 · 2026-11-03 주문 0224)
+  check_essence: () => ['node', ['scripts/atlas11/next/check_essence.mjs', '--base', BASE, '--all', '--out', path.join(TMP, 'check_essence.json')]],
   verify: () => ['python3', ['-I', 'scripts/atlas11/next/gdr/verify2.py', '--quiet', '--out', path.join(TMP, 'verify2.json')]],
 };
 const TMP = fs.mkdtempSync(path.join(process.env.TMPDIR || '/tmp', 'check-changed-'));
