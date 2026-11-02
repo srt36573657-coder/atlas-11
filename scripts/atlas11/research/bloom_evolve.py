@@ -7,6 +7,7 @@
 쓰는 법:
   python3 scripts/atlas11/research/bloom_evolve.py --list [후보 json]       낱 조건 156 · 짝 수만(결과 셈 없음 — 셈 전에 적음)
   python3 scripts/atlas11/research/bloom_evolve.py [자료 폴더] [결과 json]  셈(달마다 걸어가며 고르기 · 맞대기 · 운 걸러내기 · 넣는 잣대)
+  python3 scripts/atlas11/research/bloom_evolve.py --atoms-fixture [자료 폴더] [맞대기 json]  낱 조건 156 셈까지만 · 수와 지문(site/next/bloom-atoms.js 시험용)
 읽기만 한다. 앞날을 맞히는 숫자가 아니라 지난 기록에서 센 횟수다.
 앞 판 바탕 셈(자료 · 시장 지수 · 싹 · 꽃 · 낱 조건 134 · F 이름 공간)은 scripts/atlas11/research/sprout365.py 의 앞부분을 그대로 돌려 씀(같은 숫자).
 """
@@ -23,6 +24,7 @@ np.seterr(all='ignore')
 T_START = time.time()
 HERE = os.path.dirname(os.path.abspath(__file__))
 LIST = '--list' in sys.argv[1:]
+FIXTURE = '--atoms-fixture' in sys.argv[1:]
 ARGS = [a for a in sys.argv[1:] if not a.startswith('--')]
 SEED = 20261102
 REPS_CI, REPS_RC, BLOCK = 2000, 500, 20
@@ -208,6 +210,24 @@ for k, a in enumerate(ATOMS):
     ATOM_FULL.append(m)
     ATOM_U[k] = m[U]
 log('낱 조건', K, '· 싹 바탕', nU)
+
+if FIXTURE:  # 낱 조건 156 맞대기 자료(site/next/bloom-atoms.js 시험) — 여기서 멈춤 · 다른 셈은 안 함
+    _HR = 'sum over cells t>=T0 of ((t+1)*2654435761 + int(code,36)) mod 2^32, then mod 2^32'
+    _cv = np.array([int(c, 36) for c in codes], dtype=np.int64)
+    _cell = ((np.arange(N, dtype=np.int64)[:, None] + 1) * 2654435761 + _cv[None, :]) % (1 << 32)
+
+    def _ch(m):
+        mm = np.asarray(m, bool)[T0:]
+        return {'count': int(mm.sum()), 'hash': int(_cell[T0:][mm].sum()) % (1 << 32)}
+
+    fx = {'schema': 'dori-bloom-atoms-fixture-1', 'asOf': D[-1], 'N': N, 'C': C, 'T0': T0, 'hashRule': _HR,
+          'base': {k: _ch(NS0[k]) for k in ('COUNT', 'SPROUT', 'BASEM', 'FLOWER')},
+          'atoms': [dict({'id': a['id']}, **_ch(SPROUT & ATOM_FULL[k])) for k, a in enumerate(ATOMS)]}
+    if OUT:
+        os.makedirs(os.path.dirname(OUT) or '.', exist_ok=True)
+        open(OUT, 'w', encoding='utf8').write(json.dumps(fx, ensure_ascii=False, indent=1) + '\n')
+    log('맞대기 자료', len(fx['atoms']), '낱 조건 ·', OUT)
+    sys.exit(0)
 
 
 def perday(mvec):

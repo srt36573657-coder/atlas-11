@@ -1,0 +1,489 @@
+{
+ "schema": "dori-bloom-month-1",
+ "spec": "docs/design/self-evolve-2026-11-02/spec.md v2",
+ "root": "site/atlas/data",
+ "asOf": "2026-10-13",
+ "tl": "2026-09-09",
+ "days": 839,
+ "sealFrom": "2026-11",
+ "stored": null,
+ "months": [
+  {
+   "month": "2025-01",
+   "s": "2025-01-02",
+   "id": "c120b&isz2",
+   "fresh": "c120b&isz2",
+   "sealed": false,
+   "trainDays": 269,
+   "elig": 1285,
+   "lb": 8.737,
+   "d": 14.42,
+   "nTrain": 1991,
+   "record": {
+    "n": 143,
+    "h": 41,
+    "nb": 42962,
+    "hb": 9688,
+    "days": 18,
+    "pickDays": 18,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-02",
+   "s": "2025-02-03",
+   "id": "c120b&ib3",
+   "fresh": "c120b&ib3",
+   "sealed": false,
+   "trainDays": 287,
+   "elig": 1267,
+   "lb": 7.564,
+   "d": 14.315,
+   "nTrain": 372,
+   "record": {
+    "n": 15,
+    "h": 2,
+    "nb": 47904,
+    "hb": 11155,
+    "days": 20,
+    "pickDays": 7,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-03",
+   "s": "2025-03-04",
+   "id": "c120b&isz2",
+   "fresh": "c120b&isz2",
+   "sealed": false,
+   "trainDays": 307,
+   "elig": 1312,
+   "lb": 8.121,
+   "d": 13.196,
+   "nTrain": 2341,
+   "record": {
+    "n": 116,
+    "h": 20,
+    "nb": 48125,
+    "hb": 10630,
+    "days": 20,
+    "pickDays": 20,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-04",
+   "s": "2025-04-01",
+   "id": "px4&iz3",
+   "fresh": "px4&iz3",
+   "sealed": false,
+   "trainDays": 327,
+   "elig": 1314,
+   "lb": 8.031,
+   "d": 11.511,
+   "nTrain": 813,
+   "record": {
+    "n": 190,
+    "h": 107,
+    "nb": 53117,
+    "hb": 12581,
+    "days": 22,
+    "pickDays": 14,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-05",
+   "s": "2025-05-02",
+   "id": "c120b&isz2",
+   "fresh": "c120b&isz2",
+   "sealed": false,
+   "trainDays": 349,
+   "elig": 1268,
+   "lb": 7.636,
+   "d": 12.407,
+   "nTrain": 2569,
+   "record": {
+    "n": 81,
+    "h": 48,
+    "nb": 45813,
+    "hb": 11284,
+    "days": 19,
+    "pickDays": 17,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-06",
+   "s": "2025-06-02",
+   "id": "c120b&isz2",
+   "fresh": "c120b&isz2",
+   "sealed": false,
+   "trainDays": 368,
+   "elig": 1304,
+   "lb": 9.035,
+   "d": 13.837,
+   "nTrain": 2733,
+   "record": {
+    "n": 74,
+    "h": 13,
+    "nb": 45986,
+    "hb": 9919,
+    "days": 19,
+    "pickDays": 17,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-07",
+   "s": "2025-07-01",
+   "id": "c120b&isz2",
+   "fresh": "c120b&isz2",
+   "sealed": false,
+   "trainDays": 387,
+   "elig": 1307,
+   "lb": 9.346,
+   "d": 14.391,
+   "nTrain": 2814,
+   "record": {
+    "n": 188,
+    "h": 63,
+    "nb": 55792,
+    "hb": 11296,
+    "days": 23,
+    "pickDays": 23,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-08",
+   "s": "2025-08-01",
+   "id": "big1&ib3",
+   "fresh": "big1&ib3",
+   "sealed": false,
+   "trainDays": 410,
+   "elig": 1281,
+   "lb": 8.996,
+   "d": 14.045,
+   "nTrain": 420,
+   "record": {
+    "n": 5,
+    "h": 2,
+    "nb": 48586,
+    "hb": 10304,
+    "days": 20,
+    "pickDays": 3,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-09",
+   "s": "2025-09-01",
+   "id": "c120b&isz2",
+   "fresh": "c120b&isz2",
+   "sealed": false,
+   "trainDays": 430,
+   "elig": 1259,
+   "lb": 9.201,
+   "d": 13.908,
+   "nTrain": 3083,
+   "record": {
+    "n": 242,
+    "h": 62,
+    "nb": 53579,
+    "hb": 11038,
+    "days": 22,
+    "pickDays": 22,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-10",
+   "s": "2025-10-01",
+   "id": "big1&iz3",
+   "fresh": "big1&iz3",
+   "sealed": false,
+   "trainDays": 452,
+   "elig": 1307,
+   "lb": 8.911,
+   "d": 12.669,
+   "nTrain": 1555,
+   "record": {
+    "n": 26,
+    "h": 7,
+    "nb": 43915,
+    "hb": 10320,
+    "days": 18,
+    "pickDays": 10,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-11",
+   "s": "2025-11-03",
+   "id": "big1&iz3",
+   "fresh": "big1&iz3",
+   "sealed": false,
+   "trainDays": 470,
+   "elig": 1314,
+   "lb": 9.844,
+   "d": 13.908,
+   "nTrain": 1618,
+   "record": {
+    "n": 17,
+    "h": 3,
+    "nb": 48809,
+    "hb": 9953,
+    "days": 20,
+    "pickDays": 10,
+    "complete": true
+   }
+  },
+  {
+   "month": "2025-12",
+   "s": "2025-12-01",
+   "id": "big1&ib3",
+   "fresh": "big1&ib3",
+   "sealed": false,
+   "trainDays": 490,
+   "elig": 1244,
+   "lb": 9.672,
+   "d": 14.619,
+   "nTrain": 459,
+   "record": {
+    "n": 21,
+    "h": 5,
+    "nb": 51334,
+    "hb": 10958,
+    "days": 21,
+    "pickDays": 11,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-01",
+   "s": "2026-01-02",
+   "id": "big1&iz3",
+   "fresh": "big1&iz3",
+   "sealed": false,
+   "trainDays": 511,
+   "elig": 1267,
+   "lb": 9.468,
+   "d": 13.503,
+   "nTrain": 1675,
+   "record": {
+    "n": 89,
+    "h": 31,
+    "nb": 51584,
+    "hb": 13882,
+    "days": 21,
+    "pickDays": 19,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-02",
+   "s": "2026-02-02",
+   "id": "big1&iz3",
+   "fresh": "big1&iz3",
+   "sealed": false,
+   "trainDays": 532,
+   "elig": 1272,
+   "lb": 10.463,
+   "d": 14.298,
+   "nTrain": 1798,
+   "record": {
+    "n": 132,
+    "h": 26,
+    "nb": 41895,
+    "hb": 10290,
+    "days": 17,
+    "pickDays": 17,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-03",
+   "s": "2026-03-03",
+   "id": "big1&ib3",
+   "fresh": "big1&ib3",
+   "sealed": false,
+   "trainDays": 549,
+   "elig": 1314,
+   "lb": 11.249,
+   "d": 16.595,
+   "nTrain": 520,
+   "record": {
+    "n": 4,
+    "h": 1,
+    "nb": 51776,
+    "hb": 11558,
+    "days": 21,
+    "pickDays": 3,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-04",
+   "s": "2026-04-01",
+   "id": "big2&ix4",
+   "fresh": "big2&ix4",
+   "sealed": false,
+   "trainDays": 570,
+   "elig": 1293,
+   "lb": 11.394,
+   "d": 17.544,
+   "nTrain": 484,
+   "record": {
+    "n": 75,
+    "h": 40,
+    "nb": 54131,
+    "hb": 14123,
+    "days": 22,
+    "pickDays": 22,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-05",
+   "s": "2026-05-04",
+   "id": "big1&fin10",
+   "fresh": "big1&fin10",
+   "sealed": false,
+   "trainDays": 592,
+   "elig": 1338,
+   "lb": 11.228,
+   "d": 16.388,
+   "nTrain": 804,
+   "record": {
+    "n": 58,
+    "h": 19,
+    "nb": 44147,
+    "hb": 14683,
+    "days": 18,
+    "pickDays": 18,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-06",
+   "s": "2026-06-01",
+   "id": "big2&ix4",
+   "fresh": "big2&ix4",
+   "sealed": false,
+   "trainDays": 610,
+   "elig": 1338,
+   "lb": 11.835,
+   "d": 17.653,
+   "nTrain": 593,
+   "record": {
+    "n": 37,
+    "h": 11,
+    "nb": 51631,
+    "hb": 18605,
+    "days": 21,
+    "pickDays": 16,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-07",
+   "s": "2026-07-01",
+   "id": "big2&ix4",
+   "fresh": "big2&ix4",
+   "sealed": false,
+   "trainDays": 631,
+   "elig": 1328,
+   "lb": 11.952,
+   "d": 17.321,
+   "nTrain": 667,
+   "record": {
+    "n": 28,
+    "h": 7,
+    "nb": 54200,
+    "hb": 14367,
+    "days": 22,
+    "pickDays": 10,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-08",
+   "s": "2026-08-03",
+   "id": "big2&ix4",
+   "fresh": "big2&ix4",
+   "sealed": false,
+   "trainDays": 653,
+   "elig": 1327,
+   "lb": 10.633,
+   "d": 16.023,
+   "nTrain": 709,
+   "record": {
+    "n": 16,
+    "h": 8,
+    "nb": 49371,
+    "hb": 12081,
+    "days": 20,
+    "pickDays": 4,
+    "complete": true
+   }
+  },
+  {
+   "month": "2026-09",
+   "s": "2026-09-01",
+   "id": "big2&ix4",
+   "fresh": "big2&ix4",
+   "sealed": false,
+   "trainDays": 673,
+   "elig": 1323,
+   "lb": 10.614,
+   "d": 15.931,
+   "nTrain": 725,
+   "record": {
+    "n": 13,
+    "h": 6,
+    "nb": 17276,
+    "hb": 4432,
+    "days": 7,
+    "pickDays": 5,
+    "complete": false
+   }
+  },
+  {
+   "month": "2026-10",
+   "s": "2026-10-01",
+   "id": "big2&ix4",
+   "fresh": "big2&ix4",
+   "sealed": false,
+   "trainDays": 693,
+   "elig": 1281,
+   "lb": 10.787,
+   "d": 15.971,
+   "nTrain": 744,
+   "record": {
+    "n": 0,
+    "h": 0,
+    "nb": 0,
+    "hb": 0,
+    "days": 0,
+    "pickDays": 0,
+    "complete": false
+   }
+  }
+ ],
+ "totals": {
+  "n": 1570,
+  "h": 522,
+  "nb": 1001933,
+  "hb": 243147
+ },
+ "today": {
+  "date": "2026-10-13",
+  "month": "2026-10",
+  "id": "big2&ix4",
+  "carry": false,
+  "rows": [],
+  "past": {}
+ },
+ "seconds": 70.9
+}

@@ -234,6 +234,20 @@ a.th-ck:active { background: #FFFFFF; }
 .th-pkmore { border-style: dashed; background: transparent; }
 .th-pkgo { display: inline-block; margin: 0 var(--sp-2) var(--sp-2); color: #111111; font-size: var(--fs-1); font-weight: 700; line-height: 44px; }
 .th-pkrec1 { margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border-left: 4px solid #DDDDDD; color: #222222; font-size: var(--fs-2); line-height: 1.45; }
+/* 달마다 스스로 고른 점수(사장님 2026-11-02 08:13(+04) 「응 그리고 스스로 하건 점수화해소 교차 검증 하게 해」 · 주문 1313) — 달 줄 = 달(굵게) · 점수(오른쪽 · 좁으면 아래로) · 작은 글(고른 수 · 스스로 고른 달) */
+.th-score { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; padding: var(--sp-2); border: 2px solid #111111; border-radius: 16px; background: #FFFFFF; min-width: 0; }
+.th-score .th-chs { margin: 0; }
+.th-scl { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; min-width: 0; }
+.th-scr { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: var(--sp-1); row-gap: 2px; min-height: 56px; padding: var(--sp-1) 0; border-bottom: 1px solid #DDDDDD; color: #111111; box-sizing: border-box; }
+.th-scr[hidden] { display: none; }
+.th-scm { flex: 0 0 auto; font-size: var(--fs-2); font-weight: 800; }
+.th-scv { flex: 1 1 auto; min-width: 0; font-size: var(--fs-2); font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; word-break: keep-all; overflow-wrap: anywhere; }
+.th-sc-up .th-scv { color: var(--up); } .th-sc-dn .th-scv { color: var(--down); } .th-sc-eq .th-scv, .th-sc-na .th-scv { color: #222222; font-weight: 700; }
+.th-scn, .th-scs { flex: 1 0 100%; color: #222222; font-size: var(--fs-1); line-height: 1.4; }
+.th-scs { color: #111111; font-weight: 800; }
+.th-score .th-pkmore { justify-self: start; }
+.th-ruleT { display: grid; gap: 4px; margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-2); border-left: 4px solid #111111; } /* 지금 고르는 조건 — 줄마다 한 문장 · 번호 없음 */
+.th-rulel { margin: 0; color: #111111; font-size: var(--fs-2); font-weight: 700; line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; }
 /* 싹 자리 전부(#/t/sprout · 돌 시계 판 ②) — 맨 앞 셋 큰 판(세 칸 한 줄) · 그 밖 업종 알약 */
 .th-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-1); margin: 0 0 var(--sp-2); }
 .th-tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: var(--sp-1); text-align: center; min-height: 164px; box-sizing: border-box; padding: var(--sp-1); border: 1px solid #DDDDDD; border-radius: 14px; background: #FFFFFF; color: #111111; text-decoration: none; }

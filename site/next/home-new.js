@@ -327,15 +327,16 @@ export function recordBox(B) {
   const R = okH ? H : B?.record?.all, ok = R && fin(R.rate) && fin(R.base) && Number.isInteger(R.n);
   const box = h('section', {class: 'nh-sec nh-rec', id: 'nh-p2', 'data-w': 'record', 'aria-label': '지난 기록으로 고른 회사'},
     h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '2'}), h('span', {text: '고른 회사'})),
-    h('h2', {class: 'nh-pl', text: '돈이 몰린 업종에서 지난 기록으로 골라요'}), todayPicks(B));
+    h('h2', {class: 'nh-pl', text: B?.rule?.monthly ? '지난 기록으로 달마다 스스로 골라요' : '돈이 몰린 업종에서 지난 기록으로 골라요'}), todayPicks(B)); // 달마다 스스로 다시 고르기(2026-11-02 주문 1313) — 조건이 달마다 바뀔 수 있어 업종 말을 빼요
   if (!ok) { box.append(h('p', {class: 'nh-p', text: '? 지난 기록을 아직 못 받았어요. 잠시 뒤 다시 열어 주세요.'}), recLinks()); return box; }
-  const a = Math.round(R.rate), b = Math.round(R.base), rc = recent(B);
+  const a = Math.round(R.rate), b = Math.round(R.base), rc = recent(B), mon = !!B?.rule?.monthly && okH; // 달마다 고르기면 달력 칸이 모두 고를 때 안 본 날 — 「요즘 두 달」 말로(주문 1313)
   box.append(h('div', {class: 'nh-wafs'}, wfig(a, 'me', '이렇게 고른 회사'), wfig(b, 'all', '아무 회사나')),
     h('p', {class: 'nh-say', text: `이렇게 고른 회사 100곳 중 ${a}곳이 한 달 뒤 시장보다 5% 넘게 더 올랐어요.`}),
     h('p', {class: 'nh-say', text: `같은 날 아무 회사나 골랐다면 100곳 중 ${b}곳이었어요.`}));
   if (okH) box.append(h('p', {class: 'nh-say', text: '고를 때 안 본 기록만 셌어요.'}));
   if (rc.P != null && rc.Q != null) box.append(h('div', {class: 'nh-warn' + (rc.P < rc.Q ? ' nh-worse' : '')},
-    h('p', {class: 'nh-wt', text: rc.P < rc.Q ? `요즘 고를 때 안 본 날은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : rc.P > rc.Q ? `요즘 고를 때 안 본 날도 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.` : `요즘 고를 때 안 본 날은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 같았어요.`}), sage('다윈', '내 생각과 다른 기록도 바로 적어요.'))); // 날짜를 쓰지 않음 — 첫 화면에 보이는 날짜는 띠에 한 번(next_check [6] 2)
+    h('p', {class: 'nh-wt', text: mon ? (rc.P < rc.Q ? `요즘 두 달은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : rc.P > rc.Q ? `요즘 두 달도 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.` : `요즘 두 달은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 같았어요.`)
+      : rc.P < rc.Q ? `요즘 고를 때 안 본 날은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : rc.P > rc.Q ? `요즘 고를 때 안 본 날도 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.` : `요즘 고를 때 안 본 날은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 같았어요.`}), sage('다윈', '내 생각과 다른 기록도 바로 적어요.'))); // 날짜를 쓰지 않음 — 첫 화면에 보이는 날짜는 띠에 한 번(next_check [6] 2)
   box.append(sage('덩샤오핑', '말보다 결과를 봐요.'), recLinks());
   return box;
 }

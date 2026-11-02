@@ -1,10 +1,12 @@
 /* 테마 시계 셈 한 곳(사장님 2026-10-19(싱가포르) 16:06 「테마가 된 게 아니라 될 듯한 걸 찾아 주는 거야 … 이 본질이 중심이자 시작」 ·
    16:54 「큰 구조는 건들이지 말고 더 스마트한 내부 시스템을 만들어서 올려」) — 결정표 docs/design/theme-2026-10-19/theme-engine.md 그대로
-   다른 파일을 부르지 않음 · 화면(DOM)을 만지지 않음 — 올릴 때 셈(scripts/atlas11/next/build/theme.mjs) · 시험(tests/atlas11/theme.test.mjs) · 화면(p-theme.js 의 글 틀)이 같이 부름
+   theme-rule.js · 꽃 될 회사 낱 조건 bloom-atoms.js · 그 쉬운 한 줄 bloom-labels.js 만 부름(2026-11-02 주문 1313) · 화면(DOM)을 만지지 않음 — 올릴 때 셈(scripts/atlas11/next/build/theme.mjs) · 시험(tests/atlas11/theme.test.mjs) · 화면(p-theme.js 의 글 틀)이 같이 부름
    셈은 올릴 때 한 번(모든 회사 종가 839일) → /next/data/theme.json · theme-more.json — 화면은 그 파일만 읽음(첫 화면은 mkt · cond 를 받지 않음 · [9] 7)
    v1.3(2026-10-20 · 결정표 9): 회사 한 곳의 자리 → /next/data/theme-co.json(회사 화면 탭 아래 한 줄 — app.js wZone) */
 
 import {THEME_SCHEMA, RULE, ZONES, zoneOf, pp, nearBar, DOT_TEXT} from './theme-rule.js'; // 잣대 · 글 꼴은 theme-rule.js 한 곳(화면도 같이 씀)
+import {atomBase} from './bloom-atoms.js'; // 꽃 될 회사 낱 조건 156(연구 셈 bloom_evolve.py 와 칸마다 같음 — 시험 bloom-atoms.test · 2026-11-02 주문 1313)
+import {ATOM_SAY, SPROUT_SAY} from './bloom-labels.js'; // 낱 조건마다 쉬운 한 줄(화면 글 · 영어 사전 en-src.json)
 export {THEME_SCHEMA, RULE, ZONES, zoneOf, pp, nearBar, DOT_TEXT};
 const r2 = v => (Number.isFinite(v) ? Math.round(v * 100) / 100 : null);
 const r1 = v => (Number.isFinite(v) ? Math.round(v * 10) / 10 : null);
@@ -59,7 +61,7 @@ export const sproutCmp = (a, b) => b.sc - a.sc || (b._y ?? b.y) - (a._y ?? a.y) 
  * 전체 셈 — {dates, closes: Map(code → number[N]), companies: {code: {n, i}}, industries: [{name, g}], groups: [{id, name}], rk: Map(code → 차례), provisional}
  * → {theme, more} (두 파일의 몸) · 결정표 1 ~ 6
  */
-export function computeTheme({dates, closes, companies, industries, groups = [], rk = new Map(), caps = new Map(), provisional = false, made = new Date().toISOString(), kept = {}}) { // caps = 회사 몸값(억 원 · cond.json · 꽃 될 회사 몸값 차례 — 2026-11-02 주문 0815)
+export function computeTheme({dates, closes, companies, industries, groups = [], rk = new Map(), caps = new Map(), fins = new Map(), months = null, provisional = false, made = new Date().toISOString(), kept = {}}) { // caps = 회사 몸값(억 원 · cond.json · 꽃 될 회사 몸값 차례 — 2026-11-02 주문 0815)
   const N = dates.length, T = N - 1;
   if (N < RULE.recFrom + RULE.recAhead + 2) throw Error('theme: 날짜가 너무 적음 ' + N);
   const codes = [...closes.keys()].filter(c => companies[c]).sort();
@@ -114,7 +116,7 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
   const cz = {}; let skip = 0;
   for (const c of codes) { const v = coZoneOf(closes.get(c), M, T); if (!v) { skip++; continue; } cz[c] = [r2(v.x), r2(v.y), v.z]; }
   const co = {schema: THEME_SCHEMA + '-co', made, asOf: dates[T], from20: dates[T - RULE.win], from5: dates[T - 5], provisional: !!provisional, n: Object.keys(cz).length, skip, co: cz};
-  return {theme, more, co, path: pathOf(U, M, dates, sprout.slice(0, 3).map(i => i.n), made), cal: calOf(U, M, dates, made, CAL_DAYS, kept), bloom: bloomOf({U, M, closes, codes, companies, dates, caps, made, provisional})};
+  return {theme, more, co, path: pathOf(U, M, dates, sprout.slice(0, 3).map(i => i.n), made), cal: calOf(U, M, dates, made, CAL_DAYS, kept), bloom: bloomOf({U, M, closes, codes, companies, dates, caps, fins, months, made, provisional})}; // fins = 회사 실적(co 파일 fin · 낱 조건 fin 갈래) · months = 달마다 고른 조건(bloom-months.json · 2026-11-02 주문 1313)
 }
 
 /** 싹 달력(사장님 2026-10-22 11:55 「일 이 삼 찾아낸 것들 다 달력으로 … 제시만 해가지고 기록이 없으면 그건 하수야」 · 「구글 잡스라면」) — 지난 CAL_DAYS 거래일마다
@@ -221,18 +223,41 @@ export const PICK_EVOLVE = Object.freeze({
   prev: 'hi1&iz1',
   say: ['업종이 한 달 동안 시장보다 15% 넘게 더 올랐어요', '그날 몸값이 큰 쪽 위 20% 회사예요', '회사는 아직 싹이에요'],
 });
-export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map(), made = new Date().toISOString(), provisional = false}) {
+/** 달마다 고른 조건(spec v2 · site/next/data/bloom-months.json months) → 날마다 결정 차례 at(t) · 결정 전 끝 달은 가장 최근 결정을 이어 씀(carry)
+ *  결정 파일이 없거나 비면 다시 세운 하나(PICK_EVOLVE.final)를 2025-01 부터 씀(legacy · 이어 씀 표시 없음) */
+export function planOf(dates, months) {
+  const list = (Array.isArray(months) ? months : Array.isArray(months?.months) ? months.months : []).filter(m => m && /^\d{4}-\d{2}$/.test(m.month ?? '') && (m.id == null || /^[a-z0-9]+(&[a-z0-9]+)?$/.test(m.id))).sort((p, q) => (p.month < q.month ? -1 : 1));
+  const legacy = !list.length;
+  const plan = legacy ? [{month: '2025-01', id: PICK_EVOLVE.final.id, sealed: false, legacy: true}]
+    : list.map(m => ({month: m.month, id: m.id ?? null, sealed: !!m.sealed, s: m.s ?? null, lb: Number.isFinite(m.lb) ? m.lb : null, nTrain: Number.isInteger(m.nTrain) ? m.nTrain : null, elig: Number.isInteger(m.elig) ? m.elig : null, fresh: m.fresh ?? null}));
+  const N = dates.length, at = new Int32Array(N).fill(-1), carry = new Uint8Array(N), by = new Map(plan.map((p, q) => [p.month, q]));
+  for (let t = 0, last = -1; t < N; t++) {
+    const mo = dates[t].slice(0, 7);
+    if (mo < plan[0].month) continue;
+    if (by.has(mo)) last = by.get(mo); else if (!legacy) carry[t] = 1;
+    at[t] = last;
+  }
+  return {plan, at, carry, legacy};
+}
+/** 셈 셋 맞대기 결과(bloom-months.json check · 깃허브 일 atlas11-bloom-month 이 씀) — 화면 한 줄용으로 줄임 */
+const selfOf = m => { const c = m && !Array.isArray(m) ? m.check : null; return c && typeof c === 'object' ? {agree: c.agree === true, asOf: typeof c.asOf === 'string' ? c.asOf : null, data: c.data === 'live' ? 'live' : 'stored', counts: Number.isInteger(c.counts) ? c.counts : null, at: typeof c.at === 'string' ? c.at : null, made: typeof m.made === 'string' ? m.made : null} : null; };
+export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map(), fins = new Map(), months = null, made = new Date().toISOString(), provisional = false}) {
   const N = dates.length, T = N - 1, k = RULE.win, A = RULE.recAhead;
   const t0 = BLOOM.from, t1 = T - A;
-  let mid = dates.findIndex((d, t) => t > t0 && d >= BLOOM.split); if (mid < 0 || mid > t1) mid = t1 + 1; // 가름 날이 지난 기록 밖이면 안 본 기록은 아직 없음
-  const indZ = new Map(), indI = new Map(U.map(u => [u.n, u.I])), indX = new Map();
+  // 2026-11-02 주문 1313 — 조건은 달마다 스스로 다시 고른 것(spec v2) · 낱 조건 156 은 bloom-atoms.js(연구 셈과 칸마다 같음 — 시험 bloom-atoms.test)
+  const {plan, at: PL, carry: PC, legacy} = planOf(dates, months);
+  const ctx = atomBase({dates, codes, closes, companies, caps, fins}), CX = ctx.C;
+  const RM = plan.map(p => (p.id ? ctx.pair(p.id) : null)); // 결정마다 (날 × 회사) 참거짓 — ctx 칸 차례
+  const firstT = PL.findIndex(q => q >= 0);
+  let mid = firstT >= 0 ? Math.max(firstT, t0 + 1) : -1; if (mid < 0 || mid > t1) mid = t1 + 1; // 고를 때 안 본 기록 = 달마다 그 달을 안 보고 고른 날(첫 결정 달부터)
+  const indZ = new Map(), indI = new Map(U.map(u => [u.n, u.I]));
   const c0 = Math.max(k, T - BLOOM.cal + 1), cal = []; for (let t = c0; t <= T; t++) cal.push({d: dates[t], n: 0, hit: 0, miss: 0, wait: 0, why: [0, 0, 0], bn: 0, bh: 0}); // 달력 — 날마다 고른 수 · 꽃 · 못 됨(까닭 가 · 나 · 다) · 기다림 · 같은 날 아무 회사(bn 센 수 · bh 꽃)
   const whyOf = () => ({miss: 0, why: [0, 0, 0]}), why = {all: whyOf(), train: whyOf(), test: whyOf()};
   const whyAt = (ex, I, t) => (ex >= 0 ? 0 : I && exOf(I, M, t + A, A) < 0 ? 1 : 2); // 가 조금 모자람 · 나 업종째 식음 · 다 회사만 처짐(spec v6)
   for (const u of U) {
-    const z = new Uint8Array(N), x = new Uint8Array(N);
-    for (let t = k; t < N; t++) { const xx = exOf(u.I, M, t, k) * 100; if (zoneOf(xx, exOf(u.I, M, t, 5) * 100) === 'B') z[t] = 1; if (xx >= BLOOM_IX.min) x[t] = 1; }
-    indZ.set(u.n, z); indX.set(u.n, x);
+    const z = new Uint8Array(N);
+    for (let t = k; t < N; t++) if (zoneOf(exOf(u.I, M, t, k) * 100, exOf(u.I, M, t, 5) * 100) === 'B') z[t] = 1;
+    indZ.set(u.n, z);
   }
   // 회사마다 튄 날 · 멈춘 날 누적 · 셀 수 있는 날 · 몸값(그날 종가 × 지금 주식 수) — 몸값 차례는 그날 셀 수 있는 회사끼리
   const CC = codes.length, JJ = [], EE = [], CNT = [], SZ = [];
@@ -245,13 +270,11 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
     if (Number.isFinite(sh)) for (let t = 0; t < N; t++) if (ok(a[t])) sz[t] = a[t] * sh;
     JJ.push(J); EE.push(E); CNT.push(cn); SZ.push(sz);
   }
-  const BIG = codes.map(() => new Uint8Array(N)), TOPP = new Float64Array(CC).fill(NaN); // TOPP = 마지막 날 몸값 위 몇 %(회사마다 까닭)
-  for (let t = 0, js = []; t < N; t++) {
-    js.length = 0; for (let j = 0; j < CC; j++) if (CNT[j][t] && Number.isFinite(SZ[j][t])) js.push(j);
-    js.sort((p, q) => SZ[p][t] - SZ[q][t] || p - q);
-    const nv = js.length;
-    for (let r = 0; r < nv; r++) { const s = (r + 1) / nv; if (s >= BLOOM_BIG.top) BIG[js[r]][t] = 1; if (t === T) TOPP[js[r]] = (1 - r / nv) * 100; }
-  }
+  const TOPP = new Float64Array(CC).fill(NaN); // TOPP = 마지막 날 몸값 위 몇 %(회사마다 까닭 — 그 달 조건에 몸값 갈래가 있을 때만 보임)
+  { const js = []; for (let j = 0; j < CC; j++) if (CNT[j][T] && Number.isFinite(SZ[j][T])) js.push(j);
+    js.sort((p, q) => SZ[p][T] - SZ[q][T] || p - q);
+    const nv = js.length; for (let r = 0; r < nv; r++) TOPP[js[r]] = (1 - r / nv) * 100; }
+  const PN = new Float64Array(N), PH = new Float64Array(N), BNd = new Float64Array(N), BHd = new Float64Array(N); // 날마다 고른 회사(결과 있음) · 꽃 · 같은 날 아무 회사 · 꽃 — 달 기록 · 모은 기록
   const blank = () => ({n: 0, h: 0, f: 0, e: 0});
   const blank4 = () => [blank(), blank(), blank(), blank()];
   const acc = {all: blank4(), train: blank4(), test: blank4()}, years = {}; // [아무 회사 · 지금 조건 · 그냥 싹 · 바꾸기 전 조건(업종 꽃 자리 + 싹 + 반년 가장 높은 값 가까이)]
@@ -259,7 +282,7 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
   const today = [], PD = new Uint8Array(N); // PD = 지금 조건으로 고른 회사가 있던 날(지난 기록 t0 ~ t1 · 결과가 난 회사만 — 연구 셈 고른 날과 같은 잣대)
   let todayOld = 0;
   codes.forEach((c, j) => {
-    const a = closes.get(c), iz = indZ.get(companies[c]?.i), ix = indX.get(companies[c]?.i), I = indI.get(companies[c]?.i), J = JJ[j], cn = CNT[j], big = BIG[j];
+    const a = closes.get(c), iz = indZ.get(companies[c]?.i), I = indI.get(companies[c]?.i), J = JJ[j], cn = CNT[j], cj = ctx.col(c);
     const countable = t => t - k >= 0 && cn[t] === 1;
     const sproutAt = t => zoneOf(((a[t] / a[t - k]) / (M[t] / M[t - k]) - 1) * 100, ((a[t] / a[t - 5]) / (M[t] / M[t - 5]) - 1) * 100) === 'S';
     // 반년 가장 높은 값 가까이(BLOOM_HI · 바꾸기 전 조건) — t − 119 ~ t 하루도 빈 값이 없고 a[t] ÷ 그 사이 가장 높은 값 ≥ 0.95(연구 셈과 같은 나눗셈)
@@ -271,21 +294,22 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
       while (qt > qh && dq[qh] <= t - HW) qh++;
       if (t >= HW - 1 && bad === 0 && qt > qh && a[t] / a[dq[qh]] >= BLOOM_HI.near) NEAR[t] = 1;
     }
-    const pick = t => !!ix && ix[t] === 1 && big[t] === 1; // 지금 조건(싹 · 셀 수 있음은 따로 봄)
-    let pastN = 0, pastH = 0; // 이 회사가 지난 기록에서 지금 조건에 든 날 · 그중 꽃
+    const pick = t => { const q = PL[t], m = q >= 0 ? RM[q] : null; return !!m && cj >= 0 && m[t * CX + cj] === 1; }; // 그날이 든 달의 조건(싹 · 셀 수 있음은 따로 봄)
+    let pastN = 0, pastH = 0; // 이 회사가 지난 기록에서 수르가 고른 날(달마다 조건) · 그중 꽃
     for (let t = t0; t <= t1; t++) {
       if (!countable(t) || !ok(a[t + A]) || J[t + A] - J[t] !== 0) continue;
       const ex = (a[t + A] / a[t]) / (M[t + A] / M[t]) - 1, hit = ex >= RULE.bloomX / 100, fall = ex <= BLOOM.fall, e = Math.max(-BLOOM.clip, Math.min(BLOOM.clip, ex));
       const sp = sproutAt(t), g = sp && pick(t), go = sp && !!iz && iz[t] === 1 && NEAR[t] === 1, half = t < mid ? 'train' : 'test', yr = dates[t].slice(0, 4);
       years[yr] ??= blank4();
       for (const o of [acc.all, acc[half], years[yr]]) { add(o[0], hit, fall, e); if (g) add(o[1], hit, fall, e); if (sp) add(o[2], hit, fall, e); if (go) add(o[3], hit, fall, e); }
+      BNd[t]++; if (hit) BHd[t]++; if (g) { PN[t]++; if (hit) PH[t]++; }
       if (g) { PD[t] = 1; pastN++; if (hit) pastH++; if (!hit) { const w = whyAt(ex, I, t); for (const o of [why.all, why[half]]) { o.miss++; o.why[w]++; } } }
     }
     for (let t = c0; t <= T; t++) {
       const cnt = countable(t), day = cal[t - c0], done = t <= t1 && cnt && ok(a[t + A]) && J[t + A] - J[t] === 0; // 한 달 안에 튄 날 · 값 없음 — 셈 밖(지난 기록과 같은 잣대)
       const ex = done ? (a[t + A] / a[t]) / (M[t + A] / M[t]) - 1 : 0;
       if (done) { day.bn++; if (ex >= RULE.bloomX / 100) day.bh++; } // 같은 날 아무 회사 — 고른 회사와 같은 날끼리 맞댐
-      if (!cnt || !sproutAt(t) || !pick(t)) continue; // 지금 조건(싹 + 몸값 위 20% + 업종 한 달 15% 넘게)
+      if (!cnt || !sproutAt(t) || !pick(t)) continue; // 그날이 든 달의 조건(싹 + 낱 조건 둘)
       day.n++;
       if (t > t1) { day.wait++; continue; }
       if (!done) continue;
@@ -309,15 +333,36 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
   }).sort((p, q) => q.x - p.x || (p.n < q.n ? -1 : 1));
   const dayStat = (lo, hi) => { let days = 0, pickDays = 0; for (let t = lo; t <= hi; t++) { days++; if (PD[t]) pickDays++; } return {days, pickDays}; }; // 고른 날 몫 — 날 수 · 고른 회사가 있던 날 수
   const rec = {all: {...out(acc.all), ...dayStat(t0, t1)}, train: {...out(acc.train), ...dayStat(t0, Math.min(mid, t1 + 1) - 1)}, test: {...out(acc.test), ...dayStat(mid, t1)}, years: Object.fromEntries(Object.keys(years).sort().map(yv => [yv, out(years[yv])]))};
-  // 안 본 기록만(첫 화면 · 쪽 결론) — 연구의 달마다 걸어가며 고른 기록(wf.A) + 그 뒤 이 조건의 고를 때 안 본 기록(test)
-  const W = PICK_EVOLVE.wf.A, te = rec.test, hn = W.n + te.n, hh = W.hits + te.hits, hbn = W.baseN + te.baseN, hbh = W.baseHits + te.baseHits;
-  const honest = {from: W.from, to: te.n ? dates[t1] : W.to, n: hn, hits: hh, rate: pct(hh, hn), base: pct(hbh, hbn), baseN: hbn, wf: W.n, live: te.n};
+  // 달마다 결정 · 달 기록(spec v2 §3 · §4) — 연구 셈 bloom_month.py · 따로 센 일꾼과 칸마다 맞댐(시험 theme-bloom · 깃허브 일 atlas11-bloom-month)
+  const sayOf = id => (typeof id === 'string' ? [...id.split('&').map(p => ATOM_SAY[p] ?? p), SPROUT_SAY] : []);
+  const lastMo = dates[T].slice(0, 7);
+  const monthsOut = plan.map((p, q) => [p, q]).filter(([p]) => p.month <= lastMo).map(([p, q]) => { // 자료 끝 달 뒤의 결정(다른 자료로 낸 판)은 빼요
+    let n = 0, h = 0, nb = 0, hb = 0, days = 0, pickDays = 0, lastT = -1, firstD = -1;
+    for (let t = 0; t < N; t++) {
+      if (PL[t] !== q || PC[t]) continue;
+      if (firstD < 0) firstD = t;
+      lastT = t;
+      if (t < t0 || t > t1) continue;
+      days++; n += PN[t]; h += PH[t]; nb += BNd[t]; hb += BHd[t]; if (PN[t] > 0) pickDays++;
+    }
+    const nextIn = PL.some((v, t) => v > q && !PC[t]) || (lastT >= 0 && lastT < T); // 다음 달 첫 거래일이 자료에 있음
+    const complete = !p.legacy && lastT >= 0 && lastT <= t1 && nextIn;
+    return {month: p.month, s: firstD >= 0 ? dates[firstD] : p.s, id: p.id, say: sayOf(p.id), sealed: p.sealed, lb: p.lb ?? null, nTrain: p.nTrain ?? null, elig: p.elig ?? null, fresh: p.fresh ?? null,
+      rec: {n, h, nb, hb, days, pickDays, complete, rate: pct(h, n), base: pct(hb, nb), score: n && nb ? Math.round((h / n - hb / nb) * 10000) / 100 : null}};
+  });
+  // 고를 때 안 본 기록만(첫 화면 · 쪽 결론) = 달마다 그 달을 안 보고 고른 모든 달(2025-01 부터 · 결과가 난 날)
+  let hn = 0, hh = 0, hbn = 0, hbh = 0, hd = 0, hpd = 0; for (const m of monthsOut) { hn += m.rec.n; hh += m.rec.h; hbn += m.rec.nb; hbh += m.rec.hb; hd += m.rec.days; hpd += m.rec.pickDays; }
+  const honest = {from: firstT >= 0 ? dates[firstT] : null, to: dates[t1], n: hn, hits: hh, rate: pct(hh, hn), base: pct(hbh, hbn), baseN: hbn, baseHits: hbh, days: hd, pickDays: hpd, months: monthsOut.filter(m => m.rec.days > 0).length,
+    up: monthsOut.filter(m => m.rec.n > 0 && Math.round(m.rec.score) > 0).length, down: monthsOut.filter(m => m.rec.n > 0 && Math.round(m.rec.score) < 0).length, scored: monthsOut.filter(m => m.rec.n > 0).length}; // up · down = 화면 「100번에 N번 더 · 덜」과 같은 반올림(0 이면 「비슷」)
+  const qT = PL[T], ruleT = qT >= 0 ? plan[qT] : null;
+  const hasBig = typeof ruleT?.id === 'string' && ruleT.id.split('&').some(p => /^big\d$/.test(p));
+  if (!hasBig) for (const i of inds) for (const r of i.co) r[6] = null; // 몸값 위 몇 % 는 그 달 조건에 몸값 갈래가 있을 때만
   return {
     schema: THEME_SCHEMA + '-bloom', made, asOf: dates[T], provisional: !!provisional, companies: codes.length, tried: PICK_EVOLVE.n, // 고르는 조건 후보 — 셈 전에 적은 11,874(docs/design/bloom-evolve-2026-11-02/candidates.json)
-    rule: {from: BLOOM.from, win: k, ahead: A, bloomX: RULE.bloomX, fall: BLOOM.fall * 100, clip: BLOOM.clip * 100, bigTop: Math.round((1 - BLOOM_BIG.top) * 100), ixMin: BLOOM_IX.min, hiWin: BLOOM_HI.win, hiNear: BLOOM_HI.near * 100},
+    rule: {from: BLOOM.from, win: k, ahead: A, bloomX: RULE.bloomX, fall: BLOOM.fall * 100, clip: BLOOM.clip * 100, hiWin: BLOOM_HI.win, hiNear: BLOOM_HI.near * 100, monthly: !legacy},
     span: {from: dates[t0], to: dates[t1], train: [dates[t0], dates[Math.min(mid, t1 + 1) - 1]], test: mid <= t1 ? [dates[mid], dates[t1]] : [BLOOM.split, null]},
-    record: rec, honest,
-    today: {n: today.length, all: todayOld, inds}, // all = 바꾸기 전 조건이면 고른 수
+    record: rec, honest, months: monthsOut, self: selfOf(months), // self = 달마다 다시 고르기 · 셈 셋 맞대기 결과(bloom-months.json check)
+    today: {n: today.length, all: todayOld, inds, rule: ruleT ? {month: dates[T].slice(0, 7), id: ruleT.id, say: sayOf(ruleT.id), carry: !!PC[T], decided: ruleT.month} : null}, // all = 바꾸기 전 조건이면 고른 수 · rule = 오늘 쓴 조건(그 달 결정 · carry = 이번 달 결정 전이라 앞 달 것)
     cal: {from: dates[c0], to: dates[T], days: cal}, // 지난 60거래일 — 날마다 고른 수 · 꽃 · 못 됨 · 까닭 · 기다림(사장님 22:54 「그 기록을 한 달력이 첫화면에」)
     why: {all: why.all, train: why.train, test: why.test, names: ['조금 모자랐어요', '업종째 식었어요', '회사만 처졌어요']},
     pick: PICK_EVOLVE, prev: PICK365, // 다시 세운 길(2026-11-02) · 바꾸기 전 조건이 나온 길(2026-10-27)
