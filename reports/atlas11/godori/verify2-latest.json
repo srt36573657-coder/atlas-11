@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-02T20:58:39Z",
+ "at": "2026-11-02T22:00:13Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -62,12 +62,12 @@
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "66079e283f9ad8a4b0fb894be302b5405b028a1cdee60829607c43869f60ac88"
+   "sha256": "08de77af943c22e9583308bc65be09fd0b375e8225532e275c30882373fa745c"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "01c1635e05dbbed734862c3dff11c6b2916c162d9c2f50d86909ee75e30389f5"
+   "sha256": "c3522b3ff7f0748edb47e16ef69cf04cae6071d5b5eee35a79d0fdf0b2865263"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
@@ -91,23 +91,23 @@
    "outThin": 1703,
    "outThinQ": 19,
    "outHalt": 6,
-   "outList": 7,
-   "listQ": 841,
-   "afterOut": 841,
+   "outList": 0,
+   "listQ": 848,
+   "afterOut": 848,
    "g1": 257,
    "g2": 654,
    "g3": 52,
-   "g4": 678,
+   "g4": 682,
    "g5": 0,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 829,
+   "loss3": 836,
    "why": "lists"
   },
-  "loss3Years": 829,
+  "loss3Years": 836,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -423,8 +423,8 @@
    "detail": [
     1703,
     6,
-    7,
-    841,
+    0,
+    848,
     2557
    ]
   },
@@ -441,20 +441,20 @@
   "outThin": 1703,
   "outThinQ": 19,
   "outHalt": 6,
-  "outList": 7,
-  "listQ": 841,
-  "afterOut": 841,
+  "outList": 0,
+  "listQ": 848,
+  "afterOut": 848,
   "g1": 257,
   "g2": 654,
   "g3": 52,
-  "g4": 678,
+  "g4": 682,
   "g5": 0,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 829,
+  "loss3": 836,
   "why": "lists"
  },
  "compared": 2707,
@@ -464,9 +464,9 @@
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 3.1,
-  "build": 2.2,
-  "recount": 1.2,
-  "total": 6.5
+  "readBundle": 2.4,
+  "build": 1.4,
+  "recount": 0.7,
+  "total": 4.5
  }
 }
