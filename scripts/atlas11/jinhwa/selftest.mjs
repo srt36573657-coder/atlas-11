@@ -643,7 +643,7 @@ test('E13 지금 사이트 자료 — begin 이 가지 판으로 회차를 연 �
   sh(work, 'git', ['add', '-A']); sh(work, 'git', ['commit', '-q', '-m', '낡은 사본']); sh(work, 'git', ['push', '-q', 'origin', 'main']); sh(work, 'git', ['fetch', '-q', 'origin']);
   const live = path.join(T, 'live');
   const neu = {'atlas/data/mkt.json': {asOf: '2026-11-02'}, 'atlas/data/days.json': {dates: ['2026-10-13', '2026-11-02']}, 'atlas/data/core.json': {g: 2}, 'atlas/data/co/A00001.json': {close: [1, 2]}, 'atlas/data/co/B00002.json': {close: [9]},
-    'next/data/theme.json': {asOf: '2026-11-02'}, 'next/data/fx-rate.json': {fx: [1]}, 'jinhwa-data.json': {schema: 'atlas11-jinhwa-live-data-1', asOf: '2026-11-02', lastDay: '2026-11-02', files: 5}};
+    'next/data/theme.json': {asOf: '2026-11-02'}, 'next/data/fx-rate.json': {fx: [1]}, 'changelog.json': {schema: 'atlas11-changelog-1', entries: []}, 'jinhwa-data.json': {schema: 'atlas11-jinhwa-live-data-1', asOf: '2026-11-02', lastDay: '2026-11-02', files: 5}};
   for (const [f, v] of Object.entries(neu)) write(live, f, JSON.stringify(v));
   const D = {...fakeDeps({work, run: path.join(T, 'run'), now: '2026-10-21T00:30:00Z', status: {items: []}}),
     siteData: async dir => { fs.rmSync(dir, {recursive: true, force: true}); fs.cpSync(live, dir, {recursive: true}); return {ok: true, dir, info: JSON.parse(fs.readFileSync(path.join(dir, 'jinhwa-data.json'), 'utf8')), how: 'new', run: 9, why: ''}; },
@@ -655,6 +655,7 @@ test('E13 지금 사이트 자료 — begin 이 가지 판으로 회차를 연 �
   eq(J(work, 'site/atlas/data/mkt.json').asOf, '2026-11-02', '회차를 연 폴더 — 살펴보기가 지금 사이트 자료를 읽음');
   eq(J(work, 'site/next/data/theme.json').asOf, '2026-11-02', '새 화면 작은 자료도');
   ok(!fs.existsSync(path.join(work, 'site/atlas/data/co/C00003.json')), '사본에만 있던 파일은 지금 사이트처럼 없음');
+  ok(fs.existsSync(path.join(work, 'site/changelog.json')), '올릴 때만 생기는 기록 탭 파일도(#/up 404 막음)');
   eq(sh(work, 'git', ['status', '--porcelain', '--', 'site']), '', 'git 은 바뀐 자료를 안 봄');
   eq(dataOf(), data0, '진화 칸 자료는 그대로');
   const s = await R(D, 'alt-start', '--n', '1'); eq(s.code, 0, JSON.stringify(s.out)); eq(s.out.fresh, '2026-11-02', '대안 폴더도 지금 사이트 판');
@@ -663,7 +664,7 @@ test('E13 지금 사이트 자료 — begin 이 가지 판으로 회차를 연 �
   eq(sh(s.out.dir, 'git', ['show', '--name-only', '--format=', 'HEAD']), 'site/next/p-why.js', '대안 커밋 = 고친 파일 하나(자료 안 섞임 · 새 자료 파일도 안 섞임)');
   r = await R(D, 'end'); eq(r.code, 0, JSON.stringify(r.out));
   eq(J(work, 'site/atlas/data/mkt.json').asOf, '2026-10-13', 'end — 회차를 연 폴더 자료를 저장소 판으로');
-  ok(fs.existsSync(path.join(work, 'site/atlas/data/co/C00003.json')) && !fs.existsSync(path.join(work, 'site/atlas/data/co/B00002.json')), 'end — 지운 것은 되살리고 새로 생긴 것은 지움');
+  ok(fs.existsSync(path.join(work, 'site/atlas/data/co/C00003.json')) && !fs.existsSync(path.join(work, 'site/atlas/data/co/B00002.json')) && !fs.existsSync(path.join(work, 'site/changelog.json')), 'end — 지운 것은 되살리고 새로 생긴 것은 지움');
   eq(sh(work, 'git', ['ls-files', '-v', '--', 'site']).split('\n').filter(l => l.startsWith('S ')), [], 'end — git 이 다시 봄(skip-worktree 없음)');
   eq(sh(work, 'git', ['status', '--porcelain', '--', 'site']), '', 'end — 깨끗함');
   // 못 받으면 저장소 자료로 이어 감(못 한 것에 적음)

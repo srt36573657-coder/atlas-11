@@ -337,7 +337,7 @@ export function freshen(dir, liveDir, {timeout = 15 * 60e3} = {}) {
   const ad = path.join(dir, 'site', 'atlas', 'data'), nd = path.join(dir, 'site', 'next', 'data');
   const lad = path.join(liveDir, 'atlas', 'data'), lnd = path.join(liveDir, 'next', 'data');
   if (!fs.existsSync(path.join(lad, 'mkt.json'))) return {ok: false, changed: [], added: [], why: '지금 사이트 자료가 없음'};
-  const others = () => new Set(git(dir, ['ls-files', '--others', '-z', '--', 'site/atlas/data', 'site/next/data']).out.split('\0').filter(Boolean));
+  const others = () => new Set(git(dir, ['ls-files', '--others', '-z', '--', 'site/atlas/data', 'site/next/data', 'site/changelog.json']).out.split('\0').filter(Boolean));
   const before = others();
   let b = {ok: false, out: '', err: ''};
   try {
@@ -346,6 +346,8 @@ export function freshen(dir, liveDir, {timeout = 15 * 60e3} = {}) {
     fs.mkdirSync(nd, {recursive: true});
     const liveNext = fs.existsSync(lnd) ? fs.readdirSync(lnd).filter(f => !f.startsWith('jinhwa')) : [];
     for (const f of liveNext) fs.cpSync(path.join(lnd, f), path.join(nd, f), {recursive: true});
+    // 올릴 때만 생기는 파일(기록 탭이 읽는 /changelog.json) — 없으면 시험 서버에서 404(next_check 「#/up 404」 · 주문 0224)
+    if (fs.existsSync(path.join(liveDir, 'changelog.json'))) fs.copyFileSync(path.join(liveDir, 'changelog.json'), path.join(dir, 'site', 'changelog.json'));
     b = run('node', ['scripts/atlas11/next/build_data.mjs', '--site', 'site'], {cwd: dir, timeout});
     for (const f of liveNext) if (!fs.existsSync(path.join(nd, f))) fs.cpSync(path.join(lnd, f), path.join(nd, f), {recursive: true});
   } catch (e) { return {ok: false, changed: [], added: [], why: '자료를 못 바꿈 ' + short(e?.message ?? e, 120)}; }

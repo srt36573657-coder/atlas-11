@@ -15,7 +15,8 @@ export const DATA_SCHEMA = 'atlas11-jinhwa-live-data-1';
 export const INFO_FILE = 'jinhwa-data.json';
 const sha = b => createHash('sha256').update(b).digest('hex');
 /** 받을 파일 — 사이트 자료 atlas/data 모두 · 새 화면 작은 자료 next/data(진화 칸 jinhwa* 는 빼고 — 회차 도구가 쓰는 곳 · 올릴 때 네트워크로 받는 fx-rate 같은 것이 여기 있음) */
-export const wantFile = f => !f.includes('..') && (f.startsWith('atlas/data/') || (f.startsWith('next/data/') && !f.startsWith('next/data/jinhwa')));
+export const wantFile = f => !f.includes('..') && (f.startsWith('atlas/data/') || (f.startsWith('next/data/') && !f.startsWith('next/data/jinhwa')) || f === 'changelog.json');
+//   changelog.json = 기록 탭(#/up)이 읽는 것 — 올릴 때 package.mjs 가 dist 에만 씀(저장소 site/ 에 없음 → 일 폴더 시험 서버에서 404 · 주문 0224 · next_check 「#/up 404」)
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 /** 지금 사이트 atlas/data 받기 — {ok, out, asOf, builtAt, files, bytes, secs, why, stat}
