@@ -1,23 +1,25 @@
 {
- "when": "2026-11-02T08:08:41.792Z",
+ "when": "2026-11-02T08:40:36.453Z",
  "base": "https://aaa7377.com",
- "sec": 48,
+ "sec": 50,
  "xCodes": 1750,
  "all": true,
  "time": {
-  "old": 15.3,
-  "new": 29.7,
-  "wall": 48,
+  "old": 13.7,
+  "new": 31.6,
+  "wall": 49.9,
   "opensOld": 1771,
   "opensNew": 1836,
-  "oldPct": 31.8,
-  "oldShare": 34
+  "oldPct": 27.5,
+  "oldShare": 30.2
  },
  "net": {
-  "req": 9,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
+  "req": 10,
+  "retry": 1,
+  "waitSec": 1,
+  "why": {
+   "ECONNRESET": 1
+  },
   "cut": 0,
   "page": {
    "retry": 0,
