@@ -1,17 +1,13 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-02T07:04:20.974Z",
+ "at": "2026-11-02T07:26:50.528Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 424,
-  "fail": 3
+  "pass": 427,
+  "fail": 0
  },
- "fails": [
-  "처음 온 기기 ② 단추 테두리 대비 3 — 2곳 · a.nh-tw 1.50 「꽃이 될 종목›오늘은 조건」 · button.nh-tw 1.50 「돈이 몰린 종목한 달›하이」",
-  "다시 온 기기 ② 단추 테두리 대비 3 — 2곳 · a.nh-tw 1.50 「꽃이 될 종목›오늘은 조건」 · button.nh-tw 1.50 「돈이 몰린 종목한 달›하이」",
-  "③ 가장 큰 그림 2.5초 안(느린 4G) — 4380ms"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034053699055348395,
@@ -25,10 +21,7 @@
    },
    "tabsTop": 776,
    "lowContrast": [],
-   "uiContrast": [
-    "a.nh-tw 1.50 「꽃이 될 종목›오늘은 조건」",
-    "button.nh-tw 1.50 「돈이 몰린 종목한 달›하이」"
-   ],
+   "uiContrast": [],
    "tiny": [],
    "small": [],
    "ruin": [],
@@ -217,10 +210,7 @@
    },
    "tabsTop": 776,
    "lowContrast": [],
-   "uiContrast": [
-    "a.nh-tw 1.50 「꽃이 될 종목›오늘은 조건」",
-    "button.nh-tw 1.50 「돈이 몰린 종목한 달›하이」"
-   ],
+   "uiContrast": [],
    "tiny": [],
    "small": [],
    "ruin": [],
@@ -707,7 +697,7 @@
    }
   },
   "speed": {
-   "lcp": 4380,
+   "lcp": 2356,
    "inp": 80,
    "cls": 0.006
   }
@@ -716,6 +706,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
