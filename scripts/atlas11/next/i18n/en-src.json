@@ -10410,6 +10410,8 @@
   "오늘 {n}곳": "{n} today",
   "? 아직 못 받았어요.": "? Not received yet.",
   "? 아직 못 셌어요.": "? Not counted yet.",
-  "꽃이 될 종목과 돈이 몰린 종목": "Bloom picks and money flowed in"
+  "꽃이 될 종목과 돈이 몰린 종목": "Bloom picks and money flowed in",
+  "최근 {n}거래일 가운데 고른 회사가 있던 날은 {n}일이에요.": "Of the last {n1} trading days, Sur picked companies on {n2}.",
+  "마지막으로 고른 날은 {d}이에요.": "The last day with picks was {d}."
  }
 }
