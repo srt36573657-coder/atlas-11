@@ -10241,6 +10241,8 @@
   "몸값 위 {n}% · 지난 기록 {n}번 중 꽃 {n}번": "Top {n1}% by market value · bloomed {n3} of {n2} times before",
   "몸값 위 {n}% · 지난 기록에 든 날이 없어요": "Top {n}% by market value · never met this rule before",
   "고를 때 안 본 기록에서 이렇게 고른 회사는 {n}번에 {n}번 꽃이 됐어요.": "In the record not seen when choosing, {n2} in {n1} of these picks bloomed.",
-  "고를 때 안 본 기록에서 이렇게 고른 회사는 {n}번에 {n}번 꽃이 됐어요. 아무거나 고른 회사는 {n}번이에요.": "In the record not seen when choosing, {n2} in {n1} of these picks bloomed. Random picks: {n3}."
+  "고를 때 안 본 기록에서 이렇게 고른 회사는 {n}번에 {n}번 꽃이 됐어요. 아무거나 고른 회사는 {n}번이에요.": "In the record not seen when choosing, {n2} in {n1} of these picks bloomed. Random picks: {n3}.",
+  "이런 회사를 골라요": "We pick companies like these",
+  "이 해마다 숫자에는 고를 때 본 기록이 섞여 있어요.": "These yearly numbers include the record seen when choosing."
  }
 }

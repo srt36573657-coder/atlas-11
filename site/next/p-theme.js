@@ -471,7 +471,7 @@ async function pPick() {
         '고를 때 본 기록은 좋아 보이게 섞여 있어서 결론에는 안 써요.',
         okW ? `결론은 달마다 안 본 채 고른 기록 ${num(WA.n)}번과 그 뒤 기록만 썼어요.` : null,
         span.test?.[0] ? (ok2(te) && te.n > 0 ? `${ymd(span.test[0])}부터는 이 조건을 고를 때 안 본 기록이에요. 100번에 ${r0(te.rate)}번, 아무거나 고르면 ${r0(te.base)}번이에요.` : `${ymd(span.test[0])}부터 이 조건을 고를 때 안 본 기록이 쌓여요.`) : null]),
-      yrs.length ? step(4, upY === yrs.length ? '해마다 나눠 봐도 모든 해에 더 많았어요' : '해마다 나눠 보면 더 많은 해도 있고 적은 해도 있었어요', yrs.map(([y, v]) => `${y}년에는 100번에 ${r0(v.rate)}번, 아무거나 고르면 ${r0(v.base)}번이에요.`)) : null,
+      yrs.length ? step(4, upY === yrs.length ? '해마다 나눠 봐도 모든 해에 더 많았어요' : '해마다 나눠 보면 더 많은 해도 있고 적은 해도 있었어요', [...yrs.map(([y, v]) => `${y}년에는 100번에 ${r0(v.rate)}번, 아무거나 고르면 ${r0(v.base)}번이에요.`), '이 해마다 숫자에는 고를 때 본 기록이 섞여 있어요.']) : null,
       step(yrs.length ? 5 : 4, '다른 방법으로 다시 셌어요', ['처음부터 따로 센 숫자와 같았어요.']),
       step(yrs.length ? 6 : 5, '거래가 멈춘 회사는 뺐어요', ['한 달 내내 값이 그대로인 회사예요.'])));
   // 결론 먼저 · 그다음 처음 → 이어서 → 그런데 → 그래서(사장님 2026-10-26 05:14 「기승전결로 화면 배치를 하라 결론이 항상 먼저 나오고 그다음 기승전결이다 혁신적인 방법이어야 한다 잡스라면」)
@@ -557,7 +557,8 @@ async function pPicks() {
       h('a', {class: 'th-pkgo', href: '#/t/i/' + enc(i.n), text: '업종 보기 ›'}));
   };
   // 이래서 골랐어요(지금 조건 셋 — theme-engine.js PICK_EVOLVE.say) · 고르는 날 몫(고를 때 안 본 기록)
-  const why = okP ? h('section', {class: 'th-pkwhy3', 'aria-label': '이래서 골랐어요'}, h('h2', {class: 'th-h2', text: '이래서 골랐어요'}),
+  const whyT = n ? '이래서 골랐어요' : '이런 회사를 골라요'; // 오늘 0곳이면 「골랐어요」가 아니라 고르는 모습
+  const why = okP ? h('section', {class: 'th-pkwhy3', 'aria-label': whyT}, h('h2', {class: 'th-h2', text: whyT}),
     h('ol', {class: 'th-steps'}, ...P.say.map((t, k) => h('li', {}, h('span', {class: 'th-sn', text: String(k + 1)}), h('span', {class: 'th-st'}, h('b', {text: t})))))) : null;
   const dayShare = okP ? dayLine(B.record?.all) : null;
   // 기록 한 줄 = 고를 때 안 본 기록만(honest — 연구의 달마다 걸어가며 고른 기록 + 그 뒤 지금 조건) · 없으면 옛 지난 기록
