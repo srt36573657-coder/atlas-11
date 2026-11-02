@@ -335,7 +335,7 @@ export function recordBox(B) {
     h('p', {class: 'nh-say', text: `같은 날 아무 회사나 골랐다면 100곳 중 ${b}곳이었어요.`}));
   if (okH) box.append(h('p', {class: 'nh-say', text: '고를 때 안 본 기록만 셌어요.'}));
   if (rc.P != null && rc.Q != null) box.append(h('div', {class: 'nh-warn' + (rc.P < rc.Q ? ' nh-worse' : '')},
-    h('p', {class: 'nh-wt', text: rc.P < rc.Q ? `${md(rc.cut)}부터는 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : `${md(rc.cut)}부터는 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.`}), sage('다윈', '내 생각과 다른 기록도 바로 적어요.')));
+    h('p', {class: 'nh-wt', text: rc.P < rc.Q ? `요즘 고를 때 안 본 날은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : rc.P > rc.Q ? `요즘 고를 때 안 본 날도 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.` : `요즘 고를 때 안 본 날은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 같았어요.`}), sage('다윈', '내 생각과 다른 기록도 바로 적어요.'))); // 날짜를 쓰지 않음 — 첫 화면에 보이는 날짜는 띠에 한 번(next_check [6] 2)
   box.append(sage('덩샤오핑', '말보다 결과를 봐요.'), recLinks());
   return box;
 }

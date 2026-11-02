@@ -10243,6 +10243,9 @@
   "고를 때 안 본 기록에서 이렇게 고른 회사는 {n}번에 {n}번 꽃이 됐어요.": "In the record not seen when choosing, {n2} in {n1} of these picks bloomed.",
   "고를 때 안 본 기록에서 이렇게 고른 회사는 {n}번에 {n}번 꽃이 됐어요. 아무거나 고른 회사는 {n}번이에요.": "In the record not seen when choosing, {n2} in {n1} of these picks bloomed. Random picks: {n3}.",
   "이런 회사를 골라요": "We pick companies like these",
-  "이 해마다 숫자에는 고를 때 본 기록이 섞여 있어요.": "These yearly numbers include the record seen when choosing."
+  "이 해마다 숫자에는 고를 때 본 기록이 섞여 있어요.": "These yearly numbers include the record seen when choosing.",
+  "요즘 고를 때 안 본 날은 {n}곳 중 {n}곳 대 {n}곳으로 졌어요.": "Lately, on days not seen when choosing, it lost: {n2} vs {n3} out of {n1}.",
+  "요즘 고를 때 안 본 날도 {n}곳 중 {n}곳 대 {n}곳으로 앞섰어요.": "Lately, on days not seen when choosing, it led too: {n2} vs {n3} out of {n1}.",
+  "요즘 고를 때 안 본 날은 {n}곳 중 {n}곳 대 {n}곳으로 같았어요.": "Lately, on days not seen when choosing, it tied: {n2} vs {n3} out of {n1}."
  }
 }
