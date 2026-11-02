@@ -445,6 +445,8 @@ export function memoryOf(records) {
       const g = get(x.id);
       if (x.preview?.state === 'running') g.pending = {kind: 'retest', sha: x.sha, branch: tryBranchOf(x.id), run: x.preview.run ?? null, round: r.id};
       if (x.preview?.state === 'pass' && x.sha) g.checked.push(x.sha);
+      // 뒤 회차의 다시 시험이 지나가면 앞 회차의 「내려감」을 거둠 — 05:30 회차가 도구 고장(끝 빈 줄을 깎은 조각)으로 대안 둘을 내렸고 손으로 기다림에 되살림(주문 0556) · 거두지 않으면 사장님 확인이 「내려간 대안」으로 버려짐
+      if (x.ok === true) delete g.dropped;
     }
     for (const x of r.finished ?? []) {
       if (!x?.id) continue;
