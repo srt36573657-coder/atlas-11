@@ -210,13 +210,41 @@ export function protectedHits(files) {
     return h ? [{file: f, why: h[1]}] : [];
   });
 }
-/** 잣대 신호를 건드린 줄(더하거나 뺀 줄에 tally( · /api/tally · /api/jinhwa) — 멍거 눈 「잣대를 비트나」를 기계로도 막음 */
+const YARD_RE = /\btally\s*\(|\/api\/tally|\/api\/jinhwa|['"]\.\/tally\.js['"]|atlas11:invite:owner/;
+/** 빌드한 영어 사전(i18n_build.mjs 가 만든 한 줄짜리 큰 JSON · site/next/i18n/*.json) — 줄 하나가 파일 전체라 */
+export const BUILT_DICT = /^site\/next\/i18n\/[^/]+\.json$/;
+/** JSON 잎 — 「길 → 글」(객체 · 배열을 풀어 끝 값만) */
+function jsonLeaves(x, p = '', out = new Map()) {
+  if (x && typeof x === 'object') { for (const [k, v] of Object.entries(x)) jsonLeaves(v, p + '\u0000' + k, out); return out; }
+  out.set(p, String(x));
+  return out;
+}
+/** 잣대 신호를 건드린 줄(더하거나 뺀 줄에 tally( · /api/tally · /api/jinhwa) — 멍거 눈 「잣대를 비트나」를 기계로도 막음
+ *  빌드한 영어 사전은 줄이 아니라 바뀐 낱말(열쇠 · 값)만 봄 — 한 줄짜리 사전에 한 글자만 더해도 그 안의 옛 번역 「… year-end tally (…」이 잣대 신호 줄 둘로 잡혀,
+ *  새 화면 글을 넣는 대안이 모두 막혔음(2026-11-02 서울 23:40 회차 글 · 주문 2249) · 사전을 못 읽으면 예전처럼 줄로 봄(닫힌 쪽) */
 export function yardstickLines(patchU0) {
   const out = [];
+  let dict = null;
+  const flush = () => {
+    if (!dict) return;
+    const {minus, plus} = dict; dict = null;
+    let a = null, b = null;
+    try { a = jsonLeaves(minus.length ? JSON.parse(minus.join('\n')) : {}); b = jsonLeaves(plus.length ? JSON.parse(plus.join('\n')) : {}); } catch { a = b = null; }
+    if (!a || !b) { for (const l of [...minus.map(x => '-' + x), ...plus.map(x => '+' + x)]) if (YARD_RE.test(l)) out.push(l.slice(0, 120)); return; }
+    for (const k of new Set([...a.keys(), ...b.keys()])) {
+      if (a.get(k) === b.get(k)) continue;
+      const key = k.split('\u0000').pop();
+      if (a.has(k) && YARD_RE.test(key + ' ' + a.get(k))) out.push(('-' + key + ': ' + a.get(k)).slice(0, 120));
+      if (b.has(k) && YARD_RE.test(key + ' ' + b.get(k))) out.push(('+' + key + ': ' + b.get(k)).slice(0, 120));
+    }
+  };
   for (const l of String(patchU0).split('\n')) {
+    if (l.startsWith('diff --git ')) { flush(); const m = / b\/(.+)$/.exec(l); if (m && BUILT_DICT.test(m[1])) dict = {minus: [], plus: []}; continue; }
     if (!/^[+-]/.test(l) || /^(\+\+\+|---)/.test(l)) continue;
-    if (/\btally\s*\(|\/api\/tally|\/api\/jinhwa|['"]\.\/tally\.js['"]|atlas11:invite:owner/.test(l)) out.push(l.slice(0, 120));
+    if (dict) { (l[0] === '-' ? dict.minus : dict.plus).push(l.slice(1)); continue; }
+    if (YARD_RE.test(l)) out.push(l.slice(0, 120));
   }
+  flush();
   return out;
 }
 

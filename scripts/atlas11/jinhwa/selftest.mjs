@@ -113,6 +113,15 @@ test('⑩ 작음 — 6개 막힘 · 5개 지남 · 못 고치는 파일 · 지�
     ok(!L.fileCheck([{path: p, status: 'M'}]).ok, '지킴 ' + p);
   ok(!L.fileCheck([{path: 'site/next/p-why.js', status: 'D'}]).ok, '지운 파일');
   ok(!L.fileCheck([{path: 'site/next/p-why.js', status: 'M'}], {patch: "diff --git a/site/next/p-why.js b/site/next/p-why.js\n+  tally('stop_rest');"}).ok, '잣대 신호');
+  // 빌드한 한 줄 사전 — 옛 번역 안의 「tally (」는 잣대 신호가 아님 · 바뀐 낱말에 든 것만(2026-11-02 23:40 회차 · 주문 2249)
+  const dictP = (a, b, more = '') => `diff --git a/site/next/i18n/en.json b/site/next/i18n/en.json\nindex 1..2 100644\n--- a/site/next/i18n/en.json\n+++ b/site/next/i18n/en.json\n@@ -1 +1 @@\n-${JSON.stringify(a)}\n\\ No newline at end of file\n+${JSON.stringify(b)}\n\\ No newline at end of file${more}`;
+  const old = {schema: 'x', templates: {'연말 집계': 'In the year-end tally (shows from {m1})', '가': 'A'}};
+  const en = [{path: 'site/next/i18n/en.json', status: 'M'}, {path: 'site/next/p-theme.js', status: 'M'}];
+  ok(L.fileCheck(en, {patch: dictP(old, {...old, templates: {...old.templates, '새 글': 'New text'}})}).ok, '사전 — 옛 번역의 tally ( 는 지남');
+  eq(L.yardstickLines(dictP(old, {...old, templates: {...old.templates, '새 글': 'New text'}})), [], '사전 — 잣대 줄 0');
+  ok(!L.fileCheck(en, {patch: dictP(old, {...old, templates: {...old.templates, '새 글': 'see /api/tally now'}})}).ok, '사전 — 새 낱말에 든 잣대 신호는 막힘');
+  ok(!L.fileCheck(en, {patch: dictP(old, old, "\ndiff --git a/site/next/p-theme.js b/site/next/p-theme.js\n+  tally('stop');")}).ok, '사전 뒤 코드 줄의 잣대 신호는 그대로 막힘');
+  ok(!L.fileCheck(en, {patch: 'diff --git a/site/next/i18n/en.json b/site/next/i18n/en.json\n@@ -5 +5 @@\n-  "x": "tally (a"\n+  "x": "tally (b"'}).ok, '사전을 못 읽으면 줄로 봄(닫힌 쪽)');
   ok(L.bigReasons([{path: 'site/next/p-why.js', status: 'M'}]).length > 0 && L.bigReasons([{path: 'site/next/new.js', status: 'A'}]).includes('새 기능(새 파일)') && L.bigReasons([{path: 'site/next/p-today.js', status: 'M'}], "localStorage.setItem('x', 1)").length > 0, '큰 것');
   eq(L.bigReasons([{path: 'site/next/p-today.js', status: 'M'}], 'const a = 1;'), [], '작은 것');
 });
