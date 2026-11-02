@@ -292,6 +292,84 @@ export async function liveData(siteDir, {base = SITE, budgetMs = 180e3, conc = 8
   } catch (e) { return {ok: false, why: short(e?.message ?? e, 100)}; }
 }
 
+// ───────────── 지금 사이트 자료 — 가지 jinhwa-data(사장님 2026-11-03 02:24(서울) 「응」 · 주문 0224) ─────────────
+//   까닭: 저장소 사이트 자료 사본(site/atlas/data)은 10월 14일 뒤 안 바뀜 · 진짜 사이트는 올릴 때마다 다시 셈 → 회차가 낡은 사본으로 살펴보고 검사해 대안이 못 지나감(주문 2249 · 서울 23:40 · 00:53 회차 글)
+//   Claude 예약 방은 aaa7377.com · 깃허브 묶음 받는 곳을 못 닿음 → 깃허브 일 atlas11-jinhwa-data.yml 이 받아 가지 jinhwa-data 에 두고 → 여기서 git 으로 받음
+export const DATA_WORKFLOW = 'atlas11-jinhwa-data.yml', DATA_BRANCH = 'jinhwa-data';
+/** 지금 사이트 자료를 새로 받게 하고(깃허브 일 · 2분쯤) 가지 jinhwa-data 를 dir 에 꺼냄 — {ok, dir, info, how: new|branch, run, why}
+ *  일을 못 부르거나 못 기다리면 가지에 있던 판으로(있으면 · how=branch · 까닭을 why 에) · 가지도 없으면 ok=false(회차는 저장소 자료로 이어 감) */
+export async function siteDataBranch(cwd, {dir, maxMin = 6, runner = gh, wait = sleep, say = () => {}} = {}) {
+  let id = null, why = '', fresh = false;
+  if (!git(cwd, ['cat-file', '-e', `origin/main:.github/workflows/${DATA_WORKFLOW}`]).ok) why = `자료 받기 일(${DATA_WORKFLOW})이 main 에 없음`;
+  else {
+    const t0 = Date.now() - 15e3;
+    const w = runner(cwd, ['workflow', 'run', DATA_WORKFLOW, '-R', REPO, '--ref', 'main']);
+    if (!w.ok) why = '자료 받기 일을 못 부름 ' + short(w.err, 100);
+    else {
+      say('지금 사이트 자료 — 깃허브 일로 받는 중');
+      for (let i = 0; i < 24 && !id; i++) {
+        await wait(5000);
+        const l = runner(cwd, ['run', 'list', '-R', REPO, '--workflow', DATA_WORKFLOW, '--limit', '5', '--json', 'databaseId,createdAt']);
+        try { id = JSON.parse(l.out || '[]').filter(x => Date.parse(x.createdAt) >= t0).sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))[0]?.databaseId ?? null; } catch { /* 다시 */ }
+      }
+      if (!id) why = '자료 받기 일 실행을 못 찾음';
+      else {
+        const wch = runner(cwd, ['run', 'watch', String(id), '-R', REPO, '--exit-status', '--interval', '10'], {timeout: maxMin * 60e3});
+        if (wch.ok) fresh = true; else why = `자료 받기 일이 끝나지 못함(${id})`;
+      }
+    }
+  }
+  const f = git(cwd, ['fetch', '-q', '--no-tags', '--depth', '1', 'origin', `+refs/heads/${DATA_BRANCH}:refs/remotes/origin/${DATA_BRANCH}`], {timeout: 300e3});
+  if (!f.ok) return {ok: false, run: id, why: (why ? why + ' · ' : '') + `가지 ${DATA_BRANCH} 를 못 받음 ${short(f.err, 80)}`};
+  fs.rmSync(dir, {recursive: true, force: true}); fs.mkdirSync(dir, {recursive: true});
+  const x = run('sh', ['-c', `git archive --format=tar refs/remotes/origin/${DATA_BRANCH} | tar -x -C "$1"`, 'sh', dir], {cwd, timeout: 300e3});
+  if (!x.ok) return {ok: false, run: id, why: `가지 ${DATA_BRANCH} 를 못 꺼냄 ${short(x.err, 80)}`};
+  const {readInfo} = await import('./live_data.mjs');
+  const ri = readInfo(dir);
+  if (!ri.ok) return {ok: false, run: id, why: `가지 ${DATA_BRANCH} 자료가 틀림(${ri.why})`};
+  return {ok: true, dir, info: ri.info, how: fresh ? 'new' : 'branch', run: id, why};
+}
+/** 일 폴더의 사이트 자료를 지금 사이트 판으로 — 올릴 때(package.mjs)와 모든 쪽 미리 검사(atlas11-next-full.yml)와 같은 셈:
+ *  site/atlas/data 를 통째로 바꿈 → 새 화면 작은 자료(site/next/data · 진화 칸 jinhwa* 빼고)를 지금 사이트 판으로 깔고 build_data 로 다시 셈(이 폴더 코드로)
+ *  → 셈이 못 만든 것(망으로 받는 fx-rate 등)은 지금 사이트 판으로 · 바뀐 파일은 git 이 안 보게(skip-worktree — 대안 커밋 commit -am 에 자료가 섞이지 않음)
+ *  {ok, changed, added, built, why} — 지운 · 바꾼 파일 목록은 unfreshen 이 되돌릴 때 씀 */
+export function freshen(dir, liveDir, {timeout = 15 * 60e3} = {}) {
+  const ad = path.join(dir, 'site', 'atlas', 'data'), nd = path.join(dir, 'site', 'next', 'data');
+  const lad = path.join(liveDir, 'atlas', 'data'), lnd = path.join(liveDir, 'next', 'data');
+  if (!fs.existsSync(path.join(lad, 'mkt.json'))) return {ok: false, changed: [], added: [], why: '지금 사이트 자료가 없음'};
+  const others = () => new Set(git(dir, ['ls-files', '--others', '-z', '--', 'site/atlas/data', 'site/next/data']).out.split('\0').filter(Boolean));
+  const before = others();
+  let b = {ok: false, out: '', err: ''};
+  try {
+    fs.rmSync(ad, {recursive: true, force: true}); fs.mkdirSync(ad, {recursive: true});
+    fs.cpSync(lad, ad, {recursive: true});
+    fs.mkdirSync(nd, {recursive: true});
+    const liveNext = fs.existsSync(lnd) ? fs.readdirSync(lnd).filter(f => !f.startsWith('jinhwa')) : [];
+    for (const f of liveNext) fs.cpSync(path.join(lnd, f), path.join(nd, f), {recursive: true});
+    b = run('node', ['scripts/atlas11/next/build_data.mjs', '--site', 'site'], {cwd: dir, timeout});
+    for (const f of liveNext) if (!fs.existsSync(path.join(nd, f))) fs.cpSync(path.join(lnd, f), path.join(nd, f), {recursive: true});
+  } catch (e) { return {ok: false, changed: [], added: [], why: '자료를 못 바꿈 ' + short(e?.message ?? e, 120)}; }
+  const changed = [...new Set(git(dir, ['ls-files', '-m', '-d', '-z', '--', 'site/atlas/data', 'site/next/data']).out.split('\0').filter(Boolean))].filter(p => !p.startsWith('site/next/data/jinhwa'));
+  if (changed.length) { const u = git(dir, ['update-index', '--skip-worktree', '-z', '--stdin'], {input: changed.join('\0') + '\0'}); if (!u.ok) return {ok: false, changed: [], added: [], why: 'git 이 자료를 안 보게 못 함 ' + short(u.err, 100)}; }
+  const added = [...others()].filter(p => !before.has(p) && !p.startsWith('site/next/data/jinhwa')); // 이번에 새로 생긴 것만(전부터 있던 것 · 진화 칸 그림은 빼고)
+  if (added.length) { // 새로 생긴 자료 파일(새 회사 등) — git add -A 에도 안 들어가게(이 파일 이름만 · 진화 칸 그림 길은 안 건드림)
+    const ex = path.join(git(dir, ['rev-parse', '--git-common-dir']).out.trim() || '.git', 'info', 'exclude');
+    try { const abs = path.isAbsolute(ex) ? ex : path.join(dir, ex); fs.mkdirSync(path.dirname(abs), {recursive: true}); fs.appendFileSync(abs, added.map(p => '/' + p).join('\n') + '\n'); } catch { /* 거들 뿐 */ }
+  }
+  return {ok: true, changed, added, built: b.ok, why: b.ok ? '' : '새 화면 작은 자료를 다 못 셈(지금 사이트 판으로 둠) ' + short(b.err || b.out, 120)};
+}
+/** freshen 되돌리기 — git 이 다시 보게 하고 바꾼 · 지운 파일은 저장소 판으로 · 새로 생긴 파일은 지움(회차 끝 · 회차를 연 폴더) */
+export function unfreshen(dir, {changed = [], added = []} = {}) {
+  for (let i = 0; i < changed.length; i += 400) {
+    const part = changed.slice(i, i + 400);
+    git(dir, ['update-index', '--no-skip-worktree', '-z', '--stdin'], {input: part.join('\0') + '\0'});
+    const r = git(dir, ['checkout', '-q', 'HEAD', '--', ...part]);
+    if (!r.ok) return {ok: false, why: '저장소 판으로 못 되돌림 ' + short(r.err, 100)};
+  }
+  for (const p of added) fs.rmSync(path.join(dir, p), {force: true});
+  return {ok: true, why: ''};
+}
+
 // ───────────── 시험 서버(invite_dev) · 바뀐 쪽 검사(check_changed) · 빠른 검사(quick) ─────────────
 export async function startDev(dir, {port = 8826, key} = {}) {
   const ownerKey = key || crypto.randomBytes(24).toString('base64url');
