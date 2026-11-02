@@ -8,3 +8,15 @@ node scripts/atlas11/trust_gate.mjs || { echo "밀어 넣기 막힘 — 틀림 �
 node scripts/atlas11/face_gate.mjs || { echo "밀어 넣기 막힘 — 지운 옛 얼굴 그림이 다시 들어 있습니다. 그 파일을 빼고 다시 밀어 넣으세요"; exit 1; }
 # 커밋 번호 문(2026-10-13 12:3x · 틀림 장부 19번) — 기록 탭 줄의 커밋 번호가 저장소 줄기에 있어야 함(다시 쌓기 뒤 바뀐 번호를 막음)
 node scripts/atlas11/changelog_commit_gate.mjs || { echo "밀어 넣기 막힘 — 기록 탭 커밋 번호가 저장소에 없습니다. 바뀐 번호로 고침 줄을 더하세요"; exit 1; }
+# 줄기 번호 문(2026-11-02 주문 2249 「응 철저하게 해」 · 틀림 장부 172) — main 으로 미는 판 그 자체에서 커밋 번호 문을 다시 봄
+#   위 커밋 번호 문은 미는 곳의 HEAD 를 봄 — 갈래에서 main 으로 파일만 옮겨 밀면 갈래 번호가 main 줄기에 없어도 지나갔고,
+#   그 main 을 받은 진화 예약 방의 밀어 넣기가 이 문에 모두 막혀 회차가 기록 없이 끝났음(10-30 ~ 11-02)
+#   지금 원격 main(바탕)보다 새로 막히는 줄만 막음 — 나빠지는 밀기만 막고, 옛 막힘을 고치는 밀기는 지나감
+z=0000000000000000000000000000000000000000
+while read -r lref lsha rref rsha; do
+  [ "$rref" = "refs/heads/main" ] || continue
+  [ "$lsha" = "$z" ] && continue
+  if [ "$rsha" != "$z" ] && git cat-file -e "$rsha^{commit}" 2>/dev/null; then base="--base $rsha"; else base=""; fi
+  node scripts/atlas11/changelog_commit_gate.mjs --ref "$lsha" $base || { echo "밀어 넣기 막힘 — main 으로 미는 판의 기록 탭 커밋 번호가 main 줄기에 없습니다. 갈래 번호 대신 main 번호로 적거나 고침 줄을 더하세요"; exit 1; }
+done
+exit 0
