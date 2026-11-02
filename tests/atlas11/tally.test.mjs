@@ -189,7 +189,10 @@ test('신호 자리 — 매매일지 끝냄(쉬어 가자면 stop_rest) · 한 �
   assert.equal((fin.match(/tally\(/g) ?? []).length, 1);
   const lb = why.slice(why.indexOf('async function laterBox'));
   assert.match(lb, /const ask = yes => \(\) => \{ keep\(r, yes\); tally\(yes \? 'promise_yes' : 'promise'\);/, '답한 순간 한 번');
-  assert.equal((why.match(/\btally\(/g) ?? []).length, 2, 'p-why 신호는 두 줄(끝냄 · 한 달 답)');
+  // 2026-10-22 매매일지 「한 달 전 약속」 칸(b8cdcc9fb)이 답한 순간 한 번 더 셈 — 시험이 따라가지 못해 그 뒤 늘 걸리던 것 고침(주문 0556) · 주석 속 「tally()」(빈 괄호)는 셈하지 않음
+  const ds = why.slice(why.indexOf('function dueSection'), why.indexOf('async function laterBox'));
+  assert.match(ds, /keep\(r, yes\); tally\(yes \? 'promise_yes' : 'promise'\); did\+\+;/, '한 달 전 약속 칸 — 답한 순간 한 번');
+  assert.equal((why.match(/\btally\((?!\))/g) ?? []).length, 3, 'p-why 신호는 세 줄(끝냄 · 한 달 전 약속 칸 답 · 한 달 답)');
   assert.match(app, /import\('\/next\/tally\.js'\)\.then\(m => m\.tally\('visit'\)\)/, '쪽 열 때 연 수');
   const fn = await import('../../functions/atlas11/tally.mjs');
   assert.deepEqual(fn.config.path, ['/api/tally', '/api/tally/sum']);

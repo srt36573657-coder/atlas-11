@@ -1,6 +1,6 @@
 /* 진화(#/jinhwa) — 사장님 2026-10-18(싱가포르) 16:39 「[꼴똘이 · 진화가 본질인 명령문]」 [9] · [10] · 일꾼 KD · 22:45 「진화 탭을 상단에 만들어 구글과 잡스라면 어떻게 만들까?」 · 22:46 「모든 사람들」 · 일꾼 KM(accept/KM.md)
    모든 사람이 봄(읽기만): 위 막대 「진화」 단추(app.js) → 이 쪽 · 자료 /next/data/jinhwa.json 한 곳
-   잡스 = 겉: 맨 위 「골똘이 진화」 + 본질 첫 줄 + 「진화 n번째」 → 카드 한 장씩(옆으로 밀거나 「‹」 「›」) — 들어간 것(새 날짜부터) → 확인을 기다리는 것
+   잡스 = 겉: 맨 위 「골똘이 진화」 + 본질 첫 줄 + 「진화 n번째」(보이는 카드의 차례) → 카드 한 장씩(옆으로 밀거나 「‹」 「›」) — 확인을 기다리는 것(새 진화 · 주문 0556) → 들어간 것(새 날짜부터)
      카드 = 상태 한 줄(「n월 n일 들어감」 · 「확인을 기다려요」 · 「되돌렸어요」) · 이름 · 전과 후 그림(세로 화면 그림이라 나란히 · 없으면 「그림 없음」) · 섬기는 본질 · 세 사람 한마디 · 어림 · 10거래일 채점 · 접은 「자세히」
    구글 = 맨 아래 접은 「숫자로 보기」(진화한 수 · 들어간 것 · 되돌린 것 · 확인을 기다리는 것 · 10거래일 어림 맞음 · 틀림 — 수만 · 몫 · 순위 없음) · 고친 고장 줄
    단추(확인 · 다시 눌러 거두기 · 되돌리기)와 잣대 셋 · 위험 · 검사 줄은 사장님 열쇠 기기(localStorage atlas11:invite:owner + 서버 GET /api/jinhwa/me 가 맞다고 함)에서만 — 다른 기기는 단추 0 · 서버 물음 0
@@ -9,7 +9,7 @@
    「○시」 = 진화 회차(업데이트 30분 전)가 회차마다 하나만 넣는 차례(되돌리기 먼저 · 그다음 확인 · 이른 때부터 — scripts/atlas11/jinhwa/lib.mjs planRound)를 흉내 낸 셈 — slotPlan
    회차가 쓴 글(이름 · 섬기는 본질 · 세 사람 · 어림 · 고장 · 채점 까닭)은 한국어 그대로(lang="ko") · 글은 textContent 로만(보안 규칙) · 노드에서도 불러 시험(맨 위에서 NX 를 안 읽음) · 이름은 brand.js 한 곳 */
 import {NAME, BRAND, josa} from './brand.js';
-import {ON as EN} from './i18n.js'; // 영어 화면이면 본질 줄 위에 영어 한 줄(총정리 D24 · 노드에서 부르면 한국어 = false)
+import {ON as EN, t as tr} from './i18n.js'; // 영어 화면이면 본질 줄 위에 영어 한 줄(총정리 D24 · 노드에서 부르면 한국어 = false) · tr = 넘길 때 바꾸는 머리 글(영어 화면은 사전 틀로 · 한국어는 그대로)
 const OWNER = 'atlas11:invite:owner', DAYS = 14, MIN_SAMPLE = 30; // MIN_SAMPLE = config/atlas11/jinhwa-metrics.v1.json judge.minSample
 const nx = () => globalThis.NX;
 const h = (...a) => nx().h(...a);
@@ -155,13 +155,16 @@ export function scoreLine(a) {
   return {cls: sc.ok === true ? ' ok' : sc.ok === false ? ' no' : '', head: `${days}거래일 뒤 · ${sc.ok === true ? '맞았어요' : sc.ok === false ? '틀렸어요' : '판단 못 했어요'}`, why};
 }
 
-/** 카드 차례(모든 사람 같은 셈) — 들어간 것(새 날짜부터 · 되돌린 것도 그 자리) → 확인을 기다리는 것(자료 차례) · 번호 없는 줄은 버림 */
+/** 카드 차례(모든 사람 같은 셈) — 확인을 기다리는 것(새 진화 · 자료 차례) → 들어간 것(새 날짜부터 · 되돌린 것도 그 자리) · 번호 없는 줄은 버림
+ *  사장님 2026-11-03 00:56(+04) 「뭘 진화 시켰단게 기록이 그대로야 내가 보낸 이 사진 이 자리에 진화 내용을 기재 해야지!」(주문 0556) — 쪽을 열면 맨 앞 자리에 새 진화가 옴
+ *  no = 머리 「진화 n번째」 — 들어간 것은 들어간 차례(오래된 것 1) · 기다리는 것은 다음 차례(들어간 수 + 1) */
 export function cardsOf(J) {
   if (!J || !Array.isArray(J.waiting) || !Array.isArray(J.applied)) return null;
   const tOf = x => { const t = Date.parse(x?.at); return Number.isFinite(t) ? t : 0; };
-  const A = J.applied.filter(a => typeof a?.id === 'string').sort((a, b) => tOf(b) - tOf(a)).map(x => ({kind: revertedAt(x) != null ? 'reverted' : 'applied', x}));
-  const W = J.waiting.filter(w => typeof w?.id === 'string').map(x => ({kind: 'waiting', x}));
-  return [...A, ...W];
+  const As = J.applied.filter(a => typeof a?.id === 'string'), up = [...As].sort((a, b) => tOf(a) - tOf(b));
+  const A = [...As].sort((a, b) => tOf(b) - tOf(a)).map(x => ({kind: revertedAt(x) != null ? 'reverted' : 'applied', x, no: up.indexOf(x) + 1}));
+  const W = J.waiting.filter(w => typeof w?.id === 'string').map(x => ({kind: 'waiting', x, no: As.length + 1}));
+  return [...W, ...A];
 }
 /** 숫자로 보기(접은 칸) — 들어간 수 · 확인을 기다리는 수 · 되돌린 수 · 10거래일 어림(맞음 · 틀림 · 판단 못 함 · 아직) — 몫(%)은 셈하지 않음 */
 export function numbersOf(J) {
@@ -227,13 +230,13 @@ function oneCard({kind, x}, i, n, C) {
     ...own);
 }
 
-/** 카드 넘기기 — 손가락으로 밀거나 「‹ 앞」 「다음 ›」 · 지금 몇 번째인지 한 줄 */
-function carousel(cards, C, start = 0) {
+/** 카드 넘기기 — 손가락으로 밀거나 「‹ 앞」 「다음 ›」 · 지금 몇 번째인지 한 줄 · onAt(i) = 보이는 카드가 바뀔 때(머리 「진화 n번째」를 그 카드로) */
+function carousel(cards, C, start = 0, onAt = null) {
   const n = cards.length, rail = h('div', {class: 'jh-rail', tabindex: '0', 'aria-label': '진화 카드'}, ...cards.map((c, i) => oneCard(c, i, n, C)));
   const cnt = h('span', {class: 'jh-cnt num', 'aria-live': 'polite'});
   const prev = h('button', {class: 'jh-nav', type: 'button', 'aria-label': '앞 카드', text: '‹'}), next = h('button', {class: 'jh-nav', type: 'button', 'aria-label': '다음 카드', text: '›'});
   const at = () => { const w = rail.clientWidth || 1; return Math.max(0, Math.min(n - 1, Math.round(rail.scrollLeft / w))); };
-  const paint = (i = at()) => { cnt.textContent = `${i + 1} / ${n}`; prev.disabled = i <= 0; next.disabled = i >= n - 1; };
+  const paint = (i = at()) => { cnt.textContent = `${i + 1} / ${n}`; prev.disabled = i <= 0; next.disabled = i >= n - 1; onAt?.(i); };
   const go = i => { const smooth = !(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches); rail.scrollTo({left: i * rail.clientWidth, behavior: smooth ? 'smooth' : 'auto'}); paint(i); };
   prev.addEventListener('click', () => go(at() - 1)); next.addEventListener('click', () => go(at() + 1));
   let raf = 0; rail.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => paint()); }, {passive: true});
@@ -284,15 +287,17 @@ export async function render(arg) {
   root.append(h('h1', {class: 'jh-h1', text: `${NAME} 진화`}),
     ...(EN ? [h('p', {class: 'jh-ess-en', text: '싹에서 꽃이 되는 종목을 찾아 줘요.'})] : []), // 영어 화면 — 본질 1을 사전에 이미 있는 영어 한 줄로(아래 한국어 본질 줄은 글자 그대로 · 총정리 D24)
     h('p', {class: 'jh-ess', lang: 'ko', text: ess}));
-  const head = h('div', {class: 'jh-head'}, h('p', {class: 'jh-n', text: `진화 ${n ?? '?'}번째`}));
+  const i0 = cards?.length ? Math.max(0, cards.findIndex(c => c.x.id === arg)) : 0;
+  const noText = no => `진화 ${no ?? '?'}번째`; // 머리 = 보이는 카드의 차례(카드가 없으면 들어간 수 n) — 영어 화면은 사전 틀 「진화 {n}번째」
+  const jn = h('p', {class: 'jh-n', text: noText(cards?.length ? cards[i0].no : n)});
+  const head = h('div', {class: 'jh-head'}, jn);
   root.append(head);
   /* 결 — 이 쪽이 무엇을 세는지 한 줄 고리(총정리 2026-10-22 D21) · 그 밖 바뀐 것은 업데이트 기록 · 사장님 열쇠 기기는 확인 · 되돌리기 단추가 첫 화면에 들어야 해서 안 그림(check_jinhwa 360 × 640) */
   if (!owner) root.append(h('a', {class: 'jh-what', href: '#/up', text: `${josa(NAME, '를')} 만든 사람이 확인한 나아짐만 세요 · 다른 바뀐 것은 업데이트 기록 ›`}));
   if (!J) root.append(h('p', {class: 'note jh-q', text: '? 진화 자료를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
   else if (!cards.length) root.append(h('p', {class: 'note jh-empty', text: '아직 진화한 것이 없어요. 위 한 줄을 잣대로 천천히 고쳐 가요.'}));
   else {
-    const i0 = Math.max(0, cards.findIndex(c => c.x.id === arg));
-    const {rail, nav} = carousel(cards, C, i0);
+    const {rail, nav} = carousel(cards, C, i0, i => { const s = tr(noText(cards[i]?.no)); if (jn.textContent !== s) jn.textContent = s; });
     head.append(nav); root.append(rail);
     if (owner && !C.stOk) root.append(h('p', {class: 'note jh-q', text: '? 확인 상태를 받지 못했어요. 잠시 뒤 다시 열어 주세요.'}));
   }
