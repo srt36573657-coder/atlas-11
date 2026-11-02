@@ -376,6 +376,28 @@ export function roundNotesOf(dir, id) {
   let names; try { names = fs.readdirSync(dir); } catch { return []; }
   return names.filter(n => n.startsWith(id + '-') && /^[0-9A-Za-z가-힣._-]+\.md$/.test(n) && fs.statSync(path.join(dir, n)).isFile()).sort();
 }
+/** 막힘 글(<회차>-blocked.md) — 기록(record)을 못 하고 끝난 회차를 회차 도구(end)가 저절로 씀(사장님 2026-11-02 17:49(+04) 「응 철저하게 해」 · 주문 2249)
+ *  st.steps(명령마다 때 · 끝 코드 · 까닭)에서 마지막으로 막힌 단계를 머리에 · 지나간 단계 모두 · 못 한 것 · 자기 시험 실패 줄 · 회차가 쓴 글 이름 */
+export function blockedNote(st, {why = '', now = '', notes = []} = {}) {
+  const steps = Array.isArray(st?.steps) ? st.steps : [];
+  const failed = [...steps].reverse().find(s => s && s.code);
+  const kt = s => String(s ?? '').replace(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}).*$/, '$1-$2-$3 $4:$5');
+  const out = [`# 진화 회차 ${st?.id ?? '?'} — 기록 못 하고 끝남`, '',
+    '이 글은 회차 도구(round.mjs end)가 저절로 썼어요. 이 회차는 기록 단계(record)까지 가지 못했거나 기록에 실패했어요.', '',
+    `- 시작: ${kt(st?.start)}(서울) · 끝: ${kt(now)}(서울)`];
+  if (st?.essence?.sha) out.push(`- 본질 파일: ${st.essence.file} · ${String(st.essence.sha).slice(0, 8)}`);
+  if (st?.plan) out.push(`- 할 일: ${st.plan.next ?? '?'} · 넣기 · 되돌리기: ${st.plan.change ? `${st.plan.change.kind} ${st.plan.change.id}` : '없음'}`);
+  if (failed) out.push(`- 막힌 단계: ${failed.cmd}${failed.args ? ' ' + failed.args : ''} · 끝 코드 ${failed.code}`, `- 까닭: ${failed.why || '(까닭 글 없음)'}`);
+  else out.push('- 막힌 단계: 없음 — 기록 단계를 부르지 않고 끝냄');
+  if (why) out.push(`- 회차가 남긴 말: ${why}`);
+  if (st?.notDone?.length) out.push(`- 못 한 것: ${st.notDone.join(' · ')}`);
+  if (st?.selftest) { out.push(`- 자기 시험: 통과 ${st.selftest.pass ?? '?'} · 실패 ${st.selftest.fail ?? '?'}`); for (const f of (st.selftest.fails ?? []).slice(0, 8)) out.push(`  - ${f.name} — ${f.why}`); }
+  out.push('', '## 지나간 단계');
+  if (!steps.length) out.push('- (적힌 단계 없음)');
+  steps.forEach((s, i) => out.push(`${i + 1}. ${kt(s.at).slice(11)} ${s.cmd}${s.args ? ' ' + s.args : ''} — ${s.code ? `막힘(${s.code})${s.why ? ' · ' + s.why : ''}` : '했음'}`));
+  out.push('', '## 회차가 쓴 글', notes.length ? notes.map(n => `- ${n}`).join('\n') : '- 없음(<회차>-did.md 를 쓰지 않음)');
+  return out.join('\n') + '\n';
+}
 /** 기록에서 번호마다 — {id, changeHash, files, rule, commit, checked[], pending, merge, appliedAt, reverted, revertCommit, dropped} */
 export function memoryOf(records) {
   const m = new Map();

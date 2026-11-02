@@ -224,6 +224,19 @@ export function pushMain(cwd, sha) {
   const r = git(cwd, ['push', '-q', 'origin', `${sha}:refs/heads/main`], {timeout: 300e3});
   return {ok: r.ok, rejected: /rejected|non-fast-forward|fetch first|stale info/i.test(r.err), why: r.ok ? '' : short(r.err, 200)};
 }
+/** main 에 회차 도구 제 파일만(진화 칸 자료 · 그림 · 기록 · 회차 글) — 바뀐 파일이 모두 allow 안일 때만 밀어 넣기 문(pre-push)을 거치지 않고 밂(가지 · 잠금 밀기와 같음)
+ *  사장님 2026-11-02 17:49(+04) 「응 철저하게 해」(주문 2249): 밀어 넣기 문의 커밋 번호 문이 main 판에서 깨져 있던 동안(10-30 ~ 11-02 · 틀림 장부 172)
+ *  진화 기록 밀기가 모두 막혀 회차가 소리 없이 끝남 — 기록은 회차 도구가 스스로 맞대 본 제 파일이라 다른 일의 문에 묶이지 않게 함.
+ *  allow 밖 파일이 하나라도 있으면 밀지 않음(닫힌 쪽) · 넣기 · 되돌리기 · 고장 고침(코드)은 그대로 pushMain(문을 거침) */
+export function pushMainOwn(cwd, sha, base, allow) {
+  const d = git(cwd, ['diff', '--name-only', '--no-renames', base, sha]);
+  if (!d.ok) return {ok: false, rejected: false, why: '바뀐 파일을 못 셈 ' + short(d.err, 120)};
+  const inAllow = f => allow.some(p => f === p || f.startsWith(p.replace(/\/$/, '') + '/'));
+  const out = d.out.split('\n').filter(Boolean).filter(f => !inAllow(f));
+  if (out.length) return {ok: false, rejected: false, why: '회차 도구 제 파일 밖이 바뀜 — ' + out.slice(0, 3).join(' · ')};
+  const r = git(cwd, ['push', '-q', '--no-verify', 'origin', `${sha}:refs/heads/main`], {timeout: 300e3});
+  return {ok: r.ok, rejected: /rejected|non-fast-forward|fetch first|stale info/i.test(r.err), why: r.ok ? '' : short(r.err, 200)};
+}
 /** 회차 가지 지우기 — git 길이 지우기를 안 받으면(Claude 예약 방 · 2026-10-18 첫 회차) 깃허브 REST 로 한 번 더 · 둘 다 안 되면 ok false(가지만 남음 · 아무것도 넣지 않음) */
 export function deleteRemoteBranch(cwd, b, {runner = gh} = {}) {
   const r = git(cwd, ['push', '-q', '--no-verify', 'origin', '--delete', b]);
