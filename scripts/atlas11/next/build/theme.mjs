@@ -21,6 +21,7 @@ export function homeOf(theme) {
 /* 싹 달력 지킨 기록(사장님 2026-10-22 11:55 「제시만 해가지고 기록이 없으면 그건 하수야」) — 그날 장 마감 때 처음 셈한 세 곳을 날마다 한 줄 남김 · 한 번 적은 날은 바꾸지 않음
    올리기 작업(atlas11-site.yml · package.mjs keepCal)만 씀 → 그 작업이 reports/ 를 저장소에 넣음 · 장중 값(provisional)인 마지막 날은 아직 안 적음 · 검사 · 시험 · 손 셈은 읽기만 */
 export const KEPT_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../reports/atlas11/theme-cal/kept.json');
+const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..'); // 저장소 뿌리(달마다 고른 조건 기본 자리)
 export const KEEP_FROM = '2026-10-22';
 const KEPT_SCHEMA = 'dori-theme-cal-kept-1';
 async function readKept(f) { try { const k = JSON.parse(await fs.readFile(f, 'utf8')); return k?.schema === KEPT_SCHEMA && k.days && typeof k.days === 'object' ? k.days : {}; } catch { return {}; } }
@@ -34,14 +35,14 @@ export function keepNew(cal, kept, {provisional = false, made} = {}) {
   }
   return add;
 }
-export async function build({siteDir = 'site', made = new Date().toISOString(), keepCal = false, keptFile = KEPT_FILE} = {}) {
+export async function build({siteDir = 'site', made = new Date().toISOString(), keepCal = false, keptFile = KEPT_FILE, monthsFile = null} = {}) { // monthsFile = 달마다 고른 조건(기본 <site>/next/data/bloom-months.json · 없으면 저장소 site/next/data — 2026-11-02 주문 1313)
   const dd = path.join(siteDir, 'atlas', 'data');
   const [days, mkt, core, cond] = await Promise.all(['days.json', 'mkt.json', 'core.json', 'cond.json'].map(f => J(path.join(dd, f))));
   const dates = days?.dates;
   if (!Array.isArray(dates) || dates.some((d, i) => typeof d !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(d) || (i && d <= dates[i - 1]))) throw Error('theme: days.json 날짜 줄이 비었거나 차례가 틀림');
   const N = dates.length, companies = mkt?.companies;
   if (!companies || typeof companies !== 'object') throw Error('theme: mkt.json 회사 칸 없음');
-  const closes = new Map();
+  const closes = new Map(), fins = new Map(); // fins = 회사 실적(co 파일 fin — 꽃 될 회사 낱 조건 fin 갈래)
   const files = (await fs.readdir(path.join(dd, 'co'))).filter(f => /^[0-9][0-9A-Z]{5}\.json$/.test(f)).sort();
   await Promise.all(files.map(async f => {
     const code = f.slice(0, 6); if (!companies[code]) return;
@@ -50,13 +51,16 @@ export async function build({siteDir = 'site', made = new Date().toISOString(), 
     const a = new Float64Array(N); // 0 = 없음
     for (let j = 0; j < cl.length; j++) { const t = j + k0, v = cl[j]; if (t >= 0 && t < N && typeof v === 'number' && v > 0) a[t] = v; }
     closes.set(code, a);
+    if (c?.fin && typeof c.fin === 'object') fins.set(code, c.fin);
   }));
   if (closes.size < 100) throw Error('theme: 종가 파일이 너무 적음 ' + closes.size);
   const co = cond?.co, rk = new Map(), caps = new Map();
   if (co && Array.isArray(co.c) && Array.isArray(co.rk)) co.c.forEach((c, k) => { if (Number.isInteger(co.rk[k])) rk.set(c, co.rk[k]); });
   if (co && Array.isArray(co.c) && Array.isArray(co.cap)) co.c.forEach((c, k) => { const v = co.cap[k]; if (typeof v === 'number' && v > 0) caps.set(c, v); }); // 몸값(억 원) — 꽃 될 회사 「그날 몸값 위 20%」(2026-11-02 주문 0815 · 연구 셈 sprout365.py CAP 과 같은 값)
   const kept = await readKept(keptFile);
-  const {theme, more, co: coz, path: yr, cal, bloom} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, caps, provisional: core?.provisional === true || cond?.provisional === true, made, kept});
+  const mfile = monthsFile ?? path.join(siteDir, 'next', 'data', 'bloom-months.json'), mfallback = path.join(ROOT_DIR, 'site', 'next', 'data', 'bloom-months.json');
+  let months = null; for (const f of [mfile, mfallback]) { try { const j = await J(f); if (Array.isArray(j?.months)) { months = j; break; } } catch { /* 다음 */ } } // 없으면 엔진이 다시 세운 하나(legacy)로
+  const {theme, more, co: coz, path: yr, cal, bloom} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, caps, fins, months, provisional: core?.provisional === true || cond?.provisional === true, made, kept});
   cal.keepFrom = KEEP_FROM;
   if (keepCal) { // 올리기 작업만 — 새 날을 더하고 옛 날은 그대로
     const add = keepNew(cal, kept, {provisional: theme.provisional, made});

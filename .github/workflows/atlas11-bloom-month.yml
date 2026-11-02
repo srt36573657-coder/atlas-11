@@ -1,0 +1,148 @@
+name: atlas11-bloom-month
+run-name: 꽃 될 회사 달마다 다시 고르기 · 셈 셋 맞대기 · ${{ github.event_name }}
+# 사장님 2026-11-02 08:13(+04) 「응 그리고 스스로 하건 점수화해소 교차 검증 하게 해」(주문 1313 · docs/design/self-evolve-2026-11-02/order-1313.txt)
+#   앞 물음 「다음 큰 진화로, 이 고르는 법을 달마다 새 기록으로 스스로 다시 시험하게 할까요?」의 답 · 셈 약속 docs/design/self-evolve-2026-11-02/spec.md v2
+# 하는 일 — 지금 사이트 자료(큰 검사와 같은 sha256 받기)로:
+#   ① 연구 셈 scripts/atlas11/research/bloom_month.py — 자료에 첫 거래일이 있는 모든 달의 결정(v1 고르기) · 2026-11 부터는 저장된 결정 그대로(봉인) · 달 기록
+#   ② 따로 센 일꾼 docs/design/self-evolve-2026-11-02/recount-month.py — 약속과 자료만 보고 짠 셈(① 코드를 보지 않음)
+#   ③ 사이트 엔진(site/next/theme-engine.js + bloom-atoms.js)을 같은 자료 · ① 의 결정으로 돌림 — scripts/atlas11/research/bloom_cross.mjs 가 셋을 맞댐
+#   셋이 달마다 결정 · 달 기록 · 모은 기록 · 오늘 고른 회사까지 모두 같을 때만 site/next/data/bloom-months.json 을 새로 씀(다르면 쓰지 않음 · 이 실행을 실패로)
+#   결정이나 자료 날이 바뀌었을 때만 main 에 넣음 — 다음 매시 올리기(서울 :59)가 사이트에 실음
+# 하지 않는 일: 사이트 올리기(매시 올리기가 함) · 예약 작업 파일(atlas11-daily · atlas11-evening) 고치기(규칙 7) · 비밀 값 쓰기(GITHUB_TOKEN 만)
+# 부르는 곳: 예약 작업 「꽃 될 회사 달마다 다시 고르기」(서울 평일 17:31 · 그날 자료가 사이트에 오른 뒤) — 깃허브 예약(cron)은 이 저장소에서 봇 · Claude 가 넣으면 안 올 수 있어 쓰지 않음(atlas11-daily.yml 머리 주석)
+on:
+  workflow_dispatch:
+    inputs:
+      data:
+        description: 'live = 지금 사이트 자료 · stored = 저장소 site/atlas/data'
+        type: choice
+        options: [live, stored]
+        default: live
+      commit:
+        description: 'main 에 결과 넣기(끄면 셈 · 맞대기만 하고 산출물로만 남김)'
+        type: boolean
+        default: true
+permissions:
+  contents: write
+concurrency:
+  group: atlas11-bloom-month
+  cancel-in-progress: false
+jobs:
+  month:
+    name: 달마다 다시 고르기 · 셈 셋 맞대기
+    runs-on: ubuntu-24.04 # 실행기 고정(atlas11-next-full · probe 와 같음 — ubuntu-latest 가 옮겨 가는 중 · 2026-10-29)
+    timeout-minutes: 30
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 파이썬 준비(numpy)
+        run: python3 -m pip install --user --break-system-packages -q numpy || python3 -m pip install --user -q numpy
+      - name: 지금 사이트 자료 받기(sha256 맞는 한 판)
+        id: d
+        if: ${{ inputs.data != 'stored' }}
+        run: |
+          # atlas11-next-full.yml 「지금 사이트 자료 받기」와 같은 셈 — dist-manifest.json 의 sha256 과 맞는 파일만 · 받는 사이 올림이 끼면 처음부터(세 번까지)
+          node --input-type=module - <<'EOF'
+          import fs from 'node:fs'; import path from 'node:path'; import {createHash} from 'node:crypto';
+          const B = 'https://aaa7377.com/', OUT = 'live-data', T0 = Date.now(), BUDGET = 240e3, C = 8;
+          const sha = b => createHash('sha256').update(b).digest('hex'), wait = ms => new Promise(r => setTimeout(r, ms));
+          const put = kv => fs.appendFileSync(process.env.GITHUB_OUTPUT, Object.entries(kv).map(([k, v]) => `${k}=${String(v).replace(/[\r\n]+/g, ' ')}`).join('\n') + '\n');
+          async function get(f, want = null, tries = 6) {
+            let last = '', bad = 0;
+            for (let i = 0; i < tries; i++) {
+              if (Date.now() - T0 > BUDGET) throw Error('시간 넘음 ' + f);
+              try {
+                const r = await fetch(B + f, {signal: AbortSignal.timeout(20000)});
+                if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); if (!want || sha(b) === want) return b; last = 'sha256 다름'; if (++bad >= 2) break; }
+                else { last = 'HTTP ' + r.status; if (r.status === 404) break; if (r.status === 429 || r.status === 503) await wait(3000); }
+              } catch (e) { last = String(e?.cause?.code || e?.name || e?.message || e).slice(0, 40); }
+              await wait(400 * (i + 1));
+            }
+            throw Error(f + ' ' + last);
+          }
+          try {
+            let ok = false, note = '';
+            for (let round = 1; round <= 3 && !ok; round++) {
+              const man = JSON.parse(await get('dist-manifest.json', null, 8)), files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/')).sort();
+              if (!files.includes('atlas/data/mkt.json') || !files.includes('atlas/data/days.json')) throw Error('dist-manifest.json 에 atlas/data 가 없음');
+              fs.rmSync(OUT, {recursive: true, force: true});
+              let i = 0; const bad = [];
+              await Promise.all(Array.from({length: C}, async () => { while (i < files.length && bad.length < 12) { const f = files[i++]; try { const b = await get(f, man.hashes[f]); fs.mkdirSync(path.dirname(path.join(OUT, f)), {recursive: true}); fs.writeFileSync(path.join(OUT, f), b); } catch (e) { bad.push(String(e.message).slice(0, 80)); } } }));
+              if (!bad.length) { ok = true; const days = JSON.parse(fs.readFileSync(path.join(OUT, 'atlas/data/days.json'), 'utf8')); const asOf = (days.dates ?? days).at(-1); put({data: 'live', asof: asOf, files: files.length}); console.log(`지금 사이트 자료 ${files.length}개 · sha256 모두 맞음 · 마지막 날 ${asOf}`); }
+              else { note = `${round}번째 못 받은 것 ${bad.length}(${bad.slice(0, 2).join(' · ')})`; console.log(note); }
+            }
+            if (!ok) throw Error(note);
+          } catch (e) { put({data: 'none', why: String(e?.message ?? e).slice(0, 160)}); console.log('지금 사이트 자료를 못 받음 — ' + e.message); }
+          EOF
+      - name: 셈할 자료 정하기
+        id: src
+        run: |
+          if [ "${{ inputs.data }}" = "stored" ]; then echo "site=site" >> "$GITHUB_OUTPUT"; echo "data=stored" >> "$GITHUB_OUTPUT";
+          elif [ "${{ steps.d.outputs.data }}" = "live" ]; then echo "site=live-data" >> "$GITHUB_OUTPUT"; echo "data=live" >> "$GITHUB_OUTPUT";
+          else echo "지금 사이트 자료를 못 받아 셈하지 않음(${{ steps.d.outputs.why }}) — 결정은 그대로"; exit 1; fi
+      - name: ① 연구 셈 · ② 따로 센 일꾼
+        run: |
+          S=""; [ -f site/next/data/bloom-months.json ] && S="--stored site/next/data/bloom-months.json"
+          python3 scripts/atlas11/research/bloom_month.py "${{ steps.src.outputs.site }}/atlas/data" /tmp/r.json $S > /tmp/r.log 2>&1 || { tail -20 /tmp/r.log; exit 1; }
+          tail -3 /tmp/r.log
+          python3 docs/design/self-evolve-2026-11-02/recount-month.py "${{ steps.src.outputs.site }}/atlas/data" /tmp/q.json $S > /tmp/q.log 2>&1 || { tail -20 /tmp/q.log; exit 1; }
+          tail -3 /tmp/q.log
+      - name: ③ 사이트 엔진과 셈 셋 맞대기
+        id: x
+        run: |
+          set +e
+          node scripts/atlas11/research/bloom_cross.mjs --research /tmp/r.json --recount /tmp/q.json --site "${{ steps.src.outputs.site }}" \
+            --stored site/next/data/bloom-months.json --out site/next/data/bloom-months.json --report /tmp/check.json --data "${{ steps.src.outputs.data }}"
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          mkdir -p reports/atlas11/bloom-month
+          node -e 'const fs=require("fs");const c=JSON.parse(fs.readFileSync("/tmp/check.json","utf8")),r=JSON.parse(fs.readFileSync("/tmp/r.json","utf8"));
+            const last=r.months.at(-1)||{};const out={...c,lastMonth:{month:last.month,id:last.id,fresh:last.fresh,record:last.record},months:r.months.map(m=>({month:m.month,id:m.id,record:m.record}))};
+            fs.writeFileSync("reports/atlas11/bloom-month/latest.json",JSON.stringify(out,null,1)+"\n");
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`### 꽃 될 회사 달마다 다시 고르기\n- 자료 ${c.data} · ${c.asOf}\n- 셈 셋 ${c.agree?"같음":"다름 "+c.diffs.length+"곳"}\n- 이번 달 ${last.month} ${last.id||"-"}\n- 오늘 고른 회사 ${c.today?.n??"?"}곳\n`);'
+          exit 0
+      - name: main 에 넣기(결정이나 자료 날이 바뀌었을 때만)
+        if: ${{ inputs.commit }}
+        run: |
+          same=$(node -e 'const fs=require("fs"),cp=require("child_process");
+            const head=f=>{try{return JSON.parse(cp.execFileSync("git",["show","HEAD:"+f],{encoding:"utf8",maxBuffer:1<<28}))}catch{return null}};
+            const now=f=>{try{return JSON.parse(fs.readFileSync(f,"utf8"))}catch{return null}};
+            const key=o=>o?JSON.stringify({m:(o.months||[]).map(x=>[x.month,x.id,!!x.sealed]),a:o.asOf||o.check?.asOf,g:o.agree??o.check?.agree}):null;
+            const a=key(head("site/next/data/bloom-months.json")),b=key(now("site/next/data/bloom-months.json"));
+            const c=key(head("reports/atlas11/bloom-month/latest.json")),d=key(now("reports/atlas11/bloom-month/latest.json"));
+            console.log(a===b&&c===d?"yes":"no")')
+          if [ "$same" = "yes" ]; then echo "결정 · 자료 날이 앞 판과 같음 — 넣지 않음"; exit 0; fi
+          git config user.name atlas11-bot
+          git config user.email atlas11-bot@users.noreply.github.com
+          git add reports/atlas11/bloom-month/latest.json
+          [ "${{ steps.x.outputs.code }}" = "0" ] && git add site/next/data/bloom-months.json
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "bloom month ${{ steps.d.outputs.asof || 'stored' }} · 셈 셋 $([ "${{ steps.x.outputs.code }}" = "0" ] && echo 같음 || echo 다름) [skip ci]"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --autostash -q && git push; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            echo "밀기 다시 $i"; sleep $((i * 7))
+          done
+          exit 1
+      - name: 셈 셋이 다르면 이 실행을 실패로(결정은 그대로)
+        if: ${{ steps.x.outputs.code != '0' }}
+        run: |
+          echo "셈 셋이 달라 결정을 바꾸지 않음 — reports/atlas11/bloom-month/latest.json 의 diffs"; exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bloom-month
+          path: |
+            /tmp/r.json
+            /tmp/q.json
+            /tmp/check.json
+            /tmp/r.log
+            /tmp/q.log
+          retention-days: 7
+          if-no-files-found: ignore
