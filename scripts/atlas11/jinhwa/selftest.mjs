@@ -409,7 +409,16 @@ test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · �
   r = await R(D, 'cards', '--debate', df); eq(r.code, 0, JSON.stringify(r.out)); eq(r.out.order, [2, 1, 3]);
   r = await R(D, 'finish', '--wait', '0'); eq(r.code, 0, JSON.stringify(r.out)); eq(r.out.newCards, [ID(2), ID(1), ID(3)]);
   r = await R(D, 'score'); eq(r.code, 0);
+  // 회차 글(사장님 2026-11-02 14:22(+04) 「진화도 과감하개 하고 그매용도 기재 해야 햐」 · 주문 1922) — 작업 폴더의 <회차>-did.md 가 기록과 한 커밋으로 main 에 · 다른 회차 글 · .md 아닌 것은 안 감
+  fs.mkdirSync(path.join(work, L.REC_DIR), {recursive: true});
+  fs.writeFileSync(path.join(work, L.REC_DIR, '20261019-0930-did.md'), '# 한 일\n1. 새 대안 셋을 만들었어요.\n');
+  fs.writeFileSync(path.join(work, L.REC_DIR, '20261019-0830-did.md'), '# 다른 회차\n'); fs.writeFileSync(path.join(work, L.REC_DIR, '20261019-0930-x.txt'), '안 감\n');
+  eq(L.roundNotesOf(path.join(work, L.REC_DIR), '20261019-0930'), ['20261019-0930-did.md']); eq(L.roundNotesOf(path.join(work, L.REC_DIR), '../x'), []);
   r = await R(D, 'record'); eq(r.code, 0, JSON.stringify(r.out)); ok(/새 진화 대안 3개/.test(r.out.owner[0]), r.out.owner[0]); ok(r.out.notice.includes('새 대안 3개'));
+  ok(/새 대안 셋/.test(mainFile(work, `${L.REC_DIR}/20261019-0930-did.md`) ?? ''), '회차 글이 기록과 함께 main 에');
+  eq(mainFile(work, `${L.REC_DIR}/20261019-0830-did.md`), null, '다른 회차 글은 안 감'); eq(mainFile(work, `${L.REC_DIR}/20261019-0930-x.txt`), null, '.md 아닌 것은 안 감');
+  eq(JSON.parse(mainFile(work, `${L.REC_DIR}/20261019-0930.json`)).notes, ['20261019-0930-did.md'], '기록 notes');
+  for (const f of ['20261019-0930-did.md', '20261019-0830-did.md', '20261019-0930-x.txt']) fs.rmSync(path.join(work, L.REC_DIR, f), {force: true});
   const d = JSON.parse(mainFile(work, L.DATA_FILE));
   eq(d.waiting.map(w => [w.id, w.pick]), [[ID(2), true], [ID(1), false], [ID(3), false]]); eq(d.n, 0);
   const W = await loadWords(ROOT);
