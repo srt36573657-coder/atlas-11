@@ -370,6 +370,12 @@ export function writeRecord(dir, rec) {
   fs.writeFileSync(f, JSON.stringify(rec, null, 1) + '\n', {flag: 'wx'}); // 있으면 EEXIST
   return f;
 }
+/** 회차 글 이름 — 기록 폴더에서 이 회차 번호로 시작하는 .md(<회차>-did.md 한 일 · -four.md · -why36.md · 사장님 2026-11-02 14:22(+04) 「그매용도 기재 해야 햐」 · 주문 1922) · 이름 차례 · 폴더가 없으면 빈 줄 */
+export function roundNotesOf(dir, id) {
+  if (!ROUND_RE.test(id ?? '')) return [];
+  let names; try { names = fs.readdirSync(dir); } catch { return []; }
+  return names.filter(n => n.startsWith(id + '-') && /^[0-9A-Za-z가-힣._-]+\.md$/.test(n) && fs.statSync(path.join(dir, n)).isFile()).sort();
+}
 /** 기록에서 번호마다 — {id, changeHash, files, rule, commit, checked[], pending, merge, appliedAt, reverted, revertCommit, dropped} */
 export function memoryOf(records) {
   const m = new Map();

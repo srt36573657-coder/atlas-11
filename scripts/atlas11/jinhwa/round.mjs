@@ -669,10 +669,15 @@ export async function cmdRecord(a, D) {
     retested: st.retested, finished: st.finished, dropped: st.dropped, pending, scores: st.scores, facts: st.facts, factsNote: st.factsNote ?? '', tally: st.tally ?? null,
     data: {changed: v.ok && dataChanged, ok: v.ok, n: v.ok ? next.n : st.data0.n, waiting: (v.ok ? next.waiting : st.data0.waiting).map(w => w.id), errors: v.ok ? [] : v.errors.slice(0, 5)},
     owner, notice, notDone: st.notDone, confirmOnly: {appliedWithoutConfirm: 0, rule: '열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄'}, log: st.log};
+  // 회차 글 — 회차가 작업 폴더에 쓴 이 회차의 새 글(<회차>-did.md 한 일 · -four.md 네 가지 따지기 · -why36.md)을 기록과 한 커밋으로(사장님 2026-11-02 14:22(+04) 「진화도 과감하개 하고 그매용도 기재 해야 햐」 · 주문 1922)
+  //   이 회차 번호로 시작하는 .md 만 · main 에 이미 있는 이름은 건너뜀(새 파일만 · 지우지 않음) · 기록 notes 에 이름(없으면 빈 줄)
+  const notes = L.roundNotesOf(path.join(D.root, L.REC_DIR), st.id).filter(n => !fs.existsSync(path.join(wt, L.REC_DIR, n)));
+  rec.notes = notes;
   let file;
   try { file = L.writeRecord(path.join(wt, L.REC_DIR), rec); } catch (e) { stop(e.code === 'EEXIST' ? '같은 이름의 기록이 이미 있음 — 쓰지 않음(새 파일만)' : '기록을 못 씀 ' + e.message); }
+  for (const n of notes) fs.copyFileSync(path.join(D.root, L.REC_DIR, n), path.join(wt, L.REC_DIR, n));
   G.git(wt, ['add', '-A', '--', L.DATA_FILE, L.IMG_DIR, L.REC_DIR]);
-  const msg = `${W.name} 진화 회차 ${st.id} 기록 — ${owner[0]}\n\n본질 ${st.essence.sha.slice(0, 8)} · 기다리는 대안 ${rec.data.waiting.length} · 진화 ${rec.data.n}번째 · 못 한 것 ${st.notDone.length}가지 · 새 파일 ${path.relative(wt, file)}`;
+  const msg = `${W.name} 진화 회차 ${st.id} 기록 — ${owner[0]}\n\n본질 ${st.essence.sha.slice(0, 8)} · 기다리는 대안 ${rec.data.waiting.length} · 진화 ${rec.data.n}번째 · 못 한 것 ${st.notDone.length}가지 · 새 파일 ${path.relative(wt, file)}${notes.length ? ' · 회차 글 ' + notes.join(' · ') : ' · 회차 글 없음'}`;
   const c = G.git(wt, ['commit', '-q', '--no-verify', '-m', msg]);
   if (!c.ok) stop('기록 커밋을 못 만듦 ' + G.short(c.err));
   let head = G.revParse(wt, 'HEAD'), pushed = null;
