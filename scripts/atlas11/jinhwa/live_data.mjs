@@ -2,7 +2,7 @@
 // 진화 회차 — 지금 사이트 자료(사장님 2026-11-03 02:24(서울) 「응」 · 주문 0224 — 물음 「다음으로, 진화 방이 새 자료로 살펴보게 고칠까요?」의 답)
 //   까닭: 저장소의 사이트 자료 사본(site/atlas/data)은 10월 14일 뒤 안 바뀜(마지막 날 10월 13일) — 진짜 사이트는 올릴 때마다(package.mjs) 이어 받은 종가로 다시 셈
 //         → 진화 회차가 낡은 사본으로 살펴보고(「가격 자료가 멈춤」 · 「오늘이 사실이 아님」) 낡은 사본으로 검사해(check_hold 「센 날이 앞섬」 등) 대안이 못 지나감(주문 2249 · 서울 23:40 · 00:53 회차 글)
-//   하는 일: 지금 사이트의 dist-manifest.json 이 적은 atlas/data/ 파일을 sha256 이 맞는 한 판으로 받음(atlas11-next-full.yml 「지금 사이트 자료 받기」와 같은 셈)
+//   하는 일: 지금 사이트의 dist-manifest.json 이 적은 atlas/data/ 와 next/data/(진화 칸 빼고) 파일을 sha256 이 맞는 한 판으로 받음(atlas11-next-full.yml 「지금 사이트 자료 받기」와 같은 셈)
 //         + jinhwa-data.json(때 · 고른 날 · 파일 수 · 묶은 때 · 목록 지문)
 //   깃허브 실행기에서 돎(atlas11-jinhwa-data.yml) — Claude 예약 방의 바깥 길은 aaa7377.com 과 깃허브 묶음 받는 곳을 막아서, 받은 판을 가지 jinhwa-data(한 커밋 · 덮어씀)에 두고 방은 git 으로 받음
 //   쓰는 법: node scripts/atlas11/jinhwa/live_data.mjs --out live-data [--site https://aaa7377.com/] [--budget 180]
@@ -14,6 +14,8 @@ import {fileURLToPath} from 'node:url';
 export const DATA_SCHEMA = 'atlas11-jinhwa-live-data-1';
 export const INFO_FILE = 'jinhwa-data.json';
 const sha = b => createHash('sha256').update(b).digest('hex');
+/** 받을 파일 — 사이트 자료 atlas/data 모두 · 새 화면 작은 자료 next/data(진화 칸 jinhwa* 는 빼고 — 회차 도구가 쓰는 곳 · 올릴 때 네트워크로 받는 fx-rate 같은 것이 여기 있음) */
+export const wantFile = f => !f.includes('..') && (f.startsWith('atlas/data/') || (f.startsWith('next/data/') && !f.startsWith('next/data/jinhwa')));
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 /** 지금 사이트 atlas/data 받기 — {ok, out, asOf, builtAt, files, bytes, secs, why, stat}
@@ -38,7 +40,7 @@ export async function downloadLive({site = 'https://aaa7377.com/', out, budgetMs
   try {
     for (let round = 1; round <= 3; round++) {
       const man = JSON.parse(String(await get('dist-manifest.json', null, 8)));
-      const files = Object.keys(man.hashes ?? {}).filter(f => f.startsWith('atlas/data/') && !f.includes('..')).sort();
+      const files = Object.keys(man.hashes ?? {}).filter(wantFile).sort();
       if (!files.includes('atlas/data/mkt.json') || !files.includes('atlas/data/days.json') || !files.includes('atlas/data/core.json')) throw Error('dist-manifest.json 에 atlas/data 가 없음');
       fs.rmSync(out, {recursive: true, force: true});
       let i = 0, bytes = 0; const bad = [];
