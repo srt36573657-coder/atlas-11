@@ -1,0 +1,712 @@
+{
+ "schema": "dori-bloom-evolve-research-1",
+ "spec": "docs/design/bloom-evolve-2026-11-02/spec.md v1",
+ "root": "site/atlas/data",
+ "seed": 20261102,
+ "days": 839,
+ "from": "2023-04-28",
+ "to": "2026-10-13",
+ "tl": "2026-09-09",
+ "companies": 2557,
+ "industries": 77,
+ "universe": 503058,
+ "atoms": 156,
+ "pairs": 11718,
+ "candidates": 11874,
+ "elig": {
+  "n": 300,
+  "cover": 0.4,
+  "perDay": 20,
+  "fallPlus": 2.0
+ },
+ "block": 20,
+ "repsCI": 2000,
+ "repsRC": 500,
+ "steps": [
+  {
+   "month": "2025-01",
+   "s": "2025-01-02",
+   "trainDays": 269,
+   "elig": 1285,
+   "id": "c120b&isz2",
+   "lb": 8.737,
+   "d": 14.42,
+   "n": 1991
+  },
+  {
+   "month": "2025-02",
+   "s": "2025-02-03",
+   "trainDays": 287,
+   "elig": 1267,
+   "id": "c120b&ib3",
+   "lb": 7.564,
+   "d": 14.315,
+   "n": 372
+  },
+  {
+   "month": "2025-03",
+   "s": "2025-03-04",
+   "trainDays": 307,
+   "elig": 1312,
+   "id": "c120b&isz2",
+   "lb": 8.121,
+   "d": 13.196,
+   "n": 2341
+  },
+  {
+   "month": "2025-04",
+   "s": "2025-04-01",
+   "trainDays": 327,
+   "elig": 1314,
+   "id": "px4&iz3",
+   "lb": 8.031,
+   "d": 11.511,
+   "n": 813
+  },
+  {
+   "month": "2025-05",
+   "s": "2025-05-02",
+   "trainDays": 349,
+   "elig": 1268,
+   "id": "c120b&isz2",
+   "lb": 7.636,
+   "d": 12.407,
+   "n": 2569
+  },
+  {
+   "month": "2025-06",
+   "s": "2025-06-02",
+   "trainDays": 368,
+   "elig": 1304,
+   "id": "c120b&isz2",
+   "lb": 9.035,
+   "d": 13.837,
+   "n": 2733
+  },
+  {
+   "month": "2025-07",
+   "s": "2025-07-01",
+   "trainDays": 387,
+   "elig": 1307,
+   "id": "c120b&isz2",
+   "lb": 9.346,
+   "d": 14.391,
+   "n": 2814
+  },
+  {
+   "month": "2025-08",
+   "s": "2025-08-01",
+   "trainDays": 410,
+   "elig": 1281,
+   "id": "big1&ib3",
+   "lb": 8.996,
+   "d": 14.045,
+   "n": 420
+  },
+  {
+   "month": "2025-09",
+   "s": "2025-09-01",
+   "trainDays": 430,
+   "elig": 1259,
+   "id": "c120b&isz2",
+   "lb": 9.201,
+   "d": 13.908,
+   "n": 3083
+  },
+  {
+   "month": "2025-10",
+   "s": "2025-10-01",
+   "trainDays": 452,
+   "elig": 1307,
+   "id": "big1&iz3",
+   "lb": 8.911,
+   "d": 12.669,
+   "n": 1555
+  },
+  {
+   "month": "2025-11",
+   "s": "2025-11-03",
+   "trainDays": 470,
+   "elig": 1314,
+   "id": "big1&iz3",
+   "lb": 9.844,
+   "d": 13.908,
+   "n": 1618
+  },
+  {
+   "month": "2025-12",
+   "s": "2025-12-01",
+   "trainDays": 490,
+   "elig": 1244,
+   "id": "big1&ib3",
+   "lb": 9.672,
+   "d": 14.619,
+   "n": 459
+  },
+  {
+   "month": "2026-01",
+   "s": "2026-01-02",
+   "trainDays": 511,
+   "elig": 1267,
+   "id": "big1&iz3",
+   "lb": 9.468,
+   "d": 13.503,
+   "n": 1675
+  },
+  {
+   "month": "2026-02",
+   "s": "2026-02-02",
+   "trainDays": 532,
+   "elig": 1272,
+   "id": "big1&iz3",
+   "lb": 10.463,
+   "d": 14.298,
+   "n": 1798
+  },
+  {
+   "month": "2026-03",
+   "s": "2026-03-03",
+   "trainDays": 549,
+   "elig": 1314,
+   "id": "big1&ib3",
+   "lb": 11.249,
+   "d": 16.595,
+   "n": 520
+  },
+  {
+   "month": "2026-04",
+   "s": "2026-04-01",
+   "trainDays": 570,
+   "elig": 1293,
+   "id": "big2&ix4",
+   "lb": 11.394,
+   "d": 17.544,
+   "n": 484
+  },
+  {
+   "month": "2026-05",
+   "s": "2026-05-04",
+   "trainDays": 592,
+   "elig": 1338,
+   "id": "big1&fin10",
+   "lb": 11.228,
+   "d": 16.388,
+   "n": 804
+  },
+  {
+   "month": "2026-06",
+   "s": "2026-06-01",
+   "trainDays": 610,
+   "elig": 1338,
+   "id": "big2&ix4",
+   "lb": 11.835,
+   "d": 17.653,
+   "n": 593
+  },
+  {
+   "month": "2026-07",
+   "s": "2026-07-01",
+   "trainDays": 631,
+   "elig": 1328,
+   "id": "big2&ix4",
+   "lb": 11.952,
+   "d": 17.321,
+   "n": 667
+  },
+  {
+   "month": "2026-08",
+   "s": "2026-08-03",
+   "trainDays": 653,
+   "elig": 1327,
+   "id": "big2&ix4",
+   "lb": 10.633,
+   "d": 16.023,
+   "n": 709
+  },
+  {
+   "month": "2026-09",
+   "s": "2026-09-01",
+   "trainDays": 673,
+   "elig": 1323,
+   "id": "big2&ix4",
+   "lb": 10.614,
+   "d": 15.931,
+   "n": 725
+  }
+ ],
+ "months": [
+  {
+   "month": "2025-01",
+   "id": "c120b&isz2",
+   "n": 143,
+   "hits": 41,
+   "base": 22.55,
+   "pickDays": 18,
+   "days": 18
+  },
+  {
+   "month": "2025-02",
+   "id": "c120b&ib3",
+   "n": 15,
+   "hits": 2,
+   "base": 23.29,
+   "pickDays": 7,
+   "days": 20
+  },
+  {
+   "month": "2025-03",
+   "id": "c120b&isz2",
+   "n": 116,
+   "hits": 20,
+   "base": 22.09,
+   "pickDays": 20,
+   "days": 20
+  },
+  {
+   "month": "2025-04",
+   "id": "px4&iz3",
+   "n": 190,
+   "hits": 107,
+   "base": 23.69,
+   "pickDays": 14,
+   "days": 22
+  },
+  {
+   "month": "2025-05",
+   "id": "c120b&isz2",
+   "n": 81,
+   "hits": 48,
+   "base": 24.63,
+   "pickDays": 17,
+   "days": 19
+  },
+  {
+   "month": "2025-06",
+   "id": "c120b&isz2",
+   "n": 74,
+   "hits": 13,
+   "base": 21.57,
+   "pickDays": 17,
+   "days": 19
+  },
+  {
+   "month": "2025-07",
+   "id": "c120b&isz2",
+   "n": 188,
+   "hits": 63,
+   "base": 20.25,
+   "pickDays": 23,
+   "days": 23
+  },
+  {
+   "month": "2025-08",
+   "id": "big1&ib3",
+   "n": 5,
+   "hits": 2,
+   "base": 21.21,
+   "pickDays": 3,
+   "days": 20
+  },
+  {
+   "month": "2025-09",
+   "id": "c120b&isz2",
+   "n": 242,
+   "hits": 62,
+   "base": 20.6,
+   "pickDays": 22,
+   "days": 22
+  },
+  {
+   "month": "2025-10",
+   "id": "big1&iz3",
+   "n": 26,
+   "hits": 7,
+   "base": 23.5,
+   "pickDays": 10,
+   "days": 18
+  },
+  {
+   "month": "2025-11",
+   "id": "big1&iz3",
+   "n": 17,
+   "hits": 3,
+   "base": 20.39,
+   "pickDays": 10,
+   "days": 20
+  },
+  {
+   "month": "2025-12",
+   "id": "big1&ib3",
+   "n": 21,
+   "hits": 5,
+   "base": 21.35,
+   "pickDays": 11,
+   "days": 21
+  },
+  {
+   "month": "2026-01",
+   "id": "big1&iz3",
+   "n": 89,
+   "hits": 31,
+   "base": 26.91,
+   "pickDays": 19,
+   "days": 21
+  },
+  {
+   "month": "2026-02",
+   "id": "big1&iz3",
+   "n": 132,
+   "hits": 26,
+   "base": 24.56,
+   "pickDays": 17,
+   "days": 17
+  },
+  {
+   "month": "2026-03",
+   "id": "big1&ib3",
+   "n": 4,
+   "hits": 1,
+   "base": 22.32,
+   "pickDays": 3,
+   "days": 21
+  },
+  {
+   "month": "2026-04",
+   "id": "big2&ix4",
+   "n": 75,
+   "hits": 40,
+   "base": 26.09,
+   "pickDays": 22,
+   "days": 22
+  },
+  {
+   "month": "2026-05",
+   "id": "big1&fin10",
+   "n": 58,
+   "hits": 19,
+   "base": 33.26,
+   "pickDays": 18,
+   "days": 18
+  },
+  {
+   "month": "2026-06",
+   "id": "big2&ix4",
+   "n": 37,
+   "hits": 11,
+   "base": 36.03,
+   "pickDays": 16,
+   "days": 21
+  },
+  {
+   "month": "2026-07",
+   "id": "big2&ix4",
+   "n": 28,
+   "hits": 7,
+   "base": 26.51,
+   "pickDays": 10,
+   "days": 22
+  },
+  {
+   "month": "2026-08",
+   "id": "big2&ix4",
+   "n": 16,
+   "hits": 8,
+   "base": 24.47,
+   "pickDays": 4,
+   "days": 20
+  },
+  {
+   "month": "2026-09",
+   "id": "big2&ix4",
+   "n": 13,
+   "hits": 6,
+   "base": 25.65,
+   "pickDays": 5,
+   "days": 7
+  }
+ ],
+ "periodA": {
+  "method": {
+   "n": 1570,
+   "hits": 522,
+   "rate": 33.25,
+   "base": 24.27,
+   "baseN": 1001933,
+   "baseHits": 243147,
+   "ex": 2.29,
+   "exBase": -0.54,
+   "fall": 32.1,
+   "fallBase": 38.05,
+   "pickDays": 286,
+   "days": 411,
+   "pickDayShare": 69.59,
+   "perPickDay": 5.49,
+   "from": "2025-01-02",
+   "to": "2026-09-09"
+  },
+  "current": {
+   "n": 2912,
+   "hits": 931,
+   "rate": 31.97,
+   "base": 24.27,
+   "baseN": 1001933,
+   "baseHits": 243147,
+   "ex": 2.24,
+   "exBase": -0.54,
+   "fall": 31.15,
+   "fallBase": 38.05,
+   "pickDays": 334,
+   "days": 411,
+   "pickDayShare": 81.27,
+   "perPickDay": 8.72,
+   "from": "2025-01-02",
+   "to": "2026-09-09"
+  },
+  "c3": {
+   "n": 22505,
+   "hits": 6200,
+   "rate": 27.55,
+   "base": 24.27,
+   "baseN": 1001933,
+   "baseHits": 243147,
+   "ex": 0.55,
+   "exBase": -0.54,
+   "fall": 37.72,
+   "fallBase": 38.05,
+   "pickDays": 411,
+   "days": 411,
+   "pickDayShare": 100.0,
+   "perPickDay": 54.76,
+   "from": "2025-01-02",
+   "to": "2026-09-09"
+  },
+  "sprout": {
+   "n": 254963,
+   "hits": 59635,
+   "rate": 23.39,
+   "base": 24.27,
+   "baseN": 1001933,
+   "baseHits": 243147,
+   "ex": -0.43,
+   "exBase": -0.54,
+   "fall": 36.64,
+   "fallBase": 38.05,
+   "pickDays": 411,
+   "days": 411,
+   "pickDayShare": 100.0,
+   "perPickDay": 620.35,
+   "from": "2025-01-02",
+   "to": "2026-09-09"
+  }
+ },
+ "periodB": {
+  "method": {
+   "n": 1295,
+   "hits": 459,
+   "rate": 35.44,
+   "base": 24.57,
+   "baseN": 855709,
+   "baseHits": 210261,
+   "ex": 3.07,
+   "exBase": -0.55,
+   "fall": 31.27,
+   "fallBase": 38.74,
+   "pickDays": 240,
+   "days": 350,
+   "pickDayShare": 68.57,
+   "perPickDay": 5.4,
+   "from": "2025-04-04",
+   "to": "2026-09-09"
+  },
+  "current": {
+   "n": 2653,
+   "hits": 850,
+   "rate": 32.04,
+   "base": 24.57,
+   "baseN": 855709,
+   "baseHits": 210261,
+   "ex": 2.28,
+   "exBase": -0.55,
+   "fall": 31.55,
+   "fallBase": 38.74,
+   "pickDays": 280,
+   "days": 350,
+   "pickDayShare": 80.0,
+   "perPickDay": 9.47,
+   "from": "2025-04-04",
+   "to": "2026-09-09"
+  },
+  "c3": {
+   "n": 19539,
+   "hits": 5370,
+   "rate": 27.48,
+   "base": 24.57,
+   "baseN": 855709,
+   "baseHits": 210261,
+   "ex": 0.48,
+   "exBase": -0.55,
+   "fall": 38.74,
+   "fallBase": 38.74,
+   "pickDays": 350,
+   "days": 350,
+   "pickDayShare": 100.0,
+   "perPickDay": 55.83,
+   "from": "2025-04-04",
+   "to": "2026-09-09"
+  },
+  "sprout": {
+   "n": 214375,
+   "hits": 50767,
+   "rate": 23.68,
+   "base": 24.57,
+   "baseN": 855709,
+   "baseHits": 210261,
+   "ex": -0.44,
+   "exBase": -0.55,
+   "fall": 37.51,
+   "fallBase": 38.74,
+   "pickDays": 350,
+   "days": 350,
+   "pickDayShare": 100.0,
+   "perPickDay": 612.5,
+   "from": "2025-04-04",
+   "to": "2026-09-09"
+  }
+ },
+ "years": {
+  "2025": {
+   "method": {
+    "n": 1118,
+    "hits": 373,
+    "rate": 33.36,
+    "base": 22.04,
+    "baseN": 585922,
+    "baseHits": 129126,
+    "ex": 2.62,
+    "exBase": -0.38,
+    "fall": 30.23,
+    "fallBase": 35.41,
+    "pickDays": 172,
+    "days": 242,
+    "pickDayShare": 71.07,
+    "perPickDay": 6.5,
+    "from": "2025-01-02",
+    "to": "2025-12-30"
+   },
+   "current": {
+    "n": 1822,
+    "hits": 534,
+    "rate": 29.31,
+    "base": 22.04,
+    "baseN": 585922,
+    "baseHits": 129126,
+    "ex": 2.01,
+    "exBase": -0.38,
+    "fall": 28.81,
+    "fallBase": 35.41,
+    "pickDays": 231,
+    "days": 242,
+    "pickDayShare": 95.45,
+    "perPickDay": 7.89,
+    "from": "2025-01-02",
+    "to": "2025-12-30"
+   }
+  },
+  "2026": {
+   "method": {
+    "n": 452,
+    "hits": 149,
+    "rate": 32.96,
+    "base": 27.41,
+    "baseN": 416011,
+    "baseHits": 114021,
+    "ex": 1.49,
+    "exBase": -0.76,
+    "fall": 36.73,
+    "fallBase": 41.76,
+    "pickDays": 114,
+    "days": 169,
+    "pickDayShare": 67.46,
+    "perPickDay": 3.96,
+    "from": "2026-01-02",
+    "to": "2026-09-09"
+   },
+   "current": {
+    "n": 1090,
+    "hits": 397,
+    "rate": 36.42,
+    "base": 27.41,
+    "baseN": 416011,
+    "baseHits": 114021,
+    "ex": 2.63,
+    "exBase": -0.76,
+    "fall": 35.05,
+    "fallBase": 41.76,
+    "pickDays": 103,
+    "days": 169,
+    "pickDayShare": 60.95,
+    "perPickDay": 10.58,
+    "from": "2026-01-02",
+    "to": "2026-09-09"
+   }
+  }
+ },
+ "ci": {
+  "methodMinusBase": [
+   1.46,
+   18.37
+  ],
+  "methodMinusCurrent": [
+   -6.83,
+   11.3
+  ],
+  "currentMinusBase": [
+   2.35,
+   12.51
+  ]
+ },
+ "final": {
+  "id": "big2&ix4",
+  "n": 754,
+  "rate": 39.79,
+  "base": 23.56,
+  "d": 16.223,
+  "se": 3.13,
+  "lb": 11.074,
+  "pickDayShare": 46.64,
+  "fall": 30.24,
+  "fallBase": 36.04,
+  "parts": [
+   {
+    "id": "big2",
+    "label": "그날 몸값 위 20%",
+    "fam": "big"
+   },
+   {
+    "id": "ix4",
+    "label": "업종 한 달 15% 넘게 오름",
+    "fam": "ix"
+   }
+  ]
+ },
+ "rc": {
+  "eligible": 1276,
+  "reps": 500,
+  "t": 5.183,
+  "p": 0.008,
+  "vMedian": 2.987,
+  "v95": 4.121
+ },
+ "rules": {
+  "1_B_beats_current_and_base_lo": true,
+  "2_A_pickDayShare_ge_60": true,
+  "3_A_fall_le_base": true,
+  "4_rc_p_lt_005": true
+ },
+ "today": {
+  "date": "2026-10-13",
+  "n": 0,
+  "rows": []
+ },
+ "seconds": 64.4
+}

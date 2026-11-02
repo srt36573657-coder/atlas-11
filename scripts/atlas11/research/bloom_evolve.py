@@ -316,18 +316,24 @@ daysB = oos_days[oos_days >= tB]
 def summ(ds, n, h, f, e):
     nT, hT = float(n[ds].sum()), float(h[ds].sum())
     nbT, hbT = float(nb_d[ds].sum()), float(hb_d[ds].sum())
-    return {'n': int(nT), 'hits': int(hT), 'rate': round(hT / max(nT, 1) * 100, 2), 'base': round(hbT / max(nbT, 1) * 100, 2),
+    return {'n': int(nT), 'hits': int(hT), 'rate': round(hT / max(nT, 1) * 100, 2), 'base': round(hbT / max(nbT, 1) * 100, 2), 'baseN': int(nbT), 'baseHits': int(hbT),
             'ex': round(float(e[ds].sum()) / max(nT, 1) * 100, 2), 'exBase': round(float(eb_d[ds].sum()) / max(nbT, 1) * 100, 2),
             'fall': round(float(f[ds].sum()) / max(nT, 1) * 100, 2), 'fallBase': round(float(fb_d[ds].sum()) / max(nbT, 1) * 100, 2),
             'pickDays': int(np.sum(n[ds] > 0)), 'days': int(len(ds)), 'pickDayShare': round(float(np.mean(n[ds] > 0)) * 100, 2) if len(ds) else 0.0,
             'perPickDay': round(nT / max(int(np.sum(n[ds] > 0)), 1), 2), 'from': D[int(ds[0])] if len(ds) else None, 'to': D[int(ds[-1])] if len(ds) else None}
 
 
-qCur, qC3 = IDN['iz1&hi1'], IDN['iz1']
+qCur, qC3 = IDN.get('iz1&hi1', IDN.get('hi1&iz1')), IDN['iz1']  # 지금 조건(업종 꽃 자리 + 반년 가장 높은 값 가까이) — 짝 이름은 낱 조건 차례(hi 갈래가 iz 앞)
 ser = {'method': (OOS_N, OOS_H, OOS_F, OOS_E), 'current': (NC[qCur], HC[qCur], FC[qCur], EC[qCur]), 'c3': (NC[qC3], HC[qC3], FC[qC3], EC[qC3]),
        'sprout': (ns_d, hs_d, fs_d, es_d)}
 cmpA = {k: summ(oos_days, *v) for k, v in ser.items()}
 cmpB = {k: summ(daysB, *v) for k, v in ser.items()}
+monthsRec = []  # 달마다 안 본 기록(고른 조건 · 고른 수 · 꽃 · 고른 날 몫) — 쪽 그림 · 따로 센 일꾼 맞대기
+for rec in steps:
+    ds = np.array([t for t in oos_days if D[t][:7] == rec['month']])
+    if len(ds):
+        mm = summ(ds, OOS_N, OOS_H, OOS_F, OOS_E)
+        monthsRec.append({'month': rec['month'], 'id': rec.get('id'), 'n': mm['n'], 'hits': mm['hits'], 'base': mm['base'], 'pickDays': mm['pickDays'], 'days': mm['days']})
 years = {}
 for yv in sorted({D[t][:4] for t in oos_days}):
     ds = np.array([t for t in oos_days if D[t][:4] == yv])
@@ -411,7 +417,7 @@ if final:
 res = {'schema': 'dori-bloom-evolve-research-1', 'spec': 'docs/design/bloom-evolve-2026-11-02/spec.md v1', 'root': ROOT, 'seed': SEED,
        'days': N, 'from': D[0], 'to': D[-1], 'tl': D[TL], 'companies': C, 'industries': len(inds), 'universe': nU,
        'atoms': K, 'pairs': len(PAIRS), 'candidates': NCAND, 'elig': ELIG, 'block': BLOCK, 'repsCI': REPS_CI, 'repsRC': REPS_RC,
-       'steps': steps, 'periodA': cmpA, 'periodB': cmpB, 'years': years, 'ci': CI, 'final': final, 'rc': rc, 'rules': rules,
+       'steps': steps, 'months': monthsRec, 'periodA': cmpA, 'periodB': cmpB, 'years': years, 'ci': CI, 'final': final, 'rc': rc, 'rules': rules,
        'today': {'date': D[T], 'n': len(today), 'rows': today}, 'seconds': round(time.time() - T_START, 1)}
 if OUT:
     os.makedirs(os.path.dirname(OUT) or '.', exist_ok=True)
