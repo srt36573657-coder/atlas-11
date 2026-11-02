@@ -1,12 +1,25 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-11-02T08:23:46.991Z",
+ "at": "2026-11-02T08:54:12.870Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 758,
-  "fail": 0
+  "pass": 755,
+  "fail": 3
  },
- "fails": [],
+ "fails": [
+  [
+   "③ #/gift 열림 · 주소 그대로",
+   "false #/gift"
+  ],
+  [
+   "③ #/gift 쪽이 그려짐",
+   " · 로마 신 72 · 수르 · 1"
+  ],
+  [
+   "③ #/gift 종이 판 꺼짐",
+   "true"
+  ]
+ ],
  "m": {
   "rooms": 37,
   "art": {
