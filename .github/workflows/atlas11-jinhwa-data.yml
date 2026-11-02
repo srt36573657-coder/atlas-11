@@ -1,0 +1,54 @@
+name: atlas11-jinhwa-data
+# 진화 회차 — 지금 사이트 자료를 가지 jinhwa-data 에(사장님 2026-11-03 02:24(서울) 「응」 · 주문 0224 — 물음 「다음으로, 진화 방이 새 자료로 살펴보게 고칠까요?」의 답)
+#   까닭: 저장소의 사이트 자료 사본(site/atlas/data)은 10월 14일 뒤 안 바뀜(마지막 날 10월 13일) · 진짜 사이트는 올릴 때마다(package.mjs) 이어 받은 종가로 다시 셈
+#         → 진화 회차가 낡은 사본으로 살펴보고 검사해 대안이 못 지나감(주문 2249 · 서울 23:40 · 00:53 회차 글)
+#   하는 일: scripts/atlas11/jinhwa/live_data.mjs 가 지금 사이트 atlas/data 를 sha256 맞는 한 판으로 받음(atlas11-next-full.yml 「지금 사이트 자료 받기」와 같은 셈)
+#           → 가지 jinhwa-data 에 한 커밋(앞 커밋 없음)으로 덮어 씀 · 목록 지문이 가지와 같으면 밀지 않음
+#   Claude 예약 방의 바깥 길은 aaa7377.com 과 깃허브 묶음 받는 곳을 막음(2026-10-18 확인) → 회차 도구(round.mjs begin)가 이 일을 부르고 git fetch --depth 1 origin jinhwa-data 로 받음
+#   하지 않는 일: main 에 쓰기 · 사이트에 올리기 · 비밀 값 쓰기 — 가지 jinhwa-data 하나만 씀
+#   쓰는 법: gh workflow run atlas11-jinhwa-data.yml -R srt36573657-coder/atlas-11 --ref main
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: atlas11-jinhwa-data
+  cancel-in-progress: false
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with: # 받기 파일만
+          sparse-checkout: scripts/atlas11/jinhwa
+          filter: blob:none
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 지금 사이트 자료 받기(sha256 맞는 한 판 · 3분까지)
+        run: node scripts/atlas11/jinhwa/live_data.mjs --out "$RUNNER_TEMP/live-data" --budget 180
+      - name: 가지 jinhwa-data 에 한 커밋으로(목록 지문이 같으면 안 밂)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          url="https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
+          cd "$RUNNER_TEMP/live-data"
+          new=$(node -p 'require("./jinhwa-data.json").list')
+          day=$(node -p 'const d=require("./jinhwa-data.json"); d.lastDay + " · 파일 " + d.files')
+          git init -q -b jinhwa-data
+          git config user.name "atlas11-bot"
+          git config user.email "atlas11-bot@users.noreply.github.com"
+          old=""
+          if git ls-remote --exit-code "$url" refs/heads/jinhwa-data >/dev/null 2>&1; then
+            git fetch -q --depth 1 "$url" "+refs/heads/jinhwa-data:refs/remotes/origin/jinhwa-data"
+            old=$( (git show refs/remotes/origin/jinhwa-data:jinhwa-data.json 2>/dev/null || true) | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{process.stdout.write(String(JSON.parse(s).list||""))}catch{}})' || true)
+          fi
+          if [ -n "$old" ] && [ "$new" = "$old" ]; then echo "가지 jinhwa-data 가 지금 사이트 판과 같음(${day}) — 안 밂"; exit 0; fi
+          git add -A
+          git commit -q -m "진화 회차 지금 사이트 자료 — 마지막 날 ${day} [skip ci]"
+          git push -q --force "$url" HEAD:refs/heads/jinhwa-data
+          echo "가지 jinhwa-data 새로 씀 — 마지막 날 ${day}"
