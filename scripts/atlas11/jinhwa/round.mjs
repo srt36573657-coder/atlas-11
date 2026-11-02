@@ -34,6 +34,8 @@ export const RUN_SCHEMA = 'kkolttori-jinhwa-run-1';
 /** 회차 도구 · 본질 문 · 낱말 · 설정 — 회차를 연 폴더가 main 과 이것이 같아야 돎(가지 쪽 도구로 돌지 않음) */
 export const TOOL_PATHS = Object.freeze(['scripts/atlas11/jinhwa', 'scripts/atlas11/next/essence_check.mjs', 'scripts/atlas11/next/wait_preview.mjs', 'site/next/words.js', 'site/next/brand.js', 'config/atlas11']);
 export const CODE_PATHS = Object.freeze(['site', 'lib', 'scripts', 'functions', 'config', 'netlify', 'netlify.toml', 'package.json', 'package-lock.json', '.github/workflows/atlas11-next-full.yml']); // wait_preview CODE_PATHS 와 같음
+/** 회차 도구 제 파일 — 기록 · 막힘 글 밀기는 이것만 바꿀 때만 밀어 넣기 문 없이 main 에(gh.mjs pushMainOwn · 주문 2249) */
+export const OWN_PATHS = Object.freeze([L.DATA_FILE, L.IMG_DIR, L.REC_DIR]);
 
 class Stop extends Error { constructor(why, code = 1, extra = {}) { super(why); this.code = code; this.extra = extra; } }
 const stop = (why, code = 1, extra) => { throw new Stop(why, code, extra); };
@@ -121,7 +123,7 @@ export async function cmdBegin(a, D) {
   // ③ 회차 잠금(한 번에 하나)
   if (!a['no-lock']) {
     const t = G.lockTake(D.root, {by: id, now});
-    if (!t.ok) { st.ended = true; save(D, st); stop(t.why, t.busy ? 3 : 1); }
+    if (!t.ok) { st.ended = true; st.busy = !!t.busy; save(D, st); stop(t.why, t.busy ? 3 : 1); } // 바쁨(다른 회차가 돎)은 막힘 글을 남기지 않음
     st.lock = {sha: t.sha, stolen: t.stolen ?? null};
     save(D, st); // 아래에서 막혀도 end 가 잠금을 풀 수 있게
   }
@@ -682,7 +684,7 @@ export async function cmdRecord(a, D) {
   if (!c.ok) stop('기록 커밋을 못 만듦 ' + G.short(c.err));
   let head = G.revParse(wt, 'HEAD'), pushed = null;
   for (let i = 0; i < 5 && !pushed; i++) {
-    const p = G.pushMain(wt, head);
+    const p = G.pushMainOwn(wt, head, base, OWN_PATHS); // 제 파일만 — 다른 일의 밀어 넣기 문에 묶이지 않음(주문 2249)
     if (p.ok) { pushed = head; break; }
     if (!p.rejected) stop('기록을 main 에 못 밂 ' + p.why);
     if (!G.fetchMain(D.root).ok) stop('main 을 못 받음');
@@ -702,14 +704,78 @@ export async function cmdRecord(a, D) {
 }
 
 // ───────────── end · status · validate · empty ─────────────
+/** 기록(record)을 못 한 회차 — 도구가 쓰는 막힘 글(<회차>-blocked.md)과 회차가 쓴 <회차>-*.md 를 main 에 새 파일로(사장님 2026-11-02 17:49(+04) 「응 철저하게 해」 · 주문 2249)
+ *  까닭: 「막히면 7 끝으로」라 막힌 회차는 record 를 건너뛰고 end 는 아무것도 안 올려, 고친 뒤 세 회차(11-02 20:30 · 21:40 · 22:19)가 무엇에 막혔는지 하나도 안 남음(틀림 장부 171)
+ *  진화 칸 자료 · 그림은 건드리지 않음 · 기록 폴더의 새 .md 만(pushMainOwn) · blocked=false 면 회차 글 가운데 main 에 없는 것만 · 못 밀어도 end 는 이어 감(잠금은 꼭 풂) */
+async function pushRoundNotes(D, st, {why = '', blocked = true} = {}) {
+  const src = path.join(D.root, L.REC_DIR);
+  const local = L.roundNotesOf(src, st.id);
+  if (!blocked && !local.length) return {files: [], why: ''};
+  if (!G.fetchMain(D.root).ok) return {files: [], why: 'main 을 못 받음'};
+  let base = G.revParse(D.root, 'origin/main');
+  if (!base) return {files: [], why: 'main 을 못 찾음'};
+  const wt = path.join(D.run, 'wt', 'notes');
+  G.worktreeRemove(D.root, wt);
+  const w = G.worktreeAdd(D.root, wt, base);
+  if (!w.ok) return {files: [], why: '일 폴더를 못 만듦 ' + G.short(w.why, 120)};
+  try {
+    const dir = path.join(wt, L.REC_DIR); fs.mkdirSync(dir, {recursive: true});
+    const files = [];
+    for (const n of local) if (!fs.existsSync(path.join(dir, n))) { fs.copyFileSync(path.join(src, n), path.join(dir, n)); files.push(n); }
+    if (blocked) {
+      const n = `${st.id}-blocked.md`;
+      if (!fs.existsSync(path.join(dir, n))) { fs.writeFileSync(path.join(dir, n), L.blockedNote(st, {why, now: L.isoKst(D.now()), notes: local})); files.push(n); }
+    }
+    if (!files.length) return {files: [], why: ''};
+    G.git(wt, ['add', '--', ...files.map(n => `${L.REC_DIR}/${n}`)]);
+    const msg = `진화 회차 ${st.id} ${blocked ? '막힘 글 — 기록 못 하고 끝남' : '회차 글'} · ${files.join(' · ')}`;
+    const c = G.git(wt, ['commit', '-q', '--no-verify', '-m', msg]);
+    if (!c.ok) return {files: [], why: '커밋을 못 만듦 ' + G.short(c.err)};
+    let head = G.revParse(wt, 'HEAD');
+    for (let i = 0; i < 5; i++) {
+      const p = G.pushMainOwn(wt, head, base, [L.REC_DIR]);
+      if (p.ok) return {files, why: '', commit: head};
+      if (!p.rejected) return {files: [], why: 'main 에 못 밂 ' + p.why};
+      if (!G.fetchMain(D.root).ok) return {files: [], why: 'main 을 못 받음'};
+      const nb = G.revParse(D.root, 'origin/main');
+      const r = G.replayOnto(wt, head, nb, msg);
+      if (!r.ok) return {files: [], why: '새 main 위에 못 얹음 — ' + r.why};
+      head = r.sha; base = nb;
+      await D.sleep(500);
+    }
+    return {files: [], why: 'main 이 계속 앞서 감'};
+  } finally { G.worktreeRemove(D.root, wt); }
+}
+/** 회차 없이 end — 0 자기 시험이 실패해 begin 을 못 한 때 · 같은 방의 자기 시험 실패 글(3시간 안 · 아직 안 올림)이나 --why 가 있으면 막힘 글만 main 에 · 없으면 예전대로 「begin 을 먼저」(주문 2249) */
+async function endNoRound(a, D) {
+  const why = typeof a.why === 'string' ? a.why.trim() : '';
+  const sfFile = path.join(D.run, 'selftest-fail.json'), sf = readJson(sfFile);
+  const fresh = !!sf && !sf.reported && Number.isFinite(Date.parse(sf.at)) && D.now() - new Date(sf.at) < 3 * 3600e3;
+  if (!why && !fresh) stop('회차를 먼저 시작하세요(begin)', 2);
+  const now = D.now(), id = L.roundId(now);
+  const st = {id, start: L.isoKst(now), notDone: [], selftest: fresh ? sf : null,
+    steps: fresh ? [{cmd: '--selftest', at: L.isoKst(sf.at), code: 1, why: `자기 시험 실패 ${sf.fail}개 — ${(sf.fails ?? []).map(f => f.name).slice(0, 3).join(' · ')}`}] : []};
+  const n = await pushRoundNotes(D, st, {why: why || '자기 시험이 실패해 회차를 시작하지 못함', blocked: true});
+  if (fresh && n.files.length) { try { fs.writeFileSync(sfFile, JSON.stringify({...sf, reported: L.isoKst(now)}, null, 1) + '\n'); } catch { /* 거들 뿐 */ } }
+  return {id, ended: L.isoKst(now), recorded: false, lock: 'none', notes: n.files, notDone: n.why ? [`막힘 글을 main 에 못 올림(${n.why})`] : []};
+}
 export async function cmdEnd(a, D) {
+  const raw = readJson(stateFile(D.run));
+  if (!raw || raw.schema !== RUN_SCHEMA) return endNoRound(a, D);
   const st = load(D, {open: false});
+  // ⓪ 기록 못 한 회차 — 막힘 글 · 회차 글을 main 에(잠금을 쥔 채 · 풀기 전에) · 바쁨(다른 회차가 돎)은 남기지 않음 · 두 번 불러도 한 번만
+  if (!st.busy && !st.notesPushed) {
+    const n = await pushRoundNotes(D, st, {why: typeof a.why === 'string' ? a.why.trim() : '', blocked: !st.recorded});
+    if (n.files.length) st.notesPushed = {files: n.files, commit: n.commit, at: L.isoKst(D.now())};
+    else if (n.why) notDone(st, `막힘 글을 main 에 못 올림(${n.why})`);
+    save(D, st);
+  }
   if (st.lock?.sha) { const r = G.lockRelease(D.root, {sha: st.lock.sha, now: D.now()}); st.lockReleased = r.ok ? r.how : null; if (!r.ok) notDone(st, `회차 잠금을 못 풂(${r.why}) — 100분 뒤 다음 회차가 묵은 잠금으로 가져감`); }
   for (const w of Object.values(st.wt ?? {})) if (typeof w === 'string') G.worktreeRemove(D.root, w);
   for (const b of Object.keys(st.wt ?? {}).filter(k => /^alt\d$/.test(k))) G.git(D.root, ['branch', '-D', L.branchOf(`${st.id}-${b.slice(3)}`)]); // 이 기계의 가지만(원격 가지는 기록 단계가 정리)
   if (st.fixing) G.git(D.root, ['branch', '-D', L.fixBranchOf(st.fixing.id)]);
   st.ended = L.isoKst(D.now()); save(D, st);
-  return {id: st.id, ended: st.ended, recorded: !!st.recorded, lock: st.lock?.sha ? (st.lockReleased ?? 'not released') : 'none', notDone: st.notDone};
+  return {id: st.id, ended: st.ended, recorded: !!st.recorded, lock: st.lock?.sha ? (st.lockReleased ?? 'not released') : 'none', notes: st.notesPushed?.files ?? [], notDone: st.notDone};
 }
 export async function cmdStatus(a, D) { const raw = await D.fetchStatus(); return L.normalizeStatus(raw); }
 export async function cmdValidate(a, D) {
@@ -749,12 +815,26 @@ export function parseArgs(argv) {
   }
   return a;
 }
+const NO_ROUND = new Set(['status', 'validate', 'empty']);
+/** 회차 상태에 단계 한 줄(명령 · 옵션 · 때 · 끝 코드 · 까닭) — end 의 막힘 글이 이것으로 「어디서 무엇에 막혔나」를 적음(주문 2249) */
+function logStep(D, name, argv, code, why) {
+  if (!name || NO_ROUND.has(name)) return;
+  try {
+    const st = readJson(stateFile(D.run)); if (!st || st.schema !== RUN_SCHEMA) return;
+    const args = G.short(argv.slice(1).filter(x => !/^[[{]/.test(String(x))).join(' '), 120);
+    st.steps = [...(st.steps ?? []), {cmd: name, ...(args ? {args} : {}), at: L.isoKst(D.now()), code, ...(code && why ? {why: G.short(why, 300)} : {})}].slice(-80);
+    save(D, st);
+  } catch { /* 단계 줄은 거들 뿐 — 명령 결과를 바꾸지 않음 */ }
+}
 /** 명령 하나 돌리기 — {code, out} (CLI · 자기 시험이 함께 씀) */
 export async function runCommand(argv, D) {
   const a = parseArgs(argv), name = a._[0], fn = COMMANDS[name];
   if (!fn) return {code: 2, out: {ok: false, why: `모르는 명령 ${name ?? ''} — ${Object.keys(COMMANDS).join(' · ')} · --selftest`}};
-  try { const r = await fn(a, D); return {code: 0, out: {ok: true, cmd: name, ...r}}; }
-  catch (e) { if (e instanceof Stop) return {code: e.code, out: {ok: false, cmd: name, why: e.message, ...e.extra}}; return {code: 1, out: {ok: false, cmd: name, why: '오류 ' + G.short(e?.stack ?? e, 400)}}; }
+  let res;
+  try { const r = await fn(a, D); res = {code: 0, out: {ok: true, cmd: name, ...r}}; }
+  catch (e) { res = e instanceof Stop ? {code: e.code, out: {ok: false, cmd: name, why: e.message, ...e.extra}} : {code: 1, out: {ok: false, cmd: name, why: '오류 ' + G.short(e?.stack ?? e, 400)}}; }
+  logStep(D, name, argv, res.code, res.out.why);
+  return res;
 }
 
 // 맨 위 await 를 쓰지 않음 — 자기 시험(selftest.mjs)이 이 파일을 다시 불러 쓰므로 이 파일이 먼저 다 읽혀야 함
@@ -764,6 +844,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (argv.includes('--selftest')) {
       const {selftest} = await import('./selftest.mjs');
       const r = await selftest({verbose: argv.includes('--verbose')});
+      try { // 자기 시험이 실패하면 같은 방의 end 가 막힘 글로 main 에 올리게 남김 · 통과하면 지움(주문 2249)
+        const run = realDeps().run, f = path.join(run, 'selftest-fail.json');
+        if (r.fail) { fs.mkdirSync(run, {recursive: true}); fs.writeFileSync(f, JSON.stringify({at: new Date().toISOString(), pass: r.pass, fail: r.fail, fails: r.fails ?? []}, null, 1) + '\n'); }
+        else fs.rmSync(f, {force: true});
+      } catch { /* 거들 뿐 */ }
       process.exit(r.fail ? 1 : 0);
     }
     const {code, out} = await runCommand(argv, realDeps());

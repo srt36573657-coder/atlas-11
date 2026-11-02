@@ -559,24 +559,91 @@ test('E9 미리 검사가 회차를 넘김 — 기록에 그림을 먼저 두고
   const D3 = mk('c', '2026-10-26T04:30:00Z'); r = await R(D3, 'begin'); eq(r.out.plan.next, 'retest', '다음은 다시 시험(새로 안 만듦)'); await R(D3, 'end');
 });
 
-/** 모두 돌리기 — {pass, fail, seconds} */
+// ── 막힌 회차도 글을 남김(사장님 2026-11-02 17:49(+04) 「응 철저하게 해」 · 주문 2249 · 틀림 장부 171 · 172) ──
+test('㉓ 막힘 글(blockedNote) — 마지막 막힌 단계가 머리에 · 지나간 단계 · 못 한 것 · 자기 시험 줄 · 회차 글', () => {
+  const st = {id: '20261102-2030', start: '2026-11-02T20:30:47+09:00', essence: {file: 'docs/수르_본질.md', sha: 'abcdef0123456789'}, plan: {next: 'make', change: null},
+    steps: [{cmd: 'begin', at: '2026-11-02T20:30:50+09:00', code: 0}, {cmd: 'alt', args: '--n 1 --route #/', at: '2026-11-02T21:05:00+09:00', code: 1, why: '바뀐 쪽 검사 걸림 2'},
+      {cmd: 'record', at: '2026-11-02T21:20:00+09:00', code: 1, why: '기록을 main 에 못 밂 커밋 번호 문 막힘'}], notDone: ['확인 상태를 못 읽음']};
+  const t = L.blockedNote(st, {now: '2026-11-02T21:23:51+09:00', notes: ['20261102-2030-did.md'], why: '대안 셋이 모두 떨어짐'});
+  ok(t.startsWith('# 진화 회차 20261102-2030 — 기록 못 하고 끝남'), t.split('\n')[0]);
+  ok(/막힌 단계: record · 끝 코드 1/.test(t) && /까닭: 기록을 main 에 못 밂 커밋 번호 문 막힘/.test(t), '마지막 막힌 단계가 머리에\n' + t);
+  ok(/2\. 21:05 alt --n 1 --route #\/ — 막힘\(1\) · 바뀐 쪽 검사 걸림 2/.test(t), '지나간 단계\n' + t);
+  ok(/회차가 남긴 말: 대안 셋이 모두 떨어짐/.test(t) && /못 한 것: 확인 상태를 못 읽음/.test(t) && /- 20261102-2030-did\.md/.test(t) && /본질 파일: docs\/수르_본질\.md · abcdef01/.test(t), t);
+  const none = L.blockedNote({id: '20261102-2219', start: '2026-11-02T22:19:17+09:00', steps: [{cmd: 'begin', at: '2026-11-02T22:19:30+09:00', code: 0}]}, {now: '2026-11-02T22:20:11+09:00'});
+  ok(/막힌 단계: 없음 — 기록 단계를 부르지 않고 끝냄/.test(none) && /없음\(<회차>-did\.md 를 쓰지 않음\)/.test(none) && /1\. 22:19 begin — 했음/.test(none), none);
+});
+test('E10 막힌 회차 — end 가 막힘 글 · 회차 글을 main 에(진화 칸 자료 그대로) · 바쁨은 안 남김 · 두 번 불러도 한 번', async ctx => {
+  const {work} = ctx.repo;
+  const D = fakeDeps({work, run: path.join(ctx.tmp, 'run10'), now: '2026-10-21T00:30:00Z', status: {items: []}});
+  const data0 = mainFile(work, L.DATA_FILE);
+  let r = await R(D, 'begin'); eq(r.code, 0, JSON.stringify(r.out)); const id = r.out.id;
+  r = await R(D, 'alt', '--n', '1', '--route', '#/'); ok(r.code !== 0, '일 폴더 없이 alt → 막힘 ' + JSON.stringify(r.out)); const altWhy = r.out.why;
+  fs.writeFileSync(path.join(work, L.REC_DIR, `${id}-did.md`), '# 한 일\n1. 대안을 못 만들었어요.\n');
+  const Db = {...D, run: path.join(ctx.tmp, 'run10b')};
+  const busy = await R(Db, 'begin'); eq(busy.code, 3, '다른 회차가 돎 → 바쁨');
+  const eb = await R(Db, 'end'); eq(eb.code, 0, JSON.stringify(eb.out)); eq(eb.out.notes, [], '바쁨은 막힘 글 없음');
+  r = await R(D, 'end'); eq(r.code, 0, JSON.stringify(r.out));
+  eq([...r.out.notes].sort(), [`${id}-blocked.md`, `${id}-did.md`].sort(), '막힘 글 + 회차 글');
+  const note = mainFile(work, `${L.REC_DIR}/${id}-blocked.md`) ?? '';
+  ok(note.includes('막힌 단계: alt --n 1 --route #/') && note.includes(altWhy) && /1\. \d\d:\d\d begin — 했음/.test(note), note);
+  ok(/대안을 못 만들었어요/.test(mainFile(work, `${L.REC_DIR}/${id}-did.md`) ?? ''), '회차 글도 main 에');
+  eq(mainFile(work, L.DATA_FILE), data0, '진화 칸 자료는 그대로');
+  const head = sh(work, 'git', ['rev-parse', 'origin/main']);
+  r = await R(D, 'end'); eq(r.code, 0); sh(work, 'git', ['fetch', '-q', 'origin']); eq(sh(work, 'git', ['rev-parse', 'origin/main']), head, '두 번 불러도 다시 안 밂');
+  fs.rmSync(path.join(work, L.REC_DIR, `${id}-did.md`), {force: true});
+});
+test('E11 밀어 넣기 문이 깨져 있어도 기록은 main 에(제 파일만 · 문 없이) · 제 파일 밖이 섞이면 안 밂 · 넣기 길은 문을 거침', async ctx => {
+  const {work, origin} = ctx.repo;
+  const hooks = path.join(ctx.tmp, 'hooks'); fs.mkdirSync(hooks, {recursive: true});
+  fs.writeFileSync(path.join(hooks, 'pre-push'), '#!/bin/sh\necho "시험 문 — 늘 막음" >&2\nexit 1\n', {mode: 0o755});
+  sh(work, 'git', ['config', 'core.hooksPath', hooks]);
+  const t = path.join(ctx.tmp, 'own');
+  try {
+    const D = fakeDeps({work, run: path.join(ctx.tmp, 'run11'), now: '2026-10-21T02:30:00Z', status: {items: []}});
+    let r = await R(D, 'begin'); eq(r.code, 0, JSON.stringify(r.out));
+    r = await R(D, 'record'); eq(r.code, 0, '문이 막아도 기록은 밂 ' + JSON.stringify(r.out));
+    ok(mainFile(work, r.out.file), '기록 파일이 main 에');
+    r = await R(D, 'end'); eq(r.code, 0); eq(r.out.notes, [], '기록한 회차는 막힘 글 없음');
+    sh(ctx.tmp, 'git', ['clone', '-q', origin, t]); sh(t, 'git', ['config', 'core.hooksPath', hooks]);
+    write(t, `${L.REC_DIR}/x.md`, '글\n'); write(t, 'site/next/p-why.js', '// 몰래\n');
+    sh(t, 'git', ['add', '-A']); sh(t, 'git', ['-c', 'user.name=x', '-c', 'user.email=x@x', 'commit', '-qm', '섞임']);
+    const base = sh(t, 'git', ['rev-parse', 'HEAD~1']), head = sh(t, 'git', ['rev-parse', 'HEAD']);
+    const p = G.pushMainOwn(t, head, base, [L.REC_DIR]); ok(!p.ok && /제 파일 밖/.test(p.why), JSON.stringify(p));
+    const q = G.pushMain(t, head); ok(!q.ok, '문을 거치는 밀기(넣기 · 되돌리기 · 고장 고침)는 그대로 막힘');
+    sh(work, 'git', ['fetch', '-q', 'origin']); ok(sh(work, 'git', ['show', 'origin/main:site/next/p-why.js']).includes("'why 칸"), 'main 은 그대로');
+  } finally { sh(work, 'git', ['config', '--unset', 'core.hooksPath']); fs.rmSync(t, {recursive: true, force: true}); }
+});
+test('E12 회차 없이 end — 같은 방의 자기 시험 실패 글이 있으면 막힘 글만 main 에 · 없으면 예전대로 「begin 을 먼저」 · 한 번만', async ctx => {
+  const {work} = ctx.repo;
+  const run = path.join(ctx.tmp, 'run12'); fs.mkdirSync(run, {recursive: true});
+  const D = fakeDeps({work, run, now: '2026-10-21T04:30:00Z', status: {items: []}});
+  let r = await R(D, 'end'); eq(r.code, 2, '글 없으면 예전대로 ' + JSON.stringify(r.out));
+  fs.writeFileSync(path.join(run, 'selftest-fail.json'), JSON.stringify({at: '2026-10-21T04:25:00.000Z', pass: 30, fail: 1, fails: [{name: '⑬ 시험', why: '첫 줄이 본질 파일을 안 가리킴'}]}));
+  r = await R(D, 'end'); eq(r.code, 0, JSON.stringify(r.out)); eq(r.out.notes, ['20261021-1330-blocked.md']);
+  const note = mainFile(work, `${L.REC_DIR}/20261021-1330-blocked.md`) ?? '';
+  ok(/자기 시험: 통과 30 · 실패 1/.test(note) && /⑬ 시험 — 첫 줄이 본질 파일을 안 가리킴/.test(note) && /막힌 단계: --selftest/.test(note), note);
+  r = await R(D, 'end'); eq(r.code, 2, '한 번 올린 자기 시험 글은 다시 안 올림');
+});
+
+/** 모두 돌리기 — {pass, fail, seconds, fails} */
 export async function selftest({verbose = false} = {}) {
   const t0 = Date.now();
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'jinhwa-selftest-'));
   const ctx = {tmp};
   let pass = 0, fail = 0;
+  const fails = [];
   try {
     ctx.repo = makeRepo(tmp);
     for (const t of T) {
       const s = Date.now();
       try { await t.fn(ctx); pass++; if (verbose) console.log(`통과 ${t.name} · ${((Date.now() - s) / 1000).toFixed(1)}초`); }
-      catch (e) { fail++; console.log(`실패 ${t.name}\n   ${String(e?.message ?? e).split('\n').slice(0, 4).join('\n   ')}`); if (/E\d/.test(t.name.slice(0, 2))) { /* 끝까지 시험은 앞 것에 기대므로 이어서 봄 */ } }
+      catch (e) { fail++; fails.push({name: t.name.slice(0, 80), why: String(e?.message ?? e).split('\n')[0].slice(0, 200)}); console.log(`실패 ${t.name}\n   ${String(e?.message ?? e).split('\n').slice(0, 4).join('\n   ')}`); if (/E\d/.test(t.name.slice(0, 2))) { /* 끝까지 시험은 앞 것에 기대므로 이어서 봄 */ } }
     }
   } finally {
-    for (const d of ['run', 'run2', 'run2b', 'run3', 'run4', 'run5', 'run6', 'run7', 'run8', 'run8b']) { try { G.git(path.join(tmp, 'work'), ['worktree', 'prune']); } catch { /* 없음 */ } }
+    try { G.git(path.join(tmp, 'work'), ['worktree', 'prune']); } catch { /* 없음 */ }
     fs.rmSync(tmp, {recursive: true, force: true});
   }
   const seconds = Math.round((Date.now() - t0) / 100) / 10;
   console.log(`진화 회차 자기 시험 — 통과 ${pass} · 실패 ${fail} · ${seconds}초 · 망 없이(임시 git 원격)`);
-  return {pass, fail, seconds};
+  return {pass, fail, seconds, fails};
 }

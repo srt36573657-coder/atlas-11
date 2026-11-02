@@ -23,7 +23,7 @@
 - 섬기는 길(꽃 될 종목 찾기 길) = 첫 화면 두 칸(꽃이 될 종목 · 돈이 몰린 종목 — 2026-11-02 주문 1538 · site/next/home-new.js twoBox) · 꽃 될 회사 쪽(#/t/picks · #/t/pick — 달마다 스스로 고른 조건과 점수 · 주문 1313 · site/next/p-theme.js) · 테마 시계 · 싹 자리(#/t/sprout) · 업종에서 회사로 가는 「다음」.
 - 기재 = 회차마다 한 일을 새 파일 reports/atlas11/jinhwa/<회차>-did.md 에 쉬운 한국말로 적는다(작업 폴더 안 · 6 record 전에 · 새 파일만 · 지우지 않음 — record 가 같은 회차의 <회차>-*.md 를 기록과 함께 main 에 올린다):
   ① 네 가지 따지기에서 찾은 고칠 거리(번호 줄) ② 만든 대안마다 이름 · 바꾸는 곳(쪽 · 칸) · 무엇이 나아지나 한 줄 · 바뀐 곳 그림 ③ 검사에 떨어진 대안과 그 까닭 ④ 넣은 것 · 되돌린 것 · 고친 고장 ⑤ 「바꾼 것 없음」이면 그 까닭 ⑥ 「왜?」 36줄과 네 가지 따지기 글이 있는 파일 이름.
-  아무 일도 못 하고 막힌 회차도 이 파일에 막힌 단계와 까닭을 적는다(못 한 것을 숨기지 않음).
+  아무 일도 못 하고 막힌 회차도 이 파일에 막힌 단계와 까닭을 적는다(못 한 것을 숨기지 않음). 6 record 를 못 하고 7 로 가도 7 의 end 가 이 파일을 main 에 올리고, 도구가 따로 「<회차>-blocked.md」에 막힌 단계 · 끝 코드 · 까닭 · 지나간 단계를 저절로 적어 함께 올린다(사장님 2026-11-02 17:49(+04) 「응 철저하게 해」 · 주문 2249 — 고친 뒤 세 회차가 무엇에 막혔는지 하나도 안 남았음).
 
 고르는 법 — 동서남북 네 가지 따지기 (영구)
 사장님 2026-10-22(서울) 00시대 「동서남북 즉 계산을 해 · 정서적 계산 · 상황적 계산 · 수학적 계산 · 한국 주식에 본질적 계산 · 치밀하게 해서 최고로 표현을 하라 · 진화 시키라는 것이다」 · 「지금 방식으로 돌아간다고 노력해 다른 방식으로 해」 — 되물음 「고칠 거리를 고를 때 마음·상황·숫자·한국 주식 네 가지를 꼼꼼히 따져 보고, 가장 좋은 한 가지만 고친다. 싹 찾기 방향은 그대로다. 이 뜻인가요?」에 「응」.
@@ -44,12 +44,12 @@
 - 진화 칸 = 사장님 열쇠 기기에서만 열리는 쪽 #/jinhwa · 자료 site/next/data/jinhwa.json(이 회차가 씀) · 그림 site/next/data/jinhwa/<번호>-before.png · -after.png
 - 잣대 셋(config/atlas11/jinhwa-metrics.v1.json): ① 멈춤(매매일지를 끝낸 수 · 그중 「쉬어 가자」) ② 약속(한 달 뒤 「정한 대로 했어?」에 답한 수 · 그중 「했어」) ③ 사실(화면 숫자가 자료와 다른 곳 0). 방문 수 · 가입 수 · 보내기 수는 잣대가 아니다.
 
-할 일(차례대로 · 막히면 그 자리에서 7 「끝」으로 가고 보고)
+할 일(차례대로 · 막히면 그 자리에서 7 「끝」으로 가고 보고 — 7 의 end 는 막혔어도 꼭 부른다: 기록(6)을 못 한 회차는 end 가 막힘 글과 회차 글을 main 에 올린다 · 주문 2249)
 0. 작업 폴더
    cd ~ && if [ -d atlas-11-jinhwa/.git ]; then git -C atlas-11-jinhwa fetch -q --no-tags origin main && git -C atlas-11-jinhwa checkout -q -B main origin/main; else gh repo clone srt36573657-coder/atlas-11 atlas-11-jinhwa -- --filter=blob:none --no-tags --single-branch --branch main; fi
    (2026-10-22 알림: 이 방에서 gh repo clone 이 막혀(GraphQL 403) 실패하면 이미 받아진 작업 폴더(현재 디렉터리의 atlas-11)를 쓴다. 얕은 복제(shallow)라 밀기 때 「커밋 번호 문」이 막히면 git fetch --unshallow origin main 을 한 번 하고 다시 record 한다.)
    cd ~/atlas-11-jinhwa && git config core.hooksPath scripts/atlas11/hooks && ( [ -d node_modules ] || npm ci --no-audit --no-fund --loglevel=error )
-   node scripts/atlas11/jinhwa/round.mjs --selftest — 실패가 하나라도 있으면 아무것도 넣지 않고 7 로(보고 첫 줄 「실패」).
+   node scripts/atlas11/jinhwa/round.mjs --selftest — 실패가 하나라도 있으면 아무것도 넣지 않고 7 로(보고 첫 줄 「실패」 · 7 의 end 가 자기 시험 실패 줄을 막힘 글로 main 에 올림).
 1. 시작: node scripts/atlas11/jinhwa/round.mjs begin
    본질 파일 해시 · 첫 줄을 읽고(읽었다는 증거로 기록에 남음) 잠금과 맞댄다 · 회차 잠금(한 번에 한 회차) · 열쇠 없는 상태 읽기 · 할 일(plan)을 셈.
    끝 코드 3 = 다른 회차가 돎 → 아무것도 하지 않고 「바쁨」 한 줄로 끝. 1 = 본질 잠금이 맞지 않는 등 → 넣지 않고 7 로.
@@ -57,7 +57,7 @@
    plan.change.kind 가 apply 면: node scripts/atlas11/jinhwa/round.mjs apply --id <plan.change.id>
    revert 면: node scripts/atlas11/jinhwa/round.mjs revert --id <plan.change.id>
    round.mjs 가 하는 것: 넣기 직전 · 밀기 직전 상태를 다시 봄(그새 거두셨으면 안 넣음) · 대안 가지가 만든 그대로인지(지문) · 바뀐 파일 다섯 안 · 지킴 파일 0 · 본질 문(essence_check --diff 지킴 파일 · 일곱 가지 정적 검사에서 지금 main 보다 새로 걸리는 곳 0) · 바뀐 쪽 검사 0 · 모든 쪽 미리 검사 0(atlas11-next-full.yml -f local=true — 같은 코드로 이미 통과한 결과가 있으면 그것) · 다른 올리기(atlas11-site · daily · evening)가 돌면 끝날 때까지 기다림 · main 에 앞으로만 밂(강제 없음).
-   끝 코드 3 = 올리기가 아직 돎 · 검사 결과를 못 기다림 → 다음 회차가 다시 한다. 1 = 넣지 않음(까닭을 보고). 확인 없이 넣는 길은 없다.
+   끝 코드 3 = 올리기가 아직 돎 · 검사 결과를 못 기다림 → 다음 회차가 다시 한다(이 회차는 5 · 6 · 7 을 그대로 함). 1 = 넣지 않음(까닭을 보고 · 5 · 6 · 7 은 그대로). 확인 없이 넣는 길은 없다.
    넣거나 되돌린 회차에는 새 대안을 만들지 않는다. 곧바로 5 · 6 으로 — 업데이트 4분 전(:56)까지 기록이 main 에 들어가야 진화 칸의 「들어감」이 같은 업데이트에 실린다.
 3. plan.next 에 따라 하나만
    finish = 지난 회차가 못 본 미리 검사 결과: node scripts/atlas11/jinhwa/round.mjs finish --wait 3
@@ -74,7 +74,7 @@
        새 한국어 화면 글을 넣으면 커밋하기 전에 반드시 같은 가지에서 node scripts/atlas11/next/i18n/add.mjs "<한국어 틀>" "<영어>" → node scripts/atlas11/next/i18n_build.mjs 를 돌려 en-src.json · site/next/i18n/en.json 도 함께 커밋한다(두 파일도 다섯에 듦 · 영어가 없으면 alt 가 미리 검사 전에 막고 「영어 사전에 없는 화면 글」과 넣을 틀을 알려 준다 — 그 틀 그대로 넣고 다시 alt · 2026-10-18 20:20 첫 회차 대안 셋이 이것으로 모두 떨어짐).
        대안마다: node scripts/atlas11/jinhwa/round.mjs alt-start --n <1|2|3> → 받은 dir 에서 고치고 git -C <dir> commit -am "<이름>" → node scripts/atlas11/jinhwa/round.mjs alt --n <n> --route '#/<보일 쪽>' [--seed <localStorage 열쇠>=<값>] [--steps '<누르기 차례 JSON>']
        바뀐 곳 표시(사장님 2026-10-19 「어디를 고쳤는지 글은 있는데 표기가 없어서 한참 찾아야 해」): alt 는 전후 두 쪽을 끝까지 찍어 다른 곳을 찾고, 그 곳이 화면 위쪽에 오게 내려 찍고, 카드에 금빛 네모와 「바뀐 곳」 크게 보기를 단다. 전후 그림이 같으면 떨어진다 — 결과 화면처럼 눌러야 나오는 곳을 고쳤으면 --steps 로 누르기 차례를 준다. 꼴 = [{"fill":"<css>","text":"<글>"} · {"click":"<css>","nth":0} · {"press":"<css>","key":"Enter"} · {"wait":600}] 20개까지. 매매일지 결과 화면 예: [{"fill":".wy-find","text":"삼성전자"},{"wait":600},{"click":".wy-hit"}, {"click":".wy-opt"} 열한 번, {"click":".wy-quick button"},{"click":".wy-nav .wy-next"}] (마지막 둘을 빼면 팔 약속 쓰는 쪽).
-       alt 가 보는 것: 다섯 · 지킴 · 잣대 신호 · 본질 문(지킴 파일 · 일곱 가지에 새로 걸림 0) · 「큰 것」 까닭 · 더한 화면 글의 쓰지 않을 말(words.js screenHits · 망치는 길 ruinHits · 수익 자랑 · 옛 이름 · 퍼센트) · 다른 대안과 같은 고침 · 바뀐 쪽 검사 0 · 전과 후 그림(360 × 640 · 같은 자료 · 두 그림이 같으면 떨어짐 · 바뀐 곳 네모) · 모든 쪽 미리 검사 시작. 막히면 까닭대로 한 번 고쳐 다시. 그래도 막히면 그 번호는 뺀다(셋이 안 되면 지나간 것만 · 1번이 없으면 올리지 않음).
+       alt 가 보는 것: 다섯 · 지킴 · 잣대 신호 · 본질 문(지킴 파일 · 일곱 가지에 새로 걸림 0) · 「큰 것」 까닭 · 더한 화면 글의 쓰지 않을 말(words.js screenHits · 망치는 길 ruinHits · 수익 자랑 · 옛 이름 · 퍼센트) · 다른 대안과 같은 고침 · 바뀐 쪽 검사 0 · 전과 후 그림(360 × 640 · 같은 자료 · 두 그림이 같으면 떨어짐 · 바뀐 곳 네모) · 모든 쪽 미리 검사 시작. 막히면 까닭대로 한 번 고쳐 다시. 그래도 막히면 그 번호는 뺀다(셋이 안 되면 지나간 것만 · 1번이 없으면 카드를 올리지 않음 — 그래도 5 · 6 · 7 은 한다).
    4-5 카드 글을 debate.json 으로 쓴다(꼴 아래) → node scripts/atlas11/jinhwa/round.mjs cards --debate debate.json
        카드마다([8] 5): 이름 한 줄 · 섬기는 본질 줄(본질 파일 글자 그대로 — 번호 줄이나 ①②③ 마디 · 「…다.」 문장 하나 · 싹 찾기 대안은 1번 줄) · 세 사람 한마디 · 어림 글과 잴 규칙(잣대 셋 가운데 하나만) · 되돌릴 조건 · 사전 부검 한 줄(1년 뒤 이 고침이 실패했다면 왜?) · 「큰 것」이면 위험 두 줄.
        본질 · 돈 · 법 · 개인정보 · 카카오 · 보안 규칙 · 예약 작업 · 새 기능에 닿으면 「큰 것」 꼬리표와 위험 두 줄([8] 8 — 기계가 찾은 까닭이 있으면 big 이 저절로 참).
@@ -84,7 +84,7 @@
 5. 채점: node scripts/atlas11/jinhwa/round.mjs score — 들어간 진화의 어림을 10거래일 뒤 잣대로 매긴다(열쇠 없는 https://aaa7377.com/api/tally/sum · 표본이 30 안 되면 판단하지 않고 모음 · 같은 길이로 늘려 60거래일까지 · 앞뒤 차이가 소음 안이면 「판단 못 함」 · [10] 5 · 6).
 6. 기록: 먼저 위 「기재」대로 reports/atlas11/jinhwa/<회차>-did.md 를 쓴다 → node scripts/atlas11/jinhwa/round.mjs record — 진화 칸 자료 · 그림 · 기록 reports/atlas11/jinhwa/<회차>.json(회차마다 새 파일 · 지우지 않음)을 main 에 앞으로만 밂 → 다음 업데이트가 사이트에 싣는다. 결과의 owner = 사장님께 세 줄 · notice = 알림 한 줄.
    notice 가 비어 있지 않아도(새 대안이 진화 칸에 오름) 이 회차는 알림을 보내지 않는다 — 감시 방이 70분 안에 「🙋 확인 기다림」 카톡으로 알린다(위 「보고는 한 방에서만」 · 사장님 2026-10-22 10:04 「응」).
-7. 끝: node scripts/atlas11/jinhwa/round.mjs end — 막혔어도 언제나(회차 잠금을 풂 · 일 폴더를 지움). 실패해도 이 회차는 알림을 보내지 않는다 — 감시 방이 한 시간 안에 「🚨 고장」 카톡으로 알린다(보고는 한 방에서만). 실패는 보고 첫 줄에 그대로 적는다(숨기지 않음).
+7. 끝: node scripts/atlas11/jinhwa/round.mjs end — 막혔어도 언제나 부른다(회차 잠금을 풂 · 일 폴더를 지움). 6 record 를 못 한 회차(막힘 · record 실패 · 자기 시험 실패)는 먼저 위 「기재」대로 <회차>-did.md 에 막힌 단계와 까닭을 쓰고 end 를 부른다 — end 가 그 글과 도구가 저절로 쓴 「<회차>-blocked.md」(막힌 단계 · 끝 코드 · 까닭 · 지나간 단계 · 못 한 것)를 main 에 새 파일로 올린다(진화 칸 자료 · 그림은 그대로 · 기록 폴더의 새 .md 만 · 주문 2249). end 결과의 notes 에 올린 글 이름이 나온다. 회차를 시작하지 못하고 막혔으면(자기 시험 실패 등) end --why "<까닭 한 줄>" 로 부른다. 실패해도 이 회차는 알림을 보내지 않는다 — 감시 방이 한 시간 안에 「🚨 고장」 카톡으로 알린다(보고는 한 방에서만). 실패는 보고 첫 줄에 그대로 적는다(숨기지 않음).
 
 debate.json 꼴(round.mjs cards 가 맞대 봄)
 {"mode": "subagents", "top": {"kahneman": 2, "munger": 2, "popper": 1},
