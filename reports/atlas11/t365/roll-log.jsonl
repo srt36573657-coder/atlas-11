@@ -485,3 +485,4 @@
 {"at":"2026-11-02T11:04:56.081Z","kst":"2026-11-02 20:04","slot":null,"result":"바꿈","served":"rolled","asOf":"2026-11-02","base":"2026-10-01","in":0,"out":0,"inspectFail":0,"surge":"carry","why":null}
 {"at":"2026-11-02T11:13:40.018Z","kst":"2026-11-02 20:13","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-02","base":"2026-10-01","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
 {"at":"2026-11-02T13:05:07.718Z","kst":"2026-11-02 22:05","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-02","base":"2026-10-01","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
+{"at":"2026-11-02T13:13:56.389Z","kst":"2026-11-02 22:13","slot":null,"result":"그대로","served":"rolled","asOf":"2026-11-02","base":"2026-10-01","in":0,"out":0,"inspectFail":0,"surge":"carry","why":"새 값 없음 — 앞 회차와 같은 값으로 다시 만듦"}
