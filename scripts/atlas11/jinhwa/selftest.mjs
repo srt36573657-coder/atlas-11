@@ -370,6 +370,48 @@ test('㉒ 회차 잠금 — 지우기를 안 받는 원격(Claude 예약 방 git
   } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
 });
 
+test('㉔ 얹기 — 끝 줄이 빈 맥락 줄인 조각도 지금 main 위에 얹힘 · 일 폴더의 꾸러미 길은 git add -A 에 안 잡힘(05:30 회차 · 주문 0556)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'jh-ap-'));
+  try {
+    const r = path.join(tmp, 'r'), wt = path.join(tmp, 'wt'), f = 'site/next/p-x.js';
+    sh(tmp, 'git', ['init', '-q', '-b', 'main', r]); fs.mkdirSync(path.join(r, 'site/next'), {recursive: true});
+    fs.writeFileSync(path.join(r, '.gitignore'), 'node_modules/\n');
+    fs.writeFileSync(path.join(r, f), 'one\ntwo\nthree\nfour\n\nfive\n'); // 「two」를 바꾸면 뒤 맥락 셋 = three · four · 빈 줄 → 조각의 끝 줄이 「 」 하나
+    sh(r, 'git', ['add', '-A']); sh(r, 'git', ['commit', '-qm', '바탕']);
+    sh(r, 'git', ['checkout', '-qb', 'alt']); fs.writeFileSync(path.join(r, f), 'one\nTWO\nthree\nfour\n\nfive\n'); sh(r, 'git', ['commit', '-qam', '대안']);
+    const alt = sh(r, 'git', ['rev-parse', 'HEAD']);
+    sh(r, 'git', ['checkout', '-q', 'main']); fs.writeFileSync(path.join(r, 'other.txt'), 'x\n'); sh(r, 'git', ['add', '-A']); sh(r, 'git', ['commit', '-qm', 'main 이 앞섬']);
+    const main = sh(r, 'git', ['rev-parse', 'HEAD']);
+    const raw = G.git(r, ['diff', '--no-renames', '--binary', '--full-index', `${main}~1`, alt], {raw: true}).out;
+    ok(raw.endsWith('\n \n'), '시험 조각의 끝 줄이 빈 맥락 줄이어야 함 ' + JSON.stringify(raw.slice(-12)));
+    ok(G.git(r, ['diff', `${main}~1`, alt]).out.endsWith('four'), '깎는 셈(옛 길)은 끝 빈 줄을 잃음');
+    fs.mkdirSync(path.join(r, 'node_modules'), {recursive: true}); fs.writeFileSync(path.join(r, 'node_modules', 'k.js'), '');
+    ok(G.worktreeAdd(r, wt, main).ok, '일 폴더');
+    ok(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), '꾸러미 길이 이어짐');
+    const ap = G.applyOnto(wt, alt, main, '다시 시험');
+    ok(ap.ok, '얹기 ' + JSON.stringify(ap));
+    eq(fs.readFileSync(path.join(wt, f), 'utf8'), 'one\nTWO\nthree\nfour\n\nfive\n', '얹은 뒤 파일');
+    sh(wt, 'git', ['add', '-A']);
+    eq(sh(wt, 'git', ['status', '--porcelain']), '', '꾸러미 길은 git 이 안 봄(add -A 뒤에도 바뀐 것 없음)');
+    eq(sh(wt, 'git', ['show', '--name-only', '--format=', 'HEAD']), f, '얹은 커밋에는 대안 파일 하나만');
+    G.worktreeRemove(r, wt);
+  } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
+});
+
+test('㉕ 되살림 — 앞 회차가 내린 대안도 뒤 회차 다시 시험이 지나가면 「내려감」을 거둠 · 그 뒤 사장님 확인은 받음 · 지나가지 못하면 그대로 내려감(주문 0556)', () => {
+  const X = ID(1), made = madeRec([X]);
+  const drop = rec('20261019-1100', {dropped: [{id: X, why: '지금 main 위에 얹으면 부딪힘 error: corrupt patch at line 55'}]});
+  ok(/corrupt patch/.test(L.memoryOf([made, drop]).get(X).dropped ?? ''), '앞 회차가 내림');
+  const back = rec('20261019-1300', {retested: [{id: X, ok: true, sha: 'b'.repeat(40), preview: {state: 'pass'}}]});
+  eq(L.memoryOf([made, drop, back]).get(X).dropped, undefined, '다시 시험이 지나가면 거둠');
+  const fail = rec('20261019-1300', {retested: [{id: X, ok: false, why: ['부딪힘']}], dropped: [{id: X, why: '부딪힘'}]});
+  ok(L.memoryOf([made, drop, fail]).get(X).dropped, '못 지나가면 그대로 내려감');
+  const conf = st([{id: X, state: 'confirmed', at: null}]);
+  eq(L.planRound({data: data({waiting: [card(X, {pick: true})]}), status: conf, records: [made, drop]}).change, null, '되살리기 전 확인은 「내려간 대안」');
+  const p = L.planRound({data: data({waiting: [card(X, {pick: true})]}), status: conf, records: [made, drop, back]});
+  eq(p.change?.id, X, '되살린 뒤 확인은 넣기로 ' + JSON.stringify(p.ignored));
+});
+
 test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · 본질 문 없음은 막힘) → 카드 → 미리 검사 → 기록(진화 칸 자료 · 그림 · 새 기록 파일)', async ctx => {
   const {work} = ctx.repo, run = path.join(ctx.tmp, 'run');
   const D = fakeDeps({work, run, now: '2026-10-19T00:30:00Z', status: {items: []}});

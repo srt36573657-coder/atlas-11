@@ -13,9 +13,11 @@ import {REPO, SITE, LOCK_BRANCH, LOCK_STALE_MIN, DEPLOY_WORKFLOWS, DATA_FILE, IM
 export const sleepSync = ms => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, Math.max(0, ms));
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
 /** 명령 하나 — {ok, code, out, err} */
-export function run(cmd, args, {cwd, timeout = 180e3, input, env} = {}) {
+export function run(cmd, args, {cwd, timeout = 180e3, input, env, raw = false} = {}) {
   const r = spawnSync(cmd, args, {cwd, encoding: 'utf8', timeout, input, maxBuffer: 256 << 20, env: {...process.env, GIT_TERMINAL_PROMPT: '0', ...env}});
-  return {ok: r.status === 0, code: r.status ?? -1, out: String(r.stdout ?? '').replace(/\s+$/, ''), err: String(r.stderr ?? r.error?.message ?? '').trim()};
+  // raw = 나온 글 그대로(조각 · patch 는 끝 빈 칸도 뜻이 있음 — 끝 공백을 깎으면 마지막 빈 맥락 줄 「 」이 사라져 git apply 가 「corrupt patch」 · 05:30 회차가 대안 둘을 버린 까닭 · 주문 0556)
+  const so = String(r.stdout ?? '');
+  return {ok: r.status === 0, code: r.status ?? -1, out: raw ? so : so.replace(/\s+$/, ''), err: String(r.stderr ?? r.error?.message ?? '').trim()};
 }
 const ID_ENV = {GIT_AUTHOR_NAME: 'Claude', GIT_AUTHOR_EMAIL: 'noreply@anthropic.com', GIT_COMMITTER_NAME: 'Claude', GIT_COMMITTER_EMAIL: 'noreply@anthropic.com'};
 export const git = (cwd, args, o = {}) => run('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', '-c', 'core.quotepath=false', ...args], {cwd, ...o, env: {...ID_ENV, ...(o.env ?? {})}});
@@ -177,7 +179,21 @@ export function worktreeAdd(cwd, dir, ref, {branch} = {}) {
   if (!r.ok) return {ok: false, why: '일 폴더를 못 만듦 ' + short(r.err)};
   const nm = path.join(cwd, 'node_modules'), to = path.join(dir, 'node_modules');
   if (fs.existsSync(nm) && !fs.existsSync(to)) { try { fs.symlinkSync(fs.realpathSync(nm), to, 'dir'); } catch { /* 없어도 git 셈은 됨 */ } }
+  excludeNodeModules(cwd);
   return {ok: true};
+}
+/** 꾸러미 길(node_modules)을 git 이 안 보게 — .gitignore 의 「node_modules/」는 폴더만 맞아 이어 놓은 길(symlink)은 못 막음
+ *  → 03:31 회차 대안 2 커밋에 node_modules 길이 섞여 카드에서 빠짐(주문 0224 남은 일 · 주문 0556) · 모든 일 폴더가 함께 쓰는 info/exclude 에 「/node_modules」(길 · 폴더 모두) */
+export function excludeNodeModules(cwd) {
+  try {
+    const common = git(cwd, ['rev-parse', '--git-common-dir']).out.trim();
+    if (!common) return;
+    const f = path.join(path.isAbsolute(common) ? common : path.join(cwd, common), 'info', 'exclude');
+    const cur = fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '';
+    if (cur.split('\n').some(l => l.trim() === '/node_modules')) return;
+    fs.mkdirSync(path.dirname(f), {recursive: true});
+    fs.writeFileSync(f, cur + (cur && !cur.endsWith('\n') ? '\n' : '') + '/node_modules\n');
+  } catch { /* 못 적어도 회차는 이어 감 — 대안 파일 맞대기(fileCheck)가 남은 문 */ }
 }
 export function worktreeRemove(cwd, dir) { git(cwd, ['worktree', 'remove', '--force', dir]); fs.rmSync(dir, {recursive: true, force: true}); git(cwd, ['worktree', 'prune']); }
 /** base..head 바뀐 것 — {files: [{path, status}], numstat: [{path, add, del}], patch(-U0)} */
@@ -191,9 +207,9 @@ export function diffInfo(cwd, base, head) {
 export function applyOnto(wt, ref, onto, message) {
   const mb = git(wt, ['merge-base', onto, ref]).out.trim();
   if (!/^[0-9a-f]{40}$/.test(mb)) return {ok: false, why: '가지와 main 의 바탕을 못 찾음'};
-  const patch = git(wt, ['diff', '--no-renames', '--binary', '--full-index', mb, ref]);
+  const patch = git(wt, ['diff', '--no-renames', '--binary', '--full-index', mb, ref], {raw: true}); // 그대로 — 끝 빈 맥락 줄을 깎으면 「corrupt patch」(주문 0556)
   if (!patch.ok || !patch.out.trim()) return {ok: false, why: '가지에 바뀐 것이 없음'};
-  const a = git(wt, ['apply', '--3way', '--index', '--whitespace=nowarn'], {input: patch.out + '\n'});
+  const a = git(wt, ['apply', '--3way', '--index', '--whitespace=nowarn'], {input: patch.out.endsWith('\n') ? patch.out : patch.out + '\n'});
   if (!a.ok) { git(wt, ['reset', '-q', '--hard', onto]); return {ok: false, why: '지금 main 위에 얹으면 부딪힘 ' + short(a.err, 120)}; }
   if (git(wt, ['diff', '--cached', '--name-only', '--diff-filter=U']).out.trim()) { git(wt, ['reset', '-q', '--hard', onto]); return {ok: false, why: '지금 main 위에 얹으면 부딪힘'}; }
   const c = git(wt, ['commit', '-q', '--no-verify', '-m', message]);
