@@ -185,7 +185,7 @@ try {
       const head = W?.head ?? null;
       check(JSON.stringify(H.h1) === JSON.stringify(head ? head.ko : DEF.h1), `${tag} 머리 = 자료`, H.h1.join(' / '));
       check(JSON.stringify(H.keys) === JSON.stringify(head ? head.keys.ko : DEF.keys), `${tag} 칸 이름 = 자료`, H.keys.join(' / '));
-      check(H.order.slice(0, 4).join() === 'nh-pm,nh-h1,nh-no,nh-fm', `${tag} 차례 = 번호 · 머리 · 권하지 않습니다 · 돈 흐름 판`, H.order.join());
+      check(H.order.slice(0, 5).join() === 'nh-pm,nh-h1,nh-no,nh-two,nh-fm', `${tag} 차례 = 번호 · 머리 · 권하지 않습니다 · 두 칸(꽃 · 돈 · 주문 1538) · 돈 흐름 판`, H.order.join());
       check(/사고팔기를 권하지 않습니다/.test(H.no ?? '') && H.noR && H.noR.b <= H.fold, `${tag} 「권하지 않습니다」 첫 한 화면 안`, `${H.noR?.b} > ${H.fold}`);
       check(H.items[0]?.lR && H.items[0].lR.b <= H.fold, `${tag} 첫 몰린 곳 「왜?」 첫 한 화면 안`, `${H.items[0]?.lR?.b} > ${H.fold}`);
     } else if (W?.head) check(JSON.stringify(H.h1) === JSON.stringify(W.head.en) && JSON.stringify(H.keys) === JSON.stringify(W.head.keys.en), `${tag} 머리 · 칸 이름 = 자료 영어`, H.h1.concat(H.keys).join(' / '));
@@ -350,7 +350,7 @@ try {
     if (!B) check(false, tag, '여는 동안 칸이 없음');
     else {
       const fin = R.m.hero390;
-      check(JSON.stringify(B.h1) === JSON.stringify(DEF.h1) && B.order.slice(0, 4).join() === 'nh-pm,nh-h1,nh-no,nh-fm', `${tag} 머리 · 차례`, B.h1.join(' / ') + ' · ' + B.order.join());
+      check(JSON.stringify(B.h1) === JSON.stringify(DEF.h1) && B.order.slice(0, 5).join() === 'nh-pm,nh-h1,nh-no,nh-two,nh-fm', `${tag} 머리 · 차례(두 칸 · 주문 1538)`, B.h1.join(' / ') + ' · ' + B.order.join());
       check(B.items.length === FLOW_N && B.items.every(x => x.cls.includes('y11-i')), `${tag} 몰린 곳 자리 ${FLOW_N}`, B.items.map(x => x.cls).join(','));
       check(fin && near(B.noR?.t, fin.no?.t) && B.items.every((x, k) => near(x.r?.t, fin.items[k]?.[1]) && near(x.r?.h, fin.items[k]?.[2])), `${tag} 자리 = 다 그린 칸(1px 안 · 밀림 0)`, `${B.noR?.t}+${B.noR?.h}/${fin?.no?.t}+${fin?.no?.h} · ${B.items.map(x => `${x.r?.t}+${x.r?.h}`)} · ${fin?.items.map(x => `${x[1]}+${x[2]}`)}`);
     }

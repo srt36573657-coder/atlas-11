@@ -54,6 +54,34 @@ export function coZoneOf(a, M, T) {
   return {x, y, z: zoneOf(x, y)};
 }
 
+/** 업종 안에서 돈이 가장 많이 몰린 회사(사장님 2026-11-02 10:38(+04) 주문 1538 「돈이 몰린 종목 업종을 … 첫화면에」 · docs/design/home-two-2026-11-02/order-1538.txt ②)
+ *  거래 대금 자료가 없어 종가와 몸값으로만 셈 — 한 달(T − 20 ~ T) 동안 몸값이 원으로 가장 많이 는 회사 하나
+ *  는 몸값(억 원) = (close(T) − close(T − 20)) × 주식 수 · 주식 수 = 몸값(caps · cond.json 억 원) ÷ 마지막 종가(bloomOf 의 sh 와 같은 셈)
+ *  셀 수 없음 = ① close(T) · close(T − 20) 가운데 빈 것 ② 몸값 없음 ③ T − 19 ~ T 에 하루 |r| ≥ 0.35 인 날(bloomOf J 와 같은 잣대) ④ 스물한 날 종가가 모두 같음(멈춤 — bloomOf E 와 같은 잣대)
+ *  가장 많이 는 회사 · 같으면 번호 작은 쪽 · 가장 많이 는 값이 0 이하이거나 셀 회사가 없으면 null → [번호, 이름, 는 몸값(억 원 · 정수)] */
+export function leadOf(cs, closes, companies, caps, T) {
+  const k = RULE.win;
+  if (T - k < 0) return null;
+  let best = null, bg = 0;
+  for (const c of cs) {
+    const a = closes.get(c);
+    if (!a || !ok(a[T]) || !ok(a[T - k])) continue;
+    const cap = Number(caps.get(c));
+    if (!Number.isFinite(cap) || cap <= 0) continue;
+    let jump = false, same = 0;
+    for (let s = T - k + 1; s <= T; s++) {
+      if (!ok(a[s - 1]) || !ok(a[s])) continue;
+      if (Math.abs(a[s] / a[s - 1] - 1) >= RULE.jump) { jump = true; break; }
+      if (a[s] === a[s - 1]) same++;
+    }
+    if (jump || same === k) continue;
+    let last = 0; for (let t = a.length - 1; t >= 0; t--) if (ok(a[t])) { last = a[t]; break; }
+    const g = (a[T] - a[T - k]) * (cap / last);
+    if (g > bg || (best !== null && g === bg && c < best)) { best = c; bg = g; }
+  }
+  return best === null ? null : [best, companies[best]?.n ?? best, Math.round(bg)];
+}
+
 /** 싹 순서(결정표 4) — 점 수 → y → 이름 */
 export const sproutCmp = (a, b) => b.sc - a.sc || (b._y ?? b.y) - (a._y ?? a.y) || (a.n < b.n ? -1 : a.n > b.n ? 1 : 0);
 
@@ -97,13 +125,13 @@ export function computeTheme({dates, closes, companies, industries, groups = [],
       _x: x, _y: y, n: u.n, g: gOf.get(u.n) ?? null, gn: gName.get(gOf.get(u.n)) ?? null, k: cs.length, z, x: r2(x), y: r2(y), d, t: tail, tz,
       dots: D0.dots.map(Number), sc: D0.dots.filter(Boolean).length, up: D0.up, tot: D0.tot, sp: series, sp5: series[series.length - 6], peak: Math.max(...series),
       bigAvg: r2(D0.bigAvg == null ? NaN : D0.bigAvg * 100), m10: r2((I[T] / I[T - RULE.back] - 1) * 100), A5: r2((I[T - 5] / I[T - 10] - 1) * 100), B5: r2((I[T] / I[T - 5] - 1) * 100),
-      big, top, ranked: rows.length,
+      big, top, ranked: rows.length, lead: leadOf(cs, closes, companies, caps, T),
     };
   });
   const by = z => inds.filter(i => i.z === z);
   const sprout = by('S').sort(sproutCmp), bloom = by('B').sort((a, b) => b._x - a._x || (a.n < b.n ? -1 : 1)), wilt = by('W').sort((a, b) => a._y - b._y || (a.n < b.n ? -1 : 1)), quiet = by('Q').sort((a, b) => b._y - a._y || (a.n < b.n ? -1 : 1));
   const record = recordOf(U, M, T);
-  const lite = i => ({n: i.n, g: i.g, gn: i.gn, k: i.k, z: i.z, x: i.x, y: i.y, d: i.d, t: i.t, tz: i.tz, dots: i.dots, sc: i.sc, up: i.up, tot: i.tot, sp: i.sp, sp5: i.sp5, peak: i.peak, bigAvg: i.bigAvg, m10: i.m10, A5: i.A5, B5: i.B5});
+  const lite = i => ({n: i.n, g: i.g, gn: i.gn, k: i.k, z: i.z, x: i.x, y: i.y, d: i.d, t: i.t, tz: i.tz, dots: i.dots, sc: i.sc, up: i.up, tot: i.tot, sp: i.sp, sp5: i.sp5, peak: i.peak, bigAvg: i.bigAvg, m10: i.m10, A5: i.A5, B5: i.B5, lead: i.lead}); // lead = 돈이 가장 많이 몰린 회사 [번호, 이름, 한 달 동안 는 몸값(억 원)] · 없으면 null(leadOf · 2026-11-02 주문 1538)
   const theme = {
     schema: THEME_SCHEMA, made, asOf: dates[T], from20: dates[T - RULE.win], days6: dates.slice(T - RULE.tail + 1), recFrom: dates[RULE.recFrom], recTo: dates[T - RULE.recAhead], provisional: !!provisional, rule: RULE,
     count: {S: sprout.length, B: bloom.length, W: wilt.length, Q: quiet.length, real: sprout.filter(i => i.sc === 4).length, fresh: sprout.filter(i => i.d === 1).length},

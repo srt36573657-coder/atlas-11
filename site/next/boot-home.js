@@ -45,9 +45,13 @@ if (isHome && v && boot) {
     if (at) { const re = el('button', 'nh-sallr', '처음부터'); re.type = 'button'; row.append(re); wrap.append(el('p', 'nh-sallc', '멈춘 곳: ' + SN[at])); }
     fm.append(wrap);
   }
+  // 첫 화면 두 칸(사장님 2026-11-02 10:38(+04) 「꽃이 될 종목과 돈이 몰린 종목 업종을 두가지로 나누어 첫화면에」 · 주문 1538) — 다 그린 칸(home-new.js twoBox)과 같은 틀 · 같은 높이(이름 줄 두 줄 자리 · 이름은 자료가 와야)
+  const two = el('div', 'nh-two'); two.setAttribute('role', 'group'); two.setAttribute('aria-label', '꽃이 될 종목과 돈이 몰린 종목');
+  const tw = (k, t, tag) => { const a = el(tag, 'nh-tw nh-tw-' + k), hd = el('span', 'nh-twh'); hd.append(hid(el('i', 'nh-twi nh-twi-' + k)), el('b', 'nh-twk', t), hid(el('i', 'nh-twg', '›'))); a.append(hd, el('span', 'nh-twn')); return a; };
+  const tb = tw('bl', '꽃이 될 종목', 'a'); tb.href = '#/t/picks'; const tm = tw('mo', '돈이 몰린 종목', 'button'); tm.type = 'button'; two.append(tb, tm);
   const go = el('button', 'nh-go nh-gopick'); go.type = 'button'; go.append(el('span', null, '지난 기록으로 고른 회사 보기'), hid(el('i', null, '›')));
   const door = el('div', 'nh-door'); door.append(go);
-  sec.append(pm, h2, el('p', 'nh-no', '앞날을 맞히거나 사고팔기를 권하지 않습니다.'), fm, door);
+  sec.append(pm, h2, el('p', 'nh-no', '앞날을 맞히거나 사고팔기를 권하지 않습니다.'), two, fm, door);
   const wrap = el('div', 'boot nh-bootw'); wrap.setAttribute('aria-busy', 'true'); wrap.append(sec);
   boot.replaceWith(wrap);
 }

@@ -12,11 +12,18 @@ import {fileURLToPath} from 'node:url';
 import {computeTheme} from '../../../../site/next/theme-engine.js';
 
 const J = async f => JSON.parse(await fs.readFile(f, 'utf8'));
-/** 첫 화면 칸 자료 — 시계 점(이름 · 자리 · x · y)과 싹 앞 셋의 꼬리 · 점 넷 · 며칠째 · 세 칸 수 · 성적표만(theme.json 의 같은 값 그대로) */
+/** 첫 화면 칸 자료 — 시계 점(이름 · 자리 · x · y)과 싹 앞 셋의 꼬리 · 점 넷 · 며칠째 · 세 칸 수 · 성적표만(theme.json 의 같은 값 그대로)
+ *  돈이 몰린 곳 셋(첫 화면 ① · home-new.js flowRows 와 같은 고르기 — x 가 있는 업종을 x 큰 차례로 줄 세워 x > 0 인 앞 셋)에만 lead(그 업종에서 돈이 가장 많이 몰린 회사 · theme.json 의 같은 값 · 2026-11-02 주문 1538) */
+const FLOW_N = 3; // home-new.js FLOW_N 과 같은 수
 export function homeOf(theme) {
   const top = theme.order.S.slice(0, 3);
+  const flow = new Set(theme.inds.filter(i => Number.isFinite(i.x) && typeof i.n === 'string').sort((a, b) => b.x - a.x).filter(i => i.x > 0).slice(0, FLOW_N).map(i => i.n));
   return {schema: 'dori-theme-1-home', made: theme.made, asOf: theme.asOf, provisional: theme.provisional, recFrom: theme.recFrom, recTo: theme.recTo, count: theme.count, order: {S: top}, record: theme.record,
-    inds: theme.inds.map(i => (top.includes(i.n) ? {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y, d: i.d, t: i.t, dots: i.dots, sc: i.sc} : {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y}))}; // g = 큰 업종 무리(시계 행성 사진 — 2026-10-20 22:17)
+    inds: theme.inds.map(i => {
+      const o = top.includes(i.n) ? {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y, d: i.d, t: i.t, dots: i.dots, sc: i.sc} : {n: i.n, g: i.g, z: i.z, x: i.x, y: i.y}; // g = 큰 업종 무리(시계 행성 사진 — 2026-10-20 22:17)
+      if (flow.has(i.n)) o.lead = i.lead ?? null;
+      return o;
+    })};
 }
 /* 싹 달력 지킨 기록(사장님 2026-10-22 11:55 「제시만 해가지고 기록이 없으면 그건 하수야」) — 그날 장 마감 때 처음 셈한 세 곳을 날마다 한 줄 남김 · 한 번 적은 날은 바꾸지 않음
    올리기 작업(atlas11-site.yml · package.mjs keepCal)만 씀 → 그 작업이 reports/ 를 저장소에 넣음 · 장중 값(provisional)인 마지막 날은 아직 안 적음 · 검사 · 시험 · 손 셈은 읽기만 */

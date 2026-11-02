@@ -603,7 +603,7 @@ async function vHomeAll() {
   const news = watched && TH ? await import('/next/theme-watch.js').then(m => m.noticeBox(TH)).catch(() => null) : null;
   const ess = essenceBox(false); ess.classList.add('w-ess'); ess.setAttribute('data-w', 'ess'); // 본질 세 줄 그대로(essence.js · 본질 문 ②) — 맨 아래 공식 안내 칸 안
   const thumb = quickReturn(h('div', {class: 's-thumb'}, findBox())); // 아래 단추 바로 위에 붙음(stone.css sticky · 찾은 줄이 뜨면 풀림)
-  const hero = heroBox(TH, W); hero.id = 'nh-p1';
+  const hero = heroBox(TH, W, B); hero.id = 'nh-p1'; // B = 꽃 될 회사 오늘(첫 화면 두 칸 ① · 2026-11-02 주문 1538)
   // 바보도 한눈에(사장님 2026-10-29 12:45 ~ 13:33 「요즘 주식판을 한눈에 · 헷갈리게 글을 적는 것 모두 빼 · 분명한 이야기만」 · docs/design/babo-2026-10-29/order-1245.txt · brief.md)
   // ① 돈 흐름(맨 위 · 돈이 몰린 곳 셋 · 빠진 곳 셋) → ② 고른 회사(오늘 맞은 회사 · 100곳 중 몇 곳 · 최근 두 달) → 업종 점 그림 → 오늘 시장 → ③ 묻기(질문 11개 · 「왜 사?」 시작하기) → ④ 돌아보기(한 달 뒤 · 한 달 된 기록 줄)
   const nodes = [hero, recordBox(B), mapBox(TH, news), mktBox(band.el, newsBox(H), H), partDo(), // 코스피 · 코스닥 석 달 · 사고판 돈은 home.json

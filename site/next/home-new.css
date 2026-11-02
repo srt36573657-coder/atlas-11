@@ -454,6 +454,21 @@ html.home #view .nh-fl-up .nh-fr > b { color: #B4123A; }
 html.home #view .nh-fl-dn .nh-fr > b { color: #1A55B0; }
 html.home #view .nh-fc { margin: 2px 0 0; font-size: 17px; line-height: 1.45; color: #5E3446; }
 html.home #view .nh-hero .nh-door { margin-top: 2px; }
+/* 첫 화면 두 칸(사장님 2026-11-02 10:38(+04) 「꽃이 될 종목과 돈이 몰린 종목 업종을 두가지로 나누어 첫화면에 · 잡스라면」 · 주문 1538) — 칸 둘 위아래 · 이름 줄은 두 줄 자리(여는 동안 칸과 같은 높이)
+   빨간 글은 숫자 글만(check_white ④) — 칸 표시는 글이 아니라 동그라미 · 세모(꽃 = 초록 동그라미 · 돈 = 몰린 곳 세모와 같은 빛) · 누르는 칸 48px 위 */
+html.home #view .nh-two { display: grid; gap: 8px; }
+html.home #view .nh-tw { display: grid; gap: 4px; width: 100%; box-sizing: border-box; min-height: 48px; margin: 0; padding: 10px 12px; border-radius: 18px; background: #FFFFFF; border: 1px solid #9E5A78; color: #2A1420; font: inherit; text-align: left; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html.home #view .nh-twh { display: flex; align-items: center; gap: 6px; min-height: 28px; }
+html.home #view .nh-twi { flex: none; display: block; width: 14px; height: 14px; }
+html.home #view .nh-twi-bl { border-radius: 50%; background: #1E8C4E; }
+html.home #view .nh-twi-mo { width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 12px solid #B4123A; }
+html.home #view .nh-twk { font-size: 19px; font-weight: 900; line-height: 28px; color: #2A1420; }
+html.home #view .nh-twc { font-size: 17px; font-weight: 700; line-height: 28px; color: #5E3446; white-space: nowrap; }
+html.home #view .nh-twg { margin-left: auto; flex: none; font-style: normal; font-size: 24px; line-height: 1; color: #5E3446; }
+html.home #view .nh-twn { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; min-height: 56px; font-size: 21px; font-weight: 800; line-height: 28px; color: #2A1420; word-break: keep-all; overflow-wrap: anywhere; }
+html.home #view .nh-twn b { display: inline-block; font-weight: 900; } /* 이름마다 제 칸(inline-block) — 다 그린 뒤 이름 두 줄이 한 덩이로 「가장 큰 그림」이 되어 늦게 잡히지 않게(check_white ③ 느린 4G 2.5초) */
+html.home #view .nh-twd { color: #5E3446; font-weight: 700; }
+html.home #view .nh-twe { font-size: 19px; font-weight: 700; color: #5E3446; }
 /* 스승 한 줄 — 동그라미 첫 글자 · 이름 · 한 문장(지어낸 따옴말 아님 · brief.md 출처) */
 html.home #view .nh-sage { display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 10px; align-items: center; margin: 4px 0 0; font-size: 17px; line-height: 1.4; color: #2A1420; }
 html.home #view .nh-sage i { grid-row: 1 / span 2; align-self: start; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #F7D4DE; color: #7A1238; font-style: normal; font-size: 17px; font-weight: 900; }
