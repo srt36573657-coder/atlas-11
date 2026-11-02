@@ -39,6 +39,7 @@
 저장소 · 때 · 도구
 - 저장소 srt36573657-coder/atlas-11 · 시각은 한국 시각: TZ=Asia/Seoul date '+%Y-%m-%d %H:%M'
 - 회차 도구: node scripts/atlas11/jinhwa/round.mjs <명령> — 결과는 표준 출력에 JSON 한 줄(ok · why …) · 끝 코드 0 했음 · 1 막음 · 2 차례가 아님 · 3 바쁨(다음 회차)
+  명령은 한 번에 하나씩 — 앞 명령이 끝난 뒤 다음을 부른다(함께 부르면 회차 상태가 서로 덮인다 · 2026-11-03 서울 01:56 회차 대안 2 · 3 이 이것으로 검사에 못 들어감).
 - 확인 상태는 열쇠 없는 읽기 주소 https://aaa7377.com/api/jinhwa/status 로 번호 · 상태만 읽는다(round.mjs 가 읽음). 사장님 열쇠 · 깃허브 열쇠를 사이트나 파일에 두지 않는다([9] 8).
   이 방의 바깥 길이 aaa7377.com 을 막으면(2026-10-18 막힘 확인) round.mjs 가 깃허브 작업 atlas11-jinhwa-read.yml 을 불러 깃허브 실행기에서 같은 두 주소를 열쇠 없이 읽어 온다(1분쯤). 둘 다 못 읽으면 「확인 상태를 못 읽음」 — 아무것도 넣지 않는다.
 - 진화 칸 = 사장님 열쇠 기기에서만 열리는 쪽 #/jinhwa · 자료 site/next/data/jinhwa.json(이 회차가 씀) · 그림 site/next/data/jinhwa/<번호>-before.png · -after.png
