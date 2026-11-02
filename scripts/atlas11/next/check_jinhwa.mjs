@@ -6,7 +6,7 @@
 //   ① 모든 사람(사장님 2026-10-18 22:46 「모든 사람들」 · 일꾼 KM — 옛 「문 밖 0」 잣대를 바꿈): 열쇠 없음 · 깊은 주소 · 짧은 · 틀린 열쇠 · 서버가 「아님」(403 · 404) · 못 닿음 · 위 막대 「진화」 단추
 //      → 진화 쪽이 열림(publicOpens = n/n) · 확인 · 거두기 · 되돌리기 단추 · 보유종목 「진화 칸」 줄 · 잣대 셋 0(offDeviceButtons = 0) · 열쇠 없는 기기는 /api/jinhwa 물음 0
 //      위 막대 「진화」 단추 = 320 · 360 · 390 × 한국어 · 영어 — 44 × 44 · 17px · 겹침 · 옆 넘침 0 · 로고 한 줄
-//   ② 모든 사람 화면(시험 자료 · 열쇠 없음): 「골똘이 진화」 · 본질 첫 줄 · 「진화 n번째」 · 카드 차례(들어간 것 새 날짜부터 → 확인을 기다리는 것) · 「확인을 기다려요」 · 「n월 n일 들어감」 · 저절로 글 0
+//   ② 모든 사람 화면(시험 자료 · 열쇠 없음): 「골똘이 진화」 · 본질 첫 줄 · 「진화 n번째」 · 카드 차례(확인을 기다리는 것 → 들어간 것 새 날짜부터 · 주문 0556) · 「확인을 기다려요」 · 「n월 n일 들어감」 · 저절로 글 0
 //      카드마다 이름 · 전후 그림(못 받으면 「그림 없음」) · 섬기는 본질 · 세 사람 · 어림 · 접은 「자세히」 · 10거래일 채점 · 「›」 넘기기 · #/jinhwa/<번호> · 접은 「숫자로 보기」(수만) · 고친 고장 · 360×640 첫 화면
 //      사장님 열쇠 기기(시험 서버만): 같은 카드 + 확인 → 「확인함 · 다음 업데이트 ○시에 들어가요」(slotPlan) · 거둠 · 둘째 확인 다음 업데이트 · 되돌리기 → revert · kept · 잣대 셋(30 아래 「모으는 중」 · 참고 접힘)
 //      빈 자료 · 자료 못 받음 · 상태 못 받음(단추 잠김) · 합계 못 받음 「?」 · 세 폭 · 영어(모든 사람 · 사장님 기기) 남은 한글 0 · 17px · 44px · 넘침 0 · 보유종목 「진화 칸」 줄(사장님 기기만)
@@ -219,21 +219,21 @@ else {
   };
   const want = async (items, sets) => { const t = Date.now(); return [t, t - 15e3].map(now => { const plan = slotPlan(items, now, sets); return id => slotLabel(id.includes('-a') ? 'revert' : 'confirm', plan.get(id) ?? null, now); }); };
   const setsOf = d => ({waiting: new Set(d.waiting.map(w => w.id)), applied: new Set(d.applied.filter(a => !a.reverted).map(a => a.id))});
-  const ORDER = [A2, A10, A20, W1, W2, W3]; // 들어간 것(새 날짜부터 · 되돌린 것도 그 자리) → 확인을 기다리는 것(자료 차례)
+  const ORDER = [W1, W2, W3, A2, A10, A20]; // 확인을 기다리는 것(새 진화 · 자료 차례) → 들어간 것(새 날짜부터 · 되돌린 것도 그 자리) — 사장님 2026-11-03 「이 자리에 진화 내용을 기재 해야지」(주문 0556)
   try {
     await setData(FIX);
     // ② 모든 사람(열쇠 없음) — 같은 자료 · 카드 차례 · 단추 0 · 잣대 셋 0 · 위험 · 검사 줄 0 · 「확인을 기다려요」 · 「n월 n일 들어감」 · 숫자로 보기(접힘)
     let {ctx, p} = await keyPage({key: null});
     let M = await p.evaluate(MODEL);
-    check(M.h1 === NEW_NAME + ' 진화' && M.ess === ESS && M.essKo === 'ko' && M.n === `진화 ${FIX.n}번째`, '맨 위 = 「수르 진화」 · 본질 첫 줄(자료 글 그대로) · 「진화 n번째」', `${M.h1} · ${M.ess} · ${M.n}`);
+    check(M.h1 === NEW_NAME + ' 진화' && M.ess === ESS && M.essKo === 'ko' && M.n === `진화 ${FIX.n + 1}번째`, '맨 위 = 「수르 진화」 · 본질 첫 줄(자료 글 그대로) · 「진화 n번째」 = 맨 앞 카드(새 진화 = 들어간 수 + 1)', `${M.h1} · ${M.ess} · ${M.n}`);
     check(M.title === '진화 · ' + NEW_NAME, '창 제목', `「${M.title}」`);
-    check(JSON.stringify(M.cards.map(c => c.id)) === JSON.stringify(ORDER), '카드 차례 = 들어간 것(새 날짜부터) → 확인을 기다리는 것', M.cards.map(c => c.id).join());
+    check(JSON.stringify(M.cards.map(c => c.id)) === JSON.stringify(ORDER), '카드 차례 = 확인을 기다리는 것(새 진화) → 들어간 것(새 날짜부터)', M.cards.map(c => c.id).join());
     check(M.cnt === `1 / ${ORDER.length}`, '넘기기 「1 / n」', `「${M.cnt}」`);
     check(M.cards.every(c => c.btns === 0) && !M.ms.length && M.cards.every(c => !c.risks && !c.big && !c.lines.some(l => /검사 실패/.test(l))), '모든 사람 — 단추 0 · 잣대 셋 0 · 위험 · 큰 것 · 검사 줄 0', JSON.stringify(M.cards.map(c => [c.btns, c.risks, c.big])));
     check(M.cards.filter(c => c.kind === 'waiting').every(c => c.tag === '확인을 기다려요'), '확인을 기다리는 카드 = 「확인을 기다려요」', M.cards.map(c => c.tag).join(' | '));
-    check(/^\d{1,2}월 \d{1,2}일 들어감$/.test(M.cards[0].tag ?? '') && /^\d{1,2}월 \d{1,2}일 들어감$/.test(M.cards[2].tag ?? '') && /^되돌렸어요 · \d{1,2}월 \d{1,2}일$/.test(M.cards[1].tag ?? ''), '들어간 카드 = 「n월 n일 들어감」 · 되돌린 카드 = 「되돌렸어요 · 날짜」', M.cards.slice(0, 3).map(c => c.tag).join(' | '));
+    check(/^\d{1,2}월 \d{1,2}일 들어감$/.test(M.cards[3].tag ?? '') && /^\d{1,2}월 \d{1,2}일 들어감$/.test(M.cards[5].tag ?? '') && /^되돌렸어요 · \d{1,2}월 \d{1,2}일$/.test(M.cards[4].tag ?? ''), '들어간 카드 = 「n월 n일 들어감」 · 되돌린 카드 = 「되돌렸어요 · 날짜」', M.cards.slice(0, 3).map(c => c.tag).join(' | '));
     check(M.cards.every(c => !/스스로|저절로/.test(c.tag + c.lines.join(' '))), '저절로 넣었다는 글 0(아직 사장님 확인 길)', '');
-    check(M.cards[2].score === '10거래일 뒤 · 맞았어요 — 들어가기 전보다 나아졌어요' && M.cards[0].score === '채점 전 — 들어간 뒤 10거래일이 지나면 매겨요', '[10] 6 10거래일 뒤 채점 글(맞았어요 · 아직)', `${M.cards[2].score} · ${M.cards[0].score}`);
+    check(M.cards[5].score === '10거래일 뒤 · 맞았어요 — 들어가기 전보다 나아졌어요' && M.cards[3].score === '채점 전 — 들어간 뒤 10거래일이 지나면 매겨요', '[10] 6 10거래일 뒤 채점 글(맞았어요 · 아직)', `${M.cards[5].score} · ${M.cards[3].score}`);
     for (const c of M.cards.filter(x => x.kind === 'waiting')) {
       const w = FIX.waiting.find(x => x.id === c.id);
       check(c.name === w.title && c.figs === 2 && c.voices.length === 3, '[9] 3 카드마다 이름 · 전후 그림 둘 · 세 사람 셋', JSON.stringify(c).slice(0, 300));
@@ -241,8 +241,13 @@ else {
       check(c.lines.includes(`섬기는 본질 ${w.serves}`) && c.lines.includes(`어림 ${w.predict.text}`) && c.lines.includes(`되돌릴 조건 ${w.revert}`) && c.lines.includes(`사전 부검 ${w.premortem}`) && c.more && !c.moreOpen, '섬기는 본질 · 어림 · 접은 「자세히」(되돌릴 조건 · 사전 부검)', c.lines.join(' | ').slice(0, 300));
       check((c.badge === '세 사람이 고른 것') === !!w.pick, '「세 사람이 고른 것」은 고른 카드에만', `${c.id} 「${c.badge}」`);
     }
-    check(M.cards[0].img === 2 && M.cards[1].noimg === 2 && M.cards[1].img === 0, '전후 그림 — 받으면 그림 · 못 받으면 「그림 없음」', `${M.cards[0].img} · ${M.cards[1].noimg}`);
-    check(M.cards[1].noimg && await p.evaluate(() => [...document.querySelectorAll('.jh-noimg')].every(e => e.textContent.trim() === '그림 없음')), '「그림 없음」 글', '');
+    // 그림은 늦게 받음(loading lazy) — 그림이 없는 카드(A10 · 넷째 자리)로 넘긴 뒤에야 받다가 「그림 없음」이 됨 → 그 카드로 밀어 보고 맨 앞으로 되돌림(주문 0556 · 새 진화가 앞으로 옴)
+    const slide = i => p.evaluate(k => { const r = document.querySelector('.jh-rail'); r.scrollLeft = k * r.clientWidth; }, i);
+    await slide(ORDER.indexOf(A10)); await p.waitForFunction(id => document.querySelectorAll(`.jh-card[data-id="${id}"] .jh-noimg`).length === 2, A10, {timeout: 8000}).catch(() => {});
+    const ni = await p.evaluate(id => { const c = document.querySelector(`.jh-card[data-id="${id}"]`); return {noimg: c.querySelectorAll('.jh-noimg').length, img: c.querySelectorAll('img.jh-img').length, txt: [...c.querySelectorAll('.jh-noimg')].map(e => e.textContent.trim())}; }, A10);
+    await slide(0); await sleep(500);
+    check(M.cards[3].img === 2 && ni.noimg === 2 && ni.img === 0, '전후 그림 — 받으면 그림 · 못 받으면 「그림 없음」', `${M.cards[3].img} · ${JSON.stringify(ni)}`);
+    check(ni.txt.length === 2 && ni.txt.every(t => t === '그림 없음'), '「그림 없음」 글', ni.txt.join(' | '));
     check(!M.gOpen && JSON.stringify(M.g) === JSON.stringify(['진화한 수 3', '들어간 것 3 · 그중 되돌린 것 1', '확인을 기다리는 것 3', '10거래일 어림 · 맞음 1 · 틀림 0 · 판단 못 함 0 · 아직 2']), '맨 아래 접은 「숫자로 보기」 — 수만(몫 · 순위 없음)', JSON.stringify(M.g));
     check(M.fix.length === FIX.fixed.length && M.h2.includes(`고친 고장 ${FIX.fixed.length}`) && /시험 고장 — 날짜/.test(M.fix[0]), '[9] 7 고친 고장 줄 수 = fixed 수(새 날짜부터)', M.fix.join(' | '));
     let L = await p.evaluate(LAYOUT);
@@ -261,8 +266,17 @@ else {
     // 깊은 주소 #/jinhwa/<번호> → 그 카드부터
     ({ctx, p} = await keyPage({key: null, hash: ROUTE + '/' + W2}));
     await sleep(500);
-    const dl = await p.evaluate(() => document.querySelector('.jh-cnt')?.textContent.trim());
-    check(dl === `5 / ${ORDER.length}`, '#/jinhwa/<번호> → 그 카드부터', `「${dl}」`);
+    const dl = await p.evaluate(() => [document.querySelector('.jh-cnt')?.textContent.trim(), document.querySelector('.jh-n')?.textContent.trim()]);
+    check(dl[0] === `${ORDER.indexOf(W2) + 1} / ${ORDER.length}` && dl[1] === `진화 ${FIX.n + 1}번째`, '#/jinhwa/<번호> → 그 카드부터 · 머리 = 그 카드 차례', `「${dl.join(' · ')}」`);
+    await ctx.close();
+    // 머리 「진화 n번째」는 보이는 카드를 따라감 — 들어간 것은 들어간 차례(오래된 것 1) · 넘기면 바뀜(주문 0556)
+    ({ctx, p} = await keyPage({key: null, hash: ROUTE + '/' + A20}));
+    await sleep(500);
+    const hd = await p.evaluate(() => [document.querySelector('.jh-cnt')?.textContent.trim(), document.querySelector('.jh-n')?.textContent.trim()]);
+    check(hd[0] === `${ORDER.length} / ${ORDER.length}` && hd[1] === '진화 1번째', '가장 오래 들어간 카드 → 「진화 1번째」', `「${hd.join(' · ')}」`);
+    await p.locator('#view .jh-nav').nth(0).click(); await sleep(700);
+    const hd2 = await p.evaluate(() => document.querySelector('.jh-n')?.textContent.trim());
+    check(hd2 === '진화 2번째', '「‹」로 넘기면 머리도 그 카드 차례(되돌린 것도 차례 그대로)', `「${hd2}」`);
     await ctx.close();
     // ③ 사장님 열쇠 기기 — 같은 카드 + 단추(확인 · 거두기 · 되돌리기) · 잣대 셋 · 위험 · 검사 줄
     ({ctx, p} = await keyPage());
@@ -271,7 +285,7 @@ else {
     const pos = await seen(p);
     check(pos.drawn >= 1 && pos.title >= 1, '셈의 맞는 짝 — 같은 셈이 진화 쪽 · 제목을 셈', JSON.stringify(pos));
     check(JSON.stringify(M.cards.map(c => c.id)) === JSON.stringify(ORDER), '사장님 기기 카드 차례 = 모든 사람과 같음', M.cards.map(c => c.id).join());
-    check(M.cards.filter(c => c.kind === 'waiting').every(c => c.btns === 1 && c.ok === '확인') && M.cards[0].rv === '되돌리기' && M.cards[2].rv === '되돌리기' && M.cards[1].btns === 0, '사장님 기기 — 기다리는 카드에 「확인」 · 들어간 카드에 「되돌리기」 · 되돌린 카드는 단추 0', JSON.stringify(M.cards.map(c => [c.btns, c.ok, c.rv])));
+    check(M.cards.filter(c => c.kind === 'waiting').every(c => c.btns === 1 && c.ok === '확인') && M.cards[3].rv === '되돌리기' && M.cards[5].rv === '되돌리기' && M.cards[4].btns === 0, '사장님 기기 — 기다리는 카드에 「확인」 · 들어간 카드에 「되돌리기」 · 되돌린 카드는 단추 0', JSON.stringify(M.cards.map(c => [c.btns, c.ok, c.rv])));
     check(M.cards.find(c => c.id === W3).big === '큰 것' && M.cards.find(c => c.id === W3).risks === 2 && M.cards.find(c => c.id === W1).lines.some(l => l === '바뀐 쪽 검사 실패 0 · 전체 미리 검사 실패 0'), '사장님 기기 — 큰 것 · 위험 두 줄 · 검사 줄', '');
     L = await p.evaluate(LAYOUT); F = L.fold;
     check(Math.max(F.ess, F.n, F.name, F.pics) <= F.tabs + 0.5, '사장님 기기 360 × 640 첫 화면 = 본질 줄 · n · 첫 카드 이름 · 그림', JSON.stringify(F));

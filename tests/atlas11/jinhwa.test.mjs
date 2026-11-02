@@ -236,10 +236,11 @@ test('길 · 문 — 모든 사람이 엶(사장님 2026-10-18 22:46 「모든 �
   assert.deepEqual(jsStrings(pj).map(x => x.s).filter(x => /스스로|저절로/.test(x)), [], '화면 글에 저절로 넣었다는 글 없음(아직 사장님 확인 길 · 2026-10-18 리드 말씀)');
 });
 
-test('카드 차례 · 숫자로 보기 — 들어간 것(새 날짜부터) → 확인을 기다리는 것 · 수만', async () => {
+test('카드 차례 · 숫자로 보기 — 확인을 기다리는 것(새 진화) → 들어간 것(새 날짜부터) · 머리 차례 · 수만', async () => {
   const {cardsOf, numbersOf} = await import('../../site/next/p-jinhwa.js');
   const D = {...DATA, applied: [...DATA.applied, {id: '20261017-0930-1', at: '2026-10-17T10:00:00+09:00', score: {at: '2026-10-31T09:30:00+09:00', ok: false}}, {id: '20261014-0930-1', at: '2026-10-14T10:00:00+09:00', score: {at: '2026-10-28T09:30:00+09:00', ok: true}}]};
-  assert.deepEqual(cardsOf(D).map(c => [c.x.id, c.kind]), [['20261017-0930-1', 'applied'], [A1, 'applied'], [AR, 'reverted'], ['20261014-0930-1', 'applied'], [W1, 'waiting'], [W2, 'waiting'], [W3, 'waiting']]);
+  // 확인을 기다리는 것(새 진화) 먼저 → 들어간 것(새 날짜부터) · no = 머리 「진화 n번째」(들어간 차례 · 기다리는 것은 들어간 수 + 1) — 주문 0556
+  assert.deepEqual(cardsOf(D).map(c => [c.x.id, c.kind, c.no]), [[W1, 'waiting', 5], [W2, 'waiting', 5], [W3, 'waiting', 5], ['20261017-0930-1', 'applied', 4], [A1, 'applied', 3], [AR, 'reverted', 2], ['20261014-0930-1', 'applied', 1]]);
   assert.deepEqual(numbersOf(D), {applied: 4, waiting: 3, reverted: 1, right: 1, wrong: 1, unsure: 0, notYet: 2});
   assert.equal(cardsOf(null), null); assert.equal(numbersOf({}), null);
   assert.deepEqual(cardsOf({waiting: [{}, {id: 3}], applied: []}), [], '번호 없는 줄은 버림');
