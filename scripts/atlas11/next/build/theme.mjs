@@ -52,10 +52,11 @@ export async function build({siteDir = 'site', made = new Date().toISOString(), 
     closes.set(code, a);
   }));
   if (closes.size < 100) throw Error('theme: 종가 파일이 너무 적음 ' + closes.size);
-  const co = cond?.co, rk = new Map();
+  const co = cond?.co, rk = new Map(), caps = new Map();
   if (co && Array.isArray(co.c) && Array.isArray(co.rk)) co.c.forEach((c, k) => { if (Number.isInteger(co.rk[k])) rk.set(c, co.rk[k]); });
+  if (co && Array.isArray(co.c) && Array.isArray(co.cap)) co.c.forEach((c, k) => { const v = co.cap[k]; if (typeof v === 'number' && v > 0) caps.set(c, v); }); // 몸값(억 원) — 꽃 될 회사 「그날 몸값 위 20%」(2026-11-02 주문 0815 · 연구 셈 sprout365.py CAP 과 같은 값)
   const kept = await readKept(keptFile);
-  const {theme, more, co: coz, path: yr, cal, bloom} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, provisional: core?.provisional === true || cond?.provisional === true, made, kept});
+  const {theme, more, co: coz, path: yr, cal, bloom} = computeTheme({dates, closes, companies, industries: core?.industries ?? [], groups: core?.groups ?? [], rk, caps, provisional: core?.provisional === true || cond?.provisional === true, made, kept});
   cal.keepFrom = KEEP_FROM;
   if (keepCal) { // 올리기 작업만 — 새 날을 더하고 옛 날은 그대로
     const add = keepNew(cal, kept, {provisional: theme.provisional, made});

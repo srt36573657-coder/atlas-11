@@ -1,6 +1,6 @@
 /* 밤 무대 판 — scripts/atlas11/next/clock_theme.py 가 지은 파일(손으로 고치지 않음 · 옛 핑크 판 --pink · 옛 청록 판 --teal)
  * 사장님 2026-10-29 16:57 「이 거 색 그리고 느씸 180가지 분석해서 둘리에 백경색 글씨색으로 적용시켜」 — 무대 사진 색(docs/design/neon-2026-10-29)을 모든 쪽 바탕 · 글씨에
- * 읽은 파일 32개 · 바꾼 규칙 247개 · 바꾼 칸 321개 */
+ * 읽은 파일 32개 · 바꾼 규칙 251개 · 바꾼 칸 326개 */
 html:where(.white.clock) i.play { border: 2px solid rgba(58, 39, 86, 0.8); }
 html:where(.white.clock) i.play::after { border-left: 18px solid #3A2756; }
 html:where(.white.clock) .m4-msg .m4-moon { border: 1px solid rgba(58, 39, 86, 0.12); outline: 1px solid rgba(36, 21, 64, 0.05); }
@@ -132,6 +132,7 @@ html:where(.white.clock) .th-pkt i { background: #412649; }
 html:where(.white.clock) .th-pkbar.pick .th-pkt i { color: #0C081D; }
 html:where(.white.clock) .th-pkrow { border-bottom: 1px solid #5E4A7E; }
 html:where(.white.clock) .th-pkrow i { color: var(--sub, #F2EFF9); }
+html:where(.white.clock) .th-pkpast { color: #E4DDF0; }
 html:where(.white.clock) .th-pkcal { border: 2px solid #A58BC2; background: #1C1136; }
 html:where(.white.clock) .th-pkwd { color: #F2EFF9; }
 html:where(.white.clock) .th-pkc { background: #241540; }
@@ -151,6 +152,9 @@ html:where(.white.clock) .th-pkhowf { border-top: 1px solid #5E4A7E; }
 html:where(.white.clock) .th-pkday { color: #E4DDF0; }
 html:where(.white.clock) .th-pki { border: 1px solid #5E4A7E; background: #1C1136; }
 html:where(.white.clock) .th-pkcp { border: 1px solid #A58BC2; background: #1C1136; color: #F2EFF9; }
+html:where(.white.clock) .th-pkr { border-bottom: 1px solid #5E4A7E; color: #F2EFF9; }
+html:where(.white.clock) .th-pkr small { color: #E4DDF0; }
+html:where(.white.clock) .th-pkix { color: #E4DDF0; }
 html:where(.white.clock) .th-pkgo { color: #F2EFF9; }
 html:where(.white.clock) .th-pkrec1 { border-left: 4px solid #5E4A7E; color: #E4DDF0; }
 html:where(.white.clock) .th-tile { border: 1px solid #5E4A7E; background: #1C1136; color: #F2EFF9; }

@@ -300,12 +300,13 @@ export function mapBox(TH, news = null) {
     h('a', {class: 'nh-link', href: '#/f/ind'}, h('span', {text: `업종 ${num(n)}개 모두 보기`}), h('i', {'aria-hidden': 'true', text: '›'})));
 }
 
-/** 최근 두 달(기록 달력 가운데 한 달이 지난 날 — theme-home.js pickPQ 와 같은 셈) */
+/** 요즘 기록(기록 달력 가운데 한 달이 지난 날 — theme-home.js pickPQ 와 같은 셈) · 2026-11-02 주문 0815 — 고를 때 안 본 날(span.test[0] 부터)만 · 그 앞 칸은 이 조건을 고를 때 본 날이라 좋아 보이게 섞임 */
 function recent(B) {
-  const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string') : [];
+  const cut = typeof B?.span?.test?.[0] === 'string' ? B.span.test[0] : '';
+  const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string' && d.d >= cut) : [];
   const done = days.filter(d => d.hit + d.miss > 0), sum = f => done.reduce((p, d) => p + (Number(f(d)) || 0), 0);
   const D = sum(d => d.hit + d.miss), N = sum(d => d.bn);
-  return {P: D ? Math.round((sum(d => d.hit) / D) * 100) : null, Q: N ? Math.round((sum(d => d.bh) / N) * 100) : null, n: D};
+  return {P: D ? Math.round((sum(d => d.hit) / D) * 100) : null, Q: N ? Math.round((sum(d => d.bh) / N) * 100) : null, n: D, cut};
 }
 
 /** ② 고른 회사(본질 1 「싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다」 · 2 ② 「지난 기록만 보여 준다」) — 사장님 2026-10-29 13:30 「이거 사라는 못넣어도 이게 확율이 좋은듯해 수익성이 이렇다는 할수 있잖아」
@@ -321,7 +322,9 @@ function todayPicks(B) {
 }
 const wfig = (n, cls, label) => h('figure', {class: 'nh-wf'}, waffle(n, cls, label), h('figcaption', {}, h('b', {class: 'num', text: n + '곳'}), h('span', {text: label})));
 export function recordBox(B) {
-  const R = B?.record?.all, ok = R && fin(R.rate) && fin(R.base) && Number.isInteger(R.n);
+  // 2026-11-02 주문 0815(꽃 될 회사 고르는 법 다시 세우기) — 숫자는 고를 때 안 본 기록만(theme-bloom.json honest) · 없으면 지난 기록(record.all)
+  const H = B?.honest, okH = !!H && fin(H.rate) && fin(H.base) && Number.isInteger(H.n) && H.n > 0;
+  const R = okH ? H : B?.record?.all, ok = R && fin(R.rate) && fin(R.base) && Number.isInteger(R.n);
   const box = h('section', {class: 'nh-sec nh-rec', id: 'nh-p2', 'data-w': 'record', 'aria-label': '지난 기록으로 고른 회사'},
     h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '2'}), h('span', {text: '고른 회사'})),
     h('h2', {class: 'nh-pl', text: '돈이 몰린 업종에서 지난 기록으로 골라요'}), todayPicks(B));
@@ -330,8 +333,9 @@ export function recordBox(B) {
   box.append(h('div', {class: 'nh-wafs'}, wfig(a, 'me', '이렇게 고른 회사'), wfig(b, 'all', '아무 회사나')),
     h('p', {class: 'nh-say', text: `이렇게 고른 회사 100곳 중 ${a}곳이 한 달 뒤 시장보다 5% 넘게 더 올랐어요.`}),
     h('p', {class: 'nh-say', text: `같은 날 아무 회사나 골랐다면 100곳 중 ${b}곳이었어요.`}));
+  if (okH) box.append(h('p', {class: 'nh-say', text: '고를 때 안 본 기록만 셌어요.'}));
   if (rc.P != null && rc.Q != null) box.append(h('div', {class: 'nh-warn' + (rc.P < rc.Q ? ' nh-worse' : '')},
-    h('p', {class: 'nh-wt', text: rc.P < rc.Q ? `최근 두 달은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : `최근 두 달은 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.`}), sage('다윈', '내 생각과 다른 기록도 바로 적어요.')));
+    h('p', {class: 'nh-wt', text: rc.P < rc.Q ? `${md(rc.cut)}부터는 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 졌어요.` : `${md(rc.cut)}부터는 100곳 중 ${rc.P}곳 대 ${rc.Q}곳으로 앞섰어요.`}), sage('다윈', '내 생각과 다른 기록도 바로 적어요.')));
   box.append(sage('덩샤오핑', '말보다 결과를 봐요.'), recLinks());
   return box;
 }
