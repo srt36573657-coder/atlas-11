@@ -25,3 +25,7 @@
 3. 「미국 종가」 작업의 올리기 단계 · 「진화」 작업(10-27 15:34Z 뒤 조용 · 없는 docs/돌이_본질.md 를 읽음)도 같은 길로.
 
 근거: 일꾼 진단(2026-11-02 · 실행 목록 scratchpad upd/site_runs.jsonl) · `.github/workflows/atlas11-site.yml` · `scripts/atlas11/help/room.mjs` · `.claude/hooks/full-run-guard.sh`.
+
+## 이어서(2026-11-02 21:22 서울 · 주문 2110 「응 할때 과감하게 섬세하게 해」)
+
+- 옛 매시 작업(trig_01Pb43ZxugmZESQiGiYnHPEv) 끔 — 지우지 않음 · 지시문 그대로 · 이름 앞 「(꺼 둠 · 새 판으로 옮김 2026-11-02 · 사장님 「응」)」. 끄기 전 두 방 맞대기 · 새 방 21시 못 누름 · 22시 확인은 `docs/design/hourly-off-2026-11-02/order-2110.txt`.
