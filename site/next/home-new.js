@@ -226,13 +226,36 @@ const goPick = () => document.getElementById('nh-p2')?.scrollIntoView({behavior:
     여는 동안 칸(boot-home.js)에도 같은 단추 — 다 그린 뒤 머리가 밀리지 않게(tests/atlas11/home-new.test.mjs 가 둘을 맞댐) */
 export const MANSOUR = 'https://shin-yxy.gino.im/';
 const mansour = () => h('a', {class: 'nh-mans', href: MANSOUR, target: '_blank', rel: 'noopener noreferrer'}, h('span', {text: EN ? 'Mansour' : '만수르'}), h('span', {class: 'nh-mgo', 'aria-hidden': 'true', text: '›'}));
-/** ① 돈 흐름 — 머리(늘 두 줄) · 「권하지 않습니다」(첫 한 화면 안 — 까닭 열한 가지로 칸이 길어져 맨 아래에서 머리 밑으로 · 2026-10-30) · 돈 흐름 판 · ② 로 내려가는 단추 */
-export function heroBox(TH = null, W = null) {
+/** 첫 화면 두 칸(사장님 2026-11-02 10:38(+04) 「꽃이 될 종목과 돈이 몰린 종목 업종을 두가지로 나누어 첫화면에 보여야 해 잡스라면」 · 주문 1538 · docs/design/home-two-2026-11-02)
+ *  잡스라면 — 한 화면에 두 가지만 · 진짜 이름을 크게 · 설명은 누른 뒤
+ *  ① 꽃이 될 종목 = 오늘 달마다 스스로 고른 조건에 든 회사(theme-bloom.json today · 업종 x 큰 차례 · 회사 이름 차례 · 앞 셋) → 꽃 될 회사 쪽(#/t/picks)
+ *  ② 돈이 몰린 종목 = 돈이 몰린 업종 셋(아래 돈 흐름 판과 같은 셋 · flowRows)마다 한 달 동안 몸값이 가장 많이 늘어난 회사(theme-home.json inds lead) → 아래 돈 흐름 판
+ *  여는 동안 칸(boot-home.js)과 같은 틀 · 같은 높이(이름 줄 두 줄 자리) · 앞날 말 · 사고팔기 말 없음 */
+export const TWO_N = 3;
+export function twoNames(TH, B) {
+  const bl = Array.isArray(B?.today?.inds) ? B.today.inds.flatMap(i => (Array.isArray(i?.co) ? i.co : []).map(r => r?.[1])).filter(n => typeof n === 'string' && n) : null;
+  const {up} = flowRows(TH), mo = up.map(i => (Array.isArray(i?.lead) && typeof i.lead[1] === 'string' ? i.lead[1] : null)).filter(Boolean);
+  return {bl, mo};
+}
+const goFlow = () => document.querySelector('#view section.nh-hero .nh-fm')?.scrollIntoView({behavior: 'smooth', block: 'start'}); // ② 돈이 몰린 종목 → 바로 아래 돈 흐름 판(주소 # 는 그대로)
+const twoLine = (ns, empty) => h('span', {class: 'nh-twn'}, ...(ns.length ? ns.slice(0, TWO_N).flatMap((n, k) => [k ? h('span', {class: 'nh-twd', 'aria-hidden': 'true', text: ' · '}) : null, h('b', {'data-proper': '', text: n})]).filter(Boolean) : [h('span', {class: 'nh-twe', text: empty})]));
+export function twoBox(TH = null, B = null) {
+  const {bl, mo} = twoNames(TH, B);
+  const head = (k, t, c) => h('span', {class: 'nh-twh'}, h('i', {class: 'nh-twi nh-twi-' + k, 'aria-hidden': 'true'}), h('b', {class: 'nh-twk', text: t}), c ? h('span', {class: 'nh-twc', text: c}) : null, h('i', {class: 'nh-twg', 'aria-hidden': 'true', text: '›'}));
+  return h('div', {class: 'nh-two', role: 'group', 'aria-label': '꽃이 될 종목과 돈이 몰린 종목'},
+    h('a', {class: 'nh-tw nh-tw-bl', href: '#/t/picks'}, head('bl', '꽃이 될 종목', bl == null ? null : bl.length ? `오늘 ${num(bl.length)}곳` : null),
+      twoLine(bl ?? [], bl == null ? '? 아직 못 받았어요.' : '오늘은 조건에 맞은 회사가 없어요.')),
+    h('button', {class: 'nh-tw nh-tw-mo', type: 'button', onclick: goFlow}, head('mo', '돈이 몰린 종목', mo.length ? '한 달' : null),
+      twoLine(mo, '? 아직 못 셌어요.')));
+}
+/** ① 돈 흐름 — 머리(늘 두 줄) · 「권하지 않습니다」(첫 한 화면 안 — 까닭 열한 가지로 칸이 길어져 맨 아래에서 머리 밑으로 · 2026-10-30) · 첫 화면 두 칸(2026-11-02 주문 1538) · 돈 흐름 판 · ② 로 내려가는 단추 */
+export function heroBox(TH = null, W = null, B = null) {
   const head = whyOk(TH, W) && W.head ? W.head : null, hl = head ? (EN ? head.en : head.ko) : null;
   return h('section', {class: 'nh-hero', 'aria-label': '요즘 돈 흐름'},
     h('p', {class: 'nh-pm'}, h('i', {'aria-hidden': 'true', text: '1'}), h('span', {text: '돈 흐름'}), mansour()), // 만수르(order-0414) — 머리 줄 오른쪽
     h('h2', {class: 'nh-h1'}, h('span', {text: hl?.[0] ?? '요즘 돈은'}), ' ', h('span', {class: 'nh-acc', text: hl?.[1] ?? '여기로 몰렸어요'})), // 늘 두 줄(여는 동안 칸과 같은 높이 · 영어 엔진이 문장을 나누지 않게 줄마다 한 덩이)
     h('p', {class: 'nh-no', text: '앞날을 맞히거나 사고팔기를 권하지 않습니다.'}),
+    twoBox(TH, B),
     flowMap(TH, W),
     h('div', {class: 'nh-door'}, h('button', {type: 'button', class: 'nh-go nh-gopick', onclick: goPick}, h('span', {text: '지난 기록으로 고른 회사 보기'}), h('i', {'aria-hidden': 'true', text: '›'}))));
 }

@@ -725,6 +725,15 @@ html.white.clock.clock.clock.clock.home #view .nh-fn { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-fl-up .nh-fr > b { color: #FF5A65; }
 html.white.clock.clock.clock.clock.home #view .nh-fl-dn .nh-fr > b { color: #5B96FF; }
 html.white.clock.clock.clock.clock.home #view .nh-fc { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-tw { background: #241540; border: 1px solid #3A2756; color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-twi-bl { background: #C42F98; }
+html.white.clock.clock.clock.clock.home #view .nh-twi-mo { border-bottom: 12px solid #FF5A65; }
+html.white.clock.clock.clock.clock.home #view .nh-twk { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-twc { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-twg { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-twn { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-twd { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-twe { color: #CFC4E0; }
 html.white.clock.clock.clock.clock.home #view .nh-sage { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-sage i { background: #0C081D; color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .nh-sage b { color: #F06FCB; }

@@ -10404,6 +10404,12 @@
   "회사가 같은 업종 안에서 한 달 성적이 아래 절반이에요": "Over a month, the company is in the bottom half of its industry",
   "업종이 한 달 성적으로 모든 업종 가운데 {n}등 안에 들어요": "Over a month, the industry ranks in the top {n} of all industries",
   "업종이 한 달 성적으로 모든 업종 가운데 아래 절반이에요": "Over a month, the industry is in the bottom half of all industries",
-  "고르는 날은 {n}일 중 {n}일쯤이에요.": "Picks happen on about {n2} of every {n1} days."
+  "고르는 날은 {n}일 중 {n}일쯤이에요.": "Picks happen on about {n2} of every {n1} days.",
+  "꽃이 될 종목": "Bloom picks",
+  "돈이 몰린 종목": "Money flowed in",
+  "오늘 {n}곳": "{n} today",
+  "? 아직 못 받았어요.": "? Not received yet.",
+  "? 아직 못 셌어요.": "? Not counted yet.",
+  "꽃이 될 종목과 돈이 몰린 종목": "Bloom picks and money flowed in"
  }
 }
