@@ -1,0 +1,679 @@
+{
+ "schema": "bloom-evolve-recount-independent-1",
+ "spec": "docs/design/bloom-evolve-2026-11-02/spec.md v1",
+ "flags": [],
+ "root": "site/atlas/data",
+ "days": 839,
+ "from": "2023-04-28",
+ "to": "2026-10-13",
+ "companies": 2557,
+ "industries": 77,
+ "T0": [
+  120,
+  "2023-10-27"
+ ],
+ "TL": [
+  818,
+  "2026-09-09"
+ ],
+ "sprout_rows": 442161,
+ "n_singles": 156,
+ "n_pairs": 11718,
+ "n_candidates": 11874,
+ "steps": [
+  {
+   "month": "2025-01",
+   "s_date": "2025-01-02",
+   "train_days": 269,
+   "chosen_id": "c120b&isz2",
+   "chosen_LB": 8.7372,
+   "eval_from": "2025-01-02",
+   "eval_to": "2025-01-31",
+   "eval_days": 18,
+   "n_eligible": 1285,
+   "train_n": 1991,
+   "train_rate": 36.87,
+   "train_base": 22.45,
+   "runner_up": {
+    "id": "c120b&ib3",
+    "LB": 7.859141,
+    "gap": 0.8780426962991577
+   },
+   "exact_ties": [],
+   "oos_n": 143,
+   "oos_hits": 41
+  },
+  {
+   "month": "2025-02",
+   "s_date": "2025-02-03",
+   "train_days": 287,
+   "chosen_id": "c120b&ib3",
+   "chosen_LB": 7.5637,
+   "eval_from": "2025-02-03",
+   "eval_to": "2025-02-28",
+   "eval_days": 20,
+   "n_eligible": 1267,
+   "train_n": 372,
+   "train_rate": 36.83,
+   "train_base": 22.51,
+   "runner_up": {
+    "id": "px4&iz3",
+    "LB": 7.293832,
+    "gap": 0.2698393687124794
+   },
+   "exact_ties": [],
+   "oos_n": 15,
+   "oos_hits": 2
+  },
+  {
+   "month": "2025-03",
+   "s_date": "2025-03-04",
+   "train_days": 307,
+   "chosen_id": "c120b&isz2",
+   "chosen_LB": 8.1208,
+   "eval_from": "2025-03-04",
+   "eval_to": "2025-03-31",
+   "eval_days": 20,
+   "n_eligible": 1312,
+   "train_n": 2341,
+   "train_rate": 35.71,
+   "train_base": 22.52,
+   "runner_up": {
+    "id": "px4&iz3",
+    "LB": 7.913952,
+    "gap": 0.20689369871616758
+   },
+   "exact_ties": [],
+   "oos_n": 116,
+   "oos_hits": 20
+  },
+  {
+   "month": "2025-04",
+   "s_date": "2025-04-01",
+   "train_days": 327,
+   "chosen_id": "px4&iz3",
+   "chosen_LB": 8.0314,
+   "eval_from": "2025-04-01",
+   "eval_to": "2025-04-30",
+   "eval_days": 22,
+   "n_eligible": 1314,
+   "train_n": 813,
+   "train_rate": 34.07,
+   "train_base": 22.56,
+   "runner_up": {
+    "id": "c120b&isz2",
+    "LB": 7.995796,
+    "gap": 0.03559623413489632
+   },
+   "exact_ties": [],
+   "oos_n": 190,
+   "oos_hits": 107
+  },
+  {
+   "month": "2025-05",
+   "s_date": "2025-05-02",
+   "train_days": 349,
+   "chosen_id": "c120b&isz2",
+   "chosen_LB": 7.6365,
+   "eval_from": "2025-05-02",
+   "eval_to": "2025-05-30",
+   "eval_days": 19,
+   "n_eligible": 1268,
+   "train_n": 2569,
+   "train_rate": 34.92,
+   "train_base": 22.51,
+   "runner_up": {
+    "id": "big4&ix4",
+    "LB": 6.973114,
+    "gap": 0.6633414826118056
+   },
+   "exact_ties": [],
+   "oos_n": 81,
+   "oos_hits": 48
+  },
+  {
+   "month": "2025-06",
+   "s_date": "2025-06-02",
+   "train_days": 368,
+   "chosen_id": "c120b&isz2",
+   "chosen_LB": 9.0352,
+   "eval_from": "2025-06-02",
+   "eval_to": "2025-06-30",
+   "eval_days": 19,
+   "n_eligible": 1304,
+   "train_n": 2733,
+   "train_rate": 36.44,
+   "train_base": 22.61,
+   "runner_up": {
+    "id": "px4&iz3",
+    "LB": 8.878585,
+    "gap": 0.15660366482515542
+   },
+   "exact_ties": [],
+   "oos_n": 74,
+   "oos_hits": 13
+  },
+  {
+   "month": "2025-07",
+   "s_date": "2025-07-01",
+   "train_days": 387,
+   "chosen_id": "c120b&isz2",
+   "chosen_LB": 9.3464,
+   "eval_from": "2025-07-01",
+   "eval_to": "2025-07-31",
+   "eval_days": 23,
+   "n_eligible": 1307,
+   "train_n": 2814,
+   "train_rate": 37.1,
+   "train_base": 22.71,
+   "runner_up": {
+    "id": "px4&iz3",
+    "LB": 8.7752,
+    "gap": 0.5712067174803508
+   },
+   "exact_ties": [],
+   "oos_n": 188,
+   "oos_hits": 63
+  },
+  {
+   "month": "2025-08",
+   "s_date": "2025-08-01",
+   "train_days": 410,
+   "chosen_id": "big1&ib3",
+   "chosen_LB": 8.9962,
+   "eval_from": "2025-08-01",
+   "eval_to": "2025-08-29",
+   "eval_days": 20,
+   "n_eligible": 1281,
+   "train_n": 420,
+   "train_rate": 36.67,
+   "train_base": 22.62,
+   "runner_up": {
+    "id": "c120b&isz2",
+    "LB": 8.830953,
+    "gap": 0.16527074800409025
+   },
+   "exact_ties": [],
+   "oos_n": 5,
+   "oos_hits": 2
+  },
+  {
+   "month": "2025-09",
+   "s_date": "2025-09-01",
+   "train_days": 430,
+   "chosen_id": "c120b&isz2",
+   "chosen_LB": 9.2006,
+   "eval_from": "2025-09-01",
+   "eval_to": "2025-09-30",
+   "eval_days": 22,
+   "n_eligible": 1259,
+   "train_n": 3083,
+   "train_rate": 36.43,
+   "train_base": 22.52,
+   "runner_up": {
+    "id": "big1&ib3",
+    "LB": 8.849809,
+    "gap": 0.3507410292685851
+   },
+   "exact_ties": [],
+   "oos_n": 242,
+   "oos_hits": 62
+  },
+  {
+   "month": "2025-10",
+   "s_date": "2025-10-01",
+   "train_days": 452,
+   "chosen_id": "big1&iz3",
+   "chosen_LB": 8.9113,
+   "eval_from": "2025-10-01",
+   "eval_to": "2025-10-31",
+   "eval_days": 18,
+   "n_eligible": 1307,
+   "train_n": 1555,
+   "train_rate": 35.11,
+   "train_base": 22.44,
+   "runner_up": {
+    "id": "big1&ib3",
+    "LB": 8.867814,
+    "gap": 0.04345656878762938
+   },
+   "exact_ties": [],
+   "oos_n": 26,
+   "oos_hits": 7
+  },
+  {
+   "month": "2025-11",
+   "s_date": "2025-11-03",
+   "train_days": 470,
+   "chosen_id": "big1&iz3",
+   "chosen_LB": 9.8444,
+   "eval_from": "2025-11-03",
+   "eval_to": "2025-11-28",
+   "eval_days": 20,
+   "n_eligible": 1314,
+   "train_n": 1618,
+   "train_rate": 36.28,
+   "train_base": 22.37,
+   "runner_up": {
+    "id": "px4&iz3",
+    "LB": 9.300587,
+    "gap": 0.54383636210909
+   },
+   "exact_ties": [],
+   "oos_n": 17,
+   "oos_hits": 3
+  },
+  {
+   "month": "2025-12",
+   "s_date": "2025-12-01",
+   "train_days": 490,
+   "chosen_id": "big1&ib3",
+   "chosen_LB": 9.6722,
+   "eval_from": "2025-12-01",
+   "eval_to": "2025-12-30",
+   "eval_days": 21,
+   "n_eligible": 1244,
+   "train_n": 459,
+   "train_rate": 37.04,
+   "train_base": 22.42,
+   "runner_up": {
+    "id": "big1&iz3",
+    "LB": 9.619018,
+    "gap": 0.0532070220644556
+   },
+   "exact_ties": [],
+   "oos_n": 21,
+   "oos_hits": 5
+  },
+  {
+   "month": "2026-01",
+   "s_date": "2026-01-02",
+   "train_days": 511,
+   "chosen_id": "big1&iz3",
+   "chosen_LB": 9.4676,
+   "eval_from": "2026-01-02",
+   "eval_to": "2026-01-30",
+   "eval_days": 21,
+   "n_eligible": 1267,
+   "train_n": 1675,
+   "train_rate": 35.82,
+   "train_base": 22.32,
+   "runner_up": {
+    "id": "px4&iz3",
+    "LB": 9.375649,
+    "gap": 0.09191580111009401
+   },
+   "exact_ties": [],
+   "oos_n": 89,
+   "oos_hits": 31
+  },
+  {
+   "month": "2026-02",
+   "s_date": "2026-02-02",
+   "train_days": 532,
+   "chosen_id": "big1&iz3",
+   "chosen_LB": 10.4626,
+   "eval_from": "2026-02-02",
+   "eval_to": "2026-02-27",
+   "eval_days": 17,
+   "n_eligible": 1273,
+   "train_n": 1798,
+   "train_rate": 36.6,
+   "train_base": 22.3,
+   "runner_up": {
+    "id": "c120b&isz2",
+    "LB": 9.744518,
+    "gap": 0.7180476190575593
+   },
+   "exact_ties": [],
+   "oos_n": 132,
+   "oos_hits": 26
+  },
+  {
+   "month": "2026-03",
+   "s_date": "2026-03-03",
+   "train_days": 549,
+   "chosen_id": "big1&ib3",
+   "chosen_LB": 11.2494,
+   "eval_from": "2026-03-03",
+   "eval_to": "2026-03-31",
+   "eval_days": 21,
+   "n_eligible": 1314,
+   "train_n": 520,
+   "train_rate": 39.04,
+   "train_base": 22.44,
+   "runner_up": {
+    "id": "big1&iz3",
+    "LB": 10.37095,
+    "gap": 0.8784633325291402
+   },
+   "exact_ties": [],
+   "oos_n": 4,
+   "oos_hits": 1
+  },
+  {
+   "month": "2026-04",
+   "s_date": "2026-04-01",
+   "train_days": 570,
+   "chosen_id": "big2&ix4",
+   "chosen_LB": 11.3943,
+   "eval_from": "2026-04-01",
+   "eval_to": "2026-04-30",
+   "eval_days": 22,
+   "n_eligible": 1294,
+   "train_n": 484,
+   "train_rate": 40.08,
+   "train_base": 22.54,
+   "runner_up": {
+    "id": "big1&ib3",
+    "LB": 10.448103,
+    "gap": 0.9461662010166059
+   },
+   "exact_ties": [],
+   "oos_n": 75,
+   "oos_hits": 40
+  },
+  {
+   "month": "2026-05",
+   "s_date": "2026-05-04",
+   "train_days": 592,
+   "chosen_id": "big1&fin10",
+   "chosen_LB": 11.5713,
+   "eval_from": "2026-05-04",
+   "eval_to": "2026-05-29",
+   "eval_days": 18,
+   "n_eligible": 1336,
+   "train_n": 799,
+   "train_rate": 39.17,
+   "train_base": 22.54,
+   "runner_up": {
+    "id": "big1&fin3",
+    "LB": 10.809127,
+    "gap": 0.762171256003219
+   },
+   "exact_ties": [],
+   "oos_n": 58,
+   "oos_hits": 19
+  },
+  {
+   "month": "2026-06",
+   "s_date": "2026-06-01",
+   "train_days": 610,
+   "chosen_id": "big2&ix4",
+   "chosen_LB": 11.8352,
+   "eval_from": "2026-06-01",
+   "eval_to": "2026-06-30",
+   "eval_days": 21,
+   "n_eligible": 1337,
+   "train_n": 593,
+   "train_rate": 40.3,
+   "train_base": 22.65,
+   "runner_up": {
+    "id": "big1&fin3",
+    "LB": 10.835218,
+    "gap": 0.9999637223124687
+   },
+   "exact_ties": [],
+   "oos_n": 37,
+   "oos_hits": 11
+  },
+  {
+   "month": "2026-07",
+   "s_date": "2026-07-01",
+   "train_days": 631,
+   "chosen_id": "big2&ix4",
+   "chosen_LB": 11.952,
+   "eval_from": "2026-07-01",
+   "eval_to": "2026-07-31",
+   "eval_days": 22,
+   "n_eligible": 1327,
+   "train_n": 667,
+   "train_rate": 40.33,
+   "train_base": 23.01,
+   "runner_up": {
+    "id": "big1&fin3",
+    "LB": 10.920671,
+    "gap": 1.0313273257261173
+   },
+   "exact_ties": [],
+   "oos_n": 28,
+   "oos_hits": 7
+  },
+  {
+   "month": "2026-08",
+   "s_date": "2026-08-03",
+   "train_days": 653,
+   "chosen_id": "big2&ix4",
+   "chosen_LB": 10.6326,
+   "eval_from": "2026-08-03",
+   "eval_to": "2026-08-31",
+   "eval_days": 20,
+   "n_eligible": 1326,
+   "train_n": 709,
+   "train_rate": 39.49,
+   "train_base": 23.47,
+   "runner_up": {
+    "id": "big1&fin3",
+    "LB": 9.654439,
+    "gap": 0.9781476053883296
+   },
+   "exact_ties": [],
+   "oos_n": 16,
+   "oos_hits": 8
+  },
+  {
+   "month": "2026-09",
+   "s_date": "2026-09-01",
+   "train_days": 673,
+   "chosen_id": "big2&ix4",
+   "chosen_LB": 10.6138,
+   "eval_from": "2026-09-01",
+   "eval_to": "2026-09-09",
+   "eval_days": 7,
+   "n_eligible": 1322,
+   "train_n": 725,
+   "train_rate": 39.45,
+   "train_base": 23.52,
+   "runner_up": {
+    "id": "big1&fin3",
+    "LB": 9.453918,
+    "gap": 1.1599084842054612
+   },
+   "exact_ties": [],
+   "oos_n": 13,
+   "oos_hits": 6
+  }
+ ],
+ "final": {
+  "id": "big2&ix4",
+  "n": 754,
+  "hits": 300,
+  "rate": 39.79,
+  "base": 23.56,
+  "LB": 11.0743,
+  "d": 16.2229,
+  "se": 3.1299,
+  "n_eligible": 1275,
+  "train_days": 699,
+  "runner_up": {
+   "id": "big1&ib3",
+   "LB": 8.916588,
+   "gap": 2.157702160467016
+  },
+  "exact_ties": [],
+  "top5": [
+   [
+    "big2&ix4",
+    11.0743,
+    754
+   ],
+   [
+    "big1&ib3",
+    8.9166,
+    664
+   ],
+   [
+    "big1&fin3",
+    8.6981,
+    4702
+   ],
+   [
+    "big1&iz3",
+    8.3604,
+    2441
+   ],
+   [
+    "px4&iz3",
+    7.98,
+    2574
+   ]
+  ]
+ },
+ "periodA": {
+  "from": "2025-01-02",
+  "to": "2026-09-09",
+  "days": 411,
+  "n": 1570,
+  "hits": 522,
+  "rate": 33.25,
+  "base": 24.27,
+  "pick_days": 286,
+  "pick_day_share": 69.59,
+  "per_pick_day": 5.49,
+  "fall": 32.1,
+  "fall_base": 38.05
+ },
+ "periodB": {
+  "from": "2025-04-04",
+  "to": "2026-09-09",
+  "days": 350,
+  "n": 1295,
+  "hits": 459,
+  "rate": 35.44,
+  "base": 24.57,
+  "pick_days": 240,
+  "pick_day_share": 68.57,
+  "per_pick_day": 5.4,
+  "fall": 31.27,
+  "fall_base": 38.74
+ },
+ "iz1&hi1": {
+  "id_in_singles_order": "hi1&iz1",
+  "periodA": {
+   "from": "2025-01-02",
+   "to": "2026-09-09",
+   "days": 411,
+   "n": 2912,
+   "hits": 931,
+   "rate": 31.97,
+   "base": 24.27,
+   "pick_days": 334,
+   "pick_day_share": 81.27,
+   "per_pick_day": 8.72,
+   "fall": 31.15,
+   "fall_base": 38.05
+  },
+  "periodB": {
+   "from": "2025-04-04",
+   "to": "2026-09-09",
+   "days": 350,
+   "n": 2653,
+   "hits": 850,
+   "rate": 32.04,
+   "base": 24.57,
+   "pick_days": 280,
+   "pick_day_share": 80.0,
+   "per_pick_day": 9.47,
+   "fall": 31.55,
+   "fall_base": 38.74
+  }
+ },
+ "iz1": {
+  "periodA": {
+   "from": "2025-01-02",
+   "to": "2026-09-09",
+   "days": 411,
+   "n": 22505,
+   "hits": 6200,
+   "rate": 27.55,
+   "base": 24.27,
+   "pick_days": 411,
+   "pick_day_share": 100.0,
+   "per_pick_day": 54.76,
+   "fall": 37.72,
+   "fall_base": 38.05
+  },
+  "periodB": {
+   "from": "2025-04-04",
+   "to": "2026-09-09",
+   "days": 350,
+   "n": 19539,
+   "hits": 5370,
+   "rate": 27.48,
+   "base": 24.57,
+   "pick_days": 350,
+   "pick_day_share": 100.0,
+   "per_pick_day": 55.83,
+   "fall": 38.74,
+   "fall_base": 38.74
+  }
+ },
+ "check_vs_sprout365": {
+  "iz1_train": {
+   "from": "2023-10-27",
+   "to": "2025-04-03",
+   "days": 349,
+   "n": 15818,
+   "hits": 4060,
+   "rate": 25.67,
+   "base": 22.51,
+   "pick_days": 349,
+   "pick_day_share": 100.0,
+   "per_pick_day": 45.32,
+   "fall": 31.5,
+   "fall_base": 33.21
+  },
+  "iz1_test": {
+   "from": "2025-04-04",
+   "to": "2026-09-09",
+   "days": 350,
+   "n": 19539,
+   "hits": 5370,
+   "rate": 27.48,
+   "base": 24.57,
+   "pick_days": 350,
+   "pick_day_share": 100.0,
+   "per_pick_day": 55.83,
+   "fall": 38.74,
+   "fall_base": 38.74
+  },
+  "hi1&iz1_train": {
+   "from": "2023-10-27",
+   "to": "2025-04-03",
+   "days": 349,
+   "n": 1349,
+   "hits": 411,
+   "rate": 30.47,
+   "base": 22.51,
+   "pick_days": 284,
+   "pick_day_share": 81.38,
+   "per_pick_day": 4.75,
+   "fall": 21.42,
+   "fall_base": 33.21
+  },
+  "hi1&iz1_test": {
+   "from": "2025-04-04",
+   "to": "2026-09-09",
+   "days": 350,
+   "n": 2653,
+   "hits": 850,
+   "rate": 32.04,
+   "base": 24.57,
+   "pick_days": 280,
+   "pick_day_share": 80.0,
+   "per_pick_day": 9.47,
+   "fall": 31.55,
+   "fall_base": 38.74
+  }
+ }
+}

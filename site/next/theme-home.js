@@ -171,7 +171,8 @@ export function recentLine(B) {
 }
 /** 기록 달력(지난 60거래일) 가운데 한 달이 지난 날만 — P = 돌이가 고른 회사 · Q = 같은 날 아무 회사(100곳 가운데) */
 export function pickPQ(B) {
-  const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string') : [];
+  const cut = typeof B?.span?.test?.[0] === 'string' ? B.span.test[0] : ''; // 고를 때 안 본 날만(2026-11-02 주문 0815 · home-new.js recent 와 같은 셈)
+  const days = Array.isArray(B?.cal?.days) ? B.cal.days.filter(d => d && typeof d.d === 'string' && d.d >= cut) : [];
   const done = days.filter(d => d.hit + d.miss > 0), sum = f => done.reduce((p, d) => p + (Number(f(d)) || 0), 0);
   const D = sum(d => d.hit + d.miss), N = sum(d => d.bn);
   return {P: D ? Math.round((sum(d => d.hit) / D) * 100) : null, Q: N ? Math.round((sum(d => d.bh) / N) * 100) : null};
