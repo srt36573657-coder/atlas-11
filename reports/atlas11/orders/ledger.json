@@ -1647,6 +1647,12 @@
    "to": "카톡 나에게 보내기",
    "messages": 47,
    "how": "node scripts/atlas11/orders/kakao_digest.mjs"
+  },
+  {
+   "at": "2026-11-02T19:1x+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 49,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs"
   }
  ]
 }
