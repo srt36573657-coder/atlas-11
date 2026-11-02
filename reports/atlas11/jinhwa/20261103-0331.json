@@ -1,0 +1,439 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261103-0331",
+ "start": "2026-11-03T03:31:48+09:00",
+ "end": "2026-11-03T04:52:24+09:00",
+ "essence": {
+  "file": "docs/수르_본질.md",
+  "sha256": "51545febe65a5ad9c657c7e5ed2c8ed35239fc511460c87c68887147a602aed1",
+  "first": "수르의 본질: 싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다. 이 본질이 중심이자 시작이다. 세 번에서 다섯 번만 눌러도 왕초보도, 전문가도, 어린이도 알 수 있게 한다."
+ },
+ "main": "8905f74dea783378b132562fb8317aa6cb73d48a",
+ "cutoff": "2026-11-03T03:30:00+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "make",
+  "retest": [],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [
+  {
+   "n": 1,
+   "id": "20261103-0331-1",
+   "ok": true,
+   "route": "#/t/picks",
+   "steps": [],
+   "commit": "ed7deb9ba9bcf13bf836136759ea0ac1cbb1569f",
+   "base": "8905f74dea783378b132562fb8317aa6cb73d48a",
+   "why": [],
+   "files": [
+    "scripts/atlas11/next/i18n/en-src.json",
+    "site/next/i18n/en-names.json",
+    "site/next/i18n/en.json",
+    "site/next/p-theme.js"
+   ],
+   "changeHash": "6a70a2198e8d70af",
+   "big": [],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "mark": {
+    "box": {
+     "x": 26,
+     "y": 186,
+     "w": 216,
+     "h": 32
+    },
+    "text": "조건에 가장 가까운 업종 음료 ›",
+    "route": "#/t/picks",
+    "steps": []
+   },
+   "preview": {
+    "state": "pass",
+    "run": 41505040722,
+    "sha": "ed7deb9ba9bcf13bf836136759ea0ac1cbb1569f",
+    "at": "2026-11-03T03:55:08+09:00"
+   },
+   "seed": {}
+  },
+  {
+   "n": 2,
+   "id": "20261103-0331-2",
+   "ok": true,
+   "route": "#/t/picks",
+   "steps": [],
+   "commit": "01eb4e59bd89ea200e7269167362ba7b8cdc3f91",
+   "base": "8905f74dea783378b132562fb8317aa6cb73d48a",
+   "why": [],
+   "files": [
+    "node_modules",
+    "scripts/atlas11/next/i18n/en-src.json",
+    "site/next/i18n/en-names.json",
+    "site/next/i18n/en.json",
+    "site/next/p-theme.js"
+   ],
+   "changeHash": "6e87b7dad2e5bd9f",
+   "big": [
+    "새 기능(새 파일)"
+   ],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "mark": {
+    "box": {
+     "x": 10,
+     "y": 186,
+     "w": 340,
+     "h": 105
+    },
+    "text": "최근 60거래일 가운데 고른 회사가 있던 날은 18일이에요. 마지막으로 고른 날은 10월 8일이에요.",
+    "route": "#/t/picks",
+    "steps": []
+   },
+   "preview": {
+    "state": "pass",
+    "run": 41507790462,
+    "sha": "01eb4e59bd89ea200e7269167362ba7b8cdc3f91",
+    "at": "2026-11-03T04:12:38+09:00"
+   },
+   "seed": {}
+  },
+  {
+   "n": 3,
+   "id": "20261103-0331-3",
+   "ok": true,
+   "route": "#/t/picks",
+   "steps": [],
+   "commit": "ea361c2b25867cbbc3f601779b5e2fcb4e7ab48a",
+   "base": "8905f74dea783378b132562fb8317aa6cb73d48a",
+   "why": [],
+   "files": [
+    "scripts/atlas11/next/i18n/en-src.json",
+    "site/next/i18n/en-names.json",
+    "site/next/i18n/en.json",
+    "site/next/p-theme.js"
+   ],
+   "changeHash": "87cf3a7427cd3b96",
+   "big": [],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "mark": {
+    "box": {
+     "x": 10,
+     "y": 186,
+     "w": 340,
+     "h": 105
+    },
+    "text": "최근 60거래일 가운데 고른 회사가 있던 날은 18일이에요. 마지막으로 고른 날은 10월 8일이에요.",
+    "route": "#/t/picks",
+    "steps": []
+   },
+   "preview": {
+    "state": "pass",
+    "run": 41510756995,
+    "sha": "ea361c2b25867cbbc3f601779b5e2fcb4e7ab48a",
+    "at": "2026-11-03T04:31:48+09:00"
+   },
+   "seed": {}
+  }
+ ],
+ "debate": {
+  "mode": "single",
+  "top": {
+   "kahneman": 1,
+   "munger": 1,
+   "popper": 3
+  },
+  "order": [
+   1,
+   3
+  ],
+  "people": {
+   "kahneman": "꽃 될 회사가 없는 날 화면이 '없어요' 한 줄에서 끊겨, 처음 온 사람이 고장으로 오해해요. 끊긴 곳에서 바로 다음 길(조건에 가장 가까운 업종)을 보여 주면 포기하지 않아요. 따지기: 마음 좋아짐 · 상황 오늘 자료(11월 2일) · 숫자 theme.json 그대로 · 한국 주식 업종에서 회사로 가는 길 그대로.",
+   "munger": "빈 날이 흔한데 아무 설명이 없으면 믿음이 깨져요. 지난 달력(60거래일 중 18일)을 그대로 보여 주면 비는 날이 정상임을 스스로 알아요. 숫자를 새로 세지 않고 자료를 옮기기만 해요. 따지기: 마음 안심 · 상황 장 마감 뒤 · 숫자 자료와 같음 · 한국 주식 장이 열린 날 기준.",
+   "popper": "둘 다 자료를 그대로 옮기는 글이라 틀렸는지 바로 확인돼요. 파일은 p-theme.js 하나와 영어 사전뿐이라 한 번에 되돌릴 수 있어요. 첫 화면 칸까지 고치면 높이 검사에 걸릴 수 있어 이번엔 꽃 될 회사 쪽만 해요."
+  },
+  "at": "2026-11-03T04:35:06+09:00",
+  "ok": true,
+  "why": []
+ },
+ "cards": [
+  {
+   "n": 1,
+   "id": "20261103-0331-1",
+   "ok": true,
+   "rule": {
+    "measure": "fact",
+    "num": "mismatch",
+    "dir": "zero"
+   },
+   "card": {
+    "id": "20261103-0331-1",
+    "title": "꽃 될 회사가 없는 날 가까운 업종으로 이어 줌",
+    "pick": true,
+    "serves": "싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다.",
+    "before": "/next/data/jinhwa/20261103-0331-1-before.png",
+    "after": "/next/data/jinhwa/20261103-0331-1-after.png",
+    "voices": {
+     "kahneman": "막다른 길에서 한 번 더 누를 곳이 생겨요.",
+     "munger": "자료의 가장 센 업종을 옮겼을 뿐이라 망치는 길이 아니에요.",
+     "popper": "음료가 아니면 틀린 것이라 바로 확인돼요."
+    },
+    "predict": {
+     "text": "꽃 될 회사가 없는 날에도 업종 쪽으로 이어져 화면 글과 자료가 어긋나는 곳이 0으로 남을 것으로 어림한다.",
+     "measure": "③ 사실 · 화면 숫자가 자료와 다른 곳이 들어간 뒤 10거래일 내내 0이면 맞아요",
+     "days": 10
+    },
+    "revert": "가까운 업종 이름이 theme.json 의 가장 센 업종과 다르게 보이면 곧바로 되돌린다.",
+    "premortem": "빈 날에 가까운 업종을 보여 줘 '곧 꽃이 된다'는 기대로 읽혔다면, 글이 '조건에 가장 가까운'이라고만 말하고 앞날은 말하지 않아서 괜찮다.",
+    "big": false,
+    "risks": [],
+    "branch": "jinhwa/20261103-0331-1",
+    "files": [
+     "scripts/atlas11/next/i18n/en-src.json",
+     "site/next/i18n/en-names.json",
+     "site/next/i18n/en.json",
+     "site/next/p-theme.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    },
+    "mark": {
+     "box": {
+      "x": 26,
+      "y": 186,
+      "w": 216,
+      "h": 32
+     },
+     "text": "조건에 가장 가까운 업종 음료 ›",
+     "route": "#/t/picks",
+     "steps": []
+    }
+   }
+  },
+  {
+   "n": 3,
+   "id": "20261103-0331-3",
+   "ok": true,
+   "rule": {
+    "measure": "fact",
+    "num": "mismatch",
+    "dir": "zero"
+   },
+   "card": {
+    "id": "20261103-0331-3",
+    "title": "꽃 될 회사가 없는 날 고른 날 수를 알려 줌",
+    "pick": false,
+    "serves": "싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다.",
+    "before": "/next/data/jinhwa/20261103-0331-3-before.png",
+    "after": "/next/data/jinhwa/20261103-0331-3-after.png",
+    "voices": {
+     "kahneman": "비는 날이 흔하다는 걸 알면 겁먹지 않아요.",
+     "munger": "60거래일 가운데 18일처럼 지난 달력 숫자만 써요.",
+     "popper": "달력 자료와 다르면 바로 틀린 것이 드러나요."
+    },
+    "predict": {
+     "text": "빈 날 설명이 달력 자료 그대로여서 화면 글과 자료가 어긋나는 곳이 0으로 남을 것으로 어림한다.",
+     "measure": "③ 사실 · 화면 숫자가 자료와 다른 곳이 들어간 뒤 10거래일 내내 0이면 맞아요",
+     "days": 10
+    },
+    "revert": "고른 날 수나 마지막 고른 날이 theme-bloom.json 달력과 다르게 보이면 곧바로 되돌린다.",
+    "premortem": "달력 칸이 60일보다 짧아지면 문장이 안 맞게 읽힐 수 있어, 20일 아래이면 줄을 숨기게 만들었다.",
+    "big": false,
+    "risks": [],
+    "branch": "jinhwa/20261103-0331-3",
+    "files": [
+     "scripts/atlas11/next/i18n/en-src.json",
+     "site/next/i18n/en-names.json",
+     "site/next/i18n/en.json",
+     "site/next/p-theme.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    },
+    "mark": {
+     "box": {
+      "x": 10,
+      "y": 186,
+      "w": 340,
+      "h": 105
+     },
+     "text": "최근 60거래일 가운데 고른 회사가 있던 날은 18일이에요. 마지막으로 고른 날은 10월 8일이에요.",
+     "route": "#/t/picks",
+     "steps": []
+    }
+   }
+  }
+ ],
+ "retested": [],
+ "finished": [
+  {
+   "id": "20261103-0331-1",
+   "kind": "made",
+   "state": "pass",
+   "sha": "ed7deb9ba9bcf13bf836136759ea0ac1cbb1569f",
+   "round": "20261103-0331",
+   "why": ""
+  },
+  {
+   "id": "20261103-0331-2",
+   "kind": "made",
+   "state": "pass",
+   "sha": "01eb4e59bd89ea200e7269167362ba7b8cdc3f91",
+   "round": "20261103-0331",
+   "why": ""
+  },
+  {
+   "id": "20261103-0331-3",
+   "kind": "made",
+   "state": "pass",
+   "sha": "ea361c2b25867cbbc3f601779b5e2fcb4e7ab48a",
+   "round": "20261103-0331",
+   "why": ""
+  }
+ ],
+ "dropped": [],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": 1,
+  "at": "2026-11-02T19:01:17+09:00"
+ },
+ "factsNote": "",
+ "tally": {
+  "2026-10-21": {
+   "stop": 6,
+   "stop_rest": 4,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-22": {
+   "stop": 1,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-23": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-24": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-25": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-26": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-27": {
+   "stop": 1,
+   "stop_rest": 1,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-28": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-29": {
+   "stop": 2,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-30": {
+   "stop": 4,
+   "stop_rest": 2,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-31": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-01": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-02": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-03": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  }
+ },
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 1,
+  "waiting": [
+   "20261103-0331-1",
+   "20261103-0331-3"
+  ],
+  "errors": []
+ },
+ "owner": [
+  "새 진화 대안 2개를 만들었어요.",
+  "진화 칸에서 대안 2개가 확인을 기다려요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 0가지예요."
+ ],
+ "notice": "수르 진화 칸에 새 대안 2개가 올라가요. 5시 업데이트부터 보여요.",
+ "notDone": [],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-11-03T03:33:17+09:00 시작 · 본질 51545feb · main 8905f74 · 할 일 넣기 없음 → make",
+  "2026-11-03T03:34:50+09:00 지금 사이트 자료 마지막 날 2026-11-02(깃허브 일로 새로 받음) · main 일 폴더 2584개 · 회차를 연 폴더 2584개",
+  "2026-11-03T03:55:08+09:00 대안 1 검사 지남 · 미리 검사 시작 41505040722",
+  "2026-11-03T04:12:38+09:00 대안 2 검사 지남 · 미리 검사 시작 41507790462",
+  "2026-11-03T04:31:48+09:00 대안 3 검사 지남 · 미리 검사 시작 41510756995"
+ ],
+ "notes": [
+  "20261103-0331-did.md",
+  "20261103-0331-why36.md"
+ ]
+}
