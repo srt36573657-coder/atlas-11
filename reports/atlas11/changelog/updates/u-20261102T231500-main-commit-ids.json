@@ -1,0 +1,250 @@
+{
+ "schema": "atlas11-change-1",
+ "id": "u-20261102T231500-main-commit-ids",
+ "kind": "update",
+ "place": "all",
+ "made": "2026-11-02T23:15:00+09:00",
+ "title": "기록 탭 커밋 번호 고침 — 10월 30일부터 스물다섯 줄",
+ "what": [
+  "줄마다 적힌 커밋 번호 서른세 개를 사이트 줄기의 번호로 바꿨어요(바뀐 내용 없음)",
+  "작업 갈래에서 만든 번호라 줄기에서 찾을 수 없었고, 그 때문에 진화 회차가 기록을 올리지 못했어요",
+  "밀어 넣기 문이 이제 사이트 줄기로 미는 판 그 자체의 커밋 번호를 봐요"
+ ],
+ "why": "제가 갈래 번호를 그대로 적음 — 틀림 장부 172번",
+ "commits": [
+  "a2ebb9c8e"
+ ],
+ "fixes": [
+  {
+   "id": "u-20261030T061420-why11",
+   "field": "commits",
+   "index": 0,
+   "from": "18d706e95",
+   "to": "831321bb5"
+  },
+  {
+   "id": "u-20261030T061420-why11",
+   "field": "commits",
+   "index": 1,
+   "from": "671f5e3ae",
+   "to": "831321bb5"
+  },
+  {
+   "id": "u-20261030T061420-why11",
+   "field": "commits",
+   "index": 2,
+   "from": "aee468b81",
+   "to": "831321bb5"
+  },
+  {
+   "id": "u-20261030T093000-why11-89",
+   "field": "commits",
+   "index": 0,
+   "from": "c7fbc4f5e",
+   "to": "4b3801e26"
+  },
+  {
+   "id": "u-20261030T093000-why11-89",
+   "field": "commits",
+   "index": 1,
+   "from": "27a0fc8ec",
+   "to": "bedce665c"
+  },
+  {
+   "id": "u-20261030T170000-talk11",
+   "field": "commits",
+   "index": 0,
+   "from": "47a9a914d",
+   "to": "77c3d3a53"
+  },
+  {
+   "id": "u-20261031T052158-roman72",
+   "field": "commits",
+   "index": 0,
+   "from": "22bd76c47",
+   "to": "722a66861"
+  },
+  {
+   "id": "u-20261031T121146-roman-tag",
+   "field": "commits",
+   "index": 0,
+   "from": "3b4c7146b",
+   "to": "70f830b63"
+  },
+  {
+   "id": "u-20261031T121146-roman-tag",
+   "field": "commits",
+   "index": 1,
+   "from": "967a780d1",
+   "to": "70f830b63"
+  },
+  {
+   "id": "u-20261031T140934-roman-art",
+   "field": "commits",
+   "index": 0,
+   "from": "33ed618f6",
+   "to": "093dcd7dc"
+  },
+  {
+   "id": "u-20261031T161152-roman-say",
+   "field": "commits",
+   "index": 0,
+   "from": "6713d87c3",
+   "to": "5d623cdfd"
+  },
+  {
+   "id": "u-20261031T173953-roman-all",
+   "field": "commits",
+   "index": 0,
+   "from": "3ceb39d33",
+   "to": "3bfb880c3"
+  },
+  {
+   "id": "u-20261031T193113-roman-all8",
+   "field": "commits",
+   "index": 0,
+   "from": "2cb3854b7",
+   "to": "6b3229903"
+  },
+  {
+   "id": "u-20261031T193113-roman-all8",
+   "field": "commits",
+   "index": 1,
+   "from": "fa9c86f88",
+   "to": "6b3229903"
+  },
+  {
+   "id": "u-20261031T214018-home-talk-all",
+   "field": "commits",
+   "index": 0,
+   "from": "b24b94b22",
+   "to": "5f92d37e9"
+  },
+  {
+   "id": "u-20261101T005107-roman-every",
+   "field": "commits",
+   "index": 0,
+   "from": "022b89adf",
+   "to": "4a3964c59"
+  },
+  {
+   "id": "u-20261101T020328-roman-resume",
+   "field": "commits",
+   "index": 0,
+   "from": "135a18ff0",
+   "to": "9ddbb213f"
+  },
+  {
+   "id": "u-20261101T040020-sage-say",
+   "field": "commits",
+   "index": 0,
+   "from": "5ae50e334",
+   "to": "ef31a4b27"
+  },
+  {
+   "id": "u-20261101T043828-mansour",
+   "field": "commits",
+   "index": 0,
+   "from": "9b595c571",
+   "to": "81789930f"
+  },
+  {
+   "id": "u-20261101T053114-sur",
+   "field": "commits",
+   "index": 0,
+   "from": "7bb78ca75",
+   "to": "6c00fbb97"
+  },
+  {
+   "id": "u-20261101T112106-sage-art",
+   "field": "commits",
+   "index": 0,
+   "from": "e72609dc4",
+   "to": "f7f0f5a7e"
+  },
+  {
+   "id": "u-20261101T154224-sage-face-home",
+   "field": "commits",
+   "index": 0,
+   "from": "4ebc50396",
+   "to": "1b2747b17"
+  },
+  {
+   "id": "u-20261101T181208-sage-face-say",
+   "field": "commits",
+   "index": 0,
+   "from": "7fe402069",
+   "to": "243e00642"
+  },
+  {
+   "id": "u-20261101T202451-sage-face-all",
+   "field": "commits",
+   "index": 0,
+   "from": "cf98ea867",
+   "to": "728e4a9f5"
+  },
+  {
+   "id": "u-20261101T214713-sage-face-resume",
+   "field": "commits",
+   "index": 0,
+   "from": "701c9e4ba",
+   "to": "260df338c"
+  },
+  {
+   "id": "u-20261102T002419-talk-face",
+   "field": "commits",
+   "index": 0,
+   "from": "a07b55f9b",
+   "to": "6734f427e"
+  },
+  {
+   "id": "u-20261102T043718-talk-resume",
+   "field": "commits",
+   "index": 0,
+   "from": "853f44c00",
+   "to": "edcfa0cb5"
+  },
+  {
+   "id": "u-20261102T090101-bloom-evolve",
+   "field": "commits",
+   "index": 0,
+   "from": "491d40925",
+   "to": "c7fc8d021"
+  },
+  {
+   "id": "u-20261102T090101-bloom-evolve",
+   "field": "commits",
+   "index": 1,
+   "from": "b3695830e",
+   "to": "c7fc8d021"
+  },
+  {
+   "id": "u-20261102T142404-self-evolve",
+   "field": "commits",
+   "index": 0,
+   "from": "2c6975584",
+   "to": "308f22d34"
+  },
+  {
+   "id": "u-20261102T142404-self-evolve",
+   "field": "commits",
+   "index": 1,
+   "from": "5ed990422",
+   "to": "308f22d34"
+  },
+  {
+   "id": "u-20261102T155949-home-two",
+   "field": "commits",
+   "index": 0,
+   "from": "af95d90c7",
+   "to": "cd10947d3"
+  },
+  {
+   "id": "u-20261102T155949-home-two",
+   "field": "commits",
+   "index": 1,
+   "from": "122516fc9",
+   "to": "cd10947d3"
+  }
+ ]
+}
