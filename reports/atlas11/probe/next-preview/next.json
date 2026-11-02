@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-11-02T18:59:09.861Z",
+ "at": "2026-11-02T19:16:58.103Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-02",
  "ready": [
@@ -27,11 +27,11 @@
  "full": true,
  "oldNameScreens": 2700,
  "oldNameAllow": [],
- "seconds": 140,
+ "seconds": 159,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 139.7,
+  "wall": 159.2,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
@@ -51,7 +51,7 @@
   }
  },
  "counts": {
-  "고리": 17986,
+  "고리": 17985,
   "화면": 153,
   "옛 이름 본 화면": 2702,
   "큰 글씨 화면": 51,
