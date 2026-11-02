@@ -577,6 +577,13 @@ async function pPick() {
 
 /** 꽃 될 회사(돌 시계 판 ③ — 사장님 2026-10-26 08:16 「디자인 이렇게 하라고 어 다 다시해」 · 13:50 「다 해」) — 오늘 고른 회사를 업종으로 묶어 큰 묶음부터 · 맨 위 하나만 펼침 · 끝에 지난 기록 한 줄
  *  자료 = theme-bloom.json today(기록 쪽 #/t/pick 「오늘 고른 회사」와 같은 자료 · 같은 셈) · 회사는 받은 차례 그대로(차례에는 뜻이 없음) · 묶음마다 넷까지 보이고 「외 n곳」을 누르면 모두 */
+/** 오늘 고른 회사가 없을 때 — 비는 날이 흔한지 지난 달력 그대로 알려 줌(첫 화면에서 빈 칸을 보고 고장으로 오해하지 않게) · 숫자는 theme-bloom.json cal 그대로 */
+function quietLine(B) {
+  const D = (Array.isArray(B?.cal?.days) ? B.cal.days : []).filter(d => d && typeof d.d === 'string' && Number.isInteger(d.n)), got = D.filter(d => d.n > 0);
+  if (D.length < 20) return null;
+  return h('div', {class: 'th-pkquiet'}, h('p', {class: 'th-pkday', text: `최근 ${num(D.length)}거래일 가운데 고른 회사가 있던 날은 ${num(got.length)}일이에요.`}),
+    got.length ? h('p', {class: 'th-pkday', text: `마지막으로 고른 날은 ${md(got[got.length - 1].d)}이에요.`}) : null);
+}
 async function pPicks() {
   const B = await pickData();
   const inds = (Array.isArray(B?.today?.inds) ? B.today.inds : []).map(i => ({n: i?.n, x: i?.x, co: (Array.isArray(i?.co) ? i.co : []).filter(r => Array.isArray(r) && /^[0-9A-Z]{6}$/.test(r[0] ?? ''))})).filter(i => typeof i.n === 'string' && i.n && i.co.length);
@@ -614,6 +621,7 @@ async function pPicks() {
     hd(n ? `${title} ${num(n)}곳` : title, 'pick'),
     h('p', {class: 'th-pkday', text: `${md(B.asOf)}에 지난 기록으로 골랐어요`}),
     n ? h('div', {class: 'th-pkis'}, ...inds.map(group)) : h('p', {class: 'empty', text: '오늘은 수르가 고른 회사가 없어요.'}),
+    n ? null : quietLine(B),
     n ? null : dayShare, why, n ? dayShare : null, rec, nextBtn('지난 기록', '#/t/pick'), safe())]};
 }
 
