@@ -3,15 +3,15 @@
  "base": "http://127.0.0.1:8826",
  "limit": "all",
  "wide": "all",
- "took_s": 146,
+ "took_s": 129,
  "time": {
-  "old": 30.2,
-  "new": 99.6,
-  "wall": 146.4,
+  "old": 23.5,
+  "new": 92.8,
+  "wall": 128.7,
   "opensOld": 1176,
   "opensNew": 2882,
-  "oldPct": 20.6,
-  "oldShare": 23.2
+  "oldPct": 18.2,
+  "oldShare": 20.2
  },
  "net": {
   "req": 5,
