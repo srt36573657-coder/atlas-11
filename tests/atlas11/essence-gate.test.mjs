@@ -41,6 +41,7 @@ function clean(dir) {
   const top = Object.entries(M.companies).filter(([k, o]) => /^[0-9A-Z]{6}$/.test(k) && Number.isFinite(o?.c)).sort((a, b) => b[1].c - a[1].c).slice(0, 6).map(([k]) => k);
   for (const k of top) { const f = path.join(SITE, 'atlas/data/co', k + '.json'); if (fs.existsSync(f)) cp(f, path.join(site, 'atlas/data/co', k + '.json')); }
   for (const f of ['hello.html', 'hello-send.js', 'letter.html', 'letter.js', 'invite.html', 'invite.js', 'privacy.html']) if (fs.existsSync(path.join(SITE, f))) cp(path.join(SITE, f), path.join(site, f));
+  if (fs.existsSync(path.join(SITE, 'su'))) cp(path.join(SITE, 'su'), path.join(site, 'su')); // 수르 두 길 = 첫 화면(주문 2333 · 0047 — 진화도 이 쪽을 고침)
   for (const f of [ESSENCE_FILE, LOCK_FILE, ORDER_FILE]) cp(path.join(ROOT, f), path.join(root, f));
   // 받은 기록 하나(이 자료 home.json 을 만든 업데이트) · 요약 = 그 받은 때 · 첫 화면이 쓰는 요약(src.home = home.json kst)
   const H = readJ(path.join(site, 'atlas/data/home.json'));
@@ -80,10 +81,14 @@ const WRONG = [
   [5, '친구 말 칸을 질문 앞에 둠', ({site}) => must(path.join(site, 'next/p-share.js'), 'nodes: [top,', 'nodes: [top, after,')],
   [6, '보내는 글의 수익 숫자 거름(noGain)을 비움', ({site}) => must(path.join(site, 'next/p-share.js'), /const noGain = s => [^\n]*/, "const noGain = s => String(s ?? '');")],
   [7, '오래된 받은 때에도 「?」를 안 붙임', ({site}) => must(path.join(site, 'next/essence.js'), "(d.old ? '? ' : '')", "''")],
+  // 새 첫 화면(수르 두 길 · site/su/ — 사장님 2026-11-03 19:47(+04) 「응」 진화가 이 쪽을 고침 · 주문 0047) — 진화 대안이 망치면 막힘
+  [3, '새 첫 화면 글에 망치는 길 낱말', ({site}) => must(path.join(site, 'su/su.js'), "text: '두 가지예요'", "text: '지금이 기회예요. 놓치지 마세요.'")],
+  [2, '새 첫 화면에서 본질 세 줄 칸을 뺌', ({site}) => must(path.join(site, 'su/su.js'), 'moneyCard(moneyList(TH, W)), essBox(S), foot(asOf)', 'moneyCard(moneyList(TH, W)), foot(asOf)')],
+  [2, '새 첫 화면 세 줄을 자료로 셈하지 않음', ({site}) => must(path.join(site, 'su/su.js'), 'essenceLines(essenceData({summary: S}))', "['앞날을 맞혀요']")],
 ];
-for (const [no, name, wreck] of WRONG) {
+for (const [i, [no, name, wreck]] of WRONG.entries()) {
   test(`틀린 판 ${no} — ${name} → 끝 코드 1 · 막은 번호 ${no} 하나`, async () => {
-    const v = variant('w' + no); wreck(v);
+    const v = variant('w' + i); wreck(v);
     const r = await essenceGate({dist: v.site, root: v.root, now: v.now});
     assert.equal(r.code, 1, why(r));
     assert.deepEqual(fails(r), [no], why(r));

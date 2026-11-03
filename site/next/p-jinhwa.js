@@ -105,7 +105,13 @@ export function markOf(x) {
 }
 /** 찍은 쪽 이름(아래 단추 이름 · 진화) — 모르면 null */
 const PAGE = {'': '오늘 장', shorts: '시황', why: '매매일지', sub: '관심', me: '보유종목', jinhwa: '진화'};
-export const pageOf = route => { const m = /^#\/([a-z]*)/.exec(String(route ?? '')); return m && m[1] in PAGE ? PAGE[m[1]] : null; };
+/** 새 첫 화면(수르 두 길 · /su/ · 주문 0047 · 사장님 2026-11-03 19:47(+04) 「응」 진화도 이 쪽) — 처음 쪽 · 회사 쪽(#/c/번호) · 업종 쪽(#/i/업종) */
+const SU_PAGE = {'': '첫 화면', c: '회사', i: '업종'};
+export const pageOf = route => {
+  const r = String(route ?? ''), su = /^\/su\/#\/([a-z]*)/.exec(r);
+  if (su) return su[1] in SU_PAGE ? SU_PAGE[su[1]] : null;
+  const m = /^#\/([a-z]*)/.exec(r); return m && m[1] in PAGE ? PAGE[m[1]] : null;
+};
 const pct = (v, of) => `${(v / of * 100).toFixed(3)}%`;
 /** 그림 위 네모 — 전 = 점선(여기가 바뀌어요) · 후 = 금빛 굵은 테 · 자리는 스타일 속성이 아니라 CSSOM 으로(보안 규칙 style-src 'self') */
 function boxOn(M, side) {
