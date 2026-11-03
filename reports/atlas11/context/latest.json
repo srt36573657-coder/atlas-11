@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-03",
- "fetchedAt": "2026-11-03T07:49:25Z",
- "file": "reports/atlas11/context/2026-11-03/2026-11-03T07-49-25Z.json",
+ "fetchedAt": "2026-11-03T10:02:05Z",
+ "file": "reports/atlas11/context/2026-11-03/2026-11-03T10-02-05Z.json",
  "summary": {
   "day": "2026-11-03",
-  "fetchedAt": "2026-11-03T07:49:25Z",
+  "fetchedAt": "2026-11-03T10:02:05Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-03",
@@ -31,12 +31,12 @@
   },
   "news": {
    "stocks": 365,
-   "raw": 7213,
+   "raw": 7212,
    "distinct": 7164,
-   "republished": 49,
+   "republished": 48,
    "sameArticle": 0,
-   "stocksWithTodayNews": 182,
-   "todayDistinct": 1282
+   "stocksWithTodayNews": 189,
+   "todayDistinct": 1391
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-03",
-     "value": 1341.3,
-     "changePct": -0.35
+     "value": 1344.6,
+     "changePct": -0.1
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 267,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -240,6 +240,12 @@
    "latestObservation": "2026-11-03",
    "corporateActions": 768,
    "recentActions": [
+    {
+     "code": "035420",
+     "title": "네이버(주) (정정)유상증자결정",
+     "publishedAt": "2026-11-03T17:00:59+09:00",
+     "word": "유상증자"
+    },
     {
      "code": "259960",
      "title": "주식회사 크래프톤 자기주식 취득 결정",
@@ -305,12 +311,6 @@
      "title": "SK(주) 자기주식 처분 결정",
      "publishedAt": "2026-10-30T06:53:29+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "012330",
-     "title": "현대모비스(주) 자기주식 처분 결정",
-     "publishedAt": "2026-10-30T06:53:24+09:00",
-     "word": "자기주식"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-03",
-     "value": 1341.3,
+     "value": 1344.6,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
