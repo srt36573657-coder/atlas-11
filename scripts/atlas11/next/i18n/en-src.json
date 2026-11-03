@@ -10410,6 +10410,12 @@
   "오늘 {n}곳": "{n} today",
   "? 아직 못 받았어요.": "? Not received yet.",
   "? 아직 못 셌어요.": "? Not counted yet.",
-  "꽃이 될 종목과 돈이 몰린 종목": "Bloom picks and money flowed in"
+  "꽃이 될 종목과 돈이 몰린 종목": "Bloom picks and money flowed in",
+  "가까운 곳": "Closest",
+  "조건에 가장 가까운 회사": "Closest to the conditions",
+  "조건에 다 맞지는 않아요. 수르가 고른 회사가 아니에요.": "They do not meet every condition. Sur did not pick them.",
+  "맞은 조건": "Conditions met",
+  "안 맞은 조건": "Condition not met",
+  "지난 빈 날 가장 가까운 회사는 100번에 {n}번 꽃이 됐어요.": "On past empty days, the closest companies bloomed {n} times in 100."
  }
 }

@@ -143,8 +143,14 @@ test('첫 화면 두 칸(사장님 2026-11-02 10:38(+04) 「꽃이 될 종목과
   const TH = {inds: [{n: '가', x: 9, lead: ['000001', '갑', 120]}, {n: '나', x: 7, lead: ['000002', '을', 80]}, {n: '다', x: -3}, {n: '라', x: 5}]};
   const B = {today: {inds: [{n: '가', x: 9, co: [['000003', '병'], ['000004', '정']]}, {n: '라', x: 5, co: [['000005', '무']]}]}};
   assert.deepEqual(flowRows(TH).up.map(i => i.n), ['가', '나', '라']);
-  assert.deepEqual(twoNames(TH, B), {bl: ['병', '정', '무'], mo: ['갑', '을']}, '꽃 = 오늘 고른 회사(업종 · 이름 차례 그대로) · 돈 = 몰린 업종 셋의 lead');
+  assert.deepEqual(twoNames(TH, B), {bl: ['병', '정', '무'], mo: ['갑', '을'], nr: []}, '꽃 = 오늘 고른 회사(업종 · 이름 차례 그대로) · 돈 = 몰린 업종 셋의 lead');
   assert.deepEqual(twoNames(TH, null).bl, null, '꽃 자료가 없으면 null(「? 아직 못 받았어요.」)');
+  // 빈 날 가장 가까운 회사 셋(주문 1512) — 고른 회사가 0곳인 날만 · 고른 회사가 있으면 쓰지 않음 · 자료가 없으면 빈 목록
+  const NR = {today: [['000006', '기', '마', 8.6, -12.6], ['000007', '경', '바', 7.6, 2.4]]};
+  assert.deepEqual(twoNames(TH, {today: {inds: []}, near: NR}).nr, ['기', '경'], '빈 날 = 가까운 셋 이름');
+  assert.deepEqual(twoNames(TH, {...B, near: NR}).nr, [], '고른 회사가 있는 날은 가까운 셋을 안 씀');
+  assert.deepEqual(twoNames(TH, {today: {inds: []}}).nr, [], '가까운 셋 자료가 없으면 빈 목록(「오늘은 조건에 맞은 회사가 없어요.」)');
+  assert.ok(src.includes("nearOn ? '가까운 곳'") && src.includes("twoLine(nr, '', 'nh-twnr')"), '빈 날 머리 「가까운 곳」 · 이름 줄은 옅게(같은 높이 칸)');
   const strs = [...quoted(src.slice(src.indexOf('/** 첫 화면 두 칸'), src.indexOf('/** ① 돈 흐름')))];
   assert.ok(!strs.some(x => /추천|매수|매도|사세요|파세요|예측|확률|유망/.test(x)), '두 칸에 앞날 · 사고팔기 말');
 });
