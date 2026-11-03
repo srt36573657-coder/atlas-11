@@ -115,3 +115,8 @@ h1:focus { outline: none; }
 .su-foot { display: grid; gap: 6px; padding-top: 8px; border-top: 1px solid var(--line); }
 .su-foot p { margin: 0; font-size: var(--f5); color: var(--sub); }
 .su-full { display: inline-flex; align-items: center; gap: 6px; justify-self: start; min-height: 48px; font-size: var(--f4); font-weight: 700; color: var(--co); }
+
+/* 본질 세 줄(첫 화면 · 18:33 「응」) — 맨 아래 조용한 칸 */
+.su-ess { display: grid; gap: 6px; padding: 14px 16px; border-radius: 16px; background: var(--card); border: 1px dashed var(--line); }
+.su-ess p { margin: 0; font-size: var(--f5); line-height: 1.5; color: var(--sub); }
+.su-ess p[data-ess="1"] { color: var(--fg); font-weight: 700; }
