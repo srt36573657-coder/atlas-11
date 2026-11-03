@@ -149,7 +149,7 @@ async function pZone(z, f = '') {
   if (z === 'B') body.push(h('p', {class: 'th-sub', text: '수르는 꽃보다 싹을 먼저 봐요. 꽃은 이미 오른 곳이라 늦을 수 있어요.'}));
   if (z === 'W') body.push(h('p', {class: 'th-sub', text: '지난 닷새는 시장보다 덜 올랐어요. 다시 잠잠으로 갈까?'})); // 시듦의 까닭(닷새)을 머리 밑에(감사 A15)
   if (!list.length) body.push(h('p', {class: 'empty', text: F ? F[3] : '지금 이 자리에는 업종이 없어요.'}));
-  else if (z === 'S' && !F) body.push(...sproutTiles(list)); // 싹 자리 전부 = 맨 앞 셋 큰 판 + 업종 알약(돌 시계 판 ② · 2026-10-26 「다 해」 — 옛 점 수 묶음 sproutGroups 는 쓰지 않음 · 차례 order.S 그대로)
+  else if (z === 'S' && !F) body.push(...sproutTiles(list), h('a', {class: 'th-hi', href: '#/t/picks'}, h('span', {text: '꽃 될 회사'}), h('i', {'aria-hidden': 'true', text: ' ›'}))); // 싹 자리 전부 = 맨 앞 셋 큰 판 + 업종 알약(돌 시계 판 ② · 2026-10-26 「다 해」 — 옛 점 수 묶음 sproutGroups 는 쓰지 않음 · 차례 order.S 그대로)
   else body.push(h('div', {class: 'th-rows'}, list.map((i, k) => (z === 'S' ? row(i, k) : simpleRow(i, {mode: z})))));
   if (z === 'B' && list.length) body.push(h('p', {class: 'th-cap2', text: '숫자는 한 달 동안 시장보다 더 오른 만큼이에요.'}));
   if (z === 'W' && list.length) body.push(h('p', {class: 'th-cap2', text: '큰 숫자는 닷새, 작은 숫자는 한 달이에요.'}));
