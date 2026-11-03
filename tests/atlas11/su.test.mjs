@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {CODE, pct, moreLess, dateKo, bloomList, moneyList, whyOf, reasonsFor, idxLine, coLine, indRows} from '../../site/su/su-data.js';
+import {CODE, pct, moreLess, dateKo, bloomList, moneyList, whyOf, reasonsFor, idxLine, coLine, indRows, forwardTo} from '../../site/su/su-data.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const SAY = ['그날 몸값이 큰 쪽 위 20% 회사예요', '업종이 한 달 동안 시장보다 15% 넘게 더 올랐어요', '회사는 아직 싹이에요'];
@@ -91,4 +91,17 @@ test('저장소 자료 그대로 — 꽃이 될 회사 · 돈이 몰린 회사 �
   const mo = moneyList(TH, W);
   assert.ok(mo.length <= 3);
   for (const r of mo) { assert.match(r.code, CODE); assert.ok(r.x > 0); }
+});
+
+test('첫 화면이 된 뒤 — 지금 수르 고리 · 말 · 카톡 표는 /next/ 로 그대로 · 수르 두 길 길과 다른 표는 그대로', () => {
+  for (const h of ['', '#', '#/', '#/c/005930', '#/i/%ED%95%AD%EA%B3%B5']) assert.equal(forwardTo('', h), null, h);
+  assert.equal(forwardTo('?v=123', '#/'), null);
+  assert.equal(forwardTo('?fbclid=abc', ''), null);
+  assert.equal(forwardTo('', '#/w/005930'), '/next/#/w/005930');
+  assert.equal(forwardTo('', '#/s/abc%20def'), '/next/#/s/abc%20def'); // 카톡으로 받은 보내기
+  assert.equal(forwardTo('', '#/why'), '/next/#/why');
+  assert.equal(forwardTo('', '#/c/'), '/next/#/c/'); // 번호 없는 옛 회사 길은 지금 수르가 풂
+  assert.equal(forwardTo('?lang=en', '#/'), '/next/?lang=en#/');
+  assert.equal(forwardTo('?kakao=ok', ''), '/next/?kakao=ok');
+  assert.equal(forwardTo('?v=1&sw=1', '#/c/005930'), '/next/?v=1&sw=1#/c/005930');
 });
