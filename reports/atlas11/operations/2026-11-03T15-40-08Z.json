@@ -1,0 +1,117 @@
+{
+  "schema": "atlas11-operation-3",
+  "at": "2026-11-03T15:40:08Z",
+  "dayKST": "2026-11-04",
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-11-03T15:40:09.292Z",
+      "status": "ok",
+      "durationMs": 72,
+      "session": true,
+      "afterClose": false,
+      "day": "2026-11-04",
+      "cutoff": "2026-11-03"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-11-03T15:40:09.364Z",
+      "status": "ok",
+      "durationMs": 1,
+      "skipped": true,
+      "reason": "정규장 마감(15:30) 전 · 장중값은 받지 않음"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-11-03T15:40:09.365Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true
+    },
+    {
+      "step": "5_record_view",
+      "startedAt": "2026-11-03T15:40:09.429Z",
+      "view": {
+        "boardId": "board-2026-11-03-032a847b",
+        "asOf": "2026-11-03",
+        "companies": 365,
+        "files": 368,
+        "dir": "public/data/atlas11/view",
+        "universeNext": null,
+        "bytes": 2963060,
+        "similar": [
+          "안랩",
+          "에스원",
+          "스튜디오드래곤",
+          "IPARK현대산업개발",
+          "원익홀딩스",
+          "영원무역홀딩스",
+          "파라다이스"
+        ],
+        "moves": "2026-10-30 → 2026-11-03",
+        "evening": null,
+        "lead6": {
+          "groups": 15,
+          "companies": 74,
+          "both": 37,
+          "index": "코스피 2026-11-03 -38.0%"
+        },
+        "market": {
+          "file": "public/data/atlas11/market/KOSPI.json",
+          "added": [],
+          "mismatch": []
+        },
+        "changelog": {
+          "file": "reports/atlas11/changelog/data-kr/kr-20261104T004008.json",
+          "wrote": true,
+          "title": "수급 · 기사 · 공시를 새로 모음"
+        },
+        "issue": {
+          "wrote": false,
+          "reason": "2026-11-03 이슈가 이미 있음"
+        }
+      },
+      "status": "ok",
+      "durationMs": 1413
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu26",
+    "event": "schedule",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "41663885790",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/41663885790",
+    "commit": "a660b7119ad4af15a60424f418437a5af50fe854",
+    "serverInstalled": true,
+    "scheduledRun": true
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": true,
+  "prediction": "off",
+  "warnings": [],
+  "universeId": "u2-n365-v1-2026-10-05",
+  "day": "2026-11-04",
+  "session": true,
+  "afterClose": false,
+  "calendarGate": {
+    "day": "2026-11-04",
+    "status": "before_regular_close",
+    "regularClose": "15:30",
+    "mayCollectFinalClose": false,
+    "providerFinalRequired": true,
+    "targetDeadline": "16:00",
+    "beforeTargetDeadline": true
+  },
+  "cutoff": "2026-11-03",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-10-01",
+  "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
+  "inputSnapshotSHA256": "cb71be347e105ce09a166ef799d50cecc1d703dc9c9243984dddcb2a514a9682",
+  "expectedStocks": 365,
+  "finishedAt": "2026-11-03T15:40:10.842Z"
+}
