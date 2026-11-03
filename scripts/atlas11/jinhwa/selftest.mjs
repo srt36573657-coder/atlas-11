@@ -25,6 +25,10 @@ const METRICS = readJson(path.join(ROOT, L.METRICS_FILE));
 const ESS = L.readEssence(ROOT);
 const UNITS = L.essenceUnits(ESS.lines);
 const ID = n => `20261019-0930-${n}`;
+/** 배운 글(일꾼 열하나 · 주문 0218) — 만드는 회차의 alt-start 가 봄 */
+const LEARN = '# 배운 글\n\n' + L.LENSES.map(x => `## ${x.n}. ${x.name}\n- 본 것: 처음 쪽 맨 위에 꽃이 될 회사 칸이 있어요. 회사 이름을 누르면 그 회사 쪽이 바로 열려요.\n- 출처: 못 찾음\n`).join('\n')
+  + '\n## 이상적인 흐름\n처음 쪽 → 꽃이 될 회사 → 회사 쪽 → 사기 전에 한 번 멈춤\n\n## 고칠 거리 차례\n1. 회사 쪽 첫 칸 글을 줄여요.\n';
+const learnIn = (work, id) => { fs.mkdirSync(path.join(work, L.REC_DIR), {recursive: true}); fs.writeFileSync(path.join(work, L.REC_DIR, id + L.LEARN_SUFFIX), LEARN); };
 const card = (id, o = {}) => ({id, title: '오늘 칸 날짜 옆에 받은 때', pick: false, serves: '② 지난 기록만 보여 준다.', before: L.imgOf(id, 'before'), after: L.imgOf(id, 'after'),
   voices: {kahneman: '서두르게 하지 않아요.', munger: '망치는 길에 닿지 않아요.', popper: '틀리면 바로 되돌려요.'}, predict: {text: '다른 곳이 0 으로 남아요.', measure: L.measureRules(METRICS).find(r => r.measure === 'fact' && r.dir === 'zero').text, days: 10},
   revert: '다른 곳이 하나라도 나오면 되돌려요.', premortem: '날짜가 늦게 와서 헷갈렸을 수 있어요.', big: false, risks: [], branch: L.branchOf(id), files: ['site/next/p-today.js'], checks: {changed: 0, preview: 0}, ...o});
@@ -217,11 +221,14 @@ test('⑰ 본질 잠금 — 지금 저장소 맞음 · 한 글자 바꾸면 회�
     ok(!L.essenceLockCheck(dir).ok, '고친 본질');
   } finally { fs.rmSync(dir, {recursive: true, force: true}); }
 });
-test('⑱ 때 — 회차 때 · 실리는 업데이트 · 확인하면 들어가는 업데이트', () => {
-  eq(L.isoKst(L.roundCutoff(new Date('2026-10-19T00:33:00Z'))), '2026-10-19T09:30:00+09:00');
+test('⑱ 때 — 회차 때(두 시간마다 · 하루 열두 번 · 주문 0218) · 실리는 업데이트 · 확인하면 들어가는 업데이트', () => {
+  eq(L.ROUND_SLOTS.map(([H]) => H), [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23], '서울 짝수 시 29분 회차 → 홀수 시 업데이트');
+  eq(L.isoKst(L.roundCutoff(new Date('2026-10-19T01:33:00Z'))), '2026-10-19T10:30:00+09:00', '10:30 회차');
+  eq(L.isoKst(L.roundCutoff(new Date('2026-10-19T00:33:00Z'))), '2026-10-19T09:33:00+09:00', '회차 때가 아니면 지금(손으로 돌린 회차)');
   eq(L.isoKst(L.carrySlot(new Date('2026-10-19T00:50:00Z'))), '2026-10-19T10:00:00+09:00');
   eq(L.isoKst(L.carrySlot(new Date('2026-10-19T00:57:00Z'))), '2026-10-19T11:00:00+09:00', '4분 안이면 다음 업데이트(매시)');
-  eq(L.isoKst(L.nextSlot(new Date('2026-10-18T10:00:00Z'))), '2026-10-18T21:00:00+09:00', '일요일 저녁도 매시 — 19:00 에 만든 판은 20:00 에 실리고 20:30 회차 → 21시');
+  eq(L.isoKst(L.nextSlot(new Date('2026-10-18T10:00:00Z'))), '2026-10-18T21:00:00+09:00', '일요일 저녁 — 19:00 에 만든 판은 20:00 에 실리고 20:30 회차 → 21시');
+  eq(L.isoKst(L.nextSlot(new Date('2026-10-18T11:00:00Z'))), '2026-10-18T23:00:00+09:00', '20:00 에 만든 판은 21:00 에 실리고 22:30 회차 → 23시(21:30 회차는 없음)');
   eq(L.roundId(new Date('2026-10-19T00:30:00Z')), '20261019-0930');
 });
 
@@ -439,6 +446,12 @@ test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · �
   ctx.D1 = D;
   const b = await R(D, 'begin'); eq(b.code, 0, JSON.stringify(b.out)); eq(b.out.plan.next, 'make'); eq(b.out.essence.first, ESS.first);
   const starts = {};
+  // 먼저 배우기(주문 0218) — 배운 글이 없거나 모자라면 대안을 못 만듦
+  let lr = await R(D, 'alt-start', '--n', '1'); eq(lr.code, 1, '배운 글 없이 alt-start'); ok(/먼저 배우기/.test(lr.out.why) && /배운 글이 없음/.test(lr.out.why), lr.out.why);
+  fs.mkdirSync(path.join(work, L.REC_DIR), {recursive: true});
+  fs.writeFileSync(path.join(work, L.REC_DIR, '20261019-0930' + L.LEARN_SUFFIX), LEARN.replace('## 7. 누구나 보기', '## 7. 아무나'));
+  lr = await R(D, 'alt-start', '--n', '1'); eq(lr.code, 1, '칸 하나 빠진 배운 글'); ok(/7\. 누구나 보기/.test(lr.out.why), lr.out.why);
+  learnIn(work, '20261019-0930');
   for (const n of [1, 2, 3]) { const s = await R(D, 'alt-start', '--n', String(n)); eq(s.code, 0, JSON.stringify(s.out)); starts[n] = s.out.dir; }
   // 막혀야 하는 대안: 지킴 파일 · 여섯 파일 · 잣대 신호 · 본질 문 없음
   fs.writeFileSync(path.join(starts[1], L.METRICS_FILE), '{}'); sh(starts[1], 'git', ['commit', '-qam', '잣대 고침']);
@@ -485,11 +498,12 @@ test('E1 만드는 회차 — 대안 셋(지킴 · 다섯 · 잣대 신호 · �
   fs.mkdirSync(path.join(work, L.REC_DIR), {recursive: true});
   fs.writeFileSync(path.join(work, L.REC_DIR, '20261019-0930-did.md'), '# 한 일\n1. 새 대안 셋을 만들었어요.\n');
   fs.writeFileSync(path.join(work, L.REC_DIR, '20261019-0830-did.md'), '# 다른 회차\n'); fs.writeFileSync(path.join(work, L.REC_DIR, '20261019-0930-x.txt'), '안 감\n');
-  eq(L.roundNotesOf(path.join(work, L.REC_DIR), '20261019-0930'), ['20261019-0930-did.md']); eq(L.roundNotesOf(path.join(work, L.REC_DIR), '../x'), []);
+  eq(L.roundNotesOf(path.join(work, L.REC_DIR), '20261019-0930'), ['20261019-0930-did.md', '20261019-0930-learn11.md']); eq(L.roundNotesOf(path.join(work, L.REC_DIR), '../x'), []);
   r = await R(D, 'record'); eq(r.code, 0, JSON.stringify(r.out)); ok(/새 진화 대안 3개/.test(r.out.owner[0]), r.out.owner[0]); ok(r.out.notice.includes('새 대안 3개'));
   ok(/새 대안 셋/.test(mainFile(work, `${L.REC_DIR}/20261019-0930-did.md`) ?? ''), '회차 글이 기록과 함께 main 에');
   eq(mainFile(work, `${L.REC_DIR}/20261019-0830-did.md`), null, '다른 회차 글은 안 감'); eq(mainFile(work, `${L.REC_DIR}/20261019-0930-x.txt`), null, '.md 아닌 것은 안 감');
-  eq(JSON.parse(mainFile(work, `${L.REC_DIR}/20261019-0930.json`)).notes, ['20261019-0930-did.md'], '기록 notes');
+  eq(JSON.parse(mainFile(work, `${L.REC_DIR}/20261019-0930.json`)).notes, ['20261019-0930-did.md', '20261019-0930-learn11.md'], '기록 notes — 배운 글도 함께');
+  ok(/## 11\. 처음 온 사람/.test(mainFile(work, `${L.REC_DIR}/20261019-0930-learn11.md`) ?? ''), '배운 글이 기록과 함께 main 에');
   for (const f of ['20261019-0930-did.md', '20261019-0830-did.md', '20261019-0930-x.txt']) fs.rmSync(path.join(work, L.REC_DIR, f), {force: true});
   const d = JSON.parse(mainFile(work, L.DATA_FILE));
   eq(d.waiting.map(w => [w.id, w.pick]), [[ID(2), true], [ID(1), false], [ID(3), false]]); eq(d.n, 0);
@@ -602,6 +616,7 @@ test('E9 미리 검사가 회차를 넘김 — 기록에 그림을 먼저 두고
   const mk = (run, now) => fakeDeps({work, run: path.join(tmp9, run), now, status: {items: []}, preview: () => state});
   const D = mk('a', '2026-10-26T00:30:00Z'), id = n => `20261026-0930-${n}`;
   let r = await R(D, 'begin'); eq(r.out.plan.next, 'make');
+  learnIn(work, '20261026-0930');
   for (const [n, f, from, to] of [[1, 'site/next/p-why.js', "'why 칸'", "'why 칸 · 한 번 더'"], [2, 'site/next/p-today.js', "'today 칸'", "'today 칸 · 받은 때'"]]) {
     const st = await R(D, 'alt-start', '--n', String(n)); commitIn(st.out.dir, f, from, to);
     const a = await R(D, 'alt', '--n', String(n), '--route', '#/'); eq(a.code, 0, JSON.stringify(a.out));
@@ -721,6 +736,7 @@ test('E13 지금 사이트 자료 — begin 이 가지 판으로 회차를 연 �
   ok(fs.existsSync(path.join(work, 'site/changelog.json')), '올릴 때만 생기는 기록 탭 파일도(#/up 404 막음)');
   eq(sh(work, 'git', ['status', '--porcelain', '--', 'site']), '', 'git 은 바뀐 자료를 안 봄');
   eq(dataOf(), data0, '진화 칸 자료는 그대로');
+  learnIn(work, '20261021-0930');
   const s = await R(D, 'alt-start', '--n', '1'); eq(s.code, 0, JSON.stringify(s.out)); eq(s.out.fresh, '2026-11-02', '대안 폴더도 지금 사이트 판');
   eq(J(s.out.dir, 'site/atlas/data/co/A00001.json').close, [1, 2], '대안 폴더 자료 = 지금 사이트');
   commitIn(s.out.dir, 'site/next/p-why.js', "'why 칸'", "'왜 칸'", '대안 — add -A 로 커밋');

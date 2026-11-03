@@ -36,9 +36,12 @@ export const FIX_MAX_FILES = 3, FIX_MAX_LINES = 20, FIX_MAX_CHARS = 24, FIX_MAX_
 export const FIX_KINDS = Object.freeze(['깨진 길', '날짜 「?」', '오타']);
 export const SLOTS = Object.freeze(Array.from({length: 24}, (_, h) => Object.freeze([h, 0]))); // 매시 업데이트(서울 · 주말 · 공휴일도 — 사장님 2026-10-18 20:59 「한시간 마다 업데이트를 하라」 · 21:00 「진화도 24번 한다」) — 업데이트 예약 작업은 1분 앞 :59 · 옛 판 하루 4번(평일 10 · 12 · 14 · 18)
 export const ROUND_LEAD_MIN = 30;                      // 회차 = 업데이트 30분 전(09:30 · 11:30 · 13:30 · 17:30)
+/** 회차가 도는 업데이트 — 하루 열두 번(사장님 2026-11-03 21:18(+04) 「하루에 12번 진화 되도록」 · 주문 0218): 서울 짝수 시 29분 회차 → 홀수 시 정각 업데이트에 실림 · 업데이트는 매시 그대로 */
+export const ROUND_EVERY_H = 2;
+export const ROUND_SLOTS = Object.freeze(SLOTS.filter(([H]) => H % ROUND_EVERY_H === 1));
 export const CARRY_MARGIN_MIN = 4;                     // 업데이트 4분 전까지 main 에 든 것이 그 업데이트에 실림
 export const DEPLOY_WORKFLOWS = Object.freeze(['atlas11-site.yml', 'atlas11-daily.yml', 'atlas11-evening.yml']); // 사이트를 올리는 작업 — [8] 2 「다른 올리기가 돌고 있으면 끝날 때까지 기다려라」
-export const LOCK_BRANCH = 'jinhwa-lock', LOCK_STALE_MIN = 100; // 회차 둘이 겹치지 않게(회차 사이 2시간 넘음)
+export const LOCK_BRANCH = 'jinhwa-lock', LOCK_STALE_MIN = 115; // 회차 둘이 겹치지 않게 — 회차는 2시간마다(주문 0218) · 멈춘 회차의 잠금은 다음 회차(120분 뒤) 전에 낡음 · 회차는 110분 안에 끝냄
 export const ID_RE = /^(\d{8})-(\d{4})-([1-3])$/;      // 대안 번호 = 회차 때(서울) + 1 ~ 3
 export const FIX_ID_RE = /^(\d{8})-(\d{4})-f([1-9])$/;  // 고장 고침 번호
 export const ROUND_RE = /^\d{8}-\d{4}$/;
@@ -62,26 +65,28 @@ export const roundId = t => { const k = kst(t); return `${k.y}${p2(k.mo)}${p2(k.
 export const isoKst = t => { const k = kst(t), s = new Date(t).getUTCSeconds(); return `${k.date}T${p2(k.H)}:${p2(k.M)}:${p2(s)}+09:00`; };
 const kstDate = (date, H, M) => new Date(`${date}T${p2(H)}:${p2(M)}:00+09:00`);
 export const addDays = (date, n) => { const t = new Date(date + 'T00:00:00Z'); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
-/** t 뒤(같거나)의 업데이트 때 n 개(매시 정각 · 주말도) */
-export function slotsFrom(t, n = 1) {
+/** t 뒤(같거나)의 업데이트 때 n 개(매시 정각 · 주말도) · slots = ROUND_SLOTS 면 회차가 도는 업데이트만(두 시간마다) */
+export function slotsFrom(t, n = 1, slots = SLOTS) {
   const out = [], t0 = new Date(t).getTime();
   for (let day = kst(t).date, guard = 0; out.length < n && guard < 30; day = addDays(day, 1), guard++) {
-    for (const [H, M] of SLOTS) { const s = kstDate(day, H, M); if (s.getTime() >= t0 && out.length < n) out.push(s); }
+    for (const [H, M] of slots) { const s = kstDate(day, H, M); if (s.getTime() >= t0 && out.length < n) out.push(s); }
   }
   return out;
 }
+/** t 뒤(같거나)의 「회차가 도는」 업데이트 n 개 — 그 30분 전에 회차(서울 짝수 시 29분 · 하루 열두 번) */
+export const roundSlotsFrom = (t, n = 1) => slotsFrom(t, n, ROUND_SLOTS);
 /** 지금 main 에 넣으면 실리는 업데이트(4분 앞까지) */
 export const carrySlot = (t = new Date()) => slotsFrom(new Date(new Date(t).getTime() + CARRY_MARGIN_MIN * 60e3))[0];
-/** 「확인」하면 들어가는 업데이트 — 이 자료가 사이트에 오른 뒤 처음 도는 회차(업데이트 30분 전)의 업데이트 */
+/** 「확인」하면 들어가는 업데이트 — 이 자료가 사이트에 오른 뒤 처음 도는 회차(업데이트 30분 전 · 두 시간마다)의 업데이트 */
 export function nextSlot(t = new Date()) {
   const live = carrySlot(t);
-  return slotsFrom(new Date(live.getTime() + (ROUND_LEAD_MIN + 1) * 60e3))[0];
+  return roundSlotsFrom(new Date(live.getTime() + (ROUND_LEAD_MIN + 1) * 60e3))[0];
 }
 /** 회차가 보는 확인의 끝 때 — 지금 바로 앞의 회차 때(업데이트 30분 전 · 60분 안) · 아니면 지금(손으로 돌린 회차)
  *  진화 칸(p-jinhwa.js slotAfter)은 「회차 때보다 늦게 온 확인 = 그다음 업데이트」로 보여 줌 — 같은 잣대로 그 약속을 지킴 */
 export function roundCutoff(t = new Date()) {
   const now = new Date(t).getTime();
-  for (const s of slotsFrom(new Date(now - 70 * 60e3), 3)) { const r = s.getTime() - ROUND_LEAD_MIN * 60e3; if (r <= now && now - r <= 60 * 60e3) return new Date(r); }
+  for (const s of roundSlotsFrom(new Date(now - 70 * 60e3), 3)) { const r = s.getTime() - ROUND_LEAD_MIN * 60e3; if (r <= now && now - r < 60 * 60e3) return new Date(r); }
   return new Date(now);
 }
 /** 쉬운 말 시각 — 「10월 19일 12시」 · 「12시 30분」 */
@@ -527,6 +532,44 @@ export const APPLIED_KEYS = Object.freeze(['id', 'title', 'at', 'before', 'after
 export const WAIT_OPT = Object.freeze(['mark']); // 바뀐 곳 표시(사장님 2026-10-19 00:5x 「어디를 고쳤는지 … 표기가 없어서 한참 찾아야 해」) — shots.mjs 가 찾은 네모 · 새로 생긴 글 · 찍은 길
 export const APPLIED_OPT = Object.freeze(['revertedAt', 'mark']); // 되돌린 진화 — 서울 시각(KD 서버 · 화면이 이 이름으로 읽음 · split.md 에 더한 칸)
 export const LIM = Object.freeze({title: 40, serves: 80, voice: 120, text: 120, what: 120, measure: 90});
+/** 배우는 일꾼 열하나 — 화면 모양과 누르는 길(UI/UX)의 가장 이상적인 흐름을 먼저 배우고 그다음 진화(사장님 2026-11-03 21:18(+04) 「진화를 ui/ux에 집중 … 11개 에이전트를 동원해서 가장 이상적인 흐름의 구조를 학습한 이후 진화하는 구조」 · 주문 0218)
+ *  만드는 회차(make)는 alt-start 앞에 <회차>-learn11.md(기록 폴더 · 회차 글로 기록과 함께 main 에)를 써야 함 — learnOk 가 봄 */
+export const LENSES = Object.freeze([
+  {n: 1, name: '첫눈', ask: '처음 3초에 이 쪽이 무엇을 하는 곳인지 아는가'},
+  {n: 2, name: '길 찾기', ask: '누르면 기대한 곳으로 가는가 · 이름과 자리가 맞는가'},
+  {n: 3, name: '누르는 수', ask: '꽃이 될 회사의 까닭까지 세 번에서 다섯 번 안에 닿는가'},
+  {n: 4, name: '눈 흐름', ask: '위에서 아래로 중요한 것이 먼저 보이는가'},
+  {n: 5, name: '읽기', ask: '글이 짧고 쉬운가 · 글씨가 큰가'},
+  {n: 6, name: '손가락', ask: '휴대폰 한 손으로 누르기 쉬운가 · 누르는 자리의 크기와 간격'},
+  {n: 7, name: '누구나 보기', ask: '색 대비 · 색만으로 뜻을 전하지 않음 · 화면 읽기 · 어두운 판'},
+  {n: 8, name: '빠르기', ask: '느린 망에서 첫 그림이 빨리 뜨고 흔들리지 않는가'},
+  {n: 9, name: '믿음', ask: '숫자 출처와 받은 때 · 지난 기록 · 앞날을 맞히지 않는다는 말이 보이는가'},
+  {n: 10, name: '멈춤', ask: '서두르게 하는 장치가 없고 사기 전에 한 번 멈추는 길이 자연스러운가'},
+  {n: 11, name: '처음 온 사람', ask: '왕초보 · 어린이 · 어르신이 혼자 쓸 수 있는가(쓰기 쉬움 열 가지)'},
+]);
+export const LEARN_SUFFIX = '-learn11.md';
+export const LEARN_SECTIONS = Object.freeze(['이상적인 흐름', '고칠 거리 차례']);
+/** 배운 글 꼴 — 칸 열하나(「## n. 이름」 · 칸마다 「출처:」 줄 · 너무 짧지 않음) + 「## 이상적인 흐름」 · 「## 고칠 거리 차례」 → {ok, why[]} */
+export function learnOk(text) {
+  if (typeof text !== 'string' || !text.trim()) return {ok: false, why: ['배운 글이 없음']};
+  const lines = text.split('\n'), why = [];
+  const heads = lines.map((l, i) => [i, l.replace(/\s+/g, ' ').trim()]).filter(([, l]) => l.startsWith('## '));
+  const body = at => { const nx = heads.find(([i]) => i > at); return lines.slice(at + 1, nx ? nx[0] : lines.length).join('\n'); };
+  for (const x of LENSES) {
+    const h = heads.find(([, l]) => l === `## ${x.n}. ${x.name}` || l.startsWith(`## ${x.n}. ${x.name} `));
+    if (!h) { why.push(`「## ${x.n}. ${x.name}」 칸 없음`); continue; }
+    const b = body(h[0]);
+    if (!/^\s*(?:[-*]\s*)?출처\s*[:：]/m.test(b)) why.push(`${x.n}. ${x.name} 칸에 「출처:」 줄 없음`);
+    if (b.replace(/\s/g, '').length < 40) why.push(`${x.n}. ${x.name} 칸이 너무 짧음`);
+  }
+  for (const name of LEARN_SECTIONS) {
+    const h = heads.find(([, l]) => l === `## ${name}` || l.startsWith(`## ${name} `));
+    if (!h) why.push(`「## ${name}」 칸 없음`);
+    else if (body(h[0]).replace(/\s/g, '').length < 8) why.push(`「${name}」 칸이 비었음`);
+  }
+  return {ok: why.length === 0, why};
+}
+
 /** 찍는 길 꼴(한 곳 — shots.mjs 와 이 파일 markOk 가 같이 씀) — 지금 수르(/next/) 「#/…」 · 새 첫 화면 수르 두 길(/su/ · 주문 0047 · 사장님 2026-11-03 19:47(+04) 「응」 진화도 이 쪽) 「/su/#/…」 */
 export const ROUTE_RE = /^(\/su\/)?#\/[\w\-/.%?=&]*$/;
 /** 바뀐 곳 표시 꼴 — {box: {x, y, w, h}(360 × 640 그림 안 · 점), text(새로 생긴 글 · 120자까지 · 빈 글 됨), route(#/… · /su/#/…), steps(누르기 차례 · shots.mjs stepsOk)} */

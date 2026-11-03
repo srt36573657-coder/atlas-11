@@ -400,6 +400,9 @@ export async function cmdAltStart(a, D) {
   const st = load(D), n = Number(a.n);
   if (st.plan?.next !== 'make') stop(`이번 회차는 새 대안을 만들지 않음(할 일 ${st.plan?.next}) — 기다리는 대안이 있으면 다시 시험만([8] 3)`, 2);
   if (![1, 2, 3].includes(n)) stop('--n 은 1 · 2 · 3', 2);
+  // 먼저 배우기(사장님 2026-11-03 21:18(+04) 「11개 에이전트를 동원해서 가장 이상적인 흐름의 구조를 학습한 이후 진화」 · 주문 0218) — 일꾼 열하나가 쓴 배운 글이 없거나 모자라면 대안을 만들지 않음
+  const lf = path.join(D.root, L.REC_DIR, st.id + L.LEARN_SUFFIX), lr = L.learnOk(fs.existsSync(lf) ? fs.readFileSync(lf, 'utf8') : null);
+  if (!lr.ok) stop(`먼저 배우기 — 일꾼 열하나가 배운 글 ${L.REC_DIR}/${st.id}${L.LEARN_SUFFIX} 가 모자람: ${lr.why.slice(0, 4).join(' · ')}(지시문 「열하나가 먼저 배운다」)`);
   const id = altId(st, n), dir = path.join(D.run, 'wt', 'alt-' + n);
   const w = G.worktreeAdd(D.root, dir, st.main0, {branch: L.branchOf(id)});
   if (!w.ok) stop(w.why);
