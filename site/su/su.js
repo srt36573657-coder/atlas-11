@@ -1,8 +1,8 @@
 /* 수르 두 길(aaa7377.com/su/) — 꽃이 될 회사 · 돈이 몰린 회사 두 가지만
    사장님 2026-11-03 15:49(+04) 「수르가 말이야 물흐르듯 해야 하고 무엇을 클릭하면 그 연관된곳으로 명확하게 이동되서 그 정보를 제공해야 하는대 …
    잡스라면 … 특화된 수르를 만든다면 어떻게 만들거야 그리고 만들어봐」(설계 docs/design/su-two-2026-11-03/order-2049.txt)
-   신문 차례(사장님 2026-11-04 00:08(+04) 「지면 신문처럼 큰값이 나오고 그다음 중간값 나오고 그다음 자세히 나오고 출처 나오도록 하고 움직이는 도식화로」 ·
-   주문 0508 · 샘플 열하나의 장점을 한 판에 — docs/design/jinhwa-paper-2026-11-04/) — 쪽마다 ① 큰 값 ② 중간 값 ③ 자세히 ④ 출처
+   신문 차례 — 주문 0508(사장님 11월 4일 0시 8분 사장님 시계 · 원문 docs/design/jinhwa-paper-2026-11-04/order-0508.txt) · 샘플 열하나의 장점을 한 판에
+   쪽마다 ① 큰 값 ② 중간 값 ③ 자세히 ④ 출처
    길 셋 — #/ 처음 · #/c/<번호> 회사 · #/i/<업종> 업종 · 누르면 그것이 나옴(설명 쪽 · 바깥 · 선물 · 카톡으로 가는 고리 0)
    보안 규칙(script-src 'self' · style-src 'self') — innerHTML 없음 · 글 속 style 없음 · 그림은 SVG 속성으로만 · 움직임은 su.css(한 번 · 움직임 줄이기면 끝 모습)
    새 셈 없음 — 그림의 숫자는 모두 su-data.js 가 고른 자료 그대로 */
@@ -31,11 +31,10 @@ const D = {B: '/next/data/theme-bloom.json', TH: '/next/data/theme.json', W: '/n
 
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
 const NOT_PICK = '조건에 다 맞지는 않아요. ' + josa(NAME, '가') + ' 고른 회사가 아니에요.';
-const BLOOM = '꽃은 한 달 동안 시장보다 5% 넘게 더 오른 것이에요.';
 const coHref = code => '#/c/' + code;
 const indHref = name => '#/i/' + encodeURIComponent(name);
 const fin = v => typeof v === 'number' && Number.isFinite(v);
-/** 내림 · 오름을 소리로도(화면 읽기 · 샘플 07) — −39.4 → 「39.4% 내렸어요」 */
+/** 내림 · 오름을 말로도(화면 읽기 · 샘플 07) — 빼기표만으로 뜻을 전하지 않음 */
 const WORD = ['영', '하나', '둘', '셋', '넷', '다섯', '여섯', '일곱', '여덟', '아홉', '열'];
 const word = n => WORD[n] ?? String(n);
 const saidPct = v => (fin(v) ? (Math.abs(v).toFixed(1) === '0.0' ? '그대로예요' : Math.abs(v).toFixed(1) + '% ' + (v > 0 ? '올랐어요' : '내렸어요')) : '?');
@@ -95,8 +94,8 @@ function recBox(rec, who, compact = false) {
     h('figure', {class: 'su-rec-f'}, h('figcaption', {}, h('span', {text: '아무 회사'}), h('b', {text: '100번에 ' + rec.base + '번'})), dots100(rec.base, 'su-dots-any')),
     compact ? null : h('p', {class: 'su-rec-a'}, h('span', {text: josa(who, '는') + ' 100번에 '}), h('b', {text: rec.rate + '번'}), h('span', {text: ' 꽃이 됐어요.'})),
     compact ? null : h('p', {class: 'su-rec-b', text: '아무 회사를 골랐다면 ' + rec.base + '번이었어요.'}),
-    h('p', {class: 'su-rec-c', text: BLOOM}),
-    compact ? null : h('p', {class: 'su-rec-c', text: '지난 일을 센 것이에요. 앞날을 맞히는 숫자가 아니에요.'}));
+    compact ? null : h('p', {class: 'su-rec-c su-rec-d', text: '지난 일을 센 것이에요. 앞날을 맞히는 숫자가 아니에요.'}),
+    h('p', {class: 'su-rec-c', text: '꽃은 한 달 동안 시장보다 5% 넘게 더 오른 것이에요.'}));
 }
 /** ④ 출처 — 세 쪽 같은 꼴(샘플 09) · 맨 끝 · 가장 작은 글씨 */
 function srcBox({asOf, S, extra = [], brief = false}) {
@@ -139,7 +138,7 @@ function bloomCard(bl, asOf) {
   if (bl.mode === 'pick') return h('section', {class: 'su-card su-bl', 'aria-label': '꽃이 될 회사'}, head,
     h('p', {class: 'su-lead', text: '오늘 조건에 모두 맞은 회사 ' + bl.rows.length + '곳이에요.'}), rowsOf(rows));
   if (bl.mode === 'near') return h('section', {class: 'su-card su-bl', 'aria-label': '꽃이 될 회사'}, head,
-    fin(bl.min) ? h('p', {class: 'su-note su-legend-n', text: '막대 위 점선이 꽃 조건 ' + bl.min + '%예요.'}) : null,
+    fin(bl.min) ? h('p', {class: 'su-note su-legend-n', text: '막대 위 점선이 꽃 조건이에요.'}) : null,
     rowsOf(rows));
   return h('section', {class: 'su-card su-bl', 'aria-label': '꽃이 될 회사'}, head, h('p', {class: 'su-lead', text: '오늘은 조건에 맞은 회사가 없어요.'}));
 }
@@ -236,7 +235,7 @@ async function vCo(code) {
     ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
     coBig(rs),
     mids([
-      near && fin(near.ix) ? {label: '업종이 시장보다', value: moreLess(near.ix), sub: fin(near.min) ? '조건은 ' + near.min + '% 넘게' : null, fig: barFig(near.ix, max, near.min, 'su-barf-bl'), cls: 'su-mid-wide'} : null,
+      near && fin(near.ix) ? {label: '업종이 시장보다', value: moreLess(near.ix), sub: fin(near.min) ? '점선이 꽃 조건이에요' : null, fig: barFig(near.ix, max, near.min, 'su-barf-bl'), cls: 'su-mid-wide'} : null,
       fin(cEnd) ? {label: c.name + ' 한 달', value: pct(cEnd), sub: saidPct(cEnd)} : null,
       fin(iEnd) ? {label: il.name + ' 한 달', value: pct(iEnd), sub: saidPct(iEnd)} : null]),
     rs.length ? rs.map(r => reasonCard(r)) : h('p', {class: 'su-lead2 su-none', text: '이 회사는 오늘 두 목록에 없어요. 지난 한 달만 보여 드려요.'}),
@@ -274,7 +273,7 @@ async function vInd(name) {
     h('h1', {class: 'su-h1', tabindex: '-1'}, h('span', {text: name + ' 업종'})),
     x != null ? h('div', {class: 'su-bigw'}, bigVal({label: '한 달 동안 시장보다', num: moreLess(x), unit: ' 올랐어요', cls: 'su-big-ind'}),
       barFig(Math.max(0, x), Math.max(min ? min * 1.3 : 0, x, 1), min, 'su-barf-big'),
-      min ? h('p', {class: 'su-note', text: '점선은 꽃 조건 「업종이 시장보다 ' + min + '% 넘게」예요.'}) : null) : null,
+      min ? h('p', {class: 'su-note'}, h('span', {text: '점선은 꽃 조건이에요. '}), bl.miss ?? '') : null) : null,
     mids([
       {label: '이 업종 회사', value: rows.length + '곳', sub: rows.length > SHOW ? '한 달 많이 오른 차례로 ' + SHOW + '곳 먼저' : '한 달 많이 오른 차례'},
       from ? {label: '보던 회사', value: from.name, sub: '아래 줄에 「보던 회사」로 표시했어요', cls: 'su-mid-seen'} : null]),
