@@ -85,18 +85,6 @@ function dots100(n, cls) {
   }
   return g;
 }
-/** 지난 기록 칸 — 점 100개 두 판 · 한 줄 풀이 · 꽃의 뜻 */
-function recBox(rec, who, compact = false) {
-  if (!rec) return null;
-  return h('div', {class: 'su-rec', role: 'group', 'aria-label': '지난 기록'},
-    h('p', {class: 'su-rec-h', text: '지난 기록 · 꽃이 된 수'}),
-    h('figure', {class: 'su-rec-f su-rec-me'}, h('figcaption', {}, h('span', {text: who}), h('b', {text: '100번에 ' + rec.rate + '번'})), dots100(rec.rate, 'su-dots-me')),
-    h('figure', {class: 'su-rec-f'}, h('figcaption', {}, h('span', {text: '아무 회사'}), h('b', {text: '100번에 ' + rec.base + '번'})), dots100(rec.base, 'su-dots-any')),
-    compact ? null : h('p', {class: 'su-rec-a'}, h('span', {text: josa(who, '는') + ' 100번에 '}), h('b', {text: rec.rate + '번'}), h('span', {text: ' 꽃이 됐어요.'})),
-    compact ? null : h('p', {class: 'su-rec-b', text: '아무 회사를 골랐다면 ' + rec.base + '번이었어요.'}),
-    compact ? null : h('p', {class: 'su-rec-c su-rec-d', text: '지난 일을 센 것이에요. 앞날을 맞히는 숫자가 아니에요.'}),
-    h('p', {class: 'su-rec-c', text: '꽃은 한 달 동안 시장보다 5% 넘게 더 오른 것이에요.'}));
-}
 /** ④ 출처 — 세 쪽 같은 꼴(샘플 09) · 맨 끝 · 가장 작은 글씨 */
 function srcBox({asOf, S, extra = [], brief = false}) {
   const at = S?.fetchedAt ? kstText(S.fetchedAt) : null;
@@ -124,6 +112,26 @@ function rowsOf(rows, mark = null) {
       r.indFact ? h('span', {class: 'su-ib-f', text: r.indFact}) : null,
       r.indFig ?? null,
       h('i', {'aria-hidden': 'true', text: '›'})) : null)));
+}
+/** 지난 기록 두 줄 — 「○○는 100번에 n번 꽃이 됐어요」 · 아무 회사 · 꽃의 뜻 */
+function recBox(rec, who) {
+  if (!rec) return null;
+  return h('div', {class: 'su-rec'},
+    h('p', {class: 'su-rec-a'}, h('span', {text: josa(who, '는') + ' 100번에 '}), h('b', {text: rec.rate + '번'}), h('span', {text: ' 꽃이 됐어요.'})),
+    h('p', {class: 'su-rec-b', text: '아무 회사를 골랐다면 ' + rec.base + '번이었어요.'}),
+    h('p', {class: 'su-rec-c', text: '꽃은 한 달 동안 시장보다 5% 넘게 더 오른 것이에요.'}));
+}
+/** 지난 기록 칸 — 옛 두 줄 칸(recBox) 위에 점 100개 두 판 · 처음 쪽은 짧게(점과 꽃의 뜻만) */
+function recFig(rec, who, compact = false) {
+  const box = recBox(rec, who); if (!box) return null;
+  const [a, b, c] = box.children;
+  box.setAttribute('role', 'group'); box.setAttribute('aria-label', '지난 기록');
+  box.prepend(h('p', {class: 'su-rec-h', text: '지난 기록 · 꽃이 된 수'}),
+    h('figure', {class: 'su-rec-f su-rec-me'}, h('figcaption', {}, h('span', {text: who}), h('b', {text: '100번에 ' + rec.rate + '번'})), dots100(rec.rate, 'su-dots-me')),
+    h('figure', {class: 'su-rec-f'}, h('figcaption', {}, h('span', {text: '아무 회사'}), h('b', {text: '100번에 ' + rec.base + '번'})), dots100(rec.base, 'su-dots-any')));
+  if (compact) { a.remove(); b.remove(); }
+  else c.before(h('p', {class: 'su-rec-c su-rec-d', text: '지난 일을 센 것이에요. 앞날을 맞히는 숫자가 아니에요.'}));
+  return box;
 }
 const cardHead = (k, title, note) => h('div', {class: 'su-ch'}, h('span', {class: 'su-dot su-dot-' + k, 'aria-hidden': 'true'}), h('h2', {class: 'su-ct', text: title}), note ? h('span', {class: 'su-cn', text: note}) : null);
 
@@ -165,7 +173,7 @@ async function vHome() {
     mids([
       bl.rows.length && bl.mode === 'near' ? {label: '가장 가까운 회사', value: bl.rows.length + '곳', sub: '조건 ' + word(all) + ' 중 ' + word(ok) + ' 맞음', cls: 'su-mid-bl'} : null,
       mo.length ? {label: '돈이 몰린 회사', value: mo.length + '곳', sub: '업종의 대장 회사', cls: 'su-mid-mo'} : null]),
-    bl.mode === 'near' ? recBox(bl.rec, '지난 빈 날 가장 가까운 회사', true) : recBox(bl.rec, '이렇게 고른 회사', true),
+    bl.mode === 'near' ? recFig(bl.rec, '지난 빈 날 가장 가까운 회사', true) : recFig(bl.rec, '이렇게 고른 회사', true),
     bloomCard(bl, asOf), moneyCard(mo),
     srcBox({asOf, S, brief: true, extra: bl.rec?.n ? [['지난 기록', bl.rec.n + '번 가운데 ' + (bl.rec.hits ?? '?') + '번']] : []}),
     essBox(S))]};
@@ -196,14 +204,14 @@ function reasonCard(r) {
   if (r.kind === 'pick') return h('section', {class: 'su-card su-why su-bl'}, cardHead('bl', '꽃이 될 회사예요'),
     h('p', {class: 'su-lead', text: '오늘 조건 ' + r.ok.length + '가지에 모두 맞았어요.'}),
     h('ul', {class: 'su-cond'}, r.ok.map(t => h('li', {class: 'su-ok'}, h('i', {'aria-hidden': 'true', text: '✓'}), h('span', {text: t}), h('em', {text: '맞음'})))),
-    recBox(r.rec, '이렇게 고른 회사'));
+    recFig(r.rec, '이렇게 고른 회사'));
   if (r.kind === 'near') return h('section', {class: 'su-card su-why su-bl'}, cardHead('bl', '조건에 가장 가까운 회사예요'),
     h('p', {class: 'su-note', text: NOT_PICK}),
     h('h3', {class: 'su-h3', text: '맞은 조건'}),
     h('ul', {class: 'su-cond'}, r.ok.map(t => h('li', {class: 'su-ok'}, h('i', {'aria-hidden': 'true', text: '✓'}), h('span', {text: t}), h('em', {text: '맞음'})))),
     h('h3', {class: 'su-h3', text: '안 맞은 조건'}),
     h('ul', {class: 'su-cond'}, r.no.map(t => h('li', {class: 'su-no'}, h('i', {'aria-hidden': 'true', text: '✗'}), h('span', {text: t}), h('em', {text: '안 맞음'})))),
-    recBox(r.rec, '지난 빈 날 가장 가까운 회사'));
+    recFig(r.rec, '지난 빈 날 가장 가까운 회사'));
   if (r.kind === 'money') return h('section', {class: 'su-card su-why su-mo'}, cardHead('mo', '돈이 몰린 회사예요'),
     h('p', {class: 'su-lead', text: r.ind + ' 업종이 한 달 동안 시장보다 ' + moreLess(r.x) + ' 올랐어요.'}),
     r.why?.line ? h('p', {class: 'su-lead2', text: '왜? ' + r.why.line}) : null,
