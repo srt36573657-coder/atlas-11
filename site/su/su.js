@@ -1,0 +1,179 @@
+/* 수르 두 길(aaa7377.com/su/) — 꽃이 될 회사 · 돈이 몰린 회사 두 가지만
+   사장님 2026-11-03 15:49(+04) 「수르가 말이야 물흐르듯 해야 하고 무엇을 클릭하면 그 연관된곳으로 명확하게 이동되서 그 정보를 제공해야 하는대 …
+   잡스라면 … 특화된 수르를 만든다면 어떻게 만들거야 그리고 만들어봐」(설계 docs/design/su-two-2026-11-03/order-2049.txt)
+   길 셋 — #/ 처음 · #/c/<번호> 회사 · #/i/<업종> 업종 · 누르면 그것이 나옴(설명 쪽 · 바깥 · 선물 · 카톡으로 가는 고리 0)
+   보안 규칙(script-src 'self' · style-src 'self') — innerHTML 없음 · 글 속 style 없음 · 그림은 SVG 속성으로만 */
+import {NAME, josa} from '/next/brand.js';
+import {glossTree} from '/next/glossary.js'; // 낱말표 한 곳(몸값 → 회사 크기 …) — 지금 사이트와 같은 말 · 이름([data-proper])은 그대로
+import {CODE, pct, moreLess, dateKo, bloomList, moneyList, reasonsFor, whyOf, idxLine, coLine, indRows} from '/su/su-data.js';
+
+const SVGNS = 'http://www.w3.org/2000/svg';
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs ?? {})) {
+    if (v == null || v === false) continue;
+    if (k === 'text') e.textContent = String(v);
+    else if (k === 'class') e.className = v;
+    else e.setAttribute(k, v === true ? '' : String(v));
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) e.append(c instanceof Node ? c : String(c));
+  return e;
+}
+const s = (tag, attrs = {}) => { const e = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, String(v)); return e; };
+
+const cache = new Map();
+const get = url => { if (!cache.has(url)) cache.set(url, fetch(url).then(r => (r.ok ? r.json() : null)).catch(() => null)); return cache.get(url); };
+const D = {B: '/next/data/theme-bloom.json', TH: '/next/data/theme.json', W: '/next/data/flow-why.json', H: '/atlas/data/home.json', M: '/atlas/data/mkt.json', co: c => '/atlas/data/co/' + c + '.json'};
+
+const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
+const NOT_PICK = '조건에 다 맞지는 않아요. ' + josa(NAME, '가') + ' 고른 회사가 아니에요.';
+const coHref = code => '#/c/' + code;
+const indHref = name => '#/i/' + encodeURIComponent(name);
+
+/** 위 막대 — 이름(처음으로) · 한 줄 */
+const bar = () => h('header', {class: 'su-bar'}, h('a', {class: 'su-logo', href: '#/', 'aria-label': NAME + ' 처음으로'}, h('img', {src: '/media/makbi-icon.svg', alt: '', width: 28, height: 28}), h('b', {text: NAME})), h('span', {class: 'su-tag-line', text: '꽃이 될 회사 · 돈이 몰린 회사'}));
+const safe = () => h('p', {class: 'su-safe', text: SAFE});
+const back = () => h('a', {class: 'su-back', href: '#/'}, h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '처음으로'}));
+const foot = asOf => h('footer', {class: 'su-foot'},
+  h('p', {text: dateKo(asOf) + ' 자료예요.'}),
+  h('a', {class: 'su-full', href: '/next/'}, h('span', {text: '모든 기록은 지금 ' + NAME + '에서'}), h('i', {'aria-hidden': 'true', text: '›'})));
+
+/** 줄 목록 — 줄 하나 = 누르면 그 회사(또는 업종) 한 곳 */
+function rowsOf(rows) {
+  return h('ul', {class: 'su-rows'}, rows.map(r => h('li', {},
+    h('a', {class: 'su-row', href: r.href},
+      h('span', {class: 'su-rn'}, h('b', {'data-proper': '', text: r.name}), r.tag ? h('span', {class: 'su-chip', text: r.tag}) : null),
+      r.sub ? h('span', {class: 'su-rs', text: r.sub}) : null,
+      r.why ? h('span', {class: 'su-rw', text: r.why}) : null,
+      h('i', {class: 'su-go', 'aria-hidden': 'true', text: '›'})))));
+}
+/** 지난 기록 두 줄 — 「○○는 100번에 n번 꽃이 됐어요」 · 아무 회사 · 꽃의 뜻 */
+function recBox(rec, who) {
+  if (!rec) return null;
+  return h('div', {class: 'su-rec'},
+    h('p', {class: 'su-rec-a'}, h('span', {text: josa(who, '는') + ' 100번에 '}), h('b', {text: rec.rate + '번'}), h('span', {text: ' 꽃이 됐어요.'})),
+    h('p', {class: 'su-rec-b', text: '아무 회사를 골랐다면 ' + rec.base + '번이었어요.'}),
+    h('p', {class: 'su-rec-c', text: '꽃은 한 달 동안 시장보다 5% 넘게 더 오른 것이에요.'}));
+}
+const cardHead = (k, title, note) => h('div', {class: 'su-ch'}, h('span', {class: 'su-dot su-dot-' + k, 'aria-hidden': 'true'}), h('h2', {class: 'su-ct', text: title}), note ? h('span', {class: 'su-cn', text: note}) : null);
+
+function bloomCard(bl, asOf) {
+  const head = cardHead('bl', '꽃이 될 회사', dateKo(asOf));
+  if (bl.mode === 'pick') return h('section', {class: 'su-card su-bl', 'aria-label': '꽃이 될 회사'}, head,
+    h('p', {class: 'su-lead', text: '오늘 조건에 모두 맞은 회사 ' + bl.rows.length + '곳이에요.'}),
+    rowsOf(bl.rows.map(r => ({href: coHref(r.code), name: r.name, sub: r.ind ? r.ind + ' 업종' : null}))),
+    recBox(bl.rec, '이렇게 고른 회사'));
+  if (bl.mode === 'near') return h('section', {class: 'su-card su-bl', 'aria-label': '꽃이 될 회사'}, head,
+    h('p', {class: 'su-lead', text: '오늘은 조건에 다 맞은 회사가 없어요.'}),
+    h('p', {class: 'su-lead2', text: '그래서 조건에 가장 가까운 회사 ' + bl.rows.length + '곳을 따로 보여 드려요.'}),
+    rowsOf(bl.rows.map(r => ({href: coHref(r.code), name: r.name, tag: '가까운 곳', sub: r.ind ? r.ind + ' 업종' : null}))),
+    h('p', {class: 'su-note', text: NOT_PICK}),
+    recBox(bl.rec, '지난 빈 날 가장 가까운 회사'));
+  return h('section', {class: 'su-card su-bl', 'aria-label': '꽃이 될 회사'}, head, h('p', {class: 'su-lead', text: '오늘은 조건에 맞은 회사가 없어요.'}), recBox(bl.rec, '이렇게 고른 회사'));
+}
+function moneyCard(mo) {
+  const head = cardHead('mo', '돈이 몰린 회사', '한 달 흐름');
+  if (!mo.length) return h('section', {class: 'su-card su-mo', 'aria-label': '돈이 몰린 회사'}, head, h('p', {class: 'su-lead', text: '? 아직 못 셌어요.'}));
+  return h('section', {class: 'su-card su-mo', 'aria-label': '돈이 몰린 회사'}, head,
+    h('p', {class: 'su-lead', text: '한 달 동안 시장보다 많이 오른 업종 ' + mo.length + '곳의 대장 회사예요.'}),
+    rowsOf(mo.map(r => ({href: coHref(r.code), name: r.name, sub: r.ind + ' 업종이 시장보다 ' + moreLess(r.x) + ' 올랐어요', why: r.why?.line ? '왜? ' + r.why.line : null}))));
+}
+
+async function vHome() {
+  const [B, TH, W] = await Promise.all([get(D.B), get(D.TH), get(D.W)]);
+  const asOf = B?.asOf ?? TH?.asOf ?? W?.asOf;
+  return {title: null, nodes: [bar(), h('main', {class: 'su-main'}, safe(),
+    h('h1', {class: 'su-h1', tabindex: '-1'}, h('span', {text: '오늘 볼 것은'}), ' ', h('em', {text: '두 가지예요'})),
+    bloomCard(bloomList(B), asOf), moneyCard(moneyList(TH, W)), foot(asOf))]};
+}
+
+/** 회사 한 달 그림 — 그 회사 줄 · 지수 줄(같은 날들 · 기준일 = 100) · 글은 그림 밖 HTML(큰 글씨) */
+function chart(name, cl, il) {
+  if (!cl) return null;
+  const all = [...cl, ...(il?.line ?? [])], lo = Math.min(...all), hi = Math.max(...all), pad = Math.max(2, (hi - lo) * 0.12), y0 = lo - pad, y1 = hi + pad;
+  const W = 340, H = 170, X = (i, n) => 8 + (W - 16) * i / Math.max(1, n - 1), Y = v => 8 + (H - 16) * (1 - (v - y0) / (y1 - y0));
+  const pts = l => l.map((v, i) => X(i, l.length).toFixed(1) + ',' + Y(v).toFixed(1)).join(' ');
+  const g = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'su-svg', role: 'img', 'aria-label': name + ' 한 달 ' + pct(cl[cl.length - 1] - 100) + (il ? ' · ' + il.name + ' 한 달 ' + pct(il.line[il.line.length - 1] - 100) : '')});
+  g.append(s('line', {x1: 8, x2: W - 8, y1: Y(100).toFixed(1), y2: Y(100).toFixed(1), class: 'su-base'}));
+  if (il) g.append(s('polyline', {points: pts(il.line), class: 'su-li'}));
+  g.append(s('polyline', {points: pts(cl), class: 'su-lc'}));
+  const last = cl.length - 1; g.append(s('circle', {cx: X(last, cl.length).toFixed(1), cy: Y(cl[last]).toFixed(1), r: 5, class: 'su-dotc'}));
+  return h('section', {class: 'su-card su-chart', 'aria-label': '한 달 그림'},
+    h('h2', {class: 'su-ct', text: '한 달 동안 걸어온 길'}),
+    il ? h('p', {class: 'su-cn2', text: dateKo(il.from) + '부터 ' + dateKo(il.to) + '까지'}) : null,
+    g,
+    h('ul', {class: 'su-legend'},
+      h('li', {class: 'su-lg-c'}, h('i', {'aria-hidden': 'true'}), h('span', {text: name}), h('b', {text: pct(cl[last] - 100)})),
+      il ? h('li', {class: 'su-lg-i'}, h('i', {'aria-hidden': 'true'}), h('span', {text: il.name}), h('b', {text: pct(il.line[il.line.length - 1] - 100)})) : null));
+}
+/** 왜 여기 있나 — 칸 하나에 까닭 하나 */
+function reasonCard(r, code) {
+  if (r.kind === 'pick') return h('section', {class: 'su-card su-why su-bl'}, cardHead('bl', '꽃이 될 회사예요'),
+    h('p', {class: 'su-lead', text: '오늘 조건 ' + r.ok.length + '가지에 모두 맞았어요.'}),
+    h('ul', {class: 'su-cond'}, r.ok.map(t => h('li', {class: 'su-ok'}, h('i', {'aria-hidden': 'true', text: '✓'}), h('span', {text: t})))),
+    recBox(r.rec, '이렇게 고른 회사'));
+  if (r.kind === 'near') return h('section', {class: 'su-card su-why su-bl'}, cardHead('bl', '조건에 가장 가까운 회사예요'),
+    h('p', {class: 'su-note', text: NOT_PICK}),
+    h('h3', {class: 'su-h3', text: '맞은 조건'}),
+    h('ul', {class: 'su-cond'}, r.ok.map(t => h('li', {class: 'su-ok'}, h('i', {'aria-hidden': 'true', text: '✓'}), h('span', {text: t})))),
+    h('h3', {class: 'su-h3', text: '안 맞은 조건'}),
+    h('ul', {class: 'su-cond'}, r.no.map(t => h('li', {class: 'su-no'}, h('i', {'aria-hidden': 'true', text: '✗'}), h('span', {text: t})))),
+    r.ix != null ? h('p', {class: 'su-lead2', text: r.ind + ' 업종은 한 달 동안 시장보다 ' + moreLess(r.ix) + ' 올랐어요.'}) : null,
+    recBox(r.rec, '지난 빈 날 가장 가까운 회사'));
+  if (r.kind === 'money') return h('section', {class: 'su-card su-why su-mo'}, cardHead('mo', '돈이 몰린 회사예요'),
+    h('p', {class: 'su-lead', text: r.ind + ' 업종이 한 달 동안 시장보다 ' + moreLess(r.x) + ' 올랐어요.'}),
+    r.why?.line ? h('p', {class: 'su-lead2', text: '왜? ' + r.why.line}) : null,
+    r.why?.items?.length ? h('ul', {class: 'su-items'}, r.why.items.slice(0, 4).map(it => h('li', {}, h('b', {text: it.t}), it.sub ? h('span', {text: it.sub}) : null))) : null,
+    h('a', {class: 'su-more', href: indHref(r.ind)}, h('span', {text: r.ind + ' 업종 회사 모두 보기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+  return null;
+}
+
+async function vCo(code) {
+  if (!CODE.test(code ?? '')) return notFound('이 회사를 찾지 못했어요.');
+  const [B, TH, W, H, co] = await Promise.all([get(D.B), get(D.TH), get(D.W), get(D.H), get(D.co(code))]);
+  const c = co?.c; if (!c || typeof c.name !== 'string') return notFound('이 회사를 찾지 못했어요.');
+  const rs = reasonsFor(code, bloomList(B), moneyList(TH, W)), ind = typeof c.i === 'string' ? c.i : null;
+  const il = idxLine(H, c.market, H?.base, H?.asOf);
+  return {title: c.name, nodes: [bar(), h('main', {class: 'su-main'}, back(), safe(),
+    h('h1', {class: 'su-h1 su-coh', tabindex: '-1'}, h('span', {'data-proper': '', text: c.name})),
+    ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
+    rs.length ? rs.map(r => reasonCard(r, code)) : h('p', {class: 'su-lead2 su-none', text: '이 회사는 오늘 두 목록에 없어요. 지난 한 달만 보여 드려요.'}),
+    chart(c.name, coLine(co), il),
+    h('a', {class: 'su-ask', href: '/next/#/why/' + code}, h('span', {class: 'su-ask-a', text: '사기 전에 한 번 멈춰요'}), h('span', {class: 'su-ask-b', text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요'}), h('i', {'aria-hidden': 'true', text: '›'})),
+    foot(H?.asOf))]};
+}
+
+async function vInd(name) {
+  const [TH, W, M] = await Promise.all([get(D.TH), get(D.W), get(D.M)]);
+  const rows = indRows(M, name); if (!rows.length) return notFound('이 업종을 찾지 못했어요.');
+  const t = (Array.isArray(TH?.inds) ? TH.inds : []).find(i => i?.n === name), w = whyOf(W, name);
+  return {title: name + ' 업종', nodes: [bar(), h('main', {class: 'su-main'}, back(), safe(),
+    h('h1', {class: 'su-h1', tabindex: '-1'}, h('span', {text: name + ' 업종'})),
+    t && typeof t.x === 'number' ? h('p', {class: 'su-lead su-indl', text: '한 달 동안 시장보다 ' + moreLess(t.x) + ' 올랐어요.'}) : null,
+    w ? h('section', {class: 'su-card su-mo', 'aria-label': '돈이 몰린 까닭'}, cardHead('mo', '돈이 몰린 까닭'),
+      w.line ? h('p', {class: 'su-lead', text: w.line}) : null,
+      w.items.length ? h('ul', {class: 'su-items'}, w.items.slice(0, 4).map(it => h('li', {}, h('b', {text: it.t}), it.sub ? h('span', {text: it.sub}) : null))) : null) : null,
+    h('section', {class: 'su-card', 'aria-label': '이 업종 회사'}, cardHead('co', '이 업종 회사 ' + rows.length + '곳', '한 달 많이 오른 차례'),
+      rowsOf(rows.map(r => ({href: coHref(r.code), name: r.name, sub: '한 달 ' + pct(r.c)})))),
+    foot(M?.asOf))]};
+}
+
+function notFound(msg) { return {title: '?', nodes: [bar(), h('main', {class: 'su-main'}, back(), h('p', {class: 'su-lead su-none', text: '? ' + msg}))]}; }
+
+let seq = 0;
+async function route() {
+  const m = /^#\/(c|i)\/(.+)$/.exec(location.hash || '');
+  let a = null; if (m) { try { a = decodeURIComponent(m[2]); } catch { a = m[2]; } }
+  const my = ++seq, root = document.getElementById('su');
+  let out;
+  try { out = !m ? await vHome() : m[1] === 'c' ? await vCo(a) : await vInd(a); }
+  catch (e) { console.error(e); out = notFound('화면을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'); }
+  if (my !== seq) return;
+  root.replaceChildren(...out.nodes.filter(Boolean));
+  try { glossTree(root); } catch (e) { console.error(e); }
+  document.title = (out.title ? out.title + ' · ' : '') + NAME;
+  window.scrollTo(0, 0);
+  root.querySelector('h1')?.focus?.({preventScroll: true});
+}
+window.addEventListener('hashchange', route);
+route();
