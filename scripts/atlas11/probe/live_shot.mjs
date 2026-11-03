@@ -9,7 +9,7 @@ const require = createRequire(process.env.PW_DIR ? process.env.PW_DIR.replace(/\
 const {chromium} = require('playwright');
 const B = (process.env.LIVE_BASE || 'https://aaa7377.com').replace(/\/+$/, ''), P0 = /^\/[\w\-/]*$/.test(process.env.LIVE_PATH ?? '') ? process.env.LIVE_PATH : '/'; // P0 = 새 화면 길(올라간 사이트 = / · 이 컴퓨터 시험 서버 = /next/)
 const dir = process.env.LIVE_OUT || 'reports/atlas11/probe/live-shot'; await fs.mkdir(dir, {recursive: true});
-const SHOTS = (process.env.SHOTS || 'home=#/,cal=#/t/cal,surge=#/f/surge,co=#/w/005930,today=#/today,ind=#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4').split(',').map(s => s.trim().split('=')).filter(x => x.length === 2 && /^[a-z0-9-]{1,24}$/.test(x[0]) && /^#\/[\w\-/%.]*$/.test(x[1]));
+const SHOTS = (process.env.SHOTS || 'home=#/,cal=#/t/cal,surge=#/f/surge,co=#/w/005930,today=#/today,ind=#/ch/i/%EB%B0%98%EB%8F%84%EC%B2%B4').split(',').map(s => s.trim().split('=')).filter(x => x.length === 2 && /^[a-z0-9-]{1,24}$/.test(x[0]) && /^(\/su\/)?#\/[\w\-/%.]*$/.test(x[1])); // 「/su/#/…」 = 수르 두 길(주문 2049 · site/su/) — 그 길 그대로 · 아니면 새 화면 길(P0)
 const LONG = 3000; // 긴 그림은 위에서 3000px 까지만(싹 달력 60날을 다 찍으면 그림이 너무 큼)
 const out = {made: new Date().toISOString(), base: B, size: [390, 844], shots: []};
 const b = await chromium.launch();
@@ -23,8 +23,9 @@ try {
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
     const r = {name, hash, size: [vp.width, vp.height], files: [], errs, info: null, err: null};
     try {
-      await p.goto(B + P0 + '?v=' + Date.now() + hash, {waitUntil: 'networkidle', timeout: 60000});
-      await p.waitForFunction(() => !!document.querySelector('#view') && !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => {});
+      const su = hash.startsWith('/su/'); // 수르 두 길(주문 2049) — 쪽 틀이 #su
+      await p.goto(B + (su ? '/su/' : P0) + '?v=' + Date.now() + (su ? hash.slice(4) : hash), {waitUntil: 'networkidle', timeout: 60000});
+      await p.waitForFunction(su ? () => !!document.querySelector('#su') && !document.querySelector('#su .su-boot') : () => !!document.querySelector('#view') && !document.querySelector('#view .boot'), null, {timeout: 20000}).catch(() => {});
       await p.waitForTimeout(2500);
       const f1 = `${dir}/${name}${tag}.png`; await p.screenshot({path: f1}); r.files.push(f1);
       const hgt = await p.evaluate(() => document.documentElement.scrollHeight);
