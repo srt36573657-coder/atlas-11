@@ -166,8 +166,11 @@ export function siteStrings(dir) {
   try { names = fs.readdirSync(nd); } catch { problems.push('next/ 폴더가 없음'); return {out, problems}; }
   const jsFile = (rel, abs) => { const t = readText(abs); if (t == null) { problems.push(rel + ' 없음'); return; } try { for (const x of jsStrings(t)) add(rel, x.s); } catch (e) { problems.push(rel + ' 글 뽑기 실패 — ' + e.message); } };
   for (const f of names.filter(f => f.endsWith('.js')).sort()) if (f !== 'words.js') jsFile('next/' + f, path.join(nd, f)); // words.js = 낱말 목록 자신(화면 글 아님)
-  const pages = names.filter(f => f.endsWith('.html')).map(f => 'next/' + f).concat(['hello.html', 'letter.html', 'invite.html', 'privacy.html']);
+  // 수르 두 길 = 첫 화면(site/su/ · 사장님 2026-11-03 18:33(+04) 「응」 · 19:47 「응」 진화도 이 쪽 · 주문 2333 · 0047) — 그 쪽 글 · 쪽도 망치는 길 낱말 0
+  let suNames = []; try { suNames = fs.readdirSync(path.join(dir, 'su')); } catch { /* 수르 두 길이 없는 판 */ }
   const seenJs = new Set();
+  for (const f of suNames.filter(f => f.endsWith('.js')).sort()) { jsFile('su/' + f, path.join(dir, 'su', f)); seenJs.add('su/' + f); }
+  const pages = names.filter(f => f.endsWith('.html')).map(f => 'next/' + f).concat(suNames.filter(f => f.endsWith('.html')).map(f => 'su/' + f), ['hello.html', 'letter.html', 'invite.html', 'privacy.html']);
   for (const rel of pages) {
     const t = readText(path.join(dir, rel)); if (t == null) { if (!rel.startsWith('next/')) problems.push(rel + ' 없음'); continue; }
     const P = htmlParts(t); for (const s of P.text) add(rel, s);
@@ -423,6 +426,18 @@ export function checkAppSource(dir) {
     const b = A.slice(home.start, home.end), cb = code.slice(home.start, home.end), ib = cb.search(/\bessenceBox\s*\(/), it = b.indexOf('tk-entry');
     if (ib < 0) bad(c, 'app.js 첫 화면(vHomeAll)이 essenceBox() 를 그리지 않음');
     else if (it >= 0 && ib > it) bad(c, 'app.js 첫 화면에서 세 줄 칸이 이야기 입구(tk-entry) 아래에 있음([5] 1 「이야기 입구 위」)');
+  }
+  // 수르 두 길 = 첫 화면(_redirects 「/ → /su/index.html」 · 주문 2333) — 처음 쪽(vHome)이 본질 세 줄 칸(essBox → essenceLines(essenceData(…)))을 그림 · 진화 대안이 빼면 막음
+  const S = readText(path.join(dir, 'su/su.js'));
+  if (S != null) {
+    const sc = codeOnly(S);
+    if (!/from\s*['"]\/next\/essence\.js['"]/.test(S)) bad(c, 'su.js 가 essence.js(세 줄 셈)를 부르지 않음');
+    const eb = fnBody(sc, 'essBox');
+    if (!eb) bad(c, 'su.js 에 essBox() 가 없음');
+    else if (!/\bessenceLines\s*\(\s*essenceData\s*\(/.test(sc.slice(eb.start, eb.end))) bad(c, 'su.js essBox() 가 essenceLines(essenceData(…))(자료로 셈한 세 줄)를 쓰지 않음');
+    const vh = fnBody(sc, 'vHome');
+    if (!vh) bad(c, 'su.js 첫 화면(vHome)이 없음');
+    else if (!/\bessBox\s*\(/.test(sc.slice(vh.start, vh.end))) bad(c, 'su.js 첫 화면(vHome)이 essBox() 를 그리지 않음');
   }
   return c;
 }
