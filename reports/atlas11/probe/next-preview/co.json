@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-co-check-1",
- "at": "2026-11-03T03:49:08.642Z",
+ "at": "2026-11-03T08:35:53.525Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-03",
  "companies": 2557,
@@ -11,7 +11,7 @@
  "units": {
   "total": 2566,
   "mine": 2566,
-  "hash": "0d18aa81bf6aa05a",
+  "hash": "5d84796bb78f1591",
   "kinds": {
    "c": {
     "total": 2557,
@@ -31,15 +31,15 @@
    }
   }
  },
- "seconds": 273,
+ "seconds": 285,
  "time": {
-  "old": 40.9,
-  "new": 89.2,
-  "wall": 272.5,
+  "old": 47.8,
+  "new": 93.4,
+  "wall": 285.1,
   "opensOld": 2557,
   "opensNew": 2648,
-  "oldPct": 15,
-  "oldShare": 31.5
+  "oldPct": 16.8,
+  "oldShare": 33.9
  },
  "net": {
   "req": 2510,
