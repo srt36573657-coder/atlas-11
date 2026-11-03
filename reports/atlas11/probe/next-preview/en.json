@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-03T17:49:03.917Z",
+ "at": "2026-11-03T18:02:32.163Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -18,8 +18,8 @@
   "rivals": true,
   "grow": true,
   "range": true,
-  "cal": true,
   "surge": true,
+  "cal": true,
   "cond": true,
   "talk": true,
   "up": true,
@@ -31,11 +31,11 @@
   "today": true,
   "why": true,
   "gdr": true,
-  "share": true,
   "hold": true,
   "theme": true,
   "sage": true,
-  "roman": true
+  "roman": true,
+  "share": true
  },
  "edge": true,
  "only": null,
@@ -50,8 +50,8 @@
    "@newwin": 15
   }
  },
- "seconds": 520,
- "secondsSum": 2463,
+ "seconds": 519,
+ "secondsSum": 2500,
  "shards": [
   {
    "shard": "1/5",
@@ -60,10 +60,10 @@
    "routes": 2736,
    "screens": 2736,
    "mine": 2736,
-   "seconds": 474,
+   "seconds": 507,
    "secs": {
-    "open": 0.5,
-    "routes": 472.9
+    "open": 0.4,
+    "routes": 505.5
    }
   },
   {
@@ -73,10 +73,10 @@
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 505,
+   "seconds": 495,
    "secs": {
     "open": 0.4,
-    "routes": 503.4
+    "routes": 494.1
    }
   },
   {
@@ -86,10 +86,10 @@
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 465,
+   "seconds": 473,
    "secs": {
     "open": 0.3,
-    "routes": 464.2
+    "routes": 471.2
    }
   },
   {
@@ -99,11 +99,11 @@
    "routes": 2727,
    "screens": 2749,
    "mine": 2722,
-   "seconds": 520,
+   "seconds": 519,
    "secs": {
     "open": 0.4,
-    "routes": 514.9,
-    "newwin": 3.2
+    "routes": 514.1,
+    "newwin": 3.1
    }
   },
   {
@@ -113,12 +113,12 @@
    "routes": 2656,
    "screens": 2777,
    "mine": 2657,
-   "seconds": 499,
+   "seconds": 506,
    "secs": {
     "open": 0.4,
-    "routes": 483.7,
-    "act": 6.8,
-    "edge": 7.2,
+    "routes": 491.3,
+    "act": 6.7,
+    "edge": 7.3,
     "grammar": 0
    }
   }
