@@ -87,7 +87,7 @@ export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 �
   't/picks': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-pkis:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-pkrec1:0"], "bottom": ["th-safe:0"]}, // 꽃 될 회사
   't/pick': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ch:0", "z": 1.3, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-ch:2", "th-ch:3", "th-ch:4"], "bottom": ["th-safe:0"]}, // 지난 기록
   'dori': {"pre": ["h:0"], "hero": "dm:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": null, "sec": [], "bottom": ["safe:0"]}, // 돌이
-  't/sprout': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ans:0", "z": 1.6, "card": 2, "hide": 2, "stick": null, "vis": "th-grp:0", "act": "th-next:0", "sec": [], "bottom": ["th-safe:0"]}, // 싹 자리
+  't/sprout': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ans:0", "z": 1.6, "card": 2, "hide": 2, "stick": null, "vis": "th-grp:0", "act": "th-next:0", "sec": ["th-hi:0"], "bottom": ["th-safe:0"]}, // 싹 자리
   't/bloom': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ans:0", "z": 1.8, "card": 1, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-rows:0"], "bottom": ["th-safe:0"]}, // 꽃 자리
   't/wilt': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-ans:0", "z": 1.7, "card": 1, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-rows:0"], "bottom": ["th-safe:0"]}, // 시듦 자리
   't/cal': {"pre": ["th-pg:0", "th-hd:0"], "hero": null, "z": 1.8, "card": 1, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-days:0"], "bottom": ["th-safe:0"]}, // 싹 달력
