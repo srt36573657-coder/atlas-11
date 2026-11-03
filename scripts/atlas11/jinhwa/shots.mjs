@@ -4,6 +4,7 @@
 //   서버 = 이 파일 안의 작은 정적 서버(폴더 둘을 따로 띄움 · 포트는 빈 것) — 시험 서버(8826)와 안 부딪힘 · 함수(/api/*)는 없음(둘 다 같은 조건)
 //   --live <폴더> = 지금 사이트 자료(그 폴더의 atlas/data/* — gh.mjs liveData 가 받음)를 두 쪽 모두 /atlas/data/ 로 덮어 보임(저장소 자료는 며칠 묵음 · 일 폴더는 안 고침)
 //   쓰는 법: node scripts/atlas11/jinhwa/shots.mjs --id 20261019-0930-1 --route '#/why' --before <폴더> --after <폴더> [--out site/next/data/jinhwa]
+//            새 첫 화면(수르 두 길 · site/su/)은 --route '/su/#/' · '/su/#/c/<번호>' · '/su/#/i/<업종>'(주문 0047 · 사장님 2026-11-03 19:47(+04) 「응」)
 //            [--w 360] [--h 640] [--seed key=json …] [--steps '<JSON 누르기 차례>'|@파일] [--live <폴더>] [--motion] [--base-before http://… --base-after http://…]
 //   끝 코드: 0 = 두 장 다 찍음(360 × 640 PNG · 바뀐 곳 네모 box · 새로 생긴 글 text) · 1 = 못 찍음(두 그림이 같아도) · 2 = 잘못 넣음
 //   브라우저: createRequire('/opt/node-tools/')('playwright') · executablePath /opt/pw-browsers/chromium (한 번에 하나 · 다 쓰면 닫음)
@@ -12,6 +13,7 @@ import http from 'node:http';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {ROUTE_RE} from './lib.mjs'; // 길 꼴 한 곳(바뀐 곳 표시 markOk 와 같음)
 
 const MIME = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp',
@@ -81,6 +83,7 @@ async function openSide(ctx, url, steps) {
   const errors = [];
   page.on('pageerror', e => errors.push(String(e?.message ?? e).slice(0, 120)));
   await page.goto(url, {waitUntil: 'load', timeout: 30000});
+  if (/\/su\/(#|$)/.test(new URL(url).pathname + new URL(url).hash)) await page.waitForFunction(() => !!document.getElementById('su') && !document.querySelector('#su .su-boot'), null, {timeout: 15000}).catch(() => {}); // 새 첫 화면 — 「여는 중이에요…」가 사라질 때까지
   await settle(page, net);
   for (const s of steps) {
     if ('click' in s) await page.locator(s.click).nth(s.nth ?? 0).click({timeout: 8000});
@@ -136,13 +139,21 @@ async function newText(before, after) {
   return {box: {x: Math.round(x0), y: Math.round(y0), w: Math.round(x1 - x0), h: Math.round(y1 - y0), kind: 'text'}, text: [...new Set(g.map(o => o.t))].join(' ').slice(0, 120)};
 }
 
+/** 길 꼴 — 지금 수르(/next/) 「#/…」 · 새 첫 화면 수르 두 길(/su/ · 사장님 2026-11-03 18:33(+04) 「응」 · 19:47 「응」 진화도 이 쪽) 「/su/#/…」 */
+export const ROUTE = ROUTE_RE;
+/** 찍을 쪽 주소 — 「/su/#/…」 = /su/ 에 그 #(물음표 표를 붙이지 않음 — ?dev= 이면 수르 두 길이 지금 수르로 이어 주므로) · 「#/…」 = /next/ 에(?dev=1 은 그대로) */
+export function pageUrl(base, route, dev = true) {
+  const b = String(base).replace(/\/$/, ''), r = String(route || '#/');
+  return r.startsWith('/su/') ? `${b}/su/${r.slice(4)}` : `${b}/next/${dev ? '?dev=1' : ''}${r}`;
+}
+
 /** 전후 두 장 — o = {id, route, before, after(폴더 — 그 안의 site/ 를 띄움) | baseBefore, baseAfter(주소), out, w, h, seed: {key: 글}, steps, motion, dev}
  *  두 쪽을 끝까지 찍어 다른 곳을 찾고 → 그 곳이 화면 위쪽 3분의 1에 오게 두 쪽을 같은 만큼 내려 한 장씩(360 × 640)
  *  돌려줌 {ok, before, after, box: {x, y, w, h}(찍은 그림 안 바뀐 곳 · 점), text(새로 생긴 글)} · 두 그림이 같으면 ok false(사장님이 어디를 고쳤는지 못 찾음) */
 export async function shoot(o) {
   const w = Number(o.w || 360), h = Number(o.h || 640), route = o.route || '#/', out = o.out;
   if (!/^\d{8}-\d{4}-(?:[1-3]|f[1-9])$/.test(o.id || '')) return {ok: false, why: '번호(--id)가 이상함'};
-  if (!/^#\/[\w\-/.%?=&]*$/.test(route)) return {ok: false, why: '길(--route)은 #/… 꼴'};
+  if (!ROUTE.test(route)) return {ok: false, why: '길(--route)은 #/… 꼴 · 새 첫 화면(수르 두 길)은 /su/#/… 꼴'};
   const steps = stepsOk(o.steps);
   if (!steps) return {ok: false, why: '누르기 차례(--steps)의 꼴이 틀림'};
   const req = createRequire('/opt/node-tools/');
@@ -162,7 +173,7 @@ export async function shoot(o) {
       const ctx = await browser.newContext({viewport: {width: w, height: h}, deviceScaleFactor: 1, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: o.motion ? 'no-preference' : 'reduce'});
       const seed = o.seed || {};
       if (Object.keys(seed).length) await ctx.addInitScript(s => { try { for (const [k, v] of Object.entries(s)) localStorage.setItem(k, v); } catch { /* 기억 못 하는 기계 */ } }, seed);
-      const url = `${base.replace(/\/$/, '')}/next/${o.dev === false ? '' : '?dev=1'}${route}`;
+      const url = pageUrl(base, route, o.dev !== false);
       try { side[k] = {ctx, ...(await openSide(ctx, url, steps))}; }
       catch (e) { return {ok: false, why: `${k} 쪽 누르기 차례 실패 — ` + String(e?.message ?? e).split('\n')[0].slice(0, 140)}; }
     }

@@ -527,7 +527,9 @@ export const APPLIED_KEYS = Object.freeze(['id', 'title', 'at', 'before', 'after
 export const WAIT_OPT = Object.freeze(['mark']); // 바뀐 곳 표시(사장님 2026-10-19 00:5x 「어디를 고쳤는지 … 표기가 없어서 한참 찾아야 해」) — shots.mjs 가 찾은 네모 · 새로 생긴 글 · 찍은 길
 export const APPLIED_OPT = Object.freeze(['revertedAt', 'mark']); // 되돌린 진화 — 서울 시각(KD 서버 · 화면이 이 이름으로 읽음 · split.md 에 더한 칸)
 export const LIM = Object.freeze({title: 40, serves: 80, voice: 120, text: 120, what: 120, measure: 90});
-/** 바뀐 곳 표시 꼴 — {box: {x, y, w, h}(360 × 640 그림 안 · 점), text(새로 생긴 글 · 120자까지 · 빈 글 됨), route(#/…), steps(누르기 차례 · shots.mjs stepsOk)} */
+/** 찍는 길 꼴(한 곳 — shots.mjs 와 이 파일 markOk 가 같이 씀) — 지금 수르(/next/) 「#/…」 · 새 첫 화면 수르 두 길(/su/ · 주문 0047 · 사장님 2026-11-03 19:47(+04) 「응」 진화도 이 쪽) 「/su/#/…」 */
+export const ROUTE_RE = /^(\/su\/)?#\/[\w\-/.%?=&]*$/;
+/** 바뀐 곳 표시 꼴 — {box: {x, y, w, h}(360 × 640 그림 안 · 점), text(새로 생긴 글 · 120자까지 · 빈 글 됨), route(#/… · /su/#/…), steps(누르기 차례 · shots.mjs stepsOk)} */
 export function markOk(m) {
   if (!m || typeof m !== 'object' || Array.isArray(m)) return false;
   const ks = Object.keys(m).sort().join(',');
@@ -535,7 +537,7 @@ export function markOk(m) {
   const b = m.box, n = v => Number.isInteger(v) && v >= 0;
   if (!b || Object.keys(b).sort().join(',') !== 'h,w,x,y' || ![b.x, b.y, b.w, b.h].every(n) || b.w < 1 || b.h < 1 || b.x + b.w > 360 || b.y + b.h > 640) return false;
   if (typeof m.text !== 'string' || m.text.length > 120) return false;
-  if (typeof m.route !== 'string' || !/^#\/[\w\-/.%?=&]*$/.test(m.route)) return false;
+  if (typeof m.route !== 'string' || !ROUTE_RE.test(m.route)) return false;
   return Array.isArray(m.steps) && m.steps.length <= 20;
 }
 export const imgOf = (id, which) => `${IMG_WEB}/${id}-${which}.png`;
