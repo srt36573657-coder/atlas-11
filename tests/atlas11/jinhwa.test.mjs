@@ -287,14 +287,42 @@ test('배우는 일꾼 열하나 — 칸 열하나 · 칸마다 출처 줄 · �
   assert.equal(LENSES.length, 11); assert.equal(LEARN_SUFFIX, '-learn11.md'); assert.equal(ROUND_EVERY_H, 2);
   assert.deepEqual(RS.map(([H]) => H), [...ROUND_SLOTS], '회차 업데이트 — 도구와 화면이 같음');
   assert.equal(new Set(LENSES.map(x => x.name)).size, 11, '이름이 겹치지 않음');
-  const sec = x => `## ${x.n}. ${x.name}\n- 본 것: 처음 쪽 맨 위에 꽃이 될 회사 칸이 있어요. 회사 이름을 누르면 그 회사 쪽이 바로 열려요.\n- 출처: 못 찾음\n- 고칠 거리: 없음\n`;
+  const sec = x => `## ${x.n}. ${x.name}\n- 본 것: 처음 쪽 맨 위에 꽃이 될 회사 칸이 있어요. 회사 이름을 누르면 그 회사 쪽이 바로 열려요.\n- 출처: 못 찾음\n- 고칠 거리: 없음\n- 장점 셋: ① 큰 값이 맨 위에 가장 크게 ② 막대가 제 값까지 자람 ③ 출처가 맨 끝\n`;
   const good = '# 배운 글\n\n' + LENSES.map(sec).join('\n') + '\n## 이상적인 흐름\n처음 쪽 → 꽃이 될 회사 → 회사 쪽 → 사기 전에 한 번 멈춤\n\n## 고칠 거리 차례\n1. 회사 쪽 첫 칸 글을 줄여요.\n';
   assert.deepEqual(learnOk(good), {ok: true, why: []});
   assert.deepEqual(learnOk(null), {ok: false, why: ['배운 글이 없음']});
   assert.match(learnOk(good.replace('## 7. 누구나 보기', '## 7. 아무나')).why.join(), /7\. 누구나 보기/, '칸 이름이 다르면');
-  assert.match(learnOk(good.replace('- 출처: 못 찾음\n- 고칠 거리: 없음\n\n## 이상적인', '- 고칠 거리: 없음\n\n## 이상적인')).why.join(), /11\. 처음 온 사람 칸에 「출처:」/, '출처 줄이 없으면');
+  const lastSec = '- 출처: 못 찾음\n- 고칠 거리: 없음\n- 장점 셋: ① 큰 값이 맨 위에 가장 크게 ② 막대가 제 값까지 자람 ③ 출처가 맨 끝\n\n## 이상적인';
+  assert.ok(good.includes(lastSec), '시험 글 꼴');
+  assert.match(learnOk(good.replace(lastSec, '- 고칠 거리: 없음\n- 장점 셋: ① 큰 값 ② 막대 ③ 출처\n\n## 이상적인')).why.join(), /11\. 처음 온 사람 칸에 「출처:」/, '출처 줄이 없으면');
+  assert.match(learnOk(good.replace(lastSec, '- 출처: 못 찾음\n- 고칠 거리: 없음\n- 본 것을 더 적어요. 큰 값이 맨 위에 있어요.\n\n## 이상적인')).why.join(), /11\. 처음 온 사람 칸에 「장점 셋:」 줄 없음/, '장점 셋 줄이 없으면(샘플 열하나 · 주문 0620)');
   assert.match(learnOk(good.replace('## 고칠 거리 차례', '## 다른 것')).why.join(), /고칠 거리 차례/, '고칠 거리 차례가 없으면');
   assert.match(learnOk(good.replace(/## 3\. 누르는 수\n[^#]*/, '## 3. 누르는 수\n- 출처: 없음\n')).why.join(), /3\. 누르는 수 칸이 너무 짧음/, '빈 칸');
   assert.equal((await look({dir: '/없는/폴더'})).ok, false, '폴더에 site/next 가 없으면');
   assert.match((await look({dir: new URL('../..', import.meta.url).pathname, routes: 'javascript:x'})).why, /길이 이상함/, '길 꼴이 틀리면 띄우기 전에 막음');
+});
+
+test('샘플 열하나를 한 판에 — 일꾼에게 줄 자료 한 장(su-data.js 셈 그대로) · 찍을 세 쪽 · 잰 값의 선 · 띄우기 전에 막음(사장님 2026-11-04 01:20(+04) 「응」 · 주문 0620)', async () => {
+  const S = await import('../../scripts/atlas11/jinhwa/sample.mjs');
+  const root = new URL('../..', import.meta.url).pathname;
+  const e = S.snapshot({});
+  assert.equal(e.schema, 'jinhwa-sample-data-1'); assert.equal(e.safe, S.SAFE); assert.deepEqual([e.companies, e.industries, e.home.money], [[], [], []], '자료가 없으면 빈 것(지어내지 않음)');
+  assert.deepEqual(S.routesOf(e), [['home', '#/']], '첫 회사가 없으면 처음 쪽만');
+  const r = S.snapFrom(root);
+  assert.equal(r.ok, true, '저장소 사이트 자료로 한 장'); assert.equal(r.data.schema, 'jinhwa-sample-data-1');
+  for (const c of r.data.companies) { assert.match(c.code, /^[0-9A-Z]{6}$/); assert.equal(typeof c.name, 'string'); assert.ok(Array.isArray(c.reasons)); }
+  const rt = S.routesOf(r.data);
+  assert.deepEqual(rt[0], ['home', '#/']);
+  if (rt.length > 1) { assert.match(rt[1][1], /^#\/c\/[0-9A-Z]{6}$/); assert.match(rt[2][1], /^#\/i\/[^/]+$/); }
+  assert.equal(S.snapFrom('/없는/폴더').ok, false);
+  assert.equal(S.MIN_FONT, 17); assert.equal(S.MIN_TAP, 48);
+  assert.deepEqual(S.measureWhy('home', {minFont: 17, smallTapCount: 0, hScroll: false, errors: [], safe: true}), []);
+  const bad = S.measureWhy('co', {minFont: 16, smallTapCount: 2, hScroll: true, errors: ['x'], safe: false}).join(' / ');
+  for (const w of ['가장 작은 글씨 16px', '작은 누르는 곳 2개', '옆으로 넘침', '화면 오류 1개', '안전 문장이 없음']) assert.ok(bad.includes(w), w);
+  assert.equal((await S.shootSample('/없는/폴더')).ok, false, '샘플 폴더에 index.html 이 없으면 띄우지 않음');
+  assert.match((await S.shootSample(root + 'site/su', {data: null})).why.join(), /첫 회사가 없어/, '자료 없이 찍지 않음');
+  const brief = read('docs/design/jinhwa-paper-2026-11-04/sample-brief.md');
+  for (const w of ['{n}', '{이름}', '{묻는 것}', '{일 폴더}', '- 장점 셋:', '- 출처:', 'sample.mjs --shoot', '신문 차례', '움직이는 도식']) assert.ok(brief.includes(w), '일꾼에게 주는 글에 ' + w);
+  const doc = read('docs/design/kkolttori-2026-10-18/jinhwa-round.md');
+  assert.ok(doc.includes('샘플 열하나를 한 판에 (영구)'), '지시문에 영구 마디'); assert.ok(doc.includes('sample-brief.md'), '지시문이 일꾼 글을 가리킴');
 });

@@ -26,7 +26,7 @@ const ESS = L.readEssence(ROOT);
 const UNITS = L.essenceUnits(ESS.lines);
 const ID = n => `20261019-0930-${n}`;
 /** 배운 글(일꾼 열하나 · 주문 0218) — 만드는 회차의 alt-start 가 봄 */
-const LEARN = '# 배운 글\n\n' + L.LENSES.map(x => `## ${x.n}. ${x.name}\n- 본 것: 처음 쪽 맨 위에 꽃이 될 회사 칸이 있어요. 회사 이름을 누르면 그 회사 쪽이 바로 열려요.\n- 출처: 못 찾음\n`).join('\n')
+const LEARN = '# 배운 글\n\n' + L.LENSES.map(x => `## ${x.n}. ${x.name}\n- 본 것: 처음 쪽 맨 위에 꽃이 될 회사 칸이 있어요. 회사 이름을 누르면 그 회사 쪽이 바로 열려요.\n- 출처: 못 찾음\n- 장점 셋: ① 큰 값이 맨 위에 가장 크게 ② 막대가 제 값까지 자람 ③ 출처가 맨 끝\n`).join('\n')
   + '\n## 이상적인 흐름\n처음 쪽 → 꽃이 될 회사 → 회사 쪽 → 사기 전에 한 번 멈춤\n\n## 고칠 거리 차례\n1. 회사 쪽 첫 칸 글을 줄여요.\n';
 const learnIn = (work, id) => { fs.mkdirSync(path.join(work, L.REC_DIR), {recursive: true}); fs.writeFileSync(path.join(work, L.REC_DIR, id + L.LEARN_SUFFIX), LEARN); };
 const card = (id, o = {}) => ({id, title: '오늘 칸 날짜 옆에 받은 때', pick: false, serves: '② 지난 기록만 보여 준다.', before: L.imgOf(id, 'before'), after: L.imgOf(id, 'after'),
@@ -154,9 +154,9 @@ test('⑬ 지시문 첫 줄 = 본질 먼저 · 꼭 있을 말 · 회차 도구�
   const doc = fs.readFileSync(path.join(ROOT, L.ROUND_DOC), 'utf8');
   const first = doc.split('\n')[0].replace(/^#\s*/, '');
   ok(first.startsWith(`먼저 ${L.essenceFileOf(ROOT)}를 읽는다`), '첫 줄: ' + first.slice(0, 60));
-  for (const w of ['gh api', '/api/jinhwa/status', 'round.mjs begin', 'round.mjs apply', 'round.mjs record', '한 번에 하나', '카너먼', '멍거', '포퍼', 'PushNotification', '세 줄', '확인 없이', '고친 고장', '사전 부검', '큰 것', '10거래일', '없으면 없다고'])
+  for (const w of ['gh api', '/api/jinhwa/status', 'round.mjs begin', 'round.mjs apply', 'round.mjs record', '한 번에 하나', '카너먼', '멍거', '포퍼', 'PushNotification', '세 줄', '확인 없이', '고친 고장', '사전 부검', '큰 것', '10거래일', '없으면 없다고', '샘플 열하나를 한 판에', 'sample.mjs --snap', 'sample-brief.md'])
     ok(doc.includes(w), '지시문에 「' + w + '」');
-  for (const f of ['round.mjs', 'gh.mjs', 'lib.mjs', 'shots.mjs', 'selftest.mjs', 'read.mjs'].map(f => path.join(ROOT, 'scripts/atlas11/jinhwa', f)).concat(path.join(ROOT, L.ROUND_DOC), path.join(ROOT, '.github/workflows/atlas11-jinhwa-read.yml')).filter(f => fs.existsSync(f))) {
+  for (const f of ['round.mjs', 'gh.mjs', 'lib.mjs', 'shots.mjs', 'sample.mjs', 'selftest.mjs', 'read.mjs'].map(f => path.join(ROOT, 'scripts/atlas11/jinhwa', f)).concat(path.join(ROOT, L.ROUND_DOC), path.join(ROOT, '.github/workflows/atlas11-jinhwa-read.yml')).filter(f => fs.existsSync(f))) {
     const t = fs.readFileSync(f, 'utf8');
     ok(!/(ghp_|github_pat_|gho_|nfp_|sk-ant-)[A-Za-z0-9_]{16,}/.test(t), '비밀 값 ' + f);
     if (!/selftest|ROUND_DOC|jinhwa-round/.test(path.basename(f))) ok(!/x-atlas-owner/i.test(t), '사장님 열쇠 머리글 ' + f);
