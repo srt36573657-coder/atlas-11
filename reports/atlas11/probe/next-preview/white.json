@@ -1,33 +1,28 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-03T08:32:04.928Z",
+ "at": "2026-11-03T08:51:42.789Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
-  "pass": 425,
-  "fail": 2
+  "pass": 427,
+  "fail": 0
  },
- "fails": [
-  "처음 온 기기 ② 글씨 17px 아래 0 — 1곳 · p.nh-tpnote 15px 「조건에 다 맞지는 않아」",
-  "다시 온 기기 ② 글씨 17px 아래 0 — 1곳 · p.nh-tpnote 15px 「조건에 다 맞지는 않아」"
- ],
+ "fails": [],
  "m": {
   "first": {
    "bodyLum": 0.0034053699055348395,
    "chars": 125,
    "blocks": {
-    "ess": 5744,
+    "ess": 5490,
     "find": 776,
-    "today": 3713,
-    "gdr": 5038,
-    "all": 5474
+    "today": 3572,
+    "gdr": 4838,
+    "all": 5250
    },
    "tabsTop": 776,
    "lowContrast": [],
    "uiContrast": [],
-   "tiny": [
-    "p.nh-tpnote 15px 「조건에 다 맞지는 않아」"
-   ],
+   "tiny": [],
    "small": [],
    "ruin": [],
    "says": [
@@ -222,18 +217,16 @@
    "bodyLum": 0.0034053699055348395,
    "chars": 125,
    "blocks": {
-    "ess": 5621,
+    "ess": 5367,
     "find": 776,
-    "today": 3713,
-    "gdr": 5038,
-    "all": 5474
+    "today": 3572,
+    "gdr": 4838,
+    "all": 5250
    },
    "tabsTop": 776,
    "lowContrast": [],
    "uiContrast": [],
-   "tiny": [
-    "p.nh-tpnote 15px 「조건에 다 맞지는 않아」"
-   ],
+   "tiny": [],
    "small": [],
    "ruin": [],
    "says": [
@@ -734,8 +727,8 @@
    }
   },
   "speed": {
-   "lcp": 2412,
-   "inp": 88,
+   "lcp": 2432,
+   "inp": 32,
    "cls": 0.006
   }
  },
@@ -743,6 +736,6 @@
   "retry": 0,
   "why": {}
  },
- "ok": false,
+ "ok": true,
  "enforced": true
 }
