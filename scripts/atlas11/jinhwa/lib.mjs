@@ -533,7 +533,8 @@ export const WAIT_OPT = Object.freeze(['mark']); // 바뀐 곳 표시(사장님 
 export const APPLIED_OPT = Object.freeze(['revertedAt', 'mark']); // 되돌린 진화 — 서울 시각(KD 서버 · 화면이 이 이름으로 읽음 · split.md 에 더한 칸)
 export const LIM = Object.freeze({title: 40, serves: 80, voice: 120, text: 120, what: 120, measure: 90});
 /** 배우는 일꾼 열하나 — 화면 모양과 누르는 길(UI/UX)의 가장 이상적인 흐름을 먼저 배우고 그다음 진화(사장님 2026-11-03 21:18(+04) 「진화를 ui/ux에 집중 … 11개 에이전트를 동원해서 가장 이상적인 흐름의 구조를 학습한 이후 진화하는 구조」 · 주문 0218)
- *  만드는 회차(make)는 alt-start 앞에 <회차>-learn11.md(기록 폴더 · 회차 글로 기록과 함께 main 에)를 써야 함 — learnOk 가 봄 */
+ *  만드는 회차(make)는 alt-start 앞에 <회차>-learn11.md(기록 폴더 · 회차 글로 기록과 함께 main 에)를 써야 함 — learnOk 가 봄
+ *  샘플 열하나를 한 판에(사장님 2026-11-04 01:20(+04) 「응」 · 주문 0620): 일꾼마다 렌즈 하나로 샘플을 하나씩 만들고(sample.mjs · docs/design/jinhwa-paper-2026-11-04/sample-brief.md) 칸마다 「장점 셋:」 줄을 낸다 — 회차는 그 장점을 대안 하나(한 판)에 모음 */
 export const LENSES = Object.freeze([
   {n: 1, name: '첫눈', ask: '처음 3초에 이 쪽이 무엇을 하는 곳인지 아는가'},
   {n: 2, name: '길 찾기', ask: '누르면 기대한 곳으로 가는가 · 이름과 자리가 맞는가'},
@@ -549,7 +550,7 @@ export const LENSES = Object.freeze([
 ]);
 export const LEARN_SUFFIX = '-learn11.md';
 export const LEARN_SECTIONS = Object.freeze(['이상적인 흐름', '고칠 거리 차례']);
-/** 배운 글 꼴 — 칸 열하나(「## n. 이름」 · 칸마다 「출처:」 줄 · 너무 짧지 않음) + 「## 이상적인 흐름」 · 「## 고칠 거리 차례」 → {ok, why[]} */
+/** 배운 글 꼴 — 칸 열하나(「## n. 이름」 · 칸마다 「출처:」 줄 · 「장점 셋:」 줄(샘플 · 주문 0620) · 너무 짧지 않음) + 「## 이상적인 흐름」 · 「## 고칠 거리 차례」 → {ok, why[]} */
 export function learnOk(text) {
   if (typeof text !== 'string' || !text.trim()) return {ok: false, why: ['배운 글이 없음']};
   const lines = text.split('\n'), why = [];
@@ -560,6 +561,7 @@ export function learnOk(text) {
     if (!h) { why.push(`「## ${x.n}. ${x.name}」 칸 없음`); continue; }
     const b = body(h[0]);
     if (!/^\s*(?:[-*]\s*)?출처\s*[:：]/m.test(b)) why.push(`${x.n}. ${x.name} 칸에 「출처:」 줄 없음`);
+    if (!/^\s*(?:[-*]\s*)?장점\s*셋\s*[:：]/m.test(b)) why.push(`${x.n}. ${x.name} 칸에 「장점 셋:」 줄 없음(샘플 열하나 · 주문 0620)`);
     if (b.replace(/\s/g, '').length < 40) why.push(`${x.n}. ${x.name} 칸이 너무 짧음`);
   }
   for (const name of LEARN_SECTIONS) {
