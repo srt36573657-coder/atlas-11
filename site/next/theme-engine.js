@@ -230,6 +230,13 @@ export const BLOOM = Object.freeze({from: 120, clip: 0.5, fall: -0.05, split: '2
 export const BLOOM_HI = Object.freeze({win: 120, near: 0.95}); // 바꾸기 전 조건(2026-10-27 ~ 11-01)의 「반년 가장 높은 값 가까이」 — old 로 나란히 셈
 export const BLOOM_BIG = Object.freeze({top: 0.8}); // 그날 셀 수 있는 회사 가운데 몸값 차례(작은 쪽부터 0) (차례 + 1) ÷ 센 수 ≥ 0.8 = 위 20% · 몸값 = 그날 종가 × 지금 주식 수(cond.json 몸값 ÷ 마지막 종가)
 export const BLOOM_IX = Object.freeze({min: 15}); // 업종이 한 달(20거래일) 동안 시장보다 앞선 만큼(%p) ≥ 15
+/** 빈 날 가장 가까운 회사 셋(사장님 2026-11-03 12:01(+04) 「어 그렇게 해」 — 물음 「꽃이 될 종목이 없는 날에는 조건에 가장 가까운 회사 셋을 따로 보여 드릴까요?」 · 주문 1512 · docs/design/bloom-empty-2026-11-03)
+ *  그날 조건이 「업종이 한 달 동안 시장보다 X% 넘게 더 오름」(ix1 ~ ix4) 하나 + 회사 조건일 때만 — 셀 수 있음 · 싹 · 회사 조건은 그대로, 업종 조건만 빼고
+ *  업종이 한 달 동안 시장보다 더 오른 만큼 큰 차례 · 같으면 회사가 한 달 동안 더 오른 차례 · 같으면 번호 차례로 셋 · 고른 회사와 섞지 않음(today 와 따로 near)
+ *  지난 기록도 따로 — 고를 때 안 본 날(달마다 그 달 결정 · 앞 달 것을 이어 쓴 날은 뺌) 가운데 고른 회사가 없던 날만 · 한 달 뒤 결과가 난 회사만 · 같은 날 아무 회사와 맞댐
+ *  따로 다시 세기 = scripts/atlas11/verify/bloom_near_verify.mjs(엔진 · 낱 조건 셈을 안 씀) — 다르면 올릴 때 near 를 뺌 */
+export const NEAR = Object.freeze({n: 3, ix: Object.freeze({ix1: 0, ix2: 5, ix3: 10, ix4: 15})});
+const IND_ATOM = /^(iz|ix|iy|ib|i60|isz)/; // 업종 갈래 낱 조건(bloom-atoms.js ind1 · ind2 · byInd)
 /** 365 → 37 → 3 → 1(2026-10-27 17:34) — 바꾸기 전 조건이 나온 길(기록으로 남김) */
 export const PICK365 = Object.freeze({
   date: '2026-10-27', asOf: '2026-10-13', n: 365, ok: 88, short: 37, final: 'C3+hi1',
@@ -307,6 +314,7 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
   const blank4 = () => [blank(), blank(), blank(), blank()];
   const acc = {all: blank4(), train: blank4(), test: blank4()}, years = {}; // [아무 회사 · 지금 조건 · 그냥 싹 · 바꾸기 전 조건(업종 꽃 자리 + 싹 + 반년 가장 높은 값 가까이)]
   const add = (o, hit, fall, e) => { o.n++; if (hit) o.h++; if (fall) o.f++; o.e += e; };
+  const SPS = new Array(CC), PANY = new Uint16Array(N); // 빈 날 가까운 회사(주문 1512) — 회사마다 날마다 셀 수 있고 싹 · 날마다 그날 조건에 든 회사 수(결과 없는 날도)
   const today = [], PD = new Uint8Array(N); // PD = 지금 조건으로 고른 회사가 있던 날(지난 기록 t0 ~ t1 · 결과가 난 회사만 — 연구 셈 고른 날과 같은 잣대)
   let todayOld = 0;
   codes.forEach((c, j) => {
@@ -323,6 +331,7 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
       if (t >= HW - 1 && bad === 0 && qt > qh && a[t] / a[dq[qh]] >= BLOOM_HI.near) NEAR[t] = 1;
     }
     const pick = t => { const q = PL[t], m = q >= 0 ? RM[q] : null; return !!m && cj >= 0 && m[t * CX + cj] === 1; }; // 그날이 든 달의 조건(싹 · 셀 수 있음은 따로 봄)
+    { const sps = new Uint8Array(N); for (let t = k; t < N; t++) if (countable(t) && sproutAt(t)) { sps[t] = 1; if (pick(t)) PANY[t]++; } SPS[j] = sps; }
     let pastN = 0, pastH = 0; // 이 회사가 지난 기록에서 수르가 고른 날(달마다 조건) · 그중 꽃
     for (let t = t0; t <= t1; t++) {
       if (!countable(t) || !ok(a[t + A]) || J[t + A] - J[t] !== 0) continue;
@@ -352,6 +361,44 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
     }
   });
   const pct = (v, n) => (n ? Math.round((v / n) * 10000) / 100 : null); // 소수 둘째 자리 — 화면은 다시 반올림해 「100번에 N번」(소수 한 자리로 두 번 반올림하면 27.48 이 28 이 됨)
+  // 빈 날 가장 가까운 회사 셋(주문 1512 · 위 NEAR) — 그 달 조건이 ix1 ~ ix4 하나 + 회사 조건일 때만
+  const nearPlan = plan.map(p => {
+    const parts = typeof p.id === 'string' ? p.id.split('&') : [], ind = parts.filter(x => Object.hasOwn(NEAR.ix, x)), co = parts.filter(x => !IND_ATOM.test(x));
+    return ind.length === 1 && co.length >= 1 && co.length === parts.length - 1 ? {atom: ind[0], min: NEAR.ix[ind[0]], co: co.map(x => ctx.atom(x))} : null;
+  });
+  const COLS = codes.map(c => ctx.col(c));
+  const nearAt = t => {
+    const q = PL[t], np = q >= 0 ? nearPlan[q] : null; if (!np) return null;
+    const rows = [];
+    for (let j = 0; j < CC; j++) {
+      const cj = COLS[j]; if (!SPS[j][t] || cj < 0) continue;
+      let okc = true; for (const m of np.co) if (m[t * CX + cj] !== 1) { okc = false; break; }
+      if (!okc) continue;
+      const c = codes[j], I = indI.get(companies[c]?.i); if (!I) continue;
+      const ix = exOf(I, M, t, k); if (!Number.isFinite(ix)) continue;
+      const a = closes.get(c);
+      rows.push({j, ix, x: (a[t] / a[t - k]) / (M[t] / M[t - k]) - 1});
+    }
+    rows.sort((p, q2) => q2.ix - p.ix || q2.x - p.x || (codes[p.j] < codes[q2.j] ? -1 : 1));
+    return {np, rows: rows.slice(0, NEAR.n)};
+  };
+  let near = null;
+  { const qT0 = PL[T], npT = qT0 >= 0 ? nearPlan[qT0] : null;
+    if (npT) {
+      let nn = 0, nh = 0, nbn = 0, nbh = 0, nd = 0, lo = -1;
+      for (let t = t0; t <= t1; t++) {
+        if (PL[t] < 0 || PC[t] || PANY[t] > 0) continue; // 고를 때 안 본 날(달마다 그 달 결정) · 고른 회사가 없던 날만
+        const r = nearAt(t); if (!r || !r.rows.length) continue;
+        if (lo < 0) lo = t;
+        nd++; nbn += BNd[t]; nbh += BHd[t];
+        for (const {j} of r.rows) { const a = closes.get(codes[j]); if (!ok(a[t + A]) || JJ[j][t + A] - JJ[j][t] !== 0) continue; nn++; if ((a[t + A] / a[t]) / (M[t + A] / M[t]) - 1 >= RULE.bloomX / 100) nh++; }
+      }
+      const rT = PANY[T] === 0 ? nearAt(T) : null;
+      near = {rule: {atom: npT.atom, min: npT.min, say: ATOM_SAY[npT.atom] ?? null},
+        today: rT ? rT.rows.map(({j, ix, x}) => { const c = codes[j]; return [c, companies[c].n ?? c, companies[c].i, r2(ix * 100), r2(x * 100)]; }) : [], // [번호 · 이름 · 업종 · 업종이 한 달 동안 시장보다 더 오른 % · 회사가 더 오른 %]
+        rec: {n: nn, hits: nh, rate: pct(nh, nn), base: pct(nbh, nbn), baseN: nbn, baseHits: nbh, days: nd, from: lo >= 0 ? dates[lo] : null, to: dates[t1]}};
+    }
+  }
   const out = ([b, g, s, o]) => ({n: g.n, hits: g.h, base: pct(b.h, b.n), rate: pct(g.h, g.n), ex: pct(g.e, g.n), exBase: pct(b.e, b.n), fall: pct(g.f, g.n), fallBase: pct(b.f, b.n), baseN: b.n, baseHits: b.h, plain: pct(s.h, s.n), plainN: s.n, old: pct(o.h, o.n), oldN: o.n}); // old = 바꾸기 전 조건(업종 꽃 자리 + 싹 + 반년 가장 높은 값 가까이)
   const byInd = new Map();
   for (const r of today) { if (!byInd.has(r.i)) byInd.set(r.i, []); byInd.get(r.i).push(r); }
@@ -391,6 +438,7 @@ export function bloomOf({U, M, closes, codes, companies, dates, caps = new Map()
     span: {from: dates[t0], to: dates[t1], train: [dates[t0], dates[Math.min(mid, t1 + 1) - 1]], test: mid <= t1 ? [dates[mid], dates[t1]] : [BLOOM.split, null]},
     record: rec, honest, months: monthsOut, self: selfOf(months), // self = 달마다 다시 고르기 · 셈 셋 맞대기 결과(bloom-months.json check)
     today: {n: today.length, all: todayOld, inds, rule: ruleT ? {month: dates[T].slice(0, 7), id: ruleT.id, say: sayOf(ruleT.id), carry: !!PC[T], decided: ruleT.month} : null}, // all = 바꾸기 전 조건이면 고른 수 · rule = 오늘 쓴 조건(그 달 결정 · carry = 이번 달 결정 전이라 앞 달 것)
+    near, // 빈 날 가장 가까운 회사 셋(주문 1512) — 고른 회사가 아님 · 조건이 ix1 ~ ix4 하나 + 회사 조건일 때만(아니면 null) · today 는 고른 회사가 없는 날만
     cal: {from: dates[c0], to: dates[T], days: cal}, // 지난 60거래일 — 날마다 고른 수 · 꽃 · 못 됨 · 까닭 · 기다림(사장님 22:54 「그 기록을 한 달력이 첫화면에」)
     why: {all: why.all, train: why.train, test: why.test, names: ['조금 모자랐어요', '업종째 식었어요', '회사만 처졌어요']},
     pick: PICK_EVOLVE, prev: PICK365, // 다시 세운 길(2026-11-02) · 바꾸기 전 조건이 나온 길(2026-10-27)

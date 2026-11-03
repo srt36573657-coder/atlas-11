@@ -609,12 +609,22 @@ async function pPicks() {
   const H = B.honest, okH = H && Number.isFinite(H.rate) && Number.isFinite(H.base) && H.n > 0, all = B.record?.all;
   const rec = okH ? h('p', {class: 'th-pkrec1'}, h('span', {text: `고를 때 안 본 기록에서 이렇게 고른 회사는 100번에 ${Math.round(H.rate)}번 꽃이 됐어요.`}), h('span', {text: ` 아무거나 고른 회사는 ${Math.round(H.base)}번이에요.`}))
     : all && Number.isFinite(all.rate) && Number.isFinite(all.base) ? h('p', {class: 'th-pkrec1'}, h('span', {text: `지난 기록으로 이렇게 고른 회사는 100번에 ${Math.round(all.rate)}번 꽃이 됐어요.`}), h('span', {text: ` 아무거나 고른 회사는 ${Math.round(all.base)}번이에요.`})) : null;
+  // 빈 날 가장 가까운 회사 셋(사장님 2026-11-03 12:01(+04) 「어 그렇게 해」 · 주문 1512) — 고른 회사가 아님을 먼저 · 맞은 조건 · 안 맞은 조건 하나 · 지난 빈 날 기록(같은 날 아무 회사와 견줌)
+  const NR = B.near, nrRows = !n && Array.isArray(NR?.today) ? NR.today.filter(r => Array.isArray(r) && /^[0-9A-Z]{6}$/.test(r[0] ?? '')) : [];
+  const nrMiss = typeof NR?.rule?.say === 'string' ? NR.rule.say : null, nrMet = sayP.filter(t => t !== nrMiss), nrRec = NR?.rec, okNr = !!nrRec && Number.isFinite(nrRec.rate) && Number.isFinite(nrRec.base) && nrRec.n > 0;
+  const nearBox = nrRows.length ? h('section', {class: 'th-pknear', 'aria-label': '조건에 가장 가까운 회사'}, h('h2', {class: 'th-h2', text: '조건에 가장 가까운 회사'}),
+    h('p', {class: 'th-sub', text: '조건에 다 맞지는 않아요. 수르가 고른 회사가 아니에요.'}),
+    h('div', {class: 'th-pkrs'}, ...nrRows.map(r => h('a', {class: 'th-pkr', href: '#/w/' + r[0]}, h('b', {'data-proper': '', text: String(r[1] ?? r[0])}),
+      h('small', {}, typeof r[2] === 'string' ? h('span', {'data-proper': '', text: r[2]}) : null, Number.isFinite(r[3]) ? h('span', {text: ` 업종은 한 달 동안 시장보다 ${Math.abs(r[3]).toFixed(1)}% ${r[3] >= 0 ? '더' : '덜'} 올랐어요.`}) : null)))),
+    nrMet.length ? h('h3', {class: 'th-chs', text: '맞은 조건'}) : null, nrMet.length ? h('ul', {class: 'th-pknl'}, ...nrMet.map(t => h('li', {text: t}))) : null,
+    nrMiss ? h('h3', {class: 'th-chs', text: '안 맞은 조건'}) : null, nrMiss ? h('ul', {class: 'th-pknl th-pknl-x'}, h('li', {text: nrMiss})) : null,
+    okNr ? h('p', {class: 'th-pkrec1'}, h('span', {text: `지난 빈 날 가장 가까운 회사는 100번에 ${Math.round(nrRec.rate)}번 꽃이 됐어요.`}), h('span', {text: ` 아무거나 고른 회사는 ${Math.round(nrRec.base)}번이에요.`})) : null) : null;
   return {title, nodes: [h('div', {class: 'tc th-picks', 'data-page': 'theme'},
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')),
     hd(n ? `${title} ${num(n)}곳` : title, 'pick'),
     h('p', {class: 'th-pkday', text: `${md(B.asOf)}에 지난 기록으로 골랐어요`}),
     n ? h('div', {class: 'th-pkis'}, ...inds.map(group)) : h('p', {class: 'empty', text: '오늘은 수르가 고른 회사가 없어요.'}),
-    n ? null : dayShare, why, n ? dayShare : null, rec, nextBtn('지난 기록', '#/t/pick'), safe())]};
+    nearBox, n ? null : dayShare, why, n ? dayShare : null, rec, nextBtn('지난 기록', '#/t/pick'), safe())]};
 }
 
 export async function render(arg = '') {

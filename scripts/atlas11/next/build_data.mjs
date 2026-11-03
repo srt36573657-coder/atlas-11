@@ -28,6 +28,7 @@ import {build as themeBuild} from './build/theme.mjs'; // 테마 시계(사장�
 import {build as flowWhy, FX} from './build/flow_why.mjs'; // ① 돈 흐름 몰린 곳 까닭 열한 가지(사장님 2026-10-30 04:27 · 05:03 「응」 · 결정표 docs/design/why11-2026-10-30/decision.md) — 테마 막대를 새로 쓴 때만 · 따로 다시 세기(파이썬)가 맞을 때만 둠
 import {fetchFxRate, writeFxRate} from './build/fx_rate.mjs'; // 8 환율과 금리 자료(2026-10-30 08:28 「어 그렇게 해」) — 올릴 때 받음 · 못 받으면 8 만 「?」
 import {coCount} from '../../../site/next/essence.js';
+import {verifyNear} from '../verify/bloom_near_verify.mjs'; // 빈 날 가장 가까운 회사 셋 따로 다시 세기(주문 1512) — 같을 때만 near 를 둠
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 export const UPDATES_DIR = 'reports/atlas11/t365/updates';
@@ -84,7 +85,23 @@ export async function buildData({siteDir = 'site', verify = false, log = console
   try { const r = await themeBuild({siteDir, keepCal}); out.theme = r; log('테마 시계 ' + r); }
   catch (e) {
     out.themeError = e.message; log('테마 시계 못 만듦 — ' + e.message);
-    for (const f of ['theme.json', 'theme-more.json', 'theme-home.json', 'theme-co.json', 'theme-path.json', 'theme-cal.json', 'theme-bloom.json']) fs.rmSync(path.join(siteDir, 'next', 'data', f), {force: true}); // 화면은 파일이 없으면 「?」 한 줄
+    for (const f of ['theme.json', 'theme-more.json', 'theme-home.json', 'theme-co.json', 'theme-path.json', 'theme-cal.json', 'theme-bloom.json']) fs.rmSync(path.join(siteDir, 'next', 'data', f), {force: true}); // 화면은파일이 없으면 「?」 한 줄
+  }
+  // 빈 날 가장 가까운 회사 셋(사장님 2026-11-03 12:01(+04) 「어 그렇게 해」 · 주문 1512) — 따로 다시 세기(scripts/atlas11/verify/bloom_near_verify.mjs · 엔진 · 낱 조건 셈을 안 씀)가 같을 때만 둠
+  //   다르거나 셀 수 없으면 near 를 뺌(화면은 「오늘은 조건에 맞은 회사가 없어요.」 그대로 · 같은 높이) · 지난 판을 오늘에 붙이지 않음
+  if (out.theme) {
+    const bf = path.join(siteDir, 'next', 'data', 'theme-bloom.json');
+    const drop = () => { try { const b = JSON.parse(fs.readFileSync(bf, 'utf8')); if (b.near) { b.near = null; fs.writeFileSync(bf, JSON.stringify(b) + '\n'); } } catch { /* 파일 없음 */ } };
+    try {
+      const b = JSON.parse(fs.readFileSync(bf, 'utf8'));
+      if (b.near) {
+        const mf = fs.existsSync(path.join(siteDir, 'next', 'data', 'bloom-months.json')) ? null : path.join(ROOT, 'site', 'next', 'data', 'bloom-months.json');
+        const v = verifyNear(siteDir, mf);
+        out.near = {code: v.code, today: Array.isArray(b.near.today) ? b.near.today.length : 0, diffs: (v.diffs ?? []).slice(0, 5), why: v.why ?? null};
+        if (v.code !== 0) drop();
+        log(`가장 가까운 회사 — 따로 다시 세기 ${v.code === 0 ? '같음' : '다름 · 뺌'} · 오늘 ${out.near.today}곳` + (v.code ? ' · ' + JSON.stringify(out.near.diffs.length ? out.near.diffs : out.near.why) : ''));
+      }
+    } catch (e) { out.nearError = e.message; log('가장 가까운 회사 못 맞댐 — ' + e.message); drop(); }
   }
   // 까닭 열한 가지 — 막대(theme-home.json)를 이번에 새로 쓴 때만 그 몰린 곳 셋으로 셈 · 따로 다시 세기(scripts/atlas11/verify/flow_why_verify.py)가 틀림 0 일 때만 둠
   //   못 만들거나 다르면 파일을 지움(화면은 「왜? 아직 못 셌어요.」 · 불빛 모두 「?」 — 같은 높이) · 지난 판 까닭을 오늘 막대에 붙이지 않게
