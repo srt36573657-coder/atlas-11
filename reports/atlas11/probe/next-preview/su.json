@@ -1,0 +1,26 @@
+{
+ "schema": "su-check-1",
+ "at": "2026-11-03T12:18:41.649Z",
+ "base": "http://127.0.0.1:8826",
+ "counts": {
+  "pass": 165,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "data": {
+   "picks": 0,
+   "near": 3,
+   "money": [
+    "한진칼",
+    "하이트진로",
+    "한진"
+   ]
+  },
+  "home": {
+   "screens": 2.01,
+   "links": 8
+  }
+ },
+ "ok": true
+}
