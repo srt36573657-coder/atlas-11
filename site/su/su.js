@@ -5,7 +5,8 @@
    보안 규칙(script-src 'self' · style-src 'self') — innerHTML 없음 · 글 속 style 없음 · 그림은 SVG 속성으로만 */
 import {NAME, josa} from '/next/brand.js';
 import {glossTree} from '/next/glossary.js'; // 낱말표 한 곳(몸값 → 회사 크기 …) — 지금 사이트와 같은 말 · 이름([data-proper])은 그대로
-import {CODE, pct, moreLess, dateKo, bloomList, moneyList, reasonsFor, whyOf, idxLine, coLine, indRows} from '/su/su-data.js';
+import {CODE, pct, moreLess, dateKo, bloomList, moneyList, reasonsFor, whyOf, idxLine, coLine, indRows, forwardTo} from '/su/su-data.js';
+import {essenceData, essenceLines} from '/next/essence.js'; // 본질 세 줄(사장님 글자 그대로 · 명령문 [5] 2) — 첫 화면이 되면서(18:33 「응」) 처음 쪽 맨 아래에
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -23,7 +24,7 @@ const s = (tag, attrs = {}) => { const e = document.createElementNS(SVGNS, tag);
 
 const cache = new Map();
 const get = url => { if (!cache.has(url)) cache.set(url, fetch(url).then(r => (r.ok ? r.json() : null)).catch(() => null)); return cache.get(url); };
-const D = {B: '/next/data/theme-bloom.json', TH: '/next/data/theme.json', W: '/next/data/flow-why.json', H: '/atlas/data/home.json', M: '/atlas/data/mkt.json', co: c => '/atlas/data/co/' + c + '.json'};
+const D = {B: '/next/data/theme-bloom.json', TH: '/next/data/theme.json', W: '/next/data/flow-why.json', S: '/next/data/home-summary.json', H: '/atlas/data/home.json', M: '/atlas/data/mkt.json', co: c => '/atlas/data/co/' + c + '.json'};
 
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
 const NOT_PICK = '조건에 다 맞지는 않아요. ' + josa(NAME, '가') + ' 고른 회사가 아니에요.';
@@ -80,11 +81,11 @@ function moneyCard(mo) {
 }
 
 async function vHome() {
-  const [B, TH, W] = await Promise.all([get(D.B), get(D.TH), get(D.W)]);
+  const [B, TH, W, S] = await Promise.all([get(D.B), get(D.TH), get(D.W), get(D.S)]);
   const asOf = B?.asOf ?? TH?.asOf ?? W?.asOf;
   return {title: null, nodes: [bar(), h('main', {class: 'su-main'}, safe(),
     h('h1', {class: 'su-h1', tabindex: '-1'}, h('span', {text: '오늘 볼 것은'}), ' ', h('em', {text: '두 가지예요'})),
-    bloomCard(bloomList(B), asOf), moneyCard(moneyList(TH, W)), foot(asOf))]};
+    bloomCard(bloomList(B), asOf), moneyCard(moneyList(TH, W)), essBox(S), foot(asOf))]};
 }
 
 /** 회사 한 달 그림 — 그 회사 줄 · 지수 줄(같은 날들 · 기준일 = 100) · 글은 그림 밖 HTML(큰 글씨) */
@@ -160,8 +161,18 @@ async function vInd(name) {
 
 function notFound(msg) { return {title: '?', nodes: [bar(), h('main', {class: 'su-main'}, back(), h('p', {class: 'su-lead su-none', text: '? ' + msg}))]}; }
 
+/** 본질 세 줄 — essence.js 그대로(회사 수 · 받은 때 = home-summary.json · 못 읽으면 「?」) · 「왜 사?」 열한 질문으로 가는 고리 하나(본질 2번) */
+function essBox(S) {
+  const lines = essenceLines(essenceData({summary: S}));
+  return h('section', {class: 'su-ess', 'aria-label': NAME + ' 세 줄'},
+    lines.map((t, i) => h('p', {'data-ess': String(i + 1), text: t})),
+    h('a', {class: 'su-full', href: '/next/#/why'}, h('span', {text: '「왜 사?」 열한 질문 하기'}), h('i', {'aria-hidden': 'true', text: '›'})));
+}
+
 let seq = 0;
 async function route() {
+  const fw = forwardTo(location.search, location.hash); // 지금 수르 고리(#/w/ · #/s/ · ?lang= …)는 그쪽으로 그대로(첫 화면이 된 뒤 옛 고리 · 카톡으로 받은 고리)
+  if (fw) { location.replace(fw); return; }
   const m = /^#\/(c|i)\/(.+)$/.exec(location.hash || '');
   let a = null; if (m) { try { a = decodeURIComponent(m[2]); } catch { a = m[2]; } }
   const my = ++seq, root = document.getElementById('su');
