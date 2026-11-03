@@ -25,4 +25,7 @@ jobs:
           git config user.name atlas11-bot
           git config user.email atlas11-bot@users.noreply.github.com
           git add -f reports/atlas11/probe tests/atlas11/fixtures/naver-minute
-          git commit -m "atlas11 collector check [skip ci]" && git pull --rebase -q && git push
+          git commit -m "atlas11 collector check [skip ci]" || { echo "올릴 것 없음"; exit 0; }
+          # 탐침과 같은 까닭으로 세 번까지(2026-11-03 주문 0556)
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 7; done
+          exit 1
