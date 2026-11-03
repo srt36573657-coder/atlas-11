@@ -229,6 +229,10 @@ a.th-ck:active { background: #FFFFFF; }
 .th-pkr small { color: #222222; font-size: var(--fs-1); line-height: 1.4; overflow-wrap: anywhere; }
 .th-pkr[hidden] { display: none; }
 .th-pkrs .th-pkmore { justify-self: start; margin-top: var(--sp-1); }
+/* 빈 날 가장 가까운 회사 셋(주문 1512) — 맞은 조건 · 안 맞은 조건 목록 */
+.th-pknear { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0; }
+.th-pknl { margin: 0; padding-left: 1.2em; display: grid; gap: 2px; font-size: var(--fs-2); font-weight: 700; }
+.th-pknl-x li { color: #A3264F; }
 .th-pkix { margin: 0; padding: 0 var(--sp-2) var(--sp-1); color: #222222; font-size: var(--fs-1); line-height: 1.4; }
 .th-pkwhy3 { margin: var(--sp-2) 0; }
 .th-pkmore { border-style: dashed; background: transparent; }

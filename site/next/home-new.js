@@ -235,16 +235,18 @@ export const TWO_N = 3;
 export function twoNames(TH, B) {
   const bl = Array.isArray(B?.today?.inds) ? B.today.inds.flatMap(i => (Array.isArray(i?.co) ? i.co : []).map(r => r?.[1])).filter(n => typeof n === 'string' && n) : null;
   const {up} = flowRows(TH), mo = up.map(i => (Array.isArray(i?.lead) && typeof i.lead[1] === 'string' ? i.lead[1] : null)).filter(Boolean);
-  return {bl, mo};
+  // 빈 날 가장 가까운 회사 셋(사장님 2026-11-03 12:01(+04) 「어 그렇게 해」 · 주문 1512) — 고른 회사가 0곳인 날만 · 고른 회사와 섞지 않음(머리 「가까운 곳」)
+  const nr = Array.isArray(bl) && !bl.length && Array.isArray(B?.near?.today) ? B.near.today.map(r => (Array.isArray(r) ? r[1] : null)).filter(n => typeof n === 'string' && n) : [];
+  return {bl, mo, nr};
 }
 const goFlow = () => document.querySelector('#view section.nh-hero .nh-fm')?.scrollIntoView({behavior: 'smooth', block: 'start'}); // ② 돈이 몰린 종목 → 바로 아래 돈 흐름 판(주소 # 는 그대로)
-const twoLine = (ns, empty) => h('span', {class: 'nh-twn'}, ...(ns.length ? ns.slice(0, TWO_N).flatMap((n, k) => [k ? h('span', {class: 'nh-twd', 'aria-hidden': 'true', text: ' · '}) : null, h('b', {'data-proper': '', text: n})]).filter(Boolean) : [h('span', {class: 'nh-twe', text: empty})]));
+const twoLine = (ns, empty, cls = '') => h('span', {class: 'nh-twn' + (cls ? ' ' + cls : '')}, ...(ns.length ? ns.slice(0, TWO_N).flatMap((n, k) => [k ? h('span', {class: 'nh-twd', 'aria-hidden': 'true', text: ' · '}) : null, h('b', {'data-proper': '', text: n})]).filter(Boolean) : [h('span', {class: 'nh-twe', text: empty})]));
 export function twoBox(TH = null, B = null) {
-  const {bl, mo} = twoNames(TH, B);
+  const {bl, mo, nr} = twoNames(TH, B), nearOn = nr.length > 0; // nearOn = 오늘 고른 회사 0곳 · 가장 가까운 회사 셋(주문 1512)
   const head = (k, t, c) => h('span', {class: 'nh-twh'}, h('i', {class: 'nh-twi nh-twi-' + k, 'aria-hidden': 'true'}), h('b', {class: 'nh-twk', text: t}), c ? h('span', {class: 'nh-twc', text: c}) : null, h('i', {class: 'nh-twg', 'aria-hidden': 'true', text: '›'}));
   return h('div', {class: 'nh-two', role: 'group', 'aria-label': '꽃이 될 종목과 돈이 몰린 종목'},
-    h('a', {class: 'nh-tw nh-tw-bl', href: '#/t/picks'}, head('bl', '꽃이 될 종목', bl == null ? null : bl.length ? `오늘 ${num(bl.length)}곳` : null),
-      twoLine(bl ?? [], bl == null ? '? 아직 못 받았어요.' : '오늘은 조건에 맞은 회사가 없어요.')),
+    h('a', {class: 'nh-tw nh-tw-bl', href: '#/t/picks'}, head('bl', '꽃이 될 종목', bl == null ? null : bl.length ? `오늘 ${num(bl.length)}곳` : nearOn ? '가까운 곳' : null),
+      nearOn ? twoLine(nr, '', 'nh-twnr') : twoLine(bl ?? [], bl == null ? '? 아직 못 받았어요.' : '오늘은 조건에 맞은 회사가 없어요.')),
     h('button', {class: 'nh-tw nh-tw-mo', type: 'button', onclick: goFlow}, head('mo', '돈이 몰린 종목', mo.length ? '한 달' : null),
       twoLine(mo, '? 아직 못 셌어요.')));
 }
@@ -339,7 +341,13 @@ function recent(B) {
 function todayPicks(B) {
   if (!B?.today) return h('p', {class: 'nh-tp nh-tp0', text: '? 오늘 고른 회사를 아직 못 받았어요.'});
   const list = (Array.isArray(B.today.inds) ? B.today.inds : []).flatMap(i => (Array.isArray(i?.co) ? i.co : []).map(c => ({n: c?.[1], i: i?.n}))).filter(x => typeof x.n === 'string' && x.n);
-  if (!list.length) return h('p', {class: 'nh-tp nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'});
+  if (!list.length) { // 빈 날 — 가장 가까운 회사 셋을 따로(주문 1512 · 고른 회사가 아님을 먼저 말함)
+    const nr = (Array.isArray(B?.near?.today) ? B.near.today : []).filter(r => Array.isArray(r) && typeof r[1] === 'string' && r[1]);
+    if (!nr.length) return h('p', {class: 'nh-tp nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'});
+    return h('div', {class: 'nh-tp nh-tpnr'}, h('p', {class: 'nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'}), h('p', {class: 'nh-tpk', text: '조건에 가장 가까운 회사'}),
+      h('ul', {class: 'nh-tpl'}, ...nr.map(r => h('li', {}, h('b', {'data-proper': '', text: r[1]}), typeof r[2] === 'string' ? h('small', {'data-proper': '', text: r[2]}) : null))),
+      h('p', {class: 'nh-tpnote', text: '조건에 다 맞지는 않아요. 수르가 고른 회사가 아니에요.'}));
+  }
   return h('div', {class: 'nh-tp'}, h('p', {class: 'nh-tpk', text: `오늘 조건에 맞은 회사 ${num(list.length)}곳`}),
     h('ul', {class: 'nh-tpl'}, ...list.slice(0, 5).map(x => h('li', {}, h('b', {'data-proper': '', text: x.n}), typeof x.i === 'string' ? h('small', {'data-proper': '', text: x.i}) : null))));
 }

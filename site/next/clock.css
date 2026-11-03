@@ -740,6 +740,10 @@ html.white.clock.clock.clock.clock.home #view .nh-sage b { color: #F06FCB; }
 html.white.clock.clock.clock.clock.home #view .nh-tp { background: #1C1136; border: 1px solid #3A2756; }
 html.white.clock.clock.clock.clock.home #view p.nh-tp.nh-tp0 { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-tpk { color: #CFC4E0; }
+html.white.clock.clock.clock.clock.home #view .nh-twn.nh-twnr { color: #CFC4E0; } /* 빈 날 가장 가까운 회사 셋(주문 1512) — 고른 회사 이름(#F2EFF9)보다 옅게 */
+html.white.clock.clock.clock.clock.home #view .nh-tpnr .nh-tp0 { color: #F2EFF9; }
+html.white.clock.clock.clock.clock.home #view .nh-tpnote { color: #CFC4E0; }
+html:where(.white.clock) .th-pknl-x li { color: #FFC2D6; }
 html.white.clock.clock.clock.clock.home #view .nh-tpl b { color: #F2EFF9; }
 html.white.clock.clock.clock.clock.home #view .nh-tpl small { color: #CFC4E0; }
 html.white.clock.clock.clock.clock.home #view .nh-say { color: #F2EFF9; }
