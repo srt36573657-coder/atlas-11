@@ -623,8 +623,9 @@ async function pPicks() {
     h('div', {class: 'th-pg'}, h('a', {class: 'th-back', href: '#/', text: '‹ 테마 시계'}), h('span')),
     hd(n ? `${title} ${num(n)}곳` : title, 'pick'),
     h('p', {class: 'th-pkday', text: `${md(B.asOf)}에 지난 기록으로 골랐어요`}),
+    rec,
     n ? h('div', {class: 'th-pkis'}, ...inds.map(group)) : h('p', {class: 'empty', text: '오늘은 수르가 고른 회사가 없어요.'}),
-    nearBox, n ? null : dayShare, why, n ? dayShare : null, rec, nextBtn('지난 기록', '#/t/pick'), safe())]};
+    nearBox, n ? null : dayShare, why, n ? dayShare : null, nextBtn('지난 기록', '#/t/pick'), safe())]};
 }
 
 export async function render(arg = '') {
