@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-03T03:46:43.374Z",
+ "at": "2026-11-03T03:54:22.833Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,16 +14,16 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
   "past": true,
   "rivals": true,
   "grow": true,
   "range": true,
   "surge": true,
   "cal": true,
+  "cond": true,
   "talk": true,
-  "time": true,
   "up": true,
+  "time": true,
   "info": true,
   "x": true,
   "co": true,
@@ -31,11 +31,11 @@
   "today": true,
   "why": true,
   "gdr": true,
-  "share": true,
   "hold": true,
   "theme": true,
   "sage": true,
-  "roman": true
+  "roman": true,
+  "share": true
  },
  "edge": true,
  "only": null,
@@ -50,8 +50,8 @@
    "@newwin": 15
   }
  },
- "seconds": 459,
- "secondsSum": 2540,
+ "seconds": 427,
+ "secondsSum": 2477,
  "shards": [
   {
    "shard": "1/6",
@@ -60,10 +60,10 @@
    "routes": 2280,
    "screens": 2281,
    "mine": 2280,
-   "seconds": 418,
+   "seconds": 427,
    "secs": {
     "open": 0.4,
-    "routes": 416.6
+    "routes": 425.8
    }
   },
   {
@@ -73,10 +73,10 @@
    "routes": 2280,
    "screens": 2281,
    "mine": 2280,
-   "seconds": 405,
+   "seconds": 393,
    "secs": {
-    "open": 0.4,
-    "routes": 404.1
+    "open": 0.3,
+    "routes": 392
    }
   },
   {
@@ -86,10 +86,10 @@
    "routes": 2285,
    "screens": 2285,
    "mine": 2279,
-   "seconds": 417,
+   "seconds": 425,
    "secs": {
-    "open": 0.3,
-    "routes": 416.3
+    "open": 0.4,
+    "routes": 422.9
    }
   },
   {
@@ -99,10 +99,10 @@
    "routes": 2279,
    "screens": 2279,
    "mine": 2279,
-   "seconds": 408,
+   "seconds": 413,
    "secs": {
     "open": 0.4,
-    "routes": 407.4
+    "routes": 412.1
    }
   },
   {
@@ -112,11 +112,11 @@
    "routes": 2265,
    "screens": 2329,
    "mine": 2266,
-   "seconds": 459,
+   "seconds": 422,
    "secs": {
     "open": 0.4,
-    "routes": 454.7,
-    "newwin": 3.2
+    "routes": 416.8,
+    "newwin": 3.1
    }
   },
   {
@@ -126,12 +126,12 @@
    "routes": 2200,
    "screens": 2363,
    "mine": 2201,
-   "seconds": 433,
+   "seconds": 397,
    "secs": {
-    "open": 0.4,
-    "routes": 418.5,
-    "act": 6.7,
-    "edge": 7.2,
+    "open": 0.3,
+    "routes": 385,
+    "act": 5.7,
+    "edge": 5.9,
     "grammar": 0
    }
   }
