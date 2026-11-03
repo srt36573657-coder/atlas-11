@@ -109,7 +109,7 @@ export const BOLD = { // 매매일지(왜 사? · 한 달 뒤) · 보유종목 �
   'jinhwa': {"pre": ["jh-h1:0", "jh-ess:0", "jh-head:0"], "hero": "jh-rail:0", "z": 1, "card": 2, "hide": 1, "stick": null, "vis": null, "act": "jh-what:0", "sec": [], "bottom": []}, // 진화
   't/today': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-rec:0", "z": 1.7, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-steps:0"], "bottom": ["th-safe:0"]}, // 오늘 정리
   't/hello': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-steps:0", "z": 1.5, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-found:0", "sec": [], "bottom": ["th-safe:0"]}, // 돌이 인사
-  't/how': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-map:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": [], "bottom": ["th-safe:0"]}, // 시계 읽는 법
+  't/how': {"pre": ["th-pg:0", "th-hd:0"], "hero": "th-map:0", "z": 1, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "th-next:0", "sec": ["th-hi:0"], "bottom": ["th-safe:0"]}, // 시계 읽는 법
   'help': {"pre": ["hp-h1:0", "hp-voice:0"], "hero": "hp-note-card:0", "z": 1.5, "card": 2, "hide": 2, "stick": null, "vis": null, "act": "hp-doors:0", "sec": [], "bottom": []}, // 고객센터
 };
 const LATE_TOK = new Set(['th-foot', 'kk-box', 'kk-pgrow', 'cp-card']);
