@@ -1785,6 +1785,14 @@
    "how": "node scripts/atlas11/orders/kakao_digest.mjs",
    "order": "1312",
    "note": "53통 모두 「성공적으로 보냈습니다」(13:16 ~ 13:21 서울) · 모두 원문 그대로"
+  },
+  {
+   "at": "2026-11-03T15:32+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 53,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs",
+   "order": "1512",
+   "note": "53통 모두 「성공적으로 보냈습니다」(15:27 ~ 15:32 서울) · 모두 원문 그대로"
   }
  ]
 }
