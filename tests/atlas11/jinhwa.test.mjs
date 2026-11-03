@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {handleJinhwa, memoryStore, change, statusOf, siteData, idsOf, STATES, LIM, DATA_SCHEMA, STATE_SCHEMA} from '../../lib/atlas11/jinhwa.mjs';
-import {slotAfter, slotPlan, slotLabel, picSrc, revertedAt, scoreLine, SLOTS, LEAD_MIN} from '../../site/next/p-jinhwa.js';
+import {slotAfter, roundAfter, slotPlan, slotLabel, picSrc, revertedAt, scoreLine, SLOTS, ROUND_SLOTS, LEAD_MIN} from '../../site/next/p-jinhwa.js';
 import {screenHits, ruinHits} from '../../site/next/words.js';
 import {jsStrings} from '../../scripts/atlas11/next/rename.mjs';
 
@@ -143,31 +143,35 @@ test('깃허브 열쇠 0 · 비밀 값 0 · 함수 길', async () => {
 
 /* ── 「○시」 셈(화면 p-jinhwa.js) — 진화 회차 = 평일 09:30 · 11:30 · 13:30 · 17:30(서울 · [8] 1) · 회차마다 하나 ── */
 const ms = s => KST(s).getTime(), iso = s => KST(s).toISOString();
-test('업데이트 때 — 매시 정각(주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 회차는 30분 전', () => {
+test('업데이트 때 — 매시 정각(주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 회차는 두 시간마다 30분 전(하루 열두 번 · 2026-11-03 21:18(+04) · 주문 0218)', () => {
   assert.deepEqual([...SLOTS], Array.from({length: 24}, (_, h) => h)); assert.equal(LEAD_MIN, 30);
-  assert.equal(slotAfter(ms('2026-10-19T09:29:00')), ms('2026-10-19T10:00:00'), '09:29 → 10시 회차에 듦');
-  assert.equal(slotAfter(ms('2026-10-19T09:30:00')), ms('2026-10-19T11:00:00'), '09:30 회차가 이미 돎 → 11시');
-  assert.equal(slotAfter(ms('2026-10-19T09:45:00'), false), ms('2026-10-19T10:00:00'), '다음 업데이트(회차 아님)');
+  assert.deepEqual([...ROUND_SLOTS], [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23], '서울 짝수 시 29분 회차 → 홀수 시 업데이트 · 열두 번');
+  assert.equal(slotAfter(ms('2026-10-19T09:29:00')), ms('2026-10-19T11:00:00'), '09:29 → 10:30 회차 → 11시');
+  assert.equal(slotAfter(ms('2026-10-19T10:29:00')), ms('2026-10-19T11:00:00'), '10:30 회차 전');
+  assert.equal(slotAfter(ms('2026-10-19T10:30:00')), ms('2026-10-19T13:00:00'), '10:30 회차가 이미 돎 → 12:30 회차 → 13시');
+  assert.equal(slotAfter(ms('2026-10-19T09:45:00'), false), ms('2026-10-19T10:00:00'), '다음 업데이트(회차 아님 · 매시)');
   assert.equal(slotAfter(ms('2026-10-24T12:10:00'), false), ms('2026-10-24T13:00:00'), '토요일도 매시');
-  assert.equal(slotAfter(ms('2026-10-24T23:45:00')), ms('2026-10-25T01:00:00'), '자정 넘어 일요일 1시');
+  assert.equal(slotAfter(ms('2026-10-24T23:45:00')), ms('2026-10-25T01:00:00'), '자정 넘어 일요일 0:30 회차 → 1시');
+  assert.equal(roundAfter(ms('2026-10-19T10:45:00')), ms('2026-10-19T11:00:00'), '회차는 돌았고 11시 업데이트 전');
+  assert.equal(roundAfter(ms('2026-10-19T11:00:00')), ms('2026-10-19T13:00:00'), '그다음 회차 업데이트');
 });
 
-test('「○시」 차례 = 진화 회차 차례 — 회차마다 하나 · 되돌리기 먼저 · 이른 것부터 · 기다리는 것 · 들어간 것만', () => {
+test('「○시」 차례 = 진화 회차 차례 — 회차마다 하나(두 시간마다) · 되돌리기 먼저 · 이른 것부터 · 기다리는 것 · 들어간 것만', () => {
   const now = ms('2026-10-19T09:10:00'), sets = {waiting: new Set([W1, W2, W3]), applied: new Set([A1])};
   let p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], now, sets);
-  assert.equal(p.get(W1), ms('2026-10-19T10:00:00'));
+  assert.equal(p.get(W1), ms('2026-10-19T11:00:00'), '10:30 회차 → 11시');
   p = slotPlan([{id: W2, state: 'confirmed', at: iso('2026-10-19T09:05:00')}, {id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], now, sets);
-  assert.deepEqual([p.get(W1), p.get(W2)], [ms('2026-10-19T10:00:00'), ms('2026-10-19T11:00:00')], '둘이면 하나씩');
+  assert.deepEqual([p.get(W1), p.get(W2)], [ms('2026-10-19T11:00:00'), ms('2026-10-19T13:00:00')], '둘이면 회차마다 하나씩(두 시간마다)');
   p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T08:00:00')}, {id: A1, state: 'revert', at: iso('2026-10-19T09:00:00')}], now, sets);
-  assert.deepEqual([p.get(A1), p.get(W1)], [ms('2026-10-19T10:00:00'), ms('2026-10-19T11:00:00')], '되돌리기 먼저(lib.mjs planRound)');
-  p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:35:00')}], ms('2026-10-19T09:40:00'), sets);
-  assert.equal(p.get(W1), ms('2026-10-19T11:00:00'), '09:30 회차 뒤에 누름 → 11시');
-  p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], ms('2026-10-19T09:40:00'), sets);
-  assert.equal(p.get(W1), ms('2026-10-19T10:00:00'), '09:30 회차가 실었고 10시 업데이트 전');
-  p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T09:00:00')}], ms('2026-10-19T10:05:00'), sets);
-  assert.equal(p.get(W1), ms('2026-10-19T11:00:00'), '회차가 못 넣었으면 다음 업데이트');
+  assert.deepEqual([p.get(A1), p.get(W1)], [ms('2026-10-19T11:00:00'), ms('2026-10-19T13:00:00')], '되돌리기 먼저(lib.mjs planRound)');
+  p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T10:35:00')}], ms('2026-10-19T10:40:00'), sets);
+  assert.equal(p.get(W1), ms('2026-10-19T13:00:00'), '10:30 회차 뒤에 누름 → 12:30 회차 → 13시');
+  p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T10:00:00')}], ms('2026-10-19T10:40:00'), sets);
+  assert.equal(p.get(W1), ms('2026-10-19T11:00:00'), '10:30 회차가 실었고 11시 업데이트 전');
+  p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-19T10:00:00')}], ms('2026-10-19T11:05:00'), sets);
+  assert.equal(p.get(W1), ms('2026-10-19T13:00:00'), '회차가 못 넣었으면 다음 회차 업데이트');
   p = slotPlan([{id: W1, state: 'confirmed', at: iso('2026-10-23T17:40:00')}], ms('2026-10-23T17:41:00'), sets);
-  assert.equal(p.get(W1), ms('2026-10-23T19:00:00'), '17:30 회차 뒤에 누름 → 18:30 회차 → 19시(매시)');
+  assert.equal(p.get(W1), ms('2026-10-23T19:00:00'), '17:40 에 누름 → 18:30 회차 → 19시');
   p = slotPlan([{id: 'gone', state: 'confirmed', at: iso('2026-10-19T09:00:00')}, {id: W3, state: 'withdrawn', at: iso('2026-10-19T09:00:00')}, {id: W1, state: 'revert', at: iso('2026-10-19T09:00:00')}, {id: W2, state: 'confirmed', at: iso('2026-10-19T09:01:00')}], now, sets);
   assert.deepEqual([...p.keys()], [W2], '내려간 대안 · 거둔 것 · 기다리는 것의 되돌리기는 셈 밖');
 });
@@ -180,6 +184,7 @@ test('「○시」 글 — 다음 업데이트 · 오늘 뒤 · 다른 날 · �
   assert.equal(slotLabel('revert', ms('2026-10-19T10:00:00'), now), '되돌리기 함 · 다음 업데이트 10시에 되돌려요');
   assert.equal(slotLabel('confirm', null, now), '확인함 · 다음 업데이트에 들어가요');
   assert.match(slotLabel('confirm', ms('2026-10-19T10:00:00'), now), /^확인함 · 다음 업데이트 \d+시에 들어가요$/, '[9] 4 사장님 글 꼴');
+  assert.equal(slotLabel('confirm', ms('2026-10-19T11:00:00'), ms('2026-10-19T10:40:00')), '확인함 · 다음 업데이트 11시에 들어가요', '회차 업데이트가 바로 다음이면');
 });
 
 test('화면 조각 — 그림 길 · 되돌린 때 · 채점 글(회차 꼴 score.at = null 이면 아직)', () => {
@@ -274,4 +279,22 @@ test('바뀐 곳 표시 — 카드 네모 꼴 · 쪽 이름 · 누르기 차례 
   const src = fs.readFileSync(new URL('../../site/next/p-jinhwa.js', import.meta.url), 'utf8');
   const card = src.slice(src.indexOf('function oneCard'), src.indexOf('function carousel'));
   assert.ok(card.indexOf("stateBtn(x, 'confirm', C)") < card.indexOf('pics(x)'), '확인 단추는 그림보다 위(이름 바로 밑)');
+});
+
+test('배우는 일꾼 열하나 — 칸 열하나 · 칸마다 출처 줄 · 이상적인 흐름 · 고칠 거리 차례 · 지금 화면 사진 도구의 꼴 막기(사장님 2026-11-03 21:18(+04) · 주문 0218)', async () => {
+  const {LENSES, learnOk, LEARN_SUFFIX, ROUND_SLOTS: RS, ROUND_EVERY_H} = await import('../../scripts/atlas11/jinhwa/lib.mjs');
+  const {look} = await import('../../scripts/atlas11/jinhwa/shots.mjs');
+  assert.equal(LENSES.length, 11); assert.equal(LEARN_SUFFIX, '-learn11.md'); assert.equal(ROUND_EVERY_H, 2);
+  assert.deepEqual(RS.map(([H]) => H), [...ROUND_SLOTS], '회차 업데이트 — 도구와 화면이 같음');
+  assert.equal(new Set(LENSES.map(x => x.name)).size, 11, '이름이 겹치지 않음');
+  const sec = x => `## ${x.n}. ${x.name}\n- 본 것: 처음 쪽 맨 위에 꽃이 될 회사 칸이 있어요. 회사 이름을 누르면 그 회사 쪽이 바로 열려요.\n- 출처: 못 찾음\n- 고칠 거리: 없음\n`;
+  const good = '# 배운 글\n\n' + LENSES.map(sec).join('\n') + '\n## 이상적인 흐름\n처음 쪽 → 꽃이 될 회사 → 회사 쪽 → 사기 전에 한 번 멈춤\n\n## 고칠 거리 차례\n1. 회사 쪽 첫 칸 글을 줄여요.\n';
+  assert.deepEqual(learnOk(good), {ok: true, why: []});
+  assert.deepEqual(learnOk(null), {ok: false, why: ['배운 글이 없음']});
+  assert.match(learnOk(good.replace('## 7. 누구나 보기', '## 7. 아무나')).why.join(), /7\. 누구나 보기/, '칸 이름이 다르면');
+  assert.match(learnOk(good.replace('- 출처: 못 찾음\n- 고칠 거리: 없음\n\n## 이상적인', '- 고칠 거리: 없음\n\n## 이상적인')).why.join(), /11\. 처음 온 사람 칸에 「출처:」/, '출처 줄이 없으면');
+  assert.match(learnOk(good.replace('## 고칠 거리 차례', '## 다른 것')).why.join(), /고칠 거리 차례/, '고칠 거리 차례가 없으면');
+  assert.match(learnOk(good.replace(/## 3\. 누르는 수\n[^#]*/, '## 3. 누르는 수\n- 출처: 없음\n')).why.join(), /3\. 누르는 수 칸이 너무 짧음/, '빈 칸');
+  assert.equal((await look({dir: '/없는/폴더'})).ok, false, '폴더에 site/next 가 없으면');
+  assert.match((await look({dir: new URL('../..', import.meta.url).pathname, routes: 'javascript:x'})).why, /길이 이상함/, '길 꼴이 틀리면 띄우기 전에 막음');
 });

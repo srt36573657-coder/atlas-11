@@ -40,18 +40,29 @@ export function ownerRow(box) {
     if (!box.querySelector('a.gm-row')) box.append(h('a', {class: 'gm-row', href: '#/game'}, '가짜 돈 연습', h('span', {text: '›'}))); // 시험판(2026-10-19 15:04 「일단해」) — 공개 전에는 사장님 기기만 // 쿠폰 번호 확인 · 쿠폰 목록 · 가입 수(2026-10-19 13:54 「관리자 페이지도 있어야 해」)
   }).catch(() => {});
 }
-/* ── 업데이트 때(「○시」) — 매시 정각(서울 · 주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 진화 회차는 30분 전 ── */
+/* ── 업데이트 때(「○시」) — 매시 정각(서울 · 주말 · 공휴일도 · 사장님 2026-10-18 20:59 · 21:00) · 진화 회차는 30분 전
+ *  회차는 두 시간마다 — 하루 열두 번(사장님 2026-11-03 21:18(+04) 「하루에 12번」 · 주문 0218): 서울 짝수 시 29분 회차 → 홀수 시 정각 업데이트(ROUND_SLOTS · scripts/atlas11/jinhwa/lib.mjs 와 같음) ── */
 export const SLOTS = Object.freeze(Array.from({length: 24}, (_, h) => h)), LEAD_MIN = 30;
-/** t(ms) 뒤 첫 업데이트 — lead = 회차가 그 업데이트 30분 전에 돌아 그때까지 들어온 확인만 봄(true) · false 면 그냥 다음 업데이트 */
+export const ROUND_SLOTS = Object.freeze(SLOTS.filter(h => h % 2 === 1));
+/** t(ms) 뒤 첫 업데이트 — lead = 회차가 도는 업데이트 가운데 그 30분 전 회차가 아직 안 돈 것(그때까지 들어온 확인만 봄 · true) · false 면 그냥 다음 업데이트(매시) */
 export function slotAfter(t, lead = true) {
-  const k = new Date(t + KST);
+  const k = new Date(t + KST), hours = lead ? ROUND_SLOTS : SLOTS;
   for (let i = 0; i < 15; i++) {
     const day = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate() + i);
-    for (const hh of SLOTS) { const s = day + hh * 36e5 - KST; if ((lead ? s - LEAD_MIN * 6e4 : s) > t) return s; }
+    for (const hh of hours) { const s = day + hh * 36e5 - KST; if ((lead ? s - LEAD_MIN * 6e4 : s) > t) return s; }
   }
   return null;
 }
-/** 상태 → 번호마다 들어갈(되돌릴) 업데이트 때(ms) — 진화 회차를 흉내 냄: 다음 업데이트부터 업데이트마다 그 회차 때(30분 전) 앞에 적힌 것 가운데 하나만
+/** t(ms) 뒤 첫 「회차가 도는」 업데이트(그 회차가 이미 돌았어도 — 업데이트 30분 안) */
+export function roundAfter(t) {
+  const k = new Date(t + KST);
+  for (let i = 0; i < 15; i++) {
+    const day = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate() + i);
+    for (const hh of ROUND_SLOTS) { const s = day + hh * 36e5 - KST; if (s > t) return s; }
+  }
+  return null;
+}
+/** 상태 → 번호마다 들어갈(되돌릴) 업데이트 때(ms) — 진화 회차를 흉내 냄: 다음 회차 업데이트부터(두 시간마다) 그 회차 때(30분 전) 앞에 적힌 것 가운데 하나만
  *  (되돌리기 먼저 · 그다음 확인 · 같은 갈래는 이른 때부터 — scripts/atlas11/jinhwa/lib.mjs planRound) · 이미 돈 회차(업데이트 30분 안)는 그때 앞에 적힌 것을 실음
  *  waiting · applied = 지금 자료의 번호(Set) — 주면 확인은 기다리는 것만 · 되돌리기는 들어간 것만(회차가 버리는 것은 셈하지 않음) */
 export function slotPlan(items, now = Date.now(), {waiting = null, applied = null} = {}) {
@@ -60,11 +71,11 @@ export function slotPlan(items, now = Date.now(), {waiting = null, applied = nul
   const order = (a, b) => at(a) - at(b) || (a.id < b.id ? -1 : 1);
   const rv = items.filter(x => x.state === 'revert' && (!applied || applied.has(x.id))).sort(order);
   const cf = items.filter(x => x.state === 'confirmed' && (!waiting || waiting.has(x.id))).sort(order);
-  let s = slotAfter(now, false);
+  let s = roundAfter(now);
   for (let k = 0; s != null && (rv.length || cf.length) && k < 400; k++) {
     const cut = s - LEAD_MIN * 6e4, q = rv[0] && at(rv[0]) < cut ? rv : cf[0] && at(cf[0]) < cut ? cf : null;
     if (q) out.set(q.shift().id, s);
-    s = slotAfter(s, false);
+    s = roundAfter(s);
   }
   return out;
 }
