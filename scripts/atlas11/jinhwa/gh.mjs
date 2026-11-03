@@ -434,7 +434,20 @@ export function previewStart(cwd, {sha, branch, expect = ''}) {
 }
 /** 결과 보기 — wait_preview.mjs(올리기 문과 같은 판정: 코드 같음 + 모든 쪽 실패 0) · sha = 검사한 커밋 · head = 넣을 커밋 · maxMin 0 이면 한 번만 봄
  *  돌려줌 {state: 'pass' | 'fail' | 'running', why} */
+/** 이 폴더(저장소)에 그 커밋이 있나 — 40자 번호만 */
+export const hasCommit = (cwd, c) => /^[0-9a-f]{40}$/.test(String(c ?? '')) && git(cwd, ['cat-file', '-e', `${c}^{commit}`]).ok;
 export async function previewResult(cwd, {sha, head, maxMin = 0, every = 30, say = () => {}, codePaths = null}) {
+  // 검사한 판 · 올릴 판이 이 폴더에 없으면 먼저 받음 — 새 예약 방은 main 만 받아 지난 회차의 시험 가지 커밋이 없음
+  //   → wait_preview 가 「올릴 판(HEAD)을 못 찾음」(쓰임 오류)으로 끝나 07:30 회차가 미리 검사를 지난 대안 3 을 「실패」로 내림(주문 0556 · 틀림 장부 177)
+  //   받지 못하면 실패가 아니라 「아직」(다음 회차가 다시 봄) — 모르는 것을 실패로 셈해 대안을 버리지 않음
+  const want = [...new Set([sha, head ?? sha])];
+  if (want.every(c => /^[0-9a-f]{40}$/.test(String(c ?? '')))) {
+    // 얕은 사본일 때만 깊이를 줌 — 온전한 사본(예약 방 · 이 방)에 --depth 로 받으면 사본이 얕아져 밀어 넣기 문(커밋 번호 문)이 main 의 옛 커밋을 못 찾음(주문 0556 이 방에서 겪음)
+    const shallow = git(cwd, ['rev-parse', '--is-shallow-repository']).out.trim() === 'true';
+    for (const c of want) if (!hasCommit(cwd, c)) git(cwd, ['fetch', '-q', '--no-tags', '--no-write-fetch-head', ...(shallow ? ['--depth=50'] : []), 'origin', c], {timeout: 180e3});
+    const missing = want.filter(c => !hasCommit(cwd, c));
+    if (missing.length) return {state: 'running', why: `검사한 판 ${missing.map(c => c.slice(0, 7)).join(' · ')} 을 이 폴더에 못 받음 — 다음 회차가 다시 봄`};
+  }
   let W;
   try { W = await import(pathToFileURL(path.join(cwd, 'scripts/atlas11/next/wait_preview.mjs')).href); } catch (e) { return {state: 'fail', why: '기다리기 도구를 못 읽음 ' + short(e?.message ?? e)}; }
   const paths = [...(codePaths ?? W.CODE_PATHS), ...DATA_EXCLUDES];

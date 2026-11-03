@@ -398,6 +398,27 @@ test('㉔ 얹기 — 끝 줄이 빈 맥락 줄인 조각도 지금 main 위에 �
   } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
 });
 
+test('㉖ 미리 검사 결과 읽기 — 지난 회차의 시험 가지 커밋이 이 폴더에 없으면 받아 옴 · 원격에도 없으면 「실패」가 아니라 「아직」(07:30 회차 · 주문 0556)', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'jh-pv-'));
+  try {
+    const origin = path.join(tmp, 'o.git'), a = path.join(tmp, 'a'), b = path.join(tmp, 'b');
+    sh(tmp, 'git', ['init', '-q', '--bare', origin]);
+    sh(tmp, 'git', ['init', '-q', '-b', 'main', a]); sh(a, 'git', ['remote', 'add', 'origin', origin]);
+    fs.writeFileSync(path.join(a, 'x.txt'), '1\n'); sh(a, 'git', ['add', '-A']); sh(a, 'git', ['commit', '-qm', 'main']); sh(a, 'git', ['push', '-q', 'origin', 'main']);
+    sh(tmp, 'git', ['clone', '-q', '--single-branch', '--branch', 'main', origin, b]); // 새 예약 방 = main 만 받은 폴더
+    sh(a, 'git', ['checkout', '-qb', 'jinhwa-try/x']); fs.writeFileSync(path.join(a, 'x.txt'), '2\n'); sh(a, 'git', ['commit', '-qam', '다시 시험']); sh(a, 'git', ['push', '-q', 'origin', 'jinhwa-try/x']);
+    const c = sh(a, 'git', ['rev-parse', 'HEAD']);
+    ok(!G.hasCommit(b, c), '처음에는 이 폴더에 없음');
+    const r = await G.previewResult(b, {sha: c, head: c, maxMin: 0});
+    ok(G.hasCommit(b, c), '원격 시험 가지 커밋을 받아 옴 ' + JSON.stringify(r));
+    eq(sh(b, 'git', ['rev-parse', '--is-shallow-repository']), 'false', '온전한 사본은 받은 뒤에도 얕아지지 않음(밀어 넣기 문이 옛 커밋을 찾게)');
+    ok(!/못 찾음/.test(r.why ?? ''), '「올릴 판을 못 찾음」으로 끝나지 않음 ' + JSON.stringify(r));
+    const ghost = 'f'.repeat(40);
+    const r2 = await G.previewResult(b, {sha: ghost, head: ghost, maxMin: 0});
+    eq(r2.state, 'running', '원격에도 없으면 실패가 아니라 아직 ' + JSON.stringify(r2));
+  } finally { fs.rmSync(tmp, {recursive: true, force: true}); }
+});
+
 test('㉕ 되살림 — 앞 회차가 내린 대안도 뒤 회차 다시 시험이 지나가면 「내려감」을 거둠 · 그 뒤 사장님 확인은 받음 · 지나가지 못하면 그대로 내려감(주문 0556)', () => {
   const X = ID(1), made = madeRec([X]);
   const drop = rec('20261019-1100', {dropped: [{id: X, why: '지금 main 위에 얹으면 부딪힘 error: corrupt patch at line 55'}]});
