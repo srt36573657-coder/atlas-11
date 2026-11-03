@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-03T21:07:25.570Z",
+ "at": "2026-11-03T21:55:47.865Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,28 +14,28 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
-  "past": true,
   "rivals": true,
   "grow": true,
-  "surge": true,
   "range": true,
+  "surge": true,
+  "past": true,
   "cal": true,
+  "cond": true,
   "talk": true,
   "up": true,
   "time": true,
   "info": true,
-  "x": true,
   "co": true,
+  "x": true,
   "chx": true,
-  "today": true,
   "why": true,
+  "today": true,
   "gdr": true,
   "share": true,
   "hold": true,
   "theme": true,
-  "sage": true,
-  "roman": true
+  "roman": true,
+  "sage": true
  },
  "edge": true,
  "only": null,
@@ -50,8 +50,8 @@
    "@newwin": 15
   }
  },
- "seconds": 511,
- "secondsSum": 2425,
+ "seconds": 543,
+ "secondsSum": 2453,
  "shards": [
   {
    "shard": "1/5",
@@ -60,10 +60,10 @@
    "routes": 2736,
    "screens": 2736,
    "mine": 2736,
-   "seconds": 487,
+   "seconds": 486,
    "secs": {
-    "open": 0.4,
-    "routes": 485.6
+    "open": 0.3,
+    "routes": 483.8
    }
   },
   {
@@ -73,10 +73,10 @@
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 511,
+   "seconds": 488,
    "secs": {
     "open": 0.4,
-    "routes": 510
+    "routes": 486.6
    }
   },
   {
@@ -86,10 +86,10 @@
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 467,
+   "seconds": 543,
    "secs": {
-    "open": 0.3,
-    "routes": 465.8
+    "open": 0.5,
+    "routes": 542.1
    }
   },
   {
@@ -99,11 +99,11 @@
    "routes": 2727,
    "screens": 2749,
    "mine": 2722,
-   "seconds": 481,
+   "seconds": 475,
    "secs": {
     "open": 0.3,
-    "routes": 477.5,
-    "newwin": 2.6
+    "routes": 470.4,
+    "newwin": 2.8
    }
   },
   {
@@ -113,12 +113,12 @@
    "routes": 2656,
    "screens": 2777,
    "mine": 2657,
-   "seconds": 479,
+   "seconds": 461,
    "secs": {
-    "open": 0.3,
-    "routes": 463.7,
-    "act": 6.1,
-    "edge": 6.6,
+    "open": 0.2,
+    "routes": 446.4,
+    "act": 5.8,
+    "edge": 5.9,
     "grammar": 0
    }
   }
