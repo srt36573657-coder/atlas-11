@@ -5,6 +5,7 @@
 //   --live <폴더> = 지금 사이트 자료(그 폴더의 atlas/data/* — gh.mjs liveData 가 받음)를 두 쪽 모두 /atlas/data/ 로 덮어 보임(저장소 자료는 며칠 묵음 · 일 폴더는 안 고침)
 //   쓰는 법: node scripts/atlas11/jinhwa/shots.mjs --id 20261019-0930-1 --route '#/why' --before <폴더> --after <폴더> [--out site/next/data/jinhwa]
 //            새 첫 화면(수르 두 길 · site/su/)은 --route '/su/#/' · '/su/#/c/<번호>' · '/su/#/i/<업종>'(주문 0047 · 사장님 2026-11-03 19:47(+04) 「응」)
+//   지금 화면 사진(배우는 일꾼 열하나 · 주문 0218): node scripts/atlas11/jinhwa/shots.mjs --look --dir <폴더> [--routes auto] --out <폴더>
 //            [--w 360] [--h 640] [--seed key=json …] [--steps '<JSON 누르기 차례>'|@파일] [--live <폴더>] [--motion] [--base-before http://… --base-after http://…]
 //   끝 코드: 0 = 두 장 다 찍음(360 × 640 PNG · 바뀐 곳 네모 box · 새로 생긴 글 text) · 1 = 못 찍음(두 그림이 같아도) · 2 = 잘못 넣음
 //   브라우저: createRequire('/opt/node-tools/')('playwright') · executablePath /opt/pw-browsers/chromium (한 번에 하나 · 다 쓰면 닫음)
@@ -212,6 +213,51 @@ export async function shoot(o) {
   }
 }
 
+/** 지금 화면 사진 — 배우는 일꾼 열하나가 볼 것(사장님 2026-11-03 21:18(+04) 「가장 이상적인 흐름의 구조를 학습한 이후 진화」 · 주문 0218)
+ *  o = {dir(그 안의 site/ 를 띄움), routes: 'auto' | ['/su/#/', '#/why', …], out, w, h, live}
+ *  auto = 새 첫 화면 처음 쪽 + 그 쪽의 첫 회사(#/c/…) + 첫 업종(#/i/…) · 360 너비 전체 사진 → {ok, files: [{route, file, h, screens, errors}]} */
+export async function look(o = {}) {
+  const w = Number(o.w || 360), h = Number(o.h || 640), out = o.out || 'look';
+  const site = path.join(o.dir || '', 'site');
+  if (!o.dir || !fs.existsSync(path.join(site, 'next'))) return {ok: false, why: '폴더(--dir)에 site/next 가 없음'};
+  let routes = null;
+  if (o.routes && o.routes !== 'auto') {
+    routes = (Array.isArray(o.routes) ? o.routes : String(o.routes).split(',')).map(x => String(x).trim()).filter(Boolean);
+    const bad = routes.find(r => !ROUTE.test(r));
+    if (bad || !routes.length || routes.length > 8) return {ok: false, why: bad ? `길이 이상함 「${bad}」 — #/… 또는 /su/#/… 꼴` : '길은 하나에서 여덟까지'};
+  }
+  const req = createRequire('/opt/node-tools/');
+  let chromium; try { ({chromium} = req('playwright')); } catch { return {ok: false, why: 'playwright 를 못 찾음(/opt/node-tools)'}; }
+  const srv = await serve(site, {live: o.live || null});
+  let browser;
+  try {
+    browser = await chromium.launch({executablePath: o.executablePath || '/opt/pw-browsers/chromium', args: ['--disable-dev-shm-usage']});
+    const ctx = await browser.newContext({viewport: {width: w, height: h}, deviceScaleFactor: 1, locale: 'ko-KR', timezoneId: 'Asia/Seoul', reducedMotion: 'reduce'});
+    if (!routes) { // 처음 쪽에서 첫 회사 고리 → 그 회사 쪽에서 업종 고리(업종 고리는 회사 쪽에 있음)
+      const hrefOn = async (route, sel) => { const {page} = await openSide(ctx, pageUrl(srv.base, route), []); const v = await page.evaluate(q => document.querySelector(q)?.getAttribute('href') ?? null, sel); await page.close(); return v; };
+      const c = await hrefOn('/su/#/', '#su a[href^="#/c/"]');
+      const i = c && ROUTE.test('/su/' + c) ? await hrefOn('/su/' + c, '#su a[href^="#/i/"]') : await hrefOn('/su/#/', '#su a[href^="#/i/"]');
+      routes = ['/su/#/', ...[c, i].filter(x => x && ROUTE.test('/su/' + x)).map(x => '/su/' + x)];
+    }
+    fs.mkdirSync(out, {recursive: true});
+    const files = [];
+    for (const [k, r] of routes.entries()) {
+      const {page, errors} = await openSide(ctx, pageUrl(srv.base, r, o.dev !== false), []);
+      const file = path.join(out, `look-${k + 1}.png`);
+      await page.screenshot({path: file, type: 'png', fullPage: true});
+      const ph = await page.evaluate(() => document.documentElement.scrollHeight);
+      files.push({route: r, file, h: ph, screens: Math.round(ph / h * 10) / 10, errors});
+      await page.close();
+    }
+    return {ok: true, files};
+  } catch (e) {
+    return {ok: false, why: '찍기 실패 ' + String(e?.message ?? e).split('\n')[0].slice(0, 160)};
+  } finally {
+    if (browser) await browser.close().catch(() => {});
+    await srv.close();
+  }
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 && i + 1 < a.length ? a[i + 1] : d; };
   const seed = {};
@@ -220,6 +266,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (sa) { try { steps = JSON.parse(sa.startsWith('@') ? fs.readFileSync(sa.slice(1), 'utf8') : sa); } catch { console.error('--steps 는 JSON'); process.exit(2); } }
   const o = {steps, id: arg('--id'), route: arg('--route', '#/'), before: arg('--before'), after: arg('--after'), baseBefore: arg('--base-before'), baseAfter: arg('--base-after'),
     out: arg('--out', 'site/next/data/jinhwa'), w: arg('--w', '360'), h: arg('--h', '640'), seed, live: arg('--live'), motion: a.includes('--motion'), dev: !a.includes('--no-dev')};
+  if (a.includes('--look')) { // 지금 화면 사진(배우는 일꾼 열하나 · 주문 0218) — node scripts/atlas11/jinhwa/shots.mjs --look --dir <폴더> [--routes auto | '/su/#/,#/why'] --out <폴더>
+    const r = await look({dir: arg('--dir', '.'), routes: arg('--routes', 'auto'), out: arg('--out', 'look'), w: arg('--w', '360'), h: arg('--h', '640'), live: arg('--live')});
+    console.log(JSON.stringify(r)); process.exit(r.ok ? 0 : 1);
+  }
   if (!o.id) { console.error('쓰는 법: shots.mjs --id <번호> --route "#/…" --before <폴더> --after <폴더> [--out 폴더]'); process.exit(2); }
   const r = await shoot(o);
   console.log(JSON.stringify(r));
