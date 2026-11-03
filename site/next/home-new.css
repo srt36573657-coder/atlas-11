@@ -486,7 +486,7 @@ html.home #view .nh-tpl li { display: flex; flex-wrap: wrap; align-items: baseli
 /* 빈 날 가장 가까운 회사 셋(주문 1512) — 고른 회사와 섞이지 않게 이름 줄을 옅게 · 아래 한 줄 「조건에 다 맞지는 않아요」 */
 html.home #view .nh-twn.nh-twnr { color: #6E5462; }
 html.home #view .nh-tpnr .nh-tp0 { margin: 0; font-size: 18px; font-weight: 800; color: #2A1420; }
-html.home #view .nh-tpnote { margin: 0; font-size: 15px; font-weight: 700; color: #6E5462; }
+html.home #view .nh-tpnote { margin: 0; font-size: 17px; font-weight: 700; color: #6E5462; } /* 첫 화면 글씨 17px 아래 0(check_white ② · check_theme) */
 html.home #view .nh-tpl b { font-size: 20px; font-weight: 900; color: #2A1420; }
 html.home #view .nh-tpl small { font-size: 17px; color: #5E3446; }
 html.home #view .nh-say { margin: 0; font-size: 19px; line-height: 1.5; font-weight: 800; color: #2A1420; }
