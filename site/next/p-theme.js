@@ -111,6 +111,7 @@ async function pHow() {
     h('p', {class: 'th-sub th-key', text: recKey}),
     h('p', {class: 'th-sub', text: `지난 ${y ?? '?'}년 기록이에요. 싹 자리였던 날, 100번 가운데 몇 번이 한 달 뒤 꽃 선을 넘었을까?`}),
     h('div', {class: 'th-rbs'}, byDots, h('div', {class: 'th-rb all'}, h('span', {class: 'th-rbk', text: '아무 업종'}), h('span', {class: 'th-rbb'}, rb(R?.all?.p)), h('b', {text: R?.all?.p == null ? '?' : Math.round(R.all.p) + '번'}))),
+    h('a', {class: 'th-hi', href: '#/t/picks'}, h('span', {text: '꽃 될 회사'}), h('i', {'aria-hidden': 'true', text: ' ›'})),
     h('details', {class: 'th-fold'}, h('summary', {text: '수르는 이렇게 셉니다'}),
       h('p', {text: `${ymd(TH.recFrom)}부터 ${ymd(TH.recTo)}까지, 업종마다 날마다 셌어요. 같은 업종의 이어진 날도 하루씩 셌어요.`}),
       h('p', {text: '지금 상장된 회사로만 셌어요. 큰 회사 셋은 오늘 몸값 차례로 지난날도 셌어요.'}),
