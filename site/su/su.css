@@ -120,3 +120,125 @@ h1:focus { outline: none; }
 .su-ess { display: grid; gap: 6px; padding: 14px 16px; border-radius: 16px; background: var(--card); border: 1px dashed var(--line); }
 .su-ess p { margin: 0; font-size: var(--f5); line-height: 1.5; color: var(--sub); }
 .su-ess p[data-ess="1"] { color: var(--fg); font-weight: 700; }
+
+/* ── 신문 차례(주문 0508 · 사장님 2026-11-04 00:08(+04) 「지면 신문처럼 큰값 → 중간값 → 자세히 → 출처 · 움직이는 도식화」) — 샘플 열하나의 장점을 한 판에 ── */
+:root { --track: #EFE6EC; }
+@media (prefers-color-scheme: dark) { :root { --track: #2C2438; } }
+.su-safe { color: var(--fg); font-weight: 600; border-left: 4px solid var(--fg); padding-left: 12px; }
+.su-kick { margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: var(--f5); }
+.su-kick b { background: var(--fg); color: var(--bg); padding: 1px 10px; border-radius: 6px; font-weight: 800; }
+.su-kick span { color: var(--sub); font-weight: 700; }
+/* ① 큰 값 */
+.su-big { margin: 0; display: grid; gap: 4px; }
+.su-big-l { font-size: var(--f3); font-weight: 800; line-height: 1.35; color: var(--fg); }
+.su-big-n { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.su-big-n b { font-size: clamp(64px, 20vw, 96px); line-height: 0.95; font-weight: 900; letter-spacing: -0.03em; color: var(--bl); }
+.su-big-n span { font-size: var(--f2); font-weight: 800; color: var(--fg); }
+.su-big-s { font-size: var(--f4); line-height: 1.5; color: var(--sub); font-weight: 600; }
+.su-big-mo .su-big-n b { color: var(--mo); font-size: clamp(52px, 16vw, 80px); }
+.su-big-ind .su-big-n b { color: var(--co); font-size: clamp(52px, 16vw, 80px); }
+.su-big-none .su-big-n b { font-size: 44px; color: var(--sub); }
+.su-bigw { display: grid; gap: 10px; }
+/* ② 중간 값 — 누르지 않는 납작한 칸 */
+.su-mid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.su-mid li { display: grid; gap: 0; align-content: start; padding: 10px 12px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); min-width: 0; }
+.su-mid-l { font-size: var(--f5); font-weight: 700; color: var(--sub); }
+.su-mid-n { font-size: 28px; line-height: 1.15; font-weight: 900; }
+.su-mid-s { font-size: var(--f5); color: var(--sub); }
+.su-mid-wide { grid-column: 1 / -1; }
+.su-mid-bl .su-mid-n { color: var(--bl); }
+.su-mid-mo .su-mid-n { color: var(--mo); }
+.su-mid-seen .su-mid-n { font-size: var(--f2); }
+/* 조건 칸 — 맞음 ✓ 동그라미 · 안 맞음 ✗ 점선 네모(색을 지워도 모양으로) */
+.su-cm { display: inline-flex; gap: 6px; align-items: center; }
+.su-cm i { width: 30px; height: 30px; display: grid; place-items: center; font-style: normal; font-size: var(--f5); font-weight: 900; line-height: 1; }
+.su-cm-ok { border-radius: 50%; background: var(--ok); color: var(--card); }
+.su-cm-no { border-radius: 6px; border: 2px dashed var(--no); color: var(--no); }
+.su-cm-big i { width: 44px; height: 44px; font-size: var(--f3); }
+/* 막대 · 점 100개 · 0 선 막대 */
+.su-barf { width: 100%; height: auto; display: block; }
+.su-bt { fill: var(--track); stroke: none; }
+.su-bf { fill: var(--bl); stroke: none; }
+.su-barf-mo .su-bf { fill: var(--mo); }
+.su-barf-big .su-bf { fill: var(--co); }
+.su-bline { stroke: var(--no); stroke-width: 3; stroke-dasharray: 4 3; }
+.su-bz { stroke: var(--sub); stroke-width: 1.5; }
+.su-divf .su-up { fill: var(--bl); }
+.su-divf .su-dn { fill: transparent; stroke: var(--sub); stroke-width: 2; }
+.su-dots { width: 100%; height: auto; display: block; }
+.su-d0, .su-d1 { stroke: none; }
+.su-d0 { fill: var(--track); }
+.su-d1 { fill: var(--bl); }
+.su-dots-any .su-d1 { fill: var(--idx); }
+.su-rec { display: grid; gap: 8px; padding: 14px 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
+.su-card .su-rec { padding: 12px 0 0; border: 0; border-top: 1px dashed var(--line); border-radius: 0; background: none; }
+.su-rec-h { margin: 0; font-size: var(--f3); font-weight: 800; }
+.su-rec-f { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.su-rec-f figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.su-rec-f figcaption span { font-size: var(--f5); color: var(--sub); line-height: 1.4; }
+.su-rec-f figcaption b { font-size: var(--f3); font-weight: 900; }
+.su-rec-me figcaption b { color: var(--bl); }
+/* 줄 — 회사 한 줄 · 그 아래 업종 띠(따로 누름) */
+.su-row > .su-cm, .su-row > .su-barf { grid-column: 1; }
+.su-ib { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; column-gap: 8px; row-gap: 6px; align-items: center; min-height: 52px; margin: 0 0 12px; padding: 8px 12px; border-radius: 12px; background: var(--cobg); color: var(--co); }
+.su-ib-n { grid-column: 1; font-size: var(--f5); font-weight: 800; line-height: 1.35; }
+.su-ib-f { grid-column: 2; font-size: var(--f5); font-weight: 800; color: var(--fg); white-space: nowrap; }
+.su-ib > .su-barf { grid-column: 1 / span 2; }
+.su-ib i { grid-column: 3; grid-row: 1 / span 2; font-style: normal; font-size: var(--f2); }
+.su-seen { background: var(--blbg); border-radius: 12px; }
+.su-seen-t { font-size: var(--f5); font-weight: 800; border: 2px solid var(--fg); border-radius: 999px; padding: 0 10px; }
+.su-cond li { grid-template-columns: 28px minmax(0, 1fr) auto; column-gap: 6px; }
+.su-cond em { font-style: normal; font-size: var(--f5); font-weight: 800; padding: 0 8px; border-radius: 999px; align-self: start; }
+.su-ok em { color: var(--ok); border: 1.5px solid var(--ok); }
+.su-no em { color: var(--no); border: 1.5px dashed var(--no); }
+.su-li { stroke-dasharray: 7 5; }
+.su-dotsq { fill: var(--idx); }
+.su-lg-i i { background: repeating-linear-gradient(90deg, var(--idx) 0 7px, transparent 7px 12px); }
+.su-more-co { width: 100%; border: 0; font: inherit; cursor: pointer; background: var(--cobg); color: var(--co); text-align: left; }
+.su-back-co { background: var(--blbg); color: var(--bl); }
+.su-back-end { justify-self: start; }
+/* ④ 출처 — 맨 끝 · 가장 작은 글씨 */
+.su-src { display: grid; gap: 6px; padding-top: 10px; border-top: 2px solid var(--fg); }
+.su-src-h { margin: 0; font-size: var(--f5); font-weight: 800; }
+.su-src ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.su-src li { display: flex; justify-content: space-between; gap: 12px; font-size: var(--f5); color: var(--sub); }
+.su-src li b { font-weight: 700; color: var(--fg); text-align: right; }
+/* 움직이는 도식 — 들어올 때 한 번(0.4 ~ 1.2초) · 되풀이 · 깜빡임 없음 · 숫자 글은 처음부터 끝 값 · 움직임 줄이기면 끝 모습 */
+@keyframes su-grow { from { transform: scaleX(0); } }
+@keyframes su-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes su-pop { from { transform: scale(0.3); opacity: 0; } }
+@keyframes su-fill { from { opacity: 0.12; } }
+.su-lc { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.su-anim .su-bf { transform-box: fill-box; transform-origin: left center; animation: su-grow 0.9s cubic-bezier(0.22, 0.8, 0.3, 1) 0.15s both; }
+.su-anim .su-divf .su-dn { transform-origin: right center; }
+.su-anim .su-lc { animation: su-draw 1.1s ease-out 0.1s both; }
+.su-anim .su-dotc { transform-box: fill-box; transform-origin: center; animation: su-pop 0.35s ease-out 1s both; }
+.su-anim .su-cm i { animation: su-pop 0.35s ease-out both; }
+.su-anim .su-cm i:nth-child(2) { animation-delay: 0.12s; }
+.su-anim .su-cm i:nth-child(3) { animation-delay: 0.24s; }
+.su-anim .su-cm i:nth-child(4) { animation-delay: 0.36s; }
+.su-anim .su-d1 { animation: su-fill 0.35s ease-out both; }
+.su-anim .c2 .su-d1 { animation-delay: 0.03s; } .su-anim .c3 .su-d1 { animation-delay: 0.06s; } .su-anim .c4 .su-d1 { animation-delay: 0.09s; } .su-anim .c5 .su-d1 { animation-delay: 0.12s; } .su-anim .c6 .su-d1 { animation-delay: 0.15s; }
+.su-anim .c7 .su-d1 { animation-delay: 0.18s; } .su-anim .c8 .su-d1 { animation-delay: 0.21s; } .su-anim .c9 .su-d1 { animation-delay: 0.24s; } .su-anim .c10 .su-d1 { animation-delay: 0.27s; } .su-anim .c11 .su-d1 { animation-delay: 0.30s; }
+.su-anim .c12 .su-d1 { animation-delay: 0.33s; } .su-anim .c13 .su-d1 { animation-delay: 0.36s; } .su-anim .c14 .su-d1 { animation-delay: 0.39s; } .su-anim .c15 .su-d1 { animation-delay: 0.42s; } .su-anim .c16 .su-d1 { animation-delay: 0.45s; }
+.su-anim .c17 .su-d1 { animation-delay: 0.48s; } .su-anim .c18 .su-d1 { animation-delay: 0.51s; } .su-anim .c19 .su-d1 { animation-delay: 0.54s; } .su-anim .c20 .su-d1 { animation-delay: 0.57s; } .su-anim .c21 .su-d1 { animation-delay: 0.60s; }
+.su-anim .c22 .su-d1 { animation-delay: 0.63s; } .su-anim .c23 .su-d1 { animation-delay: 0.66s; } .su-anim .c24 .su-d1 { animation-delay: 0.69s; } .su-anim .c25 .su-d1 { animation-delay: 0.72s; }
+@media (prefers-reduced-motion: reduce) { .su-anim *, .su-anim *::before, .su-anim *::after { animation: none !important; } }
+
+.su-rn .su-cm i { width: 26px; height: 26px; }
+.su-legend-n { margin-top: -4px; }
+.su-card { padding: 16px 14px; gap: 10px; }
+.su-main { gap: 14px; }
+
+.su-row { min-height: 56px; padding: 8px 4px; }
+.su-ib { margin-bottom: 8px; }
+.su-main { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+.su-main { gap: 12px; }
+.su-card { padding: 14px 14px; }
+.su-rec { padding: 12px 14px; gap: 6px; }
+.su-ess { padding: 12px 14px; gap: 4px; }
+.su-mid li { padding: 8px 12px; }
+.su-src-brief p { margin: 0; font-size: var(--f5); color: var(--sub); line-height: 1.5; }
+.su-src-brief b { color: var(--fg); font-weight: 800; }
+/* 멈춤 칸 — 사고파는 단추처럼 보이지 않게 조용한 같은 모양(샘플 10 · 세 쪽 출처 바로 위) */
+.su-ask { background: var(--card); color: var(--fg); border: 2px solid var(--fg); border-left-width: 8px; }
