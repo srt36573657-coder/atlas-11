@@ -1,5 +1,5 @@
 {
- "made": "2026-11-03T14:10:49.693Z",
+ "made": "2026-11-03T15:12:45.753Z",
  "base": "https://aaa7377.com",
  "size": [
   390,
@@ -7,15 +7,15 @@
  ],
  "shots": [
   {
-   "name": "suhome",
-   "hash": "/su/#/",
+   "name": "root",
+   "hash": "#/",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/suhome-390.png",
-    "reports/atlas11/probe/live-shot/suhome-390-long.png"
+    "reports/atlas11/probe/live-shot/root-390.png",
+    "reports/atlas11/probe/live-shot/root-390-long.png"
    ],
    "errs": [],
    "info": {
@@ -29,7 +29,7 @@
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1695,
+    "height": 1985,
     "fold": null,
     "hero": null
    },
@@ -37,15 +37,15 @@
    "parts": {}
   },
   {
-   "name": "suco",
-   "hash": "/su/#/c/127120",
+   "name": "rootco",
+   "hash": "#/c/127120",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/suco-390.png",
-    "reports/atlas11/probe/live-shot/suco-390-long.png"
+    "reports/atlas11/probe/live-shot/rootco-390.png",
+    "reports/atlas11/probe/live-shot/rootco-390-long.png"
    ],
    "errs": [],
    "info": {
@@ -67,29 +67,29 @@
    "parts": {}
   },
   {
-   "name": "sumo",
-   "hash": "/su/#/c/180640",
+   "name": "oldw",
+   "hash": "#/w/005930",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/sumo-390.png",
-    "reports/atlas11/probe/live-shot/sumo-390-long.png"
+    "reports/atlas11/probe/live-shot/oldw-390.png",
+    "reports/atlas11/probe/live-shot/oldw-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/c/180640",
-    "title": "한진칼 · 수르",
-    "h1": "",
-    "kakaoText": 0,
-    "kakaoRow": 0,
-    "kakaoAll": 0,
+    "hash": "#/w/005930",
+    "title": "삼성전자 · 수르",
+    "h1": "삼성전자",
+    "kakaoText": 3,
+    "kakaoRow": 6,
+    "kakaoAll": 10,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1602,
+    "height": 3363,
     "fold": null,
     "hero": null
    },
@@ -97,29 +97,29 @@
    "parts": {}
   },
   {
-   "name": "suind",
-   "hash": "/su/#/i/%ED%95%AD%EA%B3%B5",
+   "name": "oldpicks",
+   "hash": "#/t/picks",
    "size": [
     390,
     844
    ],
    "files": [
-    "reports/atlas11/probe/live-shot/suind-390.png",
-    "reports/atlas11/probe/live-shot/suind-390-long.png"
+    "reports/atlas11/probe/live-shot/oldpicks-390.png",
+    "reports/atlas11/probe/live-shot/oldpicks-390-long.png"
    ],
    "errs": [],
    "info": {
-    "hash": "#/i/%ED%95%AD%EA%B3%B5",
-    "title": "항공 업종 · 수르",
-    "h1": "",
-    "kakaoText": 0,
+    "hash": "#/t/picks",
+    "title": "꽃이 될 듯한 회사 · 수르",
+    "h1": "꽃이 될 듯한 회사",
+    "kakaoText": 3,
     "kakaoRow": 0,
-    "kakaoAll": 0,
+    "kakaoAll": 3,
     "days": 0,
     "firstDay": null,
     "graphs": 0,
     "calgo": false,
-    "height": 1644,
+    "height": 2333,
     "fold": null,
     "hero": null
    },
