@@ -1190,6 +1190,16 @@
    "state": "미완성",
    "proof": "할 일 docs/design/jinhwa-paper-2026-11-04/order-0620.txt · 일꾼 글 docs/design/jinhwa-paper-2026-11-04/sample-brief.md · 도구 scripts/atlas11/jinhwa/sample.mjs · 지시문 jinhwa-round.md 「샘플 열하나를 한 판에」 · 시험 tests/atlas11/jinhwa.test.mjs · main 718195eb7 · 전체 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/41722808114 · 기록 reports/atlas11/changelog/updates/u-20261104T070500-jinhwa-sample11.json · 진화 기록 reports/atlas11/jinhwa/20261104-0632-did.md · 사이트 올리기 https://github.com/srt36573657-coder/atlas-11/actions/runs/41727487756 · 올리기 기록 reports/atlas11/operations/deploy-latest.json(2026-11-03T22:12:42Z ready)",
    "short": "앞으로 진화는 매번 샘플 열하나를 만들고 한 판으로 모아요."
+  },
+  {
+   "id": "1223",
+   "at": "2026-11-04T12:23+09:00",
+   "words": "미국장은 히지 않는다(12:19 · 물음 「미국 방 올리기가 막힌 까닭도 찾아볼까요?」에 대한 말씀) · 어(12:23 · 물음 「미국 종가를 받는 방도 꺼 둘까요?」의 답)",
+   "then": "12:2x(서울) 이해 보고 두 번 · 미국 종가를 받는 방 둘을 찾음(미국 종가 올리기 trig_01XKaeASdJtTiXwANVg2Y7Xo · 2시간마다 방의 미국 일 trig_015Zv8ZSDiPYjaooXZBpPbjy — 서울 07:00 미국 받기와 07:04 사이트 올리기를 누른 방) · atlas11-us.yml 에는 깃허브 예약 없음 · 첫 방 끄기(예약 작업 고치기)를 안전 검사가 막음(까닭 없음 · 다른 길로 돌아가지 않음) · 둘째 방은 손대지 않음 · 미국 값이 멈추면 지금 수르 9번 불빛은 5일 뒤 저절로 「?」 · 새 첫 화면은 미국 값을 쓰지 않음",
+   "did": "수르는 미국 장을 하지 않음을 받아 적고 미국 종가를 받는 방 둘을 찾았으나, 끄기는 안전 검사가 막아 못 함 — 사장님 말씀을 기다림",
+   "state": "미완성",
+   "proof": "할 일 docs/design/us-off-2026-11-04/order-1223.txt · 9번 불빛 셈 scripts/atlas11/next/build/flow_why.mjs(US_STALE 5) · 미국 받기 실행 https://github.com/srt36573657-coder/atlas-11/actions/workflows/atlas11-us.yml",
+   "short": "미국 종가를 받는 방을 끄려 했는데 안전 검사가 막았어요."
   }
  ],
  "open": [
@@ -1243,10 +1253,10 @@
   "10월까지 점수는 지난 기록으로 돌려 본 거예요. 스스로 고른 첫 달은 11월이에요",
   "몸값이 똑같은 회사가 경계에 걸리면 셈 셋이 다를 수 있어요. 그때는 조건을 바꾸지 않아요",
   "셈 셋이 달라도 아직 카톡으로는 안 알려요. 감시 방을 고치려면 허락이 필요해요",
-  "미국 종가 방도 사이트 올리기 단추를 안 눌러요. 매시 업데이트와 함께 고쳐야 해요",
   "진짜 사이트 큰 검사가 네 번 모두 다른 쪽 하나씩 막혔어요. 바꾼 첫 화면은 네 번 다 통과했어요",
   "글씨 크게 단추와 어둡게 단추, 처음 쪽 미리 그리기는 다음 진화 거리예요",
-  "앞으로 진화는 샘플 열하나를 한 판에 모아요. 첫 판은 기다리는 새 판이 정해진 뒤 만들어요"
+  "앞으로 진화는 샘플 열하나를 한 판에 모아요. 첫 판은 기다리는 새 판이 정해진 뒤 만들어요",
+  "미국 종가를 받는 방 둘을 끄려 했는데 안전 검사가 막았어요. 사장님 말씀을 기다려요"
  ],
  "sent": [
   {
