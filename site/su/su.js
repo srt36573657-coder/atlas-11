@@ -100,7 +100,8 @@ export function page(m) {
   if (m.proper) h1.setAttribute('data-proper', '');
   const main = h('main', {class: 'su-page'},
     h('p', {class: 'su-safe', text: SAFE}),
-    h('section', {class: 'su-head', 'aria-label': '큰 값'}, m.kick ? h('p', {class: 'su-kick', text: m.kick}) : null, h1, m.big ? bigVal(m.big) : null),
+    h('section', {class: 'su-head', 'aria-label': '큰 값'}, m.kick ? h('p', {class: 'su-kick', text: m.kick}) : null, h1, m.big ? bigVal(m.big) : null,
+      m.big && ymd(m.asOf) ? h('p', {class: 'su-got', text: '네이버 증권에서 받은 지난 기록이에요 · 자료 ' + ymd(m.asOf)}) : null),
     m.hero ?? null,
     m.mids?.length ? h('section', {class: 'su-mids n' + m.mids.length, 'aria-label': '중간 값'}, m.mids.map(midCard)) : null,
     m.big ? sixTiles(m.big.six, {label: '큰 값의 여섯 칸'}) : null,
@@ -185,8 +186,8 @@ async function vCo(code) {
     hero, mids: e.mids, honest: honestOf(B),
     figs: [(r0?.kind === 'pick' || r0?.kind === 'near') ? matrix([{name: c.name, ok: bl.say.map(t => (r0.kind === 'pick' ? true : !r0.no.includes(t)))}], condsOf(bl), {label: c.name + '와 꽃 조건', title: '꽃 조건 셋과 이 회사'}) : null,
       inds.length && ind ? bars(inds.map(x => ({name: x.n, v: x.x, key: x.n})), {label: '업종 · 한 달 동안 시장보다', title: '업종이 시장보다 더 오른 만큼' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: ind}) : null].filter(Boolean),
-    body: [...rs.map(reasonCard), ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
-      h('a', {class: 'su-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'}))],
+    body: [h('a', {class: 'su-ask su-ask-up', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요. 천천히 해도 돼요.'})),
+      ...rs.map(reasonCard), ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null],
     rows: ec.rows, rowsTitle: '이달 꽃 조건 하나씩',
     next: ind ? {href: indHref(ind), label: '업종은 얼마나 올랐나?', step: 3} : {href: '#/r', label: '지난날 몇 번 꽃이 됐나?', step: 4}, asOf: H?.asOf ?? asOf, S,
     note: rs.length ? null : '이 회사는 오늘 두 목록에 없어요. 지난 한 달만 보여 드려요.'};
