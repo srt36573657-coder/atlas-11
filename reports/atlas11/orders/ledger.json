@@ -2041,6 +2041,14 @@
    "how": "node scripts/atlas11/orders/kakao_digest.mjs",
    "order": "2044",
    "note": "주문 2044 올린 뒤 끝 보고 — 장부 128건(성공 98 · 미완성 7) 요약 45통 · 실패 0"
+  },
+  {
+   "at": "2026-11-05T05:5x+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 46,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs",
+   "order": "0054",
+   "note": "주문 0054 진짜 사이트 확인 뒤 끝 보고 — 장부 129건(성공 99 · 미완성 7) 요약 46통 · 실패 0"
   }
  ]
 }
