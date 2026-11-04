@@ -141,12 +141,12 @@ export function say5(w) {
 }
 
 /** 첫 화면이 된 뒤(사장님 2026-11-03 18:33(+04) 「응」 — 물음 「이 새 수르를 첫 화면으로 바꿀까요?」) — 지금 수르(/next/) 고리로 온 사람은 그쪽으로 그대로 이어 줌
-    수르 두 길 = '' · '#' · '#/' · '#/c/…' · '#/i/…' · '#/b' · '#/k' · '#/r' · '#/p'(+ '/<번호>' · 주문 1238 새 판 길) · 그 밖의 #/…(#/w/ · #/t/ · #/s/ 보낸 것 · #/why …)는 지금 수르 쪽
+    수르 두 길 = '' · '#' · '#/' · '#/c/…' · '#/i/…' · '#/b' · '#/k' · '#/r' · '#/p' · '#/q'(+ '/<번호>' · 주문 1238 · 1506 새 판 길) · 그 밖의 #/…(#/w/ · #/t/ · #/s/ 보낸 것 · #/why …)는 지금 수르 쪽
     물음표 표 중 lang(말) · sw(말 바꿈) · kakao(카톡 들어오기 결과) · dev 가 있으면 지금 수르 쪽 — 그 밖의 표(?v= · 광고 표 …)는 그대로 둠 · 이어 줄 곳 또는 null */
 export const KEEP_Q = Object.freeze(['lang', 'sw', 'kakao', 'dev']);
 export function forwardTo(search, hash) {
   const q = String(search ?? ''), hh = String(hash ?? '');
-  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || /^#\/[bkrp](\/[0-9A-Z]{6})?$/.test(hh); // 새 판 길 넷(주문 1238 — 꽃 #/b · 조건 #/k · 기록 #/r · 멈춤 #/p · 회사 번호를 붙여도 됨)
+  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || /^#\/[bkrpq](\/[0-9A-Z]{6})?$/.test(hh); // 새 판 길(주문 1238 — 꽃 #/b · 조건 #/k · 기록 #/r · 멈춤 #/p · 주문 1506 「왜 사?」 #/q · 회사 번호를 붙여도 됨)
   let keep = false;
   try { const sp = new URLSearchParams(q); keep = KEEP_Q.some(k => sp.has(k)); } catch { keep = false; }
   return su && !keep ? null : '/next/' + q + hh;

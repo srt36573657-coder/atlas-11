@@ -149,3 +149,28 @@ test('새 판 화면 — 일곱 걸음 · 탭 넷 기승전결 · 「왜 사?」
   const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
   assert.deepEqual(bad, [], '화면 글에 쓰지 않을 말 0');
 });
+
+test('새 판 「왜 사?」 답하기 — 답 셋 · 한마디 · 왜 묻나 · 판정 이름이 지금 수르와 글자 그대로 · 판정 셈이 같음 · 기록 열쇠가 같음(주문 1506)', async () => {
+  const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8'), look = fs.readFileSync(path.join(ROOT, 'site/next/why-look.js'), 'utf8');
+  const block = (src, head, end) => { const s = src.indexOf(head); assert.ok(s >= 0, head); const e = src.indexOf(end, s); return src.slice(s + head.length, e + end.length - 1); };
+  const QS = new Function('return ' + block(why, 'export const QS = ', '\n];'))();
+  const LOOK = new Function('return ' + block(look, 'export const LOOK = Object.freeze(', '\n])'))();
+  const TYPE = new Function('const Object = {freeze: x => x}; return ' + block(look, 'export const TYPE_OF = Object.freeze(', '\n})'))();
+  const A = new Function('return ' + block(su, 'export const WHY_A = Object.freeze(', '\n])'))();
+  const W = new Function('return ' + block(su, 'export const WHY_WHY = Object.freeze(', '\n])'))();
+  const T = new Function('return ' + block(su, 'export const WHY_TYPE = Object.freeze(', '});').slice(0, -1))();
+  assert.deepEqual(A, QS.map(q => q.a), '답 셋 · 한마디 = p-why.js QS 의 a 그대로(차례까지)');
+  assert.deepEqual(W, LOOK.map(l => l.why), '왜 묻나 = why-look.js LOOK 의 why 그대로');
+  for (const k of ['go', 'wait', 'rest']) { assert.equal(T[k][0], TYPE[k].name, k); assert.equal(T[k][1], TYPE[k].q, k); }
+  assert.equal(T.rest[2], TYPE.rest.stopQ);
+  // 판정 셈 = p-why.js judge(문턱 · 쉬어 가는 답 · 점수표가 글자 그대로)
+  for (const frag of ["stop || score >= 12 || reds >= 4 ? '오늘은 쉬어 가자' : score >= 6 ? '반만 준비됐어' : '좋아, 정해 둔 대로만'", "{g: 0, y: 1, r: 2}", "'거의 다·빌린 돈'", "a[1] === '곧'"]) {
+    assert.ok(why.includes(frag), 'p-why.js — ' + frag); assert.ok(su.includes(frag), 'su.js — ' + frag);
+  }
+  assert.ok(why.includes("const KEY = 'atlas:godori-why'") && su.includes("WHY_KEY = 'atlas:godori-why'"), '매매일지 열쇠가 같음');
+  assert.ok(why.includes("tally(V_CODE[J.verdict] === 'rest' ? 'stop_rest' : 'stop')") && su.includes("tally(v === 'rest' ? 'stop_rest' : 'stop')"), '합계 칸 신호가 같음');
+  const {screenHits, ruinHits} = await import('../../site/next/words.js');
+  const texts = [...A.flat(2), ...W, ...Object.values(T).flat()];
+  assert.deepEqual(texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)]), [], '답하기 글에 쓰지 않을 말 0');
+  assert.equal(forwardTo('', '#/q'), null); assert.equal(forwardTo('', '#/q/127120'), null);
+});

@@ -8,6 +8,7 @@
 //   ④ 왜 여기 있나 — 가까운 회사 쪽에 「맞은 조건」 · 「안 맞은 조건」 · 돈이 몰린 회사 쪽에 「돈이 몰린 회사예요」 · 그림 글(한 달 %)이 회사 자료와 같음
 //   ⑤ 세 폭(320 · 360 · 390): 가로 넘침 0 · 글 17px 넘게 · 누르는 것 48 × 48 넘게 · 화면 오류 0 · 모든 쪽 맨 위 안전 문장 · 쓰지 않을 말 · 망치는 길 0(이름 빼고)
 //   ⑥ 처음 쪽 길이 3 화면 안(390 × 844 — 두 칸만)
+//   ⑧ 「왜 사?」 답하기(주문 1506 · #/q/<번호>) — 열한 질문 끝까지 · 결과 판정 · 매매일지 기록 한 줄 · 쪽 규칙
 //   ⑦ 첫 화면이 된 뒤(사장님 2026-11-03 18:33(+04) 「응」): 처음 쪽 본질 세 줄(essence.js 그대로 · 회사 수 · 받은 때 = home-summary) · 지금 수르 고리(#/w/ · #/s/ · ?lang=)는 /next/ 로 이어짐 · ?v= · 다른 표는 그대로 · 느린 4G 가장 큰 그림 2.5초 안
 //   실패가 하나라도 있으면 끝 코드 1
 import fs from 'node:fs/promises';
@@ -23,7 +24,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrp]|#\/[ckrp]\/[0-9A-Z]{6}|#\/i\/[^/]+|\/next\/|\/next\/#\/why(\/[0-9A-Z]{6})?)$/; // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>)
+const LINK_OK = /^(#\/|#\/[bkrpq]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/i\/[^/]+|\/next\/|\/next\/#\/why(\/[0-9A-Z]{6})?)$/; // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>)
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -123,6 +124,24 @@ for (const width of [390, 360, 320]) {
       check(!!c1, W + '업종 쪽 회사 줄', '');
       if (c1) { await p.click(`#su a.su-row[href="${c1.href}"]`); await settle(p, c1.name); const m3 = await measure(p); check(m3.h1 === c1.name, W + '업종 → 그 회사 — ' + c1.name, m3.h1); }
     }
+  }
+  if (width === 390) { // 「왜 사?」 답하기(주문 1506) — 열한 질문을 하나씩 답하면 결과 판정 · 매매일지에 같은 열쇠 · 같은 꼴로 한 줄 · 질문 쪽과 결과 쪽도 쪽 규칙 그대로
+    const qc = (bl[0] ?? mo[0])?.href?.slice(4) ?? null;
+    await open(p, qc ? '#/q/' + qc : '#/q');
+    pageRules(await measure(p), W + '「왜 사?」 질문');
+    let flow = true;
+    for (let i = 0; i < 11 && flow; i++) {
+      const b = await p.$('#su .su-a'); if (!b) { flow = false; break; }
+      await b.click(); await p.waitForTimeout(120);
+      const nx = await p.$('#su .su-qnext'); if (!nx) { flow = false; break; }
+      await nx.click(); await p.waitForTimeout(150);
+    }
+    check(flow, W + '「왜 사?」 열한 질문을 끝까지 답함', '');
+    await p.waitForTimeout(400);
+    const res = await p.evaluate(() => ({h1: (document.querySelector('#su h1')?.innerText ?? '').trim(), rec: (() => { try { return JSON.parse(localStorage.getItem('atlas:godori-why') || '[]')[0] ?? null; } catch { return null; } })()}));
+    check(['좋아, 정해 둔 대로만', '반만 준비됐어', '오늘은 쉬어 가자'].includes(res.h1), W + '「왜 사?」 결과 판정', res.h1);
+    check(Array.isArray(res.rec?.answers) && res.rec.answers.length === 11 && res.rec.code === qc && typeof res.rec.verdict === 'string', W + '「왜 사?」 매매일지에 기록 한 줄(같은 열쇠 · 같은 꼴)', JSON.stringify(res.rec ?? null).slice(0, 160));
+    pageRules(await measure(p), W + '「왜 사?」 결과');
   }
   check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' | '));
   // 없는 회사 · 업종 — 「?」 한 줄과 처음으로(빈 화면 아님 · 없는 회사 자료 404 는 일부러 — 오류 셈 뒤)

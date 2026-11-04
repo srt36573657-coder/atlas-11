@@ -7,7 +7,7 @@
   color-scheme: light;
   --bg: #FBF8F4; --card: #FFFFFF; --fg: #1D1923; --sub: #47404F; --line: #E4DCE6; --rule: #1D1923;
   --bl: #A3195B; --blbg: #FBE7F1; --mo: #B2410E; --mobg: #FDEBDD; --co: #3D4A8A; --cobg: #E8EBFA;
-  --ok: #17663F; --okbg: #E2F3E9; --no: #A61B1B; --nobg: #FBE3E3; --idx: #5E5770; --focus: #1D4ED8;
+  --ok: #17663F; --okbg: #E2F3E9; --no: #A61B1B; --nobg: #FBE3E3; --warn: #8A5A00; --idx: #5E5770; --focus: #1D4ED8;
   --f0: 64px; --f1: 32px; --f2: 24px; --f3: 21px; --f4: 19px; --f5: 17px;
   --tabh: 64px;
 }
@@ -17,7 +17,7 @@
     color-scheme: dark;
     --bg: #14111B; --card: #1E1929; --fg: #F5F1F8; --sub: #D3CADD; --line: #3B3349; --rule: #F5F1F8;
     --bl: #F49AC9; --blbg: #3A1D30; --mo: #FDBA8C; --mobg: #3A2416; --co: #B4BEF5; --cobg: #232A4A;
-    --ok: #7CE0A9; --okbg: #143222; --no: #FDA4A4; --nobg: #3B1A1A; --idx: #B9B0C6; --focus: #93C5FD;
+    --ok: #7CE0A9; --okbg: #143222; --no: #FDA4A4; --nobg: #3B1A1A; --warn: #F5C36B; --idx: #B9B0C6; --focus: #93C5FD;
   }
 }
 * { box-sizing: border-box; }
@@ -279,6 +279,42 @@ h1:focus { outline: none; }
 .su-ti { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .su-tab.on .su-ti { stroke-width: 2.8; }
 
+
+/* ── 「왜 사?」 답하기(주문 1506) — 한 번에 질문 하나 · 답 셋은 모양과 글로(● 좋아요 · ▲ 한 번 더 생각 · ■ 멈춰요) ── */
+.su-qh { font-size: var(--f0); line-height: 1.1; letter-spacing: -0.02em; }
+.su-qwhy { margin: 0; font-size: var(--f4); line-height: 1.5; color: var(--sub); }
+.su-ans { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.su-a { width: 100%; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 16px; border-radius: 18px; border: 2px solid var(--line); background: var(--card); color: var(--fg); font: inherit; font-size: var(--f3); font-weight: 800; line-height: 1.3; text-align: left; cursor: pointer; }
+.su-a.on { border-color: var(--fg); box-shadow: inset 0 0 0 2px var(--fg); }
+.su-shape { display: inline-grid; place-items: center; width: 30px; height: 30px; flex: none; font-style: normal; font-size: 21px; line-height: 1; }
+.su-shape.g, .su-ma.g i, .su-reply.g .su-rk { color: var(--ok); }
+.su-shape.y, .su-ma.y i, .su-reply.y .su-rk { color: var(--warn); }
+.su-shape.r, .su-ma.r i, .su-reply.r .su-rk { color: var(--no); }
+.su-reply { display: grid; gap: 4px; padding: 14px 16px; border-radius: 18px; border-left: 6px solid var(--line); background: var(--card); animation: su-up .45s ease-out both; }
+.su-reply.g { border-left-color: var(--ok); }
+.su-reply.y { border-left-color: var(--warn); }
+.su-reply.r { border-left-color: var(--no); }
+.su-reply p { margin: 0; }
+.su-rk { display: flex; align-items: center; gap: 8px; font-size: var(--f5); font-weight: 800; }
+.su-rk i { font-style: normal; }
+.su-rt2 { font-size: var(--f3); font-weight: 700; line-height: 1.45; }
+button.su-next { width: 100%; border: 0; font: inherit; text-align: left; cursor: pointer; }
+.su-qback { justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; min-width: 48px; padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); color: var(--fg); font: inherit; font-size: var(--f4); font-weight: 700; cursor: pointer; }
+.su-qback i { font-style: normal; }
+.su-qhint { text-align: center; padding: 6px 0; }
+.su-qdots { gap: 4px; }
+.su-qdots i { width: 8px; height: 8px; border-width: 1.5px; }
+.su-qdots i.now { width: 18px; }
+.su-tone-g { fill: var(--ok); }
+.su-tone-y { fill: var(--warn); }
+.su-tone-r { fill: var(--no); }
+.su-quote { color: var(--sub); }
+.su-myans { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.su-myans li { display: flex; justify-content: space-between; align-items: center; gap: 4px 10px; flex-wrap: wrap; font-size: var(--f4); }
+.su-mq { color: var(--sub); }
+.su-ma { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; }
+.su-ma i { font-style: normal; }
+
 /* ── 움직임 — 들어올 때 한 번 ── */
 @keyframes su-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes su-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -299,5 +335,5 @@ h1:focus { outline: none; }
 .su-say .b3 { animation: su-up .45s ease-out .9s both; }
 .su-say .b4 { animation: su-up .45s ease-out 1.35s both; }
 @media (prefers-reduced-motion: reduce) {
-  .su-fig *, .su-say li, .su-vt * { animation: none !important; }
+  .su-fig *, .su-say li, .su-vt *, .su-reply { animation: none !important; }
 }

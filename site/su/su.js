@@ -11,6 +11,7 @@ import {NAME, josa} from '/next/brand.js';
 import {glossTree} from '/next/glossary.js'; // 낱말표 한 곳(몸값 → 회사 크기 …) — 지금 사이트와 같은 말 · 이름([data-proper])은 그대로
 import {CODE, pct, moreLess, dateKo, bloomList, moneyList, reasonsFor, whyOf, idxLine, coLine, indRows, forwardTo, w5hCo, w5hInd, w5hRec, say5, jo} from '/su/su-data.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js'; // 본질 세 줄(사장님 글자 그대로) · 받은 때 글
+import {tally} from '/next/tally.js'; // 합계 칸 신호(① 멈춤) — 지금 수르 「왜 사?」와 같은 한 곳
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 function h(tag, attrs = {}, ...kids) {
@@ -43,10 +44,60 @@ const kHref = code => (code ? '#/k/' + code : '#/k');
 const rHref = code => (code ? '#/r/' + code : '#/r');
 const pHref = code => (code ? '#/p/' + code : '#/p');
 const whyHref = code => '/next/#/why' + (code ? '/' + code : '');
+const qHref = code => (code ? '#/q/' + code : '#/q'); // 새 판 「왜 사?」(주문 1506)
 
 /* 「왜 사?」 열한 질문 — 지금 수르 site/next/p-why.js QS · GROUPS 글자 그대로(시험 tests/atlas11/su.test.mjs 가 맞댐) · 답하기와 기록은 지금 수르 쪽(합계 칸 ① 멈춤 · ② 약속 셈이 그쪽) */
 export const WHY_QS = Object.freeze(['왜 사?', '공부했어?', '뭐가 좋아?', '얼마 넣어?', '흐름은?', '얼마나 올랐어?', '떨어지면?', '오르면?', '언제 쓸 돈?', '마음은?', '나눠 넣어?']);
 export const WHY_GROUPS = Object.freeze([['이유', [1, 2, 3]], ['돈', [4, 9, 11]], ['때', [5, 6]], ['마음', [7, 8, 10]]]);
+/* 「왜 사?」 답하기 — 새 판(주문 1506 · 사장님 2026-11-04 10:06(+04) 「어」 — 물음 「「왜 사?」 답하는 쪽도 새 판 모양으로 바꿀까요?」)
+   답 셋 · 한마디 = p-why.js QS 의 a 글자 그대로(차례도 그대로) · 왜 묻나 = why-look.js LOOK 의 why 그대로 · 판정 이름 = why-look.js TYPE_OF 그대로(시험이 맞댐)
+   판정 셈 = p-why.js judge 와 같음 · 기록 = 같은 열쇠 · 같은 꼴(매매일지 · 고도리 칸 · 한 달 약속이 지금 수르에서 그대로 이어짐) · 합계 칸 신호 = tally.js(stop · stop_rest) */
+export const WHY_A = Object.freeze([
+  [['r', '친구 말', '친구 말만 듣고 사면, 팔 때도 친구 말을 기다리게 돼.'], ['y', '뉴스', '뉴스는 모두가 같이 봐. 내 이유를 하나 더 찾아봐.'], ['g', '내가 따져 봄', '좋아! 내 이유가 있으면 흔들릴 때 버틸 수 있어.']],
+  [['g', '했다', '좋아, 아는 만큼 덜 무서워.'], ['y', '조금', '조금 더 알아보자. 무엇을 파는 회사인지부터.'], ['r', '안 했다', '모르는 회사는 떨어질 때 더 무서워.']],
+  [['g', '돈을 잘 번다', '돈을 잘 버는 회사는 오래 볼 힘이 있어.'], ['y', '클 일이 있다', '클 일이 정말 일어날지 날짜를 적어 두자.'], ['r', '그냥 오를 것 같다', '느낌은 이유가 아니야. 한 번 더 생각해 보자.']],
+  [['g', '내 돈 열에 하나 이하', '좋아, 틀려도 다시 일어설 수 있어.'], ['y', '반쯤', '반은 많아. 조금 줄이면 마음이 편해.'], ['r', '거의 다·빌린 돈', '빌린 돈은 밤잠을 뺏어. 오늘은 줄이자.']],
+  [['g', '조용히 조금씩 오름', '조용히 오를 때가 마음 편히 볼 때야.'], ['y', '떨어지는 중', '떨어지는 칼은 잡지 말자. 멈추는지 보자.'], ['r', '다들 떠들며 급등', '다들 떠들 때는 이미 늦었을 수 있어.']],
+  [['g', '아직', '아직이면 서두를 까닭이 없어.'], ['y', '조금', '조금 올랐으면 어디까지 볼지 정해 두자.'], ['r', '벌써 두 배', '두 배 오른 뒤엔 내릴 길도 길어.']],
+  [['g', '팔 곳 정함', '좋아, 정한 대로만 하면 돼.'], ['y', '생각만', '생각만 하면 그때 가서 흔들려. 숫자로 적어 둬.'], ['r', '안 정함', '사기 전에 팔 곳부터 정하자.']],
+  [['g', '정함', '좋아, 욕심이 날 때 그 숫자를 보자.'], ['y', '모름', '오를 때 어디서 나눌지 미리 정해 두자.'], ['r', '끝까지 간다', '끝까지는 아무도 몰라. 나눠서 챙기자.']],
+  [['g', '1년 넘게', '오래 둘 돈이면 기다릴 수 있어.'], ['y', '몇 달 안', '몇 달 안에 쓸 돈은 흔들리면 곤란해.'], ['r', '곧', '곧 쓸 돈은 주식에 넣지 말자.']],
+  [['g', '차분', '차분하면 좋은 값을 기다릴 수 있어.'], ['r', '놓칠까 급함', '급하면 가장 비싼 값을 치르게 돼.'], ['r', '본전 생각', '본전 생각은 판단을 흐려. 오늘은 쉬자.']],
+  [['g', '세 곳 이상', '좋아, 하나가 넘어져도 괜찮아.'], ['y', '두 곳', '한 곳 더 나눠 담으면 마음이 편해.'], ['r', '한 곳', '달걀을 한 바구니에 담지 말자.']],
+]);
+export const WHY_WHY = Object.freeze([
+  '남의 말로 산 주식은 남의 말에 흔들리기 쉬워요. 내 이유가 있는지 확인해요.',
+  '아는 만큼 덜 무서워요. 떨어질 때 버틸 힘이 돼요.',
+  '느낌과 이유를 나눠 봐요. 이유가 있어야 오래 볼 수 있어요.',
+  '틀려도 다시 일어설 수 있는 만큼만 넣어야 마음이 편해요.',
+  '모두가 떠들 때 사면 비싸게 살 수 있어요. 지금 흐름을 봐요.',
+  '많이 오른 뒤에는 내려갈 길도 길어요.',
+  '사기 전에 팔 곳을 정해 두면 흔들릴 때 덜 무서워요.',
+  '오를 때 욕심이 커져요. 미리 정한 숫자가 마음을 잡아 줘요.',
+  '곧 쓸 돈은 값이 내려도 기다릴 수 없어요.',
+  '급한 마음이 가장 비싼 값을 치르게 해요. 지금 마음은 충동 매매를 알아보는 데 중요한 요소예요.',
+  '분산 투자는 위험을 줄이는 중요한 방법이에요. 하나가 넘어져도 다른 곳이 버텨 줘요.',
+]);
+export const WHY_TYPE = Object.freeze({go: ['신중한 준비형 투자자', '내 이유로 따져 보고, 정해 둔 대로 움직이는 편이에요.'], wait: ['반쯤 준비된 투자자', '이유는 있지만, 가끔 마음이 앞설 때가 있어요.'], rest: ['오늘은 쉬어 갈 투자자', '준비가 덜 된 곳이 많아요. 오늘은 하루 쉬어 가요.', '빌린 돈이나 곧 쓸 돈이라면, 오늘은 쉬어 가는 게 좋아요.']});
+const WHY_PT = {g: 0, y: 1, r: 2}, WHY_MAX = WHY_QS.length * 2, WHY_KEY = 'atlas:godori-why';
+const WHY_REST = [[3, WHY_A[3].findIndex(a => a[1] === '거의 다·빌린 돈')], [8, WHY_A[8].findIndex(a => a[1] === '곧')]];
+const WHY_BIG = [2, WHY_A[2].findIndex(a => a[1] === '클 일이 있다')];
+export const WHY_V = Object.freeze({'좋아, 정해 둔 대로만': 'go', '반만 준비됐어': 'wait', '오늘은 쉬어 가자': 'rest'});
+/** 판정 — 점수 · 빨간 답 수 · 묶음 · 판정 글(p-why.js judge 와 같은 셈) */
+export function judgeWhy(ans) {
+  const pts = ans.map((k, i) => WHY_PT[WHY_A[i][k][0]]);
+  const score = pts.reduce((s, x) => s + x, 0), reds = pts.filter(x => x === 2).length, stop = WHY_REST.some(([q, k]) => k >= 0 && ans[q] === k);
+  const groups = Object.fromEntries(WHY_GROUPS.map(([n, qs]) => [n, qs.reduce((s, q) => s + pts[q - 1], 0)]));
+  const verdict = stop || score >= 12 || reds >= 4 ? '오늘은 쉬어 가자' : score >= 6 ? '반만 준비됐어' : '좋아, 정해 둔 대로만';
+  return {score, ready: WHY_MAX - score, reds, groups, verdict, stop};
+}
+/** 매매일지에 한 줄 더함(지금 수르 p-why.js save 와 같은 열쇠 · 같은 꼴 · 200줄까지) — 남겼나 */
+function saveWhy(rec) {
+  try {
+    let all = []; try { const x = JSON.parse(localStorage.getItem(WHY_KEY) || '[]'); all = Array.isArray(x) ? x : []; } catch { all = []; }
+    all.unshift(rec); localStorage.setItem(WHY_KEY, JSON.stringify(all.slice(0, 200))); return true;
+  } catch { return false; }
+}
 
 /* 일곱 걸음 · 탭 넷(기승전결) — 걸음 → 탭: 1 기 · 2 ~ 3 승 · 4 ~ 6 전 · 7 결 */
 export const STEPS = Object.freeze([['오늘', '기'], ['꽃', '승'], ['회사', '승'], ['조건', '전'], ['업종', '전'], ['기록', '전'], ['멈춤', '결']]);
@@ -380,7 +431,7 @@ async function vCo(code) {
       ...rs.map(reasonCard),
       bloomKind ? figLine(c.name, cl, il) : null,
       ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
-      h('a', {class: 'su-ask', href: whyHref(code)}, h('span', {class: 'su-ask-a', text: '사기 전에 한 번 멈춰요'}), h('span', {class: 'su-ask-b', text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'}))],
+      h('a', {class: 'su-ask', href: qHref(code)}, h('span', {class: 'su-ask-a', text: '사기 전에 한 번 멈춰요'}), h('span', {class: 'su-ask-b', text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'}))],
     go, src: source(H?.asOf ?? asOf, S, rs.length ? null : '이 회사는 오늘 두 목록에 없어요. 지난 한 달만 보여 드려요.')});
 }
 /** 왜 여기 있나 — 칸 하나에 까닭 하나(검사 글: 「조건에 가장 가까운 회사예요」 · 「맞은 조건」 · 「안 맞은 조건」 · 「돈이 몰린 회사예요」 · 「꽃이 될 회사예요」) */
@@ -499,7 +550,7 @@ async function vRec(code) {
     src: source(asOf, S, '지난 기록은 같은 조건을 지난날에 대어 센 것이에요.')});
 }
 
-/** 일곱째 걸음 · 멈춤(결) — 열한 질문 네 묶음 · 끝 단추 = 지금 수르 「왜 사?」(답 · 기록 · 합계 셈) */
+/** 일곱째 걸음 · 멈춤(결) — 열한 질문 네 묶음 · 끝 단추 = 새 판 「왜 사?」 답하기(#/q · 주문 1506 — 기록 · 합계 셈은 지금 수르와 같은 곳) */
 async function vPause(code) {
   const {S, asOf} = await base();
   const co = code && CODE.test(code) ? await get(D.co(code)) : null, name = co?.c?.name ?? null;
@@ -510,8 +561,87 @@ async function vPause(code) {
     fig: figQs(),
     say: ['주식을 사기 전에 내 이유부터 물어요.', '질문은 열한 가지예요. 이유와 돈, 때와 마음 네 묶음이에요.', '그런데 답을 맞히는 시험이 아니에요.', '그래서 천천히 하나씩 답해요.'],
     body: WHY_GROUPS.map(([g, qs], k) => section(g + ' 질문', BEAT[k] + ' · ' + g, h('ol', {class: 'su-qlist'}, qs.map(i => h('li', {}, h('i', {'aria-hidden': 'true', text: String(i)}), h('span', {text: WHY_QS[i - 1]})))))),
-    go: next(7, whyHref(name ? code : null), (name ? name + ' — ' : '') + '「왜 사?」 열한 질문 하기'),
+    go: next(7, qHref(name ? code : null), (name ? name + ' — ' : '') + '「왜 사?」 열한 질문 하기'),
     src: source(asOf, S, '답과 기록은 내 휴대폰에만 남아요.')});
+}
+
+/** 「왜 사?」 답하기(결 · 주문 1506) — 한 번에 질문 하나(큰 글) · 답 셋(● 좋아요 · ▲ 한 번 더 생각 · ■ 멈춰요 — 모양과 글로) · 답하면 한마디 · 열한 개 뒤 결과(네 묶음 막대 · 기승전결)
+    기록은 지금 수르 매매일지와 같은 곳에 남기고 합계 칸에 「멈춤」 신호 한 번(지금 수르와 같음) · 쿠폰 · 가입 · 선물 단추는 이 쪽에 두지 않음(매매일지 쪽은 그대로) */
+const SHAPE = {g: '●', y: '▲', r: '■'}, TONE_W = {g: '좋아요', y: '한 번 더 생각', r: '멈춰요'};
+async function vQuiz(code0) {
+  const {asOf} = await base();
+  const code = code0 && CODE.test(code0) ? code0 : null;
+  const co = code ? await get(D.co(code)) : null, c = co?.c ?? null, name = typeof c?.name === 'string' ? c.name : null;
+  if (code && name) lastCo = {code, name, ind: typeof c.i === 'string' ? c.i : null};
+  const Q = {i: 0, ans: new Array(WHY_QS.length).fill(null), J: null, saved: false};
+  let cur = null;
+  const btn = (cls, kids, on) => { const b = h('button', {class: cls, type: 'button'}, kids); b.addEventListener('click', on); return b; };
+  const dots = n => h('span', {class: 'su-dots su-qdots', 'aria-hidden': 'true'}, WHY_QS.map((_, k) => h('i', {class: k < n || Q.i === 'res' ? 'on' : k === n ? 'now' : null})));
+  const foot = () => h('footer', {class: 'su-src'}, h('div', {class: 'su-srcr'}, h('h2', {class: 'su-srch', text: '출처'})),
+    h('p', {text: '질문과 한마디는 지금 ' + NAME + ' 「왜 사?」와 같아요. 답은 이 휴대폰에만 남아요.'}));
+  /** 다시 그림 — 새 질문 · 결과면 맨 위로(큰 제목에 초점) · 답만 고른 것이면 그 자리에서 한마디와 다음 단추가 보이게(엄지가 그대로 머묾) */
+  const draw = (picked = false) => {
+    const nm = Q.i === 'res' ? result() : ask();
+    if (cur) {
+      cur.replaceWith(nm); try { glossTree(nm); } catch (e) { console.error(e); }
+      if (picked) { const y = window.scrollY; nm.querySelector('.su-a.on')?.focus?.({preventScroll: true}); window.scrollTo(0, y); nm.querySelector('.su-qnext')?.scrollIntoView?.({block: 'nearest'}); }
+      else { window.scrollTo(0, 0); nm.querySelector('h1')?.focus?.({preventScroll: true}); }
+    }
+    cur = nm; return nm;
+  };
+  const finish = () => {
+    const J = judgeWhy(Q.ans), v = WHY_V[J.verdict], ok = Number.isFinite(c?.price) && c.price > 0;
+    Q.J = J;
+    Q.saved = saveWhy({at: new Date().toISOString(), asOf: asOf ?? null, code, name, price: ok ? c.price : null, day: ok && typeof c.priceDate === 'string' ? c.priceDate : null,
+      answers: [...Q.ans], score: J.score, reds: J.reds, verdict: J.verdict, groups: J.groups, bigDay: Q.ans[WHY_BIG[0]] === WHY_BIG[1] ? '' : null, why: null, promise: null, picks: []});
+    tally(v === 'rest' ? 'stop_rest' : 'stop'); // 합계 칸 ① 멈춤 — 지금 수르 「왜 사?」 끝냄과 같은 신호
+    Q.i = 'res'; draw();
+  };
+  const ask = () => {
+    const i = Q.i, a = Q.ans[i], gi = WHY_GROUPS.findIndex(([, qs]) => qs.includes(i + 1)), last = i === WHY_QS.length - 1, ch = a != null ? WHY_A[i][a] : null;
+    return h('main', {class: 'su-main su-quiz'},
+      safe(),
+      h('p', {class: 'su-prog'}, dots(i), h('span', {class: 'su-progt', text: (i + 1) + ' / ' + WHY_QS.length + ' · ' + WHY_GROUPS[gi][0]})),
+      kicker('사기 전에' + (name ? ' · ' + name : '') + ' · ' + BEAT[gi] + ' 묶음'),
+      h('h1', {class: 'su-h1 su-qh', tabindex: '-1'}, h('span', {text: WHY_QS[i]})),
+      h('p', {class: 'su-qwhy', text: WHY_WHY[i]}),
+      h('ul', {class: 'su-ans', 'aria-label': '답 셋'}, WHY_A[i].map(([tone, label], k) => h('li', {},
+        btn('su-a' + (a === k ? ' on' : ''), [h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label})], () => { Q.ans[i] = k; draw(true); })))),
+      ch ? h('div', {class: 'su-reply ' + ch[0], role: 'status'}, h('p', {class: 'su-rk'}, h('i', {'aria-hidden': 'true', text: SHAPE[ch[0]]}), h('b', {text: TONE_W[ch[0]]})), h('p', {class: 'su-rt2', text: ch[2]})) : h('p', {class: 'su-note su-qhint', text: '답 하나를 눌러요.'}),
+      ch ? btn('su-next su-qnext', [h('span', {class: 'su-nk', text: last ? '끝 · 결과' : (i + 2) + ' / ' + WHY_QS.length}), h('span', {class: 'su-nt', text: last ? '결과 보기' : '다음 질문'}), h('i', {'aria-hidden': 'true', text: '›'})],
+        () => { if (last) finish(); else { Q.i = i + 1; draw(); } }) : null,
+      i > 0 ? btn('su-qback', [h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '앞 질문'})], () => { Q.i = i - 1; draw(); }) : null,
+      foot());
+  };
+  const result = () => {
+    const J = Q.J, v = WHY_V[J.verdict], T = WHY_TYPE[v], W = 300;
+    const rows = WHY_GROUPS.map(([n, qs], k) => { const max = qs.length * 2, val = J.groups[n] ?? 0; return {n, k, max, ready: max - val, tone: val === 0 ? 'g' : val * 2 >= max ? 'r' : 'y'}; });
+    const weak = rows.filter(r => r.ready < r.max).sort((a, b) => a.ready / a.max - b.ready / b.max)[0] ?? null;
+    return h('main', {class: 'su-main su-quiz'},
+      safe(),
+      h('p', {class: 'su-prog'}, dots(WHY_QS.length), h('span', {class: 'su-progt', text: WHY_QS.length + ' / ' + WHY_QS.length + ' · 결과'})),
+      kicker('사기 전에' + (name ? ' · ' + name : '') + ' · 결과'),
+      h('h1', {class: 'su-h1', tabindex: '-1'}, h('span', {text: J.verdict})),
+      big(String(J.ready), '/ ' + WHY_MAX, '준비된 만큼이에요. 높을수록 좋아요.'),
+      mids([['당신은', T[0]], ['빨간 답', J.reds + '개']]),
+      fig('네 묶음 막대', 'su-hb su-gb', h('ul', {class: 'su-hbl'}, rows.map(r => h('li', {class: 'su-hbr b' + (r.k + 1)},
+        h('p', {}, h('span', {class: 'su-hbn', text: BEAT[r.k] + ' · ' + r.n}), h('b', {class: 'su-hbv', text: r.ready + ' / ' + r.max}), h('i', {class: 'su-shape ' + r.tone, 'aria-hidden': 'true', text: SHAPE[r.tone]})),
+        s('svg', {viewBox: `0 0 ${W} 20`, class: 'su-svg su-hbs', 'aria-hidden': 'true'}, s('rect', {x: 4, y: 3, width: W - 8, height: 14, rx: 7, class: 'su-track'}),
+          s('rect', {x: 4, y: 3, width: Math.max(3, (W - 8) * r.ready / r.max).toFixed(1), height: 14, rx: 7, class: 'su-grow su-tone-' + r.tone}))))),
+        h('p', {class: 'su-mxr b4'}, h('span', {text: '당신은'}), h('b', {text: T[0]}))),
+      beats(['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
+        J.stop ? '그런데 빌린 돈이나 곧 쓸 돈이라고 답했어요.' : weak ? '그런데 ' + weak.n + ' 묶음이 가장 덜 준비됐어요.' : '그런데 답은 오늘 마음일 뿐이에요.',
+        v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.']),
+      h('p', {class: 'su-lead2 su-quote', text: '“' + (v === 'rest' && J.stop ? T[2] : T[1]) + '”'}),
+      section('내 답', '내 답 열한 개', h('ol', {class: 'su-myans'}, WHY_QS.map((q, k) => { const [tone, label] = WHY_A[k][Q.ans[k]];
+        return h('li', {}, h('span', {class: 'su-mq', text: (k + 1) + ' · ' + q}), h('b', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label}))); }))),
+      h('p', {class: 'su-note su-notp', text: Q.saved ? '오늘 답을 매매일지에 날짜와 함께 쌓았어요.' : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
+      h('a', {class: 'su-ask', href: '/next/#/why'}, h('span', {class: 'su-ask-a', text: '매매일지 자세히 보기'}), h('span', {class: 'su-ask-b', text: '쌓인 답과 한 달 뒤 약속, 상세 분석이 있어요.'})),
+      btn('su-qback su-again', [h('i', {'aria-hidden': 'true', text: '↺'}), h('span', {text: '다시 하기'})], () => { Q.i = 0; Q.ans.fill(null); Q.J = null; draw(); }),
+      h('a', {class: 'su-next', href: '#/'}, h('span', {class: 'su-nk', text: '처음으로'}), h('span', {class: 'su-nt', text: '오늘로 가기'}), h('i', {'aria-hidden': 'true', text: '›'})),
+      foot());
+  };
+  return {title: '왜 사?', beat: '결', nodes: [bar(), draw()]};
 }
 
 function notFound(msg) {
@@ -532,13 +662,13 @@ async function route() {
   if (fw) { location.replace(fw); return; }
   stopSpeak();
   const hh = location.hash || '#/';
-  const m = /^#\/(c|i|k|r|p)\/(.+)$/.exec(hh), t = /^#\/([bkrp])$/.exec(hh);
+  const m = /^#\/(c|i|k|r|p|q)\/(.+)$/.exec(hh), t = /^#\/([bkrpq])$/.exec(hh);
   let a = null; if (m) { try { a = decodeURIComponent(m[2]); } catch { a = m[2]; } }
   const my = ++seq, root = document.getElementById('su');
   let out;
   try {
-    out = m ? (m[1] === 'c' ? await vCo(a) : m[1] === 'i' ? await vInd(a) : m[1] === 'k' ? await vCond(a) : m[1] === 'r' ? await vRec(a) : await vPause(a))
-      : t ? (t[1] === 'b' ? await vBloom() : t[1] === 'k' ? await vCond(null) : t[1] === 'r' ? await vRec(null) : await vPause(null)) : await vHome();
+    out = m ? (m[1] === 'c' ? await vCo(a) : m[1] === 'i' ? await vInd(a) : m[1] === 'k' ? await vCond(a) : m[1] === 'r' ? await vRec(a) : m[1] === 'q' ? await vQuiz(a) : await vPause(a))
+      : t ? (t[1] === 'b' ? await vBloom() : t[1] === 'k' ? await vCond(null) : t[1] === 'r' ? await vRec(null) : t[1] === 'q' ? await vQuiz(null) : await vPause(null)) : await vHome();
   } catch (e) { console.error(e); out = notFound('화면을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'); }
   if (my !== seq) return;
   root.replaceChildren(...out.nodes.filter(Boolean), tabs(out.beat));
