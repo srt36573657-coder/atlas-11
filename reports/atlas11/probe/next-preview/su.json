@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-04T06:33:33.131Z",
+ "at": "2026-11-04T07:58:40.511Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 197,
+  "pass": 332,
   "fail": 0
  },
  "fails": [],
@@ -14,15 +14,98 @@
    "money": [
     "한진칼",
     "하이트진로",
-    "CJ ENM"
+    "롯데렌탈"
    ]
   },
   "home": {
-   "screens": 2.79,
-   "links": 21
+   "screens": 5.02,
+   "links": 17
+  },
+  "path": [
+   {
+    "h1": "오늘 꽃 조건",
+    "share": 52,
+    "shareIn": 69,
+    "figs": 3,
+    "moving": 3,
+    "need": 0
+   },
+   {
+    "h1": "한화손해보험",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 5,
+    "moving": 5,
+    "need": 0
+   },
+   {
+    "h1": "보험 업종",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 5,
+    "moving": 5,
+    "need": 1
+   },
+   {
+    "h1": "지난 기록 한곳",
+    "share": 51,
+    "shareIn": 67,
+    "figs": 4,
+    "moving": 4,
+    "need": 0
+   },
+   {
+    "h1": "달마다 지난 기록",
+    "share": 52,
+    "shareIn": 69,
+    "figs": 4,
+    "moving": 4,
+    "need": 1
+   },
+   {
+    "h1": "꽃이 못 된 까닭",
+    "share": 53,
+    "shareIn": 70,
+    "figs": 5,
+    "moving": 5,
+    "need": 0
+   },
+   {
+    "h1": "왜 사?",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 2,
+    "moving": 2,
+    "need": 0
+   },
+   {
+    "h1": "내 매매일지",
+    "share": 52,
+    "shareIn": 69,
+    "figs": 4,
+    "moving": 4,
+    "need": 0
+   }
+  ],
+  "drawers": {
+   "#/r/d": {
+    "h1": "날마다 지난 기록",
+    "share": 54,
+    "moving": 4
+   },
+   "#/r/y": {
+    "h1": "해마다 지난 기록",
+    "share": 51,
+    "moving": 3
+   },
+   "#/r/n": {
+    "h1": "가까운 회사의 지난 기록",
+    "share": 51,
+    "moving": 3
+   }
   },
   "speed": {
-   "lcp": 1784,
+   "lcp": 1816,
    "cls": 0.023
   }
  },

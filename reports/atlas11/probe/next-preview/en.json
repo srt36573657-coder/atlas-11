@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-04T06:43:46.515Z",
+ "at": "2026-11-04T08:12:21.639Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,15 +14,15 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
-  "talk": true,
-  "up": true,
-  "rivals": true,
   "past": true,
+  "rivals": true,
   "grow": true,
   "range": true,
   "surge": true,
   "cal": true,
+  "cond": true,
+  "talk": true,
+  "up": true,
   "time": true,
   "info": true,
   "x": true,
@@ -44,14 +44,14 @@
  "full": false,
  "units": {
   "total": 13585,
-  "hash": "1ab0312f1bc8f78d",
+  "hash": "44d7f4b076b5fdf6",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 563,
- "secondsSum": 2511,
+ "seconds": 552,
+ "secondsSum": 2509,
  "shards": [
   {
    "shard": "1/5",
@@ -60,10 +60,10 @@
    "routes": 2736,
    "screens": 2736,
    "mine": 2736,
-   "seconds": 479,
+   "seconds": 552,
    "secs": {
-    "open": 0.3,
-    "routes": 478
+    "open": 0.4,
+    "routes": 550.9
    }
   },
   {
@@ -73,10 +73,10 @@
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 513,
+   "seconds": 471,
    "secs": {
     "open": 0.4,
-    "routes": 511.6
+    "routes": 470.6
    }
   },
   {
@@ -86,10 +86,10 @@
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 462,
+   "seconds": 481,
    "secs": {
     "open": 0.3,
-    "routes": 461.2
+    "routes": 480.4
    }
   },
   {
@@ -99,11 +99,11 @@
    "routes": 2727,
    "screens": 2749,
    "mine": 2722,
-   "seconds": 494,
+   "seconds": 491,
    "secs": {
     "open": 0.4,
-    "routes": 489.1,
-    "newwin": 3.1
+    "routes": 486,
+    "newwin": 3
    }
   },
   {
@@ -113,12 +113,12 @@
    "routes": 2656,
    "screens": 2777,
    "mine": 2657,
-   "seconds": 563,
+   "seconds": 514,
    "secs": {
-    "open": 0.5,
-    "routes": 544.6,
-    "act": 8.3,
-    "edge": 8.8,
+    "open": 0.4,
+    "routes": 498.7,
+    "act": 7,
+    "edge": 7.5,
     "grammar": 0
    }
   }
