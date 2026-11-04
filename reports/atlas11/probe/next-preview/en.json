@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-04T17:38:09.421Z",
+ "at": "2026-11-04T17:58:40.804Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -9,15 +9,15 @@
   360,
   390
  ],
- "routes": 8119,
+ "routes": 13589,
  "companies": 2557,
  "allCompanies": true,
  "modules": true,
  "modFiles": {
   "past": true,
-  "rivals": true,
-  "grow": true,
   "range": true,
+  "grow": true,
+  "rivals": true,
   "surge": true,
   "cal": true,
   "cond": true,
@@ -28,14 +28,14 @@
   "x": true,
   "co": true,
   "chx": true,
+  "today": true,
   "why": true,
+  "gdr": true,
   "share": true,
-  "hold": true,
   "theme": true,
   "sage": true,
   "roman": true,
-  "gdr": true,
-  "today": true
+  "hold": true
  },
  "edge": true,
  "only": null,
@@ -50,62 +50,89 @@
    "@newwin": 15
   }
  },
- "seconds": 507,
- "secondsSum": 1478,
+ "seconds": 509,
+ "secondsSum": 2510,
  "shards": [
   {
    "shard": "1/5",
-   "ok": false,
-   "fails": 4,
+   "ok": true,
+   "fails": 0,
    "routes": 2736,
    "screens": 2736,
    "mine": 2736,
-   "seconds": 507,
+   "seconds": 506,
    "secs": {
     "open": 0.4,
-    "routes": 505.7
+    "routes": 505
+   }
+  },
+  {
+   "shard": "2/5",
+   "ok": true,
+   "fails": 0,
+   "routes": 2735,
+   "screens": 2778,
+   "mine": 2735,
+   "seconds": 487,
+   "secs": {
+    "open": 0.4,
+    "routes": 486.3
+   }
+  },
+  {
+   "shard": "3/5",
+   "ok": true,
+   "fails": 0,
+   "routes": 2735,
+   "screens": 2778,
+   "mine": 2735,
+   "seconds": 509,
+   "secs": {
+    "open": 0.4,
+    "routes": 507.5
    }
   },
   {
    "shard": "4/5",
-   "ok": false,
-   "fails": 4,
+   "ok": true,
+   "fails": 0,
    "routes": 2727,
    "screens": 2749,
    "mine": 2722,
-   "seconds": 493,
+   "seconds": 509,
    "secs": {
     "open": 0.4,
-    "routes": 487.3,
-    "newwin": 3.1
+    "routes": 504.4,
+    "newwin": 3
    }
   },
   {
    "shard": "5/5",
-   "ok": false,
-   "fails": 4,
+   "ok": true,
+   "fails": 0,
    "routes": 2656,
    "screens": 2777,
    "mine": 2657,
-   "seconds": 478,
+   "seconds": 499,
    "secs": {
-    "open": 0.3,
-    "routes": 464.5,
-    "act": 6.1,
-    "edge": 6.7,
+    "open": 0.4,
+    "routes": 484.1,
+    "act": 6.7,
+    "edge": 7.3,
     "grammar": 0
    }
   }
  ],
  "counts": {
-  "화면": 8262,
+  "화면": 13818,
   "길 · home": 1,
-  "길 · chips": 3,
+  "길 · chips": 7,
   "길 · me": 1,
-  "길 · find": 5,
-  "길 · watch": 1529,
-  "길 · chan": 54,
-  "길 · mod": 6518,
+  "길 · find": 9,
+  "길 · watch": 2560,
+  "길 · chan": 89,
+  "길 · mod": 10914,
+  "왜 사? 끝까지": 2,
   "쇼츠 장": 6,
   "길 · shorts": 7,
   "수르 칸 잠김": 2,
@@ -116,87 +143,23 @@
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412
  },
- "missing": 3,
+ "missing": 0,
  "avatarLetters": 0,
- "kinds": {
-  "한글 남음": 1,
-  "사전에 없는 틀": 3
- },
- "fails": 4,
+ "kinds": {},
+ "fails": 0,
  "own": {
-  "fails": 4,
-  "missing": 3,
-  "leftover": 1
+  "fails": 0,
+  "missing": 0,
+  "leftover": 0
  },
  "mod": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
- "missingList": [
-  {
-   "key": "불장",
-   "ex": "불장",
-   "at": "#/"
-  },
-  {
-   "key": "꽃이 될",
-   "ex": "꽃이 될",
-   "at": "#/"
-  },
-  {
-   "key": "돈이 몰리는 회사를 우량주 {n}곳 안에서 {n}곳씩 찾아요.",
-   "ex": "돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.",
-   "at": "#/"
-  }
- ],
- "all": [
-  {
-   "kind": "한글 남음",
-   "what": "불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 {n}곳 안에서 {n}곳씩 찾아요.",
-   "ex": "불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.",
-   "at": [
-    "#/",
-    "새 창 · 몸값 · 급등 · 첫 화면 · 수르 칸 자료 못 받음 #/",
-    "새 창 · 모든 자료 못 받음 #/",
-    "아주 큰 글씨 · #/",
-    "바꿔치기 · 오늘 한 줄 날짜 · 마감 0"
-   ],
-   "n": 43
-  },
-  {
-   "kind": "사전에 없는 틀",
-   "what": "불장  ← 「불장」",
-   "ex": null,
-   "at": [
-    "#/"
-   ],
-   "n": 1
-  },
-  {
-   "kind": "사전에 없는 틀",
-   "what": "꽃이 될  ← 「꽃이 될」",
-   "ex": null,
-   "at": [
-    "#/"
-   ],
-   "n": 1
-  },
-  {
-   "kind": "사전에 없는 틀",
-   "what": "돈이 몰리는 회사를 우량주 {n}곳 안에서 {n}곳씩 찾아요.  ← 「돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.」",
-   "ex": null,
-   "at": [
-    "#/"
-   ],
-   "n": 1
-  }
- ],
+ "missingList": [],
+ "all": [],
  "truncated": false,
- "problems": [
-  "2/5 몫 결과 없음",
-  "3/5 몫 결과 없음",
-  "몫 일감 합 8115 ≠ 전체 13585"
- ],
- "ok": false
+ "problems": [],
+ "ok": true
 }
