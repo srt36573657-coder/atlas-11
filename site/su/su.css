@@ -43,21 +43,21 @@ button { font: inherit; color: inherit; }
 /* ── 쪽 ── */
 .su-page { padding: 0 max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px)); max-width: 720px; margin: 0 auto; }
 .su-safe { margin: 6px 0 0; font-size: 17px; line-height: 1.4; color: var(--mute); }
-.su-head { padding: 6px 0 2px; }
+.su-head { padding: 2px 0 0; }
 .su-kick { margin: 0; font-size: 17px; color: var(--mute); }
-.su-h1 { margin: 2px 0 0; font-size: 26px; line-height: 1.3; font-weight: 800; letter-spacing: -0.01em; text-wrap: balance; }
-.su-big { margin-top: 6px; }
+.su-h1 { margin: 0; font-size: 26px; line-height: 1.3; font-weight: 800; letter-spacing: -0.01em; text-wrap: balance; }
+.su-big { margin-top: 2px; }
 .su-bv { margin: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; line-height: 1.05; }
 .su-bv b { font-size: 64px; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .su-bv span { font-size: 24px; font-weight: 700; }
 .su-bv em { font-style: normal; font-size: 24px; color: var(--mute); margin: 0 2px; }
 .su-bv b.su-needv, .su-mv b.su-needv, .su-vv b.su-needv { font-size: 24px; color: var(--warn); border: 2px dashed var(--warn); border-radius: 10px; padding: 2px 10px; }
-.su-bl { margin: 2px 0 0; font-size: 19px; color: var(--mute); }
+.su-bl { margin: 0; font-size: 19px; color: var(--mute); }
 .su-bsix { margin: 2px 0 0; display: flex; align-items: center; gap: 6px; font-size: 17px; color: var(--mute); }
 
 /* ── 그림 ── */
-.su-fig { margin: 18px calc(-1 * max(16px, env(safe-area-inset-left, 0px))) 0; padding: 12px 0 8px; background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.su-hero { margin-top: 6px; padding-top: 6px; }
+.su-fig { margin: 14px calc(-1 * max(16px, env(safe-area-inset-left, 0px))) 0; padding: 12px 0 8px; background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.su-hero { margin-top: 4px; padding-top: 6px; }
 .su-ft { margin: 0 0 6px; padding: 0 16px; font-size: 21px; line-height: 1.35; font-weight: 800; }
 .su-fig .su-ft { padding: 0 16px; }
 .su-g { display: block; }
@@ -313,7 +313,7 @@ button { font: inherit; color: inherit; }
 .su-mean { margin: 6px 0 2px; font-size: 19px; line-height: 1.5; }
 .su-mean i { display: inline-block; margin-right: 8px; font-style: normal; font-size: 17px; line-height: 1.45; font-weight: 800; color: var(--bg); background: var(--ink); border-radius: 8px; padding: 0 8px; vertical-align: 1px; }
 .su-mean span { min-width: 0; }
-.su-mean-big { margin-top: 4px; font-size: 19px; font-weight: 700; }
+.su-mean-big { margin-top: 2px; font-size: 19px; font-weight: 700; }
 .su-bv .su-petal { width: 34px; height: 34px; align-self: center; margin-left: 4px; }
 .su-mean-big i { font-size: 17px; }
 .su-mid .su-mean, .su-vr .su-mean { font-size: 17px; }
@@ -346,12 +346,12 @@ li.su-gl { margin-left: 0; }
 .su-h4 { grid-template-columns: repeat(2, 1fr); }
 .su-honest .su-mean { padding: 0 12px; }
 .su-smg { display: grid; gap: 8px; padding: 0 12px; }
-.su-smr { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) 168px; gap: 8px; align-items: center; }
+.su-smr { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 8px; align-items: center; }
 .su-sml { min-width: 0; font-size: 17px; line-height: 1.35; }
 .su-sml em { font-style: normal; font-weight: 700; }
-.su-sm6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-.su-smk { font-size: 17px; line-height: 1.3; text-align: center; color: var(--mute); }
-.su-smc { display: block; height: 20px; border-radius: 6px; background: var(--ok); }
+.su-sm6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+.su-smh { margin: 0; font-size: 17px; line-height: 1.4; color: var(--mute); }
+.su-smc { display: block; height: 17px; border-radius: 5px; background: var(--ok); }
 .su-smc.su-need { background: transparent; border: 2px dashed var(--warn); }
 .su-smap .su-mean { padding: 0 12px; }
 .su-wc { color: var(--mute); }

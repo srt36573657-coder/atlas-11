@@ -219,7 +219,7 @@ test('쉬운 말과 전문가 정보(주문 1807 · 사장님 2026-11-04 13:07(+
     record: {all: {n: 1580, hits: 523, rate: 33.1, base: 23.65, baseN: 1708573, baseHits: 404033, ex: 2.2, exBase: -0.44, fall: 32.34, fallBase: 36}}, why: {all: {miss: 1057, why: [251, 573, 233]}, names: ['조금 모자랐어요', '업종째 식었어요', '회사만 처졌어요']}};
   const hub = E.eHub({B, mine: []});
   for (const v of [hub.big, ...hub.mids]) assert.ok(typeof v.mean === 'string' && v.mean.endsWith('요.'), '값마다 「그래서」 한 줄 — ' + v.label);
-  assert.ok(hub.big.mean.includes('100번에 67번은 꽃이 못 됐어요'), '33 대 24 → 셋 가운데 둘은 못 됨을 숨기지 않음');
+  assert.ok(hub.big.mean.includes('100번에 67번은 못 됐어요') && hub.big.label.includes('대 아무 회사'), '33 대 24 → 셋 가운데 둘은 못 됨을 숨기지 않음');
   const pro = new Map(hub.pro.map(p => [p.k, p]));
   assert.ok(pro.get('100번에 꽃').how.startsWith('523 ÷ 1,580 × 100 = 33.1 · 자료 값과 ✓ 맞음'), '셈을 그대로 — 다시 셀 수 있게');
   assert.ok(pro.get('아무 회사 100번에 꽃').how.startsWith('253,231 ÷ 1,038,744 × 100 = 24.38 · 자료 값과 ✓ 맞음'));

@@ -55,8 +55,9 @@ export function easy(t) {
 export function glossPage(main, {skip = '.su-head, .su-pro, .su-gl, svg, nav, button, summary, .su-src'} = {}) { // 머리(큰 값)는 건너뜀 — 첫 화면은 큰 값과 그림
   if (!main) return [];
   const done = new Set(), out = [], BL = 'p, li, h1, h2, h3, .su-ml, .su-vl, .su-bl, .su-cname, .su-csub';
-  const mk = (tag, hit) => {
-    const box = document.createElement(tag); box.className = 'su-gl';
+  const mk = (tag, hit, at = null) => {
+    const near = at?.nextElementSibling, join = near && near.classList.contains('su-gl') && near.tagName === tag.toUpperCase();
+    const box = join ? near : document.createElement(tag); if (!join) box.className = 'su-gl';
     for (const [w, g] of hit) {
       done.add(w); out.push(w);
       const line = document.createElement('span'); line.className = 'su-glr';
@@ -77,8 +78,10 @@ export function glossPage(main, {skip = '.su-head, .su-pro, .su-gl, svg, nav, bu
     const t = b.textContent ?? '';
     const hit = GLOSS.filter(([w]) => !done.has(w) && has(t, w));
     if (!hit.length) continue;
-    const anchor = b.closest('li, .su-mid, .su-card, .su-vr') && b.tagName !== 'LI' ? b.closest('li, .su-mid, .su-card, .su-vr') : b;
-    const box = mk(anchor.tagName === 'LI' ? 'li' : 'p', hit);
+    const fig = b.closest('figcaption, .su-cap') ? b.closest('figure') : null; // 그림 안 글 → 풀이는 그림 바로 밑(네 박자 글을 끊지 않음)
+    const anchor = fig ?? (b.closest('li, .su-mid, .su-card, .su-vr') && b.tagName !== 'LI' ? b.closest('li, .su-mid, .su-card, .su-vr') : b);
+    const box = mk(anchor.tagName === 'LI' ? 'li' : 'p', hit, anchor);
+    if (box.isConnected) continue; // 이미 있던 풀이 칸에 더함
     if (anchor.tagName === 'A' || anchor.closest('a')) (anchor.closest('a') ?? anchor).after(box); else anchor.after(box);
   }
   // ③ 단추 · 칸 이름 · 서랍 이름에만 나온 낱말도 그 덩어리 바로 밑에 풀이(빈틈없이)

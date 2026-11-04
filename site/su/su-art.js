@@ -80,7 +80,7 @@ export function guard(root) {
   const tr = [], tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   for (let n = tw.nextNode(); n; n = tw.nextNode()) {
     const pe = n.parentElement;
-    if (!n.textContent.trim() || !pe || pe.closest('svg, [aria-hidden="true"]')) continue;
+    if (!n.textContent.trim() || !pe || pe.closest('svg, [aria-hidden="true"], details:not([open]) > :not(summary)')) continue; // 닫힌 서랍 안 글은 안 보임(검사 ⑩ 과 같은 셈)
     const r = document.createRange(); r.selectNodeContents(n);
     for (const q of r.getClientRects()) if (q.width > 0 && q.height > 0) tr.push(q);
   }
