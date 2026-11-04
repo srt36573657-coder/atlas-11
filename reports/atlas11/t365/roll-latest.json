@@ -1,64 +1,85 @@
 {
  "schema": "atlas-t365-update-1",
- "at": "2026-11-03T23:59:08.925Z",
- "kst": "2026-11-04 08:59",
+ "at": "2026-11-04T04:35:39.850Z",
+ "kst": "2026-11-04 13:35",
  "slot": null,
- "reason": "09:00 회차",
+ "reason": "주문 1238 수르 새 판 — 사장님 08:17(+04) 「응 받지 말고 그냥 싸잍에 올려」 · 전체 검사 1/11 통과 run 41772810423 · main 5ed6c4899",
  "ci": true,
  "version": "ml-v1",
- "result": "실패",
- "served": "live",
- "why": "사이트 자료 멈춤: site_build: 365곳 마지막 종가 날 2026-11-03 이 고르는 날 2026-11-04 과 다름 — 지금 사이트 자료 그대로 다시 올림 · 네 눈 점검에서 걸림(올라가는 자료) — 애플 32건(100030 회사 파일(co/100030.json) 없음 — 3~7단이 「없는 주소」) · 클로드 27건(100030 3단 자료 없음)",
+ "result": "바꿈",
+ "served": "rolled",
+ "why": null,
  "fetch": {
-  "file": "../../../../../tmp/atlas-roll-8wcjcm/closes/20261103T235908Z.json.gz",
+  "file": "../../../../../tmp/atlas-roll-H6tGjr/closes/20261104T043539Z.json.gz",
   "ok": 2557,
   "failed": 0,
   "last": "20261104",
-  "sec": 184,
+  "sec": 189,
   "firstErrors": []
  },
- "asOf": null,
- "base": null,
- "provisional": null,
- "roll": null,
- "digest": null,
- "in": null,
- "out": null,
- "counts": null,
+ "asOf": "2026-11-04",
+ "base": "2026-10-06",
+ "provisional": true,
+ "roll": {
+  "files": 1,
+  "added": 40548,
+  "mismatch": 21
+ },
+ "digest": "54f75576417b3797",
+ "in": [],
+ "out": [],
+ "counts": {
+  "picked": 56,
+  "mg": 27,
+  "ly": 32,
+  "both": 3,
+  "q": 1768
+ },
  "tiers": null,
  "kinds": null,
- "stay": null,
- "ruleChanged": null,
- "prevVersion": null,
- "buffer": null,
- "all": null,
- "top": null,
- "range": null,
+ "stay": 56,
+ "ruleChanged": false,
+ "prevVersion": "ml-v1",
+ "buffer": false,
+ "all": {
+  "chg": -12.79,
+  "up": 5,
+  "down": 51
+ },
+ "top": {
+  "short": "지주·유통",
+  "chg": -7.77,
+  "scope": "mkt"
+ },
+ "range": {
+  "eligible": 56,
+  "reused": false
+ },
  "market": {
   "schema": "atlas-market-read-1",
   "rule": "mr-v2",
   "n": 2557,
-  "asOf": "2026-11-03",
-  "base": "2026-10-02",
+  "asOf": "2026-11-04",
+  "base": "2026-10-06",
   "days": 20,
-  "provisional": false,
+  "provisional": true,
   "day": {
-   "date": "2026-11-03",
-   "prev": "2026-11-02",
-   "up": 574,
-   "down": 1814,
-   "flat": 150,
-   "none": 19,
-   "avg": -1.68,
-   "cw": -3.09,
+   "date": "2026-11-04",
+   "prev": "2026-11-03",
+   "up": 277,
+   "down": 2114,
+   "flat": 143,
+   "none": 23,
+   "avg": -2.57,
+   "cw": -4.61,
    "word": "넓게 내린 날"
   },
   "span": {
-   "up": 315,
-   "down": 2133,
-   "flat": 90,
-   "chg": -11.65,
-   "cwChg": -18.79,
+   "up": 226,
+   "down": 2225,
+   "flat": 83,
+   "chg": -14.78,
+   "cwChg": -22.33,
    "word": "넓게 내림",
    "size": "작은 · 중간 회사 쪽이 덜 내림"
   },
@@ -67,22 +88,24 @@
    "up": 0,
    "down": 10,
    "gain": [
-    "금융",
-    "IT·통신",
-    "조선·방산",
     "반도체"
    ],
-   "fade": [],
+   "fade": [
+    "K-소비재",
+    "소재·건설",
+    "전자부품",
+    "바이오"
+   ],
    "top": {
     "id": "hold",
     "short": "지주·유통",
-    "chg": -5.37,
+    "chg": -7.77,
     "tr": "▼ 내림"
    },
    "low": {
     "id": "semi",
     "short": "반도체",
-    "chg": -22.59,
+    "chg": -27.08,
     "tr": "▼ 강하게 내림 · 힘 붙음"
    }
   },
@@ -93,83 +116,117 @@
    "prevTop": "지주·유통"
   },
   "lines": [
-   "11월 3일(화) 마감 값 — 모든 회사 2,557곳 가운데 574곳 오름 · 1,814곳 내림 → 넓게 내린 날",
-   "20거래일(10월 2일(금)부터) — 한 회사 한 표 −11.6% · 큰 회사는 크게 −18.8% → 작은 · 중간 회사 쪽이 덜 내림",
-   "가장 센 갈래 지주·유통 −5.4%(▼ 내림) · 가장 약한 갈래 반도체 −22.6%",
-   "앞 회차(11월 3일(화))와 같은 값 — 하루 오른 곳 574곳 · 1등 갈래 지주·유통 그대로"
+   "11월 4일(수) 장 중 값(아직 바뀜) — 모든 회사 2,557곳 가운데 277곳 오름 · 2,114곳 내림 → 넓게 내린 날",
+   "20거래일(10월 6일(화)부터) — 한 회사 한 표 −14.8% · 큰 회사는 크게 −22.3% → 작은 · 중간 회사 쪽이 덜 내림",
+   "가장 센 갈래 지주·유통 −7.8%(▼ 내림) · 가장 약한 갈래 반도체 −27.1%",
+   "앞 회차(11월 3일(화))와 견줌 — 하루 오른 곳 574곳 → 277곳 · 1등 갈래 그대로 지주·유통"
   ]
  },
  "inspect": {
   "version": "i4-v1",
   "nEach": 111,
-  "fail": 59,
-  "ok": false,
-  "ms": 253,
+  "fail": 0,
+  "ok": true,
+  "ms": 708,
   "lenses": [
    {
     "key": "apple",
     "name": "애플",
     "n": 111,
-    "fail": 32,
+    "fail": 0,
     "things": 18638,
-    "first": [
-     "100030 회사 파일(co/100030.json) 없음 — 3~7단이 「없는 주소」",
-     "100090 회사 파일(co/100090.json) 없음 — 3~7단이 「없는 주소」",
-     "100130 회사 파일(co/100130.json) 없음 — 3~7단이 「없는 주소」"
-    ]
+    "first": []
    },
    {
     "key": "google",
     "name": "구글",
     "n": 111,
     "fail": 0,
-    "things": 641675,
+    "things": 641524,
     "first": []
    },
    {
     "key": "claude",
     "name": "클로드",
     "n": 111,
-    "fail": 27,
-    "things": 197184,
-    "first": [
-     "100030 3단 자료 없음",
-     "100090 3단 자료 없음",
-     "100130 3단 자료 없음"
-    ]
+    "fail": 0,
+    "things": 444189,
+    "first": []
    },
    {
     "key": "cia",
     "name": "CIA",
     "n": 111,
     "fail": 0,
-    "things": 79462,
+    "things": 172752,
     "first": []
    }
   ]
  },
- "home": null,
- "homeFetch": null,
- "surge": null,
- "cal": null,
+ "home": {
+  "ok": true,
+  "kst": "2026-11-04 13:40",
+  "live": true,
+  "idx": true,
+  "flows": true,
+  "sectors": true,
+  "us": true,
+  "stale": {},
+  "errors": [],
+  "alerts": 1
+ },
+ "homeFetch": {
+  "ok": 10,
+  "failed": []
+ },
+ "surge": {
+  "kind": "carry",
+  "from": "2026-10-31T09:03:51.218Z",
+  "fromKst": "2026-10-31 18:03",
+  "fromSlot": "18:00",
+  "digest": "e5d8146bb8146b30"
+ },
+ "cal": {
+  "version": "tr-v1",
+  "asOf": "2026-11-04",
+  "provisional": true,
+  "records": 28,
+  "cases": 561,
+  "N": 561,
+  "a": 81,
+  "b": 477,
+  "k": 0,
+  "n10": 1,
+  "m10": 1,
+  "alerts": [
+   [
+    "half",
+    5
+   ]
+  ]
+ },
  "verify": {
-  "pick": "멍거 · 린치 조건 따로 세기 — 고른 곳 56 · 멍거 27 · 린치 32 · 둘 다 3 · 틀림 0"
+  "pick": "멍거 · 린치 조건 따로 세기 — 고른 곳 56 · 멍거 27 · 린치 32 · 둘 다 3 · 틀림 0",
+  "site": "{\"checks\":161092,\"bad\":0,\"first\":[]}",
+  "range": "{\"checks\":15322,\"mcChecks\":184,\"skipped\":4,\"bad\":0,\"first\":[]}",
+  "cal": "{\"ok\":true,\"checks\":10884,\"bad\":0,\"asOf\":\"2026-11-04\",\"last\":\"2026-11-03\",\"cases\":561,\"first\":[]}",
+  "cond": "조건 찾기 따로 세기: 회사 2557 · 짝 100 · 맞댐 36526 · 틀림 0 · 기본 2557 → 282 → 11 → 8"
  },
  "steps": [
   {
    "name": "일봉 받기",
    "code": 0,
-   "sec": 183.7
+   "sec": 189.3
   },
   {
    "name": "후보 표",
    "code": 0,
-   "sec": 3
+   "sec": 4.1
   },
   {
    "name": "바탕 회사 고르기(멍거 · 린치 조건)",
    "code": 0,
-   "sec": 4
+   "sec": 5.1
   },
   {
    "name": "업종 정리",
@@ -179,17 +236,75 @@
   {
    "name": "고르기 따로 세기",
    "code": 0,
-   "sec": 1.6
+   "sec": 2.6
   },
   {
    "name": "사이트 자료",
-   "code": 1,
-   "sec": 5.8
+   "code": 0,
+   "sec": 12.6
+  },
+  {
+   "name": "사이트 자료 따로 세기",
+   "code": 0,
+   "sec": 4.6
+  },
+  {
+   "name": "7단 범위 셈",
+   "code": 0,
+   "sec": 42.3
+  },
+  {
+   "name": "7단 범위 따로 세기",
+   "code": 0,
+   "sec": 39.2
+  },
+  {
+   "name": "첫 화면 원문 받기",
+   "code": 0,
+   "sec": 3.5
+  },
+  {
+   "name": "첫 화면 자료",
+   "code": 0,
+   "sec": 0
+  },
+  {
+   "name": "달력 셈",
+   "code": 0,
+   "sec": 6.1
+  },
+  {
+   "name": "달력 따로 세기",
+   "code": 0,
+   "sec": 3.9
+  },
+  {
+   "name": "조건 찾기 셈",
+   "code": 0,
+   "sec": 0.5
+  },
+  {
+   "name": "조건 찾기 따로 세기",
+   "code": 0,
+   "sec": 0.3
   },
   {
    "name": "네 눈 점검",
-   "code": 1,
-   "sec": 0.3
+   "code": 0,
+   "sec": 0.8
   }
- ]
+ ],
+ "cond": {
+  "version": "cd-v1",
+  "n": 2557,
+  "bytes": 183901,
+  "rise": 3,
+  "rc": 11,
+  "up": 0,
+  "x5": 35,
+  "q5": 27,
+  "f3": 1061,
+  "f3q": 18,
+  "noRank": 0
+ }
 }
