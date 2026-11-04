@@ -1,12 +1,17 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-03T21:40:39.294Z",
+ "at": "2026-11-04T01:43:33.798Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 174,
-  "fail": 0
+  "pass": 173,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] 처음 쪽 3 화면 안",
+   "3.05"
+  ]
+ ],
  "m": {
   "data": {
    "picks": 0,
@@ -18,13 +23,13 @@
    ]
   },
   "home": {
-   "screens": 2.35,
-   "links": 9
+   "screens": 3.05,
+   "links": 15
   },
   "speed": {
-   "lcp": 1048,
+   "lcp": 1168,
    "cls": 0
   }
  },
- "ok": true
+ "ok": false
 }
