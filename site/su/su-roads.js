@@ -32,11 +32,11 @@ export const nameOf = f => (f?.say ?? f?.name ?? '').replace(/\s*\(사장님만\
 const noneText = f => (f.group === 'sky' ? '뒷배경에서 날아요' : '지금은 여는 곳이 없어요');
 const noneShort = f => (f.group === 'sky' ? '뒷배경' : '여는 곳 없음');
 
-/** 묶음 막대 그림 — 묶음마다 기능 수(셋은 금빛 · 돕는 길은 연두 · 하늘은 살구) */
+/** 묶음 막대 그림 — 묶음마다 기능 수(셋은 21칸과 같은 색 · 돕는 길은 옅은 금빛) */
 function roadBars(rows) {
   const W = 390, rh = 44, H = rows.length * rh + 12, max = Math.max(1, ...rows.map(r => r.n));
   return s('svg', {class: 'su-svg su-roads', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '묶음마다 옛 기능 수'},
-    rows.map((r, i) => { const y = 6 + i * rh, w = 168 * r.n / max, cls = ['hot', 'bloom', 'money'].includes(r.g) ? 'g-ok' : r.g === 'sky' ? 'g-bad' : 'g-basefill';
+    rows.map((r, i) => { const y = 6 + i * rh, w = 168 * r.n / max, cls = {hot: 'g-bad', bloom: 'g-basefill', money: 'g-ok'}[r.g] ?? 'g-mute'; // 셋은 21칸과 같은 색(불장 살구 · 꽃 연두 · 돈 금빛 — 주문 0054 [2] 3) · 돕는 길은 옅은 금빛
       return [s('text', {x: 12, y: y + 27, class: 'g-tl g-tsub', text: SHORT[r.g]}), s('rect', {x: 120, y: y + 8, width: Math.max(4, w), height: 26, rx: 13, class: cls + ' b' + (1 + (i % 4)) + ' a-gx'}),
         s('text', {x: 128 + w, y: y + 28, class: 'g-tl g-tland', text: r.n + '가지'})]; }));
 }

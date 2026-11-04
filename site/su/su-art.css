@@ -193,3 +193,4 @@ body { background: var(--sky2); }
 .su-why21 { padding-left: 6px; padding-right: 6px; }
 .su-whyg .su-why21s { display: block; width: 100%; height: auto; }
 .g-halo { paint-order: stroke; stroke: var(--card); stroke-width: 6px; stroke-linejoin: round; }
+.g-mute { fill: var(--gold2); } /* 셋의 길 막대 — 셋을 돕는 길(멈춤 · 길잡이 · 손님 · 뒤 · 하늘)은 옅은 금빛 · 셋은 21칸 색 그대로(주문 0054 [2] 3) */
