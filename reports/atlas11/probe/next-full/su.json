@@ -1,0 +1,30 @@
+{
+ "schema": "su-check-1",
+ "at": "2026-11-04T04:45:53.307Z",
+ "base": "https://aaa7377.com",
+ "counts": {
+  "pass": 174,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "data": {
+   "picks": 0,
+   "near": 3,
+   "money": [
+    "한진칼",
+    "하이트진로",
+    "CJ ENM"
+   ]
+  },
+  "home": {
+   "screens": 2.79,
+   "links": 21
+  },
+  "speed": {
+   "lcp": 916,
+   "cls": 0
+  }
+ },
+ "ok": true
+}
