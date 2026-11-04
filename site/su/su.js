@@ -72,7 +72,7 @@ function barsOf(items) {
   items.forEach((it, i) => g.append(s('rect', {x: 0, y: i * 24 + 3, width: Math.max(4, 340 * it.v / mx).toFixed(1), height: 16, rx: 5, class: 'su-bar-' + it.k})));
   return g;
 }
-const recHero = (rec, who) => rec ? [hero('지난 기록', String(rec.rate), '번', '100번 가운데 꽃이 된 수예요.'),
+const recHero = (rec, who) => rec ? [hero('지난 기록 · 100번 가운데', String(rec.rate), '번 꽃이 됐어요', null),
   h('div', {class: 'su-herob'}, barsOf([{v: rec.rate, k: 'a'}, {v: rec.base, k: 'b'}]),
     h('ul', {class: 'su-legend'},
       h('li', {class: 'su-lg-c'}, h('i', {'aria-hidden': 'true'}), h('span', {text: who}), h('b', {text: rec.rate + '번'})),
