@@ -149,7 +149,7 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
 
 test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 기승전결 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);
@@ -159,12 +159,12 @@ test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 
   const st = /export const STEPS = (\[null, [^\n]*\]);/.exec(su); assert.ok(st, 'STEPS');
   const steps = new Function('return ' + st[1])().slice(1);
   assert.equal(steps.length, 8, '여덟 화면 = 다음 단추 일곱 번');
-  assert.deepEqual(steps.map(x => x[1]), [0, 1, 1, 2, 2, 2, 3, 3], '걸음이 기승전결 차례로 이어짐');
+  assert.deepEqual(steps.map(x => x[1]), [0, 1, 1, 2, 2, 3, 3, 3], '걸음이 기승전결 차례로 이어짐(주문 2044 — 21곳 · 땅 지도 · 업종 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게)');
   const tl = /const TABS = \(\) => \[([\s\S]*?)\]\];/.exec(su); assert.ok(tl, 'TABS');
-  const tabNames = [...tl[1].matchAll(/\['([가-힣]+)', /g)].map(m => m[1]);
-  assert.deepEqual(tabNames.slice(0, 4), ['오늘', '회사', '기록', '멈춤'], '탭 넷 = 기 오늘 · 승 회사 · 전 기록 · 결 멈춤');
-  assert.ok(su.includes("'탭 — 기 오늘 · 승 회사 · 전 기록 · 결 멈춤'"));
-  for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/n', '#/q', '#/q/127120', '#/j', '#/c/127120']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href);
+  const tabNames = [...tl[1].matchAll(/\['([0-9가-힣]+)', /g)].map(m => m[1]);
+  assert.deepEqual(tabNames.slice(0, 4), ['21곳', '지도', '기록', '멈춤'], '탭 넷 = 기 21곳 · 승 지도 · 전 기록 · 결 멈춤(주문 2044)');
+  assert.ok(su.includes("'탭 — 기 21곳 · 승 지도 · 전 기록 · 결 멈춤'"));
+  for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/n', '#/q', '#/q/127120', '#/j', '#/c/127120', '#/m', '#/m/hold', '#/f', '#/c/127120/more']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href);
   const {screenHits, ruinHits} = await import('../../site/next/words.js');
   const texts = [...all.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
   const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
@@ -250,3 +250,23 @@ test('아름다움(주문 1833 · 사장님 2026-11-04 13:33(+04) [아름다움]
   assert.ok(js.includes("'aria-hidden': 'true'") && css.includes('.su-orn-off { display: none !important; }') && /pointer-events: none/.test(css), '장식은 읽지 않고 누를 수 없음 · 글과 겹치면 숨김');
 });
 
+
+test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개편 명령서」 [1]) — 상장 회사 모두 → 우량주 365 → 셋 일곱씩 · 21곳은 365 안에서만 · 겹친 곳 표시 · 숫자는 받은 자료 그대로', () => {
+  const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8'));
+  const B = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/atlas11/view/board.json'), 'utf8'));
+  const in365 = new Set(B.companies.map(c => c.code));
+  assert.equal(T.schema, 'su21-1');
+  assert.ok(Number.isInteger(T.counts.listed) && T.counts.listed > 2000, '상장 회사 수 = 받은 자료(mkt.json n)');
+  assert.equal(T.counts.b365, in365.size, '우량주 = 지금 판(board.json) 그대로');
+  for (const k of ['hot', 'bloom', 'money']) {
+    assert.equal(T.lists[k].length, 7, k + ' 일곱');
+    for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' — 365곳 안에서만([7] 5)'); assert.ok(c.in.includes(k)); }
+  }
+  const cnt = {}; for (const k of ['hot', 'bloom', 'money']) for (const c of T.lists[k]) cnt[c.code] = (cnt[c.code] ?? 0) + 1;
+  assert.deepEqual(T.overlap.map(o => o.code).sort(), Object.keys(cnt).filter(c => cnt[c] > 1).sort(), '두 곳에 걸린 회사 = 겹침([1] 7)');
+  assert.equal(T.distinct, Object.keys(cnt).length, '서로 다른 회사 수');
+  const M = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-map.json'), 'utf8'));
+  assert.equal(M.lands.reduce((a, L) => a + L.inds.reduce((b, g) => b + g.cos.length, 0), 0), in365.size, '땅 지도 = 365곳 모두(빠진 곳 없음)');
+  const js = fs.readFileSync(path.join(ROOT, 'site/su/su-21.js'), 'utf8');
+  assert.ok(!/[가-힣][^'\n]*%/.test([...js.matchAll(/'([^'\n]*)'/g)].map(m => m[1]).join('\n')), '새 글에 % 없음');
+});
