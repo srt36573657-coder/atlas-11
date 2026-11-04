@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-04T10:32:25.709Z",
+ "at": "2026-11-04T12:29:41.770Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 372,
+  "pass": 573,
   "fail": 0
  },
  "fails": [],
@@ -18,55 +18,23 @@
    ]
   },
   "home": {
-   "screens": 7.05,
-   "links": 18
+   "screens": 4.51,
+   "links": 30
+  },
+  "t21": {
+   "listed": 2557,
+   "b365": 365,
+   "n": 21,
+   "overlap": 3,
+   "distinct": 18
   },
   "path": [
    {
-    "h1": "오늘 꽃 조건",
-    "share": 54,
-    "shareIn": 72,
-    "figs": 4,
-    "moving": 3,
-    "need": 0,
-    "means": 7,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 11,
-    "orn": 7
-   },
-   {
-    "h1": "삼표시멘트",
-    "share": 57,
-    "shareIn": 76,
-    "figs": 6,
-    "moving": 5,
-    "need": 0,
-    "means": 7,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 7,
-    "orn": 7
-   },
-   {
-    "h1": "시멘트 업종",
-    "share": 57,
-    "shareIn": 76,
-    "figs": 6,
-    "moving": 5,
-    "need": 1,
-    "means": 16,
-    "hard": 0,
-    "hardWords": "",
-    "glossed": 7,
-    "orn": 7
-   },
-   {
-    "h1": "지난 기록 한곳",
+    "h1": "지금 볼 21곳",
     "share": 54,
     "shareIn": 71,
-    "figs": 5,
-    "moving": 4,
+    "figs": 3,
+    "moving": 2,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -75,35 +43,61 @@
     "orn": 7
    },
    {
-    "h1": "달마다 지난 기록",
-    "share": 54,
+    "h1": "땅 지도",
+    "share": 52,
     "shareIn": 72,
-    "figs": 5,
-    "moving": 4,
-    "need": 1,
-    "means": 25,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
     "hard": 0,
     "hardWords": "",
-    "glossed": 8,
+    "glossed": 1,
     "orn": 7
    },
    {
-    "h1": "꽃이 못 된 까닭",
-    "share": 55,
-    "shareIn": 73,
-    "figs": 6,
-    "moving": 5,
+    "h1": "지주 · 유통 · 운송 땅",
+    "share": 53,
+    "shareIn": 70,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
+    "orn": 7
+   },
+   {
+    "h1": "한진칼",
+    "share": 57,
+    "shareIn": 76,
+    "figs": 5,
+    "moving": 4,
     "need": 0,
     "means": 7,
     "hard": 0,
     "hardWords": "",
-    "glossed": 6,
+    "glossed": 9,
+    "orn": 7
+   },
+   {
+    "h1": "한진칼 출목표",
+    "share": 53,
+    "shareIn": 73,
+    "figs": 4,
+    "moving": 3,
+    "need": 0,
+    "means": 4,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 4,
     "orn": 7
    },
    {
     "h1": "왜 사?",
     "share": 57,
-    "shareIn": 75,
+    "shareIn": 78,
     "figs": 3,
     "moving": 2,
     "need": 0,
@@ -116,7 +110,7 @@
    {
     "h1": "내 매매일지",
     "share": 54,
-    "shareIn": 72,
+    "shareIn": 75,
     "figs": 5,
     "moving": 4,
     "need": 0,
@@ -124,6 +118,19 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
+    "orn": 7
+   },
+   {
+    "h1": "친구에게",
+    "share": 54,
+    "shareIn": 75,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
     "orn": 7
    }
   ],
@@ -147,7 +154,7 @@
    }
   },
   "speed": {
-   "lcp": 2024,
+   "lcp": 1872,
    "cls": 0.023
   }
  },
