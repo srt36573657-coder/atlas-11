@@ -42,7 +42,7 @@ function clean(dir) {
   for (const k of top) { const f = path.join(SITE, 'atlas/data/co', k + '.json'); if (fs.existsSync(f)) cp(f, path.join(site, 'atlas/data/co', k + '.json')); }
   for (const f of ['hello.html', 'hello-send.js', 'letter.html', 'letter.js', 'invite.html', 'invite.js', 'privacy.html']) if (fs.existsSync(path.join(SITE, f))) cp(path.join(SITE, f), path.join(site, f));
   if (fs.existsSync(path.join(SITE, 'su'))) cp(path.join(SITE, 'su'), path.join(site, 'su')); // 수르 두 길 = 첫 화면(주문 2333 · 0047 — 진화도 이 쪽을 고침)
-  for (const f of [ESSENCE_FILE, LOCK_FILE, ORDER_FILE]) cp(path.join(ROOT, f), path.join(root, f));
+  for (const f of new Set([ESSENCE_FILE, LOCK_FILE, ORDER_FILE, ...Object.keys(readJ(path.join(ROOT, LOCK_FILE)).files ?? {})])) if (fs.existsSync(path.join(ROOT, f))) cp(path.join(ROOT, f), path.join(root, f)); // 잠금에 적힌 파일 모두(주문 0054 — 세 줄 틀이 essence-0054.txt 로 옮겨도 옛 order-1639.txt 는 잠금에 그대로)
   // 받은 기록 하나(이 자료 home.json 을 만든 업데이트) · 요약 = 그 받은 때 · 첫 화면이 쓰는 요약(src.home = home.json kst)
   const H = readJ(path.join(site, 'atlas/data/home.json'));
   const stamp = new Date(H.made).toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
@@ -67,7 +67,7 @@ test('깨끗한 판 — 일곱 모두 지나감(끝 코드 0) · 세 줄 숫자 
   const c2 = r.result.checks.find(c => c.no === 2), M = readJ(path.join(FX.site, 'atlas/data/mkt.json'));
   assert.match(c2.counts.lines[1], new RegExp(`회사 ${Object.keys(M.companies).length.toLocaleString('en-US')}곳`));
   assert.ok(!c2.counts.lines[2].includes('?'), c2.counts.lines[2]);
-  assert.deepEqual(c2.counts.lines.map(s => s.replace(/[\d,]+곳/, 'n곳').replace(/\d{1,2}월 \d{1,2}일 \d{1,2}시/, '○월 ○일 ○시')), orderLines(FX.root));
+  assert.deepEqual(c2.counts.lines.map((s, i) => (i === 1 ? s.replace(/[\d,]+곳/, 'n곳') : s).replace(/\d{1,2}월 \d{1,2}일 \d{1,2}시/, '○월 ○일 ○시')), orderLines(FX.root)); // n 은 둘째 줄(회사 수)만 — 첫 줄 「우량주 365곳 · 7곳씩」은 틀 글자 그대로(주문 0054)
   const c6 = r.result.checks.find(c => c.no === 6);
   assert.ok(c6.counts.sent >= 5, '보낸 것 ' + c6.counts.sent);
   console.log(`깨끗한 판 ${((Date.now() - t) / 1000).toFixed(1)}초 · 세 줄: ${c2.counts.lines.join(' / ')} · 보낸 것 ${c6.counts.sent}`);
@@ -82,8 +82,8 @@ const WRONG = [
   [6, '보내는 글의 수익 숫자 거름(noGain)을 비움', ({site}) => must(path.join(site, 'next/p-share.js'), /const noGain = s => [^\n]*/, "const noGain = s => String(s ?? '');")],
   [7, '오래된 받은 때에도 「?」를 안 붙임', ({site}) => must(path.join(site, 'next/essence.js'), "(d.old ? '? ' : '')", "''")],
   // 새 첫 화면(수르 두 길 · site/su/ — 사장님 2026-11-03 19:47(+04) 「응」 진화가 이 쪽을 고침 · 주문 0047) — 진화 대안이 망치면 막힘
-  [3, '새 첫 화면 글에 망치는 길 낱말', ({site}) => must(path.join(site, 'su/su.js'), "text: '두 가지예요'", "text: '지금이 기회예요. 놓치지 마세요.'")],
-  [2, '새 첫 화면에서 본질 세 줄 칸을 뺌', ({site}) => must(path.join(site, 'su/su.js'), 'moneyCard(moneyList(TH, W)), essBox(S), foot(asOf)', 'moneyCard(moneyList(TH, W)), foot(asOf)')],
+  [3, '새 첫 화면 글에 망치는 길 낱말', ({site}) => must(path.join(site, 'su/su.js'), "text: '찾기'", "text: '지금이 기회예요. 놓치지 마세요.'")], // 자리는 지금 su.js 글(주문 0054 — 옛 「두 가지예요」 줄은 2044 판에서 빠짐)
+  [2, '새 첫 화면에서 본질 세 줄 칸을 뺌', ({site}) => must(path.join(site, 'su/su.js'), 'after: [essBox(S)]', 'after: []')],
   [2, '새 첫 화면 세 줄을 자료로 셈하지 않음', ({site}) => must(path.join(site, 'su/su.js'), 'essenceLines(essenceData({summary: S}))', "['앞날을 맞혀요']")],
 ];
 for (const [i, [no, name, wreck]] of WRONG.entries()) {

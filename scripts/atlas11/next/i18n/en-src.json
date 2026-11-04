@@ -8346,7 +8346,7 @@
   "고친 고장 ?": "Fixed faults ?",
   "고친 고장이 없어요.": "No fixed faults.",
   "주식을 사기 전에 {q} 열한 질문으로 내 이유부터 확인해요.": "Before you buy a stock, check your own reason first with the eleven {q} questions.",
-  "불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.": "Among 365 blue-chip companies, we find 7 each that are running hot, about to bloom, or drawing money.",
+  "불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 {n}곳 안에서 {n}곳씩 찾아요.": "Among {n} blue-chip companies, we find {n} each that are running hot, about to bloom, or drawing money.",
   "앞날을 맞히지 않아요. {e}와 {e} 회사 {n}곳의 지난 기록만 보여 줘요.": "We don't predict the future. We only show past records of {n} companies on {e} and {e}.",
   "앞날을 맞히지 않아요. {e}와 {e} 회사 ?곳의 지난 기록만 보여 줘요.": "We don't predict the future. We only show past records of ? companies on {e} and {e}.",
   "사고팔기를 권하지 않아요. 숫자는 {e} 증권에서 받아요. 마지막으로 받은 때: {d} {n}시.": "We don't tell you to buy or sell. Numbers come from {e} Securities. Last received: {d}, {n}:00 (Seoul).",

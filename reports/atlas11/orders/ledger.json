@@ -1282,7 +1282,7 @@
    "did": "한국 상장 회사 2,557곳(코스피 · 코스닥 보통주) → 우량주 365곳(2026-10-05 판 그대로) → 불장 7 · 꽃이 될 7(조건 다 맞은 곳 0 → 가장 가까운 7) · 돈이 몰리는 7 · 겹친 3곳(한진칼 · CJ ENM · 하이트진로) → 서로 다른 18곳을 scripts/atlas11/next/su21.py 로 세어 site/su/data/su21.json · su21-map.json 에 둠 · 빈 파일 site/su/su-21.js 에서 새 길(21곳 → 땅 지도 → 땅 · 업종 → 회사 → 자세히(출목표 · 뜨거운 태양 · 수급 · 뉴스) → 왜 사? → 매매일지 → 친구에게) · 탭 21곳 · 지도 · 기록 · 멈춤 · 다음 단추에 앵무새 · 무하풍 별 · 용 뒷배경(천천히 · 움직임 줄이기면 멈춤) · 옛 기능 13줄은 새 길 위 · 셋과 안 이어진 것 = 만수르 바깥 길 하나 · 시안 열하나 → 장점표(learn11.md)",
    "state": "성공",
    "proof": "docs/design/su-21-2026-11-04/order-2044.txt · learn11.md · tests/atlas11/su.test.mjs(21곳 시험) · scripts/atlas11/next/check_su.mjs · reports/atlas11/full-runs/su-21-2044.jsonl · reports/atlas11/probe/next-full/su.json(진짜 사이트 573 · 0)",
-   "short": "수르 전면 개편 — 7번 눌러 지금 볼 21곳(불장 · 꽃 · 돈 일곱씩)"
+   "short": "수르 전면 개편 — 7번 눌러 지금 볼 21곳, 불장 · 꽃 · 돈 일곱씩"
   }
  ],
  "open": 7,
