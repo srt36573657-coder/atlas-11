@@ -1989,6 +1989,14 @@
    "how": "node scripts/atlas11/orders/kakao_digest.mjs",
    "order": "1616",
    "note": "주문 1616 끝 보고 — 장부 요약 45통 모두 보냄(실패 0 · 일꾼이 받은 글 그대로 차례대로)"
+  },
+  {
+   "at": "2026-11-04T19:51:22+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 44,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs",
+   "order": "1833",
+   "note": "주문 1807 · 1833 끝 보고 — 장부 127건 요약 44통 · 실패 0"
   }
  ]
 }
