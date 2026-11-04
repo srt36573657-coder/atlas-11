@@ -1,5 +1,5 @@
 {
- "at": "2026-11-04T10:06:33.493Z",
+ "at": "2026-11-04T10:15:25.320Z",
  "base": "http://127.0.0.1:8826",
  "secs": 120,
  "scenarios": [
@@ -40,13 +40,13 @@
   "edge-badcal"
  ],
  "time": {
-  "old": 34.9,
-  "new": 71.3,
-  "wall": 120.5,
+  "old": 34.5,
+  "new": 70.9,
+  "wall": 119.7,
   "opensOld": 357,
   "opensNew": 484,
-  "oldPct": 29,
-  "oldShare": 32.8
+  "oldPct": 28.8,
+  "oldShare": 32.7
  },
  "net": {
   "req": 4,

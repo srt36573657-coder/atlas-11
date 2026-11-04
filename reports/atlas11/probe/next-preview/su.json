@@ -1,12 +1,21 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-04T09:57:52.263Z",
+ "at": "2026-11-04T10:06:51.750Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 332,
-  "fail": 0
+  "pass": 370,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] 처음 쪽 7 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 숫자마다 「그래서」 · 풀이 · 여섯 칸 지도로 한 화면 늘림)",
+   "7.22"
+  ],
+  [
+   "[390] ⑨ 첫 화면 그림 넓이 50% 넘게 — 지난 기록 한곳",
+   "49%"
+  ]
+ ],
  "m": {
   "data": {
    "picks": 0,
@@ -18,96 +27,138 @@
    ]
   },
   "home": {
-   "screens": 5.05,
-   "links": 17
+   "screens": 7.22,
+   "links": 18
   },
   "path": [
    {
     "h1": "오늘 꽃 조건",
     "share": 52,
     "shareIn": 69,
-    "figs": 3,
+    "figs": 4,
     "moving": 3,
-    "need": 0
+    "need": 0,
+    "means": 7,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 11,
+    "orn": 7
    },
    {
     "h1": "삼표시멘트",
-    "share": 54,
-    "shareIn": 72,
-    "figs": 5,
+    "share": 52,
+    "shareIn": 70,
+    "figs": 6,
     "moving": 5,
-    "need": 0
+    "need": 0,
+    "means": 7,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 7,
+    "orn": 7
    },
    {
     "h1": "시멘트 업종",
-    "share": 54,
-    "shareIn": 72,
-    "figs": 5,
+    "share": 52,
+    "shareIn": 70,
+    "figs": 6,
     "moving": 5,
-    "need": 1
+    "need": 1,
+    "means": 16,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 7,
+    "orn": 7
    },
    {
     "h1": "지난 기록 한곳",
-    "share": 51,
-    "shareIn": 67,
-    "figs": 4,
+    "share": 49,
+    "shareIn": 65,
+    "figs": 5,
     "moving": 4,
-    "need": 0
+    "need": 0,
+    "means": 4,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 7,
+    "orn": 7
    },
    {
     "h1": "달마다 지난 기록",
     "share": 52,
     "shareIn": 69,
-    "figs": 4,
+    "figs": 5,
     "moving": 4,
-    "need": 1
+    "need": 1,
+    "means": 25,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 8,
+    "orn": 7
    },
    {
     "h1": "꽃이 못 된 까닭",
-    "share": 53,
+    "share": 52,
     "shareIn": 70,
-    "figs": 5,
+    "figs": 6,
     "moving": 5,
-    "need": 0
+    "need": 0,
+    "means": 7,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 6,
+    "orn": 7
    },
    {
     "h1": "왜 사?",
-    "share": 54,
+    "share": 55,
     "shareIn": 72,
-    "figs": 2,
+    "figs": 3,
     "moving": 2,
-    "need": 0
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
+    "orn": 7
    },
    {
     "h1": "내 매매일지",
     "share": 52,
     "shareIn": 69,
-    "figs": 4,
+    "figs": 5,
     "moving": 4,
-    "need": 0
+    "need": 0,
+    "means": 3,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 4,
+    "orn": 7
    }
   ],
+  "hard": 0,
+  "hardWords": [],
   "drawers": {
    "#/r/d": {
     "h1": "날마다 지난 기록",
-    "share": 54,
+    "share": 52,
     "moving": 4
    },
    "#/r/y": {
     "h1": "해마다 지난 기록",
-    "share": 51,
+    "share": 49,
     "moving": 3
    },
    "#/r/n": {
     "h1": "가까운 회사의 지난 기록",
-    "share": 51,
+    "share": 52,
     "moving": 3
    }
   },
   "speed": {
-   "lcp": 1856,
+   "lcp": 2204,
    "cls": 0.023
   }
  },
- "ok": true
+ "ok": false
 }
