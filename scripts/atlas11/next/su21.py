@@ -31,6 +31,15 @@ r1 = lambda v: None if v is None else round(v, 1)
 r2 = lambda v: None if v is None else round(v, 2)
 SRC_P = '네이버 증권 그날 마지막 값 · 수르가 셈'
 
+_OPEN = {}
+def opens(c):
+    # 수르 회사 쪽이 열리는 회사만 고름 — 회사 자료(atlas/data/co/<번호>.json)에 c 칸(이름 · 시장)이 있어야 그 쪽을 그림
+    # (2026-11-05 진짜 사이트 검사 — 올릴 때 다시 센 꽃 칸의 F&F 383220 은 c 칸이 없어 「찾지 못했어요」 · 주문 0054 [2] 4 「누르면 왜 여기 있나 먼저」)
+    if c not in _OPEN:
+        try: _OPEN[c] = isinstance(J(A.live + '/atlas/data/co/' + c + '.json').get('c'), dict)
+        except Exception: _OPEN[c] = False
+    return _OPEN[c]
+
 def per2(lst, k=7, per=2):
     out, cnt = [], collections.Counter()
     for c in lst:
@@ -42,12 +51,12 @@ def per2(lst, k=7, per=2):
 
 # ① 불장
 hot = {i['id']: i for i in b['hot']['items']}
-f1 = sorted([c for c, v in B.items() if v['group']['id'] in hot and c not in late and v.get('change20') is not None and v['change20'] > 0], key=lambda c: (-B[c]['change20'], c))
+f1 = sorted([c for c, v in B.items() if v['group']['id'] in hot and c not in late and v.get('change20') is not None and v['change20'] > 0 and opens(c)], key=lambda c: (-B[c]['change20'], c))
 HOT = per2(f1)
 # ② 꽃이 될
 caps = sorted(v for v in cond['co']['cap'] if v and v > 0); n = len(caps)
 thr = caps[next(r for r in range(n) if (r + 1) / n >= 0.8)]
-spr = [c for c in B if c in tco and tco[c][2] == 'S' and (cap.get(c) or 0) >= thr]
+spr = [c for c in B if c in tco and tco[c][2] == 'S' and (cap.get(c) or 0) >= thr and opens(c)]
 full = [c for c in spr if (IND.get(MK.get(c, {}).get('i'), {}).get('x') or -1e9) >= 15]
 ix = lambda c: IND.get(MK.get(c, {}).get('i'), {}).get('x')
 spr.sort(key=lambda c: (-(ix(c) if ix(c) is not None else -1e9), -tco[c][0], c))
@@ -61,7 +70,7 @@ def gain(c):
     return cap[c] * (1 - l[0] / l[-1])
 MONEY, mrow = [], {}
 for i in sorted([i for i in th['inds'] if i.get('x') is not None and i['x'] > 0], key=lambda i: -i['x']):
-    g = sorted([(gain(c), c) for c in B if MK.get(c, {}).get('i') == i['n'] and gain(c) is not None], key=lambda t: (-t[0], t[1]))
+    g = sorted([(gain(c), c) for c in B if MK.get(c, {}).get('i') == i['n'] and gain(c) is not None and opens(c)], key=lambda t: (-t[0], t[1]))
     if g and g[0][0] > 0:
         MONEY.append(g[0][1]); mrow[g[0][1]] = (i, round(g[0][0]))
     if len(MONEY) == 7: break
