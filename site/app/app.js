@@ -153,12 +153,11 @@ function globeIcon() {
 /*   2026-10-07 05:13 「언어팩을 주식시장이 있는 전세게 나라가 있잖아 다 만들어」 — 말 74개(i18n.js LANG_LIST): 위 세 말(한국어 · English · 简体中文)은 그대로 맨 위,
  *   나머지는 지금 보고 있는 말의 이름 차례(가나다 · ABC …) · 줄마다 그 말 글자 이름 + 지금 말로 쓴 이름(Intl.DisplayNames · 한국어로 보면 「독일어」) · 맨 위 찾기 칸(이름 · 코드로 거름) */
 const langHref = code => location.pathname + '?lang=' + code + location.hash;
-const PINNED = ['ko', 'en'];
-const NO_ZH = new Set(['zh', 'zh-TW']); // 중국어 뺌(사장님 2026-11-04 15:40(+04) 「중국어 삭제」 · 18:54(+03) 「잡스 판」 [1] 2 「중국어는 빼라 (영어 단추만 남긴다)」) — 말 고르기에서 보이지 않음(사전 파일은 검사가 쓰므로 둠)
+const PINNED = ['ko', 'en', 'zh'];
 function langItems() {
   let dn = null, col = null; try { dn = new Intl.DisplayNames([LANG_INFO.tag], {type: 'language'}); col = new Intl.Collator(LANG_INFO.tag); } catch {}
   const local = x => { try { const v = dn?.of(x.tag); return v && v.toLowerCase() !== x.tag.toLowerCase() && v !== x.name ? v : ''; } catch { return ''; } };
-  const rows = LANG_LIST.filter(x => !NO_ZH.has(x.code)).map(x => ({...x, local: local(x)}));
+  const rows = LANG_LIST.map(x => ({...x, local: local(x)}));
   const head = PINNED.map(c => rows.find(x => x.code === c)), rest = rows.filter(x => !PINNED.includes(x.code));
   rest.sort((a, b) => (col ? col.compare(a.local || a.name, b.local || b.name) : (a.local || a.name).localeCompare(b.local || b.name)));
   return [...head, ...rest];
@@ -167,7 +166,7 @@ function langPicker() {
   const items = langItems();
   const list = h('div', {class: 'lang-list'}, ...items.map(x => h('a', {class: 'lang-i', href: langHref(x.code), lang: x.tag, hreflang: x.tag, dir: x.rtl ? 'rtl' : 'ltr', 'data-code': x.code, 'data-find': `${x.code} ${x.tag} ${x.name} ${x.local}`.toLowerCase(), 'aria-current': x.code === LANG ? 'true' : null,
     onclick: e => { e.currentTarget.setAttribute('href', langHref(x.code)); }}, h('span', {class: 'lang-n'}, x.name), x.local ? h('small', {class: 'lang-s', 'data-ident': ''}, x.local) : null)));
-  const find = h('input', {class: 'lang-find', type: 'search', inputmode: 'search', autocomplete: 'off', spellcheck: 'false', placeholder: 'Language · 언어', 'aria-label': 'Language · 언어', 'data-orig-attr': 'aria-label placeholder',
+  const find = h('input', {class: 'lang-find', type: 'search', inputmode: 'search', autocomplete: 'off', spellcheck: 'false', placeholder: 'Language · 언어 · 语言', 'aria-label': 'Language · 언어 · 语言', 'data-orig-attr': 'aria-label placeholder',
     oninput: () => { const q = find.value.trim().toLowerCase(); for (const a of list.children) a.hidden = !!q && !a.dataset.find.includes(q); }});
   const box = h('details', {class: 'lang'},
     h('summary', {class: 'round lang-b', 'aria-label': 'Language · 语言 · 언어', title: 'Language · 语言 · 언어', 'data-orig-attr': 'aria-label title'}, globeIcon()),
