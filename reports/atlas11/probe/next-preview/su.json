@@ -1,0 +1,155 @@
+{
+ "schema": "su-check-1",
+ "at": "2026-11-04T10:32:25.709Z",
+ "base": "http://127.0.0.1:8826",
+ "counts": {
+  "pass": 372,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "data": {
+   "picks": 0,
+   "near": 3,
+   "money": [
+    "한진칼",
+    "하이트진로",
+    "현대글로비스"
+   ]
+  },
+  "home": {
+   "screens": 7.05,
+   "links": 18
+  },
+  "path": [
+   {
+    "h1": "오늘 꽃 조건",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 4,
+    "moving": 3,
+    "need": 0,
+    "means": 7,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 11,
+    "orn": 7
+   },
+   {
+    "h1": "삼표시멘트",
+    "share": 57,
+    "shareIn": 76,
+    "figs": 6,
+    "moving": 5,
+    "need": 0,
+    "means": 7,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 7,
+    "orn": 7
+   },
+   {
+    "h1": "시멘트 업종",
+    "share": 57,
+    "shareIn": 76,
+    "figs": 6,
+    "moving": 5,
+    "need": 1,
+    "means": 16,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 7,
+    "orn": 7
+   },
+   {
+    "h1": "지난 기록 한곳",
+    "share": 54,
+    "shareIn": 71,
+    "figs": 5,
+    "moving": 4,
+    "need": 0,
+    "means": 4,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 7,
+    "orn": 7
+   },
+   {
+    "h1": "달마다 지난 기록",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 5,
+    "moving": 4,
+    "need": 1,
+    "means": 25,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 8,
+    "orn": 7
+   },
+   {
+    "h1": "꽃이 못 된 까닭",
+    "share": 55,
+    "shareIn": 73,
+    "figs": 6,
+    "moving": 5,
+    "need": 0,
+    "means": 7,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 6,
+    "orn": 7
+   },
+   {
+    "h1": "왜 사?",
+    "share": 57,
+    "shareIn": 75,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
+    "orn": 7
+   },
+   {
+    "h1": "내 매매일지",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 5,
+    "moving": 4,
+    "need": 0,
+    "means": 3,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 4,
+    "orn": 7
+   }
+  ],
+  "hard": 0,
+  "hardWords": [],
+  "drawers": {
+   "#/r/d": {
+    "h1": "날마다 지난 기록",
+    "share": 57,
+    "moving": 4
+   },
+   "#/r/y": {
+    "h1": "해마다 지난 기록",
+    "share": 54,
+    "moving": 3
+   },
+   "#/r/n": {
+    "h1": "가까운 회사의 지난 기록",
+    "share": 57,
+    "moving": 3
+   }
+  },
+  "speed": {
+   "lcp": 2024,
+   "cls": 0.023
+  }
+ },
+ "ok": true
+}
