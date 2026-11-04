@@ -1,0 +1,279 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261104-1430",
+ "start": "2026-11-04T14:30:29+09:00",
+ "end": "2026-11-04T14:51:33+09:00",
+ "essence": {
+  "file": "docs/수르_본질.md",
+  "sha256": "51545febe65a5ad9c657c7e5ed2c8ed35239fc511460c87c68887147a602aed1",
+  "first": "수르의 본질: 싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다. 이 본질이 중심이자 시작이다. 세 번에서 다섯 번만 눌러도 왕초보도, 전문가도, 어린이도 알 수 있게 한다."
+ },
+ "main": "95f86cf85794b724b9093f64ee4529da22f0bf7c",
+ "cutoff": "2026-11-04T14:30:00+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "make",
+  "retest": [],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [
+  {
+   "n": 1,
+   "id": "20261104-1430-1",
+   "ok": true,
+   "route": "/su/#/c/000370",
+   "steps": [],
+   "commit": "7263e5aed348811912b0a261bca9ef2deab08cab",
+   "base": "95f86cf85794b724b9093f64ee4529da22f0bf7c",
+   "why": [],
+   "files": [
+    "site/su/su.css",
+    "site/su/su.js"
+   ],
+   "changeHash": "7c395cd84f01620c",
+   "big": [],
+   "changed": {
+    "fails": 0,
+    "tail": ""
+   },
+   "mark": {
+    "box": {
+     "x": 10,
+     "y": 65,
+     "w": 280,
+     "h": 60
+    },
+    "text": "‹ 처음으로 처음 › 한화손해보험",
+    "route": "/su/#/c/000370",
+    "steps": []
+   },
+   "preview": {
+    "state": "pass",
+    "run": 41780521261,
+    "sha": "7263e5aed348811912b0a261bca9ef2deab08cab",
+    "at": "2026-11-04T14:38:56+09:00"
+   },
+   "seed": {}
+  }
+ ],
+ "debate": {
+  "mode": "single",
+  "top": {
+   "kahneman": 1,
+   "munger": 1,
+   "popper": 1
+  },
+  "order": [
+   1
+  ],
+  "people": {
+   "kahneman": "샘플 열하나가 같은 곳을 짚었다: 돌아갈 길이 없어 길을 잃는다. 길 표시와 처음으로 단추만 더하고 서두르게 하는 것은 없다.",
+   "munger": "멈춤 칸을 키우는 것은 본질 2번을 눈에 띄게 하는 일이다. 어두운 판 단추와 아래 고정 띠는 범위가 커서 뺀다.",
+   "popper": "고침은 su.js와 su.css 두 파일이고 한 번에 되돌린다. 멈춤 칸까지 닿는 사람이 늘면 맞고 안 늘면 틀린 것이다."
+  },
+  "at": "2026-11-04T14:39:29+09:00",
+  "ok": true,
+  "why": []
+ },
+ "cards": [
+  {
+   "n": 1,
+   "id": "20261104-1430-1",
+   "ok": true,
+   "rule": {
+    "measure": "stop",
+    "num": "stop",
+    "dir": "up"
+   },
+   "card": {
+    "id": "20261104-1430-1",
+    "title": "길 표시와 멈춤 칸을 한 판에",
+    "pick": true,
+    "serves": "세 번에서 다섯 번만 눌러도 왕초보도, 전문가도, 어린이도 알 수 있게 한다.",
+    "before": "/next/data/jinhwa/20261104-1430-1-before.png",
+    "after": "/next/data/jinhwa/20261104-1430-1-after.png",
+    "voices": {
+     "kahneman": "돌아가는 길만 분명히 하고 더 사게 하는 장치는 없어요.",
+     "munger": "망치는 길 낱말이 없고 잣대를 비틀지 않아요.",
+     "popper": "어림을 약속 잣대에 걸고 파일이 두 개뿐이라 되돌리기 쉬워요."
+    },
+    "predict": {
+     "text": "회사 쪽에서 멈춤 칸을 눌러 매매일지를 끝낸 수가 늘어날 것으로 어림해요.",
+     "measure": "① 멈춤 · 매매일지를 끝낸 수가 들어가기 전 10거래일보다 늘면 맞아요",
+     "days": 10
+    },
+    "revert": "멈춤을 끝낸 수가 이전 열흘보다 줄거나 돌아가기 단추 때문에 화면 오류가 생기면 되돌려요.",
+    "premortem": "그것이 싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 주고 사기 전에 한 번 멈추게 하는 본질 1번과 2번을 쉬운 길로 닿게 하는 일이에요.",
+    "big": false,
+    "risks": [],
+    "branch": "jinhwa/20261104-1430-1",
+    "files": [
+     "site/su/su.css",
+     "site/su/su.js"
+    ],
+    "checks": {
+     "changed": 0,
+     "preview": 0
+    },
+    "mark": {
+     "box": {
+      "x": 10,
+      "y": 65,
+      "w": 280,
+      "h": 60
+     },
+     "text": "‹ 처음으로 처음 › 한화손해보험",
+     "route": "/su/#/c/000370",
+     "steps": []
+    }
+   }
+  }
+ ],
+ "retested": [],
+ "finished": [
+  {
+   "id": "20261104-1430-1",
+   "kind": "made",
+   "state": "pass",
+   "sha": "7263e5aed348811912b0a261bca9ef2deab08cab",
+   "round": "20261104-1430",
+   "why": ""
+  }
+ ],
+ "dropped": [],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": 2,
+  "at": "2026-11-04T14:19:48+09:00"
+ },
+ "factsNote": "",
+ "tally": {
+  "2026-10-22": {
+   "stop": 1,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-23": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-24": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-25": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-26": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-27": {
+   "stop": 1,
+   "stop_rest": 1,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-28": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-29": {
+   "stop": 2,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-30": {
+   "stop": 4,
+   "stop_rest": 2,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-31": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-01": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-02": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-03": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-04": {
+   "stop": 1,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  }
+ },
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 1,
+  "waiting": [
+   "20261104-1430-1"
+  ],
+  "errors": []
+ },
+ "owner": [
+  "새 진화 대안 1개를 만들었어요.",
+  "진화 칸에서 대안 1개가 확인을 기다려요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 0가지예요."
+ ],
+ "notice": "수르 진화 칸에 새 대안 1개가 올라가요. 15시 업데이트부터 보여요.",
+ "notDone": [],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-11-04T14:31:37+09:00 시작 · 본질 51545feb · main 95f86cf · 할 일 넣기 없음 → make",
+  "2026-11-04T14:32:59+09:00 지금 사이트 자료 마지막 날 2026-11-04(깃허브 일로 새로 받음) · main 일 폴더 2584개 · 회차를 연 폴더 2584개",
+  "2026-11-04T14:38:56+09:00 대안 1 검사 지남 · 미리 검사 시작 41780521261"
+ ],
+ "notes": [
+  "20261104-1430-did.md",
+  "20261104-1430-learn11.md",
+  "20261104-1430-why36.md"
+ ]
+}
