@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-04T18:29:58.996Z",
+ "at": "2026-11-04T19:39:57.384Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-04",
  "companies": 2557,
@@ -32,21 +32,23 @@
    }
   }
  },
- "seconds": 695,
+ "seconds": 927,
  "time": {
-  "old": 402.4,
-  "new": 305.7,
-  "wall": 694.9,
+  "old": 462.6,
+  "new": 454.7,
+  "wall": 927.2,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 57.9,
-  "oldShare": 56.8
+  "oldPct": 49.9,
+  "oldShare": 50.4
  },
  "net": {
-  "req": 5126,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
+  "req": 5129,
+  "retry": 1,
+  "waitSec": 1,
+  "why": {
+   "TimeoutError": 1
+  },
   "cut": 0,
   "page": {
    "retry": 0,
@@ -63,7 +65,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 2개(/atlas/ · /atlas/data/core.json)",
+   "why": "바뀐 파일 1개(/atlas/data/core.json)",
    "made": null,
    "inputs": 2568,
    "reads": 2557,
