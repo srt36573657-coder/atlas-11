@@ -235,18 +235,22 @@ export function funnel({total, conds = [], pick = [], near = [], miss = null, ca
 }
 
 /* ── 13 정직한 세 칸(시안 9) — 아무 회사 · 못했던 달 · 못 된 횟수(같은 크기 · 누르면 그 기록) ── */
-export function honest3({base, rate, down, scored, miss, n} = {}) {
+export function honest3({base, rate, down, scored, miss, n, fall = null, fallBase = null} = {}) { // 숨기지 않는 네 칸(시안 9 장점) — 아무 회사 · 못한 달 · 못 된 때 · 크게 처진 때
+  const two = (a, b, cls) => s('svg', {class: 'su-svg su-h3s', viewBox: '0 0 100 40', 'aria-hidden': 'true', 'data-g': 'h3'}, s('rect', {x: 0, y: 4, width: 100, height: 14, rx: 3, class: 'g-empty'}), s('rect', {x: 0, y: 4, width: fin(a) ? a : 0, height: 14, rx: 3, class: cls + ' b2 a-gx'}),
+    s('rect', {x: 0, y: 24, width: 100, height: 14, rx: 3, class: 'g-empty'}), s('rect', {x: 0, y: 24, width: fin(b) ? b : 0, height: 14, rx: 3, class: 'g-basefill b3 a-gx'}));
   const mini = (kind) => {
-    if (kind === 'b') return s('svg', {class: 'su-svg su-h3s', viewBox: '0 0 100 40', 'aria-hidden': 'true', 'data-g': 'h3'}, s('rect', {x: 0, y: 4, width: 100, height: 14, rx: 3, class: 'g-empty'}), s('rect', {x: 0, y: 4, width: fin(rate) ? rate : 0, height: 14, rx: 3, class: 'g-ok b2 a-gx'}),
-      s('rect', {x: 0, y: 24, width: 100, height: 14, rx: 3, class: 'g-empty'}), s('rect', {x: 0, y: 24, width: fin(base) ? base : 0, height: 14, rx: 3, class: 'g-basefill b3 a-gx'}));
+    if (kind === 'b') return two(rate, base, 'g-ok');
+    if (kind === 'f') return two(fall, fallBase, 'g-bad');
     if (kind === 'm') { const k = fin(scored) ? scored : 0; return s('svg', {class: 'su-svg su-h3s', viewBox: '0 0 100 40', 'aria-hidden': 'true', 'data-g': 'h3'}, Array.from({length: k}, (_, i) => s('rect', {x: (i % 11) * 9, y: Math.floor(i / 11) * 20 + 2, width: 7, height: 16, rx: 2, class: i < (fin(down) ? down : 0) ? 'g-no b3 a-pop' : 'g-bar b2 a-pop'}))); }
     return s('svg', {class: 'su-svg su-h3s', viewBox: '0 0 100 40', 'aria-hidden': 'true', 'data-g': 'h3'}, s('rect', {x: 0, y: 10, width: 100, height: 20, rx: 3, class: 'g-ok'}), s('rect', {x: fin(n) && fin(miss) && n > 0 ? 100 - 100 * miss / n : 100, y: 10, width: fin(n) && fin(miss) && n > 0 ? 100 * miss / n : 0, height: 20, rx: 3, class: 'g-no b3 a-gxr'}));
   };
   const tile = (href, kind, v, t) => h('a', {class: 'su-h3t', href}, mini(kind), h('b', {text: v}), h('span', {text: t}));
-  return h('figure', {class: 'su-fig su-honest', 'aria-label': '그런데 · 정직한 세 칸'}, h('h2', {class: 'su-ft', text: '그런데 · 정직한 세 칸'}),
-    h('div', {class: 'su-h3'}, tile('#/r', 'b', fin(base) ? Math.round(base) + '번' : '?', '아무 회사도 100번에'),
+  return h('figure', {class: 'su-fig su-honest', 'aria-label': '그런데 · 숨기지 않는 네 칸'}, h('h2', {class: 'su-ft', text: '그런데 · 숨기지 않는 네 칸'}),
+    h('div', {class: 'su-h3 su-h4'}, tile('#/r', 'b', fin(base) ? Math.round(base) + '번' : '?', '아무 회사도 100번에'),
       tile('#/r/m', 'm', fin(down) ? down + '달' : '?', '아무 회사보다 못했던 달'),
-      tile('#/r/w', 'x', fin(miss) ? miss.toLocaleString('ko-KR') + '번' : '?', '조건에 맞고도 꽃이 못 됨')));
+      tile('#/r/w', 'x', fin(miss) ? miss.toLocaleString('ko-KR') + '번' : '?', '조건에 맞고도 꽃이 못 됨'),
+      fin(fall) ? tile('#/r', 'f', Math.round(fall) + '번', '100번에 시장보다 한참 덜 오름 · 아무 회사 ' + (fin(fallBase) ? Math.round(fallBase) + '번' : '?')) : null),
+    h('p', {class: 'su-mean'}, h('i', {text: '그래서'}), h('span', {text: '좋은 숫자만 보여 주지 않는다는 뜻이에요. 못한 쪽도 같은 크기로 함께 봐요.'})));
 }
 
 /* ── 14 여섯 꽃잎(시안 7) — 찬 잎 = 채운 칸 · 점선 잎 = 「확인 필요」 ── */
@@ -254,4 +258,21 @@ export function dots6(six) {
   const keys = ['누가', '언제', '어디서', '무엇을', '어떻게', '왜'];
   return s('svg', {class: 'su-svg su-petal', viewBox: '-14 -14 28 28', 'aria-hidden': 'true'}, keys.map((k, i) =>
     s('ellipse', {cx: 0, cy: -7, rx: 3.6, ry: 6.2, transform: `rotate(${i * 60})`, class: six?.[k] ? 'g-pf' : 'g-pe'})), s('circle', {cx: 0, cy: 0, r: 2.6, class: 'g-pc'}));
+}
+
+/* ── 15 여섯 칸 지도(시안 8) — 이 쪽 값마다 여섯 칸 · 빈 칸이 한눈에 ── */
+export function sixMap(vals, {label = '이 쪽 값의 여섯 칸 지도'} = {}) {
+  const keys = ['누가', '언제', '어디서', '무엇을', '어떻게', '왜'], beat = ['b1', 'b1', 'b2', 'b2', 'b3', 'b4'];
+  const vs = (vals ?? []).filter(v => v && v.six);
+  if (!vs.length) return null;
+  const holes = vs.reduce((a, v) => a + keys.filter(k => !v.six[k]).length, 0);
+  const grid6 = (cells) => h('span', {class: 'su-sm6'}, cells);
+  return h('figure', {class: 'su-fig su-smap', 'aria-label': label},
+    h('h2', {class: 'su-ft', text: '여섯 칸 지도 · 값 ' + vs.length + '개 · ' + (holes ? '확인 필요 ' + holes + '칸' : '다 채움')}),
+    h('div', {class: 'su-g su-smg', 'data-g': 'smap'},
+      h('p', {class: 'su-smr su-smh', 'aria-hidden': 'true'}, h('span', {class: 'su-sml', text: '칸 자리'}), grid6(keys.map(k => h('span', {class: 'su-smk', text: k})))),
+      vs.map(v => { const n = keys.filter(k => !v.six[k]).length;
+        return h('p', {class: 'su-smr'}, h('span', {class: 'su-sml'}, h('b', {text: v.label || '값'}), n ? h('em', {class: 'su-needt', text: ' 확인 필요 ' + n + '칸'}) : null),
+          grid6(keys.map((k, i) => h('span', {class: 'su-smc ' + beat[i] + ' a-pop' + (v.six[k] ? '' : ' su-need'), role: 'img', 'aria-label': k + (v.six[k] ? ' 채움' : ' 확인 필요')})))); })),
+    h('p', {class: 'su-mean'}, h('i', {text: '그래서'}), h('span', {text: holes ? '빈 칸 ' + holes + '개는 자료가 없어서 「확인 필요」로 남겼다는 뜻이에요. 지어서 채우지 않았어요.' : '이 쪽 값은 여섯 칸이 다 찼다는 뜻이에요.'})));
 }
