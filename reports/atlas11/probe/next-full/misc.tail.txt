@@ -1,14 +1,14 @@
 {
- "sec": 69,
+ "sec": 43,
  "xCodes": 1750,
  "time": {
-  "old": 21.1,
-  "new": 43.6,
-  "wall": 69.4,
+  "old": 13.1,
+  "new": 26,
+  "wall": 42.5,
   "opensOld": 1771,
   "opensNew": 1836,
-  "oldPct": 30.4,
-  "oldShare": 32.6
+  "oldPct": 30.7,
+  "oldShare": 33.5
  },
  "net": {
   "req": 9,

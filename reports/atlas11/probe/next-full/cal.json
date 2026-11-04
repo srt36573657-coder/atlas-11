@@ -3,15 +3,15 @@
  "base": "https://aaa7377.com",
  "limit": "all",
  "wide": "all",
- "took_s": 134,
+ "took_s": 149,
  "time": {
-  "old": 27.3,
-  "new": 91.3,
-  "wall": 134.5,
+  "old": 32.7,
+  "new": 98.1,
+  "wall": 148.9,
   "opensOld": 1176,
   "opensNew": 2882,
-  "oldPct": 20.3,
-  "oldShare": 23
+  "oldPct": 22,
+  "oldShare": 25
  },
  "net": {
   "req": 5,
@@ -35,6 +35,7 @@
   "종목 파일": 561,
   "없는 주소 · 밖 번호": 4,
   "바꿔치기": 8,
+  "옛 쪽 오류(참고)": 1,
   "세 폭 화면": 1692,
   "칸 고르기 줄": 2826
  },
