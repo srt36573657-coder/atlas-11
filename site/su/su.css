@@ -74,7 +74,7 @@ h1:focus { outline: none; }
 .su-mid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 8px; }
 .su-mid li { display: grid; align-content: start; gap: 2px; padding: 8px 12px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); min-width: 0; }
 .su-mk { font-size: var(--f5); color: var(--sub); line-height: 1.35; }
-.su-mv { font-size: var(--f3); font-weight: 800; line-height: 1.3; }
+.su-mv { font-size: var(--f3); font-weight: 800; line-height: 1.3; white-space: nowrap; }
 
 /* 그림 — 기승전결 네 박자 · 맺음(b4) = 그 쪽의 큰 값 */
 .su-fig { margin: 0; display: grid; gap: 10px; padding: 14px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); min-width: 0; }
@@ -247,6 +247,17 @@ h1:focus { outline: none; }
 .su-ask { display: grid; gap: 2px; min-height: 64px; padding: 14px 16px; border-radius: 18px; background: var(--cobg); color: var(--co); }
 .su-ask-a { font-size: var(--f3); font-weight: 800; }
 .su-ask-b { font-size: var(--f5); }
+.su-ask { border: 2px solid var(--co); min-height: 84px; }
+.su-ask-g { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.su-ask-g i { font-style: normal; font-size: var(--f5); font-weight: 800; padding: 2px 12px; border-radius: 999px; background: var(--bg); }
+.su-ask-g i:nth-child(1) { animation: su-fade .4s ease-out .2s both; }
+.su-ask-g i:nth-child(2) { animation: su-fade .4s ease-out .6s both; }
+.su-ask-g i:nth-child(3) { animation: su-fade .4s ease-out 1s both; }
+.su-ask-g i:nth-child(4) { animation: su-fade .4s ease-out 1.4s both; }
+/* 지금 있는 곳 — 처음으로 돌아가는 길(누르는 곳 48 이상) */
+.su-crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.su-crumb-a { display: inline-flex; align-items: center; min-height: 48px; padding: 6px 16px; border-radius: 999px; background: var(--cobg); color: var(--co); font-size: var(--f4); font-weight: 800; }
+.su-crumb-n { font-size: var(--f5); color: var(--sub); }
 
 /* 다음 걸음 — 쪽마다 하나 */
 .su-next { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; align-items: center; min-height: 76px; padding: 14px 18px; border-radius: 20px; background: var(--fg); color: var(--bg); }
@@ -299,5 +310,5 @@ h1:focus { outline: none; }
 .su-say .b3 { animation: su-up .45s ease-out .9s both; }
 .su-say .b4 { animation: su-up .45s ease-out 1.35s both; }
 @media (prefers-reduced-motion: reduce) {
-  .su-fig *, .su-say li, .su-vt * { animation: none !important; }
+  .su-fig *, .su-say li, .su-vt *, .su-ask-g i { animation: none !important; }
 }

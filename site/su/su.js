@@ -94,6 +94,9 @@ const safe = () => h('p', {class: 'su-safe', text: SAFE});
 const prog = n => h('p', {class: 'su-prog'},
   h('span', {class: 'su-dots', 'aria-hidden': 'true'}, STEPS.map((_, i) => h('i', {class: i < n - 1 ? 'on' : i === n - 1 ? 'now' : null}))),
   h('span', {class: 'su-progt', text: n + ' / 7 · ' + STEPS[n - 1][0]}));
+/** 지금 있는 곳 — 「‹ 처음으로」 한 번이면 돌아가는 길(처음 쪽에는 없음) */
+const crumb = (step, title) => (step > 1 && title ? h('nav', {class: 'su-crumb', 'aria-label': '지금 있는 곳'},
+  h('a', {class: 'su-crumb-a', href: '#/', text: '‹ 처음으로'}), h('span', {class: 'su-crumb-n', text: '처음 › ' + title})) : null);
 const kicker = t => h('p', {class: 'su-kick', text: t});
 const h1 = (t, proper = false) => h('h1', {class: 'su-h1', tabindex: '-1'}, proper ? h('span', {'data-proper': '', text: t}) : h('span', {text: t}));
 /** 큰 값 — 그 쪽의 머리 값 하나(가장 큰 글씨) */
@@ -129,7 +132,7 @@ const tabs = active => h('nav', {class: 'su-tabs', 'aria-label': NAME + ' 탭'},
 /** 한 면 — 신문 차례 그대로 */
 function paper({step, title, kick, head, value, S, mid, fig, say, body = [], go, src}) {
   return {title, beat: STEPS[step - 1][1], nodes: [bar(), h('main', {class: 'su-main'},
-    safe(), prog(step), kicker(kick), head, value, got(S), mid, fig, beats(say), ...body.filter(Boolean), go, src)]};
+    crumb(step, title), safe(), prog(step), kicker(kick), head, value, got(S), mid, fig, beats(say), ...body.filter(Boolean), go, src)]};
 }
 
 /* ── 조건(맞은 것 먼저 · 못 맞은 것 뒤 — 그림 · 목록 · 문장이 같은 차례) ── */
@@ -309,7 +312,7 @@ async function vHome() {
     near ? '오늘 가장 가까운 ' + bl.rows.length + '곳은 조건 ' + kn(cs.length) + ' 가운데 ' + kn(ok) + '에 맞았어요.' : pick ? '오늘 ' + n + '곳이 조건 ' + kn(cs.length) + '에 모두 맞았어요.' : '오늘은 꽃 조건에 가까운 회사가 없어요.',
     near ? '그런데 조건에 다 맞은 회사는 오늘 없어요.' : rec ? '그런데 지난 기록에서 이런 회사는 100번에 ' + rec.rate + '번 꽃이 됐어요.' : '그런데 돈이 몰린 업종은 있어요.',
     '그래서 서두르지 않고 한 곳씩 까닭을 봐요.'];
-  return paper({step: 1, title: null, kick: dateKo(asOf) + ' 자료 · 이달 꽃 조건 ' + kn(bl.say.length),
+  return paper({step: 1, title: null, kick: '꽃이 될 회사를 찾아요 · ' + dateKo(asOf) + ' 자료 · 이달 꽃 조건 ' + kn(bl.say.length),
     head: h1('꽃 조건에 다 맞은 회사'),
     value: big(String(n), '곳', near ? '가장 가까운 ' + bl.rows.length + '곳을 따로 보여 드려요.' : pick ? '이달 꽃 조건에 모두 맞았어요.' : '오늘은 가까운 회사도 없어요.'),
     S, mid: mids([near ? ['가장 가까운 곳', bl.rows.length + '곳'] : pick ? ['꽃이 될 회사', n + '곳'] : null, ['돈이 몰린 회사', mo.length + '곳']]),
@@ -380,9 +383,14 @@ async function vCo(code) {
       ...rs.map(reasonCard),
       bloomKind ? figLine(c.name, cl, il) : null,
       ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
-      h('a', {class: 'su-ask', href: whyHref(code)}, h('span', {class: 'su-ask-a', text: '사기 전에 한 번 멈춰요'}), h('span', {class: 'su-ask-b', text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'}))],
+      stopBox(whyHref(code))],
     go, src: source(H?.asOf ?? asOf, S, rs.length ? null : '이 회사는 오늘 두 목록에 없어요. 지난 한 달만 보여 드려요.')});
 }
+/** 멈춤 칸 — 사기 전에 한 번 멈추는 길(이유 · 돈 · 때 · 마음 네 묶음이 차례로 나타남 · 서두르게 하지 않음) */
+const stopBox = href => h('a', {class: 'su-ask', href},
+  h('span', {class: 'su-ask-a', text: '사기 전에 한 번 멈춰요'}),
+  h('span', {class: 'su-ask-b', text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'}),
+  h('span', {class: 'su-ask-g', 'aria-hidden': 'true'}, WHY_GROUPS.map(([g]) => h('i', {text: g}))));
 /** 왜 여기 있나 — 칸 하나에 까닭 하나(검사 글: 「조건에 가장 가까운 회사예요」 · 「맞은 조건」 · 「안 맞은 조건」 · 「돈이 몰린 회사예요」 · 「꽃이 될 회사예요」) */
 function reasonCard(r) {
   const okList = list => h('ul', {class: 'su-cond'}, list.map(t => h('li', {class: 'su-ok'}, okNo({ok: true}), h('span', {text: t}))));
@@ -462,7 +470,8 @@ async function vInd(name) {
       rows.length > 12 ? moreRows(rows.slice(12).filter(r => r.code !== cur?.code)) : null),
     say,
     body: [wy?.items?.length ? section('돈이 몰린 까닭', '돈이 몰린 까닭', wy.line ? h('p', {class: 'su-lead', text: wy.line}) : null,
-      h('ol', {class: 'su-items'}, wy.items.slice(0, 4).map(it => h('li', {}, h('b', {text: it.t}), it.sub ? h('span', {text: it.sub}) : null)))) : null],
+      h('ol', {class: 'su-items'}, wy.items.slice(0, 4).map(it => h('li', {}, h('b', {text: it.t}), it.sub ? h('span', {text: it.sub}) : null)))) : null,
+      stopBox(whyHref(cur?.code ?? lastCo?.code ?? null))],
     go: next(5, rHref(cur?.code ?? lastCo?.code ?? null), '지난 기록 · 싹이 꽃이 된 횟수'),
     src: source(M?.asOf, S)});
 }
