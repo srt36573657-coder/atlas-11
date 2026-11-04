@@ -26,8 +26,8 @@ export function find21(T, code) { for (const k of KEY) for (const c of T?.lists?
 /** 까닭 한 줄(학생 말) — 왜 이 회사가 21곳에 들었나 */
 export function why21(c, k, T) {
   const w = c.why ?? {};
-  if (k === 'hot') return c.ind + ' 업종이 지난 20거래일 동안 365곳 업종 평균으로 ' + sgn(w.ind20) + ' 움직였어요. 그 가운데 ' + c.name + '는 ' + sgn(c.ch20) + ' 올라 불장 7곳에 들었어요.';
-  if (k === 'bloom') return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. ' + c.name + '는 아직 「싹」이에요. ' + (w.full ? '꽃 조건을 모두 채웠어요.' : '꽃 조건을 다 채우지는 못한, 가장 가까운 곳이에요.');
+  if (k === 'hot') return c.ind + ' 업종이 지난 20거래일 동안 365곳 업종 평균으로 ' + sgn(w.ind20) + ' 움직였어요. 그 가운데 ' + josa(c.name, '은') + ' ' + day(c.date) + '까지 20거래일 동안 ' + sgn(c.ch20) + ' 올라 불장 7곳에 들었어요.';
+  if (k === 'bloom') return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. ' + josa(c.name, '은') + ' 아직 「싹」이에요. ' + (w.full ? '꽃 조건을 모두 채웠어요.' : '꽃 조건을 다 채우지는 못한, 가장 가까운 곳이에요.');
   return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.';
 }
 const six21 = (c, k, T) => ({누가: c.name + ' · ' + c.ind + ' 업종', 언제: day(T?.asOf?.board) + ' 자료', 어디서: '우량주 365곳 안(' + (c.land ?? NEED) + ')', 무엇을: KIND[k] + ' 7곳에 들었어요', 어떻게: T?.rules?.[k] ?? null, 왜: why21(c, k, T)});
@@ -103,6 +103,7 @@ function petals6() {
   const W = 390, H = 440, cx = W / 2, cy = 220;
   return s('svg', {class: 'su-svg su-p6', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '친구에게 건네는 여섯 가지'},
     Array.from({length: 6}, (_, i) => s('g', {transform: `rotate(${i * 60} ${cx} ${cy})`}, s('ellipse', {cx, cy: cy - 106, rx: 48, ry: 102, class: 'o-pet ' + BEAT[i % 4] + ' a-pop'}))),
+    ['카톡 보내기', '선물', '커피 쿠폰', '소개 영상', '내 종목', '진화'].map((t, i) => s('text', {x: cx + 150 * Math.sin(i * Math.PI / 3), y: cy - 150 * Math.cos(i * Math.PI / 3) + 8, 'text-anchor': 'middle', class: 'g-tl g-tland ' + BEAT[i % 4] + ' a-up', text: t})), // 꽃잎마다 친구에게 건네는 것
     s('circle', {cx, cy, r: 34, class: 'o-core b4 a-pop'}), s('text', {x: cx, y: cy + 8, 'text-anchor': 'middle', class: 'g-tl g-tw', text: '21곳'}));
 }
 
@@ -159,7 +160,7 @@ export async function vMore(X, code) {
   const c = find21(T, code); if (!c) return X.notFound('이 회사의 출목표 자료가 없어요. 21곳만 있어요.');
   X.setCur?.({code, name: c.name, ind: c.ind});
   const l = c.c ?? [], d = l.slice(1).map((v, i) => Math.sign(v - l[i])), up = d.filter(x => x > 0).length, dn = d.filter(x => x < 0).length, f = c.flows ?? {};
-  const big = val(c.ch20, '', c.name + ' · 20거래일 오른 만큼', {누가: c.name, 언제: day(c.date) + '까지 20거래일', 어디서: c.ind + ' 업종', 무엇을: '그날 마지막 값으로 셌어요', 어떻게: '첫날 값과 마지막 날 값을 견줬어요', 왜: '21곳에 든 까닭을 값으로 보려고요'}, {mean: '20거래일 전에 100원이었다면 지금 ' + (fin(c.ch20) ? num(Math.round((100 + c.ch20) * 10) / 10) : NEED) + '원이라는 뜻이에요.'});
+  const big = val(fin(c.ch20) ? sgn(c.ch20) : null, '%', c.name + ' · ' + day(c.date) + '까지 20거래일 오른 만큼', {누가: c.name, 언제: day(c.date) + '까지 20거래일', 어디서: c.ind + ' 업종', 무엇을: '그날 마지막 값으로 셌어요', 어떻게: '첫날 값과 마지막 날 값을 견줬어요', 왜: '21곳에 든 까닭을 값으로 보려고요'}, {mean: day(c.date) + ' 마지막 값으로 보면, 20거래일 전에 100원이었다면 지금 ' + (fin(c.ch20) ? num(Math.round((100 + c.ch20) * 10) / 10) : NEED) + '원이라는 뜻이에요.'});
   const mids = [
     val(up, '일', '오른 날 · 내린 날 ' + dn + '일', {누가: c.name, 언제: day(c.date) + '까지', 어디서: '출목표', 무엇을: '날마다 오른 날과 내린 날을 셌어요', 어떻게: '● 오른 날 · ○ 내린 날', 왜: '오른 날이 이어졌는지 보려고요'}, {mean: '20일 가운데 ' + up + '일 올랐고 ' + dn + '일 내렸다는 뜻이에요.'}),
     val(f.foreign, '', '외국인 닷새 · 기관 ' + (fin(f.institution) ? num(f.institution) : NEED) + ' · 개인 ' + (fin(f.individual) ? num(f.individual) : NEED), {누가: '외국인 · 기관 · 개인', 언제: f.from && f.to ? day(f.from) + '부터 ' + day(f.to) + '까지' : null, 어디서: c.name, 무엇을: '닷새 동안 들어온 돈과 나간 돈의 차이', 어떻게: '자료 값 그대로 · 단위 확인 필요', 왜: null}, {mean: fin(f.foreign) ? (f.foreign > 0 ? '외국인은 닷새 동안 판 것보다 산 것이 많았다는 뜻이에요.' : '외국인은 닷새 동안 산 것보다 판 것이 많았다는 뜻이에요.') : null}),
@@ -188,7 +189,7 @@ export async function vFriend(X) {
 /** 회사 쪽 — 21곳 까닭 상자 */
 export function reasonBox21(T, code) {
   const ks = KEY.filter(k => (T?.lists?.[k] ?? []).some(c => c.code === code)); if (!ks.length) return null;
-  const c = find21(T, code);
+  const ck = k => T.lists[k].find(c => c.code === code); // 목록마다 그 목록의 까닭(겹친 곳은 두 줄 — 불장 까닭 · 돈 까닭)
   return h('section', {class: 'su-why su-why21', 'aria-label': '21곳에 든 까닭'}, h('h2', {class: 'su-ft', text: '21곳에 든 까닭 · ' + ks.map(k => KIND[k]).join(' · ')}),
-    ks.map(k => h('p', {class: 'su-lead', text: why21(c, k, T)})), h('p', {class: 'su-note', text: '자료 ' + day(T.asOf.board) + ' · ' + SRC}));
+    ks.map(k => h('p', {class: 'su-lead', text: why21(ck(k), k, T)})), h('p', {class: 'su-note', text: '자료 ' + day(T.asOf.board) + ' · ' + SRC}));
 }
