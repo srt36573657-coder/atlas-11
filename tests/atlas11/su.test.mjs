@@ -267,6 +267,10 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
   assert.equal(T.distinct, Object.keys(cnt).length, '서로 다른 회사 수');
   const M = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-map.json'), 'utf8'));
   assert.equal(M.lands.reduce((a, L) => a + L.inds.reduce((b, g) => b + g.cos.length, 0), 0), in365.size, '땅 지도 = 365곳 모두(빠진 곳 없음)');
+  for (const k of ['hot', 'bloom', 'money']) for (const c of T.lists[k]) { const w = c.why ?? {}; // 까닭 칸이 그 목록 셈으로 채워짐(겹친 곳도 목록마다 따로)
+    if (k === 'hot') assert.ok(Number.isFinite(w.ind20) && Number.isFinite(c.ch20), 'hot 까닭 ' + c.name);
+    if (k === 'money') assert.ok(Number.isFinite(w.indX) && Number.isFinite(w.gain), 'money 까닭 ' + c.name);
+    if (k === 'bloom') assert.ok(Number.isFinite(w.indX), 'bloom 까닭 ' + c.name); }
   const js = fs.readFileSync(path.join(ROOT, 'site/su/su-21.js'), 'utf8');
   assert.ok(!/[가-힣][^'\n]*%/.test([...js.matchAll(/'([^'\n]*)'/g)].map(m => m[1]).join('\n')), '새 글에 % 없음');
 });
