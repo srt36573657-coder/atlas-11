@@ -1,0 +1,170 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261104-2030",
+ "start": "2026-11-04T20:30:23+09:00",
+ "end": "2026-11-04T20:33:43+09:00",
+ "essence": {
+  "file": "docs/수르_본질.md",
+  "sha256": "51545febe65a5ad9c657c7e5ed2c8ed35239fc511460c87c68887147a602aed1",
+  "first": "수르의 본질: 싹에서 꽃이 되는 종목을 지난 기록으로 엄선해 찾아 준다. 이 본질이 중심이자 시작이다. 세 번에서 다섯 번만 눌러도 왕초보도, 전문가도, 어린이도 알 수 있게 한다."
+ },
+ "main": "c30641a02c7bf132596616dd12c3efe29b654ada",
+ "cutoff": "2026-11-04T20:30:00+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "retest",
+  "retest": [
+   "20261104-1834-1"
+  ],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [],
+ "debate": null,
+ "cards": [],
+ "retested": [
+  {
+   "id": "20261104-1834-1",
+   "ok": false,
+   "why": [
+    "지금 main 위에 얹으면 부딪힘 Applied patch to 'site/su/su.css' with conflicts. Applied patch to 'site/su/su.js' with conflicts. U site/su/su.css U si"
+   ]
+  }
+ ],
+ "finished": [],
+ "dropped": [
+  {
+   "id": "20261104-1834-1",
+   "why": "지금 main 위에 얹으면 부딪힘 Applied patch to 'site/su/su.css' with conflicts. Applied patch to 'site/su/su.js' with conflicts. U site/su/su.css U si"
+  }
+ ],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": 2,
+  "at": "2026-11-04T18:12:47+09:00"
+ },
+ "factsNote": "",
+ "tally": {
+  "2026-10-22": {
+   "stop": 1,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-23": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-24": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-25": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-26": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-27": {
+   "stop": 1,
+   "stop_rest": 1,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-28": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-29": {
+   "stop": 2,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-30": {
+   "stop": 4,
+   "stop_rest": 2,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-31": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-01": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-02": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-03": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-04": {
+   "stop": 1,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  }
+ },
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 1,
+  "waiting": [],
+  "errors": []
+ },
+ "owner": [
+  "이번 진화 회차는 바꾼 것이 없어요.",
+  "진화 칸에 기다리는 대안은 없어요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 0가지예요."
+ ],
+ "notice": "",
+ "notDone": [],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-11-04T20:31:44+09:00 시작 · 본질 51545feb · main c30641a · 할 일 넣기 없음 → retest",
+  "2026-11-04T20:32:49+09:00 지금 사이트 자료 마지막 날 2026-11-04(깃허브 일로 새로 받음) · main 일 폴더 2584개 · 회차를 연 폴더 2584개"
+ ],
+ "notes": [
+  "20261104-2030-did.md"
+ ]
+}
