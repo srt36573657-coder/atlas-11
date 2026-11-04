@@ -1,9 +1,6 @@
 {
  "schema": "atlas11-check-gift-1",
  "base": "https://aaa7377.com",
- "ok": false,
- "fails": [
-  "390 #/ 위 막대 금빛 선물 단추 없음",
-  "320 #/ 위 막대 금빛 선물 단추 없음"
- ]
+ "ok": true,
+ "fails": []
 }
