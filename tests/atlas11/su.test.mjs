@@ -174,3 +174,12 @@ test('새 판 「왜 사?」 답하기 — 답 셋 · 한마디 · 왜 묻나 ·
   assert.deepEqual(texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)]), [], '답하기 글에 쓰지 않을 말 0');
   assert.equal(forwardTo('', '#/q'), null); assert.equal(forwardTo('', '#/q/127120'), null);
 });
+
+test('새 판 매매일지 — 지금 수르 매매일지와 같은 열쇠 · 같은 약속 꼴 · 같은 한 달 셈 · 같은 신호(주문 1519)', async () => {
+  const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  for (const frag of ["{a: yes ? 'yes' : 'no', at: new Date().toISOString()}", "const LATER = 20;", "(Date.now() - Date.parse(r.at)) / 864e5 >= 30", "'/next/data/median20.json'",
+    "'그날 정한 대로 했어?'", "text: '했어'", "text: '안 했어'", "tally(yes ? 'promise_yes' : 'promise')", '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.']) {
+    assert.ok(why.includes(frag), 'p-why.js — ' + frag); assert.ok(su.includes(frag), 'su.js — ' + frag);
+  }
+  assert.equal(forwardTo('', '#/j'), null, '매매일지 길은 새 판 안');
+});

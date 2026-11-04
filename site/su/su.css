@@ -315,6 +315,40 @@ button.su-next { width: 100%; border: 0; font: inherit; text-align: left; cursor
 .su-ma { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; }
 .su-ma i { font-style: normal; }
 
+
+/* ── 매매일지(주문 1519) — 판정 기둥 · 준비 점수 길 · 네 묶음 평균 · 기록마다 작은 막대 · 한 달 전 약속 ── */
+.su-vcl { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; text-align: center; }
+.su-vcl li { display: grid; justify-items: center; gap: 2px; font-size: var(--f5); }
+.su-vcl b { font-size: var(--f3); font-weight: 900; }
+.su-zg { fill: var(--okbg); }
+.su-zy { fill: var(--bg); }
+.su-zr { fill: var(--nobg); }
+.su-rdl { fill: none; stroke: var(--fg); stroke-width: 2; stroke-linejoin: round; stroke-dasharray: 1; }
+.su-pt { stroke: var(--card); stroke-width: 1.5; }
+.su-mini { width: 96px; height: 24px; flex: none; }
+.su-jl { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.su-jr { display: grid; gap: 6px; padding: 12px 14px; border-radius: 16px; background: var(--bg); border: 1px solid var(--line); }
+.su-jr p { margin: 0; }
+.su-jrt { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.su-jri { display: grid; gap: 2px; min-width: 0; }
+.su-jrh { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: var(--f4); }
+.su-jrs { font-size: var(--f5); color: var(--sub); }
+.su-jrk { display: flex; align-items: center; gap: 6px; font-size: var(--f5); font-weight: 800; }
+.su-jrk i { font-style: normal; }
+.su-jrk.g { color: var(--ok); }
+.su-jrk.r { color: var(--no); }
+.su-jrv { font-size: var(--f5); color: var(--sub); line-height: 1.5; }
+.su-lv { color: var(--ok); font-weight: 800; }
+.su-lv.dn { color: var(--no); }
+.su-due { border: 2px solid var(--fg); }
+.su-kq { margin: 0; font-size: var(--f2); font-weight: 900; }
+.su-kbs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.su-kb { min-height: 64px; border-radius: 18px; border: 2px solid var(--fg); background: var(--card); color: var(--fg); font: inherit; font-size: var(--f3); font-weight: 900; cursor: pointer; }
+.su-kb:first-child { background: var(--fg); color: var(--bg); }
+@keyframes su-growy { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.su-fig .su-vgrow, .su-jr .su-vgrow { transform-box: fill-box; transform-origin: 50% 100%; animation: su-growy .45s ease-out .45s both; }
+.su-fig .b3 .su-vgrow { animation-delay: .9s; }
+
 /* ── 움직임 — 들어올 때 한 번 ── */
 @keyframes su-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes su-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -335,5 +369,5 @@ button.su-next { width: 100%; border: 0; font: inherit; text-align: left; cursor
 .su-say .b3 { animation: su-up .45s ease-out .9s both; }
 .su-say .b4 { animation: su-up .45s ease-out 1.35s both; }
 @media (prefers-reduced-motion: reduce) {
-  .su-fig *, .su-say li, .su-vt *, .su-reply { animation: none !important; }
+  .su-fig *, .su-say li, .su-vt *, .su-reply, .su-jr * { animation: none !important; }
 }

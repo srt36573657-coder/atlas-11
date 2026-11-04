@@ -560,7 +560,8 @@ async function vPause(code) {
     mid: mids(WHY_GROUPS.map(([g, q]) => [g, q.length + '가지'])),
     fig: figQs(),
     say: ['주식을 사기 전에 내 이유부터 물어요.', '질문은 열한 가지예요. 이유와 돈, 때와 마음 네 묶음이에요.', '그런데 답을 맞히는 시험이 아니에요.', '그래서 천천히 하나씩 답해요.'],
-    body: WHY_GROUPS.map(([g, qs], k) => section(g + ' 질문', BEAT[k] + ' · ' + g, h('ol', {class: 'su-qlist'}, qs.map(i => h('li', {}, h('i', {'aria-hidden': 'true', text: String(i)}), h('span', {text: WHY_QS[i - 1]})))))),
+    body: [h('a', {class: 'su-ask', href: '#/j'}, h('span', {class: 'su-ask-a', text: '내 매매일지 ' + ((readWhy() ?? []).filter(fullWhy).length) + '번'}), h('span', {class: 'su-ask-b', text: '멈춘 기록과 한 달 뒤 약속을 봐요.'})),
+      ...WHY_GROUPS.map(([g, qs], k) => section(g + ' 질문', BEAT[k] + ' · ' + g, h('ol', {class: 'su-qlist'}, qs.map(i => h('li', {}, h('i', {'aria-hidden': 'true', text: String(i)}), h('span', {text: WHY_QS[i - 1]}))))))],
     go: next(7, qHref(name ? code : null), (name ? name + ' — ' : '') + '「왜 사?」 열한 질문 하기'),
     src: source(asOf, S, '답과 기록은 내 휴대폰에만 남아요.')});
 }
@@ -624,11 +625,7 @@ async function vQuiz(code0) {
       h('h1', {class: 'su-h1', tabindex: '-1'}, h('span', {text: J.verdict})),
       big(String(J.ready), '/ ' + WHY_MAX, '준비된 만큼이에요. 높을수록 좋아요.'),
       mids([['당신은', T[0]], ['빨간 답', J.reds + '개']]),
-      fig('네 묶음 막대', 'su-hb su-gb', h('ul', {class: 'su-hbl'}, rows.map(r => h('li', {class: 'su-hbr b' + (r.k + 1)},
-        h('p', {}, h('span', {class: 'su-hbn', text: BEAT[r.k] + ' · ' + r.n}), h('b', {class: 'su-hbv', text: r.ready + ' / ' + r.max}), h('i', {class: 'su-shape ' + r.tone, 'aria-hidden': 'true', text: SHAPE[r.tone]})),
-        s('svg', {viewBox: `0 0 ${W} 20`, class: 'su-svg su-hbs', 'aria-hidden': 'true'}, s('rect', {x: 4, y: 3, width: W - 8, height: 14, rx: 7, class: 'su-track'}),
-          s('rect', {x: 4, y: 3, width: Math.max(3, (W - 8) * r.ready / r.max).toFixed(1), height: 14, rx: 7, class: 'su-grow su-tone-' + r.tone}))))),
-        h('p', {class: 'su-mxr b4'}, h('span', {text: '당신은'}), h('b', {text: T[0]}))),
+      groupFig(rows, '네 묶음 막대', '당신은', T[0]),
       beats(['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
         J.stop ? '그런데 빌린 돈이나 곧 쓸 돈이라고 답했어요.' : weak ? '그런데 ' + weak.n + ' 묶음이 가장 덜 준비됐어요.' : '그런데 답은 오늘 마음일 뿐이에요.',
         v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.']),
@@ -636,12 +633,171 @@ async function vQuiz(code0) {
       section('내 답', '내 답 열한 개', h('ol', {class: 'su-myans'}, WHY_QS.map((q, k) => { const [tone, label] = WHY_A[k][Q.ans[k]];
         return h('li', {}, h('span', {class: 'su-mq', text: (k + 1) + ' · ' + q}), h('b', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label}))); }))),
       h('p', {class: 'su-note su-notp', text: Q.saved ? '오늘 답을 매매일지에 날짜와 함께 쌓았어요.' : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
-      h('a', {class: 'su-ask', href: '/next/#/why'}, h('span', {class: 'su-ask-a', text: '매매일지 자세히 보기'}), h('span', {class: 'su-ask-b', text: '쌓인 답과 한 달 뒤 약속, 상세 분석이 있어요.'})),
+      h('a', {class: 'su-ask', href: '#/j'}, h('span', {class: 'su-ask-a', text: '내 매매일지 보기'}), h('span', {class: 'su-ask-b', text: '쌓인 답과 한 달 뒤 약속이 한 곳에 있어요.'})),
       btn('su-qback su-again', [h('i', {'aria-hidden': 'true', text: '↺'}), h('span', {text: '다시 하기'})], () => { Q.i = 0; Q.ans.fill(null); Q.J = null; draw(); }),
       h('a', {class: 'su-next', href: '#/'}, h('span', {class: 'su-nk', text: '처음으로'}), h('span', {class: 'su-nt', text: '오늘로 가기'}), h('i', {'aria-hidden': 'true', text: '›'})),
       foot());
   };
   return {title: '왜 사?', beat: '결', nodes: [bar(), draw()]};
+}
+
+/* ── 매매일지(주문 1519 · 사장님 2026-11-04 10:19(+04) 「지금 만든 것과 모든기록을 통합한다 · 기준은 이전 명령서와 같다 · 그림이 많아야 · 그림이 움직여야 · 5배 빠르게」) ──
+   지금 수르 p-why.js 의 쌓인 기록 · 한 달 전 약속(「그날 정한 대로 했어?」 — 했어 · 안 했어 → 그 기록에 kept · 합계 칸 promise · promise_yes) · 한 달 뒤 값(장 스무 번 — 그 회사 · 같은 때 코스피 · 모든 회사 가운데 값)을 새 판 한 쪽(#/j)으로
+   같은 열쇠 · 같은 꼴 · 같은 셈(장 스무 번 = /atlas/data/days.json · 달력 서른 날) · 틀린 것도 지우지 않음 · 그림 넷(판정 기둥 · 준비 점수 길 · 네 묶음 막대 · 기록마다 작은 막대) */
+const readWhy = () => { try { const x = JSON.parse(localStorage.getItem(WHY_KEY) || '[]'); return Array.isArray(x) ? x : []; } catch { return null; } }; // null = 기억 못 하는 기계
+const fullWhy = r => !!r && typeof r === 'object' && Array.isArray(r.answers) && r.answers.length === WHY_QS.length && r.answers.every((k, i) => Number.isInteger(k) && k >= 0 && k < WHY_A[i].length);
+const readyOfRec = r => (Number.isFinite(r?.score) ? WHY_MAX - r.score : null);
+const seoulDay = ms => new Date(ms + 9 * 36e5).toISOString().slice(0, 10);
+const dayOf = r => { const x = Date.parse(r?.at); return Number.isFinite(x) ? seoulDay(x) : null; };
+const won = n => Math.floor(n).toLocaleString('ko-KR') + '원';
+const toneOf = v => (v === 'go' ? 'g' : v === 'rest' ? 'r' : 'y');
+const VNAME = {go: '좋아, 정해 둔 대로만', wait: '반만 준비됐어', rest: '오늘은 쉬어 가자'};
+/** 그날 정한 대로 했나 — 그 기록에만 남김(지우지 않음 · p-why.js keep 과 같은 꼴) · 남겼나 */
+function keepWhy(r, yes) {
+  const v = {a: yes ? 'yes' : 'no', at: new Date().toISOString()};
+  r.kept = v;
+  try {
+    const all = readWhy() ?? [], k = all.findIndex(x => x && typeof x === 'object' && x.at === r.at && (x.code ?? null) === (r.code ?? null));
+    if (k < 0) return false;
+    all[k] = {...all[k], kept: v}; localStorage.setItem(WHY_KEY, JSON.stringify(all)); return true;
+  } catch { return false; }
+}
+const LATER = 20; // 한 달 = 장 스무 번(p-why.js 와 같음)
+/** 기록의 한 달 칸 — 시작 날(그날 값 날짜 · 자료 날 · 기록한 서울 날짜 · 그날이나 그 앞 마지막 장 날) → 스무 번째 장 날(아직이면 null) */
+async function windowOfRec(r) {
+  const days = await get('/atlas/data/days.json'), DD = Array.isArray(days?.dates) && days.dates.length ? days.dates : null;
+  if (!DD) return null;
+  const okD = x => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x);
+  const t0 = okD(r.day) ? r.day : okD(r.asOf) ? r.asOf : dayOf(r);
+  if (!t0 || t0 > DD[DD.length - 1]) return {k: -1, s: t0, e: null};
+  let k = -1; for (let j = DD.length - 1; j >= 0; j--) if (DD[j] <= t0) { k = j; break; }
+  return k < 0 ? {k, s: null, e: null} : {k, s: DD[k], e: DD[k + LATER] ?? null};
+}
+/** 한 달 지났나 — 장 스무 번이 지났거나 달력으로 서른 날(사이트 자료가 멈춰도 물음은 옴) */
+async function dueOfRec(r) {
+  let W = null; try { W = await windowOfRec(r); } catch (e) { console.error(e); }
+  const cal = Number.isFinite(Date.parse(r.at)) && (Date.now() - Date.parse(r.at)) / 864e5 >= 30;
+  return {due: W?.e ? true : cal, W};
+}
+const pctOf = (a, b) => (a > 0 && b > 0 ? (b / a - 1) * 100 : null);
+/** 한 달 뒤 값 셋 — 그 회사 시작 날 종가 → 스무 번째 장 날 종가 · 같은 때 코스피 · 같은 때 모든 회사 가운데 값(/next/data/median20.json) · 못 찾으면 null */
+async function laterOf(r, W) {
+  if (!W?.e) return null;
+  const [co, H, M] = await Promise.all([r.code && CODE.test(r.code) ? get(D.co(r.code)) : null, get(D.H), get('/next/data/median20.json')]);
+  const cl = Array.isArray(co?.close) ? co.close : null, k0 = Number.isInteger(co?.k0) ? co.k0 : 0;
+  const K = H?.idx?.KOSPI, kr = new Map(Array.isArray(K?.rows) ? K.rows.filter(x => Array.isArray(x)).map(x => [x[0], x[1]]) : []);
+  if (typeof K?.date === 'string' && K.close > 0 && !kr.has(K.date)) kr.set(K.date, K.close);
+  const mr = Array.isArray(M?.rows) ? M.rows.find(x => Array.isArray(x) && x[0] === W.s && x[1] === W.e) : null;
+  return {s: W.s, e: W.e, co: cl ? pctOf(cl[W.k - k0], cl[W.k + LATER - k0]) : null, kospi: pctOf(kr.get(W.s), kr.get(W.e)), med: mr && Number.isFinite(mr[2]) ? mr[2] : null};
+}
+/** 판정 기둥 셋(● 좋아 · ▲ 반만 · ■ 쉬어) — 기 땅 → 승 좋아 기둥 → 전 반만 · 쉬어 기둥 → 결 멈춘 횟수 */
+function figVerdicts(vc, total) {
+  const cols = [['go', '좋아', 'g'], ['wait', '반만', 'y'], ['rest', '쉬어', 'r']], max = Math.max(1, ...cols.map(([k]) => vc[k])), W = 300, H = 120;
+  const g = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'su-svg su-vc', role: 'img', 'aria-label': `좋아 ${vc.go}번 · 반만 ${vc.wait}번 · 쉬어 ${vc.rest}번`});
+  g.append(s('g', {class: 'b1'}, s('line', {x1: 8, x2: W - 8, y1: H - 4, y2: H - 4, class: 'su-axis'})));
+  cols.forEach(([k, , tone], j) => { const hh = vc[k] ? Math.max(8, (H - 16) * vc[k] / max) : 3; g.append(s('g', {class: j ? 'b3' : 'b2'}, s('rect', {x: 25 + j * 95, y: (H - 4 - hh).toFixed(1), width: 60, height: hh.toFixed(1), rx: 8, class: 'su-vgrow su-tone-' + tone}))); });
+  return fig('판정 기둥 셋', 'su-vcf', g,
+    h('ul', {class: 'su-vcl'}, cols.map(([k, label, tone]) => h('li', {}, h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label}), h('b', {text: vc[k] + '번'})))),
+    h('p', {class: 'su-mxr b4'}, h('span', {text: '멈춘 횟수'}), h('b', {text: total + '번'})));
+}
+/** 준비 점수 길 — 왼쪽이 오래된 기록 · 오른쪽이 새 기록(서른 번까지) · 띠 셋 = 판정 셈의 문턱(17 넘게 좋아 · 11 ~ 16 반만 · 10 아래 쉬어) · 점은 모양으로 */
+function figReady(full) {
+  const L = full.slice(0, 30).reverse(), n = L.length; if (!n) return null;
+  const W = 340, H = 170, X = i => 16 + (W - 32) * (n === 1 ? 0.5 : i / (n - 1)), Y = v => 8 + (H - 16) * (1 - v / WHY_MAX);
+  const pts = L.map((r, i) => [X(i), Y(readyOfRec(r) ?? 0), toneOf(WHY_V[r.verdict])]);
+  const mark = ([x, y, tone], big) => (tone === 'g' ? s('circle', {cx: x.toFixed(1), cy: y.toFixed(1), r: big ? 8 : 5.5, class: 'su-tone-' + tone + ' su-pt'})
+    : tone === 'r' ? s('rect', {x: (x - (big ? 7 : 5)).toFixed(1), y: (y - (big ? 7 : 5)).toFixed(1), width: big ? 14 : 10, height: big ? 14 : 10, class: 'su-tone-' + tone + ' su-pt'})
+    : s('path', {d: `M${x.toFixed(1)} ${(y - (big ? 8 : 6)).toFixed(1)}l${big ? 8 : 6} ${big ? 13 : 10}h-${big ? 16 : 12}z`, class: 'su-tone-' + tone + ' su-pt'}));
+  const g = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'su-svg su-rd', role: 'img', 'aria-label': `준비 점수 ${n}번 — 마지막 ${readyOfRec(L[n - 1]) ?? '?'}점`});
+  g.append(s('g', {class: 'b1'}, s('rect', {x: 4, y: Y(22), width: W - 8, height: (Y(16.5) - Y(22)).toFixed(1), class: 'su-zg'}), s('rect', {x: 4, y: Y(16.5).toFixed(1), width: W - 8, height: (Y(10.5) - Y(16.5)).toFixed(1), class: 'su-zy'}),
+    s('rect', {x: 4, y: Y(10.5).toFixed(1), width: W - 8, height: (Y(0) - Y(10.5)).toFixed(1), class: 'su-zr'})));
+  g.append(s('g', {class: 'b2'}, n > 1 ? s('polyline', {points: pts.map(([x, y]) => x.toFixed(1) + ',' + y.toFixed(1)).join(' '), class: 'su-rdl su-draw', pathLength: 1}) : null));
+  g.append(s('g', {class: 'b3'}, pts.map(p => mark(p, false))));
+  g.append(s('g', {class: 'b4'}, mark(pts[n - 1], true)));
+  return fig('준비 점수 길', 'su-rdf', g, h('figcaption', {class: 'su-cap'},
+    h('ul', {class: 'su-vcl'}, [['g', '위 띠 좋아'], ['y', '가운데 반만'], ['r', '아래 띠 쉬어']].map(([tone, txt]) => h('li', {}, h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: txt})))),
+    h('p', {class: 'su-capn', text: '왼쪽이 오래된 기록, 오른쪽이 새 기록이에요. 높을수록 준비가 된 것이에요.'})),
+    h('p', {class: 'su-mxr b4'}, h('span', {text: '마지막 준비 점수'}), h('b', {text: (readyOfRec(L[n - 1]) ?? '?') + ' / ' + WHY_MAX})));
+}
+/** 네 묶음 막대(기 이유 · 승 돈 · 전 때 · 결 마음) — 묶음마다 준비된 만큼(rows = {n, k, max, ready, tone}) · 「왜 사?」 결과와 매매일지가 함께 씀 */
+function groupFig(rows, label, endK, endV) {
+  const W = 300;
+  return fig(label, 'su-hb su-gb', h('ul', {class: 'su-hbl'}, rows.map(r => h('li', {class: 'su-hbr b' + (r.k + 1)},
+    h('p', {}, h('span', {class: 'su-hbn', text: BEAT[r.k] + ' · ' + r.n}), h('b', {class: 'su-hbv', text: r.ready == null ? '?' : (Number.isInteger(r.ready) ? r.ready : r.ready.toFixed(1)) + ' / ' + r.max}), h('i', {class: 'su-shape ' + r.tone, 'aria-hidden': 'true', text: SHAPE[r.tone]})),
+    s('svg', {viewBox: `0 0 ${W} 20`, class: 'su-svg su-hbs', 'aria-hidden': 'true'}, s('rect', {x: 4, y: 3, width: W - 8, height: 14, rx: 7, class: 'su-track'}),
+      s('rect', {x: 4, y: 3, width: Math.max(3, (W - 8) * (r.ready ?? 0) / r.max).toFixed(1), height: 14, rx: 7, class: 'su-grow su-tone-' + r.tone}))))),
+    h('p', {class: 'su-mxr b4'}, h('span', {text: endK}), h('b', {text: endV})));
+}
+const groupRows = groups => WHY_GROUPS.map(([n, qs], k) => { const max = qs.length * 2, val = Number.isFinite(groups?.[n]) ? groups[n] : null;
+  return {n, k, max, ready: val == null ? null : max - val, tone: val == null ? 'y' : val === 0 ? 'g' : val * 2 >= max ? 'r' : 'y'}; });
+/** 기록마다 작은 막대 넷(기록 줄 안 · 네 묶음 준비) */
+function miniBars(groups) {
+  const rows = groupRows(groups), W = 120, H = 30;
+  return s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'su-svg su-mini', 'aria-hidden': 'true'}, rows.map((r, j) => {
+    const hh = Math.max(2, (H - 4) * (r.ready ?? 0) / r.max);
+    return [s('rect', {x: 4 + j * 29, y: 2, width: 22, height: H - 4, rx: 4, class: 'su-track'}), s('rect', {x: 4 + j * 29, y: (H - 2 - hh).toFixed(1), width: 22, height: hh.toFixed(1), rx: 4, class: 'su-vgrow su-tone-' + r.tone})];
+  }));
+}
+/** 한 달 전 약속 — 가장 오래된 것부터 하나씩(「그날 정한 대로 했어?」 · 했어 · 안 했어) · 답하면 그 기록에 남기고 합계 칸 신호 한 번 · 다시 그림 */
+function dueBox(dues) {
+  const r = dues[0], b1 = h('button', {class: 'su-kb', type: 'button', text: '했어'}), b2 = h('button', {class: 'su-kb', type: 'button', text: '안 했어'});
+  const ask = yes => () => { if (b1.disabled) return; b1.disabled = b2.disabled = true; keepWhy(r, yes); tally(yes ? 'promise_yes' : 'promise'); route(); };
+  b1.addEventListener('click', ask(true)); b2.addEventListener('click', ask(false));
+  const rd = readyOfRec(r);
+  return h('section', {class: 'su-card su-due', 'aria-label': '한 달 전 약속'}, h('h2', {class: 'su-ct', text: '한 달 전 약속'}),
+    h('p', {class: 'su-lead2'}, h('b', {text: dateKo(dayOf(r))}), r.name || r.code ? h('span', {text: ' · '}) : null, r.name || r.code ? h('span', {'data-proper': '', text: String(r.name || r.code)}) : null,
+      h('span', {text: ' · 준비 ' + (rd ?? '?') + ' / ' + WHY_MAX + ' · ' + (r.verdict ?? '?')})),
+    h('p', {class: 'su-kq', text: '그날 정한 대로 했어?'}),
+    h('div', {class: 'su-kbs', role: 'group', 'aria-label': '그날 정한 대로 했어?'}, b1, b2),
+    dues.length > 1 ? h('p', {class: 'su-note', text: '한 달 지난 약속이 ' + (dues.length - 1) + '개 더 있어요.'}) : null);
+}
+const pctSpan = x => h('b', {class: 'su-lv' + (x != null && x < 0 ? ' dn' : ''), text: x == null ? '?' : pct(x)});
+/** 기록 줄 하나 — 날짜 · 판정(모양과 글) · 준비 · 회사와 그날 값 · 작은 막대 넷 · 한 달 뒤(했어 · 안 했어 · 값 셋) */
+function recCard(r, W, L) {
+  const rd = readyOfRec(r), tone = toneOf(WHY_V[r.verdict]);
+  return h('li', {class: 'su-jr'},
+    h('div', {class: 'su-jrt'},
+      h('div', {class: 'su-jri'},
+        h('p', {class: 'su-jrh'}, h('b', {text: dateKo(dayOf(r))}), h('span', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: r.verdict ?? '?'}))),
+        h('p', {class: 'su-jrs'}, h('span', {text: '준비 ' + (rd ?? '?') + ' / ' + WHY_MAX}),
+          r.code || r.name ? h('span', {text: ' · '}) : null, r.code || r.name ? h('span', {'data-proper': '', text: String(r.name || r.code)}) : null,
+          r.code || r.name ? h('span', {text: r.price > 0 ? ' · 그날 값 ' + won(r.price) : ' · 그날 값 ?'}) : null)),
+      miniBars(r.groups)),
+    r.kept ? h('p', {class: 'su-jrk ' + (r.kept.a === 'yes' ? 'g' : 'r')}, h('i', {'aria-hidden': 'true', text: r.kept.a === 'yes' ? SHAPE.g : SHAPE.r}), h('span', {text: r.kept.a === 'yes' ? '한 달 뒤 — 정한 대로 했어요.' : '한 달 뒤 — 정한 대로 못 했어요.'})) : null,
+    r.kept && L ? h('p', {class: 'su-jrv'}, h('span', {text: dateKo(L.s) + ' → ' + dateKo(L.e) + ' · '}), r.code || r.name ? h('span', {text: '이 회사 '}) : null, r.code || r.name ? pctSpan(L.co) : null,
+      h('span', {text: ' · 코스피 '}), pctSpan(L.kospi), h('span', {text: ' · 모든 회사 가운데 값 '}), pctSpan(L.med)) : null,
+    !r.kept && !W?.e ? h('p', {class: 'su-note', text: '한 달이 지나면 그날 정한 대로 했는지 먼저 물어요.'}) : null);
+}
+
+/** 매매일지 쪽(결 · #/j) — 큰 값 = 멈춘 횟수 · 중간 값 = 정한 대로 한 수 · 한 달 지난 약속 · 마지막 기록 · 그림 넷 · 기승전결 · 한 달 전 약속 · 쌓인 기록 */
+async function vJournal() {
+  const {S, asOf} = await base();
+  const raw = readWhy(), can = raw != null, full = (raw ?? []).filter(fullWhy);
+  const metas = await Promise.all(full.map(async r => ({r, ...(await dueOfRec(r))})));
+  const dues = metas.filter(m => m.due && !(m.r.kept?.a === 'yes' || m.r.kept?.a === 'no')).map(m => m.r).sort((a, b) => (Date.parse(a.at) || 0) - (Date.parse(b.at) || 0));
+  const shown = metas.slice(0, 30), laters = await Promise.all(shown.map(m => (m.r.kept && m.W?.e ? laterOf(m.r, m.W).catch(() => null) : null)));
+  const vc = {go: 0, wait: 0, rest: 0}; full.forEach(r => { const v = WHY_V[r.verdict]; if (v) vc[v]++; });
+  const kept = full.filter(r => r.kept?.a === 'yes').length, top = Object.entries(vc).sort((a, b) => b[1] - a[1])[0];
+  const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
+  const say = full.length ? ['이 휴대폰에서 「왜 사?」에 ' + full.length + '번 답했어요.', '가장 많은 판정은 「' + VNAME[top[0]] + '」' + jo(VNAME[top[0]], '이에요').slice(VNAME[top[0]].length) + '.',
+    dues.length ? '그런데 한 달 지난 약속 ' + dues.length + '개에 아직 답하지 않았어요.' : '그런데 기록은 이 휴대폰에만 있어요.',
+    dues.length ? '그래서 한 달 전 약속부터 답해요.' : '그래서 사기 전에 또 한 번 멈춰요.']
+    : ['아직 「왜 사?」 기록이 없어요.', '열한 질문에 답하면 날짜와 함께 여기 쌓여요.', '그런데 기록은 이 휴대폰에만 남아요.', '그래서 오늘 첫 기록을 남겨 봐요.'];
+  return paper({step: 7, title: '매매일지', kick: '내 기록 · 이 휴대폰에만',
+    head: h1('내 매매일지'), value: big(String(full.length), '번', '사기 전에 멈춰 「왜 사?」에 답한 횟수예요.'), S,
+    mid: mids([['정한 대로 했어요', kept + '번'], ['한 달 지난 약속', dues.length + '개'], full[0] ? ['마지막 기록', dateKo(dayOf(full[0]))] : null]),
+    fig: full.length ? figVerdicts(vc, full.length) : figQs(), say,
+    body: [
+      dues.length ? dueBox(dues) : null,
+      full.length ? figReady(full) : null,
+      full.length ? groupFig(groupRows(avg), '네 묶음 평균', '기록', full.length + '번의 평균') : null,
+      full.length ? section('쌓인 기록', '쌓인 기록 ' + full.length + '번',
+        h('p', {class: 'su-note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.'}),
+        h('ol', {class: 'su-jl'}, shown.map((m, i) => recCard(m.r, m.W, laters[i]))),
+        full.length > 30 ? h('p', {class: 'su-note', text: '새 기록 서른 줄만 보여요. 나머지 ' + (full.length - 30) + '줄도 지우지 않고 그대로 있어요.'}) : null) : null,
+      can ? null : h('p', {class: 'su-note su-notp', text: '이 기기는 기록을 남길 수 없어요.'})],
+    go: next(7, qHref(lastCo?.code ?? null), '「왜 사?」 열한 질문 하기'),
+    src: source(asOf, S, '기록은 이 휴대폰에만 있어요. 이름도 열쇠도 받지 않아요.')});
 }
 
 function notFound(msg) {
@@ -662,13 +818,13 @@ async function route() {
   if (fw) { location.replace(fw); return; }
   stopSpeak();
   const hh = location.hash || '#/';
-  const m = /^#\/(c|i|k|r|p|q)\/(.+)$/.exec(hh), t = /^#\/([bkrpq])$/.exec(hh);
+  const m = /^#\/(c|i|k|r|p|q)\/(.+)$/.exec(hh), t = /^#\/([bkrpqj])$/.exec(hh);
   let a = null; if (m) { try { a = decodeURIComponent(m[2]); } catch { a = m[2]; } }
   const my = ++seq, root = document.getElementById('su');
   let out;
   try {
     out = m ? (m[1] === 'c' ? await vCo(a) : m[1] === 'i' ? await vInd(a) : m[1] === 'k' ? await vCond(a) : m[1] === 'r' ? await vRec(a) : m[1] === 'q' ? await vQuiz(a) : await vPause(a))
-      : t ? (t[1] === 'b' ? await vBloom() : t[1] === 'k' ? await vCond(null) : t[1] === 'r' ? await vRec(null) : t[1] === 'q' ? await vQuiz(null) : await vPause(null)) : await vHome();
+      : t ? (t[1] === 'b' ? await vBloom() : t[1] === 'k' ? await vCond(null) : t[1] === 'r' ? await vRec(null) : t[1] === 'q' ? await vQuiz(null) : t[1] === 'j' ? await vJournal() : await vPause(null)) : await vHome();
   } catch (e) { console.error(e); out = notFound('화면을 그리지 못했어요. 잠시 뒤 다시 열어 주세요.'); }
   if (my !== seq) return;
   root.replaceChildren(...out.nodes.filter(Boolean), tabs(out.beat));

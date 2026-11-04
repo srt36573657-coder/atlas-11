@@ -146,7 +146,7 @@ export function say5(w) {
 export const KEEP_Q = Object.freeze(['lang', 'sw', 'kakao', 'dev']);
 export function forwardTo(search, hash) {
   const q = String(search ?? ''), hh = String(hash ?? '');
-  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || /^#\/[bkrpq](\/[0-9A-Z]{6})?$/.test(hh); // 새 판 길(주문 1238 — 꽃 #/b · 조건 #/k · 기록 #/r · 멈춤 #/p · 주문 1506 「왜 사?」 #/q · 회사 번호를 붙여도 됨)
+  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || (/^#\/[bkrpq](\/[0-9A-Z]{6})?$/.test(hh) || hh === '#/j'); // 새 판 길(주문 1238 — 꽃 #/b · 조건 #/k · 기록 #/r · 멈춤 #/p · 주문 1506 「왜 사?」 #/q · 주문 1519 매매일지 #/j · 회사 번호를 붙여도 됨)
   let keep = false;
   try { const sp = new URLSearchParams(q); keep = KEEP_Q.some(k => sp.has(k)); } catch { keep = false; }
   return su && !keep ? null : '/next/' + q + hh;
