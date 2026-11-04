@@ -1,6 +1,6 @@
 /* 수르 — 「왜 사?」 열한 질문(7) · 내 매매일지(8 · 끝) — 빈 파일에서 새로 쓴 쪽(주문 1616 · docs/design/su-full-2026-11-04/order-1616.txt)
    질문 · 답 · 한마디 · 왜 묻나 · 판정 셈 · 기록 열쇠와 꼴 · 한 달 뒤 셈은 지금 수르 p-why.js · why-look.js 와 글자 그대로(시험 tests/atlas11/su.test.mjs 가 맞댐 — 바꾸면 안 되는 약속)
-   화면(꽃잎 열하나 · 한 달 뒤 활 · 기록 시간 줄 · 판정 기둥)은 새로 씀(시안 11 「사기 전에 멈춤」) */
+   화면(꽃잎 열하나 · 한 달 뒤 활 · 기록 시간 줄 · 판정 기둥)은 새로 씀(시안 11 「사기 전에 멈춤」) · 주문 1807: 값마다 「그래서」 뜻 줄 · 「전문가용 자세히」(점수 셈 · 판정 문턱 · 기록 줄) */
 import {NAME} from '/next/brand.js';
 import {CODE, pct, dateKo} from '/su/su-data.js';
 import {NEED, val, eQuizResult, eJournal} from '/su/su-six.js';
@@ -148,6 +148,7 @@ export async function vQuiz(code0, X) {
   const redraw = (keep = false) => {
     const root = document.getElementById('su'), y = window.scrollY;
     root.replaceChildren(...X.page(model()).filter(Boolean));
+    X.afterPaint?.(root);
     if (keep) { window.scrollTo(0, y); root.querySelector('.su-qnext')?.scrollIntoView?.({block: 'nearest'}); } else window.scrollTo(0, 0);
   };
   const finish = () => {
@@ -160,8 +161,13 @@ export async function vQuiz(code0, X) {
   };
   const ask = () => {
     const i = Q.i, a = Q.ans[i], gi = WHY_GROUPS.findIndex(([, qs]) => qs.includes(i + 1)), last = i === WHY_QS.length - 1, ch = a != null ? WHY_A[i][a] : null;
-    const big = val((i + 1) + ' / ' + WHY_QS.length, '', '질문 · ' + WHY_GROUPS[gi][0] + ' 묶음', {누가: '나', 언제: '오늘', 어디서: name ? name + ' 앞에서' : '이 휴대폰', 무엇을: WHY_QS[i], 어떻게: '답 셋 가운데 하나를 골라요', 왜: WHY_WHY[i]});
+    const big = val((i + 1) + ' / ' + WHY_QS.length, '', '질문 · ' + WHY_GROUPS[gi][0] + ' 묶음', {누가: '나', 언제: '오늘', 어디서: name ? name + ' 앞에서' : '이 휴대폰', 무엇을: WHY_QS[i], 어떻게: '답 셋 가운데 하나를 골라요', 왜: WHY_WHY[i]},
+      {mean: '열한 질문 가운데 ' + (i + 1) + '번째라는 뜻이에요. ' + (WHY_QS.length - i - 1 ? (WHY_QS.length - i - 1) + '개가 남았어요.' : '마지막 질문이에요.')});
     return {title: '왜 사?', tab: 3, step: 7, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · ' + ['기', '승', '전', '결'][gi] + ' ' + WHY_GROUPS[gi][0], h1: WHY_QS[i], big,
+      pro: [{k: '질문 수', v: WHY_QS.length + '개', how: '네 묶음 · ' + WHY_GROUPS.map(([n, q]) => n + ' ' + q.length).join(' · ')}, {k: '지금 질문', v: (i + 1) + ' / ' + WHY_QS.length, how: WHY_GROUPS[gi][0] + ' 묶음'},
+        {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답 · 준비 점수 = ' + WHY_MAX + ' 에서 답 점수를 뺀 값'},
+        {k: '판정 문턱', v: '쉬어 · 반만 · 좋아', how: '빌린 돈 · 곧 쓸 돈이면 쉬어 · 점수 12 넘거나 빨간 답 넷이면 쉬어 · 6 넘으면 반만 · 지금 수르 「왜 사?」와 같은 셈'},
+        {k: '답한 질문', v: Q.ans.filter(x => x != null).length + ' / ' + WHY_QS.length, how: '이 휴대폰에서 지금 답한 수'}],
       hero: petals(tonesNow(), {cur: i, label: '열한 질문 꽃잎', hero: true, cap: ['사기 전에 열한 가지를 물어요.', (i + 1) + '번째 질문이에요. 답한 잎에 색이 들어요.', '그런데 맞히는 시험이 아니에요.', '그래서 내 마음 그대로 답해요.']}),
       body: [h('p', {class: 'su-qwhy', text: WHY_WHY[i]}),
         h('ul', {class: 'su-ans', 'aria-label': '답 셋'}, WHY_A[i].map(([tone, label], k) => h('li', {},
@@ -182,6 +188,9 @@ export async function vQuiz(code0, X) {
           v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.']}),
       mids: e.mids,
       figs: [groupBars(rows, '네 묶음 · 준비된 만큼')],
+      pro: [{k: '준비 점수', v: J.ready + ' / ' + WHY_MAX, how: '답마다 ● 0 · ▲ 1 · ■ 2 를 더한 값을 ' + WHY_MAX + '에서 뺌'}, {k: '빨간 답', v: J.reds + '개', how: '■ 멈춰요 쪽 답'},
+        ...WHY_GROUPS.map(([g, qs]) => ({k: g + ' 묶음 점수', v: (J.groups[g] ?? 0) + ' / ' + qs.length * 2, how: '질문 ' + qs.join(' · ') + '번 · 낮을수록 준비됨'})),
+        {k: '판정 문턱', v: '쉬어 · 반만 · 좋아', how: '빌린 돈 · 곧 쓸 돈이면 쉬어 · 점수 12 넘거나 빨간 답 넷이면 쉬어 · 6 넘으면 반만 · 지금 수르 「왜 사?」와 같은 셈'}],
       body: [h('p', {class: 'su-quote', text: '“' + (v === 'rest' && J.stop ? T[2] : T[1]) + '”'}),
         h('section', {class: 'su-why', 'aria-label': '내 답'}, h('h2', {class: 'su-ft', text: '내 답 열한 개'}), h('ol', {class: 'su-myans'}, WHY_QS.map((q, k) => { const [tone, label] = WHY_A[k][Q.ans[k]];
           return h('li', {}, h('span', {class: 'su-mq', text: (k + 1) + ' · ' + q}), h('b', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label}))); }))),
@@ -254,5 +263,9 @@ export async function vJournal(X) {
         full.length > 30 ? h('p', {class: 'su-note', text: '새 기록 서른 줄만 보여요. 나머지 ' + (full.length - 30) + '줄도 지우지 않고 그대로 있어요.'}) : null) : null,
       h('a', {class: 'su-ask', href: '#/r'}, h('b', {text: '꽃 지난 기록과 함께 보기'}), h('span', {text: '기록 탭 한곳에 모두 있어요.'})),
       can ? null : h('p', {class: 'su-note', text: '이 기기는 기록을 남길 수 없어요.'})],
+    pro: [{k: '쌓인 기록', v: full.length + '번', how: '이 휴대폰에만 · 틀린 것도 지우지 않음'}, {k: '판정 · 좋아 · 반만 · 쉬어', v: vc.go + ' · ' + vc.wait + ' · ' + vc.rest, how: '「왜 사?」 결과 판정을 센 값'},
+      {k: '한 달 뒤 물은 기록 · 정한 대로 한 기록', v: asked + ' · ' + kept, how: '한 달이 지난 기록에만 물어요 · 지금 물을 기록 ' + dues.length + '번'},
+      ...WHY_GROUPS.map(([n]) => ({k: n + ' 묶음 평균', v: Number.isFinite(avg[n]) ? String(Math.round(avg[n] * 10) / 10) : NEED, how: '기록마다 묶음 점수의 평균 · 준비된 만큼'})),
+      ...full.slice(0, 30).map(r => ({k: (dayOf(r) ?? NEED) + (r.name ? ' · ' + r.name : ''), v: (readyOfRec(r) ?? NEED) + ' / ' + WHY_MAX + ' · ' + (r.verdict ?? NEED), how: '그날 값 ' + (r.price > 0 ? won(r.price) : NEED) + ' · 빨간 답 ' + (Number.isFinite(r.reds) ? r.reds : NEED) + ' · 한 달 뒤 ' + (r.kept ? (r.kept.a === 'yes' ? '정한 대로 함' : '못 함') : '아직')}))],
     next: {href: '#/', label: '처음으로', step: null, k: '끝'}, asOf, S, note: '기록은 이 휴대폰에만 있어요. 이름도 열쇠도 받지 않아요.'};
 }

@@ -72,7 +72,7 @@ for (const width of [390, 360, 320]) {
   // 처음 쪽
   await open(p, '#/');
   const m0 = await measure(p); pageRules(m0, W + '처음');
-  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 6, W + '처음 쪽 6 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐)', String(m0.screens)); }
+  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 7, W + '처음 쪽 7 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 숫자마다 「그래서」 · 풀이 · 여섯 칸 지도로 한 화면 늘림)', String(m0.screens)); }
   const ess = await p.evaluate(() => [1, 2, 3].map(i => document.querySelector(`#su [data-ess="${i}"]`)?.textContent ?? null));
   check(JSON.stringify(ess) === JSON.stringify(ESS), W + '처음 쪽 본질 세 줄 = essence.js', JSON.stringify(ess).slice(0, 200));
   if (width === 390) {
@@ -165,7 +165,15 @@ for (const width of [390, 360, 320]) {
       const tiles = six ? [...six.querySelectorAll('li.su-st')].map(li => ({need: li.classList.contains('su-need'), v: li.querySelector('.su-sv')?.textContent ?? ''})) : [];
       const vals = [...document.querySelectorAll('#su .su-mid, #su .su-vr')], valsSix = vals.filter(v => v.querySelector('details.su-sixd li.su-st')).length;
       const last = main?.lastElementChild;
-      return {h1: (document.querySelector('#su h1')?.innerText ?? '').trim(), step: document.querySelector('#su .su-step')?.innerText.replace(/\s+/g, ' ').trim() ?? '', next: document.querySelector('#su .su-next')?.getAttribute('href') ?? null,
+      // ⑩ 주문 1807 · 1833 — 숫자마다 「그래서」 · 전문가 서랍(눌러야 열림) · 어려운 낱말 셈 · 여섯 칸 지도 · 장식이 글을 가리지 않음
+      const mv = [...document.querySelectorAll('#su .su-head .su-big, #su .su-mid, #su .su-vr')], mw = mv.filter(v => (v.querySelector('.su-mean span')?.textContent ?? '').trim().length > 0).length;
+      const pro = document.querySelector('#su main details.su-pro');
+      const tr = []; { const tw = document.createTreeWalker(main ?? document.body, NodeFilter.SHOW_TEXT); let n; while ((n = tw.nextNode())) { if (!n.textContent.trim() || n.parentElement?.closest('details:not([open]) > :not(summary), svg, [aria-hidden="true"]')) continue; const r = document.createRange(); r.selectNodeContents(n); for (const q of r.getClientRects()) if (q.bottom > 0 && q.top < H && q.width > 0) tr.push(q); } }
+      let orn = 0; for (const o of document.querySelectorAll('#su .su-orn')) { const q = o.getBoundingClientRect(); if (q.bottom <= 0 || q.top >= H) continue; for (const t of tr) orn += Math.max(0, Math.min(q.right, t.right) - Math.max(q.left, t.left)) * Math.max(0, Math.min(q.bottom, t.bottom) - Math.max(q.top, t.top)); }
+      const ornN = document.querySelectorAll('#su .su-orn').length;
+      return {means: {vals: mv.length, with: mw}, pro: {has: !!pro, open: !!pro?.open, rows: pro?.querySelectorAll('li').length ?? 0}, hard: Number(main?.dataset.hard ?? NaN), hardWords: main?.dataset.hardWords ?? '', glossed: (main?.dataset.glossed ?? '').split(',').filter(Boolean).length,
+        smap: !!document.querySelector('#su main figure.su-smap'), orn: Math.round(orn), ornN,
+        h1: (document.querySelector('#su h1')?.innerText ?? '').trim(), step: document.querySelector('#su .su-step')?.innerText.replace(/\s+/g, ' ').trim() ?? '', next: document.querySelector('#su .su-next')?.getAttribute('href') ?? null,
         share: Math.round(100 * area('#su main [data-g]') / (W * H)), shareIn: Math.round(100 * area('#su main [data-g]') / Math.max(1, W * (low - top))),
         order: !!(big && hero && big.bottom <= hero.top + 1 && (!mids || hero.bottom <= mids.top + 1)), lastIsSrc: !!last?.classList?.contains('su-src') && /출처/.test(last.innerText) && /조사 날짜/.test(last.innerText),
         figs: figs.length, moving, tiles, vals: vals.length, valsSix, tabs: [...document.querySelectorAll('#su .su-tabs a')].map(a => ({t: a.innerText.trim(), cur: a.getAttribute('aria-current') === 'page'}))};
@@ -183,11 +191,17 @@ for (const width of [390, 360, 320]) {
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? t.v === '확인 필요' : t.v && t.v !== '확인 필요')), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
       check(m.tabs.length === 4 && m.tabs.map(t => t.t).join(' ') === '오늘 회사 기록 멈춤' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 넷 기승전결 차례 · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
+      check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
+      check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
+      check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);
+      check(m.smap, W + '⑩ 여섯 칸 지도 — ' + m.h1, '');
+      check(m.orn === 0, W + '⑩ 장식이 글을 가리지 않음(겹친 넓이 0) — ' + m.h1, m.orn + ' · 장식 ' + m.ornN);
       pageRules(await measure(p), W + '⑨ ' + (k + 1) + '번째 화면 ' + m.h1);
       if (k < 7) { const a = await p.$('#su .su-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + m.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(300); }
     }
     check(seen.length === 8 && new Set(seen.map(m => m.h1)).size === 8 && seen[7]?.h1 === '내 매매일지', W + '⑨ 다음 일곱 번에 끝(여덟 화면 · 끝 = 내 매매일지)', seen.map(m => m.h1).join(' → '));
-    R.m.path = seen.map(m => ({h1: m.h1, share: m.share, shareIn: m.shareIn, figs: m.figs, moving: m.moving, need: m.tiles.filter(t => t.need).length}));
+    R.m.path = seen.map(m => ({h1: m.h1, share: m.share, shareIn: m.shareIn, figs: m.figs, moving: m.moving, need: m.tiles.filter(t => t.need).length, means: m.means.vals, hard: m.hard, hardWords: m.hardWords, glossed: m.glossed, orn: m.ornN}));
+    R.m.hard = seen.reduce((a, m) => a + (Number.isFinite(m.hard) ? m.hard : 0), 0); R.m.hardWords = [...new Set(seen.flatMap(m => m.hardWords.split(',').filter(Boolean)))];
     // 기록 서랍 여섯 · 서랍 쪽
     await open(p, '#/r');
     const dr = await p.evaluate(() => [...document.querySelectorAll('#su .su-drawer')].map(a => a.getAttribute('href')));

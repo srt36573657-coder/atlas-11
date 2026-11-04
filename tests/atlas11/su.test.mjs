@@ -132,15 +132,15 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
   const ms = E.eMonths({B});
   assert.equal(ms.big.v, '1 · 0', '다 센 달만 셈(세는 중인 달 · 빈 달은 빼고 따로 표시)');
   assert.ok(ms.rows.find(r => r.month === '2026-10').open, '세는 중인 달 표시');
-  const pz = E.ePause({B});
+  const pz = E.eMiss({B});
   assert.equal(pz.big.v, '1,057'); assert.deepEqual(pz.mids.map(x => x.v), ['251', '573', '233']);
-  assert.ok(E.ePause({B}).big.six.왜.includes('업종째 식었어요'), '왜 = 자료에 있는 지난 까닭(가장 많은 것)');
+  assert.ok(E.eMiss({B}).big.six.왜.includes('업종째 식었어요'), '왜 = 자료에 있는 지난 까닭(가장 많은 것)');
   const nr = E.eNear({B});
   assert.equal(nr.big.v, '16'); assert.equal(nr.big.v2, '26');
   const yr = E.eYears({B: {record: {all: {n: 1580, hits: 523, rate: 33.1, base: 23.65}, years: {'2024': {n: 0, hits: 0, rate: null, base: 22.71}, '2025': {n: 1118, hits: 373, rate: 33.36, base: 22.04}}}}});
   assert.equal(yr.rows[0].v, null, '고른 적 없는 해는 값 없음(「확인 필요」 · 0으로 지어 넣지 않음)');
   const {screenHits, ruinHits} = await import('../../site/next/words.js');
-  const all = [home, E.eBloom({S: {coN: 2557}, B, bl, mo: [], asOf: '2026-11-03'}), hub, ms, pz, nr, yr, E.eDays({B: {cal: {from: '2026-08-05', to: '2026-11-03', days: [{d: '2026-08-05', n: 2, hit: 1, miss: 1, wait: 0}]}}}), E.eJournal({recs: []})];
+  const all = [home, hub, ms, pz, nr, yr, E.eDays({B: {cal: {from: '2026-08-05', to: '2026-11-03', days: [{d: '2026-08-05', n: 2, hit: 1, miss: 1, wait: 0}]}}}), E.eJournal({recs: []})];
   const texts = all.flatMap(m => [...m.say, ...[m.big, ...m.mids, ...m.rows].flatMap(x => [x.label, ...Object.values(x.six)])]).filter(Boolean);
   const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
   assert.deepEqual(bad, [], '엔진 글에 쓰지 않을 말 0');
@@ -149,7 +149,7 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
 
 test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 기승전결 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);
@@ -205,3 +205,48 @@ test('새 판 매매일지 — 지금 수르 매매일지와 같은 열쇠 · �
   }
   assert.equal(forwardTo('', '#/j'), null, '매매일지 길은 새 판 안');
 });
+
+test('쉬운 말과 전문가 정보(주문 1807 · 사장님 2026-11-04 13:07(+04)) — 숫자마다 「그래서」 · 전문가 칸은 셈과 출처 · 바꿀 낱말은 바꾸고 못 바꾸면 풀이 · 「꽃잎」은 「꽃」이 아님', async () => {
+  const W = await import('../../site/su/su-word.js'), E = await import('../../site/su/su-six.js');
+  assert.equal(W.easy('시가총액이 컸어요'), '회사 크기가 컸어요', '바꾼 말 뒤 토씨도 받침에 맞춤');
+  assert.equal(W.easy('수익률은 몰라요'), '오른 만큼은 몰라요');
+  assert.equal(W.easy('종가를 봐요'), '그날 마지막 값을 봐요');
+  assert.ok(W.has('꽃이 됐어요', '꽃') && !W.has('빈 꽃잎', '꽃'), '꽃잎은 꽃이 아님');
+  for (const w of ['코스피', '코스닥', '업종', '꽃', '싹', '대장', '거래일']) assert.ok(W.GLOSS.some(g => g[0] === w && g[1].length > 8), '풀이 한 줄 — ' + w);
+  assert.deepEqual(W.hardLeft('코스피와 업종을 봐요', ['코스피']), ['업종'], '풀이 없이 남은 낱말만 셈');
+  assert.deepEqual(W.hardLeft('시가총액', []), ['시가총액'], '바꿨어야 할 낱말이 남으면 셈');
+  const B = {honest: {from: '2025-01-02', to: '2026-10-02', n: 1580, hits: 523, rate: 33.1, base: 24.38, baseN: 1038744, baseHits: 253231, days: 426, pickDays: 292, months: 22, up: 13, down: 8, scored: 22},
+    record: {all: {n: 1580, hits: 523, rate: 33.1, base: 23.65, baseN: 1708573, baseHits: 404033, ex: 2.2, exBase: -0.44, fall: 32.34, fallBase: 36}}, why: {all: {miss: 1057, why: [251, 573, 233]}, names: ['조금 모자랐어요', '업종째 식었어요', '회사만 처졌어요']}};
+  const hub = E.eHub({B, mine: []});
+  for (const v of [hub.big, ...hub.mids]) assert.ok(typeof v.mean === 'string' && v.mean.endsWith('요.'), '값마다 「그래서」 한 줄 — ' + v.label);
+  assert.ok(hub.big.mean.includes('100번에 67번은 꽃이 못 됐어요'), '33 대 24 → 셋 가운데 둘은 못 됨을 숨기지 않음');
+  const pro = new Map(hub.pro.map(p => [p.k, p]));
+  assert.ok(pro.get('100번에 꽃').how.startsWith('523 ÷ 1,580 × 100 = 33.1 · 자료 값과 ✓ 맞음'), '셈을 그대로 — 다시 셀 수 있게');
+  assert.ok(pro.get('아무 회사 100번에 꽃').how.startsWith('253,231 ÷ 1,038,744 × 100 = 24.38 · 자료 값과 ✓ 맞음'));
+  for (const k of ['고른 회사가 시장보다 더 오른 평균', '아무 회사가 시장보다 더 오른 평균', '100번에 시장보다 5 넘게 덜 오름', '아무 회사 · 100번에 5 넘게 덜 오름', '센 거래일', '고른 회사가 있던 날']) assert.ok(pro.has(k) && pro.get(k).v !== E.NEED, '전문가 칸에 빠지지 않음 — ' + k);
+  assert.ok([...pro.keys()].some(k => k.startsWith('plain')) && [...pro.keys()].some(k => k.startsWith('old')), '뜻 모르는 값도 빼지 않고 「뜻 확인 필요」');
+  const few = E.eNear({B: {near: {rec: {n: 12, hits: 2, rate: 16.67, base: 26.21, from: '2026-06-10', to: '2026-10-02'}}}});
+  assert.ok(few.big.mean.includes('센 수가 12번뿐이라'), '센 수가 적으면 「이 숫자만 믿기 어렵다」');
+});
+
+test('아름다움(주문 1833 · 사장님 2026-11-04 13:33(+04) [아름다움]) — 금빛 · 연두 · 살구 · 글 대비 · 고른 회사와 아무 회사 같은 무게 · 어두운 판 · 움직임 2초 안 · 움직임 줄이기', () => {
+  const css = fs.readFileSync(path.join(ROOT, 'site/su/su-art.css'), 'utf8');
+  const block = sel => { const i = css.indexOf(sel); assert.ok(i >= 0, sel); const a = css.indexOf('{', i), b = css.indexOf('}', a); return Object.fromEntries([...css.slice(a + 1, b).matchAll(/--([a-z0-9]+):\s*(#[0-9A-Fa-f]{6})/g)].map(m => [m[1], m[2]])); };
+  const lt = block(':root {'), dk1 = block(':root:not([data-theme="light"])'), dk2 = block(':root[data-theme="dark"]');
+  for (const k of Object.keys(lt)) { assert.ok(dk1[k] && dk2[k], '어두운 판에도 같은 이름 — ' + k); assert.equal(dk1[k], dk2[k], '어두운 판 두 곳이 같은 값 — ' + k); }
+  const L = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(c => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  const C = (a, b) => { const x = L(a), y = L(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  for (const [nm, P] of [['밝은 판', lt], ['어두운 판', dk1]]) {
+    assert.ok(C(P.ink, P.bg) >= 7 && C(P.mute, P.bg) >= 4.5 && C(P.mute, P.card) >= 4.5 && C(P.mute, P.soft) >= 4.5, nm + ' — 글 대비(본문 7 · 흐린 글 4.5 넘게)');
+    assert.ok(C(P.ok, P.bg) >= 3 && C(P.base, P.bg) >= 3 && C(P.no, P.bg) >= 3, nm + ' — 그림 색 대비 3 넘게');
+    assert.ok(Math.abs(L(P.ok) - L(P.base)) < 0.02, nm + ' — 고른 회사와 아무 회사가 같은 무게(밝기 차이 0.02 안)');
+    assert.ok(C(P.chipt, P.chip) >= 4.5 && C(P.warn, P.bg) >= 4.5, nm + ' — 「그래서」 딱지 · 「확인 필요」 글 대비');
+  }
+  assert.ok(C(lt.okt, lt.ok) >= 4.5, '고른 회사 칸 위 흰 글');
+  const delays = [...css.matchAll(/\.art-b\d \{ animation-delay: ([\d.]+)s; \}/g)].map(m => +m[1]), durs = [...css.matchAll(/animation: su-art-[a-z]+ ([\d.]+)s/g)].map(m => +m[1]);
+  assert.ok(delays.length === 4 && durs.length >= 3 && Math.max(...delays) + Math.max(...durs) <= 2, '네 박자 · 2초 안에 한 번');
+  assert.ok(/@media \(prefers-reduced-motion: reduce\) \{\s*\.art-draw, \.art-pop, \.art-fade \{ animation: none;/.test(css), '움직임 줄이기면 끝 모습');
+  const js = fs.readFileSync(path.join(ROOT, 'site/su/su-art.js'), 'utf8');
+  assert.ok(js.includes("'aria-hidden': 'true'") && css.includes('.su-orn-off { display: none !important; }') && /pointer-events: none/.test(css), '장식은 읽지 않고 누를 수 없음 · 글과 겹치면 숨김');
+});
+
