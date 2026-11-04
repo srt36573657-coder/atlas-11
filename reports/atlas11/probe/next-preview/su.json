@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-04T05:40:18.424Z",
+ "at": "2026-11-04T06:15:48.552Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 174,
+  "pass": 189,
   "fail": 0
  },
  "fails": [],
@@ -18,12 +18,12 @@
    ]
   },
   "home": {
-   "screens": 2.82,
+   "screens": 2.79,
    "links": 21
   },
   "speed": {
-   "lcp": 1416,
-   "cls": 0
+   "lcp": 1776,
+   "cls": 0.023
   }
  },
  "ok": true
