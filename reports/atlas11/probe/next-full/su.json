@@ -1,12 +1,21 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-04T13:16:28.292Z",
+ "at": "2026-11-04T18:16:43.868Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 573,
-  "fail": 0
+  "pass": 634,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] 21곳 누르면 그 회사 — F&F",
+   "/c/383220 · 찾지 못했어요"
+  ],
+  [
+   "[390] 왜 21곳에 들었나 칸 — F&F",
+   ""
+  ]
+ ],
  "m": {
   "data": {
    "picks": 0,
@@ -18,8 +27,8 @@
    ]
   },
   "home": {
-   "screens": 4.51,
-   "links": 30
+   "screens": 4.81,
+   "links": 36
   },
   "t21": {
    "listed": 2557,
@@ -31,21 +40,21 @@
   "path": [
    {
     "h1": "지금 볼 21곳",
-    "share": 54,
-    "shareIn": 71,
+    "share": 67,
+    "shareIn": 89,
     "figs": 3,
     "moving": 2,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
-    "glossed": 7,
+    "glossed": 8,
     "orn": 7
    },
    {
     "h1": "땅 지도",
     "share": 52,
-    "shareIn": 72,
+    "shareIn": 69,
     "figs": 3,
     "moving": 2,
     "need": 0,
@@ -70,8 +79,8 @@
    },
    {
     "h1": "한진칼",
-    "share": 57,
-    "shareIn": 76,
+    "share": 54,
+    "shareIn": 72,
     "figs": 5,
     "moving": 4,
     "need": 0,
@@ -83,7 +92,7 @@
    },
    {
     "h1": "한진칼 출목표",
-    "share": 51,
+    "share": 53,
     "shareIn": 70,
     "figs": 4,
     "moving": 3,
@@ -97,7 +106,7 @@
    {
     "h1": "왜 사?",
     "share": 57,
-    "shareIn": 78,
+    "shareIn": 75,
     "figs": 3,
     "moving": 2,
     "need": 0,
@@ -110,7 +119,7 @@
    {
     "h1": "내 매매일지",
     "share": 54,
-    "shareIn": 75,
+    "shareIn": 72,
     "figs": 5,
     "moving": 4,
     "need": 0,
@@ -123,7 +132,7 @@
    {
     "h1": "친구에게",
     "share": 54,
-    "shareIn": 75,
+    "shareIn": 72,
     "figs": 3,
     "moving": 2,
     "need": 0,
@@ -154,9 +163,9 @@
    }
   },
   "speed": {
-   "lcp": 1116,
+   "lcp": 1020,
    "cls": 0
   }
  },
- "ok": true
+ "ok": false
 }
