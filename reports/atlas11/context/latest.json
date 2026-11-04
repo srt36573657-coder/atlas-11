@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-04",
- "fetchedAt": "2026-11-04T10:13:18Z",
- "file": "reports/atlas11/context/2026-11-04/2026-11-04T10-13-18Z.json",
+ "fetchedAt": "2026-11-04T12:01:31Z",
+ "file": "reports/atlas11/context/2026-11-04/2026-11-04T12-01-31Z.json",
  "summary": {
   "day": "2026-11-04",
-  "fetchedAt": "2026-11-04T10:13:18Z",
+  "fetchedAt": "2026-11-04T12:01:31Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-04",
@@ -32,11 +32,11 @@
   "news": {
    "stocks": 365,
    "raw": 7211,
-   "distinct": 7164,
-   "republished": 47,
+   "distinct": 7162,
+   "republished": 49,
    "sameArticle": 0,
-   "stocksWithTodayNews": 205,
-   "todayDistinct": 1511
+   "stocksWithTodayNews": 206,
+   "todayDistinct": 1531
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-04",
-     "value": 1338.5,
-     "changePct": -0.56
+     "value": 1339.4,
+     "changePct": -0.49
     },
     "rows": 10
    },
@@ -151,9 +151,9 @@
     "label": "국고채 3년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-11-03",
-     "value": 3.744,
-     "changePct": 0
+     "date": "2026-11-04",
+     "value": 3.71,
+     "changePct": -0.91
     },
     "rows": 10
    },
@@ -162,9 +162,9 @@
     "label": "국고채 10년",
     "factorId": "F03",
     "latest": {
-     "date": "2026-11-03",
-     "value": 4.002,
-     "changePct": -0.99
+     "date": "2026-11-04",
+     "value": 3.968,
+     "changePct": -0.85
     },
     "rows": 10
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-04",
-     "value": 1338.5,
+     "value": 1339.4,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -488,22 +488,22 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-11-03",
-   "calendarLagDays": 1,
+   "latestObservation": "2026-11-04",
+   "calendarLagDays": 0,
    "series": [
     {
      "series": "KR3YT=RR",
      "label": "국고채 3년",
-     "latestObservation": "2026-11-03",
-     "value": 3.744,
+     "latestObservation": "2026-11-04",
+     "value": 3.71,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR3YT=RR/prices?page=1&pageSize=10"
     },
     {
      "series": "KR10YT=RR",
      "label": "국고채 10년",
-     "latestObservation": "2026-11-03",
-     "value": 4.002,
+     "latestObservation": "2026-11-04",
+     "value": 3.968,
      "unit": "percent",
      "sourceUrl": "https://api.stock.naver.com/marketindex/bond/KR10YT=RR/prices?page=1&pageSize=10"
     }
