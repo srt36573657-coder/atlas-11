@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {CODE, pct, moreLess, dateKo, bloomList, moneyList, whyOf, reasonsFor, idxLine, coLine, indRows, forwardTo} from '../../site/su/su-data.js';
+import {CODE, pct, moreLess, dateKo, bloomList, moneyList, whyOf, reasonsFor, idxLine, coLine, indRows, forwardTo, jo, w5hCo, w5hInd, w5hRec, say5} from '../../site/su/su-data.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const SAY = ['그날 몸값이 큰 쪽 위 20% 회사예요', '업종이 한 달 동안 시장보다 15% 넘게 더 올랐어요', '회사는 아직 싹이에요'];
@@ -95,6 +95,8 @@ test('저장소 자료 그대로 — 꽃이 될 회사 · 돈이 몰린 회사 �
 
 test('첫 화면이 된 뒤 — 지금 수르 고리 · 말 · 카톡 표는 /next/ 로 그대로 · 수르 두 길 길과 다른 표는 그대로', () => {
   for (const h of ['', '#', '#/', '#/c/005930', '#/i/%ED%95%AD%EA%B3%B5']) assert.equal(forwardTo('', h), null, h);
+  for (const h of ['#/b', '#/k', '#/r', '#/p', '#/k/127120', '#/r/127120', '#/p/005930']) assert.equal(forwardTo('', h), null, h); // 새 판 탭(주문 1238)
+  assert.equal(forwardTo('', '#/p/abc'), '/next/#/p/abc'); // 번호 꼴이 아니면 지금 수르
   assert.equal(forwardTo('?v=123', '#/'), null);
   assert.equal(forwardTo('?fbclid=abc', ''), null);
   assert.equal(forwardTo('', '#/w/005930'), '/next/#/w/005930');
@@ -104,4 +106,46 @@ test('첫 화면이 된 뒤 — 지금 수르 고리 · 말 · 카톡 표는 /ne
   assert.equal(forwardTo('?lang=en', '#/'), '/next/?lang=en#/');
   assert.equal(forwardTo('?kakao=ok', ''), '/next/?kakao=ok');
   assert.equal(forwardTo('?v=1&sw=1', '#/c/005930'), '/next/?v=1&sw=1#/c/005930');
+});
+
+test('육하원칙 엔진 — 여섯 칸 · 문장(이름표 없음) · 토씨 · 지난 사실만(주문 1238 · 사장님 2026-11-04 07:38(+04))', () => {
+  assert.equal(jo('삼성생명', '은'), '삼성생명은'); assert.equal(jo('제이에스링크', '은'), '제이에스링크는'); assert.equal(jo('코스닥', '이'), '코스닥이'); assert.equal(jo('반도체', '을'), '반도체를');
+  const near = {kind: 'near', ok: SAY.filter(x => x !== SAY[1]), no: [SAY[1]], ind: '바이오 도구·서비스', ix: 9.06, min: 15, rec: {rate: 16, base: 26, n: 132, hits: 21}};
+  const w = w5hCo({co: {code: '127120', name: '제이에스링크', ind: '바이오 도구·서비스', market: 'KOSDAQ'}, reasons: [near], line: [100, 80, 60.6], index: {name: '코스닥', line: [100, 90, 78.9]}, asOf: '2026-11-03'});
+  assert.deepEqual(Object.keys(w).filter(k => ['who', 'when', 'where', 'what', 'how', 'why'].includes(k)), ['who', 'when', 'where', 'what', 'how', 'why']);
+  assert.equal(w.who, '제이에스링크'); assert.equal(w.when, '11월 3일'); assert.equal(w.where, '코스닥 바이오 도구·서비스 업종'); assert.equal(w.kind, 'near');
+  const t = say5(w);
+  assert.equal(t[0], '제이에스링크는 11월 3일 코스닥 바이오 도구·서비스 업종에서 이달 꽃 조건 3가지 가운데 2가지에 맞았어요.');
+  assert.equal(t[1], '한 달 동안 −39.4% 움직였고, 같은 때 코스닥은 −21.1%였어요.');
+  assert.match(t[2], /조건 하나만 못 맞았어요\.$/);
+  for (const x of t) assert.doesNotMatch(x, /누가|언제|어디서|무엇을|어떻게|왜:|추천|예측|매수|매도|오를 것|내릴 것/, '이름표 · 쓰지 않을 말 0');
+  const m = w5hCo({co: {code: '180640', name: '한진칼', ind: '항공', market: 'KOSPI'}, reasons: [{kind: 'money', ind: '항공', x: 16.82, why: {line: '기관이 샀고, 한진칼이 끌었어요.', items: []}}], asOf: '2026-11-03'});
+  assert.equal(say5(m)[0], '한진칼은 11월 3일 코스피에서 한 달 동안 시장보다 17% 더 오른 항공 업종의 대장이에요.');
+  assert.equal(say5(m)[1], '기관이 샀고, 한진칼이 끌었어요.', '줄이 없으면 어떻게 칸은 건너뜀 · 왜 = 자료의 까닭 그대로');
+  assert.equal(w5hCo({co: {code: 'x', name: 'y'}}), null); assert.deepEqual(say5(null), []);
+  const ind = w5hInd({name: '보험', x: 7.86, rows: [{c: 3}, {c: -1}, {c: null}], count: 12, asOf: '2026-11-03', why: {line: '외국인이 샀어요.'}});
+  assert.deepEqual(say5(ind), ['보험 업종은 11월 3일까지 한 달 동안 시장보다 7.9% 더 올랐어요.', '값을 아는 회사 2곳 가운데 1곳이 한 달 동안 올랐어요.', '외국인이 샀어요.']);
+  const rec = say5(w5hRec({rate: 16, base: 26, n: 132, hits: 21}, 'near'));
+  assert.equal(rec[0], '조건에 가까웠던 회사는 지난 기록에서 100번에 16번 꽃이 됐어요.'); assert.equal(rec[1], '아무 회사나 고르면 100번에 26번이었어요.');
+  assert.match(rec[2], /적었어요\.$/, '정직하게 — 가까운 회사가 아무 회사보다 적었으면 적었다고');
+  assert.equal(w5hRec(null), null);
+});
+
+test('새 판 화면 — 일곱 걸음 · 탭 넷 기승전결 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1238)', async () => {
+  const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const arr = (src, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(src); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
+  const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
+  assert.equal(qs.length, 11);
+  assert.deepEqual(arr(su, 'WHY_QS'), qs, '열한 질문 = site/next/p-why.js QS 의 q 그대로');
+  const g = /export const GROUPS = (\[\[[^\n]*\]\]);/.exec(why); assert.ok(g);
+  assert.deepEqual(arr(su, 'WHY_GROUPS'), JSON.parse(g[1].replace(/'/g, '"')), '네 묶음 = p-why.js GROUPS 그대로');
+  const steps = arr(su, 'STEPS'), tabs = arr(su, 'TABS');
+  assert.equal(steps.length, 7, '일곱 걸음');
+  assert.deepEqual(tabs.map(t => t[0]), ['기', '승', '전', '결'], '탭 넷 = 기승전결 차례');
+  assert.deepEqual([...new Set(steps.map(s => s[1]))], ['기', '승', '전', '결'], '걸음도 기승전결 차례로 이어짐');
+  for (const [, , href] of tabs) assert.equal(forwardTo('', href), null, '탭 고리는 새 판 안 — ' + href);
+  const {screenHits, ruinHits} = await import('../../site/next/words.js');
+  const texts = [...su.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
+  const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
+  assert.deepEqual(bad, [], '화면 글에 쓰지 않을 말 0');
 });

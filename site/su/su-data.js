@@ -90,13 +90,63 @@ export function indRows(M, name) {
     .sort((a, b) => (b.c ?? -Infinity) - (a.c ?? -Infinity) || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 }
 
+/* ── 육하원칙 엔진 — 주문 1238(사장님 2026-11-04 07:38(+04) 「속단에 운영되는 엔진은 육하원칙에 구조가 되어야 한다」 · docs/design/su-new-2026-11-04/order-1238.txt)
+   자료 한 줄 → 누가 · 언제 · 어디서 · 무엇을 · 어떻게 · 왜 여섯 칸 → 화면은 이 칸으로 문장을 지음
+   이름표(누가 · 언제 …)는 화면에 쓰지 않음(비서가 회장께 올리는 글처럼 문장에 녹임) · 왜는 늘 자료에 있는 지난 사실(앞날 말 0 · 새 셈 0) */
+const batchim = w => { const t = String(w ?? ''), c = t.charCodeAt(t.length - 1) - 0xac00; return c >= 0 && c <= 11171 && c % 28 !== 0; };
+const PAIRS = Object.freeze({은: ['은', '는'], 이: ['이', '가'], 을: ['을', '를'], 과: ['과', '와'], 이에요: ['이에요', '예요']});
+/** 받침에 맞는 토씨 — jo('삼성생명', '은') → 「삼성생명은」 · jo('제이에스링크', '은') → 「제이에스링크는」 */
+export function jo(w, p) { const t = String(w ?? ''), pr = PAIRS[p]; return pr ? t + (batchim(t) ? pr[0] : pr[1]) : t + p; }
+export const MARKET_KO = Object.freeze({KOSPI: '코스피', KOSDAQ: '코스닥'});
+const lastOf = l => (Array.isArray(l) && l.length >= 2 && fin(l[l.length - 1]) ? l[l.length - 1] - 100 : null);
+/** 회사 한 곳의 여섯 칸 — co = {code, name, ind, market} · reasons = reasonsFor 결과 · line · index = 한 달 줄(기준 100 · idxLine) · asOf = 자료 날
+    → {who, when, where, what, how, why, kind, code} 또는 null(번호 · 이름이 없으면) */
+export function w5hCo({co, reasons = [], line = null, index = null, asOf = null} = {}) {
+  if (!co || !CODE.test(co.code ?? '') || !str(co.name)) return null;
+  const pick = reasons.find(x => x?.kind === 'pick'), near = reasons.find(x => x?.kind === 'near'), money = reasons.find(x => x?.kind === 'money');
+  const c = lastOf(line), i = lastOf(index?.line), mk = MARKET_KO[co.market] ?? null;
+  const what = pick ? `이달 꽃 조건 ${pick.ok.length}가지에 모두 맞았어요`
+    : near ? `이달 꽃 조건 ${near.ok.length + near.no.length}가지 가운데 ${near.ok.length}가지에 맞았어요`
+    : money ? `한 달 동안 시장보다 ${moreLess(money.x)} 오른 ${str(co.ind) ? co.ind + ' ' : ''}업종의 대장이에요` : null;
+  const how = c != null ? (i != null ? `한 달 동안 ${pct(c)} 움직였고, 같은 때 ${jo(index.name, '은')} ${pct(i)}였어요` : `한 달 동안 ${pct(c)} 움직였어요`) : null;
+  const why = money && str(money.why?.line) ? money.why.line
+    : near && near.no.length ? `「${near.no[0]}」 조건 하나만 못 맞았어요`
+    : pick ? '이달 꽃 조건을 모두 맞춰서 여기 있어요' : null; // 「회사라서」는 쓰지 않음(화면 낱말 거르기 「사라」에 걸림)
+  const where = (pick || near) ? [mk, str(co.ind) ? co.ind + ' 업종' : null].filter(Boolean).join(' ') : mk; // 돈이 몰린 회사는 업종 이름이 무엇을 칸에 있음(같은 말 두 번 0)
+  return {code: co.code, kind: pick ? 'pick' : near ? 'near' : money ? 'money' : null, who: co.name, when: dateKo(asOf), where: where || null, what, how, why};
+}
+/** 업종 한 곳의 여섯 칸 — {name, x, why, rows, count, asOf} → 누가 = 업종 · 어떻게 = 오른 회사 수(rows 의 c) */
+export function w5hInd({name, x = null, why = null, rows = [], count = null, asOf = null} = {}) {
+  if (!str(name)) return null;
+  const known = (Array.isArray(rows) ? rows : []).filter(r => fin(r?.c)), up = known.filter(r => r.c > 0).length;
+  const d = dateKo(asOf);
+  return {who: name + ' 업종', when: d === '?' ? null : d + '까지', where: null, what: fin(x) ? `한 달 동안 시장보다 ${moreLess(x)} 올랐어요` : null,
+    how: known.length ? `값을 아는 회사 ${known.length}곳 가운데 ${up}곳이 한 달 동안 올랐어요` : null,
+    why: str(why?.line) ?? null, count: fin(count) ? count : null};
+}
+/** 지난 기록의 여섯 칸 — rec = {rate, base, n, hits}(bloomList) · mode near · pick */
+export function w5hRec(rec, mode = 'near') {
+  if (!rec || !fin(rec.rate) || !fin(rec.base)) return null;
+  const who = mode === 'near' ? '조건에 가까웠던 회사' : '꽃 조건에 맞았던 회사';
+  return {who, when: '지난 기록에서', where: null, what: `100번에 ${rec.rate}번 꽃이 됐어요`, how: `아무 회사나 고르면 100번에 ${rec.base}번이었어요`,
+    why: rec.rate > rec.base ? '조건이 맞았던 회사가 아무 회사보다 꽃이 된 적이 많았어요' : rec.rate < rec.base ? '조건에 가까웠던 회사가 아무 회사보다 꽃이 된 적이 적었어요' : '조건에 가까웠던 회사와 아무 회사가 같았어요',
+    n: fin(rec.n) ? rec.n : null};
+}
+/** 여섯 칸 → 문장들(이름표 없이) — [첫 문장(누가 · 언제 · 어디서 · 무엇을), 어떻게, 왜] · 없는 칸은 건너뜀 */
+export function say5(w) {
+  if (!w) return [];
+  const head = w.what ? `${jo(w.who, '은')} ${w.when && w.when !== '?' ? w.when + ' ' : ''}${w.where ? w.where + '에서 ' : ''}${w.what}`.replace(/[.]?$/, '.') : null;
+  const end = t => (t && !/[.?!]$/.test(t) ? t + '.' : t);
+  return [head, end(w.how), end(w.why)].filter(Boolean);
+}
+
 /** 첫 화면이 된 뒤(사장님 2026-11-03 18:33(+04) 「응」 — 물음 「이 새 수르를 첫 화면으로 바꿀까요?」) — 지금 수르(/next/) 고리로 온 사람은 그쪽으로 그대로 이어 줌
-    수르 두 길 = '' · '#' · '#/' · '#/c/…' · '#/i/…' · 그 밖의 #/…(#/w/ · #/t/ · #/s/ 보낸 것 · #/why …)는 지금 수르 쪽
+    수르 두 길 = '' · '#' · '#/' · '#/c/…' · '#/i/…' · '#/b' · '#/k' · '#/r' · '#/p'(+ '/<번호>' · 주문 1238 새 판 길) · 그 밖의 #/…(#/w/ · #/t/ · #/s/ 보낸 것 · #/why …)는 지금 수르 쪽
     물음표 표 중 lang(말) · sw(말 바꿈) · kakao(카톡 들어오기 결과) · dev 가 있으면 지금 수르 쪽 — 그 밖의 표(?v= · 광고 표 …)는 그대로 둠 · 이어 줄 곳 또는 null */
 export const KEEP_Q = Object.freeze(['lang', 'sw', 'kakao', 'dev']);
 export function forwardTo(search, hash) {
   const q = String(search ?? ''), hh = String(hash ?? '');
-  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh);
+  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || /^#\/[bkrp](\/[0-9A-Z]{6})?$/.test(hh); // 새 판 길 넷(주문 1238 — 꽃 #/b · 조건 #/k · 기록 #/r · 멈춤 #/p · 회사 번호를 붙여도 됨)
   let keep = false;
   try { const sp = new URLSearchParams(q); keep = KEEP_Q.some(k => sp.has(k)); } catch { keep = false; }
   return su && !keep ? null : '/next/' + q + hh;
