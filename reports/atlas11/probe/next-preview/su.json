@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-04T13:52:41.228Z",
+ "at": "2026-11-04T17:10:41.353Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 573,
+  "pass": 636,
   "fail": 0
  },
  "fails": [],
@@ -18,8 +18,8 @@
    ]
   },
   "home": {
-   "screens": 4.51,
-   "links": 30
+   "screens": 4.71,
+   "links": 36
   },
   "t21": {
    "listed": 2557,
@@ -31,21 +31,21 @@
   "path": [
    {
     "h1": "지금 볼 21곳",
-    "share": 54,
-    "shareIn": 71,
+    "share": 67,
+    "shareIn": 89,
     "figs": 3,
     "moving": 2,
     "need": 0,
     "means": 4,
-    "hard": 0,
-    "hardWords": "",
+    "hard": 1,
+    "hardWords": "급등",
     "glossed": 7,
     "orn": 7
    },
    {
     "h1": "땅 지도",
     "share": 52,
-    "shareIn": 72,
+    "shareIn": 69,
     "figs": 3,
     "moving": 2,
     "need": 0,
@@ -70,8 +70,8 @@
    },
    {
     "h1": "한진칼",
-    "share": 52,
-    "shareIn": 69,
+    "share": 54,
+    "shareIn": 72,
     "figs": 5,
     "moving": 4,
     "need": 0,
@@ -83,7 +83,7 @@
    },
    {
     "h1": "한진칼 출목표",
-    "share": 51,
+    "share": 53,
     "shareIn": 70,
     "figs": 4,
     "moving": 3,
@@ -97,7 +97,7 @@
    {
     "h1": "왜 사?",
     "share": 57,
-    "shareIn": 78,
+    "shareIn": 75,
     "figs": 3,
     "moving": 2,
     "need": 0,
@@ -110,7 +110,7 @@
    {
     "h1": "내 매매일지",
     "share": 54,
-    "shareIn": 75,
+    "shareIn": 72,
     "figs": 5,
     "moving": 4,
     "need": 0,
@@ -123,7 +123,7 @@
    {
     "h1": "친구에게",
     "share": 54,
-    "shareIn": 75,
+    "shareIn": 72,
     "figs": 3,
     "moving": 2,
     "need": 0,
@@ -134,8 +134,10 @@
     "orn": 7
    }
   ],
-  "hard": 0,
-  "hardWords": [],
+  "hard": 1,
+  "hardWords": [
+   "급등"
+  ],
   "drawers": {
    "#/r/d": {
     "h1": "날마다 지난 기록",
@@ -154,7 +156,7 @@
    }
   },
   "speed": {
-   "lcp": 1884,
+   "lcp": 1944,
    "cls": 0.023
   }
  },

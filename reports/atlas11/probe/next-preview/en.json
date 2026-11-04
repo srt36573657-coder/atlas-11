@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-04T14:02:38.330Z",
+ "at": "2026-11-04T17:22:16.105Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -14,28 +14,28 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "cond": true,
-  "talk": true,
   "past": true,
   "rivals": true,
   "grow": true,
+  "range": true,
   "surge": true,
   "cal": true,
-  "range": true,
+  "cond": true,
+  "talk": true,
   "up": true,
   "time": true,
   "info": true,
   "x": true,
   "co": true,
   "chx": true,
+  "today": true,
   "why": true,
   "gdr": true,
-  "share": true,
   "hold": true,
   "theme": true,
+  "share": true,
   "sage": true,
-  "roman": true,
-  "today": true
+  "roman": true
  },
  "edge": true,
  "only": null,
@@ -50,75 +50,75 @@
    "@newwin": 15
   }
  },
- "seconds": 541,
- "secondsSum": 2563,
+ "seconds": 525,
+ "secondsSum": 2462,
  "shards": [
   {
    "shard": "1/5",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 4,
    "routes": 2736,
    "screens": 2736,
    "mine": 2736,
-   "seconds": 516,
+   "seconds": 512,
    "secs": {
     "open": 0.4,
-    "routes": 514.7
+    "routes": 510.7
    }
   },
   {
    "shard": "2/5",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 3,
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 502,
+   "seconds": 525,
    "secs": {
     "open": 0.4,
-    "routes": 501.1
+    "routes": 523.5
    }
   },
   {
    "shard": "3/5",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 3,
    "routes": 2735,
    "screens": 2778,
    "mine": 2735,
-   "seconds": 511,
+   "seconds": 490,
    "secs": {
     "open": 0.4,
-    "routes": 508.1
+    "routes": 488.9
    }
   },
   {
    "shard": "4/5",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 4,
    "routes": 2727,
    "screens": 2749,
    "mine": 2722,
-   "seconds": 541,
+   "seconds": 467,
    "secs": {
-    "open": 0.4,
-    "routes": 536.7,
-    "newwin": 3.1
+    "open": 0.3,
+    "routes": 463.6,
+    "newwin": 2.2
    }
   },
   {
    "shard": "5/5",
-   "ok": true,
-   "fails": 0,
+   "ok": false,
+   "fails": 4,
    "routes": 2656,
    "screens": 2777,
    "mine": 2657,
-   "seconds": 493,
+   "seconds": 468,
    "secs": {
-    "open": 0.4,
-    "routes": 476.8,
-    "act": 7.2,
-    "edge": 7.4,
+    "open": 0.3,
+    "routes": 455,
+    "act": 5.6,
+    "edge": 5.6,
     "grammar": 0
    }
   }
@@ -143,23 +143,83 @@
   "바꿔치기": 1,
   "오늘 한 줄 문장": 412
  },
- "missing": 0,
+ "missing": 3,
  "avatarLetters": 0,
- "kinds": {},
- "fails": 0,
+ "kinds": {
+  "한글 남음": 1,
+  "사전에 없는 틀": 3
+ },
+ "fails": 4,
  "own": {
-  "fails": 0,
-  "missing": 0,
-  "leftover": 0
+  "fails": 4,
+  "missing": 3,
+  "leftover": 1
  },
  "mod": {
   "fails": 0,
   "missing": 0,
   "leftover": 0
  },
- "missingList": [],
- "all": [],
+ "missingList": [
+  {
+   "key": "불장",
+   "ex": "불장",
+   "at": "#/"
+  },
+  {
+   "key": "꽃이 될",
+   "ex": "꽃이 될",
+   "at": "#/"
+  },
+  {
+   "key": "돈이 몰리는 회사를 우량주 {n}곳 안에서 {n}곳씩 찾아요.",
+   "ex": "돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.",
+   "at": "#/"
+  }
+ ],
+ "all": [
+  {
+   "kind": "한글 남음",
+   "what": "불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 {n}곳 안에서 {n}곳씩 찾아요.",
+   "ex": "불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.",
+   "at": [
+    "#/",
+    "새 창 · 몸값 · 급등 · 첫 화면 · 수르 칸 자료 못 받음 #/",
+    "새 창 · 모든 자료 못 받음 #/",
+    "아주 큰 글씨 · #/",
+    "바꿔치기 · 오늘 한 줄 날짜 · 마감 0"
+   ],
+   "n": 43
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "불장  ← 「불장」",
+   "ex": null,
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "꽃이 될  ← 「꽃이 될」",
+   "ex": null,
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  },
+  {
+   "kind": "사전에 없는 틀",
+   "what": "돈이 몰리는 회사를 우량주 {n}곳 안에서 {n}곳씩 찾아요.  ← 「돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.」",
+   "ex": null,
+   "at": [
+    "#/"
+   ],
+   "n": 1
+  }
+ ],
  "truncated": false,
  "problems": [],
- "ok": true
+ "ok": false
 }

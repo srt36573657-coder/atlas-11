@@ -1,5 +1,5 @@
 {
- "made": "2026-11-04T13:59:34.574Z",
+ "made": "2026-11-04T17:17:29.478Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -48,15 +48,15 @@
  },
  "fails": [],
  "warn": [],
- "sec": 402,
+ "sec": 399,
  "time": {
-  "old": 110.3,
-  "new": 301.5,
-  "wall": 402.4,
+  "old": 98.6,
+  "new": 296.3,
+  "wall": 399.5,
   "opensOld": 25571,
   "opensNew": 33282,
-  "oldPct": 27.4,
-  "oldShare": 26.8
+  "oldPct": 24.7,
+  "oldShare": 25
  },
  "net": {
   "req": 2560,
