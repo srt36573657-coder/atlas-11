@@ -55,10 +55,9 @@ function rowsOf(rows) {
 /** 지난 기록 두 줄 — 「○○는 100번에 n번 꽃이 됐어요」 · 아무 회사 · 꽃의 뜻 */
 function recBox(rec, who, short = false) {
   if (!rec) return null;
-  if (short) return h('div', {class: 'su-rec'}, h('p', {class: 'su-rec-c', text: '꽃은 한 달 동안 시장보다 5% 넘게 더 오른 것이에요.'})); // 머리 값 칸이 위에서 두 숫자를 보였으니 뜻만
   return h('div', {class: 'su-rec'},
-    h('p', {class: 'su-rec-a'}, h('span', {text: josa(who, '는') + ' 100번에 '}), h('b', {text: rec.rate + '번'}), h('span', {text: ' 꽃이 됐어요.'})),
-    h('p', {class: 'su-rec-b', text: '아무 회사를 골랐다면 ' + rec.base + '번이었어요.'}),
+    short ? null : h('p', {class: 'su-rec-a'}, h('span', {text: josa(who, '는') + ' 100번에 '}), h('b', {text: rec.rate + '번'}), h('span', {text: ' 꽃이 됐어요.'})), // 짧게 = 머리 값 칸이 위에서 두 숫자를 이미 보였음
+    short ? null : h('p', {class: 'su-rec-b', text: '아무 회사를 골랐다면 ' + rec.base + '번이었어요.'}),
     h('p', {class: 'su-rec-c', text: '꽃은 한 달 동안 시장보다 5% 넘게 더 오른 것이에요.'}));
 }
 /** 신문 첫 면 머리 값 — 큰 값 하나(가장 큰 글씨) · 받치는 말 · 막대는 한 번 자람(들어올 때 1초 안 · 움직임 줄이기면 끝 모습) */
