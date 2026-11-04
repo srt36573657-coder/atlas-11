@@ -2015,6 +2015,14 @@
    "how": "node scripts/atlas11/orders/kakao_digest.mjs",
    "order": "1833",
    "note": "주문 1807 · 1833 올린 뒤 끝 보고 — 장부 127건(성공 97) 요약 45통 · 실패 0"
+  },
+  {
+   "at": "2026-11-04T21:59:00+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 45,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs",
+   "order": "2044",
+   "note": "주문 2044 끝 보고(올리기 전 · 전체 검사 2/11 실패 0) — 장부 128건(성공 97 · 미완성 8) 요약 45통 · 실패 0"
   }
  ]
 }
