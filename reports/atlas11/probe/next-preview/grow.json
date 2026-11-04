@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-04T12:47:30.973Z",
+ "at": "2026-11-04T13:57:56.123Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-04",
  "companies": 2557,
@@ -32,18 +32,18 @@
    }
   }
  },
- "seconds": 141,
+ "seconds": 144,
  "time": {
-  "old": 3,
-  "new": 129.9,
-  "wall": 140.9,
-  "opensOld": 11,
+  "old": 126.1,
+  "new": 127.8,
+  "wall": 143.6,
+  "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 2.1,
-  "oldShare": 2.3
+  "oldPct": 87.8,
+  "oldShare": 49.7
  },
  "net": {
-  "req": 5126,
+  "req": 2560,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -62,12 +62,12 @@
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": true,
-   "why": "",
-   "made": "2026-11-04T12:34:43.747Z",
+   "use": false,
+   "why": "기준값 파일 없음",
+   "made": null,
    "inputs": 2566,
    "reads": 2557,
-   "note": "기준값 다시 씀"
+   "note": "기준값 새로 씀(파일 2566개 · 값 2557개)"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
