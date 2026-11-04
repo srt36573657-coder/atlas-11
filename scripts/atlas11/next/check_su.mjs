@@ -26,7 +26,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqjmf]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.-]*|\/hello\.html\?su=guest)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n
+const LINK_OK = /^(#\/|#\/[bkrpqjmf]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -221,6 +221,13 @@ for (const width of [390, 360, 320]) {
     check(seen.length === 8 && new Set(seen.map(m => m.h1)).size === 8 && seen[7]?.h1 === '친구에게', W + '⑨ 다음 일곱 번에 끝(여덟 화면 · 끝 = 친구에게 — 주문 2044 21곳 → 땅 → 업종 → 회사 → 자세히 → 왜 사? → 매매일지 → 친구에게)', seen.map(m => m.h1).join(' → '));
     R.m.path = seen.map(m => ({h1: m.h1, share: m.share, shareIn: m.shareIn, figs: m.figs, moving: m.moving, need: m.tiles.filter(t => t.need).length, means: m.means.vals, hard: m.hard, hardWords: m.hardWords, glossed: m.glossed, orn: m.ornN}));
     R.m.hard = seen.reduce((a, m) => a + (Number.isFinite(m.hard) ? m.hard : 0), 0); R.m.hardWords = [...new Set(seen.flatMap(m => m.hardWords.split(',').filter(Boolean)))];
+    // 셋의 길 — 옛 기능 82가지 자리(주문 0054 [4] 1 ~ 8) · 모두(#/g)와 묶음 여덟 · 칸마다 수르 안 고리 · 쓰지 않을 말 0 · 넘침 0
+    for (const hh of ['#/g', '#/g/hot', '#/g/bloom', '#/g/money', '#/g/stop', '#/g/guide', '#/g/guest', '#/g/back', '#/g/sky']) {
+      await open(p, hh); await p.waitForTimeout(200);
+      const n = await p.evaluate(() => document.querySelectorAll('#su .su-fcard').length);
+      check(n >= 1, W + '⑨ 셋의 길 ' + hh + ' 칸', String(n));
+      pageRules(await measure(p), W + '⑨ 셋의 길 ' + hh);
+    }
     // 기록 서랍 여섯 · 서랍 쪽
     await open(p, '#/r');
     const dr = await p.evaluate(() => [...document.querySelectorAll('#su .su-drawer')].map(a => a.getAttribute('href')));

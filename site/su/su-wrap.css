@@ -1,6 +1,9 @@
 /* 수르 틀 씌우기(su-wrap.js) — html.su-wrapped 일 때만 · 옛 쪽 글 · 숫자는 그대로 · 아래 막대와 금빛 테두리만(주문 0054 [4] 4 · 6) */
 html.su-wrapped body { padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px)) !important; }
 html.su-wrapped .tabs, html.su-wrapped nav.tabs, html.su-wrapped .bottom-tabs { display: none !important; }
+/* 미국은 뺀다(주문 0054 자료 0 「미국은 뺀다」 · [1] 1) — 수르 틀 안에서 연 옛 쪽에서만 미국 칸 · 미국 고리를 숨김(옛 쪽 글과 옛 검사는 그대로) */
+html.su-wrapped a[href="#/f/us"], html.su-wrapped a[href^="#/w/INX"], html.su-wrapped a[href^="#/w/IXIC"], html.su-wrapped a[href^="#/w/DJI"], html.su-wrapped a[href^="#/w/SOX"], html.su-wrapped a[href^="#/w/VIX"],
+html.su-wrapped .hm-it[data-k="us"], html.su-wrapped .ptoday-sec[data-k="us"], html.su-wrapped a[href^="/us/"], html.su-wrapped section.sh:has(a[href="#/f/us"]) { display: none !important; }
 html.su-wrapped::after { content: ""; position: fixed; inset: 4px; border: 1.5px solid #B58A33; border-radius: 18px; pointer-events: none; z-index: 2147482990; }
 .suw-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 2147483000; background: #FAF4E6; color: #2B2118; border-top: 2px solid #B58A33;
   padding: 8px max(12px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));

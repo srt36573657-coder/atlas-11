@@ -16,8 +16,15 @@ import {halo, dress} from '/su/su-art.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {h, s, fig, matrix, bars, cols, waffle, line, cal, split, sixTiles, sixMap, thumb, funnel, honest3, dots6} from '/su/su-fig.js';
 import {load21, v21Home, vLand, vLandOne, vMore, vFriend, reasonBox21, find21} from '/su/su-21.js';
-import {godTag, sageGuide, roomKey, STOP_STEP} from '/su/su-gods.js';
-import {vRoads} from '/su/su-roads.js'; // 셋의 길 — 옛 기능 자리(주문 0054 [4]) // 신 72 지킴이 · 스승 39 길잡이(주문 0054 [5])
+let GODM = null; const godM = () => (GODM ??= import('/su/su-gods.js')); // 신 72 지킴이 · 스승 39 길잡이(주문 0054 [5]) — 첫 그림을 막지 않게 창이 다 열린 뒤 받음(느린 휴대폰 첫 화면 2.5초)
+const roadM = () => import('/su/su-roads.js'); // 셋의 길 — 옛 기능 자리(주문 0054 [4]) · 그 쪽을 열 때만 받음
+/** 늦게 채우는 자리 — 빈 칸을 먼저 두고, 창이 다 열린 뒤 신 · 스승 모듈이 오면 바꿔 끼움(못 받거나 그 방에 없으면 빈 칸을 치움) */
+function lateGod(make) {
+  const slot = h('div', {class: 'su-late', 'aria-hidden': 'true'});
+  const go = () => godM().then(G => { const e = make(G); if (e) slot.replaceWith(e); else slot.remove(); }).catch(() => slot.remove());
+  if (document.readyState === 'complete') setTimeout(go, 0); else window.addEventListener('load', () => setTimeout(go, 300), {once: true});
+  return slot;
+}
 let WHYM = null; const whyM = async () => (WHYM ??= await import('/su/su-why.js')); // 「왜 사?」 · 매매일지는 그 쪽에서 받음(첫 화면이 가볍게 — 주문 2044 느린 휴대폰)
 
 brand(NAME);
@@ -107,7 +114,7 @@ export function page(m) {
   const st = m.step ? STEPS[m.step] : null;
   const head = h('header', {class: 'su-top top'}, h('a', {class: 'su-brand', href: '#/', text: NAME}),
     st ? h('span', {class: 'su-step'}, h('i', {text: PHASE[st[1]]}), h('span', {text: m.step + ' / 8 · ' + st[0]})) : null, tools());
-  const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title});
+  const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title}), hk = location.hash;
   if (m.proper) h1.setAttribute('data-proper', '');
   const main = h('main', {class: 'su-page' + (m.compact ? ' su-compact' : '')}, // compact = 첫 화면 한 장에 21곳이 다 보이게(주문 0054 [2] 2)
     h('p', {class: 'su-safe', text: SAFE}),
@@ -122,7 +129,7 @@ export function page(m) {
     m.big ? sixMap([m.big, ...(m.mids ?? []), ...(m.rows ?? [])]) : null,
     proBox(m.pro),
     ...(m.after ?? []),
-    godTag(location.hash), // 방 지킴이 신(주문 0054 [5] 5)
+    lateGod(G => G.godTag(hk)), // 방 지킴이 신(주문 0054 [5] 5)
     source(m.asOf, m.S, m.note ?? null, m.kick ?? null));
   return [head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
 }
@@ -351,19 +358,19 @@ async function route() {
     if (!FIRST && !on21) { const b0 = await base(); FIRST = firstCode(b0.bl, b0.mo); }
     if (on21) setTimeout(() => { base().catch(() => null); }, 2500); // 넷째 쪽(회사) 자료는 첫 화면 뒤에 미리 받아 둠
     if (!m && !t) v = await v21Home(X21);
-    else if (t) v = t[1] === 'g' ? await vRoads(X21) : t[1] === 'm' ? await vLand(X21) : t[1] === 'f' ? await vFriend(X21) : t[1] === 'r' ? await vHub() : t[1] === 'q' || t[1] === 'p' ? await (await whyM()).vQuiz(lastCo?.code ?? null, ctx) : t[1] === 'j' ? await (await whyM()).vJournal(ctx) : t[1] === 'k' && lastCo?.code ? await vCo(lastCo.code) : await vHome();
+    else if (t) v = t[1] === 'g' ? await (await roadM()).vRoads(X21) : t[1] === 'm' ? await vLand(X21) : t[1] === 'f' ? await vFriend(X21) : t[1] === 'r' ? await vHub() : t[1] === 'q' || t[1] === 'p' ? await (await whyM()).vQuiz(lastCo?.code ?? null, ctx) : t[1] === 'j' ? await (await whyM()).vJournal(ctx) : t[1] === 'k' && lastCo?.code ? await vCo(lastCo.code) : await vHome();
     else {
       const [, k, raw] = m; let a = raw; try { a = decodeURIComponent(raw); } catch { /* 그대로 */ }
       if (k === 'c' && /^[0-9A-Z]{6}\/more$/.test(a)) v = await vMore(X21, a.slice(0, 6));
       else if (k === 'm') v = await vLandOne(X21, a);
-      else if (k === 'g') v = await vRoads(X21, a);
+      else if (k === 'g') v = await (await roadM()).vRoads(X21, a);
       else if (k === 'c' || k === 'k') v = await coOnPath(a);
       else if (k === 'i') v = await vInd(a);
       else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
       else v = CODE.test(a) ? await (await whyM()).vQuiz(a, ctx) : notFound('이 회사를 찾지 못했어요.');
     }
   } catch (e) { console.error(e); v = notFound('화면을 그리다 멈췄어요. 다시 열어 주세요.'); }
-  { const sk = roomKey(hh); if (v && STOP_STEP[sk]) v.after = [...(v.after ?? []), sageGuide(STOP_STEP[sk], new Date().getDate())]; } // 스승 길잡이 — 사기 전에 멈추는 길(주문 0054 [5] 7)
+  if (v) v.after = [...(v.after ?? []), lateGod(G => { const st = G.STOP_STEP[G.roomKey(hh)]; return st ? G.sageGuide(st, new Date().getDate()) : null; })]; // 스승 길잡이 — 사기 전에 멈추는 길의 쪽에만(주문 0054 [5] 7)
   if (hh !== (location.hash || '#/')) return;
   root.replaceChildren(...page(v).filter(Boolean));
   afterPaint(root);
@@ -373,4 +380,7 @@ async function route() {
 try { if (localStorage.getItem('su-big-text') === '1') document.documentElement.classList.add('su-lg'); } catch { /* 저장소 없음 */ }
 window.addEventListener('hashchange', route);
 route();
-import('/su/su-sky.js').then(m => m.startSky()).catch(e => console.error(e)); // 하늘(주문 0054 [6] 8 · 9) — 스스로 첫 그림 뒤에 늦게 시작
+window.addEventListener('load', () => setTimeout(() => { // 하늘(주문 0054 [6] 8 · 9) — 첫 그림을 막지 않게 창이 다 열린 뒤 모양 · 그림을 받음
+  const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/su/su-sky.css'; document.head.append(l);
+  import('/su/su-sky.js').then(m => m.startSky()).catch(e => console.error(e));
+}, 1500), {once: true});

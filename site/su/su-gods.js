@@ -6,7 +6,8 @@
    - 명단 · 얼굴은 옛 것 그대로: /next/roman72.js(GODS · 얼굴 /next/roman-art/<번호>.svg) · /next/data/sage39.json(people · 얼굴 /next/sage-art/<id>.svg)
    - 신 일흔둘 모두 = 길잡이 길의 「로마 신 72」 방(/next/#/roman) · 스승 서른아홉 모두 = 「서른아홉 스승」 방(/next/#/sage — 모두 듣기 · 이어 듣기)
    - 지킴이는 재미로 이은 것 — 앞날을 맞히거나 사고팔기를 권하는 말 없음 · 듣기는 화면 글 그대로 읽음 */
-import {GODS} from '/next/roman72.js';
+let GODS = null; // 옛 신 명단(/next/roman72.js) — 첫 그림을 막지 않게 늦게 받음(느린 휴대폰 첫 화면 2.5초)
+const godsP = () => (GODS ? Promise.resolve(GODS) : import('/next/roman72.js').then(m => (GODS = m.GODS)));
 import {h} from '/su/su-fig.js';
 
 /** 수르 방 → 지킴이 신 번호(roman72.js GODS) — 열쇠 = 주소 꼴(#/<k> · #/<k>/<a> 의 k · 「k/*」) */
@@ -23,7 +24,7 @@ export function roomKey(hash = location.hash) {
   if (a && Object.hasOwn(SU_ROOMS, k + '/*')) return k + '/*';
   return Object.hasOwn(SU_ROOMS, k) ? k : '';
 }
-export const godOf = key => { const n = SU_ROOMS[key]; const g = GODS[n]; return Array.isArray(g) ? {n, name: g[0], latin: g[1], who: g[3]} : null; }; // GODS[n] = [한국어 이름, 라틴 이름, 영어 이름, 누구(한국어), 누구(영어), 무리]
+export const godOf = key => { const n = SU_ROOMS[key]; const g = GODS?.[n]; return Array.isArray(g) ? {n, name: g[0], latin: g[1], who: g[3]} : null; }; // GODS[n] = [한국어 이름, 라틴 이름, 영어 이름, 누구(한국어), 누구(영어), 무리]
 
 /** 소리 — 화면 글 그대로(한국어 · 천천히) · 못 하면 조용히 */
 export function say(text) {
@@ -31,14 +32,16 @@ export function say(text) {
 }
 const listenBtn = (text, label) => { const b = h('button', {class: 'su-gl-say', type: 'button', 'aria-label': label}, h('span', {'aria-hidden': 'true', text: '🔈'}), h('span', {text: '듣기'})); b.addEventListener('click', () => say(text)); return b; };
 
-/** 방 지킴이 이름표 — 얼굴 · 이름 · 누구 한 줄 · 얼굴 듣기 · 신 72 모두 */
+/** 방 지킴이 이름표 — 얼굴 · 이름 · 누구 한 줄 · 얼굴 듣기 · 신 72 모두(명단은 늦게 받아 채움) */
 export function godTag(hash = location.hash) {
-  const g = godOf(roomKey(hash)); if (!g) return null;
-  const line = josa2(g.name) + ' 이 방 지킴이예요. ' + g.who;
-  return h('aside', {class: 'su-god', 'aria-label': '이 방 지킴이 신'},
-    h('img', {class: 'su-godf', src: '/next/roman-art/' + g.n + '.svg', alt: '', width: '64', height: '64', loading: 'lazy', decoding: 'async'}),
-    h('div', {class: 'su-godt'}, h('p', {class: 'su-godk', text: '이 방 지킴이 · 재미로 이은 신'}), h('p', {class: 'su-godn'}, h('b', {text: g.name}), ' ', h('span', {text: g.latin})), h('p', {class: 'su-godw', text: g.who})),
-    h('div', {class: 'su-godb'}, listenBtn(line, g.name + ' 얼굴 듣기'), h('a', {class: 'su-godall', href: '/next/?su=guide#/roman', text: '신 72 모두'})));
+  const key = roomKey(hash); if (!Object.hasOwn(SU_ROOMS, key)) return null;
+  const box = h('aside', {class: 'su-god', 'aria-label': '이 방 지킴이 신'});
+  godsP().then(() => { const g = godOf(key); if (!g) return;
+    const line = josa2(g.name) + ' 이 방 지킴이예요. ' + g.who;
+    box.append(h('img', {class: 'su-godf', src: '/next/roman-art/' + g.n + '.svg', alt: '', width: '64', height: '64', loading: 'lazy', decoding: 'async'}),
+      h('div', {class: 'su-godt'}, h('p', {class: 'su-godk', text: '재미로 이은 이 방 지킴이'}), h('p', {class: 'su-godn'}, h('b', {text: g.name}), ' ', h('span', {text: g.latin})), h('p', {class: 'su-godw', text: g.who})),
+      h('div', {class: 'su-godb'}, listenBtn(line, g.name + ' 얼굴 듣기'), h('a', {class: 'su-godall', href: '/next/?su=guide#/roman', text: '신 72 모두'}))); }).catch(() => box.remove());
+  return box;
 }
 const josa2 = w => w + (/[가-힣]$/.test(w) && (w.charCodeAt(w.length - 1) - 0xac00) % 28 ? '은' : '는');
 

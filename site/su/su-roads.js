@@ -17,54 +17,62 @@ const HELP = {hot: '불장 7곳', bloom: '꽃이 될 7곳', money: '돈이 몰�
 let FP = null;
 export const feats = () => (FP ??= import('/su/su-feat.js').then(m => m.FEAT ?? []).catch(() => []));
 
-/** 기능 하나의 주소 — 수르 쪽(#/…)은 그대로 · 옛 쪽은 ?su=<묶음>(수르 틀) · 없으면 null */
-export function hrefOf(f, g = f?.group) {
-  const o = f?.open; if (!o) return null;
+/** 기능 하나의 주소 — 수르 쪽(#/…)은 그대로 · 옛 쪽은 ?su=<묶음>(수르 틀) · 없으면 null
+    co = 그날 21곳 안 회사 번호 — 회사 자세히(#/c/<번호>/more)는 21곳 안 회사만 열려서, 명단을 만든 날 번호 대신 그날 불장 첫 회사로 엶 */
+export function hrefOf(f, g = f?.group, co = null) {
+  let o = f?.open; if (!o) return null;
+  if (co && /^[0-9A-Z]{6}$/.test(co) && /^#\/c\/[0-9A-Z]{6}\/more$/.test(o)) o = '#/c/' + co + '/more';
   if (o.startsWith('#/')) return o;
   try { const u = new URL(o, 'https://aaa7377.com'); u.searchParams.set('su', ORDER.includes(g) ? g : 'guide'); return u.pathname + u.search + u.hash; } catch { return null; }
 }
 const helpText = f => (f.helps ? '돕는 것 · ' + (HELP[f.helps] ?? f.helps) : '셋과 안 이어짐 · 사장님이 정하실 것');
+/** 화면 이름 — 명단(su-feat.js)의 name 은 자료 2 글자 그대로 · 화면에 쓰지 않는 말이 든 이름은 say 로 보임 · 「(사장님만)」은 따로 붙임 */
+export const nameOf = f => (f?.say ?? f?.name ?? '').replace(/\s*\(사장님만\)\s*$/, '');
+/** 누를 곳이 없는 칸의 한 줄 — 하늘은 뒷배경에서 날고, 옛 화면에만 있던 것은 여는 곳이 없음 */
+const noneText = f => (f.group === 'sky' ? '뒷배경에서 날아요' : '지금은 여는 곳이 없어요');
+const noneShort = f => (f.group === 'sky' ? '뒷배경' : '여는 곳 없음');
 
 /** 묶음 막대 그림 — 묶음마다 기능 수(셋은 금빛 · 돕는 길은 연두 · 하늘은 살구) */
 function roadBars(rows) {
   const W = 390, rh = 44, H = rows.length * rh + 12, max = Math.max(1, ...rows.map(r => r.n));
   return s('svg', {class: 'su-svg su-roads', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '묶음마다 옛 기능 수'},
-    rows.map((r, i) => { const y = 6 + i * rh, w = 200 * r.n / max, cls = ['hot', 'bloom', 'money'].includes(r.g) ? 'g-ok' : r.g === 'sky' ? 'g-bad' : 'g-basefill';
+    rows.map((r, i) => { const y = 6 + i * rh, w = 168 * r.n / max, cls = ['hot', 'bloom', 'money'].includes(r.g) ? 'g-ok' : r.g === 'sky' ? 'g-bad' : 'g-basefill';
       return [s('text', {x: 12, y: y + 27, class: 'g-tl g-tsub', text: SHORT[r.g]}), s('rect', {x: 120, y: y + 8, width: Math.max(4, w), height: 26, rx: 13, class: cls + ' b' + (1 + (i % 4)) + ' a-gx'}),
         s('text', {x: 128 + w, y: y + 28, class: 'g-tl g-tland', text: r.n + '가지'})]; }));
 }
 
 /** 셋의 길 모두(#/g) · 묶음 하나(#/g/<묶음>) */
 export async function vRoads(X, g = null) {
-  const [{S}, F] = await Promise.all([X.base(), feats()]);
+  const [{S}, F, T] = await Promise.all([X.base(), feats(), import('/su/su-21.js').then(m => m.load21(X.get)).catch(() => null)]);
+  const co = T?.lists?.hot?.[0]?.code ?? null; // 회사 자세히를 여는 그날 21곳 안 회사
   const by = k => F.filter(f => f.group === k);
   if (!g) {
     const rows = ORDER.map(k => ({g: k, n: by(k).length}));
-    const open = F.filter(f => hrefOf(f)).length, none = F.filter(f => !f.helps);
+    const open = F.filter(f => hrefOf(f)).length, none = F.filter(f => !f.helps), skyN = F.filter(f => !hrefOf(f) && f.group === 'sky').length, goneN = F.length - open - skyN;
     const big = val(F.length, '가지', '옛 기능 모두 · 하나도 버리지 않음', {누가: NAME, 언제: null, 어디서: '셋의 길 여덟 묶음', 무엇을: '옛 기능을 묶음대로 셋의 길에 놓았어요', 어떻게: '사장님이 정하신 묶음 그대로', 왜: '모든 기능이 셋을 돕게 하려고요'},
       {mean: '옛 기능 ' + F.length + '가지가 모두 수르 안에 자리가 있다는 뜻이에요.'});
-    const mids = [val(open, '가지', '누르면 수르 틀 안에서 열림', {누가: NAME, 언제: null, 어디서: '수르 · 옛 쪽', 무엇을: '열리는 주소가 있는 기능', 어떻게: '브라우저로 하나씩 열어 봤어요', 왜: '튕기지 않게 하려고요'}, {mean: '뒷배경 하늘처럼 누를 곳이 따로 없는 것을 빼면 모두 열린다는 뜻이에요.'}),
-      val(none.length, '가지', '셋과 안 이어짐', {누가: NAME, 언제: null, 어디서: '셋의 길', 무엇을: none.map(f => f.name).join(' · ') || null, 어떻게: '셋 가운데 무엇을 돕는지 하나씩 적었어요', 왜: '지우지 않고 사장님이 정하시게'}, {mean: none.length ? '이 기능들은 지우지 않고 그대로 두었다는 뜻이에요.' : '모두 셋 가운데 하나를 돕는다는 뜻이에요.'})];
+    const mids = [val(open, '가지', '누르면 수르 틀 안에서 열림', {누가: NAME, 언제: null, 어디서: '수르 · 옛 쪽', 무엇을: '열리는 주소가 있는 기능', 어떻게: '브라우저로 하나씩 열어 봤어요', 왜: '튕기지 않게 하려고요'}, {mean: '뒷배경 하늘 ' + skyN + '가지' + (goneN ? '와 옛 화면에만 있던 ' + goneN + '가지' : '') + '를 빼면 모두 열린다는 뜻이에요.'}),
+      val(none.length, '가지', '셋과 안 이어짐', {누가: NAME, 언제: null, 어디서: '셋의 길', 무엇을: none.map(nameOf).join(' · ') || null, 어떻게: '셋 가운데 무엇을 돕는지 하나씩 적었어요', 왜: '지우지 않고 사장님이 정하시게'}, {mean: none.length ? '이 기능들은 지우지 않고 그대로 두었다는 뜻이에요.' : '모두 셋 가운데 하나를 돕는다는 뜻이에요.'})];
     const list = h('section', {class: 'su-roadl', 'aria-label': '묶음'}, h('h2', {class: 'su-ft', text: '묶음 여덟 · 누르면 그 길'}),
-      ORDER.map(k => h('a', {class: 'su-fcard', href: '#/g/' + k}, h('b', {text: HEAD[k] + ' · ' + by(k).length + '가지'}), h('span', {text: by(k).slice(0, 4).map(f => f.name).join(' · ') + (by(k).length > 4 ? ' …' : '')}))));
+      ORDER.map(k => h('a', {class: 'su-fcard', href: '#/g/' + k}, h('b', {text: HEAD[k] + ' · ' + by(k).length + '가지'}), h('span', {text: by(k).slice(0, 4).map(nameOf).join(' · ') + (by(k).length > 4 ? ' …' : '')}))));
     return {title: '셋의 길', tab: 0, kick: '옛 기능 자리', h1: '셋의 길', big,
       hero: X.fig('roads', [roadBars(rows)], {label: '셋의 길 묶음', hero: true, cap: ['옛 기능을 여덟 묶음으로 나눴어요.', '셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 묶음이 맨 위예요.', '그런데 하늘 그림처럼 누르는 기능이 아닌 것도 있어요.', '그래서 묶음을 누르면 그 기능이 수르 안에서 열려요.']}),
-      mids, body: [list], pro: F.map(f => ({k: SHORT[f.group] + ' · ' + f.name, v: hrefOf(f) ? '열림' : '뒷배경', how: f.how + ' · ' + helpText(f)})),
+      mids, body: [list], pro: F.map(f => ({k: SHORT[f.group] + ' · ' + nameOf(f), v: hrefOf(f) ? '열림' : noneShort(f), how: f.how + ' · ' + helpText(f)})),
       next: {href: '#/g/hot', label: '불장을 돕는 것은?'}, asOf: null, S};
   }
   if (!ORDER.includes(g)) return X.notFound('이 길을 찾지 못했어요.');
-  const L = by(g), first = L.find(f => hrefOf(f));
-  const big = val(L.length, '가지', HEAD[g], {누가: NAME, 언제: null, 어디서: '셋의 길 · ' + SHORT[g], 무엇을: L.map(f => f.name).join(' · ') || null, 어떻게: '사장님이 정하신 묶음 그대로', 왜: ['hot', 'bloom', 'money'].includes(g) ? HELP[g] + '을 볼 때 함께 쓰려고요' : '셋을 찾는 길을 도우려고요'},
+  const L = by(g), first = L.find(f => hrefOf(f, g, co));
+  const big = val(L.length, '가지', HEAD[g], {누가: NAME, 언제: null, 어디서: '셋의 길 · ' + SHORT[g], 무엇을: L.map(nameOf).join(' · ') || null, 어떻게: '사장님이 정하신 묶음 그대로', 왜: ['hot', 'bloom', 'money'].includes(g) ? HELP[g] + '을 볼 때 함께 쓰려고요' : '셋을 찾는 길을 도우려고요'},
     {mean: L.length + '가지 기능이 ' + (['hot', 'bloom', 'money'].includes(g) ? HELP[g] + ' 곁에' : '이 길에') + ' 있다는 뜻이에요.'});
-  const card = f => { const href = hrefOf(f, g);
+  const card = f => { const href = hrefOf(f, g, co);
     return h(href ? 'a' : 'div', {class: 'su-fcard su-feat' + (href ? '' : ' su-featx'), href: href ?? null, 'data-feat': f.id},
-      h('b', {text: f.name + (f.owner ? ' · 사장님만' : '')}), h('span', {text: f.how}), h('em', {class: 'su-help', text: helpText(f)}), href ? null : h('em', {class: 'su-help', text: '뒷배경에서 날아요'})); };
+      h('b', {text: nameOf(f) + (f.owner ? ' · 사장님만' : '')}), h('span', {text: f.how}), h('em', {class: 'su-help', text: helpText(f)}), href ? null : h('em', {class: 'su-help', text: noneText(f)})); };
   const body = [h('section', {class: 'su-flist', 'aria-label': HEAD[g]}, h('h2', {class: 'su-ft', text: HEAD[g] + ' · 누르면 수르 안에서 열림'}), L.map(card))];
   if (g === 'hot') body.unshift(surgeBox(X));
   return {title: HEAD[g], tab: g === 'stop' ? 3 : g === 'back' || g === 'guest' ? 2 : 0, kick: '셋의 길 · ' + SHORT[g], h1: HEAD[g], big,
     hero: X.fig('roads', [roadBars([{g, n: L.length}, ...ORDER.filter(k => k !== g).slice(0, 3).map(k => ({g: k, n: by(k).length}))])], {label: HEAD[g], hero: true, cap: [HEAD[g] + ' ' + L.length + '가지예요.', '다른 묶음과 견주어 보여요.', '그런데 옛 쪽 글과 숫자는 바꾸지 않았어요.', '그래서 누르면 옛 쪽이 수르 틀 안에서 열려요.']}),
-    mids: [], body, pro: L.map(f => ({k: f.name, v: hrefOf(f, g) ? '열림' : '뒷배경', how: (f.open ?? '주소 없음') + ' · ' + helpText(f)})),
-    next: first ? {href: hrefOf(first, g), label: first.name + ' 열기'} : {href: '#/g', label: '셋의 길 모두'}, asOf: null, S};
+    mids: [], body, pro: L.map(f => ({k: nameOf(f), v: hrefOf(f, g, co) ? '열림' : noneShort(f), how: (hrefOf(f, g, co) ?? '주소 없음') + ' · ' + helpText(f)})),
+    next: first ? {href: hrefOf(first, g, co), label: nameOf(first) + ' 열기'} : {href: '#/g', label: '셋의 길 모두'}, asOf: null, S};
 }
 
 /** 불장 곁 급등(주문 0054 [5] 1 ~ 3) — 급등 다섯 칸 · 급등 달력 고리 + 급등 회사 가운데 365곳 안 · 불장 7 이음 + 며칠 뒤 기록 고리 */

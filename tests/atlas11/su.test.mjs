@@ -149,7 +149,7 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
 
 test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 기승전결 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-gods.js') + src('su-roads.js') + src('su-wrap.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-gods.js') + src('su-roads.js') + src('su-wrap.js') + src('su-sky.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);
@@ -169,7 +169,12 @@ test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 
   const texts = [...all.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
   const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
   assert.deepEqual(bad, [], '화면 글에 쓰지 않을 말 0');
-  assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(all), '보안 규칙 — innerHTML · 글 속 style 없음');
+  assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(all + src('su-feat.js')), '보안 규칙 — innerHTML · 글 속 style 없음');
+  // 옛 기능 명단(주문 0054 [4]) — name 은 자료 2 글자 그대로라 화면에는 say ?? name 과 how 가 보임 → 그 글에 쓰지 않을 말 0
+  const {FEAT} = await import('../../site/su/su-feat.js');
+  assert.equal(FEAT.length, 82, '자료 2 옛 기능 82가지');
+  const fbad = FEAT.flatMap(f => { const t = (f.say ?? f.name) + ' ' + f.how; return [...screenHits(t), ...ruinHits(t).map(x => x.word)].map(w => w + ' ← ' + f.id); });
+  assert.deepEqual(fbad, [], '옛 기능 화면 이름 · 한 줄에 쓰지 않을 말 0');
 });
 
 test('새 판 「왜 사?」 답하기 — 답 셋 · 한마디 · 왜 묻나 · 판정 이름이 지금 수르와 글자 그대로 · 판정 셈이 같음 · 기록 열쇠가 같음(주문 1506)', async () => {

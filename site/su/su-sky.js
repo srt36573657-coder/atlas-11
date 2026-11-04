@@ -1,12 +1,9 @@
-/* 수르 하늘 — 뒷배경에 하나씩 천천히 나는 무하풍 그림 열다섯(빈 파일에서 새로 씀)
-   사장님 명령서(docs/design/su-jobs-2026-11-05/order-0054.txt) [6] 6 · 8 · 9
-   「옛 하늘 풍경을 모두 무하풍으로 다시 그려라」 「하늘은 뒷배경에서 하나씩 천천히 날게 해라」(10월 22일 「너무 번잡해」 말씀)
-   「장식은 값과 글을 가리지 않게 해라」
-   · 층 하나(.su-sky) — 화면에 고정 · 글판 뒤(z-index -1) · 누를 수 없음 · 읽어 주기에서 숨김 · 글과 값 위로 올라오지 않음
-   · 한 번에 그림 하나 — 40 ~ 70초 동안 천천히 가로지르며 나타났다 흐려짐 → 잠깐 쉼 → 다음 그림(열다섯을 차례로 · 끝없이)
-   · 그림 = 무하풍 선 그림(채찍처럼 휜 곡선 · 후광 고리 · 가는 금빛 선 · 살구와 연두 덧칠) · 그림 안 글자 없음 · 바깥 파일 없음
-   · 움직임 줄이기 = 별 한 장만 멈춘 채 둠 · 첫 그림을 늦추지 않음(창 load 뒤 3초 + 한가할 때 시작)
-   · 자리와 움직임은 CSS 클래스와 @keyframes 로만(su-sky.css) — 글 속 꾸밈을 쓰지 않음(보안 규칙) */
+/* 수르 하늘 — 뒷배경에 하나씩 천천히 나는 무하풍 그림 열다섯(빈 파일에서 새로 씀 · 짝 su-sky.css)
+   사장님 명령서(docs/design/su-jobs-2026-11-05/order-0054.txt) [6] 6 「장식은 값과 글을 가리지 않게 해라」
+   8 「옛 하늘 풍경을 모두 무하풍으로 다시 그려라」 9 「하늘은 뒷배경에서 하나씩 천천히 날게 해라」(10월 22일 「너무 번잡해」)
+   · 층 하나 — 화면 고정 · 글판 뒤 · 누를 수 없음 · 읽어 주기에서 숨김 · 한 번에 그림 하나(40 ~ 70초) → 잠깐 쉼 → 다음
+   · 길은 날 때마다 빈 바탕이 가장 많은 쪽으로 고름(글판 뒤에 숨지 않고 글 뒤를 덜 지남)
+   · 움직임 줄이기 = 별 한 장만 멈춤 · 창 load 뒤 3초 + 한가할 때 시작 · 자리와 움직임은 CSS 클래스로만(글 속 꾸밈 없음) */
 const NS = 'http://www.w3.org/2000/svg';
 const PI = Math.PI, sin = Math.sin, cos = Math.cos;
 const f = v => Math.round(v * 10) / 10;
@@ -40,10 +37,10 @@ const spark = (x, y, r) => { const a = f(x - r), b = f(x + r), c = f(y - r), e =
 /** 무하 후광 — 옅은 살구 빛 · 가는 금 고리 · 점 고리 */
 const halo = (x, y, r) => [O('kg', x, y, r + 2), O('k kt', x, y, r), O('k kd', x, y, f(r - 3.5))];
 /** 구름 털 — 타원 둘레를 밖으로 부푼 물결로(비숑) */
-function puff(cx, cy, rx, ry, n, a0 = 0) {
+function puff(cx, cy, rx, ry, n) {
   let d = '';
   for (let i = 0; i <= n; i++) {
-    const a = a0 + i / n * 2 * PI, x = f(cx + rx * cos(a)), y = f(cy + ry * sin(a));
+    const a = i / n * 2 * PI, x = f(cx + rx * cos(a)), y = f(cy + ry * sin(a));
     if (!i) { d = `M${x} ${y}`; continue; }
     const m = a - PI / n;
     d += `Q${f(cx + rx * 1.3 * cos(m))} ${f(cy + ry * 1.3 * sin(m))} ${x} ${y}`;
@@ -79,24 +76,24 @@ function aPolaris() {
   ];
 }
 
-/** 오로라 — 물결치는 빛의 띠 둘 · 아래 끝이 밝고 위로 올라갈수록 옅어지는 빛줄기 커튼 */
+/** 오로라 — 주름진 빛의 커튼 둘 · 아래 끝이 밝게 접히며 물결치고 빛줄기는 위로 올라갈수록 옅어짐 */
 function aAurora() {
-  const curtain = (ph, amp, base, len, step) => {
+  const curtain = (ph, y0, amp, len, n) => {
     let edge = '', rays = '';
-    for (let x = 8; x <= 272; x += step) {
-      const y = base + amp * sin(x / 40 + ph) + 4 * sin(x / 13 + ph * 2), h = len * (.5 + .5 * sin(x / 21 + ph)) * (.65 + .35 * sin(x / 47)) + 10;
-      edge += (edge ? 'L' : 'M') + x + ' ' + f(y);
-      rays += `M${x} ${f(y)}q${f(2 * sin(x / 7))} ${f(-h / 2)} ${f(1.5 * sin(x / 11))} ${f(-h)}`;
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, x = 10 + 260 * t + 13 * sin(6 * PI * t + ph), y = y0 + amp * sin(2.6 * PI * t + ph), h = len * (.45 + .55 * (.5 + .5 * sin(3 * PI * t + ph * 2)));
+      edge += (i ? 'L' : 'M') + f(x) + ' ' + f(y);
+      rays += `M${f(x)} ${f(y)}l${f(3 * sin(9 * t + ph))} ${f(-h)}`;
     }
     return [edge, rays];
   };
-  const [e1, r1] = curtain(0, 16, 84, 62, 5), [e2, r2] = curtain(2.3, 11, 108, 40, 7);
+  const [e1, r1] = curtain(0, 92, 16, 76, 70), [e2, r2] = curtain(2.2, 112, 10, 46, 46);
   const grad = (id, a) => el('linearGradient', {id, x1: 0, y1: 1, x2: 0, y2: 0}, [el('stop', {offset: 0, class: a + '1'}), el('stop', {offset: 1, class: a + '2'})]);
   return [
     el('defs', {}, [grad('su-sky-au', 'ku'), grad('su-sky-av', 'kv')]),
-    P('k ku', r1), P('k kl', e1),
     P('k kv kt', r2), P('k kp kt', e2),
-    P('k', spark(40, 12, 4) + spark(140, 8, 3.5) + spark(238, 14, 4)),
+    P('k ku kt', r1), P('k kl', e1),
+    P('k', spark(40, 12, 4) + spark(146, 6, 3.5) + spark(240, 14, 4)),
   ];
 }
 
@@ -132,7 +129,7 @@ function dragon(pearl) {
   for (let i = N; i >= 0; i--) d += `L${f(belly[i][0])} ${f(belly[i][1])}`;
   for (let i = 3; i < N - 1; i += 2) { const [tx, ty] = T(i), w = W[i] * .4; rung += `M${f(belly[i][0])} ${f(belly[i][1])}L${f(C[i][0] - ty * w)} ${f(C[i][1] + tx * w)}`; }
   const ang = i => f(Math.atan2(T(i)[1], T(i)[0]) * 180 / PI);
-  const at = (i, p, kids, k = 1) => G(`translate(${f(p[i][0])} ${f(p[i][1])}) rotate(${f(ang(i) * k)})`, kids);
+  const at = (i, p, kids) => G(`translate(${f(p[i][0])} ${f(p[i][1])}) rotate(${ang(i)})`, kids);
   const leg = (i, far) => at(i, belly, [P(far ? 'k kt' : 'k', 'M0 0C2 9 8 15 17 15M17 15l6 -4M17 15l7 1M17 15l5 5')]);
   return [
     leg(12, 1), leg(28, 1),
@@ -226,7 +223,7 @@ function aParrot() {
   ];
 }
 
-/** 하트 별자리 — 하트 둘레의 별 열 개를 가는 선으로 이음 */
+/** 하트 별자리 — 하트 둘레의 별 열네 개를 가는 선으로 이음 */
 function aHeart() {
   const pt = t => [f(100 + 4.6 * 16 * sin(t) ** 3), f(76 - 4.6 * (13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)))];
   const ts = [0, .4, .82, 1.22, 1.58, 1.98, 2.5, PI], ps = ts.concat(ts.slice(1, -1).reverse().map(t => -t)).map(pt);
@@ -300,41 +297,98 @@ function aDragons() {
   ];
 }
 
-/* 그림표 — [그리기, 가로, 세로, 길(su-sky.css .su-fly-*), 뒤집기(왼쪽으로 날 때), 넓은 그림] */
+/* 그림표 — [그리기, 가로, 세로, 나는 꼴, 넓은 그림] · 나는 꼴 c = 고요히 떠 감(안 뒤집음 · 옆 빈 자리도) · h = 옆으로 남(왼쪽이면 뒤집음)
+   r = 비스듬히 올라감 · f = 비스듬히 떨어짐 */
 const ART = [
-  [aStar, 200, 160, 'a'], [aPolaris, 200, 160, 'b'], [aAurora, 280, 130, 'a', 0, 1], [aMeteor, 220, 130, 'e', 0, 1], [aDragon, 266, 165, 'b', 1, 1],
-  [aAngels, 280, 130, 'a', 0, 1], [aPeter, 240, 150, 'c', 0, 1], [aBichon, 200, 150, 'd', 1], [aParrot, 220, 150, 'a', 0, 1], [aHeart, 200, 170, 'b'],
-  [aSolar, 230, 150, 'd', 0, 1], [aComet, 260, 140, 'e', 0, 1], [aRocket, 170, 176, 'c'], [aUfo, 200, 140, 'b'], [aDragons, 300, 125, 'a', 0, 1],
+  [aStar, 200, 160, 'c'], [aPolaris, 200, 160, 'c'], [aAurora, 280, 132, 'c', 1], [aMeteor, 220, 130, 'f', 1], [aDragon, 266, 165, 'h', 1],
+  [aAngels, 280, 130, 'c', 1], [aPeter, 240, 150, 'r', 1], [aBichon, 200, 150, 'h'], [aParrot, 220, 150, 'h', 1], [aHeart, 200, 170, 'c'],
+  [aSolar, 230, 150, 'c', 1], [aComet, 260, 140, 'f', 1], [aRocket, 170, 176, 'r'], [aUfo, 200, 140, 'c'], [aDragons, 300, 125, 'c', 1],
 ];
 
-/** 그림 하나 — 연(날리는 틀) 안에 출렁임 틀 안에 SVG */
+/* 날아가는 길 열여섯 = su-sky.css @keyframes su-sky-<이름>(그림 가운데 · 화면 너비와 높이의 비율)
+   m = 옆 빈 자리 위아래 · a = 왼쪽에서 오른쪽(높이 다섯 칸) · b = 거꾸로 · f = 떨어짐 · r = 올라감 */
+const PATHS = [
+  ['m1', .1, .22, .12, .74], ['m2', .9, .74, .88, .22],
+  ['a1', .1, .17, .9, .13], ['b1', .9, .17, .1, .13], ['a2', .1, .33, .9, .29], ['b2', .9, .33, .1, .29],
+  ['a3', .1, .49, .9, .45], ['b3', .9, .49, .1, .45], ['a4', .1, .65, .9, .61], ['b4', .9, .65, .1, .61],
+  ['a5', .1, .81, .9, .77], ['b5', .9, .81, .1, .77],
+  ['f1', .12, .08, .88, .36], ['f2', .12, .34, .88, .62], ['r1', .14, .5, .86, .12], ['r2', .14, .82, .86, .44],
+];
+
+/** 길 고르기 — 길마다 그림이 다 보이는 동안 다섯 때 × 네 점을 찍어 빈 바탕이 가장 많은 길을 고름
+    빈 바탕 = 글판 · 단추 · 그림이 덮지 않고 글줄도 없는 곳(글줄은 찍힌 요소의 글만 잼) · 값과 글 뒤를 덜 지남 */
+function pick(kind, box, last) {
+  const W = window.innerWidth, H = window.innerHeight, root = document.documentElement, seen = new Map(), txt = new Map();
+  const solid = e => {
+    if (seen.has(e)) return seen.get(e);
+    const cs = getComputedStyle(e), v = e instanceof SVGElement || /^(IMG|VIDEO|CANVAS|IFRAME|INPUT|BUTTON|SELECT|TEXTAREA)$/.test(e.tagName) || cs.backgroundImage !== 'none' || !/(transparent|, 0\))$/.test(cs.backgroundColor);
+    seen.set(e, v); return v;
+  };
+  const inText = (e, x, y) => {
+    let rs = txt.get(e);
+    if (!rs) { rs = []; for (const n of e.childNodes) if (n.nodeType === 3 && n.textContent.trim()) { const r = document.createRange(); r.selectNodeContents(n); rs.push(...r.getClientRects()); } txt.set(e, rs); }
+    return rs.some(q => x >= q.left && x <= q.right && y >= q.top && y <= q.bottom);
+  };
+  const free = (x, y) => {
+    if (x <= 0 || y <= 0 || x >= W || y >= H) return false;
+    const st = document.elementsFromPoint(x, y);
+    return !st.some(e => e !== root && e !== document.body && solid(e)) && !(st[0] && inText(st[0], x, y));
+  };
+  let best = null, top = -1;
+  for (const [id, x0, y0, x1, y1] of PATHS) {
+    const t = id[0];
+    if ((t === 'f' || t === 'r') && t !== kind || t === 'm' && kind !== 'c') continue;
+    const bonus = (t === kind ? .15 : 0) - (id === last ? .08 : 0) + .04 * (1 - (y0 + y1) / 2);
+    let s = 0, n = 0;
+    for (const u of [.1, .27, .5, .73, .9]) {
+      const cx = (x0 + (x1 - x0) * u) * W, cy = (y0 + (y1 - y0) * u) * H;
+      for (const [dx, dy] of [[-.28, -.22], [.28, -.22], [-.28, .22], [.28, .22]]) { s += free(cx + dx * box.width, cy + dy * box.height) ? 1 : 0; n++; }
+      if ((s + 20 - n) / 20 + bonus <= top) break; // 남은 점을 다 얻어도 못 이기면 그만
+    }
+    if (s / 20 + bonus > top) { top = s / 20 + bonus; best = id; }
+  }
+  return best;
+}
+
+/** 그림 하나 — 연(날리는 틀) 안에 출렁임 틀 안에 SVG(가운데 맞춤은 su-sky.css) */
 function kite(i, cls) {
-  const [draw, w, h, , flip, wide] = ART[i];
-  const svg = el('svg', {class: 'su-sky-art' + (wide ? ' su-sky-wide' : '') + (flip && !/still/.test(cls) ? ' su-sky-flip' : ''), viewBox: `0 0 ${w} ${h}`, width: w, height: h, 'aria-hidden': 'true', focusable: 'false'}, [draw()]);
+  const [draw, w, h, , wide] = ART[i];
+  const svg = el('svg', {class: 'su-sky-art' + (wide ? ' su-sky-wide' : ''), viewBox: `0 0 ${w} ${h}`, width: w, height: h, 'aria-hidden': 'true', focusable: 'false'}, [draw()]);
   const bob = document.createElement('div'); bob.className = 'su-sky-b'; bob.appendChild(svg);
-  const k = document.createElement('div'); k.className = 'su-sky-k ' + cls; k.dataset.sky = SKY_ITEMS[i].id; k.appendChild(bob);
+  const k = document.createElement('div'); k.className = 'su-sky-k' + (cls ? ' ' + cls : ''); k.dataset.sky = SKY_ITEMS[i].id; k.appendChild(bob);
   return k;
 }
 
 /* ── 하늘 돌리기 ── */
-const PAUSE = 4500, LONGEST = 75000; // 다음 그림까지 쉼 · 한 번 나는 길이의 넉넉한 끝(su-sky.css 의 가장 긴 길 64초보다 김)
-let layer = null, timer = 0, run = false, started = false, mq = null;
+const PAUSE = 4500, LONGEST = 75000; // 다음 그림까지 쉼 · 끝 소식이 안 올 때 기다리는 끝(가장 긴 길 64초보다 김)
+let layer = null, timer = 0, run = false, started = false, mq = null, gen = 0, last = '';
 const still = () => !!(mq && mq.matches);
+const soon = fn => (window.requestIdleCallback ? window.requestIdleCallback(fn, {timeout: 2000}) : fn());
 function ensure() {
   if (layer && layer.isConnected) return layer;
   layer = document.querySelector('.su-sky');
   if (!layer) { layer = document.createElement('div'); layer.className = 'su-sky'; layer.setAttribute('aria-hidden', 'true'); document.body.appendChild(layer); }
   return layer;
 }
-function clear() { clearTimeout(timer); timer = 0; if (layer) while (layer.firstChild) layer.firstChild.remove(); }
-/** 그림 i 를 한 번 날림 → 끝나면 잠깐 쉬고 다음 그림 */
+function clear() { gen++; clearTimeout(timer); timer = 0; if (layer) while (layer.firstChild) layer.firstChild.remove(); }
+/** 그림 i 를 한 번 날림 → 다 날면 걷고 잠깐 쉰 뒤(한가할 때) 다음 그림 */
 function fly(i) {
-  clear();
   if (!run) return;
   if (still()) { rest(); return; }
-  const k = kite(i, 'su-fly-' + ART[i][3]), next = () => { if (!k.isConnected) return; k.remove(); clearTimeout(timer); timer = setTimeout(() => fly((i + 1) % ART.length), PAUSE); };
-  k.addEventListener('animationend', e => { if (e.target === k && e.animationName === 'su-sky-fade') next(); });
+  clear();
+  const g = gen, k = kite(i, ''), svg = k.firstChild.firstChild, kind = ART[i][3];
   ensure().appendChild(k);
+  let id = null;
+  try { id = pick(kind, svg.getBoundingClientRect(), last); } catch (e) { id = null; }
+  id = id || (kind === 'f' ? 'f1' : kind === 'r' ? 'r1' : 'a1'); last = id;
+  if (kind !== 'c' && id[0] === 'b') svg.classList.add('su-sky-flip');
+  k.classList.add('su-fly', 'su-fly-' + id);
+  const next = () => {
+    if (g !== gen) return; // 새 그림이 이미 시작됨
+    k.remove(); clearTimeout(timer);
+    timer = setTimeout(() => { if (g === gen) soon(() => { if (g === gen) fly((i + 1) % ART.length); }); }, PAUSE);
+  };
+  k.addEventListener('animationend', e => { if (e.target === k && e.animationName === 'su-sky-fade') next(); });
   timer = setTimeout(next, LONGEST);
 }
 /** 움직임 줄이기 — 별 한 장만 멈춘 채 */
