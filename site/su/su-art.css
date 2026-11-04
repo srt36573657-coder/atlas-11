@@ -57,7 +57,7 @@ body { background: var(--bg); }
 .su-fig::before, .su-fig::after { content: ""; position: absolute; pointer-events: none; }
 .su-fig::before { inset: 4px 6px; border: 1.5px solid var(--gold); border-radius: 22px; }
 .su-fig::after { inset: 8px 10px; border: 1px solid var(--gold2); border-radius: 18px; }
-.su-hero { padding-top: 14px; }
+.su-hero { padding-top: 11px; }
 .su-hero::before { border-radius: 46% 46% 22px 22px / 22px 22px 22px 22px; }
 .su-hero::after { border-radius: 46% 46% 18px 18px / 18px 18px 18px 18px; }
 .su-hero .su-beats { margin-left: 58px; margin-right: 58px; }

@@ -38,11 +38,12 @@ const recOk = r => r && fin(r.rate) && fin(r.base);
 const SRC = '네이버 증권 그날 마지막 값으로 ' + '수르가 셈';
 const BLOOM_HOW = '그날 고른 회사가 한 달 뒤 시장보다 5% 넘게 더 올랐는지 셈';
 /** 뜻 줄 — 100번에 a번 대 b번 */
-function vsMean(a, b, who, n = null) { // n = 센 수 — 30번보다 적으면 「이 숫자만 믿기 어렵다」(시안 3 장점)
+function vsMean(a, b, who, n = null, short = false) { // short — 바로 위 이름표가 「대 아무 회사」를 말할 때(큰 값) 「아무 회사보다」를 뺌 // n = 센 수 — 30번보다 적으면 「이 숫자만 믿기 어렵다」(시안 3 장점)
   if (!fin(a) || !fin(b)) return null;
   const A = r0(a), B = r0(b), miss = 100 - A;
-  return (A > B ? who + '가 아무 회사보다 꽃이 더 자주 됐다는 뜻이에요.' : A < B ? who + '가 아무 회사보다 꽃이 된 적이 더 적었다는 뜻이에요.' : who + '와 아무 회사가 같았다는 뜻이에요.')
-    + (A > B ? ' 그래도' : ' 그리고') + ' 100번에 ' + miss + '번은 꽃이 못 됐어요.'
+  const than = short ? '' : '아무 회사보다 ';
+  return (A > B ? who + '가 ' + than + '꽃이 더 자주 됐어요.' : A < B ? who + '가 ' + than + '꽃이 덜 자주 됐어요.' : who + '와 아무 회사가 같았어요.')
+    + (A > B ? ' 그래도' : ' 그리고') + ' 100번에 ' + miss + (short ? '번은 못 됐어요.' : '번은 꽃이 못 됐어요.')
     + (fin(n) && n > 0 && n < 30 ? ' 센 수가 ' + n + '번뿐이라 이 숫자만 믿기는 어려워요.' : '');
 }
 /** 셈을 그대로 — 전문가가 다시 셀 수 있게(시안 5 장점) */
@@ -160,7 +161,7 @@ export function eHub({B, mine = [], lastDay = null}) {
   const hon = B?.honest, all = B?.record?.all, n = mine.length;
   const big = val(recOk(hon) ? r0(hon.rate) : null, '번', '100번에 꽃 · 조건에 맞은 회사 대 아무 회사', {누가: '꽃 조건에 맞았던 회사', 언제: span(hon?.from, hon?.to), 어디서: '코스피 · 코스닥',
     무엇을: fin(hon?.n) ? num(hon.n) + '번 가운데 ' + num(hon.hits) + '번 꽃이 됐어요' : null, 어떻게: recOk(hon) ? '같은 날 아무 회사나 고르면 100번에 ' + r0(hon.base) + '번이었어요' : null,
-    왜: fin(hon?.up) ? '센 ' + hon.scored + '달 가운데 ' + hon.up + '달은 나았고 ' + hon.down + '달은 못했어요' : null}, {v2: recOk(hon) ? String(r0(hon.base)) : null, mean: vsMean(hon?.rate, hon?.base, '조건에 맞은 회사', hon?.n)});
+    왜: fin(hon?.up) ? '센 ' + hon.scored + '달 가운데 ' + hon.up + '달은 나았고 ' + hon.down + '달은 못했어요' : null}, {v2: recOk(hon) ? String(r0(hon.base)) : null, mean: vsMean(hon?.rate, hon?.base, '조건에 맞은 회사', hon?.n, true)});
   const mids = [
     fin(hon?.scored) ? val(hon.up + ' · ' + hon.down, '달', '나았던 달 · 못했던 달', {누가: '꽃 조건에 맞았던 회사', 언제: span(hon.from, hon.to), 어디서: '코스피 · 코스닥', 무엇을: '달마다 아무 회사와 견줬어요', 어떻게: '한 달이 다 지난 달만 셌어요', 왜: null},
       {mean: (t10 => '열 달이면 ' + kc(t10) + ' 달쯤은 나았고 ' + kc(10 - t10) + ' 달쯤은 못했다는 뜻이에요. 늘 나은 것은 아니에요.')(Math.round(10 * hon.up / Math.max(1, hon.up + hon.down)))}) : null,

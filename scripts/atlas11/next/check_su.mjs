@@ -72,7 +72,7 @@ for (const width of [390, 360, 320]) {
   // 처음 쪽
   await open(p, '#/');
   const m0 = await measure(p); pageRules(m0, W + '처음');
-  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 7, W + '처음 쪽 7 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 숫자마다 「그래서」 · 풀이 · 여섯 칸 지도로 한 화면 늘림)', String(m0.screens)); }
+  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 7.5, W + '처음 쪽 7.5 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 「정보를 빼지 마라」 — 숫자마다 「그래서」 · 낱말 풀이 · 여섯 칸 지도 · 숨기지 않는 네 칸으로 한 화면 반 늘림 · 받은 자료와 글꼴에 따라 0.3 화면 오감)', String(m0.screens)); }
   const ess = await p.evaluate(() => [1, 2, 3].map(i => document.querySelector(`#su [data-ess="${i}"]`)?.textContent ?? null));
   check(JSON.stringify(ess) === JSON.stringify(ESS), W + '처음 쪽 본질 세 줄 = essence.js', JSON.stringify(ess).slice(0, 200));
   if (width === 390) {

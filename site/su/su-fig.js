@@ -45,7 +45,7 @@ const svg = (w, hgt, label, ...kids) => s('svg', {class: 'su-svg', viewBox: `0 0
 export function fig(kind, label, body, {hero = false, cap = null, title = null} = {}) {
   return h('figure', {class: 'su-fig su-f-' + kind + (hero ? ' su-hero' : ''), 'aria-label': label},
     title ? h('h2', {class: 'su-ft', text: title}) : null,
-    hero && cap ? h('ol', {class: 'su-beats', 'aria-hidden': 'true'}, ['기', '승', '전', '결'].map((t, i) => h('li', {class: 'b' + (i + 1) + ' a-lit', text: t}))) : null, // 시안 4 — 네 칸이 박자대로 켜짐
+    hero && cap ? h('ol', {class: 'su-beats', 'aria-hidden': 'true', 'data-g': 'beats'}, ['기', '승', '전', '결'].map((t, i) => h('li', {class: 'b' + (i + 1) + ' a-lit', text: t}))) : null, // 시안 4 — 네 칸이 박자대로 켜짐
     h('div', {class: 'su-g', 'data-g': kind}, body),
     cap ? h('figcaption', {class: 'su-cap'}, cap.filter(Boolean).map((t, i) => h('p', {class: 'b' + (i + 1) + ' a-up', text: t}))) : null);
 }
@@ -113,7 +113,7 @@ export function cols(rows, {label = '달마다', hero = false, cap = null, title
 
 /* ── 4 백 점 둘 — 100번에 몇 번(앞 = 고른 회사 · 뒤 = 아무 회사 · 같은 크기) ── */
 export function waffle(a, b, {label = '100번에 몇 번', la = '고른 회사', lb = '아무 회사', hero = false, cap = null, title = null} = {}) {
-  const W = 390, cell = 15, ch = 30, gap = 3, side = 10 * (cell + gap), sideY = 10 * (ch + gap), gx = [16, W - 16 - side], top = 56, H = top + sideY + 52;
+  const W = 390, cell = 15, ch = hero ? 34 : 30, gap = 3, side = 10 * (cell + gap), sideY = 10 * (ch + gap), gx = [16, W - 16 - side], top = 56, H = top + sideY + 52; // 큰 그림은 칸을 키가 크게(첫 화면 끝까지 그림)
   const grid = (x0, n, cls, beat) => Array.from({length: 100}, (_, k) => {
     const i = k, cx = x0 + (i % 10) * (cell + gap), cy = top + Math.floor(i / 10) * (ch + gap), on = k < n; // 위에서부터 채움(첫 화면에 찬 칸이 먼저 보이게)
     return s('rect', {x: cx, y: cy, width: cell, height: ch, rx: 4, class: on ? cls + ' ' + beat + ' a-pop' : 'g-empty b1 a-fade'});
@@ -270,7 +270,7 @@ export function sixMap(vals, {label = '이 쪽 값의 여섯 칸 지도'} = {}) 
   return h('figure', {class: 'su-fig su-smap', 'aria-label': label},
     h('h2', {class: 'su-ft', text: '여섯 칸 지도 · 값 ' + vs.length + '개 · ' + (holes ? '확인 필요 ' + holes + '칸' : '다 채움')}),
     h('div', {class: 'su-g su-smg', 'data-g': 'smap'},
-      h('p', {class: 'su-smr su-smh', 'aria-hidden': 'true'}, h('span', {class: 'su-sml', text: '칸 자리'}), grid6(keys.map(k => h('span', {class: 'su-smk', text: k})))),
+      h('p', {class: 'su-smh'}, h('b', {text: '칸 차례 '}), keys.join(' · ')),
       vs.map(v => { const n = keys.filter(k => !v.six[k]).length;
         return h('p', {class: 'su-smr'}, h('span', {class: 'su-sml'}, h('b', {text: v.label || '값'}), n ? h('em', {class: 'su-needt', text: ' 확인 필요 ' + n + '칸'}) : null),
           grid6(keys.map((k, i) => h('span', {class: 'su-smc ' + beat[i] + ' a-pop' + (v.six[k] ? '' : ' su-need'), role: 'img', 'aria-label': k + (v.six[k] ? ' 채움' : ' 확인 필요')})))); })),

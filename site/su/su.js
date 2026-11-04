@@ -132,7 +132,7 @@ export function afterPaint(root) {
   main.dataset.hardWords = left.join(',');
   const f = main.querySelector('.su-src'); // 쉬운 말 셈을 맨 아래에(시안 2 장점) — 기계가 센 값
   if (f) { f.querySelector('.su-wc')?.remove(); f.append(h('p', {class: 'su-wc'}, h('b', {text: '쉬운 말 '}), '풀이 붙인 낱말 ' + glossed.length + '개 · 풀이 없이 남은 어려운 낱말 ' + left.length + '개' + (left.length ? ' (' + left.join(', ') + ')' : ''))); }
-  dress(root); // 무하처럼 — 어깨 덩굴 · 꽃 띠 · 네 모서리 꽃 · 글과 겹치면 숨김(주문 1833)
+  requestAnimationFrame(() => setTimeout(() => dress(root), 0)); // 무하처럼 — 어깨 덩굴 · 꽃 띠 · 네 모서리 꽃 · 글과 겹치면 숨김(주문 1833) · 첫 그림이 뜬 뒤에(느린 휴대폰에서 첫 화면을 늦추지 않게)
 }
 export function notFound(t) { return {title: '찾지 못했어요', h1: '찾지 못했어요', tab: 0, body: [h('p', {class: 'su-lead', text: '? ' + t}), h('a', {class: 'su-ask', href: '#/'}, h('b', {text: '처음으로'}))]}; }
 const condsOf = bl => bl.say.map(t => ({t, short: t.replace(/(이에요|예요|어요)$/, '')}));
