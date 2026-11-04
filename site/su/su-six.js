@@ -17,7 +17,8 @@ export const kn = n => KN[n] ?? String(n);
 const KC = ['영', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉', '열'];
 export const kc = n => KC[n] ?? String(n);
 const ORD = ['', '첫째', '둘째', '셋째', '넷째', '다섯째', '여섯째', '일곱째', '여덟째', '아홉째', '열째'];
-export const num = n => (fin(n) ? n.toLocaleString('ko-KR') : null);
+const NF = new Intl.NumberFormat('ko-KR', {maximumFractionDigits: 3}); // toLocaleString 과 같은 꼴 · 한 번만 만듦(느린 휴대폰 첫 화면)
+export const num = n => (fin(n) ? NF.format(n) : null);
 const r0 = v => (fin(v) ? Math.round(v) : null);
 const r1 = v => (fin(v) ? Math.round(v * 10) / 10 : null);
 

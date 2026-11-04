@@ -26,7 +26,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqj]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/#\/why(\/[0-9A-Z]{6})?)$/; // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n
+const LINK_OK = /^(#\/|#\/[bkrpqjmf]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/)$/; // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -83,17 +83,36 @@ for (const width of [390, 360, 320]) {
       check(want.test(u.pathname) && (want.source.includes('su') || u.hash === hh || hh === '#/'), W + '고리 이어짐 ' + (q + hh || '(빈)'), u.pathname + u.search + u.hash);
     }
   }
+  { // 주문 2044 — 처음 쪽 21곳 한눈에(셋 × 일곱 · 이름 = su21.json · 겹친 곳 ✦ · 누르면 그 회사)
+    const T21 = await J('/su/data/su21.json');
+    const g = await p.evaluate(() => [...document.querySelectorAll('#su .su-21g ol')].map(o => [...o.querySelectorAll('a')].map(a => ({href: a.getAttribute('href'), name: a.querySelector('span')?.textContent ?? '', x: !!a.querySelector('i')}))));
+    const want21 = ['hot', 'bloom', 'money'].map(k => (T21.lists[k] ?? []).map(c => c.name));
+    check(JSON.stringify(g.map(c => c.map(x => x.name))) === JSON.stringify(want21), W + '처음 쪽 21곳 = su21.json(불장 · 꽃이 될 · 돈이 몰리는 일곱씩)', JSON.stringify(g.map(c => c.length)));
+    check(g.flat().every(x => /^#\/c\/[0-9A-Z]{6}$/.test(x.href)), W + '21곳 이름 → 그 회사', '');
+    const ov = new Set((T21.overlap ?? []).map(o => o.name));
+    check(g.flat().every(x => x.x === ov.has(x.name)), W + '겹친 곳마다 ✦ · 안 겹친 곳 없음', [...ov].join(','));
+    R.m.t21 = {listed: T21.counts.listed, b365: T21.counts.b365, n: g.flat().length, overlap: ov.size, distinct: T21.distinct};
+    const tap21 = width === 390 ? [...new Map(g.flat().map(x => [x.href, x])).values()] : g.map(c => c[0]).filter(Boolean);
+    for (const r of tap21) {
+      await open(p, '#/'); await p.click(`#su .su-21g a[href="${r.href}"]`); await settle(p, r.name);
+      const m1 = await measure(p);
+      check(p.url().endsWith(r.href) && m1.h1 === r.name, W + '21곳 누르면 그 회사 — ' + r.name, `${p.url().split('#')[1]} · ${m1.h1}`);
+      check(await p.evaluate(() => !!document.querySelector('#su .su-why21')), W + '왜 21곳에 들었나 칸 — ' + r.name, '');
+      pageRules(m1, W + '21곳 회사 ' + r.name);
+    }
+    await open(p, '#/b'); // 옛 처음(꽃 · 돈 줄)은 #/b 에 그대로 — 아래 검사는 그 쪽에서
+  }
   const rows = await p.evaluate(() => [...document.querySelectorAll('#su section[aria-label] a.su-row')].map(a => ({sec: a.closest('section').getAttribute('aria-label'), href: a.getAttribute('href'), name: a.querySelector('[data-proper]')?.textContent ?? '', chip: a.querySelector('.su-chip')?.textContent ?? ''})));
   const bl = rows.filter(r => r.sec === '꽃이 될 회사'), mo = rows.filter(r => r.sec === '돈이 몰린 회사');
   const want = picks.length ? picks : near;
   check(JSON.stringify(bl.map(r => r.name)) === JSON.stringify(want.map(r => r.name)), W + '꽃이 될 회사 줄 = 자료', `${bl.map(r => r.name)} / ${want.map(r => r.name)}`);
   check(bl.every(r => r.href === '#/c/' + want.find(x => x.name === r.name)?.code), W + '꽃이 될 회사 줄 → 그 회사 번호', bl.map(r => r.href).join(' '));
-  if (near.length) { check(bl.every(r => r.chip === '가까운 곳'), W + '가까운 회사 줄마다 「가까운 곳」', bl.map(r => r.chip).join(',')); check(m0.text.includes('고른 회사가 아니에요'), W + '고른 회사가 아니라는 말', ''); }
+  if (near.length) { check(bl.every(r => r.chip === '가까운 곳'), W + '가까운 회사 줄마다 「가까운 곳」', bl.map(r => r.chip).join(',')); check((await p.evaluate(() => document.body.innerText)).includes('고른 회사가 아니에요'), W + '고른 회사가 아니라는 말(#/b)', ''); }
   check(JSON.stringify(mo.map(r => r.name)) === JSON.stringify(money.map(r => r.name)), W + '돈이 몰린 회사 줄 = 한 달 앞선 업종 셋의 대장', `${mo.map(r => r.name)} / ${money.map(r => r.name)}`);
   // ① 누르면 그것이 나옴 — 줄마다(390 에서만 모두 · 다른 폭은 첫 줄씩)
   const tap = width === 390 ? rows : [bl[0], mo[0]].filter(Boolean);
   for (const r of tap) {
-    await open(p, '#/');
+    await open(p, '#/b');
     await p.click(`#su a.su-row[href="${r.href}"]`);
     await settle(p, r.name);
     const m1 = await measure(p);
@@ -190,7 +209,7 @@ for (const width of [390, 360, 320]) {
       check(m.moving >= 2, W + '⑨ 움직이는 그림 둘 넘게 — ' + m.h1, String(m.moving));
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? t.v === '확인 필요' : t.v && t.v !== '확인 필요')), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
-      check(m.tabs.length === 4 && m.tabs.map(t => t.t).join(' ') === '오늘 회사 기록 멈춤' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 넷 기승전결 차례 · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
+      check(m.tabs.length === 4 && m.tabs.map(t => t.t).join(' ') === '21곳 지도 기록 멈춤' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 넷 기승전결 차례 · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
       check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
       check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);
@@ -199,7 +218,7 @@ for (const width of [390, 360, 320]) {
       pageRules(await measure(p), W + '⑨ ' + (k + 1) + '번째 화면 ' + m.h1);
       if (k < 7) { const a = await p.$('#su .su-next'); if (!a) { check(false, W + '⑨ 다음 단추 — ' + m.h1, ''); break; } await a.click(); await settle(p); await p.waitForTimeout(300); }
     }
-    check(seen.length === 8 && new Set(seen.map(m => m.h1)).size === 8 && seen[7]?.h1 === '내 매매일지', W + '⑨ 다음 일곱 번에 끝(여덟 화면 · 끝 = 내 매매일지)', seen.map(m => m.h1).join(' → '));
+    check(seen.length === 8 && new Set(seen.map(m => m.h1)).size === 8 && seen[7]?.h1 === '친구에게', W + '⑨ 다음 일곱 번에 끝(여덟 화면 · 끝 = 친구에게 — 주문 2044 21곳 → 땅 → 업종 → 회사 → 자세히 → 왜 사? → 매매일지 → 친구에게)', seen.map(m => m.h1).join(' → '));
     R.m.path = seen.map(m => ({h1: m.h1, share: m.share, shareIn: m.shareIn, figs: m.figs, moving: m.moving, need: m.tiles.filter(t => t.need).length, means: m.means.vals, hard: m.hard, hardWords: m.hardWords, glossed: m.glossed, orn: m.ornN}));
     R.m.hard = seen.reduce((a, m) => a + (Number.isFinite(m.hard) ? m.hard : 0), 0); R.m.hardWords = [...new Set(seen.flatMap(m => m.hardWords.split(',').filter(Boolean)))];
     // 기록 서랍 여섯 · 서랍 쪽
