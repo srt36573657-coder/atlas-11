@@ -120,3 +120,34 @@ h1:focus { outline: none; }
 .su-ess { display: grid; gap: 6px; padding: 14px 16px; border-radius: 16px; background: var(--card); border: 1px dashed var(--line); }
 .su-ess p { margin: 0; font-size: var(--f5); line-height: 1.5; color: var(--sub); }
 .su-ess p[data-ess="1"] { color: var(--fg); font-weight: 700; }
+
+/* 신문 첫 면 머리 값(주문 0620 한 판) — 큰 값 하나 · 막대 · 한 번만 자람 */
+.su-hero { display: grid; gap: 2px; padding: 4px 2px 0; }
+.su-hl { margin: 0; font-size: var(--f4); font-weight: 800; color: var(--sub); }
+.su-hv { margin: 0; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.su-hv b { font-size: 64px; line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; color: var(--bl); }
+.su-hv span { font-size: var(--f2); font-weight: 800; }
+.su-hs { margin: 0; font-size: var(--f4); line-height: 1.5; }
+.su-herob { display: grid; gap: 6px; padding: 10px 14px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
+.su-bars { width: 100%; height: auto; display: block; }
+.su-bar-a { fill: var(--bl); }
+.su-bar-b { fill: var(--idx); }
+.su-bars rect { transform-box: fill-box; transform-origin: left center; animation: su-grow .9s ease-out both; }
+@keyframes su-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.su-lc { stroke-dasharray: 1; animation: su-draw 1.2s ease-out both; }
+@keyframes su-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.su-li { stroke-dasharray: 7 5; }
+@media (prefers-reduced-motion: reduce) { .su-bars rect, .su-lc { animation: none; } }
+.su-svg { aspect-ratio: 340 / 170; }
+
+/* 줄 끝 말 · 업종 칩 · 맞음 글자 · 큰 처음으로 · 멈춤 칸 · 출처 */
+.su-go { grid-column: 2; grid-row: 1 / span 3; display: inline-flex; align-items: center; gap: 4px; font-size: var(--f5); font-weight: 700; color: var(--sub); }
+.su-go i { font-style: normal; font-size: var(--f2); }
+.su-indchip { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; margin: 0 0 6px 4px; padding: 6px 16px; border-radius: 999px; background: var(--cobg); color: var(--co); font-size: var(--f5); font-weight: 800; }
+.su-indchip i { font-style: normal; font-size: var(--f3); }
+.su-tg { font-weight: 800; }
+.su-backb { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; border: 2px solid var(--line); border-radius: 16px; background: var(--card); font-size: var(--f3); font-weight: 800; color: var(--fg); }
+.su-backb i { font-style: normal; font-size: var(--f2); }
+.su-ask { background: var(--card); color: var(--fg); border: 2px solid var(--ok); min-height: 72px; }
+.su-ask-a { color: var(--ok); }
+.su-src { font-size: var(--f5); }
