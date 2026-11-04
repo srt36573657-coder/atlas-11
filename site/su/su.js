@@ -107,7 +107,9 @@ export function page(m) {
   const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title});
   if (m.proper) h1.setAttribute('data-proper', '');
   const main = h('main', {class: 'su-page'},
+    m.crumb?.length ? h('nav', {class: 'su-crumb', 'aria-label': '지금 어디예요'}, m.crumb.map((c, i) => [i ? h('i', {'aria-hidden': 'true', text: '›'}) : null, c.href ? h('a', {href: c.href, text: c.t}) : h('b', {'aria-current': 'page', text: c.t})])) : null,
     h('p', {class: 'su-safe', text: SAFE}),
+    m.intro ? h('p', {class: 'su-intro', text: m.intro}) : null,
     h('section', {class: 'su-head', 'aria-label': '큰 값'}, h1, m.big ? bigVal(m.big) : null), // 머리 줄(때 · 시장)은 맨 아래 출처 칸으로 — 첫 화면은 큰 값과 그림이 차지
     m.hero ?? null,
     m.mids?.length ? h('section', {class: 'su-mids n' + m.mids.length, 'aria-label': '중간 값'}, m.mids.map(midCard)) : null,
@@ -170,7 +172,7 @@ async function vHome() {
   const sec = (label, title, list, note) => (list.length ? h('section', {class: 'su-list', 'aria-label': label}, h('h2', {class: 'su-ft', text: title}), note ? h('p', {class: 'su-note', text: note}) : null, h('div', {class: 'su-shelf', role: 'list'}, list.map(card))) : null); // 유튜브 앱 선반처럼 옆으로 넘김(쪽은 옆으로 안 움직임)
   FIRST = firstCode(bl, mo);
   const first = all[0] ?? null;
-  return {title: '오늘 꽃 조건', tab: 0, step: null, kick: (dateKo(asOf) === '?' ? '' : dateKo(asOf) + ' · ') + '코스피 · 코스닥', h1: '오늘 꽃 조건', big: e.big,
+  return {title: '오늘 꽃 조건', tab: 0, step: null, kick: (dateKo(asOf) === '?' ? '' : dateKo(asOf) + ' · ') + '코스피 · 코스닥', h1: '오늘 꽃 조건', intro: '꽃이 될 회사와 돈이 몰린 회사를 지난 기록으로 보여 줘요.', big: e.big,
     hero: funnel({total: S?.coN, conds: bl.say, near: near ? bl.rows.map(r => r.name) : [], pick: pick ? bl.rows.map(r => r.name) : [], miss: bl.miss, cap: e.say}),
     mids: e.mids, honest: honestOf(B),
     body: [sec('꽃이 될 회사', pick ? '꽃 조건에 모두 맞은 회사' : near ? '조건에 가장 가까운 회사' : '꽃이 될 회사', blI, near ? '조건에 다 맞지는 않아요. ' + josa(NAME, '가') + ' 고른 회사가 아니에요.' : null),
@@ -181,7 +183,7 @@ async function vHome() {
 
 /* ── 2 회사(승) ── */
 function reasonCard(r) {
-  const li = (t, ok) => h('li', {class: ok ? 'su-ok' : 'su-no'}, h('i', {'aria-hidden': 'true', text: ok ? '●' : '■'}), h('span', {text: t}));
+  const li = (t, ok) => h('li', {class: ok ? 'su-ok' : 'su-no'}, h('i', {'aria-hidden': 'true', text: ok ? '●' : '■'}), h('b', {class: 'su-tag', text: ok ? '맞음' : '못 맞음'}), h('span', {text: t}));
   if (r.kind === 'pick') return h('section', {class: 'su-why', 'aria-label': '꽃이 될 회사예요'}, h('h2', {class: 'su-ft', text: '꽃이 될 회사예요'}), h('p', {class: 'su-lead', text: '이달 꽃 조건 ' + kn(r.ok.length) + '에 모두 맞았어요.'}), h('ul', {class: 'su-cond'}, r.ok.map(t => li(easy(t), true))));
   if (r.kind === 'near') return h('section', {class: 'su-why', 'aria-label': '조건에 가장 가까운 회사예요'}, h('h2', {class: 'su-ft', text: '조건에 가장 가까운 회사예요'}),
     h('p', {class: 'su-note', text: '조건에 다 맞지는 않아요. ' + josa(NAME, '가') + ' 고른 회사가 아니에요.'}),
@@ -201,7 +203,7 @@ async function vCo(code) {
   hero.append(h('p', {class: 'su-lg'}, h('span', {class: 'su-lg-c'}, h('b', {text: last != null ? pct(last) : '?'}), ' ' + c.name), h('span', {class: 'su-lg-i'}, h('b', {text: ilast != null ? pct(ilast) : '?'}), ' ' + (il?.name ?? '시장'))));
   const indX = n => (TH?.inds ?? []).find(i => i?.n === n)?.x;
   const inds = [...bl.rows.map(r => ({n: r.ind, x: indX(r.ind)})), ...mo.map(r => ({n: r.ind, x: r.x}))].filter((x, i, a) => x.n && Number.isFinite(x.x) && a.findIndex(y => y.n === x.n) === i).sort((a, b) => b.x - a.x);
-  return {title: c.name, tab: 1, step: 2, proper: true, kick: [c.market === 'KOSDAQ' ? '코스닥' : c.market === 'KOSPI' ? '코스피' : null, ind ? ind + ' 업종' : null].filter(Boolean).join(' · '), h1: c.name, big: e.big,
+  return {title: c.name, tab: 1, step: 2, proper: true, kick: [c.market === 'KOSDAQ' ? '코스닥' : c.market === 'KOSPI' ? '코스피' : null, ind ? ind + ' 업종' : null].filter(Boolean).join(' · '), h1: c.name, crumb: [{t: '처음', href: '#/'}, {t: c.name}, ind ? {t: ind + ' 업종', href: indHref(ind)} : null].filter(Boolean), big: e.big,
     hero, mids: e.mids, honest: honestOf(B),
     figs: [(r0?.kind === 'pick' || r0?.kind === 'near') ? matrix([{name: c.name, ok: bl.say.map(t => (r0.kind === 'pick' ? true : !r0.no.map(easy).includes(t)))}], condsOf(bl), {label: c.name + '와 꽃 조건', title: '꽃 조건 셋과 이 회사'}) : null,
       inds.length && ind ? bars(inds.map(x => ({name: x.n, v: x.x, key: x.n})), {label: '업종 · 한 달 동안 시장보다', title: '업종이 시장보다 더 오른 만큼' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: ind}) : null].filter(Boolean),
@@ -226,7 +228,7 @@ async function vInd(name) {
     [...top, ...extra].map(r => h('a', {class: 'su-row su-irow' + (c0?.code === r.code ? ' su-cur' : ''), href: coHref(r.code)}, h('b', {'data-proper': '', text: r.name}), h('span', {class: 'su-csub', text: '한 달 ' + (Number.isFinite(r.c) ? pct(r.c) : NEED)}))));
   const indX = n => (TH?.inds ?? []).find(i => i?.n === n)?.x;
   const inds = [...bl.rows.map(r => ({n: r.ind, x: indX(r.ind)})), ...mo.map(r => ({n: r.ind, x: r.x})), {n: name, x}].filter((v, i, a) => v.n && Number.isFinite(v.x) && a.findIndex(y => y.n === v.n) === i).sort((a, b) => b.x - a.x);
-  return {title: name + ' 업종', tab: 1, step: null, kick: '돈의 흐름 · ' + dateKo(M?.asOf) + '까지 한 달', h1: name + ' 업종', big: e.big,
+  return {title: name + ' 업종', tab: 1, step: null, kick: '돈의 흐름 · ' + dateKo(M?.asOf) + '까지 한 달', h1: name + ' 업종', crumb: [{t: '처음', href: '#/'}, lastCo?.ind === name ? {t: lastCo.name, href: coHref(lastCo.code)} : null, {t: name + ' 업종'}].filter(Boolean), big: e.big,
     hero: bars([...top, ...extra].map(r => ({name: r.name, v: r.c, key: r.code})), {label: name + ' 업종 회사 한 달 움직임', hero: true, signed: true, cur: c0?.code ?? null, cap: e.say}),
     mids: e.mids, honest: honestOf(B),
     figs: [known.length ? waffle(100 * up / known.length, 100 * (known.length - up) / known.length, {label: '오른 회사와 오르지 못한 회사', title: '100곳으로 치면 · 오른 곳과 못 오른 곳', la: '오른 곳', lb: '못 오른 곳'}) : null,
