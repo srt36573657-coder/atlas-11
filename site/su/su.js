@@ -100,8 +100,7 @@ export function page(m) {
   if (m.proper) h1.setAttribute('data-proper', '');
   const main = h('main', {class: 'su-page'},
     h('p', {class: 'su-safe', text: SAFE}),
-    h('section', {class: 'su-head', 'aria-label': '큰 값'}, m.kick ? h('p', {class: 'su-kick', text: m.kick}) : null, h1, m.big ? bigVal(m.big) : null,
-      m.big && ymd(m.asOf) ? h('p', {class: 'su-got', text: '네이버 증권에서 받은 지난 기록이에요 · 자료 ' + ymd(m.asOf)}) : null),
+    h('section', {class: 'su-head', 'aria-label': '큰 값'}, m.kick ? h('p', {class: 'su-kick', text: m.kick}) : null, h1, m.big ? bigVal(m.big) : null),
     m.hero ?? null,
     m.mids?.length ? h('section', {class: 'su-mids n' + m.mids.length, 'aria-label': '중간 값'}, m.mids.map(midCard)) : null,
     m.big ? sixTiles(m.big.six, {label: '큰 값의 여섯 칸'}) : null,
