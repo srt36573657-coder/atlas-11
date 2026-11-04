@@ -175,14 +175,27 @@ export function split(total, hit, parts, {label = '꽃이 된 것과 못 된 것
 /* ── 8 여섯 칸 — 누가 · 언제 · 어디서 · 무엇을 · 어떻게 · 왜(빈 칸은 「확인 필요」) ── */
 const ICON = {누가: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 9a7 7 0 0 1 14 0', 언제: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 4v5l3 3', 어디서: 'M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11zm0-9a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
   무엇을: 'M4 7l8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10', 어떻게: 'M4 19h16M7 16V9M12 16V5M17 16v-4', 왜: 'M9 9a3 3 0 1 1 4 3c-1 .5-1 1-1 2M12 18h.01'};
-export function sixTiles(six, {label = '이 값의 여섯 칸', need = '확인 필요', title = '이 값의 여섯 칸', small = false} = {}) {
+export function sixTiles(six, {label = '이 값을 센 길', need = '확인 필요', title = '이 값은 이렇게 셌어요', small = false} = {}) {
   const keys = ['누가', '언제', '어디서', '무엇을', '어떻게', '왜'], beat = ['b1', 'b1', 'b2', 'b2', 'b3', 'b4'];
   const holes = keys.filter(k => !six?.[k]).length;
   return h('figure', {class: 'su-fig su-six' + (small ? ' su-six-s' : ''), 'aria-label': label},
-    title ? h('h2', {class: 'su-ft', text: title + (holes ? ' · ' + need + ' ' + holes + '칸' : ' · 다 채움')}) : null,
-    h('ol', {class: 'su-g su-sixg', 'data-g': 'six'}, keys.map((k, i) => h('li', {class: 'su-st ' + beat[i] + ' a-pop' + (six?.[k] ? '' : ' su-need')},
-      h('span', {class: 'su-sk'}, s('svg', {class: 'su-si', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d: ICON[k]})), h('b', {text: k})),
-      h('span', {class: 'su-sv', text: six?.[k] ?? need})))));
+    title ? h('h2', {class: 'su-ft', text: title + (holes ? ' · ' + need + ' ' + holes + '가지' : '')}) : null,
+    h('ol', {class: 'su-g su-sixg', 'data-g': 'six'}, keys.map((k, i) => h('li', {class: 'su-st ' + beat[i] + ' a-pop' + (six?.[k] ? '' : ' su-need'), 'data-k': k},
+      h('span', {class: 'su-sk', 'aria-hidden': 'true'}, s('svg', {class: 'su-si', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d: ICON[k]}))),
+      h('span', {class: 'su-sv', text: sixSay(k, six?.[k], need)})))));
+}
+/** 칸 이름을 문장에 녹임(주문 0054 [7] 8 「칸 이름은 화면에 쓰지 말고 문장에 녹여라」) — 누가 · 언제 … 이름표 없이 한 문장 · 빈 칸은 「확인 필요」를 그 자리 말과 함께 */
+const SAY_NEED = {누가: '누구 이야기인지', 언제: '언제 자료인지', 어디서: '어디서 셌는지', 무엇을: '무엇을 셌는지', 어떻게: '어떻게 셌는지', 왜: '왜 셌는지'};
+const done = t => /[요다.!?)」]$/.test(t);
+export function sixSay(k, v, need = '확인 필요') {
+  const t = typeof v === 'string' ? v.trim() : '';
+  if (!t) return SAY_NEED[k] + ' ' + need;
+  if (done(t)) return t;
+  if (k === '누가') return t + ' 이야기예요.';
+  if (k === '언제') return t + ' 기준이에요.';
+  if (k === '어디서') return t + '에서 셌어요.';
+  if (k === '어떻게') return '고른 법은 ' + t + '.';
+  return t + '.';
 }
 
 /* ── 9 미리 보기 카드(유튜브처럼) — 작은 한 달 줄 + 이름 + 까닭 칩 ── */
@@ -261,18 +274,18 @@ export function dots6(six) {
 }
 
 /* ── 15 여섯 칸 지도(시안 8) — 이 쪽 값마다 여섯 칸 · 빈 칸이 한눈에 ── */
-export function sixMap(vals, {label = '이 쪽 값의 여섯 칸 지도'} = {}) {
+export function sixMap(vals, {label = '값마다 빈 곳 지도'} = {}) {
   const keys = ['누가', '언제', '어디서', '무엇을', '어떻게', '왜'], beat = ['b1', 'b1', 'b2', 'b2', 'b3', 'b4'];
   const vs = (vals ?? []).filter(v => v && v.six);
   if (!vs.length) return null;
   const holes = vs.reduce((a, v) => a + keys.filter(k => !v.six[k]).length, 0);
   const grid6 = (cells) => h('span', {class: 'su-sm6'}, cells);
   return h('figure', {class: 'su-fig su-smap', 'aria-label': label},
-    h('h2', {class: 'su-ft', text: '여섯 칸 지도 · 값 ' + vs.length + '개 · ' + (holes ? '확인 필요 ' + holes + '칸' : '다 채움')}),
+    h('h2', {class: 'su-ft', text: '값마다 빈 곳 지도 · 값 ' + vs.length + '개 · ' + (holes ? '확인 필요 ' + holes + '곳' : '빈 곳 없음')}),
     h('div', {class: 'su-g su-smg', 'data-g': 'smap'},
-      h('p', {class: 'su-smh'}, h('b', {text: '칸 차례 '}), keys.join(' · ')),
+      h('p', {class: 'su-smh'}, '점 여섯은 누구 · 언제 · 어디서 · 무엇을 · 어떻게 · 왜 셌는지예요. 빈 점은 자료가 없는 곳이에요.'),
       vs.map(v => { const n = keys.filter(k => !v.six[k]).length;
-        return h('p', {class: 'su-smr'}, h('span', {class: 'su-sml'}, h('b', {text: v.label || '값'}), n ? h('em', {class: 'su-needt', text: ' 확인 필요 ' + n + '칸'}) : null),
-          grid6(keys.map((k, i) => h('span', {class: 'su-smc ' + beat[i] + ' a-pop' + (v.six[k] ? '' : ' su-need'), role: 'img', 'aria-label': k + (v.six[k] ? ' 채움' : ' 확인 필요')})))); })),
-    h('p', {class: 'su-mean'}, h('i', {text: '그래서'}), h('span', {text: holes ? '빈 칸 ' + holes + '개는 자료가 없어서 「확인 필요」로 남겼다는 뜻이에요. 지어서 채우지 않았어요.' : '이 쪽 값은 여섯 칸이 다 찼다는 뜻이에요.'})));
+        return h('p', {class: 'su-smr'}, h('span', {class: 'su-sml'}, h('b', {text: v.label || '값'}), n ? h('em', {class: 'su-needt', text: ' 확인 필요 ' + n + '곳'}) : null),
+          grid6(keys.map((k, i) => h('span', {class: 'su-smc ' + beat[i] + ' a-pop' + (v.six[k] ? '' : ' su-need'), role: 'img', 'aria-label': sixSay(k, v.six[k])})))); })),
+    h('p', {class: 'su-mean'}, h('i', {text: '그래서'}), h('span', {text: holes ? '빈 곳 ' + holes + '개는 자료가 없어서 「확인 필요」로 남겼다는 뜻이에요. 지어서 채우지 않았어요.' : '이 쪽 값은 빈 곳 없이 다 셌다는 뜻이에요.'})));
 }

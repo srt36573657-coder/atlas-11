@@ -20,7 +20,7 @@ const deco = (cls, vb) => ({class: 'su-orn ' + cls, viewBox: vb, 'aria-hidden': 
 const f1 = x => x.toFixed(1);
 
 /** ① 후광 꽃 — 큰 값 옆(값 줄 안의 한 칸 · 글을 덮지 않음) · 여섯 칸을 꽃잎으로 */
-export function halo(six, label = '큰 값의 여섯 칸') {
+export function halo(six, label = '큰 값을 센 길') {
   const full = KEYS.map(k => !!six?.[k]), need = full.filter(f => !f).length;
   const rays = Array.from({length: 16}, (_, i) => { const a = i * Math.PI / 8;
     return sv('line', {x1: f1(36 + 29.5 * Math.cos(a)), y1: f1(36 + 29.5 * Math.sin(a)), x2: f1(36 + 33 * Math.cos(a)), y2: f1(36 + 33 * Math.sin(a)), class: 'o-ray art-fade art-b2'}); });

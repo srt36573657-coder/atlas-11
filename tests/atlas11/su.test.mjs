@@ -149,7 +149,7 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
 
 test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 기승전결 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-gods.js') + src('su-roads.js') + src('su-wrap.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);
@@ -273,4 +273,32 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
     if (k === 'bloom') assert.ok(Number.isFinite(w.indX), 'bloom 까닭 ' + c.name); }
   const js = fs.readFileSync(path.join(ROOT, 'site/su/su-21.js'), 'utf8');
   assert.ok(!/[가-힣][^'\n]*%/.test([...js.matchAll(/'([^'\n]*)'/g)].map(m => m[1]).join('\n')), '새 글에 % 없음');
+});
+
+test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 녹이기 · 신 지킴이 · 수르 틀 · 본질 세 줄', async () => {
+  const {sixSay} = await import('../../site/su/su-fig.js');
+  for (const k of ['누가', '언제', '어디서', '무엇을', '어떻게', '왜']) {
+    const empty = sixSay(k, ''), full = sixSay(k, '한진칼 · 항공 업종');
+    assert.ok(empty.includes('확인 필요') && empty !== k + ' 확인 필요' && !new RegExp('^' + k + '\\s*[:·]').test(empty), '빈 칸은 「확인 필요」를 그 자리 말과 함께(이름표 「누가:」 꼴 아님) — ' + k);
+    assert.ok(!full.startsWith(k + ' ') && !full.startsWith(k + ':'), '칸 이름표 없이 문장 — ' + k);
+  }
+  assert.equal(sixSay('누가', '한진칼'), '한진칼 이야기예요.');
+  assert.equal(sixSay('왜', '까닭이에요.'), '까닭이에요.', '이미 문장이면 그대로');
+  const R = fs.readFileSync(path.join(ROOT, 'site/next/roman72.js'), 'utf8'), G = fs.readFileSync(path.join(ROOT, 'site/su/su-gods.js'), 'utf8');
+  const nums = new Set([...R.matchAll(/^\s*\[(\d+), '/gm)].map(m => +m[1]));
+  assert.equal(nums.size, 72, '옛 신 명단 일흔둘');
+  const rooms = /SU_ROOMS = Object\.freeze\(\{([\s\S]*?)\}\);/.exec(G)?.[1] ?? '';
+  const used = [...rooms.matchAll(/:\s*(\d+)/g)].map(m => +m[1]);
+  assert.ok(used.length >= 15 && used.every(n => nums.has(n)), '수르 방마다 지킴이 신 = 옛 명단 안의 신');
+  const sg = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/next/data/sage39.json'), 'utf8'));
+  assert.equal(sg.people.length, 39, '스승 서른아홉');
+  for (const p of sg.people) assert.ok(fs.existsSync(path.join(ROOT, 'site/next/sage-art', p.id + '.svg')), '스승 얼굴 그림 — ' + p.id);
+  const W = fs.readFileSync(path.join(ROOT, 'site/su/su-wrap.js'), 'utf8');
+  assert.ok(/new URLSearchParams\(search\)\.get\('su'\)/.test(W) && /hasOwnProperty\.call\(GROUPS, g\)/.test(W), '수르 틀은 ?su=<묶음> 일 때만(모르는 값은 씌우지 않음)');
+  for (const f of ['site/next/index.html', 'site/atlas/index.html']) assert.ok(fs.readFileSync(path.join(ROOT, f), 'utf8').includes('/su/su-wrap.js'), '옛 쪽에 수르 틀 — ' + f);
+  const {ESSENCE} = await import('../../site/next/essence.js');
+  assert.ok(ESSENCE[0].includes('불장') && ESSENCE[0].includes('꽃이 될') && ESSENCE[0].includes('돈이 몰리는') && ESSENCE[0].includes('365'), '첫 화면 본질 첫 줄 = 셋 · 365(자료 0)');
+  const doc = fs.readFileSync(path.join(ROOT, 'docs/수르_본질.md'), 'utf8');
+  assert.ok(/^1\. 수르의 본질: 불장 종목, 꽃이 될 종목, 돈이 몰리는 종목을 찾아내는 탐지다\./m.test(doc), '본질 문서 1번 = 자료 0');
+  assert.ok(/^2\. 셋을 돕는 일/m.test(doc), '옛 하는 일 셋 → 셋을 돕는 일');
 });

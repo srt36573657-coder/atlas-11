@@ -10,6 +10,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
+import fsSync from 'node:fs';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {readSiteLog} from '../../lib/atlas11/changelog.mjs';
@@ -44,6 +45,18 @@ export async function buildDist() {
   // 고도리 첫 화면 요약 · 매매일지 한 달 가운데 값(사장님 2026-10-18 00:15 [9] 7 · [5] 9) — 굴린 dist 자료로 다시 셈 · 못 만들면 그 파일만 옛것 그대로(올리기는 멈추지 않음)
   await (await import('./next/build_data.mjs')).buildData({siteDir: dist, keepCal: /\/atlas11-site\.yml@/.test(process.env.GITHUB_WORKFLOW_REF ?? '')}); // 싹 달력 지킨 기록(2026-10-22 11:55) — 올리기 작업(atlas11-site.yml)에서만 reports/atlas11/theme-cal/kept.json 에 새 날을 더함(그 작업이 reports/ 를 저장 · 검사 · 손 묶음은 읽기만)
   await copyDir(path.join(root, 'public/data/atlas11/view'), path.join(dist, 'data/atlas11/view'));
+  // 수르 21곳(사장님 2026-11-04 15:39(+04) 「2,570여 개 중 365개를 먼저 찾아낸 뒤 그 안에서 각각 7개씩 찾아내는 구조다」 · 주문 0054 [3] 9 「21곳은 장이 끝나면 날마다 다시 세라」)
+  //   매일 · 저녁 · 손 올리기가 모두 이 묶음을 거치므로 올릴 때마다 굴린 dist 자료(atlas/data · next/data)와 오늘 판(public/data/atlas11/view/board.json)으로 다시 셈
+  //   셈이 멈추면 저장된 판(site/su/data/su21.json)이 그대로 실림 — 올리기는 멈추지 않음 · scripts/atlas11/next/su21.py
+  try {
+    const {stdout} = await run('python3', [path.join(root, 'scripts/atlas11/next/su21.py'), '--live', dist, '--repo', root, '--out', path.join(dist, 'su/data/su21.json')], {maxBuffer: 1e7});
+    // 뒷걸음 막기 — 이번 묶음 자료(mkt 날짜)가 저장된 판보다 옛것이면(종가를 못 받아 굴리지 못한 날) 저장된 판을 그대로 둠
+    const day = f => JSON.parse(fsSync.readFileSync(f, 'utf8')).asOf?.mkt ?? '';
+    const was = path.join(root, 'site/su/data/su21.json'), now = path.join(dist, 'su/data/su21.json');
+    if (day(now) < day(was)) { for (const f of ['su21.json', 'su21-map.json']) await fs.copyFile(path.join(root, 'site/su/data', f), path.join(dist, 'su/data', f)); console.warn(`수르 21곳 — 이번 자료(${day(now)})가 저장된 판(${day(was)})보다 옛것이라 저장된 판을 그대로 씀`); }
+    else console.log('수르 21곳 다시 셈 — ' + String(stdout).trim().slice(0, 300));
+  }
+  catch (e) { console.warn('수르 21곳 다시 세기 못 함 — 저장된 판 그대로: ' + String(e.stderr || e.message).slice(0, 300)); }
   // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에
   //   한국 매일·저녁 실행도 이 함수로 싸서 올리므로(사이트 전체를 바꿈) 미국 판을 여기서 함께 싸야 지워지지 않는다
   //   places.json = 위 막대 「한국 · 미국 · 중국 · 일본 · 베트남」 단추가 읽는 판 목록(바깥 판이 없으면 한국 하나 → 단추 없음) — 늘 써서 화면이 없는 파일을 부르지 않게

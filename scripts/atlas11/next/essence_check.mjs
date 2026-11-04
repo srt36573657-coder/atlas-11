@@ -47,7 +47,7 @@ import {BRAND, NAME} from '../../../site/next/brand.js';
 const SELF = fileURLToPath(import.meta.url);
 export const ROOT = path.resolve(path.dirname(SELF), '../../..');
 /** 본질 파일 = docs/<이름>_본질.md(이름은 brand.js 한 곳 — 이름이 바뀌고 파일 · 잠금이 안 따라오면 ① 이 막음) */
-export const ESSENCE_FILE = `docs/${NAME}_본질.md`, LOCK_FILE = 'config/atlas11/essence.lock.json', ORDER_FILE = 'docs/design/kkolttori-2026-10-18/order-1639.txt';
+export const ESSENCE_FILE = `docs/${NAME}_본질.md`, LOCK_FILE = 'config/atlas11/essence.lock.json', ORDER_FILE = 'docs/design/su-jobs-2026-11-05/essence-0054.txt'; // 세 줄 틀 — 2026-11-04 18:54(+03) 「잡스 판」 [8] 2 로 새로 찍음(옛 틀 order-1639.txt 는 잠금에 그대로)
 /** 옛 이름의 본질 파일 길(brand.js was · 17:15 「꼴동이」 — 세 분 동안 쓴 이름이라 was 에 없음) — 진화 가지가 옛 길로 본질 파일을 되살리지 못하게 지킴 목록에 */
 export const ESSENCE_OLD = Object.freeze([...new Set([...BRAND.was.map(w => `docs/${w.ko}_본질.md`), 'docs/꼴동이_본질.md'])].filter(f => f !== ESSENCE_FILE));
 export const LOCK_SCHEMA = 'kkolttori-essence-lock-1';
@@ -832,7 +832,7 @@ export async function renderChecks({base, pw = null, units = RENDER_UNITS, log =
           if (!E) bad(c, '첫 화면에 본질 세 줄 칸이 없음');
           else {
             if (!E.above) bad(c, '세 줄 칸이 이야기 입구(tk-entry) 아래에 있음');
-            if (!/주식을 사기 전에/.test(E.text) || !/앞날을 맞히지 않아요/.test(E.text) || !/사고팔기를 권하지 않아요/.test(E.text)) bad(c, '세 줄 글이 명령문 [5] 2 와 다름');
+            if (!/돈이 몰리는 회사를/.test(E.text) || !/앞날을 맞히지 않아요/.test(E.text) || !/사고팔기를 권하지 않아요/.test(E.text)) bad(c, '세 줄 글이 명령문 [5] 2 와 다름');
             if (E.shown.some(x => !x)) bad(c, `처음 온 기기인데 세 줄이 다 보이지 않음(보이는 줄 ${E.shown.filter(Boolean).length}/3) — [5] 1 「처음 온 사람에게는 펼치고」`);
             look(E, '처음 연');
             c.counts.first = E.text.replace(/\s+/g, ' ').trim().slice(0, 200);

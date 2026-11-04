@@ -1,0 +1,55 @@
+/* 수르 하늘 — 뒷배경에 하나씩 천천히 나는 무하풍 그림(su-sky.js 짝 · 빈 파일에서 새로 씀)
+   사장님 명령서 [6] 8 · 9 「옛 하늘 풍경을 모두 무하풍으로 다시 그려라」 「하늘은 뒷배경에서 하나씩 천천히 날게 해라」 · [6] 6 「장식은 값과 글을 가리지 않게 해라」
+   층은 글판 뒤(z-index -1) · 누를 수 없음 · 화면 밖으로 넘치지 않음(가로 밀림 없음) · 움직임은 transform 과 opacity 만(글판을 다시 그리지 않음) */
+.su-sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; contain: strict; }
+.su-sky * { pointer-events: none; }
+.su-sky-k { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; }
+.su-sky-b { animation: su-sky-bob 9s ease-in-out infinite alternate; }
+.su-sky-art { display: block; width: clamp(130px, 40vw, 230px); height: auto; opacity: .46; overflow: visible; }
+.su-sky-wide { width: clamp(170px, 54vw, 320px); }
+.su-sky-flip { transform: scaleX(-1); }
+
+/* 선과 덧칠 — 가는 금빛 선 · 살구 · 연두(쪽이 정한 색 · 없으면 기본 색) */
+.su-sky-art .k { fill: none; stroke: var(--gold, #B58A33); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.su-sky-art .kt { stroke-width: .9; }
+.su-sky-art .kd { stroke-width: 1.8; stroke-dasharray: .1 4.2; }
+.su-sky-art .kh { stroke-dasharray: 3 4; }
+.su-sky-art .kl { stroke: var(--leaf, #7A9A3A); }
+.su-sky-art .kp { stroke: var(--apri, #EFA77E); }
+.su-sky-art .ku { stroke: url(#su-sky-au); }
+.su-sky-art .ka { fill: var(--apri, #EFA77E); fill-opacity: .5; }
+.su-sky-art .kf { fill: var(--leaf, #7A9A3A); fill-opacity: .28; }
+.su-sky-art .kw { fill: #FFFDF8; fill-opacity: .95; }
+.su-sky-art .kg { fill: var(--apri, #EFA77E); fill-opacity: .15; stroke: none; }
+.su-sky-art .ke { fill: var(--gold, #B58A33); stroke: none; }
+.su-sky-art .kn { fill: #3B2A1A; stroke: none; }
+.su-sky-art .kv { stroke: url(#su-sky-av); }
+.su-sky-art .ku1 { stop-color: var(--leaf, #7A9A3A); stop-opacity: .95; }
+.su-sky-art .ku2 { stop-color: var(--leaf, #7A9A3A); stop-opacity: 0; }
+.su-sky-art .kv1 { stop-color: var(--apri, #EFA77E); stop-opacity: .95; }
+.su-sky-art .kv2 { stop-color: var(--apri, #EFA77E); stop-opacity: 0; }
+
+/* 날아가는 길 다섯 — 그림 가운데가 지나는 자리(화면 너비 vw · 높이 vh) · 나타남과 흐려짐은 su-sky-fade(길과 같은 길이) */
+.su-fly-a { animation: su-sky-a 58s cubic-bezier(.37, 0, .63, 1) both, su-sky-fade 58s ease-in-out both; }
+.su-fly-b { animation: su-sky-b 54s cubic-bezier(.37, 0, .63, 1) both, su-sky-fade 54s ease-in-out both; }
+.su-fly-c { animation: su-sky-c 50s cubic-bezier(.37, 0, .63, 1) both, su-sky-fade 50s ease-in-out both; }
+.su-fly-d { animation: su-sky-d 64s cubic-bezier(.37, 0, .63, 1) both, su-sky-fade 64s ease-in-out both; }
+.su-fly-e { animation: su-sky-e 46s cubic-bezier(.37, 0, .63, 1) both, su-sky-fade 46s ease-in-out both; }
+@keyframes su-sky-a { from { transform: translate(12vw, 16vh) translate(-50%, -50%); } to { transform: translate(88vw, 10vh) translate(-50%, -50%); } }
+@keyframes su-sky-b { from { transform: translate(88vw, 46vh) translate(-50%, -50%); } to { transform: translate(12vw, 38vh) translate(-50%, -50%); } }
+@keyframes su-sky-c { from { transform: translate(16vw, 76vh) translate(-50%, -50%); } to { transform: translate(84vw, 26vh) translate(-50%, -50%); } }
+@keyframes su-sky-d { from { transform: translate(86vw, 72vh) translate(-50%, -50%); } to { transform: translate(14vw, 64vh) translate(-50%, -50%); } }
+@keyframes su-sky-e { from { transform: translate(14vw, 12vh) translate(-50%, -50%); } to { transform: translate(86vw, 42vh) translate(-50%, -50%); } }
+@keyframes su-sky-fade { 0% { opacity: 0; } 16% { opacity: 1; } 84% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes su-sky-bob { from { transform: translateY(-6px) rotate(-1.5deg); } to { transform: translateY(6px) rotate(1.5deg); } }
+
+/* 멈춘 그림 — 움직임 줄이기(별 한 장 · 오른쪽 위) · 시험용 가운데 */
+.su-sky-still { opacity: 1; transform: translate(80vw, 18vh) translate(-50%, -50%); }
+.su-sky-mid { transform: translate(50vw, 50vh) translate(-50%, -50%); }
+.su-sky-still .su-sky-b { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .su-sky-k, .su-sky-b { animation: none !important; }
+  .su-sky-k:not(.su-sky-still) { display: none; }
+}
+@media print { .su-sky { display: none; } }
+@media (forced-colors: active) { .su-sky { display: none; } }

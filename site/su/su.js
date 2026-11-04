@@ -16,6 +16,8 @@ import {halo, dress} from '/su/su-art.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {h, s, fig, matrix, bars, cols, waffle, line, cal, split, sixTiles, sixMap, thumb, funnel, honest3, dots6} from '/su/su-fig.js';
 import {load21, v21Home, vLand, vLandOne, vMore, vFriend, reasonBox21, find21} from '/su/su-21.js';
+import {godTag, sageGuide, roomKey, STOP_STEP} from '/su/su-gods.js';
+import {vRoads} from '/su/su-roads.js'; // 셋의 길 — 옛 기능 자리(주문 0054 [4]) // 신 72 지킴이 · 스승 39 길잡이(주문 0054 [5])
 let WHYM = null; const whyM = async () => (WHYM ??= await import('/su/su-why.js')); // 「왜 사?」 · 매매일지는 그 쪽에서 받음(첫 화면이 가볍게 — 주문 2044 느린 휴대폰)
 
 brand(NAME);
@@ -40,10 +42,11 @@ const TABS = () => [['21곳', '#/', 'M4 11l8-7 8 7v9h-5v-6h-6v6H4z'], ['지도',
 
 /* ── 틀 ── */
 function tools() {
-  const big = h('button', {class: 'su-tool', type: 'button', 'aria-pressed': String(document.documentElement.classList.contains('su-lg')), text: '글씨 크게'});
+  const big = h('button', {class: 'su-tool', type: 'button', 'aria-label': '글씨 크게', 'aria-pressed': String(document.documentElement.classList.contains('su-lg')), text: '글씨'});
   big.addEventListener('click', () => { const on = document.documentElement.classList.toggle('su-lg'); big.setAttribute('aria-pressed', String(on)); try { localStorage.setItem('su-big-text', on ? '1' : '0'); } catch { /* 저장 못 해도 됨 */ } });
   const gift = h('a', {id: 'giftBtn', class: 'su-tool su-gift', href: '#/gift', 'aria-label': '선물 받기 · 상품권', text: '선물'}); // 옛 기능 상품권 · 커피 쿠폰(주문 2044 — 옛 기능 하나도 빼지 않음)
-  return h('div', {class: 'su-tools'}, gift, big);
+  const find = h('a', {class: 'su-tool su-find', href: '/next/?su=guide#/find', 'aria-label': '종목 찾기', text: '찾기'}); // 종목 검색은 어느 화면에나(주문 0054 [4] 6) — 찾기 쪽은 수르 틀 안에서 열림
+  return h('div', {class: 'su-tools'}, find, gift, big);
 }
 /** 듣기 — 큰 값 · 뜻 줄 · 네 줄 글(엄지 자리 · 다음 단추 옆) */
 function sayBtn() {
@@ -66,8 +69,8 @@ const bigVal = v => h('div', {class: 'su-big'}, h('p', {class: 'su-bv'}, valText
 /** 값의 여섯 칸 — 닫혀 있어도 꽃잎 여섯과 빈 칸 수가 보임 · 누르면 여섯 칸 판 */
 export function sixBox(v) {
   const n = holes(v.six).length;
-  return h('details', {class: 'su-sixd'}, h('summary', {class: 'su-sixs'}, dots6(v.six), h('span', {class: 'su-sixw', text: '여섯 칸'}), h('b', {class: n ? 'su-needt' : 'su-fullt', text: n ? NEED + ' ' + n + '칸' : '다 채움'})),
-    sixTiles(v.six, {title: null, small: true, label: v.label + ' — 여섯 칸'}));
+  return h('details', {class: 'su-sixd'}, h('summary', {class: 'su-sixs'}, dots6(v.six), h('span', {class: 'su-sixw', text: '어떻게 셌나'}), h('b', {class: n ? 'su-needt' : 'su-fullt', text: n ? NEED + ' ' + n + '곳' : '빈 곳 없음'})),
+    sixTiles(v.six, {title: null, small: true, label: v.label + ' — 센 길'}));
 }
 export const midCard = v => h('div', {class: 'su-mid'}, h('p', {class: 'su-ml', text: v.label}), h('p', {class: 'su-mv'}, valText(v)), meanLine(v), sixBox(v));
 function valRow(v) {
@@ -106,12 +109,12 @@ export function page(m) {
     st ? h('span', {class: 'su-step'}, h('i', {text: PHASE[st[1]]}), h('span', {text: m.step + ' / 8 · ' + st[0]})) : null, tools());
   const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title});
   if (m.proper) h1.setAttribute('data-proper', '');
-  const main = h('main', {class: 'su-page'},
+  const main = h('main', {class: 'su-page' + (m.compact ? ' su-compact' : '')}, // compact = 첫 화면 한 장에 21곳이 다 보이게(주문 0054 [2] 2)
     h('p', {class: 'su-safe', text: SAFE}),
-    h('section', {class: 'su-head', 'aria-label': '큰 값'}, h1, m.big ? bigVal(m.big) : null), // 머리 줄(때 · 시장)은 맨 아래 출처 칸으로 — 첫 화면은 큰 값과 그림이 차지
+    h('section', {class: 'su-head', 'aria-label': '큰 값'}, h1, m.lead ?? null, m.big ? bigVal(m.big) : null), // lead = 「왜 여기 있나」 먼저(주문 0054 [2] 4) // 머리 줄(때 · 시장)은 맨 아래 출처 칸으로 — 첫 화면은 큰 값과 그림이 차지
     m.hero ?? null,
     m.mids?.length ? h('section', {class: 'su-mids n' + m.mids.length, 'aria-label': '중간 값'}, m.mids.map(midCard)) : null,
-    m.big ? sixTiles(m.big.six, {label: '큰 값의 여섯 칸'}) : null,
+    m.big ? sixTiles(m.big.six, {label: '큰 값을 센 길'}) : null,
     m.honest ?? null,
     ...(m.figs ?? []),
     ...(m.body ?? []),
@@ -119,6 +122,7 @@ export function page(m) {
     m.big ? sixMap([m.big, ...(m.mids ?? []), ...(m.rows ?? [])]) : null,
     proBox(m.pro),
     ...(m.after ?? []),
+    godTag(location.hash), // 방 지킴이 신(주문 0054 [5] 5)
     source(m.asOf, m.S, m.note ?? null, m.kick ?? null));
   return [head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
 }
@@ -237,6 +241,16 @@ async function vInd(name) {
     next: {href: '#/r', label: '지난날 몇 번 꽃이 됐나?', step: null}, asOf: M?.asOf ?? a0, S};
 }
 
+/** 다른 기록도 기록 한곳에(주문 0054 [4] 7 「모든 기록은 기록 한곳(#/r)에 모아라」) — 한 달 뒤 · 봉인 · 지난 기록 · 업데이트 기록 · 진화 · 합계 세기(옛 쪽은 수르 틀로) */
+const REC_NAMES = ['한 달 뒤', '지난 기록', '봉인', '업데이트 기록', '진화', '합계 세기', '싹 달력', '급등 달력'];
+function recOthers() {
+  const box = h('section', {class: 'su-flist su-rec2', 'aria-label': '다른 기록'}, h('h2', {class: 'su-ft', text: '다른 기록도 여기서 · 수르 틀 안에서 열림'}));
+  import('/su/su-roads.js').then(async R => { const F = await R.feats();
+    for (const nm of REC_NAMES) { const f = F.find(x => x.name === nm), href = f ? R.hrefOf(f) : null; if (!f || !href) continue;
+      box.append(h('a', {class: 'su-fcard', href}, h('b', {text: f.name}), h('span', {text: f.how}))); }
+  }).catch(e => console.error(e));
+  return box;
+}
 /* ── 4 기록 한곳(전) ── */
 async function vHub() {
   const {B, S, bl, mo, asOf} = await base();
@@ -256,7 +270,7 @@ async function vHub() {
       drawer('#/r/d', '날마다', dd.big.v != null ? dd.big.v + '날' : NEED, '지난 60거래일 달력'),
       drawer('#/r/y', '해마다', yy.big.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, '모든 해 · 100번에 몇 번'),
       drawer('#/r/n', '가까운 회사', nn.big.v != null ? nn.big.v + ' 대 ' + nn.big.v2 : NEED, '조건에 가까웠던 회사 · 100번에 몇 번'),
-      drawer('#/j', '내 매매일지', mine.length + '번', '「왜 사?」에 답한 기록 · 이 휴대폰에만'))],
+      drawer('#/j', '내 매매일지', mine.length + '번', '「왜 사?」에 답한 기록 · 이 휴대폰에만')), recOthers()],
     pro: e.pro,
     next: {href: '#/r/m', label: '몇 달이 나았나?', step: null}, asOf, S, note: '지난 기록은 같은 조건을 지난날에 대어 센 것이에요. 앞날을 정해 주지 않아요.'};
 }
@@ -320,7 +334,8 @@ async function coOnPath(code) {
   const v = await vCo(code); if (!v || !v.big) return v;
   const T = await load21(get).catch(() => null), c = T ? find21(T, code) : null;
   v.step = 4;
-  if (c) { v.body = [reasonBox21(T, code), ...(v.body ?? [])]; v.next = {href: '#/c/' + code + '/more', label: '출목표와 수급은?', step: 5, k: '5 / 8'}; }
+  if (c && v.big?.six?.언제) v.big = {...v.big, label: v.big.label + ' · ' + v.big.six.언제.replace(/ 기준이에요\.?$/, '')}; // 큰 값의 기간을 이름에(21곳 까닭의 20거래일 값과 헷갈리지 않게)
+  if (c) { v.lead = reasonBox21(T, code); v.next = {href: '#/c/' + code + '/more', label: '출목표와 수급은?', step: 5, k: '5 / 8'}; } // 누르면 「왜 여기 있나」부터(주문 0054 [2] 4)
   else v.next = {href: '#/q/' + code, label: '내 이유는 무엇인가?', step: 6, k: '6 / 8'};
   return v;
 }
@@ -329,24 +344,26 @@ async function route() {
   const fw = forwardTo(location.search, hh);
   if (fw) { location.replace(fw); return; }
   const root = document.getElementById('su');
-  const m = /^#\/(c|i|k|r|p|q|m)\/(.+)$/.exec(hh), t = /^#\/(b|k|r|p|q|j|m|f)$/.exec(hh);
+  const m = /^#\/(c|i|k|r|p|q|m|g)\/(.+)$/.exec(hh), t = /^#\/(b|k|r|p|q|j|m|f|g)$/.exec(hh);
   let v;
   try {
-    const on21 = (!m && !t) || (t && (t[1] === 'm' || t[1] === 'f')) || (m && m[1] === 'm'); // 21곳 쪽은 꽃 · 돈 · 왜 자료를 기다리지 않음(주문 2044 느린 휴대폰 첫 화면)
+    const on21 = (!m && !t) || (t && (t[1] === 'm' || t[1] === 'f' || t[1] === 'g')) || (m && (m[1] === 'm' || m[1] === 'g')); // 21곳 쪽은 꽃 · 돈 · 왜 자료를 기다리지 않음(주문 2044 느린 휴대폰 첫 화면)
     if (!FIRST && !on21) { const b0 = await base(); FIRST = firstCode(b0.bl, b0.mo); }
     if (on21) setTimeout(() => { base().catch(() => null); }, 2500); // 넷째 쪽(회사) 자료는 첫 화면 뒤에 미리 받아 둠
     if (!m && !t) v = await v21Home(X21);
-    else if (t) v = t[1] === 'm' ? await vLand(X21) : t[1] === 'f' ? await vFriend(X21) : t[1] === 'r' ? await vHub() : t[1] === 'q' || t[1] === 'p' ? await (await whyM()).vQuiz(lastCo?.code ?? null, ctx) : t[1] === 'j' ? await (await whyM()).vJournal(ctx) : t[1] === 'k' && lastCo?.code ? await vCo(lastCo.code) : await vHome();
+    else if (t) v = t[1] === 'g' ? await vRoads(X21) : t[1] === 'm' ? await vLand(X21) : t[1] === 'f' ? await vFriend(X21) : t[1] === 'r' ? await vHub() : t[1] === 'q' || t[1] === 'p' ? await (await whyM()).vQuiz(lastCo?.code ?? null, ctx) : t[1] === 'j' ? await (await whyM()).vJournal(ctx) : t[1] === 'k' && lastCo?.code ? await vCo(lastCo.code) : await vHome();
     else {
       const [, k, raw] = m; let a = raw; try { a = decodeURIComponent(raw); } catch { /* 그대로 */ }
       if (k === 'c' && /^[0-9A-Z]{6}\/more$/.test(a)) v = await vMore(X21, a.slice(0, 6));
       else if (k === 'm') v = await vLandOne(X21, a);
+      else if (k === 'g') v = await vRoads(X21, a);
       else if (k === 'c' || k === 'k') v = await coOnPath(a);
       else if (k === 'i') v = await vInd(a);
       else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
       else v = CODE.test(a) ? await (await whyM()).vQuiz(a, ctx) : notFound('이 회사를 찾지 못했어요.');
     }
   } catch (e) { console.error(e); v = notFound('화면을 그리다 멈췄어요. 다시 열어 주세요.'); }
+  { const sk = roomKey(hh); if (v && STOP_STEP[sk]) v.after = [...(v.after ?? []), sageGuide(STOP_STEP[sk], new Date().getDate())]; } // 스승 길잡이 — 사기 전에 멈추는 길(주문 0054 [5] 7)
   if (hh !== (location.hash || '#/')) return;
   root.replaceChildren(...page(v).filter(Boolean));
   afterPaint(root);
@@ -356,3 +373,4 @@ async function route() {
 try { if (localStorage.getItem('su-big-text') === '1') document.documentElement.classList.add('su-lg'); } catch { /* 저장소 없음 */ }
 window.addEventListener('hashchange', route);
 route();
+import('/su/su-sky.js').then(m => m.startSky()).catch(e => console.error(e)); // 하늘(주문 0054 [6] 8 · 9) — 스스로 첫 그림 뒤에 늦게 시작

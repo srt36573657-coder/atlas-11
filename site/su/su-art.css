@@ -134,19 +134,8 @@ body { background: var(--bg); }
 .g-up { fill: var(--ok); } .g-dn { fill: none; stroke: var(--base); stroke-width: 3; } .g-eq { fill: var(--mute); }
 .g-axis { stroke: var(--line); stroke-width: 2; }
 .su-f-21 .su-g, .su-f-land .su-g, .su-f-road .su-g, .su-f-ib .su-g, .su-f-p6 .su-g, .su-f-l21 .su-g { display: grid; gap: 6px; }
-/* 뒷배경 — 무하풍 밤하늘 · 별 · 용(천천히 · 글 뒤 · 움직임 줄이기면 멈춤 · 반짝이와 별똥별은 넣지 않음 — 2026-10-22 「배경 반짝이가 너무 시선이가요」) */
-body::before, body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1; }
-body::before { background:
-  radial-gradient(1.6px 1.6px at 12% 18%, var(--gold) 50%, transparent 52%), radial-gradient(1.4px 1.4px at 78% 9%, var(--gold) 50%, transparent 52%),
-  radial-gradient(1.8px 1.8px at 64% 31%, var(--gold) 50%, transparent 52%), radial-gradient(1.2px 1.2px at 30% 44%, var(--gold) 50%, transparent 52%),
-  radial-gradient(1.6px 1.6px at 88% 57%, var(--gold) 50%, transparent 52%), radial-gradient(1.3px 1.3px at 8% 71%, var(--gold) 50%, transparent 52%),
-  radial-gradient(1.7px 1.7px at 52% 83%, var(--gold) 50%, transparent 52%), radial-gradient(1.2px 1.2px at 36% 94%, var(--gold) 50%, transparent 52%),
-  linear-gradient(180deg, var(--sky1), var(--sky2)); animation: su-sky 90s linear infinite alternate; }
-body::after { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 160'%3E%3Cpath d='M10 120 C 60 60, 110 150, 160 90 S 250 40, 300 80 S 370 60, 390 30' fill='none' stroke='%23B58A33' stroke-width='3' stroke-linecap='round' opacity='.55'/%3E%3Cpath d='M390 30 l-16 2 l6 -12 z M300 80 l-10 -14 M250 62 l-8 -14 M200 76 l-10 -12 M150 96 l-6 -14' fill='none' stroke='%23B58A33' stroke-width='2.4' stroke-linecap='round' opacity='.5'/%3E%3Ccircle cx='384' cy='27' r='3' fill='%23EFA77E'/%3E%3C/svg%3E") no-repeat 110% 78% / 420px auto; opacity: .55; animation: su-dragon 60s ease-in-out infinite alternate; }
-@keyframes su-sky { from { transform: translateY(0); } to { transform: translateY(-40px); } } /* 칠하기 없이 옮기기만(느린 휴대폰) */
-body::before { inset: 0 0 -40px; will-change: transform; } body::after { will-change: transform; }
-@keyframes su-dragon { from { transform: translate(0, 0); } to { transform: translate(-90px, -24px); } }
-@media (prefers-reduced-motion: reduce) { body::before, body::after { animation: none; } }
+/* 뒷배경 바탕 — 은은한 하늘빛 한 겹(움직이는 하늘 그림은 su-sky.css · su-sky.js — 한 번에 하나 · 아주 천천히 · 주문 0054 [6] 8 · 9) */
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -2; background: linear-gradient(180deg, var(--sky1), var(--sky2)); }
 :root { --sky1: #F6EFE0; --sky2: #EADFCB; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --sky1: #141B2A; --sky2: #1B1712; } }
 :root[data-theme="dark"] { --sky1: #141B2A; --sky2: #1B1712; }
@@ -154,3 +143,53 @@ body { background: var(--sky2); }
 .su-page { background: transparent; }
 .g-ray { stroke: var(--gold); stroke-width: 3; stroke-linecap: round; }
 .su-chipa { min-width: 48px; justify-content: center; }
+
+/* ── 주문 0054 · 첫 화면 한 장에 21곳(compact) · 「왜 여기 있나」 먼저(lead) ── */
+.su-compact .su-safe { margin-top: 2px; }
+.su-compact .su-h1 { margin-bottom: 0; }
+.su-compact .su-bv b { font-size: 40px; }
+.su-compact .su-bv span { font-size: 20px; }
+.su-compact .su-bv .su-petal, .su-compact .su-bv svg { width: 30px; height: 30px; }
+.su-compact .su-bl { font-size: 17px; }
+.su-compact .su-mean-big { font-size: 17px; }
+.su-compact .su-21g { padding-top: 0; }
+.su-compact .su-21t a { min-height: 48px; padding: 2px 6px; }
+.su-head .su-why21 { margin: 6px 0 10px; }
+.su-head .su-why21 .su-lead { font-size: 21px; font-weight: 700; line-height: 1.45; }
+.su-21h a { color: inherit; text-decoration: none; display: block; min-height: 40px; }
+.su-compact .su-f-21 .su-beats { display: none; }
+.su-compact .su-21g { gap: 4px; }
+.su-compact .su-21c { gap: 4px; }
+
+/* ── 주문 0054 · 신 지킴이 · 스승 길잡이 · 셋의 길 · 급등 곁 · 찾기 ── */
+.su-21h a { display: block; color: inherit; text-decoration: none; min-height: 40px; line-height: 40px; }
+.su-21near { padding: 4px 10px 8px; }
+.su-god { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px 12px; align-items: center; margin: 18px 0 8px; padding: 12px 14px; border-radius: 22px 22px 14px 14px; background: var(--card); box-shadow: inset 0 0 0 1.5px var(--gold2), inset 0 0 0 5px var(--card), inset 0 0 0 6px var(--halo); }
+.su-godf { width: 64px; height: 64px; border-radius: 50%; background: var(--halo); }
+.su-godt p { margin: 0; } .su-godk { font-size: 17px; color: var(--mute); } .su-godn b { font-size: 21px; } .su-godn span { font-size: 17px; color: var(--mute); } .su-godw { font-size: 17px; }
+.su-godb { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.su-gl-say, .su-godall { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 16px; border-radius: 24px; border: 1.5px solid var(--gold); background: var(--card); color: var(--ink); font: inherit; font-size: 17px; font-weight: 700; text-decoration: none; cursor: pointer; }
+.su-sage { margin: 16px 0; padding: 14px; border-radius: 26px 26px 14px 14px; background: var(--halo); box-shadow: inset 0 0 0 1.5px var(--gold); }
+.su-sage p { margin: 0 0 6px; } .su-sagek { font-size: 17px; color: var(--mute); font-weight: 700; } .su-sages { font-size: 19px; font-weight: 800; }
+.su-sagep { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; align-items: start; }
+.su-sagef { width: 72px; height: 72px; border-radius: 50%; background: var(--card); box-shadow: 0 0 0 2px var(--gold2); }
+.su-sagen b { font-size: 21px; } .su-sagen span { font-size: 17px; color: var(--mute); } .su-sagesay { font-size: 19px; line-height: 1.5; } .su-sagesrc { font-size: 17px; color: var(--mute); } .su-sageq { font-size: 19px; font-weight: 700; color: var(--chip); }
+.su-sageb { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.su-roadl { margin-top: 16px; display: grid; gap: 10px; }
+.su-featx { opacity: .85; }
+.su-surge { margin: 12px 0; } .su-surgel { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 6px; } .su-surgel li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.su-find { background: var(--card); }
+/* 머리 막대 — 도구 셋(찾기 · 선물 · 글씨)이 들어오도록 걸음 글은 줄여 보임(주문 0054 [4] 6) */
+.su-step { min-width: 0; flex: 1 1 auto; overflow: hidden; }
+.su-step > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.su-tools { flex: none; }
+.su-brand { flex: none; }
+.su-tool { display: inline-grid; place-items: center; text-decoration: none; color: var(--ink); }
+@media (max-width: 370px) { .su-compact .su-bl { display: none; } .su-compact .su-bv b { font-size: 34px; } .su-compact .su-safe { font-size: 17px; } }
+@media (max-width: 370px) { .su-compact .su-h1 { font-size: 24px; line-height: 1.2; } .su-compact .su-mean-big { line-height: 1.3; } .su-compact .su-bv .su-petal, .su-compact .su-bv svg { display: none; } .su-compact .su-21g, .su-compact .su-21c { gap: 3px; } }
+@media (max-width: 370px) { .su-compact .su-21h { padding: 1px 2px; } .su-compact .su-safe { margin-top: 0; } }
+.su-whyg { margin: 4px 0 8px; }
+.g-road { fill: none; stroke: var(--gold); stroke-width: 3; stroke-dasharray: 1; }
+.su-why21 { padding-left: 6px; padding-right: 6px; }
+.su-whyg .su-why21s { display: block; width: 100%; height: auto; }
+.g-halo { paint-order: stroke; stroke: var(--card); stroke-width: 6px; stroke-linejoin: round; }
