@@ -1,0 +1,165 @@
+{
+ "schema": "su-check-1",
+ "at": "2026-11-05T02:18:43.561Z",
+ "base": "http://127.0.0.1:8826",
+ "counts": {
+  "pass": 626,
+  "fail": 0
+ },
+ "fails": [],
+ "m": {
+  "dropped": [
+   "실리콘투"
+  ],
+  "data": {
+   "picks": 0,
+   "near": 2,
+   "money": [
+    "한진칼",
+    "롯데칠성",
+    "오리온"
+   ]
+  },
+  "home": {
+   "screens": 4.86,
+   "links": 37
+  },
+  "t21": {
+   "listed": 2557,
+   "b365": 365,
+   "n": 21,
+   "overlap": 3,
+   "distinct": 18
+  },
+  "path": [
+   {
+    "h1": "지금 볼 21곳",
+    "share": 61,
+    "shareIn": 88,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 4,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 8,
+    "orn": 7
+   },
+   {
+    "h1": "땅 지도",
+    "share": 52,
+    "shareIn": 69,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
+    "orn": 7
+   },
+   {
+    "h1": "지주 · 유통 · 운송 땅",
+    "share": 53,
+    "shareIn": 70,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
+    "orn": 7
+   },
+   {
+    "h1": "한진칼",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 5,
+    "moving": 4,
+    "need": 0,
+    "means": 7,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 9,
+    "orn": 7
+   },
+   {
+    "h1": "한진칼 출목표",
+    "share": 53,
+    "shareIn": 70,
+    "figs": 4,
+    "moving": 3,
+    "need": 0,
+    "means": 4,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 4,
+    "orn": 7
+   },
+   {
+    "h1": "왜 사?",
+    "share": 57,
+    "shareIn": 75,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
+    "orn": 7
+   },
+   {
+    "h1": "내 매매일지",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 5,
+    "moving": 4,
+    "need": 0,
+    "means": 3,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 4,
+    "orn": 7
+   },
+   {
+    "h1": "친구에게",
+    "share": 54,
+    "shareIn": 72,
+    "figs": 3,
+    "moving": 2,
+    "need": 0,
+    "means": 1,
+    "hard": 0,
+    "hardWords": "",
+    "glossed": 1,
+    "orn": 7
+   }
+  ],
+  "hard": 0,
+  "hardWords": [],
+  "drawers": {
+   "#/r/d": {
+    "h1": "날마다 지난 기록",
+    "share": 57,
+    "moving": 4
+   },
+   "#/r/y": {
+    "h1": "해마다 지난 기록",
+    "share": 54,
+    "moving": 3
+   },
+   "#/r/n": {
+    "h1": "가까운 회사의 지난 기록",
+    "share": 57,
+    "moving": 3
+   }
+  },
+  "speed": {
+   "lcp": 1936,
+   "cls": 0.023
+  }
+ },
+ "ok": true
+}

@@ -1,11 +1,31 @@
-합침: {"ok":true,"shards":5,"got":5,"routes":13589,"screens":13818,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":514,"secondsSum":2536,"problems":[]}
-── en1/5 ──
-{"ok":true,"shard":"1/5","routes":2736,"screens":2736,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":497,"secs":{"open":0.4,"routes":495.2},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en2/5 ──
-{"ok":true,"shard":"2/5","routes":2735,"screens":2778,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":512,"secs":{"open":0.4,"routes":510.8},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en3/5 ──
-{"ok":true,"shard":"3/5","routes":2735,"screens":2778,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":502,"secs":{"open":0.4,"routes":501.3},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en4/5 ──
-{"ok":true,"shard":"4/5","routes":2727,"screens":2749,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":511,"secs":{"open":0.4,"routes":505.9,"newwin":3.1},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
-── en5/5 ──
-{"ok":true,"shard":"5/5","routes":2656,"screens":2777,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":514,"secs":{"open":0.4,"routes":498.8,"act":6.8,"edge":7.3,"grammar":0},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+합침: {"ok":true,"shards":15,"got":15,"routes":13589,"screens":13818,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":193,"secondsSum":2632,"problems":[]}
+── en1/15 ──
+{"ok":true,"shard":"1/15","routes":912,"screens":912,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":165,"secs":{"open":0.5,"routes":164.1},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en2/15 ──
+{"ok":true,"shard":"2/15","routes":912,"screens":955,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":169,"secs":{"open":0.5,"routes":168},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en3/15 ──
+{"ok":true,"shard":"3/15","routes":912,"screens":955,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":169,"secs":{"open":0.5,"routes":167.2},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en4/15 ──
+{"ok":true,"shard":"4/15","routes":912,"screens":913,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":169,"secs":{"open":0.5,"routes":166.1},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en5/15 ──
+{"ok":true,"shard":"5/15","routes":912,"screens":913,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":166,"secs":{"open":0.4,"routes":162.6},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en6/15 ──
+{"ok":true,"shard":"6/15","routes":912,"screens":912,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":165,"secs":{"open":0.5,"routes":161.8},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en7/15 ──
+{"ok":true,"shard":"7/15","routes":912,"screens":912,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":185,"secs":{"open":0.7,"routes":183.6},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en8/15 ──
+{"ok":true,"shard":"8/15","routes":912,"screens":912,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":185,"secs":{"open":0.7,"routes":183.1},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en9/15 ──
+{"ok":true,"shard":"9/15","routes":918,"screens":918,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":187,"secs":{"open":0.7,"routes":184},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en10/15 ──
+{"ok":true,"shard":"10/15","routes":912,"screens":912,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":164,"secs":{"open":0.5,"routes":162.6},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en11/15 ──
+{"ok":true,"shard":"11/15","routes":912,"screens":912,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":167,"secs":{"open":0.5,"routes":165.7},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en12/15 ──
+{"ok":true,"shard":"12/15","routes":911,"screens":911,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":163,"secs":{"open":0.5,"routes":162.1},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en13/15 ──
+{"ok":true,"shard":"13/15","routes":911,"screens":911,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":192,"secs":{"open":0.7,"routes":190},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en14/15 ──
+{"ok":true,"shard":"14/15","routes":897,"screens":918,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":193,"secs":{"open":0.7,"routes":186.6,"newwin":4.1},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
+── en15/15 ──
+{"ok":true,"shard":"15/15","routes":832,"screens":952,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":193,"secs":{"open":0.7,"routes":173.7,"act":8,"edge":8.9,"grammar":0},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
