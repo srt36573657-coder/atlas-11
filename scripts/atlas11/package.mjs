@@ -94,7 +94,7 @@ export async function buildDist() {
   await fs.writeFile(path.join(dist, 'story.json'), JSON.stringify(story) + '\n');
   // 새 ATLAS 가 첫 화면(2026-10-11 07:43 사장님 「aaa7377.com 에 올려」 · 규칙 54) — aaa7377.com/ 은 새 ATLAS(/atlas/ · 아래 _redirects 200!) ·
   //   옛 한국 판은 /old/ 에 그대로(같은 화면 코드 · 같은 판 자료 · 위 lens.json 까지) — 영상 · 새 판 · 새 ATLAS 폴더는 맨 위 것을 씀(절대 주소)
-  //   2026-10-15(싱가포르) 23:35 사장님 「예 알틀란스는 영구 삭제한다」 — 옛 한국 판(/old/)을 싣지 않음 · 옛 주소 /old/ 는 첫 화면으로(아래 _redirects) · 미국 판(/us/)은 그대로
+  //   2026-10-15(싱가포르) 23:35 사장님 「예 알틀란스는 영구 삭제한다」 — 옛 한국 판(/old/)을 싣지 않음 · 옛 주소 /old/ 는 첫 화면으로(아래 _redirects) · 미국 판(/us/)도 2026-11-05 03:55(+03) 사장님 「응」으로 내림(lib/atlas11/places.mjs RETIRED — 옛 주소는 첫 화면으로)
   await fs.writeFile(path.join(dist, '_headers'), HEADER_TOP + "/index.html\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/app/*\n  Cache-Control: no-cache\n/places.json\n  Cache-Control: no-cache\n/story.json\n  Cache-Control: no-cache\n" + abroad.map(id => `/${id}/index.html\n  Cache-Control: no-cache\n/${id}/data/*\n  Cache-Control: no-cache\n/${id}/app/*\n  Cache-Control: no-cache\n`).join('') + "/data/atlas11/names-kr.json\n  Cache-Control: no-cache\n/atlas/*\n  Cache-Control: no-cache\n");
   // 지운 화면(게임 · 옛 자료 파일 주소)은 처음 화면으로 — 옛 즐겨찾기가 빈 쪽에 닿지 않게
   // 2026-10-17 04:04(싱가포르) 사장님 「첫화면 부터 마지막 페이지 까지 모두 바꿔」(규칙 74) — 첫 화면(/) = 새 아틀란스(/next/) · 지금 아틀란스는 /atlas/ 그대로(아직 옮기지 않은 쪽)

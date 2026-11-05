@@ -19,7 +19,7 @@ const pickHow = C => `멍거 갈래는 3년 성적표만, 린치 갈래는 3년 
 const MN = C => (C?.mkt?.n ?? NP(C)); // 모든 회사 수
 function foot(C) {
   return h('footer', {class: 'pinfo-foot'},
-    h('p', {class: 'pinfo-links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'}), h('a', {href: '/us/', text: '미국 판'})),
+    h('p', {class: 'pinfo-links'}, h('a', {href: '/hello.html', text: '친구에게 소개하기'})),
     h('p', {text: `자료: ${C.sources?.price ?? '?'} · 기준일 = 마지막 종가 날(${md(C.asOf)})의 ${C.days}거래일 전(${md(C.base)}) · ${pickName(C)} — ${pickHow(C)}(그 뒤 주가는 안 씀).`}),
     C.provisional ? warn(`? ${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`, {short: '? 확정 전 값이에요 — 누르면 펼쳐요', cls: 'in'}) : null,
     h('p', {class: 'safe', text: '수르는 지난 기록만 보여 줘요. 사고팔기를 권하지 않아요.'}),

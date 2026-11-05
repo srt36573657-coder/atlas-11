@@ -1293,9 +1293,19 @@
    "state": "성공",
    "proof": "docs/design/su-jobs-2026-11-05/order-0054.txt · essence-0054.txt · learn11.md · tests/atlas11/su.test.mjs · scripts/atlas11/next/check_su.mjs · reports/atlas11/full-runs/su-jobs-0054.jsonl · reports/atlas11/probe/next-full/summary.json · reports/atlas11/trust/misses-2026-11-05-a.json · misses-2026-11-05-b.json",
    "short": "수르 잡스 판 — 셋을 찾는 눈 하나 · 옛 기능 모두 셋의 길에"
+  },
+  {
+   "id": "0955",
+   "at": "2026-11-05T09:55+09:00",
+   "words": "사이트에 남은 옛 미국 판 쪽도 아주 뺄까요?  응",
+   "then": "03:55(+03) 받음 · 이해 보고 · 보고 06:30(+03)쯤 · 옛 미국 판 내림 · 전체 검사 기다림",
+   "did": "옛 미국 판 쪽을 내린 판으로 적어 사이트에 싣지 않음 · 옛 주소는 수르 첫 화면으로 · 옛 쪽 다섯에서 미국 판 고리를 뺌",
+   "state": "미완성",
+   "proof": "docs/design/us-off-2026-11-05/order-0955.txt · lib/atlas11/places.mjs · scripts/atlas11/package.mjs",
+   "short": "사이트에 남은 옛 미국 판 쪽을 아주 뺌"
   }
  ],
- "open": 7,
+ "open": 8,
  "sent": [
   {
    "at": "2026-10-22T02:03+09:00",
