@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-04T18:45:55Z",
+ "at": "2026-11-05T18:54:13Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "b8ac1dfb69e171375eb47560bf4932dd6083d0f9fbc7d3a6de69587df2fbc02f",
-   "last": "2026-11-04"
+   "sha256": "50fa6ae24d5a3b4552dd4535bbf7feca3052b61d1ddbf04a33f43239ede17fdd",
+   "last": "2026-11-05"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 855,
+   "n": 856,
    "first": "2023-04-28",
-   "last": "2026-11-04",
+   "last": "2026-11-05",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "439921c5a2326df9b23eb97f24d947963b039bce02412e1f6a866a28e5f25c04"
+   "sha256": "6caee481e17ef87a668cd97ef8814cbed2c64b8612cd125cc42e6849c0333562"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "e75f7b6ac6a9bd02e63bb9410373eb94af4b65bf471ce872cfcfebdb6da1ba72"
+   "sha256": "f304f122c064ba06a887497ee75024302fbbff660f621b1730b3c249bea14f1d"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "9ddf8607899fa00b9dde389c27945a77cfa26e58143506104236be273a93271e"
+   "sha256": "41b8e44214b633a214585782091acdd4cff0370f6ff531a9179bade529691338"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 854,
-  "day": "2026-11-04",
+  "k": 855,
+  "day": "2026-11-05",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1724,
-   "outThinQ": 23,
-   "outHalt": 6,
+   "outThin": 1730,
+   "outThinQ": 24,
+   "outHalt": 7,
    "outList": 7,
-   "listQ": 820,
-   "afterOut": 820,
+   "listQ": 813,
+   "afterOut": 813,
    "g1": 253,
-   "g2": 681,
-   "g3": 40,
-   "g4": 660,
-   "g5": 0,
+   "g2": 646,
+   "g3": 41,
+   "g4": 681,
+   "g5": 4,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 808,
+   "loss3": 801,
    "why": "lists"
   },
-  "loss3Years": 808,
+  "loss3Years": 801,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,27 +321,27 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-10-06",
-   "to": "2026-11-04",
+   "from": "2026-10-07",
+   "to": "2026-11-05",
    "n": 4,
    "counted": 4,
-   "up": 0,
+   "up": 1,
    "lo": 16,
-   "hi": 31,
+   "hi": 29,
    "rows": [
     {
-     "code": "306200",
-     "name": "세아제강",
+     "code": "150900",
+     "name": "파수AI",
      "lo": 4,
      "hi": 8,
-     "from": 154300,
-     "to": 123700,
-     "up": 0,
+     "from": 4235,
+     "to": 4465,
+     "up": 1,
      "mcCounts": [
-      1070,
-      980,
-      1473,
-      1014
+      855,
+      984,
+      1487,
+      978
      ],
      "mcEdges": [
       0,
@@ -351,18 +351,39 @@
      ]
     },
     {
-     "code": "001230",
-     "name": "동국홀딩스",
+     "code": "130660",
+     "name": "한전산업",
      "lo": 4,
-     "hi": 8,
-     "from": 2040,
-     "to": 1868,
+     "hi": 6,
+     "from": 12120,
+     "to": 9700,
      "up": 0,
      "mcCounts": [
-      1145,
-      1077,
-      1417,
-      982
+      962,
+      989,
+      1143,
+      993
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "code": "086960",
+     "name": "MDS테크",
+     "lo": 4,
+     "hi": 7,
+     "from": 2350,
+     "to": 1928,
+     "up": 0,
+     "mcCounts": [
+      858,
+      1013,
+      1271,
+      983
      ],
      "mcEdges": [
       0,
@@ -376,35 +397,14 @@
      "name": "한국정보인증",
      "lo": 4,
      "hi": 8,
-     "from": 5630,
-     "to": 5030,
+     "from": 5370,
+     "to": 4920,
      "up": 0,
      "mcCounts": [
-      860,
-      965,
-      1517,
-      969
-     ],
-     "mcEdges": [
-      0,
-      0,
-      0,
-      0
-     ]
-    },
-    {
-     "code": "013030",
-     "name": "하이록코리아",
-     "lo": 4,
-     "hi": 7,
-     "from": 35700,
-     "to": 31700,
-     "up": 0,
-     "mcCounts": [
-      1023,
-      965,
-      1296,
-      984
+      845,
+      959,
+      1463,
+      981
      ],
      "mcEdges": [
       0,
@@ -463,10 +463,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1724,
-    6,
+    1730,
     7,
-    820,
+    7,
+    813,
     2557
    ]
   },
@@ -480,23 +480,23 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1724,
-  "outThinQ": 23,
-  "outHalt": 6,
+  "outThin": 1730,
+  "outThinQ": 24,
+  "outHalt": 7,
   "outList": 7,
-  "listQ": 820,
-  "afterOut": 820,
+  "listQ": 813,
+  "afterOut": 813,
   "g1": 253,
-  "g2": 681,
-  "g3": 40,
-  "g4": 660,
-  "g5": 0,
+  "g2": 646,
+  "g3": 41,
+  "g4": 681,
+  "g5": 4,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 808,
+  "loss3": 801,
   "why": "lists"
  },
  "compared": 2721,
@@ -506,9 +506,9 @@
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.1,
-  "build": 1.2,
-  "recount": 0.8,
-  "total": 4.1
+  "readBundle": 2.5,
+  "build": 1.7,
+  "recount": 1.0,
+  "total": 5.2
  }
 }
