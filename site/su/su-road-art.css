@@ -107,8 +107,7 @@
   .su-road-art .ra-sway, .su-road-art .ra-sway2, .su-road-art .ra-in, .su-road-art .ra-gfl, .su-road-art .ra-fband { animation: none; transform: none; }
 }
 /* 셋의 길 여덟째 판(r8-brief.md 「A12」) — 08 친구에게는 쓰지 않는 새 이름만(고정 색 · 어두운 판에서도 같은 색)
-   머리 다발 밑깔개(가닥 사이를 옅게 메워 한 다발로 보이게) · 펼친 책(겉장 · 장 · 글줄 · 낱장 · 금 테 · 서표 끈) · 밑동 봉오리 */
-.ra-roads .ra-hu { fill: var(--hb); fill-opacity: .34; }
+   펼친 책(겉장 · 장 · 글줄 · 낱장 · 금 테 · 서표 끈) · 밑동 봉오리 */
 .ra-roads .ra-bkc { fill: #9A5545; stroke: #6A3527; stroke-width: .8; stroke-linejoin: round; }
 .ra-roads .ra-bkp { fill: #FFFBF0; stroke: #B58A33; stroke-width: .8; stroke-linejoin: round; }
 .ra-roads .ra-bks { fill: #FBF2DE; stroke: #B58A33; stroke-width: .7; stroke-linejoin: round; }

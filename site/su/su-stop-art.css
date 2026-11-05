@@ -181,7 +181,7 @@
 }
 
 /* 여덟째 판(A06) — 왜 사? 물음 칸: 반쯤 비치는 밤빛(별하늘이 비침) · 둥근 아치 머리 · 이중 금선 · 정수리 번호 메달 양옆 금 잎 · 별가루(어두운 판에서도 같은 색) */
-.ss-q8 { fill: #0D1B30; fill-opacity: .6; }
+.ss-q8 { fill: #0D1B30; fill-opacity: .64; }
 .ss-q8-l { fill: none; stroke: #D3A64B; stroke-width: 1.5; }
 .ss-q8-l2 { fill: none; stroke: #EDD597; stroke-width: .7; }
 .ss-lab-on .ss-q8 { fill-opacity: .66; }
