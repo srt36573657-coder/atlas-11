@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-rivals-1",
- "at": "2026-11-04T19:09:10.001Z",
+ "at": "2026-11-05T01:17:50.219Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-04",
  "companies": 2557,
@@ -9,12 +9,12 @@
  "limit": null,
  "seconds": 71,
  "time": {
-  "old": 53.6,
-  "new": 54.9,
-  "wall": 71.3,
+  "old": 53.9,
+  "new": 55.2,
+  "wall": 71.4,
   "opensOld": 5130,
   "opensNew": 5195,
-  "oldPct": 75.1,
+  "oldPct": 75.4,
   "oldShare": 49.4
  },
  "net": {

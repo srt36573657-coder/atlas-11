@@ -1,6 +1,6 @@
 {
  "schema": "godori-check-share-1",
- "at": "2026-11-04T18:57:14.708Z",
+ "at": "2026-11-05T01:10:41.165Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
