@@ -194,3 +194,6 @@ body { background: var(--sky2); }
 .su-whyg .su-why21s { display: block; width: 100%; height: auto; }
 .g-halo { paint-order: stroke; stroke: var(--card); stroke-width: 6px; stroke-linejoin: round; }
 .g-mute { fill: var(--gold2); } /* 셋의 길 막대 — 셋을 돕는 길(멈춤 · 길잡이 · 손님 · 뒤 · 하늘)은 옅은 금빛 · 셋은 21칸 색 그대로(주문 0054 [2] 3) */
+/* 만수르 바로가기 — 첫 화면 맨 위 한 줄(주문 1023 [2] 1) · 누르는 자리 48px · 금빛 띠 */
+.su-mansour { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; margin: 0; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); background: linear-gradient(90deg, var(--halo), var(--gold2), var(--halo)); color: var(--ink); text-decoration: none; font-size: 18px; font-weight: 800; border-bottom: 1.5px solid var(--gold); }
+.su-mansour b { font-size: 19px; letter-spacing: .02em; }
