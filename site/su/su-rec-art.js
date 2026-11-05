@@ -198,8 +198,8 @@ function bust09(clipId) {
     taper(curlEnd(smooth([[195.6, 169], [196.4, 164.6], [198.6, 160.6]], 6), 2.6, 1, 1.25), {w0: 1.7, w1: 0.3, cls: 'mk-vstem'}),
     s('path', {d: leafD(196.2, 166, -2.5, 7.5, 2.3) + leafD(196.6, 167.4, -0.5, 6.5, 2), class: 'mk-vleaf'}));
   // 두 손 — 왼손은 위에서 · 오른손은 아래에서 줄기를 감아쥠(엄지가 위)
-  return [cloth, jewel, stem, sleeve({x: 158, y: 165, ang: -79, len: 26, w: 12.5, hand: 'hold', dir: 1, tone: 'ivory'}),
-    sleeve({x: 233, y: 170, ang: 73, len: 28, w: 12.5, hand: 'hold', dir: -1, tone: 'ivory'})];
+  return [cloth, jewel, stem, sleeve({x: 152, y: 157, ang: -66, len: 30, w: 12.5, hand: 'hold', dir: 1, tone: 'cream'}),
+    sleeve({x: 238, y: 160, ang: 62, len: 32, w: 12.5, hand: 'hold', dir: -1, tone: 'cream'})];
 }
 
 /* ① 기록 한곳 — 아치 · 휜 리본 제목 · 메달(머리가 두 창 꼭대기 꽃까지) · 한 금테 창 둘(빈 칸 크림 모자이크 · 찬 칸 둥근 유리) · 아래 아치 판 하나(값 한 줄 + 서랍 여섯 꽃 명판) · 덩굴 · 꽃 모자이크 띠 */
@@ -275,12 +275,12 @@ function hub(d, id) {
   //   여덟째 판: 굵은 밧줄 셋 → 한 뿌리에서 갈라지는 가는 가닥 여섯(굵기 4.2 → 1.8 · 끝 가늘게) · 끝 소용돌이가 창 아치 위 여기저기에서 아치 쪽으로 감김(넷) · 바깥으로 말림(둘)
   const hairSide = (wc, sgn, o) => { const W = (r, u) => P(wc, SPR, r, sgn * u), X = x => (sgn < 0 ? x : 390 - x), A = sgn, B = -sgn;
     return [
-      [[[X(178), 132], [X(156), 136], W(88, -22), W(84, -8), W(82, 8), W(82, 22), W(82.5, o.e[0])], {w: 4.2, r: o.r[0], dir: A, turns: 1.3}],
-      [[[X(176), 124], [X(152), 124], W(93, -16), W(90, 0), W(89, 18), W(88.5, 36), W(88, o.e[1])], {w: 3.5, r: o.r[1], dir: A, turns: 1.3}],
-      [[[X(176), 116], [X(150), 113], W(99, -12), W(97, 2), W(96.5, 14), W(97, o.e[2])], {w: 3, r: o.r[2], dir: B, turns: 1.25}],
-      [[[X(178), 140], [X(158), 146], W(81, -26), W(79.5, o.e[3])], {w: 2.4, r: o.r[3], dir: A, turns: 1.45}],
-      [[[X(174), 110], [X(148), 104], W(103, -10), W(101.5, 4), W(100, o.e[4])], {w: 2.2, r: o.r[4], dir: B, turns: 1.4}],
-      [[[X(177), 128], [X(154), 130], W(91, -20), W(88.5, -11), W(88, o.e[5])], {w: 1.8, r: o.r[5], dir: A, turns: 1.5}]]; };
+      [[[X(176), 130], [X(150), 132], [X(138), 133], W(86, -20), W(83, -6), W(82, 8), W(82, 22), W(82.5, o.e[0])], {w: 5.6, r: o.r[0], dir: A, turns: 1.3}],
+      [[[X(176), 126], [X(150), 127], [X(138), 128.5], W(91, -17), W(89.5, -2), W(89, 18), W(88.5, 36), W(88, o.e[1])], {w: 4.6, r: o.r[1], dir: A, turns: 1.3}],
+      [[[X(176), 122], [X(150), 122], [X(138), 124], W(96, -14), W(96, 0), W(96.5, 14), W(97, o.e[2])], {w: 3.8, r: o.r[2], dir: B, turns: 1.25}],
+      [[[X(176), 134], [X(150), 136], [X(139), 137.5], W(81, -25), W(79.5, o.e[3])], {w: 3.2, r: o.r[3], dir: A, turns: 1.45}],
+      [[[X(176), 118], [X(150), 117], [X(139), 119.5], W(101, -12), W(101, 2), W(100, o.e[4])], {w: 2.8, r: o.r[4], dir: B, turns: 1.4}],
+      [[[X(176), 128], [X(150), 130], [X(138), 131], W(88.5, -19), W(88, -11), W(88, o.e[5])], {w: 2.2, r: o.r[5], dir: A, turns: 1.5}]]; };
   const WCL = WX[0] + WR, WCR = WX[1] + WR;
   art.append(locks(5, [...hairSide(WCL, -1, {e: [36, 54, 24, -14, 12, -4], r: [5.2, 6.4, 4.4, 3.6, 4, 3.2]}), ...hairSide(WCR, 1, {e: [40, 56, 20, -12, 14, -2], r: [5.8, 5.6, 4.8, 3.4, 4.4, 3]})]));
   // 머리채 위 꽃 — 창 꼭대기에서 다발을 묶은 꽃 장식
@@ -341,14 +341,14 @@ function hub(d, id) {
   kids[0].append(s('linearGradient', {id: gv, x1: 0, y1: 0, x2: 0, y2: 1}, s('stop', {offset: 0, class: 'ra-gv0'}), s('stop', {offset: 0.55, class: 'ra-gv1'}), s('stop', {offset: 1, class: 'ra-gv2'})));
   cells.forEach(c => { const x = c.d, isNeed = x.v === NEED, mid = c.x + c.w / 2, tall = c.h > 70;
     let lines = [x.name];
-    if (est(x.name, 18) > c.w - 18) { const sp = [...x.name].map((ch, i) => (ch === ' ' ? i : -1)).filter(i => i > 0);
+    if (est(x.name, 18) * 0.93 > c.w - 16) { const sp = [...x.name].map((ch, i) => (ch === ' ' ? i : -1)).filter(i => i > 0);
       const at = sp.sort((p, q) => Math.abs(est(x.name.slice(0, p), 18) - est(x.name.slice(p + 1), 18)) - Math.abs(est(x.name.slice(0, q), 18) - est(x.name.slice(q + 1), 18)))[0];
       if (at) lines = [x.name.slice(0, at), x.name.slice(at + 1)]; }
-    const ny = lines.length > 1 ? [c.y + 31, c.y + 50] : [c.y + (tall ? 45 : 31)], vy = c.y + (tall ? 74 : 58);
+    const two = lines.length > 1, ny = two ? [c.y + 28, c.y + 50] : [c.y + (tall ? 45 : 31)], vy = c.y + (tall ? 74 : 58);
     L.push(s('a', {href: x.href, class: 'ra-lab ra-d' + (c.n + 1), 'aria-label': x.name + ' ' + x.v, 'data-k': x.k, 'data-v': x.v, 'data-also': x.also ?? null},
       s('rect', {x: r1(c.x - CW / 2 + 0.5), y: c.y + 4, width: r1(c.w + CW - 1), height: c.h - 4, rx: 12, class: 'ra-hit'}),
       lines.map((t, i) => T(mid, ny[i], t, 'ra-ln', {'text-anchor': 'middle'})),
-      T(mid, vy, x.v, 'ra-lv' + (isNeed ? ' ra-needt' : ' ra-lvg'), {'text-anchor': 'middle', fill: isNeed ? null : 'url(#' + gv + ')'})));
+      T(mid, vy, x.v, 'ra-lv' + (two ? ' ra-lv2' : '') + (isNeed ? ' ra-needt' : ' ra-lvg'), {'text-anchor': 'middle', fill: isNeed ? null : 'url(#' + gv + ')'})));
   });
   kids.push(s('g', {'data-mucha': 'lettering', class: 'ra-letters'}, L));
   return svgRoot('hub', '기록 한곳 · 100번에 몇 번 꽃이 됐나 · 한 금테 창 둘 · 아래 아치 회랑 두 층 여섯 칸에 기록 서랍', ...kids);
@@ -423,19 +423,19 @@ function months(d, id) {
   //   메달 어깨에서 비스듬히 솟아 리본 뒤로 지나감(손잡이 · 뿔 꼴 아님) · 왼쪽은 범례 · 「2025년」 이름판 위에서 끝남 · 오른쪽은 조금 더 내려와 창 어깨 위에서 끝남
   //   여덟째 판: 뻣뻣한 두 줄기 → 한 뿌리에서 갈라지며 가늘어지는 가닥 다섯씩 · 왼쪽 끝 소용돌이 셋이 「2025년」 판 왼끝을 위 · 옆 · 아래로 감음 · 오른쪽은 창 오른 어깨 위에서 말림
   const AR = (r, a) => P(AC[0], AC[1], r, a), mir = q => q.map(([x, y]) => [390 - x, y]);
-  const fan10 = (r0, e, sgn) => { const Q = (r, a) => AR(r, a); const b = [[176, 100 + r0 * 0.1], [150, 92], [128, 80], [112, 70]];
+  const fan10 = (r0, e, sgn) => { const Q = (r, a) => AR(r, a); const b = [[176, 100 + r0 * 0.1], [154, 97], [136, 88], [124, 76], [110, 68]];
     return [
-      [[...b, Q(163, -40), Q(164.5, -54), Q(165.5, -66), Q(166, -78), [27.4, 194], [24.6, 207], [26.4, e[0]]], {w: 3.8, r: 4.6, dir: -sgn, turns: 1.3}],
-      [[...b, Q(160, -40), Q(161, -54), Q(161.5, -66), [42, 178], [37.4, 190], [40, e[1]]], {w: 3, r: 4, dir: sgn, turns: 1.3}],
-      [[...b, Q(166, -40), Q(167.5, -54), Q(168.6, -66), Q(169.4, -78), [23, 196], [19.6, 214], [20.6, e[2]]], {w: 2.6, r: 4.4, dir: -sgn, turns: 1.35}],
-      [[[174, 96], [150, 86], Q(158, -42), Q(158.6, -56), Q(158, e[3])], {w: 2, r: 3.4, dir: -sgn, turns: 1.45}],
-      [[[174, 92], [148, 80], Q(170, -42), Q(171, e[4])], {w: 1.6, r: 3, dir: sgn, turns: 1.5}]]; };
+      [[...b, Q(163, -40), Q(164.5, -54), Q(165.5, -66), Q(166, -78), [27.4, 194], [24.6, 207], [26.4, e[0]]], {w: 5.6, r: 5.4, dir: -sgn, turns: 1.3}],
+      [[...b, Q(160, -40), Q(161, -54), Q(161.5, -66), [42, 178], [37.4, 190], [40, e[1]]], {w: 4.4, r: 4.6, dir: sgn, turns: 1.3}],
+      [[...b, Q(166, -40), Q(167.5, -54), Q(168.6, -66), Q(169.4, -78), [23, 196], [19.6, 214], [20.6, e[2]]], {w: 3.6, r: 4.8, dir: -sgn, turns: 1.35}],
+      [[[174, 96], [152, 90], [134, 84], Q(158, -42), Q(158.6, -56), Q(158, e[3])], {w: 2.8, r: 3.8, dir: -sgn, turns: 1.45}],
+      [[[174, 92], [150, 84], [132, 74], Q(170, -42), Q(171, e[4])], {w: 2.2, r: 3.4, dir: sgn, turns: 1.5}]]; };
   const HL = fan10(0, [221, 199, 236, -68, -55], 1), HR = fan10(2, [216, 196, 232, -70, -58], -1).map(([p, o]) => [mir(p), o]);
   art.append(locks(6, [...HL, ...HR]));
   art.append(medallion({cx: MC[0], cy: MC[1], r: MR, v: 6, dir: 1, ring: 'mosaic'}));
   // 이 쪽만의 손짓 — 메달 왼쪽 아래에서 올린 손(공용 부품 hold)이 초승달 아래 뿔을 쥠(「달과 별」 1902)
-  art.append(s('g', {class: 'ra-moonhand', 'aria-hidden': 'true'}, s('path', {d: moon(160, 111, 7.6), class: 'rx-moon', 'data-mucha': 'stars'}),
-    sleeve({x: 171, y: 158, ang: 162, len: 26, w: 10.5, hand: 'hold', dir: -1, tone: 'cream'})));
+  art.append(s('g', {class: 'ra-moonhand', 'aria-hidden': 'true'}, s('path', {d: moon(160, 109, 9.4), class: 'rx-moon', 'data-mucha': 'stars'}),
+    sleeve({x: 172, y: 160, ang: 162, len: 30, w: 10.5, hand: 'hold', dir: -1, tone: 'cream'})));
 
   // 두 창 사이 꽃덩굴 띠 — 해 이름판 오른쪽 말림에서 돋아 오른쪽 테까지(굵게 → 가늘게) · 꽃 셋
   const vy = tops.slice(1).map(t => t - GAP / 2 - 1);

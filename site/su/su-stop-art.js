@@ -312,65 +312,63 @@ function quizWoman(id, done, total) {
   return [back, body];
 }
 
-/* ── ① 물음 판 — 일곱째 판(r7-brief S 1): 열하나 모두 같은 크기(112 × 58 · 둥근 머리 · 가는 두 겹 금테 · 머리 꼭대기 작은 꽃 하나)
-   양옆 세로 장식 판(둥근 머리 · 가는 두 겹 금테)에 가지런히 — 왼 판 = 이유 · 때 · 오른 판 = 돈 · 마음(WHY_GROUPS 차례 · 질문 차례 그대로 · 두 판의 줄 높이가 맞음)
-   번호 메달은 판 바깥 끝 · 틀 금선 위(보석처럼 박힘 · 그림 맨 위 층) · 글은 메달과 테에서 8 넘게 · 띄어쓰기에서만 두 줄(낱말 가운데서 끊지 않음) ── */
-const PW = 112, PH = 61, PAH = 8, PX = {L: 24, R: 254}, MX = {L: 22, R: 368}, MR = 13.5, ROW0 = 126, HDR = 20;
-const TXT = {L: [MX.L + MR + 8, PX.L + PW - 9], R: [PX.R + 9, MX.R - MR - 8]}; // 글 자리 — 왼 43.5 ~ 127 · 오른 263 ~ 346.5(폭 83.5)
-/** 판 짜기 — 묶음 차례대로 왼 · 오른 번갈아(이유 → 왼 · 돈 → 오른 · 때 → 왼 · 마음 → 오른) · 묶음 이름 줄 + 판(58) · 판 사이 3 · 묶음 사이 6 */
-function layout(groups) {
-  const items = [], y = {L: ROW0, R: ROW0}, seen = {L: 0, R: 0};
+/* ── ① 물음 칸 — 여덟째 판(r8-brief A06 1 · judge-r7 6): 이어 붙은 남색 세로 판 둘을 걷어 내고 칸 열하나를 하나씩 띄움(칸 사이로 별하늘 · 달 후광 · 소매가 보임)
+   칸 = 둥근 아치 머리 · 이중 금선 테 · 반쯤 비치는 밤빛 바탕 · 번호 메달은 칸 꼭대기(아치 정수리에 박힌 보석 · 양옆 금 잎) · 칸 높이 61 → 54(두 줄 칸 75)
+   왼 = 이유 · 때 · 오른 = 돈 · 마음(WHY_GROUPS 차례 · 질문 차례 그대로) · 왼쪽이 먼저 끝난 아래는 꾸밈 칸 없이 여인의 자락이 흐름
+   글은 테 · 메달 · 반짝이에서 8 넘게 · 띄어쓰기에서만 두 줄(낱말 가운데서 끊지 않음) ── */
+const PW = 112, PX = {L: 24, R: 254}, AH = 12, MR = 12, MR2 = 10.2, PH1 = 54, PH2 = 75, TOP0 = 80, GAP = 4, GHD = 21;
+const TXT = [11, PW - 11]; // 글 자리 — 칸 왼끝에서 11 ~ 101(바깥 금선 3 + 8 · 폭 90)
+const wrap2 = t => { const sp = t.indexOf(' '); return sp > 0 ? [t.slice(0, sp), t.slice(sp + 1)] : [t]; };
+const linesOf = t => (tw(t, 18) > TXT[1] - TXT[0] ? wrap2(t) : [t]);
+/** 칸 짜기 — 묶음 차례대로 왼 · 오른 번갈아(이유 → 왼 · 돈 → 오른 · 때 → 왼 · 마음 → 오른) · 묶음 이름(글 21 + 8) → 메달 꼭대기 · 칸 바닥에서 다음 메달 꼭대기까지 4 · 묶음 사이 8 */
+function layout(groups, qs) {
+  const items = [], y = {L: TOP0, R: TOP0}, seen = {L: 0, R: 0};
   groups.forEach(([name, list], gi) => {
     const sd = gi % 2 ? 'R' : 'L';
-    if (seen[sd]++) y[sd] += 6;
-    items.push({sd, name, y: y[sd]}); y[sd] += HDR;
-    list.forEach(q => { items.push({sd, q, y: y[sd]}); y[sd] += PH + 2; });
+    if (seen[sd]++) y[sd] += 8;
+    items.push({sd, name, y: y[sd]}); y[sd] += GHD + 8;
+    list.forEach(q => { const t = typeof qs[q - 1] === 'string' ? qs[q - 1] : NEED, L = linesOf(t), ap = y[sd] + MR - 2; // 메달 가운데 = 정수리 + 2
+      items.push({sd, q, L, ap}); y[sd] = ap + (L.length > 1 ? PH2 : PH1) + GAP; });
+    y[sd] -= GAP;
   });
-  return {items, y, end: Math.max(y.L, y.R)};
+  return items;
 }
-const wrap2 = t => { const sp = t.indexOf(' '); return sp > 0 ? [t.slice(0, sp), t.slice(sp + 1)] : [t]; };
-/** 세로 장식 판 — 둥근 머리 · 반투명 밤빛 바탕 · 가는 두 겹 금테 */
-function board(sd, bot) {
-  const x0 = PX[sd] - 4, x1 = PX[sd] + PW + 4, sh = i => `M ${x0 + i} ${bot - i} L ${x0 + i} ${ROW0 + i * 0.4} A ${f1((x1 - x0) / 2 - i)} ${f1(16 - i * 0.5)} 0 0 1 ${x1 - i} ${ROW0 + i * 0.4} L ${x1 - i} ${bot - i} Z`;
-  return s('g', {class: 'ss-board'}, s('path', {d: sh(0), class: 'ss-bd'}), s('path', {d: sh(0), class: 'ss-bd-l'}), s('path', {d: sh(3), class: 'ss-bd-l2'}),
-    flower(f1((x0 + x1) / 2), ROW0 - 16, 5.2, 'ss-fl5'));
+/** 아치 안쪽 테의 x(왼쪽) — y 가 아치 어깨(126) 위면 둥근 테를 따라 */
+const archX = y => (y >= 126 ? 20 : 195 - 175 * Math.sqrt(Math.max(0, 1 - ((126 - y) / 104) ** 2)));
+/** 묶음 이름 — 반짝이 둘(글에서 9 넘게) · 양옆 가는 금줄(아치 테에서 6 넘게 · 짧으면 뺌) */
+function groupName(sd, name, y) {
+  const cx = PX[sd] + PW / 2, w = tw(name, 18), ly = y + 10.5, ex = archX(ly) + 6;
+  const a0 = sd === 'L' ? Math.max(PX.L + 4, ex) : PX.R + 4, a1 = f1(cx - w / 2 - 24), b0 = f1(cx + w / 2 + 24), b1 = sd === 'R' ? Math.min(PX.R + PW - 4, 390 - ex) : PX.L + PW - 4;
+  const ln = (a, b) => (b - a >= 8 ? `M ${f1(a)} ${ly} L ${f1(b)} ${ly} ` : '');
+  const gl = ln(a0, a1) + ln(b0, b1);
+  return s('g', {class: 'ss-gn'}, gl ? s('path', {d: gl, class: 'ss-gline'}) : null,
+    s('path', {d: spark(f1(cx - w / 2 - 15), ly, 4.2) + ' ' + spark(f1(cx + w / 2 + 15), ly, 4.2), class: 'ss-sp'}),
+    s('text', {x: f1(cx), y: y + 16, 'text-anchor': 'middle', class: 'ss-gname', text: name}));
 }
-/** 묶음 이름 — 첫 묶음은 판 머리 안 · 둘째 묶음은 가는 금줄 사이(별 반짝임 둘) */
-function groupName(sd, name, y, first) {
-  const cx = PX[sd] + PW / 2, w = tw(name, 18), by = y + 15;
-  return s('g', {class: 'ss-gn'},
-    first ? null : [s('path', {d: `M ${PX[sd] + 6} ${y + 10} L ${f1(cx - w / 2 - 16)} ${y + 10}`, class: 'ss-gline'}), s('path', {d: `M ${f1(cx + w / 2 + 16)} ${y + 10} L ${PX[sd] + PW - 6} ${y + 10}`, class: 'ss-gline'})],
-    s('path', {d: spark(f1(cx - w / 2 - 9), y + 10, 4.6), class: 'ss-sp'}), s('path', {d: spark(f1(cx + w / 2 + 9), y + 10, 4.6), class: 'ss-sp'}),
-    s('text', {x: f1(cx), y: by, 'text-anchor': 'middle', class: 'ss-gname', text: name}));
+/** 물음 칸 하나 — 둥근 아치 머리(정수리 ap · 어깨 ap + 12) · 반쯤 비치는 밤빛 · 이중 금선 · 정수리에 박힌 번호 메달(양옆 금 잎 · 지금 칸은 뒤에서 별이 숨 쉼) · 글 한두 줄(가운데) */
+function qPlaque(it, state) {
+  const {sd, q, L, ap} = it, x0 = PX[sd], x1 = x0 + PW, cx = x0 + PW / 2, bt = ap + (L.length > 1 ? PH2 : PH1), my = ap + 2;
+  const sh = i => `M ${x0 + i} ${bt - i} L ${x0 + i} ${f1(ap + AH + i * 0.3)} A ${f1(PW / 2 - i)} ${f1(AH - i * 0.5)} 0 0 1 ${x1 - i} ${f1(ap + AH + i * 0.3)} L ${x1 - i} ${bt - i} Z`;
+  return s('g', {class: 'ss-lab' + (state === 'cur' ? ' ss-lab-cur' : state === 'on' ? ' ss-lab-on' : ''), 'data-q': q},
+    s('path', {d: sh(0), class: 'ss-q8'}), s('path', {d: sh(0), class: 'ss-q8-l'}), s('path', {d: sh(3), class: 'ss-q8-l2'}),
+    state === 'cur' ? s('g', {transform: `translate(${cx} ${my})`}, s('g', {class: 'ss-pulse'}, s('path', {d: spark(0, 0, 21), class: 'ss-q8-glow'}))) : null,
+    s('g', {class: 'ss-q8-wing'}, leaf(cx - MR - 1, my + 1.5, 172, 13), leaf(cx + MR + 1, my + 1.5, 8, 13)),
+    s('circle', {cx, cy: my, r: MR, class: 'ss-md'}), s('circle', {cx, cy: my, r: MR2, class: state === 'cur' ? 'ss-md-cur' : state === 'on' ? 'ss-md-on' : 'ss-md-off'}),
+    s('text', {x: cx, y: f1(my + 6.3), 'text-anchor': 'middle', class: 'ss-num', text: String(q)}),
+    L.map((t, i) => s('text', {x: f1(x0 + (TXT[0] + TXT[1]) / 2), y: ap + 38 + i * 21, 'text-anchor': 'middle', class: 'ss-q', text: t})));
 }
-/** 물음 판 하나 — 위가 둥근 판(같은 크기) · 가는 두 겹 금테 · 머리 꼭대기 작은 꽃 · 글 한두 줄(가운데) */
-function qPlaque(q, t, sd, y, state) {
-  const x0 = PX[sd], x1 = x0 + PW, cx = f1(x0 + PW / 2), [ta, tb] = TXT[sd], tx = f1((ta + tb) / 2), my = y + PAH + (PH - PAH) / 2;
-  const lines = tw(t, 18) > tb - ta ? wrap2(t) : [t];
-  const sh = i => `M ${x0 + i} ${y + PH - i} L ${x0 + i} ${f1(y + PAH + i * 0.5)} A ${f1(PW / 2 - i)} ${f1(PAH - i * 0.45)} 0 0 1 ${x1 - i} ${f1(y + PAH + i * 0.5)} L ${x1 - i} ${y + PH - i} Z`;
-  return s('g', {class: 'ss-lab' + (state === 'cur' ? ' ss-lab-cur' : state === 'on' ? ' ss-lab-on' : '')},
-    s('path', {d: sh(0), class: 'ss-pq'}), s('path', {d: sh(0), class: 'ss-pq-l'}), s('path', {d: sh(3), class: 'ss-pq-l2'}),
-    s('g', {transform: `translate(${cx} ${f1(y + 4.4)})`}, s('g', {class: state === 'cur' ? 'ss-pulse' : null}, flower(0, 0, 4.4, state === 'off' ? 'ss-fl5' : 'ss-fl6'))),
-    lines.map((L, i) => s('text', {x: tx, y: f1(lines.length > 1 ? my - 5 + i * 21 : my + 5.5), 'text-anchor': 'middle', class: 'ss-q', text: L})));
-}
-/** 번호 메달 — 판 바깥 끝 · 틀 금선 위(그림 맨 위 층 · 틀 바깥 테 8 안) */
-const qMedal = (q, sd, y, state) => { const x = MX[sd], my = f1(y + PAH + (PH - PAH) / 2);
-  return s('g', {class: 'ss-qm'}, s('circle', {cx: x, cy: my, r: MR, class: 'ss-md'}), s('circle', {cx: x, cy: my, r: 11, class: state === 'cur' ? 'ss-md-cur' : state === 'on' ? 'ss-md-on' : 'ss-md-off'}),
-    s('text', {x, y: f1(my + 6.3), 'text-anchor': 'middle', class: 'ss-num', text: String(q)})); };
-/** 빈 칸 꾸밈 — 판이 적은 쪽 아래(작은 금 고리 · 다섯 잎 꽃 · 잎 둘) */
-const filler = (sd, y0, y1) => { const cx = PX[sd] + PW / 2, cy = f1((y0 + y1) / 2);
-  return s('g', {class: 'ss-fill'}, leaf(cx - 20, cy + 3, 160, 15), leaf(cx + 20, cy + 3, 20, 15), s('circle', {cx, cy, r: 15, class: 'ss-mdl'}), s('circle', {cx, cy, r: 11.5, class: 'ss-mdl2'}), flower(cx, cy, 9.5, 'ss-fl3')); };
 function route(groups, qs, cur, done) {
-  const {items, y, end} = layout(groups), bot = end + 2, labs = [], names = [], medals = [], seen = {L: 0, R: 0};
-  items.forEach(it => {
-    if (it.name != null) { names.push(groupName(it.sd, it.name, it.y, !seen[it.sd]++)); return; }
-    const t = typeof qs[it.q - 1] === 'string' ? qs[it.q - 1] : NEED, st = it.q === cur ? 'cur' : it.q <= done ? 'on' : 'off';
-    labs.push(qPlaque(it.q, t, it.sd, it.y, st)); medals.push(qMedal(it.q, it.sd, it.y, st));
+  const names = [], labs = [];
+  layout(groups, qs).forEach(it => {
+    if (it.name != null) names.push(groupName(it.sd, it.name, it.y));
+    else labs.push(qPlaque(it, it.q === cur ? 'cur' : it.q <= done ? 'on' : 'off'));
   });
-  const fills = ['L', 'R'].filter(sd => end - y[sd] > 40).map(sd => filler(sd, y[sd], end - 3));
-  return [s('g', {class: 'ss-route', 'data-mucha': 'panel', 'aria-hidden': 'true'}, board('L', bot), board('R', bot), fills, names, labs),
-    s('g', {class: 'ss-route ss-medals', 'aria-hidden': 'true'}, medals)];
+  return s('g', {class: 'ss-route', 'data-mucha': 'panel', 'aria-hidden': 'true'}, names, labs);
 }
+/** 별가루 — 반쯤 비치는 칸 너머 · 칸 사이로 보이는 밤하늘 작은 별(한 path) */
+const DUST = [[34, 150], [126, 146], [58, 214], [128, 222], [36, 262], [112, 286], [52, 330], [130, 318], [38, 380], [116, 392], [60, 452], [128, 462], [34, 492],
+  [264, 150], [356, 146], [300, 214], [360, 226], [262, 270], [334, 290], [286, 340], [358, 362], [266, 402], [338, 430], [290, 470], [360, 500], [270, 528], [148, 36], [246, 34]];
+const dust = () => s('path', {d: DUST.map(([x, y], i) => { const r = i % 3 ? 0.9 : 1.4; return `M ${f1(x - r)} ${y} a ${r} ${r} 0 1 0 ${f1(2 * r)} 0 a ${r} ${r} 0 1 0 ${f1(-2 * r)} 0`; }).join(' '), class: 'ss-dust'});
 /** 아래 받침 글씨 — 곡선을 따라 휘는 리본 위에 새긴 글(띠 바탕이 고르니 테 없음) */
 function band(t, pts, w, cls, extra) {
   const rb = ribbon(pts, {w, tone: 'cream'}), pid = rb.getAttribute('data-path');
@@ -383,20 +381,20 @@ function quizPic(d, opt, id) {
   const n = qs ? qs.length : 11, done = Number.isInteger(opt.done) ? Math.max(0, Math.min(n, opt.done)) : 0;
   const cur = Number.isInteger(opt.cur) && opt.cur >= 1 && opt.cur <= n ? opt.cur : null;
   const [hair, body] = quizWoman(id, done, n);
-  const [panels, medals] = qs && groups ? route(groups, qs, cur, done) : [s('g', {class: 'ss-route'}, qPlaque(0, NEED, 'L', 150, 'cur')), null];
-  const label = qs && groups ? '보름달 아래 모래시계를 받친 여인과 양옆 세로 판의 열한 질문 · ' + (cur ? '지금 ' + cur + '번째 질문 · ' : '') + '답한 판 ' + done + '개' : '열한 질문 · ' + NEED;
+  const panels = qs && groups ? route(groups, qs, cur, done) : s('g', {class: 'ss-route'}, qPlaque({sd: 'L', q: 0, L: [NEED], ap: 150}, 'cur'));
+  const label = qs && groups ? '보름달 아래 모래시계를 받친 여인과 양옆에 하나씩 띄운 열한 질문 칸 · ' + (cur ? '지금 ' + cur + '번째 질문 · ' : '') + '답한 칸 ' + done + '개' : '열한 질문 · ' + NEED;
   return s('svg', {class: 'su-svg su-art4 su-stop-art ss-quiz', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label, 'data-g': 'stop-art', preserveAspectRatio: 'xMidYMid meet'},
     defs(id),
     s('g', {'clip-path': `url(#${id}clip)`},
-      sky(id), sunset(504),
-      skyStars([[72, 118, 3, 0], [318, 114, 3, 1], [104, 98, 2.4, 1], [290, 94, 2.4, 0], [152, 300, 2.4, 1], [246, 420, 2.2, 0], [154, 452, 2.2, 0], [245, 486, 2.4, 1]]),
+      sky(id), sunset(520), s('g', {'data-mucha': 'stars', class: 'ss-stars'}, dust()),
+      skyStars([[112, 44, 2.6, 1], [280, 44, 2.4, 0], [31, 184, 2.6, 1], [359, 184, 2.6, 0], [31, 252, 2.2, 0], [359, 252, 2.2, 1], [31, 421, 2.4, 1], [359, 421, 2.4, 0], [359, 489, 2.4, 1]]),
       s('g', {'data-mucha': 'halo', class: 'ss-halo'},
         s('circle', {cx: 198, cy: 92, r: 80, class: 'ss-hring3'}), s('circle', {cx: 198, cy: 92, r: 72, fill: `url(#${id}moon)`, class: 'ss-hdisk'}),
         s('path', {d: crescent(198, 92, 72, 30, -6, 66), class: 'ss-moon'}),
         s('circle', {cx: 198, cy: 92, r: 72, class: 'ss-hring'}), s('circle', {cx: 198, cy: 92, r: 60, class: 'ss-hring2'})),
       hair, body, panels,
       band('사기 전에 한 번 멈춰요', [[44, 580], [120, 572], [195, 569], [270, 572], [346, 580]], 32, 'ss-plqt'), mosaic()),
-    frame(id, true), medals);
+    frame(id, true));
 }
 
 /* ── ② 「내 매매일지」 여인 — 돌 의자에 앉아 무릎 위 책에 깃펜으로 적음 · 한 벌 장밋빛 옷

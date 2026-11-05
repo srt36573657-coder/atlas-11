@@ -303,11 +303,11 @@ function roads(d) {
   // 흉상 — 연두 옷 소매(메달 원 안에서만)에서 나온 손이 펼친 책을 받쳐 듦 · 책은 원 아래 테를 넘고 낱장 셋이 「옛 기능」 띠 뒤로
   const clip = s('clipPath', {id: 'ra-mclip'}, circ(cx, cy, R - 1.4));
   const tome = book(206, 187, -7);
-  const arm = g({'clip-path': 'url(#ra-mclip)', class: 'ra-arm'}, sleeve({x: 149, y: 232, ang: -132, len: 25, w: 12.5, hand: 'hold', dir: 1, tone: 'sage'}));
+  const arm = g({'clip-path': 'url(#ra-mclip)', class: 'ra-arm'}, sleeve({x: 147, y: 236, ang: -130, len: 27, w: 14, hand: 'hold', dir: 1, tone: 'cream'}));
   // 머리 — 가는 가닥 여섯을 묶은 다발 둘 · 메달 뒤(뿌리는 메달에 가려짐)에서 나와 S 로 흘러 기둥 머리 연꽃을 한 바퀴 감고 안으로 말림
   //   왼쪽은 위로 솟았다 내려오고 · 오른쪽은 아래로 처졌다 올라옴(좌우 비대칭) · 고리 아래쪽은 연꽃 뒤로(연꽃을 머리 뒤에 다시 그림)
-  const hairL = skein([[160, 151], [134, 146], [110, 137], [88, 133], [68, 139], [54, 151], [42, 162], [31, 165.5]], {r: 11.5, turn: -1, seed: 0});
-  const hairR = skein([[230, 153], [256, 157], [280, 164], [302, 161], [321, 151], [337, 153], [348, 162], [359, 165.5]], {r: 11.5, turn: 1, seed: 1});
+  const hairL = skein([[160, 151], [134, 146], [110, 136], [88, 131], [68, 137], [53, 150], [44, 163], [37, 169], [30, 172]], {r: 14, turn: -1, seed: 0});
+  const hairR = skein([[230, 153], [256, 157], [280, 164], [302, 161], [321, 151], [337, 152], [348, 162], [355, 169], [362, 172]], {r: 14, turn: 1, seed: 1});
   const tresses = g({'data-mucha': 'whiplash', class: 'ra-whiplash'}, g({class: 'mk-hair mk-t7'}, hairL, hairR));
   // 제목 — 아치 금선 안쪽 초승달 띠(가운데 두껍고 끝은 가늘게 · 어깨에서 금선이 소용돌이로 풀림)
   const title = archTitle('셋의 길');
@@ -320,8 +320,8 @@ function roads(d) {
   const sx = y => { for (let i = 1; i < stem.length; i++) if (stem[i][1] <= y) { const a = stem[i - 1], b = stem[i], t = (a[1] - y) / Math.max(0.01, a[1] - b[1]); return a[0] + (b[0] - a[0]) * t; } return 195; };
   const vine = [path(taper(stem, 10.5, 2.2, 1.2), 'mk-vstem')];
   const tags = [];
-  // 잎 여덟 — 같은 쪽 잎 사이 76(잎 높이 62 · 틈 14) · 왼쪽과 오른쪽이 반 칸씩 엇갈림 · 잎자루는 줄기 마디(잎 가운데보다 14 아래)에서 바깥 위로 휨
-  const SY = 76, Y0 = 303;
+  // 잎 여덟 — 같은 쪽 잎 사이 74(잎 높이 60 · 틈 14 — 지난 판 8) · 왼쪽과 오른쪽이 반 칸씩 엇갈림 · 잎자루는 줄기 마디(잎 가운데보다 14 아래)에서 바깥 위로 휨
+  const SY = 74, Y0 = 302;
   rows.forEach((r, i) => {
     const side = i % 2 ? 1 : -1, yc = Y0 + (side < 0 ? 0 : SY / 2) + ((i / 2) | 0) * SY, name = r.name ?? NEED, cnt = Number.isFinite(r.n) ? r.n + '가지' : NEED;
     const tone = TONES[i % 3], yn = yc + 14, sn = sx(yn), st = sx(yc), bx = st + side * 13, room = Math.floor(side < 0 ? bx - 64 : 326 - bx);
@@ -335,7 +335,7 @@ function roads(d) {
       text(tx, yc - 5, name, 'ra-ln'), text(tx, yc + 19, cnt, 'ra-lc')));
   });
   // 아래 꽃 띠 — 두 받침 사이 · 윗 금선은 양 끝에서 받침 쪽으로 풀려 말림 · 꽃과 마름모 모자이크(밑동 둘레는 비움)
-  const bl = 64, br = 326, b0 = 596, foot = 177;
+  const bl = 64, br = 326, b0 = 598, foot = 177;
   const topLine = [...coil([[bl + 40, b0], [bl + 8, b0]], 5, -1, 1.25).reverse(), ...coil([[br - 40, b0], [br - 8, b0]], 5, 1, 1.25)];
   const band = [s('rect', {x: bl, y: b0, width: br - bl, height: 12, rx: 6, class: 'ra-bandbg'}), path(taper(topLine, 0.5, 0.5, 1.3), 'ra-tline'), s('line', {x1: bl + 10, y1: b0 + 12, x2: br - 10, y2: b0 + 12, class: 'ra-ml'})];
   let dd = '';
@@ -379,7 +379,7 @@ function book(x, y, rot) {
   for (const sd of [-1, 1]) for (let j = 0; j < 5; j++) { const yy = 4.6 + j * 4.1, a = sd * 4, b = sd * (W - 4 - (j === 4 ? 10 : 0)); ln += `M${a} ${f1(yy + 0.4)}Q${sd * 15} ${f1(yy - 1.6)} ${b} ${f1(yy - 0.2)}`; }
   // 낱장 — 책등 아래 끝(0, H)을 축으로 돌린 장(28 · 50 · 72도) · 바깥 모서리는 살짝 말림 · 글줄 둘
   const sheet = deg => { const a = deg * PI / 180, ca = Math.cos(a), sa = Math.sin(a), T = (u, v) => [u * ca - (v - H) * sa, H + u * sa + (v - H) * ca];
-    const c = [T(0, 1), T(W * 0.55, -2), T(W, 0.5), T(W + 1.5, H * 0.55), T(W - 0.5, H), T(W * 0.5, H - 2.5), T(0, H)];
+    const c = [T(0, 0.6), T(W * 0.5, -1.2), T(W, 0.2), T(W + 0.9, H * 0.5), T(W, H), T(W * 0.5, H - 1.4), T(0, H)];
     const d = `M${P(...c[0])}Q${P(...c[1])} ${P(...c[2])}Q${P(...c[3])} ${P(...c[4])}Q${P(...c[5])} ${P(...c[6])}Z`;
     const l = [0.3, 0.55].map(v => { const s0 = T(W * 0.3, H * v), s1 = T(W * 0.82, H * v - 0.6); return `M${P(...s0)}L${P(...s1)}`; }).join('');
     return [path(d, 'ra-bks'), path(l, 'ra-bkl')]; };
@@ -430,7 +430,7 @@ function archTitle(t) {
 /** 초승달 — 바깥 반원과 안쪽 반타원 사이(두 호가 겹쳐 사라지지 않게) */
 const crescent = (x, y, r) => path(`M${P(x, y - r)}A${f1(r)} ${f1(r)} 0 1 0 ${P(x, y + r)}A${f1(r * 0.6)} ${f1(r)} 0 0 1 ${P(x, y - r)}Z`, 'ra-moon');
 /* 잎 칸 — 버들잎 꼴(t = 밑동 0 → 끝 1): 밑동은 둥글고 · 가운데 넓은 곳이 길며(t 0.11 ~ 0.6) · 끝은 위로 살짝 들려 뾰족 */
-const LH = 31, LIFT = 12, TT = 0.62;
+const LH = 30, LIFT = 12, TT = 0.62;
 const lhw = (t, tb = 0.2) => { const b = t < tb ? Math.pow(Math.sin(t / tb * PI / 2), 0.72) : 1, u = t > TT ? (t - TT) / (1 - TT) : 0;
   return LH * b * Math.pow(Math.max(0, 1 - Math.pow(u, 1.6)), 0.8) * (1 + 0.04 * Math.sin(PI * Math.min(1, t / 0.72))); };
 const lmid = t => (t < 0.45 ? 0 : -LIFT * Math.pow((t - 0.45) / 0.55, 2));
@@ -452,13 +452,12 @@ function leafTag(bx, yc, L, side, tone, tc, wt, tb = 0.2) {
   const k = [];
   const sh = B.slice(5, N - 4).map(([x, y]) => [x, y - 0.9]), sh2 = sh.map(([x, y], j, a) => [x, y - 3.6 * Math.sin(PI * j / (a.length - 1))]);
   k.push(path('M' + [...sh, ...sh2.reverse()].map(([x, y]) => P(x, y)).join('L') + 'Z', 'ra-lsh ra-ls-' + tone));
-  const t0 = tc - (wt / 2 + 8) / L, t1 = tc + (wt / 2 + 9) / L, j0 = Math.floor(Math.min(0.07, t0 - 0.02) * N), j1 = Math.min(N - 6, Math.ceil(t1 * N));
-  if (j0 >= 3) k.push(path(taper(M.slice(0, j0 + 1), 2.2, 0.3), 'ra-lvein'));
-  k.push(path(taper(M.slice(j1, N), 0.5, 0.3, 2.2), 'ra-lvein'));
+  const t1 = tc + (wt / 2 + 9) / L, j1 = Math.min(N - 8, Math.ceil(t1 * N));
+  k.push(path(taper(M.slice(j1, N - 1), 0.45, 0.3, 1.25), 'ra-lvein'));
   // 곁맥 — 잎 끝 쪽에만(글 끝 + 9 부터)
   let vd = '';
   const vein = t => { const j = Math.round(t * N), [x, m] = M[j], h = lhw(t, tb); return [-1, 1].map(v => taper([[x, m], [x + side * h * 0.32, m + v * h * 0.36], [x + side * h * 0.66, m + v * h * 0.6]], 1, 0.2)).join(''); };
-  for (let t = j1 / N + 5 / L; t < 0.9; t += 11 / L) vd += vein(t);
+  for (let t = j1 / N + 4 / L; t < 0.9; t += 9 / L) vd += vein(t);
   if (vd) k.push(path(vd, 'ra-lvs'));
   k.push(path(taper(T, 1.1, 0.45, 0.7) + taper(B, 1.5, 0.5, 1.5) + taper([M[N], ...tip], 1.3, 0.3), 'ra-lo'));
   return g({class: 'ra-leafg', 'data-mucha': 'vine'}, path(body, 'ra-leaf ra-lf-' + tone), k);

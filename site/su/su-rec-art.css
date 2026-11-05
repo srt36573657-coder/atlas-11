@@ -143,3 +143,4 @@ svg.su-rec-art .rx-moon { fill: #E9C35E; stroke: #8E6A24; stroke-width: .7; stro
 /* 회랑 기둥에 감긴 가는 덩굴(옆 덩굴손 없음) */
 .ra-cvs { fill: #6E8F3E; }
 .ra-cvl { fill: #8DAE5C; stroke: #4A6626; stroke-width: .5; }
+.ra-lv.ra-lv2 { font-size: 20px; } /* 이름이 두 줄인 칸(옛 기록 더 보기)의 값 — 두 줄 이름 아래 자리에 맞춤 */
