@@ -121,20 +121,3 @@
 .su-more-art .ma-nkt { fill: var(--gold); }
 .su-more-art .ma-gst { fill: var(--gold); }
 .su-more-art .ma-pink2 { fill: var(--base); fill-opacity: .8; }
-
-/* 일곱째 판 — 휜 리본 글씨(리본은 늘 크림이라 글씨도 늘 짙은 밤색) · 목걸이 끝 꼬리표 · 금고리 · 진주 줄 · 아래 작은 아치 칸 셋과 봉오리 */
-.su-more-art .ma-rbt { fill: #3B2A1B; font-weight: 800; }
-.su-more-art .ma-tag { fill: var(--halo); stroke: var(--gold); stroke-width: 1.3; }
-.su-more-art .ma-tag2 { fill: none; stroke: var(--gold); stroke-width: .5; stroke-opacity: .85; }
-.su-more-art .ma-ontag { stroke: var(--halo); }
-.su-more-art .ma-thread { fill: var(--gold); }
-.su-more-art .ma-tring { fill: var(--halo); stroke: var(--gold); stroke-width: 1.2; }
-.su-more-art .ma-ring { fill: none; stroke: var(--gold); stroke-width: 1.8; }
-.su-more-art .ma-ring2 { fill: var(--gold); }
-.su-more-art .ma-np { fill: #F7EEDC; stroke: #A9802F; stroke-width: .9; }
-.su-more-art .ma-cell { fill: var(--soft); stroke: var(--gold); stroke-width: 1.4; }
-.su-more-art .ma-cell2 { fill: none; stroke: var(--gold); stroke-width: .6; stroke-opacity: .8; }
-.su-more-art .ma-onc { stroke: var(--soft); }
-.su-more-art .ma-budst { fill: none; stroke: #7C8B4E; stroke-width: 1.4; stroke-linecap: round; }
-.su-more-art .ma-budo { fill: var(--apri); stroke: var(--gold); stroke-width: .9; }
-.su-more-art .ma-budc { fill: #CFE0B4; stroke: #7E9258; stroke-width: .9; }
