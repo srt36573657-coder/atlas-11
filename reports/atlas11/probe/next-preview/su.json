@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-05T06:53:05.861Z",
+ "at": "2026-11-05T08:26:24.728Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 650,
@@ -34,7 +34,7 @@
   "path": [
    {
     "h1": "지금 볼 21곳",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 73,
     "outside": 15,
     "two": 2,
@@ -56,11 +56,11 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "땅 지도",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 73,
     "outside": 13,
     "two": 2,
@@ -75,7 +75,7 @@
      "arch",
      "lettering"
     ],
-    "anim": 119,
+    "anim": 122,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -85,23 +85,23 @@
    },
    {
     "h1": "지주 · 유통 · 운송 땅",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 73,
     "outside": 13,
     "two": 2,
-    "labels": 29,
+    "labels": 23,
     "mucha": [
      "pastel",
+     "halo",
      "stars",
      "whiplash",
      "mosaic",
      "vine",
      "outline",
      "arch",
-     "lettering",
-     "halo"
+     "lettering"
     ],
-    "anim": 134,
+    "anim": 138,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -111,7 +111,7 @@
    },
    {
     "h1": "한진칼",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 147,
     "outside": 12,
     "two": 2,
@@ -127,7 +127,7 @@
      "whiplash",
      "lettering"
     ],
-    "anim": 26,
+    "anim": 29,
     "need": 0,
     "means": 7,
     "hard": 0,
@@ -137,7 +137,7 @@
    },
    {
     "h1": "한진칼 출목표",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 147,
     "outside": 13,
     "two": 2,
@@ -153,7 +153,7 @@
      "whiplash",
      "halo"
     ],
-    "anim": 24,
+    "anim": 27,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -163,7 +163,7 @@
    },
    {
     "h1": "왜 사?",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 147,
     "outside": 15,
     "two": 2,
@@ -175,11 +175,11 @@
      "halo",
      "whiplash",
      "outline",
-     "vine",
+     "panel",
      "lettering",
      "arch"
     ],
-    "anim": 22,
+    "anim": 23,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -189,7 +189,7 @@
    },
    {
     "h1": "내 매매일지",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 147,
     "outside": 13,
     "two": 2,
@@ -216,7 +216,7 @@
    },
    {
     "h1": "친구에게",
-    "heroShare": 72.6,
+    "heroShare": 72.5,
     "share": 73,
     "outside": 13,
     "two": 2,
@@ -239,7 +239,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 1,
-    "orn": 7
+    "orn": 5
    }
   ],
   "hard": 0,
@@ -262,9 +262,9 @@
    }
   },
   "speed": {
-   "lcp": 2284,
+   "lcp": 2304,
    "cls": 0.023,
-   "pic": 2534
+   "pic": 2549
   }
  },
  "ok": true
