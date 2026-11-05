@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-05T02:18:43.561Z",
+ "at": "2026-11-05T06:02:36.249Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 626,
+  "pass": 650,
   "fail": 0
  },
  "fails": [],
@@ -21,8 +21,8 @@
    ]
   },
   "home": {
-   "screens": 4.86,
-   "links": 37
+   "screens": 1.59,
+   "links": 32
   },
   "t21": {
    "listed": 2557,
@@ -34,10 +34,23 @@
   "path": [
    {
     "h1": "지금 볼 21곳",
-    "share": 61,
-    "shareIn": 88,
-    "figs": 3,
-    "moving": 2,
+    "heroShare": 72.6,
+    "share": 73,
+    "outside": 15,
+    "two": 2,
+    "labels": 46,
+    "mucha": [
+     "pastel",
+     "stars",
+     "halo",
+     "outline",
+     "whiplash",
+     "vine",
+     "arch",
+     "panel",
+     "lettering"
+    ],
+    "anim": 19,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -47,10 +60,22 @@
    },
    {
     "h1": "땅 지도",
-    "share": 52,
-    "shareIn": 69,
-    "figs": 3,
-    "moving": 2,
+    "heroShare": 72.6,
+    "share": 73,
+    "outside": 13,
+    "two": 2,
+    "labels": 39,
+    "mucha": [
+     "pastel",
+     "halo",
+     "whiplash",
+     "mosaic",
+     "vine",
+     "outline",
+     "arch",
+     "lettering"
+    ],
+    "anim": 119,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -60,10 +85,23 @@
    },
    {
     "h1": "지주 · 유통 · 운송 땅",
-    "share": 53,
-    "shareIn": 70,
-    "figs": 3,
-    "moving": 2,
+    "heroShare": 72.6,
+    "share": 73,
+    "outside": 13,
+    "two": 2,
+    "labels": 29,
+    "mucha": [
+     "pastel",
+     "stars",
+     "whiplash",
+     "mosaic",
+     "vine",
+     "outline",
+     "arch",
+     "lettering",
+     "halo"
+    ],
+    "anim": 134,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -73,10 +111,23 @@
    },
    {
     "h1": "한진칼",
-    "share": 54,
-    "shareIn": 72,
-    "figs": 5,
-    "moving": 4,
+    "heroShare": 72.6,
+    "share": 147,
+    "outside": 12,
+    "two": 2,
+    "labels": 19,
+    "mucha": [
+     "pastel",
+     "outline",
+     "mosaic",
+     "panel",
+     "stars",
+     "vine",
+     "halo",
+     "whiplash",
+     "lettering"
+    ],
+    "anim": 26,
     "need": 0,
     "means": 7,
     "hard": 0,
@@ -86,10 +137,23 @@
    },
    {
     "h1": "한진칼 출목표",
-    "share": 53,
-    "shareIn": 70,
-    "figs": 4,
-    "moving": 3,
+    "heroShare": 72.6,
+    "share": 147,
+    "outside": 13,
+    "two": 2,
+    "labels": 18,
+    "mucha": [
+     "pastel",
+     "outline",
+     "mosaic",
+     "panel",
+     "stars",
+     "vine",
+     "lettering",
+     "whiplash",
+     "halo"
+    ],
+    "anim": 24,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -99,10 +163,23 @@
    },
    {
     "h1": "왜 사?",
-    "share": 57,
-    "shareIn": 75,
-    "figs": 3,
-    "moving": 2,
+    "heroShare": 72.6,
+    "share": 147,
+    "outside": 15,
+    "two": 2,
+    "labels": 34,
+    "mucha": [
+     "pastel",
+     "mosaic",
+     "stars",
+     "halo",
+     "whiplash",
+     "outline",
+     "vine",
+     "lettering",
+     "arch"
+    ],
+    "anim": 23,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -112,10 +189,24 @@
    },
    {
     "h1": "내 매매일지",
-    "share": 54,
-    "shareIn": 72,
-    "figs": 5,
-    "moving": 4,
+    "heroShare": 72.6,
+    "share": 147,
+    "outside": 13,
+    "two": 2,
+    "labels": 8,
+    "mucha": [
+     "stars",
+     "halo",
+     "mosaic",
+     "vine",
+     "whiplash",
+     "outline",
+     "flower",
+     "lettering",
+     "panel",
+     "arch"
+    ],
+    "anim": 27,
     "need": 0,
     "means": 3,
     "hard": 0,
@@ -125,10 +216,24 @@
    },
    {
     "h1": "친구에게",
-    "share": 54,
-    "shareIn": 72,
-    "figs": 3,
-    "moving": 2,
+    "heroShare": 72.6,
+    "share": 73,
+    "outside": 13,
+    "two": 2,
+    "labels": 10,
+    "mucha": [
+     "pastel",
+     "arch",
+     "mosaic",
+     "panel",
+     "stars",
+     "halo",
+     "vine",
+     "whiplash",
+     "outline",
+     "lettering"
+    ],
+    "anim": 20,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -142,23 +247,24 @@
   "drawers": {
    "#/r/d": {
     "h1": "날마다 지난 기록",
-    "share": 57,
-    "moving": 4
+    "share": 73,
+    "moving": 1
    },
    "#/r/y": {
     "h1": "해마다 지난 기록",
-    "share": 54,
-    "moving": 3
+    "share": 73,
+    "moving": 1
    },
    "#/r/n": {
     "h1": "가까운 회사의 지난 기록",
-    "share": 57,
-    "moving": 3
+    "share": 73,
+    "moving": 1
    }
   },
   "speed": {
-   "lcp": 1936,
-   "cls": 0.023
+   "lcp": 2216,
+   "cls": 0.023,
+   "pic": 2358
   }
  },
  "ok": true
