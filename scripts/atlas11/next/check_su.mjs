@@ -32,9 +32,14 @@ const LINK_OK = /^(#\/|#\/[bkrpqjmf]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
 const B = await J('/next/data/theme-bloom.json'), TH = await J('/next/data/theme.json'), SUM = await J('/next/data/home-summary.json').catch(() => null);
 const ESS = essenceLines(essenceData({summary: SUM}));
-const picks = (B?.today?.inds ?? []).flatMap(i => (i?.co ?? []).filter(r => /^[0-9A-Z]{6}$/.test(r?.[0] ?? '')).map(r => ({code: r[0], name: r[1]})));
-const near = picks.length ? [] : (B?.near?.today ?? []).filter(r => /^[0-9A-Z]{6}$/.test(r?.[0] ?? '')).map(r => ({code: r[0], name: r[1]}));
-const money = (TH?.inds ?? []).filter(i => typeof i?.x === 'number' && i.x > 0 && /^[0-9A-Z]{6}$/.test(i?.lead?.[0] ?? '') && typeof i.lead[1] === 'string').sort((a, b) => b.x - a.x).slice(0, 3).map(i => ({code: i.lead[0], name: i.lead[1], ind: i.n}));
+const picks0 = (B?.today?.inds ?? []).flatMap(i => (i?.co ?? []).filter(r => /^[0-9A-Z]{6}$/.test(r?.[0] ?? '')).map(r => ({code: r[0], name: r[1]})));
+const near0 = picks0.length ? [] : (B?.near?.today ?? []).filter(r => /^[0-9A-Z]{6}$/.test(r?.[0] ?? '')).map(r => ({code: r[0], name: r[1]}));
+const money0 = (TH?.inds ?? []).filter(i => typeof i?.x === 'number' && i.x > 0 && /^[0-9A-Z]{6}$/.test(i?.lead?.[0] ?? '') && typeof i.lead[1] === 'string').sort((a, b) => b.x - a.x).slice(0, 3).map(i => ({code: i.lead[0], name: i.lead[1], ind: i.n}));
+// 누르면 열리는 회사만(su.js base 와 같은 셈) — 회사 자료가 가벼운 판뿐(c 없음)이면 누르면 「찾지 못했어요」라 화면 목록에서 뺌(2026-11-05 실리콘투 · 41949468910)
+const opensCo = async c => { try { const co = await J('/atlas/data/co/' + c.code + '.json'); return !!co?.c && typeof co.c.name === 'string'; } catch { return false; } };
+const keepOpen = async xs => { const ok = await Promise.all(xs.map(opensCo)); return xs.filter((x, i) => ok[i]); };
+const [picks, near, money] = await Promise.all([keepOpen(picks0), keepOpen(near0), keepOpen(money0)]);
+R.m.dropped = [...picks0, ...near0, ...money0].filter(x => ![...picks, ...near, ...money].some(y => y.code === x.code)).map(x => x.name); // 뺀 회사(결과에 남김)
 R.m.data = {picks: picks.length, near: near.length, money: money.map(x => x.name)};
 
 const browser = await chromium.launch(process.env.PW_EXE ? {executablePath: process.env.PW_EXE} : {});
@@ -123,7 +128,7 @@ for (const width of [390, 360, 320]) {
     if (picks.some(x => x.name === r.name)) check(kind.includes('꽃이 될 회사예요'), W + '왜 여기 있나 — 고른 회사 ' + r.name, '');
     if (money.some(x => x.name === r.name)) check(kind.includes('돈이 몰린 회사예요'), W + '왜 여기 있나 — 돈이 몰린 회사 ' + r.name, '');
     if (width === 390) { // 그림 글 = 회사 자료(co.line 마지막 · 기준 100)
-      const code = r.href.slice(4), co = await J('/atlas/data/co/' + code + '.json'), last = co.line[co.line.length - 1] / 100 - 100;
+      const code = r.href.slice(4), co = await J('/atlas/data/co/' + code + '.json').catch(() => null), last = co?.line?.length ? co.line[co.line.length - 1] / 100 - 100 : NaN; // 자료가 없으면 멈추지 않고 아래 맞댐이 실패로 적음
       const wantPct = (Math.abs(last).toFixed(1) === '0.0' ? '0.0' : (last > 0 ? '+' : '−') + Math.abs(last).toFixed(1)) + '%';
       const got = await p.evaluate(() => document.querySelector('.su-lg-c b')?.textContent ?? '');
       check(got === wantPct, W + '그림 한 달 % = 회사 자료 — ' + r.name, `${got} / ${wantPct}`);
@@ -209,7 +214,7 @@ for (const width of [390, 360, 320]) {
       check(m.moving >= 2, W + '⑨ 움직이는 그림 둘 넘게 — ' + m.h1, String(m.moving));
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? t.v === '확인 필요' : t.v && t.v !== '확인 필요')), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
-      check(m.tabs.length === 4 && m.tabs.map(t => t.t).join(' ') === '21곳 지도 기록 멈춤' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 넷 기승전결 차례 · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
+      check(m.tabs.length === 4 && m.tabs.map(t => t.t).join(' ') === '21곳 지도 멈춤 기록' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 넷 중요한 차례(주문 1023 [4]) · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
       check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
       check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);

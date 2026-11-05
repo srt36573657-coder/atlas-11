@@ -33,7 +33,11 @@ export const get = url => { if (!cache.has(url)) cache.set(url, fetch(url).then(
 export const D = {B: '/next/data/theme-bloom.json', TH: '/next/data/theme.json', W: '/next/data/flow-why.json', S: '/next/data/home-summary.json', H: '/atlas/data/home.json', M: '/atlas/data/mkt.json', co: c => '/atlas/data/co/' + c + '.json'};
 export async function base() {
   const [B, TH, W, S] = await Promise.all([get(D.B), get(D.TH), get(D.W), get(D.S)]);
-  const bl = bloomList(B), mo = moneyList(TH, W).map(r => ({...r, why: r.why ? {...r.why, line: easy(r.why.line)} : r.why}));
+  const bl0 = bloomList(B), mo0 = moneyList(TH, W).map(r => ({...r, why: r.why ? {...r.why, line: easy(r.why.line)} : r.why}));
+  // 누르면 열리는 회사만 — 회사 자료가 가벼운 판뿐(c 없음)인 곳은 누르면 「찾지 못했어요」라 목록에서 뺌(2026-11-05 자료: 가까운 회사 실리콘투 · 검사 41949468910)
+  const opens = async r => { const co = await get(D.co(r.code)); return !!co?.c && typeof co.c.name === 'string'; };
+  const [okB, okM] = await Promise.all([Promise.all(bl0.rows.map(opens)), Promise.all(mo0.map(opens))]);
+  const bl = {...bl0, rows: bl0.rows.filter((r, i) => okB[i])}, mo = mo0.filter((r, i) => okM[i]);
   return {B, TH, W, S, bl: {...bl, say: bl.say.map(easy), miss: easy(bl.miss)}, mo, asOf: B?.asOf ?? TH?.asOf ?? null};
 }
 export const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
@@ -104,9 +108,14 @@ function dock(nx, step) {
     step ? h('ol', {class: 'su-prog', 'aria-label': '여덟 화면 가운데 ' + step + '번째'}, STEPS.slice(1).map((x, i) => h('li', {class: i + 1 < step ? 'su-pd' : i + 1 === step ? 'su-pc' : ''}))) : null,
     h('div', {class: 'su-dk'}, sayBtn(), h('a', {class: 'su-next', href: nx.href}, h('img', {class: 'su-parrot', src: '/media/makbi-icon.svg', alt: '', 'aria-hidden': 'true', width: '34', height: '34'}), h('span', {class: 'su-nk', text: nx.k ?? (nx.step ? nx.step + ' / 8' : '다음')}), h('b', {text: nx.label}), h('i', {'aria-hidden': 'true', text: '›'}))));
 }
+/** 탭이 보이는 차례 — 중요한 차례(주문 1023 [4] · 에이전트 열하나가 따로 매긴 차례를 보르다로 셈 44 · 32 · 20 · 13 · 반대편 셋이 못 깸 · tabs-11.md): 21곳 · 지도 · 멈춤 · 기록
+ *  쪽마다 tab 값은 그대로(0 21곳 · 1 지도 · 2 기록 · 3 멈춤 = TABS 차례) — 보이는 차례만 바꿈 · 「탭 차례는 기승전결보다 중요순이 앞선다」([4] 6) */
+export const TAB_ORDER = Object.freeze([0, 1, 3, 2]);
 function tabs(active) {
-  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 기 21곳 · 승 지도 · 전 기록 · 결 멈춤'}, TABS().map(([t, href, d], i) => h('a', {class: 'su-tab' + (i === active ? ' su-on' : ''), href, 'aria-current': i === active ? 'page' : null, 'aria-label': PHASE[i] + ' · ' + t},
-    s('svg', {class: 'su-ti', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d})), h('span', {text: t}))));
+  const T = TABS();
+  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 중요한 차례 21곳 · 지도 · 멈춤 · 기록'}, TAB_ORDER.map((i, k) => { const [t, href, d] = T[i];
+    return h('a', {class: 'su-tab' + (i === active ? ' su-on' : ''), href, 'aria-current': i === active ? 'page' : null, 'aria-label': (k + 1) + '번째 · ' + t},
+      s('svg', {class: 'su-ti', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d})), h('span', {text: t})); }));
 }
 /** 쪽 하나 */
 export function page(m) {

@@ -238,10 +238,17 @@ jobs:
           end=$(( $(date +%s) + 3600 ))
           base=https://aaa7377.com; mode=live
           if [ "$LOCAL" = 1 ]; then base=http://127.0.0.1:8826; mode=local; fi
-          for n in $PAGES; do # 쪽 하나씩(묶음은 차례로 · 몫 작업은 몫 하나) · 쪽마다 결과 셋(json · exit.json · tail.txt — 이름은 몫 이름 그대로 · 예 co2)
+          # 한 작업 안에서 검사 J 개를 함께 — 사장님 2026-11-05 04:42(+03) 「속도를 지금 보다 5배 빠르게 하는 방법 찾아서 작업을 하라」(주문 1023 [0])
+          #   실행기는 4코어인데 검사가 하나씩 돌아 한 코어만 쓰던 것 · local 은 셋(plan.mjs PAR_IN 과 같게) · live 는 하나 그대로(실제 사이트를 한꺼번에 두드리지 않게)
+          #   SOLO = 느린 휴대폰 흉내로 시간을 재는 검사(su · white) — 함께 돌면 잰 시간이 늘어 틀리게 걸림 → 다른 검사가 돌기 전에 혼자 먼저(plan.mjs SOLO 와 같게)
+          J=1; if [ "$LOCAL" = 1 ]; then J=3; fi
+          SOLO=" su white "
+          run1() { # 검사 하나 — 「쪽」 또는 「몫 이름@쪽@k/n」 · 결과 셋(json · exit.json · tail.txt — 이름은 몫 이름 그대로 · 예 co2)
+            local tok=$1 n pg sh t0 f extra left code
             t0=$(date +%s)
-            pg=$n; sh=""
-            if [ -n "$PIECE" ]; then pg=$PIECE_OF; sh="--shard $PIECE"; fi # 몫 하나 — 일감을 가르는 셈은 검사 안(shard/part.mjs · 영어는 next_en_check)
+            n=${tok%%@*}; pg=$n; sh=""
+            if [ "$tok" != "$n" ]; then pg=$(cut -d@ -f2 <<< "$tok"); sh="--shard $(cut -d@ -f3 <<< "$tok")" # 몫 하나(몫 이름@쪽@k/n) — 일감을 가르는 셈은 검사 안(shard/part.mjs · 영어는 next_en_check)
+            elif [ -n "$PIECE" ]; then pg=$PIECE_OF; sh="--shard $PIECE"; fi # 옛 꼴(작업 하나 = 몫 하나)
             case "$pg" in
               next) f=next_check.mjs; extra="" ;;
               en) f=next_en_check.mjs; extra="--modules --dev 0 --all $sh" ;;
@@ -263,7 +270,14 @@ jobs:
             echo "{\"name\":\"$n\",\"code\":$code,\"seconds\":$(( $(date +%s) - t0 )),\"mode\":\"$mode\",\"sha\":\"$GITHUB_SHA\"${BUILD_S:+,\"build\":$BUILD_S}${DATA:+,\"data\":\"$DATA\"}}" > "out/$n.exit.json"
             tail -c 4000 "out/$n.log" > "out/$n.tail.txt"; rm -f "out/$n.log"
             echo "끝 코드 $code · $(cat "out/$n.exit.json")"
+          }
+          for tok in $PAGES; do case "$SOLO" in *" ${tok%%@*} "*) run1 "$tok" ;; esac; done
+          for tok in $PAGES; do
+            case "$SOLO" in *" ${tok%%@*} "*) continue ;; esac
+            while [ "$(jobs -rp | wc -l)" -ge "$J" ]; do wait -n || true; done
+            run1 "$tok" &
           done
+          wait || true
           snap1=$(cat oldsnap/*.json 2>/dev/null | sha256sum | cut -c1-16)
           if [ -n "$(ls oldsnap 2>/dev/null)" ] && [ "$snap0" != "$snap1" ]; then echo "SNAP_NEW=1" >> "$GITHUB_ENV"; echo "옛 쪽 기준값을 새로 찍음 — 저장"; fi
       - uses: actions/cache/save@v4

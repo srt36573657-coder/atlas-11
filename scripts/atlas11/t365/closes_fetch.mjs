@@ -43,7 +43,8 @@ async function worker() {
     if (!fixture) await new Promise(r => setTimeout(r, 120)); // 네이버에 예의 — 곳마다 쉼
   }
 }
-await Promise.all([worker(), worker(), worker(), worker()]);
+const PAR = Math.max(1, Math.min(12, Math.floor(+process.env.ATLAS_FETCH_PAR) || 4)); // 함께 받는 갈래 수 — 기본 넷(예약 올리기 그대로) · 손으로 올리기(atlas11-site.yml)는 여덟(주문 1023 [0] · 2026-11-05)
+await Promise.all(Array.from({length: PAR}, worker));
 const ok = Object.keys(rows).length;
 const res = {schema: 'atlas-t365-closes-2', startedAt, finishedAt: new Date().toISOString(), source: 'https://fchart.stock.naver.com/sise.nhn?symbol=<번호>&timeframe=day&count=' + count + '&requestType=0',
   count, set, codes: codes.length, ok, failed: codes.length - ok, rows: Object.fromEntries(codes.filter(c => rows[c]).map(c => [c, rows[c]])), errors};
