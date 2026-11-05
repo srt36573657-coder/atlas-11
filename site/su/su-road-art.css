@@ -106,12 +106,15 @@
 @media (prefers-reduced-motion: reduce) {
   .su-road-art .ra-sway, .su-road-art .ra-sway2, .su-road-art .ra-in, .su-road-art .ra-gfl, .su-road-art .ra-fband { animation: none; transform: none; }
 }
-/* 셋의 길 메달 — 오른 어깨에 걸친 크림 겉옷(고정 색) */
-.w-mantlec { fill: #F6ECD6; }
-.w-mfoldc { fill: #C9B286; }
-.w-mgold { fill: #D3AE5A; }
-.w-brooch { fill: #E3C77A; stroke: #A9802E; stroke-width: .8; }
-.w-brooch2 { fill: #4F8A6A; }
+/* 셋의 길 여덟째 판(r8-brief.md 「A12」) — 08 친구에게는 쓰지 않는 새 이름만(고정 색 · 어두운 판에서도 같은 색)
+   펼친 책(겉장 · 장 · 글줄 · 낱장 · 금 테 · 서표 끈) · 밑동 봉오리 */
+.ra-roads .ra-bkc { fill: #9A5545; stroke: #6A3527; stroke-width: .8; stroke-linejoin: round; }
+.ra-roads .ra-bkp { fill: #FFFBF0; stroke: #B58A33; stroke-width: .8; stroke-linejoin: round; }
+.ra-roads .ra-bks { fill: #FBF2DE; stroke: #B58A33; stroke-width: .7; stroke-linejoin: round; }
+.ra-roads .ra-bkl { fill: none; stroke: #B49A6C; stroke-width: .7; stroke-linecap: round; }
+.ra-roads .ra-bkg { fill: #C9A24A; }
+.ra-roads .ra-bkm { fill: #C4574B; }
+.ra-roads .ra-bud { fill: #F4B391; stroke: #B58A33; stroke-width: .8; stroke-linejoin: round; }
 /* 셋의 길 일곱째 판(r7-brief.md 「F」) — 아치 제목 띠 · 세로 판(폭 42 · 백합 기둥머리 · 꽃 원판과 모자이크 층층이) · 버들잎 칸(굵기 변하는 테 · 금 잎맥 · 덩굴손 끝)
    띠 · 원판 · 잎은 고정 파스텔(어두운 판에서도 같은 색) · 금선과 판 바탕은 판 색을 따름 */
 .ra-tband { fill: #F4E4B6; }

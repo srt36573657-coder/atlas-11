@@ -180,6 +180,18 @@
   .su-stop-art, .su-stop-art * { animation: none !important; }
 }
 
+/* 여덟째 판(A06) — 왜 사? 물음 칸: 반쯤 비치는 밤빛(별하늘이 비침) · 둥근 아치 머리 · 이중 금선 · 정수리 번호 메달 양옆 금 잎 · 별가루(어두운 판에서도 같은 색) */
+.ss-q8 { fill: #0D1B30; fill-opacity: .64; }
+.ss-q8-l { fill: none; stroke: #D3A64B; stroke-width: 1.5; }
+.ss-q8-l2 { fill: none; stroke: #EDD597; stroke-width: .7; }
+.ss-lab-on .ss-q8 { fill-opacity: .66; }
+.ss-lab-on .ss-q8-l2 { stroke: #F2CD7C; stroke-width: 1; }
+.ss-lab-cur .ss-q8 { fill: #1E2340; fill-opacity: .72; }
+.ss-lab-cur .ss-q8-l { stroke: #EFA77E; stroke-width: 2.2; }
+.ss-q8-glow { fill: #F6D9A8; fill-opacity: .9; }
+.ss-q8-wing .ss-leaf { fill: #D3A64B; stroke: #8C6A26; stroke-width: .6; }
+.ss-dust { fill: #F6E7B8; fill-opacity: .8; }
+
 /* 일곱째 판 — 매매일지 후광 안 옅은 레이스(비스듬한 꽃 격자 · 가장자리 물결 고리) */
 .ss-lace-l { fill: none; stroke: #B79A62; stroke-width: .6; }
 .ss-lace-f { fill: #E8C9A6; }

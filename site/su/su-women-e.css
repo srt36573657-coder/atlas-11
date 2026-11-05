@@ -9,9 +9,9 @@
 .su-women-e .we-band { fill: #F3E2B4; }
 .su-women-e .we-win { fill: var(--soft); }
 .su-women-e .we-rings { fill: none; stroke: var(--gold); stroke-width: .8; stroke-opacity: .28; }
-.su-women-e .we-n0 { fill: #EDBF9C; }
-.su-women-e .we-n1 { fill: #CCDAAF; }
-.su-women-e .we-n2 { fill: #EBD394; }
+.su-women-e .we-n0 { fill: #CFDCB2; }
+.su-women-e .we-n1 { fill: #F0DBA6; }
+.su-women-e .we-n2 { fill: #C9D6DC; }
 .su-women-e .we-nline { fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-linejoin: round; }
 .su-women-e .we-arch { fill: none; stroke: var(--gold); stroke-width: 2.2; stroke-linejoin: round; }
 .su-women-e .we-arch2 { fill: none; stroke: var(--gold); stroke-width: .8; }
@@ -49,6 +49,12 @@
 .su-women-e .we-tag:focus { outline: none; }
 .su-women-e .we-tag:focus-visible .we-hit { stroke: var(--ink); stroke-width: 2.5; }
 
+/* 옷 색 — 꽃이 될 = 연두 · 돈이 몰리는 = 황금빛 황토(부품 옷 색을 이 그림 안에서만 바꿈 · 어두운 판에서도 그대로) */
+.su-women-e .we-bloom .mk-cl-sage { fill: #D3E59F; }
+.su-women-e .we-bloom .mk-cld-sage { fill: #86A24E; }
+.su-women-e .we-money .mk-cl-cream { fill: #DDAE66; }
+.su-women-e .we-money .mk-cld-cream { fill: #946626; }
+
 /* 몸의 부피 — 옷 그늘(부품 옷 그늘 색을 옅게) · 빛 */
 .su-women-e .we-sh { fill-opacity: .42; }
 .su-women-e .we-hl { fill: #FFFBF0; fill-opacity: .5; }
@@ -68,17 +74,17 @@
 /* 어두운 판 — 띠 · 벽감은 같은 빛의 짙은 톤 · 띠 글씨는 금빛 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .su-women-e .we-band { fill: #3A2F1C; }
-  :root:not([data-theme="light"]) .su-women-e .we-n0 { fill: #5E3D2B; }
-  :root:not([data-theme="light"]) .su-women-e .we-n1 { fill: #3A4729; }
-  :root:not([data-theme="light"]) .su-women-e .we-n2 { fill: #574628; }
+  :root:not([data-theme="light"]) .su-women-e .we-n0 { fill: #34432B; }
+  :root:not([data-theme="light"]) .su-women-e .we-n1 { fill: #5A4628; }
+  :root:not([data-theme="light"]) .su-women-e .we-n2 { fill: #2C3E47; }
   :root:not([data-theme="light"]) .su-women-e .we-aw-hot { fill: #F0A07A; }
   :root:not([data-theme="light"]) .su-women-e .we-aw-bloom { fill: #B5CC7A; }
   :root:not([data-theme="light"]) .su-women-e .we-aw-money { fill: #E8C26A; }
 }
 :root[data-theme="dark"] .su-women-e .we-band { fill: #3A2F1C; }
-:root[data-theme="dark"] .su-women-e .we-n0 { fill: #5E3D2B; }
-:root[data-theme="dark"] .su-women-e .we-n1 { fill: #3A4729; }
-:root[data-theme="dark"] .su-women-e .we-n2 { fill: #574628; }
+:root[data-theme="dark"] .su-women-e .we-n0 { fill: #34432B; }
+:root[data-theme="dark"] .su-women-e .we-n1 { fill: #5A4628; }
+:root[data-theme="dark"] .su-women-e .we-n2 { fill: #2C3E47; }
 :root[data-theme="dark"] .su-women-e .we-aw-hot { fill: #F0A07A; }
 :root[data-theme="dark"] .su-women-e .we-aw-bloom { fill: #B5CC7A; }
 :root[data-theme="dark"] .su-women-e .we-aw-money { fill: #E8C26A; }
