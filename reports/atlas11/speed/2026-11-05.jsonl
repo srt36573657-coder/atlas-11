@@ -1,3 +1,6 @@
 {"job":"check_changed","start":"2026-11-05T01:32:06.415Z","end":"2026-11-05T01:33:57.863Z","seconds":111.4,"files":6,"checks":[{"k":"su-tests","ok":true,"sec":0.3},{"k":"check_su","ok":true,"sec":111.1}],"fails":0}
 {"job":"check_changed","start":"2026-11-05T02:12:42.414Z","end":"2026-11-05T02:12:43.107Z","seconds":0.7,"files":23,"checks":[{"k":"su-tests","ok":true,"sec":0.3},{"k":"check_su","ok":false,"sec":0.4}],"fails":1}
 {"job":"check_changed","start":"2026-11-05T02:12:52.117Z","end":"2026-11-05T02:14:43.107Z","seconds":111,"files":23,"checks":[{"k":"su-tests","ok":true,"sec":0.3},{"k":"check_su","ok":true,"sec":110.6}],"fails":0}
+{"job":"check_changed","start":"2026-11-05T08:20:48.374Z","end":"2026-11-05T08:20:49.359Z","seconds":1,"files":18,"checks":[{"k":"su-tests","ok":true,"sec":0.5},{"k":"check_su","ok":false,"sec":0.4}],"fails":1}
+{"job":"check_changed","start":"2026-11-05T08:20:52.961Z","end":"2026-11-05T08:20:54.130Z","seconds":1.2,"files":19,"checks":[{"k":"su-tests","ok":true,"sec":0.7},{"k":"check_su","ok":false,"sec":0.5}],"fails":1}
+{"job":"check_changed","start":"2026-11-05T08:21:00.535Z","end":"2026-11-05T08:23:03.842Z","seconds":123.3,"files":19,"checks":[{"k":"su-tests","ok":true,"sec":0.5},{"k":"check_su","ok":false,"sec":122.8}],"fails":1}
