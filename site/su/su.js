@@ -131,8 +131,7 @@ export function page(m) {
     ...(m.after ?? []),
     lateGod(G => G.godTag(hk)), // 방 지킴이 신(주문 0054 [5] 5)
     source(m.asOf, m.S, m.note ?? null, m.kick ?? null));
-  const man = m.mansour ? h('a', {class: 'su-mansour', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '만수르 바로가기 · 새 창'}, h('b', {text: '만수르'}), h('span', {text: '바로가기 ↗'})) : null; // 만수르는 첫 화면 맨 위에 바로가기(사장님 2026-11-05 04:14(+03) · 주문 1023 [2] 1 — 누르면 새 창)
-  return [man, head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
+  return [head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
 }
 /** 그린 뒤 — 낱말 풀이를 붙이고 풀이 없이 남은 어려운 낱말을 셈(main data-hard · data-hard-words · data-glossed) */
 export function afterPaint(root) {
