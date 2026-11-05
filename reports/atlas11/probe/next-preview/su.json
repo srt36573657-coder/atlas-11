@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-05T08:26:24.728Z",
+ "at": "2026-11-05T09:11:43.804Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 650,
@@ -38,7 +38,7 @@
     "share": 73,
     "outside": 15,
     "two": 2,
-    "labels": 46,
+    "labels": 49,
     "mucha": [
      "pastel",
      "stars",
@@ -159,7 +159,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "왜 사?",
@@ -167,7 +167,7 @@
     "share": 147,
     "outside": 15,
     "two": 2,
-    "labels": 32,
+    "labels": 28,
     "mucha": [
      "pastel",
      "mosaic",
@@ -179,7 +179,7 @@
      "lettering",
      "arch"
     ],
-    "anim": 23,
+    "anim": 17,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -239,7 +239,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 1,
-    "orn": 5
+    "orn": 7
    }
   ],
   "hard": 0,
@@ -262,9 +262,9 @@
    }
   },
   "speed": {
-   "lcp": 2304,
+   "lcp": 2176,
    "cls": 0.023,
-   "pic": 2549
+   "pic": 2407
   }
  },
  "ok": true
