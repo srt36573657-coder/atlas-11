@@ -1,8 +1,8 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-04T20:10:35.064Z",
+ "at": "2026-11-05T06:27:51.945Z",
  "base": "https://aaa7377.com",
- "asOf": "2026-11-04",
+ "asOf": "2026-11-05",
  "companies": 2557,
  "of": 2557,
  "all": true,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 589,
+ "seconds": 768,
  "time": {
-  "old": 34.3,
-  "new": 474.1,
-  "wall": 589.5,
-  "opensOld": 11,
+  "old": 481.6,
+  "new": 378.3,
+  "wall": 768,
+  "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 5.8,
-  "oldShare": 6.7
+  "oldPct": 62.7,
+  "oldShare": 56
  },
  "net": {
   "req": 5128,
@@ -56,18 +56,18 @@
   }
  },
  "counts": {
-  "맞댄 글 낱낱": 43387,
-  "맞댄 숫자 낱말": 80068,
+  "맞댄 글 낱낱": 45948,
+  "맞댄 숫자 낱말": 90312,
   "이야기 있는 회사": 61,
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": true,
-   "why": "",
-   "made": "2026-11-04T19:39:37.166Z",
+   "use": false,
+   "why": "바뀐 파일 2562개(/atlas/atlas.js · /atlas/data/core.json · /atlas/data/lines.json)",
+   "made": null,
    "inputs": 2568,
    "reads": 2557,
-   "note": "기준값 다시 씀"
+   "note": "기준값 새로 씀(파일 2568개 · 값 2557개)"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
