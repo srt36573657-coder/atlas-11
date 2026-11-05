@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-05T06:02:36.249Z",
+ "at": "2026-11-05T06:53:05.861Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 650,
@@ -17,7 +17,7 @@
    "money": [
     "한진칼",
     "롯데칠성",
-    "오리온"
+    "CJ ENM"
    ]
   },
   "home": {
@@ -50,13 +50,13 @@
      "panel",
      "lettering"
     ],
-    "anim": 19,
+    "anim": 18,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "땅 지도",
@@ -133,7 +133,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 9,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "한진칼 출목표",
@@ -159,7 +159,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "왜 사?",
@@ -167,7 +167,7 @@
     "share": 147,
     "outside": 15,
     "two": 2,
-    "labels": 34,
+    "labels": 32,
     "mucha": [
      "pastel",
      "mosaic",
@@ -179,7 +179,7 @@
      "lettering",
      "arch"
     ],
-    "anim": 23,
+    "anim": 22,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -262,9 +262,9 @@
    }
   },
   "speed": {
-   "lcp": 2216,
+   "lcp": 2284,
    "cls": 0.023,
-   "pic": 2358
+   "pic": 2534
   }
  },
  "ok": true
