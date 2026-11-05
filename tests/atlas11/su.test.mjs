@@ -147,9 +147,41 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
   assert.ok(!texts.some(t => /셋가지|하나번째|둘가지/.test(t)), '셈 낱말(세 가지 · 첫째)');
 });
 
+/** 주문 1023 「머스크 판 4」 — 일꾼 열하나가 서로 모르게 만든 무하 그림 부품(docs/design/su-musk-2026-11-05/pic-brief.md) */
+const ART4 = ['su-women-e.js', 'su-mucha.js', 'su-land-art.js', 'su-co-art.js', 'su-more-art.js', 'su-stop-art.js', 'su-rec-art.js', 'su-road-art.js'];
+test('무하 그림 부품 — 부품 꼴(load · picture · CSS) · 꾸밈 파일 · 신 72 · 스승 39 무하 얼굴(기계가 그린 그대로 · 글자 · style · 스크립트 0) · 앵무새(주문 1023 [3] 4 · [5] 3)', async () => {
+  for (const f of ART4) {
+    const t = fs.readFileSync(path.join(ROOT, 'site/su', f), 'utf8');
+    assert.ok(/export async function load\(/.test(t) && /export function picture\(/.test(t), f + ' 부품 꼴');
+    const css = /export const CSS = '\/su\/([a-z0-9-]+\.css)'/.exec(t); assert.ok(css && fs.existsSync(path.join(ROOT, 'site/su', css[1])), f + ' 꾸밈 파일');
+    const used = ['su.js', 'su-21.js', 'su-why.js', 'su-roads.js'].some(u => fs.readFileSync(path.join(ROOT, 'site/su', u), 'utf8').includes("'" + f.replace(/\.js$/, '') + "'"));
+    if (used) assert.ok(fs.readFileSync(path.join(ROOT, 'site/su/index.html'), 'utf8').includes('/su/' + css[1]) || /await cssOf\(M\.CSS\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8')), f + ' 쓰는 부품의 꾸밈 파일을 쪽이 받음(첫 화면은 index.html · 나머지는 부품을 쓸 때)');
+    assert.ok(/data-mucha/.test(t), f + ' 무하 요소 이름표');
+  }
+  // 공용 부품(su-mucha-kit.js — 심사 2회 공통 약점 다섯을 한 번 잘 그림 · 일꾼 둘이 따로 만든 a · b 가운데 a · docs/design/su-musk-2026-11-05/kit-brief.md · r4-brief.md 2판)
+  const K = fs.readFileSync(path.join(ROOT, 'site/su/su-mucha-kit.js'), 'utf8');
+  for (const n of ['svg', 'taper', 'strands', 'face', 'hair', 'medallion', 'scroll', 'stemBar', 'vine', 'beads', 'rays', 'sleeve', 'leafBar', 'plaque', 'ribbon']) assert.ok(new RegExp('export function ' + n + '\\(').test(K), '공용 부품 ' + n);
+  assert.ok(!/innerHTML|outerHTML|insertAdjacentHTML|\.style\b|Math\.random/.test(K), '공용 부품 — 글 속 꾸밈 · 아무 수 0(같은 입력 → 같은 그림)');
+  assert.ok(fs.readFileSync(path.join(ROOT, 'site/su/index.html'), 'utf8').includes('/su/su-mucha-kit.css'), '공용 부품 꾸밈을 쪽이 받음');
+  const {execFileSync} = await import('node:child_process');
+  execFileSync('node', [path.join(ROOT, 'scripts/atlas11/next/su_faces.mjs'), '--check'], {cwd: ROOT, stdio: 'pipe'}); // 다르면 끝 코드 1 → 던짐
+  const R = fs.readFileSync(path.join(ROOT, 'site/next/roman72.js'), 'utf8'), nums = [...new Set([...R.matchAll(/^\s*\[(\d+), '/gm)].map(m => +m[1]))];
+  const sg = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/next/data/sage39.json'), 'utf8')).people.map(p => p.id);
+  const faces = [...nums.map(n => 'site/su/faces/roman/' + n + '.svg'), ...sg.map(id => 'site/su/faces/sage/' + id + '.svg')];
+  assert.equal(faces.length, 111, '신 72 + 스승 39');
+  for (const f of [...faces, 'site/media/su-parrot.svg']) {
+    const t = fs.readFileSync(path.join(ROOT, f), 'utf8');
+    assert.ok(!/<text|style=|<style|<script|href="http|xlink:href="http/.test(t), f + ' 글자 · style · 스크립트 · 바깥 그림 0');
+    assert.ok(t.length < 16000, f + ' 16KB 안');
+  }
+  const G = fs.readFileSync(path.join(ROOT, 'site/su/su-gods.js'), 'utf8');
+  assert.ok(G.includes("'/su/faces/roman/'") && G.includes("'/su/faces/sage/'"), '수르는 무하 얼굴을 씀(옛 얼굴은 옛 화면이 그대로)');
+  assert.ok(fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8').includes("'/media/su-parrot.svg'"), '다음 단추 앵무새 = 무하풍');
+});
+
 test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 기승전결 · 「왜 사?」 열한 질문이 지금 수르와 글자 그대로 · 화면 낱말 거르기 0(주문 1616)', async () => {
   const src = f => fs.readFileSync(path.join(ROOT, 'site/su/' + f), 'utf8');
-  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-gods.js') + src('su-roads.js') + src('su-wrap.js') + src('su-sky.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
+  const su = src('su.js'), wy = src('su-why.js'), all = su + wy + src('su-six.js') + src('su-fig.js') + src('su-word.js') + src('su-art.js') + src('su-21.js') + src('su-gods.js') + src('su-roads.js') + src('su-wrap.js') + src('su-sky.js') + ART4.map(src).join('') + src('su-mucha-kit.js'), why = fs.readFileSync(path.join(ROOT, 'site/next/p-why.js'), 'utf8');
   const arr = (s, name) => { const m = new RegExp('export const ' + name + ' = Object\\.freeze\\((\\[[\\s\\S]*?\\])\\);').exec(s); assert.ok(m, name); return JSON.parse(m[1].replace(/'/g, '"')); };
   const qs = [...why.matchAll(/\{q: '([^']+)'/g)].map(m => m[1]);
   assert.equal(qs.length, 11);

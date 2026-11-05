@@ -3,7 +3,7 @@
      「로마 신 72명을 한 명도 빼지 말고 넣어라」 「신은 방마다 지킴이 이름표로 달아라 (사장님 10월 31일 「재미삼아 적절한 곳에」)」
      「서른아홉 스승을 한 명도 빼지 말고 넣어라」 「스승은 사기 전에 멈추는 길의 길잡이로 세워라」
      「신·스승 명단과 얼굴 그림은 옛 것을 써라 (roman72.js와 sage39.json)」 「얼굴 듣기·모두 듣기·이어 듣기를 살려라」
-   - 명단 · 얼굴은 옛 것 그대로: /next/roman72.js(GODS · 얼굴 /next/roman-art/<번호>.svg) · /next/data/sage39.json(people · 얼굴 /next/sage-art/<id>.svg)
+   - 명단은 옛 것 그대로: /next/roman72.js(GODS) · /next/data/sage39.json(people) · 얼굴은 무하풍으로 새로 그린 /su/faces/roman/<번호>.svg · /su/faces/sage/<id>.svg(주문 1023 [5] 3 · scripts/atlas11/next/su_faces.mjs — 옛 얼굴은 옛 화면이 그대로 씀)
    - 신 일흔둘 모두 = 길잡이 길의 「로마 신 72」 방(/next/#/roman) · 스승 서른아홉 모두 = 「서른아홉 스승」 방(/next/#/sage — 모두 듣기 · 이어 듣기)
    - 지킴이는 재미로 이은 것 — 앞날을 맞히거나 사고팔기를 권하는 말 없음 · 듣기는 화면 글 그대로 읽음 */
 let GODS = null; // 옛 신 명단(/next/roman72.js) — 첫 그림을 막지 않게 늦게 받음(느린 휴대폰 첫 화면 2.5초)
@@ -38,7 +38,7 @@ export function godTag(hash = location.hash) {
   const box = h('aside', {class: 'su-god', 'aria-label': '이 방 지킴이 신'});
   godsP().then(() => { const g = godOf(key); if (!g) return;
     const line = josa2(g.name) + ' 이 방 지킴이예요. ' + g.who;
-    box.append(h('img', {class: 'su-godf', src: '/next/roman-art/' + g.n + '.svg', alt: '', width: '64', height: '64', loading: 'lazy', decoding: 'async'}),
+    box.append(h('img', {class: 'su-godf', src: '/su/faces/roman/' + g.n + '.svg', alt: '', width: '64', height: '64', loading: 'lazy', decoding: 'async'}),
       h('div', {class: 'su-godt'}, h('p', {class: 'su-godk', text: '재미로 이은 이 방 지킴이'}), h('p', {class: 'su-godn'}, h('b', {text: g.name}), ' ', h('span', {text: g.latin})), h('p', {class: 'su-godw', text: g.who})),
       h('div', {class: 'su-godb'}, listenBtn(line, g.name + ' 얼굴 듣기'), h('a', {class: 'su-godall', href: '/next/?su=guide#/roman', text: '신 72 모두'}))); }).catch(() => box.remove());
   return box;
@@ -65,7 +65,7 @@ export function sageGuide(step, i = 0) {
     const all = ppl.map(x => (x.ko?.name ?? '') + '. ' + (x.ko?.say ?? '')).join(' ');
     box.append(
       st ? h('p', {class: 'su-sages', text: (st.ko?.v ?? '') + ' — ' + (st.ko?.q ?? '')}) : null,
-      h('div', {class: 'su-sagep'}, h('img', {class: 'su-sagef', src: '/next/sage-art/' + p.id + '.svg', alt: '', width: '72', height: '72', loading: 'lazy', decoding: 'async'}),
+      h('div', {class: 'su-sagep'}, h('img', {class: 'su-sagef', src: '/su/faces/sage/' + p.id + '.svg', alt: '', width: '72', height: '72', loading: 'lazy', decoding: 'async'}),
         h('div', {}, h('p', {class: 'su-sagen'}, h('b', {text: ko.name ?? p.id}), ' · ', h('span', {text: ko.key ?? ''})), h('p', {class: 'su-sagesay', text: '「' + (ko.say ?? '') + '」'}), h('p', {class: 'su-sagesrc', text: '출처 · ' + (ko.src ?? p.orig ?? '확인 필요')}))),
       h('p', {class: 'su-sageq', text: ko.today ?? ''}),
       h('div', {class: 'su-sageb'}, listenBtn((ko.name ?? '') + '. ' + (ko.say ?? ''), (ko.name ?? '') + ' 얼굴 듣기'),

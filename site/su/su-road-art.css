@@ -1,0 +1,114 @@
+/* 수르 그림 부품 su-road-art — 친구에게(S자 여인 · 꽃 화환 메달) · 셋의 길(메달 여인 포스터) (주문 1023 · 셋째 판 r3-brief.md 「F」)
+   바탕 · 틀 · 금빛은 su-art.css 변수(어두운 판에서 저절로 바뀜) · 여인의 살 · 옷 · 꽃 · 리본 · 이름표는 고정 색(어두운 판에서도 크림 · 상아 · 파스텔)
+   얼굴 · 머리 · 손 · 두루마리 · 메달 · 덩굴의 꾸밈은 공용 부품 su-mucha-kit.css(쪽이 받음 — 여기 다시 넣지 않음)
+   글씨는 18px 넘게(18 ~ 30) · 처음부터 진하게(opacity 1 · 글씨는 움직이지 않음) · 글씨 둘레 판 색 테(paint-order: stroke)
+   움직임은 꽃 · 머리칼에만(transform) · 들어오는 움직임은 0.6초 안에 끝남 · 움직임 줄이기면 모두 멈춤 */
+.su-road-art { display: block; width: 100%; height: auto; overflow: hidden; --ra-field: var(--glbg); }
+.su-road-art text { opacity: 1; }
+
+/* 파스텔 색면 · 아치 · 모자이크 · 세로 판 · 별과 달(판 색을 따름) */
+.ra-field { fill: var(--ra-field); }
+.ra-glow { fill: var(--halo); opacity: .6; }
+.ra-ground { fill: var(--halo); opacity: .75; }
+.ra-arch-o { fill: none; stroke: var(--gold); stroke-width: 2.6; }
+.ra-arch-i { fill: none; stroke: var(--gold2); stroke-width: 1.3; }
+.ra-m1 { fill: var(--gold); } .ra-m2 { fill: #9DB861; } .ra-m3 { fill: #EFA77E; }
+.ra-pil { stroke: var(--gold2); stroke-width: 1; }
+.ra-pnl { fill: var(--halo); stroke: var(--gold); stroke-width: 1.8; }
+.ra-pnl2 { fill: none; stroke: var(--gold2); stroke-width: 1; }
+.ra-ml { stroke: var(--gold); stroke-width: 1.3; stroke-linecap: round; }
+.ra-bandbg { fill: var(--halo); }
+.ra-moon, .ra-star, .ra-sdot { fill: var(--gold); }
+
+/* 후광 — 금테 · 점 고리 · 살구 · 금 꽃잎 고리(흰 타원 없음) · 머리 뒤 둥근 판 */
+.ra-h0 { fill: var(--halo); stroke: var(--gold); stroke-width: 2.4; }
+.ra-h1 { fill: none; stroke: var(--gold2); stroke-width: 1.1; }
+.ra-hd { fill: var(--gold); }
+.ra-hp { fill: #F2B08E; stroke: #B58A33; stroke-width: .6; stroke-linejoin: round; }
+.ra-hp2 { fill: #EBCB7E; stroke: #B58A33; stroke-width: .6; stroke-linejoin: round; }
+.ra-h2 { fill: #FFF8EA; stroke: var(--gold); stroke-width: 1.8; }
+.ra-h3 { fill: none; stroke: #E3CC8E; stroke-width: 1; }
+
+/* 화환 */
+.ra-rope { fill: none; stroke: #7E9C47; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.ra-twine { fill: none; stroke: var(--gold); stroke-width: 1.1; stroke-linecap: round; opacity: .9; }
+
+/* 여인 — 고정 색(상아 옷 · 살구 겉옷) · 주름은 굵기가 변하는 채운 모양 */
+.w-dress { fill: #FBF6EA; stroke: #6B4A35; stroke-width: .9; stroke-linejoin: round; }
+.w-foldf { fill: #C9AD7E; }
+.w-mantle { fill: #F5C7A9; stroke: #8E5236; stroke-width: .9; stroke-linejoin: round; }
+.w-mantle2 { fill: #EFB896; stroke: #8E5236; stroke-width: .9; stroke-linejoin: round; }
+.w-mfoldf { fill: #C67C58; }
+.w-sleeve { fill: #F8EEDB; stroke: #6B4A35; stroke-width: .9; stroke-linejoin: round; }
+.w-collar { fill: #E7CF8F; stroke: #A9802E; stroke-width: 1; stroke-linejoin: round; }
+.w-pearl { fill: #FFFBF2; stroke: #A9802E; stroke-width: .6; }
+.w-gdot { fill: #C99A3E; }
+.w-edge { fill: #5A3D2B; }
+
+/* 꽃 · 잎(고정 파스텔) */
+.w-pet { stroke: #B58A33; stroke-width: .8; }
+.w-p-apri { fill: #F4B391; } .w-p-gold { fill: #EBCB7E; } .w-p-leaf { fill: #B9D07F; } .w-p-rose { fill: #F0B4AE; }
+.w-core { fill: #C99A3E; stroke: #FFF8EA; stroke-width: .9; }
+.w-leaf { fill: #A9C46E; stroke: #5E7B2C; stroke-width: .8; stroke-linejoin: round; }
+
+/* 꽃 메달 · 말린 리본(고정 파스텔 · 금테 · 흰 상자 없음) */
+.ra-md { stroke: #B58A33; stroke-width: 2.6; }
+.ra-md-apri { fill: #FBE0CF; } .ra-md-gold { fill: #F6E6BC; } .ra-md-leaf { fill: #E3EEC6; }
+.ra-md2 { fill: none; stroke: #D9BC72; stroke-width: 1; }
+.ra-rtail { fill: #E7CF8F; stroke: #A9802E; stroke-width: .8; stroke-linejoin: round; }
+
+/* 갈래 이름표 — 복숭아 · 쑥 · 크림 셋 · 둥근 모서리 패 + 말린 리본 끝 · 안쪽 가는 금 테 */
+.ra-tag { stroke: #B58A33; stroke-width: 1.5; stroke-linejoin: round; }
+.ra-tag2 { fill: none; stroke: #D2B266; stroke-width: 1; stroke-linecap: round; }
+.ra-tg-peach { fill: #F9DCC8; } .ra-tg-ssuk { fill: #DFE9C8; } .ra-tg-cream { fill: #FBF2DC; }
+.ra-rd-peach { fill: #E8B395; } .ra-rd-ssuk { fill: #B6CA92; } .ra-rd-cream { fill: #E4CF9F; }
+.ra-rsp { fill: #86633A; }
+.ra-hit { fill: #FFFFFF; fill-opacity: 0; }
+
+/* 셋의 길 넷째 판 — 잎사귀 패(줄기 쪽 넓고 끝이 둥글게 뾰족 · 가는 금 테 · 글 자리에 줄 없음) · 아래 그늘과 잎맥은 글 끝부터 */
+.ra-leaf { stroke: none; }
+.ra-lf-peach { fill: #F9DCC8; } .ra-lf-ssuk { fill: #DFE9C8; } .ra-lf-cream { fill: #FBF2DC; }
+.ra-ls-peach { fill: #EDB998; } .ra-ls-ssuk { fill: #BCCF98; } .ra-ls-cream { fill: #E8D5A6; }
+.ra-lsh { fill-opacity: .8; }
+.ra-lvein { fill: #B9934A; }
+.ra-leafo { fill: none; stroke: #B58A33; stroke-width: 1.1; stroke-linejoin: round; }
+/* 띠에 새긴 글씨 · 잎 위 글씨 — 흰 테 없이 갈색(띠 · 잎 바탕이 고르니 테가 필요 없음) · 처음부터 진하게 */
+.ra-rt { fill: #5E3F1C; font-size: 30px; font-weight: 800; letter-spacing: .3em; }
+.ra-rs { fill: #4A3522; font-size: 18px; font-weight: 800; }
+.ra-ln { fill: #33251A; font-size: 19px; font-weight: 800; }
+.ra-lc { fill: #5A4430; font-size: 18px; font-weight: 700; }
+.ra-a:hover .ra-leafo, .ra-a:focus-visible .ra-leafo { stroke-width: 2.2; }
+
+/* 글씨 — 고정 짙은 먹빛(파스텔 위) · 테는 그 판 색 */
+.ra-t { fill: #2B2118; paint-order: stroke; stroke: #F4E3B2; stroke-width: 4px; stroke-linejoin: round; }
+.ra-tt { font-size: 30px; font-weight: 800; letter-spacing: .1em; }
+.ra-ts { font-size: 18px; font-weight: 800; stroke: #FBF3E1; }
+.ra-tb { font-size: 19px; font-weight: 800; letter-spacing: .02em; }
+.ra-tf { font-size: 18px; font-weight: 800; }
+.ra-tn { font-size: 19px; font-weight: 800; }
+.ra-tc { font-size: 18px; font-weight: 700; fill: #4E4233; }
+.ra-tm-peach { stroke: #F9DCC8; } .ra-tm-ssuk { stroke: #DFE9C8; } .ra-tm-cream { stroke: #FBF2DC; }
+.ra-tf.ra-tm-apri { stroke: #FBE0CF; } .ra-tf.ra-tm-gold { stroke: #F6E6BC; } .ra-tf.ra-tm-leaf { stroke: #E3EEC6; }
+.ra-a { cursor: pointer; }
+.ra-a:hover .ra-md, .ra-a:focus-visible .ra-md, .ra-a:hover .ra-tag, .ra-a:focus-visible .ra-tag { stroke-width: 3; }
+.ra-a:focus { outline: none; }
+
+/* 움직임 — 머리칼만 천천히 흔들림(11 ~ 13초 · 2도) · 꽃은 0.5초 안에 피어남(+ 0.015초씩 · 0.6초 안에 끝) */
+.ra-sway, .ra-sway2 { transform-box: fill-box; animation: ra-sway 11s ease-in-out infinite alternate; }
+.ra-sway2 { animation-duration: 13s; animation-delay: -5s; }
+.ra-o-r { transform-origin: 100% 0%; } .ra-o-l { transform-origin: 0% 0%; }
+@keyframes ra-sway { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+.ra-bloom, .ra-gfl, .ra-fband { transform-box: fill-box; transform-origin: center; }
+.ra-in, .ra-gfl, .ra-fband { animation: ra-in .5s ease-out both; }
+.ra-d1 { animation-delay: .015s; } .ra-d2 { animation-delay: .03s; } .ra-d3 { animation-delay: .045s; }
+.ra-d4 { animation-delay: .06s; } .ra-d5 { animation-delay: .075s; } .ra-d6 { animation-delay: .09s; } .ra-d7 { animation-delay: .1s; }
+@keyframes ra-in { from { transform: scale(.8) rotate(-12deg); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .su-road-art .ra-sway, .su-road-art .ra-sway2, .su-road-art .ra-in, .su-road-art .ra-gfl, .su-road-art .ra-fband { animation: none; transform: none; }
+}
+/* 셋의 길 메달 — 오른 어깨에 걸친 크림 겉옷(고정 색) */
+.w-mantlec { fill: #F6ECD6; }
+.w-mfoldc { fill: #C9B286; }
+.w-mgold { fill: #D3AE5A; }
+.w-brooch { fill: #E3C77A; stroke: #A9802E; stroke-width: .8; }
+.w-brooch2 { fill: #4F8A6A; }

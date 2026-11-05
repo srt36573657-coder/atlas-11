@@ -1,0 +1,118 @@
+/* 수르 — 기록 탭의 큰 그림 둘(su-rec-art.js) 꾸밈 · 넷째 판(r4-brief.md 「R」) · 알폰스 무하 화풍
+   색은 su-art.css 변수(--bg --card --ink --mute --gold --gold2 --leaf --apri --apri2 --halo --no --ok --base · --glbg --line --warn) — 어두운 판에서 저절로 바뀜
+   메달 · 머리 · 두루마리 · 꽃대는 공용 부품 고정 색(su-mucha-kit.css · 쪽이 이미 받음 — 여기서 다시 넣지 않음) · 두루마리 위 글씨도 고정 먹색
+   창: 빈 칸 옅은 크림 모자이크 세 결(어두운 판 짙은 밤색 세 결) · 줄눈 금 · 찬 칸 둥근 유리(위가 밝은 호박빛 금 · 초록 — 두 판 같음) · 아치 머리 색유리는 고정 파스텔
+   리본 · 아치 판 위 글씨: 흰 테 없이 고정 갈색(리본 · 판 바탕이 고르니 테가 필요 없음)
+   글씨: 18 ~ 22px · 처음부터 진하게(opacity 1 · 움직이지 않음)
+   움직임: 꽃 · 별에만(머리채는 공용 부품) · transform 만 · 들어옴(꽃 피어남)은 0.6초 안에 끝 · 움직임 줄이기면 모두 멈춤 */
+svg.su-svg.su-rec-art { display: block; width: 100%; height: auto; overflow: hidden; font-family: inherit;
+  --ra-e0: #FBF3E1; --ra-e1: #F6EAD0; --ra-e2: #FDF8EC; --ra-lun: #FDF6E6; --ra-came: #CFAE5C; --ra-scroll-ink: #2B2118; --ra-scroll-warn: #8A4A10;
+  --ra-gl: #8C6420; --ra-bar: #DDB55E; --ra-barl: #8E6A24; --ra-wf: #FDF5E2; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) svg.su-svg.su-rec-art { --ra-e0: #3A2A1D; --ra-e1: #34261A; --ra-e2: #403022; --ra-lun: #33251A; --ra-came: #B8913F; --ra-gl: #D9B46A; --ra-bar: #E9CF8A; --ra-barl: #A88334; --ra-wf: #2A2116; }
+}
+:root[data-theme="dark"] svg.su-svg.su-rec-art { --ra-e0: #3A2A1D; --ra-e1: #34261A; --ra-e2: #403022; --ra-lun: #33251A; --ra-came: #B8913F; --ra-gl: #D9B46A; --ra-bar: #E9CF8A; --ra-barl: #A88334; --ra-wf: #2A2116; }
+
+/* 바탕 · 틀 · 파스텔 색면 */
+.ra-bg { fill: var(--bg); }
+.ra-frame { fill: none; stroke: var(--gold); stroke-width: 1.4; }
+.ra-field { fill: var(--halo); }
+
+/* 별과 달 */
+.ra-moon, .ra-star, .ra-dot { fill: var(--gold); }
+
+/* 후광 고리 */
+.ra-ring { fill: none; stroke: var(--gold); stroke-width: 1.2; }
+
+/* 아치 띠 · 모자이크 조각 */
+.ra-aband { fill: var(--apri2); fill-rule: evenodd; stroke: var(--gold); stroke-width: 1; }
+.ra-abase { fill: var(--apri2); }
+.ra-t1 { fill: var(--gold); }
+.ra-t2 { fill: var(--leaf); }
+.ra-t3 { fill: var(--apri); }
+
+/* 굵기가 변하는 윤곽 · 보석 · 창 그림자 */
+.ra-ink { fill: var(--gold); }
+.ra-gem { fill: var(--gold); stroke: var(--card); stroke-width: .8; }
+.ra-cont { fill: #8A6436; fill-opacity: .55; }
+
+/* 꽃 */
+.ra-pet { fill: var(--apri); stroke: var(--gold); stroke-width: .7; }
+.ra-pet2 { fill: var(--apri2); stroke: var(--gold); stroke-width: .8; }
+.ra-pqf { fill: #F2B79A; stroke: #B8913F; stroke-width: .7; } /* 아치 판(두 판 모두 크림) 위 꽃 — 고정 색 */
+.ra-core { fill: var(--gold); }
+
+/* 한 금테 창 — 금테 · 금 줄눈 · 아치 머리(상아 유리 · 둘레 꽃잎 색유리) · 칸(고른 회사 금갈색 · 아무 회사 초록 · 빈칸 상아) */
+.ra-rim { fill: var(--gold); }
+.ra-rim2 { fill: none; stroke: var(--gold2); stroke-width: 1; }
+.ra-came { fill: var(--ra-came); }
+.ra-lun { fill: var(--ra-lun); }
+.ra-glass { stroke: #B08A3A; stroke-width: .8; stroke-linejoin: round; }
+.ra-g1 { fill: #F2C3A4; }
+.ra-g2 { fill: #CCDCA9; }
+.ra-g3 { fill: #EED89C; }
+.ra-ok { stroke: #A06C14; stroke-width: .7; }
+.ra-basefill { stroke: #4A6A26; stroke-width: .7; }
+.ra-ga0 { stop-color: #F6D274; } .ra-ga1 { stop-color: #D89A24; }
+.ra-gb0 { stop-color: #B5D07E; } .ra-gb1 { stop-color: #6E9640; }
+.ra-e0 { fill: var(--ra-e0); } .ra-e1 { fill: var(--ra-e1); } .ra-e2 { fill: var(--ra-e2); }
+.ra-pillar { fill: var(--gold); }
+
+/* 꽃 모자이크 띠 */
+.ra-mband { fill: var(--apri2); }
+.ra-mline { fill: none; stroke: var(--gold); stroke-width: 1.2; }
+
+/* 아치 판 위 — 굵기 변하는 금선 · 누르는 자리 */
+.ra-rule { fill: #B8913F; }
+.ra-lab { cursor: pointer; text-decoration: none; }
+.ra-hit { fill: transparent; }
+.ra-lab:focus { outline: none; }
+.ra-lab:focus-visible .ra-hit { stroke: var(--ink); stroke-width: 2.5; }
+
+/* 글씨 — 처음부터 진하게 · 리본 · 아치 판 위는 고정 갈색 · 먹색(바탕이 어두운 판에서도 크림이라) · 흰 테 없음 */
+.ra-title { font-size: 21px; font-weight: 800; fill: #6A4418; letter-spacing: .05em; }
+.ra-wn { font-size: 18px; font-weight: 800; fill: var(--ink); paint-order: stroke; stroke: var(--ra-lun); stroke-width: 3px; stroke-linejoin: round; }
+.ra-wv { font-size: 22px; font-weight: 800; fill: var(--ra-scroll-ink); font-variant-numeric: tabular-nums; }
+.ra-vA { fill: #8A5410; } .ra-vB { fill: #46682A; } .ra-vdot { fill: #B8913F; }
+.ra-ln { font-size: 18px; font-weight: 700; fill: var(--ra-scroll-ink); }
+.ra-lv { font-size: 20px; font-weight: 800; fill: var(--ra-scroll-ink); font-variant-numeric: tabular-nums; }
+.ra-yr { font-size: 20px; font-weight: 800; fill: var(--ra-scroll-ink); font-variant-numeric: tabular-nums; }
+.ra-wv .ra-needt, .ra-lv.ra-needt { fill: var(--ra-scroll-warn); }
+.ra-needt { fill: var(--warn); }
+.ra-need { font-size: 26px; font-weight: 800; fill: var(--warn); }
+
+/* ② 달마다 — 두 개의 창 · 꽃대 막대(값 · 움직이지 않음 · 밝은 판은 금빛 한두 단계 진하게) · 금 구슬 눈금 · 작은 잎 · 범례는 해 리본 안 */
+.ra-wfield { fill: var(--ra-wf); }
+.ra-wink { fill: var(--gold); }
+.ra-wrim2 { fill: none; stroke: var(--gold2); stroke-width: .8; }
+.ra-cols .mk-bar-gold { fill: var(--ra-bar); stroke: var(--ra-barl); }
+svg.su-rec-art.ra-months .mk-t6 { --hb: #8A4426; --hd: #55240F; --hl: #E2B65A; }
+.ra-strip { fill-opacity: .85; }
+.ra-c1 { fill: var(--apri2); }
+.ra-c2 { fill: var(--glbg); }
+.ra-axis { stroke: var(--gold); stroke-width: 1.8; stroke-linecap: round; }
+.ra-gl { font-size: 18px; font-weight: 800; fill: var(--ra-gl); font-variant-numeric: tabular-nums; }
+.ra-cols .mk-bar > .mk-leaf:not(.mk-vstem0 ~ .mk-leaf) { display: none; } /* 꽃대 줄기 잎은 숨김 — 잎은 「아무 회사」 하나만 뜻함(봉오리 받침 잎은 그대로) */
+.ra-blf { fill: #7FA04A; stroke: #3E5A1C; stroke-width: .9; stroke-linejoin: round; }
+.ra-blv { fill: none; stroke: #F4F1D8; stroke-width: 1; stroke-linecap: round; }
+.ra-mn { font-size: 18px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -0.05em; }
+.ra-lg { font-size: 18px; font-weight: 700; fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 4px; stroke-linejoin: round; }
+.ra-legend .ra-lg { stroke: none; fill: var(--ra-scroll-ink); }
+.ra-opent { fill: var(--ra-gl); stroke: none; }
+
+/* 움직임 — 꽃은 0.45초에 피어나고(늦음 0 ~ 0.12초 · 0.6초 안에 끝) 그 뒤 아주 천천히 흔들림 · 별은 반짝(크기만) */
+@media (prefers-reduced-motion: no-preference) {
+  .ra-fl { transform-box: fill-box; transform-origin: 50% 50%; animation: ra-bloom .45s cubic-bezier(.2, .9, .3, 1.15) both; }
+  .ra-fd1 { animation-delay: .04s; } .ra-fd2 { animation-delay: .08s; } .ra-fd3 { animation-delay: .12s; }
+  .ra-sw { transform-box: fill-box; transform-origin: 50% 50%; animation: ra-turn 11s ease-in-out .6s infinite alternate; }
+  .ra-sw2 { animation-duration: 13s; animation-direction: alternate-reverse; }
+  .ra-tw1, .ra-tw2, .ra-tw3 { transform-box: fill-box; transform-origin: 50% 50%; animation: ra-tw 4.6s ease-in-out infinite alternate; }
+  .ra-tw2 { animation-duration: 5.8s; animation-delay: 1.2s; }
+  .ra-tw3 { animation-duration: 7s; animation-delay: 2.4s; }
+}
+@keyframes ra-bloom { from { transform: scale(.3) rotate(-50deg); } to { transform: none; } }
+@keyframes ra-turn { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+@keyframes ra-tw { from { transform: scale(.72); } to { transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) {
+  .ra-fl, .ra-sw, .ra-tw1, .ra-tw2, .ra-tw3 { animation: none !important; transform: none !important; }
+}

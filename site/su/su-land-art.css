@@ -1,0 +1,129 @@
+/* 수르 — 땅 지도 큰 그림 둘(su-land-art.js · 주문 1023 「머스크 판 4」 · 알폰스 무하 화풍 · 심사 1회 뒤 다시 그림)
+   판 색은 su-art.css 변수만(--bg --card --ink --mute --gold --gold2 --leaf --apri --apri2 --halo --no --ok --base) — 어두운 판은 변수가 저절로 바뀜
+   여인 · 두루마리 · 꽃대는 공용 부품(su-mucha-kit.css 의 고정 색 — 어두운 판에서도 크림 · 파스텔 그대로) · 두루마리 위 글도 고정 색
+   글씨는 17px 넘게(이름표 18 ~ 22px) · 처음부터 진하게(들어오는 움직임 없음) · 글씨 둘레에 바탕색 테(paint-order: stroke)
+   움직임은 꽃 · 덩굴 잎 · 별에만 · transform 만 · 천천히(덩굴 11 · 13초 · 별 3.6초) · 처음 열 때 꽃이 0.5초 안에 피어남
+   움직임 줄이기(prefers-reduced-motion: reduce)면 모두 멈춤 */
+
+/* 글씨 */
+.su-land-art text { font-family: inherit; font-weight: 800; fill: var(--ink); opacity: 1; }
+.su-land-art .la-t { paint-order: stroke; stroke: var(--card); stroke-width: 4px; stroke-linejoin: round; }
+.su-land-art .la-arch-t { font-size: 20px; letter-spacing: .03em; fill: #6E4513; stroke: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-land-art .la-arch-t { fill: #E8C66E; } }
+:root[data-theme="dark"] .su-land-art .la-arch-t { fill: #E8C66E; }
+.su-land-art .la-arch-s { font-size: 19px; letter-spacing: .01em; }
+.su-land-art .la-name { font-size: 18px; }
+.su-land-art .la-cnt { font-size: 20px; font-variant-numeric: tabular-nums; }
+.su-land-art .la-st { font-size: 19px; font-variant-numeric: tabular-nums; }
+.su-land-art .la-st-on { fill: var(--ok); }
+.su-land-art .la-st-off { fill: var(--mute); font-weight: 700; }
+.su-land-art .la-leg { font-size: 18px; }
+.su-land-art .la-title { font-size: 22px; letter-spacing: .02em; }
+.su-land-art .la-f18 { font-size: 18px; } .su-land-art .la-f19 { font-size: 19px; } .su-land-art .la-f20 { font-size: 20px; }
+.su-land-art .la-f21 { font-size: 21px; } .su-land-art .la-f22 { font-size: 22px; }
+.su-land-art .la-ind { font-weight: 700; }
+.su-land-art .la-val { font-weight: 800; font-variant-numeric: tabular-nums; }
+.su-land-art .la-val-up { fill: var(--ok); }
+.su-land-art .la-val-dn { fill: var(--no); }
+.su-land-art .la-tag-t { font-size: 18px; }
+.su-land-art .la-soft { fill: var(--mute); font-weight: 700; }
+.su-land-art .la-gold { fill: var(--ok); }
+
+/* 파스텔 색면 · 아치 띠 · 겹테 */
+.su-land-art .la-panel { fill: var(--apri2); }
+.su-land-art .la-win { fill: var(--halo); }
+.su-land-art .la-glow { fill: var(--card); opacity: .4; }
+.su-land-art .la-band { fill: var(--apri2); }
+.su-land-art .la-dot { fill: var(--gold); }
+.su-land-art .la-fr1t { fill: var(--gold); }
+.su-land-art .la-fr2 { fill: none; stroke: var(--gold); stroke-width: 2.4; stroke-linejoin: round; }
+.su-land-art .la-fr3 { fill: none; stroke: var(--gold2); stroke-width: .8; }
+.su-land-art .la-m1 { fill: var(--gold); } .su-land-art .la-m2 { fill: var(--leaf); } .su-land-art .la-m3 { fill: var(--apri); }
+.su-land-art .la-mline { stroke: var(--gold); stroke-width: 1.2; }
+
+/* 어두운 판 — 아치 바깥 귀퉁이를 짙은 밤색으로(밝은 판은 비움) */
+.su-land-art .la-bgd { fill: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-land-art .la-bgd { fill: #23190F; } }
+:root[data-theme="dark"] .su-land-art .la-bgd { fill: #23190F; }
+
+/* 땅 메달 — 굵기가 변하는 금 테 · 원판 · 꽃잎 고리 */
+.su-land-art .la-ring-on { fill: var(--gold); }
+.su-land-art .la-ring-off { fill: var(--gold2); }
+.su-land-art .la-disc-on { fill: var(--card); }
+.su-land-art .la-disc-off { fill: var(--card); }
+.su-land-art .la-fine { fill: none; stroke: var(--gold2); stroke-width: .9; }
+.su-land-art .la-pa { fill: var(--apri); stroke: var(--gold); stroke-width: .6; }
+.su-land-art .la-pb { fill: var(--gold2); stroke: var(--gold); stroke-width: .6; }
+
+/* 두루마리 위 글 — 두루마리가 어두운 판에서도 크림이라 글도 고정 색(짙은 세피아 · 크림 테) */
+.su-land-art .la-pt { fill: #3A2817; font-weight: 800; paint-order: stroke; stroke: #FBF3E1; stroke-width: 3px; stroke-linejoin: round; }
+.su-land-art .la-pgold { fill: #8A5E14; }
+
+/* 땅을 뜻하는 물건(날개 바퀴 · 돛배 · 번개 · 금화 · 잎) */
+.su-land-art .la-em { fill: var(--gold); }
+.su-land-art .la-wing { fill: var(--apri2); stroke: var(--gold); stroke-width: 1; stroke-linejoin: round; }
+.su-land-art .la-spoke { fill: none; stroke: var(--gold); stroke-width: 1.3; stroke-linecap: round; }
+.su-land-art .la-sail { fill: var(--halo); stroke: var(--gold); stroke-width: 1.1; stroke-linejoin: round; }
+.su-land-art .la-mast { fill: var(--gold); }
+.su-land-art .la-wave { fill: var(--leaf); }
+
+/* 덩굴 · 꽃 · 잎 · 채찍 곡선 · 별 */
+.su-land-art .la-whip { fill: var(--gold); }
+.su-land-art .la-leaf { fill: var(--leaf); }
+.su-land-art .la-leaf2 { fill: var(--base); }
+.su-land-art .la-pet { fill: var(--apri); stroke: var(--gold); stroke-width: .7; }
+.su-land-art .la-core { fill: var(--gold); }
+.su-land-art .la-moon, .su-land-art .la-star { fill: var(--gold); }
+
+/* 누르는 자리 — 보이지 않는 판(높이 52 넘게) · 눌러 고를 때 테 */
+.su-land-art .la-hit { fill: transparent; stroke: none; }
+.su-land-art a { cursor: pointer; }
+.su-land-art a:focus { outline: none; }
+.su-land-art a:focus-visible .la-hit { stroke: var(--ink); stroke-width: 3; }
+.su-land-art a:hover .la-roll .mk-gl { stroke-width: 1.8; }
+
+/* 움직임 — 꽃 · 덩굴 잎 · 별에만 · transform 만 */
+@media (prefers-reduced-motion: no-preference) {
+  .su-land-art .la-sway { transform-box: fill-box; transform-origin: 50% 100%; animation: la-bloom .5s ease-out both, la-sway 11s ease-in-out .5s infinite alternate; }
+  .su-land-art .la-sway2 { animation-duration: .5s, 13s; }
+  .su-land-art .la-tw { transform-box: fill-box; transform-origin: center; animation: la-tw 3.6s ease-in-out infinite alternate; }
+  .su-land-art .la-tw2 { animation-delay: -1.2s; } .su-land-art .la-tw3 { animation-delay: -2.4s; }
+}
+@keyframes la-bloom { from { transform: scale(.6); } to { transform: none; } }
+@keyframes la-sway { from { transform: rotate(-2.4deg); } to { transform: rotate(2.4deg); } }
+@keyframes la-tw { from { transform: scale(.78); } to { transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) {
+  .su-land-art *, .su-land-art { animation: none !important; transition: none !important; }
+}
+
+/* 넷째 판 — 리본 · 아치 판 위 글(흰 테 없이 띠 안에 새김 · 띠가 어두운 판에서도 크림이라 고정 색) */
+.su-land-art .la-rt { font-size: 18px; font-weight: 800; fill: #3E2A14; stroke: none; }
+.su-land-art .la-rt.la-f19 { font-size: 19px; }
+.su-land-art .la-rt.la-pgold, .su-land-art .la-rt .la-pgold { fill: #93650F; }
+/* 아치 안 옅은 동심원 후광 */
+.su-land-art .la-cc { fill: none; stroke: var(--gold); stroke-width: 1.1; opacity: .2; }
+.su-land-art .la-cc2 { stroke-dasharray: 1.5 5; stroke-width: 1.6; opacity: .28; }
+/* 봉오리 고리(✦ 0) · 잎 끝 봉오리 */
+.su-land-art .la-budstem { fill: none; stroke: var(--leaf); stroke-width: 1.1; stroke-linecap: round; }
+.su-land-art .la-bud { fill: #F2C9B4; stroke: #B07A4A; stroke-width: .6; }
+.su-land-art .la-bud-dn { fill: #D9826A; stroke: #9C4A33; }
+/* 빈 바탕 옅은 물결 · 별 */
+.su-land-art .la-calm { fill: var(--gold); opacity: .3; }
+/* 여인 · 문장(고정 파스텔 — 어두운 판에서도 같은 색) */
+.su-land-art .lw-pet { fill: #F2B8A6; stroke: #B07A4A; stroke-width: .6; }
+.su-land-art .lw-core { fill: #E2B24C; }
+.su-land-art .lw-leaf { fill: #9DB861; stroke: #657F3C; stroke-width: .45; }
+.su-land-art .lw-wing { fill: #F8DCC6; stroke: #B08A3A; stroke-width: .8; stroke-linejoin: round; }
+.su-land-art .lw-wing2 { fill: #F1C2AE; stroke: #B08A3A; stroke-width: .8; stroke-linejoin: round; }
+.su-land-art .lw-disc { fill: #FBF1DC; }
+.su-land-art .lw-gold { fill: #C39A42; }
+.su-land-art .lw-goldl { fill: #A8802F; }
+.su-land-art .lw-spoke { fill: none; stroke: #B08A3A; stroke-width: 1.6; stroke-linecap: round; }
+.su-land-art .lw-sail { fill: #FBF3E1; stroke: #B08A3A; stroke-width: .7; stroke-linejoin: round; }
+.su-land-art .lw-sail2 { fill: #F3CCC6; stroke: #B08A3A; stroke-width: .7; stroke-linejoin: round; }
+.su-land-art .lw-wave { fill: #8FAE5E; }
+/* 아래 꽃 모자이크 띠에 새긴 풀이(흰 테 없음) */
+.su-land-art .la-legt { font-size: 18px; font-weight: 800; fill: #5A3A12; stroke: none; }
+.su-land-art .la-legs { fill: #93650F; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-land-art .la-legt { fill: #F0DDB0; } :root:not([data-theme="light"]) .su-land-art .la-legs { fill: #E8C66E; } }
+:root[data-theme="dark"] .su-land-art .la-legt { fill: #F0DDB0; } :root[data-theme="dark"] .su-land-art .la-legs { fill: #E8C66E; }

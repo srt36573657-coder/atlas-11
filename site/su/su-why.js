@@ -143,6 +143,8 @@ export async function vQuiz(code0, X) {
   const co = code ? await get(D.co(code)) : null, c = co?.c ?? null, name = typeof c?.name === 'string' ? c.name : null;
   if (code && name) X.setCur({code, name, ind: typeof c.i === 'string' ? c.i : null});
   const Q = {i: 0, ans: new Array(WHY_QS.length).fill(null), J: null, saved: false};
+  const ART = await X.artMod?.('su-stop-art', 'quiz'); // 무하 「달과 별」 — 모래시계를 든 여인 · 열한 질문 별자리(주문 1023) · 누를 때마다 다시 그리므로 한 번만 받음
+  const pic = (cur, done, old) => X.heroOf(X.artFig?.(ART, {cur, done}) ?? null, old);
   const tonesNow = () => Q.ans.map((k, i) => (k == null ? null : WHY_A[i][k][0]));
   const btn = (cls, kids, on) => { const b = h('button', {class: cls, type: 'button'}, kids); b.addEventListener('click', on); return b; };
   const redraw = (keep = false) => {
@@ -168,13 +170,13 @@ export async function vQuiz(code0, X) {
         {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답 · 준비 점수 = ' + WHY_MAX + ' 에서 답 점수를 뺀 값'},
         {k: '판정 문턱', v: '쉬어 · 반만 · 좋아', how: '빌린 돈 · 곧 쓸 돈이면 쉬어 · 점수 12 넘거나 빨간 답 넷이면 쉬어 · 6 넘으면 반만 · 지금 수르 「왜 사?」와 같은 셈'},
         {k: '답한 질문', v: Q.ans.filter(x => x != null).length + ' / ' + WHY_QS.length, how: '이 휴대폰에서 지금 답한 수'}],
-      hero: petals(tonesNow(), {cur: i, label: '열한 질문 꽃잎', hero: true, cap: ['사기 전에 열한 가지를 물어요.', (i + 1) + '번째 질문이에요. 답한 잎에 색이 들어요.', '그런데 맞히는 시험이 아니에요.', '그래서 내 마음 그대로 답해요.']}),
-      body: [h('p', {class: 'su-qwhy', text: WHY_WHY[i]}),
-        h('ul', {class: 'su-ans', 'aria-label': '답 셋'}, WHY_A[i].map(([tone, label], k) => h('li', {},
+      ...pic(i + 1, Q.ans.filter(x => x != null).length, petals(tonesNow(), {cur: i, label: '열한 질문 꽃잎', hero: true, cap: ['사기 전에 열한 가지를 물어요.', (i + 1) + '번째 질문이에요. 답한 잎에 색이 들어요.', '그런데 맞히는 시험이 아니에요.', '그래서 내 마음 그대로 답해요.']})),
+      act: [h('ul', {class: 'su-ans', 'aria-label': '답 셋'}, WHY_A[i].map(([tone, label], k) => h('li', {}, // 누르는 곳은 그림 바로 아래(신문 짜임에서도 기능은 그대로 — 주문 1023 [2] 3)
           btn('su-a' + (a === k ? ' on' : ''), [h('i', {class: 'su-shape ' + tone, 'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label})], () => { Q.ans[i] = k; redraw(true); })))),
-        ch ? h('div', {class: 'su-reply ' + ch[0], role: 'status'}, h('p', {class: 'su-rk'}, h('i', {'aria-hidden': 'true', text: SHAPE[ch[0]]}), h('b', {text: TONE_W[ch[0]]})), h('p', {class: 'su-rt2', text: ch[2]})) : h('p', {class: 'su-note', text: '답 하나를 눌러요.'}),
         ch ? btn('su-big-btn su-qnext', [h('span', {class: 'su-nk', text: last ? '끝 · 결과' : (i + 2) + ' / ' + WHY_QS.length}), h('b', {text: last ? '결과 보기' : '다음 질문'}), h('i', {'aria-hidden': 'true', text: '›'})], () => { if (last) finish(); else { Q.i = i + 1; redraw(); } }) : null,
         i > 0 ? btn('su-qback', [h('i', {'aria-hidden': 'true', text: '‹'}), h('span', {text: '앞 질문'})], () => { Q.i = i - 1; redraw(); }) : null],
+      body: [h('p', {class: 'su-qwhy', text: WHY_WHY[i]}),
+        ch ? h('div', {class: 'su-reply ' + ch[0], role: 'status'}, h('p', {class: 'su-rk'}, h('i', {'aria-hidden': 'true', text: SHAPE[ch[0]]}), h('b', {text: TONE_W[ch[0]]})), h('p', {class: 'su-rt2', text: ch[2]})) : h('p', {class: 'su-note', text: '답 하나를 눌러요.'})],
       next: {href: '#/j', label: '내 기록은 몇 번?', step: 7}, asOf, S, note: '질문과 한마디는 지금 ' + NAME + ' 「왜 사?」와 같아요. 답은 이 휴대폰에만 남아요.'};
   };
   const result = () => {
@@ -182,10 +184,10 @@ export async function vQuiz(code0, X) {
     const weak = rows.filter(r => r.ready < r.max).sort((a, b) => a.ready / a.max - b.ready / b.max)[0] ?? null;
     const e = eQuizResult({score: J.ready, max: WHY_MAX, verdict: J.verdict, reds: J.reds, type: T[0], day: seoulDay(Date.now()), name});
     return {title: '왜 사? 결과', tab: 3, step: 6, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · 결과', h1: J.verdict, big: e.big,
-      hero: petals(tonesNow(), {label: '내 답 꽃잎 열하나와 한 달 뒤', hero: true, arc: '한 달 뒤 · 장 스무 번',
+      ...pic(WHY_QS.length, WHY_QS.length, petals(tonesNow(), {label: '내 답 꽃잎 열하나와 한 달 뒤', hero: true, arc: '한 달 뒤 · 장 스무 번',
         cap: ['질문 열한 개에 모두 답했어요.', '준비는 ' + WHY_MAX + '점 가운데 ' + J.ready + '점이에요.',
           J.stop ? '그런데 빌린 돈이나 곧 쓸 돈이라고 답했어요.' : weak ? '그런데 ' + weak.n + ' 묶음이 가장 덜 준비됐어요.' : '그런데 답은 오늘 마음일 뿐이에요.',
-          v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.']}),
+          v === 'go' ? '그래서 정해 둔 대로만 해요.' : v === 'wait' ? '그래서 덜 된 묶음부터 채워요.' : '그래서 오늘은 하루 쉬어 가요.']})),
       mids: e.mids,
       figs: [groupBars(rows, '네 묶음 · 준비된 만큼')],
       pro: [{k: '준비 점수', v: J.ready + ' / ' + WHY_MAX, how: '답마다 ● 0 · ▲ 1 · ■ 2 를 더한 값을 ' + WHY_MAX + '에서 뺌'}, {k: '빨간 답', v: J.reds + '개', how: '■ 멈춰요 쪽 답'},
@@ -197,6 +199,7 @@ export async function vQuiz(code0, X) {
         h('p', {class: 'su-note', text: Q.saved ? '오늘 답을 매매일지에 날짜와 함께 쌓았어요. 한 달 뒤에 「그날 정한 대로 했어?」를 물어요.' : '이 기기는 기록을 남길 수 없어요. 답은 이 화면에만 있어요.'}),
         h('a', {class: 'su-ask', href: '#/j'}, h('b', {text: '내 매매일지 보기'}), h('span', {text: '쌓인 답과 한 달 뒤 약속이 한곳에 있어요.'})),
         btn('su-qback su-again', [h('i', {'aria-hidden': 'true', text: '↺'}), h('span', {text: '다시 하기'})], () => { Q.i = 0; Q.ans.fill(null); Q.J = null; redraw(); })],
+      act: [h('a', {class: 'su-ask su-ask1', href: '#/j'}, h('b', {text: '내 매매일지 보기'}))], // 누르는 곳 하나는 그림 바로 아래
       next: {href: '#/j', label: '내 기록은 몇 번?', step: 7}, asOf, S, note: '답과 기록은 이 휴대폰에만 남아요.'};
   };
   const model = () => (Q.i === 'res' ? result() : ask());
@@ -252,11 +255,12 @@ export async function vJournal(X) {
   const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
   const e = eJournal({recs: full, due: dues.length, kept, asked, lastDay: full[0] ? dayOf(full[0]) : null});
   return {title: '매매일지', tab: 3, step: 7, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
-    hero: timeline(metas, {label: '내 기록 시간 줄 · 한 달 뒤 동그라미', hero: true, cap: e.say}),
+    ...X.artHero('su-stop-art', 'journal', timeline(metas, {label: '내 기록 시간 줄 · 한 달 뒤 동그라미', hero: true, cap: e.say})),
     mids: e.mids,
     figs: [tally3([{name: '좋아', v: vc.go, cls: 'g-pt-g'}, {name: '반만', v: vc.wait, cls: 'g-pt-y'}, {name: '쉬어', v: vc.rest, cls: 'g-pt-r'}], {label: '판정 셋', title: '판정 · 좋아 · 반만 · 쉬어'}),
       full.length ? groupBars(groupRowsOf(avg), '네 묶음 평균 · 준비된 만큼') : petals(new Array(WHY_QS.length).fill(null), {label: '열한 질문 꽃잎', title: '열한 질문 · 아직 빈 꽃잎'})],
-    body: [dues.length ? dueBox(dues, X) : null,
+    act: dues.length ? [dueBox(dues, X)] : null, // 한 달 전 약속 — 답할 것이 있을 때만 그림 바로 아래(누르는 곳 · 주문 1023 [2] 3)
+    body: [
       full.length ? h('section', {class: 'su-why', 'aria-label': '쌓인 기록'}, h('h2', {class: 'su-ft', text: '쌓인 기록 ' + full.length + '번'}),
         h('p', {class: 'su-note', text: '틀린 것도 지우지 않아요. 한 달이 지나면 그날 정한 대로 했는지 먼저 묻고, 그 뒤 값을 같은 때 코스피와 모든 회사 가운데 값과 함께 붙여요.'}),
         h('ol', {class: 'su-jl'}, shown.map((m, i) => recCard(m.r, m.W, laters[i]))),

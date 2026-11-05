@@ -1,0 +1,68 @@
+/* 수르 — 둥글고 넉넉한 곡선(su-curve · 주문 1023 [6] 4 「칸과 단추는 둥글고 넉넉한 곡선으로 빚어라」 · 5 「틀과 장식 선은 머리카락처럼 흐르게 그려라」 · [5] 3 앵무새)
+   꾸밈만 — 새 글 없음 · 칸 크기와 누르는 자리는 그대로(48px 넘게) · 글씨 그대로(17px 넘게) · 색은 su-art.css 변수만(어두운 판에서 저절로 바뀜)
+   장식 선은 가면 그림 둘(su-curve-hair.svg 머리카락 세 가닥 · su-curve-curl.svg 소용돌이 고리)에 금빛 변수를 칠함 · 누를 수 없음 · 화면 밖으로 넘지 않음
+   움직임은 transform · opacity 만 · 아주 천천히(10 ~ 12초) · 움직임 줄이기면 모두 멈춤 */
+
+/* ── 1. 단추 — 알약처럼 끝이 둥근 꼴 ── */
+.su-next, .su-say, .su-tool, .su-kb, .su-big-btn, .su-qback { border-radius: 999px; }
+.su-a { border-radius: 32px / 30px; }
+.su-chipa, .su-gl-say, .su-godall { border-radius: 999px; }
+.su-mansour { border-radius: 0 0 50% 50% / 0 0 18px 18px; }
+
+/* 다음 단추 — 앵무새 메달 둘레에 금빛 고리 한 겹 · 꼬리 쪽 화살은 둥근 자리 안에 */
+.su-next .su-parrot { box-shadow: 0 0 0 1.5px var(--gold2); }
+
+/* ── 2. 칸 — 위가 둥근 아치(무하 포스터 판) · 넉넉한 곡선 ── */
+.su-mid { position: relative; border-radius: 38px 38px 24px 24px / 30px 30px 24px 24px; }
+.su-pro { position: relative; border-radius: 36px 36px 26px 26px / 28px 28px 26px 26px; }
+.su-why, .su-why21 { position: relative; border-radius: 36px 36px 26px 26px / 28px 28px 26px 26px; }
+.su-ask, .su-ind { border-radius: 30px / 28px; }
+.su-drawer, .su-fcard, .su-card { border-radius: 30px / 28px; }
+.su-thumb { border-radius: 20px / 18px; }
+.su-cur { border-radius: 20px; }
+.su-st { border-radius: 18px; }
+.su-h3t { border-radius: 24px / 22px; }
+.su-reply { border-radius: 28px / 26px; }
+.su-jr { border-radius: 24px / 22px; }
+.su-god, .su-sage { border-radius: 46px 46px 26px 26px / 34px 34px 26px 26px; }
+.su-21h { border-radius: 26px 26px 10px 10px / 20px 20px 10px 10px; }
+.su-21t a { border-radius: 18px; }
+.su-mean i { border-radius: 14px 5px 14px 5px; }
+
+/* ── 3. 머리카락처럼 흐르는 장식 선 ── */
+/* 머리 막대 아래 — 곧은 물결 대신 세 가닥이 엇갈려 흐름 */
+.su-top::after { height: 12px; bottom: -4px; background: var(--gold); -webkit-mask: url("su-curve-hair.svg") center / 100% 100% no-repeat; mask: url("su-curve-hair.svg") center / 100% 100% no-repeat; }
+/* 탭 위 — 곧은 두 줄 대신 머리카락 세 가닥(위아래 6px 안 · 다음 단추에 닿지 않음) */
+.su-tabs { box-shadow: none; }
+.su-tabs::before { content: ""; position: absolute; left: 6px; right: 6px; top: -6px; height: 12px; pointer-events: none; background: var(--gold); -webkit-mask: url("su-curve-hair.svg") center / 100% 100% no-repeat; mask: url("su-curve-hair.svg") center / 100% 100% no-repeat; }
+/* 값 칸 · 서랍 · 까닭 — 윗테 가운데에 소용돌이 고리(머리핀처럼 테 위에 얹힘 · 글 자리 밖) */
+.su-mid::before, .su-pro::before, .su-why::before { content: ""; position: absolute; left: 50%; top: -9px; width: 72px; height: 15px; margin-left: -36px; pointer-events: none; background: var(--gold); -webkit-mask: url("su-curve-curl.svg") center / 100% 100% no-repeat; mask: url("su-curve-curl.svg") center / 100% 100% no-repeat; }
+/* 값 칸 안쪽 — 둘레를 따라 흐르는 둘째 가닥(굽은 정도가 달라 테와 가까워졌다 멀어짐) */
+.su-mid { box-shadow: none; border-color: var(--gold2); }
+/* 굽은 자리는 바깥 테보다 작게(글 자리 12px 밖에만 지남) · 아래로 갈수록 흐려져 머리카락 끝처럼 사라짐 */
+.su-mid::after { content: ""; position: absolute; inset: 5px; pointer-events: none; border: 1.5px solid var(--gold); border-radius: 30px 34px 18px 18px / 24px 26px 16px 16px; opacity: .75; -webkit-mask: linear-gradient(#000, transparent 78%); mask: linear-gradient(#000, transparent 78%); }
+
+/* ── 4. 켜진 탭 — 아이콘 둘레 작은 후광 원(그림자 번짐 — 자리를 차지하지 않고 이름 글씨에 닿지 않음) ── */
+.su-tab.su-on { border-top-color: transparent; }
+.su-tab.su-on .su-ti { border-radius: 50%; background: var(--halo); box-shadow: 0 0 0 3px var(--halo), 0 0 0 4.5px var(--gold); }
+
+/* ── 5. 눌렀을 때 — 살짝 들어감(누른 것이 보임) · 키보드 자리는 둥근 금빛 테 ── */
+.su-next:focus-visible, .su-say:focus-visible, .su-tool:focus-visible, .su-tab:focus-visible, .su-drawer:focus-visible, .su-fcard:focus-visible, .su-ask:focus-visible, .su-ind:focus-visible, .su-chipa:focus-visible, .su-21t a:focus-visible, .su-a:focus-visible, .su-big-btn:focus-visible, .su-kb:focus-visible, .su-pros:focus-visible, .su-mansour:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.su-next:active, .su-say:active, .su-tool:active, .su-drawer:active, .su-fcard:active, .su-ask:active, .su-ind:active, .su-chipa:active, .su-21t a:active, .su-a:active, .su-big-btn:active, .su-kb:active, .su-qback:active, .su-card:active { transform: scale(.97); }
+
+/* ── 6. 움직임 — 아주 천천히 · 한 번에 하나씩 크게 움직이지 않음 ── */
+@media (prefers-reduced-motion: no-preference) {
+  .su-next, .su-say, .su-tool, .su-drawer, .su-fcard, .su-ask, .su-ind, .su-chipa, .su-21t a, .su-a, .su-big-btn, .su-kb, .su-qback, .su-card { transition: transform .16s ease-out; }
+  /* 탭 위 머리카락 — 숨 쉬듯 물결이 잦아들었다 살아남(12초) */
+  .su-tabs::before { animation: su-cv-flow 12s ease-in-out infinite alternate; }
+  /* 앵무새 — 고개를 아주 조금 갸웃(10초 · 3도) */
+  .su-next .su-parrot { transform-origin: 50% 70%; animation: su-cv-tilt 10s ease-in-out infinite alternate; }
+  /* 소용돌이 고리 — 처음 열 때 한 번 내려앉음 */
+  .su-mid::before, .su-pro::before, .su-why::before { animation: su-cv-in .6s ease-out .9s both; }
+  /* 켜진 탭 후광 — 처음 한 번 번짐 */
+  .su-tab.su-on .su-ti { animation: su-cv-halo .6s ease-out both; }
+}
+@keyframes su-cv-flow { from { transform: scaleY(1); } to { transform: scaleY(.55); } }
+@keyframes su-cv-tilt { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+@keyframes su-cv-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@keyframes su-cv-halo { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }

@@ -1,0 +1,95 @@
+/* 수르 — 첫 화면 세 여인(su-women-e · 넷째 판 다른 안 · r4-brief.md 「W2」)
+   틀 · 띠 · 판 바탕 · 글씨는 su-art.css 변수(어두운 판에서 저절로 바뀜) · 여인의 살 · 머리 · 옷 · 든 것은 부품 고정 색(어두운 판에서도 그대로)
+   벽감 셋은 밝은 판에서 살구 · 연두 · 금빛 가운데 톤(크림 옷이 묻히지 않게) · 어두운 판에서 같은 빛의 짙은 톤
+   부품 꾸밈(.mk-)은 쪽이 이미 받음(index.html) — 여기에 다시 넣지 않음(이름표 판 바탕만 이 쪽 변수로) · 글씨는 처음부터 진하게 · 움직임은 꽃 · 별 · 불꽃에만(transform) */
+.su-women-e { display: block; width: 100%; height: auto; overflow: hidden; }
+
+/* 바탕 · 글씨 띠 · 한 무대 창 · 벽감 */
+.su-women-e .we-p0 { fill: var(--card); }
+.su-women-e .we-band { fill: #F3E2B4; }
+.su-women-e .we-win { fill: var(--soft); }
+.su-women-e .we-rings { fill: none; stroke: var(--gold); stroke-width: .8; stroke-opacity: .28; }
+.su-women-e .we-n0 { fill: #EDBF9C; }
+.su-women-e .we-n1 { fill: #CCDAAF; }
+.su-women-e .we-n2 { fill: #EBD394; }
+.su-women-e .we-nline { fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-linejoin: round; }
+.su-women-e .we-arch { fill: none; stroke: var(--gold); stroke-width: 2.2; stroke-linejoin: round; }
+.su-women-e .we-arch2 { fill: none; stroke: var(--gold); stroke-width: .8; }
+.su-women-e .we-ground { fill: var(--leaf); fill-opacity: .4; }
+.su-women-e .we-vst { fill: var(--gold); }
+
+/* 후광 · 별 · 달 */
+.su-women-e .we-hrim { fill: none; stroke: #B08A3A; stroke-width: 1.6; }
+.su-women-e .we-hrim2 { fill: none; stroke: #D9BC6E; stroke-width: .7; }
+.su-women-e .we-star { fill: var(--gold); }
+.su-women-e .we-moon { fill: var(--gold); }
+.su-women-e .we-sun { fill: #E9C46A; stroke: var(--gold); stroke-width: 1; }
+
+/* 글씨 — 아치 띠 세 말(띠 안에 새김 · 테 없음) · 이름표(아치 판) */
+.su-women-e .we-aw { font-size: 20px; font-weight: 800; letter-spacing: .06em; }
+.su-women-e .we-aw-hot { fill: #A4471F; }
+.su-women-e .we-aw-bloom { fill: #4F6B22; }
+.su-women-e .we-aw-money { fill: #8A5E14; }
+.su-women-e .we-gem { fill: var(--gold); }
+.su-women-e .we-tag-hot .mk-pq-rose { fill: var(--apri2); }
+.su-women-e .we-tag-money .mk-pq-gold { fill: var(--halo); }
+.su-women-e .we-tag-bloom .mk-pq-sage { fill: var(--glbg); }
+.su-women-e .we-name { font-weight: 800; fill: var(--ink); }
+.su-women-e .we-n20 { font-size: 20px; }
+.su-women-e .we-n19 { font-size: 19px; }
+.su-women-e .we-n18 { font-size: 18px; }
+.su-women-e .we-val { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.su-women-e .we-v-hot { fill: var(--no); }
+.su-women-e .we-v-bloom { fill: var(--base); }
+.su-women-e .we-v-money { fill: var(--ok); }
+.su-women-e .we-need { font-size: 22px; font-weight: 800; fill: var(--ink); }
+.su-women-e .we-hit { fill: var(--card); fill-opacity: 0; pointer-events: all; }
+.su-women-e .we-tag { cursor: pointer; }
+.su-women-e .we-tag:focus { outline: none; }
+.su-women-e .we-tag:focus-visible .mk-plaque { stroke: var(--ink); stroke-width: 2.5; }
+
+/* 든 것 — 불꽃 · 금빛 파도 · 꽃다발 리본(고정 색) */
+.su-women-e .we-fire { fill: #F08A52; stroke: #8C3D1B; stroke-width: .7; }
+.su-women-e .we-fire2 { fill: #D9572B; }
+.su-women-e .we-fire3 { fill: #FFE08E; }
+.su-women-e .we-wv1 { fill: #B98A2E; stroke: #7A5A1C; stroke-width: .6; stroke-linejoin: round; }
+.su-women-e .we-wv2 { fill: #E8BF5C; stroke: #8A6420; stroke-width: .6; stroke-linejoin: round; }
+.su-women-e .we-wv3 { fill: #F8E2A0; stroke: #A8812F; stroke-width: .5; stroke-linejoin: round; }
+.su-women-e .we-streak { fill: #FFF3CF; fill-opacity: .9; }
+.su-women-e .we-foam { fill: #FFF8E4; stroke: #8A6420; stroke-width: .55; stroke-linejoin: round; }
+.su-women-e .we-coin { fill: #F6DC8A; stroke: #8A6420; stroke-width: .6; }
+.su-women-e .we-ribbon { fill: #E9A99A; stroke: #A55E52; stroke-width: .5; }
+
+/* 어두운 판 — 띠 · 벽감은 같은 빛의 짙은 톤 · 띠 글씨는 금빛 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .su-women-e .we-band { fill: #3A2F1C; }
+  :root:not([data-theme="light"]) .su-women-e .we-n0 { fill: #5E3D2B; }
+  :root:not([data-theme="light"]) .su-women-e .we-n1 { fill: #3A4729; }
+  :root:not([data-theme="light"]) .su-women-e .we-n2 { fill: #574628; }
+  :root:not([data-theme="light"]) .su-women-e .we-aw-hot { fill: #F0A07A; }
+  :root:not([data-theme="light"]) .su-women-e .we-aw-bloom { fill: #B5CC7A; }
+  :root:not([data-theme="light"]) .su-women-e .we-aw-money { fill: #E8C26A; }
+}
+:root[data-theme="dark"] .su-women-e .we-band { fill: #3A2F1C; }
+:root[data-theme="dark"] .su-women-e .we-n0 { fill: #5E3D2B; }
+:root[data-theme="dark"] .su-women-e .we-n1 { fill: #3A4729; }
+:root[data-theme="dark"] .su-women-e .we-n2 { fill: #574628; }
+:root[data-theme="dark"] .su-women-e .we-aw-hot { fill: #F0A07A; }
+:root[data-theme="dark"] .su-women-e .we-aw-bloom { fill: #B5CC7A; }
+:root[data-theme="dark"] .su-women-e .we-aw-money { fill: #E8C26A; }
+
+/* 움직임 — 꽃 · 별 · 불꽃만(머리카락은 부품이 흔듦) · transform 만 · 글씨는 움직이지 않음 */
+.su-women-e .we-nod, .su-women-e .we-twinkle, .su-women-e .we-flame { transform-box: fill-box; transform-origin: 50% 100%; }
+.su-women-e .we-twinkle { transform-origin: 50% 50%; }
+@media (prefers-reduced-motion: no-preference) {
+  .su-women-e .we-nod0 { animation: we-nod 7s ease-in-out infinite alternate; }
+  .su-women-e .we-nod1 { animation: we-nod 8.5s ease-in-out -3s infinite alternate; }
+  .su-women-e .we-twinkle { animation: we-tw 6s ease-in-out infinite alternate; }
+  .su-women-e .we-flame { animation: we-fl 2.4s ease-in-out infinite alternate; }
+}
+@keyframes we-nod { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+@keyframes we-tw { from { transform: scale(.97); } to { transform: scale(1.03); } }
+@keyframes we-fl { from { transform: scale(.97, .95); } to { transform: scale(1.02, 1.04); } }
+@media (prefers-reduced-motion: reduce) {
+  .su-women-e * { animation: none !important; }
+}

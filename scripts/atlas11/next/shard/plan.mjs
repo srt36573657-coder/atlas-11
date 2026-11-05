@@ -23,14 +23,17 @@ export const COST = { // local 은 2026-11-05 41949468910 로 새로 잼(주문 
 };
 export const SPLITTABLE = ['en', 'co', 'range', 'past', 'grow'];
 const START = {local: 5, live: 8}; // 검사 하나를 띄우는 초(노드 · 브라우저 · 자료) — 몫마다 한 번씩 더 듦
-const SETUP = {local: 50, live: 32}; // 작업마다 준비 초(저장소 받기 · 브라우저 · local 은 묶고 띄우기)
+const SETUP = {local: 78, live: 32}; // 작업마다 준비 초(저장소 받기 · 브라우저 · local 은 묶고 띄우기 — local 2026-11-05 실측 75 ~ 80)
 const UNKNOWN = {local: 150, live: 300}; // COST 에 없는 쪽 — 어림만
 const MAXN = 20;
 /** 한 작업 안에서 함께 도는 검사 수 — 사장님 2026-11-05 04:42(+03) 「속도를 지금 보다 5배 빠르게 하는 방법 찾아서 작업을 하라」(주문 1023 [0])
  *  깃허브 공개 저장소 실행기는 4코어인데 검사가 하나씩 돌아 한 코어만 씀 → local 은 셋씩 함께(쪽 묶음은 쪽마다 · 나눌 수 있는 쪽은 작업마다 몫 셋으로)
  *  live 는 하나 그대로(실제 사이트를 한꺼번에 두드리면 「자료를 못 받음」이 남 — 아래 page 의 max-parallel 6 과 같은 까닭) */
 export const PAR_IN = Object.freeze({local: 3, live: 1});
-const SP = [0, 1, 1.8, 2.4, 2.8]; // k 개를 함께 돌릴 때 하나씩보다 몇 배 일을 하나(어림 · 4코어 · 브라우저 셈) — 실측으로 고침
+/** 셋씩 함께 돌 때 쪽마다 느려지는 배수 = 함께 돈 초 ÷ 혼자 돈 초(2026-11-05 41954062442 ÷ 41949468910 실측 · 주문 1042) — 모르는 쪽은 1.6
+ *  en 은 기다림이 많아 셋이 함께여도 그대로(1.0) · cal · gdr · rivals · misc 는 화면 셈이 무거워 두 배 가까이 → 무거운 쪽은 혼자 한 작업에 두게 됨 */
+export const SLOW = Object.freeze({en: 1, past: 1.5, co: 1.43, range: 1.8, grow: 1.4, cal: 1.77, gdr: 1.76, chx: 1.05, gift: 1.02, theme: 1.07, essence: 1, kakao: 1.28, surge: 1.21, help: 1.1, next: 1.16,
+  share: 1, sage: 1.09, hold: 1, why11: 1, why: 1, today: 1.58, rivals: 2.27, misc: 2.28, cond: 1.42, jinhwa: 1.23, roman: 1, su: 1, white: 1});
 /** 느린 휴대폰 흉내로 시간을 재는 검사(check_su · check_white) — 함께 돌면 잰 시간이 늘어 틀리게 걸림 → 작업 안에서 혼자 먼저 돎(워크플로 SOLO 와 같게) */
 export const SOLO = Object.freeze(['su', 'white']);
 
@@ -49,29 +52,32 @@ export const parseSplit = s => Object.fromEntries(String(s || '').split(',').map
 export function makePlan({names, local, en = null, split = {}, par = local ? 20 : 10, maxJobs = 20, J = local ? PAR_IN.local : PAR_IN.live}) {
   const mode = local ? 'local' : 'live', s = START[mode], setup = SETUP[mode];
   const known = n => COST[mode][n] != null, C = n => COST[mode][n] ?? UNKNOWN[mode];
-  const sp = k => SP[Math.max(1, Math.min(k, SP.length - 1))];
+  const f = n => (J > 1 ? SLOW[n] ?? 1.6 : 1); // 함께 돌 때 느려지는 배수(J 가 하나면 1)
   const force = {...split, ...(en ? {en} : {})}; // 손으로 준 몫 수 = 그 쪽에 쓸 작업 수(작업마다 몫 J 개)
-  /** 쪽 묶음 하나가 걸리는 초 — 혼자 도는 쪽(SOLO)은 차례로 먼저 · 나머지는 J 개씩 함께 */
+  /** 쪽 묶음 하나가 걸리는 초 — 쪽 하나면 혼자(느려짐 없음) · 혼자 쪽(SOLO)끼리는 차례로 · 나머지는 J 칸에 긴 것부터 넣은 끝나는 때(느려짐 배수 곱함) */
   const binTime = pages => {
-    const so = pages.filter(p => SOLO.includes(p)), rest = pages.filter(p => !SOLO.includes(p)).map(C);
-    return so.reduce((a, p) => a + C(p), 0) + (rest.length ? Math.max(Math.max(...rest), rest.reduce((a, b) => a + b, 0) / sp(Math.min(J, rest.length))) : 0);
+    if (pages.length === 1) return C(pages[0]);
+    const so = pages.filter(p => SOLO.includes(p)), rest = pages.filter(p => !SOLO.includes(p)).map(p => C(p) * f(p)).sort((a, b) => b - a);
+    const slot = new Array(Math.max(1, J)).fill(0); for (const t of rest) { let i = 0; for (let q = 1; q < slot.length; q++) if (slot[q] < slot[i]) i = q; slot[i] += t; }
+    return so.reduce((a, p) => a + C(p), 0) + (rest.length ? Math.max(...slot) : 0);
   };
+  const fits = (b, n) => (SOLO.includes(n) ? b.pages.every(p => SOLO.includes(p)) : !b.pages.some(p => SOLO.includes(p))); // 혼자 쪽은 혼자 쪽끼리만(다른 검사와 한 작업에 두지 않음)
   let best = null, fewest = null;
   for (let T = 40; T <= 4000; T += 5) { // 목표 초 — 몫 · 묶음이 이 안에 들게
     const N = {}; // 쪽마다 작업 수 — 나눌 수 있는 쪽은 작업 N 개 × 몫 J 개(작업 하나가 몫 J 개를 함께 돎)
-    for (const n of names) N[n] = SPLITTABLE.includes(n) ? Math.min(MAXN, Math.max(1, force[n] ?? Math.ceil((C(n) - s) / Math.max(1, T * sp(J) - J * s)))) : 1;
+    for (const n of names) N[n] = SPLITTABLE.includes(n) ? Math.min(MAXN, Math.max(1, force[n] ?? Math.ceil((C(n) - s) * f(n) / J / Math.max(1, T - s * f(n))))) : 1;
     const jobs = [];
     for (const n of names) {
       const P = N[n] * J; if (!SPLITTABLE.includes(n) || P < 2) continue;
       for (let k = 1; k <= N[n]; k++) {
         const toks = Array.from({length: J}, (_, j) => { const i = (k - 1) * J + j + 1; return `${n}${i}@${n}@${i}/${P}`; }); // 몫 이름@쪽@k/n — 몫마다 결과 파일 이름 = 몫 이름(gather 가 1 ~ P 를 합침)
-        jobs.push({job: n + k, pages: toks.join(' '), base: n, shard: '', cost: Math.ceil(((C(n) - s) / N[n] + J * s) / sp(J))});
+        jobs.push({job: n + k, pages: toks.join(' '), base: n, shard: '', cost: Math.ceil(((C(n) - s) / (N[n] * J) + s) * f(n))}); // 몫 J 개가 함께 — 몫 하나 초 × 느려짐
       }
     }
     const whole = n => !SPLITTABLE.includes(n) || N[n] * J < 2;
     const bins = [];
     for (const n of names.filter(n => whole(n) && known(n)).sort((a, b) => C(b) - C(a) || (a < b ? -1 : 1))) {
-      const b = bins.find(b => binTime([...b.pages, n]) <= T); if (b) { b.pages.push(n); b.cost = Math.ceil(binTime(b.pages)); } else bins.push({pages: [n], cost: C(n)});
+      const b = bins.find(b => fits(b, n) && binTime([...b.pages, n]) <= T); if (b) { b.pages.push(n); b.cost = Math.ceil(binTime(b.pages)); } else bins.push({pages: [n], cost: C(n)});
     }
     for (const b of bins) jobs.push({job: b.pages.join('-'), pages: b.pages.join(' '), base: '', shard: '', cost: b.cost});
     const unknown = names.filter(n => whole(n) && !known(n)).map(n => ({job: n, pages: n, base: '', shard: '', cost: C(n)}));

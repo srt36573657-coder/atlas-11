@@ -1,0 +1,159 @@
+/* 수르 — 「멈춤」 탭 큰 그림 둘(su-stop-art.js 짝 · 주문 1023 「머스크 판 4」 · 심사 1회 뒤 새로 씀)
+   무하 「달과 별」(1902) · 「장식 인물」(1905) — 밤하늘 판 · 금빛 말굽 아치 · 상아 옷 · 구릿빛 / 꿀빛 머리 · 살구와 연두 파스텔
+   여인 · 이름표 · 둥근 틀 안은 고정 색(어두운 판에서도 크림 · 상아 그대로 — judge-r1 5) · 밤하늘만 판마다 어두워짐
+   글씨 18px 넘게 · 글씨 둘레 바탕색 테(paint-order: stroke) · 글씨는 처음부터 진하게(움직임 없음)
+   움직임은 별 · 모래 · 머리칼에만(transform) · 움직임 줄이기면 모두 멈춤 */
+.su-stop-art {
+  --ss-sky1: #1C2A4C; --ss-sky2: #33507E; --ss-sky3: #B98A80;
+  --ss-ink: #3A2417; --ss-skin: #FAE8D6; --ss-blush: #EFA77E; --ss-lips: #C5654A;
+  --ss-gown: #F8F0DF; --ss-gown2: #E9DCBF; --ss-fold: #B79A62; --ss-fold2: #879E62; --ss-fold3: #C08479;
+  --ss-sage: #CADAAE; --ss-sage2: #98B072; --ss-rose: #F3CCC6; --ss-rose2: #DCA58E;
+  --ss-hq: #B4532A; --ss-hq2: #DE8B55; --ss-hj: #D6A245; --ss-hj2: #F2CD7C; --ss-hj3: #A97A22;
+  --ss-gold: #D3A64B; --ss-gold2: #EDD597; --ss-cream: #FFF5E0; --ss-navy: #16213C; --ss-rib: #1B2948;
+  --ss-moon1: #FFF6DC; --ss-moon2: #F1E2B4; --ss-moon3: #E3CC8E;
+  --ss-med1: #F3EEDB; --ss-med2: #D8E2C3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .su-stop-art { --ss-sky1: #0B1120; --ss-sky2: #17223E; --ss-sky3: #4A3334; }
+}
+:root[data-theme="dark"] .su-stop-art { --ss-sky1: #0B1120; --ss-sky2: #17223E; --ss-sky3: #4A3334; }
+.ss-journal { --ss-sky3: #5E5274; } /* 매매일지 — 아래 칸이 밤하늘에 녹도록 밝은 판도 보랏빛 밤 */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ss-journal { --ss-sky3: #3A2E44; } }
+:root[data-theme="dark"] .ss-journal { --ss-sky3: #3A2E44; }
+.su-stop-art { display: block; width: 100%; height: auto; overflow: hidden; }
+
+/* 하늘 · 금빛 · 달빛 · 둥근 틀 안 */
+.ss-sk1 { stop-color: var(--ss-sky1); } .ss-sk2 { stop-color: var(--ss-sky2); } .ss-sk3 { stop-color: var(--ss-sky3); }
+.ss-au1 { stop-color: var(--gold); } .ss-au2 { stop-color: var(--ss-gold2); }
+.ss-mo1 { stop-color: var(--ss-moon1); } .ss-mo2 { stop-color: var(--ss-moon2); } .ss-mo3 { stop-color: var(--ss-moon3); }
+.ss-me1 { stop-color: var(--ss-med1); } .ss-me2 { stop-color: var(--ss-med2); }
+
+/* 아치 틀 · 모자이크 */
+.ss-band { stroke: none; }
+.ss-edge { fill: none; stroke: var(--ss-gold); stroke-width: 1.5; }
+.ss-edge2 { fill: none; stroke: var(--ss-gold2); stroke-width: 1; }
+.ss-adot { fill: var(--ss-navy); }
+.ss-mbar { fill: var(--ss-navy); }
+.ss-m1 { fill: var(--ss-gold); } .ss-m2 { fill: #9DB861; } .ss-m3 { fill: #EFA77E; }
+
+/* 별과 달 */
+.ss-moon { fill: var(--ss-gold); }
+.ss-sp, .ss-st { fill: var(--ss-gold2); }
+
+/* 후광(보름달) · 둥근 틀 */
+.ss-hring3 { fill: none; stroke: var(--ss-gold2); stroke-width: 1; stroke-dasharray: 2 5; }
+.ss-hdisk { stroke: none; }
+.ss-hring { fill: none; stroke: var(--ss-gold); stroke-width: 2.4; }
+.ss-hring2 { fill: none; stroke: var(--ss-gold); stroke-width: 1; }
+.ss-medband { fill: var(--ss-navy); }
+.ss-meddisk { stroke: none; }
+.ss-sp2 { fill: var(--ss-gold); }
+
+/* 여인 — 채운 모양 + 초승달 꼴 바깥 선(.ss-ink) */
+.ss-ink { fill: var(--ss-ink); }
+.ss-skin { fill: var(--ss-skin); }
+.ss-blush { fill: var(--ss-blush); opacity: .34; }
+.ss-lips { fill: var(--ss-lips); }
+.ss-gown { fill: var(--ss-gown); } .ss-gown2 { fill: var(--ss-gown2); }
+.ss-fold { fill: var(--ss-fold); } .ss-fold2 { fill: var(--ss-fold2); } .ss-fold3 { fill: var(--ss-fold3); }
+.ss-sage { fill: var(--ss-sage); } .ss-sage2 { fill: var(--ss-sage2); }
+.ss-rose { fill: var(--ss-rose); } .ss-rose2 { fill: var(--ss-rose2); }
+.ss-hq { fill: var(--ss-hq); } .ss-hq2 { fill: var(--ss-hq2); }
+.ss-hj { fill: var(--ss-hj); } .ss-hj2 { fill: var(--ss-hj2); } .ss-hj3 { fill: var(--ss-hj3); }
+.ss-gold, .ss-gem { fill: var(--ss-gold); } .ss-gold2 { fill: var(--ss-gold2); }
+.ss-page { fill: #FFFAEE; } .ss-bl { fill: var(--ss-fold); }
+.ss-feather { fill: var(--ss-cream); }
+
+/* 모래시계 */
+.ss-glass { fill: var(--ss-moon1); fill-opacity: .35; }
+.ss-glassl { fill: none; stroke: var(--ss-ink); stroke-width: 1.3; }
+.ss-sand, .ss-grain { fill: #C8963A; }
+.ss-sheen { fill: none; stroke: #FFFFFF; stroke-width: 1.2; stroke-linecap: round; opacity: .8; }
+.ss-post, .ss-plate { fill: var(--ss-gold); stroke: var(--ss-ink); stroke-width: .9; }
+
+/* 파스텔 지평 · 꽃 덩굴 */
+.ss-sun1 { fill: #F1B48F; } /* 복숭아빛 노을 */
+.ss-sun2 { fill: #ECC97E; } /* 금빛 노을 */
+.ss-pline { fill: none; stroke: var(--ss-gold); stroke-width: 1.2; }
+.ss-stem { fill: #8FAE55; }
+.ss-leaf { fill: #9DB861; stroke: var(--ss-ink); stroke-width: .7; }
+.ss-pet { fill: #F3B58E; stroke: var(--ss-gold); stroke-width: .8; }
+.ss-flc { fill: var(--ss-gold); }
+.ss-fl2 .ss-pet { fill: #F7D2B8; stroke: #C98F5E; stroke-width: .5; }
+.ss-fl3 .ss-pet { fill: #F7DCC4; stroke: var(--ss-gold); stroke-width: .8; }
+.ss-fl4 .ss-pet { fill: #F5C2A2; stroke: var(--ss-gold); stroke-width: .5; }
+.ss-bud { fill: #EFA77E; stroke: var(--ss-gold); stroke-width: .8; }
+
+/* 그림에 녹인 글씨 · 받침 글씨판 */
+.ss-archt { font-size: 19px; font-weight: 700; letter-spacing: .06em; fill: var(--ss-gold2); }
+.ss-plq { fill: var(--ss-gold2); stroke: var(--ss-gold); stroke-width: 1.6; }
+.ss-plql { fill: none; stroke: var(--ss-gold); stroke-width: 1; }
+.ss-plqt { font-size: 20px; font-weight: 800; letter-spacing: .05em; fill: #5A3517; } /* 리본 띠 안에 새김 — 테 없음 */
+
+/* 별자리 이름표 — 크림 · 금 두루마리(공용 scroll) 위 짙은 밤색 글자 · 바깥 끝에 작은 금 메달 */
+.ss-q { font-size: 18px; font-weight: 700; fill: #3A2417; } /* 고른 크림 판 위 — 테 없음 */
+.ss-pill { fill: #F7EDD7; }
+.ss-lab-on .ss-pill { fill: #F1DFAE; }
+.ss-lab-cur .ss-pill { fill: #F9D9BF; }
+.ss-pill-l { fill: none; stroke: #B08A3A; stroke-width: 1.1; }
+.ss-pill-l2 { fill: none; stroke: #D9BC6E; stroke-width: .6; }
+.ss-lab-cur .ss-pill-l { stroke: #D9743F; stroke-width: 1.8; }
+.ss-md { fill: #C9A24A; stroke: #8C6A26; stroke-width: 1; }
+.ss-md-off { fill: #FBF3E1; stroke: #E3C77A; stroke-width: 1; }
+.ss-md-on { fill: #D9B25E; stroke: #FFF6DE; stroke-width: 1; }
+.ss-md-cur { fill: #EFA77E; stroke: #FFF6DE; stroke-width: 1.2; }
+.ss-gname { font-size: 18px; font-weight: 800; letter-spacing: .1em; fill: var(--ss-gold2); paint-order: stroke; stroke: var(--ss-navy); stroke-width: 4px; stroke-linejoin: round; }
+.ss-road { fill: none; stroke: var(--ss-gold2); stroke-width: 1.8; stroke-dasharray: 1 6; stroke-linecap: round; }
+.ss-road-on { stroke: var(--ss-gold); stroke-width: 2.4; stroke-dasharray: none; }
+.ss-ring { fill: none; stroke: #EFA77E; stroke-width: 2.6; }
+.ss-num { font-size: 18px; font-weight: 800; fill: #2B1A10; }
+
+/* 머리색 — 공용 머리 부품의 변수만 이 그림에서 바꿈(어두운 판에서도 같은 색) · ① 구릿빛 · ② 꿀빛 */
+.ss-quiz .mk-hair { --hb: #A9481F; --hd: #62240D; --hl: #D98552; }
+.ss-journal .mk-hair { --hb: #CC9A42; --hd: #8A5D1B; --hl: #F1D08C; }
+.ss-crown .ss-gold { fill: #C9A24A; }
+
+/* 매매일지 — 돌 의자 · 방석 · 띠(크림 두루마리) · 세 판 · 달 · 빈 칸 꽃 메달 */
+.ss-stone { fill: #D9CDB3; }
+.ss-stone2 { fill: #EDE3CC; }
+.ss-carve { fill: none; stroke: #B79A62; stroke-width: .8; }
+.ss-shoe { fill: #B9746A; }
+.ss-dais { fill: #E9DCBF; }
+.ss-dline { fill: none; stroke: var(--ss-gold); stroke-width: 1.2; }
+.ss-ribt { font-size: 22px; font-weight: 800; fill: #5A3517; }
+.ss-ribt-s { font-size: 19px; }
+.ss-ribn { font-size: 26px; fill: #9C4F24; }
+.ss-pnl { fill: #FFF5E0; fill-opacity: .14; stroke: #C9A24A; stroke-width: 1.2; } /* 밤하늘에 녹는 반투명 크림(여인보다 어둡게) */
+.ss-pl2 { fill: none; stroke: #E3C77A; stroke-width: .7; stroke-opacity: .6; }
+.ss-mdisk { fill: var(--ss-moon1); }
+.ss-mrim { fill: none; stroke: var(--ss-gold); stroke-width: 1.6; }
+.ss-mlit { fill: var(--ss-gold); }
+.ss-mlit-no { fill: #EFA77E; }
+.ss-mdl { fill: var(--ss-moon1); stroke: var(--ss-gold); stroke-width: 1.4; }
+.ss-mdl2 { fill: none; stroke: var(--ss-gold2); stroke-width: 1; }
+.ss-div { stroke: #C9A24A; stroke-width: .8; stroke-opacity: .7; }
+.ss-pd { font-size: 19px; font-weight: 800; fill: #FFF5E0; }
+.ss-pv { font-size: 18px; font-weight: 700; fill: #FFF5E0; }
+.ss-pr { font-size: 18px; font-weight: 700; fill: #EDD597; }
+.ss-pm { font-size: 18px; font-weight: 700; fill: #E3D3AE; }
+.ss-tone-g { fill: #B5D68E; } .ss-tone-y { fill: #F0CB6A; } .ss-tone-r { fill: #F2A285; }
+
+/* 움직임 — 별 반짝(크기) · 모래 알갱이 · 머리칼 끝 흔들림(9 ~ 13초) · 머리칼 0.6초 들어옴 · 지금 별 숨 쉼 — 모두 transform(덩굴 · 글씨는 멈춤) */
+@media (prefers-reduced-motion: no-preference) {
+  .ss-tw { transform-box: fill-box; transform-origin: center; animation: ss-tw 4.6s ease-in-out infinite; }
+  .ss-t1 { animation-delay: -1.2s; } .ss-t2 { animation-delay: -2.4s; } .ss-t3 { animation-delay: -3.5s; }
+  .ss-sway-l, .ss-sway-l2 { transform-box: fill-box; transform-origin: 100% 0; animation: ss-sway 11s ease-in-out infinite alternate; }
+  .ss-sway-r, .ss-sway-r2 { transform-box: fill-box; transform-origin: 0 0; animation: ss-sway 13s ease-in-out infinite alternate-reverse; }
+  .ss-sway-l2 { animation-duration: 9s; } .ss-sway-r2 { animation-duration: 10s; }
+  .ss-pulse { transform-box: fill-box; transform-origin: center; animation: ss-pulse 2.8s ease-in-out infinite; }
+  .ss-grain { animation: ss-grain 1.5s linear infinite; } .ss-g1 { animation-delay: -.5s; } .ss-g2 { animation-delay: -1s; }
+  .ss-whip { animation: ss-in .6s ease-out both; }
+}
+@keyframes ss-tw { 0%, 100% { transform: scale(.7); } 50% { transform: scale(1.15); } }
+@keyframes ss-sway { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+@keyframes ss-pulse { 0%, 100% { transform: scale(.88); } 50% { transform: scale(1.12); } }
+@keyframes ss-grain { from { transform: translateY(0); } to { transform: translateY(22px); } }
+@keyframes ss-in { from { transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) {
+  .su-stop-art, .su-stop-art * { animation: none !important; }
+}

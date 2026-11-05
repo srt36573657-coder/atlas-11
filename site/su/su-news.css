@@ -1,0 +1,93 @@
+/* 수르 신문 짜임 — 주문 1023 「머스크 판 4」 [목표] 「큰 값 한 줄 → 움직이는 그림 70% → 설명 두 줄 → 출처」
+   사장님 2026-11-05 04:06(+03) 「너무 글이 많다. 지면 신문 구조를 유지하면서 움직이는 그림이 70%가 되게끔 UI/UX를 대수정하라」
+   390 × 844: 머리 줄 56 → 이름 · 큰 값 한 줄 약 48 → 그림 620(폭 390 가득) → 누르는 곳(있을 때) → 설명 두 줄 → 「자세히」(닫힘) → 출처
+   그림이 화면에서 실제로 보이는 넓이(머리 줄 아래 · 다음 단추와 탭 위) = 약 71% · 색은 su-art.css 변수만 */
+
+/* 머리 줄 — 첫 화면은 만수르 바로가기(둥근 금빛 알약 · 누르는 자리 48 넘게) */
+.su-top .su-mansour { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 48px; min-width: 48px; margin: 0; padding: 0 14px;
+  border-radius: 999px; border-bottom: 0; background: linear-gradient(90deg, var(--halo), var(--gold2)); box-shadow: inset 0 0 0 2px var(--gold); color: var(--ink); text-decoration: none; }
+.su-top .su-mansour b { font-size: 19px; font-weight: 800; letter-spacing: .02em; }
+.su-top .su-mansour i { font-style: normal; font-size: 18px; }
+
+/* 이름과 큰 값 한 줄 */
+.su-news { padding-top: 0; }
+.su-news > .su-head1 { display: flex; align-items: center; gap: 2px 10px; flex-wrap: nowrap; min-height: 0; padding: 2px 0 0; background: none; }
+.su-news > .su-head1 .su-h1 { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 22px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-wrap: nowrap; }
+.su-news > .su-head1 .su-step { flex: 0 1 auto; }
+.su-news > .su-head1 .su-big1 { flex: 0 0 auto; margin: 0; padding: 0; background: none; }
+.su-news > .su-head1 .su-bv { margin: 0; line-height: 1; gap: 0 4px; flex-wrap: nowrap; white-space: nowrap; }
+.su-news > .su-head1 .su-bv b { font-size: 30px; }
+.su-news > .su-head1 .su-bv span, .su-news > .su-head1 .su-bv em { font-size: 19px; }
+.su-news > .su-head1 .su-bv b.su-needv { font-size: 19px; }
+
+/* 큰 그림 — 화면 폭 가득(옆 여백 밖으로) · 390 폭에서 높이 620 */
+.su-news > .su-hero { margin: 2px calc(-1 * max(16px, env(safe-area-inset-left, 0px))) 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px))); width: auto; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.su-news > .su-hero::before, .su-news > .su-hero::after { content: none; }
+.su-news > .su-hero > svg { display: block; width: 100%; height: auto; max-width: 100%; }
+
+/* 누르는 곳(「왜 사?」 답 단추 · 한 달 전 약속) — 그림 바로 아래 */
+.su-news > .su-act { display: grid; gap: 10px; margin: 10px 0 0; }
+.su-news > .su-act .su-ans { margin: 0; }
+
+/* 설명 두 줄 — 무엇을 셌나 · 그래서 */
+.su-news > .su-two { display: grid; gap: 4px; margin: 12px 0 0; }
+.su-news > .su-two .su-bl { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.4; }
+.su-news > .su-two .su-mean { margin: 0; font-size: 19px; line-height: 1.45; }
+
+/* 「자세히」 — 닫혀 있음 · 지운 것 없이 모두(주문 1023 [2] 3 · 4) · 둥글고 넉넉하게([6] 4) */
+.su-more { margin: 16px 0 0; border-radius: 26px; background: var(--card); box-shadow: inset 0 0 0 2px var(--gold2), 0 2px 0 var(--gold); }
+.su-mores { display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 6px 20px; cursor: pointer; list-style: none; border-radius: 26px; }
+.su-mores::-webkit-details-marker { display: none; }
+.su-mores b { font-size: 21px; font-weight: 800; }
+.su-mores span { font-size: 17px; color: var(--mute); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.su-mores::after { content: "▾"; margin-left: auto; font-size: 22px; color: var(--gold); transition: transform .35s ease; }
+.su-more[open] > .su-mores::after { transform: rotate(180deg); }
+.su-more > :not(summary) { margin-left: 12px; margin-right: 12px; }
+.su-more > :last-child { margin-bottom: 14px; }
+.su-more .su-kick { font-size: 17px; color: var(--mute); }
+
+/* 옛 기록 더 보기 — 이름이 보이는 접힘(기록 탭 · 토론 차례) */
+.su-oldrec { margin: 10px 0 0; border-radius: 20px; box-shadow: inset 0 0 0 1px var(--gold2); }
+.su-oldrecs { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 16px; cursor: pointer; list-style: none; }
+.su-oldrecs::-webkit-details-marker { display: none; }
+.su-oldrecs b { font-size: 19px; }
+.su-oldrecs span { font-size: 17px; color: var(--mute); }
+
+/* 출처 — 맨 아래(안전 문장 포함) */
+.su-news > .su-src { margin-top: 16px; }
+.su-news > .su-src .su-safe { margin: 6px 0 0; font-size: 17px; }
+
+@media (prefers-reduced-motion: reduce) { .su-mores::after { transition: none; } }
+
+/* 무하 그림에는 제 장식이 있음 — 옛 어깨 덩굴(su-art.js dress)은 새 그림 칸에 달지 않음(화면 폭 390 을 9px 넘기던 것) */
+.su-news > .su-hero > .su-orn { display: none; }
+/* 낱말 풀이 · 쉬운 말 셈 — 「자세히」 안에서 */
+.su-glbox { margin-top: 10px; }
+
+/* 좁은 휴대폰(320 · 360) — 머리 줄에 수르 · 만수르 · 찾기 · 선물 · 글씨가 넘치지 않게 · 큰 값 줄은 접힘 */
+@media (max-width: 374px) {
+  .su-top { gap: 4px; }
+  .su-top .su-tools { gap: 4px; }
+  .su-top .su-mansour { padding: 0 8px; }
+  .su-top .su-mansour b { font-size: 17px; }
+  .su-top .su-mansour i { display: none; }
+  .su-news > .su-head1 { flex-wrap: wrap; }
+  .su-news > .su-head1 .su-h1 { white-space: normal; }
+}
+/* 그림이 오기 전 같은 크기 자리(글이 먼저 그려지고 그림이 와도 쪽이 밀리지 않음 — 느린 휴대폰 첫 그림 2.5초) */
+.su-news > .su-hero.su-wait { aspect-ratio: 390 / 620; background: radial-gradient(60% 40% at 50% 38%, var(--halo), transparent 70%); }
+/* 다음 단추 — 그림보다 무겁지 않게(심사 1회 덧: 짙은 갈색 단추가 그림보다 먼저 눈을 끔) · 상아 바탕에 금테 · 어두운 판은 변수로 저절로 */
+.su-next { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--gold), 0 2px 0 var(--gold2); }
+.su-next .su-nk { color: var(--mute); }
+/* 아름다움 심사 2회(docs/design/su-musk-2026-11-05/judge-r2.md · 사이트 틀) — 어두운 판 위 하늘을 남보라 대신 따뜻한 밤색(갈색 그림과 이어지게) · 아래 막대 바탕을 꽉 채움(「듣기」와 「다음」 틈에 뒤 글이 비치지 않게) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --sky1: #231C15; } }
+:root[data-theme="dark"] { --sky1: #231C15; }
+.su-dock { background: var(--bg); }
+/* 아래 막대가 그림 아래 끝을 덜 덮게(꽉 찬 바탕으로 바꾼 뒤 첫 화면 「꽃이 될」 둘째 줄 「싹」이 가려짐) — 걸음 표시를 얇게 · 막대 아래 여백을 줄임 */
+.su-news ~ .su-dock { padding-bottom: 4px; }
+.su-news ~ .su-dock .su-prog { padding-top: 4px; margin-bottom: 4px; }
+.su-news ~ .su-dock .su-prog li { height: 5px; }
+/* 심사 3회 — ① 큰 그림 칸에 바탕을 깔아 뒷하늘(su-sky · 빈 바탕을 찾아 날다가 그림 옆 틈으로 지나감)이 그림 둘레 틈에 가는 사선으로 비치지 않게(하늘은 그림 아래 글판 뒤에서 그대로 낢 — 주문 0054 [6] 9)
+   ② 꽉 찬 금빛 「선물」 단추가 그림보다 먼저 눈을 끎 → 다른 단추처럼 금테 · 짙은 글씨 */
+.su-news > .su-hero { background: linear-gradient(180deg, var(--sky1), var(--sky2)); }
+#su .su-top .su-gift { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--gold); }

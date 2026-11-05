@@ -1,0 +1,160 @@
+/* 수르 무하 공용 부품 꾸밈(su-mucha-kit.js 와 짝 · kit-brief.md)
+   살 · 머리 · 옷 · 두루마리 · 메달 · 꽃대는 고정 색(어두운 판에서도 크림 · 상아 · 파스텔 그대로)
+   어두운 판에서 바뀌는 것 = 바탕 위에 바로 놓이는 빛살 · 점줄 · 덩굴 줄기뿐 · 움직임은 머리 타래만(transform) · 움직임 줄이기면 멈춤 */
+.mk-ink{fill:#5B3A29}
+.mk-ink2{fill:#7A5440}
+.mk-skin{fill:#F7E6D6}
+.mk-skin2{fill:#EDD0BC}
+.mk-blush{fill:#F0B9A8;fill-opacity:.36}
+.mk-lip{fill:#C9766C}
+.mk-lip2{fill:#E29E94}
+.mk-eyew{fill:#FDF8F2}
+.mk-i0{fill:#7A5238}
+.mk-i1{fill:#5F7F57}
+.mk-i2{fill:#56708F}
+.mk-pup{fill:#2E1E16}
+.mk-t0{--hb:#9A4A2C;--hd:#5E2A18;--hl:#C9805A}
+.mk-t1{--hb:#C38A45;--hd:#85561F;--hl:#E7C07F}
+.mk-t2{--hb:#7A4A2E;--hd:#47291A;--hl:#A97A58}
+.mk-t3{--hb:#C08672;--hd:#85503F;--hl:#E4B7A4}
+.mk-t4{--hb:#573A2A;--hd:#2E1D14;--hl:#8A664F}
+.mk-t5{--hb:#D48F5A;--hd:#985A31;--hl:#F0C397}
+.mk-t6{--hb:#B39C76;--hd:#786446;--hl:#DCCDA9}
+.mk-t7{--hb:#B5602E;--hd:#763617;--hl:#DE9260}
+.mk-hb{fill:var(--hb,#9A4A2C)}
+.mk-hd{fill:var(--hd,#5E2A18)}
+.mk-hl{fill:var(--hl,#C9805A)}
+.mk-hair0{fill:#9A4A2C}
+.mk-hair1{fill:#C38A45}
+.mk-hair2{fill:#7A4A2E}
+.mk-hair3{fill:#C08672}
+.mk-hair4{fill:#573A2A}
+.mk-hair5{fill:#D48F5A}
+.mk-hair6{fill:#B39C76}
+.mk-hair7{fill:#B5602E}
+.mk-hf0{fill:#FBF1DC}
+.mk-hf1{fill:#E8EFD8}
+.mk-hf2{fill:#FCE6D6}
+.mk-hf3{fill:#F8E2DE}
+.mk-hray{fill:#C9A24A;fill-opacity:.2}
+.mk-rim{fill:none;stroke:#B08A3A}
+.mk-rim2{fill:none;stroke:#D9BC6E}
+.mk-mob{fill:none;stroke:#F6EBCB}
+.mk-mo-g{fill:#C9A24A}
+.mk-mo-b{fill:#4E6A8E}
+.mk-mo-n{fill:#6F8F5A}
+.mk-mo-d{fill:#E3C77A}
+.mk-nightb{fill:none;stroke:#2E3A5C}
+.mk-star{fill:#E9CD82}
+.mk-star2{fill:#F6E6B8}
+.mk-moon{fill:#EED38A}
+.mk-pe-a{fill:#EFB4A2;stroke:#C08a5a;stroke-width:.4}
+.mk-pe-b{fill:#F3D69C;stroke:#C08a5a;stroke-width:.4}
+.mk-cl-ivory{fill:#F8F0DF}
+.mk-cld-ivory{fill:#D3BF98}
+.mk-cl-peach{fill:#F6D3BC}
+.mk-cld-peach{fill:#D8A27F}
+.mk-cl-sage{fill:#D5E1BF}
+.mk-cld-sage{fill:#98AD78}
+.mk-cl-rose{fill:#F3CCC6}
+.mk-cld-rose{fill:#CC8E86}
+.mk-cl-cream{fill:#F4E8CC}
+.mk-cld-cream{fill:#C8B183}
+.mk-collar{fill:#E9D08C;stroke:#B08A3A;stroke-width:.7}
+.mk-gold{fill:#C9A24A}
+.mk-gold2{fill:#E3C77A}
+.mk-gl{fill:none;stroke:#B08A3A;stroke-width:1.1;stroke-linecap:round}
+.mk-gl2{fill:none;stroke:#EAD497;stroke-width:.7;stroke-linecap:round}
+.mk-gl3{fill:#FFF6DE;fill-opacity:.75}
+.mk-gem-r{fill:#B5485A;stroke:#E3C77A;stroke-width:.5}
+.mk-gem-b{fill:#3F6E9A;stroke:#E3C77A;stroke-width:.5}
+.mk-gem-g{fill:#4F8A6A;stroke:#E3C77A;stroke-width:.5}
+.mk-pearl{fill:#FBF6EC;stroke:#C9B48A;stroke-width:.35}
+.mk-fl-rose{fill:#EBA6A0;stroke:#B5655E;stroke-width:.4}
+.mk-fl-rose2{fill:#F4C3BC;stroke:#B5655E;stroke-width:.35}
+.mk-fl-daisy{fill:#FFFAF1;stroke:#BFA06A;stroke-width:.35}
+.mk-fl-poppy{fill:#E27A5C;stroke:#9C4630;stroke-width:.4}
+.mk-fl-lily{fill:#FCF3DE;stroke:#C2A15C;stroke-width:.4}
+.mk-fl-c{fill:#E2B24C}
+.mk-fl-c2{fill:#4A2E22}
+.mk-leaf{fill:#8FAE5E;stroke:#657F3C;stroke-width:.35}
+.mk-vstem0{fill:#7C8B4E}
+.mk-sc-cream{fill:#FBF3E1}
+.mk-scd-cream{fill:#E6D2A9}
+.mk-sc-rose{fill:#F7DED7}
+.mk-scd-rose{fill:#DFAFA3}
+.mk-sc-sage{fill:#E4ECD3}
+.mk-scd-sage{fill:#B9CB9C}
+.mk-sc-gold{fill:#F4E3B2}
+.mk-scd-gold{fill:#D5B86C}
+.mk-scl{fill:#86633A}
+.mk-bar-gold{fill:#EBD290}
+.mk-barl-gold{fill:#A88334}
+.mk-bud-gold{fill:#F2DC9E;stroke:#A88334;stroke-width:.6}
+.mk-bar-rose{fill:#F0BAB1}
+.mk-barl-rose{fill:#B07060}
+.mk-bud-rose{fill:#F6CFC8;stroke:#B07060;stroke-width:.6}
+.mk-bar-sage{fill:#C0D3A0}
+.mk-barl-sage{fill:#7E9258}
+.mk-bud-sage{fill:#D4E2BC;stroke:#7E9258;stroke-width:.6}
+.mk-bar-red{fill:#DE8C70}
+.mk-barl-red{fill:#9C4A33}
+.mk-bud-red{fill:#EBA78F;stroke:#9C4A33;stroke-width:.6}
+.mk-bar-blue{fill:#ADC1DC}
+.mk-barl-blue{fill:#5D7699}
+.mk-bud-blue{fill:#C6D5E8;stroke:#5D7699;stroke-width:.6}
+.mk-vstem{fill:#6F7F45}
+.mk-vstalk{fill:none;stroke:#6F7F45;stroke-width:1;stroke-linecap:round}
+.mk-vleaf{fill:#9DB861;stroke:#657F3C;stroke-width:.45}
+.mk-vvein{fill:none;stroke:#657F3C;stroke-width:.55;stroke-linecap:round}
+.mk-vbud{fill:#EFA77E;stroke:#B06A47;stroke-width:.5}
+.mk-bead{fill:#B8913F}
+.mk-bead2{fill:#D9BC6E}
+.mk-ray{fill:#C9A24A;fill-opacity:.1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mk-sc-cream,:root:not([data-theme="light"]) .mk-pq-cream{fill:#EADCBE}
+:root:not([data-theme="light"]) .mk-sc-rose,:root:not([data-theme="light"]) .mk-pq-rose{fill:#E9CCC3}
+:root:not([data-theme="light"]) .mk-sc-sage,:root:not([data-theme="light"]) .mk-pq-sage{fill:#D3DDBF}
+:root:not([data-theme="light"]) .mk-sc-gold,:root:not([data-theme="light"]) .mk-pq-gold{fill:#E5D19C}
+:root:not([data-theme="light"]) .mk-vstem{fill:#A7B873}
+:root:not([data-theme="light"]) .mk-vstalk{stroke:#A7B873}
+:root:not([data-theme="light"]) .mk-bead{fill:#D9B25E}
+:root:not([data-theme="light"]) .mk-bead2{fill:#EAD08A}
+:root:not([data-theme="light"]) .mk-ray{fill:#E3C77A;fill-opacity:.1}
+}
+:root[data-theme="dark"] .mk-sc-cream,:root[data-theme="dark"] .mk-pq-cream{fill:#EADCBE}
+:root[data-theme="dark"] .mk-sc-rose,:root[data-theme="dark"] .mk-pq-rose{fill:#E9CCC3}
+:root[data-theme="dark"] .mk-sc-sage,:root[data-theme="dark"] .mk-pq-sage{fill:#D3DDBF}
+:root[data-theme="dark"] .mk-sc-gold,:root[data-theme="dark"] .mk-pq-gold{fill:#E5D19C}
+:root[data-theme="dark"] .mk-vstem{fill:#A7B873}
+:root[data-theme="dark"] .mk-vstalk{stroke:#A7B873}
+:root[data-theme="dark"] .mk-bead{fill:#D9B25E}
+:root[data-theme="dark"] .mk-bead2{fill:#EAD08A}
+:root[data-theme="dark"] .mk-ray{fill:#E3C77A;fill-opacity:.1}
+.mk-sway,.mk-sway2{transform-box:fill-box;transform-origin:50% 0;animation:mk-sw 12s ease-in-out infinite alternate}
+.mk-sway2{animation-duration:9s;animation-direction:alternate-reverse}
+@keyframes mk-sw{from{transform:rotate(-1.4deg)}
+to{transform:rotate(1.4deg)}
+}
+@media (prefers-reduced-motion: reduce){.mk-sway,.mk-sway2{animation:none}
+}
+.mk-bud-shut{fill:#C8584A;stroke:#8E3328;stroke-width:.6}
+.mk-lf-gold{fill:#EBD290;stroke:#B08A3A;stroke-width:.8}
+.mk-lv-gold{fill:#B08A3A}
+.mk-lf-rose{fill:#F0BAB1;stroke:#B08A3A;stroke-width:.8}
+.mk-lv-rose{fill:#B07060}
+.mk-lf-sage{fill:#C0D3A0;stroke:#B08A3A;stroke-width:.8}
+.mk-lv-sage{fill:#6F844C}
+.mk-lf-red{fill:#DE8C70;stroke:#B08A3A;stroke-width:.8}
+.mk-lv-red{fill:#9C4A33}
+.mk-pq-cream{fill:#F4E4C1}
+.mk-pq-rose{fill:#F4D5CB}
+.mk-pq-sage{fill:#DCE7C7}
+.mk-pq-gold{fill:#F0DCA2}
+.mk-rbp{fill:none;stroke:none}
+.mk-rbf{fill:#6B4A2A;fill-opacity:.32}
+.mk-gl4{fill:none;stroke:#B08A3A;stroke-width:.75;stroke-linejoin:round}
+.mk-lvs{fill:none;stroke:#6B4A2A;stroke-opacity:.32;stroke-width:.6;stroke-linecap:round}
+.mk-hx{fill:#2A140A;fill-opacity:.32}
+.mk-hy{fill:#FFF0DA;fill-opacity:.36}
+.mk-fl-in{fill:#FFF6E4;fill-opacity:.7}
+.mk-shut2{fill:#F2A08F;fill-opacity:.8}

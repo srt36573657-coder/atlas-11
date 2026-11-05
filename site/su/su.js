@@ -66,7 +66,7 @@ function sayBtn() {
     try {
       const sy = window.speechSynthesis; if (!sy) return;
       if (sy.speaking) { sy.cancel(); return; }
-      const t = [...document.querySelectorAll('#su h1, #su .su-head .su-big, #su .su-head .su-mean, #su .su-hero .su-cap p')].map(e => e.innerText.replace(/\s+/g, ' ')).join('. ');
+      const t = [...document.querySelectorAll('#su h1, #su .su-head .su-big, #su main > .su-two p')].map(e => e.innerText.replace(/\s+/g, ' ')).join('. '); // 신문 짜임 — 큰 값 · 설명 두 줄(주문 1023)
       const u = new SpeechSynthesisUtterance(t); u.lang = 'ko-KR'; u.rate = 0.9; sy.speak(u);
     } catch { /* 읽어 주기가 없는 기기 */ }
   });
@@ -100,13 +100,48 @@ export function source(asOf, S, note = null, kick = null) {
   return h('footer', {class: 'su-src'}, kick ? h('p', {}, h('b', {text: '이 쪽 '}), kick) : null,
     h('p', {}, h('b', {text: '출처 '}), '네이버 증권 그날 마지막 값 · ' + josa(NAME, '가') + ' 센 지난 기록'),
     h('p', {}, h('b', {text: '조사 날짜 '}), '자료 ' + (ymd(asOf) ?? NEED) + (got ? ' · 받은 때 ' + got : '')),
-    note ? h('p', {text: note}) : null);
+    note ? h('p', {text: note}) : null,
+    h('p', {class: 'su-safe', text: SAFE})); // 안전 문장은 출처 칸 맨 아래(신문 짜임 — 주문 1023 [1] 2 「그림 밖 문장은 큰 값 · 설명 두 줄 · 출처뿐」)
 }
+/* ── 무하 그림(주문 1023 「머스크 판 4」 [3] 4 · [5] · [6] — 일꾼 열하나가 서로 모르게 만든 부품 · docs/design/su-musk-2026-11-05/pic-brief.md) ── */
+const MODS = new Map();
+/** 부품 꾸밈 파일 — 그 부품을 처음 쓸 때 받음(첫 화면은 index.html 이 미리 받음 · 느린 휴대폰 첫 그림 2.5초 — 주문 1023 [1] 6) · 다 받을 때까지(2.5초까지) 기다려 맨 그림이 보이지 않게 */
+const cssOf = href => {
+  if (!href || document.querySelector('link[href="' + href + '"]')) return Promise.resolve();
+  return new Promise(ok => { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; l.addEventListener('load', ok, {once: true}); l.addEventListener('error', ok, {once: true}); setTimeout(ok, 2500); document.head.append(l); });
+};
+const modOf = name => { if (!MODS.has(name)) MODS.set(name, import('/su/' + name + '.js').then(async M => { await cssOf(M.CSS); return M; })); return MODS.get(name); };
+/** 부품 하나와 그 자료 — {M, d, name} · 못 받으면 null(옛 그림이 그 자리) */
+export async function artMod(name, arg = null) { try { const M = await modOf(name); return {M, d: await M.load(get, arg), name}; } catch (e) { console.error(e); return null; } }
+/** 큰 그림 칸 — data-g = 부품 이름(화면 넓이 셈) · 「왜 사?」처럼 누를 때마다 다시 그리는 쪽은 artMod 를 한 번 받고 이것만 부름 */
+export function artFig(A, opt = {}) {
+  if (!A) return null;
+  try { const svg = A.M.picture(A.d, opt); return svg ? h('figure', {class: 'su-fig su-hero su-art4', 'data-g': A.name}, svg) : null; } catch (e) { console.error(e); return null; }
+}
+export const art = async (name, arg = null, opt = {}) => artFig(await artMod(name, arg), opt);
+/** 무하 포스터 틀(su-mucha.js) — 쪽의 값 그래프를 그대로(가로 · 세로 같은 비율로만 줄여) 아치 창 안에 · 그래프 모양은 바꾸지 않음([6] 6) */
+export async function framed(old, title, kind, tone = 'calm') {
+  try { const g = old?.querySelector?.('svg'); if (!g) return null; const M = await modOf('su-mucha'); const svg = M.frame(g, {title, kind, tone}); return svg ? h('figure', {class: 'su-fig su-hero su-art4', 'data-g': 'su-mucha'}, svg) : null; } catch (e) { console.error(e); return null; }
+}
+/** 새 그림이 나오면 큰 자리에 · 옛 그림은 「자세히」 서랍에(지우지 않음 — [2] 3 · 4) */
+export const heroOf = (pic, old) => (pic ? {hero: pic, hero2: old ?? null} : {hero: old ?? null, hero2: null});
+/** 큰 그림 자리를 바로 두고(같은 크기 · 글이 먼저 그려짐 — 느린 휴대폰 첫 그림 2.5초 [1] 6) 부품이 오면 채움 · 못 오면 옛 그림을 그 자리로(서랍에서 꺼냄)
+ *  make = () => Promise<svg|null> · 검사는 data-wait 가 없어질 때까지 기다림 */
+function slot(name, make, old) {
+  const fig = h('figure', {class: 'su-fig su-hero su-art4 su-wait', 'data-g': name, 'data-wait': ''});
+  const back = () => { if (old) fig.replaceWith(old); else fig.remove(); };
+  make().then(svg => { if (svg) { fig.replaceChildren(svg); fig.removeAttribute('data-wait'); fig.classList.remove('su-wait'); } else back(); }).catch(e => { console.error(e); back(); });
+  return {hero: fig, hero2: old ?? null};
+}
+/** 부품 그림 — {hero, hero2} */
+export const artHero = (name, arg, old, opt = {}) => slot(name, async () => { const A = await artMod(name, arg); return A ? A.M.picture(A.d, opt) : null; }, old);
+/** 무하 틀 그림 — {hero, hero2} */
+export const frameHero = (old, title, kind, tone = 'calm') => slot('su-mucha', async () => { const g = old?.querySelector?.('svg'); if (!g) return null; const M = await modOf('su-mucha'); return M.frame(g, {title, kind, tone}); }, old);
 function dock(nx, step) {
   if (!nx) return null;
   return h('nav', {class: 'su-dock', 'aria-label': '다음 화면'},
     step ? h('ol', {class: 'su-prog', 'aria-label': '여덟 화면 가운데 ' + step + '번째'}, STEPS.slice(1).map((x, i) => h('li', {class: i + 1 < step ? 'su-pd' : i + 1 === step ? 'su-pc' : ''}))) : null,
-    h('div', {class: 'su-dk'}, sayBtn(), h('a', {class: 'su-next', href: nx.href}, h('img', {class: 'su-parrot', src: '/media/makbi-icon.svg', alt: '', 'aria-hidden': 'true', width: '34', height: '34'}), h('span', {class: 'su-nk', text: nx.k ?? (nx.step ? nx.step + ' / 8' : '다음')}), h('b', {text: nx.label}), h('i', {'aria-hidden': 'true', text: '›'}))));
+    h('div', {class: 'su-dk'}, sayBtn(), h('a', {class: 'su-next', href: nx.href}, h('img', {class: 'su-parrot', src: '/media/su-parrot.svg', alt: '', 'aria-hidden': 'true', width: '34', height: '34'}), h('span', {class: 'su-nk', text: nx.k ?? (nx.step ? nx.step + ' / 8' : '다음')}), h('b', {text: nx.label}), h('i', {'aria-hidden': 'true', text: '›'}))));
 }
 /** 탭이 보이는 차례 — 중요한 차례(주문 1023 [4] · 에이전트 열하나가 따로 매긴 차례를 보르다로 셈 44 · 32 · 20 · 13 · 반대편 셋이 못 깸 · tabs-11.md): 21곳 · 지도 · 멈춤 · 기록
  *  쪽마다 tab 값은 그대로(0 21곳 · 1 지도 · 2 기록 · 3 멈춤 = TABS 차례) — 보이는 차례만 바꿈 · 「탭 차례는 기승전결보다 중요순이 앞선다」([4] 6) */
@@ -117,20 +152,26 @@ function tabs(active) {
     return h('a', {class: 'su-tab' + (i === active ? ' su-on' : ''), href, 'aria-current': i === active ? 'page' : null, 'aria-label': (k + 1) + '번째 · ' + t},
       s('svg', {class: 'su-ti', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d})), h('span', {text: t})); }));
 }
-/** 쪽 하나 */
+/** 쪽 하나 — 신문 1면(주문 1023 「머스크 판 4」 [목표] 「큰 값 한 줄 → 움직이는 그림 70% → 설명 두 줄 → 출처」)
+ *  머리 줄(수르 · 만수르 바로가기 — 첫 화면 [2] 1 · 걸음 · 찾기 · 선물 · 글씨) → 이름과 큰 값 한 줄 → 그림(390 폭에서 높이 620 = 화면의 73%)
+ *  → 설명 두 줄(무엇을 셌나 · 그래서) → 「자세히」(닫힘 — 지운 것 없이 모두: 왜 여기 있나 · 옛 그림 · 중간 값 · 여섯 칸 · 네 칸 · 그림 · 목록 · 자세한 값 · 지도 · 전문가 · 본질 · 지킴이) → 출처 · 조사 날짜 · 안전 문장
+ *  가장 좋은 글은 없는 글이다 — 그림 밖 문장은 큰 값 · 설명 두 줄 · 출처뿐([1] 2) · 이름과 숫자는 그림 안 이름표([1] 3) · 기능은 하나도 빼지 않고 서랍으로([2] 3 · 4) */
 export function page(m) {
   document.title = (m.title ? m.title + ' · ' : '') + NAME;
-  const st = m.step ? STEPS[m.step] : null;
-  const head = h('header', {class: 'su-top top'}, h('a', {class: 'su-brand', href: '#/', text: NAME}),
-    st ? h('span', {class: 'su-step'}, h('i', {text: PHASE[st[1]]}), h('span', {text: m.step + ' / 8 · ' + st[0]})) : null, tools());
-  const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title}), hk = location.hash;
+  const st = m.step ? STEPS[m.step] : null, hk = location.hash;
+  const man = m.mansour ? h('a', {class: 'su-mansour', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '만수르 바로가기 · 새 창'}, h('b', {text: '만수르'}), h('i', {'aria-hidden': 'true', text: '↗'})) : null; // 만수르는 첫 화면 맨 위 머리 줄에(사장님 2026-11-05 04:14(+03) · [2] 1 — 누르면 새 창)
+  const step = st ? h('span', {class: 'su-step'}, h('i', {text: PHASE[st[1]]}), h('span', {text: m.step + ' / 8 · ' + st[0]})) : null;
+  const head = h('header', {class: 'su-top top'}, h('a', {class: 'su-brand', href: '#/', text: NAME}), man ?? step, tools()); // 첫 화면은 걸음 표시가 큰 값 줄로(머리 줄에 만수르)
+  const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title});
   if (m.proper) h1.setAttribute('data-proper', '');
-  const main = h('main', {class: 'su-page' + (m.compact ? ' su-compact' : '')}, // compact = 첫 화면 한 장에 21곳이 다 보이게(주문 0054 [2] 2)
-    h('p', {class: 'su-safe', text: SAFE}),
-    h('section', {class: 'su-head', 'aria-label': '큰 값'}, h1, m.lead ?? null, m.big ? bigVal(m.big) : null), // lead = 「왜 여기 있나」 먼저(주문 0054 [2] 4) // 머리 줄(때 · 시장)은 맨 아래 출처 칸으로 — 첫 화면은 큰 값과 그림이 차지
-    m.hero ?? null,
+  const top = h('section', {class: 'su-head su-head1', 'aria-label': '큰 값'}, h1, man ? step : null, m.big ? h('div', {class: 'su-big su-big1'}, h('p', {class: 'su-bv'}, valText(m.big))) : null);
+  const two = m.big ? h('div', {class: 'su-two', 'aria-label': '설명 두 줄'}, h('p', {class: 'su-bl', text: m.big.label}), meanLine(m.big, true)) : null;
+  const more = h('details', {class: 'su-more'}, h('summary', {class: 'su-mores'}, h('b', {text: '자세히'}), h('span', {text: '값 · 그림 · 목록 · 셈 모두'})),
+    m.kick ? h('p', {class: 'su-kick'}, h('b', {text: '이 쪽 '}), m.kick) : null,
+    m.lead ?? null, // 「왜 여기 있나」(주문 0054 [2] 4 — 이제 그림 안 길이 먼저 · 글은 서랍에)
+    m.big ? sixTiles(m.big.six, {label: '큰 값을 센 길'}) : null, // 큰 값의 여섯 칸 — 서랍 맨 앞(검사: details.su-more > figure.su-six)
+    m.hero2 ?? null, // 옛 큰 그림(값 그래프 그대로 · 네 줄 글과 함께)
     m.mids?.length ? h('section', {class: 'su-mids n' + m.mids.length, 'aria-label': '중간 값'}, m.mids.map(midCard)) : null,
-    m.big ? sixTiles(m.big.six, {label: '큰 값을 센 길'}) : null,
     m.honest ?? null,
     ...(m.figs ?? []),
     ...(m.body ?? []),
@@ -138,10 +179,11 @@ export function page(m) {
     m.big ? sixMap([m.big, ...(m.mids ?? []), ...(m.rows ?? [])]) : null,
     proBox(m.pro),
     ...(m.after ?? []),
-    lateGod(G => G.godTag(hk)), // 방 지킴이 신(주문 0054 [5] 5)
-    source(m.asOf, m.S, m.note ?? null, m.kick ?? null));
-  const man = m.mansour ? h('a', {class: 'su-mansour', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '만수르 바로가기 · 새 창'}, h('b', {text: '만수르'}), h('span', {text: '바로가기 ↗'})) : null; // 만수르는 첫 화면 맨 위에 바로가기(사장님 2026-11-05 04:14(+03) · 주문 1023 [2] 1 — 누르면 새 창)
-  return [man, head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
+    m.note ? h('p', {class: 'su-note', text: m.note}) : null,
+    lateGod(G => G.godTag(hk))); // 방 지킴이 신(주문 0054 [5] 5)
+  const act = m.act?.filter(Boolean).length ? h('div', {class: 'su-act', 'aria-label': '누르는 곳'}, m.act.filter(Boolean)) : null; // 「왜 사?」 답 단추처럼 기능에 꼭 있는 누르는 곳(지우지 않음 — [2] 3)
+  const main = h('main', {class: 'su-page su-news'}, top, m.hero ?? null, act, two, more, source(m.asOf, m.S));
+  return [head, main, dock(m.next, m.step), tabs(m.tab ?? 0)];
 }
 /** 그린 뒤 — 낱말 풀이를 붙이고 풀이 없이 남은 어려운 낱말을 셈(main data-hard · data-hard-words · data-glossed) */
 export function afterPaint(root) {
@@ -153,8 +195,13 @@ export function afterPaint(root) {
   main.dataset.glossed = glossed.join(',');
   main.dataset.hard = String(left.length);
   main.dataset.hardWords = left.join(',');
-  const f = main.querySelector('.su-src'); // 쉬운 말 셈을 맨 아래에(시안 2 장점) — 기계가 센 값
-  if (f) { f.querySelector('.su-wc')?.remove(); f.append(h('p', {class: 'su-wc'}, h('b', {text: '쉬운 말 '}), '풀이 붙인 낱말 ' + glossed.length + '개 · 풀이 없이 남은 어려운 낱말 ' + left.length + '개' + (left.length ? ' (' + left.join(', ') + ')' : ''))); }
+  // 신문 짜임(주문 1023 [1] 2 「그림 밖 문장은 큰 값 · 설명 두 줄 · 출처뿐」) — 낱말 풀이와 쉬운 말 셈은 지우지 않고 「자세히」 서랍 맨 앞으로(앞 주문 1807 과 부딪힘 → [2] 5 로 이 주문을 따름)
+  const more = main.querySelector(':scope > details.su-more'), wc = h('p', {class: 'su-wc'}, h('b', {text: '쉬운 말 '}), '풀이 붙인 낱말 ' + glossed.length + '개 · 풀이 없이 남은 어려운 낱말 ' + left.length + '개' + (left.length ? ' (' + left.join(', ') + ')' : ''));
+  if (more) {
+    more.querySelector('.su-glbox')?.remove();
+    const out = [...main.querySelectorAll('.su-gl')].filter(g => !g.closest('details.su-more'));
+    more.querySelector(':scope > summary')?.after(h('section', {class: 'su-glbox', 'aria-label': '낱말 풀이'}, h('h2', {class: 'su-ft', text: '낱말 풀이'}), ...out, wc));
+  } else { const f = main.querySelector('.su-src'); if (f) { f.querySelector('.su-wc')?.remove(); f.append(wc); } } // 쉬운 말 셈을 맨 아래에(시안 2 장점) — 기계가 센 값
   requestAnimationFrame(() => setTimeout(() => dress(root), 0)); // 무하처럼 — 어깨 덩굴 · 꽃 띠 · 네 모서리 꽃 · 글과 겹치면 숨김(주문 1833) · 첫 그림이 뜬 뒤에(느린 휴대폰에서 첫 화면을 늦추지 않게)
 }
 export function notFound(t) { return {title: '찾지 못했어요', h1: '찾지 못했어요', tab: 0, body: [h('p', {class: 'su-lead', text: '? ' + t}), h('a', {class: 'su-ask', href: '#/'}, h('b', {text: '처음으로'}))]}; }
@@ -191,8 +238,9 @@ async function vHome() {
   const sec = (label, title, list, note) => (list.length ? h('section', {class: 'su-list', 'aria-label': label}, h('h2', {class: 'su-ft', text: title}), note ? h('p', {class: 'su-note', text: note}) : null, h('div', {class: 'su-shelf', role: 'list'}, list.map(card))) : null); // 유튜브 앱 선반처럼 옆으로 넘김(쪽은 옆으로 안 움직임)
   FIRST = firstCode(bl, mo);
   const first = all[0] ?? null;
+  const fun = funnel({total: S?.coN, conds: bl.say, near: near ? bl.rows.map(r => r.name) : [], pick: pick ? bl.rows.map(r => r.name) : [], miss: bl.miss, cap: e.say});
   return {title: '오늘 꽃 조건', tab: 0, step: null, kick: (dateKo(asOf) === '?' ? '' : dateKo(asOf) + ' · ') + '코스피 · 코스닥', h1: '오늘 꽃 조건', big: e.big,
-    hero: funnel({total: S?.coN, conds: bl.say, near: near ? bl.rows.map(r => r.name) : [], pick: pick ? bl.rows.map(r => r.name) : [], miss: bl.miss, cap: e.say}),
+    ...frameHero(fun, '오늘 꽃 조건', 'matrix', 'bloom'),
     mids: e.mids, honest: honestOf(B),
     body: [sec('꽃이 될 회사', pick ? '꽃 조건에 모두 맞은 회사' : near ? '조건에 가장 가까운 회사' : '꽃이 될 회사', blI, near ? '조건에 다 맞지는 않아요. ' + josa(NAME, '가') + ' 고른 회사가 아니에요.' : null),
       sec('돈이 몰린 회사', '돈이 몰린 회사', moI, '업종이 한 달 동안 시장보다 더 오른 곳의 대장이에요.')],
@@ -223,7 +271,7 @@ async function vCo(code) {
   const indX = n => (TH?.inds ?? []).find(i => i?.n === n)?.x;
   const inds = [...bl.rows.map(r => ({n: r.ind, x: indX(r.ind)})), ...mo.map(r => ({n: r.ind, x: r.x}))].filter((x, i, a) => x.n && Number.isFinite(x.x) && a.findIndex(y => y.n === x.n) === i).sort((a, b) => b.x - a.x);
   return {title: c.name, tab: 1, step: 2, proper: true, kick: [c.market === 'KOSDAQ' ? '코스닥' : c.market === 'KOSPI' ? '코스피' : null, ind ? ind + ' 업종' : null].filter(Boolean).join(' · '), h1: c.name, big: e.big,
-    hero, mids: e.mids, honest: honestOf(B),
+    ...artHero('su-co-art', code, hero), mids: e.mids, honest: honestOf(B), // 무하 아치 창 안 한 달 줄 · 끝값 이름표 · 「왜 여기 있나」 길(주문 1023)
     figs: [(r0?.kind === 'pick' || r0?.kind === 'near') ? matrix([{name: c.name, ok: bl.say.map(t => (r0.kind === 'pick' ? true : !r0.no.map(easy).includes(t)))}], condsOf(bl), {label: c.name + '와 꽃 조건', title: '꽃 조건 셋과 이 회사'}) : null,
       inds.length && ind ? bars(inds.map(x => ({name: x.n, v: x.x, key: x.n})), {label: '업종 · 한 달 동안 시장보다', title: '업종이 시장보다 더 오른 만큼' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: ind}) : null].filter(Boolean),
     body: [...rs.map(reasonCard), ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
@@ -247,8 +295,9 @@ async function vInd(name) {
     [...top, ...extra].map(r => h('a', {class: 'su-row su-irow' + (c0?.code === r.code ? ' su-cur' : ''), href: coHref(r.code)}, h('b', {'data-proper': '', text: r.name}), h('span', {class: 'su-csub', text: '한 달 ' + (Number.isFinite(r.c) ? pct(r.c) : NEED)}))));
   const indX = n => (TH?.inds ?? []).find(i => i?.n === n)?.x;
   const inds = [...bl.rows.map(r => ({n: r.ind, x: indX(r.ind)})), ...mo.map(r => ({n: r.ind, x: r.x})), {n: name, x}].filter((v, i, a) => v.n && Number.isFinite(v.x) && a.findIndex(y => y.n === v.n) === i).sort((a, b) => b.x - a.x);
+  const ib = bars([...top, ...extra].map(r => ({name: r.name, v: r.c, key: r.code})), {label: name + ' 업종 회사 한 달 움직임', hero: true, signed: true, cur: c0?.code ?? null, cap: e.say});
   return {title: name + ' 업종', tab: 1, step: null, kick: '돈의 흐름 · ' + dateKo(M?.asOf) + '까지 한 달', h1: name + ' 업종', big: e.big,
-    hero: bars([...top, ...extra].map(r => ({name: r.name, v: r.c, key: r.code})), {label: name + ' 업종 회사 한 달 움직임', hero: true, signed: true, cur: c0?.code ?? null, cap: e.say}),
+    ...frameHero(ib, name + ' 한 달', 'bars', 'money'),
     mids: e.mids, honest: honestOf(B),
     figs: [known.length ? waffle(100 * up / known.length, 100 * (known.length - up) / known.length, {label: '오른 회사와 오르지 못한 회사', title: '100곳으로 치면 · 오른 곳과 못 오른 곳', la: '오른 곳', lb: '못 오른 곳'}) : null,
       inds.length > 1 ? bars(inds.map(v => ({name: v.n, v: v.x, key: v.n})), {label: '업종 · 한 달 동안 시장보다', title: '다른 업종과 견주면' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: name}) : null].filter(Boolean),
@@ -277,17 +326,20 @@ async function vHub() {
   const e = eHub({B, mine, lastDay}), hon = B?.honest, ms = eMonths({B}), dd = eDays({B}), yy = eYears({B}), nn = eNear({B});
   const drawer = (href, t, v, sub) => h('a', {class: 'su-drawer', href}, h('b', {text: t}), h('span', {class: 'su-dv', text: v}), h('span', {class: 'su-ds', text: sub}), h('i', {'aria-hidden': 'true', text: '›'}));
   return {title: '기록', tab: 2, step: null, kick: ymd(hon?.from) && ymd(hon?.to) ? ymd(hon.from) + '부터 ' + ymd(hon.to) + '까지' : '지난 기록', h1: '지난 기록 한곳', big: e.big,
-    hero: waffle(hon?.rate, hon?.base, {label: '100번에 몇 번 꽃이 됐나 · 조건에 맞은 회사와 아무 회사', hero: true, la: '조건에 맞은 회사', lb: '아무 회사', cap: e.say}),
+    ...artHero('su-rec-art', 'hub', waffle(hon?.rate, hon?.base, {label: '100번에 몇 번 꽃이 됐나 · 조건에 맞은 회사와 아무 회사', hero: true, la: '조건에 맞은 회사', lb: '아무 회사', cap: e.say})),
     mids: e.mids,
     figs: [cols(ms.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|07)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수', title: '달마다 · 못했던 달은 ■'}),
       split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것', title: '꽃이 된 것과 못 된 것'})],
-    body: [h('section', {class: 'su-drawers', 'aria-label': '기록 서랍 여섯'}, h('h2', {class: 'su-ft', text: '기록 서랍 여섯'}),
+    body: [h('section', {class: 'su-drawers', 'aria-label': '기록 서랍 — 중요한 차례'}, h('h2', {class: 'su-ft', text: '기록 서랍 — 중요한 차례'}), // 토론으로 정한 차례(주문 1023 [4] · tabs-11.md 최종): 달마다 → 한 달 뒤 → 내 매매일지 → 못 된 까닭 → 날마다 → 옛 기록 더 보기
       drawer('#/r/m', '달마다', ms.big.v ?? NEED, ms.big.label),
+      drawer('#/j', '한 달 뒤', mine.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length + '번', '한 달 전 약속 — 「그날 정한 대로 했어?」에 답한 수'),
+      drawer('#/j', '내 매매일지', mine.length + '번', '「왜 사?」에 답한 기록 · 이 휴대폰에만'),
       drawer('#/r/w', '못 된 까닭', num(B?.why?.all?.miss) ? num(B.why.all.miss) + '번' : NEED, '조건에 맞고도 꽃이 못 된 횟수'),
       drawer('#/r/d', '날마다', dd.big.v != null ? dd.big.v + '날' : NEED, '지난 60거래일 달력'),
-      drawer('#/r/y', '해마다', yy.big.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, '모든 해 · 100번에 몇 번'),
-      drawer('#/r/n', '가까운 회사', nn.big.v != null ? nn.big.v + ' 대 ' + nn.big.v2 : NEED, '조건에 가까웠던 회사 · 100번에 몇 번'),
-      drawer('#/j', '내 매매일지', mine.length + '번', '「왜 사?」에 답한 기록 · 이 휴대폰에만')), recOthers()],
+      h('details', {class: 'su-oldrec'}, h('summary', {class: 'su-oldrecs'}, h('b', {text: '옛 기록 더 보기'}), h('span', {text: '해마다 · 가까운 회사 · 옛 기록 여덟'})), // 이름이 보이는 접힘
+        drawer('#/r/y', '해마다', yy.big.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, '모든 해 · 100번에 몇 번'),
+        drawer('#/r/n', '가까운 회사', nn.big.v != null ? nn.big.v + ' 대 ' + nn.big.v2 : NEED, '조건에 가까웠던 회사 · 100번에 몇 번'),
+        recOthers()))],
     pro: e.pro,
     next: {href: '#/r/m', label: '몇 달이 나았나?', step: null}, asOf, S, note: '지난 기록은 같은 조건을 지난날에 대어 센 것이에요. 앞날을 정해 주지 않아요.'};
 }
@@ -297,7 +349,7 @@ async function vMonths() {
   const {B, S, asOf} = await base();
   const e = eMonths({B});
   return {title: '달마다', tab: 2, step: null, kick: '그달 꽃 조건으로 고른 회사', h1: '달마다 지난 기록', big: e.big,
-    hero: cols(e.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|04|07|10)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수와 아무 회사', hero: true, cap: e.say}),
+    ...artHero('su-rec-art', 'months', cols(e.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|04|07|10)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수와 아무 회사', hero: true, cap: e.say})),
     mids: e.mids, honest: honestOf(B),
     figs: [bars(e.ms.filter(m => m.rec.complete === true).map(m => ({name: ym(m.month), v: m.rec.rate - m.rec.base, key: m.month, t: (m.rec.rate - m.rec.base >= 0 ? '+' : '−') + Math.abs(Math.round(m.rec.rate - m.rec.base)) + '번'})).reverse(),
       {label: '달마다 아무 회사보다 더 · 덜', title: '아무 회사보다 더(오른쪽) · 덜(왼쪽)', signed: true})],
@@ -309,8 +361,9 @@ async function vMonths() {
 async function vMiss() {
   const {B, S, asOf} = await base();
   const e = eMiss({B}), dd = eDays({B}), hon = B?.honest, code = lastCo?.code ?? null;
+  const sp0 = split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것 · 까닭 셋', hero: true, cap: e.say});
   return {title: '못 된 까닭', tab: 2, step: null, kick: '조건에 맞고도 꽃이 못 된 것', h1: '꽃이 못 된 까닭', big: e.big,
-    hero: split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것 · 까닭 셋', hero: true, cap: e.say}),
+    ...frameHero(sp0, '꽃이 못 된 까닭', 'split', 'calm'),
     mids: e.mids, honest: honestOf(B),
     figs: [cal(dd.ds, {label: '지난 60거래일 달력', title: '날마다 · ● 꽃이 됨 · ■ 못 됨 · ▲ 기다림'}), B?.near?.rec ? waffle(B.near.rec.rate, B.near.rec.base, {label: '가까운 회사 · 100번에 몇 번', title: '조건에 가까웠던 회사는', la: '가까운 회사', lb: '아무 회사'}) : null].filter(Boolean),
     rows: dd.mids, rowsTitle: '지난 60거래일', pro: [...e.pro, ...dd.pro],
@@ -320,32 +373,32 @@ async function vMiss() {
 /* ── 기록 서랍 — 날마다 · 해마다 · 가까운 회사 ── */
 async function vDays() {
   const {B, S, asOf} = await base();
-  const e = eDays({B});
+  const e = eDays({B}), c0 = cal(e.ds, {label: '지난 60거래일 달력', hero: true, cap: e.say});
   return {title: '날마다', tab: 2, kick: ymd(B?.cal?.from) && ymd(B?.cal?.to) ? ymd(B.cal.from) + '부터 ' + ymd(B.cal.to) + '까지' : '지난 60거래일', h1: '날마다 지난 기록', big: e.big,
-    hero: cal(e.ds, {label: '지난 60거래일 달력', hero: true, cap: e.say}), mids: e.mids, honest: honestOf(B),
+    ...frameHero(c0, '날마다', 'cal', 'calm'), mids: e.mids, honest: honestOf(B),
     figs: [bars([{name: '꽃이 됨', v: e.hit, key: 'h', cls: 'g-ok'}, {name: '못 됨', v: e.miss, key: 'm', cls: 'g-no'}, {name: '기다림', v: e.wait, key: 'w', cls: 'g-wait'}], {label: '날마다 고른 회사 · 셋으로', title: '고른 회사를 셋으로 나누면', unit: '번'})],
     pro: e.pro, next: {href: '#/r/y', label: '해마다 보기'}, asOf, S};
 }
 async function vYears() {
   const {B, S, asOf} = await base();
-  const e = eYears({B});
+  const e = eYears({B}), y0 = cols(e.ys.map(([y, v]) => ({v: Number.isFinite(v?.rate) ? v.rate : null, v2: Number.isFinite(v?.base) ? v.base : null, key: y, tick: y + '년', label: Number.isFinite(v?.rate) ? Math.round(v.rate) + '번' : '고른 적 없음'})), {label: '해마다 100번에 몇 번 · 짧은 금 = 아무 회사', hero: true, cap: e.say});
   return {title: '해마다', tab: 2, kick: '모든 해', h1: '해마다 지난 기록', big: e.big,
-    hero: cols(e.ys.map(([y, v]) => ({v: Number.isFinite(v?.rate) ? v.rate : null, v2: Number.isFinite(v?.base) ? v.base : null, key: y, tick: y + '년', label: Number.isFinite(v?.rate) ? Math.round(v.rate) + '번' : '고른 적 없음'})), {label: '해마다 100번에 몇 번 · 짧은 금 = 아무 회사', hero: true, cap: e.say}),
+    ...frameHero(y0, '해마다', 'cols', 'calm'),
     mids: [], honest: honestOf(B), rows: e.rows, rowsTitle: '해마다', pro: e.pro,
     next: {href: '#/r/n', label: '가까운 회사 보기'}, asOf, S};
 }
 async function vNear() {
   const {B, S, asOf} = await base();
-  const e = eNear({B}), rec = B?.near?.rec;
+  const e = eNear({B}), rec = B?.near?.rec, w0 = waffle(rec?.rate, rec?.base, {label: '가까운 회사와 아무 회사 · 100번에 몇 번', hero: true, la: '가까운 회사', lb: '아무 회사', cap: e.say});
   return {title: '가까운 회사', tab: 2, kick: ymd(rec?.from) && ymd(rec?.to) ? ymd(rec.from) + '부터 ' + ymd(rec.to) + '까지' : '지난 기록', h1: '가까운 회사의 지난 기록', big: e.big,
-    hero: waffle(rec?.rate, rec?.base, {label: '가까운 회사와 아무 회사 · 100번에 몇 번', hero: true, la: '가까운 회사', lb: '아무 회사', cap: e.say}), mids: [], honest: honestOf(B), pro: e.pro,
+    ...frameHero(w0, '가까운 회사', 'waffle', 'bloom'), mids: [], honest: honestOf(B), pro: e.pro,
     next: {href: '#/j', label: '내 매매일지 보기'}, asOf, S};
 }
 
 /* ── 길 ── */
-const ctx = {base, get, D, page, notFound, source, midCard, sixBox, proBox, cur, setCur, honestOf, STEPS, afterPaint};
+const ctx = {base, get, D, page, notFound, source, midCard, sixBox, proBox, cur, setCur, honestOf, STEPS, afterPaint, art, artMod, artFig, framed, heroOf, artHero, frameHero};
 const X21 = {base: async () => ({S: await get(D.S)}), get, // 21곳 쪽은 home-summary 만(느린 4G 첫 화면 — 꽃 · 돈 · 왜 자료는 회사 쪽에서)
-   notFound, essBox, setCur, setFirst: c => { if (c) FIRST = c; }, fig: (kind, body, o = {}) => fig(kind, o.label ?? '', body, o)};
+   notFound, essBox, setCur, setFirst: c => { if (c) FIRST = c; }, fig: (kind, body, o = {}) => fig(kind, o.label ?? '', body, o), art, framed, heroOf, artHero, frameHero};
 /** 길 위 회사(④) — 21곳 까닭 상자 · 다음은 출목표(⑤) */
 async function coOnPath(code) {
   const v = await vCo(code); if (!v || !v.big) return v;
