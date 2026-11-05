@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-05T07:18:40.308Z",
+ "at": "2026-11-05T08:52:22.817Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-05",
  "companies": 2557,
@@ -32,29 +32,29 @@
    }
   }
  },
- "seconds": 784,
+ "seconds": 803,
  "time": {
-  "old": 461.3,
-  "new": 295.5,
-  "wall": 784,
+  "old": 521.1,
+  "new": 401.7,
+  "wall": 802.6,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 58.8,
-  "oldShare": 61
+  "oldPct": 64.9,
+  "oldShare": 56.5
  },
  "net": {
-  "req": 5128,
-  "retry": 0,
-  "waitSec": 0,
-  "why": {},
+  "req": 5130,
+  "retry": 2,
+  "waitSec": 2,
+  "why": {
+   "TimeoutError": 2
+  },
   "cut": 0,
   "page": {
-   "retry": 1,
-   "waitSec": 2,
+   "retry": 0,
+   "waitSec": 0,
    "blocked": 0,
-   "why": {
-    "답 없는 요청": 1
-   }
+   "why": {}
   }
  },
  "counts": {
@@ -65,11 +65,11 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 2255개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
+   "why": "바뀐 파일 2314개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
    "made": null,
-   "inputs": 2567,
+   "inputs": 2568,
    "reads": 2557,
-   "note": "옛 화면 파일 몸을 다 못 읽어 기준값을 쓰지 않음"
+   "note": "기준값 새로 씀(파일 2568개 · 값 2557개)"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
