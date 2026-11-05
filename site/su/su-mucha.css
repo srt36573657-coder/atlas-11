@@ -134,6 +134,11 @@
 .su-mucha .mu-barart .mk-lv-sage { fill: #52693A; }
 .su-mucha .mu-barart .mk-lvs { stroke: #5E3F22; stroke-opacity: .72; stroke-width: .8; }
 .mu-sfold { fill: #7E9A5A; }
+/* 8판 — 후광 아치 창 바깥 금테(메달 테와 같은 금) · 장밋빛 잎 잎맥 · 꽃받침 잎맥(모두 고정 색) */
+.mu-nrim { fill: #B08A3A; }
+.mu-rvein { fill: #8C4636; }
+.mu-rveins { fill: none; stroke: #8C4636; stroke-opacity: .8; stroke-width: .65; stroke-linecap: round; }
+.mu-sepv { fill: #4F6A2E; }
 .mu-grass { fill: #6F8A45; }
 :root[data-theme="dark"] .su-mucha .mu-ntend, :root[data-theme="dark"] .su-mucha .mu-grass { fill: #A7B873; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-mucha .mu-ntend, :root:not([data-theme="light"]) .su-mucha .mu-grass { fill: #A7B873; } }

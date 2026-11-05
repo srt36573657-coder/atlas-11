@@ -262,12 +262,14 @@ function medal(it, x, y, i) {
     two ? [text(x, y - 3, lines[0], 'ra-t ra-tf ra-tm-' + tone), text(x, y + 18, lines[1], 'ra-t ra-tf ra-tm-' + tone)] : text(x, y + 6.5, lines[0], 'ra-t ra-tf ra-tm-' + tone));
 }
 
-/* ── ② 셋의 길(일곱째 판 r7-brief.md 「F」 · 심사 6회 6.5 · 6.5 · 6.5) ──
+/* ── ② 셋의 길(여덟째 판 r8-brief.md 「A12」 · 심사 7회 6.5 · 6.5 · 7 예) ──
    제목 = 아치 금선 안쪽 초승달 띠에 휜 글씨(띠의 안쪽 금선은 어깨에서 소용돌이로 풀림) · 메달 여인 v=7 ·
-   머리는 좌우 비대칭 — 왼쪽은 메달 뒤에서 S 로 흘러 왼 세로 판 꼭대기 덩굴손에 감기고 · 오른쪽은 어깨로 흘러내려 말림(뿌리 굵고 끝 가늚 · 후광 위 고리 없음)
-   세로 판 = 폭 42(지난 판 28 의 1.5배) · 꼭대기 백합 기둥머리와 두 소용돌이 · 안은 꽃 원판과 모자이크가 층층이 · 받침 쪽 금선은 아래 꽃 띠로 풀려 말림
-   잎 칸 여덟 = 버들잎(밑동 둥글고 · 가운데 넓은 곳이 길며 · 끝이 들려 덩굴손처럼 말림) · 글은 넓은 곳 가운데(이름 위 · 개수 아래) ·
-   금 잎맥은 밑동에서 끝까지 · 테는 굵기 변하는 금선(아래 굵게 · 위 가늘게) */
+   머리 = 가는 가닥 여섯을 묶은 다발 둘(뿌리 굵고 끝 가늚 · 가운데서 모이고 끝에서 벌어짐) — 메달 뒤에서 나와 S 로 흘러 양쪽 기둥 머리 연꽃을 한 바퀴 감고
+     안으로 말림(고리 아래쪽은 꽃잎 뒤로 들어감) · 가닥마다 끝 길이와 작은 말림이 다름
+   흉상 = 연두 옷 소매에서 나온 손이 펼친 책을 받쳐 듦 · 오른쪽 장 아래에서 낱장 셋이 부채처럼 펼쳐져 「옛 기능」 띠 뒤로 들어감
+   세로 판 = 폭 42 · 꼭대기 백합 기둥머리와 두 소용돌이 · 안은 꽃 원판과 모자이크가 층층이
+   잎 칸 여덟 = 버들잎 · 줄기 마디에서 나온 잎자루 끝에 달림 · 같은 쪽 잎 사이 14 · 글 자리는 비우고 금 잎맥은 글 끝에서 잎 끝까지만
+   줄기 밑동 = 뿌리 다섯이 아래 띠 위로 퍼져 끝이 말리고 · 둘레에 작은 꽃무리와 잎 */
 const AC = [195, 176]; // 아치 가운데(archD 와 같은 타원의 가운데)
 /** 띠 위에 새긴 글 — 띠 가운데 선(부품 ribbon 의 data-path)을 따라 휨 · 흰 테 없음 */
 const onRibbon = (rb, t, cls) => s('text', {class: cls, 'text-anchor': 'middle', 'dominant-baseline': 'central'}, s('textPath', {href: '#' + rb.getAttribute('data-path'), startOffset: '50%', text: t}));
@@ -298,62 +300,106 @@ function roads(d) {
   const cx = 195, cy = 148, R = 72;
   const pastel = g({'data-mucha': 'pastel', class: 'ra-pastel'}, path(archD(0), 'ra-field'), circ(cx, cy, 112, 'ra-glow'), rays(cx, cy, R + 6, 122, {n: 44}));
   const med = medallion({cx, cy, r: R, v: 7, ring: 'petal'});
-  // 오른 어깨에 걸친 크림 겉옷(어깨 선 · 비스듬한 앞섶 · 아래로 모이는 주름 셋 · 금 브로치) — 메달 원 안에서만
+  // 흉상 — 연두 옷 소매(메달 원 안에서만)에서 나온 손이 펼친 책을 받쳐 듦 · 책은 원 아래 테를 넘고 낱장 셋이 「옛 기능」 띠 뒤로
   const clip = s('clipPath', {id: 'ra-mclip'}, circ(cx, cy, R - 1.4));
-  const fold = (a, w0, w1) => path(taper(bez(...a, 18), w0, w1, 0.3), 'w-mfoldc');
-  const mantle = g({'clip-path': 'url(#ra-mclip)', class: 'ra-mantle', 'data-mucha': 'outline'},
-    path(`M${P(cx + 68, cy + 24)}C${P(cx + 52, cy + 30)} ${P(cx + 36, cy + 31)} ${P(cx + 27, cy + 33)}C${P(cx + 19, cy + 42)} ${P(cx + 10, cy + 56)} ${P(cx - 1, cy + 76)}L${P(cx + 70, cy + 76)}Z`, 'w-mantlec'),
-    fold([[cx + 36, cy + 36], [cx + 30, cy + 46], [cx + 22, cy + 58], [cx + 14, cy + 74]], 0.4, 2.2),
-    fold([[cx + 46, cy + 38], [cx + 40, cy + 50], [cx + 33, cy + 62], [cx + 28, cy + 76]], 0.4, 2),
-    fold([[cx + 56, cy + 40], [cx + 52, cy + 52], [cx + 46, cy + 64], [cx + 43, cy + 76]], 0.3, 1.6),
-    path(taper(bez([cx + 27, cy + 33], [cx + 19, cy + 42], [cx + 10, cy + 56], [cx - 1, cy + 76], 20), 0.7, 2.6), 'w-edge'),
-    path(taper(bez([cx + 68, cy + 24], [cx + 52, cy + 30], [cx + 36, cy + 31], [cx + 27, cy + 33], 16), 1.6, 0.6), 'w-edge'),
-    path(taper(bez([cx + 25, cy + 38], [cx + 18, cy + 47], [cx + 10, cy + 60], [cx + 2, cy + 76], 20), 0.5, 1.4), 'w-mgold'),
-    circ(cx + 30, cy + 35, 4.2, 'w-brooch'), circ(cx + 30, cy + 35, 1.9, 'w-brooch2'));
-  // 머리 — 좌우 비대칭 · 메달 뒤(뿌리는 메달에 가려짐)에서 나옴 · 위로 솟는 고리 없음
-  //   왼쪽 큰 다발: 메달 왼쪽에서 나와 S 로 흘러 왼 세로 판 꼭대기 덩굴손을 한 바퀴 감음 · 왼쪽 작은 다발: 아래로 흘러 안쪽으로 말림
-  //   오른쪽 다발 둘: 어깨로 흘러내려 하나는 안으로 · 하나는 바깥으로 작게 말림(굵기 · 끝 소용돌이 크기 다르게)
-  const tresses = g({'data-mucha': 'whiplash', class: 'ra-whiplash'},
-    g({class: 'mk-hair mk-t7'}, lock([[156, 146], [130, 142], [106, 133], [86, 132], [68, 140], [55, 152], [45, 164], [35, 171], [27, 168]], {w: 12, r: 5.6, turn: 1, turns: 1.35})),
-    g({class: 'mk-hair mk-t7 ra-sway ra-o-r'}, lock([[152, 160], [128, 160], [108, 154], [92, 156], [80, 166], [76, 180]], {w: 6, r: 3.8, turn: -1, turns: 1.2})),
-    g({class: 'mk-hair mk-t7 ra-sway2 ra-o-l'}, lock([[238, 148], [264, 152], [281, 165], [287, 183], [280, 199], [270, 209], [268, 220]], {w: 9, r: 5, turn: -1, turns: 1.25})));
-  // 감김 — 덩굴손 줄기 한 토막을 머리 위로 다시 그려 머리가 덩굴손 뒤로 돌아 감긴 듯
-  const wrapFront = g({class: 'ra-wrapf', 'aria-hidden': 'true'}, path(taper([[32.8, 170], [32.5, 165], [32.8, 160]], 1.8, 1.5), 'ra-pvine'));
+  const tome = book(206, 187, -7);
+  const arm = g({'clip-path': 'url(#ra-mclip)', class: 'ra-arm'}, sleeve({x: 149, y: 232, ang: -132, len: 25, w: 12.5, hand: 'hold', dir: 1, tone: 'sage'}));
+  // 머리 — 가는 가닥 여섯을 묶은 다발 둘 · 메달 뒤(뿌리는 메달에 가려짐)에서 나와 S 로 흘러 기둥 머리 연꽃을 한 바퀴 감고 안으로 말림
+  //   왼쪽은 위로 솟았다 내려오고 · 오른쪽은 아래로 처졌다 올라옴(좌우 비대칭) · 고리 아래쪽은 연꽃 뒤로(연꽃을 머리 뒤에 다시 그림)
+  const hairL = skein([[160, 151], [134, 146], [110, 137], [88, 133], [68, 139], [54, 151], [42, 162], [31, 165.5]], {r: 11.5, turn: -1, seed: 0});
+  const hairR = skein([[230, 153], [256, 157], [280, 164], [302, 161], [321, 151], [337, 153], [348, 162], [359, 165.5]], {r: 11.5, turn: 1, seed: 1});
+  const tresses = g({'data-mucha': 'whiplash', class: 'ra-whiplash'}, g({class: 'mk-hair mk-t7'}, hairL, hairR));
   // 제목 — 아치 금선 안쪽 초승달 띠(가운데 두껍고 끝은 가늘게 · 어깨에서 금선이 소용돌이로 풀림)
   const title = archTitle('셋의 길');
   // 부제 — 메달 밑을 감싸는 띠
   const sub = total != null ? '옛 기능 ' + total + '가지 · 여덟 갈래' : '옛 기능 ' + NEED;
   const sRib = ribbon([[64, 229], [124, 249], [195, 256], [266, 249], [326, 229]], {w: 30, tone: 'cream'});
   const subT = onRibbon(sRib, sub, 'ra-rs');
-  // 가운데 줄기 — 아래 띠에서 올라 크게 S 로 휘어(아래는 왼쪽 · 위는 오른쪽) 부제 띠 뒤로 들어감 · 아래 굵고 위 가늚
-  const stem = bez([179, 606], [135, 488], [267, 420], [199, 262], 64);
+  // 가운데 줄기 — 밑동(뿌리)에서 올라 크게 S 로 휘어(아래는 왼쪽 · 위는 오른쪽) 부제 띠 뒤로 들어감 · 아래 굵고 위 가늚
+  const stem = bez([177, 595], [133, 482], [266, 420], [199, 262], 64);
   const sx = y => { for (let i = 1; i < stem.length; i++) if (stem[i][1] <= y) { const a = stem[i - 1], b = stem[i], t = (a[1] - y) / Math.max(0.01, a[1] - b[1]); return a[0] + (b[0] - a[0]) * t; } return 195; };
-  const vine = [path(taper(stem, 11, 2.2, 1.2), 'mk-vstem')];
+  const vine = [path(taper(stem, 10.5, 2.2, 1.2), 'mk-vstem')];
   const tags = [];
+  // 잎 여덟 — 같은 쪽 잎 사이 76(잎 높이 62 · 틈 14) · 왼쪽과 오른쪽이 반 칸씩 엇갈림 · 잎자루는 줄기 마디(잎 가운데보다 14 아래)에서 바깥 위로 휨
+  const SY = 76, Y0 = 303;
   rows.forEach((r, i) => {
-    const side = i % 2 ? 1 : -1, yc = (side < 0 ? 306 : 341) + ((i / 2) | 0) * 70, name = r.name ?? NEED, cnt = Number.isFinite(r.n) ? r.n + '가지' : NEED;
-    const tone = TONES[i % 3], st = sx(yc + 3), bx = st + side * 9, room = Math.floor(side < 0 ? bx - 66 : 324 - bx);
-    const w1 = tw(name, 19) * 0.95, w2 = tw(cnt, 18) * 0.95, fit = leafFit(w1, w2, room), L = Math.min(room, 150, Math.round(fit.L + 0.5 * Math.max(0, room - fit.L))), tx = bx + side * fit.tc * L, sh = fit.tb;
+    const side = i % 2 ? 1 : -1, yc = Y0 + (side < 0 ? 0 : SY / 2) + ((i / 2) | 0) * SY, name = r.name ?? NEED, cnt = Number.isFinite(r.n) ? r.n + '가지' : NEED;
+    const tone = TONES[i % 3], yn = yc + 14, sn = sx(yn), st = sx(yc), bx = st + side * 13, room = Math.floor(side < 0 ? bx - 64 : 326 - bx);
+    const w1 = tw(name, 19) * 0.95, w2 = tw(cnt, 18) * 0.95, fit = leafFit(w1, w2, room), L = Math.min(room, 146, Math.round(fit.L + 0.3 * Math.max(0, room - fit.L))), tx = bx + side * fit.tc * L, sh = fit.tb;
     const tipX = bx + side * (L + 10);
-    vine.push(path(taper([[st, yc + 6], [(st + bx) / 2, yc + 3], [bx + side * 3, yc + 0.5]], 4.4, 2.2), 'mk-vstem'));
+    vine.push(path(taper(bez([sn, yn], [sn + side * 7, yn - 1], [bx - side * 5, yc + 4], [bx + side * 2.5, yc + 0.4], 16), 3.8, 1.7), 'mk-vstem'));
     tags.push(s('a', {href: '#/g/' + r.g, class: 'ra-a', 'aria-label': (r.head ?? name) + ' · ' + cnt, 'data-road': r.g},
       s('rect', {x: f1(Math.min(st - 6, tipX)), y: yc - 32, width: f1(Math.abs(tipX - st) + 6), height: 64, rx: 18, class: 'ra-hit'}),
       leafTag(bx, yc, L, side, tone, fit.tc, Math.max(w1, w2), sh),
-      bloom(st, yc + 3, 10, BLOOM[tone], 5, -90 + i * 15, 'ra-bloom ra-in ra-d' + i),
+      bloom(sn, yn, 6.6, BLOOM[tone], 5, -90 + i * 15, 'ra-bloom ra-in ra-d' + i),
       text(tx, yc - 5, name, 'ra-ln'), text(tx, yc + 19, cnt, 'ra-lc')));
   });
-  // 아래 꽃 띠 — 두 받침 사이 · 윗 금선은 양 끝에서 받침 쪽으로 풀려 말림 · 꽃과 마름모 모자이크
-  const bl = 64, br = 326, b0 = 590;
+  // 아래 꽃 띠 — 두 받침 사이 · 윗 금선은 양 끝에서 받침 쪽으로 풀려 말림 · 꽃과 마름모 모자이크(밑동 둘레는 비움)
+  const bl = 64, br = 326, b0 = 596, foot = 177;
   const topLine = [...coil([[bl + 40, b0], [bl + 8, b0]], 5, -1, 1.25).reverse(), ...coil([[br - 40, b0], [br - 8, b0]], 5, 1, 1.25)];
-  const band = [s('rect', {x: bl, y: b0, width: br - bl, height: 16, rx: 8, class: 'ra-bandbg'}), path(taper(topLine, 0.5, 0.5, 1.3), 'ra-tline'), s('line', {x1: bl + 10, y1: b0 + 16, x2: br - 10, y2: b0 + 16, class: 'ra-ml'})];
+  const band = [s('rect', {x: bl, y: b0, width: br - bl, height: 12, rx: 6, class: 'ra-bandbg'}), path(taper(topLine, 0.5, 0.5, 1.3), 'ra-tline'), s('line', {x1: bl + 10, y1: b0 + 12, x2: br - 10, y2: b0 + 12, class: 'ra-ml'})];
   let dd = '';
-  for (let k = 0; k < 7; k++) { const x = bl + 24 + k * 35.6; band.push(bloom(x, b0 + 8, 7.4, ['apri', 'rose', 'gold', 'leaf'][k % 4], 5, -90 + k * 12, 'ra-bfl')); if (k < 6) dd += dia(x + 17.8, b0 + 8, 3.2); }
+  for (let k = 0; k < 7; k++) { const x = bl + 24 + k * 35.6; if (Math.abs(x - foot) > 34) band.push(bloom(x, b0 + 6, 6.2, ['apri', 'rose', 'gold', 'leaf'][k % 4], 5, -90 + k * 12, 'ra-bfl')); if (k < 6 && Math.abs(x + 17.8 - foot) > 40) dd += dia(x + 17.8, b0 + 6, 2.8); }
   band.push(path(dd, 'ra-m1'));
-  const sky = g({'data-mucha': 'stars', class: 'ra-stars'}, crescent(322, 146, 8), star(108, 96, 5), star(268, 88, 4.2), star(298, 104, 5.4));
-  svg.append(s('defs', {}, clip), pastel, arch, mosaic, sky, pillar(1), pillar(-1), title, tresses, wrapFront, med, mantle,
-    g({'data-mucha': 'vine', class: 'ra-vine'}, vine, g({class: 'ra-fband'}, band)),
+  // 밑동 — 뿌리 다섯(굵게 → 가늘게 · 끝이 말림)이 띠 위로 퍼지고 · 둘레에 작은 꽃무리 · 잎
+  const roots = rootCluster(foot, 595);
+  const sky = g({'data-mucha': 'stars', class: 'ra-stars'}, crescent(301, 121, 7.5), star(106, 100, 5), star(268, 88, 4.2), star(334, 126, 4.6));
+  svg.append(s('defs', {}, clip), pastel, arch, mosaic, sky, pillar(1, 'body'), pillar(-1, 'body'), title, tresses, pillar(1, 'cap'), pillar(-1, 'cap'), med, tome, arm,
+    g({'data-mucha': 'vine', class: 'ra-vine'}, g({class: 'ra-fband'}, band), vine, roots),
     g({'data-mucha': 'lettering', class: 'ra-lettering'}, sRib, subT, tags));
   return svg;
+}
+/** 가는 가닥 다발(셋의 길 머리) — 가운데 길 p 를 따라 가닥 여섯 · 뿌리에서 벌어졌다 가운데서 모이고(묶음) 끝으로 가늘어짐 ·
+    길 끝은 coil 로 연꽃 위를 한 바퀴 감고 안으로 말림 · 가닥마다 끝 자리 · 굵기 · 작은 끝 말림이 다름(seed 로 좌우를 조금 다르게) */
+function skein(p, {r, turn, seed = 0}) {
+  const A = coil(smooth(p, 10), r, turn, 1.12, 0.42, 44), n = A.length;
+  const nr = A.map((q, i) => { const a = A[Math.max(0, i - 1)], b = A[Math.min(n - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [-dy / l, dx / l]; });
+  const k0 = n - 45; // 고리가 시작하는 자리
+  // 벌림 — 뿌리 13 → 가운데 6(묶음) → 고리 들기 전 11(갈라짐) → 고리 안 7 → 끝 4
+  const sp = i => { const t = i / k0; return i <= k0 ? (t < 0.45 ? 13 - 7 * t / 0.45 : 6 + 5 * (t - 0.45) / 0.55) : 11 - 7 * Math.min(1, (i - k0) / 40); };
+  // 가닥마다 느린 물결(서로 다른 위상) — 나란한 줄무늬(밧줄)가 아니라 모였다 벌어지며 엇갈리게 · 고리 안에서는 잦아듦
+  const wv = (i, j) => 1.5 * Math.sin(2 * PI * 1.4 * i / k0 + j * 2.1 + seed) * (i <= k0 ? Math.sin(PI * Math.min(1, i / k0)) : 0.2);
+  // [벌림 자리 · 끝(전체의 몫) · 뿌리 굵기 · 꾸밈 · 끝 말림 반지름 · 말림 방향] — 바깥 둘은 고리 들기 전에 떨어져 나와 따로 말림
+  const S = [[-0.5, 0.5, 1.2, 'mk-hd', 5.5, turn], [-0.3, 0.93, 1.7, 'mk-hb', 0, 0], [-0.1, 1, 1.9, 'mk-hl', 0, 0],
+    [0.1, 0.96, 1.8, 'mk-hb', 0, 0], [0.3, 0.88, 1.5, 'mk-hd', 0, 0], [0.5, 0.57, 1.1, 'mk-hb', 4.5, -turn]];
+  return S.map(([u, e, w0, cls, cr, ct], j) => {
+    const m = Math.max(4, Math.round(e * (n - 1))), q = [];
+    for (let i = 0; i <= m; i++) { const o = u * sp(i) + wv(i, j); q.push([A[i][0] + nr[i][0] * o, A[i][1] + nr[i][1] * o]); }
+    const pts = cr ? coil(q, cr, ct, 1.15, 0.72, 20) : q;
+    return path(taper(pts, w0, 0.2, 0.35), cls);
+  });
+}
+/** 펼친 책(셋의 길 흉상) — (x, y) = 책등 위 끝 · rot 기울기 · 겉장(진한 장미 갈색 · 금 테) · 두 장(가운데가 부푼 곡선) · 글줄 ·
+    오른쪽 장 아래 끝을 축으로 낱장 셋이 부채처럼 아래로 펼쳐짐(띠 쪽) · 서표 끈 */
+function book(x, y, rot) {
+  const W = 31, H = 26;
+  const pg = sd => `M0 1C${sd * 9} -3 ${sd * 22} -4 ${sd * W} -1L${sd * W} ${H - 1}C${sd * 22} ${H - 4} ${sd * 9} ${H - 4} 0 ${H}Z`;
+  const cv = sd => `M0 -1.5C${sd * 10} -5.5 ${sd * 24} -6.5 ${sd * (W + 3)} -3.5L${sd * (W + 3)} ${H + 1.5}C${sd * 24} ${H - 1.5} ${sd * 10} ${H - 1.5} 0 ${H + 2}Z`;
+  let ln = '';
+  for (const sd of [-1, 1]) for (let j = 0; j < 5; j++) { const yy = 4.6 + j * 4.1, a = sd * 4, b = sd * (W - 4 - (j === 4 ? 10 : 0)); ln += `M${a} ${f1(yy + 0.4)}Q${sd * 15} ${f1(yy - 1.6)} ${b} ${f1(yy - 0.2)}`; }
+  // 낱장 — 책등 아래 끝(0, H)을 축으로 돌린 장(28 · 50 · 72도) · 바깥 모서리는 살짝 말림 · 글줄 둘
+  const sheet = deg => { const a = deg * PI / 180, ca = Math.cos(a), sa = Math.sin(a), T = (u, v) => [u * ca - (v - H) * sa, H + u * sa + (v - H) * ca];
+    const c = [T(0, 1), T(W * 0.55, -2), T(W, 0.5), T(W + 1.5, H * 0.55), T(W - 0.5, H), T(W * 0.5, H - 2.5), T(0, H)];
+    const d = `M${P(...c[0])}Q${P(...c[1])} ${P(...c[2])}Q${P(...c[3])} ${P(...c[4])}Q${P(...c[5])} ${P(...c[6])}Z`;
+    const l = [0.3, 0.55].map(v => { const s0 = T(W * 0.3, H * v), s1 = T(W * 0.82, H * v - 0.6); return `M${P(...s0)}L${P(...s1)}`; }).join('');
+    return [path(d, 'ra-bks'), path(l, 'ra-bkl')]; };
+  const mark = path(taper([[1.5, H], [3, H + 7], [1, H + 13], [4, H + 19]], 1.8, 1.2), 'ra-bkm');
+  return g({class: 'ra-book', transform: `translate(${x} ${y}) rotate(${rot})`, 'data-mucha': 'outline', 'aria-hidden': 'true'},
+    sheet(74), sheet(52), sheet(30), mark, path(cv(-1) + cv(1), 'ra-bkc'), path(pg(-1) + pg(1), 'ra-bkp'), path(ln, 'ra-bkl'),
+    path(taper([[0, 0.5], [0, H * 0.5], [0, H]], 0.4, 1.4), 'ra-bkg'), path(taper([[-W, -1], [-W, H * 0.5], [-W, H - 1]], 1.2, 0.5) + taper([[W, -1], [W, H * 0.5], [W, H - 1]], 1.2, 0.5), 'ra-bkg'));
+}
+/** 줄기 밑동 — 뿌리 다섯(밑동에서 굵게 → 끝 가늘게 · 바깥 둘은 끝이 말림)이 띠 위로 퍼지고 · 왼쪽에 작은 꽃 셋 · 오른쪽에 봉오리 하나 · 잎 다섯 */
+function rootCluster(x, y) {
+  const rt = (a, w, cr = 0, ct = 1) => path(taper(cr ? coil(smooth(a, 6), cr, ct, 1.05, 0.7, 14) : smooth(a, 6), w, 0.25, 0.3), 'mk-vstem');
+  const roots = [rt([[x - 1, y - 2], [x - 12, y + 3], [x - 28, y + 5], [x - 42, y + 2]], 3.4, 3, 1), rt([[x - 1, y], [x - 8, y + 7], [x - 20, y + 11]], 2.4),
+    rt([[x, y], [x + 1, y + 7], [x - 1, y + 13]], 2.2), rt([[x + 1, y], [x + 9, y + 7], [x + 21, y + 10]], 2.4), rt([[x + 1, y - 2], [x + 13, y + 3], [x + 29, y + 5], [x + 42, y + 1]], 3.4, 3, -1)];
+  const stalk = (a, w = 1.4) => path(taper(smooth(a, 6), w, 0.7), 'mk-vstem');
+  const kids = [stalk([[x - 3, y - 3], [x - 12, y - 12], [x - 22, y - 20]]), stalk([[x - 4, y - 1], [x - 18, y - 4], [x - 34, y - 9]]), stalk([[x - 2, y - 4], [x - 6, y - 16], [x - 5, y - 30]], 1.2),
+    stalk([[x + 3, y - 2], [x + 10, y - 6], [x + 17, y - 8]], 1.2),
+    leaf(x - 2, y - 1, 16, 205, 'w-leaf'), leaf(x - 1, y - 3, 13, 238, 'w-leaf'), leaf(x + 2, y - 1, 15, -24, 'w-leaf'), leaf(x + 2, y - 3, 11, -62, 'w-leaf'), leaf(x - 3, y - 2, 11, 172, 'w-leaf'),
+    bloom(x - 22, y - 21, 6.2, 'rose', 5, -80, 'ra-bloom ra-in ra-d2'), bloom(x - 35, y - 10, 5.4, 'apri', 5, -60, 'ra-bloom ra-in ra-d4'), bloom(x - 5, y - 31, 5, 'gold', 5, -90, 'ra-bloom ra-in ra-d6'),
+    path(`M${P(x + 17, y - 8)}C${P(x + 22, y - 13)} ${P(x + 25, y - 8)} ${P(x + 21, y - 5)}C${P(x + 19, y - 4)} ${P(x + 17, y - 6)} ${P(x + 17, y - 8)}Z`, 'ra-bud')];
+  return g({class: 'ra-root', 'aria-hidden': 'true'}, roots, kids);
 }
 /** 아치 제목 띠 — 아치 안쪽 금선을 따라 붙은 초승달 띠(가운데 두께 TK · 끝은 0) · 띠 안 휜 글씨 · 안쪽 금선은 가운데 굵고 끝 가늘다가 어깨에서 소용돌이로 풀림 · 작은 점 모자이크 두 줄 */
 function archTitle(t) {
@@ -383,17 +429,6 @@ function archTitle(t) {
 }
 /** 초승달 — 바깥 반원과 안쪽 반타원 사이(두 호가 겹쳐 사라지지 않게) */
 const crescent = (x, y, r) => path(`M${P(x, y - r)}A${f1(r)} ${f1(r)} 0 1 0 ${P(x, y + r)}A${f1(r * 0.6)} ${f1(r)} 0 0 1 ${P(x, y - r)}Z`, 'ra-moon');
-/** 굵은 머리 다발 — 뿌리 굵고 끝 가는 채운 띠(가운데 살짝 부풂) · 속 결 셋(어둡게 둘 · 밝게 하나) · 바깥 가는 윤곽 · 끝은 소용돌이로 말림(coil · 접선 이어짐) */
-function lock(p, {w = 12, r = 6, turn = 1, turns = 1.2} = {}) {
-  const A = coil(smooth(p, 8), r, turn, turns, 0.8, 30), n = A.length, bul = -w * 0.16; // 뿌리 굵고 끝으로 빨리 가늘어짐(밧줄 아님)
-  const off = o => A.map((q, i) => { const a = A[Math.max(0, i - 1)], b = A[Math.min(n - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1, t = i / (n - 1); return [q[0] - dy / l * o(t), q[1] + dx / l * o(t)]; });
-  const half = t => (w + (0.5 - w) * t + bul * Math.sin(PI * t)) / 2, cut = (a, k) => a.slice(0, Math.max(3, Math.round(a.length * k)));
-  return [path(taper(A, w, 0.5, bul), 'mk-hb'),
-    path(taper(cut(off(t => -half(t) * 0.4), 0.84), w * 0.2, 0.3), 'mk-hd'),
-    path(taper(cut(off(t => half(t) * 0.5), 0.7), w * 0.13, 0.25), 'mk-hd'),
-    path(taper(cut(off(t => half(t) * 0.05), 0.64), w * 0.17, 0.25), 'mk-hl'),
-    path(taper(off(t => -half(t) + 0.45), 1.3, 0.25), 'mk-hd')];
-}
 /* 잎 칸 — 버들잎 꼴(t = 밑동 0 → 끝 1): 밑동은 둥글고 · 가운데 넓은 곳이 길며(t 0.11 ~ 0.6) · 끝은 위로 살짝 들려 뾰족 */
 const LH = 31, LIFT = 12, TT = 0.62;
 const lhw = (t, tb = 0.2) => { const b = t < tb ? Math.pow(Math.sin(t / tb * PI / 2), 0.72) : 1, u = t > TT ? (t - TT) / (1 - TT) : 0;
@@ -407,7 +442,8 @@ function leafFit(w1, w2, room) {
   }
   return {L: room, tc: 0.42, tb: 0.11};
 }
-/** 잎 칸 그리기 — (bx, yc) 밑동 · side 쪽으로 L · 금 잎맥은 밑동에서 끝까지 · 곁맥은 글 밖에만 · 테는 굵기 변하는 금선 · 끝은 덩굴손처럼 위로 말림 */
+/** 잎 칸 그리기 — (bx, yc) 밑동 · side 쪽으로 L · 글 자리는 비움 — 금 잎맥과 곁맥은 글 끝(+ 9)에서 잎 끝까지만 · 밑동에는 잎자루가 잎 안으로 짧게 이어진 자국 하나 ·
+    테는 굵기 변하는 금선 · 끝은 덩굴손처럼 위로 말림 */
 function leafTag(bx, yc, L, side, tone, tc, wt, tb = 0.2) {
   const N = 60, T = [], B = [], M = [];
   for (let i = 0; i <= N; i++) { const t = i / N, x = bx + side * t * L, m = yc + lmid(t), h = lhw(t, tb); T.push([x, m - h]); B.push([x, m + h]); M.push([x, m]); }
@@ -416,21 +452,31 @@ function leafTag(bx, yc, L, side, tone, tc, wt, tb = 0.2) {
   const k = [];
   const sh = B.slice(5, N - 4).map(([x, y]) => [x, y - 0.9]), sh2 = sh.map(([x, y], j, a) => [x, y - 3.6 * Math.sin(PI * j / (a.length - 1))]);
   k.push(path('M' + [...sh, ...sh2.reverse()].map(([x, y]) => P(x, y)).join('L') + 'Z', 'ra-lsh ra-ls-' + tone));
-  k.push(path(taper(M.slice(0, N), 2.8, 0.35, -0.5), 'ra-lvein'));
-  // 곁맥 — 글 밖에만(끝 쪽 여럿 · 밑동 쪽은 자리가 되면 한 쌍)
-  const t0 = tc - (wt / 2 + 7) / L, t1 = tc + (wt / 2 + 7) / L;
+  const t0 = tc - (wt / 2 + 8) / L, t1 = tc + (wt / 2 + 9) / L, j0 = Math.floor(Math.min(0.07, t0 - 0.02) * N), j1 = Math.min(N - 6, Math.ceil(t1 * N));
+  if (j0 >= 3) k.push(path(taper(M.slice(0, j0 + 1), 2.2, 0.3), 'ra-lvein'));
+  k.push(path(taper(M.slice(j1, N), 0.5, 0.3, 2.2), 'ra-lvein'));
+  // 곁맥 — 잎 끝 쪽에만(글 끝 + 9 부터)
   let vd = '';
   const vein = t => { const j = Math.round(t * N), [x, m] = M[j], h = lhw(t, tb); return [-1, 1].map(v => taper([[x, m], [x + side * h * 0.32, m + v * h * 0.36], [x + side * h * 0.66, m + v * h * 0.6]], 1, 0.2)).join(''); };
-  for (let t = t1; t < 0.9; t += 12 / L) vd += vein(t);
-  for (let t = 0.08; t + lhw(t, tb) * 0.66 / L < t0; t += 12 / L) vd += vein(t);
+  for (let t = j1 / N + 5 / L; t < 0.9; t += 11 / L) vd += vein(t);
   if (vd) k.push(path(vd, 'ra-lvs'));
   k.push(path(taper(T, 1.1, 0.45, 0.7) + taper(B, 1.5, 0.5, 1.5) + taper([M[N], ...tip], 1.3, 0.3), 'ra-lo'));
   return g({class: 'ra-leafg', 'data-mucha': 'vine'}, path(body, 'ra-leaf ra-lf-' + tone), k);
 }
-/** 세로 판(왼쪽 기준으로 그리고 오른쪽은 거울) — 폭 42 · 두 겹 금테 · 꼭대기 백합 기둥머리(두 소용돌이 · 위로 오르는 덩굴손) ·
-    안은 꽃 원판 여섯과 마름모 모자이크 다섯이 층층이 · 가운데로 가는 덩굴 줄기 · 받침 */
-function pillar(side) {
-  const c = 33, k = [];
+/** 세로 판(왼쪽 기준으로 그리고 오른쪽은 거울) — 폭 42 · 두 겹 금테 · 꼭대기 백합 기둥머리(두 소용돌이) ·
+    안은 꽃 원판 여섯과 마름모 모자이크 다섯이 층층이 · 가운데로 가는 덩굴 줄기 · 받침
+    part = 'body'(판 · 받침) | 'cap'(기둥머리 · 백합) — 머리채 고리가 백합 뒤로 들어가도록 둘로 나눠 그림 */
+function pillar(side, part = 'body') {
+  const c = 33, k = [], mir = side < 0 ? 'matrix(-1 0 0 1 390 0)' : null;
+  if (part === 'cap') {
+    // 기둥머리 — 넓적한 판 · 그 밑 사발 · 양 끝 소용돌이 · 위에 백합 한 송이와 잎 둘(덩굴손 대신 머리채 고리가 백합을 감음)
+    const vol = [coil([[20, 209], [14, 209]], 5, -1, 1.3), coil([[46, 209], [52, 209]], 5, 1, 1.3)].map(p => taper(p, 1.8, 0.4)).join('');
+    k.push(path('M14 207Q33 223 52 207Z', 'ra-cap'), s('rect', {x: 9, y: 199, width: 48, height: 9, rx: 3.5, class: 'ra-cap'}), path(vol, 'ra-vol'),
+      leaf(31, 199, 16, 192, 'w-leaf'), leaf(35, 199, 16, -12, 'w-leaf'),
+      path('M32 198C26 199 19 196 17 186C21 190 26 191 31 193Z', 'ra-lily'), path('M34 198C40 199 47 196 49 186C45 190 40 191 35 193Z', 'ra-lily'),
+      path('M29 199C27 192 29 185 33 179C37 185 39 192 37 199Z', 'ra-lily'), circ(c, 186, 1.6, 'w-core'));
+    return g({'data-mucha': 'panel', class: 'ra-panel ra-pcap', transform: mir}, k);
+  }
   k.push(s('rect', {x: 12, y: 208, width: 42, height: 372, rx: 8, class: 'ra-pnl'}), s('rect', {x: 15.5, y: 211.5, width: 35, height: 365, rx: 5.5, class: 'ra-pnl2'}));
   const vp = [];
   for (let y = 576; y >= 214; y -= 6) vp.push([c + 2.6 * Math.sin((y - 214) / 22), y]);
@@ -443,15 +489,8 @@ function pillar(side) {
       md += `M${P(c - 18, ym - 0.6)}h4v1.2h-4ZM${P(c + 14, ym - 0.6)}h4v1.2h-4Z`; }
   });
   k.push(g({'data-mucha': 'mosaic', class: 'ra-pmos'}, path(m1, 'ra-m1'), path(m2, 'ra-m2'), path(m3, 'ra-m3'), path(md, 'ra-m1')));
-  // 기둥머리 — 넓적한 판 · 그 밑 사발 · 양 끝 소용돌이 · 위에 백합 한 송이와 잎 둘 · 꽃 가운데서 오르는 덩굴손
-  const vol = [coil([[20, 209], [14, 209]], 5, -1, 1.3), coil([[46, 209], [52, 209]], 5, 1, 1.3)].map(p => taper(p, 1.8, 0.4)).join('');
-  k.push(path('M14 207Q33 223 52 207Z', 'ra-cap'), s('rect', {x: 9, y: 199, width: 48, height: 9, rx: 3.5, class: 'ra-cap'}), path(vol, 'ra-vol'),
-    leaf(31, 199, 16, 192, 'w-leaf'), leaf(35, 199, 16, -12, 'w-leaf'),
-    path('M32 198C26 199 19 196 17 186C21 190 26 191 31 193Z', 'ra-lily'), path('M34 198C40 199 47 196 49 186C45 190 40 191 35 193Z', 'ra-lily'),
-    path('M29 199C27 192 29 185 33 179C37 185 39 192 37 199Z', 'ra-lily'), circ(c, 186, 1.6, 'w-core'),
-    path(taper(coil([[33, 182], [32.4, 172], [33.4, 163], [36, 157]], 4.2, 1, 1.15), 2, 0.35), 'ra-pvine'));
   // 받침 — 넓적한 판과 발
   k.push(s('rect', {x: 9, y: 578, width: 48, height: 8, rx: 3, class: 'ra-cap'}), s('rect', {x: 11, y: 586, width: 44, height: 18, rx: 3, class: 'ra-pnl'}),
     s('line', {x1: 15, y1: 595, x2: 51, y2: 595, class: 'ra-ml'}));
-  return g({'data-mucha': 'panel', class: 'ra-panel', transform: side < 0 ? 'matrix(-1 0 0 1 390 0)' : null}, k);
+  return g({'data-mucha': 'panel', class: 'ra-panel', transform: mir}, k);
 }

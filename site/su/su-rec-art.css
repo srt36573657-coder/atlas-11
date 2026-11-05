@@ -7,14 +7,14 @@
    글씨: 18 ~ 22px · 처음부터 진하게(opacity 1 · 움직이지 않음)
    움직임: 꽃 · 별에만(머리채는 공용 부품) · transform 만 · 들어옴(꽃 피어남)은 0.6초 안에 끝 · 움직임 줄이기면 모두 멈춤 */
 svg.su-svg.su-rec-art { display: block; width: 100%; height: auto; overflow: hidden; font-family: inherit;
-  --ra-e0: #F8EDD6; --ra-lun: #FDF6E6; --ra-came: #C9A24E; --ra-pb: #F7EACB; --ra-scroll-ink: #2B2118; --ra-scroll-warn: #8A4A10;
+  --ra-e0: #FAEFD9; --ra-e1: #F7DCD2; --ra-e2: #FDF6E9; --ra-cnt: #2F6A1C; --ra-lun: #FDF6E6; --ra-came: #BE9640; --ra-pb: #F7EACB; --ra-scroll-ink: #2B2118; --ra-scroll-warn: #8A4A10;
   --ra-gl: #A27A2E; --ra-bar: #DDB55E; --ra-barl: #8E6A24; --ra-wf: #FDF5E2;
   --ra-cb: #FBF1DC; --ra-ct: #2B2118; --ra-cv: #2B2118; --ra-cw: #8A4A10; --ra-sA: #8A5410; --ra-sB: #46682A; --ra-lf: #FFFBEF; --ra-lg: #A27A2A; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) svg.su-svg.su-rec-art { --ra-e0: #33261B; --ra-lun: #33251A; --ra-came: #9E7C36; --ra-pb: #E3CE9C; --ra-gl: #BF9B55; --ra-bar: #E9CF8A; --ra-barl: #A88334; --ra-wf: #2A2116;
+  :root:not([data-theme="light"]) svg.su-svg.su-rec-art { --ra-e0: #33261B; --ra-e1: #3C2A21; --ra-e2: #2D2117; --ra-cnt: #B9D486; --ra-lun: #33251A; --ra-came: #9E7C36; --ra-pb: #E3CE9C; --ra-gl: #BF9B55; --ra-bar: #E9CF8A; --ra-barl: #A88334; --ra-wf: #2A2116;
     --ra-cb: #2C1F15; --ra-ct: #E2C47E; --ra-cv: #F2D892; --ra-cw: #F2B866; --ra-scroll-ink: #EAD291; --ra-sA: #F2B866; --ra-sB: #B9D486; --ra-lf: #2A2116; --ra-lg: #D9B46A; }
 }
-:root[data-theme="dark"] svg.su-svg.su-rec-art { --ra-e0: #33261B; --ra-lun: #33251A; --ra-came: #9E7C36; --ra-pb: #E3CE9C; --ra-gl: #BF9B55; --ra-bar: #E9CF8A; --ra-barl: #A88334; --ra-wf: #2A2116;
+:root[data-theme="dark"] svg.su-svg.su-rec-art { --ra-e0: #33261B; --ra-e1: #3C2A21; --ra-e2: #2D2117; --ra-cnt: #B9D486; --ra-lun: #33251A; --ra-came: #9E7C36; --ra-pb: #E3CE9C; --ra-gl: #BF9B55; --ra-bar: #E9CF8A; --ra-barl: #A88334; --ra-wf: #2A2116;
   --ra-cb: #2C1F15; --ra-ct: #E2C47E; --ra-cv: #F2D892; --ra-cw: #F2B866; --ra-scroll-ink: #EAD291; --ra-sA: #F2B866; --ra-sB: #B9D486; --ra-lf: #2A2116; --ra-lg: #D9B46A; }
 
 /* 바탕 · 틀 · 파스텔 색면 */
@@ -59,7 +59,9 @@ svg.su-svg.su-rec-art { display: block; width: 100%; height: auto; overflow: hid
 .ra-ga0 { stop-color: #FFF0B4; } .ra-ga1 { stop-color: #EDB848; } .ra-ga2 { stop-color: #B0700C; }
 .ra-gb0 { stop-color: #E8F5C4; } .ra-gb1 { stop-color: #93BC5C; } .ra-gb2 { stop-color: #4A7426; }
 .ra-glint { fill: #FFFDF4; fill-opacity: .78; }
-.ra-empty { fill: var(--ra-e0); } /* 빈 칸 = 한 가지 색 · 테 없음(줄눈은 뒤 금빛 판이 칸 사이로 보임) */
+.ra-empty { fill: var(--ra-e0); } /* 빈 칸 = 색유리 조각 셋(옅은 크림 · 연분홍 · 상아) · 테 없음(가는 금 납선은 뒤 금빛 판이 칸 사이로 보임) */
+.ra-empty.ra-e1 { fill: var(--ra-e1); }
+.ra-empty.ra-e2 { fill: var(--ra-e2); }
 
 /* 꽃 모자이크 띠 */
 .ra-mband { fill: var(--apri2); }
@@ -81,7 +83,12 @@ svg.su-svg.su-rec-art { display: block; width: 100%; height: auto; overflow: hid
 .ra-wv { font-size: 22px; font-weight: 800; fill: var(--ra-cv); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }
 .ra-vA { fill: var(--ra-sA); } .ra-vB { fill: var(--ra-sB); } .ra-vdot { fill: var(--gold); }
 .ra-ln { font-size: 18px; font-weight: 600; fill: var(--ra-ct); }
-.ra-lv { font-size: 20px; font-weight: 700; fill: var(--ra-cv); font-variant-numeric: tabular-nums; }
+.ra-lv { font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .01em; } /* 금빛 큰 숫자 — 채움은 금빛 사다리(id 가 쪽마다 달라 그림에서 줌) */
+.ra-lv.ra-lvg { paint-order: stroke; stroke: var(--ra-cb); stroke-width: 1.6px; stroke-linejoin: round; }
+.ra-gv0 { stop-color: #C99526; } .ra-gv1 { stop-color: #A06A0E; } .ra-gv2 { stop-color: #7A4C06; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) svg.su-rec-art .ra-gv0 { stop-color: #FFF0B6; } :root:not([data-theme="light"]) svg.su-rec-art .ra-gv1 { stop-color: #F2CC66; } :root:not([data-theme="light"]) svg.su-rec-art .ra-gv2 { stop-color: #D6A23C; } }
+:root[data-theme="dark"] svg.su-rec-art .ra-gv0 { stop-color: #FFF0B6; } :root[data-theme="dark"] svg.su-rec-art .ra-gv1 { stop-color: #F2CC66; } :root[data-theme="dark"] svg.su-rec-art .ra-gv2 { stop-color: #D6A23C; }
+svg.su-rec-art .ra-gem { fill: #B5303C; stroke: #8E6A24; stroke-width: .5; } /* 09 흉상 목걸이 방울 */
 .ra-yr { font-size: 20px; font-weight: 800; fill: #2B2118; font-variant-numeric: tabular-nums; }
 .ra-wv .ra-needt, .ra-lv.ra-needt { fill: var(--ra-cw); }
 .ra-needt { fill: var(--warn); }
@@ -108,11 +115,14 @@ svg.su-rec-art.ra-months .mk-t6 { --hb: #A5552F; --hd: #6E2E16; --hl: #E2A46E; }
 .ra-c2 { fill: var(--glbg); }
 .ra-axis { stroke: var(--gold); stroke-width: 1.8; stroke-linecap: round; }
 .ra-gl { font-size: 18px; font-weight: 600; fill: var(--ra-gl); font-variant-numeric: tabular-nums; } /* 눈금 숫자 — 한 단계 가늘고 옅은 금빛 */
-.ra-blv { fill: none; stroke: var(--ra-lg); stroke-width: 1.7; stroke-linecap: round; } /* 아무 회사 — 짧은 금선 + 점 */
-.ra-bld { fill: var(--ra-lg); stroke: var(--ra-lf); stroke-width: .8; }
+.ra-bld { fill: var(--ra-lg); stroke: #7E5A16; stroke-width: .6; } /* 아무 회사 — 값 높이의 작은 금구슬 하나(꽃대에서 반 칸) */
+.ra-bls { fill: #FFF6D8; }
+svg.su-rec-art .rx-mdl { stroke: var(--gold); stroke-width: 1.1; } /* 달 숫자 — 작은 둥근 메달(가는 금 두 겹 테) */
+svg.su-rec-art .rx-mdl2 { fill: none; stroke: var(--gold2); stroke-width: .6; }
+svg.su-rec-art .rx-moon { fill: #E9C35E; stroke: #8E6A24; stroke-width: .7; stroke-linejoin: round; } /* 10 흉상 — 손에 든 초승달 */
 .ra-mn { font-size: 18px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -0.05em; }
 .ra-lg { font-size: 18px; font-weight: 700; fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 4px; stroke-linejoin: round; }
-.ra-opent { fill: var(--ra-gl); stroke: none; }
+.ra-opent { fill: var(--ra-cnt); stroke: none; } /* 세는 중 — 밝은 판 진한 초록 · 어두운 판 연두 */
 
 /* 움직임 — 꽃은 0.45초에 피어나고(늦음 0 ~ 0.12초 · 0.6초 안에 끝) 그 뒤 아주 천천히 흔들림 · 별은 반짝(크기만) */
 @media (prefers-reduced-motion: no-preference) {

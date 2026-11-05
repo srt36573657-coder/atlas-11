@@ -86,7 +86,21 @@ function closedBud(x, y, sg, L) {
     s('path', {d: `M${P(b + L * 0.2, -w * 0.25)}C${P(b + L * 0.45, -w * 0.55)} ${P(b + L * 0.75, -w * 0.4)} ${P(b + L * 0.97, -0.3)}`, class: 'mu-cbudl'}),
     s('path', {d: `M${P(b - 0.6, 0)}C${P(b + L * 0.06, -cw * 1.05)} ${P(b + cl * 0.72, -cw * 0.95)} ${P(b + cl, -w * 0.22)}C${P(b + cl * 0.55, -w * 0.5)} ${P(b + L * 0.16, -w * 0.36)} ${P(b - 0.6, 0)}Z`
       + `M${P(b - 0.6, 0)}C${P(b + L * 0.06, cw * 1.05)} ${P(b + cl * 0.72, cw * 0.95)} ${P(b + cl, w * 0.22)}C${P(b + cl * 0.55, w * 0.5)} ${P(b + L * 0.16, w * 0.36)} ${P(b - 0.6, 0)}Z`
-      + `M${P(b - 0.4, 0)}C${P(b + cl * 0.3, -w * 0.3)} ${P(b + cl * 0.62, -w * 0.12)} ${P(b + cl * 0.82, 0)}C${P(b + cl * 0.62, w * 0.12)} ${P(b + cl * 0.3, w * 0.3)} ${P(b - 0.4, 0)}Z`, class: 'mu-leaf mu-sep'}));
+      + `M${P(b - 0.4, 0)}C${P(b + cl * 0.3, -w * 0.3)} ${P(b + cl * 0.62, -w * 0.12)} ${P(b + cl * 0.82, 0)}C${P(b + cl * 0.62, w * 0.12)} ${P(b + cl * 0.3, w * 0.3)} ${P(b - 0.4, 0)}Z`, class: 'mu-leaf mu-sep'}),
+    // 8판 — 큰 꽃받침 둘에 잎맥(밑동 굵고 끝 가늘게 · 금빛 잎과 같은 정성)
+    [-1, 1].map(sv => kTaper(bez([b + 0.5, sv * 0.3], [b + cl * 0.3, sv * cw * 0.6], [b + cl * 0.7, sv * cw * 0.52], [b + cl * 0.95, sv * w * 0.27], 8).map(([u, v]) => [x + sg * u, y + v]), {w0: 0.8, w1: 0.15, cls: 'mu-sepv'})));
+}
+/** 8판 — 장밋빛 잎(내림)의 잎맥: 가운데 맥(밑동 굵고 끝 가늘게) + 길이에 맞춘 곁맥 한 쌍 ~ 세 쌍(길이 그대로 · 잎 꼴은 부품 leafBar 와 같음) */
+function roseVeins(x, y, L, w, sgn) {
+  if (!(L > 3)) return null;
+  const hw = w / 2, m = Math.min(L * 0.3, w * 1.1), nv = L >= 20 ? 3 : L >= 12 ? 2 : 1;
+  let d = '';
+  for (let j = 0; j < nv; j++) {
+    const vx = L * (0.22 + 0.56 * (j + 0.5) / nv), hx = vx < m ? hw : hw * Math.max(0.15, 1 - Math.pow((vx - m) / Math.max(0.1, L - m), 1.4)), e = Math.max(1.2, Math.min(w * 0.4, (L - vx) * 0.7));
+    for (const sv of [-1, 1]) d += `M${f1(vx)} 0Q${f1(vx + e * 0.4)} ${f1(sv * hx * 0.25)} ${f1(vx + e)} ${f1(sv * hx * 0.6)}`;
+  }
+  return s('g', {transform: `translate(${f1(x)} ${f1(y)})` + (sgn < 0 ? ' scale(-1 1)' : ''), class: 'mu-rvg'},
+    kTaper([[0.6, 0], [L * 0.5, 0], [L * 0.94, 0]], {w0: 1.05, w1: 0.2, cls: 'mu-rvein'}), s('path', {d, class: 'mu-rveins'}));
 }
 /** 채찍 곡선 — 3차 곡선 하나로 휘었다가 끝이 안으로 말림(접선이 이어지게 · 말림 반지름 r · dir 1 = 화면에서 시계 방향) */
 function whipPts(p0, p1, p2, p3, r, dir, turns = 1.1) {
@@ -217,7 +231,60 @@ function drape(tipY, toStem) {
 function medal(tn) {
   const {x, y, r} = MED;
   const tipY = STEM ? STEM.hy : y + r + 9;
+  if (NICHE) return s('g', {class: 'mu-medal'}, locks(), nicheBody(), kMedallion({cx: x, cy: y, r, v: 0, dir: 1, ring: RING[tn]}), ringCover(), nicheDress(), nicheEdge(tn));
   return s('g', {class: 'mu-medal'}, locks(), kMedallion({cx: x, cy: y, r, v: 0, dir: 1, ring: RING[tn]}), drape(tipY, !!STEM));
+}
+/* 8판 — 줄기 쪽(업종): 둥근 후광을 아래로 늘인 아치 창 · 원의 양옆 접선에서 곧게 내려와 아래 띠로 닫힘 · 고리 무늬가 옆 · 아래 띠로 이어짐
+   옷은 창 안을 채우며 아래 띠에 잘림(깔때기 끝 없음) · 팔 · 소매 · 손이 창 안에 듦 · 줄기는 아래 띠 앞을 지나 잎 줄로 내려감 */
+let NICHE = null;                                          // {yb} = 창 아래 끝(첫 줄 글보다 위 · barsArt 가 정함)
+function nicheBody() {
+  const {x, y, r} = MED;
+  return s('path', {d: `M${f1(x - r)} ${f1(y)}V${f1(NICHE.yb)}H${f1(x + r)}V${f1(y)}Z`, class: 'mk-hf0 mu-nbody'});
+}
+/** 메달 원의 아래 반 고리(무늬 · 테)를 창 바탕색으로 덮음 — 고리가 원으로 돌지 않고 옆 띠로 곧게 내려가 보이게 */
+function ringCover() {
+  const {x, y, r} = MED, a = [], b = [];
+  for (let d = 0; d <= 180; d += 4) { a.push(ell(x, y, r + 1.3, r + 1.3, d)); b.push(ell(x, y, r * 0.81, r * 0.81, 180 - d)); }
+  return s('path', {d: poly([...a, ...b]) + 'Z', class: 'mk-hf0'});
+}
+/** 창 테 — 고리 띠(무늬는 메달 고리와 같은 꼴) · 바깥 금테(아래 굵게 → 위 가늘게) · 안쪽 가는 금선 · 아래 두 귀에 작은 꽃 */
+function nicheEdge(tn) {
+  const {x, y, r} = MED, yb = NICHE.yb, bw = 0.125 * r, rm = 0.9125 * r, ring = RING[tn], yB = yb - (r - rm), k = [];
+  const xl = x - rm, xr = x + rm, U = `M${f1(xl)} ${f1(y)}V${f1(yB)}H${f1(xr)}V${f1(y)}`;
+  if (ring !== 'petal') k.push(s('path', {d: U, class: ring === 'stars' ? 'mk-nightb' : 'mk-mob', 'stroke-width': f1(bw), 'stroke-linejoin': 'miter'}));
+  const run = [], st = ring === 'stars' ? 9 : ring === 'petal' ? 8 : 2 * Math.PI * rm / Math.max(15, Math.round(2 * Math.PI * rm / 6.6 / 3) * 3);
+  for (let v = y + st * 0.6; v < yB - st * 0.4; v += st) run.push([xl, v, -1, 0], [xr, v, 1, 0]);
+  for (let u = xl + st; u < xr - st * 0.5; u += st) if (Math.abs(u - x) > 5) run.push([u, yB, 0, 1]);
+  const q = ['', '', ''], pa = ['', ''];
+  let dt = '';
+  run.forEach(([px, py, nx, ny], i) => {
+    if (ring === 'petal') { const L = bw, Wd = bw * 0.5, bx = px - nx * bw / 2, by = py - ny * bw / 2, tx = -ny, ty = nx;
+      pa[i % 2] += `M${f1(bx)} ${f1(by)}Q${f1(bx + nx * L * 0.5 + tx * Wd)} ${f1(by + ny * L * 0.5 + ty * Wd)} ${f1(bx + nx * L)} ${f1(by + ny * L)}Q${f1(bx + nx * L * 0.5 - tx * Wd)} ${f1(by + ny * L * 0.5 - ty * Wd)} ${f1(bx)} ${f1(by)}Z`; }
+    else if (ring === 'stars') { if (i % 4 < 2) q[0] += starD(px, py, bw * 0.36); else dt += dotD(px, py, bw * 0.12); }
+    else { const h = bw * 0.255; q[i % 3] += `M${f1(px - h)} ${f1(py - h)}H${f1(px + h)}V${f1(py + h)}H${f1(px - h)}Z`; dt += dotD(px + ny * 0 + (nx ? 0 : st / 2), py + (nx ? st / 2 : 0), bw * 0.1); }
+  });
+  if (ring === 'petal') k.push(s('path', {d: pa[0], class: 'mk-pe-a'}), s('path', {d: pa[1], class: 'mk-pe-b'}));
+  else if (ring === 'stars') k.push(s('path', {d: q[0], class: 'mk-star'}), s('path', {d: dt, class: 'mk-star2'}));
+  else k.push(s('path', {d: q[0], class: 'mk-mo-g'}), s('path', {d: q[1], class: 'mk-mo-b'}), s('path', {d: q[2], class: 'mk-mo-n'}), s('path', {d: dt, class: 'mk-mo-d'}));
+  const ri2 = 0.835 * r, yi = yb - (r - ri2);
+  k.push(s('path', {d: `M${f1(x - ri2)} ${f1(y + 2)}V${f1(yi)}H${f1(x + ri2)}V${f1(y + 2)}`, class: 'mk-rim2', 'stroke-width': f2(Math.max(0.5, r * 0.012))}));
+  for (const sg of [-1, 1]) {   // 바깥 금테 — 아래 가운데에서 굵게(3.6) 나와 귀를 돌아 원과 만나는 곳에서 가늘게(원 테 굵기)
+    const X = u => x + sg * u, pts = [[x, yb], [X(r * 0.5), yb], [X(r - 5), yb], [X(r - 1.2), yb - 0.4], [X(r), yb - 4], [X(r), (yb + y) / 2], [X(r), y]];
+    k.push(kTaper(pts, {w0: 3.6, w1: Math.max(1.2, r * 0.034), cls: 'mu-nrim'}));
+  }
+  for (const sg of [-1, 1]) k.push(s('path', {d: petD(x + sg * rm, yB, bw * 0.78, 5, -90, 0.5), class: 'mu-mopet'}), s('circle', {cx: f1(x + sg * rm), cy: f1(yB), r: f1(bw * 0.2), class: 'mu-core'}));
+  return grp('niche', k, 'mu-niche');
+}
+/** 창 안 옷 — 어깨에서 창 옆 금선을 따라 곧게 내려와 아래 띠에 잘림 · 세로 주름 다섯(아래 굵고 위 가늘게) · 바깥선은 어깨에서 굵게 아래로 가늘게 */
+function nicheDress() {
+  const {x, y, r} = MED, ri2 = 0.835 * r - 0.6, yi = NICHE.yb - (r - 0.835 * r) + 0.4, A = (deg, k = 1) => ell(x, y, r * k, r * k, deg);
+  const pL = A(140), pR = A(46), iL = A(140, 0.8), iR = A(46, 0.8), rr = f1(0.8 * r);     // 부품 어깨선 끝(왼 140° · 오른 46°)에서 이어 내려감 — 어깨에 턱이 지지 않게
+  const eL = bez(pL, [pL[0] - 3, pL[1] + 0.22 * r], [x - ri2, yi - 0.3 * r], [x - ri2, yi]), eR = bez(pR, [pR[0] + 4, pR[1] + 0.22 * r], [x + ri2, yi - 0.3 * r], [x + ri2, yi]);
+  const body = poly([...eL, ...eR.slice().reverse()]) + `L${f1(iR[0])} ${f1(iR[1])}A${rr} ${rr} 0 0 1 ${f1(iL[0])} ${f1(iL[1])}Z`;
+  const folds = [-0.62, -0.36, -0.12, 0.14, 0.4, 0.64].map((u, i) => { const x0 = x + u * r * 0.86, top = y + r * (0.86 + 0.08 * Math.abs(u)), b = (i % 2 ? 1 : -1) * 2.2;
+    return kTaper([[x0 + b * 0.6, yi], [x0 + b, (top + yi) / 2 + 3], [x0 - b * 0.4, top]], {w0: 1.5, w1: 0.25, cls: 'mu-dressd'}); });
+  return grp('drape', [s('path', {d: body, class: 'mu-dress'}), folds,
+    kTaper(eL.slice().reverse(), {w0: Math.max(1.8, r * 0.032), w1: 0.5, cls: 'mk-ink'}), kTaper(eR.slice().reverse(), {w0: Math.max(1.6, r * 0.028), w1: 0.45, cls: 'mk-ink'})], 'mu-drape');
 }
 /** 7판 머리 — 어깨 앞 굵은 두 가닥(소시지)을 지우고, 메달 뒤에서 나온 굵기 다른 가는 가닥 여섯(왼쪽 셋 · 오른쪽 셋)이
  *  S 로 휘며 아치 기둥 쪽으로 흘러내려 끝이 크기 다르게 말림(좌우 비대칭 · 뿌리 굵고 끝 가늘게 · 구리빛 + 금빛 결) · 그래프 윗선(CTOP) 위에서 멈춤 */
@@ -242,6 +309,7 @@ function locks() {
  *  손가락이 줄기 앞을 감싸고 줄기는 두 손 위아래로 보임 · 소매 주름 셋이 어깨에서 손목 금 단까지 휘며 내려옴 */
 function arms() {
   if (!STEM) return null;
+  if (NICHE) return nicheArms();
   const {x, y, r} = MED, w = Math.max(16, r * 0.31), k = [];
   const one = (sg, top, grip) => { // top = 소매 위 끝(어깨) · grip = 쥔 자리(줄기 위)
     const dx = grip[0] - top[0], dy = grip[1] - top[1], D = Math.hypot(dx, dy), ang = -Math.atan2(dx, dy) * 180 / Math.PI, len = D - 0.95 * w;
@@ -251,6 +319,40 @@ function arms() {
   };
   k.push(one(1, ell(x, y, r * 0.9, r * 0.9, 34), [x - 6, STEM.g2]), one(-1, ell(x, y, r * 0.9, r * 0.9, 150), [x + 6, STEM.g1])); // 쥔 자리를 줄기 너머로 — 손바닥이 줄기 앞을 덮고 손가락이 줄기를 감쌈
   return grp('arms', k, 'mu-arms');
+}
+/** 8판 팔 — 소매를 가늘게(손도 작아짐) · 어깨를 창 안으로 · 왼팔은 가슴 · 오른팔은 허리 위에서 줄기를 쥠(팔짱) ·
+ *  손등 끝은 줄기 바로 앞에서 멈추고 손가락 넷이 줄기 앞을 감아 끝이 줄기 너머로 말림 · 소매 끝 자락 둘이 흘러내려 줄기를 한 번 감음(앞 → 뒤 → 앞) */
+function nicheArms() {
+  const {x, y, r} = MED, w = Math.max(14, r * 0.25), ax = STEM.x, k = [];
+  const one = (sg, top, grip) => {
+    const dx = grip[0] - top[0], dy = grip[1] - top[1], D = Math.hypot(dx, dy), ang = -Math.atan2(dx, dy) * 180 / Math.PI, len = D - 0.95 * w;
+    const fold = [[-0.2, -0.46, 0.07], [0.18, 0.36, 0.05]].map(([u0, u1, b]) => kTaper([[u0 * w * sg, len * 0.06], [(u0 * 0.6 + u1 * 0.4 + b) * w * sg, len * 0.45], [(u0 * 0.2 + u1 * 0.8 - b) * w * sg, len * 0.82], [u1 * w * sg, len + w * 0.06]], {w0: 0.35, w1: Math.max(1, w * 0.07), cls: 'mu-sfold'}));
+    return [sleeve({x: f1(top[0]), y: f1(top[1]), ang: f1(ang), len: f1(len), w: f1(w), hand: 'hold', dir: sg, tone: 'sage'}),
+      s('g', {transform: `translate(${f1(top[0])} ${f1(top[1])}) rotate(${f1(ang)})`, class: 'mu-sfolds'}, fold)];
+  };
+  k.push(tails(), one(1, ell(x, y, r * 0.8, r * 0.8, 38), [ax + 3.2, STEM.g2]), fist(STEM.g2, 1), one(-1, ell(x, y, r * 0.8, r * 0.8, 142), [ax - 3.2, STEM.g1]), fist(STEM.g1, -1));
+  return grp('arms', k, 'mu-arms');
+}
+/** 손가락 넷 + 엄지 — 손바닥 쪽(side)에서 줄기 앞을 가로질러 줄기 너머에서 끝이 둥글게 말림(살 띠 + 굵기 변하는 먹 테) */
+function fist(gy, side) {
+  const ax = STEM.x, out = [];
+  const band = (pts, w) => [kTaper(pts, {w0: w + 1.15, w1: w + 0.75, cls: 'mk-ink'}), kTaper(pts, {w0: w, w1: w - 0.3, cls: 'mk-skin'})];
+  for (let i = 3; i >= 0; i--) {
+    const yy = gy - 4.2 + i * 2.85, tip = 5.4 - Math.abs(i - 1.2) * 0.55;
+    out.push(band([[ax - side * tip, yy + 1.1], [ax - side * (tip - 1.2), yy - 0.2], [ax - side * 1.5, yy - 0.5], [ax + side * 2.2, yy - 0.2], [ax + side * 5, yy + 0.6]], 2.35));
+  }
+  out.push(band([[ax - side * 2.6, gy - 6.6], [ax, gy - 7.3], [ax + side * 3.4, gy - 7.2], [ax + side * 6.6, gy - 5.6]], 2.5));
+  return s('g', {class: 'mu-fist', 'data-mucha': 'hand'}, out);
+}
+/** 소매 끝 자락 — 오른 소매 끝에서 줄기 뒤로 돌아(줄기에 가려 끊김) 왼쪽으로 늘어지고 · 왼 소매 끝에서 내려와 줄기 앞을 가로질러 오른쪽 아래로(아래 띠 위에서 뾰족이 끝남) */
+function tails() {
+  const ax = STEM.x, g1 = STEM.g1, g2 = STEM.g2, yi = NICHE.yb - 0.165 * MED.r - 1.5, k = [];
+  const tail = (pts, w0, w1) => [kTaper(pts, {w0: w0 + 1.3, w1: w1 + 0.5, cls: 'mk-ink'}), kTaper(pts, {w0, w1, cls: 'mu-dress'}),
+    kTaper(pts.slice(1, -1).map(([a, b]) => [a + 0.6, b]), {w0: Math.max(0.5, w0 * 0.16), w1: 0.15, cls: 'mu-dressd'})];
+  k.push(tail(bez([ax - 12, g1 + 5], [ax - 22, g2 - 4], [ax - 15, yi + 1], [ax + 13, yi - 1], 16), 6.5, 0.9));       // 왼 소매 자락 — 줄기 왼쪽으로 늘어졌다가 아래에서 줄기 앞을 가로질러 오른쪽으로
+  k.push(tail(bez([ax + 14, g2 + 2], [ax + 10, g2 + 6], [ax + 6.5, g2 + 8.5], [ax + 3.4, g2 + 10], 8), 5.4, 4.4));     // 오른 소매 자락 — 줄기 뒤로 듦
+  k.push(tail(bez([ax - 3.4, g2 + 11.5], [ax - 8.5, g2 + 13], [ax - 9, yi - 9], [ax - 5, yi - 4], 8), 4.4, 0.9));     // 줄기 왼쪽에서 다시 나와 뾰족이 끝남
+  return s('g', {class: 'mu-tails', 'data-mucha': 'drape'}, k);
 }
 
 /* ── 5 양옆 덩굴 — 굵게(8 → 1.8) S 로 감기며 기둥을 타고 올라 아치 띠를 따라 제목 리본 끝까지 · 회사 줄 높이마다 꽃 하나(줄이 없으면 고른 간격) · 틀 안에서 자름 ── */
@@ -466,17 +568,18 @@ function barsArt(src) {
   ROWY = rows.map((_, i) => yA + rh * (i + 0.5));
   // 금 줄기 — 밑동(모자이크 띠 위) 굵고 위 가늘게 · 꼭대기는 메달 옷자락이 좁아져 이어지는 자리 · 줄 사이마다 작은 잎
   // 줄기 — 굵기 6 → 5(거의 고르게) · 위 끝은 두 손이 쥔 자리 위 작은 봉오리 · 마디마다 작은 잎 하나와 덩굴손 하나(서로 다른 쪽)
-  const HY = hy(), sTop = signed ? HY - 34 : yA - 2;
-  if (signed) STEM = {x: ax, y: sTop, hy: HY, g1: HY - 20, g2: HY + 6}; // 위 손(가슴) · 아래 손(허리) — 줄기가 두 손 위아래로 보임
+  const HY = hy(), g1 = MED.y + 0.64 * MED.r, sTop = signed ? g1 - 3 : yA - 2;
+  // 8판 — 두 손을 창 안으로 올림(왼손 가슴 · 오른손 허리 위) · 줄기 위 끝은 위 손 안에서 멈춤(지팡이) · 창 아래 끝 = 첫 줄 자리 3 위
+  if (signed) { STEM = {x: ax, y: sTop, hy: HY, g1, g2: MED.y + 0.96 * MED.r}; NICHE = {yb: top - 3}; }
   CTOP = yA;
   if (bh) kids.push(bed(ax, yb, Math.min(34, yb - yEnd + 4)));
   kids.push(kTaper([[ax, bh ? yb - 1 : yEnd + 6], [ax + 0.8, (yA + yEnd) / 2 + 30], [ax - 0.7, yA + 40], [ax, sTop]], {w0: 6, w1: 5, cls: 'mu-axis'}));
+  const sideN = i => (signed && neg[i] ? 1 : -1);            // 이름이 놓이는 쪽(덩굴손이 뻗는 쪽) — 줄기 잎은 그 반대쪽
   for (let i = 1; i < n; i++) {
-    const ny = yA + rh * i, sg = i % 2 ? 1 : -1;
+    const ny = yA + rh * i, sg = signed ? -sideN(i) : i % 2 ? 1 : -1;
     kids.push(leaf(ax, ny, Math.min(12, rh * 0.26), sg > 0 ? -38 : 218, i, 'mu-leaf mu-bleaf'));
   }
-  if (signed) kids.push(s('g', {transform: `translate(${f1(ax)} ${f1(sTop + 1)}) rotate(-90)`}, closedBud(0, 0, 1, 10)));
-  else kids.push(flower(ax, yA - 8, 6, 2, {anim: true}));
+  if (!signed) kids.push(flower(ax, yA - 8, 6, 2, {anim: true}));
   rows.forEach((r, i) => {
     const yc = ROWY[i], L = Math.max(0, r.w * f), dn = neg[i], v = V[i], eq = !dn && !(v.n > 0) && signed, sgn = signed && dn ? -1 : 1;
     const tone = dn ? 'rose' : eq ? 'sage' : 'gold';
@@ -488,6 +591,7 @@ function barsArt(src) {
       // 오름 = 잎 달린 가지(밑동 쪽 작은 잎 하나) · 끝에 핀 꽃 / 내림 = 끝에 닫힌 붉은 봉오리
       if (!dn && !eq && L > 2 * bw) kids.push(leaf(ax + sgn * (1.5 + L * 0.38), yc - bw * 0.36, bw * 0.62, sgn > 0 ? -42 : 222, -1, 'mu-leaf mu-sep'));
       kids.push(bar, leafEdge(ax + sgn * 1.5, yc, L, bw, sgn));
+      if (dn) kids.push(roseVeins(ax + sgn * 1.5, yc, L, bw, sgn));
       kids.push(dn ? closedBud(tipX, yc, sgn, bl) : openFlower(tipX, yc, sgn, fr, i));
     }
     else { bar = s('g', {}, s('circle', {cx: ax, cy: f1(yc), r: 3.2, class: 'mu-zero'})); kids.push(bar); }
@@ -500,6 +604,12 @@ function barsArt(src) {
     // 7판 — 줄기에서 나온 덩굴손이 이름 아래를 따라 글자 끝까지 뻗어 말림(이름이 줄기에 매달림 · 글씨 테가 덩굴손을 가림)
     const sN = signed && dn ? 1 : -1, nW = Math.max(...nf.ls.map(t => textW(t, nf.fs))), base = ny + (nf.ls.length - 1) * lh, xe = nx + sN * (nW + 3);
     kids.push(kTaper(whipPts([ax + sN * 2.6, yc + 1], [ax + sN * 9, base + 7.5], [nx + sN * nW * 0.55, base + 3.5], [xe, base + 1.5], 4.2, -sN, 1.05), {w0: 1.7, w1: 0.35, cls: 'mu-tend mu-ntend'}));
+    // 8판 — 같은 덩굴손이 줄기 마디(윗줄과 사이)에서도 나와 이름 위 빈 틈을 건너 끝이 말림 · 작은 잎 하나(밑줄과 한 줄기에서 갈라진 한 선)
+    if (signed && i > 0) {
+      const yN = yA + rh * i, reach = Math.min(nW * 0.8, 74) + 10, q = whipPts([ax + sN * 2.8, yN + 0.5], [ax + sN * 12, yN - 3.2], [ax + sN * reach * 0.62, yN + 3.4], [ax + sN * reach, yN + 0.4], 3.6, sN, 1.0);
+      const m = q[Math.round(q.length * 0.32)];
+      kids.push(kTaper(q, {w0: 1.6, w1: 0.3, cls: 'mu-tend mu-ntend'}), leaf(m[0], m[1] - 0.4, 6.2, sN > 0 ? -34 : 214, -1, 'mu-leaf mu-sep'));
+    }
     kids.push(r.href ? s('a', {href: r.href, class: 'g-link'}, s('rect', {x: WIN.x0, y: f1(yc - Math.max(30, rh / 2)), width: WIN.x1 - WIN.x0, height: f1(Math.max(60, rh)), class: 'mu-hit'}), tx) : tx);
   });
   return s('g', {class: 'mu-chart mu-barart', 'data-f': +f.toFixed(5)}, grp('vine', kids, 'mu-barvine'));
@@ -523,9 +633,9 @@ export function frame(chart, {title = null, kind = 'line', tone = 'calm'} = {}) 
   let src = chartSvg(chart);
   if (!src || !viewOf(src)) src = needSvg();
   const T = titleOf(title), cw = 'mu-win-' + id, cf = 'mu-frm-' + id;
-  setMed(R0); ROWY = null; STEM = null; CTOP = 999;
+  setMed(R0); ROWY = null; STEM = null; NICHE = null; CTOP = 999;
   let win = kd === 'bars' ? barsArt(src) : null;
-  if (!win) { ROWY = null; STEM = null; CTOP = 999; win = chartWin(src, kd); }       // 자리(메달 크기 · 줄 높이)는 그래프를 먼저 놓고 정함
+  if (!win) { ROWY = null; STEM = null; NICHE = null; CTOP = 999; win = chartWin(src, kd); }       // 자리(메달 크기 · 줄 높이)는 그래프를 먼저 놓고 정함
   const label = [T.t, src.getAttribute('aria-label')].filter(Boolean).join(' — ');
   return s('svg', {class: `su-svg su-art4 su-mucha mu-${tn} mu-k-${kd}`, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label, preserveAspectRatio: 'xMidYMid meet', 'data-kind': kd, 'data-tone': tn, 'data-r': MED.r},
     s('defs', {}, s('clipPath', {id: cw}, s('path', {d: archPath(RXI, RYI, E + BAND, W - E - BAND, MOS_Y) + 'Z'})), s('clipPath', {id: cf}, s('path', {d: archPath(RXO, RYO, E, W - E, MOS_Y) + 'Z'}))),

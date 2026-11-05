@@ -170,8 +170,10 @@ export function poster(o) {
   const y0 = SH + 4, y1 = vEnd, hh = y1 - y0;
   const vp = o.vinePts || (side => { const X = x => (side ? W - x : x), P = []; for (let i = 0; i <= 12; i++) { const t = i / 12; P.push([X(20 + 15 * Math.sin(2 * Math.PI * 1.25 * t + 0.4 + side * 0.9)), y1 - hh * t]); } return P; });
   const vines = [0, 1].map(side => { const pts = vp(side), p0 = pts[0], dx = side ? -1 : 1;
-    return [kVine(pts, {w0: 6.4, w1: 1.2, leaves: Math.max(12, Math.round(hh / 15)), buds: 9, seed: 11 + side * 6 + v}),
-      kTaper(curlPts(p0[0], p0[1], side ? 0 : Math.PI, 9, dx * -1, 1.5), {w0: 3.4, w1: 0.6, cls: 'mk-vstem'})]; });
+    const pe = pts[pts.length - 1];
+    return [kVine(pts, {w0: fin(o.vw0) ? o.vw0 : 6.4, w1: 1.2, leaves: Math.max(12, Math.round(hh / 15)), buds: 9, seed: 11 + side * 6 + v}),
+      kTaper(curlPts(p0[0], p0[1], side ? 0 : Math.PI, 9, dx * -1, 1.5), {w0: 3.4, w1: 0.6, cls: 'mk-vstem'}),
+      o.vineTop ? kTaper(curlPts(pe[0], pe[1], side ? Math.PI * 0.5 : Math.PI * 0.5, 8, dx, 1.3), {w0: 2.4, w1: 0.5, cls: 'mk-vstem'}) : null]; });
   const vine = s('g', {'data-mucha': 'vine'}, s('g', {'clip-path': `url(#${id}gc)`}, vines),
     flower(32, ACY + 4, 8.5, '', 2), flower(W - 32, ACY + 4, 8.5, '', 3));
   // 아래 글씨판(아치 머리 · 금 덩굴 테) + 꽃 모자이크 띠(네모 · 동그라미 · 다섯 점 꽃을 금 · 잎 · 살구로 번갈아)
@@ -274,32 +276,27 @@ function chartG(m, P) {
   const ca = m.cl ? [dk(m.from), dk(m.to)] : null, ia = m.il ? [dk(m.il.from), dk(m.il.to)] : null;
   const head = (ca || ia) && (!ca || !ia || (ca[0] === ia[0] && ca[1] === ia[1])) ? (ca || ia) : null, headT = head && (head[0] || head[1]) ? spanLines('한 달', head[0], head[1], 18, 999)[0] : null;
   if (headT) out.push(s('g', {'data-per': 'line'}, T(CX, A + 48, headT, 'ca-t ca-m ca-f18 ca-onw', {'text-anchor': 'middle'})));
-  // 끝값 이름표 — 오른쪽 · 줄 끝 높이에 맞추되 겹치지 않게 · 흰 상자 없이 금빛 리본 막대와 글씨
-  const tmax = LR - LX - 14;
+  // 끝값 이름표 — 그래프 아래 한 줄(두 값이 한 줄에 들면 한 줄 · 아니면 줄마다) · 줄 끝에는 꽃(회사) · 점(시장)만
+  const tmax = WX1 - WX0 - 12;
   if (m.cl) labs.push({cls: 'su-lg-c', k: 'c', val: pct(m.last), name: m.name, proper: true, ex: X(m.cl.length - 1), ey: Y(lastOf(m.cl)), a: dk(m.from), b: dk(m.to)});
   labs.push({cls: 'su-lg-i', k: 'i', val: m.il ? pct(m.ilast) : NEED, name: m.il ? m.il.name : '시장', proper: false, ex: m.il ? X(m.il.line.length - 1) : PR, ey: m.il ? Y(lastOf(m.il.line)) : PB,
     a: m.il ? dk(m.il.from) : null, b: m.il ? dk(m.il.to) : null});
-  for (const b of labs) {
-    b.one = tw(b.val, 24) + 8 + tw(b.name, 19) <= tmax; b.names = b.one ? [] : wrapW(b.name, 19, tmax);
-    b.per = headT ? [] : spanLines('한 달', b.a, b.b, 18, tmax); b.h = 30 + (b.names.length + b.per.length) * 21; b.top = b.ey - 15;
-  }
-  const minT = PT - 4, maxB = P.bot;
-  labs.sort((a, b) => a.ey - b.ey);
-  for (let it = 0; it < 8; it++) {
-    for (const b of labs) b.top = Math.max(minT, Math.min(maxB - b.h, b.top));
-    for (let i = 1; i < labs.length; i++) { const a = labs[i - 1], b = labs[i], ov = a.top + a.h + 10 - b.top; if (ov > 0) { a.top -= ov / 2; b.top += ov / 2; } }
-  }
-  labs.forEach(b => {
-    const vy = b.top + 24, my = b.top + 16;
-    out.push(s('path', {d: brush(`M${r1(b.ex + 6)} ${r1(b.ey)}C${r1(b.ex + 12)} ${r1(b.ey)} ${r1(LX - 9)} ${r1(my)} ${r1(LX - 1)} ${r1(my)}`, fall(2.6, 0.8), 10), class: 'ca-lead-' + b.k}));
-    out.push(b.k === 'c' ? flower(b.ex, b.ey, 9, ' ca-endpet', 2) : s('circle', {cx: r1(b.ex), cy: r1(b.ey), r: 5.5, class: 'ca-dot-i'}));
-    let y = vy + 23; const rows = [];
-    for (const t of b.names) { rows.push(T(LX + 12, y, t, 'ca-t ca-b ca-f19 ca-onw', b.proper ? {'data-proper': ''} : {})); y += 21; }
-    for (const t of b.per) { rows.push(T(LX + 12, y, t, 'ca-t ca-m ca-f18 ca-onw')); y += 21; }
+  for (const b of labs) { b.w = tw(b.val, 21) + 6 + tw(b.name, 18); b.per = headT ? [] : spanLines('한 달', b.a, b.b, 18, tmax); }
+  const GAP = 26, one = labs.every(b => !b.per.length) && labs.reduce((a, b) => a + b.w, 0) + GAP * (labs.length - 1) <= tmax;
+  const rowsOf = [];
+  if (one) { let x = CX - (labs.reduce((a, b) => a + b.w, 0) + GAP * (labs.length - 1)) / 2; labs.forEach(b => { rowsOf.push([b, x - 14, P.ly]); x += b.w + GAP; }); }
+  else { let y = P.ly - (labs.length - 1) * 26 - labs.reduce((a, b) => a + b.per.length * 21, 0); labs.forEach(b => { rowsOf.push([b, CX - Math.min(b.w, tmax) / 2 - 14, y]); y += 26 + b.per.length * 21; }); }
+  labs.forEach(b => out.push(b.k === 'c' ? flower(b.ex, b.ey, 8, ' ca-endpet', 2) : s('circle', {cx: r1(b.ex), cy: r1(b.ey), r: 5, class: 'ca-dot-i'})));
+  if (one && labs.length > 1) { const [b0, x0] = rowsOf[0], sx = x0 + 14 + b0.w + GAP / 2; out.push(s('g', {class: 'ca-sep'}, leaf(sx - 2, P.ly - 7, -150, 8, 'mu-gleaf'), leaf(sx + 2, P.ly - 7, -30, 8, 'mu-gleaf'), s('circle', {cx: r1(sx), cy: r1(P.ly - 7), r: 2.4, class: 'ca-conn'}))); }
+  rowsOf.forEach(([b, x, y]) => {
+    const names = b.w > tmax ? wrapW(b.name, 18, tmax - 14) : [], rows = [];
+    let yy = y + 22;
+    for (const nm of names) { rows.push(T(x + 14, yy, nm, 'ca-t ca-b ca-f18 ca-onw', b.proper ? {'data-proper': ''} : {})); yy += 21; }
+    for (const l of b.per) { rows.push(T(x + 14, yy, l, 'ca-t ca-m ca-f18 ca-onw')); yy += 21; }
     out.push(s('g', {class: b.cls + ' ca-lab', 'data-end': b.k},
-      s('circle', {cx: r1(LX + 1), cy: r1(my), r: 3.2, class: 'ca-rib-' + b.k}),
-      s('text', {x: r1(LX + 12), y: r1(vy), class: 'ca-t ca-b ca-f24 ca-onw ca-v-' + b.k}, s('tspan', {class: 'v', text: b.val}),
-        b.one ? s('tspan', {dx: 8, class: 'ca-nm2', ...(b.proper ? {'data-proper': ''} : {}), text: b.name}) : null),
+      one ? null : b.k === 'c' ? flower(x + 4, y - 7, 6, ' ca-endpet', 3) : s('circle', {cx: r1(x + 4), cy: r1(y - 7), r: 4.2, class: 'ca-rib-' + b.k}),
+      s('text', {x: r1(x + 14), y: r1(y), class: 'ca-t ca-b ca-f21 ca-onw ca-v-' + b.k}, s('tspan', {class: 'v', text: b.val}),
+        names.length ? null : s('tspan', {dx: 6, class: 'ca-nm2 ca-f18', ...(b.proper ? {'data-proper': ''} : {}), text: b.name})),
       rows));
   });
   return out;
@@ -315,21 +312,28 @@ function valRows(lab, val, tmax) {
   return {rows: [...(lab ? wrapW(lab, 18, tmax).map(l => ({lab: l, val: null, px: 18})) : []), ...wrapW(val, px, tmax).map(l => ({lab: null, val: l, px}))], h: 0};
 }
 const rowsH = R => R.h || R.rows.reduce((a, r) => a + (r.val ? 28 : 20), 0);
+const BPX = [36, 34, 32, 30, 28, 26, 24, 22, 21, 20];
 function roadPlan(m) {
   const n = m.roads.length;
   if (!n) { const lines = m.ind ? wrapW(m.ind + ' 업종', 20, 220) : []; return {n, plateH: m.ind ? Math.max(84, lines.length * 24 + 58) : 30, lines, H: 0}; }
   const gap = 12, X0 = 30, X1 = W - 30, pw = n === 1 ? 300 : (X1 - X0 - (n - 1) * gap) / n, tmax = pw - 12;
   const cols = m.roads.map(r => {
     const pers = [r.ivp, r.cvp].filter(Boolean), same = pers.length > 0 && pers.every(p => p[0] === pers[0][0] && p[1] === pers[0][1]), sameD = pers.length > 0 && !!pers[0][1] && pers.every(p => p[1] === pers[0][1]);
-    const head = same ? spanLines(pers[0][0], null, pers[0][1], 18, tmax) : sameD ? [pers[0][1] + '까지'] : [];
+    const head = same ? spanLines(pers[0][0], null, pers[0][1], 18, tmax - 30) : sameD ? [pers[0][1] + '까지'] : [];
     const perOf = p => (!p || same ? [] : sameD ? [p[0]] : spanLines(p[0], null, p[1], 18, tmax));
     const iv = valRows(r.ivL, r.ivN, tmax), cvBoth = valRows(r.name, r.cv, tmax);
-    const cv = cvBoth.h || r.k !== 'money' ? cvBoth : valRows(null, r.cv, tmax);
-    return {head, iv, ivPer: perOf(r.ivp), cv, cvPer: perOf(r.cvp), kind: wrapW(r.kind + ' 7곳에 듦', 19, tmax)};
+    // 큰 값 하나 — 회사 값만 크게(칸에 맞춰 36 → 20) · 안 들면 숫자만 크게 · 단위는 아래 작은 글 · 이름(옛 판과 같은 규칙)은 위 작은 글
+    const showName = !!cvBoth.h || r.k !== 'money', big = String(r.cv), px = BPX.find(q => tw(big, q) <= tmax - 6) || 20;
+    const sp = /^([+−-]?[\d,.]+)(.*)$/.exec(big), split = px < 28 && sp && sp[2].trim() ? {num: sp[1], unit: sp[2].trim(), px: BPX.find(q => tw(sp[1], q) <= tmax - 6) || 20} : null;
+    const ivRows = iv.rows.map(x => ({lab: x.lab, val: x.val})), names = showName ? wrapW(r.name, 18, tmax) : [];
+    const kind = wrapW(r.kind + ' 7곳에 듦', 18, tmax - 34);
+    const hH = head.length ? 26 + (head.length - 1) * 19 : 0, fH = 26 + (kind.length - 1) * 19;
+    const ivH = ivRows.length * 21 + perOf(r.ivp).length * 20, bigH = names.length * 20 + 40 + (split ? 20 : 0) + perOf(r.cvp).length * 20;
+    return {head, hH, ivRows, ivPer: perOf(r.ivp), ivH, names, big, px, split, cvPer: perOf(r.cvp), bigH, kind, fH};
   });
-  const headN = Math.max(...cols.map(c => c.head.length)), nA = Math.max(...cols.map(c => rowsH(c.iv) + c.ivPer.length * 20)), nB = Math.max(...cols.map(c => rowsH(c.cv) + c.cvPer.length * 20)), nC = Math.max(...cols.map(c => c.kind.length));
+  const hH = Math.max(...cols.map(c => c.hH)), ivH = Math.max(...cols.map(c => c.ivH)), bigH = Math.max(...cols.map(c => c.bigH)), fH = Math.max(...cols.map(c => c.fH));
   const rib = wrapW(m.roads[0].ind + ' 업종', 20, 230), rh = 34 + (rib.length - 1) * 23;
-  return {n, gap, X0, pw, cols, headN, nA, nB, nC, rib, rh, plateH: 0, H: rh + 2 + 22 + headN * 20 + 8 + nA + 10 + nB + 10 + nC * 21 + 6};
+  return {n, gap, X0, pw, cols, hH, ivH, bigH, fH, rib, rh, plateH: 0, H: rh + 2 + 24 + hH + 4 + ivH + 2 + bigH + 4 + fH + 7};
 }
 /** 판 꼭대기 상징 — 불장 = 불꽃 · 돈이 몰리는 = 금빛 물결 · 꽃이 될 = 새싹(굵기 변하는 윤곽) */
 function sigil(k, x, y) {
@@ -348,27 +352,36 @@ const vineRule = (cx, y) => [s('path', {d: brush(`M${r1(cx)} ${r1(y)}C${r1(cx - 
   s('path', {d: brush(`M${r1(cx)} ${r1(y)}C${r1(cx + 12)} ${r1(y + 4)} ${r1(cx + 22)} ${r1(y - 4)} ${r1(cx + 34)} ${r1(y + 1)}`, fall(1.7, 0.35), 10), class: 'ca-conn'}),
   leaf(cx - 17, y, -150, 6, 'mu-gleaf'), leaf(cx + 17, y, -30, 6, 'mu-gleaf'), s('circle', {cx: r1(cx), cy: r1(y), r: 1.8, class: 'ca-conn'})];
 function roadG(m, R, top, bot) {
-  const {n, gap, X0, pw, cols, headN, nA, nB, rib, rh} = R, x0 = n === 1 ? (W - pw) / 2 : X0, wins = [], deco = [], rules = [], out = [];
-  const Tp = top + rh + 2, ry = n === 1 ? 26 : 24, hTop = Tp + 22, aTop = hTop + headN * 20 + 8, bTop = aTop + nA + 10, cTop = bTop + nB + 10;
-  const valG = (cx, y0, V, per, on) => { let y = y0; const g = [];
-    for (const r of V.rows) {
-      if (r.lab && r.val) { const w = tw(r.lab + ' ', 18) + tw(r.val, r.px), x = cx - w / 2; g.push(s('text', {x: r1(x), y: r1(y + 22), class: 'ca-t' + on}, s('tspan', {class: 'ca-lab ca-f18', text: r.lab + ' '}), s('tspan', {class: 'ca-num ca-f' + r.px, text: r.val}))); y += 28; }
-      else if (r.val) { g.push(T(cx, y + 22, r.val, 'ca-t ca-num ca-f' + r.px + on, {'text-anchor': 'middle'})); y += 28; }
-      else { g.push(T(cx, y + 16, r.lab, 'ca-t ca-lab ca-f18' + on, {'text-anchor': 'middle'})); y += 20; }
-    }
-    per.forEach((l, i) => g.push(T(cx, y + 15 + i * 20, l, 'ca-t ca-m ca-f18' + on, {'text-anchor': 'middle'})));
-    return g; };
+  const {n, gap, X0, pw, cols, hH, ivH, bigH, rib, rh} = R, x0 = n === 1 ? (W - pw) / 2 : X0, wins = [], deco = [], rules = [], out = [];
+  const Tp = top + rh + 2, ry = n === 1 ? 30 : 28, hTop = Tp + 24, ivTop = hTop + hH + 4, bTop = ivTop + ivH + 2, fTop = bTop + bigH + 4;
+  const TONE = {hot: 'rose', bloom: 'sage', money: 'gold'};
   cols.forEach((c, ci) => {
     const x = x0 + ci * (pw + gap), cx = x + pw / 2, k = m.roads[ci].k, on = ' ca-on-' + k;
     wins.push(s('path', {d: archD(x, x + pw, Tp, ry, bot), class: 'ca-pan ca-pan-' + k}), s('path', {d: archD(x + 4.5, x + pw - 4.5, Tp + 4.5, ry - 3.5, bot), class: 'ca-panl2'}));
-    deco.push(archVine(x, x + pw, Tp, ry, 3), sigil(k, cx, Tp + 11));
-    const h0 = hTop + (headN - c.head.length) * 10;
-    out.push(s('g', {'data-road': 'per'}, c.head.map((l, i) => T(cx, h0 + 15 + i * 20, l, 'ca-t ca-m ca-f18' + on, {'text-anchor': 'middle'}))));
-    if (c.head.length) deco.push(s('g', {class: 'ca-base'}, kBeads(cx - 26, r1(hTop + headN * 20 + 3), cx + 26, r1(hTop + headN * 20 + 3), {gap: 6.5, r: 1.4})));
-    out.push(s('g', {'data-road': 'indv'}, valG(cx, aTop, c.iv, c.ivPer, on)));
-    out.push(s('g', {'data-road': 'co'}, valG(cx, bTop, c.cv, c.cvPer, on)));
-    out.push(s('g', {'data-road': 'list'}, c.kind.map((l, i) => T(cx, cTop + 16 + i * 21, l, 'ca-t ca-b ca-f19 ca-k-' + k + on, {'text-anchor': 'middle'}))));
-    rules.push(vineRule(cx, aTop + nA + 4), vineRule(cx, bTop + nB + 4));
+    // 칸 머리 아치에 크게 녹인 상징(불꽃 · 금빛 물결 · 새싹) — 아치 꼭대기 선 위에 걸침
+    deco.push(archVine(x, x + pw, Tp, ry, 3), s('g', {transform: `translate(${r1(cx)} ${r1(Tp + 6)}) scale(1.75) translate(${r1(-cx)} ${r1(-(Tp + 6))})`}, sigil(k, cx, Tp + 6)));
+    // 칸 머리 리본 — 기간(작은 글)
+    if (c.head.length) out.push(s('g', {'data-road': 'per'}, scrollT(x + 6, hTop + (hH - c.hH) / 2, pw - 12, c.hH, c.head, 18, 'cream')));
+    else out.push(s('g', {'data-road': 'per'}));
+    // 업종 값 — 작은 글 한 줄
+    let y = ivTop; const iv = [];
+    for (const r of c.ivRows) {
+      if (r.lab && r.val) { const w = tw(r.lab + ' ', 18) + tw(r.val, 18); iv.push(s('text', {x: r1(cx - w / 2), y: r1(y + 16), class: 'ca-t' + on}, s('tspan', {class: 'ca-lab ca-f18', text: r.lab + ' '}), s('tspan', {class: 'ca-num ca-f18', text: r.val}))); }
+      else iv.push(T(cx, y + 16, r.lab || r.val, 'ca-t ca-f18 ' + (r.val ? 'ca-num' : 'ca-lab') + on, {'text-anchor': 'middle'}));
+      y += 21;
+    }
+    c.ivPer.forEach(l => { iv.push(T(cx, y + 15, l, 'ca-t ca-m ca-f18' + on, {'text-anchor': 'middle'})); y += 20; });
+    out.push(s('g', {'data-road': 'indv'}, iv));
+    // 큰 값 하나 — 회사 값
+    let yb = bTop + (bigH - c.bigH) / 2; const bg = [];
+    c.names.forEach(l => { bg.push(T(cx, yb + 15, l, 'ca-t ca-lab ca-f18' + on, {'text-anchor': 'middle'})); yb += 20; });
+    if (c.split) { bg.push(T(cx, yb + 33, c.split.num, 'ca-t ca-num ca-big ca-f' + c.split.px + on, {'text-anchor': 'middle'})); yb += 40; bg.push(T(cx, yb + 15, c.split.unit, 'ca-t ca-lab ca-f18' + on, {'text-anchor': 'middle'})); yb += 20; }
+    else { bg.push(T(cx, yb + 33, c.big, 'ca-t ca-num ca-big ca-f' + c.px + on, {'text-anchor': 'middle'})); yb += 40; }
+    c.cvPer.forEach(l => { bg.push(T(cx, yb + 15, l, 'ca-t ca-m ca-f18' + on, {'text-anchor': 'middle'})); yb += 20; });
+    out.push(s('g', {'data-road': 'co'}, bg));
+    rules.push(vineRule(cx, bTop - 1));
+    // 칸 발치 리본 — 든 목록(작은 글)
+    out.push(s('g', {'data-road': 'list'}, scrollT(x + 6, fTop, pw - 12, c.fH, c.kind, 18, TONE[k] || 'cream')));
   });
   // 업종 두루마리(양끝 말림) — 두 창 위 · 차트 창 밑선 아래 · 누르면 그 업종(투명한 누름 자리 높이 64)
   const rw = Math.min(314, Math.max(170, Math.max(...rib.map(l => tw(l, 20))) + 84)), rx = (W - rw) / 2, ry0 = top, hitH = Math.max(64, rh + 26);
@@ -393,19 +406,28 @@ export function picture(d, opt = {}) {
   const m = model(d), id = 'ca' + (++SEQ) + (m.code || 'x');
   const R = m.ok ? roadPlan(m) : {n: 0, plateH: 30, lines: [], H: 0};
   const BOT = 592, MY = 108, MR = 65, A = 148, plateTop = BOT - R.plateH, roadTop = R.n ? BOT - R.H : plateTop;
-  const WB = R.n ? roadTop - 6 : plateTop - 22;
-  const P = {PL: 50, PR: 166, PT: A + 62, PB: R.n ? roadTop - 24 : WB - 22, LX: 180, LR: 350, bot: R.n ? roadTop - 12 : WB - 10, A, ry: 52, WX0: 34, WX1: W - 34, WB, id};
+  const WB = R.n ? roadTop + R.rh / 2 : plateTop - 22;
+  // 그래프는 창 폭 가득 · 끝값 이름표는 그래프 아래 한 줄
+  const ly = R.n ? roadTop - 8 : WB - 14, P = {PL: 54, PR: W - 58, PT: A + 60, PB: ly - 28, ly, LX: 180, LR: 350, bot: WB - 10, A, ry: 52, WX0: 34, WX1: W - 34, WB, id};
   // 여인 1.3배(어깨 · 옷 주름까지) · 머리 다발 둘이 원 밖으로 흘러 띠의 별 · 꽃까지(뒤통수 쪽 = 왼쪽)
+  // 머리 다발 — 둘은 뒤로 띠까지 · 둘은 창 양옆 테를 타고 아래 두 칸 어깨까지 흘러내려 화면을 한 그림으로 묶음(끝은 칸 어깨에서 말림)
+  const low = R.n ? roadTop + R.rh + 18 : plateTop - 6;
   const locks = {tone: 3, list: [[[CX - 26, MY - 30], [CX - 52, MY - 52], [CX - 80, MY - 40], [CX - 100, MY - 50], [CX - 108, MY - 70], [CX - 100, MY - 84]],
     [[CX - 34, MY + 18], [CX - 62, MY + 40], [CX - 92, MY + 24], [CX - 114, MY + 30], [CX - 122, MY + 48]]]};
-  const F = poster({id, title: m.ok ? m.name : NEED, proper: m.ok, v: 3, side: 1, ring: 'mosaic', my: MY, mr: MR, plateTop: R.n ? null : plateTop, bot: BOT, locks});
+  const longs = [[[CX - 44, MY + 34], [CX - 92, MY + 52], [62, 166], [34, 196], [28, 250], [33, (250 + low) / 2], [27, low - 22], [38, low - 4], [54, low + 2]],
+    [[CX + 44, MY + 40], [CX + 92, MY + 56], [W - 62, 168], [W - 34, 198], [W - 28, 252], [W - 33, (252 + low) / 2], [W - 27, low - 22], [W - 38, low - 4], [W - 54, low + 2]]];
+  const longG = s('g', {class: 'mk-hair mk-t3', 'data-mucha': 'whiplash', 'aria-hidden': 'true'}, longs.map((pts, i) => s('g', {class: 'mk-sway' + (i ? '2' : '')},
+    kStrands(pts, {n: 5, spread: 6, w0: 2.6, w1: 0.2, curl: 0.9, seed: 70 + i * 9, cls: 'mk-hb'}), kStrands(pts, {n: 3, spread: 5, w0: 1.1, w1: 0.12, curl: 0.8, seed: 81 + i * 9, cls: 'mk-hl'}))));
+  // 양옆 덩굴 — 굵다 가늘어지는 줄기가 아래 두 칸 바깥 테를 타고 올라가 위 띠 어깨에 감김
+  const vinePts = side => { const X = x => (side ? W - x : x), P2 = []; for (let i = 0; i <= 14; i++) { const u = i / 14, y = BOT - 6 - (BOT - 6 - 162) * u; P2.push([X(18 + 7 * Math.sin(u * Math.PI * 3.2 + side)), y]); } return P2; };
+  const F = poster({id, title: m.ok ? m.name : NEED, proper: m.ok, v: 3, side: 1, ring: 'mosaic', my: MY, mr: MR, plateTop: R.n ? null : plateTop, bot: BOT, locks, vinePts, vw0: 9, vineTop: true});
   const label = m.ok ? m.name + ' 한 달 줄 ' + (m.cl ? pct(m.last) : NEED) + ' · ' + (m.il ? m.il.name + ' ' + pct(m.ilast) : '시장 ' + NEED) + (m.from && m.to ? ' · ' + dk(m.from) + ' ~ ' + dk(m.to) : '')
     + (m.roads.length ? ' · 21곳에 든 길 ' + m.roads.map(r => r.ind + ' ' + r.iv + (r.ivp ? ' ' + r.ivp.join(' ') + '까지' : '') + ' → ' + r.name + ' ' + r.cv + (r.cvp ? ' ' + r.cvp.join(' ') + '까지' : '') + ' → ' + r.kind).join(' · ') : m.ind ? ' · ' + m.ind + ' 업종' : '') : '회사 자료 ' + NEED;
   const svg = s('svg', {class: 'su-svg su-art4 su-co-art', viewBox: `0 0 ${W} ${HT}`, role: 'group', 'aria-label': label, preserveAspectRatio: 'xMidYMid meet', 'data-g': 'su-co-art', 'data-mode': R.n ? 'road' + R.n : m.ok && m.ind ? 'ind' : m.ok ? 'line' : 'need'},
     s('defs', {}, F.defs), F.back,
     m.ok ? chartG(m, P) : T(CX, 330, '이 회사 자료 ' + NEED, 'ca-t ca-b ca-f21', {'text-anchor': 'middle'}),
     R.n ? roadG(m, R, roadTop, BOT) : indG(m, R, plateTop),
-    F.front);
+    longG, F.front);
   if (opt && opt.still) svg.classList.add('mu-still');
   return svg;
 }

@@ -104,3 +104,8 @@
 .su-co-art .ca-bud { fill: var(--apri); stroke: var(--gold); stroke-width: .8; }
 .su-co-art .ca-lab { font-weight: 700; fill: var(--mute); }
 .su-co-art .ca-num { font-weight: 800; fill: var(--ink); letter-spacing: -.01em; }
+
+/* 여덟째 판 — 칸마다 큰 값 하나(회사 값) · 나머지는 리본 속 작은 글 · 그래프 아래 한 줄 이름표 */
+.su-co-art .ca-big { font-weight: 900; letter-spacing: -.02em; }
+.su-co-art .ca-f26 { font-size: 26px; } .su-co-art .ca-f28 { font-size: 28px; } .su-co-art .ca-f30 { font-size: 30px; } .su-co-art .ca-f32 { font-size: 32px; } .su-co-art .ca-f34 { font-size: 34px; } .su-co-art .ca-f36 { font-size: 36px; }
+.su-co-art .ca-sep .mu-gleaf { fill: var(--gold2); }
