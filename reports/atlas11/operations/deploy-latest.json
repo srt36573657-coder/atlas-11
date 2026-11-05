@@ -1,19 +1,19 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-11-05T08:30:45.642Z",
-  "state": "ready",
+  "at": "2026-11-05T09:16:03.626Z",
+  "state": "failed",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
-  "url": "https://aaa7377.com",
-  "deployUrl": "https://6aec3ed8bc47ecc1364f0358--mulgil.netlify.app",
-  "deployId": "6aec3ed8bc47ecc1364f0358",
+  "url": null,
+  "deployUrl": null,
+  "deployId": null,
   "noindex": false,
   "files": 3864,
-  "exitCode": 0,
-  "error": null,
+  "exitCode": 1,
+  "error": "npm error code ETARGET\nnpm error notarget No matching version found for @vue/compiler-core@3.5.45.\nnpm error notarget In most cases you or one of your dependencies are requesting\nnpm error notarget a package version that doesn't exist.\nnpm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-11-05T09_16_20_100Z-debug-0.log\n",
   "functions": {
-    "state": "deployed",
+    "state": "failed",
     "names": [
       "auto",
       "gift",
@@ -72,6 +72,6 @@
       "urlpattern-polyfill",
       "when-exit"
     ],
-    "error": null
+    "error": "npm error code ETARGET\nnpm error notarget No matching version found for @vue/compiler-core@3.5.45.\nnpm error notarget In most cases you or one of your dependencies are requesting\nnpm error notarget a package version that doesn't exist.\nnpm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-11-05T09_16_05_781Z-debug-0.log\n"
   }
 }
