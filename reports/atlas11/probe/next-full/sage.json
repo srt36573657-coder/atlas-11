@@ -1,17 +1,12 @@
 {
  "schema": "duri-check-sage-1",
- "at": "2026-11-05T07:02:35.371Z",
+ "at": "2026-11-05T08:36:09.640Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1537,
-  "fail": 1
+  "pass": 1584,
+  "fail": 0
  },
- "fails": [
-  [
-   "검사 멈춤",
-   "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://aaa7377.com/next/?v=1793862225102#/\", waiting until \"load\"\n\n    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_sage.mjs:583:14"
-  ]
- ],
+ "fails": [],
  "m": {
   "people": 39,
   "steps": [
