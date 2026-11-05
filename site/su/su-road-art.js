@@ -303,7 +303,7 @@ function roads(d) {
   // 흉상 — 연두 옷 소매(메달 원 안에서만)에서 나온 손이 펼친 책을 받쳐 듦 · 책은 원 아래 테를 넘고 낱장 셋이 「옛 기능」 띠 뒤로
   const clip = s('clipPath', {id: 'ra-mclip'}, circ(cx, cy, R - 1.4));
   const tome = book(206, 187, -7);
-  const arm = g({'clip-path': 'url(#ra-mclip)', class: 'ra-arm'}, sleeve({x: 147, y: 236, ang: -130, len: 27, w: 14, hand: 'hold', dir: 1, tone: 'cream'}));
+  const arm = g({'clip-path': 'url(#ra-mclip)', class: 'ra-arm'}, sleeve({x: 144, y: 194, ang: -70, len: 21, w: 13, hand: 'hold', dir: 1, tone: 'cream'}));
   // 머리 — 가는 가닥 여섯을 묶은 다발 둘 · 메달 뒤(뿌리는 메달에 가려짐)에서 나와 S 로 흘러 기둥 머리 연꽃을 한 바퀴 감고 안으로 말림
   //   왼쪽은 위로 솟았다 내려오고 · 오른쪽은 아래로 처졌다 올라옴(좌우 비대칭) · 고리 아래쪽은 연꽃 뒤로(연꽃을 머리 뒤에 다시 그림)
   const hairL = skein([[160, 151], [134, 146], [110, 136], [88, 131], [68, 137], [53, 150], [44, 163], [37, 169], [30, 172]], {r: 14, turn: -1, seed: 0});
@@ -388,17 +388,18 @@ function book(x, y, rot) {
     sheet(74), sheet(52), sheet(30), mark, path(cv(-1) + cv(1), 'ra-bkc'), path(pg(-1) + pg(1), 'ra-bkp'), path(ln, 'ra-bkl'),
     path(taper([[0, 0.5], [0, H * 0.5], [0, H]], 0.4, 1.4), 'ra-bkg'), path(taper([[-W, -1], [-W, H * 0.5], [-W, H - 1]], 1.2, 0.5) + taper([[W, -1], [W, H * 0.5], [W, H - 1]], 1.2, 0.5), 'ra-bkg'));
 }
-/** 줄기 밑동 — 뿌리 다섯(밑동에서 굵게 → 끝 가늘게 · 바깥 둘은 끝이 말림)이 띠 위로 퍼지고 · 왼쪽에 작은 꽃 셋 · 오른쪽에 봉오리 하나 · 잎 다섯 */
+/** 줄기 밑동 — 뿌리 다섯(밑동에서 굵게 → 끝 가늘게 · 바깥 둘은 끝이 말림)이 띠 위로 퍼지고 · 왼쪽(마지막 왼 잎 아래 빈자리)에 작은 꽃 넷과 봉오리 · 밑동에 잎 다섯
+    오른쪽은 마지막 오른 잎 밑이라 뿌리만 낮게 */
 function rootCluster(x, y) {
   const rt = (a, w, cr = 0, ct = 1) => path(taper(cr ? coil(smooth(a, 6), cr, ct, 1.05, 0.7, 14) : smooth(a, 6), w, 0.25, 0.3), 'mk-vstem');
   const roots = [rt([[x - 1, y - 2], [x - 12, y + 3], [x - 28, y + 5], [x - 42, y + 2]], 3.4, 3, 1), rt([[x - 1, y], [x - 8, y + 7], [x - 20, y + 11]], 2.4),
-    rt([[x, y], [x + 1, y + 7], [x - 1, y + 13]], 2.2), rt([[x + 1, y], [x + 9, y + 7], [x + 21, y + 10]], 2.4), rt([[x + 1, y - 2], [x + 13, y + 3], [x + 29, y + 5], [x + 42, y + 1]], 3.4, 3, -1)];
+    rt([[x, y], [x + 1, y + 7], [x - 1, y + 13]], 2.2), rt([[x + 1, y], [x + 9, y + 7], [x + 21, y + 11]], 2.4), rt([[x + 1, y - 1], [x + 12, y + 4], [x + 26, y + 7], [x + 36, y + 6]], 3, 2.6, -1)];
   const stalk = (a, w = 1.4) => path(taper(smooth(a, 6), w, 0.7), 'mk-vstem');
-  const kids = [stalk([[x - 3, y - 3], [x - 12, y - 12], [x - 22, y - 20]]), stalk([[x - 4, y - 1], [x - 18, y - 4], [x - 34, y - 9]]), stalk([[x - 2, y - 4], [x - 6, y - 16], [x - 5, y - 30]], 1.2),
-    stalk([[x + 3, y - 2], [x + 10, y - 6], [x + 17, y - 8]], 1.2),
-    leaf(x - 2, y - 1, 16, 205, 'w-leaf'), leaf(x - 1, y - 3, 13, 238, 'w-leaf'), leaf(x + 2, y - 1, 15, -24, 'w-leaf'), leaf(x + 2, y - 3, 11, -62, 'w-leaf'), leaf(x - 3, y - 2, 11, 172, 'w-leaf'),
-    bloom(x - 22, y - 21, 6.2, 'rose', 5, -80, 'ra-bloom ra-in ra-d2'), bloom(x - 35, y - 10, 5.4, 'apri', 5, -60, 'ra-bloom ra-in ra-d4'), bloom(x - 5, y - 31, 5, 'gold', 5, -90, 'ra-bloom ra-in ra-d6'),
-    path(`M${P(x + 17, y - 8)}C${P(x + 22, y - 13)} ${P(x + 25, y - 8)} ${P(x + 21, y - 5)}C${P(x + 19, y - 4)} ${P(x + 17, y - 6)} ${P(x + 17, y - 8)}Z`, 'ra-bud')];
+  const kids = [stalk([[x - 3, y - 3], [x - 13, y - 11], [x - 24, y - 19]]), stalk([[x - 4, y - 1], [x - 20, y - 3], [x - 38, y - 8]]), stalk([[x - 3, y - 2], [x - 26, y + 1], [x - 50, y - 15]], 1.2),
+    stalk([[x - 3, y - 4], [x - 9, y - 14], [x - 12, y - 25]], 1.1),
+    leaf(x - 2, y - 1, 16, 205, 'w-leaf'), leaf(x - 1, y - 3, 13, 238, 'w-leaf'), leaf(x + 2, y - 1, 13, -18, 'w-leaf'), leaf(x - 3, y - 2, 11, 172, 'w-leaf'), leaf(x - 30, y - 1, 11, 200, 'w-leaf'),
+    bloom(x - 24, y - 20, 6.4, 'rose', 5, -80, 'ra-bloom ra-in ra-d2'), bloom(x - 39, y - 9, 5.6, 'apri', 5, -60, 'ra-bloom ra-in ra-d4'), bloom(x - 51, y - 16, 5, 'gold', 5, -100, 'ra-bloom ra-in ra-d6'),
+    path(`M${P(x - 12, y - 25)}C${P(x - 17, y - 30)} ${P(x - 13, y - 35)} ${P(x - 10, y - 31)}C${P(x - 9, y - 29)} ${P(x - 10, y - 26)} ${P(x - 12, y - 25)}Z`, 'ra-bud')];
   return g({class: 'ra-root', 'aria-hidden': 'true'}, roots, kids);
 }
 /** 아치 제목 띠 — 아치 안쪽 금선을 따라 붙은 초승달 띠(가운데 두께 TK · 끝은 0) · 띠 안 휜 글씨 · 안쪽 금선은 가운데 굵고 끝 가늘다가 어깨에서 소용돌이로 풀림 · 작은 점 모자이크 두 줄 */
