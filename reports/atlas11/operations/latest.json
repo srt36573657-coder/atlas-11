@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-11-05T15:14:51Z",
+  "at": "2026-11-05T15:47:40Z",
   "dayKST": "2026-11-06",
   "status": "complete",
   "exitCode": 0,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-11-05T15:14:51.482Z",
+      "startedAt": "2026-11-05T15:47:40.680Z",
       "status": "ok",
-      "durationMs": 40,
+      "durationMs": 37,
       "session": true,
       "afterClose": false,
       "day": "2026-11-06",
@@ -17,30 +17,30 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-11-05T15:14:51.522Z",
+      "startedAt": "2026-11-05T15:47:40.717Z",
       "status": "ok",
-      "durationMs": 1,
+      "durationMs": 0,
       "skipped": true,
       "reason": "정규장 마감(15:30) 전 · 장중값은 받지 않음"
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-11-05T15:14:51.523Z",
+      "startedAt": "2026-11-05T15:47:40.717Z",
       "status": "ok",
-      "durationMs": 0,
+      "durationMs": 1,
       "skipped": true
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-11-05T15:14:51.598Z",
+      "startedAt": "2026-11-05T15:47:40.801Z",
       "view": {
-        "boardId": "board-2026-11-05-17554f1f",
+        "boardId": "board-2026-11-05-e18eeaa1",
         "asOf": "2026-11-05",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 2988800,
+        "bytes": 2988451,
         "similar": [
           "삼성E&A",
           "SK바이오팜",
@@ -50,7 +50,7 @@
           "유한양행",
           "코웨이"
         ],
-        "moves": "2026-11-03 → 2026-11-04",
+        "moves": "2026-11-04 → 2026-11-05",
         "evening": null,
         "lead6": {
           "groups": 15,
@@ -64,9 +64,8 @@
           "mismatch": []
         },
         "changelog": {
-          "file": "reports/atlas11/changelog/data-kr/kr-20261106T001451.json",
-          "wrote": true,
-          "title": "수급 · 기사 · 공시를 새로 모음"
+          "wrote": false,
+          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
         },
         "issue": {
           "wrote": false,
@@ -74,7 +73,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1764
+      "durationMs": 1753
     }
   ],
   "runtime": {
@@ -83,10 +82,10 @@
     "event": "schedule",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "42052534362",
+    "runId": "42058101407",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/42052534362",
-    "commit": "595107e5ea5d3e10d57708d9649adaa331c10286",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/42058101407",
+    "commit": "8254fb5d961d3726794b5fa2baf95b9648e578e0",
     "serverInstalled": true,
     "scheduledRun": true
   },
@@ -113,5 +112,5 @@
   "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
   "inputSnapshotSHA256": "03d252073ae79dc0a2de220fd79ab873931bc5c33f70765c6ab732f31216696e",
   "expectedStocks": 365,
-  "finishedAt": "2026-11-05T15:14:53.362Z"
+  "finishedAt": "2026-11-05T15:47:42.554Z"
 }
