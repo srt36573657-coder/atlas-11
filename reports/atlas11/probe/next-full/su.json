@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-05T06:12:35.060Z",
+ "at": "2026-11-05T07:02:24.074Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 651,
@@ -50,13 +50,13 @@
      "panel",
      "lettering"
     ],
-    "anim": 19,
+    "anim": 18,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "땅 지도",
@@ -167,7 +167,7 @@
     "share": 147,
     "outside": 15,
     "two": 2,
-    "labels": 34,
+    "labels": 32,
     "mucha": [
      "pastel",
      "mosaic",
@@ -179,7 +179,7 @@
      "lettering",
      "arch"
     ],
-    "anim": 23,
+    "anim": 22,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -262,9 +262,9 @@
    }
   },
   "speed": {
-   "lcp": 1236,
+   "lcp": 1232,
    "cls": 0,
-   "pic": 1439
+   "pic": 1464
   }
  },
  "ok": true

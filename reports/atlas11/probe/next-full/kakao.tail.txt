@@ -1,42 +1,35 @@
-rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/003650/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/006140/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/012700/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/013000/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/016740/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/017390/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/018290/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/021240/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/023760/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/024830/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/025540/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/025880/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/030610/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/033100/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/034230/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/034950/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/035900/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/036530/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/036620/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/038390/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/042700/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/045340/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/049430/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/049720/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/052600/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/058470/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/061090/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/062040/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/066130/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/067160/rivals · 줄 4 · 단추 4 · 종목 고리 10 · 누름 rivals.peer
-통과 #/w/078070/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/079900/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/080470/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/089470/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/092130/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/w/094850/rivals · 줄 5 · 단추 5 · 종목 고리 11 · 누름 rivals.peer
-통과 #/find/%ED%98%84%EB%8C%80 · 줄 36 · 단추 36 · 종목 고리 36 · 누름 find.co
-통과 #/find/%EC%97%90%EC%8A%A4 · 줄 40 · 단추 40 · 종목 고리 40 · 누름 find.co
-곳 22 · chip.card 3 · chip.row 165 · surge.row 36 · surge.board 91 · surge.track 615 · cal.row 590 · cal.ev 2265 · cal.gone 1 · cond.row 5 · today.mv 4 · talk.card 1 · talk.fact 3 · hold.news 74 · sub.co 2 · hold.card 1 · me.hist 3 · why.rec 1 · find.co 92 · chx.row 2557 · ch.grid 1536 · watch.next 467 · rivals.peer 272
-뺀 꼴 그날 들고 난 이름 목록(이름 글 1767 · 고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사) 112 · 7단 길 고리 750
-모두 통과 · 길 251 · 줄 8784 · 단추 8784 · 누름 479 · 173초
+.track 443670 단추 240 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 030530 단추 224 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 460940 단추 272 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 078590 단추 224 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 190510 단추 192 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 412350 단추 211 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 411080 단추 192 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 459550 단추 176 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 200470 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 448900 단추 240 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 078350 단추 224 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 034730 단추 168 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 179900 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 101930 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 114840 단추 272 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 003780 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 010640 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 451760 단추 176 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 441270 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 211270 단추 201 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 030610 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 253590 단추 192 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 144960 단추 256 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 323350 단추 224 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 317850 단추 176 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 484120 단추 224 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 290550 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 025560 단추 208 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 059090 단추 176 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 028050 단추 212 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 437730 단추 176 · 줄 360
+  ✗ #/surge/20 · 360 · 단추가 줄 오른쪽 끝이 아님 — surge.track 109670 단추 208 · 줄 360
+곳 21 · chip.card 3 · chip.row 165 · surge.board 20 · surge.track 214 · cal.row 590 · cal.ev 2265 · cal.gone 1 · cond.row 4 · today.mv 4 · talk.card 1 · talk.fact 3 · hold.news 74 · sub.co 2 · hold.card 1 · me.hist 3 · why.rec 1 · find.co 92 · chx.row 2557 · ch.grid 1536 · watch.next 467 · rivals.peer 272
+뺀 꼴 그날 들고 난 이름 목록(이름 글 604 · 고른 곳 이름 알약(줄 · 카드 아님 · 누르면 회사) 112 · 7단 길 고리 750
+실패 640 · 길 251 · 줄 8275 · 단추 8275 · 누름 475 · 229초

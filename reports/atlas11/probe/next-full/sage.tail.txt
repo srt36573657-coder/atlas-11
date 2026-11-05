@@ -1,1 +1,6 @@
-서른아홉 스승 검사 — 통과 1584 · 실패 0
+실패 검사 멈춤 — page.goto: Timeout 60000ms exceeded.
+Call log:
+  - navigating to "https://aaa7377.com/next/?v=1793862225102#/", waiting until "load"
+
+    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_sage.mjs:583:14
+서른아홉 스승 검사 — 통과 1537 · 실패 1
