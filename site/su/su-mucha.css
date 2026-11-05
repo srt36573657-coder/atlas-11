@@ -85,7 +85,16 @@
 .mu-pbud .mu-cbud { fill: #EFA77E; stroke: #B06A47; }
 .mu-lvein { fill: none; stroke: #657F3C; stroke-width: .5; stroke-linecap: round; }
 .mu-hemg { fill: #C9A24A; }
-.mu-rays { opacity: .8; }
+/* 5판 — 옷은 연두(살과 먼 색 · 메달 안 어깨 옷도 같은 색) · 주름은 한 톤 짙게 · 머리는 구리빛 다발 + 금빛 결 · 덩굴손 · 뿌리 · 빛살은 금빛으로 조금 진하게(고정 색) */
+.mu-dress, .su-mucha .mu-medal [class^="mk-cl-"], .su-mucha .mu-arms [class^="mk-cl-"] { fill: #D3E2B8; }
+.mu-dressd, .su-mucha .mu-medal [class^="mk-cld-"], .su-mucha .mu-arms [class^="mk-cld-"] { fill: #8EA86A; }
+.su-mucha .mk-t0 { --hb: #A9572B; --hd: #6A2F15; --hl: #E8BC62; }
+.su-mucha .mk-t0 .mk-hy { fill: #F0C766; fill-opacity: .62; }
+.mu-tend { fill: #6F7F45; }
+.mu-root { fill: #6F7F45; }
+.su-mucha .mu-rays .mk-ray { fill: #C4952F; fill-opacity: .17; }
+:root[data-theme="dark"] .su-mucha .mu-rays .mk-ray { fill: #E3C06A; fill-opacity: .14; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-mucha .mu-rays .mk-ray { fill: #E3C06A; fill-opacity: .14; } }
 .mu-rpet { fill: #F6CFC8; stroke: #B58A33; stroke-width: .5; }
 .mu-ringdot { fill: var(--gold); }
 .mu-name { font-size: 20px; fill: var(--ink); paint-order: stroke; stroke: var(--mu-b); stroke-width: 4px; stroke-linejoin: round; }

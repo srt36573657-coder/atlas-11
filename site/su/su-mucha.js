@@ -7,7 +7,7 @@
    글씨는 처음부터 진하게(그래프의 들어오는 움직임 이름을 뗌) · 움직임은 꽃 · 잎 · 별 · 머리카락에만(transform) · 들어옴 0.5초
    여인의 살 · 머리칼 · 옷 · 리본 · 봉오리는 고정 색(어두운 판에서도 크림 · 파스텔) · 원화를 본뜨지 않고 화풍만 */
 import {s, line} from '/su/su-fig.js';
-import {taper as kTaper, strands, medallion as kMedallion, vine, rays, leafBar, ribbon} from './su-mucha-kit.js';
+import {taper as kTaper, strands, medallion as kMedallion, vine, rays, leafBar, ribbon, sleeve} from './su-mucha-kit.js';
 
 export const CSS = '/su/su-mucha.css';
 
@@ -74,15 +74,22 @@ function openFlower(x, y, sg, r, k) {
       s('path', {d: petD(0, 0, r, 5, -90 + (k % 2) * 36, 0.5), class: 'mu-opet'}), s('path', {d: petD(0, 0, r * 0.62, 5, -54 + (k % 2) * 36, 0.46), class: 'mu-opet2'}),
       s('circle', {cx: 0, cy: 0, r: f1(r * 0.27), class: 'mu-ocore'}), s('path', {d: [0, 1, 2, 3, 4].map(i => dotD(...ell(0, 0, r * 0.42, r * 0.42, -90 + i * 72), r * 0.07)).join(''), class: 'mu-ocore'})))));
 }
-/** 닫힌 붉은 봉오리(내림 잎 끝) — 끝이 뾰족한 물방울 · 꽃잎 접힌 선 · 밑을 감싼 꽃받침 둘 · 짧은 꽃자루 */
+/** 닫힌 붉은 봉오리(내림 잎 끝) — 끝이 뾰족한 물방울 · 꽃잎 접힌 선 · 밑을 감싼 큰 꽃받침 셋(봉오리 반을 넘게 감쌈 · 길이 그대로) · 짧은 꽃자루 */
 function closedBud(x, y, sg, L) {
-  const P = (u, v) => f1(x + sg * u) + ' ' + f1(y + v), b = 2.5, w = L * 0.4;
+  const P = (u, v) => f1(x + sg * u) + ' ' + f1(y + v), b = 2.5, w = L * 0.4, cw = w * 1.5, cl = L * 0.66;
   return s('g', {class: 'mu-cbudg'},
     s('path', {d: `M${P(-1, 0)}L${P(b + 0.5, 0)}`, class: 'mu-ostalk'}),
     s('path', {d: `M${P(b, 0)}C${P(b + L * 0.08, -w)} ${P(b + L * 0.62, -w * 0.95)} ${P(b + L, 0)}C${P(b + L * 0.62, w * 0.95)} ${P(b + L * 0.08, w)} ${P(b, 0)}Z`, class: 'mu-cbud'}),
     s('path', {d: `M${P(b + L * 0.2, -w * 0.25)}C${P(b + L * 0.45, -w * 0.55)} ${P(b + L * 0.75, -w * 0.4)} ${P(b + L * 0.97, -0.3)}`, class: 'mu-cbudl'}),
-    s('path', {d: `M${P(b - 0.5, 0)}C${P(b + L * 0.1, -w * 1.15)} ${P(b + L * 0.42, -w * 0.9)} ${P(b + L * 0.5, -w * 0.32)}C${P(b + L * 0.28, -w * 0.5)} ${P(b + L * 0.12, -w * 0.3)} ${P(b - 0.5, 0)}Z`
-      + `M${P(b - 0.5, 0)}C${P(b + L * 0.1, w * 1.15)} ${P(b + L * 0.42, w * 0.9)} ${P(b + L * 0.5, w * 0.32)}C${P(b + L * 0.28, w * 0.5)} ${P(b + L * 0.12, w * 0.3)} ${P(b - 0.5, 0)}Z`, class: 'mu-leaf mu-sep'}));
+    s('path', {d: `M${P(b - 0.6, 0)}C${P(b + L * 0.06, -cw * 1.05)} ${P(b + cl * 0.72, -cw * 0.95)} ${P(b + cl, -w * 0.22)}C${P(b + cl * 0.55, -w * 0.5)} ${P(b + L * 0.16, -w * 0.36)} ${P(b - 0.6, 0)}Z`
+      + `M${P(b - 0.6, 0)}C${P(b + L * 0.06, cw * 1.05)} ${P(b + cl * 0.72, cw * 0.95)} ${P(b + cl, w * 0.22)}C${P(b + cl * 0.55, w * 0.5)} ${P(b + L * 0.16, w * 0.36)} ${P(b - 0.6, 0)}Z`
+      + `M${P(b - 0.4, 0)}C${P(b + cl * 0.3, -w * 0.3)} ${P(b + cl * 0.62, -w * 0.12)} ${P(b + cl * 0.82, 0)}C${P(b + cl * 0.62, w * 0.12)} ${P(b + cl * 0.3, w * 0.3)} ${P(b - 0.4, 0)}Z`, class: 'mu-leaf mu-sep'}));
+}
+/** 덩굴손 — 마디에서 나와 한 바퀴 반 말리는 가는 손(뿌리 굵고 끝 가늘게) · sg = 뻗는 쪽 · up = 위로 휨 */
+function tendril(x, y, sg, R, up = -1) {
+  const loc = [[0, 0], [R * 0.8, -R * 0.3], [R * 1.6, -R * 0.2]], c = [R * 1.6, -R * 0.2 - R * 0.55];
+  for (let i = 1; i <= 18; i++) { const t = i / 18, a = Math.PI / 2 - t * 2.4 * Math.PI, rr = R * 0.55 * (1 - 0.62 * t); loc.push([c[0] + rr * Math.cos(a), c[1] + rr * Math.sin(a)]); }
+  return kTaper(loc.map(([u, v]) => [x + sg * u, up < 0 ? y + v : y - v]), {w0: 1.5, w1: 0.35, cls: 'mu-tend'});
 }
 
 /* ── 1 바탕 · 아치 밖 두 귀(밤하늘) · 메달에서 퍼지는 아주 옅은 빛살 ── */
@@ -157,35 +164,50 @@ function drape(tipY, toStem) {
   const top = `L${f1(iR[0])} ${f1(iR[1])}A${ri} ${ri} 0 0 1 ${f1(iL[0])} ${f1(iL[1])}Z`;
   let eL, eR, hem = [], folds;
   if (toStem) {
-    eL = bez(pL, [pL[0] - 0.05 * r, pL[1] + 0.34 * r], [x - 0.36 * r, tipY - 0.26 * r], [x - 3, tipY]);
-    eR = bez(pR, [pR[0] + 0.04 * r, pR[1] + 0.32 * r], [x + 0.33 * r, tipY - 0.28 * r], [x + 3, tipY]);
-    folds = [[A(132, 0.72), [x - 0.62 * r, y + 0.86 * r], [x - 0.42 * r, y + r + 4], [x - 6, tipY - 4]], [A(114, 0.7), [x - 0.3 * r, y + 0.9 * r], [x - 0.24 * r, y + r + 2], [x - 3, tipY - 6]],
-      [A(94, 0.72), [x - 0.06 * r, y + 0.92 * r], [x + 0.02 * r, y + r + 4], [x - 0.5, tipY - 8]], [A(72, 0.7), [x + 0.24 * r, y + 0.9 * r], [x + 0.2 * r, y + r + 3], [x + 3, tipY - 6]],
-      [A(50, 0.72), [x + 0.58 * r, y + 0.86 * r], [x + 0.38 * r, y + r + 4], [x + 5.5, tipY - 4]]];
+    // 허리까지 오는 웃옷(연두) — 어깨에서 허리로 잘록해지고 허리 끝은 둥근 단(두 손 · 소매가 앞을 덮음 · 줄기에 꽂히는 뾰족 끝 없음)
+    const wx = 0.3 * r;
+    eL = bez(pL, [pL[0] + 0.02 * r, pL[1] + 0.3 * r], [x - wx - 0.1 * r, tipY - 0.2 * r], [x - wx, tipY]);
+    eR = bez(pR, [pR[0] - 0.02 * r, pR[1] + 0.3 * r], [x + wx + 0.1 * r, tipY - 0.2 * r], [x + wx, tipY]);
+    hem = bez([x - wx, tipY], [x - wx * 0.45, tipY + 6], [x + wx * 0.45, tipY + 6], [x + wx, tipY], 8).slice(1, -1);
+    folds = [[A(122, 0.8), [x - 0.34 * r, y + 0.98 * r], [x - 0.22 * r, tipY - 9], [x - 0.17 * r, tipY + 2]], [A(98, 0.82), [x - 0.05 * r, y + 1.02 * r], [x - 0.07 * r, tipY - 10], [x - 0.03 * r, tipY + 4]],
+      [A(64, 0.8), [x + 0.28 * r, y + 0.98 * r], [x + 0.2 * r, tipY - 9], [x + 0.16 * r, tipY + 2]]];
   } else {
     const hx = 0.58 * r;
     eL = bez(pL, [pL[0] - 0.1 * r, pL[1] + 0.24 * r], [x - 0.8 * r, tipY - 0.04 * r], [x - hx, tipY - 2]);
     eR = bez(pR, [pR[0] + 0.1 * r, pR[1] + 0.24 * r], [x + 0.8 * r, tipY - 0.04 * r], [x + hx, tipY - 2]);
-    for (let i = 0; i < 3; i++) { const a = x - hx + i * 2 * hx / 3, b = a + 2 * hx / 3; hem.push(...bez([a, tipY - 2], [a + hx * 0.15, tipY + 3], [b - hx * 0.15, tipY + 3], [b, tipY - 2], 6).slice(1)); }
+    hem = bez([x - hx, tipY - 2], [x - hx * 0.45, tipY + 4], [x + hx * 0.45, tipY + 4], [x + hx, tipY - 2], 12).slice(1, -1); // 옷단은 매끈한 한 곡선(호박 같은 물결 셋 지움)
     folds = [[A(120, 0.72), [x - hx / 3 - 2, tipY - 6], [x - hx / 3, tipY - 2]], [A(64, 0.72), [x + hx / 3 + 2, tipY - 6], [x + hx / 3, tipY - 2]]];
   }
   const body = poly([...eL, ...hem, ...eR.slice().reverse()]) + top;
   const inward = pts => pts.map(p => [p[0] + Math.sign(x - p[0]) * Math.min(3.2, Math.abs(x - p[0]) * 0.45), p[1] - (toStem ? 0 : 1.6)]); // 옷 가장자리 안쪽 금 수 선
-  return grp('drape', [s('path', {d: body, class: 'mk-cl-peach'}),
+  // 바깥선은 어깨에서 굵게(2.6) 허리로 가늘게 · 안쪽 주름은 가늘게(굵기가 변하는 윤곽)
+  return grp('drape', [s('path', {d: body, class: 'mu-dress'}),
     kTaper(inward(eL.slice(1, -1)), {w0: 1.3, w1: 0.35, cls: 'mu-hemg'}), kTaper(inward(eR.slice(1, -1)), {w0: 1.3, w1: 0.35, cls: 'mu-hemg'}),
-    folds.map(p => kTaper(p, {w0: Math.max(1, r * 0.022), w1: 0.35, cls: 'mk-cld-peach'})),
-    kTaper(eL, {w0: Math.max(1.6, r * 0.034), w1: 0.5, cls: 'mk-ink'}), kTaper(eR, {w0: Math.max(1.2, r * 0.026), w1: 0.45, cls: 'mk-ink2'}),
-    hem.length ? kTaper(hem, {w0: 0.9, w1: 0.5, cls: 'mk-ink2'}) : null], 'mu-drape');
+    folds.map(p => kTaper(p, {w0: Math.max(0.9, r * 0.018), w1: 0.3, cls: 'mu-dressd'})),
+    kTaper(eL, {w0: Math.max(1.8, r * 0.038), w1: 0.6, cls: 'mk-ink'}), kTaper(eR, {w0: Math.max(1.5, r * 0.032), w1: 0.5, cls: 'mk-ink'}),
+    hem.length ? kTaper(hem, {w0: 1, w1: 0.5, cls: 'mk-ink2'}) : null], 'mu-drape');
 }
 function medal(tn) {
   const {x, y, r} = MED, P = (deg, k) => ell(x, y, r * k, r * k, deg);
-  // 얼굴 옆 머리채 둘 — 어깨 위로 흘러 옷자락 바깥 테를 따라 돌고 원 밖에서 말림(옆으로 뻗지 않음 · 그래프 자리 위에서 멈춤)
-  const locks = [[[x - 0.36 * r, y + 0.4 * r], P(128, 0.84), [x - 0.64 * r, y + 0.84 * r], [x - 0.52 * r, y + 1.0 * r], [x - 0.4 * r, y + 1.04 * r]],
-    [[x + 0.16 * r, y - 0.42 * r], [x + 0.36 * r, y - 0.16 * r], [x + 0.4 * r, y + 0.3 * r], P(50, 0.86), [x + 0.62 * r, y + 0.9 * r], [x + 0.48 * r, y + 1.08 * r], [x + 0.32 * r, y + 1.13 * r]]];
-  const hairs = locks.map((pts, i) => s('g', {class: 'mk-sway' + (i ? '2' : '')},   // 부품 2판 굵은 다발 둘(속 결은 부품이 그림)
-    strands(pts, {n: 2, spread: r * 0.17, w0: r * 0.075, w1: 0.25, curl: 0.8, seed: 41 + i * 7, cls: 'mk-hb'})));
-  const tipY = STEM ? STEM.y : y + r + 9;
-  return s('g', {class: 'mu-medal'}, kMedallion({cx: x, cy: y, r, v: 0, dir: 1, ring: RING[tn]}), drape(tipY, !!STEM), grp('whiplash', s('g', {class: 'mk-hair mk-t0'}, hairs), 'mu-locks'));
+  const tipY = STEM ? STEM.hy : y + r + 9;
+  return s('g', {class: 'mu-medal'}, kMedallion({cx: x, cy: y, r, v: 0, dir: 1, ring: RING[tn]}), drape(tipY, !!STEM), STEM ? null : lockR());
+}
+/** 두 팔 — 어깨에서 손목까지 오는 소매(부품 sleeve · 연두 · 손목에 금 단) · 두 손이 줄기를 위아래로 쥠 · 줄기가 손에서 아래로 내려감 · 머리는 부품 3판 그대로(덧그리지 않음) */
+/** 오른쪽 머리 다발 하나 — 귀 뒤에서 어깨 앞으로 S 로 흘러 끝이 바깥으로 말림(부품 다발 하나 · 구리빛 + 금빛 결 · 왼쪽 긴 다발과 짝) */
+function lockR() {
+  const {x, y, r} = MED;
+  const pts = [[x + 0.3 * r, y - 0.04 * r], [x + 0.4 * r, y + 0.22 * r], [x + 0.47 * r, y + 0.48 * r], [x + 0.6 * r, y + 0.66 * r], [x + 0.74 * r, y + 0.74 * r]];
+  return grp('whiplash', s('g', {class: 'mk-hair mk-t0'}, s('g', {class: 'mk-sway2'}, strands(pts, {n: 1, spread: r * 0.06, w0: r * 0.066, w1: 0.3, curl: 1, seed: 47, cls: 'mk-hb'}))), 'mu-locks');
+}
+function arms() {
+  if (!STEM) return null;
+  const {x, y, r} = MED, w = Math.max(15, r * 0.24), k = [];
+  const one = (sg, top, grip) => { // top = 소매 위 끝(어깨) · grip = 쥔 자리(줄기 위)
+    const dx = grip[0] - top[0], dy = grip[1] - top[1], D = Math.hypot(dx, dy), ang = -Math.atan2(dx, dy) * 180 / Math.PI;
+    return sleeve({x: f1(top[0]), y: f1(top[1]), ang: f1(ang), len: f1(D - 0.95 * w), w: f1(w), hand: 'hold', dir: sg, tone: 'sage'});
+  };
+  k.push(one(-1, ell(x, y, r * 0.9, r * 0.9, 148), [x - 1, STEM.hy - 7]), one(1, ell(x, y, r * 0.9, r * 0.9, 32), [x + 1, STEM.hy + 5]));
+  return grp('arms', [k, lockR()], 'mu-arms');
 }
 
 /* ── 5 양옆 덩굴 — 굵게(8 → 1.8) S 로 감기며 기둥을 타고 올라 아치 띠를 따라 제목 리본 끝까지 · 회사 줄 높이마다 꽃 하나(줄이 없으면 고른 간격) · 틀 안에서 자름 ── */
@@ -303,6 +325,26 @@ function fitName(t, fs0, room, rh) {
   let i = ch.length; while (i > 1 && textW(ch.slice(0, i).join('') + '…', fs) > room) i--;
   return {ls: [ch.slice(0, i).join('') + '…'], fs};
 }
+/** 아래 꽃밭 — 폭 전체 · 한 뿌리(가운데 줄기 밑동에서 굵게 나와 양옆 덩굴 기둥 밑동까지 가늘게 이어지는 뿌리줄기) 위에 잎 부채 · 핀 꽃 · 봉오리가 번갈아 남 */
+function bed(x, yb, hgt) {
+  const k = Math.min(1, hgt / 34), kids = [], y0 = yb - 3, xl = E + BAND / 2 + 1;
+  for (const sg of [-1, 1]) {
+    const X = u => sg < 0 ? x - u * (x - xl) : x + u * (x - xl);
+    kids.push(kTaper([[x, y0 + 1], [X(0.2), y0 - 3], [X(0.45), y0 + 0.5], [X(0.7), y0 - 2.5], [X(0.9), y0 + 1], [X(1), y0 + 5]], {w0: 5.5, w1: 2.6, cls: 'mu-root'}));
+    // 잎 부채 · 꽃 · 봉오리 — 줄기에서 바깥으로 셋(가운데 덤불과 겹치지 않게)
+    [[0.36, 'f'], [0.62, 'b'], [0.86, 'f']].forEach(([u, kind], i) => {
+      const cx = X(u), cy = y0 - (i % 2 ? 2 : 0);
+      [[-62, 20], [-30, 24], [30, 22], [62, 18]].forEach(([a, L]) => kids.push(s('g', {transform: `translate(${f1(cx)} ${f1(cy)}) rotate(${-90 + a})`},
+        s('path', {d: `M0 0C${f1(L * k * 0.3)} ${f1(-L * k * 0.22)} ${f1(L * k * 0.75)} ${f1(-L * k * 0.18)} ${f1(L * k)} 0C${f1(L * k * 0.75)} ${f1(L * k * 0.18)} ${f1(L * k * 0.3)} ${f1(L * k * 0.22)} 0 0Z`, class: 'mu-leaf mu-bleaf'}),
+        s('path', {d: `M1 0L${f1(L * k * 0.85)} 0`, class: 'mu-lvein'}))));
+      if (kind === 'f') kids.push(s('path', {d: `M${f1(cx)} ${f1(cy)}L${f1(cx)} ${f1(cy - 19 * k)}`, class: 'mu-ostalk'}), flower(cx, cy - 21 * k, 7.4 * k, i + (sg > 0 ? 1 : 0), {anim: true, pet: i ? 'mu-mpet' : 'mu-vpet', core: 'mu-core'}));
+      else kids.push(s('path', {d: `M${f1(cx)} ${f1(cy)}Q${f1(cx + sg * 3)} ${f1(cy - 12 * k)} ${f1(cx + sg * 2)} ${f1(cy - 20 * k)}`, class: 'mu-ostalk'}),
+        s('g', {class: 'mu-pbud', transform: `translate(${f1(cx + sg * 2)} ${f1(cy - 20 * k)}) rotate(-90)`}, closedBud(0, 0, 1, 11 * k)));
+    });
+  }
+  kids.push(bush(x, yb - 1, hgt * 0.9));
+  return s('g', {class: 'mu-bed', 'data-mucha': 'bed'}, kids);
+}
 /** 줄기 밑동 꽃 덤불 — 양옆으로 부채처럼 퍼진 잎 · 핀 꽃 둘씩 · 봉오리 하나씩(모자이크 띠 바로 위 · 마지막 줄 글 아래) */
 function bush(x, yb, hgt) {
   const k = Math.min(1, hgt / 34), kids = [];
@@ -334,11 +376,12 @@ function barsArt(src) {
   const {rows, x0, signed} = P, n = rows.length;
   // 메달 1.3배 · 밑동 덤불 자리 — 줄이 많으면 덤불을 빼고 메달을 54 까지 줄임(줄 높이 32 넘게)
   let r = R1, bh = signed ? 34 : 0, rh = 0;
-  const fit = () => { setMed(r); rh = Math.min(64, (WIN.y1 - 4 - bh - (WIN.y0 + 6)) / n); };
+  const hy = () => MED.y + MED.r + 16, topOf = () => signed ? Math.max(WIN.y0 + 6, hy() + 22) : WIN.y0 + 6; // 두 손(줄기를 쥔 자리) 아래에서 줄이 시작
+  const fit = () => { setMed(r); rh = Math.min(64, (WIN.y1 - 4 - bh - topOf()) / n); };
   fit(); if (rh < 40 && bh) { bh = 0; fit(); }
   while (rh < 32 && r > R0) { r = Math.max(R0, r - 4); fit(); }
   if (rh < 30) return null; // 너무 많으면 그래프를 같은 비율로 줄여 담는 길로
-  const top = WIN.y0 + 6, bot = WIN.y1 - 4 - bh;
+  const top = topOf(), bot = WIN.y1 - 4 - bh;
   const fs = rh >= 46 ? 21 : rh >= 38 ? 20 : 19, bw = Math.round(Math.max(13, Math.min(19, rh * 0.36))), yA = top + (bot - top - rh * n) / 2;
   const fr = Math.max(6.5, Math.min(8.5, bw * 0.46)), bl = Math.max(12, Math.min(16, bw * 0.85));         // 핀 꽃 반지름 · 닫힌 봉오리 길이
   const ext = Math.max(1.78 * fr + 2, bl + 3.5), onPad = rows.some(r => r.on) ? 11 : 0; // 잎 끝 너머 꽃 · 봉오리가 나가는 길이 · 꽃 테 자리
@@ -359,13 +402,17 @@ function barsArt(src) {
   const yEnd = yA + rh * n, kids = [], yb = WIN.y1 + 2;
   ROWY = rows.map((_, i) => yA + rh * (i + 0.5));
   // 금 줄기 — 밑동(모자이크 띠 위) 굵고 위 가늘게 · 꼭대기는 메달 옷자락이 좁아져 이어지는 자리 · 줄 사이마다 작은 잎
-  const sTop = yA - 2;
-  if (signed) STEM = {x: ax, y: sTop + 4};
-  kids.push(kTaper([[ax, bh ? yb : yEnd + 6], [ax + 1.4, (yA + yEnd) / 2 + 30], [ax - 1.2, yA + 40], [ax, sTop]], {w0: 7.5, w1: 2.6, cls: 'mu-axis'}));
-  for (let i = 1; i < n; i++) kids.push(leaf(ax, yA + rh * i, Math.min(13, rh * 0.28), i % 2 ? -38 : 218, i, 'mu-leaf mu-bleaf'));
-  if (signed) kids.push(s('ellipse', {cx: ax, cy: f1(sTop + 4), rx: 5.6, ry: 2.6, class: 'mu-knot'}), s('ellipse', {cx: ax, cy: f1(sTop + 9), rx: 4.4, ry: 2, class: 'mu-knot'}));
+  // 줄기 — 굵기 6 → 5(거의 고르게) · 위 끝은 두 손이 쥔 자리 위 작은 봉오리 · 마디마다 작은 잎 하나와 덩굴손 하나(서로 다른 쪽)
+  const HY = hy(), sTop = signed ? HY - 13 : yA - 2;
+  if (signed) STEM = {x: ax, y: sTop, hy: HY};
+  if (bh) kids.push(bed(ax, yb, Math.min(34, yb - yEnd + 4)));
+  kids.push(kTaper([[ax, bh ? yb - 1 : yEnd + 6], [ax + 0.8, (yA + yEnd) / 2 + 30], [ax - 0.7, yA + 40], [ax, sTop]], {w0: 6, w1: 5, cls: 'mu-axis'}));
+  for (let i = 1; i < n; i++) {
+    const ny = yA + rh * i, sg = i % 2 ? 1 : -1;
+    kids.push(leaf(ax, ny, Math.min(12, rh * 0.26), sg > 0 ? -38 : 218, i, 'mu-leaf mu-bleaf'), tendril(ax - sg * 2.5, ny + 1, -sg, Math.min(6.5, rh * 0.14), -1));
+  }
+  if (signed) kids.push(s('g', {transform: `translate(${f1(ax)} ${f1(sTop + 1)}) rotate(-90)`}, closedBud(0, 0, 1, 10)));
   else kids.push(flower(ax, yA - 8, 6, 2, {anim: true}));
-  if (bh) kids.push(bush(ax, yb, Math.min(34, yb - yEnd + 4)));
   rows.forEach((r, i) => {
     const yc = ROWY[i], L = Math.max(0, r.w * f), dn = neg[i], v = V[i], eq = !dn && !(v.n > 0) && signed, sgn = signed && dn ? -1 : 1;
     const tone = dn ? 'rose' : eq ? 'sage' : 'gold';
@@ -419,6 +466,7 @@ export function frame(chart, {title = null, kind = 'line', tone = 'calm'} = {}) 
     arch(T.half), sideBands(cf, T), mosaic(), outlines(),
     medal(tn),
     win,
+    arms(),
     lettering(T, tn));
 }
 

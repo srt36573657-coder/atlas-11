@@ -91,3 +91,6 @@
    ② 꽉 찬 금빛 「선물」 단추가 그림보다 먼저 눈을 끎 → 다른 단추처럼 금테 · 짙은 글씨 */
 .su-news > .su-hero { background: linear-gradient(180deg, var(--sky1), var(--sky2)); }
 #su .su-top .su-gift { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--gold); }
+/* 심사 4회 — 「다음」 단추 글이 「…」로 잘림(여덟 쪽) → 두 줄까지 · 글씨 19 */
+.su-news ~ .su-dock .su-next b { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; text-overflow: clip; font-size: 19px; line-height: 1.15; }
+:root.su-lg .su-news ~ .su-dock .su-next b { font-size: 22px; }

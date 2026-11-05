@@ -1,21 +1,21 @@
-/* 수르 — 기록 탭의 큰 그림 둘(su-rec-art · 넷째 판 r4-brief.md 「R」 · 심사 3회 judge-r3.md 공통 여덟을 고침 · 알폰스 무하 화풍)
-   ① 기록 한곳(#/r) — 큰 아치 · 아치를 따라 휜 리본 제목(흰 테 없음) · 공용 메달(v=5 · 꽃잎 고리 · 머리 다발이 두 창 꼭대기 꽃까지)
-      창 둘 = 아치 머리(색유리 꽃잎 띠 · 이름)와 100칸 판이 한 금테 · 빈 칸 옅은 크림 모자이크 + 금빛 줄눈 · 찬 칸 둥근 유리(호박빛 금 · 초록)
-      100칸 = su-fig.js waffle 과 같은 값 · 같은 칸 수 · 위 줄부터 채움
-      아래 = 위가 둥근 아치 판(plaque) 하나 — 「100번에 33번 · 24번」 한 줄 + 서랍 여섯 두 줄 세 칸 꽃 명판(값 뒤 꾸밈 없음 · 칸 사이 작은 꽃)
+/* 수르 — 기록 탭의 큰 그림 둘(su-rec-art · 다섯째 판 r5-brief.md 「R」 · 심사 4회 judge-r4.md 를 고침 · 알폰스 무하 화풍)
+   ① 기록 한곳(#/r) — 큰 아치 · 아치를 따라 휜 리본 제목(흰 테 없음) · 공용 메달(v=5 · 꽃잎 고리 · 머리 큰 덩어리 셋이 두 창 꼭대기 꽃까지)
+      창 둘 = 아치 머리(색유리 꽃잎 띠 · 이름)와 100칸 판이 한 금테 · 빈 칸 = 크림 · 연분홍 · 연두 빛이 조금씩 다른 둥근 모자이크 조각 · 칸 사이 금빛 납선 · 찬 칸 = 보석 윤(호박빛 금 · 초록)
+      100칸 = su-fig.js waffle 과 같은 값 · 같은 칸 수 · 위 줄부터 채움 · 가운데 금 기둥에 덩굴 한 줄
+      아래 = 「100번에 33번 · 24번」 한 줄(양옆 꽃 · 굵기 변하는 금선) + 서랍 여섯 = 위 창과 같은 작은 아치 칸(두 줄 세 칸 · 칸 사이 덩굴 · 어두운 판은 짙은 갈색 바탕에 금빛 글씨)
       서랍 차례(토론으로 정함 · 그대로): 달마다 → 한 달 뒤 → 내 매매일지 → 못 된 까닭 → 날마다 → 옛 기록 더 보기(누르면 #/r/y)
       서랍 값은 su.js vHub 서랍과 같은 셈(su-six.js eMonths · eDays · eYears) · 한 달 뒤 = 매매일지의 「한 달 뒤 물은 기록」 수(su-why.js)
-   ② 달마다(#/r/m) — 막대 = 공용 꽃대(stemBar · 위로 가늘어지는 줄기) · 꽃 된 달 = 핀 꽃 · 못한 달 = 닫힌 붉은 봉오리(여덟이면 여덟) · 세는 중 = 새싹
+   ② 달마다(#/r/m) — 막대 = 둥근 줄기(값 길이 그대로 · 꼭지에 꽃 · 봉오리 · 밑동에 잎 둘) · 꽃 된 달 = 핀 꽃 · 못한 달 = 닫힌 붉은 봉오리(여덟이면 여덟) · 세는 중 = 새싹
       su-fig.js cols 와 같은 값 · 같은 차례 · 같은 높이 비 · 두 그래프 뒤에 가는 금테 아치 창 둘(「두 개의 창」)
-      눈금 = 금 구슬 줄(beads) · 숫자 금갈색 · 아무 회사 = 작은 잎 · 범례는 「2025년」과 한 리본 · 두 창 사이 꽃덩굴 · 맨 아래 꽃 모자이크 띠
-      메달(v=6) 머리 = 밤색 · 금빛 굵은 다발이 S 로 「2025년」 리본 쪽으로 흘러 첫 창에 닿음
+      눈금 = 금 구슬 줄(beads) · 숫자 금갈색 · 아무 회사 = 막대 옆 금테 작은 잎 · 「2025년」 · 「2026년」 은 해마다 따로 작은 리본 · 범례 셋은 아치 머리 아래 한 줄 · 두 창 사이 꽃덩굴 · 맨 아래 꽃 모자이크 띠
+      메달(v=6) 머리 = 밤색 · 금빛 굵은 다발이 어깨 위로 돌아 양옆 틀을 따라 흘러내리고 끝이 말림(왼쪽은 「2025년」 리본에 감김) · 두 자리 달(10 · 11 · 12)은 글자 폭만 좁혀 띄움(글씨 18px 그대로)
    부품 꼴(docs/design/su-musk-2026-11-05/pic-brief.md): load(get, 'hub'|'months') · picture(d) · CSS
    보안: 글 꽂아 넣기 · 글 속 꾸밈 없음 — createElementNS · setAttribute(su-fig.js s · 공용 부품 svg)만
-   색: su-rec-art.css 클래스 · 살 · 머리 · 옷 · 두루마리는 공용 부품 고정 색(어두운 판에서도 같음)
+   색: su-rec-art.css 클래스 · 살 · 머리 · 옷 · 두루마리는 공용 부품 고정 색(어두운 판에서도 같음) · 메달 몸 · 눈 · 머리는 공용 부품 그대로(덧그리지 않음)
    움직임: 꽃 · 별 · 머리카락에만(transform) · 들어옴은 0.6초 안에 끝 · 글씨는 처음부터 진하게 */
 import {s} from '/su/su-fig.js';
 import {NEED, num, eMonths, eDays, eYears} from '/su/su-six.js';
-import {svg, taper, strands, medallion, stemBar, vine, beads, rays, plaque, ribbon} from './su-mucha-kit.js';
+import {svg, taper, strands, medallion, stemBar, vine, beads, rays, ribbon} from './su-mucha-kit.js';
 
 export const CSS = '/su/su-rec-art.css';
 const B_URL = '/next/data/theme-bloom.json';
@@ -105,23 +105,27 @@ function archRibbon(cx, cy, r, a0, a1, w, text, cls) {
   try { tp.setAttributeNS(XL, 'xlink:href', '#' + pid); } catch (e) { /* 새 브라우저는 href 만으로 됨 */ }
   return [rb, s('text', {class: cls, 'text-anchor': 'middle', 'dominant-baseline': 'central'}, tp)];
 }
-/** 굵기가 변하는 가로 금선 — 가운데 굵고 양끝 가늘게(두 갈래 taper) */
-const goldRule = (x0, x1, y, w = 1.8) => [taper([[(x0 + x1) / 2, y], [x0, y]], {w0: w, w1: 0.2, cls: 'ra-rule'}), taper([[(x0 + x1) / 2, y], [x1, y]], {w0: w, w1: 0.2, cls: 'ra-rule'})];
-/** 머리 다발 — 메달 뒤에서 나와 S 로 흘러내림(공용 strands · 굵은 다발) · tone = 메달 머리 색 */
-const hairFlow = (pts, tone, seed, flip) => svg('g', {class: 'mk-hair mk-t' + tone, 'data-mucha': 'whiplash', 'aria-hidden': 'true'},
-  svg('g', {class: 'mk-sway' + (flip ? '2' : '')}, strands(pts, {n: 4, spread: 7, w0: 3.6, w1: 0.4, curl: 0.8, seed, cls: 'mk-hb'}),
-    strands(pts, {n: 3, spread: 7, w0: 1.6, w1: 0.2, curl: 0.85, seed: seed + 1, cls: 'mk-hd'}), strands(pts, {n: 2, spread: 5, w0: 1.2, w1: 0.15, curl: 0.7, seed: seed + 2, cls: 'mk-hl'})));
+/** 머리 다발 — 메달 뒤에서 나와 S 로 흘러내림(공용 strands) · 큰 덩어리 셋(뒤 그늘 둘 + 앞 셋 · 안쪽 결은 부품이 몇 줄만) · 끝은 소용돌이 · tone = 메달 머리 색 */
+const hairFlow = (pts, tone, seed, flip, sp = 10, w = 6) => svg('g', {class: 'mk-hair mk-t' + tone, 'data-mucha': 'whiplash', 'aria-hidden': 'true'},
+  svg('g', {class: 'mk-sway' + (flip ? '2' : '')}, strands(pts, {n: 2, spread: sp * 0.7, w0: w * 0.75, w1: 0.5, curl: 1, seed: seed + 1, cls: 'mk-hd'}),
+    strands(pts, {n: 3, spread: sp, w0: w, w1: 0.45, curl: 1, seed, cls: 'mk-hb'})));
+/** 잎 한 장 — (x, y) 밑동 · ang 방향(라디안) · 길이 len · 반폭 wd */
+const leafD = (x, y, ang, len, wd) => { const c = Math.cos(ang), n = Math.sin(ang), Q = (u, v) => r1(x + c * u - n * v) + ' ' + r1(y + n * u + c * v);
+  return 'M' + Q(0, 0) + 'C' + Q(len * 0.3, -wd * 1.3) + ' ' + Q(len * 0.75, -wd * 1.1) + ' ' + Q(len, 0) + 'C' + Q(len * 0.75, wd * 1.1) + ' ' + Q(len * 0.3, wd * 1.3) + ' ' + Q(0, 0) + 'Z'; };
+/** 작은 아치 칸 — 위 창과 같은 꼴(위가 둥근 아치 · rise 만큼 솟음) · i = 안쪽으로 들인 만큼 */
+const cellD = (x, y, w, h, rise, i = 0) => 'M' + r1(x + i) + ' ' + r1(y + h - i) + 'V' + r1(y + rise + i * 0.6) + 'A' + r1(w / 2 - i) + ' ' + r1(Math.max(1, rise - i * 0.4)) + ' 0 0 1 ' + r1(x + w - i) + ' ' + r1(y + rise + i * 0.6) + 'V' + r1(y + h - i) + 'Z';
 
 /* ① 기록 한곳 — 아치 · 휜 리본 제목 · 메달(머리가 두 창 꼭대기 꽃까지) · 한 금테 창 둘(빈 칸 크림 모자이크 · 찬 칸 둥근 유리) · 아래 아치 판 하나(값 한 줄 + 서랍 여섯 꽃 명판) · 덩굴 · 꽃 모자이크 띠 */
 function hub(d, id) {
   const AC = [195, 206], AO = 190, AI = 178, MC = [195, 128], MR = 60;
-  const WW = 142, WR = 71, RIM = 5, LEAD = 1.8, PAD = 2.2, PH = 13.4, ST = 21, SPR = 226, WX = [30, 218];
+  const WW = 142, WR = 71, RIM = 5, LEAD = 2.1, PAD = 2.2, PH = 13, ST = 21, SPR = 226, WX = [30, 218];
   const PW = (WW - 2 * RIM - 2 * PAD - 9 * LEAD) / 10, GT = SPR + ST + 3.2, GB = GT + 10 * PH + 9 * LEAD, WB = r1(GB + PAD + RIM);
-  const PQ = {x: 10, y: 408, w: 370, h: 186}, VL = 448, RY = [462, 526], RH = 62;
+  const VL = 433, RY = [445, 521], RH = 70, RISE = 12, IX = [17, 373], VG = 16;
   const TC = ['ra-t1', 'ra-t2', 'ra-t3'], clip = id + '-clip', ga = id + '-ga', gb = id + '-gb';
   const winD = (x, ys, bot, r) => 'M' + r1(x) + ' ' + r1(bot) + 'V' + r1(ys) + 'A' + r1(r) + ' ' + r1(r) + ' 0 0 1 ' + r1(x + 2 * r) + ' ' + r1(ys) + 'V' + r1(bot) + 'Z';
-  const grad = (gid, c0, c1) => s('linearGradient', {id: gid, x1: 0, y1: 0, x2: 0, y2: 1}, s('stop', {offset: 0, class: c0}), s('stop', {offset: 1, class: c1}));
-  const kids = [s('defs', {}, s('clipPath', {id: clip}, s('rect', {x: 2, y: 2, width: 386, height: 616, rx: 24})), grad(ga, 'ra-ga0', 'ra-ga1'), grad(gb, 'ra-gb0', 'ra-gb1'))];
+  // 찬 칸 = 보석(카보숑) — 왼쪽 위가 밝고 가장자리가 짙은 둥근 빛
+  const grad = (gid, c0, c1, c2) => s('radialGradient', {id: gid, cx: 0.36, cy: 0.3, r: 0.85, fx: 0.3, fy: 0.22}, s('stop', {offset: 0, class: c0}), s('stop', {offset: 0.48, class: c1}), s('stop', {offset: 1, class: c2}));
+  const kids = [s('defs', {}, s('clipPath', {id: clip}, s('rect', {x: 2, y: 2, width: 386, height: 616, rx: 24})), grad(ga, 'ra-ga0', 'ra-ga1', 'ra-ga2'), grad(gb, 'ra-gb0', 'ra-gb1', 'ra-gb2'))];
   const art = s('g', {'clip-path': 'url(#' + clip + ')'});
   art.append(s('rect', {x: 2, y: 2, width: 386, height: 616, rx: 24, class: 'ra-bg'}));
 
@@ -144,9 +148,9 @@ function hub(d, id) {
     s('path', {d: arcInk(AC[0], AC[1], AO, -89, 89, 5), class: 'ra-ink'}),
     WX.map(x => s('path', {d: winD(x + 1.8, SPR + 2.4, WB + 2.4, WR), class: 'ra-cont'}))));
 
-  // 덩굴 — 아래 아치 판 어깨(굵게)에서 옆선을 따라 제목 리본 끝(가늘게)까지 끊기지 않고 오름
+  // 덩굴 — 맨 아래 칸 발치(굵게)에서 옆선을 따라 제목 리본 끝(가늘게)까지 끊기지 않고 오름
   const side = flip => { const X = x => (flip ? 390 - x : x);
-    return vine([[15, 478], [10, 440], [15, 404], [9, 370], [15, 336], [10, 300], [16, 266], [12, 232], [20, 198], [32, 168], [46, 144], [60, 126]].map(([x, y]) => [X(x), y]), {w0: 5.5, w1: 1, leaves: 11, buds: 3, seed: flip ? 23 : 7}); };
+    return vine([[10, 592], [7, 548], [11, 504], [7, 462], [12, 420], [9, 380], [14, 340], [10, 300], [16, 266], [12, 232], [20, 198], [32, 168], [46, 144], [60, 126]].map(([x, y]) => [X(x), y]), {w0: 5.5, w1: 1, leaves: 13, buds: 3, seed: flip ? 23 : 7}); };
   art.append(s('g', {class: 'ra-vines', 'aria-hidden': 'true'}, side(false), side(true)));
 
   // 메달 머리 — 메달 뒤에서 나와 S 로 흘러 두 아치 창 꼭대기 꽃까지(꽃이 다발 끝을 덮음)
@@ -154,7 +158,7 @@ function hub(d, id) {
   art.append(hairFlow(flowL, 5, 51, false), hairFlow(flowL.map(([x, y]) => [390 - x, y]), 5, 57, true));
 
   // 창 둘 — 한 금테 안에 아치 머리(상아 유리 · 둘레 꽃잎 색유리 · 이름)와 100칸 판
-  //   빈 칸 = 옅은 크림 모자이크(세 결 · 금빛 줄눈) · 찬 칸 = 둥근 모서리 유리(위가 밝은 호박빛 금 · 초록) · 위 줄 왼쪽부터 채움(su-fig.js waffle 과 같은 차례)
+  //   빈 칸 = 크림 · 연분홍 · 연두 빛이 조금씩 다른 둥근 모자이크 조각(여섯 결) · 칸 사이 = 금빛 납선 · 찬 칸 = 보석 윤(둥근 빛 + 왼쪽 위 반짝임) · 위 줄 왼쪽부터 채움(su-fig.js waffle 과 같은 차례)
   const A = fin(d.rate) ? Math.round(d.rate) : 0, Bn = fin(d.base) ? Math.round(d.base) : 0;
   const GC = ['ra-g1', 'ra-g2', 'ra-g3'];
   const window_ = (x, who, n, cls, gid, late) => {
@@ -162,25 +166,43 @@ function hub(d, id) {
     g.append(s('path', {d: winD(x, SPR, WB, WR), class: 'ra-rim'}), s('path', {d: winD(x + RIM, SPR, WB - RIM, WR - RIM), class: 'ra-came'}));
     g.append(s('path', {d: 'M' + r1(wc - rl) + ' ' + r1(SPR + ST) + 'V' + SPR + 'A' + r1(rl) + ' ' + r1(rl) + ' 0 0 1 ' + r1(wc + rl) + ' ' + SPR + 'V' + r1(SPR + ST) + 'Z', class: 'ra-lun'}));
     for (let i = 0; i < 9; i++) { const a = -90 + i * 20; g.append(s('path', {d: sector(wc, SPR, rl - 9, rl, a + 0.9, a + 19.1), class: 'ra-glass ' + GC[i % 3]})); }
+    const glints = [];
     g.append(s('g', {class: 'ra-grid', 'data-who': who, 'data-n': String(n)}, Array.from({length: 100}, (_, k) => {
-      const on = k < n, tone = (k * 7 + Math.floor(k / 10) * 3) % 3;
-      return s('rect', {x: r1(x0 + (k % 10) * (PW + LEAD)), y: r1(GT + Math.floor(k / 10) * (PH + LEAD)), width: r1(PW), height: PH, rx: on ? 3.8 : 1.4, fill: on ? 'url(#' + gid + ')' : null, class: on ? cls + ' ra-on' : 'ra-empty ra-e' + tone, 'data-cell': ''});
-    })));
+      const on = k < n, tone = (k * 7 + Math.floor(k / 10) * 5 + (k % 3)) % 6, cx = x0 + (k % 10) * (PW + LEAD), cy = GT + Math.floor(k / 10) * (PH + LEAD);
+      if (on) glints.push(s('ellipse', {cx: r1(cx + PW * 0.33), cy: r1(cy + PH * 0.27), rx: r1(PW * 0.2), ry: r1(PH * 0.11), class: 'ra-glint'}));
+      return s('rect', {x: r1(cx), y: r1(cy), width: r1(PW), height: PH, rx: on ? 4 : 3, fill: on ? 'url(#' + gid + ')' : null, class: on ? cls + ' ra-on' : 'ra-empty ra-e' + tone, 'data-cell': ''});
+    })), s('g', {class: 'ra-glints', 'aria-hidden': 'true'}, glints));
     g.append(s('path', {d: winD(x + 2.2, SPR, WB - 2.2, WR - 2.2), class: 'ra-rim2'}));
     g.append(flower(wc, SPR - WR - 1, 7.5, 'ra-pet', late));
     return g;
   };
   const gems = []; for (let y = 236; y < WB - 10; y += 40) gems.push(s('path', {d: 'M195 ' + y + 'l5 7 -5 7 -5 -7Z', class: 'ra-gem'}));
+  // 가운데 금 기둥에 감겨 오르는 덩굴 한 줄(발치 굵게 → 위 가늘게)
+  const pv = []; for (let y = WB - 2, i = 0; y > 214; y -= 19, i++) pv.push([195 + (i % 2 ? 5.5 : -5.5) * (i ? 1 : 0), y]); pv.push([195, 212]);
   art.append(s('g', {'data-mucha': 'panel', class: 'ra-panel'},
     s('rect', {x: 191, y: 196, width: 8, height: r1(WB - 196), rx: 4, class: 'ra-pillar'}), gems,
+    vine(pv, {w0: 2.8, w1: 0.7, leaves: 9, buds: 2, seed: 31}),
     s('path', {d: star(195, 200, 9, 3.6), class: 'ra-star ra-tw1'}),
     window_(WX[0], 'pick', A, 'ra-ok', ga, 1), window_(WX[1], 'any', Bn, 'ra-basefill', gb, 2)));
 
   // 메달(공용 v=5 · 반측면 · 꽃잎 고리)
   art.append(medallion({cx: MC[0], cy: MC[1], r: MR, v: 5, dir: 1, ring: 'petal'}));
 
-  // 아래 아치 판 하나(공용 plaque) — 창 둘 발치에 받침처럼
-  art.append(plaque({...PQ, tone: 'cream'}));
+  // 아래 숫자 판 — 위 창과 같은 작은 아치 칸 여섯(두 줄 세 칸 · 가는 금 두 겹 테 · 꼭대기 꽃) · 칸 사이는 덩굴 · 어두운 판은 짙은 갈색 바탕
+  const dr = (d.drawers ?? []).slice(0, 6), rowsD = [dr.slice(0, 3), dr.slice(3, 6)], cells = [];
+  rowsD.forEach((row, ri) => {
+    if (!row.length) return;
+    const ws0 = row.map(x => Math.max(64, estK(x.name, 18), estK(x.v, 20)) + 22), extra = Math.max(0, (IX[1] - IX[0] - ws0.reduce((a, b) => a + b, 0) - VG * (row.length - 1)) / row.length);
+    let cx = IX[0];
+    row.forEach((x, i) => { const w = ws0[i] + extra; cells.push({x: cx, y: RY[ri], w, d: x, n: ri * 3 + i}); cx += w + VG; });
+  });
+  const cellG = s('g', {'data-mucha': 'arch', class: 'ra-cells', 'aria-hidden': 'true'});
+  cells.forEach((c, j) => { const nx = cells[j + 1];
+    if (nx && nx.y === c.y) { const gx = (c.x + c.w + nx.x) / 2; cellG.append(vine([[gx, c.y + RH - 1], [gx - 3, c.y + RH * 0.68], [gx + 3, c.y + RH * 0.36], [gx, c.y + 9]], {w0: 3, w1: 0.8, leaves: 4, buds: 1, seed: 40 + j})); }
+  });
+  cells.forEach(c => cellG.append(s('path', {d: cellD(c.x, c.y, c.w, RH, RISE), class: 'ra-crim'}), s('path', {d: cellD(c.x, c.y, c.w, RH, RISE, 2), class: 'ra-cbg'}),
+    s('path', {d: cellD(c.x, c.y, c.w, RH, RISE, 4.2), class: 'ra-cin'}), flower(c.x + c.w / 2, c.y + 1, 4.4, 'ra-pqf', (c.n % 3) + 1)));
+  art.append(cellG);
 
   // 꽃 모자이크 띠 — 맨 아래
   const mb = [s('rect', {x: 8, y: 597, width: 374, height: 18, rx: 6, class: 'ra-mband'}), s('path', {d: 'M12 597.6H378M12 614.4H378', class: 'ra-mline'})];
@@ -192,33 +214,24 @@ function hub(d, id) {
   art.append(s('rect', {x: 3.5, y: 3.5, width: 383, height: 613, rx: 22, class: 'ra-frame', 'aria-hidden': 'true'}));
   kids.push(art);
 
-  // 그림에 녹인 글씨 — 아치 리본 제목 · 창 머리 이름 · 아치 판 값 한 줄 · 서랍 여섯 꽃 명판(누르면 그 서랍)
+  // 그림에 녹인 글씨 — 아치 리본 제목 · 창 머리 이름 · 값 한 줄(양옆 꽃 · 굵기 변하는 금선) · 서랍 여섯 = 작은 아치 칸(누르면 그 서랍)
   const L = [...archRibbon(AC[0], AC[1], 160, -55, 55, 30, '100번에 몇 번 꽃이 됐나', 'ra-title')];
   const nm = [[WX[0] + WR, ['조건에 맞은', '회사']], [WX[1] + WR, ['아무 회사']]];
   nm.forEach(([cx, lines]) => lines.forEach((t, i) => L.push(T(cx, lines.length > 1 ? SPR - 7 + i * 21 : SPR + 4, t, 'ra-wn', {'text-anchor': 'middle'}))));
-  const okA = fin(d.rate), okB = fin(d.base);
+  const okA = fin(d.rate), okB = fin(d.base), sw = est('100번에 ' + (okA ? A + '번' : NEED) + ' · ' + (okB ? Bn + '번' : NEED), 22) / 2 + 12;
   L.push(s('g', {class: 'ra-waffle', 'aria-label': '100번에 몇 번 꽃이 됐나 · 조건에 맞은 회사 ' + (okA ? A + '번' : NEED) + ' · 아무 회사 ' + (okB ? Bn + '번' : NEED), 'data-rate': okA ? String(d.rate) : '', 'data-base': okB ? String(d.base) : ''},
     s('text', {x: 195, y: VL, class: 'ra-wv', 'text-anchor': 'middle'}, s('tspan', {text: '100번에 '}), s('tspan', {class: okA ? 'ra-vA' : 'ra-needt', text: okA ? A + '번' : NEED}),
       s('tspan', {class: 'ra-vdot', text: ' · '}), s('tspan', {class: okB ? 'ra-vB' : 'ra-needt', text: okB ? Bn + '번' : NEED}))));
-  L.push(s('g', {'aria-hidden': 'true'}, goldRule(36, 354, RY[0] - 2, 2), flower(195, RY[0] - 2, 4.6, 'ra-pqf', 2), goldRule(48, 342, RY[1] - 1, 1.4)));
-  const dr = (d.drawers ?? []).slice(0, 6), rowsD = [dr.slice(0, 3), dr.slice(3, 6)], IX = [24, 366];
-  rowsD.forEach((row, ri) => {
-    if (!row.length) return;
-    const y0 = RY[ri], ws = row.map(x => Math.max(52, estK(x.name, 18), estK(x.v, 20))), gap = Math.max(0, (IX[1] - IX[0] - ws.reduce((a, b) => a + b, 0)) / row.length);
-    let cx = IX[0] + gap / 2;
-    row.forEach((x, i) => {
-      const w = ws[i], mid = cx + w / 2, isNeed = x.v === NEED, n = ri * 3 + i;
-      const hx0 = i ? cx - gap / 2 : 16, hx1 = i === row.length - 1 ? 374 : cx + w + gap / 2;
-      if (i) L.push(s('g', {'aria-hidden': 'true'}, flower(cx - gap / 2, y0 + 30, 3.8, 'ra-pqf', (n % 3) + 1)));
-      L.push(s('a', {href: x.href, class: 'ra-lab ra-d' + (n + 1), 'aria-label': x.name + ' ' + x.v, 'data-k': x.k, 'data-v': x.v, 'data-also': x.also ?? null},
-        s('rect', {x: r1(hx0), y: y0, width: r1(hx1 - hx0), height: RH, rx: 14, class: 'ra-hit'}),
-        T(mid, y0 + 24, x.name, 'ra-ln', {'text-anchor': 'middle'}),
-        T(mid, y0 + 50, x.v, 'ra-lv' + (isNeed ? ' ra-needt' : ''), {'text-anchor': 'middle'})));
-      cx += w + gap;
-    });
+  L.push(s('g', {'aria-hidden': 'true'}, taper([[195 - sw - 8, VL - 7], [26, VL - 7]], {w0: 2, w1: 0.2, cls: 'ra-rule'}), taper([[195 + sw + 8, VL - 7], [364, VL - 7]], {w0: 2, w1: 0.2, cls: 'ra-rule'}),
+    flower(195 - sw, VL - 7, 4.6, 'ra-pet', 2), flower(195 + sw, VL - 7, 4.6, 'ra-pet', 3)));
+  cells.forEach(c => { const x = c.d, isNeed = x.v === NEED, mid = c.x + c.w / 2;
+    L.push(s('a', {href: x.href, class: 'ra-lab ra-d' + (c.n + 1), 'aria-label': x.name + ' ' + x.v, 'data-k': x.k, 'data-v': x.v, 'data-also': x.also ?? null},
+      s('rect', {x: r1(c.x - VG / 2 + 0.5), y: c.y + 4, width: r1(c.w + VG - 1), height: RH - 4, rx: 12, class: 'ra-hit'}),
+      T(mid, c.y + 37, x.name, 'ra-ln', {'text-anchor': 'middle'}),
+      T(mid, c.y + 61, x.v, 'ra-lv' + (isNeed ? ' ra-needt' : ''), {'text-anchor': 'middle'})));
   });
   kids.push(s('g', {'data-mucha': 'lettering', class: 'ra-letters'}, L));
-  return svgRoot('hub', '기록 한곳 · 100번에 몇 번 꽃이 됐나 · 한 금테 창 둘 · 아래 아치 판에 값과 기록 서랍 여섯', ...kids);
+  return svgRoot('hub', '기록 한곳 · 100번에 몇 번 꽃이 됐나 · 한 금테 창 둘 · 아래 작은 아치 칸 여섯에 기록 서랍', ...kids);
 }
 
 /* ② 달마다 — 큰 아치 · 휜 리본 제목 · 메달(밤색 · 금빛 머리 다발이 「2025년」 리본으로) · 두 개의 창(해마다 한 창 · 가는 금테 아치) · 꽃대 막대 · 아래 꽃 모자이크 띠 */
@@ -226,19 +239,27 @@ function months(d, id) {
   const rows = d.rows, M = Math.max(10, ...rows.flatMap(r => [r.v, r.v2]).filter(fin)); // cols 와 같은 끝 값
   const years = [...new Set(rows.map(r => String(r.key).slice(0, 4)))].sort(), nY = Math.max(1, years.length);
   const AC = [195, 195], AO = 189, AI = 177, MC = [195, 116], MR = 58;
-  const L = 56, R = 356, cw = (R - L) / 12, bw = 12, WX0 = 22, WX1 = 368, RISE = 18, TOP0 = 214, GAP = 44;
+  const L = 56, R = 356, cw = (R - L) / 12, bw = 12, WX0 = 22, WX1 = 368, RISE = 18, TOP0 = 240, GAP = 44, LGY = 201;
   const hB = Math.max(30, Math.min(200, Math.floor((584 - TOP0 - 64 * nY - (nY - 1) * GAP) / nY))); // 단 높이 — 막대 높이 비는 그대로(높이 = hB × 값 ÷ 끝 값)
   const tops = years.map((_, i) => TOP0 + i * (64 + hB + GAP)), y0s = tops.map(t => t + 20 + hB);
-  const clip = id + '-clip', TC = ['ra-t1', 'ra-t2', 'ra-t3'];
+  const clip = id + '-clip', TC = ['ra-t1', 'ra-t2', 'ra-t3'], SG = t => id + '-s' + t;
+  // 둥근 줄기의 빛 — 가로로 짙음 → 밝음 → 짙음(원기둥처럼)
+  const sgrad = t => s('linearGradient', {id: SG(t), x1: 0, y1: 0, x2: 1, y2: 0}, s('stop', {offset: 0, class: 'ra-s' + t + '0'}), s('stop', {offset: 0.38, class: 'ra-s' + t + '1'}), s('stop', {offset: 1, class: 'ra-s' + t + '0'}));
   const archPath = (r, bot) => 'M' + (195 - r) + ' ' + bot + 'L' + (195 - r) + ' ' + AC[1] + 'A' + r + ' ' + r + ' 0 0 1 ' + (195 + r) + ' ' + AC[1] + 'L' + (195 + r) + ' ' + bot + 'Z';
   const hw = (WX1 - WX0) / 2, WRr = (hw * hw + RISE * RISE) / (2 * RISE), wcx = (WX0 + WX1) / 2;
   const archY = (x, top) => top + WRr - Math.sqrt(WRr * WRr - (x - wcx) ** 2);
   const winD = (top, bot, k = 0) => { const x0 = WX0 + k, x1 = WX1 - k, rr = WRr - k; return 'M' + r1(x0) + ' ' + r1(bot - k) + 'V' + r1(archY(x0, top) + k) + 'A' + r1(rr) + ' ' + r1(rr) + ' 0 0 1 ' + r1(x1) + ' ' + r1(archY(x1, top) + k) + 'V' + r1(bot - k) + 'Z'; };
   const winInk = (top, bot) => [-1, 1].map(sg => { const pts = []; for (let i = 0; i <= 12; i++) { const x = wcx + sg * hw * i / 12; pts.push([x, archY(x, top)]); } pts.push([wcx + sg * hw, (archY(WX0, top) + bot) / 2], [wcx + sg * hw, bot]); return taper(pts, {w0: 2.6, w1: 0.5, cls: 'ra-wink'}); });
-  const kids = [s('defs', {}, s('clipPath', {id: clip}, s('rect', {x: 2, y: 2, width: 386, height: 616, rx: 24})))];
+  const kids = [s('defs', {}, s('clipPath', {id: clip}, s('rect', {x: 2, y: 2, width: 386, height: 616, rx: 24})), sgrad('gold'), sgrad('red'), sgrad('sage'))];
   const art = s('g', {'clip-path': 'url(#' + clip + ')'});
   art.append(s('rect', {x: 2, y: 2, width: 386, height: 616, rx: 24, class: 'ra-bg'}));
   art.append(skies([30, 32, 13], [360, 32, 10.5, 4.4], [[72, 16, 5, 2.1], [320, 14, 5, 2.1]], [[100, 8], [14, 76], [376, 78], [290, 8], [52, 50], [340, 54]]));
+  /** 둥근 줄기 — 밑동(y0)에서 len 만큼 곧게(값 그대로) · 위로 살짝 가늘어짐 · 원기둥 빛 · 바깥선 밑동 굵게 끝 가늘게 · 밑동에 잎 둘 */
+  const stem = (cx, y0, len, tone) => { const b = 3.6, t = 2.7, rr = Math.min(t, len / 2), top = y0 - len, k = [];
+    if (len > 0.5) k.push(s('path', {d: 'M' + r1(cx - b) + ' ' + r1(y0) + 'L' + r1(cx - t) + ' ' + r1(top + rr) + 'A' + r1(t) + ' ' + r1(rr) + ' 0 0 1 ' + r1(cx + t) + ' ' + r1(top + rr) + 'L' + r1(cx + b) + ' ' + r1(y0) + 'Z', fill: 'url(#' + SG(tone) + ')', class: 'ra-stem'}),
+      taper([[cx - b, y0], [cx - t, top + rr]], {w0: 1.3, w1: 0.35, cls: 'ra-sl ra-sl-' + tone}), taper([[cx + b, y0], [cx + t, top + rr]], {w0: 0.9, w1: 0.25, cls: 'ra-sl ra-sl-' + tone}));
+    k.push(s('path', {d: leafD(cx - 1.2, y0 - 0.6, -Math.PI * 0.8, 9.5, 2.6) + leafD(cx + 1.2, y0 - 0.6, -Math.PI * 0.2, 9.5, 2.6), class: 'ra-sleaf'}));
+    return k; };
 
   // 아치 틀 — 띠 폭 12 · 안은 옅은 금빛 파스텔 한 면
   art.append(s('g', {'data-mucha': 'arch', class: 'ra-arch', 'aria-hidden': 'true'},
@@ -262,9 +283,12 @@ function months(d, id) {
 
   // 후광 — 메달 뒤 아주 옅은 빛살 · 가는 금 고리
   art.append(s('g', {'data-mucha': 'halo', class: 'ra-halo', 'aria-hidden': 'true'}, rays(MC[0], MC[1], MR, MR + 38, {n: 48}), s('circle', {cx: MC[0], cy: MC[1], r: MR + 6, class: 'ra-ring'})));
-  // 머리 다발 — 밤색 · 금빛 굵은 다발이 메달 뒤에서 나와 S 로 「2025년」 리본 쪽으로 흘러 첫 창 어깨에 닿음(리본 뒤로 지나감)
-  art.append(hairFlow([[166, 136], [140, 152], [116, 150], [94, 156], [78, 172], [58, 180], [40, 190], [30, 206]], 6, 41, false),
-    hairFlow([[224, 136], [250, 152], [274, 150], [296, 156], [312, 172], [330, 180], [344, 194]], 6, 61, true));
+  // 머리 다발 — 밤색 · 금빛 굵은 다발이 메달 뒤에서 나와 어깨 위로 둥글게 돌아 양옆 틀을 따라 아래로 흐르고 끝이 말림(왼쪽은 「2025년」 리본 뒤로 지나 감김)
+  //   긴 다발 = 물결치며 틀까지 가서 아래로(끝 말림) · 짧은 다발 = 어깨 곁에서 갈라져 말림(갈라지는 다발이라 띠 · 콧수염으로 읽히지 않음)
+  const HL = [[168, 146], [148, 154], [126, 150], [104, 139], [82, 141], [62, 153], [45, 171], [32, 192], [26, 214], [28, 234], [38, 248]];
+  const HS = [[170, 152], [152, 166], [132, 171], [116, 168], [106, 175]];
+  const mir = q => q.map(([x, y]) => [390 - x, y]);
+  art.append(hairFlow(HL, 6, 41, false, 6.5, 4.2), hairFlow(HS, 6, 43, false, 5, 3.6), hairFlow(mir(HL), 6, 61, true, 6.5, 4.2), hairFlow(mir(HS), 6, 63, true, 5, 3.6));
   art.append(medallion({cx: MC[0], cy: MC[1], r: MR, v: 6, dir: 1, ring: 'mosaic'}));
 
   // 두 창 사이 꽃덩굴 띠 — 해 리본에서 돋아 오른쪽 테까지(굵게 → 가늘게) · 꽃 셋
@@ -282,7 +306,7 @@ function months(d, id) {
   art.append(s('g', {'data-mucha': 'mosaic', class: 'ra-mosaic', 'aria-hidden': 'true'}, mb));
   kids.push(art);
 
-  // 막대 — cols 와 같은 값 · 같은 차례 · 같은 높이 비(꽃대 길이 = hB × 값 ÷ 끝 값) · 꽃 된 달 = 핀 꽃 · 못한 달 = 닫힌 붉은 봉오리 · 세는 중 = 새싹 · 아무 회사 = 작은 잎 · 움직이지 않음(값)
+  // 막대 — cols 와 같은 값 · 같은 차례 · 같은 높이 비(줄기 길이 = hB × 값 ÷ 끝 값) · 둥근 줄기(꼭지에 꽃 · 봉오리 · 밑동에 잎 둘) · 꽃 된 달 = 핀 꽃 · 못한 달 = 닫힌 붉은 봉오리 · 세는 중 = 새싹 · 아무 회사 = 막대 옆 금테 작은 잎 · 움직이지 않음(값)
   const chart = s('g', {class: 'ra-cols', 'data-max': String(M), 'data-h': String(hB)});
   const ribbons = [];
   let order = 0;
@@ -298,38 +322,37 @@ function months(d, id) {
       const mo = +String(r.key).slice(5, 7), cx = L + cw * (mo - 1) + cw / 2, worse = fin(r.v) && fin(r.v2) && r.v < r.v2 && !r.open, k = order++;
       const len = fin(r.v) ? r1(hB * Math.min(1, Math.max(0, r.v) / M)) : null, tone = r.open ? 'sage' : worse ? 'red' : 'gold', tip = r.open ? 'bud' : worse ? 'closed' : 'flower';
       const g = s('g', {class: 'ra-mo' + (worse ? ' ra-sq' : ''), 'data-k': r.key, 'data-i': String(k), 'data-v': fin(r.v) ? String(r.v) : '', 'data-v2': fin(r.v2) ? String(r.v2) : '', 'data-len': len == null ? '' : String(len), 'data-tip': tip},
-        len != null ? stemBar({x: r1(cx), y: r1(y0), len, dir: 'up', w: bw, tip, tone, seed: k}) : null,
-        fin(r.v2) ? baseLeaf(cx, yy(r.v2)) : null,
-        T(cx, y0 + 34, String(mo), 'ra-mn', {'text-anchor': 'middle'}));
+        len != null ? s('g', {class: 'ra-st', 'data-mucha': 'vine'}, stem(cx, y0, len, tone), stemBar({x: r1(cx), y: r1(y0 - len), len: 0, dir: 'up', w: bw, tip, tone, seed: k})) : null,
+        fin(r.v2) ? baseLeaf(cx + 4.4, yy(r.v2)) : null,
+        T(cx, y0 + 34, String(mo), 'ra-mn', mo > 9 ? {'text-anchor': 'middle', textLength: 16.5, lengthAdjust: 'spacingAndGlyphs'} : {'text-anchor': 'middle'}));
       chart.append(g);
       if (r.open) chart.append(T(cx + 9, y0 - 5, '세는 중', 'ra-lg ra-opent')); // 세는 중 — 10월 새싹 바로 옆에 작게
     });
-    // 해 리본 — 첫 해는 범례와 한 띠(아래로 살짝 처진 긴 리본) · 다음 해는 두 창 사이 짧은 리본
-    if (!i) {
-      const yc = x => 194 + 6 * Math.sin(Math.PI * Math.max(0, Math.min(1, (x - 4) / 382)));
-      const pts = []; for (let x = 4; x <= 386; x += 22) pts.push([x, yc(x)]); pts.push([386, yc(386)]);
-      ribbons.push(ribbon(pts, {w: 28, tone: 'cream'}), T(28, yc(60) + 7, yv + '년', 'ra-yr'));
-      const items = [['flower', '꽃 된 달'], ['closed', '못한 달'], ['leaf', '아무 회사']], iw = items.map(([kind, t]) => (kind === 'leaf' ? 23 : 15) + est(t, 18)), ig = 4;
-      let lx = 362 - iw.reduce((a, b) => a + b, 0) - ig * (items.length - 1);
-      items.forEach(([kind, t], j) => {
-        const ix = lx + 6, cy = yc(ix);
-        ribbons.push(kind === 'flower' ? stemBar({x: ix, y: cy + 9.5, len: 3, dir: 'up', w: 11, tip: 'flower', tone: 'gold', seed: 2})
-          : kind === 'closed' ? stemBar({x: ix, y: cy + 9, len: 3, dir: 'up', w: 11, tip: 'closed', tone: 'red', seed: 2}) : baseLeaf(ix + 4, cy),
-          T(lx + iw[j] - est(t, 18), yc(lx + iw[j] / 2) + 6.5, t, 'ra-lg ra-legt'));
-        lx += iw[j] + ig;
-      });
-    } else {
-      const ry = tops[i] - GAP / 2 + 4;
-      ribbons.push(ribbon([[14, ry + 3], [60, ry - 2], [110, ry + 1], [156, ry - 1]], {w: 28, tone: 'cream'}), T(85, ry + 7.5, yv + '년', 'ra-yr', {'text-anchor': 'middle'}));
-    }
+    // 해 리본 — 해마다 따로 작은 리본(창 왼쪽 위)
+    const ry = tops[i] - 18;
+    ribbons.push(ribbon([[14, ry + 3], [60, ry - 2], [110, ry + 1], [156, ry - 1]], {w: 28, tone: 'cream'}), T(85, ry + 7.5, yv + '년', 'ra-yr', {'text-anchor': 'middle'}));
   });
   kids.push(chart);
 
-  // 그림에 녹인 글씨 — 아치 리본 제목 · 해 리본(첫 해는 범례와 한 띠)
-  kids.push(s('g', {'data-mucha': 'lettering', class: 'ra-letters'}, archRibbon(AC[0], AC[1], 160, -50, 50, 30, '달마다 꽃이 된 횟수', 'ra-title'), s('g', {class: 'ra-legend'}, ribbons)));
-  return svgRoot('months', '달마다 꽃이 된 횟수 · 해마다 한 창 · 꽃 된 달은 핀 꽃 · 못한 달은 닫힌 붉은 봉오리 · 아무 회사는 작은 잎', ...kids);
+  // 범례 셋 — 아치 머리 아래 한 줄(가운데 맞춤 · 띠 없이 바탕에 새김)
+  const items = [['flower', '꽃 된 달'], ['closed', '못한 달'], ['leaf', '아무 회사']], iw = items.map(([kind, t]) => (kind === 'leaf' ? 16 : 13) + est(t, 18)), ig = 16;
+  let lx = 195 - (iw.reduce((a, b) => a + b, 0) + ig * (items.length - 1)) / 2;
+  const legend = [];
+  items.forEach(([kind, t], j) => {
+    const ix = lx + 5;
+    legend.push(kind === 'leaf' ? baseLeaf(ix - 4, LGY - 6.5) : s('g', {}, stem(ix, LGY + 2, 5, kind === 'flower' ? 'gold' : 'red').slice(0, 3), stemBar({x: ix, y: LGY - 3, len: 0, dir: 'up', w: 11, tip: kind, tone: kind === 'flower' ? 'gold' : 'red', seed: 2})),
+      T(lx + iw[j] - est(t, 18), LGY, t, 'ra-lg ra-legt'));
+    lx += iw[j] + ig;
+  });
+
+  // 머리 끝 한 가닥이 「2025년」 리본 왼쪽 꼬리를 앞으로 감아 내림(리본 뒤 다발과 이어짐)
+  const wrap = svg('g', {class: 'mk-hair mk-t6', 'data-mucha': 'whiplash', 'aria-hidden': 'true'}, strands([[30, 196], [21, 210], [24, 224], [34, 236], [40, 250]], {n: 1, spread: 2, w0: 4.2, w1: 0.4, curl: 1, seed: 47, cls: 'mk-hb'}));
+
+  // 그림에 녹인 글씨 — 아치 리본 제목 · 범례 한 줄 · 해 리본
+  kids.push(s('g', {'data-mucha': 'lettering', class: 'ra-letters'}, archRibbon(AC[0], AC[1], 160, -50, 50, 30, '달마다 꽃이 된 횟수', 'ra-title'), s('g', {class: 'ra-legend'}, legend), s('g', {class: 'ra-years'}, ribbons), wrap));
+  return svgRoot('months', '달마다 꽃이 된 횟수 · 해마다 한 창 · 꽃 된 달은 핀 꽃 · 못한 달은 닫힌 붉은 봉오리 · 아무 회사는 막대 옆 작은 잎', ...kids);
 }
-/** 아무 회사 — 가로로 누운 작은 잎(가운데 잎맥이 값 높이) */
-const baseLeaf = (cx, y) => s('g', {class: 'ra-bl'},
-  s('path', {d: 'M' + r1(cx - 9.5) + ' ' + r1(y) + 'C' + r1(cx - 4.5) + ' ' + r1(y - 5.2) + ' ' + r1(cx + 4) + ' ' + r1(y - 4.7) + ' ' + r1(cx + 9.5) + ' ' + r1(y) + 'C' + r1(cx + 4) + ' ' + r1(y + 4.7) + ' ' + r1(cx - 4.5) + ' ' + r1(y + 5.2) + ' ' + r1(cx - 9.5) + ' ' + r1(y) + 'Z', class: 'ra-blf'}),
-  s('path', {d: 'M' + r1(cx - 8.5) + ' ' + r1(y) + 'L' + r1(cx + 8) + ' ' + r1(y), class: 'ra-blv'}));
+/** 아무 회사 — 막대 옆 가는 금테만 있는 작은 잎((x, y) 밑동 = 값 높이 · 오른쪽으로 누움) */
+const baseLeaf = (x, y) => s('g', {class: 'ra-bl'},
+  s('path', {d: 'M' + r1(x) + ' ' + r1(y) + 'C' + r1(x + 3) + ' ' + r1(y - 4.4) + ' ' + r1(x + 8) + ' ' + r1(y - 4.6) + ' ' + r1(x + 11) + ' ' + r1(y - 1) + 'C' + r1(x + 8) + ' ' + r1(y + 2.8) + ' ' + r1(x + 3) + ' ' + r1(y + 3.6) + ' ' + r1(x) + ' ' + r1(y) + 'Z', class: 'ra-blf'}),
+  s('path', {d: 'M' + r1(x + 0.8) + ' ' + r1(y) + 'Q' + r1(x + 5) + ' ' + r1(y - 0.9) + ' ' + r1(x + 9.4) + ' ' + r1(y - 1.1), class: 'ra-blv'}));

@@ -1,11 +1,11 @@
-/* 수르 — 첫 화면 세 여인(su-women-e · 넷째 판 다른 안 · docs/design/su-musk-2026-11-05/r4-brief.md 「W2」 · judge-r3.md 공통 여덟)
-   짜임: 한 무대 — 큰 아치 창 하나에 세 여인이 나란히 섬 · 여인마다 제 아치 벽감(살구 · 연두 · 옅은 금빛)과 잘리지 않은 온전한 후광
-   몸: 8등신 · 허리 잘록 · 골반 둥글게 · 골반에서 발치로 S 로 휘는 큰 주름 넷 · 바깥선은 굵다가 가늘게 · 치맛자락은 발치에서 소용돌이로 말림
-   자세: 불장 = 불꽃을 머리 위로 높이 듦 · 꽃이 될 = 고개를 기울이고 꽃다발을 가슴에 · 돈이 몰리는 = 엉덩이를 뺀 S 자 · 두 손에서 넘쳐 꽃 띠까지 굽이쳐 내리는 세 겹 금빛 파도 띠
-   이름표 21 = 위가 둥근 아치 판(부품 plaque) · 양옆 판은 가는 덩굴로 이어진 세로 장식 판 · 아래 일곱과는 꽃 덩굴 띠로 이음
+/* 수르 — 첫 화면 세 여인(su-women-e · 다섯째 판 · docs/design/su-musk-2026-11-05/r5-brief.md 「W」 · judge-r4.md 셋이 겹쳐 짚은 여섯)
+   짜임: 한 무대 — 큰 아치 창 하나에 세 여인 · 양옆 · 아래 이름은 가는 금 덩굴 테 하나짜리 장식 판 셋(칸마다 두른 테 없음 · 이름 사이 작은 꽃 점) → 가운데 창을 넓힘
+   몸: 8등신 · 한쪽 다리에 무게를 실은 S 자(굽힌 앞 무릎) · 가슴 · 골반 · 팔에 부피(그늘 · 빛) · 허리 아래 주름 여섯이 발치에 고였다가 소용돌이 · 바깥선 가운데 굵고 끝 가늘게 · 안쪽 주름 가늘게
+   자세: 불장 = 팔꿈치를 굽혀 횃불을 듦 · 넓은 소매가 주름지며 흘러내림 · 세 갈래로 말려 오르는 큰 불꽃 · 꽃이 될 = 고개를 기울이고 꽃다발을 가슴에 · 돈이 몰리는 = 두 손에서 넘쳐 꽃 띠까지 굽이쳐 내리는 세 겹 금빛 파도 띠
+   머리: 어깨 아래로 S 로 흘러 끝이 말리는 굵은 다발(부품 strands) · 아치 글씨 셋은 한 호 위에 같은 크기 · 같은 간격(글 넓이를 재어 사이를 고르게)
    보안 규칙: createElementNS · setAttribute 만(글 속 style 없음) · 꾸밈은 su-women-e.css 와 부품 꾸밈 클래스 */
 import {s} from '/su/su-fig.js';
-import {taper, strands, face, hair, sleeve, rays, plaque} from './su-mucha-kit.js';
+import {taper, strands, face, hair, sleeve, rays} from './su-mucha-kit.js';
 
 export const CSS = '/su/su-women-e.css';
 const D = '/su/data/su21.json';
@@ -139,25 +139,35 @@ const dotD = (x, y, r) => `M${r1(x - r)} ${r1(y)}a${r1(r)} ${r1(r)} 0 1 0 ${r1(2
 function starD(x, y, r) { let d = ''; for (let i = 0; i < 10; i++) { const a = -PI / 2 + i * PI / 5, rr = i % 2 ? r * 0.42 : r; d += (i ? 'L' : 'M') + r1(x + rr * Math.cos(a)) + ' ' + r1(y + rr * Math.sin(a)); } return d + 'Z'; }
 
 /* ── 여인 하나 — 제 자리(얼굴 가운데 0,0 · 얼굴은 +x 쪽을 봄 · 단위 h = 이마 위 ~ 턱 끝 · 머리 높이 ≈ 1.2h · 8등신 = 발치 9h) ── */
-/* 긴 옷 — 목 · 손목 · 발목까지 · 어깨 1.2h · 허리 0.8h(잘록) · 골반 1.3h(둥글게) · 무릎 아래에서 퍼져 발치에 고임 */
-const G_BACK = [[-0.2, 0.9], [-0.5, 1.02], [-0.64, 1.18], [-0.66, 1.5], [-0.6, 2.0], [-0.45, 2.58], [-0.41, 2.92], [-0.62, 3.42], [-0.78, 3.95], [-0.77, 4.6], [-0.69, 5.6], [-0.75, 6.6], [-0.92, 7.5], [-1.14, 8.3], [-1.34, 8.86]];
-const G_HEM = [[-1.34, 8.86], [-1.0, 9.04], [-0.45, 8.94], [0.08, 9.05], [0.6, 8.92], [1.04, 8.8]];
-const G_FRONT = [[1.04, 8.8], [0.92, 8.2], [0.74, 7.4], [0.62, 6.5], [0.6, 5.5], [0.66, 4.5], [0.7, 3.88], [0.56, 3.3], [0.38, 2.92], [0.42, 2.6], [0.58, 2.2], [0.63, 1.8], [0.6, 1.38], [0.5, 1.08], [0.2, 0.9]];
+/* 긴 옷 — 목 · 손목 · 발목까지 · 가슴(앞으로 둥글게) · 허리 0.8h(잘록) · 골반(무게 실은 뒤쪽이 더 나옴) · 굽힌 앞 무릎 · 발치에 고여 물결지며 퍼지는 자락 */
+const G_BACK = [[-0.2, 0.9], [-0.5, 1.0], [-0.66, 1.18], [-0.67, 1.55], [-0.57, 2.15], [-0.43, 2.72], [-0.58, 3.22], [-0.8, 3.78], [-0.81, 4.4], [-0.69, 5.3], [-0.6, 6.3], [-0.68, 7.2], [-0.92, 8.0], [-1.25, 8.62], [-1.52, 8.98]];
+const G_HEM = [[-1.52, 8.98], [-1.26, 9.1], [-0.98, 8.99], [-0.66, 9.12], [-0.32, 9.0], [0.02, 9.14], [0.36, 9.02], [0.7, 9.1], [1.0, 8.96], [1.18, 8.88]];
+const G_FRONT = [[1.18, 8.88], [0.98, 8.3], [0.74, 7.55], [0.66, 6.8], [0.8, 6.15], [0.74, 5.45], [0.62, 4.6], [0.64, 3.9], [0.5, 3.32], [0.36, 2.88], [0.4, 2.5], [0.62, 2.2], [0.76, 1.9], [0.72, 1.55], [0.54, 1.18], [0.2, 0.9]];
 const GOWN = [...G_BACK, ...G_HEM.slice(1, -1), ...G_FRONT];
-/* 큰 주름 넷 — 앞 골반 한 곳에서 부채처럼 갈라져 S 로 휘며 발치의 말린 자락으로(가늘게 · 가운데만 조금 굵게) */
+/* 주름 여섯 — 허리 · 골반 · 굽힌 무릎에서 S 로 흘러 발치에 고였다가 소용돌이(CURL = [반지름 h · 도는 쪽] · 0 은 말림 없음) */
 const FOLDS = [
-  [[0.28, 3.25], [-0.12, 4.2], [-0.5, 5.4], [-0.66, 6.6], [-1.0, 7.9], [-1.12, 8.72]],
-  [[0.32, 3.45], [0.02, 4.7], [-0.3, 6.0], [-0.4, 7.3], [-0.62, 8.86]],
-  [[0.38, 3.7], [0.22, 5.0], [0.0, 6.4], [0.06, 7.7], [0.0, 8.98]],
-  [[0.46, 3.95], [0.42, 5.2], [0.5, 6.6], [0.62, 7.8], [0.82, 8.7]]];
-/* 몸의 휨(높이 → 옆으로) — 셋이 다름 */
+  [[0.3, 3.2], [0.08, 4.1], [-0.2, 5.2], [-0.42, 6.4], [-0.64, 7.6], [-0.96, 8.5]],
+  [[0.4, 3.5], [0.26, 4.6], [0.02, 5.8], [-0.12, 7.0], [-0.3, 8.1], [-0.38, 8.72]],
+  [[0.52, 3.85], [0.46, 4.9], [0.3, 6.0], [0.2, 7.1], [0.08, 8.2], [0.0, 8.8]],
+  [[0.74, 6.25], [0.56, 7.0], [0.44, 7.8], [0.4, 8.74]],
+  [[0.8, 6.42], [0.78, 7.2], [0.86, 8.0], [0.92, 8.58]],
+  [[-0.62, 3.7], [-0.52, 4.8], [-0.44, 6.0], [-0.5, 7.1], [-0.74, 8.1], [-1.08, 8.62]]];
+const CURL = [[0.2, 1], [0, 0], [0.15, -1], [0, 0], [0.13, -1], [0.22, 1]];
+/* 몸의 휨(높이 → 옆으로) — 어깨는 앞 · 골반은 뒤(무게 실은 다리) · 발은 다시 앞 · 셋이 다름 */
 const BEND = {
-  hot: [[-1.2, 0.06], [1.0, 0.0], [2.9, -0.1], [3.9, -0.24], [5.6, -0.06], [7.6, 0.1], [9.0, 0.16]],
-  bloom: [[-1.2, 0.2], [1.0, 0.05], [2.9, -0.12], [3.9, -0.3], [5.6, -0.08], [7.6, 0.12], [9.0, 0.22]],
+  hot: [[-1.2, 0.1], [1.0, 0.05], [2.9, -0.16], [3.9, -0.36], [5.6, -0.12], [7.6, 0.1], [9.0, 0.18]],
+  bloom: [[-1.2, 0.24], [1.0, 0.08], [2.9, -0.18], [3.9, -0.4], [5.6, -0.14], [7.6, 0.12], [9.0, 0.22]],
   money: [[-1.2, 0.3], [1.0, 0.14], [2.9, -0.2], [3.9, -0.52], [5.6, -0.28], [7.6, 0.02], [9.0, 0.14]],
 };
 /* 금빛 파도 띠의 등줄기(돈이 몰리는 여인 · 두 손 → 몸 앞을 S 로 가로질러 → 발치 꽃 띠) */
 const WAVE = [[0.5, 2.74], [0.92, 3.3], [1.12, 4.1], [0.78, 4.95], [0.1, 5.6], [-0.5, 6.35], [-0.86, 7.25], [-0.62, 8.1], [-0.84, 8.9], [-1.02, 9.25]];
+/** 촘촘한 점 줄 끝에 안으로 말리는 소용돌이를 이음(지나온 방향을 그대로 이어 돎) */
+function curlEnd(Q, r, sg, turns = 0.9) {
+  const p = Q[Q.length - 1], q = Q[Math.max(0, Q.length - 3)], dl = Math.hypot(p[0] - q[0], p[1] - q[1]) || 1, dx = (p[0] - q[0]) / dl, dy = (p[1] - q[1]) / dl;
+  const c = [p[0] - dy * sg * r, p[1] + dx * sg * r], a0 = Math.atan2(p[1] - c[1], p[0] - c[0]);
+  return Q.concat(spiral(c, r, a0, turns, sg, 0.35, 14).slice(1));
+}
+const thin = (Q, w0) => bandD(Q, t => w0 * Math.pow(Math.sin(PI * t), 0.8) + 0.3);
 
 /** 여인 — o: {k, x, y(얼굴 가운데) · h · dir(1 = 오른쪽을 봄) · tilt · tone(머리) · cloth · iris · seed} */
 function lady(o) {
@@ -165,24 +175,30 @@ function lady(o) {
   const P = pts => pts.map(([u, v]) => [(u + bend(v) - b0) * h, v * h]);
   const g = s('g', {class: 'we-w we-' + k, 'data-body': k, transform: `translate(${r1(o.x)} ${r1(o.y)})` + (o.dir < 0 ? ' scale(-1 1)' : '')});
   const T = 'mk-hair mk-t' + o.tone, cl = o.cloth;
-  /* 1 등 뒤 머리 — 어깨 밖으로 말리는 굵은 다발 */
-  const hb = P([[-0.4, -0.45], [-0.8, 0.1], [-0.94, 0.85], [-1.02, 1.55], [-1.3, 2.05]]);
+  /* 1 등 뒤 머리 — 어깨 아래로 S 로 흘러 허리께에서 끝이 말리는 굵은 다발 */
+  const hb = P([[-0.38, -0.42], [-0.78, 0.15], [-0.98, 0.85], [-0.84, 1.55], [-1.04, 2.2], [-1.3, 2.6]]);
   g.append(s('g', {class: T, 'data-mucha': 'whiplash'}, s('g', {class: 'mk-sway'},
-    strands(hb, {n: 3, spread: h * 0.32, w0: h * 0.17, w1: 0.4, curl: 1, seed: o.seed * 3 + 1, cls: 'mk-hb'}),
-    strands(hb, {n: 2, spread: h * 0.22, w0: h * 0.05, w1: 0.15, curl: 1, seed: o.seed * 3 + 2, cls: 'mk-hd'}))));
-  const head = s('g', {transform: `rotate(${o.tilt})`}, hair({cx: 0, cy: 0, h, dir: 1, tone: o.tone, len: 2.6, seed: o.seed, view: 'three'}));
-  g.append(head);
-  /* 2 긴 옷 · 말린 치맛자락 · 큰 주름 넷 · 굵다가 가늘어지는 바깥선 */
-  const curlB = spiral([-1.08, 8.58], 0.36, 2.33, 1.15, 1), curlF = spiral([0.86, 8.62], 0.23, 0.9, 1.05, -1);
-  g.append(s('path', {d: dotD(...P([[-1.08, 8.58]])[0], h * 0.34) + dotD(...P([[0.86, 8.62]])[0], h * 0.21), class: 'mk-cl-' + cl}),
+    strands(hb, {n: 3, spread: h * 0.34, w0: h * 0.17, w1: 0.4, curl: 1, seed: o.seed * 3 + 1, cls: 'mk-hb'}),
+    strands(hb, {n: 2, spread: h * 0.2, w0: h * 0.05, w1: 0.15, curl: 1, seed: o.seed * 3 + 2, cls: 'mk-hd'}))));
+  g.append(s('g', {transform: `rotate(${o.tilt})`}, hair({cx: 0, cy: 0, h, dir: 1, tone: o.tone, len: 2.6, seed: o.seed, view: 'three'})));
+  /* 2 긴 옷 · 발치에 고인 자락(말린 끝 셋) */
+  const curlB = spiral([-1.22, 8.6], 0.36, 2.4, 1.15, 1), curlF = spiral([0.96, 8.62], 0.24, 0.9, 1.05, -1), curlM = spiral([-0.24, 8.84], 0.17, 1.3, 1.0, 1);
+  g.append(s('path', {d: dotD(...P([[-1.22, 8.6]])[0], h * 0.34) + dotD(...P([[0.96, 8.62]])[0], h * 0.22), class: 'mk-cl-' + cl}),
     s('path', {d: closedD(P(GOWN)), class: 'mk-cl-' + cl}));
-  for (const f of FOLDS) g.append(s('path', {d: lens(P(f), h * 0.07, 0.9), class: 'mk-cld-' + cl}));
-  g.append(s('path', {d: lens(P([[-0.4, 1.45], [-0.24, 1.95], [-0.02, 2.2]]), h * 0.05) + lens(P([[0.12, 1.5], [0.2, 2.0], [0.34, 2.3]]), h * 0.045), class: 'mk-cld-' + cl}));
-  g.append(taper(P(G_BACK), {w0: h * 0.06, w1: h * 0.13, cls: 'mk-ink'}), taper(P(G_FRONT.slice().reverse()), {w0: h * 0.05, w1: h * 0.1, cls: 'mk-ink'}),
-    s('path', {d: lens(P(G_HEM), h * 0.06), class: 'mk-ink2'}),
-    taper(P(curlB), {w0: h * 0.11, w1: 0.4, cls: 'mk-ink'}), taper(P(curlF), {w0: h * 0.08, w1: 0.35, cls: 'mk-ink'}));
+  /* 부피 — 그늘(등 · 엉덩이 · 가슴 밑 · 굽힌 무릎 아래) · 빛(가슴 · 앞 허벅지 · 뒤 골반) */
+  g.append(s('path', {d: lens(P([[-0.56, 1.3], [-0.48, 2.2], [-0.42, 2.8], [-0.62, 3.8], [-0.6, 5.0], [-0.52, 6.4], [-0.72, 7.9]]), h * 0.2, 0.6)
+      + lens(P([[0.26, 2.12], [0.5, 2.32], [0.72, 2.14]]), h * 0.1) + lens(P([[0.66, 6.35], [0.52, 7.2], [0.58, 8.2]]), h * 0.15), class: 'mk-cld-' + cl + ' we-sh'}),
+    s('path', {d: lens(P([[0.4, 1.52], [0.6, 1.7], [0.64, 1.98]]), h * 0.1) + lens(P([[0.4, 3.95], [0.56, 4.9], [0.68, 5.9]]), h * 0.16) + lens(P([[-0.52, 3.55], [-0.6, 4.1], [-0.55, 4.7]]), h * 0.1), class: 'we-hl'}));
+  /* 주름 여섯(가늘게) — 셋은 발치에서 소용돌이 */
+  let fd = '';
+  FOLDS.forEach((f, i) => { const Q = crPts(P(f), 6); fd += thin(CURL[i][0] ? curlEnd(Q, CURL[i][0] * h, CURL[i][1]) : Q, h * 0.036); });
+  g.append(s('path', {d: fd + lens(P([[-0.4, 1.45], [-0.24, 1.95], [-0.04, 2.22]]), h * 0.035) + lens(P([[0.14, 1.5], [0.22, 2.0], [0.34, 2.3]]), h * 0.03), class: 'mk-cld-' + cl}));
+  /* 바깥선 — 몸 가운데 굵고 목 · 발치로 가늘게(안쪽 주름보다 세 배) */
+  g.append(s('path', {d: lens(P(G_BACK), h * 0.1, 0.5) + lens(P(G_FRONT), h * 0.085, 0.5), class: 'mk-ink'}),
+    s('path', {d: lens(P(G_HEM), h * 0.05), class: 'mk-ink2'}),
+    taper(P(curlB), {w0: h * 0.1, w1: 0.4, cls: 'mk-ink'}), taper(P(curlF), {w0: h * 0.08, w1: 0.35, cls: 'mk-ink'}), taper(P(curlM), {w0: h * 0.05, w1: 0.3, cls: 'mk-ink2'}));
   /* 허리 띠 · 앞으로 늘어진 띠 끝 */
-  g.append(s('path', {d: lens(P([[-0.45, 2.78], [-0.1, 2.92], [0.2, 2.92], [0.42, 2.78]]), h * 0.15), class: 'mk-gold'}),
+  g.append(s('path', {d: lens(P([[-0.46, 2.76], [-0.1, 2.92], [0.2, 2.92], [0.4, 2.8]]), h * 0.15), class: 'mk-gold'}),
     taper(P([[0.3, 2.92], [0.44, 3.55], [0.32, 4.25], [0.46, 4.95]]), {w0: h * 0.1, w1: 0.5, cls: 'mk-gold2'}));
   /* 3 얼굴(부품) · 높은 깃 · 보석 */
   const sl = (from, to, hand, w = h * 0.44) => { const [a, b] = P([from, to]), vx = b[0] - a[0], vy = b[1] - a[1]; return sleeve({x: r1(a[0]), y: r1(a[1]), ang: r1(Math.atan2(-vx, vy) * 180 / PI), len: Math.max(8, Math.hypot(vx, vy) - w * 0.32), w, hand, dir: 1, tone: cl}); };
@@ -191,18 +207,42 @@ function lady(o) {
   const gem = s('path', {d: dotD(0, 1.0 * h, h * 0.055), class: 'mk-gem-' + (k === 'hot' ? 'r' : k === 'bloom' ? 'g' : 'b')});
   g.append(fc, collar, gem);
   /* 4 자세와 든 것 */
-  if (k === 'hot') { // 앞 손은 골반에 · 뒤 손은 불꽃을 머리 위로 높이 듦
-    g.append(sl([0.5, 1.12], [0.7, 3.05], 'rest', h * 0.42));
-    const [hx, hy] = P([[-1.0, -1.38]])[0];
-    g.append(torch(hx, hy, h), sl([-0.52, 1.12], [-1.0, -1.38], 'hold', h * 0.4));
-  } else if (k === 'bloom') { // 두 팔로 꽃다발을 가슴에 안음
+  if (k === 'hot') g.append(sl([0.5, 1.12], [0.72, 3.05], 'rest', h * 0.42), torchArm(P, h, cl)); // 앞 손은 골반에 · 뒤 팔은 팔꿈치를 굽혀 횃불을 듦
+  else if (k === 'bloom') { // 두 팔로 꽃다발을 가슴에 안음
     g.append(sl([0.48, 1.1], [0.66, 2.3], 'hold', h * 0.46));
     const [cx, cy] = P([[0.3, 1.92]])[0];
     g.append(bouquet(cx, cy, h), sl([-0.5, 1.1], [0.18, 2.55], 'hold', h * 0.46));
   } else { // 두 손 사이로 금빛 파도가 넘쳐 몸 앞을 S 로 가로질러 꽃 띠까지
     g.append(sl([0.48, 1.1], [0.68, 2.6], 'hold', h * 0.42), waves(P(WAVE), h), sl([-0.5, 1.12], [0.34, 2.8], 'hold', h * 0.42));
   }
-  /* 5 어깨 앞으로 흘러 밖으로 말리는 머리 한 다발 · 머리 장식 */
+  return g;
+}
+/** 횃불 든 팔 — 어깨 → 굽힌 팔꿈치 → 들어 올린 주먹 · 넓은 소매가 팔꿈치 아래로 주름지며 흘러내림(손목까지 덮음) */
+function torchArm(P, h, cl) {
+  const B = (pts, wf) => bandD(crPts(P(pts), 8), wf);
+  const up = [[-0.48, 1.08], [-0.86, 0.68], [-1.2, 0.46]], fore = [[-1.2, 0.46], [-1.1, -0.04], [-0.92, -0.46]];
+  const upW = t => h * (0.3 + 0.08 * Math.sin(PI * t)), foW = t => h * (0.3 - 0.09 * t);
+  const drape = [[-1.0, -0.34], [-1.18, 0.06], [-1.42, 0.5], [-1.55, 1.0], [-1.5, 1.4], [-1.36, 1.56], [-1.2, 1.38], [-1.06, 1.12], [-0.94, 0.84], [-0.9, 0.5], [-0.94, 0.1]];
+  const g = s('g', {class: 'we-arm', 'data-mucha': 'outline'});
+  g.append(s('path', {d: B(up, t => upW(t) + h * 0.075), class: 'mk-ink'}), s('path', {d: B(up, upW), class: 'mk-cl-' + cl}),
+    s('path', {d: B([[-0.62, 0.98], [-0.88, 0.78], [-1.08, 0.62]], t => h * 0.03 * Math.sin(PI * t) + 0.3), class: 'mk-cld-' + cl}));
+  /* 흘러내린 소매 자락 — 주름 셋 · 바깥선 굵게 · 금 단 */
+  let dr = '';
+  for (const f of [[[-1.04, -0.2], [-1.26, 0.4], [-1.4, 1.0], [-1.42, 1.42]], [[-1.0, 0.06], [-1.12, 0.6], [-1.22, 1.06], [-1.22, 1.32]], [[-0.96, 0.4], [-1.0, 0.8], [-1.08, 1.08]]]) dr += thin(crPts(P(f), 6), h * 0.04);
+  g.append(s('path', {d: closedD(P(drape)), class: 'mk-cl-' + cl}), s('path', {d: dr, class: 'mk-cld-' + cl}),
+    s('path', {d: lens(P([[-1.0, -0.34], [-1.18, 0.06], [-1.42, 0.5], [-1.55, 1.0], [-1.5, 1.4], [-1.36, 1.56]]), h * 0.09, 0.5) + lens(P([[-0.9, 0.5], [-0.94, 0.84], [-1.06, 1.12]]), h * 0.04), class: 'mk-ink'}),
+    s('path', {d: lens(P([[-1.52, 1.36], [-1.36, 1.56], [-1.2, 1.38], [-1.06, 1.12]]), h * 0.09), class: 'mk-gold'}));
+  /* 아래팔(소매가 손목까지) · 금 소맷부리 */
+  g.append(s('path', {d: B(fore, t => foW(t) + h * 0.07), class: 'mk-ink'}), s('path', {d: B(fore, foW), class: 'mk-cl-' + cl}),
+    s('path', {d: lens(P([[-1.04, -0.42], [-0.92, -0.47], [-0.8, -0.44]]), h * 0.1), class: 'mk-gold'}));
+  /* 자루 · 잔 · 불꽃(주먹 뒤에서 위로) · 주먹(손가락 마디 셋 · 엄지) */
+  const [cx, cy] = P([[-0.9, -1.16]])[0], [hx, hy] = P([[-0.88, -0.3]])[0];
+  g.append(torch(cx, cy, h, hx, hy));
+  const fist = P([[-1.02, -0.54], [-1.05, -0.68], [-0.99, -0.81], [-0.88, -0.86], [-0.78, -0.8], [-0.75, -0.67], [-0.79, -0.55], [-0.9, -0.5]]);
+  const m = fist.reduce((a, p) => [a[0] + p[0] / fist.length, a[1] + p[1] / fist.length], [0, 0]);
+  g.append(s('path', {d: closedD(fist.map(p => [m[0] + (p[0] - m[0]) * 1.16, m[1] + (p[1] - m[1]) * 1.12])), class: 'mk-ink'}), s('path', {d: closedD(fist), class: 'mk-skin'}),
+    s('path', {d: lens(P([[-0.86, -0.6], [-0.8, -0.62], [-0.76, -0.6]]), h * 0.025) + lens(P([[-0.86, -0.68], [-0.8, -0.7], [-0.76, -0.68]]), h * 0.025) + lens(P([[-0.87, -0.76], [-0.81, -0.78], [-0.77, -0.76]]), h * 0.025)
+      + lens(P([[-1.0, -0.78], [-0.93, -0.84], [-0.84, -0.8]]), h * 0.035), class: 'mk-ink2'}));
   return g;
 }
 /** 머리 장식 — 불장 = 붉은 양귀비 · 꽃이 될 = 흰 들국 화관 · 돈이 몰리는 = 금 동전 머리띠 */
@@ -226,16 +266,22 @@ function diadem(k, h) {
   g.append(s('path', {d: lv, class: 'mk-leaf'}), s('path', {d: pe, class: k === 'hot' ? 'mk-fl-poppy' : 'mk-fl-daisy'}), s('path', {d: ce, class: k === 'hot' ? 'mk-fl-c2' : 'mk-fl-c'}));
   return g;
 }
-/** 횃불 — 높이 든 손(x, y)이 쥔 금 자루 · 위에 잔 · 세 겹 불꽃 · 불티 */
-function torch(x, y, h) {
-  const top = y - 0.8 * h, fl = (x0, y0, hh, w) => `M${r1(x0)} ${r1(y0)}C${r1(x0 - w)} ${r1(y0 - hh * 0.3)} ${r1(x0 - w * 0.75)} ${r1(y0 - hh * 0.72)} ${r1(x0 - w * 0.08)} ${r1(y0 - hh)}C${r1(x0 + w * 0.1)} ${r1(y0 - hh * 0.78)} ${r1(x0 + w * 0.5)} ${r1(y0 - hh * 0.76)} ${r1(x0 + w * 0.45)} ${r1(y0 - hh * 0.92)}C${r1(x0 + w * 1.05)} ${r1(y0 - hh * 0.55)} ${r1(x0 + w * 0.85)} ${r1(y0 - hh * 0.15)} ${r1(x0)} ${r1(y0)}Z`;
-  const cup = `M${r1(x - h * 0.28)} ${r1(top - h * 0.1)}Q${r1(x)} ${r1(top + h * 0.26)} ${r1(x + h * 0.28)} ${r1(top - h * 0.1)}Z`;
-  let sp = ''; for (const [dx, dy, r] of [[-0.42, -0.85, 0.06], [0.4, -1.0, 0.05], [-0.2, -1.28, 0.045], [0.28, -1.4, 0.035]]) sp += dotD(x + dx * h, top + dy * h, r * h);
+/** 횃불 — 자루(주먹 아래 hx,hy → 잔 x,y) · 금 잔 · 세 갈래 불꽃(밑동에서 갈라져 위로 S 로 휘고 끝이 말림 · 양옆은 바깥으로 · 지난 판의 두 배) · 불티 */
+function torch(x, y, h, hx, hy) {
+  const b = y - h * 0.1, X = (u, v) => [x + u * h, b - v * h];
+  const tongue = (Q, w0, sg, r) => bandD(curlEnd(crPts(Q, 8), r, sg, 0.85), t => w0 * (t < 0.14 ? 0.62 + 0.38 * t / 0.14 : Math.pow(1 - (t - 0.14) / 0.86, 1.2)) + 0.25);
+  const C = [X(0, 0), X(0.18, 0.6), X(-0.12, 1.25), X(0.06, 1.9)], Lt = [X(-0.1, 0), X(-0.36, 0.42), X(-0.4, 0.88), X(-0.56, 1.24)], Rt = [X(0.1, 0), X(0.38, 0.45), X(0.4, 0.94), X(0.58, 1.32)];
+  const inner = (Q, k) => Q.map(([px, py]) => [x + (px - x) * 0.8, b + (py - b) * k]);
+  const cup = `M${r1(x - h * 0.3)} ${r1(y - h * 0.08)}Q${r1(x)} ${r1(y + h * 0.3)} ${r1(x + h * 0.3)} ${r1(y - h * 0.08)}Z`;
+  let sp = ''; for (const [u, v, r] of [[-0.62, 1.72, 0.05], [0.64, 1.92, 0.045], [-0.34, 2.28, 0.04], [0.42, 2.4, 0.035]]) sp += dotD(...X(u, v), r * h);
   return s('g', {class: 'we-torch', 'data-held': 'torch'},
-    taper([[x + 0.02 * h, y + 0.55 * h], [x, y], [x - 0.01 * h, top]], {w0: h * 0.07, w1: h * 0.1, cls: 'mk-gold'}),
-    s('path', {d: cup, class: 'mk-gold'}), s('path', {d: lens([[x - h * 0.28, top - h * 0.1], [x, top - h * 0.16], [x + h * 0.28, top - h * 0.1]], h * 0.06), class: 'mk-gold2'}),
-    s('g', {class: 'we-flame'}, s('path', {d: fl(x, top - h * 0.12, h * 1.2, h * 0.4), class: 'we-fire'}), s('path', {d: fl(x + h * 0.02, top - h * 0.14, h * 0.86, h * 0.29), class: 'we-fire2'}),
-      s('path', {d: fl(x + h * 0.02, top - h * 0.16, h * 0.48, h * 0.15), class: 'we-fire3'})), s('path', {d: sp, class: 'we-fire3'}));
+    taper([[hx, hy], [(hx + x) / 2, (hy + y) / 2], [x, y + 0.05 * h]], {w0: h * 0.075, w1: h * 0.1, cls: 'mk-gold'}),
+    s('g', {class: 'we-flame', 'data-mucha': 'whiplash'},
+      s('path', {d: tongue(Lt, h * 0.34, -1, h * 0.11) + tongue(Rt, h * 0.34, 1, h * 0.11) + tongue(C, h * 0.52, -1, h * 0.14), class: 'we-fire'}),
+      s('path', {d: tongue(inner(Lt, 0.7), h * 0.16, -1, h * 0.07) + tongue(inner(Rt, 0.7), h * 0.16, 1, h * 0.07) + tongue(inner(C, 0.72), h * 0.28, -1, h * 0.09), class: 'we-fire2'}),
+      s('path', {d: tongue(inner(C, 0.44), h * 0.16, -1, h * 0.06), class: 'we-fire3'})),
+    s('path', {d: sp, class: 'we-fire3'}),
+    s('path', {d: cup, class: 'mk-gold'}), s('path', {d: lens([[x - h * 0.3, y - h * 0.08], [x, y - h * 0.15], [x + h * 0.3, y - h * 0.08]], h * 0.06), class: 'mk-gold2'}));
 }
 /** 세 겹 금빛 파도 띠 — 두 손에서 넘쳐 굽이쳐 내림 · 물마루마다 안으로 말린 물거품 · 금 알갱이(그릇 없음) */
 function waves(Q, h) {
@@ -296,18 +342,18 @@ export function picture(d, opt = {}) {
   const day = d?.asOf?.board ?? null;
   const svg = s('svg', {class: 'su-svg su-art4 su-women-e', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet',
     'aria-label': ok ? '세 여인 그림 · 불장 ' + lists.hot.length + '곳 · 꽃이 될 ' + lists.bloom.length + '곳 · 돈이 몰리는 ' + lists.money.length + '곳' + (day ? ' · ' + day + ' 자료' : '') : '세 여인 그림 · 자료 ' + NEED});
-  /* 틀 자리 — 양옆 장식 판(폭 92) · 가운데 한 무대(아치 창) · 아래 판 두 줄(맨 아래 8 단위는 꾸밈만) */
-  const CL = 4, CR = 386, CW = 94, CT = 47, CB = 486, PT = 491, PB = 612, WL = CL + CW + 4, WR = CR - CW - 4, WS = 84, WT = 44, WX = (WL + WR) / 2, WRX = (WR - WL) / 2;
+  /* 틀 자리 — 양옆 장식 판(폭 90 · 칸 테를 걷어 4 씩 좁힘) · 가운데 한 무대(아치 창 · 지난 판보다 10 넓음) · 아래 판 하나(맨 아래 8 단위는 꾸밈만) */
+  const CL = 4, CR = 386, CW = 90, CT = 47, CB = 486, PT = 491, PB = 612, WL = CL + CW + 3, WR = CR - CW - 3, WS = 84, WT = 44, WX = (WL + WR) / 2, WRX = (WR - WL) / 2;
   const winD = `M${WL} ${CB}L${WL} ${WS}A${WRX} ${WS - WT} 0 0 1 ${WR} ${WS}L${WR} ${CB}Z`;
   /* 벽감 셋(겹친 아케이드) — [왼 · 오른 · 꼭대기] */
-  const NI = [[WL, 178, 110], [151, 239, 62], [212, WR, 110]];
+  const NI = [[WL, 184, 110], [150, 240, 62], [206, WR, 110]];
   const nicheD = ([a, b, top]) => { const rx = (b - a) / 2, ry = rx * 0.92; return `M${a} ${CB}L${a} ${r1(top + ry)}A${r1(rx)} ${r1(ry)} 0 0 1 ${b} ${r1(top + ry)}L${b} ${CB}Z`; };
 
   const defs = s('defs');
   defs.append(s('clipPath', {id: id + 'w'}, s('path', {d: winD})));
-  const MR = 176, MY = 30; // 글씨가 앉는 띠 가운데 선(타원)
+  const MR = 178, MY = 26; // 글씨가 앉는 띠 가운데 선(납작한 타원 한 호)
   defs.append(s('path', {id: id + 'a', d: `M${195 - MR} ${CT}A${MR} ${MY} 0 0 1 ${195 + MR} ${CT}`}));
-  const arcAt = (() => { const N = 400, Q = [], L = [0]; for (let i = 0; i <= N; i++) { const a = PI * (1 - i / N); Q.push([195 + Math.cos(a) * MR, CT - Math.sin(a) * MY]); if (i) L.push(L[i - 1] + Math.hypot(Q[i][0] - Q[i - 1][0], Q[i][1] - Q[i - 1][1])); } return t => { const want = t * L[N]; let i = 1; while (i < N && L[i] < want) i++; return Q[i]; }; })();
+  const ARC = (() => { const N = 400, Q = [], L = [0]; for (let i = 0; i <= N; i++) { const a = PI * (1 - i / N); Q.push([195 + Math.cos(a) * MR, CT - Math.sin(a) * MY]); if (i) L.push(L[i - 1] + Math.hypot(Q[i][0] - Q[i - 1][0], Q[i][1] - Q[i - 1][1])); } return {len: L[N], at: t => { const want = t * L[N]; let i = 1; while (i < N && L[i] < want) i++; return Q[i]; }}; })();
   svg.append(defs);
 
   /* 1 바탕 · 글씨 띠(아치 머리) · 한 무대 창 · 벽감 셋(살구 · 연두 · 옅은 금빛) */
@@ -322,17 +368,17 @@ export function picture(d, opt = {}) {
     s('path', {d: nicheD(NI[1]), class: 'we-niche we-n1'}), s('path', {d: nicheD(NI[0]), class: 'we-niche we-n0'}), s('path', {d: nicheD(NI[2]), class: 'we-niche we-n2'}),
     s('path', {d: nicheD(NI[1]), class: 'we-nline'}), s('path', {d: nicheD(NI[0]), class: 'we-nline'}), s('path', {d: nicheD(NI[2]), class: 'we-nline'})));
 
-  /* 2 별과 초승달 — 창 아치 위 두 귀퉁이 */
+  /* 2 별 · 초승달 · 해 — 창 아치 위 두 귀퉁이(글씨 띠 아래 · 창 밖) */
   let st = '';
-  for (const [x, y, r] of [[128, 55, 3.2], [146, 50, 2.4], [262, 55, 3.2], [244, 50, 2.4], [108, 76, 2.2], [282, 76, 2.2]]) st += starD(x, y, r);
-  svg.append(s('g', {'data-mucha': 'stars'}, s('path', {d: 'M112 57A9.5 9.5 0 1 0 112 76A7.4 7.4 0 1 1 112 57Z', class: 'we-moon'}), s('g', {class: 'we-twinkle'}, s('path', {d: st, class: 'we-star'})),
-    s('path', {d: dotD(278, 64, 6), class: 'we-sun'}), rays(278, 64, 7, 12.5, {n: 14})));
+  for (const [x, y, r] of [[124, 50, 2.6], [139, 44, 2.0], [266, 50, 2.6], [251, 44, 2.0]]) st += starD(x, y, r);
+  svg.append(s('g', {'data-mucha': 'stars'}, s('path', {d: `M${WL + 15} 46A8 8 0 1 0 ${WL + 15} 62A11 11 0 0 1 ${WL + 15} 46Z`, class: 'we-moon'}), s('g', {class: 'we-twinkle'}, s('path', {d: st, class: 'we-star'})),
+    s('path', {d: dotD(WR - 13, 54, 4.6), class: 'we-sun'}), rays(WR - 13, 54, 5.6, 9.6, {n: 14})));
 
   /* 3 후광 셋(온전한 원 · 머리의 두 배) · 세 여인(가운데가 뒤 · 양옆이 앞) */
   const F = {
-    hot: {k: 'hot', x: 141, y: 182, h: 31, dir: 1, tilt: -7, tone: 0, cloth: 'peach', iris: 0, seed: 2, hf: 'mk-hf2'},
+    hot: {k: 'hot', x: 146, y: 182, h: 31.5, dir: 1, tilt: -7, tone: 0, cloth: 'peach', iris: 0, seed: 2, hf: 'mk-hf2'},
     bloom: {k: 'bloom', x: 196, y: 128, h: 34, dir: 1, tilt: 12, tone: 1, cloth: 'ivory', iris: 1, seed: 5, hf: 'mk-hf1'},
-    money: {k: 'money', x: 249, y: 182, h: 31, dir: -1, tilt: -8, tone: 5, cloth: 'cream', iris: 2, seed: 8, hf: 'mk-hf0'},
+    money: {k: 'money', x: 244, y: 182, h: 31.5, dir: -1, tilt: -8, tone: 5, cloth: 'cream', iris: 2, seed: 8, hf: 'mk-hf0'},
   };
   const people = s('g', {'clip-path': `url(#${id}w)`, 'data-mucha': 'outline'});
   const halos = s('g', {'data-mucha': 'halo'});
@@ -341,7 +387,7 @@ export function picture(d, opt = {}) {
   for (const k of ['bloom', 'hot', 'money']) people.append(lady(F[k]));
   /* 발치 꽃밭 — 무대 바닥(꽃만 살랑임) */
   let lv = '', da = '', po = '', ce = '', ce2 = '';
-  const meadow = [[106, 476, 'd'], [122, 468, 'p'], [140, 480, 'd'], [160, 470, 'd'], [178, 478, 'p'], [196, 466, 'd'], [212, 479, 'd'], [230, 470, 'p'], [250, 480, 'd'], [268, 470, 'd'], [284, 478, 'p']];
+  const meadow = [[100, 476, 'd'], [117, 468, 'p'], [136, 480, 'd'], [157, 470, 'd'], [176, 478, 'p'], [195, 466, 'd'], [214, 479, 'd'], [233, 470, 'p'], [254, 480, 'd'], [273, 470, 'd'], [290, 478, 'p']];
   for (const [i, [x, y]] of meadow.entries()) lv += leafD(x - 2, y + 6, (200 + i * 17) * PI / 180, 13, 4) + leafD(x + 2, y + 6, (-30 - i * 9) * PI / 180, 12, 3.6);
   const nod = [s('g', {class: 'we-nod we-nod0'}), s('g', {class: 'we-nod we-nod1'})];
   for (const [i, [x, y, kind]] of meadow.entries()) {
@@ -352,86 +398,89 @@ export function picture(d, opt = {}) {
   people.append(s('g', {'data-mucha': 'vine'}, s('path', {d: `M${WL} 482C140 470 170 484 195 476C222 484 252 470 ${WR} 482L${WR} ${CB}L${WL} ${CB}Z`, class: 'we-ground'}), s('path', {d: lv, class: 'mk-leaf'}), nod));
   svg.append(people);
 
-  /* 4 창 금테(아치 끝으로 가늘게) · 글씨 띠 금선 두 겹 */
+  /* 4 창 금테 · 글씨 띠 금선 두 겹 */
   svg.append(s('g', {'data-mucha': 'arch'}, s('path', {d: winD, class: 'we-arch'}), s('path', {d: outer, class: 'we-arch'}),
     s('path', {d: `M${CL + 5} ${CT}A186 39.5 0 0 1 ${CR - 5} ${CT}`, class: 'we-arch2'})));
 
-  /* 5 꽃 덩굴 띠 — 창 밑을 가로질러 양옆 판 · 아래 일곱과 이음 */
+  /* 5 꽃 덩굴 띠 — 창 밑을 가로질러 양옆 판 · 아래 판과 이음 */
   const vy = 488.6;
   let vl = '', vf = '', vc = '';
   for (let x = 14, i = 0; x < W - 10; x += 21, i++) { vl += leafD(x, vy, (i % 2 ? -0.5 : 0.5) - (i % 2 ? 0 : PI), 8, 2.6) + leafD(x + 4, vy, (i % 2 ? 0.4 : -0.4), 7, 2.3); if (i % 3 === 1) { vf += petalsD(x + 10, vy, 3.6, 5, 0.55, i); vc += dotD(x + 10, vy, 1.2); } }
   svg.append(s('g', {'data-mucha': 'vine'}, taper([[CL + 2, vy + 0.6], [100, vy - 0.8], [195, vy + 0.6], [290, vy - 0.8], [CR - 2, vy + 0.6]], {w0: 1.6, w1: 0.9, cls: 'we-vst'}),
     s('path', {d: vl, class: 'mk-leaf'}), s('path', {d: vf, class: 'mk-fl-rose'}), s('path', {d: vc, class: 'mk-fl-c'})));
 
-  /* 6 글씨 — 아치 띠 세 말(띠 안에 새김 · 흰 테 없음) · 이름표 21개(아치 판) */
+  /* 6 글씨 — 아치 띠 세 말(한 호 위 · 같은 크기 · 글 넓이를 재어 사이를 같게 · 사이마다 보석 하나) · 이름표 21개 */
   const let9 = s('g', {'data-mucha': 'lettering'});
   svg.append(let9);
   const word = (t, at, k) => {
     const tx = s('text', {class: 'we-aw we-aw-' + k, 'text-anchor': 'middle', 'dominant-baseline': 'central'});
-    const tp = s('textPath', {href: '#' + id + 'a', startOffset: at + '%', text: t});
+    const tp = s('textPath', {href: '#' + id + 'a', startOffset: r1(at) + '%', text: t});
     tp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + id + 'a');
     tx.append(tp); return tx;
   };
-  let9.append(word(KIND.hot, 14, 'hot'), word(KIND.bloom, 50, 'bloom'), word(KIND.money, 84, 'money'));
-  for (const t of [0.31, 0.67]) { const [px, py] = arcAt(t); let9.append(s('path', {d: `M${r1(px)} ${r1(py - 4.5)}L${r1(px + 3.6)} ${r1(py)}L${r1(px)} ${r1(py + 4.5)}L${r1(px - 3.6)} ${r1(py)}Z`, class: 'we-gem'})); }
+  const ww = KEY.map(k => est(KIND[k], 20) + [...KIND[k]].length * 1.2), use = ARC.len * 0.84, gap = (use - ww.reduce((a, b) => a + b, 0)) / 2;
+  let at = (ARC.len - use) / 2;
+  KEY.forEach((k, i) => {
+    let9.append(word(KIND[k], (at + ww[i] / 2) / ARC.len * 100, k)); at += ww[i];
+    if (i < KEY.length - 1) { const [px, py] = ARC.at((at + gap / 2) / ARC.len); let9.append(s('path', {d: `M${r1(px)} ${r1(py - 4.5)}L${r1(px + 3.6)} ${r1(py)}L${r1(px)} ${r1(py + 4.5)}L${r1(px - 3.6)} ${r1(py)}Z`, class: 'we-gem'})); at += gap; }
+  });
 
   if (!ok) {
     let9.append(s('text', {x: 195, y: 552, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: 'we-need', text: NEED}));
     return svg;
   }
   const items = k => (lists[k] ?? []).slice(0, 7).map(c => ({k, code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k), star: Array.isArray(c.in) && c.in.length > 1}));
-  const TONE = {hot: 'rose', money: 'gold', bloom: 'sage'}, tags = [];
-  /** 판 안 글 자리 — 값 줄은 판 아래 곧은 쪽(금 겹선 안) · 이름 줄은 아치가 넓어지는 높이에서 잰 넓이(부품 plaque 와 같은 셈) */
-  const room = (w, hh) => {
-    const pw = w - 1, ph = hh - 2, ah = Math.min(pw / 2, ph * 0.4), g = Math.max(2, Math.min(4, ph * 0.08)), yb = 1 + ph - g - 10.5, top = yb - 20 - 9.6;
-    const dy = Math.max(0, ah - top), hw = dy >= ah ? 0 : (pw / 2) * Math.sqrt(1 - (dy / ah) ** 2);
-    return {nW: Math.max(20, 2 * (hw - g - 2)), vW: pw - 2 * g - 3, yb};
-  };
-  /** 아치 판 하나(부품 plaque) + 글 · 누르는 자리 = 칸 전체(높이 60 넘게) · 글은 판의 글 자리 안 */
+  const tags = [], PAD = 4;
+  /** 이름 하나 — 누르는 자리 = 칸 전체(높이 60 넘게 · 투명) · 테 없이 글만 판 위에(가운데 맞춤 · 안쪽 여백 4) */
   const tag = (it, x0, y0, w, hh, tailOK) => {
     const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'we-tag we-tag-' + it.k, 'data-k': it.k, 'data-name': it.name,
       'aria-label': it.name + ' · ' + KIND[it.k] + ' · ' + it.val + (it.star ? ' · 두 목록에 함께' : '')});
-    const pq = plaque({x: r1(x0 + 0.5), y: r1(y0 + 1), w: r1(w - 1), h: r1(hh - 2), tone: TONE[it.k], knots: false}); // 꽃 매듭은 판 사이 귀퉁이에 따로(이름 줄과 같은 높이라 긴 이름에 닿음)
-    a.append(s('rect', {x: r1(x0), y: r1(y0), width: r1(w), height: r1(hh), class: 'we-hit'}), pq);
-    const G = room(w, hh), L = lay(it, G.nW, tailOK, G.vW), n = L.rows.length, lh = n === 3 ? 20.5 : 20, cx = x0 + w / 2, yb = y0 + G.yb;
+    a.append(s('rect', {x: r1(x0), y: r1(y0), width: r1(w), height: r1(hh), rx: 9, class: 'we-hit'}));
+    const nW = w - 2 * PAD, L = lay(it, nW, tailOK, nW), n = L.rows.length, lh = n === 3 ? 20.5 : 21, cx = x0 + w / 2, cy = y0 + hh / 2;
     L.rows.forEach((row, j) => {
-      const yy = r1(yb - (n - 1 - j) * lh), px = row.v ? 18 : L.px;
-      const full = row.tail ? row.t + ' ' + row.tail : row.t, lim = row.v || row.tail ? G.vW : G.nW;
+      const yy = r1(cy + (j - (n - 1) / 2) * lh), px = row.v ? 18 : L.px;
+      const full = row.tail ? row.t + ' ' + row.tail : row.t;
       const tx = s('text', {x: r1(cx), y: yy, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: row.v ? 'we-val we-v-' + it.k : 'we-name we-n' + px});
       if (row.tail) tx.append(s('tspan', {text: row.t}), s('tspan', {dx: 5, class: 'we-val we-v-' + it.k, text: row.tail}));
       else tx.textContent = row.t;
-      if (est(full, px) > lim) { tx.setAttribute('textLength', r1(lim)); tx.setAttribute('lengthAdjust', 'spacingAndGlyphs'); }
+      if (est(full, px) > nW) { tx.setAttribute('textLength', r1(nW)); tx.setAttribute('lengthAdjust', 'spacingAndGlyphs'); }
       a.append(tx);
     });
     return a;
   };
-  const hot = items('hot'), money = items('money'), bloom = items('bloom');
-  /* 양옆 — 가는 덩굴로 이어진 세로 장식 판(판 사이 귀퉁이에 덩굴이 보임) · 세 줄 판은 78 · 두 줄 판은 60 넘게 */
-  const side = (list, x0) => {
-    const G = room(CW, 60.2), Ls = list.map(it => lay(it, G.nW, false, G.vW)), want = Ls.map(L => (L.rows.length === 3 ? 78 : 61));
-    const sum = want.reduce((a, b) => a + b, 0), total = CB - CT;
-    const n3 = want.filter(x => x === 78).length, hs = sum <= total ? want.map(v => v + (total - sum) / list.length) : want.map(v => (v === 78 ? (total - 60.2 * (list.length - n3)) / Math.max(1, n3) : 60.2));
-    const vg = s('g', {'data-mucha': 'panel'});
-    vg.append(taper([[x0 + 1.6, CT + 6], [x0 + 2.4, (CT + CB) / 2], [x0 + 1.6, CB]], {w0: 1.4, w1: 0.9, cls: 'we-vst'}), taper([[x0 + CW - 1.6, CT + 6], [x0 + CW - 2.4, (CT + CB) / 2], [x0 + CW - 1.6, CB]], {w0: 1.4, w1: 0.9, cls: 'we-vst'}));
-    let y = CT, lf = '', fr = '', fc = '';
-    list.forEach((it, i) => {
-      tags.push(tag(it, x0, y, CW, hs[i], false));
-      for (const [ex, sg] of [[x0 + 2, 1], [x0 + CW - 2, -1]]) { if (i) lf += leafD(ex, y + 3, sg > 0 ? -0.35 : PI + 0.35, 9, 2.8); fr += petalsD(ex + sg * 4.2, y + 7.5, 3.5, 5, 0.55, i + sg); fc += dotD(ex + sg * 4.2, y + 7.5, 1.1); }
-      y += hs[i];
-    });
-    vg.append(s('path', {d: lf, class: 'mk-leaf'}), s('path', {d: fr, class: 'mk-fl-rose'}), s('path', {d: fc, class: 'mk-fl-c'}));
-    svg.insertBefore(vg, let9);
+  /** 장식 판 하나 — 바탕 · 가는 금 덩굴 테 하나(위 두 귀퉁이 덩굴손) · 이름 사이 작은 꽃 점(양옆으로 잎 둘 · 세로 판은 테에서도 잎이 돋음) */
+  const panel = (x0, y0, w, hh, tone, cuts, across) => {
+    const q = 2.8, rr = 9, rect = (i, r) => `M${r1(x0 + i + r)} ${r1(y0 + i)}H${r1(x0 + w - i - r)}A${r} ${r} 0 0 1 ${r1(x0 + w - i)} ${r1(y0 + i + r)}V${r1(y0 + hh - i - r)}A${r} ${r} 0 0 1 ${r1(x0 + w - i - r)} ${r1(y0 + hh - i)}H${r1(x0 + i + r)}A${r} ${r} 0 0 1 ${r1(x0 + i)} ${r1(y0 + hh - i - r)}V${r1(y0 + i + r)}A${r} ${r} 0 0 1 ${r1(x0 + i + r)} ${r1(y0 + i)}Z`;
+    let lf = '', fl = '', fc = '', tw = '';
+    for (const [x, y] of cuts) {
+      fl += petalsD(x, y, 3.9, 5, 0.55, 0.3); fc += dotD(x, y, 1.3);
+      if (across) lf += leafD(x - 3.2, y, PI + 0.14, 10, 2.7) + leafD(x + 3.2, y, -0.14, 10, 2.7) + leafD(x0 + q, y - 1, 0.62, 7.5, 2.2) + leafD(x0 + w - q, y - 1, PI - 0.62, 7.5, 2.2);
+      else lf += leafD(x, y - 3.2, -PI / 2 + 0.14, 10, 2.7) + leafD(x, y + 3.2, PI / 2 + 0.14, 10, 2.7);
+    }
+    for (const [cx0, sg] of [[x0 + q + rr * 0.9, 1], [x0 + w - q - rr * 0.9, -1]]) tw += thin(crPts(spiral([cx0, y0 + q + 5.4], 3.6, sg > 0 ? PI * 1.1 : -PI * 0.1, 0.9, sg, 0.35, 12), 2), 1.3);
+    return s('g', {'data-mucha': 'panel'}, s('path', {d: rect(0.5, rr), class: 'we-pan we-pan-' + tone}), s('path', {d: rect(q, rr - 2.3), class: 'we-pfr'}),
+      s('path', {d: tw, class: 'we-vst'}), s('path', {d: lf, class: 'mk-leaf'}), s('path', {d: fl, class: 'mk-fl-rose'}), s('path', {d: fc, class: 'mk-fl-c'}));
   };
-  side(hot, CL); side(money, CR - CW);
-  /* 아래 — 꽃이 될 일곱(위 넷 · 아래 셋) · 판 넓이는 글에 맞추고 남는 자리는 고르게 */
-  const rowH = (PB - PT) / 2;
-  let kf = '', kc = '';
+  const hot = items('hot'), money = items('money'), bloom = items('bloom');
+  /* 양옆 — 판 하나에 이름 일곱(세 줄 이름은 76 · 두 줄은 60 넘게) */
+  const side = (list, x0, tone) => {
+    const Ls = list.map(it => lay(it, CW - 2 * PAD, false, CW - 2 * PAD)), want = Ls.map(L => (L.rows.length === 3 ? 76 : 61));
+    const sum = want.reduce((a, b) => a + b, 0), total = CB - CT;
+    const n3 = want.filter(x => x === 76).length, hs = sum <= total ? want.map(v => v + (total - sum) / list.length) : want.map(v => (v === 76 ? (total - 60.2 * (list.length - n3)) / Math.max(1, n3) : 60.2));
+    let y = CT; const cuts = [];
+    list.forEach((it, i) => { if (i) cuts.push([x0 + CW / 2, y]); tags.push(tag(it, x0, y, CW, hs[i], false)); y += hs[i]; });
+    svg.insertBefore(panel(x0, CT, CW, CB - CT, tone, cuts, true), let9);
+  };
+  side(hot, CL, 'hot'); side(money, CR - CW, 'money');
+  /* 아래 — 꽃이 될 일곱(위 넷 · 아래 셋)을 판 하나에 · 칸 넓이는 글에 맞추고 남는 자리는 고르게 */
+  const rowH = (PB - PT) / 2, cuts = [];
   [bloom.slice(0, 4), bloom.slice(4)].forEach((row, ri) => {
-    const total = CR - CL, need = row.map(it => needW(it, true) + 20), sum = need.reduce((a, b) => a + b, 0);
+    const total = CR - CL, need = row.map(it => needW(it, true) + 2 * PAD + 12), sum = need.reduce((a, b) => a + b, 0);
     const ws = sum <= total ? need.map(v => v + (total - sum) / row.length) : need.map(v => total * v / sum);
     let x = CL;
-    row.forEach((it, j) => { tags.push(tag(it, x, PT + ri * rowH, ws[j], rowH, true)); x += ws[j]; if (j < row.length - 1) { kf += petalsD(x, PT + ri * rowH + 7, 3.8, 5, 0.55, j); kc += dotD(x, PT + ri * rowH + 7, 1.2); } });
+    row.forEach((it, j) => { tags.push(tag(it, x, PT + ri * rowH, ws[j], rowH, true)); x += ws[j]; if (j < row.length - 1) cuts.push([x, PT + ri * rowH + rowH / 2]); });
   });
-  let9.append(...tags, s('path', {d: kf, class: 'mk-fl-rose', 'data-mucha': 'vine'}), s('path', {d: kc, class: 'mk-fl-c'}));
+  svg.insertBefore(panel(CL, PT, CR - CL, PB - PT, 'bloom', cuts, false), let9);
+  let9.append(...tags);
   return svg;
 }

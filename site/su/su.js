@@ -160,7 +160,7 @@ export function page(m) {
   document.title = (m.title ? m.title + ' · ' : '') + NAME;
   const st = m.step ? STEPS[m.step] : null, hk = location.hash;
   const man = m.mansour ? h('a', {class: 'su-mansour', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '만수르 바로가기 · 새 창'}, h('b', {text: '만수르'}), h('i', {'aria-hidden': 'true', text: '↗'})) : null; // 만수르는 첫 화면 맨 위 머리 줄에(사장님 2026-11-05 04:14(+03) · [2] 1 — 누르면 새 창)
-  const step = st ? h('span', {class: 'su-step'}, h('i', {text: PHASE[st[1]]}), h('span', {text: m.step + ' / 8 · ' + st[0]})) : null;
+  const step = st ? h('span', {class: 'su-step'}, h('i', {text: PHASE[st[1]]}), h('span', {text: m.step + ' / 8' + (String(m.h1 ?? m.title ?? '').includes(st[0]) ? '' : ' · ' + st[0])})) : null; // 큰 제목에 이미 있는 이름은 걸음 표시에서 뺌(첫 화면 「21곳」이 세 번 — 심사 4회)
   const head = h('header', {class: 'su-top top'}, h('a', {class: 'su-brand', href: '#/', text: NAME}), man ?? step, tools()); // 첫 화면은 걸음 표시가 큰 값 줄로(머리 줄에 만수르)
   const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title});
   if (m.proper) h1.setAttribute('data-proper', '');

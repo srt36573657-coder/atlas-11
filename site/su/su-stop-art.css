@@ -17,6 +17,9 @@
   :root:not([data-theme="light"]) .su-stop-art { --ss-sky1: #0B1120; --ss-sky2: #17223E; --ss-sky3: #4A3334; }
 }
 :root[data-theme="dark"] .su-stop-art { --ss-sky1: #0B1120; --ss-sky2: #17223E; --ss-sky3: #4A3334; }
+.ss-quiz { --ss-sky1: #213A4E; --ss-sky2: #426878; } /* 왜 사? — 남색을 조금 회청 · 청록 쪽으로 낮춤(r5-brief S 3) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ss-quiz { --ss-sky1: #0C1A22; --ss-sky2: #1B3340; } }
+:root[data-theme="dark"] .ss-quiz { --ss-sky1: #0C1A22; --ss-sky2: #1B3340; }
 .ss-journal { --ss-sky3: #5E5274; } /* 매매일지 — 아래 칸이 밤하늘에 녹도록 밝은 판도 보랏빛 밤 */
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ss-journal { --ss-sky3: #3A2E44; } }
 :root[data-theme="dark"] .ss-journal { --ss-sky3: #3A2E44; }
@@ -90,8 +93,18 @@
 .ss-plql { fill: none; stroke: var(--ss-gold); stroke-width: 1; }
 .ss-plqt { font-size: 20px; font-weight: 800; letter-spacing: .05em; fill: #5A3517; } /* 리본 띠 안에 새김 — 테 없음 */
 
-/* 별자리 이름표 — 크림 · 금 두루마리(공용 scroll) 위 짙은 밤색 글자 · 바깥 끝에 작은 금 메달 */
-.ss-q { font-size: 18px; font-weight: 700; fill: #3A2417; } /* 고른 크림 판 위 — 테 없음 */
+/* 물음 패 — 금테 · 짙은 남색 속 · 크림 글씨의 작은 아치 패(하늘에 녹음 · 어두운 판에서도 같은 색) · 바깥 끝 번호 메달은 세로 덩굴에 매달림 */
+.ss-q { font-size: 18px; font-weight: 700; fill: #FFF1D6; } /* 고른 남색 판 위 — 테 없음 */
+.ss-pq { fill: #1E3248; }
+.ss-pq-l { fill: none; stroke: #D3A64B; stroke-width: 1.6; }
+.ss-pq-l2 { fill: none; stroke: #EDD597; stroke-width: .6; stroke-opacity: .75; }
+.ss-pq-k { fill: #EDD597; stroke: #A9822F; stroke-width: .6; }
+.ss-lab-on .ss-pq { fill: #25394F; }
+.ss-lab-on .ss-pq-l2 { stroke: #F2CD7C; stroke-width: 1; stroke-opacity: 1; }
+.ss-lab-cur .ss-pq { fill: #2C3E5E; }
+.ss-lab-cur .ss-pq-l { stroke: #EFA77E; stroke-width: 2.2; }
+.ss-lab-cur .ss-q { fill: #FFE3C8; }
+.ss-svine .mk-vstem { fill: #8E9E58; } .ss-svine .mk-vstalk { stroke: #8E9E58; } /* 밤하늘 위 덩굴 — 판마다 같은 색 */
 .ss-pill { fill: #F7EDD7; }
 .ss-lab-on .ss-pill { fill: #F1DFAE; }
 .ss-lab-cur .ss-pill { fill: #F9D9BF; }

@@ -59,44 +59,59 @@ const swell=(m,e=0.22)=>s=>m*(e+(1-e)*Math.sin(PI*Math.min(1,s*1.08)));
 export function taper(pts,{w0=4,w1=0.5,cls='mk-ink'}={}){ return P(band(pts,lin(w0,w1)),cls); }
 
 function nrm(C){ const m=C.length; return C.map((p,i)=>{ const a=C[Math.max(0,i-1)],b=C[Math.min(m-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],d=Math.hypot(dx,dy)||1; return [-dy/d,dx/d]; }); }
-/* 2판: 가는 올 n 가닥 → 굵은 다발 넷 ~ 여섯(n ≤ 3 이면 n 다발) · 다발마다 뿌리 굵고 끝 가는 띠 + 속 결 셋(어둡게 둘 · 밝게 하나) · S 로 흐르다 끝이 말림 */
+/* 3판: 머리 한 타래 = 또렷한 덩어리 면 하나(바깥선 굵게 → 끝 가늘게 · 안쪽 경계 없음) + 끝에서 갈라지는 말림 K(n ≤ 3 이면 n · 그 밖 3)
+   cls 가 mk-hd · mk-hl 이고 w0 < spread × 0.45 이면 「결」 — 덩어리 안쪽에 옅은 선 둘까지(갈라지기 전에 끝남 · 국수 금지) */
 export function strands(pts,{n=7,spread=9,w0=2.6,w1=0.25,curl=0.6,seed=1,cls='mk-hair0'}={}){
   const R=rnd(seed),C=cr(pts,3.5),m=C.length;
   if (m<2) return G(cls,[]);
-  const N=nrm(C),nb=n<=3?Math.max(1,n | 0):Math.min(6,Math.max(4,Math.round(n*0.6))),bw=Math.max(w0*1.6,spread*1.5/nb),fr=0.6+R()*0.4,ph=R()*2*PI,out=[];
-  let dk='',lt='';
-  for (let k=0; k<nb; k++){
-    const u=nb>1?k/(nb-1)-0.5:0,o=u*spread*(0.8+0.4*R()),amp=spread*(0.14+0.1*R()),p2=ph+(R()-0.5),last=Math.max(2,Math.round((m-1)*(0.8+0.2*R()))),sp=[],bk=bw*(0.8+0.4*R());
-    for (let i=0; i<=last; i++){ const t=i/(m-1),off=o*(0.3+0.7*sm(0,0.4,t)-0.3*sm(0.72,1,t))+amp*Math.sin(2*PI*fr*t+p2)*sm(0.04,0.4,t); sp.push([C[i][0]+N[i][0]*off,C[i][1]+N[i][1]*off]); }
-    if (curl>0&&(nb<2||R()<0.35+0.4*Math.min(1,curl))){
-      const p=sp[sp.length-1],q=sp[sp.length-2],dl=Math.hypot(p[0]-q[0],p[1]-q[1])||1,dx=(p[0]-q[0])/dl,dy=(p[1]-q[1])/dl,sg=u>0.05?1:u<-0.05?-1:(R()<0.5?1:-1);
-      const R0=bk*(0.75+0.45*R())*(0.6+curl*0.5),th=(0.9+0.5*R())*PI*Math.min(1.3,0.4+curl),c=[p[0]-dy*sg*R0,p[1]+dx*sg*R0],a0=Math.atan2(p[1]-c[1],p[0]-c[0]),st=Math.max(5,Math.ceil(th*R0/2.5));
-      for (let j=1; j<=st; j++){ const t=j/st,a=a0+sg*th*t,r=R0*(1-0.45*t); sp.push([c[0]+r*Math.cos(a),c[1]+r*Math.sin(a)]); }
+  const N=nrm(C);
+  if ((cls==='mk-hd'||cls==='mk-hl')&&w0<spread*0.45){
+    const ng=Math.max(1,Math.min(2,n | 0));
+    let d='';
+    for (let k=0; k<ng; k++){
+      const u=ng>1?k/(ng-1)-0.5:(R()-0.5)*0.4,o=u*spread*0.42,b=Math.round((m-1)*(0.05+0.06*R())),e=Math.max(b+1,Math.round((m-1)*(0.5+0.12*R()))),a=[];
+      for (let i=b; i<=e; i++){ const t=i/(m-1),off=o*(0.55+0.45*sm(0,0.4,t)); a.push([C[i][0]+N[i][0]*off,C[i][1]+N[i][1]*off]); }
+      d+=band(a,swell(Math.max(0.3,w0*0.6),0.08),6);
     }
-    const wf=s=>w1+(bk-w1)*Math.pow(1-s,0.5)*(0.72+0.28*sm(0,0.12,s)),ns=nrm(sp),z=sp.length-1;
-    const ln=(g,ww,s0,s1)=>{ const a=[]; for (let i=Math.round(s0*z); i<=Math.round(s1*z); i++){ const o2=g*wf(i/z); a.push([sp[i][0]+ns[i][0]*o2,sp[i][1]+ns[i][1]*o2]); } return a.length>1?band(a,s=>ww*wf(s0+(s1-s0)*s),9):''; };
-    out.push(P(band(sp,wf,9),null));
-    dk+=ln(-0.33,0.15,0.02,0.92)+(bk>5?ln(0.2,0.07,0.25,0.6):'');
-    lt+=ln(0.0,0.13,0.06,0.58);
+    return G(cls+' mk-grain',[P(d,null)]);
   }
-  out.push(P(dk,'mk-hx'),P(lt,'mk-hy'));
-  return G(cls,out);
+  const K=n<=1?1:n<=3?(n | 0):3,Wm=spread*0.95+w0*1.3,Wk=K>1?Wm*0.6:Wm,ot=Math.min(3.4,Math.max(0.6,Wm*0.12)),s1=R()<0.5?1:-1;
+  let dk='',fl='',gx='',gy='';
+  for (let k=0; k<K; k++){
+    const u=K>1?k/(K-1)-0.5:0,base=u*(Wm-Wk),wid=Wk*(0.92+0.16*R()),last=Math.max(2,Math.round((m-1)*(K>1?1-Math.abs(u)*0.14-0.06*R():1))),sp=[];
+    for (let i=0; i<=last; i++){ const t=i/(m-1),off=base*(0.3+0.7*sm(0,0.2,t))+u*spread*0.8*sm(0.5,1,t); sp.push([C[i][0]+N[i][0]*off,C[i][1]+N[i][1]*off]); }
+    const sg=K<2?s1:u<-0.01?-1:u>0.01?1:-s1,big=K<2||Math.abs(u)>0.01;
+    if (curl>0&&big){
+      const p=sp[sp.length-1],q=sp[sp.length-2],dl=Math.hypot(p[0]-q[0],p[1]-q[1])||1,dx=(p[0]-q[0])/dl,dy=(p[1]-q[1])/dl;
+      const R0=wid*(0.5+0.3*R())*(0.55+curl*0.5)*(big?1:0.55),th=(big?1.15+0.45*R():0.7)*PI*Math.min(1.3,0.4+curl),c=[p[0]-dy*sg*R0,p[1]+dx*sg*R0],a0=Math.atan2(p[1]-c[1],p[0]-c[0]),st=Math.max(6,Math.ceil(th*R0/2.2));
+      for (let j=1; j<=st; j++){ const t=j/st,a=a0+sg*th*t,r=R0*(1-0.5*t); sp.push([c[0]+r*Math.cos(a),c[1]+r*Math.sin(a)]); }
+    }
+    const z=sp.length-1,wf=s=>w1+(wid-w1)*Math.pow(1-s,0.6)*(0.5+0.5*sm(0,0.2,s)),ns=nrm(sp);
+    const so=sp.map((p,i)=>{ const v=ot*0.3*(1-i/z); return [p[0]+ns[i][0]*v,p[1]+ns[i][1]*v]; });
+    dk+=band(so,s=>wf(s)+ot*(1-0.8*s),9);
+    fl+=band(sp,wf,9);
+    const ln=(g,ww,s0,s1b)=>{ const a=[]; for (let i=Math.round(s0*z); i<=Math.round(s1b*z); i++){ const o2=g*wf(i/z); a.push([sp[i][0]+ns[i][0]*o2,sp[i][1]+ns[i][1]*o2]); } return a.length>1?band(a,s=>ww*wf(s0+(s1b-s0)*s),9):''; };
+    if (k<2) gx+=ln(-0.2,0.1,0.1,0.55);
+    if (k===(K>>1)) gy+=ln(0.16,0.12,0.05,0.4);
+  }
+  return G(cls,[P(dk,'mk-hd'),P(fl,null),P(gx,'mk-hx'),P(gy,'mk-hy')]);
 }
 
-function eye(M,ex,ey,ew,inner,iris,fine,hp){
-  const Q=a=>M(a.map(([x,y])=>[ex+x*ew*inner,ey+y*ew])),W=ew*hp;
-  const lidProf=s=>W*0.1*(s<0.16?0.25+0.75*s/0.16:1-0.82*Math.pow((s-0.16)/0.84,1.25));
+/* 3판 눈: 두 눈 높이 같게(ys 하나) · 윗눈꺼풀이 눈동자 위를 덮은 반쯤 내리뜬 고요한 눈(윙크 없음) · 가로만 줄여 원근 */
+function eye(M,ex,ey,ew,inner,iris,fine,hp,ys){
+  const Q=a=>M(a.map(([x,y])=>[ex+x*ew*inner,ey+y*ys])),W=ys*hp;
+  const lidProf=s=>W*0.11*(s<0.16?0.3+0.7*s/0.16:1-0.8*Math.pow((s-0.16)/0.84,1.2));
   const k=[
-    blob(Q([[-0.5,0.05],[-0.26,-0.035],[0.04,-0.06],[0.3,-0.035],[0.5,0.04],[0.28,0.11],[0,0.135],[-0.28,0.11]]),'mk-eyew'),
-    blob(Q([[-0.13,-0.05],[0.23,-0.05],[0.235,0.06],[0.05,0.135],[-0.13,0.06]]),'mk-i'+iris),
-    blob(Q([[-0.01,-0.045],[0.12,-0.045],[0.11,0.05],[0.0,0.05]]),'mk-pup'),C0(...M([[ex+0.14*ew*inner,ey-0.005*ew]])[0],Math.max(0.3,W*0.035),'mk-eyew'),
-    P(band(Q([[-0.66,0.13],[-0.5,0.05],[-0.26,-0.055],[0.04,-0.085],[0.3,-0.055],[0.52,0.035]]),lidProf),'mk-ink'),
-    P(band(Q([[-0.38,0.1],[-0.1,0.13],[0.2,0.112]]),swell(Math.max(0.3,W*0.032))),'mk-ink2'),
+    blob(Q([[-0.5,0.06],[-0.26,0.0],[0.04,-0.018],[0.3,0.0],[0.5,0.05],[0.28,0.112],[0,0.135],[-0.28,0.11]]),'mk-eyew'),
+    blob(Q([[-0.1,-0.012],[0.2,-0.016],[0.19,0.07],[0.05,0.128],[-0.09,0.07]]),'mk-i'+iris),
+    blob(Q([[0.0,-0.01],[0.11,-0.012],[0.1,0.055],[0.01,0.055]]),'mk-pup'),C0(...M([[ex+0.13*ew*inner,ey+0.02*ys]])[0],Math.max(0.3,W*0.03),'mk-eyew'),
+    P(band(Q([[-0.66,0.12],[-0.5,0.055],[-0.26,-0.03],[0.04,-0.05],[0.3,-0.03],[0.53,0.045]]),lidProf),'mk-ink'),
+    P(band(Q([[-0.38,0.1],[-0.1,0.13],[0.2,0.112]]),swell(Math.max(0.25,W*0.026))),'mk-ink2'),
   ];
   if (fine){
-    k.push(P(band(Q([[-0.36,-0.15],[-0.04,-0.215],[0.3,-0.165]]),swell(Math.max(0.25,W*0.028))),'mk-ink2'));
-    for (const [bx,by,lx,ly] of [[-0.52,0.05,-0.72,0.2],[-0.42,0.0,-0.6,0.15],[-0.32,-0.04,-0.46,0.1]])
-      k.push(P(band(Q([[bx,by],[(bx+lx)/2-0.03,(by+ly)/2],[lx,ly]]),lin(Math.max(0.3,W*0.05),0.1)),'mk-ink'));
+    k.push(P(band(Q([[-0.36,-0.13],[-0.04,-0.17],[0.3,-0.125]]),swell(Math.max(0.25,W*0.024))),'mk-ink2'));
+    for (const [bx,by,lx,ly] of [[-0.52,0.05,-0.7,0.17],[-0.42,0.01,-0.58,0.12]])
+      k.push(P(band(Q([[bx,by],[(bx+lx)/2-0.03,(by+ly)/2],[lx,ly]]),lin(Math.max(0.3,W*0.045),0.1)),'mk-ink'));
   }
   return k;
 }
@@ -108,7 +123,7 @@ const F3={
   near: [[-.295,.02],[-.265,.2],[-.195,.32],[-.1,.415],[.01,.455]],
   nl: [[-.18,.36],[-.19,.62],[-.225,.92]],nr: [[.14,.42],[.18,.64],[.22,.9]],
   brows: [[[.02,-.165],[-.08,-.215],[-.2,-.212],[-.29,-.17]],[[.14,-.168],[.21,-.198],[.29,-.175]]],
-  eyes: [[-.11,-.062,.215,1],[.2,-.06,.128,-1]],
+  eyes: [[-.11,-.062,.21,1],[.195,-.062,.15,-1]],
   nose: [[.155,-.01],[.178,.07],[.186,.118],[.172,.148],[.148,.154]],nos: [[.058,.145],[.085,.158],[.105,.153]],
   lipU: [[.02,.272],[.065,.255],[.098,.262],[.128,.253],[.175,.268],[.13,.276],[.065,.278]],
   lipL: [[.035,.278],[.1,.28],[.165,.272],[.14,.302],[.09,.312],[.05,.298]],
@@ -136,17 +151,17 @@ export function face({cx,cy,h=40,dir=1,view='profile',tilt=0,cls='',iris=0}={}){
     const S=FP.skin;
     k.push(blob(M(FP.neck),'mk-skin'),blob(M([[-0.1,0.36],[0.02,0.44],[0.12,0.49],[0.04,0.53],[-0.1,0.45]]),'mk-skin2'),blob(M(S),'mk-skin'),ell(FP.blush),
       blob(M(FP.lipU),'mk-lip'),blob(M(FP.lipL),'mk-lip2'),
-      L(FP.nl,swell(Wd(0.02))),L(FP.nr,lin(Wd(0.02),Wd(0.004))),
-      L([[0.21,0.485],[0.09,0.47],[-0.03,0.4],[-0.1,0.28]],lin(Wd(0.026),Wd(0.004))),
-      L(S.slice(0,19),s=>Wd(0.006+0.02*Math.sin(PI*(0.15+s*0.85)))),
+      L(FP.nl,lin(Wd(0.034),Wd(0.004))),L(FP.nr,lin(Wd(0.02),Wd(0.003))),
+      L([[0.21,0.485],[0.09,0.47],[-0.03,0.4],[-0.1,0.28]],lin(Wd(0.036),Wd(0.004))),
+      L(S.slice(0,19),s=>Wd(0.005+0.03*Math.sin(PI*(0.15+s*0.85)))),
       ...eyeP(M,h,fine),
       L(FP.brow,lin(Wd(0.016),Wd(0.003))),L(FP.nos,swell(Wd(0.009)),'mk-ink2'),L(FP.mouth,swell(Wd(0.011))));
   }else{
     k.push(blob(M(F3.neck),'mk-skin'),blob(M([[-0.17,0.37],[-0.06,0.45],[0.06,0.49],[0.14,0.45],[0.06,0.53],[-0.08,0.5]]),'mk-skin2'),blob(M(F3.skin),'mk-skin'),
       ...F3.blush.map(ell),blob(M(F3.lipU),'mk-lip'),blob(M(F3.lipL),'mk-lip2'),
-      L(F3.nl,lin(Wd(0.024),Wd(0.004))),L(F3.nr,swell(Wd(0.012))),
-      L(F3.far,s=>Wd(0.004+0.022*Math.pow(Math.sin(PI*(0.2+s*0.72)),1.6))),L(F3.near,swell(Wd(0.016),0.15)),
-      ...F3.eyes.flatMap(([x,y,w,inn])=>eye(M,x,y,w,inn,iris,fine,h)),
+      L(F3.nl,lin(Wd(0.036),Wd(0.004))),L(F3.nr,lin(Wd(0.018),Wd(0.003))),
+      L(F3.far,s=>Wd(0.004+0.036*Math.pow(Math.sin(PI*(0.2+s*0.72)),1.4))),L(F3.near,s=>Wd(0.003+0.024*Math.pow(Math.sin(PI*Math.min(1,0.1+s*0.8)),1.3))),
+      ...F3.eyes.flatMap(([x,y,w,inn])=>eye(M,x,y,w,inn,iris,fine,h,0.2)),
       ...F3.brows.map((b,i)=>L(b,s=>Wd((i?0.009:0.012)*(0.3+0.7*Math.sin(PI*Math.min(1,0.22+s*0.95)))))),
       L(F3.nose,s=>Wd(0.002+0.01*Math.sin(PI*Math.min(1,0.1+s*0.95)))),L(F3.nos,swell(Wd(0.008)),'mk-ink2'),L(F3.mouth,swell(Wd(0.011),0.35)),L(F3.chin,swell(Wd(0.006)),'mk-ink2'));
   }
@@ -186,16 +201,16 @@ export function hair({cx,cy,h=40,dir=1,tone=0,flow='down',len=2.4,seed=1,view='t
   const d=dir<0?-1:1,t=((tone | 0)%8+8)%8,Hd=view==='profile'?HP:H3,sway=flow==='down'?1:1.6;
   const ys=y=>(y<=0.3?y:0.3+(y-0.3)*Math.max(0.6,len)/2.4);
   const M=a=>a.map(([x,y])=>[x*h*d,ys(y)*h]),w=Math.max(0.3,h*0.012);
-  const k=[blob(M(Hd.mass),'mk-hb'),
-    P(band(M(Hd.edge),swell(Math.max(0.6,h*0.026),0.15)),'mk-hd'),
-    ...Hd.lines.map(l=>P(band(M(l),lin(w*1.5,0.15)),'mk-hd')),
-    ...Hd.lights.map(l=>P(band(M(l),swell(w*1.6)),'mk-hl'))];
+  const k=[],k2=[blob(M(Hd.mass),'mk-hb'),
+    P(band(M(Hd.edge),swell(Math.max(0.7,h*0.036),0.12)),'mk-hd'),
+    P([0,2,4].map(i=>band(M(Hd.lines[i]),lin(w*1.2,0.12))).join(''),'mk-hx'),
+    P(band(M(Hd.lights[0]),swell(w*1.8)),'mk-hl')];
   const sp=h*0.15;
   Hd.locks.forEach((l,i)=>{
     const a=l[0],b=l[l.length-1],g=i%2?1:-1,pts=M([0,0.2,0.4,0.6,0.8,1].map(t=>[a[0]+(b[0]-a[0])*t+(0.1*g*Math.sin(1.6*PI*t)+0.03*(sway-1))*sm(0,0.25,t),a[1]+(b[1]-a[1])*t]));
-    k.push(G('mk-sway'+(i%2?'2':''),[strands(pts,{n: i===1?3:2,spread: sp*(i===1?1.3:1),w0: h*0.085,w1: 0.25,curl: 0.75,seed: seed*31+i,cls: 'mk-hb'})]));
+    k.push(G('mk-sway'+(i%2?'2':''),[strands(pts,{n: i===1?2:1,spread: sp*(i===1?1.3:1),w0: h*0.085,w1: 0.25,curl: 0.75,seed: seed*31+i,cls: 'mk-hb'})]));
   });
-  k.push(strands(M(Hd.swirl),{n: 2,spread: sp*0.7,w0: h*0.07,w1: 0.25,curl: 0.8,seed: seed*7+3,cls: 'mk-hb'}));
+  k.push(...k2,strands(M(Hd.swirl),{n: 1,spread: sp*0.6,w0: h*0.06,w1: 0.25,curl: 0.8,seed: seed*7+3,cls: 'mk-hb'}));
   return G('mk-hair mk-t'+t,k,{transform: `translate(${f(cx)} ${f(cy)})`,'data-mucha': 'whiplash','aria-hidden': 'true'});
 }
 
@@ -224,8 +239,8 @@ function starD(x,y,r){ let d=''; for (let i=0; i<10; i++){ const a=-PI/2+i*PI/5,
 const dotD=(x,y,r)=>`M${f(x-r)} ${f(y)}a${f(r)} ${f(r)} 0 1 0 ${f(2*r)} 0a${f(r)} ${f(r)} 0 1 0 ${f(-2*r)} 0`;
 
 /* 여인 여덟 [머리색 얼굴 방향 기울기 장식 옷 후광 눈 보석] */
-const WOMEN=[[0,'three',1,-6,'rose','peach',0,0,'r'],[1,'profile',-1,3,'pearl','sage',1,1,'g'],[2,'three',-1,7,'daisy','cream',2,0,'b'],[3,'profile',1,-3,'diadem','rose',3,2,'r'],
-  [4,'three',1,5,'laurel','sage',0,1,'g'],[5,'three',-1,-7,'poppy','peach',1,0,'r'],[6,'profile',-1,2,'stars','cream',2,2,'b'],[7,'three',1,8,'lily','rose',3,1,'g']];
+const WOMEN=[[0,'three',1,-6,'rose','sage',0,0,'r'],[1,'profile',-1,3,'pearl','sky',1,1,'g'],[2,'three',-1,7,'daisy','gold',2,0,'b'],[3,'profile',1,-3,'diadem','sage',3,2,'r'],
+  [4,'three',1,5,'laurel','mrose',0,1,'g'],[5,'three',-1,-7,'poppy','sky',1,0,'r'],[6,'profile',-1,2,'stars','mrose',2,2,'b'],[7,'three',1,8,'lily','sky',3,1,'g']];
 
 export function medallion({cx,cy,r,v=0,dir=1,ring='mosaic'}={}){
   const W8=WOMEN[((v | 0)%8+8)%8],[tone,view,d0,tilt,hd,cloth,hf,iris,gem]=W8;
@@ -262,13 +277,19 @@ export function medallion({cx,cy,r,v=0,dir=1,ring='mosaic'}={}){
   k.push(hair({cx: fx,cy: fy,h,dir: d,tone,len: 2.15,seed: v+3,view}),face({cx: fx,cy: fy,h,dir: d,view,tilt,iris}));
   const a1=(d>0?40:46)*PI/180,a2=(d>0?46:40)*PI/180,L0=[cx-r*Math.cos(a1),cy+r*Math.sin(a1)],R0=[cx+r*Math.cos(a2),cy+r*Math.sin(a2)];
   const nk=view==='profile'?-0.03:0,SL=[L0,[cx-r*0.52,cy+r*0.46],X(nk-0.42,0.77),X(nk-0.24,0.665)],SR=[R0,[cx+r*0.52,cy+r*0.46],X(nk+0.4,0.77),X(nk+0.24,0.665)];
-  const sh=cr([...SL,X(nk,0.69),...SR.slice().reverse()],2.4);
+  const sh=cr([...SL,X(nk,0.69),...SR.slice().reverse()],2.4),cc=' mk-cld-'+cloth;
   k.push(P(D(sh)+`A${f(r)} ${f(r)} 0 0 1 ${f(L0[0])} ${f(L0[1])}Z`,'mk-cl-'+cloth));
-  for (const [u,e,b2] of [[-0.12,-0.36,-0.06],[0.15,0.3,0.05]]) k.push(P(band([X(nk+u,0.8),X(nk+u*1.5+b2,1.05),[cx+r*e*0.8*d,cy+r*0.78],[cx+r*e*d,cy+r*0.97]],lin(Math.max(0.6,h*0.04),0.15)),'mk-cld-'+cloth));
-  k.push(P(band(SL,lin(Math.max(0.9,h*0.05),0.3)),'mk-ink'),P(band(SR,lin(Math.max(0.6,h*0.03),0.25)),'mk-ink'));
-  const col=[X(nk-0.24,0.6),X(nk,0.635),X(nk+0.24,0.6),X(nk+0.28,0.71),X(nk,0.755),X(nk-0.28,0.71)];
-  k.push(blob(col,'mk-collar'),beads(...X(nk-0.25,0.715),...X(nk+0.25,0.715),{gap: Math.max(2.4,h*0.075),r: Math.max(0.6,h*0.018)}));
-  const gp=X(nk,0.755);
+  let dt='';
+  for (let j=0; j<7; j++) for (let i=-7; i<=7; i++){ const x=cx+(i+(j%2)*0.5)*r*0.115,y=cy+r*(0.4+j*0.09),ax=Math.abs(x-cx)/r; if (y>cy+r*(0.36+0.42*Math.max(0,ax-0.12))&&Math.hypot(x-cx,y-cy)<r*0.9) dt+=dotD(x,y,Math.max(0.35,r*0.013)); }
+  k.push(P(dt,'mk-clp'+cc));
+  for (const [u,e,b2] of [[-0.12,-0.36,-0.06],[0.15,0.3,0.05],[-0.3,-0.62,-0.05]]) k.push(P(band([X(nk+u,0.8),X(nk+u*1.5+b2,1.05),[cx+r*e*0.8*d,cy+r*0.78],[cx+r*e*d,cy+r*0.97]],lin(Math.max(0.6,h*0.045),0.15)),'mk-cld-'+cloth));
+  k.push(P(band(SL,lin(Math.max(0.5,h*0.012),Math.max(1,h*0.06))),'mk-ink'),P(band(SR,lin(Math.max(0.4,h*0.01),Math.max(0.7,h*0.04))),'mk-ink'));
+  const ct=[X(nk-0.2,0.545),X(nk,0.58),X(nk+0.2,0.545)],cb=[X(nk+0.27,0.66),X(nk,0.7),X(nk-0.27,0.66)];
+  k.push(blob([...ct,...cb],'mk-cl-'+cloth),P(band(cb,swell(Math.max(0.5,h*0.026),0.3)),'mk-cld-'+cloth),P(band(ct,swell(Math.max(0.5,h*0.03),0.35)),'mk-gold'),
+    P(band([X(nk-0.24,0.6),X(nk-0.33,0.69)],lin(Math.max(0.4,h*0.02),0.2))+band([X(nk+0.24,0.6),X(nk+0.33,0.69)],lin(Math.max(0.4,h*0.02),0.2)),'mk-ink'));
+  const col=[X(nk-0.26,0.64),X(nk,0.68),X(nk+0.26,0.64),X(nk+0.3,0.74),X(nk,0.79),X(nk-0.3,0.74)];
+  k.push(blob(col,'mk-collar'),beads(...X(nk-0.27,0.745),...X(nk+0.27,0.745),{gap: Math.max(2.4,h*0.075),r: Math.max(0.6,h*0.018)}));
+  const gp=X(nk,0.79);
   k.push(P(`M${f(gp[0])} ${f(gp[1])}C${f(gp[0]+h*0.07)} ${f(gp[1]+h*0.08)} ${f(gp[0]+h*0.05)} ${f(gp[1]+h*0.17)} ${f(gp[0])} ${f(gp[1]+h*0.2)}C${f(gp[0]-h*0.05)} ${f(gp[1]+h*0.17)} ${f(gp[0]-h*0.07)} ${f(gp[1]+h*0.08)} ${f(gp[0])} ${f(gp[1])}Z`,'mk-gem-'+gem));
  
   const fl=(view==='profile'?[[-0.4,0.16],[-0.47,0.55],[-0.4,0.95],[-0.54,1.35],[-0.46,1.72],[-0.6,2.05]]:[[-0.3,0.12],[-0.42,0.5],[-0.34,0.9],[-0.5,1.3],[-0.42,1.72],[-0.6,2.06]]).map(([u,v2])=>X(u,v2));
@@ -435,7 +456,7 @@ const HANDS={
 export function sleeve({x,y,ang=0,len=40,w=16,hand='rest',dir=1,tone='ivory'}={}){
   const d=dir<0?-1:1,t=CL.includes(tone)?tone:'ivory',HL=w*1.25,hp=HANDS[hand]??HANDS.rest,k=[];
   const Hm=a=>a.map(([u,v])=>[u*HL*d,len-w*0.12+v*HL]),lw=Math.max(0.3,HL*0.012),fw=s=>HL*(0.098-0.046*s);
-  const fing=pts=>[P(band(Hm(pts),s=>fw(s)+2*lw),'mk-ink'),P(band(Hm(pts),s=>Math.max(0.3,fw(s)-0.2)),'mk-skin')];
+  const fing=pts=>[P(band(Hm(pts),s=>fw(s)+lw*(2.6-1.8*s)),'mk-ink'),P(band(Hm(pts),s=>Math.max(0.3,fw(s)-0.2)),'mk-skin')];
   const palm=Hm([[-0.12,-0.25],[-0.13,0.0],[-0.165,0.22],[-0.165,0.43],[-0.1,0.48],[0.0,0.49],[0.1,0.47],[0.152,0.36],[0.162,0.18],[0.12,0.0],[0.11,-0.25]]);
   const pl=[blob(palm,'mk-skin'),P(band(Hm([[-0.13,0.0],[-0.165,0.22],[-0.165,0.42]]),swell(lw*2)),'mk-ink'),P(band(Hm([[0.12,0.0],[0.16,0.18],[0.155,0.34]]),swell(lw*1.4)),'mk-ink2')];
   if (hand==='hold') k.push(...pl,...hp.slice(0,4).flatMap(fing));
@@ -444,8 +465,8 @@ export function sleeve({x,y,ang=0,len=40,w=16,hand='rest',dir=1,tone='ivory'}={}
   const S=[[-0.24*w,0],[-0.3*w,len*0.35],[-0.5*w,len*0.72],[-0.82*w,len+w*0.12],[-0.36*w,len+w*0.2],[0.1*w,len+w*0.06],[0.56*w,len-w*0.1],[0.38*w,len*0.55],[0.26*w,0],[0,-w*0.12]].map(([u,v])=>[u*d,v]);
   k.push(blob(S,'mk-cl-'+t));
   for (const [u0,u1,b] of [[-0.12,-0.6,0.1],[0.04,-0.14,-0.08],[0.18,0.34,0.06]]) k.push(P(band([[u0*w*d,len*0.12],[(u0*0.6+u1*0.4+b)*w*d,len*0.48],[(u0*0.2+u1*0.8-b)*w*d,len*0.8],[u1*w*d,len+w*0.1]],lin(Math.max(0.5,w*0.065),0.15)),'mk-cld-'+t));
-  k.push(P(band([[-0.24*w*d,0],[-0.3*w*d,len*0.35],[-0.5*w*d,len*0.72],[-0.82*w*d,len+w*0.12]],lin(Math.max(0.6,w*0.07),Math.max(0.4,w*0.03))),'mk-ink'),
-    P(band([[0.26*w*d,0],[0.38*w*d,len*0.55],[0.56*w*d,len-w*0.1]],swell(Math.max(0.4,w*0.035))),'mk-ink2'),
+  k.push(P(band([[-0.24*w*d,0],[-0.3*w*d,len*0.35],[-0.5*w*d,len*0.72],[-0.82*w*d,len+w*0.12]],lin(Math.max(0.8,w*0.12),Math.max(0.25,w*0.02))),'mk-ink'),
+    P(band([[0.26*w*d,0],[0.38*w*d,len*0.55],[0.56*w*d,len-w*0.1]],lin(Math.max(0.5,w*0.065),Math.max(0.2,w*0.012))),'mk-ink'),
     P(band([[-0.82*w*d,len+w*0.12],[-0.36*w*d,len+w*0.2],[0.1*w*d,len+w*0.06],[0.56*w*d,len-w*0.1]],swell(Math.max(0.8,w*0.1),0.4)),'mk-gold'));
   return G('mk-sleeve',k,{transform: `translate(${f(x)} ${f(y)})`+(ang?` rotate(${f(ang)})`:''),'data-mucha': 'outline','aria-hidden': 'true'});
 }
