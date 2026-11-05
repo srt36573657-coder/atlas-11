@@ -127,3 +127,30 @@
 .su-land-art .la-legs { fill: #93650F; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-land-art .la-legt { fill: #F0DDB0; } :root:not([data-theme="light"]) .su-land-art .la-legs { fill: #E8C66E; } }
 :root[data-theme="dark"] .su-land-art .la-legt { fill: #F0DDB0; } :root[data-theme="dark"] .su-land-art .la-legs { fill: #E8C66E; }
+/* 일곱째 판 — 메달 아래 둥근 이름 띠(꼬리 없음 · 두 겹 금테 · 고정 색: 어두운 판에서도 크림이라 위 글도 고정 색) */
+.su-land-art .la-nbf { stroke: #B08A3A; stroke-width: 1.6; stroke-linejoin: round; }
+.su-land-art .la-nb-on .la-nbf { fill: #F6E3B0; }
+.su-land-art .la-nb-off .la-nbf { fill: #F8EEDA; }
+.su-land-art .la-nbl { fill: none; stroke: #C9A24A; stroke-width: .8; }
+.su-land-art .la-fine { stroke-width: 1.1; }
+/* 한 땅 — 기둥을 나눠 쓰는 아치 회랑(칸 바탕 분홍 · 연두 · 크림 번갈아 · 어두운 판은 짙은 갈색 + 금테) */
+.su-land-art .la-bay { stroke: #B08A3A; stroke-width: 1.6; stroke-linejoin: round; }
+.su-land-art .la-bay0 { fill: #F6D6CC; } .su-land-art .la-bay1 { fill: #DDE8C6; } .su-land-art .la-bay2 { fill: #F7EBCF; }
+.su-land-art .la-bayl { fill: none; stroke: #C9A24A; stroke-width: .8; }
+.su-land-art .la-col { fill: #D9BC72; stroke: #A8802F; stroke-width: .7; }
+.su-land-art .la-cap { fill: #C39A42; }
+.su-land-art .la-bays { fill: #A8802F; }
+.su-land-art .la-bay-t { font-size: 18px; font-weight: 800; fill: #3E2A14; stroke: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .su-land-art .la-bay0, :root:not([data-theme="light"]) .su-land-art .la-bay1, :root:not([data-theme="light"]) .su-land-art .la-bay2 { fill: #3A2817; stroke: #D8B25A; }
+  :root:not([data-theme="light"]) .su-land-art .la-bayl { stroke: #8C6A2E; } :root:not([data-theme="light"]) .su-land-art .la-bay-t { fill: #F3E3BE; } :root:not([data-theme="light"]) .su-land-art .la-bays { fill: #E8C66E; }
+}
+:root[data-theme="dark"] .su-land-art .la-bay0, :root[data-theme="dark"] .su-land-art .la-bay1, :root[data-theme="dark"] .su-land-art .la-bay2 { fill: #3A2817; stroke: #D8B25A; }
+:root[data-theme="dark"] .su-land-art .la-bayl { stroke: #8C6A2E; } :root[data-theme="dark"] .su-land-art .la-bay-t { fill: #F3E3BE; } :root[data-theme="dark"] .su-land-art .la-bays { fill: #E8C66E; }
+/* 한 땅 — 후광 테에 붙은 작은 모자이크 원(날개 바퀴 · 돛배) · 빈 바탕 옅은 햇살 · 동심원 */
+.su-land-art .lw-mob { fill: none; stroke: #F1E0BA; stroke-width: 6.4; }
+.su-land-art .lw-m1 { fill: #C39A42; } .su-land-art .lw-m2 { fill: #8FAE5E; } .su-land-art .lw-m3 { fill: #E9A98E; }
+.su-land-art .lw-rim2 { fill: none; stroke: #C39A42; stroke-width: .8; }
+.su-land-art .la-sun { fill: var(--gold); opacity: .075; }
+.su-land-art .la-cc3 { fill: none; stroke: var(--gold); stroke-width: 1; opacity: .16; }
+.su-land-art .la-cc3.la-cc2 { stroke-dasharray: 1.5 5; stroke-width: 1.5; opacity: .22; }

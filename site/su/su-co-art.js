@@ -1,5 +1,6 @@
 /* 수르 — 회사 쪽 큰 그림 「su-co-art」(주문 1023 「머스크 판 4」 · 넷째 판 — docs/design/su-musk-2026-11-05/r4-brief.md 「C」 · judge-r3.md 공통 여덟)
-   넷째 판: 꼭대기 굵고 양끝 가는 아치 띠(모자이크 · 꽃 · 별 · 흰 테 없이 새긴 제목) · 여인 1.3배와 원 밖으로 흐르는 머리 다발 · 아래 두 판 꼭대기 상징(불꽃 · 금빛 물결) · 숫자 크게 설명 작게 · 줄 사이 가는 덩굴 · 두루마리는 차트 창 밑선 아래 · 양옆 S 덩굴(잎 · 봉오리 세 배)
+   일곱째 판(r7-brief.md 「C」 · judge-r6.md): 아치 띠 무늬 「꽃 · 점 · 마름모 · 점」 한 박자 · 머리는 뒤통수에서 이어진 가는 가닥이 띠 아래를 따라 좌우로 흐름 · 창 머리는 메달 둘레로 오목하게 · 창 안 빛살 없음
+   · 아래 두 칸은 칸마다 큰 값 하나만 크게(나머지 작은 한 줄) · 지붕에 큰 상징 · 아랫단 둥글게 닫음 · 금선은 어깨 · 바닥 귀퉁이에서 소용돌이로 풂
    사장님 「… 알폰스 무하 … 그의 화풍이 짙게 묻어 나오게 하라」 · 「정말 아름답게, 정말 아름답게 수르가 되어야 한다」
    한 장 = 무하 포스터(viewBox 0 0 390 620) — 위 아치(회사 이름을 아치 따라 휘어 씀) 안 공용 메달 여인(su-mucha-kit medallion v=3 · 반측면 · 머리가 테 밖으로)
      → 위가 둥근 창(금 두 줄 테 · 머리에 금 덩굴 · 옅은 빛살) 안 한 달 줄(회사 polyline 그대로 + 굵다가 가늘어지는 금 리본 · 시장 polyline 그대로 + 잎 몇 장 덩굴 · 처음 = 100 금 구슬 줄)
@@ -11,7 +12,7 @@ import {s} from '/su/su-fig.js';
 import {CODE, pct, dateKo, coLine, idxLine} from '/su/su-data.js';
 import {NEED, num} from '/su/su-six.js';
 import {KIND} from '/su/su-21.js';
-import {medallion, scroll as kScroll, vine as kVine, beads as kBeads, rays as kRays, taper as kTaper, strands as kStrands} from './su-mucha-kit.js';
+import {medallion, scroll as kScroll, vine as kVine, beads as kBeads, taper as kTaper} from './su-mucha-kit.js';
 
 export const CSS = '/su/su-co-art.css';
 const W = 390, HT = 620, CX = 195, KEY = ['hot', 'bloom', 'money'];
@@ -43,6 +44,15 @@ function wrapW(t, px, maxW) {
   if (line.trim()) out.push(line.trim());
   const all = out.reduce((a, l) => a.concat(tw(l, px) <= maxW ? [l] : hard(l, px, maxW)), []);
   return all.length ? all : [''];
+}
+/** 고른 줄 나누기 — 한 줄에 안 들고 두 줄이면 두 줄 길이가 가장 비슷한 띄어쓰기 자리에서(「돈이 몰리는 / 7곳에 듦」) */
+function wrapB(t, px, maxW) {
+  const L = wrapW(t, px, maxW);
+  if (L.length !== 2) return L;
+  const w = String(t).split(' ');
+  let best = L, bw = Math.max(tw(L[0], px), tw(L[1], px));
+  for (let i = 1; i < w.length; i++) { const a = w.slice(0, i).join(' '), b = w.slice(i).join(' '), m = Math.max(tw(a, px), tw(b, px)); if (m <= maxW && m < bw) { best = [a, b]; bw = m; } }
+  return best;
 }
 /** 기간 줄 — 한 줄에 들면 한 줄 · 아니면 「한 달 · 10월 2일」 / 「~ 11월 3일」처럼 물결 앞에서 나눔 */
 function spanLines(len, a, b, px, maxW) {
@@ -84,6 +94,26 @@ function ribbonD(P, wf) {
 const archD = (x0, x1, top, ry, bot) => `M${r1(x0)} ${r1(bot)}V${r1(top + ry)}A${r1((x1 - x0) / 2)} ${r1(ry)} 0 0 1 ${r1(x1)} ${r1(top + ry)}V${r1(bot)}Z`;
 /** 창 머리 위 점 — t 0 = 왼 어깨 · 0.5 = 꼭대기 · 1 = 오른 어깨 · [x, y, 기울기(도)] */
 const archPt = (x0, x1, top, ry, t) => { const rx = (x1 - x0) / 2, a = Math.PI * (1 - t); return [x0 + rx + rx * Math.cos(a), top + ry - ry * Math.sin(a), Math.atan2(ry * Math.cos(a), rx * Math.sin(a)) * 180 / Math.PI]; };
+/** 위가 둥근 창인데 메달이 걸리는 곳은 메달 둘레를 따라 오목하게 — N = {cx, cy, r}(메달 + 틈) · {d, t1}(t1 = 오목이 시작하는 창 머리 자리) */
+function winD(x0, x1, top, ry, bot, N) {
+  const rx = (x1 - x0) / 2, yc = top + ry, dd = t => { const p = archPt(x0, x1, top, ry, t); return Math.hypot(p[0] - N.cx, p[1] - N.cy) - N.r; };
+  if (!N || dd(0.5) >= 0) return {d: archD(x0, x1, top, ry, bot), t1: 0.5};
+  const cut = (a, b) => { for (let i = 0; i < 32; i++) { const m = (a + b) / 2; if (dd(m) > 0) a = m; else b = m; } return a; };
+  const t1 = cut(0.02, 0.5), t2 = cut(0.98, 0.5);
+  const P1 = archPt(x0, x1, top, ry, t1), P2 = archPt(x0, x1, top, ry, t2);
+  return {d: `M${r1(x0)} ${r1(bot)}V${r1(yc)}A${r1(rx)} ${r1(ry)} 0 0 1 ${r1(P1[0])} ${r1(P1[1])}A${r1(N.r)} ${r1(N.r)} 0 0 0 ${r1(P2[0])} ${r1(P2[1])}A${r1(rx)} ${r1(ry)} 0 0 1 ${r1(x1)} ${r1(yc)}V${r1(bot)}Z`, t1};
+}
+/** 아랫단을 둥글게 닫은 아치 칸 — 바닥 귀퉁이 반지름 rb */
+const panD = (x0, x1, top, ry, bot, rb) => `M${r1(x0)} ${r1(bot - rb)}V${r1(top + ry)}A${r1((x1 - x0) / 2)} ${r1(ry)} 0 0 1 ${r1(x1)} ${r1(top + ry)}V${r1(bot - rb)}Q${r1(x1)} ${r1(bot)} ${r1(x1 - rb)} ${r1(bot)}H${r1(x0 + rb)}Q${r1(x0)} ${r1(bot)} ${r1(x0)} ${r1(bot - rb)}Z`;
+/** 금선 소용돌이 — (x, y) 에서 a0 쪽 원을 따라 sg(1 = 화면 시계 방향)로 감기며 가늘어짐 */
+const volute = (x, y, a0, r0, sg, turns = 1.3, w0 = 2.4) => kTaper(curlPts(x, y, a0, r0, sg, turns), {w0, w1: 0.45, cls: 'mu-gv'});
+/** 점 줄 끝에 안으로 말리는 소용돌이를 이음(마지막 접선을 이어받음 · dir 1 = 화면 시계 방향) */
+function curlEnd(A, r, dir, turns = 1.2) {
+  const a = A[A.length - 2], b = A[A.length - 1], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, tx = (b[0] - a[0]) / l, ty = (b[1] - a[1]) / l;
+  const N = dir > 0 ? [-ty, tx] : [ty, -tx], c = [b[0] + N[0] * r, b[1] + N[1] * r], a0 = Math.atan2(b[1] - c[1], b[0] - c[0]), B = [];
+  for (let i = 1; i <= 18; i++) { const t = i / 18, an = a0 + dir * t * turns * 2 * Math.PI, rr = r * (1 - 0.72 * t); B.push([c[0] + rr * Math.cos(an), c[1] + rr * Math.sin(an)]); }
+  return A.concat(B);
+}
 
 /* ── 낱개 무늬 ── */
 /** 꽃 — 끝이 둥근 꽃잎 다섯(무하 들장미 꼴 · 금 가는 테) · 바깥 g 는 자리 · 안쪽 g 가 피어남(0.5초) 뒤 천천히 흔들림(transform) */
@@ -110,11 +140,11 @@ function star(cx, cy, R, k = 0, cls = 'mu-star') {
 const moon = (cx, cy, r, cls = 'mu-moon') => s('path', {d: `M${r1(cx)} ${r1(cy - r)}A${r} ${r} 0 1 0 ${r1(cx)} ${r1(cy + r)}A${r1(r * 0.58)} ${r} 0 1 1 ${r1(cx)} ${r1(cy - r)}Z`, class: cls});
 const at = (rx, ry, cy, th) => [CX + rx * Math.cos(th), cy - ry * Math.sin(th)]; // 아치 타원 위 점(th = 라디안 · 왼쪽 = π · 꼭대기 = π/2)
 /** 금 덩굴 테 — 창 머리를 따라 꼭대기에서 두 어깨로 굵다가 가늘어지는 금 줄기 · 작은 잎 */
-function archVine(x0, x1, top, ry, k = 4, cls = 'mu-gv') {
-  const half = side => Array.from({length: 10}, (_, i) => archPt(x0, x1, top, ry, side ? 0.5 + i * 0.05 : 0.5 - i * 0.05).slice(0, 2));
+function archVine(x0, x1, top, ry, k = 4, cls = 'mu-gv', gap = 0) {
+  const tIn = 0.5 - gap, half = side => Array.from({length: 10}, (_, i) => { const t = tIn - i * (tIn - 0.05) / 9; return archPt(x0, x1, top, ry, side ? 1 - t : t).slice(0, 2); });
   const lv = [];
   for (let i = 0; i < k; i++) for (const side of [0, 1]) {
-    const t = 0.1 + 0.32 * (i + 0.5) / k, p = archPt(x0, x1, top, ry, side ? 1 - t : t), grow = side ? p[2] : p[2] + 180;
+    const t = 0.1 + (tIn - 0.18) * (i + 0.5) / k, p = archPt(x0, x1, top, ry, side ? 1 - t : t), grow = side ? p[2] : p[2] + 180;
     lv.push(leaf(p[0], p[1], grow + (i % 2 ? 38 : -38) * (side ? 1 : -1), 7 + (i % 2) * 2, 'mu-gleaf'));
   }
   return s('g', {'data-mucha': 'vine', class: 'mu-gvine'}, kTaper(half(0), {w0: 2.6, w1: 0.5, cls}), kTaper(half(1), {w0: 2.6, w1: 0.5, cls}), lv);
@@ -144,27 +174,30 @@ export function poster(o) {
     s('path', {d: cres([186, 148], OB), class: 'mu-ol'}), s('path', {d: cres(OB, IB), class: 'mu-band'}), s('path', {d: cres(IB, [IB[0] - 1.5, IB[1] - 3]), class: 'mu-ol'}));
   // 띠 글씨 — 띠 안에 새김(흰 테 없음 · 갈색 · 금빛)
   const em = tw(title, 1, 0.08), size = Math.max(20, Math.min(28, Math.floor(232 / Math.max(1, em)))), tHalf = tw(title, size, 0.08) / 2 + 14;
-  // 띠 무늬 — 모자이크 네모 · 별 · 다섯 점 꽃 · 잎 점(띠 굵기에 맞춰 크기가 변함 · 제목 자리는 비움)
-  const deco = [];
-  for (let d = 4, i = 0; d <= 176; d += 5.2, i++) {
-    const th = d * Math.PI / 180, x = CX + 175.5 * Math.cos(th), y = ACY - 122 * Math.sin(th), T = 13 + 25 * Math.pow(Math.sin(th), 1.6), z = T * 0.27;
+  // 띠 무늬 — 「꽃 · 점 · 마름모 · 점」 한 박자(둘레 길이로 같은 간격 · 꼭대기에서 좌우 같게 · 띠 굵기에 맞춰 크기만 변함 · 제목 자리는 비움)
+  const deco = [], BRX = 175.5, BRY = 122, NS = 360, thK = k => (4 + 172 * k / NS) * Math.PI / 180, arcL = [0];
+  for (let k = 1; k <= NS; k++) arcL.push(arcL[k - 1] + Math.hypot(BRX * (Math.cos(thK(k)) - Math.cos(thK(k - 1))), BRY * (Math.sin(thK(k)) - Math.sin(thK(k - 1)))));
+  const thAt = L => { let k = 1; while (k < NS && arcL[k] < L) k++; const u = (L - arcL[k - 1]) / ((arcL[k] - arcL[k - 1]) || 1); return thK(k - 1) + (thK(k) - thK(k - 1)) * u; };
+  const midL = arcL[NS] / 2, STEP = 14.2;
+  for (let j = 0; midL + j * STEP <= arcL[NS] - 3; j++) for (const sg of j ? [-1, 1] : [1]) {
+    const th = thAt(midL + sg * j * STEP), x = CX + BRX * Math.cos(th), y = ACY - BRY * Math.sin(th), T = 13 + 25 * Math.pow(Math.sin(th), 1.6), z = T * 0.27;
     if (Math.abs(x - CX) < tHalf && y < 80) continue;
-    const k = i % 4, c = 'mu-m' + (i % 3);
-    if (k === 0) deco.push(s('path', {d: `M${r1(x)} ${r1(y - z)}l${r1(z)} ${r1(z)}l${r1(-z)} ${r1(z)}l${r1(-z)} ${r1(-z)}z`, class: c}));
-    else if (k === 1) deco.push(star(x, y, z * 1.05, i, 'mu-bstar'));
-    else if (k === 2) deco.push(s('g', {}, [0, 1, 2, 3, 4].map(q => { const a = -Math.PI / 2 + q * 2 * Math.PI / 5; return s('circle', {cx: r1(x + Math.cos(a) * z * 0.62), cy: r1(y + Math.sin(a) * z * 0.62), r: r1(z * 0.42), class: 'mu-m2'}); }), s('circle', {cx: r1(x), cy: r1(y), r: r1(z * 0.3), class: 'mu-m0'})));
-    else deco.push(s('circle', {cx: r1(x), cy: r1(y), r: r1(z * 0.5), class: 'mu-m1'}));
+    const k = j % 4;
+    if (k === 0) deco.push(s('g', {}, [0, 1, 2, 3, 4].map(q => { const a = -Math.PI / 2 + q * 2 * Math.PI / 5; return s('circle', {cx: r1(x + Math.cos(a) * z * 0.6), cy: r1(y + Math.sin(a) * z * 0.6), r: r1(z * 0.44), class: 'mu-m2'}); }), s('circle', {cx: r1(x), cy: r1(y), r: r1(z * 0.3), class: 'mu-m0'})));
+    else if (k === 2) deco.push(s('path', {d: `M${r1(x)} ${r1(y - z * 0.92)}l${r1(z * 0.92)} ${r1(z * 0.92)}l${r1(-z * 0.92)} ${r1(z * 0.92)}l${r1(-z * 0.92)} ${r1(-z * 0.92)}z`, class: 'mu-m1'}));
+    else deco.push(s('circle', {cx: r1(x), cy: r1(y), r: r1(z * 0.34), class: 'mu-m0'}));
   }
   const tp = s('textPath', {href: '#' + id + 'tp', startOffset: '50%', text: title});
   tp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + id + 'tp');
   const lettering = s('g', {'data-mucha': 'lettering'},
     s('text', {class: 'mu-title mu-n' + size, 'text-anchor': 'middle', ...(o.proper ? {'data-proper': ''} : {})}, tp));
   const bandDeco = s('g', {'data-mucha': 'mosaic', class: 'mu-bdeco'}, deco);
-  // 어깨 받침(금 기둥 머리 · 둥근 모서리)
-  const caps = s('g', {'data-mucha': 'panel'}, [[10, 44], [W - 54, 44]].map(([x, w]) => s('rect', {x, y: ACY, width: w, height: SH - ACY, rx: 4, class: 'mu-cap'})));
+  // 어깨 받침(금 기둥 머리 · 둥근 모서리) — 안쪽 끝에서 금선이 소용돌이로 풀림(컴퍼스 반원만이 아니게)
+  const caps = s('g', {'data-mucha': 'panel'}, [[10, 44], [W - 54, 44]].map(([x, w]) => s('rect', {x, y: ACY, width: w, height: SH - ACY, rx: 4, class: 'mu-cap'})),
+    volute(54, ACY + 4, -Math.PI / 2, 6.2, 1, 1.25, 2.6), volute(W - 54, ACY + 4, -Math.PI / 2, 6.2, -1, 1.25, 2.6));
   // 별과 달(마당 빈 쪽 — 여인이 보는 쪽)
   const sx = x => CX + sd * x;
-  const spec = [[70, 76, 6, 0], [128, 132, 5, 2], [84, 140, 3.6, 1], [118, 84, 3.4, 2], [-114, 136, 3.4, 1], [-60, 66, 3.2, 0]].filter(([x, y]) => !(o.clear && o.clear(sx(x), y)) && Math.hypot(sx(x) - CX, y - MY) > MR + 10);
+  const spec = [[70, 76, 6, 0], [128, 132, 5, 2], [84, 140, 3.6, 1], [118, 84, 3.4, 2], [-114, 136, 3.4, 1], [-60, 66, 3.2, 0], [-92, 104, 3, 2]].filter(([x, y]) => !(o.clear && o.clear(sx(x), y)) && Math.hypot(sx(x) - CX, y - MY) > MR + 10);
   const stars = s('g', {'data-mucha': 'stars'}, s('g', {class: 'mu-tw mu-tw1'}, moon(sx(MR + 52), MY + 4, 12)), spec.map(([x, y, r, k]) => star(sx(x), y, r, k)));
   // 양옆 덩굴 — S 로 두세 번 휘는 굵은 덩굴(아래 굵고 위 가늚 · 잎 · 봉오리 세 배) · 아래 끝은 모자이크 띠 위에서 말림 · 틀 밖으로 나가지 않게 자름
   const y0 = SH + 4, y1 = vEnd, hh = y1 - y0;
@@ -185,10 +218,9 @@ export function poster(o) {
     plateTop == null ? null : [s('path', {d: archD(12, W - 12, plateTop - 10, 22, bot), class: 'mu-plate'}), s('path', {d: archD(17, W - 17, plateTop - 5, 18, bot), class: 'mu-plate2'})],
     s('rect', {x: 6, y: bot + 1, width: W - 12, height: 18, rx: 9, class: 'mu-mband'}), tiles);
   const plateVine = plateTop == null ? null : archVine(12, W - 12, plateTop - 10, 22, 6);
-  // 원 밖으로 흐르는 머리 다발(메달 뒤 — 원 가장자리에서 나와 띠 · 별까지 · 굵은 다발은 공용 strands)
+  // 뒤통수에서 이어진 가는 머리 가닥(메달 뒤에서 나와 아치 띠 아래를 따라 흐르다 끝이 말림 · 왼쪽 · 오른쪽 짝 · 굵기 · 말림 크기 다르게)
   const locks = o.locks && Array.isArray(o.locks.list) ? s('g', {class: 'mk-hair mk-t' + (o.locks.tone | 0), 'data-mucha': 'whiplash', 'aria-hidden': 'true'},
-    o.locks.list.map((pts, i) => s('g', {class: 'mk-sway' + (i % 2 ? '2' : '')}, kStrands(pts, {n: 3, spread: 7, w0: 5, w1: 0.4, curl: 0.9, seed: 40 + i * 7 + v, cls: 'mk-hb'}),
-      kStrands(pts, {n: 2, spread: 7, w0: 1.6, w1: 0.15, curl: 0.9, seed: 52 + i * 7 + v, cls: 'mk-hd'}), kStrands(pts, {n: 2, spread: 5, w0: 1.2, w1: 0.12, curl: 0.7, seed: 61 + i * 7 + v, cls: 'mk-hl'})))) : null;
+    o.locks.list.map((L, i) => s('g', {class: 'mk-sway' + (i % 2 ? '2' : '')}, kTaper(L.pts, {w0: L.w, w1: 0.35, cls: L.cls || 'mk-hb'})))) : null;
   return {back: [ground, outline, bandDeco, caps, stars, vine, mosaic, plateVine], front: [lettering, locks, s('g', {class: 'mu-medal'}, medallion({cx: CX, cy: MY, r: MR, v, dir: o.dir === -1 ? -1 : 1, ring: o.ring || 'mosaic'}))],
     defs: [s('path', {id: id + 'tp', d: ell(166, 111.5)}), s('clipPath', {id: id + 'gc'}, s('rect', {x: 3, y: 3, width: W - 6, height: HT - 6, rx: 20}))]};
 }
@@ -229,13 +261,12 @@ const T = (x, y, t, cls, extra = {}) => s('text', {x: r1(x), y: r1(y), class: cl
 
 /* ── 한 달 줄 창 — 위가 둥근 창 · 줄 둘 · 끝값 이름표(기간은 창 머리에 한 번 · 두 값의 기간이 다르면 값마다) ── */
 function chartG(m, P) {
-  const {PL, PR, PT, PB, LX, LR, A, ry, WX0, WX1, WB, id} = P, out = [], labs = [];
-  const win = archD(WX0, WX1, A, ry, WB);
-  // 창 — 안은 아주 옅은 빛살(값을 가리지 않음) · 금 두 줄 테 · 머리에 금 덩굴
-  out.push(s('defs', {}, s('clipPath', {id: id + 'wc'}, s('path', {d: win}))),
-    s('g', {'data-mucha': 'panel'}, s('path', {d: win, class: 'ca-win'}), s('g', {'clip-path': `url(#${id}wc)`}, kRays(CX, WB, 26, Math.min(168, HT - 6 - WB), {n: 40})),
-      s('path', {d: win, class: 'ca-winl'}), s('path', {d: archD(WX0 + 5, WX1 - 5, A + 5, ry - 4, WB), class: 'ca-winl2'})),
-    archVine(WX0, WX1, A, ry, 5));
+  const {PL, PR, PT, PB, LX, LR, A, ry, WX0, WX1, WB, NC} = P, out = [], labs = [];
+  // 창 — 메달이 걸리는 머리는 메달 둘레를 따라 오목하게 · 빛살 없음(값만 또렷이) · 금 두 줄 테 · 머리에 금 덩굴 · 바닥 두 귀퉁이에서 금선이 소용돌이로 풀림
+  const win = winD(WX0, WX1, A, ry, WB, NC), win2 = winD(WX0 + 5, WX1 - 5, A + 5, ry - 4, WB, NC ? {cx: NC.cx, cy: NC.cy, r: NC.r + 5} : null);
+  out.push(s('g', {'data-mucha': 'panel'}, s('path', {d: win.d, class: 'ca-win'}), s('path', {d: win.d, class: 'ca-winl'}), s('path', {d: win2.d, class: 'ca-winl2'}),
+      volute(WX0, WB, Math.PI / 2, 6.5, 1, 1.3, 2.4), volute(WX1, WB, Math.PI / 2, 6.5, -1, 1.3, 2.4)),
+    archVine(WX0, WX1, A, ry, 5, 'mu-gv', 0.5 - win.t1 + 0.012));
   const all = [...(m.cl || []), ...(m.il ? m.il.line : [])].filter(fin), lo = Math.min(97, ...all), hi = Math.max(103, ...all);
   const N = Math.max(m.cl ? m.cl.length : 0, m.il ? m.il.line.length : 0), step = N > 1 ? (PR - PL) / (N - 1) : 0;
   const X = i => PL + i * step, Y = v => PT + (PB - PT) * (1 - (v - lo) / (hi - lo));
@@ -273,7 +304,7 @@ function chartG(m, P) {
   // 기간 — 두 값이 같은 기간이면 창 머리에 한 번(창 안 값 모두에 걸림 · 아치를 따라 휘어 씀) · 다르면 이름표마다
   const ca = m.cl ? [dk(m.from), dk(m.to)] : null, ia = m.il ? [dk(m.il.from), dk(m.il.to)] : null;
   const head = (ca || ia) && (!ca || !ia || (ca[0] === ia[0] && ca[1] === ia[1])) ? (ca || ia) : null, headT = head && (head[0] || head[1]) ? spanLines('한 달', head[0], head[1], 18, 999)[0] : null;
-  if (headT) out.push(s('g', {'data-per': 'line'}, T(CX, A + 48, headT, 'ca-t ca-m ca-f18 ca-onw', {'text-anchor': 'middle'})));
+  if (headT) out.push(s('g', {'data-per': 'line'}, T(CX, P.headY, headT, 'ca-t ca-m ca-f18 ca-onw', {'text-anchor': 'middle'})));
   // 끝값 이름표 — 오른쪽 · 줄 끝 높이에 맞추되 겹치지 않게 · 흰 상자 없이 금빛 리본 막대와 글씨
   const tmax = LR - LX - 14;
   if (m.cl) labs.push({cls: 'su-lg-c', k: 'c', val: pct(m.last), name: m.name, proper: true, ex: X(m.cl.length - 1), ey: Y(lastOf(m.cl)), a: dk(m.from), b: dk(m.to)});
@@ -306,30 +337,29 @@ function chartG(m, P) {
 }
 
 /* ── 「왜 여기 있나」 길 — 업종 두루마리(누르면 업종) → 목록마다 위가 둥근 아치 창(꼭대기 상징 · 기간은 창 머리에 한 번 → 업종 값 → 회사 값 → 든 목록 · 숫자 크게 설명 작게) ── */
-/** 값 줄 — 설명(18) + 숫자(크게 · 칸에 맞춰 24 → 20) 한 줄 · 안 들면 두 줄 */
-const NPX = [24, 23, 22, 21, 20];
-function valRows(lab, val, tmax) {
-  const one = lab ? NPX.find(px => tw(lab + ' ', 18) + tw(val, px) <= tmax) : NPX.find(px => tw(val, px) <= tmax);
-  if (one) return {rows: [{lab, val, px: one}], h: 28};
-  const px = NPX.find(q => tw(val, q) <= tmax) || 20;
-  return {rows: [...(lab ? wrapW(lab, 18, tmax).map(l => ({lab: l, val: null, px: 18})) : []), ...wrapW(val, px, tmax).map(l => ({lab: null, val: l, px}))], h: 0};
+/** 큰 값 하나 — 숫자는 크게(칸에 맞춰 36 → 22) · 뒤 한글 단위(억 원)는 작게 같은 줄 · 숫자가 아닌 값(아직 싹 · 확인 필요)은 24 안 */
+const BIG = [36, 34, 32, 30, 29, 28, 27, 26, 25, 24, 23, 22];
+function bigFit(v, tmax) {
+  const m = /^([+−-]?[0-9][0-9,.]*)(.*)$/.exec(String(v)), unit = m && /[가-힣]/.test(m[2]) ? m[2].trim() : '', numT = unit ? m[1] : String(v);
+  const w = px => tw(numT, px) + (unit ? 3 + tw(unit, 19) : 0);
+  return {numT, unit, w, px: (m ? BIG : [24, 22, 20]).find(px => w(px) <= tmax) || 20};
 }
-const rowsH = R => R.h || R.rows.reduce((a, r) => a + (r.val ? 28 : 20), 0);
+/** 작은 줄 — 값과 기간을 한 줄에(들면) · 안 들면 값 줄 다음에 기간 줄(낱말 가운데서 끊지 않음) */
+const joinPer = (a, per, tmax) => { const one = per.length === 1 ? a + ' · ' + per[0] : null; return one && tw(one, 18) <= tmax ? [one] : [...wrapB(a, 18, tmax), ...per]; };
 function roadPlan(m) {
   const n = m.roads.length;
   if (!n) { const lines = m.ind ? wrapW(m.ind + ' 업종', 20, 220) : []; return {n, plateH: m.ind ? Math.max(84, lines.length * 24 + 58) : 30, lines, H: 0}; }
-  const gap = 12, X0 = 30, X1 = W - 30, pw = n === 1 ? 300 : (X1 - X0 - (n - 1) * gap) / n, tmax = pw - 12;
+  const gap = 10, X0 = 18, X1 = W - 18, pw = n === 1 ? 300 : (X1 - X0 - (n - 1) * gap) / n, tmax = pw - 20;
   const cols = m.roads.map(r => {
     const pers = [r.ivp, r.cvp].filter(Boolean), same = pers.length > 0 && pers.every(p => p[0] === pers[0][0] && p[1] === pers[0][1]), sameD = pers.length > 0 && !!pers[0][1] && pers.every(p => p[1] === pers[0][1]);
     const head = same ? spanLines(pers[0][0], null, pers[0][1], 18, tmax) : sameD ? [pers[0][1] + '까지'] : [];
     const perOf = p => (!p || same ? [] : sameD ? [p[0]] : spanLines(p[0], null, p[1], 18, tmax));
-    const iv = valRows(r.ivL, r.ivN, tmax), cvBoth = valRows(r.name, r.cv, tmax);
-    const cv = cvBoth.h || r.k !== 'money' ? cvBoth : valRows(null, r.cv, tmax);
-    return {head, iv, ivPer: perOf(r.ivp), cv, cvPer: perOf(r.cvp), kind: wrapW(r.kind + ' 7곳에 듦', 19, tmax)};
+    return {head, iv: joinPer(r.ivL + ' ' + r.ivN, perOf(r.ivp), tmax), nm: joinPer(r.name, perOf(r.cvp), tmax), big: bigFit(r.cv, tmax), kind: wrapB(r.kind + ' 7곳에 듦', 18, tmax)};
   });
-  const headN = Math.max(...cols.map(c => c.head.length)), nA = Math.max(...cols.map(c => rowsH(c.iv) + c.ivPer.length * 20)), nB = Math.max(...cols.map(c => rowsH(c.cv) + c.cvPer.length * 20)), nC = Math.max(...cols.map(c => c.kind.length));
+  const px = Math.min(...cols.map(c => c.big.px)), mx = k => Math.max(...cols.map(c => c[k].length));
+  const headN = mx('head'), ivN = mx('iv'), nmN = mx('nm'), kN = mx('kind'), LH = 20, G0 = 20;
   const rib = wrapW(m.roads[0].ind + ' 업종', 20, 230), rh = 34 + (rib.length - 1) * 23;
-  return {n, gap, X0, pw, cols, headN, nA, nB, nC, rib, rh, plateH: 0, H: rh + 2 + 22 + headN * 20 + 8 + nA + 10 + nB + 10 + nC * 21 + 6};
+  return {n, gap, X0, pw, cols, px, headN, ivN, nmN, kN, LH, G0, rib, rh, plateH: 0, H: rh + G0 + 20 + headN * LH + 8 + ivN * LH + 12 + nmN * LH + 6 + Math.round(px * 1.12) + 6 + kN * LH + 14};
 }
 /** 판 꼭대기 상징 — 불장 = 불꽃 · 돈이 몰리는 = 금빛 물결 · 꽃이 될 = 새싹(굵기 변하는 윤곽) */
 function sigil(k, x, y) {
@@ -348,27 +378,23 @@ const vineRule = (cx, y) => [s('path', {d: brush(`M${r1(cx)} ${r1(y)}C${r1(cx - 
   s('path', {d: brush(`M${r1(cx)} ${r1(y)}C${r1(cx + 12)} ${r1(y + 4)} ${r1(cx + 22)} ${r1(y - 4)} ${r1(cx + 34)} ${r1(y + 1)}`, fall(1.7, 0.35), 10), class: 'ca-conn'}),
   leaf(cx - 17, y, -150, 6, 'mu-gleaf'), leaf(cx + 17, y, -30, 6, 'mu-gleaf'), s('circle', {cx: r1(cx), cy: r1(y), r: 1.8, class: 'ca-conn'})];
 function roadG(m, R, top, bot) {
-  const {n, gap, X0, pw, cols, headN, nA, nB, rib, rh} = R, x0 = n === 1 ? (W - pw) / 2 : X0, wins = [], deco = [], rules = [], out = [];
-  const Tp = top + rh + 2, ry = n === 1 ? 26 : 24, hTop = Tp + 22, aTop = hTop + headN * 20 + 8, bTop = aTop + nA + 10, cTop = bTop + nB + 10;
-  const valG = (cx, y0, V, per, on) => { let y = y0; const g = [];
-    for (const r of V.rows) {
-      if (r.lab && r.val) { const w = tw(r.lab + ' ', 18) + tw(r.val, r.px), x = cx - w / 2; g.push(s('text', {x: r1(x), y: r1(y + 22), class: 'ca-t' + on}, s('tspan', {class: 'ca-lab ca-f18', text: r.lab + ' '}), s('tspan', {class: 'ca-num ca-f' + r.px, text: r.val}))); y += 28; }
-      else if (r.val) { g.push(T(cx, y + 22, r.val, 'ca-t ca-num ca-f' + r.px + on, {'text-anchor': 'middle'})); y += 28; }
-      else { g.push(T(cx, y + 16, r.lab, 'ca-t ca-lab ca-f18' + on, {'text-anchor': 'middle'})); y += 20; }
-    }
-    per.forEach((l, i) => g.push(T(cx, y + 15 + i * 20, l, 'ca-t ca-m ca-f18' + on, {'text-anchor': 'middle'})));
-    return g; };
+  const {n, gap, X0, pw, cols, px, headN, ivN, nmN, LH, G0, rib, rh} = R, x0 = n === 1 ? (W - pw) / 2 : X0, wins = [], deco = [], rules = [], out = [];
+  const Tp = top + rh + G0, ry = n === 1 ? 26 : 24, hTop = Tp + 20, aTop = hTop + headN * LH + 8, nTop = aTop + ivN * LH + 12, bTop = nTop + nmN * LH + 6, cTop = bTop + Math.round(px * 1.12) + 6;
+  const lines = (cx, y0, L, cls, slots) => { const o = (slots - L.length) * LH / 2; return L.map((l, i) => T(cx, y0 + o + 15 + i * LH, l, cls, {'text-anchor': 'middle'})); };
   cols.forEach((c, ci) => {
     const x = x0 + ci * (pw + gap), cx = x + pw / 2, k = m.roads[ci].k, on = ' ca-on-' + k;
-    wins.push(s('path', {d: archD(x, x + pw, Tp, ry, bot), class: 'ca-pan ca-pan-' + k}), s('path', {d: archD(x + 4.5, x + pw - 4.5, Tp + 4.5, ry - 3.5, bot), class: 'ca-panl2'}));
-    deco.push(archVine(x, x + pw, Tp, ry, 3), sigil(k, cx, Tp + 11));
-    const h0 = hTop + (headN - c.head.length) * 10;
-    out.push(s('g', {'data-road': 'per'}, c.head.map((l, i) => T(cx, h0 + 15 + i * 20, l, 'ca-t ca-m ca-f18' + on, {'text-anchor': 'middle'}))));
-    if (c.head.length) deco.push(s('g', {class: 'ca-base'}, kBeads(cx - 26, r1(hTop + headN * 20 + 3), cx + 26, r1(hTop + headN * 20 + 3), {gap: 6.5, r: 1.4})));
-    out.push(s('g', {'data-road': 'indv'}, valG(cx, aTop, c.iv, c.ivPer, on)));
-    out.push(s('g', {'data-road': 'co'}, valG(cx, bTop, c.cv, c.cvPer, on)));
-    out.push(s('g', {'data-road': 'list'}, c.kind.map((l, i) => T(cx, cTop + 16 + i * 21, l, 'ca-t ca-b ca-f19 ca-k-' + k + on, {'text-anchor': 'middle'}))));
-    rules.push(vineRule(cx, aTop + nA + 4), vineRule(cx, bTop + nB + 4));
+    // 칸 — 위가 둥근 아치 · 아랫단은 둥글게 닫음 · 금 두 줄 테 · 지붕에 큰 상징(불꽃 · 금빛 물결 · 새싹) · 지붕 금 덩굴은 상징 옆에서 시작
+    wins.push(s('path', {d: panD(x, x + pw, Tp, ry, bot - 5, 18), class: 'ca-pan ca-pan-' + k}), s('path', {d: panD(x + 4.5, x + pw - 4.5, Tp + 4.5, ry - 3.5, bot - 9.5, 14), class: 'ca-panl2'}));
+    deco.push(archVine(x, x + pw, Tp, ry, 3, 'mu-gv', 0.14), s('g', {class: 'ca-roof', transform: `translate(${r1(cx)} ${r1(Tp - 2)}) scale(1.5) translate(${r1(-cx)} ${r1(-(Tp - 2))})`}, sigil(k, cx, Tp - 2)));
+    // 기간(작게 · 칸 머리에 한 번) → 업종 값(작은 한 줄) → 회사 이름(작은 한 줄) → 회사 값 하나만 크게 → 든 목록(작은 한 줄)
+    out.push(s('g', {'data-road': 'per'}, lines(cx, hTop, c.head, 'ca-t ca-m ca-f18' + on, headN)));
+    if (c.head.length) deco.push(s('g', {class: 'ca-base'}, kBeads(cx - 26, r1(hTop + headN * LH + 4), cx + 26, r1(hTop + headN * LH + 4), {gap: 6.5, r: 1.4})));
+    out.push(s('g', {'data-road': 'indv'}, lines(cx, aTop, c.iv, 'ca-t ca-lab ca-f18' + on, ivN)));
+    const b = c.big, bw = b.w(px), by = bTop + Math.round(px * 0.9);
+    out.push(s('g', {'data-road': 'co'}, lines(cx, nTop, c.nm, 'ca-t ca-b ca-f18' + on, nmN),
+      s('text', {x: r1(b.unit ? cx - bw / 2 : cx), y: r1(by), 'text-anchor': b.unit ? 'start' : 'middle', class: 'ca-t ca-big ca-k-' + k + on}, s('tspan', {class: 'ca-f' + px, text: b.numT}), b.unit ? s('tspan', {dx: 3, class: 'ca-unit ca-f19', text: b.unit}) : null)));
+    out.push(s('g', {'data-road': 'list'}, c.kind.map((l, i) => T(cx, cTop + 15 + i * LH, l, 'ca-t ca-b ca-f18 ca-k-' + k + on, {'text-anchor': 'middle'}))));
+    rules.push(vineRule(cx, nTop - 6));
   });
   // 업종 두루마리(양끝 말림) — 두 창 위 · 차트 창 밑선 아래 · 누르면 그 업종(투명한 누름 자리 높이 64)
   const rw = Math.min(314, Math.max(170, Math.max(...rib.map(l => tw(l, 20))) + 84)), rx = (W - rw) / 2, ry0 = top, hitH = Math.max(64, rh + 26);
@@ -393,12 +419,15 @@ export function picture(d, opt = {}) {
   const m = model(d), id = 'ca' + (++SEQ) + (m.code || 'x');
   const R = m.ok ? roadPlan(m) : {n: 0, plateH: 30, lines: [], H: 0};
   const BOT = 592, MY = 108, MR = 65, A = 148, plateTop = BOT - R.plateH, roadTop = R.n ? BOT - R.H : plateTop;
-  const WB = R.n ? roadTop - 6 : plateTop - 22;
-  const P = {PL: 50, PR: 166, PT: A + 62, PB: R.n ? roadTop - 24 : WB - 22, LX: 180, LR: 350, bot: R.n ? roadTop - 12 : WB - 10, A, ry: 52, WX0: 34, WX1: W - 34, WB, id};
-  // 여인 1.3배(어깨 · 옷 주름까지) · 머리 다발 둘이 원 밖으로 흘러 띠의 별 · 꽃까지(뒤통수 쪽 = 왼쪽)
-  const locks = {tone: 3, list: [[[CX - 26, MY - 30], [CX - 52, MY - 52], [CX - 80, MY - 40], [CX - 100, MY - 50], [CX - 108, MY - 70], [CX - 100, MY - 84]],
-    [[CX - 34, MY + 18], [CX - 62, MY + 40], [CX - 92, MY + 24], [CX - 114, MY + 30], [CX - 122, MY + 48]]]};
-  const F = poster({id, title: m.ok ? m.name : NEED, proper: m.ok, v: 3, side: 1, ring: 'mosaic', my: MY, mr: MR, plateTop: R.n ? null : plateTop, bot: BOT, locks});
+  const WB = R.n ? roadTop - 6 : plateTop - 22, NC = {cx: CX, cy: MY, r: MR + 7};
+  const P = {PL: 50, PR: 166, PT: A + 78, PB: R.n ? roadTop - 24 : WB - 22, LX: 180, LR: 350, bot: R.n ? roadTop - 12 : WB - 10, A, ry: 52, WX0: 34, WX1: W - 34, WB, NC, headY: MY + MR + 7 + 30};
+  // 머리 가닥 — 메달 뒤 정수리에서 나와 아치 띠 아래(띠 안쪽 테와 나란한 타원)를 따라 왼쪽 · 오른쪽으로 흐르다 끝이 안으로 말림(굵기 · 길이 · 말림 크기 다르게 · 좌우 비대칭)
+  const LRX = 160, LRY = 95, along = (t0, t1, off) => Array.from({length: 17}, (_, i) => { const t = (t0 + (t1 - t0) * i / 16) * Math.PI / 180; return [CX + (LRX + off) * Math.cos(t), ACY - (LRY + off) * Math.sin(t)]; });
+  const locks = {tone: 3, list: [
+    {pts: curlEnd(along(100, 160, 0), 8.5, -1, 1.15), w: 5.2}, {pts: curlEnd(along(104, 166, -6), 5.5, -1, 1.2), w: 3, cls: 'mk-hd'}, {pts: curlEnd(along(98, 152, 6), 4.2, -1, 1.1), w: 2.4, cls: 'mk-hd'},
+    {pts: curlEnd(along(80, 18, 0), 7, 1, 1.15), w: 4.6}, {pts: curlEnd(along(76, 26, 6), 4.6, 1, 1.1), w: 2.6, cls: 'mk-hd'}, {pts: curlEnd(along(82, 12, -6), 3.6, 1, 1.1), w: 2, cls: 'mk-hd'}]};
+  const clear = (x, y) => (y < ACY && Math.abs(Math.hypot((x - CX) / LRX, (y - ACY) / LRY) - 1) < 0.16) || (x > 318 && y > 112);
+  const F = poster({id, title: m.ok ? m.name : NEED, proper: m.ok, v: 3, side: 1, ring: 'mosaic', my: MY, mr: MR, plateTop: R.n ? null : plateTop, bot: BOT, locks, clear});
   const label = m.ok ? m.name + ' 한 달 줄 ' + (m.cl ? pct(m.last) : NEED) + ' · ' + (m.il ? m.il.name + ' ' + pct(m.ilast) : '시장 ' + NEED) + (m.from && m.to ? ' · ' + dk(m.from) + ' ~ ' + dk(m.to) : '')
     + (m.roads.length ? ' · 21곳에 든 길 ' + m.roads.map(r => r.ind + ' ' + r.iv + (r.ivp ? ' ' + r.ivp.join(' ') + '까지' : '') + ' → ' + r.name + ' ' + r.cv + (r.cvp ? ' ' + r.cvp.join(' ') + '까지' : '') + ' → ' + r.kind).join(' · ') : m.ind ? ' · ' + m.ind + ' 업종' : '') : '회사 자료 ' + NEED;
   const svg = s('svg', {class: 'su-svg su-art4 su-co-art', viewBox: `0 0 ${W} ${HT}`, role: 'group', 'aria-label': label, preserveAspectRatio: 'xMidYMid meet', 'data-g': 'su-co-art', 'data-mode': R.n ? 'road' + R.n : m.ok && m.ind ? 'ind' : m.ok ? 'line' : 'need'},

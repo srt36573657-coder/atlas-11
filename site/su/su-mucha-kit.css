@@ -169,3 +169,7 @@ to{transform:rotate(1.4deg)}
 
 /* 심사 5회 — 메달 옷의 물방울무늬는 무하 그림에 없는 요즘 옷(심사 셋 가운데 하나 · 03 05 09 10 11 12) → 숨김 */
 .mk-clp{display:none}
+.mk-cl-teal{fill:#A9CBC2}
+.mk-cld-teal{fill:#5E8C84}
+.mk-cl-plum{fill:#C7B3D6}
+.mk-cld-plum{fill:#7D6491}

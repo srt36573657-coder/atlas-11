@@ -34,14 +34,17 @@
 .su-women-e .we-pan-hot { fill: var(--apri2); }
 .su-women-e .we-pan-money { fill: var(--halo); }
 .su-women-e .we-pan-bloom { fill: var(--glbg); }
-.su-women-e .we-pfr { fill: none; stroke: var(--gold); stroke-width: 1.1; stroke-linejoin: round; }
+.su-women-e .we-pfr { fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-linejoin: round; }
+.su-women-e .we-pfr2 { fill: none; stroke: var(--gold); stroke-width: .6; stroke-opacity: .8; stroke-linejoin: round; }
+.su-women-e .we-mdot { fill: #E3C77A; }
+.su-women-e .we-gemt { fill: #A77B22; }
 .su-women-e .we-name { font-weight: 800; fill: var(--ink); }
 .su-women-e .we-n20 { font-size: 20px; }
 .su-women-e .we-n19 { font-size: 19px; }
 .su-women-e .we-n18 { font-size: 18px; }
 .su-women-e .we-val { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .su-women-e .we-v-hot { fill: var(--no); }
-.su-women-e .we-v-bloom { fill: var(--base); }
+.su-women-e .we-v-bloom { fill: #2F5A17; }
 .su-women-e .we-v-money { fill: var(--ok); }
 .su-women-e .we-need { font-size: 22px; font-weight: 800; fill: var(--ink); }
 .su-women-e .we-hit { fill: var(--card); fill-opacity: 0; pointer-events: all; }
@@ -74,6 +77,8 @@
   :root:not([data-theme="light"]) .su-women-e .we-aw-hot { fill: #F0A07A; }
   :root:not([data-theme="light"]) .su-women-e .we-aw-bloom { fill: #B5CC7A; }
   :root:not([data-theme="light"]) .su-women-e .we-aw-money { fill: #E8C26A; }
+  :root:not([data-theme="light"]) .su-women-e .we-v-bloom { fill: #B9D98A; }
+  :root:not([data-theme="light"]) .su-women-e .we-gemt { fill: #E8C26A; }
 }
 :root[data-theme="dark"] .su-women-e .we-band { fill: #3A2F1C; }
 :root[data-theme="dark"] .su-women-e .we-n0 { fill: #5E3D2B; }
@@ -82,6 +87,8 @@
 :root[data-theme="dark"] .su-women-e .we-aw-hot { fill: #F0A07A; }
 :root[data-theme="dark"] .su-women-e .we-aw-bloom { fill: #B5CC7A; }
 :root[data-theme="dark"] .su-women-e .we-aw-money { fill: #E8C26A; }
+:root[data-theme="dark"] .su-women-e .we-v-bloom { fill: #B9D98A; }
+:root[data-theme="dark"] .su-women-e .we-gemt { fill: #E8C26A; }
 
 /* 움직임 — 꽃 · 별만(머리카락은 부품이 흔듦) · transform 만 · 글씨는 움직이지 않음 */
 .su-women-e .we-nod, .su-women-e .we-twinkle { transform-box: fill-box; transform-origin: 50% 100%; }

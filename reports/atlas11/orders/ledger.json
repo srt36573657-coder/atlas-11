@@ -1323,6 +1323,16 @@
    "state": "미완성",
    "proof": "scripts/atlas11/next/shard/plan.mjs · .github/workflows/atlas11-next-full.yml · docs/design/su-musk-2026-11-05/speed.md · reports/atlas11/speed/ship-su-musk-1023.jsonl",
    "short": "만드는 속도를 지금보다 5배 빠르게"
+  },
+  {
+   "id": "1636",
+   "at": "2026-11-05T16:36+09:00",
+   "words": "합격 못 한 열한 쪽을 이어서 더 다시 만들까요?  어",
+   "then": "16:36 받음 · 이해 보고(얼굴 · 손 · 머리 솜씨부터 · 첫 화면은 「친구에게」 여인 그리는 법을 빌림 · 19:30 보고)",
+   "did": "아직",
+   "state": "미완성",
+   "proof": "docs/design/su-musk-2026-11-05/judge-r6.md",
+   "short": "아름다움 합격 못 한 열한 쪽을 이어서 다시 만듦"
   }
  ],
  "open": 7,

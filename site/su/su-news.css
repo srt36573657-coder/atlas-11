@@ -94,3 +94,11 @@
 /* 심사 4회 — 「다음」 단추 글이 「…」로 잘림(여덟 쪽) → 두 줄까지 · 글씨 19 */
 .su-news ~ .su-dock .su-next b { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; text-overflow: clip; font-size: 19px; line-height: 1.15; }
 :root.su-lg .su-news ~ .su-dock .su-next b { font-size: 22px; }
+/* 심사 6회 — 아래 걸음 표시를 납작한 네모 여덟 대신 금실에 꿴 구슬 여덟로(높이는 그대로 13 — 그림 아래 끝을 더 가리지 않게) · 머리 줄 큰 숫자의 금 그림자를 뺌(요즘 앱처럼 보임) */
+.su-news ~ .su-dock .su-prog { padding-top: 2px; margin-bottom: 3px; justify-items: center; background: linear-gradient(var(--gold2), var(--gold2)) center 7px / calc(100% - 36px) 1.5px no-repeat; }
+.su-news ~ .su-dock .su-prog li { width: 8px; height: 8px; border-radius: 50%; background: var(--card); box-shadow: inset 0 0 0 1.5px var(--gold); }
+.su-news ~ .su-dock .su-prog li.su-pd { background: var(--gold); }
+.su-news ~ .su-dock .su-prog li.su-pc { width: 10px; height: 10px; margin-top: -1px; background: var(--acc); box-shadow: 0 0 0 2px var(--gold2); }
+.su-news > .su-head1 .su-bv b { text-shadow: none; }
+/* 심사 6회 — 머리 줄 큰 숫자를 고딕 대신 세리프 숫자로(포스터 글씨처럼 · 한글은 기기 글꼴 그대로) */
+.su-news > .su-head1 .su-bv b { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", Georgia, "Times New Roman", "Liberation Serif", serif; font-weight: 700; letter-spacing: .01em; }

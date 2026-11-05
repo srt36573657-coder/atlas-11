@@ -20,9 +20,9 @@
 .ss-quiz { --ss-sky1: #213A4E; --ss-sky2: #426878; } /* 왜 사? — 남색을 조금 회청 · 청록 쪽으로 낮춤(r5-brief S 3) */
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ss-quiz { --ss-sky1: #0C1A22; --ss-sky2: #1B3340; } }
 :root[data-theme="dark"] .ss-quiz { --ss-sky1: #0C1A22; --ss-sky2: #1B3340; }
-.ss-journal { --ss-sky3: #5E5274; } /* 매매일지 — 아래 칸이 밤하늘에 녹도록 밝은 판도 보랏빛 밤 */
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ss-journal { --ss-sky3: #3A2E44; } }
-:root[data-theme="dark"] .ss-journal { --ss-sky3: #3A2E44; }
+.ss-journal { --ss-sky3: #3F4F7E; } /* 매매일지 — 아래는 쪽빛 밤(일곱째 판 · 남색 칸이 탁한 보라 회색 위에 뜨지 않게) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ss-journal { --ss-sky3: #1F2A48; } }
+:root[data-theme="dark"] .ss-journal { --ss-sky3: #1F2A48; }
 .su-stop-art { display: block; width: 100%; height: auto; overflow: hidden; }
 
 /* 하늘 · 금빛 · 달빛 · 둥근 틀 안 */
@@ -95,7 +95,7 @@
 
 /* 물음 패 — 금테 · 짙은 남색 속 · 크림 글씨의 작은 아치 패(하늘에 녹음 · 어두운 판에서도 같은 색) · 바깥 끝 번호 메달은 세로 덩굴에 매달림 */
 .ss-q { font-size: 18px; font-weight: 700; fill: #FFF1D6; } /* 고른 남색 판 위 — 테 없음 */
-.ss-pq { fill: #1E3248; }
+.ss-pq { fill: #213852; }
 .ss-pq-l { fill: none; stroke: #D3A64B; stroke-width: 1.6; }
 .ss-pq-l2 { fill: none; stroke: #EDD597; stroke-width: .6; stroke-opacity: .75; }
 .ss-pq-k { fill: #EDD597; stroke: #A9822F; stroke-width: .6; }
@@ -115,6 +115,15 @@
 .ss-md-off { fill: #FBF3E1; stroke: #E3C77A; stroke-width: 1; }
 .ss-md-on { fill: #D9B25E; stroke: #FFF6DE; stroke-width: 1; }
 .ss-md-cur { fill: #EFA77E; stroke: #FFF6DE; stroke-width: 1.2; }
+/* 일곱째 판 — 양옆 세로 장식 판(둥근 머리 · 반투명 밤빛 · 가는 두 겹 금테) · 판 머리 꼭대기 작은 꽃 · 묶음 사이 가는 금줄 · 빈 칸 꾸밈 */
+.ss-bd { fill: #0F1E2E; fill-opacity: .86; }
+.ss-bd-l { fill: none; stroke: #D3A64B; stroke-width: 1.3; }
+.ss-bd-l2 { fill: none; stroke: #EDD597; stroke-width: .6; stroke-opacity: .7; }
+.ss-gline { fill: none; stroke: #D3A64B; stroke-width: 1; stroke-linecap: round; }
+.ss-fl5 .ss-pet { fill: #F7DCC4; stroke: #C9A24A; stroke-width: .5; }
+.ss-fl6 .ss-pet { fill: #F2CD7C; stroke: #A9822F; stroke-width: .5; }
+.ss-lab-cur .ss-fl6 .ss-pet { fill: #EFA77E; stroke: #FFF6DE; }
+.ss-qm .ss-num { pointer-events: none; }
 .ss-gname { font-size: 18px; font-weight: 800; letter-spacing: .1em; fill: var(--ss-gold2); paint-order: stroke; stroke: var(--ss-navy); stroke-width: 4px; stroke-linejoin: round; }
 .ss-road { fill: none; stroke: var(--ss-gold2); stroke-width: 1.8; stroke-dasharray: 1 6; stroke-linecap: round; }
 .ss-road-on { stroke: var(--ss-gold); stroke-width: 2.4; stroke-dasharray: none; }
@@ -136,8 +145,8 @@
 .ss-ribt { font-size: 22px; font-weight: 800; fill: #5A3517; }
 .ss-ribt-s { font-size: 19px; }
 .ss-ribn { font-size: 26px; fill: #9C4F24; }
-.ss-pnl { fill: #FFF5E0; fill-opacity: .14; stroke: #C9A24A; stroke-width: 1.2; } /* 밤하늘에 녹는 반투명 크림(여인보다 어둡게) */
-.ss-pl2 { fill: none; stroke: #E3C77A; stroke-width: .7; stroke-opacity: .6; }
+.ss-pnl { fill: #182645; stroke: #D3A64B; stroke-width: 1.6; } /* 일곱째 판 — 남색 바탕 · 금테 · 크림 글씨 아치 칸(어두운 판에서도 같은 색) */
+.ss-pl2 { fill: none; stroke: #EDD597; stroke-width: .7; stroke-opacity: .85; }
 .ss-mdisk { fill: var(--ss-moon1); }
 .ss-mrim { fill: none; stroke: var(--ss-gold); stroke-width: 1.6; }
 .ss-mlit { fill: var(--ss-gold); }
@@ -148,7 +157,7 @@
 .ss-pd { font-size: 19px; font-weight: 800; fill: #FFF5E0; }
 .ss-pv { font-size: 18px; font-weight: 700; fill: #FFF5E0; }
 .ss-pr { font-size: 18px; font-weight: 700; fill: #EDD597; }
-.ss-pm { font-size: 18px; font-weight: 700; fill: #E3D3AE; }
+.ss-pm { font-size: 18px; font-weight: 700; fill: #FFF5E0; }
 .ss-tone-g { fill: #B5D68E; } .ss-tone-y { fill: #F0CB6A; } .ss-tone-r { fill: #F2A285; }
 
 /* 움직임 — 별 반짝(크기) · 모래 알갱이 · 머리칼 끝 흔들림(9 ~ 13초) · 머리칼 0.6초 들어옴 · 지금 별 숨 쉼 — 모두 transform(덩굴 · 글씨는 멈춤) */
@@ -170,3 +179,12 @@
 @media (prefers-reduced-motion: reduce) {
   .su-stop-art, .su-stop-art * { animation: none !important; }
 }
+
+/* 일곱째 판 — 매매일지 후광 안 옅은 레이스(비스듬한 꽃 격자 · 가장자리 물결 고리) */
+.ss-lace-l { fill: none; stroke: #B79A62; stroke-width: .6; }
+.ss-lace-f { fill: #E8C9A6; }
+.ss-lace-c { fill: #C9A24A; }
+.ss-lace-g { opacity: .42; }
+.ss-lace-r { fill: none; stroke: #C9A24A; stroke-width: .9; stroke-opacity: .55; }
+/* 아치 틀 금선이 어깨 · 바닥 귀퉁이에서 풀리는 소용돌이 */
+.ss-fcurl .ss-gold { fill: #D3A64B; }

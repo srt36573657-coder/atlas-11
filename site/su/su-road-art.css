@@ -70,10 +70,10 @@
 .ra-lf-peach { fill: #F9DCC8; } .ra-lf-ssuk { fill: #DFE9C8; } .ra-lf-cream { fill: #FBF2DC; }
 .ra-ls-peach { fill: #EDB998; } .ra-ls-ssuk { fill: #BCCF98; } .ra-ls-cream { fill: #E8D5A6; }
 .ra-lsh { fill-opacity: .8; }
-.ra-lvein { fill: #B9934A; }
+.ra-lvein { fill: #C29538; }
 .ra-leafo { fill: none; stroke: #B58A33; stroke-width: 1.1; stroke-linejoin: round; }
 /* 띠에 새긴 글씨 · 잎 위 글씨 — 흰 테 없이 갈색(띠 · 잎 바탕이 고르니 테가 필요 없음) · 처음부터 진하게 */
-.ra-rt { fill: #5E3F1C; font-size: 30px; font-weight: 800; letter-spacing: .3em; }
+.ra-rt { fill: #5E3F1C; font-size: 24px; font-weight: 800; letter-spacing: .34em; }
 .ra-rs { fill: #4A3522; font-size: 18px; font-weight: 800; }
 .ra-ln { fill: #33251A; font-size: 19px; font-weight: 800; }
 .ra-lc { fill: #5A4430; font-size: 18px; font-weight: 700; }
@@ -112,3 +112,18 @@
 .w-mgold { fill: #D3AE5A; }
 .w-brooch { fill: #E3C77A; stroke: #A9802E; stroke-width: .8; }
 .w-brooch2 { fill: #4F8A6A; }
+/* 셋의 길 일곱째 판(r7-brief.md 「F」) — 아치 제목 띠 · 세로 판(폭 42 · 백합 기둥머리 · 꽃 원판과 모자이크 층층이) · 버들잎 칸(굵기 변하는 테 · 금 잎맥 · 덩굴손 끝)
+   띠 · 원판 · 잎은 고정 파스텔(어두운 판에서도 같은 색) · 금선과 판 바탕은 판 색을 따름 */
+.ra-tband { fill: #F4E4B6; }
+.ra-tline { fill: var(--gold); }
+.ra-tdot { fill: #B58A33; } .ra-tdot2 { fill: #8FAE55; }
+.ra-tpath { fill: none; stroke: none; }
+.ra-pvine { fill: #7E9C47; }
+.ra-rd { stroke: #B58A33; stroke-width: 1.4; }
+.ra-rd-apri { fill: #FBE0CF; } .ra-rd-rose { fill: #F8DDD8; } .ra-rd-gold { fill: #F6E6BC; }
+.ra-rd2 { fill: none; stroke: #D9BC72; stroke-width: .8; }
+.ra-cap { fill: #EBD18E; stroke: #A9802E; stroke-width: .9; stroke-linejoin: round; }
+.ra-vol { fill: #A9802E; }
+.ra-lily { fill: #FBEBD6; stroke: #A9802E; stroke-width: .8; stroke-linejoin: round; }
+.ra-lo { fill: #9E762C; }
+.ra-lvs { fill: #CCA65A; }
