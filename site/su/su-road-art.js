@@ -385,7 +385,7 @@ function archTitle(t) {
 const crescent = (x, y, r) => path(`M${P(x, y - r)}A${f1(r)} ${f1(r)} 0 1 0 ${P(x, y + r)}A${f1(r * 0.6)} ${f1(r)} 0 0 1 ${P(x, y - r)}Z`, 'ra-moon');
 /** 굵은 머리 다발 — 뿌리 굵고 끝 가는 채운 띠(가운데 살짝 부풂) · 속 결 셋(어둡게 둘 · 밝게 하나) · 바깥 가는 윤곽 · 끝은 소용돌이로 말림(coil · 접선 이어짐) */
 function lock(p, {w = 12, r = 6, turn = 1, turns = 1.2} = {}) {
-  const A = coil(smooth(p, 8), r, turn, turns, 0.8, 30), n = A.length, bul = w * 0.32;
+  const A = coil(smooth(p, 8), r, turn, turns, 0.8, 30), n = A.length, bul = -w * 0.16; // 뿌리 굵고 끝으로 빨리 가늘어짐(밧줄 아님)
   const off = o => A.map((q, i) => { const a = A[Math.max(0, i - 1)], b = A[Math.min(n - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1, t = i / (n - 1); return [q[0] - dy / l * o(t), q[1] + dx / l * o(t)]; });
   const half = t => (w + (0.5 - w) * t + bul * Math.sin(PI * t)) / 2, cut = (a, k) => a.slice(0, Math.max(3, Math.round(a.length * k)));
   return [path(taper(A, w, 0.5, bul), 'mk-hb'),

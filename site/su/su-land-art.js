@@ -241,9 +241,9 @@ function bust(cx, hy, hr, cid) {
   const halo = G('halo', s('circle', {cx, cy: hy, r: hr, class: 'mk-hf1'}), rays(cx, hy, hr * 0.3, hr * 0.84, {n: 36}), s('circle', {cx, cy: hy, r: hr * 0.84, class: 'mk-rim2', 'stroke-width': 0.9}), ring, s('circle', {cx, cy: hy, r: hr, class: 'mk-rim', 'stroke-width': 2.2}));
   /* 머리 — 끝이 가늘어지는 소용돌이 타래(왼쪽 둘 · 오른쪽 셋 · 굵기 · 말림 크기 · 방향 다르게 · 위로 솟는 고리 없음): 어깨 뒤에서 흘러내려 하나는 땅 메달 뒤로 지나 양옆 덩굴 테두리에서 작게 말리고 · 하나는 어깨 곁에서 크게 말림 */
   const flow = s('g', {'clip-path': 'url(#' + cid + ')', 'data-mucha': 'whiplash'},
-    lock([[fx + 2, fy + 12], [cx - 30, fy + 21], [cx - 50, fy + 12], [cx - 68, fy + 17], [cx - 100, fy + 33], [cx - 140, fy + 38], [cx - 156, fy + 46]], 4, -1, 6, 1, 1.15, 1),
+    lock([[fx - 4, fy + 30], [cx - 34, fy + 39], [cx - 50, fy + 31], [cx - 68, fy + 28], [cx - 100, fy + 35], [cx - 140, fy + 40], [cx - 156, fy + 48]], 4, -1, 6, 1, 1.15, 1),
     lock([[fx, fy + 26], [cx - 40, fy + 44], [cx - 53, fy + 62], [cx - 51, fy + 80]], 7.4, -1, 5, 1, 1.25, 0),
-    lock([[fx + 14, fy + 6], [cx + 36, fy + 15], [cx + 56, fy + 8], [cx + 74, fy + 15], [cx + 104, fy + 31], [cx + 140, fy + 36], [cx + 157, fy + 46]], 4.4, 1, 6.4, 1, 1.1, 0),
+    lock([[fx + 8, fy + 30], [cx + 36, fy + 39], [cx + 54, fy + 30], [cx + 72, fy + 27], [cx + 104, fy + 34], [cx + 140, fy + 38], [cx + 157, fy + 48]], 4.4, 1, 6.4, 1, 1.1, 0),
     lock([[fx + 16, fy - 4], [cx + 40, fy + 4], [cx + 56, fy + 20], [cx + 60, fy + 42]], 6.4, 1, 5, 1, 1.25, 1),
     lock([[fx + 16, fy + 30], [cx + 40, fy + 56], [cx + 50, fy + 76], [cx + 54, fy + 94]], 4.8, -1, 4.2, 1, 1.1, 0));
   const back = hair({cx: fx, cy: fy, h, dir: -1, tone: 1, len: 2.1, seed: 4, view: 'profile'});
