@@ -447,7 +447,7 @@ for (const width of [390, 360, 320]) {
 }
 { // ⑯ 수르에서 넘어간 옛 쪽도 첫 페이지 판(주문 2011 · 사장님 2026-11-08 20:26 「아니 이것도 같이 작업해」 — 서른아홉 스승 · 로마 신처럼 수르에서 눌러 넘어간 옛 쪽)
   //   ?su=<묶음> 으로 연 옛 쪽: 밤 무대 판(clock) 뗌 · 바탕 · 위 막대 · 아래 수르 막대 흰색 · 금빛 테두리 0 · 맨 위 띠 흰색 · 화면을 크게 덮는 어두운 판 0 · 읽기 어려운 글(대비 3 아래) 0 — 밝은 · 어두운 휴대폰 둘 다
-  //   수르를 거치지 않고 옛 주소로 바로 온 손님 화면은 그대로(밤 무대 판 · 틀 없음)
+  //   옛 주소로 바로 온 손님도 같은 흰 판(주문 2250 · 22:50 「이것도 구슬로 해」) — 수르 막대만 없음 · 서른아홉 스승 · 로마 신은 읽는 종이 바탕 #FDF9F5(그 쪽 검사 「밝은 종이 바탕」)
   const ROUTES = ['/next/?su=hot#/surge', '/next/?su=stop#/sage', '/next/?su=guide#/roman', '/next/?su=stop#/why', '/next/?su=guide#/', '/next/?su=back#/jinhwa', '/hello.html?su=guest', '/letter.html?su=guest', '/invite.html?su=guest', '/su/privacy.html'];
   const WHITE = 'rgb(255, 255, 255)';
   const lookOld = p => p.evaluate(() => {
@@ -485,18 +485,26 @@ for (const width of [390, 360, 320]) {
       await p.waitForTimeout(1500);
       const o = await lookOld(p); R.m.old[scheme + ' ' + u] = o;
       const cl = o.cls.split(/\s+/);
-      check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === WHITE && okBg(o.view) && okBg(o.top) && o.bar === WHITE && (o.frame === 'none' || o.frame === 'normal') && o.tc.every(c => c === '#FFFFFF') && o.darkMax <= 0.12 && o.lowN === 0,
+      check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === WHITE && (okBg(o.view) || (/pg-(sage|roman)/.test(o.cls) && o.view === 'rgb(253, 249, 245)')) && okBg(o.top) && o.bar === WHITE && (o.frame === 'none' || o.frame === 'normal') && o.tc.every(c => c === '#FFFFFF') && o.darkMax <= 0.12 && o.lowN === 0,
         '⑯ 수르에서 넘어간 옛 쪽도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 뗌 · 바탕 · 위 · 아래 막대 흰색 · 금빛 테두리 0 · 어두운 판 0 · 흐린 글 0', JSON.stringify(o).slice(0, 400));
     }
     await ctx.close();
   }
-  { // 옛 주소로 바로 온 손님 — 그대로
-    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+  // 옛 주소로 바로 온 손님도 첫 페이지 판(주문 2250 · 사장님 2026-11-08 22:50 「이것도 구슬로 해」) — 밤 판 0 · 흰 바탕 · 위 막대 · 옛 아래 단추 흰색 · 수르 틀(아래 수르 막대)은 없음 · 어두운 판 0 · 흐린 글 0
+  const DIRECT = ['/next/#/surge', '/next/#/sage', '/next/#/roman', '/next/#/why', '/next/#/', '/next/#/jinhwa', '/hello.html', '/letter.html', '/invite.html', '/privacy.html'];
+  for (const scheme of ['light', 'dark']) {
+    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', colorScheme: scheme});
     const p = await ctx.newPage();
-    await p.goto(base + '/next/#/sage', {waitUntil: 'load', timeout: 45000}).catch(() => {}); await p.waitForTimeout(2000);
-    const d = await p.evaluate(() => ({cls: document.documentElement.className, css: !!document.querySelector('link[href="/su/su-wrap-jobs.css"]'), bar: !!document.querySelector('.suw-bar')}));
-    R.m.old.direct = d;
-    check(/\bclock\b/.test(d.cls) && !/su-wrapped|su-jobs/.test(d.cls) && !d.css && !d.bar, '⑯ 옛 주소로 바로 온 손님 화면은 그대로(밤 판 · 수르 틀 없음)', JSON.stringify(d));
+    for (const u of DIRECT) {
+      await p.goto(base + u, {waitUntil: 'load', timeout: 45000}).catch(() => {});
+      await p.waitForFunction(() => document.documentElement.classList.contains('su-jobs'), null, {timeout: 12000}).catch(() => {});
+      await p.waitForTimeout(1500);
+      const o = await lookOld(p), tabs = await p.evaluate(() => { const t = document.querySelector('nav.tabs, .tabs'); return t && getComputedStyle(t).display !== 'none' ? getComputedStyle(t).backgroundColor : null; });
+      R.m.old['direct ' + scheme + ' ' + u] = {...o, tabs};
+      const cl = o.cls.split(/\s+/), paper = /pg-(sage|roman)/.test(o.cls);
+      check(cl.includes('su-jobs') && !cl.includes('su-wrapped') && !cl.includes('clock') && o.body === WHITE && (okBg(o.view) || (paper && o.view === 'rgb(253, 249, 245)')) && okBg(o.top) && o.bar === null && (tabs === null || tabs === WHITE) && (o.frame === 'none' || o.frame === 'normal') && o.tc.every(c => c === '#FFFFFF') && o.darkMax <= 0.12 && o.lowN === 0,
+        '⑯ 옛 주소로 바로 온 손님도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 0 · 바탕 · 위 막대 · 옛 아래 단추 흰색 · 수르 막대 없음 · 어두운 판 0 · 흐린 글 0', JSON.stringify({...o, tabs}).slice(0, 400));
+    }
     await ctx.close();
   }
 }

@@ -1,0 +1,162 @@
+/* 따로 선 쪽(hello · letter · invite) 첫 페이지 색 — 주문 2011 · 2250(사장님 2026-11-08 20:11 「모든 페이지를 첫페이지 기준으로」 · 22:50 「이것도 구슬로 해」)
+   세 쪽 머리가 su-wrap-jobs.css 다음에 받음 · 쪽마다 몸(body.hp · #lt · body.iv-day · body.iv-night)으로 묶어 다른 쪽에 안 걸림 · 모든 선택자는 html.su-jobs 로 시작 · 색 · 바탕 · 테 · 그림자만 */
+/* ══ 따로 선 쪽(hello · letter · invite) 색 — 일꾼이 22가지 모습 × 밝은 · 어두운 × 390 · 320 을 찍고 재며 지은 것 ══ */
+/* ── 옛 쪽 셋(소개 · 편지 · 초대장) — 수르 틀 안에서만 첫 페이지 색(주문 2011) · 글 · 크기 · 간격 · 누르는 자리는 그대로 · 색 · 바탕 · 테 · 그림자만
+   amber text #B4570A only on white (on #F5F5F7 / #FFF4E5 it is 4.48 : 1) · on soft or pale fills the text is ink #1D1D1F or #6E6E73
+   hairlines drawn as 0 0 0 1px rings where the old box had no border (no size change) · pictures, videos and the envelope / celadon box drawings stay */
+
+/* ═══ /hello.html — 소개 한 장(body.hp) ═══ */
+html.su-jobs body.hp :is(.hp-h, .hp-lead, .hp-msg, .hp-uleft) { color: #1D1D1F; }
+html.su-jobs body.hp .hp-go { background: #1D1D1F; color: #FFFFFF; }
+html.su-jobs body.hp .hp-data { border-color: #E5E5EA; background: #FFFFFF; color: #1D1D1F; }
+html.su-jobs body.hp .hp-dl li { border-top-color: #E5E5EA; }
+html.su-jobs body.hp .hp-dl b { color: #8A5A00; }
+html.su-jobs body.hp .hp-pbar { background: #FFF4E5; color: #1D1D1F; }
+html.su-jobs body.hp .hp-talk { border-color: #E5E5EA; background: #FFFFFF; color: #1D1D1F; }
+html.su-jobs body.hp .hp-which { color: #8A5A00; }
+html.su-jobs body.hp .hp-send { background: #F5F5F7; color: #1D1D1F; box-shadow: inset 0 0 0 1px #E5E5EA; }
+html.su-jobs body.hp .hp-send:active { background: #E8E8ED; }
+/* 상품권 칸 — 흰 칸 · 옅은 호박 테 · 알림 칸은 옅은 호박 바탕에 먹 글 */
+html.su-jobs body.hp .hp-promo { border-color: #F3D9B8; background: #FFFFFF; color: #1D1D1F; }
+html.su-jobs body.hp .hp-pt { color: #8A5A00; }
+html.su-jobs body.hp .hp-vow { border-color: #F3D9B8; background: #FFF4E5; color: #1D1D1F; }
+html.su-jobs body.hp .hp-vow b { color: #1D1D1F; }
+html.su-jobs body.hp .hp-steps b, html.su-jobs body.hp .hp-num b { color: #8A5A00; }
+html.su-jobs body.hp .hp-num { color: #1D1D1F; }
+html.su-jobs body.hp .hp-ucap { color: #6E6E73; }
+html.su-jobs body.hp .hp-ucap b { color: #1D1D1F; }
+html.su-jobs body.hp .hp-uplay { border-color: #1D1D1F; background: #1D1D1F; color: #FFFFFF; }
+html.su-jobs body.hp .hp-ubar { border-color: #D2D2D7; }
+html.su-jobs body.hp .hp-ubar::-webkit-progress-value { background: #D97706; }
+html.su-jobs body.hp .hp-ubar::-moz-progress-bar { background: #D97706; }
+html.su-jobs body.hp .hp-lock { border-color: #D2D2D7; color: #6E6E73; }
+html.su-jobs body.hp .hp-thx { color: #8A5A00; }
+html.su-jobs body.hp .hp-sms { background: #1D1D1F; color: #FFFFFF; }
+html.su-jobs body.hp .hp-call { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs body.hp :is(.hp-pn, .hp-foot, .hp-priv a) { color: #6E6E73; }
+html.su-jobs body.hp :is(.hp-go, .hp-send, .hp-vid, .hp-pbar, .hp-which, .hp-uplay, .hp-sms, .hp-call, .hp-priv a):focus-visible { outline-color: #B4570A; }
+
+/* ═══ /letter.html — 편지 여는 밤(main#lt · 몸통 끝에 붙는 알림 · 봉인 막 · 글상자는 #lt ~ 형제로 · :has() 없음) ═══ */
+/* 첫 장 — 밤하늘 대신 흰 판 · 별 점 없음 · 봉투 그림은 그대로(금빛 번짐만 뺌) */
+html.su-jobs #lt .hero { background: #FFFFFF; }
+html.su-jobs #lt .hero::before { background: none; }
+html.su-jobs #lt .kick { color: #8A5A00; }
+html.su-jobs #lt .hbig { color: #1D1D1F; }
+html.su-jobs #lt .hsub { color: #6E6E73; }
+html.su-jobs #lt .clock { border-color: #E5E5EA; background: #FFFFFF; }
+html.su-jobs #lt .clock small { color: #6E6E73; }
+html.su-jobs #lt .clock.guest small { color: #1D1D1F; }
+html.su-jobs #lt .clk { color: #8A5A00; }
+html.su-jobs #lt .live { color: #6E6E73; }
+html.su-jobs #lt .live b { color: #1D1D1F; }
+html.su-jobs #lt .env { filter: none; }
+/* 칸 · 입력 · 단추 */
+html.su-jobs #lt .card { background: #FFFFFF; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-jobs #lt .card.own { background: #FFF4E5; box-shadow: 0 0 0 1px #F3D9B8; }
+html.su-jobs #lt :is(.bodri, .bod)::before { box-shadow: 0 0 0 2px #E5E5EA; }
+html.su-jobs #lt :is(.in, .ta) { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs #lt :is(.in, .ta)::placeholder { color: #6E6E73; opacity: 1; }
+html.su-jobs #lt :is(.note, .cnt) { color: #6E6E73; }
+html.su-jobs #lt .msg { color: #8A5A00; }
+html.su-jobs #lt :is(.card.own, .lt .own) .msg { color: #1D1D1F; }
+html.su-jobs #lt .bod, html.su-jobs #lt .bod.ok, html.su-jobs #lt .mine .quiet { color: #1D1D1F; }
+html.su-jobs #lt .bod.no { color: #8A5A00; }
+html.su-jobs #lt .kk .kkr.ok { color: #1D1D1F; }
+html.su-jobs #lt .chip { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs #lt .chip[aria-pressed=true] { border-color: #D97706; background: #FFF4E5; color: #1D1D1F; }
+html.su-jobs #lt .gold { background: #1D1D1F; color: #FFFFFF; box-shadow: none; }
+html.su-jobs #lt .gold:disabled { background: #F5F5F7; color: #6E6E73; box-shadow: none; }
+html.su-jobs #lt .ghost { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs #lt :is(.chip, .ghost, .pill):active { background: #E8E8ED; }
+/* 열린 편지 — 흰 종이 · 가는 테 · 그 주 기록 칸도 흰 칸(호박 글이 흰 바탕에만 오게) */
+html.su-jobs #lt .lt { background: #FFFFFF; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-jobs #lt .lt.hid { outline-color: #D97706; }
+html.su-jobs #lt :is(.lth span, .lt .note) { color: #6E6E73; }
+html.su-jobs #lt .lt .msg { color: #8A5A00; }
+html.su-jobs #lt .rec { background: #FFFFFF; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-jobs #lt :is(.rt, .rd, .lt .rec .note) { color: #6E6E73; }
+html.su-jobs #lt :is(.rt .q, .qq) { color: #8A5A00; }
+html.su-jobs #lt .qq { border-color: #D2D2D7; }
+html.su-jobs #lt .rd .gd { color: #1D1D1F; }
+/* 선 그림 — 오름 호박 · 내림 회색(첫 페이지 선과 같음) · 봉인한 날 점은 먹(오름 선과 갈리게) */
+html.su-jobs #lt .sp [stroke="#FF5A65"] { stroke: #D97706; }
+html.su-jobs #lt .sp [stroke="#5B96FF"] { stroke: #86868B; }
+html.su-jobs #lt .sp [fill="#FF5A65"] { fill: #D97706; }
+html.su-jobs #lt .sp [fill="#5B96FF"] { fill: #86868B; }
+html.su-jobs #lt .sp .seal-dot { fill: #1D1D1F; }
+html.su-jobs #lt .look span { background: #FFF4E5; color: #1D1D1F; }
+html.su-jobs #lt .pill { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs #lt .pill.on { border-color: #D97706; background: #FFF4E5; color: #1D1D1F; }
+html.su-jobs #lt .pill.dim { border-color: #E5E5EA; color: #48484A; }
+html.su-jobs #lt .lt .rep .in { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs #lt :is(.lt .rep .ghost, .lt .own .ghost) { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs #lt .lt .own { background: #FFF4E5; }
+/* 초대장 표 */
+html.su-jobs #lt .tk { border-color: #D97706; color: #1D1D1F; }
+html.su-jobs #lt .tk.used { border-color: #E5E5EA; color: #6E6E73; }
+html.su-jobs #lt .foot { color: #6E6E73; }
+/* 몸통 끝에 붙는 것(main#lt 뒤 형제) — 알림 한 줄 · 봉인 순간 막 */
+html.su-jobs #lt ~ .toast { background: #F5F5F7; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-jobs #lt ~ .seal-ov { background: rgba(255, 255, 255, .96); color: #1D1D1F; }
+html.su-jobs #lt ~ .seal-ov .env { filter: none; }
+html.su-jobs #lt ~ .seal-ov .t2 { color: #8A5A00; }
+
+/* ═══ /invite.html — 초대장 쓰는 쪽(body.iv-day) ═══ */
+html.su-jobs body.iv-day .iv-top { background: #FFFFFF; color: #1D1D1F; box-shadow: inset 0 -1px 0 #E5E5EA; }
+html.su-jobs body.iv-day .iv-top a { color: #1D1D1F; }
+html.su-jobs body.iv-day .iv-top .iv-back { color: #6E6E73; }
+html.su-jobs body.iv-day .iv-hero p { color: #6E6E73; }
+html.su-jobs body.iv-day .iv-form { background: #FFFFFF; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-jobs body.iv-day :is(.iv-field label small, .iv-label small, .iv-row, .iv-pv-h p, .iv-hint, .iv-made label, .iv-photo-drop, .iv-photo-note) { color: #6E6E73; }
+html.su-jobs body.iv-day .iv-in { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs body.iv-day .iv-in::placeholder { color: #6E6E73; opacity: 1; }
+html.su-jobs body.iv-day .iv-in:focus { border-color: #B4570A; box-shadow: 0 0 0 3px #FFF4E5; }
+html.su-jobs body.iv-day .iv-in[aria-invalid="true"] { border-color: #B4570A; }
+html.su-jobs body.iv-day :is(.iv-row button, .iv-share .iv-link, .iv-err, .iv-status.bad) { color: #8A5A00; }
+html.su-jobs body.iv-day .iv-privacy { background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs body.iv-day .iv-privacy b { color: #1D1D1F; }
+html.su-jobs body.iv-day :is(.iv-form, .iv-share) .iv-btn.pri { background: #1D1D1F; color: #FFFFFF; }
+html.su-jobs body.iv-day :is(.iv-form, .iv-share) .iv-btn.pri:hover { background: #3A3A3C; }
+html.su-jobs body.iv-day .iv-share .iv-btn.sec { background: #F5F5F7; color: #1D1D1F; box-shadow: inset 0 0 0 1.5px #E5E5EA; }
+html.su-jobs body.iv-day .iv-share .iv-btn.sec:active { background: #E8E8ED; }
+html.su-jobs body.iv-day .iv-made { background: #F5F5F7; box-shadow: none; }
+html.su-jobs body.iv-day .iv-made input { border-color: #E5E5EA; background: #FFFFFF; color: #1D1D1F; }
+html.su-jobs body.iv-day .iv-status { color: #1D1D1F; }
+html.su-jobs body.iv-day .iv-owner-ok { background: #FFF4E5; color: #1D1D1F; }
+html.su-jobs body.iv-day .iv-photo-thumb { background: #F5F5F7; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-jobs body.iv-day .iv-photo-pick { background: #F5F5F7; color: #1D1D1F; box-shadow: inset 0 0 0 1.5px #E5E5EA; }
+html.su-jobs body.iv-day .iv-photo:focus-within .iv-photo-pick { outline-color: #B4570A; }
+html.su-jobs body.iv-day :focus-visible:not(.iv-frame *) { outline-color: #B4570A; }
+/* 미리 보기 창 — 받는 사람(수르 틀 밖)이 보는 밤 장면 그대로라 속은 어두운 채 둠 · 바깥 그림자만 뺌 */
+html.su-jobs body.iv-day .iv-frame { box-shadow: 0 0 0 8px #1D1D1F; }
+
+/* ═══ /invite.html?i=… · /i/… — 초대장 받는 쪽(body.iv-night) — 흰 판 · 별은 호박 점 · 청자 합 그림은 그대로 ═══ */
+html.su-jobs body.iv-night { color-scheme: light; }
+html.su-jobs body.iv-night .iv-scene { background: #FFFFFF; }
+html.su-jobs body.iv-night .iv-scene::before { background: none; }
+html.su-jobs body.iv-night :is(.iv-to, .iv-from b, .iv-msg, .iv-sign b) { color: #1D1D1F; }
+html.su-jobs body.iv-night :is(.iv-brand, .iv-to small, .iv-from, .iv-note p, .iv-go-sub, .iv-what, .iv-foot, .iv-foot a, .iv-sign) { color: #6E6E73; }
+html.su-jobs body.iv-night .iv-msg.none { color: #6E6E73; }
+html.su-jobs body.iv-night .iv-scene .iv-link { color: #6E6E73; }
+html.su-jobs body.iv-night .iv-scene .iv-link:hover { color: #1D1D1F; }
+html.su-jobs body.iv-night .iv-glow { background: none; }
+html.su-jobs body.iv-night .iv-sky polyline { stroke: #D2D2D7; }
+html.su-jobs body.iv-night .iv-star, html.su-jobs body.iv-night .iv-lite .iv-star { background: radial-gradient(closest-side, #D97706 0 24%, rgba(217, 119, 6, 0) 26%); } /* 날 선 점 하나(번짐 없음) */
+html.su-jobs body.iv-night .iv-star.empty { background: radial-gradient(closest-side, rgba(217, 119, 6, 0) 0 15%, #D97706 17% 21%, rgba(217, 119, 6, 0) 23%); }
+html.su-jobs body.iv-night .iv-wait { background: radial-gradient(closest-side, #D97706 0 22%, rgba(217, 119, 6, 0) 24%); }
+html.su-jobs body.iv-night .iv-scene .iv-btn.pri { background: #1D1D1F; color: #FFFFFF; box-shadow: none; }
+html.su-jobs body.iv-night .iv-scene .iv-btn.pri:hover { background: #3A3A3C; }
+html.su-jobs body.iv-night .iv-card { background: #F5F5F7; color: #1D1D1F; box-shadow: none; }
+html.su-jobs body.iv-night :focus-visible { outline-color: #B4570A; }
+/* 사진이 든 선물을 연 때 — 장면 뒤가 사진 하늘(그림 그대로 · 어두움)이라 그 위 글만 밝게 */
+html.su-jobs body.iv-night .iv-has-photo.iv-open :is(.iv-brand, .iv-go-sub, .iv-what) { color: #F5F5F7; }
+html.su-jobs body.iv-night .iv-has-photo.iv-open .iv-link, html.su-jobs body.iv-night .iv-has-photo.iv-open .iv-link:hover { color: #FFFFFF; }
+html.su-jobs body.iv-night .iv-has-photo.iv-open .iv-btn.pri { background: #FFFFFF; color: #1D1D1F; }
+
+/* ═══ /hello.html · /letter.html — 보내기 글상자(/next/p-share.css · 앱 쪽은 html.white 규칙이 받는 것을 이 두 쪽에도 같게) ═══ */
+html.su-jobs body.hp :is(.ps-go, .ps-toast), html.su-jobs #lt ~ .ps-dlg .ps-go, html.su-jobs #lt ~ .ps-toast { color: #FFFFFF; }
+html.su-jobs body.hp .ps-t::placeholder, html.su-jobs #lt ~ .ps-dlg .ps-t::placeholder { color: #6E6E73; opacity: 1; }
+
+/* ═══ /invite.html 두 쪽 함께 — 건너뛰기 고리 · 맨 아래 처리방침 고리 ═══ */
+html.su-jobs :is(body.iv-day, body.iv-night) .iv-skip { background: #F5F5F7; color: #1D1D1F; }
+html.su-jobs :is(body.iv-day, body.iv-night) .pv-foot a { color: #6E6E73; }

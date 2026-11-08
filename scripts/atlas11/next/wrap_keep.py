@@ -2,7 +2,7 @@
 # 수르 틀 안 옛 쪽 — 밤 무대 판(html.clock)을 뗀 뒤에도 자리 · 크기는 지금 그대로(주문 2011 · 사장님 2026-11-08 20:11 「모든 페이지를 첫페이지 기준으로」 · 20:26 「아니 이것도 같이 작업해」)
 #   su-wrap.js 가 수르 틀일 때 clock 을 떼면 그 판에 딸린 색 아닌 규칙(글 크기 17px · 굵기 · 칸 짜임 · 여백 · 테 두께 …)도 함께 빠짐
 #   → 옛 쪽 꾸밈 파일(site/next 의 stone · theme-home · clock · home-new · home-talk)에서 선택자에 .clock 이 든 규칙의 「색 아닌 칸」만 골라
-#     .clock 자리를 .su-wrapped 로 바꿔 적음(무게 그대로 · 수르 틀일 때만 · 원래 차례 그대로) — 색은 su-wrap-jobs.css 의 첫 페이지 값이 맡음
+#     .clock 자리를 .su-jobs 로 바꿔 적음(무게 그대로 · 첫 페이지 판일 때 · 원래 차례 그대로) — 색은 su-wrap-jobs.css 의 첫 페이지 값이 맡음
 #   테 두께가 든 칸(border · border-top …)은 두께 · 모양을 그대로 두고 색만 가는 회색 #E5E5EA · 바깥 테(outline) · 그림자 · 칠 · 색 이름(--*) · 투명도 · 거르개는 뺌
 # 짓기: python3 scripts/atlas11/next/wrap_keep.py → site/su/su-wrap-jobs.css 의 표시 줄 사이를 새로 씀 · --check = 다르면 끝 코드 1(시험 tests/atlas11/su.test.mjs)
 import os, re, sys
@@ -86,7 +86,7 @@ def keep_rules():
             for sel in split_top(pre, ','):
                 if not re.search(r'\.clock\b', sel): continue
                 if re.search(r':not\([^)]*\.clock', sel): continue  # 「clock 이 없을 때」 규칙은 이미 걸림
-                sels.append(re.sub(r'\.clock\b', '.su-wrapped', sel))
+                sels.append(re.sub(r'\.clock\b', '.su-jobs', sel))
             if not sels: continue
             ds = []
             for k, v in decls(body):

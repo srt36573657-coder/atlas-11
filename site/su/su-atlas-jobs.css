@@ -1,0 +1,124 @@
+/* 옛 ATLAS 앱(/atlas/)을 첫 페이지(흰 구슬 판) 모습으로 — 주문 2250(사장님 2026-11-08 22:50 「이것도 구슬로 해」)
+   부르는 곳: site/atlas/index.html 의 <link rel="stylesheet" href="/su/su-atlas-jobs.css"> 하나뿐 (su-wrap-jobs.css 다음)
+   색 · 바탕 · 테 · 칠 · 선만 바꿈 — 글 · 숫자 · 고리 · 크기 · 자리는 그대로 · 숨기는 것 없음
+   모든 줄은 R = html.su-jobs×4:not(.white) 와 header.band 뒤 형제(#view · .sheet · .tabbar)로 묶음
+   → /atlas/ 에만 닿음(/next/ 는 html.white · hello · letter · invite · privacy · /su/ 에는 header.band 가 없음)
+   값: 바탕 #FFFFFF · 글 #1D1D1F · 흐린 글 #6E6E73 · 가는 줄 #E5E5EA · 옅은 칸 #F5F5F7 · 누름 #E8E8ED
+       강조 하나 = 호박색(점 · 선 · 막대 #D97706 · 옅은 면 #FFF4E5) · 호박 글 · 내림 글은 su-wrap-jobs.css 의 색 이름 그대로(이 파일은 글 색을 정하지 않음) */
+
+/* ── 바탕 · 막대 — 어두운 기기에서도 흰 판 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) body > header.band,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~.tabbar { background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~.tabbar [aria-current="page"]::before { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band :is(.find, .ibtn):is(:hover, :active) { background-color: #E8E8ED; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~.sheet { background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~.sheet .sheet-top { background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~.sheet :is(.close, .play):is(:hover, :active),
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~.sheet :is(.lang-pick button, button.cd-op):is(:hover, :active) { background-color: #E8E8ED; }
+
+/* ── 칸 머리 달(홍표 얼굴 뒤 둥근 판) — 먹빛 원 → 옅은 칸 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) :is(h1.head, .co-head h1, h2.sec, .box h2, .m4-t)::before { background-color: #F5F5F7; border-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-seal { border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-seal i { background-color: #F5F5F7; }
+/* 맨 아래 도장 — 달 번짐(둥근 번짐 칠)을 빼고 가는 줄 테 · 홍표 그림은 그대로 */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .foot::before { background-image: url(/media/makbi-moon.svg); background-color: #FFFFFF; border-color: #E5E5EA; }
+
+/* ── 첫 화면 편지(.m4-letter) ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-letter .hpi .hpi-b { background-color: #FFFFFF; color: #1D1D1F; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-letter .hpi .m4-bm,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-msg .m4-moon { background-color: #FFFFFF; border-color: #E5E5EA; outline-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-stars i { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-msg { background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-ch .lg { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-lgd i.g { border-top-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-ch .ag2 { fill: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view details.m4-how[open] summary::before { background-color: #D97706; border-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view details.m4-how .m4-in { background-color: #F5F5F7; border-left-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view :is(a.m4-tr, a.m4-sr, a.m4-mv, a.m4-g):active { background-color: #E8E8ED; }
+/* 오른 곳 · 그대로 · 내린 곳 막대 — 오름 호박 · 그대로 옅은 회색 · 내림 회색 */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-bar .u { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-bar .f { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-bar .d { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-fr .fb { background-color: #E8E8ED; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .m4-fr .fb i { background-color: #8E8E93; }
+
+/* ── 고르는 단추(코스피 · 코스닥 · 한 회사 한 표 …) — 먹빛 덩이 대신 누름 회색 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) :is(.m4-seg, .seg, .m4-per) button[aria-pressed="true"] { background-color: #E8E8ED; color: #1D1D1F; }
+
+/* ── 다음 단 고리(›) — 먹빛 원 → 옅은 칸 원 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .nextst .chev { background-color: #F5F5F7; color: #1D1D1F; outline: 1px solid #E5E5EA; outline-offset: -1px; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .nextst:active { background-color: #E8E8ED; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) :is(.play, .tell .ibtn):is(:hover, :active) { background-color: #E8E8ED; }
+
+/* ── 펼친 칸(details.more) — 회색 판(#C7C7CC) → 옅은 칸(호박 글은 su-wrap-jobs 의 깊은 호박 그대로 · 옅은 칸 위 대비 4.5 넘음) ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) details.more .in,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~.sheet .alt { background-color: #F5F5F7; border-left-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) details.more[open] > summary::before { background-color: #D97706; border-color: #D97706; }
+
+/* ── 막대 그림 — 바닥 누름 회색 · 막대 회색 · 이 회사 · 멈춘 곳은 호박 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) :is(ul.fin .ft, ul.peers .pt, ul.gbars .gt, ul.dirbars .dt) { background-color: #E8E8ED; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) :is(ul.fin .fb.pos, ul.gbars .gf, ul.peers .pb) { background-color: #8E8E93; background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) ul.fin .fb.neg { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) ul.peers .pb.me { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .funnel li::after { background-color: #E8E8ED; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .funnel li .fill { background-color: #8E8E93; background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .funnel li.stop .fill,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .funnel li.stop::before { background-color: #D97706; }
+/* 범위 막대(7단) — 줄무늬 대신 판판한 칠 · 번 길 옅은 회색 · 크게 잃는 길 옅은 호박(조심 뜻 그대로) */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) ul.dirbars .db.pos,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .lkey .l-dw { background-image: none; background-color: #E5E5EA; border-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) ul.dirbars .db.neg,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .lkey .l-db { background-image: none; background-color: #FFF4E5; border-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .lkey .l-gband { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .lkey .l-mt { background-color: #F5F5F7; }
+/* 매출 막대(6단) — 먹빛 덩이 → 회색 · 보기(범례)도 같은 색 */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .gc rect[fill="#3A3A3C"] { fill: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .lkey .l-gact { background-color: #8E8E93; }
+/* 그림 속 호박 점 · 선 · 막대는 #D97706(그림 속 글은 깊은 호박 그대로) */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg:not(.mo) :is(circle, rect, path, line, polyline, polygon, ellipse):is([fill="#8A5A00"], [fill="#B4570A"]) { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg:not(.mo) :is(circle, rect, path, line, polyline, polygon, ellipse):is([stroke="#8A5A00"], [stroke="#B4570A"]) { stroke: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) :is(.l-dot, .key .k-pk, .lkey .l-pick) { background-color: #D97706; border-color: #D97706; }
+/* 선 보기(위 호박 · 아래 짙은 회색) — 번짐 칠 대신 두 칸 판판한 칠(폭 22px 그대로) */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .lkey .l-co { background-image: none; background-color: #D97706; border-right: 11px solid #48484A; box-sizing: border-box; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .board .row.pk::before,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) :is(.badge.gold, .m4-pk)::before { background-color: #D97706; }
+/* 달력 막대(오름 · 내림 · 0) */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .cal-bar { background-color: #E8E8ED; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .cal-bar i.u { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .cal-bar i.d { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view .cal-bar i.z { background-color: #C7C7CC; }
+/* 업데이트 기록 · 종목 파일의 바뀐 날 점 — 먹빛 점 → 호박 점 */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) ol.uplist li.r-ch::before,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~#view ol.cal-steps li.now::before { background-color: #D97706; border-color: #D97706; }
+/* 클수록 진한 칩(6단 「아주 높다」 …) — 먹 위 먹 글이던 것 */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .gchip.g5 { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .gchip.g4 { background-color: #D2D2D7; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) .gchip.g3 { background-color: #E8E8ED; color: #1D1D1F; }
+
+/* ── 작은 친구 그림(꽃 · 나비 · 고양이 · 앵무 · 고래 · 달 · 별 · 무지개) — 먹 · 회색 · 호박 선 그림 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo [fill="#F6F3FF"] { fill: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo :is([fill="#F2A7D6"], [fill="#EFA6D2"], [fill="#F6D97A"]) { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo :is([fill="#F6BCDD"], [fill="#F9D6E4"], [fill="#F2A65A"], [fill="#F9C48F"]) { fill: #F3D9B8; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo :is([fill="#C9B6F2"], [fill="#B4A4EE"]) { fill: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo :is([fill="#9EDDB4"], [fill="#EDE7F2"]) { fill: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo :is([fill="#ABA8BE"], [fill="#9887DD"], [fill="#A893E0"]) { fill: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo [fill="#DCD3FA"] { fill: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo [fill="#3A2F5A"] { fill: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo [stroke="#3A2F5A"] { stroke: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo :is([stroke="#CFC6EE"], [stroke="#9EDDB4"], [stroke="#ABA8BE"], [stroke="#C9B6F2"]) { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo :is([stroke="#C9761F"], [stroke="#EFA6D2"], [stroke="#F6D97A"]) { stroke: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo [stroke="#F2A65A"] { stroke: #F3D9B8; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo [stroke="#F6F3FF"] { stroke: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo [stroke="#8A6A2A"] { stroke: #1D1D1F; }
+/* 흰 꽃잎 · 흰 고양이 · 고래 · 달 — 흰 바탕에서 보이게 가는 테 */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-daisy ellipse,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-whale path:first-of-type,
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-butterfly ellipse { stroke: #8E8E93; stroke-width: 1px; vector-effect: non-scaling-stroke; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-butterfly ellipse:nth-of-type(n+3) { stroke: #D97706; }
+/* 무지개 띠 다섯 — 호박에서 회색으로 · 구름은 옅은 회색 */
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-rainbow path:nth-of-type(1) { stroke: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-rainbow path:nth-of-type(2) { stroke: #F3D9B8; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-rainbow path:nth-of-type(3) { stroke: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-rainbow path:nth-of-type(4) { stroke: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-rainbow path:nth-of-type(5) { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs:not(.white) .band~:is(#view, .sheet) svg.mo-rainbow circle { fill: #E5E5EA; }

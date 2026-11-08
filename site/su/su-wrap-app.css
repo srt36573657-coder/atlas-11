@@ -1,0 +1,497 @@
+/* 옛 앱 쪽(/next/) 쪽마다 첫 페이지 색 — 주문 2011 · 2250(사장님 2026-11-08 20:11 「모든 페이지를 첫페이지 기준으로」 · 22:50 「이것도 구슬로 해」)
+   바탕 · 글 · 자리 · 크기는 쪽 머리가 처음부터 받는 su-wrap-jobs.css(색 이름 · 위 막대 · 아래 단추 · 밤 판 자리 지킴)가 맡음 — 이 파일은 쪽마다 남은 색만(옛 앱 68길을 찍고 재며 지은 것)
+   첫 그림을 늦추지 않게 su-wrap.js 가 /next/ 에서 뒤에 붙임(느린 휴대폰 첫 그림 2.5초 · check_white ③) · 모든 선택자는 html.su-jobs 로 시작 · 색 · 바탕 · 테 · 칠만 */
+/* ══ 옛 앱 쪽(/next/) 쪽마다 색 — 일꾼이 68길을 찍고 재며 지은 것(첫 화면 · 왜 사? · 스승 · 신 · 회사 · 테마 시계 …) ══ */
+/* ══ 수르 틀 옛 쪽 — 첫 페이지 색 덧붙임(part-app · 주문 2011) ══
+   모든 줄은 html.su-jobs 로 시작 · 색 · 바탕 · 테 · 칠 · 그림자만 바꿈(글 · 숫자 · 크기 · 자리 그대로)
+   html.su-jobs×4 = 옛 쪽 규칙(html.en.white.home #view … 까지)보다 늘 한 단 위 — 쪽 css 가 뒤에 붙어도 이김
+   호박 글 #B4570A · 옅은 칸(#F5F5F7 · #FFF4E5) 위 호박 글만 #B0550A(대비 4.5 넘게) */
+
+/* ── 모든 쪽: 방 지킴이 알약(roman-tag.css · 쪽 맨 아래) — 짙은 보라 → 옅은 회색 알약 · 먹 글 · 이름만 호박 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rmt-p { background-color: #F5F5F7; color: #1D1D1F; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt a.rmt-k { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rmt-l { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rmt-n, html.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt a.rmt-k i { color: #1D1D1F; } /* 방 지킴이 이름 · › 는 먹 글(강조색은 쪽 내용에만 — 급등 맞대기 검사 「새 쪽에만 색 글」) */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rms-cap { background-color: #F5F5F7; color: #1D1D1F; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rms-spk circle { fill: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rmt .rms-face[aria-pressed="true"] img, html.su-jobs.su-jobs.su-jobs.su-jobs #view .rmt .rms-face:focus-visible, html.su-jobs.su-jobs.su-jobs.su-jobs #view .rmt a.rmt-k:focus-visible { outline-color: #D97706; }
+@media (hover: hover) { html.su-jobs.su-jobs.su-jobs.su-jobs #view > .rmt .rms-face:hover img { outline-color: #D97706; } }
+
+/* ── 모든 쪽: 작은 선 그림(app.js COLOR · 오름 초록 · 내림 파랑 · 모름 보라 칠) — 오름 호박 · 내림 회색 · 모름 옅은 회색 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs :is([fill="#007A35"], [fill="#007a35"]) { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs :is([fill="#6B2A8C"], [fill="#6b2a8c"]) { fill: #AEAEB2; }
+html.su-jobs.su-jobs.su-jobs.su-jobs :is([stroke="#6B2A8C"], [stroke="#6b2a8c"]) { stroke: #AEAEB2; }
+
+/* ── 모든 쪽: 큰 「다음」 단추(theme-home.css .th-next 검정 · 민트 작은 글) · 금빛 고리(.jb-act) ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs .th-next { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .th-nx small { color: #D2D2D7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .th-why .th-nx small { color: #D2D2D7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .jb-act { box-shadow: none; }
+/* ── 첫 화면 #/ — home-new.css 바탕 규칙의 색만(생성 · 같은 차례) ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view { --nh-card: #FFFFFF; --nh-ink: #1D1D1F; --nh-sub: #6E6E73; --nh-line: #E5E5EA; --nh-go: #1D1D1F; --nh-link: #8A5A00; --nh-S: #D97706; --nh-B: #D97706; --nh-W: #8E8E93; --nh-Q: #C7C7CC; --nh-zS: #FFF4E5; --nh-zB: #FFF4E5; --nh-zW: #FFF4E5; --nh-zQ: #ECEFEE; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-hero { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kick { border-color: #E5E5EA; color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-h1 { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-h1 .nh-acc { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sub { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fact { background-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fact b { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fact span { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-no { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-how { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zline { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dot { stroke: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dot4 { stroke: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl, html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dl, html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tick { stroke: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-S { fill: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-B { fill: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-W { fill: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-zl-Q { fill: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tick { fill: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-dl { fill: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-lg { border-bottom-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rule { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-bt { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-up .nh-me { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-up .nh-all { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-dn .nh-me { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-cmp-dn .nh-all { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-won { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-w1 i, html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-stack .nh-w1 { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-w0 i, html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-stack .nh-w0 { background-color: #F3D9B8; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-w2 i, html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-stack .nh-w2 { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-warn { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-warn.nh-worse { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-wt { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sec.nh-mkt { background-color: transparent; background-image: none; border-color: #E5E5EA; color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-mkt .nh-h2 { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-go { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-foot { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fh { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fp { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rb { background-color: transparent; background-image: none; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rb i { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rb.on span { text-decoration-color: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pm { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pm i { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b.nh-pb2 { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b.up { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb b.dn { color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pb span { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pl { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pc { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt span { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b.up { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b.dn { color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-kt b.fl { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view details.nh-fold { border-color: #E5E5EA; background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-waf rect.off { fill: #FFFFFF; stroke: #D2D2D7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-waf.me rect.on { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-waf.all rect.on { fill: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-wf figcaption b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-wf figcaption span { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-honest { border-left-color: #D97706; background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-honest span { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-honest b { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-part::before { border-top-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-q { background-color: #FFFFFF; border-color: #E5E5EA; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-yrsum { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c i { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3c span { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3w { border-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3w b { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chkh { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk li i { border-color: #D97706; background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chkt { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-chk li b { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pc2 { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-ktw { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-ktw .nh-kt { background-color: transparent; background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rng .nh-rl0 { stroke: #D2D2D7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rng .nh-rt { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rng .nh-rd { fill: #D97706; stroke: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-rc { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3h { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-3how { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-path ol::before { background-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt { background-color: transparent; background-image: none; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt i { border-color: #E5E5EA; background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pt small { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-pm small { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-hero > .nh-pm .nh-mans { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fm { background-color: #FFFFFF; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fk { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fk-up i { border-bottom-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fk-dn i { border-top-color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fr { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-up .nh-fbar { background-color: #FFF4E5; border-left-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-dn .nh-fbar { background-color: #F5F5F7; border-left-color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fn { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-up .nh-fr > b { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fl-dn .nh-fr > b { color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-fc { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tw { background-color: #FFFFFF; border-color: #8E8E93; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twi-bl { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twi-mo { border-bottom-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twk { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twc { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twg { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twn { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twd { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twe { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage i { background-color: #F5F5F7; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage b { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tp { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view p.nh-tp.nh-tp0 { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpk { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-twn.nh-twnr { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpnr .nh-tp0 { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpnote { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpl b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-tpl small { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-say { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-part .nh-sage > i { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > i.nh-sf { background-color: transparent; background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > button.nh-sf { background-color: transparent; background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > button.nh-sf[aria-pressed="true"] img { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > button.nh-sf:focus-visible { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > a.nh-sl:focus-visible { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > .nh-scap { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw.rm-say { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sage.nh-sfw > button.nh-sf:hover img { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sall { border-color: #D97706; background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sall.nh-sallon { background-color: #FFFFFF; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sall:focus-visible { outline-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallr { border-color: #D97706; background-color: #FFFFFF; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallr:focus-visible { outline-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .nh-sallc { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-l { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-q { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-t { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-g > i { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-on { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-off { fill: #FFFFFF; stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qd { fill: #F5F5F7; stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qt { fill: none; stroke: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qdot { fill: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-m { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-x { background-color: #FFFFFF; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-wt { color: #6E6E73; }
+/* ── 첫 화면 #/ — home-talk.css 열한 불빛 색만(생성) ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-hint { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-key { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bd { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bn { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp { background-color: transparent; background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c-on { background-color: #1D1D1F; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c-off { background-color: #FFFFFF; border-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-c-q { background-color: #F5F5F7; border-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp[aria-pressed="true"] > .y11-c { outline-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp:focus-visible { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf > .y11-lf { border-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[data-s="off"] > .y11-lf { border-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[data-s="q"] > .y11-lf { border-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-lf { outline-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bub { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bub::before { background-color: #FFFFFF; border-left-color: #E5E5EA; border-top-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-god { background-color: #F5F5F7; border-color: #E5E5EA; color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gs { background-color: transparent; background-image: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gs[aria-pressed="true"] img { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gs:focus-visible { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gk { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gl { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gn { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gg { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gk:focus-visible { outline-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gw .rms-cap { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bk { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-on { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-off { border-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-a-q { border-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bq { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-cap { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-tt { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sub { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ez { background-color: #F5F5F7; color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ez > b { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > button { border-color: #8E8E93; background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > .y11-nx { background-color: #1D1D1F; border-color: #D97706; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > .y11-snd[aria-pressed="true"] { background-color: #F5F5F7; border-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ctl > button:focus-visible { outline-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-spk { fill: currentColor; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-spw { fill: none; stroke: currentColor; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-note { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sc { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sky { fill: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gnd { fill: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sun { fill: #F3D9B8; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ray { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-cld { fill: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-rain { stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-umb { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-bod { fill: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-ln { stroke: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-wal { fill: #FFFFFF; stroke: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-aw1 { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-aw2 { fill: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-aw3 { fill: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-awo { fill: none; stroke: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-gls { fill: #F5F5F7; stroke: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-knb { fill: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-pan { fill: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-cak { fill: #F3D9B8; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-oni { fill: none; stroke: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-stm { fill: none; stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-dor { fill: #E5E5EA; stroke: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-glo { fill: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sl-on { fill: #D97706; stroke: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sl-off { fill: #FFFFFF; stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sl-q { fill: #F5F5F7; stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sq { fill: none; stroke: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sqd { fill: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-sea { fill: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-arc { fill: none; stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-qbox { fill: none; stroke: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-s9l { background-color: #FFFFFF; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-all { border-color: #D97706; background-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-all.y11-allon { background-color: #FFFFFF; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-all:focus-visible { outline-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allr { border-color: #D97706; background-color: #FFFFFF; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allr:focus-visible { outline-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view .y11-allc { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+/* ── 첫 화면 #/ — 옛 흰 판(html.white.clock.clock.clock.home · 밤 판을 떼면 꺼지는 그림 색)을 첫 페이지 색으로 다시 켬(생성 · 색만) ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view { --nh-card: #FFFFFF; --nh-ink: #1D1D1F; --nh-sub: #6E6E73; --nh-line: #E5E5EA; --nh-go: #1D1D1F; --nh-link: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-hero { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-kick { border-color: #D97706; color: #8A5A00; background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-h1 { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-h1 .nh-acc { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sub { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fact { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fact b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fact span, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-no { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-how, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-rule, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-warn { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-won { background-color: #FFF4E5; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-warn.nh-worse { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wt { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dl, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-tick { stroke: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-bt { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-up .nh-me { background-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-up .nh-all { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-dn .nh-me { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cmp-dn .nh-all { background-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg { border-bottom-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sec.nh-mkt { background-color: #FFFFFF; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .nh-h2 { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band * { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band .dn, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .dn { color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt a.hm-band .up, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .up { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .w-lb, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .w-ans p { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .w-news .w-why { border-color: #D97706; color: #8A5A00; background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .s-split .gu { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .s-split .gd { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-why a.w-month { border-color: #D97706; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-all .w-rows a, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-all .w-rows a * { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-foot { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fh { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fp { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-t, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-l, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-l.q { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .w-ess .ess-d > summary::after { border-color: #D97706; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view { --c-me: #D97706; --c-all: #C7C7CC; --c-up: #D97706; --c-dn: #8E8E93; --c-ink: #1D1D1F; --c-sub: #6E6E73; --c-wine: #1D1D1F; --c-soft: #E5E5EA; --c-pale: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-idx { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-in { color: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-iv { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ic.up { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ic.dn { color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ic.fl { color: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ka { fill: rgba(217, 119, 6, 0.13); stroke: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-kl { fill: none; stroke: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-km { fill: var(--c-wine); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-klast { fill: var(--c-me); stroke: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-kt { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-kd { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-trail { fill: none; stroke: var(--c-wine); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-trail0 { fill: var(--c-wine); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-axl { stroke: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-axh { fill: none; stroke: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-axt { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz b { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-S { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-B { background-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-W { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cz-Q { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg b { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-S i { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-B i { background-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-W i { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg-Q i { background-color: #C7C7CC; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-real { background-color: var(--c-wine); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-rk { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-real b { color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-db { fill: var(--c-soft); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-db4 { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dball { fill: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dv { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dv4 { fill: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dk { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-chart { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ck { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cap { color: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fig { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fig figcaption { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cb.nh-me { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cb.nh-all { fill: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cv.nh-me { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cv.nh-all { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-cl { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wz { stroke: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wb.nh-me { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wb.nh-all { fill: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wv.nh-me { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wv.nh-all { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-wl { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fbar.nh-buy { fill: var(--c-up); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fbar.nh-sell { fill: var(--c-dn); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fvv.nh-buy { fill: var(--c-up); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fvv.nh-sell { fill: var(--c-dn); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-yb.nh-me { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-yb.nh-all { fill: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-yv.nh-me { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-yv.nh-all { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-yk { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-yn { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-lg3 li { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-l-me i, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-l-sh i { background-color: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-l-all i, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-l-sm i { background-color: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-l-sw i { background-color: var(--c-pale); border-color: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dn { fill: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dn.nh-w1 { stroke: var(--c-wine); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dn.nh-w0 { stroke: #D2D2D7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dn.nh-w2 { stroke: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ml li.nh-w1 > i { background-color: var(--c-wine); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ml li.nh-w0 > i { background-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-ml li.nh-w2 > i { background-color: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-missw .nh-mt { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-missw .nh-mp { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dnv { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-dnk { fill: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sb.nh-sh { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sb.nh-sm { fill: var(--c-all); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sb.nh-sw { fill: var(--c-pale); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-s0 { fill: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-vsa b { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-vsb b { color: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-vs small { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-vsx { color: var(--c-sub); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fb { fill: var(--c-soft); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fb1 { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fv { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fv1 { fill: #FFFFFF; stroke: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-fl { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sc { fill: #FFFFFF; stroke: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sc1 { fill: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sk { fill: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sk1 { fill: #FFFFFF; stroke: none; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-st { fill: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sarr { fill: none; stroke: var(--c-me); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view details.nh-more > summary { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mbody .nh-rl, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mbody .nh-old { color: var(--c-ink); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-l-buy i { background-color: var(--c-up); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-l-sell i { background-color: var(--c-dn); }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-map .th-news { background-color: #F5F5F7; border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-map .th-news a.th-hi { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-golist { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-part a.w-month { border-color: #D97706; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-part .nh-link { color: #8A5A00; }
+/* ── 첫 화면 #/ (home-new.css · home-talk.css) 손질 — 위 생성 줄 다음에 둠 ── */
+/* 업종 점 그림 네 자리: 싹 = 호박 · 강함 = 먹 · 꺾임 = 회색 · 조용함 = 옅은 회색 · 자리 바탕은 옅게 */
+html.su-jobs.su-jobs.su-jobs.su-jobs.home #view { --nh-S: #D97706; --nh-B: #1D1D1F; --nh-W: #8E8E93; --nh-Q: #C7C7CC; --nh-zS: #FFF4E5; --nh-zB: #F5F5F7; --nh-zW: #F5F5F7; --nh-zQ: #FAFAFA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl-B { fill: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl-W { fill: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-zl-S { fill: #B4570A; }
+/* 오늘 시장 칸 — 청록 판의 흰 글 → 먹 글 */
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-sec.nh-mkt, html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-mkt .nh-h2 { color: #1D1D1F; }
+/* 채운 단추(자홍 · 초록) → 먹 단추 · 흰 글 — 테도 같은 먹 */
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.nh-sall, .y11-all, .y11-ctl > .y11-nx, .nh-go, .nh-mans) { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.nh-sall.nh-sallon, .y11-all.y11-allon) { background-color: #FFFFFF; border-color: #D97706; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.nh-sallr, .y11-allr) { border-color: #1D1D1F; color: #1D1D1F; }
+/* 켜진 불빛 = 호박 점 · 꺼진 불빛 = 회색 테 */
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .y11-c-on { background-color: #D97706; border-color: #FFF4E5; }
+/* 찾기 칸 단추(검정) → 먹 */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .w-find .w-go { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+/* 「힘이 고르게 …」 짙은 칸(.nh-real) → 옅은 칸 · 먹 글 · 업종 두 칸 테는 가는 줄 */
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-real { background-color: #F5F5F7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-rk { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-real b { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view .nh-tw { border-color: #D2D2D7; }
+/* 옅은 칸(#F5F5F7 · #FFF4E5) 위 호박 글 — 대비 4.5 넘게 한 단 짙게 */
+html.su-jobs.su-jobs.su-jobs.su-jobs.white.home #view :is(.y11-gn, .y11-gg, .nh-wt, .y11-ez > b, .nh-fl-up .nh-fr > b, .nh-sl > b) { color: #8A5A00; }
+/* ── 「왜 사?」 #/why (p-why.css · html.pg-why) — 짙은 초록 첫 칸 · 분홍 단추 → 흰 판 · 먹 글 · 먹 단추 · 고른 답은 옅은 호박 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy { --wm-dark: #FFFFFF; --wm-cream: #FFFFFF; --wm-line: #E5E5EA; --wm-mint: #D97706; --wm-pink1: #1D1D1F; --wm-pink2: #1D1D1F; --wm-pinkt: #FFFFFF; --wm-sel: #FFF4E5; --wm-selr: #D97706;
+  --wm-sun: #FFF4E5; --wm-sunt: #6E6E73; --wm-mind: #F5F5F7; --wm-tab: #1D1D1F; --wm-prog: #D97706; --wm-track: #E8E8ED; --wm-teal: #8A5A00; --wm-shadow: 0 0 0 0 transparent; --wm-pinksh: 0 0 0 0 transparent;
+  --card: #FFFFFF; --card2: #F5F5F7; --ink: #1D1D1F; --sub: #6E6E73; --mute: #6E6E73; --hair: #E5E5EA; --hair2: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy[data-step="start"] { background-color: #FFFFFF; background-image: none; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-hero .wy-up, html.su-jobs.su-jobs.su-jobs.su-jobs .wy-h { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-h em { color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-sub, html.su-jobs.su-jobs.su-jobs.su-jobs .wy-time { color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl { background-color: #F5F5F7; outline-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl li { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl .wl-ic { background-color: #FFF4E5; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-hl .wl-ic path { stroke: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg rect { fill: #F5F5F7; stroke: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg g, html.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg g > circle { fill: #E8E8ED; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg path, html.su-jobs.su-jobs.su-jobs.su-jobs .wy-scfg path { stroke: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-scbg > circle { fill: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy :is(.wy-go, .wy-next, .wy-detb) { background-color: #1D1D1F; background-image: none; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .wy :is(.wy-go, .wy-next, .wy-detb) { box-shadow: none !important; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy[data-step="q"] .wy-nav { background-image: none; background-color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy .wy-back, html.su-jobs.su-jobs.su-jobs.su-jobs .wy .wy-again { border-color: #E5E5EA; background-color: #F5F5F7; color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-pg .wy-step { color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-oi { background-color: #F5F5F7; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-opt.on .wy-oi { background-color: #FFF4E5; color: #8A5A00; }
+html.su-jobs.su-jobs.su-jobs.su-jobs .wy-err { color: #8A5A00; }
+/* ── 서른아홉 스승 #/sage (p-sage.css) — 네 걸음 색(청록 · 금 · 보라 · 자주) → 먹 · 호박 · 회색 · 옅은 회색 · 칸 테는 가는 줄 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s1, html.su-jobs.su-jobs.su-jobs.su-jobs #view li.s1 > i { fill: #1D1D1F; background-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s2, html.su-jobs.su-jobs.su-jobs.su-jobs #view li.s2 > i { fill: #D97706; background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s3, html.su-jobs.su-jobs.su-jobs.su-jobs #view li.s3 > i { fill: #6E6E73; background-color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-dot.s4, html.su-jobs.su-jobs.su-jobs.su-jobs #view li.s4 > i { fill: #AEAEB2; background-color: #AEAEB2; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view :is(.sg-jump, .sg-step, .sg-tile, .sg-sn):is(.s1, .s2, .s3, .s4), html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-step :is(.sg-tile, .sg-sn) { border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-jump .sg-gl, html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-jump .sg-gl path { stroke: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view :is(.sg-allb, .rm-allb) { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+/* ── 로마 신 72 #/roman (p-roman.css) — 여섯 무리 점 · 「가 보기」 테 → 먹 · 회색 차례 · 가는 줄 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g1 > i { background-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g2 > i { background-color: #D97706; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g3 > i { background-color: #48484A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g4 > i { background-color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g5 > i { background-color: #8E8E93; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-grp.g6 > i { background-color: #AEAEB2; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-card .rm-goa { border-color: #D2D2D7; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-why .rm-wl, html.su-jobs.su-jobs.su-jobs.su-jobs #view .rm-card .rm-spot { color: #6B4500; } /* 읽는 종이 판 — 글 대비 7 넘게(로마 신 · 스승 검사) */
+/* ── 테마 쪽 #/t/… — 흰 글 ✓ 동그라미(호박 칠 위 흰 글 대비 4.5) ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .th-ck b.y { background-color: #B4570A; }
+/* ── 오늘 시장 #/today — 옅은 호박 칸 위 호박 글 대비 4.5 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .ptoday-al .nw-t { color: #8A5A00; }
+/* ── 스승 한 분 쪽 #/sage/<이름> — 걸음 색 테 · 그림 줄 → 가는 줄 · 호박 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view :is(.sg-chip, .sg-sp, .sg-say, .sg-card):is(.s1, .s2, .s3, .s4), html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-card :is(.sg-say, .sg-sp), html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-top .sg-chip, html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-bh .sg-sp { border-color: #E5E5EA; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-gl, html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-gl path { stroke: #B4570A; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .sg-bh .sg-bl { color: #6B4500; } /* 읽는 종이 판 — 글 대비 7 넘게(로마 신 · 스승 검사) */
+/* ── 고른 곳 달력 #/t/pick — 오른 날 칸 · 내린 날 칸(흰 글이 옅은 호박 · 회색 칠 위 대비 3.2) → 짙은 호박 · 짙은 회색 칠 · 빈 날은 옅은 칸 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc { background-color: #F5F5F7; color: #6E6E73; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc.up { background-color: #B4570A; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc.dn { background-color: #48484A; color: #FFFFFF; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc:is(.w, .e) { background-color: transparent; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pkc.w { border-color: #1D1D1F; }
+html.su-jobs.su-jobs.su-jobs.su-jobs #view .th-pknl-x li { color: #8A5A00; }
+/* ── 「왜 사?」 질문 칸 테 ── */
+html.su-jobs.su-jobs.su-jobs.su-jobs #view section.wy.page { border-color: #E5E5EA; }

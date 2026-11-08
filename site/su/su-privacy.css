@@ -1,6 +1,10 @@
-/* 수르 틀을 미리 입힌 개인정보 처리방침(/su/privacy.html · scripts/atlas11/next/su_privacy.mjs 가 원본에서 지음)의 첫 페이지 색 — 주문 2011(사장님 2026-11-08 20:11 「모든 페이지를 첫페이지 기준으로」 · 20:26 「아니 이것도 같이 작업해」)
-   원본 privacy.css 의 색 이름만 첫 페이지 값으로(글 · 자리 · 크기 그대로) · 흰 바탕 · 먹 글 · 가는 줄 · 강조는 호박색 하나 · 어두운 기기에서도 흰 판 · 원본 쪽(/privacy.html)은 그대로 */
-html.su-wrapped { color-scheme: light; --bg: #FFFFFF; --card: #F5F5F7; --hair: #E5E5EA; --ink: #1D1D1F; --sub: #3A3A3C; --mute: #6E6E73; --gold: #B4570A; background: #FFFFFF; }
-html.su-wrapped body { background: #FFFFFF; color: #1D1D1F; }
-html.su-wrapped .pv-jump a { border-color: #D2D2D7; background: #FFFFFF; }
-html.su-wrapped .pv-jump a:active { background: #E8E8ED; }
+/* 개인정보 처리방침(/privacy.html · 짝 쪽 /su/privacy.html)의 첫 페이지 색 — 주문 2011(사장님 2026-11-08 20:11 「모든 페이지를 첫페이지 기준으로」 · 20:26 「아니 이것도 같이 작업해」) · 주문 2250(22:50 「이것도 구슬로 해」 — 바로 온 손님도)
+   원본 privacy.css 의 색 이름만 첫 페이지 값으로(글 · 자리 · 크기 그대로) · 흰 바탕 · 먹 글 · 가는 줄 · 강조는 호박색 하나 · 어두운 기기에서도 흰 판 · 쪽 보안 규칙(스크립트 0)이라 쪽 머리가 이 파일을 받고 <html class="su-jobs"> */
+html.su-jobs { color-scheme: light; --bg: #FFFFFF; --card: #F5F5F7; --hair: #E5E5EA; --ink: #1D1D1F; --sub: #3A3A3C; --mute: #6E6E73; --gold: #B4570A; background: #FFFFFF; }
+html.su-jobs body { background: #FFFFFF; color: #1D1D1F; }
+html.su-jobs .pv-jump a { border-color: #D2D2D7; background: #FFFFFF; }
+html.su-jobs .pv-jump a:active { background: #E8E8ED; }
+/* 옛 아래 단추(바로 온 손님 · 주문 2250) — 흰 바탕 · 가는 줄 · 회색 글 · 가운데 단추 그림 호박색 */
+html.su-jobs .tabs { background: #FFFFFF; border-top: 1px solid #E5E5EA; }
+html.su-jobs .tabs a { color: #6E6E73; }
+html.su-jobs .tabs a.plus .ic { color: #D97706; }

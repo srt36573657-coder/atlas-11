@@ -2,7 +2,7 @@
 /**
  * 수르 틀을 미리 입힌 개인정보 처리방침(/su/privacy.html) 짓기 — 주문 2011(사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」 · 20:26 「아니 이것도 같이 작업해」)
  *   원본 site/privacy.html 은 쪽 보안 규칙(default-src 'none')이 스크립트를 막아 su-wrap.js 로 틀을 씌울 수 없음 → 원본 글은 한 글자도 바꾸지 않고 머리 · 꼬리만 덧붙인 짝 쪽을 지음
- *   - <html> 에 su-wrapped su-jobs · 창 위 띠 흰색 · 꾸밈 su-wrap.css(아래 수르 막대 · 옛 아래 단추 숨김) + su-privacy.css(첫 페이지 색)
+ *   - 원본도 첫 페이지 색(<html class="su-jobs"> · su-privacy.css · 주문 2250) — 짝 쪽은 su-wrapped + su-wrap.css(아래 수르 막대 · 옛 아래 단추 숨김)만 더함
  *   - 아래 수르 막대는 su-wrap.js wrapBar 와 같은 꼴을 글로 박음(스크립트 0 · 글 속 style 0 — 원본 보안 규칙 그대로)
  *   - 수르 쪽 고리(su-roads.js hrefOf)와 수르 틀 안 옛 쪽의 「개인정보 처리방침」 고리(su-wrap.js SOLO)가 이 쪽으로 옴 · 옛 주소로 바로 온 손님은 원본 그대로
  * 쓰는 법: node scripts/atlas11/next/su_privacy.mjs          → site/su/privacy.html 을 새로 씀
@@ -30,9 +30,9 @@ export function build(src) {
   const once = (s, a, b) => { const i = s.indexOf(a); if (i < 0 || s.indexOf(a, i + 1) >= 0) throw new Error('원본에서 한 번만 나와야 함: ' + a); return s.slice(0, i) + b + s.slice(i + a.length); };
   let s = src;
   s = once(s, '<!doctype html>\n', '<!doctype html>\n<!-- 지은 파일 — scripts/atlas11/next/su_privacy.mjs 가 site/privacy.html 에서 지음(손으로 고치지 않음 · 원본을 고친 뒤 다시 지음) · 수르 틀을 미리 입힌 짝 쪽(주문 2011) -->\n');
-  s = once(s, '<html lang="ko">', '<html lang="ko" class="su-wrapped su-jobs">');
+  s = once(s, '<html lang="ko" class="su-jobs">', '<html lang="ko" class="su-jobs su-wrapped">'); // 원본은 이미 첫 페이지 색(su-jobs · su-privacy.css · 주문 2250) — 짝 쪽은 수르 틀(아래 수르 막대)만 더함
   s = s.replace(/<meta name="theme-color" content="#[0-9A-Fa-f]{6}">/, '<meta name="theme-color" content="#FFFFFF">');
-  s = once(s, '<link rel="stylesheet" href="/privacy.css">', '<link rel="stylesheet" href="/privacy.css">\n<link rel="stylesheet" href="/su/su-wrap.css">\n<link rel="stylesheet" href="/su/su-privacy.css">');
+  s = once(s, '<link rel="stylesheet" href="/su/su-privacy.css">', '<link rel="stylesheet" href="/su/su-privacy.css">\n<link rel="stylesheet" href="/su/su-wrap.css">');
   s = once(s, '</body>', bar() + '\n</body>');
   return s;
 }

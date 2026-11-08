@@ -12,7 +12,7 @@ html.su-wrapped .hm-it[data-k="us"], html.su-wrapped .ptoday-sec[data-k="us"], h
 .suw-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
 .suw-back { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 14px 0 8px; border-radius: 26px; background: #F5F5F7; color: #1D1D1F; text-decoration: none; min-width: 0; }
 .suw-back img { width: 34px; height: 34px; border-radius: 50%; background: #FFFFFF; flex: none; }
-.suw-back .suw-bk { font-size: 17px; font-weight: 600; color: #B4570A; white-space: nowrap; flex: none; }
+.suw-back .suw-bk { font-size: 17px; font-weight: 600; color: #8A5A00; white-space: nowrap; flex: none; }
 .suw-back b { font-size: 19px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .suw-back i { margin-left: auto; font-style: normal; font-size: 24px; color: #86868B; }
 .suw-find { display: flex; align-items: center; gap: 6px; min-height: 52px; min-width: 52px; padding: 0 14px; border-radius: 26px; border: 1px solid #D2D2D7; color: #1D1D1F; text-decoration: none; background: #FFFFFF; }

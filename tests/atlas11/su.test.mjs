@@ -444,21 +444,38 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
   assert.equal(sg.people.length, 39, '스승 서른아홉');
   for (const p of sg.people) assert.ok(fs.existsSync(path.join(ROOT, 'site/next/sage-art', p.id + '.svg')), '스승 얼굴 그림 — ' + p.id);
   const W = fs.readFileSync(path.join(ROOT, 'site/su/su-wrap.js'), 'utf8');
-  { // 주문 2011 — 수르 틀 안 옛 쪽 색 파일: 수르 틀일 때만(모든 선택자가 html.su-wrapped 로 시작) · 밤 판을 뗀 뒤 자리 · 크기 지킴 칸 = 옛 꾸밈 파일에서 지은 그대로 · 수르 틀이 색 파일을 받은 뒤 밤 판을 뗌
+  { // 주문 2011 · 2250 — 옛 쪽 첫 페이지 색 파일 셋(모든 선택자가 html.su-jobs 로 시작) · 밤 판을 뗀 뒤 자리 · 크기 지킴 칸 = 옛 꾸밈 파일에서 지은 그대로 · 색 파일을 받은 뒤 밤 판을 뗌
     const {execFileSync} = await import('node:child_process');
     execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/wrap_keep.py'), '--check'], {cwd: ROOT, stdio: 'pipe'});
-    const J = fs.readFileSync(path.join(ROOT, 'site/su/su-wrap-jobs.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+    const J = ['su-wrap-jobs.css', 'su-wrap-app.css', 'su-wrap-solo.css'].map(f => fs.readFileSync(path.join(ROOT, 'site/su', f), 'utf8')).join('\n').replace(/\/\*[\s\S]*?\*\//g, '');
     const top = []; let d = 0, cur = '', ins = [];
     for (const ch of J) { if (ch === '{') { const pre = cur.trim(); if (!pre.startsWith('@')) top.push(pre); ins.push(pre.startsWith('@')); cur = ''; d++; } else if (ch === '}') { ins.pop(); cur = ''; d--; } else if (ch === ';' && !ins.length) cur = ''; else cur += ch; }
     const parts = top.flatMap(x => { const o = []; let q = 0, c = ''; for (const ch of x) { if (ch === '(') q++; if (ch === ')') q--; if (ch === ',' && !q) { o.push(c.trim()); c = ''; } else c += ch; } o.push(c.trim()); return o.filter(Boolean); });
-    assert.ok(parts.length > 500 && parts.every(x => /^html(:where\(\.white\.su-wrapped\)|\.)/.test(x) && /su-wrapped/.test(x.split(' ')[0])), '옛 쪽 색은 수르 틀일 때만 — ' + parts.filter(x => !/su-wrapped/.test(x.split(' ')[0])).slice(0, 3).join(' | '));
+    assert.ok(parts.length > 500 && parts.every(x => /^html(:where\(\.white\.su-jobs\)|\.)/.test(x) && /su-jobs/.test(x.split(' ')[0])), '옛 쪽 색은 첫 페이지 판(html.su-jobs)일 때만 — ' + parts.filter(x => !/su-jobs/.test(x.split(' ')[0])).slice(0, 3).join(' | '));
+    // 주문 2250(22:50 「이것도 구슬로 해」) — 옛 주소로 바로 온 손님도: 옛 쪽 머리가 색 파일을 처음부터 받고 <html> 에 su-jobs · 창 위 띠 흰색 · 밤 판 파일은 받지 않음
+    const head = f => fs.readFileSync(path.join(ROOT, 'site', f), 'utf8');
+    for (const f of ['next/index.html', 'atlas/index.html', 'hello.html', 'letter.html', 'invite.html']) {
+      const t = head(f);
+      assert.ok(t.includes('<link rel="stylesheet" href="/su/su-wrap-jobs.css">') && /<html lang="ko" class="[^"]*\bsu-jobs\b/.test(t) && t.includes('<meta name="theme-color" content="#FFFFFF">') && !/<html[^>]*\bclock\b/.test(t), f + ' 첫 그림부터 흰 구슬 판');
+    }
+    assert.ok(!head('next/index.html').includes('href="/next/clock.css"') && head('next/index.html').indexOf('/su/su-wrap.js') < head('next/index.html').indexOf('/next/app.js'), '옛 앱 — 밤 판 파일 안 받음 · 수르 틀이 app.js 보다 먼저(밤 판을 곧바로 뗌)');
+    for (const f of ['hello.html', 'letter.html', 'invite.html']) assert.ok(head(f).includes('/su/su-wrap-solo.css'), f + ' 쪽 색');
+    { // 옛 아틀란스(/atlas/) 남은 색 — 그 쪽 머리만 받고 · 모든 선택자가 html.su-jobs …:not(.white)(옛 앱 /next/ 는 늘 white) 로 시작
+      assert.ok(head('atlas/index.html').includes('<link rel="stylesheet" href="/su/su-atlas-jobs.css">') && head('atlas/index.html').includes('<meta name="color-scheme" content="light">'), '옛 아틀란스 — 남은 색 파일 · 밝은 판');
+      const A = fs.readFileSync(path.join(ROOT, 'site/su/su-atlas-jobs.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+      const sel = []; let cur = '', depth = 0; for (const ch of A) { if (ch === '{') { const pre = cur.trim(); if (!pre.startsWith('@')) sel.push(pre); cur = ''; depth++; } else if (ch === '}') { cur = ''; depth--; } else cur += ch; }
+      const ps = sel.flatMap(x => { const o = []; let q = 0, c = ''; for (const ch of x) { if (ch === '(') q++; if (ch === ')') q--; if (ch === ',' && !q) { o.push(c.trim()); c = ''; } else c += ch; } o.push(c.trim()); return o.filter(Boolean); });
+      assert.ok(ps.length > 50 && ps.every(x => /^html\.su-jobs(\.su-jobs)*:not\(\.white\)/.test(x)) && !/!important|@import|gradient|box-shadow:\s*(?!none)/.test(A), '옛 아틀란스 색은 그 쪽에만 · 그림자 · 그러데이션 0 — ' + ps.filter(x => !/^html\.su-jobs(\.su-jobs)*:not\(\.white\)/.test(x)).slice(0, 2).join(' | '));
+    }
+    assert.ok(head('privacy.html').includes('/su/su-privacy.css') && head('privacy.html').includes('class="su-jobs"') && !/<script/.test(head('privacy.html')), '개인정보 — 스크립트 0 그대로 · 첫 페이지 색');
+    assert.ok(/APP_CSS = '\/su\/su-wrap-app\.css'/.test(W) && /\{ jobsLook\(\); wrap\(\); \}/.test(W), '첫 페이지 판은 모든 손님 · 옛 앱 쪽마다 색은 뒤에 붙임(첫 그림 2.5초)');
     assert.ok(/l\.addEventListener\('load', on, \{once: true\}\)/.test(W) && /de\.classList\.remove\('clock'\)/.test(W), '색 파일을 받은 뒤에 밤 판을 뗌(반쯤 바뀐 화면 없음)');
   }
   { // 주문 2011 — 개인정보 처리방침은 수르 틀을 미리 입힌 짝 쪽(원본 글 그대로 · 원본에서 지은 그대로인지)
     const {execFileSync} = await import('node:child_process');
     execFileSync('node', [path.join(ROOT, 'scripts/atlas11/next/su_privacy.mjs'), '--check'], {cwd: ROOT, stdio: 'pipe'});
     const P = fs.readFileSync(path.join(ROOT, 'site/su/privacy.html'), 'utf8');
-    assert.ok(!/<script|style=/.test(P) && P.includes('default-src \'none\'') && P.includes('class="su-wrapped su-jobs"') && P.includes('/su/su-privacy.css'), '짝 쪽도 스크립트 · 글 속 style 0 · 원본 보안 규칙 그대로 · 첫 페이지 색');
+    assert.ok(!/<script|style=/.test(P) && P.includes('default-src \'none\'') && /<html lang="ko" class="(?=[^"]*\bsu-wrapped\b)(?=[^"]*\bsu-jobs\b)[^"]*">/.test(P) && P.includes('/su/su-privacy.css'), '짝 쪽도 스크립트 · 글 속 style 0 · 원본 보안 규칙 그대로 · 첫 페이지 색');
     assert.ok(/'\/privacy\.html': '\/su\/privacy\.html'/.test(W) && fs.readFileSync(path.join(ROOT, 'site/su/su-roads.js'), 'utf8').includes("if (o === '/privacy.html') return '/su/privacy.html';"), '수르 쪽 · 수르 틀 안 옛 쪽 고리 → 짝 쪽');
   }
   assert.ok(/new URLSearchParams\(search\)\.get\('su'\)/.test(W) && /hasOwnProperty\.call\(GROUPS, g\)/.test(W), '수르 틀은 ?su=<묶음> 일 때만(모르는 값은 씌우지 않음)');
