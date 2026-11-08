@@ -409,6 +409,9 @@ async function coOnPath(code) {
   else v.next = {href: '#/q/' + code, label: '내 이유는 무엇인가?', step: 6, k: '6 / 8'};
   return v;
 }
+/** 휴대폰 맨 위 띠 색(theme-color) — 잡스 판 첫 페이지(구슬 그림이 있는 쪽)는 흰색 · 다른 쪽은 index.html 원래 색(주문 1708 · 위아래까지 흰 구슬 판) */
+const TC = [...document.querySelectorAll('meta[name="theme-color"]')].map(m => [m, m.getAttribute('content')]);
+function tint(root) { const w = !!root.querySelector(':scope > main > .su-hero[data-g="su-apple"]'); for (const [m, c] of TC) m.setAttribute('content', w ? '#FFFFFF' : c); }
 async function route() {
   const hh = location.hash || '#/';
   const fw = forwardTo(location.search, hh);
@@ -437,6 +440,7 @@ async function route() {
   if (v) v.after = [...(v.after ?? []), lateGod(G => { const st = G.STOP_STEP[G.roomKey(hh)]; return st ? G.sageGuide(st, new Date().getDate()) : null; })]; // 스승 길잡이 — 사기 전에 멈추는 길의 쪽에만(주문 0054 [5] 7)
   if (hh !== (location.hash || '#/')) return;
   root.replaceChildren(...page(v).filter(Boolean));
+  tint(root);
   afterPaint(root);
   window.scrollTo(0, 0);
   if (typeof v.later === 'function') v.later().catch(e => console.error(e));
@@ -448,3 +452,18 @@ window.addEventListener('load', () => setTimeout(() => { // 하늘(주문 0054 [
   const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/su/su-sky.css'; document.head.append(l);
   import('/su/su-sky.js').then(m => m.startSky()).catch(e => console.error(e));
 }, 1500), {once: true});
+/* 새 판이 올라가면 스스로 새로 고침(주문 1708 · 사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어!」 — 휴대폰이 전에 열어 둔 화면을 새로 받지 않고 그대로 보여 줌)
+   판 표 /su/version.json = 올릴 때마다 새 표(scripts/atlas11/package.mjs 가 씀 · 저장소에는 「dev」) · 처음 연 때의 표를 기억
+   화면이 다시 보일 때(다른 앱에서 돌아옴 · 뒤로 가기로 저장된 화면이 다시 뜸) 표를 새로 받아 바뀌었으면 한 번 새로 고침 · 같거나 못 받으면 그대로(읽는 중에는 바꾸지 않음) */
+const VER = '/su/version.json';
+const verNow = () => fetch(VER + '?t=' + Date.now(), {cache: 'no-store'}).then(r => (r.ok ? r.json() : null)).then(j => (j && typeof j.v === 'string' && j.v ? j.v : null)).catch(() => null);
+let ver0 = null;
+verNow().then(v => { if (v && !ver0) ver0 = v; });
+async function fresh() {
+  if (document.visibilityState !== 'visible') return;
+  const v = await verNow(); if (!v) return;
+  if (!ver0) { ver0 = v; return; }
+  if (v !== ver0) { ver0 = v; location.reload(); }
+}
+document.addEventListener('visibilitychange', fresh);
+window.addEventListener('pageshow', e => { if (e.persisted) fresh(); });

@@ -158,6 +158,37 @@ test('잡스 판 첫 페이지 — su-apple 부품 꼴 · 처음 쪽과 될 듯 
   assert.equal((u.match(/artHero\('su-apple'/g) ?? []).length, 2, '처음 쪽 · 될 듯 21곳이 잡스 판');
 });
 
+/** 주문 1708(사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어! 구슬으로 첫페이지 해서 다 변경해야 하잖아」 · 17:18 「맞아」) — 첫 페이지 위아래까지 흰 구슬 판 · 새 판이면 스스로 새로 고침 */
+test('첫 페이지 위아래까지 흰 구슬 판 · 새 판이면 스스로 새로 고침(주문 1708)', () => {
+  const css = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.css'), 'utf8');
+  const P = ':root:has(#su main > .su-hero[data-g="su-apple"])';
+  const i = css.indexOf(P + ' {'); assert.ok(i >= 0, '이 그림이 있는 쪽만 색 이름을 바꿈');
+  const V = Object.fromEntries([...css.slice(i, css.indexOf('}', i)).matchAll(/--([a-z0-9]+):\s*(#[0-9A-Fa-f]{6})/g)].map(m => [m[1], m[2]]));
+  const art = fs.readFileSync(path.join(ROOT, 'site/su/su-art.css'), 'utf8'), a0 = art.indexOf(':root {');
+  const names = [...art.slice(a0, art.indexOf('}', a0)).matchAll(/--([a-z0-9]+):/g)].map(m => m[1]);
+  for (const k of [...names, 'sky1', 'sky2']) assert.ok(V[k], '어두운 모드 값이 남지 않게 색 이름 모두 — ' + k);
+  assert.equal(V.bg, '#FFFFFF'); assert.equal(V.card, '#FFFFFF'); assert.equal(V.sky1, '#FFFFFF'); assert.equal(V.sky2, '#FFFFFF');
+  assert.ok(/color-scheme: light;/.test(css.slice(i, css.indexOf('}', i))), '어두운 모드 휴대폰에서도 흰 판');
+  const L = h => { const c = [1, 3, 5].map(j => parseInt(h.slice(j, j + 2), 16) / 255).map(c => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  const C = (a, b) => { const x = L(a), y = L(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  assert.ok(C(V.ink, V.bg) >= 7 && C(V.mute, V.bg) >= 4.5 && C(V.mute, V.soft) >= 4.5 && C(V.chipt, V.chip) >= 4.5 && C(V.warn, V.bg) >= 4.5, '글 대비(본문 7 · 흐린 글 4.5 넘게)');
+  for (const s of ['.su-corners', '.su-orn', '.su-sky']) assert.ok(css.includes(P + ' ' + s), '무하 꾸밈 뺌 — ' + s);
+  for (const s of ['.su-top::after { content: none; }', '.su-tabs::before { content: none; }']) assert.ok(css.includes(P + ' ' + s), '금빛 물결 줄 뺌 — ' + s);
+  for (const s of ['.su-top {', '.su-dock {', '.su-tabs {']) assert.ok(new RegExp(P.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ' ' + s.replace(/[.{]/g, '\\$&') + ' background: #FFFFFF;').test(css), '위아래 흰 바탕 — ' + s);
+  const flat = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/@keyframes[^{]+\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '');
+  const sels = [...flat.matchAll(/([^{}]+)\{[^{}]*\}/g)].map(m => m[1].trim()).filter(s => !s.startsWith('@')).flatMap(s => s.split(',').map(x => x.trim()));
+  const OK = [P, '#su:has(main > .su-hero[data-g="su-apple"])', '.su-apple ', '.su-news > .su-hero[data-g="su-apple"]'];
+  assert.ok(sels.length > 40 && sels.every(s => OK.some(o => s.startsWith(o))), '다른 쪽에는 걸리지 않음(꾸밈마다 이 그림이 있는 쪽만) — ' + sels.filter(s => !OK.some(o => s.startsWith(o))).slice(0, 3).join(' | '));
+  const html = fs.readFileSync(path.join(ROOT, 'site/su/index.html'), 'utf8');
+  assert.ok(html.includes('<link rel="stylesheet" href="/su/su-apple.css">'), '처음부터 붙임(위아래가 옛 색으로 깜빡이지 않게)');
+  const js = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8');
+  assert.ok(js.includes("const VER = '/su/version.json'") && js.includes("document.addEventListener('visibilitychange', fresh)") && /pageshow', e => \{ if \(e\.persisted\) fresh\(\); \}/.test(js), '화면이 다시 보일 때 판 표를 새로 받음');
+  assert.ok(/if \(v !== ver0\) \{ ver0 = v; location\.reload\(\); \}/.test(js) && /if \(!v\) return;/.test(js), '표가 바뀌었을 때만 한 번 새로 고침 · 못 받으면 그대로');
+  assert.ok(/m\.setAttribute\('content', w \? '#FFFFFF' : c\)/.test(js), '휴대폰 맨 위 띠 색도 흰색(다른 쪽은 원래 색)');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/version.json'), 'utf8')), {v: 'dev'}, '저장소 판 표 = dev');
+  assert.ok(/fs\.writeFile\(path\.join\(dist, 'su\/version\.json'\)/.test(fs.readFileSync(path.join(ROOT, 'scripts/atlas11/package.mjs'), 'utf8')), '묶을 때마다 새 판 표');
+});
+
 /** 주문 1023 「머스크 판 4」 — 일꾼 열하나가 서로 모르게 만든 무하 그림 부품(docs/design/su-musk-2026-11-05/pic-brief.md) */
 const ART4 = ['su-show.js', 'su-women-e.js', 'su-mucha.js', 'su-land-art.js', 'su-co-art.js', 'su-more-art.js', 'su-stop-art.js', 'su-rec-art.js', 'su-road-art.js'];
 test('무하 그림 부품 — 부품 꼴(load · picture · CSS) · 꾸밈 파일 · 신 72 · 스승 39 무하 얼굴(기계가 그린 그대로 · 글자 · style · 스크립트 0) · 앵무새(주문 1023 [3] 4 · [5] 3)', async () => {

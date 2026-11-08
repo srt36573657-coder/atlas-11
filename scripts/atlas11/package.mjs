@@ -39,6 +39,8 @@ export async function buildDist() {
   const dist = path.join(root, 'dist');
   await fs.rm(dist, {recursive: true, force: true}); await fs.mkdir(dist, {recursive: true});
   await copyDir(path.join(root, 'site'), dist);
+  // 수르 판 표(주문 1708 · 사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어!」) — 묶을 때마다 새 표 · 휴대폰이 화면을 다시 볼 때 표가 바뀌었으면 스스로 새로 고침(site/su/su.js fresh) · 저장소 판은 「dev」
+  await fs.writeFile(path.join(dist, 'su/version.json'), JSON.stringify({v: (process.env.GITHUB_SHA ?? 'local').slice(0, 12) + '-' + Date.now().toString(36)}) + '\n');
   // 새 ATLAS 날마다 굴리기(2026-10-11 09:37 사장님 「기준일을 항상 현재 날짜에서 지난 20일 거래로 … 항상 그렇게 하라」) — 이어 받은 종가로 dist/atlas/data 를 다시 셈
   //   깃허브 실행기에서만 종가를 받음 · 따로 세기 틀림 0 이고 새 거래일일 때만 바꿈 · 멈추면 저장된 자료 그대로(올리기는 멈추지 않음) — scripts/atlas11/t365/roll.mjs
   await rollAtlas({root, dist});
