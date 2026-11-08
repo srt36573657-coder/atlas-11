@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-site-deploy-1",
-  "at": "2026-11-08T12:02:47.957Z",
+  "at": "2026-11-08T12:29:21.999Z",
   "state": "ready",
   "siteSource": "env",
   "siteCreated": false,
   "siteId": "db92732d-6f92-48e5-8b70-6b39c42dd405",
   "url": "https://aaa7377.com",
-  "deployUrl": "https://6af0650e220f6e487b18362c--mulgil.netlify.app",
-  "deployId": "6af0650e220f6e487b18362c",
+  "deployUrl": "https://6af06b3f5661b35808694cdd--mulgil.netlify.app",
+  "deployId": "6af06b3f5661b35808694cdd",
   "noindex": false,
-  "files": 3870,
+  "files": 3887,
   "exitCode": 0,
   "error": null,
   "functions": {
@@ -22,6 +22,7 @@
       "jinhwa",
       "kakao",
       "letter",
+      "price",
       "tally"
     ],
     "packages": [
