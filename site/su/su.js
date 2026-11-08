@@ -426,6 +426,7 @@ async function route() {
     else {
       const [, k, raw] = m; let a = raw; try { a = decodeURIComponent(raw); } catch { /* 그대로 */ }
       if (k === 'c' && /^[0-9A-Z]{6}\/more$/.test(a)) v = await vMore(X21, a.slice(0, 6));
+      else if (k === 'c' && /^[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)$/.test(a)) v = await (await import('/su/su-why36.js')).vWhy(X21, a.slice(0, 6), a.slice(9)); // 「왜?」 쪽 — 첫 페이지 42칸을 누르면(주문 0123)
       else if (k === 'm') v = await vLandOne(X21, a);
       else if (k === 'g') v = await (await roadM()).vRoads(X21, a);
       else if (k === 'c' || k === 'k') v = await coOnPath(a);

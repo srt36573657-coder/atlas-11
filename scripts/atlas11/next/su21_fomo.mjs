@@ -13,6 +13,7 @@
  *      난수 = sfc32 · 씨앗 sha256(그날 판 · 회사 번호 · 판 이름) — 같은 날 같은 회사는 늘 같은 값(다시 세기 가능)
  *   ② 소거법 기준 일곱(차례 고정 · 하나라도 걸리면 그 회사 값은 「보류」 또는 「뺌」 — 지어내지 않음)
  *   ③ 까닭 열하나 = 지수 · 두 묶음 · 여섯 잣대 · 무게 · 바탕(su-why36.js 가 글로 풀어 보여 줌)
+ *   종가 = 회사 자료(atlas/data/co) · 마지막 21거래일은 첫 페이지 칸과 같은 판 값(board.json c — 자료 마지막 날 = 판 날일 때만 · 두 자료가 다른 날이 있어 첫 페이지와 같은 값으로 셈)
  *   쓰는 곳: 목록 칸마다 fomo(정수 · 보류면 null) · fv(pass · hold · out) → su21.json · su21-next.json · 자세한 값 → su21-why.json(「왜?」 쪽만 받음)
  * 쓰는 법: node scripts/atlas11/next/su21_fomo.mjs --su <su/data 폴더> --data <atlas/data 폴더> [--paths 100000]
  */
@@ -143,7 +144,11 @@ if (isMain) {
     let co; try { co = J(path.join(DD, 'co', code + '.json')); } catch { co = null; }
     const C = new Float64Array(N);
     if (co && Array.isArray(co.close) && Number.isInteger(co.k0)) co.close.forEach((x, j) => { const t = j + co.k0; if (t >= 0 && t < N && typeof x === 'number' && x > 0) C[t] = x; });
-    out[code] = fomoOf(C, N - 1, dates, {seed: [FOMO_MC.id, board, code].join('|'), lag, paths: PATHS});
+    // 마지막 21거래일은 첫 페이지 칸과 같은 값(그날 판 board.json 의 21 마지막 값 · 네이버 증권 그날 마지막 값) — 자료 마지막 날 = 판 날일 때만(날짜가 맞을 때만 갈아 끼움)
+    const it = items.find(x => x.code === code && Array.isArray(x.c)) ?? items.find(x => x.code === code), c21 = Array.isArray(it?.c) && it.c.length === 21 && it.c.every(v => typeof v === 'number' && v > 0) ? it.c : null;
+    const spliced = !!(c21 && board && dates[N - 1] === board && it.date === board);
+    if (spliced) for (let k = 0; k < 21; k++) C[N - 21 + k] = c21[k];
+    out[code] = {...fomoOf(C, N - 1, dates, {seed: [FOMO_MC.id, board, code].join('|'), lag, paths: PATHS}), src: spliced ? '마지막 21거래일 = 첫 페이지 판 값 · 그 앞 = 회사 자료 종가' : '회사 자료 종가'};
   }
   for (const c of items) { const x = out[c.code]; c.fomo = x?.v ?? null; c.fv = x?.verdict ?? 'hold'; }
   const why = {schema: 'su21-why-1', made: new Date().toISOString(), board, data: dates[N - 1], mc: {...FOMO_MC, paths: PATHS}, checks: CHECKS, feats: FEATS, groups: GROUPS, fomo: out};

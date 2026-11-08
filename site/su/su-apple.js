@@ -146,13 +146,20 @@ function cell(it, x, y, w, h, side) {
   const sx = x + w - 8 - SW, room = sx - x - 12;
   const price = it.px != null ? won(it.px) : NEED, pfs = est(price, 18) <= room ? 18 : 17;
   const say = (it.px != null ? ' · 현재가 ' + price : '') + (it.sp ? ' · 한 달 전 ' + won(it.sp[0]) : '');
-  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'sa-cell sa-' + side, 'data-k': it.k, 'data-name': it.name, 'data-px': it.px ?? '', 'data-code': it.code,
-    'aria-label': (side === 'now' ? '지금 ' : '될 듯 ') + it.kind + ' · ' + it.name + ' · ' + it.val + say + (it.star ? ' · 두 목록에 함께' : '')});
+  // 첫 발견 · 며칠째 · 포모지수(주문 0123 · 사장님 2026-11-09 01:44 「몇일째 그 항목에 있는지 … 첫 발견」 · 02:01 「포모지수값을 첫페이지 42곳에 모두」) — 누르면 「왜?」 쪽(서른여섯 가지 · 기준 일곱 · 포모 까닭)
+  const found = fin(it.days) && mday(it.found) ? '첫 발견 ' + mday(it.found) : '첫 발견 ' + NEED;
+  const fo = fin(it.fomo) ? String(it.fomo) : '보류', dl = (fin(it.days) ? it.days + '일째' : NEED) + ' · ', dw = dl + '포모지수 ' + fo;
+  const dline = est(dw, 17) <= w - 12 ? dw : dl + '포모 ' + fo;
+  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code) + '/y/' + it.k, class: 'sa-cell sa-' + side, 'data-k': it.k, 'data-name': it.name, 'data-px': it.px ?? '', 'data-code': it.code,
+    'data-days': fin(it.days) ? it.days : '', 'data-found': it.found ?? '', 'data-fomo': fin(it.fomo) ? it.fomo : '',
+    'aria-label': (side === 'now' ? '지금 ' : '될 듯 ') + it.kind + ' · ' + it.name + ' · ' + it.val + say + (it.star ? ' · 두 목록에 함께' : '') + ' · ' + found + ' · ' + dl + '포모지수 ' + fo});
   a.append(s('title', {text: it.name + ' · ' + it.val + say}),
     s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit'}),
     T(x + 6, y + 26, nm, 'sa-name', {'font-size': fs}),
     T(x + 6, y + 52, it.val, 'sa-val sa-val-' + side + (it.val === '꽃' ? ' sa-bloomv' : '')),
     T(x + 6, y + 78, price, 'sa-px' + (it.px != null ? '' : ' sa-need'), {'font-size': pfs}),
+    T(x + 6, y + 104, found, 'sa-found' + (fin(it.days) ? '' : ' sa-need'), {'font-size': 17}),
+    T(x + 6, y + 128, dline, 'sa-days' + (fin(it.fomo) ? '' : ' sa-need'), {'font-size': 17}),
     spark(it.sp, sx, y + 40, SW, 34, side));
   CELL.set(a, {it, side, sx, sy: y + 40, room, say0: say});
   return a;
@@ -211,9 +218,9 @@ function draw(d, opt) {
   const day = d?.asOf?.board ?? null;
   const pxOf = c => (fin(c?.close) && c.close > 0 && (!c.date || !day || c.date === day) ? c.close : null); // 그날(asOf.board) 마지막 값만 — 다른 날 값이면 「확인 필요」
   const spOf = c => (Array.isArray(c?.c) && c.c.length === 21 && c.c.every(v => fin(v) && v > 0) && pxOf(c) === c.c[20] ? c.c : null); // 21 마지막 값 · 끝 = 현재가일 때만
-  const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c)}));
+  const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c), days: c.days, found: c.found, fomo: c.fomo}));
   const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
-  const ROW = 92, HEADH = 58, GAP = 26, CW = MID - PAD - 3;
+  const ROW = 140, HEADH = 58, GAP = 26, CW = MID - PAD - 3; // 줄 넷째 · 다섯째 = 첫 발견 · 며칠째와 포모지수(주문 0123)
   const LIST0 = 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄 아래
   const rowsOf = k => Math.max(items(k, false).length, items(k, true).length, 1);
   const H = LIST0 + KEY.reduce((a, k) => a + HEADH + rowsOf(k) * ROW + GAP, 0) + 24;

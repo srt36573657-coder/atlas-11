@@ -13,7 +13,7 @@ import {NEED, num} from '/su/su-six.js';
 import {KIND} from '/su/su-21.js';
 
 export const CSS = '/su/su-co-jobs.css';
-const W = 390, PAD = 20, MID = W / 2, HMIN = 660, KEY = ['hot', 'bloom', 'money'];
+const W = 390, PAD = 20, MID = W / 2, HMIN = 660, KEY = ['hot', 'bloom', 'money'], KEY6 = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const r1 = v => Math.round(v * 10) / 10;
 const lastOf = a => (Array.isArray(a) && a.length ? a[a.length - 1] : null);
@@ -61,8 +61,8 @@ export async function load(get, code) {
   const c = typeof code === 'string' && CODE.test(code) ? code : null;
   if (!c || typeof get !== 'function') return {code: c, co: null, H: null, T: null};
   const safe = u => Promise.resolve().then(() => get(u)).catch(() => null);
-  const [co, H, T21] = await Promise.all([safe('/atlas/data/co/' + c + '.json'), safe('/atlas/data/home.json'), safe('/su/data/su21.json')]);
-  return {code: c, co, H, T: T21};
+  const [co, H, T21, N21] = await Promise.all([safe('/atlas/data/co/' + c + '.json'), safe('/atlas/data/home.json'), safe('/su/data/su21.json'), safe('/su/data/su21-next.json')]);
+  return {code: c, co, H, T: T21, N: N21};
 }
 
 /** 자료 → 그릴 값(새 셈 없음 — su-data.js coLine · idxLine · pct 와 whyRoad 의 값 그대로 · 기간은 자료 날짜에서 · 현재가 = 회사 자료 c.price 그대로) */
@@ -82,8 +82,12 @@ function model(d) {
       name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : sgnP(x.ch20), ivp, cvp};
   });
   const from = H && typeof H.base === 'string' ? H.base : null, to = typeof c.priceDate === 'string' ? c.priceDate : H && typeof H.asOf === 'string' ? H.asOf : null;
+  // 현재가 = 첫 페이지 칸과 같은 값(주문 0200 · 사장님 2026-11-09 02:00 「어」 — 물음 「회사 쪽 현재가도 첫 페이지와 같은 날 값으로 맞출까요?」)
+  //   42칸에 든 회사는 그날 판 값(su21.json · su21-next.json 의 close · date = asOf.board) · 아니면 회사 자료 c.price 그대로 · 장 중에는 live() 가 1분마다 바꿈
+  const N21 = d ? d.N : null, pool = [...KEY6.flatMap(k => (lists[k] || [])), ...KEY6.flatMap(k => ((N21 && N21.lists && N21.lists[k]) || []))];
+  const bd = pool.find(x => x && x.code === code && fin(x.close) && x.close > 0 && typeof x.date === 'string' && x.date === asOf.board) || null;
   return {ok: true, code, name: c.name, ind, cl, il, last: cl ? lastOf(cl) - 100 : null, ilast: il ? lastOf(il.line) - 100 : null, from, to, roads,
-    price: fin(c.price) && c.price > 0 ? c.price : null, pday: dk(c.priceDate)};
+    price: bd ? bd.close : fin(c.price) && c.price > 0 ? c.price : null, pday: bd ? dk(bd.date) : dk(c.priceDate), pdate: bd ? bd.date : typeof c.priceDate === 'string' ? c.priceDate : null, psrc: bd ? 'board' : 'co'};
 }
 
 /* ═══ ① 이름 · 현재가 ═══ */
@@ -261,5 +265,34 @@ export function picture(d, opt = {}) {
     'data-mode': roads.length ? 'road' + roads.length : m.ind ? 'ind' : 'line'},
     s('rect', {x: 0, y: 0, width: W, height: H, class: 'cj-bg'}), topG(m, TP), chartG(m, P, id), sec);
   if (opt && opt.still) svg.classList.add('cj-still');
+  svg.setAttribute('data-px', m.price != null ? String(m.price) : ''); svg.setAttribute('data-pdate', m.pdate || ''); svg.setAttribute('data-psrc', m.psrc || '');
+  if (m.price != null && (!opt || opt.live !== false)) live(svg, m.code, m.pdate);
   return svg;
+}
+
+/* ── 장 중 현재가(주문 0200 — 첫 페이지 칸과 같은 길 · /api/price · 네이버 증권 분봉 그대로) ──
+   그림을 돌려준 뒤 물음 · 받은 값이 판 날보다 앞이 아니면 큰 숫자 · 날짜 글 · 이름표를 바꿈 · 장 중이면 1분마다(화면이 보일 때 · 그림이 쪽에서 빠지면 멈춤) · 못 받으면 그대로 */
+const hmK = t => { const q = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(String(t || '')); if (!q) return null; const H = +q[4]; return +q[2] + '월 ' + +q[3] + '일 ' + (H < 12 ? '오전 ' : '오후 ') + (H % 12 || 12) + '시' + (+q[5] ? ' ' + +q[5] + '분' : ''); };
+function live(svg, code, day) {
+  if (!code || typeof fetch !== 'function') return;
+  const ask = async () => {
+    if (!svg.isConnected && svg.dataset.asked) return;
+    svg.dataset.asked = '1';
+    try {
+      if (typeof document === 'undefined' || document.visibilityState === 'visible') {
+        const r = await fetch('/api/price?codes=' + code), j = r.ok ? await r.json() : null, v = j && j.items ? j.items[code] : null;
+        if (!j || typeof j.day !== 'string' || !(j.day >= (day || ''))) return;
+        if (v && fin(v.p) && v.p > 0 && typeof v.t === 'string') {
+          const n = svg.querySelector('text.cj-px tspan.cj-n'), dl = svg.querySelector('text.cj-d'), old = svg.getAttribute('data-px');
+          if (n) n.textContent = num(v.p);
+          if (dl) dl.textContent = j.status === 'open' ? '현재가는 ' + hmK(v.t) + ' 값이에요.' : '현재가는 ' + dk(j.day) + ' 마지막 값이에요.';
+          const lab = svg.getAttribute('aria-label') || ''; if (old) svg.setAttribute('aria-label', lab.replace(num(+old) + '원', num(v.p) + '원'));
+          svg.setAttribute('data-px', String(v.p)); svg.setAttribute('data-live', v.t);
+        }
+        if (j.status !== 'open') return;
+      }
+    } catch (e) { return; }
+    setTimeout(ask, 60000);
+  };
+  setTimeout(ask, 0);
 }

@@ -486,3 +486,22 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
   assert.ok(/^1\. 수르의 본질: 불장 종목, 꽃이 될 종목, 돈이 몰리는 종목을 찾아내는 탐지다\./m.test(doc), '본질 문서 1번 = 자료 0');
   assert.ok(/^2\. 셋을 돕는 일/m.test(doc), '옛 하는 일 셋 → 셋을 돕는 일');
 });
+
+/** 주문 0123(사장님 2026-11-09 01:23 · 01:44 · 02:01 · 02:02 · 02:04 「어」) · 주문 0200(02:00 「어」) — 「왜?」 쪽 · 42칸 첫 발견 · 며칠째 · 포모지수 · 회사 쪽 현재가 */
+test('「왜?」 쪽 — 길 · 서른여섯 가지 · 기준 일곱 · 포모 까닭 · 42칸 줄 · 회사 쪽 현재가', () => {
+  const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), y = fs.readFileSync(path.join(ROOT, 'site/su/su-why36.js'), 'utf8');
+  const ap = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.js'), 'utf8'), cj = fs.readFileSync(path.join(ROOT, 'site/su/su-co-jobs.js'), 'utf8'), pk = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/package.mjs'), 'utf8');
+  assert.ok(/\\\/y\\\/\(hot\|bloom\|money\|hotNext\|moneyNext\|bloomNext\)\$\/\.test\(a\)\) v = await \(await import\('\/su\/su-why36\.js'\)\)\.vWhy\(X21, a\.slice\(0, 6\), a\.slice\(9\)\)/.test(su), '길 #/c/<번호>/y/<묶음>');
+  assert.ok(fs.existsSync(path.join(ROOT, 'site/su/su-why36.css')) && /export const CSS = '\/su\/su-why36\.css'/.test(y), '꾸밈 파일');
+  for (const k of ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext']) assert.ok(new RegExp(`\\b${k}: \\{기: \\[`).test(y), '중요한 차례 — ' + k);
+  assert.ok(/PARTS = Object\.freeze\(\[\s*\{id: '기'/.test(y) && /items\.length >= 9/.test(y) && /while \(p\.items\.length < 9 && spare\.length\)/.test(y), '기 · 승 · 전 · 결 아홉씩');
+  assert.ok(/export function crit7/.test(y) && /fomo11/.test(y) && /rows\.slice\(0, 11\)/.test(y), '기준 일곱 · 포모 까닭 열하나');
+  assert.ok(/'#\/c\/' \+ encodeURIComponent\(it\.code\) \+ '\/y\/' \+ it\.k/.test(ap) && /'sa-found'/.test(ap) && /'sa-days'/.test(ap) && /const ROW = 140/.test(ap), '첫 페이지 칸 — 누르면 「왜?」 · 첫 발견 · 며칠째 · 포모지수');
+  assert.ok(/psrc: bd \? 'board' : 'co'/.test(cj) && /function live\(svg, code, day\)/.test(cj) && /su21-next\.json/.test(cj), '회사 쪽 현재가 = 첫 페이지 값 · 장 중 1분마다');
+  for (const f of ['su21_replay.mjs', 'su21_days.mjs', 'su21_fomo.mjs']) assert.ok(pk.includes('scripts/atlas11/next/' + f), '묶을 때 셈 — ' + f);
+  const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8')), W = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-why.json'), 'utf8'));
+  const all = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'].flatMap(k => T.lists[k]);
+  assert.equal(all.length, 42);
+  assert.ok(all.every(c => Number.isInteger(c.days) && c.days >= 1 && /^\d{4}-\d{2}-\d{2}$/.test(c.found) && (c.fomo === null || (Number.isInteger(c.fomo) && c.fomo >= 0 && c.fomo <= 100))), '저장된 판 42칸 — 며칠째 · 첫 발견 · 포모');
+  assert.equal(W.board, T.asOf.board); assert.equal(W.checks.length, 7); assert.ok(W.mc.paths >= 20000);
+});
