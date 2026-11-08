@@ -143,13 +143,24 @@ land_of = {}
 for G in lands:
     for i in G['industries']: land_of[i] = G
 
-HEAVY = ('c', 'flows', 'news', 'pos52', 'close')
+HEAVY = ('c', 'cFrom', 'cd', 'flows', 'news', 'pos52', 'close')
 slim = lambda co: {k: v for k, v in co.items() if k not in HEAVY}
+# 21 마지막 값의 날짜(주문 0806 · 사장님 2026-11-09 08:06 「어 그렇게 해」 — 회사 쪽 한 달 꺾은선도 첫 페이지와 같은 값 · 처음 날 · 끝 날도 같게)
+#   같은 판에서 나온 회사 파일(view/stocks/<번호>.json closes60 · 같은 boardId)의 마지막 21줄 — 값 21개가 판 c 와 모두 같고 첫 날 = cFrom · 끝 날 = date 일 때만 · 아니면 None
+def cdOf(c):
+    v = B[c]; cs = v.get('c')
+    try: st = J(A.repo + '/public/data/atlas11/view/stocks/' + c + '.json')
+    except Exception: return None
+    rows = (st.get('closes60') or [])[-21:] if st.get('boardId') == b.get('boardId') else []
+    if not isinstance(cs, list) or len(cs) != 21 or len(rows) != 21: return None
+    ds = [r.get('date') for r in rows]
+    if ds[0] != v.get('cFrom') or ds[-1] != v.get('date') or any(round(r.get('close') or 0, 2) != x for r, x in zip(rows, cs)): return None
+    return ds
 def item(c, k):
     v = B[c]; ind = v['group']['label']; L = land_of.get(ind)
     co = {'code': c, 'name': nm(c), 'ind': ind, 'land': L['name'] if L else None, 'landId': L['id'] if L else None, 'kind': v.get('kind'), 'in': inl[c],
           'ch20': r1(v['change20'] * 100) if v.get('change20') is not None else None, 'close': v.get('close'), 'date': v.get('date'),
-          'c': v.get('c'), 'flows': (v.get('brief') or {}).get('flows'), 'news': {k2: (v.get('brief') or {}).get(k2) for k2 in ('newsCount', 'newsNamed')},
+          'c': v.get('c'), 'cFrom': v.get('cFrom'), 'cd': cdOf(c), 'flows': (v.get('brief') or {}).get('flows'), 'news': {k2: (v.get('brief') or {}).get(k2) for k2 in ('newsCount', 'newsNamed')},
           'pos52': (v.get('info') or {}).get('pos52'), 'cap': cap.get(c), 'x': tco.get(c, [None, None])[0], 'y': tco.get(c, [None, None])[1], 'z': tco.get(c, [None, None, None])[2]}
     if k == 'hot':
         h = hot[v['group']['id']]

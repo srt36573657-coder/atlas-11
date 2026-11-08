@@ -1,0 +1,41 @@
+/* 수르 한국 시장 일곱 가지(기록창 · 주문 0814 · su-kr7.js) — 첫 페이지 잡스 판과 같은 말투: 흰 바탕 · 검정 · 회색 · 호박색 하나 · 가는 줄 · 글 17px 넘게 */
+.su-news > .su-hero.k7 { display: grid; gap: 22px; padding: 6px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); background: #FFFFFF; color: #1D1D1F; }
+.su-hero.k7 .k7-lead { margin: 0; font-size: 20px; line-height: 1.55; font-weight: 700; color: #1D1D1F; word-break: keep-all; overflow-wrap: anywhere; }
+.su-hero.k7 .k7-when { margin: -10px 0 0; font-size: 17px; line-height: 1.5; font-weight: 600; color: #6E6E73; word-break: keep-all; }
+.su-hero.k7 .k7-map { display: block; width: 100%; max-width: 100%; height: auto; }
+.su-hero.k7 .k7-bg { fill: #F5F5F7; }
+.su-hero.k7 .k7-mh { font-size: 17px; font-weight: 700; fill: #6E6E73; }
+.su-hero.k7 .k7-mc { font-size: 18px; font-weight: 800; fill: #1D1D1F; }
+.su-hero.k7 .k7-mm { font-size: 18px; font-weight: 700; fill: #3A3A3C; }
+.su-hero.k7 .k7-ln { stroke: #86868B; stroke-width: 1.5; fill: none; }
+.su-hero.k7 .k7-dot { fill: #FFFFFF; stroke: #D97706; stroke-width: 2; }
+.su-hero.k7 .k7-dn { font-size: 17px; font-weight: 800; fill: #1D1D1F; font-variant-numeric: tabular-nums; }
+.su-hero.k7 .k7-ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.su-hero.k7 .k7-li { margin: 0; }
+.su-hero.k7 .k7-d { border-top: 1px solid #D2D2D7; padding-top: 12px; }
+.su-hero.k7 .k7-sum { list-style: none; display: grid; grid-template-columns: 40px minmax(0, 1fr) 20px; gap: 12px; align-items: start; min-height: 48px; cursor: pointer; }
+.su-hero.k7 .k7-sum::-webkit-details-marker { display: none; }
+.su-hero.k7 .k7-sum::after { content: '+'; font-size: 24px; line-height: 34px; font-weight: 700; color: #86868B; text-align: center; }
+.su-hero.k7 .k7-d[open] > .k7-sum::after { content: '−'; }
+.su-hero.k7 .k7-n { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #FFF7ED; border: 1.6px solid #D97706; color: #1D1D1F; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.su-hero.k7 .k7-tx { display: grid; gap: 4px; min-width: 0; }
+.su-hero.k7 .k7-t { font-size: 21px; line-height: 1.35; font-weight: 800; letter-spacing: -0.3px; color: #1D1D1F; word-break: keep-all; overflow-wrap: anywhere; }
+.su-hero.k7 .k7-one { font-size: 18px; line-height: 1.55; font-weight: 500; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; }
+.su-hero.k7 .k7-body { display: grid; gap: 8px; padding: 12px 0 6px 52px; min-width: 0; }
+.su-hero.k7 .k7-h3 { margin: 8px 0 0; font-size: 18px; line-height: 1.4; font-weight: 800; color: #8A5A00; }
+.su-hero.k7 .k7-s { margin: 0; font-size: 18px; line-height: 1.6; font-weight: 500; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; }
+.su-hero.k7 .k7-vs, .su-hero.k7 .k7-src { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.su-hero.k7 .k7-v { display: grid; gap: 2px; }
+.su-hero.k7 .k7-who { font-size: 18px; font-weight: 800; color: #1D1D1F; }
+.su-hero.k7 .k7-sr { font-size: 17px; line-height: 1.5; font-weight: 500; color: #6E6E73; word-break: keep-all; overflow-wrap: anywhere; }
+.su-hero.k7 .k7-fig { margin: 6px 0 0; display: grid; gap: 6px; }
+.su-hero.k7 .k7-cap { font-size: 17px; line-height: 1.45; font-weight: 700; color: #1D1D1F; word-break: keep-all; }
+.su-hero.k7 .k7-bars { display: block; width: 100%; max-width: 100%; height: auto; }
+.su-hero.k7 .k7-bw { font-size: 18px; font-weight: 800; fill: #1D1D1F; }
+.su-hero.k7 .k7-bb { fill: #D2D2D7; }
+.su-hero.k7 .k7-kr .k7-bb { fill: #D97706; }
+.su-hero.k7 .k7-bt { font-size: 17px; font-weight: 800; fill: #1D1D1F; }
+.su-hero.k7 .k7-note { margin: 0; font-size: 17px; line-height: 1.5; color: #6E6E73; word-break: keep-all; }
+.su-news > .k7-how { display: grid; gap: 12px; padding: 18px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); }
+.su-news > .k7-how .k7-hw { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+.su-news > .k7-how .k7-s { margin: 0; font-size: 18px; line-height: 1.6; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; }

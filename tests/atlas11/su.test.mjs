@@ -96,6 +96,7 @@ test('저장소 자료 그대로 — 꽃이 될 회사 · 돈이 몰린 회사 �
 test('첫 화면이 된 뒤 — 지금 수르 고리 · 말 · 카톡 표는 /next/ 로 그대로 · 수르 두 길 길과 다른 표는 그대로', () => {
   for (const h of ['', '#', '#/', '#/c/005930', '#/i/%ED%95%AD%EA%B3%B5']) assert.equal(forwardTo('', h), null, h);
   for (const h of ['#/b', '#/k', '#/r', '#/p', '#/k/127120', '#/r/127120', '#/p/005930']) assert.equal(forwardTo('', h), null, h); // 새 판 탭(주문 1238)
+  assert.equal(forwardTo('', '#/r/k'), null, '#/r/k 기록창(주문 0814) — 수르 안');
   assert.equal(forwardTo('', '#/p/abc'), '/next/#/p/abc'); // 번호 꼴이 아니면 지금 수르
   assert.equal(forwardTo('?v=123', '#/'), null);
   assert.equal(forwardTo('?fbclid=abc', ''), null);
@@ -497,11 +498,39 @@ test('「왜?」 쪽 — 길 · 서른여섯 가지 · 기준 일곱 · 포모 �
   assert.ok(/PARTS = Object\.freeze\(\[\s*\{id: '기'/.test(y) && /items\.length >= 9/.test(y) && /while \(p\.items\.length < 9 && spare\.length\)/.test(y), '기 · 승 · 전 · 결 아홉씩');
   assert.ok(/export function crit7/.test(y) && /fomo11/.test(y) && /rows\.slice\(0, 11\)/.test(y), '기준 일곱 · 포모 까닭 열하나');
   assert.ok(/'#\/c\/' \+ encodeURIComponent\(it\.code\) \+ '\/y\/' \+ it\.k/.test(ap) && /'sa-found'/.test(ap) && /'sa-days'/.test(ap) && /const ROW = 140/.test(ap), '첫 페이지 칸 — 누르면 「왜?」 · 첫 발견 · 며칠째 · 포모지수');
-  assert.ok(/psrc: bd \? 'board' : 'co'/.test(cj) && /function live\(svg, code, day\)/.test(cj) && /su21-next\.json/.test(cj), '회사 쪽 현재가 = 첫 페이지 값 · 장 중 1분마다');
+  assert.ok(/psrc: bd \? 'board' : 'co'/.test(cj) && /function live\(svg, m, P, id\)/.test(cj) && /su21-next\.json/.test(cj), '회사 쪽 현재가 = 첫 페이지 값 · 장 중 1분마다');
+  // 주문 0806(사장님 2026-11-09 08:06 「어 그렇게 해」) — 회사 쪽 한 달 꺾은선 = 첫 페이지 칸 값 21개 · 같은 날짜 · 시장 줄은 날짜가 꼭 맞을 때만 · 장 중에는 칸과 똑같이 밀림
+  assert.ok(/bd\.c\.length !== 21/.test(cj) && /bd\.c\[20\] !== bd\.close/.test(cj) && /lsrc: B \? 'board' : 'co'/.test(cj), '칸 값 잣대 = 첫 페이지 spOf 와 같음(21개 · 끝 값 = 현재가)');
+  assert.ok(/function idxAt\(H, market, cd\)/.test(cj) && /v\.every\(fin\) \?/.test(cj), '시장 줄 = 그 21날 지수 값이 모두 있을 때만');
+  assert.ok(/const sh = jday > \(day \|\| ''\), v = sh \? m\.lv\.slice\(1\)\.concat\(\[p\]\) : m\.lv\.slice\(0, 20\)\.concat\(\[p\]\)/.test(cj) && /il = sh \? null : m\.il/.test(cj), '장 중 — 첫 페이지 relive 와 같은 셈 · 밀리면 시장 줄 없음');
+  assert.ok(/const sp = j\.day > day \? \[\.\.\.c\.it\.sp\.slice\(1\), v\.p\] : \[\.\.\.c\.it\.sp\.slice\(0, 20\), v\.p\]/.test(ap), '첫 페이지 셈(맞댄 짝)');
+  const S21 = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/next/su21.py'), 'utf8');
+  assert.ok(/HEAVY = \('c', 'cFrom', 'cd',/.test(S21) && /'cFrom': v\.get\('cFrom'\), 'cd': cdOf\(c\)/.test(S21) && /st\.get\('boardId'\) == b\.get\('boardId'\)/.test(S21), '판 날짜 21개(같은 판 회사 파일 · 값이 모두 같을 때만)');
   for (const f of ['su21_replay.mjs', 'su21_days.mjs', 'su21_fomo.mjs']) assert.ok(pk.includes('scripts/atlas11/next/' + f), '묶을 때 셈 — ' + f);
   const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8')), W = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-why.json'), 'utf8'));
   const all = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'].flatMap(k => T.lists[k]);
   assert.equal(all.length, 42);
   assert.ok(all.every(c => Number.isInteger(c.days) && c.days >= 1 && /^\d{4}-\d{2}-\d{2}$/.test(c.found) && (c.fomo === null || (Number.isInteger(c.fomo) && c.fomo >= 0 && c.fomo <= 100))), '저장된 판 42칸 — 며칠째 · 첫 발견 · 포모');
   assert.equal(W.board, T.asOf.board); assert.equal(W.checks.length, 7); assert.ok(W.mc.paths >= 20000);
+});
+
+/** 주문 0814(사장님 2026-11-09 08:14 「… 총 7가지를 파악해서 기록창을 만들어 먼저 기재 하라 에이전트 활용하라」 · 08:25 「수르에 올려야해」) — 기록창 「한국 시장 일곱 가지」 */
+test('기록창 — 한국 시장 일곱 가지(자료 꼴 · 쓰지 않을 말 0 · 「%」 0 · 영어 글자 0 · 길 · 서랍)', async () => {
+  const K = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/kr7.json'), 'utf8'));
+  assert.equal(K.schema, 'su-kr7-1'); assert.match(K.at, /^\d{4}-\d{2}-\d{2}$/); assert.equal(K.items.length, 7);
+  const W = await import('../../site/next/words.js');
+  const strs = [K.lead, ...(K.how ?? [])];
+  for (const it of K.items) {
+    for (const k of ['t', 'one', 'kr', 'why', 'culture', 'tag']) { assert.equal(typeof it[k], 'string', it.t + ' ' + k); assert.ok(it[k].trim().length > 1, it.t + ' ' + k); strs.push(it[k]); }
+    assert.ok([...it.culture].length <= 5 && [...it.tag].length <= 8, it.t + ' 한눈 그림 글 길이(문화 다섯 · 모습 여덟 글자 안)');
+    assert.ok(Array.isArray(it.vs) && it.vs.length >= 2 && it.vs.every(v => v.who && v.s), it.t + ' 다른 나라 둘 넘게'); for (const v of it.vs) strs.push(v.who, v.s);
+    assert.ok(Array.isArray(it.src) && it.src.length >= 1 && it.src.every(x => typeof x === 'string' && /\d{4}/.test(x)), it.t + ' 근거(해 적힘)'); strs.push(...it.src);
+    if (it.bars) { assert.ok(it.bars.rows.length >= 2 && it.bars.rows.some(r => r.who === '한국' || r.kr === true) && it.bars.rows.every(r => Number.isFinite(r.v) && r.v >= 0 && r.t), it.t + ' 견줌 그림'); strs.push(it.bars.title, ...(it.bars.note ? [it.bars.note] : []), ...it.bars.rows.flatMap(r => [r.who, r.t])); }
+  }
+  const all = strs.join('\n');
+  assert.deepEqual([...W.screenHits(all), ...W.ruinHits(all)].map(x => x.word ?? x), [], '쓰지 않을 말 0');
+  assert.ok(!all.includes('%'), '「%」 없음'); assert.ok(!/[A-Za-z]/.test(all), '영어 글자 없음');
+  const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), k7 = fs.readFileSync(path.join(ROOT, 'site/su/su-kr7.js'), 'utf8');
+  assert.ok(/a === 'k' \? await \(await import\('\/su\/su-kr7\.js'\)\)\.vKr7\(X21\)/.test(su) && /drawer\('#\/r\/k', '한국 시장 일곱 가지'/.test(su), '길 #/r/k · 기록 쪽 서랍');
+  assert.ok(/export const CSS = '\/su\/su-kr7\.css'/.test(k7) && fs.existsSync(path.join(ROOT, 'site/su/su-kr7.css')) && !/innerHTML|outerHTML|insertAdjacentHTML|\.style\b|Math\.random|https?:\/\//.test(k7), '꾸밈 파일 · 글 속 꾸밈 0 · 아무 수 0 · 바깥 고리 0');
 });

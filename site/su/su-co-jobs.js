@@ -3,6 +3,7 @@
    한 장 = 위에서 아래로 생각 하나씩
      ① 회사 이름(크게) → 현재가(큰 숫자 · 회사 자료 c.price) → 「현재가는 ○월 ○일 마지막 값이에요.」(첫 페이지 칸과 같은 말)
      ② 한 달 꺾은선(회사 co.line 그대로 · 회색 2px · 한 달 전 값에 옅은 가로줄 · 끝 점 호박색 + 흰 고리 + 숨 쉬는 빛) · 시장 줄(코스피 · 코스닥 그대로 · 옅은 회색)
+        첫 페이지 42칸 회사는 칸과 같은 21 마지막 값 · 같은 날짜(주문 0806 — boardRoad · 장 중에는 liveRoad 로 칸과 똑같이 밀림)
         끝값 이름표(su-lg-c · su-lg-i · 값 tspan.v — 검사가 회사 자료와 맞대 봄) · 아래 처음 날 · 끝 날
      ③ 「왜 여기 있나」 — 가는 선으로 나눈 줄: 업종 줄(누르면 그 업종 · 옛 부품과 같은 주소 · 같은 aria-label) → 목록마다 「불장 7곳에 들었어요」 · 기간 · 업종 값 · 회사 값(su-21.js whyRoad 와 같은 값)
    숫자는 자료 그대로(새 셈 없음 — su-data.js coLine · idxLine · pct 그대로) · 빈 값은 「확인 필요」
@@ -69,7 +70,6 @@ export async function load(get, code) {
 function model(d) {
   const code = d && typeof d.code === 'string' ? d.code : null, co = d ? d.co : null, c = co ? co.c : null, H = d ? d.H : null, T21 = d ? d.T : null;
   if (!c || typeof c.name !== 'string' || !c.name) return {ok: false, code};
-  const cl = coLine(co), il = idxLine(H, c.market, H ? H.base : null, H ? H.asOf : null);
   const ind = typeof c.i === 'string' && c.i ? c.i : null;
   const lists = T21 && T21.lists ? T21.lists : {}, asOf = T21 && T21.asOf ? T21.asOf : {};
   const roads = KEY.filter(k => Array.isArray(lists[k]) && lists[k].some(x => x && x.code === code)).map(k => {
@@ -81,13 +81,39 @@ function model(d) {
     return {k, kind: KIND[k], n: lists[k].length, ind: x.ind || ind || NEED, iv: ivL + ' ' + ivN, ivL, ivN,
       name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : sgnP(x.ch20), ivp, cvp};
   });
-  const from = H && typeof H.base === 'string' ? H.base : null, to = typeof c.priceDate === 'string' ? c.priceDate : H && typeof H.asOf === 'string' ? H.asOf : null;
   // 현재가 = 첫 페이지 칸과 같은 값(주문 0200 · 사장님 2026-11-09 02:00 「어」 — 물음 「회사 쪽 현재가도 첫 페이지와 같은 날 값으로 맞출까요?」)
   //   42칸에 든 회사는 그날 판 값(su21.json · su21-next.json 의 close · date = asOf.board) · 아니면 회사 자료 c.price 그대로 · 장 중에는 live() 가 1분마다 바꿈
   const N21 = d ? d.N : null, pool = [...KEY6.flatMap(k => (lists[k] || [])), ...KEY6.flatMap(k => ((N21 && N21.lists && N21.lists[k]) || []))];
   const bd = pool.find(x => x && x.code === code && fin(x.close) && x.close > 0 && typeof x.date === 'string' && x.date === asOf.board) || null;
-  return {ok: true, code, name: c.name, ind, cl, il, last: cl ? lastOf(cl) - 100 : null, ilast: il ? lastOf(il.line) - 100 : null, from, to, roads,
+  // 한 달 꺾은선 = 첫 페이지 칸과 같은 21 마지막 값(주문 0806 · 사장님 2026-11-09 08:06 「어 그렇게 해」) — 처음 날 · 끝 날도 칸 값 날짜 그대로 · 시장 줄은 날짜 21개가 꼭 맞을 때만
+  //   42칸에 없는 회사(또는 칸 값이 첫 페이지 잣대에 안 맞으면) = 옛 길 그대로(회사 자료 co.line · 지수 base ~ asOf)
+  const B = boardRoad(bd, H, c.market);
+  const cl = B ? B.cl : coLine(co), il = B ? B.il : idxLine(H, c.market, H ? H.base : null, H ? H.asOf : null);
+  const from = B ? B.from : H && typeof H.base === 'string' ? H.base : null, to = B ? B.to : typeof c.priceDate === 'string' ? c.priceDate : H && typeof H.asOf === 'string' ? H.asOf : null;
+  return {ok: true, code, name: c.name, ind, cl, il, last: cl ? lastOf(cl) - 100 : null, ilast: il ? lastOf(il.line) - 100 : null, from, to, roads, market: c.market,
+    lsrc: B ? 'board' : 'co', lv: B ? B.v : null, cd: B ? B.cd : null,
     price: bd ? bd.close : fin(c.price) && c.price > 0 ? c.price : null, pday: bd ? dk(bd.date) : dk(c.priceDate), pdate: bd ? bd.date : typeof c.priceDate === 'string' ? c.priceDate : null, psrc: bd ? 'board' : 'co'};
+}
+
+/* ── 한 달 꺾은선 = 첫 페이지 칸 값(주문 0806) ──
+   칸 값 잣대는 첫 페이지 su-apple.js spOf 와 같음: c 가 21개 · 모두 0 보다 큰 수 · 끝 값 = 그날 현재가(close)
+   날짜 21개 = su21 자료 cd(같은 판의 회사 파일 날짜 · 값이 모두 같을 때만) · 없으면 지수 날짜에서 cFrom ~ date 가 꼭 21날일 때만(빠진 날이 없을 때) · 그것도 아니면 날짜 없음(처음 날 글을 쓰지 않음)
+   시장 줄 = 그 21날의 코스피 · 코스닥 값(21날이 모두 지수 자료에 있을 때만 · 하나라도 없으면 그리지 않음) · 둘 다 처음 날 = 100 */
+const ISO = /^\d{4}-\d{2}-\d{2}$/;
+const idxRows = (H, market) => { const k = market === 'KOSDAQ' ? 'KOSDAQ' : 'KOSPI', r = H && H.idx && H.idx[k] ? H.idx[k].rows : null; return {k, rows: Array.isArray(r) ? r.filter(x => Array.isArray(x) && typeof x[0] === 'string' && fin(x[1]) && x[1] > 0) : []}; };
+const norm = v => v.map(x => x / v[0] * 100);
+function idxAt(H, market, cd) {
+  if (!cd) return null;
+  const {k, rows} = idxRows(H, market), by = new Map(rows.map(r => [r[0], r[1]])), v = cd.map(d => by.get(d));
+  return v.every(fin) ? {name: k === 'KOSDAQ' ? '코스닥' : '코스피', line: norm(v), from: cd[0], to: cd[cd.length - 1]} : null;
+}
+function boardRoad(bd, H, market) {
+  if (!bd || !Array.isArray(bd.c) || bd.c.length !== 21 || !bd.c.every(v => fin(v) && v > 0) || bd.c[20] !== bd.close) return null;
+  const from0 = typeof bd.cFrom === 'string' && ISO.test(bd.cFrom) ? bd.cFrom : null;
+  let cd = Array.isArray(bd.cd) && bd.cd.length === 21 && bd.cd.every((x, i) => typeof x === 'string' && ISO.test(x) && (!i || x > bd.cd[i - 1])) && bd.cd[20] === bd.date && (!from0 || bd.cd[0] === from0) ? bd.cd.slice() : null;
+  if (!cd && from0) { const ds = idxRows(H, market).rows.map(r => r[0]).filter(x => x >= from0 && x <= bd.date); if (ds.length === 21 && ds[0] === from0 && ds[20] === bd.date) cd = ds; }
+  const v = bd.c.slice();
+  return {v, cd, cl: norm(v), il: idxAt(H, market, cd), from: cd ? cd[0] : from0, to: bd.date};
 }
 
 /* ═══ ① 이름 · 현재가 ═══ */
@@ -136,8 +162,10 @@ function chartG(m, P, id) {
   // 한 달 전 값 — 옅은 가로줄(두 줄 모두 처음 = 100 에서 시작)
   out.push(s('path', {d: `M${r1(PL - 6)} ${y100}H${r1(PR + 6)}`, class: 'cj-base', 'data-base': ''}));
   // 시장 줄(옅은 회색 · 아래) → 회사 줄(회색 2px · 위 · 흰 밑줄로 겹친 곳도 또렷이)
-  if (m.il) out.push(s('g', {'data-line': 'idx'}, s('polyline', {points: pts(m.il.line), class: 'cj-idx'})));
-  if (m.cl) out.push(s('g', {'data-line': 'co'}, s('polyline', {points: pts(m.cl), class: 'cj-cou'}), s('polyline', {points: pts(m.cl), class: 'cj-co'})));
+  // data-* = 검사가 자료와 맞대 보는 값(주문 0806 — 줄이 어디서 왔나 · 처음 날 · 끝 날 · 점 수 · 칸 값 21개)
+  if (m.il) out.push(s('g', {'data-line': 'idx', 'data-from': m.il.from || '', 'data-to': m.il.to || '', 'data-n': m.il.line.length}, s('polyline', {points: pts(m.il.line), class: 'cj-idx'})));
+  if (m.cl) out.push(s('g', {'data-line': 'co', 'data-src': m.lsrc || 'co', 'data-from': m.from || '', 'data-to': m.to || '', 'data-n': m.cl.length, 'data-v': m.lv ? m.lv.join(',') : ''},
+    s('polyline', {points: pts(m.cl), class: 'cj-cou'}), s('polyline', {points: pts(m.cl), class: 'cj-co'})));
   else out.push(T((PL + PR) / 2, (PT + PB) / 2 + 7, '한 달 줄 ' + NEED, 'cj-need cj-halo', {'text-anchor': 'middle'}));
   // 「한 달 전」 — 가로줄 위 · 아래 가운데 줄이 지나가지 않는 첫 자리(왼쪽부터 · 끝 점 빛과 떨어져)
   const segs = [];
@@ -256,24 +284,35 @@ export function picture(d, opt = {}) {
     let y = secY + link.h;
     roads.forEach((R, i) => { sec.append(s('path', {d: `M${PAD} ${y}H${W - PAD}`, class: 'cj-line'}), roadG(R, y, i)); y += R.h; });
   }
-  const per = m.from && m.to ? ' · ' + dk(m.from) + ' ~ ' + dk(m.to) : '';
-  const label = m.name + ' 현재가 ' + (m.price != null ? num(m.price) + '원' + (m.pday ? '(' + m.pday + ' 마지막 값)' : '') : NEED)
-    + ' · 한 달 줄 ' + (m.cl ? pct(m.last) : NEED) + ' · ' + (m.il ? m.il.name + ' ' + pct(m.ilast) : '시장 ' + NEED) + per
-    + (m.roads.length ? ' · 21곳에 든 길 ' + m.roads.map(r => r.ind + (r.k === 'hot' ? ' ' : ' 업종 ') + r.iv + (r.ivp && r.ivp[1] ? ' ' + r.ivp[0] + ' ' + r.ivp[1] + '까지' : '') + ' → ' + r.name + ' ' + r.cv
-      + (r.cvp && r.cvp[1] ? ' ' + r.cvp[0] + ' ' + r.cvp[1] + '까지' : '') + ' → ' + r.kind + ' ' + r.n + '곳').join(' · ') : m.ind ? ' · ' + m.ind + ' 업종' : '');
-  const svg = s('svg', {class: 'su-svg su-co-jobs', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label, preserveAspectRatio: 'xMidYMid meet', 'data-g': 'su-co-jobs', 'data-clean': 'jobs',
+  const svg = s('svg', {class: 'su-svg su-co-jobs', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': labelOf(m), preserveAspectRatio: 'xMidYMid meet', 'data-g': 'su-co-jobs', 'data-clean': 'jobs',
     'data-mode': roads.length ? 'road' + roads.length : m.ind ? 'ind' : 'line'},
     s('rect', {x: 0, y: 0, width: W, height: H, class: 'cj-bg'}), topG(m, TP), chartG(m, P, id), sec);
   if (opt && opt.still) svg.classList.add('cj-still');
-  svg.setAttribute('data-px', m.price != null ? String(m.price) : ''); svg.setAttribute('data-pdate', m.pdate || ''); svg.setAttribute('data-psrc', m.psrc || '');
-  if (m.price != null && (!opt || opt.live !== false)) live(svg, m.code, m.pdate);
+  svg.setAttribute('data-px', m.price != null ? String(m.price) : ''); svg.setAttribute('data-pdate', m.pdate || ''); svg.setAttribute('data-psrc', m.psrc || ''); svg.setAttribute('data-lsrc', m.lsrc || '');
+  if (m.price != null && (!opt || opt.live !== false)) live(svg, m, P, id);
   return svg;
+}
+/** 그림 이름표(aria-label) — 현재가 · 한 달 줄 · 시장 줄 · 기간 · 21곳에 든 길 */
+function labelOf(m) {
+  const per = m.from && m.to ? ' · ' + dk(m.from) + ' ~ ' + dk(m.to) : '';
+  return m.name + ' 현재가 ' + (m.price != null ? num(m.price) + '원' + (m.plab ? '(' + m.plab + ')' : m.pday ? '(' + m.pday + ' 마지막 값)' : '') : NEED)
+    + ' · 한 달 줄 ' + (m.cl ? pct(m.last) : NEED) + ' · ' + (m.il ? m.il.name + ' ' + pct(m.ilast) : '시장 ' + NEED) + per
+    + (m.roads.length ? ' · 21곳에 든 길 ' + m.roads.map(r => r.ind + (r.k === 'hot' ? ' ' : ' 업종 ') + r.iv + (r.ivp && r.ivp[1] ? ' ' + r.ivp[0] + ' ' + r.ivp[1] + '까지' : '') + ' → ' + r.name + ' ' + r.cv
+      + (r.cvp && r.cvp[1] ? ' ' + r.cvp[0] + ' ' + r.cvp[1] + '까지' : '') + ' → ' + r.kind + ' ' + r.n + '곳').join(' · ') : m.ind ? ' · ' + m.ind + ' 업종' : '');
+}
+/** 장 중 한 달 꺾은선 — 첫 페이지 relive 와 같은 셈(오늘이 판 날보다 뒤 = 맨 앞 하루를 빼고 오늘 값을 끝에 · 같은 날 = 끝 값만 바꿈) · 날짜도 함께 밀림 · 오늘 지수 값은 자료에 없으니 밀리면 시장 줄은 그리지 않음 */
+function liveRoad(m, p, day, jday) {
+  if (!m || !m.lv || !fin(p) || p <= 0 || typeof jday !== 'string' || !(jday >= (day || ''))) return null;
+  const sh = jday > (day || ''), v = sh ? m.lv.slice(1).concat([p]) : m.lv.slice(0, 20).concat([p]);
+  const cd = m.cd ? (sh ? m.cd.slice(1).concat([jday]) : m.cd.slice()) : null, cl = norm(v), il = sh ? null : m.il;
+  return {...m, lv: v, cd, cl, il, last: lastOf(cl) - 100, ilast: il ? lastOf(il.line) - 100 : null, from: sh ? (cd ? cd[0] : null) : m.from, to: sh ? jday : m.to};
 }
 
 /* ── 장 중 현재가(주문 0200 — 첫 페이지 칸과 같은 길 · /api/price · 네이버 증권 분봉 그대로) ──
    그림을 돌려준 뒤 물음 · 받은 값이 판 날보다 앞이 아니면 큰 숫자 · 날짜 글 · 이름표를 바꿈 · 장 중이면 1분마다(화면이 보일 때 · 그림이 쪽에서 빠지면 멈춤) · 못 받으면 그대로 */
 const hmK = t => { const q = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(String(t || '')); if (!q) return null; const H = +q[4]; return +q[2] + '월 ' + +q[3] + '일 ' + (H < 12 ? '오전 ' : '오후 ') + (H % 12 || 12) + '시' + (+q[5] ? ' ' + +q[5] + '분' : ''); };
-function live(svg, code, day) {
+function live(svg, m, P, id) {
+  const code = m.code, day = m.pdate;
   if (!code || typeof fetch !== 'function') return;
   const ask = async () => {
     if (!svg.isConnected && svg.dataset.asked) return;
@@ -283,10 +322,17 @@ function live(svg, code, day) {
         const r = await fetch('/api/price?codes=' + code), j = r.ok ? await r.json() : null, v = j && j.items ? j.items[code] : null;
         if (!j || typeof j.day !== 'string' || !(j.day >= (day || ''))) return;
         if (v && fin(v.p) && v.p > 0 && typeof v.t === 'string') {
-          const n = svg.querySelector('text.cj-px tspan.cj-n'), dl = svg.querySelector('text.cj-d'), old = svg.getAttribute('data-px');
+          const n = svg.querySelector('text.cj-px tspan.cj-n'), dl = svg.querySelector('text.cj-d');
           if (n) n.textContent = num(v.p);
           if (dl) dl.textContent = j.status === 'open' ? '현재가는 ' + hmK(v.t) + ' 값이에요.' : '현재가는 ' + dk(j.day) + ' 마지막 값이에요.';
-          const lab = svg.getAttribute('aria-label') || ''; if (old) svg.setAttribute('aria-label', lab.replace(num(+old) + '원', num(v.p) + '원'));
+          // 한 달 꺾은선도 첫 페이지 칸과 똑같이 바뀜(주문 0806) — 칸 값으로 그린 줄일 때만 · 이름표 · 처음 날 · 끝 날 · 끝 점이 함께
+          const m2 = liveRoad(m, v.p, day, j.day) || m;
+          if (m2 !== m) {
+            const LP = labPlan(m2), g = chartG(m2, {PL: P.PL, PR: LP.PR, PT: P.PT, PB: P.PB, LX: LP.LX, labs: LP.labs, axis: LP.axis}, id);
+            g.classList.remove('cj-grow'); g.setAttribute('data-live', v.t);
+            const old = svg.querySelector('g.cj-chart'); if (old) old.replaceWith(g);
+          }
+          svg.setAttribute('aria-label', labelOf({...m2, price: v.p, pday: null, plab: j.status === 'open' ? hmK(v.t) + ' 값' : dk(j.day) + ' 마지막 값'}));
           svg.setAttribute('data-px', String(v.p)); svg.setAttribute('data-live', v.t);
         }
         if (j.status !== 'open') return;
