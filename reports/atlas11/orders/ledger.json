@@ -2143,6 +2143,14 @@
    "how": "node scripts/atlas11/orders/kakao_digest.mjs",
    "order": "1103",
    "note": "주문 1103 끝 보고 — 장부 135건(성공 101 · 완성 25 · 미완성 9) 요약 47통 · 실패 0"
+  },
+  {
+   "at": "2026-11-08T14:3x+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 48,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs",
+   "order": "1249",
+   "note": "주문 1249 끝 보고 — 장부 136건(성공 102 · 완성 25 · 미완성 9) 요약 48통 · 실패 0"
   }
  ]
 }
