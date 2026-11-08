@@ -1418,14 +1418,14 @@
    "id": "2250",
    "at": "2026-11-08T22:50+09:00",
    "words": "(제 보고 「옛 주소로 바로 들어온 손님 화면은 예전 그대로예요.」를 짚으시며) 이것도 구슬로 해",
-   "then": "22:50 받음 · 22:5x 이해 보고(옛 주소로 바로 온 손님 화면도 흰 구슬 판 · 옛 앱 · 소개 영상 · 편지 · 초대장 · 개인정보 · 옛 검사가 밤 판 색을 재면 새 판에 맞게 · 새벽 2시쯤 보고)",
+   "then": "22:50 받음 · 22:5x 이해 보고(옛 주소로 바로 온 손님 화면도 흰 구슬 판 · 옛 앱 · 소개 영상 · 편지 · 초대장 · 개인정보 · 옛 검사가 밤 판 색을 재면 새 판에 맞게 · 새벽 2시쯤 보고) · 23:0x 옛 쪽 머리가 첫 페이지 색 파일을 처음부터 받게(깜빡임 0) · 밤 판 파일 안 받음 · 한 파일로는 옛 앱 첫 화면이 3초 넘어 셋으로 나눔(머리 35KB · 쪽마다 색은 뒤에) · 옛 아틀란스는 일꾼이 32길을 찍고 재며 색 · 옛 쪽 화면 잣대(누르는 테 대비 3 · 빨간 글은 숫자에만 · 스승 · 신 종이 바탕 · 글 대비 7 · 카톡 단추 카카오 노랑) · 이 컴퓨터 흰 판 검사 427 · 수르 검사 796 · 급등 맞대기 실패 0 · 23:46 올리기 — 전체 검사 1/11 실패 0(28쪽 · 미리 보기 옛 앱 첫 화면 2124ms — 전 2344ms) · 23:55 진짜 사이트에 올라감(받은 때부터 65.1분) · 00:28 진짜 사이트 전체 검사 2/11 — 27쪽 실패 0 · 수르 779 통과(⑯ 바로 온 손님 열 곳 × 밝은 · 어두운 흰 판) · 흰 판 427 · 스승 1584 · 급등 맞대기 실패 0 · 로마 신 쪽만 진짜 사이트 인증서 오류(ERR_CERT_COMMON_NAME_INVALID)로 한 번 멈춤(252 통과 뒤 · 그 뒤 사이트는 정상) → 3/11 다시 부름",
    "did": "옛 주소로 바로 온 손님 화면도 흰 구슬 판(옛 앱 · 옛 아틀란스 · 소개 영상 · 편지 · 초대장 · 개인정보)",
-   "state": "미완성",
-   "proof": "docs/design/su-jobs-all-2026-11-08/order-2250.txt · site/su/su-wrap-jobs.css · site/su/su-wrap-app.css · site/su/su-wrap-solo.css · site/su/su-atlas-jobs.css · scripts/atlas11/next/check_su.mjs ⑯",
-   "short": "옛 주소로 바로 온 손님 화면도 흰 구슬 판으로 바꾸는 중이에요."
+   "state": "완성",
+   "proof": "docs/design/su-jobs-all-2026-11-08/order-2250.txt · site/su/su-wrap-jobs.css · site/su/su-wrap-app.css · site/su/su-wrap-solo.css · site/su/su-atlas-jobs.css · scripts/atlas11/next/check_su.mjs ⑯ · reports/atlas11/speed/ship-su-old-2250.jsonl · 전체 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/42491417811 · 진짜 사이트 전체 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/42492157504 · 다시 https://github.com/srt36573657-coder/atlas-11/actions/runs/42495015959",
+   "short": "옛 주소로 바로 온 손님 화면도 흰 구슬 판으로 올렸어요."
   }
  ],
- "open": 10,
+ "open": 9,
  "sent": [
   {
    "at": "2026-10-22T02:03+09:00",
