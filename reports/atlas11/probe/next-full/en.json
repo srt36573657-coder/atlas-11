@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-05T09:07:40.000Z",
+ "at": "2026-11-08T03:23:44.731Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -14,28 +14,28 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
+  "rivals": true,
+  "past": true,
   "range": true,
   "cond": true,
-  "cal": true,
-  "past": true,
-  "rivals": true,
   "grow": true,
-  "info": true,
-  "co": true,
-  "surge": true,
-  "x": true,
+  "cal": true,
   "roman": true,
+  "theme": true,
+  "gdr": true,
+  "hold": true,
+  "share": true,
   "up": true,
   "why": true,
-  "gdr": true,
-  "today": true,
-  "talk": true,
   "sage": true,
-  "theme": true,
+  "info": true,
+  "chx": true,
+  "x": true,
   "time": true,
-  "share": true,
-  "hold": true,
-  "chx": true
+  "today": true,
+  "co": true,
+  "talk": true,
+  "surge": true
  },
  "edge": true,
  "only": null,
@@ -44,14 +44,14 @@
  "full": false,
  "units": {
   "total": 13615,
-  "hash": "3009841c011b6100",
+  "hash": "49c75770925cb54d",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 1232,
- "secondsSum": 3357,
+ "seconds": 979,
+ "secondsSum": 2874,
  "shards": [
   {
    "shard": "1/3",
@@ -60,10 +60,10 @@
    "routes": 4570,
    "screens": 4571,
    "mine": 4570,
-   "seconds": 1087,
+   "seconds": 979,
    "secs": {
-    "open": 0.7,
-    "routes": 1084.3
+    "open": 1,
+    "routes": 975.6
    }
   },
   {
@@ -73,11 +73,11 @@
    "routes": 4554,
    "screens": 4618,
    "mine": 4555,
-   "seconds": 1038,
+   "seconds": 940,
    "secs": {
-    "open": 1.1,
-    "routes": 1030.7,
-    "newwin": 4.2
+    "open": 0.5,
+    "routes": 934.7,
+    "newwin": 3.8
    }
   },
   {
@@ -87,12 +87,12 @@
    "routes": 4495,
    "screens": 4659,
    "mine": 4490,
-   "seconds": 1232,
+   "seconds": 955,
    "secs": {
-    "open": 0.9,
-    "routes": 1214.7,
-    "act": 6.7,
-    "edge": 7.3,
+    "open": 1.1,
+    "routes": 939.7,
+    "act": 6,
+    "edge": 6.8,
     "grammar": 0
    }
   }
