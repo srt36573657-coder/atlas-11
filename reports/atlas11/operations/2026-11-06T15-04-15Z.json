@@ -1,0 +1,112 @@
+{
+  "schema": "atlas11-operation-3",
+  "at": "2026-11-06T15:04:15Z",
+  "dayKST": "2026-11-07",
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-11-06T15:04:15.804Z",
+      "status": "ok",
+      "durationMs": 38,
+      "session": false,
+      "afterClose": false,
+      "day": "2026-11-07",
+      "cutoff": "2026-11-06"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-11-06T15:04:15.842Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true,
+      "reason": "거래일이 아님"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-11-06T15:04:15.842Z",
+      "status": "ok",
+      "durationMs": 1,
+      "skipped": true
+    },
+    {
+      "step": "5_record_view",
+      "startedAt": "2026-11-06T15:04:15.919Z",
+      "view": {
+        "boardId": "board-2026-11-06-900b4298",
+        "asOf": "2026-11-06",
+        "companies": 365,
+        "files": 368,
+        "dir": "public/data/atlas11/view",
+        "universeNext": null,
+        "bytes": 3019639,
+        "similar": [
+          "SIMPAC",
+          "JYP Ent.",
+          "NAVER",
+          "미원에스씨",
+          "와이지엔터테인먼트",
+          "스틱인베스트먼트",
+          "삼성에스디에스"
+        ],
+        "moves": "2026-11-04 → 2026-11-05",
+        "evening": null,
+        "lead6": {
+          "groups": 15,
+          "companies": 74,
+          "both": 41,
+          "index": "코스피 2026-11-06 -44.5%"
+        },
+        "market": {
+          "file": "public/data/atlas11/market/KOSPI.json",
+          "added": [],
+          "mismatch": []
+        },
+        "changelog": {
+          "wrote": false,
+          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
+        },
+        "issue": {
+          "wrote": false,
+          "reason": "2026-11-06 이슈가 이미 있음"
+        }
+      },
+      "status": "ok",
+      "durationMs": 1853
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu26",
+    "event": "schedule",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "42238487598",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/42238487598",
+    "commit": "e76d29d19fabb0e043e856a890964d548be3b0b7",
+    "serverInstalled": true,
+    "scheduledRun": true
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": true,
+  "prediction": "off",
+  "warnings": [],
+  "universeId": "u2-n365-v1-2026-10-05",
+  "day": "2026-11-07",
+  "session": false,
+  "afterClose": false,
+  "calendarGate": {
+    "day": "2026-11-07",
+    "status": "non_trading_day",
+    "mayCollectFinalClose": false
+  },
+  "cutoff": "2026-11-06",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-10-01",
+  "skippedReason": "거래일이 아님",
+  "inputSnapshotSHA256": "47391c3288011d259ce59307feefb7e67601ad60b745c22a67702989daba782d",
+  "expectedStocks": 365,
+  "finishedAt": "2026-11-06T15:04:17.772Z"
+}
