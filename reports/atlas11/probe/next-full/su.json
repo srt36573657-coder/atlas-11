@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T05:03:49.033Z",
+ "at": "2026-11-08T07:02:25.846Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 706,
@@ -20,7 +20,7 @@
    ]
   },
   "home": {
-   "screens": 2.21,
+   "screens": 3.44,
    "links": 55
   },
   "t21": {
@@ -32,24 +32,14 @@
   },
   "path": [
    {
-    "h1": "지금 볼 21곳",
+    "h1": "지금, 그리고 될 듯.",
     "heroShare": 72.5,
     "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 109,
-    "mucha": [
-     "stars",
-     "halo",
-     "outline",
-     "whiplash",
-     "hair",
-     "pastel",
-     "arch",
-     "panel",
-     "lettering"
-    ],
-    "anim": 72,
+    "labels": 101,
+    "mucha": [],
+    "anim": 11,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -261,9 +251,9 @@
    }
   },
   "speed": {
-   "lcp": 1236,
-   "cls": 0.061,
-   "pic": 1568
+   "lcp": 1268,
+   "cls": 0,
+   "pic": 1385
   }
  },
  "ok": true

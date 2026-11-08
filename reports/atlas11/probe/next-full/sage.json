@@ -1,12 +1,17 @@
 {
  "schema": "duri-check-sage-1",
- "at": "2026-11-08T05:03:28.308Z",
+ "at": "2026-11-08T07:02:40.052Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1584,
-  "fail": 0
+  "pass": 1583,
+  "fail": 1
  },
- "fails": [],
+ "fails": [
+  [
+   "⑨ 소리 모듈을 다 받기 전에 눌러도 받은 뒤 그 말을 읽음(글상자 · 테 같이)",
+   "{\"held\":1,\"early\":false,\"tq\":[],\"cap\":null}"
+  ]
+ ],
  "m": {
   "people": 39,
   "steps": [

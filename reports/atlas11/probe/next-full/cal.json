@@ -5,12 +5,12 @@
  "wide": "all",
  "took_s": 133,
  "time": {
-  "old": 26.7,
-  "new": 92.4,
-  "wall": 133.5,
+  "old": 26.9,
+  "new": 93.1,
+  "wall": 132.7,
   "opensOld": 1236,
   "opensNew": 3032,
-  "oldPct": 20,
+  "oldPct": 20.3,
   "oldShare": 22.4
  },
  "net": {
