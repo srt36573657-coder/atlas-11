@@ -1,0 +1,137 @@
+/* 쇼 판 s04 — 잡스 발표 무대(art.js 와 짝) · 검은 무대 · 조명 셋 · 빛 기둥 둘 · 흑백 트위드에 금 한 점
+   어두운 판 · 밝은 판 모두 같은 검은 무대(쇼 장면이라 늘 밤) · 움직임은 transform · opacity 만 · 움직임 줄이기면 끝 모습 */
+.s4 { display: block; width: 100%; height: auto; overflow: hidden; }
+.s4 .s4-bg { fill: #0A0810; }
+
+/* 무대 — 빛 점 벽 · 조명 · 후광 · 바닥 · 아치 */
+.s4 .s4-wash { fill: url(#s4wash); }
+.s4 .s4-ws0 { stop-color: #8E3FB0; stop-opacity: .42; }
+.s4 .s4-ws1 { stop-color: #5B2378; stop-opacity: .2; }
+.s4 .s4-ws2 { stop-color: #2A1038; stop-opacity: 0; }
+.s4 .s4-led { fill: #FFFFFF; fill-opacity: .09; }
+.s4 .s4-led2 { fill: #FFFFFF; fill-opacity: .5; }
+.s4 .s4-st0 { stop-color: #FFF6FF; stop-opacity: .5; }
+.s4 .s4-st1 { stop-color: #E7D2FF; stop-opacity: .2; }
+.s4 .s4-st2 { stop-color: #D7BFFF; stop-opacity: .07; }
+.s4 .s4-beam { fill: url(#s4cone); }
+.s4 .s4-ps0 { stop-color: #FFFFFF; stop-opacity: .55; }
+.s4 .s4-ps1 { stop-color: #E7D2FF; stop-opacity: 0; }
+.s4 .s4-pool { fill: url(#s4pool); }
+.s4 .s4-hs0 { stop-color: #FFF9FF; stop-opacity: .34; }
+.s4 .s4-hs1 { stop-color: #EBDCFA; stop-opacity: .16; }
+.s4 .s4-hs2 { stop-color: #D9C4F2; stop-opacity: .08; }
+.s4 .s4-halo { fill: url(#s4halo); }
+.s4 .s4-hrim { fill: none; stroke: #C9A24A; stroke-width: 1.4; }
+.s4 .s4-hrim2 { fill: none; stroke: #E3C77A; stroke-width: .6; stroke-dasharray: 1.2 2.4; }
+.s4 .mk-ray { fill: #F3E3B0; fill-opacity: .12; }
+.s4 .s4-floor { fill: #120E19; }
+.s4 .s4-fline { fill: none; stroke: #4A3F5C; stroke-width: .8; }
+.s4 .s4-refl { opacity: .16; }
+.s4 .s4-lamp { fill: #2B2533; stroke: #6A5F78; stroke-width: .6; }
+.s4 .s4-bulb { fill: #FFF8E6; }
+.s4 .s4-arch { fill: none; stroke: #C9A24A; stroke-width: 2; stroke-linecap: round; }
+.s4 .s4-arch2 { fill: none; stroke: #E3C77A; stroke-width: .7; stroke-linecap: round; }
+
+/* 기둥 — 검은 판 · 금 테 · 가장자리 전구 */
+.s4 .s4-pil { fill: #16121D; }
+.s4 .s4-pil-nx { fill: #18121F; }
+.s4 .s4-pfr { fill: none; stroke: #B08A3A; stroke-width: 1.2; stroke-linejoin: round; }
+.s4 .s4-sep { fill: #C9A24A; fill-opacity: .5; stroke: #C9A24A; stroke-opacity: .32; stroke-width: .8; }
+
+/* 글씨 — 기둥 머리(지금 · 될 듯 + 큰 숫자) · 칸 머리 · 이름 · 값 */
+.s4 .s4-hl { font-size: 21px; font-weight: 800; letter-spacing: .12em; fill: #E3C77A; }
+.s4 .s4-num { font-size: 50px; font-weight: 800; letter-spacing: -.02em; fill: #FFFFFF; font-variant-numeric: tabular-nums; }
+.s4 .s4-need { font-size: 21px; }
+.s4 .s4-ch { font-size: 20px; font-weight: 800; letter-spacing: .02em; }
+.s4 .s4-ch-hot { fill: #FF9C70; }
+.s4 .s4-ch-bloom { fill: #F7BFCB; }
+.s4 .s4-ch-money { fill: #EBC96E; }
+.s4 .s4-name { font-weight: 800; fill: #F7F1E7; }
+.s4 .s4-f20 { font-size: 20px; }
+.s4 .s4-f196 { font-size: 19.6px; }
+.s4 .s4-f18 { font-size: 18px; }
+.s4 .s4-val { font-weight: 800; font-variant-numeric: tabular-nums; }
+.s4 .s4-v-hot { fill: #FF9C70; }
+.s4 .s4-v-bloom { fill: #F7BFCB; }
+.s4 .s4-v-money { fill: #EBC96E; }
+.s4 .s4-hit { fill: #FFFFFF; fill-opacity: 0; pointer-events: all; }
+.s4 .s4-tag { cursor: pointer; }
+.s4 .s4-tag:focus { outline: none; }
+.s4 .s4-tag:focus-visible .s4-hit { stroke: #FFFFFF; stroke-width: 2.5; }
+
+/* 옷 — 트위드 결(검정 · 흰) · 땋은 테 · 금 단추 · 검정 원피스 · 흰 깃 */
+.s4 .s4-twb0 { fill: #1D1A21; }
+.s4 .s4-twb1 { fill: #ECE5D8; fill-opacity: .5; }
+.s4 .s4-twb2 { fill: #6E6878; }
+.s4 .s4-twg { fill: #C9A24A; fill-opacity: .8; }
+.s4 .s4-tww0 { fill: #F4EFE6; }
+.s4 .s4-tww1 { fill: #1D1A21; fill-opacity: .4; }
+.s4 .s4-tww2 { fill: #BEB6A7; }
+.s4 .s4-tw-b { fill: url(#s4twB); }
+.s4 .s4-tw-w { fill: url(#s4twW); }
+.s4 .s4-br0-w { fill: none; stroke: #1D1A21; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.s4 .s4-br1-w { fill: none; stroke: #F4EFE6; stroke-width: 1.1; stroke-dasharray: 1.3 1.5; }
+.s4 .s4-br0-b { fill: none; stroke: #EFE8DA; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.s4 .s4-br1-b { fill: none; stroke: #1D1A21; stroke-width: 1.1; stroke-dasharray: 1.3 1.5; }
+.s4 .s4-btn { fill: #D4AF55; stroke: #8A6A22; stroke-width: .4; }
+.s4 .s4-sheen { fill: #FFFFFF; fill-opacity: .1; }
+.s4 .s4-fold-b { fill: #FFFFFF; fill-opacity: .13; }
+.s4 .s4-dress { fill: #17151B; }
+.s4 .s4-belt { fill: #2C2833; }
+.s4 .s4-collar { fill: #F7F2E9; stroke: #CFC5B2; stroke-width: .5; }
+.s4 .s4-leg { fill: #2A2431; }
+.s4 .s4-legl { fill: #A496B4; fill-opacity: .4; }
+.s4 .s4-shoe { fill: #E6D4B4; stroke: #8E7A5C; stroke-width: .4; }
+.s4 .s4-toe { fill: #121015; }
+.s4 .s4-bow { fill: #0F0D12; stroke: #5A5266; stroke-width: .5; }
+.s4 .s4-bow2 { fill: #2B2632; }
+.s4 .s4-pearl { fill: #FBF6EC; stroke: #B9A887; stroke-width: .3; }
+.s4 .s4-pearlh { fill: #FFFFFF; }
+/* 팔(부품 소매) — 검정 트위드 · 흰 트위드 · 검정 원피스 소매 */
+.s4 .s4-cl-b .mk-cl-cream { fill: url(#s4twB); }
+.s4 .s4-cl-b .mk-cld-cream { fill: #FFFFFF; fill-opacity: .12; }
+.s4 .s4-cl-b .mk-sleeve .mk-gold { fill: #EFE8DA; }
+.s4 .s4-w-bloom .s4-cl-b .mk-cl-cream { fill: #17151B; }
+.s4 .s4-w-bloom .s4-cl-b .mk-sleeve .mk-gold { fill: #F7F2E9; }
+.s4 .s4-cl-w .mk-cl-ivory { fill: url(#s4twW); }
+.s4 .s4-cl-w .mk-sleeve .mk-gold { fill: #1D1A21; }
+
+/* 든 것 — 금 횃불 · 흰 동백 · 누빔 가방(금 사슬) */
+.s4 .s4-gold { fill: #D4AF55; }
+.s4 .s4-fire { fill: #F2894F; stroke: #8C3D1B; stroke-width: .8; stroke-linejoin: round; }
+.s4 .s4-fire2 { fill: #FFD98A; }
+.s4 .s4-cam1 { fill: #FFFDF8; stroke: #C9BBA0; stroke-width: .5; }
+.s4 .s4-cam2 { fill: #F2EBDD; stroke: #C9BBA0; stroke-width: .4; }
+.s4 .s4-leaf { fill: #3F5B3B; stroke: #263A24; stroke-width: .4; }
+.s4 .s4-chain { fill: none; stroke: #D9B25E; stroke-width: 1.7; stroke-dasharray: 2.2 1.1; stroke-linecap: round; }
+.s4 .s4-bagb { fill: #141217; stroke: #5A5266; stroke-width: .7; }
+.s4 .s4-quilt { fill: none; stroke: #3F3948; stroke-width: .8; }
+.s4 .s4-flap { fill: none; stroke: #5A5266; stroke-width: .8; }
+
+/* 쇼 — 조명 셋 차례로 → 지금 이름 위에서부터 → 될 듯 기둥이 아래에서 떠오름(2.4초 안 한 번) · 그 뒤 조명 · 빛 점만 느리게 */
+@media (prefers-reduced-motion: no-preference) {
+  .s4 .s4-cone { animation: s4-on .7s ease-out both, s4-breath 7s ease-in-out 2.4s infinite alternate; }
+  .s4 .s4-c1 { animation-delay: .3s, 2.7s; }
+  .s4 .s4-c2 { animation-delay: .55s, 3s; }
+  .s4 .s4-bulb { animation: s4-on .5s ease-out both; }
+  .s4 .s4-b1 { animation-delay: .3s; }
+  .s4 .s4-b2 { animation-delay: .55s; }
+  .s4 .s4-w { animation: s4-on .9s ease-out .1s both; }
+  .s4 .s4-sway { transform-box: fill-box; transform-origin: 50% 100%; animation: s4-sway 6s ease-in-out 1s infinite alternate; }
+  .s4 .s4-sw-hot { animation-duration: 7s; animation-direction: alternate-reverse; }
+  .s4 .s4-sw-money { animation-duration: 6.6s; }
+  .s4 .s4-now .s4-tag, .s4 .s4-head { animation: s4-on .5s ease-out .4s both; }
+  .s4 .s4-now .s4-i1 { animation-delay: .5s; }
+  .s4 .s4-now .s4-i2 { animation-delay: .6s; }
+  .s4 .s4-now .s4-i3 { animation-delay: .7s; }
+  .s4 .s4-now .s4-i4 { animation-delay: .8s; }
+  .s4 .s4-now .s4-i5 { animation-delay: .9s; }
+  .s4 .s4-now .s4-i6 { animation-delay: 1s; }
+  .s4 .s4-pnx { animation: s4-rise 1s cubic-bezier(.2, .8, .2, 1) 1.3s both; }
+  .s4 .s4-led2 { animation: s4-tw 3.2s ease-in-out infinite alternate; }
+}
+@keyframes s4-on { from { opacity: .4; } to { opacity: 1; } }
+@keyframes s4-breath { from { opacity: 1; } to { opacity: .7; } }
+@keyframes s4-sway { from { transform: rotate(-1.1deg); } to { transform: rotate(1.1deg); } }
+@keyframes s4-rise { from { opacity: .4; transform: translateY(46px); } to { opacity: 1; transform: none; } }
+@keyframes s4-tw { from { opacity: 1; } to { opacity: .45; } }

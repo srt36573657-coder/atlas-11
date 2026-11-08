@@ -147,7 +147,7 @@ export async function v21Home(X) {
   const first = T.lists.hot?.[0] ?? T.lists.money?.[0];
   X.setFirst?.(first?.code);
   return {title: '21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안', h1: '지금 볼 21곳', big,
-    ...X.artHero('su-women-e', null, X.fig('21', [grid21(T), funnel3(T)], {label: '상장 회사 → 우량주 → 21곳', hero: true, cap: ['한국 상장 회사 ' + num(T.counts.listed) + '곳을 셌어요.', '그 가운데 우량주 ' + T.counts.b365 + '곳을 먼저 골랐어요.', '그런데 셋에 함께 든 곳이 ' + T.overlap.length + '곳 있어요(✦).', '그래서 지금 볼 곳은 21곳, 겹침을 빼면 ' + T.distinct + '곳이에요.']})),
+    ...X.artHero('su-show', null, X.fig('21', [grid21(T), funnel3(T)], {label: '상장 회사 → 우량주 → 21곳', hero: true, cap: ['한국 상장 회사 ' + num(T.counts.listed) + '곳을 셌어요.', '그 가운데 우량주 ' + T.counts.b365 + '곳을 먼저 골랐어요.', '그런데 셋에 함께 든 곳이 ' + T.overlap.length + '곳 있어요(✦).', '그래서 지금 볼 곳은 21곳, 겹침을 빼면 ' + T.distinct + '곳이에요.']})),
     mids, pro: [...ruleRows(T), ...KEY.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: sgn(c.ch20), how: why21(c, k, T) + ' · ' + Object.entries(six21(c, k, T)).map(([a, b]) => a + ' ' + (b ?? NEED)).join(' · ')})))], after: [X.essBox(S)], // 21곳 하나씩은 서랍에(첫 화면은 그림 — 주문 2044 [5] 7 · 8)
     act: [modeBar(false)],
     next: {href: '#/m', label: '21곳은 어느 땅에 있나?', step: 2, k: '2 / 8'}, asOf: T.asOf.board, S, note: '21곳은 ' + day(T.asOf.board) + ' 자료로 고른 곳이에요. 앞날을 맞히는 목록이 아니에요.'};

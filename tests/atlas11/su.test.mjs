@@ -148,7 +148,7 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
 });
 
 /** 주문 1023 「머스크 판 4」 — 일꾼 열하나가 서로 모르게 만든 무하 그림 부품(docs/design/su-musk-2026-11-05/pic-brief.md) */
-const ART4 = ['su-women-e.js', 'su-mucha.js', 'su-land-art.js', 'su-co-art.js', 'su-more-art.js', 'su-stop-art.js', 'su-rec-art.js', 'su-road-art.js'];
+const ART4 = ['su-show.js', 'su-women-e.js', 'su-mucha.js', 'su-land-art.js', 'su-co-art.js', 'su-more-art.js', 'su-stop-art.js', 'su-rec-art.js', 'su-road-art.js'];
 test('무하 그림 부품 — 부품 꼴(load · picture · CSS) · 꾸밈 파일 · 신 72 · 스승 39 무하 얼굴(기계가 그린 그대로 · 글자 · style · 스크립트 0) · 앵무새(주문 1023 [3] 4 · [5] 3)', async () => {
   for (const f of ART4) {
     const t = fs.readFileSync(path.join(ROOT, 'site/su', f), 'utf8');
