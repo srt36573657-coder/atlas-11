@@ -1393,6 +1393,16 @@
    "state": "성공",
    "proof": "docs/design/su-white-2026-11-08/order-1708.txt · site/su/su-apple.css · site/su/su.js · reports/atlas11/speed/ship-su-white-1708.jsonl · 전체 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/42463454345 · 진짜 사이트 전체 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/42464075065",
    "short": "첫 페이지를 위아래까지 흰 구슬 판으로 바꾸고 진짜 사이트에서 확인했어요."
+  },
+  {
+   "id": "1837",
+   "at": "2026-11-08T18:37+09:00",
+   "words": "첫패이지에 나온 종목들에 현재가와 꺽기 그래프 한달 올려",
+   "then": "18:37 받음 · 18:4x 이해 보고(현재가 = 장이 끝난 뒤 마지막 값 · 11월 6일 금요일 값 · 9시쯤 보고) · 18:5x ~ 19:2x 칸마다 현재가 · 한 달 꺾은선(판 close · c 21개 그대로 · 한 달 전 옅은 줄 · 마지막 점) · 날짜 글 두 줄 · 첫 화면 느린 4G 2660ms(날짜 글 한 줄이 가장 큰 칠함) → 두 조각 · 될 듯 값 따로 받음 → 2448ms · 이 컴퓨터 수르 검사 통과 746 · 실패 0",
+   "did": "처음 쪽(#/) · 될 듯 21곳(#/n) 칸 42 마다 현재가(11월 6일 마지막 값)와 한 달 꺾은선 · 날짜 글",
+   "state": "미완성",
+   "proof": "docs/design/su-price-2026-11-08/order-1837.txt · site/su/su-apple.js · scripts/atlas11/next/check_su.mjs ⑭",
+   "short": "첫 페이지 종목마다 현재가와 한 달 꺾은선을 붙였어요."
   }
  ],
  "open": 7,

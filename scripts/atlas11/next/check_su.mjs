@@ -359,6 +359,46 @@ for (const width of [390, 360, 320]) {
   check(same === 1 && after === 2 && lost === 2 && at === '#/', '⑬ 새 판이면 스스로 새로 고침 — 같은 판 그대로 · 바뀐 판 한 번 · 표를 못 받으면 그대로 · 보던 쪽 그대로', JSON.stringify(R.m.fresh));
   await ctx.close();
 }
+{ // ⑭ 첫 페이지 종목마다 현재가 · 한 달 꺾은선(주문 1837 · 사장님 2026-11-08 18:37 「첫패이지에 나온 종목들에 현재가와 꺽기 그래프 한달 올려」) — 처음 쪽 · 될 듯 21곳
+  //   칸마다 현재가 = su21.json 그 회사 close(그날 = asOf.board) · 「N원」 글 · 꺾은선 21점 = 그 회사 c 21개 그대로(오르내림 차례가 값과 같음) · 한 달 전 옅은 줄 = 첫 값 높이 · 마지막 점 = 끝 값 · 날짜 글
+  const T21 = await J('/su/data/su21.json'), N21 = await J('/su/data/su21-next.json'), day = T21?.asOf?.board ?? ''; // 될 듯 셋의 현재가 · 21 마지막 값 = su21-next.json
+  const md = /^\d{4}-(\d{2})-(\d{2})$/.exec(day), mtxt = md ? '현재가는 ' + +md[1] + '월 ' + +md[2] + '일 마지막 값이에요.' : '현재가는 마지막 값이에요.';
+  const NFk = new Intl.NumberFormat('ko-KR');
+  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+  const p = await ctx.newPage();
+  R.m.price = {};
+  for (const [hh, KM] of [['#/', {hot: 'hot', bloom: 'bloom', money: 'money', hotNext: 'hotNext', bloomNext: 'bloomNext', moneyNext: 'moneyNext'}], ['#/n', {hotNow: 'hot', bloomNow: 'bloom', moneyNow: 'money', hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'}]]) {
+    await open(p, hh);
+    const got = await p.evaluate(() => ({note: (() => { const L = new Map(); for (const e of document.querySelectorAll('#su main > .su-hero text.sa-note')) { const y = e.getAttribute('y'); L.set(y, (L.has(y) ? L.get(y) + ' ' : '') + e.textContent); } return [...L.values()]; })(), // 한 줄 = 같은 높이 두 조각
+      cells: [...document.querySelectorAll('#su main > .su-hero a[data-k]')].map(a => {
+        const dot = a.querySelector('circle.sa-spA, circle.sa-spB');
+        return {k: a.getAttribute('data-k'), name: a.getAttribute('data-name'), px: a.getAttribute('data-px'), t: [...a.querySelectorAll('text')].map(e => e.textContent), label: a.getAttribute('aria-label') ?? '',
+          line: a.querySelector('path.sa-sp')?.getAttribute('d') ?? '', base: a.querySelector('path.sa-sp0')?.getAttribute('d') ?? '', dot: dot ? [+dot.getAttribute('cx'), +dot.getAttribute('cy')] : null, ring: !!a.querySelector('circle.sa-spB')};
+      })}));
+    const bad = [];
+    for (const c of got.cells) {
+      const key = KM[c.k], it = ((key.endsWith('Next') ? N21 : T21).lists?.[key] ?? []).find(x => x.name === c.name);
+      if (!it) { bad.push(c.name + ' 목록에 없음'); continue; }
+      const ok = typeof it.close === 'number' && it.close > 0 && (!it.date || it.date === day), price = ok ? NFk.format(it.close) + '원' : null;
+      if (!ok) { if (!c.t.includes('확인 필요') || c.line) bad.push(c.name + ' 값 없음인데 「확인 필요」 아님'); continue; }
+      if (c.px !== String(it.close) || !c.t.includes(price) || !c.label.includes('현재가 ' + price)) { bad.push(c.name + ' 현재가 ' + c.px + ' ≠ ' + it.close); continue; }
+      const pts = [...c.line.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map(m => [+m[1], +m[2]]), v = it.c;
+      if (!Array.isArray(v) || v.length !== 21 || pts.length !== 21) { bad.push(c.name + ' 꺾은선 점 ' + pts.length); continue; }
+      if (v[20] !== it.close) { bad.push(c.name + ' 끝 값 ≠ 현재가'); continue; }
+      const lo = Math.min(...v), hi = Math.max(...v), yT = Math.min(...pts.map(q => q[1])), yB = Math.max(...pts.map(q => q[1]));
+      const sameWay = hi === lo ? yB - yT < 0.15 : pts.every((q, i) => Math.abs(q[1] - (yT + ((hi - v[i]) / (hi - lo)) * (yB - yT))) <= 0.15); // 점마다 높이 = 그 값(가장 높은 값 = 위 · 가장 낮은 값 = 아래)
+      const xs = pts.every((q, i) => !i || q[0] > pts[i - 1][0]);
+      const by = +(/M[\d.]+ ([\d.]+)H/.exec(c.base)?.[1] ?? NaN);
+      if (!sameWay || !xs) { bad.push(c.name + ' 꺾은선 오르내림이 값과 다름'); continue; }
+      if (!(Math.abs(by - pts[0][1]) < 0.15)) { bad.push(c.name + ' 한 달 전 줄 높이 ' + by + ' ≠ ' + pts[0][1]); continue; }
+      if (!c.dot || Math.abs(c.dot[0] - pts[20][0]) > 0.15 || Math.abs(c.dot[1] - pts[20][1]) > 0.15 || c.ring !== key.endsWith('Next')) { bad.push(c.name + ' 마지막 점'); continue; }
+    }
+    R.m.price[hh] = {cells: got.cells.length, bad: bad.length, note: got.note};
+    check(got.cells.length === 42 && !bad.length, '⑭ ' + hh + ' 종목마다 현재가 = 자료 · 한 달 꺾은선 21점 = 자료 그대로 · 한 달 전 줄 · 마지막 점(지금 찬 점 · 될 듯 고리)', got.cells.length + ' · ' + bad.slice(0, 4).join(' | '));
+    check(got.note[0] === mtxt && /꺾은선은 한 달/.test(got.note[1] ?? ''), '⑭ ' + hh + ' 현재가 날짜 글 — ' + mtxt, got.note.join(' / '));
+  }
+  await ctx.close();
+}
 await browser.close();
 R.ok = R.counts.fail === 0;
 console.log(`수르 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);

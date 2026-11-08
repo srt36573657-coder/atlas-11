@@ -2,11 +2,28 @@
    한 화면에 생각 하나: 큰 제목 「지금, 그리고 될 듯.」 · 흰 바탕에 빛나는 구슬 둘(환한 큰 구슬 = 지금 · 속에서 불이 오르는 작은 유리 구슬 = 될 듯) · 지금 21 | 될 듯 21
    아래로 내리면: 불장 · 꽃이 될 · 돈이 몰리는 마다 왼쪽 지금 일곱 · 오른쪽 될 듯 일곱(한 줄에 짝 하나 · 이름 20 · 값 18 · 누름 60)
    덜어냄: 무하 그림 · 금 테 · 장식 0 · 흐림 필터 0(밝기 차만으로 빛남) · 색은 검정 · 회색 · 호박색 하나
+   칸마다 현재가 · 한 달 꺾은선(주문 1837 · 사장님 2026-11-08 18:37 「첫패이지에 나온 종목들에 현재가와 꺽기 그래프 한달 올려」)
+     현재가 = 그 회사 마지막 값(board.json close — 지금 셋 su21.json · 될 듯 셋 su21-next.json · 그날 = asOf.board) · 꺾은선 = 21 마지막 값(board.json c — 20거래일 앞 ~ 마지막 날) 그대로
+     칸 = 이름 · 값 · 현재가(왼쪽) + 오른쪽 꺾은선(회색 2px · 한 달 전 값에 옅은 가로줄 · 마지막 값 점 — 지금 = 호박색 찬 점 · 될 듯 = 고리 점) · 누름 92
    그리기: s() 만(createElementNS · setAttribute) · 색 · 움직임은 su-apple.css(움직임 줄이기면 끝 모습) */
 import {s} from '/su/su-fig.js';
 
 export const CSS = '/su/su-apple.css';
-export async function load(get) { try { return (await get('/su/data/su21.json')) ?? null; } catch { return null; } }
+/** 자료 — su21.json(지금 셋은 현재가 · 21 마지막 값까지) + su21-next.json(될 듯 셋의 현재가 · 21 마지막 값 — 첫 화면 자료를 가볍게 두려고 따로 · 주문 1837)
+ *  받은 자료는 고치지 않고 새 묶음으로(다른 쪽이 같은 자료를 씀) · su21-next.json 을 못 받으면 될 듯 칸은 「확인 필요」 */
+const NXF = ['close', 'date', 'c'];
+export async function load(get) {
+  try {
+    const [d, n] = await Promise.all([get('/su/data/su21.json'), get('/su/data/su21-next.json').catch(() => null)]);
+    if (!d) return null;
+    const lists = {...(d.lists ?? {})};
+    for (const k of ['hotNext', 'bloomNext', 'moneyNext']) {
+      const by = new Map((n?.lists?.[k] ?? []).map(c => [String(c.code), c]));
+      lists[k] = (d.lists?.[k] ?? []).map(c => { const f = by.get(String(c.code)); return f ? {...c, ...Object.fromEntries(NXF.filter(x => f[x] != null).map(x => [x, f[x]]))} : c; });
+    }
+    return {...d, lists};
+  } catch { return null; }
+}
 
 const NEED = '확인 필요';
 const KEY = ['hot', 'bloom', 'money'];
@@ -46,6 +63,30 @@ function est(t, px) {
   return w * px;
 }
 const T = (x, y, text, cls, extra = {}) => s('text', {x, y, class: cls, ...extra, text});
+const f1 = v => Math.round(v * 10) / 10;
+const won = v => NF.format(Math.round(v)) + '원';
+/** 날짜 「2026-11-06」 → 「11월 6일」 */
+const mday = t => { const m = /^\d{4}-(\d{2})-(\d{2})$/.exec(String(t ?? '')); return m ? +m[1] + '월 ' + +m[2] + '일' : null; };
+
+/** 설명 한 줄을 두 글 조각으로(가운데 맞춤 · 한 조각이 느린 휴대폰 첫 화면의 「가장 큰 칠함」이 되어 첫 화면을 늦추지 않게 — 주문 1532 에서 배움) */
+function note2(y, a, b) {
+  const gap = est(' ', 18), wa = est(a, 18), x0 = MID - (wa + gap + est(b, 18)) / 2;
+  return [T(f1(x0), y, a, 'sa-note sa-in sa-in3'), T(f1(x0 + wa + gap), y, b, 'sa-note sa-in sa-in3')];
+}
+
+/* ── 한 달 꺾은선(주문 1837) — 그날마다 마지막 값 21개를 그대로 이음 · 높이는 그 회사의 한 달 가장 낮은 값 ~ 가장 높은 값 · 한 달 전 값에 옅은 가로줄 ── */
+function spark(sp, x, y, w, h, side) {
+  const g = s('g', {class: 'sa-spk', 'aria-hidden': 'true'});
+  if (!sp) return g;
+  const n = sp.length, lo = Math.min(...sp), hi = Math.max(...sp);
+  const px = i => x + (w * i) / (n - 1), py = v => (hi === lo ? y + h / 2 : y + h - ((v - lo) / (hi - lo)) * h);
+  g.append(s('path', {d: `M${f1(x)} ${f1(py(sp[0]))}H${f1(x + w)}`, class: 'sa-sp0'}),
+    s('path', {d: 'M' + sp.map((v, i) => f1(px(i)) + ' ' + f1(py(v))).join('L'), class: 'sa-sp'}));
+  const ex = f1(px(n - 1)), ey = f1(py(sp[n - 1]));
+  if (side === 'now') g.append(s('circle', {cx: ex, cy: ey, r: 4, class: 'sa-spA'}));
+  else g.append(s('circle', {cx: ex, cy: ey, r: 4, class: 'sa-spB'}), s('circle', {cx: ex, cy: ey, r: 1.6, class: 'sa-spBc'}));
+  return g;
+}
 
 /* ── 구슬 둘 — 밝기 차만으로 빛남(흐림 필터 없음) ── */
 function orbs(id, cy) {
@@ -97,15 +138,22 @@ function orbs(id, cy) {
   return {g, bottom: FL + 64};
 }
 
-/* ── 이름 칸 하나(누르면 그 회사) ── */
+/* ── 이름 칸 하나(누르면 그 회사) — 이름 · 값 · 현재가 + 오른쪽 한 달 꺾은선(주문 1837) ── */
+const SW = 52; // 꺾은선 넓이(칸 오른쪽 · 글 자리 100)
 function cell(it, x, y, w, h, side) {
   const st = it.star ? '✦ ' : '', nm = st + it.name;
   const fs = est(nm, 20) <= w - 8 ? 20 : est(nm, 18) <= w - 8 ? 18 : 17;
-  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'sa-cell sa-' + side, 'data-k': it.k, 'data-name': it.name,
-    'aria-label': (side === 'now' ? '지금 ' : '될 듯 ') + it.kind + ' · ' + it.name + ' · ' + it.val + (it.star ? ' · 두 목록에 함께' : '')});
-  a.append(s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit'}),
+  const sx = x + w - 8 - SW, room = sx - x - 12;
+  const price = it.px != null ? won(it.px) : NEED, pfs = est(price, 18) <= room ? 18 : 17;
+  const say = (it.px != null ? ' · 현재가 ' + price : '') + (it.sp ? ' · 한 달 전 ' + won(it.sp[0]) : '');
+  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'sa-cell sa-' + side, 'data-k': it.k, 'data-name': it.name, 'data-px': it.px ?? '',
+    'aria-label': (side === 'now' ? '지금 ' : '될 듯 ') + it.kind + ' · ' + it.name + ' · ' + it.val + say + (it.star ? ' · 두 목록에 함께' : '')});
+  a.append(s('title', {text: it.name + ' · ' + it.val + say}),
+    s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit'}),
     T(x + 6, y + 26, nm, 'sa-name', {'font-size': fs}),
-    T(x + 6, y + 50, it.val, 'sa-val sa-val-' + side + (it.val === '꽃' ? ' sa-bloomv' : '')));
+    T(x + 6, y + 52, it.val, 'sa-val sa-val-' + side + (it.val === '꽃' ? ' sa-bloomv' : '')),
+    T(x + 6, y + 78, price, 'sa-px' + (it.px != null ? '' : ' sa-need'), {'font-size': pfs}),
+    spark(it.sp, sx, y + 40, SW, 34, side));
   return a;
 }
 
@@ -114,13 +162,15 @@ function draw(d, opt) {
   const id = 'sa' + (++UID);
   const L = d?.lists ?? {};
   const ovs = new Set((d?.overlap ?? []).map(o => o.name));
-  const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name))}));
+  const day = d?.asOf?.board ?? null;
+  const pxOf = c => (fin(c?.close) && c.close > 0 && (!c.date || !day || c.date === day) ? c.close : null); // 그날(asOf.board) 마지막 값만 — 다른 날 값이면 「확인 필요」
+  const spOf = c => (Array.isArray(c?.c) && c.c.length === 21 && c.c.every(v => fin(v) && v > 0) && pxOf(c) === c.c[20] ? c.c : null); // 21 마지막 값 · 끝 = 현재가일 때만
+  const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c)}));
   const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
-  const ROW = 60, HEADH = 58, GAP = 26, CW = MID - PAD - 3;
-  const LIST0 = 548;
+  const ROW = 92, HEADH = 58, GAP = 26, CW = MID - PAD - 3;
+  const LIST0 = 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄 아래
   const rowsOf = k => Math.max(items(k, false).length, items(k, true).length, 1);
   const H = LIST0 + KEY.reduce((a, k) => a + HEADH + rowsOf(k) * ROW + GAP, 0) + 24;
-  const day = d?.asOf?.board ?? null;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
     'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (day ? ' · ' + day + ' 자료' : '')});
   svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'sa-bg'}));
@@ -143,7 +193,9 @@ function draw(d, opt) {
     s('circle', {cx: 248, cy: PY + 22, r: 6.5, class: 'sa-dotB'}), s('circle', {cx: 248, cy: PY + 22, r: 2.6, class: 'sa-dotBc'}), T(262, PY + 27, '될 듯', 'sa-k'),
     T(285, PY + 96, String(nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
     T(285, PY + 124, '곧 그렇게 될 듯한 곳', 'sa-d', {'text-anchor': 'middle'}));
-  svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}));
+  svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
+    ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.'),
+    ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   let y = LIST0;
   KEY.forEach((k, ki) => {

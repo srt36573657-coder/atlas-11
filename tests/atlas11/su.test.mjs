@@ -158,6 +158,33 @@ test('잡스 판 첫 페이지 — su-apple 부품 꼴 · 처음 쪽과 될 듯 
   assert.equal((u.match(/artHero\('su-apple'/g) ?? []).length, 2, '처음 쪽 · 될 듯 21곳이 잡스 판');
 });
 
+/** 주문 1837(사장님 2026-11-08 18:37 「첫패이지에 나온 종목들에 현재가와 꺽기 그래프 한달 올려」) — 첫 페이지 종목마다 현재가 · 한 달 꺾은선 */
+test('첫 페이지 종목마다 현재가 · 한 달 꺾은선(주문 1837)', () => {
+  const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8'));
+  const N = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-next.json'), 'utf8')); // 될 듯 셋의 현재가 · 21 마지막 값(첫 화면 자료 su21.json 은 가볍게 그대로)
+  const BD = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/atlas11/view/board.json'), 'utf8'));
+  const B = new Map(BD.companies.map(c => [c.code, c])), sameDay = BD.asOf === T.asOf.board; // 저장된 21곳 판이 지금 판과 같은 날이면 값까지 맞대 봄(날마다 판이 바뀌어도 시험이 흔들리지 않게)
+  for (const k of ['hotNext', 'bloomNext', 'moneyNext']) assert.deepEqual(N.lists[k].map(c => c.code), T.lists[k].map(c => c.code), k + ' 될 듯 두 파일이 같은 회사 · 같은 차례');
+  for (const k of ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext']) for (const c of (k.endsWith('Next') ? N : T).lists[k]) {
+    assert.ok(Number.isFinite(c.close) && c.close > 0 && Array.isArray(c.c) && c.c.length === 21 && c.c.every(v => Number.isFinite(v) && v > 0) && c.c[20] === c.close, k + ' ' + c.name + ' 현재가 · 한 달 21 마지막 값 · 끝 = 현재가');
+    assert.equal(c.date, T.asOf.board, k + ' ' + c.name + ' 그날 값');
+    if (sameDay) { const b = B.get(c.code); assert.ok(c.close === b.close && c.date === b.date && JSON.stringify(c.c) === JSON.stringify(b.c), k + ' ' + c.name + ' = 판 값 그대로'); }
+  }
+  const t = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.js'), 'utf8');
+  assert.ok(/get\('\/su\/data\/su21-next\.json'\)\.catch\(\(\) => null\)/.test(t) && /const NXF = \['close', 'date', 'c'\]/.test(t), '될 듯 셋의 현재가 · 21 마지막 값은 su21-next.json 에서(못 받으면 「확인 필요」)');
+  assert.ok(/function note2\(y, a, b\)/.test(t), '설명 글은 두 조각(첫 화면 가장 큰 칠함이 되지 않게)');
+  assert.ok(/function spark\(sp, x, y, w, h, side\)/.test(t) && /class: 'sa-sp0'/.test(t) && /class: 'sa-spA'/.test(t) && /class: 'sa-spB'/.test(t), '꺾은선 · 한 달 전 줄 · 마지막 점(찬 점 · 고리)');
+  assert.ok(/pxOf\(c\) === c\.c\[20\]/.test(t) && /c\.date === day/.test(t), '끝 값 = 현재가 · 그날 값일 때만(아니면 「확인 필요」)');
+  assert.ok(/note2\(PY \+ 202, '현재가는', \(mday\(day\) \? mday\(day\) \+ ' ' : ''\) \+ '마지막 값이에요\.'\)/.test(t), '현재가 날짜 글');
+  assert.ok(!/innerHTML|outerHTML|insertAdjacentHTML|\.style\b|Math\.random/.test(t), '글 속 꾸밈 · 아무 수 0');
+  const css = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.css'), 'utf8');
+  assert.ok(/\.su-apple \.sa-sp \{ fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; \}/.test(css), '선 2px 둥근 이음');
+  assert.ok(/\.su-apple \.sa-spA \{ fill: #D97706; stroke: #FFFFFF; stroke-width: 2; \}/.test(css), '마지막 점 흰 고리 2px');
+  const L = h => { const c = [1, 3, 5].map(j => parseInt(h.slice(j, j + 2), 16) / 255).map(c => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  const C = (a, b) => { const x = L(a), y = L(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  assert.ok(C('#D97706', '#FFFFFF') >= 3 && C('#86868B', '#FFFFFF') >= 3, '점 · 선 색 대비 3 넘게(흰 바탕)');
+});
+
 /** 주문 1708(사장님 2026-11-08 17:08 「왜? 이 디자인이 남아 있어! 구슬으로 첫페이지 해서 다 변경해야 하잖아」 · 17:18 「맞아」) — 첫 페이지 위아래까지 흰 구슬 판 · 새 판이면 스스로 새로 고침 */
 test('첫 페이지 위아래까지 흰 구슬 판 · 새 판이면 스스로 새로 고침(주문 1708)', () => {
   const css = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.css'), 'utf8');

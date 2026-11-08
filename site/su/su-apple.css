@@ -23,9 +23,19 @@
 .su-apple .sa-cell:hover .sa-hit, .su-apple .sa-cell:focus .sa-hit { fill: #F5F5F7; fill-opacity: 1; }
 .su-apple .sa-cell:focus { outline: none; }
 .su-apple .sa-cell:focus-visible .sa-hit { stroke: #0071E3; stroke-width: 2; }
-.su-apple .sa-dotA { fill: #FF9F0A; }
-.su-apple .sa-dotB { fill: #FFFFFF; stroke: #B0B4BC; stroke-width: 1.6; }
-.su-apple .sa-dotBc { fill: #FF9F0A; }
+.su-apple .sa-dotA { fill: #D97706; }
+.su-apple .sa-dotB { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.6; }
+.su-apple .sa-dotBc { fill: #D97706; }
+/* 현재가 · 한 달 꺾은선(주문 1837) — 값 글은 검정(색은 선과 점만) · 선 회색 2px 둥근 이음 · 한 달 전 값 옅은 실선 1px · 마지막 값 점 8px(흰 고리 2px)
+   점 색 #D97706 = 흰 바탕과 대비 3 넘게(차트 색 검사 통과) · 지금 = 찬 점 · 될 듯 = 고리 점(색만으로 가르지 않음 — 위 「● 지금 · ◎ 될 듯」 표와 같은 꼴) */
+.su-apple .sa-px { font-weight: 600; fill: #1D1D1F; font-variant-numeric: tabular-nums; letter-spacing: -0.2px; }
+.su-apple .sa-px.sa-need { font-weight: 500; fill: #6E6E73; }
+.su-apple .sa-note { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+.su-apple .sa-sp { fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.su-apple .sa-sp0 { fill: none; stroke: #E5E5EA; stroke-width: 1; }
+.su-apple .sa-spA { fill: #D97706; stroke: #FFFFFF; stroke-width: 2; }
+.su-apple .sa-spB { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.6; }
+.su-apple .sa-spBc { fill: #D97706; }
 /* 구슬 빛(밝기 차) */
 .su-apple .sa-hl0 { stop-color: #FFB340; stop-opacity: .62; } .su-apple .sa-hl1 { stop-color: #FFC56B; stop-opacity: .3; } .su-apple .sa-hl2 { stop-color: #FFE2AD; stop-opacity: .1; } .su-apple .sa-hl3 { stop-color: #FFFFFF; stop-opacity: 0; }
 .su-apple .sa-b0 { stop-color: #FFFEF9; } .su-apple .sa-b1 { stop-color: #FFF3D2; } .su-apple .sa-b2 { stop-color: #FFD684; } .su-apple .sa-b3 { stop-color: #FFB24A; } .su-apple .sa-b4 { stop-color: #FF9A2E; } .su-apple .sa-b5 { stop-color: #FF8A24; }
