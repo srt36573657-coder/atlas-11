@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-08T14:52:30.259Z",
+ "at": "2026-11-08T18:07:13.857Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -35,17 +35,17 @@
  "seconds": 71,
  "secondsSum": 213,
  "time": {
-  "old": 174.3,
-  "new": 175.4,
-  "wall": 71.3,
-  "wallSum": 213.3,
+  "old": 174.6,
+  "new": 174.4,
+  "wall": 70.9,
+  "wallSum": 212.4,
   "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 81.7,
-  "oldShare": 49.8
+  "oldPct": 82.2,
+  "oldShare": 50
  },
  "net": {
-  "req": 5274,
+  "req": 5280,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -65,7 +65,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 4개(/atlas/ · /su/su-wrap.css · /su/su-wrap.js)",
+   "why": "바뀐 파일 1개(/atlas/data/core.json)",
    "made": null,
    "inputs": 2596,
    "reads": 2557,

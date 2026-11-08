@@ -1,24 +1,24 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-11-08T14:51:08.465Z",
+ "at": "2026-11-08T17:58:11.259Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-06",
  "pages": 87,
  "of": 87,
  "widthPages": 87,
  "full": true,
- "seconds": 213,
+ "seconds": 206,
  "time": {
-  "old": 169.1,
-  "new": 31.1,
-  "wall": 213.1,
+  "old": 165.1,
+  "new": 29.2,
+  "wall": 206.1,
   "opensOld": 698,
   "opensNew": 703,
-  "oldPct": 79.3,
-  "oldShare": 84.5
+  "oldPct": 80.1,
+  "oldShare": 85
  },
  "net": {
-  "req": 15,
+  "req": 17,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -40,7 +40,7 @@
   "맞댄 화면": 174,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 5개(/atlas/ · /su/su-wrap.css · /su/su-wrap.js)",
+   "why": "바뀐 파일 2개(/atlas/data/core.json · /atlas/data/home.json)",
    "made": null,
    "inputs": 15,
    "reads": 174,
