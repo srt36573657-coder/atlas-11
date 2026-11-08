@@ -107,7 +107,7 @@ export function source(asOf, S, note = null, kick = null) {
 const MODS = new Map();
 /** 부품 꾸밈 파일 — 그 부품을 처음 쓸 때 받음(첫 화면은 index.html 이 미리 받음 · 느린 휴대폰 첫 그림 2.5초 — 주문 1023 [1] 6) · 다 받을 때까지(2.5초까지) 기다려 맨 그림이 보이지 않게 */
 const cssOf = href => {
-  if (!href || document.querySelector('link[href="' + href + '"]')) return Promise.resolve();
+  if (!href || document.querySelector('link[rel="stylesheet"][href="' + href + '"]')) return Promise.resolve(); // 미리 받기(rel=preload)만 있으면 꾸밈으로 붙임(주문 1532 · 잡스 판 꾸밈을 일찍 받음)
   return new Promise(ok => { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; l.addEventListener('load', ok, {once: true}); l.addEventListener('error', ok, {once: true}); setTimeout(ok, 2500); document.head.append(l); });
 };
 const modOf = name => { if (!MODS.has(name)) MODS.set(name, import('/su/' + name + '.js').then(async M => { await cssOf(M.CSS); return M; })); return MODS.get(name); };

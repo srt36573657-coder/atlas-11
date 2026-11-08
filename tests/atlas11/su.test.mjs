@@ -147,6 +147,17 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
   assert.ok(!texts.some(t => /셋가지|하나번째|둘가지/.test(t)), '셈 낱말(세 가지 · 첫째)');
 });
 
+/** 주문 1532(사장님 2026-11-08 15:32 「6번으로 해서 잡스에 빙식으로 해서 만들어봐」) — 잡스 판 첫 페이지(su-apple · 샘플 j06) — 부품 꼴 · 꾸밈 파일 · 글 속 꾸밈 0 · 처음 쪽과 될 듯 21곳이 이 판 */
+test('잡스 판 첫 페이지 — su-apple 부품 꼴 · 처음 쪽과 될 듯 21곳', () => {
+  const t = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.js'), 'utf8');
+  assert.ok(/export async function load\(/.test(t) && /export function picture\(/.test(t), '부품 꼴');
+  assert.ok(/export const CSS = '\/su\/su-apple\.css'/.test(t) && fs.existsSync(path.join(ROOT, 'site/su/su-apple.css')), '꾸밈 파일');
+  assert.ok(!/innerHTML|outerHTML|insertAdjacentHTML|\.style\b|Math\.random/.test(t), '글 속 꾸밈 · 아무 수 0');
+  assert.ok(/'data-show': 'now-next'/.test(t) && /'data-clean': 'jobs'/.test(t), '지금 · 될 듯 한 판 · 덜어낸 판 표시');
+  const u = fs.readFileSync(path.join(ROOT, 'site/su/su-21.js'), 'utf8');
+  assert.equal((u.match(/artHero\('su-apple'/g) ?? []).length, 2, '처음 쪽 · 될 듯 21곳이 잡스 판');
+});
+
 /** 주문 1023 「머스크 판 4」 — 일꾼 열하나가 서로 모르게 만든 무하 그림 부품(docs/design/su-musk-2026-11-05/pic-brief.md) */
 const ART4 = ['su-show.js', 'su-women-e.js', 'su-mucha.js', 'su-land-art.js', 'su-co-art.js', 'su-more-art.js', 'su-stop-art.js', 'su-rec-art.js', 'su-road-art.js'];
 test('무하 그림 부품 — 부품 꼴(load · picture · CSS) · 꾸밈 파일 · 신 72 · 스승 39 무하 얼굴(기계가 그린 그대로 · 글자 · style · 스크립트 0) · 앵무새(주문 1023 [3] 4 · [5] 3)', async () => {

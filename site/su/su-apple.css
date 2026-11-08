@@ -1,0 +1,64 @@
+/* 수르 첫 페이지 — 잡스 판(주문 1532 · su-apple.js) · 흰 바탕 · 검정 · 회색 · 호박색 하나 · 흐림 필터 없음 */
+.su-news > .su-hero[data-g="su-apple"] { background: #FFFFFF; }
+/* 덜어냄 — 이 판이 있는 쪽에서는 화면 둘레 금 테(su-art.css #su::before · ::after)를 뺌 */
+#su:has(main > .su-hero[data-g="su-apple"])::before, #su:has(main > .su-hero[data-g="su-apple"])::after { content: none; }
+.su-apple .sa-bg { fill: #FFFFFF; }
+.su-apple text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; }
+.su-apple .sa-sub { font-size: 20px; font-weight: 500; fill: #6E6E73; }
+.su-apple .sa-k { font-size: 21px; font-weight: 700; fill: #1D1D1F; }
+.su-apple .sa-n { font-size: 58px; font-weight: 800; letter-spacing: -1.5px; fill: #1D1D1F; }
+.su-apple .sa-unit { font-size: 22px; font-weight: 700; fill: #1D1D1F; }
+.su-apple .sa-d { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+.su-apple .sa-safe { font-size: 18px; font-weight: 500; fill: #86868B; }
+.su-apple .sa-div { stroke: #D2D2D7; stroke-width: 1; fill: none; }
+.su-apple .sa-rule { stroke: #1D1D1F; stroke-width: 1.4; fill: none; }
+.su-apple .sa-line { stroke: #E5E5EA; stroke-width: 1; fill: none; }
+.su-apple .sa-kh { font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; }
+.su-apple .sa-name { font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
+.su-apple .sa-val { font-size: 18px; font-weight: 600; }
+.su-apple .sa-val-now { fill: #B4570A; }
+.su-apple .sa-val-next { fill: #6E6E73; }
+.su-apple .sa-bloomv { fill: #2E7D32; }
+.su-apple .sa-hit { fill: #FFFFFF; fill-opacity: 0; }
+.su-apple .sa-cell:hover .sa-hit, .su-apple .sa-cell:focus .sa-hit { fill: #F5F5F7; fill-opacity: 1; }
+.su-apple .sa-cell:focus { outline: none; }
+.su-apple .sa-cell:focus-visible .sa-hit { stroke: #0071E3; stroke-width: 2; }
+.su-apple .sa-dotA { fill: #FF9F0A; }
+.su-apple .sa-dotB { fill: #FFFFFF; stroke: #B0B4BC; stroke-width: 1.6; }
+.su-apple .sa-dotBc { fill: #FF9F0A; }
+/* 구슬 빛(밝기 차) */
+.su-apple .sa-hl0 { stop-color: #FFB340; stop-opacity: .62; } .su-apple .sa-hl1 { stop-color: #FFC56B; stop-opacity: .3; } .su-apple .sa-hl2 { stop-color: #FFE2AD; stop-opacity: .1; } .su-apple .sa-hl3 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-apple .sa-b0 { stop-color: #FFFEF9; } .su-apple .sa-b1 { stop-color: #FFF3D2; } .su-apple .sa-b2 { stop-color: #FFD684; } .su-apple .sa-b3 { stop-color: #FFB24A; } .su-apple .sa-b4 { stop-color: #FF9A2E; } .su-apple .sa-b5 { stop-color: #FF8A24; }
+.su-apple .sa-c0 { stop-color: #FFFFFF; stop-opacity: .95; } .su-apple .sa-c1 { stop-color: #FFF6DC; stop-opacity: .55; } .su-apple .sa-c2 { stop-color: #FFF6DC; stop-opacity: 0; }
+.su-apple .sa-s0 { stop-color: #FFFFFF; stop-opacity: .95; } .su-apple .sa-s1 { stop-color: #FFFFFF; stop-opacity: .35; } .su-apple .sa-s2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-apple .sa-g0 { stop-color: #FFFFFF; } .su-apple .sa-g1 { stop-color: #F6F7F9; } .su-apple .sa-g2 { stop-color: #E6E9EE; } .su-apple .sa-g3 { stop-color: #C3C9D2; } .su-apple .sa-g4 { stop-color: #8F98A6; }
+.su-apple .sa-e0 { stop-color: #FFAB3D; stop-opacity: .75; } .su-apple .sa-e1 { stop-color: #FFC06A; stop-opacity: .25; } .su-apple .sa-e2 { stop-color: #FFD9A0; stop-opacity: 0; }
+.su-apple .sa-k0 { stop-color: #FFFAF0; } .su-apple .sa-k1 { stop-color: #FFD27A; } .su-apple .sa-k2 { stop-color: #FF8A1F; stop-opacity: .7; } .su-apple .sa-k3 { stop-color: #FF8A1F; stop-opacity: 0; }
+.su-apple .sa-d0 { stop-color: #1D1D1F; stop-opacity: .3; } .su-apple .sa-d1 { stop-color: #1D1D1F; stop-opacity: .09; } .su-apple .sa-d2 { stop-color: #1D1D1F; stop-opacity: 0; }
+.su-apple .sa-p0 { stop-color: #FFB648; stop-opacity: .4; } .su-apple .sa-p1 { stop-color: #FFD08A; stop-opacity: .15; } .su-apple .sa-p2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-apple .sa-w0 { stop-color: #FFB24A; stop-opacity: .42; } .su-apple .sa-w1 { stop-color: #FFC977; stop-opacity: .12; } .su-apple .sa-w2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-apple .sa-f0 { stop-color: #FFFFFF; stop-opacity: .45; } .su-apple .sa-f1 { stop-color: #FFFFFF; stop-opacity: 1; }
+.su-apple .sa-bloom { fill: #FFAD42; fill-opacity: .16; }
+.su-apple .sa-under { fill: #FFF4DC; fill-opacity: .32; }
+.su-apple .sa-underB { fill: #FFFFFF; fill-opacity: .7; }
+.su-apple .sa-glint { fill: #FFFFFF; fill-opacity: .9; }
+.su-apple .sa-rimA { fill: none; stroke: #FFFFFF; stroke-opacity: .6; stroke-width: 1.4; }
+.su-apple .sa-rimB { fill: none; stroke: #7D8696; stroke-opacity: .45; stroke-width: 1.2; }
+.su-apple .sa-edge { fill: none; stroke: #FFFFFF; stroke-opacity: .85; stroke-width: 2; stroke-linecap: round; }
+.su-apple .sa-refl { opacity: .3; }
+/* 움직임 — 처음 한 번(2초 안) · 그 뒤 구슬 빛만 천천히 숨 쉼 · 줄이기면 끝 모습 */
+@media (prefers-reduced-motion: no-preference) {
+  .su-apple .sa-in { animation: sa-up .8s cubic-bezier(.2, .8, .2, 1) both; }
+  .su-apple .sa-in1 { animation-delay: .12s; } .su-apple .sa-in2 { animation-delay: .5s; } .su-apple .sa-in3 { animation-delay: .7s; }
+  .su-apple .sa-orbA, .su-apple .sa-orbB { transform-box: fill-box; transform-origin: 50% 100%; animation: sa-grow 1.1s cubic-bezier(.2, .8, .2, 1) .2s both; }
+  .su-apple .sa-orbB { animation-delay: .45s; }
+  .su-apple .sa-halo { animation: sa-breathe 4.2s ease-in-out 1.4s infinite alternate; }
+  .su-apple .sa-ember { transform-box: fill-box; transform-origin: 50% 70%; animation: sa-ember 3.4s ease-in-out 1s infinite alternate; }
+  .su-apple .sa-sec { animation: sa-fade .7s ease-out both; }
+  .su-apple .sa-sec0 { animation-delay: .9s; } .su-apple .sa-sec1 { animation-delay: 1.1s; } .su-apple .sa-sec2 { animation-delay: 1.3s; }
+}
+@keyframes sa-up { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes sa-grow { from { opacity: .4; transform: scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes sa-breathe { from { opacity: .78; } to { opacity: 1; } }
+@keyframes sa-ember { from { opacity: .72; transform: translateY(5px) scale(.9); } to { opacity: 1; transform: translateY(-7px) scale(1.08); } }
+@keyframes sa-fade { from { opacity: .4; } to { opacity: 1; } }
