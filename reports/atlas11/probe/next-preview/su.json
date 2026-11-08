@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T02:46:32.426Z",
+ "at": "2026-11-08T04:54:38.209Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 698,
+  "pass": 713,
   "fail": 0
  },
  "fails": [],
@@ -20,8 +20,8 @@
    ]
   },
   "home": {
-   "screens": 1.71,
-   "links": 34
+   "screens": 2.21,
+   "links": 55
   },
   "t21": {
    "listed": 2557,
@@ -34,28 +34,28 @@
    {
     "h1": "지금 볼 21곳",
     "heroShare": 72.5,
-    "share": 73,
+    "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 49,
+    "labels": 107,
     "mucha": [
-     "pastel",
      "stars",
      "halo",
      "outline",
      "whiplash",
-     "vine",
+     "hair",
+     "pastel",
      "arch",
      "panel",
      "lettering"
     ],
-    "anim": 18,
+    "anim": 72,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "땅 지도",
@@ -158,7 +158,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "왜 사?",
@@ -261,9 +261,9 @@
    }
   },
   "speed": {
-   "lcp": 2484,
-   "cls": 0.023,
-   "pic": 2778
+   "lcp": 2376,
+   "cls": 0.084,
+   "pic": 2916
   }
  },
  "ok": true
