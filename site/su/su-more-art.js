@@ -31,6 +31,11 @@ export async function load(get, code) {
   try { T = await get(D); } catch (e) { T = null; }
   let c = null, kind = null;
   for (const k of KEYS) { const L = T && T.lists && Array.isArray(T.lists[k]) ? T.lists[k] : []; const x = L.find(r => r && r.code === code); if (x) { c = x; kind = k; break; } }
+  if (!c) { // 될 듯 21곳(주문 1103) — 21 마지막 값 · 수급 · 뉴스는 su21-next.json 에 따로(첫 화면이 가볍게)
+    let N = null;
+    try { N = await get('/su/data/su21-next.json'); } catch (e) { N = null; }
+    for (const k of ['hotNext', 'bloomNext', 'moneyNext']) { const L = N && N.lists && Array.isArray(N.lists[k]) ? N.lists[k] : []; const x = L.find(r => r && r.code === code); if (x) { c = x; kind = k === 'hotNext' ? 'hot' : k === 'bloomNext' ? 'bloom' : 'money'; break; } }
+  }
   return {code: code == null ? null : code, c, kind, asOf: T && T.asOf ? T.asOf.board : null};
 }
 

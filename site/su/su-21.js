@@ -195,7 +195,10 @@ export async function vLandOne(X, id) {
 }
 export async function vMore(X, code) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
-  const c = find21(T, code); if (!c) return X.notFound('이 회사의 출목표 자료가 없어요. 21곳만 있어요.');
+  let c = find21(T, code); if (!c) return X.notFound('이 회사의 출목표 자료가 없어요. 21곳만 있어요.');
+  if (!Array.isArray(c.c)) { // 될 듯 21곳은 첫 화면이 가볍게 21 마지막 값 · 수급 · 뉴스를 따로 둠(su21-next.json · 주문 1103)
+    const N = await X.get('/su/data/su21-next.json').catch(() => null), full = KEYN.flatMap(k => N?.lists?.[k] ?? []).find(x => x.code === code);
+    if (full) c = {...c, c: full.c, flows: full.flows, news: full.news, pos52: full.pos52, close: full.close}; }
   X.setCur?.({code, name: c.name, ind: c.ind});
   const l = c.c ?? [], d = l.slice(1).map((v, i) => Math.sign(v - l[i])), up = d.filter(x => x > 0).length, dn = d.filter(x => x < 0).length, f = c.flows ?? {};
   const big = val(fin(c.ch20) ? sgn(c.ch20) : null, '%', c.name + ' · ' + day(c.date) + '까지 20거래일 오른 만큼', {누가: c.name, 언제: day(c.date) + '까지 20거래일', 어디서: c.ind + ' 업종', 무엇을: '그날 마지막 값으로 셌어요', 어떻게: '첫날 값과 마지막 날 값을 견줬어요', 왜: '21곳에 든 까닭을 값으로 보려고요'}, {mean: day(c.date) + ' 마지막 값으로 보면, 20거래일 전에 100원이었다면 지금 ' + (fin(c.ch20) ? num(Math.round((100 + c.ch20) * 10) / 10) : NEED) + '원이라는 뜻이에요.'});

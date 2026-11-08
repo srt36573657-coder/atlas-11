@@ -177,7 +177,7 @@ try {
     await p.goto(URL_OF(en ? '&lang=en' : '&lang=ko'), {waitUntil: 'load', timeout: 60000});
     if (!await ready(p)) { check(false, `${tag} 첫 화면`, '안 그려짐'); await ctx.close(); continue; }
     await p.waitForTimeout(300);
-    const H = await p.evaluate(heroInPage);
+    await p.evaluate(() => document.fonts?.ready).catch(() => {}); await p.waitForTimeout(150); const H = await p.evaluate(heroInPage);
     if (!en) { heightsKo = H.items.map(x => x.r?.h); R.m.hero390 = {fold: H.fold, no: H.noR, items: H.items.map(x => [x.name, x.r?.t, x.r?.h, x.lR?.b])}; }
     if (!en && OUT) await p.locator('#view section.nh-hero').screenshot({path: path.join(path.dirname(OUT), 'why11-hero.jpg'), type: 'jpeg', quality: 60}).catch(() => {}); // 결과 폴더에 한 장(깃허브 결과와 함께 main 에 남음 — 올리기 전 진짜 자료 화면을 봄)
     check(H.items.length === FLOW_N, `${tag} 몰린 곳 줄 ${FLOW_N}`, H.items.length);
@@ -321,7 +321,7 @@ try {
       await p.route('**/next/data/flow-why.json*', fileOf(fall));
       await p.goto(URL_OF(en ? '&lang=en' : '&lang=ko'), {waitUntil: 'load', timeout: 60000});
       if (!await ready(p)) { check(false, `${tag} 첫 화면`, '안 그려짐'); await ctx.close(); continue; }
-      const H = await p.evaluate(heroInPage), L = en ? 'en' : 'ko';
+      await p.evaluate(() => document.fonts?.ready).catch(() => {}); await p.waitForTimeout(150); const H = await p.evaluate(heroInPage), L = en ? 'en' : 'ko';
       check(JSON.stringify(H.h1) === JSON.stringify(fall.head[L]), `${tag} 머리`, H.h1.join(' / '));
       check(JSON.stringify(H.keys) === JSON.stringify(fall.head.keys[L]), `${tag} 칸 이름`, H.keys.join(' / '));
       if (!en) check(H.items.every((x, k) => near(x.r?.h, heightsKo?.[k])), `${tag} 줄 높이 그대로`, `${H.items.map(x => x.r?.h)} · ${heightsKo}`);
@@ -333,7 +333,7 @@ try {
       await p.route('**/next/data/flow-why.json*', how);
       await p.goto(URL_OF('&lang=ko'), {waitUntil: 'load', timeout: 60000});
       if (!await ready(p)) { check(false, `${tag} 첫 화면`, '안 그려짐'); await ctx.close(); continue; }
-      const H = await p.evaluate(heroInPage);
+      await p.evaluate(() => document.fonts?.ready).catch(() => {}); await p.waitForTimeout(150); const H = await p.evaluate(heroInPage);
       check(H.items.length === FLOW_N && H.items.every(x => !x.details && x.q === '왜?' && JSON.stringify(x.why) === JSON.stringify(['아직 못 셌어요.']) && x.dots.length === 11 && x.dots.every(c => c === 'y11-qd') && !x.moreVis),
         `${tag} → 「왜? 아직 못 셌어요.」 · 불빛 모두 「?」 · 누르는 칸 없음`, JSON.stringify(H.items.map(x => [x.details, x.why, x.dots.filter(c => c !== 'y11-qd').length, x.moreVis])));
       check(JSON.stringify(H.h1) === JSON.stringify(DEF.h1) && JSON.stringify(H.keys) === JSON.stringify(DEF.keys), `${tag} → 머리 · 칸 이름은 그대로`, H.h1.concat(H.keys).join(' / '));
