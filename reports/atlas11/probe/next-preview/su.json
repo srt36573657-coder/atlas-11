@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T04:54:38.209Z",
+ "at": "2026-11-08T06:53:22.370Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 713,
@@ -20,7 +20,7 @@
    ]
   },
   "home": {
-   "screens": 2.21,
+   "screens": 3.44,
    "links": 55
   },
   "t21": {
@@ -32,30 +32,20 @@
   },
   "path": [
    {
-    "h1": "지금 볼 21곳",
+    "h1": "지금, 그리고 될 듯.",
     "heroShare": 72.5,
     "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 107,
-    "mucha": [
-     "stars",
-     "halo",
-     "outline",
-     "whiplash",
-     "hair",
-     "pastel",
-     "arch",
-     "panel",
-     "lettering"
-    ],
-    "anim": 72,
+    "labels": 101,
+    "mucha": [],
+    "anim": 11,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "땅 지도",
@@ -80,7 +70,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 1,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "지주 · 유통 · 운송 땅",
@@ -132,7 +122,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 10,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "한진칼 출목표",
@@ -261,9 +251,9 @@
    }
   },
   "speed": {
-   "lcp": 2376,
-   "cls": 0.084,
-   "pic": 2916
+   "lcp": 2320,
+   "cls": 0.144,
+   "pic": 2420
   }
  },
  "ok": true
