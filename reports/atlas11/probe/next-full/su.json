@@ -1,28 +1,27 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-05T08:36:13.163Z",
+ "at": "2026-11-08T02:54:20.649Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 643,
+  "pass": 691,
   "fail": 0
  },
  "fails": [],
  "m": {
   "dropped": [
-   "실리콘투"
+   "JYP Ent."
   ],
   "data": {
    "picks": 0,
-   "near": 2,
+   "near": 3,
    "money": [
     "한진칼",
-    "롯데칠성",
-    "CJ ENM"
+    "롯데칠성"
    ]
   },
   "home": {
-   "screens": 1.59,
-   "links": 32
+   "screens": 1.71,
+   "links": 34
   },
   "t21": {
    "listed": 2557,
@@ -36,9 +35,9 @@
     "h1": "지금 볼 21곳",
     "heroShare": 72.5,
     "share": 73,
-    "outside": 15,
+    "outside": 19,
     "two": 2,
-    "labels": 46,
+    "labels": 50,
     "mucha": [
      "pastel",
      "stars",
@@ -89,7 +88,7 @@
     "share": 73,
     "outside": 13,
     "two": 2,
-    "labels": 21,
+    "labels": 18,
     "mucha": [
      "pastel",
      "halo",
@@ -101,7 +100,7 @@
      "arch",
      "lettering"
     ],
-    "anim": 138,
+    "anim": 153,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -132,7 +131,7 @@
     "means": 7,
     "hard": 0,
     "hardWords": "",
-    "glossed": 9,
+    "glossed": 10,
     "orn": 5
    },
    {
@@ -167,7 +166,7 @@
     "share": 147,
     "outside": 15,
     "two": 2,
-    "labels": 32,
+    "labels": 28,
     "mucha": [
      "pastel",
      "mosaic",
@@ -179,7 +178,7 @@
      "lettering",
      "arch"
     ],
-    "anim": 23,
+    "anim": 17,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -262,9 +261,9 @@
    }
   },
   "speed": {
-   "lcp": 1200,
+   "lcp": 1232,
    "cls": 0,
-   "pic": 1309
+   "pic": 1421
   }
  },
  "ok": true
