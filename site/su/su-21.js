@@ -163,7 +163,7 @@ export async function v21Next(X) {
   const mids = KEYN.map(k => { const p = P[k]; return val(p?.per100 ?? null, '번', KIND[k] + ' · 100번 가운데', {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: (P.what?.[k] ?? NEED), 어떻게: '날마다 고른 일곱을 모두 셌어요(' + num(p?.n) + '번 가운데 ' + num(p?.hit) + '번)', 왜: '지난 기록만 보여 줘요'},
     {mean: p ? '100번에 ' + p.per100 + '번이 한 달 안에 ' + PASTW[k] + '. 아무 회사는 100번에 ' + p.base100 + '번이었어요.' : '지난 기록은 ' + NEED + '예요.'}); });
   return {title: '될 듯 21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안 · 지난 1년 기록으로 고름', h1: '될 듯 21곳', big,
-    ...X.artHero('su-women-e', null, X.fig('21', [grid21(T, KEYN)], {label: '될 듯 21곳', hero: true, cap: ['지금 불장 · 꽃 · 돈이 몰리는 일곱 바로 앞에 선 곳을 7곳씩 골랐어요.', '지난 1년 기록으로 고른 셈이에요.', '앞날을 맞히는 목록이 아니에요.']}), {mode: 'next'}),
+    ...X.artHero('su-show', null, X.fig('21', [grid21(T, KEYN)], {label: '될 듯 21곳', hero: true, cap: ['지금 불장 · 꽃 · 돈이 몰리는 일곱 바로 앞에 선 곳을 7곳씩 골랐어요.', '지난 1년 기록으로 고른 셈이에요.', '앞날을 맞히는 목록이 아니에요.']}), {mode: 'next'}),
     mids, pro: [...KEYN.map(k => ({k: KIND[k], v: (T.lists[k] ?? []).length + '곳', how: (T.rules?.[k] ?? NEED) + (P[k] ? ' · 지난 1년(' + P.from + ' ~ ' + P.to + ') ' + num(P[k].n) + '번 가운데 ' + num(P[k].hit) + '번 · 아무 회사 100번에 ' + P[k].base100 + '번' : '')})),
       {k: '셈한 기록', v: (P.days ?? NEED) + '날', how: (P.universe ?? NEED) + ' · ' + (P.src ?? NEED)},
       ...KEYN.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: k === 'moneyNext' ? (fin(c.why?.gain) ? '+' + num(c.why.gain) + '억 원' : NEED) : k === 'hotNext' ? sgn(c.why?.r20) : sgn(c.why?.x5), how: why21(c, k, T)})))],
