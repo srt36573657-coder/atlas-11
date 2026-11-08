@@ -96,6 +96,20 @@ for (const width of [390, 360, 320]) {
     const want21 = ['hot', 'bloom', 'money'].map(k => (T21.lists[k] ?? []).map(c => c.name));
     check(JSON.stringify(g.map(c => c.map(x => x.name))) === JSON.stringify(want21), W + '처음 쪽 21곳 = su21.json(불장 · 꽃이 될 · 돈이 몰리는 일곱씩)', JSON.stringify(g.map(c => c.length)));
     check(g.flat().every(x => /^#\/c\/[0-9A-Z]{6}$/.test(x.href)), W + '21곳 이름 → 그 회사', '');
+    { // 주문 1249(사장님 2026-11-08 12:49) — 처음 쪽 그림 하나에 지금 21곳과 될 듯 21곳을 함께(무대 쇼 · 요즘 옷 세 여인) · 될 듯 이름표 = su21.json 될 듯 셋 일곱씩 · 누르면 그 회사
+      const gH = await p.evaluate(() => ['hotNext', 'bloomNext', 'moneyNext'].map(k => [...document.querySelectorAll(`#su main > .su-hero a[data-k="${k}"]`)].map(a => ({href: a.getAttribute('href'), name: a.getAttribute('data-name') ?? ''}))));
+      const wantH = ['hotNext', 'bloomNext', 'moneyNext'].map(k => (T21.lists[k] ?? []).map(c => c.name));
+      check(JSON.stringify(gH.map(c => c.map(x => x.name))) === JSON.stringify(wantH) && gH.every(c => c.length === 7), W + '처음 쪽 그림에 될 듯 21곳도 함께 = su21.json(될 듯 셋 일곱씩)', JSON.stringify(gH.map(c => c.length)));
+      check(gH.flat().every(x => /^#\/c\/[0-9A-Z]{6}$/.test(x.href)), W + '처음 쪽 될 듯 이름 → 그 회사', gH.flat().map(x => x.href).filter(h => !/^#\/c\/[0-9A-Z]{6}$/.test(h)).slice(0, 3).join(' '));
+      check(await p.evaluate(() => document.querySelector('#su main > .su-hero svg')?.getAttribute('data-show') === 'now-next'), W + '처음 쪽 그림 = 지금 · 될 듯 한 무대', '');
+      if (width === 390) for (const r of gH.map(c => c[0]).filter(Boolean)) {
+        await open(p, '#/'); await p.click(`#su main > .su-hero a[data-k][href="${r.href}"]:is([data-k="hotNext"], [data-k="bloomNext"], [data-k="moneyNext"])`); await settle(p, r.name);
+        const m1 = await measure(p);
+        check(p.url().endsWith(r.href) && m1.h1 === r.name, W + '처음 쪽 될 듯 이름 누르면 그 회사 — ' + r.name, `${p.url().split('#')[1]} · ${m1.h1}`);
+        check(await p.evaluate(() => /될 듯/.test(document.querySelector('#su .su-why21 h2')?.textContent ?? '')), W + '처음 쪽에서 누른 될 듯 회사 — 왜 될 듯 21곳에 들었나 칸 — ' + r.name, '');
+      }
+      if (width === 390) await open(p, '#/');
+    }
     const ov = new Set((T21.overlap ?? []).map(o => o.name));
     check(g.flat().every(x => x.x === ov.has(x.name)), W + '겹친 곳마다 ✦ · 안 겹친 곳 없음', [...ov].join(','));
     R.m.t21 = {listed: T21.counts.listed, b365: T21.counts.b365, n: g.flat().length, overlap: ov.size, distinct: T21.distinct};
