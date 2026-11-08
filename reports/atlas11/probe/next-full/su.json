@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T02:54:20.649Z",
+ "at": "2026-11-08T05:03:49.033Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 691,
+  "pass": 706,
   "fail": 0
  },
  "fails": [],
@@ -20,8 +20,8 @@
    ]
   },
   "home": {
-   "screens": 1.71,
-   "links": 34
+   "screens": 2.21,
+   "links": 55
   },
   "t21": {
    "listed": 2557,
@@ -34,28 +34,28 @@
    {
     "h1": "지금 볼 21곳",
     "heroShare": 72.5,
-    "share": 73,
+    "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 50,
+    "labels": 109,
     "mucha": [
-     "pastel",
      "stars",
      "halo",
      "outline",
      "whiplash",
-     "vine",
+     "hair",
+     "pastel",
      "arch",
      "panel",
      "lettering"
     ],
-    "anim": 18,
+    "anim": 72,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "땅 지도",
@@ -261,9 +261,9 @@
    }
   },
   "speed": {
-   "lcp": 1232,
-   "cls": 0,
-   "pic": 1421
+   "lcp": 1236,
+   "cls": 0.061,
+   "pic": 1568
   }
  },
  "ok": true

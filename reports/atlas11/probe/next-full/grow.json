@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-08T03:09:04.816Z",
+ "at": "2026-11-08T05:15:23.696Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-06",
  "companies": 2557,
@@ -32,31 +32,27 @@
    }
   }
  },
- "seconds": 704,
+ "seconds": 543,
  "time": {
-  "old": 435.2,
-  "new": 378.3,
-  "wall": 703.7,
+  "old": 348.9,
+  "new": 277.2,
+  "wall": 542.7,
   "opensOld": 7682,
   "opensNew": 10286,
-  "oldPct": 61.8,
-  "oldShare": 53.5
+  "oldPct": 64.3,
+  "oldShare": 55.7
  },
  "net": {
-  "req": 5130,
-  "retry": 2,
-  "waitSec": 2,
-  "why": {
-   "UND_ERR_CONNECT_TIMEOUT": 2
-  },
+  "req": 5128,
+  "retry": 0,
+  "waitSec": 0,
+  "why": {},
   "cut": 0,
   "page": {
-   "retry": 1,
-   "waitSec": 2,
+   "retry": 0,
+   "waitSec": 0,
    "blocked": 0,
-   "why": {
-    "Timeout 30000ms exceeded": 1
-   }
+   "why": {}
   }
  },
  "counts": {
@@ -67,7 +63,7 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 2560개(/atlas/data/core.json · /atlas/data/lines.json · /atlas/data/comp.json)",
+   "why": "바뀐 파일 1개(/atlas/data/core.json)",
    "made": null,
    "inputs": 2568,
    "reads": 2557,
