@@ -1,0 +1,86 @@
+/* 수르 — 기록 탭의 큰 그림 둘 · 잡스 판(su-rec-jobs.js · 주문 2011) · 흰 바탕 · 검정 · 회색 · 호박색 하나 · 흐림 필터 없음
+   색 · 글꼴 · 움직임 값은 첫 페이지(su-apple.css) 그대로 — 호박색 구슬 = sa-b · 둘레 빛 = sa-hl · 유리 구슬 = sa-g · 점 #D97706 · 값 글 #B4570A
+   수르 모든 쪽은 휴대폰이 어두운 모드여도 흰 판(su-apple.css :root:has(#su)) — 이 그림도 두 판 같은 색
+   꾸밈은 모두 이 그림(.su-rec-jobs) 안에만 걸림 */
+.su-rec-jobs .rj-bg { fill: #FFFFFF; }
+.su-rec-jobs text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; }
+
+/* 글 — 부제 20 회색 · 이름 20 굵게 · 큰 숫자 58 · 안전 줄 18 회색 */
+.su-rec-jobs .rj-sub { font-size: 20px; font-weight: 500; fill: #6E6E73; }
+.su-rec-jobs .rj-key { font-size: 20px; font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
+.su-rec-jobs .rj-n { font-size: 58px; font-weight: 800; letter-spacing: -1.5px; fill: #1D1D1F; font-variant-numeric: tabular-nums; }
+.su-rec-jobs .rj-unit { font-size: 22px; font-weight: 700; letter-spacing: 0; fill: #1D1D1F; }
+.su-rec-jobs .rj-need { font-size: 24px; font-weight: 700; fill: #6E6E73; }
+.su-rec-jobs .rj-safe { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+
+/* 선 — 세로 가름 · 굵은 검정 선(칸 머리) · 가는 회색 선 */
+.su-rec-jobs .rj-div { stroke: #D2D2D7; stroke-width: 1; fill: none; }
+.su-rec-jobs .rj-rule { stroke: #1D1D1F; stroke-width: 1.4; fill: none; }
+.su-rec-jobs .rj-line { stroke: #E5E5EA; stroke-width: 1; fill: none; }
+
+/* 이름 점 — 호박색 찬 점(조건에 맞은 회사) · 유리 고리 점(아무 회사) */
+.su-rec-jobs .rj-dotA { fill: #D97706; }
+.su-rec-jobs .rj-dotB { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.6; }
+
+/* 100칸 구슬 — 찬 칸 = 빛나는 호박색 구슬(sa-b) · 맑은 유리 구슬(sa-g) · 빈 칸 = 가는 고리 */
+.su-rec-jobs .rj-b0 { stop-color: #FFFEF9; } .su-rec-jobs .rj-b1 { stop-color: #FFF3D2; } .su-rec-jobs .rj-b2 { stop-color: #FFD684; }
+.su-rec-jobs .rj-b3 { stop-color: #FFB24A; } .su-rec-jobs .rj-b4 { stop-color: #FF9A2E; } .su-rec-jobs .rj-b5 { stop-color: #FF8A24; }
+.su-rec-jobs .rj-g0 { stop-color: #FFFFFF; } .su-rec-jobs .rj-g1 { stop-color: #F6F7F9; } .su-rec-jobs .rj-g2 { stop-color: #E6E9EE; }
+.su-rec-jobs .rj-g3 { stop-color: #C3C9D2; } .su-rec-jobs .rj-g4 { stop-color: #8F98A6; }
+.su-rec-jobs .rj-amber { stroke: #FFFFFF; stroke-opacity: .6; stroke-width: 1; }
+.su-rec-jobs .rj-glass { stroke: #7D8696; stroke-opacity: .5; stroke-width: 1; }
+.su-rec-jobs .rj-empty { fill: #FFFFFF; stroke: #D2D2D7; stroke-width: 1; }
+/* 둘레 빛(sa-hl) — 숨 쉼 */
+.su-rec-jobs .rj-hl0 { stop-color: #FFB340; stop-opacity: .5; } .su-rec-jobs .rj-hl1 { stop-color: #FFC56B; stop-opacity: .24; }
+.su-rec-jobs .rj-hl2 { stop-color: #FFE2AD; stop-opacity: .08; } .su-rec-jobs .rj-hl3 { stop-color: #FFFFFF; stop-opacity: 0; }
+
+/* 서랍 여섯 — 이름 검정 · 값 호박색 글(#B4570A — 흰 바탕 대비 4.5 넘게) · 꺾쇠 옅은 회색 · 누르면 옅은 회색 판 */
+.su-rec-jobs .rj-dn { font-size: 20px; font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
+.su-rec-jobs .rj-dn18 { font-size: 18px; }
+.su-rec-jobs .rj-dv { font-size: 20px; font-weight: 700; fill: #B4570A; font-variant-numeric: tabular-nums; letter-spacing: -0.2px; }
+.su-rec-jobs .rj-needv { font-size: 18px; font-weight: 600; fill: #6E6E73; }
+.su-rec-jobs .rj-chev { fill: none; stroke: #C7C7CC; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.su-rec-jobs .rj-lab { cursor: pointer; text-decoration: none; }
+.su-rec-jobs .rj-hit { fill: #FFFFFF; fill-opacity: 0; }
+.su-rec-jobs .rj-lab:hover .rj-hit, .su-rec-jobs .rj-lab:focus .rj-hit { fill: #F5F5F7; fill-opacity: 1; }
+.su-rec-jobs .rj-lab:focus { outline: none; }
+.su-rec-jobs .rj-lab:focus-visible .rj-hit { stroke: #0071E3; stroke-width: 2; }
+
+/* ② 달마다 — 범례 · 해 이름 · 눈금 · 막대(호박색 원기둥 빛 · 회색 유리 · 빈 호박색 · 세는 중 점선과 고리 점) */
+.su-rec-jobs .rj-lg { font-size: 18px; font-weight: 600; fill: #1D1D1F; }
+.su-rec-jobs .rj-yr { font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; font-variant-numeric: tabular-nums; }
+.su-rec-jobs .rj-gl { font-size: 18px; font-weight: 500; fill: #6E6E73; font-variant-numeric: tabular-nums; }
+.su-rec-jobs .rj-mn { font-size: 18px; font-weight: 600; fill: #6E6E73; font-variant-numeric: tabular-nums; letter-spacing: -0.4px; }
+.su-rec-jobs .rj-open { font-size: 18px; font-weight: 600; fill: #6E6E73; }
+.su-rec-jobs .rj-gridl { stroke: #E5E5EA; stroke-width: 1; fill: none; }
+.su-rec-jobs .rj-axis { stroke: #C7C7CC; stroke-width: 1.2; fill: none; }
+.su-rec-jobs .rj-ra0 { stop-color: #F59A1B; } .su-rec-jobs .rj-ra1 { stop-color: #FFC46A; } .su-rec-jobs .rj-ra2 { stop-color: #D97706; }
+.su-rec-jobs .rj-rg0 { stop-color: #C3C9D2; } .su-rec-jobs .rj-rg1 { stop-color: #F2F4F7; } .su-rec-jobs .rj-rg2 { stop-color: #8F98A6; }
+.su-rec-jobs .rj-w0 { stop-color: #FFB648; stop-opacity: 0; } .su-rec-jobs .rj-w1 { stop-color: #FFB648; stop-opacity: .26; }
+.su-rec-jobs .rj-rodA { stroke: none; }
+.su-rec-jobs .rj-rodB { stroke: #7D8696; stroke-opacity: .45; stroke-width: .8; }
+.su-rec-jobs .rj-hollow { fill: #FFFFFF; stroke: #D97706; stroke-width: 1.6; }
+.su-rec-jobs .rj-flat { stroke: #D97706; stroke-width: 2; stroke-linecap: round; fill: none; }
+.su-rec-jobs .rj-dash { fill: none; stroke: #AEAEB2; stroke-width: 1.4; stroke-dasharray: 3 2.4; }
+.su-rec-jobs .rj-ring { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.6; }
+.su-rec-jobs .rj-ember { fill: #D97706; }
+
+/* 움직임 — 들어올 때 한 번(1.2초 안) · 그 뒤 호박색 빛과 「세는 중」 불씨만 천천히 숨 쉼(투명도만) · 줄이기면 끝 모습 */
+@media (prefers-reduced-motion: no-preference) {
+  .su-rec-jobs .rj-in { animation: rj-up .7s cubic-bezier(.2, .8, .2, 1) both; }
+  .su-rec-jobs .rj-in1 { animation-delay: .05s; } .su-rec-jobs .rj-in2 { animation-delay: .3s; } .su-rec-jobs .rj-in3 { animation-delay: .42s; }
+  .su-rec-jobs .rj-grow { transform-box: fill-box; transform-origin: 50% 50%; animation: rj-grow .9s cubic-bezier(.2, .8, .2, 1) .12s both; }
+  .su-rec-jobs .rj-grow2 { animation-delay: .26s; }
+  .su-rec-jobs .rj-rise { transform-box: fill-box; transform-origin: 50% 100%; animation: rj-rise .8s cubic-bezier(.2, .8, .2, 1) .22s both; }
+  .su-rec-jobs .rj-rise2 { animation-delay: .36s; }
+  .su-rec-jobs .rj-fade { animation: rj-fade .6s ease-out .5s both; }
+  .su-rec-jobs .rj-fade2 { animation-delay: .58s; }
+  .su-rec-jobs .rj-halo { animation: rj-breathe 4.2s ease-in-out 1.2s infinite alternate; }
+  .su-rec-jobs .rj-ember { animation: rj-ember 3.4s ease-in-out 1s infinite alternate; }
+}
+@keyframes rj-up { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes rj-grow { from { opacity: .4; transform: scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes rj-rise { from { opacity: .4; transform: scaleY(.08); } to { opacity: 1; transform: none; } }
+@keyframes rj-fade { from { opacity: .4; } to { opacity: 1; } }
+@keyframes rj-breathe { from { opacity: .62; } to { opacity: 1; } }
+@keyframes rj-ember { from { opacity: .5; } to { opacity: 1; } }

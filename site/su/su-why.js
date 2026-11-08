@@ -143,7 +143,7 @@ export async function vQuiz(code0, X) {
   const co = code ? await get(D.co(code)) : null, c = co?.c ?? null, name = typeof c?.name === 'string' ? c.name : null;
   if (code && name) X.setCur({code, name, ind: typeof c.i === 'string' ? c.i : null});
   const Q = {i: 0, ans: new Array(WHY_QS.length).fill(null), J: null, saved: false};
-  const ART = await X.artMod?.('su-stop-art', 'quiz'); // 무하 「달과 별」 — 모래시계를 든 여인 · 열한 질문 별자리(주문 1023) · 누를 때마다 다시 그리므로 한 번만 받음
+  const ART = await X.artMod?.('su-stop-jobs', 'quiz'); // 무하 「달과 별」 — 모래시계를 든 여인 · 열한 질문 별자리(주문 1023) · 누를 때마다 다시 그리므로 한 번만 받음
   const pic = (cur, done, old) => X.heroOf(X.artFig?.(ART, {cur, done}) ?? null, old);
   const tonesNow = () => Q.ans.map((k, i) => (k == null ? null : WHY_A[i][k][0]));
   const btn = (cls, kids, on) => { const b = h('button', {class: cls, type: 'button'}, kids); b.addEventListener('click', on); return b; };
@@ -255,7 +255,7 @@ export async function vJournal(X) {
   const avg = {}; for (const [n] of WHY_GROUPS) { const v = full.map(r => r.groups?.[n]).filter(Number.isFinite); avg[n] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }
   const e = eJournal({recs: full, due: dues.length, kept, asked, lastDay: full[0] ? dayOf(full[0]) : null});
   return {title: '매매일지', tab: 3, step: 7, kick: '내 기록 · 이 휴대폰에만', h1: '내 매매일지', big: e.big,
-    ...X.artHero('su-stop-art', 'journal', timeline(metas, {label: '내 기록 시간 줄 · 한 달 뒤 동그라미', hero: true, cap: e.say})),
+    ...X.artHero('su-stop-jobs', 'journal', timeline(metas, {label: '내 기록 시간 줄 · 한 달 뒤 동그라미', hero: true, cap: e.say})),
     mids: e.mids,
     figs: [tally3([{name: '좋아', v: vc.go, cls: 'g-pt-g'}, {name: '반만', v: vc.wait, cls: 'g-pt-y'}, {name: '쉬어', v: vc.rest, cls: 'g-pt-r'}], {label: '판정 셋', title: '판정 · 좋아 · 반만 · 쉬어'}),
       full.length ? groupBars(groupRowsOf(avg), '네 묶음 평균 · 준비된 만큼') : petals(new Array(WHY_QS.length).fill(null), {label: '열한 질문 꽃잎', title: '열한 질문 · 아직 빈 꽃잎'})],

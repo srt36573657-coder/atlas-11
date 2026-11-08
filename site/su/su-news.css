@@ -76,6 +76,15 @@
 }
 /* 그림이 오기 전 같은 크기 자리(글이 먼저 그려지고 그림이 와도 쪽이 밀리지 않음 — 느린 휴대폰 첫 그림 2.5초) */
 .su-news > .su-hero.su-wait { aspect-ratio: 390 / 620; background: radial-gradient(60% 40% at 50% 38%, var(--halo), transparent 70%); }
+/* 잡스 판 부품(주문 2011 · 사장님 2026-11-08 20:11 「모든 페이지를 첫페이지 기준으로」)은 그림 높이가 부품마다 달라 기다리는 자리도 그 비율로(그림이 와도 아래 글이 밀리지 않게) */
+.su-news > .su-hero.su-wait[data-g="su-more-jobs"] { aspect-ratio: 390 / 1006; }
+.su-news > .su-hero.su-wait[data-g="su-stop-jobs"] { aspect-ratio: 390 / 690; }
+.su-news > .su-hero.su-wait[data-g="su-rec-jobs"][data-a="hub"] { aspect-ratio: 390 / 668; }
+.su-news > .su-hero.su-wait[data-g="su-rec-jobs"][data-a="months"] { aspect-ratio: 390 / 642; }
+.su-news > .su-hero.su-wait[data-g="su-road-jobs"] { aspect-ratio: 390 / 665; }
+.su-news > .su-hero.su-wait[data-g="su-co-jobs"] { aspect-ratio: 390 / 680; }
+.su-news > .su-hero.su-wait[data-g="su-land-jobs"] { aspect-ratio: 390 / 652; }
+.su-news > .su-hero.su-wait[data-g="su-land-jobs"][data-a] { aspect-ratio: 390 / 700; }
 /* 다음 단추 — 그림보다 무겁지 않게(심사 1회 덧: 짙은 갈색 단추가 그림보다 먼저 눈을 끔) · 상아 바탕에 금테 · 어두운 판은 변수로 저절로 */
 .su-next { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--gold), 0 2px 0 var(--gold2); }
 .su-next .su-nk { color: var(--mute); }

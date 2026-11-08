@@ -1,0 +1,6 @@
+/* 수르 틀을 미리 입힌 개인정보 처리방침(/su/privacy.html · scripts/atlas11/next/su_privacy.mjs 가 원본에서 지음)의 첫 페이지 색 — 주문 2011(사장님 2026-11-08 20:11 「모든 페이지를 첫페이지 기준으로」 · 20:26 「아니 이것도 같이 작업해」)
+   원본 privacy.css 의 색 이름만 첫 페이지 값으로(글 · 자리 · 크기 그대로) · 흰 바탕 · 먹 글 · 가는 줄 · 강조는 호박색 하나 · 어두운 기기에서도 흰 판 · 원본 쪽(/privacy.html)은 그대로 */
+html.su-wrapped { color-scheme: light; --bg: #FFFFFF; --card: #F5F5F7; --hair: #E5E5EA; --ink: #1D1D1F; --sub: #3A3A3C; --mute: #6E6E73; --gold: #B4570A; background: #FFFFFF; }
+html.su-wrapped body { background: #FFFFFF; color: #1D1D1F; }
+html.su-wrapped .pv-jump a { border-color: #D2D2D7; background: #FFFFFF; }
+html.su-wrapped .pv-jump a:active { background: #E8E8ED; }

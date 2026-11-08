@@ -26,7 +26,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqjmfn]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
+const LINK_OK = /^(#\/|#\/[bkrpqjmfn]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -338,9 +338,13 @@ for (const width of [390, 360, 320]) {
       check(w.frame === 'none' && w.wave === 'none' && w.curve === 'none' && w.orn === 0, W1 + '— 둘레 겹테 · 금빛 물결 줄 · 무하 꾸밈 · 뒷하늘 0', JSON.stringify({frame: w.frame, wave: w.wave, curve: w.curve, orn: w.orn}));
       check(w.tc.length >= 1 && w.tc.every(c => c === '#FFFFFF'), W1 + '— 휴대폰 맨 위 띠 흰색', w.tc.join(' '));
     }
-    await open(p, '#/m'); await p.waitForTimeout(400);
-    const o = await look(p); R.m.white[scheme + ' #/m'] = o;
-    check(!o.clean && o.top !== WHITE && o.frame !== 'none' && o.tc.every(c => c !== '#FFFFFF'), '⑫ 다른 쪽(#/m 땅 지도)은 옛 꾸밈 그대로(' + scheme + ')', JSON.stringify({top: o.top, frame: o.frame, tc: o.tc}));
+    // 주문 2011(사장님 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」) — 다른 쪽도 같은 흰 판(1708 에는 「옛 꾸밈 그대로」를 쟀음)
+    for (const hh of ['#/m', '#/r', '#/r/d', '#/g']) {
+      await open(p, hh); await p.waitForTimeout(400);
+      const o = await look(p); R.m.white[scheme + ' ' + hh] = o;
+      check([o.body, o.top, o.dock, o.tabs].every(c => c === WHITE || c === 'none') && o.top === WHITE && o.frame === 'none' && o.wave === 'none' && o.curve === 'none' && o.orn === 0 && o.tc.every(c => c === '#FFFFFF') && con(o.h1, WHITE) >= 7,
+        '⑫ 다른 쪽도 흰 판(' + scheme + ' · ' + hh + ') — 바탕 · 위아래 흰색 · 둘레 겹테 · 물결 줄 · 무하 꾸밈 0 · 큰 제목 대비 7', JSON.stringify({body: o.body, top: o.top, dock: o.dock, tabs: o.tabs, frame: o.frame, orn: o.orn, tc: o.tc}));
+    }
     await ctx.close();
   }
 }
@@ -372,7 +376,7 @@ for (const width of [390, 360, 320]) {
     const got = await p.evaluate(() => ({note: (() => { const L = new Map(); for (const e of document.querySelectorAll('#su main > .su-hero text.sa-note')) { const y = e.getAttribute('y'); L.set(y, (L.has(y) ? L.get(y) + ' ' : '') + e.textContent); } return [...L.values()]; })(), // 한 줄 = 같은 높이 두 조각
       cells: [...document.querySelectorAll('#su main > .su-hero a[data-k]')].map(a => {
         const dot = a.querySelector('circle.sa-spA, circle.sa-spB');
-        return {k: a.getAttribute('data-k'), name: a.getAttribute('data-name'), px: a.getAttribute('data-px'), t: [...a.querySelectorAll('text')].map(e => e.textContent), label: a.getAttribute('aria-label') ?? '',
+        return {k: a.getAttribute('data-k'), name: a.getAttribute('data-name'), px: a.getAttribute('data-px'), live: a.getAttribute('data-live'), t: [...a.querySelectorAll('text')].map(e => e.textContent), label: a.getAttribute('aria-label') ?? '',
           line: a.querySelector('path.sa-sp')?.getAttribute('d') ?? '', base: a.querySelector('path.sa-sp0')?.getAttribute('d') ?? '', dot: dot ? [+dot.getAttribute('cx'), +dot.getAttribute('cy')] : null, ring: !!a.querySelector('circle.sa-spB')};
       })}));
     const bad = [];
@@ -381,6 +385,11 @@ for (const width of [390, 360, 320]) {
       if (!it) { bad.push(c.name + ' 목록에 없음'); continue; }
       const ok = typeof it.close === 'number' && it.close > 0 && (!it.date || it.date === day), price = ok ? NFk.format(it.close) + '원' : null;
       if (!ok) { if (!c.t.includes('확인 필요') || c.line) bad.push(c.name + ' 값 없음인데 「확인 필요」 아님'); continue; }
+      if (c.live) { // 장 중 현재가(주문 2011)가 붙은 칸 — 받은 값(data-px)이 글 · 이름표 · 꺾은선 끝과 같은지(판 값과는 다를 수 있음)
+        const lp = NFk.format(+c.px) + '원', pts = [...c.line.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)];
+        if (!(+c.px > 0) || !c.t.includes(lp) || !c.label.includes('현재가 ' + lp) || pts.length !== 21 || !c.dot) bad.push(c.name + ' 장 중 값 ' + c.px);
+        continue;
+      }
       if (c.px !== String(it.close) || !c.t.includes(price) || !c.label.includes('현재가 ' + price)) { bad.push(c.name + ' 현재가 ' + c.px + ' ≠ ' + it.close); continue; }
       const pts = [...c.line.matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map(m => [+m[1], +m[2]]), v = it.c;
       if (!Array.isArray(v) || v.length !== 21 || pts.length !== 21) { bad.push(c.name + ' 꺾은선 점 ' + pts.length); continue; }
@@ -395,9 +404,101 @@ for (const width of [390, 360, 320]) {
     }
     R.m.price[hh] = {cells: got.cells.length, bad: bad.length, note: got.note};
     check(got.cells.length === 42 && !bad.length, '⑭ ' + hh + ' 종목마다 현재가 = 자료 · 한 달 꺾은선 21점 = 자료 그대로 · 한 달 전 줄 · 마지막 점(지금 찬 점 · 될 듯 고리)', got.cells.length + ' · ' + bad.slice(0, 4).join(' | '));
-    check(got.note[0] === mtxt && /꺾은선은 한 달/.test(got.note[1] ?? ''), '⑭ ' + hh + ' 현재가 날짜 글 — ' + mtxt, got.note.join(' / '));
+    const liveN = /^현재가는 \d+월 \d+일 (오전|오후) \d+시( \d+분)? 값이에요\.$|^현재가는 \d+월 \d+일 마지막 값이에요\.$/; // 장 중 · 장 끝 값이 붙으면 그 때(주문 2011)
+    check((got.note[0] === mtxt || (got.cells.some(c => c.live) && liveN.test(got.note[0] ?? ''))) && /꺾은선은 한 달/.test(got.note[1] ?? ''), '⑭ ' + hh + ' 현재가 날짜 글 — ' + mtxt, got.note.join(' / '));
   }
   await ctx.close();
+}
+{ // ⑮ 장 중 현재가(주문 2011 · 사장님 2026-11-08 20:11 「어 그렇게 하고」 — 장이 열려 있는 낮에도 현재가가 바뀌게) — /api/price 답을 시험 값으로 바꿔 끼워 화면이 따라 바뀌는지
+  //   오늘(판 다음 날) 장 중 값 → 그 칸 현재가 글 · data-px · data-live · 이름표 · 꺾은선(맨 앞 하루를 빼고 오늘 값을 끝에 = 21점 · 끝 점 = 받은 값 높이) · 날짜 글 「○월 ○일 오후 2시 31분 값이에요.」
+  //   받은 값이 없는 칸은 그대로 · 함수가 없거나(404) 장 밖이면 아무것도 바꾸지 않음
+  const T21 = await J('/su/data/su21.json'), day = T21?.asOf?.board ?? '2026-11-06', h = T21?.lists?.hot?.[0];
+  const next = (() => { const d = new Date(day + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + 3); return d.toISOString().slice(0, 10); })();
+  const P = h?.close ? Math.round(h.close * 1.031) : 0, NFk = new Intl.NumberFormat('ko-KR');
+  const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+  const p = await ctx.newPage(); let mode = 'open', asked = 0;
+  await p.route('**/api/price*', r => { asked++; if (mode === '404') return r.fulfill({status: 404, contentType: 'text/plain', body: ''});
+    return r.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify({schema: 'su-price-1', day: next, hhmm: '1431', status: mode, items: mode === 'shut' ? {} : {[h.code]: {p: P, t: next + 'T14:31'}}})}); });
+  const cellOf = () => p.evaluate(code => { const a = document.querySelector(`#su main > .su-hero a.sa-cell[data-code="${code}"]`); if (!a) return null;
+    const pts = [...(a.querySelector('path.sa-sp')?.getAttribute('d') ?? '').matchAll(/(-?[\d.]+) (-?[\d.]+)/g)].map(m => [+m[1], +m[2]]);
+    const notes = new Map(); for (const e of document.querySelectorAll('#su main > .su-hero text.sa-note')) { const y = e.getAttribute('y'); notes.set(y, (notes.has(y) ? notes.get(y) + ' ' : '') + e.textContent); }
+    const other = document.querySelector(`#su main > .su-hero a.sa-cell:not([data-code="${code}"])`);
+    return {px: a.getAttribute('data-px'), live: a.getAttribute('data-live'), t: [...a.querySelectorAll('text')].map(e => e.textContent), label: a.getAttribute('aria-label'), pts, dot: !!a.querySelector('circle.sa-spA, circle.sa-spB'),
+      note: [...notes.values()][0] ?? '', otherLive: other?.getAttribute('data-live') ?? null};
+  }, h?.code ?? '');
+  if (h && P) {
+    await open(p, '#/'); await p.waitForTimeout(1200);
+    const c = await cellOf(), v = h.c, sp = [...v.slice(1), P], lo = Math.min(...sp), hi = Math.max(...sp);
+    const yT = c ? Math.min(...c.pts.map(q => q[1])) : 0, yB = c ? Math.max(...c.pts.map(q => q[1])) : 0;
+    const shape = !!c && c.pts.length === 21 && c.pts.every((q, i) => Math.abs(q[1] - (yT + ((hi - sp[i]) / (hi - lo || 1)) * (yB - yT))) <= 0.15);
+    R.m.live = {asked, px: c?.px, live: c?.live, note: c?.note, shape};
+    check(asked >= 1 && c && c.px === String(P) && c.live === next + 'T14:31' && c.t.includes(NFk.format(P) + '원') && /현재가 /.test(c.label) && c.label.includes(NFk.format(P) + '원') && shape && c.dot && c.otherLive === null,
+      '⑮ 장 중 현재가 — 받은 칸만 바뀜(글 · data-px · 이름표 · 꺾은선 맨 앞 하루 빼고 오늘 값 끝) · 받은 값이 없는 칸은 그대로', JSON.stringify(R.m.live));
+    const md = /^\d{4}-(\d{2})-(\d{2})$/.exec(next);
+    check(c?.note === '현재가는 ' + +md[1] + '월 ' + +md[2] + '일 오후 2시 31분 값이에요.', '⑮ 날짜 글 — 장 중 그 때', c?.note ?? '');
+    mode = 'shut'; await open(p, '#/'); await p.waitForTimeout(1200);
+    const s0 = await cellOf();
+    check(s0 && s0.px === String(h.close) && s0.live === null, '⑮ 장 밖(값 없음)이면 판 값 그대로', JSON.stringify({px: s0?.px, live: s0?.live}));
+    mode = '404'; await open(p, '#/'); await p.waitForTimeout(1200);
+    const s4 = await cellOf();
+    check(s4 && s4.px === String(h.close) && s4.live === null, '⑮ 함수가 없으면(404) 판 값 그대로', JSON.stringify({px: s4?.px, live: s4?.live}));
+  } else check(false, '⑮ 장 중 현재가 — 불장 첫 회사 자료', JSON.stringify(h ?? null).slice(0, 120));
+  await ctx.close();
+}
+{ // ⑯ 수르에서 넘어간 옛 쪽도 첫 페이지 판(주문 2011 · 사장님 2026-11-08 20:26 「아니 이것도 같이 작업해」 — 서른아홉 스승 · 로마 신처럼 수르에서 눌러 넘어간 옛 쪽)
+  //   ?su=<묶음> 으로 연 옛 쪽: 밤 무대 판(clock) 뗌 · 바탕 · 위 막대 · 아래 수르 막대 흰색 · 금빛 테두리 0 · 맨 위 띠 흰색 · 화면을 크게 덮는 어두운 판 0 · 읽기 어려운 글(대비 3 아래) 0 — 밝은 · 어두운 휴대폰 둘 다
+  //   수르를 거치지 않고 옛 주소로 바로 온 손님 화면은 그대로(밤 무대 판 · 틀 없음)
+  const ROUTES = ['/next/?su=hot#/surge', '/next/?su=stop#/sage', '/next/?su=guide#/roman', '/next/?su=stop#/why', '/next/?su=guide#/', '/next/?su=back#/jinhwa', '/hello.html?su=guest', '/letter.html?su=guest', '/invite.html?su=guest', '/su/privacy.html'];
+  const WHITE = 'rgb(255, 255, 255)';
+  const lookOld = p => p.evaluate(() => {
+    const cs = e => getComputedStyle(e), de = document.documentElement, vw = innerWidth, vh = innerHeight;
+    const L = c => { const m = /rgba?\(([^)]+)\)/.exec(c); if (!m) return null; const v = m[1].split(',').map(x => parseFloat(x)); if (v.length > 3 && v[3] < 0.5) return null; const q = v.slice(0, 3).map(x => x / 255).map(x => (x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)); return 0.2126 * q[0] + 0.7152 * q[1] + 0.0722 * q[2]; };
+    const shown = e => { const s = cs(e); if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity < 0.1) return false; const r = e.getBoundingClientRect(); return r.width > 2 && r.height > 2 && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw; };
+    const media = e => e.matches('video, canvas, img, picture, iframe') || !!e.querySelector('video, canvas, iframe');
+    let darkMax = 0, darkSel = '';
+    for (const e of document.querySelectorAll('body *')) {
+      if (!shown(e) || media(e) || e.closest('svg')) continue;
+      const l = L(cs(e).backgroundColor); if (l == null || l > 0.12) continue;
+      const r = e.getBoundingClientRect(), a = Math.max(0, Math.min(r.right, vw) - Math.max(r.left, 0)) * Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0)) / (vw * vh);
+      if (a > darkMax) { darkMax = a; darkSel = e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + (e.classList.length ? '.' + [...e.classList].join('.') : ''); }
+    }
+    const bgOf = e => { for (let x = e; x; x = x.parentElement) { const s = cs(x); if (s.backgroundImage !== 'none' && !/gradient/.test(s.backgroundImage)) return null; const l = L(s.backgroundColor); if (l != null) return l; } return 1; };
+    const low = [];
+    for (const e of document.querySelectorAll('body *')) {
+      if (!shown(e) || e.closest('svg') || e.closest('.suw-bar')) continue;
+      const t = [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent.trim()).join(''); if (!t) continue;
+      const fg = L(cs(e).color), bg = bgOf(e); if (fg == null || bg == null) continue;
+      const c = (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05); if (c < 3) low.push(t.slice(0, 16) + ' ' + c.toFixed(1));
+    }
+    const top = document.querySelector('header.top, header.band'), view = document.getElementById('view'), bar = document.querySelector('.suw-bar');
+    return {cls: de.className, body: cs(document.body).backgroundColor, view: view ? cs(view).backgroundColor : null, top: top ? cs(top).backgroundColor : null, bar: bar ? cs(bar).backgroundColor : null,
+      frame: cs(de, '::after').content, tc: [...document.querySelectorAll('meta[name="theme-color"]')].map(m => m.getAttribute('content')), darkMax: +darkMax.toFixed(3), darkSel, low: low.slice(0, 6), lowN: low.length};
+  });
+  const okBg = c => c == null || c === WHITE || c === 'rgba(0, 0, 0, 0)';
+  R.m.old = {};
+  for (const scheme of ['light', 'dark']) {
+    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', colorScheme: scheme});
+    const p = await ctx.newPage();
+    for (const u of ROUTES) {
+      await p.goto(base + u, {waitUntil: 'load', timeout: 45000}).catch(() => {});
+      await p.waitForFunction(() => document.documentElement.classList.contains('su-jobs'), null, {timeout: 12000}).catch(() => {});
+      await p.waitForTimeout(1500);
+      const o = await lookOld(p); R.m.old[scheme + ' ' + u] = o;
+      const cl = o.cls.split(/\s+/);
+      check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === WHITE && okBg(o.view) && okBg(o.top) && o.bar === WHITE && (o.frame === 'none' || o.frame === 'normal') && o.tc.every(c => c === '#FFFFFF') && o.darkMax <= 0.12 && o.lowN === 0,
+        '⑯ 수르에서 넘어간 옛 쪽도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 뗌 · 바탕 · 위 · 아래 막대 흰색 · 금빛 테두리 0 · 어두운 판 0 · 흐린 글 0', JSON.stringify(o).slice(0, 400));
+    }
+    await ctx.close();
+  }
+  { // 옛 주소로 바로 온 손님 — 그대로
+    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+    const p = await ctx.newPage();
+    await p.goto(base + '/next/#/sage', {waitUntil: 'load', timeout: 45000}).catch(() => {}); await p.waitForTimeout(2000);
+    const d = await p.evaluate(() => ({cls: document.documentElement.className, css: !!document.querySelector('link[href="/su/su-wrap-jobs.css"]'), bar: !!document.querySelector('.suw-bar')}));
+    R.m.old.direct = d;
+    check(/\bclock\b/.test(d.cls) && !/su-wrapped|su-jobs/.test(d.cls) && !d.css && !d.bar, '⑯ 옛 주소로 바로 온 손님 화면은 그대로(밤 판 · 수르 틀 없음)', JSON.stringify(d));
+    await ctx.close();
+  }
 }
 await browser.close();
 R.ok = R.counts.fail === 0;

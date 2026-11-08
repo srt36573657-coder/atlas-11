@@ -23,6 +23,7 @@ export function hrefOf(f, g = f?.group, co = null) {
   let o = f?.open; if (!o) return null;
   if (co && /^[0-9A-Z]{6}$/.test(co) && /^#\/c\/[0-9A-Z]{6}\/more$/.test(o)) o = '#/c/' + co + '/more';
   if (o.startsWith('#/')) return o;
+  if (o === '/privacy.html') return '/su/privacy.html'; // 개인정보 처리방침 = 수르 틀을 미리 입힌 짝 쪽(원본은 보안 규칙이 스크립트를 막아 틀을 씌울 수 없음 · 주문 2011 · su-wrap.js SOLO)
   try { const u = new URL(o, 'https://aaa7377.com'); u.searchParams.set('su', ORDER.includes(g) ? g : 'guide'); return u.pathname + u.search + u.hash; } catch { return null; }
 }
 const helpText = f => (f.helps ? '돕는 것 · ' + (HELP[f.helps] ?? f.helps) : '셋과 안 이어짐 · 사장님이 정하실 것');
@@ -56,7 +57,7 @@ export async function vRoads(X, g = null) {
     const list = h('section', {class: 'su-roadl', 'aria-label': '묶음'}, h('h2', {class: 'su-ft', text: '묶음 여덟 · 누르면 그 길'}),
       ORDER.map(k => h('a', {class: 'su-fcard', href: '#/g/' + k}, h('b', {text: HEAD[k] + ' · ' + by(k).length + '가지'}), h('span', {text: by(k).slice(0, 4).map(nameOf).join(' · ') + (by(k).length > 4 ? ' …' : '')}))));
     return {title: '셋의 길', tab: 0, kick: '옛 기능 자리', h1: '셋의 길', big,
-      ...X.artHero('su-road-art', 'roads', X.fig('roads', [roadBars(rows)], {label: '셋의 길 묶음', hero: true, cap: ['옛 기능을 여덟 묶음으로 나눴어요.', '셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 묶음이 맨 위예요.', '그런데 하늘 그림처럼 누르는 기능이 아닌 것도 있어요.', '그래서 묶음을 누르면 그 기능이 수르 안에서 열려요.']})),
+      ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars(rows)], {label: '셋의 길 묶음', hero: true, cap: ['옛 기능을 여덟 묶음으로 나눴어요.', '셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 묶음이 맨 위예요.', '그런데 하늘 그림처럼 누르는 기능이 아닌 것도 있어요.', '그래서 묶음을 누르면 그 기능이 수르 안에서 열려요.']})),
       mids, body: [list], pro: F.map(f => ({k: SHORT[f.group] + ' · ' + nameOf(f), v: hrefOf(f) ? '열림' : noneShort(f), how: f.how + ' · ' + helpText(f)})),
       next: {href: '#/g/hot', label: '불장을 돕는 것은?'}, asOf: null, S};
   }
@@ -70,7 +71,7 @@ export async function vRoads(X, g = null) {
   const body = [h('section', {class: 'su-flist', 'aria-label': HEAD[g]}, h('h2', {class: 'su-ft', text: HEAD[g] + ' · 누르면 수르 안에서 열림'}), L.map(card))];
   if (g === 'hot') body.unshift(surgeBox(X));
   return {title: HEAD[g], tab: g === 'stop' ? 3 : g === 'back' || g === 'guest' ? 2 : 0, kick: '셋의 길 · ' + SHORT[g], h1: HEAD[g], big,
-    ...X.artHero('su-road-art', 'roads', X.fig('roads', [roadBars([{g, n: L.length}, ...ORDER.filter(k => k !== g).slice(0, 3).map(k => ({g: k, n: by(k).length}))])], {label: HEAD[g], hero: true, cap: [HEAD[g] + ' ' + L.length + '가지예요.', '다른 묶음과 견주어 보여요.', '그런데 옛 쪽 글과 숫자는 바꾸지 않았어요.', '그래서 누르면 옛 쪽이 수르 틀 안에서 열려요.']})),
+    ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars([{g, n: L.length}, ...ORDER.filter(k => k !== g).slice(0, 3).map(k => ({g: k, n: by(k).length}))])], {label: HEAD[g], hero: true, cap: [HEAD[g] + ' ' + L.length + '가지예요.', '다른 묶음과 견주어 보여요.', '그런데 옛 쪽 글과 숫자는 바꾸지 않았어요.', '그래서 누르면 옛 쪽이 수르 틀 안에서 열려요.']})),
     mids: [], body, pro: L.map(f => ({k: nameOf(f), v: hrefOf(f, g, co) ? '열림' : noneShort(f), how: (hrefOf(f, g, co) ?? '주소 없음') + ' · ' + helpText(f)})),
     next: first ? {href: hrefOf(first, g, co), label: nameOf(first) + ' 열기'} : {href: '#/g', label: '셋의 길 모두'}, asOf: null, S};
 }

@@ -1,0 +1,1008 @@
+/* 수르 틀 안 옛 쪽 — 첫 페이지(흰 구슬 판) 기준 색(주문 2011 · 사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」 · 20:26 「아니 이것도 같이 작업해」)
+   su-wrap.js 가 수르에서 넘어온 때(html.su-wrapped)만 이 파일을 붙임 — 옛 주소로 바로 온 손님 화면 · 옛 쪽 검사는 그대로
+   이 파일이 붙은 뒤 su-wrap.js 가 밤 무대 판(html.clock)을 뗌 → 옛 흰 판 자리 · 크기 규칙은 그대로 · 색만 첫 페이지 값으로
+   첫 페이지 값(su-apple.css) — 바탕 #FFFFFF · 글 #1D1D1F · 흐린 글 #6E6E73 · 가는 줄 #E5E5EA · 옅은 칸 #F5F5F7 · 강조 하나 = 호박색(글 #B4570A · 점 #D97706)
+   오름 = 호박색 · 내림 = 짙은 회색(부호 · 화살표가 뜻을 그대로 지님) · 어두운 기기에서도 흰 판(첫 페이지와 같음) · 글 · 숫자 · 셈 · 누르는 자리는 그대로 */
+
+/* ── 색 이름: 옛 흰 판 · 쪽마다 판(읽는 종이 · 매매일지 · 첫 화면)을 모두 같은 값으로 ── */
+html.su-wrapped, html.su-wrapped.white, html.su-wrapped.su-wrapped #view, html.su-wrapped .wy {
+  color-scheme: light;
+  --bg: #FFFFFF; --night: #FFFFFF; --band: #FFFFFF; --violet: #1D1D1F;
+  --card: #FFFFFF; --card2: #F5F5F7; --card3: #E8E8ED;
+  --hair: #D2D2D7; --hair2: #C7C7CC; --line: #E5E5EA; --hair-soft: #F2F2F7; --seam: #F2F2F7; --press: #F2F2F7; --lift: #FFFFFF;
+  --ink: #1D1D1F; --ink-hi: #1D1D1F; --sub: #3A3A3C; --mute: #6E6E73; --flat: #6E6E73;
+  --violet-ink: #1D1D1F; --violet-wash: #FFFFFF; --violet-line: #D2D2D7; --violet-glow: #F5F5F7;
+  --gold: #B4570A; --gold-wash: #FFF4E5; --gold-line: #D97706;
+  --up: #B4570A; --down: #48484A; --up-ink: #B4570A; --down-ink: #48484A; --up-bg: #D97706; --down-bg: #8E8E93;
+  --up-fill: rgba(217, 119, 6, .14); --down-fill: rgba(142, 142, 147, .16); --up-fade: rgba(217, 119, 6, .06); --down-fade: rgba(142, 142, 147, .06);
+  --lacquer: #FFFFFF; --lacquer-ink: #1D1D1F; --lacquer-sub: #3A3A3C; --lacquer-gold: #B4570A;
+  --moon: #1D1D1F; --moonrow: #F5F5F7;
+  --m4-band: #FFFFFF; --m4-line: #D2D2D7; --m4-soft: #C7C7CC; --m4-neu: #3A3A3C; --m4-line2: #F2F2F7;
+  --pk-bg: #FFFFFF; --pk-card: #FFFFFF; --pk-tint: #F5F5F7; --pk-line: #E5E5EA; --pk-ink: #1D1D1F; --pk-sub: #6E6E73; --pk-acc: #B4570A; --pk-wine: #1D1D1F;
+}
+html.su-wrapped, html.su-wrapped body, html.su-wrapped.su-wrapped #view { background: #FFFFFF; color: #1D1D1F; }
+
+/* ── 위 막대: 흰 바탕 · 가는 줄 하나 · 단추는 테 없이(첫 페이지 위 막대처럼) ── */
+html.su-wrapped .top { background: #FFFFFF; border-bottom: 1px solid #E5E5EA; box-shadow: none; }
+html.su-wrapped .top .logo { color: #1D1D1F; }
+html.su-wrapped .top .ibtn, html.su-wrapped .top #langBtn, html.su-wrapped .top #findBtn { border: 0; border-radius: 50%; background: transparent; color: #1D1D1F; }
+html.su-wrapped .top #jhBtn { border: 1px solid #D2D2D7; background: #FFFFFF; color: #1D1D1F; }
+html.su-wrapped .top .ibtn.tgift { border: 1px solid #F3D9B8; background: #FFF4E5; color: #B4570A; }
+
+/* ── 카톡 보내기 · 선물 단추: 노란 칠 대신 옅은 회색 알약 · 말풍선 그림만 호박색 ── */
+html.su-wrapped .kk-btn, html.su-wrapped .kk-btn.kk-txt, html.su-wrapped .kk-btn.kk-row, html.su-wrapped .kk-yel, html.su-wrapped .acts .act.kk-yel, html.su-wrapped .sh .side button.kk-yel, html.su-wrapped .kk-gift {
+  background: #F5F5F7; color: #1D1D1F; border: 1px solid #E5E5EA; }
+html.su-wrapped .kk-ic .kk-b { fill: #D97706; }
+html.su-wrapped :is(.kk-btn, .kk-yel, .kk-gift):active { background: #E8E8ED; }
+
+/* ── 그림 꾸밈: 옛 판의 빛 · 그림자 없음 ── */
+html.su-wrapped .top, html.su-wrapped .suw-bar { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* ── 밤 판 자리 · 크기 지킴(아래는 scripts/atlas11/next/wrap_keep.py 가 지음 · 손으로 고치지 않음) ── */
+/* site/next/clock.css */
+html:where(.white.su-wrapped) i.play { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .m4-msg .m4-moon { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .m4-letter .hpi .m4-bm { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .m4-letter .hpi .hpi-b { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .m4-seal { border: 1.5px solid #E5E5EA; }
+html.white.su-wrapped .kk-gift { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .dm-it { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .jb-more { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .pchx-key .k-avg { border-top: 2px dashed #E5E5EA; }
+html:where(.white.su-wrapped) .pchx-key .k-b0 { border-top: 1px dotted #E5E5EA; }
+html:where(.white.su-wrapped) .ps-after .ps-t { border: 1px solid var(--hair2, ) #E5E5EA; }
+html:where(.white.su-wrapped) .ps-after .ps-qb { border: 1px solid var(--hair2, ) #E5E5EA; }
+html:where(.white.su-wrapped) .ps-lock { border: 1px dashed var(--hair2, ) #E5E5EA; }
+html:where(.white.su-wrapped) .ps-offer { border: 1px solid var(--hair2, ) #E5E5EA; }
+html:where(.white.su-wrapped) .psurge-key .psurge-kb0 { border-top: 1px dashed #E5E5EA; }
+html:where(.white.su-wrapped) .th-say { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-who { border-right: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-steps li { border-top: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-sn { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-ck { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-ck > b.n { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-box { border: 1px dashed #E5E5EA; }
+html:where(.white.su-wrapped) .th-li { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-cor { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-srow { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-two p { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-al { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-sw { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-rb.all { border-top: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-fold { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-found { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-why { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-gh { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-gfold > summary { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-calc { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-calm i.no { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-calkey i.no { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkrec { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkrow { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkcal { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkc.w { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-day { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-sinr { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-ch { border-top: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-ch.th-chend { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-chk { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-chb { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkhowf { border-top: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pki { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkcp { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkr { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-score { border: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-scr { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-tile { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-tbadge { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-chip { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .ptime-key .k-pool { border-top: 2px solid #E5E5EA; }
+html:where(.white.su-wrapped) .ptoday-lgd i.ptoday-gi { border-top: 1.5px solid #E5E5EA; }
+html.white.su-wrapped .top { border-bottom: 1px solid #E5E5EA; }
+html.white.su-wrapped .top #jhBtn { border: 1px solid #E5E5EA; }
+html.white.su-wrapped .top .ibtn { border-top: 1px solid #E5E5EA; border-bottom: 1px solid #E5E5EA; }
+html.white.su-wrapped .top #langBtn { border-left: 1px solid #E5E5EA; }
+html.white.su-wrapped .top #findBtn { border-right: 1px solid #E5E5EA; }
+html.white.su-wrapped .tabs { border-top: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .w-say p { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .w-say .s-who { border-right: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .w-say .w-kk { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .s-ch + .s-ch { border-top: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .s-no { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .w-ess .ess-d > summary::after { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .w-news .w-why { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .w-news .w-qs li { border-top: 1px solid #E5E5EA; }
+html.white.su-wrapped.home a.s-ghost { border: 1px dashed #E5E5EA; }
+html.white.su-wrapped.home a.w-month { border: 1px dashed #E5E5EA; }
+html.white.su-wrapped.home .s-thumb { border-top: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .s-thumb form.w-find { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.home .s-short { border-top: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-three a { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-row { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-tg { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-more { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-rec { border: 1px dashed #E5E5EA; }
+html:where(.white.su-wrapped) .th-next { border: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-hfold { border-bottom: 1px solid #E5E5EA; }
+html:where(.white.su-wrapped) .th-pkhgo { border-top: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped body { isolation: isolate; }
+html.white.su-wrapped.su-wrapped.su-wrapped body::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+html.white.su-wrapped.su-wrapped.su-wrapped .top { border-bottom: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .top .logo { font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped .top .logo img { display: none; }
+html.white.su-wrapped.su-wrapped.su-wrapped .top .tbtn, html.white.su-wrapped.su-wrapped.su-wrapped .top .ibtn { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .tabs { border-top: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .tabs a { gap: 3px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .tabs a .ic { width: 34px; height: 34px; padding: 5px; box-sizing: border-box; border-radius: 10px; border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .tabs a.plus .ic { width: 38px; height: 38px; padding: 6px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .tabs a[aria-current="page"] { font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped .top .logo { font-weight: 900; letter-spacing: 0; }
+html.white.su-wrapped.su-wrapped.su-wrapped a.why-go.cw { border-radius: 16px; }
+html.white.su-wrapped.su-wrapped.su-wrapped a.why-go.cw b { font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped a.why-go.cw i { font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zc { isolation: isolate; overflow: hidden; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zc::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "S B" "K K" "Q W"; column-gap: 16px; row-gap: 10px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zcS { grid-area: S; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zcB { grid-area: B; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zcQ { grid-area: Q; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zcW { grid-area: W; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .s-clk { grid-area: K; display: flex; justify-content: center; margin: 0; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zc { min-height: 96px; padding: 6px 10px 6px 4px; grid-template-columns: 72px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 4px; row-gap: 0; align-items: end; border-radius: 14px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zi { grid-column: 1; grid-row: 1 / span 2; align-self: center; width: 72px; height: 72px; border: 0; border-radius: 0; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zic { width: 72px; height: 72px; overflow: visible; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zw { grid-column: 2; grid-row: 1; align-self: start; padding-top: 4px; font-size: 22px; font-weight: 900; letter-spacing: -.02em; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zn { grid-column: 2; grid-row: 2; padding: 0; font-size: 44px; font-weight: 900; letter-spacing: -.05em; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zu { font-size: 18px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zgo { display: none; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-sway { transform-box: view-box; transform-origin: 51.5% 24%; }
+@media (prefers-reduced-motion: no-preference) { html.white.su-wrapped.su-wrapped.su-wrapped .th-sway { animation: ck-sway 3.2s ease-in-out infinite; } }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-ar { position: absolute; z-index: 2; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #E5E5EA; pointer-events: none; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-ar svg { display: block; width: 100%; height: 100%; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-t { left: 50%; top: 32px; margin-left: -16px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-b { left: 50%; bottom: 32px; margin-left: -16px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-r { right: 2px; top: 50%; margin-top: -16px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-l { left: 2px; top: 50%; margin-top: -16px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.en .tabs a { white-space: normal; text-align: center; line-height: 1.1; overflow-wrap: anywhere; }
+html.white.su-wrapped.su-wrapped.su-wrapped .dm-it { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-tbadge { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-chip { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-chipmore { border-style: dashed; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-pki { border-radius: 14px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-pkcp { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-pkmore { border-style: dashed; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-apps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 18px 0 44px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-app { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; min-height: 48px; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-apb { position: relative; display: block; width: 66px; height: 66px; border-radius: 16px; overflow: hidden; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-apb::before { content: ""; position: absolute; inset: 0; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-apb svg { position: relative; display: block; width: 100%; height: 100%; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-apl { font-size: 17px; font-weight: 800; line-height: 1.2; text-align: center; white-space: nowrap; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-badge { position: absolute; z-index: 1; top: -8px; left: 50%; margin-left: 18px; width: max-content; min-width: 30px; height: 30px; padding: 0 6px; box-sizing: border-box; white-space: nowrap; border-radius: 15px; border: 2px solid #E5E5EA; font-size: 17px; font-weight: 900; line-height: 26px; text-align: center; }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-app:active .s-apb { transform: translate(2px, 2px); }
+html.white.su-wrapped.su-wrapped.su-wrapped.en .s-apl { white-space: normal; word-break: keep-all; overflow-wrap: normal; line-height: 1.1; }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones { column-gap: 12px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zc { min-height: 84px; grid-template-columns: 52px minmax(0, 1fr); padding: 4px 8px 4px 2px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zi, html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zic { width: 52px; height: 52px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zw { font-size: 19px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zn { font-size: 36px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zu { font-size: 17px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-ar { width: 28px; height: 28px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-t { top: 28px; margin-left: -14px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-b { bottom: 28px; margin-left: -14px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-r, html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-l { margin-top: -14px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-apb { width: 56px; height: 56px; border-radius: 14px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-apl { white-space: normal; font-size: 17px; } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-badge { margin-left: 12px; } }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-hd .th-h1, html.white.su-wrapped.su-wrapped.su-wrapped h1.st-h { font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped .th-hd .th-mclk { flex: none; width: 104px; height: 83px; margin-left: 8px; }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-hd .th-mclk { width: 84px; height: 67px; } }
+html.white.su-wrapped.su-wrapped.su-wrapped .st-h .th-mclk.st-art { flex: none; width: 104px; height: 83px; }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .st-h .th-mclk.st-art { width: 84px; height: 67px; } }
+html.white.su-wrapped.su-wrapped.su-wrapped.en .th-zones .th-zn { flex-direction: column; align-items: flex-start; row-gap: 0; }
+html.white.su-wrapped.su-wrapped.su-wrapped.en .th-zones .th-zu { display: block; white-space: nowrap; overflow-wrap: normal; word-break: normal; font-size: 17px; line-height: 1.1; }
+html.white.su-wrapped.su-wrapped.su-wrapped.en .th-zones .th-zw { font-size: 19px; }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped.en .th-zones .th-zc { grid-template-columns: 42px minmax(0, 1fr); } }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped.en .th-zones .th-zi, html.white.su-wrapped.su-wrapped.su-wrapped.en .th-zones .th-zic { width: 42px; height: 42px; } }
+html.white.su-wrapped.su-wrapped.su-wrapped .s-boot { margin-top: 178px; }
+@media (max-width: 359px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-boot { margin-top: 163px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones { row-gap: 8px; margin-bottom: 0; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zc { min-height: 0; padding: 3px 8px 3px 2px; grid-template-columns: 48px minmax(0, 1fr); } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zi, html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zic { width: 48px; height: 48px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zw { padding-top: 0; font-size: 19px; line-height: 1.1; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zn { font-size: 34px; line-height: 1; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .th-zu { font-size: 17px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-zones .s-art, html.white.su-wrapped.su-wrapped.su-wrapped .s-boot { width: calc(var(--ckh) * 272 / 218); height: var(--ckh); } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-boot { margin-top: 153px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-t { top: 15px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .th-ar-b { bottom: 15px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-apps { margin: 10px 0 44px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-app { gap: 4px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-apb { width: 56px; height: 56px; border-radius: 14px; } }
+@media (max-height: 820px) { html.white.su-wrapped.su-wrapped.su-wrapped .s-badge { margin-left: 12px; } }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top { border-bottom: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top .tbtn, html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top .ibtn { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top #jhBtn { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .tabs { border-top: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top { border-bottom: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top .tbtn, html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top .ibtn { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .top #jhBtn { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped .tabs { border-top: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kick { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home .top { border-bottom: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home .tabs { border-top: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fact { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-mkt .w-news .w-why { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-why a.w-month { border: 1px dashed #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home .s-thumb { border-top: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home .s-thumb form.w-find { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .w-ess .ess-d > summary::after { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home .top #jhBtn { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-idx { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chart { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fig { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-map .th-news { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view details.nh-fold { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-q { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3c { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3w { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chk { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chk li i { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-ktw { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-part a.w-month { border: 1px dashed #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fm { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tw { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tp { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-part .nh-sage > i { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > .nh-scap { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sall { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sallr { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sallc { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-x { border: 1px solid #E5E5EA; }
+/* site/next/home-new.css */
+html.white.su-wrapped.su-wrapped.su-wrapped.home .top { border-bottom: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home .tabs { border-top: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-h1 { font-size: 32px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fact { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-mkt .w-news .w-why { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-why a.w-month { border: 1px dashed #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home .s-thumb { border-top: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home .s-thumb form.w-find { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .w-ess .ess-d > summary::after { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home .top #jhBtn { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-svg text { font-family: inherit; paint-order: stroke; stroke-width: 3px; stroke-linejoin: round; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-idx { display: grid; gap: 4px; padding: 12px 12px 8px; border-radius: 18px; border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-ih { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-in { font-size: 17px; font-weight: 700; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-iv { font-size: 26px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-idx-big .nh-iv { font-size: 30px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-ic { font-size: 19px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kl { stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-klast { stroke-width: 2.5; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt { font-size: 14px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kd { font-size: 13px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-trail { stroke-width: 1.6; stroke-dasharray: 3 3; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-axl { stroke-width: 1.4; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-axh { stroke-width: 1.6; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-axt { font-size: 13px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-zl { font-size: 15px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dl { font-size: 16px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-cz b { font-size: 22px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-leg { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-lg { border-bottom: 0; padding: 0; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-lg b { margin-left: auto; font-size: 17px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-real { display: grid; gap: 2px; margin: 0; padding: 12px 14px; border-radius: 16px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rk { font-size: 17px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-real b { font-size: 24px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dv { font-size: 15px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dv4 { font-size: 19px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dk { font-size: 14px; font-weight: 700; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chart { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-ck { font-size: 18px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fig { border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fig figcaption { font-size: 17px; font-weight: 800; line-height: 1.3; text-align: center; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-cv { font-size: 21px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-cl { font-size: 14px; font-weight: 700; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-wz { stroke-width: 1.5; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-wv { font-size: 18px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-wl { font-size: 14px; font-weight: 700; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fvv { font-size: 16px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-yv { font-size: 13px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-yk { font-size: 14px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-yn { font-size: 12px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-l-sw i { border: 2px solid #E5E5EA; box-sizing: border-box; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dn { stroke-width: 24; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-missw .nh-ml li { grid-template-columns: 14px minmax(0, 1fr) auto; align-items: center; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-missw .nh-ml li > i { margin-top: 0; width: 14px; height: 14px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-missw .nh-mt { font-size: 17px; font-weight: 700; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-missw .nh-mp { font-size: 22px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dnv { font-size: 24px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dnk { font-size: 14px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-vs b { font-size: 36px; font-weight: 900; line-height: 1.1; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-vs small { font-size: 17px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-vsx { font-size: 18px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fv { font-size: 16px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fl { font-size: 14px; font-weight: 700; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sc { stroke-width: 3; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sk { font-size: 20px; font-weight: 900; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-st { font-size: 14px; font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sarr { stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view :is(.nh-kt, .nh-kd, .nh-tick, .nh-zl, .nh-dl, .nh-axt, .nh-dv, .nh-dk, .nh-cl, .nh-wl, .nh-yv, .nh-yk, .nh-yn, .nh-dnk, .nh-fl, .nh-fv, .nh-st, .nh-fvv) { font-size: 17px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-map .th-news { display: grid; gap: 4px; margin: 0; padding: 12px 14px; border-radius: 16px; border: 1px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-map .th-news :is(.th-nh, .th-nm, .th-nl, .th-nl *) { font-size: 17px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-map .th-news a { display: flex; align-items: center; min-height: 48px; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-map .th-news a.th-hi { font-weight: 800; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-part a.w-month { border: 1px dashed #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-hero .nh-h1 { font-size: 26px; line-height: 1.3; }
+@media (max-width: 380px) { html.white.su-wrapped.su-wrapped.su-wrapped.home #view .nh-hero .nh-h1 { font-size: 24px; } }
+/* site/next/home-talk.css */
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-c { transform: none; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp.y11-lampf[data-s="off"] > .y11-lf { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp.y11-lampf[data-s="q"] > .y11-lf { border: 2px dashed #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bub { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bub::before { border-left: 2px solid #E5E5EA; border-top: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-god { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gw .rms-cap { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-a-off { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-a-q { border: 2px dashed #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ctl > button { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-all { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-allr { border: 2px solid #E5E5EA; }
+html.white.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-allc { border: 2px solid #E5E5EA; }
+/* ── 지은 것 끝 ── */
+
+/* ══ 옛 앱 쪽(/next/) 쪽마다 색 — 일꾼이 68길을 찍고 재며 지은 것(첫 화면 · 왜 사? · 스승 · 신 · 회사 · 테마 시계 …) ══ */
+/* ══ 수르 틀 옛 쪽 — 첫 페이지 색 덧붙임(part-app · 주문 2011) ══
+   모든 줄은 html.su-wrapped 로 시작 · 색 · 바탕 · 테 · 칠 · 그림자만 바꿈(글 · 숫자 · 크기 · 자리 그대로)
+   html.su-wrapped×4 = 옛 쪽 규칙(html.en.white.home #view … 까지)보다 늘 한 단 위 — 쪽 css 가 뒤에 붙어도 이김
+   호박 글 #B4570A · 옅은 칸(#F5F5F7 · #FFF4E5) 위 호박 글만 #B0550A(대비 4.5 넘게) */
+
+/* ── 모든 쪽: 방 지킴이 알약(roman-tag.css · 쪽 맨 아래) — 짙은 보라 → 옅은 회색 알약 · 먹 글 · 이름만 호박 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view > .rmt .rmt-p { background-color: #F5F5F7; color: #1D1D1F; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view > .rmt a.rmt-k { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view > .rmt .rmt-l { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view > .rmt .rmt-n, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view > .rmt a.rmt-k i { color: #B0550A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view > .rmt .rms-cap { background-color: #F5F5F7; color: #1D1D1F; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rms-spk circle { fill: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rmt .rms-face[aria-pressed="true"] img, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rmt .rms-face:focus-visible, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rmt a.rmt-k:focus-visible { outline-color: #D97706; }
+@media (hover: hover) { html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view > .rmt .rms-face:hover img { outline-color: #D97706; } }
+
+/* ── 모든 쪽: 작은 선 그림(app.js COLOR · 오름 초록 · 내림 파랑 · 모름 보라 칠) — 오름 호박 · 내림 회색 · 모름 옅은 회색 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped :is([fill="#007A35"], [fill="#007a35"]) { fill: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped :is([stroke="#007A35"], [stroke="#007a35"]) { stroke: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped :is([fill="#1E4FC2"], [fill="#1e4fc2"]) { fill: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped :is([stroke="#1E4FC2"], [stroke="#1e4fc2"]) { stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped :is([fill="#6B2A8C"], [fill="#6b2a8c"]) { fill: #AEAEB2; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped :is([stroke="#6B2A8C"], [stroke="#6b2a8c"]) { stroke: #AEAEB2; }
+
+/* ── 모든 쪽: 큰 「다음」 단추(theme-home.css .th-next 검정 · 민트 작은 글) · 금빛 고리(.jb-act) ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .th-next { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .th-nx small { color: #D2D2D7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .th-why .th-nx small { color: #D2D2D7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .jb-act { box-shadow: none; }
+/* ── 첫 화면 #/ — home-new.css 바탕 규칙의 색만(생성 · 같은 차례) ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view { --nh-card: #FFFFFF; --nh-ink: #1D1D1F; --nh-sub: #6E6E73; --nh-line: #E5E5EA; --nh-go: #1D1D1F; --nh-link: #B4570A; --nh-S: #D97706; --nh-B: #D97706; --nh-W: #8E8E93; --nh-Q: #C7C7CC; --nh-zS: #FFF4E5; --nh-zB: #FFF4E5; --nh-zW: #FFF4E5; --nh-zQ: #ECEFEE; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-hero { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kick { border-color: #E5E5EA; color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-h1 { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-h1 .nh-acc { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sub { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fact { background-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fact b { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fact span { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-no { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-how { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-zline { stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dot { stroke: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dot4 { stroke: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-zl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tick { stroke: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-zl-S { fill: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-zl-B { fill: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-zl-W { fill: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-zl-Q { fill: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tick { fill: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-dl { fill: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-lg { border-bottom-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rule { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-bt { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-cmp-up .nh-me { background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-cmp-up .nh-all { background-color: #C7C7CC; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-cmp-dn .nh-me { background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-cmp-dn .nh-all { background-color: #C7C7CC; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-won { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-w1 i, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-stack .nh-w1 { background-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-w0 i, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-stack .nh-w0 { background-color: #F3D9B8; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-w2 i, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-stack .nh-w2 { background-color: #C7C7CC; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-warn { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-warn.nh-worse { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-wt { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sec.nh-mkt { background-color: transparent; background-image: none; border-color: #E5E5EA; color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-mkt .nh-h2 { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-go { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-foot { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fh { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fp { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rb { background-color: transparent; background-image: none; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rb i { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rb.on span { text-decoration-color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pm { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pm i { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pb b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pb b.nh-pb2 { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pb b.up { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pb b.dn { color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pb span { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pl { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pc { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt span { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt b.up { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt b.dn { color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-kt b.fl { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view details.nh-fold { border-color: #E5E5EA; background-color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-waf rect.off { fill: #FFFFFF; stroke: #D2D2D7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-waf.me rect.on { fill: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-waf.all rect.on { fill: #C7C7CC; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-wf figcaption b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-wf figcaption span { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-honest { border-left-color: #D97706; background-color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-honest span { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-honest b { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-part::before { border-top-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-q { background-color: #FFFFFF; border-color: #E5E5EA; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-yrsum { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3c { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3c i { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3c b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3c span { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3w { border-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3w b { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chk { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chkh { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chk li i { border-color: #D97706; background-color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chkt { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-chk li b { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pc2 { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-ktw { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-ktw .nh-kt { background-color: transparent; background-image: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rng .nh-rl0 { stroke: #D2D2D7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rng .nh-rt { stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rng .nh-rd { fill: #D97706; stroke: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-rc { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3h { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-3how { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-path ol::before { background-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pt { background-color: transparent; background-image: none; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pt i { border-color: #E5E5EA; background-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pt b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pt small { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-pm small { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-hero > .nh-pm .nh-mans { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fm { background-color: #FFFFFF; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fk { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fk-up i { border-bottom-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fk-dn i { border-top-color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fr { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fl-up .nh-fbar { background-color: #FFF4E5; border-left-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fl-dn .nh-fbar { background-color: #F5F5F7; border-left-color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fn { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fl-up .nh-fr > b { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fl-dn .nh-fr > b { color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-fc { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tw { background-color: #FFFFFF; border-color: #8E8E93; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twi-bl { background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twi-mo { border-bottom-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twk { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twc { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twg { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twn { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twd { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twe { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage i { background-color: #F5F5F7; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage b { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tp { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view p.nh-tp.nh-tp0 { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tpk { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-twn.nh-twnr { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tpnr .nh-tp0 { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tpnote { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tpl b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-tpl small { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-say { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-part .nh-sage > i { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > i.nh-sf { background-color: transparent; background-image: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > button.nh-sf { background-color: transparent; background-image: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > button.nh-sf[aria-pressed="true"] img { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > button.nh-sf:focus-visible { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > a.nh-sl:focus-visible { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > .nh-scap { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw.rm-say { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sage.nh-sfw > button.nh-sf:hover img { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sall { border-color: #D97706; background-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sall.nh-sallon { background-color: #FFFFFF; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sall:focus-visible { outline-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sallr { border-color: #D97706; background-color: #FFFFFF; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sallr:focus-visible { outline-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .nh-sallc { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-l { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-q { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-t { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-g > i { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-on { fill: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-off { fill: #FFFFFF; stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-qd { fill: #F5F5F7; stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-qt { fill: none; stroke: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-qdot { fill: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-m { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-x { background-color: #FFFFFF; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-wt { color: #6E6E73; }
+/* ── 첫 화면 #/ — home-talk.css 열한 불빛 색만(생성) ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-hint { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-key { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bd { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bn { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp { background-color: transparent; background-image: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-c { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-c-on { background-color: #1D1D1F; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-c-off { background-color: #FFFFFF; border-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-c-q { background-color: #F5F5F7; border-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp[aria-pressed="true"] > .y11-c { outline-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp:focus-visible { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp.y11-lampf > .y11-lf { border-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp.y11-lampf[data-s="off"] > .y11-lf { border-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp.y11-lampf[data-s="q"] > .y11-lf { border-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-lamp.y11-lampf[aria-pressed="true"] > .y11-lf { outline-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bub { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bub::before { background-color: #FFFFFF; border-left-color: #E5E5EA; border-top-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-god { background-color: #F5F5F7; border-color: #E5E5EA; color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gs { background-color: transparent; background-image: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gs[aria-pressed="true"] img { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gs:focus-visible { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gk { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gl { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gn { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gg { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gk:focus-visible { outline-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gw .rms-cap { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bk { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-a-on { background-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-a-off { border-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-a-q { border-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bq { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-cap { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-tt { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sub { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ez { background-color: #F5F5F7; color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ez > b { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ctl > button { border-color: #8E8E93; background-color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ctl > .y11-nx { background-color: #1D1D1F; border-color: #D97706; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ctl > .y11-snd[aria-pressed="true"] { background-color: #F5F5F7; border-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ctl > button:focus-visible { outline-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-spk { fill: currentColor; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-spw { fill: none; stroke: currentColor; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-note { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sc { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sky { fill: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gnd { fill: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sun { fill: #F3D9B8; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ray { stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-cld { fill: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-rain { stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-umb { fill: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-bod { fill: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-ln { stroke: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-wal { fill: #FFFFFF; stroke: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-aw1 { fill: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-aw2 { fill: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-aw3 { fill: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-awo { fill: none; stroke: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-gls { fill: #F5F5F7; stroke: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-knb { fill: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-pan { fill: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-cak { fill: #F3D9B8; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-oni { fill: none; stroke: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-stm { fill: none; stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-dor { fill: #E5E5EA; stroke: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-glo { fill: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sl-on { fill: #D97706; stroke: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sl-off { fill: #FFFFFF; stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sl-q { fill: #F5F5F7; stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sq { fill: none; stroke: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sqd { fill: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-sea { fill: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-arc { fill: none; stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-qbox { fill: none; stroke: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-s9l { background-color: #FFFFFF; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-all { border-color: #D97706; background-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-all.y11-allon { background-color: #FFFFFF; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-all:focus-visible { outline-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-allr { border-color: #D97706; background-color: #FFFFFF; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-allr:focus-visible { outline-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view .y11-allc { background-color: #F5F5F7; border-color: #E5E5EA; color: #1D1D1F; }
+/* ── 첫 화면 #/ — 옛 흰 판(html.white.clock.clock.clock.home · 밤 판을 떼면 꺼지는 그림 색)을 첫 페이지 색으로 다시 켬(생성 · 색만) ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view { --nh-card: #FFFFFF; --nh-ink: #1D1D1F; --nh-sub: #6E6E73; --nh-line: #E5E5EA; --nh-go: #1D1D1F; --nh-link: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-hero { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-kick { border-color: #D97706; color: #B4570A; background-color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-h1 { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-h1 .nh-acc { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sub { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fact { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fact b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fact span, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-no { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-how, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-rule, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-warn { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-won { background-color: #FFF4E5; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-warn.nh-worse { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-wt { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-zl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-tick { stroke: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-bt { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cmp-up .nh-me { background-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cmp-up .nh-all { background-color: #C7C7CC; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cmp-dn .nh-me { background-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cmp-dn .nh-all { background-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-lg { border-bottom-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sec.nh-mkt { background-color: #FFFFFF; border-color: #E5E5EA; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .nh-h2 { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt a.hm-band, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt a.hm-band * { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt a.hm-band .dn, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .w-news .dn { color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt a.hm-band .up, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .w-news .up { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .w-news .w-lb, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .w-news .w-ans p { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .w-news .w-why { border-color: #D97706; color: #B4570A; background-color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .s-split .gu { background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .s-split .gd { background-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-why a.w-month { border-color: #D97706; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .w-all .w-rows a, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .w-all .w-rows a * { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-foot { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fh { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fp { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .w-ess .ess-t, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .w-ess .ess-l, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .w-ess .ess-l.q { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .w-ess .ess-d > summary::after { border-color: #D97706; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view { --c-me: #D97706; --c-all: #C7C7CC; --c-up: #D97706; --c-dn: #8E8E93; --c-ink: #1D1D1F; --c-sub: #6E6E73; --c-wine: #1D1D1F; --c-soft: #E5E5EA; --c-pale: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-idx { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-in { color: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-iv { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ic.up { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ic.dn { color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ic.fl { color: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ka { fill: rgba(217, 119, 6, 0.13); stroke: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-kl { fill: none; stroke: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-km { fill: var(--c-wine); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-klast { fill: var(--c-me); stroke: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-kt { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-kd { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-trail { fill: none; stroke: var(--c-wine); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-trail0 { fill: var(--c-wine); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-axl { stroke: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-axh { fill: none; stroke: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-axt { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cz b { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cz-S { background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cz-B { background-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cz-W { background-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cz-Q { background-color: #C7C7CC; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-lg b { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-lg-S i { background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-lg-B i { background-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-lg-W i { background-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-lg-Q i { background-color: #C7C7CC; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-real { background-color: var(--c-wine); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-rk { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-real b { color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-db { fill: var(--c-soft); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-db4 { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dball { fill: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dv { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dv4 { fill: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dk { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-chart { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ck { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cap { color: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fig { background-color: #FFFFFF; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fig figcaption { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cb.nh-me { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cb.nh-all { fill: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cv.nh-me { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cv.nh-all { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-cl { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-wz { stroke: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-wb.nh-me { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-wb.nh-all { fill: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-wv.nh-me { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-wv.nh-all { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-wl { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fbar.nh-buy { fill: var(--c-up); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fbar.nh-sell { fill: var(--c-dn); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fvv.nh-buy { fill: var(--c-up); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fvv.nh-sell { fill: var(--c-dn); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-yb.nh-me { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-yb.nh-all { fill: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-yv.nh-me { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-yv.nh-all { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-yk { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-yn { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-lg3 li { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-l-me i, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-l-sh i { background-color: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-l-all i, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-l-sm i { background-color: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-l-sw i { background-color: var(--c-pale); border-color: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dn { fill: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dn.nh-w1 { stroke: var(--c-wine); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dn.nh-w0 { stroke: #D2D2D7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dn.nh-w2 { stroke: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ml li.nh-w1 > i { background-color: var(--c-wine); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ml li.nh-w0 > i { background-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-ml li.nh-w2 > i { background-color: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-missw .nh-mt { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-missw .nh-mp { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dnv { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-dnk { fill: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sb.nh-sh { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sb.nh-sm { fill: var(--c-all); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sb.nh-sw { fill: var(--c-pale); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-s0 { fill: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-vsa b { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-vsb b { color: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-vs small { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-vsx { color: var(--c-sub); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fb { fill: var(--c-soft); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fb1 { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fv { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fv1 { fill: #FFFFFF; stroke: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-fl { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sc { fill: #FFFFFF; stroke: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sc1 { fill: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sk { fill: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sk1 { fill: #FFFFFF; stroke: none; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-st { fill: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sarr { fill: none; stroke: var(--c-me); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view details.nh-more > summary { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mbody .nh-rl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mbody .nh-old { color: var(--c-ink); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-l-buy i { background-color: var(--c-up); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-l-sell i { background-color: var(--c-dn); }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-map .th-news { background-color: #F5F5F7; border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-map .th-news a.th-hi { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-golist { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-part a.w-month { border-color: #D97706; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-part .nh-link { color: #B4570A; }
+/* ── 첫 화면 #/ (home-new.css · home-talk.css) 손질 — 위 생성 줄 다음에 둠 ── */
+/* 업종 점 그림 네 자리: 싹 = 호박 · 강함 = 먹 · 꺾임 = 회색 · 조용함 = 옅은 회색 · 자리 바탕은 옅게 */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.home #view { --nh-S: #D97706; --nh-B: #1D1D1F; --nh-W: #8E8E93; --nh-Q: #C7C7CC; --nh-zS: #FFF4E5; --nh-zB: #F5F5F7; --nh-zW: #F5F5F7; --nh-zQ: #FAFAFA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-zl-B { fill: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-zl-W { fill: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-zl-S { fill: #B4570A; }
+/* 오늘 시장 칸 — 청록 판의 흰 글 → 먹 글 */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-sec.nh-mkt, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-mkt .nh-h2 { color: #1D1D1F; }
+/* 채운 단추(자홍 · 초록) → 먹 단추 · 흰 글 — 테도 같은 먹 */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view :is(.nh-sall, .y11-all, .y11-ctl > .y11-nx, .nh-go, .nh-mans) { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view :is(.nh-sall.nh-sallon, .y11-all.y11-allon) { background-color: #FFFFFF; border-color: #D97706; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view :is(.nh-sallr, .y11-allr) { border-color: #1D1D1F; color: #1D1D1F; }
+/* 켜진 불빛 = 호박 점 · 꺼진 불빛 = 회색 테 */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .y11-c-on { background-color: #D97706; border-color: #FFF4E5; }
+/* 찾기 칸 단추(검정) → 먹 */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .w-find .w-go { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+/* 「힘이 고르게 …」 짙은 칸(.nh-real) → 옅은 칸 · 먹 글 · 업종 두 칸 테는 가는 줄 */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-real { background-color: #F5F5F7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-rk { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-real b { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view .nh-tw { border-color: #D2D2D7; }
+/* 옅은 칸(#F5F5F7 · #FFF4E5) 위 호박 글 — 대비 4.5 넘게 한 단 짙게 */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped.white.home #view :is(.y11-gn, .y11-gg, .nh-wt, .y11-ez > b, .nh-fl-up .nh-fr > b, .nh-sl > b) { color: #B0550A; }
+/* ── 「왜 사?」 #/why (p-why.css · html.pg-why) — 짙은 초록 첫 칸 · 분홍 단추 → 흰 판 · 먹 글 · 먹 단추 · 고른 답은 옅은 호박 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy { --wm-dark: #FFFFFF; --wm-cream: #FFFFFF; --wm-line: #E5E5EA; --wm-mint: #D97706; --wm-pink1: #1D1D1F; --wm-pink2: #1D1D1F; --wm-pinkt: #FFFFFF; --wm-sel: #FFF4E5; --wm-selr: #D97706;
+  --wm-sun: #FFF4E5; --wm-sunt: #6E6E73; --wm-mind: #F5F5F7; --wm-tab: #1D1D1F; --wm-prog: #D97706; --wm-track: #E8E8ED; --wm-teal: #B0550A; --wm-shadow: 0 0 0 0 transparent; --wm-pinksh: 0 0 0 0 transparent;
+  --card: #FFFFFF; --card2: #F5F5F7; --ink: #1D1D1F; --sub: #6E6E73; --mute: #6E6E73; --hair: #E5E5EA; --hair2: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy[data-step="start"] { background-color: #FFFFFF; background-image: none; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-hero .wy-up, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-h { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-h em { color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-sub, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-time { color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-hl { background-color: #F5F5F7; outline-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-hl li { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-hl .wl-ic { background-color: #FFF4E5; color: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-hl .wl-ic path { stroke: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-scbg rect { fill: #F5F5F7; stroke: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-scbg g, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-scbg g > circle { fill: #E8E8ED; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-scbg path, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-scfg path { stroke: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-scbg > circle { fill: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy :is(.wy-go, .wy-next, .wy-detb) { background-color: #1D1D1F; background-image: none; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .wy :is(.wy-go, .wy-next, .wy-detb) { box-shadow: none !important; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy[data-step="q"] .wy-nav { background-image: none; background-color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy .wy-back, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy .wy-again { border-color: #E5E5EA; background-color: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-pg .wy-step { color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-oi { background-color: #F5F5F7; color: #B0550A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-opt.on .wy-oi { background-color: #FFF4E5; color: #B0550A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped .wy-err { color: #B4570A; }
+/* ── 서른아홉 스승 #/sage (p-sage.css) — 네 걸음 색(청록 · 금 · 보라 · 자주) → 먹 · 호박 · 회색 · 옅은 회색 · 칸 테는 가는 줄 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-dot.s1, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view li.s1 > i { fill: #1D1D1F; background-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-dot.s2, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view li.s2 > i { fill: #D97706; background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-dot.s3, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view li.s3 > i { fill: #6E6E73; background-color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-dot.s4, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view li.s4 > i { fill: #AEAEB2; background-color: #AEAEB2; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view :is(.sg-jump, .sg-step, .sg-tile, .sg-sn):is(.s1, .s2, .s3, .s4), html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-step :is(.sg-tile, .sg-sn) { border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-jump .sg-gl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-jump .sg-gl path { stroke: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view :is(.sg-allb, .rm-allb) { background-color: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+/* ── 로마 신 72 #/roman (p-roman.css) — 여섯 무리 점 · 「가 보기」 테 → 먹 · 회색 차례 · 가는 줄 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-grp.g1 > i { background-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-grp.g2 > i { background-color: #D97706; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-grp.g3 > i { background-color: #48484A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-grp.g4 > i { background-color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-grp.g5 > i { background-color: #8E8E93; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-grp.g6 > i { background-color: #AEAEB2; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-card .rm-goa { border-color: #D2D2D7; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-why .rm-wl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .rm-card .rm-spot { color: #B0550A; }
+/* ── 테마 쪽 #/t/… — 흰 글 ✓ 동그라미(호박 칠 위 흰 글 대비 4.5) ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .th-ck b.y { background-color: #B4570A; }
+/* ── 오늘 시장 #/today — 옅은 호박 칸 위 호박 글 대비 4.5 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .ptoday-al .nw-t { color: #B0550A; }
+/* ── 스승 한 분 쪽 #/sage/<이름> — 걸음 색 테 · 그림 줄 → 가는 줄 · 호박 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view :is(.sg-chip, .sg-sp, .sg-say, .sg-card):is(.s1, .s2, .s3, .s4), html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-card :is(.sg-say, .sg-sp), html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-top .sg-chip, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-bh .sg-sp { border-color: #E5E5EA; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-gl, html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-gl path { stroke: #B4570A; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .sg-bh .sg-bl { color: #B0550A; }
+/* ── 고른 곳 달력 #/t/pick — 오른 날 칸 · 내린 날 칸(흰 글이 옅은 호박 · 회색 칠 위 대비 3.2) → 짙은 호박 · 짙은 회색 칠 · 빈 날은 옅은 칸 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .th-pkc { background-color: #F5F5F7; color: #6E6E73; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .th-pkc.up { background-color: #B4570A; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .th-pkc.dn { background-color: #48484A; color: #FFFFFF; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .th-pkc:is(.w, .e) { background-color: transparent; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .th-pkc.w { border-color: #1D1D1F; }
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view .th-pknl-x li { color: #B4570A; }
+/* ── 「왜 사?」 질문 칸 테 ── */
+html.su-wrapped.su-wrapped.su-wrapped.su-wrapped #view section.wy.page { border-color: #E5E5EA; }
+
+/* ══ 따로 선 쪽(hello · letter · invite) 색 — 일꾼이 22가지 모습 × 밝은 · 어두운 × 390 · 320 을 찍고 재며 지은 것 ══ */
+/* ── 옛 쪽 셋(소개 · 편지 · 초대장) — 수르 틀 안에서만 첫 페이지 색(주문 2011) · 글 · 크기 · 간격 · 누르는 자리는 그대로 · 색 · 바탕 · 테 · 그림자만
+   amber text #B4570A only on white (on #F5F5F7 / #FFF4E5 it is 4.48 : 1) · on soft or pale fills the text is ink #1D1D1F or #6E6E73
+   hairlines drawn as 0 0 0 1px rings where the old box had no border (no size change) · pictures, videos and the envelope / celadon box drawings stay */
+
+/* ═══ /hello.html — 소개 한 장(body.hp) ═══ */
+html.su-wrapped body.hp :is(.hp-h, .hp-lead, .hp-msg, .hp-uleft) { color: #1D1D1F; }
+html.su-wrapped body.hp .hp-go { background: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped body.hp .hp-data { border-color: #E5E5EA; background: #FFFFFF; color: #1D1D1F; }
+html.su-wrapped body.hp .hp-dl li { border-top-color: #E5E5EA; }
+html.su-wrapped body.hp .hp-dl b { color: #B4570A; }
+html.su-wrapped body.hp .hp-pbar { background: #FFF4E5; color: #1D1D1F; }
+html.su-wrapped body.hp .hp-talk { border-color: #E5E5EA; background: #FFFFFF; color: #1D1D1F; }
+html.su-wrapped body.hp .hp-which { color: #B4570A; }
+html.su-wrapped body.hp .hp-send { background: #F5F5F7; color: #1D1D1F; box-shadow: inset 0 0 0 1px #E5E5EA; }
+html.su-wrapped body.hp .hp-send:active { background: #E8E8ED; }
+/* 상품권 칸 — 흰 칸 · 옅은 호박 테 · 알림 칸은 옅은 호박 바탕에 먹 글 */
+html.su-wrapped body.hp .hp-promo { border-color: #F3D9B8; background: #FFFFFF; color: #1D1D1F; }
+html.su-wrapped body.hp .hp-pt { color: #B4570A; }
+html.su-wrapped body.hp .hp-vow { border-color: #F3D9B8; background: #FFF4E5; color: #1D1D1F; }
+html.su-wrapped body.hp .hp-vow b { color: #1D1D1F; }
+html.su-wrapped body.hp .hp-steps b, html.su-wrapped body.hp .hp-num b { color: #B4570A; }
+html.su-wrapped body.hp .hp-num { color: #1D1D1F; }
+html.su-wrapped body.hp .hp-ucap { color: #6E6E73; }
+html.su-wrapped body.hp .hp-ucap b { color: #1D1D1F; }
+html.su-wrapped body.hp .hp-uplay { border-color: #1D1D1F; background: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped body.hp .hp-ubar { border-color: #D2D2D7; }
+html.su-wrapped body.hp .hp-ubar::-webkit-progress-value { background: #D97706; }
+html.su-wrapped body.hp .hp-ubar::-moz-progress-bar { background: #D97706; }
+html.su-wrapped body.hp .hp-lock { border-color: #D2D2D7; color: #6E6E73; }
+html.su-wrapped body.hp .hp-thx { color: #B4570A; }
+html.su-wrapped body.hp .hp-sms { background: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped body.hp .hp-call { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped body.hp :is(.hp-pn, .hp-foot, .hp-priv a) { color: #6E6E73; }
+html.su-wrapped body.hp :is(.hp-go, .hp-send, .hp-vid, .hp-pbar, .hp-which, .hp-uplay, .hp-sms, .hp-call, .hp-priv a):focus-visible { outline-color: #B4570A; }
+
+/* ═══ /letter.html — 편지 여는 밤(main#lt · 몸통 끝에 붙는 알림 · 봉인 막 · 글상자는 #lt ~ 형제로 · :has() 없음) ═══ */
+/* 첫 장 — 밤하늘 대신 흰 판 · 별 점 없음 · 봉투 그림은 그대로(금빛 번짐만 뺌) */
+html.su-wrapped #lt .hero { background: #FFFFFF; }
+html.su-wrapped #lt .hero::before { background: none; }
+html.su-wrapped #lt .kick { color: #B4570A; }
+html.su-wrapped #lt .hbig { color: #1D1D1F; }
+html.su-wrapped #lt .hsub { color: #6E6E73; }
+html.su-wrapped #lt .clock { border-color: #E5E5EA; background: #FFFFFF; }
+html.su-wrapped #lt .clock small { color: #6E6E73; }
+html.su-wrapped #lt .clock.guest small { color: #1D1D1F; }
+html.su-wrapped #lt .clk { color: #B4570A; }
+html.su-wrapped #lt .live { color: #6E6E73; }
+html.su-wrapped #lt .live b { color: #1D1D1F; }
+html.su-wrapped #lt .env { filter: none; }
+/* 칸 · 입력 · 단추 */
+html.su-wrapped #lt .card { background: #FFFFFF; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-wrapped #lt .card.own { background: #FFF4E5; box-shadow: 0 0 0 1px #F3D9B8; }
+html.su-wrapped #lt :is(.bodri, .bod)::before { box-shadow: 0 0 0 2px #E5E5EA; }
+html.su-wrapped #lt :is(.in, .ta) { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped #lt :is(.in, .ta)::placeholder { color: #6E6E73; opacity: 1; }
+html.su-wrapped #lt :is(.note, .cnt) { color: #6E6E73; }
+html.su-wrapped #lt .msg { color: #B4570A; }
+html.su-wrapped #lt :is(.card.own, .lt .own) .msg { color: #1D1D1F; }
+html.su-wrapped #lt .bod, html.su-wrapped #lt .bod.ok, html.su-wrapped #lt .mine .quiet { color: #1D1D1F; }
+html.su-wrapped #lt .bod.no { color: #B4570A; }
+html.su-wrapped #lt .kk .kkr.ok { color: #1D1D1F; }
+html.su-wrapped #lt .chip { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped #lt .chip[aria-pressed=true] { border-color: #D97706; background: #FFF4E5; color: #1D1D1F; }
+html.su-wrapped #lt .gold { background: #1D1D1F; color: #FFFFFF; box-shadow: none; }
+html.su-wrapped #lt .gold:disabled { background: #F5F5F7; color: #6E6E73; box-shadow: none; }
+html.su-wrapped #lt .ghost { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped #lt :is(.chip, .ghost, .pill):active { background: #E8E8ED; }
+/* 열린 편지 — 흰 종이 · 가는 테 · 그 주 기록 칸도 흰 칸(호박 글이 흰 바탕에만 오게) */
+html.su-wrapped #lt .lt { background: #FFFFFF; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-wrapped #lt .lt.hid { outline-color: #D97706; }
+html.su-wrapped #lt :is(.lth span, .lt .note) { color: #6E6E73; }
+html.su-wrapped #lt .lt .msg { color: #B4570A; }
+html.su-wrapped #lt .rec { background: #FFFFFF; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-wrapped #lt :is(.rt, .rd, .lt .rec .note) { color: #6E6E73; }
+html.su-wrapped #lt :is(.rt .q, .qq) { color: #B4570A; }
+html.su-wrapped #lt .qq { border-color: #D2D2D7; }
+html.su-wrapped #lt .rd .gd { color: #1D1D1F; }
+/* 선 그림 — 오름 호박 · 내림 회색(첫 페이지 선과 같음) · 봉인한 날 점은 먹(오름 선과 갈리게) */
+html.su-wrapped #lt .sp [stroke="#FF5A65"] { stroke: #D97706; }
+html.su-wrapped #lt .sp [stroke="#5B96FF"] { stroke: #86868B; }
+html.su-wrapped #lt .sp [fill="#FF5A65"] { fill: #D97706; }
+html.su-wrapped #lt .sp [fill="#5B96FF"] { fill: #86868B; }
+html.su-wrapped #lt .sp .seal-dot { fill: #1D1D1F; }
+html.su-wrapped #lt .look span { background: #FFF4E5; color: #1D1D1F; }
+html.su-wrapped #lt .pill { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped #lt .pill.on { border-color: #D97706; background: #FFF4E5; color: #1D1D1F; }
+html.su-wrapped #lt .pill.dim { border-color: #E5E5EA; color: #48484A; }
+html.su-wrapped #lt .lt .rep .in { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped #lt :is(.lt .rep .ghost, .lt .own .ghost) { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped #lt .lt .own { background: #FFF4E5; }
+/* 초대장 표 */
+html.su-wrapped #lt .tk { border-color: #D97706; color: #1D1D1F; }
+html.su-wrapped #lt .tk.used { border-color: #E5E5EA; color: #6E6E73; }
+html.su-wrapped #lt .foot { color: #6E6E73; }
+/* 몸통 끝에 붙는 것(main#lt 뒤 형제) — 알림 한 줄 · 봉인 순간 막 */
+html.su-wrapped #lt ~ .toast { background: #F5F5F7; color: #1D1D1F; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-wrapped #lt ~ .seal-ov { background: rgba(255, 255, 255, .96); color: #1D1D1F; }
+html.su-wrapped #lt ~ .seal-ov .env { filter: none; }
+html.su-wrapped #lt ~ .seal-ov .t2 { color: #B4570A; }
+
+/* ═══ /invite.html — 초대장 쓰는 쪽(body.iv-day) ═══ */
+html.su-wrapped body.iv-day .iv-top { background: #FFFFFF; color: #1D1D1F; box-shadow: inset 0 -1px 0 #E5E5EA; }
+html.su-wrapped body.iv-day .iv-top a { color: #1D1D1F; }
+html.su-wrapped body.iv-day .iv-top .iv-back { color: #6E6E73; }
+html.su-wrapped body.iv-day .iv-hero p { color: #6E6E73; }
+html.su-wrapped body.iv-day .iv-form { background: #FFFFFF; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-wrapped body.iv-day :is(.iv-field label small, .iv-label small, .iv-row, .iv-pv-h p, .iv-hint, .iv-made label, .iv-photo-drop, .iv-photo-note) { color: #6E6E73; }
+html.su-wrapped body.iv-day .iv-in { border-color: #E5E5EA; background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped body.iv-day .iv-in::placeholder { color: #6E6E73; opacity: 1; }
+html.su-wrapped body.iv-day .iv-in:focus { border-color: #B4570A; box-shadow: 0 0 0 3px #FFF4E5; }
+html.su-wrapped body.iv-day .iv-in[aria-invalid="true"] { border-color: #B4570A; }
+html.su-wrapped body.iv-day :is(.iv-row button, .iv-share .iv-link, .iv-err, .iv-status.bad) { color: #B4570A; }
+html.su-wrapped body.iv-day .iv-privacy { background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped body.iv-day .iv-privacy b { color: #1D1D1F; }
+html.su-wrapped body.iv-day :is(.iv-form, .iv-share) .iv-btn.pri { background: #1D1D1F; color: #FFFFFF; }
+html.su-wrapped body.iv-day :is(.iv-form, .iv-share) .iv-btn.pri:hover { background: #3A3A3C; }
+html.su-wrapped body.iv-day .iv-share .iv-btn.sec { background: #F5F5F7; color: #1D1D1F; box-shadow: inset 0 0 0 1.5px #E5E5EA; }
+html.su-wrapped body.iv-day .iv-share .iv-btn.sec:active { background: #E8E8ED; }
+html.su-wrapped body.iv-day .iv-made { background: #F5F5F7; box-shadow: none; }
+html.su-wrapped body.iv-day .iv-made input { border-color: #E5E5EA; background: #FFFFFF; color: #1D1D1F; }
+html.su-wrapped body.iv-day .iv-status { color: #1D1D1F; }
+html.su-wrapped body.iv-day .iv-owner-ok { background: #FFF4E5; color: #1D1D1F; }
+html.su-wrapped body.iv-day .iv-photo-thumb { background: #F5F5F7; box-shadow: 0 0 0 1px #E5E5EA; }
+html.su-wrapped body.iv-day .iv-photo-pick { background: #F5F5F7; color: #1D1D1F; box-shadow: inset 0 0 0 1.5px #E5E5EA; }
+html.su-wrapped body.iv-day .iv-photo:focus-within .iv-photo-pick { outline-color: #B4570A; }
+html.su-wrapped body.iv-day :focus-visible:not(.iv-frame *) { outline-color: #B4570A; }
+/* 미리 보기 창 — 받는 사람(수르 틀 밖)이 보는 밤 장면 그대로라 속은 어두운 채 둠 · 바깥 그림자만 뺌 */
+html.su-wrapped body.iv-day .iv-frame { box-shadow: 0 0 0 8px #1D1D1F; }
+
+/* ═══ /invite.html?i=… · /i/… — 초대장 받는 쪽(body.iv-night) — 흰 판 · 별은 호박 점 · 청자 합 그림은 그대로 ═══ */
+html.su-wrapped body.iv-night { color-scheme: light; }
+html.su-wrapped body.iv-night .iv-scene { background: #FFFFFF; }
+html.su-wrapped body.iv-night .iv-scene::before { background: none; }
+html.su-wrapped body.iv-night :is(.iv-to, .iv-from b, .iv-msg, .iv-sign b) { color: #1D1D1F; }
+html.su-wrapped body.iv-night :is(.iv-brand, .iv-to small, .iv-from, .iv-note p, .iv-go-sub, .iv-what, .iv-foot, .iv-foot a, .iv-sign) { color: #6E6E73; }
+html.su-wrapped body.iv-night .iv-msg.none { color: #6E6E73; }
+html.su-wrapped body.iv-night .iv-scene .iv-link { color: #6E6E73; }
+html.su-wrapped body.iv-night .iv-scene .iv-link:hover { color: #1D1D1F; }
+html.su-wrapped body.iv-night .iv-glow { background: none; }
+html.su-wrapped body.iv-night .iv-sky polyline { stroke: #D2D2D7; }
+html.su-wrapped body.iv-night .iv-star, html.su-wrapped body.iv-night .iv-lite .iv-star { background: radial-gradient(closest-side, #D97706 0 24%, rgba(217, 119, 6, 0) 26%); } /* 날 선 점 하나(번짐 없음) */
+html.su-wrapped body.iv-night .iv-star.empty { background: radial-gradient(closest-side, rgba(217, 119, 6, 0) 0 15%, #D97706 17% 21%, rgba(217, 119, 6, 0) 23%); }
+html.su-wrapped body.iv-night .iv-wait { background: radial-gradient(closest-side, #D97706 0 22%, rgba(217, 119, 6, 0) 24%); }
+html.su-wrapped body.iv-night .iv-scene .iv-btn.pri { background: #1D1D1F; color: #FFFFFF; box-shadow: none; }
+html.su-wrapped body.iv-night .iv-scene .iv-btn.pri:hover { background: #3A3A3C; }
+html.su-wrapped body.iv-night .iv-card { background: #F5F5F7; color: #1D1D1F; box-shadow: none; }
+html.su-wrapped body.iv-night :focus-visible { outline-color: #B4570A; }
+/* 사진이 든 선물을 연 때 — 장면 뒤가 사진 하늘(그림 그대로 · 어두움)이라 그 위 글만 밝게 */
+html.su-wrapped body.iv-night .iv-has-photo.iv-open :is(.iv-brand, .iv-go-sub, .iv-what) { color: #F5F5F7; }
+html.su-wrapped body.iv-night .iv-has-photo.iv-open .iv-link, html.su-wrapped body.iv-night .iv-has-photo.iv-open .iv-link:hover { color: #FFFFFF; }
+html.su-wrapped body.iv-night .iv-has-photo.iv-open .iv-btn.pri { background: #FFFFFF; color: #1D1D1F; }
+
+/* ═══ /hello.html · /letter.html — 보내기 글상자(/next/p-share.css · 앱 쪽은 html.white 규칙이 받는 것을 이 두 쪽에도 같게) ═══ */
+html.su-wrapped body.hp :is(.ps-go, .ps-toast), html.su-wrapped #lt ~ .ps-dlg .ps-go, html.su-wrapped #lt ~ .ps-toast { color: #FFFFFF; }
+html.su-wrapped body.hp .ps-t::placeholder, html.su-wrapped #lt ~ .ps-dlg .ps-t::placeholder { color: #6E6E73; opacity: 1; }
+
+/* ═══ /invite.html 두 쪽 함께 — 건너뛰기 고리 · 맨 아래 처리방침 고리 ═══ */
+html.su-wrapped :is(body.iv-day, body.iv-night) .iv-skip { background: #F5F5F7; color: #1D1D1F; }
+html.su-wrapped :is(body.iv-day, body.iv-night) .pv-foot a { color: #6E6E73; }

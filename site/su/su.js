@@ -120,23 +120,23 @@ export function artFig(A, opt = {}) {
 }
 export const art = async (name, arg = null, opt = {}) => artFig(await artMod(name, arg), opt);
 /** 무하 포스터 틀(su-mucha.js) — 쪽의 값 그래프를 그대로(가로 · 세로 같은 비율로만 줄여) 아치 창 안에 · 그래프 모양은 바꾸지 않음([6] 6) */
-export async function framed(old, title, kind, tone = 'calm') {
-  try { const g = old?.querySelector?.('svg'); if (!g) return null; const M = await modOf('su-mucha'); const svg = M.frame(g, {title, kind, tone}); return svg ? h('figure', {class: 'su-fig su-hero su-art4', 'data-g': 'su-mucha'}, svg) : null; } catch (e) { console.error(e); return null; }
+export async function framed(old, title, kind, tone = 'calm') { // 값 그래프 틀 = 잡스 판(su-frame-jobs · 주문 2011 — 옛 무하 틀 su-mucha 는 지우지 않고 둠)
+  try { const g = old?.querySelector?.('svg'); if (!g) return null; const M = await modOf('su-frame-jobs'); const svg = M.frame(g, {title, kind, tone}); return svg ? h('figure', {class: 'su-fig su-hero su-art4', 'data-g': 'su-frame-jobs'}, svg) : null; } catch (e) { console.error(e); return null; }
 }
 /** 새 그림이 나오면 큰 자리에 · 옛 그림은 「자세히」 서랍에(지우지 않음 — [2] 3 · 4) */
 export const heroOf = (pic, old) => (pic ? {hero: pic, hero2: old ?? null} : {hero: old ?? null, hero2: null});
 /** 큰 그림 자리를 바로 두고(같은 크기 · 글이 먼저 그려짐 — 느린 휴대폰 첫 그림 2.5초 [1] 6) 부품이 오면 채움 · 못 오면 옛 그림을 그 자리로(서랍에서 꺼냄)
  *  make = () => Promise<svg|null> · 검사는 data-wait 가 없어질 때까지 기다림 */
-function slot(name, make, old) {
-  const fig = h('figure', {class: 'su-fig su-hero su-art4 su-wait', 'data-g': name, 'data-wait': ''});
+function slot(name, make, old, arg = null) {
+  const fig = h('figure', {class: 'su-fig su-hero su-art4 su-wait', 'data-g': name, 'data-wait': '', ...(typeof arg === 'string' && /^[a-z]+$/.test(arg) ? {'data-a': arg} : {})}); // data-a = 부품 갈래(기다리는 자리 비율 — su-news.css)
   const back = () => { if (old) fig.replaceWith(old); else fig.remove(); };
   make().then(svg => { if (svg) { fig.replaceChildren(svg); fig.removeAttribute('data-wait'); fig.classList.remove('su-wait'); } else back(); }).catch(e => { console.error(e); back(); });
   return {hero: fig, hero2: old ?? null};
 }
 /** 부품 그림 — {hero, hero2} */
-export const artHero = (name, arg, old, opt = {}) => slot(name, async () => { const A = await artMod(name, arg); return A ? A.M.picture(A.d, opt) : null; }, old);
+export const artHero = (name, arg, old, opt = {}) => slot(name, async () => { const A = await artMod(name, arg); return A ? A.M.picture(A.d, opt) : null; }, old, arg);
 /** 무하 틀 그림 — {hero, hero2} */
-export const frameHero = (old, title, kind, tone = 'calm') => slot('su-mucha', async () => { const g = old?.querySelector?.('svg'); if (!g) return null; const M = await modOf('su-mucha'); return M.frame(g, {title, kind, tone}); }, old);
+export const frameHero = (old, title, kind, tone = 'calm') => slot('su-frame-jobs', async () => { const g = old?.querySelector?.('svg'); if (!g) return null; const M = await modOf('su-frame-jobs'); return M.frame(g, {title, kind, tone}); }, old); // 잡스 판 틀(주문 2011)
 function dock(nx, step) {
   if (!nx) return null;
   return h('nav', {class: 'su-dock', 'aria-label': '다음 화면'},
@@ -271,7 +271,7 @@ async function vCo(code) {
   const indX = n => (TH?.inds ?? []).find(i => i?.n === n)?.x;
   const inds = [...bl.rows.map(r => ({n: r.ind, x: indX(r.ind)})), ...mo.map(r => ({n: r.ind, x: r.x}))].filter((x, i, a) => x.n && Number.isFinite(x.x) && a.findIndex(y => y.n === x.n) === i).sort((a, b) => b.x - a.x);
   return {title: c.name, tab: 1, step: 2, proper: true, kick: [c.market === 'KOSDAQ' ? '코스닥' : c.market === 'KOSPI' ? '코스피' : null, ind ? ind + ' 업종' : null].filter(Boolean).join(' · '), h1: c.name, big: e.big,
-    ...artHero('su-co-art', code, hero), mids: e.mids, honest: honestOf(B), // 무하 아치 창 안 한 달 줄 · 끝값 이름표 · 「왜 여기 있나」 길(주문 1023)
+    ...artHero('su-co-jobs', code, hero), mids: e.mids, honest: honestOf(B), // 한 달 줄 · 끝값 이름표 · 「왜 여기 있나」 길(주문 1023) — 첫 페이지 잡스 판으로(주문 2011 · 옛 무하 판 su-co-art 는 남김)
     figs: [(r0?.kind === 'pick' || r0?.kind === 'near') ? matrix([{name: c.name, ok: bl.say.map(t => (r0.kind === 'pick' ? true : !r0.no.map(easy).includes(t)))}], condsOf(bl), {label: c.name + '와 꽃 조건', title: '꽃 조건 셋과 이 회사'}) : null,
       inds.length && ind ? bars(inds.map(x => ({name: x.n, v: x.x, key: x.n})), {label: '업종 · 한 달 동안 시장보다', title: '업종이 시장보다 더 오른 만큼' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: ind}) : null].filter(Boolean),
     body: [...rs.map(reasonCard), ind ? h('a', {class: 'su-ind', href: indHref(ind)}, h('span', {text: ind + ' 업종'}), h('i', {'aria-hidden': 'true', text: '›'})) : null,
@@ -326,7 +326,7 @@ async function vHub() {
   const e = eHub({B, mine, lastDay}), hon = B?.honest, ms = eMonths({B}), dd = eDays({B}), yy = eYears({B}), nn = eNear({B});
   const drawer = (href, t, v, sub) => h('a', {class: 'su-drawer', href}, h('b', {text: t}), h('span', {class: 'su-dv', text: v}), h('span', {class: 'su-ds', text: sub}), h('i', {'aria-hidden': 'true', text: '›'}));
   return {title: '기록', tab: 2, step: null, kick: ymd(hon?.from) && ymd(hon?.to) ? ymd(hon.from) + '부터 ' + ymd(hon.to) + '까지' : '지난 기록', h1: '지난 기록 한곳', big: e.big,
-    ...artHero('su-rec-art', 'hub', waffle(hon?.rate, hon?.base, {label: '100번에 몇 번 꽃이 됐나 · 조건에 맞은 회사와 아무 회사', hero: true, la: '조건에 맞은 회사', lb: '아무 회사', cap: e.say})),
+    ...artHero('su-rec-jobs', 'hub', waffle(hon?.rate, hon?.base, {label: '100번에 몇 번 꽃이 됐나 · 조건에 맞은 회사와 아무 회사', hero: true, la: '조건에 맞은 회사', lb: '아무 회사', cap: e.say})),
     mids: e.mids,
     figs: [cols(ms.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|07)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수', title: '달마다 · 못했던 달은 ■'}),
       split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것', title: '꽃이 된 것과 못 된 것'})],
@@ -349,7 +349,7 @@ async function vMonths() {
   const {B, S, asOf} = await base();
   const e = eMonths({B});
   return {title: '달마다', tab: 2, step: null, kick: '그달 꽃 조건으로 고른 회사', h1: '달마다 지난 기록', big: e.big,
-    ...artHero('su-rec-art', 'months', cols(e.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|04|07|10)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수와 아무 회사', hero: true, cap: e.say})),
+    ...artHero('su-rec-jobs', 'months', cols(e.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|04|07|10)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수와 아무 회사', hero: true, cap: e.say})),
     mids: e.mids, honest: honestOf(B),
     figs: [bars(e.ms.filter(m => m.rec.complete === true).map(m => ({name: ym(m.month), v: m.rec.rate - m.rec.base, key: m.month, t: (m.rec.rate - m.rec.base >= 0 ? '+' : '−') + Math.abs(Math.round(m.rec.rate - m.rec.base)) + '번'})).reverse(),
       {label: '달마다 아무 회사보다 더 · 덜', title: '아무 회사보다 더(오른쪽) · 덜(왼쪽)', signed: true})],
@@ -409,9 +409,6 @@ async function coOnPath(code) {
   else v.next = {href: '#/q/' + code, label: '내 이유는 무엇인가?', step: 6, k: '6 / 8'};
   return v;
 }
-/** 휴대폰 맨 위 띠 색(theme-color) — 잡스 판 첫 페이지(구슬 그림이 있는 쪽)는 흰색 · 다른 쪽은 index.html 원래 색(주문 1708 · 위아래까지 흰 구슬 판) */
-const TC = [...document.querySelectorAll('meta[name="theme-color"]')].map(m => [m, m.getAttribute('content')]);
-function tint(root) { const w = !!root.querySelector(':scope > main > .su-hero[data-g="su-apple"]'); for (const [m, c] of TC) m.setAttribute('content', w ? '#FFFFFF' : c); }
 async function route() {
   const hh = location.hash || '#/';
   const fw = forwardTo(location.search, hh);
@@ -440,7 +437,6 @@ async function route() {
   if (v) v.after = [...(v.after ?? []), lateGod(G => { const st = G.STOP_STEP[G.roomKey(hh)]; return st ? G.sageGuide(st, new Date().getDate()) : null; })]; // 스승 길잡이 — 사기 전에 멈추는 길의 쪽에만(주문 0054 [5] 7)
   if (hh !== (location.hash || '#/')) return;
   root.replaceChildren(...page(v).filter(Boolean));
-  tint(root);
   afterPaint(root);
   window.scrollTo(0, 0);
   if (typeof v.later === 'function') v.later().catch(e => console.error(e));

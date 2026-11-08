@@ -1,0 +1,18 @@
+/* 수르 값 그래프 틀 — 잡스 판(주문 2011 · su-frame-jobs.js) · 흰 바탕 · 호박색 점 하나 · 가는 선 · 흐림 필터 없음 */
+.su-frame-jobs .sfj-bg { fill: #FFFFFF; }
+.su-frame-jobs .sfj-title { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.3px; }
+.su-frame-jobs .sfj-need { font-size: 20px; font-weight: 600; fill: #6E6E73; }
+.su-frame-jobs .sfj-dot { fill: #D97706; }
+.su-frame-jobs .sfj-g0 { stop-color: #FFB340; stop-opacity: .55; }
+.su-frame-jobs .sfj-g1 { stop-color: #FFD08A; stop-opacity: .2; }
+.su-frame-jobs .sfj-g2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-frame-jobs .sfj-rule { stroke: #E5E5EA; stroke-width: 1; fill: none; }
+/* 움직임 — 들어올 때 한 번 · 점 둘레 빛만 천천히 숨 쉼 · 줄이기면 끝 모습 */
+@media (prefers-reduced-motion: no-preference) {
+  .su-frame-jobs .sfj-in { animation: sfj-up .8s cubic-bezier(.2, .8, .2, 1) both; }
+  .su-frame-jobs .sfj-fade { animation: sfj-fade .7s ease-out .25s both; }
+  .su-frame-jobs .sfj-glow { animation: sfj-breathe 4.2s ease-in-out 1.2s infinite alternate; }
+}
+@keyframes sfj-up { from { opacity: .35; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes sfj-fade { from { opacity: .4; } to { opacity: 1; } }
+@keyframes sfj-breathe { from { opacity: .6; } to { opacity: 1; } }

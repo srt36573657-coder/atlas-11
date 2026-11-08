@@ -175,7 +175,7 @@ export async function vLand(X) {
   const big = val(T.lands.length, '땅', '우량주 365곳을 열 땅으로', {누가: '우량주 365곳', 언제: day(T.asOf.board), 어디서: '73개 업종 → 열 땅', 무엇을: '하는 일이 비슷한 업종을 땅으로 묶었어요', 어떻게: '땅 → 업종 → 회사 세 번 누르면 회사에 닿아요', 왜: '어디서 21곳이 나왔는지 지도로 보려고요'}, {mean: '365곳이 열 갈래 땅에 나뉘어 있다는 뜻이에요. 별 ✦ 이 있는 땅에 21곳이 있어요.'});
   const L0 = T.lists.hot?.[0]?.landId ?? T.lands[0].id;
   return {title: '땅 지도', tab: 1, step: 2, kick: '우량주 365곳 지도', h1: '땅 지도', big,
-    ...X.artHero('su-land-art', null, X.fig('land', [landMap(T)], {label: '땅 지도', hero: true, cap: ['우량주 365곳을 열 땅에 나눴어요.', '칸마다 회사 수와 21곳(✦) 수를 적었어요.', '그런데 21곳이 모든 땅에 고르게 있지는 않아요.', '그래서 ✦ 가 많은 땅부터 들어가 봐요.']})),
+    ...X.artHero('su-land-jobs', null, X.fig('land', [landMap(T)], {label: '땅 지도', hero: true, cap: ['우량주 365곳을 열 땅에 나눴어요.', '칸마다 회사 수와 21곳(✦) 수를 적었어요.', '그런데 21곳이 모든 땅에 고르게 있지는 않아요.', '그래서 ✦ 가 많은 땅부터 들어가 봐요.']})),
     mids: [], pro: T.lands.map(L => ({k: L.name, v: L.inds.reduce((a, g) => a + g.cos.length, 0) + '곳', how: L.inds.map(g => g.name).join(' · ')})),
     next: {href: '#/m/' + L0, label: (T.lands.find(L => L.id === L0)?.name ?? '') + ' 땅에는?', step: 3, k: '3 / 8'}, asOf: T.asOf.board, S};
 }
@@ -189,7 +189,7 @@ export async function vLandOne(X, id) {
     L.inds.map(g => h('div', {class: 'su-indc'}, h('p', {class: 'su-indn'}, h('b', {text: g.name}), ' · 20거래일 ' + sgn(g.ch20) + (g.hot ? ' · 불장 업종' : '')),
       h('p', {class: 'su-chips'}, g.cos.map(c => h('a', {class: 'su-chipa' + (c.in.length ? ' su-chip21' : ''), href: '#/c/' + c.code, 'data-proper': ''}, c.in.length ? '✦ ' : '', c.name))))));
   return {title: L.name, tab: 1, step: 3, kick: '땅 지도 · ' + L.name, h1: L.name + ' 땅', proper: false, big,
-    ...X.artHero('su-land-art', id, X.fig('ib', [indBars(L)], {label: L.name + ' 업종 막대', hero: true, cap: [L.name + ' 땅에는 업종이 ' + L.inds.length + '개 있어요.', '막대는 업종마다 20거래일 동안 365곳 평균으로 움직인 만큼이에요.', '그런데 내린 업종도 숨기지 않아요.', '그래서 오른 업종의 ✦ 회사부터 봐요.']})),
+    ...X.artHero('su-land-jobs', id, X.fig('ib', [indBars(L)], {label: L.name + ' 업종 막대', hero: true, cap: [L.name + ' 땅에는 업종이 ' + L.inds.length + '개 있어요.', '막대는 업종마다 20거래일 동안 365곳 평균으로 움직인 만큼이에요.', '그런데 내린 업종도 숨기지 않아요.', '그래서 오른 업종의 ✦ 회사부터 봐요.']})),
     mids: [], body: [list], pro: L.inds.map(g => ({k: g.name, v: sgn(g.ch20), how: '20거래일 365곳 평균 · ' + g.cos.map(c => c.name).join(' · ')})),
     next: go ? {href: '#/c/' + go.code, label: josa(go.name, '은') + ' 왜 21곳에?', step: 4, k: '4 / 8'} : {href: '#/', label: '처음으로'}, asOf: T.asOf.board, S};
 }
@@ -207,7 +207,7 @@ export async function vMore(X, code) {
     val(f.foreign, '', '외국인 닷새 · 기관 ' + (fin(f.institution) ? num(f.institution) : NEED) + ' · 개인 ' + (fin(f.individual) ? num(f.individual) : NEED), {누가: '외국인 · 기관 · 개인', 언제: f.from && f.to ? day(f.from) + '부터 ' + day(f.to) + '까지' : null, 어디서: c.name, 무엇을: '닷새 동안 들어온 돈과 나간 돈의 차이', 어떻게: '자료 값 그대로 · 단위 확인 필요', 왜: null}, {mean: fin(f.foreign) ? (f.foreign > 0 ? '외국인은 닷새 동안 판 것보다 산 것이 많았다는 뜻이에요.' : '외국인은 닷새 동안 산 것보다 판 것이 많았다는 뜻이에요.') : null}),
     val(c.news?.newsCount, '건', '뉴스', {누가: c.name, 언제: day(c.date), 어디서: '뉴스', 무엇을: '이 회사 이름이 나온 뉴스 수', 어떻게: '자료 값 그대로', 왜: null}, {mean: fin(c.news?.newsCount) ? '이 회사 이야기가 뉴스에 ' + c.news.newsCount + '번 나왔다는 뜻이에요.' : null})];
   return {title: c.name + ' 자세히', tab: 2, step: 5, kick: c.name + ' · ' + c.ind, h1: c.name + ' 출목표', proper: true, big,
-    ...X.artHero('su-more-art', code, X.fig('road', [road(c), line21(c)].filter(Boolean), {label: '출목표 · 21거래일 줄', hero: true, cap: ['20거래일을 하루씩 놓았어요.', '오른 날은 ●, 내린 날은 ○ 예요. 같은 쪽이 이어지면 아래로 쌓여요.', '그런데 오른 날이 많아도 앞날을 알려 주지는 않아요.', '그래서 줄 그림과 함께 봐요.']})),
+    ...X.artHero('su-more-jobs', code, X.fig('road', [road(c), line21(c)].filter(Boolean), {label: '출목표 · 21거래일 줄', hero: true, cap: ['20거래일을 하루씩 놓았어요.', '오른 날은 ●, 내린 날은 ○ 예요. 같은 쪽이 이어지면 아래로 쌓여요.', '그런데 오른 날이 많아도 앞날을 알려 주지는 않아요.', '그래서 줄 그림과 함께 봐요.']})),
     mids, figs: sun52(c) ? [X.fig('sun', [sun52(c)], {label: '뜨거운 태양 · 1년 사이 값 자리', title: '1년 사이 값 자리(뜨거운 태양 = 1년 가장 높은 값 가까이)'})] : [],
     pro: [{k: '그날 마지막 값 21개', v: l.map(num).join(' · '), how: SRC + ' · ' + day(c.date) + '까지'}, {k: '닷새 수급', v: [f.foreign, f.institution, f.individual].map(v => (fin(v) ? num(v) : NEED)).join(' · '), how: '외국인 · 기관 · 개인 · 자료 값 · 단위 확인 필요'}, {k: '52주 자리', v: fin(c.pos52) ? num(Math.round(c.pos52 * 1000) / 10) : NEED, how: '52주 가장 낮은 값 0 · 가장 높은 값 100'}, {k: '회사 크기', v: fin(c.cap) ? num(c.cap) + '억 원' : NEED, how: '/atlas/data/cond.json · ' + day(T.asOf.cond)}],
     next: {href: '#/q/' + code, label: '내 이유는 무엇인가?', step: 6, k: '6 / 8'}, asOf: c.date, S};
@@ -224,7 +224,7 @@ export async function vFriend(X) {
     card('https://shin-yxy.gino.im/', '만수르', '사장님이 정하신 바깥 길이에요.', '셋과 안 이어짐'),
     card('#/g', '셋의 길 · 옛 기능 모두', '옛 기능을 하나도 버리지 않고 셋을 돕는 자리에 놓았어요.', '셋 모두'));
   return {title: '친구에게', tab: 3, step: 8, kick: '함께 보기', h1: '친구에게', big,
-    ...X.artHero('su-road-art', 'friend', X.fig('p6', [petals6()], {label: '친구에게 건네는 여섯 가지', hero: true, cap: ['21곳을 친구와 함께 봐요.', '카톡으로 보내고, 친구가 열면 가입은 두 번이면 돼요.', '그런데 친구에게도 사고팔기를 권하지 않아요.', '그래서 까닭과 함께 건네요.']})),
+    ...X.artHero('su-road-jobs', 'friend', X.fig('p6', [petals6()], {label: '친구에게 건네는 여섯 가지', hero: true, cap: ['21곳을 친구와 함께 봐요.', '카톡으로 보내고, 친구가 열면 가입은 두 번이면 돼요.', '그런데 친구에게도 사고팔기를 권하지 않아요.', '그래서 까닭과 함께 건네요.']})),
     mids: [], body: [cards], pro: [{k: '카톡 가입', v: '켜짐', how: 'config/atlas11/kakao.json'}, {k: '커피 쿠폰', v: '열 번에 한 장', how: '한 달에 한 번 · 사장님이 직접 보냄'}, {k: '옛 기능', v: '13줄 모두 길 위에', how: '21곳 · 땅 지도 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게 여덟 쪽에 나눠 둠 · 지운 것 없음'}, {k: '셋과 안 이어진 것', v: '1', how: '만수르(바깥 길) — 사장님이 정하실 것'}],
     next: {href: '#/', label: '처음으로', step: null, k: '끝'}, asOf: T.asOf.board, S};
 }

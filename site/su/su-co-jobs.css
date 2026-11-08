@@ -1,0 +1,66 @@
+/* 수르 회사 쪽 큰 그림 — 잡스 판(su-co-jobs · 주문 2011 · 첫 페이지 su-apple.css 와 같은 색 · 글꼴 · 움직임 값)
+   흰 바탕 · 글 #1D1D1F · 흐린 글 #6E6E73 · 가는 선 #E5E5EA / #D2D2D7 · 눈에 띄는 색은 호박색 하나(끝 점 #D97706 · 회사 값 #B4570A) · 흐림 필터 없음
+   휴대폰이 어두운 모드여도 흰 판(첫 페이지와 같음 — 색을 바꾸지 않음) · 꾸밈은 모두 이 그림 안(.su-co-jobs …)에만 걸림 */
+.su-co-jobs .cj-bg { fill: #FFFFFF; }
+.su-co-jobs text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+
+/* ① 이름 · 현재가 */
+.su-co-jobs .cj-name { font-weight: 800; fill: #1D1D1F; letter-spacing: -0.5px; }
+.su-co-jobs .cj-n { font-size: 56px; font-weight: 800; letter-spacing: -1.5px; fill: #1D1D1F; }
+.su-co-jobs .cj-unit { font-size: 24px; font-weight: 700; fill: #1D1D1F; }
+.su-co-jobs .cj-sub { font-size: 20px; font-weight: 500; fill: #6E6E73; }
+.su-co-jobs .cj-d { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+.su-co-jobs .cj-need { font-size: 24px; font-weight: 700; fill: #6E6E73; }
+
+/* ② 한 달 꺾은선 — 회사 회색 2px 둥근 이음 · 시장 옅은 회색 · 한 달 전 옅은 실선 1px · 끝 점 호박색(흰 고리 2px) · 이음 가는 선 */
+.su-co-jobs .cj-base { fill: none; stroke: #D2D2D7; stroke-width: 1; }
+.su-co-jobs .cj-idx { fill: none; stroke: #B8B8BD; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.su-co-jobs .cj-cou { fill: none; stroke: #FFFFFF; stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+.su-co-jobs .cj-co { fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.su-co-jobs .cj-dotC { fill: #D97706; stroke: #FFFFFF; stroke-width: 2; }
+.su-co-jobs .cj-dotI { fill: #AEAEB2; stroke: #FFFFFF; stroke-width: 2; }
+.su-co-jobs .cj-dotN { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.6; }
+.su-co-jobs .cj-lead { fill: none; stroke: #D2D2D7; stroke-width: 1; }
+.su-co-jobs .cj-hl0 { stop-color: #FFB340; stop-opacity: .62; } .su-co-jobs .cj-hl1 { stop-color: #FFC56B; stop-opacity: .3; } .su-co-jobs .cj-hl2 { stop-color: #FFE2AD; stop-opacity: .1; } .su-co-jobs .cj-hl3 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-co-jobs .cj-v { font-weight: 800; letter-spacing: -0.5px; }
+.su-co-jobs .cj-v-c { fill: #1D1D1F; }
+.su-co-jobs .cj-v-i { fill: #6E6E73; }
+.su-co-jobs .cj-lname { font-size: 18px; font-weight: 600; fill: #6E6E73; letter-spacing: -0.2px; }
+/* 줄 위에 놓인 글 — 흰 테로 줄과 떨어져 보이게 */
+.su-co-jobs .cj-halo { paint-order: stroke; stroke: #FFFFFF; stroke-width: 4px; stroke-linejoin: round; }
+
+/* ③ 「왜 여기 있나」 — 굵은 선 하나 · 가는 선으로 나눈 줄 · 업종 줄(누름) · 목록 이름 · 값 */
+.su-co-jobs .cj-rule { stroke: #1D1D1F; stroke-width: 1.4; fill: none; }
+.su-co-jobs .cj-line { stroke: #E5E5EA; stroke-width: 1; fill: none; }
+.su-co-jobs .cj-kh { font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; }
+.su-co-jobs .cj-chev { font-size: 28px; font-weight: 600; fill: #86868B; }
+.su-co-jobs .cj-k { font-size: 21px; font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
+.su-co-jobs .cj-dotA { fill: #D97706; }
+.su-co-jobs .cj-rlab { font-weight: 600; fill: #1D1D1F; letter-spacing: -0.3px; }
+.su-co-jobs .cj-num { font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; }
+.su-co-jobs .cj-amb { fill: #B4570A; }
+.su-co-jobs .cj-needv { font-weight: 600; fill: #6E6E73; }
+.su-co-jobs .cj-hit { fill: #FFFFFF; fill-opacity: 0; }
+.su-co-jobs .cj-link { cursor: pointer; }
+.su-co-jobs .cj-link:hover .cj-hit, .su-co-jobs .cj-link:focus .cj-hit { fill: #F5F5F7; fill-opacity: 1; }
+.su-co-jobs .cj-link:focus { outline: none; }
+.su-co-jobs .cj-link:focus-visible .cj-hit { stroke: #0071E3; stroke-width: 2; }
+
+/* 글 크기(셈한 크기 18 넘게) */
+.su-co-jobs .cj-f18 { font-size: 18px; } .su-co-jobs .cj-f20 { font-size: 20px; } .su-co-jobs .cj-f22 { font-size: 22px; } .su-co-jobs .cj-f24 { font-size: 24px; }
+.su-co-jobs .cj-f26 { font-size: 26px; } .su-co-jobs .cj-f28 { font-size: 28px; } .su-co-jobs .cj-f30 { font-size: 30px; }
+
+/* 움직임 — 처음 한 번(1.2초 안) · 그 뒤 끝 점 빛만 천천히 숨 쉼(투명도만) · 줄이기면 끝 모습 */
+@media (prefers-reduced-motion: no-preference) {
+  .su-co-jobs .cj-in { animation: cj-up .8s cubic-bezier(.2, .8, .2, 1) both; }
+  .su-co-jobs .cj-in1 { animation-delay: .1s; } .su-co-jobs .cj-in3 { animation-delay: .4s; }
+  .su-co-jobs .cj-grow { transform-box: fill-box; transform-origin: 50% 100%; animation: cj-grow 1s cubic-bezier(.2, .8, .2, 1) .15s both; }
+  .su-co-jobs .cj-fade { animation: cj-fade .7s ease-out both; }
+  .su-co-jobs .cj-fd0 { animation-delay: .45s; } .su-co-jobs .cj-fd1 { animation-delay: .5s; } .su-co-jobs .cj-fd2 { animation-delay: .5s; }
+  .su-co-jobs .cj-glow { animation: cj-breathe 4.2s ease-in-out 1.2s infinite alternate; }
+}
+@keyframes cj-up { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes cj-grow { from { opacity: .4; transform: scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes cj-fade { from { opacity: .4; } to { opacity: 1; } }
+@keyframes cj-breathe { from { opacity: .55; } to { opacity: 1; } }
+.su-co-jobs.cj-still * { animation: none !important; }

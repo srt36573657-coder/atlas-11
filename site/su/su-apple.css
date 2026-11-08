@@ -1,7 +1,7 @@
 /* 수르 첫 페이지 — 잡스 판(주문 1532 · su-apple.js) · 흰 바탕 · 검정 · 회색 · 호박색 하나 · 흐림 필터 없음 */
 .su-news > .su-hero[data-g="su-apple"] { background: #FFFFFF; }
 /* 덜어냄 — 이 판이 있는 쪽에서는 화면 둘레 금 테(su-art.css #su::before · ::after)를 뺌 */
-#su:has(main > .su-hero[data-g="su-apple"])::before, #su:has(main > .su-hero[data-g="su-apple"])::after { content: none; }
+#su::before, #su::after { content: none; }
 .su-apple .sa-bg { fill: #FFFFFF; }
 .su-apple text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; }
 .su-apple .sa-sub { font-size: 20px; font-weight: 500; fill: #6E6E73; }
@@ -73,54 +73,55 @@
 @keyframes sa-ember { from { opacity: .72; transform: translateY(5px) scale(.9); } to { opacity: 1; transform: translateY(-7px) scale(1.08); } }
 @keyframes sa-fade { from { opacity: .4; } to { opacity: 1; } }
 
-/* ── 첫 페이지 위아래까지 흰 구슬 판(주문 1708 · 사장님 2026-11-08 17:08 「구슬으로 첫페이지 해서 다 변경해야 하잖아」 · 17:18 「맞아」)
-   이 그림이 있는 쪽(처음 쪽 #/ · 될 듯 21곳 #/n)만 바꿈 — 다른 쪽은 옛 꾸밈 그대로(옛 화면은 손대지 않음 · 규칙 75)
+/* ── 위아래까지 흰 구슬 판(주문 1708 · 사장님 2026-11-08 17:08 「구슬으로 첫페이지 해서 다 변경해야 하잖아」 · 17:18 「맞아」)
+   주문 2011(사장님 2026-11-08 20:11 「제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해」) — 수르 모든 쪽(#su)에 같은 흰 판 · 옛 무하 꾸밈은 어느 쪽에도 없음
    휴대폰이 어두운 모드여도 흰 판(6번 = 제품 소개 쪽처럼 늘 흰 바탕) · 색 이름(su-art.css 변수)을 이 쪽에서만 밝은 흰 판 값으로 바꿔 서랍 속 그림까지 함께 밝게
    무하 꾸밈(둘레 겹테 · 네 귀퉁이 꽃 · 어깨 덩굴 · 꽃 띠 · 금빛 물결 줄 · 뒷하늘)은 이 쪽에서 뺌 · 선은 옅은 회색 실선 하나 · 눈에 띄는 색은 구슬의 호박색 하나
    이 꾸밈은 index.html 이 처음부터 붙임(그림 부품이 오기 전에 위아래가 옛 색으로 깜빡이지 않게) */
-:root:has(#su main > .su-hero[data-g="su-apple"]) {
+:root:has(#su) {
   --bg: #FFFFFF; --card: #FFFFFF; --ink: #1D1D1F; --mute: #636366; --line: #E5E5EA; --soft: #F5F5F7;
-  --ok: #98681A; --okt: #FFFFFF; --base: #5E7B2C; --no: #B4532A; --no1: #8C3D1B; --no2: #DE8B5F; --wait: #98681A; --acc: #FF9F0A; --warn: #8A4A10;
-  --g: #557A1E; --y: #98681A; --r: #B4532A;
-  --gold: #D2D2D7; --gold2: #E8E8ED; --leaf: #9DB861; --apri: #EFA77E; --apri2: #FBE3D2; --chip: #B4570A; --chipt: #FFFFFF; --glbg: #EEF3DC; --halo: #F5F5F7;
+  /* 그래프 색(주문 2011 — 모든 쪽 잡스 판): 고른 회사 · 꽃 = 호박색 하나 · 아무 회사 · 나머지 = 회색 단계(색만으로 가르지 않음 — 그래프마다 이름표) */
+  --ok: #B4570A; --okt: #FFFFFF; --base: #8E8E93; --no: #636366; --no1: #3A3A3C; --no2: #AEAEB2; --wait: #B4570A; --acc: #FF9F0A; --warn: #8A4A10;
+  --g: #B4570A; --y: #8E8E93; --r: #48484A;
+  --gold: #D2D2D7; --gold2: #E8E8ED; --leaf: #AEAEB2; --apri: #D1D1D6; --apri2: #F2F2F7; --chip: #B4570A; --chipt: #FFFFFF; --glbg: #F2F2F7; --halo: #F5F5F7;
   --sky1: #FFFFFF; --sky2: #FFFFFF;
   color-scheme: light;
 }
-:root:has(#su main > .su-hero[data-g="su-apple"]) body { background: #FFFFFF; color: #1D1D1F; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) body::before { background: #FFFFFF; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-corners,
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-orn,
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-sky { display: none; }
+:root:has(#su) body { background: #FFFFFF; color: #1D1D1F; }
+:root:has(#su) body::before { background: #FFFFFF; }
+:root:has(#su) .su-corners,
+:root:has(#su) .su-orn,
+:root:has(#su) .su-sky { display: none; }
 /* 맨 위 단추 줄 — 흰 바탕 · 아래 옅은 실선 하나(금빛 물결 줄 뺌) */
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-top { background: #FFFFFF; border-bottom: 1px solid #E5E5EA; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-top::after { content: none; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-brand { color: #1D1D1F; letter-spacing: .02em; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-top .su-mansour { background: #F5F5F7; box-shadow: none; color: #1D1D1F; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-tool { background: #FFFFFF; border: 1px solid #D2D2D7; color: #1D1D1F; box-shadow: none; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-tool[aria-pressed="true"] { background: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) #su .su-top .su-gift { background: #FFFFFF; color: #1D1D1F; border-color: #1D1D1F; box-shadow: inset 0 0 0 1px #1D1D1F; }
+:root:has(#su) .su-top { background: #FFFFFF; border-bottom: 1px solid #E5E5EA; }
+:root:has(#su) .su-top::after { content: none; }
+:root:has(#su) .su-brand { color: #1D1D1F; letter-spacing: .02em; }
+:root:has(#su) .su-top .su-mansour { background: #F5F5F7; box-shadow: none; color: #1D1D1F; }
+:root:has(#su) .su-tool { background: #FFFFFF; border: 1px solid #D2D2D7; color: #1D1D1F; box-shadow: none; }
+:root:has(#su) .su-tool[aria-pressed="true"] { background: #1D1D1F; border-color: #1D1D1F; color: #FFFFFF; }
+:root:has(#su) #su .su-top .su-gift { background: #FFFFFF; color: #1D1D1F; border-color: #1D1D1F; box-shadow: inset 0 0 0 1px #1D1D1F; }
 /* 큰 제목 줄 — 걸음 동그라미는 검정 · 큰 숫자는 그림과 같은 고딕 */
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-step i { background: #1D1D1F; color: #FFFFFF; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-news > .su-head1 .su-bv b { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+:root:has(#su) .su-step i { background: #1D1D1F; color: #FFFFFF; }
+:root:has(#su) .su-news > .su-head1 .su-bv b { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; }
 /* 그림 아래 — 지금 · 될 듯 두 칸(고른 칸은 검정 테) · 자세히 서랍(옅은 회색 판) */
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-mode .su-modea { background: #F5F5F7; color: #1D1D1F; box-shadow: none; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-mode .su-modea span { color: #636366; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-mode .su-modea.on { background: #FFFFFF; box-shadow: inset 0 0 0 2px #1D1D1F; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-mode .su-modea.on span { color: #1D1D1F; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-more { background: #F5F5F7; box-shadow: none; }
+:root:has(#su) .su-mode .su-modea { background: #F5F5F7; color: #1D1D1F; box-shadow: none; }
+:root:has(#su) .su-mode .su-modea span { color: #636366; }
+:root:has(#su) .su-mode .su-modea.on { background: #FFFFFF; box-shadow: inset 0 0 0 2px #1D1D1F; }
+:root:has(#su) .su-mode .su-modea.on span { color: #1D1D1F; }
+:root:has(#su) .su-more { background: #F5F5F7; box-shadow: none; }
 /* 이야기 막대 — 흰 바탕 · 위 옅은 실선 · 걸음 구슬은 회색 · 지금 걸음만 호박색 */
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-dock { background: #FFFFFF; box-shadow: 0 -1px 0 #E5E5EA; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-news ~ .su-dock .su-prog { background: linear-gradient(#E5E5EA, #E5E5EA) center 7px / calc(100% - 36px) 1px no-repeat; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-news ~ .su-dock .su-prog li { background: #FFFFFF; box-shadow: inset 0 0 0 1.5px #C7C7CC; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-news ~ .su-dock .su-prog li.su-pd { background: #1D1D1F; box-shadow: none; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-news ~ .su-dock .su-prog li.su-pc { background: #FF9F0A; box-shadow: 0 0 0 3px #FFE7C2; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-say { background: #FFFFFF; border: 1.5px solid #D2D2D7; color: #1D1D1F; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-next { background: #F5F5F7; color: #1D1D1F; box-shadow: none; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-next .su-nk { color: #636366; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-next .su-parrot { background: #FFFFFF; box-shadow: 0 0 0 1px #E5E5EA; }
+:root:has(#su) .su-dock { background: #FFFFFF; box-shadow: 0 -1px 0 #E5E5EA; }
+:root:has(#su) .su-news ~ .su-dock .su-prog { background: linear-gradient(#E5E5EA, #E5E5EA) center 7px / calc(100% - 36px) 1px no-repeat; }
+:root:has(#su) .su-news ~ .su-dock .su-prog li { background: #FFFFFF; box-shadow: inset 0 0 0 1.5px #C7C7CC; }
+:root:has(#su) .su-news ~ .su-dock .su-prog li.su-pd { background: #1D1D1F; box-shadow: none; }
+:root:has(#su) .su-news ~ .su-dock .su-prog li.su-pc { background: #FF9F0A; box-shadow: 0 0 0 3px #FFE7C2; }
+:root:has(#su) .su-say { background: #FFFFFF; border: 1.5px solid #D2D2D7; color: #1D1D1F; }
+:root:has(#su) .su-next { background: #F5F5F7; color: #1D1D1F; box-shadow: none; }
+:root:has(#su) .su-next .su-nk { color: #636366; }
+:root:has(#su) .su-next .su-parrot { background: #FFFFFF; box-shadow: 0 0 0 1px #E5E5EA; }
 /* 아래 단추 넷 — 흰 바탕(금빛 물결 줄 뺌) · 고른 단추는 검정 글 · 호박색 집 */
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-tabs { background: #FFFFFF; border-top: 0; box-shadow: none; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-tabs::before { content: none; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-tab { color: #636366; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-tab.su-on { color: #1D1D1F; border-top-color: transparent; }
-:root:has(#su main > .su-hero[data-g="su-apple"]) .su-tab.su-on .su-ti { background: none; box-shadow: none; fill: #FF9F0A; fill-opacity: .9; stroke: #1D1D1F; }
+:root:has(#su) .su-tabs { background: #FFFFFF; border-top: 0; box-shadow: none; }
+:root:has(#su) .su-tabs::before { content: none; }
+:root:has(#su) .su-tab { color: #636366; }
+:root:has(#su) .su-tab.su-on { color: #1D1D1F; border-top-color: transparent; }
+:root:has(#su) .su-tab.su-on .su-ti { background: none; box-shadow: none; fill: #FF9F0A; fill-opacity: .9; stroke: #1D1D1F; }

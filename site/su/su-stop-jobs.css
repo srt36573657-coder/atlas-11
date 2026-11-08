@@ -1,0 +1,65 @@
+/* 수르 「멈춤」 탭 큰 그림 둘 — 잡스 판(주문 2011 · su-stop-jobs.js) · 흰 바탕 · 검정 · 회색 · 호박색 하나 · 흐림 필터 없음
+   색과 구슬 빛 값은 첫 페이지 su-apple.css 그대로(이름만 ssj- 로) · 모든 꾸밈은 이 그림(svg.su-stop-jobs) 안에만 */
+.su-stop-jobs .ssj-bg { fill: #FFFFFF; }
+.su-stop-jobs text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; font-size: 18px; fill: #1D1D1F; }
+.su-stop-jobs .ssj-sub { font-size: 20px; font-weight: 500; fill: #6E6E73; }
+.su-stop-jobs .ssj-k { font-size: 21px; font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
+.su-stop-jobs .ssj-d { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+.su-stop-jobs .ssj-n { font-size: 54px; font-weight: 800; letter-spacing: -1.5px; fill: #1D1D1F; font-variant-numeric: tabular-nums; }
+.su-stop-jobs .ssj-big { font-size: 60px; font-weight: 800; letter-spacing: -1.5px; fill: #1D1D1F; font-variant-numeric: tabular-nums; }
+.su-stop-jobs .ssj-unit { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; fill: #1D1D1F; }
+.su-stop-jobs .ssj-q { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; fill: #1D1D1F; }
+.su-stop-jobs .ssj-num { font-size: 18px; font-weight: 600; fill: #6E6E73; font-variant-numeric: tabular-nums; }
+.su-stop-jobs .ssj-num-on { font-weight: 700; fill: #1D1D1F; }
+.su-stop-jobs .ssj-gname { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; fill: #1D1D1F; }
+.su-stop-jobs .ssj-gq { font-size: 18px; font-weight: 600; fill: #6E6E73; }
+.su-stop-jobs .ssj-date { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; fill: #1D1D1F; }
+.su-stop-jobs .ssj-vname { font-size: 18px; font-weight: 600; fill: #1D1D1F; }
+.su-stop-jobs .ssj-st { font-size: 18px; font-weight: 600; fill: #1D1D1F; }
+.su-stop-jobs .ssj-st-due { font-weight: 700; fill: #B4570A; }
+/* 판정 모양 — 눈에 띄는 색은 호박색 하나라 모양(● ▲ ■)과 낱말(좋아 · 반만 · 쉬어)로만 가름(검정) */
+.su-stop-jobs .ssj-tone-g, .su-stop-jobs .ssj-tone-y, .su-stop-jobs .ssj-tone-r { fill: #1D1D1F; }
+/* 가는 선 · 점 */
+.su-stop-jobs .ssj-div { stroke: #D2D2D7; stroke-width: 1; fill: none; }
+.su-stop-jobs .ssj-rule { stroke: #1D1D1F; stroke-width: 1.4; fill: none; }
+.su-stop-jobs .ssj-line { stroke: #E5E5EA; stroke-width: 1; fill: none; }
+.su-stop-jobs .ssj-dotA { fill: #D97706; }
+.su-stop-jobs .ssj-dotB { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.6; }
+.su-stop-jobs .ssj-dotBc { fill: #D97706; }
+.su-stop-jobs .ssj-track { fill: none; stroke: #E5E5EA; stroke-width: 2; stroke-linecap: round; }
+.su-stop-jobs .ssj-ghost { stroke: #D2D2D7; stroke-dasharray: 2 7; }
+.su-stop-jobs .ssj-fill { fill: none; stroke: #D97706; stroke-width: 2.6; stroke-linecap: round; }
+.su-stop-jobs .ssj-ring { fill: none; stroke: #D97706; stroke-width: 1.6; stroke-opacity: .85; }
+.su-stop-jobs .ssj-arc { fill: none; stroke: #86868B; stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 0.1 7; }
+/* 구슬 빛(밝기 차 · su-apple.css 와 같은 값) */
+.su-stop-jobs .ssj-hl0 { stop-color: #FFB340; stop-opacity: .62; } .su-stop-jobs .ssj-hl1 { stop-color: #FFC56B; stop-opacity: .3; } .su-stop-jobs .ssj-hl2 { stop-color: #FFE2AD; stop-opacity: .1; } .su-stop-jobs .ssj-hl3 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-stop-jobs .ssj-b0 { stop-color: #FFFEF9; } .su-stop-jobs .ssj-b1 { stop-color: #FFF3D2; } .su-stop-jobs .ssj-b2 { stop-color: #FFD684; } .su-stop-jobs .ssj-b3 { stop-color: #FFB24A; } .su-stop-jobs .ssj-b4 { stop-color: #FF9A2E; } .su-stop-jobs .ssj-b5 { stop-color: #FF8A24; }
+.su-stop-jobs .ssj-c0 { stop-color: #FFFFFF; stop-opacity: .95; } .su-stop-jobs .ssj-c1 { stop-color: #FFF6DC; stop-opacity: .55; } .su-stop-jobs .ssj-c2 { stop-color: #FFF6DC; stop-opacity: 0; }
+.su-stop-jobs .ssj-s0 { stop-color: #FFFFFF; stop-opacity: .95; } .su-stop-jobs .ssj-s1 { stop-color: #FFFFFF; stop-opacity: .35; } .su-stop-jobs .ssj-s2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-stop-jobs .ssj-g0 { stop-color: #FFFFFF; } .su-stop-jobs .ssj-g1 { stop-color: #F6F7F9; } .su-stop-jobs .ssj-g2 { stop-color: #E6E9EE; } .su-stop-jobs .ssj-g3 { stop-color: #C3C9D2; } .su-stop-jobs .ssj-g4 { stop-color: #8F98A6; }
+.su-stop-jobs .ssj-e0 { stop-color: #FFAB3D; stop-opacity: .75; } .su-stop-jobs .ssj-e1 { stop-color: #FFC06A; stop-opacity: .25; } .su-stop-jobs .ssj-e2 { stop-color: #FFD9A0; stop-opacity: 0; }
+.su-stop-jobs .ssj-k0 { stop-color: #FFFAF0; } .su-stop-jobs .ssj-k1 { stop-color: #FFD27A; } .su-stop-jobs .ssj-k2 { stop-color: #FF8A1F; stop-opacity: .7; } .su-stop-jobs .ssj-k3 { stop-color: #FF8A1F; stop-opacity: 0; }
+.su-stop-jobs .ssj-d0 { stop-color: #1D1D1F; stop-opacity: .3; } .su-stop-jobs .ssj-d1 { stop-color: #1D1D1F; stop-opacity: .09; } .su-stop-jobs .ssj-d2 { stop-color: #1D1D1F; stop-opacity: 0; }
+.su-stop-jobs .ssj-p0 { stop-color: #FFB648; stop-opacity: .4; } .su-stop-jobs .ssj-p1 { stop-color: #FFD08A; stop-opacity: .15; } .su-stop-jobs .ssj-p2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-stop-jobs .ssj-w0 { stop-color: #FFB24A; stop-opacity: .42; } .su-stop-jobs .ssj-w1 { stop-color: #FFC977; stop-opacity: .12; } .su-stop-jobs .ssj-w2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-stop-jobs .ssj-bloom { fill: #FFAD42; fill-opacity: .16; }
+.su-stop-jobs .ssj-under { fill: #FFF4DC; fill-opacity: .32; }
+.su-stop-jobs .ssj-underB { fill: #FFFFFF; fill-opacity: .7; }
+.su-stop-jobs .ssj-glint { fill: #FFFFFF; fill-opacity: .9; }
+.su-stop-jobs .ssj-rimA { fill: none; stroke: #FFFFFF; stroke-opacity: .6; stroke-width: 1.4; }
+.su-stop-jobs .ssj-rimB { fill: none; stroke: #7D8696; stroke-opacity: .45; stroke-width: 1.2; }
+.su-stop-jobs .ssj-edge { fill: none; stroke: #FFFFFF; stroke-opacity: .85; stroke-width: 2; stroke-linecap: round; }
+/* 움직임 — 들어올 때 한 번(1.2초 안) · 그 뒤 빛 하나만 천천히 숨 쉼(투명도만) · 움직임 줄이기면 끝 모습 */
+@media (prefers-reduced-motion: no-preference) {
+  .su-stop-jobs .ssj-in { animation: ssj-up .7s cubic-bezier(.2, .8, .2, 1) both; }
+  .su-stop-jobs .ssj-in1 { animation-delay: .05s; } .su-stop-jobs .ssj-in2 { animation-delay: .2s; } .su-stop-jobs .ssj-in3 { animation-delay: .35s; } .su-stop-jobs .ssj-in4 { animation-delay: .45s; }
+  .su-stop-jobs .ssj-pop, .su-stop-jobs .ssj-orb { transform-box: fill-box; transform-origin: 50% 50%; animation: ssj-grow .9s cubic-bezier(.2, .8, .2, 1) .1s both; }
+  .su-stop-jobs .ssj-orbB { animation-delay: .3s; }
+  .su-stop-jobs .ssj-row { animation: ssj-fade .6s ease-out both; }
+  .su-stop-jobs .ssj-r0 { animation-delay: .4s; } .su-stop-jobs .ssj-r1 { animation-delay: .5s; } .su-stop-jobs .ssj-r2 { animation-delay: .6s; }
+  .su-stop-jobs .ssj-breathe { animation: ssj-breathe 4.2s ease-in-out 1.2s infinite alternate; }
+}
+@keyframes ssj-up { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes ssj-grow { from { opacity: .4; transform: scale(.9); } to { opacity: 1; transform: none; } }
+@keyframes ssj-fade { from { opacity: .4; } to { opacity: 1; } }
+@keyframes ssj-breathe { from { opacity: .55; } to { opacity: 1; } }

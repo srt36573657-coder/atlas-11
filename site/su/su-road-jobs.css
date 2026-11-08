@@ -1,0 +1,77 @@
+/* 수르 그림 부품 su-road-jobs — 친구에게 · 셋의 길(주문 2011 · 첫 페이지 잡스 판 su-apple.css 값 그대로)
+   흰 바탕 · 글 #1D1D1F · 흐린 글 #6E6E73 · 가는 선 #E5E5EA / #D2D2D7 · 눈에 띄는 색은 호박색 하나 · 흐림 필터 0
+   어두운 모드 휴대폰에서도 흰 판(수르 모든 쪽이 흰 판 — su-apple.css :root:has(#su)) · 선택자는 모두 이 그림 안(.su-road-jobs …) */
+.su-road-jobs { display: block; width: 100%; height: auto; overflow: hidden; }
+.su-road-jobs .srj-bg { fill: #FFFFFF; }
+.su-road-jobs text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; }
+.su-road-jobs .srj-sub { font-size: 20px; font-weight: 500; fill: #6E6E73; }
+.su-road-jobs .srj-k { font-size: 21px; font-weight: 700; fill: #1D1D1F; }
+.su-road-jobs .srj-n { font-size: 58px; font-weight: 800; letter-spacing: -1.5px; fill: #1D1D1F; }
+.su-road-jobs .srj-unit { font-size: 22px; font-weight: 700; fill: #1D1D1F; }
+.su-road-jobs .srj-big { font-size: 22px; }
+.su-road-jobs .srj-need { font-size: 22px; font-weight: 700; fill: #6E6E73; }
+.su-road-jobs .srj-d { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+.su-road-jobs .srj-name { font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; }
+.su-road-jobs .srj-say { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+.su-road-jobs .srj-cnt { font-size: 18px; font-weight: 600; fill: #6E6E73; font-variant-numeric: tabular-nums; }
+.su-road-jobs .srj-cntA { fill: #B4570A; }
+.su-road-jobs .srj-needc { font-weight: 500; }
+.su-road-jobs .srj-rule { stroke: #1D1D1F; stroke-width: 1.4; fill: none; }
+.su-road-jobs .srj-line { stroke: #E5E5EA; stroke-width: 1; fill: none; }
+.su-road-jobs .srj-div { stroke: #D2D2D7; stroke-width: 1; fill: none; }
+.su-road-jobs .srj-dotA { fill: #D97706; }
+.su-road-jobs .srj-dotC { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.6; }
+/* 누르는 칸 — 평소 투명 · 누르거나 고르면 옅은 회색 · 지금 보는 갈래(opt.g)도 옅은 회색 */
+.su-road-jobs .srj-a { cursor: pointer; }
+.su-road-jobs .srj-hit { fill: #FFFFFF; fill-opacity: 0; }
+.su-road-jobs .srj-a:hover .srj-hit, .su-road-jobs .srj-a:focus .srj-hit, .su-road-jobs .srj-on .srj-hit { fill: #F5F5F7; fill-opacity: 1; }
+.su-road-jobs .srj-a:focus { outline: none; }
+.su-road-jobs .srj-a:focus-visible .srj-hit { stroke: #0071E3; stroke-width: 2; }
+/* 셋의 길 고리 — 셋을 돕는 세 갈래 호박색 · 다른 다섯 회색 · 토막 사이 흰 틈 */
+.su-road-jobs .srj-arcA { fill: none; stroke: #D97706; stroke-width: 12; }
+.su-road-jobs .srj-arcB { fill: none; stroke: #D2D2D7; stroke-width: 12; }
+.su-road-jobs .srj-track { fill: none; stroke: #E5E5EA; stroke-width: 12; }
+/* 호박색 토막 둘레 빛 — 고리 둘레에서 가장 밝고 안팎으로 옅어짐 · 부채꼴 끝은 두 걸음으로 옅어짐 */
+.su-road-jobs .srj-gl0 { stop-color: #FFB340; stop-opacity: 0; } .su-road-jobs .srj-gl1 { stop-color: #FFB340; stop-opacity: .42; } .su-road-jobs .srj-gl2 { stop-color: #FFC56B; stop-opacity: .16; } .su-road-jobs .srj-gl3 { stop-color: #FFE2AD; stop-opacity: 0; }
+.su-road-jobs .srj-gw1 { opacity: .5; } .su-road-jobs .srj-gw2 { opacity: .2; }
+/* 빛이 건너감 — 호박색 점(갈수록 진하게) */
+.su-road-jobs .srj-hp { fill: #D97706; }
+.su-road-jobs .srj-hp1 { fill-opacity: .3; } .su-road-jobs .srj-hp2 { fill-opacity: .45; } .su-road-jobs .srj-hp3 { fill-opacity: .6; } .su-road-jobs .srj-hp4 { fill-opacity: .78; } .su-road-jobs .srj-hp5 { fill-opacity: .95; }
+/* 구슬 빛(밝기 차 · su-apple.css sa-* 와 같은 값) */
+.su-road-jobs .srj-hl0 { stop-color: #FFB340; stop-opacity: .62; } .su-road-jobs .srj-hl1 { stop-color: #FFC56B; stop-opacity: .3; } .su-road-jobs .srj-hl2 { stop-color: #FFE2AD; stop-opacity: .1; } .su-road-jobs .srj-hl3 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-road-jobs .srj-b0 { stop-color: #FFFEF9; } .su-road-jobs .srj-b1 { stop-color: #FFF3D2; } .su-road-jobs .srj-b2 { stop-color: #FFD684; } .su-road-jobs .srj-b3 { stop-color: #FFB24A; } .su-road-jobs .srj-b4 { stop-color: #FF9A2E; } .su-road-jobs .srj-b5 { stop-color: #FF8A24; }
+.su-road-jobs .srj-c0 { stop-color: #FFFFFF; stop-opacity: .95; } .su-road-jobs .srj-c1 { stop-color: #FFF6DC; stop-opacity: .55; } .su-road-jobs .srj-c2 { stop-color: #FFF6DC; stop-opacity: 0; }
+.su-road-jobs .srj-s0 { stop-color: #FFFFFF; stop-opacity: .95; } .su-road-jobs .srj-s1 { stop-color: #FFFFFF; stop-opacity: .35; } .su-road-jobs .srj-s2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-road-jobs .srj-g0 { stop-color: #FFFFFF; } .su-road-jobs .srj-g1 { stop-color: #F6F7F9; } .su-road-jobs .srj-g2 { stop-color: #E6E9EE; } .su-road-jobs .srj-g3 { stop-color: #C3C9D2; } .su-road-jobs .srj-g4 { stop-color: #8F98A6; }
+.su-road-jobs .srj-e0 { stop-color: #FFAB3D; stop-opacity: .75; } .su-road-jobs .srj-e1 { stop-color: #FFC06A; stop-opacity: .25; } .su-road-jobs .srj-e2 { stop-color: #FFD9A0; stop-opacity: 0; }
+.su-road-jobs .srj-k0 { stop-color: #FFFAF0; } .su-road-jobs .srj-k1 { stop-color: #FFD27A; } .su-road-jobs .srj-k2 { stop-color: #FF8A1F; stop-opacity: .7; } .su-road-jobs .srj-k3 { stop-color: #FF8A1F; stop-opacity: 0; }
+.su-road-jobs .srj-d0 { stop-color: #1D1D1F; stop-opacity: .3; } .su-road-jobs .srj-d1 { stop-color: #1D1D1F; stop-opacity: .09; } .su-road-jobs .srj-d2 { stop-color: #1D1D1F; stop-opacity: 0; }
+.su-road-jobs .srj-p0 { stop-color: #FFB648; stop-opacity: .4; } .su-road-jobs .srj-p1 { stop-color: #FFD08A; stop-opacity: .15; } .su-road-jobs .srj-p2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-road-jobs .srj-w0 { stop-color: #FFB24A; stop-opacity: .42; } .su-road-jobs .srj-w1 { stop-color: #FFC977; stop-opacity: .12; } .su-road-jobs .srj-w2 { stop-color: #FFFFFF; stop-opacity: 0; }
+.su-road-jobs .srj-f0 { stop-color: #FFFFFF; stop-opacity: .45; } .su-road-jobs .srj-f1 { stop-color: #FFFFFF; stop-opacity: 1; }
+.su-road-jobs .srj-bloom { fill: #FFAD42; fill-opacity: .16; }
+.su-road-jobs .srj-under { fill: #FFF4DC; fill-opacity: .32; }
+.su-road-jobs .srj-underB { fill: #FFFFFF; fill-opacity: .7; }
+.su-road-jobs .srj-glint { fill: #FFFFFF; fill-opacity: .9; }
+.su-road-jobs .srj-rimA { fill: none; stroke: #FFFFFF; stroke-opacity: .6; stroke-width: 1.4; }
+.su-road-jobs .srj-rimB { fill: none; stroke: #7D8696; stroke-opacity: .45; stroke-width: 1.2; }
+.su-road-jobs .srj-edge { fill: none; stroke: #FFFFFF; stroke-opacity: .85; stroke-width: 2; stroke-linecap: round; }
+.su-road-jobs .srj-refl { opacity: .3; }
+/* 움직임 — 들어올 때 한 번(1.2초 안) · 그 뒤 빛만 천천히 숨 쉼(투명도만) · 줄이기면 끝 모습 */
+@media (prefers-reduced-motion: no-preference) {
+  .su-road-jobs .srj-in { animation: srj-up .8s cubic-bezier(.2, .8, .2, 1) both; }
+  .su-road-jobs .srj-in1 { animation-delay: .1s; } .su-road-jobs .srj-in2 { animation-delay: .3s; } .su-road-jobs .srj-in3 { animation-delay: .35s; }
+  .su-road-jobs .srj-orbA, .su-road-jobs .srj-orbB, .su-road-jobs .srj-ring { transform-box: fill-box; transform-origin: 50% 100%; animation: srj-grow .9s cubic-bezier(.2, .8, .2, 1) .15s both; }
+  .su-road-jobs .srj-ring { transform-origin: 50% 50%; }
+  .su-road-jobs .srj-orbB { animation-delay: .25s; }
+  .su-road-jobs .srj-hp { animation: srj-pop .45s ease-out both; }
+  .su-road-jobs .srj-hp1 { animation-delay: .45s; } .su-road-jobs .srj-hp2 { animation-delay: .52s; } .su-road-jobs .srj-hp3 { animation-delay: .59s; } .su-road-jobs .srj-hp4 { animation-delay: .66s; } .su-road-jobs .srj-hp5 { animation-delay: .73s; }
+  .su-road-jobs .srj-fade { animation: srj-fade .7s ease-out .45s both; }
+  .su-road-jobs .srj-halo { animation: srj-breathe 4.2s ease-in-out 1.2s infinite alternate; }
+  .su-road-jobs .srj-ember { animation: srj-breathe 3.4s ease-in-out 1s infinite alternate; }
+}
+@keyframes srj-up { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes srj-grow { from { opacity: .4; transform: scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes srj-breathe { from { opacity: .72; } to { opacity: 1; } }
+@keyframes srj-fade { from { opacity: .4; } to { opacity: 1; } }
+@keyframes srj-pop { from { opacity: 0; } to { opacity: 1; } }

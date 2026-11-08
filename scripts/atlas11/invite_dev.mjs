@@ -72,6 +72,12 @@ if (!process.argv.includes('--no-gift-contact')) {
   const s = getStore({name: GIFT_STORE, consistency: 'strong'});
   if (!(await s.get(CONTACT_KEY, {type: 'json'}).catch(() => null))) await s.setJSON(CONTACT_KEY, {phone: '01000000000', at: new Date().toISOString(), test: true});
 }
+// 수르 현재가(주문 2011 · 사장님 2026-11-08 20:11 「어 그렇게 하고」 · lib/atlas11/price.mjs) — 함수 파일(functions/atlas11/price.mjs)과 같은 셈 · 시험 서버는 네이버에 가지 않음(값 없음 → 화면은 판 값 그대로 · 검사가 늘 같음) · --live-price 면 진짜로 받음
+const pr = await (async () => {
+  const {handlePrice} = await import('../../lib/atlas11/price.mjs');
+  const offline = async () => ({ok: false, json: async () => null});
+  return req => handlePrice(req, process.argv.includes('--live-price') ? {} : {fetchImpl: offline});
+})();
 /** 함수 응답(Fetch Response) → node 응답 · Set-Cookie 여럿을 그대로(하나로 합치지 않음) */
 const sendFetch = async (res, r) => { const h = {}; for (const [k, v] of r.headers) if (k !== 'set-cookie') h[k] = v; const sc = r.headers.getSetCookie?.() ?? []; if (sc.length) h['set-cookie'] = sc; res.writeHead(r.status, h); res.end(Buffer.from(await r.arrayBuffer())); };
 const bodyOf = req => (req.method === 'POST' || req.method === 'PUT' ? new Promise(r => { let b = ''; req.on('data', d => { b += d; }); req.on('end', () => r(b)); }) : Promise.resolve(undefined));
@@ -107,6 +113,7 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/api/gift' || url.pathname.startsWith('/api/gift/')) { await sendFetch(res, await gf(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 친구 소개 세기 · 선물 받기
     if (url.pathname === '/api/help' || url.pathname.startsWith('/api/help/')) { await sendFetch(res, await hp(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 고객센터
     if (url.pathname === '/api/auto' || url.pathname.startsWith('/api/auto/')) { await sendFetch(res, await au(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 자동으로 산 기록(가짜 돈)
+    if (url.pathname === '/api/price') { await sendFetch(res, await pr(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; } // 수르 현재가(시험 서버는 값 없음)
     if (url.pathname === '/api/tally' || url.pathname === '/api/tally/sum') { await sendFetch(res, await jt.tally(new Request(url, {method: req.method, headers: req.headers, body: await bodyOf(req)}))); return; }
     if (url.pathname === '/__dev/jinhwa-data') { // 진화 칸 검사용 — 이 시험 서버에서만(올리는 사이트에는 없음)
       if (req.method === 'POST') { let d = null; try { d = JSON.parse(await bodyOf(req)); } catch { d = null; } jt.S.data = d && typeof d === 'object' && !Array.isArray(d) ? d : null; }

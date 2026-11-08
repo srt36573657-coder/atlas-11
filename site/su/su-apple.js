@@ -69,9 +69,9 @@ const won = v => NF.format(Math.round(v)) + '원';
 const mday = t => { const m = /^\d{4}-(\d{2})-(\d{2})$/.exec(String(t ?? '')); return m ? +m[1] + '월 ' + +m[2] + '일' : null; };
 
 /** 설명 한 줄을 두 글 조각으로(가운데 맞춤 · 한 조각이 느린 휴대폰 첫 화면의 「가장 큰 칠함」이 되어 첫 화면을 늦추지 않게 — 주문 1532 에서 배움) */
-function note2(y, a, b) {
+function note2(y, a, b, k = '') {
   const gap = est(' ', 18), wa = est(a, 18), x0 = MID - (wa + gap + est(b, 18)) / 2;
-  return [T(f1(x0), y, a, 'sa-note sa-in sa-in3'), T(f1(x0 + wa + gap), y, b, 'sa-note sa-in sa-in3')];
+  return [T(f1(x0), y, a, 'sa-note sa-in sa-in3' + (k ? ' sa-' + k + 'a' : '')), T(f1(x0 + wa + gap), y, b, 'sa-note sa-in sa-in3' + (k ? ' sa-' + k + 'b' : ''))];
 }
 
 /* ── 한 달 꺾은선(주문 1837) — 그날마다 마지막 값 21개를 그대로 이음 · 높이는 그 회사의 한 달 가장 낮은 값 ~ 가장 높은 값 · 한 달 전 값에 옅은 가로줄 ── */
@@ -146,7 +146,7 @@ function cell(it, x, y, w, h, side) {
   const sx = x + w - 8 - SW, room = sx - x - 12;
   const price = it.px != null ? won(it.px) : NEED, pfs = est(price, 18) <= room ? 18 : 17;
   const say = (it.px != null ? ' · 현재가 ' + price : '') + (it.sp ? ' · 한 달 전 ' + won(it.sp[0]) : '');
-  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'sa-cell sa-' + side, 'data-k': it.k, 'data-name': it.name, 'data-px': it.px ?? '',
+  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'sa-cell sa-' + side, 'data-k': it.k, 'data-name': it.name, 'data-px': it.px ?? '', 'data-code': it.code,
     'aria-label': (side === 'now' ? '지금 ' : '될 듯 ') + it.kind + ' · ' + it.name + ' · ' + it.val + say + (it.star ? ' · 두 목록에 함께' : '')});
   a.append(s('title', {text: it.name + ' · ' + it.val + say}),
     s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit'}),
@@ -154,7 +154,53 @@ function cell(it, x, y, w, h, side) {
     T(x + 6, y + 52, it.val, 'sa-val sa-val-' + side + (it.val === '꽃' ? ' sa-bloomv' : '')),
     T(x + 6, y + 78, price, 'sa-px' + (it.px != null ? '' : ' sa-need'), {'font-size': pfs}),
     spark(it.sp, sx, y + 40, SW, 34, side));
+  CELL.set(a, {it, side, sx, sy: y + 40, room, say0: say});
   return a;
+}
+
+/* ── 장 중 현재가(주문 2011 · 사장님 2026-11-08 20:11 「어 그렇게 하고」 — 장이 열려 있는 낮에도 현재가가 바뀌게) ──
+   그림을 그린 뒤 /api/price(넷리파이 함수 · 네이버 증권 분봉 그대로 · lib/atlas11/price.mjs)에 칸 회사들을 물음 · 첫 화면을 기다리게 하지 않음
+   받은 값이 있는 칸만 바꿈: 현재가 글 · data-px · data-live(때) · 이름표 · 꺾은선(오늘이 판보다 뒤 = 맨 앞 하루를 빼고 오늘 값을 끝에 · 같은 날 = 끝 값만 바꿈)
+   날짜 글 「현재가는 ○월 ○일 오후 ○시 ○분 값이에요.」(장 중) · 「○월 ○일 마지막 값이에요.」(장 끝) · 장 중이면 1분마다 다시(화면이 보일 때만 · 그림이 쪽에서 빠지면 멈춤)
+   못 받으면(쉬는 날 · 밤 · 함수 없음) 아무것도 바꾸지 않음 — 판 값 그대로 */
+const CELL = new WeakMap();
+const hm = t => { const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(String(t ?? '')); if (!m) return null; const H = +m[4]; return +m[2] + '월 ' + +m[3] + '일 ' + (H < 12 ? '오전 ' : '오후 ') + (H % 12 || 12) + '시' + (+m[5] ? ' ' + +m[5] + '분' : ''); };
+function relive(svg, j, day) {
+  let last = null, n = 0;
+  for (const a of svg.querySelectorAll('a.sa-cell[data-code]')) {
+    const c = CELL.get(a), v = j.items?.[a.getAttribute('data-code')];
+    if (!c || !v || !fin(v.p) || v.p <= 0 || typeof v.t !== 'string' || !c.it.sp || !(j.day >= day)) continue;
+    const sp = j.day > day ? [...c.it.sp.slice(1), v.p] : [...c.it.sp.slice(0, 20), v.p], price = won(v.p);
+    const px = a.querySelector('text.sa-px'); if (px) { px.textContent = price; px.setAttribute('font-size', est(price, 18) <= c.room ? 18 : 17); px.classList.remove('sa-need'); }
+    a.querySelector('g.sa-spk')?.replaceWith(spark(sp, c.sx, c.sy, SW, 34, c.side));
+    const say = ' · 현재가 ' + price + ' · 한 달 전 ' + won(sp[0]), lab = a.getAttribute('aria-label') ?? '';
+    a.setAttribute('aria-label', lab.replace(c.say0, say)); a.querySelector('title').textContent = c.it.name + ' · ' + c.it.val + say;
+    a.setAttribute('data-px', String(v.p)); a.setAttribute('data-live', v.t);
+    if (!last || v.t > last) last = v.t; n++;
+  }
+  if (!n) return 0;
+  const b = svg.querySelector('text.sa-note1b'), a0 = svg.querySelector('text.sa-note1a');
+  if (a0 && b) { const t = (j.status === 'open' ? hm(last) + ' 값이에요.' : (mday(j.day) ?? '') + ' 마지막 값이에요.'); const [na, nb] = note2(+a0.getAttribute('y'), '현재가는', t); a0.setAttribute('x', na.getAttribute('x')); b.setAttribute('x', nb.getAttribute('x')); b.textContent = t; }
+  svg.setAttribute('data-live', j.status + ' ' + last);
+  return n;
+}
+function live(svg, day) {
+  const codes = [...new Set([...svg.querySelectorAll('a.sa-cell[data-code]')].map(a => a.getAttribute('data-code')))].filter(c => /^[0-9A-Z]{6}$/.test(c)).sort();
+  if (!codes.length || typeof fetch !== 'function') return;
+  const ask = async () => {
+    if (!svg.isConnected && svg.dataset.asked) return; // 쪽이 바뀌면 멈춤
+    svg.dataset.asked = '1';
+    try {
+      if (document.visibilityState === 'visible') {
+        const r = await fetch('/api/price?codes=' + codes.join(','));
+        const j = r.ok ? await r.json() : null;
+        if (j && j.items && typeof j.day === 'string') { relive(svg, j, day ?? ''); if (j.status !== 'open') return; }
+        else return;
+      }
+    } catch { return; }
+    setTimeout(ask, 60000);
+  };
+  setTimeout(ask, 0);
 }
 
 /* ── 그림 ── */
@@ -194,7 +240,7 @@ function draw(d, opt) {
     T(285, PY + 96, String(nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
     T(285, PY + 124, '곧 그렇게 될 듯한 곳', 'sa-d', {'text-anchor': 'middle'}));
   svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
-    ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.'),
+    ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   let y = LIST0;
@@ -228,5 +274,6 @@ export function picture(d, opt = {}) {
     for (const a of svg.querySelectorAll('a[data-k]')) { const k = a.getAttribute('data-k'); if (M[k]) a.setAttribute('data-k', M[k]); }
     svg.setAttribute('data-mode', 'next');
   } else svg.setAttribute('data-mode', 'now');
+  if (opt.live !== false) live(svg, d?.asOf?.board ?? null); // 장 중 현재가(주문 2011) — 그림은 바로 돌려주고 값은 받은 뒤에 바꿈
   return svg;
 }
