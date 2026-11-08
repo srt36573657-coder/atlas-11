@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+/* j03 — 2007년 아이폰 홈 화면: 회사 = 앱 아이콘 · 두 쪽(지금 · 될 듯) · 독(불장 · 꽃 · 돈) */
+:root{
+  --side:12px; --gap:8px;
+  --sub:#c9c9d2; --dim:#b3b3bd;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;color:#fff}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.ph{position:relative;max-width:440px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;background:#000}
+
+/* 무리 색 — 불장 · 꽃 · 돈 */
+.c-hot{--a:#ff7c45;--b:#c3121b;--t:#ff8c5e}
+.c-bloom{--a:#ff7cbb;--b:#a30f55;--t:#ff92c6}
+.c-money{--a:#49d678;--b:#0a652a;--t:#66e392}
+
+/* 위 막대 — 그 시절 상태 막대 */
+.sb{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:30px;padding:0 10px;background:linear-gradient(#45454c,#131316);border-bottom:1px solid #000;font-size:17px;line-height:1}
+.sb .l{display:flex;align-items:center;gap:6px;font-weight:800}
+.sb .l svg{width:20px;height:12px}
+.sb .c{font-weight:800}
+.sb .r{justify-self:end;font-weight:600;color:#e6e6ec}
+
+/* 한 줄 머리 */
+.hero{padding:8px var(--side) 0}
+.hero h1{font-size:26px;font-weight:820;letter-spacing:-.03em;line-height:1.2}
+
+/* 두 쪽 이름 */
+.seg{display:flex;flex-wrap:wrap;gap:4px 14px;padding:4px var(--side) 2px}
+.seg button{display:flex;align-items:center;gap:7px;font-size:18px;font-weight:700;padding:3px 0;color:#fff}
+.seg .mk{width:13px;height:13px;border-radius:4px;flex:none}
+.seg .mk.s{background:linear-gradient(135deg,#fff,#bdbdc6)}
+.seg .mk.h{border:2px dashed #fff}
+.seg .tx b{font-weight:850}
+.seg button:not(.on) .tx{background:linear-gradient(90deg,#9a9aa4 0%,#9a9aa4 38%,#fff 50%,#9a9aa4 62%,#9a9aa4 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 2.8s linear infinite}
+.seg button:not(.on) .mk{opacity:.6}
+.seg button.on .tx{border-bottom:2px solid #fff}
+@keyframes sh{0%{background-position:100% 0}100%{background-position:0 0}}
+
+/* 두 쪽 — 손가락으로 넘김 */
+.pg{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.pg::-webkit-scrollbar{display:none}
+.page{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;padding:6px var(--side) 2px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.col{display:flex;flex-direction:column;gap:7px;min-width:0;transition:opacity .25s,filter .25s}
+.ph[data-sel="hot"] .col:not(.c-hot),.ph[data-sel="bloom"] .col:not(.c-bloom),.ph[data-sel="money"] .col:not(.c-money){opacity:.2;filter:saturate(.3)}
+
+/* 회사 = 앱 아이콘 */
+.t{position:relative;display:flex;flex-direction:column;justify-content:space-between;height:76px;padding:6px 8px 6px 9px;border-radius:15px;color:#fff;text-decoration:none;overflow:hidden;isolation:isolate;transition:transform .12s}
+.t:active{transform:scale(.94)}
+.t .n{position:relative;z-index:1;font-size:19px;font-weight:760;line-height:1.1;letter-spacing:-.03em;word-break:break-all;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.t .v{position:relative;z-index:1;display:block;white-space:nowrap;font-size:17px;font-weight:680;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.now .t{background:linear-gradient(180deg,var(--a) 0%,var(--b) 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 0 1px rgba(255,255,255,.12),0 2px 5px rgba(0,0,0,.85);text-shadow:0 1px 2px rgba(0,0,0,.55)}
+.now .t::before{content:"";position:absolute;z-index:0;left:-25%;right:-25%;top:-70%;height:118%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,.07));pointer-events:none}
+.next .t{background:#101013;background:linear-gradient(180deg,color-mix(in srgb,var(--t) 24%,#0d0d10),#0d0d10 88%);border:2px dashed var(--t)}
+.next .t .v{color:var(--t)}
+.t .bd{position:absolute;z-index:2;top:5px;right:5px}
+.t.b2 .n{padding-right:24px}
+.bd{display:inline-block;flex:none;min-width:25px;height:25px;padding:0 6px;border-radius:13px;background:radial-gradient(circle at 50% 28%,#ff7070,#cf000e 70%);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.75);font-size:17px;font-weight:850;line-height:21px;text-align:center;text-shadow:none;color:#fff}
+
+/* 아래 — 점 두 개 + 독 */
+.ft{margin-top:auto;padding-top:4px}
+.dots{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:26px;padding:0 var(--side)}
+.dots .d{display:flex;gap:2px}
+.dots .d button{width:26px;height:26px;display:grid;place-items:center}
+.dots .d button::after{content:"";width:9px;height:9px;border-radius:50%;background:#62626b;transition:background .2s}
+.dots .d button.on::after{background:#fff}
+.lg{justify-self:end;display:flex;align-items:center;gap:6px;font-size:17px;color:var(--sub);transition:opacity .25s;white-space:nowrap}
+.ph[data-page="1"] .lg{opacity:0}
+.dock{position:relative;padding:8px var(--side) 6px;background:linear-gradient(180deg,rgba(255,255,255,.30) 0,rgba(255,255,255,.15) 49%,rgba(255,255,255,.06) 50%,rgba(255,255,255,.11) 100%);border-top:1px solid rgba(255,255,255,.6)}
+.dk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.dk button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0}
+.dk .ic{position:relative;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,var(--a),var(--b));box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 2px 6px rgba(0,0,0,.8);transition:box-shadow .2s,transform .12s}
+.dk .ic::before{content:"";position:absolute;left:-25%;right:-25%;top:-62%;height:112%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.08))}
+.dk .ic svg{position:relative;z-index:1;width:34px;height:34px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+.dk button:active .ic{transform:scale(.92)}
+.dk button[aria-pressed="true"] .ic{box-shadow:0 0 0 3px #fff,0 0 22px var(--t)}
+.dk .lb{font-size:19px;font-weight:780;text-shadow:0 1px 2px #000}
+.safe{margin-top:6px;text-align:center;font-size:17px;color:var(--dim);word-break:keep-all}
+
+/* 말풍선 — 독을 누르면 */
+.tip{position:absolute;left:var(--side);right:var(--side);bottom:calc(100% + 36px);padding:12px 14px 13px;border-radius:15px;background:linear-gradient(180deg,rgba(56,68,102,.98),rgba(22,28,48,.98));border:2px solid rgba(255,255,255,.85);box-shadow:0 12px 32px rgba(0,0,0,.75);display:none;z-index:5;text-align:left}
+.tip.on{display:block;animation:pop .18s ease-out}
+.tip::after{content:"";position:absolute;bottom:-11px;left:var(--ax,50%);width:18px;height:18px;background:#17203a;border-right:2px solid rgba(255,255,255,.85);border-bottom:2px solid rgba(255,255,255,.85);transform:translateX(-50%) rotate(45deg)}
+.tip h3{font-size:21px;font-weight:840;color:var(--t);padding-right:52px}
+.tip p{font-size:18px;line-height:1.45;margin-top:5px;color:#f4f4f8;word-break:keep-all}
+.tip .x{position:absolute;top:10px;right:12px;font-size:17px;font-weight:700;color:#d6d8ea}
+@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
+.msg{padding:40px var(--side);font-size:19px;color:var(--sub)}
+
+@media (max-width:359px){
+  :root{--side:10px;--gap:6px}
+  .t{height:auto;min-height:70px;padding:6px 6px 6px 7px}
+  .seg{gap:2px 10px}
+  .seg button{font-size:17px}
+  .lg .w{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .seg button:not(.on) .tx{animation:none;color:#c9c9d2;background:none}
+  .tip.on{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="ph" data-page="0" data-sel="">
+  <div class="sb" aria-hidden="false">
+    <div class="l"><svg viewBox="0 0 20 12" aria-hidden="true"><rect x="0" y="9" width="3" height="3" fill="#fff"/><rect x="4" y="7" width="3" height="5" fill="#fff"/><rect x="8" y="5" width="3" height="7" fill="#fff"/><rect x="12" y="3" width="3" height="9" fill="#fff"/><rect x="16" y="0" width="3" height="12" fill="#fff"/></svg>수르</div>
+    <div class="c" id="day">…</div>
+    <div class="r">한국 주식</div>
+  </div>
+
+  <div class="hero"><h1>될 듯한 회사를 찾아 줘요</h1></div>
+
+  <div class="seg" role="tablist">
+    <button class="on" data-go="0" role="tab"><i class="mk s"></i><span class="tx">지금 그런 곳 <b>21</b></span></button>
+    <button data-go="1" role="tab"><i class="mk h"></i><span class="tx">곧 될 듯한 곳 <b>21</b></span></button>
+  </div>
+
+  <div class="pg" id="pg">
+    <section class="page now" aria-label="지금 그런 곳"><div class="grid" id="g0"></div></section>
+    <section class="page next" aria-label="곧 될 듯한 곳"><div class="grid" id="g1"></div></section>
+  </div>
+
+  <div class="ft">
+    <div class="dots">
+      <span></span>
+      <div class="d"><button class="on" data-go="0" aria-label="지금 쪽"></button><button data-go="1" aria-label="될 듯 쪽"></button></div>
+      <div class="lg"><span class="bd">2</span><span>두 곳<span class="w">에 함께</span></span></div>
+    </div>
+    <div class="dock">
+      <div class="tip" id="tip" role="dialog" aria-live="polite"><button class="x" id="tipx">닫기</button><h3 id="tiph"></h3><p id="tipp"></p></div>
+      <div class="dk">
+        <button class="c-hot" data-k="hot" aria-pressed="false"><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2c1 5-3 7-3 11 0 2 1 3 2 4-3 0-6-3-6-7-3 3-5 7-5 11 0 6 5 10 12 10s12-4 12-10c0-8-6-11-6-16-2 2-3 4-3 6-1-4-1-7-3-9z" fill="#fff"/><path d="M16 30c-3 0-5-2-5-5 0-3 3-5 4-8 1 3 6 5 6 8 0 3-2 5-5 5z" fill="#ffcf5a"/></svg></span><span class="lb">불장</span></button>
+        <button class="c-bloom" data-k="bloom" aria-pressed="false"><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><g fill="#fff"><ellipse cx="16" cy="7.5" rx="5" ry="6.5"/><ellipse cx="16" cy="24.5" rx="5" ry="6.5"/><ellipse cx="7.5" cy="16" rx="6.5" ry="5"/><ellipse cx="24.5" cy="16" rx="6.5" ry="5"/><ellipse cx="10" cy="10" rx="5" ry="5.5" transform="rotate(-45 10 10)"/><ellipse cx="22" cy="10" rx="5" ry="5.5" transform="rotate(45 22 10)"/><ellipse cx="10" cy="22" rx="5" ry="5.5" transform="rotate(45 10 22)"/><ellipse cx="22" cy="22" rx="5" ry="5.5" transform="rotate(-45 22 22)"/></g><circle cx="16" cy="16" r="5" fill="#ffd34d"/></svg></span><span class="lb">꽃</span></button>
+        <button class="c-money" data-k="money" aria-pressed="false"><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="24" rx="12" ry="4.5" fill="#d99a0b"/><rect x="4" y="18" width="24" height="6" fill="#d99a0b"/><ellipse cx="16" cy="18" rx="12" ry="4.5" fill="#ffd34d"/><ellipse cx="16" cy="14" rx="12" ry="4.5" fill="#e3a812"/><rect x="4" y="8" width="24" height="6" fill="#e3a812"/><ellipse cx="16" cy="8" rx="12" ry="4.5" fill="#ffe27a"/><ellipse cx="16" cy="8" rx="7" ry="2.2" fill="none" stroke="#c98d00" stroke-width="1.4"/></svg></span><span class="lb">돈</span></button>
+      </div>
+      <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const ph = document.querySelector('.ph'), pg = document.getElementById('pg');
+  const tip = document.getElementById('tip'), tipH = document.getElementById('tiph'), tipP = document.getElementById('tipp');
+  const G = [{k: 'hot', now: 'hot', next: 'hotNext'}, {k: 'bloom', now: 'bloom', next: 'bloomNext'}, {k: 'money', now: 'money', next: 'moneyNext'}];
+  let D = null;
+
+  const pct = v => (typeof v !== 'number' || !isFinite(v)) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + String(Math.round(Math.abs(v) * 10) / 10) + '%';
+  const won = v => {
+    if (typeof v !== 'number' || !isFinite(v)) return '—';
+    const s = v > 0 ? '+' : v < 0 ? '−' : '', a = Math.abs(v);
+    return s + (a >= 10000 ? String(Math.round(a / 1000) / 10) + '조' : Math.round(a).toLocaleString('ko-KR') + '억');
+  };
+  const val = (page, k, c) => {
+    const w = c.why || {};
+    if (page === 0) return k === 'hot' ? pct(c.ch20) : k === 'money' ? won(w.gain) : (w.full ? '꽃' : '싹');
+    return k === 'hot' ? pct(w.r20) : k === 'money' ? won(w.gain) : pct(w.x5);
+  };
+
+  function tile(c, k, page, badge) {
+    const a = document.createElement('a');
+    a.className = 't'; a.href = '#/c/' + c.code;
+    const n = document.createElement('span'); n.className = 'n'; n.textContent = c.name;
+    const v = document.createElement('span'); v.className = 'v';
+    const vt = document.createElement('span'); vt.textContent = val(page, k, c); v.appendChild(vt);
+    a.append(n, v);
+    if (badge) { const b = document.createElement('span'); b.className = 'bd'; b.textContent = String(badge); a.appendChild(b); a.classList.add('b2'); }
+    return a;
+  }
+
+  function build() {
+    const two = new Map((D.overlap || []).map(o => [o.code, (o.in || []).length || 2]));
+    [0, 1].forEach(page => {
+      const g = document.getElementById('g' + page); g.textContent = '';
+      G.forEach(gr => {
+        const col = document.createElement('div'); col.className = 'col c-' + gr.k;
+        (D.lists[page ? gr.next : gr.now] || []).forEach(c => col.appendChild(tile(c, gr.k, page, page === 0 ? two.get(c.code) : 0)));
+        g.appendChild(col);
+      });
+    });
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec((D.asOf && D.asOf.board) || '');
+    document.getElementById('day').textContent = m ? (+m[2]) + '월 ' + (+m[3]) + '일' : '';
+    if (!two.size) document.querySelector('.lg').style.visibility = 'hidden';
+  }
+
+  function words(page, k) {
+    const P = (D && D.past) || {};
+    const past = (key, what) => { const p = P[key]; return p && p.per100 != null ? ` 지난 1년, 100번 가운데 ${p.per100}번은 한 달 안에 ${what}. 아무 회사는 ${p.base100}번.` : ''; };
+    if (page === 0) {
+      if (k === 'hot') return ['불장 7', '한 달 동안 함께 오른 업종에서 가장 많이 오른 회사예요. 숫자는 그동안 오른 만큼.'];
+      if (k === 'bloom') {
+        const full = (D.lists.bloom || []).filter(c => c.why && c.why.full).length;
+        return ['꽃이 될 7', '시장보다 앞서기 시작한 큰 회사예요. 시장보다 15 넘게 앞서면 꽃이에요. ' + (full ? `지금 꽃 ${full}곳, 싹 ${7 - full}곳.` : '지금은 모두 싹.')];
+      }
+      return ['돈이 몰리는 7', '한 달 동안 회사 크기가 원으로 가장 많이 는 회사예요. 숫자는 는 만큼.' + ((D.overlap || []).length ? ' 빨간 2는 불장에도 함께 든 곳.' : '')];
+    }
+    if (k === 'hot') return ['불장이 될 듯 7', '불장 일곱 바로 아래 회사예요.' + past('hotNext', '불장에 들었어요')];
+    if (k === 'bloom') return ['꽃이 될 듯 7', '닷새 동안 시장보다 앞서기 시작한 싹이에요.' + past('bloomNext', '꽃이 됐어요')];
+    return ['돈이 몰릴 듯 7', '돈 일곱 바로 아래 업종에서 크기가 가장 많이 는 회사예요.' + past('moneyNext', '돈 일곱에 들었어요')];
+  }
+
+  function paintTip() {
+    const k = ph.dataset.sel;
+    document.querySelectorAll('.dk button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === k)));
+    if (!k || !D) { tip.classList.remove('on'); return; }
+    const i = G.findIndex(g => g.k === k), [h, p] = words(+ph.dataset.page, k);
+    tip.className = 'tip on c-' + k; tip.style.setProperty('--ax', ((i + 0.5) / 3 * 100) + '%');
+    tipH.textContent = h; tipP.textContent = p;
+  }
+
+  function setPage(i) {
+    if (String(i) === ph.dataset.page) return;
+    ph.dataset.page = String(i);
+    document.querySelectorAll('[data-go]').forEach(b => b.classList.toggle('on', +b.dataset.go === i));
+    paintTip();
+  }
+  const go = i => pg.scrollTo({left: i * pg.clientWidth, behavior: 'smooth'});
+  document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
+  let raf = 0;
+  pg.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => setPage(Math.round(pg.scrollLeft / Math.max(1, pg.clientWidth)))); }, {passive: true});
+  document.querySelectorAll('.dk button').forEach(b => b.addEventListener('click', () => { ph.dataset.sel = ph.dataset.sel === b.dataset.k ? '' : b.dataset.k; paintTip(); }));
+  tip.addEventListener('click', () => { ph.dataset.sel = ''; paintTip(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') go(1); else if (e.key === 'ArrowLeft') go(0); else if (e.key === 'Escape') { ph.dataset.sel = ''; paintTip(); }
+  });
+
+  fetch('/su/data/su21.json', {cache: 'no-store'}).then(r => r.json()).then(d => { D = d; build(); paintTip(); })
+    .catch(() => { document.getElementById('g0').innerHTML = '<p class="msg">자료를 아직 못 불러왔어요. 잠시 뒤 다시 열어 주세요.</p>'; });
+})();
+</script>
+</body>
+</html>

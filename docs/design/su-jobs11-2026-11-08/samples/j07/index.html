@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+:root{--paper:#f4efe2;--card:#fffdf6;--ink:#1c1a16;--soft:#3d3931}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif;font-size:20px;line-height:1.45;-webkit-text-size-adjust:100%;overflow-x:hidden;word-break:keep-all;overflow-wrap:anywhere}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.win{margin:14px 16px 0;border:3px solid var(--ink);border-radius:12px;background:var(--card);box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+.bar{height:42px;display:flex;align-items:center;justify-content:center;border-bottom:3px solid var(--ink);padding:9px 10px;background:repeating-linear-gradient(to bottom,var(--ink) 0 2px,transparent 2px 5px) content-box}
+.bar b{background:var(--card);padding:0 14px;font-size:21px;font-weight:800;line-height:1.1}
+.hero{padding:16px 16px 14px}
+.eye{font-size:18px;font-weight:700;color:var(--soft);margin:0}
+h1{font-size:30px;line-height:1.24;font-weight:850;margin:4px 0 0;letter-spacing:-0.5px}
+.row{display:grid;grid-template-columns:108px 1fr;gap:10px;align-items:center;padding:12px 14px 12px 10px;border-top:3px solid var(--ink)}
+.ic{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ic svg{display:block}
+.ic span{font-size:19px;font-weight:850;line-height:1.2;text-align:center}
+.tks{display:flex;flex-direction:column;min-width:0}
+.tk{display:flex;align-items:center;gap:8px;min-height:42px}
+.pill{flex:none;display:inline-flex;align-items:center;justify-content:center;width:52px;height:34px;border-radius:999px;font-size:18px;font-weight:850;border:2.5px solid var(--ink)}
+.now .pill{background:var(--ink);color:var(--card)}
+.soon .pill{border-style:dashed;background:var(--card)}
+.tk .nm{font-size:21px;font-weight:800;text-decoration:none;line-height:1.2}
+.tk .more{font-size:17px;font-weight:700;color:var(--soft);white-space:nowrap;text-decoration:underline;text-underline-offset:3px}
+.dn{width:52px;display:flex;justify-content:center;height:26px;align-items:center}
+.safe{margin:16px 16px 0;padding:12px 14px;border:2.5px dashed var(--ink);border-radius:10px;font-size:19px;font-weight:700;display:flex;align-items:center;gap:10px;background:var(--card)}
+.date{margin:10px 16px 0;font-size:17px;font-weight:700;color:var(--soft);display:flex;justify-content:space-between;gap:10px}
+.cat{margin:30px 16px 0;border:3px solid var(--ink);border-radius:12px;background:var(--card);box-shadow:5px 5px 0 var(--ink);overflow:hidden;scroll-margin-top:12px}
+.cat .top{display:flex;gap:12px;align-items:center;padding:14px 14px 6px}
+.cat .top h2{font-size:26px;margin:0;line-height:1.2;font-weight:850}
+.cat .top p{margin:2px 0 0;font-size:18px;font-weight:600;color:var(--soft);line-height:1.35}
+.lst{padding:8px 14px 4px}
+.lh{display:flex;align-items:center;gap:8px;margin:10px 0 2px;flex-wrap:wrap}
+.lh .pill{width:auto;padding:0 12px}
+.lh small{font-size:17px;font-weight:600;color:var(--soft)}
+ol{list-style:none;margin:0;padding:0}
+li a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:2px dotted var(--ink);text-decoration:none;min-height:46px}
+li:last-child a{border-bottom:0}
+li .n{font-size:20px;font-weight:750;display:flex;align-items:center;gap:8px;min-width:0}
+li .v{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--soft)}
+.past{margin:8px 14px 14px;padding:12px;border:2px solid var(--ink);border-radius:10px}
+.past h3{font-size:18px;margin:0 0 10px;line-height:1.35;font-weight:800}
+.grids{display:flex;gap:14px;justify-content:space-between}
+.g{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.g svg{width:100%;max-width:130px;height:auto;display:block}
+.g span{font-size:17px;font-weight:700;text-align:center;line-height:1.3}
+.past p{font-size:17px;margin:10px 0 0;font-weight:600;color:var(--soft)}
+footer{margin:30px 16px 40px;font-size:18px;font-weight:700;text-align:center;line-height:1.5}
+.hint{margin:12px 16px 0;font-size:17px;font-weight:700;text-align:center;color:var(--soft)}
+</style>
+</head>
+<body>
+<main id="app">
+  <section class="win" aria-label="수르">
+    <div class="bar"><b>수르</b></div>
+    <div class="hero">
+      <p class="eye">한국 주식 회사 42곳</p>
+      <h1>지금 그런 곳,<br>곧 그럴 듯한 곳</h1>
+    </div>
+    <div id="rows"></div>
+  </section>
+  <div class="safe"><span id="eyeIc"></span><span>앞날을 맞히는 목록이 아니에요.</span></div>
+  <div class="date"><span id="asof">자료 날짜</span><span>아래로 내리면 42곳 모두</span></div>
+  <div id="cats"></div>
+  <footer>앞날을 맞히는 목록이 아니에요.<br>수르</footer>
+</main>
+<script>
+(function(){
+const PAL={K:'#1c1a16',F:'#ea4f1f',Y:'#ffc531',W:'#fff1b8',P:'#f2739f',H:'#ffffff',G:'#3c9d55',B:'#b9784a',L:'#ffd447',D:'#d99a12'};
+const ICON={
+fire:[
+'......K.........',
+'......KK........',
+'.....KFK........',
+'.....KFFK.......',
+'....KFFFK...K...',
+'....KFFFFK.KK...',
+'...KFFFFFKKFK...',
+'...KFFYFFFFFK...',
+'..KFFFYYFFFFFK..',
+'..KFFYYYYFFFFK..',
+'..KFFYYWYYFFFK..',
+'..KFYYWWWYYFFK..',
+'..KFYYWWWYYFFK..',
+'...KFYYWYYFFK...',
+'....KKFFFFKK....',
+'......KKKK......'],
+flower:[
+'................',
+'.....KKKKKK.....',
+'....KPPPPPPK....',
+'..KKKPPPPPPKKK..',
+'.KPPPKKKKKKPPPK.',
+'.KPPKKYYYYKKPPK.',
+'.KPPKYHYYYYKPPK.',
+'.KPPKKYYYYKKPPK.',
+'.KPPPKKKKKKPPPK.',
+'..KKKPPPPPPKKK..',
+'....KPPPPPPK....',
+'.....KKGGKK.....',
+'.KKK..KGGK..KKK.',
+'KGGGK.KGGK.KGGGK',
+'.KKGGKKGGKKGGKK.',
+'...KKKKKKKKKK...'],
+sprout:[
+'................',
+'................',
+'..KKKK....KKKK..',
+'.KGGGGK..KGGGGK.',
+'.KGGGGGKKGGGGGK.',
+'..KGGGGKKGGGGK..',
+'...KKKGKKGKKK...',
+'......KGGK......',
+'......KGGK......',
+'......KGGK......',
+'......KGGK......',
+'..KKKKKKKKKKKK..',
+'..KBBBBBBBBBBK..',
+'...KBBBBBBBBK...',
+'...KBBBBBBBBK...',
+'....KKKKKKKK....'],
+eye:[
+'................',
+'................',
+'................',
+'.....KKKKKK.....',
+'...KK......KK...',
+'..K...KKKK...K..',
+'.K...KKHKKK...K.',
+'K....KKKKKK....K',
+'.K...KKKKKK...K.',
+'..K...KKKK...K..',
+'...KK......KK...',
+'.....KKKKKK.....',
+'................',
+'................',
+'................',
+'................']
+};
+/* 동전 무더기 — 세 더미를 줄무늬로 쌓는다 */
+(function(){const g=[];for(let y=0;y<16;y++)g.push(Array(16).fill('.'));
+ const stack=(x0,w,top)=>{for(let y=top;y<=15;y++){for(let x=x0;x<x0+w;x++){let c;
+   if(y===top||y===15)c='K';else if(x===x0||x===x0+w-1)c='K';else c=((y-top)%2===1)?'L':'D';
+   if(y===top+1&&x===x0+1)c='H';g[y][x]=c;}}};
+ stack(0,6,8);stack(10,6,5);stack(5,6,1);
+ ICON.coins=g.map(r=>r.join(''));})();
+function svg(name,px,label){const m=ICON[name];const n=m.length;let r='';
+ for(let y=0;y<n;y++)for(let x=0;x<m[y].length;x++){const c=m[y][x];if(c!=='.')r+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${PAL[c]}"/>`;}
+ return `<svg viewBox="0 0 16 16" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="${label||''}">${r}</svg>`;}
+function arrowDown(){const m=['..KKK..','..KKK..','..KKK..','KKKKKKK','.KKKKK.','..KKK..','...K...'];let r='';
+ m.forEach((row,y)=>[...row].forEach((c,x)=>{if(c==='K')r+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${PAL.K}"/>`;}));
+ return `<svg viewBox="0 0 7 7" width="21" height="21" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;}
+function grid(hit){let r='';for(let i=0;i<100;i++){const x=i%10,y=Math.floor(i/10);const on=i<hit;
+ r+=`<rect x="${x*11+1}" y="${y*11+1}" width="9" height="9" fill="${on?PAL.K:'none'}" stroke="${PAL.K}" stroke-width="${on?0:1.2}"/>`;}
+ return `<svg viewBox="0 0 111 111" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct=v=>(v>0?'+':'')+(Math.round(v*10)/10).toFixed(1)+'%';
+const won=g=>{if(g==null||isNaN(g))return'';const s=g<0?'-':'+';g=Math.abs(Math.round(g));if(g>=10000){const j=Math.floor(g/10000),e=g%10000;return s+j+'조'+(e?' '+e.toLocaleString('ko-KR')+'억':'');}return s+g.toLocaleString('ko-KR')+'억';};
+const CATS=[
+ {k:'hot',nx:'hotNext',ic:'fire',name:'불장',soon:'불장이 될 듯',desc:'한 달 동안 크게 오른 곳',sdesc:'불장 바로 아래에서 오르는 곳',
+  cap:'숫자는 한 달 동안 오른 만큼',scap:'숫자는 한 달 동안 오른 만큼',val:c=>pct(c.ch20),sval:c=>pct(c.why&&c.why.r20!=null?c.why.r20:c.ch20),past:'불장이 된 때'},
+ {k:'bloom',nx:'bloomNext',ic:'flower',name:'꽃이 될',soon:'꽃이 될 듯',desc:'싹이 터서 꽃이 되어 가는 곳',sdesc:'닷새 사이 시장보다 앞선 싹',
+  cap:'그림은 꽃인지 싹인지',scap:'숫자는 닷새 동안 시장보다 앞선 만큼',val:c=>(c.why&&c.why.full)?'꽃':'싹',sval:c=>c.why&&c.why.x5!=null?pct(c.why.x5):'',past:'꽃이 된 때',mini:true},
+ {k:'money',nx:'moneyNext',ic:'coins',name:'돈이 몰리는',soon:'돈이 몰릴 듯',desc:'회사 크기가 가장 많이 는 곳',sdesc:'그 바로 아래에서 돈이 느는 곳',
+  cap:'숫자는 한 달 동안 회사 크기가 는 만큼',scap:'숫자는 회사 크기가 는 만큼',val:c=>won(c.why&&c.why.gain),sval:c=>won(c.why&&c.why.gain),past:'돈이 몰리는 곳이 된 때'}
+];
+function go(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function render(d){
+ const L=d.lists||{};
+ const b=(d.asOf&&d.asOf.board)||'';const m=b.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ document.getElementById('asof').textContent=m?`${+m[2]}월 ${+m[3]}일 자료`:'자료 날짜';
+ document.getElementById('eyeIc').innerHTML=svg('eye',34,'');
+ const rows=CATS.map(c=>{const a=(L[c.k]||[]),n=(L[c.nx]||[]);const f=a[0],s=n[0];
+  return `<div class="row">
+   <div class="ic">${svg(c.ic,92,c.name)}<span>${c.name}</span></div>
+   <div class="tks">
+    <div class="tk now"><span class="pill">지금</span><span>${f?`<a class="nm" href="#/c/${esc(f.code)}">${esc(f.name)}</a> `:''}<button class="more" data-go="c-${c.k}">외 ${Math.max(a.length-1,0)}곳</button></span></div>
+    <div class="dn">${arrowDown()}</div>
+    <div class="tk soon"><span class="pill">곧</span><span>${s?`<a class="nm" href="#/c/${esc(s.code)}">${esc(s.name)}</a> `:''}<button class="more" data-go="c-${c.k}">외 ${Math.max(n.length-1,0)}곳</button></span></div>
+   </div></div>`;}).join('');
+ document.getElementById('rows').innerHTML=rows;
+ const past=d.past||{};
+ const cats=CATS.map(c=>{const a=(L[c.k]||[]),n=(L[c.nx]||[]);const p=past[c.nx]||{};
+  const li=(arr,fn,mini)=>arr.map(x=>`<li><a href="#/c/${esc(x.code)}"><span class="n">${mini?svg((x.why&&x.why.full)?'flower':'sprout',30,''):''}${esc(x.name)}</span><span class="v">${mini?'':esc(fn(x))}</span></a></li>`).join('');
+  return `<section class="cat" id="c-${c.k}">
+   <div class="bar"><b>${c.name}</b></div>
+   <div class="top">${svg(c.ic,64,c.name)}<div><h2>${c.name}</h2><p>${c.desc}</p></div></div>
+   <div class="lst">
+    <div class="lh"><span class="pill" style="background:var(--ink);color:var(--card)">지금 ${a.length}곳</span><small>${c.cap}</small></div>
+    <ol>${li(a,c.val,c.mini)}</ol>
+    <div class="lh" style="margin-top:16px"><span class="pill" style="border-style:dashed">곧 ${n.length}곳</span><small>${c.soon}한 곳</small></div><p class="lh" style="margin:0 0 2px"><small>${c.sdesc}</small></p>
+    <ol>${li(n,c.sval,false)}</ol>
+    <p class="lh" style="margin:6px 0 0"><small>${c.scap}</small></p>
+   </div>
+   ${p.per100!=null?`<div class="past"><h3>지난 1년, 곧 칸에 든 곳이 한 달 안에 정말 ${c.past}</h3>
+    <div class="grids"><div class="g">${grid(p.per100)}<span>곧 칸에 든 곳<br>100번에 ${p.per100}번</span></div>
+    <div class="g">${grid(p.base100)}<span>아무 회사<br>100번에 ${p.base100}번</span></div></div>
+    <p>지난 일이에요. 앞으로도 같다는 뜻은 아니에요.</p></div>`:''}
+  </section>`;}).join('');
+ document.getElementById('cats').innerHTML=cats;
+ document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.getAttribute('data-go'))));
+}
+fetch('/su/data/su21.json',{cache:'no-store'}).then(r=>r.json()).then(render).catch(()=>{document.getElementById('rows').innerHTML='<p style="padding:14px;font-size:19px">자료를 아직 못 불러왔어요.</p>';});
+})();
+</script>
+</body>
+</html>

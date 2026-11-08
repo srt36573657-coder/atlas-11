@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르 — 지금, 그리고 될 듯</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+:root{
+  --ink:#1d1d1f; --ink2:#3a3a3c; --hair:#d2d2d7; --tile:#f5f5f7;
+  --amberInk:#a8430b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:#fff;color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:21px;line-height:1.45;word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+
+/* 맨 위 줄 */
+.nav{position:sticky;top:0;z-index:5;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(255,255,255,.84);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.07)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.01em}
+.mark{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 42% 38%,#fff7e3 0,#ffc463 32%,#ff8a1f 70%,#c9510c 100%);box-shadow:0 0 12px rgba(255,159,10,.55)}
+.asof{font-size:17px;color:var(--ink2);font-weight:500}
+
+/* 첫 화면 */
+.hero{text-align:center;padding:28px 16px 6px;max-width:760px;margin:0 auto}
+h1{font-size:clamp(30px,10vw,66px);line-height:1.08;font-weight:800;letter-spacing:-.04em;white-space:nowrap}
+.sub{margin-top:12px;font-size:21px;line-height:1.42;color:var(--ink2);font-weight:500;letter-spacing:-.015em}
+.stage{margin:4px auto 0;max-width:520px}
+.stage svg{display:block;width:100%;height:auto}
+.pair{display:grid;grid-template-columns:1fr 1fr;margin:0 auto;max-width:520px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.cell{padding:12px 4px 14px;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0}
+.cell+.cell{border-left:1px solid var(--hair)}
+.k{display:flex;align-items:center;gap:8px;font-size:21px;font-weight:700}
+.n{font-size:52px;line-height:1.04;font-weight:800;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.n small{font-size:22px;font-weight:700;margin-left:3px;letter-spacing:0}
+.d{font-size:17px;color:var(--ink2);font-weight:500;line-height:1.35}
+.safe{margin-top:14px;font-size:18px;color:var(--ink2);font-weight:600}
+.dot{width:14px;height:14px;border-radius:50%;display:inline-block;flex:none}
+.dot.on{background:radial-gradient(circle at 42% 38%,#fff7e3 0,#ffc463 32%,#ff8a1f 72%,#c9510c 100%);box-shadow:0 0 10px rgba(255,159,10,.65)}
+.dot.soon{background:radial-gradient(circle at 50% 58%,#ff9f2e 0,#ffb648 16%,rgba(255,182,72,0) 36%),radial-gradient(circle at 50% 45%,#fff 0,#eef0f4 60%,#aeb6c2 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.10)}
+
+/* 빛 움직임 */
+#haloA{animation:breathe 5.5s ease-in-out infinite}
+#emberB{animation:ember 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes breathe{0%,100%{opacity:.80}50%{opacity:1}}
+@keyframes ember{0%,100%{opacity:.55;transform:scale(.88)}50%{opacity:1;transform:scale(1.1)}}
+@media (prefers-reduced-motion:reduce){#haloA,#emberB{animation:none}}
+
+/* 아래 두 칸 */
+main{padding:34px 16px 8px;max-width:1100px;margin:0 auto;display:grid;gap:16px}
+@media (min-width:780px){main{grid-template-columns:1fr 1fr;align-items:start}}
+.tile{background:var(--tile);border-radius:28px;padding:28px 20px 26px;scroll-margin-top:64px;min-width:0}
+.tk{display:flex;align-items:center;gap:8px;font-size:19px;font-weight:700;color:var(--ink2)}
+.tile h2{margin-top:6px;font-size:32px;line-height:1.16;font-weight:800;letter-spacing:-.035em}
+.grp{margin-top:26px}
+.grp h3{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:22px;font-weight:800;letter-spacing:-.015em;padding:0 4px}
+.grp h3 span{font-size:17px;font-weight:600;color:var(--ink2);flex:none}
+.chips{margin-top:10px;background:#fff;border-radius:18px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.045);overflow:hidden}
+.chip{display:flex;align-items:center;gap:12px;min-height:54px;padding:12px 16px;font-size:20px;font-weight:650;letter-spacing:-.015em;transition:background .15s ease}
+.chip+.chip{border-top:1px solid #e8e8ed}
+.chip:active{background:#f0f0f3}
+.chip .nm{min-width:0;flex:1 1 auto}
+.chip::after{content:'';flex:none;width:8px;height:8px;margin-left:2px;border-right:2px solid #aeaeb5;border-top:2px solid #aeaeb5;transform:rotate(45deg)}
+.chip .v{font-size:18px;font-weight:650;color:var(--amberInk);font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
+.next .chip .v{color:var(--ink2)}
+.past{margin-top:12px;font-size:17px;line-height:1.5;color:var(--ink2)}
+.past b{color:var(--ink);font-weight:800}
+footer{padding:26px 16px 52px;text-align:center;font-size:17px;color:var(--ink2);line-height:1.6}
+.err{padding:20px;text-align:center;font-size:19px}
+</style>
+</head>
+<body>
+<header class="nav">
+  <span class="brand"><i class="mark" aria-hidden="true"></i>수르</span>
+  <span class="asof" id="asof">자료 날짜</span>
+</header>
+
+<section class="hero">
+  <h1>지금, 그리고 될 듯.</h1>
+  <p class="sub">한국 주식 회사 가운데<br>될 듯한 곳을 찾아 드려요.</p>
+
+  <figure class="stage">
+    <svg viewBox="0 0 360 252" role="img" aria-label="환하게 빛나는 유리 구슬 하나와, 속에서 막 불이 오르는 유리 구슬 하나">
+      <defs>
+        <radialGradient id="gHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#ffb340" stop-opacity=".62"/>
+          <stop offset=".38" stop-color="#ffc56b" stop-opacity=".30"/>
+          <stop offset=".7" stop-color="#ffe2ad" stop-opacity=".10"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gBody" cx="44%" cy="40%" r="64%" fx="40%" fy="34%">
+          <stop offset="0" stop-color="#fffef9"/>
+          <stop offset=".20" stop-color="#fff3d2"/>
+          <stop offset=".46" stop-color="#ffd684"/>
+          <stop offset=".70" stop-color="#ffb24a"/>
+          <stop offset=".88" stop-color="#ff9a2e"/>
+          <stop offset="1" stop-color="#ff8a24"/>
+        </radialGradient>
+        <radialGradient id="gCore" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff" stop-opacity=".95"/>
+          <stop offset=".5" stop-color="#fff6dc" stop-opacity=".55"/>
+          <stop offset="1" stop-color="#fff6dc" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gSpec" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff" stop-opacity=".95"/>
+          <stop offset=".6" stop-color="#fff" stop-opacity=".35"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="gRim" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity=".85"/>
+          <stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+          <stop offset=".85" stop-color="#fff" stop-opacity=".15"/>
+          <stop offset="1" stop-color="#fff" stop-opacity=".6"/>
+        </linearGradient>
+        <radialGradient id="gGlass" cx="48%" cy="44%" r="56%">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset=".55" stop-color="#f6f7f9"/>
+          <stop offset=".80" stop-color="#e6e9ee"/>
+          <stop offset=".94" stop-color="#c3c9d2"/>
+          <stop offset="1" stop-color="#8f98a6"/>
+        </radialGradient>
+        <linearGradient id="gWarmSide" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#ffb24a" stop-opacity=".42"/>
+          <stop offset=".45" stop-color="#ffc977" stop-opacity=".12"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="gEmberGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#ffab3d" stop-opacity=".75"/>
+          <stop offset=".5" stop-color="#ffc06a" stop-opacity=".25"/>
+          <stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gEmber" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fffaf0"/>
+          <stop offset=".3" stop-color="#ffd27a"/>
+          <stop offset=".7" stop-color="#ff8a1f" stop-opacity=".7"/>
+          <stop offset="1" stop-color="#ff8a1f" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gShadow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#1d1d1f" stop-opacity=".34"/>
+          <stop offset=".6" stop-color="#1d1d1f" stop-opacity=".10"/>
+          <stop offset="1" stop-color="#1d1d1f" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gSpill" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#ffb648" stop-opacity=".42"/>
+          <stop offset=".55" stop-color="#ffd08a" stop-opacity=".16"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="gFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <mask id="mFade" maskUnits="userSpaceOnUse" x="0" y="206" width="360" height="46">
+          <rect x="0" y="206" width="360" height="46" fill="url(#gFade)"/>
+        </mask>
+        <filter id="fB2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2"/></filter>
+        <filter id="fB4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+        <filter id="fB7" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+        <filter id="fGrain" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="11" result="n"/>
+          <feColorMatrix in="n" type="matrix" values="0 0 0 0 .45  0 0 0 0 .22  0 0 0 0 .05  0 0 0 .55 0"/>
+          <feComposite operator="in" in2="SourceGraphic"/>
+        </filter>
+        <clipPath id="cA"><circle cx="121" cy="124" r="82"/></clipPath>
+        <clipPath id="cB"><circle cx="267" cy="152" r="54"/></clipPath>
+      </defs>
+
+      <!-- 바닥에 번진 빛 -->
+      <ellipse cx="128" cy="210" rx="170" ry="24" fill="url(#gSpill)" filter="url(#fB4)"/>
+      <!-- 지금: 빛나는 구슬의 둘레 빛 -->
+      <circle id="haloA" cx="121" cy="124" r="118" fill="url(#gHalo)"/>
+
+      <!-- 될 듯 구슬 그림자와 모인 빛 -->
+      <ellipse cx="284" cy="207" rx="56" ry="7.5" fill="url(#gShadow)" filter="url(#fB2)"/>
+      <ellipse cx="292" cy="207.5" rx="17" ry="3" fill="#fff1cf" opacity=".95" filter="url(#fB2)"/>
+      <!-- 지금 구슬 닿는 곳 -->
+      <ellipse cx="121" cy="206" rx="52" ry="5" fill="url(#gShadow)" filter="url(#fB2)"/>
+
+      <!-- 지금: 구슬 가장자리에서 번지는 빛 -->
+      <circle cx="121" cy="124" r="88" fill="#ffad42" opacity=".55" filter="url(#fB7)"/>
+      <!-- 지금: 환한 구슬 -->
+      <g id="orbA">
+        <circle cx="121" cy="124" r="82" fill="url(#gBody)"/>
+        <g clip-path="url(#cA)">
+          <circle cx="110" cy="106" r="40" fill="url(#gCore)" filter="url(#fB7)"/>
+          <ellipse cx="121" cy="186" rx="58" ry="16" fill="#fff4dc" opacity=".30" filter="url(#fB4)"/>
+          <rect x="39" y="42" width="164" height="164" fill="#000" filter="url(#fGrain)" opacity=".22"/>
+        </g>
+        <ellipse cx="88" cy="78" rx="27" ry="11" transform="rotate(-38 88 78)" fill="url(#gSpec)"/>
+        <circle cx="76" cy="98" r="3.2" fill="#fff" opacity=".9"/>
+        <circle cx="121" cy="124" r="81.3" fill="none" stroke="url(#gRim)" stroke-width="1.4"/>
+      </g>
+      <!-- 지금 구슬이 바닥에 비친 모습 -->
+      <g mask="url(#mFade)" opacity=".35">
+        <use href="#orbA" transform="translate(0 412) scale(1 -1)"/>
+      </g>
+
+      <!-- 될 듯: 맑은 유리 구슬, 속에서 불이 막 오른다 -->
+      <g id="orbB">
+        <circle cx="267" cy="152" r="54" fill="url(#gGlass)"/>
+        <g clip-path="url(#cB)">
+          <rect x="213" y="98" width="108" height="108" fill="url(#gWarmSide)"/>
+          <ellipse cx="267" cy="190" rx="36" ry="9" fill="#fff" opacity=".75" filter="url(#fB2)"/>
+          <g id="emberB">
+            <circle cx="267" cy="160" r="38" fill="url(#gEmberGlow)"/>
+            <circle cx="267" cy="160" r="13" fill="url(#gEmber)"/>
+          </g>
+          <rect x="213" y="98" width="108" height="108" fill="#000" filter="url(#fGrain)" opacity=".10"/>
+        </g>
+        <ellipse cx="245" cy="126" rx="17" ry="7" transform="rotate(-36 245 126)" fill="url(#gSpec)"/>
+        <circle cx="236" cy="141" r="2.4" fill="#fff"/>
+        <circle cx="267" cy="152" r="53.4" fill="none" stroke="#7d8696" stroke-opacity=".45" stroke-width="1.2"/>
+        <path d="M300 113 A50 50 0 0 1 312 170" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <g mask="url(#mFade)" opacity=".28">
+        <use href="#orbB" transform="translate(0 412) scale(1 -1)"/>
+      </g>
+    </svg>
+  </figure>
+
+  <div class="pair">
+    <button class="cell" type="button" data-go="now">
+      <span class="k"><i class="dot on" aria-hidden="true"></i>지금</span>
+      <span class="n">21<small>곳</small></span>
+      <span class="d">지금 그런 곳</span>
+    </button>
+    <button class="cell" type="button" data-go="next">
+      <span class="k"><i class="dot soon" aria-hidden="true"></i>될 듯</span>
+      <span class="n">21<small>곳</small></span>
+      <span class="d">곧 그렇게 될 듯한 곳</span>
+    </button>
+  </div>
+  <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+</section>
+
+<main id="lists"></main>
+<footer id="foot">수르</footer>
+
+<script>
+(function(){
+  var GROUPS = {
+    now:  [['hot','불장'],['bloom','꽃이 될'],['money','돈이 몰리는']],
+    next: [['hotNext','불장이 될 듯'],['bloomNext','꽃이 될 듯'],['moneyNext','돈이 몰릴 듯']]
+  };
+  var PAST = {hotNext:'불장이 됐어요', bloomNext:'꽃이 됐어요', moneyNext:'돈이 몰리는 일곱에 들었어요'};
+  function won(g){ return g >= 10000 ? (g/10000).toFixed(1).replace(/\.0$/,'') + '조' : Math.round(g).toLocaleString('ko-KR') + '억'; }
+  function pct(v){ return (v > 0 ? '+' : '') + Number(v).toFixed(1) + '%'; }
+  function val(k, c){
+    var w = c.why || {};
+    if (k === 'hot') return c.ch20 != null ? pct(c.ch20) : '';
+    if (k === 'bloom') return w.full ? '꽃' : '싹';
+    if (k === 'money' || k === 'moneyNext') return w.gain != null ? won(w.gain) : '';
+    if (k === 'hotNext') return w.r20 != null ? pct(w.r20) : '';
+    if (k === 'bloomNext') return w.x5 != null ? pct(w.x5) : '';
+    return '';
+  }
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function day(s){ var p = String(s || '').split('-'); return p.length === 3 ? {full: p[0] + '. ' + (+p[1]) + '. ' + (+p[2]) + '.', short: (+p[1]) + '월 ' + (+p[2]) + '일'} : null; }
+
+  function tile(side, d){
+    var t = el('section', 'tile ' + side); t.id = side;
+    var tk = el('p', 'tk'); var dot = el('i', 'dot ' + (side === 'now' ? 'on' : 'soon')); dot.setAttribute('aria-hidden', 'true');
+    tk.appendChild(dot); tk.appendChild(document.createTextNode(side === 'now' ? '지금' : '될 듯'));
+    t.appendChild(tk);
+    t.appendChild(el('h2', null, side === 'now' ? '지금 그런 곳 21' : '곧 그렇게 될 듯한 곳 21'));
+    GROUPS[side].forEach(function(g){
+      var list = (d.lists && d.lists[g[0]]) || [];
+      var box = el('div', 'grp');
+      var h = el('h3', null, g[1]); h.appendChild(el('span', null, list.length + '곳')); box.appendChild(h);
+      var chips = el('div', 'chips');
+      list.forEach(function(c){
+        var a = el('a', 'chip'); a.href = '#/c/' + c.code;
+        a.appendChild(el('span', 'nm', c.name));
+        var v = val(g[0], c); if (v) a.appendChild(el('span', 'v', v));
+        chips.appendChild(a);
+      });
+      box.appendChild(chips);
+      var p = d.past && d.past[g[0]];
+      if (side === 'next' && p && p.per100 != null) {
+        var line = el('p', 'past');
+        line.appendChild(document.createTextNode('지난 1년, 이렇게 고른 곳은 100번에 '));
+        line.appendChild(el('b', null, p.per100 + '번'));
+        line.appendChild(document.createTextNode(' 한 달 안에 ' + PAST[g[0]] + '. 아무 회사는 '));
+        line.appendChild(el('b', null, p.base100 + '번'));
+        line.appendChild(document.createTextNode('.'));
+        box.appendChild(line);
+      }
+      t.appendChild(box);
+    });
+    return t;
+  }
+
+  document.querySelectorAll('[data-go]').forEach(function(b){
+    b.addEventListener('click', function(){ var t = document.getElementById(b.getAttribute('data-go')); if (t) t.scrollIntoView({behavior:'smooth', block:'start'}); });
+  });
+
+  fetch('/su/data/su21.json', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+    var day1 = day(d.asOf && d.asOf.board);
+    if (day1) { document.getElementById('asof').textContent = day1.short + ' 자료'; document.getElementById('foot').textContent = '수르 · ' + day1.full + ' 자료'; }
+    var uni = /(\d+)곳/.exec((d.past && d.past.universe) || '');
+    if (uni) { var f = document.getElementById('foot'); f.appendChild(document.createElement('br')); f.appendChild(document.createTextNode('지난 1년 셈은 지금 있는 우량주 ' + uni[1] + '곳으로만 했어요.')); }
+    var m = document.getElementById('lists');
+    m.appendChild(tile('now', d)); m.appendChild(tile('next', d));
+  }).catch(function(){
+    document.getElementById('lists').appendChild(el('p', 'err', '목록을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'));
+  });
+})();
+</script>
+</body>
+</html>

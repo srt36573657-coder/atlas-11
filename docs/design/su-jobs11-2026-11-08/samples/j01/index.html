@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+  /* 한 가지 재료(종이) · 한 색(먹) · 큰 여백 · 장식 0 */
+  :root {
+    --paper: #f6f5f1;
+    --ink: #141414;
+    --side: clamp(16px, 5.4vw, 22px);
+    --gap: clamp(14px, 4.6vw, 20px);
+    --name: clamp(17px, 5.15vw, 20px);
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    font-size: 19px;
+    line-height: 1.5;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .page {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: calc(22px + env(safe-area-inset-top)) var(--side) calc(56px + env(safe-area-inset-bottom));
+  }
+
+  /* 머리 — 이름과 날짜, 가는 선 하나 */
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .mark { font-size: 22px; font-weight: 720; letter-spacing: 0.04em; margin: 0; }
+  .asof { font-size: 17px; font-weight: 450; }
+
+  /* 한 문장 */
+  .lead { margin: 44px 0 0; font-size: clamp(26px, 7.7vw, 31px); font-weight: 640; line-height: 1.28; letter-spacing: -0.025em; }
+  .safe { margin: 12px 0 0; font-size: 19px; font-weight: 420; }
+
+  /* 두 단 — 지금 · 될 듯. 줄이 서로 맞도록 한 틀(subgrid)에 얹는다 */
+  .cols {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: repeat(26, auto);
+    column-gap: var(--gap);
+    margin-top: 40px;
+  }
+  .cols::before {            /* 가운데 세로 가는 선 */
+    content: "";
+    position: absolute;
+    top: 6px; bottom: 0;
+    left: 50%;
+    border-left: 1px solid var(--ink);
+    opacity: 0.22;
+  }
+  .col { grid-row: 1 / span 26; display: grid; grid-template-rows: subgrid; min-width: 0; }
+  .col.now  { grid-column: 1; }
+  .col.next { grid-column: 2; padding-left: 2px; }
+
+  .big {
+    margin: 0;
+    font-size: clamp(88px, 32vw, 132px);
+    font-weight: 190;
+    line-height: 0.86;
+    letter-spacing: -0.055em;
+    font-variant-numeric: tabular-nums;
+    margin-left: -0.04em;
+  }
+  .cap { margin: 14px 0 0; font-size: 19px; font-weight: 560; line-height: 1.35; }
+
+  .g {
+    margin: 26px 0 4px;
+    padding-top: 14px;
+    border-top: 1px solid var(--ink);
+    font-size: 19px;
+    font-weight: 740;
+    line-height: 1.3;
+  }
+  .list { grid-row: span 7; display: grid; grid-template-rows: subgrid; margin: 0; padding: 0; list-style: none; }
+  .list li { min-width: 0; }
+  .list a {
+    display: block;
+    padding: 8px 0;
+    min-height: 42px;
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--name);
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .list a:active { text-decoration: underline; text-underline-offset: 4px; }
+  a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+
+  .end { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--ink); font-size: 19px; }
+  .end p { margin: 0; }
+  .end p + p { margin-top: 6px; font-size: 17px; }
+
+  .err { margin-top: 40px; font-size: 19px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1 class="mark">수르</h1>
+    <span class="asof" id="asof"></span>
+  </header>
+
+  <p class="lead">한국 주식에서<br>될 듯한 곳을 찾아요.</p>
+  <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+
+  <main class="cols" id="cols" aria-live="polite"></main>
+
+  <footer class="end" id="end" hidden>
+    <p>회사 이름을 누르면 자세히 보여 드려요.</p>
+    <p id="asof2"></p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var COLS = [
+    { cls: 'now',  cap: ['지금 그런 곳', '불장, 꽃, 돈'], groups: [['hot', '불장'], ['bloom', '꽃이 될'], ['money', '돈이 몰리는']] },
+    { cls: 'next', cap: ['곧 그렇게', '될 듯한 곳'],  groups: [['hotNext', '불장이 될 듯'], ['bloomNext', '꽃이 될 듯'], ['moneyNext', '돈이 몰릴 듯']] }
+  ];
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function day(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || '');
+    return m ? { y: +m[1], m: +m[2], d: +m[3] } : null;
+  }
+
+  function draw(d) {
+    var box = document.getElementById('cols');
+    box.textContent = '';
+    COLS.forEach(function (c) {
+      var sec = el('section', 'col ' + c.cls);
+      var total = 0;
+      c.groups.forEach(function (g) { total += ((d.lists && d.lists[g[0]]) || []).length; });
+      var capId = 'cap-' + c.cls;
+      sec.setAttribute('aria-labelledby', capId);
+
+      sec.appendChild(el('p', 'big', String(total)));
+      var cap = el('h2', 'cap');
+      cap.id = capId;
+      cap.appendChild(document.createTextNode(c.cap[0]));
+      cap.appendChild(document.createElement('br'));
+      cap.appendChild(document.createTextNode(c.cap[1]));
+      sec.appendChild(cap);
+
+      c.groups.forEach(function (g) {
+        sec.appendChild(el('h3', 'g', g[1]));
+        var ol = el('ol', 'list');
+        var L = (d.lists && d.lists[g[0]]) || [];
+        for (var i = 0; i < 7; i++) {
+          var li = el('li');
+          var co = L[i];
+          if (co) {
+            var a = el('a', null, co.name);
+            a.href = '#/c/' + co.code;
+            li.appendChild(a);
+          }
+          ol.appendChild(li);
+        }
+        sec.appendChild(ol);
+      });
+      box.appendChild(sec);
+    });
+
+    var t = day(d.asOf && d.asOf.board);
+    if (t) {
+      document.getElementById('asof').textContent = t.m + '월 ' + t.d + '일 기준';
+      document.getElementById('asof2').textContent = '자료 ' + t.y + '년 ' + t.m + '월 ' + t.d + '일';
+    }
+    document.getElementById('end').hidden = false;
+  }
+
+  fetch('/su/data/su21.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(draw)
+    .catch(function () {
+      var box = document.getElementById('cols');
+      box.textContent = '';
+      box.appendChild(el('p', 'err', '자료를 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'));
+    });
+})();
+</script>
+</body>
+</html>

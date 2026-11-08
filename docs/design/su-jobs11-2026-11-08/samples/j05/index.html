@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+:root{
+  --bg:#000; --card:#0f0f12; --line:#24242a;
+  --ink:#ffffff; --ink2:#d6d6dc; --ink3:#babac2;
+  --hot:#ff2d55; --hot2:#ff7d97;
+  --bloom:#8fe80b; --bloom2:#d2ff6e;
+  --money:#ffb81f; --money2:#ffe28a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'Pretendard Variable',system-ui,sans-serif;font-size:21px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden;word-break:keep-all}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px 44px}
+
+/* 머리 */
+.top{display:flex;justify-content:space-between;align-items:center}
+.mark{font-size:30px;font-weight:820;letter-spacing:-.03em}
+.date{font-size:17px;color:var(--ink3);font-weight:500}
+h1{font-size:26px;font-weight:760;letter-spacing:-.025em;line-height:1.28;margin-top:8px}
+h1 .ghost{color:var(--ink2);font-weight:600}
+.sub{font-size:19px;color:var(--ink2);margin-top:4px}
+
+/* 고리 */
+.ring{position:relative;width:min(318px,100%);aspect-ratio:1/1;margin:14px auto 0}
+.ring svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.cap{position:absolute;left:50%;transform:translate(-50%,-50%);font-size:17px;font-weight:800;line-height:1;color:#000;padding:5px 9px 5px;border-radius:99px;letter-spacing:-.02em;box-shadow:0 0 0 3px #000;opacity:0;animation:pop .35s ease-out forwards;animation-delay:1.05s}
+.cap.hot{top:6.11%;background:var(--hot2)}
+.cap.bloom{top:17.22%;background:var(--bloom2)}
+.cap.money{top:28.33%;background:var(--money2)}
+.mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.mid span{font-size:17px;font-weight:650;color:var(--ink);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.mid i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#fff;flex:none}
+.mid i.o{background:transparent;box-shadow:inset 0 0 0 2.2px #fff}
+.trk{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1s cubic-bezier(.3,.7,.2,1) forwards}
+.dot{transform-box:fill-box;transform-origin:center;opacity:0;animation:pop .32s ease-out forwards}
+.dot.on{animation:none;opacity:1;transform:scale(1.9)}
+.hit{cursor:pointer}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+.cap{animation-name:capin}
+@keyframes capin{from{opacity:0}to{opacity:1}}
+
+.safe{font-size:18px;color:var(--ink2);text-align:center;margin-top:12px}
+
+/* 셋 × 둘 */
+.cat{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:16px 14px 14px;scroll-margin-top:12px}
+.ch{display:flex;align-items:center;gap:10px}
+.ch svg{width:34px;height:34px;flex:none}
+.ch h2{font-size:25px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.ch p{font-size:17px;color:var(--ink2);line-height:1.3}
+.hot .ch h2{color:var(--hot)} .bloom .ch h2{color:var(--bloom)} .money .ch h2{color:var(--money)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:12px}
+.col h3{font-size:17px;font-weight:750;display:flex;align-items:center;gap:7px;color:var(--ink);padding-bottom:6px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.col h3 i{width:11px;height:11px;border-radius:50%;flex:none;background:#fff}
+.col.next h3 i{background:transparent}
+.hot .col.next h3 i{box-shadow:inset 0 0 0 2.4px var(--hot)}
+.bloom .col.next h3 i{box-shadow:inset 0 0 0 2.4px var(--bloom)}
+.money .col.next h3 i{box-shadow:inset 0 0 0 2.4px var(--money)}
+.col ol{list-style:none}
+.col li a{display:flex;align-items:flex-start;gap:7px;overflow-wrap:anywhere;min-width:0;font-size:19px;font-weight:560;line-height:1.3;padding:5px 0;min-height:36px;border-radius:8px}
+.col li a::before{content:"";width:9px;height:9px;border-radius:50%;flex:none;margin-top:8px}
+.hot .now li a::before{background:var(--hot)} .bloom .now li a::before{background:var(--bloom)} .money .now li a::before{background:var(--money)}
+.hot .next li a::before{box-shadow:inset 0 0 0 2px var(--hot)} .bloom .next li a::before{box-shadow:inset 0 0 0 2px var(--bloom)} .money .next li a::before{box-shadow:inset 0 0 0 2px var(--money)}
+.col li a:active,.col li a:focus-visible{background:#1d1d22;outline:none}
+.past{font-size:17px;color:var(--ink3);margin-top:10px;padding-top:10px;border-top:1px solid var(--line);line-height:1.4}
+.past b{color:var(--ink);font-weight:700}
+.foot{font-size:17px;color:var(--ink3);text-align:center;margin-top:20px}
+.err{font-size:19px;color:var(--ink2);text-align:center;margin-top:20px}
+@media (prefers-reduced-motion:reduce){.trk,.dot,.cap{animation:none;opacity:1;stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="top"><div class="mark">수르</div><div class="date" id="date"></div></div>
+    <h1>지금 그런 곳 21,<br><span class="ghost">곧 그럴 듯한 곳 21.</span></h1>
+    <p class="sub">한국 주식 회사를 불장 · 꽃 · 돈 셋으로 봐요</p>
+  </header>
+
+  <div class="ring" id="ring">
+    <svg id="rsvg" viewBox="0 0 360 360" role="img" aria-label="세 고리 — 안쪽 점은 지금, 바깥 점은 될 듯"></svg>
+    <a class="cap hot" href="#k-hot">불장</a>
+    <a class="cap bloom" href="#k-bloom">꽃</a>
+    <a class="cap money" href="#k-money">돈</a>
+    <div class="mid"><span><i></i>안쪽 지금</span><span><i class="o"></i>바깥 될 듯</span></div>
+  </div>
+  <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+
+  <main id="cats"></main>
+  <p class="foot" id="foot"></p>
+</div>
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  var K = [
+    {k:'hot',   nx:'hotNext',   name:'불장', r:158, c1:'#ff2d55', c2:'#ff8aa2', desc:'달아오른 업종에서 많이 오른 곳', what:'불장 일곱에 들었어요'},
+    {k:'bloom', nx:'bloomNext', name:'꽃',   r:118, c1:'#6fd400', c2:'#d2ff6e', desc:'시장보다 앞서 피기 시작한 곳', what:'꽃이 됐어요'},
+    {k:'money', nx:'moneyNext', name:'돈',   r:78,  c1:'#ff9f0a', c2:'#ffe28a', desc:'돈이 몰리는 업종의 앞장선 곳', what:'돈이 몰리는 일곱에 들었어요'}
+  ];
+  function el(n, a){ var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); return e; }
+  function h(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function korDate(s){ var p = String(s || '').split('-'); return p.length === 3 ? (+p[1]) + '월 ' + (+p[2]) + '일' : ''; }
+
+  function ringIcon(c1, c2){
+    var s = el('svg', {viewBox:'0 0 34 34', 'aria-hidden':'true'});
+    s.appendChild(el('circle', {cx:17, cy:17, r:12, fill:'none', stroke:c1, 'stroke-opacity':'.28', 'stroke-width':7}));
+    s.appendChild(el('circle', {cx:17, cy:17, r:12, fill:'none', stroke:c2, 'stroke-width':7, 'stroke-linecap':'round', 'stroke-dasharray':'60 100', transform:'rotate(-90 17 17)'}));
+    return s;
+  }
+
+  function drawRing(d){
+    var svg = document.getElementById('rsvg');
+    var defs = el('defs', {});
+    var f = el('filter', {id:'glow', x:'-30%', y:'-30%', width:'160%', height:'160%'});
+    f.appendChild(el('feGaussianBlur', {stdDeviation:'3.2', result:'b'}));
+    var m = el('feMerge', {}); m.appendChild(el('feMergeNode', {'in':'b'})); m.appendChild(el('feMergeNode', {'in':'SourceGraphic'})); f.appendChild(m);
+    defs.appendChild(f);
+    K.forEach(function(q){
+      var g = el('linearGradient', {id:'g-' + q.k, x1:'0', y1:'0', x2:'1', y2:'1'});
+      g.appendChild(el('stop', {offset:'0', 'stop-color':q.c2}));
+      g.appendChild(el('stop', {offset:'1', 'stop-color':q.c1}));
+      defs.appendChild(g);
+    });
+    svg.appendChild(defs);
+
+    var step = 360 / 7;
+    K.forEach(function(q, qi){
+      var g = el('g', {'class':'band', 'data-k':q.k});
+      var rin = q.r - 8, rout = q.r + 8;
+      /* 바깥 길 — 될 듯(어둡게) */
+      g.appendChild(el('circle', {cx:180, cy:180, r:rout, fill:'none', stroke:q.c1, 'stroke-opacity':'.2', 'stroke-width':16}));
+      /* 안쪽 길 — 지금(빛 고리) */
+      var len = 2 * Math.PI * rin;
+      var trk = el('circle', {cx:180, cy:180, r:rin, fill:'none', stroke:'url(#g-' + q.k + ')', 'stroke-width':16, 'stroke-linecap':'round', 'class':'trk', filter:'url(#glow)', transform:'rotate(-90 180 180)', style:'--len:' + len.toFixed(1) + ';animation-delay:' + (qi * 0.12) + 's'});
+      g.appendChild(trk);
+      var now = d.lists[q.k] || [], nxt = d.lists[q.nx] || [];
+      for (var i = 0; i < 7; i++) {
+        var a = (-90 + step / 2 + i * step) * Math.PI / 180;
+        var delay = 0.75 + qi * 0.08 + i * 0.05;
+        if (now[i]) {
+          var c = el('circle', {cx:(180 + rin * Math.cos(a)).toFixed(2), cy:(180 + rin * Math.sin(a)).toFixed(2), r:5.2, fill:'#fff', 'class':'dot', 'data-code':now[i].code, style:'animation-delay:' + delay.toFixed(2) + 's'});
+          g.appendChild(c);
+        }
+        if (nxt[i]) {
+          var o = el('circle', {cx:(180 + rout * Math.cos(a)).toFixed(2), cy:(180 + rout * Math.sin(a)).toFixed(2), r:5, fill:'#000', stroke:q.c2, 'stroke-width':2.6, 'class':'dot', 'data-code':nxt[i].code, style:'animation-delay:' + (delay + 0.25).toFixed(2) + 's'});
+          g.appendChild(o);
+        }
+      }
+      /* 누르는 자리 — 고리를 누르면 그 칸으로 */
+      var hit = el('circle', {cx:180, cy:180, r:q.r, fill:'none', stroke:'transparent', 'stroke-width':36, 'class':'hit', 'pointer-events':'stroke'});
+      hit.addEventListener('click', function(){ var t = document.getElementById('k-' + q.k); if (t) t.scrollIntoView({behavior:'smooth', block:'start'}); });
+      g.appendChild(hit);
+      svg.appendChild(g);
+    });
+  }
+
+  function lit(code, on){
+    var ds = document.querySelectorAll('.dot[data-code="' + code + '"]');
+    for (var i = 0; i < ds.length; i++) ds[i].classList.toggle('on', on);
+  }
+
+  function list(arr){
+    var ol = h('ol');
+    arr.forEach(function(c){
+      var li = h('li'), a = h('a', null, c.name);
+      a.href = '#/c/' + c.code;
+      a.addEventListener('pointerenter', function(){ lit(c.code, true); });
+      a.addEventListener('pointerleave', function(){ lit(c.code, false); });
+      a.addEventListener('focus', function(){ lit(c.code, true); });
+      a.addEventListener('blur', function(){ lit(c.code, false); });
+      li.appendChild(a); ol.appendChild(li);
+    });
+    return ol;
+  }
+
+  function drawCats(d){
+    var box = document.getElementById('cats');
+    K.forEach(function(q){
+      var s = h('section', 'cat ' + q.k); s.id = 'k-' + q.k;
+      var ch = h('div', 'ch'); ch.appendChild(ringIcon(q.c1, q.c2));
+      var t = h('div'); t.appendChild(h('h2', null, q.name)); t.appendChild(h('p', null, q.desc)); ch.appendChild(t);
+      s.appendChild(ch);
+      var cols = h('div', 'cols');
+      var cn = h('div', 'col now'); var hn = h('h3'); hn.appendChild(h('i')); hn.appendChild(document.createTextNode('지금')); cn.appendChild(hn); cn.appendChild(list(d.lists[q.k] || []));
+      var cx = h('div', 'col next'); var hx = h('h3'); hx.appendChild(h('i')); hx.appendChild(document.createTextNode('될 듯')); cx.appendChild(hx); cx.appendChild(list(d.lists[q.nx] || []));
+      cols.appendChild(cn); cols.appendChild(cx); s.appendChild(cols);
+      var p = d.past && d.past[q.nx];
+      if (p && p.per100 != null) {
+        var pp = h('p', 'past');
+        pp.appendChild(document.createTextNode('지난 1년, 이렇게 고른 될 듯 100번 가운데 '));
+        pp.appendChild(h('b', null, p.per100 + '번'));
+        pp.appendChild(document.createTextNode('은 한 달 안에 ' + q.what + '. 아무 회사는 '));
+        pp.appendChild(h('b', null, p.base100 + '번'));
+        pp.appendChild(document.createTextNode('.'));
+        s.appendChild(pp);
+      }
+      box.appendChild(s);
+    });
+  }
+
+  fetch('/su/data/su21.json', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+    var day = korDate(d.asOf && d.asOf.board);
+    document.getElementById('date').textContent = day ? day + ' 기준' : '';
+    drawRing(d);
+    drawCats(d);
+    document.getElementById('foot').textContent = day ? '자료 ' + day + ' · 회사 이름을 누르면 자세히' : '';
+  }).catch(function(){
+    var e = h('p', 'err', '자료를 잠시 못 가져왔어요. 조금 뒤 다시 열어 주세요.');
+    document.getElementById('cats').appendChild(e);
+  });
+})();
+</script>
+</body>
+</html>

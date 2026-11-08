@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르 지갑</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+:root{
+  --bg:#0b0b0d; --ink:#f5f5f7; --ink2:#d6d6dc; --line:rgba(255,255,255,.14);
+  --H:384px; --peek:70px; --gap:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif;font-size:21px;line-height:1.35;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:radial-gradient(130% 55% at 50% -12%,#2b2b31 0%,#141417 45%,var(--bg) 70%) no-repeat,var(--bg);min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.wrap{max-width:460px;margin:0 auto;padding:14px 16px 40px}
+
+/* 머리 */
+.eyebrow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:18px;color:var(--ink2);font-weight:500}
+.eyebrow b{color:var(--ink);font-weight:800;font-size:21px;letter-spacing:.02em}
+h1{margin-top:4px;font-size:25px;line-height:1.3;font-weight:750;letter-spacing:-.01em}
+h1 .now{color:#ffb08a}
+h1 .soon{color:#cfd3da}
+
+/* 앞면 · 뒷면 고르개 */
+.seg{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:16px;
+  background:rgba(255,255,255,.07);border:1px solid var(--line);position:relative}
+.seg button{position:relative;z-index:1;height:44px;border-radius:12px;font-size:18px;font-weight:650;color:var(--ink2);transition:color .3s}
+.seg button[aria-pressed="true"]{color:#111}
+.seg .knob{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:12px;
+  background:linear-gradient(180deg,#fafafa,#d9d9de);box-shadow:0 2px 8px rgba(0,0,0,.45),inset 0 1px 0 #fff;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.seg.back .knob{transform:translateX(100%)}
+
+/* 지갑 */
+.stack{position:relative;margin-top:14px;height:calc(var(--H) + var(--gap) + var(--peek)*2 + 4px);overflow:hidden;overflow:clip;
+  transition:height .55s cubic-bezier(.2,.8,.2,1);border-radius:0 0 18px 18px}
+.stack.fan{height:calc(var(--H)*3 + var(--gap)*2);overflow:visible}
+.stack::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16px;z-index:9;pointer-events:none;
+  background:linear-gradient(rgba(11,11,13,0),rgba(11,11,13,.95))}
+.stack.fan::after{display:none}
+.card{position:absolute;left:0;right:0;height:var(--H);perspective:1600px;transition:top .6s cubic-bezier(.2,.8,.2,1);
+  -webkit-tap-highlight-color:transparent;cursor:pointer}
+.inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.25,.85,.25,1)}
+.card.flip .inner{transform:rotateY(180deg)}
+.card.hint .inner{animation:peek 1.15s .5s cubic-bezier(.45,0,.2,1)}
+@keyframes peek{0%{transform:none}45%{transform:rotateY(-24deg) translateZ(10px)}100%{transform:none}}
+.face{position:absolute;inset:0;border-radius:22px;overflow:hidden;padding:14px 16px 0;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 rgba(0,0,0,.28),0 22px 44px rgba(0,0,0,.6),0 4px 12px rgba(0,0,0,.45)}
+.face.back{transform:rotateY(180deg)}
+/* 재질: 결 · 낟알 · 빛 */
+.face::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,rgba(0,0,0,.05) 1px 2px,transparent 2px 4px),
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.face::after{content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;
+  background:radial-gradient(circle at var(--lx,22%) var(--ly,0%),rgba(255,255,255,.75),rgba(255,255,255,0) 52%)}
+.glint{position:absolute;inset:-20% -60%;pointer-events:none;z-index:2;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.34) 50%,transparent 60%);
+  transform:translateX(-80%);animation:glint 1.7s cubic-bezier(.3,.6,.2,1) both}
+@keyframes glint{to{transform:translateX(80%)}}
+
+/* 카드 셋의 재질 */
+.hot  .front{background:linear-gradient(140deg,#ff7a3d 0%,#d23c1d 42%,#86190f 100%);color:#fff}
+.hot  .back {background:linear-gradient(150deg,#33140d 0%,#1d0b07 60%,#120604 100%);color:#ffe6da;--acc:#ff8a57}
+.bloom .front{background:linear-gradient(140deg,#fde2ea 0%,#f3aec5 45%,#d9799c 100%);color:#2a0a16}
+.bloom .back {background:linear-gradient(150deg,#311420 0%,#1c0a12 60%,#12060b 100%);color:#ffe6ee;--acc:#ff9fc0}
+.money .front{background:linear-gradient(140deg,#f7f7f9 0%,#cfd2d8 45%,#8f949c 100%);color:#121316}
+.money .back {background:linear-gradient(150deg,#2c2e33 0%,#18191c 60%,#0e0f11 100%);color:#eef0f3;--acc:#d3d7de}
+
+.head{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;height:54px;flex:none}
+.ttl{font-size:25px;font-weight:800;line-height:1.15;letter-spacing:-.01em;white-space:nowrap}
+.sub{font-size:17px;font-weight:550;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}
+.side{flex:none;font-size:17px;font-weight:700;padding:3px 10px;border-radius:999px;border:1.5px solid currentColor;opacity:.9;margin-left:8px}
+.front .side{background:rgba(255,255,255,.18)}
+.back .side{color:var(--acc)}
+
+.list{position:relative;z-index:3;margin-top:6px;flex:none}
+.row{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:8px;height:34px;
+  border-top:1px solid rgba(127,127,127,.28)}
+.row:first-child{border-top:0}
+.n{font-size:17px;font-weight:700;opacity:.75;font-variant-numeric:tabular-nums}
+.nm{font-size:21px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.back .v{color:var(--acc)}
+.hot .front .nm,.hot .front .v{text-shadow:0 1px 1px rgba(0,0,0,.25)}
+
+.foot{position:relative;z-index:3;margin-top:auto;height:58px;flex:none;display:flex;align-items:center;font-size:17px;line-height:1.3;font-weight:600;padding-right:64px}
+.foot .k{display:block;font-weight:800}
+.back .foot .k{color:var(--acc)}
+/* 접힌 귀퉁이 — 뒷면이 있다는 표시 */
+.peel{position:absolute;right:0;bottom:0;width:58px;height:58px;z-index:4;pointer-events:none}
+.peel i{position:absolute;inset:0;background:linear-gradient(to top left,var(--bg) 0 50%,transparent 50%)}
+.peel b{position:absolute;inset:0;filter:drop-shadow(-3px -3px 5px rgba(0,0,0,.45))}
+.peel b::before{content:"";position:absolute;inset:0;background:linear-gradient(to top left,transparent 0 50%,var(--flap) 50%)}
+.hot .peel{--flap:#2a100a}.bloom .peel{--flap:#2c111c}.money .peel{--flap:#222428}
+.back .peel{display:none}
+
+.safe{margin-top:8px;font-size:18px;color:var(--ink2);text-align:center}
+.more{display:block;margin:10px auto 0;font-size:18px;font-weight:650;padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06)}
+.how{margin-top:26px;border-top:1px solid var(--line);padding-top:18px}
+.how h2{font-size:21px;font-weight:750;margin-bottom:10px}
+.how p{font-size:18px;color:var(--ink2);margin-top:8px;line-height:1.5}
+.how p b{color:var(--ink)}
+.both{margin-top:14px;font-size:18px;color:var(--ink2);line-height:1.6}
+.both a{color:var(--ink);font-weight:650;border-bottom:1px solid var(--line)}
+.err{padding:30px 0;font-size:19px;color:var(--ink2)}
+@media (prefers-reduced-motion:reduce){.inner,.card,.stack,.seg .knob{transition:none}.glint{display:none}.card.hint .inner{animation:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="eyebrow"><span><b>수르</b> · 한국 주식 42곳</span><span id="day"></span></div>
+  <h1><span class="now">앞면은 지금 그런 곳,</span><br><span class="soon">뒷면은 곧 그렇게 될 듯한 곳.</span></h1>
+  <div class="seg" id="seg" role="group" aria-label="카드 면 고르기">
+    <span class="knob"></span>
+    <button type="button" data-face="front" aria-pressed="true">앞면 · 지금 21</button>
+    <button type="button" data-face="back" aria-pressed="false">뒷면 · 될 듯 21</button>
+  </div>
+  <div class="stack" id="stack"></div>
+  <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+  <button type="button" class="more" id="more">세 장 모두 펼치기</button>
+  <section class="how">
+    <h2>카드는 이렇게 골라요</h2>
+    <p><b>불장</b> — 한 달 동안 많이 오른 업종 안에서 가장 많이 오른 회사.</p>
+    <p><b>꽃이 될</b> — 업종은 시장보다 크게 앞섰는데, 회사는 아직 싹인 큰 회사.</p>
+    <p><b>돈이 몰리는</b> — 시장보다 더 오른 업종마다 회사 크기가 가장 많이 불어난 회사.</p>
+    <p><b>뒷면</b> — 앞면 일곱 바로 다음 차례에서 움직이기 시작한 회사.</p>
+    <p class="both" id="both"></p>
+  </section>
+</main>
+<script>
+(function(){
+  var DECK = [
+    {id:'hot',   now:'hot',   next:'hotNext',   t:'불장',     tn:'불장이 될 듯', sub:'한 달 오른 만큼',     subN:'한 달 오른 만큼',  went:'불장에 들었어요'},
+    {id:'bloom', now:'bloom', next:'bloomNext', t:'꽃이 될',  tn:'꽃이 될 듯',   sub:'꽃 또는 아직 싹',     subN:'닷새 앞선 만큼',   went:'꽃이 됐어요'},
+    {id:'money', now:'money', next:'moneyNext', t:'돈이 몰리는', tn:'돈이 몰릴 듯', sub:'한 달 불어난 돈',   subN:'한 달 불어난 돈',  went:'돈이 몰렸어요'}
+  ];
+  var order = ['hot','bloom','money'];   // 맨 앞 = 위에 다 보이는 카드
+  var fan = false;
+  var stack = document.getElementById('stack');
+  var seg = document.getElementById('seg');
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pct(v){ if(v==null||isNaN(v)) return ''; v=Number(v); return (v>0?'+':'')+v.toFixed(1)+'%'; }
+  function won(g){ if(g==null||isNaN(g)) return ''; g=Math.round(Number(g)); var jo=Math.floor(g/10000), uk=g%10000;
+    return '+'+(jo? jo+'조'+(uk?' '+uk.toLocaleString('ko-KR')+'억':'') : uk.toLocaleString('ko-KR')+'억'); }
+  function val(kind, c){ var w=c.why||{};
+    if(kind==='hot') return pct(c.ch20);
+    if(kind==='money'||kind==='moneyNext') return won(w.gain);
+    if(kind==='bloom') return w.full?'꽃':'싹';
+    if(kind==='hotNext') return pct(w.r20);
+    if(kind==='bloomNext') return pct(w.x5);
+    return ''; }
+  function rows(kind, list){ return (list||[]).map(function(c,i){
+    return '<a class="row" href="#/c/'+esc(c.code)+'"><span class="n">'+(i+1)+'</span><span class="nm">'+esc(c.name)+'</span><span class="v">'+esc(val(kind,c))+'</span></a>'; }).join(''); }
+
+  function build(d){
+    var b=(d.asOf&&d.asOf.board)||''; var m=b.split('-');
+    if(m.length===3) document.getElementById('day').textContent=(+m[1])+'월 '+(+m[2])+'일 자료';
+    stack.innerHTML = DECK.map(function(k){
+      var p=(d.past&&d.past[k.next])||{};
+      return '<div class="card '+k.id+'" data-id="'+k.id+'">'+
+        '<div class="inner">'+
+          '<div class="face front" aria-label="'+k.t+' 앞면">'+
+            '<span class="glint"></span>'+
+            '<div class="head"><div><div class="ttl">'+k.t+'</div><div class="sub">지금 일곱 · '+k.sub+'</div></div><span class="side">앞면</span></div>'+
+            '<div class="list">'+rows(k.now,d.lists[k.now])+'</div>'+
+            '<div class="foot"><span><span class="k">↻ 뒤집으면</span>'+k.tn+' 일곱</span></div>'+
+            '<span class="peel"><i></i><b></b></span>'+
+          '</div>'+
+          '<div class="face back" aria-label="'+k.tn+' 뒷면">'+
+            '<div class="head"><div><div class="ttl">'+k.tn+'</div><div class="sub">될 듯 일곱 · '+k.subN+'</div></div><span class="side">뒷면</span></div>'+
+            '<div class="list">'+rows(k.next,d.lists[k.next])+'</div>'+
+            '<div class="foot"><span><span class="k">지난 1년 100번에 '+(p.per100!=null?p.per100:'-')+'번, 한 달 안에</span>'+k.went+' · 아무 회사 '+(p.base100!=null?p.base100:'-')+'번</span></div>'+
+          '</div>'+
+        '</div></div>';
+    }).join('');
+    var both=(d.overlap||[]);
+    if(both.length) document.getElementById('both').innerHTML='두 장에 함께 든 곳 — '+both.map(function(c){return '<a href="#/c/'+esc(c.code)+'">'+esc(c.name)+'</a>';}).join(' · ');
+    layout(); bind();
+    var first=stack.querySelector('.card.'+order[0]);
+    if(first){ first.classList.add('hint'); first.addEventListener('animationend',function(e){ if(e.target.classList.contains('inner')) first.classList.remove('hint'); }); }
+  }
+
+  function H(){ return parseFloat(getComputedStyle(stack).getPropertyValue('--H'))||384; }
+  function layout(){
+    var h=H(), gap=12, peek=70;
+    stack.scrollTop=0;
+    (fan?['hot','bloom','money']:order).forEach(function(id,i){
+      var el=stack.querySelector('.card.'+id); if(!el) return;
+      var top = fan ? i*(h+gap) : (i===0 ? 0 : h+gap+(i-1)*peek);
+      el.style.top=top+'px'; el.style.zIndex = i===0 ? 5 : i;
+      el.classList.toggle('front-card', i===0 || fan);
+    });
+    stack.classList.toggle('fan',fan);
+    var top=stack.querySelector('.card.'+order[0]);
+    var isBack = top && top.classList.contains('flip');
+    seg.classList.toggle('back',!!isBack);
+    seg.querySelectorAll('button').forEach(function(bt){ bt.setAttribute('aria-pressed', String((bt.dataset.face==='back')===!!isBack)); });
+  }
+
+  function bind(){
+    stack.querySelectorAll('.card').forEach(function(card){
+      card.addEventListener('click',function(e){
+        var link=e.target.closest('a.row');
+        if(!card.classList.contains('front-card')){ e.preventDefault(); order.splice(order.indexOf(card.dataset.id),1); order.unshift(card.dataset.id); layout(); return; }
+        if(link) return;
+        card.classList.toggle('flip'); layout();
+      });
+      card.addEventListener('pointermove',function(e){
+        var r=card.getBoundingClientRect();
+        card.style.setProperty('--lx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+        card.style.setProperty('--ly',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+        card.querySelectorAll('.face').forEach(function(f){ f.style.setProperty('--lx',card.style.getPropertyValue('--lx')); f.style.setProperty('--ly',card.style.getPropertyValue('--ly')); });
+      });
+    });
+    seg.addEventListener('click',function(e){
+      var bt=e.target.closest('button'); if(!bt) return;
+      var back = bt.dataset.face==='back';
+      stack.querySelectorAll('.card').forEach(function(c,i){ setTimeout(function(){ c.classList.toggle('flip',back); },i*90); });
+      setTimeout(layout,0); seg.classList.toggle('back',back);
+      seg.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', String(x===bt)); });
+    });
+    document.getElementById('more').addEventListener('click',function(){
+      fan=!fan; this.textContent = fan ? '다시 겹치기' : '세 장 모두 펼치기'; layout();
+    });
+    window.addEventListener('deviceorientation',function(e){
+      if(e.gamma==null) return;
+      var x=Math.max(0,Math.min(100,50+e.gamma*1.6)), y=Math.max(0,Math.min(100,20+(e.beta-40)*1.2));
+      stack.querySelectorAll('.face').forEach(function(f){ f.style.setProperty('--lx',x+'%'); f.style.setProperty('--ly',y+'%'); });
+    });
+    window.addEventListener('resize',layout);
+    stack.addEventListener('scroll',function(){ if(!fan) stack.scrollTop=0; });
+  }
+
+  fetch('/su/data/su21.json',{cache:'no-store'}).then(function(r){return r.json();}).then(build).catch(function(){
+    stack.style.height='auto'; stack.innerHTML='<p class="err">자료를 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.</p>';
+  });
+})();
+</script>
+</body>
+</html>

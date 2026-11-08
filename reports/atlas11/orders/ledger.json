@@ -1363,6 +1363,16 @@
    "state": "성공",
    "proof": "docs/design/su-show-2026-11-08/order-1249.txt · brief.md · debate.md · judge-1.md ~ judge-3.md · research-1342.md · site/su/su-show.js · reports/atlas11/speed/ship-su-show-1249.jsonl(검사 실패 0 · 28쪽 · 72.6분) · reports/atlas11/full-runs/su-show-1249.jsonl · reports/atlas11/probe/next-full/su.tail.txt(진짜 사이트 통과 706 · 실패 0) · reports/atlas11/probe/next-full/help.tail.txt(진짜 사이트 통과 114 · 실패 1 — 수르와 상관없는 쪽)",
    "short": "무하 세 여인을 날개 단 무대 쇼로 바꾸고 진짜 사이트에서 확인했어요."
+  },
+  {
+   "id": "1448",
+   "at": "2026-11-08T14:48+09:00",
+   "words": "디자인이 모두 개판이야 진짜 잡스가 디자인팀을 구성해서 했다면 어떻게 할까? 11개 에이전트 해서 지금디자인 다 무시하고 새롭게 해봐 11개 샘플을 내게 보여줘 첫 페으지만 30분 이내에",
+   "then": "14:48 받음 · 14:4x 이해 보고 · 14:50 일꾼 열하나(덜어냄 · 발표 무대 · 아이폰 홈 화면 · 지갑 카드 · 워치 고리 · 제품 소개 쪽 · 다정한 그림 문자 · 람스 격자 · 잡지 표지 · 신문 1면 · 별자리 지도) · 14:57 열하나 모두 기계 재기 실패 0(42곳 이름 · 글 17px 넘게 · 쓰지 않을 말 · 영어 0) · 14:59 샘플 열하나를 카드 한 장으로 보여 드림(진짜 사이트에는 안 올림)",
+   "did": "첫 페이지만 지금 디자인을 버리고 백지에서 샘플 열하나 — docs/design/su-jobs11-2026-11-08/samples/j01 ~ j11(index.html · first.jpg)",
+   "state": "미완성",
+   "proof": "docs/design/su-jobs11-2026-11-08/brief.md · samples/j01 ~ j11",
+   "short": "잡스 디자인팀처럼 첫 페이지 샘플 열하나를 새로 만들어 보여 드렸어요."
   }
  ],
  "open": 7,

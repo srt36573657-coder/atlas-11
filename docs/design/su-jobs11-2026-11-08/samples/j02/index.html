@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>수르</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+:root{
+  --bg:#000; --fg:#f5f5f7; --mute:#a1a1a6; --line:#2a2a2d;
+  --fire:#ff6a3d; --bloom:#ff86c1; --money:#ffc94d;
+  --grad:linear-gradient(100deg,#ff6a3d 0%,#ff86c1 52%,#ffc94d 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#000;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  font-size:21px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:560px;margin:0 auto;padding:0 20px}
+
+/* ── 첫 무대 ── */
+.stage{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding-top:20px;padding-bottom:22px}
+.top{display:flex;justify-content:space-between;align-items:baseline}
+.logo{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.date{font-size:17px;color:var(--mute)}
+.hero{margin-top:auto;padding-top:28px}
+.eye{font-size:21px;font-weight:600;color:var(--mute);letter-spacing:-.01em}
+h1{margin-top:10px;font-size:clamp(50px,18.4vw,76px);line-height:1.05;font-weight:800;letter-spacing:-.045em}
+.g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:16px;font-size:21px;line-height:1.45;color:#d2d2d7}
+.beat{margin-top:34px;display:flex;align-items:center;gap:12px;font-size:21px;font-weight:700}
+.beat::after{content:"";flex:1;height:1px;background:var(--line)}
+.pair{margin-top:16px;display:grid;grid-template-columns:1fr 1fr}
+.side{display:block;padding:4px 0 4px 0}
+.side+.side{border-left:1px solid var(--line);padding-left:20px}
+.k{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:700}
+.dot{width:13px;height:13px;border-radius:50%;flex:none}
+.dot.full{background:var(--fg)}
+.dot.ring{border:2.5px solid var(--fg)}
+.n{display:block;font-size:clamp(64px,21vw,84px);line-height:1;font-weight:800;letter-spacing:-.05em;margin-top:6px}
+.t{display:block;margin-top:8px;font-size:18px;color:var(--mute);line-height:1.35}
+.safe{margin-top:26px;font-size:19px;color:#d2d2d7}
+.cue{margin-top:auto;padding-top:22px;display:flex;align-items:center;gap:10px;font-size:18px;color:var(--mute)}
+.cue i{display:inline-block;width:11px;height:11px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg) translateY(-3px)}
+
+/* 한 박자씩 — 2.3초 안에 다 선다 */
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes in{from{opacity:0}to{opacity:1}}
+.a{animation:up .62s cubic-bezier(.2,.75,.2,1) both}
+.f{animation:in .5s ease-out both}
+.d0{animation-delay:.05s}.d1{animation-delay:.25s}.d2{animation-delay:.6s}
+.d3{animation-delay:1.05s}.d4{animation-delay:1.3s}.d5{animation-delay:1.5s}.d6{animation-delay:1.7s}
+@media (prefers-reduced-motion:reduce){.a,.f{animation:none}}
+
+/* ── 한 화면에 생각 하나 ── */
+.slide{padding-top:84px;padding-bottom:72px;border-top:1px solid #141416}
+.slide h2{margin-top:10px;font-size:clamp(38px,11.4vw,48px);line-height:1.12;font-weight:800;letter-spacing:-.04em}
+.lead{margin-top:14px;font-size:21px;color:#d2d2d7}
+.grp{margin-top:40px}
+.grp h3{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:800;letter-spacing:-.02em}
+.grp h3 .c{margin-left:auto;font-size:21px;font-weight:700;color:var(--mute)}
+.grp .dot{width:14px;height:14px}
+.fire .dot.full{background:var(--fire)} .fire .dot.ring{border-color:var(--fire)}
+.bloom .dot.full{background:var(--bloom)} .bloom .dot.ring{border-color:var(--bloom)}
+.money .dot.full{background:var(--money)} .money .dot.ring{border-color:var(--money)}
+.what{margin-top:4px;font-size:18px;color:var(--mute)}
+.names{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px 8px}
+.names a{display:inline-flex;align-items:center;min-height:44px;padding:0 15px;border-radius:999px;
+  font-size:20px;font-weight:600;letter-spacing:-.01em;background:#121214;border:1px solid #232326}
+.next .names a{background:transparent;border:1px dashed #4a4a4f}
+.names a:active{background:#1d1d20}
+
+/* 지난 1년 */
+.rows{margin-top:36px;display:grid;gap:26px}
+.row .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:20px;font-weight:700}
+.row .lab span:last-child{font-size:18px;font-weight:600;color:var(--mute)}
+.bar{margin-top:9px;height:12px;border-radius:6px;background:#161618;position:relative;overflow:hidden}
+.bar b{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+.bar.base{margin-top:6px;height:8px}
+.bar.base b{background:#5a5a5f}
+.note{margin-top:30px;font-size:18px;color:var(--mute);line-height:1.5}
+
+footer{padding-top:56px;padding-bottom:64px;border-top:1px solid #141416;font-size:18px;color:var(--mute)}
+footer .logo{color:var(--fg);display:block;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<main>
+  <!-- 첫 무대: 거대한 한 문장 → 한 박자 → 하나 더 -->
+  <section class="stage wrap" aria-label="첫 화면">
+    <div class="top f d0"><span class="logo">수르</span><span class="date" id="date">자료 날짜</span></div>
+
+    <div class="hero">
+      <p class="eye a d0" id="eye">두 해 이익 낸 회사 365곳 가운데</p>
+      <h1 class="a d1">곧 그렇게<br>될 <span class="g">21곳.</span></h1>
+      <p class="sub a d2">불이 붙고, 꽃이 피고,<br>돈이 몰릴 듯한 곳을 찾아 둡니다.</p>
+
+      <p class="beat f d3"><span class="g">하나 더.</span></p>
+      <div class="pair">
+        <a class="side a d4" href="#now"><span class="k"><span class="dot full"></span>지금</span><span class="n" id="nNow">21</span><span class="t">이미 그런 곳</span></a>
+        <a class="side a d5" href="#next"><span class="k"><span class="dot ring"></span>될 듯</span><span class="n g" id="nNext">21</span><span class="t">곧 그럴 듯한 곳</span></a>
+      </div>
+      <p class="safe f d6">앞날을 맞히는 목록이 아니에요.</p>
+    </div>
+
+    <a class="cue f d6" href="#now"><i></i>42곳 이름 보기</a>
+  </section>
+
+  <!-- 생각 하나: 지금 -->
+  <section class="slide wrap" id="now">
+    <p class="eye"><span class="dot full" style="display:inline-block;vertical-align:middle;margin-right:9px;background:var(--fg)"></span>지금</p>
+    <h2>이미 그런 21곳.</h2>
+    <p class="lead">불이 붙었고, 싹이 텄고,<br>돈이 들어오는 곳.</p>
+    <div id="nowList"></div>
+  </section>
+
+  <!-- 생각 하나: 될 듯 -->
+  <section class="slide wrap next" id="next">
+    <p class="eye"><span class="dot ring" style="display:inline-block;vertical-align:middle;margin-right:9px"></span>될 듯</p>
+    <h2>곧 <span class="g">그럴 듯한</span><br>21곳.</h2>
+    <p class="lead">지금 일곱 바로 뒤에 줄 선 곳.</p>
+    <div id="nextList"></div>
+  </section>
+
+  <!-- 생각 하나: 지난 1년 -->
+  <section class="slide wrap" id="past">
+    <p class="eye">지난 1년을 되짚어 보니</p>
+    <h2 id="pastHead">100번에<br><span class="g">47번.</span></h2>
+    <p class="lead" id="pastLead">불장이 될 듯한 곳이 한 달 안에 불장 일곱에 든 횟수예요.</p>
+    <div class="rows" id="rows"></div>
+    <p class="note" id="pastNote">회색 막대는 아무 회사나 골랐을 때예요.<br>지금 남아 있는 회사로만 셈해서 조금 좋게 나와요.</p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span class="logo">수르</span>
+  <p id="foot">지금 그런 곳과 곧 그럴 듯한 곳을 나란히 둡니다.</p>
+  <p style="margin-top:6px;color:#d2d2d7">앞날을 맞히는 목록이 아니에요.</p>
+</footer>
+
+<script>
+(function(){
+  var NOW = [
+    {k:'hot',   cls:'fire',  name:'불장',       what:'한 달 동안 가장 많이 오른 곳'},
+    {k:'bloom', cls:'bloom', name:'꽃이 될 싹',  what:'업종은 앞서는데 아직 덜 핀 곳'},
+    {k:'money', cls:'money', name:'돈이 몰리는 곳', what:'회사 크기가 가장 많이 늘어난 곳'}
+  ];
+  var NEXT = [
+    {k:'hotNext',   cls:'fire',  name:'불장이 될 듯',  what:'불장 일곱 바로 뒤 차례'},
+    {k:'bloomNext', cls:'bloom', name:'꽃이 될 듯',    what:'닷새 동안 시장보다 앞선 싹'},
+    {k:'moneyNext', cls:'money', name:'돈이 몰릴 듯',  what:'돈 몰리는 일곱 바로 뒤 업종'}
+  ];
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function group(g, list, ring){
+    var h = '<div class="grp '+g.cls+'"><h3><span class="dot '+(ring?'ring':'full')+'"></span>'+esc(g.name)+'<span class="c">'+list.length+'곳</span></h3>'+
+            '<p class="what">'+esc(g.what)+'</p><p class="names">';
+    list.forEach(function(c){ h += '<a href="#/c/'+esc(c.code)+'">'+esc(c.name)+'</a>'; });
+    return h + '</p></div>';
+  }
+  function draw(d){
+    var L = d.lists || {};
+    var nNow = 0, nNext = 0;
+    document.getElementById('nowList').innerHTML = NOW.map(function(g){ var l = L[g.k]||[]; nNow += l.length; return group(g, l, false); }).join('');
+    document.getElementById('nextList').innerHTML = NEXT.map(function(g){ var l = L[g.k]||[]; nNext += l.length; return group(g, l, true); }).join('');
+    document.getElementById('nNow').textContent = nNow;
+    document.getElementById('nNext').textContent = nNext;
+
+    var a = d.asOf && d.asOf.board;
+    if (a) { var p = a.split('-'); var t = (+p[1]) + '월 ' + (+p[2]) + '일 자료';
+      document.getElementById('date').textContent = t;
+      document.getElementById('foot').textContent = p[0] + '. ' + (+p[1]) + '. ' + (+p[2]) + '. 자료 · 지금 그런 곳과 곧 그럴 듯한 곳을 나란히 둡니다.'; }
+    if (d.counts && d.counts.b365) document.getElementById('eye').textContent = '두 해 이익 낸 회사 ' + d.counts.b365 + '곳 가운데';
+
+    var P = d.past || {};
+    var R = [
+      {k:'hotNext',   cls:'var(--fire)',  lab:'불장이 될 듯'},
+      {k:'moneyNext', cls:'var(--money)', lab:'돈이 몰릴 듯'},
+      {k:'bloomNext', cls:'var(--bloom)', lab:'꽃이 될 듯'}
+    ];
+    var html = '';
+    R.forEach(function(r){ var x = P[r.k]; if (!x) return;
+      html += '<div class="row"><p class="lab"><span>'+r.lab+' · 100번에 '+x.per100+'번</span><span>아무 회사 '+x.base100+'번</span></p>'+
+              '<div class="bar"><b style="width:'+Math.max(0,Math.min(100,x.per100))+'%;background:'+r.cls+'"></b></div>'+
+              '<div class="bar base"><b style="width:'+Math.max(0,Math.min(100,x.base100))+'%"></b></div></div>';
+    });
+    if (html) document.getElementById('rows').innerHTML = html;
+    if (P.hotNext) document.getElementById('pastHead').innerHTML = '100번에<br><span class="g">'+P.hotNext.per100+'번.</span>';
+    if (P.hotNext) document.getElementById('pastLead').innerHTML = '불장이 될 듯한 곳이 한 달 안에<br>불장 일곱에 든 횟수예요.<br>아무 회사는 ' + P.hotNext.base100 + '번.';
+  }
+  fetch('/su/data/su21.json', {cache:'no-store'}).then(function(r){return r.json();}).then(draw).catch(function(){
+    document.getElementById('nowList').innerHTML = '<p class="lead">자료를 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.</p>';
+  });
+})();
+</script>
+</body>
+</html>

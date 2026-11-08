@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르 · 표지</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+:root{
+  --paper:#f2ece0;
+  --paper-2:#ebe3d3;
+  --ink:#1c1915;
+  --ink-2:#3d372f;
+  --rule:rgba(28,25,21,.82);
+  --hair:rgba(28,25,21,.22);
+  --gold:#b08524;
+  --gold-2:#d9b45a;
+  --serif:'Gowun Batang', serif;
+  --sans:'Pretendard Variable', system-ui, sans-serif;
+  --side:clamp(20px, 7.2vw, 30px);
+  color-scheme: light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--paper)}
+body{
+  min-height:100svh;color:var(--ink);font-family:var(--sans);font-size:21px;line-height:1.5;
+  background-color:var(--paper);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.42'/></svg>"),
+    radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%),
+    radial-gradient(140% 100% at 50% 110%, rgba(120,96,60,.12), rgba(120,96,60,0) 60%);
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.cover{
+  min-height:100svh;padding:calc(18px + env(safe-area-inset-top)) var(--side) 22px;
+  display:flex;flex-direction:column;padding-bottom:calc(16px + env(safe-area-inset-bottom));
+}
+/* 위 띠 — 잡지 호수 자리 */
+.strip{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:17px;letter-spacing:.06em;color:var(--ink-2);
+  padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.strip b{font-weight:600;color:var(--ink)}
+/* 큰 제목 */
+.mast{margin-top:clamp(10px,2.2vh,22px);display:flex;align-items:flex-end;gap:6px}
+.mast h1{font-family:var(--serif);font-weight:700;font-size:clamp(104px,34vw,146px);
+  line-height:.86;letter-spacing:-.04em;color:var(--ink)}
+.dot{width:clamp(20px,6vw,26px);height:clamp(20px,6vw,26px);border-radius:50%;margin-bottom:.55em;flex:none;
+  background:radial-gradient(circle at 34% 30%, #f6e2a4 0%, var(--gold-2) 28%, var(--gold) 64%, #7d5c12 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 6px rgba(120,86,20,.35)}
+.tag{margin-top:10px;font-family:var(--serif);font-size:clamp(23px,6.6vw,27px);line-height:1.35;font-weight:700}
+.sub{margin-top:6px;font-size:clamp(18px,4.9vw,20px);color:var(--ink-2);line-height:1.45}
+.sub .nw{white-space:nowrap}
+.sub em{font-style:normal;color:var(--ink);font-weight:600}
+/* 표지 기사 셋 */
+.stories{margin-top:clamp(12px,2vh,18px);border-top:2px solid var(--ink)}
+.story{display:block;padding:11px 0 10px;border-bottom:1px solid var(--hair)}
+.story:last-child{border-bottom:1px solid var(--rule)}
+.kick{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.kick .k{font-family:var(--serif);font-weight:700;font-size:clamp(25px,7vw,29px);letter-spacing:.02em}
+.kick .d{font-size:17px;color:var(--ink-2)}
+.pair{margin-top:2px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:8px}
+.pair a{display:block;font-family:var(--serif);font-size:clamp(20px,5.8vw,24px);line-height:1.25;font-weight:700;
+  word-break:keep-all;overflow-wrap:anywhere;padding:2px 0}
+.pair a:active{opacity:.6}
+.pair .to{font-family:var(--serif);font-size:22px;color:var(--ink-2)}
+.pair .next{text-align:right}
+.cap{display:grid;grid-template-columns:1fr 1fr;font-size:17px;line-height:1.3;color:var(--ink-2);letter-spacing:.08em}
+.cap span:last-child{text-align:right}
+/* 아래 */
+.foot{margin-top:auto;padding-top:12px}
+.safe{font-family:var(--serif);font-size:18px;color:var(--ink-2);text-align:center}
+.open{margin-top:10px;width:100%;min-height:54px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);
+  font-family:var(--sans);font-size:20px;font-weight:600;letter-spacing:.04em;border-radius:2px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px}
+.open:active{background:var(--ink);color:var(--paper)}
+.open i{font-style:normal;display:inline-block;transition:transform .3s ease}
+.open[aria-expanded="true"] i{transform:rotate(180deg)}
+/* 목차 */
+.toc{overflow:hidden;max-height:0;transition:max-height .6s ease}
+.toc.on{max-height:9000px}
+.toc-in{padding:26px var(--side) 40px;border-top:2px solid var(--ink)}
+.toc h2{font-family:var(--serif);font-size:clamp(40px,12vw,52px);line-height:1.05;letter-spacing:-.02em}
+.toc .lead{margin-top:6px;font-size:18px;color:var(--ink-2)}
+.part{margin-top:28px}
+.part>h3{font-family:var(--serif);font-size:25px;padding-bottom:6px;border-bottom:2px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:baseline}
+.part>h3 small{font-family:var(--sans);font-size:18px;font-weight:600;color:var(--ink-2)}
+.sec{margin-top:18px}
+.sec h4{font-family:var(--serif);font-size:23px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sec h4 span{font-family:var(--sans);font-size:17px;font-weight:500;color:var(--ink-2);text-align:right}
+.sec .past{margin-top:2px;font-size:17px;color:var(--ink-2);line-height:1.45}
+.sec ol{list-style:none;margin-top:6px;border-top:1px solid var(--hair)}
+.sec li a{display:grid;grid-template-columns:30px minmax(0,auto) 1fr auto;align-items:baseline;column-gap:8px;
+  padding:9px 0;border-bottom:1px solid var(--hair);font-size:20px}
+.sec li a:active{background:rgba(28,25,21,.06)}
+.sec .n{font-family:var(--serif);font-size:17px;color:var(--ink-2)}
+.sec .nm{font-family:var(--serif);font-weight:700;word-break:keep-all;overflow-wrap:anywhere}
+.sec .lead-dots{border-bottom:2px dotted rgba(28,25,21,.35);transform:translateY(-6px);min-width:10px}
+.sec .v{font-size:18px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.toc .end{margin-top:30px;font-family:var(--serif);font-size:18px;color:var(--ink-2);text-align:center}
+.err{font-size:18px;color:var(--ink-2);padding:12px 0}
+</style>
+</head>
+<body>
+<main>
+<section class="cover" aria-label="표지">
+  <div class="strip"><span id="issue">자료 불러오는 중</span><b>42곳</b></div>
+  <div class="mast"><h1>수르</h1><span class="dot" aria-hidden="true"></span></div>
+  <p class="tag">곧 그렇게 될 듯한 회사를<br>찾아 드려요.</p>
+  <p class="sub"><span class="nw">지금 그런 회사 <em>21곳</em> ·</span> <span class="nw">곧 될 듯한 회사 <em>21곳</em></span></p>
+  <div class="stories" id="stories"></div>
+  <div class="foot">
+    <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+    <button class="open" id="open" type="button" aria-expanded="false" aria-controls="toc">42곳 목차 펼치기 <i>↓</i></button>
+  </div>
+</section>
+<section class="toc" id="toc" aria-label="42곳 목차">
+  <div class="toc-in" id="tocIn"></div>
+</section>
+</main>
+<script>
+(function(){
+  var KO = {hot:'불장', bloom:'꽃이 될', money:'돈이 몰리는', hotNext:'불장이 될 듯', bloomNext:'꽃이 될 듯', moneyNext:'돈이 몰릴 듯'};
+  var STORY = [
+    {k:'불장', d:'크게 오르는 곳', now:'hot', next:'hotNext'},
+    {k:'꽃', d:'꽃이 피려는 곳', now:'bloom', next:'bloomNext'},
+    {k:'돈', d:'돈이 몰리는 곳', now:'money', next:'moneyNext'}
+  ];
+  var HEAD = {hot:'스무 날 오른 폭', bloom:'꽃인가 싹인가', money:'몰린 돈', hotNext:'스무 날 오른 폭', bloomNext:'닷새 앞선 폭', moneyNext:'몰린 돈'};
+  var PASTW = {hotNext:'한 달 안에 불장 일곱에 들었어요.', bloomNext:'한 달 안에 꽃이 피었어요.', moneyNext:'한 달 안에 돈이 몰렸어요.'};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pct(x){ if(x==null||isNaN(x)) return ''; var v=Math.round(x*10)/10; return (v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1)+'%'; }
+  function eok(g){ if(g==null||isNaN(g)) return ''; g=Math.round(g); var j=Math.floor(g/10000), r=g%10000;
+    return j ? (j+'조'+(r? ' '+r.toLocaleString('ko-KR')+'억':'')) : r.toLocaleString('ko-KR')+'억'; }
+  function val(key,c){ var w=c.why||{};
+    if(key==='hot') return pct(c.ch20);
+    if(key==='money'||key==='moneyNext') return eok(w.gain);
+    if(key==='bloom') return w.full ? '꽃' : '싹';
+    if(key==='hotNext') return pct(w.r20);
+    if(key==='bloomNext') return pct(w.x5);
+    return '';
+  }
+  function dateKo(s){ var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m ? (m[1]+'. '+(+m[2])+'. '+(+m[3])+'.') : ''; }
+  function link(c,cls){ return '<a class="'+(cls||'')+'" href="#/c/'+esc(c.code)+'">'+esc(c.name)+'</a>'; }
+
+  var btn=document.getElementById('open'), toc=document.getElementById('toc');
+  function setOpen(on){
+    toc.classList.toggle('on',on); btn.setAttribute('aria-expanded',on?'true':'false');
+    btn.firstChild.nodeValue = on ? '목차 접기 ' : '42곳 목차 펼치기 ';
+    toc.setAttribute('aria-hidden', on ? 'false' : 'true');
+    if(on) setTimeout(function(){ toc.scrollIntoView({behavior:'smooth',block:'start'}); }, 60);
+  }
+  btn.addEventListener('click',function(){ setOpen(!toc.classList.contains('on')); });
+  toc.setAttribute('aria-hidden','true');
+
+  fetch('/su/data/su21.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+    var L=d.lists||{};
+    document.getElementById('issue').textContent = dateKo(d.asOf && d.asOf.board) + ' 자료';
+    // 표지 기사 셋
+    var h='';
+    STORY.forEach(function(s){
+      var a=(L[s.now]||[])[0], b=(L[s.next]||[])[0]; if(!a||!b) return;
+      h+='<div class="story"><div class="kick"><span class="k">'+s.k+'</span><span class="d">'+s.d+'</span></div>'
+        +'<div class="pair">'+link(a,'now')+'<span class="to" aria-hidden="true">→</span>'+link(b,'next')+'</div>'
+        +'<div class="cap"><span>지금</span><span>곧</span></div></div>';
+    });
+    document.getElementById('stories').innerHTML=h;
+    // 목차 42곳
+    var t='<h2>목차</h2><p class="lead">이름을 누르면 그 회사 쪽으로 가요.</p>';
+    [['지금 그런 곳',['hot','bloom','money']],['곧 그렇게 될 듯한 곳',['hotNext','bloomNext','moneyNext']]].forEach(function(p){
+      var n=p[1].reduce(function(s,k){return s+(L[k]||[]).length;},0);
+      t+='<div class="part"><h3>'+p[0]+'<small>'+n+'곳</small></h3>';
+      p[1].forEach(function(k){
+        var list=L[k]||[], ps=d.past&&d.past[k];
+        t+='<div class="sec"><h4>'+KO[k]+'<span>'+HEAD[k]+'</span></h4>';
+        if(ps && ps.per100!=null) t+='<p class="past">지난 1년, 이렇게 고르면 100번에 '+ps.per100+'번, '+PASTW[k]+' 아무 회사는 '+ps.base100+'번.</p>';
+        t+='<ol>';
+        list.forEach(function(c,i){
+          t+='<li><a href="#/c/'+esc(c.code)+'"><span class="n">'+(i+1)+'</span><span class="nm">'+esc(c.name)+'</span><span class="lead-dots" aria-hidden="true"></span><span class="v">'+esc(val(k,c))+'</span></a></li>';
+        });
+        t+='</ol></div>';
+      });
+      t+='</div>';
+    });
+    t+='<p class="end">앞날을 맞히는 목록이 아니에요.</p>';
+    document.getElementById('tocIn').innerHTML=t;
+  }).catch(function(){
+    document.getElementById('stories').innerHTML='<p class="err">자료를 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.</p>';
+  });
+})();
+</script>
+</body>
+</html>

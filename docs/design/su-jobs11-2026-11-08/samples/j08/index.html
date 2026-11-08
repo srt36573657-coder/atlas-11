@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>수르</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+:root{
+  --bg:#EEECE7;      /* 회백색 바탕 */
+  --paper:#F7F6F2;   /* 될 듯 칸 — 아주 조금 밝게 */
+  --ink:#1B1A18;
+  --ink2:#4C4943;    /* 흐린 회색 쓰지 않음 — 바탕 대비 7 넘게 */
+  --line:#C6C2B8;
+  --or:#E5571C;      /* 주황 — 쪽 전체에 점 하나만 */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard Variable',Pretendard,system-ui,-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:18px;line-height:1.45;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;word-break:keep-all;overflow-wrap:break-word}
+a{color:inherit}
+.wrap{max-width:440px;margin:0 auto;padding:0 16px 56px}
+
+/* 머리 */
+.top{padding:16px 0 14px}
+.r1{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.mark{font-size:30px;font-weight:700;letter-spacing:-0.03em;line-height:1.15}
+.date{font-size:17px;color:var(--ink2);white-space:nowrap}
+.lead{font-size:21px;font-weight:600;letter-spacing:-0.02em;margin-top:8px;line-height:1.35}
+.how{font-size:18px;color:var(--ink2);margin-top:2px;letter-spacing:-0.01em;text-wrap:balance}
+
+/* 표 — 세 줄 × 두 칸 */
+.board{display:grid;grid-template-columns:54px minmax(0,1fr) minmax(0,1fr);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.hd{font-size:18px;font-weight:700;padding:8px 0 8px 10px;border-bottom:1px solid var(--ink);display:flex;align-items:center}
+.hd.c0{padding-left:0}
+.hd.nx,.cell.nx{background:var(--paper)}
+.hd:not(.c0){border-left:1px solid var(--line)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--or);margin-left:8px;flex:none}
+.rl{padding:10px 0 10px 0;border-top:1px solid var(--line)}
+.rl b{display:block;font-size:21px;font-weight:700;line-height:1.2;letter-spacing:-0.02em}
+.rl span{display:block;font-size:17px;color:var(--ink2);margin-top:3px}
+.cell{list-style:none;padding:9px 4px 9px 10px;border-top:1px solid var(--line);border-left:1px solid var(--line);min-width:0}
+.board > .rl:nth-of-type(1), .board > .cell.g1{border-top:0}
+.cell a{display:block;text-decoration:none;font-size:19px;line-height:26px;letter-spacing:-0.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cell a:active{background:var(--line)}
+.safe{font-size:18px;font-weight:600;margin-top:12px;letter-spacing:-0.01em}
+
+/* 아래 — 접어 둔 설명 */
+.sec{margin-top:44px;border-top:2px solid var(--ink);padding-top:12px}
+.sec h2{font-size:21px;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px}
+.sec p.sub{font-size:18px;color:var(--ink2);margin-bottom:10px}
+.pr{padding:12px 0;border-top:1px solid var(--line)}
+.pr:first-of-type{border-top:0}
+.pr .t{font-size:19px;font-weight:700}
+.pr .w{font-size:17px;color:var(--ink2);margin:1px 0 8px}
+.bar{display:grid;grid-template-columns:76px minmax(0,1fr) 64px;align-items:center;gap:8px;margin-top:5px}
+.bar .k{font-size:17px;color:var(--ink2)}
+.bar .tr{height:12px;background:var(--paper);border:1px solid var(--line)}
+.bar .fi{height:100%;background:var(--ink)}
+.bar .fi.b{background:#9A958B}
+.bar .n{font-size:18px;font-weight:700;text-align:right}
+.bar .n.b{font-weight:500;color:var(--ink2)}
+.note{font-size:17px;color:var(--ink2);margin-top:10px}
+dl.words{display:grid;grid-template-columns:54px minmax(0,1fr);border-top:1px solid var(--line)}
+dl.words dt{font-size:19px;font-weight:700;padding:10px 0;border-bottom:1px solid var(--line)}
+dl.words dd{font-size:18px;padding:10px 0 10px 10px;border-bottom:1px solid var(--line);border-left:1px solid var(--line)}
+.both{font-size:18px}
+.both a{text-decoration:none;font-weight:700;border-bottom:1px solid var(--ink)}
+.foot{margin-top:36px;font-size:17px;color:var(--ink2);border-top:1px solid var(--line);padding-top:10px}
+
+/* 회사 한 장 */
+.sheet{position:fixed;inset:0;background:rgba(27,26,24,.38);display:none;align-items:flex-end;justify-content:center;z-index:9}
+.sheet.on{display:flex}
+.card{background:var(--bg);width:100%;max-width:440px;padding:18px 16px 28px;border-top:2px solid var(--ink)}
+.card .nm{font-size:26px;font-weight:700;letter-spacing:-0.02em}
+.card .ind{font-size:17px;color:var(--ink2);margin-top:2px}
+.card ul{list-style:none;margin-top:12px;border-top:1px solid var(--line)}
+.card li{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:18px}
+.card li b{font-weight:700;white-space:nowrap}
+.card .x{margin-top:16px;display:block;width:100%;font:inherit;font-size:19px;font-weight:700;padding:12px;background:var(--ink);color:var(--bg);border:0;border-radius:2px}
+@media (max-width:360px){
+  .wrap{padding:0 12px 48px}
+  .board{grid-template-columns:46px minmax(0,1fr) minmax(0,1fr)}
+  .cell{padding-left:7px;padding-right:1px}
+  .cell a{font-size:17px}
+  .lead{font-size:20px}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="r1"><h1 class="mark">수르</h1><span class="date" id="asof"></span></div>
+    <p class="lead">될 듯한 회사를 찾아 줍니다.</p>
+    <p class="how">왼쪽은 지금, 오른쪽은 곧 그렇게 될 듯한 곳.</p>
+  </header>
+
+  <section class="board" aria-label="지금과 될 듯">
+    <div class="hd c0"></div><div class="hd">지금</div><div class="hd nx">될 듯<i class="dot" aria-hidden="true"></i></div>
+    <div class="rl"><b>불장</b><span>오름</span></div><ol class="cell g1" id="hot"></ol><ol class="cell nx g1" id="hotNext"></ol>
+    <div class="rl"><b>꽃</b><span>앞섬</span></div><ol class="cell" id="bloom"></ol><ol class="cell nx" id="bloomNext"></ol>
+    <div class="rl"><b>돈</b><span>몰림</span></div><ol class="cell" id="money"></ol><ol class="cell nx" id="moneyNext"></ol>
+  </section>
+  <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+
+  <section class="sec">
+    <h2>될 듯, 지난 1년에는</h2>
+    <p class="sub">한 달 안에 정말 그렇게 된 때를 셌어요.</p>
+    <div id="past"></div>
+    <p class="note" id="pastNote"></p>
+  </section>
+
+  <section class="sec">
+    <h2>말뜻</h2>
+    <dl class="words">
+      <dt>불장</dt><dd>한 달 동안 오른 업종 안에서 가장 많이 오른 곳.</dd>
+      <dt>꽃</dt><dd>큰 회사 가운데 시장보다 앞서기 시작한 곳. 많이 앞서면 꽃, 그 전은 싹.</dd>
+      <dt>돈</dt><dd>한 달 동안 회사 크기가 원으로 가장 많이 늘어난 곳.</dd>
+      <dt>될 듯</dt><dd>각 일곱 바로 아래에서 막 따라붙는 곳.</dd>
+    </dl>
+  </section>
+
+  <section class="sec" id="bothSec">
+    <h2>두 줄에 함께</h2>
+    <p class="both" id="both"></p>
+  </section>
+
+  <p class="foot" id="foot"></p>
+</main>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="회사">
+  <div class="card">
+    <div class="nm" id="sNm"></div>
+    <div class="ind" id="sInd"></div>
+    <ul id="sList"></ul>
+    <button class="x" id="sX" type="button">닫기</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEYS = ['hot','hotNext','bloom','bloomNext','money','moneyNext'];
+  var NAME = {hot:'지금 · 불장', bloom:'지금 · 꽃', money:'지금 · 돈', hotNext:'될 듯 · 불장', bloomNext:'될 듯 · 꽃', moneyNext:'될 듯 · 돈'};
+  var D = null, BY = {};
+  function el(t, c, s){ var e = document.createElement(t); if (c) e.className = c; if (s != null) e.textContent = s; return e; }
+  function sg(v){ return (v > 0 ? '+' : '') + Number(v).toFixed(1); }
+  function eok(v){ v = Math.round(v); var j = Math.floor(v / 10000), r = v % 10000; return (j ? j + '조 ' : '') + (r ? r.toLocaleString('ko-KR') + '억' : (j ? '' : '0억')); }
+  function day(s){ var p = String(s || '').split('-'); return p.length === 3 ? (+p[0]) + '. ' + (+p[1]) + '. ' + (+p[2]) + '.' : ''; }
+  function val(k, c){
+    var w = c.why || {};
+    if (k === 'hot') return ['한 달 동안', sg(c.ch20) + '%'];
+    if (k === 'bloom') return ['지금 모습', w.full ? '꽃' : '싹'];
+    if (k === 'money') return ['회사 크기 늘어남', eok(w.gain || 0)];
+    if (k === 'hotNext') return ['한 달 동안', sg(w.r20) + '%'];
+    if (k === 'bloomNext') return ['닷새 동안 시장보다', sg(w.x5) + '%'];
+    if (k === 'moneyNext') return ['회사 크기 늘어남', eok(w.gain || 0)];
+    return ['', ''];
+  }
+  function draw(d){
+    D = d;
+    var bd = String((d.asOf && d.asOf.board) || '').split('-'); document.getElementById('asof').textContent = bd.length === 3 ? (+bd[1]) + '월 ' + (+bd[2]) + '일 기준' : '';
+    KEYS.forEach(function(k){
+      var ol = document.getElementById(k); ol.textContent = '';
+      (d.lists[k] || []).forEach(function(c){
+        (BY[c.code] = BY[c.code] || {c: c, in: []}).in.push({k: k, c: c});
+        var li = el('li'), a = el('a', '', c.name); a.href = '#/c/' + c.code; li.appendChild(a); ol.appendChild(li);
+      });
+    });
+    // 지난 1년
+    var P = d.past || {}, box = document.getElementById('past');
+    [['hotNext','불장이 될 듯'],['bloomNext','꽃이 될 듯'],['moneyNext','돈이 몰릴 듯']].forEach(function(x){
+      var p = P[x[0]]; if (!p) return;
+      var r = el('div', 'pr'); r.appendChild(el('div', 't', x[1]));
+      r.appendChild(el('div', 'w', (P.what && P.what[x[0]]) || ''));
+      [['될 듯', p.per100, ''], ['아무 회사', p.base100, 'b']].forEach(function(y){
+        var b = el('div', 'bar'); b.appendChild(el('span', 'k', y[0]));
+        var tr = el('div', 'tr'), fi = el('div', 'fi ' + y[2]); fi.style.width = Math.max(0, Math.min(100, y[1])) + '%'; tr.appendChild(fi); b.appendChild(tr);
+        b.appendChild(el('span', 'n ' + y[2], y[1] + '번')); r.appendChild(b);
+      });
+      box.appendChild(r);
+    });
+    document.getElementById('pastNote').textContent = '100번에 몇 번인지 셌어요. ' + day(P.from) + ' ~ ' + day(P.to) + ', 지금 우량주 365곳으로 셈. 살아남은 곳만 본 치우침이 있어요.';
+    // 두 줄에 함께
+    var both = document.getElementById('both'), ov = d.overlap || [];
+    if (!ov.length) document.getElementById('bothSec').style.display = 'none';
+    ov.forEach(function(o, i){
+      if (i) both.appendChild(document.createTextNode(' · '));
+      var a = el('a', '', o.name); a.href = '#/c/' + o.code; both.appendChild(a);
+    });
+    var RW = {hot:'불장', bloom:'꽃', money:'돈'}, pair = ov.length ? (ov[0].in || []).map(function(k){ return RW[k] || ''; }).filter(Boolean).join('과 ') : '';
+    if (ov.length) both.appendChild(document.createTextNode(' — 지금 ' + (pair || '두 줄') + ', 두 줄에 함께 들었어요.'));
+    document.getElementById('foot').textContent = '자료 ' + day(d.asOf && d.asOf.board) + ' 장 마감 · 우량주 365곳 · 회사를 누르면 값이 나와요.';
+    route();
+  }
+  function route(){
+    var m = location.hash.match(/^#\/c\/([0-9A-Za-z]+)/), s = document.getElementById('sheet');
+    if (!m || !BY[m[1]]) { s.classList.remove('on'); return; }
+    var o = BY[m[1]], c = o.c;
+    document.getElementById('sNm').textContent = c.name;
+    document.getElementById('sInd').textContent = [c.ind, c.land].filter(Boolean).join(' · ');
+    var ul = document.getElementById('sList'); ul.textContent = '';
+    o.in.forEach(function(x){
+      var v = val(x.k, x.c), li = el('li'); li.appendChild(el('span', '', NAME[x.k] + ' — ' + v[0])); li.appendChild(el('b', '', v[1])); ul.appendChild(li);
+    });
+    s.classList.add('on');
+  }
+  document.getElementById('sX').addEventListener('click', function(){ history.replaceState(null, '', location.pathname + location.search); route(); });
+  document.getElementById('sheet').addEventListener('click', function(e){ if (e.target === this) document.getElementById('sX').click(); });
+  window.addEventListener('hashchange', route);
+  fetch('/su/data/su21.json', {cache: 'no-store'}).then(function(r){ return r.json(); }).then(draw).catch(function(){
+    document.getElementById('foot').textContent = '자료를 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.';
+  });
+})();
+</script>
+</body>
+</html>

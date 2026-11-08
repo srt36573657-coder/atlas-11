@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050817">
+<title>수르 · 주식 별자리 지도</title>
+<link rel="stylesheet" href="/app/fonts.css">
+<style>
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-108-400-normal.woff2') format('woff2');unicode-range:U+AE0B,U+C2F9}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-109-400-normal.woff2') format('woff2');unicode-range:U+C22B}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-110-400-normal.woff2') format('woff2');unicode-range:U+ACE7}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-111-400-normal.woff2') format('woff2');unicode-range:U+AE5C,U+B054,U+B35C}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-112-400-normal.woff2') format('woff2');unicode-range:U+AC12,U+D540}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-113-400-normal.woff2') format('woff2');unicode-range:U+B3C8,U+B5A0,U+BC1D,U+BC24,U+BE5B,U+C9DD}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-114-400-normal.woff2') format('woff2');unicode-range:U+ACF3,U+AF43,U+B07C,U+B4A4,U+B4EF,U+B807,U+BAB0,U+C55E,U+C5B5,U+D070,U+D3ED}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-115-400-normal.woff2') format('woff2');unicode-range:U+B420,U+B9C9,U+B9DE,U+BA38,U+C9DC}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-116-400-normal.woff2') format('woff2');unicode-range:U+B09C,U+B0A0,U+B204,U+B298,U+B2EC,U+B450,U+B8E8,U+B974,U+B984,U+B9B0,U+BC15,U+BCC4,U+BD88,U+C21C,U+C5C8,U+C5F4}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-117-400-normal.woff2') format('woff2');unicode-range:U+AD6D,U+AE08,U+B144,U+B370,U+B798,U+B824,U+B8CC,U+B978,U+BAA9,U+BC18,U+C2DD,U+C57C,U+C608,U+C640,U+C6D4,U+C9C1,U+D53C,U+D788}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-118-400-normal.woff2') format('woff2');unicode-range:U+39,U+AC04,U+AC1C,U+AC8C,U+ADF8,U+B098,U+B0B4,U+B294,U+B2C8,U+B3C4,U+B3D9,U+B4E4,U+B85D,U+B97C,U+B9C8,U+BA74,U+BB34,U+C120,U+C138,U+C218,U+C544,U+C548,U+C5B4,U+C5D0,U+C624,U+C694,U+C6B4,U+C740,U+C744,U+C758,U+C77C,U+C790,U+C791,U+C7A5,U+C870,U+C8FC,U+D06C,U+D55C,U+D68C}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-119-400-normal.woff2') format('woff2');unicode-range:U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+B7,U+AC00,U+AE30,U+B2E4,U+B85C,U+B9AC,U+C0AC,U+C774,U+C9C0,U+D558}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-korean-400-normal.woff2') format('woff2');unicode-range:U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+39,U+B7,U+AC00,U+AC04,U+AC12,U+AC1C,U+AC8C,U+ACE7,U+ACF3,U+AD6D,U+ADF8,U+AE08,U+AE0B,U+AE30,U+AE5C,U+AF43,U+B054,U+B07C,U+B098,U+B09C,U+B0A0,U+B0B4,U+B144,U+B204,U+B294,U+B298,U+B2C8,U+B2E4,U+B2EC,U+B35C,U+B370,U+B3C4,U+B3C8,U+B3D9,U+B420,U+B450,U+B4A4,U+B4E4,U+B4EF,U+B5A0,U+B798,U+B807,U+B824,U+B85C,U+B85D,U+B8CC,U+B8E8,U+B974,U+B978,U+B97C,U+B984,U+B9AC,U+B9B0,U+B9C8,U+B9C9,U+B9DE,U+BA38,U+BA74,U+BAA9,U+BAB0,U+BB34,U+BC15,U+BC18,U+BC1D,U+BC24,U+BCC4,U+BD88,U+BE5B,U+C0AC,U+C120,U+C138,U+C218,U+C21C,U+C22B,U+C2DD,U+C2F9,U+C544,U+C548,U+C55E,U+C57C,U+C5B4,U+C5B5,U+C5C8,U+C5D0,U+C5F4,U+C608,U+C624,U+C640,U+C694,U+C6B4,U+C6D4,U+C740,U+C744,U+C758,U+C774,U+C77C,U+C790,U+C791,U+C7A5,U+C870,U+C8FC,U+C9C0,U+C9C1,U+C9DC,U+C9DD,U+D06C,U+D070,U+D3ED,U+D53C,U+D540,U+D558,U+D55C,U+D68C,U+D788}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-latin-400-normal.woff2') format('woff2');unicode-range:U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+39,U+B7}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-108-700-normal.woff2') format('woff2');unicode-range:U+AE0B,U+C2F9}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-109-700-normal.woff2') format('woff2');unicode-range:U+C22B}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-110-700-normal.woff2') format('woff2');unicode-range:U+ACE7}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-111-700-normal.woff2') format('woff2');unicode-range:U+AE5C,U+B054,U+B35C}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-112-700-normal.woff2') format('woff2');unicode-range:U+AC12,U+D540}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-113-700-normal.woff2') format('woff2');unicode-range:U+B3C8,U+B5A0,U+BC1D,U+BC24,U+BE5B,U+C9DD}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-114-700-normal.woff2') format('woff2');unicode-range:U+ACF3,U+AF43,U+B07C,U+B4A4,U+B4EF,U+B807,U+BAB0,U+C55E,U+C5B5,U+D070,U+D3ED}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-115-700-normal.woff2') format('woff2');unicode-range:U+B420,U+B9C9,U+B9DE,U+BA38,U+C9DC}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-116-700-normal.woff2') format('woff2');unicode-range:U+B09C,U+B0A0,U+B204,U+B298,U+B2EC,U+B450,U+B8E8,U+B974,U+B984,U+B9B0,U+BC15,U+BCC4,U+BD88,U+C21C,U+C5C8,U+C5F4}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-117-700-normal.woff2') format('woff2');unicode-range:U+AD6D,U+AE08,U+B144,U+B370,U+B798,U+B824,U+B8CC,U+B978,U+BAA9,U+BC18,U+C2DD,U+C57C,U+C608,U+C640,U+C6D4,U+C9C1,U+D53C,U+D788}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-118-700-normal.woff2') format('woff2');unicode-range:U+39,U+AC04,U+AC1C,U+AC8C,U+ADF8,U+B098,U+B0B4,U+B294,U+B2C8,U+B3C4,U+B3D9,U+B4E4,U+B85D,U+B97C,U+B9C8,U+BA74,U+BB34,U+C120,U+C138,U+C218,U+C544,U+C548,U+C5B4,U+C5D0,U+C624,U+C694,U+C6B4,U+C740,U+C744,U+C758,U+C77C,U+C790,U+C791,U+C7A5,U+C870,U+C8FC,U+D06C,U+D55C,U+D68C}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-119-700-normal.woff2') format('woff2');unicode-range:U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+B7,U+AC00,U+AE30,U+B2E4,U+B85C,U+B9AC,U+C0AC,U+C774,U+C9C0,U+D558}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-korean-700-normal.woff2') format('woff2');unicode-range:U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+39,U+B7,U+AC00,U+AC04,U+AC12,U+AC1C,U+AC8C,U+ACE7,U+ACF3,U+AD6D,U+ADF8,U+AE08,U+AE0B,U+AE30,U+AE5C,U+AF43,U+B054,U+B07C,U+B098,U+B09C,U+B0A0,U+B0B4,U+B144,U+B204,U+B294,U+B298,U+B2C8,U+B2E4,U+B2EC,U+B35C,U+B370,U+B3C4,U+B3C8,U+B3D9,U+B420,U+B450,U+B4A4,U+B4E4,U+B4EF,U+B5A0,U+B798,U+B807,U+B824,U+B85C,U+B85D,U+B8CC,U+B8E8,U+B974,U+B978,U+B97C,U+B984,U+B9AC,U+B9B0,U+B9C8,U+B9C9,U+B9DE,U+BA38,U+BA74,U+BAA9,U+BAB0,U+BB34,U+BC15,U+BC18,U+BC1D,U+BC24,U+BCC4,U+BD88,U+BE5B,U+C0AC,U+C120,U+C138,U+C218,U+C21C,U+C22B,U+C2DD,U+C2F9,U+C544,U+C548,U+C55E,U+C57C,U+C5B4,U+C5B5,U+C5C8,U+C5D0,U+C5F4,U+C608,U+C624,U+C640,U+C694,U+C6B4,U+C6D4,U+C740,U+C744,U+C758,U+C774,U+C77C,U+C790,U+C791,U+C7A5,U+C870,U+C8FC,U+C9C0,U+C9C1,U+C9DC,U+C9DD,U+D06C,U+D070,U+D3ED,U+D53C,U+D540,U+D558,U+D55C,U+D68C,U+D788}
+@font-face{font-family:'Gowun Batang';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/gowun-batang/gowun-batang-latin-700-normal.woff2') format('woff2');unicode-range:U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+39,U+B7}
+:root{--ink:#f6f0e2;--soft:#d3d8ee;--fire:#ffa071;--bloom:#f7b0d6;--gold:#ffd97a;--night:#050817;--line:rgba(255,232,190,.2)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--night)}
+body{background:var(--night);color:var(--ink);font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif;font-size:21px;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;word-break:keep-all}
+a{color:inherit;text-decoration:none}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:0 16px 40px}
+.serif{font-family:'Gowun Batang','Pretendard Variable',serif}
+
+/* 머리 */
+.top{display:flex;justify-content:space-between;align-items:center;padding-top:16px}
+.brand{font-size:25px;font-weight:700;letter-spacing:.18em;color:var(--gold);text-shadow:0 0 14px rgba(255,210,120,.45)}
+.date{font-size:17px;color:var(--soft)}
+h1{font-weight:700;font-size:clamp(24px,7.3vw,29px);line-height:1.34;margin-top:12px;letter-spacing:-.01em}
+h1 .now{color:#fffaf0;text-shadow:0 0 16px rgba(255,236,190,.6)}
+h1 .next{color:#c4d4ff}
+.lead{font-size:19px;color:var(--soft);margin-top:4px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:19px}
+.legend span{display:inline-flex;align-items:center;gap:9px}
+.dot{display:inline-block;flex:none;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 0 5px 2px rgba(255,242,205,.95),0 0 16px 6px rgba(255,214,140,.45)}
+.dot.dim{width:9px;height:9px;margin:0 2px;background:#d8e4ff;box-shadow:0 0 6px 2px rgba(170,198,255,.6);animation:tw 2.6s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.34}50%{opacity:1}}
+
+/* 하늘 */
+.sky{position:relative;margin-top:6px;width:100%;aspect-ratio:360/460}
+.sn{position:absolute;font-size:17px;font-weight:600;color:#fff7e6;white-space:nowrap;line-height:1.2;text-shadow:0 0 6px #050817,0 0 12px #050817}
+.sky svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lab{position:absolute;line-height:1.18;padding:4px 2px}
+.lab b{display:block;font-size:22px;font-weight:700;letter-spacing:.02em}
+.lab i{display:block;font-style:normal;font-size:17px;color:var(--soft)}
+.lab.fire b{color:var(--fire)} .lab.bloom b{color:var(--bloom)} .lab.money b{color:var(--gold)}
+.tw{animation:tw 2.8s ease-in-out infinite}
+.safe{margin-top:4px;text-align:center;font-size:18px;color:#efe7d3;letter-spacing:.01em}
+.safe::before,.safe::after{content:'';display:inline-block;width:26px;height:1px;background:var(--line);vertical-align:middle;margin:0 10px}
+.down{display:block;text-align:center;margin-top:10px;font-size:18px;color:var(--soft)}
+.down b{color:var(--ink);font-weight:600}
+
+/* 별자리 목록 */
+.cons{margin-top:44px;padding-top:6px;border-top:1px solid var(--line)}
+.cons h2{font-size:28px;font-weight:700;margin-top:18px;display:flex;align-items:center;gap:10px}
+.cons h2 .k{font-size:22px}
+.cons .what{font-size:19px;color:var(--soft);margin-top:2px}
+.half{margin-top:18px}
+.half h3{font-size:19px;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--ink)}
+.half h3 em{font-style:normal;font-size:17px;color:var(--soft);font-weight:400}
+.chart{list-style:none;position:relative;margin-top:6px}
+.chart svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.chart li{position:relative;height:50px;display:flex;align-items:center}
+.chart a{display:flex;align-items:center;gap:12px;min-width:0;max-width:100%;padding:6px 6px 6px 0;margin-left:var(--x,0px)}
+.st{flex:none;width:14px;height:14px;border-radius:50%;background:#fffaf0;box-shadow:0 0 5px 2px rgba(255,244,214,.95),0 0 18px 7px var(--glow)}
+.chart.dim .st{width:10px;height:10px;margin:0 2px;background:#dfe8ff;box-shadow:0 0 6px 2px rgba(180,205,255,.6),0 0 14px 4px var(--glow2);animation:tw 2.6s ease-in-out infinite}
+.nm{font-size:21px;font-weight:600;min-width:0;overflow-wrap:anywhere;color:#fffaf0}
+.chart.dim .nm{font-weight:500;color:#dbe4ff}
+.v{flex:none;font-size:17px;color:var(--soft);font-variant-numeric:tabular-nums}
+.twin{flex:none;font-size:17px;color:var(--gold);border:1px solid rgba(255,217,122,.45);border-radius:999px;padding:0 8px;line-height:1.4}
+.past{margin-top:8px;font-size:18px;line-height:1.55;color:var(--soft);padding:10px 12px;border-left:2px solid var(--line);background:rgba(255,255,255,.03);border-radius:0 10px 10px 0}
+.past b{color:var(--ink);font-weight:600}
+.fire{--c:var(--fire);--glow:rgba(255,140,90,.55);--glow2:rgba(255,150,110,.35)}
+.bloom{--c:var(--bloom);--glow:rgba(247,150,205,.55);--glow2:rgba(247,170,215,.35)}
+.money{--c:var(--gold);--glow:rgba(255,205,100,.55);--glow2:rgba(255,215,130,.35)}
+.cons h2 .k{color:var(--c)}
+.foot{margin-top:44px;text-align:center;font-size:17px;color:var(--soft);line-height:1.7}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<main>
+  <header class="top">
+    <span class="brand serif">수르</span>
+    <span class="date" id="date">밤하늘</span>
+  </header>
+  <h1 class="serif"><span class="now">지금 빛나는 회사 21곳</span><br><span class="next">곧 떠오를 듯한 회사 21곳</span></h1>
+  <p class="lead">별 하나가 한국 주식 회사 하나예요.</p>
+  <div class="legend">
+    <span><i class="dot"></i>빛나는 별 = 지금</span>
+    <span><i class="dot dim"></i>깜박이는 별 = 될 듯</span>
+  </div>
+
+  <div class="sky" id="sky">
+    <svg id="skysvg" viewBox="0 0 360 460" aria-hidden="false"></svg>
+    <a class="lab fire serif" href="#c-hot" style="left:54%;top:7%"><b>불장자리</b><i>값이 크게 오른 곳</i></a>
+    <a class="lab bloom serif" href="#c-bloom" style="left:4%;top:51%"><b>꽃자리</b><i>꽃이 피는 곳</i></a>
+    <a class="lab money serif" href="#c-money" style="left:59%;top:79%"><b>돈자리</b><i>돈이 몰리는 곳</i></a>
+  </div>
+  <p class="safe">앞날을 맞히는 목록이 아니에요.</p>
+  <a class="down" href="#c-hot">아래로 내리면 <b>별 42개의 이름</b></a>
+
+  <div id="lists"></div>
+  <p class="foot" id="foot"></p>
+</main>
+<script>
+(function(){
+  // 뒤 하늘: 작은 별가루와 은하수
+  var cv=document.getElementById('bg'),cx=cv.getContext('2d');
+  function seed(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  function paint(){
+    var w=innerWidth,h=innerHeight,r=Math.min(devicePixelRatio||1,2);
+    cv.width=w*r;cv.height=h*r;cx.setTransform(r,0,0,r,0,0);
+    var g=cx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#070b22');g.addColorStop(.55,'#060a1c');g.addColorStop(1,'#04060f');
+    cx.fillStyle=g;cx.fillRect(0,0,w,h);
+    var m=cx.createRadialGradient(w*.78,h*.18,0,w*.78,h*.18,Math.max(w,h)*.7);
+    m.addColorStop(0,'rgba(120,110,200,.20)');m.addColorStop(.45,'rgba(70,60,140,.08)');m.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=m;cx.fillRect(0,0,w,h);
+    var n=cx.createRadialGradient(w*.1,h*.85,0,w*.1,h*.85,Math.max(w,h)*.55);
+    n.addColorStop(0,'rgba(200,120,90,.10)');n.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=n;cx.fillRect(0,0,w,h);
+    var rnd=seed(7377),k=Math.round(w*h/1500);
+    for(var i=0;i<k;i++){var x=rnd()*w,y=rnd()*h,s=rnd(),a=.18+rnd()*.5;
+      cx.fillStyle='rgba(235,235,255,'+a.toFixed(2)+')';cx.beginPath();cx.arc(x,y,s<.93?.6:1.1,0,6.3);cx.fill();}
+  }
+  paint();addEventListener('resize',paint);
+})();
+
+(async function(){
+  var d=await (await fetch('/su/data/su21.json')).json();
+  var L=d.lists, NS='http://www.w3.org/2000/svg';
+  var ov={};(d.overlap||[]).forEach(function(o){ov[o.code]=o.in});
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+  function won(x){x=Math.round(x);if(x>=10000){var j=Math.floor(x/10000),r=x%10000;return j+'조'+(r?' '+r.toLocaleString('ko-KR')+'억':'')}return x.toLocaleString('ko-KR')+'억'}
+  function pct(x){return (x>0?'+':'')+x.toFixed(1)+'%'}
+  if(d.asOf&&d.asOf.board){var p=d.asOf.board.split('-');document.getElementById('date').textContent=(+p[1])+'월 '+(+p[2])+'일 밤하늘';
+    document.getElementById('foot').innerHTML='자료 날짜 '+p[0]+'. '+(+p[1])+'. '+(+p[2])+'.<br>별을 누르면 그 회사 이야기가 열려요.';}
+
+  // 큰 하늘 지도: 세 별자리
+  var C={hot:'#ffa071',bloom:'#f7b0d6',money:'#ffd97a'};
+  var P={};
+  P.hot=[[95,22],[129,66],[64,72],[146,120],[48,132],[100,102],[96,178]];
+  P.hotN=[[24,54],[172,42],[176,94],[18,100],[168,170],[30,184],[134,206]];
+  var fc=[258,252];P.bloom=[];for(var i=0;i<6;i++){var a=(-90+i*60)*Math.PI/180;P.bloom.push([fc[0]+42*Math.cos(a),fc[1]+42*Math.sin(a)])}P.bloom.push(fc);
+  P.bloomN=[];[-30,10,50,90,130,170,210].forEach(function(g){a=g*Math.PI/180;P.bloomN.push([fc[0]+80*Math.cos(a),fc[1]+80*Math.sin(a)])});
+  var mc=[112,384];P.money=[];P.moneyN=[];
+  for(i=0;i<7;i++){a=(-90+i*360/7)*Math.PI/180;P.money.push([mc[0]+44*Math.cos(a),mc[1]+44*Math.sin(a)]);
+    a=(-50+i*280/6)*Math.PI/180;P.moneyN.push([mc[0]+80*Math.cos(a),mc[1]+70*Math.sin(a)])}
+  var EDGE={hot:[[0,1],[1,3],[3,6],[6,4],[4,2],[2,0],[2,5],[5,1],[5,6]],
+    bloom:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[6,0],[6,2],[6,4]],
+    money:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0]]};
+  var sv=document.getElementById('skysvg'),defs=el('defs',{},sv);
+  ['hot','bloom','money'].forEach(function(k){
+    var g=el('radialGradient',{id:'g'+k},defs);
+    el('stop',{offset:'0','stop-color':'#fffaf0','stop-opacity':'1'},g);
+    el('stop',{offset:'.18','stop-color':'#fff3dc','stop-opacity':'.95'},g);
+    el('stop',{offset:'.42','stop-color':C[k],'stop-opacity':'.38'},g);
+    el('stop',{offset:'1','stop-color':C[k],'stop-opacity':'0'},g);
+  });
+  var lay=el('g',{},sv),stars=el('g',{},sv);
+  function near(p,arr){var b=arr[0],bd=1e9;arr.forEach(function(q){var dd=(p[0]-q[0])*(p[0]-q[0])+(p[1]-q[1])*(p[1]-q[1]);if(dd<bd){bd=dd;b=q}});return b}
+  ['hot','bloom','money'].forEach(function(k){
+    var B=P[k],N=P[k+'N'];
+    EDGE[k].forEach(function(e){el('line',{x1:B[e[0]][0],y1:B[e[0]][1],x2:B[e[1]][0],y2:B[e[1]][1],stroke:C[k],'stroke-opacity':'.5','stroke-width':'1.1'},lay)});
+    N.forEach(function(p){var q=near(p,B);el('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'#c9d6ff','stroke-opacity':'.32','stroke-width':'.9','stroke-dasharray':'2 4'},lay)});
+    L[k].forEach(function(c,i){var p=B[i],r=5.4-i*.42;
+      var a=el('a',{href:'#/c/'+c.code,'aria-label':c.name+' · 지금'},stars);
+      el('circle',{cx:p[0],cy:p[1],r:16,fill:'transparent'},a);
+      el('circle',{cx:p[0],cy:p[1],r:r*3.4,fill:'url(#g'+k+')'},a);
+      el('circle',{cx:p[0],cy:p[1],r:r*.62,fill:'#ffffff'},a);
+    });
+    L[k+'Next'].forEach(function(c,i){var p=N[i];
+      var a=el('a',{href:'#/c/'+c.code,'aria-label':c.name+' · 될 듯'},stars);
+      el('circle',{cx:p[0],cy:p[1],r:15,fill:'transparent'},a);
+      var t=el('g',{'class':'tw',style:'animation-delay:'+(-(i*.37+(k.length*.21))%2.8).toFixed(2)+'s'},a);
+      el('circle',{cx:p[0],cy:p[1],r:6,fill:'url(#g'+k+')','fill-opacity':'.7'},t);
+      el('circle',{cx:p[0],cy:p[1],r:1.6,fill:'#e4ecff'},t);
+    });
+  });
+  // 별자리마다 가장 밝은 별에 이름 (별 이름 = 회사 이름)
+  var sky=document.getElementById('sky');
+  [['hot',P.hot[0],12,0,'0,-50%'],['bloom',P.bloom[0],0,-19,'-50%,-50%'],['money',P.money[0],0,-19,'-50%,-50%']].forEach(function(t){
+    var c=L[t[0]][0],a=document.createElement('a');a.className='sn';a.href='#/c/'+c.code;a.textContent=c.name;
+    a.style.left=((t[1][0]+t[2])/360*100).toFixed(2)+'%';a.style.top=((t[1][1]+t[3])/460*100).toFixed(2)+'%';a.style.transform='translate('+t[4]+')';sky.appendChild(a);});
+  // 별 하나가 반짝 지나가는 순간 (아주 가끔)
+  var shoot=el('line',{x1:0,y1:0,x2:0,y2:0,stroke:'#fff',
+    'stroke-opacity':'0','stroke-width':'1.2','stroke-linecap':'round'},sv);
+  function fly(){var x=200+Math.random()*120,y=10+Math.random()*60,t0=performance.now();
+    function f(t){var u=(t-t0)/900;if(u>1){shoot.setAttribute('stroke-opacity','0');return}
+      var hx=x-u*120,hy=y+u*60;shoot.setAttribute('x1',hx);shoot.setAttribute('y1',hy);shoot.setAttribute('x2',hx+26);shoot.setAttribute('y2',hy-13);
+      shoot.setAttribute('stroke-opacity',(Math.sin(u*Math.PI)*.8).toFixed(2));requestAnimationFrame(f)}
+    requestAnimationFrame(f)}
+  setTimeout(fly,3400);setInterval(fly,9000);
+
+  // 별자리 목록 (별 이름 = 회사 이름)
+  var META=[
+    {k:'hot',id:'c-hot',cls:'fire',name:'불장자리',mark:'✦',what:'값이 크게 오른 곳',nowNote:'숫자는 한 달 동안 오른 폭',nextNote:'숫자는 한 달 동안 오른 폭',
+      val:function(c){return c.ch20!=null?pct(c.ch20):''},valN:function(c){return c.why&&c.why.r20!=null?pct(c.why.r20):''},
+      past:'hotNext',pastText:'한 달 안에 불장자리에 들었어요'},
+    {k:'bloom',id:'c-bloom',cls:'bloom',name:'꽃자리',mark:'✦',what:'꽃이 피는 곳',nowNote:'싹은 아직 덜 핀 꽃',nextNote:'',
+      val:function(c){return c.why?(c.why.full?'꽃':'싹'):''},valN:function(){return ''},
+      past:'bloomNext',pastText:'한 달 안에 꽃이 피었어요'},
+    {k:'money',id:'c-money',cls:'money',name:'돈자리',mark:'✦',what:'돈이 몰리는 곳',nowNote:'숫자는 몰린 돈',nextNote:'숫자는 몰린 돈',
+      val:function(c){return c.why&&c.why.gain!=null?won(c.why.gain):''},valN:function(c){return c.why&&c.why.gain!=null?won(c.why.gain):''},
+      past:'moneyNext',pastText:'한 달 안에 돈자리에 들었어요'}
+  ];
+  var X=[0,30,8,42,16,50,24];
+  var box=document.getElementById('lists');
+  function rows(arr,valf,dim,kk){
+    return arr.map(function(c,i){var v=valf(c),tw='';
+      if(!dim&&ov[c.code]&&ov[c.code].length>1)tw='<span class="twin">두 별자리</span>';
+      return '<li><a href="#/c/'+c.code+'" style="--x:'+X[i]+'px"><i class="st"'+(dim?' style="animation-delay:-'+(i*.41).toFixed(2)+'s"':'')+'></i><span class="nm">'+c.name+'</span>'+(v?'<span class="v">'+v+'</span>':'')+tw+'</a></li>'}).join('');
+  }
+  box.innerHTML=META.map(function(m){
+    var ps=d.past&&d.past[m.past];
+    return '<section class="cons '+m.cls+'" id="'+m.id+'">'+
+      '<h2 class="serif"><span class="k">'+m.mark+'</span>'+m.name+'</h2><p class="what">'+m.what+'</p>'+
+      '<div class="half"><h3><i class="dot"></i>지금 빛나는 별 7'+(m.nowNote?' <em>· '+m.nowNote+'</em>':'')+'</h3><ol class="chart">'+rows(L[m.k],m.val,false)+'</ol></div>'+
+      '<div class="half"><h3><i class="dot dim"></i>막 떠오르는 별 7'+(m.nextNote?' <em>· '+m.nextNote+'</em>':'')+'</h3><ol class="chart dim">'+rows(L[m.k+'Next'],m.valN,true)+'</ol>'+
+      (ps?'<p class="past">지난 1년, 이렇게 떠오른 별 100개 가운데 <b>'+ps.per100+'개</b>가 '+m.pastText+'. 아무 회사는 100개 가운데 '+ps.base100+'개.</p>':'')+
+      '</div></section>';
+  }).join('');
+
+  // 목록 별끼리 별자리 선 긋기
+  function link(){document.querySelectorAll('.chart').forEach(function(ol){
+    var old=ol.querySelector('svg');if(old)old.remove();
+    var r0=ol.getBoundingClientRect(),pts=[].map.call(ol.querySelectorAll('.st'),function(s){var r=s.getBoundingClientRect();return [(r.left+r.width/2-r0.left).toFixed(1),(r.top+r.height/2-r0.top).toFixed(1)]});
+    var s=el('svg',{viewBox:'0 0 '+r0.width.toFixed(1)+' '+r0.height.toFixed(1)});
+    var dim=ol.classList.contains('dim'),col=getComputedStyle(ol.closest('.cons')).getPropertyValue('--c').trim()||'#ffd97a';
+    el('polyline',{points:pts.map(function(p){return p.join(',')}).join(' '),fill:'none',stroke:dim?'#c9d6ff':col,'stroke-opacity':dim?'.35':'.55','stroke-width':'1.2','stroke-dasharray':dim?'3 5':'none'},s);
+    ol.insertBefore(s,ol.firstChild);
+  })}
+  link();addEventListener('resize',link);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(link);
+})();
+</script>
+</body>
+</html>
