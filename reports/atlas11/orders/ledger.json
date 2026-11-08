@@ -1408,14 +1408,14 @@
    "id": "2011",
    "at": "2026-11-08T20:11+09:00",
    "words": "어 그렇게 하고 제 처음부터 끝까지 모든 페이지를 첫페이지 기준으로 모두 변경해 · 20:26 「아니 이것도 같이 작업해」(서른아홉 스승 · 로마 신처럼 수르에서 넘어가는 옛 수르 쪽)",
-   "then": "20:11 받음 · 20:1x 이해 보고(장 중 현재가 1분마다 · 수르 모든 쪽 흰 구슬 판 · 옛 쪽은 그대로라고 말씀드림) · 20:26 「아니 이것도 같이 작업해」 → 옛 쪽도 함께로 고쳐 보고(새벽 1시쯤 한 번에) · 20:2x ~ 장 중 현재가 함수(/api/price · 네이버 증권 분봉) · 수르 모든 쪽 흰 판 · 값 그래프 틀 잡스 판 · 무하 그림 여섯 부품 잡스 판 · 수르에서 넘어간 옛 쪽 흰 판",
+   "then": "20:11 받음 · 20:1x 이해 보고(장 중 현재가 1분마다 · 수르 모든 쪽 흰 구슬 판 · 옛 쪽은 그대로라고 말씀드림 — 틀림 191) · 20:26 「아니 이것도 같이 작업해」 → 옛 쪽도 함께로 고쳐 보고(새벽 1시쯤 한 번에) · 20:2x ~ 21:2x 장 중 현재가 함수(/api/price · 네이버 증권 분봉) · 수르 모든 쪽 흰 판 · 무하 그림 부품 여섯 잡스 판(일꾼 여섯) · 수르에서 넘어간 옛 쪽 흰 판(일꾼 둘 · 옛 앱 68길 · hello · letter · invite) · 밤 판 자리 · 크기 지킴(wrap_keep.py) · 개인정보 짝 쪽(/su/privacy.html) · 이 컴퓨터 수르 검사 757 통과(⑯ 판정 고침) · 21:22 올리기 — 전체 검사 1/11 실패 0(28쪽 · 미리 보기 수르 767 · 느린 4G 2144ms) · 21:30 진짜 사이트에 올라감(받은 때부터 80.1분) · 22:06 진짜 사이트 전체 검사 2/11 끝 — 28쪽 모두 실패 0 · 수르 쪽 통과 760 · 실패 0(⑯ 넘어간 옛 쪽 열 곳 × 밝은 · 어두운 흰 판 · 어두운 판 0 · 흐린 글 0 · 바로 온 손님 그대로 · ⑮ 장 중 현재가 받은 칸만 바뀜) · 느린 4G 첫 화면 1164ms · 함수 /api/price 진짜 사이트 답(일요일 = 받지 않음) · 남은 것: 장이 열린 월요일 9시 35분에 진짜 값이 1분마다 바뀌는지 확인(예약함) → 그때 성공",
    "did": "수르 모든 쪽 흰 구슬 판(그림 여섯 부품 · 값 그래프 틀 · 위아래 막대) · 수르에서 넘어간 옛 쪽도 흰 판 · 장 중 현재가 1분마다",
-   "state": "미완성",
-   "proof": "docs/design/su-jobs-all-2026-11-08/order-2011.txt · docs/design/su-jobs-all-2026-11-08/brief.md · site/su/su-*-jobs.js · site/su/su-wrap-jobs.css · lib/atlas11/price.mjs · functions/atlas11/price.mjs · scripts/atlas11/next/check_su.mjs ⑫ ⑮ ⑯",
-   "short": "수르 모든 쪽과 넘어간 옛 쪽을 흰 구슬 판으로 바꾸는 중이에요."
+   "state": "완성",
+   "proof": "docs/design/su-jobs-all-2026-11-08/order-2011.txt · site/su/su-*-jobs.js · site/su/su-wrap-jobs.css · lib/atlas11/price.mjs · functions/atlas11/price.mjs · scripts/atlas11/next/check_su.mjs ⑮ ⑯ · reports/atlas11/speed/ship-su-all-2011.jsonl · 전체 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/42479972638 · 진짜 사이트 전체 검사 https://github.com/srt36573657-coder/atlas-11/actions/runs/42480652375",
+   "short": "수르 모든 쪽과 넘어간 옛 쪽을 흰 구슬 판으로 올렸어요."
   }
  ],
- "open": 10,
+ "open": 9,
  "sent": [
   {
    "at": "2026-10-22T02:03+09:00",
