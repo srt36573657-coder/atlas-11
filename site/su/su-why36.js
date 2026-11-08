@@ -27,7 +27,13 @@ const sgn = x => (fin(x) ? (x > 0 ? '+' : x < 0 ? '−' : '') + n1(Math.abs(x)) 
 const won = x => '100원이 ' + n1(100 + x) + '원';
 const day = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) ? dateKo(d) : NEED);
 const eok = v => (fin(v) ? num(Math.round(v)) + '억 원' : NEED);
-const share = v => '100주에 ' + n1(v) + '주';
+const eokS = v => (fin(v) ? (v < 0 ? num(Math.round(-v)) + '억 원 적자' : num(Math.round(v)) + '억 원') : NEED); // 이익이 0 아래면 「적자」(「-」 표시 대신)
+const share = v => '100주에 ' + num(Math.round(v * 100) / 100) + '주';
+/** 받침 — 숫자는 읽는 소리 끝(일 · 삼 · 육 · 칠 · 팔 · 십 · 백 = 받침) · 한글은 끝 글자 */
+const jong = t => { t = String(t); const d = /(\d+)$/.exec(t); if (d) { const v = +d[1]; return v % 10 === 0 || [1, 3, 6, 7, 8].includes(v % 10); } const ch = t.charCodeAt(t.length - 1); return ch >= 0xAC00 && ch <= 0xD7A3 && (ch - 0xAC00) % 28 !== 0; };
+/** 「이에요 · 예요」 붙임 — 끝이 따옴표면 그 안 글자로 셈 */
+export const cop = w => { const t = String(w), core = t.replace(/[」』"')\]]+$/, ''); return t + (jong(core) ? '이에요' : '예요'); };
+const ord = n => (n === 1 ? '첫 번째' : n + '번째');
 const KIND_ROUTE = {quality: '우량 네 조건(두 해 잇달아 이익 · 자기자본이익 5 넘게 · 빚 150 아래 · 업종마다 다섯 곳)을 모두 넘어', trend: '우량 조건을 다 넘지는 못했지만 시대 흐름 업종이어서',
   profit: '최근 결산이 흑자여서', size: '업종 다섯 자리를 채우는 그 업종의 큰 회사여서'}; // 「회사라」는 쓰지 않을 말 「사라」를 품음 — 「회사여서」
 
@@ -53,32 +59,32 @@ export function crit7(T, c, k) {
   if (k === 'hot') return [base,
     {t: '업종이 불장 업종', s: c.ind + ' 업종 365곳 평균이 지난 20거래일 동안 ' + (fin(w.ind20) ? won(w.ind20) + '이 됐어요' : NEED) + '. 평균이 오른 업종 가운데 큰 차례로 열한 업종까지가 불장 업종이에요.', ok: fin(w.ind20) && w.ind20 > 0},
     {t: '20거래일 동안 오름', s: day(c.date) + '까지 20거래일 동안 ' + (fin(c.ch20) ? won(c.ch20) + '이 됐어요.' : NEED), ok: fin(c.ch20) && c.ch20 > 0},
-    {t: '오른 차례 일곱 안', s: '불장 업종 회사 ' + (num(T?.counts?.hotPool) ?? NEED) + '곳을 20거래일 동안 오른 차례로 줄 세워 ' + (i + 1) + '번째예요.', ok: i >= 0 && i < 7},
+    {t: '오른 차례 일곱 안', s: '불장 업종 회사 ' + (num(T?.counts?.hotPool) ?? NEED) + '곳을 20거래일 동안 오른 차례로 줄 세워 ' + ord(i + 1) + '예요.', ok: i >= 0 && i < 7},
     {t: '업종마다 둘까지', s: '한 업종에서 둘까지만 골라요. ' + c.ind + ' 업종은 일곱 가운데 ' + sameInd + '곳이에요.', ok: sameInd <= 2},
     fresh, opens];
   if (k === 'bloom') return [base,
     {t: '싹 ① 아직 덜 감', s: '한 달 동안 시장보다 앞선 만큼이 5 아래예요. 지금 ' + sgn(c.x) + '만큼이에요.', ok: fin(c.x) && c.x < 5},
     {t: '싹 ② 닷새 동안 뒤지지 않음', s: '닷새 동안 시장보다 ' + sgn(c.y) + '만큼으로 뒤지지 않았어요.', ok: fin(c.y) && c.y >= 0},
     {t: '회사 크기 위 20 안', s: '회사 크기(시가총액)가 ' + eok(c.cap) + '으로, 모든 회사를 크기 차례로 세운 위 20 안이에요(선 ' + eok(w.capTop20) + ').', ok: fin(c.cap) && fin(w.capTop20) && c.cap >= w.capTop20},
-    {t: '업종이 시장보다 앞선 차례', s: c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + '만큼 더 갔어요. 업종이 많이 앞선 차례로 골라 ' + (i + 1) + '번째예요.', ok: fin(w.indX)},
+    {t: '업종이 시장보다 앞선 차례', s: c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + '만큼 더 갔어요. 업종이 많이 앞선 차례로 골라 ' + ord(i + 1) + '예요.', ok: fin(w.indX)},
     {t: '꽃 선 15', s: w.full ? '업종이 시장보다 15 넘게 앞서 꽃 선을 넘었어요.' : '업종이 꽃 선 15를 아직 넘지 못해, 꽃 선에 가장 가까운 차례로 골랐어요.', ok: !!w.full},
     opens];
   if (k === 'money') return [base,
     {t: '업종이 시장보다 더 오름', s: c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + '만큼 더 갔어요.', ok: fin(w.indX) && w.indX > 0},
-    {t: '업종 차례 일곱 안', s: '시장보다 더 오른 업종을 큰 차례로 세워 ' + (i + 1) + '번째 업종이에요.', ok: i >= 0 && i < 7},
+    {t: '업종 차례 일곱 안', s: '시장보다 더 오른 업종을 큰 차례로 세워 ' + ord(i + 1) + ' 업종이에요.', ok: i >= 0 && i < 7},
     {t: '업종마다 하나', s: c.ind + ' 업종 365곳 가운데 회사 크기가 가장 많이 는 한 곳만 골라요.', ok: true},
     {t: '회사 크기가 원으로 늚', s: '20거래일 동안 회사 크기가 ' + eok(w.gain) + ' 늘었어요.', ok: fin(w.gain) && w.gain > 0},
     calm, opens];
   if (k === 'hotNext') return [base,
     w.how === 'rank' ? {t: '업종이 불장 업종', s: c.ind + ' 업종은 불장 업종이에요.', ok: true} : {t: '업종도 닷새 오름', s: c.ind + ' 업종이 닷새 동안 ' + (fin(w.ind5) ? won(w.ind5) + '이 됐어요.' : NEED), ok: fin(w.ind5) && w.ind5 > 0},
-    w.how === 'rank' ? {t: '불장 일곱 바로 아래', s: '불장 업종 안에서 20거래일 동안 오른 차례가 ' + w.rank + '번째예요(8 ~ 14째).', ok: fin(w.rank) && w.rank >= 8 && w.rank <= 14}
+    w.how === 'rank' ? {t: '불장 일곱 바로 아래', s: '불장 업종 안에서 20거래일 동안 오른 차례가 ' + ord(w.rank) + '예요(8 ~ 14째).', ok: fin(w.rank) && w.rank >= 8 && w.rank <= 14}
       : {t: '닷새 동안 막 오름', s: '닷새 동안 ' + (fin(w.r5) ? won(w.r5) + '이 됐어요.' : NEED) + ' 일곱 바로 아래가 모자라 닷새 차례로 채웠어요.', ok: fin(w.r5) && w.r5 > 0},
     {t: '20거래일 동안 오름', s: '20거래일 동안 ' + (fin(w.r20) ? won(w.r20) + '이 됐어요.' : NEED), ok: fin(w.r20) && w.r20 > 0},
     {t: '업종마다 둘까지', s: '한 업종에서 둘까지만 골라요. ' + c.ind + ' 업종은 일곱 가운데 ' + sameInd + '곳이에요.', ok: sameInd <= 2},
     calm, opens];
   if (k === 'moneyNext') return [base,
     {t: '업종이 시장보다 더 오름', s: c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + '만큼 더 갔어요.', ok: fin(w.indX)},
-    w.how === 'rank' ? {t: '돈이 몰리는 일곱 바로 아래 업종', s: '시장보다 더 오른 업종 차례로 ' + w.rank + '번째 업종이에요(8 ~ 14째).', ok: fin(w.rank) && w.rank >= 8}
+    w.how === 'rank' ? {t: '돈이 몰리는 일곱 바로 아래 업종', s: '시장보다 더 오른 업종 차례로 ' + ord(w.rank) + ' 업종이에요(8 ~ 14째).', ok: fin(w.rank) && w.rank >= 8}
       : {t: '일곱 밖 업종에서 닷새 차례', s: '일곱 바로 아래 업종이 모자라, 일곱 밖 업종마다 닷새 동안 회사 크기가 가장 많이 는 곳으로 채웠어요.', ok: true},
     {t: '업종마다 하나', s: c.ind + ' 업종 365곳 가운데 회사 크기가 가장 많이 는 한 곳만 골라요.', ok: true},
     {t: '회사 크기가 원으로 늚', s: (w.how === 'rank' ? '20거래일' : '닷새') + ' 동안 회사 크기가 ' + eok(w.gain) + ' 늘었어요.', ok: fin(w.gain) && w.gain > 0},
@@ -105,13 +111,13 @@ function facts(X) {
   const out = {
     /* 기 */
     core: {t: '가장 큰 까닭', s: why21(c, k, T)},
-    rank: i >= 0 ? {t: '일곱 가운데 자리', s: kn + ' 일곱 가운데 ' + (i + 1) + '번째로 이름이 올라 있어요.'} : null,
+    rank: i >= 0 ? {t: '일곱 가운데 자리', s: kn + ' 일곱 가운데 ' + ord(i + 1) + '로 이름이 올라 있어요.'} : null,
     days: fin(c.days) ? {t: '며칠째', s: day(c.found) + '에 이 묶음에서 처음 발견됐고, 오늘(' + day(a.board) + ')로 장이 열린 날 ' + c.days + '일째예요.' + (c.since ? ' 기록 첫날부터 이어져 그 앞은 셀 수 없어요.' : '')} : null,
     r20: fin(c.ch20) ? {t: '20거래일 움직임', s: day(c.date) + '까지 20거래일 동안 ' + won(c.ch20) + '이 됐어요.'} : st ? {t: '20거래일 움직임', s: '20거래일 동안 ' + won(st.r20) + '이 됐어요.'} : null,
     ind: k === 'hot' && fin(w.ind20) ? {t: '업종 평균', s: c.ind + ' 업종 365곳 평균은 20거래일 동안 ' + won(w.ind20) + '이 됐어요.'} : X.indCh20 != null ? {t: '업종 평균', s: c.ind + ' 업종 365곳 다섯 회사의 평균은 20거래일 동안 ' + won(X.indCh20) + '이 됐어요.'} : null,
     mkt: fin(c.x) ? {t: '시장과 견줌', s: '한 달 동안 시장보다 ' + sgn(c.x) + '만큼 ' + (c.x >= 0 ? '더 갔어요.' : '덜 갔어요.')} : null,
     r5: st ? {t: '닷새 움직임', s: '닷새 동안은 ' + won(st.r5) + '이 됐어요.'} : null,
-    fomo: fin(c.fomo) ? {t: '포모지수', s: '포모지수는 ' + c.fomo + '예요. 50이 이 회사의 보통 때이고, 100에 가까울수록 요즘 열흘 값이 뜨거워요.'} : null,
+    fomo: fin(c.fomo) ? {t: '포모지수', s: '포모지수는 ' + cop(c.fomo) + '. 50이 이 회사의 보통 때이고, 100에 가까울수록 요즘 열흘 값이 뜨거워요.'} : null,
     price: fin(c.close) ? {t: '마지막 값', s: day(c.date) + ' 마지막 값은 ' + num(c.close) + '원이에요.'} : null,
     both: (c.in ?? []).length > 1 ? {t: '두 목록', s: (c.in ?? []).filter(x => x !== k).map(x => KIND[x]).join(' · ') + ' 목록에도 함께 들었어요.'} : null,
     /* 승 */
@@ -128,8 +134,8 @@ function facts(X) {
     updays: st ? {t: '오른 날 수', s: '20거래일 가운데 ' + st.up + '일 오르고 ' + st.down + '일 내렸어요.'} : null,
     best: st ? {t: '가장 크게 오른 날', s: '20거래일 가운데 가장 크게 오른 날은 하루에 ' + won(st.best) + '이 됐어요.'} : null,
     news: c.news && fin(c.news.newsCount) ? {t: '뉴스', s: '닷새 동안 뉴스 ' + c.news.newsCount + '건, 이 회사 이름이 나온 뉴스 ' + (fin(c.news.newsNamed) ? c.news.newsNamed : 0) + '건이 있었어요.'} : null,
-    peers: peers && peersUp != null ? {t: '같은 업종 회사', s: '같은 업종 365곳 다섯 회사 가운데 ' + peersUp + '곳이 20거래일 동안 올랐어요.'} : null,
-    peerRank: peerRank ? {t: '업종 안 차례', s: '같은 업종 다섯 회사 가운데 20거래일 동안 오른 차례로 ' + peerRank + '번째예요.'} : null,
+    peers: peers && peersUp != null ? {t: '같은 업종 회사', s: '같은 업종 365곳 다섯 회사 가운데 ' + (peersUp ? peersUp + '곳이 20거래일 동안 올랐어요.' : '20거래일 동안 오른 곳이 한 곳도 없어요.')} : null,
+    peerRank: peerRank ? {t: '업종 안 차례', s: '같은 업종 다섯 회사 가운데 20거래일 동안 오른 차례로 ' + ord(peerRank) + '예요.'} : null,
     /* 전 */
     edge: k === 'hot' || k === 'hotNext' ? (fin(hot7) && fin(c.ch20) ? {t: '일곱째와 견줌', s: '불장 일곱의 일곱째는 20거래일 동안 ' + won(hot7) + '이 됐어요. 이 회사는 ' + won(c.ch20) + '이에요.'} : null)
       : k === 'bloom' ? (fin(w.indX) ? {t: '꽃 선까지', s: '업종이 시장보다 15 넘게 앞서면 꽃 선이에요. 지금 ' + sgn(w.indX) + '만큼이라 ' + (w.indX >= 15 ? '넘었어요.' : n1(15 - w.indX) + '만큼 남았어요.')} : null)
@@ -150,19 +156,23 @@ function facts(X) {
       : {hot: fin(T?.counts?.hotPool) ? {t: '고른 바탕', s: '불장 업종 ' + T.counts.hotInds + '곳의 회사 ' + T.counts.hotPool + '곳 가운데에서 골랐어요.'} : null,
         bloom: fin(T?.counts?.bloomPool) ? {t: '고른 바탕', s: '크기 위 20 안인 싹 ' + T.counts.bloomPool + '곳 가운데에서 골랐어요. 꽃 선을 넘은 곳은 ' + (T.counts.bloomFull ?? 0) + '곳이에요.'} : null,
         money: {t: '고른 바탕', s: '시장보다 더 오른 업종을 차례로 보며 업종마다 한 곳씩 골랐어요.'}}[k] ?? null,
-    sales: co?.grow?.ind && fin(co.grow.ind.rank) && fin(co.grow.ind.n) ? {t: '업종 안 매출 크기', s: co.grow.ind.name + ' 업종 ' + co.grow.ind.n + '곳 가운데 매출 크기는 ' + co.grow.ind.rank + '번째예요.'} : null,
-    pbr: fin(co?.pbr) ? {t: '값과 장부', s: '주식 값이 회사 장부 값의 ' + n1(co.pbr) + '배예요.'} : null,
+    sales: co?.grow?.ind && fin(co.grow.ind.rank) && fin(co.grow.ind.n) ? {t: '업종 안 매출 크기', s: co.grow.ind.name + ' 업종 ' + co.grow.ind.n + '곳 가운데 매출 크기는 ' + ord(co.grow.ind.rank) + '예요.'} : null,
+    pbr: fin(co?.pbr) ? {t: '값과 장부', s: '주식 값이 회사 장부 값의 ' + num(Math.round(co.pbr * 100) / 100) + '배예요.'} : null,
     /* 결 */
     sum: {t: '한 줄 정리', s: josa(c.name, '은') + ' ' + {hot: '업종이 불장이고 그 안에서 많이 올라', hotNext: '불장 업종 안에서 일곱 바로 아래까지 올라와', money: '업종이 시장보다 앞서고 그 안에서 회사 크기가 가장 많이 늘어',
       moneyNext: '돈이 몰리는 일곱 바로 아래 업종에서 회사 크기가 가장 많이 늘어', bloom: '업종은 앞서는데 회사는 아직 덜 간 싹이라', bloomNext: '아직 싹인데 닷새 동안 시장보다 앞서기 시작해'}[k] + ' ' + kn + ' 일곱에 들었어요.'},
     watch: {t: '볼 것 하나', s: {hot: '다음 장에도 업종 평균이 오르는지 보세요.', hotNext: '불장 일곱 안으로 들어오는지 보세요.', money: '회사 크기가 계속 느는지 보세요.',
       moneyNext: '업종이 돈이 몰리는 일곱 안으로 들어오는지 보세요.', bloom: '업종이 시장보다 15 넘게 앞서 꽃 선을 넘는지 보세요.', bloomNext: '닷새 앞섬이 이어져 한 달 앞섬이 5에 가까워지는지 보세요.'}[k]},
     route: KIND_ROUTE[c.kind] ? {t: '우량주에 든 길', s: KIND_ROUTE[c.kind] + ' 우량주 365곳에 들었어요.'} : null,
-    op: fm && fin(fm.f.op?.[fm.i]) ? {t: '영업이익', s: fm.y + '년 영업이익은 ' + eok(fm.f.op[fm.i]) + (fin(fm.f.net?.[fm.i]) ? ', 순이익은 ' + eok(fm.f.net[fm.i]) : '') + '이에요.'} : null,
-    opTrend: fm && fm.i >= 1 && fin(fm.f.op?.[fm.i - 1]) && fin(fm.f.op?.[fm.i]) ? {t: '이익 흐름', s: '영업이익이 ' + String(fm.f.years[fm.i - 1]).slice(0, 4) + '년 ' + eok(fm.f.op[fm.i - 1]) + '에서 ' + fm.y + '년 ' + eok(fm.f.op[fm.i]) + '으로 ' + (fm.f.op[fm.i] >= fm.f.op[fm.i - 1] ? '늘었어요.' : '줄었어요.')} : null,
-    rev: fm && fin(fm.f.rev?.[fm.i]) ? {t: '매출', s: fm.y + '년 매출은 ' + eok(fm.f.rev[fm.i]) + '이에요.'} : null,
-    roe: fm && fin(fm.f.roe?.[fm.i]) ? {t: '자기자본이익', s: '자기 돈 100원으로 ' + fm.y + '년에 ' + n1(fm.f.roe[fm.i]) + '원의 이익을 냈어요(자기자본이익).'} : null,
-    debt: fm && fin(fm.f.debt?.[fm.i]) ? {t: '빚', s: '빚은 자기 돈 100원에 ' + n1(fm.f.debt[fm.i]) + '원이에요.'} : null,
+    op: fm && fin(fm.f.op?.[fm.i]) ? {t: '영업이익', s: fm.y + '년 영업이익은 ' + (fin(fm.f.net?.[fm.i]) ? eokS(fm.f.op[fm.i]) + ', 순이익은 ' + cop(eokS(fm.f.net[fm.i])) : cop(eokS(fm.f.op[fm.i]))) + '.'} : null,
+    opTrend: fm && fm.i >= 1 && fin(fm.f.op?.[fm.i - 1]) && fin(fm.f.op?.[fm.i]) ? {t: '이익 흐름', s: (() => {
+      const a = fm.f.op[fm.i - 1], b = fm.f.op[fm.i], ya = String(fm.f.years[fm.i - 1]).slice(0, 4) + '년 ', yb = fm.y + '년 ';
+      if (a < 0 && b < 0) return '영업이익 적자가 ' + ya + eok(-a) + '에서 ' + yb + eok(-b) + '으로 ' + (-b > -a ? '커졌어요.' : '줄었어요.');
+      if (a >= 0 && b >= 0) return '영업이익이 ' + ya + eok(a) + '에서 ' + yb + eok(b) + '으로 ' + (b >= a ? '늘었어요.' : '줄었어요.');
+      return '영업이익이 ' + ya + eokS(a) + '에서 ' + yb + eokS(b) + '로 바뀌었어요.'; })()} : null,
+    rev: fm && fin(fm.f.rev?.[fm.i]) ? {t: '매출', s: fm.y + '년 매출은 ' + cop(eok(fm.f.rev[fm.i])) + '.'} : null,
+    roe: fm && fin(fm.f.roe?.[fm.i]) ? {t: '자기자본이익', s: '자기 돈 100원으로 ' + fm.y + '년에 ' + (fm.f.roe[fm.i] >= 0 ? n1(fm.f.roe[fm.i]) + '원의 이익을 냈어요(자기자본이익).' : n1(-fm.f.roe[fm.i]) + '원을 잃었어요(자기자본이익이 0 아래).')} : null,
+    debt: fm && fin(fm.f.debt?.[fm.i]) ? {t: '빚', s: '빚은 자기 돈 100원에 ' + cop(n1(fm.f.debt[fm.i]) + '원') + '.'} : null,
     biz: typeof cc.products === 'string' && cc.products ? {t: '하는 일', s: cc.products + ' 일을 하는 회사예요.'} : null,
     market: cc.market === 'KOSPI' || cc.market === 'KOSDAQ' ? {t: '시장', s: (cc.market === 'KOSPI' ? '코스피' : '코스닥') + '에 올라 있는 회사예요.'} : null,
     stop: {t: '사기 전에', s: '사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.'},
@@ -203,11 +213,11 @@ export function why36(X) {
 /* ═══ 포모지수 — 소거 기준 일곱 · 까닭 열하나(su21-why.json 그대로) ═══ */
 const FEAT_SAY = {
   return10: (v, s) => '열흘 동안 ' + won(100 * (Math.exp(v) - 1)) + '이 됐어요. 10만 길 가운데 이보다 덜 오른 길이 100번에 ' + Math.round(s) + '번꼴이에요.',
-  acceleration: (v, s) => '뒤 닷새가 앞 닷새보다 ' + (v >= 0 ? '더 올랐어요' : '덜 올랐어요') + '(차이 ' + n1(Math.abs(100 * v)) + '만큼). 10만 길 가운데 자리는 ' + Math.round(s) + '이에요.',
-  upDays: (v, s) => '열흘 가운데 ' + Math.round(v * 10) + '일 올랐어요. 10만 길 가운데 자리는 ' + Math.round(s) + '이에요.',
-  maGap: (v, s) => '지금 값이 20일 평균보다 ' + n1(Math.abs(100 * v)) + '만큼 ' + (v >= 0 ? '높아요' : '낮아요') + '. 10만 길 가운데 자리는 ' + Math.round(s) + '이에요.',
-  breakout: (v, s) => '직전 60일 가장 높은 값보다 ' + (v >= 0 ? n1(100 * v) + '만큼 위예요' : n1(Math.abs(100 * v)) + '만큼 아래예요') + '. 10만 길 가운데 자리는 ' + Math.round(s) + '이에요.',
-  upVariation: (v, s) => '열흘 움직임 가운데 오른 날 몫이 100에 ' + Math.round(100 * v) + '이에요. 10만 길 가운데 자리는 ' + Math.round(s) + '이에요.'};
+  acceleration: (v, s) => '뒤 닷새가 앞 닷새보다 ' + (v >= 0 ? '더 올랐어요' : '덜 올랐어요') + '(차이 ' + n1(Math.abs(100 * v)) + '만큼). 10만 길 가운데 자리는 ' + cop(Math.round(s)) + '.',
+  upDays: (v, s) => '열흘 가운데 ' + Math.round(v * 10) + '일 올랐어요. 10만 길 가운데 자리는 ' + cop(Math.round(s)) + '.',
+  maGap: (v, s) => '지금 값이 20일 평균보다 ' + n1(Math.abs(100 * v)) + '만큼 ' + (v >= 0 ? '높아요' : '낮아요') + '. 10만 길 가운데 자리는 ' + cop(Math.round(s)) + '.',
+  breakout: (v, s) => '직전 60일 가장 높은 값보다 ' + (v >= 0 ? n1(100 * v) + '만큼 위예요' : n1(Math.abs(100 * v)) + '만큼 아래예요') + '. 10만 길 가운데 자리는 ' + cop(Math.round(s)) + '.',
+  upVariation: (v, s) => '열흘 움직임 가운데 오른 날 몫이 100에 ' + cop(Math.round(100 * v)) + '. 10만 길 가운데 자리는 ' + cop(Math.round(s)) + '.'};
 export function fomo11(F, why) {
   if (!F || F.verdict !== 'pass' || !fin(F.v)) return null;
   const G = Object.fromEntries((F.groups ?? []).map(g => [g.id, g])), FL = Object.fromEntries((why?.feats ?? []).map(f => [f.id, f.label]));
@@ -217,7 +227,7 @@ export function fomo11(F, why) {
     {t: '추세 묶음 ' + Math.round(G.trend?.score ?? NaN), s: '오르는 힘(열흘 상승 · 가속 · 오른 날 비중)을 무게대로 합친 점수예요.'},
     {t: '가격 위치 묶음 ' + Math.round(G.place?.score ?? NaN), s: '값의 자리(20일 평균 이격 · 60일 고점 돌파 · 오른 날 움직임 몫)를 무게대로 합친 점수예요.'},
     ...(F.f ?? []).map(f => ({t: (FL[f.id] ?? f.id) + ' ' + Math.round(f.score), s: FEAT_SAY[f.id] ? FEAT_SAY[f.id](f.act, f.score) : ''})),
-    {t: '무게', s: '같은 묶음에서 서로 많이 닮은 잣대는 무게를 줄였어요. 가장 크게 끌어당긴 잣대는 「' + (FL[top?.id] ?? NEED) + '」예요.'},
+    {t: '무게', s: '같은 묶음에서 서로 많이 닮은 잣대는 무게를 줄였어요. 가장 크게 끌어당긴 잣대는 ' + cop('「' + (FL[top?.id] ?? NEED) + '」') + '.'},
     {t: '바탕', s: (ymd(F.base?.from) ?? NEED) + '부터 ' + (ymd(F.base?.to) ?? NEED) + '까지 하루 움직임 ' + F.base?.n + '날에서 마구 뽑았어요(' + day(F.asOf) + ' 종가까지). '
       + (fin(F.se) && F.se < 0.1 ? '다시 세어도 값이 0.1보다 적게 흔들려요.' : '다시 세어도 값이 ' + n1(F.se) + ' 안에서 흔들려요.')}];
   return rows.slice(0, 11);
