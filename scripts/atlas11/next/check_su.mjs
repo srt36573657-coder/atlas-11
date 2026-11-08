@@ -522,6 +522,10 @@ for (const width of [390, 360, 320]) {
   check(codes.every(c => F[c] && Array.isArray(F[c].checks) && F[c].checks.length === 7 && (F[c].verdict === 'pass' ? Number.isInteger(F[c].v) && F[c].v >= 0 && F[c].v <= 100 && F[c].se <= 0.5 && F[c].paths >= 20000 && F[c].f?.length === 6 : F[c].v === null)), '⑰ 회사마다 포모 — 기준 일곱 · 통과면 0 ~ 100 · 흔들림 0.5 안 · 잣대 여섯', JSON.stringify(codes.filter(c => !F[c]).slice(0, 5)));
   check(all.every(c => (F[c.code]?.verdict === 'pass' ? c.fomo === F[c.code].v : c.fomo === null) && c.fv === (F[c.code]?.verdict ?? 'hold')), '⑰ 42칸 포모지수 = 포모 자료', '');
   const passN = codes.filter(c => F[c]?.verdict === 'pass').length;
+  if (/^https:/.test(base)) { // 진짜 사이트 — 올릴 때 굴린 종가로 셈(미리 보기 묶음은 종가를 굴리지 않아 옛 자료 · 그때는 묶음 꼴만 봄)
+    check(T21.days?.from < board && all.some(c => c.days > 1), '⑰ 진짜 사이트 — 지난 판 기록으로 센 며칠째(기록 첫날 < 오늘 판 · 2일째 넘는 칸 있음)', JSON.stringify(T21.days ?? null).slice(0, 120));
+    check(WHY?.data === board && passN >= Math.ceil(codes.length * 0.8), '⑰ 진짜 사이트 — 포모 자료 날 = 오늘 판 · 열에 여덟 넘게 통과', `${WHY?.data} · ${passN}/${codes.length}`);
+  }
   R.m.why = {board, cells: all.length, codes: codes.length, fomoPass: passN, days: Object.fromEntries(all.map(c => [c.k + ' ' + c.code, [c.days, c.found, c.fomo]])), daysFrom: T21.days?.from ?? null};
   const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
   const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
