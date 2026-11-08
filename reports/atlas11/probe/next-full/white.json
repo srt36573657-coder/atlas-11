@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-08T12:34:57.785Z",
+ "at": "2026-11-08T14:58:07.832Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -10,14 +10,14 @@
  "fails": [],
  "m": {
   "first": {
-   "bodyLum": 0.0034053699055348395,
+   "bodyLum": 1,
    "chars": 124,
    "blocks": {
-    "ess": 5792,
+    "ess": 5560,
     "find": 776,
-    "today": 3761,
-    "gdr": 5086,
-    "all": 5522
+    "today": 3641,
+    "gdr": 4908,
+    "all": 5319
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -199,8 +199,8 @@
     "ask": true
    },
    "theme": null,
-   "bodyHex": "#0C081D",
-   "inkHex": "#F2EFF9",
+   "bodyHex": "#FFFFFF",
+   "inkHex": "#1D1D1F",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -214,14 +214,14 @@
    "errs": []
   },
   "back": {
-   "bodyLum": 0.0034053699055348395,
+   "bodyLum": 1,
    "chars": 124,
    "blocks": {
-    "ess": 5669,
+    "ess": 5436,
     "find": 776,
-    "today": 3761,
-    "gdr": 5086,
-    "all": 5522
+    "today": 3641,
+    "gdr": 4908,
+    "all": 5319
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -403,8 +403,8 @@
     "ask": true
    },
    "theme": null,
-   "bodyHex": "#0C081D",
-   "inkHex": "#F2EFF9",
+   "bodyHex": "#FFFFFF",
+   "inkHex": "#1D1D1F",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -727,8 +727,8 @@
    }
   },
   "speed": {
-   "lcp": 1276,
-   "inp": 64,
+   "lcp": 1248,
+   "inp": 56,
    "cls": 0.003
   }
  },

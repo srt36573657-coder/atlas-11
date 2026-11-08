@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T12:33:39.517Z",
+ "at": "2026-11-08T14:57:09.773Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 760,
+  "pass": 779,
   "fail": 0
  },
  "fails": [],
@@ -45,7 +45,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "땅 지도",
@@ -180,9 +180,9 @@
    }
   },
   "speed": {
-   "lcp": 1164,
+   "lcp": 1220,
    "cls": 0.121,
-   "pic": 1524
+   "pic": 1606
   },
   "white": {
    "light #/": {
@@ -411,7 +411,7 @@
   },
   "old": {
    "light /next/?su=hot#/surge": {
-    "cls": "m4 white space su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -426,9 +426,9 @@
     "lowN": 0
    },
    "light /next/?su=stop#/sage": {
-    "cls": "m4 white space pg-sage su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped pg-sage",
     "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
     "top": "rgb(255, 255, 255)",
     "bar": "rgb(255, 255, 255)",
     "frame": "normal",
@@ -441,9 +441,9 @@
     "lowN": 0
    },
    "light /next/?su=guide#/roman": {
-    "cls": "m4 white space pg-roman su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped pg-roman",
     "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
     "top": "rgb(255, 255, 255)",
     "bar": "rgb(255, 255, 255)",
     "frame": "normal",
@@ -456,7 +456,7 @@
     "lowN": 0
    },
    "light /next/?su=stop#/why": {
-    "cls": "m4 white space pg-why su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped pg-why",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -471,7 +471,7 @@
     "lowN": 0
    },
    "light /next/?su=guide#/": {
-    "cls": "m4 white home space su-wrapped su-jobs",
+    "cls": "m4 white home space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -486,7 +486,7 @@
     "lowN": 0
    },
    "light /next/?su=back#/jinhwa": {
-    "cls": "m4 white space su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -501,7 +501,7 @@
     "lowN": 0
    },
    "light /hello.html?su=guest": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -516,7 +516,7 @@
     "lowN": 0
    },
    "light /letter.html?su=guest": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -531,7 +531,7 @@
     "lowN": 0
    },
    "light /invite.html?su=guest": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -546,7 +546,7 @@
     "lowN": 0
    },
    "light /su/privacy.html": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -561,7 +561,7 @@
     "lowN": 0
    },
    "dark /next/?su=hot#/surge": {
-    "cls": "m4 white space su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -576,9 +576,9 @@
     "lowN": 0
    },
    "dark /next/?su=stop#/sage": {
-    "cls": "m4 white space pg-sage su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped pg-sage",
     "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
     "top": "rgb(255, 255, 255)",
     "bar": "rgb(255, 255, 255)",
     "frame": "normal",
@@ -591,9 +591,9 @@
     "lowN": 0
    },
    "dark /next/?su=guide#/roman": {
-    "cls": "m4 white space pg-roman su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped pg-roman",
     "body": "rgb(255, 255, 255)",
-    "view": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
     "top": "rgb(255, 255, 255)",
     "bar": "rgb(255, 255, 255)",
     "frame": "normal",
@@ -606,7 +606,7 @@
     "lowN": 0
    },
    "dark /next/?su=stop#/why": {
-    "cls": "m4 white space pg-why su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped pg-why",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -621,7 +621,7 @@
     "lowN": 0
    },
    "dark /next/?su=guide#/": {
-    "cls": "m4 white home space su-wrapped su-jobs",
+    "cls": "m4 white home space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -636,7 +636,7 @@
     "lowN": 0
    },
    "dark /next/?su=back#/jinhwa": {
-    "cls": "m4 white space su-wrapped su-jobs",
+    "cls": "m4 white space su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": "rgb(255, 255, 255)",
     "top": "rgb(255, 255, 255)",
@@ -651,7 +651,7 @@
     "lowN": 0
    },
    "dark /hello.html?su=guest": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -666,7 +666,7 @@
     "lowN": 0
    },
    "dark /letter.html?su=guest": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -681,7 +681,7 @@
     "lowN": 0
    },
    "dark /invite.html?su=guest": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -696,7 +696,7 @@
     "lowN": 0
    },
    "dark /su/privacy.html": {
-    "cls": "su-wrapped su-jobs",
+    "cls": "su-jobs su-wrapped",
     "body": "rgb(255, 255, 255)",
     "view": null,
     "top": null,
@@ -710,10 +710,325 @@
     "low": [],
     "lowN": 0
    },
-   "direct": {
-    "cls": "m4 white clock space pg-sage",
-    "css": false,
-    "bar": false
+   "direct light /next/#/surge": {
+    "cls": "m4 white space su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.01,
+    "darkSel": "a.psurge-chip",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/sage": {
+    "cls": "m4 white space su-jobs pg-sage",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.047,
+    "darkSel": "button.sg-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/roman": {
+    "cls": "m4 white space su-jobs pg-roman",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.041,
+    "darkSel": "button.rm-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/why": {
+    "cls": "m4 white space su-jobs pg-why",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.05,
+    "darkSel": "button.wy-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/": {
+    "cls": "m4 white space su-jobs home",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.014,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /next/#/jinhwa": {
+    "cls": "m4 white space su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /hello.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.021,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /letter.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct light /invite.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": null
+   },
+   "direct light /privacy.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/surge": {
+    "cls": "m4 white space su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.01,
+    "darkSel": "a.psurge-chip",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/sage": {
+    "cls": "m4 white space su-jobs pg-sage",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.047,
+    "darkSel": "button.sg-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/roman": {
+    "cls": "m4 white space su-jobs pg-roman",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(253, 249, 245)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.041,
+    "darkSel": "button.rm-allb",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/why": {
+    "cls": "m4 white space su-jobs pg-why",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.05,
+    "darkSel": "button.wy-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/": {
+    "cls": "m4 white space su-jobs home",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.014,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /next/#/jinhwa": {
+    "cls": "m4 white space su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /hello.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.021,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /letter.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
+   },
+   "direct dark /invite.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": null
+   },
+   "direct dark /privacy.html": {
+    "cls": "su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": null,
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0,
+    "tabs": "rgb(255, 255, 255)"
    }
   }
  },
