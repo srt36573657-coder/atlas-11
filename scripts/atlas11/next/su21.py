@@ -75,7 +75,67 @@ for i in sorted([i for i in th['inds'] if i.get('x') is not None and i['x'] > 0]
         MONEY.append(g[0][1]); mrow[g[0][1]] = (i, round(g[0][0]))
     if len(MONEY) == 7: break
 
-lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY}
+# ④ 될 듯 셋(주문 1103 · 사장님 2026-11-08 11:03 「불장이 될듯 한 종목 7개 · 돈이 몰릴듯 한 종목 7개 · 싹에서 꽃이 될듯 한 7개 추가하자」 · 11:08 「응」)
+#   지난 1년(su_next_past.py · reports/atlas11/su-next/past.json)에 날마다 똑같이 대어 한 달 안에 그렇게 된 일이 가장 많은 셈 + 일곱이 안 되면 다음 셈으로 채움
+#   불장이 될 듯(H5) = 불장 업종 안 20거래일 차례 8 ~ 14째(일곱 바로 아래) → 모자라면 닷새 막 오르기 시작한 곳(업종도 닷새 오름 · 닷새 큰 순)
+#   돈이 몰릴 듯(M4) = 돈이 몰리는 일곱 바로 아래 업종(8 ~ 14째)마다 회사 크기가 가장 많이 는 곳 → 모자라면 일곱 밖 업종마다 닷새 동안 가장 많이 는 곳
+#   꽃이 될 듯(B5) = 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음) 가운데 닷새 시장보다 2 넘게 앞서고 20거래일 오른 곳 → 모자라면 크기 위 20 안 싹을 닷새 차례로
+CL = {}
+for c, v in B.items():
+    l = v.get('c')
+    if isinstance(l, list) and len(l) == 21 and all(isinstance(x, (int, float)) and x > 0 for x in l) and not any(abs(q / p - 1) >= 0.35 for p, q in zip(l, l[1:])): CL[c] = l
+R20 = {c: l[-1] / l[0] - 1 for c, l in CL.items()}; R5 = {c: l[-1] / l[-6] - 1 for c, l in CL.items()}
+avg = lambda xs: sum(xs) / len(xs) if xs else None
+M20, M5 = avg(list(R20.values())), avg(list(R5.values()))
+INDS = collections.defaultdict(list)
+for c in CL: INDS[B[c]['group']['label']].append(c)
+I5 = {i: avg([R5[c] for c in cs]) for i, cs in INDS.items()}
+ok_n = lambda c: c in CL and c not in late and opens(c)
+def per2k(lst, k=7, per=2):
+    out, cnt = [], collections.Counter()
+    for c in lst:
+        if c in out: continue
+        g = B[c]['group']['label']
+        if cnt[g] >= per: continue
+        cnt[g] += 1; out.append(c)
+        if len(out) == k: break
+    return out
+hot14 = per2(f1, k=14)
+h_main = [c for c in hot14 if c not in HOT and c in CL]
+h_fill = sorted([c for c in CL if ok_n(c) and c not in HOT and R5[c] > 0 and R20[c] > 0 and (I5.get(B[c]['group']['label']) or 0) > 0], key=lambda c: (-R5[c], c))
+HOTN = per2k(h_main + h_fill)
+hrow = {c: ('rank', hot14.index(c) + 1) if c in h_main else ('five', None) for c in HOTN}
+def gain5(c):
+    l = (MK.get(c) or {}).get('l') or []
+    if len(l) != 21 or not cap.get(c) or any(x is None or x <= 0 for x in l): return None
+    if any(abs(q / p - 1) >= 0.35 for p, q in zip(l, l[1:])): return None
+    return cap[c] * (1 - l[-6] / l[-1])
+MONEYN, mnrow, seen, rank_inds = [], {}, 0, set()
+for i in sorted([i for i in th['inds'] if i.get('x') is not None and i['x'] > 0], key=lambda i: -i['x']):
+    g = sorted([(gain(c), c) for c in B if MK.get(c, {}).get('i') == i['n'] and gain(c) is not None and opens(c)], key=lambda t: (-t[0], t[1]))
+    if g and g[0][0] > 0:
+        seen += 1
+        if seen > 7 and g[0][1] not in MONEY: MONEYN.append(g[0][1]); mnrow[g[0][1]] = ('rank', i, round(g[0][0]), seen); rank_inds.add(i['n'])
+    if len(MONEYN) == 7 or seen >= 14: break
+top7 = {mrow[c][0]['n'] for c in MONEY}
+fill = []
+for i in th['inds']:
+    if i['n'] in top7 or i['n'] in rank_inds: continue
+    g = sorted([(gain5(c), c) for c in B if MK.get(c, {}).get('i') == i['n'] and gain5(c) is not None and opens(c) and c not in MONEY and c not in MONEYN], key=lambda t: (-t[0], t[1]))
+    if g and g[0][0] > 0: fill.append((g[0][0], g[0][1], i))
+for gn, c, i in sorted(fill, key=lambda t: (-t[0], t[1])):
+    if len(MONEYN) == 7: break
+    MONEYN.append(c); mnrow[c] = ('five', i, round(gn), None)
+X20 = {c: R20[c] - M20 for c in CL}; X5 = {c: R5[c] - M5 for c in CL}
+sprN = [c for c in CL if ok_n(c) and X20[c] < 0.05 and X5[c] >= 0 and c not in BLOOM]
+b_main = sorted([c for c in sprN if X5[c] >= 0.02 and R20[c] > 0], key=lambda c: (-X5[c], c))
+b_fill = sorted([c for c in sprN if (cap.get(c) or 0) >= thr], key=lambda c: (-X5[c], c))
+BLOOMN = per2k(b_main + b_fill)
+try: PAST = J(A.repo + '/reports/atlas11/su-next/past.json')
+except Exception: PAST = None
+
+lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN}
+NOW3 = ('hot', 'bloom', 'money')
 inl = collections.defaultdict(list)
 for k, L in lists.items():
     for c in L: inl[c].append(k)
@@ -94,27 +154,43 @@ def item(c, k):
         co['why'] = {'ind20': r1(h['change20'] * 100), 'from': h['from'], 'to': h['to'], 'up': h['up'], 'measured': h['measured']}
     elif k == 'bloom':
         co['why'] = {'indX': ix(c), 'full': c in full, 'line': 15, 'capTop20': thr}
-    else:
+    elif k == 'money':
         i, gn = mrow[c]
         co['why'] = {'indX': i['x'], 'gain': gn, 'lead': i.get('lead')}
+    elif k == 'hotNext':
+        how, rk = hrow[c]
+        co['why'] = {'how': how, 'rank': rk, 'r20': r1(R20[c] * 100), 'r5': r1(R5[c] * 100), 'ind5': r1((I5.get(ind) or 0) * 100), 'hot7': r1(B[HOT[-1]]['change20'] * 100) if HOT else None}
+    elif k == 'moneyNext':
+        how, i, gn, rk = mnrow[c]
+        co['why'] = {'how': how, 'rank': rk, 'indX': i.get('x'), 'gain': gn}
+    else:
+        co['why'] = {'how': 'main' if c in b_main else 'cap', 'x20': r1(X20[c] * 100), 'x5': r1(X5[c] * 100), 'r20': r1(R20[c] * 100), 'capTop20': thr}
     return co
 
 out = {
-    'schema': 'su21-1', 'made': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
+    'schema': 'su21-2', 'made': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
     'asOf': {'board': b['asOf'], 'data': th['asOf'], 'mkt': mkt.get('asOf'), 'cond': cond.get('asOf')},
     'src': {'price': SRC_P, 'board': '/data/atlas11/view/board.json', 'theme': '/next/data/theme.json · theme-co.json', 'cap': '/atlas/data/cond.json', 'mkt': '/atlas/data/mkt.json'},
     'counts': {'listed': mkt.get('n'), 'listedWhat': '코스피 · 코스닥 보통주', 'b365': len(B), 'kinds': dict(collections.Counter(v.get('kind') for v in B.values())),
-               'markets': None, 'hotInds': len(hot), 'hotPool': len(f1), 'bloomPool': len(spr), 'bloomFull': len(full), 'late': len(late)},
+               'markets': None, 'hotInds': len(hot), 'hotPool': len(f1), 'bloomPool': len(spr), 'bloomFull': len(full), 'late': len(late),
+               'hotNextRank': len(h_main), 'moneyNextRank': len([c for c in MONEYN if mnrow[c][0] == 'rank']), 'bloomNextMain': len([c for c in BLOOMN if c in b_main]), 'sproutN': len(sprN)},
     'rules': {'b365': '두 해 잇달아 이익 · 자기자본이익 5 넘게 · 빚 150 아래(금융은 빚 셈 빼고) · 업종마다 5곳 · 73업종 · 2026년 10월 5일에 정한 판(n365-v1)',
               'hot': '불장 업종(지난 20거래일 365곳 업종 평균이 오른 업종) 안에서 20거래일 동안 가장 많이 오른 차례 · 업종마다 둘까지 · 값이 늦은 회사는 뺌',
               'bloom': '싹(시장보다 앞선 만큼 아직 5 아래 · 닷새 동안 뒤지지 않음)이고 회사 크기가 위 20 안 · 업종이 시장보다 많이 앞선 차례(꽃 선 15)',
-              'money': '한 달 동안 시장보다 더 오른 업종 차례로 · 업종마다 20거래일 동안 회사 크기가 원으로 가장 많이 는 회사 하나'},
+              'money': '한 달 동안 시장보다 더 오른 업종 차례로 · 업종마다 20거래일 동안 회사 크기가 원으로 가장 많이 는 회사 하나',
+              'hotNext': '불장 업종 안에서 20거래일 동안 오른 차례가 8 ~ 14째인 곳(불장 일곱 바로 아래 · 업종마다 둘) · 모자라면 닷새 동안 막 오르기 시작한 곳',
+              'moneyNext': '돈이 몰리는 일곱 바로 아래 업종(8 ~ 14째)마다 20거래일 동안 회사 크기가 가장 많이 는 곳 · 모자라면 일곱 밖 업종마다 닷새 동안 가장 많이 는 곳',
+              'bloomNext': '싹 가운데 닷새 동안 시장보다 2 넘게 앞서고 20거래일 동안 오른 곳 · 모자라면 회사 크기가 위 20 안인 싹을 닷새 차례로'},
+    'past': ({'from': PAST['from'], 'to': PAST['to'], 'days': PAST['days'], 'within': PAST['within'], 'universe': PAST['universe'], 'src': 'reports/atlas11/su-next/past.json',
+              'what': PAST['what'], **{g: {'n': v['picks'], 'hit': v['hits'], 'per100': round(v['per100']), 'base100': round(v['base100'])} for g, v in PAST['final'].items()}} if PAST else None),
     'lists': {k: [item(c, k) for c in L] for k, L in lists.items()},
-    'overlap': [{'code': c, 'name': nm(c), 'in': ks} for c, ks in inl.items() if len(ks) > 1],
-    'distinct': len(inl),
+    'overlap': [{'code': c, 'name': nm(c), 'in': [k for k in ks if k in NOW3]} for c, ks in inl.items() if len([k for k in ks if k in NOW3]) > 1],
+    'distinct': len([c for c, ks in inl.items() if any(k in NOW3 for k in ks)]),
+    'overlapNext': [{'code': c, 'name': nm(c), 'in': [k for k in ks if k not in NOW3]} for c, ks in inl.items() if len([k for k in ks if k not in NOW3]) > 1],
+    'distinctNext': len([c for c, ks in inl.items() if any(k not in NOW3 for k in ks)]),
     'lands': [{'id': G['id'], 'name': G['name'], 'say': G.get('say'),
                'inds': [{'name': g['label'], 'ch20': r1(g['change20'] * 100) if g.get('change20') is not None else None, 'hot': bool(g.get('hot')),
-                         'cos': [{'code': c, 'name': nm(c), 'kind': B[c].get('kind'), 'ch20': r1(B[c]['change20'] * 100) if B[c].get('change20') is not None else None, 'in': inl.get(c, [])}
+                         'cos': [{'code': c, 'name': nm(c), 'kind': B[c].get('kind'), 'ch20': r1(B[c]['change20'] * 100) if B[c].get('change20') is not None else None, 'in': [k for k in inl.get(c, []) if k in NOW3]}
                                  for c in g['codes'] if c in B]}
                         for g in b['groups'] if g['label'] in G['industries']]}
               for G in lands],

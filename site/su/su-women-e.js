@@ -11,6 +11,7 @@ export const CSS = '/su/su-women-e.css';
 const D = '/su/data/su21.json';
 const KEY = ['hot', 'bloom', 'money'];
 const KIND = {hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는'};
+const KINDN = {hot: '불장이 될 듯', bloom: '꽃이 될 듯', money: '돈이 몰릴 듯'}; // 될 듯 21곳(주문 1103 · #/n) — 아치 띠 세 말은 여인 셋의 이름이라 그대로
 const NEED = '확인 필요';
 const W = 390, H = 620;
 const fin = v => typeof v === 'number' && Number.isFinite(v);
@@ -25,7 +26,14 @@ export async function load(get, arg = null) { // arg(회사 번호)는 이 그�
 }
 
 /* ── 값 글(옛 21곳 그림과 같은 셈) ── */
-function valText(c, k) {
+const pct = x => (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(1) + '%';
+function valText(c, k, nx = false) {
+  if (nx) { // 될 듯 — 불장이 될 듯 = 20거래일 오른 만큼 · 돈이 몰릴 듯 = 늘어난 회사 크기 · 꽃이 될 듯 = 닷새 동안 시장보다 앞선 만큼(주문 1103)
+    const w = c?.why ?? {};
+    if (k === 'hot') return fin(w.r20) ? pct(w.r20) : NEED;
+    if (k === 'money') return fin(w.gain) ? (w.gain >= 0 ? '+' : '−') + NF.format(Math.abs(Math.round(w.gain))) + '억' : NEED;
+    return fin(w.x5) ? pct(w.x5) : NEED;
+  }
   if (k === 'hot') return fin(c?.ch20) ? (c.ch20 > 0 ? '+' : c.ch20 < 0 ? '−' : '') + Math.abs(c.ch20).toFixed(1) + '%' : NEED;
   if (k === 'money') { const g = c?.why?.gain; return fin(g) ? (g >= 0 ? '+' : '−') + NF.format(Math.abs(Math.round(g))) + '억' : NEED; }
   return c?.why?.full === true ? '꽃' : '싹';
@@ -359,11 +367,13 @@ function halo(cx, cy, r, hf) {
 /* ── 그림 ── */
 export function picture(d, opt = {}) {
   const id = 'we' + (++UID);
-  const lists = d?.lists ?? {};
+  const nx = opt?.mode === 'next', L0 = d?.lists ?? {}, KN = nx ? KINDN : KIND; // 될 듯 21곳(#/n)은 같은 세 여인에 될 듯 일곱씩
+  const lists = nx ? {hot: L0.hotNext, bloom: L0.bloomNext, money: L0.moneyNext} : L0;
   const ok = KEY.every(k => Array.isArray(lists[k]) && lists[k].length);
   const day = d?.asOf?.board ?? null;
   const svg = s('svg', {class: 'su-svg su-art4 su-women-e', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet',
-    'aria-label': ok ? '세 여인 그림 · 불장 ' + lists.hot.length + '곳 · 꽃이 될 ' + lists.bloom.length + '곳 · 돈이 몰리는 ' + lists.money.length + '곳' + (day ? ' · ' + day + ' 자료' : '') : '세 여인 그림 · 자료 ' + NEED});
+    'data-mode': nx ? 'next' : 'now',
+    'aria-label': ok ? '세 여인 그림 · ' + KN.hot + ' ' + lists.hot.length + '곳 · ' + KN.bloom + ' ' + lists.bloom.length + '곳 · ' + KN.money + ' ' + lists.money.length + '곳' + (day ? ' · ' + day + ' 자료' : '') : '세 여인 그림 · 자료 ' + NEED});
   /* 틀 자리 — 양옆 장식 판(폭 90 · 칸 테를 걷어 4 씩 좁힘) · 가운데 한 무대(아치 창 · 지난 판보다 10 넓음) · 아래 판 하나(맨 아래 8 단위는 꾸밈만) */
   const CL = 4, CR = 386, CW = 90, CT = 47, CB = 486, PT = 491, PB = 612, WL = CL + CW + 3, WR = CR - CW - 3, WS = 84, WT = 44, WX = (WL + WR) / 2, WRX = (WR - WL) / 2;
   const winD = `M${WL} ${CB}L${WL} ${WS}A${WRX} ${WS - WT} 0 0 1 ${WR} ${WS}L${WR} ${CB}Z`;
@@ -452,12 +462,12 @@ export function picture(d, opt = {}) {
     let9.append(s('text', {x: 195, y: 552, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: 'we-need', text: NEED}));
     return svg;
   }
-  const items = k => (lists[k] ?? []).slice(0, 7).map(c => ({k, code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k), star: Array.isArray(c.in) && c.in.length > 1}));
+  const items = k => (lists[k] ?? []).slice(0, 7).map(c => ({k, code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: Array.isArray(c.in) && c.in.filter(x => (nx ? ['hotNext', 'bloomNext', 'moneyNext'] : KEY).includes(x)).length > 1}));
   const tags = [], PAD = 4, INK = px => 0.42 * px, MIN = 60.8; // INK = 굵은 글 먹 반높이 어림 · MIN = 누름 자리 높이
   /** 이름 하나 — 누르는 자리 = 칸 전체(투명 · 높이 60 넘게) · 글은 판 위에 가운데 맞춤 · cyT = 글 덩이 가운데 · lhT = 줄 사이 · 빈 줄은 자리만 */
   const tag = (it, x0, y0, w, hh, L, cyT, lhT) => {
     const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'we-tag we-tag-' + it.k, 'data-k': it.k, 'data-name': it.name,
-      'aria-label': it.name + ' · ' + KIND[it.k] + ' · ' + it.val + (it.star ? ' · 두 목록에 함께' : '')});
+      'aria-label': it.name + ' · ' + KN[it.k] + ' · ' + it.val + (it.star ? ' · 두 목록에 함께' : '')});
     a.append(s('rect', {x: r1(x0), y: r1(y0), width: r1(w), height: r1(hh), rx: 9, class: 'we-hit'}));
     const nW = w - 2 * PAD, n = L.rows.length, cx = x0 + w / 2;
     L.rows.forEach((row, j) => {

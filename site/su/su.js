@@ -15,7 +15,7 @@ import {easy, glossPage, hardLeft} from '/su/su-word.js';
 import {halo, dress} from '/su/su-art.js';
 import {essenceData, essenceLines, kstText} from '/next/essence.js';
 import {h, s, fig, matrix, bars, cols, waffle, line, cal, split, sixTiles, sixMap, thumb, funnel, honest3, dots6} from '/su/su-fig.js';
-import {load21, v21Home, vLand, vLandOne, vMore, vFriend, reasonBox21, find21} from '/su/su-21.js';
+import {load21, v21Home, v21Next, vLand, vLandOne, vMore, vFriend, reasonBox21, find21} from '/su/su-21.js';
 let GODM = null; const godM = () => (GODM ??= import('/su/su-gods.js')); // 신 72 지킴이 · 스승 39 길잡이(주문 0054 [5]) — 첫 그림을 막지 않게 창이 다 열린 뒤 받음(느린 휴대폰 첫 화면 2.5초)
 const roadM = () => import('/su/su-roads.js'); // 셋의 길 — 옛 기능 자리(주문 0054 [4]) · 그 쪽을 열 때만 받음
 /** 늦게 채우는 자리 — 빈 칸을 먼저 두고, 창이 다 열린 뒤 신 · 스승 모듈이 오면 바꿔 끼움(못 받거나 그 방에 없으면 빈 칸을 치움) */
@@ -414,13 +414,14 @@ async function route() {
   const fw = forwardTo(location.search, hh);
   if (fw) { location.replace(fw); return; }
   const root = document.getElementById('su');
-  const m = /^#\/(c|i|k|r|p|q|m|g)\/(.+)$/.exec(hh), t = /^#\/(b|k|r|p|q|j|m|f|g)$/.exec(hh);
+  const m = /^#\/(c|i|k|r|p|q|m|g)\/(.+)$/.exec(hh), t = /^#\/(b|k|r|p|q|j|m|f|g|n)$/.exec(hh);
   let v;
   try {
-    const on21 = (!m && !t) || (t && (t[1] === 'm' || t[1] === 'f' || t[1] === 'g')) || (m && (m[1] === 'm' || m[1] === 'g')); // 21곳 쪽은 꽃 · 돈 · 왜 자료를 기다리지 않음(주문 2044 느린 휴대폰 첫 화면)
+    const on21 = (!m && !t) || (t && (t[1] === 'm' || t[1] === 'f' || t[1] === 'g' || t[1] === 'n')) || (m && (m[1] === 'm' || m[1] === 'g')); // 21곳 쪽은 꽃 · 돈 · 왜 자료를 기다리지 않음(주문 2044 느린 휴대폰 첫 화면)
     if (!FIRST && !on21) { const b0 = await base(); FIRST = firstCode(b0.bl, b0.mo); }
     if (on21) setTimeout(() => { base().catch(() => null); }, 2500); // 넷째 쪽(회사) 자료는 첫 화면 뒤에 미리 받아 둠
     if (!m && !t) v = await v21Home(X21);
+    else if (t && t[1] === 'n') v = await v21Next(X21); // 될 듯 21곳(주문 1103)
     else if (t) v = t[1] === 'g' ? await (await roadM()).vRoads(X21) : t[1] === 'm' ? await vLand(X21) : t[1] === 'f' ? await vFriend(X21) : t[1] === 'r' ? await vHub() : t[1] === 'q' || t[1] === 'p' ? await (await whyM()).vQuiz(lastCo?.code ?? null, ctx) : t[1] === 'j' ? await (await whyM()).vJournal(ctx) : t[1] === 'k' && lastCo?.code ? await vCo(lastCo.code) : await vHome();
     else {
       const [, k, raw] = m; let a = raw; try { a = decodeURIComponent(raw); } catch { /* 그대로 */ }

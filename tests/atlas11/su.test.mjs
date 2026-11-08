@@ -294,7 +294,7 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
   const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8'));
   const B = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/atlas11/view/board.json'), 'utf8'));
   const in365 = new Set(B.companies.map(c => c.code));
-  assert.equal(T.schema, 'su21-1');
+  assert.equal(T.schema, 'su21-2');
   assert.ok(Number.isInteger(T.counts.listed) && T.counts.listed > 2000, '상장 회사 수 = 받은 자료(mkt.json n)');
   assert.equal(T.counts.b365, in365.size, '우량주 = 지금 판(board.json) 그대로');
   for (const k of ['hot', 'bloom', 'money']) {
@@ -310,6 +310,19 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
     if (k === 'hot') assert.ok(Number.isFinite(w.ind20) && Number.isFinite(c.ch20), 'hot 까닭 ' + c.name);
     if (k === 'money') assert.ok(Number.isFinite(w.indX) && Number.isFinite(w.gain), 'money 까닭 ' + c.name);
     if (k === 'bloom') assert.ok(Number.isFinite(w.indX), 'bloom 까닭 ' + c.name); }
+  // 될 듯 셋(주문 1103 · 사장님 2026-11-08 11:03 「불장이 될듯 · 돈이 몰릴듯 · 싹에서 꽃이 될듯 7개 추가하자」 · 11:08 「응」) — 일곱씩 · 365 안 · 지금 셋과 같은 종류에는 겹치지 않음 · 까닭 값 · 지난 1년 기록
+  const NOWK = {hotNext: 'hot', bloomNext: 'bloom', moneyNext: 'money'};
+  for (const k of ['hotNext', 'bloomNext', 'moneyNext']) {
+    assert.equal(T.lists[k].length, 7, k + ' 일곱');
+    const now = new Set(T.lists[NOWK[k]].map(c => c.code));
+    for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' 365 안'); assert.ok(c.in.includes(k)); assert.ok(!now.has(c.code), k + ' ' + c.name + ' — 지금 일곱과 겹치지 않음');
+      const w = c.why ?? {};
+      if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 까닭 ' + c.name);
+      if (k === 'moneyNext') assert.ok(Number.isFinite(w.gain) && w.gain > 0, 'moneyNext 까닭 ' + c.name);
+      if (k === 'bloomNext') assert.ok(Number.isFinite(w.x5) && w.x5 >= 0 && Number.isFinite(w.x20) && w.x20 < 5, 'bloomNext 까닭(싹) ' + c.name); }
+    assert.ok(Number.isFinite(T.past?.[k]?.per100) && Number.isFinite(T.past?.[k]?.base100) && T.past[k].n > 500, k + ' 지난 1년 기록');
+  }
+  assert.ok(T.rules.hotNext && T.rules.moneyNext && T.rules.bloomNext, '될 듯 셋 규칙 글');
   const js = fs.readFileSync(path.join(ROOT, 'site/su/su-21.js'), 'utf8');
   assert.ok(!/[가-힣][^'\n]*%/.test([...js.matchAll(/'([^'\n]*)'/g)].map(m => m[1]).join('\n')), '새 글에 % 없음');
 });

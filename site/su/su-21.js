@@ -11,8 +11,8 @@ const JPAIR = {은: ['은', '는'], 는: ['은', '는'], 이: ['이', '가'], �
 const josa = (w, p) => { const t = String(w ?? ''); if (!/[A-Za-z0-9]$/.test(t) || !JPAIR[p]) return josaH(t, p); return t + JPAIR[p][/[LMNR]$/i.test(t) || /[013678]$/.test(t) ? 0 : 1]; };
 
 export const D21 = '/su/data/su21.json';
-export const KIND = {hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는'};
-const KEY = ['hot', 'bloom', 'money'], BEAT = ['b1', 'b2', 'b3', 'b4'];
+export const KIND = {hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는', hotNext: '불장이 될 듯', bloomNext: '꽃이 될 듯', moneyNext: '돈이 몰릴 듯'};
+const KEY = ['hot', 'bloom', 'money'], KEYN = ['hotNext', 'bloomNext', 'moneyNext'], KEY6 = [...KEY, ...KEYN], BEAT = ['b1', 'b2', 'b3', 'b4']; // 될 듯 셋(주문 1103 · 사장님 2026-11-08 11:03 · 11:08 「응」)
 const fin = x => typeof x === 'number' && Number.isFinite(x);
 const sgn = x => (fin(x) ? (x > 0 ? '+' : x < 0 ? '−' : '') + num(Math.abs(Math.round(x * 10) / 10)) : NEED);
 /** 오른 만큼(퍼센트 수)을 「100원이 몇 원」으로 — 문장에 「%」 없이 여고생 말로(주문 0054 [7] 1 · 시안 11 장점) · 그림 값에는 「%」를 붙임(단위가 분명한 값만) */
@@ -27,11 +27,19 @@ export async function load21(get) { if (!CACHE) CACHE = await get(D21); return C
 export const D21M = '/su/data/su21-map.json'; // 땅 지도(365곳 모두)는 따로 받음 — 첫 화면이 가볍게
 let MAP = null;
 async function loadMap(get) { const [T, M] = await Promise.all([load21(get), MAP ?? get(D21M)]); MAP = M; return {...T, lands: M.lands ?? []}; }
-export function find21(T, code) { for (const k of KEY) for (const c of T?.lists?.[k] ?? []) if (c.code === code) return c; return null; }
+export function find21(T, code) { for (const k of KEY6) for (const c of T?.lists?.[k] ?? []) if (c.code === code) return c; return null; }
 
+/** 될 듯 셋의 지난 1년 기록 한 줄(su_next_past.py — 날마다 고른 일곱을 모두 셈 · 아무 회사와 견줌) */
+const PASTW = {hotNext: '불장 일곱에 들었어요', moneyNext: '돈이 몰리는 일곱에 들었어요', bloomNext: '시장보다 15 넘게 앞섰어요(꽃)'};
+const pastLine = (k, T) => { const p = T?.past?.[k]; return p ? '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + p.per100 + '번이 한 달 안에 ' + PASTW[k] + '. 아무 회사는 100번에 ' + p.base100 + '번이었어요.' : ''; };
 /** 까닭 한 줄(학생 말) — 왜 이 회사가 21곳에 들었나 */
 export function why21(c, k, T) {
   const w = c.why ?? {};
+  if (k === 'hotNext') return (w.how === 'rank' ? c.ind + ' 업종은 불장 업종이에요. ' + josa(c.name, '은') + ' 그 안에서 20거래일 동안 오른 차례가 ' + w.rank + '번째라 불장 일곱 바로 아래예요.'
+    : josa(c.name, '은') + ' 닷새 동안 ' + (fin(w.r5) ? won100(w.r5) + '이 될 만큼' : '') + ' 막 오르기 시작했어요. ' + c.ind + ' 업종도 닷새 동안 올랐어요.') + ' ' + pastLine(k, T);
+  if (k === 'moneyNext') return (w.how === 'rank' ? c.ind + ' 업종은 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 돈이 몰리는 일곱 바로 아래 업종(' + w.rank + '번째)이에요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.'
+    : c.ind + ' 업종 365곳 가운데 ' + c.name + '의 회사 크기가 닷새 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.') + ' ' + pastLine(k, T);
+  if (k === 'bloomNext') return josa(c.name, '은') + ' 아직 「싹」이에요. 한 달 동안 시장보다 앞선 만큼이 5 아래예요. ' + (w.how === 'main' ? '닷새 동안은 시장보다 ' + sgn(w.x5) + ' 앞섰고 20거래일 동안 올랐어요.' : '회사 크기가 위 20 안이고 닷새 동안 시장보다 ' + sgn(w.x5) + ' 앞섰어요.') + ' ' + pastLine(k, T);
   if (k === 'hot') return c.ind + ' 업종 평균(365곳 안)이 지난 20거래일 동안 ' + (fin(w.ind20) ? won100(w.ind20) + '이 될 만큼 움직였어요.' : '얼마나 움직였는지는 ' + NEED + '예요.') + ' 그 가운데 ' + josa(c.name, '은') + ' ' + day(c.date) + '까지 20거래일 동안 ' + (fin(c.ch20) ? won100(c.ch20) + '이 될 만큼 올라' : '오른 만큼은 ' + NEED + '이지만') + ' 불장 7곳에 들었어요.';
   if (k === 'bloom') return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. ' + josa(c.name, '은') + ' 아직 「싹」이에요. ' + (w.full ? '꽃 조건을 모두 채웠어요.' : '꽃 조건을 다 채우지는 못한, 가장 가까운 곳이에요.');
   return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.';
@@ -50,11 +58,11 @@ function funnel3(T) {
         s('text', {x: inside ? 12 + ww / 2 : 12 + ww + 10, y: 33 + i * 46, 'text-anchor': inside ? 'middle' : 'start', class: 'g-tl ' + (inside ? 'g-tw' : 'g-tland') + ' ' + BEAT[i] + ' a-up', text: lab[i]})]; }));
 }
 /** 21곳 한눈에 — 셋 줄 × 일곱 · 겹친 곳은 ✦ */
-function grid21(T) {
+function grid21(T, keys = KEY) {
   const col = k => h('ol', {class: 'su-21c su-21-' + k, 'aria-label': KIND[k] + ' 7곳'}, h('li', {class: 'su-21h', text: KIND[k]}), // 이름표와 색으로 셋이 갈림(주문 0054 [2] 3) · 셋의 길은 아래 칩(#/g)
-    (T.lists[k] ?? []).map((c, i) => h('li', {class: 'su-21t' + (c.in.length > 1 ? ' su-21x' : '')},
-      h('a', {href: '#/c/' + c.code, 'data-proper': ''}, c.in.length > 1 ? h('i', {'aria-label': '겹침', text: '✦'}) : null, h('span', {text: c.name})))));
-  return h('div', {class: 'su-21w'}, h('div', {class: 'su-g su-21g'}, KEY.map(col)),
+    (T.lists[k] ?? []).map((c, i) => { const x2 = c.in.filter(q => keys.includes(q)).length > 1; return h('li', {class: 'su-21t' + (x2 ? ' su-21x' : '')},
+      h('a', {href: '#/c/' + c.code, 'data-proper': ''}, x2 ? h('i', {'aria-label': '겹침', text: '✦'}) : null, h('span', {text: c.name}))); }));
+  return h('div', {class: 'su-21w'}, h('div', {class: 'su-g su-21g'}, keys.map(col)),
     h('p', {class: 'su-chips su-21near'}, h('a', {class: 'su-chipa', href: '/next/?su=hot#/surge', text: '불장 곁 · 급등 다섯 칸 ›'}), h('a', {class: 'su-chipa', href: '/next/?su=hot#/cal', text: '급등 달력 ›'}), h('a', {class: 'su-chipa su-chip21', href: '#/g', text: '옛 기능 모두 · 셋의 길 ›'}))); // 급등은 불장 7곳 곁에(주문 0054 [5] 1)
 }
 /** 땅 지도 — 열 땅 · 칸 크기 = 365곳 가운데 회사 수 · 별 = 21곳 */
@@ -123,6 +131,10 @@ const ruleRows = T => [{k: '상장 회사', v: num(T.counts.listed) + '곳', how
   {k: '겹침', v: T.overlap.length + '곳', how: T.overlap.map(o => o.name + '(' + o.in.map(k => KIND[k]).join(' · ') + ')').join(' · ') || '없음'},
   {k: '값이 늦은 회사', v: T.counts.late + '곳', how: '불장 셈에서 뺌'}];
 
+/** 지금 · 될 듯 두 칸(주문 1103 이해 보고 7 「세 여인마다 「지금 일곱」과 「될 듯 일곱」 두 칸」) — 같은 세 여인 그림에서 #/ ↔ #/n */
+const modeBar = nx => h('nav', {class: 'su-mode', 'aria-label': '지금 21곳 · 될 듯 21곳'},
+  h('a', {class: 'su-modea' + (nx ? '' : ' on'), href: '#/', 'aria-current': nx ? null : 'page'}, h('b', {text: '지금 21곳'}), h('span', {text: '지금 그런 회사'})),
+  h('a', {class: 'su-modea' + (nx ? ' on' : ''), href: '#/n', 'aria-current': nx ? 'page' : null}, h('b', {text: '될 듯 21곳'}), h('span', {text: '곧 그렇게 될 듯한 회사'})));
 export async function v21Home(X) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   const big = val(21, '곳', '불장 7 · 꽃이 될 7 · 돈이 몰리는 7', {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안', 무엇을: '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요', 어떻게: '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
@@ -137,7 +149,26 @@ export async function v21Home(X) {
   return {title: '21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안', h1: '지금 볼 21곳', big,
     ...X.artHero('su-women-e', null, X.fig('21', [grid21(T), funnel3(T)], {label: '상장 회사 → 우량주 → 21곳', hero: true, cap: ['한국 상장 회사 ' + num(T.counts.listed) + '곳을 셌어요.', '그 가운데 우량주 ' + T.counts.b365 + '곳을 먼저 골랐어요.', '그런데 셋에 함께 든 곳이 ' + T.overlap.length + '곳 있어요(✦).', '그래서 지금 볼 곳은 21곳, 겹침을 빼면 ' + T.distinct + '곳이에요.']})),
     mids, pro: [...ruleRows(T), ...KEY.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: sgn(c.ch20), how: why21(c, k, T) + ' · ' + Object.entries(six21(c, k, T)).map(([a, b]) => a + ' ' + (b ?? NEED)).join(' · ')})))], after: [X.essBox(S)], // 21곳 하나씩은 서랍에(첫 화면은 그림 — 주문 2044 [5] 7 · 8)
+    act: [modeBar(false)],
     next: {href: '#/m', label: '21곳은 어느 땅에 있나?', step: 2, k: '2 / 8'}, asOf: T.asOf.board, S, note: '21곳은 ' + day(T.asOf.board) + ' 자료로 고른 곳이에요. 앞날을 맞히는 목록이 아니에요.'};
+}
+/** 될 듯 21곳(#/n · 주문 1103) — 불장이 될 듯 7 · 꽃이 될 듯 7 · 돈이 몰릴 듯 7 · 지난 1년 기록(아무 회사와 견줌) · 같은 세 여인 그림 */
+export async function v21Next(X) {
+  const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
+  const P = T.past ?? {}, have = KEYN.every(k => (T.lists?.[k] ?? []).length);
+  if (!have) return {title: '될 듯 21곳', tab: 0, step: 1, h1: '될 듯 21곳', body: [h('p', {class: 'su-lead', text: '될 듯 21곳 자료는 ' + NEED + '예요.'})], act: [modeBar(true)], asOf: T.asOf?.board, S};
+  const n = KEYN.reduce((a, k) => a + T.lists[k].length, 0);
+  const big = val(n, '곳', '불장이 될 듯 7 · 꽃이 될 듯 7 · 돈이 몰릴 듯 7', {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안', 무엇을: '곧 불장 · 꽃 · 돈이 몰리는 곳이 될 듯한 회사를 7곳씩 골랐어요', 어떻게: '지난 1년 날마다 여러 셈을 똑같이 대어 보고, 한 달 안에 그렇게 된 일이 가장 많은 셈을 골랐어요', 왜: '지금 그런 곳 바로 앞에 자주 보이던 모습을 찾으려고요'},
+    {mean: '지난 기록으로 고른 셈이에요. 앞날을 맞히는 목록이 아니에요.'});
+  const mids = KEYN.map(k => { const p = P[k]; return val(p?.per100 ?? null, '번', KIND[k] + ' · 100번 가운데', {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: (P.what?.[k] ?? NEED), 어떻게: '날마다 고른 일곱을 모두 셌어요(' + num(p?.n) + '번 가운데 ' + num(p?.hit) + '번)', 왜: '지난 기록만 보여 줘요'},
+    {mean: p ? '100번에 ' + p.per100 + '번이 한 달 안에 ' + PASTW[k] + '. 아무 회사는 100번에 ' + p.base100 + '번이었어요.' : '지난 기록은 ' + NEED + '예요.'}); });
+  return {title: '될 듯 21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안 · 지난 1년 기록으로 고름', h1: '될 듯 21곳', big,
+    ...X.artHero('su-women-e', null, X.fig('21', [grid21(T, KEYN)], {label: '될 듯 21곳', hero: true, cap: ['지금 불장 · 꽃 · 돈이 몰리는 일곱 바로 앞에 선 곳을 7곳씩 골랐어요.', '지난 1년 기록으로 고른 셈이에요.', '앞날을 맞히는 목록이 아니에요.']}), {mode: 'next'}),
+    mids, pro: [...KEYN.map(k => ({k: KIND[k], v: (T.lists[k] ?? []).length + '곳', how: (T.rules?.[k] ?? NEED) + (P[k] ? ' · 지난 1년(' + P.from + ' ~ ' + P.to + ') ' + num(P[k].n) + '번 가운데 ' + num(P[k].hit) + '번 · 아무 회사 100번에 ' + P[k].base100 + '번' : '')})),
+      {k: '셈한 기록', v: (P.days ?? NEED) + '날', how: (P.universe ?? NEED) + ' · ' + (P.src ?? NEED)},
+      ...KEYN.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: k === 'moneyNext' ? (fin(c.why?.gain) ? '+' + num(c.why.gain) + '억 원' : NEED) : k === 'hotNext' ? sgn(c.why?.r20) : sgn(c.why?.x5), how: why21(c, k, T)})))],
+    after: [X.essBox(S)], act: [modeBar(true)],
+    next: {href: '#/m', label: '21곳은 어느 땅에 있나?', step: 2, k: '2 / 8'}, asOf: T.asOf.board, S, note: '될 듯 21곳은 ' + day(T.asOf.board) + ' 자료와 지난 1년 기록으로 고른 곳이에요. 앞날을 맞히는 목록이 아니에요.'};
 }
 export async function vLand(X) {
   const [{S}, T] = await Promise.all([X.base(), loadMap(X.get)]);
@@ -196,9 +227,9 @@ export async function vFriend(X) {
 }
 /** 회사 쪽 — 21곳 까닭 상자 */
 export function reasonBox21(T, code) {
-  const ks = KEY.filter(k => (T?.lists?.[k] ?? []).some(c => c.code === code)); if (!ks.length) return null;
+  const ks = KEY6.filter(k => (T?.lists?.[k] ?? []).some(c => c.code === code)); if (!ks.length) return null;
   const ck = k => T.lists[k].find(c => c.code === code); // 목록마다 그 목록의 까닭(겹친 곳은 두 줄 — 불장 까닭 · 돈 까닭)
-  return h('section', {class: 'su-why su-why21', 'aria-label': '21곳에 든 까닭'}, h('h2', {class: 'su-ft', text: '21곳에 든 까닭 · ' + ks.map(k => KIND[k]).join(' · ')}),
+  return h('section', {class: 'su-why su-why21', 'aria-label': '21곳에 든 까닭'}, h('h2', {class: 'su-ft', text: (ks.some(k => KEY.includes(k)) ? '21곳' : '될 듯 21곳') + '에 든 까닭 · ' + ks.map(k => KIND[k]).join(' · ')}),
     h('div', {class: 'su-g su-whyg', 'data-g': 'why21'}, whyRoad(ks.map(k => [k, ck(k)]))), // 까닭 길 그림 — 업종 → 회사 → 목록(그림이 화면 대부분 · 주문 0054 [6] 5)
     ks.map(k => h('p', {class: 'su-lead', text: why21(ck(k), k, T)})), h('p', {class: 'su-note', text: '자료 ' + day(T.asOf.board) + ' · ' + SRC}));
 }
@@ -210,9 +241,10 @@ function whyRoad(rows) {
   const val = (cx, cy, t, b) => one ? s('text', {x: cx + r + 16, y: cy + 8, class: 'g-tl g-tland g-halo ' + b + ' a-up', text: t}) : s('text', {x: cx, y: cy + r + 30, 'text-anchor': 'middle', class: 'g-tl g-tland g-halo ' + b + ' a-up', text: t});
   return s('svg', {class: 'su-svg su-why21s', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '21곳에 든 까닭 길 — ' + rows.map(([k, c]) => c.ind + ' 업종 → ' + c.name + ' → ' + KIND[k]).join(' · ')},
     rows.map(([k, c], i) => { const x = cols[i], w = c.why ?? {};
-      const iv = k === 'hot' ? '업종 ' + sgnP(w.ind20) : '시장보다 ' + sgn(w.indX), cv = k === 'money' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : sgnP(c.ch20);
+      const iv = k === 'hot' ? '업종 ' + sgnP(w.ind20) : k === 'hotNext' ? (w.how === 'rank' ? '불장 업종' : '업종 닷새 ' + sgnP(w.ind5)) : k === 'bloomNext' ? '아직 싹' : '시장보다 ' + sgn(w.indX);
+      const cv = k === 'money' || k === 'moneyNext' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : k === 'bloomNext' ? '닷새 ' + sgn(w.x5) : k === 'hotNext' ? sgnP(w.r20) : sgnP(c.ch20);
       return s('g', {}, s('path', {d: `M${x} ${ys[0]} C ${x - 40} ${ys[0] + 60}, ${x + 40} ${ys[1] - 60}, ${x} ${ys[1]} S ${x - 40} ${ys[2] - 60}, ${x} ${ys[2]}`, class: 'g-road b1 a-draw', pathLength: 1}),
         s('circle', {cx: x, cy: ys[0], r, class: 'g-basefill b1 a-pop'}), label(x, ys[0], c.ind, 'b1'), val(x, ys[0], iv, 'b1'),
         s('circle', {cx: x, cy: ys[1], r: r + 4, class: 'g-ok b2 a-pop'}), label(x, ys[1], c.name, 'b2'), val(x, ys[1], cv, 'b2'),
-        s('circle', {cx: x, cy: ys[2], r, class: (k === 'hot' ? 'g-bad' : 'g-ok') + ' b3 a-pop'}), label(x, ys[2], KIND[k], 'b3'), val(x, ys[2], '7곳에 듦', 'b3')); }));
+        s('circle', {cx: x, cy: ys[2], r, class: (k === 'hot' || k === 'hotNext' ? 'g-bad' : 'g-ok') + ' b3 a-pop'}), label(x, ys[2], KIND[k], 'b3'), val(x, ys[2], '7곳에 듦', 'b3')); }));
 }

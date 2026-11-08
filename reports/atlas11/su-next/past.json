@@ -1,0 +1,154 @@
+{
+ "schema": "su-next-past-1",
+ "order": "1103",
+ "from": "2025-10-01",
+ "to": "2026-09-07",
+ "lastData": "2026-10-08",
+ "days": 226,
+ "within": 20,
+ "universe": "지금 우량주 365곳(지난 1년도 같은 365곳으로 셈 · 살아남은 곳만 보는 치우침이 있음)",
+ "src": "reports/atlas11/universe/2026-10-10/bundle.json.gz · public/data/atlas11/view/board.json",
+ "what": {
+  "hotNext": "한 달(20거래일) 안에 불장 일곱에 듦",
+  "moneyNext": "한 달 안에 돈이 몰리는 일곱에 듦",
+  "bloomNext": "한 달 안에 시장보다 15 넘게 앞섬(꽃)"
+ },
+ "best": {
+  "hotNext": "H5",
+  "moneyNext": "M2",
+  "bloomNext": "B3"
+ },
+ "final": {
+  "hotNext": {
+   "picks": 1555,
+   "hits": 727,
+   "per100": 46.8,
+   "days": 224,
+   "rule": "H5",
+   "base100": 6.1
+  },
+  "moneyNext": {
+   "picks": 1582,
+   "hits": 711,
+   "per100": 44.9,
+   "days": 226,
+   "rule": "M4",
+   "base100": 7.1
+  },
+  "bloomNext": {
+   "picks": 1582,
+   "hits": 786,
+   "per100": 49.7,
+   "days": 226,
+   "rule": "B5",
+   "base100": 26.8
+  }
+ },
+ "res": {
+  "hotNext": {
+   "H1": {
+    "picks": 1528,
+    "hits": 643,
+    "per100": 42.1,
+    "days": 223
+   },
+   "H2": {
+    "picks": 1574,
+    "hits": 470,
+    "per100": 29.9,
+    "days": 226
+   },
+   "H3": {
+    "picks": 1533,
+    "hits": 574,
+    "per100": 37.4,
+    "days": 224
+   },
+   "H4": {
+    "picks": 1522,
+    "hits": 708,
+    "per100": 46.5,
+    "days": 221
+   },
+   "H5": {
+    "picks": 1555,
+    "hits": 727,
+    "per100": 46.8,
+    "days": 224
+   },
+   "_base": {
+    "picks": 80915,
+    "hits": 4922,
+    "per100": 6.1
+   }
+  },
+  "moneyNext": {
+   "M1": {
+    "picks": 1514,
+    "hits": 274,
+    "per100": 18.1,
+    "days": 226
+   },
+   "M2": {
+    "picks": 1575,
+    "hits": 711,
+    "per100": 45.1,
+    "days": 226
+   },
+   "M3": {
+    "picks": 1581,
+    "hits": 478,
+    "per100": 30.2,
+    "days": 226
+   },
+   "M4": {
+    "picks": 1582,
+    "hits": 711,
+    "per100": 44.9,
+    "days": 226
+   },
+   "_base": {
+    "picks": 80908,
+    "hits": 5719,
+    "per100": 7.1
+   }
+  },
+  "bloomNext": {
+   "B1": {
+    "picks": 1581,
+    "hits": 765,
+    "per100": 48.4,
+    "days": 226
+   },
+   "B2": {
+    "picks": 1231,
+    "hits": 397,
+    "per100": 32.3,
+    "days": 222
+   },
+   "B3": {
+    "picks": 1230,
+    "hits": 626,
+    "per100": 50.9,
+    "days": 181
+   },
+   "B4": {
+    "picks": 1582,
+    "hits": 492,
+    "per100": 31.1,
+    "days": 226
+   },
+   "B5": {
+    "picks": 1582,
+    "hits": 786,
+    "per100": 49.7,
+    "days": 226
+   },
+   "_base": {
+    "picks": 70054,
+    "hits": 18784,
+    "per100": 26.8
+   }
+  }
+ }
+}

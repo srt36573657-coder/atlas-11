@@ -26,7 +26,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqjmf]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n
+const LINK_OK = /^(#\/|#\/[bkrpqjmfn]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdyn]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -106,6 +106,22 @@ for (const width of [390, 360, 320]) {
       check(p.url().endsWith(r.href) && m1.h1 === r.name, W + '21곳 누르면 그 회사 — ' + r.name, `${p.url().split('#')[1]} · ${m1.h1}`);
       check(await p.evaluate(() => !!document.querySelector('#su .su-why21')), W + '왜 21곳에 들었나 칸 — ' + r.name, '');
       pageRules(m1, W + '21곳 회사 ' + r.name);
+    }
+    { // 주문 1103(사장님 2026-11-08 11:03 · 11:08 「응」) — 될 듯 21곳 #/n · 같은 세 여인 · 불장이 될 듯 · 꽃이 될 듯 · 돈이 몰릴 듯 일곱씩 · 지난 1년 기록 · 누르면 그 회사의 까닭
+      await open(p, '#/n');
+      const mN = await measure(p); pageRules(mN, W + '될 듯 21곳');
+      const gN = await p.evaluate(() => ['hot', 'bloom', 'money'].map(k => [...document.querySelectorAll(`#su main > .su-hero a[data-k="${k}"]`)].map(a => ({href: a.getAttribute('href'), name: a.getAttribute('data-name') ?? ''}))));
+      const wantN = ['hotNext', 'bloomNext', 'moneyNext'].map(k => (T21.lists[k] ?? []).map(c => c.name));
+      check(JSON.stringify(gN.map(c => c.map(x => x.name))) === JSON.stringify(wantN) && gN.every(c => c.length === 7), W + '될 듯 21곳 = su21.json(될 듯 셋 일곱씩)', JSON.stringify(gN.map(c => c.length)));
+      check(await p.evaluate(() => document.querySelector('#su main > .su-hero svg')?.getAttribute('data-mode') === 'next'), W + '될 듯 21곳 그림 = 될 듯 판', '');
+      check(['hotNext', 'bloomNext', 'moneyNext'].every(k => Number.isFinite(T21.past?.[k]?.per100) && Number.isFinite(T21.past?.[k]?.base100)), W + '될 듯 셋 지난 1년 기록(100번에 몇 번 · 아무 회사)', JSON.stringify(T21.past ?? null).slice(0, 120));
+      check(await p.evaluate(() => [...document.querySelectorAll('#su .su-mode a')].map(a => a.getAttribute('href')).join(' ') === '#/ #/n'), W + '지금 · 될 듯 두 칸 단추', '');
+      for (const r of gN.map(c => c[0]).filter(Boolean)) {
+        await open(p, '#/n'); await p.click(`#su main > .su-hero a[href="${r.href}"]`); await settle(p, r.name);
+        const m1 = await measure(p);
+        check(p.url().endsWith(r.href) && m1.h1 === r.name, W + '될 듯 21곳 누르면 그 회사 — ' + r.name, `${p.url().split('#')[1]} · ${m1.h1}`);
+        check(await p.evaluate(() => /될 듯/.test(document.querySelector('#su .su-why21 h2')?.textContent ?? '')), W + '왜 될 듯 21곳에 들었나 칸 — ' + r.name, '');
+      }
     }
     await open(p, '#/b'); await more(p); // 옛 처음(꽃 · 돈 줄)은 #/b 에 그대로 — 아래 검사는 그 쪽에서(줄은 「자세히」 안)
   }
