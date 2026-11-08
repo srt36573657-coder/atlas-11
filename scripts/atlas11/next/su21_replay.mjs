@@ -3,15 +3,19 @@
  * 수르 42칸 「며칠째 · 첫 발견」의 지난 날 — 남아 있는 판(board.json)마다 같은 고르는 규칙(su21.py 그대로)으로 여섯 목록을 다시 셈
  *   주문 0123 덧붙임(사장님 2026-11-09 01:44 「그리고 몇일째 그 항목에 있는지도 표기가 되어야 하고 첫포착은 첫 발견이라고 기록 되어야 해 퐁 42곳 모두에 말이야」)
  *   · 01:47 이해 보고 「지난 날은 같은 고르는 규칙으로 하루씩 다시 세어 찾고, 오늘부터는 날마다 기록을 남겨요」
- *   판 = 저장소 기록(public/data/atlas11/view/board.json 을 커밋한 날마다 · 같은 날 판이 여럿이면 마지막 것) — 지어낸 판 없음
+ *   판 = reports/atlas11/su21/boards/<날>.json.gz(저장소 기록 public/data/atlas11/view/board.json 을 날마다 마지막 것으로 옮겨 둔 것 · 셈에 쓰는 칸만) + 오늘 판(--board)
  *   업종 · 회사 자리(theme.json · theme-co.json) · 몸값(cond.json) · 21 마지막 값 선(mkt.json l)은 그날까지의 종가(atlas/data/co · days.json)로 다시 셈
- *     — 셈은 테마 엔진 그대로(site/next/theme-engine.js indexOf · exOf · coZoneOf) · 자료 마지막 날보다 뒤의 판은 자료 마지막 날 값(지금 사이트가 하는 그대로)
- *   맞댐(--check 와 늘): 자료 마지막 날로 다시 센 업종 x · 회사 자리 · 선 · 몸값이 그 사이트 파일과 같아야 함 · 가장 늦은 판으로 다시 센 여섯 목록이 저장된 수르 판(site/su/data/su21.json)과 같아야 함 — 다르면 쓰지 않고 끝 코드 1
- * 쓰는 법: node scripts/atlas11/next/su21_replay.mjs --live <사이트 자료 폴더(atlas/data · next/data)> [--out reports/atlas11/su21/days.json] [--check]
+ *     — 셈은 테마 엔진 그대로(site/next/theme-engine.js indexOf · exOf · coZoneOf) · 자료 마지막 날보다 뒤의 판은 자료 마지막 날 값(사이트가 하는 그대로)
+ *   맞댐 1: 자료 마지막 날로 다시 센 업종 x · 회사 자리 · 21 값 선이 그 사이트 파일과 같아야 함
+ *   맞댐 2: 오늘 판으로 다시 센 여섯 목록이 방금 센 수르 판(--su 의 su21.json)과 같아야 함 — 둘 가운데 하나라도 다르면 쓰지 않고 끝 코드 1
+ *   기록(--days)에 다시 센 날(how replay)만 새로 씀 · 올릴 때 적은 날(how kept)과 오늘은 건드리지 않음
+ * 쓰는 법: node scripts/atlas11/next/su21_replay.mjs --live <사이트 자료 폴더(atlas/data · next/data)> --su <su/data 폴더> [--board public/data/atlas11/view/board.json] [--days reports/atlas11/su21/days.json] [--check] [--if-needed]
+ *   package.mjs 가 올릴 때 부름 — 기록에 판 날이 모두 있으면 부르지 않음
  */
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {indexOf, exOf, coZoneOf, RULE} from '../../../site/next/theme-engine.js';
@@ -19,7 +23,10 @@ import {indexOf, exOf, coZoneOf, RULE} from '../../../site/next/theme-engine.js'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const arg = (k, d = null) => (process.argv.includes(k) ? process.argv[process.argv.indexOf(k) + 1] : d);
 const LIVE = path.resolve(arg('--live', path.join(ROOT, 'site')));
-const OUT = path.resolve(arg('--out', path.join(ROOT, 'reports/atlas11/su21/days.json')));
+const OUT = path.resolve(arg('--days', path.join(ROOT, 'reports/atlas11/su21/days.json')));
+const SU = path.resolve(arg('--su', path.join(ROOT, 'site/su/data')));
+const BOARD_NOW = path.resolve(arg('--board', path.join(ROOT, 'public/data/atlas11/view/board.json')));
+export const BOARDS_DIR = 'reports/atlas11/su21/boards';
 const CHECK = process.argv.includes('--check');
 const J = f => JSON.parse(fs.readFileSync(f, 'utf8'));
 const r2 = v => (Number.isFinite(v) ? Math.round(v * 100) / 100 : null);
@@ -85,16 +92,22 @@ const T0 = N - 1, th0 = J(path.join(LIVE, 'next', 'data', 'theme.json')), tc0 = 
   if (lb) console.warn(`선(l)이 다른 회사 ${lb}곳 — 값 없는 날 꼴 차이(돈 셈은 21 값이 모두 있을 때만 씀)`);
 }
 
-/* ── 판 — 저장소 기록에서 날마다 마지막 판 ── */
-const git = (...a) => execFileSync('git', a, {cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 28});
+/* ── 판 — 옮겨 둔 날마다 판 + 오늘 판 ── */
 const BOARD = 'public/data/atlas11/view/board.json';
 const byDay = new Map();
-for (const h of git('log', '--format=%H', '--', BOARD).trim().split('\n').filter(Boolean)) {
-  let b; try { b = JSON.parse(git('show', `${h}:${BOARD}`)); } catch { continue; }
-  if (typeof b?.asOf !== 'string' || !Array.isArray(b.companies) || byDay.has(b.asOf)) continue; // 새 것부터 — 그날 첫 만남 = 그날 마지막 판
-  byDay.set(b.asOf, {h, b});
+const bdir = path.join(ROOT, BOARDS_DIR);
+for (const f of (fs.existsSync(bdir) ? fs.readdirSync(bdir) : []).filter(f => /^\d{4}-\d{2}-\d{2}\.json\.gz$/.test(f)).sort()) {
+  let b; try { b = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(bdir, f))).toString('utf8')); } catch { continue; }
+  if (typeof b?.asOf === 'string' && Array.isArray(b.companies)) byDay.set(b.asOf, {b});
 }
+const now = J(BOARD_NOW); if (typeof now?.asOf === 'string' && Array.isArray(now.companies)) byDay.set(now.asOf, {b: now}); // 오늘 판이 옮겨 둔 같은 날 판보다 앞섬
 const days = [...byDay.keys()].sort();
+if (process.argv.includes('--if-needed')) { // 기록에 지난 판 날이 모두 있으면 다시 세지 않음(올릴 때마다 부름 · 처음 한 번만 셈)
+  let rec0 = null; try { rec0 = J(OUT); } catch { /* 기록 없음 — 셈 */ }
+  const miss = days.filter(d => d < now.asOf && !rec0?.days?.[d]);
+  if (!miss.length) { console.log(`지난 판 ${days.length - 1}날 기록이 모두 있음 — 다시 세지 않음`); process.exit(0); }
+  console.log(`기록에 없는 지난 판 ${miss.length}날 — 다시 셈`);
+}
 console.log(`판 ${days.length}날 — ${days[0]} ~ ${days.at(-1)}`);
 
 /* ── 날마다 su21.py 를 그대로 돌림(그날 판 + 그날까지 자료) ── */
@@ -130,16 +143,20 @@ for (const d of days) {
 fs.rmSync(tmp, {recursive: true, force: true});
 
 /* ── 맞댐 2 — 가장 늦은 판으로 다시 센 여섯 목록 = 저장된 수르 판 ── */
-const last = days.at(-1), saved = J(path.join(ROOT, 'site/su/data/su21.json'));
+const last = now.asOf, saved = J(path.join(SU, 'su21.json'));
 const same = saved.asOf?.board === last && KEYS.every(k => JSON.stringify(out[last]?.lists?.[k]) === JSON.stringify((saved.lists?.[k] ?? []).map(c => c.code)));
-console.log(`맞댐 2 — ${last} 다시 센 여섯 목록 ${same ? '=' : '≠'} 저장된 수르 판(${saved.asOf?.board} · 자료 ${saved.asOf?.data})`);
+console.log(`맞댐 2 — ${last} 다시 센 여섯 목록 ${same ? '=' : '≠'} 방금 센 수르 판(${saved.asOf?.board} · 자료 ${saved.asOf?.data})`);
 if (!same) { for (const k of KEYS) console.error(k, JSON.stringify(out[last]?.lists?.[k]), JSON.stringify((saved.lists?.[k] ?? []).map(c => c.code))); process.exit(1); }
 if (CHECK) process.exit(0);
 
+let rec; try { rec = J(OUT); } catch { rec = null; }
+const keep = Object.fromEntries(Object.entries(rec?.days ?? {}).filter(([d, v]) => v?.how === 'kept'));
+delete out[last]; // 오늘은 올릴 때 적음(how kept)
+const merged = {...out, ...keep};
 const body = {schema: SCHEMA, made: new Date().toISOString(),
-  how: {replay: '저장소에 남은 그날 판(board.json)마다 같은 고르는 규칙(su21.py)으로 다시 셈 · 업종 · 회사 자리 · 몸값 · 21 값 선은 그날까지 종가로(자료 마지막 날보다 뒤의 판은 자료 마지막 날 값)', kept: '올릴 때마다 그날 판으로 센 여섯 목록을 한 번 적음(먼저 적은 것을 바꾸지 않음)'},
-  src: {boards: BOARD + ' (저장소 기록)', data: 'atlas/data(days · co · mkt · cond) · next/data(theme · theme-co) — 자료 마지막 날 ' + dates[T0]},
-  days: out};
+  how: {replay: '날마다 판(board.json · 저장소 기록)으로 같은 고르는 규칙(su21.py)을 다시 셈 · 업종 · 회사 자리 · 몸값 · 21 값 선은 그날까지 종가로(자료 마지막 날보다 뒤의 판은 자료 마지막 날 값)', kept: '올릴 때마다 그날 판으로 센 여섯 목록을 한 번 적음(먼저 적은 것을 바꾸지 않음)'},
+  src: {boards: BOARDS_DIR + ' + ' + BOARD, data: 'atlas/data(days · co · mkt · cond) · next/data(theme · theme-co) — 자료 마지막 날 ' + dates[T0]},
+  days: Object.fromEntries(Object.keys(merged).sort().map(d => [d, merged[d]]))};
 fs.mkdirSync(path.dirname(OUT), {recursive: true});
-fs.writeFileSync(OUT, JSON.stringify(body, null, 1) + '\n');
-console.log('씀 →', path.relative(ROOT, OUT), Object.keys(out).length + '날');
+const tmpf = OUT + '.tmp' + process.pid; fs.writeFileSync(tmpf, JSON.stringify(body, null, 1) + '\n'); fs.renameSync(tmpf, OUT);
+console.log('씀 →', path.relative(ROOT, OUT), '다시 센 날 ' + Object.keys(out).length + ' · 적은 날 ' + Object.keys(keep).length);

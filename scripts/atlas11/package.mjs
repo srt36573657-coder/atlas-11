@@ -59,6 +59,21 @@ export async function buildDist() {
     else console.log('수르 21곳 다시 셈 — ' + String(stdout).trim().slice(0, 300));
   }
   catch (e) { console.warn('수르 21곳 다시 세기 못 함 — 저장된 판 그대로: ' + String(e.stderr || e.message).slice(0, 300)); }
+  // 수르 42칸 며칠째 · 첫 발견 · 포모지수(주문 0123 · 사장님 2026-11-09 01:44 「몇일째 그 항목에 있는지 … 첫 발견」 · 02:01 「포모지수값을 첫페이지 42곳에 모두」 · 02:02 「몬트리올(몬테카를로) 방식 … 소거법 … 이유 7가지」)
+  //   ① 지난 판 기록(reports/atlas11/su21/days.json)에 비어 있는 날이 있으면 같은 규칙으로 다시 셈(su21_replay · 맞댐 둘이 맞을 때만 씀)
+  //   ② 그날 여섯 목록을 기록에 적음(올리기 작업 — site · daily · evening 만 · 그 작업이 reports/ 를 저장소에 넣음) · 칸마다 며칠째 · 첫 발견(su21_days)
+  //   ③ 몬테카를로 → 소거 기준 일곱 → 포모지수(su21_fomo · 자세한 값은 su/data/su21-why.json) — 하나가 멈춰도 올리기는 그대로(그 칸만 빈 값)
+  {
+    const suData = path.join(dist, 'su/data'), daysFile = path.join(root, 'reports/atlas11/su21/days.json'), dd = path.join(dist, 'atlas/data');
+    const keepJob = /\/atlas11-(site|daily|evening)\.yml@/.test(process.env.GITHUB_WORKFLOW_REF ?? '');
+    for (const [name, args] of [
+      ['지난 판 다시 세기', ['scripts/atlas11/next/su21_replay.mjs', '--live', dist, '--su', suData, '--days', daysFile, '--if-needed']],
+      ['며칠째 · 첫 발견', ['scripts/atlas11/next/su21_days.mjs', '--su', suData, '--cal', path.join(dd, 'days.json'), '--days', daysFile, ...(keepJob ? ['--keep'] : [])]],
+      ['포모지수', ['scripts/atlas11/next/su21_fomo.mjs', '--su', suData, '--data', dd]]]) {
+      try { const {stdout} = await run('node', [path.join(root, args[0]), ...args.slice(1)], {maxBuffer: 1e7}); console.log('수르 42칸 ' + name + ' — ' + String(stdout).trim().split('\n').slice(-2).join(' · ').slice(0, 300)); }
+      catch (e) { console.warn('수르 42칸 ' + name + ' 못 함 — 그 칸만 빈 값: ' + String(e.stderr || e.stdout || e.message).trim().slice(-300)); }
+    }
+  }
   // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에
   //   한국 매일·저녁 실행도 이 함수로 싸서 올리므로(사이트 전체를 바꿈) 미국 판을 여기서 함께 싸야 지워지지 않는다
   //   places.json = 위 막대 「한국 · 미국 · 중국 · 일본 · 베트남」 단추가 읽는 판 목록(바깥 판이 없으면 한국 하나 → 단추 없음) — 늘 써서 화면이 없는 파일을 부르지 않게
