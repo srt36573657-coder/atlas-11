@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T10:07:23.635Z",
+ "at": "2026-11-08T12:33:39.517Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 729,
+  "pass": 760,
   "fail": 0
  },
  "fails": [],
@@ -45,26 +45,17 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "땅 지도",
-    "heroShare": 72.5,
-    "share": 73,
+    "heroShare": 72.4,
+    "share": 77,
     "outside": 13,
     "two": 2,
-    "labels": 39,
-    "mucha": [
-     "pastel",
-     "halo",
-     "whiplash",
-     "mosaic",
-     "vine",
-     "outline",
-     "arch",
-     "lettering"
-    ],
-    "anim": 122,
+    "labels": 49,
+    "mucha": [],
+    "anim": 27,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -74,23 +65,13 @@
    },
    {
     "h1": "지주 · 유통 · 운송 땅",
-    "heroShare": 72.5,
-    "share": 73,
+    "heroShare": 72.4,
+    "share": 89,
     "outside": 13,
     "two": 2,
-    "labels": 18,
-    "mucha": [
-     "pastel",
-     "halo",
-     "stars",
-     "whiplash",
-     "mosaic",
-     "vine",
-     "outline",
-     "arch",
-     "lettering"
-    ],
-    "anim": 153,
+    "labels": 25,
+    "mucha": [],
+    "anim": 23,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -100,23 +81,13 @@
    },
    {
     "h1": "한진칼",
-    "heroShare": 72.5,
-    "share": 147,
+    "heroShare": 72.4,
+    "share": 178,
     "outside": 12,
     "two": 2,
-    "labels": 19,
-    "mucha": [
-     "pastel",
-     "outline",
-     "mosaic",
-     "panel",
-     "stars",
-     "vine",
-     "halo",
-     "whiplash",
-     "lettering"
-    ],
-    "anim": 29,
+    "labels": 26,
+    "mucha": [],
+    "anim": 6,
     "need": 0,
     "means": 7,
     "hard": 0,
@@ -126,23 +97,13 @@
    },
    {
     "h1": "한진칼 출목표",
-    "heroShare": 72.5,
-    "share": 147,
+    "heroShare": 72.4,
+    "share": 178,
     "outside": 13,
     "two": 2,
-    "labels": 18,
-    "mucha": [
-     "pastel",
-     "outline",
-     "mosaic",
-     "panel",
-     "stars",
-     "vine",
-     "lettering",
-     "whiplash",
-     "halo"
-    ],
-    "anim": 27,
+    "labels": 31,
+    "mucha": [],
+    "anim": 11,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -152,23 +113,13 @@
    },
    {
     "h1": "왜 사?",
-    "heroShare": 72.5,
-    "share": 147,
+    "heroShare": 72.4,
+    "share": 78,
     "outside": 15,
     "two": 2,
-    "labels": 28,
-    "mucha": [
-     "pastel",
-     "mosaic",
-     "stars",
-     "halo",
-     "whiplash",
-     "outline",
-     "panel",
-     "lettering",
-     "arch"
-    ],
-    "anim": 17,
+    "labels": 30,
+    "mucha": [],
+    "anim": 7,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -178,24 +129,13 @@
    },
    {
     "h1": "내 매매일지",
-    "heroShare": 72.5,
-    "share": 147,
+    "heroShare": 72.4,
+    "share": 82,
     "outside": 13,
     "two": 2,
-    "labels": 8,
-    "mucha": [
-     "stars",
-     "halo",
-     "mosaic",
-     "vine",
-     "whiplash",
-     "outline",
-     "flower",
-     "lettering",
-     "panel",
-     "arch"
-    ],
-    "anim": 27,
+    "labels": 15,
+    "mucha": [],
+    "anim": 11,
     "need": 0,
     "means": 3,
     "hard": 0,
@@ -205,24 +145,13 @@
    },
    {
     "h1": "친구에게",
-    "heroShare": 72.5,
-    "share": 73,
+    "heroShare": 72.4,
+    "share": 79,
     "outside": 13,
     "two": 2,
-    "labels": 10,
-    "mucha": [
-     "pastel",
-     "arch",
-     "mosaic",
-     "panel",
-     "stars",
-     "halo",
-     "vine",
-     "whiplash",
-     "outline",
-     "lettering"
-    ],
-    "anim": 20,
+    "labels": 19,
+    "mucha": [],
+    "anim": 13,
     "need": 0,
     "means": 1,
     "hard": 0,
@@ -236,24 +165,24 @@
   "drawers": {
    "#/r/d": {
     "h1": "날마다 지난 기록",
-    "share": 73,
+    "share": 79,
     "moving": 1
    },
    "#/r/y": {
     "h1": "해마다 지난 기록",
-    "share": 73,
+    "share": 66,
     "moving": 1
    },
    "#/r/n": {
     "h1": "가까운 회사의 지난 기록",
-    "share": 73,
+    "share": 70,
     "moving": 1
    }
   },
   "speed": {
-   "lcp": 1272,
+   "lcp": 1164,
    "cls": 0.121,
-   "pic": 1646
+   "pic": 1524
   },
   "white": {
    "light #/": {
@@ -269,7 +198,6 @@
     "orn": 0,
     "sky": true,
     "tc": [
-     "#FFFFFF",
      "#FFFFFF"
     ]
    },
@@ -286,25 +214,71 @@
     "orn": 0,
     "sky": true,
     "tc": [
-     "#FFFFFF",
      "#FFFFFF"
     ]
    },
    "light #/m": {
-    "clean": false,
-    "body": "rgb(234, 223, 203)",
-    "top": "rgb(250, 244, 230)",
-    "dock": "rgb(250, 244, 230)",
-    "tabs": "rgb(250, 244, 230)",
-    "h1": "rgb(43, 33, 24)",
-    "frame": "\"\"",
-    "wave": "\"\"",
-    "curve": "\"\"",
-    "orn": 6,
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
     "sky": false,
     "tc": [
-     "#FAF4E6",
-     "#1B1712"
+     "#FFFFFF"
+    ]
+   },
+   "light #/r": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": false,
+    "tc": [
+     "#FFFFFF"
+    ]
+   },
+   "light #/r/d": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": false,
+    "tc": [
+     "#FFFFFF"
+    ]
+   },
+   "light #/g": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": false,
+    "tc": [
+     "#FFFFFF"
     ]
    },
    "dark #/": {
@@ -320,7 +294,6 @@
     "orn": 0,
     "sky": true,
     "tc": [
-     "#FFFFFF",
      "#FFFFFF"
     ]
    },
@@ -337,25 +310,71 @@
     "orn": 0,
     "sky": true,
     "tc": [
-     "#FFFFFF",
      "#FFFFFF"
     ]
    },
    "dark #/m": {
-    "clean": false,
-    "body": "rgb(27, 23, 18)",
-    "top": "rgb(27, 23, 18)",
-    "dock": "rgb(27, 23, 18)",
-    "tabs": "rgb(27, 23, 18)",
-    "h1": "rgb(243, 233, 211)",
-    "frame": "\"\"",
-    "wave": "\"\"",
-    "curve": "\"\"",
-    "orn": 6,
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
     "sky": false,
     "tc": [
-     "#FAF4E6",
-     "#1B1712"
+     "#FFFFFF"
+    ]
+   },
+   "dark #/r": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": false,
+    "tc": [
+     "#FFFFFF"
+    ]
+   },
+   "dark #/r/d": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": false,
+    "tc": [
+     "#FFFFFF"
+    ]
+   },
+   "dark #/g": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": false,
+    "tc": [
+     "#FFFFFF"
     ]
    }
   },
@@ -381,6 +400,320 @@
      "현재가는 11월 6일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요."
     ]
+   }
+  },
+  "live": {
+   "asked": 1,
+   "px": "202179",
+   "live": "2026-11-09T14:31",
+   "note": "현재가는 11월 9일 오후 2시 31분 값이에요.",
+   "shape": true
+  },
+  "old": {
+   "light /next/?su=hot#/surge": {
+    "cls": "m4 white space su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.01,
+    "darkSel": "a.psurge-chip",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=stop#/sage": {
+    "cls": "m4 white space pg-sage su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.047,
+    "darkSel": "button.sg-allb",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=guide#/roman": {
+    "cls": "m4 white space pg-roman su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.041,
+    "darkSel": "button.rm-allb",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=stop#/why": {
+    "cls": "m4 white space pg-why su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.05,
+    "darkSel": "button.wy-go",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=guide#/": {
+    "cls": "m4 white home space su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.014,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "light /next/?su=back#/jinhwa": {
+    "cls": "m4 white space su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "light /hello.html?su=guest": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.021,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0
+   },
+   "light /letter.html?su=guest": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "light /invite.html?su=guest": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "light /su/privacy.html": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=hot#/surge": {
+    "cls": "m4 white space su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.01,
+    "darkSel": "a.psurge-chip",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=stop#/sage": {
+    "cls": "m4 white space pg-sage su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.047,
+    "darkSel": "button.sg-allb",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=guide#/roman": {
+    "cls": "m4 white space pg-roman su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.041,
+    "darkSel": "button.rm-allb",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=stop#/why": {
+    "cls": "m4 white space pg-why su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.05,
+    "darkSel": "button.wy-go",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=guide#/": {
+    "cls": "m4 white home space su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.014,
+    "darkSel": "a.nh-mans",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /next/?su=back#/jinhwa": {
+    "cls": "m4 white space su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /hello.html?su=guest": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0.021,
+    "darkSel": "a.hp-go",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /letter.html?su=guest": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /invite.html?su=guest": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "dark /su/privacy.html": {
+    "cls": "su-wrapped su-jobs",
+    "body": "rgb(255, 255, 255)",
+    "view": null,
+    "top": null,
+    "bar": "rgb(255, 255, 255)",
+    "frame": "normal",
+    "tc": [
+     "#FFFFFF"
+    ],
+    "darkMax": 0,
+    "darkSel": "",
+    "low": [],
+    "lowN": 0
+   },
+   "direct": {
+    "cls": "m4 white clock space pg-sage",
+    "css": false,
+    "bar": false
    }
   }
  },
