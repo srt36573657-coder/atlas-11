@@ -200,3 +200,21 @@
 .ss-lace-r { fill: none; stroke: #C9A24A; stroke-width: .9; stroke-opacity: .55; }
 /* 아치 틀 금선이 어깨 · 바닥 귀퉁이에서 풀리는 소용돌이 */
 .ss-fcurl .ss-gold { fill: #D3A64B; }
+
+/* 아홉째 판(r9 B06) — 왜 사? 아치 테를 따라 걸린 꽃 메달 열하나 · 덩굴 · 물음 글(어두운 판에서도 같은 색 · 매매일지 꾸밈은 그대로) */
+.sq-stem { fill: #8E9E58; }
+.sq-leaf { fill: #9DB861; stroke: #3A2417; stroke-width: .6; }
+.sq-fl .ss-pet { fill: #F7D2B8; stroke: #C9A24A; stroke-width: .5; }
+.sq-fl .ss-flc { fill: #C9A24A; }
+.sq-pet { fill: #F7DCC4; stroke: #B08A3A; stroke-width: .6; }
+.sq-on .sq-pet { fill: #F2CD7C; stroke: #A9822F; }
+.sq-cur .sq-pet { fill: #F3B58E; stroke: #FFF6DE; }
+.sq-disk { fill: #FBF3E1; stroke: #B08A3A; stroke-width: 1.6; }
+.sq-on .sq-disk { fill: #D9B25E; stroke: #FFF6DE; }
+.sq-cur .sq-disk { fill: #EFA77E; stroke: #FFF6DE; stroke-width: 1.8; }
+.sq-num { font-size: 18px; font-weight: 800; fill: #2B1A10; }
+.sq-qt { font-size: 18px; font-weight: 700; fill: #FFF1D6; paint-order: stroke; stroke: #13203A; stroke-width: 4px; stroke-linejoin: round; }
+.sq-cur .sq-qt { fill: #FFDDBE; }
+.sq-gn { font-size: 19px; font-weight: 800; letter-spacing: .08em; fill: #EDD597; paint-order: stroke; stroke: #13203A; stroke-width: 4px; stroke-linejoin: round; }
+.sq-spk { fill: #EDD597; }
+.sq-glow { fill: #F6D9A8; fill-opacity: .85; }

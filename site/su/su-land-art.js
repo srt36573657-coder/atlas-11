@@ -23,6 +23,7 @@ const W = 390, H = 620, NEED = '확인 필요';
 const fin = x => typeof x === 'number' && Number.isFinite(x);
 const f = v => Math.round(v * 10) / 10, f2 = v => Math.round(v * 100) / 100; // f2 = 막대 자리(같은 값 → 같은 길이를 0.01 까지)
 const pt = p => f(p[0]) + ' ' + f(p[1]);
+const mid = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
 const isStar = c => Array.isArray(c?.in) && c.in.length > 0;
 const sgnP = v => (fin(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + String(Math.abs(f(v))) + '%' : NEED);
 const G = (name, ...kids) => s('g', {'data-mucha': name}, ...kids);
@@ -229,6 +230,74 @@ function closedD(P) {
     seg.push([p1, [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6], [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6], p2]); }
   return segD(seg) + 'Z';
 }
+/* ── 아홉째 판(r9-brief.md B23) — 메달 흉상을 지우고 큰 여인 한 명이 그림을 채움 ──
+   머리는 그림 위 1/5 안 · 치맛단은 아래 1/5 · S자(엉덩이를 오른쪽으로 · 왼 무릎 굽힘 · 고개 기울임) · 둥근 어깨 · 풍만한 엉덩이 · 옷은 목 · 손목 · 발목까지
+   띠(겉옷)가 오른 어깨에서 왼 엉덩이로 몸을 비스듬히 감고 발치에서 말림 · 치맛단은 바닥에 퍼져 양끝이 말림(분홍 꼬리 없음) · 후광은 머리 뒤 큰 원 */
+/** 머리 다발 — 가는 가닥 대여섯을 묶은 다발(속 띠 하나 + 공용 strands · 뿌리 굵고 끝 가늚) */
+const tress = (p, {n = 6, spread = 12, w0 = 2.4, curl = 0.7, seed = 1, tone = 1, core = 6, sw = 0} = {}) => s('g', {class: 'mk-hair mk-t' + tone}, s('g', {class: sw % 2 ? 'mk-sway2' : 'mk-sway'},
+  core ? ktaper(p, {w0: core, w1: 0.6, cls: 'mk-hb'}) : null, strands(p, {n, spread, w0, w1: 0.22, curl, seed, cls: 'mk-hb'})));
+/** 큰 후광 — 빛살 · 꽃잎 고리 · 점 고리 · 두 겹 금테(머리 뒤) */
+function bigHalo(cx, cy, r) {
+  const ri = r * 0.86, ro = r * 0.985, n = 32; let a1 = '', a2 = '', dt = '';
+  for (let i = 0; i < n; i++) { const a = i * 2 * Math.PI / n, ca = Math.cos(a), sa = Math.sin(a), x = cx + ri * ca, y = cy + ri * sa, L = ro - ri, Wd = L * 0.5;
+    const pd = `M${f(x)} ${f(y)}Q${f(x + ca * L * 0.5 - sa * Wd)} ${f(y + sa * L * 0.5 + ca * Wd)} ${f(x + ca * L)} ${f(y + sa * L)}Q${f(x + ca * L * 0.5 + sa * Wd)} ${f(y + sa * L * 0.5 - ca * Wd)} ${f(x)} ${f(y)}Z`;
+    if (i % 2) a2 += pd; else a1 += pd; const b = a + Math.PI / n; dt += circ(cx + (ro - 1) * Math.cos(b), cy + (ro - 1) * Math.sin(b), 0.9); }
+  return G('halo', s('circle', {cx: f(cx), cy: f(cy), r: f(r), class: 'mk-hf1'}), rays(cx, cy, r * 0.3, r * 0.84, {n: 40}), s('circle', {cx: f(cx), cy: f(cy), r: f(r * 0.84), class: 'mk-rim2', 'stroke-width': 0.9}),
+    s('path', {d: a1, class: 'mk-pe-a'}), s('path', {d: a2, class: 'mk-pe-b'}), s('path', {d: dt, class: 'mk-mo-g'}), s('circle', {cx: f(cx), cy: f(cy), r: f(r), class: 'mk-rim', 'stroke-width': 2.4}));
+}
+/** 큰 여인 — pose 'open'(두 팔을 들어 벌림 · 두 손이 덩굴을 쥠) | 'hold'(두 손이 가슴 앞에서 줄기를 위아래로 쥠 · hx = 줄기 자리)
+   돌려줌 {halo, back, body, hands, y} — 쓰는 쪽이 층(후광 → 뒤 머리 → 몸)을 정함 */
+function lady(o) {
+  const {cx, top, hem, pose = 'open', cloth = 'sage', sash = 'gold', arm = 'ivory', tone = 5, view = 'three', fdir = 1, seed = 3, sx = 12, hx = cx, hw = 1} = o, hend = o.hend;
+  const T = hem - top, Y = t => top + t * T, h = T * 0.104, fx = cx + fdir * 1.5, fy = top + h * 0.66;
+  const ySh = fy + h * 0.98, yWa = o.wa ?? Y(0.355), yBu = (ySh + yWa) / 2 + 4, yHi = yWa + T * 0.085, yKn = Y(0.67), yCa = Y(0.83);
+  const Lp = [[cx - 10, ySh - 7], [cx - 34, ySh - 3], [cx - 52, ySh + 9], [cx - 56, ySh + 30], [cx - 47, yBu + 4], [cx - 36, yBu + 24], [cx - 25 + sx * 0.3, yWa], [cx - 36 + sx, yWa + (yHi - yWa) * 0.55], [cx - 46 + sx, yHi],
+    [cx - 46 + sx * 0.8, Y(0.54)], [cx - 42 + sx * 0.4, yKn], [cx - 52, yCa], [cx - 70, Y(0.93)], [cx - 88, hem - 4]];
+  const Hm = [[cx - 66, hem + 2], [cx - 42, hem - 3], [cx - 18, hem + 3], [cx + 6, hem - 2], [cx + 30, hem + 3], [cx + 54, hem - 3], [cx + 76, hem + 1]];
+  const Rp = [[cx + 94, hem - 6], [cx + 72, Y(0.92)], [cx + 56, yCa], [cx + 50 + sx * 0.4, yKn], [cx + 56 + sx * 0.8, Y(0.54)], [cx + 58 + sx, yHi], [cx + 46 + sx, yWa + (yHi - yWa) * 0.55], [cx + 29 + sx * 0.3, yWa],
+    [cx + 38, yBu + 24], [cx + 49, yBu + 4], [cx + 57, ySh + 30], [cx + 53, ySh + 9], [cx + 35, ySh - 3], [cx + 10, ySh - 7]];
+  const dress = s('path', {d: closedD([...Lp, ...Hm, ...Rp]), class: 'mk-cl-' + cloth + ' la-ol'});
+  /* 치마 주름 — 엉덩이에서 휘며 흘러내려 아래로 갈수록 굵음(일곱 줄) · 굽힌 왼 무릎 둘레 주름 · 가슴 아래 잔주름 */
+  const folds = Array.from({length: 7}, (_, i) => { const u = -1 + i / 3, j = i % 2 ? 1 : -1;
+    return ktaper([[cx + sx * 0.7 + u * 26, yHi + 6 + (i % 2) * 14], [cx + sx * 0.45 + u * 36 + j * 6, Y(0.6)], [cx + u * 50 - j * 5, Y(0.79)], [cx + 6 + u * 72, hem - 5 - (i % 3) * 3]], {w0: 0.4, w1: 2.5, cls: 'mk-cld-' + cloth}); })
+    .concat(ktaper([[cx - 40 + sx * 0.6, yKn - 44], [cx - 24, yKn - 10], [cx - 32, yKn + 26]], {w0: 0.4, w1: 2, cls: 'mk-cld-' + cloth}),
+      [[[cx - 30, yBu + 6], [cx - 20, yBu + 18], [cx - 10, yWa - 8]], [[cx + 34, yBu + 4], [cx + 24, yBu + 18], [cx + 16, yWa - 8]]].map(a => ktaper(a, {w0: 1.4, w1: 0.3, cls: 'mk-cld-' + cloth})));
+  /* 띠 — 오른 어깨에서 왼 엉덩이로 비스듬히 감고 왼쪽으로 흘러 발치에서 말림 */
+  const A = [[cx + 42, ySh + 1], [cx + 22, yBu - 6], [cx - 6, yWa - 14], [cx - 36 + sx * 0.5, yHi - 12], [cx - 52, Y(0.58)], [cx - 62, Y(0.75)], [cx - 80, Y(0.9)], [cx - 104, hem - 2]];
+  const B = [[cx - 84, hem + 4], [cx - 58, Y(0.9)], [cx - 44, Y(0.75)], [cx - 32, Y(0.58)], [cx - 16 + sx * 0.5, yHi + 2], [cx + 10, yWa + 2], [cx + 36, yBu + 10], [cx + 56, ySh + 18]];
+  const sashEl = [s('path', {d: closedD([...A, ...B]), class: 'mk-cl-' + sash + ' la-ol'}),
+    [0.32, 0.66].map((t, i) => ktaper(A.map((p, k) => mid(p, B[B.length - 1 - k], t)).slice(1), {w0: 0.4, w1: 2 + i * 0.4, cls: 'mk-cld-' + sash})),
+    s('path', {d: fillLine(curled([[cx - 86, hem + 3], [cx - 104, hem + 1], [cx - 116, hem - 8]], 5.5, 1, 1.15), 8, 0.8, 0, 0.7), class: 'mk-cl-' + sash + ' la-ol'}),
+    s('path', {d: fillLine(curled([[cx + 74, hem + 1], [cx + 94, hem - 1], [cx + 108, hem - 9]], 5.5, -1, 1.15), 8, 0.8, 0, 0.7), class: 'mk-cl-' + cloth + ' la-ol'})];
+  const edges = [ktaper(Lp.slice(1), {w0: 3.4, w1: 0.6, cls: 'mk-ink'}), ktaper([...Rp].reverse().slice(1), {w0: 3.4, w1: 0.6, cls: 'mk-ink'}), ktaper(A, {w0: 2.4, w1: 0.5, cls: 'mk-ink'})];
+  const belt = [s('path', {d: closedD([[cx - 26 + sx * 0.3, yWa - 5], [cx + 3, yWa - 2], [cx + 30 + sx * 0.3, yWa - 6], [cx + 31 + sx * 0.3, yWa + 3], [cx + 3, yWa + 6], [cx - 27 + sx * 0.3, yWa + 4]]), class: 'mk-collar'}),
+    s('circle', {cx: f(cx + 3), cy: f(yWa + 2), r: 3.4, class: 'mk-gem-g'})];
+  let pr = ''; for (let i = 0; i <= 8; i++) { const t = i / 8; pr += circ(cx - 18 + 36 * t, ySh + 2 + 5 * Math.sin(Math.PI * t), 1.15); }
+  const collar = [s('path', {d: closedD([[cx - 13, ySh - 13], [cx, ySh - 15], [cx + 13, ySh - 13], [cx + 22, ySh - 1], [cx + 10, ySh + 8], [cx, ySh + 10], [cx - 10, ySh + 8], [cx - 22, ySh - 1]]), class: 'mk-collar'}), s('path', {d: pr, class: 'mk-pearl'})];
+  /* 팔 — 부푼 윗소매 + 손목까지 소매(공용 sleeve · 가늘고 긴 손가락이 덩굴 · 줄기를 감쌈) */
+  const ups = [], fores = [], hands = [];
+  for (const sg of [-1, 1]) {
+    const up = pose === 'open' ? [[cx + sg * 34, ySh - 4], [cx + sg * 58, ySh - 2], [cx + sg * 74, ySh + 16], [cx + sg * 84, ySh + 38], [cx + sg * 78, ySh + 52], [cx + sg * 64, ySh + 44], [cx + sg * 52, ySh + 28], [cx + sg * 40, ySh + 16]]
+      : [[cx + sg * 34, ySh - 4], [cx + sg * 58, ySh], [cx + sg * 66, ySh + 22], [cx + sg * 64, yBu + 6], [cx + sg * 54, yBu + 16], [cx + sg * 46, yBu + 2], [cx + sg * 44, ySh + 22], [cx + sg * 38, ySh + 10]];
+    ups.push(s('path', {d: closedD(up), class: 'mk-cl-' + arm + ' la-ol'}), ktaper([up[0], up[1], up[2], up[3], up[4]], {w0: 2.6, w1: 0.6, cls: 'mk-ink'}),
+      ktaper([mid(up[1], up[6], 0.3), mid(up[2], up[6], 0.4), mid(up[3], up[5], 0.5)], {w0: 1.3, w1: 0.3, cls: 'mk-cld-' + arm}));
+    const E = pose === 'open' ? [cx + sg * 78, ySh + 44] : [cx + sg * 56, yBu + 10];
+    const H = pose === 'open' ? o.hands[sg < 0 ? 0 : 1] : [hx, sg < 0 ? ySh + 24 : ySh + 5];
+    const dx = H[0] - E[0], dy = H[1] - E[1], L = Math.hypot(dx, dy), w = 15;
+    fores.push(sleeve({x: f(E[0]), y: f(E[1]), ang: f(-Math.atan2(dx, dy) * 180 / Math.PI), len: f(Math.max(10, L - 9)), w, hand: 'hold', dir: pose === 'open' ? sg : -sg, tone: arm}));
+    hands.push(H);
+  }
+  /* 머리 — 공용 hair(머리 덩이) + 가는 가닥 다발이 어깨 뒤로 흘러 엉덩이에서 말림 · 앞 다발 하나는 어깨 앞으로 · 꽃관 */
+  const back = [tress([[fx - h * 0.25, fy - h * 0.3], [cx - 44, ySh - 10], [cx - 40 - 24 * hw, yBu - 4], [cx - 40 - 22 * hw, yWa], [cx - 46 - 28 * hw, hend ?? yHi + 8]], {n: 6, spread: 13, w0: 2.6, curl: 0.8, seed: seed + 1, tone, core: 7, sw: 0}),
+    tress([[fx + h * 0.25, fy - h * 0.3], [cx + 46, ySh - 10], [cx + 42 + 24 * hw, yBu - 4], [cx + 42 + 24 * hw + sx * 0.5, yWa], [cx + 50 + 30 * hw + sx, hend ?? yHi + 10]], {n: 6, spread: 13, w0: 2.6, curl: 0.8, seed: seed + 2, tone, core: 7, sw: 1}),
+    hair({cx: fx, cy: fy, h, dir: fdir, tone, len: 2, seed, view})];
+  const front = tress([[fx - fdir * h * 0.36, fy + h * 0.02], [fx - fdir * h * 0.42, fy + h * 0.42], [cx - fdir * 30, ySh + 4], [cx - fdir * 36, yBu - 6], [cx - fdir * 30, yBu + 18]], {n: 4, spread: 7, w0: 2, curl: 0.7, seed: seed + 5, tone, core: 4, sw: 1});
+  const fc = face({cx: fx, cy: fy, h, dir: fdir, view, tilt: -4, iris: 1});
+  const Cr = a => [fx + (-0.12 * fdir + 0.5 * Math.cos(a)) * h, fy + (-0.36 + 0.42 * Math.sin(a)) * h];
+  const crown = [-150, -120, -90, -60, -30].flatMap((dg, i) => { const p = Cr(dg * Math.PI / 180); return [leaf(p[0], p[1], dg + 180 + (i % 2 ? 30 : -30), 8, 'lw-leaf'), flower(p[0], p[1], i === 2 ? 5.6 : 4.4, 'lw')]; });
+  return {halo: bigHalo(cx, fy - 2, h * 1.18), back: G('whiplash', back),
+    body: G('outline', dress, folds, sashEl, belt, ups, edges, collar, fc, front, s('g', {'data-mucha': 'vine'}, crown)), fore: G('outline', fores), hands, y: {fy, ySh, yWa, yHi, hem, h}};
+}
 /** 가운데 여인 반신 — 후광 원(빛살 · 꽃잎 고리) · 뒤 머리 · 아치를 따라 흐르는 다발 둘 · 어깨 · 팔 · 옷 주름(목까지 옷 · 옷깃) · 옆얼굴 · 꽃관 · 두 손에 꽃다발 */
 function bust(cx, hy, hr, cid) {
   const h = hr * 0.6, fx = cx + 2, fy = hy - 6, X = (u, v) => [cx + u * h, fy + v * h], M = a => a.map(([u, v]) => X(u, v));
@@ -385,73 +454,65 @@ function placeR(us, pref) {
   const e = extra / (n + 1), xs = [f(x0 + e)]; for (let i = 1; i < n; i++) xs.push(f(xs[i - 1] + gap(i - 1) + e));
   return xs;
 }
+/** 땅 꽃 이름표(아홉째 판) — 양끝 둥근 판 · 가장자리 꽃잎 술(두 빛) · 두 겹 금테 · 안쪽 옆구리에 덩굴에 맺힌 꽃 · 이름은 반듯하게(기울이지 않음) · 아랫줄에 회사 수와 ✦ 수 */
+function rimPts(X0, Y0, X1, Y1, q, step) {
+  const o = [], line = (a, b, n) => { const L = Math.hypot(b[0] - a[0], b[1] - a[1]), k = Math.max(1, Math.round(L / step)); for (let i = 0; i < k; i++) o.push([a[0] + (b[0] - a[0]) * i / k, a[1] + (b[1] - a[1]) * i / k, n[0], n[1]]); };
+  const arc = (c, a0) => { const k = Math.max(1, Math.round(q * Math.PI / 2 / step)); for (let i = 0; i < k; i++) { const a = (a0 + 90 * i / k) * Math.PI / 180; o.push([c[0] + q * Math.cos(a), c[1] + q * Math.sin(a), Math.cos(a), Math.sin(a)]); } };
+  line([X0 + q, Y0], [X1 - q, Y0], [0, -1]); arc([X1 - q, Y0 + q], -90); line([X1, Y0 + q], [X1, Y1 - q], [1, 0]); arc([X1 - q, Y1 - q], 0);
+  line([X1 - q, Y1], [X0 + q, Y1], [0, 1]); arc([X0 + q, Y1 - q], 90); line([X0, Y1 - q], [X0, Y0 + q], [-1, 0]); arc([X0 + q, Y0 + q], 180);
+  return o;
+}
+function landTag(u, side) {
+  const on = u.star > 0, x0 = u.x - u.w / 2, y0 = u.y, w = u.w, h = u.h, q = Math.min(24, h / 2);
+  const rr = i => { const X0 = x0 + i, Y0 = y0 + i, X1 = x0 + w - i, Y1 = y0 + h - i, k = Math.max(2, q - i); return `M${f(X0 + k)} ${f(Y0)}H${f(X1 - k)}A${f(k)} ${f(k)} 0 0 1 ${f(X1)} ${f(Y0 + k)}V${f(Y1 - k)}A${f(k)} ${f(k)} 0 0 1 ${f(X1 - k)} ${f(Y1)}H${f(X0 + k)}A${f(k)} ${f(k)} 0 0 1 ${f(X0)} ${f(Y1 - k)}V${f(Y0 + k)}A${f(k)} ${f(k)} 0 0 1 ${f(X0 + k)} ${f(Y0)}Z`; };
+  let pa = '', pb = '';
+  rimPts(x0 + 1, y0 + 1, x0 + w - 1, y0 + h - 1, q - 1, 9.5).forEach(([x, y, nx, ny], i) => { const L = i % 2 ? 5.2 : 7, Wd = L * 0.42, tx = x + nx * L, ty = y + ny * L;
+    const d = `M${f(x)} ${f(y)}Q${f(x + nx * L * 0.5 - ny * Wd)} ${f(y + ny * L * 0.5 + nx * Wd)} ${f(tx)} ${f(ty)}Q${f(x + nx * L * 0.5 + ny * Wd)} ${f(y + ny * L * 0.5 - nx * Wd)} ${f(x)} ${f(y)}Z`; if (i % 2) pb += d; else pa += d; });
+  const two = u.lines.length > 1, by = two ? [y0 + 21, y0 + 41] : [y0 + 24], cy = y0 + h - (two ? 6 : 9);
+  const cw = tw(u.n + '곳', 20), sw = tw('✦ ' + u.star, 19), x1 = u.x - (cw + 9 + sw) / 2;
+  const fxo = side < 0 ? x0 + w : x0;
+  return s('a', {href: '#/m/' + u.id, class: 'la-u', 'aria-label': u.name + ' 땅 · 우량주 ' + u.n + '곳 · 21곳에 든 회사 ' + u.star + '곳'},
+    s('g', {'data-mucha': 'lettering', class: 'la-tg ' + (on ? 'la-tg-on' : 'la-tg-off')}, s('path', {d: pa, class: 'la-tfa'}), s('path', {d: pb, class: 'la-tfb'}), s('path', {d: rr(0), class: 'la-tgb'}), s('path', {d: rr(3.2), class: 'la-tgl'}),
+      s('path', {d: `M${f(u.x - Math.min(30, w / 2 - 22))} ${f(cy - 21)}H${f(u.x + Math.min(30, w / 2 - 22))}`, class: 'la-tgr'})),
+    sway(flower(fxo, f(y0 + h / 2), 8.4, 'lw'), side < 0 ? 0 : 1),
+    s('text', {x: f(x1), y: f(cy), 'text-anchor': 'start', class: 'la-tc', text: u.n + '곳'}),
+    s('text', {x: f(x1 + cw + 9), y: f(cy), 'text-anchor': 'start', class: 'la-ts ' + (on ? 'la-ts-on' : 'la-ts-off'), text: '✦ ' + u.star}),
+    G('lettering', u.lines.map((l, i) => s('text', {x: f(u.x), y: f(by[i]), 'text-anchor': 'middle', class: 'la-rt', 'data-proper': '', text: l}))),
+    s('rect', {x: f(x0 - 5), y: f(y0 - 3), width: f(w + 10), height: f(Math.max(64, h + 6)), rx: 18, class: 'la-hit'}));
+}
 function allPic(d) {
   const lands = [...d.lands].sort((a, b) => b.star - a.star || a.i - b.i); // ✦ 가 많은 땅이 윗자리(먼저 눈에 듦) · 같으면 자료 차례
   const total = lands.reduce((a, u) => a + u.n, 0), title = '우량주 ' + total + '곳 · ' + (KO[lands.length] ?? lands.length) + ' 땅';
-  const R = 34, NFS = 18, HY = 98, HR = 56, S = seats(), lo = IX0 + 2, hi = IX1 - 2;
-  for (const u of lands) { u.lines = split2(u.name, NFS, 96); u.tw = Math.max(...u.lines.map(l => tw(l, NFS))); u.rh = (u.lines.length > 1 ? RB2 : RB1) + 2; u.rw = f(Math.max(64, u.tw + NPAD)); u.uw = Math.max(2 * R + 6, u.rw - 10); }
-  /* 줄 나누기 — 첫 줄은 여인 곁 두 자리 · 나머지는 세 · 두 칸 줄(리본이 서로 닿지 않는 나눔을 고름 · 차례는 그대로) */
-  const top = lands.slice(0, Math.min(2, lands.length)), rest = lands.slice(top.length), pats = [];
-  const comp = (m, acc) => { if (!m) { pats.push(acc); return; } for (const c of [3, 2]) if (c <= m && m - c !== 1) comp(m - c, [...acc, c]); if (m === 1) pats.push([...acc, 1]); };
-  comp(rest.length, []);
-  pats.sort((a, b) => a.length - b.length || (b.every((c, i) => !i || c !== b[i - 1]) ? 1 : 0) - (a.every((c, i) => !i || c !== a[i - 1]) ? 1 : 0));
-  const PREF = {1: [CX], 2: [130, 260], 3: [86, 195, 304]};
-  let rows = null;
-  for (const pat of pats) {
-    let k = 0; const rr = [];
-    for (const c of pat) { const us = rest.slice(k, k + c); k += c; const xs = placeR(us, PREF[c]); if (!xs) { rr.length = 0; break; } rr.push({us, xs}); }
-    if (rr.length) { rows = rr; break; }
-  }
-  if (!rows) { rows = []; for (let k = 0; k < rest.length; k += 3) { const us = rest.slice(k, k + 3); rows.push({us, xs: PREF[us.length]}); } }
-  const tx = top.length === 2 ? [Math.max(80, lo + top[0].rw / 2), Math.min(310, hi - top[1].rw / 2)] : [CX];
-  rows.unshift({us: top, xs: tx, top: true});
-  /* 높이 — 메달 · 리본(메달 밑 곡선을 따라 휨) · ✦ 줄은 꽃잎 고리 자리만큼 더 */
-  let y = 118; const U = [];
-  rows.forEach((row, r) => {
-    const st = row.us.some(u => u.star > 0), ph = Math.max(...row.us.map(u => u.rh));
-    if (r) y = y + 2 + R + (st ? 12 : 4);
-    row.us.forEach((u, j) => U.push({...u, cx: f(row.xs[j]), cy: y, row: r}));
-    row.cy = y; row.bot = y + R + ph; y = row.bot;
-  });
-  const spare = Math.max(0, IB - 30 - y), step = rows.length > 1 ? Math.min(14, spare / (rows.length - 1)) : 0;
-  rows.forEach((row, r) => { row.cy = f(row.cy + step * r); });
-  for (const u of U) u.cy = f(u.cy + step * u.row);
-  S.add(CX - HR - 6, HY - HR - 6, 2 * HR + 12, 2 * HR + 60); // 여인 반신
-  for (const u of U) { S.add(u.cx - R - 3, u.cy - R - 3, 2 * R + 6, 2 * R + 6); S.add(u.cx - u.rw / 2 - 4, u.cy + R - 8, u.rw + 8, u.rh + 12); if (u.star > 0) S.add(u.cx - R - 14, u.cy - R - 14, 2 * R + 28, R + 16); }
+  const NFS = 18, S = seats(), TOP = 46, HEM = 562;
+  for (const u of lands) { u.lines = split2(u.name, NFS, 96); u.tw = Math.max(...u.lines.map(l => tw(l, NFS))); u.w = f(Math.max(98, u.tw + 18, tw(u.n + '곳', 20) + 9 + tw('✦ ' + u.star, 19) + 18)); u.h = u.lines.length > 1 ? 72 : 60; }
+  /* 두 줄기 — 읽는 차례(왼 → 오른 · 위 → 아래)대로 왼쪽 · 오른쪽에 번갈아 · 여인 두 손에서 내려온 덩굴에 맺힘 */
+  const cols = [lands.filter((_, i) => i % 2 === 0), lands.filter((_, i) => i % 2 === 1)], Y0 = 186, YM = 556;
+  cols.forEach((col, c) => { if (!col.length) return; const wm = Math.max(...col.map(u => u.w)), sum = col.reduce((a, u) => a + u.h, 0), gap = col.length > 1 ? Math.min(14, Math.max(3, (YM - Y0 - sum) / (col.length - 1))) : 0; let y = Y0;
+    col.forEach(u => { u.x = c ? f(IX1 - 4 - wm / 2) : f(IX0 + 4 + wm / 2); u.y = f(y); y += u.h + gap; }); col.edge = c ? Math.min(...col.map(u => u.x - u.w / 2)) : Math.max(...col.map(u => u.x + u.w / 2)); });
+  for (const u of lands) S.add(u.x - u.w / 2 - 6, u.y - 6, u.w + 12, u.h + 12);
   const legend = '✦ 는 21곳에 든 회사 수', legW = f(tw(legend, NFS) + 30);
   S.add(CX - legW / 2 + 8, IB + 4, legW - 16, 24);
-  const F = frame(title, 20, S), cid = uid('w'), ldefs = [];
+  const F = frame(title, 20, S), cid = uid('w');
+  /* 여인 — 가운데 서서 두 팔을 들어 벌림(손은 첫 이름표 위 빈 자리) · 엉덩이는 왼쪽으로 · 치맛단은 발목까지 덮고 바닥에 퍼져 말림 */
+  const HND = [[CX - 90, 128], [CX + 90, 128]];
+  const Lw = lady({cx: CX, top: TOP, hem: HEM, pose: 'open', hands: HND, cloth: 'sage', sash: 'gold', arm: 'cream', tone: 5, view: 'three', fdir: 1, seed: 4, sx: -6, hw: 0.45});
+  const HY = Lw.y.fy - 2;
   /* 아치 안 옅은 동심원 후광(여인 후광에서 퍼져 나감) */
   const inWin = (x, y) => x > IX0 + 2 && x < IX1 - 2 && y < IB - 2 && y > archY(x) + 2;
-  const conc = G('halo', [78, 104, 134, 168, 206, 250, 300, 356].map((r, i) => { let dd = '', on = false;
+  const conc = G('halo', [84, 112, 144, 180, 222, 268, 320, 376].map((r, i) => { let dd = '', on = false;
     for (let k = 0; k <= 240; k++) { const a = k * Math.PI / 120, x = CX + r * Math.cos(a), y = HY + r * Math.sin(a); if (inWin(x, y)) { dd += (on ? 'L' : 'M') + f(x) + ' ' + f(y); on = true; } else on = false; }
     return dd ? s('path', {d: dd, class: 'la-cc' + (i % 2 ? ' la-cc2' : '')}) : null; }));
-  /* 나무 — 여인 두 손에서 나온 두 줄기가 옷단 밑에서 한 줄기로(위 굵게 · 아래 가늘게) · 줄마다 땅 사이 틈으로 지나며 가지가 땅 원판으로(원판 뒤로 들어감) */
-  const B = bust(CX, HY, HR, cid), TP = [B.m0, [CX - 3, B.m0[1] + 18]];
-  const gaps = rows.slice(1).map((row, r) => { const xs = U.filter(u => u.row === r + 1).map(u => u.cx).sort((a, b) => a - b); const g = xs.length > 1 ? xs.slice(1).map((x, i) => (x + xs[i]) / 2) : [xs[0] + (r % 2 ? 50 : -50)]; return {g: g[g.length > 1 ? r % 2 : 0], cy: row.cy}; });
-  gaps.forEach(({g, cy}, i) => { if (i) TP.push([(g + gaps[i - 1].g) / 2, (cy + gaps[i - 1].cy) / 2 - 8]); TP.push([g, cy]); });
-  const lastG = gaps.length ? gaps[gaps.length - 1] : {g: CX, cy: TP[1][1]}; TP.push([lastG.g + 6, lastG.cy + 44], [lastG.g - 4, Math.min(IB - 14, lastG.cy + 70)]);
-  const branches = U.filter(u => u.row > 0).map((u, i) => { const gp = gaps[u.row - 1], a = [gp.g, gp.cy], m = [(a[0] + u.cx) / 2, (a[1] + u.cy) / 2 - 12]; return kvine([a, m, [u.cx, u.cy]], {w0: 3.4, w1: 1.1, leaves: 2, buds: i % 2, seed: 7 + i * 5}); });
-  const tree = s('g', {'clip-path': 'url(#' + cid + ')'}, G('vine', kvine(TP, {w0: 6.4, w1: 1.6, leaves: 14, buds: 4, seed: 3}), branches));
-  /* 고리 — 두 겹 금테 밖 모자이크 점 고리 · ✦ 가 있는 땅만 작은 꽃 관 */
-  const halo = G('halo', U.map(u => dotRing(u.cx, u.cy, R + 6.5, u.star > 0)));
-  /* 땅 메달 — 굵기가 변하는 금 테(초승달 꼴) · 안은 원판 · 아래 둥근 이름 띠 · 누르는 자리 높이 60 넘게 */
-  const rbs = [], units = U.map(u => {
-    const on = u.star > 0, rb = nameBand(u, ldefs, on), hitT = u.cy - R - 6, hitB = rb.bot + 4, hw = Math.max(64, u.uw);
-    rbs.push(rb.rb);
-    return s('a', {href: '#/m/' + u.id, class: 'la-u', 'aria-label': u.name + ' 땅 · 우량주 ' + u.n + '곳 · 21곳에 든 회사 ' + u.star + '곳'},
-      s('circle', {cx: u.cx, cy: u.cy, r: R - 2, class: on ? 'la-disc-on' : 'la-disc-off'}),
-      G('outline', s('path', {d: circ(u.cx, u.cy, R) + circ(u.cx - 1.1, u.cy - 1.5, R - 5.2), 'fill-rule': 'evenodd', class: on ? 'la-ring-on' : 'la-ring-off'}), s('circle', {cx: u.cx, cy: u.cy, r: R + 3, class: 'la-fine'})),
-      s('text', {x: u.cx, y: f(u.cy + 1), 'text-anchor': 'middle', class: 'la-t la-cnt', text: u.n + '곳'}),
-      s('text', {x: u.cx, y: f(u.cy + 22), 'text-anchor': 'middle', class: 'la-t la-st ' + (on ? 'la-st-on' : 'la-st-off'), text: '✦ ' + u.star}),
-      rb.txt,
-      s('rect', {x: f(u.cx - hw / 2), y: f(hitT), width: f(hw), height: f(hitB - hitT), rx: 14, class: 'la-hit'}));
-  });
+  /* 덩굴 — 두 손에서 갈라져(위로 새순 · 아래로 큰 줄기) 이름표 줄 안쪽 틈을 따라 내려가 치맛단 곁에서 말림 · 이름표는 그 덩굴에 맺힌 꽃 */
+  const vines = [-1, 1].map((sg, k) => { const H0 = Lw.hands[k], col = cols[k]; if (!col.length) return null; const gx = col.edge + (sg < 0 ? 7 : -7), y1 = Math.max(...col.map(u => u.y + u.h));
+    return [kvine([H0, [H0[0] + sg * 2, H0[1] + 28], [gx, Y0 + 12], [gx - sg * 3, (Y0 + y1) / 2], [gx + sg * 2, y1 - 30], [gx + sg * 16, Math.min(IB - 10, y1 + 10)]], {w0: 4.6, w1: 1.2, leaves: 12, buds: 3, seed: 5 + k * 6}),
+      kvine([[H0[0], H0[1] + 4], [H0[0] - sg * 8, H0[1] - 16], [H0[0] + sg * 4, H0[1] - 34], [H0[0] - sg * 8, H0[1] - 50]], {w0: 2.8, w1: 0.8, leaves: 3, buds: 1, seed: 17 + k * 4})]; });
   const leg = G('lettering', s('text', {x: CX, y: IB + 23, 'text-anchor': 'middle', class: 'la-legt'}, s('tspan', {class: 'la-legs', text: '✦'}), s('tspan', {text: ' 는 21곳에 든 회사 수'})));
-  const clip = s('defs', {}, s('clipPath', {id: cid}, s('path', {d: archIn})), ldefs);
+  const clip = s('defs', {}, s('clipPath', {id: cid}, s('path', {d: archIn})));
+  const units = lands.map((u, i) => landTag(u, i % 2 ? 1 : -1));
   return s('svg', {class: 'su-svg su-art4 su-land-art la-all', viewBox: `0 0 ${W} ${H}`, role: 'group', preserveAspectRatio: 'xMidYMid meet',
-    'aria-label': '땅 지도 · 우량주 ' + total + '곳을 ' + U.length + '땅으로 · ✦ 는 21곳에 든 회사 수'},
-  backing(), F.defs, clip, F.pastel, conc, F.whip, F.mosaic, F.outline, F.arch, tree, B.el, halo, leg, s('g', {'clip-path': 'url(#' + cid + ')'}, G('lettering', rbs)), s('g', {class: 'la-units'}, units));
+    'aria-label': '땅 지도 · 우량주 ' + total + '곳을 ' + lands.length + '땅으로 · ✦ 는 21곳에 든 회사 수'},
+  backing(), F.defs, clip, F.pastel, conc, F.whip, F.mosaic, F.outline, F.arch,
+  s('g', {'clip-path': 'url(#' + cid + ')'}, Lw.halo, Lw.back, Lw.body, G('vine', vines), Lw.fore), leg, s('g', {class: 'la-units'}, units));
 }
 
 /* ── ② 한 땅 — 아치 창 안의 업종 꽃대(줄기에서 돋은 잎 막대) ── */
@@ -487,7 +548,7 @@ function onePic(d) {
   const inds = (d.inds ?? []).filter(g => g && g.name);
   if (!inds.length) return needPic(d);
   const seen = new Set(), stars = (d.stars ?? []).filter(c => c?.code && !seen.has(c.code) && seen.add(c.code));
-  const S = seats(), tFs = tw(d.name, 20) <= 250 ? 20 : 19, LCY = 95, LR = 62; // 여인 메달 1.2배(52 → 62)
+  const S = seats(), tFs = tw(d.name, 20) <= 250 ? 20 : 19, LCY = 69, LR = 62; // 아홉째 판 — 메달 지움 · LCY = 큰 여인 후광 가운데
   S.add(CX - LR - 6, LCY - LR - 6, 2 * LR + 12, 2 * LR + 12);
   /* ✦ 회사 — 기둥을 나눠 쓰는 아치 회랑(셋씩 한 줄 · 차례 그대로) · 칸 폭은 이름 폭 + 안쪽 여백(글이 테에 닿지 않게) · 이름은 낱말 자리에서 두 줄 · 줄 간격 82(누르는 자리 높이 60 넘게) */
   const TFS = 18, PH = 72, TP = 82, CW = 5, tags = stars.map(c => { const lines = nameLines(c.name, TFS, 86); return {...c, lines, w: f(Math.max(84, Math.max(...lines.map(l => tw(l, TFS))) + 20))}; }), trows = [];
@@ -528,7 +589,7 @@ function onePic(d) {
     if (S.free(axis + 1, gy - 6, 12, 10, 1)) axLeaves.push(sway(leaf(axis + 1, gy, i % 2 ? -20 : 20, 11, i % 2 ? 'la-leaf la-leaf2' : 'la-leaf'), i + 1)); }
   S.add(axis - 4, Y0 - 16, 8, barsEnd - Y0 + 22);
   /* 땅을 뜻하는 물건 — 여인 후광 테 양옆에 붙은 작은 모자이크 원 안 */
-  const ER = 30, EM = [[CX - LR - ER + 3, LCY + 12], [CX + LR + ER - 3, LCY + 12]];
+  const ER = 30, EM = [[CX - LR - ER + 3, LCY + 22], [CX + LR + ER - 3, LCY + 22]];
   for (const [x, y] of EM) S.add(x - ER - 2, y - ER - 2, 2 * ER + 4, 2 * ER + 4);
   /* 아래 — ✦ 회사 아치 회랑 또는 「없어요」 판 */
   const tagTop = f(barsEnd + 4), tagRows = trows.map((r, i) => { const py = tagTop + 18 + i * TP; let x = CX - r.w / 2 + CW; const items = r.items.map(t => { const it = {...t, x, py}; x += t.w + CW; S.add(it.x - CW, py - 4, t.w + 2 * CW, PH + 6); return it; }); return {py, items, x0: f(CX - r.w / 2), x1: f(CX + r.w / 2)}; });
@@ -539,13 +600,18 @@ function onePic(d) {
   const vines = [], fork = [axis, f(barsEnd + 8)];
   tagRows.forEach((r, ri) => r.items.forEach((t, j) => { const top = [t.x + t.w / 2, t.py - 2], mid = [(fork[0] + top[0]) / 2 + (j - 1) * 6, Math.min(fork[1], top[1]) - 6 + ri * 10]; vines.push(kvine([fork, mid, top], {w0: 3, w1: 1.1, leaves: 2, buds: (j + ri) % 2, seed: 11 + ri * 7 + j * 3})); }));
   const stars2 = sky(S, [[318, 160, 'small'], [72, 160, 'small']]);
-  /* 줄기 — 맨 아래에서 굵게 올라와 여인 메달 밑에서 가늘게 끝남 · 여인 머리 한 가닥이 메달에서 흘러내려 줄기 끝을 한 번 감고 줄기가 됨 */
-  const stemTop = LCY + LR + 2, stemBot = f(trows.length ? barsEnd + 8 : barsEnd + 2);
-  const hx = CX + LR * 0.3, near = Math.abs(axis - hx) <= 24; // 줄기가 메달 밑 가까이 서면 머리 가닥이 줄기로 이어짐 · 멀면 메달 밑에서 말려 끝남(메달을 가로지르는 막대 금지)
-  const hairDown = s('g', {'data-mucha': 'whiplash'}, near ? lock([[CX + LR * 0.12, LCY + LR * 0.42], [hx, LCY + LR * 0.66], [(hx + axis) / 2 + 3, LCY + LR * 0.9], [axis + 2, LCY + LR + 4]], 2.6, axis >= hx ? -1 : 1, 5.4, 2, 1.1, 1)
-    : lock([[CX + LR * 0.12, LCY + LR * 0.42], [hx, LCY + LR * 0.66], [hx + 2, LCY + LR * 0.92]], 4, axis >= hx ? -1 : 1, 5, 2, 1.1, 1));
-  const stem = G('vine', ktaper([[axis, stemBot], [axis, (stemBot + stemTop) / 2], [axis, near ? stemTop : Y0 - 12]], {w0: 5.6, w1: 1.4, cls: 'mk-vstem'}),
-    near ? null : [leaf(axis, Y0 - 9, -128, 10, 'la-leaf'), leaf(axis, Y0 - 9, -52, 10, 'la-leaf la-leaf2')], axLeaves);
+  /* 큰 여인(아홉째 판) — 가운데 서서 두 손으로 줄기를 위아래로 쥠 · 허리띠는 막대 줄 사이 빈 틈에(값 칸이 허리선을 가리지 않게) · 얼굴 · 손은 첫 막대 줄 위 */
+  let waY = null, best = 1e9;
+  for (let i = 0; i < N - 1; i++) { const a = rows[i], b = rows[i + 1], lo = Math.max(a.bc + bh / 2, a.vb + 0.3 * nfs, a.nb + 0.3 * nfs), hi = Math.min(b.bt, b.nb - 0.8 * nfs, b.vb - 0.8 * nfs), c = (lo + hi) / 2;
+    if (hi - lo >= 7 && c > 190 && c < 300 && Math.abs(c - 232) < best) { best = Math.abs(c - 232); waY = f(c); } }
+  const HX = f(Math.max(CX - 26, Math.min(CX + 26, axis))), sd = HX >= CX ? 1 : -1;
+  const Lw = lady({cx: CX, top: 34, hem: 572, pose: 'hold', hx: HX, cloth: 'sky', sash: 'rose', arm: 'ivory', tone: 2, view: 'profile', fdir: -1, seed: 9, sx: 10, wa: waY, hw: 0.25, hend: (waY ?? 230) - 8});
+  const hU = Lw.hands[1], hD = Lw.hands[0], stemBot = f(trows.length ? barsEnd + 8 : barsEnd + 2);
+  /* 줄기 — 맨 아래에서 굵게 올라와 첫 막대 줄 위에서 여인 두 손으로 들어가 손 위에서 꽃 한 송이로 끝남(줄기가 멀면 막대 줄 위로 휘어 들어감) */
+  const SP = Math.abs(axis - HX) < 3 ? [[axis, stemBot], [axis, (stemBot + Y0) / 2], [axis, Y0 - 8], [HX, hD[1]], [HX, hU[1] - 8], [HX + sd * 9, hU[1] - 28]]
+    : [[axis, stemBot], [axis, (stemBot + Y0) / 2], [axis, Y0 - 2], [(axis + HX) / 2, Y0 - 9], [HX, hD[1] + 2], [HX, hU[1] - 8], [HX + sd * 9, hU[1] - 28]];
+  const top2 = [HX + sd * 9, hU[1] - 31];
+  const stem = G('vine', ktaper(SP, {w0: 5.6, w1: 1.4, cls: 'mk-vstem'}), leaf(top2[0], top2[1] + 8, sd > 0 ? -20 : 200, 10, 'lw-leaf'), leaf(top2[0], top2[1] + 10, sd > 0 ? 160 : 20, 9, 'lw-leaf'), sway(flower(top2[0], top2[1], 7.2, 'lw'), 1), axLeaves);
   /* 값 꽃대 — 모양은 그대로(같은 값 → 같은 길이 · 같은 차례) · 오름 = 금 꽃대 · 내림 = 붉은 꽃대 · 끝에 잎 · 잎 너머에 값 */
   const bars = s('g', {class: 'la-bars'},
     rows.map((r, i) => s('g', {class: 'la-row', 'data-v': f(r.v), 'data-len': f2(r.len)},
@@ -582,8 +648,8 @@ function onePic(d) {
   const calmEl = calm(S, f(barsEnd + 12), IB - 12);
   return s('svg', {class: 'su-svg su-art4 su-land-art la-one', viewBox: `0 0 ${W} ${H}`, role: 'group', preserveAspectRatio: 'xMidYMid meet',
     'aria-label': d.name + ' 땅 · 업종 ' + N + '개 · 20거래일 동안 움직인 만큼 · 21곳에 든 회사 ' + stars.length + '곳'},
-  backing(), F.defs, s('defs', {}, s('clipPath', {id: cid}, s('path', {d: archIn}))), F.pastel, sun, calmEl, F.whip, F.mosaic, F.outline, F.arch, stars2, em,
-  medallion({cx: CX, cy: LCY, r: LR, v: 2, ring: 'mosaic'}), s('g', {'clip-path': 'url(#' + cid + ')'}, G('vine', vines)), stem, hairDown, bars, arcades, G('lettering', note, tagEls));
+  backing(), F.defs, s('defs', {}, s('clipPath', {id: cid}, s('path', {d: archIn}))), F.pastel, sun, calmEl, F.whip, F.mosaic, F.outline, F.arch, stars2,
+  s('g', {'clip-path': 'url(#' + cid + ')'}, Lw.halo, Lw.back), em, s('g', {'clip-path': 'url(#' + cid + ')'}, Lw.body, G('vine', vines)), stem, Lw.fore, bars, arcades, G('lettering', note, tagEls));
 }
 
 /** 자료 받기 — id 가 없으면 ① 열 땅 · 있으면 ② 한 땅 */

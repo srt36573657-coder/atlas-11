@@ -9,7 +9,7 @@
    글씨는 처음부터 진하게(그래프의 들어오는 움직임 이름을 뗌) · 움직임은 꽃 · 잎 · 별 · 머리카락에만(transform) · 들어옴 0.5초
    여인의 살 · 머리칼 · 옷 · 리본 · 봉오리는 고정 색(어두운 판에서도 크림 · 파스텔) · 원화를 본뜨지 않고 화풍만 */
 import {s, line} from '/su/su-fig.js';
-import {taper as kTaper, medallion as kMedallion, vine, rays, leafBar, sleeve} from './su-mucha-kit.js';
+import {taper as kTaper, medallion as kMedallion, vine, rays, leafBar, sleeve, face as kFace, hair as kHair, strands as kStrands} from './su-mucha-kit.js';
 
 export const CSS = '/su/su-mucha.css';
 
@@ -22,6 +22,7 @@ const MTOP = 50, R0 = 54, R1 = 70;                        // 메달 위 끝(넓�
 const WX0 = E + BAND + 4, WX1 = W - E - BAND - 4, WY1 = MOS_Y - 4;
 const WIN_W = 330;                                        // 그래프 상자 폭(안쪽 여백은 덩굴 띠에 3px 걸쳐도 됨 — 값은 여백 안쪽)
 let MED, WIN, ROWY = null, STEM = null, CTOP = 999;        // 한 장을 그리는 동안의 자리(frame 이 처음에 정함 · 동기 셈) · CTOP = 그래프 윗선(머리 가닥이 그 위에서 멈춤)
+let FIG = null;                                           // 9판 — 큰 전신 여인(막대 쪽) · {back, front} · 없으면 옛 메달 길
 function setMed(r) { MED = {x: CX, y: MTOP + r, r}; WIN = {x0: WX0, x1: WX1, y0: MTOP + 2 * r + 12, y1: WY1}; }
 setMed(R0);
 const TONES = ['hot', 'bloom', 'money', 'calm'], KINDS = ['line', 'bars', 'cols', 'waffle', 'cal', 'split', 'matrix'];
@@ -505,6 +506,182 @@ function barsArt(src) {
   return s('g', {class: 'mu-chart mu-barart', 'data-f': +f.toFixed(5)}, grp('vine', kids, 'mu-barvine'));
 }
 
+/* ── 9판(주문 1844 「어 다 채워」 · r9-brief.md 「B11」) — 벽감 아치 안 큰 전신 여인이 지팡이(축)를 두 손으로 쥐고 섬 ──
+   머리는 아치 위(그림 위 1/5 안) · 치맛단은 꽃밭에 고임 · 몸은 S자(머리는 왼쪽으로 기울고 엉덩이는 왼쪽으로 · 오른 무릎 굽힘) · 둥근 어깨 · 풍만한 엉덩이
+   옷은 목 · 손목 · 발목까지(연두 한 벌 · 장밋빛 띠가 오른 어깨에서 왼 엉덩이로 비스듬히 감고 자락이 발치에서 말림)
+   잎 막대 일곱은 지팡이에서 뻗은 잎(차례 · 끝값 · 길이 그대로) · 이름과 값은 여인 몸 밖 양옆에(몸이 글에 가리지 않음 · 몸 밖에 자리가 없을 때만 옷 위에 고정 색 글)
+   빈 크림 바탕은 이름마다 뻗는 덩굴손과 떨어지는 꽃잎으로 */
+const WG = {
+  face: {cx: 184, cy: 100, h: 46, tilt: -7}, halo: {x: 186, y: 103, r: 60},
+  L: [[178, 137], [161, 140], [147, 147], [139, 159], [140, 178], [145, 198], [157, 219], [163, 232], [148, 252], [132, 278], [127, 308], [129, 350], [134, 400], [139, 452], [143, 500], [146, 530], [135, 553], [113, 575]],
+  HEM: [[113, 575], [128, 585], [150, 579], [172, 588], [196, 583], [220, 589], [244, 581], [266, 587], [285, 577]],
+  R: [[285, 577], [257, 557], [233, 534], [228, 500], [226, 452], [227, 405], [230, 360], [236, 318], [240, 286], [231, 256], [219, 234], [221, 221], [232, 200], [237, 180], [240, 161], [232, 148], [216, 141], [202, 137]]};
+const FIG_Y0 = 240, FIG_Y1 = 538;                       // 잎 줄 자리 — 허리(232) 아래부터 발목 위까지
+/** 점 사이를 매끈하게(캣멀-롬) */
+function crs(p, k = 6) {
+  const o = [p[0]], at = i => p[Math.max(0, Math.min(p.length - 1, i))];
+  for (let i = 0; i < p.length - 1; i++) { const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+    for (let j = 1; j <= k; j++) { const t = j / k, t2 = t * t, t3 = t2 * t; o.push([0, 1].map(q => 0.5 * (2 * p1[q] + (p2[q] - p0[q]) * t + (2 * p0[q] - 5 * p1[q] + 4 * p2[q] - p3[q]) * t2 + (3 * p1[q] - p0[q] - 3 * p2[q] + p3[q]) * t3))); } }
+  return o;
+}
+const EL = crs(WG.L), ER = crs(WG.R).reverse();           // 몸 왼쪽 · 오른쪽 가장자리(위 → 아래)
+/** 옷 가장자리 x(그 높이) — 잎 줄 자리(허리 ~ 발목)에서만 씀 */
+function edgeAt(E, y) {
+  let best = null;
+  for (let i = 1; i < E.length; i++) { const a = E[i - 1], b = E[i]; if ((a[1] - y) * (b[1] - y) <= 0 && a[1] !== b[1]) { const x = a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]); best = best == null ? x : (E === EL ? Math.min(best, x) : Math.max(best, x)); } }
+  return best ?? (E === EL ? CX - 40 : CX + 40);
+}
+const xlAt = y => edgeAt(EL, y), xrAt = y => edgeAt(ER, y);
+/** 머리채 한 다발 — 가는 속 띠(뿌리 굵게 · 끝 가늘게) 위에 공용 부품 strands(가는 가닥 대여섯 묶음 · 끝에서 벌어져 말림) */
+const tress = (p, {n = 12, spread = 14, w0 = 2.5, curl = 0.7, seed = 1, core = 7, sw = 'mk-sway'} = {}) => s('g', {class: sw},
+  kTaper(crs(p, 5), {w0: core, w1: core * 0.14, cls: 'mk-hb'}), kStrands(p, {n, spread, w0, w1: 0.22, curl, seed, cls: 'mk-hb'}));
+/** 후광 — 머리 뒤 큰 원(바깥 금테 · 살구와 금 꽃잎 고리 · 점 고리 · 안쪽 상아 원판) · 아치 안에서만 */
+function haloArt(clip) {
+  const {x: cx, y: cy, r} = WG.halo, n = 28, ri = r - 13;
+  let pa = '', pb = '', dt = '';
+  for (let i = 0; i < n; i++) {
+    const a = i * 2 * Math.PI / n, ca = Math.cos(a), sa = Math.sin(a), L = 12.5, w = 5, x = cx + ri * ca, y = cy + ri * sa;
+    const d = `M${f1(x)} ${f1(y)}Q${f1(x + ca * L * 0.5 - sa * w)} ${f1(y + sa * L * 0.5 + ca * w)} ${f1(x + ca * L)} ${f1(y + sa * L)}Q${f1(x + ca * L * 0.5 + sa * w)} ${f1(y + sa * L * 0.5 - ca * w)} ${f1(x)} ${f1(y)}Z`;
+    if (i % 2) pb += d; else pa += d;
+    const b = a + Math.PI / n; dt += dotD(cx + (r - 3.5) * Math.cos(b), cy + (r - 3.5) * Math.sin(b), 1.15);
+  }
+  return s('g', {'clip-path': `url(#${clip})`, 'data-mucha': 'halo', class: 'mu-halo', 'aria-hidden': 'true'},
+    s('circle', {cx, cy, r, class: 'mu-h0'}), s('path', {d: pa, class: 'mk-pe-a'}), s('path', {d: pb, class: 'mk-pe-b'}), s('path', {d: dt, class: 'mk-mo-g'}),
+    s('circle', {cx, cy, r: ri - 1, class: 'mu-h1'}), s('circle', {cx, cy, r: ri - 6, class: 'mu-h2'}));
+}
+/** 여인 뒤쪽 — 후광 · 등 뒤 머리채 넷 · 머리 덩이 · 얼굴 · 옷(치마 · 몸판) · 주름 · 띠 · 깃 · 허리띠 · 꽃관 · 앞 머리채 */
+function womanBack(clip) {
+  const {cx, cy, h, tilt} = WG.face, k = [];
+  const hp = (u, v) => { const a = tilt * Math.PI / 180; return [cx + u * Math.cos(a) - v * Math.sin(a), cy + u * Math.sin(a) + v * Math.cos(a)]; };
+  // 등 뒤 머리채 — 정수리에서 후광 둘레를 따라 어깨 뒤로 흘러 양옆 빈 자리에서 크기 다르게 말림(첫 잎 줄 위에서 멈춤)
+  const back = s('g', {class: 'mk-hair mk-t0', 'data-mucha': 'whiplash'},
+    tress([[178, 64], [150, 71], [126, 95], [112, 131], [105, 166], [95, 196], [78, 219]], {n: 15, spread: 17, w0: 2.6, curl: 0.85, seed: 5, core: 8}),
+    tress([[171, 84], [146, 108], [134, 145], [130, 181], [121, 209], [108, 230]], {n: 10, spread: 12, w0: 2.3, curl: 0.65, seed: 9, core: 6.5, sw: 'mk-sway2'}),
+    tress([[193, 62], [222, 71], [246, 97], [262, 133], [273, 168], [289, 198], [305, 217]], {n: 14, spread: 16, w0: 2.6, curl: 0.8, seed: 13, core: 8}),
+    tress([[201, 83], [228, 108], [243, 145], [251, 181], [262, 210], [275, 230]], {n: 9, spread: 11, w0: 2.2, curl: 0.6, seed: 17, core: 6, sw: 'mk-sway2'}));
+  k.push(haloArt(clip), back, s('g', {transform: `rotate(${tilt} ${cx} ${cy})`}, kHair({cx, cy, h, dir: 1, tone: 0, len: 1.25, seed: 6, view: 'three'})),
+    kFace({cx, cy, h, dir: 1, view: 'three', tilt, iris: 1, v: 1}));
+  // 옷 한 벌 — 목 깃에서 어깨(둥글게) · 가슴 · 허리 · 엉덩이(풍만하게 왼쪽으로) · 무릎 · 발목 · 발치에서 퍼져 꽃밭에 고임
+  const neck = crs([[202, 137], [195, 141], [189, 142], [183, 141], [178, 137]], 3);
+  const dress = poly([...EL, ...crs(WG.HEM, 4).slice(1), ...crs(WG.R, 6).slice(1), ...neck.slice(1)]) + 'Z';
+  const B = (a, b, c, d, n = 16) => bez(a, b, c, d, n);
+  const folds = [[[176, 250], [166, 330], [184, 430], [170, 578]], [[199, 246], [208, 340], [190, 452], [205, 584]], [[155, 288], [146, 382], [161, 472], [148, 574]],
+    [[221, 266], [227, 350], [212, 444], [229, 580]], [[188, 300], [180, 392], [197, 500], [186, 586]], [[140, 326], [146, 420], [150, 520], [140, 570]]]
+    .map(([a, b, c, d]) => kTaper(B(a, b, c, d), {w0: 0.4, w1: 2.1, cls: 'mu-dressd'}));
+  const knee = kTaper(B([200, 372], [208, 386], [218, 396], [228, 400], 10), {w0: 2, w1: 0.4, cls: 'mu-dressd'}); // 굽힌 오른 무릎
+  const bodice = [[[150, 194], [160, 204], [172, 209], [186, 210]], [[200, 208], [212, 206], [222, 200], [230, 192]]].map(p => kTaper(B(...p, 8), {w0: 1.4, w1: 0.3, cls: 'mu-dressd'}));
+  // 띠 — 오른 어깨에서 왼 엉덩이로 비스듬히 · 자락은 왼쪽 치마 위로 흘러 발치에서 말림
+  const sashUp = [[224, 141], [206, 170], [178, 213], [150, 258], [134, 281]], sashLo = [[136, 296], [156, 268], [188, 224], [214, 183], [238, 152]];
+  const sash = poly([...crs(sashUp, 5), ...crs(sashLo, 5)]) + 'Z';
+  const tail = whipPts([140, 290], [146, 360], [134, 450], [148, 548], 5, 1, 1.05);
+  const sfold = [kTaper(crs([[230, 148], [206, 182], [176, 228], [146, 276]], 5), {w0: 1.3, w1: 0.4, cls: 'mu-sashd'}), kTaper(crs([[142, 300], [147, 380], [138, 460], [148, 540]], 5), {w0: 0.4, w1: 1.6, cls: 'mu-sashd'})];
+  // 깃(높은 목) · 허리띠(금) · 진주
+  const collar = s('path', {d: `M177 131C185 136 197 136 205 131L206 140C198 146 185 146 176 140Z`, class: 'mk-collar'});
+  const pearls = Array.from({length: 7}, (_, i) => s('circle', {cx: f1(180 + i * 4.2), cy: f1(141.5 + Math.sin(i / 6 * Math.PI) * 2.2), r: 1.25, class: 'mk-pearl'}));
+  const girdle = kTaper(crs([[160, 229], [176, 233], [196, 233], [212, 229], [221, 225]], 4), {w0: 4.2, w1: 3.2, cls: 'mu-girdle'});
+  // 바깥 선 — 어깨에서 굵게 시작해 발치로 가늘게 · 치맛단은 가늘게 · 발치 자락 말림
+  const outl = [kTaper(EL.slice(4), {w0: 3, w1: 0.6, cls: 'mk-ink'}), kTaper(ER.slice(4), {w0: 2.6, w1: 0.6, cls: 'mk-ink'}), kTaper(crs(WG.HEM, 4), {w0: 1.1, w1: 0.6, cls: 'mk-ink2'})];
+  const swirl = [kTaper(whipPts([118, 571], [104, 576], [92, 584], [95, 571], 6, 1, 1.1), {w0: 8, w1: 0.6, cls: 'mu-dress'}), kTaper(whipPts([118, 571], [104, 576], [92, 584], [95, 571], 6, 1, 1.1), {w0: 1.3, w1: 0.3, cls: 'mk-ink2'}),
+    kTaper(whipPts([280, 573], [296, 578], [308, 586], [304, 572], 6, -1, 1.1), {w0: 8, w1: 0.6, cls: 'mu-dress'}), kTaper(whipPts([280, 573], [296, 578], [308, 586], [304, 572], 6, -1, 1.1), {w0: 1.3, w1: 0.3, cls: 'mk-ink2'})];
+  // 꽃관 — 머리 위 둥근 줄을 따라 작은 꽃 다섯(고개와 같이 기울임)
+  const cw = [[-158, 5.6], [-132, 6.6], [-106, 7.4], [-80, 6.6], [-54, 5.6]].map(([a, r], i) => { const ar = a * Math.PI / 180, p = hp((-0.12 + 0.52 * Math.cos(ar)) * h, (-0.3 + 0.5 * Math.sin(ar)) * h); return [p, r, a, i]; });
+  const crown = s('g', {class: 'mu-crown'}, cw.map(([p, , a]) => leaf(p[0], p[1], 10, a - 40 + tilt, -1, 'mu-leaf mu-sep')), cw.map(([p, r, , i]) => flower(p[0], p[1], r * 1.5, i, {anim: true, pet: i % 2 ? 'mu-vpet' : 'mu-mpet', core: 'mu-core'})));
+  const front = s('g', {class: 'mk-hair mk-t0'}, tress([[207, 112], [214, 134], [210, 158], [216, 184], [225, 204]], {n: 7, spread: 7, w0: 2, curl: 0.7, seed: 21, core: 5, sw: 'mk-sway2'}));
+  k.push(s('g', {'data-mucha': 'outline', class: 'mu-woman'}, s('path', {d: dress, class: 'mu-dress'}), folds, knee, bodice,
+    s('path', {d: sash, class: 'mu-sash'}), kTaper(tail, {w0: 12, w1: 1.2, cls: 'mu-sash'}), sfold, outl, swirl, collar, pearls, girdle), crown, front);
+  return grp('figure', k, 'mu-fig');
+}
+/** 여인 앞쪽 — 두 팔(둥근 윗소매 + 손목까지 오는 아래 소매) · 손가락이 지팡이를 감쌈(위 손 가슴 · 아래 손 허리) */
+function womanArms(ax) {
+  const k = [];
+  const upper = (S, E, w0, wm, w1) => { // 윗소매 — 어깨에서 팔꿈치로 부푼 소매(가장자리 굵기가 변하는 선)
+    const dx = E[0] - S[0], dy = E[1] - S[1], L = Math.hypot(dx, dy), nx = -dy / L, ny = dx / L, A = [], Bk = [];
+    for (let i = 0; i <= 10; i++) { const t = i / 10, w = (t < 0.5 ? w0 + (wm - w0) * Math.sin(Math.PI * t) : wm + (w1 - wm) * (t - 0.5) * 2) / 2, x = S[0] + dx * t, y = S[1] + dy * t; A.push([x + nx * w, y + ny * w]); Bk.push([x - nx * w, y - ny * w]); }
+    return [s('path', {d: poly([...A, ...Bk.reverse()]) + 'Z', class: 'mu-dress'}), kTaper(A, {w0: 2.2, w1: 0.6, cls: 'mk-ink'}), kTaper(Bk.slice().reverse(), {w0: 1.6, w1: 0.5, cls: 'mk-ink'}),
+      kTaper(crs([[S[0] + dx * 0.15, S[1] + dy * 0.15], [S[0] + dx * 0.55 + nx * 3, S[1] + dy * 0.55 + ny * 3], [S[0] + dx * 0.92 + nx * 2, S[1] + dy * 0.92 + ny * 2]], 5), {w0: 0.4, w1: 1.5, cls: 'mu-sfold'})];
+  };
+  const fore = (E, grip, dir, w) => { const dx = grip[0] - E[0], dy = grip[1] - E[1], D = Math.hypot(dx, dy), ang = -Math.atan2(dx, dy) * 180 / Math.PI;
+    return sleeve({x: f1(E[0]), y: f1(E[1]), ang: f1(ang), len: f1(D - 0.95 * w), w, hand: 'hold', dir, tone: 'sage'}); };
+  // 오른쪽(그림 오른쪽) 팔 — 어깨에서 팔꿈치로 내려와 아래팔이 가슴 높이에서 지팡이를 쥠
+  k.push(upper([233, 154], [251, 200], 20, 25, 15), fore([251, 199], [ax - 6, 177], 1, 15));
+  // 왼쪽 팔 — 팔꿈치가 몸 밖으로 · 아래팔이 허리를 가로질러 허리 높이에서 지팡이를 쥠
+  k.push(upper([145, 156], [135, 211], 20, 25, 15), fore([136, 209], [ax + 6, 223], -1, 15));
+  return grp('arms', k, 'mu-arms');
+}
+/** 떨어지는 꽃잎 하나 — 끝이 살짝 말린 물방울 꽃잎(고정 색) */
+const fallPetal = (x, y, r, deg, i) => s('path', {d: `M0 ${f1(-r)}C${f1(r * 0.75)} ${f1(-r * 0.55)} ${f1(r * 0.62)} ${f1(r * 0.6)} 0 ${f1(r)}C${f1(-r * 0.3)} ${f1(r * 0.35)} ${f1(-r * 0.6)} ${f1(-r * 0.4)} 0 ${f1(-r)}Z`,
+  transform: `translate(${f1(x)} ${f1(y)}) rotate(${f1(deg)})`, class: 'mu-fpet' + (i % 3 === 1 ? ' mu-fpet2' : '')});
+/** 막대 쪽 9판 — 큰 전신 여인 · 지팡이에서 뻗은 잎 · 이름과 값은 몸 밖 양옆(같은 값 → 같은 길이 · 같은 차례 · 같은 개수 · 끝마다 값 그대로) */
+function figureArt(src, clip) {
+  const P = barRows(src); if (!P || !P.signed) return null;
+  const {rows, x0} = P, n = rows.length, rh = Math.min(46, (FIG_Y1 - FIG_Y0) / n);
+  if (rh < 32) return null;
+  MED = {x: WG.halo.x, y: WG.halo.y, r: WG.halo.r}; WIN = {x0: WX0, x1: WX1, y0: FIG_Y0, y1: WY1};
+  const fs = rh >= 46 ? 21 : rh >= 38 ? 20 : 19, bw = Math.round(Math.max(13, Math.min(19, rh * 0.36)));
+  const fr = Math.max(6.5, Math.min(8.5, bw * 0.46)), bl = Math.max(12, Math.min(16, bw * 0.85));
+  const ext = Math.max(1.78 * fr + 2, bl + 3.5), onPad = rows.some(r => r.on) ? 11 : 0;
+  const V = rows.map(r => valOf(r.val, true)), neg = rows.map(r => r.x < x0 - 0.5);
+  const mx = arr => Math.max(0, ...arr), ax = CX;
+  const pw = mx(rows.filter((_, i) => !neg[i]).map(r => r.w)), nw = mx(rows.filter((_, i) => neg[i]).map(r => r.w));
+  const pl = mx(V.filter((_, i) => !neg[i]).map(v => textW(v.t, fs))), nl = mx(V.filter((_, i) => neg[i]).map(v => textW(v.t, fs)));
+  const f = Math.min(pw ? (WIN.x1 - ax - 9 - ext - onPad - pl) / pw : 9, nw ? (ax - WIN.x0 - 9 - ext - onPad - nl) / nw : 9, 1.3); // 옛 막대 길과 같은 셈(같은 값 → 같은 길이)
+  if (!(f > 0.25)) return null;
+  const yA = FIG_Y0 + (FIG_Y1 - FIG_Y0 - rh * n) / 2, yEnd = yA + rh * n, yb = WIN.y1 + 2, kids = [], over = [], boxes = [];
+  ROWY = rows.map((_, i) => yA + rh * (i + 0.5)); CTOP = yA; STEM = null;
+  kids.push(bed(ax, yb, 34));
+  const sTop = 158;
+  kids.push(kTaper([[ax, yb - 1], [ax + 0.8, (yA + yEnd) / 2 + 30], [ax - 0.7, yA + 20], [ax, sTop]], {w0: 6, w1: 4.6, cls: 'mu-axis'}));
+  for (let i = 1; i < n; i++) { const ny = yA + rh * i, sg = i % 2 ? 1 : -1; kids.push(leaf(ax, ny, Math.min(11, rh * 0.25), sg > 0 ? -38 : 218, i, 'mu-leaf mu-bleaf')); }
+  kids.push(s('g', {transform: `translate(${f1(ax)} ${f1(sTop + 1)}) rotate(-90)`}, closedBud(0, 0, 1, 11)));
+  const TX0 = WIN.x0 + 4, TX1 = WIN.x1 - 4, nmW = (t, px) => textW(t, px) * 0.93, vlW = t => textW(t, 20) * 1.08;
+  rows.forEach((r, i) => {
+    const yc = ROWY[i], L = Math.max(0, r.w * f), dn = neg[i], v = V[i], eq = !dn && !(v.n > 0), sgn = dn ? -1 : 1;
+    const tone = dn ? 'rose' : eq ? 'sage' : 'gold', tipX = ax + sgn * (1.5 + L);
+    if (r.on) { const rr = bw / 2 + 7, a = ax - sgn * 4 + sgn * rr, b = ax + sgn * (L + ext + 3) - sgn * rr; kids.push(flowerRing(Math.min(a, b, (a + b) / 2), Math.max(Math.min(a, b), Math.max(a, b)), yc, rr, i)); }
+    let bar;
+    if (L >= 1) {
+      bar = leafBar({x: f1(ax + sgn * 1.5), y: f1(yc), len: f2(L), dir: sgn > 0 ? 'right' : 'left', w: bw, tone});
+      // 꽃받침 — 잎이 지팡이에 붙는 자리를 감싸는 작은 초록 잎 둘(오름 · 내림 모두)
+      const cup = s('g', {class: 'mu-cup'}, leaf(ax + sgn * 2, yc - 1, bw * 0.62, sgn > 0 ? -28 : 208, -1, 'mu-leaf mu-sep'), leaf(ax + sgn * 2, yc + 1, bw * 0.62, sgn > 0 ? 28 : 152, -1, 'mu-leaf mu-sep'));
+      if (!dn && !eq && L > 2 * bw) kids.push(leaf(ax + sgn * (1.5 + L * 0.38), yc - bw * 0.36, bw * 0.62, sgn > 0 ? -42 : 222, -1, 'mu-leaf mu-sep'));
+      kids.push(bar, leafEdge(ax + sgn * 1.5, yc, L, bw, sgn), cup, dn ? closedBud(tipX, yc, sgn, bl) : openFlower(tipX, yc, sgn, fr, i));
+    } else { bar = s('g', {}, s('circle', {cx: ax, cy: f1(yc), r: 3.2, class: 'mu-zero'})); kids.push(bar); }
+    for (const [k, val] of [['data-bar', ''], ['data-name', r.name], ['data-val', v.t], ['data-len', f2(L)]]) bar.setAttribute(k, val);
+    const xl = Math.min(xlAt(yc - 12), xlAt(yc), xlAt(yc + 11)), xr = Math.max(xrAt(yc - 12), xrAt(yc), xrAt(yc + 11));
+    const tipEnd = ax + sgn * (1.5 + L + ext + 4 + (r.on ? onPad : 0)), vw = vlW(v.t);
+    // 값 — 잎 끝 꽃 · 봉오리 너머, 몸 밖으로(자리가 없으면 잎 끝 바로 곁 · 옷 위 고정 색)
+    let vx, vOn = false;
+    if (sgn > 0) { vx = Math.max(tipEnd, xr + 8); if (vx + vw > TX1) vx = Math.max(tipEnd, TX1 - vw); vOn = vx < xr + 4; }
+    else { vx = Math.min(tipEnd, xl - 8); if (vx - vw < TX0) vx = Math.min(tipEnd, TX0 + vw); vOn = vx > xl - 4; }
+    kids.push(s('text', {x: f1(vx), y: f1(yc + 20 * 0.36), 'text-anchor': sgn < 0 ? 'end' : 'start', class: 'mu-val ' + (dn ? 'mu-vdn' : eq ? 'mu-veq' : 'mu-vup') + (vOn ? ' mu-ondress' : ''), text: v.t}));
+    boxes.push(sgn > 0 ? [vx, yc - 13, vx + vw, yc + 10] : [vx - vw, yc - 13, vx, yc + 10]);
+    const gap = sgn > 0 ? vx - tipEnd : tipEnd - vx;
+    if (gap > 10) over.push(kTaper(crs([[tipEnd - sgn * 3, yc + 0.5], [tipEnd + sgn * gap * 0.35, yc + 2.6], [tipEnd + sgn * gap * 0.7, yc - 1.4], [vx - sgn * 4, yc + 0.6]], 5), {w0: 1.1, w1: 0.45, cls: 'mu-lead2'}));
+    // 이름 — 몸 밖 반대쪽(오름이면 왼쪽 · 내림이면 오른쪽) · 몸 가장자리에서 나온 덩굴손이 이름 아래를 따라 말림
+    const sN = dn ? 1 : -1, edge = dn ? xr : xl;
+    let nx = dn ? Math.max(ax + 11, xr + 8) : Math.min(ax - 11, xl - 8), nf = null, nOn = false;
+    for (const px of [20, 18]) if (!nf && (dn ? nx + nmW(r.name, px) <= TX1 : nx - nmW(r.name, px) >= TX0)) nf = {ls: [r.name], fs: px};
+    if (!nf) { nx = dn ? ax + 11 : ax - 11; nf = fitName(r.name, fs, (dn ? TX1 - nx : nx - TX0), rh); nOn = true; }
+    const lh = nf.fs * 1.08, ny = yc + nf.fs * 0.36 - (nf.ls.length - 1) * lh / 2;
+    const tx = nf.ls.map((t, j) => s('text', {x: f1(nx), y: f1(ny + j * lh), 'text-anchor': dn ? 'start' : 'end', class: 'mu-name' + (r.on ? ' mu-nameon' : '') + (nf.fs < 19 ? ' mu-name-s' : '') + (nOn ? ' mu-ondress' : ''), text: t}));
+    const nW = Math.max(...nf.ls.map(t => nmW(t, nf.fs))), base = ny + (nf.ls.length - 1) * lh, xe = nx + sN * (nW + 3), x0t = nOn ? ax + sN * 2.6 : edge + sN * 1;
+    boxes.push(dn ? [nx, yc - 13, nx + nW, base + 6] : [nx - nW, yc - 13, nx, base + 6]);
+    over.push(kTaper(whipPts([x0t, yc + 2], [x0t + sN * 6, base + 7], [nx + sN * nW * 0.55, base + 3.5], [xe, base + 1.5], 4, -sN, 1.05), {w0: 1.6, w1: 0.35, cls: 'mu-tend mu-ntend'}));
+    kids.push(r.href ? s('a', {href: r.href, class: 'g-link'}, s('rect', {x: WIN.x0, y: f1(yc - Math.max(30, rh / 2)), width: WIN.x1 - WIN.x0, height: f1(Math.max(60, rh)), class: 'mu-hit'}), tx) : tx);
+  });
+  // 떨어지는 꽃잎 — 글 · 몸 · 잎에 닿지 않는 빈 크림 바탕에만(같은 그림 → 같은 자리)
+  const pets = [], free = (x, y, m) => !boxes.some(b => x > b[0] - m && x < b[2] + m && y > b[1] - m && y < b[3] + m) && (x < xlAt(y) - m || x > xrAt(y) + m);
+  for (let i = 0; i < 64 && pets.length < 11; i++) {
+    const x = TX0 + 6 + ((i * 97 + 31) % 97) / 97 * (TX1 - TX0 - 12), y = yA + 4 + ((i * 61 + 17) % 89) / 89 * (yEnd - yA - 4);
+    if (!free(x, y, 9) || pets.some(p => Math.hypot(p[0] - x, p[1] - y) < 34)) continue;
+    pets.push([x, y]);
+  }
+  for (const [x, y] of [[58, 168], [70, 236], [330, 160], [318, 236], [96, 252], [296, 252]]) if (free(x, y, 9) && !pets.some(p => Math.hypot(p[0] - x, p[1] - y) < 30)) pets.push([x, y]);
+  const petals = s('g', {class: 'mu-fall', 'data-mucha': 'bloom'}, pets.map(([x, y], i) => fallPetal(x, y, 4.2 + (i % 3) * 0.9, (i * 47) % 360, i)));
+  FIG = {back: womanBack(clip), front: womanArms(ax)};
+  return s('g', {class: 'mu-chart mu-barart mu-figart', 'data-f': +f.toFixed(5)}, petals, s('g', {class: 'mu-over'}, over), grp('vine', kids, 'mu-barvine'));
+}
+
 /* ── 자료가 없을 때 — 빈 그림 대신 「확인 필요」 이름표가 든 작은 그래프 ── */
 function needSvg() {
   return s('svg', {class: 'su-svg', viewBox: '0 0 390 300', role: 'img', 'aria-label': '자료 확인 필요'},
@@ -523,17 +700,19 @@ export function frame(chart, {title = null, kind = 'line', tone = 'calm'} = {}) 
   let src = chartSvg(chart);
   if (!src || !viewOf(src)) src = needSvg();
   const T = titleOf(title), cw = 'mu-win-' + id, cf = 'mu-frm-' + id;
-  setMed(R0); ROWY = null; STEM = null; CTOP = 999;
-  let win = kd === 'bars' ? barsArt(src) : null;
+  setMed(R0); ROWY = null; STEM = null; CTOP = 999; FIG = null;
+  let win = kd === 'bars' ? figureArt(src, cw) : null;                                 // 9판 — 큰 전신 여인(줄이 많으면 옛 메달 길)
+  if (!win && kd === 'bars') { FIG = null; setMed(R0); ROWY = null; STEM = null; CTOP = 999; win = barsArt(src); }
   if (!win) { ROWY = null; STEM = null; CTOP = 999; win = chartWin(src, kd); }       // 자리(메달 크기 · 줄 높이)는 그래프를 먼저 놓고 정함
+  const fig = FIG;
   const label = [T.t, src.getAttribute('aria-label')].filter(Boolean).join(' — ');
   return s('svg', {class: `su-svg su-art4 su-mucha mu-${tn} mu-k-${kd}`, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': label, preserveAspectRatio: 'xMidYMid meet', 'data-kind': kd, 'data-tone': tn, 'data-r': MED.r},
     s('defs', {}, s('clipPath', {id: cw}, s('path', {d: archPath(RXI, RYI, E + BAND, W - E - BAND, MOS_Y) + 'Z'})), s('clipPath', {id: cf}, s('path', {d: archPath(RXO, RYO, E, W - E, MOS_Y) + 'Z'}))),
     pastel(cw), stars(),
     arch(T.half), sideBands(cf, T), mosaic(), outlines(),
-    medal(tn),
+    fig ? fig.back : medal(tn),
     win,
-    arms(),
+    fig ? fig.front : arms(),
     lettering(T, tn, id));
 }
 

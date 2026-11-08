@@ -70,6 +70,12 @@
 .su-women-e .we-foam { fill: #FFF8E4; stroke: #8A6420; stroke-width: .55; stroke-linejoin: round; }
 .su-women-e .we-coin { fill: #F6DC8A; stroke: #8A6420; stroke-width: .6; }
 .su-women-e .we-ribbon { fill: #E9A99A; stroke: #A55E52; stroke-width: .5; }
+/* 띠 — 몸을 비스듬히 감는 띠(불장 = 진홍 · 꽃이 될 = 장밋빛 · 돈이 몰리는 = 청록) · 띠 속 주름은 1 아래 */
+.su-women-e .we-sash { stroke: #6E4A2E; stroke-width: .5; stroke-linejoin: round; }
+.su-women-e .we-sash-hot { fill: #C8553A; }
+.su-women-e .we-sash-bloom { fill: #E7A6A0; }
+.su-women-e .we-sash-money { fill: #5E8C86; }
+.su-women-e .we-sash2 { fill: #5A3A24; fill-opacity: .55; }
 
 /* 어두운 판 — 띠 · 벽감은 같은 빛의 짙은 톤 · 띠 글씨는 금빛 */
 @media (prefers-color-scheme: dark) {

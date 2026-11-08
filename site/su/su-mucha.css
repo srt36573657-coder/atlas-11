@@ -137,3 +137,19 @@
 .mu-grass { fill: #6F8A45; }
 :root[data-theme="dark"] .su-mucha .mu-ntend, :root[data-theme="dark"] .su-mucha .mu-grass { fill: #A7B873; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-mucha .mu-ntend, :root:not([data-theme="light"]) .su-mucha .mu-grass { fill: #A7B873; } }
+
+/* 9판(주문 1844 · r9-brief.md 「B11」) — 막대 쪽 큰 전신 여인 · 머리 뒤 큰 후광 · 장밋빛 띠 · 금 허리띠 · 떨어지는 꽃잎 · 값 잇는 가는 금 덩굴(모두 고정 색 — 어두운 판에서도 같은 색) */
+.mu-h0 { fill: #F3E2B4; stroke: #B08A3A; stroke-width: 1.4; }
+.mu-h1 { fill: #FBF1DC; stroke: #C9A24A; stroke-width: .8; }
+.mu-h2 { fill: none; stroke: #E3C77A; stroke-width: .6; }
+.mu-sash { fill: #EDB9AC; }
+.mu-sashd { fill: #B9786C; }
+.mu-girdle { fill: #C9A24A; }
+.mu-lead2 { fill: #B08A3A; }
+.mu-fpet { fill: #F4C3B6; stroke: #C27C70; stroke-width: .45; }
+.mu-fpet2 { fill: #FBE1CF; }
+.su-mucha .mu-chart text.mu-ondress { fill: #3A2716; stroke: #EEF3E2; }
+.su-mucha .mu-chart text.mu-val.mu-ondress.mu-vup { fill: #2F6B3A; }
+.su-mucha .mu-chart text.mu-val.mu-ondress.mu-vdn { fill: #A3402C; }
+:root[data-theme="dark"] .su-mucha .mu-lead2 { fill: #E3C06A; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .su-mucha .mu-lead2 { fill: #E3C06A; } }

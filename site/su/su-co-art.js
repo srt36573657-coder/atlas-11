@@ -189,10 +189,81 @@ export function poster(o) {
   const locks = o.locks && Array.isArray(o.locks.list) ? s('g', {class: 'mk-hair mk-t' + (o.locks.tone | 0), 'data-mucha': 'whiplash', 'aria-hidden': 'true'},
     o.locks.list.map((pts, i) => s('g', {class: 'mk-sway' + (i % 2 ? '2' : '')}, kStrands(pts, {n: 3, spread: 7, w0: 5, w1: 0.4, curl: 0.9, seed: 40 + i * 7 + v, cls: 'mk-hb'}),
       kStrands(pts, {n: 2, spread: 7, w0: 1.6, w1: 0.15, curl: 0.9, seed: 52 + i * 7 + v, cls: 'mk-hd'}), kStrands(pts, {n: 2, spread: 5, w0: 1.2, w1: 0.12, curl: 0.7, seed: 61 + i * 7 + v, cls: 'mk-hl'})))) : null;
-  return {back: [ground, outline, bandDeco, caps, stars, vine, mosaic, plateVine], front: [lettering, locks, s('g', {class: 'mu-medal'}, medallion({cx: CX, cy: MY, r: MR, v, dir: o.dir === -1 ? -1 : 1, ring: o.ring || 'mosaic'}))],
+  // 아홉째 판: o.noMedal 이면 메달 흉상을 그리지 않음(큰 여인이 그림을 채움) · o.under = 아치 띠 밑에 깔 것(여인 후광 — 띠가 후광 윗머리를 덮음)
+  return {back: [ground, o.under || null, outline, bandDeco, caps, stars, vine, mosaic, plateVine], front: [lettering, locks, o.noMedal ? null : s('g', {class: 'mu-medal'}, medallion({cx: CX, cy: MY, r: MR, v, dir: o.dir === -1 ? -1 : 1, ring: o.ring || 'mosaic'}))],
     defs: [s('path', {id: id + 'tp', d: ell(166, 111.5)}), s('clipPath', {id: id + 'gc'}, s('rect', {x: 3, y: 3, width: W - 6, height: HT - 6, rx: 20}))]};
 }
-export const MU = {poster, brush, fall, swell, flower, leaf, star, moon, wrapW, tw, spanLines, r1, ribbonD, archD, archPt, archVine, scrollT, curlPts};
+/* ═══ 아홉째 판 — 큰 여인 한 명이 그림을 채움(docs/design/su-musk-2026-11-05/r9-brief.md 「새 짜임」 · su-road-art friend 의 그리는 법을 빌림)
+   몸 = 점을 캣멀-롬으로 이은 채운 모양 · 바깥선 = 굵게 시작해 끝에서 가늘어지는 공용 taper · 주름 = 위 가늘고 아래 굵은 채운 줄 · 머리채 = 가는 가닥을 묶은 공용 strands 다발
+   04 · 05 가 같은 뼈대를 쓰되 T(좌우 뒤집기 · 세로 줄임) · 팔 · 소품 · 옷 색을 달리함 ═══ */
+function crp(p, closed = false, k = 6) {
+  const n = p.length, at = i => (closed ? p[((i % n) + n) % n] : p[Math.max(0, Math.min(n - 1, i))]), o = [p[0]];
+  for (let i = 0; i < (closed ? n : n - 1); i++) {
+    const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+    for (let j = 1; j <= k; j++) { const t = j / k, t2 = t * t, t3 = t2 * t; o.push([0, 1].map(q => 0.5 * (2 * p1[q] + (p2[q] - p0[q]) * t + (2 * p0[q] - 5 * p1[q] + 4 * p2[q] - p3[q]) * t2 + (3 * p1[q] - p0[q] - 3 * p2[q] + p3[q]) * t3))); }
+  }
+  return o;
+}
+const fillD = p => 'M' + crp(p, true).map(q => r1(q[0]) + ' ' + r1(q[1])).join('L') + 'Z';
+const shape = (p, cls) => s('path', {d: fillD(p), class: cls});
+const inkL = (p, w0 = 2.8, w1 = 0.45, cls = 'lw-ink') => kTaper(p, {w0, w1, cls});
+const foldL = (p, w0 = 0.35, w1 = 2.1, cls = 'lw-fold') => kTaper(p, {w0, w1, cls});
+/** 머리 다발 — 가는 가닥을 묶은 다발 하나(뿌리 굵고 끝 가늘게 · 끝이 말림) */
+const tress = (pts, {n = 4, spread = 12, w0 = 2.6, curl = 0.8, seed = 1, tone = 3, sway = ''} = {}) => s('g', {class: ('mk-hair mk-t' + tone + ' ' + sway).trim()}, kStrands(pts, {n, spread, w0, w1: 0.22, curl, seed, cls: 'mk-hb'}));
+/** 꽃잎 후광 — 금테 · 빛살 · 점 고리 · 살구와 금 꽃잎 고리 · 머리 뒤 둥근 판 */
+function haloL(cx, cy, r) {
+  const pet = [[], []], n = 28;
+  for (let k = 0; k < n; k++) { const a = k * 360 / n - 90, ar = a * Math.PI / 180, r0 = r - 24; pet[k % 2].push(leaf(cx + r0 * Math.cos(ar), cy + r0 * Math.sin(ar), a, k % 2 ? 11 : 15, k % 2 ? 'lw-hp2' : 'lw-hp')); }
+  const dots = []; for (let k = 0; k < 56; k++) { const a = k * Math.PI / 28; dots.push(s('circle', {cx: r1(cx + (r - 4.4) * Math.cos(a)), cy: r1(cy + (r - 4.4) * Math.sin(a)), r: k % 2 ? 0.9 : 1.5, class: 'lw-hd'})); }
+  return s('g', {'data-mucha': 'halo', class: 'lw-halo'}, s('circle', {cx, cy, r, class: 'lw-h0'}), kRays(cx, cy, r * 0.5, r - 8, {n: 48}), s('circle', {cx, cy, r: r - 9, class: 'lw-h1'}), dots, pet, s('circle', {cx, cy, r: r * 0.52, class: 'lw-h2'}), s('circle', {cx, cy, r: r * 0.52 - 4, class: 'lw-h3'}));
+}
+/** 여인 뼈대(04 자리 · 목 밑 y 136 · 치맛단 y 588 · 엉덩이를 왼쪽으로 내민 S자) */
+const LB = {
+  L: [[186, 134], [166, 140], [150, 148], [144, 160], [147, 178], [152, 196], [160, 212], [167, 226], [156, 246], [136, 268], [123, 294], [127, 334], [139, 376], [146, 416], [142, 458], [134, 502], [122, 546], [104, 582]],
+  HEM: [[104, 582], [120, 591], [140, 585], [158, 593], [178, 587], [198, 594], [220, 588], [242, 594], [264, 586], [284, 591], [298, 579]],
+  R: [[298, 579], [278, 542], [264, 498], [256, 452], [252, 406], [250, 358], [251, 314], [250, 282], [244, 256], [230, 234], [224, 222], [232, 206], [240, 190], [244, 170], [242, 154], [230, 144], [212, 138], [204, 134]],
+  folds: [[[178, 252], [168, 330], [180, 420], [166, 500], [176, 586]], [[206, 250], [218, 330], [206, 420], [220, 500], [214, 590]], [[232, 262], [244, 344], [234, 430], [250, 510], [262, 586]],
+    [[154, 276], [143, 360], [154, 440], [142, 520], [132, 584]], [[192, 300], [197, 380], [188, 460], [199, 540], [196, 592]], [[244, 300], [238, 380], [246, 456], [240, 520], [282, 584]]],
+  bodice: [[[176, 168], [186, 182], [196, 188], [208, 184], [218, 170]], [[170, 194], [182, 206], [196, 210], [212, 206], [224, 194]]],
+  sash: [[240, 148], [236, 170], [222, 196], [202, 214], [182, 228], [164, 242], [150, 258], [166, 266], [184, 250], [204, 238], [226, 220], [244, 198], [252, 172], [250, 152]],
+  casc: [[150, 258], [134, 292], [126, 342], [124, 402], [118, 462], [106, 522], [88, 566], [66, 586], [96, 594], [120, 582], [140, 550], [156, 502], [164, 442], [168, 382], [170, 322], [168, 264]],
+  cfold: [[[146, 286], [138, 360], [136, 440], [124, 520], [100, 574]], [[158, 300], [154, 380], [150, 460], [138, 530], [118, 580]]],
+  belt: [[164, 218], [196, 226], [228, 216], [229, 227], [196, 237], [163, 229]],
+  collar: [[176, 132], [196, 139], [216, 131], [218, 143], [196, 152], [174, 144]],
+};
+/** 큰 여인 — o = {T(점 → 점), dress, mantle, hair(머리 색 번호), face:{cx, cy, h, dir, tilt, iris, v}, up:[윗팔 소매 둘](T 뒤 좌표), arms:[공용 sleeve 설정], tresses:[[점들, 설정]], front:[[점들, 설정]], crown}
+ *  → {back(머리채 · 뒤), body(몸 · 옷 · 얼굴), arms(앞 팔)} */
+function lady(o) {
+  const T = o.T || (p => p), M = a => a.map(T), dr = o.dress || 'lw-d1', ma = o.mantle || 'lw-m1';
+  const L = M(LB.L), HEM = M(LB.HEM), R = M(LB.R), f = o.face;
+  const dress = shape([...L, ...HEM.slice(1, -1), ...R], dr);
+  const folds = LB.folds.map(a => foldL(M(a), 0.35, 2.2, 'lw-fold'));
+  const bod = LB.bodice.map(a => foldL(M(a), 1.4, 0.3, 'lw-fold'));
+  const hemDots = crp(HEM, false, 3).filter((_, i) => i % 3 === 1).map(q => s('circle', {cx: r1(q[0]), cy: r1(q[1] - 7), r: 1.5, class: 'lw-gdot'}));
+  const sash = shape(M(LB.sash), ma), casc = shape(M(LB.casc), ma), cf = LB.cfold.map(a => foldL(M(a), 0.4, 2.4, 'lw-mfold'));
+  const hl = T([66, 586]), hr = T([298, 579]), sg = T([1, 0])[0] > T([0, 0])[0] ? 1 : -1;
+  const swirls = [kTaper(curlPts(hl[0], hl[1], sg > 0 ? Math.PI : 0, 9, -sg, 1.4), {w0: 6, w1: 0.6, cls: 'lw-mink'}), kTaper(curlPts(hr[0], hr[1], sg > 0 ? 0 : Math.PI, 8, sg, 1.4), {w0: 5, w1: 0.6, cls: 'lw-dink'})];
+  const edges = [inkL(L.slice(2), 3, 0.5), inkL(R.slice(0, -2).reverse(), 3, 0.5), inkL(M(LB.casc.slice(0, 8)), 2.4, 0.5), inkL(M(LB.sash.slice(0, 7)), 1.8, 0.4), inkL(HEM, 1.6, 0.6)];
+  const up = (o.up || []).map(p => [shape(p, 'lw-sl ' + (o.sleeve || 'lw-s1')), inkL(p.slice(0, 7), 2.4, 0.4)]);
+  const upF = (o.up || []).map(p => foldL([p[1], p[3], p[5]].map(q => [q[0] * 0.7 + p[9][0] * 0.3, q[1] * 0.7 + p[9][1] * 0.3]), 0.3, 1.6, 'lw-fold'));
+  const belt = shape(M(LB.belt), 'lw-belt'), bc = T([196, 231]);
+  const collar = shape(M(LB.collar), 'lw-belt');
+  const pearls = Array.from({length: 9}, (_, k) => { const q = T([179 + k * 4.6, 143 + Math.sin(k / 8 * Math.PI) * 4]); return s('circle', {cx: r1(q[0]), cy: r1(q[1]), r: 1.3, class: 'lw-pearl'}); });
+  const fc = kFace({cx: f.cx, cy: f.cy, h: f.h, dir: f.dir, view: 'three', tilt: f.tilt, iris: f.iris || 0, v: f.v});
+  const hr0 = s('g', {transform: `rotate(${r1(f.tilt * f.dir)} ${r1(f.cx)} ${r1(f.cy)})`}, kHair({cx: f.cx, cy: f.cy, h: f.h, dir: f.dir, tone: o.hair, len: 1.2, seed: o.seed || 5, view: 'three'}));
+  const back = s('g', {'data-mucha': 'whiplash', class: 'lw-back'}, (o.tresses || []).map(([p, c]) => tress(p, {tone: o.hair, ...c})));
+  const body = s('g', {'data-mucha': 'outline', class: 'lw-body'}, casc, cf, dress, folds, bod, hemDots, sash, swirls, up, upF, edges, belt, s('circle', {cx: r1(bc[0]), cy: r1(bc[1] - 4), r: 3.4, class: 'lw-gem'}), hr0, fc, collar, pearls,
+    o.crown || null, (o.front || []).map(([p, c]) => tress(p, {tone: o.hair, ...c})));
+  const arms = s('g', {'data-mucha': 'outline', class: 'lw-arms'}, (o.arms || []).map(a => kSleeve(a)));
+  return {back, body, arms};
+}
+/** 꽃관 — 머리 위 둥근 줄을 따라 작은 꽃 · 잎(고개와 같이 기울임) */
+function crownL(f, tones) {
+  const a0 = f.tilt * f.dir * Math.PI / 180, P = (u, v) => [f.cx + u * Math.cos(a0) - v * Math.sin(a0), f.cy + u * Math.sin(a0) + v * Math.cos(a0)];
+  return s('g', {class: 'lw-crown'}, tones.map((c, i) => { const a = (-160 + i * 140 / Math.max(1, tones.length - 1)) * Math.PI / 180, p = P((-0.1 * f.dir + 0.5 * Math.cos(a)) * f.h, (-0.32 + 0.46 * Math.sin(a)) * f.h);
+    return [leaf(p[0], p[1], a * 180 / Math.PI - 40, 9, 'mu-leaf'), flower(p[0], p[1], 4.6 + (i % 2) * 1.2, ' lw-cf' + (i % 3), 1 + (i % 3))]; }));
+}
+export const MU = {poster, brush, fall, swell, flower, leaf, star, moon, wrapW, tw, spanLines, r1, ribbonD, archD, archPt, archVine, scrollT, curlPts, lady, haloL, crownL, crp, shape, inkL, foldL, tress};
 
 /* ═══ 회사 그림 ═══ */
 /** 자료 셋 — 회사 · 첫 화면(지수) · 21곳 · 못 받으면 null(그림은 「확인 필요」로 그려짐) */
