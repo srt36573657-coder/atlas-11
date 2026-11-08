@@ -1,17 +1,12 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-11-08T14:56:09.704Z",
+ "at": "2026-11-08T15:29:51.130Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 252,
-  "fail": 1
+  "pass": 758,
+  "fail": 0
  },
- "fails": [
-  [
-   "검사 멈춤",
-   "page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://aaa7377.com/next/?v=1794149842395#/dori\nCall log:\n  - navigating to \"https://aaa7377.com/next/?v=1794149842395#/dori\", waiting until \"load\"\n\n    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_roman.mjs:392:13"
-  ]
- ],
+ "fails": [],
  "m": {
   "rooms": 37,
   "art": {

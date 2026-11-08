@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-08T15:28:06.711Z",
+ "at": "2026-11-08T15:59:38.523Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -14,28 +14,28 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "grow": true,
-  "info": true,
-  "gdr": true,
-  "theme": true,
-  "rivals": true,
-  "range": true,
-  "past": true,
-  "cal": true,
-  "surge": true,
-  "talk": true,
-  "sage": true,
-  "why": true,
-  "time": true,
-  "co": true,
-  "x": true,
-  "share": true,
   "up": true,
-  "roman": true,
-  "today": true,
-  "hold": true,
+  "x": true,
   "chx": true,
-  "cond": true
+  "co": true,
+  "why": true,
+  "range": true,
+  "surge": true,
+  "grow": true,
+  "rivals": true,
+  "cond": true,
+  "theme": true,
+  "roman": true,
+  "share": true,
+  "hold": true,
+  "gdr": true,
+  "past": true,
+  "time": true,
+  "info": true,
+  "talk": true,
+  "today": true,
+  "cal": true,
+  "sage": true
  },
  "edge": true,
  "only": null,
@@ -50,8 +50,8 @@
    "@newwin": 15
   }
  },
- "seconds": 1123,
- "secondsSum": 3087,
+ "seconds": 1049,
+ "secondsSum": 3009,
  "shards": [
   {
    "shard": "1/3",
@@ -60,10 +60,10 @@
    "routes": 4570,
    "screens": 4571,
    "mine": 4570,
-   "seconds": 1123,
+   "seconds": 917,
    "secs": {
-    "open": 0.7,
-    "routes": 1098.2
+    "open": 0.4,
+    "routes": 915.8
    }
   },
   {
@@ -73,11 +73,11 @@
    "routes": 4554,
    "screens": 4618,
    "mine": 4555,
-   "seconds": 983,
+   "seconds": 1049,
    "secs": {
-    "open": 0.8,
-    "routes": 974.3,
-    "newwin": 4.8
+    "open": 1.1,
+    "routes": 1041.1,
+    "newwin": 4.6
    }
   },
   {
@@ -87,12 +87,12 @@
    "routes": 4495,
    "screens": 4659,
    "mine": 4490,
-   "seconds": 981,
+   "seconds": 1043,
    "secs": {
-    "open": 1.3,
-    "routes": 963.6,
-    "act": 6.3,
-    "edge": 7.4,
+    "open": 1.5,
+    "routes": 1027.5,
+    "act": 5.9,
+    "edge": 6.4,
     "grammar": 0
    }
   }

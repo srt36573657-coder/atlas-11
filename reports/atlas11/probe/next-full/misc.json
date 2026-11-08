@@ -1,17 +1,17 @@
 {
- "when": "2026-11-08T15:13:03.695Z",
+ "when": "2026-11-08T15:49:36.883Z",
  "base": "https://aaa7377.com",
- "sec": 56,
+ "sec": 60,
  "xCodes": 1750,
  "all": true,
  "time": {
-  "old": 17,
-  "new": 35,
-  "wall": 56.2,
+  "old": 18.5,
+  "new": 37.5,
+  "wall": 60,
   "opensOld": 1771,
   "opensNew": 1836,
-  "oldPct": 30.2,
-  "oldShare": 32.6
+  "oldPct": 30.8,
+  "oldShare": 33
  },
  "net": {
   "req": 9,

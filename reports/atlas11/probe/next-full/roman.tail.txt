@@ -1,6 +1,1 @@
-실패 검사 멈춤 — page.goto: net::ERR_CERT_COMMON_NAME_INVALID at https://aaa7377.com/next/?v=1794149842395#/dori
-Call log:
-  - navigating to "https://aaa7377.com/next/?v=1794149842395#/dori", waiting until "load"
-
-    at /home/runner/work/atlas-11/atlas-11/scripts/atlas11/next/check_roman.mjs:392:13
-로마 신 72 검사 — 통과 252 · 실패 1
+로마 신 72 검사 — 통과 758 · 실패 0
