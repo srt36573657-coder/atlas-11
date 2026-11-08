@@ -7,7 +7,7 @@
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-08T12:28:47.895Z",
+ "at": "2026-11-08T14:52:30.259Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,17 +32,17 @@
    }
   }
  },
- "seconds": 70,
- "secondsSum": 210,
+ "seconds": 71,
+ "secondsSum": 213,
  "time": {
-  "old": 173.9,
-  "new": 173.8,
-  "wall": 70.4,
-  "wallSum": 210.9,
+  "old": 174.3,
+  "new": 175.4,
+  "wall": 71.3,
+  "wallSum": 213.3,
   "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 82.5,
-  "oldShare": 50
+  "oldPct": 81.7,
+  "oldShare": 49.8
  },
  "net": {
   "req": 5274,
@@ -65,11 +65,11 @@
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 3개(/su/su-wrap.css · /su/su-wrap.js · /atlas/data/core.json)",
+   "why": "바뀐 파일 4개(/atlas/ · /su/su-wrap.css · /su/su-wrap.js)",
    "made": null,
-   "inputs": 2590,
+   "inputs": 2596,
    "reads": 2557,
-   "note": "기준값 새로 씀(파일 864개 · 값 853개) | 기준값 새로 씀(파일 863개 · 값 852개)"
+   "note": "기준값 새로 씀(파일 866개 · 값 853개) | 기준값 새로 씀(파일 865개 · 값 852개)"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
@@ -81,7 +81,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 70,
+   "seconds": 71,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -94,7 +94,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 70,
+   "seconds": 71,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -107,7 +107,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 70,
+   "seconds": 71,
    "mine": 856,
    "kinds": {
     "c": 852,

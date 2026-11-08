@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-08T12:24:18.230Z",
+ "at": "2026-11-08T14:47:29.964Z",
  "base": "http://127.0.0.1:8826",
  "mock": null,
  "counts": {
@@ -10,7 +10,7 @@
  "fails": [],
  "m": {
   "first": {
-   "bodyLum": 0.0034053699055348395,
+   "bodyLum": 1,
    "chars": 124,
    "blocks": {
     "ess": 5560,
@@ -199,8 +199,8 @@
     "ask": true
    },
    "theme": null,
-   "bodyHex": "#0C081D",
-   "inkHex": "#F2EFF9",
+   "bodyHex": "#FFFFFF",
+   "inkHex": "#1D1D1F",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -214,7 +214,7 @@
    "errs": []
   },
   "back": {
-   "bodyLum": 0.0034053699055348395,
+   "bodyLum": 1,
    "chars": 124,
    "blocks": {
     "ess": 5436,
@@ -403,8 +403,8 @@
     "ask": true
    },
    "theme": null,
-   "bodyHex": "#0C081D",
-   "inkHex": "#F2EFF9",
+   "bodyHex": "#FFFFFF",
+   "inkHex": "#1D1D1F",
    "findInput": true,
    "riseShown": [],
    "grid": [],
@@ -727,8 +727,8 @@
    }
   },
   "speed": {
-   "lcp": 2344,
-   "inp": 32,
+   "lcp": 2124,
+   "inp": 48,
    "cls": 0.006
   }
  },
