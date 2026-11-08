@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T07:02:25.846Z",
+ "at": "2026-11-08T08:44:40.321Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 706,
+  "pass": 725,
   "fail": 0
  },
  "fails": [],
@@ -20,7 +20,7 @@
    ]
   },
   "home": {
-   "screens": 3.44,
+   "screens": 3.38,
    "links": 55
   },
   "t21": {
@@ -33,7 +33,7 @@
   "path": [
    {
     "h1": "지금, 그리고 될 듯.",
-    "heroShare": 72.5,
+    "heroShare": 72.4,
     "share": 89,
     "outside": 19,
     "two": 2,
@@ -45,7 +45,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "땅 지도",
@@ -251,9 +251,119 @@
    }
   },
   "speed": {
-   "lcp": 1268,
+   "lcp": 1276,
    "cls": 0,
-   "pic": 1385
+   "pic": 1386
+  },
+  "white": {
+   "light #/": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": true,
+    "tc": [
+     "#FFFFFF",
+     "#FFFFFF"
+    ]
+   },
+   "light #/n": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": true,
+    "tc": [
+     "#FFFFFF",
+     "#FFFFFF"
+    ]
+   },
+   "light #/m": {
+    "clean": false,
+    "body": "rgb(234, 223, 203)",
+    "top": "rgb(250, 244, 230)",
+    "dock": "rgb(250, 244, 230)",
+    "tabs": "rgb(250, 244, 230)",
+    "h1": "rgb(43, 33, 24)",
+    "frame": "\"\"",
+    "wave": "\"\"",
+    "curve": "\"\"",
+    "orn": 6,
+    "sky": false,
+    "tc": [
+     "#FAF4E6",
+     "#1B1712"
+    ]
+   },
+   "dark #/": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": true,
+    "tc": [
+     "#FFFFFF",
+     "#FFFFFF"
+    ]
+   },
+   "dark #/n": {
+    "clean": true,
+    "body": "rgb(255, 255, 255)",
+    "top": "rgb(255, 255, 255)",
+    "dock": "rgb(255, 255, 255)",
+    "tabs": "rgb(255, 255, 255)",
+    "h1": "rgb(29, 29, 31)",
+    "frame": "none",
+    "wave": "none",
+    "curve": "none",
+    "orn": 0,
+    "sky": true,
+    "tc": [
+     "#FFFFFF",
+     "#FFFFFF"
+    ]
+   },
+   "dark #/m": {
+    "clean": false,
+    "body": "rgb(27, 23, 18)",
+    "top": "rgb(27, 23, 18)",
+    "dock": "rgb(27, 23, 18)",
+    "tabs": "rgb(27, 23, 18)",
+    "h1": "rgb(243, 233, 211)",
+    "frame": "\"\"",
+    "wave": "\"\"",
+    "curve": "\"\"",
+    "orn": 6,
+    "sky": false,
+    "tc": [
+     "#FAF4E6",
+     "#1B1712"
+    ]
+   }
+  },
+  "fresh": {
+   "same": 1,
+   "after": 2,
+   "lost": 2,
+   "at": "#/"
   }
  },
  "ok": true
