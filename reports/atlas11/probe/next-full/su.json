@@ -1,21 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-08T15:31:21.806Z",
+ "at": "2026-11-08T16:07:05.478Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 777,
-  "fail": 2
+  "pass": 779,
+  "fail": 0
  },
- "fails": [
-  [
-   "느린 4G 가장 큰 그림 2.5초 안",
-   "6180ms"
-  ],
-  [
-   "느린 4G 무하 큰 그림 2.5초 안(진짜 사이트 · 넷리파이가 줄여 보냄 · 시험 서버는 안 줄여 재기만)",
-   "6541ms"
-  ]
- ],
+ "fails": [],
  "m": {
   "dropped": [
    "JYP Ent."
@@ -189,9 +180,9 @@
    }
   },
   "speed": {
-   "lcp": 6180,
+   "lcp": 1180,
    "cls": 0.121,
-   "pic": 6541
+   "pic": 1525
   },
   "white": {
    "light #/": {
@@ -253,7 +244,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -349,7 +340,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -1041,5 +1032,5 @@
    }
   }
  },
- "ok": false
+ "ok": true
 }
