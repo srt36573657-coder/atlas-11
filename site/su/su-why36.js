@@ -163,7 +163,7 @@ export function top3Box(T, c, k) {
   const nm = r => r ? r.name + '(' + KIND[r.k] + ')' : NEED;
   const R = n => (t3.rank ?? []).find(r => r.place === n);
   return box('yw-top3', place ? '수르 계산법 ' + place + '등 — 1억 번 셈' : '수르 계산법 — 1억 번 셈', [
-    h('p', {class: 'yw-s', text: '42칸마다 지난 250거래일 하루 값으로 우연 길 ' + korN(t3.null ?? 100000) + '개를 그렸어요. 그리고 판을 ' + korN(tot) + ' 번 벌였어요.'}),
+    h('p', {class: 'yw-s', text: '42칸마다 지난 250거래일 하루 값으로 우연 길 ' + korN(t3.null ?? 100000) + ' 개를 그렸어요. 그리고 판을 ' + korN(tot) + ' 번 벌였어요.'}),
     h('p', {class: 'yw-s', text: '판마다 칸마다 우연 길 하나를 뽑아 지금 값과 견주고, 우연보다 약한 칸부터 하나씩 떨어뜨렸어요. 이것도 ' + korN(tot) + ' 번이에요.'}),
     h('p', {class: 'yw-s yw-verdict', text: '이 칸은 ' + korN(tot) + ' 번 가운데 ' + korN(me[0]) + '번 끝까지 남았어요. 42칸 가운데 ' + ord(rk) + '예요.' + (place ? ' 그래서 ' + place + '등이에요.' : '')}),
     h('p', {class: 'yw-s', text: '1등 ' + nm(R(1)) + ' · 2등 ' + nm(R(2)) + ' · 3등 ' + nm(R(3)) + '이에요.'})]);
