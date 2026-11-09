@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-grow-check-1",
- "at": "2026-11-09T19:34:56.825Z",
+ "at": "2026-11-09T22:26:24.803Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-09",
  "companies": 2557,
@@ -32,15 +32,15 @@
    }
   }
  },
- "seconds": 837,
+ "seconds": 521,
  "time": {
-  "old": 451.8,
-  "new": 387.9,
-  "wall": 836.9,
-  "opensOld": 7682,
+  "old": 28.1,
+  "new": 368.7,
+  "wall": 521.4,
+  "opensOld": 11,
   "opensNew": 10286,
-  "oldPct": 54,
-  "oldShare": 53.8
+  "oldPct": 5.4,
+  "oldShare": 7.1
  },
  "net": {
   "req": 5130,
@@ -62,12 +62,12 @@
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": false,
-   "why": "바뀐 파일 2개(/su/su-wrap.js · /atlas/data/core.json)",
-   "made": null,
+   "use": true,
+   "why": "",
+   "made": "2026-11-09T21:53:51.496Z",
    "inputs": 2570,
    "reads": 2557,
-   "note": "기준값 새로 씀(파일 2570개 · 값 2557개)"
+   "note": "기준값 다시 씀"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,

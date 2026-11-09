@@ -1,6 +1,6 @@
 {
  "schema": "golttori-check-white-1",
- "at": "2026-11-09T19:18:37.029Z",
+ "at": "2026-11-09T22:16:38.962Z",
  "base": "https://aaa7377.com",
  "mock": null,
  "counts": {
@@ -15,7 +15,7 @@
    "blocks": {
     "ess": 5750,
     "find": 776,
-    "today": 3719,
+    "today": 3707,
     "gdr": 5044,
     "all": 5480
    },
@@ -217,11 +217,11 @@
    "bodyLum": 1,
    "chars": 121,
    "blocks": {
-    "ess": 5367,
+    "ess": 5627,
     "find": 776,
-    "today": 3572,
-    "gdr": 4838,
-    "all": 5250
+    "today": 3719,
+    "gdr": 5044,
+    "all": 5480
    },
    "tabsTop": 776,
    "lowContrast": [],
@@ -727,8 +727,8 @@
    }
   },
   "speed": {
-   "lcp": 1268,
-   "inp": 56,
+   "lcp": 1312,
+   "inp": 40,
    "cls": 0.003
   }
  },

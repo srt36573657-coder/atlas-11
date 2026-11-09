@@ -1,5 +1,5 @@
 {
- "made": "2026-11-09T19:35:18.995Z",
+ "made": "2026-11-09T22:35:24.233Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -48,15 +48,15 @@
  },
  "fails": [],
  "warn": [],
- "sec": 667,
+ "sec": 960,
  "time": {
-  "old": 267.8,
-  "new": 471.3,
-  "wall": 667.1,
+  "old": 343,
+  "new": 559.5,
+  "wall": 960.3,
   "opensOld": 25571,
   "opensNew": 33282,
-  "oldPct": 40.1,
-  "oldShare": 36.2
+  "oldPct": 35.7,
+  "oldShare": 38
  },
  "net": {
   "req": 2560,
