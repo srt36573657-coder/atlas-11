@@ -655,6 +655,8 @@ for (const width of [390, 360, 320]) {
         && all42.length === 42 && all42.every(key => CUJ.cu?.[key] && Array.isArray(CUJ.cu[key].on) && CUJ.cu[key].v) && T21.mc?.method === 'fhs' && past.cultureRank === true
         && ['hotNext', 'moneyNext', 'bloomNext'].every(g => Number.isFinite(past[g]?.mc100) && Number.isFinite(past[g]?.old100)),
         '⑳ 문화 셈(주문 1912) — 한국 투자자 문화 일곱(su21-cu.json) · 칸마다 흔적 · 요즘 흔들림에 맞춘 길 · 지난 1년(바로 앞 셈 · 예전 셈과 견줌)', JSON.stringify({rule: C?.rule, n: tr?.length, cu: Object.keys(CUJ?.cu ?? {}).length, method: T21.mc?.method, past: past.cultureRank}));
+      check(past.bloomFrom === 'pick' && /고른 날/.test(past.what?.bloomNext ?? '') && Number.isFinite(past.bloomNext?.per100) && Number.isFinite(past.bloomNext?.base100),
+        '⑳ 꽃이 될 듯 맞음 — 고른 날 값부터 셈(주문 0103 · 지난 스무 날 창의 덤 없음)', JSON.stringify({from: past.bloomFrom, what: past.what?.bloomNext, per100: past.bloomNext?.per100}));
       const codes3 = (T21.top3?.rank ?? []).map(r => r.code);
       if (T21.top3 || /^https:/.test(base)) check(T21.top3?.v === 'top3-v2' && T21.top3?.gn === 12 && Array.isArray(T21.top3?.how) && T21.top3.how.length === 3 && new Set(codes3).size === 3,
         '⑳ 1억 번 셈 v2 — 잣대 셋 · 무게 열두 가지 · 1 · 2 · 3등은 서로 다른 회사', JSON.stringify({v: T21.top3?.v, gn: T21.top3?.gn, codes3}));

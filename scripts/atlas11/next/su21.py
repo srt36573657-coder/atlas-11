@@ -350,6 +350,7 @@ out = {
               'top3': '42칸마다 요즘 흔들림에 맞춘 우연 길 10만 개를 미리 그리고, 잣대 셋(오른 만큼 · 가장 크게 뛴 하루를 뺀 만큼 · 눈길 몰린 날이 적은 만큼)을 판마다 다른 무게로 섞어 1억 번 판을 벌임 → 판마다 우연보다 약한 칸부터 떨어뜨림 → 끝까지 남은 횟수가 많은 차례로 1등 · 2등 · 3등'},
     'past': ({'from': PASTC['from'], 'to': PASTC['to'], 'mid': PASTC.get('mid'), 'days': PASTC['days'], 'within': PASTC['within'], 'universe': PASTC['universe'], 'src': 'reports/atlas11/su-next/past-culture.json',
               'mcRank': True, 'cultureRank': True, 'what': PASTC['what'], 'mc': PASTC.get('mc'), 'calib': PASTC.get('calib'),
+              'bloomFrom': PASTC.get('flower'), # 주문 0103 — 꽃이 될 듯 맞음을 고른 날 값부터 셈('pick') · 화면 글 「고른 날부터」
               **{g: {'n': v['culture']['picks'], 'hit': v['culture']['hits'], 'per100': round(v['culture']['per100']), 'base100': round(v['base']['per100']), 'old100': round(v['old']['per100']),
                      'mc100': round(v['mc1422']['per100']), 'oldN': v['old']['picks'], 'days': v['culture']['days'],
                      'h1': round(PASTC['halves'][g]['first']['culture']['per100']), 'h2': round(PASTC['halves'][g]['second']['culture']['per100']),

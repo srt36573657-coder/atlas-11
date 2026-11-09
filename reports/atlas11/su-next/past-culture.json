@@ -1,7 +1,8 @@
 {
- "schema": "su-culture-past-1",
- "order": "1912",
+ "schema": "su-culture-past-2",
+ "order": "1912 · 0103",
  "rule": "culture7-v1",
+ "flower": "pick",
  "from": "2025-10-01",
  "mid": "2026-04-01",
  "to": "2026-09-07",
@@ -26,7 +27,28 @@
  "what": {
   "hotNext": "한 달(20거래일) 안에 불장 일곱에 듦",
   "moneyNext": "한 달 안에 돈이 몰리는 일곱에 듦",
-  "bloomNext": "한 달 안에 시장보다 15 넘게 앞섬(꽃)"
+  "bloomNext": "고른 날 값부터 한 달 안에 시장보다 15 넘게 앞섬(꽃)"
+ },
+ "flowerHow": "꽃이 될 듯 맞음 = 고른 날 값에서 1 ~ 20거래일 뒤 값까지 오른 몫이 그날 365곳 평균보다 15 넘게 앞선 날이 있음(주문 0103) · bloomTrail = 옛 잣대(그 뒤 한 달 안에 지난 스무 날 시장보다 15 넘게인 날 — 고르기 앞 오름이 덤으로 섞임)",
+ "bloomTrail": {
+  "all": {
+   "culture": 53.3,
+   "mc1422": 43.9,
+   "old": 50.1,
+   "base": 26.9
+  },
+  "first": {
+   "culture": 51.2,
+   "mc1422": 39.3,
+   "old": 47.7,
+   "base": 23.6
+  },
+  "second": {
+   "culture": 55.6,
+   "mc1422": 48.9,
+   "old": 52.8,
+   "base": 30.6
+  }
  },
  "res": {
   "hotNext": {
@@ -84,26 +106,26 @@
   "bloomNext": {
    "culture": {
     "picks": 1582,
-    "hits": 843,
-    "per100": 53.3,
+    "hits": 487,
+    "per100": 30.8,
     "days": 226
    },
    "mc1422": {
     "picks": 1582,
-    "hits": 695,
-    "per100": 43.9,
+    "hits": 360,
+    "per100": 22.8,
     "days": 226
    },
    "old": {
     "picks": 1582,
-    "hits": 793,
-    "per100": 50.1,
+    "hits": 458,
+    "per100": 29.0,
     "days": 226
    },
    "base": {
     "picks": 70054,
-    "hits": 18842,
-    "per100": 26.9,
+    "hits": 15438,
+    "per100": 22.0,
     "days": 226
    }
   }
@@ -221,52 +243,52 @@
    "first": {
     "culture": {
      "picks": 826,
-     "hits": 423,
-     "per100": 51.2,
+     "hits": 263,
+     "per100": 31.8,
      "days": 118
     },
     "mc1422": {
      "picks": 826,
-     "hits": 325,
-     "per100": 39.3,
+     "hits": 185,
+     "per100": 22.4,
      "days": 118
     },
     "old": {
      "picks": 826,
-     "hits": 394,
-     "per100": 47.7,
+     "hits": 241,
+     "per100": 29.2,
      "days": 118
     },
     "base": {
      "picks": 36739,
-     "hits": 8653,
-     "per100": 23.6,
+     "hits": 7528,
+     "per100": 20.5,
      "days": 118
     }
    },
    "second": {
     "culture": {
      "picks": 756,
-     "hits": 420,
-     "per100": 55.6,
+     "hits": 224,
+     "per100": 29.6,
      "days": 108
     },
     "mc1422": {
      "picks": 756,
-     "hits": 370,
-     "per100": 48.9,
+     "hits": 175,
+     "per100": 23.1,
      "days": 108
     },
     "old": {
      "picks": 756,
-     "hits": 399,
-     "per100": 52.8,
+     "hits": 217,
+     "per100": 28.7,
      "days": 108
     },
     "base": {
      "picks": 33315,
-     "hits": 10189,
-     "per100": 30.6,
+     "hits": 7910,
+     "per100": 23.7,
      "days": 108
     }
    }
@@ -328,26 +350,26 @@
   "bloomNext": {
    "culture": {
     "picks": 1582,
-    "hits": 843,
-    "per100": 53.3,
+    "hits": 487,
+    "per100": 30.8,
     "days": 226
    },
    "mc1422": {
     "picks": 1582,
-    "hits": 695,
-    "per100": 43.9,
+    "hits": 360,
+    "per100": 22.8,
     "days": 226
    },
    "old": {
     "picks": 1582,
-    "hits": 778,
-    "per100": 49.2,
+    "hits": 447,
+    "per100": 28.3,
     "days": 226
    },
    "base": {
     "picks": 70054,
-    "hits": 18787,
-    "per100": 26.8,
+    "hits": 15368,
+    "per100": 21.9,
     "days": 226
    }
   }

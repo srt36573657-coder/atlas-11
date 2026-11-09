@@ -4,7 +4,7 @@
   재료 = su_mc_past.py 와 같음(저장소 안 자료만 · 앞날 값 없음): 365곳 = 지금 판 · 날마다 값 = reports/atlas11/universe/2026-10-10/bundle.json.gz
   날마다: 묶음마다 소거 한 번(su21.py 와 같은 기본 조건) → 문화 흔적으로 뺌(빚투 쏠림 · 본전 버티기) → 문화 흔적이 많은 차례 → 몬테카를로 드문 차례(요즘 흔들림에 맞춘 길)
           · 불장이 될 듯 · 꽃이 될 듯은 365곳 모두의 길과 견줌(크게 움직인 차례) · 돈 둘은 업종마다 국민주(몸집 위 열에 하나)를 먼저
-  맞음 = 한 달(20거래일) 안에 불장 일곱 · 돈이 몰리는 일곱(문화 셈 목록)에 듦 · 꽃 = 시장보다 15 넘게 앞섬 — 1422 목록 잣대로도 따로 셈
+  맞음 = 한 달(20거래일) 안에 불장 일곱 · 돈이 몰리는 일곱(문화 셈 목록)에 듦 · 꽃 = 고른 날 값부터 시장보다 15 넘게 앞섬(주문 0103 — 전에는 지난 스무 날 창이라 고르기 앞 오름이 덤으로 섞였음 · 그 값도 bloomTrail 로 남김) — 1422 목록 잣대로도 따로 셈
   우연 길 정직도(calib) = 지난 1년 아무 회사 · 아무 날을 1,500번씩 뽑아 「스무 번에 한 번」 드묾이 몇 번 나오나(옛 길 · 새 길)
   쓰는 법: python3 scripts/atlas11/next/su_culture_past.py [--repo .] [--out reports/atlas11/su-next/past-culture.json]
 """
@@ -216,6 +216,19 @@ def OLDP(s, g, now):
     return per(list(dict.fromkeys(b3 + b1)))
 
 NOWK = {'hotNext': 'hot', 'moneyNext': 'money', 'bloomNext': 'bloom'}
+# 꽃이 될 듯 맞음(주문 0103 · 사장님 2026-11-10 01:03 「어」 — 물음 「꽃이 될 듯 맞음을 고른 날부터 세도록 바꿀까요?」)
+#   고른 날 값에서 1 ~ 20거래일 뒤 값까지 오른 몫 − 그날 365곳 평균(고른 날 셀 수 있던 곳) 가운데 가장 큰 값이 15 넘으면 꽃이 됨
+#   옛 잣대(그 뒤 한 달 안에 「지난 스무 날 시장보다 15 넘게」인 날)는 고르기 앞 오름이 창에 남아 덤을 받았음(reports/atlas11/su-next/past-volume.json yard)
+EXF = {}
+for t in range(T0, ND - 20):
+    ok_ = ST[t]['ok']; best = np.full(N, -np.inf)
+    for k in range(1, 21):
+        with np.errstate(divide='ignore', invalid='ignore'):
+            F = P[:, t + k] / P[:, t] - 1
+        va = ok_ & np.isfinite(F)
+        if va.any(): best = np.where(va, np.maximum(best, F - F[va].mean()), best)
+    EXF[t] = best
+def bloom_hit(j, t): return bool(EXF[t][j] >= 0.15)
 PK = {t: pick(t, False) for t in range(T0, ND)}
 if A.explore:
     FLOWER0 = {t: set(np.where(ST[t]['ok'] & ((ST[t]['r20'] - ST[t]['m20']) >= 0.15))[0].tolist()) for t in ST}
@@ -224,7 +237,7 @@ if A.explore:
         PX = {t: pick(t, True, cfg) for t in range(T0, ND)}
         HOTD = {t: set(PX[t]['hot']) for t in PX}; MOND = {t: set(PX[t]['money']) for t in PX}
         OUT = {'hotNext': lambda j, t: any(j in HOTD[t + k] for k in range(1, 21)), 'moneyNext': lambda j, t: any(j in MOND[t + k] for k in range(1, 21)),
-               'bloomNext': lambda j, t: any(j in FLOWER0[t + k] for k in range(1, 21))}
+               'bloomNext': lambda j, t: bloom_hit(j, t)}
         row = {}
         for g in ('hotNext', 'moneyNext', 'bloomNext'):
             for h, (a, b2) in (('앞', (T0, MID - 1)), ('뒤', (MID, T1))):
@@ -237,13 +250,13 @@ if A.explore:
         print(name, json.dumps(row, ensure_ascii=False)); sys.stdout.flush()
     sys.exit(0)
 PC = {t: pick(t, True) for t in range(T0, ND)}
-FLOWER = {t: set(np.where(ST[t]['ok'] & ((ST[t]['r20'] - ST[t]['m20']) >= 0.15))[0].tolist()) for t in ST}
+FLOWER = {t: set(np.where(ST[t]['ok'] & ((ST[t]['r20'] - ST[t]['m20']) >= 0.15))[0].tolist()) for t in ST}   # 지금 꽃(지난 스무 날 시장보다 15 넘게) — 「이미 꽃」을 뺄 때 · 옛 잣대(bloomTrail)
 NOWK = {'hotNext': 'hot', 'moneyNext': 'money', 'bloomNext': 'bloom'}
-def score(TG):
+def score(TG, yard='pick'):
     HOTD = {t: set(TG[t]['hot']) for t in TG}; MOND = {t: set(TG[t]['money']) for t in TG}
     OUT = {'hotNext': lambda j, t: any(j in HOTD[t + k] for k in range(1, 21)),
            'moneyNext': lambda j, t: any(j in MOND[t + k] for k in range(1, 21)),
-           'bloomNext': lambda j, t: any(j in FLOWER[t + k] for k in range(1, 21))}
+           'bloomNext': (lambda j, t: bloom_hit(j, t)) if yard == 'pick' else (lambda j, t: any(j in FLOWER[t + k] for k in range(1, 21)))}
     res = {}
     for g in ('hotNext', 'moneyNext', 'bloomNext'):
         acc = {h: {'culture': [0, 0, 0], 'mc1422': [0, 0, 0], 'old': [0, 0, 0], 'base': [0, 0, 0]} for h in ('all', 'first', 'second')}
@@ -260,6 +273,7 @@ def score(TG):
     return res
 res = score(PC)
 res1422 = score(PK)
+resTrail = score(PC, 'trail')['bloomNext']   # 옛 잣대(지난 스무 날 창) — 견줌으로만 남김
 
 # 우연 길 정직도 — 아무 회사 · 아무 날 · 「스무 번에 한 번」 드묾(위쪽)이 몇 번 나오나
 rng = np.random.default_rng(seed('calib-1912'))
@@ -281,13 +295,15 @@ for rel in (False, True):
         print('정직도', rel, w, calib[('rel' if rel else 'raw') + str(w)]); sys.stdout.flush()
 
 fmt = lambda x: x[:4] + '-' + x[4:6] + '-' + x[6:]
-out = {'schema': 'su-culture-past-1', 'order': '1912', 'rule': CU.RULE_ID, 'from': fmt(DAYS[T0]), 'mid': fmt(DAYS[MID]), 'to': fmt(DAYS[T1]), 'lastData': fmt(DAYS[-1]),
+out = {'schema': 'su-culture-past-2', 'order': '1912 · 0103', 'rule': CU.RULE_ID, 'flower': 'pick', 'from': fmt(DAYS[T0]), 'mid': fmt(DAYS[MID]), 'to': fmt(DAYS[T1]), 'lastData': fmt(DAYS[-1]),
        'days': T1 - T0 + 1, 'within': 20,
        'how': {'culture': '소거 한 번 → 문화 흔적으로 뺌(빚투 쏠림 · 본전 버티기) → 문화 흔적 많은 차례 → 요즘 흔들림에 맞춘 몬테카를로 차례(불장이 될 듯 · 꽃이 될 듯은 365곳 모두의 길) · 돈 둘은 국민주 먼저',
                'mc1422': '주문 1422 셈(소거 한 번 → 하루 값을 그대로 섞은 몬테카를로 드문 차례)', 'old': '예전 셈(오른 만큼 · 앞선 만큼 차례)', 'base': '그날 소거 전 아무 회사'},
        'mc': {'paths': A.paths, 'hist': HIST, 'every': 20, 'lam': CU.LAM, 'how': '스무 날마다 그 회사 · 업종 지난 250날 하루 값을 그날 흔들림으로 나눈 뒤 지금 흔들림으로 키워 2만 번 섞은 길과 견줌'},
        'universe': '지금 우량주 365곳(지난 1년도 같은 365곳으로 셈 · 살아남은 곳만 보는 치우침이 있음)', 'src': BUN + ' · public/data/atlas11/view/board.json',
-       'what': {'hotNext': '한 달(20거래일) 안에 불장 일곱에 듦', 'moneyNext': '한 달 안에 돈이 몰리는 일곱에 듦', 'bloomNext': '한 달 안에 시장보다 15 넘게 앞섬(꽃)'},
+       'what': {'hotNext': '한 달(20거래일) 안에 불장 일곱에 듦', 'moneyNext': '한 달 안에 돈이 몰리는 일곱에 듦', 'bloomNext': '고른 날 값부터 한 달 안에 시장보다 15 넘게 앞섬(꽃)'},
+       'flowerHow': '꽃이 될 듯 맞음 = 고른 날 값에서 1 ~ 20거래일 뒤 값까지 오른 몫이 그날 365곳 평균보다 15 넘게 앞선 날이 있음(주문 0103) · bloomTrail = 옛 잣대(그 뒤 한 달 안에 지난 스무 날 시장보다 15 넘게인 날 — 고르기 앞 오름이 덤으로 섞임)',
+       'bloomTrail': {h: {k: v['per100'] for k, v in a.items()} for h, a in resTrail.items()},
        'res': {g: v['all'] for g, v in res.items()}, 'halves': {g: {'first': v['first'], 'second': v['second']} for g, v in res.items()},
        'res1422': {g: v['all'] for g, v in res1422.items()}, 'calib': calib, 'calibHow': '지난 1년 아무 회사 · 아무 날을 뽑아 그 창 값을 그 앞 250날 길과 견줌 · 스무 번에 한 번(5) 아래 드묾이 100번에 몇 번 나왔나 — 5에 가까울수록 정직'}
 OUTF = os.path.join(R, A.out)

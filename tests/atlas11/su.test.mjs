@@ -640,3 +640,24 @@ test('기록창 — 한국 투자자 특징 열하나 · 서랍 · 길 · 자료
   const {gloss} = await import('../../site/next/glossary.js'); // 쉬운 말 사전이 화면에서 바꾸는 낱말이 없어야 자료 = 화면(「한 갈래씩」 → 「한 큰 업종씩」 같은 뜻 바뀜을 막음)
   for (const x of vals.split('\n')) assert.equal(gloss(x), x, '쉬운 말 사전이 바꾸지 않음 — ' + x.slice(0, 40));
 });
+
+/** 주문 0103(사장님 2026-11-10 01:03 「어」 — 물음 「꽃이 될 듯 맞음을 고른 날부터 세도록 바꿀까요?」의 답) — 꽃이 될 듯 맞음 잣대 */
+test('꽃이 될 듯 맞음 — 고른 날 값부터 셈 · 옛 잣대는 견줌으로만 · 화면 글 「고른 날부터」', () => {
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const P = JSON.parse(rd('reports/atlas11/su-next/past-culture.json')), py = rd('scripts/atlas11/next/su_culture_past.py');
+  assert.equal(P.flower, 'pick'); assert.equal(P.schema, 'su-culture-past-2');
+  assert.ok(P.what.bloomNext.includes('고른 날 값부터') && P.what.hotNext.includes('불장 일곱') && P.what.moneyNext.includes('돈이 몰리는 일곱'), '꽃만 바뀜 — 불장 · 돈 잣대는 그대로');
+  for (const k of ['culture', 'mc1422', 'old', 'base']) assert.ok(P.bloomTrail.all[k] >= P.res.bloomNext[k].per100, '옛 잣대(덤 섞임)가 새 잣대보다 크거나 같음 — ' + k);
+  assert.ok(P.res.bloomNext.culture.per100 > P.res.bloomNext.base.per100 && P.halves.bloomNext.first.culture.per100 > P.halves.bloomNext.first.base.per100 && P.halves.bloomNext.second.culture.per100 > P.halves.bloomNext.second.base.per100, '고른 날부터 세어도 아무 회사보다 많음(두 반년)');
+  assert.ok(/def bloom_hit\(j, t\)/.test(py) && /EXF\[t\] = best/.test(py) && /resTrail = score\(PC, 'trail'\)/.test(py), 'su_culture_past.py — 고른 날부터 셈 · 옛 잣대 견줌');
+  const T = JSON.parse(rd('site/su/data/su21.json'));
+  assert.equal(T.past.bloomFrom, 'pick');
+  assert.equal(T.past.bloomNext.per100, Math.round(P.res.bloomNext.culture.per100));
+  assert.equal(T.past.hotNext.per100, Math.round(P.res.hotNext.culture.per100));
+  const s21 = rd('site/su/su-21.js'), y = rd('site/su/su-why36.js'), py21 = rd('scripts/atlas11/next/su21.py'), ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(s21.includes("bloomNext: '고른 날부터 시장보다 15 넘게 앞섰어요(꽃)'") && !s21.includes('PASTW[k]') && (s21.match(/PW\(T\)\[k\]/g) ?? []).length === 8, '21곳 쪽 — 꽃이 될 듯 글 여덟 자리');
+  assert.ok(y.includes("(T.past.bloomFrom === 'pick' ? '고른 날부터 ' : '')"), '「왜?」 쪽 — 지난 1년 기록 글');
+  assert.ok(py21.includes("'bloomFrom': PASTC.get('flower')") && ck.includes('⑳ 꽃이 될 듯 맞음 — 고른 날 값부터 셈(주문 0103'), 'su21.py · 검사 ⑳');
+  for (const t2 of ['고른 날부터 시장보다 15 넘게 앞섰어요(꽃)', '고른 날부터 ', P.what.bloomNext])
+    assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|매도|추천|예측|확률|유망|신호/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
+});

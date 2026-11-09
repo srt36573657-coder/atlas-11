@@ -262,7 +262,7 @@ function facts(X) {
     swing: st ? {t: '하루 흔들림', s: '20거래일 동안 하루에 보통 100원에 ' + n1(st.swing) + '원꼴씩 오르내렸어요.'} : null,
     y1: fin(cc.r1y) ? {t: '1년 움직임', s: '1년 동안 ' + won(cc.r1y) + '이 됐어요(' + day(cc.priceDate) + ' 회사 자료).'} : null,
     mdd: fin(cc.mdd1y) ? {t: '1년 안 가장 큰 내림', s: '지난 1년에 가장 크게 내렸을 때는 100원이 ' + n1(100 + cc.mdd1y) + '원까지 내려갔어요.'} : null,
-    past: T?.past?.[k] ? {t: '지난 1년 기록', s: '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + T.past[k].per100 + '번이 한 달 안에 ' + ({hotNext: '불장 일곱에 들었어요.', moneyNext: '돈이 몰리는 일곱에 들었어요.', bloomNext: '시장보다 15 넘게 앞섰어요.'}[k] ?? '그렇게 됐어요.') + ' 아무 회사는 100번에 ' + T.past[k].base100 + '번이었어요.'}
+    past: T?.past?.[k] ? {t: '지난 1년 기록', s: '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + T.past[k].per100 + '번이 한 달 안에 ' + ({hotNext: '불장 일곱에 들었어요.', moneyNext: '돈이 몰리는 일곱에 들었어요.', bloomNext: (T.past.bloomFrom === 'pick' ? '고른 날부터 ' : '') + '시장보다 15 넘게 앞섰어요.'}[k] ?? '그렇게 됐어요.') + ' 아무 회사는 100번에 ' + T.past[k].base100 + '번이었어요.'}
       : {hot: fin(T?.counts?.hotPool) ? {t: '고른 바탕', s: '불장 업종 ' + T.counts.hotInds + '곳의 회사 ' + T.counts.hotPool + '곳 가운데에서 골랐어요.'} : null,
         bloom: fin(T?.counts?.bloomPool) ? {t: '고른 바탕', s: '크기 위 20 안인 싹 ' + T.counts.bloomPool + '곳 가운데에서 골랐어요. 꽃 선을 넘은 곳은 ' + (T.counts.bloomFull ?? 0) + '곳이에요.'} : null,
         money: {t: '고른 바탕', s: '시장보다 더 오른 업종을 차례로 보며 업종마다 한 곳씩 골랐어요.'}}[k] ?? null,
