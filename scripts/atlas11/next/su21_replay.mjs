@@ -149,7 +149,13 @@ fs.rmSync(tmp, {recursive: true, force: true});
 const last = now.asOf, saved = J(path.join(SU, 'su21.json'));
 const same = saved.asOf?.board === last && KEYS.every(k => JSON.stringify(out[last]?.lists?.[k]) === JSON.stringify((saved.lists?.[k] ?? []).map(c => c.code)));
 console.log(`맞댐 2 — ${last} 다시 센 여섯 목록 ${same ? '=' : '≠'} 방금 센 수르 판(${saved.asOf?.board} · 자료 ${saved.asOf?.data})`);
-if (!same) { for (const k of KEYS) console.error(k, JSON.stringify(out[last]?.lists?.[k]), JSON.stringify((saved.lists?.[k] ?? []).map(c => c.code))); process.exit(1); }
+const behind = tAt(last) < T0; // 판이 자료보다 늦음(장 중 · 저녁 모음 전 — 자료는 오늘 · 판은 지난 장날) — 오늘 판을 그날까지 자료로 다시 세면 새 자료로 센 수르 판과 같을 수 없음
+if (!same) {
+  for (const k of KEYS) console.error(k, JSON.stringify(out[last]?.lists?.[k]), JSON.stringify((saved.lists?.[k] ?? []).map(c => c.code)));
+  if (!behind) process.exit(1);
+  // 주문 1422 — 고르는 규칙이 바뀐 날 판이 자료보다 늦으면(2026-11-09 13:03 · 맞댐이 멈춰 며칠째가 1일째로 보임 — 틀림 194) 오늘 목록은 맞대지 않고 지난 날만 씀(오늘은 아래에서 빼고 올릴 때 적음)
+  console.warn(`맞댐 2 — 판(${last})이 자료(${dates[T0]})보다 늦어 오늘 목록은 맞대지 않음 · 지난 판만 씀`);
+}
 if (CHECK) process.exit(0);
 
 let rec; try { rec = J(OUT); } catch { rec = null; }
