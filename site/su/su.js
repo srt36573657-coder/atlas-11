@@ -337,6 +337,7 @@ async function vHub() {
       drawer('#/r/w', '못 된 까닭', num(B?.why?.all?.miss) ? num(B.why.all.miss) + '번' : NEED, '조건에 맞고도 꽃이 못 된 횟수'),
       drawer('#/r/d', '날마다', dd.big.v != null ? dd.big.v + '날' : NEED, '지난 60거래일 달력'),
       drawer('#/r/k', '한국 시장 일곱 가지', '7가지', '다른 나라와 아주 다른 점 · 한국 문화가 묻은 곳'), // 기록창(주문 0814 · 사장님 2026-11-09 08:14 · 08:25 「수르에 올려야해」)
+      drawer('#/r/i', '한국 투자자 특징 열하나', '11가지', '도우미 열하나가 찾은 버릇 · 수르 42칸에 쓰는 일곱'), // 주문 2235
       h('details', {class: 'su-oldrec'}, h('summary', {class: 'su-oldrecs'}, h('b', {text: '옛 기록 더 보기'}), h('span', {text: '해마다 · 가까운 회사 · 옛 기록 여덟'})), // 이름이 보이는 접힘
         drawer('#/r/y', '해마다', yy.big.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, '모든 해 · 100번에 몇 번'),
         drawer('#/r/n', '가까운 회사', nn.big.v != null ? nn.big.v + ' 대 ' + nn.big.v2 : NEED, '조건에 가까웠던 회사 · 100번에 몇 번'),
@@ -432,7 +433,7 @@ async function route() {
       else if (k === 'g') v = await (await roadM()).vRoads(X21, a);
       else if (k === 'c' || k === 'k') v = await coOnPath(a);
       else if (k === 'i') v = await vInd(a);
-      else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : a === 'k' ? await (await import('/su/su-kr7.js')).vKr7(X21) : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
+      else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : a === 'k' ? await (await import('/su/su-kr7.js')).vKr7(X21) : a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21) : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
       else v = CODE.test(a) ? await (await whyM()).vQuiz(a, ctx) : notFound('이 회사를 찾지 못했어요.');
     }
   } catch (e) { console.error(e); v = notFound('화면을 그리다 멈췄어요. 다시 열어 주세요.'); }

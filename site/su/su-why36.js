@@ -140,7 +140,8 @@ export function cultureBox(T, c) {
     lot: fin(v.mx5) ? '닷새 안에 가장 크게 뛴 하루는 ' + sgn(v.mx5) + '만큼이에요.' : null, attn: fin(v.nbig) ? '닷새 안에 평소보다 크게 움직인 날이 ' + v.nbig + '일이에요.' : null};
   return box('yw-cu', '한국 투자자 문화 일곱 — 이 칸', [
     h('p', {class: 'yw-s', text: '도우미 열하나가 한국 투자자의 특징 열하나를 따로 찾았어요. 그 가운데 마지막 값으로 잴 수 있는 일곱을 이렇게 정했어요.'}),
-    h('ol', {class: 'yw-ol'}, C.traits.map((t, j) => li(j + 1, t.name + ' — ' + t.use, t.say + (said[t.k] ? ' 이 칸은 ' + said[t.k] : ''), h('span', {class: 'yw-ok ' + (on.includes(t.k) ? 'yw-pass' : 'yw-no'), text: on.includes(t.k) ? '보임' : '없음'}))))]);
+    h('ol', {class: 'yw-ol'}, C.traits.map((t, j) => li(j + 1, t.name + ' — ' + t.use, t.say + (said[t.k] ? ' 이 칸은 ' + said[t.k] : ''), h('span', {class: 'yw-ok ' + (on.includes(t.k) ? 'yw-pass' : 'yw-no'), text: on.includes(t.k) ? '보임' : '없음'})))),
+    h('a', {class: 'su-ask', href: '#/r/i'}, h('b', {text: '특징 열하나 보기'}), h('span', {text: '도우미 열하나가 찾은 근거를 기록창에서 봐요.'}))]); // 주문 2235
 }
 export function crit7mc(T, c, k) {
   const L = T?.lists?.[k] ?? [], w = c.why ?? {}, m = c.mc ?? {}, a = T?.asOf ?? {}, ind = k === 'money' || k === 'moneyNext';

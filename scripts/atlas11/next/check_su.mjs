@@ -26,7 +26,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqjmfn]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/c\/[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdynk]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
+const LINK_OK = /^(#\/|#\/[bkrpqjmfn]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/c\/[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdynki]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -306,7 +306,7 @@ for (const width of [390, 360, 320]) {
     // 기록 서랍 여섯 · 서랍 쪽
     await open(p, '#/r');
     const dr = await p.evaluate(() => [...document.querySelectorAll('#su .su-drawer')].map(a => a.getAttribute('href')));
-    check(JSON.stringify(dr) === JSON.stringify(['#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(달마다 · 한 달 뒤 · 내 매매일지 · 못 된 까닭 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
+    check(JSON.stringify(dr) === JSON.stringify(['#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(달마다 · 한 달 뒤 · 내 매매일지 · 못 된 까닭 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
     R.m.drawers = {};
     for (const hh of ['#/r/d', '#/r/y', '#/r/n']) { await open(p, hh); await p.waitForTimeout(200); const m = await shape(); R.m.drawers[hh] = {h1: m.h1, share: m.share, moving: m.moving}; check(m.tiles.length === 6 && m.lastIsSrc, W + '⑨ 서랍 쪽 ' + hh + ' — ' + m.h1, JSON.stringify(m).slice(0, 160)); pageRules(await measure(p), W + '⑨ 서랍 쪽 ' + hh); }
   }
@@ -765,6 +765,34 @@ for (const width of [390, 360, 320]) {
     check(!g.text.includes('%') && !/[A-Za-z]/.test(g.text), W + '새 문장에 「%」 · 영어 글자 없음', (g.text.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     if (width === 390) R.m.kr7 = {cards: g.cards.length, rows: g.rows, screens: m.screens};
+    await ctx.close();
+  }
+}
+{ // ⑲-2 기록창 — 한국 투자자 특징 열하나(주문 2235 · 사장님 2026-11-09 22:35 「어 올려」 — 물음 「특징 열하나도 기록창에 올릴까요?」의 답 · 주문 1912 도우미 열하나가 찾은 것)
+  //   기록 쪽 서랍 → #/r/i · 열한 칸 = 자료(su/data/ant11.json) 그대로 · 칸마다 한국은 · 다른 나라는(하나 넘게) · 수르에서는 · 근거 · 한눈 그림 열한 짝 · 쓰는 흔적을 모으면 문화 일곱 · 「%」 · 영어 글자 0 · 쪽 규칙
+  const K = await J('/su/data/ant11.json').catch(() => null);
+  const uses = new Set((K?.items ?? []).flatMap(it => it.uses ?? []));
+  check(!!K && Array.isArray(K.items) && K.items.length === 11 && K.items.every(it => it.t && it.one && it.kr && it.why && it.culture && it.tag && it.vs?.length >= 1 && it.src?.length >= 1)
+    && ['herd', 'near', 'rev', 'casc', 'big', 'lot', 'attn'].every(k => uses.has(k)) && uses.size === 7, '⑲ 기록창 자료 — 특징 열하나 · 칸마다 한국은 · 다른 나라는 · 수르에서는 · 근거 · 쓰는 흔적 = 문화 일곱', JSON.stringify({n: K?.items?.length, uses: [...uses]}));
+  for (const width of [390, 320]) {
+    const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    const W = '⑲ 특징 열하나 [' + width + '] ';
+    await open(p, '#/r');
+    const dr = await p.evaluate(() => [...document.querySelectorAll('#su a.su-drawer')].map(a => ({href: a.getAttribute('href'), t: a.querySelector('b')?.textContent ?? ''})));
+    check(dr.some(d => d.href === '#/r/i' && d.t === '한국 투자자 특징 열하나'), W + '기록 쪽 서랍 「한국 투자자 특징 열하나」 → #/r/i', JSON.stringify(dr.map(d => d.href)));
+    await open(p, '#/r/i');
+    await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.k7-d')) d.open = true; });
+    const m = await measure(p); pageRules(m, W + '기록창');
+    const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.k7');
+      return {h1: document.querySelector('#su h1')?.innerText ?? '', g: hero?.getAttribute('data-g') ?? null, rows: hero ? hero.querySelectorAll('svg.k7-map g.k7-row').length : 0,
+        cards: hero ? [...hero.querySelectorAll('li.k7-li')].map(li => ({t: li.querySelector('.k7-t')?.textContent ?? '', vs: li.querySelectorAll('.k7-v').length, src: li.querySelectorAll('.k7-sr').length, why: li.querySelector('.k7-why')?.textContent ?? ''})) : [],
+        text: [...document.querySelectorAll('#su main .su-hero.k7, #su main .k7-how')].map(e => e.innerText).join('\n')}; });
+    check(g.g === 'su-ant11' && g.h1.includes('한국 개인 투자자') && g.rows === 11 && g.cards.length === 11, W + '쪽 꼴 — 큰 제목 · 한눈 그림 열한 짝 · 열한 칸', JSON.stringify({h1: g.h1, rows: g.rows, n: g.cards.length}));
+    if (K?.items) check(g.cards.every((c, i) => c.t === K.items[i].t && c.vs === K.items[i].vs.length && c.src === K.items[i].src.length && c.why === K.items[i].why), W + '열한 칸 = 자료 그대로(차례 · 이름 · 다른 나라 · 근거 · 수르에서는)', JSON.stringify(g.cards.map(c => [c.t, c.vs, c.src])).slice(0, 200));
+    check(!g.text.includes('%') && !/[A-Za-z]/.test(g.text), W + '새 문장에 「%」 · 영어 글자 없음', (g.text.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
+    check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
+    if (width === 390) R.m.ant11 = {cards: g.cards.length, rows: g.rows, screens: m.screens};
     await ctx.close();
   }
 }

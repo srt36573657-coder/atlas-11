@@ -97,6 +97,7 @@ test('첫 화면이 된 뒤 — 지금 수르 고리 · 말 · 카톡 표는 /ne
   for (const h of ['', '#', '#/', '#/c/005930', '#/i/%ED%95%AD%EA%B3%B5']) assert.equal(forwardTo('', h), null, h);
   for (const h of ['#/b', '#/k', '#/r', '#/p', '#/k/127120', '#/r/127120', '#/p/005930']) assert.equal(forwardTo('', h), null, h); // 새 판 탭(주문 1238)
   assert.equal(forwardTo('', '#/r/k'), null, '#/r/k 기록창(주문 0814) — 수르 안');
+  assert.equal(forwardTo('', '#/r/i'), null, '#/r/i 한국 투자자 특징 열하나(주문 2235) — 수르 안');
   assert.equal(forwardTo('', '#/p/abc'), '/next/#/p/abc'); // 번호 꼴이 아니면 지금 수르
   assert.equal(forwardTo('?v=123', '#/'), null);
   assert.equal(forwardTo('?fbclid=abc', ''), null);
@@ -619,4 +620,21 @@ test('문화 셈 — 특징 열하나 · 일곱 정의 · 문화로 42칸 · 요
   assert.ok(T.top3?.v === 'top3-v2' && new Set(T.top3.rank.map(r => r.code)).size === 3, '저장된 판 — 1억 번 셈 v2 · 서로 다른 회사 셋');
   for (const t2 of ['문화 일곱으로 고르고', '1억 번 섞었어요.', '한국 투자자 문화 일곱 — 이 칸', '테마 몰림', '고점 앞 팔기', '본전 버티기', '빚투 쏠림', '국민주 쏠림', '한방 쫓기', '눈길 따라 사기', '바로 앞 셈은'])
     assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|매도|추천|예측|확률|유망|신호/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
+});
+
+/** 주문 2235(사장님 2026-11-09 22:35 「어 올려」 — 물음 「특징 열하나도 기록창에 올릴까요?」의 답) — 한국 투자자 특징 열하나 기록창 */
+test('기록창 — 한국 투자자 특징 열하나 · 서랍 · 길 · 자료(열한 칸 · 쓰는 흔적 = 문화 일곱) · 영어 · % · 쓰지 않을 말 없음', () => {
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const K = JSON.parse(rd('site/su/data/ant11.json')), su = rd('site/su/su.js'), k7 = rd('site/su/su-kr7.js'), cu = rd('scripts/atlas11/next/su21_culture.py'), ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.equal(K.items.length, 11);
+  for (const it of K.items) assert.ok(it.t && it.one && it.kr && it.why && it.culture && it.tag && it.vs.length >= 1 && it.src.length >= 1 && Array.isArray(it.uses), '칸 꼴 — ' + it.t);
+  const T = cu.match(/TRAITS = \[([^\]]+)\]/)[1].split(',').map(x => x.trim().replace(/'/g, ''));
+  assert.deepEqual([...new Set(K.items.flatMap(it => it.uses))].sort(), [...T].sort(), '쓰는 흔적을 모으면 문화 일곱(su21_culture TRAITS)');
+  const vals = [K.lead, ...K.how, ...K.items.flatMap(it => [it.culture, it.tag, it.t, it.one, it.kr, it.why, ...it.src, ...it.vs.flatMap(v => [v.who, v.s])])].join('\n'); // 화면에 나오는 글만(uses 는 흔적 이름 · 화면 밖)
+  assert.ok(!/[A-Za-z]/.test(vals) && !vals.includes('%'), '영어 글자 · % 없음');
+  for (const w of ['추천', '매수', '매도', '팔라', '사세요', '파세요', '예측', '확률', '유망', '기회', '신호', '저평가', '1위', '사라', '팔아라']) assert.ok(!vals.includes(w), '쓰지 않을 말 — ' + w);
+  for (const it of K.items) assert.ok(Array.from(it.culture).length <= 6, '한눈 그림 왼쪽 글 — ' + it.culture);
+  assert.ok(su.includes("drawer('#/r/i', '한국 투자자 특징 열하나'") && su.includes("a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21)"), '서랍 · 길 #/r/i');
+  assert.ok(/export async function vAnt11\(X\)/.test(k7) && k7.includes("'data-g': 'su-ant11'") && k7.includes("h1: '한국 개인 투자자, 무엇이 다를까요?'"), '쪽 그리기');
+  assert.ok(ck.includes('⑲ 기록창 자료 — 특징 열하나'), '검사 ⑲ — 특징 열하나');
 });
