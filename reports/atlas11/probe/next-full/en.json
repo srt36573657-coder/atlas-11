@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-09T07:51:06.432Z",
+ "at": "2026-11-09T12:45:15.625Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -14,28 +14,28 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "grow": true,
   "past": true,
-  "rivals": true,
-  "range": true,
+  "grow": true,
   "cond": true,
-  "talk": true,
+  "range": true,
+  "cal": true,
+  "rivals": true,
+  "surge": true,
+  "today": true,
   "why": true,
-  "time": true,
+  "info": true,
+  "talk": true,
   "up": true,
   "co": true,
+  "x": true,
+  "theme": true,
   "hold": true,
   "share": true,
-  "roman": true,
-  "theme": true,
-  "surge": true,
-  "gdr": true,
-  "today": true,
-  "info": true,
-  "x": true,
+  "time": true,
   "chx": true,
-  "cal": true,
-  "sage": true
+  "sage": true,
+  "roman": true,
+  "gdr": true
  },
  "edge": true,
  "only": null,
@@ -44,14 +44,14 @@
  "full": false,
  "units": {
   "total": 13615,
-  "hash": "b1f16115df9b5e91",
+  "hash": "850f18ea3f0ee36f",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 993,
- "secondsSum": 2868,
+ "seconds": 1056,
+ "secondsSum": 3060,
  "shards": [
   {
    "shard": "1/3",
@@ -60,10 +60,10 @@
    "routes": 4570,
    "screens": 4571,
    "mine": 4570,
-   "seconds": 993,
+   "seconds": 1056,
    "secs": {
-    "open": 0.6,
-    "routes": 991.4
+    "open": 0.8,
+    "routes": 1053.1
    }
   },
   {
@@ -73,11 +73,11 @@
    "routes": 4554,
    "screens": 4618,
    "mine": 4555,
-   "seconds": 899,
+   "seconds": 1046,
    "secs": {
-    "open": 1.1,
-    "routes": 893.5,
-    "newwin": 3.4
+    "open": 0.8,
+    "routes": 1039.6,
+    "newwin": 4.1
    }
   },
   {
@@ -87,12 +87,12 @@
    "routes": 4495,
    "screens": 4659,
    "mine": 4490,
-   "seconds": 976,
+   "seconds": 958,
    "secs": {
-    "open": 0.6,
-    "routes": 958.6,
-    "act": 6.5,
-    "edge": 7.7,
+    "open": 0.7,
+    "routes": 938.5,
+    "act": 6.9,
+    "edge": 8.1,
     "grammar": 0
    }
   }
