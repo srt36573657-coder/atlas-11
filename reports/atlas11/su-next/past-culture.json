@@ -1,0 +1,378 @@
+{
+ "schema": "su-culture-past-1",
+ "order": "1912",
+ "rule": "culture7-v1",
+ "from": "2025-10-01",
+ "mid": "2026-04-01",
+ "to": "2026-09-07",
+ "lastData": "2026-10-08",
+ "days": 226,
+ "within": 20,
+ "how": {
+  "culture": "소거 한 번 → 문화 흔적으로 뺌(빚투 쏠림 · 본전 버티기) → 문화 흔적 많은 차례 → 요즘 흔들림에 맞춘 몬테카를로 차례(불장이 될 듯 · 꽃이 될 듯은 365곳 모두의 길) · 돈 둘은 국민주 먼저",
+  "mc1422": "주문 1422 셈(소거 한 번 → 하루 값을 그대로 섞은 몬테카를로 드문 차례)",
+  "old": "예전 셈(오른 만큼 · 앞선 만큼 차례)",
+  "base": "그날 소거 전 아무 회사"
+ },
+ "mc": {
+  "paths": 20000,
+  "hist": 250,
+  "every": 20,
+  "lam": 0.94,
+  "how": "스무 날마다 그 회사 · 업종 지난 250날 하루 값을 그날 흔들림으로 나눈 뒤 지금 흔들림으로 키워 2만 번 섞은 길과 견줌"
+ },
+ "universe": "지금 우량주 365곳(지난 1년도 같은 365곳으로 셈 · 살아남은 곳만 보는 치우침이 있음)",
+ "src": "reports/atlas11/universe/2026-10-10/bundle.json.gz · public/data/atlas11/view/board.json",
+ "what": {
+  "hotNext": "한 달(20거래일) 안에 불장 일곱에 듦",
+  "moneyNext": "한 달 안에 돈이 몰리는 일곱에 듦",
+  "bloomNext": "한 달 안에 시장보다 15 넘게 앞섬(꽃)"
+ },
+ "res": {
+  "hotNext": {
+   "culture": {
+    "picks": 1552,
+    "hits": 742,
+    "per100": 47.8,
+    "days": 224
+   },
+   "mc1422": {
+    "picks": 1556,
+    "hits": 625,
+    "per100": 40.2,
+    "days": 224
+   },
+   "old": {
+    "picks": 1560,
+    "hits": 735,
+    "per100": 47.1,
+    "days": 224
+   },
+   "base": {
+    "picks": 80916,
+    "hits": 8849,
+    "per100": 10.9,
+    "days": 226
+   }
+  },
+  "moneyNext": {
+   "culture": {
+    "picks": 1580,
+    "hits": 600,
+    "per100": 38.0,
+    "days": 226
+   },
+   "mc1422": {
+    "picks": 1579,
+    "hits": 605,
+    "per100": 38.3,
+    "days": 226
+   },
+   "old": {
+    "picks": 1580,
+    "hits": 456,
+    "per100": 28.9,
+    "days": 226
+   },
+   "base": {
+    "picks": 80908,
+    "hits": 6145,
+    "per100": 7.6,
+    "days": 226
+   }
+  },
+  "bloomNext": {
+   "culture": {
+    "picks": 1582,
+    "hits": 843,
+    "per100": 53.3,
+    "days": 226
+   },
+   "mc1422": {
+    "picks": 1582,
+    "hits": 695,
+    "per100": 43.9,
+    "days": 226
+   },
+   "old": {
+    "picks": 1582,
+    "hits": 793,
+    "per100": 50.1,
+    "days": 226
+   },
+   "base": {
+    "picks": 70054,
+    "hits": 18842,
+    "per100": 26.9,
+    "days": 226
+   }
+  }
+ },
+ "halves": {
+  "hotNext": {
+   "first": {
+    "culture": {
+     "picks": 822,
+     "hits": 387,
+     "per100": 47.1,
+     "days": 118
+    },
+    "mc1422": {
+     "picks": 823,
+     "hits": 311,
+     "per100": 37.8,
+     "days": 118
+    },
+    "old": {
+     "picks": 826,
+     "hits": 432,
+     "per100": 52.3,
+     "days": 118
+    },
+    "base": {
+     "picks": 42244,
+     "hits": 4874,
+     "per100": 11.5,
+     "days": 118
+    }
+   },
+   "second": {
+    "culture": {
+     "picks": 730,
+     "hits": 355,
+     "per100": 48.6,
+     "days": 106
+    },
+    "mc1422": {
+     "picks": 733,
+     "hits": 314,
+     "per100": 42.8,
+     "days": 106
+    },
+    "old": {
+     "picks": 734,
+     "hits": 303,
+     "per100": 41.3,
+     "days": 106
+    },
+    "base": {
+     "picks": 38672,
+     "hits": 3975,
+     "per100": 10.3,
+     "days": 108
+    }
+   }
+  },
+  "moneyNext": {
+   "first": {
+    "culture": {
+     "picks": 826,
+     "hits": 319,
+     "per100": 38.6,
+     "days": 118
+    },
+    "mc1422": {
+     "picks": 826,
+     "hits": 331,
+     "per100": 40.1,
+     "days": 118
+    },
+    "old": {
+     "picks": 826,
+     "hits": 226,
+     "per100": 27.4,
+     "days": 118
+    },
+    "base": {
+     "picks": 42244,
+     "hits": 2950,
+     "per100": 7.0,
+     "days": 118
+    }
+   },
+   "second": {
+    "culture": {
+     "picks": 754,
+     "hits": 281,
+     "per100": 37.3,
+     "days": 108
+    },
+    "mc1422": {
+     "picks": 753,
+     "hits": 274,
+     "per100": 36.4,
+     "days": 108
+    },
+    "old": {
+     "picks": 754,
+     "hits": 230,
+     "per100": 30.5,
+     "days": 108
+    },
+    "base": {
+     "picks": 38664,
+     "hits": 3195,
+     "per100": 8.3,
+     "days": 108
+    }
+   }
+  },
+  "bloomNext": {
+   "first": {
+    "culture": {
+     "picks": 826,
+     "hits": 423,
+     "per100": 51.2,
+     "days": 118
+    },
+    "mc1422": {
+     "picks": 826,
+     "hits": 325,
+     "per100": 39.3,
+     "days": 118
+    },
+    "old": {
+     "picks": 826,
+     "hits": 394,
+     "per100": 47.7,
+     "days": 118
+    },
+    "base": {
+     "picks": 36739,
+     "hits": 8653,
+     "per100": 23.6,
+     "days": 118
+    }
+   },
+   "second": {
+    "culture": {
+     "picks": 756,
+     "hits": 420,
+     "per100": 55.6,
+     "days": 108
+    },
+    "mc1422": {
+     "picks": 756,
+     "hits": 370,
+     "per100": 48.9,
+     "days": 108
+    },
+    "old": {
+     "picks": 756,
+     "hits": 399,
+     "per100": 52.8,
+     "days": 108
+    },
+    "base": {
+     "picks": 33315,
+     "hits": 10189,
+     "per100": 30.6,
+     "days": 108
+    }
+   }
+  }
+ },
+ "res1422": {
+  "hotNext": {
+   "culture": {
+    "picks": 1552,
+    "hits": 524,
+    "per100": 33.8,
+    "days": 224
+   },
+   "mc1422": {
+    "picks": 1556,
+    "hits": 622,
+    "per100": 40.0,
+    "days": 224
+   },
+   "old": {
+    "picks": 1557,
+    "hits": 590,
+    "per100": 37.9,
+    "days": 224
+   },
+   "base": {
+    "picks": 80915,
+    "hits": 5596,
+    "per100": 6.9,
+    "days": 226
+   }
+  },
+  "moneyNext": {
+   "culture": {
+    "picks": 1580,
+    "hits": 587,
+    "per100": 37.2,
+    "days": 226
+   },
+   "mc1422": {
+    "picks": 1579,
+    "hits": 624,
+    "per100": 39.5,
+    "days": 226
+   },
+   "old": {
+    "picks": 1581,
+    "hits": 523,
+    "per100": 33.1,
+    "days": 226
+   },
+   "base": {
+    "picks": 80908,
+    "hits": 6165,
+    "per100": 7.6,
+    "days": 226
+   }
+  },
+  "bloomNext": {
+   "culture": {
+    "picks": 1582,
+    "hits": 843,
+    "per100": 53.3,
+    "days": 226
+   },
+   "mc1422": {
+    "picks": 1582,
+    "hits": 695,
+    "per100": 43.9,
+    "days": 226
+   },
+   "old": {
+    "picks": 1582,
+    "hits": 778,
+    "per100": 49.2,
+    "days": 226
+   },
+   "base": {
+    "picks": 70054,
+    "hits": 18787,
+    "per100": 26.8,
+    "days": 226
+   }
+  }
+ },
+ "calib": {
+  "raw20": {
+   "n": 1500,
+   "old": 7.0,
+   "new": 4.7
+  },
+  "raw5": {
+   "n": 1500,
+   "old": 6.0,
+   "new": 4.0
+  },
+  "rel20": {
+   "n": 1500,
+   "old": 10.1,
+   "new": 7.3
+  },
+  "rel5": {
+   "n": 1500,
+   "old": 7.2,
+   "new": 5.5
+  }
+ },
+ "calibHow": "지난 1년 아무 회사 · 아무 날을 뽑아 그 창 값을 그 앞 250날 길과 견줌 · 스무 번에 한 번(5) 아래 드묾이 100번에 몇 번 나왔나 — 5에 가까울수록 정직"
+}

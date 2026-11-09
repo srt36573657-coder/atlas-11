@@ -144,6 +144,8 @@ b_fill = sorted([c for c in sprN if (cap.get(c) or 0) >= thr], key=lambda c: (-X
 BLOOMN = per2k(b_main + b_fill)
 try: PAST = J(A.repo + '/reports/atlas11/su-next/past.json')
 except Exception: PAST = None
+try: PASTC = J(A.repo + '/reports/atlas11/su-next/past-culture.json') # 문화 셈의 지난 1년(주문 1912 · su_culture_past.py) — 규칙이 같을 때만
+except Exception: PASTC = None
 try: PASTM = J(A.repo + '/reports/atlas11/su-next/past-mc.json') # 몬테카를로 차례 셈의 지난 1년(주문 1422 · su_mc_past.py) — 규칙이 같을 때만
 except Exception: PASTM = None
 try: PASTS = J(A.repo + '/reports/atlas11/su-next/past-strict.json') # 엄격 셈의 지난 1년(주문 0854 · su_strict_past.py) — 규칙이 같을 때만
@@ -180,9 +182,6 @@ CTX = ST.Ctx(B, b['asOf'], DATES, co_close, opens, cap, CL, lambda c: B[c]['grou
 #   위 ① ~ ④(옛 셈)는 소거 조건과 까닭 값(hot · mrow · hrow · mnrow · R20 · X5 …)만 씀 — 차례는 몬테카를로
 import su21_mc as MC
 INDN = lambda c: B[c]['group']['label']
-def lead(i, gfn, skip=()):
-    g = sorted([(gfn(c), c) for c in B if MK.get(c, {}).get('i') == i['n'] and gfn(c) is not None and opens(c) and c not in skip and c not in late], key=lambda t: (-t[0], t[1])) # 값이 늦은 회사는 뺌(그날 값 · 소거 한 번)
-    return g[0] if g and g[0][0] > 0 else None
 def rep_of(i):
     mem = [c for c in CL if INDN(c) == i['n']] or [c for c in B if INDN(c) == i['n']]
     return mem[0] if mem else None
@@ -191,15 +190,48 @@ def ind_order(inds, k):
         c = rep_of(i); m = MC.mc(CTX, c, k) if c else {'p': None, 'stat': None}
         return (m['p'] is None, m['p'] if m['p'] is not None else 2, -(m['stat'] if m['stat'] is not None else -1e9), i['n'])
     return sorted(inds, key=key)
-POOL, ORD = {}, {} # ORD = 묶음마다 소거를 지난 곳(돈 둘은 업종)의 드문 차례(1부터) — 「왜?」 쪽 「드문 차례 ○째」
+POOL, ORD = {}, {} # ORD = 묶음마다 소거를 지난 곳(돈 둘은 업종)의 차례(1부터) — 「왜?」 쪽 「차례 ○째」
 def ordset(k, seq, key=lambda x: x): ORD[k] = {key(x): j + 1 for j, x in enumerate(seq)}
-# 불장 = 불장 업종 안 · 20거래일 오른 회사(값 늦지 않음 · 회사 쪽 열림) → 20거래일 오른 만큼이 드문 차례
+# ⑦ 주문 1912(사장님 2026-11-09 19:12 「한국에 주식하는 사람들에 특징 11가지를 에이전트 11개를 돌려서 찾아낸 다음 7가지에 정의를 내린 다음
+#    42개에 종목을 찾아내는데 문화에 중심으로 세팅한 다음 42개를 다시 찾아내고 그중에 이전에 했던 몬테카를로 방식 소급법(소거법)을 더 진화시켜서 작업 해봐」)
+#   한국 투자자 문화 일곱(su21_culture · 근거 docs/design/su-culture-2026-11-09/traits11.md) — 365곳마다 종가로 흔적을 잼
+#   ① 소거 한 번(묶음마다 기본 조건 · 옛 그대로) → ② 문화로 뺌(빚투 쏠림 · 본전 버티기 — 일곱이 안 되면 뒤에 붙임) → ③ 문화 흔적이 많은 차례(테마 몰림 · 고점 앞 팔기)
+#   → ④ 몬테카를로 차례(요즘 흔들림에 맞춘 길 · 불장이 될 듯 · 꽃이 될 듯은 365곳 모두의 길 = 크게 움직인 차례) · 돈 둘은 업종마다 국민주(몸집 위 열에 하나)를 대장으로 먼저
+import su21_culture as CUL
+CODES = sorted(B)
+IXN = sorted(set(INDN(c) for c in CODES)); IXI = {n: i for i, n in enumerate(IXN)}
+IXc = _np.array([IXI[INDN(c)] for c in CODES]); NIc = len(IXN)
+CJ = {c: j for j, c in enumerate(CODES)}
+_nan = float('nan')
+l5v = _np.array([CTX.ret[5].get(c, _nan) for c in CODES]); l20v = _np.array([CTX.ret[20].get(c, _nan) for c in CODES])
+with _np.errstate(invalid='ignore'):
+    il5v = _np.array([_np.nanmean(l5v[IXc == i]) if _np.isfinite(l5v[IXc == i]).sum() >= 3 else _np.nan for i in range(NIc)]) - _np.nanmean(l5v)
+    il20v = _np.array([_np.nanmean(l20v[IXc == i]) if _np.isfinite(l20v[IXc == i]).sum() >= 3 else _np.nan for i in range(NIc)]) - _np.nanmean(l20v)
+capv = _np.array([cap.get(c) or _np.nan for c in CODES], float)
+PM = _np.array([(lambda a: a if a is not None else _np.full(len(DATES), _np.nan))(co_close(c)) for c in CODES]) if DATES else None
+CON, CVAL = CUL.traits(PM, IXc, NIc, capv, CTX.T, l5v, l20v, il5v, il20v) if PM is not None and CTX.T >= 271 else ({}, {})
+def con(c, k):
+    j = CJ.get(c)
+    return bool(CON[k][j]) if CON and j is not None else False
+def ccount(k, c): return sum(con(c, x) for x in CUL.POS[k])
+def cbad(k, c): return any(con(c, x) for x in CUL.NEG[k])
+def cfilt(k, lst):
+    lst = list(dict.fromkeys(lst)); g = [c for c in lst if not cbad(k, c)]
+    return g if len(g) >= 7 else g + [c for c in lst if cbad(k, c)]
+def mkey(k, c):
+    m = MC.mc(CTX, c, k)
+    return (-ccount(k, c), m['p'] is None, m['p'] if m['p'] is not None else 2, -(m['stat'] if m['stat'] is not None else -1e9))
+def lead(i, gfn, skip=()):
+    g = sorted([(gfn(c), c) for c in B if MK.get(c, {}).get('i') == i['n'] and gfn(c) is not None and opens(c) and c not in skip and c not in late], key=lambda t: (-t[0], t[1])) # 값이 늦은 회사는 뺌(그날 값 · 소거 한 번)
+    gb = [x for x in g if x[0] > 0 and con(x[1], 'big')] # 국민주 쏠림 — 업종 안 몸집 위 열에 하나가 늘었으면 그 회사를 대장으로 먼저
+    return gb[0] if gb else (g[0] if g and g[0][0] > 0 else None)
+# 불장 = 불장 업종 안 · 20거래일 오른 회사(값 늦지 않음 · 회사 쪽 열림) → 문화로 뺌 → 신고가 · 테마 몰림이 많은 차례 → 20거래일 오른 만큼이 드문 차례
 POOL['hot'] = list(f1)
-_o = MC.order(CTX, POOL['hot'], 'hot'); ordset('hot', _o); HOT = per2(_o)
-# 꽃이 될 = 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음) · 회사 크기 위 20 → 그 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례(같은 업종은 회사 자리 x 큰 차례)
+_o = sorted(cfilt('hot', POOL['hot']), key=lambda c: (*mkey('hot', c), c)); ordset('hot', _o); HOT = per2(_o)
+# 꽃이 될 = 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음) · 회사 크기 위 20 → 문화로 뺌(빚투) → 테마 몰림 · 고점 앞 팔기가 많은 차례 → 그 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례
 POOL['bloom'] = [c for c in spr if c not in late] # 값이 늦은 회사는 뺌(그날 값)
-_o = sorted(POOL['bloom'], key=lambda c: (MC.mc(CTX, c, 'bloom')['p'] is None, MC.mc(CTX, c, 'bloom')['p'] if MC.mc(CTX, c, 'bloom')['p'] is not None else 2, -(MC.mc(CTX, c, 'bloom')['stat'] or -1e9), -tco[c][0], c)); ordset('bloom', _o); BLOOM = _o[:7]
-# 돈이 몰리는 = 한 달 동안 시장보다 더 오른 업종(x > 0) → 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례 → 업종마다 20거래일 동안 회사 크기가 가장 많이 는 곳
+_o = sorted(cfilt('bloom', POOL['bloom']), key=lambda c: (*mkey('bloom', c), -tco[c][0], c)); ordset('bloom', _o); BLOOM = _o[:7]
+# 돈이 몰리는 = 한 달 동안 시장보다 더 오른 업종(x > 0) → 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례 → 업종마다 국민주가 늘었으면 그 회사 · 아니면 20거래일 동안 회사 크기가 가장 많이 는 곳
 MONEY, mrow = [], {}
 POOL['money'] = [i for i in th['inds'] if i.get('x') is not None and i['x'] > 0]
 _o = ind_order(POOL['money'], 'money'); ordset('money', _o, key=lambda i: i['n'])
@@ -207,11 +239,11 @@ for i in _o:
     g = lead(i, gain)
     if g: MONEY.append(g[1]); mrow[g[1]] = (i, round(g[0]))
     if len(MONEY) == 7: break
-# 불장이 될 듯 = 불장 일곱 밖 · 닷새 오른 회사(불장 업종이거나 업종도 닷새 오름) → 닷새 오른 만큼이 드문 차례
+# 불장이 될 듯 = 불장 일곱 밖 · 닷새 오른 회사(불장 업종이거나 업종도 닷새 오름) → 문화로 뺌 → 고점 앞 팔기 · 테마 몰림(닷새) 먼저 → 365곳 모두의 길과 견줘 닷새 오른 만큼이 드문 차례
 POOL['hotNext'] = [c for c in CL if ok_n(c) and c not in HOT and R5[c] > 0 and (B[c]['group']['id'] in hot or (I5.get(INDN(c)) or 0) > 0)]
-_o = MC.order(CTX, POOL['hotNext'], 'hotNext'); ordset('hotNext', _o); HOTN = per2k(_o)
+_o = sorted(cfilt('hotNext', POOL['hotNext']), key=lambda c: (-ccount('hotNext', c), -CTX.ret[5].get(c, -9), c)); ordset('hotNext', _o); HOTN = per2k(_o)
 hrow = {c: ('rank', hot14.index(c) + 1 if c in hot14 else None) if B[c]['group']['id'] in hot else ('five', None) for c in HOTN} # rank = 불장 업종 안(차례는 옛 오른 차례 · 참고) · five = 업종도 닷새 오름
-# 돈이 몰릴 듯 = 돈 일곱 밖 업종 → 업종이 닷새 동안 시장보다 앞선 만큼이 드문 차례 → 업종마다 닷새 동안 회사 크기가 가장 많이 는 곳
+# 돈이 몰릴 듯 = 돈 일곱 밖 업종 → 업종이 닷새 동안 시장보다 앞선 만큼이 드문 차례 → 업종마다 국민주가 늘었으면 그 회사 · 아니면 닷새 동안 회사 크기가 가장 많이 는 곳
 top7 = {mrow[c][0]['n'] for c in MONEY}
 MONEYN, mnrow = [], {}
 POOL['moneyNext'] = [i for i in th['inds'] if i['n'] not in top7]
@@ -220,9 +252,29 @@ for i in _o:
     g = lead(i, gain5, skip=set(MONEY) | set(MONEYN))
     if g: MONEYN.append(g[1]); mnrow[g[1]] = ('five', i, round(g[0]), None)
     if len(MONEYN) == 7: break
-# 꽃이 될 듯 = 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음 · 꽃 일곱 밖) → 닷새 동안 시장보다 앞선 만큼이 드문 차례
+# 꽃이 될 듯 = 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음 · 꽃 일곱 밖) → 문화로 뺌 → 365곳 모두의 길과 견줘 닷새 동안 시장보다 앞선 만큼이 드문 차례
 POOL['bloomNext'] = [c for c in CL if ok_n(c) and X20[c] < 0.05 and X5[c] >= 0 and c not in BLOOM]
-_o = MC.order(CTX, POOL['bloomNext'], 'bloomNext'); ordset('bloomNext', _o); BLOOMN = per2k(_o)
+_o = sorted(cfilt('bloomNext', POOL['bloomNext']), key=lambda c: (-ccount('bloomNext', c), -(CTX.ret[5].get(c, -9) - CTX.mret[5]), c)); ordset('bloomNext', _o); BLOOMN = per2k(_o)
+# 365곳 모두의 길(불장이 될 듯 = 닷새 · 꽃이 될 듯 = 닷새 시장보다) — 그 칸 값이 얼마나 드문가(화면 풀이 · 차례와 같은 쪽)
+PMK = {}
+if PM is not None and CTX.T > 260:
+    with _np.errstate(divide='ignore', invalid='ignore'):
+        _lr = _np.log(PM[:, CTX.T - 5 - ST.HIST:CTX.T - 4] / PM[:, CTX.T - 6 - ST.HIST:CTX.T - 5])
+    _lr[~_np.isfinite(_lr)] = _np.nan
+    with _np.errstate(invalid='ignore'): _mr = _np.nanmean(_lr, axis=0)
+    for k, rel in (('hotNext', False), ('bloomNext', True)):
+        nl = CUL.mkt_null(_lr, _mr, 5, rel, ST.MC_PATHS, ST.seed_of(b['asOf'], k, 'mkt-null'))
+        for c in (HOTN if k == 'hotNext' else BLOOMN):
+            a = CTX.ret[5].get(c)
+            if a is not None: PMK[(k, c)] = CUL.p_of(nl, a - (CTX.mret[5] if rel else 0))
+def cu_of(c):
+    j = CJ.get(c)
+    if not CON or j is None: return None
+    v = CVAL
+    f1_ = lambda x: None if x is None or not _np.isfinite(x) else round(float(x), 1)
+    return {'on': [k for k in ('herd', 'near', 'hi52', 'rev', 'casc', 'big', 'lot', 'attn') if con(c, k)],
+            'v': {'dd': f1_(v['dd'][j] * 100), 'br20': f1_(v['br20'][j] * 100), 'br5': f1_(v['br5'][j] * 100), 'x20': f1_(v['x20'][j] * 100), 'casc': int(v['casc'][j]),
+                  'rank': int(v['rank'][j]), 'mx5': f1_((_np.exp(v['mx5'][j]) - 1) * 100) if _np.isfinite(v['mx5'][j]) else None, 'nbig': int(v['nbig'][j])}}
 MC365 = MC.scan(CTX) if A.mc365 else None
 lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN}
 # ④ 42칸 1등 · 2등 · 3등(올릴 때 --top3) — 칸마다 우연 길 10만 개 → 1억 판 소거 → 끝까지 남은 횟수 차례
@@ -238,7 +290,7 @@ land_of = {}
 for G in lands:
     for i in G['industries']: land_of[i] = G
 
-HEAVY = ('c', 'cFrom', 'cd', 'flows', 'news', 'pos52', 'close')
+HEAVY = ('c', 'cFrom', 'cd', 'flows', 'news', 'pos52', 'close', 'cu') # cu(문화 흔적 · 주문 1912)는 su21-cu.json 에 따로(첫 화면이 가볍게)
 slim = lambda co: {k: v for k, v in co.items() if k not in HEAVY}
 # 21 마지막 값의 날짜(주문 0806 · 사장님 2026-11-09 08:06 「어 그렇게 해」 — 회사 쪽 한 달 꺾은선도 첫 페이지와 같은 값 · 처음 날 · 끝 날도 같게)
 #   같은 판에서 나온 회사 파일(view/stocks/<번호>.json closes60 · 같은 boardId)의 마지막 21줄 — 값 21개가 판 c 와 모두 같고 첫 날 = cFrom · 끝 날 = date 일 때만 · 아니면 None
@@ -254,7 +306,9 @@ def cdOf(c):
 def item(c, k):
     v = B[c]; ind = v['group']['label']; L = land_of.get(ind)
     co = {'code': c, 'name': nm(c), 'ind': ind, 'land': L['name'] if L else None, 'landId': L['id'] if L else None, 'kind': v.get('kind'), 'in': inl[c],
-          'mc': {**MC.mc(CTX, c, k), 'ord': ORD.get(k, {}).get((MK.get(c) or {}).get('i') if k in ('money', 'moneyNext') else c), 'pool': len(POOL.get(k, []))}, 'r3': PLACE.get((k, c)), # 주문 1422 — 이 칸의 몬테카를로(드묾 p · 지금 값 · 바탕 날 수) · 1억 판 1등 · 2등 · 3등(아니면 None)
+          'mc': {**MC.mc(CTX, c, k), 'ord': ORD.get(k, {}).get((MK.get(c) or {}).get('i') if k in ('money', 'moneyNext') else c), 'pool': len(POOL.get(k, [])),
+                 'pm': None if PMK.get((k, c)) is None else round(PMK[(k, c)], 6)}, 'r3': PLACE.get((k, c)), # 주문 1422 — 이 칸의 몬테카를로(드묾 p · 지금 값 · 바탕 날 수) · 1억 판 1등 · 2등 · 3등(아니면 None) · 주문 1912 pm = 365곳 모두의 길과 견준 드묾
+          'cu': cu_of(c), # 주문 1912 — 이 칸에 보인 한국 투자자 문화 흔적(on) · 잰 값(v)
           'ch20': r1(v['change20'] * 100) if v.get('change20') is not None else None, 'close': v.get('close'), 'date': v.get('date'),
           'c': v.get('c'), 'cFrom': v.get('cFrom'), 'cd': cdOf(c), 'flows': (v.get('brief') or {}).get('flows'), 'news': {k2: (v.get('brief') or {}).get(k2) for k2 in ('newsCount', 'newsNamed')},
           'pos52': (v.get('info') or {}).get('pos52'), 'cap': cap.get(c), 'x': tco.get(c, [None, None])[0], 'y': tco.get(c, [None, None])[1], 'z': tco.get(c, [None, None, None])[2]}
@@ -285,15 +339,24 @@ out = {
                'hotNextRank': len([c for c in HOTN if hrow[c][0] == 'rank']), 'moneyNextRank': len([c for c in MONEYN if mnrow[c][0] == 'rank']), 'bloomNextMain': len([c for c in BLOOMN if c in b_main]), 'sproutN': len(POOL['bloomNext']),
                'pools': {k: len(v) for k, v in POOL.items()}},
     'rules': {'b365': '두 해 잇달아 이익 · 자기자본이익 5 넘게 · 빚 150 아래(금융은 빚 셈 빼고) · 업종마다 5곳 · 73업종 · 2026년 10월 5일에 정한 판(n365-v1)',
-              'mc': '365곳마다 지난 250거래일 하루 값을 10만 번 섞어 그린 길과 지금 값을 견줘, 지금 모습이 얼마나 드문지 셈(드문 차례)',
-              'hot': '소거 한 번: 불장 업종(지난 20거래일 365곳 업종 평균이 오른 업종) 안 · 20거래일 오른 회사 → 20거래일 오른 만큼이 드문 차례 · 업종마다 둘',
-              'bloom': '소거 한 번: 싹(시장보다 앞선 만큼 아직 5 아래 · 닷새 동안 뒤지지 않음)이고 회사 크기가 위 20 안 → 그 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례',
-              'money': '소거 한 번: 한 달 동안 시장보다 더 오른 업종 → 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 20거래일 동안 회사 크기가 원으로 가장 많이 는 회사 하나',
-              'hotNext': '소거 한 번: 불장 일곱 밖 · 닷새 동안 오른 회사(불장 업종이거나 그 업종도 닷새 오름) → 닷새 오른 만큼이 드문 차례 · 업종마다 둘',
-              'moneyNext': '소거 한 번: 돈이 몰리는 일곱 밖 업종 → 업종이 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 닷새 동안 회사 크기가 가장 많이 는 회사 하나',
-              'bloomNext': '소거 한 번: 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음 · 꽃 일곱 밖) → 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 둘',
-              'top3': '42칸마다 우연 길 10만 개를 미리 그리고, 1억 번 판을 벌여 판마다 우연보다 약한 칸부터 떨어뜨림 → 끝까지 남은 횟수가 많은 차례로 1등 · 2등 · 3등'},
-    'past': ({'from': PASTM['from'], 'to': PASTM['to'], 'days': PASTM['days'], 'within': PASTM['within'], 'universe': PASTM['universe'], 'src': 'reports/atlas11/su-next/past-mc.json', 'mcRank': True,
+              'mc': '365곳마다 지난 250거래일 하루 값을 그날 흔들림으로 나눈 뒤 지금 흔들림으로 다시 키워 10만 번 섞은 길과 지금 값을 견줘, 지금 모습이 얼마나 드문지 셈(드문 차례 · 요즘 흔들림에 맞춘 길)',
+              'culture': '한국 투자자 특징 열하나 가운데 종가로 잴 수 있는 일곱 — 테마 몰림 · 고점 앞 팔기(세움) · 본전 버티기 · 빚투 쏠림(뺌) · 국민주 쏠림(돈 대장 먼저) · 한방 쫓기 · 눈길 따라 사기(1 · 2 · 3등에서 덜 침)',
+              'hot': '소거 한 번: 불장 업종(지난 20거래일 365곳 업종 평균이 오른 업종) 안 · 20거래일 오른 회사 → 빚투 쏠림 · 본전 버티기는 뺌 → 신고가 · 테마 몰림이 많은 차례 → 20거래일 오른 만큼이 드문 차례 · 업종마다 둘',
+              'bloom': '소거 한 번: 싹(시장보다 앞선 만큼 아직 5 아래 · 닷새 동안 뒤지지 않음)이고 회사 크기가 위 20 안 → 빚투 쏠림은 뺌 → 테마 몰림 · 고점 앞 팔기가 많은 차례 → 그 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례',
+              'money': '소거 한 번: 한 달 동안 시장보다 더 오른 업종 → 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 국민주(몸집 위 열에 하나)가 늘었으면 그 회사, 아니면 20거래일 동안 회사 크기가 원으로 가장 많이 는 회사 하나',
+              'hotNext': '소거 한 번: 불장 일곱 밖 · 닷새 동안 오른 회사(불장 업종이거나 그 업종도 닷새 오름) → 빚투 쏠림 · 본전 버티기는 뺌 → 고점 앞 팔기 · 테마 몰림이 많은 차례 → 365곳 모두의 길과 견줘 닷새 오른 만큼이 드문 차례 · 업종마다 둘',
+              'moneyNext': '소거 한 번: 돈이 몰리는 일곱 밖 업종 → 업종이 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 국민주가 늘었으면 그 회사, 아니면 닷새 동안 회사 크기가 가장 많이 는 회사 하나',
+              'bloomNext': '소거 한 번: 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음 · 꽃 일곱 밖) → 빚투 쏠림 · 본전 버티기는 뺌 → 365곳 모두의 길과 견줘 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 둘',
+              'top3': '42칸마다 요즘 흔들림에 맞춘 우연 길 10만 개를 미리 그리고, 잣대 셋(오른 만큼 · 가장 크게 뛴 하루를 뺀 만큼 · 눈길 몰린 날이 적은 만큼)을 판마다 다른 무게로 섞어 1억 번 판을 벌임 → 판마다 우연보다 약한 칸부터 떨어뜨림 → 끝까지 남은 횟수가 많은 차례로 1등 · 2등 · 3등'},
+    'past': ({'from': PASTC['from'], 'to': PASTC['to'], 'mid': PASTC.get('mid'), 'days': PASTC['days'], 'within': PASTC['within'], 'universe': PASTC['universe'], 'src': 'reports/atlas11/su-next/past-culture.json',
+              'mcRank': True, 'cultureRank': True, 'what': PASTC['what'], 'mc': PASTC.get('mc'), 'calib': PASTC.get('calib'),
+              **{g: {'n': v['culture']['picks'], 'hit': v['culture']['hits'], 'per100': round(v['culture']['per100']), 'base100': round(v['base']['per100']), 'old100': round(v['old']['per100']),
+                     'mc100': round(v['mc1422']['per100']), 'oldN': v['old']['picks'], 'days': v['culture']['days'],
+                     'h1': round(PASTC['halves'][g]['first']['culture']['per100']), 'h2': round(PASTC['halves'][g]['second']['culture']['per100']),
+                     'h1m': round(PASTC['halves'][g]['first']['mc1422']['per100']), 'h2m': round(PASTC['halves'][g]['second']['mc1422']['per100'])}
+                 for g, v in PASTC['res'].items()}}
+             if PASTC and PASTC.get('rule') == CUL.RULE_ID else
+             {'from': PASTM['from'], 'to': PASTM['to'], 'days': PASTM['days'], 'within': PASTM['within'], 'universe': PASTM['universe'], 'src': 'reports/atlas11/su-next/past-mc.json', 'mcRank': True,
               'what': PASTM['what'], 'mc': PASTM.get('mc'),
               **{g: {'n': v['mc']['picks'], 'hit': v['mc']['hits'], 'per100': round(v['mc']['per100']), 'base100': round(v['base']['per100']), 'old100': round(v['old']['per100']), 'oldN': v['old']['picks'], 'days': v['mc']['days']}
                  for g, v in PASTM['res'].items()}}
@@ -305,7 +368,7 @@ out = {
              if PASTS and PASTS.get('rule') == ST.RULE_ID else
              {'from': PAST['from'], 'to': PAST['to'], 'days': PAST['days'], 'within': PAST['within'], 'universe': PAST['universe'], 'src': 'reports/atlas11/su-next/past.json',
               'what': PAST['what'], **{g: {'n': v['picks'], 'hit': v['hits'], 'per100': round(v['per100']), 'base100': round(v['base100'])} for g, v in PAST['final'].items()}} if PAST else None),
-    'lists': {k: [item(c, k) for c in L] if k in NOW3 else [slim(item(c, k)) for c in L] for k, L in lists.items()}, # 될 듯 셋은 가볍게(첫 화면 느린 휴대폰) — 21 마지막 값 · 수급 · 뉴스는 su21-next.json
+    'lists': {k: [{x: y for x, y in item(c, k).items() if x != 'cu'} for c in L] if k in NOW3 else [slim(item(c, k)) for c in L] for k, L in lists.items()}, # 될 듯 셋은 가볍게(첫 화면 느린 휴대폰) — 21 마지막 값 · 수급 · 뉴스는 su21-next.json
     'overlap': [{'code': c, 'name': nm(c), 'in': [k for k in ks if k in NOW3]} for c, ks in inl.items() if len([k for k in ks if k in NOW3]) > 1],
     'distinct': len([c for c, ks in inl.items() if any(k in NOW3 for k in ks)]),
     'overlapNext': [{'code': c, 'name': nm(c), 'in': [k for k in ks if k not in NOW3]} for c, ks in inl.items() if len([k for k in ks if k not in NOW3]) > 1],
@@ -319,14 +382,21 @@ out = {
 }
 out['lands'] = [L for L in out['lands'] if L['inds']]
 # 몬테카를로 → 소거 한 번 → 1억 판(주문 1422) — 첫 페이지 · 「왜?」 쪽이 읽는 요약(칸마다 값은 lists 의 mc · r3)
-out['listRule'] = MC.RULE_ID # 고르는 규칙 이름 — 며칠째 기록(su21_days · su21_replay)이 같은 규칙으로 센 날만 이어 셈
-out['mc'] = {'rule': MC.RULE_ID, 'paths': ST.MC_PATHS, 'p': ST.MC_P, 'hist': ST.HIST, 'scan': MC365, 'say': MC.SAY,
+out['listRule'] = CUL.RULE_ID # 고르는 규칙 이름(주문 1912 문화 셈) — 며칠째 기록(su21_days · su21_replay)이 같은 규칙으로 센 날만 이어 셈
+out['mc'] = {'rule': MC.RULE_ID, 'paths': ST.MC_PATHS, 'p': ST.MC_P, 'hist': ST.HIST, 'scan': MC365, 'say': MC.SAY, 'method': MC.METHOD, 'lam': CUL.LAM, 'mkt': sorted(CUL.MKT_ORDER),
              'pools': {k: len(v) for k, v in POOL.items()}}
-out['top3'] = None if T3 is None else {'total': T3['total'], 'null': T3['null'], 'k': T3['k'], 'ok': T3['ok'],
+out['culture'] = {'rule': CUL.RULE_ID, 'eleven': 11, 'pos': CUL.POS, 'neg': CUL.NEG} # 자세한 것(일곱 정의 · 칸마다 흔적 · 정직도)은 su21-cu.json(「왜?」 쪽만 받음)
+CUOUT = {'schema': 'su21-cu-1', 'asOf': out['asOf'], 'rule': CUL.RULE_ID,
+         'culture': {'eleven': 11, 'src': 'docs/design/su-culture-2026-11-09/traits11.md',
+                     'traits': [{'k': k, 'name': CUL.NAME[k], 'say': CUL.SAY[k], 'use': CUL.USE[k], 'n365': int(_np.sum(CON[k])) if CON else None} for k in CUL.TRAITS],
+                     'calib': (PASTC or {}).get('calib') if PASTC and PASTC.get('rule') == CUL.RULE_ID else None},
+         'cu': {k + ':' + c: cu_of(c) for k, L in lists.items() for c in L}}
+out['top3'] = None if T3 is None else {'total': T3['total'], 'null': T3['null'], 'k': T3['k'], 'ok': T3['ok'], 'v': T3.get('v'), 'how': T3.get('how'), 'g': T3.get('g'), 'gn': T3.get('gn'),
              'rank': [{**r, 'name': nm(r['code'])} for r in T3['rank']],
              'cells': {r['k'] + ':' + r['code']: [r['first'], r['second'], r['third'], r['z']] for r in T3['cells']}}
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 주문 1912 — 문화 일곱 · 칸마다 흔적(「왜?」 쪽만)
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음
 print('ok', {k: [nm(c) for c in L] for k, L in lists.items()}, 'distinct', len(inl), 'overlap', [o['name'] for o in out['overlap']], 'lands', len(lands_out),

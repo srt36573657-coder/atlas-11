@@ -421,7 +421,7 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
     const now = new Set(T.lists[NOWK[k]].map(c => c.code));
     for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' 365 안'); assert.ok(c.in.includes(k)); assert.ok(!now.has(c.code), k + ' ' + c.name + ' — 지금 일곱과 겹치지 않음');
       const w = c.why ?? {};
-      if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (T.listRule === 'mc365-v1' ? ['rank', 'five'].includes(w.how) : w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 까닭 ' + c.name); // 주문 1422 — 몬테카를로 차례 판은 불장 업종(rank) · 업종 닷새 오름(five)
+      if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (['mc365-v1', 'culture7-v1'].includes(T.listRule) ? ['rank', 'five'].includes(w.how) : w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 까닭 ' + c.name); // 주문 1422 — 몬테카를로 차례 판은 불장 업종(rank) · 업종 닷새 오름(five)
       if (k === 'moneyNext') assert.ok(Number.isFinite(w.gain) && w.gain > 0, 'moneyNext 까닭 ' + c.name);
       if (k === 'bloomNext') assert.ok(Number.isFinite(w.x5) && w.x5 >= 0 && Number.isFinite(w.x20) && w.x20 < 5, 'bloomNext 까닭(싹) ' + c.name); }
     assert.ok(Number.isFinite(T.past?.[k]?.per100) && Number.isFinite(T.past?.[k]?.base100) && T.past[k].n > (T.past.strict ? 50 : 500), k + ' 지난 1년 기록(엄격 셈은 고른 수가 적음 — 80 ~ 180번)');
@@ -573,7 +573,7 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   const py = rd('scripts/atlas11/next/su21.py'), mc = rd('scripts/atlas11/next/su21_mc.py'), t3 = rd('scripts/atlas11/next/su21_top3.py'), ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), s21 = rd('site/su/su-21.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.ok(/RULE_ID = 'mc365-v1'/.test(mc) && /def order\(ctx, pool, k\)/.test(mc) && /def scan\(ctx\)/.test(mc), '① 몬테카를로 · 드문 차례');
   assert.ok(/TOTAL = 100_000_000/.test(t3) && /np\.argpartition\(-z, 3, axis=1\)/.test(t3), '④ 1억 판 · 판마다 마지막 셋');
-  assert.ok(/import su21_mc as MC/.test(py) && /HOT = per2\(_o\)/.test(py) && /T3 = TOP3\.top3\(CTX, CELLS\) if A\.top3 else None/.test(py) && /out\['listRule'\] = MC\.RULE_ID/.test(py) && /'r3': PLACE\.get\(\(k, c\)\)/.test(py), 'su21.py — 일곱 · 1억 번 셈 · 규칙 이름');
+  assert.ok(/import su21_mc as MC/.test(py) && /HOT = per2\(_o\)/.test(py) && /T3 = TOP3\.top3\(CTX, CELLS\) if A\.top3 else None/.test(py) && /out\['listRule'\] = (MC|CUL)\.RULE_ID/.test(py) && /'r3': PLACE\.get\(\(k, c\)\)/.test(py), 'su21.py — 일곱 · 1억 번 셈 · 규칙 이름');
   assert.ok(pk.includes("'--mc365', '--top3'"), '올릴 때 365곳 · 1억 번');
   assert.ok(/const RANK = !!d\?\.top3/.test(ap) && /function legendR3\(/.test(ap) && ap.includes("note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4')") && /sxTag\(x \+ 6, y \+ 8, it\.r3 \+ '등', 'sa-r3'\)/.test(ap), '첫 페이지 — 1등 · 2등 · 3등 표 · 풀이 두 줄');
   assert.ok(/export function crit7mc\(/.test(y) && /export function top3Box\(/.test(y) && y.includes("'수르 계산법 ' + place + '등 — 1억 번 셈'"), '「왜?」 쪽 — 기준 일곱(몬테카를로) · 1억 번 셈 상자');
@@ -583,10 +583,40 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   assert.equal(P.rule, 'mc365-v1');
   for (const g of ['hotNext', 'moneyNext', 'bloomNext']) for (const k of ['mc', 'old', 'base']) assert.ok(P.res[g][k].picks > 0 && Number.isFinite(P.res[g][k].per100), g + ' ' + k);
   const T = JSON.parse(rd('site/su/data/su21.json'));
-  assert.equal(T.listRule, 'mc365-v1');
+  assert.ok(['mc365-v1', 'culture7-v1'].includes(T.listRule), '몬테카를로 차례 판(주문 1912 뒤에는 문화 셈 판)');
   assert.ok(T.top3 && T.top3.total === 100000000 && T.top3.rank.length === 3, '저장된 판 — 1억 번 셈');
   const r3 = Object.values(T.lists).flat().filter(c => [1, 2, 3].includes(c.r3)).map(c => c.r3).sort();
   assert.deepEqual(r3, [1, 2, 3], '1등 · 2등 · 3등 칸 셋');
   for (const j of [0, 1, 2]) assert.equal(Object.values(T.top3.cells).reduce((a, x) => a + x[j], 0), T.top3.total, '판마다 ' + (j + 1) + '등 하나씩');
   for (const t2 of ['1등', '2등', '3등', '수르 계산법 차례', '1억 번 섞어', '끝까지 남은 차례예요.']) assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|추천/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
+});
+
+/** 주문 1912(사장님 2026-11-09 19:12 「한국에 주식하는 사람들에 특징 11가지를 에이전트 11개를 돌려서 찾아낸 다음 7가지에 정의를 내린 다음
+    42개에 종목을 찾아내는데 문화에 중심으로 세팅한 다음 42개를 다시 찾아내고 그중에 이전에 했던 몬테카를로 방식 소급법(소거법)을 더 진화시켜서 작업 해봐」) */
+test('문화 셈 — 특징 열하나 · 일곱 정의 · 문화로 42칸 · 요즘 흔들림 길 · 1억 번 셈 v2 · 지난 1년(앞 · 뒤 반년)', () => {
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const cu = rd('scripts/atlas11/next/su21_culture.py'), py = rd('scripts/atlas11/next/su21.py'), mc = rd('scripts/atlas11/next/su21_mc.py'), t3 = rd('scripts/atlas11/next/su21_top3.py');
+  const ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), s21 = rd('site/su/su-21.js'), ck = rd('scripts/atlas11/next/check_su.mjs'), doc = rd('docs/design/su-culture-2026-11-09/traits11.md');
+  assert.equal((doc.match(/^# \d+ /gm) ?? []).length, 11, '특징 열하나 — 도우미 열하나가 찾은 근거');
+  assert.ok(/RULE_ID = 'culture7-v1'/.test(cu) && /TRAITS = \['herd', 'near', 'rev', 'casc', 'big', 'lot', 'attn'\]/.test(cu) && /def fhs_paths\(/.test(cu) && /def mkt_null\(/.test(cu), '일곱 정의 · 요즘 흔들림 길 · 365곳 모두의 길');
+  for (const k of ['herd', 'near', 'rev', 'casc', 'big', 'lot', 'attn']) assert.ok(new RegExp("'" + k + "': '[^']+'").test(cu), '이름 · 풀이 · 쓰는 곳 — ' + k);
+  assert.ok(/METHOD = 'fhs'/.test(mc) && /CUL\.fhs_p\(/.test(mc), '몬테카를로 — 요즘 흔들림에 맞춘 길');
+  assert.ok(/import su21_culture as CUL/.test(py) && /def cfilt\(k, lst\)/.test(py) && /con\(x\[1\], 'big'\)/.test(py) && /out\['listRule'\] = CUL\.RULE_ID/.test(py) && /out\['culture'\] = /.test(py) && /'cu': cu_of\(c\)/.test(py), 'su21.py — 문화로 빼고 세움 · 국민주 대장 · 규칙 이름');
+  assert.ok(/VERSION = 'top3-v2'/.test(t3) && /G = 12/.test(t3) && /def measures\(x, now\)/.test(t3) && /seen\.add\(cells\[j\]\[1\]\)/.test(t3), '1억 번 셈 v2 — 잣대 셋 · 무게 열둘 · 서로 다른 회사');
+  assert.ok(ap.includes("note2(y + 26, '문화 일곱으로 고르고', '1억 번 섞었어요.', 'note4')") && /legendR3\(PY \+ 254, CULT\)/.test(ap), '첫 페이지 풀이 넷째 줄');
+  assert.ok(/export function cultureBox\(/.test(y) && /export const CUR = /.test(y) && y.includes("'한국 투자자 문화 일곱 — 이 칸'"), '「왜?」 쪽 — 문화 일곱 상자');
+  assert.ok(s21.includes("바로 앞 셈은 ' + p.mc100") && /const CUR = /.test(s21), '21곳 쪽 — 바로 앞 셈과 견줌');
+  assert.ok(ck.includes('⑳ 문화 셈(주문 1912)') && ck.includes('⑳ 1억 번 셈 v2'), '검사 ⑳ — 문화 셈 판');
+  const P = JSON.parse(rd('reports/atlas11/su-next/past-culture.json'));
+  assert.equal(P.rule, 'culture7-v1');
+  for (const g of ['hotNext', 'moneyNext', 'bloomNext']) for (const k of ['culture', 'mc1422', 'old', 'base']) assert.ok(P.res[g][k].picks > 0 && Number.isFinite(P.res[g][k].per100) && Number.isFinite(P.halves[g].first[k].per100) && Number.isFinite(P.halves[g].second[k].per100), g + ' ' + k);
+  for (const [k, v] of Object.entries(P.calib)) assert.ok(v.n >= 1000 && v.new < v.old, '요즘 흔들림 길이 더 정직 — ' + k + ' ' + JSON.stringify(v));
+  const T = JSON.parse(rd('site/su/data/su21.json'));
+  assert.equal(T.listRule, 'culture7-v1');
+  const CUJ = JSON.parse(rd('site/su/data/su21-cu.json'));
+  assert.ok(T.culture?.rule === 'culture7-v1' && T.culture.pos && CUJ.rule === 'culture7-v1' && CUJ.asOf.board === T.asOf.board && CUJ.culture.traits.length === 7, '저장된 판 — 문화 일곱(su21-cu.json)');
+  for (const [k, L] of Object.entries(T.lists)) for (const c of L) assert.ok(!('cu' in c) && Array.isArray(CUJ.cu[k + ':' + c.code]?.on), '칸마다 흔적은 su21-cu.json 에만(첫 화면이 가볍게) — ' + k + ' ' + c.name);
+  assert.ok(T.top3?.v === 'top3-v2' && new Set(T.top3.rank.map(r => r.code)).size === 3, '저장된 판 — 1억 번 셈 v2 · 서로 다른 회사 셋');
+  for (const t2 of ['문화 일곱으로 고르고', '1억 번 섞었어요.', '한국 투자자 문화 일곱 — 이 칸', '테마 몰림', '고점 앞 팔기', '본전 버티기', '빚투 쏠림', '국민주 쏠림', '한방 쫓기', '눈길 따라 사기', '바로 앞 셈은'])
+    assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|매도|추천|예측|확률|유망|신호/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
 });

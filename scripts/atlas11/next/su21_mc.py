@@ -9,8 +9,11 @@
 """
 import numpy as np
 from su21_strict import mc_p, seed_of, HIST, MC_PATHS, MC_P
+import su21_culture as CUL
 
 RULE_ID = 'mc365-v1'
+# 주문 1912 — 우연 길을 요즘 흔들림에 맞춤(지난 값을 그날 흔들림으로 나눈 뒤 지금 흔들림으로 다시 키움 · su21_culture.fhs_p) · 'iid' = 1422 길(하루 값을 그대로 섞음)
+METHOD = 'fhs'
 # 묶음마다 셈 — 무엇(co 회사 · ind 업종 회사 하루 값 고른 평균) · 창(거래일) · 시장보다(365곳 고른 평균을 뺌)
 STAT = {'hot': ('co', 20, False), 'hotNext': ('co', 5, False),
         'bloom': ('ind', 20, True), 'bloomNext': ('co', 5, True),
@@ -56,11 +59,14 @@ _MC = {}
 def mc(ctx, c, k):
     """한 칸의 몬테카를로 — {p(드묾) · stat(지금 값 × 100) · n(바탕 날 수)} · 같은 셈(업종 · 창 · 시장보다)은 한 번만 셈"""
     scope, w, rel = STAT[k]
-    key = (ctx.day, subj(ctx, c, k), scope, w, rel)
+    key = (ctx.day, subj(ctx, c, k), scope, w, rel, METHOD)
     if key in _MC: return _MC[key]
     h, a = hist(ctx, c, k), actual(ctx, c, k)
     if h is None or a is None or len(h) < 60:
         r = {'p': None, 'stat': None, 'n': 0 if h is None else int(len(h))}
+    elif METHOD == 'fhs':
+        p = CUL.fhs_p(h, w, a, MC_PATHS, seed_of(key[1], ctx.day, scope, w, rel, 'mc365-fhs'))
+        r = {'p': None if p is None else round(p, 6), 'stat': round(a * 100, 2), 'n': int(len(h))}
     else:
         r = {'p': round(mc_p(h, w, a, seed_of(key[1], ctx.day, scope, w, rel, 'mc365')), 6), 'stat': round(a * 100, 2), 'n': int(len(h))}
     _MC[key] = r

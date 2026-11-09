@@ -628,7 +628,10 @@ for (const width of [390, 360, 320]) {
   //   묶음마다: 고른 곳 수 = 마지막 수 · 일곱까지 · 소거 줄(31) 줄어들기만 · 고른 곳은 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 31가지 모두 통과 · 업종마다 둘(돈 둘 = 하나)
   //   첫 페이지: 칸 + 빈 자리 = 42 · 「왜?」 쪽: 더 엄격하게 상자 · 기준 31가지 모두 통과
   const T21 = await J('/su/data/su21.json'), SX = await J('/su/data/su21-strict.json').catch(() => null), KEY6 = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
-  if (T21.listRule === 'mc365-v1') {
+  if (T21.listRule === 'mc365-v1' || T21.listRule === 'culture7-v1') {
+    // 주문 1912(사장님 2026-11-09 19:12 「… 7가지에 정의를 내린 다음 42개에 종목을 찾아내는데 문화에 중심으로 세팅한 다음 … 몬테카를로 방식 소급법(소거법)을 더 진화시켜서」)
+    //   문화 셈 판(culture7-v1): 문화 일곱(culture.traits 7 · 칸마다 cu.on) · 1억 번 셈 v2(잣대 셋 · 무게 열둘 · 서로 다른 회사 셋) · 풀이 넷째 줄 「문화 일곱으로 고르고 1억 번 섞었어요.」 · 「왜?」 쪽 문화 일곱 상자
+    const CULT = T21.listRule === 'culture7-v1';
     // 주문 1422(사장님 2026-11-09 14:22 「365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 … 1억 번 … 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」
     //   · 14:37 「42곳도 표기 하고 그중에서 … 1.2.3을 수르계산법으로 표기」)
     //   자료: 칸마다 몬테카를로(드묾 p · 드문 차례 ord · 소거를 지난 수 pool) · 묶음 안 차례 = 드문 차례 · 일곱씩 · top3(1억 판 · 판마다 1등 · 2등 · 3등이 하나씩 — 합 = 1억)
@@ -643,6 +646,19 @@ for (const width of [390, 360, 320]) {
     }
     R.m.mc = Object.fromEntries(KEY6.map(k => [k, T21.mc?.pools?.[k] ?? null]));
     check(!bad.length && T21.mc?.paths >= 100000 && T21.mc?.hist === 250, '⑳ 몬테카를로 차례(주문 1422) — 묶음마다 일곱 · 칸마다 드묾 · 드문 차례대로 · 업종마다 둘(돈 둘 = 하나)', bad.join(' | '));
+    if (CULT) {
+      const C = T21.culture, CUJ = await J('/su/data/su21-cu.json').catch(() => null), all42 = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => k + ':' + c.code)), past = T21.past ?? {};
+      const tr = CUJ?.culture?.traits;
+      R.m.culture = Array.isArray(tr) ? tr.map(t => t.name + ':' + t.n365) : null;
+      check(!!C && C.rule === 'culture7-v1' && C.eleven === 11 && !!C.pos && !!C.neg && !!CUJ && CUJ.rule === 'culture7-v1' && CUJ.asOf?.board === T21.asOf?.board
+        && Array.isArray(tr) && tr.length === 7 && tr.every(t => t.name && t.say && t.use && Number.isInteger(t.n365))
+        && all42.length === 42 && all42.every(key => CUJ.cu?.[key] && Array.isArray(CUJ.cu[key].on) && CUJ.cu[key].v) && T21.mc?.method === 'fhs' && past.cultureRank === true
+        && ['hotNext', 'moneyNext', 'bloomNext'].every(g => Number.isFinite(past[g]?.mc100) && Number.isFinite(past[g]?.old100)),
+        '⑳ 문화 셈(주문 1912) — 한국 투자자 문화 일곱(su21-cu.json) · 칸마다 흔적 · 요즘 흔들림에 맞춘 길 · 지난 1년(바로 앞 셈 · 예전 셈과 견줌)', JSON.stringify({rule: C?.rule, n: tr?.length, cu: Object.keys(CUJ?.cu ?? {}).length, method: T21.mc?.method, past: past.cultureRank}));
+      const codes3 = (T21.top3?.rank ?? []).map(r => r.code);
+      if (T21.top3 || /^https:/.test(base)) check(T21.top3?.v === 'top3-v2' && T21.top3?.gn === 12 && Array.isArray(T21.top3?.how) && T21.top3.how.length === 3 && new Set(codes3).size === 3,
+        '⑳ 1억 번 셈 v2 — 잣대 셋 · 무게 열두 가지 · 1 · 2 · 3등은 서로 다른 회사', JSON.stringify({v: T21.top3?.v, gn: T21.top3?.gn, codes3}));
+    }
     const cells = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => ({k, c})));
     const sum = j => Object.values(t3?.cells ?? {}).reduce((a, x) => a + (Array.isArray(x) ? x[j] : 0), 0);
     const t3ok = !!t3 && t3.total >= 100000000 && Array.isArray(t3.rank) && t3.rank.length === 3 && t3.rank.map(r => r.place).join() === '1,2,3' && Object.keys(t3.cells ?? {}).length === cells.length
@@ -659,14 +675,16 @@ for (const width of [390, 360, 320]) {
         tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === a.getAttribute('data-r3') + '등').length, stray: H?.querySelectorAll('a.sa-cell:not([data-r3="1"]):not([data-r3="2"]):not([data-r3="3"]) g.sa-sx').length ?? -1,
         legend: [...(H?.querySelectorAll('g.sa-r3x text.sa-sxt') ?? [])].map(e => e.textContent).join(' ') + ' ' + [H?.querySelector('text.sa-note3b'), H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' ')}; });
     const want = cells.filter(x => [1, 2, 3].includes(x.c.r3)).map(x => x.c.r3 + ':' + x.k + ':' + x.c.code).sort();
-    check(f.cells === 42 && f.empty === 0 && (t3 ? JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === 3 && f.stray === 0 && f.legend === '1등 2등 3등 수르 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.' : f.r3.length === 0),
-      '⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표 · 풀이 「[1등][2등][3등] 수르 계산법 차례 · 1억 번 섞어 끝까지 남은 차례예요.」', JSON.stringify(f).slice(0, 300));
+    const LEG = CULT ? '1등 2등 3등 수르 계산법 차례 문화 일곱으로 고르고 1억 번 섞었어요.' : '1등 2등 3등 수르 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.';
+    check(f.cells === 42 && f.empty === 0 && (t3 ? JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === 3 && f.stray === 0 && f.legend === LEG : f.r3.length === 0),
+      '⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표 · 풀이 「' + LEG + '」', JSON.stringify(f).slice(0, 300));
     if (t3) for (const pick of [cells.find(x => x.c.r3 === 1), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
       await open(p, `#/c/${pick.c.code}/y/${pick.k}`);
       const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-top3'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', crit: document.querySelectorAll('#su .yw-crit .yw-li').length,
-        mc: [...document.querySelectorAll('#su .yw-crit .yw-li')].map(e => e.textContent).join(' ').includes('번 섞어 그린 길 가운데')} : null; });
+        mc: [...document.querySelectorAll('#su .yw-crit .yw-li')].map(e => e.textContent).join(' ').includes('번 섞어 그린 길 가운데'), cu: document.querySelectorAll('#su .yw-cu .yw-li').length,
+        cuOn: [...document.querySelectorAll('#su .yw-cu .yw-ok')].map(e => e.textContent).join(',')} : null; });
       const top = pick.c.r3 === 1;
-      check(!!w && w.crit === 7 && w.mc && (top ? w.h === '수르 계산법 1등 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,]+만( [\d,]+)?번 끝까지 남았어요\. 42칸 가운데 첫 번째예요\. 그래서 1등이에요\.$/.test(w.v) : w.h === '수르 계산법 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,만 ]+번 끝까지 남았어요\. 42칸 가운데 \d+번째예요\.$/.test(w.v)),
+      check(!!w && w.crit === 7 && w.mc && (!CULT || w.cu === 7) && (top ? w.h === '수르 계산법 1등 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,]+만( [\d,]+)?번 끝까지 남았어요\. 42칸 가운데 첫 번째예요\. 그래서 1등이에요\.$/.test(w.v) : w.h === '수르 계산법 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,만 ]+번 끝까지 남았어요\. 42칸 가운데 (첫 |\d+)번째예요\.( 같은 회사의 다른 칸이 더 많이 남아 등수는 그 칸에 달았어요\.)?$/.test(w.v)),
         '⑳ 「왜?」 쪽 — 1억 번 셈 상자 · 기준 일곱(몬테카를로) — ' + (top ? '1등 ' : '등수 밖 ') + pick.k + ' ' + pick.c.name, JSON.stringify(w).slice(0, 200));
     }
     check(!errs.length, '⑳ 화면 오류 0', errs.slice(0, 3).join(' / '));

@@ -102,7 +102,12 @@ export function crit7(T, c, k) {
 
 /* ═══ 주문 1422(사장님 2026-11-09 14:22 「돈 · 꽃 · 불장 찾는 조건을 처음에 365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 …
        1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 몬테카를로 차례 판(su21.json listRule mc365-v1)의 기준 일곱 · 1억 번 셈 상자 ═══ */
-export const MCR = T => T?.listRule === 'mc365-v1';
+export const MCR = T => T?.listRule === 'mc365-v1' || T?.listRule === 'culture7-v1';
+/** 주문 1912(사장님 2026-11-09 19:12 「한국에 주식하는 사람들에 특징 11가지를 … 7가지에 정의를 내린 다음 42개에 종목을 찾아내는데 문화에 중심으로 세팅한 다음 … 몬테카를로 방식 소급법(소거법)을 더 진화시켜서」) — 문화 셈 판 */
+export const CUR = T => T?.listRule === 'culture7-v1';
+const CUN = {herd: '테마 몰림', near: '고점 앞 팔기', hi52: '신고가', rev: '본전 버티기', casc: '빚투 쏠림', big: '국민주 쏠림', lot: '한방 쫓기', attn: '눈길 따라 사기'};
+/** 까닭 한 줄 끝에 붙이는 문화 흔적(세우는 쪽만 · 신고가가 있으면 고점 앞 팔기는 빼고) */
+const cuNote = c => { const on = c?.cu?.on ?? [], x = ['herd', 'hi52', 'near', 'big'].filter(k => on.includes(k) && !(k === 'near' && on.includes('hi52'))).map(k => CUN[k]); return x.length ? ' 한국 투자자 문화로는 ' + x.join(' · ') + ' 흔적이 보여요.' : ''; };
 /** 큰 수를 우리말 자리로 — 100000000 → 1억 · 100000 → 10만 · 26787094 → 2,678만 7,094(숫자 그대로 · 읽기 쉽게) */
 export const korN = n => { if (!fin(n)) return NEED; n = Math.round(n); if (n >= 1e8) { const e = Math.floor(n / 1e8), r = n % 1e8; return num(e) + '억' + (r ? ' ' + korN(r) : ''); }
   if (n >= 1e4) { const m = Math.floor(n / 1e4), r = n % 1e4; return num(m) + '만' + (r ? ' ' + num(r) : ''); } return num(n); };
@@ -110,19 +115,42 @@ const PATHS = T => korN(T?.mc?.paths ?? 100000);
 const pTimes = (T, p) => (fin(p) ? korN(Math.round(p * (T?.mc?.paths ?? 100000))) + '번' : NEED);
 const STATW = {hot: '20거래일 동안 오른 만큼', hotNext: '닷새 동안 오른 만큼', bloom: '업종이 20거래일 동안 시장보다 앞선 만큼', bloomNext: '닷새 동안 시장보다 앞선 만큼',
   money: '업종이 20거래일 동안 시장보다 앞선 만큼', moneyNext: '업종이 닷새 동안 시장보다 앞선 만큼'};
-function mcLine(T, c, k) { // 몬테카를로 한 줄 — 지금 값 · 10만 번 가운데 몇 번 · 드문 차례
+function mcLine(T, c, k) { // 몬테카를로 한 줄 — 지금 값 · 10만 번 가운데 몇 번 · 드문 차례(문화 셈 판 = 요즘 흔들림에 맞춘 길 · 될 듯 둘은 365곳 모두의 길)
   const m = c.mc ?? {};
+  if (CUR(T)) return STATW[k] + '이 지금 ' + sgn(m.stat) + '이에요. 지난 250거래일 하루 값을 요즘 흔들림에 맞춰 ' + PATHS(T) + '번 섞어 그린 길 가운데 이만큼 이상은 ' + pTimes(T, m.p) + '이었어요.'
+    + (fin(m.pm) ? ' 365곳 모두의 길과 견주면 ' + pTimes(T, m.pm) + '이었어요.' : '');
   return STATW[k] + '이 지금 ' + sgn(m.stat) + '이에요. 지난 250거래일 하루 값을 ' + PATHS(T) + '번 섞어 그린 길 가운데 이만큼 이상은 ' + pTimes(T, m.p) + '이었어요.';
+}
+/** 이 칸의 문화 흔적 — 세우는 흔적 · 빼는 흔적(su21.json culture.pos · neg 와 칸 cu.on) */
+function cuItem(T, c, k) {
+  const on = c.cu?.on ?? [], P0 = T?.culture?.pos?.[k] ?? [], N0 = T?.culture?.neg?.[k] ?? [];
+  const pk = x => x === 'hi52' ? 'hi52' : x === 'herd20' || x === 'herd5' ? 'herd' : x;
+  const pos = [...new Set(P0.map(pk))].filter(x => on.includes(x)).map(x => CUN[x]), neg = N0.filter(x => on.includes(x)).map(x => CUN[x]);
+  if (k === 'money' || k === 'moneyNext') return {t: '한국 투자자 문화 — 국민주 쏠림', s: on.includes('big') ? josa(c.name, '은') + ' 365곳 가운데 몸집이 큰 열에 하나라, 이 업종 대장으로 먼저 골랐어요.' : '이 업종에는 크기가 는 국민주가 없어, 회사 크기가 가장 많이 는 곳을 골랐어요.', ok: true};
+  return {t: '한국 투자자 문화', s: (pos.length ? pos.join(' · ') + ' 흔적이 보여 앞에 세웠어요.' : P0.length ? '세우는 흔적은 없어요.' : '이 묶음은 세우는 흔적 없이 크게 움직인 차례로 세워요.')
+    + (neg.length ? ' ' + neg.join(' · ') + ' 흔적이 있어 뒤로 밀렸어요.' : N0.length ? ' 빼는 흔적(' + N0.map(x => CUN[x]).join(' · ') + ')은 없어요.' : ''), ok: !neg.length};
+}
+/** 문화 일곱 상자 — 일곱 흔적마다 이 칸에 보였나 · 이 칸 값 · 쓰는 곳(주문 1912) */
+export function cultureBox(T, c) {
+  const C = T?.culture, v = c.cu?.v ?? {}, on = c.cu?.on ?? [];
+  if (!CUR(T) || !Array.isArray(C?.traits) || !c.cu) return null;
+  const said = {herd: fin(v.br20) || fin(v.br5) ? '같은 업종 회사 10곳이면 ' + Math.round(Math.max(v.br20 ?? 0, v.br5 ?? 0) / 10) + '곳꼴이 시장보다 앞섰어요.' : null,
+    near: fin(v.dd) ? '지난 1년 가장 높은 값을 100으로 보면 지금은 ' + Math.round(v.dd) + '이에요.' : null, rev: fin(v.x20) ? '한 달 동안 시장보다 ' + sgn(v.x20) + '만큼 갔어요.' : null,
+    casc: fin(v.casc) ? (v.casc > 0 ? '열흘 안에 크게 내린 날이 가장 길게 ' + v.casc + '일 잇달았어요.' : '열흘 안에 크게 내린 날이 없어요.') : null, big: fin(v.rank) ? '365곳 가운데 몸집 ' + ord(v.rank) + '예요.' : null,
+    lot: fin(v.mx5) ? '닷새 안에 가장 크게 뛴 하루는 ' + sgn(v.mx5) + '만큼이에요.' : null, attn: fin(v.nbig) ? '닷새 안에 평소보다 크게 움직인 날이 ' + v.nbig + '일이에요.' : null};
+  return box('yw-cu', '한국 투자자 문화 일곱 — 이 칸', [
+    h('p', {class: 'yw-s', text: '도우미 열하나가 한국 투자자의 특징 열하나를 따로 찾았어요. 그 가운데 마지막 값으로 잴 수 있는 일곱을 이렇게 정했어요.'}),
+    h('ol', {class: 'yw-ol'}, C.traits.map((t, j) => li(j + 1, t.name + ' — ' + t.use, t.say + (said[t.k] ? ' 이 칸은 ' + said[t.k] : ''), h('span', {class: 'yw-ok ' + (on.includes(t.k) ? 'yw-pass' : 'yw-no'), text: on.includes(t.k) ? '보임' : '없음'}))))]);
 }
 export function crit7mc(T, c, k) {
   const L = T?.lists?.[k] ?? [], w = c.why ?? {}, m = c.mc ?? {}, a = T?.asOf ?? {}, ind = k === 'money' || k === 'moneyNext';
   const sameInd = L.filter(x => x.ind === c.ind).length;
   const base = {t: '우량주 365곳 안', s: '상장 회사 ' + (num(T?.counts?.listed) ?? NEED) + '곳 가운데 고른 우량주 365곳에 들어 있어요. ' + (KIND_ROUTE[c.kind] ? KIND_ROUTE[c.kind] + ' 들었어요.' : ''), ok: true};
   const mc = {t: '몬테카를로 — 365곳 모두', s: mcLine(T, c, k), ok: fin(m.p)};
-  const rank = {t: '드문 차례 일곱 안', s: '소거를 지난 ' + (ind ? '업종 ' : '') + (num(m.pool) ?? NEED) + (ind ? '곳' : '곳') + '을 드문 차례로 세워 ' + (fin(m.ord) ? ord(m.ord) : NEED) + (ind ? ' 업종이에요.' : '예요.'), ok: fin(m.ord)};
+  const rank = {t: CUR(T) ? '문화 · 드문 차례 일곱 안' : '드문 차례 일곱 안', s: '소거를 지난 ' + (ind ? '업종 ' : '') + (num(m.pool) ?? NEED) + (ind ? '곳' : '곳') + '을 ' + (CUR(T) ? '문화 흔적과 드문 차례로' : '드문 차례로') + ' 세워 ' + (fin(m.ord) ? ord(m.ord) : NEED) + (ind ? ' 업종이에요.' : '예요.'), ok: fin(m.ord)};
   const per2 = {t: '업종마다 둘까지', s: '한 업종에서 둘까지만 골라요. ' + c.ind + ' 업종은 일곱 가운데 ' + sameInd + '곳이에요.', ok: sameInd <= 2};
   const per1 = {t: '업종마다 하나', s: c.ind + ' 업종 365곳 가운데 회사 크기가 가장 많이 는 한 곳만 골라요.', ok: true};
-  const opens = {t: '회사 자료가 다 있음', s: '이름 · 시장 · 지난 값 자료가 모두 있어 누르면 회사 쪽이 열리는 회사만 골라요.', ok: true};
+  const opens = CUR(T) ? cuItem(T, c, k) : {t: '회사 자료가 다 있음', s: '이름 · 시장 · 지난 값 자료가 모두 있어 누르면 회사 쪽이 열리는 회사만 골라요.', ok: true};
   const fresh = {t: '그날 값이 있음', s: day(c.date) + ' 마지막 값이 있어요. 값이 늦은 회사는 빼요.', ok: c.date === a.board};
   if (k === 'hot') return [base, mc,
     {t: '소거 한 번 — 불장 업종 · 오름', s: c.ind + ' 업종은 365곳 평균이 지난 20거래일 동안 ' + (fin(w.ind20) ? won(w.ind20) + '이 된 불장 업종이고, 이 회사는 ' : NEED + ' · ') + (fin(c.ch20) ? won(c.ch20) + '이 됐어요.' : NEED), ok: fin(c.ch20) && c.ch20 > 0},
@@ -159,13 +187,17 @@ export function top3Box(T, c, k) {
   const t3 = T?.top3, me = t3?.cells?.[k + ':' + c.code];
   if (!t3 || !Array.isArray(me)) return null;
   const tot = t3.total ?? 100000000, place = [1, 2, 3].includes(c.r3) ? c.r3 : null;
-  const all = Object.values(t3.cells).filter(Array.isArray).map(x => x[0]), rk = 1 + all.filter(x => x > me[0]).length;
+  const best = {}; // 회사마다 가장 많이 남은 칸(같은 회사가 두 묶음에 들면 1 · 2 · 3등은 그 칸 하나만 · 주문 1912)
+  for (const [key, x] of Object.entries(t3.cells)) if (Array.isArray(x)) { const cd = key.split(':')[1]; if (!(cd in best) || x[0] > best[cd]) best[cd] = x[0]; }
+  const rk = 1 + Object.entries(best).filter(([cd, v]) => cd !== c.code && v > me[0]).length, dup = !place && best[c.code] > me[0];
   const nm = r => r ? r.name + '(' + KIND[r.k] + ')' : NEED;
   const R = n => (t3.rank ?? []).find(r => r.place === n);
+  const v2 = t3.v === 'top3-v2';
   return box('yw-top3', place ? '수르 계산법 ' + place + '등 — 1억 번 셈' : '수르 계산법 — 1억 번 셈', [
-    h('p', {class: 'yw-s', text: '42칸마다 지난 250거래일 하루 값으로 우연 길 ' + korN(t3.null ?? 100000) + ' 개를 그렸어요. 그리고 판을 ' + korN(tot) + ' 번 벌였어요.'}),
+    h('p', {class: 'yw-s', text: '42칸마다 지난 250거래일 하루 값으로 ' + (v2 ? '요즘 흔들림에 맞춘 ' : '') + '우연 길 ' + korN(t3.null ?? 100000) + ' 개를 그렸어요. 그리고 판을 ' + korN(tot) + ' 번 벌였어요.'}),
+    v2 ? h('p', {class: 'yw-s', text: '잣대는 셋이에요. 오른 만큼, 가장 크게 뛴 하루를 뺀 만큼, 눈길 몰린 날이 적은 만큼이에요. 판마다 세 잣대의 무게를 ' + (t3.gn ?? 12) + '가지 가운데 하나로 바꿔 섞었어요.'}) : null,
     h('p', {class: 'yw-s', text: '판마다 칸마다 우연 길 하나를 뽑아 지금 값과 견주고, 우연보다 약한 칸부터 하나씩 떨어뜨렸어요. 이것도 ' + korN(tot) + ' 번이에요.'}),
-    h('p', {class: 'yw-s yw-verdict', text: '이 칸은 ' + korN(tot) + ' 번 가운데 ' + korN(me[0]) + '번 끝까지 남았어요. 42칸 가운데 ' + ord(rk) + '예요.' + (place ? ' 그래서 ' + place + '등이에요.' : '')}),
+    h('p', {class: 'yw-s yw-verdict', text: '이 칸은 ' + korN(tot) + ' 번 가운데 ' + korN(me[0]) + '번 끝까지 남았어요. 42칸 가운데 ' + ord(rk) + '예요.' + (place ? ' 그래서 ' + place + '등이에요.' : dup ? ' 같은 회사의 다른 칸이 더 많이 남아 등수는 그 칸에 달았어요.' : '')}),
     h('p', {class: 'yw-s', text: '1등 ' + nm(R(1)) + ' · 2등 ' + nm(R(2)) + ' · 3등 ' + nm(R(3)) + '이에요.'})]);
 }
 
@@ -180,7 +212,7 @@ function facts(X) {
   const hot7 = k === 'hot' ? L[L.length - 1]?.ch20 : k === 'hotNext' ? w.hot7 : null;
   const out = {
     /* 기 */
-    core: {t: '가장 큰 까닭', s: why21(c, k, T)},
+    core: {t: '가장 큰 까닭', s: why21(c, k, T) + cuNote(c)},
     rank: i >= 0 ? {t: '일곱 가운데 자리', s: kn + ' 일곱 가운데 ' + ord(i + 1) + '로 이름이 올라 있어요.'} : null,
     days: fin(c.days) ? {t: '며칠째', s: day(c.found) + '에 이 묶음에서 처음 발견됐고, 오늘(' + day(a.board) + ')로 장이 열린 날 ' + c.days + '일째예요.' + (c.since ? ' 기록 첫날부터 이어져 그 앞은 셀 수 없어요.' : '')} : null,
     r20: fin(c.ch20) ? {t: '20거래일 움직임', s: day(c.date) + '까지 20거래일 동안 ' + won(c.ch20) + '이 됐어요.'} : st ? {t: '20거래일 움직임', s: '20거래일 동안 ' + won(st.r20) + '이 됐어요.'} : null,
@@ -347,11 +379,14 @@ export async function vWhy(X, code, k) {
   ensureCss();
   const get = X.get;
   const T0 = load21(get); // 엄격 셈 자세히(su21-strict.json)는 엄격 셈 판(su21.json strict)일 때만 받음 — 몬테카를로 차례 판(주문 1422)에는 그 파일이 없음(없는 파일을 물으면 화면 오류)
-  const [T, Tn, W, co, M, b, SX] = await Promise.all([T0, get('/su/data/su21-next.json').catch(() => null), get('/su/data/su21-why.json').catch(() => null),
-    get('/atlas/data/co/' + code + '.json').catch(() => null), get('/su/data/su21-map.json').catch(() => null), X.base().catch(() => ({})), T0.then(T => (T?.strict ? get('/su/data/su21-strict.json').catch(() => null) : null)).catch(() => null)]);
+  const [T, Tn, W, co, M, b, SX, CU] = await Promise.all([T0, get('/su/data/su21-next.json').catch(() => null), get('/su/data/su21-why.json').catch(() => null),
+    get('/atlas/data/co/' + code + '.json').catch(() => null), get('/su/data/su21-map.json').catch(() => null), X.base().catch(() => ({})), T0.then(T => (T?.strict ? get('/su/data/su21-strict.json').catch(() => null) : null)).catch(() => null),
+    T0.then(T => (CUR(T) ? get('/su/data/su21-cu.json').catch(() => null) : null)).catch(() => null)]); // 주문 1912 — 문화 일곱 · 칸마다 흔적(문화 셈 판일 때만)
+  if (CU && T && CU.rule === T.listRule && CU.asOf?.board === T.asOf?.board) T.culture = {...(T.culture ?? {}), ...(CU.culture ?? {})}; // 같은 판 날 · 같은 규칙만
   const nx = k.endsWith('Next'), src = nx ? (Tn?.lists?.[k] ?? T?.lists?.[k]) : T?.lists?.[k];
   const c = (src ?? []).find(x => x.code === code);
   if (!c) return X.notFound('이 회사는 오늘 그 묶음에 없어요. 첫 페이지에서 다시 골라 주세요.');
+  if (!c.cu && CU && CU.rule === T?.listRule && CU.asOf?.board === T?.asOf?.board) c.cu = CU.cu?.[k + ':' + code] ?? null;
   if (X.setCur) X.setCur({code, name: c.name, ind: c.ind});
   const indRow = (M?.lands ?? []).flatMap(l => l.inds ?? []).find(i => i.name === c.ind);
   const peers = indRow?.cos ?? null, st = closeStats(c);
@@ -370,11 +405,12 @@ export async function vWhy(X, code, k) {
       F11 ? h('h3', {class: 'yw-h3', text: '이 값이 나온 까닭 열한 가지'}) : null,
       F11 ? h('ol', {class: 'yw-ol'}, F11.map((x, j) => li(j + 1, x.t, x.s))) : h('p', {class: 'yw-s', text: fo ? '기준 「' + ((W?.checks ?? []).find(x => x.id === fo.first)?.label ?? NEED) + '」에서 걸려 값을 보여 드리지 않아요.' : '포모 자료가 오늘 판과 날이 달라 값을 보여 드리지 않아요.'})]);
   const strictBox = MCR(T) ? top3Box(T, c, k) : strict31(SX, T, k, code); // 주문 1422 — 몬테카를로 차례 판은 1억 번 셈 상자 · 옛 판은 엄격 셈 상자
+  const cuBox = cultureBox(T, c); // 주문 1912 — 문화 셈 판은 한국 투자자 문화 일곱 상자(1억 번 셈 상자 앞)
   const go = h('nav', {class: 'yw-go', 'aria-label': '다음에 볼 곳'},
     h('a', {class: 'su-ask', href: '#/c/' + code}, h('b', {text: '이 회사 쪽 보기'}), h('span', {text: '한 달 꺾은선과 업종을 봐요.'})),
     h('a', {class: 'su-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'})));
   const hero = h('div', {class: 'su-hero yw', 'data-g': 'su-why36', 'data-k': k, 'data-code': code, 'data-n': String(P.reduce((a, p) => a + p.items.length, 0)), 'data-fomo': fin(c.fomo) ? String(c.fomo) : ''},
-    head, crit, strictBox, ...parts, fomoBox, go);
+    head, crit, cuBox, strictBox, ...parts, fomoBox, go);
   const pro = fo && F11 ? [h('section', {class: 'su-why', 'aria-label': '포모 셈 자세히'}, h('h2', {class: 'su-ft', text: '포모 셈 자세히'}),
     h('p', {class: 'su-lead', text: '옛 아틀라스 포모 열여덟 가지 가운데 종가로 셀 수 있는 「가격 열기」 여섯 가지로 셈해요. 길 ' + num(fo.paths) + '개 · 흔들림 ' + n1(fo.se) + ' · 바탕 ' + fo.base?.n + '날 · 같은 날 같은 회사는 늘 같은 값이에요.'}))] : [];
   return {title: c.name + ' · 왜?', tab: 0, h1: c.name + ', 왜 ' + ASK[k] + '?', proper: false, hero, body: pro,

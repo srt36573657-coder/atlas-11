@@ -56,7 +56,7 @@ export async function buildDist() {
     //   su21-strict.json = 엄격 셈 자세히(주문 0854) — 저장된 판에 없으면 건너뜀
     const day = f => JSON.parse(fsSync.readFileSync(f, 'utf8')).asOf?.mkt ?? '';
     const was = path.join(root, 'site/su/data/su21.json'), now = path.join(dist, 'su/data/su21.json');
-    if (day(now) < day(was)) { for (const f of ['su21.json', 'su21-map.json', 'su21-next.json', 'su21-strict.json']) await fs.copyFile(path.join(root, 'site/su/data', f), path.join(dist, 'su/data', f)).catch(() => null); console.warn(`수르 21곳 — 이번 자료(${day(now)})가 저장된 판(${day(was)})보다 옛것이라 저장된 판을 그대로 씀`); }
+    if (day(now) < day(was)) { for (const f of ['su21.json', 'su21-map.json', 'su21-next.json', 'su21-strict.json', 'su21-cu.json']) await fs.copyFile(path.join(root, 'site/su/data', f), path.join(dist, 'su/data', f)).catch(() => null); console.warn(`수르 21곳 — 이번 자료(${day(now)})가 저장된 판(${day(was)})보다 옛것이라 저장된 판을 그대로 씀`); }
     else console.log('수르 21곳 다시 셈 — ' + String(stdout).trim().slice(0, 300));
   }
   catch (e) { console.warn('수르 21곳 다시 세기 못 함 — 저장된 판 그대로: ' + String(e.stderr || e.message).slice(0, 300)); }

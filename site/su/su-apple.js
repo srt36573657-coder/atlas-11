@@ -176,13 +176,13 @@ function sxTag(x, y, text = SXT, cls = '') {
 }
 /* ── 1등 · 2등 · 3등 표(주문 1422 · 사장님 2026-11-09 14:22 「42개를 찾은 것 중에서 다시 몬테카를로 … 1억 번 … 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 셋째 줄 [1등][2등][3등] 수르 계산법 차례 · 넷째 줄 풀이 ── */
 const R3L = '수르 계산법';
-function legendR3(y) {
+function legendR3(y, cul = false) {
   const ws = [1, 2, 3].map(n => Math.ceil(est(n + '등', 17)) + 18), gap = 6, tl = R3L + ' 차례', tw = est(tl, 18), all = ws.reduce((a, v) => a + v, 0) + gap * 2 + 8 + tw;
   let x = MID - all / 2;
   const tags = [1, 2, 3].map((n, i) => { const g = sxTag(f1(x), y - 18, n + '등', 'sa-r3'); x += ws[i] + gap; return g; });
   return [s('g', {class: 'sa-sx sa-note3x sa-r3x sa-in sa-in3', 'aria-hidden': 'true'}, ...tags),
     T(f1(x - gap + 8), y, tl, 'sa-note sa-in sa-in3 sa-note3b', {'aria-label': '1등 · 2등 · 3등 표 = ' + tl}),
-    ...note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4')];
+    ...(cul ? note2(y + 26, '문화 일곱으로 고르고', '1억 번 섞었어요.', 'note4') : note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4'))];
 }
 function legendSx(y) { // 셋째 줄 [수르 계산법] 수르 계산법으로 찾은 종목 · 넷째 줄 31가지 기준을 모두 지난 곳이에요.(사장님 말씀 그대로 · 이해 보고 12:10 「표 위에 「수르 계산법으로 찾은 종목」이라고 풀어 적어요」)
   const bw = Math.ceil(est(SXT, 17)) + 18, gap = 8, tl = SXL, x0 = MID - (bw + gap + est(tl, 18)) / 2;
@@ -257,7 +257,7 @@ function draw(d, opt) {
   const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
   const ROW = 140, HEADH = 58, GAP = 26, CW = MID - PAD - 3; // 줄 넷째 · 다섯째 = 첫 발견 · 며칠째와 포모지수(주문 0123)
   const STRICT = !!d?.strict && d.strict.mode !== 'mark'; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움) — 옛 판 자료만
-  const RANK = !!d?.top3 && Array.isArray(d.top3.rank); // 주문 1422(사장님 2026-11-09 14:22 「… 1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 42칸 가운데 1등 · 2등 · 3등 칸에 표
+  const RANK = !!d?.top3 && Array.isArray(d.top3.rank), CULT = d?.listRule === 'culture7-v1'; // 주문 1422(사장님 2026-11-09 14:22 「… 1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 42칸 가운데 1등 · 2등 · 3등 칸에 표
   const MARK = d?.strict?.mode === 'mark'; // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「수르 계산법」 표
   const LIST0 = MARK || RANK ? 662 : STRICT ? 636 : 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」 · 표시 판이면 셋째 · 넷째 줄 「수르 계산법」 풀이) 아래
   const rowsOf = k => STRICT ? 7 : Math.max(items(k, false).length, items(k, true).length, 1);
@@ -290,7 +290,7 @@ function draw(d, opt) {
   svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
-    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : RANK ? legendR3(PY + 254) : MARK ? legendSx(PY + 254) : []));
+    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   let y = LIST0;
   KEY.forEach((k, ki) => {
