@@ -1,17 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-09T00:06:25.401Z",
+ "at": "2026-11-09T00:23:52.491Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1396,
-  "fail": 1
+  "pass": 1401,
+  "fail": 0
  },
- "fails": [
-  [
-   "⑱ 회사 쪽 장 중 — 불장 첫 회사 판 값 · 날짜",
-   "{\"h\":\"180640\",\"lw\":true,\"cd\":false}"
-  ]
- ],
+ "fails": [],
  "m": {
   "dropped": [
    "JYP Ent."
@@ -50,7 +45,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "땅 지도",
@@ -66,7 +61,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 1,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "지주 · 유통 · 운송 땅",
@@ -114,7 +109,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "왜 사?",
@@ -185,9 +180,9 @@
    }
   },
   "speed": {
-   "lcp": 2228,
+   "lcp": 2168,
    "cls": 0.143,
-   "pic": 2717
+   "pic": 2608
   },
   "white": {
    "light #/": {
@@ -1269,6 +1264,17 @@
    "rows": 7,
    "screens": 17.35
   },
+  "coLive": {
+   "a": {
+    "px": "202179",
+    "live": "2026-11-09T14:31",
+    "from": "",
+    "to": "2026-11-09",
+    "ix": false,
+    "lab": "+53.3%"
+   },
+   "shape": true
+  },
   "coReal": {
    "live": null,
    "cellLive": null,
@@ -1279,5 +1285,5 @@
    "both": false
   }
  },
- "ok": false
+ "ok": true
 }
