@@ -244,19 +244,25 @@ const okMark = ok => h('span', {class: 'yw-ok ' + (ok ? 'yw-pass' : 'yw-no'), te
 const PASS = ok => h('span', {class: 'yw-ok ' + (ok ? 'yw-pass' : 'yw-no'), text: ok ? '통과' : '걸림'});
 export function strict31(SX, T, k, code) {
   const g = SX && SX.rule && T?.strict?.rule === SX.rule && SX.asOf?.board === T?.asOf?.board ? SX.groups?.[k] : null, me = g?.co?.[code];
-  if (!g || !me || !Array.isArray(me.ok) || me.ok.length !== (SX.crit ?? []).length) return null;
+  const mark = T?.strict?.mode === 'mark', hasOk = !!me && Array.isArray(me.ok) && me.ok.length === (SX?.crit ?? []).length; // 주문 1209 — 42칸 모두: 몬테카를로에서 걸린 곳도 그 값까지 보여 줌
+  if (!g || !me || (!hasOk && !(mark && me.mc))) return null;
   const a = me.mc?.stat, w = g.win, rel = g.rel, p = me.mc?.p;
   const say = !Number.isFinite(a) ? NEED : rel ? (w === 20 ? '20거래일' : '닷새') + ' 동안 ' + (g.ind ? '이 회사 업종이 ' : '') + '시장보다 ' + n1(Math.abs((Math.exp(a / 100) - 1) * 100)) + '만큼 ' + (a >= 0 ? '앞섬' : '뒤짐')
     : (w === 20 ? '20거래일' : '닷새') + ' 동안 100원이 ' + num(Math.round(100 * Math.exp(a / 100))) + '원';
   const cut = Math.round((SX.mc?.p ?? 0.05) * (SX.mc?.paths ?? 100000));
   const fams = [...new Set(SX.crit.map(c => c.fam))];
+  const nOk = hasOk ? me.ok.filter(Boolean).length : 0, passed = hasOk && nOk === me.ok.length;
+  const verdict = !mark ? null : passed ? '이 회사는 몬테카를로와 기준 31가지를 모두 지나 첫 페이지 칸에 「수르 계산법」 표가 붙었어요.'
+    : hasOk ? '이 회사는 기준 31가지 가운데 ' + nOk + '가지를 지나 표가 붙지 않았어요. 걸린 기준은 아래에 「걸림」으로 보여요.'
+    : '이 회사는 몬테카를로에서 걸려 기준 31가지는 세지 않았어요. 그래서 표가 붙지 않았어요.';
   let n = 0;
-  return box('yw-strict', '더 엄격하게 — 몬테카를로와 기준 31가지', [
+  return box('yw-strict', mark ? (passed ? '수르 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지' : '수르 계산법 — 몬테카를로와 기준 31가지') : '더 엄격하게 — 몬테카를로와 기준 31가지', [
     h('p', {class: 'yw-s', text: '지난 ' + num(SX.mc?.hist ?? 250) + '거래일 하루 값을 ' + num(SX.mc?.paths ?? 100000) + '번 섞어 그린 길 가운데, 지금 모습(' + say + ')보다 크거나 같은 길은 '
       + num(Math.round((p ?? 0) * (SX.mc?.paths ?? 100000))) + '번이었어요. ' + num(cut) + '번 아래(스무 번에 한 번 아래)만 남겨요.'}),
     h('p', {class: 'yw-s', text: '이 묶음 후보 ' + g.pool + '곳 → 몬테카를로를 지난 곳 ' + g.mc + '곳 → 기준 31가지를 모두 지난 곳 ' + g.final + '곳이에요.'}),
-    ...fams.flatMap(f => [h('h3', {class: 'yw-h3', text: f + ' · ' + (SX.fams?.[f] ?? '')}),
-      h('ol', {class: 'yw-ol', start: String(n + 1)}, SX.crit.map((c, j) => [c, j]).filter(([c]) => c.fam === f).map(([c, j]) => { n++; return li(n, c.label + ' — ' + c.rule, c.why + ' · 이 회사: ' + (me.v?.[j] ?? NEED), PASS(me.ok[j])); }))])]);
+    verdict ? h('p', {class: 'yw-s yw-verdict', text: verdict}) : null,
+    ...(hasOk ? fams.flatMap(f => [h('h3', {class: 'yw-h3', text: f + ' · ' + (SX.fams?.[f] ?? '')}),
+      h('ol', {class: 'yw-ol', start: String(n + 1)}, SX.crit.map((c, j) => [c, j]).filter(([c]) => c.fam === f).map(([c, j]) => { n++; return li(n, c.label + ' — ' + c.rule, c.why + ' · 이 회사: ' + (me.v?.[j] ?? NEED), PASS(me.ok[j])); }))]) : [])]);
 }
 function ensureCss() { if (typeof document !== 'undefined' && !document.querySelector(`link[href="${CSS}"]`)) document.head.append(Object.assign(document.createElement('link'), {rel: 'stylesheet', href: CSS})); }
 

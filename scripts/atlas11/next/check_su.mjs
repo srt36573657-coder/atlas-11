@@ -629,18 +629,22 @@ for (const width of [390, 360, 320]) {
   //   첫 페이지: 칸 + 빈 자리 = 42 · 「왜?」 쪽: 더 엄격하게 상자 · 기준 31가지 모두 통과
   const T21 = await J('/su/data/su21.json'), SX = await J('/su/data/su21-strict.json').catch(() => null), KEY6 = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
   if (T21.strict) {
+    // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 표시 판(mode mark): 칸은 일곱 그대로 · 엄격 셈을 모두 지난 칸만 sx · 「수르 계산법」 표
+    const MARKM = T21.strict.mode === 'mark';
     check(!!SX && SX.rule === T21.strict.rule && SX.asOf?.board === T21.asOf?.board && SX.crit?.length === 31 && new Set(SX.crit.map(c => c.id)).size === 31 && SX.mc?.paths >= 100000 && SX.mc?.p <= 0.05,
       '⑳ 엄격 셈 자료 — 규칙 · 판 날 · 기준 31가지 · 몬테카를로 10만 길 · 스무 번에 한 번', JSON.stringify({rule: SX?.rule, board: SX?.asOf?.board, n: SX?.crit?.length, mc: SX?.mc}));
     const bad = [];
     for (const k of KEY6) {
-      const L = T21.lists?.[k] ?? [], g = SX?.groups?.[k], per = k.startsWith('money') ? 1 : 2, cnt = {};
+      const L0 = T21.lists?.[k] ?? [], L = MARKM ? L0.filter(c => c.sx === true) : L0, g = SX?.groups?.[k], per = k.startsWith('money') ? 1 : 2, cnt = {};
       for (const c of L) cnt[c.ind] = (cnt[c.ind] ?? 0) + 1;
-      const ok = !!g && L.length === g.final && L.length <= 7 && g.steps?.length === 31 && g.mc <= g.pool && g.steps.every((n, i) => n <= (i ? g.steps[i - 1] : g.mc)) && g.steps[30] >= g.final
+      const mk = !MARKM || (L0.length === 7 && JSON.stringify(L.map(c => c.code)) === JSON.stringify(T21.strict.marked?.[k] ?? []) && (g?.pick ?? []).length === L.length && L.every(c => g.pick.includes(c.code))
+        && L0.every(c => !!g?.co?.[c.code]?.mc)); // 표시 판: 일곱 그대로 · 표 = su21.json marked = su21-strict.json pick · 42칸 모두 몬테카를로 값이 있음
+      const ok = !!g && mk && L.length === g.final && L.length <= 7 && g.steps?.length === 31 && g.mc <= g.pool && g.steps.every((n, i) => n <= (i ? g.steps[i - 1] : g.mc)) && g.steps[30] >= g.final
         && Object.values(cnt).every(n => n <= per) && L.every(c => { const m = g.co?.[c.code]; return m && m.mc?.p <= 0.05 && m.mc?.p2 <= 0.05 && m.ok?.length === 31 && m.ok.every(Boolean); });
       if (!ok) bad.push(k + ' ' + JSON.stringify({n: L.length, g: g && {pool: g.pool, mc: g.mc, final: g.final}}));
     }
     R.m.strict = Object.fromEntries(KEY6.map(k => [k, SX?.groups?.[k] ? [SX.groups[k].pool, SX.groups[k].mc, SX.groups[k].final] : null]));
-    check(!bad.length, '⑳ 묶음마다 — 고른 곳 = 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 기준 31가지 모두 통과 · 일곱까지 · 업종마다 둘(돈 둘 = 하나) · 소거 줄 줄어들기만', bad.join(' | '));
+    check(!bad.length, '⑳ 묶음마다 — 고른 곳 = 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 기준 31가지 모두 통과 · 일곱까지 · 업종마다 둘(돈 둘 = 하나) · 소거 줄 줄어들기만' + (MARKM ? ' · 표시 판(칸 일곱 그대로 · 표 = 고른 곳)' : ''), bad.join(' | '));
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
     await QUIET(ctx);
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
@@ -648,12 +652,29 @@ for (const width of [390, 360, 320]) {
     const f = await p.evaluate(() => ({cells: document.querySelectorAll('#su main > .su-hero a.sa-cell').length, now: document.querySelectorAll('#su main > .su-hero g.sa-empty[data-empty="now"]').length,
       next: document.querySelectorAll('#su main > .su-hero g.sa-empty[data-empty="next"]').length, note: [...document.querySelectorAll('#su main > .su-hero text.sa-note3a, #su main > .su-hero text.sa-note3b')].map(e => e.textContent).join(' ')}));
     const nNow = ['hot', 'bloom', 'money'].reduce((a, k) => a + (T21.lists?.[k] ?? []).length, 0), nNx = ['hotNext', 'bloomNext', 'moneyNext'].reduce((a, k) => a + (T21.lists?.[k] ?? []).length, 0);
-    check(f.cells === nNow + nNx && f.now === 21 - nNow && f.next === 21 - nNx && f.note === '31가지 기준을 모두 지난 곳만 보여요.', '⑳ 첫 페이지 — 칸 + 빈 자리 = 42 · 「31가지 기준을 모두 지난 곳만 보여요.」', JSON.stringify(f));
-    const first = KEY6.map(k => [k, (T21.lists?.[k] ?? [])[0]]).find(([, c]) => c);
+    if (MARKM) {
+      const nX = KEY6.reduce((a, k) => a + (T21.lists?.[k] ?? []).filter(c => c.sx === true).length, 0);
+      const x = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero'), xs = [...(H?.querySelectorAll('a.sa-cell[data-sx="1"]') ?? [])];
+        return {sx: xs.length, tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === '수르 계산법').length, codes: xs.map(a => a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(),
+          stray: H?.querySelectorAll('a.sa-cell:not([data-sx="1"]) g.sa-sx').length ?? -1, legend: [H?.querySelector('g.sa-note3x text.sa-sxt')?.textContent ?? '', H?.querySelector('text.sa-note3b')?.textContent ?? '', H?.querySelector('text.sa-note4a')?.textContent ?? '', H?.querySelector('text.sa-note4b')?.textContent ?? ''].join(' '),
+          aria: H?.querySelector('svg.su-apple')?.getAttribute('data-sx') ?? null}; });
+      const want = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.code)).sort();
+      check(f.cells === 42 && f.now === 0 && f.next === 0 && x.sx === nX && x.tags === nX && x.stray === 0 && JSON.stringify(x.codes) === JSON.stringify(want) && x.legend === '수르 계산법 수르 계산법으로 찾은 종목 31가지 기준을 모두 지난 곳이에요.' && x.aria === String(nX),
+        '⑳ 첫 페이지(주문 1209) — 42칸 모두 · 빈 자리 0 · 「수르 계산법」 표 = 엄격 셈을 모두 지난 칸(' + nX + ') · 풀이 「[수르 계산법] 수르 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요.」', JSON.stringify({f, x}).slice(0, 300));
+    } else check(f.cells === nNow + nNx && f.now === 21 - nNow && f.next === 21 - nNx && f.note === '31가지 기준을 모두 지난 곳만 보여요.', '⑳ 첫 페이지 — 칸 + 빈 자리 = 42 · 「31가지 기준을 모두 지난 곳만 보여요.」', JSON.stringify(f));
+    const first = KEY6.map(k => [k, (T21.lists?.[k] ?? []).find(c => !MARKM || c.sx === true)]).find(([, c]) => c);
+    if (MARKM) { // 표가 없는 칸 — 「왜?」 쪽에 어디서 걸렸는지(몬테카를로 또는 기준 31가지)
+      const un = KEY6.map(k => [k, (T21.lists?.[k] ?? []).find(c => c.sx !== true)]).find(([, c]) => c);
+      if (un) {
+        await open(p, `#/c/${un[1].code}/y/${un[0]}`);
+        const u = await p.evaluate(() => { const b = document.querySelector('#su .yw-strict'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', li: b.querySelectorAll('.yw-li').length, no: b.querySelectorAll('.yw-no').length} : null; });
+        check(!!u && u.h === '수르 계산법 — 몬테카를로와 기준 31가지' && /표가 붙지 않았어요/.test(u.v) && (u.li === 0 ? /몬테카를로에서 걸려/.test(u.v) : u.li === 31 && u.no >= 1), '⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지 — ' + un[0] + ' ' + un[1].name, JSON.stringify(u).slice(0, 200));
+      }
+    }
     if (first) {
       await open(p, `#/c/${first[1].code}/y/${first[0]}`);
-      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-strict'); return b ? {li: b.querySelectorAll('.yw-li').length, pass: [...b.querySelectorAll('.yw-ok')].filter(e => e.textContent === '통과').length, s: [...b.querySelectorAll('p.yw-s')].slice(0, 2).map(e => e.textContent)} : null; });
-      check(!!w && w.li === 31 && w.pass === 31 && /번 섞어 그린 길 가운데/.test(w.s[0] ?? '') && /후보 \d+곳 → 몬테카를로를 지난 곳 \d+곳 → 기준 31가지를 모두 지난 곳 \d+곳/.test(w.s[1] ?? ''), '⑳ 「왜?」 쪽 — 더 엄격하게(몬테카를로 · 후보 → 몬테카를로 → 31가지) · 기준 31가지 모두 통과 — ' + first[0] + ' ' + first[1].name, JSON.stringify(w).slice(0, 200));
+      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-strict'); return b ? {li: b.querySelectorAll('.yw-li').length, pass: [...b.querySelectorAll('.yw-ok')].filter(e => e.textContent === '통과').length, s: [...b.querySelectorAll('p.yw-s')].slice(0, 2).map(e => e.textContent), v: b.querySelector('p.yw-verdict')?.textContent ?? null} : null; });
+      check(!!w && w.li === 31 && w.pass === 31 && /번 섞어 그린 길 가운데/.test(w.s[0] ?? '') && /후보 \d+곳 → 몬테카를로를 지난 곳 \d+곳 → 기준 31가지를 모두 지난 곳 \d+곳/.test(w.s[1] ?? '') && (!MARKM || /「수르 계산법」 표가 붙었어요/.test(w.v ?? '')), '⑳ 「왜?」 쪽 — 더 엄격하게(몬테카를로 · 후보 → 몬테카를로 → 31가지) · 기준 31가지 모두 통과 — ' + first[0] + ' ' + first[1].name, JSON.stringify(w).slice(0, 200));
     }
     check(!errs.length, '⑳ 화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();

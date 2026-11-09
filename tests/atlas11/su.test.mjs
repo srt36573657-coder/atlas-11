@@ -397,7 +397,10 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
   assert.ok(Number.isInteger(T.counts.listed) && T.counts.listed > 2000, '상장 회사 수 = 받은 자료(mkt.json n)');
   assert.equal(T.counts.b365, in365.size, '우량주 = 지금 판(board.json) 그대로');
   // 엄격 셈(주문 0854 · 2026-11-09 09:02 「어」) — 묶음마다 기준을 모두 지난 곳만(일곱 이하) · 남는 자리는 비움 · 수 = su21.json strict.groups 의 final
-  const ST = T.strict?.rule ? T.strict : null, seven = k => (ST ? (assert.ok(T.lists[k].length <= 7, k + ' 일곱 이하(엄격)'), assert.equal(T.lists[k].length, ST.groups[k].final, k + ' = 엄격 셈 마지막 수')) : assert.equal(T.lists[k].length, 7, k + ' 일곱'));
+  //   주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 … 별도로 표기」) — 표시 판(mode mark)은 일곱 그대로 · 표(sx) 수 = 엄격 셈 마지막 수
+  const ST = T.strict?.rule ? T.strict : null, FIL = !!ST && ST.mode !== 'mark';
+  const seven = k => (FIL ? (assert.ok(T.lists[k].length <= 7, k + ' 일곱 이하(엄격)'), assert.equal(T.lists[k].length, ST.groups[k].final, k + ' = 엄격 셈 마지막 수'))
+    : (assert.equal(T.lists[k].length, 7, k + ' 일곱'), ST && assert.equal(T.lists[k].filter(c => c.sx === true).length, ST.groups[k].final, k + ' 수르 계산법 표 = 엄격 셈 마지막 수')));
   for (const k of ['hot', 'bloom', 'money']) {
     seven(k);
     for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' — 365곳 안에서만([7] 5)'); assert.ok(c.in.includes(k)); }
@@ -511,7 +514,7 @@ test('「왜?」 쪽 — 길 · 서른여섯 가지 · 기준 일곱 · 포모 �
   for (const f of ['su21_replay.mjs', 'su21_days.mjs', 'su21_fomo.mjs']) assert.ok(pk.includes('scripts/atlas11/next/' + f), '묶을 때 셈 — ' + f);
   const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8')), W = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-why.json'), 'utf8'));
   const all = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'].flatMap(k => T.lists[k]);
-  assert.ok(T.strict ? all.length <= 42 : all.length === 42, '저장된 판 칸 수(엄격 셈이면 42 아래 · 주문 0854)');
+  assert.ok(T.strict && T.strict.mode !== 'mark' ? all.length <= 42 : all.length === 42, '저장된 판 칸 수(엄격 셈 거른 판이면 42 아래 · 주문 0854 · 표시 판은 42 — 주문 1209)');
   assert.ok(all.every(c => Number.isInteger(c.days) && c.days >= 1 && /^\d{4}-\d{2}-\d{2}$/.test(c.found) && (c.fomo === null || (Number.isInteger(c.fomo) && c.fomo >= 0 && c.fomo <= 100))), '저장된 판 42칸 — 며칠째 · 첫 발견 · 포모');
   assert.equal(W.board, T.asOf.board); assert.equal(W.checks.length, 7); assert.ok(W.mc.paths >= 20000);
 });
@@ -545,4 +548,18 @@ test('엄격 셈 — su21.py 가 지금 셈 일곱을 거름 · 첫 페이지 �
   assert.ok(/function empty\(x, y, w, h, side, first\)/.test(ap) && /const rowsOf = k => STRICT \? 7/.test(ap) && /'31가지 기준을', '모두 지난 곳만 보여요\.'/.test(ap), '첫 페이지 — 일곱 줄 · 빈 자리 · 한 줄 글');
   assert.ok(/export function strict31\(SX, T, k, code\)/.test(y) && /su21-strict\.json/.test(y) && /strictBox/.test(y), '「왜?」 쪽 — 더 엄격하게 상자');
   assert.ok(pk.includes("'su21-strict.json'") && rp.includes("'days.json'") && rp.includes('RULE_NOW'), '묶을 때 · 지난 판 다시 세기(하루 값 · 규칙이 바뀌면 다시 셈)');
+});
+
+/** 주문 1209(사장님 2026-11-09 12:09 「아니 이렇게 해 42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기를 해봐」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「수르 계산법」 표 */
+test('수르 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지난 칸만 표 · 풀이 한 줄 · 「왜?」 쪽 42칸 모두 · 며칠째는 옛 규칙', () => {
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const py = rd('scripts/atlas11/next/su21.py'), ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), ck = rd('scripts/atlas11/next/check_su.mjs'), rp = rd('scripts/atlas11/next/su21_replay.mjs'), dy = rd('scripts/atlas11/next/su21_days.mjs'), s21 = rd('site/su/su-21.js');
+  assert.ok(/'sx': c in SXK\.get\(k, \(\)\)/.test(py) && /'mode': 'mark'/.test(py) && !/HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK/.test(py) && /for c in OLD7\[k\] if c in r\['info'\]/.test(py), 'su21.py — 칸은 일곱 그대로 · 표(sx) · 「왜?」 자료는 일곱 모두');
+  assert.ok(/const MARK = d\?\.strict\?\.mode === 'mark'/.test(ap) && /function sxTag\(/.test(ap) && /function legendSx\(/.test(ap) && ap.includes("SXT = '수르 계산법'") && ap.includes("SXL = '수르 계산법으로 찾은 종목'") && /'data-sx': it\.sx \? '1' : ''/.test(ap), '첫 페이지 — 표 · 풀이 · data-sx');
+  assert.ok(y.includes('수르 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지') && y.includes('몬테카를로에서 걸려 기준 31가지는 세지 않았어요'), '「왜?」 쪽 — 표가 붙은 곳 · 걸린 곳');
+  assert.ok(ck.includes('⑳ 첫 페이지(주문 1209)') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판');
+  assert.ok(rp.includes("s?.mode === 'mark' ? null") && dy.includes("su?.strict?.mode === 'mark' ? null"), '며칠째 — 표시 판은 칸이 옛 셈 일곱이라 옛 규칙');
+  assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 수르 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
+  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = MARK \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(수르 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
+  for (const t2 of ['수르 계산법', '수르 계산법으로 찾은 종목', '31가지 기준을 모두 지난 곳이에요.']) assert.ok(!/[A-Za-z%]/.test(t2), '새 글에 영어 · % 없음 — ' + t2);
 });

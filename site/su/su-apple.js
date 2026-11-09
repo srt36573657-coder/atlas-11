@@ -150,19 +150,34 @@ function cell(it, x, y, w, h, side) {
   const found = fin(it.days) && mday(it.found) ? '첫 발견 ' + mday(it.found) : '첫 발견 ' + NEED;
   const fo = fin(it.fomo) ? String(it.fomo) : '보류', dl = (fin(it.days) ? it.days + '일째' : NEED) + ' · ', dw = dl + '포모지수 ' + fo;
   const dline = est(dw, 17) <= w - 12 ? dw : dl + '포모 ' + fo;
-  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code) + '/y/' + it.k, class: 'sa-cell sa-' + side, 'data-k': it.k, 'data-name': it.name, 'data-px': it.px ?? '', 'data-code': it.code,
-    'data-days': fin(it.days) ? it.days : '', 'data-found': it.found ?? '', 'data-fomo': fin(it.fomo) ? it.fomo : '',
-    'aria-label': (side === 'now' ? '지금 ' : '될 듯 ') + it.kind + ' · ' + it.name + ' · ' + it.val + say + (it.star ? ' · 두 목록에 함께' : '') + ' · ' + found + ' · ' + dl + '포모지수 ' + fo});
-  a.append(s('title', {text: it.name + ' · ' + it.val + say}),
-    s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit'}),
-    T(x + 6, y + 26, nm, 'sa-name', {'font-size': fs}),
-    T(x + 6, y + 52, it.val, 'sa-val sa-val-' + side + (it.val === '꽃' ? ' sa-bloomv' : '')),
-    T(x + 6, y + 78, price, 'sa-px' + (it.px != null ? '' : ' sa-need'), {'font-size': pfs}),
-    T(x + 6, y + 104, found, 'sa-found' + (fin(it.days) ? '' : ' sa-need'), {'font-size': 17}),
-    T(x + 6, y + 128, dline, 'sa-days' + (fin(it.fomo) ? '' : ' sa-need'), {'font-size': 17}),
-    spark(it.sp, sx, y + 40, SW, 34, side));
-  CELL.set(a, {it, side, sx, sy: y + 40, room, say0: say});
+  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code) + '/y/' + it.k, class: 'sa-cell sa-' + side + (it.sx ? ' sa-x' : ''), 'data-k': it.k, 'data-name': it.name, 'data-px': it.px ?? '', 'data-code': it.code,
+    'data-days': fin(it.days) ? it.days : '', 'data-found': it.found ?? '', 'data-fomo': fin(it.fomo) ? it.fomo : '', 'data-sx': it.sx ? '1' : '',
+    'aria-label': (it.sx ? SXL + ' · ' : '') + (side === 'now' ? '지금 ' : '될 듯 ') + it.kind + ' · ' + it.name + ' · ' + it.val + say + (it.star ? ' · 두 목록에 함께' : '') + ' · ' + found + ' · ' + dl + '포모지수 ' + fo});
+  const o = it.sx ? BX : 0; // 「수르 계산법」 표(주문 1209)가 붙은 칸은 맨 위에 표 · 글은 표 높이만큼 아래로
+  a.append(s('title', {text: (it.sx ? SXL + ' · ' : '') + it.name + ' · ' + it.val + say}),
+    s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit' + (it.sx ? ' sa-hitx' : '')}),
+    it.sx ? sxTag(x + 6, y + 8) : null,
+    T(x + 6, y + 26 + o, nm, 'sa-name', {'font-size': fs}),
+    T(x + 6, y + 52 + o, it.val, 'sa-val sa-val-' + side + (it.val === '꽃' ? ' sa-bloomv' : '')),
+    T(x + 6, y + 78 + o, price, 'sa-px' + (it.px != null ? '' : ' sa-need'), {'font-size': pfs}),
+    T(x + 6, y + 104 + o, found, 'sa-found' + (fin(it.days) ? '' : ' sa-need'), {'font-size': 17}),
+    T(x + 6, y + 128 + o, dline, 'sa-days' + (fin(it.fomo) ? '' : ' sa-need'), {'font-size': 17}),
+    spark(it.sp, sx, y + 40 + o, SW, 34, side));
+  CELL.set(a, {it, side, sx, sy: y + 40 + o, room, say0: say});
   return a;
+}
+
+/* ── 「수르 계산법」 표(주문 1209 · 사장님 2026-11-09 12:09 「엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기를 해봐」) — 칸 맨 위 작은 이름표 · 풀이는 위 셋째 줄 ── */
+const BX = 30, SXT = '수르 계산법', SXL = '수르 계산법으로 찾은 종목';
+function sxTag(x, y) {
+  const bw = Math.ceil(est(SXT, 17)) + 18;
+  return s('g', {class: 'sa-sx', 'aria-hidden': 'true'}, s('rect', {x, y, width: bw, height: 24, rx: 12, class: 'sa-sxb'}), T(f1(x + bw / 2), y + 18, SXT, 'sa-sxt', {'text-anchor': 'middle'}));
+}
+function legendSx(y) { // 셋째 줄 [수르 계산법] 수르 계산법으로 찾은 종목 · 넷째 줄 31가지 기준을 모두 지난 곳이에요.(사장님 말씀 그대로 · 이해 보고 12:10 「표 위에 「수르 계산법으로 찾은 종목」이라고 풀어 적어요」)
+  const bw = Math.ceil(est(SXT, 17)) + 18, gap = 8, tl = SXL, x0 = MID - (bw + gap + est(tl, 18)) / 2;
+  return [s('g', {class: 'sa-sx sa-note3x sa-in sa-in3', 'aria-hidden': 'true'}, s('rect', {x: f1(x0), y: y - 18, width: bw, height: 24, rx: 12, class: 'sa-sxb'}), T(f1(x0 + bw / 2), y, SXT, 'sa-sxt', {'text-anchor': 'middle'})),
+    T(f1(x0 + bw + gap), y, tl, 'sa-note sa-in sa-in3 sa-note3b', {'aria-label': SXT + ' 표 = ' + tl}),
+    ...note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')];
 }
 
 /* ── 빈 자리(주문 0854 — 엄격 셈을 통과한 곳이 일곱이 안 되면 남는 자리는 비움 · 그 묶음 첫 빈 자리에만 까닭 글) ── */
@@ -227,15 +242,18 @@ function draw(d, opt) {
   const day = d?.asOf?.board ?? null;
   const pxOf = c => (fin(c?.close) && c.close > 0 && (!c.date || !day || c.date === day) ? c.close : null); // 그날(asOf.board) 마지막 값만 — 다른 날 값이면 「확인 필요」
   const spOf = c => (Array.isArray(c?.c) && c.c.length === 21 && c.c.every(v => fin(v) && v > 0) && pxOf(c) === c.c[20] ? c.c : null); // 21 마지막 값 · 끝 = 현재가일 때만
-  const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c), days: c.days, found: c.found, fomo: c.fomo}));
+  const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c), days: c.days, found: c.found, fomo: c.fomo, sx: MARK && c.sx === true}));
   const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
   const ROW = 140, HEADH = 58, GAP = 26, CW = MID - PAD - 3; // 줄 넷째 · 다섯째 = 첫 발견 · 며칠째와 포모지수(주문 0123)
-  const STRICT = !!d?.strict; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움)
-  const LIST0 = STRICT ? 636 : 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」) 아래
+  const STRICT = !!d?.strict && d.strict.mode !== 'mark'; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움) — 옛 판 자료만
+  const MARK = d?.strict?.mode === 'mark'; // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「수르 계산법」 표
+  const LIST0 = MARK ? 662 : STRICT ? 636 : 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」 · 표시 판이면 셋째 · 넷째 줄 「수르 계산법」 풀이) 아래
   const rowsOf = k => STRICT ? 7 : Math.max(items(k, false).length, items(k, true).length, 1);
-  const H = LIST0 + KEY.reduce((a, k) => a + HEADH + rowsOf(k) * ROW + GAP, 0) + 24;
+  const rowH = (k, i) => ROW + (MARK && (items(k, false)[i]?.sx || items(k, true)[i]?.sx) ? BX : 0); // 표가 붙은 칸이 있는 줄만 표 높이만큼 더
+  const nSx = MARK ? KEY.reduce((a, k) => a + items(k, false).filter(c => c.sx).length + items(k, true).filter(c => c.sx).length, 0) : 0;
+  const H = LIST0 + KEY.reduce((a, k) => a + HEADH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + 24;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
-    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (day ? ' · ' + day + ' 자료' : '')});
+    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (MARK ? ` · 수르 계산법으로 찾은 칸 ${nSx}` : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null});
   svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'sa-bg'}));
   /* 1 한 문장 */
   /* 큰 제목 「지금, 그리고 될 듯.」은 쪽 머리(h1 · 쪽과 함께 바로 그려짐 — 느린 휴대폰 첫 칠함 2.5초)에 · 그림은 부제부터 */
@@ -259,7 +277,7 @@ function draw(d, opt) {
   svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
-    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : []));
+    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : MARK ? legendSx(PY + 254) : []));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   let y = LIST0;
   KEY.forEach((k, ki) => {
@@ -270,15 +288,15 @@ function draw(d, opt) {
     y += HEADH;
     const n = rowsOf(k);
     for (let i = 0; i < n; i++) {
-      const row = s('g', {class: 'sa-row'});
+      const row = s('g', {class: 'sa-row'}), rh = rowH(k, i);
       if (i) row.append(s('path', {d: `M${PAD} ${y}H${W - PAD}`, class: 'sa-line'}));
-      if (now[i]) row.append(cell(now[i], PAD - 6, y, CW, ROW, 'now'));
+      if (now[i]) row.append(cell(now[i], PAD - 6, y, CW, rh, 'now'));
       else if (STRICT) row.append(empty(PAD - 6, y, CW, ROW, 'now', i === now.length));
-      if (nx[i]) row.append(cell(nx[i], MID + 3, y, CW, ROW, 'next'));
+      if (nx[i]) row.append(cell(nx[i], MID + 3, y, CW, rh, 'next'));
       else if (STRICT) row.append(empty(MID + 3, y, CW, ROW, 'next', i === nx.length));
       if (!now[i] && !nx[i] && !STRICT) row.append(T(PAD, y + 36, NEED, 'sa-d'));
       sec.append(row);
-      y += ROW;
+      y += rh;
     }
     y += GAP;
     svg.append(sec);

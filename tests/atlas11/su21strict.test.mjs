@@ -71,3 +71,13 @@ test('지난 1년 견줌 — 엄격 셈 · 옛 셈 · 아무 회사(될 듯 셋)
     assert.ok(v.strict.picks < v.old.picks, g + ' 엄격하면 적게');
   }
 });
+
+test('며칠째 — 표시 판(주문 1209 · strict.mode mark)은 칸이 옛 셈 일곱이라 규칙 없음(null)으로 적음', async () => {
+  const {keepDay} = await import('../../scripts/atlas11/next/su21_days.mjs');
+  const KEYS = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
+  const su = {asOf: {board: '2026-11-09'}, strict: {rule: 'strict31-v1', mode: 'mark'}, lists: Object.fromEntries(KEYS.map(k => [k, []]))};
+  const oldRec = {days: {'2026-11-06': {how: 'replay', lists: {}}}}; // 엄격 셈 앞 기록(규칙 없음) — 그대로 이어 적음
+  assert.equal(keepDay(oldRec, su, null, 'x'), true); assert.equal(oldRec.rule ?? null, null);
+  const strictRec = {rule: 'strict31-v1', days: {'2026-11-06': {how: 'replay', lists: {}}}}; // 거른 판으로 적은 기록 — 규칙이 달라 적지 않음(지난 판 다시 세기가 먼저 옛 규칙으로 바꿈)
+  assert.equal(keepDay(strictRec, su, null, 'x'), false);
+});

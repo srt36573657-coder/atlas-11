@@ -132,3 +132,8 @@
 .su-apple .sa-emp { fill: none; stroke: #D2D2D7; stroke-width: 1.2; stroke-dasharray: 5 5; }
 .su-apple .sa-empt { font-size: 17px; font-weight: 700; fill: #AEAEB2; }
 .su-apple .sa-empd { font-size: 17px; font-weight: 500; fill: #AEAEB2; }
+/* 「수르 계산법」 표(주문 1209 · 사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 칸 맨 위 연한 호박 이름표 · 칸 바탕도 연한 호박 · 글은 진한 밤색(흰 바탕과 견줌 6 넘게) */
+.su-apple .sa-sxb { fill: #FDE7C8; stroke: #D97706; stroke-width: 1.2; }
+.su-apple .sa-sxt { font-size: 17px; font-weight: 800; fill: #7A3E00; letter-spacing: -0.2px; }
+.su-apple .sa-hitx { fill: #FFF7ED; fill-opacity: 1; stroke: #F5C88A; stroke-width: 1.2; }
+.su-apple .sa-cell.sa-x:hover .sa-hitx, .su-apple .sa-cell.sa-x:focus .sa-hitx { fill: #FDEBD3; }

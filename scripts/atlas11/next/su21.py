@@ -173,7 +173,9 @@ OLD7 = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext'
 CTX = ST.Ctx(B, b['asOf'], DATES, co_close, opens, cap, CL, lambda c: B[c]['group']['label'])
 PICK, STRICT = ST.select(CTX, OLD7, fin_of)
 MC365 = ST.scan365(CTX) if A.mc365 else None
-HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK['hot'], PICK['bloom'], PICK['money'], PICK['hotNext'], PICK['moneyNext'], PICK['bloomNext']
+# 주문 1209(사장님 2026-11-09 12:09 「아니 이렇게 해 42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기를 해봐」)
+#   42칸 = 지금 셈 일곱 그대로(빈 자리 없음) · 엄격 셈(몬테카를로 → 기준 31가지)을 모두 지난 곳에만 표시(sx) — 묶음마다 따로(같은 회사도 묶음마다 셈이 다름)
+SXK = {k: set(PICK[k]) for k in PICK}
 lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN}
 NOW3 = ('hot', 'bloom', 'money')
 inl = collections.defaultdict(list)
@@ -198,7 +200,7 @@ def cdOf(c):
     return ds
 def item(c, k):
     v = B[c]; ind = v['group']['label']; L = land_of.get(ind)
-    co = {'code': c, 'name': nm(c), 'ind': ind, 'land': L['name'] if L else None, 'landId': L['id'] if L else None, 'kind': v.get('kind'), 'in': inl[c],
+    co = {'code': c, 'name': nm(c), 'ind': ind, 'land': L['name'] if L else None, 'landId': L['id'] if L else None, 'kind': v.get('kind'), 'in': inl[c], 'sx': c in SXK.get(k, ()),
           'ch20': r1(v['change20'] * 100) if v.get('change20') is not None else None, 'close': v.get('close'), 'date': v.get('date'),
           'c': v.get('c'), 'cFrom': v.get('cFrom'), 'cd': cdOf(c), 'flows': (v.get('brief') or {}).get('flows'), 'news': {k2: (v.get('brief') or {}).get(k2) for k2 in ('newsCount', 'newsNamed')},
           'pos52': (v.get('info') or {}).get('pos52'), 'cap': cap.get(c), 'x': tco.get(c, [None, None])[0], 'y': tco.get(c, [None, None])[1], 'z': tco.get(c, [None, None, None])[2]}
@@ -256,11 +258,12 @@ out = {
 out['lands'] = [L for L in out['lands'] if L['inds']]
 # 엄격 셈 요약(주문 0854) — 첫 페이지는 묶음마다 후보 · 몬테카를로 · 마지막 수만 · 자세한 것은 su21-strict.json(「왜?」 쪽)
 FAMS = {'가': '자료가 믿을 만한가', '나': '우연이 아닌가', '다': '업종과 시장이 함께인가', '라': '돈과 사람이 실제로 움직였나', '마': '회사가 탄탄한가'}
-out['strict'] = {'rule': ST.RULE_ID, 'mc': {'paths': ST.MC_PATHS, 'p': ST.MC_P, 'hist': ST.HIST}, 'n': len(ST.CRIT), 'mc365': MC365,
+out['strict'] = {'rule': ST.RULE_ID, 'mode': 'mark', 'marked': {k: [c for c in OLD7[k] if c in SXK[k]] for k in OLD7}, # 주문 1209 — 칸은 일곱 그대로 · 표시만
+                 'mc': {'paths': ST.MC_PATHS, 'p': ST.MC_P, 'hist': ST.HIST}, 'n': len(ST.CRIT), 'mc365': MC365,
                  'groups': {k: {'pool': r['pool'], 'mc': r['mc'], 'final': r['final'], 'win': r['win']} for k, r in STRICT.items()}}
 STRICT_OUT = {'schema': 'su21-strict-1', 'rule': ST.RULE_ID, 'asOf': out['asOf'], 'mc': out['strict']['mc'], 'mc365': MC365, 'fams': FAMS,
               'crit': [{'id': i, 'fam': f, 'label': lb, 'rule': ru, 'why': wy} for i, f, lb, ru, wy in ST.CRIT],
-              'groups': {k: {kk: r[kk] for kk in ('pool', 'mc', 'steps', 'final', 'win', 'cwin', 'rel', 'ind')} | {'old': [nm(c) for c in OLD7[k]], 'co': {c: {'name': nm(c), **r['info'][c]} for c in PICK[k]}} for k, r in STRICT.items()}}
+              'groups': {k: {kk: r[kk] for kk in ('pool', 'mc', 'steps', 'final', 'win', 'cwin', 'rel', 'ind')} | {'old': [nm(c) for c in OLD7[k]], 'pick': list(PICK[k]), 'co': {c: {'name': nm(c), **r['info'][c]} for c in OLD7[k] if c in r['info']}} for k, r in STRICT.items()}} # 주문 1209 — 42칸 모두 「왜?」 쪽에서 어디서 걸렸는지 봄
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
