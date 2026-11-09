@@ -102,7 +102,7 @@ for (const f of (fs.existsSync(bdir) ? fs.readdirSync(bdir) : []).filter(f => /^
 }
 const now = J(BOARD_NOW); if (typeof now?.asOf === 'string' && Array.isArray(now.companies)) byDay.set(now.asOf, {b: now}); // 오늘 판이 옮겨 둔 같은 날 판보다 앞섬
 const days = [...byDay.keys()].sort();
-const RULE_NOW = (() => { try { const s = J(path.join(SU, 'su21.json')).strict; return s?.mode === 'mark' ? null : s?.rule ?? null; } catch { return null; } })(); // 고르는 규칙 이름(주문 0854 엄격 셈 · su21_strict.py RULE_ID) — 주문 1209 표시만(mark)이면 칸은 옛 셈 일곱이라 옛 규칙(null)
+const RULE_NOW = (() => { try { const T = J(path.join(SU, 'su21.json')), s = T.strict; return T.listRule ?? (s?.mode === 'mark' ? null : s?.rule ?? null); } catch { return null; } })(); // 주문 1422 — 고르는 규칙 이름 listRule(mc365-v1) 먼저 // 고르는 규칙 이름(주문 0854 엄격 셈 · su21_strict.py RULE_ID) — 주문 1209 표시만(mark)이면 칸은 옛 셈 일곱이라 옛 규칙(null)
 if (process.argv.includes('--if-needed')) { // 기록에 지난 판 날이 모두 있고 같은 규칙이면 다시 세지 않음(올릴 때마다 부름 · 규칙이 바뀌면 모두 다시 셈)
   let rec0 = null; try { rec0 = J(OUT); } catch { /* 기록 없음 — 셈 */ }
   const miss = days.filter(d => d < now.asOf && !rec0?.days?.[d]);

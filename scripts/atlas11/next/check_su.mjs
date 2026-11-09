@@ -628,7 +628,50 @@ for (const width of [390, 360, 320]) {
   //   묶음마다: 고른 곳 수 = 마지막 수 · 일곱까지 · 소거 줄(31) 줄어들기만 · 고른 곳은 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 31가지 모두 통과 · 업종마다 둘(돈 둘 = 하나)
   //   첫 페이지: 칸 + 빈 자리 = 42 · 「왜?」 쪽: 더 엄격하게 상자 · 기준 31가지 모두 통과
   const T21 = await J('/su/data/su21.json'), SX = await J('/su/data/su21-strict.json').catch(() => null), KEY6 = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
-  if (T21.strict) {
+  if (T21.listRule === 'mc365-v1') {
+    // 주문 1422(사장님 2026-11-09 14:22 「365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 … 1억 번 … 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」
+    //   · 14:37 「42곳도 표기 하고 그중에서 … 1.2.3을 수르계산법으로 표기」)
+    //   자료: 칸마다 몬테카를로(드묾 p · 드문 차례 ord · 소거를 지난 수 pool) · 묶음 안 차례 = 드문 차례 · 일곱씩 · top3(1억 판 · 판마다 1등 · 2등 · 3등이 하나씩 — 합 = 1억)
+    //   첫 페이지: 42칸 · 1등 · 2등 · 3등 칸에만 표(그 칸 = top3.rank) · 풀이 두 줄 · 「왜?」 쪽: 1억 번 셈 상자(등수 칸 · 아닌 칸) · 기준 일곱(몬테카를로)
+    const bad = [], t3 = T21.top3;
+    for (const k of KEY6) {
+      const L = T21.lists?.[k] ?? [], per = k.startsWith('money') ? 1 : 2, cnt = {};
+      for (const c of L) cnt[c.ind] = (cnt[c.ind] ?? 0) + 1;
+      const ords = L.map(c => c.mc?.ord);
+      if (!(L.length === 7 && L.every(c => Number.isFinite(c.mc?.p) && c.mc.p > 0 && c.mc.p <= 1 && Number.isInteger(c.mc?.ord) && c.mc.ord >= 1 && c.mc.ord <= c.mc.pool)
+        && ords.every((v, i) => !i || v >= ords[i - 1]) && (k === 'bloom' || Object.values(cnt).every(n => n <= per)))) bad.push(k + ' ' + JSON.stringify(L.map(c => [c.name, c.mc?.p, c.mc?.ord])).slice(0, 160));
+    }
+    R.m.mc = Object.fromEntries(KEY6.map(k => [k, T21.mc?.pools?.[k] ?? null]));
+    check(!bad.length && T21.mc?.paths >= 100000 && T21.mc?.hist === 250, '⑳ 몬테카를로 차례(주문 1422) — 묶음마다 일곱 · 칸마다 드묾 · 드문 차례대로 · 업종마다 둘(돈 둘 = 하나)', bad.join(' | '));
+    const cells = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => ({k, c})));
+    const sum = j => Object.values(t3?.cells ?? {}).reduce((a, x) => a + (Array.isArray(x) ? x[j] : 0), 0);
+    const t3ok = !!t3 && t3.total >= 100000000 && Array.isArray(t3.rank) && t3.rank.length === 3 && t3.rank.map(r => r.place).join() === '1,2,3' && Object.keys(t3.cells ?? {}).length === cells.length
+      && sum(0) === t3.total && sum(1) === t3.total && sum(2) === t3.total && t3.rank.every((r, i) => !i || r.first <= t3.rank[i - 1].first)
+      && t3.rank.every(r => cells.some(x => x.k === r.k && x.c.code === r.code && x.c.r3 === r.place)) && cells.filter(x => [1, 2, 3].includes(x.c.r3)).length === 3;
+    R.m.top3 = t3 ? t3.rank.map(r => r.place + ':' + r.k + ':' + r.name + ':' + r.first) : null;
+    if (t3 || /^https:/.test(base)) check(t3ok, '⑳ 1억 번 셈 — 1억 판 · 판마다 1등 · 2등 · 3등 하나씩(합 = 1억) · 1등 · 2등 · 3등 = 1등 횟수 차례 · 그 칸에 등수', JSON.stringify(R.m.top3));
+    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    await open(p, '#/');
+    const f = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero'), xs = [...(H?.querySelectorAll('a.sa-cell[data-r3]') ?? [])].filter(a => a.getAttribute('data-r3'));
+      return {cells: H?.querySelectorAll('a.sa-cell').length ?? 0, empty: H?.querySelectorAll('g.sa-empty').length ?? -1, r3: xs.map(a => a.getAttribute('data-r3') + ':' + a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(),
+        tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === a.getAttribute('data-r3') + '등').length, stray: H?.querySelectorAll('a.sa-cell:not([data-r3="1"]):not([data-r3="2"]):not([data-r3="3"]) g.sa-sx').length ?? -1,
+        legend: [...(H?.querySelectorAll('g.sa-r3x text.sa-sxt') ?? [])].map(e => e.textContent).join(' ') + ' ' + [H?.querySelector('text.sa-note3b'), H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' ')}; });
+    const want = cells.filter(x => [1, 2, 3].includes(x.c.r3)).map(x => x.c.r3 + ':' + x.k + ':' + x.c.code).sort();
+    check(f.cells === 42 && f.empty === 0 && (t3 ? JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === 3 && f.stray === 0 && f.legend === '1등 2등 3등 수르 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.' : f.r3.length === 0),
+      '⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표 · 풀이 「[1등][2등][3등] 수르 계산법 차례 · 1억 번 섞어 끝까지 남은 차례예요.」', JSON.stringify(f).slice(0, 300));
+    if (t3) for (const pick of [cells.find(x => x.c.r3 === 1), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
+      await open(p, `#/c/${pick.c.code}/y/${pick.k}`);
+      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-top3'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', crit: document.querySelectorAll('#su .yw-crit .yw-li').length,
+        mc: [...document.querySelectorAll('#su .yw-crit .yw-li')].map(e => e.textContent).join(' ').includes('번 섞어 그린 길 가운데')} : null; });
+      const top = pick.c.r3 === 1;
+      check(!!w && w.crit === 7 && w.mc && (top ? w.h === '수르 계산법 1등 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,]+만( [\d,]+)?번 끝까지 남았어요\. 42칸 가운데 첫 번째예요\. 그래서 1등이에요\.$/.test(w.v) : w.h === '수르 계산법 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,만 ]+번 끝까지 남았어요\. 42칸 가운데 \d+번째예요\.$/.test(w.v)),
+        '⑳ 「왜?」 쪽 — 1억 번 셈 상자 · 기준 일곱(몬테카를로) — ' + (top ? '1등 ' : '등수 밖 ') + pick.k + ' ' + pick.c.name, JSON.stringify(w).slice(0, 200));
+    }
+    check(!errs.length, '⑳ 화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  } else if (T21.strict) {
     // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 표시 판(mode mark): 칸은 일곱 그대로 · 엄격 셈을 모두 지난 칸만 sx · 「수르 계산법」 표
     const MARKM = T21.strict.mode === 'mark';
     check(!!SX && SX.rule === T21.strict.rule && SX.asOf?.board === T21.asOf?.board && SX.crit?.length === 31 && new Set(SX.crit.map(c => c.id)).size === 31 && SX.mc?.paths >= 100000 && SX.mc?.p <= 0.05,

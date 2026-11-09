@@ -44,7 +44,7 @@ export function runOf(rec, cal, today, k, code) {
 /** 그날 목록을 기록에 적음 — 이미 적은 날은 그대로(먼저 적은 것을 바꾸지 않음) · 적었으면 참 */
 export function keepDay(rec, su, suNext, made) {
   const d = su?.asOf?.board; if (!DAY.test(d ?? '') || rec.days[d]) return false;
-  const rule = su?.strict?.mode === 'mark' ? null : su?.strict?.rule ?? null; // 고르는 규칙(주문 0854) — 기록의 규칙과 다르면 적지 않음(지난 판 다시 세기가 먼저 새 규칙으로 바꿈) · 주문 1209 표시만(mark)이면 칸은 옛 셈 일곱 = 옛 규칙(null)
+  const rule = su?.listRule ?? (su?.strict?.mode === 'mark' ? null : su?.strict?.rule ?? null); // 주문 1422 — 고르는 규칙 이름 listRule(mc365-v1) 먼저 // 고르는 규칙(주문 0854) — 기록의 규칙과 다르면 적지 않음(지난 판 다시 세기가 먼저 새 규칙으로 바꿈) · 주문 1209 표시만(mark)이면 칸은 옛 셈 일곱 = 옛 규칙(null)
   if ((rec.rule ?? null) !== rule && Object.keys(rec.days).length) return false;
   rec.rule = rule;
   const L = k => ((k.endsWith('Next') ? suNext?.lists?.[k] ?? su?.lists?.[k] : su?.lists?.[k]) ?? []).map(c => c.code);

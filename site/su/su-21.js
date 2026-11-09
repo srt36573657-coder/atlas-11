@@ -33,8 +33,16 @@ export function find21(T, code) { for (const k of KEY6) for (const c of T?.lists
 const PASTW = {hotNext: '불장 일곱에 들었어요', moneyNext: '돈이 몰리는 일곱에 들었어요', bloomNext: '시장보다 15 넘게 앞섰어요(꽃)'};
 /** 엄격 셈 판 둘 — FILT = 거른 곳만 칸에(주문 0854 첫 판 · 옛 자료) · MARK = 42칸 그대로 · 모두 지난 칸에 「수르 계산법」 표(주문 1209 · 사장님 2026-11-09 12:09) */
 const FILT = T => !!T?.strict && T.strict.mode !== 'mark', MARK = T => T?.strict?.mode === 'mark';
+/** 몬테카를로 차례 판(주문 1422 · 사장님 2026-11-09 14:22 「365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 … 1억 번 … 1등 2등 3등」) */
+const MCR = T => T?.listRule === 'mc365-v1';
+const korN = n => { if (!fin(n)) return NEED; n = Math.round(n); if (n >= 1e8) { const e = Math.floor(n / 1e8), r = n % 1e8; return num(e) + '억' + (r ? ' ' + korN(r) : ''); } if (n >= 1e4) { const m = Math.floor(n / 1e4), r = n % 1e4; return num(m) + '만' + (r ? ' ' + num(r) : ''); } return num(n); }; // 1억 · 10만(읽기 쉽게)
+const mcN = (T, c) => (fin(c?.mc?.p) ? korN(Math.round(c.mc.p * (T?.mc?.paths ?? 100000))) + '번' : NEED);
+const mcOrd = c => (fin(c?.mc?.ord) ? (c.mc.ord === 1 ? '첫 번째' : c.mc.ord + '번째') : NEED);
+const TEN = T => korN(T?.mc?.paths ?? 100000);
 const nSx = (T, ks) => ks.reduce((a, k) => a + (T?.lists?.[k] ?? []).filter(c => c.sx === true).length, 0);
-const pastLine = (k, T) => { const p = T?.past?.[k]; return !p ? '' : MARK(T) && T.past.strict && Number.isFinite(p.old100) // 주문 1209 — 일곱(칸) · 그 가운데 수르 계산법 표 · 아무 회사
+const pastLine = (k, T) => { const p = T?.past?.[k]; return !p ? '' : T.past.mcRank && Number.isFinite(p.old100) // 주문 1422 — 몬테카를로 차례로 고른 일곱 · 예전 셈 · 아무 회사
+  ? '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + p.per100 + '번이 한 달 안에 ' + PASTW[k] + '. 예전 셈은 ' + p.old100 + '번, 아무 회사는 ' + p.base100 + '번이었어요.'
+  : MARK(T) && T.past.strict && Number.isFinite(p.old100) // 주문 1209 — 일곱(칸) · 그 가운데 수르 계산법 표 · 아무 회사
   ? '지난 1년 날마다 이렇게 고른 일곱을 모두 세면 100번에 ' + p.old100 + '번이 한 달 안에 ' + PASTW[k] + '. 그 가운데 수르 계산법으로 찾은 곳은 ' + p.per100 + '번, 아무 회사는 ' + p.base100 + '번이었어요.'
   : T.past.strict && Number.isFinite(p.old100) // 엄격 셈(주문 0854) — 옛 일곱을 거른 곳 · 옛 셈 · 아무 회사를 함께
   ? '지난 1년 날마다 이렇게 엄격하게 거른 곳을 모두 세면 100번에 ' + p.per100 + '번이 한 달 안에 ' + PASTW[k] + '. 거르기 전 일곱은 100번에 ' + p.old100 + '번, 아무 회사는 ' + p.base100 + '번이었어요.'
@@ -42,6 +50,15 @@ const pastLine = (k, T) => { const p = T?.past?.[k]; return !p ? '' : MARK(T) &&
 /** 까닭 한 줄(학생 말) — 왜 이 회사가 21곳에 들었나 */
 export function why21(c, k, T) {
   const w = c.why ?? {};
+  if (MCR(T)) { // 주문 1422 — 소거 한 번 조건 · 몬테카를로 드묾 · 드문 차례
+    const mc = TEN(T) + '번 섞어 보니 이만큼은 ' + mcN(T, c) + '뿐이라, 드문 차례로 ' + mcOrd(c) + '예요.';
+    if (k === 'hot') return c.ind + ' 업종은 불장 업종이에요. ' + josa(c.name, '은') + ' 20거래일 동안 ' + (fin(c.ch20) ? won100(c.ch20) + '이 될 만큼 올랐어요. ' : '오른 만큼은 ' + NEED + '예요. ') + mc;
+    if (k === 'bloom') return josa(c.name, '은') + ' 아직 「싹」이에요. ' + c.ind + ' 업종이 20거래일 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc;
+    if (k === 'money') return c.ind + ' 업종이 20거래일 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' 그 업종에서 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.';
+    if (k === 'hotNext') return josa(c.name, '은') + ' 불장 일곱 밖에서 닷새 동안 ' + (fin(w.r5) ? won100(w.r5) + '이 될 만큼 올랐어요. ' : '오른 만큼은 ' + NEED + '예요. ') + mc + ' ' + pastLine(k, T);
+    if (k === 'moneyNext') return c.ind + ' 업종이 닷새 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' 그 업종에서 ' + c.name + '의 회사 크기가 닷새 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요. ' + pastLine(k, T);
+    return josa(c.name, '은') + ' 아직 「싹」이에요. 닷새 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' ' + pastLine(k, T);
+  }
   if (k === 'hotNext') return (w.how === 'rank' ? c.ind + ' 업종은 불장 업종이에요. ' + josa(c.name, '은') + ' 그 안에서 20거래일 동안 오른 차례가 ' + w.rank + '번째라 불장 일곱 바로 아래예요.'
     : josa(c.name, '은') + ' 닷새 동안 ' + (fin(w.r5) ? won100(w.r5) + '이 될 만큼' : '') + ' 막 오르기 시작했어요. ' + c.ind + ' 업종도 닷새 동안 올랐어요.') + ' ' + pastLine(k, T);
   if (k === 'moneyNext') return (w.how === 'rank' ? c.ind + ' 업종은 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 돈이 몰리는 일곱 바로 아래 업종(' + w.rank + '번째)이에요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.'
@@ -146,7 +163,7 @@ export async function v21Home(X) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   const nk = k => (T.lists?.[k] ?? []).length, nNow = KEY.reduce((a, k) => a + nk(k), 0); // 엄격 셈(주문 0854)이면 일곱이 안 될 수 있음 — 센 그대로
   const big = val(FILT(T) ? nNow : 21, '곳', FILT(T) ? '불장 ' + nk('hot') + ' · 꽃이 될 ' + nk('bloom') + ' · 돈이 몰리는 ' + nk('money') : '불장 7 · 꽃이 될 7 · 돈이 몰리는 7', {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안',
-    무엇을: FILT(T) ? '불장 · 꽃이 될 · 돈이 몰리는 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요', 어떻게: FILT(T) ? '세 가지 셈을 365곳에 대고, 몬테카를로 10만 번과 기준 31가지로 다시 걸렀어요' : MARK(T) ? '세 가지 셈을 365곳에 똑같이 대고, 몬테카를로와 기준 31가지를 모두 지난 ' + nSx(T, KEY) + '칸에 수르 계산법 표를 달았어요' : '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
+    무엇을: FILT(T) ? '불장 · 꽃이 될 · 돈이 몰리는 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요', 어떻게: MCR(T) ? '365곳 모두 ' + TEN(T) + '번 섞어 보고, 소거 한 번을 지난 곳을 드문 차례로 일곱씩 골랐어요' : FILT(T) ? '세 가지 셈을 365곳에 대고, 몬테카를로 10만 번과 기준 31가지로 다시 걸렀어요' : MARK(T) ? '세 가지 셈을 365곳에 똑같이 대고, 몬테카를로와 기준 31가지를 모두 지난 ' + nSx(T, KEY) + '칸에 수르 계산법 표를 달았어요' : '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
     {mean: '겹친 ' + T.overlap.length + '곳을 한 번씩만 세면 ' + T.distinct + '곳이라는 뜻이에요.'});
   const mids = [
     val(T.counts.listed, '곳', '한국 상장 회사', {누가: '코스피 · 코스닥', 언제: day(T.asOf.mkt), 어디서: '한국 주식 시장', 무엇을: T.counts.listedWhat, 어떻게: '그날 값이 있는 보통주를 셌어요', 왜: '모두에서 시작해야 빠진 곳이 없어요'}, {mean: '한국에서 주식을 사고팔 수 있는 회사가 이만큼이라는 뜻이에요. 펀드와 우선주는 빼고 셌어요.'}),
@@ -169,10 +186,12 @@ export async function v21Next(X) {
   const n = KEYN.reduce((a, k) => a + T.lists[k].length, 0);
   const nk = k => (T.lists?.[k] ?? []).length;
   const big = val(n, '곳', FILT(T) ? '불장이 될 듯 ' + nk('hotNext') + ' · 꽃이 될 듯 ' + nk('bloomNext') + ' · 돈이 몰릴 듯 ' + nk('moneyNext') : '불장이 될 듯 7 · 꽃이 될 듯 7 · 돈이 몰릴 듯 7', {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안',
-    무엇을: FILT(T) ? '곧 불장 · 꽃 · 돈이 몰리는 곳이 될 듯한 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '곧 불장 · 꽃 · 돈이 몰리는 곳이 될 듯한 회사를 7곳씩 골랐어요', 어떻게: '지난 1년 날마다 여러 셈을 똑같이 대어 보고, 한 달 안에 그렇게 된 일이 가장 많은 셈을 골랐어요', 왜: '지금 그런 곳 바로 앞에 자주 보이던 모습을 찾으려고요'},
+    무엇을: FILT(T) ? '곧 불장 · 꽃 · 돈이 몰리는 곳이 될 듯한 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '곧 불장 · 꽃 · 돈이 몰리는 곳이 될 듯한 회사를 7곳씩 골랐어요', 어떻게: MCR(T) ? '365곳 모두 ' + TEN(T) + '번 섞어 보고, 닷새 모습이 드문 차례로 일곱씩 골랐어요' : '지난 1년 날마다 여러 셈을 똑같이 대어 보고, 한 달 안에 그렇게 된 일이 가장 많은 셈을 골랐어요', 왜: '지금 그런 곳 바로 앞에 자주 보이던 모습을 찾으려고요'},
     {mean: '지난 기록으로 고른 셈이에요. 앞날을 맞히는 목록이 아니에요.'});
-  const MK = MARK(T) && P.strict && KEYN.every(k => Number.isFinite(P[k]?.old100)); // 주문 1209 — 칸은 일곱 그대로라 큰 값은 일곱의 기록 · 수르 계산법 표가 붙은 곳의 기록을 함께
-  const mids = KEYN.map(k => { const p = P[k]; return MK ? val(p.old100, '번', KIND[k] + ' · 100번 가운데', {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: (P.what?.[k] ?? NEED), 어떻게: '날마다 고른 일곱을 모두 셌어요(' + num(p.oldN) + '번)', 왜: '지난 기록만 보여 줘요'},
+  const MK = MARK(T) && P.strict && KEYN.every(k => Number.isFinite(P[k]?.old100)), MCK = MCR(T) && P.mcRank && KEYN.every(k => Number.isFinite(P[k]?.old100)); // 주문 1422 — 큰 값 = 몬테카를로 차례 일곱의 기록 · 예전 셈 함께 // 주문 1209 — 칸은 일곱 그대로라 큰 값은 일곱의 기록 · 수르 계산법 표가 붙은 곳의 기록을 함께
+  const mids = KEYN.map(k => { const p = P[k]; return MCK ? val(p.per100, '번', KIND[k] + ' · 100번 가운데', {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: (P.what?.[k] ?? NEED), 어떻게: '날마다 몬테카를로 차례로 고른 일곱을 모두 셌어요(' + num(p.n) + '번 가운데 ' + num(p.hit) + '번)', 왜: '지난 기록만 보여 줘요'},
+      {mean: '100번에 ' + p.per100 + '번이 한 달 안에 ' + PASTW[k] + '. 예전 셈은 100번에 ' + p.old100 + '번, 아무 회사는 ' + p.base100 + '번이었어요.'})
+    : MK ? val(p.old100, '번', KIND[k] + ' · 100번 가운데', {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: (P.what?.[k] ?? NEED), 어떻게: '날마다 고른 일곱을 모두 셌어요(' + num(p.oldN) + '번)', 왜: '지난 기록만 보여 줘요'},
       {mean: '100번에 ' + p.old100 + '번이 한 달 안에 ' + PASTW[k] + '. 그 가운데 수르 계산법으로 찾은 곳은 100번에 ' + p.per100 + '번(' + num(p.n) + '번 가운데 ' + num(p.hit) + '번), 아무 회사는 ' + p.base100 + '번이었어요.'})
     : val(p?.per100 ?? null, '번', KIND[k] + ' · 100번 가운데', {누가: KIND[k] + ' 셈으로 날마다 고른 일곱', 언제: (P.from ?? NEED) + ' ~ ' + (P.to ?? NEED), 어디서: '지금 우량주 365곳', 무엇을: (P.what?.[k] ?? NEED), 어떻게: '날마다 고른 일곱을 모두 셌어요(' + num(p?.n) + '번 가운데 ' + num(p?.hit) + '번)', 왜: '지난 기록만 보여 줘요'},
     {mean: p ? '100번에 ' + p.per100 + '번이 한 달 안에 ' + PASTW[k] + '.' + (P.strict && Number.isFinite(p.old100) ? ' 거르기 전 일곱은 ' + p.old100 + '번,' : '') + ' 아무 회사는 100번에 ' + p.base100 + '번이었어요.' : '지난 기록은 ' + NEED + '예요.'}); });

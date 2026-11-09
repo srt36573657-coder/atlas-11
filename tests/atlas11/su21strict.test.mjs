@@ -81,3 +81,13 @@ test('며칠째 — 표시 판(주문 1209 · strict.mode mark)은 칸이 옛 �
   const strictRec = {rule: 'strict31-v1', days: {'2026-11-06': {how: 'replay', lists: {}}}}; // 거른 판으로 적은 기록 — 규칙이 달라 적지 않음(지난 판 다시 세기가 먼저 옛 규칙으로 바꿈)
   assert.equal(keepDay(strictRec, su, null, 'x'), false);
 });
+
+test('며칠째 — 몬테카를로 차례 판(주문 1422 · listRule mc365-v1)은 그 규칙 이름으로 적음 · 옛 기록은 지난 판 다시 세기가 먼저 바꿈', async () => {
+  const {keepDay} = await import('../../scripts/atlas11/next/su21_days.mjs');
+  const KEYS = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
+  const su = {asOf: {board: '2026-11-09'}, listRule: 'mc365-v1', lists: Object.fromEntries(KEYS.map(k => [k, []]))};
+  const oldRec = {days: {'2026-11-06': {how: 'replay', lists: {}}}};
+  assert.equal(keepDay(oldRec, su, null, 'x'), false);
+  const neu = {rule: 'mc365-v1', days: {'2026-11-06': {how: 'replay', lists: {}}}};
+  assert.equal(keepDay(neu, su, null, 'x'), true); assert.equal(neu.rule, 'mc365-v1');
+});

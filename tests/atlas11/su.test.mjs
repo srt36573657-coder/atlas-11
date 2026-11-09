@@ -421,7 +421,7 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
     const now = new Set(T.lists[NOWK[k]].map(c => c.code));
     for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' 365 안'); assert.ok(c.in.includes(k)); assert.ok(!now.has(c.code), k + ' ' + c.name + ' — 지금 일곱과 겹치지 않음');
       const w = c.why ?? {};
-      if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 까닭 ' + c.name);
+      if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (T.listRule === 'mc365-v1' ? ['rank', 'five'].includes(w.how) : w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 까닭 ' + c.name); // 주문 1422 — 몬테카를로 차례 판은 불장 업종(rank) · 업종 닷새 오름(five)
       if (k === 'moneyNext') assert.ok(Number.isFinite(w.gain) && w.gain > 0, 'moneyNext 까닭 ' + c.name);
       if (k === 'bloomNext') assert.ok(Number.isFinite(w.x5) && w.x5 >= 0 && Number.isFinite(w.x20) && w.x20 < 5, 'bloomNext 까닭(싹) ' + c.name); }
     assert.ok(Number.isFinite(T.past?.[k]?.per100) && Number.isFinite(T.past?.[k]?.base100) && T.past[k].n > (T.past.strict ? 50 : 500), k + ' 지난 1년 기록(엄격 셈은 고른 수가 적음 — 80 ~ 180번)');
@@ -544,7 +544,9 @@ test('기록창 — 한국 시장 일곱 가지(자료 꼴 · 쓰지 않을 말 
 test('엄격 셈 — su21.py 가 지금 셈 일곱을 거름 · 첫 페이지 빈 자리 · 「왜?」 쪽 기준 31가지 · 묶을 때 su21-strict.json', () => {
   const src = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   const py = src('scripts/atlas11/next/su21.py'), ap = src('site/su/su-apple.js'), y = src('site/su/su-why36.js'), pk = src('scripts/atlas11/package.mjs'), rp = src('scripts/atlas11/next/su21_replay.mjs');
-  assert.ok(/import su21_strict as ST/.test(py) && /PICK, STRICT = ST\.select\(CTX, OLD7, fin_of\)/.test(py) && /su21-strict\.json/.test(py) && /past-strict\.json/.test(py), 'su21.py — 일곱 → 엄격 셈 · 자세히 파일 · 지난 1년');
+  // 주문 1422 뒤: su21.py 는 엄격 셈 거르기(ST.select)를 더 쓰지 않음(몬테카를로 차례 · 1억 번 셈) — 엄격 셈 틀(su21_strict.py)은 바탕(Ctx · 몬테카를로)으로 씀 · 화면은 옛 자료도 그림
+  const st = src('scripts/atlas11/next/su21_strict.py');
+  assert.ok(/import su21_strict as ST/.test(py) && /CTX = ST\.Ctx\(/.test(py) && /def select\(ctx, pools, fin_of\)/.test(st) && /assert len\(CRIT\) == 31/.test(st) && /past-strict\.json/.test(py), 'su21_strict.py — 엄격 셈 틀 · su21.py 바탕');
   assert.ok(/function empty\(x, y, w, h, side, first\)/.test(ap) && /const rowsOf = k => STRICT \? 7/.test(ap) && /'31가지 기준을', '모두 지난 곳만 보여요\.'/.test(ap), '첫 페이지 — 일곱 줄 · 빈 자리 · 한 줄 글');
   assert.ok(/export function strict31\(SX, T, k, code\)/.test(y) && /su21-strict\.json/.test(y) && /strictBox/.test(y), '「왜?」 쪽 — 더 엄격하게 상자');
   assert.ok(pk.includes("'su21-strict.json'") && rp.includes("'days.json'") && rp.includes('RULE_NOW'), '묶을 때 · 지난 판 다시 세기(하루 값 · 규칙이 바뀌면 다시 셈)');
@@ -554,12 +556,37 @@ test('엄격 셈 — su21.py 가 지금 셈 일곱을 거름 · 첫 페이지 �
 test('수르 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지난 칸만 표 · 풀이 한 줄 · 「왜?」 쪽 42칸 모두 · 며칠째는 옛 규칙', () => {
   const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   const py = rd('scripts/atlas11/next/su21.py'), ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), ck = rd('scripts/atlas11/next/check_su.mjs'), rp = rd('scripts/atlas11/next/su21_replay.mjs'), dy = rd('scripts/atlas11/next/su21_days.mjs'), s21 = rd('site/su/su-21.js');
-  assert.ok(/'sx': c in SXK\.get\(k, \(\)\)/.test(py) && /'mode': 'mark'/.test(py) && !/HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK/.test(py) && /for c in OLD7\[k\] if c in r\['info'\]/.test(py), 'su21.py — 칸은 일곱 그대로 · 표(sx) · 「왜?」 자료는 일곱 모두');
+  assert.ok(!/HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK/.test(py), 'su21.py — 칸은 일곱 그대로(주문 1422 뒤에는 몬테카를로 차례 · 표는 1등 · 2등 · 3등)');
   assert.ok(/const MARK = d\?\.strict\?\.mode === 'mark'/.test(ap) && /function sxTag\(/.test(ap) && /function legendSx\(/.test(ap) && ap.includes("SXT = '수르 계산법'") && ap.includes("SXL = '수르 계산법으로 찾은 종목'") && /'data-sx': it\.sx \? '1' : ''/.test(ap), '첫 페이지 — 표 · 풀이 · data-sx');
   assert.ok(y.includes('수르 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지') && y.includes('몬테카를로에서 걸려 기준 31가지는 세지 않았어요'), '「왜?」 쪽 — 표가 붙은 곳 · 걸린 곳');
   assert.ok(ck.includes('⑳ 첫 페이지(주문 1209)') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판');
   assert.ok(rp.includes("s?.mode === 'mark' ? null") && dy.includes("su?.strict?.mode === 'mark' ? null"), '며칠째 — 표시 판은 칸이 옛 셈 일곱이라 옛 규칙');
   assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 수르 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
-  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = MARK \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(수르 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
+  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(수르 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
   for (const t2 of ['수르 계산법', '수르 계산법으로 찾은 종목', '31가지 기준을 모두 지난 곳이에요.']) assert.ok(!/[A-Za-z%]/.test(t2), '새 글에 영어 · % 없음 — ' + t2);
+});
+
+/** 주문 1422(사장님 2026-11-09 14:22 「돈 · 꽃 · 불장 찾는 조건을 처음에 365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 42개를 찾은 것 중에서 다시 몬테카를로 …
+    1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」 · 14:37 「42곳도 표기 하고 그중에서 가장 … 좋은 1.2.3을 수르계산법으로 표기」) */
+test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소거 한 번 · 일곱씩 · 42칸 1등 · 2등 · 3등 표 · 「왜?」 쪽 · 지난 1년', () => {
+  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const py = rd('scripts/atlas11/next/su21.py'), mc = rd('scripts/atlas11/next/su21_mc.py'), t3 = rd('scripts/atlas11/next/su21_top3.py'), ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), s21 = rd('site/su/su-21.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(/RULE_ID = 'mc365-v1'/.test(mc) && /def order\(ctx, pool, k\)/.test(mc) && /def scan\(ctx\)/.test(mc), '① 몬테카를로 · 드문 차례');
+  assert.ok(/TOTAL = 100_000_000/.test(t3) && /np\.argpartition\(-z, 3, axis=1\)/.test(t3), '④ 1억 판 · 판마다 마지막 셋');
+  assert.ok(/import su21_mc as MC/.test(py) && /HOT = per2\(_o\)/.test(py) && /T3 = TOP3\.top3\(CTX, CELLS\) if A\.top3 else None/.test(py) && /out\['listRule'\] = MC\.RULE_ID/.test(py) && /'r3': PLACE\.get\(\(k, c\)\)/.test(py), 'su21.py — 일곱 · 1억 번 셈 · 규칙 이름');
+  assert.ok(pk.includes("'--mc365', '--top3'"), '올릴 때 365곳 · 1억 번');
+  assert.ok(/const RANK = !!d\?\.top3/.test(ap) && /function legendR3\(/.test(ap) && ap.includes("note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4')") && /sxTag\(x \+ 6, y \+ 8, it\.r3 \+ '등', 'sa-r3'\)/.test(ap), '첫 페이지 — 1등 · 2등 · 3등 표 · 풀이 두 줄');
+  assert.ok(/export function crit7mc\(/.test(y) && /export function top3Box\(/.test(y) && y.includes("'수르 계산법 ' + place + '등 — 1억 번 셈'"), '「왜?」 쪽 — 기준 일곱(몬테카를로) · 1억 번 셈 상자');
+  assert.ok(/const MCR = T => T\?\.listRule === 'mc365-v1'/.test(s21) && s21.includes("예전 셈은 ' + p.old100"), '21곳 쪽 — 몬테카를로 글 · 지난 1년(예전 셈과 견줌)');
+  assert.ok(ck.includes('⑳ 1억 번 셈 — 1억 판') && ck.includes('⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표'), '검사 ⑳ — 몬테카를로 차례 판');
+  const P = JSON.parse(rd('reports/atlas11/su-next/past-mc.json'));
+  assert.equal(P.rule, 'mc365-v1');
+  for (const g of ['hotNext', 'moneyNext', 'bloomNext']) for (const k of ['mc', 'old', 'base']) assert.ok(P.res[g][k].picks > 0 && Number.isFinite(P.res[g][k].per100), g + ' ' + k);
+  const T = JSON.parse(rd('site/su/data/su21.json'));
+  assert.equal(T.listRule, 'mc365-v1');
+  assert.ok(T.top3 && T.top3.total === 100000000 && T.top3.rank.length === 3, '저장된 판 — 1억 번 셈');
+  const r3 = Object.values(T.lists).flat().filter(c => [1, 2, 3].includes(c.r3)).map(c => c.r3).sort();
+  assert.deepEqual(r3, [1, 2, 3], '1등 · 2등 · 3등 칸 셋');
+  for (const j of [0, 1, 2]) assert.equal(Object.values(T.top3.cells).reduce((a, x) => a + x[j], 0), T.top3.total, '판마다 ' + (j + 1) + '등 하나씩');
+  for (const t2 of ['1등', '2등', '3등', '수르 계산법 차례', '1억 번 섞어', '끝까지 남은 차례예요.']) assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|추천/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
 });

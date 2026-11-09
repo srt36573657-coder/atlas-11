@@ -51,7 +51,7 @@ export async function buildDist() {
   //   매일 · 저녁 · 손 올리기가 모두 이 묶음을 거치므로 올릴 때마다 굴린 dist 자료(atlas/data · next/data)와 오늘 판(public/data/atlas11/view/board.json)으로 다시 셈
   //   셈이 멈추면 저장된 판(site/su/data/su21.json)이 그대로 실림 — 올리기는 멈추지 않음 · scripts/atlas11/next/su21.py
   try {
-    const {stdout} = await run('python3', [path.join(root, 'scripts/atlas11/next/su21.py'), '--live', dist, '--repo', root, '--out', path.join(dist, 'su/data/su21.json'), '--mc365'], {maxBuffer: 1e7}); // --mc365 = 엄격 셈 ① 몬테카를로를 365곳 모두에(주문 0854 · 지난 판 다시 세기는 일곱만)
+    const {stdout} = await run('python3', [path.join(root, 'scripts/atlas11/next/su21.py'), '--live', dist, '--repo', root, '--out', path.join(dist, 'su/data/su21.json'), '--mc365', '--top3'], {maxBuffer: 1e7}); // --mc365 = 몬테카를로를 365곳 모두에 · --top3 = 42칸 1억 번 셈 1등 · 2등 · 3등(주문 1422 · 지난 판 다시 세기는 빼고)
     // 뒷걸음 막기 — 이번 묶음 자료(mkt 날짜)가 저장된 판보다 옛것이면(종가를 못 받아 굴리지 못한 날) 저장된 판을 그대로 둠
     //   su21-strict.json = 엄격 셈 자세히(주문 0854) — 저장된 판에 없으면 건너뜀
     const day = f => JSON.parse(fsSync.readFileSync(f, 'utf8')).asOf?.mkt ?? '';

@@ -1,0 +1,90 @@
+{
+ "schema": "su-mc-past-1",
+ "order": "1422",
+ "rule": "mc365-v1",
+ "from": "2025-10-01",
+ "to": "2026-09-07",
+ "lastData": "2026-10-08",
+ "days": 226,
+ "within": 20,
+ "how": {
+  "mc": "묶음마다 소거 한 번(su21.py 와 같은 기본 조건) → 몬테카를로 드문 차례 일곱",
+  "old": "예전 셈(차례 = 오른 만큼 · 앞선 만큼)",
+  "base": "그날 소거 전 아무 회사"
+ },
+ "mc": {
+  "paths": 20000,
+  "hist": 250,
+  "every": 20,
+  "how": "스무 날마다 그 회사 · 업종 지난 250날 하루 값을 2만 번 섞어 그린 길과 견줘 드묾(p)을 셈"
+ },
+ "universe": "지금 우량주 365곳(지난 1년도 같은 365곳으로 셈 · 살아남은 곳만 보는 치우침이 있음)",
+ "src": "reports/atlas11/universe/2026-10-10/bundle.json.gz · public/data/atlas11/view/board.json",
+ "what": {
+  "hotNext": "한 달(20거래일) 안에 불장 일곱에 듦",
+  "moneyNext": "한 달 안에 돈이 몰리는 일곱에 듦",
+  "bloomNext": "한 달 안에 시장보다 15 넘게 앞섬(꽃)"
+ },
+ "res": {
+  "hotNext": {
+   "mc": {
+    "picks": 1556,
+    "hits": 601,
+    "per100": 38.6,
+    "days": 224
+   },
+   "old": {
+    "picks": 1557,
+    "hits": 592,
+    "per100": 38.0,
+    "days": 224
+   },
+   "base": {
+    "picks": 80915,
+    "hits": 5544,
+    "per100": 6.9,
+    "days": 226
+   }
+  },
+  "moneyNext": {
+   "mc": {
+    "picks": 1579,
+    "hits": 636,
+    "per100": 40.3,
+    "days": 226
+   },
+   "old": {
+    "picks": 1581,
+    "hits": 522,
+    "per100": 33.0,
+    "days": 226
+   },
+   "base": {
+    "picks": 80908,
+    "hits": 6201,
+    "per100": 7.7,
+    "days": 226
+   }
+  },
+  "bloomNext": {
+   "mc": {
+    "picks": 1582,
+    "hits": 699,
+    "per100": 44.2,
+    "days": 226
+   },
+   "old": {
+    "picks": 1582,
+    "hits": 780,
+    "per100": 49.3,
+    "days": 226
+   },
+   "base": {
+    "picks": 70054,
+    "hits": 18784,
+    "per100": 26.8,
+    "days": 226
+   }
+  }
+ }
+}

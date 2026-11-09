@@ -50,6 +50,7 @@ const finLast = co => { const f = co?.fin; if (!f || !Array.isArray(f.years) || 
 
 /* ═══ 이렇게 고른 기준 일곱(묶음마다 · su21.py 고르는 셈 그대로 · 이 회사 숫자) ═══ */
 export function crit7(T, c, k) {
+  if (MCR(T)) return crit7mc(T, c, k);
   const L = T?.lists?.[k] ?? [], i = L.findIndex(x => x.code === c.code), w = c.why ?? {}, a = T?.asOf ?? {};
   const sameInd = L.filter(x => x.ind === c.ind).length;
   const base = {t: '우량주 365곳 안', s: '상장 회사 ' + (num(T?.counts?.listed) ?? NEED) + '곳 가운데 고른 우량주 365곳에 들어 있어요. ' + (KIND_ROUTE[c.kind] ? KIND_ROUTE[c.kind] + ' 들었어요.' : ''), ok: true};
@@ -99,6 +100,75 @@ export function crit7(T, c, k) {
     {t: '꽃이 될 일곱에는 아직 없음', s: '이미 꽃이 될 일곱에 든 회사는 빼고 골라요.', ok: true}];
 }
 
+/* ═══ 주문 1422(사장님 2026-11-09 14:22 「돈 · 꽃 · 불장 찾는 조건을 처음에 365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 …
+       1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 몬테카를로 차례 판(su21.json listRule mc365-v1)의 기준 일곱 · 1억 번 셈 상자 ═══ */
+export const MCR = T => T?.listRule === 'mc365-v1';
+/** 큰 수를 우리말 자리로 — 100000000 → 1억 · 100000 → 10만 · 26787094 → 2,678만 7,094(숫자 그대로 · 읽기 쉽게) */
+export const korN = n => { if (!fin(n)) return NEED; n = Math.round(n); if (n >= 1e8) { const e = Math.floor(n / 1e8), r = n % 1e8; return num(e) + '억' + (r ? ' ' + korN(r) : ''); }
+  if (n >= 1e4) { const m = Math.floor(n / 1e4), r = n % 1e4; return num(m) + '만' + (r ? ' ' + num(r) : ''); } return num(n); };
+const PATHS = T => korN(T?.mc?.paths ?? 100000);
+const pTimes = (T, p) => (fin(p) ? korN(Math.round(p * (T?.mc?.paths ?? 100000))) + '번' : NEED);
+const STATW = {hot: '20거래일 동안 오른 만큼', hotNext: '닷새 동안 오른 만큼', bloom: '업종이 20거래일 동안 시장보다 앞선 만큼', bloomNext: '닷새 동안 시장보다 앞선 만큼',
+  money: '업종이 20거래일 동안 시장보다 앞선 만큼', moneyNext: '업종이 닷새 동안 시장보다 앞선 만큼'};
+function mcLine(T, c, k) { // 몬테카를로 한 줄 — 지금 값 · 10만 번 가운데 몇 번 · 드문 차례
+  const m = c.mc ?? {};
+  return STATW[k] + '이 지금 ' + sgn(m.stat) + '이에요. 지난 250거래일 하루 값을 ' + PATHS(T) + '번 섞어 그린 길 가운데 이만큼 이상은 ' + pTimes(T, m.p) + '이었어요.';
+}
+export function crit7mc(T, c, k) {
+  const L = T?.lists?.[k] ?? [], w = c.why ?? {}, m = c.mc ?? {}, a = T?.asOf ?? {}, ind = k === 'money' || k === 'moneyNext';
+  const sameInd = L.filter(x => x.ind === c.ind).length;
+  const base = {t: '우량주 365곳 안', s: '상장 회사 ' + (num(T?.counts?.listed) ?? NEED) + '곳 가운데 고른 우량주 365곳에 들어 있어요. ' + (KIND_ROUTE[c.kind] ? KIND_ROUTE[c.kind] + ' 들었어요.' : ''), ok: true};
+  const mc = {t: '몬테카를로 — 365곳 모두', s: mcLine(T, c, k), ok: fin(m.p)};
+  const rank = {t: '드문 차례 일곱 안', s: '소거를 지난 ' + (ind ? '업종 ' : '') + (num(m.pool) ?? NEED) + (ind ? '곳' : '곳') + '을 드문 차례로 세워 ' + (fin(m.ord) ? ord(m.ord) : NEED) + (ind ? ' 업종이에요.' : '예요.'), ok: fin(m.ord)};
+  const per2 = {t: '업종마다 둘까지', s: '한 업종에서 둘까지만 골라요. ' + c.ind + ' 업종은 일곱 가운데 ' + sameInd + '곳이에요.', ok: sameInd <= 2};
+  const per1 = {t: '업종마다 하나', s: c.ind + ' 업종 365곳 가운데 회사 크기가 가장 많이 는 한 곳만 골라요.', ok: true};
+  const opens = {t: '회사 자료가 다 있음', s: '이름 · 시장 · 지난 값 자료가 모두 있어 누르면 회사 쪽이 열리는 회사만 골라요.', ok: true};
+  const fresh = {t: '그날 값이 있음', s: day(c.date) + ' 마지막 값이 있어요. 값이 늦은 회사는 빼요.', ok: c.date === a.board};
+  if (k === 'hot') return [base, mc,
+    {t: '소거 한 번 — 불장 업종 · 오름', s: c.ind + ' 업종은 365곳 평균이 지난 20거래일 동안 ' + (fin(w.ind20) ? won(w.ind20) + '이 된 불장 업종이고, 이 회사는 ' : NEED + ' · ') + (fin(c.ch20) ? won(c.ch20) + '이 됐어요.' : NEED), ok: fin(c.ch20) && c.ch20 > 0},
+    rank, per2, fresh, opens];
+  if (k === 'bloom') return [base, mc,
+    {t: '소거 한 번 — 싹', s: '한 달 동안 시장보다 앞선 만큼이 ' + sgn(c.x) + '로 5 아래이고, 닷새 동안 ' + sgn(c.y) + '로 뒤지지 않았어요.', ok: fin(c.x) && c.x < 5 && fin(c.y) && c.y >= 0},
+    {t: '회사 크기 위 20 안', s: '회사 크기(시가총액)가 ' + eok(c.cap) + '으로, 모든 회사를 크기 차례로 세운 위 20 안이에요(선 ' + eok(w.capTop20) + ').', ok: fin(c.cap) && fin(w.capTop20) && c.cap >= w.capTop20},
+    rank,
+    {t: '꽃 선 15', s: w.full ? '업종이 시장보다 15 넘게 앞서 꽃 선을 넘었어요.' : '업종이 꽃 선 15를 아직 넘지 못했어요. 지금 ' + sgn(w.indX) + '만큼이에요.', ok: !!w.full},
+    opens];
+  if (k === 'money') return [base, mc,
+    {t: '소거 한 번 — 업종이 시장보다 더 오름', s: c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + '만큼 더 갔어요.', ok: fin(w.indX) && w.indX > 0},
+    rank, per1,
+    {t: '회사 크기가 원으로 늚', s: '20거래일 동안 회사 크기가 ' + eok(w.gain) + ' 늘었어요.', ok: fin(w.gain) && w.gain > 0},
+    opens];
+  if (k === 'hotNext') return [base, mc,
+    {t: '소거 한 번 — 불장 일곱 밖 · 닷새 오름', s: '불장 일곱에는 없고, 닷새 동안 ' + (fin(w.r5) ? won(w.r5) + '이 됐어요.' : NEED) + (w.how === 'rank' ? ' ' + c.ind + ' 업종은 불장 업종이에요.' : ''), ok: fin(w.r5) && w.r5 > 0},
+    rank,
+    {t: '20거래일 동안', s: '20거래일 동안 ' + (fin(w.r20) ? won(w.r20) + '이 됐어요.' : NEED), ok: fin(w.r20)},
+    per2, opens];
+  if (k === 'moneyNext') return [base, mc,
+    {t: '소거 한 번 — 돈 일곱 밖 업종', s: c.ind + ' 업종은 돈이 몰리는 일곱에 든 업종이 아니에요.', ok: true},
+    rank, per1,
+    {t: '회사 크기가 원으로 늚', s: '닷새 동안 회사 크기가 ' + eok(w.gain) + ' 늘었어요.', ok: fin(w.gain) && w.gain > 0},
+    opens];
+  return [base, mc, // bloomNext
+    {t: '소거 한 번 — 싹 · 꽃 일곱 밖', s: '한 달 동안 시장보다 앞선 만큼이 ' + sgn(w.x20) + '로 5 아래이고, 닷새 동안 ' + sgn(w.x5) + '로 뒤지지 않았어요. 꽃이 될 일곱에는 없어요.', ok: fin(w.x20) && w.x20 < 5 && fin(w.x5) && w.x5 >= 0},
+    rank,
+    {t: '20거래일 동안', s: '20거래일 동안 ' + (fin(w.r20) ? won(w.r20) + '이 됐어요.' : NEED), ok: fin(w.r20)},
+    per2, opens];
+}
+/** 1억 번 셈 상자 — 42칸끼리 판을 1억 번 벌여 1등 · 2등 · 3등(su21.json top3) */
+export function top3Box(T, c, k) {
+  const t3 = T?.top3, me = t3?.cells?.[k + ':' + c.code];
+  if (!t3 || !Array.isArray(me)) return null;
+  const tot = t3.total ?? 100000000, place = [1, 2, 3].includes(c.r3) ? c.r3 : null;
+  const all = Object.values(t3.cells).filter(Array.isArray).map(x => x[0]), rk = 1 + all.filter(x => x > me[0]).length;
+  const nm = r => r ? r.name + '(' + KIND[r.k] + ')' : NEED;
+  const R = n => (t3.rank ?? []).find(r => r.place === n);
+  return box('yw-top3', place ? '수르 계산법 ' + place + '등 — 1억 번 셈' : '수르 계산법 — 1억 번 셈', [
+    h('p', {class: 'yw-s', text: '42칸마다 지난 250거래일 하루 값으로 우연 길 ' + korN(t3.null ?? 100000) + '개를 그렸어요. 그리고 판을 ' + korN(tot) + ' 번 벌였어요.'}),
+    h('p', {class: 'yw-s', text: '판마다 칸마다 우연 길 하나를 뽑아 지금 값과 견주고, 우연보다 약한 칸부터 하나씩 떨어뜨렸어요. 이것도 ' + korN(tot) + ' 번이에요.'}),
+    h('p', {class: 'yw-s yw-verdict', text: '이 칸은 ' + korN(tot) + ' 번 가운데 ' + korN(me[0]) + '번 끝까지 남았어요. 42칸 가운데 ' + ord(rk) + '예요.' + (place ? ' 그래서 ' + place + '등이에요.' : '')}),
+    h('p', {class: 'yw-s', text: '1등 ' + nm(R(1)) + ' · 2등 ' + nm(R(2)) + ' · 3등 ' + nm(R(3)) + '이에요.'})]);
+}
+
 /* ═══ 서른여섯 가지 — 까닭 꾸러미(기 · 승 · 전 · 결) · 묶음마다 중요한 차례 ═══ */
 function facts(X) {
   const {T, c, k, co, peers, st, fo} = X, w = c.why ?? {}, a = T?.asOf ?? {}, L = T?.lists?.[k] ?? [], i = L.findIndex(x => x.code === c.code);
@@ -137,11 +207,18 @@ function facts(X) {
     peers: peers && peersUp != null ? {t: '같은 업종 회사', s: '같은 업종 365곳 다섯 회사 가운데 ' + (peersUp ? peersUp + '곳이 20거래일 동안 올랐어요.' : '20거래일 동안 오른 곳이 한 곳도 없어요.')} : null,
     peerRank: peerRank ? {t: '업종 안 차례', s: '같은 업종 다섯 회사 가운데 20거래일 동안 오른 차례로 ' + ord(peerRank) + '예요.'} : null,
     /* 전 */
-    edge: k === 'hot' || k === 'hotNext' ? (fin(hot7) && fin(c.ch20) ? {t: '일곱째와 견줌', s: '불장 일곱의 일곱째는 20거래일 동안 ' + won(hot7) + '이 됐어요. 이 회사는 ' + won(c.ch20) + '이에요.'} : null)
+    edge: MCR(T) ? (fin(c.mc?.p) && fin(L[L.length - 1]?.mc?.p) ? {t: '일곱째와 견줌', s: '이 묶음 일곱째는 ' + PATHS(T) + '번 가운데 ' + pTimes(T, L[L.length - 1].mc.p) + ', 이 칸은 ' + pTimes(T, c.mc.p) + '이었어요. 적을수록 드물어요.'} : null)
+      : k === 'hot' || k === 'hotNext' ? (fin(hot7) && fin(c.ch20) ? {t: '일곱째와 견줌', s: '불장 일곱의 일곱째는 20거래일 동안 ' + won(hot7) + '이 됐어요. 이 회사는 ' + won(c.ch20) + '이에요.'} : null)
       : k === 'bloom' ? (fin(w.indX) ? {t: '꽃 선까지', s: '업종이 시장보다 15 넘게 앞서면 꽃 선이에요. 지금 ' + sgn(w.indX) + '만큼이라 ' + (w.indX >= 15 ? '넘었어요.' : n1(15 - w.indX) + '만큼 남았어요.')} : null)
       : k === 'bloomNext' ? (fin(w.x20) ? {t: '싹 선까지', s: '한 달 동안 시장보다 5 넘게 앞서면 싹이 아니라 꽃 자리로 가요. 지금 ' + sgn(w.x20) + '만큼이에요.'} : null)
       : (fin(w.indX) ? {t: '업종 앞섬의 크기', s: '업종이 시장보다 ' + sgn(w.indX) + '만큼 앞서 있어요. 0 아래로 내려가면 이 묶음에서 빠져요.'} : null),
-    leave: {t: '빠지는 조건', s: {hot: '업종 평균이 20거래일 동안 내려가 불장 업종이 아니게 되거나, 같은 업종에서 더 많이 오른 회사 둘이 생기면 빠져요.',
+    leave: MCR(T) ? {t: '빠지는 조건', s: {hot: '업종 평균이 20거래일 동안 내려가 불장 업종이 아니게 되거나, 20거래일 오른 만큼이 더 드문 회사가 일곱 넘게 생기면 빠져요.',
+      hotNext: '불장 일곱에 들면 이 묶음 대신 불장에 들고, 닷새 오른 만큼이 더 드문 회사가 일곱 넘게 생기면 빠져요.',
+      money: '업종이 시장보다 뒤지거나, 같은 업종에서 회사 크기가 더 많이 는 회사가 나오거나, 앞선 만큼이 더 드문 업종이 일곱 넘게 생기면 빠져요.',
+      moneyNext: '업종이 돈이 몰리는 일곱에 들면 그쪽으로 가고, 닷새 앞선 만큼이 더 드문 업종이 일곱 넘게 생기면 빠져요.',
+      bloom: '한 달 동안 시장보다 앞선 만큼이 5를 넘으면 싹이 아니라 꽃 자리로 가고, 닷새 동안 시장에 뒤지면 빠져요.',
+      bloomNext: '닷새 동안 시장에 뒤지거나, 한 달 앞선 만큼이 5를 넘거나, 닷새 앞선 만큼이 더 드문 싹이 일곱 넘게 생기면 빠져요.'}[k]}
+      : {t: '빠지는 조건', s: {hot: '업종 평균이 20거래일 동안 내려가 불장 업종이 아니게 되거나, 같은 업종에서 더 많이 오른 회사 둘이 생기면 빠져요.',
       hotNext: '불장 일곱 안으로 올라가면 이 묶음 대신 불장에 들고, 차례가 14째 밖으로 밀리면 빠져요.',
       money: '업종이 시장보다 뒤지거나, 같은 업종에서 회사 크기가 더 많이 는 회사가 나오면 빠져요.',
       moneyNext: '업종이 일곱 안으로 올라가면 돈이 몰리는 묶음에 들고, 14째 밖으로 밀리면 빠져요.',
@@ -269,8 +346,9 @@ function ensureCss() { if (typeof document !== 'undefined' && !document.querySel
 export async function vWhy(X, code, k) {
   ensureCss();
   const get = X.get;
-  const [T, Tn, W, co, M, b, SX] = await Promise.all([load21(get), get('/su/data/su21-next.json').catch(() => null), get('/su/data/su21-why.json').catch(() => null),
-    get('/atlas/data/co/' + code + '.json').catch(() => null), get('/su/data/su21-map.json').catch(() => null), X.base().catch(() => ({})), get('/su/data/su21-strict.json').catch(() => null)]);
+  const T0 = load21(get); // 엄격 셈 자세히(su21-strict.json)는 엄격 셈 판(su21.json strict)일 때만 받음 — 몬테카를로 차례 판(주문 1422)에는 그 파일이 없음(없는 파일을 물으면 화면 오류)
+  const [T, Tn, W, co, M, b, SX] = await Promise.all([T0, get('/su/data/su21-next.json').catch(() => null), get('/su/data/su21-why.json').catch(() => null),
+    get('/atlas/data/co/' + code + '.json').catch(() => null), get('/su/data/su21-map.json').catch(() => null), X.base().catch(() => ({})), T0.then(T => (T?.strict ? get('/su/data/su21-strict.json').catch(() => null) : null)).catch(() => null)]);
   const nx = k.endsWith('Next'), src = nx ? (Tn?.lists?.[k] ?? T?.lists?.[k]) : T?.lists?.[k];
   const c = (src ?? []).find(x => x.code === code);
   if (!c) return X.notFound('이 회사는 오늘 그 묶음에 없어요. 첫 페이지에서 다시 골라 주세요.');
@@ -291,7 +369,7 @@ export async function vWhy(X, code, k) {
       h('ol', {class: 'yw-ol'}, (W?.checks ?? []).map((x, j) => { const r = fo?.checks?.find(y => y.id === x.id); return li(j + 1, x.label + ' — ' + x.rule, x.why + '.', okMark(r?.verdict === 'pass')); })),
       F11 ? h('h3', {class: 'yw-h3', text: '이 값이 나온 까닭 열한 가지'}) : null,
       F11 ? h('ol', {class: 'yw-ol'}, F11.map((x, j) => li(j + 1, x.t, x.s))) : h('p', {class: 'yw-s', text: fo ? '기준 「' + ((W?.checks ?? []).find(x => x.id === fo.first)?.label ?? NEED) + '」에서 걸려 값을 보여 드리지 않아요.' : '포모 자료가 오늘 판과 날이 달라 값을 보여 드리지 않아요.'})]);
-  const strictBox = strict31(SX, T, k, code);
+  const strictBox = MCR(T) ? top3Box(T, c, k) : strict31(SX, T, k, code); // 주문 1422 — 몬테카를로 차례 판은 1억 번 셈 상자 · 옛 판은 엄격 셈 상자
   const go = h('nav', {class: 'yw-go', 'aria-label': '다음에 볼 곳'},
     h('a', {class: 'su-ask', href: '#/c/' + code}, h('b', {text: '이 회사 쪽 보기'}), h('span', {text: '한 달 꺾은선과 업종을 봐요.'})),
     h('a', {class: 'su-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'})));
