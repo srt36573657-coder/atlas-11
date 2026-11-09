@@ -138,8 +138,7 @@ export function cultureBox(T, c) {
     near: fin(v.dd) ? '지난 1년 가장 높은 값을 100으로 보면 지금은 ' + Math.round(v.dd) + '이에요.' : null, rev: fin(v.x20) ? '한 달 동안 시장보다 ' + sgn(v.x20) + '만큼 갔어요.' : null,
     casc: fin(v.casc) ? (v.casc > 0 ? '열흘 안에 크게 내린 날이 가장 길게 ' + v.casc + '일 잇달았어요.' : '열흘 안에 크게 내린 날이 없어요.') : null, big: fin(v.rank) ? '365곳 가운데 몸집 ' + ord(v.rank) + '예요.' : null,
     lot: fin(v.mx5) ? '닷새 안에 가장 크게 뛴 하루는 ' + sgn(v.mx5) + '만큼이에요.' : null, attn: fin(v.nbig) ? '닷새 안에 평소보다 크게 움직인 날이 ' + v.nbig + '일이에요.' : null};
-  const nOn = C.traits.filter(t => on.includes(t.k)).length;
-  return fold('yw-cu', '한국 투자자 문화 일곱 — 이 칸', '일곱 가운데 ' + nOn + '가지가 보여요', [
+  return box('yw-cu', '한국 투자자 문화 일곱 — 이 칸', [
     h('p', {class: 'yw-s', text: '도우미 열하나가 한국 투자자의 특징 열하나를 따로 찾았어요. 그 가운데 마지막 값으로 잴 수 있는 일곱을 이렇게 정했어요.'}),
     h('ol', {class: 'yw-ol'}, C.traits.map((t, j) => li(j + 1, t.name + ' — ' + t.use, t.say + (said[t.k] ? ' 이 칸은 ' + said[t.k] : ''), h('span', {class: 'yw-ok ' + (on.includes(t.k) ? 'yw-pass' : 'yw-no'), text: on.includes(t.k) ? '보임' : '없음'})))),
     h('a', {class: 'su-ask', href: '#/r/i'}, h('b', {text: '특징 열하나 보기'}), h('span', {text: '도우미 열하나가 찾은 근거를 기록창에서 봐요.'}))]); // 주문 2235
@@ -195,7 +194,7 @@ export function top3Box(T, c, k) {
   const nm = r => r ? r.name + '(' + KIND[r.k] + ')' : NEED;
   const R = n => (t3.rank ?? []).find(r => r.place === n);
   const v2 = t3.v === 'top3-v2';
-  return fold('yw-top3', place ? '큐피트 계산법 ' + place + '등 — 1억 번 셈' : '큐피트 계산법 — 1억 번 셈', '42칸 가운데 ' + ord(rk) + '예요', [
+  return box('yw-top3', place ? '큐피트 계산법 ' + place + '등 — 1억 번 셈' : '큐피트 계산법 — 1억 번 셈', [
     h('p', {class: 'yw-s', text: '42칸마다 지난 250거래일 하루 값으로 ' + (v2 ? '요즘 흔들림에 맞춘 ' : '') + '우연 길 ' + korN(t3.null ?? 100000) + ' 개를 그렸어요. 그리고 판을 ' + korN(tot) + ' 번 벌였어요.'}),
     v2 ? h('p', {class: 'yw-s', text: '잣대는 셋이에요. 오른 만큼, 가장 크게 뛴 하루를 뺀 만큼, 눈길 몰린 날이 적은 만큼이에요. 판마다 세 잣대의 무게를 ' + (t3.gn ?? 12) + '가지 가운데 하나로 바꿔 섞었어요.'}) : null,
     h('p', {class: 'yw-s', text: '판마다 칸마다 우연 길 하나를 뽑아 지금 값과 견주고, 우연보다 약한 칸부터 하나씩 떨어뜨렸어요. 이것도 ' + korN(tot) + ' 번이에요.'}),
@@ -344,90 +343,11 @@ export function fomo11(F, why) {
   return rows.slice(0, 11);
 }
 
-/* ═══ 한눈 그림(주문 0510 · 사장님 2026-11-10 05:10 「이곳에 글이 너무 어렵고 많아 핵심을 도식화로 만들어서 한눈에 알수있도록 해 11개 에이전트 활용하고
-       잡스라면 어떻게 했을지 공부 한다음 혁신적으로 개선해」) — 맨 위 한 장: ① 한 줄 답 ② 고른 길(상장 → 우량주 → 기준을 지난 곳 → 일곱 → 이 회사)
-   ③ 드묾 한 줄 ④ 지난 1년(될 듯 셋 — 100번에 몇 번 · 아무 회사) · 글씨는 모두 HTML(그림 속 글자 0) · 숫자는 받은 자료 그대로 ═══ */
-const PASTW = (T, k) => ({hotNext: '한 달 안에 불장 일곱에 든 횟수예요.', moneyNext: '한 달 안에 돈이 몰리는 일곱에 든 횟수예요.',
-  bloomNext: (T?.past?.bloomFrom === 'pick' ? '고른 날부터 ' : '') + '한 달 안에 시장보다 15 넘게 앞서 꽃이 된 횟수예요.'}[k] ?? '');
-/** 한 줄 답 — 묶음마다 가장 큰 까닭 하나(su-21.js why21 의 첫 마디와 같은 숫자) */
-export function answer1(T, c, k) {
-  const w = c.why ?? {}, st = c.mc?.stat;
-  const vs = x => (fin(x) ? '시장보다 ' + n1(Math.abs(x)) + '만큼 ' + (x >= 0 ? '앞섰어요.' : '뒤졌어요.') : '시장과 견준 값은 ' + NEED + '예요.'); // 「+10만큼」은 「10만」으로 읽힘 — 표 없이 앞섬 · 뒤짐
-  if (!MCR(T)) return String(why21(c, k, T)).split(/(?<=[요다]\.)\s/)[0];
-  return {hot: c.ind + ' 업종이 불장이에요. 한 달 새 ' + (fin(c.ch20) ? won(c.ch20) + '이 됐어요.' : NEED),
-    hotNext: '불장 일곱 밖에서 닷새 새 ' + (fin(w.r5) ? won(w.r5) + '이 됐어요.' : NEED),
-    money: c.ind + ' 업종이 한 달 동안 ' + vs(st),
-    moneyNext: c.ind + ' 업종이 닷새 동안 ' + vs(st),
-    bloom: '아직 싹이에요. ' + c.ind + ' 업종은 한 달 동안 ' + vs(st),
-    bloomNext: '아직 싹인데, 닷새 동안 ' + vs(st)}[k] ?? NEED;
-}
-/** 고른 길 다섯 칸 — 큰 수 · 이름(넓이는 좁아지는 뜻만 · 실제 수는 글로) · 칸마다 그 칸의 기준(기준 일곱을 칸에 나눔) */
-const stepOf = x => (/우량주/.test(x.t) ? 1 : /^몬테카를로|^소거/.test(x.t) ? 2 : /차례|업종마다/.test(x.t) ? 3 : 4);
-export function path5(T, c, k, pos, C7 = []) {
-  const ind = k === 'money' || k === 'moneyNext', pool = fin(c.mc?.pool) ? c.mc.pool : T?.counts?.pools?.[k] ?? null;
-  const cut = String(C7.find(x => /^소거 한 번 — /.test(x.t))?.t ?? '').replace(/^소거 한 번 — /, ''); // 거른 기준 이름(기준 일곱의 소거 줄 그대로)
-  const S = [{v: T?.counts?.listed, n: num(T?.counts?.listed) + '곳', t: '상장 회사 모두', say: (T?.counts?.listedWhat ? T.counts.listedWhat.replace(' · ', '와 ') + ' ' : '') + num(T?.counts?.listed) + '곳에서 시작해요.'},
-    {v: T?.counts?.b365, n: num(T?.counts?.b365) + '곳', t: '우량주만'},
-    {v: pool, n: (fin(pool) ? num(pool) : NEED) + '곳', t: cut || (ind ? '기준을 지난 업종' : '기준을 지난 회사')},
-    {v: 7, n: '일곱', t: KIND[k] + ' · 드문 차례로'}, {v: 1, n: '한 곳', t: c.name + ' · 일곱 가운데 ' + (pos > 0 ? ord(pos) : NEED), me: true}];
-  C7.forEach((x, j) => { const st = S[stepOf(x)]; (st.items ??= []).push({...x, n: j + 1}); });
-  return S;
-}
-/** 드묾 — 왜 쪽 첫 까닭(why21)과 같은 셈(문화 셈 판의 될 듯 둘은 365곳 모두의 길) · {n: 이만큼 간 길 수, all: 그린 길 수} */
-const rareOf = (T, c) => { const m = c.mc ?? {}; if (!MCR(T) || !fin(m.p)) return null; const p = CUR(T) && fin(m.pm) ? m.pm : m.p, all = T?.mc?.paths ?? 100000;
-  return {n: Math.round(p * all), all}; };
-/** 100개에 몇 개 — 잡스처럼 큰 수를 떠올릴 수 있는 크기로(일꾼 04 「하루 2만 대」) */
-const per100 = (n, all) => { const v = 100 * n / all; return v < 1 ? '100개에 1개가 안 돼요.' : Number.isInteger(Math.round(v * 10) / 10) ? '100개에 ' + Math.round(v) + '개꼴이에요.' : '100개에 ' + Math.ceil(v) + '개가 안 돼요.'; };
-/** 네모 백 칸 — 칠한 만큼(소수 됨 · 마지막 칸은 그만큼만) */
-const grid100 = (fill, cls, label) => h('span', {class: 'yw-g100 ' + cls, role: 'img', 'aria-label': label},
-  Array.from({length: 100}, (_, i) => h('i', {class: 'yw-c', style: i < Math.floor(fill) ? '--f:100%' : i === Math.floor(fill) && fill % 1 ? '--f:' + Math.round((fill % 1) * 100) + '%' : null})));
-export function glance(T, c, k, pos, C7 = []) {
-  const P = path5(T, c, k, pos, C7), past = T?.past?.[k], A = answer1(T, c, k), R = rareOf(T, c), nOk = C7.filter(x => x.ok).length;
-  const step = (r, i) => h('li', {class: 'yw-st' + (r.me ? ' yw-sme' : ''), style: '--i:' + i},
-    h('details', {class: 'yw-sd'}, h('summary', {class: 'yw-ss'}, h('b', {class: 'yw-sn', text: r.n}), ' ', h('span', {class: 'yw-sl', text: r.t}), r.items || r.say ? h('i', {class: 'yw-chev', 'aria-hidden': 'true'}) : null), ' ',
-      r.say ? h('p', {class: 'yw-s', text: r.say}) : null,
-      r.items ? h('ol', {class: 'yw-ol yw-sx'}, r.items.map(x => li(x.n, x.t, x.s, okMark(x.ok)))) : null));
-  const top = h('section', {class: 'yw-glance yw-crit', 'aria-label': '한눈에 — 왜 여기 있나', 'data-listed': String(P[0].v ?? ''), 'data-b365': String(P[1].v ?? ''), 'data-pool': String(P[2].v ?? ''), 'data-pos': String(pos), 'data-ok': String(nOk)},
-    h('p', {class: 'yw-a1', text: A}),
-    h('div', {class: 'yw-fun'}, h('h2', {class: 'yw-gh', text: num(T?.counts?.listed) + '곳을 세 번 걸러 남은 일곱 가운데 하나예요'}),
-      h('ol', {class: 'yw-steps', 'aria-label': P.map(r => r.n + ' ' + r.t).join(' → ')}, P.map(step)),
-      h('p', {class: 'yw-dots', 'aria-label': '고른 기준 일곱 가운데 ' + nOk + '가지 맞음'}, C7.map(x => h('i', {class: 'yw-dot ' + (x.ok ? 'yw-dok' : 'yw-dno'), 'aria-hidden': 'true'})), ' ',
-        h('b', {text: nOk === C7.length ? '기준 일곱 모두 맞아요' : '기준 일곱 가운데 ' + nOk + '가지 맞아요'}), ' ', h('span', {text: '칸을 누르면 그 칸의 기준이 열려요.'}))));
-  const more = h('section', {class: 'yw-glance yw-g2', 'aria-label': '드묾과 지난 1년'}, // 세 칸(첫 발견 · 며칠째 · 포모지수) 뒤 — 우연이었나 · 지난 1년 · 셈한 날
-    R ? h('div', {class: 'yw-rare'}, h('h2', {class: 'yw-gh', text: '우연이었을까요?'}),
-      h('div', {class: 'yw-pic'}, grid100(100 * R.n / R.all, 'yw-ga', korN(R.all) + '개 가운데 ' + num(R.n) + '개'),
-        h('p', {class: 'yw-cap'}, h('span', {text: '지난 1년 하루 값을 섞어 길 ' + korN(R.all) + '개를 그렸어요.'}), ' ', h('b', {text: '이만큼 간 길은 ' + num(R.n) + '개뿐이에요.'}), ' ', h('span', {text: per100(R.n, R.all)}), ' ', h('span', {class: 'yw-small', text: '네모 하나가 길 ' + korN(R.all / 100) + '개예요.'})))) : null,
-    past && fin(past.per100) && fin(past.base100) ? h('div', {class: 'yw-past'}, h('h2', {class: 'yw-gh', text: '지난 1년, 이렇게 고른 회사는?'}),
-      h('div', {class: 'yw-pics2'},
-        h('figure', {class: 'yw-pic2'}, grid100(past.per100, 'yw-ga', '이렇게 고른 회사 100번에 ' + past.per100 + '번'), h('figcaption', null, h('span', {text: '이렇게 고른 회사'}), ' ', h('b', {text: '100번에 ' + past.per100 + '번'}))),
-        h('figure', {class: 'yw-pic2'}, grid100(past.base100, 'yw-gg', '아무 회사 100번에 ' + past.base100 + '번'), h('figcaption', null, h('span', {text: '아무 회사'}), ' ', h('b', {text: '100번에 ' + past.base100 + '번'})))),
-      h('p', {class: 'yw-cap'}, h('span', {text: PASTW(T, k)}), ' ', fin(past.h1) && fin(past.h2) ? h('span', {class: 'yw-small', text: '앞 반년 ' + past.h1 + '번, 뒤 반년 ' + past.h2 + '번이에요.'}) : null)) : null,
-    h('p', {class: 'yw-stamp', text: day(T?.asOf?.board) + ' 마지막 값으로 셌어요. 지난 기록이고, 앞날은 맞히지 않아요.'}));
-  return {top, more};
-}
-/** 포모 온도계 — 0 차분 · 50 보통 · 100 뜨거움(주문 0510 일꾼 10 「멈춤」 — 뜨거움이 경보처럼 혼자 서지 않게) · 바로 아래 「사기 전에 한 번 멈춰요」 */
-const thermo = c => (fin(c.fomo) ? h('div', {class: 'yw-th'},
-  h('p', {class: 'yw-tt'}, h('b', {text: '포모지수 ' + c.fomo}), ' ', h('span', {text: '보통은 50이에요'})),
-  h('span', {class: 'yw-tbar', role: 'img', 'aria-label': '온도계 — 0은 차분 · 50은 보통 · 100은 뜨거움 · 지금 ' + c.fomo}, h('i', {class: 'yw-tmark', style: '--v:' + Math.max(0, Math.min(100, c.fomo)) + '%'})),
-  h('span', {class: 'yw-tsc', 'aria-hidden': 'true'}, h('span', {text: '0 차분'}), h('span', {text: '50 보통'}), h('span', {text: '100 뜨거움'})),
-  h('p', {class: 'yw-s', text: '뜨거움은 앞날을 말하지 않아요. 사기 전에 한 번 멈춰요.'})) : null);
-
 /* ═══ 쪽 ═══ */
 const box = (cls, title, kids) => h('section', {class: 'yw-box ' + cls, 'aria-label': title}, h('h2', {class: 'yw-h', text: title}), ...kids);
 // 제목 · 문장 · 표 사이에 띄어쓰기 글(화면에는 안 보임 — 칸이 grid) — 글을 이어 읽을 때 「크기」+「회사」가 「기회」처럼 붙지 않게(쓰지 않을 말 셈)
 const li = (n, t, s, extra = null) => h('li', {class: 'yw-li'}, h('span', {class: 'yw-n', 'aria-hidden': 'true', text: String(n)}), ' ', h('div', {class: 'yw-tx'}, h('b', {class: 'yw-t', text: t}), ' ', h('p', {class: 'yw-s', text: s}), ' ', extra));
 const okMark = ok => h('span', {class: 'yw-ok ' + (ok ? 'yw-pass' : 'yw-no'), text: ok ? '맞음' : '아직'});
-/* ── 접는 상자(주문 0510 · 사장님 2026-11-10 05:10 「이곳에 글이 너무 어렵고 많아 핵심을 도식화로 만들어서 한눈에 알 수 있도록」) — 긴 글은 눌러야 열림 · 닫힌 줄에 무엇이 들었는지 한 줄 ── */
-const fold = (cls, title, hint, kids, shut = false) => {
-  const d = h('details', {class: 'yw-box yw-fold ' + cls},
-    h('summary', {class: 'yw-fs'}, h('span', {class: 'yw-fst'}, h('h2', {class: 'yw-h', text: title}), ' ', hint ? h('span', {class: 'yw-hint', text: hint}) : null), h('i', {class: 'yw-chev', 'aria-hidden': 'true'})), ' ', ...kids);
-  if (shut) { // 긴 상자 끝 「접기」(일꾼 06 「손가락」 — 위로 다시 밀지 않고 닫음)
-    const b = h('button', {type: 'button', class: 'yw-shut', text: '접기'});
-    b.addEventListener('click', () => { d.open = false; d.querySelector('summary')?.scrollIntoView({block: 'nearest'}); });
-    d.append(b);
-  }
-  return d;
-};
 
 /* ── 더 엄격하게(주문 0854 · 사장님 2026-11-09 08:54 「몬테카를로 방식으로 먼저 찾아낸 다음 소거법을 31번 더 돌려서 지금보다 엄격한 기준으로」 · 09:02 「어」)
    su21-strict.json 그대로 — 몬테카를로(10만 길 · 스무 번에 한 번 아래) · 후보 → 몬테카를로 → 기준 31가지 → 남은 곳 · 기준마다 이 회사 값과 통과(가 ~ 마 다섯 묶음) */
@@ -446,7 +366,7 @@ export function strict31(SX, T, k, code) {
     : hasOk ? '이 회사는 기준 31가지 가운데 ' + nOk + '가지를 지나 표가 붙지 않았어요. 걸린 기준은 아래에 「걸림」으로 보여요.'
     : '이 회사는 몬테카를로에서 걸려 기준 31가지는 세지 않았어요. 그래서 표가 붙지 않았어요.';
   let n = 0;
-  return fold('yw-strict', mark ? (passed ? '큐피트 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지' : '큐피트 계산법 — 몬테카를로와 기준 31가지') : '더 엄격하게 — 몬테카를로와 기준 31가지', hasOk ? '31가지 가운데 ' + nOk + '가지를 지났어요' : '몬테카를로에서 걸렸어요', [
+  return box('yw-strict', mark ? (passed ? '큐피트 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지' : '큐피트 계산법 — 몬테카를로와 기준 31가지') : '더 엄격하게 — 몬테카를로와 기준 31가지', [
     h('p', {class: 'yw-s', text: '지난 ' + num(SX.mc?.hist ?? 250) + '거래일 하루 값을 ' + num(SX.mc?.paths ?? 100000) + '번 섞어 그린 길 가운데, 지금 모습(' + say + ')보다 크거나 같은 길은 '
       + num(Math.round((p ?? 0) * (SX.mc?.paths ?? 100000))) + '번이었어요. ' + num(cut) + '번 아래(스무 번에 한 번 아래)만 남겨요.'}),
     h('p', {class: 'yw-s', text: '이 묶음 후보 ' + g.pool + '곳 → 몬테카를로를 지난 곳 ' + g.mc + '곳 → 기준 31가지를 모두 지난 곳 ' + g.final + '곳이에요.'}),
@@ -477,10 +397,10 @@ export async function vWhy(X, code, k) {
   const head = h('section', {class: 'yw-sum', 'aria-label': '첫 발견 · 며칠째 · 포모지수'},
     h('p', {class: 'yw-chip'}, h('span', {text: '첫 발견'}), h('b', {text: fin(c.days) ? day(c.found) : NEED})),
     h('p', {class: 'yw-chip'}, h('span', {text: '며칠째'}), h('b', {text: fin(c.days) ? c.days + '일째' : NEED})),
-    h('p', {class: 'yw-chip'}, h('span', {text: '포모지수'}), h('b', {text: fin(c.fomo) ? String(c.fomo) : '보류'}), fin(c.fomo) ? h('small', {class: 'yw-c50', text: '보통 50'}) : null));
+    h('p', {class: 'yw-chip'}, h('span', {text: '포모지수'}), h('b', {text: fin(c.fomo) ? String(c.fomo) : '보류'})));
+  const crit = box('yw-crit', '이렇게 고른 기준 일곱 가지', [h('ol', {class: 'yw-ol'}, C7.map((x, j) => li(j + 1, x.t, x.s, okMark(x.ok))))]);
   const parts = P.map(p => box('yw-part', p.name, [h('ol', {class: 'yw-ol', start: String(p.items[0]?.n ?? 1)}, p.items.map(it => li(it.n, it.t, it.s)))]));
-  const why36box = fold('yw-36', '까닭 서른여섯 가지', '중요한 차례로 기승전결 아홉씩', parts, true);
-  const fomoBox = fold('yw-fomo', fin(c.fomo) ? '포모지수 ' + c.fomo + ' — 왜 이 값이 나왔나요?' : '포모지수 — 보류', fin(c.fomo) ? '50이 이 회사의 보통 때예요' : '오늘은 값을 보여 드리지 않아요',
+  const fomoBox = box('yw-fomo', fin(c.fomo) ? '포모지수 ' + c.fomo + ' — 왜 이 값이 나왔나요?' : '포모지수 — 보류',
     [h('h3', {class: 'yw-h3', text: '기준 일곱 가지(소거법)'}),
       h('ol', {class: 'yw-ol'}, (W?.checks ?? []).map((x, j) => { const r = fo?.checks?.find(y => y.id === x.id); return li(j + 1, x.label + ' — ' + x.rule, x.why + '.', okMark(r?.verdict === 'pass')); })),
       F11 ? h('h3', {class: 'yw-h3', text: '이 값이 나온 까닭 열한 가지'}) : null,
@@ -490,9 +410,8 @@ export async function vWhy(X, code, k) {
   const go = h('nav', {class: 'yw-go', 'aria-label': '다음에 볼 곳'},
     h('a', {class: 'su-ask', href: '#/c/' + code}, h('b', {text: '이 회사 쪽 보기'}), h('span', {text: '한 달 꺾은선과 업종을 봐요.'})),
     h('a', {class: 'su-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'})));
-  const G = glance(T, c, k, (src ?? []).findIndex(x => x.code === code) + 1, C7); // 주문 0510 — 한눈 그림(답 한 줄 · 고른 길 · 기준 일곱) → 세 칸 → 우연이었나 · 지난 1년 → 접은 상자
   const hero = h('div', {class: 'su-hero yw', 'data-g': 'su-why36', 'data-k': k, 'data-code': code, 'data-n': String(P.reduce((a, p) => a + p.items.length, 0)), 'data-fomo': fin(c.fomo) ? String(c.fomo) : ''},
-    G.top, head, G.more, cuBox, strictBox, why36box, fomoBox, thermo(c), go); // 주문 0510 — 한눈 그림 먼저 · 긴 글은 접음 · 온도계 뒤에 멈춤
+    head, crit, cuBox, strictBox, ...parts, fomoBox, go);
   const pro = fo && F11 ? [h('section', {class: 'su-why', 'aria-label': '포모 셈 자세히'}, h('h2', {class: 'su-ft', text: '포모 셈 자세히'}),
     h('p', {class: 'su-lead', text: '옛 아틀라스 포모 열여덟 가지 가운데 종가로 셀 수 있는 「가격 열기」 여섯 가지로 셈해요. 길 ' + num(fo.paths) + '개 · 흔들림 ' + n1(fo.se) + ' · 바탕 ' + fo.base?.n + '날 · 같은 날 같은 회사는 늘 같은 값이에요.'}))] : [];
   return {title: c.name + ' · 왜?', tab: 0, h1: c.name + ', 왜 ' + ASK[k] + '?', proper: false, hero, body: pro,

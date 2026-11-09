@@ -682,18 +682,3 @@ test('이름 큐피트 · 천사 단추 · 꽃이 될 듯은 빚투 · 본전을
   assert.deepEqual(T.culture.neg.bloomNext, []); assert.ok(!T.rules.bloomNext.includes('본전 버티기는 뺌'), '42칸 셈 풀이');
   assert.ok(K.items[3].why.includes('꽃이 될 듯에서는 빼지 않아요') && K.items[9].why.includes('꽃이 될 듯에서는 빼지 않아요') && K.items[4].why.includes('불장과 불장이 될 듯에서 빼요'), '기록창 특징 열하나 글');
 });
-
-/** 주문 0510(사장님 2026-11-10 05:10 「이곳에 글이 너무 어렵고 많아 핵심을 도식화로 만들어서 한눈에 알수있도록 해 11개 에이전트 활용하고 잡스라면 어떻기 했을지 공부 한다음 혁신적으로 개선해」)
- *  — 「왜?」 쪽 맨 위 한눈 그림(답 한 줄 · 고른 길 다섯 칸 · 칸 안에 기준 일곱) · 우연이었나 백 칸 · 지난 1년 백 칸 둘 · 긴 글은 접음 · 온도계 뒤 멈춤 · 검사 */
-test('「왜?」 쪽 한눈 그림 — 답 한 줄 · 고른 길 · 기준 일곱이 칸 안 · 백 칸 · 접음 · 온도계(주문 0510)', () => {
-  const y = fs.readFileSync(path.join(ROOT, 'site/su/su-why36.js'), 'utf8'), css = fs.readFileSync(path.join(ROOT, 'site/su/su-why36.css'), 'utf8'), ck = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/next/check_su.mjs'), 'utf8');
-  assert.ok(/export function glance\(T, c, k, pos, C7 = \[\]\)/.test(y) && /export function answer1\(T, c, k\)/.test(y) && /export function path5\(T, c, k, pos, C7 = \[\]\)/.test(y), '한눈 그림 · 답 한 줄 · 고른 길');
-  assert.ok(y.includes("class: 'yw-glance yw-crit'") && y.includes("'곳을 세 번 걸러 남은 일곱 가운데 하나예요'"), '기준 일곱은 그림 칸 안(.yw-crit .yw-li 일곱 그대로)');
-  assert.ok(/const stepOf = x => \(\/우량주\/\.test\(x\.t\) \? 1 : \/\^몬테카를로\|\^소거\/\.test\(x\.t\) \? 2 : \/차례\|업종마다\/\.test\(x\.t\) \? 3 : 4\)/.test(y), '기준을 칸에 나눔');
-  assert.ok(y.includes("fold('yw-36', '까닭 서른여섯 가지'") && y.includes("fold('yw-fomo'") && y.includes("fold('yw-top3'") && y.includes("fold('yw-cu'"), '긴 글은 접음');
-  assert.ok(y.includes("'뜨거움은 앞날을 말하지 않아요. 사기 전에 한 번 멈춰요.'") && y.includes("h('small', {class: 'yw-c50', text: '보통 50'})"), '포모 온도계 · 보통 50');
-  assert.ok(y.includes("' 마지막 값으로 셌어요. 지난 기록이고, 앞날은 맞히지 않아요.'") && y.includes("'지난 1년, 이렇게 고른 회사는?'") && y.includes("'우연이었을까요?'"), '셈한 날 · 지난 1년 · 우연');
-  assert.ok(ck.includes("heroPct: (document.querySelector('#su .su-hero.yw')?.textContent ?? '').includes('%')"), '「왜?」 쪽 글 모두(접힌 글 포함) 「%」 없음 — 검사');
-  assert.ok(/prefers-reduced-motion: no-preference\) \{ \.yw-st \{ animation: yw-in/.test(css) && /\.yw-ss \{[^}]*min-height: 52px/.test(css) && /\.yw-shut \{[^}]*min-height: 48px/.test(css), '움직임 줄이기 · 누르는 곳 48 넘게');
-  assert.ok(ck.includes("'⑰ 한눈 그림 — 상장 · 우량주 · 거른 곳 · 일곱 · 이 회사 자리 = 자료") && ck.includes("'⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510"), '검사(check_su ⑰)');
-});
