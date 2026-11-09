@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-09",
- "fetchedAt": "2026-11-09T07:52:14Z",
- "file": "reports/atlas11/context/2026-11-09/2026-11-09T07-52-14Z.json",
+ "fetchedAt": "2026-11-09T10:01:11Z",
+ "file": "reports/atlas11/context/2026-11-09/2026-11-09T10-01-11Z.json",
  "summary": {
   "day": "2026-11-09",
-  "fetchedAt": "2026-11-09T07:52:14Z",
+  "fetchedAt": "2026-11-09T10:01:11Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-09",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7208,
-   "distinct": 7148,
-   "republished": 60,
+   "distinct": 7149,
+   "republished": 59,
    "sameArticle": 0,
-   "stocksWithTodayNews": 196,
-   "todayDistinct": 1294
+   "stocksWithTodayNews": 200,
+   "todayDistinct": 1408
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 778
+   "corporateActions": 779
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-09",
-     "value": 1349,
-     "changePct": -1.06
+     "value": 1347.7,
+     "changePct": -1.16
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 273,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,14 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-11-09",
-   "corporateActions": 778,
+   "corporateActions": 779,
    "recentActions": [
+    {
+     "code": "290650",
+     "title": "(주)엘앤씨바이오 추가상장(무상증자)",
+     "publishedAt": "2026-11-09T18:33:33+09:00",
+     "word": "무상증자"
+    },
     {
      "code": "099190",
      "title": "(주)아이센스 자기주식 취득 결정",
@@ -305,12 +311,6 @@
      "title": "(주)서진시스템 전환사채권발행결정(제44회차)",
      "publishedAt": "2026-11-06T06:53:33+09:00",
      "word": "전환사채"
-    },
-    {
-     "code": "006260",
-     "title": "(주)LS 유상증자 또는 주식관련사채 등의 발행결과(자율공시)(자회사의 주요경영사항)",
-     "publishedAt": "2026-11-06T06:53:03+09:00",
-     "word": "유상증자"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-09",
-     "value": 1349,
+     "value": 1347.7,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
