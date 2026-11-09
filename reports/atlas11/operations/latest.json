@@ -1,15 +1,15 @@
 {
   "schema": "atlas11-operation-3",
-  "at": "2026-11-09T17:27:57Z",
+  "at": "2026-11-09T17:48:35Z",
   "dayKST": "2026-11-10",
   "status": "complete",
   "exitCode": 0,
   "steps": [
     {
       "step": "1_calendar",
-      "startedAt": "2026-11-09T17:27:57.584Z",
+      "startedAt": "2026-11-09T17:48:36.334Z",
       "status": "ok",
-      "durationMs": 160,
+      "durationMs": 36,
       "session": true,
       "afterClose": false,
       "day": "2026-11-10",
@@ -17,7 +17,7 @@
     },
     {
       "step": "2_collect",
-      "startedAt": "2026-11-09T17:27:57.744Z",
+      "startedAt": "2026-11-09T17:48:36.370Z",
       "status": "ok",
       "durationMs": 0,
       "skipped": true,
@@ -25,22 +25,22 @@
     },
     {
       "step": "3_validate_store",
-      "startedAt": "2026-11-09T17:27:57.744Z",
+      "startedAt": "2026-11-09T17:48:36.370Z",
       "status": "ok",
       "durationMs": 1,
       "skipped": true
     },
     {
       "step": "5_record_view",
-      "startedAt": "2026-11-09T17:27:57.813Z",
+      "startedAt": "2026-11-09T17:48:36.447Z",
       "view": {
-        "boardId": "board-2026-11-09-dfbc0fe0",
+        "boardId": "board-2026-11-09-cb17b934",
         "asOf": "2026-11-09",
         "companies": 365,
         "files": 368,
         "dir": "public/data/atlas11/view",
         "universeNext": null,
-        "bytes": 3013721,
+        "bytes": 3013870,
         "similar": [
           "미원화학",
           "SIMPAC",
@@ -73,7 +73,7 @@
         }
       },
       "status": "ok",
-      "durationMs": 1443
+      "durationMs": 1733
     }
   ],
   "runtime": {
@@ -82,10 +82,10 @@
     "event": "schedule",
     "workflow": "atlas11-daily",
     "repository": "srt36573657-coder/atlas-11",
-    "runId": "42664183595",
+    "runId": "42667774984",
     "runAttempt": "1",
-    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/42664183595",
-    "commit": "5d792f2e9f422a232c4a7df8c3beb816471e09a1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/42667774984",
+    "commit": "9daf6703009a91c36c7517946193fafa780c0165",
     "serverInstalled": true,
     "scheduledRun": true
   },
@@ -112,5 +112,5 @@
   "skippedReason": "정규장 마감(15:30) 전 · 장중값은 받지 않음",
   "inputSnapshotSHA256": "356ad893e4ed5e72029437db7fd17df4853782d384dd33ff75759c79a1489118",
   "expectedStocks": 365,
-  "finishedAt": "2026-11-09T17:27:59.256Z"
+  "finishedAt": "2026-11-09T17:48:38.180Z"
 }
