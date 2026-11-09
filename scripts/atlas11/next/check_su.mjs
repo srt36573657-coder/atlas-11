@@ -65,11 +65,25 @@ R.m.data = {picks: picks.length, near: near.length, money: money.map(x => x.name
 const browser = await chromium.launch(process.env.PW_EXE ? {executablePath: process.env.PW_EXE} : {});
 const URL_OF = hash => `${base}/su/?v=${Date.now()}${hash}`;
 const more = p => p.evaluate(() => { for (const d of document.querySelectorAll('#su main > details.su-more')) d.open = true; }); // 신문 짜임 「자세히」 서랍을 엶 — 그 안 목록 · 단추를 누르는 길(주문 1023 [2] 3 · 4 — 기능은 서랍 안에 그대로)
-const open = async (p, hash) => { await p.goto(URL_OF(hash), {waitUntil: 'networkidle'}); await p.waitForFunction(() => !document.querySelector('#su .su-boot'), null, {timeout: 20000}).catch(() => {}); await p.waitForFunction(() => !document.querySelector('#su main > .su-hero[data-wait]'), null, {timeout: 15000}).catch(() => {}); await p.waitForTimeout(250); };
+/** 쪽 열기 — 받은 문서에 #su 가 없으면(진짜 사이트가 다른 쪽 · 오류 쪽을 줌) 그 모습을 R.m.reopen 에 남기고 3초 뒤 두 번까지 다시 엶
+ *  (주문 0510 — 진짜 사이트 검사 3/11 · 4/11 에서 「왜?」 쪽 하나가 #su 없이 열려 검사 도구가 멈춤 · 미리 보기 검사는 같은 자료로 실패 0) */
+const open = async (p, hash) => {
+  for (let i = 0; i < 3; i++) {
+    const res = await p.goto(URL_OF(hash), {waitUntil: 'networkidle'}).catch(e => ({err: String(e?.message ?? e).slice(0, 160)}));
+    await p.waitForFunction(() => !document.querySelector('#su .su-boot'), null, {timeout: 20000}).catch(() => {});
+    await p.waitForFunction(() => !document.querySelector('#su main > .su-hero[data-wait]'), null, {timeout: 15000}).catch(() => {});
+    await p.waitForTimeout(250);
+    if (await p.evaluate(() => !!document.getElementById('su')).catch(() => false)) return;
+    (R.m.reopen ??= []).push({hash, try: i + 1, status: typeof res?.status === 'function' ? res.status() : null, err: res?.err ?? null, url: p.url().slice(0, 160), title: (await p.title().catch(() => '')).slice(0, 80),
+      body: (await p.evaluate(() => (document.body?.innerText ?? '').slice(0, 160)).catch(() => ''))});
+    await p.waitForTimeout(3000);
+  }
+};
 const settle = async (p, name = null) => { await p.waitForFunction(() => !document.querySelector('#su .su-boot'), null, {timeout: 20000}).catch(() => {}); await p.waitForFunction(() => !document.querySelector('#su main > .su-hero[data-wait]'), null, {timeout: 15000}).catch(() => {}); /* 큰 그림 자리가 채워질 때까지(주문 1023 — 글 먼저 · 그림 뒤) */ if (name) await p.waitForFunction(n => (document.querySelector('#su h1')?.innerText ?? '').replace(/\s+/g, ' ').trim() === n, name, {timeout: 10000}).catch(() => {}); await p.waitForTimeout(300); }; // 누른 뒤 새 쪽이 그려질 때까지(큰 제목이 바뀜 · 10초 안)
 /** 화면 재기 — 넘침 · 작은 글 · 작은 누름 · 고리 · 글 · 큰 제목 */
 const measure = p => p.evaluate(() => {
   const v = document.getElementById('su'), out = {w: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, small: [], tiny: [], links: [], text: '', h1: '', screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(2)};
+  if (!v) return {...out, nosu: (location.href + ' · ' + document.title + ' · ' + (document.body?.innerText ?? '').slice(0, 120)).slice(0, 300)}; // #su 없는 쪽 — 멈추지 않고 실패로 적음(주문 0510)
   const vis = e => { const r = e.getBoundingClientRect(); if (!r.width || !r.height) return false; if (e.closest('details:not([open]) > :not(summary)')) return false; /* 닫힌 서랍 안은 안 보임(크롬은 닫힌 details 안에도 자리를 셈 — 신문 짜임 「자세히」) */ for (let x = e; x && x !== document.body; x = x.parentElement) { const s = getComputedStyle(x); if (s.display === 'none' || s.visibility === 'hidden') return false; } return true; };
   for (const a of v.querySelectorAll('a[href], button')) { if (!vis(a)) continue; const r = a.getBoundingClientRect(); out.links.push(a.getAttribute('href') ?? '(단추)'); if (r.width < 47.5 || r.height < 47.5) out.small.push(`${(a.innerText || '').trim().slice(0, 30)} ${Math.round(r.width)}×${Math.round(r.height)}`); }
   const w = document.createTreeWalker(v, NodeFilter.SHOW_TEXT);
@@ -79,6 +93,7 @@ const measure = p => p.evaluate(() => {
   return out;
 });
 const pageRules = (m, where) => {
+  if (m.nosu) { check(false, where + ' 쪽이 열림(#su)', m.nosu); return; }
   check(m.w <= m.cw, where + ' 가로 넘침', `${m.w} > ${m.cw}`);
   check(!m.tiny.length, where + ' 글 17px 넘게', m.tiny.slice(0, 4).join(' / '));
   check(!m.small.length, where + ' 누르는 것 48 × 48', m.small.slice(0, 4).join(' / '));
