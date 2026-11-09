@@ -1,4 +1,4 @@
-느린 4G 첫 화면 — 가장 큰 칠함 1204ms · 무하 큰 그림 1636ms
+느린 4G 첫 화면 — 가장 큰 칠함 1144ms · 무하 큰 그림 1519ms
 node:internal/modules/run_main:123
     triggerUncaughtException(
     ^
