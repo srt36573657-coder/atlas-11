@@ -64,9 +64,10 @@
 /* 낱말 풀이 · 쉬운 말 셈 — 「자세히」 안에서 */
 .su-glbox { margin-top: 10px; }
 
-/* 좁은 휴대폰(320 · 360) — 머리 줄에 수르 · 만수르 · 찾기 · 선물 · 글씨가 넘치지 않게 · 큰 값 줄은 접힘 */
+/* 좁은 휴대폰(320 · 360) — 머리 줄에 이름 · 천사 · 찾기 · 선물 · 글씨가 넘치지 않게 · 큰 값 줄은 접힘 */
 @media (max-width: 374px) {
   .su-top { gap: 4px; }
+  .su-top .su-brand { font-size: 21px; letter-spacing: 0; } /* 주문 0243 — 이름이 세 글자(큐피트)라 320 폭에서 4px 넘침(전체 검사 1/11) → 글씨 21px · 자간 0 */
   .su-top .su-tools { gap: 4px; }
   .su-top .su-mansour { padding: 0 8px; }
   .su-top .su-mansour b { font-size: 17px; }
