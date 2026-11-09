@@ -32,19 +32,19 @@
  "flowerHow": "꽃이 될 듯 맞음 = 고른 날 값에서 1 ~ 20거래일 뒤 값까지 오른 몫이 그날 365곳 평균보다 15 넘게 앞선 날이 있음(주문 0103) · bloomTrail = 옛 잣대(그 뒤 한 달 안에 지난 스무 날 시장보다 15 넘게인 날 — 고르기 앞 오름이 덤으로 섞임)",
  "bloomTrail": {
   "all": {
-   "culture": 53.3,
+   "culture": 54.0,
    "mc1422": 43.9,
    "old": 50.1,
    "base": 26.9
   },
   "first": {
-   "culture": 51.2,
+   "culture": 52.4,
    "mc1422": 39.3,
    "old": 47.7,
    "base": 23.6
   },
   "second": {
-   "culture": 55.6,
+   "culture": 55.8,
    "mc1422": 48.9,
    "old": 52.8,
    "base": 30.6
@@ -106,8 +106,8 @@
   "bloomNext": {
    "culture": {
     "picks": 1582,
-    "hits": 487,
-    "per100": 30.8,
+    "hits": 506,
+    "per100": 32.0,
     "days": 226
    },
    "mc1422": {
@@ -243,8 +243,8 @@
    "first": {
     "culture": {
      "picks": 826,
-     "hits": 263,
-     "per100": 31.8,
+     "hits": 269,
+     "per100": 32.6,
      "days": 118
     },
     "mc1422": {
@@ -269,8 +269,8 @@
    "second": {
     "culture": {
      "picks": 756,
-     "hits": 224,
-     "per100": 29.6,
+     "hits": 237,
+     "per100": 31.3,
      "days": 108
     },
     "mc1422": {
@@ -350,8 +350,8 @@
   "bloomNext": {
    "culture": {
     "picks": 1582,
-    "hits": 487,
-    "per100": 30.8,
+    "hits": 506,
+    "per100": 32.0,
     "days": 226
    },
    "mc1422": {

@@ -18,7 +18,7 @@ if (isHome && v && boot) {
   const sec = el('section', 'nh-hero'); sec.setAttribute('aria-label', '요즘 돈 흐름');
   const pm = el('p', 'nh-pm'); pm.append(hid(el('i', null, '1')), el('span', null, '돈 흐름'));
   // 만수르(사장님 2026-10-31 23:14(+04) · docs/design/mansour-2026-11-01/order-0414.txt) — 다 그린 첫 화면(home-new.js mansour)과 같은 단추 · 같은 자리(머리가 밀리지 않게)
-  const ms = el('a', 'nh-mans'); ms.href = 'https://shin-yxy.gino.im/'; ms.target = '_blank'; ms.rel = 'noopener noreferrer'; ms.append(el('span', null, '만수르'), hid(el('span', 'nh-mgo', '›'))); pm.append(ms);
+  const ms = el('a', 'nh-mans'); ms.href = 'https://shin-yxy.gino.im/'; ms.target = '_blank'; ms.rel = 'noopener noreferrer'; ms.append(el('span', null, '천사'), hid(el('span', 'nh-mgo', '›'))); pm.append(ms);
   const h2 = el('h2', 'nh-h1'); h2.append(el('span', null, '요즘 돈은'), ' ', el('span', 'nh-acc', '여기로 몰렸어요'));
   // ① 돈 흐름 틀(home-new.js flowMap 과 같은 글 · 같은 높이 — 줄은 빈 줄 셋씩)
   const fm = el('div', 'nh-fm'); fm.setAttribute('role', 'group'); fm.setAttribute('aria-label', '한 달 동안 시장보다 더 오른 업종과 덜 오른 업종');

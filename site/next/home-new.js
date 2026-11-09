@@ -225,7 +225,7 @@ const goPick = () => document.getElementById('nh-p2')?.scrollIntoView({behavior:
     ① 돈 흐름 머리 줄 오른쪽 알약 — 첫 화면을 열자마자 보임(결론 머리는 그대로 맨 위 큰 글) · 누르면 그 주소를 새 창으로(둘이 첫 화면은 그대로 남음)
     여는 동안 칸(boot-home.js)에도 같은 단추 — 다 그린 뒤 머리가 밀리지 않게(tests/atlas11/home-new.test.mjs 가 둘을 맞댐) */
 export const MANSOUR = 'https://shin-yxy.gino.im/';
-const mansour = () => h('a', {class: 'nh-mans', href: MANSOUR, target: '_blank', rel: 'noopener noreferrer'}, h('span', {text: EN ? 'Mansour' : '만수르'}), h('span', {class: 'nh-mgo', 'aria-hidden': 'true', text: '›'}));
+const mansour = () => h('a', {class: 'nh-mans', href: MANSOUR, target: '_blank', rel: 'noopener noreferrer'}, h('span', {text: EN ? 'Angel' : '천사'}), h('span', {class: 'nh-mgo', 'aria-hidden': 'true', text: '›'}));
 /** 첫 화면 두 칸(사장님 2026-11-02 10:38(+04) 「꽃이 될 종목과 돈이 몰린 종목 업종을 두가지로 나누어 첫화면에 보여야 해 잡스라면」 · 주문 1538 · docs/design/home-two-2026-11-02)
  *  잡스라면 — 한 화면에 두 가지만 · 진짜 이름을 크게 · 설명은 누른 뒤
  *  ① 꽃이 될 종목 = 오늘 달마다 스스로 고른 조건에 든 회사(theme-bloom.json today · 업종 x 큰 차례 · 회사 이름 차례 · 앞 셋) → 꽃 될 회사 쪽(#/t/picks)
@@ -346,7 +346,7 @@ function todayPicks(B) {
     if (!nr.length) return h('p', {class: 'nh-tp nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'});
     return h('div', {class: 'nh-tp nh-tpnr'}, h('p', {class: 'nh-tp0', text: '오늘은 조건에 맞은 회사가 없어요.'}), h('p', {class: 'nh-tpk', text: '조건에 가장 가까운 회사'}),
       h('ul', {class: 'nh-tpl'}, ...nr.map(r => h('li', {}, h('b', {'data-proper': '', text: r[1]}), typeof r[2] === 'string' ? h('small', {'data-proper': '', text: r[2]}) : null))),
-      h('p', {class: 'nh-tpnote', text: '조건에 다 맞지는 않아요. 수르가 고른 회사가 아니에요.'}));
+      h('p', {class: 'nh-tpnote', text: '조건에 다 맞지는 않아요. 큐피트가 고른 회사가 아니에요.'}));
   }
   return h('div', {class: 'nh-tp'}, h('p', {class: 'nh-tpk', text: `오늘 조건에 맞은 회사 ${num(list.length)}곳`}),
     h('ul', {class: 'nh-tpl'}, ...list.slice(0, 5).map(x => h('li', {}, h('b', {'data-proper': '', text: x.n}), typeof x.i === 'string' ? h('small', {'data-proper': '', text: x.i}) : null))));

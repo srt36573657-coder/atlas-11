@@ -241,7 +241,7 @@ try {
       check(c.labels.join('|') === '누가 · 언제 · 어디서|왜|무엇을 · 어떻게|오늘 나라면', `${tag} 육하원칙 이름표`, c.labels.join('|'));
       check(c.say === QUOTE.ko(x.ko.say) && c.kind === KIND.ko[x.ko.kind] && c.src === x.ko.src, `${tag} 남긴 말 · 표시 · 출처`, `${c.kind} · ${c.src}`);
       check(x.orig ? (c.orig === x.orig && c.olang === x.olang) : c.orig === null, `${tag} 원문 · 말(lang)`, `${c.orig} · ${c.olang}`);
-      check(c.go === STEP_HREF[x.step] && c.prev === '#/sage/' + prev.id && c.next === '#/sage/' + next.id && c.all === '#/sage', `${tag} 수르 고리 · 앞 · 다음 · 모두`, `${c.go} ${c.prev} ${c.next}`);
+      check(c.go === STEP_HREF[x.step] && c.prev === '#/sage/' + prev.id && c.next === '#/sage/' + next.id && c.all === '#/sage', `${tag} 큐피트 고리 · 앞 · 다음 · 모두`, `${c.go} ${c.prev} ${c.next}`);
       check(c.pos === `${i + 1} / 39` && c.on === 1 && c.off === 38, `${tag} n / 39 · 별 띠 밝은 점 하나`, `${c.pos} · ${c.on} · ${c.off}`);
       check(c.title === `${x.ko.name} · 서른아홉 스승 · ${NEW_NAME}`, `${tag} 창 제목`, c.title);
       judge(tag, await MEASURE(p));
@@ -304,10 +304,10 @@ try {
     await p.goto(URL_OF('#/dori'), {waitUntil: 'load', timeout: 60000});
     await p.waitForFunction(() => !!document.querySelector('#view .dm a[href="#/sage"]'), null, {timeout: 15000}).catch(() => {});
     const dm = await p.evaluate(() => document.querySelector('#view .dm a[href="#/sage"]')?.textContent.trim());
-    check(dm?.startsWith('서른아홉 스승'), '⑤ 수르 단추 안 「서른아홉 스승」', dm);
-    if (dm) { await p.locator('#view .dm a[href="#/sage"]').click(); check(await p.waitForFunction(() => document.querySelectorAll('#view .sg-tile').length === 39, null, {timeout: 8000}).then(() => true, () => false), '⑤ 수르 단추 안 → 첫 쪽'); }
+    check(dm?.startsWith('서른아홉 스승'), '⑤ 큐피트 단추 안 「서른아홉 스승」', dm);
+    if (dm) { await p.locator('#view .dm a[href="#/sage"]').click(); check(await p.waitForFunction(() => document.querySelectorAll('#view .sg-tile').length === 39, null, {timeout: 8000}).then(() => true, () => false), '⑤ 큐피트 단추 안 → 첫 쪽'); }
     const tab = await p.evaluate(() => document.querySelector('.tabs a[data-tab="dori"]')?.getAttribute('aria-current'));
-    check(tab === 'page', '⑤ 아래 단추 「수르」가 지금 쪽', tab);
+    check(tab === 'page', '⑤ 아래 단추 「큐피트」가 지금 쪽', tab);
     const paper = () => p.evaluate(() => ({pg: document.documentElement.classList.contains('pg-sage'), bg: getComputedStyle(document.querySelector('#view')).backgroundColor}));
     const on = await paper(); check(on.pg && on.bg === 'rgb(253, 249, 245)', '⑤ 서른아홉 스승에서 종이 판 켜짐', JSON.stringify(on));
     await go(p, '#/dori'); await p.waitForFunction(() => !!document.querySelector('#view .dm'), null, {timeout: 8000}).catch(() => {});

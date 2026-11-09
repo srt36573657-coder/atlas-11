@@ -31,7 +31,7 @@ late = {x['code'] for x in b['late']}
 nm = lambda c: (MK.get(c) or {}).get('n') or B[c]['name']
 r1 = lambda v: None if v is None else round(v, 1)
 r2 = lambda v: None if v is None else round(v, 2)
-SRC_P = '네이버 증권 그날 마지막 값 · 수르가 셈'
+SRC_P = '네이버 증권 그날 마지막 값 · 큐피트가 셈'
 
 _CO = {}
 def co_of(c):
@@ -346,7 +346,7 @@ out = {
               'money': '소거 한 번: 한 달 동안 시장보다 더 오른 업종 → 업종이 20거래일 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 국민주(몸집 위 열에 하나)가 늘었으면 그 회사, 아니면 20거래일 동안 회사 크기가 원으로 가장 많이 는 회사 하나',
               'hotNext': '소거 한 번: 불장 일곱 밖 · 닷새 동안 오른 회사(불장 업종이거나 그 업종도 닷새 오름) → 빚투 쏠림 · 본전 버티기는 뺌 → 고점 앞 팔기 · 테마 몰림이 많은 차례 → 365곳 모두의 길과 견줘 닷새 오른 만큼이 드문 차례 · 업종마다 둘',
               'moneyNext': '소거 한 번: 돈이 몰리는 일곱 밖 업종 → 업종이 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 국민주가 늘었으면 그 회사, 아니면 닷새 동안 회사 크기가 가장 많이 는 회사 하나',
-              'bloomNext': '소거 한 번: 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음 · 꽃 일곱 밖) → 빚투 쏠림 · 본전 버티기는 뺌 → 365곳 모두의 길과 견줘 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 둘',
+              'bloomNext': '소거 한 번: 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음 · 꽃 일곱 밖) → 365곳 모두의 길과 견줘 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 둘',
               'top3': '42칸마다 요즘 흔들림에 맞춘 우연 길 10만 개를 미리 그리고, 잣대 셋(오른 만큼 · 가장 크게 뛴 하루를 뺀 만큼 · 눈길 몰린 날이 적은 만큼)을 판마다 다른 무게로 섞어 1억 번 판을 벌임 → 판마다 우연보다 약한 칸부터 떨어뜨림 → 끝까지 남은 횟수가 많은 차례로 1등 · 2등 · 3등'},
     'past': ({'from': PASTC['from'], 'to': PASTC['to'], 'mid': PASTC.get('mid'), 'days': PASTC['days'], 'within': PASTC['within'], 'universe': PASTC['universe'], 'src': 'reports/atlas11/su-next/past-culture.json',
               'mcRank': True, 'cultureRank': True, 'what': PASTC['what'], 'mc': PASTC.get('mc'), 'calib': PASTC.get('calib'),
