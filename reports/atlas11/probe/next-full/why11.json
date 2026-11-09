@@ -1,6 +1,6 @@
 {
  "schema": "duri-check-why11-1",
- "at": "2026-11-09T12:16:31.227Z",
+ "at": "2026-11-09T12:50:53.435Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 209,
@@ -21,12 +21,12 @@
      "x": 33.53,
      "i": 15.71,
      "why": [
-      "외국인과 기관이 샀고,",
+      "기관이 샀고,",
       "한진칼이 끌었어요."
      ],
-     "lights": "on on off off on on on on on off off",
+     "lights": "off on off off on on on on on off off",
      "c8": [
-      "0.8 t-1.28 아님",
+      "0.77 t-1.28 아님",
       "-0.288 t-3.28 맞음"
      ],
      "t8": "금리가 3.92%에서 3.63%로 내렸어요.",
@@ -53,7 +53,7 @@
      ],
      "lights": "on on off on on off on off on off off",
      "c8": [
-      "0.8 t-2.04 아님",
+      "0.77 t-2.04 아님",
       "-0.288 t3.43 아님"
      ],
      "t8": "금리가 3.92%에서 3.63%로 내렸어요.",
@@ -80,7 +80,7 @@
      ],
      "lights": "on on off off on on on off on off on",
      "c8": [
-      "0.8 t-0.03 아님",
+      "0.77 t-0.03 아님",
       "-0.288 t0.71 아님"
      ],
      "t8": "금리가 3.92%에서 3.63%로 내렸어요.",
@@ -131,7 +131,7 @@
   "talk": {
    "ko1": {
     "n": "항공",
-    "first": 1,
+    "first": 2,
     "scene8": "8-on",
     "scene9": "9-on"
    },
@@ -149,7 +149,7 @@
    },
    "en1": {
     "n": "항공",
-    "first": 1,
+    "first": 2,
     "scene8": "8-on",
     "scene9": "9-on"
    },
