@@ -165,6 +165,15 @@ function cell(it, x, y, w, h, side) {
   return a;
 }
 
+/* ── 빈 자리(주문 0854 — 엄격 셈을 통과한 곳이 일곱이 안 되면 남는 자리는 비움 · 그 묶음 첫 빈 자리에만 까닭 글) ── */
+function empty(x, y, w, h, side, first) {
+  return s('g', {class: 'sa-empty', 'data-empty': side, role: 'img', 'aria-label': '빈 자리 — 31가지 기준을 모두 지난 곳이 더 없어요'},
+    s('rect', {x: x + 6, y: y + 12, width: w - 12, height: h - 24, rx: 16, class: 'sa-emp'}),
+    T(x + w / 2, y + h / 2 + (first ? -16 : 6), '빈 자리', 'sa-empt', {'text-anchor': 'middle'}),
+    first ? T(x + w / 2, y + h / 2 + 10, '기준을 다 지난', 'sa-empd', {'text-anchor': 'middle'}) : null,
+    first ? T(x + w / 2, y + h / 2 + 34, '곳이 더 없어요', 'sa-empd', {'text-anchor': 'middle'}) : null);
+}
+
 /* ── 장 중 현재가(주문 2011 · 사장님 2026-11-08 20:11 「어 그렇게 하고」 — 장이 열려 있는 낮에도 현재가가 바뀌게) ──
    그림을 그린 뒤 /api/price(넷리파이 함수 · 네이버 증권 분봉 그대로 · lib/atlas11/price.mjs)에 칸 회사들을 물음 · 첫 화면을 기다리게 하지 않음
    받은 값이 있는 칸만 바꿈: 현재가 글 · data-px · data-live(때) · 이름표 · 꺾은선(오늘이 판보다 뒤 = 맨 앞 하루를 빼고 오늘 값을 끝에 · 같은 날 = 끝 값만 바꿈)
@@ -221,8 +230,9 @@ function draw(d, opt) {
   const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c), days: c.days, found: c.found, fomo: c.fomo}));
   const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
   const ROW = 140, HEADH = 58, GAP = 26, CW = MID - PAD - 3; // 줄 넷째 · 다섯째 = 첫 발견 · 며칠째와 포모지수(주문 0123)
-  const LIST0 = 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄 아래
-  const rowsOf = k => Math.max(items(k, false).length, items(k, true).length, 1);
+  const STRICT = !!d?.strict; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움)
+  const LIST0 = STRICT ? 636 : 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」) 아래
+  const rowsOf = k => STRICT ? 7 : Math.max(items(k, false).length, items(k, true).length, 1);
   const H = LIST0 + KEY.reduce((a, k) => a + HEADH + rowsOf(k) * ROW + GAP, 0) + 24;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
     'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (day ? ' · ' + day + ' 자료' : '')});
@@ -241,14 +251,15 @@ function draw(d, opt) {
   const pair = s('g', {class: 'sa-pair sa-in sa-in2'},
     s('path', {d: `M${MID} ${PY + 6}V${PY + 128}`, class: 'sa-div'}),
     s('circle', {cx: 74, cy: PY + 22, r: 7, class: 'sa-dotA'}), T(88, PY + 27, '지금', 'sa-k'),
-    T(105, PY + 96, String(nNow || NEED), 'sa-n', {'text-anchor': 'middle'}), T(105 + est(String(nNow), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
+    T(105, PY + 96, String(STRICT ? nNow : nNow || NEED), 'sa-n', {'text-anchor': 'middle'}), T(105 + est(String(nNow), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
     T(105, PY + 124, '지금 그런 곳', 'sa-d', {'text-anchor': 'middle'}),
     s('circle', {cx: 248, cy: PY + 22, r: 6.5, class: 'sa-dotB'}), s('circle', {cx: 248, cy: PY + 22, r: 2.6, class: 'sa-dotBc'}), T(262, PY + 27, '될 듯', 'sa-k'),
-    T(285, PY + 96, String(nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
+    T(285, PY + 96, String(STRICT ? nNx : nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
     T(285, PY + 124, '곧 그렇게 될 듯한 곳', 'sa-d', {'text-anchor': 'middle'}));
   svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
-    ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'));
+    ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
+    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : []));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   let y = LIST0;
   KEY.forEach((k, ki) => {
@@ -262,8 +273,10 @@ function draw(d, opt) {
       const row = s('g', {class: 'sa-row'});
       if (i) row.append(s('path', {d: `M${PAD} ${y}H${W - PAD}`, class: 'sa-line'}));
       if (now[i]) row.append(cell(now[i], PAD - 6, y, CW, ROW, 'now'));
+      else if (STRICT) row.append(empty(PAD - 6, y, CW, ROW, 'now', i === now.length));
       if (nx[i]) row.append(cell(nx[i], MID + 3, y, CW, ROW, 'next'));
-      if (!now[i] && !nx[i]) row.append(T(PAD, y + 36, NEED, 'sa-d'));
+      else if (STRICT) row.append(empty(MID + 3, y, CW, ROW, 'next', i === nx.length));
+      if (!now[i] && !nx[i] && !STRICT) row.append(T(PAD, y + 36, NEED, 'sa-d'));
       sec.append(row);
       y += ROW;
     }
