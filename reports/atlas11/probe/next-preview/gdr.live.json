@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-gdr-2",
- "when": "2026-11-08T17:55:36.052Z",
+ "when": "2026-11-09T00:05:58.377Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
@@ -8,7 +8,7 @@
  "version": "gdr-v2",
  "asOf": "2026-11-06",
  "picks": 0,
- "sec": 47,
+ "sec": 44,
  "counts": {
   "맞댄 자료 곳": 0,
   "소스 본 파일": 2,
