@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-09T19:01:38.606Z",
+ "at": "2026-11-09T21:07:50.523Z",
  "base": "http://127.0.0.1:8826",
  "all": true,
  "limit": null,
@@ -25,9 +25,9 @@
  "seconds": 156,
  "counts": {
   "routes": 251,
-  "rows": 8925,
-  "btns": 8925,
-  "links": 11554,
+  "rows": 8926,
+  "btns": 8926,
+  "links": 11555,
   "clicks": 479,
   "fail": 0,
   "places": {
@@ -144,10 +144,10 @@
     "routes": 1
    },
    "me.hist": {
-    "rows": 8,
-    "btns": 8,
+    "rows": 9,
+    "btns": 9,
     "surge": 0,
-    "share": 8,
+    "share": 9,
     "routes": 1
    },
    "why.rec": {
@@ -314,9 +314,9 @@
    },
    {
     "route": "#/me",
-    "rows": 9,
-    "btns": 9,
-    "links": 9,
+    "rows": 10,
+    "btns": 10,
+    "links": 10,
     "clicked": "hold.card",
     "fail": 0
    },

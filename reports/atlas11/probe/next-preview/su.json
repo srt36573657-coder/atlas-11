@@ -1,12 +1,25 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-09T19:00:08.794Z",
+ "at": "2026-11-09T21:06:19.143Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1433,
-  "fail": 0
+  "pass": 1514,
+  "fail": 3
  },
- "fails": [],
+ "fails": [
+  [
+   "[390] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-EcZGD7T/Iu4g8RN266yWUfQA7cyj3 | Refused to apply inline style because it violates the following Content Security Policy directive"
+  ],
+  [
+   "[360] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-EcZGD7T/Iu4g8RN266yWUfQA7cyj3 | Refused to apply inline style because it violates the following Content Security Policy directive"
+  ],
+  [
+   "[320] 화면 오류 0",
+   "Refused to apply inline style because it violates the following Content Security Policy directive: \"style-src 'self'\". Either the 'unsafe-inline' keyword, a hash ('sha256-EcZGD7T/Iu4g8RN266yWUfQA7cyj3 | Refused to apply inline style because it violates the following Content Security Policy directive"
+  ]
+ ],
  "m": {
   "dropped": [
    "JYP Ent."
@@ -141,7 +154,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "친구에게",
@@ -180,7 +193,7 @@
    }
   },
   "speed": {
-   "lcp": 2440,
+   "lcp": 2444,
    "cls": 0.143,
    "pic": 3016
   },
@@ -1253,6 +1266,7 @@
     ]
    },
    "daysFrom": "2026-10-02",
+   "screens": 3.32,
    "pages": 42,
    "reasons": 1512
   },
@@ -1316,5 +1330,5 @@
    "both": false
   }
  },
- "ok": true
+ "ok": false
 }

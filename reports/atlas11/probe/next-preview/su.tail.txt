@@ -1,2 +1,5 @@
-느린 4G 첫 화면 — 가장 큰 칠함 2440ms · 무하 큰 그림 3016ms
-큐피트 두 길 검사 — 통과 1433 · 실패 0
+실패 [390] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-EcZGD7T/Iu4g8RN266yWUfQA7cyj3 | Refused to apply inline style because it violates the following Content Security Policy directive
+실패 [360] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-EcZGD7T/Iu4g8RN266yWUfQA7cyj3 | Refused to apply inline style because it violates the following Content Security Policy directive
+실패 [320] 화면 오류 0 — Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-EcZGD7T/Iu4g8RN266yWUfQA7cyj3 | Refused to apply inline style because it violates the following Content Security Policy directive
+느린 4G 첫 화면 — 가장 큰 칠함 2444ms · 무하 큰 그림 3016ms
+큐피트 두 길 검사 — 통과 1514 · 실패 3
