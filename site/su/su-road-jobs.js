@@ -17,9 +17,9 @@ const FRIEND = Object.freeze([
   {t: '카톡 보내기', href: '/next/?su=guest#/share', say: '한 곳을 보내요'},
   {t: '선물', href: '/next/?su=guest#/gift', say: '상품권 받기'},
   {t: '커피 쿠폰', href: '/next/?su=stop#/why', say: '왜 사? 끝까지'},
-  {t: '소개 영상', href: '/hello.html?su=guest', say: '큐피트가 하는 일'},
+  {t: '소개 영상', href: '/hello.html?su=guest', say: '수르가 하는 일'},
   {t: '내 종목', href: '/next/?su=stop#/me', say: '같은 잣대로'},
-  {t: '진화', href: '/next/?su=back#/jinhwa', say: '큐피트가 고친 것'}]);
+  {t: '진화', href: '/next/?su=back#/jinhwa', say: '수르가 고친 것'}]);
 /** 셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 세 갈래 — 고리 · 점이 호박색 */
 const CORE = Object.freeze(['hot', 'bloom', 'money']);
 let UID = 0;

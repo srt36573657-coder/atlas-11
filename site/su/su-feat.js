@@ -38,7 +38,7 @@ export const FEAT = Object.freeze([
   {id: 'bloomco', name: '꽃 될 회사', group: 'bloom', helps: 'bloom', open: '#/b', how: '이달 꽃 조건에 맞은 회사 — 없는 날은 가장 가까운 회사와 그 까닭', owner: false}, // 옛 쪽 = /next/#/t/picks(같은 자료 theme-bloom.json)
   {id: 'record', name: '지난 기록', group: 'bloom', helps: 'bloom', open: '#/r', how: '조건에 맞은 회사가 지난날 100번에 몇 번 꽃이 됐나 — 기록 서랍 여섯', owner: false}, // 옛 쪽 = /next/#/t/pick
   {id: 'sprout', name: '싹', group: 'bloom', helps: 'bloom', open: '/next/#/t/sprout', how: '싹 자리에 든 업종 모두 — 맨 앞 셋은 크게', owner: false},
-  {id: 'sproutcal', name: '싹 달력', group: 'bloom', helps: 'bloom', open: '/next/#/t/cal', how: '날짜마다 큐피트가 찾은 싹 1 · 2 · 3번 업종과 그 뒤 줄', owner: false},
+  {id: 'sproutcal', name: '싹 달력', group: 'bloom', helps: 'bloom', open: '/next/#/t/cal', how: '날짜마다 수르가 찾은 싹 1 · 2 · 3번 업종과 그 뒤 줄', owner: false},
   // 테마 시계 = 네 자리 시계 그림(theme-home.js clock) — 첫 화면 칸은 빠졌고 「시계 읽는 법」 쪽에 그대로 있음
   {id: 'clock', name: '테마 시계', group: 'bloom', helps: 'bloom', open: '/next/#/t/how', how: '업종을 싹 · 꽃 · 시듦 · 잠잠 네 자리에 찍은 시계 그림과 읽는 법', owner: false},
   {id: 'themeind', name: '테마 업종', group: 'bloom', helps: 'bloom', open: '/next/#/t/i/반도체', how: '한 업종의 점 넷 — 지나온 길 · 번지는 중 · 큰 회사 · 함께 움직인 회사', owner: false},
@@ -60,7 +60,7 @@ export const FEAT = Object.freeze([
   {id: 'landmap', name: '업종 지도', group: 'money', helps: 'money', open: '#/m', how: '우량주 365곳을 열 땅으로 — 땅 · 업종 · 회사 세 번 누름', owner: false},
   // 만수르 단추 = 바깥 주소(https://shin-yxy.gino.im/)로 나가는 단추 — 같은 사이트 안에서는 그 단추가 있는 쪽을 적음(새 판 「친구에게」 칸 · 옛 첫 화면 「돈 흐름」 머리 알약도 같음)
   //   묶음대로 helps = money 로 적었으나 단추가 가는 곳은 수르 밖 — su-21.js 는 「셋과 안 이어짐」으로 적어 둠(사장님이 정하실 것)
-  {id: 'mansour', name: '천사 단추', group: 'money', helps: 'money', open: '#/f', how: '「친구에게」 쪽 천사 칸 — 누르면 사장님이 정하신 바깥 주소로 나가요', owner: false},
+  {id: 'mansour', name: '만수르 단추', group: 'money', helps: 'money', open: '#/f', how: '「친구에게」 쪽 만수르 칸 — 누르면 사장님이 정하신 바깥 주소로 나가요', owner: false},
 
   /* ── 사기 전에 멈추게 돕는 것 — 셋 가운데 어느 회사를 사려 해도 똑같이 쓰는 것은 three ── */
   {id: 'whybuy', name: '「왜 사?」 열한 질문', group: 'stop', helps: 'three', open: '#/q', how: '사기 전에 열한 가지를 묻고 준비 점수와 「좋아 · 반만 · 쉬어」를 보여 줘요', owner: false},
@@ -78,7 +78,7 @@ export const FEAT = Object.freeze([
   {id: 'search', name: '종목 검색', group: 'guide', helps: 'three', open: '/next/#/find', how: '회사 이름 · 첫 글자 · 번호로 찾아요 — 맨 위 「찾기」 단추', owner: false},
   // 첫 화면 칩 = 칩 줄(app.js CHIPS · 10개) — 오늘 첫 화면에는 없고 칩 쪽(#/f/…) 맨 위에 있음 · 칩에 「미국」이 아직 남아 있음(명령서 [1] 1 미국 빼기와 부딪힘)
   {id: 'chips', name: '첫 화면 칩', group: 'guide', helps: 'three', open: '/next/#/f/rise', how: '오르는 업종 · 급등 · 대장주 · 고른 곳 · 업종 · 달력 · 조건 찾기를 한 줄 단추로 골라요', owner: false},
-  {id: 'surparrot', name: '앵무새 큐피트', group: 'guide', helps: 'three', open: '#/', how: '모든 쪽 아래 「다음」 단추의 분홍 앵무새 — 화면과 화면을 이어 줘요', owner: false},
+  {id: 'surparrot', name: '앵무새 수르', group: 'guide', helps: 'three', open: '#/', how: '모든 쪽 아래 「다음」 단추의 분홍 앵무새 — 화면과 화면을 이어 줘요', owner: false},
   // 신 72 = 재미로 단 방 지킴이(사장님 10월 31일 「재미삼아 적절한 곳에」) — 셋을 찾는 데 쓰지 않음
   {id: 'roman72', name: '로마 신 72', group: 'guide', helps: null, open: '/next/#/roman', how: '로마 신 일흔두 명의 얼굴과 이야기 — 방마다 지킴이 이름표로도 달려요', owner: false},
   // 스승 39 = 생각 공부(명령서 [5] 7 「사기 전에 멈추는 길의 길잡이」) — 멈추는 길 곁에 서지만 셋을 직접 찾거나 보이지는 않음
@@ -113,8 +113,8 @@ export const FEAT = Object.freeze([
   /* ── 손님 부르기 — 셋을 담아 건네는 것만 helps 를 적음 · 가입 · 선물 · 편지 · 초대장 · 영상은 null ── */
   {id: 'kakaosend', name: '카톡 보내기', group: 'guest', helps: 'three', open: '/next/#/today', how: '쪽마다 · 칸마다 「카톡 보내기」 — 보고 있는 것을 친구에게 보내요(오른 숫자는 빼고)', owner: false}, // 옛 쪽 모든 쪽 맨 아래 · 칸 제목마다(kk-all.js) — 첫 화면만 빠짐
   {id: 'kakaojoin', name: '카톡 가입', group: 'guest', helps: null, open: '/next/#/why', how: '매매일지 쪽 커피 쿠폰 칸의 「카톡으로 가입하기」 — 가입하면 내 기록 넷을 서버에도 지켜요', owner: false}, // 열한 질문을 끝낸 뒤 「이 기록 지키기」 칸에도 같은 길
-  {id: 'intro', name: '소개 쪽', group: 'guest', helps: 'three', open: '/hello.html', how: '큐피트가 무엇을 하는 곳인지 한 장 — 불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾는다는 소개와 1분 영상', owner: false},
-  {id: 'spacefilm', name: '우주 영상 1분', group: 'guest', helps: null, open: '/hello.html#hp-uv', how: '소개 쪽 「큐피트의 우주 · 1분」 영상 — 끝까지 보면 상품권 받기가 열려요', owner: false}, // 상품권 방(/next/#/gift) 둘째 걸음에도 같은 영상
+  {id: 'intro', name: '소개 쪽', group: 'guest', helps: 'three', open: '/hello.html', how: '수르가 무엇을 하는 곳인지 한 장 — 불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾는다는 소개와 1분 영상', owner: false},
+  {id: 'spacefilm', name: '우주 영상 1분', group: 'guest', helps: null, open: '/hello.html#hp-uv', how: '소개 쪽 「수르의 우주 · 1분」 영상 — 끝까지 보면 상품권 받기가 열려요', owner: false}, // 상품권 방(/next/#/gift) 둘째 걸음에도 같은 영상
   {id: 'giftroom', name: '상품권 방', group: 'guest', helps: null, open: '/next/#/gift', how: '친구 셋에게 소개하고 우주 영상 1분을 끝까지 보면 스타벅스 상품권', owner: false},
   {id: 'coffee', name: '커피 쿠폰', group: 'guest', helps: null, open: '/next/#/why', how: '열한 질문을 끝까지 하면 하루 1점 — 10점이면 커피 쿠폰 한 장(한 달 한 장)', owner: false},
   {id: 'letter', name: '편지 여는 밤', group: 'guest', helps: null, open: '/letter.html', how: '월요일부터 쓴 편지가 금요일 밤 8시에 다 함께 열려요', owner: false},
@@ -128,11 +128,11 @@ export const FEAT = Object.freeze([
   /* ── 뒤에서 도는 것 — 결과가 보이는 쪽을 open 에 적음 ── */
   // 종가 자동 올림 = 하루 정해진 때의 업데이트(예약 작업 atlas11-daily · evening) — 셋의 자료가 모두 이것으로 새로 들어오므로 three · 회차마다 업데이트 기록에 남음
   {id: 'closeauto', name: '종가 자동 올림', group: 'back', helps: 'three', open: '/next/#/up', how: '하루 정해진 때에 그날 값을 저절로 받아 올려요 — 회차마다 업데이트 기록에 남아요', owner: false},
-  {id: 'jinhwa', name: '진화', group: 'back', helps: null, open: '/next/#/jinhwa', how: '큐피트가 나아진 것을 하나씩 보여요 — 만든 사람이 확인한 것만 세어요', owner: false},
+  {id: 'jinhwa', name: '진화', group: 'back', helps: null, open: '/next/#/jinhwa', how: '수르가 나아진 것을 하나씩 보여요 — 만든 사람이 확인한 것만 세어요', owner: false},
   {id: 'updates', name: '업데이트 기록', group: 'back', helps: null, open: '/next/#/up', how: '언제 무엇을 새로 받았는지 회차마다 — 새로 든 곳 · 빠진 곳', owner: false},
   {id: 'help', name: '고객센터', group: 'back', helps: null, open: '/next/#/help', how: '한마디 남기기 · 물어보기 · 고객센터 안내', owner: false},
   // 도움말 = 옛 「고른 곳」 셈(멍거 · 린치 조건 56곳 · ml-v1) 풀이 — 21곳이 쓰는 우량주 365곳(n365-v1) 셈은 이 쪽에 없음 · 그래서 null
-  {id: 'info', name: '도움말', group: 'back', helps: null, open: '/next/#/info', how: '큐피트가 어떻게 셌나 — 멍거 · 린치 조건 깔때기와 자료 · 때', owner: false},
+  {id: 'info', name: '도움말', group: 'back', helps: null, open: '/next/#/info', how: '수르가 어떻게 셌나 — 멍거 · 린치 조건 깔때기와 자료 · 때', owner: false},
   {id: 'admin', name: '관리자', group: 'back', helps: null, open: '/next/#/admin', how: '사장님 휴대폰에서만 — 쿠폰 번호 확인 · 가입 수 · 고객센터 글', owner: true},
   // 합계 세기 = tally.js → /api/tally(멈춤 · 약속 · 연 수) — 셈은 모든 기기에서 돌지만 합계를 보는 칸(진화 쪽 「잣대 셋」)은 사장님 열쇠 기기에만
   {id: 'tally', name: '합계 세기', group: 'back', helps: null, open: '/next/#/jinhwa', how: '멈춤 · 약속 수를 날마다 세어요 — 진화 쪽 「잣대 셋」에서 사장님 휴대폰에만 보여요', owner: true},

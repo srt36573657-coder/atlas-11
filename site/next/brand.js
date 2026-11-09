@@ -8,12 +8,9 @@
 //   2026-10-27(서울) 21:50 「돌이 를 둘이  로 변경해라」 — 이름 = 둘이 · 영어 Duri(돌이 Dori 와 같은 꼴) · 돌이는 was 맨 앞(검사가 남은 글을 잡게)
 //   2026-10-31(+04) 23:20 「둘리 이름름 경수르로 변경해」 · 23:46 「경수르가 아니라 수르!  수르!」(docs/design/mansour-2026-11-01/order-0420.txt) — 이름 = 수르 · 영어 Sur
 //     (첫 화면 「만수르」 단추 order-0414 와 짝) · 둘이는 was 맨 앞 · 「둘이」는 보통 말이기도 해서 바꾸기 · 옛 이름 찾기는 낱말 하나로 선 이름만(brand_apply.mjs · rename.mjs)
-//   2026-11-10(서울) 02:43 「수르를 큐피트로 변경하고 만수를 천사로 변경하고  10번도 작업해」(docs/design/cupid-2026-11-10/order-0243.txt) — 이름 = 큐피트 · 영어 Cupid
-//     · 「만수르」 단추 이름 = 천사(영어 Angel · 같은 바깥 주소) · 수르는 was 맨 앞 · 주소(/su/ · #/ 길)는 그대로(보내 둔 고리가 끊기지 않게)
 export const BRAND = Object.freeze({
-  ko: '큐피트', en: 'Cupid',
+  ko: '수르', en: 'Sur',
   was: Object.freeze([ // 옛 이름(새 것부터) — 검사가 화면에 남았는지 봄 · 옛 쪽(/atlas/)과 맞댈 때 새 이름으로 바꿔 맞댐
-    Object.freeze({ko: '수르', en: 'Sur', until: '2026-11-10'}),
     Object.freeze({ko: '둘이', en: 'Duri', until: '2026-11-01', plain: true}), // plain = 보통 말이기도 함(둘이서 · 일흔둘이 · 멤버 둘이) — 옛 쪽 글 맞대기에서는 바꾸지 않음(rename.mjs)
     Object.freeze({ko: '돌이', en: 'Dori', until: '2026-10-27'}),
     Object.freeze({ko: '골똘이', en: 'Golttori', until: '2026-10-19'}),

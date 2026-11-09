@@ -37,13 +37,13 @@ test('카톡 글 — 머리 · 때 · 보던 화면 · 한 통 190자 안 · 길
   assert.equal(whenKo('2026-10-22T06:00:00Z'), '10월 22일 오후 3시');
   const one = toMessages({kind: 'note', tone: 'want', page: 'gift', at: '2026-10-21T22:47:00Z', text: '상품권 받는 법을 더 크게 써 주세요'});
   assert.equal(one.length, 1);
-  assert.match(one[0], /^\[큐피트 고객센터\] 한마디 · 바라요\n10월 22일 오전 7시 47분 · 보던 화면 상품권 방\n\n상품권 받는 법을 더 크게 써 주세요$/);
+  assert.match(one[0], /^\[수르 고객센터\] 한마디 · 바라요\n10월 22일 오전 7시 47분 · 보던 화면 상품권 방\n\n상품권 받는 법을 더 크게 써 주세요$/);
   const long = 'ㄱ'.repeat(470) + '끝';
   const many = toMessages({kind: 'ask', at: '2026-10-21T22:47:00Z', text: long});
   assert.ok(many.length >= 3, '나눔');
   assert.ok(many.every(m => Array.from(m).length <= MSG_MAX), many.map(m => Array.from(m).length).join(','));
-  assert.match(many[0], /^\[큐피트 고객센터\] 물음\n/);
-  assert.match(many[1], /^\[큐피트 고객센터 · 이어서 2\/\d\]\n/);
+  assert.match(many[0], /^\[수르 고객센터\] 물음\n/);
+  assert.match(many[1], /^\[수르 고객센터 · 이어서 2\/\d\]\n/);
   const back = many.map((m, i) => (i === 0 ? m.split('\n\n').slice(1).join('\n\n').replace(/ \(1\/\d+\)$/, '') : m.split('\n').slice(1).join('\n'))).join('');
   assert.equal(back, long, '글 한 글자도 안 바뀜');
 });

@@ -510,7 +510,7 @@ for (const width of [390, 360, 320]) {
       const o = await lookOld(p); R.m.old[scheme + ' ' + u] = o;
       const cl = o.cls.split(/\s+/);
       check(cl.includes('su-wrapped') && cl.includes('su-jobs') && !cl.includes('clock') && o.body === WHITE && (okBg(o.view) || (/pg-(sage|roman)/.test(o.cls) && o.view === 'rgb(253, 249, 245)')) && okBg(o.top) && o.bar === WHITE && (o.frame === 'none' || o.frame === 'normal') && o.tc.every(c => c === '#FFFFFF') && o.darkMax <= 0.12 && o.lowN === 0,
-        '⑯ 큐피트에서 넘어간 옛 쪽도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 뗌 · 바탕 · 위 · 아래 막대 흰색 · 금빛 테두리 0 · 어두운 판 0 · 흐린 글 0', JSON.stringify(o).slice(0, 400));
+        '⑯ 수르에서 넘어간 옛 쪽도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 뗌 · 바탕 · 위 · 아래 막대 흰색 · 금빛 테두리 0 · 어두운 판 0 · 흐린 글 0', JSON.stringify(o).slice(0, 400));
     }
     await ctx.close();
   }
@@ -527,7 +527,7 @@ for (const width of [390, 360, 320]) {
       R.m.old['direct ' + scheme + ' ' + u] = {...o, tabs};
       const cl = o.cls.split(/\s+/), paper = /pg-(sage|roman)/.test(o.cls);
       check(cl.includes('su-jobs') && !cl.includes('su-wrapped') && !cl.includes('clock') && o.body === WHITE && (okBg(o.view) || (paper && o.view === 'rgb(253, 249, 245)')) && okBg(o.top) && o.bar === null && (tabs === null || tabs === WHITE) && (o.frame === 'none' || o.frame === 'normal') && o.tc.every(c => c === '#FFFFFF') && o.darkMax <= 0.12 && o.lowN === 0,
-        '⑯ 옛 주소로 바로 온 손님도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 0 · 바탕 · 위 막대 · 옛 아래 단추 흰색 · 큐피트 막대 없음 · 어두운 판 0 · 흐린 글 0', JSON.stringify({...o, tabs}).slice(0, 400));
+        '⑯ 옛 주소로 바로 온 손님도 첫 페이지 판(' + scheme + ' · ' + u + ') — 밤 판 0 · 바탕 · 위 막대 · 옛 아래 단추 흰색 · 수르 막대 없음 · 어두운 판 0 · 흐린 글 0', JSON.stringify({...o, tabs}).slice(0, 400));
     }
     await ctx.close();
   }
@@ -677,7 +677,7 @@ for (const width of [390, 360, 320]) {
         tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === a.getAttribute('data-r3') + '등').length, stray: H?.querySelectorAll('a.sa-cell:not([data-r3="1"]):not([data-r3="2"]):not([data-r3="3"]) g.sa-sx').length ?? -1,
         legend: [...(H?.querySelectorAll('g.sa-r3x text.sa-sxt') ?? [])].map(e => e.textContent).join(' ') + ' ' + [H?.querySelector('text.sa-note3b'), H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' ')}; });
     const want = cells.filter(x => [1, 2, 3].includes(x.c.r3)).map(x => x.c.r3 + ':' + x.k + ':' + x.c.code).sort();
-    const LEG = CULT ? '1등 2등 3등 큐피트 계산법 차례 문화 일곱으로 고르고 1억 번 섞었어요.' : '1등 2등 3등 큐피트 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.';
+    const LEG = CULT ? '1등 2등 3등 수르 계산법 차례 문화 일곱으로 고르고 1억 번 섞었어요.' : '1등 2등 3등 수르 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.';
     check(f.cells === 42 && f.empty === 0 && (t3 ? JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === 3 && f.stray === 0 && f.legend === LEG : f.r3.length === 0),
       '⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표 · 풀이 「' + LEG + '」', JSON.stringify(f).slice(0, 300));
     if (t3) for (const pick of [cells.find(x => x.c.r3 === 1), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
@@ -686,7 +686,7 @@ for (const width of [390, 360, 320]) {
         mc: [...document.querySelectorAll('#su .yw-crit .yw-li')].map(e => e.textContent).join(' ').includes('번 섞어 그린 길 가운데'), cu: document.querySelectorAll('#su .yw-cu .yw-li').length,
         cuOn: [...document.querySelectorAll('#su .yw-cu .yw-ok')].map(e => e.textContent).join(',')} : null; });
       const top = pick.c.r3 === 1;
-      check(!!w && w.crit === 7 && w.mc && (!CULT || w.cu === 7) && (top ? w.h === '큐피트 계산법 1등 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,]+만( [\d,]+)?번 끝까지 남았어요\. 42칸 가운데 첫 번째예요\. 그래서 1등이에요\.$/.test(w.v) : w.h === '큐피트 계산법 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,만 ]+번 끝까지 남았어요\. 42칸 가운데 (첫 |\d+)번째예요\.( 같은 회사의 다른 칸이 더 많이 남아 등수는 그 칸에 달았어요\.)?$/.test(w.v)),
+      check(!!w && w.crit === 7 && w.mc && (!CULT || w.cu === 7) && (top ? w.h === '수르 계산법 1등 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,]+만( [\d,]+)?번 끝까지 남았어요\. 42칸 가운데 첫 번째예요\. 그래서 1등이에요\.$/.test(w.v) : w.h === '수르 계산법 — 1억 번 셈' && /^이 칸은 1억 번 가운데 [\d,만 ]+번 끝까지 남았어요\. 42칸 가운데 (첫 |\d+)번째예요\.( 같은 회사의 다른 칸이 더 많이 남아 등수는 그 칸에 달았어요\.)?$/.test(w.v)),
         '⑳ 「왜?」 쪽 — 1억 번 셈 상자 · 기준 일곱(몬테카를로) — ' + (top ? '1등 ' : '등수 밖 ') + pick.k + ' ' + pick.c.name, JSON.stringify(w).slice(0, 200));
     }
     check(!errs.length, '⑳ 화면 오류 0', errs.slice(0, 3).join(' / '));
@@ -718,13 +718,13 @@ for (const width of [390, 360, 320]) {
     if (MARKM) {
       const nX = KEY6.reduce((a, k) => a + (T21.lists?.[k] ?? []).filter(c => c.sx === true).length, 0);
       const x = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero'), xs = [...(H?.querySelectorAll('a.sa-cell[data-sx="1"]') ?? [])];
-        return {sx: xs.length, tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === '큐피트 계산법').length, codes: xs.map(a => a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(),
+        return {sx: xs.length, tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === '수르 계산법').length, codes: xs.map(a => a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(),
           stray: H?.querySelectorAll('a.sa-cell:not([data-sx="1"]) g.sa-sx').length ?? -1, legend: [H?.querySelector('g.sa-note3x text.sa-sxt')?.textContent ?? '', H?.querySelector('text.sa-note3b')?.textContent ?? '', H?.querySelector('text.sa-note4a')?.textContent ?? '', H?.querySelector('text.sa-note4b')?.textContent ?? ''].join(' '),
           aria: H?.querySelector('svg.su-apple')?.getAttribute('data-sx') ?? null}; });
       const want = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.code)).sort();
       R.m.marked = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.name)); // 보고용 — 표가 붙은 칸(묶음 · 이름)
-      check(f.cells === 42 && f.now === 0 && f.next === 0 && x.sx === nX && x.tags === nX && x.stray === 0 && JSON.stringify(x.codes) === JSON.stringify(want) && x.legend === '큐피트 계산법 큐피트 계산법으로 찾은 종목 31가지 기준을 모두 지난 곳이에요.' && x.aria === String(nX),
-        '⑳ 첫 페이지(주문 1209) — 42칸 모두 · 빈 자리 0 · 「큐피트 계산법」 표 = 엄격 셈을 모두 지난 칸(' + nX + ') · 풀이 「[큐피트 계산법] 큐피트 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요.」', JSON.stringify({f, x}).slice(0, 300));
+      check(f.cells === 42 && f.now === 0 && f.next === 0 && x.sx === nX && x.tags === nX && x.stray === 0 && JSON.stringify(x.codes) === JSON.stringify(want) && x.legend === '수르 계산법 수르 계산법으로 찾은 종목 31가지 기준을 모두 지난 곳이에요.' && x.aria === String(nX),
+        '⑳ 첫 페이지(주문 1209) — 42칸 모두 · 빈 자리 0 · 「수르 계산법」 표 = 엄격 셈을 모두 지난 칸(' + nX + ') · 풀이 「[수르 계산법] 수르 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요.」', JSON.stringify({f, x}).slice(0, 300));
     } else check(f.cells === nNow + nNx && f.now === 21 - nNow && f.next === 21 - nNx && f.note === '31가지 기준을 모두 지난 곳만 보여요.', '⑳ 첫 페이지 — 칸 + 빈 자리 = 42 · 「31가지 기준을 모두 지난 곳만 보여요.」', JSON.stringify(f));
     const first = KEY6.map(k => [k, (T21.lists?.[k] ?? []).find(c => !MARKM || c.sx === true)]).find(([, c]) => c);
     if (MARKM) { // 표가 없는 칸 — 「왜?」 쪽에 어디서 걸렸는지(몬테카를로 또는 기준 31가지)
@@ -732,7 +732,7 @@ for (const width of [390, 360, 320]) {
       if (un) {
         await open(p, `#/c/${un[1].code}/y/${un[0]}`);
         const u = await p.evaluate(() => { const b = document.querySelector('#su .yw-strict'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', li: b.querySelectorAll('.yw-li').length, no: b.querySelectorAll('.yw-no').length} : null; });
-        check(!!u && u.h === '큐피트 계산법 — 몬테카를로와 기준 31가지' && /표가 붙지 않았어요/.test(u.v) && (u.li === 0 ? /몬테카를로에서 걸려/.test(u.v) : u.li === 31 && u.no >= 1), '⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지 — ' + un[0] + ' ' + un[1].name, JSON.stringify(u).slice(0, 200));
+        check(!!u && u.h === '수르 계산법 — 몬테카를로와 기준 31가지' && /표가 붙지 않았어요/.test(u.v) && (u.li === 0 ? /몬테카를로에서 걸려/.test(u.v) : u.li === 31 && u.no >= 1), '⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지 — ' + un[0] + ' ' + un[1].name, JSON.stringify(u).slice(0, 200));
       }
     }
     if (first) {
@@ -877,6 +877,6 @@ for (const width of [390, 360, 320]) {
 }
 await browser.close();
 R.ok = R.counts.fail === 0;
-console.log(`큐피트 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
+console.log(`수르 두 길 검사 — 통과 ${R.counts.pass} · 실패 ${R.counts.fail}`);
 if (OUT) await fs.writeFile(OUT, JSON.stringify(R, null, 1));
 process.exit(R.ok ? 0 : 1);

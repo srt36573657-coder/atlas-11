@@ -20,16 +20,16 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 const icon = d => `<svg viewBox="0 0 24 24" aria-hidden="true" class="suw-i"><path d="${esc(d)}"/></svg>`;
 
 export function bar(g = G) {
-  const back = `<a class="suw-back" href="/su/#/g/${g}"><img src="/media/makbi-icon.svg" alt="" width="34" height="34"><span class="suw-bk">큐피트로</span><b>${esc(GROUPS[g])} 길</b><i aria-hidden="true">›</i></a>`;
+  const back = `<a class="suw-back" href="/su/#/g/${g}"><img src="/media/makbi-icon.svg" alt="" width="34" height="34"><span class="suw-bk">수르로</span><b>${esc(GROUPS[g])} 길</b><i aria-hidden="true">›</i></a>`;
   const find = `<a class="suw-find" href="/su/#/g/guide" aria-label="종목 찾기 · 길잡이">${icon(FIND_D)}<span>찾기</span></a>`;
-  const tabs = `<nav class="suw-tabs" aria-label="큐피트 탭">${TABS.map(([t, href, d]) => `<a href="${esc(href)}">${icon(d)}<span>${esc(t)}</span></a>`).join('')}</nav>`;
-  return `<div class="suw-bar" id="suw" role="navigation" aria-label="큐피트 길"><div class="suw-row">${back}${find}</div>${tabs}</div>`;
+  const tabs = `<nav class="suw-tabs" aria-label="수르 탭">${TABS.map(([t, href, d]) => `<a href="${esc(href)}">${icon(d)}<span>${esc(t)}</span></a>`).join('')}</nav>`;
+  return `<div class="suw-bar" id="suw" role="navigation" aria-label="수르 길"><div class="suw-row">${back}${find}</div>${tabs}</div>`;
 }
 
 export function build(src) {
   const once = (s, a, b) => { const i = s.indexOf(a); if (i < 0 || s.indexOf(a, i + 1) >= 0) throw new Error('원본에서 한 번만 나와야 함: ' + a); return s.slice(0, i) + b + s.slice(i + a.length); };
   let s = src;
-  s = once(s, '<!doctype html>\n', '<!doctype html>\n<!-- 지은 파일 — scripts/atlas11/next/su_privacy.mjs 가 site/privacy.html 에서 지음(손으로 고치지 않음 · 원본을 고친 뒤 다시 지음) · 큐피트 틀을 미리 입힌 짝 쪽(주문 2011) -->\n');
+  s = once(s, '<!doctype html>\n', '<!doctype html>\n<!-- 지은 파일 — scripts/atlas11/next/su_privacy.mjs 가 site/privacy.html 에서 지음(손으로 고치지 않음 · 원본을 고친 뒤 다시 지음) · 수르 틀을 미리 입힌 짝 쪽(주문 2011) -->\n');
   s = once(s, '<html lang="ko" class="su-jobs">', '<html lang="ko" class="su-jobs su-wrapped">'); // 원본은 이미 첫 페이지 색(su-jobs · su-privacy.css · 주문 2250) — 짝 쪽은 수르 틀(아래 수르 막대)만 더함
   s = s.replace(/<meta name="theme-color" content="#[0-9A-Fa-f]{6}">/, '<meta name="theme-color" content="#FFFFFF">');
   s = once(s, '<link rel="stylesheet" href="/su/su-privacy.css">', '<link rel="stylesheet" href="/su/su-privacy.css">\n<link rel="stylesheet" href="/su/su-wrap.css">');

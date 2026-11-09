@@ -2,7 +2,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import crypto from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {CODE, pct, moreLess, dateKo, bloomList, moneyList, whyOf, reasonsFor, idxLine, coLine, indRows, forwardTo, jo} from '../../site/su/su-data.js';
@@ -402,7 +401,7 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
   //   주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 … 별도로 표기」) — 표시 판(mode mark)은 일곱 그대로 · 표(sx) 수 = 엄격 셈 마지막 수
   const ST = T.strict?.rule ? T.strict : null, FIL = !!ST && ST.mode !== 'mark';
   const seven = k => (FIL ? (assert.ok(T.lists[k].length <= 7, k + ' 일곱 이하(엄격)'), assert.equal(T.lists[k].length, ST.groups[k].final, k + ' = 엄격 셈 마지막 수'))
-    : (assert.equal(T.lists[k].length, 7, k + ' 일곱'), ST && assert.equal(T.lists[k].filter(c => c.sx === true).length, ST.groups[k].final, k + ' 큐피트 계산법 표 = 엄격 셈 마지막 수')));
+    : (assert.equal(T.lists[k].length, 7, k + ' 일곱'), ST && assert.equal(T.lists[k].filter(c => c.sx === true).length, ST.groups[k].final, k + ' 수르 계산법 표 = 엄격 셈 마지막 수')));
   for (const k of ['hot', 'bloom', 'money']) {
     seven(k);
     for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' — 365곳 안에서만([7] 5)'); assert.ok(c.in.includes(k)); }
@@ -490,8 +489,8 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
   for (const f of ['site/next/index.html', 'site/atlas/index.html']) assert.ok(fs.readFileSync(path.join(ROOT, f), 'utf8').includes('/su/su-wrap.js'), '옛 쪽에 수르 틀 — ' + f);
   const {ESSENCE} = await import('../../site/next/essence.js');
   assert.ok(ESSENCE[0].includes('불장') && ESSENCE[0].includes('꽃이 될') && ESSENCE[0].includes('돈이 몰리는') && ESSENCE[0].includes('365'), '첫 화면 본질 첫 줄 = 셋 · 365(자료 0)');
-  const doc = fs.readFileSync(path.join(ROOT, 'docs/큐피트_본질.md'), 'utf8');
-  assert.ok(/^1\. 큐피트의 본질: 불장 종목, 꽃이 될 종목, 돈이 몰리는 종목을 찾아내는 탐지다\./m.test(doc), '본질 문서 1번 = 자료 0');
+  const doc = fs.readFileSync(path.join(ROOT, 'docs/수르_본질.md'), 'utf8');
+  assert.ok(/^1\. 수르의 본질: 불장 종목, 꽃이 될 종목, 돈이 몰리는 종목을 찾아내는 탐지다\./m.test(doc), '본질 문서 1번 = 자료 0');
   assert.ok(/^2\. 셋을 돕는 일/m.test(doc), '옛 하는 일 셋 → 셋을 돕는 일');
 });
 
@@ -554,18 +553,18 @@ test('엄격 셈 — su21.py 가 지금 셈 일곱을 거름 · 첫 페이지 �
   assert.ok(pk.includes("'su21-strict.json'") && rp.includes("'days.json'") && rp.includes('RULE_NOW'), '묶을 때 · 지난 판 다시 세기(하루 값 · 규칙이 바뀌면 다시 셈)');
 });
 
-/** 주문 1209(사장님 2026-11-09 12:09 「아니 이렇게 해 42개를 다 보이고 엄격한 2개를 큐피트 계산법으로 찾은 종목이라고 해서 별도로 표기를 해봐」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「큐피트 계산법」 표 */
-test('큐피트 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지난 칸만 표 · 풀이 한 줄 · 「왜?」 쪽 42칸 모두 · 며칠째는 옛 규칙', () => {
+/** 주문 1209(사장님 2026-11-09 12:09 「아니 이렇게 해 42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기를 해봐」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「수르 계산법」 표 */
+test('수르 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지난 칸만 표 · 풀이 한 줄 · 「왜?」 쪽 42칸 모두 · 며칠째는 옛 규칙', () => {
   const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   const py = rd('scripts/atlas11/next/su21.py'), ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), ck = rd('scripts/atlas11/next/check_su.mjs'), rp = rd('scripts/atlas11/next/su21_replay.mjs'), dy = rd('scripts/atlas11/next/su21_days.mjs'), s21 = rd('site/su/su-21.js');
   assert.ok(!/HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK/.test(py), 'su21.py — 칸은 일곱 그대로(주문 1422 뒤에는 몬테카를로 차례 · 표는 1등 · 2등 · 3등)');
-  assert.ok(/const MARK = d\?\.strict\?\.mode === 'mark'/.test(ap) && /function sxTag\(/.test(ap) && /function legendSx\(/.test(ap) && ap.includes("SXT = '큐피트 계산법'") && ap.includes("SXL = '큐피트 계산법으로 찾은 종목'") && /'data-sx': it\.sx \? '1' : ''/.test(ap), '첫 페이지 — 표 · 풀이 · data-sx');
-  assert.ok(y.includes('큐피트 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지') && y.includes('몬테카를로에서 걸려 기준 31가지는 세지 않았어요'), '「왜?」 쪽 — 표가 붙은 곳 · 걸린 곳');
+  assert.ok(/const MARK = d\?\.strict\?\.mode === 'mark'/.test(ap) && /function sxTag\(/.test(ap) && /function legendSx\(/.test(ap) && ap.includes("SXT = '수르 계산법'") && ap.includes("SXL = '수르 계산법으로 찾은 종목'") && /'data-sx': it\.sx \? '1' : ''/.test(ap), '첫 페이지 — 표 · 풀이 · data-sx');
+  assert.ok(y.includes('수르 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지') && y.includes('몬테카를로에서 걸려 기준 31가지는 세지 않았어요'), '「왜?」 쪽 — 표가 붙은 곳 · 걸린 곳');
   assert.ok(ck.includes('⑳ 첫 페이지(주문 1209)') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판');
   assert.ok(rp.includes("s?.mode === 'mark' ? null") && dy.includes("su?.strict?.mode === 'mark' ? null"), '며칠째 — 표시 판은 칸이 옛 셈 일곱이라 옛 규칙');
-  assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 큐피트 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
-  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(큐피트 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
-  for (const t2 of ['큐피트 계산법', '큐피트 계산법으로 찾은 종목', '31가지 기준을 모두 지난 곳이에요.']) assert.ok(!/[A-Za-z%]/.test(t2), '새 글에 영어 · % 없음 — ' + t2);
+  assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 수르 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
+  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(수르 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
+  for (const t2 of ['수르 계산법', '수르 계산법으로 찾은 종목', '31가지 기준을 모두 지난 곳이에요.']) assert.ok(!/[A-Za-z%]/.test(t2), '새 글에 영어 · % 없음 — ' + t2);
 });
 
 /** 주문 1422(사장님 2026-11-09 14:22 「돈 · 꽃 · 불장 찾는 조건을 처음에 365 전 종목을 몬테카를로 계산법으로 찾은 다음 소거법으로 1번만 돌려서 42개를 찾고 42개를 찾은 것 중에서 다시 몬테카를로 …
@@ -578,7 +577,7 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   assert.ok(/import su21_mc as MC/.test(py) && /HOT = per2\(_o\)/.test(py) && /T3 = TOP3\.top3\(CTX, CELLS\) if A\.top3 else None/.test(py) && /out\['listRule'\] = (MC|CUL)\.RULE_ID/.test(py) && /'r3': PLACE\.get\(\(k, c\)\)/.test(py), 'su21.py — 일곱 · 1억 번 셈 · 규칙 이름');
   assert.ok(pk.includes("'--mc365', '--top3'"), '올릴 때 365곳 · 1억 번');
   assert.ok(/const RANK = !!d\?\.top3/.test(ap) && /function legendR3\(/.test(ap) && ap.includes("note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4')") && /sxTag\(x \+ 6, y \+ 8, it\.r3 \+ '등', 'sa-r3'\)/.test(ap), '첫 페이지 — 1등 · 2등 · 3등 표 · 풀이 두 줄');
-  assert.ok(/export function crit7mc\(/.test(y) && /export function top3Box\(/.test(y) && y.includes("'큐피트 계산법 ' + place + '등 — 1억 번 셈'"), '「왜?」 쪽 — 기준 일곱(몬테카를로) · 1억 번 셈 상자');
+  assert.ok(/export function crit7mc\(/.test(y) && /export function top3Box\(/.test(y) && y.includes("'수르 계산법 ' + place + '등 — 1억 번 셈'"), '「왜?」 쪽 — 기준 일곱(몬테카를로) · 1억 번 셈 상자');
   assert.ok(/const MCR = T => T\?\.listRule === 'mc365-v1'/.test(s21) && s21.includes("예전 셈은 ' + p.old100"), '21곳 쪽 — 몬테카를로 글 · 지난 1년(예전 셈과 견줌)');
   assert.ok(ck.includes('⑳ 1억 번 셈 — 1억 판') && ck.includes('⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표'), '검사 ⑳ — 몬테카를로 차례 판');
   const P = JSON.parse(rd('reports/atlas11/su-next/past-mc.json'));
@@ -590,7 +589,7 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   const r3 = Object.values(T.lists).flat().filter(c => [1, 2, 3].includes(c.r3)).map(c => c.r3).sort();
   assert.deepEqual(r3, [1, 2, 3], '1등 · 2등 · 3등 칸 셋');
   for (const j of [0, 1, 2]) assert.equal(Object.values(T.top3.cells).reduce((a, x) => a + x[j], 0), T.top3.total, '판마다 ' + (j + 1) + '등 하나씩');
-  for (const t2 of ['1등', '2등', '3등', '큐피트 계산법 차례', '1억 번 섞어', '끝까지 남은 차례예요.']) assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|추천/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
+  for (const t2 of ['1등', '2등', '3등', '수르 계산법 차례', '1억 번 섞어', '끝까지 남은 차례예요.']) assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|추천/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
 });
 
 /** 주문 1912(사장님 2026-11-09 19:12 「한국에 주식하는 사람들에 특징 11가지를 에이전트 11개를 돌려서 찾아낸 다음 7가지에 정의를 내린 다음
@@ -661,24 +660,4 @@ test('꽃이 될 듯 맞음 — 고른 날 값부터 셈 · 옛 잣대는 견줌
   assert.ok(py21.includes("'bloomFrom': PASTC.get('flower')") && ck.includes('⑳ 꽃이 될 듯 맞음 — 고른 날 값부터 셈(주문 0103'), 'su21.py · 검사 ⑳');
   for (const t2 of ['고른 날부터 시장보다 15 넘게 앞섰어요(꽃)', '고른 날부터 ', P.what.bloomNext])
     assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|매도|추천|예측|확률|유망|신호/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
-});
-
-/** 주문 0243(사장님 2026-11-10 02:43 「수르를 큐피트로 변경하고 만수를 천사로 변경하고  10번도 작업해」) — 이름 · 천사 단추 · 꽃이 될 듯 다듬기 */
-test('이름 큐피트 · 천사 단추 · 꽃이 될 듯은 빚투 · 본전을 빼지 않음(새 잣대로 지난 1년 네 철 모두 늘어남)', async () => {
-  const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
-  const {BRAND, NAME, NAME_EN} = await import('../../site/next/brand.js');
-  assert.equal(NAME, '큐피트'); assert.equal(NAME_EN, 'Cupid'); assert.equal(BRAND.was[0].ko, '수르'); assert.equal(BRAND.was[0].en, 'Sur');
-  assert.ok(fs.existsSync(path.join(ROOT, 'docs/큐피트_본질.md')) && !fs.existsSync(path.join(ROOT, 'docs/수르_본질.md')), '본질 파일 이름 따라감');
-  const lock = JSON.parse(rd('config/atlas11/essence.lock.json')), rows = lock.files['docs/큐피트_본질.md'];
-  assert.ok(rows && rows.at(-1).words.includes('수르를 큐피트로 변경하고') && rows.at(-1).sha256 === crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, 'docs/큐피트_본질.md'))).digest('hex'), '잠금 — 오늘 말씀 · 새 해시');
-  const su = rd('site/su/su.js'), s21 = rd('site/su/su-21.js'), feat = rd('site/su/su-feat.js'), hn = rd('site/next/home-new.js'), boot = rd('site/next/boot-home.js');
-  assert.ok(su.includes("'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'})") && s21.includes("card('https://shin-yxy.gino.im/', '천사',") && feat.includes("name: '천사 단추'")
-    && hn.includes("h('span', {text: EN ? 'Angel' : '천사'})") && boot.includes("ms.append(el('span', null, '천사')"), '천사 단추 — 같은 바깥 주소');
-  for (const [f, src] of [['su.js', su], ['su-21.js', s21], ['su-feat.js', feat], ['home-new.js', hn], ['boot-home.js', boot]])
-    assert.ok(!/['"`][^'"`\n]*만수르[^'"`\n]*['"`]/.test(src.split('\n').filter(l => !/^\s*(\/\/|\*|\/\*)/.test(l)).map(l => l.replace(/\/\/.*$/, '')).join('\n')), '화면 글에 만수르 없음 — ' + f);
-  const cu = rd('scripts/atlas11/next/su21_culture.py'), P = JSON.parse(rd('reports/atlas11/su-next/past-culture.json')), T = JSON.parse(rd('site/su/data/su21.json')), K = JSON.parse(rd('site/su/data/ant11.json'));
-  assert.ok(cu.includes("'bloomNext': [], 'money': [], 'moneyNext': []}") && cu.includes("NEG = {'hot': ['casc', 'rev'], 'bloom': ['casc'], 'hotNext': ['casc', 'rev'],"), '꽃이 될 듯만 빼기 없음 — 불장 · 꽃이 될 · 불장이 될 듯은 그대로');
-  assert.ok(P.res.bloomNext.culture.per100 >= 32 && P.halves.bloomNext.first.culture.per100 > 31.8 && P.halves.bloomNext.second.culture.per100 > 29.6, '지난 1년 꽃이 될 듯 — 두 반년 모두 늘어남(31.8 · 29.6 보다)');
-  assert.deepEqual(T.culture.neg.bloomNext, []); assert.ok(!T.rules.bloomNext.includes('본전 버티기는 뺌'), '42칸 셈 풀이');
-  assert.ok(K.items[3].why.includes('꽃이 될 듯에서는 빼지 않아요') && K.items[9].why.includes('꽃이 될 듯에서는 빼지 않아요') && K.items[4].why.includes('불장과 불장이 될 듯에서 빼요'), '기록창 특징 열하나 글');
 });

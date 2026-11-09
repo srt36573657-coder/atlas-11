@@ -1533,16 +1533,6 @@
    "state": "성공",
    "proof": "docs/design/su-volume-2026-11-10/order-0103.txt · reports/atlas11/su-next/past-culture.json(su-culture-past-2 · flower pick) · 전체 검사 1/11 실패 0 https://github.com/srt36573657-coder/atlas-11/actions/runs/42653918062 · 올림 https://github.com/srt36573657-coder/atlas-11/actions/runs/42653938686 · 진짜 사이트 검사 2/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/42656984295(28쪽 모두 실패 0 · 수르 1437 통과 · 진짜 사이트 past.bloomFrom = pick · 꽃이 될 듯 100번에 31번)",
    "short": "꽃이 될 듯 맞음을 고른 날부터 세도록 바꿔요."
-  },
-  {
-   "id": "0243",
-   "at": "2026-11-10T02:43+09:00",
-   "words": "수르를 큐피트로 변경하고 만수를 천사로 변경하고  10번도 작업해",
-   "then": "02:43 받음 · 02:43 이해 보고(이름 수르 → 큐피트 · 만수르 단추 → 천사 · 화면 글 · 소리 · 그림 속 옛 이름 · 주소는 그대로 · 10번 = 새 잣대로 꽃이 될 듯 고르는 법 다듬기 · 두 반년 모두 나아질 때만 · 실패 0이면 올림 · 새벽 6시쯤 보고)",
-   "did": "하는 중 — 이름 바꿀 자리 찾기부터",
-   "state": "미완성",
-   "proof": "docs/design/cupid-2026-11-10/order-0243.txt",
-   "short": "이름을 큐피트로, 만수르 단추를 천사로 바꾸고 꽃이 될 듯 고르는 법을 다듬어요."
   }
  ],
  "open": 10,

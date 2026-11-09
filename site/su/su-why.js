@@ -168,7 +168,7 @@ export async function vQuiz(code0, X) {
     return {title: '왜 사?', tab: 3, step: 6, kick: '사기 전에' + (name ? ' · ' + name : '') + ' · ' + ['기', '승', '전', '결'][gi] + ' ' + WHY_GROUPS[gi][0], h1: WHY_QS[i], big,
       pro: [{k: '질문 수', v: WHY_QS.length + '개', how: '네 묶음 · ' + WHY_GROUPS.map(([n, q]) => n + ' ' + q.length).join(' · ')}, {k: '지금 질문', v: (i + 1) + ' / ' + WHY_QS.length, how: WHY_GROUPS[gi][0] + ' 묶음'},
         {k: '답 셋의 점수', v: '● 0 · ▲ 1 · ■ 2', how: '■ 은 빨간 답 · 준비 점수 = ' + WHY_MAX + ' 에서 답 점수를 뺀 값'},
-        {k: '판정 문턱', v: '쉬어 · 반만 · 좋아', how: '빌린 돈 · 곧 쓸 돈이면 쉬어 · 점수 12 넘거나 빨간 답 넷이면 쉬어 · 6 넘으면 반만 · 지금 큐피트 「왜 사?」와 같은 셈'},
+        {k: '판정 문턱', v: '쉬어 · 반만 · 좋아', how: '빌린 돈 · 곧 쓸 돈이면 쉬어 · 점수 12 넘거나 빨간 답 넷이면 쉬어 · 6 넘으면 반만 · 지금 수르 「왜 사?」와 같은 셈'},
         {k: '답한 질문', v: Q.ans.filter(x => x != null).length + ' / ' + WHY_QS.length, how: '이 휴대폰에서 지금 답한 수'}],
       ...pic(i + 1, Q.ans.filter(x => x != null).length, petals(tonesNow(), {cur: i, label: '열한 질문 꽃잎', hero: true, cap: ['사기 전에 열한 가지를 물어요.', (i + 1) + '번째 질문이에요. 답한 잎에 색이 들어요.', '그런데 맞히는 시험이 아니에요.', '그래서 내 마음 그대로 답해요.']})),
       act: [h('ul', {class: 'su-ans', 'aria-label': '답 셋'}, WHY_A[i].map(([tone, label], k) => h('li', {}, // 누르는 곳은 그림 바로 아래(신문 짜임에서도 기능은 그대로 — 주문 1023 [2] 3)
@@ -192,7 +192,7 @@ export async function vQuiz(code0, X) {
       figs: [groupBars(rows, '네 묶음 · 준비된 만큼')],
       pro: [{k: '준비 점수', v: J.ready + ' / ' + WHY_MAX, how: '답마다 ● 0 · ▲ 1 · ■ 2 를 더한 값을 ' + WHY_MAX + '에서 뺌'}, {k: '빨간 답', v: J.reds + '개', how: '■ 멈춰요 쪽 답'},
         ...WHY_GROUPS.map(([g, qs]) => ({k: g + ' 묶음 점수', v: (J.groups[g] ?? 0) + ' / ' + qs.length * 2, how: '질문 ' + qs.join(' · ') + '번 · 낮을수록 준비됨'})),
-        {k: '판정 문턱', v: '쉬어 · 반만 · 좋아', how: '빌린 돈 · 곧 쓸 돈이면 쉬어 · 점수 12 넘거나 빨간 답 넷이면 쉬어 · 6 넘으면 반만 · 지금 큐피트 「왜 사?」와 같은 셈'}],
+        {k: '판정 문턱', v: '쉬어 · 반만 · 좋아', how: '빌린 돈 · 곧 쓸 돈이면 쉬어 · 점수 12 넘거나 빨간 답 넷이면 쉬어 · 6 넘으면 반만 · 지금 수르 「왜 사?」와 같은 셈'}],
       body: [h('p', {class: 'su-quote', text: '“' + (v === 'rest' && J.stop ? T[2] : T[1]) + '”'}),
         h('section', {class: 'su-why', 'aria-label': '내 답'}, h('h2', {class: 'su-ft', text: '내 답 열한 개'}), h('ol', {class: 'su-myans'}, WHY_QS.map((q, k) => { const [tone, label] = WHY_A[k][Q.ans[k]];
           return h('li', {}, h('span', {class: 'su-mq', text: (k + 1) + ' · ' + q}), h('b', {class: 'su-ma ' + tone}, h('i', {'aria-hidden': 'true', text: SHAPE[tone]}), h('span', {text: label}))); }))),
