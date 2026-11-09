@@ -396,8 +396,10 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
   assert.equal(T.schema, 'su21-2');
   assert.ok(Number.isInteger(T.counts.listed) && T.counts.listed > 2000, '상장 회사 수 = 받은 자료(mkt.json n)');
   assert.equal(T.counts.b365, in365.size, '우량주 = 지금 판(board.json) 그대로');
+  // 엄격 셈(주문 0854 · 2026-11-09 09:02 「어」) — 묶음마다 기준을 모두 지난 곳만(일곱 이하) · 남는 자리는 비움 · 수 = su21.json strict.groups 의 final
+  const ST = T.strict?.rule ? T.strict : null, seven = k => (ST ? (assert.ok(T.lists[k].length <= 7, k + ' 일곱 이하(엄격)'), assert.equal(T.lists[k].length, ST.groups[k].final, k + ' = 엄격 셈 마지막 수')) : assert.equal(T.lists[k].length, 7, k + ' 일곱'));
   for (const k of ['hot', 'bloom', 'money']) {
-    assert.equal(T.lists[k].length, 7, k + ' 일곱');
+    seven(k);
     for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' — 365곳 안에서만([7] 5)'); assert.ok(c.in.includes(k)); }
   }
   const cnt = {}; for (const k of ['hot', 'bloom', 'money']) for (const c of T.lists[k]) cnt[c.code] = (cnt[c.code] ?? 0) + 1;
@@ -412,14 +414,14 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
   // 될 듯 셋(주문 1103 · 사장님 2026-11-08 11:03 「불장이 될듯 · 돈이 몰릴듯 · 싹에서 꽃이 될듯 7개 추가하자」 · 11:08 「응」) — 일곱씩 · 365 안 · 지금 셋과 같은 종류에는 겹치지 않음 · 까닭 값 · 지난 1년 기록
   const NOWK = {hotNext: 'hot', bloomNext: 'bloom', moneyNext: 'money'};
   for (const k of ['hotNext', 'bloomNext', 'moneyNext']) {
-    assert.equal(T.lists[k].length, 7, k + ' 일곱');
+    seven(k);
     const now = new Set(T.lists[NOWK[k]].map(c => c.code));
     for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' 365 안'); assert.ok(c.in.includes(k)); assert.ok(!now.has(c.code), k + ' ' + c.name + ' — 지금 일곱과 겹치지 않음');
       const w = c.why ?? {};
       if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 까닭 ' + c.name);
       if (k === 'moneyNext') assert.ok(Number.isFinite(w.gain) && w.gain > 0, 'moneyNext 까닭 ' + c.name);
       if (k === 'bloomNext') assert.ok(Number.isFinite(w.x5) && w.x5 >= 0 && Number.isFinite(w.x20) && w.x20 < 5, 'bloomNext 까닭(싹) ' + c.name); }
-    assert.ok(Number.isFinite(T.past?.[k]?.per100) && Number.isFinite(T.past?.[k]?.base100) && T.past[k].n > 500, k + ' 지난 1년 기록');
+    assert.ok(Number.isFinite(T.past?.[k]?.per100) && Number.isFinite(T.past?.[k]?.base100) && T.past[k].n > (T.past.strict ? 50 : 500), k + ' 지난 1년 기록(엄격 셈은 고른 수가 적음 — 80 ~ 180번)');
   }
   assert.ok(T.rules.hotNext && T.rules.moneyNext && T.rules.bloomNext, '될 듯 셋 규칙 글');
   const js = fs.readFileSync(path.join(ROOT, 'site/su/su-21.js'), 'utf8');
