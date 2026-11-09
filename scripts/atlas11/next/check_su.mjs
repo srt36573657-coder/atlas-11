@@ -569,7 +569,11 @@ for (const width of [390, 360, 320]) {
       const chips = [...document.querySelectorAll('#su .yw-chip b')].map(b => b.textContent);
       const sents = [...document.querySelectorAll('#su .yw-hero, #su .yw .yw-s, #su .yw .yw-t')].map(e => e.textContent);
       return {h1: document.querySelector('#su h1')?.innerText ?? '', parts, chips, crit: document.querySelectorAll('#su .yw-crit .yw-li').length, fchk: document.querySelectorAll('#su .yw-fomo > ol:first-of-type .yw-li').length,
-        f11: document.querySelectorAll('#su .yw-fomo > ol:nth-of-type(2) .yw-li').length, pct: sents.filter(t => t.includes('%')).length, price: [...document.querySelectorAll('#su .yw .yw-s')].map(e => e.textContent).find(t => /마지막 값은 [\d,]+원이에요/.test(t)) ?? null};
+        f11: document.querySelectorAll('#su .yw-fomo > ol:nth-of-type(2) .yw-li').length, pct: sents.filter(t => t.includes('%')).length, price: [...document.querySelectorAll('#su .yw .yw-s')].map(e => e.textContent).find(t => /마지막 값은 [\d,]+원이에요/.test(t)) ?? null,
+        g: (g => g ? {listed: g.getAttribute('data-listed'), b365: g.getAttribute('data-b365'), pool: g.getAttribute('data-pool'), pos: g.getAttribute('data-pos'), steps: g.querySelectorAll('.yw-steps > li').length,
+          me: g.querySelector('.yw-steps > li.yw-sme')?.textContent ?? '', a1: (g.querySelector('.yw-a1')?.textContent ?? '').trim(), inSteps: g.querySelectorAll('.yw-steps .yw-li').length, open: g.querySelectorAll('.yw-steps details[open]').length,
+          first: g.getBoundingClientRect().top < innerHeight && g.querySelector('.yw-steps > li.yw-sme').getBoundingClientRect().bottom < innerHeight} : null)(document.querySelector('#su .yw-glance.yw-crit')), // 주문 0510 — 한눈 그림
+        folds: [...document.querySelectorAll('#su details.yw-fold')].map(d => d.open), screens: +(document.documentElement.scrollHeight / innerHeight).toFixed(2), heroPct: (document.querySelector('#su .su-hero.yw')?.textContent ?? '').includes('%')};
     });
     const m = await measure(p); pageRules(m, '⑰ 「왜?」 ' + c.k + ' ' + c.name);
     const nums = w.parts.flatMap(x => x.n), okNums = nums.length === 36 && nums.every((v, i) => v === i + 1) && w.parts.length === 4 && w.parts.every(x => x.n.length === 9) && ['기', '승', '전', '결'].every((g, i) => w.parts[i]?.h.startsWith(g + ' — '));
@@ -579,7 +583,16 @@ for (const width of [390, 360, 320]) {
     check(w.crit === 7, '⑰ 이렇게 고른 기준 일곱 — ' + c.k + ' ' + c.name, String(w.crit));
     check(JSON.stringify(w.chips) === JSON.stringify(wantChips), '⑰ 첫 발견 · 며칠째 · 포모지수 = 자료 — ' + c.k + ' ' + c.name, JSON.stringify(w.chips) + ' / ' + JSON.stringify(wantChips));
     check(w.fchk === 7 && (fo?.verdict === 'pass' ? w.f11 === 11 : w.f11 === 0), '⑰ 포모 소거 기준 일곱 · 통과면 까닭 열하나 — ' + c.k + ' ' + c.name, w.fchk + ' · ' + w.f11);
-    check(w.pct === 0, '⑰ 풀이 문장에 「%」 없음 — ' + c.k + ' ' + c.name, String(w.pct));
+    check(w.pct === 0 && !w.heroPct, '⑰ 풀이 문장에 「%」 없음(한눈 그림 · 접힌 글 포함) — ' + c.k + ' ' + c.name, String(w.pct) + ' · ' + w.heroPct);
+    { // 주문 0510(사장님 2026-11-10 05:10 「이곳에 글이 너무 어렵고 많아 핵심을 도식화로 만들어서 한눈에 알수있도록 해」) — 한눈 그림 수 = 자료 · 기준 일곱이 그림 칸 안 · 긴 글은 접힘 · 쪽 길이
+      const src = (c.k.endsWith('Next') ? N21.lists?.[c.k] : null) ?? T21.lists?.[c.k] ?? [], pos = src.findIndex(x => x.code === c.code) + 1, mcr = T21.listRule === 'mc365-v1' || T21.listRule === 'culture7-v1';
+      const pool = mcr && Number.isFinite(c.mc?.pool) ? c.mc.pool : T21.counts?.pools?.[c.k];
+      const g = w.g, okG = !!g && g.listed === String(T21.counts?.listed) && g.b365 === String(T21.counts?.b365) && g.pool === String(pool ?? '') && g.pos === String(pos) && g.steps === 5 && g.me.includes(c.name) && g.inSteps === 7 && g.open === 0
+        && g.a1.length >= 8 && !g.a1.includes('확인 필요') && g.first;
+      check(okG, '⑰ 한눈 그림 — 상장 · 우량주 · 거른 곳 · 일곱 · 이 회사 자리 = 자료 · 기준 일곱이 칸 안 · 첫 화면 안(주문 0510) — ' + c.k + ' ' + c.name, JSON.stringify({g, want: {listed: T21.counts?.listed, b365: T21.counts?.b365, pool, pos}}).slice(0, 300));
+      check(w.folds.length >= 4 && w.folds.every(o => !o) && w.screens <= 4, '⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510 · 전에는 열세 장) — ' + c.k + ' ' + c.name, JSON.stringify({folds: w.folds, screens: w.screens}));
+      R.m.why.screens = Math.max(R.m.why.screens ?? 0, w.screens);
+    }
     check(!w.price || !Number.isFinite(c.close) || w.price.includes(Number(c.close).toLocaleString('ko-KR') + '원'), '⑰ 마지막 값 = 첫 페이지 값 — ' + c.k + ' ' + c.name, w.price ?? '없음');
     pages++; reasons += nums.length;
   }
