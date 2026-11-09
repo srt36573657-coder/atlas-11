@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-06T18:10:39Z",
+ "at": "2026-11-09T21:39:08Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "a663eeab6623194f6ae8500809c10080e0ab260d6ecb3c3a9b4bb58e409f5d36",
-   "last": "2026-11-06"
+   "sha256": "e2f8bce62c2fb9b7cbf84d9db27884b7937f6f365905700f20decf70e6326122",
+   "last": "2026-11-09"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 857,
+   "n": 858,
    "first": "2023-04-28",
-   "last": "2026-11-06",
+   "last": "2026-11-09",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "64d38397cf5bab8bd72412999059e17c372786eff3b9ce83af0e5b061db701b9"
+   "sha256": "30b71aac4dafad64f55a99edfa1fda745a87f14f7708402270af2508b3d17f2f"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "dbe13227ebc83b35b4f1fee3fdce43d1d92f922b41f4ccfa31c846a21e8ba203"
+   "sha256": "2e308f84de69612a975c90f55238adc154dec027cd24b94db6d36abf883a5f63"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "7bb4149a5614c6d40f2d35bfa79d825f3c2915189e275e84d6dfa684d3145358"
+   "sha256": "ec642a456191abc10af6949e6bfd96aa6909a41cbbb927dd4137797970f37977"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 856,
-  "day": "2026-11-06",
+  "k": 857,
+  "day": "2026-11-09",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1734,
-   "outThinQ": 26,
+   "outThin": 1740,
+   "outThinQ": 27,
    "outHalt": 7,
-   "outList": 7,
-   "listQ": 809,
-   "afterOut": 809,
-   "g1": 250,
-   "g2": 650,
+   "outList": 8,
+   "listQ": 802,
+   "afterOut": 802,
+   "g1": 248,
+   "g2": 665,
    "g3": 23,
-   "g4": 688,
+   "g4": 683,
    "g5": 4,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 797,
+   "loss3": 790,
    "why": "lists"
   },
-  "loss3Years": 797,
+  "loss3Years": 790,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -321,57 +321,14 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-10-08",
-   "to": "2026-11-06",
-   "n": 2,
-   "counted": 2,
-   "up": 1,
-   "lo": 8,
-   "hi": 15,
-   "rows": [
-    {
-     "code": "150900",
-     "name": "파수AI",
-     "lo": 4,
-     "hi": 8,
-     "from": 4120,
-     "to": 4350,
-     "up": 1,
-     "mcCounts": [
-      885,
-      934,
-      1415,
-      984
-     ],
-     "mcEdges": [
-      0,
-      0,
-      0,
-      0
-     ]
-    },
-    {
-     "code": "086960",
-     "name": "MDS테크",
-     "lo": 4,
-     "hi": 7,
-     "from": 2365,
-     "to": 1852,
-     "up": 0,
-     "mcCounts": [
-      839,
-      1024,
-      1358,
-      995
-     ],
-     "mcEdges": [
-      0,
-      0,
-      0,
-      0
-     ]
-    }
-   ]
+   "from": "2026-10-12",
+   "to": "2026-11-09",
+   "n": 0,
+   "counted": 0,
+   "up": 0,
+   "lo": null,
+   "hi": null,
+   "rows": []
   },
   "order": [],
   "edges": []
@@ -421,10 +378,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1734,
+    1740,
     7,
-    7,
-    809,
+    8,
+    802,
     2557
    ]
   },
@@ -438,35 +395,35 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1734,
-  "outThinQ": 26,
+  "outThin": 1740,
+  "outThinQ": 27,
   "outHalt": 7,
-  "outList": 7,
-  "listQ": 809,
-  "afterOut": 809,
-  "g1": 250,
-  "g2": 650,
+  "outList": 8,
+  "listQ": 802,
+  "afterOut": 802,
+  "g1": 248,
+  "g2": 665,
   "g3": 23,
-  "g4": 688,
+  "g4": 683,
   "g5": 4,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 797,
+  "loss3": 790,
   "why": "lists"
  },
- "compared": 2707,
+ "compared": 2693,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 2.5,
-  "build": 1.7,
-  "recount": 0.9,
-  "total": 5.1
+  "readBundle": 2.7,
+  "build": 2.0,
+  "recount": 0.8,
+  "total": 5.7
  }
 }
