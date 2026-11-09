@@ -1,0 +1,2502 @@
+{
+ "schema": "su-volume-past-1",
+ "order": "0033",
+ "rule": "culture7-v1",
+ "from": "2025-10-01",
+ "mid": "2026-04-01",
+ "to": "2026-09-07",
+ "lastData": "2026-10-08",
+ "days": 226,
+ "within": 20,
+ "universe": "지금 우량주 365곳(지난 1년도 같은 365곳 · 살아남은 곳만 보는 치우침이 있음)",
+ "src": "reports/atlas11/universe/2026-10-10/bundle.json.gz · public/data/atlas11/view/board.json · 날마다 셈 = su_culture_past.py --cache",
+ "traits": {
+  "dtr": "당일치기(회전율)",
+  "dtrR": "당일치기(회전율 + 장중 왕복)",
+  "small": "작은 회사",
+  "follow": "따라사기",
+  "newb": "새내기(가까운 모습)"
+ },
+ "how": {
+  "dtr": "닷새 평균 회전율(거래량 ÷ 상장 주식 수)이 그날 365곳 가운데 위 열에 하나",
+  "dtrR": "dtr 이고 닷새 장중 출렁임(고가 − 저가) 합 ÷ 하루 오르내림 합이 위 30",
+  "small": "몸집 아래 열에 하나 · 스무 날 평균 회전율이 가운데값 넘음",
+  "follow": "닷새 안에 거래량이 그 앞 60거래일 가운데값의 5배 넘은 날 · 그날 업종 평균보다 3 넘게 오름",
+  "newb": "닷새 안에 하루 5 넘게 오른 날이 거래량 3배 넘는 날과 겹침(나이 · 처음 온 때는 못 봄)"
+ },
+ "thresholds": "미리 정한 값 — 지난 1년에 맞춰 고르지 않음",
+ "shares": "상장 주식 수 = 모음 날 시가총액 ÷ 그날 종가(어림 · 그 사이 주식 수 바뀜은 못 봄)",
+ "count": {
+  "dtr": {
+   "mean": 36.5,
+   "min": 36,
+   "max": 37
+  },
+  "dtrR": {
+   "mean": 8.6,
+   "min": 0,
+   "max": 21
+  },
+  "small": {
+   "mean": 12.9,
+   "min": 8,
+   "max": 19
+  },
+  "follow": {
+   "mean": 22.5,
+   "min": 4,
+   "max": 52
+  },
+  "newb": {
+   "mean": 39.0,
+   "min": 9,
+   "max": 99
+  },
+  "herd": {
+   "mean": 121.6,
+   "min": 60,
+   "max": 220
+  },
+  "near": {
+   "mean": 82.4,
+   "min": 8,
+   "max": 209
+  },
+  "rev": {
+   "mean": 18.2,
+   "min": 3,
+   "max": 39
+  },
+  "casc": {
+   "mean": 19.2,
+   "min": 0,
+   "max": 94
+  },
+  "big": {
+   "mean": 36.0,
+   "min": 36,
+   "max": 36
+  },
+  "lot": {
+   "mean": 50.9,
+   "min": 7,
+   "max": 243
+  },
+  "attn": {
+   "mean": 29.0,
+   "min": 3,
+   "max": 104
+  }
+ },
+ "overlap": {
+  "dtr": {
+   "herd": 47.3,
+   "near": 35.2,
+   "rev": 3.9,
+   "casc": 12.6,
+   "big": 1.2,
+   "lot": 38.0,
+   "attn": 20.6,
+   "dtrR": 23.7,
+   "small": 7.4,
+   "follow": 34.2,
+   "newb": 45.7,
+   "n": 8987
+  },
+  "dtrR": {
+   "herd": 44.8,
+   "near": 33.9,
+   "rev": 4.0,
+   "casc": 8.5,
+   "big": 0.6,
+   "lot": 15.3,
+   "attn": 8.2,
+   "dtr": 100.0,
+   "small": 9.0,
+   "follow": 22.2,
+   "newb": 28.8,
+   "n": 2126
+  },
+  "small": {
+   "herd": 24.0,
+   "near": 15.7,
+   "rev": 4.9,
+   "casc": 7.1,
+   "big": 0.0,
+   "lot": 19.0,
+   "attn": 7.0,
+   "dtr": 21.0,
+   "dtrR": 6.0,
+   "follow": 13.4,
+   "newb": 18.9,
+   "n": 3173
+  },
+  "follow": {
+   "herd": 48.7,
+   "near": 53.6,
+   "rev": 0.4,
+   "casc": 5.3,
+   "big": 4.6,
+   "lot": 74.6,
+   "attn": 39.4,
+   "dtr": 55.4,
+   "dtrR": 8.5,
+   "small": 7.7,
+   "newb": 92.8,
+   "n": 5542
+  },
+  "newb": {
+   "herd": 52.3,
+   "near": 51.2,
+   "rev": 1.3,
+   "casc": 5.4,
+   "big": 6.6,
+   "lot": 65.8,
+   "attn": 31.4,
+   "dtr": 42.8,
+   "dtrR": 6.4,
+   "small": 6.3,
+   "follow": 53.6,
+   "n": 9593
+  }
+ },
+ "next": {
+  "dtr": {
+   "all": {
+    "days": 226,
+    "diff100": 1.96,
+    "off100": -0.21,
+    "beat100": 40.6,
+    "upDays100": 64.6
+   },
+   "first": {
+    "days": 118,
+    "diff100": 6.11,
+    "off100": -0.67,
+    "beat100": 44.6,
+    "upDays100": 85.6
+   },
+   "second": {
+    "days": 108,
+    "diff100": -2.57,
+    "off100": 0.29,
+    "beat100": 36.1,
+    "upDays100": 41.7
+   }
+  },
+  "dtrR": {
+   "all": {
+    "days": 225,
+    "diff100": 2.73,
+    "off100": -0.05,
+    "beat100": 39.7,
+    "upDays100": 52.9
+   },
+   "first": {
+    "days": 118,
+    "diff100": 8.14,
+    "off100": -0.2,
+    "beat100": 46.3,
+    "upDays100": 69.5
+   },
+   "second": {
+    "days": 107,
+    "diff100": -3.24,
+    "off100": 0.1,
+    "beat100": 32.4,
+    "upDays100": 34.6
+   }
+  },
+  "small": {
+   "all": {
+    "days": 226,
+    "diff100": 5.31,
+    "off100": -0.22,
+    "beat100": 42.3,
+    "upDays100": 67.3
+   },
+   "first": {
+    "days": 118,
+    "diff100": 6.84,
+    "off100": -0.28,
+    "beat100": 41.7,
+    "upDays100": 75.4
+   },
+   "second": {
+    "days": 108,
+    "diff100": 3.64,
+    "off100": -0.15,
+    "beat100": 42.8,
+    "upDays100": 58.3
+   }
+  },
+  "follow": {
+   "all": {
+    "days": 226,
+    "diff100": 1.73,
+    "off100": -0.14,
+    "beat100": 39.0,
+    "upDays100": 57.1
+   },
+   "first": {
+    "days": 118,
+    "diff100": 4.74,
+    "off100": -0.39,
+    "beat100": 42.5,
+    "upDays100": 74.6
+   },
+   "second": {
+    "days": 108,
+    "diff100": -1.57,
+    "off100": 0.12,
+    "beat100": 35.1,
+    "upDays100": 38.0
+   }
+  },
+  "newb": {
+   "all": {
+    "days": 226,
+    "diff100": 2.14,
+    "off100": -0.25,
+    "beat100": 40.5,
+    "upDays100": 61.5
+   },
+   "first": {
+    "days": 118,
+    "diff100": 3.98,
+    "off100": -0.53,
+    "beat100": 41.5,
+    "upDays100": 74.6
+   },
+   "second": {
+    "days": 108,
+    "diff100": 0.13,
+    "off100": 0.04,
+    "beat100": 39.4,
+    "upDays100": 47.2
+   }
+  },
+  "herd": {
+   "all": {
+    "days": 226,
+    "diff100": 1.55,
+    "off100": -0.41,
+    "beat100": 41.5,
+    "upDays100": 60.2
+   },
+   "first": {
+    "days": 118,
+    "diff100": 1.38,
+    "off100": -0.37,
+    "beat100": 38.9,
+    "upDays100": 62.7
+   },
+   "second": {
+    "days": 108,
+    "diff100": 1.73,
+    "off100": -0.45,
+    "beat100": 44.4,
+    "upDays100": 57.4
+   }
+  },
+  "near": {
+   "all": {
+    "days": 226,
+    "diff100": 0.18,
+    "off100": -0.53,
+    "beat100": 40.1,
+    "upDays100": 50.0
+   },
+   "first": {
+    "days": 118,
+    "diff100": 0.37,
+    "off100": -0.43,
+    "beat100": 39.1,
+    "upDays100": 50.0
+   },
+   "second": {
+    "days": 108,
+    "diff100": -0.04,
+    "off100": -0.64,
+    "beat100": 41.2,
+    "upDays100": 50.0
+   }
+  },
+  "rev": {
+   "all": {
+    "days": 226,
+    "diff100": -0.84,
+    "off100": 0.05,
+    "beat100": 38.2,
+    "upDays100": 45.6
+   },
+   "first": {
+    "days": 118,
+    "diff100": 1.3,
+    "off100": -0.08,
+    "beat100": 42.3,
+    "upDays100": 61.0
+   },
+   "second": {
+    "days": 108,
+    "diff100": -3.17,
+    "off100": 0.18,
+    "beat100": 33.8,
+    "upDays100": 28.7
+   }
+  },
+  "casc": {
+   "all": {
+    "days": 223,
+    "diff100": -0.41,
+    "off100": 0.04,
+    "beat100": 37.0,
+    "upDays100": 43.0
+   },
+   "first": {
+    "days": 118,
+    "diff100": 2.56,
+    "off100": -0.14,
+    "beat100": 40.9,
+    "upDays100": 56.8
+   },
+   "second": {
+    "days": 105,
+    "diff100": -3.76,
+    "off100": 0.25,
+    "beat100": 32.5,
+    "upDays100": 27.6
+   }
+  },
+  "big": {
+   "all": {
+    "days": 226,
+    "diff100": -0.16,
+    "off100": 0.02,
+    "beat100": 41.2,
+    "upDays100": 37.2
+   },
+   "first": {
+    "days": 118,
+    "diff100": -1.18,
+    "off100": 0.13,
+    "beat100": 40.6,
+    "upDays100": 33.1
+   },
+   "second": {
+    "days": 108,
+    "diff100": 0.96,
+    "off100": -0.11,
+    "beat100": 41.7,
+    "upDays100": 41.7
+   }
+  },
+  "lot": {
+   "all": {
+    "days": 226,
+    "diff100": 2.12,
+    "off100": -0.36,
+    "beat100": 41.3,
+    "upDays100": 62.4
+   },
+   "first": {
+    "days": 118,
+    "diff100": 2.99,
+    "off100": -0.44,
+    "beat100": 40.4,
+    "upDays100": 68.6
+   },
+   "second": {
+    "days": 108,
+    "diff100": 1.17,
+    "off100": -0.27,
+    "beat100": 42.2,
+    "upDays100": 55.6
+   }
+  },
+  "attn": {
+   "all": {
+    "days": 226,
+    "diff100": 1.01,
+    "off100": -0.03,
+    "beat100": 38.9,
+    "upDays100": 48.7
+   },
+   "first": {
+    "days": 118,
+    "diff100": 2.31,
+    "off100": -0.11,
+    "beat100": 37.2,
+    "upDays100": 54.2
+   },
+   "second": {
+    "days": 108,
+    "diff100": -0.42,
+    "off100": 0.06,
+    "beat100": 40.8,
+    "upDays100": 42.6
+   }
+  }
+ },
+ "beatAll100": {
+  "all": 39.5,
+  "first": 36.8,
+  "second": 42.4
+ },
+ "inPick": {
+  "dtr": {
+   "hotNext": {
+    "on": {
+     "picks": 527,
+     "per100": 48.2
+    },
+    "on1": {
+     "picks": 320,
+     "per100": 55.3
+    },
+    "on2": {
+     "picks": 207,
+     "per100": 37.2
+    },
+    "off": {
+     "picks": 1025,
+     "per100": 47.6
+    },
+    "off1": {
+     "picks": 502,
+     "per100": 41.8
+    },
+    "off2": {
+     "picks": 523,
+     "per100": 53.2
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 327,
+     "per100": 36.1
+    },
+    "on1": {
+     "picks": 201,
+     "per100": 39.3
+    },
+    "on2": {
+     "picks": 126,
+     "per100": 31.0
+    },
+    "off": {
+     "picks": 1253,
+     "per100": 38.5
+    },
+    "off1": {
+     "picks": 625,
+     "per100": 38.4
+    },
+    "off2": {
+     "picks": 628,
+     "per100": 38.5
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 323,
+     "per100": 55.7
+    },
+    "on1": {
+     "picks": 186,
+     "per100": 53.2
+    },
+    "on2": {
+     "picks": 137,
+     "per100": 59.1
+    },
+    "off": {
+     "picks": 1259,
+     "per100": 52.7
+    },
+    "off1": {
+     "picks": 640,
+     "per100": 50.6
+    },
+    "off2": {
+     "picks": 619,
+     "per100": 54.8
+    }
+   },
+   "bloomNextDown": {
+    "on": {
+     "picks": 323,
+     "per100": 45.8
+    },
+    "on1": {
+     "picks": 186,
+     "per100": 37.6
+    },
+    "on2": {
+     "picks": 137,
+     "per100": 56.9
+    },
+    "off": {
+     "picks": 1259,
+     "per100": 31.5
+    },
+    "off1": {
+     "picks": 640,
+     "per100": 27.5
+    },
+    "off2": {
+     "picks": 619,
+     "per100": 35.7
+    }
+   }
+  },
+  "dtrR": {
+   "hotNext": {
+    "on": {
+     "picks": 50,
+     "per100": 46.0
+    },
+    "on1": {
+     "picks": 28,
+     "per100": 57.1
+    },
+    "on2": {
+     "picks": 22,
+     "per100": 31.8
+    },
+    "off": {
+     "picks": 1502,
+     "per100": 47.9
+    },
+    "off1": {
+     "picks": 794,
+     "per100": 46.7
+    },
+    "off2": {
+     "picks": 708,
+     "per100": 49.2
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 28,
+     "per100": 39.3
+    },
+    "on1": {
+     "picks": 15,
+     "per100": 46.7
+    },
+    "on2": {
+     "picks": 13,
+     "per100": 30.8
+    },
+    "off": {
+     "picks": 1552,
+     "per100": 38.0
+    },
+    "off1": {
+     "picks": 811,
+     "per100": 38.5
+    },
+    "off2": {
+     "picks": 741,
+     "per100": 37.4
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 47,
+     "per100": 38.3
+    },
+    "on1": {
+     "picks": 25,
+     "per100": 32.0
+    },
+    "on2": {
+     "picks": 22,
+     "per100": 45.5
+    },
+    "off": {
+     "picks": 1535,
+     "per100": 53.7
+    },
+    "off1": {
+     "picks": 801,
+     "per100": 51.8
+    },
+    "off2": {
+     "picks": 734,
+     "per100": 55.9
+    }
+   },
+   "bloomNextDown": {
+    "on": {
+     "picks": 47,
+     "per100": 59.6
+    },
+    "on1": {
+     "picks": 25,
+     "per100": 44.0
+    },
+    "on2": {
+     "picks": 22,
+     "per100": 77.3
+    },
+    "off": {
+     "picks": 1535,
+     "per100": 33.7
+    },
+    "off1": {
+     "picks": 801,
+     "per100": 29.3
+    },
+    "off2": {
+     "picks": 734,
+     "per100": 38.4
+    }
+   }
+  },
+  "small": {
+   "hotNext": {
+    "on": {
+     "picks": 48,
+     "per100": 58.3
+    },
+    "on1": {
+     "picks": 24,
+     "per100": 66.7
+    },
+    "on2": {
+     "picks": 24,
+     "per100": 50.0
+    },
+    "off": {
+     "picks": 1504,
+     "per100": 47.5
+    },
+    "off1": {
+     "picks": 798,
+     "per100": 46.5
+    },
+    "off2": {
+     "picks": 706,
+     "per100": 48.6
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 20,
+     "per100": 55.0
+    },
+    "on1": {
+     "picks": 10,
+     "per100": 40.0
+    },
+    "on2": {
+     "picks": 10,
+     "per100": 70.0
+    },
+    "off": {
+     "picks": 1560,
+     "per100": 37.8
+    },
+    "off1": {
+     "picks": 816,
+     "per100": 38.6
+    },
+    "off2": {
+     "picks": 744,
+     "per100": 36.8
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 70,
+     "per100": 41.4
+    },
+    "on1": {
+     "picks": 51,
+     "per100": 39.2
+    },
+    "on2": {
+     "picks": 19,
+     "per100": 47.4
+    },
+    "off": {
+     "picks": 1512,
+     "per100": 53.8
+    },
+    "off1": {
+     "picks": 775,
+     "per100": 52.0
+    },
+    "off2": {
+     "picks": 737,
+     "per100": 55.8
+    }
+   },
+   "bloomNextDown": {
+    "on": {
+     "picks": 70,
+     "per100": 28.6
+    },
+    "on1": {
+     "picks": 51,
+     "per100": 31.4
+    },
+    "on2": {
+     "picks": 19,
+     "per100": 21.1
+    },
+    "off": {
+     "picks": 1512,
+     "per100": 34.7
+    },
+    "off1": {
+     "picks": 775,
+     "per100": 29.7
+    },
+    "off2": {
+     "picks": 737,
+     "per100": 40.0
+    }
+   }
+  },
+  "follow": {
+   "hotNext": {
+    "on": {
+     "picks": 509,
+     "per100": 45.4
+    },
+    "on1": {
+     "picks": 362,
+     "per100": 49.2
+    },
+    "on2": {
+     "picks": 147,
+     "per100": 36.1
+    },
+    "off": {
+     "picks": 1043,
+     "per100": 49.0
+    },
+    "off1": {
+     "picks": 460,
+     "per100": 45.4
+    },
+    "off2": {
+     "picks": 583,
+     "per100": 51.8
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 399,
+     "per100": 37.6
+    },
+    "on1": {
+     "picks": 269,
+     "per100": 36.8
+    },
+    "on2": {
+     "picks": 130,
+     "per100": 39.2
+    },
+    "off": {
+     "picks": 1181,
+     "per100": 38.1
+    },
+    "off1": {
+     "picks": 557,
+     "per100": 39.5
+    },
+    "off2": {
+     "picks": 624,
+     "per100": 36.9
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 308,
+     "per100": 60.1
+    },
+    "on1": {
+     "picks": 223,
+     "per100": 59.2
+    },
+    "on2": {
+     "picks": 85,
+     "per100": 62.4
+    },
+    "off": {
+     "picks": 1274,
+     "per100": 51.6
+    },
+    "off1": {
+     "picks": 603,
+     "per100": 48.3
+    },
+    "off2": {
+     "picks": 671,
+     "per100": 54.7
+    }
+   },
+   "bloomNextDown": {
+    "on": {
+     "picks": 308,
+     "per100": 28.6
+    },
+    "on1": {
+     "picks": 223,
+     "per100": 28.3
+    },
+    "on2": {
+     "picks": 85,
+     "per100": 29.4
+    },
+    "off": {
+     "picks": 1274,
+     "per100": 35.9
+    },
+    "off1": {
+     "picks": 603,
+     "per100": 30.3
+    },
+    "off2": {
+     "picks": 671,
+     "per100": 40.8
+    }
+   }
+  },
+  "newb": {
+   "hotNext": {
+    "on": {
+     "picks": 777,
+     "per100": 45.3
+    },
+    "on1": {
+     "picks": 516,
+     "per100": 49.6
+    },
+    "on2": {
+     "picks": 261,
+     "per100": 36.8
+    },
+    "off": {
+     "picks": 775,
+     "per100": 50.3
+    },
+    "off1": {
+     "picks": 306,
+     "per100": 42.8
+    },
+    "off2": {
+     "picks": 469,
+     "per100": 55.2
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 618,
+     "per100": 36.1
+    },
+    "on1": {
+     "picks": 395,
+     "per100": 36.2
+    },
+    "on2": {
+     "picks": 223,
+     "per100": 35.9
+    },
+    "off": {
+     "picks": 962,
+     "per100": 39.2
+    },
+    "off1": {
+     "picks": 431,
+     "per100": 40.8
+    },
+    "off2": {
+     "picks": 531,
+     "per100": 37.9
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 572,
+     "per100": 58.6
+    },
+    "on1": {
+     "picks": 373,
+     "per100": 57.6
+    },
+    "on2": {
+     "picks": 199,
+     "per100": 60.3
+    },
+    "off": {
+     "picks": 1010,
+     "per100": 50.3
+    },
+    "off1": {
+     "picks": 453,
+     "per100": 45.9
+    },
+    "off2": {
+     "picks": 557,
+     "per100": 53.9
+    }
+   },
+   "bloomNextDown": {
+    "on": {
+     "picks": 572,
+     "per100": 29.2
+    },
+    "on1": {
+     "picks": 373,
+     "per100": 25.7
+    },
+    "on2": {
+     "picks": 199,
+     "per100": 35.7
+    },
+    "off": {
+     "picks": 1010,
+     "per100": 37.4
+    },
+    "off1": {
+     "picks": 453,
+     "per100": 33.1
+    },
+    "off2": {
+     "picks": 557,
+     "per100": 40.9
+    }
+   }
+  },
+  "lot": {
+   "hotNext": {
+    "on": {
+     "picks": 997,
+     "per100": 47.4
+    },
+    "on1": {
+     "picks": 571,
+     "per100": 48.0
+    },
+    "on2": {
+     "picks": 426,
+     "per100": 46.7
+    },
+    "off": {
+     "picks": 555,
+     "per100": 48.5
+    },
+    "off1": {
+     "picks": 251,
+     "per100": 45.0
+    },
+    "off2": {
+     "picks": 304,
+     "per100": 51.3
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 782,
+     "per100": 36.3
+    },
+    "on1": {
+     "picks": 426,
+     "per100": 36.4
+    },
+    "on2": {
+     "picks": 356,
+     "per100": 36.2
+    },
+    "off": {
+     "picks": 798,
+     "per100": 39.6
+    },
+    "off1": {
+     "picks": 400,
+     "per100": 41.0
+    },
+    "off2": {
+     "picks": 398,
+     "per100": 38.2
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 686,
+     "per100": 55.7
+    },
+    "on1": {
+     "picks": 375,
+     "per100": 50.7
+    },
+    "on2": {
+     "picks": 311,
+     "per100": 61.7
+    },
+    "off": {
+     "picks": 896,
+     "per100": 51.5
+    },
+    "off1": {
+     "picks": 451,
+     "per100": 51.7
+    },
+    "off2": {
+     "picks": 445,
+     "per100": 51.2
+    }
+   },
+   "bloomNextDown": {
+    "on": {
+     "picks": 686,
+     "per100": 31.8
+    },
+    "on1": {
+     "picks": 375,
+     "per100": 32.8
+    },
+    "on2": {
+     "picks": 311,
+     "per100": 30.5
+    },
+    "off": {
+     "picks": 896,
+     "per100": 36.5
+    },
+    "off1": {
+     "picks": 451,
+     "per100": 27.3
+    },
+    "off2": {
+     "picks": 445,
+     "per100": 45.8
+    }
+   }
+  },
+  "attn": {
+   "hotNext": {
+    "on": {
+     "picks": 533,
+     "per100": 48.4
+    },
+    "on1": {
+     "picks": 286,
+     "per100": 49.7
+    },
+    "on2": {
+     "picks": 247,
+     "per100": 47.0
+    },
+    "off": {
+     "picks": 1019,
+     "per100": 47.5
+    },
+    "off1": {
+     "picks": 536,
+     "per100": 45.7
+    },
+    "off2": {
+     "picks": 483,
+     "per100": 49.5
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 395,
+     "per100": 36.5
+    },
+    "on1": {
+     "picks": 211,
+     "per100": 34.1
+    },
+    "on2": {
+     "picks": 184,
+     "per100": 39.1
+    },
+    "off": {
+     "picks": 1185,
+     "per100": 38.5
+    },
+    "off1": {
+     "picks": 615,
+     "per100": 40.2
+    },
+    "off2": {
+     "picks": 570,
+     "per100": 36.7
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 219,
+     "per100": 58.0
+    },
+    "on1": {
+     "picks": 109,
+     "per100": 45.9
+    },
+    "on2": {
+     "picks": 110,
+     "per100": 70.0
+    },
+    "off": {
+     "picks": 1363,
+     "per100": 52.5
+    },
+    "off1": {
+     "picks": 717,
+     "per100": 52.0
+    },
+    "off2": {
+     "picks": 646,
+     "per100": 53.1
+    }
+   },
+   "bloomNextDown": {
+    "on": {
+     "picks": 219,
+     "per100": 29.2
+    },
+    "on1": {
+     "picks": 109,
+     "per100": 27.5
+    },
+    "on2": {
+     "picks": 110,
+     "per100": 30.9
+    },
+    "off": {
+     "picks": 1363,
+     "per100": 35.3
+    },
+    "off1": {
+     "picks": 717,
+     "per100": 30.1
+    },
+    "off2": {
+     "picks": 646,
+     "per100": 41.0
+    }
+   }
+  }
+ },
+ "boot": {
+  "dtr": {
+   "n": 2000,
+   "upMoreN": 1501,
+   "downLessN": 4,
+   "upDiffMore100": 75.0,
+   "upDiff90": [
+    -4.5,
+    11.0
+   ],
+   "downDiffLess100": 0.2,
+   "downDiff90": [
+    6.0,
+    22.7
+   ],
+   "blocks": 12
+  },
+  "dtrR": {
+   "n": 2000,
+   "upMoreN": 3,
+   "downLessN": 4,
+   "upDiffMore100": 0.1,
+   "upDiff90": [
+    -21.3,
+    -7.4
+   ],
+   "downDiffLess100": 0.2,
+   "downDiff90": [
+    8.8,
+    43.1
+   ],
+   "blocks": 12
+  },
+  "small": {
+   "n": 2000,
+   "upMoreN": 236,
+   "downLessN": 1652,
+   "upDiffMore100": 11.8,
+   "upDiff90": [
+    -29.3,
+    4.7
+   ],
+   "downDiffLess100": 82.6,
+   "downDiff90": [
+    -18.4,
+    4.4
+   ],
+   "blocks": 12
+  },
+  "follow": {
+   "n": 2000,
+   "upMoreN": 2000,
+   "downLessN": 1938,
+   "upDiffMore100": 100.0,
+   "upDiff90": [
+    4.7,
+    13.2
+   ],
+   "downDiffLess100": 96.9,
+   "downDiff90": [
+    -14.4,
+    -0.7
+   ],
+   "blocks": 12
+  },
+  "newb": {
+   "n": 2000,
+   "upMoreN": 1991,
+   "downLessN": 1944,
+   "upDiffMore100": 99.6,
+   "upDiff90": [
+    3.4,
+    14.0
+   ],
+   "downDiffLess100": 97.2,
+   "downDiff90": [
+    -15.1,
+    -1.3
+   ],
+   "blocks": 12
+  },
+  "lot": {
+   "n": 2000,
+   "upMoreN": 1681,
+   "downLessN": 1622,
+   "upDiffMore100": 84.0,
+   "upDiff90": [
+    -2.7,
+    12.2
+   ],
+   "downDiffLess100": 81.1,
+   "downDiff90": [
+    -14.0,
+    3.9
+   ],
+   "blocks": 12
+  },
+  "attn": {
+   "n": 2000,
+   "upMoreN": 1634,
+   "downLessN": 1851,
+   "upDiffMore100": 81.7,
+   "upDiff90": [
+    -4.1,
+    15.5
+   ],
+   "downDiffLess100": 92.5,
+   "downDiff90": [
+    -13.2,
+    0.7
+   ],
+   "blocks": 12
+  }
+ },
+ "fwd": {
+  "dtr": {
+   "hotNext": {
+    "on": {
+     "picks": 527,
+     "ex100": 2.81,
+     "beat100": 42.7
+    },
+    "on1": {
+     "picks": 320,
+     "ex100": 6.13,
+     "beat100": 46.2
+    },
+    "on2": {
+     "picks": 207,
+     "ex100": -2.32,
+     "beat100": 37.2
+    },
+    "off": {
+     "picks": 1025,
+     "ex100": 3.31,
+     "beat100": 44.2
+    },
+    "off1": {
+     "picks": 502,
+     "ex100": 2.14,
+     "beat100": 39.2
+    },
+    "off2": {
+     "picks": 523,
+     "ex100": 4.44,
+     "beat100": 48.9
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 327,
+     "ex100": -0.48,
+     "beat100": 35.2
+    },
+    "on1": {
+     "picks": 201,
+     "ex100": 1.42,
+     "beat100": 35.8
+    },
+    "on2": {
+     "picks": 126,
+     "ex100": -3.51,
+     "beat100": 34.1
+    },
+    "off": {
+     "picks": 1253,
+     "ex100": -1.0,
+     "beat100": 38.5
+    },
+    "off1": {
+     "picks": 625,
+     "ex100": -2.0,
+     "beat100": 35.7
+    },
+    "off2": {
+     "picks": 628,
+     "ex100": -0.0,
+     "beat100": 41.4
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 323,
+     "ex100": 2.24,
+     "beat100": 39.0
+    },
+    "on1": {
+     "picks": 186,
+     "ex100": 5.82,
+     "beat100": 37.1
+    },
+    "on2": {
+     "picks": 137,
+     "ex100": -2.63,
+     "beat100": 41.6
+    },
+    "off": {
+     "picks": 1259,
+     "ex100": 0.89,
+     "beat100": 42.1
+    },
+    "off1": {
+     "picks": 640,
+     "ex100": 1.35,
+     "beat100": 39.1
+    },
+    "off2": {
+     "picks": 619,
+     "ex100": 0.42,
+     "beat100": 45.2
+    }
+   }
+  },
+  "dtrR": {
+   "hotNext": {
+    "on": {
+     "picks": 50,
+     "ex100": 3.66,
+     "beat100": 48.0
+    },
+    "on1": {
+     "picks": 28,
+     "ex100": 8.43,
+     "beat100": 57.1
+    },
+    "on2": {
+     "picks": 22,
+     "ex100": -2.42,
+     "beat100": 36.4
+    },
+    "off": {
+     "picks": 1502,
+     "ex100": 3.13,
+     "beat100": 43.5
+    },
+    "off1": {
+     "picks": 794,
+     "ex100": 3.53,
+     "beat100": 41.4
+    },
+    "off2": {
+     "picks": 708,
+     "ex100": 2.68,
+     "beat100": 45.9
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 28,
+     "ex100": 9.98,
+     "beat100": 53.6
+    },
+    "on1": {
+     "picks": 15,
+     "ex100": 22.99,
+     "beat100": 66.7
+    },
+    "on2": {
+     "picks": 13,
+     "ex100": -5.04,
+     "beat100": 38.5
+    },
+    "off": {
+     "picks": 1552,
+     "ex100": -1.09,
+     "beat100": 37.6
+    },
+    "off1": {
+     "picks": 811,
+     "ex100": -1.62,
+     "beat100": 35.1
+    },
+    "off2": {
+     "picks": 741,
+     "ex100": -0.51,
+     "beat100": 40.2
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 47,
+     "ex100": -9.85,
+     "beat100": 21.3
+    },
+    "on1": {
+     "picks": 25,
+     "ex100": -5.88,
+     "beat100": 24.0
+    },
+    "on2": {
+     "picks": 22,
+     "ex100": -14.35,
+     "beat100": 18.2
+    },
+    "off": {
+     "picks": 1535,
+     "ex100": 1.5,
+     "beat100": 42.1
+    },
+    "off1": {
+     "picks": 801,
+     "ex100": 2.61,
+     "beat100": 39.1
+    },
+    "off2": {
+     "picks": 734,
+     "ex100": 0.29,
+     "beat100": 45.4
+    }
+   }
+  },
+  "small": {
+   "hotNext": {
+    "on": {
+     "picks": 48,
+     "ex100": 65.65,
+     "beat100": 66.7
+    },
+    "on1": {
+     "picks": 24,
+     "ex100": 83.78,
+     "beat100": 62.5
+    },
+    "on2": {
+     "picks": 24,
+     "ex100": 47.52,
+     "beat100": 70.8
+    },
+    "off": {
+     "picks": 1504,
+     "ex100": 1.15,
+     "beat100": 43.0
+    },
+    "off1": {
+     "picks": 798,
+     "ex100": 1.28,
+     "beat100": 41.4
+    },
+    "off2": {
+     "picks": 706,
+     "ex100": 1.0,
+     "beat100": 44.8
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 20,
+     "ex100": 9.62,
+     "beat100": 40.0
+    },
+    "on1": {
+     "picks": 10,
+     "ex100": -14.46,
+     "beat100": 10.0
+    },
+    "on2": {
+     "picks": 10,
+     "ex100": 33.71,
+     "beat100": 70.0
+    },
+    "off": {
+     "picks": 1560,
+     "ex100": -1.03,
+     "beat100": 37.8
+    },
+    "off1": {
+     "picks": 816,
+     "ex100": -1.01,
+     "beat100": 36.0
+    },
+    "off2": {
+     "picks": 744,
+     "ex100": -1.05,
+     "beat100": 39.8
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 70,
+     "ex100": 7.18,
+     "beat100": 38.6
+    },
+    "on1": {
+     "picks": 51,
+     "ex100": 10.62,
+     "beat100": 41.2
+    },
+    "on2": {
+     "picks": 19,
+     "ex100": -2.04,
+     "beat100": 31.6
+    },
+    "off": {
+     "picks": 1512,
+     "ex100": 0.89,
+     "beat100": 41.6
+    },
+    "off1": {
+     "picks": 775,
+     "ex100": 1.81,
+     "beat100": 38.5
+    },
+    "off2": {
+     "picks": 737,
+     "ex100": -0.08,
+     "beat100": 44.9
+    }
+   }
+  },
+  "follow": {
+   "hotNext": {
+    "on": {
+     "picks": 509,
+     "ex100": 0.79,
+     "beat100": 42.0
+    },
+    "on1": {
+     "picks": 362,
+     "ex100": 2.17,
+     "beat100": 43.6
+    },
+    "on2": {
+     "picks": 147,
+     "ex100": -2.59,
+     "beat100": 38.1
+    },
+    "off": {
+     "picks": 1043,
+     "ex100": 4.29,
+     "beat100": 44.5
+    },
+    "off1": {
+     "picks": 460,
+     "ex100": 4.89,
+     "beat100": 40.7
+    },
+    "off2": {
+     "picks": 583,
+     "ex100": 3.81,
+     "beat100": 47.5
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 399,
+     "ex100": -0.82,
+     "beat100": 35.1
+    },
+    "on1": {
+     "picks": 269,
+     "ex100": 0.05,
+     "beat100": 33.1
+    },
+    "on2": {
+     "picks": 130,
+     "ex100": -2.63,
+     "beat100": 39.2
+    },
+    "off": {
+     "picks": 1181,
+     "ex100": -0.92,
+     "beat100": 38.8
+    },
+    "off1": {
+     "picks": 557,
+     "ex100": -1.76,
+     "beat100": 37.0
+    },
+    "off2": {
+     "picks": 624,
+     "ex100": -0.17,
+     "beat100": 40.4
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 308,
+     "ex100": 5.91,
+     "beat100": 45.1
+    },
+    "on1": {
+     "picks": 223,
+     "ex100": 8.18,
+     "beat100": 44.4
+    },
+    "on2": {
+     "picks": 85,
+     "ex100": -0.03,
+     "beat100": 47.1
+    },
+    "off": {
+     "picks": 1274,
+     "ex100": 0.02,
+     "beat100": 40.6
+    },
+    "off1": {
+     "picks": 603,
+     "ex100": 0.2,
+     "beat100": 36.5
+    },
+    "off2": {
+     "picks": 671,
+     "ex100": -0.15,
+     "beat100": 44.3
+    }
+   }
+  },
+  "newb": {
+   "hotNext": {
+    "on": {
+     "picks": 777,
+     "ex100": 0.59,
+     "beat100": 41.4
+    },
+    "on1": {
+     "picks": 516,
+     "ex100": 1.36,
+     "beat100": 41.7
+    },
+    "on2": {
+     "picks": 261,
+     "ex100": -0.93,
+     "beat100": 41.0
+    },
+    "off": {
+     "picks": 775,
+     "ex100": 5.71,
+     "beat100": 45.9
+    },
+    "off1": {
+     "picks": 306,
+     "ex100": 7.63,
+     "beat100": 42.5
+    },
+    "off2": {
+     "picks": 469,
+     "ex100": 4.45,
+     "beat100": 48.2
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 618,
+     "ex100": 0.02,
+     "beat100": 35.9
+    },
+    "on1": {
+     "picks": 395,
+     "ex100": 0.22,
+     "beat100": 34.7
+    },
+    "on2": {
+     "picks": 223,
+     "ex100": -0.36,
+     "beat100": 38.1
+    },
+    "off": {
+     "picks": 962,
+     "ex100": -1.48,
+     "beat100": 39.1
+    },
+    "off1": {
+     "picks": 431,
+     "ex100": -2.45,
+     "beat100": 36.7
+    },
+    "off2": {
+     "picks": 531,
+     "ex100": -0.69,
+     "beat100": 41.1
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 572,
+     "ex100": 4.52,
+     "beat100": 42.5
+    },
+    "on1": {
+     "picks": 373,
+     "ex100": 6.35,
+     "beat100": 41.0
+    },
+    "on2": {
+     "picks": 199,
+     "ex100": 1.09,
+     "beat100": 45.2
+    },
+    "off": {
+     "picks": 1010,
+     "ex100": -0.73,
+     "beat100": 40.9
+    },
+    "off1": {
+     "picks": 453,
+     "ex100": -0.93,
+     "beat100": 36.6
+    },
+    "off2": {
+     "picks": 557,
+     "ex100": -0.57,
+     "beat100": 44.3
+    }
+   }
+  },
+  "lot": {
+   "hotNext": {
+    "on": {
+     "picks": 997,
+     "ex100": 3.86,
+     "beat100": 44.1
+    },
+    "on1": {
+     "picks": 571,
+     "ex100": 3.87,
+     "beat100": 41.0
+    },
+    "on2": {
+     "picks": 426,
+     "ex100": 3.85,
+     "beat100": 48.4
+    },
+    "off": {
+     "picks": 555,
+     "ex100": 1.85,
+     "beat100": 42.9
+    },
+    "off1": {
+     "picks": 251,
+     "ex100": 3.28,
+     "beat100": 44.2
+    },
+    "off2": {
+     "picks": 304,
+     "ex100": 0.66,
+     "beat100": 41.8
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 782,
+     "ex100": -0.38,
+     "beat100": 38.5
+    },
+    "on1": {
+     "picks": 426,
+     "ex100": -0.91,
+     "beat100": 34.0
+    },
+    "on2": {
+     "picks": 356,
+     "ex100": 0.26,
+     "beat100": 43.8
+    },
+    "off": {
+     "picks": 798,
+     "ex100": -1.4,
+     "beat100": 37.2
+    },
+    "off1": {
+     "picks": 400,
+     "ex100": -1.44,
+     "beat100": 37.5
+    },
+    "off2": {
+     "picks": 398,
+     "ex100": -1.35,
+     "beat100": 36.9
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 686,
+     "ex100": 2.78,
+     "beat100": 41.7
+    },
+    "on1": {
+     "picks": 375,
+     "ex100": 2.38,
+     "beat100": 37.1
+    },
+    "on2": {
+     "picks": 311,
+     "ex100": 3.26,
+     "beat100": 47.3
+    },
+    "off": {
+     "picks": 896,
+     "ex100": -0.07,
+     "beat100": 41.3
+    },
+    "off1": {
+     "picks": 451,
+     "ex100": 2.33,
+     "beat100": 39.9
+    },
+    "off2": {
+     "picks": 445,
+     "ex100": -2.5,
+     "beat100": 42.7
+    }
+   }
+  },
+  "attn": {
+   "hotNext": {
+    "on": {
+     "picks": 533,
+     "ex100": 3.64,
+     "beat100": 41.5
+    },
+    "on1": {
+     "picks": 286,
+     "ex100": 7.3,
+     "beat100": 40.9
+    },
+    "on2": {
+     "picks": 247,
+     "ex100": -0.6,
+     "beat100": 42.1
+    },
+    "off": {
+     "picks": 1019,
+     "ex100": 2.89,
+     "beat100": 44.8
+    },
+    "off1": {
+     "picks": 536,
+     "ex100": 1.77,
+     "beat100": 42.5
+    },
+    "off2": {
+     "picks": 483,
+     "ex100": 4.12,
+     "beat100": 47.4
+    }
+   },
+   "moneyNext": {
+    "on": {
+     "picks": 395,
+     "ex100": -0.62,
+     "beat100": 39.7
+    },
+    "on1": {
+     "picks": 211,
+     "ex100": -1.11,
+     "beat100": 34.1
+    },
+    "on2": {
+     "picks": 184,
+     "ex100": -0.07,
+     "beat100": 46.2
+    },
+    "off": {
+     "picks": 1185,
+     "ex100": -0.98,
+     "beat100": 37.2
+    },
+    "off1": {
+     "picks": 615,
+     "ex100": -1.19,
+     "beat100": 36.3
+    },
+    "off2": {
+     "picks": 570,
+     "ex100": -0.76,
+     "beat100": 38.2
+    }
+   },
+   "bloomNext": {
+    "on": {
+     "picks": 219,
+     "ex100": 0.23,
+     "beat100": 41.1
+    },
+    "on1": {
+     "picks": 109,
+     "ex100": -1.13,
+     "beat100": 30.3
+    },
+    "on2": {
+     "picks": 110,
+     "ex100": 1.58,
+     "beat100": 51.8
+    },
+    "off": {
+     "picks": 1363,
+     "ex100": 1.32,
+     "beat100": 41.5
+    },
+    "off1": {
+     "picks": 717,
+     "ex100": 2.88,
+     "beat100": 39.9
+    },
+    "off2": {
+     "picks": 646,
+     "ex100": -0.43,
+     "beat100": 43.3
+    }
+   }
+  }
+ },
+ "yard": {
+  "picks": {
+   "all": {
+    "n": 1582,
+    "now100": 53.3,
+    "fromPick100": 30.8
+   },
+   "first": {
+    "n": 826,
+    "now100": 51.2,
+    "fromPick100": 31.8
+   },
+   "second": {
+    "n": 756,
+    "now100": 55.6,
+    "fromPick100": 29.6
+   }
+  },
+  "sprouts": {
+   "all": {
+    "n": 4024,
+    "now100": 30.6,
+    "fromPick100": 22.1
+   },
+   "first": {
+    "n": 2141,
+    "now100": 27.9,
+    "fromPick100": 21.9
+   },
+   "second": {
+    "n": 1883,
+    "now100": 33.6,
+    "fromPick100": 22.4
+   }
+  }
+ },
+ "yardHow": "꽃이 될 듯 맞음 잣대 둘 — now100 = 지금 잣대(그 뒤 한 달 안에 지난 스무 날 시장보다 15 넘게인 날이 있음 · 고르기 앞 오름이 창에 남아 덤) · fromPick100 = 고른 날 값에서 한 달 안에 시장보다 15 넘게 앞선 날이 있음 · picks = 지금 셈이 고른 일곱 · sprouts = 닷새마다 아무 싹 모두",
+ "fwdHow": "지금 셈이 고른 될 듯 칸 — 고른 날 값에서 20거래일 뒤 값까지 시장(365곳 평균)보다 얼마나(100원에) · beat100 = 시장보다 앞선 칸 몫 · 꽃 잣대(지난 스무 날 창)와 달리 고르기 앞 오름이 섞이지 않음",
+ "bootHow": "꽃이 될 듯 안 — 스무 날 덩이를 바꿔 뽑아 2,000번 다시 셈 · upDiffMore100 = 켜진 칸이 꽃이 더 많이 된 번수(100번에) · downDiffLess100 = 켜진 칸이 덜 시든 번수 · 90 = 가운데 90 사이(100칸에)",
+ "inPickHow": "지금 셈이 고른 될 듯 칸을 흔적이 켜진 칸(on) · 꺼진 칸(off)으로 나눠 각각 100칸에 몇 칸 맞았나(목록은 바꾸지 않음 · 1 = 앞 반년 · 2 = 뒤 반년)",
+ "nextHow": "날마다 흔적이 켜진 회사의 20거래일 뒤 값 변화 평균 − 365곳 평균(100원에 몇 원) → 날 평균 · beat100 = 켜진 회사 가운데 시장보다 앞선 몫 · upDays100 = 켜진 회사 평균이 시장보다 앞선 날의 몫",
+ "base": {
+  "hotNext": {
+   "all": 47.8,
+   "first": 47.1,
+   "second": 48.6
+  },
+  "moneyNext": {
+   "all": 38.0,
+   "first": 38.6,
+   "second": 37.3
+  },
+  "bloomNext": {
+   "all": 53.3,
+   "first": 51.2,
+   "second": 55.6
+  }
+ },
+ "try": {
+  "dtr:빼기": {
+   "hotNext": {
+    "all": 44.7,
+    "first": 41.8,
+    "second": 47.9
+   },
+   "moneyNext": {
+    "all": 33.8,
+    "first": 32.8,
+    "second": 34.9
+   },
+   "bloomNext": {
+    "all": 51.5,
+    "first": 48.7,
+    "second": 54.6
+   },
+   "changed100": {
+    "hotNext": 32.7,
+    "moneyNext": 20.2,
+    "bloomNext": 20.4
+   },
+   "delta": {
+    "hotNext": {
+     "all": -3.1,
+     "first": -5.3,
+     "second": -0.7
+    },
+    "moneyNext": {
+     "all": -4.2,
+     "first": -5.8,
+     "second": -2.4
+    },
+    "bloomNext": {
+     "all": -1.8,
+     "first": -2.5,
+     "second": -1.0
+    }
+   },
+   "verdict": {
+    "hotNext": "두 반년 모두 줄어듦",
+    "moneyNext": "두 반년 모두 줄어듦",
+    "bloomNext": "두 반년 모두 줄어듦"
+   }
+  },
+  "dtr:세우기": {
+   "hotNext": {
+    "all": 43.0,
+    "first": 46.0,
+    "second": 39.7
+   },
+   "moneyNext": {
+    "all": 36.9,
+    "first": 36.3,
+    "second": 37.5
+   },
+   "bloomNext": {
+    "all": 52.1,
+    "first": 50.7,
+    "second": 53.6
+   },
+   "changed100": {
+    "hotNext": 42.9,
+    "moneyNext": 13.1,
+    "bloomNext": 37.3
+   },
+   "delta": {
+    "hotNext": {
+     "all": -4.8,
+     "first": -1.1,
+     "second": -8.9
+    },
+    "moneyNext": {
+     "all": -1.1,
+     "first": -2.3,
+     "second": 0.2
+    },
+    "bloomNext": {
+     "all": -1.2,
+     "first": -0.5,
+     "second": -2.0
+    }
+   },
+   "verdict": {
+    "hotNext": "두 반년 모두 줄어듦",
+    "moneyNext": "섞임",
+    "bloomNext": "두 반년 모두 줄어듦"
+   }
+  },
+  "dtrR:빼기": {
+   "hotNext": {
+    "all": 47.7,
+    "first": 46.4,
+    "second": 49.2
+   },
+   "moneyNext": {
+    "all": 37.5,
+    "first": 38.0,
+    "second": 37.0
+   },
+   "bloomNext": {
+    "all": 53.4,
+    "first": 51.5,
+    "second": 55.6
+   },
+   "changed100": {
+    "hotNext": 3.0,
+    "moneyNext": 1.8,
+    "bloomNext": 3.0
+   },
+   "delta": {
+    "hotNext": {
+     "all": -0.1,
+     "first": -0.7,
+     "second": 0.6
+    },
+    "moneyNext": {
+     "all": -0.5,
+     "first": -0.6,
+     "second": -0.3
+    },
+    "bloomNext": {
+     "all": 0.1,
+     "first": 0.3,
+     "second": 0.0
+    }
+   },
+   "verdict": {
+    "hotNext": "섞임",
+    "moneyNext": "섞임",
+    "bloomNext": "섞임"
+   }
+  },
+  "dtrR:세우기": {
+   "hotNext": {
+    "all": 46.6,
+    "first": 47.3,
+    "second": 45.9
+   },
+   "moneyNext": {
+    "all": 37.1,
+    "first": 37.3,
+    "second": 36.9
+   },
+   "bloomNext": {
+    "all": 53.1,
+    "first": 52.4,
+    "second": 53.8
+   },
+   "changed100": {
+    "hotNext": 12.6,
+    "moneyNext": 4.6,
+    "bloomNext": 10.8
+   },
+   "delta": {
+    "hotNext": {
+     "all": -1.2,
+     "first": 0.2,
+     "second": -2.7
+    },
+    "moneyNext": {
+     "all": -0.9,
+     "first": -1.3,
+     "second": -0.4
+    },
+    "bloomNext": {
+     "all": -0.2,
+     "first": 1.2,
+     "second": -1.8
+    }
+   },
+   "verdict": {
+    "hotNext": "섞임",
+    "moneyNext": "섞임",
+    "bloomNext": "섞임"
+   }
+  },
+  "small:빼기": {
+   "hotNext": {
+    "all": 47.2,
+    "first": 46.4,
+    "second": 48.2
+   },
+   "moneyNext": {
+    "all": 37.5,
+    "first": 38.4,
+    "second": 36.6
+   },
+   "bloomNext": {
+    "all": 53.3,
+    "first": 51.1,
+    "second": 55.7
+   },
+   "changed100": {
+    "hotNext": 3.0,
+    "moneyNext": 1.3,
+    "bloomNext": 4.4
+   },
+   "delta": {
+    "hotNext": {
+     "all": -0.6,
+     "first": -0.7,
+     "second": -0.4
+    },
+    "moneyNext": {
+     "all": -0.5,
+     "first": -0.2,
+     "second": -0.7
+    },
+    "bloomNext": {
+     "all": 0.0,
+     "first": -0.1,
+     "second": 0.1
+    }
+   },
+   "verdict": {
+    "hotNext": "섞임",
+    "moneyNext": "섞임",
+    "bloomNext": "섞임"
+   }
+  },
+  "small:세우기": {
+   "hotNext": {
+    "all": 45.7,
+    "first": 45.3,
+    "second": 46.3
+   },
+   "moneyNext": {
+    "all": 36.1,
+    "first": 35.4,
+    "second": 36.9
+   },
+   "bloomNext": {
+    "all": 46.8,
+    "first": 47.5,
+    "second": 46.2
+   },
+   "changed100": {
+    "hotNext": 10.4,
+    "moneyNext": 6.4,
+    "bloomNext": 29.8
+   },
+   "delta": {
+    "hotNext": {
+     "all": -2.1,
+     "first": -1.8,
+     "second": -2.3
+    },
+    "moneyNext": {
+     "all": -1.9,
+     "first": -3.2,
+     "second": -0.4
+    },
+    "bloomNext": {
+     "all": -6.5,
+     "first": -3.7,
+     "second": -9.4
+    }
+   },
+   "verdict": {
+    "hotNext": "두 반년 모두 줄어듦",
+    "moneyNext": "두 반년 모두 줄어듦",
+    "bloomNext": "두 반년 모두 줄어듦"
+   }
+  },
+  "follow:빼기": {
+   "hotNext": {
+    "all": 45.5,
+    "first": 41.0,
+    "second": 50.5
+   },
+   "moneyNext": {
+    "all": 32.5,
+    "first": 31.6,
+    "second": 33.6
+   },
+   "bloomNext": {
+    "all": 49.7,
+    "first": 46.2,
+    "second": 53.4
+   },
+   "changed100": {
+    "hotNext": 31.5,
+    "moneyNext": 24.8,
+    "bloomNext": 19.5
+   },
+   "delta": {
+    "hotNext": {
+     "all": -2.3,
+     "first": -6.1,
+     "second": 1.9
+    },
+    "moneyNext": {
+     "all": -5.5,
+     "first": -7.0,
+     "second": -3.7
+    },
+    "bloomNext": {
+     "all": -3.6,
+     "first": -5.0,
+     "second": -2.2
+    }
+   },
+   "verdict": {
+    "hotNext": "섞임",
+    "moneyNext": "두 반년 모두 줄어듦",
+    "bloomNext": "두 반년 모두 줄어듦"
+   }
+  },
+  "follow:세우기": {
+   "hotNext": {
+    "all": 43.4,
+    "first": 45.5,
+    "second": 41.0
+   },
+   "moneyNext": {
+    "all": 36.6,
+    "first": 36.6,
+    "second": 36.6
+   },
+   "bloomNext": {
+    "all": 49.4,
+    "first": 47.6,
+    "second": 51.3
+   },
+   "changed100": {
+    "hotNext": 38.4,
+    "moneyNext": 12.7,
+    "bloomNext": 31.0
+   },
+   "delta": {
+    "hotNext": {
+     "all": -4.4,
+     "first": -1.6,
+     "second": -7.6
+    },
+    "moneyNext": {
+     "all": -1.4,
+     "first": -2.0,
+     "second": -0.7
+    },
+    "bloomNext": {
+     "all": -3.9,
+     "first": -3.6,
+     "second": -4.3
+    }
+   },
+   "verdict": {
+    "hotNext": "두 반년 모두 줄어듦",
+    "moneyNext": "두 반년 모두 줄어듦",
+    "bloomNext": "두 반년 모두 줄어듦"
+   }
+  },
+  "newb:빼기": {
+   "hotNext": {
+    "all": 42.3,
+    "first": 36.4,
+    "second": 49.0
+   },
+   "moneyNext": {
+    "all": 29.1,
+    "first": 26.7,
+    "second": 31.8
+   },
+   "bloomNext": {
+    "all": 47.0,
+    "first": 43.0,
+    "second": 51.3
+   },
+   "changed100": {
+    "hotNext": 48.1,
+    "moneyNext": 37.7,
+    "bloomNext": 36.2
+   },
+   "delta": {
+    "hotNext": {
+     "all": -5.5,
+     "first": -10.7,
+     "second": 0.4
+    },
+    "moneyNext": {
+     "all": -8.9,
+     "first": -11.9,
+     "second": -5.5
+    },
+    "bloomNext": {
+     "all": -6.3,
+     "first": -8.2,
+     "second": -4.3
+    }
+   },
+   "verdict": {
+    "hotNext": "섞임",
+    "moneyNext": "두 반년 모두 줄어듦",
+    "bloomNext": "두 반년 모두 줄어듦"
+   }
+  },
+  "newb:세우기": {
+   "hotNext": {
+    "all": 43.5,
+    "first": 46.4,
+    "second": 40.3
+   },
+   "moneyNext": {
+    "all": 35.3,
+    "first": 35.5,
+    "second": 35.1
+   },
+   "bloomNext": {
+    "all": 51.6,
+    "first": 51.1,
+    "second": 52.1
+   },
+   "changed100": {
+    "hotNext": 35.8,
+    "moneyNext": 15.7,
+    "bloomNext": 37.7
+   },
+   "delta": {
+    "hotNext": {
+     "all": -4.3,
+     "first": -0.7,
+     "second": -8.3
+    },
+    "moneyNext": {
+     "all": -2.7,
+     "first": -3.1,
+     "second": -2.2
+    },
+    "bloomNext": {
+     "all": -1.7,
+     "first": -0.1,
+     "second": -3.5
+    }
+   },
+   "verdict": {
+    "hotNext": "두 반년 모두 줄어듦",
+    "moneyNext": "두 반년 모두 줄어듦",
+    "bloomNext": "두 반년 모두 줄어듦"
+   }
+  }
+ },
+ "tryHow": "지금 셈(culture7-v1)에 흔적을 더함 — 빼기 = 불장이 될 듯 · 꽃이 될 듯에서 빼고(일곱이 안 되면 뒤에 붙임) 돈이 몰릴 듯은 대장 고를 때 뺌 · 세우기 = 같은 곳에서 흔적이 있는 회사를 앞에 · 지금 일곱 · 불장 · 돈 목록은 그대로(맞음 잣대가 같게)",
+ "what": {
+  "hotNext": "한 달(20거래일) 안에 불장 일곱에 듦",
+  "moneyNext": "한 달 안에 돈이 몰리는 일곱에 듦",
+  "bloomNext": "한 달 안에 시장보다 15 넘게 앞섬(꽃)"
+ },
+ "live": {
+  "volume": "매일 받는 일봉(atlas11-site.yml → closes_fetch.mjs)에 거래량이 이미 들어옴 — 사이트 만들기(site_build.py)에서 종가만 남김",
+  "highLow": "매일 받기에는 고가 · 저가가 없음(지난 1년 모음에는 있음)"
+ }
+}
