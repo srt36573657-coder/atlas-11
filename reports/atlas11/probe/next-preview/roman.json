@@ -1,6 +1,6 @@
 {
  "schema": "duri-check-roman-1",
- "at": "2026-11-09T16:23:02.040Z",
+ "at": "2026-11-09T18:40:37.809Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 758,
@@ -27,5 +27,5 @@
   "links": 37,
   "linkPages": 37
  },
- "brand": "수르"
+ "brand": "큐피트"
 }

@@ -1,12 +1,21 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-09T16:24:31.080Z",
+ "at": "2026-11-09T18:42:28.723Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1433,
-  "fail": 0
+  "pass": 1431,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  [
+   "[320] 처음 가로 넘침",
+   "324 > 320"
+  ],
+  [
+   "[320] 될 듯 21곳 가로 넘침",
+   "324 > 320"
+  ]
+ ],
  "m": {
   "dropped": [
    "JYP Ent."
@@ -141,7 +150,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "친구에게",
@@ -180,9 +189,9 @@
    }
   },
   "speed": {
-   "lcp": 2468,
+   "lcp": 2456,
    "cls": 0.143,
-   "pic": 3054
+   "pic": 3057
   },
   "white": {
    "light #/": {
@@ -391,7 +400,7 @@
     "note": [
      "현재가는 11월 6일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "수르 계산법 차례",
+     "큐피트 계산법 차례",
      "문화 일곱으로 고르고 1억 번 섞었어요."
     ]
    },
@@ -401,7 +410,7 @@
     "note": [
      "현재가는 11월 6일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "수르 계산법 차례",
+     "큐피트 계산법 차례",
      "문화 일곱으로 고르고 1억 번 섞었어요."
     ]
    }
@@ -484,7 +493,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.014,
+    "darkMax": 0.012,
     "darkSel": "a.nh-mans",
     "low": [],
     "lowN": 0
@@ -514,7 +523,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.021,
+    "darkMax": 0.023,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0
@@ -634,7 +643,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.014,
+    "darkMax": 0.012,
     "darkSel": "a.nh-mans",
     "low": [],
     "lowN": 0
@@ -664,7 +673,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.021,
+    "darkMax": 0.023,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0
@@ -788,7 +797,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.014,
+    "darkMax": 0.012,
     "darkSel": "a.nh-mans",
     "low": [],
     "lowN": 0,
@@ -820,7 +829,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.021,
+    "darkMax": 0.023,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0,
@@ -948,7 +957,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.014,
+    "darkMax": 0.012,
     "darkSel": "a.nh-mans",
     "low": [],
     "lowN": 0,
@@ -980,7 +989,7 @@
     "tc": [
      "#FFFFFF"
     ],
-    "darkMax": 0.021,
+    "darkMax": 0.023,
     "darkSel": "a.hp-go",
     "low": [],
     "lowN": 0,
@@ -1293,7 +1302,7 @@
   "ant11": {
    "cards": 11,
    "rows": 11,
-   "screens": 19.86
+   "screens": 20.04
   },
   "coLive": {
    "a": {
@@ -1316,5 +1325,5 @@
    "both": false
   }
  },
- "ok": true
+ "ok": false
 }
