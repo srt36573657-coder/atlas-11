@@ -623,7 +623,7 @@ test('문화 셈 — 특징 열하나 · 일곱 정의 · 문화로 42칸 · 요
 });
 
 /** 주문 2235(사장님 2026-11-09 22:35 「어 올려」 — 물음 「특징 열하나도 기록창에 올릴까요?」의 답) — 한국 투자자 특징 열하나 기록창 */
-test('기록창 — 한국 투자자 특징 열하나 · 서랍 · 길 · 자료(열한 칸 · 쓰는 흔적 = 문화 일곱) · 영어 · % · 쓰지 않을 말 없음', () => {
+test('기록창 — 한국 투자자 특징 열하나 · 서랍 · 길 · 자료(열한 칸 · 쓰는 흔적 = 문화 일곱) · 영어 · % · 쓰지 않을 말 없음 · 쉬운 말 사전이 안 바꿈', async () => {
   const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   const K = JSON.parse(rd('site/su/data/ant11.json')), su = rd('site/su/su.js'), k7 = rd('site/su/su-kr7.js'), cu = rd('scripts/atlas11/next/su21_culture.py'), ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.equal(K.items.length, 11);
@@ -637,4 +637,6 @@ test('기록창 — 한국 투자자 특징 열하나 · 서랍 · 길 · 자료
   assert.ok(su.includes("drawer('#/r/i', '한국 투자자 특징 열하나'") && su.includes("a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21)"), '서랍 · 길 #/r/i');
   assert.ok(/export async function vAnt11\(X\)/.test(k7) && k7.includes("'data-g': 'su-ant11'") && k7.includes("h1: '한국 개인 투자자, 무엇이 다를까요?'"), '쪽 그리기');
   assert.ok(ck.includes('⑲ 기록창 자료 — 특징 열하나'), '검사 ⑲ — 특징 열하나');
+  const {gloss} = await import('../../site/next/glossary.js'); // 쉬운 말 사전이 화면에서 바꾸는 낱말이 없어야 자료 = 화면(「한 갈래씩」 → 「한 큰 업종씩」 같은 뜻 바뀜을 막음)
+  for (const x of vals.split('\n')) assert.equal(gloss(x), x, '쉬운 말 사전이 바꾸지 않음 — ' + x.slice(0, 40));
 });
