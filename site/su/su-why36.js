@@ -379,14 +379,16 @@ const rareOf = (T, c) => { const m = c.mc ?? {}; if (!MCR(T) || !fin(m.p)) retur
 /** 100개에 몇 개 — 잡스처럼 큰 수를 떠올릴 수 있는 크기로(일꾼 04 「하루 2만 대」) */
 const per100 = (n, all) => { const v = 100 * n / all; return v < 1 ? '100개에 1개가 안 돼요.' : Number.isInteger(Math.round(v * 10) / 10) ? '100개에 ' + Math.round(v) + '개꼴이에요.' : '100개에 ' + Math.ceil(v) + '개가 안 돼요.'; };
 /** 네모 백 칸 — 칠한 만큼(소수 됨 · 마지막 칸은 그만큼만) */
+/** 꾸밈 값은 CSSOM 으로(사이트 보안 규칙 style-src 'self' — 글로 쓴 style 속성은 막힘 · 전체 검사 1/11 「화면 오류」) */
+const cssv = (e, k, v) => { e.style.setProperty(k, v); return e; };
 const grid100 = (fill, cls, label) => h('span', {class: 'yw-g100 ' + cls, role: 'img', 'aria-label': label},
-  Array.from({length: 100}, (_, i) => h('i', {class: 'yw-c', style: i < Math.floor(fill) ? '--f:100%' : i === Math.floor(fill) && fill % 1 ? '--f:' + Math.round((fill % 1) * 100) + '%' : null})));
+  Array.from({length: 100}, (_, i) => { const c = h('i', {class: 'yw-c'}); return i < Math.floor(fill) ? cssv(c, '--f', '100%') : i === Math.floor(fill) && fill % 1 ? cssv(c, '--f', Math.round((fill % 1) * 100) + '%') : c; }));
 export function glance(T, c, k, pos, C7 = []) {
   const P = path5(T, c, k, pos, C7), past = T?.past?.[k], A = answer1(T, c, k), R = rareOf(T, c), nOk = C7.filter(x => x.ok).length;
-  const step = (r, i) => h('li', {class: 'yw-st' + (r.me ? ' yw-sme' : ''), style: '--i:' + i},
+  const step = (r, i) => cssv(h('li', {class: 'yw-st' + (r.me ? ' yw-sme' : '')},
     h('details', {class: 'yw-sd'}, h('summary', {class: 'yw-ss'}, h('b', {class: 'yw-sn', text: r.n}), ' ', h('span', {class: 'yw-sl', text: r.t}), r.items || r.say ? h('i', {class: 'yw-chev', 'aria-hidden': 'true'}) : null), ' ',
       r.say ? h('p', {class: 'yw-s', text: r.say}) : null,
-      r.items ? h('ol', {class: 'yw-ol yw-sx'}, r.items.map(x => li(x.n, x.t, x.s, okMark(x.ok)))) : null));
+      r.items ? h('ol', {class: 'yw-ol yw-sx'}, r.items.map(x => li(x.n, x.t, x.s, okMark(x.ok)))) : null)), '--i', String(i));
   const top = h('section', {class: 'yw-glance yw-crit', 'aria-label': '한눈에 — 왜 여기 있나', 'data-listed': String(P[0].v ?? ''), 'data-b365': String(P[1].v ?? ''), 'data-pool': String(P[2].v ?? ''), 'data-pos': String(pos), 'data-ok': String(nOk)},
     h('p', {class: 'yw-a1', text: A}),
     h('div', {class: 'yw-fun'}, h('h2', {class: 'yw-gh', text: num(T?.counts?.listed) + '곳을 세 번 걸러 남은 일곱 가운데 하나예요'}),
@@ -408,7 +410,7 @@ export function glance(T, c, k, pos, C7 = []) {
 /** 포모 온도계 — 0 차분 · 50 보통 · 100 뜨거움(주문 0510 일꾼 10 「멈춤」 — 뜨거움이 경보처럼 혼자 서지 않게) · 바로 아래 「사기 전에 한 번 멈춰요」 */
 const thermo = c => (fin(c.fomo) ? h('div', {class: 'yw-th'},
   h('p', {class: 'yw-tt'}, h('b', {text: '포모지수 ' + c.fomo}), ' ', h('span', {text: '보통은 50이에요'})),
-  h('span', {class: 'yw-tbar', role: 'img', 'aria-label': '온도계 — 0은 차분 · 50은 보통 · 100은 뜨거움 · 지금 ' + c.fomo}, h('i', {class: 'yw-tmark', style: '--v:' + Math.max(0, Math.min(100, c.fomo)) + '%'})),
+  h('span', {class: 'yw-tbar', role: 'img', 'aria-label': '온도계 — 0은 차분 · 50은 보통 · 100은 뜨거움 · 지금 ' + c.fomo}, cssv(h('i', {class: 'yw-tmark'}), '--v', Math.max(0, Math.min(100, c.fomo)) + '%')),
   h('span', {class: 'yw-tsc', 'aria-hidden': 'true'}, h('span', {text: '0 차분'}), h('span', {text: '50 보통'}), h('span', {text: '100 뜨거움'})),
   h('p', {class: 'yw-s', text: '뜨거움은 앞날을 말하지 않아요. 사기 전에 한 번 멈춰요.'})) : null);
 

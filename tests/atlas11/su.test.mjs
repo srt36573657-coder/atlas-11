@@ -694,6 +694,7 @@ test('「왜?」 쪽 한눈 그림 — 답 한 줄 · 고른 길 · 기준 일�
   assert.ok(y.includes("'뜨거움은 앞날을 말하지 않아요. 사기 전에 한 번 멈춰요.'") && y.includes("h('small', {class: 'yw-c50', text: '보통 50'})"), '포모 온도계 · 보통 50');
   assert.ok(y.includes("' 마지막 값으로 셌어요. 지난 기록이고, 앞날은 맞히지 않아요.'") && y.includes("'지난 1년, 이렇게 고른 회사는?'") && y.includes("'우연이었을까요?'"), '셈한 날 · 지난 1년 · 우연');
   assert.ok(ck.includes("heroPct: (document.querySelector('#su .su-hero.yw')?.textContent ?? '').includes('%')"), '「왜?」 쪽 글 모두(접힌 글 포함) 「%」 없음 — 검사');
+  assert.ok(!/\bstyle: /.test(y) && /const cssv = \(e, k, v\) => \{ e\.style\.setProperty\(k, v\); return e; \};/.test(y), '글로 쓴 style 속성 0 — 사이트 보안 규칙 style-src \'self\'(전체 검사 1/11 화면 오류) · 꾸밈 값은 CSSOM');
   assert.ok(/prefers-reduced-motion: no-preference\) \{ \.yw-st \{ animation: yw-in/.test(css) && /\.yw-ss \{[^}]*min-height: 52px/.test(css) && /\.yw-shut \{[^}]*min-height: 48px/.test(css), '움직임 줄이기 · 누르는 곳 48 넘게');
   assert.ok(ck.includes("'⑰ 한눈 그림 — 상장 · 우량주 · 거른 곳 · 일곱 · 이 회사 자리 = 자료") && ck.includes("'⑰ 긴 글은 접힘 · 쪽 넉 장 안(주문 0510"), '검사(check_su ⑰)');
 });
