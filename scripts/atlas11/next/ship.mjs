@@ -69,7 +69,15 @@ T.deployed = T.site.conclusion === 'success' && T.full.ok;
 T.minutes = {total: min(since, T.site.ended), fromPush: min(T.pushed, T.site.ended), full: min(T.full.called, T.full.ended), site: min(T.site.called, T.site.ended)};
 // ⑦ 검사 실패면 main 을 되돌림(올리기는 문이 이미 막음 · 예약 회차가 실패 판을 싣지 않게)
 if (!T.full.ok) {
-  try { sh('git', ['fetch', '-q', 'origin']); sh('git', ['checkout', '-q', '-B', 'ship-revert', 'origin/main']); sh('git', ['revert', '--no-edit', `${base}..${sha}`]); sh('git', ['push', '-q', 'origin', 'ship-revert:main']); T.reverted = now(); } catch (e) { T.revertErr = String(e.message).slice(0, 160); }
+  // 묶음(merge) 줄은 건너뜀 — 가지가 main 의 새 줄을 받아 온 묶음을 되돌리면 main 의 일을 지우거나(-m) 멈춤(2026-11-09 09:19 실제로 멈춰 되돌리지 못함 · 일하던 곳도 ship-revert 에 남음)
+  //   가지의 제 줄만 새것부터 하나씩 되돌림 · 끝나면(되든 안 되든) 부른 가지로 돌아오고 ship-revert 를 지움
+  const back = (() => { try { return sh('git', ['branch', '--show-current']); } catch { return ''; } })();
+  try {
+    sh('git', ['fetch', '-q', 'origin']); sh('git', ['checkout', '-q', '-B', 'ship-revert', 'origin/main']);
+    for (const c of sh('git', ['rev-list', '--no-merges', `${base}..${sha}`]).split('\n').filter(Boolean)) sh('git', ['revert', '--no-edit', c]);
+    sh('git', ['push', '-q', 'origin', 'ship-revert:main']); T.reverted = now();
+  } catch (e) { T.revertErr = String(e.message).slice(0, 160); try { sh('git', ['revert', '--quit']); } catch { /* 되돌리는 중이 아님 */ } }
+  finally { try { if (back && back !== 'ship-revert') sh('git', ['checkout', '-q', back]); sh('git', ['branch', '-D', 'ship-revert']); } catch { /* 그대로 둠 */ } }
 }
 const dir = path.join(ROOT, 'reports/atlas11/speed'); fs.mkdirSync(dir, {recursive: true});
 fs.appendFileSync(path.join(dir, `ship-${work}.jsonl`), JSON.stringify(T) + '\n');

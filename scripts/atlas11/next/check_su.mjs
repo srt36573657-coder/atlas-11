@@ -658,7 +658,7 @@ for (const width of [390, 360, 320]) {
       axis: [...s.querySelectorAll('g[data-per="line"] text')].map(e => e.textContent), n: s.querySelector('text.cj-px tspan.cj-n')?.textContent ?? '', d: s.querySelector('text.cj-d')?.textContent ?? ''} : null; });
   const cellOf = (p, code) => p.evaluate(code => { const a = document.querySelector(`#su main > .su-hero a.sa-cell[data-code="${code}"]`); return a ? {px: a.getAttribute('data-px'), live: a.getAttribute('data-live'), sp: a.querySelector('path.sa-sp')?.getAttribute('d') ?? ''} : null; }, code);
   const lastOfV = v => v[20] / v[0] * 100 - 100;
-  if (h && P && lw && lw.cd) {
+  if (h && P && lw) { // 판 날짜 21개(cd)가 없으면(미리 보기 묶음 — 저장된 옛 판) 밀린 처음 날 글은 없음(그림이 처음 날을 쓰지 않음)
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     let mode = 'open';
@@ -669,8 +669,8 @@ for (const width of [390, 360, 320]) {
     const a = await coOf(p), want = [...lw.v.slice(1), P];
     await open(p, '#/'); await p.waitForTimeout(1200);
     const cA = await cellOf(p, h.code);
-    const okA = !!a && a.px === String(P) && a.live === next + 'T14:31' && a.chartLive === next + 'T14:31' && a.v === want.join(',') && a.from === lw.cd[1] && a.to === next && !a.ix && a.lab === pctOf(lastOfV(want))
-      && a.axis[0] === mdK(lw.cd[1]) && a.axis[a.axis.length - 1] === mdK(next) && a.n === NFk.format(P) && a.label.includes('현재가 ' + NFk.format(P) + '원') && a.label.includes('오후 2시 31분 값') && a.label.includes('한 달 줄 ' + pctOf(lastOfV(want)));
+    const okA = !!a && a.px === String(P) && a.live === next + 'T14:31' && a.chartLive === next + 'T14:31' && a.v === want.join(',') && a.from === (lw.cd ? lw.cd[1] : '') && a.to === next && !a.ix && a.lab === pctOf(lastOfV(want))
+      && (lw.cd ? a.axis[0] === mdK(lw.cd[1]) : a.axis.length === 1) && a.axis[a.axis.length - 1] === mdK(next) && a.n === NFk.format(P) && a.label.includes('현재가 ' + NFk.format(P) + '원') && a.label.includes('오후 2시 31분 값') && a.label.includes('한 달 줄 ' + pctOf(lastOfV(want)));
     const shA = !!cA && cA.live === next + 'T14:31' && sameShape(shapeOf(ptsOf(a?.pts, /(-?[\d.]+),(-?[\d.]+)/g)), shapeOf(ptsOf(cA.sp, /(-?[\d.]+) (-?[\d.]+)/g)));
     R.m.coLive = {a: a && {px: a.px, live: a.live, from: a.from, to: a.to, ix: a.ix, lab: a.lab}, shape: shA};
     check(okA, '⑱ 회사 쪽 장 중 — 판 다음 날 값이면 꺾은선 맨 앞 하루를 빼고 그 값을 끝에 · 처음 날 = 둘째 날 · 끝 날 = 그날 · 시장 줄 없음 · 끝값 이름표 · 현재가 글(주문 0806)', JSON.stringify(a).slice(0, 300));
@@ -678,15 +678,15 @@ for (const width of [390, 360, 320]) {
     // 가-2 판과 같은 날 값(장 끝 값) → 끝 값만
     mode = 'same'; await open(p, `#/c/${h.code}`); await p.waitForTimeout(1200);
     const b = await coOf(p), want2 = [...lw.v.slice(0, 20), P2];
-    check(!!b && b.px === String(P2) && b.v === want2.join(',') && b.from === lw.from && b.to === day && b.ix === lw.idx && b.lab === pctOf(lastOfV(want2)) && b.d === '현재가는 ' + mdK(day) + ' 마지막 값이에요.',
+    check(!!b && b.px === String(P2) && b.v === want2.join(',') && b.from === (lw.from ?? '') && b.to === day && b.ix === lw.idx && b.lab === pctOf(lastOfV(want2)) && b.d === '현재가는 ' + mdK(day) + ' 마지막 값이에요.',
       '⑱ 회사 쪽 — 판과 같은 날 값이면 끝 값만 바뀜 · 날짜 · 시장 줄 그대로', JSON.stringify(b).slice(0, 300));
     // 가-3 받은 값 없음 → 판 값 그대로
     mode = 'none'; await open(p, `#/c/${h.code}`); await p.waitForTimeout(1200);
     const z = await coOf(p);
-    check(!!z && z.px === String(h.close) && z.live === null && z.v === lw.v.join(',') && z.from === lw.from && z.to === day, '⑱ 회사 쪽 — 받은 값이 없으면 판 값 그대로', JSON.stringify(z).slice(0, 200));
+    check(!!z && z.px === String(h.close) && z.live === null && z.v === lw.v.join(',') && z.from === (lw.from ?? '') && z.to === day, '⑱ 회사 쪽 — 받은 값이 없으면 판 값 그대로', JSON.stringify(z).slice(0, 200));
     check(!errs.length, '⑱ 회사 쪽 장 중 화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
-  } else check(false, '⑱ 회사 쪽 장 중 — 불장 첫 회사 판 값 · 날짜', JSON.stringify({h: h?.code, lw: !!lw, cd: !!lw?.cd}));
+  } else check(false, '⑱ 회사 쪽 장 중 — 불장 첫 회사 판 값', JSON.stringify({h: h?.code, lw: !!lw, cd: !!lw?.cd}));
   // 나) 진짜 답 — 지금 이 때(장 중이든 밖이든)
   if (h && lw) {
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
@@ -697,7 +697,7 @@ for (const width of [390, 360, 320]) {
     const cA = await cellOf(p, h.code);
     const v = String(a?.v ?? '').split(',').map(Number), sh = !!a?.to && a.to > day;
     const ok = !!a && v.length === 21 && (a.live
-      ? +a.px > 0 && v[20] === +a.px && JSON.stringify(v.slice(0, 20)) === JSON.stringify(sh ? lw.v.slice(1) : lw.v.slice(0, 20)) && (sh ? a.from === (lw.cd ? lw.cd[1] : null) && !a.ix : a.from === lw.from)
+      ? +a.px > 0 && v[20] === +a.px && JSON.stringify(v.slice(0, 20)) === JSON.stringify(sh ? lw.v.slice(1) : lw.v.slice(0, 20)) && (sh ? a.from === (lw.cd ? lw.cd[1] : '') && !a.ix : a.from === (lw.from ?? ''))
       : a.px === String(h.close) && a.v === lw.v.join(','));
     const both = !!a?.live && !!cA?.live && a.live === cA.live;
     const okB = !both || (cA.px === a.px && sameShape(shapeOf(ptsOf(a.pts, /(-?[\d.]+),(-?[\d.]+)/g)), shapeOf(ptsOf(cA.sp, /(-?[\d.]+) (-?[\d.]+)/g))));
