@@ -659,6 +659,7 @@ for (const width of [390, 360, 320]) {
           stray: H?.querySelectorAll('a.sa-cell:not([data-sx="1"]) g.sa-sx').length ?? -1, legend: [H?.querySelector('g.sa-note3x text.sa-sxt')?.textContent ?? '', H?.querySelector('text.sa-note3b')?.textContent ?? '', H?.querySelector('text.sa-note4a')?.textContent ?? '', H?.querySelector('text.sa-note4b')?.textContent ?? ''].join(' '),
           aria: H?.querySelector('svg.su-apple')?.getAttribute('data-sx') ?? null}; });
       const want = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.code)).sort();
+      R.m.marked = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.name)); // 보고용 — 표가 붙은 칸(묶음 · 이름)
       check(f.cells === 42 && f.now === 0 && f.next === 0 && x.sx === nX && x.tags === nX && x.stray === 0 && JSON.stringify(x.codes) === JSON.stringify(want) && x.legend === '수르 계산법 수르 계산법으로 찾은 종목 31가지 기준을 모두 지난 곳이에요.' && x.aria === String(nX),
         '⑳ 첫 페이지(주문 1209) — 42칸 모두 · 빈 자리 0 · 「수르 계산법」 표 = 엄격 셈을 모두 지난 칸(' + nX + ') · 풀이 「[수르 계산법] 수르 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요.」', JSON.stringify({f, x}).slice(0, 300));
     } else check(f.cells === nNow + nNx && f.now === 21 - nNow && f.next === 21 - nNx && f.note === '31가지 기준을 모두 지난 곳만 보여요.', '⑳ 첫 페이지 — 칸 + 빈 자리 = 42 · 「31가지 기준을 모두 지난 곳만 보여요.」', JSON.stringify(f));
