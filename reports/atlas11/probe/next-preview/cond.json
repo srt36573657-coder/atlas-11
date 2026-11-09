@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-11-09T21:08:52.452Z",
+ "at": "2026-11-09T21:26:30.528Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-09",
  "combos": 100,
@@ -12,15 +12,15 @@
   "widths"
  ],
  "full": true,
- "seconds": 62,
+ "seconds": 51,
  "time": {
-  "old": 24.1,
-  "new": 30.7,
-  "wall": 61.5,
+  "old": 19.5,
+  "new": 24.1,
+  "wall": 50.9,
   "opensOld": 654,
   "opensNew": 681,
-  "oldPct": 39.2,
-  "oldShare": 44
+  "oldPct": 38.3,
+  "oldShare": 44.7
  },
  "net": {
   "req": 3,
