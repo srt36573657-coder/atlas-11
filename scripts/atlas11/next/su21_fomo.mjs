@@ -133,8 +133,7 @@ if (isMain) {
   const SU = path.resolve(arg('--su')), DD = path.resolve(arg('--data')), PATHS = Number(arg('--paths', FOMO_MC.paths));
   const J = f => JSON.parse(fs.readFileSync(f, 'utf8'));
   const su = J(path.join(SU, 'su21.json')), nf = path.join(SU, 'su21-next.json'), suNext = fs.existsSync(nf) ? J(nf) : null;
-  // 자료가 판 날보다 앞서면(장 중에 올릴 때 오늘 값이 섞임 — 2026-11-09 진짜 사이트 검사 3/11) 판 날까지만 씀 — 포모 자료 날 = 판 날 · 첫 페이지 칸과 같은 날
-  const board = su.asOf?.board ?? null, dates0 = J(path.join(DD, 'days.json')).dates, dates = board ? dates0.filter(d => d <= board) : dates0, N = dates.length;
+  const dates = J(path.join(DD, 'days.json')).dates, N = dates.length, board = su.asOf?.board ?? null;
   const KEYS = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
   const items = [su, suNext].flatMap(F => KEYS.flatMap(k => F?.lists?.[k] ?? []));
   const codes = [...new Set(items.map(c => c.code))].sort();

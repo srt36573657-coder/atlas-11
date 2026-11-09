@@ -238,33 +238,13 @@ const box = (cls, title, kids) => h('section', {class: 'yw-box ' + cls, 'aria-la
 // 제목 · 문장 · 표 사이에 띄어쓰기 글(화면에는 안 보임 — 칸이 grid) — 글을 이어 읽을 때 「크기」+「회사」가 「기회」처럼 붙지 않게(쓰지 않을 말 셈)
 const li = (n, t, s, extra = null) => h('li', {class: 'yw-li'}, h('span', {class: 'yw-n', 'aria-hidden': 'true', text: String(n)}), ' ', h('div', {class: 'yw-tx'}, h('b', {class: 'yw-t', text: t}), ' ', h('p', {class: 'yw-s', text: s}), ' ', extra));
 const okMark = ok => h('span', {class: 'yw-ok ' + (ok ? 'yw-pass' : 'yw-no'), text: ok ? '맞음' : '아직'});
-
-/* ── 더 엄격하게(주문 0854 · 사장님 2026-11-09 08:54 「몬테카를로 방식으로 먼저 찾아낸 다음 소거법을 31번 더 돌려서 지금보다 엄격한 기준으로」 · 09:02 「어」)
-   su21-strict.json 그대로 — 몬테카를로(10만 길 · 스무 번에 한 번 아래) · 후보 → 몬테카를로 → 기준 31가지 → 남은 곳 · 기준마다 이 회사 값과 통과(가 ~ 마 다섯 묶음) */
-const PASS = ok => h('span', {class: 'yw-ok ' + (ok ? 'yw-pass' : 'yw-no'), text: ok ? '통과' : '걸림'});
-export function strict31(SX, T, k, code) {
-  const g = SX && SX.rule && T?.strict?.rule === SX.rule && SX.asOf?.board === T?.asOf?.board ? SX.groups?.[k] : null, me = g?.co?.[code];
-  if (!g || !me || !Array.isArray(me.ok) || me.ok.length !== (SX.crit ?? []).length) return null;
-  const a = me.mc?.stat, w = g.win, rel = g.rel, p = me.mc?.p;
-  const say = !Number.isFinite(a) ? NEED : rel ? (w === 20 ? '20거래일' : '닷새') + ' 동안 ' + (g.ind ? '이 회사 업종이 ' : '') + '시장보다 ' + n1(Math.abs((Math.exp(a / 100) - 1) * 100)) + '만큼 ' + (a >= 0 ? '앞섬' : '뒤짐')
-    : (w === 20 ? '20거래일' : '닷새') + ' 동안 100원이 ' + num(Math.round(100 * Math.exp(a / 100))) + '원';
-  const cut = Math.round((SX.mc?.p ?? 0.05) * (SX.mc?.paths ?? 100000));
-  const fams = [...new Set(SX.crit.map(c => c.fam))];
-  let n = 0;
-  return box('yw-strict', '더 엄격하게 — 몬테카를로와 기준 31가지', [
-    h('p', {class: 'yw-s', text: '지난 ' + num(SX.mc?.hist ?? 250) + '거래일 하루 값을 ' + num(SX.mc?.paths ?? 100000) + '번 섞어 그린 길 가운데, 지금 모습(' + say + ')보다 크거나 같은 길은 '
-      + num(Math.round((p ?? 0) * (SX.mc?.paths ?? 100000))) + '번이었어요. ' + num(cut) + '번 아래(스무 번에 한 번 아래)만 남겨요.'}),
-    h('p', {class: 'yw-s', text: '이 묶음 후보 ' + g.pool + '곳 → 몬테카를로를 지난 곳 ' + g.mc + '곳 → 기준 31가지를 모두 지난 곳 ' + g.final + '곳이에요.'}),
-    ...fams.flatMap(f => [h('h3', {class: 'yw-h3', text: f + ' · ' + (SX.fams?.[f] ?? '')}),
-      h('ol', {class: 'yw-ol', start: String(n + 1)}, SX.crit.map((c, j) => [c, j]).filter(([c]) => c.fam === f).map(([c, j]) => { n++; return li(n, c.label + ' — ' + c.rule, c.why + ' · 이 회사: ' + (me.v?.[j] ?? NEED), PASS(me.ok[j])); }))])]);
-}
 function ensureCss() { if (typeof document !== 'undefined' && !document.querySelector(`link[href="${CSS}"]`)) document.head.append(Object.assign(document.createElement('link'), {rel: 'stylesheet', href: CSS})); }
 
 export async function vWhy(X, code, k) {
   ensureCss();
   const get = X.get;
-  const [T, Tn, W, co, M, b, SX] = await Promise.all([load21(get), get('/su/data/su21-next.json').catch(() => null), get('/su/data/su21-why.json').catch(() => null),
-    get('/atlas/data/co/' + code + '.json').catch(() => null), get('/su/data/su21-map.json').catch(() => null), X.base().catch(() => ({})), get('/su/data/su21-strict.json').catch(() => null)]);
+  const [T, Tn, W, co, M, b] = await Promise.all([load21(get), get('/su/data/su21-next.json').catch(() => null), get('/su/data/su21-why.json').catch(() => null),
+    get('/atlas/data/co/' + code + '.json').catch(() => null), get('/su/data/su21-map.json').catch(() => null), X.base().catch(() => ({}))]);
   const nx = k.endsWith('Next'), src = nx ? (Tn?.lists?.[k] ?? T?.lists?.[k]) : T?.lists?.[k];
   const c = (src ?? []).find(x => x.code === code);
   if (!c) return X.notFound('이 회사는 오늘 그 묶음에 없어요. 첫 페이지에서 다시 골라 주세요.');
@@ -285,12 +265,11 @@ export async function vWhy(X, code, k) {
       h('ol', {class: 'yw-ol'}, (W?.checks ?? []).map((x, j) => { const r = fo?.checks?.find(y => y.id === x.id); return li(j + 1, x.label + ' — ' + x.rule, x.why + '.', okMark(r?.verdict === 'pass')); })),
       F11 ? h('h3', {class: 'yw-h3', text: '이 값이 나온 까닭 열한 가지'}) : null,
       F11 ? h('ol', {class: 'yw-ol'}, F11.map((x, j) => li(j + 1, x.t, x.s))) : h('p', {class: 'yw-s', text: fo ? '기준 「' + ((W?.checks ?? []).find(x => x.id === fo.first)?.label ?? NEED) + '」에서 걸려 값을 보여 드리지 않아요.' : '포모 자료가 오늘 판과 날이 달라 값을 보여 드리지 않아요.'})]);
-  const strictBox = strict31(SX, T, k, code);
   const go = h('nav', {class: 'yw-go', 'aria-label': '다음에 볼 곳'},
     h('a', {class: 'su-ask', href: '#/c/' + code}, h('b', {text: '이 회사 쪽 보기'}), h('span', {text: '한 달 꺾은선과 업종을 봐요.'})),
     h('a', {class: 'su-ask', href: '#/q/' + code}, h('b', {text: '사기 전에 한 번 멈춰요'}), h('span', {text: '「왜 사?」 열한 질문으로 내 이유부터 확인해요.'})));
   const hero = h('div', {class: 'su-hero yw', 'data-g': 'su-why36', 'data-k': k, 'data-code': code, 'data-n': String(P.reduce((a, p) => a + p.items.length, 0)), 'data-fomo': fin(c.fomo) ? String(c.fomo) : ''},
-    head, crit, strictBox, ...parts, fomoBox, go);
+    head, crit, ...parts, fomoBox, go);
   const pro = fo && F11 ? [h('section', {class: 'su-why', 'aria-label': '포모 셈 자세히'}, h('h2', {class: 'su-ft', text: '포모 셈 자세히'}),
     h('p', {class: 'su-lead', text: '옛 아틀라스 포모 열여덟 가지 가운데 종가로 셀 수 있는 「가격 열기」 여섯 가지로 셈해요. 길 ' + num(fo.paths) + '개 · 흔들림 ' + n1(fo.se) + ' · 바탕 ' + fo.base?.n + '날 · 같은 날 같은 회사는 늘 같은 값이에요.'}))] : [];
   return {title: c.name + ' · 왜?', tab: 0, h1: c.name + ', 왜 ' + ASK[k] + '?', proper: false, hero, body: pro,

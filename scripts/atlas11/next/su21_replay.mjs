@@ -102,12 +102,11 @@ for (const f of (fs.existsSync(bdir) ? fs.readdirSync(bdir) : []).filter(f => /^
 }
 const now = J(BOARD_NOW); if (typeof now?.asOf === 'string' && Array.isArray(now.companies)) byDay.set(now.asOf, {b: now}); // 오늘 판이 옮겨 둔 같은 날 판보다 앞섬
 const days = [...byDay.keys()].sort();
-const RULE_NOW = (() => { try { return J(path.join(SU, 'su21.json')).strict?.rule ?? null; } catch { return null; } })(); // 고르는 규칙 이름(주문 0854 엄격 셈 · su21_strict.py RULE_ID)
-if (process.argv.includes('--if-needed')) { // 기록에 지난 판 날이 모두 있고 같은 규칙이면 다시 세지 않음(올릴 때마다 부름 · 규칙이 바뀌면 모두 다시 셈)
+if (process.argv.includes('--if-needed')) { // 기록에 지난 판 날이 모두 있으면 다시 세지 않음(올릴 때마다 부름 · 처음 한 번만 셈)
   let rec0 = null; try { rec0 = J(OUT); } catch { /* 기록 없음 — 셈 */ }
   const miss = days.filter(d => d < now.asOf && !rec0?.days?.[d]);
-  if (!miss.length && (rec0?.rule ?? null) === RULE_NOW) { console.log(`지난 판 ${days.length - 1}날 기록이 모두 있음(규칙 ${RULE_NOW}) — 다시 세지 않음`); process.exit(0); }
-  console.log((rec0?.rule ?? null) !== RULE_NOW ? `고르는 규칙이 바뀜(${rec0?.rule ?? '없음'} → ${RULE_NOW}) — 모든 판을 다시 셈` : `기록에 없는 지난 판 ${miss.length}날 — 다시 셈`);
+  if (!miss.length) { console.log(`지난 판 ${days.length - 1}날 기록이 모두 있음 — 다시 세지 않음`); process.exit(0); }
+  console.log(`기록에 없는 지난 판 ${miss.length}날 — 다시 셈`);
 }
 console.log(`판 ${days.length}날 — ${days[0]} ~ ${days.at(-1)}`);
 
@@ -121,7 +120,6 @@ for (const d of days) {
   const T = tAt(d); if (T < RULE.win + 5) continue;
   const w = path.join(tmp, d), live = path.join(w, 'live'), repo = path.join(w, 'repo');
   link(path.join(dd, 'co'), path.join(live, 'atlas', 'data', 'co'));
-  link(path.join(dd, 'days.json'), path.join(live, 'atlas', 'data', 'days.json')); // 엄격 셈(주문 0854) 몬테카를로 바탕 — 그날까지 하루 값(su21_strict.py 가 판 날에서 자름)
   if (T === T0) { // 자료 마지막 날 = 그 사이트 파일 그대로
     for (const f of ['mkt.json', 'cond.json']) link(path.join(dd, f), path.join(live, 'atlas', 'data', f));
     for (const f of ['theme.json', 'theme-co.json']) link(path.join(LIVE, 'next', 'data', f), path.join(live, 'next', 'data', f));
@@ -135,7 +133,6 @@ for (const d of days) {
   put(path.join(repo, BOARD), byDay.get(d).b);
   link(path.join(ROOT, 'scripts/atlas11/t365/groups.json'), path.join(repo, 'scripts/atlas11/t365/groups.json'));
   link(path.join(ROOT, 'reports/atlas11/su-next/past.json'), path.join(repo, 'reports/atlas11/su-next/past.json'));
-  if (fs.existsSync(path.join(ROOT, 'reports/atlas11/su-next/past-strict.json'))) link(path.join(ROOT, 'reports/atlas11/su-next/past-strict.json'), path.join(repo, 'reports/atlas11/su-next/past-strict.json')); // 엄격 셈 지난 1년(주문 0854)
   const o = path.join(w, 'su21.json');
   try { execFileSync('python3', [path.join(ROOT, 'scripts/atlas11/next/su21.py'), '--live', live, '--repo', repo, '--out', o], {encoding: 'utf8', maxBuffer: 1 << 26, stdio: ['ignore', 'pipe', 'pipe']}); }
   catch (e) { console.warn(`${d} — 다시 세기 멈춤: ${String(e.stderr || e.message).trim().split('\n').at(-1)}`); continue; }
@@ -153,11 +150,10 @@ if (!same) { for (const k of KEYS) console.error(k, JSON.stringify(out[last]?.li
 if (CHECK) process.exit(0);
 
 let rec; try { rec = J(OUT); } catch { rec = null; }
-const sameRule = (rec?.rule ?? null) === RULE_NOW; // 규칙이 바뀌면 올릴 때 적은 날(옛 규칙)도 버리고 다시 센 것만 씀
-const keep = sameRule ? Object.fromEntries(Object.entries(rec?.days ?? {}).filter(([d, v]) => v?.how === 'kept')) : {};
+const keep = Object.fromEntries(Object.entries(rec?.days ?? {}).filter(([d, v]) => v?.how === 'kept'));
 delete out[last]; // 오늘은 올릴 때 적음(how kept)
 const merged = {...out, ...keep};
-const body = {schema: SCHEMA, made: new Date().toISOString(), rule: RULE_NOW,
+const body = {schema: SCHEMA, made: new Date().toISOString(),
   how: {replay: '날마다 판(board.json · 저장소 기록)으로 같은 고르는 규칙(su21.py)을 다시 셈 · 업종 · 회사 자리 · 몸값 · 21 값 선은 그날까지 종가로(자료 마지막 날보다 뒤의 판은 자료 마지막 날 값)', kept: '올릴 때마다 그날 판으로 센 여섯 목록을 한 번 적음(먼저 적은 것을 바꾸지 않음)'},
   src: {boards: BOARDS_DIR + ' + ' + BOARD, data: 'atlas/data(days · co · mkt · cond) · next/data(theme · theme-co) — 자료 마지막 날 ' + dates[T0]},
   days: Object.fromEntries(Object.keys(merged).sort().map(d => [d, merged[d]]))};
