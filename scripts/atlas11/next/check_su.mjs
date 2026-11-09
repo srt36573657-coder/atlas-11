@@ -281,7 +281,8 @@ for (const width of [390, 360, 320]) {
       check(m.mucha.length >= 5 || m.clean, W + '⑪ 무하 요소 다섯 가지 넘게(잡스 판 첫 페이지는 덜어냄 — 주문 1532) — ' + m.h1, m.mucha.join(' ')); // [1] 4
       check(m.lastIsSrc, W + '⑨ 맨 아래 출처와 조사 날짜 — ' + m.h1, '');
       check(m.moving >= 1, W + '⑨ 큰 그림이 움직임 — ' + m.h1, '움직임 ' + m.anim);
-      check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? t.v === '확인 필요' : t.v && t.v !== '확인 필요')), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
+      // 빈 칸 글 = 「왜 셌는지 확인 필요」 꼴(주문 0054 칸 이름 녹이기 · su-fig.js sixSay) — 끝이 「확인 필요」면 빈 칸 표시 · 값 있는 칸에는 「확인 필요」가 없어야 함(아래 ⑭ 42칸 값 셈과 같은 잣대)
+      check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? /확인 필요$/.test(t.v) : t.v && !t.v.includes('확인 필요'))), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
       check(m.tabs.length === 4 && m.tabs.map(t => t.t).join(' ') === '21곳 지도 멈춤 기록' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 넷 중요한 차례(주문 1023 [4]) · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
