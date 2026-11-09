@@ -14,6 +14,7 @@ import json, sys, collections, datetime, argparse
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--live', required=True); ap.add_argument('--repo', required=True); ap.add_argument('--out', required=True)
+ap.add_argument('--mc365', action='store_true') # 엄격 셈 ① 몬테카를로를 365곳 모두에(올릴 때 · 주문 0854)
 A = ap.parse_args()
 J = lambda p: json.load(open(p, encoding='utf-8'))
 b = J(A.repo + '/public/data/atlas11/view/board.json')
@@ -31,13 +32,22 @@ r1 = lambda v: None if v is None else round(v, 1)
 r2 = lambda v: None if v is None else round(v, 2)
 SRC_P = '네이버 증권 그날 마지막 값 · 수르가 셈'
 
+_CO = {}
+def co_of(c):
+    # 회사 자료(atlas/data/co/<번호>.json) — 한 번만 읽음
+    if c not in _CO:
+        try: _CO[c] = J(A.live + '/atlas/data/co/' + c + '.json')
+        except Exception: _CO[c] = None
+    return _CO[c]
+try: DATES = J(A.live + '/atlas/data/days.json')['dates']
+except Exception: DATES = []
 _OPEN = {}
 def opens(c):
     # 수르 회사 쪽이 열리는 회사만 고름 — 회사 자료(atlas/data/co/<번호>.json)에 c 칸(이름 · 시장)이 있어야 그 쪽을 그림
     # (2026-11-05 진짜 사이트 검사 — 올릴 때 다시 센 꽃 칸의 F&F 383220 은 c 칸이 없어 「찾지 못했어요」 · 주문 0054 [2] 4 「누르면 왜 여기 있나 먼저」)
     if c not in _OPEN:
-        try: _OPEN[c] = isinstance(J(A.live + '/atlas/data/co/' + c + '.json').get('c'), dict)
-        except Exception: _OPEN[c] = False
+        co = co_of(c)
+        _OPEN[c] = isinstance(co.get('c'), dict) if isinstance(co, dict) else False
     return _OPEN[c]
 
 def per2(lst, k=7, per=2):
@@ -133,7 +143,37 @@ b_fill = sorted([c for c in sprN if (cap.get(c) or 0) >= thr], key=lambda c: (-X
 BLOOMN = per2k(b_main + b_fill)
 try: PAST = J(A.repo + '/reports/atlas11/su-next/past.json')
 except Exception: PAST = None
+try: PASTS = J(A.repo + '/reports/atlas11/su-next/past-strict.json') # 엄격 셈의 지난 1년(주문 0854 · su_strict_past.py) — 규칙이 같을 때만
+except Exception: PASTS = None
 
+# ⑤ 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 「몬테카를로 방식으로 먼저 찾아낸 다음 소거법을 31번 더 돌려서 지금보다 엄격한 기준으로」 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만)
+#   ① 몬테카를로 — 365곳마다(--mc365 · 올릴 때) 지난 250거래일 하루 값을 10만 번 섞어 지금 모습이 우연으로는 잘 안 나오는 곳(스무 번에 한 번 아래)을 먼저 찾음
+#   ② 그 가운데 묶음 셈(위 옛 셈 그대로 · 일곱)에 든 곳 → ③ 소거 기준 31가지 · 하나라도 걸리면 뺌 → 남은 곳만(차례 그대로 · 채우지 않음)
+#   지난 1년에 대어 보니(su_strict_past.py) 옛 일곱을 이렇게 거르면 될 듯 셋 모두 한 달 안에 그렇게 된 몫이 옛 셈보다 많았음 — 더 깊은 차례로 채우면 오히려 줄어 채우지 않음
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import su21_strict as ST
+import numpy as _np
+def co_close(c):
+    co = co_of(c)
+    if not isinstance(co, dict) or not DATES: return None
+    cl, k0 = co.get('close'), co.get('k0')
+    if not isinstance(cl, list) or not isinstance(k0, int): return None
+    a = _np.full(len(DATES), _np.nan)
+    for j, x in enumerate(cl):
+        t = j + k0
+        if 0 <= t < len(DATES) and isinstance(x, (int, float)) and x > 0: a[t] = x
+    return a
+def fin_of(c):
+    co = co_of(c)
+    if not isinstance(co, dict): return None
+    f = dict(co.get('fin') or {}); f['_pbr'] = co.get('pbr')
+    return f
+OLD7 = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN}
+CTX = ST.Ctx(B, b['asOf'], DATES, co_close, opens, cap, CL, lambda c: B[c]['group']['label'])
+PICK, STRICT = ST.select(CTX, OLD7, fin_of)
+MC365 = ST.scan365(CTX) if A.mc365 else None
+HOT, BLOOM, MONEY, HOTN, MONEYN, BLOOMN = PICK['hot'], PICK['bloom'], PICK['money'], PICK['hotNext'], PICK['moneyNext'], PICK['bloomNext']
 lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN}
 NOW3 = ('hot', 'bloom', 'money')
 inl = collections.defaultdict(list)
@@ -194,7 +234,12 @@ out = {
               'hotNext': '불장 업종 안에서 20거래일 동안 오른 차례가 8 ~ 14째인 곳(불장 일곱 바로 아래 · 업종마다 둘) · 모자라면 닷새 동안 막 오르기 시작한 곳',
               'moneyNext': '돈이 몰리는 일곱 바로 아래 업종(8 ~ 14째)마다 20거래일 동안 회사 크기가 가장 많이 는 곳 · 모자라면 일곱 밖 업종마다 닷새 동안 가장 많이 는 곳',
               'bloomNext': '싹 가운데 닷새 동안 시장보다 2 넘게 앞서고 20거래일 동안 오른 곳 · 모자라면 회사 크기가 위 20 안인 싹을 닷새 차례로'},
-    'past': ({'from': PAST['from'], 'to': PAST['to'], 'days': PAST['days'], 'within': PAST['within'], 'universe': PAST['universe'], 'src': 'reports/atlas11/su-next/past.json',
+    'past': ({'from': PASTS['from'], 'to': PASTS['to'], 'days': PASTS['days'], 'within': PASTS['within'], 'universe': PASTS['universe'], 'src': 'reports/atlas11/su-next/past-strict.json', 'strict': True,
+              'what': PASTS['what'], 'crit': PASTS.get('crit'), 'mc': PASTS.get('mc'),
+              **{g: {'n': v['strict']['picks'], 'hit': v['strict']['hits'], 'per100': round(v['strict']['per100']), 'base100': round(v['base']['per100']), 'old100': round(v['old']['per100']), 'oldN': v['old']['picks'], 'days': v['strict']['days']}
+                 for g, v in PASTS['res'].items()}}
+             if PASTS and PASTS.get('rule') == ST.RULE_ID else
+             {'from': PAST['from'], 'to': PAST['to'], 'days': PAST['days'], 'within': PAST['within'], 'universe': PAST['universe'], 'src': 'reports/atlas11/su-next/past.json',
               'what': PAST['what'], **{g: {'n': v['picks'], 'hit': v['hits'], 'per100': round(v['per100']), 'base100': round(v['base100'])} for g, v in PAST['final'].items()}} if PAST else None),
     'lists': {k: [item(c, k) for c in L] if k in NOW3 else [slim(item(c, k)) for c in L] for k, L in lists.items()}, # 될 듯 셋은 가볍게(첫 화면 느린 휴대폰) — 21 마지막 값 · 수급 · 뉴스는 su21-next.json
     'overlap': [{'code': c, 'name': nm(c), 'in': [k for k in ks if k in NOW3]} for c, ks in inl.items() if len([k for k in ks if k in NOW3]) > 1],
@@ -209,8 +254,16 @@ out = {
               for G in lands],
 }
 out['lands'] = [L for L in out['lands'] if L['inds']]
+# 엄격 셈 요약(주문 0854) — 첫 페이지는 묶음마다 후보 · 몬테카를로 · 마지막 수만 · 자세한 것은 su21-strict.json(「왜?」 쪽)
+FAMS = {'가': '자료가 믿을 만한가', '나': '우연이 아닌가', '다': '업종과 시장이 함께인가', '라': '돈과 사람이 실제로 움직였나', '마': '회사가 탄탄한가'}
+out['strict'] = {'rule': ST.RULE_ID, 'mc': {'paths': ST.MC_PATHS, 'p': ST.MC_P, 'hist': ST.HIST}, 'n': len(ST.CRIT), 'mc365': MC365,
+                 'groups': {k: {'pool': r['pool'], 'mc': r['mc'], 'final': r['final'], 'win': r['win']} for k, r in STRICT.items()}}
+STRICT_OUT = {'schema': 'su21-strict-1', 'rule': ST.RULE_ID, 'asOf': out['asOf'], 'mc': out['strict']['mc'], 'mc365': MC365, 'fams': FAMS,
+              'crit': [{'id': i, 'fam': f, 'label': lb, 'rule': ru, 'why': wy} for i, f, lb, ru, wy in ST.CRIT],
+              'groups': {k: {kk: r[kk] for kk in ('pool', 'mc', 'steps', 'final', 'win', 'cwin', 'rel', 'ind')} | {'old': [nm(c) for c in OLD7[k]], 'co': {c: {'name': nm(c), **r['info'][c]} for c in PICK[k]}} for k, r in STRICT.items()}}
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+json.dump(STRICT_OUT, open(A.out.replace('su21.json', 'su21-strict.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음
 print('ok', {k: [nm(c) for c in L] for k, L in lists.items()}, 'distinct', len(inl), 'overlap', [o['name'] for o in out['overlap']], 'lands', len(lands_out))

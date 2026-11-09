@@ -120,7 +120,7 @@ for (const width of [390, 360, 320]) {
     { // 주문 1249(사장님 2026-11-08 12:49) — 처음 쪽 그림 하나에 지금 21곳과 될 듯 21곳을 함께(무대 쇼 · 요즘 옷 세 여인) · 될 듯 이름표 = su21.json 될 듯 셋 일곱씩 · 누르면 그 회사
       const gH = await p.evaluate(() => ['hotNext', 'bloomNext', 'moneyNext'].map(k => [...document.querySelectorAll(`#su main > .su-hero a[data-k="${k}"]`)].map(a => ({href: a.getAttribute('href'), name: a.getAttribute('data-name') ?? ''}))));
       const wantH = ['hotNext', 'bloomNext', 'moneyNext'].map(k => (T21.lists[k] ?? []).map(c => c.name));
-      check(JSON.stringify(gH.map(c => c.map(x => x.name))) === JSON.stringify(wantH) && gH.every(c => c.length === 7), W + '처음 쪽 그림에 될 듯 21곳도 함께 = su21.json(될 듯 셋 일곱씩)', JSON.stringify(gH.map(c => c.length)));
+      check(JSON.stringify(gH.map(c => c.map(x => x.name))) === JSON.stringify(wantH) && gH.every(c => (T21.strict ? c.length <= 7 : c.length === 7)), W + '처음 쪽 그림에 될 듯 21곳도 함께 = su21.json(될 듯 셋 일곱씩)', JSON.stringify(gH.map(c => c.length)));
       check(gH.flat().every(x => /^#\/c\/[0-9A-Z]{6}\/y\/(hotNext|bloomNext|moneyNext)$/.test(x.href)), W + '처음 쪽 될 듯 이름 → 그 회사의 「왜?」 쪽(주문 0123)', gH.flat().map(x => x.href).filter(h => !/^#\/c\/[0-9A-Z]{6}\/y\/(hotNext|bloomNext|moneyNext)$/.test(h)).slice(0, 3).join(' '));
       check(await p.evaluate(() => document.querySelector('#su main > .su-hero svg')?.getAttribute('data-show') === 'now-next'), W + '처음 쪽 그림 = 지금 · 될 듯 한 무대', '');
       if (width === 390) for (const r of gH.map(c => c[0]).filter(Boolean)) {
@@ -147,7 +147,7 @@ for (const width of [390, 360, 320]) {
       const mN = await measure(p); pageRules(mN, W + '될 듯 21곳');
       const gN = await p.evaluate(() => ['hot', 'bloom', 'money'].map(k => [...document.querySelectorAll(`#su main > .su-hero a[data-k="${k}"]`)].map(a => ({href: a.getAttribute('href'), name: a.getAttribute('data-name') ?? ''}))));
       const wantN = ['hotNext', 'bloomNext', 'moneyNext'].map(k => (T21.lists[k] ?? []).map(c => c.name));
-      check(JSON.stringify(gN.map(c => c.map(x => x.name))) === JSON.stringify(wantN) && gN.every(c => c.length === 7), W + '될 듯 21곳 = su21.json(될 듯 셋 일곱씩)', JSON.stringify(gN.map(c => c.length)));
+      check(JSON.stringify(gN.map(c => c.map(x => x.name))) === JSON.stringify(wantN) && gN.every(c => (T21.strict ? c.length <= 7 : c.length === 7)), W + '될 듯 21곳 = su21.json(될 듯 셋 일곱씩)', JSON.stringify(gN.map(c => c.length)));
       check(await p.evaluate(() => document.querySelector('#su main > .su-hero svg')?.getAttribute('data-mode') === 'next'), W + '될 듯 21곳 그림 = 될 듯 판', '');
       check(['hotNext', 'bloomNext', 'moneyNext'].every(k => Number.isFinite(T21.past?.[k]?.per100) && Number.isFinite(T21.past?.[k]?.base100)), W + '될 듯 셋 지난 1년 기록(100번에 몇 번 · 아무 회사)', JSON.stringify(T21.past ?? null).slice(0, 120));
       check(await p.evaluate(() => [...document.querySelectorAll('#su .su-mode a')].map(a => a.getAttribute('href')).join(' ') === '#/ #/n'), W + '지금 · 될 듯 두 칸 단추', '');
@@ -424,7 +424,8 @@ for (const width of [390, 360, 320]) {
       if (!c.dot || Math.abs(c.dot[0] - pts[20][0]) > 0.15 || Math.abs(c.dot[1] - pts[20][1]) > 0.15 || c.ring !== key.endsWith('Next')) { bad.push(c.name + ' 마지막 점'); continue; }
     }
     R.m.price[hh] = {cells: got.cells.length, bad: bad.length, note: got.note};
-    check(got.cells.length === 42 && !bad.length, '⑭ ' + hh + ' 종목마다 현재가 = 자료 · 한 달 꺾은선 21점 = 자료 그대로 · 한 달 전 줄 · 마지막 점(지금 찬 점 · 될 듯 고리)', got.cells.length + ' · ' + bad.slice(0, 4).join(' | '));
+    const nCells = ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext'].reduce((a, k) => a + Math.min(7, (T21.lists?.[k] ?? []).length), 0); // 엄격 셈(주문 0854)이면 42 아래일 수 있음
+    check(got.cells.length === nCells && (T21.strict || nCells === 42) && !bad.length, '⑭ ' + hh + ' 종목마다 현재가 = 자료 · 한 달 꺾은선 21점 = 자료 그대로 · 한 달 전 줄 · 마지막 점(지금 찬 점 · 될 듯 고리)', got.cells.length + ' · ' + bad.slice(0, 4).join(' | '));
     const liveN = /^현재가는 \d+월 \d+일 (오전|오후) \d+시( \d+분)? 값이에요\.$|^현재가는 \d+월 \d+일 마지막 값이에요\.$/; // 장 중 · 장 끝 값이 붙으면 그 때(주문 2011)
     check((got.note[0] === mtxt || (got.cells.some(c => c.live) && liveN.test(got.note[0] ?? ''))) && /꺾은선은 한 달/.test(got.note[1] ?? ''), '⑭ ' + hh + ' 현재가 날짜 글 — ' + mtxt, got.note.join(' / '));
   }
@@ -433,7 +434,8 @@ for (const width of [390, 360, 320]) {
 { // ⑮ 장 중 현재가(주문 2011 · 사장님 2026-11-08 20:11 「어 그렇게 하고」 — 장이 열려 있는 낮에도 현재가가 바뀌게) — /api/price 답을 시험 값으로 바꿔 끼워 화면이 따라 바뀌는지
   //   오늘(판 다음 날) 장 중 값 → 그 칸 현재가 글 · data-px · data-live · 이름표 · 꺾은선(맨 앞 하루를 빼고 오늘 값을 끝에 = 21점 · 끝 점 = 받은 값 높이) · 날짜 글 「○월 ○일 오후 2시 31분 값이에요.」
   //   받은 값이 없는 칸은 그대로 · 함수가 없거나(404) 장 밖이면 아무것도 바꾸지 않음
-  const T21 = await J('/su/data/su21.json'), day = T21?.asOf?.board ?? '2026-11-06', h = T21?.lists?.hot?.[0];
+  const T21 = await J('/su/data/su21.json'), N21x = await J('/su/data/su21-next.json').catch(() => null), day = T21?.asOf?.board ?? '2026-11-06';
+  const h = [...['hot', 'money', 'bloom'].map(k => T21?.lists?.[k]?.[0]), ...['hotNext', 'moneyNext', 'bloomNext'].map(k => N21x?.lists?.[k]?.[0])].find(x => x && Array.isArray(x.c) && x.c.length === 21 && x.close > 0); // 엄격 셈(주문 0854)이면 불장이 빌 수 있음 — 첫 칸 회사
   const next = (() => { const d = new Date(day + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + 3); return d.toISOString().slice(0, 10); })();
   const P = h?.close ? Math.round(h.close * 1.031) : 0, NFk = new Intl.NumberFormat('ko-KR');
   const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
@@ -536,7 +538,8 @@ for (const width of [390, 360, 320]) {
   const item = (k, code) => (k.endsWith('Next') ? N21.lists?.[k] : T21.lists?.[k])?.find(c => c.code === code);
   const all = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => ({k, ...(item(k, c.code) ?? c)})));
   const DAYRE = /^\d{4}-\d{2}-\d{2}$/, md = d => { const q = /^\d{4}-(\d{2})-(\d{2})$/.exec(d ?? ''); return q ? +q[1] + '월 ' + +q[2] + '일' : null; };
-  check(all.length === 42 && all.every(c => Number.isInteger(c.days) && c.days >= 1 && DAYRE.test(c.found ?? '') && c.found <= board && typeof c.since === 'boolean'), '⑰ 42칸 모두 며칠째 · 첫 발견(자료)', JSON.stringify(all.filter(c => !(Number.isInteger(c.days) && DAYRE.test(c.found ?? ''))).map(c => c.k + ' ' + c.name)).slice(0, 200));
+  const nAll = KEY6.reduce((a, k) => a + Math.min(7, (T21.lists?.[k] ?? []).length), 0); // 엄격 셈(주문 0854)이면 42 아래
+  check(all.length === nAll && (T21.strict || nAll === 42) && all.every(c => Number.isInteger(c.days) && c.days >= 1 && DAYRE.test(c.found ?? '') && c.found <= board && typeof c.since === 'boolean'), '⑰ 42칸 모두 며칠째 · 첫 발견(자료)', JSON.stringify(all.filter(c => !(Number.isInteger(c.days) && DAYRE.test(c.found ?? ''))).map(c => c.k + ' ' + c.name)).slice(0, 200));
   check(T21.days && DAYRE.test(T21.days.from ?? '') && T21.days.to === board, '⑰ 며칠째 셈 바탕(기록 첫날 · 오늘 판)', JSON.stringify(T21.days ?? null).slice(0, 160));
   check(!!WHY && WHY.board === board && WHY.mc?.paths >= 20000 && Array.isArray(WHY.checks) && WHY.checks.length === 7, '⑰ 포모 자료 = 오늘 판 · 몬테카를로 길 2만 개 넘게 · 소거 기준 일곱', WHY ? `${WHY.board} · ${WHY.mc?.paths} · ${WHY.checks?.length}` : '없음');
   const codes = [...new Set(all.map(c => c.code))], F = WHY?.fomo ?? {};
@@ -544,7 +547,7 @@ for (const width of [390, 360, 320]) {
   check(all.every(c => (F[c.code]?.verdict === 'pass' ? c.fomo === F[c.code].v : c.fomo === null) && c.fv === (F[c.code]?.verdict ?? 'hold')), '⑰ 42칸 포모지수 = 포모 자료', '');
   const passN = codes.filter(c => F[c]?.verdict === 'pass').length;
   if (/^https:/.test(base)) { // 진짜 사이트 — 올릴 때 굴린 종가로 셈(미리 보기 묶음은 종가를 굴리지 않아 옛 자료 · 그때는 묶음 꼴만 봄)
-    check(T21.days?.from < board && all.some(c => c.days > 1), '⑰ 진짜 사이트 — 지난 판 기록으로 센 며칠째(기록 첫날 < 오늘 판 · 2일째 넘는 칸 있음)', JSON.stringify(T21.days ?? null).slice(0, 120));
+    check(T21.days?.from < board && (all.some(c => c.days > 1) || (T21.strict && all.length <= 7)), '⑰ 진짜 사이트 — 지난 판 기록으로 센 며칠째(기록 첫날 < 오늘 판 · 2일째 넘는 칸 있음 — 엄격 셈으로 칸이 일곱 아래면 기록 첫날만)', JSON.stringify(T21.days ?? null).slice(0, 120));
     check(WHY?.data === board && passN >= Math.ceil(codes.length * 0.8), '⑰ 진짜 사이트 — 포모 자료 날 = 오늘 판 · 열에 여덟 넘게 통과', `${WHY?.data} · ${passN}/${codes.length}`);
   }
   R.m.why = {board, cells: all.length, codes: codes.length, fomoPass: passN, days: Object.fromEntries(all.map(c => [c.k + ' ' + c.code, [c.days, c.found, c.fomo]])), daysFrom: T21.days?.from ?? null};
@@ -554,7 +557,7 @@ for (const width of [390, 360, 320]) {
   await open(p, '#/');
   const cells = await p.evaluate(() => [...document.querySelectorAll('#su main > .su-hero a.sa-cell')].map(a => ({k: a.getAttribute('data-k'), code: a.getAttribute('data-code'), href: a.getAttribute('href'), days: a.getAttribute('data-days'), found: a.getAttribute('data-found'), fomo: a.getAttribute('data-fomo'),
     sp: a.querySelector('path.sa-sp')?.getAttribute('d') ?? '', t1: a.querySelector('text.sa-found')?.textContent ?? '', t2: a.querySelector('text.sa-days')?.textContent ?? '', fs: [...a.querySelectorAll('text.sa-found, text.sa-days')].map(t => parseFloat(getComputedStyle(t).fontSize))})));
-  check(cells.length === 42, '⑰ 첫 페이지 칸 42', String(cells.length));
+  check(cells.length === nAll, '⑰ 첫 페이지 칸 = 목록 칸 수(' + nAll + ')', String(cells.length));
   const badCell = cells.filter(x => { const c = all.find(y => y.k === x.k && y.code === x.code); return !c || x.href !== `#/c/${c.code}/y/${c.k}` || x.t1 !== '첫 발견 ' + md(c.found) || !x.t2.startsWith(c.days + '일째 · ') || !(c.fomo === null ? /포모(지수)? 보류$/.test(x.t2) : new RegExp('포모(지수)? ' + c.fomo + '$').test(x.t2)) || x.fs.some(f => f < 16.95); });
   check(!badCell.length, '⑰ 42칸 모두 「첫 발견 ○월 ○일」 · 「○일째 · 포모지수 ○」 = 자료 · 누르면 「왜?」 쪽 · 글 17px 넘게', JSON.stringify(badCell.slice(0, 3)).slice(0, 300));
   let pages = 0, reasons = 0;
@@ -615,9 +618,45 @@ for (const width of [390, 360, 320]) {
     if (why.length) coBad.push(c.code + ' ' + c.name + ': ' + why.join(' · '));
   }
   R.m.coLine = {companies: seen.size, ok: coN - coBad.length, idx: idxN, cd: cdN, bad: coBad.slice(0, 6)};
-  check(seen.size >= 30 && !coBad.length, '⑰ 42칸 회사 쪽 한 달 꺾은선 = 첫 페이지 칸 값 21개 · 같은 꼴 · 처음 날 · 끝 날 · 끝값 이름표 · 시장 줄은 날짜가 꼭 맞을 때만(주문 0806)', seen.size + '곳 · ' + coBad.slice(0, 3).join(' | '));
+  check(seen.size >= Math.min(30, new Set(all.map(c => c.code)).size) && !coBad.length, '⑰ 42칸 회사 쪽 한 달 꺾은선 = 첫 페이지 칸 값 21개 · 같은 꼴 · 처음 날 · 끝 날 · 끝값 이름표 · 시장 줄은 날짜가 꼭 맞을 때만(주문 0806)', seen.size + '곳 · ' + coBad.slice(0, 3).join(' | '));
   if (/^https:/.test(base)) check(cdN === seen.size, '⑰ 진짜 사이트 — 42칸 회사 모두 판 날짜 21개(cd)', cdN + '/' + seen.size);
   await ctx.close();
+}
+{ // ⑳ 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 「몬테카를로 방식으로 먼저 찾아낸 다음 소거법을 31번 더 돌려서 지금보다 엄격한 기준으로」 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움)
+  //   자료: su21.json strict = su21-strict.json(규칙 · 판 날) · 기준 31가지 · 몬테카를로 10만 길 · 스무 번에 한 번
+  //   묶음마다: 고른 곳 수 = 마지막 수 · 일곱까지 · 소거 줄(31) 줄어들기만 · 고른 곳은 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 31가지 모두 통과 · 업종마다 둘(돈 둘 = 하나)
+  //   첫 페이지: 칸 + 빈 자리 = 42 · 「왜?」 쪽: 더 엄격하게 상자 · 기준 31가지 모두 통과
+  const T21 = await J('/su/data/su21.json'), SX = await J('/su/data/su21-strict.json').catch(() => null), KEY6 = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'];
+  if (T21.strict) {
+    check(!!SX && SX.rule === T21.strict.rule && SX.asOf?.board === T21.asOf?.board && SX.crit?.length === 31 && new Set(SX.crit.map(c => c.id)).size === 31 && SX.mc?.paths >= 100000 && SX.mc?.p <= 0.05,
+      '⑳ 엄격 셈 자료 — 규칙 · 판 날 · 기준 31가지 · 몬테카를로 10만 길 · 스무 번에 한 번', JSON.stringify({rule: SX?.rule, board: SX?.asOf?.board, n: SX?.crit?.length, mc: SX?.mc}));
+    const bad = [];
+    for (const k of KEY6) {
+      const L = T21.lists?.[k] ?? [], g = SX?.groups?.[k], per = k.startsWith('money') ? 1 : 2, cnt = {};
+      for (const c of L) cnt[c.ind] = (cnt[c.ind] ?? 0) + 1;
+      const ok = !!g && L.length === g.final && L.length <= 7 && g.steps?.length === 31 && g.mc <= g.pool && g.steps.every((n, i) => n <= (i ? g.steps[i - 1] : g.mc)) && g.steps[30] >= g.final
+        && Object.values(cnt).every(n => n <= per) && L.every(c => { const m = g.co?.[c.code]; return m && m.mc?.p <= 0.05 && m.mc?.p2 <= 0.05 && m.ok?.length === 31 && m.ok.every(Boolean); });
+      if (!ok) bad.push(k + ' ' + JSON.stringify({n: L.length, g: g && {pool: g.pool, mc: g.mc, final: g.final}}));
+    }
+    R.m.strict = Object.fromEntries(KEY6.map(k => [k, SX?.groups?.[k] ? [SX.groups[k].pool, SX.groups[k].mc, SX.groups[k].final] : null]));
+    check(!bad.length, '⑳ 묶음마다 — 고른 곳 = 몬테카를로 두 번 모두 스무 번에 한 번 아래 · 기준 31가지 모두 통과 · 일곱까지 · 업종마다 둘(돈 둘 = 하나) · 소거 줄 줄어들기만', bad.join(' | '));
+    const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
+    await QUIET(ctx);
+    const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
+    await open(p, '#/');
+    const f = await p.evaluate(() => ({cells: document.querySelectorAll('#su main > .su-hero a.sa-cell').length, now: document.querySelectorAll('#su main > .su-hero g.sa-empty[data-empty="now"]').length,
+      next: document.querySelectorAll('#su main > .su-hero g.sa-empty[data-empty="next"]').length, note: [...document.querySelectorAll('#su main > .su-hero text.sa-note3a, #su main > .su-hero text.sa-note3b')].map(e => e.textContent).join(' ')}));
+    const nNow = ['hot', 'bloom', 'money'].reduce((a, k) => a + (T21.lists?.[k] ?? []).length, 0), nNx = ['hotNext', 'bloomNext', 'moneyNext'].reduce((a, k) => a + (T21.lists?.[k] ?? []).length, 0);
+    check(f.cells === nNow + nNx && f.now === 21 - nNow && f.next === 21 - nNx && f.note === '31가지 기준을 모두 지난 곳만 보여요.', '⑳ 첫 페이지 — 칸 + 빈 자리 = 42 · 「31가지 기준을 모두 지난 곳만 보여요.」', JSON.stringify(f));
+    const first = KEY6.map(k => [k, (T21.lists?.[k] ?? [])[0]]).find(([, c]) => c);
+    if (first) {
+      await open(p, `#/c/${first[1].code}/y/${first[0]}`);
+      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-strict'); return b ? {li: b.querySelectorAll('.yw-li').length, pass: [...b.querySelectorAll('.yw-ok')].filter(e => e.textContent === '통과').length, s: [...b.querySelectorAll('p.yw-s')].slice(0, 2).map(e => e.textContent)} : null; });
+      check(!!w && w.li === 31 && w.pass === 31 && /번 섞어 그린 길 가운데/.test(w.s[0] ?? '') && /후보 \d+곳 → 몬테카를로를 지난 곳 \d+곳 → 기준 31가지를 모두 지난 곳 \d+곳/.test(w.s[1] ?? ''), '⑳ 「왜?」 쪽 — 더 엄격하게(몬테카를로 · 후보 → 몬테카를로 → 31가지) · 기준 31가지 모두 통과 — ' + first[0] + ' ' + first[1].name, JSON.stringify(w).slice(0, 200));
+    }
+    check(!errs.length, '⑳ 화면 오류 0', errs.slice(0, 3).join(' / '));
+    await ctx.close();
+  } else check(!/^https:/.test(base), '⑳ 진짜 사이트 — 엄격 셈 자료(su21.json strict)', 'strict 없음');
 }
 { // ⑲ 기록창 — 한국 시장 일곱 가지(주문 0814 · 사장님 2026-11-09 08:14 「… 다른 나라와 비교할 때 … 정말 아주 다른 특징 … 총 7가지 … 기록창을 만들어 먼저 기재 하라 에이전트 활용하라」 · 08:25 「수르에 올려야해」)
   //   기록 쪽 서랍 → #/r/k · 일곱 칸 = 자료(su/data/kr7.json) 그대로 · 칸마다 한국은 · 다른 나라는(둘 넘게) · 한국 문화와 이어진 까닭 · 근거(하나 넘게) · 한눈 그림 일곱 짝 · 새 문장 「%」 0 · 영어 글자 0 · 쪽 규칙(넘침 · 17px · 48 · 고리 · 안전 문장 · 쓰지 않을 말)
@@ -649,7 +688,8 @@ for (const width of [390, 360, 320]) {
   //   가) /api/price 답을 시험 값으로 끼움: 판 다음 날 장 중 값 → 회사 쪽 줄 = 맨 앞 하루를 빼고 그 값을 끝에(첫 페이지 relive 와 같은 셈) · 처음 날 = 둘째 날 · 끝 날 = 그날 · 시장 줄 없음 · 끝값 이름표 · 첫 페이지 칸과 같은 꼴
   //       판과 같은 날 값 → 끝 값만 바뀜 · 날짜 · 시장 줄 그대로 · 값 없음 → 판 값 그대로
   //   나) 진짜 답(끼우지 않음): 장 중이면 회사 쪽 줄 끝 = 그 현재가 · 앞 20개 = 판 값 · 첫 페이지 칸과 같은 때 값이면 같은 현재가 · 같은 꼴 / 장 밖이면 판 값 그대로
-  const T21 = await J('/su/data/su21.json'), day = T21?.asOf?.board ?? '', h = T21?.lists?.hot?.[0], lw = h ? await lineWant(h.code) : null;
+  const T21 = await J('/su/data/su21.json'), N21x = await J('/su/data/su21-next.json').catch(() => null), day = T21?.asOf?.board ?? '';
+  const h = [...['hot', 'money', 'bloom'].map(k => T21?.lists?.[k]?.[0]), ...['hotNext', 'moneyNext', 'bloomNext'].map(k => N21x?.lists?.[k]?.[0])].find(x => x && Array.isArray(x.c) && x.c.length === 21 && x.close > 0), lw = h ? await lineWant(h.code) : null;
   const next = (() => { const d = new Date(day + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + 3); return d.toISOString().slice(0, 10); })();
   const P = h?.close ? Math.round(h.close * 1.031) : 0, P2 = h?.close ? Math.round(h.close * 0.987) : 0, NFk = new Intl.NumberFormat('ko-KR'), mdK = d => { const q = /^\d{4}-(\d{2})-(\d{2})$/.exec(d ?? ''); return q ? +q[1] + '월 ' + +q[2] + '일' : null; };
   const coOf = p => p.evaluate(() => { const s = document.querySelector('#su svg.su-co-jobs'), co = s?.querySelector('g[data-line="co"]');
@@ -700,10 +740,10 @@ for (const width of [390, 360, 320]) {
       ? +a.px > 0 && v[20] === +a.px && JSON.stringify(v.slice(0, 20)) === JSON.stringify(sh ? lw.v.slice(1) : lw.v.slice(0, 20)) && (sh ? a.from === (lw.cd ? lw.cd[1] : '') && !a.ix : a.from === (lw.from ?? ''))
       : a.px === String(h.close) && a.v === lw.v.join(','));
     const both = !!a?.live && !!cA?.live && a.live === cA.live;
-    const okB = !both || (cA.px === a.px && sameShape(shapeOf(ptsOf(a.pts, /(-?[\d.]+),(-?[\d.]+)/g)), shapeOf(ptsOf(cA.sp, /(-?[\d.]+) (-?[\d.]+)/g))));
+    const okB = !both || cA.px !== a.px || sameShape(shapeOf(ptsOf(a.pts, /(-?[\d.]+),(-?[\d.]+)/g)), shapeOf(ptsOf(cA.sp, /(-?[\d.]+) (-?[\d.]+)/g))); // 같은 분 막대라도 묻는 때가 달라 값이 다를 수 있음(2026-11-09 3/11 — 210,500 · 210,000) — 같은 값일 때 같은 꼴
     R.m.coReal = {live: a?.live ?? null, cellLive: cA?.live ?? null, px: a?.px ?? null, cellPx: cA?.px ?? null, from: a?.from ?? null, to: a?.to ?? null, both};
     check(ok, '⑱ 진짜 답 — 장 중이면 회사 쪽 꺾은선 끝 = 받은 현재가 · 앞 20개 = 판 값 / 장 밖이면 판 값 그대로', JSON.stringify(R.m.coReal));
-    check(okB, '⑱ 진짜 답 — 같은 때 값이면 첫 페이지 칸과 회사 쪽이 같은 현재가 · 같은 꼴', JSON.stringify(R.m.coReal));
+    check(okB, '⑱ 진짜 답 — 같은 현재가면 첫 페이지 칸과 회사 쪽 꺾은선이 같은 꼴', JSON.stringify(R.m.coReal));
     // 장이 열려 있으면(날짜 글 「○월 ○일 오전/오후 ○시 ○분 값이에요.」) 1분 뒤 다시 — 회사 쪽 · 첫 페이지 칸 모두 때가 앞으로 · 회사 쪽 줄 끝 = 새 현재가
     if (a?.live && /(오전|오후) \d+시/.test(a.d ?? '')) {
       await open(p, `#/c/${h.code}`); await p.waitForTimeout(2500);
