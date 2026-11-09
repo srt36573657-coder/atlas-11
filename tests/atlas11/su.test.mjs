@@ -509,7 +509,7 @@ test('「왜?」 쪽 — 길 · 서른여섯 가지 · 기준 일곱 · 포모 �
   for (const f of ['su21_replay.mjs', 'su21_days.mjs', 'su21_fomo.mjs']) assert.ok(pk.includes('scripts/atlas11/next/' + f), '묶을 때 셈 — ' + f);
   const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21.json'), 'utf8')), W = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-why.json'), 'utf8'));
   const all = ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext'].flatMap(k => T.lists[k]);
-  assert.equal(all.length, 42);
+  assert.ok(T.strict ? all.length <= 42 : all.length === 42, '저장된 판 칸 수(엄격 셈이면 42 아래 · 주문 0854)');
   assert.ok(all.every(c => Number.isInteger(c.days) && c.days >= 1 && /^\d{4}-\d{2}-\d{2}$/.test(c.found) && (c.fomo === null || (Number.isInteger(c.fomo) && c.fomo >= 0 && c.fomo <= 100))), '저장된 판 42칸 — 며칠째 · 첫 발견 · 포모');
   assert.equal(W.board, T.asOf.board); assert.equal(W.checks.length, 7); assert.ok(W.mc.paths >= 20000);
 });
@@ -533,4 +533,14 @@ test('기록창 — 한국 시장 일곱 가지(자료 꼴 · 쓰지 않을 말 
   const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), k7 = fs.readFileSync(path.join(ROOT, 'site/su/su-kr7.js'), 'utf8');
   assert.ok(/a === 'k' \? await \(await import\('\/su\/su-kr7\.js'\)\)\.vKr7\(X21\)/.test(su) && /drawer\('#\/r\/k', '한국 시장 일곱 가지'/.test(su), '길 #/r/k · 기록 쪽 서랍');
   assert.ok(/export const CSS = '\/su\/su-kr7\.css'/.test(k7) && fs.existsSync(path.join(ROOT, 'site/su/su-kr7.css')) && !/innerHTML|outerHTML|insertAdjacentHTML|\.style\b|Math\.random|https?:\/\//.test(k7), '꾸밈 파일 · 글 속 꾸밈 0 · 아무 수 0 · 바깥 고리 0');
+});
+
+/** 주문 0854(사장님 2026-11-09 08:54 「몬테카를로 방식으로 먼저 찾아낸 다음 소거법을 31번 더 돌려서 지금보다 엄격한 기준으로」 · 09:02 「어」) — 엄격 셈 · 빈 자리 · 「왜?」 쪽 */
+test('엄격 셈 — su21.py 가 지금 셈 일곱을 거름 · 첫 페이지 빈 자리 · 「왜?」 쪽 기준 31가지 · 묶을 때 su21-strict.json', () => {
+  const src = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+  const py = src('scripts/atlas11/next/su21.py'), ap = src('site/su/su-apple.js'), y = src('site/su/su-why36.js'), pk = src('scripts/atlas11/package.mjs'), rp = src('scripts/atlas11/next/su21_replay.mjs');
+  assert.ok(/import su21_strict as ST/.test(py) && /PICK, STRICT = ST\.select\(CTX, OLD7, fin_of\)/.test(py) && /su21-strict\.json/.test(py) && /past-strict\.json/.test(py), 'su21.py — 일곱 → 엄격 셈 · 자세히 파일 · 지난 1년');
+  assert.ok(/function empty\(x, y, w, h, side, first\)/.test(ap) && /const rowsOf = k => STRICT \? 7/.test(ap) && /'31가지 기준을', '모두 지난 곳만 보여요\.'/.test(ap), '첫 페이지 — 일곱 줄 · 빈 자리 · 한 줄 글');
+  assert.ok(/export function strict31\(SX, T, k, code\)/.test(y) && /su21-strict\.json/.test(y) && /strictBox/.test(y), '「왜?」 쪽 — 더 엄격하게 상자');
+  assert.ok(pk.includes("'su21-strict.json'") && rp.includes("'days.json'") && rp.includes('RULE_NOW'), '묶을 때 · 지난 판 다시 세기(하루 값 · 규칙이 바뀌면 다시 셈)');
 });

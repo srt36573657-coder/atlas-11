@@ -128,3 +128,7 @@
 /* 첫 발견 · 며칠째 · 포모지수(주문 0123) — 칸 넷째 · 다섯째 줄 · 회색 글(값 글은 검정 · 색은 선과 점만) */
 .su-apple .sa-found { font-weight: 600; fill: #6E6E73; }
 .su-apple .sa-days { font-weight: 700; fill: #1D1D1F; }
+/* 빈 자리(주문 0854 — 엄격 셈을 통과한 곳이 일곱이 안 되면 남는 자리는 비움) */
+.su-apple .sa-emp { fill: none; stroke: #D2D2D7; stroke-width: 1.2; stroke-dasharray: 5 5; }
+.su-apple .sa-empt { font-size: 17px; font-weight: 700; fill: #AEAEB2; }
+.su-apple .sa-empd { font-size: 17px; font-weight: 500; fill: #AEAEB2; }
