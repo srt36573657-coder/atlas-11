@@ -175,7 +175,7 @@ function nextChap(code) {
 function foot(C) {
   return [h('p', {class: 'pco-foot', text: `자료: ${C.sources?.price ?? '?'}`}), // 2026-10-29 15:08 「쉽게」 — 기준일은 그림 아래 날짜 · 고른 때는 「왜 들었나요? · 어디서 멈췄는지」 칸에
     C.provisional ? h('details', {class: 'pco-foot pco-warn'}, h('summary', {text: '? 아직 바뀔 수 있는 값이에요 ›'}), h('p', {text: `${md(C.asOf)} 값은 그날 저녁 8시 전에 받아 아직 바뀔 수 있습니다(시간외 · 넥스트레이드) — 다음 받기에서 고쳐집니다.`})) : null, // 긴 경고는 「?」 한 줄 + 누르면 펼침([10] 10)
-    h('p', {class: 'safe pco-safe', text: '저는 투자 상담사가 아니에요. 수르는 지난 기록만 보여 줘요. 사고팔기나 들고 있기를 권하지 않고, 시장 앞날도 말하지 않아요.'})];
+    h('p', {class: 'safe pco-safe', text: '저는 투자 상담사가 아니에요. 큐피트는 지난 기록만 보여 줘요. 사고팔기나 들고 있기를 권하지 않고, 시장 앞날도 말하지 않아요.'})];
 }
 
 /* ── 화면 ── */
@@ -209,7 +209,7 @@ export async function render(arg) {
   const lv = line.filter(x => x != null), low = lv.length ? Math.min(...lv) : null, last = lv.length ? lv.at(-1) : null, man = x => h('span', {class: 'pco-nw', text: Math.round(x).toLocaleString('ko-KR') + '만 원'}); // 「81만 / 원」으로 갈리지 않게
   root.append(low == null ? h('p', {class: 'pco-won pco-q', text: '? 값을 못 읽었습니다'})
     : h('p', {class: 'pco-won'}, `${md(C.base)}에 100만 원어치였다면 `, ...(low < 100 ? ['가장 낮을 때 ', man(low), ' · 마지막 날 ', man(last)] : ['그보다 낮아진 적 없이 마지막 날 ', man(last)]))); // 2026-10-29 15:08 「쉽게」 — 옛 「끝」은 무엇의 끝인지 흐림 → 「마지막 날」(그림 오른쪽 끝 날)
-  root.append(h('p', {class: 'pco-src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · 수르 셈`}));
+  root.append(h('p', {class: 'pco-src', text: `네이버 증권 · ${md(c.priceDate || C.asOf)} 종가 · 큐피트 셈`}));
   root.append(E.pk ? whyBox(C, c) : outBox(C, code));
   root.append(nextChap(code), ...foot(C).filter(Boolean));
   return {title: c.name, nodes: [root]};

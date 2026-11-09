@@ -159,7 +159,7 @@ function tabs(active) {
 export function page(m) {
   document.title = (m.title ? m.title + ' · ' : '') + NAME;
   const st = m.step ? STEPS[m.step] : null, hk = location.hash;
-  const man = m.mansour ? h('a', {class: 'su-mansour', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '만수르 바로가기 · 새 창'}, h('b', {text: '만수르'}), h('i', {'aria-hidden': 'true', text: '↗'})) : null; // 만수르는 첫 화면 맨 위 머리 줄에(사장님 2026-11-05 04:14(+03) · [2] 1 — 누르면 새 창)
+  const man = m.mansour ? h('a', {class: 'su-mansour', href: 'https://shin-yxy.gino.im/', target: '_blank', rel: 'noopener', 'aria-label': '천사 바로가기 · 새 창'}, h('b', {text: '천사'}), h('i', {'aria-hidden': 'true', text: '↗'})) : null; // 만수르는 첫 화면 맨 위 머리 줄에(사장님 2026-11-05 04:14(+03) · [2] 1 — 누르면 새 창)
   const step = st ? h('span', {class: 'su-step', 'aria-label': m.step + ' / 8 · ' + st[0]}, h('i', {text: PHASE[st[1]]}), h('span', {text: m.step + ' / 8'})) : null; // 걸음 표시는 숫자만(이름은 큰 제목과 겹치고 머리 줄에서 「회사…」 「「왜…」처럼 잘림 — 심사 4 · 6회) · 읽어 주기에는 이름까지
   const head = h('header', {class: 'su-top top'}, h('a', {class: 'su-brand', href: '#/', text: NAME}), man ?? step, tools()); // 첫 화면은 걸음 표시가 큰 값 줄로(머리 줄에 만수르)
   const h1 = h('h1', {class: 'su-h1', text: m.h1 ?? m.title});
@@ -310,7 +310,7 @@ async function vInd(name) {
 /** 다른 기록도 기록 한곳에(주문 0054 [4] 7 「모든 기록은 기록 한곳(#/r)에 모아라」) — 한 달 뒤 · 봉인 · 지난 기록 · 업데이트 기록 · 진화 · 합계 세기(옛 쪽은 수르 틀로) */
 const REC_NAMES = ['한 달 뒤', '지난 기록', '봉인', '업데이트 기록', '진화', '합계 세기', '싹 달력', '급등 달력'];
 function recOthers() {
-  const box = h('section', {class: 'su-flist su-rec2', 'aria-label': '다른 기록'}, h('h2', {class: 'su-ft', text: '다른 기록도 여기서 · 수르 틀 안에서 열림'}));
+  const box = h('section', {class: 'su-flist su-rec2', 'aria-label': '다른 기록'}, h('h2', {class: 'su-ft', text: '다른 기록도 여기서 · 큐피트 틀 안에서 열림'}));
   import('/su/su-roads.js').then(async R => { const F = await R.feats();
     for (const nm of REC_NAMES) { const f = F.find(x => x.name === nm), href = f ? R.hrefOf(f) : null; if (!f || !href) continue;
       box.append(h('a', {class: 'su-fcard', href}, h('b', {text: f.name}), h('span', {text: f.how}))); }
@@ -337,7 +337,7 @@ async function vHub() {
       drawer('#/r/w', '못 된 까닭', num(B?.why?.all?.miss) ? num(B.why.all.miss) + '번' : NEED, '조건에 맞고도 꽃이 못 된 횟수'),
       drawer('#/r/d', '날마다', dd.big.v != null ? dd.big.v + '날' : NEED, '지난 60거래일 달력'),
       drawer('#/r/k', '한국 시장 일곱 가지', '7가지', '다른 나라와 아주 다른 점 · 한국 문화가 묻은 곳'), // 기록창(주문 0814 · 사장님 2026-11-09 08:14 · 08:25 「수르에 올려야해」)
-      drawer('#/r/i', '한국 투자자 특징 열하나', '11가지', '도우미 열하나가 찾은 버릇 · 수르 42칸에 쓰는 일곱'), // 주문 2235
+      drawer('#/r/i', '한국 투자자 특징 열하나', '11가지', '도우미 열하나가 찾은 버릇 · 큐피트 42칸에 쓰는 일곱'), // 주문 2235
       h('details', {class: 'su-oldrec'}, h('summary', {class: 'su-oldrecs'}, h('b', {text: '옛 기록 더 보기'}), h('span', {text: '해마다 · 가까운 회사 · 옛 기록 여덟'})), // 이름이 보이는 접힘
         drawer('#/r/y', '해마다', yy.big.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, '모든 해 · 100번에 몇 번'),
         drawer('#/r/n', '가까운 회사', nn.big.v != null ? nn.big.v + ' 대 ' + nn.big.v2 : NEED, '조건에 가까웠던 회사 · 100번에 몇 번'),

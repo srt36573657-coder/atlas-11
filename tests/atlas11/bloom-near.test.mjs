@@ -55,10 +55,10 @@ test('빈 날 가장 가까운 회사 셋 — 엔진 = 따로 다시 세기(오�
 
 test('빈 날 가까운 셋 — 화면 글: 고른 회사가 아님을 먼저 · 맞은 · 안 맞은 조건 · 지난 빈 날 기록(아무 회사와 견줌) · 앞날 말 · 사고팔기 말 없음', () => {
   const src = fs.readFileSync(path.join(ROOT, 'site', 'next', 'p-theme.js'), 'utf8'), home = fs.readFileSync(path.join(ROOT, 'site', 'next', 'home-new.js'), 'utf8');
-  for (const t of ['조건에 가장 가까운 회사', '조건에 다 맞지는 않아요. 수르가 고른 회사가 아니에요.', '맞은 조건', '안 맞은 조건', '지난 빈 날 가장 가까운 회사는 100번에']) assert.ok(src.includes(t), `p-theme.js 에 「${t}」 없음`);
-  for (const t of ['가까운 곳', '조건에 가장 가까운 회사', '조건에 다 맞지는 않아요. 수르가 고른 회사가 아니에요.']) assert.ok(home.includes(t), `home-new.js 에 「${t}」 없음`);
+  for (const t of ['조건에 가장 가까운 회사', '조건에 다 맞지는 않아요. 큐피트가 고른 회사가 아니에요.', '맞은 조건', '안 맞은 조건', '지난 빈 날 가장 가까운 회사는 100번에']) assert.ok(src.includes(t), `p-theme.js 에 「${t}」 없음`);
+  for (const t of ['가까운 곳', '조건에 가장 가까운 회사', '조건에 다 맞지는 않아요. 큐피트가 고른 회사가 아니에요.']) assert.ok(home.includes(t), `home-new.js 에 「${t}」 없음`);
   const part = src.slice(src.indexOf('// 빈 날 가장 가까운 회사 셋'), src.indexOf("return {title, nodes: [h('div', {class: 'tc th-picks'"));
   assert.ok(!/추천|매수|매도|사세요|파세요|예측|확률|유망|기회/.test(part), '앞날 · 사고팔기 말');
   const en = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts', 'atlas11', 'next', 'i18n', 'en-src.json'), 'utf8')).templates;
-  for (const t of ['가까운 곳', '조건에 가장 가까운 회사', '조건에 다 맞지는 않아요. 수르가 고른 회사가 아니에요.', '맞은 조건', '안 맞은 조건', '지난 빈 날 가장 가까운 회사는 100번에 {n}번 꽃이 됐어요.']) assert.ok(typeof en[t] === 'string' && en[t], `영어 사전에 「${t}」 없음`);
+  for (const t of ['가까운 곳', '조건에 가장 가까운 회사', '조건에 다 맞지는 않아요. 큐피트가 고른 회사가 아니에요.', '맞은 조건', '안 맞은 조건', '지난 빈 날 가장 가까운 회사는 100번에 {n}번 꽃이 됐어요.']) assert.ok(typeof en[t] === 'string' && en[t], `영어 사전에 「${t}」 없음`);
 });

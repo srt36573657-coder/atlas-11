@@ -25,6 +25,10 @@ export const FILES = [
   'site/hello.html', 'site/hello-send.js', 'site/letter.html', 'site/letter.js', 'site/invite.html', 'site/privacy.html',
   'scripts/atlas11/next/i18n/en-src.json',
   'scripts/atlas11/makbi/build.mjs', 'scripts/atlas11/makbi/video.mjs',
+  // 2026-11-10 주문 0243(「수르를 큐피트로 변경하고 만수를 천사로 변경하고」) — 첫 화면 두 길(site/su · 그 자료 글 · 처리방침 짓기)도 이름 한 곳을 따름
+  ...fs.readdirSync(path.join(ROOT, 'site/su')).filter(f => /\.(js|css|html)$/.test(f)).map(f => 'site/su/' + f),
+  ...fs.readdirSync(path.join(ROOT, 'site/su/data')).filter(f => /\.json$/.test(f)).map(f => 'site/su/data/' + f),
+  'scripts/atlas11/next/su_privacy.mjs',
   ...fs.readdirSync(path.join(ROOT, 'scripts/atlas11/next')).filter(f => /^(check_.*|next_check|next_en_check|run_all)\.mjs$/.test(f)).map(f => 'scripts/atlas11/next/' + f),
 ].filter(f => fs.existsSync(path.join(ROOT, f)));
 

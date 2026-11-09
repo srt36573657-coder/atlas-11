@@ -51,13 +51,13 @@ export async function vRoads(X, g = null) {
     const rows = ORDER.map(k => ({g: k, n: by(k).length}));
     const open = F.filter(f => hrefOf(f)).length, none = F.filter(f => !f.helps), skyN = F.filter(f => !hrefOf(f) && f.group === 'sky').length, goneN = F.length - open - skyN;
     const big = val(F.length, '가지', '옛 기능 모두 · 하나도 버리지 않음', {누가: NAME, 언제: null, 어디서: '셋의 길 여덟 묶음', 무엇을: '옛 기능을 묶음대로 셋의 길에 놓았어요', 어떻게: '사장님이 정하신 묶음 그대로', 왜: '모든 기능이 셋을 돕게 하려고요'},
-      {mean: '옛 기능 ' + F.length + '가지가 모두 수르 안에 자리가 있다는 뜻이에요.'});
-    const mids = [val(open, '가지', '누르면 수르 틀 안에서 열림', {누가: NAME, 언제: null, 어디서: '수르 · 옛 쪽', 무엇을: '열리는 주소가 있는 기능', 어떻게: '브라우저로 하나씩 열어 봤어요', 왜: '튕기지 않게 하려고요'}, {mean: '뒷배경 하늘 ' + skyN + '가지' + (goneN ? '와 옛 화면에만 있던 ' + goneN + '가지' : '') + '를 빼면 모두 열린다는 뜻이에요.'}),
+      {mean: '옛 기능 ' + F.length + '가지가 모두 큐피트 안에 자리가 있다는 뜻이에요.'});
+    const mids = [val(open, '가지', '누르면 큐피트 틀 안에서 열림', {누가: NAME, 언제: null, 어디서: '큐피트 · 옛 쪽', 무엇을: '열리는 주소가 있는 기능', 어떻게: '브라우저로 하나씩 열어 봤어요', 왜: '튕기지 않게 하려고요'}, {mean: '뒷배경 하늘 ' + skyN + '가지' + (goneN ? '와 옛 화면에만 있던 ' + goneN + '가지' : '') + '를 빼면 모두 열린다는 뜻이에요.'}),
       val(none.length, '가지', '셋과 안 이어짐', {누가: NAME, 언제: null, 어디서: '셋의 길', 무엇을: none.map(nameOf).join(' · ') || null, 어떻게: '셋 가운데 무엇을 돕는지 하나씩 적었어요', 왜: '지우지 않고 사장님이 정하시게'}, {mean: none.length ? '이 기능들은 지우지 않고 그대로 두었다는 뜻이에요.' : '모두 셋 가운데 하나를 돕는다는 뜻이에요.'})];
     const list = h('section', {class: 'su-roadl', 'aria-label': '묶음'}, h('h2', {class: 'su-ft', text: '묶음 여덟 · 누르면 그 길'}),
       ORDER.map(k => h('a', {class: 'su-fcard', href: '#/g/' + k}, h('b', {text: HEAD[k] + ' · ' + by(k).length + '가지'}), h('span', {text: by(k).slice(0, 4).map(nameOf).join(' · ') + (by(k).length > 4 ? ' …' : '')}))));
     return {title: '셋의 길', tab: 0, kick: '옛 기능 자리', h1: '셋의 길', big,
-      ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars(rows)], {label: '셋의 길 묶음', hero: true, cap: ['옛 기능을 여덟 묶음으로 나눴어요.', '셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 묶음이 맨 위예요.', '그런데 하늘 그림처럼 누르는 기능이 아닌 것도 있어요.', '그래서 묶음을 누르면 그 기능이 수르 안에서 열려요.']})),
+      ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars(rows)], {label: '셋의 길 묶음', hero: true, cap: ['옛 기능을 여덟 묶음으로 나눴어요.', '셋(불장 · 꽃이 될 · 돈이 몰리는)을 돕는 묶음이 맨 위예요.', '그런데 하늘 그림처럼 누르는 기능이 아닌 것도 있어요.', '그래서 묶음을 누르면 그 기능이 큐피트 안에서 열려요.']})),
       mids, body: [list], pro: F.map(f => ({k: SHORT[f.group] + ' · ' + nameOf(f), v: hrefOf(f) ? '열림' : noneShort(f), how: f.how + ' · ' + helpText(f)})),
       next: {href: '#/g/hot', label: '불장을 돕는 것은?'}, asOf: null, S};
   }
@@ -68,10 +68,10 @@ export async function vRoads(X, g = null) {
   const card = f => { const href = hrefOf(f, g, co);
     return h(href ? 'a' : 'div', {class: 'su-fcard su-feat' + (href ? '' : ' su-featx'), href: href ?? null, 'data-feat': f.id},
       h('b', {text: nameOf(f) + (f.owner ? ' · 사장님만' : '')}), h('span', {text: f.how}), h('em', {class: 'su-help', text: helpText(f)}), href ? null : h('em', {class: 'su-help', text: noneText(f)})); };
-  const body = [h('section', {class: 'su-flist', 'aria-label': HEAD[g]}, h('h2', {class: 'su-ft', text: HEAD[g] + ' · 누르면 수르 안에서 열림'}), L.map(card))];
+  const body = [h('section', {class: 'su-flist', 'aria-label': HEAD[g]}, h('h2', {class: 'su-ft', text: HEAD[g] + ' · 누르면 큐피트 안에서 열림'}), L.map(card))];
   if (g === 'hot') body.unshift(surgeBox(X));
   return {title: HEAD[g], tab: g === 'stop' ? 3 : g === 'back' || g === 'guest' ? 2 : 0, kick: '셋의 길 · ' + SHORT[g], h1: HEAD[g], big,
-    ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars([{g, n: L.length}, ...ORDER.filter(k => k !== g).slice(0, 3).map(k => ({g: k, n: by(k).length}))])], {label: HEAD[g], hero: true, cap: [HEAD[g] + ' ' + L.length + '가지예요.', '다른 묶음과 견주어 보여요.', '그런데 옛 쪽 글과 숫자는 바꾸지 않았어요.', '그래서 누르면 옛 쪽이 수르 틀 안에서 열려요.']})),
+    ...X.artHero('su-road-jobs', 'roads', X.fig('roads', [roadBars([{g, n: L.length}, ...ORDER.filter(k => k !== g).slice(0, 3).map(k => ({g: k, n: by(k).length}))])], {label: HEAD[g], hero: true, cap: [HEAD[g] + ' ' + L.length + '가지예요.', '다른 묶음과 견주어 보여요.', '그런데 옛 쪽 글과 숫자는 바꾸지 않았어요.', '그래서 누르면 옛 쪽이 큐피트 틀 안에서 열려요.']})),
     mids: [], body, pro: L.map(f => ({k: nameOf(f), v: hrefOf(f, g, co) ? '열림' : noneShort(f), how: (hrefOf(f, g, co) ?? '주소 없음') + ' · ' + helpText(f)})),
     next: first ? {href: hrefOf(first, g, co), label: nameOf(first) + ' 열기'} : {href: '#/g', label: '셋의 길 모두'}, asOf: null, S};
 }

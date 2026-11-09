@@ -194,7 +194,7 @@ export function top3Box(T, c, k) {
   const nm = r => r ? r.name + '(' + KIND[r.k] + ')' : NEED;
   const R = n => (t3.rank ?? []).find(r => r.place === n);
   const v2 = t3.v === 'top3-v2';
-  return box('yw-top3', place ? '수르 계산법 ' + place + '등 — 1억 번 셈' : '수르 계산법 — 1억 번 셈', [
+  return box('yw-top3', place ? '큐피트 계산법 ' + place + '등 — 1억 번 셈' : '큐피트 계산법 — 1억 번 셈', [
     h('p', {class: 'yw-s', text: '42칸마다 지난 250거래일 하루 값으로 ' + (v2 ? '요즘 흔들림에 맞춘 ' : '') + '우연 길 ' + korN(t3.null ?? 100000) + ' 개를 그렸어요. 그리고 판을 ' + korN(tot) + ' 번 벌였어요.'}),
     v2 ? h('p', {class: 'yw-s', text: '잣대는 셋이에요. 오른 만큼, 가장 크게 뛴 하루를 뺀 만큼, 눈길 몰린 날이 적은 만큼이에요. 판마다 세 잣대의 무게를 ' + (t3.gn ?? 12) + '가지 가운데 하나로 바꿔 섞었어요.'}) : null,
     h('p', {class: 'yw-s', text: '판마다 칸마다 우연 길 하나를 뽑아 지금 값과 견주고, 우연보다 약한 칸부터 하나씩 떨어뜨렸어요. 이것도 ' + korN(tot) + ' 번이에요.'}),
@@ -362,11 +362,11 @@ export function strict31(SX, T, k, code) {
   const cut = Math.round((SX.mc?.p ?? 0.05) * (SX.mc?.paths ?? 100000));
   const fams = [...new Set(SX.crit.map(c => c.fam))];
   const nOk = hasOk ? me.ok.filter(Boolean).length : 0, passed = hasOk && nOk === me.ok.length;
-  const verdict = !mark ? null : passed ? '이 회사는 몬테카를로와 기준 31가지를 모두 지나 첫 페이지 칸에 「수르 계산법」 표가 붙었어요.'
+  const verdict = !mark ? null : passed ? '이 회사는 몬테카를로와 기준 31가지를 모두 지나 첫 페이지 칸에 「큐피트 계산법」 표가 붙었어요.'
     : hasOk ? '이 회사는 기준 31가지 가운데 ' + nOk + '가지를 지나 표가 붙지 않았어요. 걸린 기준은 아래에 「걸림」으로 보여요.'
     : '이 회사는 몬테카를로에서 걸려 기준 31가지는 세지 않았어요. 그래서 표가 붙지 않았어요.';
   let n = 0;
-  return box('yw-strict', mark ? (passed ? '수르 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지' : '수르 계산법 — 몬테카를로와 기준 31가지') : '더 엄격하게 — 몬테카를로와 기준 31가지', [
+  return box('yw-strict', mark ? (passed ? '큐피트 계산법으로 찾은 종목 — 몬테카를로와 기준 31가지' : '큐피트 계산법 — 몬테카를로와 기준 31가지') : '더 엄격하게 — 몬테카를로와 기준 31가지', [
     h('p', {class: 'yw-s', text: '지난 ' + num(SX.mc?.hist ?? 250) + '거래일 하루 값을 ' + num(SX.mc?.paths ?? 100000) + '번 섞어 그린 길 가운데, 지금 모습(' + say + ')보다 크거나 같은 길은 '
       + num(Math.round((p ?? 0) * (SX.mc?.paths ?? 100000))) + '번이었어요. ' + num(cut) + '번 아래(스무 번에 한 번 아래)만 남겨요.'}),
     h('p', {class: 'yw-s', text: '이 묶음 후보 ' + g.pool + '곳 → 몬테카를로를 지난 곳 ' + g.mc + '곳 → 기준 31가지를 모두 지난 곳 ' + g.final + '곳이에요.'}),

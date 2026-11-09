@@ -8,7 +8,7 @@ import {pct, moreLess, dateKo, jo} from './su-data.js';
 
 export const SIX = Object.freeze(['누가', '언제', '어디서', '무엇을', '어떻게', '왜']);
 export const NEED = '확인 필요';
-let BRAND = '수르';
+let BRAND = '큐피트';
 export function brand(n) { if (typeof n === 'string' && n) BRAND = n; }
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const str = v => (typeof v === 'string' && v.trim() ? v.trim() : null);
@@ -36,7 +36,7 @@ export function ym(d) { const m = /^(\d{4})-(\d{2})/.exec(String(d ?? '')); retu
 const day = d => { const t = dateKo(d); return t === '?' ? null : t; };
 const span = (a, b) => (ymd(a) && ymd(b) ? ymd(a) + '부터 ' + ymd(b) + '까지' : null);
 const recOk = r => r && fin(r.rate) && fin(r.base);
-const SRC = '네이버 증권 그날 마지막 값으로 ' + '수르가 셈';
+const SRC = '네이버 증권 그날 마지막 값으로 ' + '큐피트가 셈';
 const BLOOM_HOW = '그날 고른 회사가 한 달 뒤 시장보다 5% 넘게 더 올랐는지 셈';
 /** 뜻 줄 — 100번에 a번 대 b번 */
 function vsMean(a, b, who, n = null, short = false) { // short — 바로 위 이름표가 「대 아무 회사」를 말할 때(큰 값) 「아무 회사보다」를 뺌 // n = 센 수 — 30번보다 적으면 「이 숫자만 믿기 어렵다」(시안 3 장점)
@@ -108,7 +108,7 @@ export function eCo({co, rs = [], cl = null, il = null, asOf, rec = null, bl = n
       {mean: c != null && i != null ? (c > i ? '이 회사가 시장보다 더 올랐다는 뜻이에요.' : c < i ? '이 회사가 시장보다 더 내렸다는 뜻이에요.' : '이 회사와 시장이 같이 움직였다는 뜻이에요.') : null}),
     r?.kind === 'pick' || r?.kind === 'near' ? val((r.ok?.length ?? 0) + ' / ' + ((r.ok?.length ?? 0) + (r.no?.length ?? 0)), '', '맞은 꽃 조건', {누가: co.name, 언제: day(asOf), 어디서: where,
       무엇을: '이달 꽃 조건 ' + kn((r.ok?.length ?? 0) + (r.no?.length ?? 0)) + ' 가운데 ' + kn(r.ok?.length ?? 0) + '에 맞았어요', 어떻게: r.no?.[0] ? '못 맞은 조건은 「' + r.no[0] + '」예요' : '못 맞은 조건이 없어요', 왜: why},
-      {mean: r.no?.length ? '조건 하나가 모자라 수르가 고른 회사는 아니라는 뜻이에요.' : '조건에 다 맞았다는 뜻이에요. 그래도 꽃이 된다는 뜻은 아니에요.'})
+      {mean: r.no?.length ? '조건 하나가 모자라 큐피트가 고른 회사는 아니라는 뜻이에요.' : '조건에 다 맞았다는 뜻이에요. 그래도 꽃이 된다는 뜻은 아니에요.'})
       : r?.kind === 'money' ? val(moreLess(r.x), '', r.ind + ' 업종 · 시장보다', {누가: r.ind + ' 업종', 언제: day(asOf) && day(asOf) + '까지 한 달', 어디서: mk, 무엇을: '한 달 동안 시장보다 ' + moreLess(r.x) + ' 올랐어요',
         어떻게: jo(co.name, '은') + ' 이 업종의 대장이에요', 왜: r.why?.line ?? null}, {mean: '이 회사가 있는 업종에 한 달 동안 돈이 몰렸다는 뜻이에요. 앞으로 오른다는 뜻은 아니에요.'}) : null,
     recOk(rec) ? val(r0(rec.rate), '번', '지난 기록 · 100번에 꽃이 된 횟수', {누가: r?.kind === 'pick' ? '조건에 맞았던 회사' : '조건에 가까웠던 회사', 언제: '지난 기록', 어디서: '코스피 · 코스닥',

@@ -119,7 +119,7 @@ test('친구 알림 — 셋째가 열면 한 통 · 넷 · 다섯은 그대로 �
   assert.equal((await fetchGift(store, {now: new Date(clock.t)})).n, 0, '둘은 아직');
   await opens(store, clock, r, 1);
   const a = await fetchGift(store, {now: new Date(clock.t)});
-  assert.equal(a.n, 1); assert.match(a.messages[0], /^\[수르 선물\] 친구 3명이 열었어요\n10월 26일 오후 2시 4\d분\n한 분이 보낸 주소를 친구 3명이 열었어요 · 카톡에서 1명/);
+  assert.equal(a.n, 1); assert.match(a.messages[0], /^\[큐피트 선물\] 친구 3명이 열었어요\n10월 26일 오후 2시 4\d분\n한 분이 보낸 주소를 친구 3명이 열었어요 · 카톡에서 1명/);
   const again = await fetchGift(store, {now: new Date(clock.t + 3600e3)});
   assert.equal(again.n, 1, '못 보냈으면 다음 시간에 같은 알림'); assert.equal(again.last, a.last, '알림을 새로 만들지 않음');
   assert.equal(((await store.list({prefix: 'e/'})).blobs ?? []).length, 1);
@@ -128,7 +128,7 @@ test('친구 알림 — 셋째가 열면 한 통 · 넷 · 다섯은 그대로 �
   assert.equal((await fetchGift(store, {now: new Date(clock.t)})).n, 0, '넷 · 다섯은 알리지 않음');
   await opens(store, clock, r, 1);
   const b = await fetchGift(store, {now: new Date(clock.t)});
-  assert.equal(b.n, 1); assert.match(b.messages[0], /^\[수르 선물\] 친구 6명이 열었어요\n/);
+  assert.equal(b.n, 1); assert.match(b.messages[0], /^\[큐피트 선물\] 친구 6명이 열었어요\n/);
   // 신청도 오면 번호(때)대로 섞임 — 친구 알림 다음에 신청
   clock.t += 60e3;
   const c = await giftApi(store, clock)('/claim', {phone: '010-5555-6666', agree: true, watched: true}, {key: me});
