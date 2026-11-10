@@ -1,8 +1,8 @@
 {
  "schema": "atlas11-next-cond-1",
- "at": "2026-11-09T23:55:55.681Z",
+ "at": "2026-11-10T03:33:47.568Z",
  "base": "https://aaa7377.com",
- "asOf": "2026-11-09",
+ "asOf": "2026-11-10",
  "combos": 100,
  "from": 0,
  "parts": [
@@ -12,15 +12,15 @@
   "widths"
  ],
  "full": true,
- "seconds": 39,
+ "seconds": 77,
  "time": {
-  "old": 9.9,
-  "new": 12.4,
-  "wall": 38.5,
-  "opensOld": 654,
-  "opensNew": 681,
-  "oldPct": 25.7,
-  "oldShare": 44.4
+  "old": 16.9,
+  "new": 21.7,
+  "wall": 76.8,
+  "opensOld": 652,
+  "opensNew": 679,
+  "oldPct": 22,
+  "oldShare": 43.9
  },
  "net": {
   "req": 3,
@@ -36,8 +36,8 @@
   }
  },
  "counts": {
-  "결과 줄": 31111,
-  "? 줄": 365,
+  "결과 줄": 32154,
+  "? 줄": 403,
   "조건": 100,
   "고르기": 3,
   "닫기": 2,
@@ -45,9 +45,15 @@
   "더 보기": 1,
   "옛 쪽 화면 오류(참고)": 1,
   "oldErr": "자료 못 받음 Failed to load resource: the server responded with a status of 404 (Not Found)",
-  "둘레": 15,
+  "둘레": 14,
+  "fail": 1,
   "폭 화면": 27
  },
- "fails": [],
- "ok": true
+ "fails": [
+  [
+   "둘레 날 다름",
+   "page.goto: Timeout 30000ms exceeded."
+  ]
+ ],
+ "ok": false
 }
