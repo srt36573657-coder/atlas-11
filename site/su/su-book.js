@@ -1,6 +1,6 @@
 /* 큐피트 1 · 2 · 3등 달력(주문 0938 · 사장님 2026-11-10 09:38 「자 달력을 만들어 1.2.3달력을 그리고 찾아낸 그날부터해서 첫페이지처럼 표현햐서 추적해
    그리고 10주씩 무조건 매수해 그리고 나서 수익율률을 추적하기 해봐   잡스라면」)
-   길 #/r/c — 사장님 열쇠 기기에서만(atlas11:invite:owner · /api/jinhwa/me 200 · 진화 칸과 같은 문) · 다른 기기는 「사장님 휴대폰에서만 열려요」 한 줄 · 자료를 받지 않음
+   길 #/r/c — 모든 사람(주문 1513 · 사장님 2026-11-10 15:13 「모든사람 휴대폰에 열리게 해」 · 0938 때는 사장님 열쇠 기기에서만이었음) · 기록 쪽 서랍 맨 앞
    잡스라면: 맨 위 큰 숫자 하나(10주씩 산 셈 — 지금 얼마) → 달력 하나(장이 서는 월 ~ 금 · 뽑힌 날에 1 · 2 · 3) → 누른 날의 세 칸(첫 페이지 칸처럼 이름 · 값 · 꺾은선)
    셈(화면에서): 산 값 = 그 판 날 마지막 값 × 10주 · 지금 = 가장 늦은 판 날 마지막 값 × 10주 · 번 것과 잃은 것을 함께 · 「100원이 ○원」(「%」 0) · 「산 셈」(쓰지 않을 말 0) · 순위 0
    자료 /su/data/su21-book.json(scripts/atlas11/next/su21_book.mjs — 판마다 · 한 번 적은 날은 고치지 않음) · 글은 textContent 로만 · 꾸밈 값은 CSSOM(보안 규칙 style-src 'self') */
@@ -8,7 +8,6 @@ import {h, s} from '/su/su-fig.js';
 import {KIND} from '/su/su-21.js';
 
 export const CSS = '/su/su-book.css';
-const OWNER = 'atlas11:invite:owner';
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const num = v => (fin(v) ? Math.round(v).toLocaleString('ko-KR') : '?');
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
@@ -24,16 +23,6 @@ export const won = v => {
 /** 늘고 준 말 — 「11만 4,000원 늘었어요」 · 「그대로예요」 */
 export const moved = d => (!fin(d) ? '?' : Math.round(d) > 0 ? won(d) + ' 늘었어요' : Math.round(d) < 0 ? won(d) + ' 줄었어요' : '그대로예요');
 const r100 = (now, buy) => (fin(now) && fin(buy) && buy > 0 ? '100원이 ' + (Math.round(1000 * now / buy) / 10).toLocaleString('ko-KR') + '원' : '?');
-
-/* ── 사장님 기기 — 진화 칸과 같은 문(이 기기에 사장님 열쇠가 있고 서버가 맞다고 할 때만) ── */
-let ME = null;
-export function ownerOk() {
-  let k = null; try { k = localStorage.getItem(OWNER); } catch { k = null; }
-  if (typeof k !== 'string' || k.length < 16 || k.length > 128) return Promise.resolve(false);
-  if (ME && ME.k === k) return ME.p;
-  ME = {k, p: fetch('/api/jinhwa/me', {headers: {'x-atlas-owner': k}, cache: 'no-store', credentials: 'omit'}).then(r => r.status === 200).catch(() => false)};
-  return ME.p;
-}
 
 /* ── 셈 — 산 셈마다 산 값 · 지금 값 · 지금까지 값 줄(산 날부터) ── */
 export function bookCalc(B) {
@@ -104,10 +93,6 @@ function ensureCss() { if (typeof document !== 'undefined' && !document.querySel
 export async function vBook(X) {
   ensureCss();
   const T = '1 · 2 · 3등 달력';
-  if (!(await ownerOk())) return {title: T, tab: 2, step: null, kick: '사장님 휴대폰에서만', h1: T, proper: false,
-    hero: h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-owner': 'no'}, h('p', {class: 'bk-lock', text: '이 쪽은 사장님 휴대폰에서만 열려요.'}),
-      h('a', {class: 'su-ask', href: '#/r'}, h('b', {text: '기록 쪽으로'}), h('span', {text: '지난 기록 서랍을 봐요.'}))),
-    body: [], next: {href: '#/r', label: '지난 기록 한곳'}, asOf: null, S: null};
   const [B, b] = await Promise.all([X.get('/su/data/su21-book.json').catch(() => null), X.base().catch(() => ({}))]);
   if (!B || !Array.isArray(B.days) || !B.days.length) return X.notFound('1 · 2 · 3등 장부를 받지 못했어요. 다시 열어 주세요.');
   const C = bookCalc(B);
@@ -122,7 +107,7 @@ export async function vBook(X) {
     for (const e of cal?.querySelectorAll('.bk-pick') ?? []) { const on = e.getAttribute('data-day') === key; e.classList.toggle('bk-on', on); e.setAttribute('aria-pressed', String(on)); }
   };
   cal = calendar(C, pick);
-  const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-owner': 'yes', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff))},
+  const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff))},
     h('section', {class: 'bk-big bk-' + st, 'aria-label': '10주씩 산 셈 — 지금'},
       h('p', {class: 'bk-k', text: C.qty + '주씩 산 셈 · 가짜 돈'}),
       h('p', {class: 'bk-v', text: moved(C.diff)}),
@@ -134,6 +119,6 @@ export async function vBook(X) {
   const how = h('details', {class: 'bk-how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '이렇게 셌어요'}), h('span', {text: '진짜 돈이 아니에요'})),
     h('ul', {class: 'bk-ul'}, ['그 판 날 마지막 값으로 ' + C.qty + '주씩 산 셈이에요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.', '한 번 적은 날은 고치지 않아요.',
       '판 날보다 늦게 뽑힌 날은 판 날 값으로 셌어요.', '값은 네이버 증권 그날 마지막 값이에요.', '지난 기록이에요. 앞날을 맞히지 않아요.'].map(t => h('li', {text: t}))));
-  return {title: T, tab: 2, step: null, kick: '사장님 휴대폰에서만 · ' + C.qty + '주씩 산 셈', h1: T, proper: false, hero, body: [how],
+  return {title: T, tab: 2, step: null, kick: C.qty + '주씩 산 셈 · 가짜 돈', h1: T, proper: false, hero, body: [how],
     next: {href: '#/r', label: '지난 기록 한곳'}, asOf: B.asOf ?? null, S: b?.S ?? null};
 }

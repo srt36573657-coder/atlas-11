@@ -321,7 +321,7 @@ for (const width of [390, 360, 320]) {
     // 기록 서랍 여섯 · 서랍 쪽
     await open(p, '#/r');
     const dr = await p.evaluate(() => [...document.querySelectorAll('#su .su-drawer')].map(a => a.getAttribute('href')));
-    check(JSON.stringify(dr) === JSON.stringify(['#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(달마다 · 한 달 뒤 · 내 매매일지 · 못 된 까닭 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
+    check(JSON.stringify(dr) === JSON.stringify(['#/r/c', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(1 · 2 · 3등 달력(주문 0938 · 1513 모든 사람) · 달마다 · 한 달 뒤 · 내 매매일지 · 못 된 까닭 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
     R.m.drawers = {};
     for (const hh of ['#/r/d', '#/r/y', '#/r/n']) { await open(p, hh); await p.waitForTimeout(200); const m = await shape(); R.m.drawers[hh] = {h1: m.h1, share: m.share, moving: m.moving}; check(m.tiles.length === 6 && m.lastIsSrc, W + '⑨ 서랍 쪽 ' + hh + ' — ' + m.h1, JSON.stringify(m).slice(0, 160)); pageRules(await measure(p), W + '⑨ 서랍 쪽 ' + hh); }
   }
@@ -903,11 +903,11 @@ for (const width of [390, 360, 320]) {
     await ctx.close();
   }
 }
-{ // ㉑ 1 · 2 · 3등 달력(주문 0938 · 사장님 2026-11-10 09:38 「자 달력을 만들어 1.2.3달력을 그리고 찾아낸 그날부터해서 첫페이지처럼 표현햐서 추적해 그리고 10주씩 무조건 매수해 그리고 나서 수익율률을 추적하기 해봐   잡스라면」)
-  //   가) 자료 su/data/su21-book.json — 꼴(su21-book-1 · 10주) · 판 날 차례 · 날마다 1 · 2 · 3등 셋 · 산 값 = 그 회사 값 줄의 그 판 날 값 · 값 줄은 산 날(그 회사가 처음 든 판 날)부터 · 장부 판 날 = 오늘 판 날(장부 만들기가 멈추면 걸림)
-  //   나) 모든 사람(열쇠 없음) — #/r/c 는 「이 쪽은 사장님 휴대폰에서만 열려요.」 한 줄 · 장부 자료를 받지 않음 · 큰 숫자 · 달력 · 칸 0 · 기록 쪽에 달력 서랍 없음 · 쪽 규칙
-  //   다) 사장님 열쇠 기기(시험 서버만 — 환경 ATLAS_DEV_OWNER_KEY 또는 127.0.0.1 시험 열쇠 · 진짜 사이트 검사에는 열쇠가 없어 건너뜀) — 큰 숫자 · 산 값 · 지금 = 이 검사가 따로 센 값
-  //       · 뽑힌 날 단추 = 판 날 · 맨 끝 날이 눌림 · 세 칸 = 그날 1 · 2 · 3등(이름 · 산 값 · 지금 값 · 회사 쪽 고리) · 다른 날을 누르면 세 칸이 그날로 · 「%」 · 영어 0(회사 이름 빼고) · 쪽 규칙 · 기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」
+{ // ㉑ 1 · 2 · 3등 달력(주문 0938 · 사장님 2026-11-10 09:38 「자 달력을 만들어 1.2.3달력을 그리고 찾아낸 그날부터해서 첫페이지처럼 표현햐서 추적해 그리고 10주씩 무조건 매수해 그리고 나서 수익율률을 추적하기 해봐   잡스라면」
+  //   · 주문 1513 · 사장님 2026-11-10 15:13 「모든사람 휴대폰에 열리게 해」 — 사장님 열쇠 문을 뺌 · 모든 사람 · 진짜 사이트 검사에서도 화면을 다 봄)
+  //   가) 자료 su/data/su21-book.json — 꼴(su21-book-1 · 10주) · 판 날 차례 · 날마다 1 · 2 · 3등 셋 · 산 값 = 그 회사 값 줄의 그 판 날 값 · 값 줄은 산 날(그 회사가 처음 든 판 날)부터 · 장부 판 날이 21곳 판 날보다 앞서지 않음(장부 만들기가 멈추면 걸림)
+  //   나) 모든 사람(열쇠 없는 기기) — 큰 숫자 · 산 값 · 지금 = 이 검사가 따로 센 값 · 뽑힌 날 단추 = 판 날 · 맨 끝 날이 눌림 · 1 · 2 · 3 숫자가 날 칸 안에 · 세 칸 = 그날 1 · 2 · 3등(이름 · 산 값 · 지금 값 · 회사 쪽 고리)
+  //       · 다른 날을 누르면 세 칸이 그날로 · 「%」 · 영어 0(회사 이름 빼고) · 「사장님 휴대폰에서만」 글 0 · 쪽 규칙 · 기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」
   //   결과 파일에는 늘고 준 돈을 적지 않음(명령문 [4] 5 「수익률은 보내지 마라」 — 결과는 저장소에 올라감) · 날 수 · 칸 수만
   const BK = await J('/su/data/su21-book.json').catch(() => null), T21b = await J('/su/data/su21.json').catch(() => null);
   const DAYb = /^\d{4}-\d{2}-\d{2}$/, NFb = new Intl.NumberFormat('ko-KR');
@@ -930,34 +930,30 @@ for (const width of [390, 360, 320]) {
   })();
   const wonB = v => { const a = Math.round(Math.abs(v)), e = Math.floor(a / 1e8), m = Math.floor((a % 1e8) / 1e4), r = a % 1e4; return [e ? NFb.format(e) + '억' : '', m ? NFb.format(m) + '만' : '', r || (!e && !m) ? NFb.format(r) : ''].filter(Boolean).join(' ') + '원'; };
   const bigB = wantB ? (wantB.diff > 0 ? wonB(wantB.diff) + ' 늘었어요' : wantB.diff < 0 ? wonB(wantB.diff) + ' 줄었어요' : '그대로예요') : null;
-  const LOCALb = /^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(base), KEYb = process.env.ATLAS_DEV_OWNER_KEY || (LOCALb ? 'testowner-key-1234567890' : null);
-  const REC = ['#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n'];
-  R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, owner: KEYb ? 'checked' : '진짜 사이트 — 열쇠 없음(모든 사람 화면만)'};
-  for (const owner of KEYb ? [false, true] : [false]) for (const width of [390, 320]) {
+  const REC = ['#/r/c', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n'];
+  R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, who: '모든 사람(주문 1513)'};
+  for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
-    if (owner) await ctx.addInitScript(k => { try { localStorage.setItem('atlas11:invite:owner', k); } catch { /* 없음 */ } }, KEYb);
-    const p = await ctx.newPage(), errs = [], asked = [];
+    const p = await ctx.newPage(), errs = [];
     p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
-    p.on('request', r => { if (/su21-book\.json/.test(r.url())) asked.push(new URL(r.url()).pathname); });
-    const W = '㉑ 1 · 2 · 3등 달력 · ' + (owner ? '사장님 기기' : '모든 사람') + ' [' + width + '] ';
+    const W = '㉑ 1 · 2 · 3등 달력 · 모든 사람 [' + width + '] ';
     await open(p, '#/r/c');
-    if (owner) await p.waitForFunction(() => document.querySelector('#su .su-hero.bk[data-owner="yes"] .bk-card'), null, {timeout: 10000}).catch(() => {});
+    await p.waitForFunction(() => document.querySelector('#su .su-hero.bk .bk-card'), null, {timeout: 10000}).catch(() => {});
     await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how')) d.open = true; });
     const m = await measure(p); pageRules(m, W);
     const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.bk');
-      return {owner: hero?.getAttribute('data-owner') ?? null, diff: hero?.getAttribute('data-diff') ?? null, lock: hero?.querySelector('.bk-lock')?.textContent ?? '', big: hero?.querySelector('.bk-v')?.textContent ?? '', two: hero?.querySelector('.bk-two')?.textContent ?? '', bigs: document.querySelectorAll('#su .bk-big').length,
+      return {diff: hero?.getAttribute('data-diff') ?? null, big: hero?.querySelector('.bk-v')?.textContent ?? '', two: hero?.querySelector('.bk-two')?.textContent ?? '', bigs: document.querySelectorAll('#su .bk-big').length,
         picks: [...document.querySelectorAll('#su .bk-pick')].map(b => b.getAttribute('data-day')), on: [...document.querySelectorAll('#su .bk-pick.bk-on')].map(b => b.getAttribute('data-day')),
         cards: [...document.querySelectorAll('#su .bk-card')].map(li => ({place: +li.getAttribute('data-place'), code: li.getAttribute('data-code'), name: li.querySelector('.bk-nm')?.textContent ?? '', px: li.querySelector('.bk-px')?.textContent ?? '', go: li.querySelector('a.bk-go')?.getAttribute('href') ?? ''})),
-        text: [...document.querySelectorAll('#su main .su-hero.bk, #su main .bk-how')].map(e => e.innerText).join('\n')}; });
-    if (!owner) {
-      check(g.owner === 'no' && g.lock === '이 쪽은 사장님 휴대폰에서만 열려요.' && !g.picks.length && !g.cards.length && !g.bigs, W + '사장님 휴대폰에서만 — 한 줄 · 큰 숫자 · 달력 · 칸 0', JSON.stringify({owner: g.owner, lock: g.lock, picks: g.picks.length, cards: g.cards.length}));
-      check(!asked.length, W + '장부 자료를 받지 않음', asked.join(' '));
-    } else if (wantB) {
+        text: [...document.querySelectorAll('#su main .su-hero.bk, #su main .bk-how')].map(e => e.innerText).join('\n'), all: document.getElementById('su')?.innerText ?? ''}; });
+    check(!g.all.includes('사장님 휴대폰에서만') && !g.all.includes('사장님 휴대폰'), W + '「사장님 휴대폰에서만」 글 0(모든 사람 — 주문 1513)', (g.all.match(/.{0,12}사장님 휴대폰.{0,12}/) ?? [''])[0]);
+    if (!wantB) check(false, W + '장부 자료가 있어야 화면을 맞댐', 'su21-book.json 없음');
+    else {
       const last = bdays[bdays.length - 1], cardsOf = d => wantB.rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
       const sameCards = (cs, d) => { const w = cardsOf(d); return cs.length === 3 && cs.every((c, i) => c.place === i + 1 && c.code === w[i].code && c.name === w[i].name && c.go === '#/c/' + w[i].code && c.px.includes('산 값 ' + NFb.format(w[i].buy) + '원') && c.px.includes('지금 ' + NFb.format(w[i].now) + '원')); };
-      check(g.owner === 'yes' && +g.diff === wantB.diff && g.big === bigB && g.two.includes('산 값 ' + wonB(wantB.cost)) && g.two.includes('지금 ' + wonB(wantB.val)), W + '큰 숫자 · 산 값 · 지금 = 따로 센 값(10주씩 · 산 날 값 → 맨 끝 값)', JSON.stringify({owner: g.owner, same: [+g.diff === wantB.diff, g.big === bigB, g.two.includes('산 값 ' + wonB(wantB.cost)), g.two.includes('지금 ' + wonB(wantB.val))]}));
+      check(g.bigs === 1 && +g.diff === wantB.diff && g.big === bigB && g.two.includes('산 값 ' + wonB(wantB.cost)) && g.two.includes('지금 ' + wonB(wantB.val)), W + '큰 숫자 · 산 값 · 지금 = 따로 센 값(10주씩 · 산 날 값 → 맨 끝 값)', JSON.stringify({bigs: g.bigs, same: [+g.diff === wantB.diff, g.big === bigB, g.two.includes('산 값 ' + wonB(wantB.cost)), g.two.includes('지금 ' + wonB(wantB.val))]}));
       check(JSON.stringify(g.picks) === JSON.stringify(bdays) && JSON.stringify(g.on) === JSON.stringify([last]), W + '달력 — 뽑힌 날 단추 = 판 날 · 맨 끝 날이 눌림', JSON.stringify({picks: g.picks, on: g.on}));
       const spill = await p.evaluate(() => [...document.querySelectorAll('#su .bk-pick')].filter(b => { const r = b.getBoundingClientRect(), q = b.querySelector('.bk-123')?.getBoundingClientRect(); return !q || q.left < r.left - 0.5 || q.right > r.right + 0.5; }).map(b => b.getAttribute('data-day')));
       check(!spill.length, W + '달력 — 1 · 2 · 3 숫자가 날 칸 안에', spill.join(' '));
@@ -973,9 +969,8 @@ for (const width of [390, 360, 320]) {
       }
     }
     await open(p, '#/r');
-    if (owner) await p.waitForFunction(() => document.querySelector('#su a.su-drawer[href="#/r/c"]'), null, {timeout: 8000}).catch(() => {});
     const dr = await p.evaluate(() => [...document.querySelectorAll('#su a.su-drawer')].map(a => a.getAttribute('href')));
-    check(JSON.stringify(dr) === JSON.stringify(owner ? ['#/r/c', ...REC] : REC), W + (owner ? '기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」' : '기록 쪽에 달력 서랍 없음'), dr.join(' '));
+    check(JSON.stringify(dr) === JSON.stringify(REC), W + '기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」(모든 사람)', dr.join(' '));
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }

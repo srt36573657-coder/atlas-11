@@ -1,6 +1,5 @@
 /* 큐피트 1 · 2 · 3등 달력(주문 0938 · su-book.js) — 첫 페이지 잡스 판과 같은 말투: 흰 바탕 · 검정 · 회색 · 호박색 하나(도형에만) · 글 17px 넘게 · 누르는 곳 48 넘게 */
 .su-news > .su-hero.bk { display: grid; gap: 22px; padding: 6px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); background: #FFFFFF; color: #1D1D1F; }
-.bk-lock { margin: 0; font-size: 22px; line-height: 1.5; font-weight: 800; color: #1D1D1F; }
 .bk-big { display: grid; gap: 4px; margin: 0; padding: 18px 18px 16px; border-radius: 22px; background: #F5F5F7; border: 1px solid #D2D2D7; }
 .bk-big.bk-up { border-left: 6px solid #D97706; }
 .bk-big.bk-dn { border-left: 6px solid #6E6E73; }

@@ -118,18 +118,18 @@ test('화면 셈 — 산 값 · 지금 · 늘고 준 것(10주씩 · 산 날부�
   assert.deepEqual([...screenHits(said), ...ruinHits(said)].map(x => x.word ?? x), [], '쓰지 않을 말 0');
 });
 
-test('길 · 서랍 · 꾸밈 · 사장님 기기 문 · 묶기 · 검사(주문 0938)', () => {
+test('길 · 서랍 · 꾸밈 · 모든 사람(주문 1513) · 묶기 · 검사(주문 0938)', () => {
   const su = rd('site/su/su.js'), bk = rd('site/su/su-book.js'), css = rd('site/su/su-book.css'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.equal(forwardTo('', '#/r/c'), null, '#/r/c — 큐피트 안');
   assert.ok(su.includes("a === 'c' ? await (await import('/su/su-book.js')).vBook(X21)"), '길 #/r/c');
-  assert.ok(/function ownerBook\(drawer\)/.test(su) && su.includes("drawer('#/r/c', '1 · 2 · 3등 달력'") && /su-drawers[\s\S]{0,400}ownerBook\(drawer\),/.test(su), '기록 쪽 서랍 맨 앞(사장님 기기만)');
-  assert.ok(/localStorage\.getItem\('atlas11:invite:owner'\)/.test(su), '서랍 — 열쇠 없는 기기는 장부 쪽을 부르지 않음');
-  assert.ok(/fetch\('\/api\/jinhwa\/me', \{headers: \{'x-atlas-owner': k\}/.test(bk) && /if \(!\(await ownerOk\(\)\)\) return/.test(bk), '사장님 기기 문(진화 칸과 같은 문) — 문 앞에서 돌려보냄');
-  assert.ok(bk.indexOf("if (!(await ownerOk()))") < bk.indexOf("X.get('/su/data/su21-book.json')"), '문을 지난 뒤에만 장부 자료를 받음');
+  assert.ok(su.includes("drawer('#/r/c', '1 · 2 · 3등 달력', '10주씩', '뽑힌 날부터 산 셈 · 가짜 돈')") && /su-drawers[\s\S]{0,400}drawer\('#\/r\/c'[\s\S]{0,300}drawer\('#\/r\/m'/.test(su), '기록 쪽 서랍 맨 앞 — 모든 사람(주문 1513)');
+  assert.ok(!/ownerBook|su-oslot/.test(su), '사장님 기기 서랍 자리(빈 자리) 0 — 모든 사람에게 같은 서랍');
+  assert.ok(!/ownerOk|api\/jinhwa\/me|atlas11:invite:owner|data-owner|bk-lock/.test(bk), '사장님 열쇠 문 0 — 모든 사람에게 같은 화면(주문 1513 「모든사람 휴대폰에 열리게 해」)');
+  assert.ok(![...bk.matchAll(/'([^'\n]*)'/g)].some(m => m[1].includes('사장님 휴대폰')), '화면 글에 「사장님 휴대폰에서만」 0');
   assert.ok(!/\bstyle:/.test(bk) && !/\.style\b/.test(bk) && !/innerHTML/.test(bk), '글 속 꾸밈(보안 규칙 style-src) · innerHTML 0');
   assert.ok(/export const CSS = '\/su\/su-book\.css'/.test(bk) && fs.existsSync(path.join(ROOT, 'site/su/su-book.css')), '꾸밈 파일');
   for (const [k, px] of [...css.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)].map(m => [m[0], +m[1]])) assert.ok(px >= 17, '글 17px 넘게 — ' + k);
   assert.ok(/\.bk-pick \{[^}]*min-height: 64px/.test(css) && /\.bk-go \{[^}]*min-height: 48px/.test(css) && /\.bk-hs \{[^}]*min-height: 48px/.test(css), '누르는 곳 48 넘게');
   assert.ok(pk.includes("'scripts/atlas11/next/su21_book.mjs'") && /su21_book\.mjs[\s\S]{0,400}\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶기 — 판마다 장부 · 올리기 작업만 저장');
-  assert.ok(ck.includes("'#/r/c'") && ck.includes('㉑ 1 · 2 · 3등 장부 자료') && ck.includes('사장님 휴대폰에서만 — 한 줄') && ck.includes('큰 숫자 · 산 값 · 지금 = 따로 센 값') && /#\\\/r\\\/\[mwdynkic\]/.test(ck), '검사 ㉑ · 고리 꼴');
+  assert.ok(ck.includes("'#/r/c'") && ck.includes('㉑ 1 · 2 · 3등 장부 자료') && ck.includes('「사장님 휴대폰에서만」 글 0') && !/ATLAS_DEV_OWNER_KEY[\s\S]{0,200}1 · 2 · 3등 달력/.test(ck.slice(ck.indexOf('㉑ 1 · 2 · 3등 달력(주문 0938'))) && ck.includes('큰 숫자 · 산 값 · 지금 = 따로 센 값') && /#\\\/r\\\/\[mwdynkic\]/.test(ck), '검사 ㉑ · 고리 꼴');
 });
