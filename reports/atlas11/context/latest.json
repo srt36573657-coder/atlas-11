@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-10",
- "fetchedAt": "2026-11-10T08:01:03Z",
- "file": "reports/atlas11/context/2026-11-10/2026-11-10T08-01-03Z.json",
+ "fetchedAt": "2026-11-10T10:00:38Z",
+ "file": "reports/atlas11/context/2026-11-10/2026-11-10T10-00-38Z.json",
  "summary": {
   "day": "2026-11-10",
-  "fetchedAt": "2026-11-10T08:01:03Z",
+  "fetchedAt": "2026-11-10T10:00:38Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-10",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7209,
-   "distinct": 7151,
-   "republished": 58,
+   "distinct": 7149,
+   "republished": 60,
    "sameArticle": 0,
-   "stocksWithTodayNews": 208,
-   "todayDistinct": 1380
+   "stocksWithTodayNews": 217,
+   "todayDistinct": 1454
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 777
+   "corporateActions": 778
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-10",
-     "value": 1335.5,
-     "changePct": -0.48
+     "value": 1338.2,
+     "changePct": -0.28
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 256,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,20 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-11-10",
-   "corporateActions": 777,
+   "corporateActions": 778,
    "recentActions": [
+    {
+     "code": "247540",
+     "title": "(주)에코프로비엠 유상증자결정(종속회사의 주요경영사항)",
+     "publishedAt": "2026-11-10T17:50:58+09:00",
+     "word": "유상증자"
+    },
+    {
+     "code": "124500",
+     "title": "(주)아이티센글로벌 회사합병 결정(종속회사의 주요경영사항)",
+     "publishedAt": "2026-11-10T17:25:39+09:00",
+     "word": "합병"
+    },
     {
      "code": "111770",
      "title": "(주)영원무역 주식 소각 결정",
@@ -299,18 +311,6 @@
      "title": "(주)엘앤씨바이오 추가상장(무상증자)",
      "publishedAt": "2026-11-09T06:52:41+09:00",
      "word": "무상증자"
-    },
-    {
-     "code": "099190",
-     "title": "(주)아이센스 자기주식 취득 결정",
-     "publishedAt": "2026-11-09T06:51:55+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "347700",
-     "title": "(주)스피어코퍼레이션 유상증자결정(종속회사의 주요경영사항)",
-     "publishedAt": "2026-11-09T06:51:35+09:00",
-     "word": "유상증자"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-10",
-     "value": 1335.5,
+     "value": 1338.2,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
