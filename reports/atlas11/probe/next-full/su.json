@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-09T19:17:03.350Z",
+ "at": "2026-11-09T23:28:59.486Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1437,
+  "pass": 1521,
   "fail": 0
  },
  "fails": [],
@@ -180,9 +180,9 @@
    }
   },
   "speed": {
-   "lcp": 1152,
+   "lcp": 1172,
    "cls": 0.121,
-   "pic": 1476
+   "pic": 1514
   },
   "white": {
    "light #/": {
@@ -228,7 +228,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -1253,6 +1253,7 @@
     ]
    },
    "daysFrom": "2026-10-02",
+   "screens": 3.62,
    "pages": 42,
    "reasons": 1512
   },
