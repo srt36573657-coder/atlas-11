@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-10T06:34:24.521Z",
+ "at": "2026-11-10T16:04:40.822Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 1572,
@@ -20,7 +20,7 @@
   },
   "home": {
    "screens": 5.61,
-   "links": 55
+   "links": 56
   },
   "t21": {
    "listed": 2557,
@@ -91,7 +91,7 @@
     "means": 7,
     "hard": 0,
     "hardWords": "",
-    "glossed": 9,
+    "glossed": 10,
     "orn": 5
    },
    {
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 2440,
+   "lcp": 2452,
    "cls": 0.143,
-   "pic": 3039
+   "pic": 3092
   },
   "white": {
    "light #/": {
@@ -1316,8 +1316,8 @@
    "both": false
   },
   "book": {
-   "days": 2,
-   "rows": 6,
+   "days": 3,
+   "rows": 9,
    "who": "모든 사람(주문 1513)"
   }
  },
