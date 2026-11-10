@@ -27,7 +27,8 @@ export function okBook(B) {
 
 /** 오늘 판으로 장부를 한 걸음 — {book, added, marked} (book 은 새 것 · 들어온 것은 바꾸지 않음)
  *  T = su21.json · board = 판(companies) · now = 처음 본 때(ISO) */
-export function stepBook(book0, T, board, now = new Date().toISOString()) {
+const kst = (d = new Date()) => new Date(d.getTime() + 9 * 3600e3).toISOString().slice(0, 16) + '+09:00'; // 처음 본 때는 서울 시각(화면 「○월 ○일에 처음 뽑혔어요」가 서울 날로 맞댐 · 주문 0040 때 고침)
+export function stepBook(book0, T, board, now = kst()) {
   const B = JSON.parse(JSON.stringify(okBook(book0) ? book0 : emptyBook()));
   const co = new Map((board?.companies ?? []).map(c => [c.code, c]));
   const day = T?.asOf?.board, rank = T?.top3?.rank;

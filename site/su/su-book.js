@@ -119,6 +119,7 @@ export async function vBook(X) {
   const how = h('details', {class: 'bk-how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '이렇게 셌어요'}), h('span', {text: '진짜 돈이 아니에요'})),
     h('ul', {class: 'bk-ul'}, ['그 판 날 마지막 값으로 ' + C.qty + '주씩 산 셈이에요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.', '한 번 적은 날은 고치지 않아요.',
       '판 날보다 늦게 뽑힌 날은 판 날 값으로 셌어요.', '값은 네이버 증권 그날 마지막 값이에요.', '지난 기록이에요. 앞날을 맞히지 않아요.'].map(t => h('li', {text: t}))));
-  return {title: T, tab: 2, step: null, kick: C.qty + '주씩 산 셈 · 가짜 돈', h1: T, proper: false, hero, body: [how],
+  // 탭 4 = 달력(주문 0040 — 이 쪽을 열면 아래 「달력」 탭이 켜짐)
+  return {title: T, tab: 4, step: null, kick: C.qty + '주씩 산 셈 · 가짜 돈', h1: T, proper: false, hero, body: [how],
     next: {href: '#/r', label: '지난 기록 한곳'}, asOf: B.asOf ?? null, S: b?.S ?? null};
 }

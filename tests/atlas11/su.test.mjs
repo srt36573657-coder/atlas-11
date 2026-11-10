@@ -295,10 +295,11 @@ test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 
   assert.deepEqual(steps.map(x => x[1]), [0, 1, 1, 2, 2, 3, 3, 3], '걸음이 기승전결 차례로 이어짐(주문 2044 — 21곳 · 땅 지도 · 업종 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게)');
   const tl = /const TABS = \(\) => \[([\s\S]*?)\]\];/.exec(su); assert.ok(tl, 'TABS');
   const tabNames = [...tl[1].matchAll(/\['([0-9가-힣]+)', /g)].map(m => m[1]);
-  assert.deepEqual(tabNames.slice(0, 4), ['21곳', '지도', '기록', '멈춤'], '탭 넷 = 쪽마다 tab 값 차례(0 21곳 · 1 지도 · 2 기록 · 3 멈춤 — 주문 2044)');
+  assert.deepEqual(tabNames.slice(0, 5), ['21곳', '지도', '기록', '멈춤', '달력'], '탭 다섯 = 쪽마다 tab 값 차례(0 21곳 · 1 지도 · 2 기록 · 3 멈춤 — 주문 2044 · 4 달력 — 주문 0040)');
   const to = /export const TAB_ORDER = Object\.freeze\((\[[0-9, ]+\])\);/.exec(su); assert.ok(to, 'TAB_ORDER');
-  assert.deepEqual(JSON.parse(to[1]).map(i => tabNames[i]), ['21곳', '지도', '멈춤', '기록'], '보이는 차례 = 중요한 차례 21곳 · 지도 · 멈춤 · 기록(주문 1023 [4] 토론)');
-  assert.ok(su.includes("'탭 — 중요한 차례 21곳 · 지도 · 멈춤 · 기록'"));
+  assert.deepEqual(JSON.parse(to[1]).map(i => tabNames[i]), ['21곳', '지도', '멈춤', '기록', '달력'], '보이는 차례 = 중요한 차례 21곳 · 지도 · 멈춤 · 기록(주문 1023 [4] 토론) · 달력은 맨 끝(주문 0040 「달력을 탭에 두도록해」)');
+  assert.ok(su.includes("'탭 — 중요한 차례 21곳 · 지도 · 멈춤 · 기록 · 달력'") && su.includes("['달력', '#/r/c', "), '달력 탭 = #/r/c');
+  assert.ok(/\.su-tabs \{[^}]*grid-template-columns: repeat\(5, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su.css'), 'utf8')), '탭 줄 다섯 칸');
   for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/n', '#/q', '#/q/127120', '#/j', '#/c/127120', '#/m', '#/m/hold', '#/f', '#/c/127120/more']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href);
   const {screenHits, ruinHits} = await import('../../site/next/words.js');
   const texts = [...all.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));

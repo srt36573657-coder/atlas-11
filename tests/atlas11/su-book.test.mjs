@@ -92,7 +92,10 @@ test('저장된 장부 · 화면 자료 — 꼴 · 판 날 차례 · 산 값 = �
   const days = B.days.map(d => d.board);
   assert.deepEqual(days, [...days].sort(), '판 날 차례');
   for (const d of B.days) for (const q of d.picks) assert.equal(B.px[q.code]?.[d.board], q.px, d.board + ' ' + q.code + ' 산 값 = 값 줄');
-  assert.deepEqual(S, siteBook(B, S.asOf), '화면 자료 = 저장된 장부(묶기가 날마다 새로 씀)');
+  // 저장된 장부(reports)는 올리기 작업마다 판 날이 늘고, 저장소 화면 자료(site/su/data)는 장부 만들기가 멈출 때 쓰는 시작 판 — 화면 자료의 날 · 값은 모두 장부와 같아야 함(11-10 판이 들어오며 「같음」에서 「앞부분」으로 · 주문 0040)
+  assert.equal(S.schema, SCHEMA); assert.equal(S.qty, 10);
+  for (const d of S.days) assert.deepEqual(B.days.find(x => x.board === d.board), d, '화면 자료 ' + d.board + ' = 장부의 그 날');
+  for (const [code, rows] of Object.entries(S.px)) for (const [dd, v] of rows) assert.equal(B.px[code]?.[dd], v, '화면 자료 값 ' + code + ' ' + dd + ' = 장부');
 });
 
 test('화면 셈 — 산 값 · 지금 · 늘고 준 것(10주씩 · 산 날부터 맨 끝 값) · 돈 글 · 「%」 0', async () => {
@@ -121,6 +124,7 @@ test('화면 셈 — 산 값 · 지금 · 늘고 준 것(10주씩 · 산 날부�
 test('길 · 서랍 · 꾸밈 · 모든 사람(주문 1513) · 묶기 · 검사(주문 0938)', () => {
   const su = rd('site/su/su.js'), bk = rd('site/su/su-book.js'), css = rd('site/su/su-book.css'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.equal(forwardTo('', '#/r/c'), null, '#/r/c — 큐피트 안');
+  assert.ok(/return \{title: T, tab: 4, step: null, kick: [^\n]*, h1: T, proper: false, hero, body: \[how\],\n/.test(bk), '달력 쪽은 탭 4(달력)가 켜짐 · 큰 숫자 · 달력(hero) · 「이렇게 셌어요」(body)가 한 줄에 그대로 — 주문 0040(줄 끝 풀이 글이 hero 를 가린 틀림 장부 201)');
   assert.ok(su.includes("a === 'c' ? await (await import('/su/su-book.js')).vBook(X21)"), '길 #/r/c');
   assert.ok(su.includes("drawer('#/r/c', '1 · 2 · 3등 달력', '10주씩', '뽑힌 날부터 산 셈 · 가짜 돈')") && /su-drawers[\s\S]{0,400}drawer\('#\/r\/c'[\s\S]{0,300}drawer\('#\/r\/m'/.test(su), '기록 쪽 서랍 맨 앞 — 모든 사람(주문 1513)');
   assert.ok(!/ownerBook|su-oslot/.test(su), '사장님 기기 서랍 자리(빈 자리) 0 — 모든 사람에게 같은 서랍');

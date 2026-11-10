@@ -49,7 +49,8 @@ export const setCur = c => { lastCo = c; };
 export const coHref = c => '#/c/' + c, indHref = n => '#/i/' + encodeURIComponent(n);
 const firstCode = (bl, mo) => bl.rows[0]?.code ?? mo[0]?.code ?? null;
 const TABS = () => [['21곳', '#/', 'M4 11l8-7 8 7v9h-5v-6h-6v6H4z'], ['지도', '#/m', 'M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14'],
-  ['기록', '#/r', 'M4 20V11M10 20V5M16 20v-8M21 20H3'], ['멈춤', lastCo?.code ? '#/q/' + lastCo.code : '#/q', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM10 9v6M14 9v6']];
+  ['기록', '#/r', 'M4 20V11M10 20V5M16 20v-8M21 20H3'], ['멈춤', lastCo?.code ? '#/q/' + lastCo.code : '#/q', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM10 9v6M14 9v6'],
+  ['달력', '#/r/c', 'M4 6h16v14H4zM4 10h16M8 3v5M16 3v5M8 14h2M14 14h2M8 17h2']]; // 4 달력 — 주문 0040(사장님 2026-11-11 00:40 「달력을 탭에 두도록해」) · 1 · 2 · 3등 달력
 
 /* ── 틀 ── */
 function tools() {
@@ -144,11 +145,12 @@ function dock(nx, step) {
     h('div', {class: 'su-dk'}, sayBtn(), h('a', {class: 'su-next', href: nx.href}, h('img', {class: 'su-parrot', src: '/media/su-parrot.svg', alt: '', 'aria-hidden': 'true', width: '34', height: '34'}), h('span', {class: 'su-nk', text: nx.k ?? (nx.step ? nx.step + ' / 8' : '다음')}), h('b', {text: nx.label}), h('i', {'aria-hidden': 'true', text: '›'}))));
 }
 /** 탭이 보이는 차례 — 중요한 차례(주문 1023 [4] · 에이전트 열하나가 따로 매긴 차례를 보르다로 셈 44 · 32 · 20 · 13 · 반대편 셋이 못 깸 · tabs-11.md): 21곳 · 지도 · 멈춤 · 기록
- *  쪽마다 tab 값은 그대로(0 21곳 · 1 지도 · 2 기록 · 3 멈춤 = TABS 차례) — 보이는 차례만 바꿈 · 「탭 차례는 기승전결보다 중요순이 앞선다」([4] 6) */
-export const TAB_ORDER = Object.freeze([0, 1, 3, 2]);
+ *  쪽마다 tab 값은 그대로(0 21곳 · 1 지도 · 2 기록 · 3 멈춤 · 4 달력 = TABS 차례) — 보이는 차례만 바꿈 · 「탭 차례는 기승전결보다 중요순이 앞선다」([4] 6)
+ *  달력(주문 0040)은 있던 넷의 자리를 옮기지 않고 맨 끝에 붙임 */
+export const TAB_ORDER = Object.freeze([0, 1, 3, 2, 4]);
 function tabs(active) {
   const T = TABS();
-  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 중요한 차례 21곳 · 지도 · 멈춤 · 기록'}, TAB_ORDER.map((i, k) => { const [t, href, d] = T[i];
+  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 중요한 차례 21곳 · 지도 · 멈춤 · 기록 · 달력'}, TAB_ORDER.map((i, k) => { const [t, href, d] = T[i];
     return h('a', {class: 'su-tab' + (i === active ? ' su-on' : ''), href, 'aria-current': i === active ? 'page' : null, 'aria-label': (k + 1) + '번째 · ' + t},
       s('svg', {class: 'su-ti', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d})), h('span', {text: t})); }));
 }
