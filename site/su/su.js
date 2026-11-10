@@ -318,13 +318,6 @@ function recOthers() {
   return box;
 }
 /* ── 4 기록 한곳(전) ── */
-/** 사장님 기기에서만 「1 · 2 · 3등 달력」 서랍(주문 0938) — 이 기기에 사장님 열쇠가 있을 때만 장부 쪽을 불러 서버에 물음 · 아니면 빈 자리 그대로 */
-function ownerBook(drawer) {
-  const sp = h('span', {class: 'su-oslot', hidden: true});
-  let k = null; try { k = localStorage.getItem('atlas11:invite:owner'); } catch { k = null; }
-  if (typeof k === 'string' && k.length >= 16) import('/su/su-book.js').then(m => m.ownerOk()).then(ok => { if (ok && sp.isConnected) sp.replaceWith(drawer('#/r/c', '1 · 2 · 3등 달력', '10주씩', '사장님 휴대폰에서만 · 뽑힌 날부터 산 셈')); }).catch(() => {});
-  return sp;
-}
 async function vHub() {
   const {B, S, bl, mo, asOf} = await base();
   FIRST = firstCode(bl, mo);
@@ -338,7 +331,6 @@ async function vHub() {
     figs: [cols(ms.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|07)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수', title: '달마다 · 못했던 달은 ■'}),
       split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것', title: '꽃이 된 것과 못 된 것'})],
     body: [h('section', {class: 'su-drawers', 'aria-label': '기록 서랍 — 중요한 차례'}, h('h2', {class: 'su-ft', text: '기록 서랍 — 중요한 차례'}), // 토론으로 정한 차례(주문 1023 [4] · tabs-11.md 최종): 달마다 → 한 달 뒤 → 내 매매일지 → 못 된 까닭 → 날마다 → 옛 기록 더 보기
-      ownerBook(drawer), // 주문 0938 — 1 · 2 · 3등 달력(사장님 휴대폰에서만 · 다른 기기는 빈 자리)
       drawer('#/r/m', '달마다', ms.big.v ?? NEED, ms.big.label),
       drawer('#/j', '한 달 뒤', mine.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length + '번', '한 달 전 약속 — 「그날 정한 대로 했어?」에 답한 수'),
       drawer('#/j', '내 매매일지', mine.length + '번', '「왜 사?」에 답한 기록 · 이 휴대폰에만'),
@@ -441,7 +433,7 @@ async function route() {
       else if (k === 'g') v = await (await roadM()).vRoads(X21, a);
       else if (k === 'c' || k === 'k') v = await coOnPath(a);
       else if (k === 'i') v = await vInd(a);
-      else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : a === 'k' ? await (await import('/su/su-kr7.js')).vKr7(X21) : a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21) : a === 'c' ? await (await import('/su/su-book.js')).vBook(X21) : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
+      else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : a === 'k' ? await (await import('/su/su-kr7.js')).vKr7(X21) : a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21) : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
       else v = CODE.test(a) ? await (await whyM()).vQuiz(a, ctx) : notFound('이 회사를 찾지 못했어요.');
     }
   } catch (e) { console.error(e); v = notFound('화면을 그리다 멈췄어요. 다시 열어 주세요.'); }

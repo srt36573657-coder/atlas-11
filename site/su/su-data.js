@@ -104,7 +104,7 @@ export const MARKET_KO = Object.freeze({KOSPI: '코스피', KOSDAQ: '코스닥'}
 export const KEEP_Q = Object.freeze(['lang', 'sw', 'kakao', 'dev']);
 export function forwardTo(search, hash) {
   const q = String(search ?? ''), hh = String(hash ?? '');
-  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || /^#\/[bkrpq](\/[0-9A-Z]{6})?$/.test(hh) || /^#\/r\/[mwdynkic]$/.test(hh) || hh === '#/j' || hh === '#/n' || /^#\/m(\/[\w-]+)?$/.test(hh) || hh === '#/f' || /^#\/g(\/[a-z]+)?$/.test(hh); // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/f 친구에게 // 새 판 길(주문 1238 · 1506 · 1519 · 주문 1616 기록 서랍 #/r/m 달마다 · #/r/w 못 된 까닭 · #/r/d 날마다 · #/r/y 해마다 · #/r/n 가까운 회사 · 회사 번호를 붙여도 됨 · 주문 2235 #/r/i 한국 투자자 특징 열하나)
+  const su = /^(#\/?)?$/.test(hh) || /^#\/(c|i)\/./.test(hh) || /^#\/[bkrpq](\/[0-9A-Z]{6})?$/.test(hh) || /^#\/r\/[mwdynki]$/.test(hh) || hh === '#/j' || hh === '#/n' || /^#\/m(\/[\w-]+)?$/.test(hh) || hh === '#/f' || /^#\/g(\/[a-z]+)?$/.test(hh); // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/f 친구에게 // 새 판 길(주문 1238 · 1506 · 1519 · 주문 1616 기록 서랍 #/r/m 달마다 · #/r/w 못 된 까닭 · #/r/d 날마다 · #/r/y 해마다 · #/r/n 가까운 회사 · 회사 번호를 붙여도 됨 · 주문 2235 #/r/i 한국 투자자 특징 열하나)
   let keep = false;
   try { const sp = new URLSearchParams(q); keep = KEEP_Q.some(k => sp.has(k)); } catch { keep = false; }
   return su && !keep ? null : '/next/' + q + hh;
