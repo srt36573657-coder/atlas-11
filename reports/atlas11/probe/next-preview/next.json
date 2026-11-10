@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-check-1",
- "at": "2026-11-10T02:13:28.711Z",
+ "at": "2026-11-10T02:34:15.919Z",
  "base": "http://127.0.0.1:8826",
  "asOf": "2026-11-10",
  "ready": [
@@ -27,11 +27,11 @@
  "full": true,
  "oldNameScreens": 2700,
  "oldNameAllow": [],
- "seconds": 168,
+ "seconds": 177,
  "time": {
   "old": 0,
   "new": 0,
-  "wall": 167.7,
+  "wall": 177.2,
   "opensOld": 0,
   "opensNew": 0,
   "oldPct": 0,
