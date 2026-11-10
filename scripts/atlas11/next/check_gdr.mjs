@@ -279,7 +279,8 @@ function perfBoxTxt(D, per) {
   else if (days[0] === D.asOf) out.push(`고른 날(${mdTxt(D.asOf)}) 종가가 마지막 자료라 아직 잴 날이 없어요. 자료가 새로 오면 같은 때 코스피와 함께 보여 줄게요.`);
   else {
     const f = per.get(ok[0].code), ws = ok.reduce((s, p) => s + p.w, 0), r = ok.reduce((s, p) => s + p.w * per.get(p.code).r, 0) / ws;
-    out.push(`${mdTxt(D.asOf)} → ${mdTxt(days[0])} · ${f.n == null ? '?' : f.n}거래일`, `${NEW_NAME} 칸 ${ok.length}곳 묶음(비중대로) ${pct(r)}`, `같은 때 코스피 ${f.kr == null ? '?' : pct(f.kr)}`);
+    // 화면은 「n거래일」을 쓰고 낱말 풀이(site/next/glossary.js — 사장님 [10] 1 「20거래일 → 한 달」)가 꼭 20이면 「한 달」로 바꿈 — 따로 셈도 같게(주문 0938 올리기 1/11 · 11월 10일 = 10월 13일부터 꼭 20거래일 · 틀림 장부 198)
+    out.push(`${mdTxt(D.asOf)} → ${mdTxt(days[0])} · ${f.n == null ? '?' : f.n === 20 ? '한 달' : f.n + '거래일'}`, `${NEW_NAME} 칸 ${ok.length}곳 묶음(비중대로) ${pct(r)}`, `같은 때 코스피 ${f.kr == null ? '?' : pct(f.kr)}`);
     if (f.kr == null) out.push('? 같은 날 코스피 값이 자료에 없어 견주지 못했어요.');
     else { const df = r - f.kr; out.push(one(df) === '0.0' ? '코스피와 거의 같아요.' : `코스피보다 ${one(df)}%p ${df > 0 ? '높아요' : '낮아요'}.`); }
     if (ok.length >= 2) {

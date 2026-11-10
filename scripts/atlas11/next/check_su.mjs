@@ -919,7 +919,8 @@ for (const width of [390, 360, 320]) {
     '㉑ 1 · 2 · 3등 장부 자료 — 꼴 · 판 날 차례 · 날마다 셋 · 산 값 = 값 줄의 그 판 날 값', JSON.stringify({schema: BK?.schema, qty: BK?.qty, days: bdays}).slice(0, 200));
   check(!!BK && Object.entries(firstB).every(([code, d0]) => [...pxOf(code).keys()].every(d => d >= d0)) && Object.keys(BK.px ?? {}).every(code => code in firstB),
     '㉑ 값 줄은 산 날부터(그 회사가 처음 든 판 날) · 장부에 없는 회사 값 0', Object.keys(BK?.px ?? {}).join(' ').slice(0, 200));
-  check(!!BK && !!T21b?.asOf?.board && BK.asOf === T21b.asOf.board && bdays[bdays.length - 1] <= BK.asOf, '㉑ 장부 판 날 = 오늘 판 날(장부 만들기가 돎)', JSON.stringify({book: BK?.asOf ?? null, board: T21b?.asOf?.board ?? null, last: bdays[bdays.length - 1] ?? null}));
+  // 장부 판 날 ≥ 21곳 판 날(장부 만들기가 멈추면 저장된 옛 장부라 21곳 판보다 앞섬) — 같음은 아님: 검사 묶음은 21곳을 저장된 옛 판(site/su/data/su21.json)으로 실을 때가 있음(주문 0938 올리기 1/11 · 틀림 장부 197)
+  check(!!BK && !!T21b?.asOf?.board && BK.asOf >= T21b.asOf.board && bdays[bdays.length - 1] <= BK.asOf, '㉑ 장부 판 날이 21곳 판 날보다 앞서지 않음(장부 만들기가 돎)', JSON.stringify({book: BK?.asOf ?? null, board: T21b?.asOf?.board ?? null, last: bdays[bdays.length - 1] ?? null}));
   // 따로 셈 — 산 값 = 그 판 날 값 × 10주 · 지금 = 산 날부터 값 줄의 맨 끝 값 × 10주
   const wantB = (() => {
     if (!BK || !bdays.length) return null;
