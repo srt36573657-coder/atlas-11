@@ -85,7 +85,7 @@ export async function load(get, which = 'hub') {
     {k: 'm', name: '달마다', href: '#/r/m', v: ms ? (ms.big.v ?? NEED) : NEED},
     {k: 'later', name: '한 달 뒤', href: later ?? '#/j', v: fin(asked) ? asked + '번' : NEED},
     {k: 'j', name: '내 매매일지', href: '#/j', v: fin(mine) ? mine + '번' : NEED},
-    {k: 'w', name: '못 된 까닭', href: '#/r/w', v: num(miss) ? num(miss) + '번' : NEED},
+    {k: 'w', name: '못 된 이유', href: '#/r/w', v: num(miss) ? num(miss) + '번' : NEED},
     {k: 'd', name: '날마다', href: '#/r/d', v: dd?.big?.v != null ? dd.big.v + '날' : NEED},
     {k: 'y', name: '옛 기록 더 보기', href: '#/r/y', v: yy?.big?.v != null ? yy.big.v + ' 대 ' + yy.big.v2 : NEED, also: '#/r/n'}]; // 해마다 · 가까운 회사를 한 이름표로 — 값은 해마다(누르면 여는 쪽)
   return {kind, asOf, rate: hon?.rate ?? null, base: hon?.base ?? null, drawers};

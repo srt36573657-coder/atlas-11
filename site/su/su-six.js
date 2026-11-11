@@ -60,7 +60,7 @@ export function eHome({S, B, bl, mo, asOf}) {
   const big = val(n, '곳', '오늘 꽃 조건에 모두 맞은 회사', {누가: BRAND, 언제: d && d + ' 자료', 어디서: fin(coN) ? '코스피 · 코스닥 회사 ' + num(coN) + '곳 가운데' : '코스피 · 코스닥',
     무엇을: '이달 꽃 조건 ' + kc(cs.length) + ' 가지에 모두 맞은 회사를 셌어요', 어떻게: '조건을 하나씩 대어 보고 모두 맞은 회사만 남겼어요',
     왜: recOk(hon) ? '지난 기록에서 조건에 맞은 회사가 100번에 ' + r0(hon.rate) + '번 꽃이 됐어요' : null},
-    {mean: n ? '오늘 조건에 다 맞은 회사가 ' + n + '곳 있다는 뜻이에요. 그래도 지난 기록에서 셋 가운데 둘은 꽃이 못 됐어요.' : '오늘은 조건에 다 맞은 회사가 없다는 뜻이에요. 서두를 까닭이 없어요.'});
+    {mean: n ? '오늘 조건에 다 맞은 회사가 ' + n + '곳 있다는 뜻이에요. 그래도 지난 기록에서 셋 가운데 둘은 꽃이 못 됐어요.' : '오늘은 조건에 다 맞은 회사가 없다는 뜻이에요. 서두를 이유가 없어요.'});
   const mids = [
     near ? val(bl.rows.length, '곳', '조건에 가장 가까운 회사', {누가: bl.rows.map(r => r.name).join(' · '), 언제: d, 어디서: '조건에 다 맞은 회사가 없는 날', 무엇을: '이달 꽃 조건 가운데 하나만 못 맞았어요',
       어떻게: bl.miss ? '못 맞은 조건은 「' + bl.miss + '」예요' : null, 왜: recOk(bl.rec) ? '이런 회사는 지난 기록에서 100번에 ' + r0(bl.rec.rate) + '번 꽃이 됐어요' : null},
@@ -153,7 +153,7 @@ export function eInd({name, x = null, wy = null, rows = [], asOf, cur = null, mi
   const say = [name + ' 업종 회사 ' + rows.length + '곳이에요.', fin(x) ? '한 달 동안 시장보다 ' + moreLess(x) + ' 올랐어요.' : known.length ? '한 달 동안 ' + up + '곳이 올랐어요.' : '한 달 움직임을 아직 못 받았어요.',
     known.length - up > 0 ? '그런데 ' + (known.length - up) + '곳은 오르지 못했어요.' : '그런데 업종이 올랐다고 회사마다 꽃이 되지는 않았어요.', '그래서 지난 기록을 함께 봐요.'];
   const pro = [P('업종이 시장보다(한 달)', fin(x) ? r1(x) : null, '업종 회사들의 한 달 움직임 ÷ 시장 · ' + SRC), P('업종 회사 수', rows.length, '업종 이름이 같은 회사'), P('값을 아는 회사', known.length, null),
-    P('한 달 동안 오른 회사', known.length ? up : null, null), fin(min) ? P('꽃 조건의 선(업종)', min, '이달 조건') : null, P('돈이 몰린 까닭(자료)', wy?.items?.length ? wy.items.length + '가지' : null, '외국인 · 기관 · 소식 자료')].filter(Boolean);
+    P('한 달 동안 오른 회사', known.length ? up : null, null), fin(min) ? P('꽃 조건의 선(업종)', min, '이달 조건') : null, P('돈이 몰린 이유(자료)', wy?.items?.length ? wy.items.length + '가지' : null, '외국인 · 기관 · 소식 자료')].filter(Boolean);
   return {big, mids, rows: top, say, pro};
 }
 
@@ -166,12 +166,12 @@ export function eHub({B, mine = [], lastDay = null}) {
   const mids = [
     fin(hon?.scored) ? val(hon.up + ' · ' + hon.down, '달', '나았던 달 · 못했던 달', {누가: '꽃 조건에 맞았던 회사', 언제: span(hon.from, hon.to), 어디서: '코스피 · 코스닥', 무엇을: '달마다 아무 회사와 견줬어요', 어떻게: '한 달이 다 지난 달만 셌어요', 왜: null},
       {mean: (t10 => '열 달이면 ' + kc(t10) + ' 달쯤은 나았고 ' + kc(10 - t10) + ' 달쯤은 못했다는 뜻이에요. 늘 나은 것은 아니에요.')(Math.round(10 * hon.up / Math.max(1, hon.up + hon.down)))}) : null,
-    fin(B?.why?.all?.miss) ? val(B.why.all.miss, '번', '꽃이 못 된 횟수', {누가: '꽃 조건에 맞았던 회사', 언제: span(hon?.from, hon?.to), 어디서: '코스피 · 코스닥', 무엇을: '한 달 뒤 꽃이 못 됐어요', 어떻게: '못 된 까닭을 셋으로 나눠 셌어요', 왜: null},
+    fin(B?.why?.all?.miss) ? val(B.why.all.miss, '번', '꽃이 못 된 횟수', {누가: '꽃 조건에 맞았던 회사', 언제: span(hon?.from, hon?.to), 어디서: '코스피 · 코스닥', 무엇을: '한 달 뒤 꽃이 못 됐어요', 어떻게: '못 된 이유를 셋으로 나눠 셌어요', 왜: null},
       {mean: fin(hon?.n) ? '고른 ' + num(hon.n) + '번 가운데 더 많은 쪽이 꽃이 못 됐다는 뜻이에요.' : null}) : null,
     val(n, '번', '내 매매일지', {누가: '나', 언제: n && ymd(lastDay) ? ymd(lastDay) + '이 마지막' : null, 어디서: '이 휴대폰', 무엇을: n ? '「왜 사?」 열한 질문에 ' + n + '번 답했어요' : '아직 답한 적이 없어요', 어떻게: '답은 이 휴대폰에만 남아요', 왜: null},
       {mean: n ? '사기 전에 ' + n + '번 멈췄다는 뜻이에요.' : '아직 사기 전에 멈춘 기록이 없다는 뜻이에요.'})].filter(Boolean);
   const say = ['지난 기록을 한곳에 모았어요. 꽃 지난 기록과 내 매매일지예요.', recOk(hon) ? '조건에 맞은 회사는 100번에 ' + r0(hon.rate) + '번 꽃이 됐어요. 아무 회사는 ' + r0(hon.base) + '번이었어요.' : '지난 기록을 아직 못 셌어요.',
-    fin(hon?.down) ? '그런데 ' + hon.down + '달은 아무 회사보다 못했어요.' : '그런데 지난 기록이 앞날을 정해 주지는 않아요.', '그래서 달마다, 날마다, 못 된 까닭까지 하나씩 봐요.'];
+    fin(hon?.down) ? '그런데 ' + hon.down + '달은 아무 회사보다 못했어요.' : '그런데 지난 기록이 앞날을 정해 주지는 않아요.', '그래서 달마다, 날마다, 못 된 이유까지 하나씩 봐요.'];
   const pro = [...honestPro(hon),
     P('모든 날 기록 · 고른 횟수', all?.n, '2023년부터 · 모든 날'), P('모든 날 · 100번에 꽃', r1(all?.rate), calc(all?.hits, all?.n, '꽃이 된 횟수 ÷ 고른 횟수 × 100', all?.rate)), P('모든 날 · 아무 회사', r1(all?.base), calc(all?.baseHits, all?.baseN, '같은 날 셀 수 있던 모든 회사로 같은 셈', all?.base)),
     P('고른 회사가 시장보다 더 오른 평균', fin(all?.ex) ? r1(all.ex) : null, '한 달 · 회사마다 위아래 50에서 자름 · 시장보다 몇 만큼'), P('아무 회사가 시장보다 더 오른 평균', fin(all?.exBase) ? r1(all.exBase) : null, '같은 셈'),
@@ -206,13 +206,13 @@ export function eMiss({B}) {
   const w = B?.why, names = Array.isArray(w?.names) ? w.names : [], why = Array.isArray(w?.all?.why) ? w.all.why : [], miss = w?.all?.miss, hon = B?.honest;
   const top = why.length ? names[why.indexOf(Math.max(...why))] : null;
   const big = val(fin(miss) ? miss : null, '번', '조건에 맞고도 꽃이 못 된 횟수', {누가: '꽃 조건에 맞았던 회사', 언제: span(hon?.from, hon?.to), 어디서: '코스피 · 코스닥',
-    무엇을: fin(hon?.n) && fin(miss) ? num(hon.n) + '번 가운데 ' + num(miss) + '번은 꽃이 못 됐어요' : null, 어떻게: '한 달 뒤 시장보다 5% 넘게 더 오르지 못한 것을 셌어요', 왜: top ? '가장 많은 까닭은 「' + top + '」예요' : null},
+    무엇을: fin(hon?.n) && fin(miss) ? num(hon.n) + '번 가운데 ' + num(miss) + '번은 꽃이 못 됐어요' : null, 어떻게: '한 달 뒤 시장보다 5% 넘게 더 오르지 못한 것을 셌어요', 왜: top ? '가장 많은 이유는 「' + top + '」예요' : null},
     {mean: '조건에 맞아도 꽃이 못 된 때가 더 많았다는 뜻이에요. 조건만 믿지 말아요.'});
-  const mids = names.map((nm, k) => (fin(why[k]) ? val(why[k], '번', nm, {누가: '꽃이 못 된 회사', 언제: span(hon?.from, hon?.to), 어디서: '코스피 · 코스닥', 무엇을: nm, 어떻게: '못 된 까닭을 셋으로 나눠 셌어요', 왜: null},
-    {mean: nm === top ? '꽃이 못 된 까닭 가운데 이것이 가장 많았다는 뜻이에요.' : '꽃이 못 된 까닭 가운데 하나라는 뜻이에요.'}) : null)).filter(Boolean).slice(0, 3);
+  const mids = names.map((nm, k) => (fin(why[k]) ? val(why[k], '번', nm, {누가: '꽃이 못 된 회사', 언제: span(hon?.from, hon?.to), 어디서: '코스피 · 코스닥', 무엇을: nm, 어떻게: '못 된 이유를 셋으로 나눠 셌어요', 왜: null},
+    {mean: nm === top ? '꽃이 못 된 이유 가운데 이것이 가장 많았다는 뜻이에요.' : '꽃이 못 된 이유 가운데 하나라는 뜻이에요.'}) : null)).filter(Boolean).slice(0, 3);
   const say = ['사기 전에 지난 기록을 한 번 더 봐요.', fin(miss) && fin(hon?.n) ? '조건에 맞은 ' + num(hon.n) + '번 가운데 ' + num(miss) + '번은 꽃이 못 됐어요.' : '꽃이 못 된 횟수를 아직 못 셌어요.',
-    '그런데 못 된 까닭은 늘 하나가 아니었어요.', '그래서 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.'];
-  const pro = [P('꽃이 못 된 횟수', miss, BLOOM_HOW), ...names.map((nm, k) => P('까닭 · ' + nm, why[k], '못 된 것을 셋으로 나눔')),
+    '그런데 못 된 이유는 늘 하나가 아니었어요.', '그래서 사기 전에 「왜 사?」 열한 질문으로 내 이유부터 확인해요.'];
+  const pro = [P('꽃이 못 된 횟수', miss, BLOOM_HOW), ...names.map((nm, k) => P('이유 · ' + nm, why[k], '못 된 것을 셋으로 나눔')),
     P('배운 기간 · 못 된 횟수', w?.train?.miss, '조건을 고를 때 본 기간'), P('안 본 기간 · 못 된 횟수', w?.test?.miss, '조건을 고를 때 안 본 기간')];
   return {big, mids, rows: [], say, pro};
 }
@@ -226,7 +226,7 @@ export function eDays({B}) {
     {mean: '조건에 맞는 회사가 없는 날이 더 많았다는 뜻이에요. 매일 고를 것이 있지는 않아요.'});
   const mids = [
     val(hit, '번', '꽃이 된 횟수', {누가: '그날 고른 회사', 언제: sp, 어디서: '코스피 · 코스닥', 무엇을: '한 달 뒤 꽃이 됐어요', 어떻게: BLOOM_HOW, 왜: null}, {mean: '지난 60거래일에 고른 회사 가운데 꽃이 된 수예요.'}),
-    val(miss, '번', '꽃이 못 된 횟수', {누가: '그날 고른 회사', 언제: sp, 어디서: '코스피 · 코스닥', 무엇을: '한 달 뒤 꽃이 못 됐어요', 어떻게: '못 된 까닭을 셋으로 나눠 셌어요', 왜: null}, {mean: hit < miss ? '꽃이 된 것보다 못 된 것이 더 많았다는 뜻이에요.' : '꽃이 된 것이 못 된 것보다 많았다는 뜻이에요.'}),
+    val(miss, '번', '꽃이 못 된 횟수', {누가: '그날 고른 회사', 언제: sp, 어디서: '코스피 · 코스닥', 무엇을: '한 달 뒤 꽃이 못 됐어요', 어떻게: '못 된 이유를 셋으로 나눠 셌어요', 왜: null}, {mean: hit < miss ? '꽃이 된 것보다 못 된 것이 더 많았다는 뜻이에요.' : '꽃이 된 것이 못 된 것보다 많았다는 뜻이에요.'}),
     val(wait, '번', '아직 한 달이 안 된 횟수', {누가: '그날 고른 회사', 언제: sp, 어디서: '코스피 · 코스닥', 무엇을: '한 달이 지나야 셀 수 있어요', 어떻게: '기다리는 중이에요', 왜: null}, {mean: '아직 결과가 안 나왔다는 뜻이에요.'})];
   const say = ['날마다 조건에 맞은 회사를 달력에 놓았어요.', ds.length + '거래일 가운데 ' + on.length + '날 맞은 회사가 있었어요.', '그런데 ' + miss + '번은 한 달 뒤 꽃이 못 됐어요. 아직 ' + wait + '번은 기다리는 중이에요.', '그래서 꽃이 된 날만 보지 말고 못 된 날도 함께 봐요.'];
   const pro = on.map(x => P(ymd(x.d) ?? x.d, x.n + ' · ' + x.hit + ' · ' + x.miss + ' · ' + x.wait, '고른 수 · 꽃 · 못 됨 · 기다림 · 그날 셀 수 있던 회사 ' + (fin(x.bn) ? num(x.bn) : NEED) + ' 가운데 꽃 ' + (fin(x.bh) ? num(x.bh) : NEED)));

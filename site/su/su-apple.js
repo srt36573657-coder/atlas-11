@@ -29,6 +29,9 @@ const NEED = '확인 필요';
 const KEY = ['hot', 'bloom', 'money'];
 const KIND = {hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는', quiet: '조용한데 힘이 모이는'}; // quiet = 넷째 창(주문 1111-1334 · 지금 28곳)
 const KINDN = {hot: '불장이 될 듯', bloom: '꽃이 될 듯', money: '돈이 몰릴 듯'};
+/* 쉬운 판(주문 1112-0253 · 사장님 2026-11-12 02:53 「… 용어도 명확하게 하고 쉽게 해」) — 묶음 이름 아래 한 줄 뜻(이름은 본질 그대로 · 뜻만 붙임) */
+export const MEAN = Object.freeze({hot: '한 달 동안 값이 크게 오른 곳이에요.', bloom: '업종이 오를 때 막 오르기 시작한 곳이에요.', money: '한 달 동안 회사 값이 크게 늘어난 곳이에요.', quiet: '값은 조용한데 큰손이 모으는 곳'});
+const MEANH = 30; // 뜻 한 줄 높이
 const NXK = {hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'};
 const W = 390, PAD = 20, MID = W / 2;
 const ORBY = 204, PY0 = ORBY + 86 + 64 + 4; // 구슬 가운데 높이 · 구슬 아래 첫 줄(= orbs(…, ORBY).bottom + 4 — LIST0 를 그리기 전에 셈)
@@ -38,15 +41,17 @@ let UID = 0;
 
 /* ── 값 글(su-women-e.js 의 valText 와 같은 셈) ── */
 const pct = x => (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(1) + '%';
+/** 늘어난 회사 값(억 원) — 1조가 넘으면 「4.7조」, 아니면 「7,797억」(쉬운 판 · 큰 돈은 조 · 억) */
+export const eok = g => (g >= 0 ? '+' : '−') + (Math.abs(g) >= 10000 ? (Math.round(Math.abs(g) / 1000) / 10).toFixed(1) + '조' : NF.format(Math.abs(Math.round(g))) + '억');
 function valText(c, k, nx = false) {
   if (nx) {
     const w = c?.why ?? {};
     if (k === 'hot') return fin(w.r20) ? pct(w.r20) : NEED;
-    if (k === 'money') return fin(w.gain) ? (w.gain >= 0 ? '+' : '−') + NF.format(Math.abs(Math.round(w.gain))) + '억' : NEED;
+    if (k === 'money') return fin(w.gain) ? eok(w.gain) : NEED;
     return fin(w.x5) ? pct(w.x5) : NEED;
   }
   if (k === 'hot') return fin(c?.ch20) ? pct(c.ch20) : NEED;
-  if (k === 'money') { const g = c?.why?.gain; return fin(g) ? (g >= 0 ? '+' : '−') + NF.format(Math.abs(Math.round(g))) + '억' : NEED; }
+  if (k === 'money') { const g = c?.why?.gain; return fin(g) ? eok(g) : NEED; }
   return c?.why?.full === true ? '꽃' : '싹';
 }
 /** 글 넓이 어림(굵은 글) */
@@ -195,8 +200,11 @@ function legendR3(y, cul = false) {
 const UPR = 140, UPG = 8, USW = 104, USH = 54; // 칸 높이 · 칸 사이 · 꺾은선 넓이 · 높이
 export const UP3H = 16 + 3 * (UPR + UPG) - UPG + 120; // 머리 줄 아래 ~ 달력 고리 아래(LIST0 = 셋째 줄 + 이 높이) · 고리 높이 60 = 320 폭에서도 누름 48 넘게(49)
 const UPHOW = ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림'];
-/** 가장 큰 까닭 — 잣대 넷 가운데 값이 가장 큰 것(같으면 앞 것) · 값이 없으면 null */
-export const topWhy = (r, how = UPHOW) => { const ps = Array.isArray(r?.parts) ? r.parts : []; let j = -1; ps.forEach((v, i) => { if (fin(v) && (j < 0 || v > ps[j])) j = i; }); return j < 0 ? null : (how[j] ?? UPHOW[j]); };
+/* 쉬운 판(주문 1112-0253 · 사장님 2026-11-12 02:53 「… 용어도 명확하게 하고 쉽게 해」) — 기준 넷을 문장으로(자료 이름은 그대로 · 보이는 말만) */
+export const EASYHOW = Object.freeze({'긴 오름세 · 덜 흔들림': '1년 꾸준히 오름', '1년 오른 날 몫': '1년 오른 날이 많음', '업종 따라잡기': '업종보다 덜 오름', '닷새 눌림': '최근 5일 쉼'});
+export const easyHow = t => EASYHOW[t] ?? t;
+/** 가장 큰 이유 — 기준 넷 가운데 값이 가장 큰 것(같으면 앞 것) · 쉬운 말로 · 값이 없으면 null */
+export const topWhy = (r, how = UPHOW) => { const ps = Array.isArray(r?.parts) ? r.parts : []; let j = -1; ps.forEach((v, i) => { if (fin(v) && (j < 0 || v > ps[j])) j = i; }); return j < 0 ? null : easyHow(how[j] ?? UPHOW[j]); };
 const ch20Of = r => (fin(r?.ch20) ? r.ch20 : Array.isArray(r?.c) && r.c.length === 21 && fin(r.c[0]) && r.c[0] > 0 && fin(r.c[20]) ? Math.round((r.c[20] / r.c[0] - 1) * 1000) / 10 : null);
 function up3Row(r, n, y, day, how) {
   const x = PAD - 6, w = W - 2 * (PAD - 6), sx = x + w - 30 - USW, room = sx - x - 18;
@@ -204,11 +212,11 @@ function up3Row(r, n, y, day, how) {
   const sp = Array.isArray(r?.c) && r.c.length === 21 && r.c.every(v => fin(v) && v > 0) && px === r.c[20] ? r.c : null; // 21 마지막 값 · 끝 = 현재가일 때만
   const nm = String(r?.name ?? NEED), tw = Math.ceil(est(n + '등', 17)) + 18, fs = est(nm, 20) <= room - tw - 8 ? 20 : est(nm, 18) <= room - tw - 8 ? 18 : 17;
   const price = px != null ? won(px) : NEED, c20 = sp ? ch20Of(r) : null, mon = '한 달 ' + (c20 != null ? pct(c20) : NEED);
-  const ind = String(r?.ind ?? NEED), why = topWhy(r, how), wl = '까닭 — ' + (why ?? NEED);
+  const ind = String(r?.ind ?? NEED), why = topWhy(r, how), wl = '이유 — ' + (why ?? NEED);
   const say = ' · 현재가 ' + price + ' · ' + mon + (sp ? ' · 한 달 전 ' + won(sp[0]) : '');
   const a = s('a', {href: '#/c/' + encodeURIComponent(String(r?.code ?? '')) + '/t', class: 'sa-up3a sa-x', 'data-place': String(n), 'data-code': String(r?.code ?? ''), 'data-px': px ?? '', 'data-name': nm,
-    'aria-label': '새 잣대 ' + n + '등 · ' + nm + say + ' · ' + ind + ' · ' + wl + ' · 누르면 까닭 쪽'});
-  a.append(s('title', {text: '새 잣대 ' + n + '등 · ' + nm + say}),
+    'aria-label': '오늘의 ' + n + '등 · ' + nm + say + ' · ' + ind + ' · ' + wl + ' · 누르면 이유 쪽'});
+  a.append(s('title', {text: '오늘의 ' + n + '등 · ' + nm + say}),
     s('rect', {x, y, width: w, height: UPR, rx: 14, class: 'sa-hit sa-hitx sa-up3hit'}),
     sxTag(x + 10, y + 10, n + '등', 'sa-r3'),
     T(f1(x + 10 + tw + 8), y + 29, nm, 'sa-name sa-up3n', {'font-size': fs}),
@@ -223,14 +231,14 @@ function up3Row(r, n, y, day, how) {
 }
 function legendUp3(y, rank, day, how) {
   const R = n => (rank ?? []).find(r => r?.place === n);
-  const head = [s('circle', {cx: PAD + 7, cy: y - 7, r: 6, class: 'sa-dotA sa-in sa-in3'}), T(PAD + 20, y, '새 잣대 1 · 2 · 3등', 'sa-kh sa-up3h sa-in sa-in3'),
-    T(W - PAD, y, '누르면 까닭 ›', 'sa-d sa-up3t sa-in sa-in3', {'text-anchor': 'end'})];
+  const head = [s('circle', {cx: PAD + 7, cy: y - 7, r: 6, class: 'sa-dotA sa-in sa-in3'}), T(PAD + 20, y, '오늘의 1 · 2 · 3등', 'sa-kh sa-up3h sa-in sa-in3'),
+    T(W - PAD, y, '누르면 이유 ›', 'sa-d sa-up3t sa-in sa-in3', {'text-anchor': 'end'})];
   const rows = [1, 2, 3].map((n, i) => up3Row(R(n), n, y + 16 + i * (UPR + UPG), day, how));
   const yb = y + 16 + 3 * (UPR + UPG) - UPG; // 칸 셋 아래
   const cal = s('a', {href: '#/r/c', class: 'sa-up3c', 'aria-label': '1 · 2 · 3등 달력 보기 — 날마다 뽑힌 셋'},
     s('rect', {x: PAD - 6, y: yb + 46, width: W - 2 * (PAD - 6), height: 60, rx: 14, class: 'sa-hit sa-up3ch'}),
     T(MID, yb + 83, '1 · 2 · 3등 달력 — 날마다 뽑힌 셋 ›', 'sa-up3ct', {'text-anchor': 'middle'}));
-  return [...head, s('g', {class: 'sa-up3g sa-in sa-in3'}, ...rows), ...note2(yb + 30, '새 잣대로', '우량주 365곳에서 골랐어요.', 'note4'), cal];
+  return [...head, s('g', {class: 'sa-up3g sa-in sa-in3'}, ...rows), ...note2(yb + 30, '지난 기록 차례예요.', '앞날은 몰라요.', 'note4'), cal];
 }
 function legendSx(y) { // 셋째 줄 [수르 계산법] 수르 계산법으로 찾은 종목 · 넷째 줄 31가지 기준을 모두 지난 곳이에요.(사장님 말씀 그대로 · 이해 보고 12:10 「표 위에 「수르 계산법으로 찾은 종목」이라고 풀어 적어요」)
   const bw = Math.ceil(est(SXT, 17)) + 18, gap = 8, tl = SXL, x0 = MID - (bw + gap + est(tl, 18)) / 2;
@@ -266,7 +274,7 @@ function relive(svg, j, day) {
     let say = ' · 현재가 ' + price + ' · 한 달 전 ' + won(sp[0]);
     if (c.up3) { const ch = Math.round((v.p / sp[0] - 1) * 1000) / 10, mon = '한 달 ' + pct(ch), m = a.querySelector('text.sa-up3m'); if (m) { m.textContent = mon; m.classList.remove('sa-need'); m.classList.toggle('sa-val-next', ch < 0); m.classList.toggle('sa-val-now', ch >= 0); } say = ' · 현재가 ' + price + ' · ' + mon + ' · 한 달 전 ' + won(sp[0]); c.it.val = mon; }
     const lab = a.getAttribute('aria-label') ?? '';
-    a.setAttribute('aria-label', lab.replace(c.say0, say)); a.querySelector('title').textContent = (c.up3 ? '새 잣대 ' + a.getAttribute('data-place') + '등 · ' + c.it.name + say : c.it.name + ' · ' + c.it.val + say); c.say0 = say;
+    a.setAttribute('aria-label', lab.replace(c.say0, say)); a.querySelector('title').textContent = (c.up3 ? '오늘의 ' + a.getAttribute('data-place') + '등 · ' + c.it.name + say : c.it.name + ' · ' + c.it.val + say); c.say0 = say;
     a.setAttribute('data-px', String(v.p)); a.setAttribute('data-live', v.t);
     if (!last || v.t > last) last = v.t; n++;
   }
@@ -316,15 +324,15 @@ function draw(d, opt) {
   const rowH = (k, i) => ROW + (tagOf(items(k, false)[i]) || tagOf(items(k, true)[i]) ? BX : 0); // 표가 붙은 칸이 있는 줄만 표 높이만큼 더
   const nSx = MARK ? KEY.reduce((a, k) => a + items(k, false).filter(c => c.sx).length + items(k, true).filter(c => c.sx).length, 0) : 0;
   const qRows = Math.ceil(QL.length / 2), qRowH = i => ROW + (QL[2 * i]?.r3q || QL[2 * i + 1]?.r3q ? BX : 0); // 넷째 창 — 한 줄에 둘(왼 · 오른) · 등수 표가 붙은 줄만 표 높이만큼 더
-  const H = LIST0 + KEY.reduce((a, k) => a + HEADH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + (QL.length ? HEADH + 30 + Array.from({length: qRows}, (_, i) => qRowH(i)).reduce((b, v) => b + v, 0) + GAP : 0) + 24;
+  const H = LIST0 + KEY.reduce((a, k) => a + HEADH + MEANH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + (QL.length ? HEADH + 30 + Array.from({length: qRows}, (_, i) => qRowH(i)).reduce((b, v) => b + v, 0) + GAP : 0) + 24;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
-    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (UP3 ? ' · 새 잣대 1등 · 2등 · 3등 ' + d.top3.rank.map(r => r.place + '등 ' + r.name).join(' · ') : RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
+    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (UP3 ? ' · 오늘의 1등 · 2등 · 3등 ' + d.top3.rank.map(r => r.place + '등 ' + r.name).join(' · ') : RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
   svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'sa-bg'}));
   /* 1 한 문장 */
   /* 큰 제목 「지금, 그리고 될 듯.」은 쪽 머리(h1 · 쪽과 함께 바로 그려짐 — 느린 휴대폰 첫 칠함 2.5초)에 · 그림은 부제부터 */
   const top = s('g', {class: 'sa-top'},
-    T(MID, 42, '한국 주식 회사 가운데', 'sa-sub sa-in sa-in1', {'text-anchor': 'middle'}),
-    T(MID, 70, '될 듯한 곳을 찾아 드려요.', 'sa-sub sa-in sa-in1', {'text-anchor': 'middle'}));
+    T(MID, 42, '한국 큰 회사 365곳 가운데', 'sa-sub sa-in sa-in1', {'text-anchor': 'middle'}),
+    T(MID, 70, '요즘 눈에 띄는 곳을 찾았어요.', 'sa-sub sa-in sa-in1', {'text-anchor': 'middle'}));
   svg.append(top);
   /* 2 물건 하나 — 구슬 둘 */
   const O = orbs(id, ORBY);
@@ -335,11 +343,11 @@ function draw(d, opt) {
     s('path', {d: `M${MID} ${PY + 6}V${PY + 128}`, class: 'sa-div'}),
     s('circle', {cx: 74, cy: PY + 22, r: 7, class: 'sa-dotA'}), T(88, PY + 27, '지금', 'sa-k'),
     T(105, PY + 96, String(STRICT ? nNow : nNow || NEED), 'sa-n', {'text-anchor': 'middle'}), T(105 + est(String(nNow), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
-    T(105, PY + 124, '지금 그런 곳', 'sa-d', {'text-anchor': 'middle'}),
+    T(105, PY + 124, '지금 눈에 띄는 곳', 'sa-d', {'text-anchor': 'middle'}),
     s('circle', {cx: 248, cy: PY + 22, r: 6.5, class: 'sa-dotB'}), s('circle', {cx: 248, cy: PY + 22, r: 2.6, class: 'sa-dotBc'}), T(262, PY + 27, '될 듯', 'sa-k'),
     T(285, PY + 96, String(STRICT ? nNx : nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
     T(285, PY + 124, '곧 그렇게 될 듯한 곳', 'sa-d', {'text-anchor': 'middle'}));
-  svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
+  svg.append(pair, T(MID, PY + 168, '지난 기록이에요. 사라는 말은 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
     ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? legendUp3(PY + 266, d.top3.rank, day, d.top3.how) : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
@@ -349,8 +357,9 @@ function draw(d, opt) {
     const now = items(k, false), nx = items(k, true), sec = s('g', {class: 'sa-sec sa-sec' + ki});
     sec.append(s('path', {d: `M${PAD} ${y}H${W - PAD}`, class: 'sa-rule'}),
       s('circle', {cx: PAD + 7, cy: y + 33, r: 6, class: 'sa-dotA'}), T(PAD + 20, y + 40, KIND[k], 'sa-kh'),
-      s('circle', {cx: MID + 10, cy: y + 33, r: 5.5, class: 'sa-dotB'}), s('circle', {cx: MID + 10, cy: y + 33, r: 2.2, class: 'sa-dotBc'}), T(MID + 23, y + 40, KINDN[k], 'sa-kh'));
-    y += HEADH;
+      s('circle', {cx: MID + 10, cy: y + 33, r: 5.5, class: 'sa-dotB'}), s('circle', {cx: MID + 10, cy: y + 33, r: 2.2, class: 'sa-dotBc'}), T(MID + 23, y + 40, KINDN[k], 'sa-kh'),
+      T(PAD, y + 68, MEAN[k], 'sa-mean', {'data-mean': k}));
+    y += HEADH + MEANH;
     const n = rowsOf(k);
     for (let i = 0; i < n; i++) {
       const row = s('g', {class: 'sa-row'}), rh = rowH(k, i);
@@ -373,7 +382,7 @@ function draw(d, opt) {
     const head = s('a', {href: '#/s', class: 'sa-qhead', 'aria-label': '넷째 창 · 조용한데 힘이 모이는 ' + QL.length + '곳 · 걸러 온 길 보기'},
       s('rect', {x: PAD - 6, y: y + 6, width: W - 2 * PAD + 12, height: HEADH + 24, rx: 12, class: 'sa-hit'}),
       s('circle', {cx: PAD + 7, cy: y + 33, r: 6, class: 'sa-dotA'}), T(PAD + 20, y + 40, KIND.quiet + ' ' + QL.length, 'sa-kh'),
-      T(PAD + 20, y + 68, '몬테카를로 · 소거법 차례 ›', 'sa-d'));
+      T(PAD + 20, y + 68, MEAN.quiet + ' ›', 'sa-d', {'data-mean': 'quiet'}));
     sec.append(s('path', {d: `M${PAD} ${y}H${W - PAD}`, class: 'sa-rule'}), head);
     y += HEADH + 30;
     for (let i = 0; i < qRows; i++) {

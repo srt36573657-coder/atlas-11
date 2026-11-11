@@ -192,7 +192,7 @@ export async function vBook(X, which = 'top3') {
   const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-book': which === 'quiet' ? 'quiet' : 'top3', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff)),
     'data-up': String(C.n.up), 'data-dn': String(C.n.dn), 'data-eq': String(C.n.eq), 'data-one': String(C.n.one), 'data-y': String(R)},
     h('p', {class: 'bk-intro', text: K.intro}),
-    which === 'top3' && up3From(B) ? h('p', {class: 'bk-intro bk-new', 'data-from': up3From(B), text: md(up3From(B)) + ' 판부터는 새 잣대로 골라요. 우량주 365곳에서 긴 오름세와 잠깐 눌림을 함께 봐요.'}) : null, // 주문 1111-1857
+    which === 'top3' && up3From(B) ? h('p', {class: 'bk-intro bk-new', 'data-from': up3From(B), text: md(up3From(B)) + ' 판부터는 새 기준으로 골라요. 우량주 365곳에서 1년 꾸준히 오른 곳이 잠깐 쉴 때를 봐요.'}) : null, // 주문 1111-1857
     h('section', {class: 'bk-sum', 'aria-label': '산 셈 모두'},
       h('div', {class: 'bk-tiles'}, tiles(C.n).map(t => h('div', {class: 'bk-tile bk-t' + t.st, 'data-st': t.st}, h('span', {class: 'bk-tv'}, shapeOf(t.st, 'big'), h('b', {class: 'bk-tn', text: t.k + '번'})), h('span', {class: 'bk-tl', text: t.label})))),
       h('p', {class: 'bk-tot', text: '모두 합치면 ' + r100(C.val, C.cost) + ' · ' + moved(C.diff)}),
