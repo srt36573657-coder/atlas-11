@@ -37,9 +37,13 @@ export function stepBook(book0, T, board, now = kst(), kind = 'top3') {
   const B = JSON.parse(JSON.stringify(okBook(book0) ? book0 : emptyBook(kind)));
   const co = new Map((board?.companies ?? []).map(c => [c.code, c]));
   const day = T?.asOf?.board, rank = RANK[kind](T);
+  // 판 날 마지막 값 — 판(board)이 그 날이면 판에서 · 아니면 그 1 · 2 · 3등을 낸 su21.json 칸의 그날 값(close · date — 같은 판에서 나온 값)
+  //   예) 묶음에 저장된 옛 su21.json(셈이 멈춘 묶음 · 검사 실행기)과 새 판이 다른 날일 때 — 그 판 날로 적고, 처음 본 때가 늦으면 화면이 「판 날보다 늦게 보였어요」라고 씀
+  const snap = board?.asOf === day ? null : new Map(Object.values(T?.lists ?? {}).flat().filter(x => x?.code && x.date === day && fin(x.close)).map(x => [x.code, x]));
+  const at = code => (snap ? snap.get(code) : co.get(code));
   let added = null;
-  if (DAY.test(day ?? '') && board?.asOf === day && Array.isArray(rank) && rank.length >= 3 && !B.days.some(d => d.board === day)) {
-    const picks = [1, 2, 3].map(pl => rank.find(r => r.place === pl)).map(r => { const c = r && co.get(r.code); return r && c && fin(c.close) && c.date === day ? {place: r.place, k: r.k, code: r.code, name: c.name ?? r.name, px: c.close} : null; });
+  if (DAY.test(day ?? '') && Array.isArray(rank) && rank.length >= 3 && !B.days.some(d => d.board === day)) {
+    const picks = [1, 2, 3].map(pl => rank.find(r => r.place === pl)).map(r => { const c = r && at(r.code); return r && c && fin(c.close) && c.date === day ? {place: r.place, k: r.k, code: r.code, name: c.name ?? r.name, px: c.close} : null; });
     if (picks.every(Boolean)) { added = {board: day, seen: now, rule: RULE[kind](T), picks}; B.days.push(added); B.days.sort((a, b) => a.board.localeCompare(b.board)); }
   }
   // 값 적기 — 산 날부터(그 회사가 처음 들어간 판 날) 판의 21 마지막 값 · 오늘 값

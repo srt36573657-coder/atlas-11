@@ -87,6 +87,12 @@ test('따로 된 장부 — quiet.rank 첫 셋을 그 판 날 마지막 값으�
   assert.equal(siteBook(t.book, d).kind, undefined);
   assert.equal(stepBook(null, {...T, quiet: null}, board, '2026-11-10T16:00:00+09:00', 'quiet').added, null, '넷째 창이 없으면 적지 않음');
   assert.equal(emptyBook('quiet').kind, 'quiet'); assert.ok(!emptyBook('quiet').note.includes('수익'));
+  // 판이 다른 날(묶음에 저장된 옛 su21.json · 새 판) — 1 · 2 · 3등을 낸 su21.json 칸의 그날 값으로 그 판 날을 적음(값 줄 = 산 값)
+  const old = '2026-11-06', Tq = {asOf: {board: old}, quiet: T.quiet, lists: {quiet: [4, 5, 6, 7].map(n => ({code: '00000' + n, name: '회사' + n, date: old, close: 100 * n}))}};
+  const s = stepBook(null, Tq, board, '2026-11-11T16:00:00+09:00', 'quiet');
+  assert.deepEqual(s.added?.picks.map(p => [p.place, p.code, p.px]), [[1, '000004', 400], [2, '000005', 500], [3, '000006', 600]], '판 날 = su21.json 날 · 값 = 그 칸 값');
+  assert.equal(s.added.board, old); assert.equal(s.book.px['000004'][old], 400);
+  assert.equal(stepBook(null, {...Tq, lists: {quiet: Tq.lists.quiet.map(x => ({...x, date: d}))}}, board, '2026-11-11T16:00:00+09:00', 'quiet').added, null, '칸 값이 그 판 날 값이 아니면 적지 않음');
 });
 
 test('화면 글 — 한 달 폭 · 이만큼 조용하기 · 외국인 · 기관(「%」 0 · 쓰지 않을 말 0) · 탭 0 · 쪽 짜임', async () => {
