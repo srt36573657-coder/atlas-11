@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-11",
- "fetchedAt": "2026-11-11T07:51:24Z",
- "file": "reports/atlas11/context/2026-11-11/2026-11-11T07-51-24Z.json",
+ "fetchedAt": "2026-11-11T10:13:02Z",
+ "file": "reports/atlas11/context/2026-11-11/2026-11-11T10-13-02Z.json",
  "summary": {
   "day": "2026-11-11",
-  "fetchedAt": "2026-11-11T07:51:24Z",
+  "fetchedAt": "2026-11-11T10:13:02Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-11",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7208,
-   "distinct": 7153,
-   "republished": 55,
+   "distinct": 7154,
+   "republished": 54,
    "sameArticle": 0,
-   "stocksWithTodayNews": 194,
-   "todayDistinct": 1341
+   "stocksWithTodayNews": 198,
+   "todayDistinct": 1454
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 778
+   "corporateActions": 779
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-11",
-     "value": 1335.7,
-     "changePct": -0.65
+     "value": 1334.8,
+     "changePct": -0.72
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 270,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,20 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-11-11",
-   "corporateActions": 778,
+   "corporateActions": 779,
    "recentActions": [
+    {
+     "code": "140860",
+     "title": "(주)파크시스템스 자기주식 처분 결정",
+     "publishedAt": "2026-11-11T16:55:25+09:00",
+     "word": "자기주식"
+    },
+    {
+     "code": "093050",
+     "title": "(주)LF 감자 결정(자율공시)(종속회사의 주요경영사항)",
+     "publishedAt": "2026-11-11T16:51:41+09:00",
+     "word": "감자"
+    },
     {
      "code": "281820",
      "title": "(주)케이씨텍 자기주식취득 신탁계약 체결 결정",
@@ -299,18 +311,6 @@
      "title": "주식회사 에프앤에프 주식 소각 결정",
      "publishedAt": "2026-11-10T06:51:43+09:00",
      "word": "소각"
-    },
-    {
-     "code": "403870",
-     "title": "주식회사 에이치피에스피 자기주식 처분 결정",
-     "publishedAt": "2026-11-10T06:51:41+09:00",
-     "word": "자기주식"
-    },
-    {
-     "code": "096530",
-     "title": "(주)씨젠 자기주식 처분 결정",
-     "publishedAt": "2026-11-10T06:51:39+09:00",
-     "word": "자기주식"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-11",
-     "value": 1335.7,
+     "value": 1334.8,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
