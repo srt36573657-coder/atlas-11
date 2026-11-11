@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-next-grow-check-1",
  "base": "http://127.0.0.1:8826",
- "asOf": "2026-11-10",
+ "asOf": "2026-11-11",
  "companies": 2557,
  "of": 2557,
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-11T02:10:00.989Z",
+ "at": "2026-11-11T06:47:12.517Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,17 +32,17 @@
    }
   }
  },
- "seconds": 70,
- "secondsSum": 210,
+ "seconds": 61,
+ "secondsSum": 181,
  "time": {
-  "old": 173.5,
-  "new": 173.8,
-  "wall": 70.3,
-  "wallSum": 210.6,
+  "old": 153.6,
+  "new": 154,
+  "wall": 60.6,
+  "wallSum": 181.4,
   "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 82.4,
-  "oldShare": 50
+  "oldPct": 84.7,
+  "oldShare": 49.9
  },
  "net": {
   "req": 5280,
@@ -58,14 +58,14 @@
   }
  },
  "counts": {
-  "맞댄 글 낱낱": 43387,
-  "맞댄 숫자 낱말": 80068,
+  "맞댄 글 낱낱": 45948,
+  "맞댄 숫자 낱말": 90312,
   "이야기 있는 회사": 61,
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
    "use": false,
-   "why": "바뀐 파일 1개(/atlas/data/core.json)",
+   "why": "바뀐 파일 856개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json) | 바뀐 파일 855개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
    "made": null,
    "inputs": 2596,
    "reads": 2557,
@@ -81,7 +81,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 70,
+   "seconds": 60,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -94,7 +94,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 70,
+   "seconds": 60,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -107,7 +107,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 70,
+   "seconds": 61,
    "mine": 856,
    "kinds": {
     "c": 852,
