@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-11T02:52:28.548Z",
+ "at": "2026-11-11T11:41:05.281Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -14,28 +14,28 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "range": true,
-  "grow": true,
-  "rivals": true,
-  "cal": true,
-  "cond": true,
   "surge": true,
+  "cond": true,
+  "cal": true,
+  "range": true,
+  "rivals": true,
   "past": true,
-  "theme": true,
-  "up": true,
-  "info": true,
-  "gdr": true,
-  "why": true,
+  "share": true,
   "hold": true,
+  "co": true,
+  "theme": true,
+  "talk": true,
+  "grow": true,
   "time": true,
+  "up": true,
+  "gdr": true,
   "roman": true,
   "today": true,
-  "talk": true,
-  "x": true,
-  "co": true,
+  "why": true,
+  "info": true,
   "chx": true,
-  "share": true,
-  "sage": true
+  "sage": true,
+  "x": true
  },
  "edge": true,
  "only": null,
@@ -44,14 +44,14 @@
  "full": false,
  "units": {
   "total": 13645,
-  "hash": "b2760d7d618b8eaa",
+  "hash": "014642088bd77289",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 1171,
- "secondsSum": 3130,
+ "seconds": 1061,
+ "secondsSum": 3100,
  "shards": [
   {
    "shard": "1/3",
@@ -60,10 +60,10 @@
    "routes": 4580,
    "screens": 4581,
    "mine": 4580,
-   "seconds": 967,
+   "seconds": 985,
    "secs": {
-    "open": 0.6,
-    "routes": 965.2
+    "open": 2.1,
+    "routes": 981.8
    }
   },
   {
@@ -73,11 +73,11 @@
    "routes": 4564,
    "screens": 4628,
    "mine": 4565,
-   "seconds": 992,
+   "seconds": 1054,
    "secs": {
-    "open": 0.5,
-    "routes": 986.5,
-    "newwin": 3.5
+    "open": 0.8,
+    "routes": 1046.4,
+    "newwin": 5.2
    }
   },
   {
@@ -87,12 +87,12 @@
    "routes": 4505,
    "screens": 4669,
    "mine": 4500,
-   "seconds": 1171,
+   "seconds": 1061,
    "secs": {
-    "open": 0.5,
-    "routes": 1153.2,
-    "act": 6.7,
-    "edge": 7.9,
+    "open": 1.1,
+    "routes": 1045,
+    "act": 5.6,
+    "edge": 5.6,
     "grammar": 0
    }
   }
