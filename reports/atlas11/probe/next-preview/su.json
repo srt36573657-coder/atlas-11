@@ -1,21 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-11T06:34:39.207Z",
+ "at": "2026-11-11T08:09:09.071Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1581,
-  "fail": 2
+  "pass": 1620,
+  "fail": 0
  },
- "fails": [
-  [
-   "㉒ 넷째 창 자료 — su21.json lists.quiet · quiet",
-   "null"
-  ],
-  [
-   "㉒ 조용한 힘 장부 자료 — 꼴 · 판 날 차례 · 날마다 셋 · 산 값 = 값 줄",
-   "{\"kind\":\"quiet\",\"days\":[]}"
-  ]
- ],
+ "fails": [],
  "m": {
   "dropped": [],
   "data": {
@@ -23,13 +14,13 @@
    "near": 3,
    "money": [
     "한진칼",
-    "롯데칠성",
+    "하이트진로",
     "삼성에스디에스"
    ]
   },
   "home": {
-   "screens": 5.61,
-   "links": 56
+   "screens": 6.51,
+   "links": 64
   },
   "t21": {
    "listed": 2557,
@@ -45,9 +36,9 @@
     "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 240,
+    "labels": 280,
     "mucha": [],
-    "anim": 19,
+    "anim": 20,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -165,7 +156,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 1,
-    "orn": 7
+    "orn": 5
    }
   ],
   "hard": 0,
@@ -188,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 2420,
+   "lcp": 2476,
    "cls": 0.143,
-   "pic": 3034
+   "pic": 3053
   },
   "white": {
    "light #/": {
@@ -394,7 +385,7 @@
   },
   "price": {
    "#/": {
-    "cells": 42,
+    "cells": 49,
     "bad": 0,
     "note": [
      "현재가는 11월 6일 마지막 값이에요.",
@@ -1325,11 +1316,11 @@
    "both": false
   },
   "book": {
-   "days": 3,
-   "rows": 9,
+   "days": 4,
+   "rows": 12,
    "shapes": {
-    "up": 2,
-    "dn": 4,
+    "up": 3,
+    "dn": 6,
     "eq": 0,
     "one": 3
    },
@@ -1339,8 +1330,8 @@
   "bookFold": {
    "320": {
     "lim": 716,
-    "name": 724,
-    "line": 923
+    "name": 771,
+    "line": 950
    },
    "390": {
     "lim": 716,
@@ -1348,10 +1339,30 @@
     "line": 723
    }
   },
-  "quiet": null,
+  "quiet": {
+   "n": 7,
+   "pool": 20,
+   "steps": [
+    365,
+    342,
+    324,
+    40,
+    36,
+    22,
+    20,
+    20,
+    15,
+    7
+   ],
+   "rank": [
+    "1:미원에스씨",
+    "2:한일홀딩스",
+    "3:바이오노트"
+   ]
+  },
   "qbook": {
-   "days": 0
+   "days": 1
   }
  },
- "ok": false
+ "ok": true
 }
