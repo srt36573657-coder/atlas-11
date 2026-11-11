@@ -114,7 +114,7 @@ for (const width of [390, 360, 320]) {
   // 처음 쪽
   await open(p, '#/');
   const m0 = await measure(p); pageRules(m0, W + '처음');
-  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 7.8, W + '처음 쪽 7.8 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 「정보를 빼지 마라」 — 숫자마다 「그래서」 · 낱말 풀이 · 여섯 칸 지도 · 숨기지 않는 네 칸으로 한 화면 반 늘림 · 주문 1112-0253 쉬운 판 「칸 하나 읽는 법」 · 「될 듯은」 풀이로 0.3 화면 늘림 · 받은 자료와 글꼴에 따라 0.3 화면 오감)', String(m0.screens)); }
+  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 7.5, W + '처음 쪽 7.5 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 「정보를 빼지 마라」 — 숫자마다 「그래서」 · 낱말 풀이 · 여섯 칸 지도 · 숨기지 않는 네 칸으로 한 화면 반 늘림 · 받은 자료와 글꼴에 따라 0.3 화면 오감)', String(m0.screens)); }
   const ess = await p.evaluate(() => [1, 2, 3].map(i => document.querySelector(`#su [data-ess="${i}"]`)?.textContent ?? null));
   check(JSON.stringify(ess) === JSON.stringify(ESS), W + '처음 쪽 본질 세 줄 = essence.js', JSON.stringify(ess).slice(0, 200));
   if (width === 390) {
@@ -1111,7 +1111,7 @@ for (const width of [390, 360, 320]) {
     check(!bad.length, '㉒ 넷째 창 일곱 — 다른 세 창 밖 · 한 달 폭 10 아래 · 하루 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례 · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 · 걸러 온 길(따로 셈)', bad.slice(0, 6).join(' / '));
     const NFq = new Intl.NumberFormat('ko-KR'), one = v => (Math.round(v * 10) / 10).toLocaleString('ko-KR');
     const wantRow = (c, j) => { const w = c.why, n = w.f + w.i;
-      return {code: c.code, href: '#/c/' + c.code, pl: j < 3 ? (j + 1) + '등' : String(j + 1), nm: c.name, l1: '한 달 흔들림: 100원에 ' + one(w.span20) + '원',
+      return {code: c.code, href: '#/c/' + c.code, pl: j < 3 ? (j + 1) + '등' : String(j + 1), nm: c.name, l1: '한 달 폭: 100원에 ' + one(w.span20) + '원',
         l2: w.p * 100 < 0.1 ? '이만큼 조용하기: 100번에 0.1번 아래' : '이만큼 조용하기: 100번에 ' + one(w.p * 100) + '번',
         l3: (Number.isFinite(w.days) && w.days !== 5 ? w.days + '거래일' : '닷새') + ' 동안 외국인 · 기관 합쳐 ' + NFq.format(Math.abs(Math.round(n))) + '주 ' + (n > 0 ? '들어왔어요' : n < 0 ? '나갔어요' : '그대로예요'), sp: true}; };
     const nNowQ = ['hot', 'bloom', 'money'].reduce((a, k) => a + Math.min(7, (T21q.lists?.[k] ?? []).length), 0) + Math.min(7, Lq.length);

@@ -26,10 +26,8 @@ const sgn = x => (fin(x) ? (x > 0 ? '+' : x < 0 ? '−' : '') + n1(Math.abs(x)) 
 /** 오른 만큼(퍼센트 수 x) → 「100원이 ○원」 */
 const won = x => '100원이 ' + n1(100 + x) + '원';
 const day = d => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) ? dateKo(d) : NEED);
-/** 억 원 → 큰 돈은 조 · 억 말로(쉬운 판 · 주문 1112-0253 · 조사 089 「47,141억」보다 「4조 7,141억」 — 맞춤법 제44항 만 단위) */
-const joEok = v => { const a = Math.abs(Math.round(v)), j = Math.floor(a / 10000), r = a % 10000; return (v < 0 ? '-' : '') + (j ? num(j) + '조' + (r ? ' ' : '') : '') + (r || !j ? num(r) + '억' : '') + ' 원'; };
-const eok = v => (fin(v) ? joEok(v) : NEED);
-const eokS = v => (fin(v) ? (v < 0 ? joEok(-v) + ' 적자' : joEok(v)) : NEED); // 이익이 0 아래면 「적자」(「-」 표시 대신)
+const eok = v => (fin(v) ? num(Math.round(v)) + '억 원' : NEED);
+const eokS = v => (fin(v) ? (v < 0 ? num(Math.round(-v)) + '억 원 적자' : num(Math.round(v)) + '억 원') : NEED); // 이익이 0 아래면 「적자」(「-」 표시 대신)
 const share = v => '100주에 ' + num(Math.round(v * 100) / 100) + '주';
 /** 받침 — 숫자는 읽는 소리 끝(일 · 삼 · 육 · 칠 · 팔 · 십 · 백 = 받침) · 한글은 끝 글자 */
 const jong = t => { t = String(t); const d = /(\d+)$/.exec(t); if (d) { const v = +d[1]; return v % 10 === 0 || [1, 3, 6, 7, 8].includes(v % 10); } const ch = t.charCodeAt(t.length - 1); return ch >= 0xAC00 && ch <= 0xD7A3 && (ch - 0xAC00) % 28 !== 0; };

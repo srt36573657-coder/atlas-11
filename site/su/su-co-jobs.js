@@ -10,7 +10,7 @@
    그리기: s() 만(createElementNS · setAttribute) · 색 · 움직임은 su-co-jobs.css 에만(움직임 줄이기면 끝 모습) · 아무 수 0 · 옛 아이폰 사파리를 위해 뒤돌아보기 글꼴 · .at() · ??= 없음 */
 import {s} from '/su/su-fig.js';
 import {CODE, pct, dateKo, coLine, idxLine} from '/su/su-data.js';
-import {NEED, num, joEok} from '/su/su-six.js';
+import {NEED, num} from '/su/su-six.js';
 import {KIND} from '/su/su-21.js';
 
 export const CSS = '/su/su-co-jobs.css';
@@ -79,7 +79,7 @@ function model(d) {
     const cvp = k === 'money' ? (fin(w.gain) ? ['20거래일', dk(asOf.mkt)] : null) : k === 'hot' ? (fin(x.ch20) ? ['20거래일', dk(x.date)] : null) : null;
     const ivL = k === 'hot' ? '업종' : '시장보다', ivN = k === 'hot' ? sgnP(w.ind20) : sgn(w.indX);
     return {k, kind: KIND[k], n: lists[k].length, ind: x.ind || ind || NEED, iv: ivL + ' ' + ivN, ivL, ivN,
-      name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + joEok(w.gain) : NEED) : k === 'bloom' ? '아직 싹' : sgnP(x.ch20), ivp, cvp};
+      name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : sgnP(x.ch20), ivp, cvp};
   });
   // 현재가 = 첫 페이지 칸과 같은 값(주문 0200 · 사장님 2026-11-09 02:00 「어」 — 물음 「회사 쪽 현재가도 첫 페이지와 같은 날 값으로 맞출까요?」)
   //   42칸에 든 회사는 그날 판 값(su21.json · su21-next.json 의 close · date = asOf.board) · 아니면 회사 자료 c.price 그대로 · 장 중에는 live() 가 1분마다 바꿈

@@ -13,8 +13,8 @@ const NF = new Intl.NumberFormat('ko-KR');
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
 const md = d => (DAY.test(d ?? '') ? +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일' : '?');
 const one = v => Math.round(v * 10) / 10;
-/** 한 달 흔들림(옛 「한 달 폭」) — 가장 낮은 값을 100원으로 칠 때 가장 높은 값까지 몇 원(「%」 없이) */
-export const spanSay = sp => (fin(sp) ? '한 달 흔들림: 100원에 ' + one(sp).toLocaleString('ko-KR') + '원' : '한 달 흔들림: 확인 필요'); // 쉬운 판(주문 1112-0253) — 「폭」 → 사이트 쉬운 말 「흔들림」(첫 페이지 칸 「흔들림 4.3%」와 같은 이름)
+/** 한 달 폭 — 가장 낮은 값을 100원으로 칠 때 가장 높은 값까지 몇 원(「%」 없이) */
+export const spanSay = sp => (fin(sp) ? '한 달 폭: 100원에 ' + one(sp).toLocaleString('ko-KR') + '원' : '한 달 폭: 확인 필요');
 /** 이만큼 조용하기 — 몬테카를로 10만 번 가운데 지금 폭 이하가 나온 몫을 100번에 몇 번으로 */
 export const rareSay = p => (!fin(p) ? '이만큼 조용하기: 확인 필요' : p * 100 < 0.1 ? '이만큼 조용하기: 100번에 0.1번 아래' : '이만큼 조용하기: 100번에 ' + one(p * 100).toLocaleString('ko-KR') + '번');
 /** 닷새 동안 외국인 · 기관 — 더한 주식 수(들어옴 · 나감) */

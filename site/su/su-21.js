@@ -4,7 +4,7 @@
    → ⑥ 「왜 사?」 #/q/<번호>(su-why.js) → ⑦ 매매일지 · 내 종목 점검 #/j → ⑧ 친구에게 #/f(카톡 · 커피 쿠폰 · 상품권 · 소개 영상 · 만수르 · 영어 · 진화)
    자료 /su/data/su21.json(scripts/atlas11/next/su21.py — 상장 2,557곳 → 우량주 365곳(n365-v1) → 불장 7 · 꽃이 될 7 · 돈이 몰리는 7 · 겹침) · 숫자는 자료 그대로 */
 import {h, s} from '/su/su-fig.js';
-import {NEED, val, num, ymd, joEok} from '/su/su-six.js';
+import {NEED, val, num, ymd} from '/su/su-six.js';
 import {NAME, josa as josaH} from '/next/brand.js';
 /** 토씨 — 이름 끝이 영어 · 숫자면 읽는 소리로 받침을 봄(CJ ENM 「엠」→ 은 · KT&G 「지」→ 는 · 받침 소리 L M N R 과 0 1 3 6 7 8) · 한글 끝은 brand.js 그대로 */
 const JPAIR = {은: ['은', '는'], 는: ['은', '는'], 이: ['이', '가'], 가: ['이', '가'], 을: ['을', '를'], 를: ['을', '를'], 과: ['과', '와'], 와: ['과', '와']};
@@ -60,19 +60,19 @@ export function why21(c, k, T) {
       + '뿐이라, ' + (CUR(T) ? '' : '드문 ') + '차례로 ' + mcOrd(c) + '예요.';
     if (k === 'hot') return c.ind + ' 업종은 불장 업종이에요. ' + josa(c.name, '은') + ' 20거래일 동안 ' + (fin(c.ch20) ? won100(c.ch20) + '이 될 만큼 올랐어요. ' : '오른 만큼은 ' + NEED + '예요. ') + mc;
     if (k === 'bloom') return josa(c.name, '은') + ' 아직 「싹」이에요. ' + c.ind + ' 업종이 20거래일 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc;
-    if (k === 'money') return c.ind + ' 업종이 20거래일 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' 그 업종에서 ' + c.name + '의 회사 크기가 20거래일 동안 ' + joEok(w.gain) + ' 늘어 가장 많았어요.';
+    if (k === 'money') return c.ind + ' 업종이 20거래일 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' 그 업종에서 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.';
     if (k === 'hotNext') return josa(c.name, '은') + ' 불장 일곱 밖에서 닷새 동안 ' + (fin(w.r5) ? won100(w.r5) + '이 될 만큼 올랐어요. ' : '오른 만큼은 ' + NEED + '예요. ') + mc + ' ' + pastLine(k, T);
-    if (k === 'moneyNext') return c.ind + ' 업종이 닷새 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' 그 업종에서 ' + c.name + '의 회사 크기가 닷새 동안 ' + joEok(w.gain) + ' 늘어 가장 많았어요. ' + pastLine(k, T);
+    if (k === 'moneyNext') return c.ind + ' 업종이 닷새 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' 그 업종에서 ' + c.name + '의 회사 크기가 닷새 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요. ' + pastLine(k, T);
     return josa(c.name, '은') + ' 아직 「싹」이에요. 닷새 동안 시장보다 ' + sgn(c.mc?.stat) + ' 앞섰어요. ' + mc + ' ' + pastLine(k, T);
   }
   if (k === 'hotNext') return (w.how === 'rank' ? c.ind + ' 업종은 불장 업종이에요. ' + josa(c.name, '은') + ' 그 안에서 20거래일 동안 오른 차례가 ' + w.rank + '번째라 불장 일곱 바로 아래예요.'
     : josa(c.name, '은') + ' 닷새 동안 ' + (fin(w.r5) ? won100(w.r5) + '이 될 만큼' : '') + ' 막 오르기 시작했어요. ' + c.ind + ' 업종도 닷새 동안 올랐어요.') + ' ' + pastLine(k, T);
-  if (k === 'moneyNext') return (w.how === 'rank' ? c.ind + ' 업종은 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 돈이 몰리는 일곱 바로 아래 업종(' + w.rank + '번째)이에요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + joEok(w.gain) + ' 늘어 가장 많았어요.'
-    : c.ind + ' 업종 365곳 가운데 ' + c.name + '의 회사 크기가 닷새 동안 ' + joEok(w.gain) + ' 늘어 가장 많았어요.') + ' ' + pastLine(k, T);
+  if (k === 'moneyNext') return (w.how === 'rank' ? c.ind + ' 업종은 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 돈이 몰리는 일곱 바로 아래 업종(' + w.rank + '번째)이에요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.'
+    : c.ind + ' 업종 365곳 가운데 ' + c.name + '의 회사 크기가 닷새 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.') + ' ' + pastLine(k, T);
   if (k === 'bloomNext') return josa(c.name, '은') + ' 아직 「싹」이에요. 한 달 동안 시장보다 앞선 만큼이 5 아래예요. ' + (w.how === 'main' ? '닷새 동안은 시장보다 ' + sgn(w.x5) + ' 앞섰고 20거래일 동안 올랐어요.' : '회사 크기가 위 20 안이고 닷새 동안 시장보다 ' + sgn(w.x5) + ' 앞섰어요.') + ' ' + pastLine(k, T);
   if (k === 'hot') return c.ind + ' 업종 평균(365곳 안)이 지난 20거래일 동안 ' + (fin(w.ind20) ? won100(w.ind20) + '이 될 만큼 움직였어요.' : '얼마나 움직였는지는 ' + NEED + '예요.') + ' 그 가운데 ' + josa(c.name, '은') + ' ' + day(c.date) + '까지 20거래일 동안 ' + (fin(c.ch20) ? won100(c.ch20) + '이 될 만큼 올라' : '오른 만큼은 ' + NEED + '이지만') + ' 불장 7곳에 들었어요.';
   if (k === 'bloom') return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. ' + josa(c.name, '은') + ' 아직 「싹」이에요. ' + (w.full ? '꽃 조건을 모두 채웠어요.' : '꽃 조건을 다 채우지는 못한, 가장 가까운 곳이에요.');
-  return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + joEok(w.gain) + ' 늘어 가장 많았어요.';
+  return c.ind + ' 업종이 한 달 동안 시장보다 ' + sgn(w.indX) + ' 더 갔어요. 그 업종 365곳 가운데 ' + c.name + '의 회사 크기가 20거래일 동안 ' + num(w.gain) + '억 원 늘어 가장 많았어요.';
 }
 const six21 = (c, k, T) => ({누가: c.name + ' · ' + c.ind + ' 업종', 언제: day(T?.asOf?.board) + ' 자료', 어디서: '우량주 365곳 안(' + (c.land ?? NEED) + ')', 무엇을: KIND[k] + ' 7곳에 들었어요', 어떻게: T?.rules?.[k] ?? null, 왜: why21(c, k, T)});
 
@@ -206,7 +206,7 @@ export async function v21Next(X) {
     ...X.artHero('su-apple', null, X.fig('21', [grid21(T, KEYN)], {label: '될 듯 21곳', hero: true, cap: [FILT(T) ? '일곱 바로 앞에 선 곳 가운데 기준 31가지를 모두 지난 곳만 남겼어요.' : '지금 불장 · 꽃 · 돈이 몰리는 일곱 바로 앞에 선 곳을 7곳씩 골랐어요.', '지난 1년 기록으로 고른 셈이에요.', '앞날을 맞히는 목록이 아니에요.']}), {mode: 'next'}),
     mids, pro: [...KEYN.map(k => ({k: KIND[k], v: (T.lists[k] ?? []).length + '곳', how: (T.rules?.[k] ?? NEED) + (P[k] ? ' · 지난 1년(' + P.from + ' ~ ' + P.to + ') ' + num(P[k].n) + '번 가운데 ' + num(P[k].hit) + '번 · 아무 회사 100번에 ' + P[k].base100 + '번' : '')})),
       {k: '셈한 기록', v: (P.days ?? NEED) + '날', how: (P.universe ?? NEED) + ' · ' + (P.src ?? NEED)},
-      ...KEYN.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: k === 'moneyNext' ? (fin(c.why?.gain) ? '+' + joEok(c.why.gain) : NEED) : k === 'hotNext' ? sgn(c.why?.r20) : sgn(c.why?.x5), how: why21(c, k, T)})))],
+      ...KEYN.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: k === 'moneyNext' ? (fin(c.why?.gain) ? '+' + num(c.why.gain) + '억 원' : NEED) : k === 'hotNext' ? sgn(c.why?.r20) : sgn(c.why?.x5), how: why21(c, k, T)})))],
     after: [X.essBox(S)], act: [modeBar(true)],
     next: {href: '#/m', label: '21곳은 어느 땅에 있나?', step: 2, k: '2 / 8'}, asOf: T.asOf.board, S, note: '될 듯 21곳은 ' + day(T.asOf.board) + ' 자료와 지난 1년 기록으로 고른 곳이에요. 앞날을 맞히는 목록이 아니에요.'};
 }
@@ -285,7 +285,7 @@ function whyRoad(rows) {
   return s('svg', {class: 'su-svg su-why21s', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '21곳에 든 이유 길 — ' + rows.map(([k, c]) => c.ind + ' 업종 → ' + c.name + ' → ' + KIND[k]).join(' · ')},
     rows.map(([k, c], i) => { const x = cols[i], w = c.why ?? {};
       const iv = k === 'hot' ? '업종 ' + sgnP(w.ind20) : k === 'hotNext' ? (w.how === 'rank' ? '불장 업종' : '업종 닷새 ' + sgnP(w.ind5)) : k === 'bloomNext' ? '아직 싹' : '시장보다 ' + sgn(w.indX);
-      const cv = k === 'money' || k === 'moneyNext' ? (fin(w.gain) ? '+' + joEok(w.gain) : NEED) : k === 'bloom' ? '아직 싹' : k === 'bloomNext' ? '닷새 ' + sgn(w.x5) : k === 'hotNext' ? sgnP(w.r20) : sgnP(c.ch20);
+      const cv = k === 'money' || k === 'moneyNext' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : k === 'bloomNext' ? '닷새 ' + sgn(w.x5) : k === 'hotNext' ? sgnP(w.r20) : sgnP(c.ch20);
       return s('g', {}, s('path', {d: `M${x} ${ys[0]} C ${x - 40} ${ys[0] + 60}, ${x + 40} ${ys[1] - 60}, ${x} ${ys[1]} S ${x - 40} ${ys[2] - 60}, ${x} ${ys[2]}`, class: 'g-road b1 a-draw', pathLength: 1}),
         s('circle', {cx: x, cy: ys[0], r, class: 'g-basefill b1 a-pop'}), label(x, ys[0], c.ind, 'b1'), val(x, ys[0], iv, 'b1'),
         s('circle', {cx: x, cy: ys[1], r: r + 4, class: 'g-ok b2 a-pop'}), label(x, ys[1], c.name, 'b2'), val(x, ys[1], cv, 'b2'),

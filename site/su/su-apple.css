@@ -17,9 +17,6 @@
 .su-apple .sa-kh { font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; }
 .su-apple .sa-name { font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
 .su-apple .sa-val { font-size: 18px; font-weight: 600; }
-.su-apple .sa-val.sa-v17 { font-size: 17px; } /* 쉬운 판(주문 1112-0253) — 이름 붙인 값(「한 달 +33.9%」)이 18 로 자리에 안 들 때 */
-.su-apple .sa-howbox { fill: #FFFFFF; stroke: #AEAEB2; stroke-width: 1.5; stroke-dasharray: 6 5; } /* 칸 하나 읽는 법 — 본보기 칸(점선 = 진짜 칸 아님) */
-.su-apple .sa-howl { font-size: 17px; font-weight: 600; fill: #3A3A3C; }
 .su-apple .sa-val-now { fill: #B4570A; }
 .su-apple .sa-val-next { fill: #6E6E73; }
 .su-apple .sa-bloomv { fill: #2E7D32; }
