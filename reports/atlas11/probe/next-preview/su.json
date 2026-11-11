@@ -1,17 +1,12 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-11T19:29:44.224Z",
+ "at": "2026-11-11T21:07:14.940Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1621,
-  "fail": 1
+  "pass": 1622,
+  "fail": 0
  },
- "fails": [
-  [
-   "느린 4G 가장 큰 그림 2.5초 안",
-   "3048ms"
-  ]
- ],
+ "fails": [],
  "m": {
   "dropped": [],
   "data": {
@@ -41,15 +36,15 @@
     "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 315,
+    "labels": 318,
     "mucha": [],
-    "anim": 25,
+    "anim": 28,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
     "glossed": 10,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "땅 지도",
@@ -97,7 +92,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 10,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "한진칼 출목표",
@@ -184,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 3048,
+   "lcp": 2280,
    "cls": 0.143,
-   "pic": 3032
+   "pic": 3257
   },
   "white": {
    "light #/": {
@@ -1369,5 +1364,5 @@
    "days": 2
   }
  },
- "ok": false
+ "ok": true
 }

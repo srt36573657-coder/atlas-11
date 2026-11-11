@@ -1,11 +1,11 @@
 {
  "schema": "godori-check-share-1",
- "at": "2026-11-11T19:31:14.167Z",
+ "at": "2026-11-11T21:08:29.784Z",
  "base": "http://127.0.0.1:8826",
  "path": "/next/?dev=1",
  "all": true,
  "code": "005930",
- "secs": 148,
+ "secs": 149,
  "counts": {
   "거르기 맞댐": 33,
   "모양 파일 글씨 크기 줄": 39,
@@ -43,7 +43,7 @@
   "taps": 2,
   "picker": true,
   "after": {
-   "y": 2523,
+   "y": 2601,
    "top": 550,
    "sameSpot": true,
    "fireworks": 0
