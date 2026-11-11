@@ -15,7 +15,7 @@
   "323280",
   "000040"
  ],
- "made": "2026-11-11T02:10:01.091Z",
+ "made": "2026-11-11T06:47:12.612Z",
  "shard": "all/3",
  "units": {
   "total": 2562,
@@ -36,17 +36,17 @@
    }
   }
  },
- "sec": 167,
- "secondsSum": 496,
+ "sec": 213,
+ "secondsSum": 633,
  "time": {
-  "old": 164.1,
-  "new": 372.2,
-  "wall": 166.8,
-  "wallSum": 495.7,
+  "old": 265.7,
+  "new": 483.4,
+  "wall": 212.9,
+  "wallSum": 632.4,
   "opensOld": 25573,
   "opensNew": 33284,
-  "oldPct": 33.1,
-  "oldShare": 30.6
+  "oldPct": 42,
+  "oldShare": 35.5
  },
  "net": {
   "req": 2566,
@@ -63,22 +63,389 @@
  },
  "counts": {
   "맞댄 칸": 191775,
-  "숫자 낱말": 401879,
+  "숫자 낱말": 416836,
   "맨 위 결 한 줄": 7671,
   "선 누르기": 7671,
   "화면(기간)": 7671,
   "회사": 2557,
+  "fail": 84,
   "폭 화면": 120,
   "없는 번호": 1
  },
- "fails": [],
- "warn": [],
+ "fails": [
+  [
+   "옛 쪽이 덜 그려짐",
+   "050090 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "050090 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "050090 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "043340 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "043340 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "043340 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "009140 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "009140 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "009140 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "018000 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "018000 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "018000 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "037330 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "037330 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "037330 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "057540 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "057540 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "057540 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "095910 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "095910 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "095910 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "290650 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "290650 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "290650 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "011810 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "011810 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "011810 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "027830 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "027830 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "027830 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "033050 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "033050 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "033050 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "033340 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "033340 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "033340 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "058820 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "058820 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "058820 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "072770 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "072770 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "072770 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "215790 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "215790 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "215790 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "254120 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "254120 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "254120 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "288980 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "288980 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "288980 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "368600 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "368600 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "368600 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "418620 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "418620 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "418620 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "023150 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "023150 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "023150 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "043610 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "043610 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "043610 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "052400 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "052400 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "052400 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "093240 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "093240 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "093240 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "099520 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "099520 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "099520 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "115180 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "115180 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "115180 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "117670 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "117670 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "117670 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "205100 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "205100 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "205100 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ],
+  [
+   "옛 쪽이 덜 그려짐",
+   "290560 20거래일 [3,2,2,1,4]"
+  ],
+  [
+   "선을 누른 날 값",
+   "290560 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
+  ],
+  [
+   "새 쪽 화면 오류",
+   "290560 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
+  ]
+ ],
+ "warn": [
+  "옛 쪽 화면 오류 050090 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 043340 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 009140 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 018000 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 037330 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 057540 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 095910 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 290650 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 011810 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 027830 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 033050 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 033340 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 058820 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 072770 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 215790 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 254120 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 288980 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 368600 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 418620 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 023150 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 043610 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 052400 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 093240 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 099520 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 115180 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 117670 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 205100 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu",
+  "옛 쪽 화면 오류 290560 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
+ ],
  "shards": [
   {
    "shard": "1/3",
-   "ok": true,
-   "fails": 0,
-   "seconds": 164,
+   "ok": false,
+   "fails": 24,
+   "seconds": 210,
    "mine": 854,
    "kinds": {
     "c": 853,
@@ -88,9 +455,9 @@
   },
   {
    "shard": "2/3",
-   "ok": true,
-   "fails": 0,
-   "seconds": 165,
+   "ok": false,
+   "fails": 33,
+   "seconds": 210,
    "mine": 854,
    "kinds": {
     "c": 852,
@@ -100,9 +467,9 @@
   },
   {
    "shard": "3/3",
-   "ok": true,
-   "fails": 0,
-   "seconds": 167,
+   "ok": false,
+   "fails": 27,
+   "seconds": 213,
    "mine": 854,
    "kinds": {
     "c": 852,
@@ -112,5 +479,5 @@
   }
  ],
  "problems": [],
- "ok": true
+ "ok": false
 }
