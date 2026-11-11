@@ -1,5 +1,5 @@
 {
- "sec": 47,
+ "sec": 63,
  "quick": false,
  "accept": {
   "css": {
@@ -47,7 +47,7 @@
   "leftScreens": 113
  },
  "timing": {
-  "flowMs": 864,
+  "flowMs": 996,
   "taps": 23,
   "qTaps": 22,
   "qTapsOneTap1018": 11
