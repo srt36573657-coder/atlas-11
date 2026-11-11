@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-11T11:45:22.599Z",
+ "at": "2026-11-11T13:40:44.513Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 1618,
@@ -14,12 +14,12 @@
    "near": 3,
    "money": [
     "한진칼",
-    "하이트진로",
-    "삼성에스디에스"
+    "삼성에스디에스",
+    "삼양식품"
    ]
   },
   "home": {
-   "screens": 6.48,
+   "screens": 6.45,
    "links": 65
   },
   "t21": {
@@ -44,7 +44,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 8,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "땅 지도",
@@ -140,7 +140,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 4,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "친구에게",
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 2436,
+   "lcp": 2500,
    "cls": 0.143,
-   "pic": 3010
+   "pic": 3107
   },
   "white": {
    "light #/": {
@@ -1256,7 +1256,7 @@
     ]
    },
    "daysFrom": "2026-10-02",
-   "screens": 3.32,
+   "screens": 3.29,
    "pages": 42,
    "reasons": 1512
   },
@@ -1292,12 +1292,12 @@
   "kr7": {
    "cards": 7,
    "rows": 7,
-   "screens": 17.35
+   "screens": 17.32
   },
   "ant11": {
    "cards": 11,
    "rows": 11,
-   "screens": 20.04
+   "screens": 20
   },
   "coLive": {
    "a": {
