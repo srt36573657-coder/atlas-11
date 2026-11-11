@@ -276,16 +276,7 @@ def cu_of(c):
             'v': {'dd': f1_(v['dd'][j] * 100), 'br20': f1_(v['br20'][j] * 100), 'br5': f1_(v['br5'][j] * 100), 'x20': f1_(v['x20'][j] * 100), 'casc': int(v['casc'][j]),
                   'rank': int(v['rank'][j]), 'mx5': f1_((_np.exp(v['mx5'][j]) - 1) * 100) if _np.isfinite(v['mx5'][j]) else None, 'nbig': int(v['nbig'][j])}}
 MC365 = MC.scan(CTX) if A.mc365 else None
-# ⑧ 주문 1111-1334(사장님 2026-11-11 13:34 「조용한데 에너지가 모이는 주식창을 하나더 만들어라 그래서 총 28개로 만들고 몬태카를로 소거법으로을 찾아내라 그러면서 이것을 ㅊ 적하는 별도에 달력을 만들어라 잡스라면」)
-#   넷째 창 「조용한데 힘이 모이는」 일곱(su21_quiet) — 소거 일곱(값 · 다른 세 창 밖 · 한 달 잠잠 · 튀는 날 없음 · 몸집 · 외국인과 기관이 들어옴 · 1년 기록)
-#   → 몬테카를로 10만 번(지난 1년 흔들림으로 보아 지금 한 달 폭이 얼마나 드물게 좁은가) → 소거 한 번 더(다섯 번에 한 번보다 흔하면 뺌) → 드문 차례 · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등
-#   지금 28곳 = 불장 7 · 꽃이 될 7 · 돈이 몰리는 7 · 조용한데 힘이 모이는 7 · 1 · 2 · 3등(42칸 1억 번 셈)과 그 장부는 그대로
-import su21_quiet as QU
-try: Q = QU.find(CTX, B, CL, late, opens, cap, set(HOT) | set(BLOOM) | set(MONEY), INDN, b['asOf'])
-except Exception as e: # 넷째 창 셈이 넘어져도 세 창 · 판은 그대로(빈 넷째 창 — 화면은 「받지 못했어요」 · 검사 ㉒ 가 실패로 알림)
-    print('넷째 창 셈 실패 —', repr(e)[:200]); Q = {'list': [], 'why': {}, 'steps': [('우량주', len(B))], 'mc': {}, 'pool': 0, 'capcut': 0}
-QUIET = Q['list']
-lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN, 'quiet': QUIET}
+lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN}
 # ④ 42칸 1등 · 2등 · 3등(올릴 때 --top3) — 칸마다 우연 길 10만 개 → 1억 판 소거 → 끝까지 남은 횟수 차례
 import su21_top3 as TOP3
 CELLS = [(k, c) for k in ('hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext') for c in lists[k]]
@@ -294,7 +285,6 @@ PLACE = {(r['k'], r['code']): r['place'] for r in (T3 or {}).get('rank', [])}
 NOW3 = ('hot', 'bloom', 'money')
 inl = collections.defaultdict(list)
 for k, L in lists.items():
-    if k == 'quiet': continue # 넷째 창(주문 1111-1334)은 겹침 · 서로 다른 수 · 칸 'in'(「왜?」 쪽 「두 목록」)에 넣지 않음 — 지금 셋 밖에서만 고르고(소거 q2) 될 듯 셋과 겹쳐도 따로 셈
     for c in L: inl[c].append(k)
 land_of = {}
 for G in lands:
@@ -302,9 +292,6 @@ for G in lands:
 
 HEAVY = ('c', 'cFrom', 'cd', 'flows', 'news', 'pos52', 'close', 'cu') # cu(문화 흔적 · 주문 1912)는 su21-cu.json 에 따로(첫 화면이 가볍게)
 slim = lambda co: {k: v for k, v in co.items() if k not in HEAVY}
-QKEEP = ('code', 'name', 'ind', 'kind', 'in', 'close', 'date', 'c', 'cFrom', 'cd', 'why', 'r3q') # 넷째 창 칸(주문 1111-1334) — 그림(값 · 21 값) · #/s(까닭 why · 등수 r3q)가 쓰는 것만 · 수급은 why 에(f · i · 날)
-QWHY = ('place', 'r20', 'span20', 'day5', 'p', 'rare', 'f', 'i', 'days') # 까닭 가운데 화면 · 검사 ㉒ 가 쓰는 것만(첫 화면 자료를 가볍게 — 느린 4G)
-qslim = lambda co: {k: ({x: co[k][x] for x in QWHY if x in co[k]} if k == 'why' and isinstance(co[k], dict) else co[k]) for k in QKEEP if k in co}
 # 21 마지막 값의 날짜(주문 0806 · 사장님 2026-11-09 08:06 「어 그렇게 해」 — 회사 쪽 한 달 꺾은선도 첫 페이지와 같은 값 · 처음 날 · 끝 날도 같게)
 #   같은 판에서 나온 회사 파일(view/stocks/<번호>.json closes60 · 같은 boardId)의 마지막 21줄 — 값 21개가 판 c 와 모두 같고 첫 날 = cFrom · 끝 날 = date 일 때만 · 아니면 None
 def cdOf(c):
@@ -318,11 +305,9 @@ def cdOf(c):
     return ds
 def item(c, k):
     v = B[c]; ind = v['group']['label']; L = land_of.get(ind)
-    mcv = ({**Q['mc'][c], 'ord': QUIET.index(c) + 1, 'pool': Q['pool'], 'pm': None} if k == 'quiet' else # 주문 1111-1334 — 넷째 창은 「한 달 폭이 얼마나 드물게 좁은가」 셈(su21_quiet)
-           {**MC.mc(CTX, c, k), 'ord': ORD.get(k, {}).get((MK.get(c) or {}).get('i') if k in ('money', 'moneyNext') else c), 'pool': len(POOL.get(k, [])),
-            'pm': None if PMK.get((k, c)) is None else round(PMK[(k, c)], 6)})
-    co = {'code': c, 'name': nm(c), 'ind': ind, 'land': L['name'] if L else None, 'landId': L['id'] if L else None, 'kind': v.get('kind'), 'in': ['quiet'] if k == 'quiet' else inl.get(c, []),
-          'mc': mcv, 'r3': PLACE.get((k, c)), # 주문 1422 — 이 칸의 몬테카를로(드묾 p · 지금 값 · 바탕 날 수) · 1억 판 1등 · 2등 · 3등(아니면 None) · 주문 1912 pm = 365곳 모두의 길과 견준 드묾
+    co = {'code': c, 'name': nm(c), 'ind': ind, 'land': L['name'] if L else None, 'landId': L['id'] if L else None, 'kind': v.get('kind'), 'in': inl[c],
+          'mc': {**MC.mc(CTX, c, k), 'ord': ORD.get(k, {}).get((MK.get(c) or {}).get('i') if k in ('money', 'moneyNext') else c), 'pool': len(POOL.get(k, [])),
+                 'pm': None if PMK.get((k, c)) is None else round(PMK[(k, c)], 6)}, 'r3': PLACE.get((k, c)), # 주문 1422 — 이 칸의 몬테카를로(드묾 p · 지금 값 · 바탕 날 수) · 1억 판 1등 · 2등 · 3등(아니면 None) · 주문 1912 pm = 365곳 모두의 길과 견준 드묾
           'cu': cu_of(c), # 주문 1912 — 이 칸에 보인 한국 투자자 문화 흔적(on) · 잰 값(v)
           'ch20': r1(v['change20'] * 100) if v.get('change20') is not None else None, 'close': v.get('close'), 'date': v.get('date'),
           'c': v.get('c'), 'cFrom': v.get('cFrom'), 'cd': cdOf(c), 'flows': (v.get('brief') or {}).get('flows'), 'news': {k2: (v.get('brief') or {}).get(k2) for k2 in ('newsCount', 'newsNamed')},
@@ -341,8 +326,6 @@ def item(c, k):
     elif k == 'moneyNext':
         how, i, gn, rk = mnrow[c]
         co['why'] = {'how': how, 'rank': rk, 'indX': i.get('x'), 'gain': gn}
-    elif k == 'quiet':
-        co['why'] = Q['why'][c]; co['r3q'] = Q['why'][c]['place'] # 넷째 창 1 · 2 · 3등(차례 첫 셋 · 따로 된 달력 su21_book --rank quiet)
     else:
         co['why'] = {'how': 'main' if c in b_main else 'cap', 'x20': r1(X20[c] * 100), 'x5': r1(X5[c] * 100), 'r20': r1(R20[c] * 100), 'capTop20': thr}
     return co
@@ -386,7 +369,7 @@ out = {
              if PASTS and PASTS.get('rule') == ST.RULE_ID else
              {'from': PAST['from'], 'to': PAST['to'], 'days': PAST['days'], 'within': PAST['within'], 'universe': PAST['universe'], 'src': 'reports/atlas11/su-next/past.json',
               'what': PAST['what'], **{g: {'n': v['picks'], 'hit': v['hits'], 'per100': round(v['per100']), 'base100': round(v['base100'])} for g, v in PAST['final'].items()}} if PAST else None),
-    'lists': {k: [{x: y for x, y in item(c, k).items() if x != 'cu'} for c in L] if k in NOW3 else [qslim(item(c, k)) for c in L] if k == 'quiet' else [slim(item(c, k)) for c in L] for k, L in lists.items()}, # 될 듯 셋은 가볍게(첫 화면 느린 휴대폰) — 21 마지막 값 · 수급 · 뉴스는 su21-next.json · 넷째 창(조용한데 힘이 모이는)은 그림 · #/s 가 쓰는 것만(까닭 why 에 외국인 · 기관)
+    'lists': {k: [{x: y for x, y in item(c, k).items() if x != 'cu'} for c in L] if k in NOW3 else [slim(item(c, k)) for c in L] for k, L in lists.items()}, # 될 듯 셋은 가볍게(첫 화면 느린 휴대폰) — 21 마지막 값 · 수급 · 뉴스는 su21-next.json
     'overlap': [{'code': c, 'name': nm(c), 'in': [k for k in ks if k in NOW3]} for c, ks in inl.items() if len([k for k in ks if k in NOW3]) > 1],
     'distinct': len([c for c, ks in inl.items() if any(k in NOW3 for k in ks)]),
     'overlapNext': [{'code': c, 'name': nm(c), 'in': [k for k in ks if k not in NOW3]} for c, ks in inl.items() if len([k for k in ks if k not in NOW3]) > 1],
@@ -408,13 +391,7 @@ CUOUT = {'schema': 'su21-cu-1', 'asOf': out['asOf'], 'rule': CUL.RULE_ID,
          'culture': {'eleven': 11, 'src': 'docs/design/su-culture-2026-11-09/traits11.md',
                      'traits': [{'k': k, 'name': CUL.NAME[k], 'say': CUL.SAY[k], 'use': CUL.USE[k], 'n365': int(_np.sum(CON[k])) if CON else None} for k in CUL.TRAITS],
                      'calib': (PASTC or {}).get('calib') if PASTC and PASTC.get('rule') == CUL.RULE_ID else None},
-         'cu': {k + ':' + c: cu_of(c) for k, L in lists.items() if k != 'quiet' for c in L}} # 넷째 창은 「왜?」 쪽이 없어 문화 흔적을 싣지 않음
-out['quiet'] = {'rule': QU.RULE_ID, 'paths': QU.PATHS, 'hist': QU.HIST, 'win': QU.WIN, 'pmax': QU.PMAX, 'move': QU.MOVE, 'capCut': Q['capcut'], 'pool': Q['pool'],
-                'crit': [{'id': i, 'name': n, 'say': s} for i, n, s in QU.QCRIT], 'steps': [{'name': n, 'n': k} for n, k in Q['steps']],
-                'rank': [{'place': j + 1, 'k': 'quiet', 'code': c, 'name': nm(c)} for j, c in enumerate(QUIET[:3])], # 따로 된 달력(su21_book --rank quiet)이 읽음
-                'say': '값은 잠잠한데 외국인과 기관이 들어온 곳 — 지난 1년 흔들림으로 보아 이만큼 조용하기가 드문 차례'}
-out['counts']['pools']['quiet'] = Q['pool']
-out['rules']['quiet'] = '소거 일곱: 값이 있음 · 다른 세 창 밖 · 한 달 오르내림 위아래 5 안 · 하루 오르내림 위아래 5 안 · 몸집 아래 열에 둘 밖 · 닷새 동안 외국인과 기관을 더하면 들어옴 · 1년 기록 → 몬테카를로 10만 번(지난 250거래일 하루 값을 20개씩 뽑은 길의 한 달 폭과 견줌) → 다섯 번에 한 번보다 흔한 조용함은 뺌 → 드문 차례 · 업종마다 둘'
+         'cu': {k + ':' + c: cu_of(c) for k, L in lists.items() for c in L}}
 out['top3'] = None if T3 is None else {'total': T3['total'], 'null': T3['null'], 'k': T3['k'], 'ok': T3['ok'], 'v': T3.get('v'), 'how': T3.get('how'), 'g': T3.get('g'), 'gn': T3.get('gn'),
              'rank': [{**r, 'name': nm(r['code'])} for r in T3['rank']],
              'cells': {r['k'] + ':' + r['code']: [r['first'], r['second'], r['third'], r['z']] for r in T3['cells']}}
@@ -423,5 +400,5 @@ json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separator
 json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 주문 1912 — 문화 일곱 · 칸마다 흔적(「왜?」 쪽만)
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음
-print('ok', {k: [nm(c) for c in L] for k, L in lists.items()}, 'quiet', [(n, k) for n, k in Q['steps']], 'distinct', len(inl), 'overlap', [o['name'] for o in out['overlap']], 'lands', len(lands_out),
+print('ok', {k: [nm(c) for c in L] for k, L in lists.items()}, 'distinct', len(inl), 'overlap', [o['name'] for o in out['overlap']], 'lands', len(lands_out),
       'top3', [(r['place'], r['k'], nm(r['code']), r['first']) for r in (T3 or {}).get('rank', [])])

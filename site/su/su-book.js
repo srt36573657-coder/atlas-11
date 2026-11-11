@@ -157,18 +157,11 @@ function monthFold(ym, days, C, R, secs) {
 
 function ensureCss() { if (typeof document !== 'undefined' && !document.querySelector(`link[href="${CSS}"]`)) document.head.append(Object.assign(document.createElement('link'), {rel: 'stylesheet', href: CSS})); }
 
-/** 달력 둘 — top3 = 1 · 2 · 3등 달력(42칸 1억 번 셈 · #/r/c) · quiet = 조용한 힘 달력(넷째 창 「조용한데 힘이 모이는」 몬테카를로 차례 첫 셋 · #/r/s
- *  주문 1111-1334 · 사장님 2026-11-11 13:34 「… 이것을 ㅊ 적하는 별도에 달력을 만들어라 잡스라면」) — 쪽 꼴 · 셈은 같고 자료 · 글만 다름 */
-export const BOOKS = Object.freeze({
-  top3: {src: '/su/data/su21-book.json', title: '1 · 2 · 3등 달력', intro: '큐피트가 날마다 고른 1 · 2 · 3등을 가짜 돈으로 주식 10주씩 산 셈이에요.',
-    miss: '1 · 2 · 3등 장부를 받지 못했어요. 다시 열어 주세요.', buy: '그 판 날 마지막 값으로', next: {href: '#/r', label: '지난 기록 한곳'}},
-  quiet: {src: '/su/data/su21-qbook.json', title: '조용한 힘 달력', intro: '조용한데 힘이 모이는 창의 1 · 2 · 3등을 가짜 돈으로 주식 10주씩 산 셈이에요.',
-    miss: '조용한 힘 장부를 받지 못했어요. 다시 열어 주세요.', buy: '조용한데 힘이 모이는 창의 몬테카를로 차례 첫 셋을 그 판 날 마지막 값으로', next: {href: '#/s', label: '조용한데 힘이 모이는 7곳'}}});
-export async function vBook(X, which = 'top3') {
+export async function vBook(X) {
   ensureCss();
-  const K = BOOKS[which] ?? BOOKS.top3, T = K.title;
-  const [B, b] = await Promise.all([X.get(K.src).catch(() => null), X.base().catch(() => ({}))]);
-  if (!B || !Array.isArray(B.days) || !B.days.length) return X.notFound(K.miss);
+  const T = '1 · 2 · 3등 달력';
+  const [B, b] = await Promise.all([X.get('/su/data/su21-book.json').catch(() => null), X.base().catch(() => ({}))]);
+  if (!B || !Array.isArray(B.days) || !B.days.length) return X.notFound('1 · 2 · 3등 장부를 받지 못했어요. 다시 열어 주세요.');
   const C = bookCalc(B), R = yRange(C), sw = swing(C);
   const desc = [...C.days].reverse(), recent = desc.slice(0, RECENT), older = desc.slice(RECENT);
   const rowsOf = d => C.rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
@@ -187,9 +180,9 @@ export async function vBook(X, which = 'top3') {
     for (const c of cal?.querySelectorAll('.bk-pick') ?? []) c.classList.toggle('bk-on', c.getAttribute('data-day') === d);
   };
   cal = calendar(C, go);
-  const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-book': which === 'quiet' ? 'quiet' : 'top3', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff)),
+  const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff)),
     'data-up': String(C.n.up), 'data-dn': String(C.n.dn), 'data-eq': String(C.n.eq), 'data-one': String(C.n.one), 'data-y': String(R)},
-    h('p', {class: 'bk-intro', text: K.intro}),
+    h('p', {class: 'bk-intro', text: '큐피트가 날마다 고른 1 · 2 · 3등을 가짜 돈으로 주식 10주씩 산 셈이에요.'}),
     h('section', {class: 'bk-sum', 'aria-label': '산 셈 모두'},
       h('div', {class: 'bk-tiles'}, tiles(C.n).map(t => h('div', {class: 'bk-tile bk-t' + t.st, 'data-st': t.st}, h('span', {class: 'bk-tv'}, shapeOf(t.st, 'big'), h('b', {class: 'bk-tn', text: t.k + '번'})), h('span', {class: 'bk-tl', text: t.label})))),
       h('p', {class: 'bk-tot', text: '모두 합치면 ' + r100(C.val, C.cost) + ' · ' + moved(C.diff)}),
@@ -202,10 +195,10 @@ export async function vBook(X, which = 'top3') {
     cal,
     h('div', {class: 'bk-list'}, list, folds));
   const how = h('details', {class: 'bk-how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '이렇게 셌어요'}), h('span', {text: '진짜 돈이 아니에요'})),
-    h('ul', {class: 'bk-ul'}, [K.buy + ' ' + C.qty + '주씩 산 셈이에요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.', '「100원이 ○원」은 산 값 100원어치가 지금 얼마인지예요.',
+    h('ul', {class: 'bk-ul'}, ['그 판 날 마지막 값으로 ' + C.qty + '주씩 산 셈이에요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.', '「100원이 ○원」은 산 값 100원어치가 지금 얼마인지예요.',
       '모든 선은 같은 눈금이에요. 점선이 산 값이에요.', '같은 회사가 또 뽑히면 따로 한 줄로 적어요.', '판은 장이 끝난 뒤에 나와요. 그 값에 실제로 살 수는 없었어요.',
       '판 날보다 늦게 보인 판도 판 날 값으로 셌어요.', '수수료와 세금은 빼지 않았어요.', '한 번 적은 날은 고치지 않아요.', '값은 네이버 증권 그날 마지막 값이에요.', '지난 기록이에요. 앞날을 맞히지 않아요.'].map(t => h('li', {text: t}))));
   // 탭 4 = 달력(주문 0040 — 이 쪽을 열면 아래 「달력」 탭이 켜짐)
   return {title: T, tab: 4, step: null, kick: C.qty + '주씩 산 셈 · 가짜 돈', h1: T, proper: false, hero, body: [how],
-    next: K.next, asOf: B.asOf ?? null, S: b?.S ?? null};
+    next: {href: '#/r', label: '지난 기록 한곳'}, asOf: B.asOf ?? null, S: b?.S ?? null};
 }

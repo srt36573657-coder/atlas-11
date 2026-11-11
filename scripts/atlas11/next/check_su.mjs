@@ -26,7 +26,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqjmfns]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/c\/[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdynkics]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
+const LINK_OK = /^(#\/|#\/[bkrpqjmfn]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/c\/[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdynkic]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -299,7 +299,7 @@ for (const width of [390, 360, 320]) {
       // 빈 칸 글 = 「왜 셌는지 확인 필요」 꼴(주문 0054 칸 이름 녹이기 · su-fig.js sixSay) — 끝이 「확인 필요」면 빈 칸 표시 · 값 있는 칸에는 「확인 필요」가 없어야 함(아래 ⑭ 42칸 값 셈과 같은 잣대)
       check(m.tiles.length === 6 && m.tiles.every(t => (t.need ? /확인 필요$/.test(t.v) : t.v && !t.v.includes('확인 필요'))), W + '⑨ 큰 값의 여섯 칸(빈 칸 = 「확인 필요」) — ' + m.h1, JSON.stringify(m.tiles).slice(0, 160));
       check(m.vals === m.valsSix, W + '⑨ 중간 값 · 자세한 값마다 여섯 칸 — ' + m.h1, m.valsSix + ' / ' + m.vals);
-      check(m.tabs.length === 5 && m.tabs.map(t => t.t).join(' ') === '28곳 지도 멈춤 기록 달력' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 다섯 중요한 차례(주문 1023 [4]) · 달력은 맨 끝(주문 0040) · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
+      check(m.tabs.length === 5 && m.tabs.map(t => t.t).join(' ') === '21곳 지도 멈춤 기록 달력' && m.tabs.filter(t => t.cur).length === 1, W + '⑨ 탭 다섯 중요한 차례(주문 1023 [4]) · 달력은 맨 끝(주문 0040) · 켜진 탭 하나 — ' + m.h1, JSON.stringify(m.tabs));
       check(m.means.vals >= 1 && m.means.vals === m.means.with, W + '⑩ 숫자마다 「그래서」 한 줄 — ' + m.h1, m.means.with + ' / ' + m.means.vals);
       check(m.pro.has && !m.pro.open && m.pro.rows >= 3, W + '⑩ 전문가용 자세히 — 눌러야 열림 — ' + m.h1, JSON.stringify(m.pro));
       check(Number.isFinite(m.hard), W + '⑩ 어려운 낱말 셈 — ' + m.h1, String(m.hard) + ' ' + m.hardWords);
@@ -321,7 +321,7 @@ for (const width of [390, 360, 320]) {
     // 기록 서랍 여섯 · 서랍 쪽
     await open(p, '#/r');
     const dr = await p.evaluate(() => [...document.querySelectorAll('#su .su-drawer')].map(a => a.getAttribute('href')));
-    check(JSON.stringify(dr) === JSON.stringify(['#/r/c', '#/r/s', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(1 · 2 · 3등 달력(주문 0938 · 1513 모든 사람) · 달마다 · 한 달 뒤 · 내 매매일지 · 못 된 까닭 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
+    check(JSON.stringify(dr) === JSON.stringify(['#/r/c', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(1 · 2 · 3등 달력(주문 0938 · 1513 모든 사람) · 달마다 · 한 달 뒤 · 내 매매일지 · 못 된 까닭 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
     R.m.drawers = {};
     for (const hh of ['#/r/d', '#/r/y', '#/r/n']) { await open(p, hh); await p.waitForTimeout(200); const m = await shape(); R.m.drawers[hh] = {h1: m.h1, share: m.share, moving: m.moving}; check(m.tiles.length === 6 && m.lastIsSrc, W + '⑨ 서랍 쪽 ' + hh + ' — ' + m.h1, JSON.stringify(m).slice(0, 160)); pageRules(await measure(p), W + '⑨ 서랍 쪽 ' + hh); }
   }
@@ -408,7 +408,7 @@ for (const width of [390, 360, 320]) {
   const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
   const p = await ctx.newPage();
   R.m.price = {};
-  for (const [hh, KM] of [['#/', {hot: 'hot', bloom: 'bloom', money: 'money', hotNext: 'hotNext', bloomNext: 'bloomNext', moneyNext: 'moneyNext', quiet: 'quiet'}], ['#/n', {hotNow: 'hot', bloomNow: 'bloom', moneyNow: 'money', hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'}]]) {
+  for (const [hh, KM] of [['#/', {hot: 'hot', bloom: 'bloom', money: 'money', hotNext: 'hotNext', bloomNext: 'bloomNext', moneyNext: 'moneyNext'}], ['#/n', {hotNow: 'hot', bloomNow: 'bloom', moneyNow: 'money', hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'}]]) {
     await open(p, hh);
     const got = await p.evaluate(() => ({note: (() => { const L = new Map(); for (const e of document.querySelectorAll('#su main > .su-hero text.sa-note')) { const y = e.getAttribute('y'); L.set(y, (L.has(y) ? L.get(y) + ' ' : '') + e.textContent); } return [...L.values()]; })(), // 한 줄 = 같은 높이 두 조각
       cells: [...document.querySelectorAll('#su main > .su-hero a[data-k]')].map(a => {
@@ -441,8 +441,7 @@ for (const width of [390, 360, 320]) {
     }
     R.m.price[hh] = {cells: got.cells.length, bad: bad.length, note: got.note};
     const nCells = ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext'].reduce((a, k) => a + Math.min(7, (T21.lists?.[k] ?? []).length), 0); // 엄격 셈(주문 0854)이면 42 아래일 수 있음
-    const nQ = hh === '#/' ? Math.min(7, (T21.lists?.quiet ?? []).length) : 0; // 넷째 창 칸(주문 1111-1334 · 처음 쪽에만 · 장부 자료가 옛 판이면 0)
-    check(got.cells.length === nCells + nQ && (T21.strict || nCells === 42) && !bad.length, '⑭ ' + hh + ' 종목마다 현재가 = 자료 · 한 달 꺾은선 21점 = 자료 그대로 · 한 달 전 줄 · 마지막 점(지금 찬 점 · 될 듯 고리)', got.cells.length + ' · ' + bad.slice(0, 4).join(' | '));
+    check(got.cells.length === nCells && (T21.strict || nCells === 42) && !bad.length, '⑭ ' + hh + ' 종목마다 현재가 = 자료 · 한 달 꺾은선 21점 = 자료 그대로 · 한 달 전 줄 · 마지막 점(지금 찬 점 · 될 듯 고리)', got.cells.length + ' · ' + bad.slice(0, 4).join(' | '));
     const liveN = /^현재가는 \d+월 \d+일 (오전|오후) \d+시( \d+분)? 값이에요\.$|^현재가는 \d+월 \d+일 마지막 값이에요\.$/; // 장 중 · 장 끝 값이 붙으면 그 때(주문 2011)
     check((got.note[0] === mtxt || (got.cells.some(c => c.live) && liveN.test(got.note[0] ?? ''))) && /꺾은선은 한 달/.test(got.note[1] ?? ''), '⑭ ' + hh + ' 현재가 날짜 글 — ' + mtxt, got.note.join(' / '));
   }
@@ -572,7 +571,7 @@ for (const width of [390, 360, 320]) {
   await QUIET(ctx); // 판 값과 맞대는 검사(장 중에도 같은 답 · 장 중 값은 ⑱)
   const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
   await open(p, '#/');
-  const cells = await p.evaluate(() => [...document.querySelectorAll('#su main > .su-hero a.sa-cell:not([data-k="quiet"])')].map(a => ({k: a.getAttribute('data-k'), code: a.getAttribute('data-code'), href: a.getAttribute('href'), days: a.getAttribute('data-days'), found: a.getAttribute('data-found'), fomo: a.getAttribute('data-fomo'),
+  const cells = await p.evaluate(() => [...document.querySelectorAll('#su main > .su-hero a.sa-cell')].map(a => ({k: a.getAttribute('data-k'), code: a.getAttribute('data-code'), href: a.getAttribute('href'), days: a.getAttribute('data-days'), found: a.getAttribute('data-found'), fomo: a.getAttribute('data-fomo'),
     sp: a.querySelector('path.sa-sp')?.getAttribute('d') ?? '', t1: a.querySelector('text.sa-found')?.textContent ?? '', t2: a.querySelector('text.sa-days')?.textContent ?? '', fs: [...a.querySelectorAll('text.sa-found, text.sa-days')].map(t => parseFloat(getComputedStyle(t).fontSize))})));
   check(cells.length === nAll, '⑰ 첫 페이지 칸 = 목록 칸 수(' + nAll + ')', String(cells.length));
   const badCell = cells.filter(x => { const c = all.find(y => y.k === x.k && y.code === x.code); return !c || x.href !== `#/c/${c.code}/y/${c.k}` || x.t1 !== '첫 발견 ' + md(c.found) || !x.t2.startsWith(c.days + '일째 · ') || !(c.fomo === null ? /포모(지수)? 보류$/.test(x.t2) : new RegExp('포모(지수)? ' + c.fomo + '$').test(x.t2)) || x.fs.some(f => f < 16.95); });
@@ -702,8 +701,8 @@ for (const width of [390, 360, 320]) {
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     await open(p, '#/');
     const f = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero'), xs = [...(H?.querySelectorAll('a.sa-cell[data-r3]') ?? [])].filter(a => a.getAttribute('data-r3'));
-      return {cells: H?.querySelectorAll('a.sa-cell:not([data-k="quiet"])').length ?? 0, empty: H?.querySelectorAll('g.sa-empty').length ?? -1, r3: xs.map(a => a.getAttribute('data-r3') + ':' + a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(), // 넷째 창 칸(주문 1111-1334 · 따로 된 1 · 2 · 3등 표)은 ㉒
-        tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === a.getAttribute('data-r3') + '등').length, stray: H?.querySelectorAll('a.sa-cell:not([data-k="quiet"]):not([data-r3="1"]):not([data-r3="2"]):not([data-r3="3"]) g.sa-sx').length ?? -1,
+      return {cells: H?.querySelectorAll('a.sa-cell').length ?? 0, empty: H?.querySelectorAll('g.sa-empty').length ?? -1, r3: xs.map(a => a.getAttribute('data-r3') + ':' + a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(),
+        tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === a.getAttribute('data-r3') + '등').length, stray: H?.querySelectorAll('a.sa-cell:not([data-r3="1"]):not([data-r3="2"]):not([data-r3="3"]) g.sa-sx').length ?? -1,
         legend: [...(H?.querySelectorAll('g.sa-r3x text.sa-sxt') ?? [])].map(e => e.textContent).join(' ') + ' ' + [H?.querySelector('text.sa-note3b'), H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' ')}; });
     const want = cells.filter(x => [1, 2, 3].includes(x.c.r3)).map(x => x.c.r3 + ':' + x.k + ':' + x.c.code).sort();
     const LEG = CULT ? '1등 2등 3등 큐피트 계산법 차례 문화 일곱으로 고르고 1억 번 섞었어요.' : '1등 2등 3등 큐피트 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.';
@@ -741,14 +740,14 @@ for (const width of [390, 360, 320]) {
     await QUIET(ctx);
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
     await open(p, '#/');
-    const f = await p.evaluate(() => ({cells: document.querySelectorAll('#su main > .su-hero a.sa-cell:not([data-k="quiet"])').length, now: document.querySelectorAll('#su main > .su-hero g.sa-empty[data-empty="now"]').length,
+    const f = await p.evaluate(() => ({cells: document.querySelectorAll('#su main > .su-hero a.sa-cell').length, now: document.querySelectorAll('#su main > .su-hero g.sa-empty[data-empty="now"]').length,
       next: document.querySelectorAll('#su main > .su-hero g.sa-empty[data-empty="next"]').length, note: [...document.querySelectorAll('#su main > .su-hero text.sa-note3a, #su main > .su-hero text.sa-note3b')].map(e => e.textContent).join(' ')}));
     const nNow = ['hot', 'bloom', 'money'].reduce((a, k) => a + (T21.lists?.[k] ?? []).length, 0), nNx = ['hotNext', 'bloomNext', 'moneyNext'].reduce((a, k) => a + (T21.lists?.[k] ?? []).length, 0);
     if (MARKM) {
       const nX = KEY6.reduce((a, k) => a + (T21.lists?.[k] ?? []).filter(c => c.sx === true).length, 0);
       const x = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero'), xs = [...(H?.querySelectorAll('a.sa-cell[data-sx="1"]') ?? [])];
         return {sx: xs.length, tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === '큐피트 계산법').length, codes: xs.map(a => a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(),
-          stray: H?.querySelectorAll('a.sa-cell:not([data-k="quiet"]):not([data-sx="1"]) g.sa-sx').length ?? -1, legend: [H?.querySelector('g.sa-note3x text.sa-sxt')?.textContent ?? '', H?.querySelector('text.sa-note3b')?.textContent ?? '', H?.querySelector('text.sa-note4a')?.textContent ?? '', H?.querySelector('text.sa-note4b')?.textContent ?? ''].join(' '),
+          stray: H?.querySelectorAll('a.sa-cell:not([data-sx="1"]) g.sa-sx').length ?? -1, legend: [H?.querySelector('g.sa-note3x text.sa-sxt')?.textContent ?? '', H?.querySelector('text.sa-note3b')?.textContent ?? '', H?.querySelector('text.sa-note4a')?.textContent ?? '', H?.querySelector('text.sa-note4b')?.textContent ?? ''].join(' '),
           aria: H?.querySelector('svg.su-apple')?.getAttribute('data-sx') ?? null}; });
       const want = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.code)).sort();
       R.m.marked = KEY6.flatMap(k => (T21.lists?.[k] ?? []).filter(c => c.sx === true).map(c => k + ':' + c.name)); // 보고용 — 표가 붙은 칸(묶음 · 이름)
@@ -947,7 +946,7 @@ for (const width of [390, 360, 320]) {
     return {rows, cost, val, diff, n, tiles: [['늘었어요', n.up], ['줄었어요', n.dn], third], swing: rows.length > 1 && bd && Math.abs(bd) * 2 >= Math.abs(diff) ? {r: big, d: bd, rest: diff - bd} : null,
       strip, picks: strip.filter(d => bdays.includes(d)), desc, recent: desc.slice(0, 5), months: [...new Set(desc.slice(5).map(d => d.slice(0, 7)))]};
   })();
-  const REC = ['#/r/c', '#/r/s', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n'];
+  const REC = ['#/r/c', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n'];
   R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, shapes: wantB?.n ?? null, folds: wantB?.months.length ?? 0, who: '모든 사람(주문 1513)'};
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
@@ -1018,90 +1017,6 @@ for (const width of [390, 360, 320]) {
     check(JSON.stringify(dr) === JSON.stringify(REC), W + '기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」(모든 사람)', dr.join(' '));
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
-  }
-}
-{ // ㉒ 넷째 창 — 조용한데 힘이 모이는 7곳 · 조용한 힘 달력(주문 1111-1334 · 사장님 2026-11-11 13:34 「조용한데 에너지가 모이는 주식창을 하나더 만들어라 그래서 총 28개로 만들고
-  //   몬태카를로 소거법으로을 찾아내라 그러면서 이것을 ㅊ 적하는 별도에 달력을 만들어라 잡스라면」)
-  //   가) 자료 su21.json lists.quiet · quiet — 일곱 · 다른 세 창 밖 · 한 달 · 하루 오르내림 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례(채움은 뒤) · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 = quiet.rank
-  //       · 걸러 온 길 줄어들기만 — 이 검사가 21 값으로 따로 셈
-  //   나) 처음 쪽 그림 넷째 창 칸 일곱(차례 · 이름 · 누르면 회사 쪽 · 첫 셋 표) · 머리 줄 → #/s · 「지금 28곳」
-  //   다) #/s — 줄마다 등수 · 이름 · 한 달 폭 · 이만큼 조용하기 · 외국인 · 기관 = 따로 센 글 · 걸러 온 길 = 자료 · 달력 고리 · 쪽 규칙 · 「%」 · 영어 0(회사 이름 빼고) · 오류 0
-  //   라) 조용한 힘 장부 su21-qbook.json(kind quiet · 날마다 셋 · 산 값 = 값 줄) · #/r/s(data-book quiet · 판 차례 새 판이 위) — 결과 파일에 돈 글 없음
-  const T21q = await J('/su/data/su21.json').catch(() => null), Lq = T21q?.lists?.quiet ?? null, Qd = T21q?.quiet ?? null, DAYq = /^\d{4}-\d{2}-\d{2}$/;
-  const has = Array.isArray(Lq) && Lq.length > 0 && !!Qd;
-  R.m.quiet = has ? {n: Lq.length, pool: Qd.pool, steps: (Qd.steps ?? []).map(x => x.n), rank: (Qd.rank ?? []).map(r => r.place + ':' + r.name)} : null;
-  check(has, '㉒ 넷째 창 자료 — su21.json lists.quiet · quiet', JSON.stringify(R.m.quiet));
-  const QB = await J('/su/data/su21-qbook.json').catch(() => null), qdays = (QB?.days ?? []).map(d => d?.board), qpx = code => new Map(Array.isArray(QB?.px?.[code]) ? QB.px[code] : []);
-  check(!!QB && QB.schema === 'su21-book-1' && QB.kind === 'quiet' && QB.qty === 10 && qdays.length >= 1 && qdays.every((d, i) => DAYq.test(d ?? '') && (!i || qdays[i - 1] < d))
-    && QB.days.every(d => Array.isArray(d.picks) && d.picks.length === 3 && d.picks.every((q, i) => q && q.place === i + 1 && q.k === 'quiet' && /^[0-9A-Z]{6}$/.test(q.code ?? '') && Number.isFinite(q.px) && qpx(q.code).get(d.board) === q.px)),
-    '㉒ 조용한 힘 장부 자료 — 꼴 · 판 날 차례 · 날마다 셋 · 산 값 = 값 줄', JSON.stringify({kind: QB?.kind ?? null, days: qdays}).slice(0, 200));
-  R.m.qbook = {days: qdays.length};
-  if (has) {
-    const now21 = new Set(['hot', 'bloom', 'money'].flatMap(k => (T21q.lists?.[k] ?? []).map(c => c.code))), bad = [], inds = {};
-    if (Lq.length !== Math.min(7, Qd.pool ?? 0)) bad.push('일곱 아님 ' + Lq.length + ' · 소거 일곱을 지난 곳 ' + Qd.pool); // 소거 일곱을 지난 곳이 일곱보다 적은 날만 그 수
-    Lq.forEach((c, j) => {
-      const l = c.c, w = c.why ?? {};
-      if (now21.has(c.code)) bad.push(c.name + ' 다른 세 창에 듦');
-      if (!Array.isArray(l) || l.length !== 21 || !l.every(v => Number.isFinite(v) && v > 0)) { bad.push(c.name + ' 21 값'); return; }
-      const r20 = (l[20] / l[0] - 1) * 100, sp = (Math.max(...l) / Math.min(...l) - 1) * 100, d1 = Math.max(...l.slice(1).map((v, i) => Math.abs(v / l[i] - 1))) * 100;
-      if (!(Math.abs(r20) < 5) || !(d1 < 5)) bad.push(c.name + ' 잠잠 아님');
-      if (!(Math.abs(w.r20 - Math.round(r20 * 10) / 10) < 0.051) || !(Math.abs(w.span20 - Math.round(sp * 10) / 10) < 0.051)) bad.push(c.name + ' 폭 값');
-      if (!(Number.isFinite(w.f) && Number.isFinite(w.i) && w.f + w.i > 0)) bad.push(c.name + ' 힘(외국인 + 기관)');
-      if (!(Number.isFinite(w.p) && w.p > 0 && w.p <= 1) || (w.rare !== false && w.p > Qd.pmax)) bad.push(c.name + ' 드묾 p');
-      if (c.r3q !== (j < 3 ? j + 1 : null) || w.place !== (j < 3 ? j + 1 : null)) bad.push(c.name + ' 등수');
-      inds[c.ind] = (inds[c.ind] ?? 0) + 1;
-    });
-    const ord = Lq.map(c => [c.why?.rare === false ? 1 : 0, c.why?.p ?? 9]);
-    if (!ord.every((x, i) => !i || x[0] > ord[i - 1][0] || (x[0] === ord[i - 1][0] && x[1] >= ord[i - 1][1]))) bad.push('드문 차례 아님');
-    if (Object.values(inds).some(n => n > 2)) bad.push('업종마다 둘 넘음');
-    const st = (Qd.steps ?? []).map(x => x.n);
-    if (!(st.length >= 3 && st.slice(0, -1).every((n, i) => !i || n <= st[i - 1]) && st[st.length - 1] === Lq.length)) bad.push('걸러 온 길 ' + st.join('>'));
-    if (JSON.stringify((Qd.rank ?? []).map(r => r.code)) !== JSON.stringify(Lq.slice(0, 3).map(c => c.code))) bad.push('quiet.rank ≠ 첫 셋');
-    check(!bad.length, '㉒ 넷째 창 일곱 — 다른 세 창 밖 · 한 달 · 하루 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례 · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 · 걸러 온 길(따로 셈)', bad.slice(0, 6).join(' / '));
-    const NFq = new Intl.NumberFormat('ko-KR'), one = v => (Math.round(v * 10) / 10).toLocaleString('ko-KR');
-    const wantRow = (c, j) => { const w = c.why, n = w.f + w.i;
-      return {code: c.code, href: '#/c/' + c.code, pl: j < 3 ? (j + 1) + '등' : String(j + 1), nm: c.name, l1: '한 달 폭: 100원에 ' + one(w.span20) + '원',
-        l2: w.p * 100 < 0.1 ? '이만큼 조용하기: 100번에 0.1번 아래' : '이만큼 조용하기: 100번에 ' + one(w.p * 100) + '번',
-        l3: (Number.isFinite(w.days) && w.days !== 5 ? w.days + '거래일' : '닷새') + ' 동안 외국인 · 기관 합쳐 ' + NFq.format(Math.abs(Math.round(n))) + '주 ' + (n > 0 ? '들어왔어요' : n < 0 ? '나갔어요' : '그대로예요'), sp: true}; };
-    const nNowQ = ['hot', 'bloom', 'money'].reduce((a, k) => a + Math.min(7, (T21q.lists?.[k] ?? []).length), 0) + Math.min(7, Lq.length);
-    for (const width of [390, 320]) {
-      const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
-      await QUIET(ctx);
-      const p = await ctx.newPage(), errs = [];
-      p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
-      p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
-      const W = '㉒ 넷째 창 [' + width + '] ';
-      await open(p, '#/');
-      const hq = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero');
-        return {cells: [...(H?.querySelectorAll('a.sa-cell[data-k="quiet"]') ?? [])].map(a => [a.getAttribute('data-code'), a.getAttribute('href'), a.getAttribute('data-r3q'), a.querySelector('text.sa-name')?.textContent ?? '', a.querySelectorAll('g.sa-sx').length]),
-          head: H?.querySelector('a.sa-qhead')?.getAttribute('href') ?? null, n: [...(H?.querySelectorAll('text.sa-n') ?? [])].map(e => e.textContent)}; });
-      check(JSON.stringify(hq.cells.map(x => x[0])) === JSON.stringify(Lq.map(c => c.code)) && hq.cells.every((x, j) => x[1] === '#/c/' + x[0] && x[2] === (j < 3 ? String(j + 1) : '') && x[3] === Lq[j].name && x[4] === (j < 3 ? 1 : 0))
-        && hq.head === '#/s' && hq.n[0] === String(nNowQ), W + '처음 쪽 넷째 창 칸 일곱 = 자료 차례 · 첫 셋 표 · 누르면 회사 쪽 · 머리 줄 → #/s · 「지금 ' + nNowQ + '곳」', JSON.stringify(hq).slice(0, 300));
-      await open(p, '#/s');
-      await p.waitForFunction(() => document.querySelector('#su .su-hero.qt .qt-row'), null, {timeout: 10000}).catch(() => {});
-      await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how')) d.open = true; });
-      pageRules(await measure(p), W + '#/s');
-      const g = await p.evaluate(() => ({rows: [...document.querySelectorAll('#su .qt-row')].map(a => ({code: a.getAttribute('data-code'), href: a.getAttribute('href'), pl: a.querySelector('.bk-pl')?.textContent ?? '', nm: a.querySelector('.bk-nm')?.textContent ?? '',
-          l1: a.querySelector('.qt-l1')?.textContent ?? '', l2: a.querySelector('.qt-l2')?.textContent ?? '', l3: a.querySelector('.qt-l3')?.textContent ?? '', sp: !!a.querySelector('svg.qt-sp path.qt-line')})),
-        steps: [...document.querySelectorAll('#su .qt-step')].map(e => [e.querySelector('.qt-sn')?.textContent ?? '', e.querySelector('.qt-sv')?.textContent ?? '']), cal: document.querySelector('#su a.qt-cal')?.getAttribute('href') ?? null,
-        tab: document.querySelector('.su-tabs [aria-current="page"]')?.textContent ?? '', h1: (document.querySelector('#su h1')?.textContent ?? '').trim(), text: [...document.querySelectorAll('#su main .su-hero.qt, #su main .bk-how')].map(e => { const c = e.cloneNode(true); for (const x of c.querySelectorAll('.su-gl')) x.remove(); return c.textContent; }).join('\n')})); // 새 문장만(쪽 틀이 붙이는 낱말 풀이 li.su-gl 은 예전 글 — 뺌)
-      const badR = g.rows.map((x, j) => (Lq[j] && JSON.stringify(x) === JSON.stringify(wantRow(Lq[j], j)) ? null : j)).filter(x => x != null);
-      check(g.rows.length === Lq.length && !badR.length && g.h1 === '조용한데 힘이 모이는 ' + Lq.length + '곳', W + '#/s 줄 일곱 = 자료 차례 · 등수 · 한 달 폭 · 이만큼 조용하기 · 외국인 · 기관(따로 센 글) · 큰 제목', JSON.stringify(badR.slice(0, 2).map(j => [g.rows[j], Lq[j] ? wantRow(Lq[j], j) : null])).slice(0, 300));
-      check(JSON.stringify(g.steps) === JSON.stringify((Qd.steps ?? []).map(x => [x.name, NFq.format(x.n) + '곳'])) && g.cal === '#/r/s' && /28곳/.test(g.tab), W + '#/s 걸러 온 길 = 자료 · 조용한 힘 달력 고리 · 아래 탭 28곳', JSON.stringify({steps: g.steps.length, cal: g.cal, tab: g.tab}));
-      const names = [...new Set(Lq.map(c => c.name))].sort((a, b) => b.length - a.length), plain = names.reduce((s, n) => s.split(n).join(''), g.text);
-      check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '#/s 「%」 · 영어 글자 0(회사 이름 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
-      if (QB) {
-        await open(p, '#/r/s');
-        await p.waitForFunction(() => document.querySelector('#su .su-hero.bk[data-book="quiet"] .bk-board'), null, {timeout: 10000}).catch(() => {});
-        await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old')) d.open = true; });
-        pageRules(await measure(p), W + '#/r/s');
-        const g2 = await p.evaluate(() => ({book: document.querySelector('#su .su-hero.bk')?.getAttribute('data-book') ?? null, h1: document.querySelector('#su h1')?.textContent ?? '',
-          boards: [...document.querySelectorAll('#su .bk-board')].map(e => e.getAttribute('data-day')), intro: document.querySelector('#su .bk-intro')?.textContent ?? ''}));
-        check(g2.book === 'quiet' && g2.h1 === '조용한 힘 달력' && JSON.stringify(g2.boards) === JSON.stringify([...qdays].reverse()) && g2.intro.startsWith('조용한데 힘이 모이는 창의'), W + '#/r/s 조용한 힘 달력 — 따로 된 장부 · 판 차례(새 판이 위)', JSON.stringify(g2).slice(0, 300));
-      }
-      check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
-      await ctx.close();
-    }
   }
 }
 await browser.close();
