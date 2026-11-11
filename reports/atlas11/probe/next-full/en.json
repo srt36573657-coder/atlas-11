@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-10T16:59:25.587Z",
+ "at": "2026-11-11T02:52:28.548Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -14,28 +14,28 @@
  "allCompanies": true,
  "modules": true,
  "modFiles": {
+  "range": true,
+  "grow": true,
+  "rivals": true,
   "cal": true,
+  "cond": true,
+  "surge": true,
+  "past": true,
+  "theme": true,
+  "up": true,
+  "info": true,
+  "gdr": true,
+  "why": true,
+  "hold": true,
+  "time": true,
+  "roman": true,
+  "today": true,
   "talk": true,
   "x": true,
-  "up": true,
-  "time": true,
-  "grow": true,
-  "cond": true,
-  "rivals": true,
-  "range": true,
-  "past": true,
-  "surge": true,
-  "hold": true,
-  "why": true,
-  "roman": true,
-  "gdr": true,
-  "theme": true,
-  "info": true,
   "co": true,
-  "today": true,
-  "sage": true,
+  "chx": true,
   "share": true,
-  "chx": true
+  "sage": true
  },
  "edge": true,
  "only": null,
@@ -44,14 +44,14 @@
  "full": false,
  "units": {
   "total": 13645,
-  "hash": "cc653f837dbd3552",
+  "hash": "b2760d7d618b8eaa",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 1260,
- "secondsSum": 3274,
+ "seconds": 1171,
+ "secondsSum": 3130,
  "shards": [
   {
    "shard": "1/3",
@@ -60,10 +60,10 @@
    "routes": 4580,
    "screens": 4581,
    "mine": 4580,
-   "seconds": 1060,
+   "seconds": 967,
    "secs": {
     "open": 0.6,
-    "routes": 1057.9
+    "routes": 965.2
    }
   },
   {
@@ -73,11 +73,11 @@
    "routes": 4564,
    "screens": 4628,
    "mine": 4565,
-   "seconds": 954,
+   "seconds": 992,
    "secs": {
     "open": 0.5,
-    "routes": 948.3,
-    "newwin": 3.8
+    "routes": 986.5,
+    "newwin": 3.5
    }
   },
   {
@@ -87,12 +87,12 @@
    "routes": 4505,
    "screens": 4669,
    "mine": 4500,
-   "seconds": 1260,
+   "seconds": 1171,
    "secs": {
-    "open": 0.7,
-    "routes": 1241.8,
-    "act": 6.8,
-    "edge": 8.6,
+    "open": 0.5,
+    "routes": 1153.2,
+    "act": 6.7,
+    "edge": 7.9,
     "grammar": 0
    }
   }
