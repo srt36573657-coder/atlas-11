@@ -199,9 +199,7 @@ jobs:
       - name: 브라우저 준비(뒤에서 — 저장소 받기 · 묶기와 겹침 · 검사 앞에서 기다림)
         run: | # npm 저장소는 따로(/tmp/pw/.npm — setup-node 의 npm 캐시를 풀어 놓는 것과 겹치지 않게)
           mkdir -p /tmp/pw
-          nohup bash -c 'cd /tmp/pw && npm_config_cache=/tmp/pw/.npm npm i -s --no-audit --no-fund playwright@1.56.1 >/dev/null && { ./node_modules/.bin/playwright install --with-deps chromium >/dev/null || { echo "apt 거울 다시 — azure 주소를 archive.ubuntu.com 으로"; sudo sed -i "s#azure[.]archive[.]ubuntu[.]com#archive.ubuntu.com#g" /etc/apt/apt-mirrors.txt 2>/dev/null; sudo apt-get update -qq >/dev/null 2>&1; ./node_modules/.bin/playwright install --with-deps chromium >/dev/null; }; }; echo $? > /tmp/pw/.done' > /tmp/pw.log 2>&1 &
-          # 2026-11-11 23:0x(서울) 깃허브 실행기가 azure.archive.ubuntu.com 을 못 찾아(주소 찾기 실패) 브라우저 받기가 모두 실패 — 진짜 사이트 검사 2/11 쪽 열여덟 모두(사이트와 무관 · 주문 1111-2202)
-          #   → 같은 받기가 실패하면 apt 거울 목록(/etc/apt/apt-mirrors.txt)의 azure 주소를 archive.ubuntu.com 으로 바꿔 한 번 더(글꼴 · 받는 것은 그대로)
+          nohup bash -c 'cd /tmp/pw && npm_config_cache=/tmp/pw/.npm npm i -s --no-audit --no-fund playwright@1.56.1 >/dev/null && ./node_modules/.bin/playwright install --with-deps chromium >/dev/null; echo $? > /tmp/pw/.done' > /tmp/pw.log 2>&1 &
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
