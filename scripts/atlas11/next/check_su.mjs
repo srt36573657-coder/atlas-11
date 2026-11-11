@@ -905,10 +905,14 @@ for (const width of [390, 360, 320]) {
 }
 { // ㉑ 1 · 2 · 3등 달력(주문 0938 · 사장님 2026-11-10 09:38 「자 달력을 만들어 1.2.3달력을 그리고 찾아낸 그날부터해서 첫페이지처럼 표현햐서 추적해 그리고 10주씩 무조건 매수해 그리고 나서 수익율률을 추적하기 해봐   잡스라면」
   //   · 주문 1513 · 사장님 2026-11-10 15:13 「모든사람 휴대폰에 열리게 해」 — 사장님 열쇠 문을 뺌 · 모든 사람 · 진짜 사이트 검사에서도 화면을 다 봄)
-  //   가) 자료 su/data/su21-book.json — 꼴(su21-book-1 · 10주) · 판 날 차례 · 날마다 1 · 2 · 3등 셋 · 산 값 = 그 회사 값 줄의 그 판 날 값 · 값 줄은 산 날(그 회사가 처음 든 판 날)부터 · 장부 판 날이 21곳 판 날보다 앞서지 않음(장부 만들기가 멈추면 걸림)
-  //   나) 모든 사람(열쇠 없는 기기) — 큰 숫자 · 산 값 · 지금 = 이 검사가 따로 센 값 · 뽑힌 날 단추 = 판 날 · 맨 끝 날이 눌림 · 1 · 2 · 3 숫자가 날 칸 안에 · 세 칸 = 그날 1 · 2 · 3등(이름 · 산 값 · 지금 값 · 회사 쪽 고리)
-  //       · 다른 날을 누르면 세 칸이 그날로 · 「%」 · 영어 0(회사 이름 빼고) · 「사장님 휴대폰에서만」 글 0 · 쪽 규칙 · 기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」
-  //   결과 파일에는 늘고 준 돈을 적지 않음(명령문 [4] 5 「수익률은 보내지 마라」 — 결과는 저장소에 올라감) · 날 수 · 칸 수만
+  //   · 주문 1111-0938 · 사장님 2026-11-11 09:38 「종목이 복이게 하고 그때부터 지금까지 그래프 보이개 하고 매매 결과 직거ㅏㄴ적으로 보이게 하고 에이번트 11개 가동해서 가방 이상적인 시스템 토론해 잡스라면」
+  //     — 일꾼 열하나 판 · 토론 두 판(docs/design/top3-cal-2026-11-11/debate.md)으로 다시 짠 쪽
+  //   가) 자료 su/data/su21-book.json — 꼴(su21-book-1 · 10주) · 판 날 차례 · 날마다 1 · 2 · 3등 셋 · 산 값 = 그 회사 값 줄의 그 판 날 값 · 값 줄은 산 날(그 회사가 처음 든 판 날)부터 · 장부 판 날이 21곳 판 날보다 앞서지 않음
+  //   나) 모든 사람(열쇠 없는 기기) — 이 검사가 따로 센 값과 맞댐: 같은 크기 세 칸(늘었어요 · 줄었어요 · 셋째 칸) · 모두 합친 줄 · 접힌 「산 값과 지금」 · 합을 흔든 한 줄
+  //       · 달력 한 줄(장이 서는 날 다섯 · 뽑힌 날 단추 · 1 · 2 · 3등 차례 모양 · 칸 안) · 판 차례(새 판이 위 · 다섯 판만 펴고 그 앞은 달마다 접음) · 판마다 「처음 보인 때」
+  //       · 줄마다 등수 · 이름 · 회사 쪽 고리 · 「100원이 ○원」 · 10주 늘고 준 돈 · 모양 · 그림 · 아직 하루치 판은 이름 한 줄 · 390 첫 화면에 종목 이름 · 날 단추를 누르면 그 판으로
+  //       · 「%」 · 영어 0(회사 이름 빼고) · 「사장님 휴대폰에서만」 글 0 · 쪽 규칙 · 기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」
+  //   결과 파일에는 늘고 준 돈을 적지 않음(명령문 [4] 5 「수익률은 보내지 마라」 — 결과는 저장소에 올라감) · 날 수 · 칸 수 · 모양 수만
   const BK = await J('/su/data/su21-book.json').catch(() => null), T21b = await J('/su/data/su21.json').catch(() => null);
   const DAYb = /^\d{4}-\d{2}-\d{2}$/, NFb = new Intl.NumberFormat('ko-KR');
   const pxOf = code => new Map((Array.isArray(BK?.px?.[code]) ? BK.px[code] : []).filter(e => Array.isArray(e) && DAYb.test(e[0] ?? '') && Number.isFinite(e[1]) && e[1] > 0));
@@ -921,17 +925,29 @@ for (const width of [390, 360, 320]) {
     '㉑ 값 줄은 산 날부터(그 회사가 처음 든 판 날) · 장부에 없는 회사 값 0', Object.keys(BK?.px ?? {}).join(' ').slice(0, 200));
   // 장부 판 날 ≥ 21곳 판 날(장부 만들기가 멈추면 저장된 옛 장부라 21곳 판보다 앞섬) — 같음은 아님: 검사 묶음은 21곳을 저장된 옛 판(site/su/data/su21.json)으로 실을 때가 있음(주문 0938 올리기 1/11 · 틀림 장부 197)
   check(!!BK && !!T21b?.asOf?.board && BK.asOf >= T21b.asOf.board && bdays[bdays.length - 1] <= BK.asOf, '㉑ 장부 판 날이 21곳 판 날보다 앞서지 않음(장부 만들기가 돎)', JSON.stringify({book: BK?.asOf ?? null, board: T21b?.asOf?.board ?? null, last: bdays[bdays.length - 1] ?? null}));
-  // 따로 셈 — 산 값 = 그 판 날 값 × 10주 · 지금 = 산 날부터 값 줄의 맨 끝 값 × 10주
+  // 따로 셈 — 산 값 = 그 판 날 값 × 10주 · 지금 = 산 날부터 값 줄의 맨 끝 값 × 10주 · 산 뒤 값이 없으면 「아직 하루치」 · 같은 회사는 산 차례로 몇 번째
+  const wonB = v => { const a = Math.round(Math.abs(v)), e = Math.floor(a / 1e8), m = Math.floor((a % 1e8) / 1e4), r = a % 1e4; return [e ? NFb.format(e) + '억' : '', m ? NFb.format(m) + '만' : '', r || (!e && !m) ? NFb.format(r) : ''].filter(Boolean).join(' ') + '원'; };
+  const movedB = v => (Math.round(v) > 0 ? wonB(v) + ' 늘었어요' : Math.round(v) < 0 ? wonB(v) + ' 줄었어요' : '그대로예요');
+  const hundB = (now, buy) => { const x = 100 * now / buy, a = Math.round(x * 10) / 10, t = a === 100 && now !== buy ? Math.round(x * 100) / 100 : a; return '100원이 ' + t.toLocaleString('ko-KR', {maximumFractionDigits: 2}) + '원'; };
+  const kstB = t => { const ms = Date.parse(t ?? ''); if (!Number.isFinite(ms)) return null; const k = new Date(ms + 9 * 3600e3), d = k.toISOString().slice(0, 10), hh = k.getUTCHours(), mm = k.getUTCMinutes(); return {day: d, text: +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일 ' + (hh < 12 ? '오전 ' : '오후 ') + (hh % 12 || 12) + '시' + (mm ? ' ' + mm + '분' : '')}; };
+  const SHB = {up: '▲', dn: '▼', eq: '―', one: '○'};
   const wantB = (() => {
     if (!BK || !bdays.length) return null;
-    const rows = BK.days.flatMap(d => d.picks.map(q => { const ser = [...pxOf(q.code)].filter(([dd]) => dd >= d.board).sort(([a], [b]) => a.localeCompare(b)); return {day: d.board, place: q.place, code: q.code, name: q.name, buy: q.px, now: ser.length ? ser[ser.length - 1][1] : q.px}; }));
-    const cost = rows.reduce((a, r) => a + r.buy * BK.qty, 0), val = rows.reduce((a, r) => a + r.now * BK.qty, 0);
-    return {rows, cost, val, diff: Math.round(val - cost)};
+    const times = {};
+    const rows = BK.days.flatMap(d => d.picks.map(q => { const ser = [...pxOf(q.code)].filter(([dd]) => dd >= d.board).sort(([a], [b]) => a.localeCompare(b)), now = ser.length ? ser[ser.length - 1][1] : q.px, one = ser.length < 2;
+      times[q.code] = (times[q.code] ?? 0) + 1;
+      return {day: d.board, seen: d.seen, place: q.place, code: q.code, name: q.name, buy: q.px, now, one, st: one ? 'one' : now > q.px ? 'up' : now < q.px ? 'dn' : 'eq', nth: times[q.code]}; }));
+    const cost = rows.reduce((a, r) => a + r.buy * BK.qty, 0), val = rows.reduce((a, r) => a + r.now * BK.qty, 0), n = {up: 0, dn: 0, eq: 0, one: 0};
+    for (const r of rows) n[r.st]++;
+    const big = rows.reduce((a, r) => (Math.abs(r.now - r.buy) * BK.qty > Math.abs(a.now - a.buy) * BK.qty ? r : a), rows[0]), bd = (big.now - big.buy) * BK.qty, diff = Math.round(val - cost);
+    const third = n.one && n.eq ? ['그대로 · 하루치', n.eq + n.one] : n.one ? ['아직 하루치', n.one] : ['그대로', n.eq];
+    const strip = []; for (let d = bdays[bdays.length - 1]; strip.length < 5;) { const w = new Date(d + 'T00:00:00Z').getUTCDay(); if (w && w < 6) strip.unshift(d); const t = new Date(d + 'T00:00:00Z'); t.setUTCDate(t.getUTCDate() - 1); d = t.toISOString().slice(0, 10); }
+    const desc = [...bdays].reverse();
+    return {rows, cost, val, diff, n, tiles: [['늘었어요', n.up], ['줄었어요', n.dn], third], swing: rows.length > 1 && bd && Math.abs(bd) * 2 >= Math.abs(diff) ? {r: big, d: bd, rest: diff - bd} : null,
+      strip, picks: strip.filter(d => bdays.includes(d)), desc, recent: desc.slice(0, 5), months: [...new Set(desc.slice(5).map(d => d.slice(0, 7)))]};
   })();
-  const wonB = v => { const a = Math.round(Math.abs(v)), e = Math.floor(a / 1e8), m = Math.floor((a % 1e8) / 1e4), r = a % 1e4; return [e ? NFb.format(e) + '억' : '', m ? NFb.format(m) + '만' : '', r || (!e && !m) ? NFb.format(r) : ''].filter(Boolean).join(' ') + '원'; };
-  const bigB = wantB ? (wantB.diff > 0 ? wonB(wantB.diff) + ' 늘었어요' : wantB.diff < 0 ? wonB(wantB.diff) + ' 줄었어요' : '그대로예요') : null;
   const REC = ['#/r/c', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n'];
-  R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, who: '모든 사람(주문 1513)'};
+  R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, shapes: wantB?.n ?? null, folds: wantB?.months.length ?? 0, who: '모든 사람(주문 1513)'};
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
@@ -940,32 +956,60 @@ for (const width of [390, 360, 320]) {
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
     const W = '㉑ 1 · 2 · 3등 달력 · 모든 사람 [' + width + '] ';
     await open(p, '#/r/c');
-    await p.waitForFunction(() => document.querySelector('#su .su-hero.bk .bk-card'), null, {timeout: 10000}).catch(() => {});
-    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how')) d.open = true; });
+    await p.waitForFunction(() => document.querySelector('#su .su-hero.bk .bk-board'), null, {timeout: 10000}).catch(() => {});
+    // 첫 화면(아무것도 열기 전) — 390 너비에서 종목 이름이 아래 고정 줄(다음 · 탭)보다 위에 보임 · 첫 그림 자리는 결과 파일에만
+    const fold0 = await p.evaluate(() => { const lim = Math.min(...[...document.querySelectorAll('.su-dock, .su-tabs')].map(e => e.getBoundingClientRect().top).filter(Number.isFinite), innerHeight);
+      const nm = document.querySelector('#su .bk-board .bk-names, #su .bk-board .bk-row .bk-nm'), sp = document.querySelector('#su .bk-board .bk-sp');
+      return {lim: Math.round(lim), name: nm ? Math.round(nm.getBoundingClientRect().bottom) : null, line: sp ? Math.round(sp.getBoundingClientRect().top) : null}; });
+    (R.m.bookFold ??= {})[width] = fold0;
+    if (width === 390) check(fold0.name != null && fold0.name <= fold0.lim, W + '첫 화면에 종목 이름(주문 1111-0938 「종목이 보이게」 — 아래 고정 줄보다 위)', JSON.stringify(fold0));
+    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old')) d.open = true; });
     const m = await measure(p); pageRules(m, W);
-    const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.bk');
-      return {diff: hero?.getAttribute('data-diff') ?? null, big: hero?.querySelector('.bk-v')?.textContent ?? '', two: hero?.querySelector('.bk-two')?.textContent ?? '', bigs: document.querySelectorAll('#su .bk-big').length,
-        picks: [...document.querySelectorAll('#su .bk-pick')].map(b => b.getAttribute('data-day')), on: [...document.querySelectorAll('#su .bk-pick.bk-on')].map(b => b.getAttribute('data-day')),
-        cards: [...document.querySelectorAll('#su .bk-card')].map(li => ({place: +li.getAttribute('data-place'), code: li.getAttribute('data-code'), name: li.querySelector('.bk-nm')?.textContent ?? '', px: li.querySelector('.bk-px')?.textContent ?? '', go: li.querySelector('a.bk-go')?.getAttribute('href') ?? ''})),
+    const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.bk'), txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
+      return {diff: hero?.getAttribute('data-diff') ?? null, n: ['up', 'dn', 'eq', 'one'].map(k => hero?.getAttribute('data-' + k)),
+        tiles: [...document.querySelectorAll('#su .bk-tile')].map(e => [txt(e.querySelector('.bk-tl')), txt(e.querySelector('.bk-tn'))]), tot: txt(hero?.querySelector('.bk-tot')), tot2: txt(hero?.querySelector('.bk-split .bk-tot2')),
+        spl: [...document.querySelectorAll('#su .bk-split .bk-spl')].map(txt), sum: txt(hero?.querySelector('.bk-sum')),
+        cal: [...document.querySelectorAll('#su .bk-cal .bk-d')].map(e => ({day: e.getAttribute('data-day'), btn: e.tagName === 'BUTTON', shapes: [...e.querySelectorAll('.bk-3 [data-shape]')].map(x => x.getAttribute('data-shape')).join('')})),
+        spill: [...document.querySelectorAll('#su .bk-pick')].filter(b => { const r = b.getBoundingClientRect(), q = b.querySelector('.bk-3')?.getBoundingClientRect(); return !q || q.left < r.left - 0.5 || q.right > r.right + 0.5; }).map(b => b.getAttribute('data-day')),
+        boards: [...document.querySelectorAll('#su .bk-board')].map(e => ({day: e.getAttribute('data-day'), fold: !!e.closest('details.bk-old'), h2: txt(e.querySelector('.bk-bh')), seen: txt(e.querySelector('.bk-seen')), late: txt(e.querySelector('.bk-late')),
+          names: [...e.querySelectorAll('.bk-names .bk-nm1')].map(x => [x.getAttribute('data-place'), x.getAttribute('data-code'), txt(x.querySelector('span'))]),
+          rows: [...e.querySelectorAll('a.bk-row')].map(a => ({place: a.getAttribute('data-place'), code: a.getAttribute('data-code'), href: a.getAttribute('href'), st: a.getAttribute('data-st'), name: txt(a.querySelector('.bk-nm')), tag: txt(a.querySelector('.bk-tag')),
+            shape: a.querySelector('.bk-res [data-shape]')?.getAttribute('data-shape') ?? '', r100: txt(a.querySelector('.bk-r100')), mon: txt(a.querySelector('.bk-mon')), sp: !!a.querySelector('svg.bk-sp path.bk-line')}))})),
+        folds: [...document.querySelectorAll('#su details.bk-old')].map(e => e.getAttribute('data-month')),
         text: [...document.querySelectorAll('#su main .su-hero.bk, #su main .bk-how')].map(e => e.innerText).join('\n'), all: document.getElementById('su')?.innerText ?? ''}; });
     check(!g.all.includes('사장님 휴대폰에서만') && !g.all.includes('사장님 휴대폰'), W + '「사장님 휴대폰에서만」 글 0(모든 사람 — 주문 1513)', (g.all.match(/.{0,12}사장님 휴대폰.{0,12}/) ?? [''])[0]);
     if (!wantB) check(false, W + '장부 자료가 있어야 화면을 맞댐', 'su21-book.json 없음');
     else {
-      const last = bdays[bdays.length - 1], cardsOf = d => wantB.rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
-      const sameCards = (cs, d) => { const w = cardsOf(d); return cs.length === 3 && cs.every((c, i) => c.place === i + 1 && c.code === w[i].code && c.name === w[i].name && c.go === '#/c/' + w[i].code && c.px.includes('산 값 ' + NFb.format(w[i].buy) + '원') && c.px.includes('지금 ' + NFb.format(w[i].now) + '원')); };
-      check(g.bigs === 1 && +g.diff === wantB.diff && g.big === bigB && g.two.includes('산 값 ' + wonB(wantB.cost)) && g.two.includes('지금 ' + wonB(wantB.val)), W + '큰 숫자 · 산 값 · 지금 = 따로 센 값(10주씩 · 산 날 값 → 맨 끝 값)', JSON.stringify({bigs: g.bigs, same: [+g.diff === wantB.diff, g.big === bigB, g.two.includes('산 값 ' + wonB(wantB.cost)), g.two.includes('지금 ' + wonB(wantB.val))]}));
-      check(JSON.stringify(g.picks) === JSON.stringify(bdays) && JSON.stringify(g.on) === JSON.stringify([last]), W + '달력 — 뽑힌 날 단추 = 판 날 · 맨 끝 날이 눌림', JSON.stringify({picks: g.picks, on: g.on}));
-      const spill = await p.evaluate(() => [...document.querySelectorAll('#su .bk-pick')].filter(b => { const r = b.getBoundingClientRect(), q = b.querySelector('.bk-123')?.getBoundingClientRect(); return !q || q.left < r.left - 0.5 || q.right > r.right + 0.5; }).map(b => b.getAttribute('data-day')));
-      check(!spill.length, W + '달력 — 1 · 2 · 3 숫자가 날 칸 안에', spill.join(' '));
-      check(sameCards(g.cards, last), W + '세 칸 = 맨 끝 날 1 · 2 · 3등(이름 · 산 값 · 지금 · 회사 쪽 고리)', JSON.stringify(g.cards.map(c => [c.place, c.code])));
-      const names = [...new Set(wantB.rows.map(r => r.name))].sort((a, b) => b.length - a.length), plain = names.reduce((t, n) => t.split(n).join(''), g.text);
+      const w = wantB, rowsOf = d => w.rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
+      check(+g.diff === w.diff && JSON.stringify(g.n.map(Number)) === JSON.stringify([w.n.up, w.n.dn, w.n.eq, w.n.one]), W + '셈 = 따로 센 값(10주씩 · 산 날 값 → 맨 끝 값 · 늘었어요 · 줄었어요 · 그대로 · 아직 하루치 수)', JSON.stringify({n: g.n, same: +g.diff === w.diff}));
+      check(JSON.stringify(g.tiles) === JSON.stringify(w.tiles.map(([l, k]) => [l, k + '번'])), W + '같은 크기 세 칸이 합보다 먼저 — 늘었어요 · 줄었어요 · 셋째 칸(아직 하루치 · 그대로)', JSON.stringify(g.tiles));
+      check(g.tot === '모두 합치면 ' + hundB(w.val, w.cost) + ' · ' + movedB(w.diff) && g.sum.indexOf('번') < g.sum.indexOf('모두 합치면') && g.tot2 === '산 값 ' + wonB(w.cost) + ' → 지금 ' + wonB(w.val), W + '모두 합친 줄(세 칸 밑) · 접힌 「산 값과 지금」 = 따로 센 값', JSON.stringify({tot: g.tot === '모두 합치면 ' + hundB(w.val, w.cost) + ' · ' + movedB(w.diff), order: g.sum.indexOf('번') < g.sum.indexOf('모두 합치면'), tot2: g.tot2 === '산 값 ' + wonB(w.cost) + ' → 지금 ' + wonB(w.val)}));
+      const sw = w.swing, swWant = sw ? [+sw.r.day.slice(5, 7) + '월 ' + +sw.r.day.slice(8, 10) + '일 ' + sw.r.place + '등 ' + sw.r.name + ' 한 줄이 ' + movedB(sw.d), '그 한 줄을 빼면 ' + movedB(sw.rest)] : [];
+      check(swWant.every(x => g.spl.includes(x)) && (sw ? g.spl.length === 4 : g.spl.length === 2), W + '합을 흔든 한 줄(합의 절반 넘게 움직인 줄만) — 그 줄 · 그 줄을 빼면', JSON.stringify({swing: !!sw, lines: g.spl.length, same: swWant.map(x => g.spl.includes(x))}));
+      check(JSON.stringify(g.cal.map(c => c.day ?? '')) === JSON.stringify(w.strip.map(d => (w.picks.includes(d) ? d : ''))) && g.cal.every(c => c.btn === !!c.day)
+        && g.cal.filter(c => c.btn).every(c => c.shapes === rowsOf(c.day).map(r => SHB[r.st]).join('')), W + '달력 한 줄 — 장이 서는 날 다섯 · 뽑힌 날만 단추 · 1 · 2 · 3등 차례 모양', JSON.stringify(g.cal).slice(0, 300));
+      check(!g.spill.length, W + '달력 — 세 모양이 날 칸 안에', g.spill.join(' '));
+      const order = g.boards.map(b => b.day), unfold = g.boards.filter(b => !b.fold).map(b => b.day);
+      check(JSON.stringify(order) === JSON.stringify(w.desc) && JSON.stringify(unfold) === JSON.stringify(w.recent) && JSON.stringify(g.folds) === JSON.stringify(w.months), W + '판 차례 — 새 판이 위 · 다섯 판만 펴고 그 앞은 달마다 접음(번 크기 차례 0)', JSON.stringify({order: order.slice(0, 8), unfold, folds: g.folds}));
+      const bad = [];
+      for (const b of g.boards) {
+        const rs = rowsOf(b.day), sn = kstB(rs[0]?.seen), one = rs.every(r => r.one);
+        if (!b.h2.includes(+b.day.slice(5, 7) + '월 ' + +b.day.slice(8, 10) + '일') || (sn && b.seen !== '처음 보인 때 ' + sn.text) || (!!(sn && sn.day > b.day) !== !!b.late)) bad.push(b.day + ' 머리');
+        if (one) { if (JSON.stringify(b.names) !== JSON.stringify(rs.map(r => [String(r.place), r.code, r.name])) || b.rows.length) bad.push(b.day + ' 이름 한 줄'); continue; }
+        if (b.rows.length !== 3) { bad.push(b.day + ' 줄 수'); continue; }
+        b.rows.forEach((x, i) => { const r = rs[i];
+          if (x.place !== String(r.place) || x.code !== r.code || x.name !== r.name || x.href !== '#/c/' + r.code || x.st !== r.st || x.shape !== SHB[r.st] || x.r100 !== hundB(r.now, r.buy)
+            || x.mon !== '10주 ' + (r.one ? '— 아직 하루치예요' : movedB((r.now - r.buy) * BK.qty)) || x.sp !== !r.one || (r.nth > 1) !== !!x.tag) bad.push(b.day + ' ' + r.place + '등'); });
+      }
+      check(!bad.length, W + '판마다 처음 보인 때 · 줄마다 등수 · 이름 · 회사 쪽 고리 · 모양 · 100원이 ○원 · 10주 늘고 준 돈 · 그림 · 같은 회사 몇 번째(따로 센 값)', bad.slice(0, 6).join(' / '));
+      const names = [...new Set(w.rows.map(r => r.name))].sort((a, b) => b.length - a.length), plain = names.reduce((t, n) => t.split(n).join(''), g.text);
       check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '「%」 · 영어 글자 0(회사 이름 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
-      if (bdays.length > 1) {
-        await p.click(`#su .bk-pick[data-day="${bdays[0]}"]`); await p.waitForTimeout(250);
-        const g2 = await p.evaluate(() => ({on: [...document.querySelectorAll('#su .bk-pick.bk-on')].map(b => b.getAttribute('data-day')), h2: document.querySelector('#su .bk-day h2')?.textContent ?? '',
-          cards: [...document.querySelectorAll('#su .bk-card')].map(li => ({place: +li.getAttribute('data-place'), code: li.getAttribute('data-code'), name: li.querySelector('.bk-nm')?.textContent ?? '', px: li.querySelector('.bk-px')?.textContent ?? '', go: li.querySelector('a.bk-go')?.getAttribute('href') ?? ''}))}));
-        check(JSON.stringify(g2.on) === JSON.stringify([bdays[0]]) && sameCards(g2.cards, bdays[0]) && g2.h2.includes(+bdays[0].slice(5, 7) + '월 ' + +bdays[0].slice(8, 10) + '일'), W + '다른 날을 누르면 세 칸이 그날로', JSON.stringify({on: g2.on, h2: g2.h2, cards: g2.cards.map(c => c.code)}));
-        pageRules(await measure(p), W + '다른 날');
+      const tgt = w.picks[0];
+      if (tgt) {
+        await p.evaluate(() => scrollTo(0, 0)); await p.click(`#su .bk-pick[data-day="${tgt}"]`); await p.waitForTimeout(1200);
+        const g2 = await p.evaluate(d => { const e = document.querySelector(`#su .bk-board[data-day="${d}"]`); return {top: e ? Math.round(e.getBoundingClientRect().top) : null, on: [...document.querySelectorAll('#su .bk-pick.bk-on')].map(b => b.getAttribute('data-day'))}; }, tgt);
+        check(g2.top != null && g2.top >= -2 && g2.top <= 160 && JSON.stringify(g2.on) === JSON.stringify([tgt]), W + '달력 날을 누르면 그 판으로(맨 위 가까이) · 누른 날 표시', JSON.stringify({day: tgt, ...g2}));
+        pageRules(await measure(p), W + '날 누른 뒤');
       }
     }
     await open(p, '#/r');

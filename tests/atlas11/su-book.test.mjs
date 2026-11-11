@@ -98,7 +98,7 @@ test('저장된 장부 · 화면 자료 — 꼴 · 판 날 차례 · 산 값 = �
   for (const [code, rows] of Object.entries(S.px)) for (const [dd, v] of rows) assert.equal(B.px[code]?.[dd], v, '화면 자료 값 ' + code + ' ' + dd + ' = 장부');
 });
 
-test('화면 셈 — 산 값 · 지금 · 늘고 준 것(10주씩 · 산 날부터 맨 끝 값) · 돈 글 · 「%」 0', async () => {
+test('화면 셈 — 산 값 · 지금 · 늘고 준 것(10주씩 · 산 날부터 맨 끝 값) · 모양 · 세 칸 · 합을 흔든 줄 · 달력 한 줄 · 돈 글 · 「%」 0', async () => {
   const src = rd('site/su/su-book.js').replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("import {KIND} from '/su/su-21.js';", 'const KIND = {};');
   assert.ok(!/^import /m.test(src), '그리기 도구를 빈 것으로 바꿈');
   const M = await import('data:text/javascript;base64,' + Buffer.from(src).toString('base64'));
@@ -115,6 +115,24 @@ test('화면 셈 — 산 값 · 지금 · 늘고 준 것(10주씩 · 산 날부�
   assert.deepEqual(C.days, ['2026-11-10', '2026-11-11']); assert.equal(C.last, '2026-11-11');
   const r = C.rows.find(x => x.day === '2026-11-11' && x.code === '000001');
   assert.deepEqual(r.ser, [['2026-11-11', 1200]], '값 줄은 그 산 날부터');
+  // 다시 짬(주문 1111-0938) — 모양 · 같은 회사 몇 번째 · 세 칸 · 합을 흔든 한 줄 · 100원이 ○원(반올림이 손실을 가리지 않음) · 달력 한 줄 · 처음 보인 때
+  assert.deepEqual(C.rows.map(x => x.st), ['up', 'dn', 'up', 'one', 'one', 'one'], '산 뒤 값이 없으면 「아직 하루치」(그대로로 세지 않음)');
+  assert.deepEqual(C.rows.map(x => x.nth), [1, 1, 1, 2, 1, 2], '같은 회사는 산 차례로 몇 번째');
+  assert.deepEqual(C.n, {up: 2, dn: 1, eq: 0, one: 3});
+  assert.deepEqual(M.tiles(C.n).map(x => [x.st, x.label, x.k]), [['up', '늘었어요', 2], ['dn', '줄었어요', 1], ['one', '아직 하루치', 3]], '같은 크기 세 칸');
+  assert.deepEqual(M.tiles({up: 1, dn: 1, eq: 2, one: 3}).map(x => x.label), ['늘었어요', '줄었어요', '그대로 · 하루치']);
+  assert.deepEqual(M.tiles({up: 1, dn: 1, eq: 2, one: 0}).map(x => x.label), ['늘었어요', '줄었어요', '그대로']);
+  const w = M.swing(C);
+  assert.ok(w && w.r.code === '000003' && w.r.day === '2026-11-10' && w.d === 3000 && w.rest === 0, '합(3,000원)의 절반 넘게 움직인 한 줄(11월 10일 마바 +3,000원) · 그 줄을 빼면 0원');
+  assert.equal(M.swing({rows: [{val: 110, cost: 100}, {val: 108, cost: 100}, {val: 109, cost: 100}], diff: 27}), null, '고르게 늘면 없음');
+  assert.equal(M.r100(1200, 1000), '100원이 120원'); assert.equal(M.r100(1219, 1000), '100원이 121.9원'); assert.equal(M.r100(57200, 57300), '100원이 99.8원');
+  assert.equal(M.r100(99990, 100000), '100원이 99.99원', '반올림으로 100원이 되면 둘째 자리'); assert.equal(M.r100(500, 500), '100원이 100원');
+  assert.deepEqual(M.strip('2026-11-10'), ['2026-11-04', '2026-11-05', '2026-11-06', '2026-11-09', '2026-11-10'], '달력 한 줄 — 장이 서는 날 다섯(주말 뺌)');
+  assert.deepEqual(M.seenKo('2026-11-09T16:20+09:00'), {day: '2026-11-09', text: '11월 9일 오후 4시 20분'});
+  assert.deepEqual(M.seenKo('2026-11-10T08:13:33.584Z'), {day: '2026-11-10', text: '11월 10일 오후 5시 13분'}, '받은 때가 세계 표준 시각이어도 한국 시각으로');
+  assert.equal(M.seenKo('2026-11-11T00:05:00+09:00').text, '11월 11일 오전 12시 5분'); assert.equal(M.seenKo('?'), null);
+  assert.equal(M.yRange(C), 20, '가장 멀리 간 값(100원이 120원)으로 눈금 — 아직 하루치는 셈에서 뺌');
+  assert.equal(M.yRange({rows: [{one: false, buy: 100, ser: [['d', 100], ['e', 121.9]]}]}), 25, '5 단위로 올림'); assert.equal(M.yRange({rows: [{one: false, buy: 100, ser: [['d', 100], ['e', 102]]}]}), 10, '눈금은 10 밑으로 안 줄임');
   // 화면 글에 「%」 · 쓰지 않을 말 0(셈 글 · 꾸밈 글)
   const said = [...src.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).join(' ');
   assert.ok(!said.includes('%'), '「%」 없음');
@@ -133,7 +151,9 @@ test('길 · 서랍 · 꾸밈 · 모든 사람(주문 1513) · 묶기 · 검사(
   assert.ok(!/\bstyle:/.test(bk) && !/\.style\b/.test(bk) && !/innerHTML/.test(bk), '글 속 꾸밈(보안 규칙 style-src) · innerHTML 0');
   assert.ok(/export const CSS = '\/su\/su-book\.css'/.test(bk) && fs.existsSync(path.join(ROOT, 'site/su/su-book.css')), '꾸밈 파일');
   for (const [k, px] of [...css.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)].map(m => [m[0], +m[1]])) assert.ok(px >= 17, '글 17px 넘게 — ' + k);
-  assert.ok(/\.bk-pick \{[^}]*min-height: 64px/.test(css) && /\.bk-go \{[^}]*min-height: 48px/.test(css) && /\.bk-hs \{[^}]*min-height: 48px/.test(css), '누르는 곳 48 넘게');
+  assert.ok(/\.bk-d \{[^}]*min-height: 62px/.test(css) && /\.bk-row \{[^}]*min-height: 48px/.test(css) && /\.bk-hs \{[^}]*min-height: 48px/.test(css) && /\.bk-sps \{[^}]*min-height: 48px/.test(css) && /\.bk-olds \{[^}]*min-height: 56px/.test(css), '누르는 곳 48 넘게(달력 칸 · 줄 · 접힌 칸)');
+  assert.ok(!/<text|'text'/.test(bk.slice(bk.indexOf('function spark'), bk.indexOf('const axisOf'))) && /viewBox: '0 0 20 20'/.test(bk), '그림 속 글자 0 · 모양은 도형(글꼴마다 넓이가 다른 글자 대신)');
+  assert.ok(/const RECENT = 5;/.test(bk) && bk.includes('function monthFold') && bk.includes("'처음 보인 때 '") && bk.includes("'같은 회사 '") && !bk.includes("import {KIND}"), '다섯 판만 펴고 달마다 접음 · 처음 보인 때 · 같은 회사 몇 번째(주문 1111-0938)');
   assert.ok(pk.includes("'scripts/atlas11/next/su21_book.mjs'") && /su21_book\.mjs[\s\S]{0,400}\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶기 — 판마다 장부 · 올리기 작업만 저장');
-  assert.ok(ck.includes("'#/r/c'") && ck.includes('㉑ 1 · 2 · 3등 장부 자료') && ck.includes('「사장님 휴대폰에서만」 글 0') && !/ATLAS_DEV_OWNER_KEY[\s\S]{0,200}1 · 2 · 3등 달력/.test(ck.slice(ck.indexOf('㉑ 1 · 2 · 3등 달력(주문 0938'))) && ck.includes('큰 숫자 · 산 값 · 지금 = 따로 센 값') && /#\\\/r\\\/\[mwdynkic\]/.test(ck), '검사 ㉑ · 고리 꼴');
+  assert.ok(ck.includes("'#/r/c'") && ck.includes('㉑ 1 · 2 · 3등 장부 자료') && ck.includes('「사장님 휴대폰에서만」 글 0') && !/ATLAS_DEV_OWNER_KEY[\s\S]{0,200}1 · 2 · 3등 달력/.test(ck.slice(ck.indexOf('㉑ 1 · 2 · 3등 달력(주문 0938'))) && ck.includes('같은 크기 세 칸이 합보다 먼저') && ck.includes('첫 화면에 종목 이름') && ck.includes('달력 날을 누르면 그 판으로') && ck.includes('판 차례 — 새 판이 위') && /#\\\/r\\\/\[mwdynkic\]/.test(ck), '검사 ㉑ · 고리 꼴');
 });

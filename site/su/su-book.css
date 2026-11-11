@@ -1,53 +1,88 @@
-/* 큐피트 1 · 2 · 3등 달력(주문 0938 · su-book.js) — 첫 페이지 잡스 판과 같은 말투: 흰 바탕 · 검정 · 회색 · 호박색 하나(도형에만) · 글 17px 넘게 · 누르는 곳 48 넘게 */
-.su-news > .su-hero.bk { display: grid; gap: 22px; padding: 6px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); background: #FFFFFF; color: #1D1D1F; }
-.bk-big { display: grid; gap: 4px; margin: 0; padding: 18px 18px 16px; border-radius: 22px; background: #F5F5F7; border: 1px solid #D2D2D7; }
-.bk-big.bk-up { border-left: 6px solid #D97706; }
-.bk-big.bk-dn { border-left: 6px solid #6E6E73; }
-.bk-k { margin: 0; font-size: 17px; font-weight: 700; color: #6E6E73; }
-.bk-v { margin: 0; font-size: 32px; line-height: 1.25; font-weight: 800; letter-spacing: -0.6px; color: #1D1D1F; word-break: keep-all; }
-.bk-s { margin: 0; font-size: 19px; line-height: 1.45; font-weight: 600; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; }
-.bk-two { display: grid; gap: 2px; }
-.bk-when { margin: 4px 0 0; font-size: 17px; color: #6E6E73; }
-.bk-cal { display: grid; gap: 14px; }
-.bk-mon { display: grid; gap: 8px; margin: 0; }
-.bk-mh { margin: 0; font-size: 21px; font-weight: 800; color: #1D1D1F; }
-.bk-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px 4px; }
-.bk-wd { text-align: center; font-size: 17px; font-weight: 700; color: #6E6E73; }
-.bk-d { box-sizing: border-box; min-width: 0; min-height: 52px; padding: 0; border-radius: 14px; display: grid; align-content: center; justify-items: center; gap: 2px; font: inherit; color: #86868B; background: transparent; border: 1px solid transparent; }
-.bk-d i { font-style: normal; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.bk-today { border-color: #D2D2D7; }
-.bk-pick { min-height: 64px; cursor: pointer; color: #1D1D1F; background: #F5F5F7; border: 1px solid #D2D2D7; -webkit-tap-highlight-color: transparent; }
-.bk-pick i { font-weight: 800; }
+/* 큐피트 1 · 2 · 3등 달력(주문 0938 · 다시 짬 1111-0938 · su-book.js) — 흰 바탕 · 검정 · 진한 회색 글 · 호박색 하나(늘어난 쪽 모양 · 선에만) · 글 17px 넘게 · 누르는 곳 48 넘게 */
+.su-news > .su-hero.bk { display: grid; gap: 10px; padding: 4px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); background: #FFFFFF; color: #1D1D1F; }
+.bk-intro { margin: 0; font-size: 19px; line-height: 1.45; font-weight: 600; color: #1D1D1F; word-break: keep-all; overflow-wrap: anywhere; }
+/* 맨 위 — 같은 크기 세 칸이 합보다 먼저(늘어난 곳 · 줄어든 곳 같은 크기 · 같은 굵기) */
+.bk-sum { display: grid; gap: 6px; margin: 0; }
+.bk-cap { margin: 0; font-size: 17px; font-weight: 700; color: #3A3A3C; word-break: keep-all; }
+.bk-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.bk-tile { display: grid; justify-items: center; align-content: start; gap: 0; min-width: 0; padding: 7px 4px 8px; border-radius: 18px; background: #F5F5F7; border: 1px solid #D2D2D7; text-align: center; }
+.bk-tv { display: inline-flex; align-items: center; gap: 6px; }
+.bk-tn { font-size: 28px; line-height: 1.2; font-weight: 800; color: #1D1D1F; font-variant-numeric: tabular-nums; }
+.bk-tl { font-size: 18px; line-height: 1.3; font-weight: 700; color: #1D1D1F; word-break: keep-all; }
+.bk-tot { margin: 0; font-size: 19px; line-height: 1.45; font-weight: 700; color: #1D1D1F; word-break: keep-all; overflow-wrap: anywhere; }
+.bk-tot2 { font-size: 18px; line-height: 1.45; color: #1D1D1F; word-break: keep-all; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.bk-split { margin: 0; border-top: 1px solid #E5E5EA; }
+.bk-sps { list-style: none; cursor: pointer; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 18px; color: #1D1D1F; }
+.bk-sps::-webkit-details-marker { display: none; }
+.bk-sps span { font-size: 17px; color: #3A3A3C; text-align: right; }
+.bk-spl { margin: 0 0 6px; font-size: 18px; line-height: 1.5; color: #1D1D1F; word-break: keep-all; }
+/* 모양(도형) — 크기 같음 · 색만으로 가르지 않음(세모 · 거꾸로 세모 · 막대 · 빈 동그라미) */
+.bk-sh { display: inline-block; flex: none; width: 18px; height: 18px; vertical-align: -2px; }
+.bk-shbig { width: 24px; height: 24px; }
+.bk-sup path { fill: #D97706; }
+.bk-sdn path { fill: #1D1D1F; }
+.bk-seq rect { fill: #6E6E73; }
+.bk-sone circle { fill: none; stroke: #6E6E73; stroke-width: 2.6; }
+/* 달력 — 한 줄(장이 서는 날 다섯) · 칸마다 요일 · 날 · 세 모양 */
+.bk-cal { margin: 0; }
+.bk-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.bk-d { box-sizing: border-box; min-width: 0; min-height: 62px; padding: 3px 0; border-radius: 14px; display: grid; align-content: center; justify-items: center; gap: 1px; font: inherit; color: #8E8E93; background: transparent; border: 1px dashed #D2D2D7; }
+.bk-d i { font-style: normal; font-size: 17px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.bk-d .bk-wd { font-weight: 600; }
+.bk-d .bk-dn { font-weight: 700; }
+.bk-pick { cursor: pointer; color: #1D1D1F; background: #F5F5F7; border: 1px solid #D2D2D7; -webkit-tap-highlight-color: transparent; }
+.bk-pick .bk-dn { font-weight: 800; }
 .bk-pick.bk-on { background: #FFF7ED; border: 2px solid #D97706; }
-.bk-123 { display: flex; gap: 2px; } /* 320 폭: 칸 54px · 눌린 칸 안 50px — 세 칸 14 + 14 + 14 + 틈 4 = 46px */
-.bk-123 b, .bk-key b { display: inline-grid; place-items: center; min-width: 14px; height: 21px; padding: 0; border-radius: 5px; font-size: 17px; line-height: 1; font-weight: 800; }
-.bk-u { background: #1D1D1F; color: #FFFFFF; }
-.bk-n { background: #FFFFFF; color: #1D1D1F; box-shadow: inset 0 0 0 1.5px #1D1D1F; }
-.bk-e { background: #D2D2D7; color: #1D1D1F; }
-.bk-key { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 17px; color: #3A3A3C; }
-.bk-key span + b { margin-left: 8px; }
-.bk-day { display: grid; gap: 12px; }
-.bk-day .su-ft { margin: 0; }
-.bk-note { margin: 0; font-size: 17px; line-height: 1.5; color: #6E6E73; }
-.bk-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.bk-card { display: grid; gap: 6px; padding: 14px 16px 10px; border-radius: 20px; border: 1px solid #D2D2D7; background: #FFFFFF; min-width: 0; }
-.bk-top { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 17px; color: #6E6E73; }
-.bk-pl { display: inline-grid; place-items: center; min-width: 44px; height: 28px; padding: 0 8px; border-radius: 14px; background: #1D1D1F; color: #FFFFFF; font-size: 17px; font-weight: 800; }
-.bk-nm { margin: 0; font-size: 23px; line-height: 1.3; font-weight: 800; color: #1D1D1F; overflow-wrap: anywhere; }
-.bk-sp { display: block; width: 100%; height: 64px; }
-.bk-base { stroke: #D2D2D7; stroke-width: 1.5; stroke-dasharray: 4 4; }
-.bk-line { fill: none; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
-.bk-upl { stroke: #D97706; }
-.bk-dnl { stroke: #6E6E73; }
-.bk-buy { fill: #FFFFFF; stroke: #6E6E73; stroke-width: 2; }
-.bk-now { fill: #1D1D1F; }
-.bk-px { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; font-size: 18px; color: #3A3A3C; font-variant-numeric: tabular-nums; }
-.bk-mv { margin: 0; display: grid; gap: 2px; font-size: 18px; color: #3A3A3C; }
-.bk-mv b { font-size: 20px; font-weight: 800; color: #1D1D1F; }
-.bk-go { display: flex; align-items: center; justify-content: space-between; min-height: 48px; margin-top: 2px; border-top: 1px solid #ECECEF; font-size: 18px; font-weight: 700; color: #1D1D1F; text-decoration: none; }
-.bk-go i { font-style: normal; font-size: 22px; color: #86868B; }
+.bk-3 { display: flex; gap: 2px; margin-top: 2px; } /* 320 폭: 칸 54px — 세 모양 14px × 3 + 틈 4 = 46px */
+.bk-3 .bk-sh { width: 14px; height: 14px; }
+.bk-key { margin: 4px 0 0; font-size: 17px; line-height: 1.5; color: #3A3A3C; word-break: keep-all; }
+/* 판 — 새 판이 위 · 머리에 처음 보인 때 */
+.bk-list { display: grid; gap: 18px; }
+.bk-board { display: grid; gap: 2px; margin: 0; scroll-margin-top: 76px; }
+.bk-bh { margin: 0; font-size: 21px; line-height: 1.35; font-weight: 800; color: #1D1D1F; word-break: keep-all; }
+.bk-seen { margin: 0; font-size: 17px; line-height: 1.45; color: #3A3A3C; }
+.bk-late { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 700; color: #1D1D1F; word-break: keep-all; }
+.bk-names { margin: 2px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 21px; font-weight: 800; color: #1D1D1F; }
+.bk-nm1 { display: inline-flex; align-items: center; gap: 6px; }
+.bk-dot { color: #86868B; font-size: 21px; }
+.bk-pl { display: inline-grid; place-items: center; min-width: 40px; height: 26px; padding: 0 7px; border-radius: 13px; background: #1D1D1F; color: #FFFFFF; font-size: 17px; font-weight: 800; flex: none; }
+.bk-rows { list-style: none; margin: 4px 0 0; padding: 0; display: grid; }
+.bk-row { display: grid; grid-template-columns: minmax(0, 1fr) 112px; grid-template-areas: "top top" "res sp" "mon sp"; column-gap: 10px; row-gap: 2px; align-items: center; min-height: 48px; padding: 10px 0; border-top: 1px solid #E5E5EA; color: #1D1D1F; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.bk-top { grid-area: top; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.bk-nm { min-width: 0; font-size: 22px; line-height: 1.3; font-weight: 800; color: #1D1D1F; overflow-wrap: anywhere; }
+.bk-tag { flex: none; padding: 0 8px; border-radius: 10px; border: 1px solid #D2D2D7; font-size: 17px; line-height: 1.5; color: #3A3A3C; }
+.bk-chev { margin-left: auto; font-style: normal; font-size: 24px; color: #86868B; }
+.bk-res { grid-area: res; display: flex; align-items: baseline; gap: 6px; min-width: 0; font-size: 20px; line-height: 1.35; font-weight: 800; font-variant-numeric: tabular-nums; }
+.bk-res { align-items: center; }
+.bk-mon { grid-area: mon; min-width: 0; font-size: 18px; line-height: 1.4; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.bk-sp { grid-area: sp; display: block; width: 112px; height: 56px; }
+.bk-base { stroke: #8E8E93; stroke-width: 1.5; stroke-dasharray: 3 4; }
+.bk-line { fill: none; stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+.bk-lup { stroke: #D97706; }
+.bk-ldn { stroke: #1D1D1F; }
+.bk-leq, .bk-lone { stroke: #6E6E73; }
+.bk-buy { fill: #FFFFFF; stroke: #1D1D1F; stroke-width: 2; }
+.bk-now { stroke: #FFFFFF; stroke-width: 1.5; }
+.bk-nup { fill: #D97706; }
+.bk-ndn { fill: #1D1D1F; }
+.bk-neq, .bk-none { fill: #6E6E73; }
+/* 지난 달 — 접힌 칸 */
+.bk-old { margin: 0; border-top: 1px solid #D2D2D7; }
+.bk-old[open] { display: grid; gap: 22px; padding-bottom: 6px; }
+.bk-olds { list-style: none; cursor: pointer; min-height: 56px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; font-size: 19px; color: #1D1D1F; }
+.bk-olds::-webkit-details-marker { display: none; }
+.bk-oldn { display: flex; gap: 12px; font-size: 18px; font-weight: 700; }
+.bk-oc { display: inline-flex; gap: 4px; align-items: center; }
+/* 이렇게 셌어요(「자세히」 서랍 안) */
 .bk-how { margin: 0 max(16px, env(safe-area-inset-left, 0px)); padding-top: 14px; border-top: 1px solid #D2D2D7; }
 .bk-hs { list-style: none; cursor: pointer; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 19px; color: #1D1D1F; }
 .bk-hs::-webkit-details-marker { display: none; }
-.bk-hs span { font-size: 17px; color: #6E6E73; }
-.bk-ul { margin: 6px 0 12px; padding-left: 1.2em; display: grid; gap: 6px; font-size: 18px; line-height: 1.5; color: #3A3A3C; }
+.bk-hs span { font-size: 17px; color: #3A3A3C; }
+.bk-ul { margin: 6px 0 12px; padding-left: 1.2em; display: grid; gap: 6px; font-size: 18px; line-height: 1.5; color: #1D1D1F; }
+/* 「글씨」 크게(:root.su-lg) — 이름 · 결과 · 판 머리를 한 단 크게(달력 칸은 넓이가 정해져 그대로) */
+:root.su-lg .bk-intro, :root.su-lg .bk-tot { font-size: 21px; }
+:root.su-lg .bk-tl, :root.su-lg .bk-mon, :root.su-lg .bk-spl, :root.su-lg .bk-ul { font-size: 20px; }
+:root.su-lg .bk-cap, :root.su-lg .bk-seen, :root.su-lg .bk-late, :root.su-lg .bk-key, :root.su-lg .bk-sps span, :root.su-lg .bk-hs span { font-size: 19px; }
+:root.su-lg .bk-bh, :root.su-lg .bk-names, :root.su-lg .bk-dot { font-size: 23px; }
+:root.su-lg .bk-nm { font-size: 25px; }
+:root.su-lg .bk-res { font-size: 22px; }
