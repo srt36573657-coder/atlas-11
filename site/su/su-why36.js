@@ -211,11 +211,10 @@ export function up3Box(T, c) {
   const t3 = T?.top3, rank = Array.isArray(t3?.rank) ? t3.rank : [];
   if (!rank.length) return null;
   const me = rank.find(r => r.code === c.code), R = n => rank.find(r => r.place === n), P = t3.past ?? {};
-  const EASY = {'긴 오름세 · 덜 흔들림': '1년 꾸준히 오름', '1년 오른 날 몫': '1년 오른 날이 많음', '업종 따라잡기': '업종보다 덜 오름', '닷새 눌림': '최근 5일 쉼'}; // 쉬운 판(주문 1112-0253) — 첫 페이지 · 1 · 2 · 3등 쪽과 같은 말
-  const how = (Array.isArray(t3.how) && t3.how.length === 4 ? t3.how : ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림']).map(t => EASY[t] ?? t);
+  const how = Array.isArray(t3.how) && t3.how.length === 4 ? t3.how : ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림'];
   const sz = v => (fin(v) ? (v >= 0.5 ? '높아요' : v <= -0.5 ? '낮아요' : '보통이에요') : NEED);
-  return fold('yw-top3', me ? '오늘의 ' + me.place + '등' : '오늘의 1 · 2 · 3등', me ? '우량주 ' + (t3.pool ?? NEED) + '곳 가운데 ' + ord(me.place) + '예요' : '이 칸은 1 · 2 · 3등이 아니에요', [
-    h('p', {class: 'yw-s', text: '고른 기준은 넷이에요. ' + how.join(', ') + '이에요. 날마다 우량주끼리 견줘 고르게 더했어요.'}),
+  return fold('yw-top3', me ? '새 잣대 ' + me.place + '등' : '새 잣대 1 · 2 · 3등', me ? '우량주 ' + (t3.pool ?? NEED) + '곳 가운데 ' + ord(me.place) + '예요' : '이 칸은 1 · 2 · 3등이 아니에요', [
+    h('p', {class: 'yw-s', text: '새 잣대는 넷이에요. ' + how.join(', ') + '이에요. 날마다 우량주끼리 견줘 고르게 더했어요.'}),
     me ? h('ol', {class: 'yw-ol'}, how.map((t, j) => li(j + 1, t, '이 회사는 ' + sz(me.parts?.[j]) + '.'))) : null,
     h('p', {class: 'yw-s yw-verdict', text: me ? '넷을 더한 값이 ' + ord(me.place) + '로 커서 ' + me.place + '등이에요.' : '1등 ' + (R(1)?.name ?? NEED) + ' · 2등 ' + (R(2)?.name ?? NEED) + ' · 3등 ' + jo(R(3)?.name ?? NEED, '이에요') + '.'}),
     P.design && P.hold ? h('p', {class: 'yw-s', text: '지난 기록이에요. ' + ym(P.design.from) + ' ~ ' + ym(P.design.to) + '에는 열흘 뒤 오른 때가 100번에 ' + Math.round(P.design.up10) + '번이었어요. ' + ym(P.hold.from) + ' ~ ' + ym(P.hold.to) + '에는 ' + Math.round(P.hold.up10) + '번이었어요.'}) : null,
@@ -233,7 +232,7 @@ function facts(X) {
   const hot7 = k === 'hot' ? L[L.length - 1]?.ch20 : k === 'hotNext' ? w.hot7 : null;
   const out = {
     /* 기 */
-    core: {t: '가장 큰 이유', s: why21(c, k, T) + cuNote(c)},
+    core: {t: '가장 큰 까닭', s: why21(c, k, T) + cuNote(c)},
     rank: i >= 0 ? {t: '일곱 가운데 자리', s: kn + ' 일곱 가운데 ' + ord(i + 1) + '로 이름이 올라 있어요.'} : null,
     days: fin(c.days) ? {t: '며칠째', s: day(c.found) + '에 이 묶음에서 처음 발견됐고, 오늘(' + day(a.board) + ')로 장이 열린 날 ' + c.days + '일째예요.' + (c.since ? ' 기록 첫날부터 이어져 그 앞은 셀 수 없어요.' : '')} : null,
     r20: fin(c.ch20) ? {t: '20거래일 움직임', s: day(c.date) + '까지 20거래일 동안 ' + won(c.ch20) + '이 됐어요.'} : st ? {t: '20거래일 움직임', s: '20거래일 동안 ' + won(st.r20) + '이 됐어요.'} : null,
@@ -326,7 +325,7 @@ const ORDER = {
     전: ['edge', 'past', 'leave', 'pos52', 'gap20', 'swing', 'y1', 'mdd', 'sales', 'pbr'], 결: ['sum', 'watch', 'route', 'op', 'opTrend', 'rev', 'roe', 'debt', 'biz', 'market', 'stop', 'asof']},
 };
 export const PARTS = Object.freeze([
-  {id: '기', name: '기 — 지금 모습과 가장 큰 이유'}, {id: '승', name: '승 — 왜 그렇게 됐나'},
+  {id: '기', name: '기 — 지금 모습과 가장 큰 까닭'}, {id: '승', name: '승 — 왜 그렇게 됐나'},
   {id: '전', name: '전 — 넓게 보면 · 바뀌는 조건'}, {id: '결', name: '결 — 그래서 · 볼 것'}]);
 /** 첫 까닭(묶음마다 su-21.js why21 글)이 이미 말한 것은 다시 쓰지 않음 — 같은 숫자를 두 번 세지 않게 */
 const SAID = (k, w) => ({hot: ['ind', 'r20'], money: ['lead', 'gain'], bloom: ['lead'], hotNext: w.how === 'rank' ? ['past'] : ['past', 'lead', 'r5'],
@@ -500,11 +499,11 @@ export async function vWhy(X, code, k) {
     h('p', {class: 'yw-chip'}, h('span', {text: '며칠째'}), h('b', {text: fin(c.days) ? c.days + '일째' : NEED})),
     h('p', {class: 'yw-chip'}, h('span', {text: '포모지수'}), h('b', {text: fin(c.fomo) ? String(c.fomo) : '보류'}), fin(c.fomo) ? h('small', {class: 'yw-c50', text: '보통 50'}) : null));
   const parts = P.map(p => box('yw-part', p.name, [h('ol', {class: 'yw-ol', start: String(p.items[0]?.n ?? 1)}, p.items.map(it => li(it.n, it.t, it.s)))]));
-  const why36box = fold('yw-36', '이유 서른여섯 가지', '중요한 차례로 기승전결 아홉씩', parts, true);
+  const why36box = fold('yw-36', '까닭 서른여섯 가지', '중요한 차례로 기승전결 아홉씩', parts, true);
   const fomoBox = fold('yw-fomo', fin(c.fomo) ? '포모지수 ' + c.fomo + ' — 왜 이 값이 나왔나요?' : '포모지수 — 보류', fin(c.fomo) ? '50이 이 회사의 보통 때예요' : '오늘은 값을 보여 드리지 않아요',
     [h('h3', {class: 'yw-h3', text: '기준 일곱 가지(소거법)'}),
       h('ol', {class: 'yw-ol'}, (W?.checks ?? []).map((x, j) => { const r = fo?.checks?.find(y => y.id === x.id); return li(j + 1, x.label + ' — ' + x.rule, x.why + '.', okMark(r?.verdict === 'pass')); })),
-      F11 ? h('h3', {class: 'yw-h3', text: '이 값이 나온 이유 열한 가지'}) : null,
+      F11 ? h('h3', {class: 'yw-h3', text: '이 값이 나온 까닭 열한 가지'}) : null,
       F11 ? h('ol', {class: 'yw-ol'}, F11.map((x, j) => li(j + 1, x.t, x.s))) : h('p', {class: 'yw-s', text: fo ? '기준 「' + ((W?.checks ?? []).find(x => x.id === fo.first)?.label ?? NEED) + '」에서 걸려 값을 보여 드리지 않아요.' : '포모 자료가 오늘 판과 날이 달라 값을 보여 드리지 않아요.'})]);
   const strictBox = MCR(T) ? top3Box(T, c, k) : strict31(SX, T, k, code); // 주문 1422 — 몬테카를로 차례 판은 1억 번 셈 상자 · 옛 판은 엄격 셈 상자
   const cuBox = cultureBox(T, c); // 주문 1912 — 문화 셈 판은 한국 투자자 문화 일곱 상자(1억 번 셈 상자 앞)

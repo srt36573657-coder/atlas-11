@@ -39,7 +39,7 @@ test('꽃이 될 회사 — 고른 날 · 빈 날(가까운 곳 · 섞지 않음
   assert.equal(bloomList(null).mode, 'none');
 });
 
-test('돈이 몰린 회사 — 한 달 앞선 업종 셋의 대장 회사 · 이유 한 줄과 켜진 이유만', () => {
+test('돈이 몰린 회사 — 한 달 앞선 업종 셋의 대장 회사 · 까닭 한 줄과 켜진 까닭만', () => {
   const TH = {inds: [
     {n: '음료', x: 15.1, lead: ['000080', '하이트진로', 1]}, {n: '항공', x: 17.5, lead: ['180640', '한진칼', 1]}, {n: '물류·운송', x: 11.2, lead: ['002320', '한진', 1]},
     {n: '보험', x: 8.0, lead: ['032830', '삼성생명', 1]}, {n: '반도체', x: -16, lead: ['005930', '삼성전자', 1]}, {n: '빈 대장', x: 30, lead: null}]};
@@ -137,7 +137,7 @@ test('육하원칙 엔진(새로 씀) — 값마다 여섯 칸 · 빈 칸은 nul
   assert.ok(ms.rows.find(r => r.month === '2026-10').open, '세는 중인 달 표시');
   const pz = E.eMiss({B});
   assert.equal(pz.big.v, '1,057'); assert.deepEqual(pz.mids.map(x => x.v), ['251', '573', '233']);
-  assert.ok(E.eMiss({B}).big.six.왜.includes('업종째 식었어요'), '왜 = 자료에 있는 지난 이유(가장 많은 것)');
+  assert.ok(E.eMiss({B}).big.six.왜.includes('업종째 식었어요'), '왜 = 자료에 있는 지난 까닭(가장 많은 것)');
   const nr = E.eNear({B});
   assert.equal(nr.big.v, '16'); assert.equal(nr.big.v2, '26');
   const yr = E.eYears({B: {record: {all: {n: 1580, hits: 523, rate: 33.1, base: 23.65}, years: {'2024': {n: 0, hits: 0, rate: null, base: 22.71}, '2025': {n: 1118, hits: 373, rate: 33.36, base: 22.04}}}}});
@@ -414,9 +414,9 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
   const M = JSON.parse(fs.readFileSync(path.join(ROOT, 'site/su/data/su21-map.json'), 'utf8'));
   assert.equal(M.lands.reduce((a, L) => a + L.inds.reduce((b, g) => b + g.cos.length, 0), 0), in365.size, '땅 지도 = 365곳 모두(빠진 곳 없음)');
   for (const k of ['hot', 'bloom', 'money']) for (const c of T.lists[k]) { const w = c.why ?? {}; // 까닭 칸이 그 목록 셈으로 채워짐(겹친 곳도 목록마다 따로)
-    if (k === 'hot') assert.ok(Number.isFinite(w.ind20) && Number.isFinite(c.ch20), 'hot 이유 ' + c.name);
-    if (k === 'money') assert.ok(Number.isFinite(w.indX) && Number.isFinite(w.gain), 'money 이유 ' + c.name);
-    if (k === 'bloom') assert.ok(Number.isFinite(w.indX), 'bloom 이유 ' + c.name); }
+    if (k === 'hot') assert.ok(Number.isFinite(w.ind20) && Number.isFinite(c.ch20), 'hot 까닭 ' + c.name);
+    if (k === 'money') assert.ok(Number.isFinite(w.indX) && Number.isFinite(w.gain), 'money 까닭 ' + c.name);
+    if (k === 'bloom') assert.ok(Number.isFinite(w.indX), 'bloom 까닭 ' + c.name); }
   // 될 듯 셋(주문 1103 · 사장님 2026-11-08 11:03 「불장이 될듯 · 돈이 몰릴듯 · 싹에서 꽃이 될듯 7개 추가하자」 · 11:08 「응」) — 일곱씩 · 365 안 · 지금 셋과 같은 종류에는 겹치지 않음 · 까닭 값 · 지난 1년 기록
   const NOWK = {hotNext: 'hot', bloomNext: 'bloom', moneyNext: 'money'};
   for (const k of ['hotNext', 'bloomNext', 'moneyNext']) {
@@ -424,9 +424,9 @@ test('21곳(주문 2044 · 사장님 2026-11-04 15:44(+04) 「수르 전면 개�
     const now = new Set(T.lists[NOWK[k]].map(c => c.code));
     for (const c of T.lists[k]) { assert.ok(in365.has(c.code), k + ' ' + c.name + ' 365 안'); assert.ok(c.in.includes(k)); assert.ok(!now.has(c.code), k + ' ' + c.name + ' — 지금 일곱과 겹치지 않음');
       const w = c.why ?? {};
-      if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (['mc365-v1', 'culture7-v1'].includes(T.listRule) ? ['rank', 'five'].includes(w.how) : w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 이유 ' + c.name); // 주문 1422 — 몬테카를로 차례 판은 불장 업종(rank) · 업종 닷새 오름(five)
-      if (k === 'moneyNext') assert.ok(Number.isFinite(w.gain) && w.gain > 0, 'moneyNext 이유 ' + c.name);
-      if (k === 'bloomNext') assert.ok(Number.isFinite(w.x5) && w.x5 >= 0 && Number.isFinite(w.x20) && w.x20 < 5, 'bloomNext 이유(싹) ' + c.name); }
+      if (k === 'hotNext') assert.ok(Number.isFinite(w.r20) && (['mc365-v1', 'culture7-v1'].includes(T.listRule) ? ['rank', 'five'].includes(w.how) : w.how === 'rank' ? Number.isInteger(w.rank) && w.rank >= 8 && w.rank <= 14 : w.how === 'five'), 'hotNext 까닭 ' + c.name); // 주문 1422 — 몬테카를로 차례 판은 불장 업종(rank) · 업종 닷새 오름(five)
+      if (k === 'moneyNext') assert.ok(Number.isFinite(w.gain) && w.gain > 0, 'moneyNext 까닭 ' + c.name);
+      if (k === 'bloomNext') assert.ok(Number.isFinite(w.x5) && w.x5 >= 0 && Number.isFinite(w.x20) && w.x20 < 5, 'bloomNext 까닭(싹) ' + c.name); }
     assert.ok(Number.isFinite(T.past?.[k]?.per100) && Number.isFinite(T.past?.[k]?.base100) && T.past[k].n > (T.past.strict ? 50 : 500), k + ' 지난 1년 기록(엄격 셈은 고른 수가 적음 — 80 ~ 180번)');
   }
   assert.ok(T.rules.hotNext && T.rules.moneyNext && T.rules.bloomNext, '될 듯 셋 규칙 글');
@@ -442,7 +442,7 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
     assert.ok(!full.startsWith(k + ' ') && !full.startsWith(k + ':'), '칸 이름표 없이 문장 — ' + k);
   }
   assert.equal(sixSay('누가', '한진칼'), '한진칼 이야기예요.');
-  assert.equal(sixSay('왜', '이유예요.'), '이유예요.', '이미 문장이면 그대로');
+  assert.equal(sixSay('왜', '까닭이에요.'), '까닭이에요.', '이미 문장이면 그대로');
   const R = fs.readFileSync(path.join(ROOT, 'site/next/roman72.js'), 'utf8'), G = fs.readFileSync(path.join(ROOT, 'site/su/su-gods.js'), 'utf8');
   const nums = new Set([...R.matchAll(/^\s*\[(\d+), '/gm)].map(m => +m[1]));
   assert.equal(nums.size, 72, '옛 신 명단 일흔둘');
@@ -497,14 +497,14 @@ test('잡스 판(주문 0054 · 사장님 2026-11-04 18:54(+03)) — 칸 이름 
 });
 
 /** 주문 0123(사장님 2026-11-09 01:23 · 01:44 · 02:01 · 02:02 · 02:04 「어」) · 주문 0200(02:00 「어」) — 「왜?」 쪽 · 42칸 첫 발견 · 며칠째 · 포모지수 · 회사 쪽 현재가 */
-test('「왜?」 쪽 — 길 · 서른여섯 가지 · 기준 일곱 · 포모 이유 · 42칸 줄 · 회사 쪽 현재가', () => {
+test('「왜?」 쪽 — 길 · 서른여섯 가지 · 기준 일곱 · 포모 까닭 · 42칸 줄 · 회사 쪽 현재가', () => {
   const su = fs.readFileSync(path.join(ROOT, 'site/su/su.js'), 'utf8'), y = fs.readFileSync(path.join(ROOT, 'site/su/su-why36.js'), 'utf8');
   const ap = fs.readFileSync(path.join(ROOT, 'site/su/su-apple.js'), 'utf8'), cj = fs.readFileSync(path.join(ROOT, 'site/su/su-co-jobs.js'), 'utf8'), pk = fs.readFileSync(path.join(ROOT, 'scripts/atlas11/package.mjs'), 'utf8');
   assert.ok(/\\\/y\\\/\(hot\|bloom\|money\|hotNext\|moneyNext\|bloomNext\)\$\/\.test\(a\)\) v = await \(await import\('\/su\/su-why36\.js'\)\)\.vWhy\(X21, a\.slice\(0, 6\), a\.slice\(9\)\)/.test(su), '길 #/c/<번호>/y/<묶음>');
   assert.ok(fs.existsSync(path.join(ROOT, 'site/su/su-why36.css')) && /export const CSS = '\/su\/su-why36\.css'/.test(y), '꾸밈 파일');
   for (const k of ['hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext']) assert.ok(new RegExp(`\\b${k}: \\{기: \\[`).test(y), '중요한 차례 — ' + k);
   assert.ok(/PARTS = Object\.freeze\(\[\s*\{id: '기'/.test(y) && /items\.length >= 9/.test(y) && /while \(p\.items\.length < 9 && spare\.length\)/.test(y), '기 · 승 · 전 · 결 아홉씩');
-  assert.ok(/export function crit7/.test(y) && /fomo11/.test(y) && /rows\.slice\(0, 11\)/.test(y), '기준 일곱 · 포모 이유 열하나');
+  assert.ok(/export function crit7/.test(y) && /fomo11/.test(y) && /rows\.slice\(0, 11\)/.test(y), '기준 일곱 · 포모 까닭 열하나');
   assert.ok(/'#\/c\/' \+ encodeURIComponent\(it\.code\) \+ '\/y\/' \+ it\.k/.test(ap) && /'sa-found'/.test(ap) && /'sa-days'/.test(ap) && /const ROW = 140/.test(ap), '첫 페이지 칸 — 누르면 「왜?」 · 첫 발견 · 며칠째 · 포모지수');
   assert.ok(/psrc: bd \? 'board' : 'co'/.test(cj) && /function live\(svg, m, P, id\)/.test(cj) && /su21-next\.json/.test(cj), '회사 쪽 현재가 = 첫 페이지 값 · 장 중 1분마다');
   // 주문 0806(사장님 2026-11-09 08:06 「어 그렇게 해」) — 회사 쪽 한 달 꺾은선 = 첫 페이지 칸 값 21개 · 같은 날짜 · 시장 줄은 날짜가 꼭 맞을 때만 · 장 중에는 칸과 똑같이 밀림
@@ -696,7 +696,7 @@ test('「왜?」 쪽 한눈 그림 — 답 한 줄 · 고른 길 · 기준 일�
   assert.ok(/export function glance\(T, c, k, pos, C7 = \[\]\)/.test(y) && /export function answer1\(T, c, k\)/.test(y) && /export function path5\(T, c, k, pos, C7 = \[\]\)/.test(y), '한눈 그림 · 답 한 줄 · 고른 길');
   assert.ok(y.includes("class: 'yw-glance yw-crit'") && y.includes("'곳을 세 번 걸러 남은 일곱 가운데 하나예요'"), '기준 일곱은 그림 칸 안(.yw-crit .yw-li 일곱 그대로)');
   assert.ok(/const stepOf = x => \(\/우량주\/\.test\(x\.t\) \? 1 : \/\^몬테카를로\|\^소거\/\.test\(x\.t\) \? 2 : \/차례\|업종마다\/\.test\(x\.t\) \? 3 : 4\)/.test(y), '기준을 칸에 나눔');
-  assert.ok(y.includes("fold('yw-36', '이유 서른여섯 가지'") && y.includes("fold('yw-fomo'") && y.includes("fold('yw-top3'") && y.includes("fold('yw-cu'"), '긴 글은 접음');
+  assert.ok(y.includes("fold('yw-36', '까닭 서른여섯 가지'") && y.includes("fold('yw-fomo'") && y.includes("fold('yw-top3'") && y.includes("fold('yw-cu'"), '긴 글은 접음');
   assert.ok(y.includes("'뜨거움은 앞날을 말하지 않아요. 사기 전에 한 번 멈춰요.'") && y.includes("h('small', {class: 'yw-c50', text: '보통 50'})"), '포모 온도계 · 보통 50');
   assert.ok(y.includes("' 마지막 값으로 셌어요. 지난 기록이고, 앞날은 맞히지 않아요.'") && y.includes("'지난 1년, 이렇게 고른 회사는?'") && y.includes("'우연이었을까요?'"), '셈한 날 · 지난 1년 · 우연');
   assert.ok(ck.includes("heroPct: (document.querySelector('#su .su-hero.yw')?.textContent ?? '').includes('%')"), '「왜?」 쪽 글 모두(접힌 글 포함) 「%」 없음 — 검사');

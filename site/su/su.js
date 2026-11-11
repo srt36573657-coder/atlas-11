@@ -303,7 +303,7 @@ async function vInd(name) {
     mids: e.mids, honest: honestOf(B),
     figs: [known.length ? waffle(100 * up / known.length, 100 * (known.length - up) / known.length, {label: '오른 회사와 오르지 못한 회사', title: '100곳으로 치면 · 오른 곳과 못 오른 곳', la: '오른 곳', lb: '못 오른 곳'}) : null,
       inds.length > 1 ? bars(inds.map(v => ({name: v.n, v: v.x, key: v.n})), {label: '업종 · 한 달 동안 시장보다', title: '다른 업종과 견주면' + (Number.isFinite(bl.min) ? ' · 넘어야 할 선 ' + bl.min : ''), base: Number.isFinite(bl.min) ? bl.min : null, cur: name}) : null].filter(Boolean),
-    body: [list, wy?.items?.length ? h('section', {class: 'su-why', 'aria-label': '돈이 몰린 이유'}, h('h2', {class: 'su-ft', text: '돈이 몰린 이유'}), wy.line ? h('p', {class: 'su-lead', text: wy.line}) : null,
+    body: [list, wy?.items?.length ? h('section', {class: 'su-why', 'aria-label': '돈이 몰린 까닭'}, h('h2', {class: 'su-ft', text: '돈이 몰린 까닭'}), wy.line ? h('p', {class: 'su-lead', text: wy.line}) : null,
       h('ol', {class: 'su-items'}, wy.items.slice(0, 4).map(it => h('li', {}, h('b', {text: easy(it.t)}), it.sub ? h('span', {text: easy(it.sub)}) : null)))) : null],
     rows: e.rows, rowsTitle: '회사마다 한 달', pro: e.pro,
     next: {href: '#/r', label: '지난날 몇 번 꽃이 됐나?', step: null}, asOf: M?.asOf ?? a0, S};
@@ -338,7 +338,7 @@ async function vHub() {
       drawer('#/r/m', '달마다', ms.big.v ?? NEED, ms.big.label),
       drawer('#/j', '한 달 뒤', mine.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length + '번', '한 달 전 약속 — 「그날 정한 대로 했어?」에 답한 수'),
       drawer('#/j', '내 매매일지', mine.length + '번', '「왜 사?」에 답한 기록 · 이 휴대폰에만'),
-      drawer('#/r/w', '못 된 이유', num(B?.why?.all?.miss) ? num(B.why.all.miss) + '번' : NEED, '조건에 맞고도 꽃이 못 된 횟수'),
+      drawer('#/r/w', '못 된 까닭', num(B?.why?.all?.miss) ? num(B.why.all.miss) + '번' : NEED, '조건에 맞고도 꽃이 못 된 횟수'),
       drawer('#/r/d', '날마다', dd.big.v != null ? dd.big.v + '날' : NEED, '지난 60거래일 달력'),
       drawer('#/r/k', '한국 시장 일곱 가지', '7가지', '다른 나라와 아주 다른 점 · 한국 문화가 묻은 곳'), // 기록창(주문 0814 · 사장님 2026-11-09 08:14 · 08:25 「수르에 올려야해」)
       drawer('#/r/i', '한국 투자자 특징 열하나', '11가지', '도우미 열하나가 찾은 버릇 · 큐피트 42칸에 쓰는 일곱'), // 주문 2235
@@ -367,9 +367,9 @@ async function vMonths() {
 async function vMiss() {
   const {B, S, asOf} = await base();
   const e = eMiss({B}), dd = eDays({B}), hon = B?.honest, code = lastCo?.code ?? null;
-  const sp0 = split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것 · 이유 셋', hero: true, cap: e.say});
-  return {title: '못 된 이유', tab: 2, step: null, kick: '조건에 맞고도 꽃이 못 된 것', h1: '꽃이 못 된 이유', big: e.big,
-    ...frameHero(sp0, '꽃이 못 된 이유', 'split', 'calm'),
+  const sp0 = split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것 · 까닭 셋', hero: true, cap: e.say});
+  return {title: '못 된 까닭', tab: 2, step: null, kick: '조건에 맞고도 꽃이 못 된 것', h1: '꽃이 못 된 까닭', big: e.big,
+    ...frameHero(sp0, '꽃이 못 된 까닭', 'split', 'calm'),
     mids: e.mids, honest: honestOf(B),
     figs: [cal(dd.ds, {label: '지난 60거래일 달력', title: '날마다 · ● 꽃이 됨 · ■ 못 됨 · ▲ 기다림'}), B?.near?.rec ? waffle(B.near.rec.rate, B.near.rec.base, {label: '가까운 회사 · 100번에 몇 번', title: '조건에 가까웠던 회사는', la: '가까운 회사', lb: '아무 회사'}) : null].filter(Boolean),
     rows: dd.mids, rowsTitle: '지난 60거래일', pro: [...e.pro, ...dd.pro],

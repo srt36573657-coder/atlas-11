@@ -179,7 +179,7 @@ export async function v21Home(X) {
   const rows = KEY.flatMap(k => (T.lists[k] ?? []).map(c => ({...val(c.ch20, '', KIND[k] + ' · ' + c.name, six21(c, k, T), {mean: why21(c, k, T)}), href: '#/c/' + c.code})));
   const first = T.lists.hot?.[0] ?? T.lists.money?.[0];
   X.setFirst?.(first?.code);
-  return {title: nq ? '28곳' : '21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안', h1: '요즘 눈에 띄는 회사', big, // 쉬운 판(주문 1112-0253) — 첫 줄만 읽어도 무엇을 보는 곳인지(옛 「지금, 그리고 될 듯.」) // 잡스 판 한 문장(주문 1532 · 옛 「지금 볼 21곳」)
+  return {title: nq ? '28곳' : '21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안', h1: '지금, 그리고 될 듯.', big, // 잡스 판 한 문장(주문 1532 · 옛 「지금 볼 21곳」)
     ...X.artHero('su-apple', null, X.fig('21', [grid21(T), funnel3(T)], {label: '상장 회사 → 우량주 → 21곳', hero: true, cap: ['한국 상장 회사 ' + num(T.counts.listed) + '곳을 셌어요.', '그 가운데 우량주 ' + T.counts.b365 + '곳을 먼저 골랐어요.', '그런데 셋에 함께 든 곳이 ' + T.overlap.length + '곳 있어요(✦).', '그래서 셋에서 볼 곳은 21곳, 겹침을 빼면 ' + T.distinct + '곳이에요.', ...(nq ? ['넷째 창 조용한데 힘이 모이는 ' + nq + '곳을 더해 ' + (21 + nq) + '곳이에요.'] : [])]})),
     mids, pro: [...ruleRows(T), ...KEY.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: sgn(c.ch20), how: why21(c, k, T) + ' · ' + Object.entries(six21(c, k, T)).map(([a, b]) => a + ' ' + (b ?? NEED)).join(' · ')})))], after: [X.essBox(S)], // 21곳 하나씩은 서랍에(첫 화면은 그림 — 주문 2044 [5] 7 · 8)
     act: [modeBar(false)],
@@ -241,7 +241,7 @@ export async function vMore(X, code) {
     if (full) c = {...c, c: full.c, flows: full.flows, news: full.news, pos52: full.pos52, close: full.close}; }
   X.setCur?.({code, name: c.name, ind: c.ind});
   const l = c.c ?? [], d = l.slice(1).map((v, i) => Math.sign(v - l[i])), up = d.filter(x => x > 0).length, dn = d.filter(x => x < 0).length, f = c.flows ?? {};
-  const big = val(fin(c.ch20) ? sgn(c.ch20) : null, '%', c.name + ' · ' + day(c.date) + '까지 20거래일 오른 만큼', {누가: c.name, 언제: day(c.date) + '까지 20거래일', 어디서: c.ind + ' 업종', 무엇을: '그날 마지막 값으로 셌어요', 어떻게: '첫날 값과 마지막 날 값을 견줬어요', 왜: '21곳에 든 이유를 값으로 보려고요'}, {mean: day(c.date) + ' 마지막 값으로 보면, 20거래일 전에 100원이었다면 지금 ' + (fin(c.ch20) ? num(Math.round((100 + c.ch20) * 10) / 10) : NEED) + '원이라는 뜻이에요.'});
+  const big = val(fin(c.ch20) ? sgn(c.ch20) : null, '%', c.name + ' · ' + day(c.date) + '까지 20거래일 오른 만큼', {누가: c.name, 언제: day(c.date) + '까지 20거래일', 어디서: c.ind + ' 업종', 무엇을: '그날 마지막 값으로 셌어요', 어떻게: '첫날 값과 마지막 날 값을 견줬어요', 왜: '21곳에 든 까닭을 값으로 보려고요'}, {mean: day(c.date) + ' 마지막 값으로 보면, 20거래일 전에 100원이었다면 지금 ' + (fin(c.ch20) ? num(Math.round((100 + c.ch20) * 10) / 10) : NEED) + '원이라는 뜻이에요.'});
   const mids = [
     val(up, '일', '오른 날 · 내린 날 ' + dn + '일', {누가: c.name, 언제: day(c.date) + '까지', 어디서: '출목표', 무엇을: '날마다 오른 날과 내린 날을 셌어요', 어떻게: '● 오른 날 · ○ 내린 날', 왜: '오른 날이 이어졌는지 보려고요'}, {mean: '20일 가운데 ' + up + '일 올랐고 ' + dn + '일 내렸다는 뜻이에요.'}),
     val(f.foreign, '', '외국인 닷새 · 기관 ' + (fin(f.institution) ? num(f.institution) : NEED) + ' · 개인 ' + (fin(f.individual) ? num(f.individual) : NEED), {누가: '외국인 · 기관 · 개인', 언제: f.from && f.to ? day(f.from) + '부터 ' + day(f.to) + '까지' : null, 어디서: c.name, 무엇을: '닷새 동안 들어온 돈과 나간 돈의 차이', 어떻게: '자료 값 그대로 · 단위 확인 필요', 왜: null}, {mean: fin(f.foreign) ? (f.foreign > 0 ? '외국인은 닷새 동안 판 것보다 산 것이 많았다는 뜻이에요.' : '외국인은 닷새 동안 산 것보다 판 것이 많았다는 뜻이에요.') : null}),
@@ -254,7 +254,7 @@ export async function vMore(X, code) {
 }
 export async function vFriend(X) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
-  const big = val(21, '곳', '친구에게 건넬 목록', {누가: '나와 친구', 언제: day(T.asOf.board), 어디서: '카카오톡', 무엇을: '21곳 목록과 이유를 건네요', 어떻게: '카톡 보내기 · 카톡 가입 · 커피 쿠폰 · 상품권 · 소개 영상', 왜: '혼자보다 함께 보면 덜 서두르니까요'}, {mean: '내가 본 21곳을 친구도 같은 잣대로 볼 수 있다는 뜻이에요.'});
+  const big = val(21, '곳', '친구에게 건넬 목록', {누가: '나와 친구', 언제: day(T.asOf.board), 어디서: '카카오톡', 무엇을: '21곳 목록과 까닭을 건네요', 어떻게: '카톡 보내기 · 카톡 가입 · 커피 쿠폰 · 상품권 · 소개 영상', 왜: '혼자보다 함께 보면 덜 서두르니까요'}, {mean: '내가 본 21곳을 친구도 같은 잣대로 볼 수 있다는 뜻이에요.'});
   const card = (href, title, say, helps) => h('a', {class: 'su-fcard', href}, h('b', {text: title}), h('span', {text: say}), h('em', {class: 'su-help', text: '돕는 일 · ' + helps}));
   const cards = h('section', {class: 'su-flist', 'aria-label': '친구에게'}, h('h2', {class: 'su-ft', text: '친구에게 · 옛 기능도 여기서'}),
     card('/next/?su=guest#/share', '카톡 보내기', '21곳 가운데 한 곳을 친구에게 보내요.', '셋 모두'), card('/next/?su=guest#/gift', '상품권 · 카톡 가입', '친구 셋이 열면 상품권을 받아요.', '셋 모두'),
@@ -264,7 +264,7 @@ export async function vFriend(X) {
     card('https://shin-yxy.gino.im/', '천사', '사장님이 정하신 바깥 길이에요.', '셋과 안 이어짐'),
     card('#/g', '셋의 길 · 옛 기능 모두', '옛 기능을 하나도 버리지 않고 셋을 돕는 자리에 놓았어요.', '셋 모두'));
   return {title: '친구에게', tab: 3, step: 8, kick: '함께 보기', h1: '친구에게', big,
-    ...X.artHero('su-road-jobs', 'friend', X.fig('p6', [petals6()], {label: '친구에게 건네는 여섯 가지', hero: true, cap: ['21곳을 친구와 함께 봐요.', '카톡으로 보내고, 친구가 열면 가입은 두 번이면 돼요.', '그런데 친구에게도 사고팔기를 권하지 않아요.', '그래서 이유와 함께 건네요.']})),
+    ...X.artHero('su-road-jobs', 'friend', X.fig('p6', [petals6()], {label: '친구에게 건네는 여섯 가지', hero: true, cap: ['21곳을 친구와 함께 봐요.', '카톡으로 보내고, 친구가 열면 가입은 두 번이면 돼요.', '그런데 친구에게도 사고팔기를 권하지 않아요.', '그래서 까닭과 함께 건네요.']})),
     mids: [], body: [cards], pro: [{k: '카톡 가입', v: '켜짐', how: 'config/atlas11/kakao.json'}, {k: '커피 쿠폰', v: '열 번에 한 장', how: '한 달에 한 번 · 사장님이 직접 보냄'}, {k: '옛 기능', v: '13줄 모두 길 위에', how: '21곳 · 땅 지도 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게 여덟 쪽에 나눠 둠 · 지운 것 없음'}, {k: '셋과 안 이어진 것', v: '1', how: '천사(바깥 길) — 사장님이 정하실 것'}],
     next: {href: '#/', label: '처음으로', step: null, k: '끝'}, asOf: T.asOf.board, S};
 }
@@ -272,7 +272,7 @@ export async function vFriend(X) {
 export function reasonBox21(T, code) {
   const ks = KEY6.filter(k => (T?.lists?.[k] ?? []).some(c => c.code === code)); if (!ks.length) return null;
   const ck = k => T.lists[k].find(c => c.code === code); // 목록마다 그 목록의 까닭(겹친 곳은 두 줄 — 불장 까닭 · 돈 까닭)
-  return h('section', {class: 'su-why su-why21', 'aria-label': '21곳에 든 이유'}, h('h2', {class: 'su-ft', text: (ks.some(k => KEY.includes(k)) ? '21곳' : '될 듯 21곳') + '에 든 이유 · ' + ks.map(k => KIND[k]).join(' · ')}),
+  return h('section', {class: 'su-why su-why21', 'aria-label': '21곳에 든 까닭'}, h('h2', {class: 'su-ft', text: (ks.some(k => KEY.includes(k)) ? '21곳' : '될 듯 21곳') + '에 든 까닭 · ' + ks.map(k => KIND[k]).join(' · ')}),
     h('div', {class: 'su-g su-whyg', 'data-g': 'why21'}, whyRoad(ks.map(k => [k, ck(k)]))), // 까닭 길 그림 — 업종 → 회사 → 목록(그림이 화면 대부분 · 주문 0054 [6] 5)
     ks.map(k => h('p', {class: 'su-lead', text: why21(ck(k), k, T)})), h('p', {class: 'su-note', text: '자료 ' + day(T.asOf.board) + ' · ' + SRC}));
 }
@@ -282,7 +282,7 @@ function whyRoad(rows) {
   const W = 390, H = 590, one = rows.length === 1, cols = one ? [130] : [98, 292], ys = [76, 290, 504], r = one ? 58 : 50;
   const label = (cx, cy, t, b) => { const L = lines2(t); return L.map((x, i) => s('text', {x: cx, y: cy + 7 + (L.length === 2 ? (i ? 12 : -12) : 0), 'text-anchor': 'middle', class: 'g-tl g-tw ' + b + ' a-up', text: x})); };
   const val = (cx, cy, t, b) => one ? s('text', {x: cx + r + 16, y: cy + 8, class: 'g-tl g-tland g-halo ' + b + ' a-up', text: t}) : s('text', {x: cx, y: cy + r + 30, 'text-anchor': 'middle', class: 'g-tl g-tland g-halo ' + b + ' a-up', text: t});
-  return s('svg', {class: 'su-svg su-why21s', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '21곳에 든 이유 길 — ' + rows.map(([k, c]) => c.ind + ' 업종 → ' + c.name + ' → ' + KIND[k]).join(' · ')},
+  return s('svg', {class: 'su-svg su-why21s', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': '21곳에 든 까닭 길 — ' + rows.map(([k, c]) => c.ind + ' 업종 → ' + c.name + ' → ' + KIND[k]).join(' · ')},
     rows.map(([k, c], i) => { const x = cols[i], w = c.why ?? {};
       const iv = k === 'hot' ? '업종 ' + sgnP(w.ind20) : k === 'hotNext' ? (w.how === 'rank' ? '불장 업종' : '업종 닷새 ' + sgnP(w.ind5)) : k === 'bloomNext' ? '아직 싹' : '시장보다 ' + sgn(w.indX);
       const cv = k === 'money' || k === 'moneyNext' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : k === 'bloomNext' ? '닷새 ' + sgn(w.x5) : k === 'hotNext' ? sgnP(w.r20) : sgnP(c.ch20);
