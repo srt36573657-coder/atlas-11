@@ -27,7 +27,7 @@ export async function load(get) {
 
 const NEED = '확인 필요';
 const KEY = ['hot', 'bloom', 'money'];
-const KIND = {hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는'};
+const KIND = {hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는', quiet: '조용한데 힘이 모이는'}; // quiet = 넷째 창(주문 1111-1334 · 지금 28곳)
 const KINDN = {hot: '불장이 될 듯', bloom: '꽃이 될 듯', money: '돈이 몰릴 듯'};
 const NXK = {hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'};
 const W = 390, PAD = 20, MID = W / 2;
@@ -254,7 +254,8 @@ function draw(d, opt) {
   const pxOf = c => (fin(c?.close) && c.close > 0 && (!c.date || !day || c.date === day) ? c.close : null); // 그날(asOf.board) 마지막 값만 — 다른 날 값이면 「확인 필요」
   const spOf = c => (Array.isArray(c?.c) && c.c.length === 21 && c.c.every(v => fin(v) && v > 0) && pxOf(c) === c.c[20] ? c.c : null); // 21 마지막 값 · 끝 = 현재가일 때만
   const items = (k, nx) => (L[nx ? NXK[k] : k] ?? []).slice(0, 7).map(c => ({k: nx ? NXK[k] : k, kind: nx ? KINDN[k] : KIND[k], code: String(c.code ?? ''), name: String(c.name ?? NEED), val: valText(c, k, nx), star: !nx && ovs.has(String(c.name)), px: pxOf(c), sp: spOf(c), days: c.days, found: c.found, fomo: c.fomo, sx: MARK && c.sx === true, r3: RANK && [1, 2, 3].includes(c.r3) ? c.r3 : null}));
-  const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
+  const QL = opt.mode === 'next' ? [] : (L.quiet ?? []).slice(0, 7).map(c => ({k: 'quiet', kind: KIND.quiet, code: String(c.code ?? ''), name: String(c.name ?? NEED), px: pxOf(c), sp: spOf(c), w: c.why ?? {}, r3q: [1, 2, 3].includes(c.r3q) ? c.r3q : null})); // 넷째 창 조용한데 힘이 모이는(주문 1111-1334) — 처음 쪽에만
+  const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0) + Math.min(7, (L.quiet ?? []).length), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
   const ROW = 140, HEADH = 58, GAP = 26, CW = MID - PAD - 3; // 줄 넷째 · 다섯째 = 첫 발견 · 며칠째와 포모지수(주문 0123)
   const STRICT = !!d?.strict && d.strict.mode !== 'mark'; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움) — 옛 판 자료만
   const RANK = !!d?.top3 && Array.isArray(d.top3.rank), CULT = d?.listRule === 'culture7-v1'; // 주문 1422(사장님 2026-11-09 14:22 「… 1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 42칸 가운데 1등 · 2등 · 3등 칸에 표
@@ -264,7 +265,8 @@ function draw(d, opt) {
   const tagOf = c => c?.sx || c?.r3; // 칸 맨 위 표(수르 계산법 · 1등 · 2등 · 3등)
   const rowH = (k, i) => ROW + (tagOf(items(k, false)[i]) || tagOf(items(k, true)[i]) ? BX : 0); // 표가 붙은 칸이 있는 줄만 표 높이만큼 더
   const nSx = MARK ? KEY.reduce((a, k) => a + items(k, false).filter(c => c.sx).length + items(k, true).filter(c => c.sx).length, 0) : 0;
-  const H = LIST0 + KEY.reduce((a, k) => a + HEADH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + 24;
+  const qRows = Math.ceil(QL.length / 2), qRowH = i => ROW + (QL[2 * i]?.r3q || QL[2 * i + 1]?.r3q ? BX : 0); // 넷째 창 — 한 줄에 둘(왼 · 오른) · 등수 표가 붙은 줄만 표 높이만큼 더
+  const H = LIST0 + KEY.reduce((a, k) => a + HEADH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + (QL.length ? HEADH + 30 + Array.from({length: qRows}, (_, i) => qRowH(i)).reduce((b, v) => b + v, 0) + GAP : 0) + 24;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
     'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
   svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'sa-bg'}));
@@ -314,7 +316,51 @@ function draw(d, opt) {
     y += GAP;
     svg.append(sec);
   });
+  /* 5 넷째 창 — 조용한데 힘이 모이는 일곱(주문 1111-1334 · 사장님 2026-11-11 13:34 「조용한데 에너지가 모이는 주식창을 하나더 만들어라 그래서 총 28개로 만들고 몬태카를로 소거법으로을 찾아내라」)
+     한 줄에 둘 · 칸 = 이름 · 한 달 폭 · 현재가 · 이만큼 조용하기 · 외국인과 기관 + 한 달 꺾은선 · 첫 셋에 1 · 2 · 3등 표(몬테카를로 차례) · 누르면 그 회사 · 머리 줄을 누르면 넷째 창 쪽(#/s) */
+  if (QL.length) {
+    const sec = s('g', {class: 'sa-sec sa-sec3 sa-secq', 'data-sec': 'quiet'});
+    const head = s('a', {href: '#/s', class: 'sa-qhead', 'aria-label': '넷째 창 · 조용한데 힘이 모이는 ' + QL.length + '곳 · 걸러 온 길 보기'},
+      s('rect', {x: PAD - 6, y: y + 6, width: W - 2 * PAD + 12, height: HEADH + 24, rx: 12, class: 'sa-hit'}),
+      s('circle', {cx: PAD + 7, cy: y + 33, r: 6, class: 'sa-dotA'}), T(PAD + 20, y + 40, KIND.quiet + ' ' + QL.length, 'sa-kh'),
+      T(PAD + 20, y + 68, '몬테카를로 · 소거법 차례 ›', 'sa-d'));
+    sec.append(s('path', {d: `M${PAD} ${y}H${W - PAD}`, class: 'sa-rule'}), head);
+    y += HEADH + 30;
+    for (let i = 0; i < qRows; i++) {
+      const row = s('g', {class: 'sa-row'}), rh = qRowH(i);
+      if (i) row.append(s('path', {d: `M${PAD} ${y}H${W - PAD}`, class: 'sa-line'}));
+      if (QL[2 * i]) row.append(cellQ(QL[2 * i], PAD - 6, y, CW, rh));
+      if (QL[2 * i + 1]) row.append(cellQ(QL[2 * i + 1], MID + 3, y, CW, rh));
+      sec.append(row);
+      y += rh;
+    }
+    svg.append(sec);
+  }
   return svg;
+}
+/* ── 넷째 창 칸 하나(누르면 그 회사) — 이름 · 한 달 폭(그림 값 「%」) · 현재가 + 한 달 꺾은선 · 이만큼 조용하기(100번에 ○번) · 외국인과 기관 닷새 ── */
+function cellQ(it, x, y, w, h) {
+  const nm = it.name, fs = est(nm, 20) <= w - 8 ? 20 : est(nm, 18) <= w - 8 ? 18 : 17;
+  const sx = x + w - 8 - SW, room = sx - x - 12, q = it.w ?? {};
+  const price = it.px != null ? won(it.px) : NEED, pfs = est(price, 18) <= room ? 18 : 17;
+  const span = fin(q.span20) ? '폭 ' + q.span20.toFixed(1) + '%' : '폭 ' + NEED;
+  const rare = fin(q.p) ? (q.p * 100 < 0.1 ? '100번에 0.1번 아래' : '100번에 ' + (Math.round(q.p * 1000) / 10) + '번') : NEED;
+  const fl = fin(q.f) && fin(q.i) ? (q.f + q.i > 0 ? '외국인·기관 들어옴' : q.f + q.i < 0 ? '외국인·기관 나감' : '외국인·기관 같음') : '외국인·기관 ' + NEED;
+  const o = it.r3q ? BX : 0, say = (it.px != null ? ' · 현재가 ' + price : '') + (it.sp ? ' · 한 달 전 ' + won(it.sp[0]) : '');
+  it.val = span; // 장 중 현재가(relive)가 이름표 · 제목을 고칠 때 씀
+  const a = s('a', {href: '#/c/' + encodeURIComponent(it.code), class: 'sa-cell sa-now sa-q' + (it.r3q ? ' sa-x sa-r' + it.r3q : ''), 'data-k': 'quiet', 'data-name': it.name, 'data-px': it.px ?? '', 'data-code': it.code, 'data-r3q': it.r3q ? String(it.r3q) : '',
+    'aria-label': (it.r3q ? '조용한 힘 ' + it.r3q + '등 · ' : '') + '지금 ' + it.kind + ' · ' + it.name + ' · ' + span + say + ' · 이만큼 조용하기 ' + rare + ' · ' + fl});
+  a.append(s('title', {text: it.name + ' · ' + span + say}),
+    s('rect', {x, y: y + 1, width: w, height: h - 2, rx: 12, class: 'sa-hit' + (it.r3q ? ' sa-hitx' : '')}),
+    it.r3q ? sxTag(x + 6, y + 8, it.r3q + '등', 'sa-r3') : null,
+    T(x + 6, y + 26 + o, nm, 'sa-name', {'font-size': fs}),
+    T(x + 6, y + 52 + o, span, 'sa-val sa-val-now'),
+    T(x + 6, y + 78 + o, price, 'sa-px' + (it.px != null ? '' : ' sa-need'), {'font-size': pfs}),
+    T(x + 6, y + 104 + o, rare, 'sa-found' + (fin(q.p) ? '' : ' sa-need'), {'font-size': 17}),
+    T(x + 6, y + 128 + o, fl, 'sa-days', {'font-size': 17}),
+    spark(it.sp, sx, y + 40 + o, SW, 34, 'now'));
+  CELL.set(a, {it, side: 'now', sx, sy: y + 40 + o, room, say0: say}); // 장 중 현재가(주문 2011)도 다른 칸과 같이 바뀜
+  return a;
 }
 
 /** 그림 — 처음 쪽(지금 · 될 듯 한 장) · 될 듯 21곳(#/n · opt.mode = 'next' — 같은 판 · data-k 를 hot · bloom · money 로 바꿔 검사와 차례를 맞춤 · 지금 이름표는 hotNow · bloomNow · moneyNow) */

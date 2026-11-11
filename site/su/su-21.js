@@ -162,15 +162,16 @@ const ruleRows = T => [{k: '상장 회사', v: num(T.counts.listed) + '곳', how
   {k: '값이 늦은 회사', v: T.counts.late + '곳', how: '불장 셈에서 뺌'}];
 
 /** 지금 · 될 듯 두 칸(주문 1103 이해 보고 7 「세 여인마다 「지금 일곱」과 「될 듯 일곱」 두 칸」) — 같은 세 여인 그림에서 #/ ↔ #/n */
-const modeBar = nx => h('nav', {class: 'su-mode', 'aria-label': '지금 21곳 · 될 듯 21곳'},
-  h('a', {class: 'su-modea' + (nx ? '' : ' on'), href: '#/', 'aria-current': nx ? null : 'page'}, h('b', {text: '지금 21곳'}), h('span', {text: '지금 그런 회사'})),
+const modeBar = nx => h('nav', {class: 'su-mode', 'aria-label': '지금 28곳 · 될 듯 21곳'}, // 지금 28곳 = 셋 창 21곳 + 넷째 창 7곳(주문 1111-1334)
+  h('a', {class: 'su-modea' + (nx ? '' : ' on'), href: '#/', 'aria-current': nx ? null : 'page'}, h('b', {text: '지금 28곳'}), h('span', {text: '지금 그런 회사'})),
   h('a', {class: 'su-modea' + (nx ? ' on' : ''), href: '#/n', 'aria-current': nx ? 'page' : null}, h('b', {text: '될 듯 21곳'}), h('span', {text: '곧 그렇게 될 듯한 회사'})));
 export async function v21Home(X) {
   const [{S}, T] = await Promise.all([X.base(), load21(X.get)]);
   const nk = k => (T.lists?.[k] ?? []).length, nNow = KEY.reduce((a, k) => a + nk(k), 0); // 엄격 셈(주문 0854)이면 일곱이 안 될 수 있음 — 센 그대로
-  const big = val(FILT(T) ? nNow : 21, '곳', FILT(T) ? '불장 ' + nk('hot') + ' · 꽃이 될 ' + nk('bloom') + ' · 돈이 몰리는 ' + nk('money') : '불장 7 · 꽃이 될 7 · 돈이 몰리는 7', {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안',
-    무엇을: FILT(T) ? '불장 · 꽃이 될 · 돈이 몰리는 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요', 어떻게: MCR(T) ? '365곳 모두 ' + TEN(T) + '번 섞어 보고, 소거 한 번을 지난 곳을 드문 차례로 일곱씩 골랐어요' : FILT(T) ? '세 가지 셈을 365곳에 대고, 몬테카를로 10만 번과 기준 31가지로 다시 걸렀어요' : MARK(T) ? '세 가지 셈을 365곳에 똑같이 대고, 몬테카를로와 기준 31가지를 모두 지난 ' + nSx(T, KEY) + '칸에 큐피트 계산법 표를 달았어요' : '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
-    {mean: '겹친 ' + T.overlap.length + '곳을 한 번씩만 세면 ' + T.distinct + '곳이라는 뜻이에요.'});
+  const nq = Math.min(7, nk('quiet')), qs = nq ? ' · 조용한 힘 ' + nq : ''; // 짧은 이름(조용한 힘 달력과 같은 말 — 큰 수 아래 한 줄이 길어 첫 화면이 늦게 칠해지지 않게) // 넷째 창(주문 1111-1334 · 사장님 2026-11-11 13:34 「… 하나더 만들어라 그래서 총 28개로」)
+  const big = val((FILT(T) ? nNow : 21) + nq, '곳', (FILT(T) ? '불장 ' + nk('hot') + ' · 꽃이 될 ' + nk('bloom') + ' · 돈이 몰리는 ' + nk('money') : '불장 7 · 꽃이 될 7 · 돈이 몰리는 7') + qs, {누가: NAME, 언제: day(T.asOf.board) + ' 자료', 어디서: '우량주 365곳 안',
+    무엇을: (FILT(T) ? '불장 · 꽃이 될 · 돈이 몰리는 일곱 가운데 몬테카를로와 기준 31가지를 모두 지난 곳만 남겼어요' : '불장 · 꽃이 될 · 돈이 몰리는 회사를 7곳씩 찾았어요') + (nq ? '. 넷째 창 조용한데 힘이 모이는 곳 ' + nq + '곳을 더했어요' : ''), 어떻게: MCR(T) ? '365곳 모두 ' + TEN(T) + '번 섞어 보고, 소거 한 번을 지난 곳을 드문 차례로 일곱씩 골랐어요' : FILT(T) ? '세 가지 셈을 365곳에 대고, 몬테카를로 10만 번과 기준 31가지로 다시 걸렀어요' : MARK(T) ? '세 가지 셈을 365곳에 똑같이 대고, 몬테카를로와 기준 31가지를 모두 지난 ' + nSx(T, KEY) + '칸에 큐피트 계산법 표를 달았어요' : '세 가지 셈을 365곳에 똑같이 대어 봤어요', 왜: '주식을 몰라도 지금 볼 곳을 한눈에 알게 하려고요'},
+    {mean: '겹친 ' + T.overlap.length + '곳을 한 번씩만 세면 ' + (nq ? new Set(['hot', 'bloom', 'money', 'quiet'].flatMap(k => (T.lists?.[k] ?? []).slice(0, k === 'quiet' ? 7 : undefined).map(c => c.code))).size : T.distinct) + '곳이라는 뜻이에요.'}); // 넷째 창은 다른 세 창 밖에서만 고름(주문 1111-1334) — 28곳이면 겹침을 뺀 수에 일곱이 더해짐
   const mids = [
     val(T.counts.listed, '곳', '한국 상장 회사', {누가: '코스피 · 코스닥', 언제: day(T.asOf.mkt), 어디서: '한국 주식 시장', 무엇을: T.counts.listedWhat, 어떻게: '그날 값이 있는 보통주를 셌어요', 왜: '모두에서 시작해야 빠진 곳이 없어요'}, {mean: '한국에서 주식을 사고팔 수 있는 회사가 이만큼이라는 뜻이에요. 펀드와 우선주는 빼고 셌어요.'}),
     val(T.counts.b365, '곳', '우량주', {누가: '상장 회사 가운데 튼튼한 곳', 언제: '2026년 10월 5일에 정함', 어디서: '73개 업종 · 업종마다 5곳', 무엇을: '우량주를 골랐어요', 어떻게: T.rules.b365, 왜: '튼튼한 회사 안에서만 찾으려고요'}, {mean: '이익을 꾸준히 내는 큰 회사 ' + T.counts.b365 + '곳 안에서만 21곳을 찾는다는 뜻이에요.'}),
@@ -178,8 +179,8 @@ export async function v21Home(X) {
   const rows = KEY.flatMap(k => (T.lists[k] ?? []).map(c => ({...val(c.ch20, '', KIND[k] + ' · ' + c.name, six21(c, k, T), {mean: why21(c, k, T)}), href: '#/c/' + c.code})));
   const first = T.lists.hot?.[0] ?? T.lists.money?.[0];
   X.setFirst?.(first?.code);
-  return {title: '21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안', h1: '지금, 그리고 될 듯.', big, // 잡스 판 한 문장(주문 1532 · 옛 「지금 볼 21곳」)
-    ...X.artHero('su-apple', null, X.fig('21', [grid21(T), funnel3(T)], {label: '상장 회사 → 우량주 → 21곳', hero: true, cap: ['한국 상장 회사 ' + num(T.counts.listed) + '곳을 셌어요.', '그 가운데 우량주 ' + T.counts.b365 + '곳을 먼저 골랐어요.', '그런데 셋에 함께 든 곳이 ' + T.overlap.length + '곳 있어요(✦).', '그래서 지금 볼 곳은 21곳, 겹침을 빼면 ' + T.distinct + '곳이에요.']})),
+  return {title: nq ? '28곳' : '21곳', tab: 0, step: 1, compact: true, mansour: true, kick: day(T.asOf.board) + ' · 우량주 365곳 안', h1: '지금, 그리고 될 듯.', big, // 잡스 판 한 문장(주문 1532 · 옛 「지금 볼 21곳」)
+    ...X.artHero('su-apple', null, X.fig('21', [grid21(T), funnel3(T)], {label: '상장 회사 → 우량주 → 21곳', hero: true, cap: ['한국 상장 회사 ' + num(T.counts.listed) + '곳을 셌어요.', '그 가운데 우량주 ' + T.counts.b365 + '곳을 먼저 골랐어요.', '그런데 셋에 함께 든 곳이 ' + T.overlap.length + '곳 있어요(✦).', '그래서 셋에서 볼 곳은 21곳, 겹침을 빼면 ' + T.distinct + '곳이에요.', ...(nq ? ['넷째 창 조용한데 힘이 모이는 ' + nq + '곳을 더해 ' + (21 + nq) + '곳이에요.'] : [])]})),
     mids, pro: [...ruleRows(T), ...KEY.flatMap(k => (T.lists[k] ?? []).map(c => ({k: KIND[k] + ' · ' + c.name, v: sgn(c.ch20), how: why21(c, k, T) + ' · ' + Object.entries(six21(c, k, T)).map(([a, b]) => a + ' ' + (b ?? NEED)).join(' · ')})))], after: [X.essBox(S)], // 21곳 하나씩은 서랍에(첫 화면은 그림 — 주문 2044 [5] 7 · 8)
     act: [modeBar(false)],
     next: {href: '#/m', label: '21곳은 어느 땅에 있나?', step: 2, k: '2 / 8'}, asOf: T.asOf.board, S, note: '21곳은 ' + day(T.asOf.board) + ' 자료로 고른 곳이에요. 앞날을 맞히는 목록이 아니에요.'};

@@ -78,6 +78,9 @@ export async function buildDist() {
     //   판마다 1등 · 2등 · 3등을 그 판 날 마지막 값으로 10주씩 산 셈(가짜 돈) · 판 날마다 값 — reports/atlas11/su21/book.json(올리기 작업만 씀) · su/data/su21-book.json(화면 — 사장님 휴대폰에서만)
     try { const {stdout} = await run('node', [path.join(root, 'scripts/atlas11/next/su21_book.mjs'), '--su', suData, '--board', path.join(dist, 'data/atlas11/view/board.json'), '--book', path.join(root, 'reports/atlas11/su21/book.json'), ...(keepJob ? ['--keep'] : [])], {maxBuffer: 1e7}); console.log('수르 ' + String(stdout).trim().slice(0, 300)); }
     catch (e) { console.warn('1 · 2 · 3등 장부 못 함 — 화면은 저장된 자료 그대로: ' + String(e.stderr || e.stdout || e.message).trim().slice(-300)); }
+    // 조용한 힘 1 · 2 · 3등 장부(주문 1111-1334 · 사장님 2026-11-11 13:34 「… 이것을 ㅊ 적하는 별도에 달력을 만들어라」) — 넷째 창 차례 첫 셋 · 따로 된 장부 reports/atlas11/su21/qbook.json · 화면 su/data/su21-qbook.json
+    try { const {stdout} = await run('node', [path.join(root, 'scripts/atlas11/next/su21_book.mjs'), '--rank', 'quiet', '--su', suData, '--board', path.join(dist, 'data/atlas11/view/board.json'), '--book', path.join(root, 'reports/atlas11/su21/qbook.json'), ...(keepJob ? ['--keep'] : [])], {maxBuffer: 1e7}); console.log('수르 ' + String(stdout).trim().slice(0, 300)); }
+    catch (e) { console.warn('조용한 힘 장부 못 함 — 화면은 저장된 자료 그대로: ' + String(e.stderr || e.stdout || e.message).trim().slice(-300)); }
   }
   // 미국 판(2026-10-05 18:02 사장님 「이제는 미국 주식도 같은 개념으로 365개를 만들어라」) — 판 묶음이 있으면 같은 화면 코드를 /us/ 에
   //   한국 매일·저녁 실행도 이 함수로 싸서 올리므로(사이트 전체를 바꿈) 미국 판을 여기서 함께 싸야 지워지지 않는다
