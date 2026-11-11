@@ -10,12 +10,17 @@
 .su-apple .sa-unit { font-size: 22px; font-weight: 700; fill: #1D1D1F; }
 .su-apple .sa-d { font-size: 18px; font-weight: 500; fill: #6E6E73; }
 .su-apple .sa-safe { font-size: 18px; font-weight: 500; fill: #6E6E73; }
+.su-apple .sa-mean { font-size: 18px; font-weight: 600; fill: #3A3A3C; } /* 쉬운 판(주문 1112-0253) — 묶음 이름 아래 한 줄 뜻 */
+.su-apple .sa-mean.sa-m17 { font-size: 17px; } /* 1 · 2 · 3등 고른 법 — 첫 화면 안 */
 .su-apple .sa-div { stroke: #D2D2D7; stroke-width: 1; fill: none; }
 .su-apple .sa-rule { stroke: #1D1D1F; stroke-width: 1.4; fill: none; }
 .su-apple .sa-line { stroke: #E5E5EA; stroke-width: 1; fill: none; }
 .su-apple .sa-kh { font-size: 21px; font-weight: 800; fill: #1D1D1F; letter-spacing: -0.4px; }
 .su-apple .sa-name { font-weight: 700; fill: #1D1D1F; letter-spacing: -0.3px; }
 .su-apple .sa-val { font-size: 18px; font-weight: 600; }
+.su-apple .sa-val.sa-v17 { font-size: 17px; } /* 쉬운 판(주문 1112-0253) — 이름 붙인 값(「한 달 +33.9%」)이 18 로 자리에 안 들 때 */
+.su-apple .sa-howbox { fill: #FFFFFF; stroke: #AEAEB2; stroke-width: 1.5; stroke-dasharray: 6 5; } /* 칸 하나 읽는 법 — 본보기 칸(점선 = 진짜 칸 아님) */
+.su-apple .sa-howl { font-size: 17px; font-weight: 600; fill: #3A3A3C; }
 .su-apple .sa-val-now { fill: #B4570A; }
 .su-apple .sa-val-next { fill: #6E6E73; }
 .su-apple .sa-bloomv { fill: #2E7D32; }

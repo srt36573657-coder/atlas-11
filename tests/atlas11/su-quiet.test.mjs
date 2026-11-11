@@ -98,7 +98,7 @@ test('따로 된 장부 — quiet.rank 첫 셋을 그 판 날 마지막 값으�
 test('화면 글 — 한 달 폭 · 이만큼 조용하기 · 외국인 · 기관(「%」 0 · 쓰지 않을 말 0) · 탭 0 · 쪽 짜임', async () => {
   const src = rd('site/su/su-quiet.js');
   const M = await import('data:text/javascript;base64,' + Buffer.from(src.replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;')).toString('base64'));
-  assert.equal(M.spanSay(3.04), '한 달 폭: 100원에 3원'); assert.equal(M.spanSay(4.56), '한 달 폭: 100원에 4.6원');
+  assert.equal(M.spanSay(3.04), '한 달 흔들림: 100원에 3원'); assert.equal(M.spanSay(4.56), '한 달 흔들림: 100원에 4.6원');
   assert.equal(M.rareSay(0.00001), '이만큼 조용하기: 100번에 0.1번 아래'); assert.equal(M.rareSay(0.0312), '이만큼 조용하기: 100번에 3.1번');
   assert.equal(M.flowSay({f: 120000, i: 3456, days: 5}), '닷새 동안 외국인 · 기관 합쳐 123,456주 들어왔어요');
   assert.equal(M.flowSay({f: -10, i: 4, days: 4}), '4거래일 동안 외국인 · 기관 합쳐 6주 나갔어요');

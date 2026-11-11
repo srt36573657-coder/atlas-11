@@ -114,7 +114,7 @@ for (const width of [390, 360, 320]) {
   // 처음 쪽
   await open(p, '#/');
   const m0 = await measure(p); pageRules(m0, W + '처음');
-  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 7.5, W + '처음 쪽 7.5 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 「정보를 빼지 마라」 — 숫자마다 「그래서」 · 낱말 풀이 · 여섯 칸 지도 · 숨기지 않는 네 칸으로 한 화면 반 늘림 · 받은 자료와 글꼴에 따라 0.3 화면 오감)', String(m0.screens)); }
+  if (width === 390) { R.m.home = {screens: m0.screens, links: m0.links.length}; check(m0.screens <= 7.8, W + '처음 쪽 7.8 화면 안(주문 1616 — 그림이 화면 대부분이라 그림만큼 길어짐 · 주문 1807·1833 「정보를 빼지 마라」 — 숫자마다 「그래서」 · 낱말 풀이 · 여섯 칸 지도 · 숨기지 않는 네 칸으로 한 화면 반 늘림 · 주문 1112-0253 쉬운 판 「칸 하나 읽는 법」 · 「될 듯은」 풀이로 0.3 화면 늘림 · 받은 자료와 글꼴에 따라 0.3 화면 오감)', String(m0.screens)); }
   const ess = await p.evaluate(() => [1, 2, 3].map(i => document.querySelector(`#su [data-ess="${i}"]`)?.textContent ?? null));
   check(JSON.stringify(ess) === JSON.stringify(ESS), W + '처음 쪽 본질 세 줄 = essence.js', JSON.stringify(ess).slice(0, 200));
   if (width === 390) {
@@ -321,7 +321,7 @@ for (const width of [390, 360, 320]) {
     // 기록 서랍 여섯 · 서랍 쪽
     await open(p, '#/r');
     const dr = await p.evaluate(() => [...document.querySelectorAll('#su .su-drawer')].map(a => a.getAttribute('href')));
-    check(JSON.stringify(dr) === JSON.stringify(['#/r/c', '#/r/s', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(1 · 2 · 3등 달력(주문 0938 · 1513 모든 사람) · 달마다 · 한 달 뒤 · 내 매매일지 · 못 된 까닭 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
+    check(JSON.stringify(dr) === JSON.stringify(['#/r/c', '#/r/s', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n']), W + '⑨ 기록 서랍 — 토론 차례(1 · 2 · 3등 달력(주문 0938 · 1513 모든 사람) · 달마다 · 한 달 뒤 · 내 매매일지 · 못 된 이유 · 날마다 · 한국 시장 일곱 가지(기록창 · 주문 0814) · 한국 투자자 특징 열하나(주문 2235) · 옛 기록 더 보기 안 해마다 · 가까운 회사 — 주문 1023 [4])', dr.join(' '));
     R.m.drawers = {};
     for (const hh of ['#/r/d', '#/r/y', '#/r/n']) { await open(p, hh); await p.waitForTimeout(200); const m = await shape(); R.m.drawers[hh] = {h1: m.h1, share: m.share, moving: m.moving}; check(m.tiles.length === 6 && m.lastIsSrc, W + '⑨ 서랍 쪽 ' + hh + ' — ' + m.h1, JSON.stringify(m).slice(0, 160)); pageRules(await measure(p), W + '⑨ 서랍 쪽 ' + hh); }
   }
@@ -598,7 +598,7 @@ for (const width of [390, 360, 320]) {
     check(okNums, '⑰ 서른여섯 가지 · 중요한 차례 1 ~ 36 · 기 · 승 · 전 · 결 아홉씩 — ' + c.k + ' ' + c.name, JSON.stringify(w.parts.map(x => x.n.length)));
     check(w.crit === 7, '⑰ 이렇게 고른 기준 일곱 — ' + c.k + ' ' + c.name, String(w.crit));
     check(JSON.stringify(w.chips) === JSON.stringify(wantChips), '⑰ 첫 발견 · 며칠째 · 포모지수 = 자료 — ' + c.k + ' ' + c.name, JSON.stringify(w.chips) + ' / ' + JSON.stringify(wantChips));
-    check(w.fchk === 7 && (fo?.verdict === 'pass' ? w.f11 === 11 : w.f11 === 0), '⑰ 포모 소거 기준 일곱 · 통과면 까닭 열하나 — ' + c.k + ' ' + c.name, w.fchk + ' · ' + w.f11);
+    check(w.fchk === 7 && (fo?.verdict === 'pass' ? w.f11 === 11 : w.f11 === 0), '⑰ 포모 소거 기준 일곱 · 통과면 이유 열하나 — ' + c.k + ' ' + c.name, w.fchk + ' · ' + w.f11);
     check(w.pct === 0 && !w.heroPct, '⑰ 풀이 문장에 「%」 없음(한눈 그림 · 접힌 글 포함) — ' + c.k + ' ' + c.name, String(w.pct) + ' · ' + w.heroPct);
     { // 주문 0510(사장님 2026-11-10 05:10 「이곳에 글이 너무 어렵고 많아 핵심을 도식화로 만들어서 한눈에 알수있도록 해」) — 한눈 그림 수 = 자료 · 기준 일곱이 그림 칸 안 · 긴 글은 접힘 · 쪽 길이
       const src = (c.k.endsWith('Next') ? N21.lists?.[c.k] : null) ?? T21.lists?.[c.k] ?? [], pos = src.findIndex(x => x.code === c.code) + 1, mcr = T21.listRule === 'mc365-v1' || T21.listRule === 'culture7-v1';
@@ -724,13 +724,14 @@ for (const width of [390, 360, 320]) {
     // 주문 1112-0044(사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」) — 1 · 2 · 3등 넓은 칸 셋:
     //   칸마다 [N등] 이름 · 현재가 · 한 달 · 업종(자료) · 까닭(잣대 넷 가운데 값이 가장 큰 것) · 한 달 꺾은선(21 마지막 값이 있으면) · › · 누름 48 넘게 · 누르면 #/c/<번호>/t · 아래 달력 고리(#/r/c · 누름 48 넘게)
     const UPHOW = Array.isArray(t3?.how) && t3.how.length === 4 ? t3.how : ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림'];
-    const topWhy = r => { const ps = Array.isArray(r?.parts) ? r.parts : []; let j = -1; ps.forEach((v, i) => { if (Number.isFinite(v) && (j < 0 || v > ps[j])) j = i; }); return j < 0 ? null : UPHOW[j]; };
+    const EASYHOW = {'긴 오름세 · 덜 흔들림': '1년 꾸준히 오름', '1년 오른 날 몫': '1년 오른 날이 많음', '업종 따라잡기': '업종보다 덜 오름', '닷새 눌림': '최근 5일 쉼'}; // 쉬운 판(주문 1112-0253) — 보이는 말
+    const topWhy = r => { const ps = Array.isArray(r?.parts) ? r.parts : []; let j = -1; ps.forEach((v, i) => { if (Number.isFinite(v) && (j < 0 || v > ps[j])) j = i; }); return j < 0 ? null : (EASYHOW[UPHOW[j]] ?? UPHOW[j]); };
     const spOk = r => Array.isArray(r?.c) && r.c.length === 21 && r.c.every(v => Number.isFinite(v) && v > 0) && r.c[20] === r.close && r.date === T21.asOf?.board;
     if (UP3) {
       const wantU = t3.rank.map(r => r.place + ':' + r.place + '등:' + r.name + ':#/c/' + r.code + '/t');
-      const rowsOk = f.up3x.length === 3 && f.up3x.every((x, i) => { const r = t3.rank[i]; return /^[\d,]+원$/.test(x.px) && (spOk(r) ? /^한 달 [+−]?\d+\.\d%$/.test(x.m) && x.sp === 1 : x.sp === 0) && x.i === String(r.ind ?? '확인 필요') && x.w === '까닭 — ' + (topWhy(r) ?? '확인 필요') && x.h >= 48 && x.chev === '›'; });
-      check(f.cells === 42 && f.empty === 0 && JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === want.length && f.stray === 0 && JSON.stringify(f.up3) === JSON.stringify(wantU) && rowsOk && /^#\/r\/c:(4[89]|[5-9]\d)$/.test(f.up3cal) && f.up3note === '새 잣대로 우량주 365곳에서 골랐어요.',
-        '⑳ 첫 페이지 — 42칸 모두 · 새 잣대 1등 · 2등 · 3등 넓은 칸 셋(이름 · 현재가 · 한 달 · 업종 · 까닭 · 한 달 꺾은선 · 누르면 그 곳 쪽) · 달력 고리 · 칸에 든 회사만 칸 표 · 풀이 「새 잣대로 우량주 365곳에서 골랐어요.」', JSON.stringify({up3: f.up3, x: f.up3x, cal: f.up3cal, r3: f.r3, note: f.up3note}).slice(0, 400));
+      const rowsOk = f.up3x.length === 3 && f.up3x.every((x, i) => { const r = t3.rank[i]; return /^[\d,]+원$/.test(x.px) && (spOk(r) ? /^한 달 [+−]?\d+\.\d%$/.test(x.m) && x.sp === 1 : x.sp === 0) && x.i === String(r.ind ?? '확인 필요') && x.w === '이유 — ' + (topWhy(r) ?? '확인 필요') && x.h >= 48 && x.chev === '›'; });
+      check(f.cells === 42 && f.empty === 0 && JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === want.length && f.stray === 0 && JSON.stringify(f.up3) === JSON.stringify(wantU) && rowsOk && /^#\/r\/c:(4[89]|[5-9]\d)$/.test(f.up3cal) && f.up3note === '지난 기록 차례예요. 앞날은 몰라요.',
+        '⑳ 첫 페이지 — 42칸 모두 · 오늘의 1등 · 2등 · 3등 넓은 칸 셋(이름 · 현재가 · 한 달 · 업종 · 이유 · 한 달 꺾은선 · 누르면 그 곳 쪽) · 달력 고리 · 칸에 든 회사만 칸 표 · 풀이 「지난 기록 차례예요. 앞날은 몰라요.」', JSON.stringify({up3: f.up3, x: f.up3x, cal: f.up3cal, r3: f.r3, note: f.up3note}).slice(0, 400));
       // 누르면 이어지는 쪽 #/c/<번호>/t — 큰 제목 · 칩 셋 · 한 달 꺾은선 · 잣대 넷 막대 · 풀이 넷 · 넷을 더한 차례 · 다른 두 곳(누르면 그 곳) · 달력 · 회사 쪽 · 「왜 사?」 · 안전 문장
       for (const r of t3.rank) {
         await open(p, '#/c/' + r.code + '/t');
@@ -755,8 +756,8 @@ for (const width of [390, 360, 320]) {
       const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-top3'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', li: b.querySelectorAll('.yw-li').length,
         crit: document.querySelectorAll('#su .yw-crit .yw-li').length} : null; });
       const pl = [1, 2, 3].includes(pick.c.r3) ? pick.c.r3 : null, R3 = n => t3.rank.find(r => r.place === n)?.name;
-      check(!!w && w.crit === 7 && (pl ? w.h === '새 잣대 ' + pl + '등' && w.li === 4 && w.v === '넷을 더한 값이 ' + (pl === 1 ? '첫 번째' : pl + '번째') + '로 커서 ' + pl + '등이에요.'
-        : w.h === '새 잣대 1 · 2 · 3등' && w.li === 0 && w.v.startsWith('1등 ' + R3(1) + ' · 2등 ' + R3(2) + ' · 3등 ' + R3(3)) && /(이에요|예요)\.$/.test(w.v)),
+      check(!!w && w.crit === 7 && (pl ? w.h === '오늘의 ' + pl + '등' && w.li === 4 && w.v === '넷을 더한 값이 ' + (pl === 1 ? '첫 번째' : pl + '번째') + '로 커서 ' + pl + '등이에요.'
+        : w.h === '오늘의 1 · 2 · 3등' && w.li === 0 && w.v.startsWith('1등 ' + R3(1) + ' · 2등 ' + R3(2) + ' · 3등 ' + R3(3)) && /(이에요|예요)\.$/.test(w.v)),
         '⑳ 「왜?」 쪽 — 새 잣대 상자 · 기준 일곱 — ' + (pl ? pl + '등 ' : '등수 밖 ') + pick.k + ' ' + pick.c.name, JSON.stringify(w).slice(0, 200));
     }
     if (t3 && !UP3) for (const pick of [cells.find(x => x.c.r3 === 1), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
@@ -826,7 +827,7 @@ for (const width of [390, 360, 320]) {
 { // ⑲ 기록창 — 한국 시장 일곱 가지(주문 0814 · 사장님 2026-11-09 08:14 「… 다른 나라와 비교할 때 … 정말 아주 다른 특징 … 총 7가지 … 기록창을 만들어 먼저 기재 하라 에이전트 활용하라」 · 08:25 「수르에 올려야해」)
   //   기록 쪽 서랍 → #/r/k · 일곱 칸 = 자료(su/data/kr7.json) 그대로 · 칸마다 한국은 · 다른 나라는(둘 넘게) · 한국 문화와 이어진 까닭 · 근거(하나 넘게) · 한눈 그림 일곱 짝 · 새 문장 「%」 0 · 영어 글자 0 · 쪽 규칙(넘침 · 17px · 48 · 고리 · 안전 문장 · 쓰지 않을 말)
   const K = await J('/su/data/kr7.json').catch(() => null);
-  check(!!K && Array.isArray(K.items) && K.items.length === 7 && K.items.every(it => it.t && it.one && it.kr && it.why && it.culture && it.tag && it.vs?.length >= 2 && it.src?.length >= 1), '⑲ 기록창 자료 — 일곱 가지 · 칸마다 한국은 · 다른 나라는 둘 넘게 · 까닭 · 근거', JSON.stringify(K?.items?.map(x => x.t) ?? null).slice(0, 200));
+  check(!!K && Array.isArray(K.items) && K.items.length === 7 && K.items.every(it => it.t && it.one && it.kr && it.why && it.culture && it.tag && it.vs?.length >= 2 && it.src?.length >= 1), '⑲ 기록창 자료 — 일곱 가지 · 칸마다 한국은 · 다른 나라는 둘 넘게 · 이유 · 근거', JSON.stringify(K?.items?.map(x => x.t) ?? null).slice(0, 200));
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
@@ -842,7 +843,7 @@ for (const width of [390, 360, 320]) {
         cards: hero ? [...hero.querySelectorAll('li.k7-li')].map(li => ({t: li.querySelector('.k7-t')?.textContent ?? '', vs: li.querySelectorAll('.k7-v').length, src: li.querySelectorAll('.k7-sr').length, why: li.querySelector('.k7-why')?.textContent ?? ''})) : [],
         text: [...document.querySelectorAll('#su main .su-hero.k7, #su main .k7-how')].map(e => e.innerText).join('\n')}; });
     check(g.g === 'su-kr7' && g.h1.includes('한국 주식시장') && g.rows === 7 && g.cards.length === 7, W + '쪽 꼴 — 큰 제목 · 한눈 그림 일곱 짝 · 일곱 칸', JSON.stringify({h1: g.h1, rows: g.rows, n: g.cards.length}));
-    if (K?.items) check(g.cards.every((c, i) => c.t === K.items[i].t && c.vs === K.items[i].vs.length && c.src === K.items[i].src.length && c.why === K.items[i].why), W + '일곱 칸 = 자료 그대로(차례 · 이름 · 다른 나라 · 근거 · 까닭)', JSON.stringify(g.cards.map(c => [c.t, c.vs, c.src])).slice(0, 200));
+    if (K?.items) check(g.cards.every((c, i) => c.t === K.items[i].t && c.vs === K.items[i].vs.length && c.src === K.items[i].src.length && c.why === K.items[i].why), W + '일곱 칸 = 자료 그대로(차례 · 이름 · 다른 나라 · 근거 · 이유)', JSON.stringify(g.cards.map(c => [c.t, c.vs, c.src])).slice(0, 200));
     check(!g.text.includes('%') && !/[A-Za-z]/.test(g.text), W + '새 문장에 「%」 · 영어 글자 없음', (g.text.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     if (width === 390) R.m.kr7 = {cards: g.cards.length, rows: g.rows, screens: m.screens};
@@ -1110,7 +1111,7 @@ for (const width of [390, 360, 320]) {
     check(!bad.length, '㉒ 넷째 창 일곱 — 다른 세 창 밖 · 한 달 폭 10 아래 · 하루 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례 · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 · 걸러 온 길(따로 셈)', bad.slice(0, 6).join(' / '));
     const NFq = new Intl.NumberFormat('ko-KR'), one = v => (Math.round(v * 10) / 10).toLocaleString('ko-KR');
     const wantRow = (c, j) => { const w = c.why, n = w.f + w.i;
-      return {code: c.code, href: '#/c/' + c.code, pl: j < 3 ? (j + 1) + '등' : String(j + 1), nm: c.name, l1: '한 달 폭: 100원에 ' + one(w.span20) + '원',
+      return {code: c.code, href: '#/c/' + c.code, pl: j < 3 ? (j + 1) + '등' : String(j + 1), nm: c.name, l1: '한 달 흔들림: 100원에 ' + one(w.span20) + '원',
         l2: w.p * 100 < 0.1 ? '이만큼 조용하기: 100번에 0.1번 아래' : '이만큼 조용하기: 100번에 ' + one(w.p * 100) + '번',
         l3: (Number.isFinite(w.days) && w.days !== 5 ? w.days + '거래일' : '닷새') + ' 동안 외국인 · 기관 합쳐 ' + NFq.format(Math.abs(Math.round(n))) + '주 ' + (n > 0 ? '들어왔어요' : n < 0 ? '나갔어요' : '그대로예요'), sp: true}; };
     const nNowQ = ['hot', 'bloom', 'money'].reduce((a, k) => a + Math.min(7, (T21q.lists?.[k] ?? []).length), 0) + Math.min(7, Lq.length);
