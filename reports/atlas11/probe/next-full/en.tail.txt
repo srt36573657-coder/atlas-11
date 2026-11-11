@@ -1,7 +1,7 @@
-합침: {"ok":false,"shards":3,"got":0,"routes":0,"screens":0,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":0,"secondsSum":0,"problems":["몫 결과가 하나도 없음","1/3 몫 결과 없음","2/3 몫 결과 없음","3/3 몫 결과 없음"]}
+합침: {"ok":true,"shards":3,"got":3,"routes":13649,"screens":13878,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":1151,"secondsSum":3040,"problems":[]}
 ── en1/3 ──
-결과 없음
+{"ok":true,"shard":"1/3","routes":4580,"screens":4581,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":1151,"secs":{"open":1.8,"routes":1147.6},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en2/3 ──
-결과 없음
+{"ok":true,"shard":"2/3","routes":4564,"screens":4628,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":981,"secs":{"open":0.5,"routes":975.8,"newwin":4},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
 ── en3/3 ──
-결과 없음
+{"ok":true,"shard":"3/3","routes":4505,"screens":4669,"missing":0,"fails":0,"own":{"fails":0,"missing":0,"leftover":0},"mod":{"fails":0,"missing":0,"leftover":0},"kinds":{},"full":false,"seconds":908,"secs":{"open":1.3,"routes":892.2,"act":5.8,"edge":6.5,"grammar":0},"net":{"req":32,"retry":0,"waitSec":0,"why":{},"cut":0,"page":{"retry":0,"waitSec":0,"blocked":0,"why":{}}}}
