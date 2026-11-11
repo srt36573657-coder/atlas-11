@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-11T18:10:48.001Z",
+ "at": "2026-11-11T21:25:12.684Z",
  "base": "https://aaa7377.com",
  "counts": {
   "pass": 1626,
@@ -19,7 +19,7 @@
    ]
   },
   "home": {
-   "screens": 7.04,
+   "screens": 7.48,
    "links": 68
   },
   "t21": {
@@ -31,19 +31,19 @@
   },
   "path": [
    {
-    "h1": "지금, 그리고 될 듯.",
+    "h1": "요즘 눈에 띄는 회사",
     "heroShare": 72.4,
     "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 297,
+    "labels": 318,
     "mucha": [],
-    "anim": 22,
+    "anim": 28,
     "need": 0,
     "means": 4,
     "hard": 0,
     "hardWords": "",
-    "glossed": 8,
+    "glossed": 10,
     "orn": 5
    },
    {
@@ -59,7 +59,7 @@
     "means": 1,
     "hard": 0,
     "hardWords": "",
-    "glossed": 1,
+    "glossed": 2,
     "orn": 5
    },
    {
@@ -75,7 +75,7 @@
     "means": 1,
     "hard": 0,
     "hardWords": "",
-    "glossed": 1,
+    "glossed": 2,
     "orn": 7
    },
    {
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 1200,
+   "lcp": 1148,
    "cls": 0.121,
-   "pic": 1598
+   "pic": 1799
   },
   "white": {
    "light #/": {
@@ -227,7 +227,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -390,7 +390,8 @@
     "note": [
      "현재가는 11월 11일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "새 잣대로 우량주 365곳에서 골랐어요."
+     "될 듯은 그렇게 되기 바로 앞 모습이에요.",
+     "지난 기록 차례예요. 앞날은 몰라요."
     ]
    },
    "#/n": {
@@ -399,7 +400,8 @@
     "note": [
      "현재가는 11월 11일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
-     "새 잣대로 우량주 365곳에서 골랐어요."
+     "될 듯은 그렇게 되기 바로 앞 모습이에요.",
+     "지난 기록 차례예요. 앞날은 몰라요."
     ]
    }
   },
@@ -1256,13 +1258,13 @@
   },
   "reopen": [
    {
-    "hash": "#/c/035420/y/moneyNext",
+    "hash": "#/c/181710/y/moneyNext",
     "try": 1,
     "status": 403,
     "err": null,
-    "url": "https://aaa7377.com/su/?v=1794421304101#/c/035420/y/moneyNext",
+    "url": "https://aaa7377.com/su/?v=1794433019758#/c/181710/y/moneyNext",
     "title": "aaa7377.com",
-    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M75XGARYVSBGXGDJNGTGD8JY"
+    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M768NVVRRSPKMM96K51482B9"
    }
   ],
   "coLine": {
@@ -1344,8 +1346,8 @@
    },
    "390": {
     "lim": 716,
-    "name": 594,
-    "line": 723
+    "name": 649,
+    "line": 778
    }
   },
   "quiet": {
