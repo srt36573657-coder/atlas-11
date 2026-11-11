@@ -14,6 +14,7 @@ for (const [tag, opt] of [['받은 chromium', {}], ['깔린 크롬', {channel: '
     await p.waitForSelector('svg.su-apple', {timeout: 40000});
     const n = await p.evaluate(() => ({cells: document.querySelectorAll('svg.su-apple a.sa-cell').length, up3: document.querySelectorAll('svg.su-apple [data-place]').length, title: document.title}));
     console.log(tag, '열림', b.version(), JSON.stringify(n), Math.round((Date.now() - t0) / 1000) + '초');
+    if (!opt.channel) { await p.waitForTimeout(1500); await p.screenshot({path: 'reports/atlas11/probe/pwnodeps-su.png'}); const w = await p.evaluate(() => { const c = document.createElement('canvas').getContext('2d'); c.font = '20px sans-serif'; return {가: c.measureText('가나다라마바사').width, a: c.measureText('abcdefg').width, font: getComputedStyle(document.body).fontFamily.slice(0, 80)}; }); console.log('글 폭', JSON.stringify(w)); }
     await b.close();
   } catch (e) {
     console.log(tag, '실패', String(e?.message ?? e).split('\n').slice(0, 3).join(' | ').slice(0, 300));
