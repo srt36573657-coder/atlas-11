@@ -1044,7 +1044,7 @@ for (const width of [390, 360, 320]) {
       if (now21.has(c.code)) bad.push(c.name + ' 다른 세 창에 듦');
       if (!Array.isArray(l) || l.length !== 21 || !l.every(v => Number.isFinite(v) && v > 0)) { bad.push(c.name + ' 21 값'); return; }
       const r20 = (l[20] / l[0] - 1) * 100, sp = (Math.max(...l) / Math.min(...l) - 1) * 100, d1 = Math.max(...l.slice(1).map((v, i) => Math.abs(v / l[i] - 1))) * 100;
-      if (!(Math.abs(r20) < 5) || !(d1 < 5)) bad.push(c.name + ' 잠잠 아님');
+      if (!(sp < 10) || !(d1 < 5)) bad.push(c.name + ' 잠잠 아님'); // 한 달 폭 100원에 10원 아래 · 하루 위아래 5 안
       if (!(Math.abs(w.r20 - Math.round(r20 * 10) / 10) < 0.051) || !(Math.abs(w.span20 - Math.round(sp * 10) / 10) < 0.051)) bad.push(c.name + ' 폭 값');
       if (!(Number.isFinite(w.f) && Number.isFinite(w.i) && w.f + w.i > 0)) bad.push(c.name + ' 힘(외국인 + 기관)');
       if (!(Number.isFinite(w.p) && w.p > 0 && w.p <= 1) || (w.rare !== false && w.p > Qd.pmax)) bad.push(c.name + ' 드묾 p');
@@ -1057,7 +1057,7 @@ for (const width of [390, 360, 320]) {
     const st = (Qd.steps ?? []).map(x => x.n);
     if (!(st.length >= 3 && st.slice(0, -1).every((n, i) => !i || n <= st[i - 1]) && st[st.length - 1] === Lq.length)) bad.push('걸러 온 길 ' + st.join('>'));
     if (JSON.stringify((Qd.rank ?? []).map(r => r.code)) !== JSON.stringify(Lq.slice(0, 3).map(c => c.code))) bad.push('quiet.rank ≠ 첫 셋');
-    check(!bad.length, '㉒ 넷째 창 일곱 — 다른 세 창 밖 · 한 달 · 하루 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례 · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 · 걸러 온 길(따로 셈)', bad.slice(0, 6).join(' / '));
+    check(!bad.length, '㉒ 넷째 창 일곱 — 다른 세 창 밖 · 한 달 폭 10 아래 · 하루 위아래 5 안 · 외국인과 기관 들어옴 · 몬테카를로 드문 차례 · 업종마다 둘 · 첫 셋 = 1 · 2 · 3등 · 걸러 온 길(따로 셈)', bad.slice(0, 6).join(' / '));
     const NFq = new Intl.NumberFormat('ko-KR'), one = v => (Math.round(v * 10) / 10).toLocaleString('ko-KR');
     const wantRow = (c, j) => { const w = c.why, n = w.f + w.i;
       return {code: c.code, href: '#/c/' + c.code, pl: j < 3 ? (j + 1) + '등' : String(j + 1), nm: c.name, l1: '한 달 폭: 100원에 ' + one(w.span20) + '원',

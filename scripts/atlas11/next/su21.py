@@ -409,7 +409,7 @@ CUOUT = {'schema': 'su21-cu-1', 'asOf': out['asOf'], 'rule': CUL.RULE_ID,
                      'traits': [{'k': k, 'name': CUL.NAME[k], 'say': CUL.SAY[k], 'use': CUL.USE[k], 'n365': int(_np.sum(CON[k])) if CON else None} for k in CUL.TRAITS],
                      'calib': (PASTC or {}).get('calib') if PASTC and PASTC.get('rule') == CUL.RULE_ID else None},
          'cu': {k + ':' + c: cu_of(c) for k, L in lists.items() if k != 'quiet' for c in L}} # 넷째 창은 「왜?」 쪽이 없어 문화 흔적을 싣지 않음
-out['quiet'] = {'rule': QU.RULE_ID, 'paths': QU.PATHS, 'hist': QU.HIST, 'win': QU.WIN, 'pmax': QU.PMAX, 'move': QU.MOVE, 'capCut': Q['capcut'], 'pool': Q['pool'],
+out['quiet'] = {'rule': QU.RULE_ID, 'paths': QU.PATHS, 'hist': QU.HIST, 'win': QU.WIN, 'pmax': QU.PMAX, 'move': QU.MOVE, 'span': QU.SPAN, 'capCut': Q['capcut'], 'pool': Q['pool'],
                 'crit': [{'id': i, 'name': n, 'say': s} for i, n, s in QU.QCRIT], 'steps': [{'name': n, 'n': k} for n, k in Q['steps']],
                 'rank': [{'place': j + 1, 'k': 'quiet', 'code': c, 'name': nm(c)} for j, c in enumerate(QUIET[:3])], # 따로 된 달력(su21_book --rank quiet)이 읽음
                 'say': '값은 잠잠한데 외국인과 기관이 들어온 곳 — 지난 1년 흔들림으로 보아 이만큼 조용하기가 드문 차례'}

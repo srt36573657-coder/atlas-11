@@ -17,9 +17,9 @@ const py = code => JSON.parse(execFileSync('python3', ['-c', 'import sys, json; 
 const clean = s => [...screenHits(s), ...ruinHits(s)].map(x => x.word ?? x);
 
 test('기준 일곱 — 서로 다른 이름 · 화면 글(쓰지 않을 말 0 · 「%」 0 · 영어 글자 0) · 셈 값', () => {
-  const C = py('print(json.dumps({"crit": Q.QCRIT, "rule": Q.RULE_ID, "paths": Q.PATHS, "hist": Q.HIST, "win": Q.WIN, "pmax": Q.PMAX, "move": Q.MOVE}, ensure_ascii=False))');
+  const C = py('print(json.dumps({"crit": Q.QCRIT, "rule": Q.RULE_ID, "paths": Q.PATHS, "hist": Q.HIST, "win": Q.WIN, "pmax": Q.PMAX, "move": Q.MOVE, "span": Q.SPAN}, ensure_ascii=False))');
   assert.equal(C.crit.length, 7); assert.equal(new Set(C.crit.map(c => c[0])).size, 7); assert.equal(new Set(C.crit.map(c => c[1])).size, 7);
-  assert.match(C.rule, /^quiet7-v\d+$/); assert.equal(C.paths, 100000); assert.equal(C.hist, 250); assert.equal(C.win, 20); assert.equal(C.pmax, 0.2); assert.equal(C.move, 0.05);
+  assert.match(C.rule, /^quiet7-v\d+$/); assert.equal(C.paths, 100000); assert.equal(C.hist, 250); assert.equal(C.win, 20); assert.equal(C.pmax, 0.2); assert.equal(C.move, 0.05); assert.equal(C.span, 0.1);
   const all = C.crit.flatMap(c => c.slice(1)).join('\n');
   assert.deepEqual(clean(all), []); assert.ok(!all.includes('%') && !/[A-Za-z]/.test(all), all);
 });
@@ -69,7 +69,7 @@ print(json.dumps({"list": o['list'], "steps": o['steps'], "why": o['why'], "pool
   assert.deepEqual(r.list.map(c => r.why[c].place), [1, 2, 3, null, null], '첫 셋 = 1 · 2 · 3등');
   assert.deepEqual(r.list.map(c => r.why[c].rare), [true, true, true, true, false], '채움 표시');
   assert.ok(r.list.slice(0, 4).every(c => r.why[c].p <= 0.2) && r.why[C(5)].p > 0.2, JSON.stringify(r.list.map(c => r.why[c].p)));
-  for (const c of r.list) { const w = r.why[c]; assert.ok(Math.abs(w.r20) < 5 && w.day5 < 5 && w.f + w.i > 0 && w.days === 5, c + ' ' + JSON.stringify(w)); }
+  for (const c of r.list) { const w = r.why[c]; assert.ok(w.span20 < 10 && Math.abs(w.r20) < 10 && w.day5 < 5 && w.f + w.i > 0 && w.days === 5, c + ' ' + JSON.stringify(w)); }
   assert.equal(r.none, null, '흐름이 없으면 없음');
 });
 
