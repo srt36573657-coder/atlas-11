@@ -286,11 +286,15 @@ except Exception as e: # 넷째 창 셈이 넘어져도 세 창 · 판은 그대
     print('넷째 창 셈 실패 —', repr(e)[:200]); Q = {'list': [], 'why': {}, 'steps': [('우량주', len(B))], 'mc': {}, 'pool': 0, 'capcut': 0}
 QUIET = Q['list']
 lists = {'hot': HOT, 'bloom': BLOOM, 'money': MONEY, 'hotNext': HOTN, 'moneyNext': MONEYN, 'bloomNext': BLOOMN, 'quiet': QUIET}
-# ④ 42칸 1등 · 2등 · 3등(올릴 때 --top3) — 칸마다 우연 길 10만 개 → 1억 판 소거 → 끝까지 남은 횟수 차례
-import su21_top3 as TOP3
+# ④ 1등 · 2등 · 3등(올릴 때 --top3) — 새 잣대(주문 1111-1857 · 사장님 2026-11-11 18:57 「… 선정 기준을 상승할것 같은 종목 으로 해야 해! 에이전트 100개 만들어서 알고리즘 만들어 재대로 상황 공부하고 대입해」)
+#   옛 셈(42칸끼리 1억 판 · su21_top3 — 한 달 오른 만큼이 우연보다 센 칸)은 지난 값에 대어 보니 고른 뒤 시장보다 덜 오른 때가 많아 바꿈
+#   새 셈(su21_up3) = 우량주 365곳 모두에서 긴 오름세 · 꾸준함 · 업종 따라잡기 · 닷새 눌림 넷을 고르게 섞은 차례 첫 셋 — 42칸 밖일 수 있음(칸에 들면 그 칸에도 등수 표)
+import su21_up3 as UP3
 CELLS = [(k, c) for k in ('hot', 'bloom', 'money', 'hotNext', 'moneyNext', 'bloomNext') for c in lists[k]]
-T3 = TOP3.top3(CTX, CELLS) if A.top3 else None
-PLACE = {(r['k'], r['code']): r['place'] for r in (T3 or {}).get('rank', [])}
+try: T3 = UP3.top3(CTX, list(B), cap, nm) if A.top3 else None
+except Exception as e:
+    print('새 잣대 셈 실패 —', repr(e)[:200]); T3 = None
+PLACE = {(k, c): r['place'] for r in (T3 or {}).get('rank', []) for k, c in CELLS if c == r['code']}
 NOW3 = ('hot', 'bloom', 'money')
 inl = collections.defaultdict(list)
 for k, L in lists.items():
@@ -364,7 +368,7 @@ out = {
               'hotNext': '소거 한 번: 불장 일곱 밖 · 닷새 동안 오른 회사(불장 업종이거나 그 업종도 닷새 오름) → 빚투 쏠림 · 본전 버티기는 뺌 → 고점 앞 팔기 · 테마 몰림이 많은 차례 → 365곳 모두의 길과 견줘 닷새 오른 만큼이 드문 차례 · 업종마다 둘',
               'moneyNext': '소거 한 번: 돈이 몰리는 일곱 밖 업종 → 업종이 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 국민주가 늘었으면 그 회사, 아니면 닷새 동안 회사 크기가 가장 많이 는 회사 하나',
               'bloomNext': '소거 한 번: 싹(한 달 시장보다 앞선 만큼 5 아래 · 닷새 뒤지지 않음 · 꽃 일곱 밖) → 365곳 모두의 길과 견줘 닷새 동안 시장보다 앞선 만큼이 드문 차례 · 업종마다 둘',
-              'top3': '42칸마다 요즘 흔들림에 맞춘 우연 길 10만 개를 미리 그리고, 잣대 셋(오른 만큼 · 가장 크게 뛴 하루를 뺀 만큼 · 눈길 몰린 날이 적은 만큼)을 판마다 다른 무게로 섞어 1억 번 판을 벌임 → 판마다 우연보다 약한 칸부터 떨어뜨림 → 끝까지 남은 횟수가 많은 차례로 1등 · 2등 · 3등'},
+              'top3': '새 잣대(주문 1111-1857) — 우량주 365곳 모두에서 잣대 넷(긴 오름세 · 덜 흔들림, 1년 오른 날 몫, 업종 따라잡기, 닷새 눌림)을 날마다 회사끼리 표준 점수로 고르게 더한 차례 첫 셋 · 그날 마지막 값이 있고 지난 60거래일 값이 빠짐없는 곳 · 몸집 아래 열에 둘은 뺌'},
     'past': ({'from': PASTC['from'], 'to': PASTC['to'], 'mid': PASTC.get('mid'), 'days': PASTC['days'], 'within': PASTC['within'], 'universe': PASTC['universe'], 'src': 'reports/atlas11/su-next/past-culture.json',
               'mcRank': True, 'cultureRank': True, 'what': PASTC['what'], 'mc': PASTC.get('mc'), 'calib': PASTC.get('calib'),
               'bloomFrom': PASTC.get('flower'), # 주문 0103 — 꽃이 될 듯 맞음을 고른 날 값부터 셈('pick') · 화면 글 「고른 날부터」
@@ -415,13 +419,13 @@ out['quiet'] = {'rule': QU.RULE_ID, 'paths': QU.PATHS, 'hist': QU.HIST, 'win': Q
                 'say': '값은 잠잠한데 외국인과 기관이 들어온 곳 — 지난 1년 흔들림으로 보아 이만큼 조용하기가 드문 차례'}
 out['counts']['pools']['quiet'] = Q['pool']
 out['rules']['quiet'] = '소거 일곱: 값이 있음 · 다른 세 창 밖 · 한 달 오르내림 위아래 5 안 · 하루 오르내림 위아래 5 안 · 몸집 아래 열에 둘 밖 · 닷새 동안 외국인과 기관을 더하면 들어옴 · 1년 기록 → 몬테카를로 10만 번(지난 250거래일 하루 값을 20개씩 뽑은 길의 한 달 폭과 견줌) → 다섯 번에 한 번보다 흔한 조용함은 뺌 → 드문 차례 · 업종마다 둘'
-out['top3'] = None if T3 is None else {'total': T3['total'], 'null': T3['null'], 'k': T3['k'], 'ok': T3['ok'], 'v': T3.get('v'), 'how': T3.get('how'), 'g': T3.get('g'), 'gn': T3.get('gn'),
-             'rank': [{**r, 'name': nm(r['code'])} for r in T3['rank']],
-             'cells': {r['k'] + ':' + r['code']: [r['first'], r['second'], r['third'], r['z']] for r in T3['cells']}}
+out['top3'] = None if T3 is None else {'v': T3['v'], 'n': T3['n'], 'pool': T3['pool'], 'how': T3['how'], 'past': T3['past'], # 주문 1111-1857 — 새 잣대(우량주 365곳 · 넷 고른 섞기)
+             'rank': [{**r, 'name': nm(r['code']), 'close': B[r['code']].get('close'), 'date': B[r['code']].get('date'), # 값 = 판(42칸과 같은 판 값 · 달력이 그 판 날 마지막 값으로 삼)
+                       'in': [k for k, c in CELLS if c == r['code']]} for r in T3['rank']]} # in = 이 회사가 든 칸(없으면 42칸 밖)
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 주문 1912 — 문화 일곱 · 칸마다 흔적(「왜?」 쪽만)
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음
 print('ok', {k: [nm(c) for c in L] for k, L in lists.items()}, 'quiet', [(n, k) for n, k in Q['steps']], 'distinct', len(inl), 'overlap', [o['name'] for o in out['overlap']], 'lands', len(lands_out),
-      'top3', [(r['place'], r['k'], nm(r['code']), r['first']) for r in (T3 or {}).get('rank', [])])
+      'top3', [(r['place'], nm(r['code']), r['score']) for r in (T3 or {}).get('rank', [])], 'pool', (T3 or {}).get('pool'))

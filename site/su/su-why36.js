@@ -9,7 +9,7 @@
    새 문장에 「%」 없음(오른 만큼은 「100원이 ○원」 · 견줌은 「○만큼」) · 쓰지 않을 말 0(words.js) */
 import {h} from '/su/su-fig.js';
 import {NEED, num, ymd} from '/su/su-six.js';
-import {dateKo} from '/su/su-data.js';
+import {dateKo, jo} from '/su/su-data.js';
 import {KIND, load21, why21} from '/su/su-21.js';
 import {josa as josaH} from '/next/brand.js';
 
@@ -186,6 +186,7 @@ export function crit7mc(T, c, k) {
 }
 /** 1억 번 셈 상자 — 42칸끼리 판을 1억 번 벌여 1등 · 2등 · 3등(su21.json top3) */
 export function top3Box(T, c, k) {
+  if (T?.top3?.v === 'up3-v1') return up3Box(T, c);
   const t3 = T?.top3, me = t3?.cells?.[k + ':' + c.code];
   if (!t3 || !Array.isArray(me)) return null;
   const tot = t3.total ?? 100000000, place = [1, 2, 3].includes(c.r3) ? c.r3 : null;
@@ -201,6 +202,23 @@ export function top3Box(T, c, k) {
     h('p', {class: 'yw-s', text: '판마다 칸마다 우연 길 하나를 뽑아 지금 값과 견주고, 우연보다 약한 칸부터 하나씩 떨어뜨렸어요. 이것도 ' + korN(tot) + ' 번이에요.'}),
     h('p', {class: 'yw-s yw-verdict', text: '이 칸은 ' + korN(tot) + ' 번 가운데 ' + korN(me[0]) + '번 끝까지 남았어요. 42칸 가운데 ' + ord(rk) + '예요.' + (place ? ' 그래서 ' + place + '등이에요.' : dup ? ' 같은 회사의 다른 칸이 더 많이 남아 등수는 그 칸에 달았어요.' : '')}),
     h('p', {class: 'yw-s', text: '1등 ' + nm(R(1)) + ' · 2등 ' + nm(R(2)) + ' · 3등 ' + nm(R(3)) + '이에요.'})]);
+}
+
+/** 새 잣대 상자(주문 1111-1857 · 사장님 2026-11-11 18:57 「… 선정 기준을 상승할것 같은 종목 으로 해야 해!」) — 우량주 365곳에서 넷을 고르게 섞은 차례
+ *  이 칸 회사가 1 · 2 · 3등이면 그 등수와 잣대 넷 값 · 아니면 오늘 1 · 2 · 3등 이름만 · 앞날을 맞히지 않음(지난 기록만) */
+const ym = d => (/^\d{4}-\d{2}/.test(d ?? '') ? d.slice(0, 4) + '년 ' + +d.slice(5, 7) + '월' : NEED);
+export function up3Box(T, c) {
+  const t3 = T?.top3, rank = Array.isArray(t3?.rank) ? t3.rank : [];
+  if (!rank.length) return null;
+  const me = rank.find(r => r.code === c.code), R = n => rank.find(r => r.place === n), P = t3.past ?? {};
+  const how = Array.isArray(t3.how) && t3.how.length === 4 ? t3.how : ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림'];
+  const sz = v => (fin(v) ? (v >= 0.5 ? '높아요' : v <= -0.5 ? '낮아요' : '보통이에요') : NEED);
+  return fold('yw-top3', me ? '새 잣대 ' + me.place + '등' : '새 잣대 1 · 2 · 3등', me ? '우량주 ' + (t3.pool ?? NEED) + '곳 가운데 ' + ord(me.place) + '예요' : '이 칸은 1 · 2 · 3등이 아니에요', [
+    h('p', {class: 'yw-s', text: '새 잣대는 넷이에요. ' + how.join(', ') + '이에요. 날마다 우량주끼리 견줘 고르게 더했어요.'}),
+    me ? h('ol', {class: 'yw-ol'}, how.map((t, j) => li(j + 1, t, '이 회사는 ' + sz(me.parts?.[j]) + '.'))) : null,
+    h('p', {class: 'yw-s yw-verdict', text: me ? '넷을 더한 값이 ' + ord(me.place) + '로 커서 ' + me.place + '등이에요.' : '1등 ' + (R(1)?.name ?? NEED) + ' · 2등 ' + (R(2)?.name ?? NEED) + ' · 3등 ' + jo(R(3)?.name ?? NEED, '이에요') + '.'}),
+    P.design && P.hold ? h('p', {class: 'yw-s', text: '지난 기록이에요. ' + ym(P.design.from) + ' ~ ' + ym(P.design.to) + '에는 열흘 뒤 오른 때가 100번에 ' + Math.round(P.design.up10) + '번이었어요. ' + ym(P.hold.from) + ' ~ ' + ym(P.hold.to) + '에는 ' + Math.round(P.hold.up10) + '번이었어요.'}) : null,
+    h('p', {class: 'yw-s', text: '앞날을 맞히지 않아요. 지난 값으로 센 기록이에요.'})]);
 }
 
 /* ═══ 서른여섯 가지 — 까닭 꾸러미(기 · 승 · 전 · 결) · 묶음마다 중요한 차례 ═══ */

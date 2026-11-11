@@ -164,6 +164,8 @@ export const BOOKS = Object.freeze({
     miss: '1 · 2 · 3등 장부를 받지 못했어요. 다시 열어 주세요.', buy: '그 판 날 마지막 값으로', next: {href: '#/r', label: '지난 기록 한곳'}},
   quiet: {src: '/su/data/su21-qbook.json', title: '조용한 힘 달력', intro: '조용한데 힘이 모이는 창의 1 · 2 · 3등을 가짜 돈으로 주식 10주씩 산 셈이에요.',
     miss: '조용한 힘 장부를 받지 못했어요. 다시 열어 주세요.', buy: '조용한데 힘이 모이는 창의 몬테카를로 차례 첫 셋을 그 판 날 마지막 값으로', next: {href: '#/s', label: '조용한데 힘이 모이는 7곳'}}});
+/** 새 잣대(주문 1111-1857 · 'up3-v1')로 고른 첫 판 날 — 없으면 null */
+export const up3From = B => (Array.isArray(B?.days) ? B.days.filter(d => d?.rule === 'up3-v1').map(d => d.board).sort()[0] ?? null : null);
 export async function vBook(X, which = 'top3') {
   ensureCss();
   const K = BOOKS[which] ?? BOOKS.top3, T = K.title;
@@ -190,6 +192,7 @@ export async function vBook(X, which = 'top3') {
   const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-book': which === 'quiet' ? 'quiet' : 'top3', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff)),
     'data-up': String(C.n.up), 'data-dn': String(C.n.dn), 'data-eq': String(C.n.eq), 'data-one': String(C.n.one), 'data-y': String(R)},
     h('p', {class: 'bk-intro', text: K.intro}),
+    which === 'top3' && up3From(B) ? h('p', {class: 'bk-intro bk-new', 'data-from': up3From(B), text: md(up3From(B)) + ' 판부터는 새 잣대로 골라요. 우량주 365곳에서 긴 오름세와 잠깐 눌림을 함께 봐요.'}) : null, // 주문 1111-1857
     h('section', {class: 'bk-sum', 'aria-label': '산 셈 모두'},
       h('div', {class: 'bk-tiles'}, tiles(C.n).map(t => h('div', {class: 'bk-tile bk-t' + t.st, 'data-st': t.st}, h('span', {class: 'bk-tv'}, shapeOf(t.st, 'big'), h('b', {class: 'bk-tn', text: t.k + '번'})), h('span', {class: 'bk-tl', text: t.label})))),
       h('p', {class: 'bk-tot', text: '모두 합치면 ' + r100(C.val, C.cost) + ' · ' + moved(C.diff)}),

@@ -139,3 +139,8 @@
 .su-apple .sa-cell.sa-x:hover .sa-hitx, .su-apple .sa-cell.sa-x:focus .sa-hitx { fill: #FDEBD3; }
 /* 1등 · 2등 · 3등 표(주문 1422 · 사장님 2026-11-09 14:22 · 14:37 「그중에서 … 1.2.3을 수르계산법으로 표기」) — 같은 이름표 틀 · 조금 더 짙은 호박 테 */
 .su-apple .sa-r3 .sa-sxb { fill: #FFE2A8; stroke: #B45309; stroke-width: 1.4; }
+
+/* 새 잣대 1 · 2 · 3등 이름(주문 1111-1857) — 첫 페이지 그림 셋째 ~ 다섯째 줄 */
+.su-apple .sa-up3n { font-weight: 700; fill: #1D1D1F; }
+.su-apple .sa-up3hit { fill: transparent; }
+.su-apple a.sa-up3a:focus-visible .sa-up3hit { stroke: #B45309; stroke-width: 2; }

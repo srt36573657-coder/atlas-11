@@ -184,6 +184,19 @@ function legendR3(y, cul = false) {
     T(f1(x - gap + 8), y, tl, 'sa-note sa-in sa-in3 sa-note3b', {'aria-label': '1등 · 2등 · 3등 표 = ' + tl}),
     ...(cul ? note2(y + 26, '문화 일곱으로 고르고', '1억 번 섞었어요.', 'note4') : note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4'))];
 }
+/* ── 새 잣대 1등 · 2등 · 3등(주문 1111-1857 · 사장님 2026-11-11 18:57 「… 선정 기준을 상승할것 같은 종목 으로 해야 해! 에이전트 100개 만들어서 알고리즘 만들어 재대로 상황 공부하고 대입해」)
+   — 우량주 365곳에서 고름(42칸 밖일 수 있음) · 셋째 ~ 다섯째 줄 [1등] 이름 · 여섯째 줄 풀이 ── */
+function legendUp3(y, rank) {
+  const R = n => (rank ?? []).find(r => r?.place === n);
+  const rows = [1, 2, 3].map((n, i) => {
+    const r = R(n), nm = String(r?.name ?? NEED), tw = Math.ceil(est(n + '등', 17)) + 18, x0 = MID - (tw + 8 + est(nm, 18)) / 2, yy = y + i * 28;
+    return s('g', {class: 'sa-up3 sa-in sa-in3', 'data-place': String(n), 'data-code': String(r?.code ?? '')}, sxTag(f1(x0), yy - 18, n + '등', 'sa-r3'), T(f1(x0 + tw + 8), yy, nm, 'sa-note sa-up3n'));
+  });
+  // 셋을 한 덩이로 누름(줄마다 누르면 48 × 48 이 안 됨 — 좁은 폭 320 에서도 넘게) → 1 · 2 · 3등 달력(날마다 고른 셋 · 산 셈)
+  const all = [1, 2, 3].map(n => n + '등 ' + (R(n)?.name ?? NEED)).join(' · ');
+  return [s('a', {href: '#/r/c', class: 'sa-up3a', 'aria-label': '새 잣대 ' + all + ' — 1 · 2 · 3등 달력 보기'}, s('rect', {x: PAD, y: y - 24, width: W - 2 * PAD, height: 90, rx: 14, class: 'sa-up3hit'}), ...rows),
+    ...note2(y + 84, '새 잣대로', '우량주 365곳에서 골랐어요.', 'note4')];
+}
 function legendSx(y) { // 셋째 줄 [수르 계산법] 수르 계산법으로 찾은 종목 · 넷째 줄 31가지 기준을 모두 지난 곳이에요.(사장님 말씀 그대로 · 이해 보고 12:10 「표 위에 「수르 계산법으로 찾은 종목」이라고 풀어 적어요」)
   const bw = Math.ceil(est(SXT, 17)) + 18, gap = 8, tl = SXL, x0 = MID - (bw + gap + est(tl, 18)) / 2;
   return [s('g', {class: 'sa-sx sa-note3x sa-in sa-in3', 'aria-hidden': 'true'}, s('rect', {x: f1(x0), y: y - 18, width: bw, height: 24, rx: 12, class: 'sa-sxb'}), T(f1(x0 + bw / 2), y, SXT, 'sa-sxt', {'text-anchor': 'middle'})),
@@ -258,9 +271,9 @@ function draw(d, opt) {
   const nNow = KEY.reduce((a, k) => a + Math.min(7, (L[k] ?? []).length), 0) + Math.min(7, (L.quiet ?? []).length), nNx = KEY.reduce((a, k) => a + Math.min(7, (L[NXK[k]] ?? []).length), 0);
   const ROW = 140, HEADH = 58, GAP = 26, CW = MID - PAD - 3; // 줄 넷째 · 다섯째 = 첫 발견 · 며칠째와 포모지수(주문 0123)
   const STRICT = !!d?.strict && d.strict.mode !== 'mark'; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움) — 옛 판 자료만
-  const RANK = !!d?.top3 && Array.isArray(d.top3.rank), CULT = d?.listRule === 'culture7-v1'; // 주문 1422(사장님 2026-11-09 14:22 「… 1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 42칸 가운데 1등 · 2등 · 3등 칸에 표
+  const RANK = !!d?.top3 && Array.isArray(d.top3.rank), CULT = d?.listRule === 'culture7-v1', UP3 = RANK && d.top3.v === 'up3-v1'; // 주문 1422(사장님 2026-11-09 14:22 「… 1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 42칸 가운데 1등 · 2등 · 3등 칸에 표
   const MARK = d?.strict?.mode === 'mark'; // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「수르 계산법」 표
-  const LIST0 = MARK || RANK ? 662 : STRICT ? 636 : 608; // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」 · 표시 판이면 셋째 · 넷째 줄 「수르 계산법」 풀이) 아래
+  const LIST0 = UP3 ? 720 : MARK || RANK ? 662 : STRICT ? 636 : 608; // 새 잣대(주문 1111-1857) — 1 · 2 · 3등 이름 세 줄 + 풀이 한 줄 // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」 · 표시 판이면 셋째 · 넷째 줄 「수르 계산법」 풀이) 아래
   const rowsOf = k => STRICT ? 7 : Math.max(items(k, false).length, items(k, true).length, 1);
   const tagOf = c => c?.sx || c?.r3; // 칸 맨 위 표(수르 계산법 · 1등 · 2등 · 3등)
   const rowH = (k, i) => ROW + (tagOf(items(k, false)[i]) || tagOf(items(k, true)[i]) ? BX : 0); // 표가 붙은 칸이 있는 줄만 표 높이만큼 더
@@ -268,7 +281,7 @@ function draw(d, opt) {
   const qRows = Math.ceil(QL.length / 2), qRowH = i => ROW + (QL[2 * i]?.r3q || QL[2 * i + 1]?.r3q ? BX : 0); // 넷째 창 — 한 줄에 둘(왼 · 오른) · 등수 표가 붙은 줄만 표 높이만큼 더
   const H = LIST0 + KEY.reduce((a, k) => a + HEADH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + (QL.length ? HEADH + 30 + Array.from({length: qRows}, (_, i) => qRowH(i)).reduce((b, v) => b + v, 0) + GAP : 0) + 24;
   const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
-    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
+    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (UP3 ? ' · 새 잣대 1등 · 2등 · 3등 ' + d.top3.rank.map(r => r.place + '등 ' + r.name).join(' · ') : RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
   svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'sa-bg'}));
   /* 1 한 문장 */
   /* 큰 제목 「지금, 그리고 될 듯.」은 쪽 머리(h1 · 쪽과 함께 바로 그려짐 — 느린 휴대폰 첫 칠함 2.5초)에 · 그림은 부제부터 */
@@ -292,7 +305,7 @@ function draw(d, opt) {
   svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
-    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
+    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? legendUp3(PY + 254, d.top3.rank) : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   let y = LIST0;
   KEY.forEach((k, ki) => {

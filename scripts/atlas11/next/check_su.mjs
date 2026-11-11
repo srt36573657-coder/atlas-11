@@ -687,16 +687,25 @@ for (const width of [390, 360, 320]) {
       check(past.bloomFrom === 'pick' && /고른 날/.test(past.what?.bloomNext ?? '') && Number.isFinite(past.bloomNext?.per100) && Number.isFinite(past.bloomNext?.base100),
         '⑳ 꽃이 될 듯 맞음 — 고른 날 값부터 셈(주문 0103 · 지난 스무 날 창의 덤 없음)', JSON.stringify({from: past.bloomFrom, what: past.what?.bloomNext, per100: past.bloomNext?.per100}));
       const codes3 = (T21.top3?.rank ?? []).map(r => r.code);
-      if (T21.top3 || /^https:/.test(base)) check(T21.top3?.v === 'top3-v2' && T21.top3?.gn === 12 && Array.isArray(T21.top3?.how) && T21.top3.how.length === 3 && new Set(codes3).size === 3,
+      if ((T21.top3 || /^https:/.test(base)) && T21.top3?.v !== 'up3-v1') check(T21.top3?.v === 'top3-v2' && T21.top3?.gn === 12 && Array.isArray(T21.top3?.how) && T21.top3.how.length === 3 && new Set(codes3).size === 3,
         '⑳ 1억 번 셈 v2 — 잣대 셋 · 무게 열두 가지 · 1 · 2 · 3등은 서로 다른 회사', JSON.stringify({v: T21.top3?.v, gn: T21.top3?.gn, codes3}));
     }
     const cells = KEY6.flatMap(k => (T21.lists?.[k] ?? []).map(c => ({k, c})));
+    // 주문 1111-1857(사장님 2026-11-11 18:57 「… 선정 기준을 상승할것 같은 종목 으로 해야 해! 에이전트 100개 …」) — 새 잣대(up3-v1): 우량주 365곳에서 넷 고른 섞기 첫 셋
+    //   자료: 셋 · 등수 1 · 2 · 3 · 서로 다른 회사 · 판 회사 · 잣대 넷 · 고를 수 있는 곳 100 넘음 · 값 = 그 판 날 값 · 칸에 든 회사만 그 칸에 등수(아니면 칸 표 0)
+    //   첫 페이지: 그림 셋째 ~ 다섯째 줄 [1등] 이름 셋(차례 · 이름 = 자료) · 누르면 회사 쪽 · 풀이 「새 잣대로 우량주 365곳에서 골랐어요.」 · 「왜?」 쪽: 새 잣대 상자
+    const UP3 = t3?.v === 'up3-v1', coOk = UP3 && Array.isArray(t3.rank) ? await Promise.all(t3.rank.map(r => J('/atlas/data/co/' + r.code + '.json').then(x => !!x?.c?.name).catch(() => false))) : []; // 누르면 열 회사 쪽 자료
+    const up3ok = UP3 && Array.isArray(t3.rank) && t3.rank.length === 3 && t3.rank.map(r => r.place).join() === '1,2,3' && new Set(t3.rank.map(r => r.code)).size === 3
+      && t3.rank.every(r => /^[0-9A-Z]{6}$/.test(r.code) && typeof r.name === 'string' && r.name && Number.isFinite(r.score) && Array.isArray(r.parts) && r.parts.length === 4 && r.date === T21.asOf?.board && Number.isFinite(r.close) && r.close > 0) && coOk.every(Boolean)
+      && t3.rank.every((r, i) => !i || r.score <= t3.rank[i - 1].score) && Array.isArray(t3.how) && t3.how.length === 4 && Number.isInteger(t3.pool) && t3.pool >= 100 && t3.pool <= t3.n
+      && cells.every(x => x.c.r3 == null ? !t3.rank.some(r => r.code === x.c.code) : t3.rank.some(r => r.code === x.c.code && r.place === x.c.r3));
+    if (UP3) { R.m.top3 = t3.rank.map(r => r.place + ':' + r.name + ':' + r.score + ':' + (r.in ?? []).join('+')); check(up3ok, '⑳ 새 잣대(주문 1111-1857) — 우량주 365곳 · 넷 고른 섞기 · 1 · 2 · 3등 서로 다른 회사 · 점수 차례 · 그 판 날 값 · 칸에 든 회사만 칸 등수', JSON.stringify({m: R.m.top3, pool: t3.pool, n: t3.n, co: coOk})); }
     const sum = j => Object.values(t3?.cells ?? {}).reduce((a, x) => a + (Array.isArray(x) ? x[j] : 0), 0);
     const t3ok = !!t3 && t3.total >= 100000000 && Array.isArray(t3.rank) && t3.rank.length === 3 && t3.rank.map(r => r.place).join() === '1,2,3' && Object.keys(t3.cells ?? {}).length === cells.length
       && sum(0) === t3.total && sum(1) === t3.total && sum(2) === t3.total && t3.rank.every((r, i) => !i || r.first <= t3.rank[i - 1].first)
       && t3.rank.every(r => cells.some(x => x.k === r.k && x.c.code === r.code && x.c.r3 === r.place)) && cells.filter(x => [1, 2, 3].includes(x.c.r3)).length === 3;
-    R.m.top3 = t3 ? t3.rank.map(r => r.place + ':' + r.k + ':' + r.name + ':' + r.first) : null;
-    if (t3 || /^https:/.test(base)) check(t3ok, '⑳ 1억 번 셈 — 1억 판 · 판마다 1등 · 2등 · 3등 하나씩(합 = 1억) · 1등 · 2등 · 3등 = 1등 횟수 차례 · 그 칸에 등수', JSON.stringify(R.m.top3));
+    if (!UP3) R.m.top3 = t3 ? t3.rank.map(r => r.place + ':' + r.k + ':' + r.name + ':' + r.first) : null;
+    if (!UP3 && (t3 || /^https:/.test(base))) check(t3ok, '⑳ 1억 번 셈 — 1억 판 · 판마다 1등 · 2등 · 3등 하나씩(합 = 1억) · 1등 · 2등 · 3등 = 1등 횟수 차례 · 그 칸에 등수', JSON.stringify(R.m.top3));
     const ctx = await browser.newContext({viewport: {width: 390, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR'});
     await QUIET(ctx);
     const p = await ctx.newPage(), errs = []; p.on('pageerror', e => errs.push(String(e?.message ?? e).slice(0, 200)));
@@ -704,12 +713,27 @@ for (const width of [390, 360, 320]) {
     const f = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero'), xs = [...(H?.querySelectorAll('a.sa-cell[data-r3]') ?? [])].filter(a => a.getAttribute('data-r3'));
       return {cells: H?.querySelectorAll('a.sa-cell:not([data-k="quiet"])').length ?? 0, empty: H?.querySelectorAll('g.sa-empty').length ?? -1, r3: xs.map(a => a.getAttribute('data-r3') + ':' + a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(), // 넷째 창 칸(주문 1111-1334 · 따로 된 1 · 2 · 3등 표)은 ㉒
         tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === a.getAttribute('data-r3') + '등').length, stray: H?.querySelectorAll('a.sa-cell:not([data-k="quiet"]):not([data-r3="1"]):not([data-r3="2"]):not([data-r3="3"]) g.sa-sx').length ?? -1,
-        legend: [...(H?.querySelectorAll('g.sa-r3x text.sa-sxt') ?? [])].map(e => e.textContent).join(' ') + ' ' + [H?.querySelector('text.sa-note3b'), H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' ')}; });
+        legend: [...(H?.querySelectorAll('g.sa-r3x text.sa-sxt') ?? [])].map(e => e.textContent).join(' ') + ' ' + [H?.querySelector('text.sa-note3b'), H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' '),
+        up3: [...(H?.querySelectorAll('g.sa-up3') ?? [])].map(g => g.getAttribute('data-place') + ':' + (g.querySelector('text.sa-sxt')?.textContent ?? '') + ':' + (g.querySelector('text.sa-up3n')?.textContent ?? '') + ':' + (g.closest('a')?.getAttribute('href') ?? '')),
+        up3note: [H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' ')}; });
     const want = cells.filter(x => [1, 2, 3].includes(x.c.r3)).map(x => x.c.r3 + ':' + x.k + ':' + x.c.code).sort();
     const LEG = CULT ? '1등 2등 3등 큐피트 계산법 차례 문화 일곱으로 고르고 1억 번 섞었어요.' : '1등 2등 3등 큐피트 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.';
-    check(f.cells === 42 && f.empty === 0 && (t3 ? JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === 3 && f.stray === 0 && f.legend === LEG : f.r3.length === 0),
+    if (UP3) {
+      const wantU = t3.rank.map(r => r.place + ':' + r.place + '등:' + r.name + ':#/r/c');
+      check(f.cells === 42 && f.empty === 0 && JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === want.length && f.stray === 0 && JSON.stringify(f.up3) === JSON.stringify(wantU) && f.up3note === '새 잣대로 우량주 365곳에서 골랐어요.',
+        '⑳ 첫 페이지 — 42칸 모두 · 새 잣대 1등 · 2등 · 3등 이름 셋(누르면 1 · 2 · 3등 달력) · 칸에 든 회사만 칸 표 · 풀이 「새 잣대로 우량주 365곳에서 골랐어요.」', JSON.stringify({up3: f.up3, r3: f.r3, note: f.up3note}).slice(0, 300));
+    } else check(f.cells === 42 && f.empty === 0 && (t3 ? JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === 3 && f.stray === 0 && f.legend === LEG : f.r3.length === 0),
       '⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표 · 풀이 「' + LEG + '」', JSON.stringify(f).slice(0, 300));
-    if (t3) for (const pick of [cells.find(x => x.c.r3 === 1), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
+    if (UP3) for (const pick of [cells.find(x => [1, 2, 3].includes(x.c.r3)), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
+      await open(p, `#/c/${pick.c.code}/y/${pick.k}`);
+      const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-top3'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', li: b.querySelectorAll('.yw-li').length,
+        crit: document.querySelectorAll('#su .yw-crit .yw-li').length} : null; });
+      const pl = [1, 2, 3].includes(pick.c.r3) ? pick.c.r3 : null, R3 = n => t3.rank.find(r => r.place === n)?.name;
+      check(!!w && w.crit === 7 && (pl ? w.h === '새 잣대 ' + pl + '등' && w.li === 4 && w.v === '넷을 더한 값이 ' + (pl === 1 ? '첫 번째' : pl + '번째') + '로 커서 ' + pl + '등이에요.'
+        : w.h === '새 잣대 1 · 2 · 3등' && w.li === 0 && w.v.startsWith('1등 ' + R3(1) + ' · 2등 ' + R3(2) + ' · 3등 ' + R3(3)) && /(이에요|예요)\.$/.test(w.v)),
+        '⑳ 「왜?」 쪽 — 새 잣대 상자 · 기준 일곱 — ' + (pl ? pl + '등 ' : '등수 밖 ') + pick.k + ' ' + pick.c.name, JSON.stringify(w).slice(0, 200));
+    }
+    if (t3 && !UP3) for (const pick of [cells.find(x => x.c.r3 === 1), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {
       await open(p, `#/c/${pick.c.code}/y/${pick.k}`);
       const w = await p.evaluate(() => { const b = document.querySelector('#su .yw-top3'); return b ? {h: b.querySelector('.yw-h')?.textContent ?? '', v: b.querySelector('p.yw-verdict')?.textContent ?? '', crit: document.querySelectorAll('#su .yw-crit .yw-li').length,
         mc: [...document.querySelectorAll('#su .yw-crit .yw-li')].map(e => e.textContent).join(' ').includes('번 섞어 그린 길 가운데'), cu: document.querySelectorAll('#su .yw-cu .yw-li').length,

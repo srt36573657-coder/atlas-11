@@ -21,7 +21,7 @@ const readJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } c
 export const emptyBook = (kind = 'top3') => ({schema: SCHEMA, qty: QTY, kind, note: (kind === 'quiet' ? '조용한데 힘이 모이는 창 1등 · 2등 · 3등(몬테카를로 차례)' : '큐피트 계산법 1등 · 2등 · 3등') + '을 그 판 날 마지막 값으로 10주씩 산 셈(가짜 돈) · 한 번 적은 판 날은 고치지 않음 · 팔지 않고 들고 있다고 침', days: [], px: {}});
 /** 장부마다 1 · 2 · 3등을 읽는 곳 — top3 = 42칸 1억 번 셈(주문 1422) · quiet = 넷째 창 차례 첫 셋(주문 1111-1334) */
 const RANK = {top3: T => T?.top3?.rank, quiet: T => T?.quiet?.rank};
-const RULE = {top3: T => T?.listRule ?? null, quiet: T => T?.quiet?.rule ?? null};
+const RULE = {top3: T => (T?.top3?.v === 'up3-v1' ? 'up3-v1' : T?.listRule ?? null), quiet: T => T?.quiet?.rule ?? null}; // 주문 1111-1857 — 새 잣대 날은 'up3-v1'(화면이 「새 잣대」 표)
 
 /** 장부 꼴 맞대기 — 날마다 셋 · 등수 1 ~ 3 · 값 · 번호 꼴 */
 export function okBook(B) {
@@ -39,7 +39,8 @@ export function stepBook(book0, T, board, now = kst(), kind = 'top3') {
   const day = T?.asOf?.board, rank = RANK[kind](T);
   // 판 날 마지막 값 — 판(board)이 그 날이면 판에서 · 아니면 그 1 · 2 · 3등을 낸 su21.json 칸의 그날 값(close · date — 같은 판에서 나온 값)
   //   예) 묶음에 저장된 옛 su21.json(셈이 멈춘 묶음 · 검사 실행기)과 새 판이 다른 날일 때 — 그 판 날로 적고, 처음 본 때가 늦으면 화면이 「판 날보다 늦게 보였어요」라고 씀
-  const snap = board?.asOf === day ? null : new Map(Object.values(T?.lists ?? {}).flat().filter(x => x?.code && x.date === day && fin(x.close)).map(x => [x.code, x]));
+  //   새 잣대(주문 1111-1857)는 42칸 밖 회사도 고름 — 그 판 날 값은 1 · 2 · 3등 줄(close · date)에서
+  const snap = board?.asOf === day ? null : new Map([...(Array.isArray(rank) ? rank : []), ...Object.values(T?.lists ?? {}).flat()].filter(x => x?.code && x.date === day && fin(x.close)).map(x => [x.code, x]));
   const at = code => (snap ? snap.get(code) : co.get(code));
   let added = null;
   if (DAY.test(day ?? '') && Array.isArray(rank) && rank.length >= 3 && !B.days.some(d => d.board === day)) {

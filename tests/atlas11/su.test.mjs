@@ -565,7 +565,7 @@ test('큐피트 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지난
   assert.ok(ck.includes('⑳ 첫 페이지(주문 1209)') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판');
   assert.ok(rp.includes("s?.mode === 'mark' ? null") && dy.includes("su?.strict?.mode === 'mark' ? null"), '며칠째 — 표시 판은 칸이 옛 셈 일곱이라 옛 규칙');
   assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 큐피트 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
-  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(큐피트 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
+  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = (UP3 \? 720 : )?MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(큐피트 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
   for (const t2 of ['큐피트 계산법', '큐피트 계산법으로 찾은 종목', '31가지 기준을 모두 지난 곳이에요.']) assert.ok(!/[A-Za-z%]/.test(t2), '새 글에 영어 · % 없음 — ' + t2);
 });
 
@@ -576,7 +576,7 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   const py = rd('scripts/atlas11/next/su21.py'), mc = rd('scripts/atlas11/next/su21_mc.py'), t3 = rd('scripts/atlas11/next/su21_top3.py'), ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), s21 = rd('site/su/su-21.js'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
   assert.ok(/RULE_ID = 'mc365-v1'/.test(mc) && /def order\(ctx, pool, k\)/.test(mc) && /def scan\(ctx\)/.test(mc), '① 몬테카를로 · 드문 차례');
   assert.ok(/TOTAL = 100_000_000/.test(t3) && /np\.argpartition\(-z, 3, axis=1\)/.test(t3), '④ 1억 판 · 판마다 마지막 셋');
-  assert.ok(/import su21_mc as MC/.test(py) && /HOT = per2\(_o\)/.test(py) && /T3 = TOP3\.top3\(CTX, CELLS\) if A\.top3 else None/.test(py) && /out\['listRule'\] = (MC|CUL)\.RULE_ID/.test(py) && /'r3': PLACE\.get\(\(k, c\)\)/.test(py), 'su21.py — 일곱 · 1억 번 셈 · 규칙 이름');
+  assert.ok(/import su21_mc as MC/.test(py) && /HOT = per2\(_o\)/.test(py) && /T3 = (TOP3\.top3\(CTX, CELLS\)|UP3\.top3\(CTX, list\(B\), cap, nm\)) if A\.top3 else None/.test(py) && /out\['listRule'\] = (MC|CUL)\.RULE_ID/.test(py) && /'r3': PLACE\.get\(\(k, c\)\)/.test(py), 'su21.py — 일곱 · 1억 번 셈 · 규칙 이름');
   assert.ok(pk.includes("'--mc365', '--top3'"), '올릴 때 365곳 · 1억 번');
   assert.ok(/const RANK = !!d\?\.top3/.test(ap) && /function legendR3\(/.test(ap) && ap.includes("note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4')") && /sxTag\(x \+ 6, y \+ 8, it\.r3 \+ '등', 'sa-r3'\)/.test(ap), '첫 페이지 — 1등 · 2등 · 3등 표 · 풀이 두 줄');
   assert.ok(/export function crit7mc\(/.test(y) && /export function top3Box\(/.test(y) && y.includes("'큐피트 계산법 ' + place + '등 — 1억 번 셈'"), '「왜?」 쪽 — 기준 일곱(몬테카를로) · 1억 번 셈 상자');
@@ -587,10 +587,15 @@ test('몬테카를로 차례 · 1억 번 셈 — 365곳 몬테카를로 · 소�
   for (const g of ['hotNext', 'moneyNext', 'bloomNext']) for (const k of ['mc', 'old', 'base']) assert.ok(P.res[g][k].picks > 0 && Number.isFinite(P.res[g][k].per100), g + ' ' + k);
   const T = JSON.parse(rd('site/su/data/su21.json'));
   assert.ok(['mc365-v1', 'culture7-v1'].includes(T.listRule), '몬테카를로 차례 판(주문 1912 뒤에는 문화 셈 판)');
-  assert.ok(T.top3 && T.top3.total === 100000000 && T.top3.rank.length === 3, '저장된 판 — 1억 번 셈');
   const r3 = Object.values(T.lists).flat().filter(c => [1, 2, 3].includes(c.r3)).map(c => c.r3).sort();
-  assert.deepEqual(r3, [1, 2, 3], '1등 · 2등 · 3등 칸 셋');
-  for (const j of [0, 1, 2]) assert.equal(Object.values(T.top3.cells).reduce((a, x) => a + x[j], 0), T.top3.total, '판마다 ' + (j + 1) + '등 하나씩');
+  if (T.top3?.v === 'up3-v1') { // 주문 1111-1857 뒤 — 새 잣대(우량주 365곳)로 바뀜 · 칸에 든 회사만 칸 등수(아래 「새 잣대」 시험)
+    assert.ok(T.top3.rank.length === 3 && !('cells' in T.top3), '저장된 판 — 새 잣대 셋');
+    assert.deepEqual(r3, Object.values(T.lists).flat().filter(c => T.top3.rank.some(r => r.code === c.code)).map(c => c.r3).sort(), '칸 등수 = 그 칸 회사가 새 잣대 등수일 때만');
+  } else {
+    assert.ok(T.top3 && T.top3.total === 100000000 && T.top3.rank.length === 3, '저장된 판 — 1억 번 셈');
+    assert.deepEqual(r3, [1, 2, 3], '1등 · 2등 · 3등 칸 셋');
+    for (const j of [0, 1, 2]) assert.equal(Object.values(T.top3.cells).reduce((a, x) => a + x[j], 0), T.top3.total, '판마다 ' + (j + 1) + '등 하나씩');
+  }
   for (const t2 of ['1등', '2등', '3등', '큐피트 계산법 차례', '1억 번 섞어', '끝까지 남은 차례예요.']) assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|추천/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
 });
 
@@ -618,8 +623,8 @@ test('문화 셈 — 특징 열하나 · 일곱 정의 · 문화로 42칸 · 요
   assert.equal(T.listRule, 'culture7-v1');
   const CUJ = JSON.parse(rd('site/su/data/su21-cu.json'));
   assert.ok(T.culture?.rule === 'culture7-v1' && T.culture.pos && CUJ.rule === 'culture7-v1' && CUJ.asOf.board === T.asOf.board && CUJ.culture.traits.length === 7, '저장된 판 — 문화 일곱(su21-cu.json)');
-  for (const [k, L] of Object.entries(T.lists)) for (const c of L) assert.ok(!('cu' in c) && Array.isArray(CUJ.cu[k + ':' + c.code]?.on), '칸마다 흔적은 su21-cu.json 에만(첫 화면이 가볍게) — ' + k + ' ' + c.name);
-  assert.ok(T.top3?.v === 'top3-v2' && new Set(T.top3.rank.map(r => r.code)).size === 3, '저장된 판 — 1억 번 셈 v2 · 서로 다른 회사 셋');
+  for (const [k, L] of Object.entries(T.lists)) if (k !== 'quiet') for (const c of L) assert.ok(!('cu' in c) && Array.isArray(CUJ.cu[k + ':' + c.code]?.on), '칸마다 흔적은 su21-cu.json 에만(첫 화면이 가볍게) — ' + k + ' ' + c.name); // 넷째 창(주문 1111-1334)은 「왜?」 쪽이 없어 흔적을 싣지 않음(su21.py CUOUT)
+  assert.ok(['top3-v2', 'up3-v1'].includes(T.top3?.v) && new Set(T.top3.rank.map(r => r.code)).size === 3, '저장된 판 — 1억 번 셈 v2(주문 1111-1857 뒤 새 잣대) · 서로 다른 회사 셋');
   for (const t2 of ['문화 일곱으로 고르고', '1억 번 섞었어요.', '한국 투자자 문화 일곱 — 이 칸', '테마 몰림', '고점 앞 팔기', '본전 버티기', '빚투 쏠림', '국민주 쏠림', '한방 쫓기', '눈길 따라 사기', '바로 앞 셈은'])
     assert.ok(!/[A-Za-z%]/.test(t2) && !/매수|매도|추천|예측|확률|유망|신호/.test(t2), '새 글에 영어 · % · 쓰지 않을 말 없음 — ' + t2);
 });
