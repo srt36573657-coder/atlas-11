@@ -31,6 +31,7 @@ const KIND = {hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는', qui
 const KINDN = {hot: '불장이 될 듯', bloom: '꽃이 될 듯', money: '돈이 몰릴 듯'};
 const NXK = {hot: 'hotNext', bloom: 'bloomNext', money: 'moneyNext'};
 const W = 390, PAD = 20, MID = W / 2;
+const ORBY = 204, PY0 = ORBY + 86 + 64 + 4; // 구슬 가운데 높이 · 구슬 아래 첫 줄(= orbs(…, ORBY).bottom + 4 — LIST0 를 그리기 전에 셈)
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 const NF = new Intl.NumberFormat('ko-KR');
 let UID = 0;
@@ -185,17 +186,51 @@ function legendR3(y, cul = false) {
     ...(cul ? note2(y + 26, '문화 일곱으로 고르고', '1억 번 섞었어요.', 'note4') : note2(y + 26, '1억 번 섞어', '끝까지 남은 차례예요.', 'note4'))];
 }
 /* ── 새 잣대 1등 · 2등 · 3등(주문 1111-1857 · 사장님 2026-11-11 18:57 「… 선정 기준을 상승할것 같은 종목 으로 해야 해! 에이전트 100개 만들어서 알고리즘 만들어 재대로 상황 공부하고 대입해」)
-   — 우량주 365곳에서 고름(42칸 밖일 수 있음) · 셋째 ~ 다섯째 줄 [1등] 이름 · 여섯째 줄 풀이 ── */
-function legendUp3(y, rank) {
+   — 우량주 365곳에서 고름(42칸 밖일 수 있음)
+   주문 1112-0044(사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」):
+   셋째 줄 머리 「● 새 잣대 1 · 2 · 3등 · 누르면 까닭 ›」 → 한 줄에 한 곳(넓은 칸 셋 · 칸마다 누름 140):
+     [N등] 이름 · 현재가 · 한 달 오른 만큼 · 업종 · 가장 큰 까닭(잣대 넷 가운데 값이 가장 큰 것) + 오른쪽 한 달 꺾은선(크게 · 한 달 전 값 옅은 줄 · 마지막 값 점) + ›
+     누르면 그 회사 새 잣대 쪽(#/c/<번호>/t — 크게 그린 한 달 · 잣대 넷 막대 · 넷을 더한 차례 · 다른 두 곳 · 달력 · 회사 쪽)
+   아래 풀이 「새 잣대로 우량주 365곳에서 골랐어요.」 · 그 아래 「1 · 2 · 3등 달력 ›」(날마다 뽑힌 셋 · 따로 누름 48) ── */
+const UPR = 140, UPG = 8, USW = 104, USH = 54; // 칸 높이 · 칸 사이 · 꺾은선 넓이 · 높이
+export const UP3H = 16 + 3 * (UPR + UPG) - UPG + 120; // 머리 줄 아래 ~ 달력 고리 아래(LIST0 = 셋째 줄 + 이 높이) · 고리 높이 60 = 320 폭에서도 누름 48 넘게(49)
+const UPHOW = ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림'];
+/** 가장 큰 까닭 — 잣대 넷 가운데 값이 가장 큰 것(같으면 앞 것) · 값이 없으면 null */
+export const topWhy = (r, how = UPHOW) => { const ps = Array.isArray(r?.parts) ? r.parts : []; let j = -1; ps.forEach((v, i) => { if (fin(v) && (j < 0 || v > ps[j])) j = i; }); return j < 0 ? null : (how[j] ?? UPHOW[j]); };
+const ch20Of = r => (fin(r?.ch20) ? r.ch20 : Array.isArray(r?.c) && r.c.length === 21 && fin(r.c[0]) && r.c[0] > 0 && fin(r.c[20]) ? Math.round((r.c[20] / r.c[0] - 1) * 1000) / 10 : null);
+function up3Row(r, n, y, day, how) {
+  const x = PAD - 6, w = W - 2 * (PAD - 6), sx = x + w - 30 - USW, room = sx - x - 18;
+  const px = fin(r?.close) && r.close > 0 && (!r.date || !day || r.date === day) ? r.close : null; // 그날(asOf.board) 마지막 값만
+  const sp = Array.isArray(r?.c) && r.c.length === 21 && r.c.every(v => fin(v) && v > 0) && px === r.c[20] ? r.c : null; // 21 마지막 값 · 끝 = 현재가일 때만
+  const nm = String(r?.name ?? NEED), tw = Math.ceil(est(n + '등', 17)) + 18, fs = est(nm, 20) <= room - tw - 8 ? 20 : est(nm, 18) <= room - tw - 8 ? 18 : 17;
+  const price = px != null ? won(px) : NEED, c20 = sp ? ch20Of(r) : null, mon = '한 달 ' + (c20 != null ? pct(c20) : NEED);
+  const ind = String(r?.ind ?? NEED), why = topWhy(r, how), wl = '까닭 — ' + (why ?? NEED);
+  const say = ' · 현재가 ' + price + ' · ' + mon + (sp ? ' · 한 달 전 ' + won(sp[0]) : '');
+  const a = s('a', {href: '#/c/' + encodeURIComponent(String(r?.code ?? '')) + '/t', class: 'sa-up3a sa-x', 'data-place': String(n), 'data-code': String(r?.code ?? ''), 'data-px': px ?? '', 'data-name': nm,
+    'aria-label': '새 잣대 ' + n + '등 · ' + nm + say + ' · ' + ind + ' · ' + wl + ' · 누르면 까닭 쪽'});
+  a.append(s('title', {text: '새 잣대 ' + n + '등 · ' + nm + say}),
+    s('rect', {x, y, width: w, height: UPR, rx: 14, class: 'sa-hit sa-hitx sa-up3hit'}),
+    sxTag(x + 10, y + 10, n + '등', 'sa-r3'),
+    T(f1(x + 10 + tw + 8), y + 29, nm, 'sa-name sa-up3n', {'font-size': fs}),
+    T(x + 12, y + 58, price, 'sa-px' + (px != null ? '' : ' sa-need'), {'font-size': est(price, 18) <= room ? 18 : 17}),
+    T(x + 12, y + 84, mon, 'sa-val sa-up3m ' + (c20 != null && c20 < 0 ? 'sa-val-next' : 'sa-val-now') + (c20 != null ? '' : ' sa-need')),
+    T(x + 12, y + 108, ind, 'sa-found sa-up3i', {'font-size': 17}),
+    T(x + 12, y + 131, wl, 'sa-days sa-up3w' + (why ? '' : ' sa-need'), {'font-size': 17}),
+    spark(sp, sx, y + 34, USW, USH, 'now'),
+    T(x + w - 14, y + 70, '›', 'sa-chev', {'text-anchor': 'end'}));
+  CELL.set(a, {it: {name: nm, val: mon, sp}, side: 'now', sx, sy: y + 34, sw: USW, sh: USH, room, say0: say, up3: true});
+  return a;
+}
+function legendUp3(y, rank, day, how) {
   const R = n => (rank ?? []).find(r => r?.place === n);
-  const rows = [1, 2, 3].map((n, i) => {
-    const r = R(n), nm = String(r?.name ?? NEED), tw = Math.ceil(est(n + '등', 17)) + 18, x0 = MID - (tw + 8 + est(nm, 18)) / 2, yy = y + i * 28;
-    return s('g', {class: 'sa-up3 sa-in sa-in3', 'data-place': String(n), 'data-code': String(r?.code ?? '')}, sxTag(f1(x0), yy - 18, n + '등', 'sa-r3'), T(f1(x0 + tw + 8), yy, nm, 'sa-note sa-up3n'));
-  });
-  // 셋을 한 덩이로 누름(줄마다 누르면 48 × 48 이 안 됨 — 좁은 폭 320 에서도 넘게) → 1 · 2 · 3등 달력(날마다 고른 셋 · 산 셈)
-  const all = [1, 2, 3].map(n => n + '등 ' + (R(n)?.name ?? NEED)).join(' · ');
-  return [s('a', {href: '#/r/c', class: 'sa-up3a', 'aria-label': '새 잣대 ' + all + ' — 1 · 2 · 3등 달력 보기'}, s('rect', {x: PAD, y: y - 24, width: W - 2 * PAD, height: 90, rx: 14, class: 'sa-up3hit'}), ...rows),
-    ...note2(y + 84, '새 잣대로', '우량주 365곳에서 골랐어요.', 'note4')];
+  const head = [s('circle', {cx: PAD + 7, cy: y - 7, r: 6, class: 'sa-dotA sa-in sa-in3'}), T(PAD + 20, y, '새 잣대 1 · 2 · 3등', 'sa-kh sa-up3h sa-in sa-in3'),
+    T(W - PAD, y, '누르면 까닭 ›', 'sa-d sa-up3t sa-in sa-in3', {'text-anchor': 'end'})];
+  const rows = [1, 2, 3].map((n, i) => up3Row(R(n), n, y + 16 + i * (UPR + UPG), day, how));
+  const yb = y + 16 + 3 * (UPR + UPG) - UPG; // 칸 셋 아래
+  const cal = s('a', {href: '#/r/c', class: 'sa-up3c', 'aria-label': '1 · 2 · 3등 달력 보기 — 날마다 뽑힌 셋'},
+    s('rect', {x: PAD - 6, y: yb + 46, width: W - 2 * (PAD - 6), height: 60, rx: 14, class: 'sa-hit sa-up3ch'}),
+    T(MID, yb + 83, '1 · 2 · 3등 달력 — 날마다 뽑힌 셋 ›', 'sa-up3ct', {'text-anchor': 'middle'}));
+  return [...head, s('g', {class: 'sa-up3g sa-in sa-in3'}, ...rows), ...note2(yb + 30, '새 잣대로', '우량주 365곳에서 골랐어요.', 'note4'), cal];
 }
 function legendSx(y) { // 셋째 줄 [수르 계산법] 수르 계산법으로 찾은 종목 · 넷째 줄 31가지 기준을 모두 지난 곳이에요.(사장님 말씀 그대로 · 이해 보고 12:10 「표 위에 「수르 계산법으로 찾은 종목」이라고 풀어 적어요」)
   const bw = Math.ceil(est(SXT, 17)) + 18, gap = 8, tl = SXL, x0 = MID - (bw + gap + est(tl, 18)) / 2;
@@ -222,14 +257,16 @@ const CELL = new WeakMap();
 const hm = t => { const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(String(t ?? '')); if (!m) return null; const H = +m[4]; return +m[2] + '월 ' + +m[3] + '일 ' + (H < 12 ? '오전 ' : '오후 ') + (H % 12 || 12) + '시' + (+m[5] ? ' ' + +m[5] + '분' : ''); };
 function relive(svg, j, day) {
   let last = null, n = 0;
-  for (const a of svg.querySelectorAll('a.sa-cell[data-code]')) {
+  for (const a of svg.querySelectorAll('a.sa-cell[data-code], a.sa-up3a[data-code]')) { // 새 잣대 1 · 2 · 3등 칸(주문 1112-0044)도 같은 값으로 · 한 달 오른 만큼도 다시 셈
     const c = CELL.get(a), v = j.items?.[a.getAttribute('data-code')];
     if (!c || !v || !fin(v.p) || v.p <= 0 || typeof v.t !== 'string' || !c.it.sp || !(j.day >= day)) continue;
     const sp = j.day > day ? [...c.it.sp.slice(1), v.p] : [...c.it.sp.slice(0, 20), v.p], price = won(v.p);
     const px = a.querySelector('text.sa-px'); if (px) { px.textContent = price; px.setAttribute('font-size', est(price, 18) <= c.room ? 18 : 17); px.classList.remove('sa-need'); }
-    a.querySelector('g.sa-spk')?.replaceWith(spark(sp, c.sx, c.sy, SW, 34, c.side));
-    const say = ' · 현재가 ' + price + ' · 한 달 전 ' + won(sp[0]), lab = a.getAttribute('aria-label') ?? '';
-    a.setAttribute('aria-label', lab.replace(c.say0, say)); a.querySelector('title').textContent = c.it.name + ' · ' + c.it.val + say;
+    a.querySelector('g.sa-spk')?.replaceWith(spark(sp, c.sx, c.sy, c.sw ?? SW, c.sh ?? 34, c.side));
+    let say = ' · 현재가 ' + price + ' · 한 달 전 ' + won(sp[0]);
+    if (c.up3) { const ch = Math.round((v.p / sp[0] - 1) * 1000) / 10, mon = '한 달 ' + pct(ch), m = a.querySelector('text.sa-up3m'); if (m) { m.textContent = mon; m.classList.remove('sa-need'); m.classList.toggle('sa-val-next', ch < 0); m.classList.toggle('sa-val-now', ch >= 0); } say = ' · 현재가 ' + price + ' · ' + mon + ' · 한 달 전 ' + won(sp[0]); c.it.val = mon; }
+    const lab = a.getAttribute('aria-label') ?? '';
+    a.setAttribute('aria-label', lab.replace(c.say0, say)); a.querySelector('title').textContent = (c.up3 ? '새 잣대 ' + a.getAttribute('data-place') + '등 · ' + c.it.name + say : c.it.name + ' · ' + c.it.val + say); c.say0 = say;
     a.setAttribute('data-px', String(v.p)); a.setAttribute('data-live', v.t);
     if (!last || v.t > last) last = v.t; n++;
   }
@@ -240,7 +277,7 @@ function relive(svg, j, day) {
   return n;
 }
 function live(svg, day) {
-  const codes = [...new Set([...svg.querySelectorAll('a.sa-cell[data-code]')].map(a => a.getAttribute('data-code')))].filter(c => /^[0-9A-Z]{6}$/.test(c)).sort();
+  const codes = [...new Set([...svg.querySelectorAll('a.sa-cell[data-code], a.sa-up3a[data-code]')].map(a => a.getAttribute('data-code')))].filter(c => /^[0-9A-Z]{6}$/.test(c)).sort();
   if (!codes.length || typeof fetch !== 'function') return;
   const ask = async () => {
     if (!svg.isConnected && svg.dataset.asked) return; // 쪽이 바뀌면 멈춤
@@ -273,7 +310,7 @@ function draw(d, opt) {
   const STRICT = !!d?.strict && d.strict.mode !== 'mark'; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움) — 옛 판 자료만
   const RANK = !!d?.top3 && Array.isArray(d.top3.rank), CULT = d?.listRule === 'culture7-v1', UP3 = RANK && d.top3.v === 'up3-v1'; // 주문 1422(사장님 2026-11-09 14:22 「… 1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 42칸 가운데 1등 · 2등 · 3등 칸에 표
   const MARK = d?.strict?.mode === 'mark'; // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「수르 계산법」 표
-  const LIST0 = UP3 ? 720 : MARK || RANK ? 662 : STRICT ? 636 : 608; // 새 잣대(주문 1111-1857) — 1 · 2 · 3등 이름 세 줄 + 풀이 한 줄 // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」 · 표시 판이면 셋째 · 넷째 줄 「수르 계산법」 풀이) 아래
+  const LIST0 = UP3 ? PY0 + 266 + UP3H : MARK || RANK ? 662 : STRICT ? 636 : 608; // 새 잣대(주문 1111-1857 · 1112-0044) — 머리 줄 · 넓은 칸 셋(꺾은선 · 값 · 한 달 · 업종 · 까닭) · 풀이 · 달력 고리 // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」 · 표시 판이면 셋째 · 넷째 줄 「수르 계산법」 풀이) 아래
   const rowsOf = k => STRICT ? 7 : Math.max(items(k, false).length, items(k, true).length, 1);
   const tagOf = c => c?.sx || c?.r3; // 칸 맨 위 표(수르 계산법 · 1등 · 2등 · 3등)
   const rowH = (k, i) => ROW + (tagOf(items(k, false)[i]) || tagOf(items(k, true)[i]) ? BX : 0); // 표가 붙은 칸이 있는 줄만 표 높이만큼 더
@@ -290,10 +327,10 @@ function draw(d, opt) {
     T(MID, 70, '될 듯한 곳을 찾아 드려요.', 'sa-sub sa-in sa-in1', {'text-anchor': 'middle'}));
   svg.append(top);
   /* 2 물건 하나 — 구슬 둘 */
-  const O = orbs(id, 204);
+  const O = orbs(id, ORBY);
   svg.append(O.g);
   /* 3 지금 21 | 될 듯 21 */
-  const PY = O.bottom + 4;
+  const PY = O.bottom + 4; // = PY0
   const pair = s('g', {class: 'sa-pair sa-in sa-in2'},
     s('path', {d: `M${MID} ${PY + 6}V${PY + 128}`, class: 'sa-div'}),
     s('circle', {cx: 74, cy: PY + 22, r: 7, class: 'sa-dotA'}), T(88, PY + 27, '지금', 'sa-k'),
@@ -305,7 +342,7 @@ function draw(d, opt) {
   svg.append(pair, T(MID, PY + 168, '앞날을 맞히는 목록이 아니에요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
-    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? legendUp3(PY + 254, d.top3.rank) : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
+    ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? legendUp3(PY + 266, d.top3.rank, day, d.top3.how) : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
   let y = LIST0;
   KEY.forEach((k, ki) => {

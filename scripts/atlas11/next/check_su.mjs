@@ -26,7 +26,7 @@ const base = String(arg('--base', 'http://127.0.0.1:8826')).replace(/\/$/, ''), 
 const R = {schema: 'su-check-1', at: new Date().toISOString(), base, counts: {pass: 0, fail: 0}, fails: [], m: {}};
 const check = (ok, name, why = '') => { if (ok) R.counts.pass++; else { R.counts.fail++; R.fails.push([name, String(why).slice(0, 300)]); console.log('실패', name, why ? '— ' + String(why).slice(0, 300) : ''); } };
 const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
-const LINK_OK = /^(#\/|#\/[bkrpqjmfns]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/c\/[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdynkics]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n
+const LINK_OK = /^(#\/|#\/[bkrpqjmfns]|#\/[ckrpq]\/[0-9A-Z]{6}|#\/c\/[0-9A-Z]{6}\/more|#\/c\/[0-9A-Z]{6}\/t|#\/c\/[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)|#\/m\/[\w-]+|#\/gift|#\/r\/[mwdynkics]|#\/i\/[^/]+|\/next\/|\/next\/\?lang=en|\/next\/#\/(why|share|gift|me|jinhwa|find)(\/[0-9A-Z]{6})?|\/hello\.html|https:\/\/shin-yxy\.gino\.im\/|#\/g(\/[a-z]+)?|\/(next|atlas)\/\?(lang=en&)?su=[a-z]+#\/[\w\/.%-]*|\/(hello|letter|invite|privacy)\.html\?su=[a-z]+(#[\w-]+)?|\/su\/privacy\.html(#[\w-]+)?)$/; // 주문 0054 — 셋의 길 #/g · 옛 쪽을 수르 틀로(?su=<묶음>) · 찾기 · 신 72 · 스승 39 · 급등 // 주문 2044 21곳 길 — #/m 땅 지도 · #/m/<땅> · #/c/<번호>/more · #/f 친구에게(옛 기능 자리: 보내기 · 선물 · 왜 사? · 내 종목 · 진화 · 찾기 · 영어 · 소개 영상 · 만수르) // 새 판(주문 1238) 길 넷 #/b 꽃 · #/k 조건 · #/r 기록 · #/p 멈춤(+ /<번호>) · 주문 1616 기록 서랍 #/r/m · w · d · y · n · 주문 1103 될 듯 21곳 #/n · 주문 1112-0044 새 잣대 한 곳 쪽 #/c/<번호>/t
 
 /** 자료에서 따로 셈(화면 코드 site/su/su-data.js 를 쓰지 않음) */
 const J = async u => { const r = await fetch(base + u); if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); };
@@ -714,14 +714,40 @@ for (const width of [390, 360, 320]) {
       return {cells: H?.querySelectorAll('a.sa-cell:not([data-k="quiet"])').length ?? 0, empty: H?.querySelectorAll('g.sa-empty').length ?? -1, r3: xs.map(a => a.getAttribute('data-r3') + ':' + a.getAttribute('data-k') + ':' + a.getAttribute('data-code')).sort(), // 넷째 창 칸(주문 1111-1334 · 따로 된 1 · 2 · 3등 표)은 ㉒
         tags: xs.filter(a => a.querySelector('g.sa-sx text.sa-sxt')?.textContent === a.getAttribute('data-r3') + '등').length, stray: H?.querySelectorAll('a.sa-cell:not([data-k="quiet"]):not([data-r3="1"]):not([data-r3="2"]):not([data-r3="3"]) g.sa-sx').length ?? -1,
         legend: [...(H?.querySelectorAll('g.sa-r3x text.sa-sxt') ?? [])].map(e => e.textContent).join(' ') + ' ' + [H?.querySelector('text.sa-note3b'), H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' '),
-        up3: [...(H?.querySelectorAll('g.sa-up3') ?? [])].map(g => g.getAttribute('data-place') + ':' + (g.querySelector('text.sa-sxt')?.textContent ?? '') + ':' + (g.querySelector('text.sa-up3n')?.textContent ?? '') + ':' + (g.closest('a')?.getAttribute('href') ?? '')),
+        up3: [...(H?.querySelectorAll('a.sa-up3a') ?? [])].map(a => a.getAttribute('data-place') + ':' + (a.querySelector('text.sa-sxt')?.textContent ?? '') + ':' + (a.querySelector('text.sa-up3n')?.textContent ?? '') + ':' + (a.getAttribute('href') ?? '')),
+        up3x: [...(H?.querySelectorAll('a.sa-up3a') ?? [])].map(a => ({px: a.querySelector('text.sa-px')?.textContent ?? '', m: a.querySelector('text.sa-up3m')?.textContent ?? '', i: a.querySelector('text.sa-up3i')?.textContent ?? '', w: a.querySelector('text.sa-up3w')?.textContent ?? '',
+          sp: a.querySelectorAll('g.sa-spk path.sa-sp').length, h: Math.round(a.getBoundingClientRect().height), chev: a.querySelector('text.sa-chev')?.textContent ?? ''})),
+        up3cal: [...(H?.querySelectorAll('a.sa-up3c') ?? [])].map(a => a.getAttribute('href') + ':' + Math.round(a.getBoundingClientRect().height)).join(' '),
         up3note: [H?.querySelector('text.sa-note4a'), H?.querySelector('text.sa-note4b')].map(e => e?.textContent ?? '').join(' ')}; });
     const want = cells.filter(x => [1, 2, 3].includes(x.c.r3)).map(x => x.c.r3 + ':' + x.k + ':' + x.c.code).sort();
     const LEG = CULT ? '1등 2등 3등 큐피트 계산법 차례 문화 일곱으로 고르고 1억 번 섞었어요.' : '1등 2등 3등 큐피트 계산법 차례 1억 번 섞어 끝까지 남은 차례예요.';
+    // 주문 1112-0044(사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」) — 1 · 2 · 3등 넓은 칸 셋:
+    //   칸마다 [N등] 이름 · 현재가 · 한 달 · 업종(자료) · 까닭(잣대 넷 가운데 값이 가장 큰 것) · 한 달 꺾은선(21 마지막 값이 있으면) · › · 누름 48 넘게 · 누르면 #/c/<번호>/t · 아래 달력 고리(#/r/c · 누름 48 넘게)
+    const UPHOW = Array.isArray(t3?.how) && t3.how.length === 4 ? t3.how : ['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림'];
+    const topWhy = r => { const ps = Array.isArray(r?.parts) ? r.parts : []; let j = -1; ps.forEach((v, i) => { if (Number.isFinite(v) && (j < 0 || v > ps[j])) j = i; }); return j < 0 ? null : UPHOW[j]; };
+    const spOk = r => Array.isArray(r?.c) && r.c.length === 21 && r.c.every(v => Number.isFinite(v) && v > 0) && r.c[20] === r.close && r.date === T21.asOf?.board;
     if (UP3) {
-      const wantU = t3.rank.map(r => r.place + ':' + r.place + '등:' + r.name + ':#/r/c');
-      check(f.cells === 42 && f.empty === 0 && JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === want.length && f.stray === 0 && JSON.stringify(f.up3) === JSON.stringify(wantU) && f.up3note === '새 잣대로 우량주 365곳에서 골랐어요.',
-        '⑳ 첫 페이지 — 42칸 모두 · 새 잣대 1등 · 2등 · 3등 이름 셋(누르면 1 · 2 · 3등 달력) · 칸에 든 회사만 칸 표 · 풀이 「새 잣대로 우량주 365곳에서 골랐어요.」', JSON.stringify({up3: f.up3, r3: f.r3, note: f.up3note}).slice(0, 300));
+      const wantU = t3.rank.map(r => r.place + ':' + r.place + '등:' + r.name + ':#/c/' + r.code + '/t');
+      const rowsOk = f.up3x.length === 3 && f.up3x.every((x, i) => { const r = t3.rank[i]; return /^[\d,]+원$/.test(x.px) && (spOk(r) ? /^한 달 [+−]?\d+\.\d%$/.test(x.m) && x.sp === 1 : x.sp === 0) && x.i === String(r.ind ?? '확인 필요') && x.w === '까닭 — ' + (topWhy(r) ?? '확인 필요') && x.h >= 48 && x.chev === '›'; });
+      check(f.cells === 42 && f.empty === 0 && JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === want.length && f.stray === 0 && JSON.stringify(f.up3) === JSON.stringify(wantU) && rowsOk && /^#\/r\/c:(4[89]|[5-9]\d)$/.test(f.up3cal) && f.up3note === '새 잣대로 우량주 365곳에서 골랐어요.',
+        '⑳ 첫 페이지 — 42칸 모두 · 새 잣대 1등 · 2등 · 3등 넓은 칸 셋(이름 · 현재가 · 한 달 · 업종 · 까닭 · 한 달 꺾은선 · 누르면 그 곳 쪽) · 달력 고리 · 칸에 든 회사만 칸 표 · 풀이 「새 잣대로 우량주 365곳에서 골랐어요.」', JSON.stringify({up3: f.up3, x: f.up3x, cal: f.up3cal, r3: f.r3, note: f.up3note}).slice(0, 400));
+      // 누르면 이어지는 쪽 #/c/<번호>/t — 큰 제목 · 칩 셋 · 한 달 꺾은선 · 잣대 넷 막대 · 풀이 넷 · 넷을 더한 차례 · 다른 두 곳(누르면 그 곳) · 달력 · 회사 쪽 · 「왜 사?」 · 안전 문장
+      for (const r of t3.rank) {
+        await open(p, '#/c/' + r.code + '/t');
+        const u = await p.evaluate(() => { const H = document.querySelector('#su main > .su-hero.u3'); if (!H) return null;
+          return {h1: document.querySelector('#su h1')?.textContent ?? '', place: H.getAttribute('data-place'), chips: [...H.querySelectorAll('.u3-sum .yw-chip span')].map(e => e.textContent).join(','),
+            line: H.querySelectorAll('svg.u3-line path.u3-lp').length, bars: H.querySelectorAll('svg.u3-bars g.u3-bar').length, words: [...H.querySelectorAll('svg.u3-bars text.u3-bw')].map(e => e.textContent),
+            li: H.querySelectorAll('.u3-ol .yw-li').length, v: H.querySelector('p.u3-verdict')?.textContent ?? '', others: [...H.querySelectorAll('a.u3-other')].map(a => a.getAttribute('href')),
+            go: [...H.querySelectorAll('nav.u3-go a')].map(a => a.getAttribute('href')), safe: (H.textContent ?? '').includes('앞날을 맞히지 않아요. 지난 값으로 센 기록이에요.')}; });
+        const ordK = n => (n === 1 ? '첫 번째' : n + '번째'), szK = v => (Number.isFinite(v) ? (v >= 0.5 ? '높아요' : v <= -0.5 ? '낮아요' : '보통이에요') : '확인 필요');
+        const wantO = t3.rank.filter(x => x.code !== r.code).map(x => '#/c/' + x.code + '/t');
+        check(!!u && u.h1 === r.name + ', 왜 ' + r.place + '등?' && u.place === String(r.place) && u.chips === '현재가,한 달,업종' && u.line === (spOk(r) ? 1 : 0) && u.bars === 4 && JSON.stringify(u.words) === JSON.stringify((r.parts ?? []).map(szK))
+          && u.li === 4 && u.v === '넷을 더한 값이 우량주 ' + t3.pool + '곳 가운데 ' + ordK(r.place) + '로 커서 ' + r.place + '등이에요.' && JSON.stringify(u.others) === JSON.stringify(wantO)
+          && JSON.stringify(u.go) === JSON.stringify(['#/r/c', '#/c/' + r.code, '#/q/' + r.code]) && u.safe,
+          '⑳ 1 · 2 · 3등 한 곳 쪽(주문 1112-0044) — ' + r.place + '등 ' + r.name + ' · 꺾은선 · 잣대 넷 막대 · 넷을 더한 차례 · 다른 두 곳 · 달력 · 회사 쪽', JSON.stringify(u).slice(0, 300));
+      }
+      const other = cells.map(x => x.c.code).find(c => !t3.rank.some(r => r.code === c)); // 1 · 2 · 3등이 아닌 회사 — 쪽 대신 「찾지 못했어요」
+      if (other) { await open(p, '#/c/' + other + '/t'); const nf = await p.evaluate(() => document.querySelector('#su h1')?.textContent ?? ''); check(nf === '찾지 못했어요', '⑳ 1 · 2 · 3등이 아닌 회사의 새 잣대 쪽 — 찾지 못했어요', other + ' ' + nf); }
     } else check(f.cells === 42 && f.empty === 0 && (t3 ? JSON.stringify(f.r3) === JSON.stringify(want) && f.tags === 3 && f.stray === 0 && f.legend === LEG : f.r3.length === 0),
       '⑳ 첫 페이지 — 42칸 모두 · 1등 · 2등 · 3등 칸에만 표 · 풀이 「' + LEG + '」', JSON.stringify(f).slice(0, 300));
     if (UP3) for (const pick of [cells.find(x => [1, 2, 3].includes(x.c.r3)), cells.find(x => ![1, 2, 3].includes(x.c.r3))].filter(Boolean)) {

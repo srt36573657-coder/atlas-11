@@ -1,0 +1,28 @@
+/* 큐피트 새 잣대 1 · 2 · 3등 — 한 회사 쪽(#/c/<번호>/t · su-up3.js · 주문 1112-0044)
+   틀(칩 · 상자 · 번호 줄)은 「왜?」 쪽(su-why36.css)과 같게 · 여기는 그림 둘(한 달 꺾은선 · 잣대 넷 막대)과 다른 두 곳 고리만
+   색은 첫 페이지와 같게 — 검정 · 회색 · 호박색 하나 · 글 17px 넘게 */
+.u3 .u3-fig { margin: 0; display: grid; gap: 6px; }
+.u3 svg.u3-line, .u3 svg.u3-bars { display: block; width: 100%; max-width: 100%; height: auto; }
+.u3 .u3-line text, .u3 .u3-bars text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif; }
+.u3 .u3-lt { font-size: 17px; font-weight: 600; fill: #6E6E73; }
+.u3 .u3-l0 { fill: none; stroke: #D2D2D7; stroke-width: 1.2; stroke-dasharray: 4 4; }
+.u3 .u3-lp { fill: none; stroke: #636366; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.u3 .u3-ls { fill: #FFFFFF; stroke: #86868B; stroke-width: 1.8; }
+.u3 .u3-le { fill: #D97706; stroke: #FFFFFF; stroke-width: 2.4; }
+.u3 .u3-lv { font-size: 18px; font-weight: 800; fill: #1D1D1F; font-variant-numeric: tabular-nums; }
+.u3 .u3-ld { font-size: 17px; font-weight: 600; fill: #6E6E73; }
+.u3 .u3-cap { margin: 0; }
+.u3 .u3-bt { font-size: 17px; font-weight: 700; fill: #1D1D1F; }
+.u3 .u3-bw { font-size: 17px; font-weight: 700; fill: #6E6E73; }
+.u3 .u3-bw.u3-up { fill: #B4570A; }
+.u3 .u3-tr { fill: #F2F2F7; }
+.u3 .u3-bp { fill: #D97706; }
+.u3 .u3-bn { fill: #AEAEB2; }
+.u3 .u3-bc { fill: none; stroke: #1D1D1F; stroke-width: 1.6; }
+.u3 .u3-bs { font-size: 17px; font-weight: 600; fill: #6E6E73; }
+.u3 .u3-sum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.u3 .u3-sum .u3-px { grid-column: 1 / -1; }
+.u3 .u3-sum .u3-pos b { color: #B4570A; }
+.u3 .u3-verdict { font-weight: 800; }
+.u3 .u3-others { display: grid; gap: 10px; }
+.u3 a.u3-other { min-height: 56px; }

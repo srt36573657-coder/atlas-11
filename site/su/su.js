@@ -434,6 +434,7 @@ async function route() {
       const [, k, raw] = m; let a = raw; try { a = decodeURIComponent(raw); } catch { /* 그대로 */ }
       if (k === 'c' && /^[0-9A-Z]{6}\/more$/.test(a)) v = await vMore(X21, a.slice(0, 6));
       else if (k === 'c' && /^[0-9A-Z]{6}\/y\/(hot|bloom|money|hotNext|moneyNext|bloomNext)$/.test(a)) v = await (await import('/su/su-why36.js')).vWhy(X21, a.slice(0, 6), a.slice(9)); // 「왜?」 쪽 — 첫 페이지 42칸을 누르면(주문 0123)
+      else if (k === 'c' && /^[0-9A-Z]{6}\/t$/.test(a)) v = await (await import('/su/su-up3.js')).vUp3(X21, a.slice(0, 6)); // 새 잣대 1 · 2 · 3등 한 회사 쪽 — 첫 페이지 1 · 2 · 3등 칸을 누르면(주문 1112-0044 · 사장님 2026-11-12 00:44 「… 클릭 하면 그정보가 이어지게 해」)
       else if (k === 'm') v = await vLandOne(X21, a);
       else if (k === 'g') v = await (await roadM()).vRoads(X21, a);
       else if (k === 'c' || k === 'k') v = await coOnPath(a);

@@ -142,5 +142,14 @@
 
 /* 새 잣대 1 · 2 · 3등 이름(주문 1111-1857) — 첫 페이지 그림 셋째 ~ 다섯째 줄 */
 .su-apple .sa-up3n { font-weight: 700; fill: #1D1D1F; }
-.su-apple .sa-up3hit { fill: transparent; }
+/* 새 잣대 1 · 2 · 3등 넓은 칸(주문 1112-0044 · 사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」)
+   칸 = 옅은 호박 바탕(1 · 2 · 3등 표가 붙은 42칸과 같은 틀) · 칸마다 누름 · 꺾은선은 42칸과 같은 색 · 오른쪽 끝 › · 아래 달력 고리(누름 52) */
+.su-apple a.sa-up3a:hover .sa-hitx, .su-apple a.sa-up3a:focus .sa-hitx { fill: #FDEBD3; }
+.su-apple a.sa-up3a:focus, .su-apple a.sa-up3c:focus { outline: none; }
 .su-apple a.sa-up3a:focus-visible .sa-up3hit { stroke: #B45309; stroke-width: 2; }
+.su-apple .sa-chev { font-size: 26px; font-weight: 600; fill: #86868B; }
+.su-apple .sa-up3t { fill: #6E6E73; }
+.su-apple .sa-up3ch { fill: #FFFFFF; fill-opacity: 1; stroke: #E5E5EA; stroke-width: 1.2; }
+.su-apple a.sa-up3c:hover .sa-up3ch, .su-apple a.sa-up3c:focus .sa-up3ch { fill: #F5F5F7; }
+.su-apple a.sa-up3c:focus-visible .sa-up3ch { stroke: #B45309; stroke-width: 2; }
+.su-apple .sa-up3ct { font-size: 18px; font-weight: 700; fill: #7A3E00; }

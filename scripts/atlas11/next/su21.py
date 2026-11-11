@@ -421,6 +421,8 @@ out['counts']['pools']['quiet'] = Q['pool']
 out['rules']['quiet'] = '소거 일곱: 값이 있음 · 다른 세 창 밖 · 한 달 오르내림 위아래 5 안 · 하루 오르내림 위아래 5 안 · 몸집 아래 열에 둘 밖 · 닷새 동안 외국인과 기관을 더하면 들어옴 · 1년 기록 → 몬테카를로 10만 번(지난 250거래일 하루 값을 20개씩 뽑은 길의 한 달 폭과 견줌) → 다섯 번에 한 번보다 흔한 조용함은 뺌 → 드문 차례 · 업종마다 둘'
 out['top3'] = None if T3 is None else {'v': T3['v'], 'n': T3['n'], 'pool': T3['pool'], 'how': T3['how'], 'past': T3['past'], # 주문 1111-1857 — 새 잣대(우량주 365곳 · 넷 고른 섞기)
              'rank': [{**r, 'name': nm(r['code']), 'close': B[r['code']].get('close'), 'date': B[r['code']].get('date'), # 값 = 판(42칸과 같은 판 값 · 달력이 그 판 날 마지막 값으로 삼)
+                       'c': B[r['code']].get('c'), 'cFrom': B[r['code']].get('cFrom'), # 주문 1112-0044(사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」) — 한 달 꺾은선 = 판 21 마지막 값(42칸과 같은 값)
+                       'ch20': r1(B[r['code']]['change20'] * 100) if B[r['code']].get('change20') is not None else None, # 한 달(20거래일) 오른 만큼 — 42칸 불장 값과 같은 셈
                        'in': [k for k, c in CELLS if c == r['code']]} for r in T3['rank']]} # in = 이 회사가 든 칸(없으면 42칸 밖)
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

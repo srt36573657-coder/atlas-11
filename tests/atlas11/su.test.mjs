@@ -565,7 +565,7 @@ test('큐피트 계산법 표 — 42칸 그대로 · 엄격 셈을 모두 지난
   assert.ok(ck.includes('⑳ 첫 페이지(주문 1209)') && ck.includes('⑳ 「왜?」 쪽 — 표가 없는 칸은 어디서 걸렸는지'), '검사 ⑳ — 표시 판');
   assert.ok(rp.includes("s?.mode === 'mark' ? null") && dy.includes("su?.strict?.mode === 'mark' ? null"), '며칠째 — 표시 판은 칸이 옛 셈 일곱이라 옛 규칙');
   assert.ok(/const FILT = T => !!T\?\.strict && T\.strict\.mode !== 'mark'/.test(s21) && s21.includes('그 가운데 큐피트 계산법으로 찾은 곳은'), '21곳 쪽 — 표시 판 글');
-  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = (UP3 \? 720 : )?MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(큐피트 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
+  assert.ok(ap.includes("note2(y + 26, '31가지 기준을', '모두 지난 곳이에요.', 'note4')") && /const LIST0 = (UP3 \? (720|PY0 \+ \d+ \+ UP3H) : )?MARK( \|\| RANK)? \? 662/.test(ap), '첫 페이지 — 풀이 두 줄(큐피트 계산법으로 찾은 종목 · 31가지 기준을 모두 지난 곳이에요)');
   for (const t2 of ['큐피트 계산법', '큐피트 계산법으로 찾은 종목', '31가지 기준을 모두 지난 곳이에요.']) assert.ok(!/[A-Za-z%]/.test(t2), '새 글에 영어 · % 없음 — ' + t2);
 });
 

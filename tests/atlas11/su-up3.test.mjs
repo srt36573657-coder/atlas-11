@@ -49,10 +49,11 @@ test('장부 — 42칸 밖 회사도 그 판 날 값(1 · 2 · 3등 줄)으로 �
 
 test('화면 — 첫 페이지 이름 셋 · 「왜?」 쪽 상자 · 달력 첫 날 · 검사 ⑳ · 쓰지 않을 말', () => {
   const ap = rd('site/su/su-apple.js'), y = rd('site/su/su-why36.js'), bk = rd('site/su/su-book.js'), ck = rd('scripts/atlas11/next/check_su.mjs');
-  assert.ok(/function legendUp3\(y, rank\)/.test(ap) && ap.includes("UP3 = RANK && d.top3.v === 'up3-v1'") && ap.includes('const LIST0 = UP3 ? 720') && ap.includes("note2(y + 84, '새 잣대로', '우량주 365곳에서 골랐어요.', 'note4')") && ap.includes("s('a', {href: '#/r/c', class: 'sa-up3a'") && ap.includes('height: 90'), '첫 페이지 — 이름 셋 · 한 덩이로 누르면 1 · 2 · 3등 달력(48 × 48 넘게) · 풀이');
+  assert.ok(/function legendUp3\(y, rank, day, how\)/.test(ap) && ap.includes("UP3 = RANK && d.top3.v === 'up3-v1'") && ap.includes('const LIST0 = UP3 ? PY0 + 266 + UP3H') && ap.includes("note2(yb + 30, '새 잣대로', '우량주 365곳에서 골랐어요.', 'note4')")
+    && ap.includes("s('a', {href: '#/r/c', class: 'sa-up3c'") && ap.includes("href: '#/c/' + encodeURIComponent(String(r?.code ?? '')) + '/t', class: 'sa-up3a sa-x'") && /const UPR = 140/.test(ap), '첫 페이지 — 넓은 칸 셋(칸마다 누르면 그 곳 쪽 · 누름 140) · 달력 고리 · 풀이(주문 1112-0044)');
   assert.ok(/export function up3Box\(T, c\)/.test(y) && y.includes("if (T?.top3?.v === 'up3-v1') return up3Box(T, c);"), '「왜?」 쪽 — 새 잣대 상자');
   assert.ok(/export const up3From = B =>/.test(bk) && bk.includes("' 판부터는 새 잣대로 골라요. 우량주 365곳에서 긴 오름세와 잠깐 눌림을 함께 봐요.'"), '달력 — 새 잣대 첫 날');
-  assert.ok(ck.includes('⑳ 새 잣대(주문 1111-1857)') && ck.includes("'⑳ 첫 페이지 — 42칸 모두 · 새 잣대 1등 · 2등 · 3등 이름 셋(누르면 1 · 2 · 3등 달력)"), '검사 ⑳ — 새 잣대');
+  assert.ok(ck.includes('⑳ 새 잣대(주문 1111-1857)') && ck.includes("'⑳ 첫 페이지 — 42칸 모두 · 새 잣대 1등 · 2등 · 3등 넓은 칸 셋(이름 · 현재가 · 한 달 · 업종 · 까닭 · 한 달 꺾은선 · 누르면 그 곳 쪽)"), '검사 ⑳ — 새 잣대');
   const says = ['새 잣대로', '우량주 365곳에서 골랐어요.', '새 잣대는 넷이에요. ', '긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림', '이 칸은 1 · 2 · 3등이 아니에요', '넷을 더한 값이 ', '앞날을 맞히지 않아요. 지난 값으로 센 기록이에요.',
     ' 판부터는 새 잣대로 골라요. 우량주 365곳에서 긴 오름세와 잠깐 눌림을 함께 봐요.', '지난 기록이에요. ', '에는 열흘 뒤 오른 때가 100번에 '];
   for (const t of says) { assert.ok(!/[A-Za-z%]/.test(t) && !/매수|매도|추천|예측|확률|유망|신호|수익률/.test(t), '영어 · % · 쓰지 않을 말 없음 — ' + t); assert.deepEqual(screenHits(t), [], '화면 낱말 — ' + t); }
@@ -79,4 +80,29 @@ test('공부 기록 — 일꾼 100 · 고르기 약속 · 남겨 둔 기간 결�
   assert.ok(pick.includes('c2') && pick.includes('남겨 둔 기간') && pick.includes('갈아타지 않는다'), '고르기 약속(남겨 둔 기간을 보기 전에 적음)');
   const res = rd(dir + '/result.md');
   assert.ok(res.includes('−0.64') && res.includes('48.1') && res.includes('b01'), '남겨 둔 기간 결과를 그대로 적음(나빠도)');
+});
+
+test('1 · 2 · 3등 그림 · 이어지는 쪽(주문 1112-0044 · 사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」)', async () => {
+  const py = rd('scripts/atlas11/next/su21.py'), ap = rd('site/su/su-apple.js'), su = rd('site/su/su.js'), u3 = rd('site/su/su-up3.js'), ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(py.includes("'c': B[r['code']].get('c'), 'cFrom': B[r['code']].get('cFrom')") && py.includes("'ch20': r1(B[r['code']]['change20'] * 100)"), '자료 — 1 · 2 · 3등에도 21 마지막 값 · 한 달(42칸과 같은 판 값)');
+  for (const x of ["T(x + 12, y + 58, price, 'sa-px'", "'sa-val sa-up3m '", "'sa-found sa-up3i'", "'sa-days sa-up3w'", 'spark(sp, sx, y + 34, USW, USH, \'now\')', "'›', 'sa-chev'"]) assert.ok(ap.includes(x), '첫 페이지 칸 — ' + x);
+  assert.ok(ap.includes("querySelectorAll('a.sa-cell[data-code], a.sa-up3a[data-code]')") && ap.includes('c.sw ?? SW, c.sh ?? 34'), '장 중 현재가 — 1 · 2 · 3등 칸도 같은 값 · 꺾은선 크기 그대로');
+  assert.ok(su.includes("/^[0-9A-Z]{6}\\/t$/.test(a)) v = await (await import('/su/su-up3.js')).vUp3(X21, a.slice(0, 6));"), '길 #/c/<번호>/t');
+  assert.ok(/export async function vUp3\(X, code\)/.test(u3) && u3.includes("X.notFound('이 회사는 오늘 새 잣대 1 · 2 · 3등이 아니에요.") && u3.includes("h('a', {class: 'su-ask', href: '#/r/c'}") && u3.includes("href: '#/c/' + r.code + '/t'"), '쪽 — 1 · 2 · 3등만 · 달력 · 다른 두 곳으로 이어짐');
+  assert.ok(ck.includes("'⑳ 1 · 2 · 3등 한 곳 쪽(주문 1112-0044) — '") && ck.includes("'⑳ 1 · 2 · 3등이 아닌 회사의 새 잣대 쪽 — 찾지 못했어요'"), '검사 ⑳ — 이어지는 쪽');
+  // 쪽에 나오는 고정 문장 — 영어 · % · 쓰지 않을 말 없음 · 화면 낱말
+  const fu = f => new URL('../../site/su/' + f, import.meta.url).href; // 화면 모듈은 /su/… 로 부름 — 시험에서는 그림 도구만 빈 것으로 · 나머지는 그 파일
+  const src = u3.replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("import {load21} from '/su/su-21.js';", 'const load21 = async () => null;')
+    .replace("'/su/su-six.js'", JSON.stringify(fu('su-six.js'))).replace("'/su/su-data.js'", JSON.stringify(fu('su-data.js')));
+  const {SAY_FIXED, sz, firstPick, facts} = await import('data:text/javascript;base64,' + Buffer.from(src).toString('base64'));
+  assert.ok(Array.isArray(SAY_FIXED) && SAY_FIXED.length > 10, '쪽 모듈을 불러 셈');
+  {
+    for (const t of SAY_FIXED) { assert.ok(!/[A-Za-z%]/.test(t) && !/매수|매도|추천|예측|확률|유망|신호|수익률/.test(t), '쓰지 않을 말 없음 — ' + t); assert.deepEqual(screenHits(t), [], '화면 낱말 — ' + t); }
+    assert.deepEqual([sz(0.5), sz(-0.5), sz(0.49), sz(NaN)], ['높아요', '낮아요', '보통이에요', '확인 필요']);
+    const book = {days: [{board: '2026-11-11', rule: 'up3-v1', picks: [{place: 2, code: '000001', px: 100}]}, {board: '2026-11-12', rule: 'up3-v1', picks: [{place: 1, code: '000001', px: 110}]}, {board: '2026-11-10', rule: 'culture7-v1', picks: [{place: 1, code: '000001', px: 90}]}]};
+    assert.deepEqual(firstPick(book, '000001'), {board: '2026-11-11', place: 2, px: 100, n: 2}, '처음 뽑힌 날 = 새 잣대 판 날만');
+    const c = Array.from({length: 21}, (_, i) => 100 + i);
+    assert.deepEqual(facts({close: 120, date: 'd', c}, 'd'), {px: 120, sp: c, ch: 20}, '한 달 = 끝 ÷ 처음');
+    assert.equal(facts({close: 121, date: 'd', c}, 'd').sp, null, '끝 값이 현재가와 다르면 꺾은선 없음');
+  }
 });
