@@ -1,4 +1,4 @@
-Wed Nov 11 15:08:31 UTC 2026
+Wed Nov 11 15:48:22 UTC 2026
 == azure.archive.ubuntu.com
 못 찾음
 == archive.ubuntu.com
@@ -10,8 +10,8 @@ http://azure.archive.ubuntu.com/ubuntu/	priority:1
 https://archive.ubuntu.com/ubuntu/	priority:2
 https://security.ubuntu.com/ubuntu/	priority:3
 == update
-Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [690 kB]
-Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [760 kB]
+Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.6 kB]
+Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [693 kB]
 Ign:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
 Ign:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease
 Ign:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease
