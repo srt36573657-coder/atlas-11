@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-11T21:26:53.721Z",
+ "at": "2026-11-11T22:05:12.898Z",
  "base": "https://aaa7377.com",
  "all": true,
  "limit": null,
@@ -22,12 +22,12 @@
    }
   }
  },
- "seconds": 174,
+ "seconds": 165,
  "counts": {
   "routes": 251,
-  "rows": 9155,
-  "btns": 9155,
-  "links": 11925,
+  "rows": 9154,
+  "btns": 9154,
+  "links": 11924,
   "clicks": 479,
   "fail": 0,
   "places": {
@@ -151,10 +151,10 @@
     "routes": 1
    },
    "me.hist": {
-    "rows": 4,
-    "btns": 4,
+    "rows": 3,
+    "btns": 3,
     "surge": 0,
-    "share": 4,
+    "share": 3,
     "routes": 1
    },
    "why.rec": {
@@ -321,9 +321,9 @@
    },
    {
     "route": "#/me",
-    "rows": 5,
-    "btns": 5,
-    "links": 5,
+    "rows": 4,
+    "btns": 4,
+    "links": 4,
     "clicked": "hold.card",
     "fail": 0
    },

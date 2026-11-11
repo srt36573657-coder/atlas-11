@@ -1,12 +1,21 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-11T21:25:12.684Z",
+ "at": "2026-11-11T22:03:50.447Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1626,
-  "fail": 0
+  "pass": 1624,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  [
+   "[360] 처음 쪽 본질 세 줄 = essence.js",
+   "[\"불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.\",\"앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.\",\"사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: 11월 12일 7시.\"]"
+  ],
+  [
+   "[320] 처음 쪽 본질 세 줄 = essence.js",
+   "[\"불장 · 꽃이 될 · 돈이 몰리는 회사를 우량주 365곳 안에서 7곳씩 찾아요.\",\"앞날을 맞히지 않아요. 코스피와 코스닥 회사 2,557곳의 지난 기록만 보여 줘요.\",\"사고팔기를 권하지 않아요. 숫자는 네이버 증권에서 받아요. 마지막으로 받은 때: 11월 12일 7시.\"]"
+  ]
+ ],
  "m": {
   "dropped": [],
   "data": {
@@ -179,9 +188,9 @@
    }
   },
   "speed": {
-   "lcp": 1148,
+   "lcp": 1128,
    "cls": 0.121,
-   "pic": 1799
+   "pic": 1771
   },
   "white": {
    "light #/": {
@@ -227,7 +236,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -1256,17 +1265,6 @@
    "pages": 42,
    "reasons": 1512
   },
-  "reopen": [
-   {
-    "hash": "#/c/181710/y/moneyNext",
-    "try": 1,
-    "status": 403,
-    "err": null,
-    "url": "https://aaa7377.com/su/?v=1794433019758#/c/181710/y/moneyNext",
-    "title": "aaa7377.com",
-    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M768NVVRRSPKMM96K51482B9"
-   }
-  ],
   "coLine": {
    "companies": 38,
    "ok": 38,
@@ -1375,5 +1373,5 @@
    "days": 1
   }
  },
- "ok": true
+ "ok": false
 }
