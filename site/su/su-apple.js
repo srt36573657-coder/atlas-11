@@ -92,6 +92,13 @@ function note2(y, a, b, k = '') {
   return [T(f1(x0), y, a, 'sa-note sa-in sa-in3' + (k ? ' sa-' + k + 'a' : '')), T(f1(x0 + wa + gap), y, b, 'sa-note sa-in sa-in3' + (k ? ' sa-' + k + 'b' : ''))];
 }
 
+/** 가운데 맞춘 긴 한 줄을 두 글 조각으로(note2 와 같은 까닭 — 한 조각이 느린 휴대폰 첫 화면의 「가장 큰 칠함」이 되지 않게 · 쉬운 판 글이 길어져 올리기 전 검사 1/11 에서 3048ms)
+ *  앞 조각은 끝을, 뒤 조각은 처음을 같은 자리에 붙임 — 어림 넓이가 실제보다 커도 두 조각 사이는 빈칸 하나 그대로 */
+function line2(y, a, b, cls, px) {
+  const sp = Math.round(px * 0.28), k = 0.92, wa = k * est(a, px), xs = MID - (wa + sp + k * est(b, px)) / 2 + wa; // k — 보통 굵기 글은 굵은 글 어림보다 좁음
+  return [T(f1(xs), y, a, cls, {'text-anchor': 'end'}), T(f1(xs + sp), y, b, cls)];
+}
+
 /* ── 한 달 꺾은선(주문 1837) — 그날마다 마지막 값 21개를 그대로 이음 · 높이는 그 회사의 한 달 가장 낮은 값 ~ 가장 높은 값 · 한 달 전 값에 옅은 가로줄 ── */
 function spark(sp, x, y, w, h, side) {
   const g = s('g', {class: 'sa-spk', 'aria-hidden': 'true'});
@@ -249,7 +256,7 @@ function legendUp3(y, rank, day, how) {
   const R = n => (rank ?? []).find(r => r?.place === n);
   const head = [s('circle', {cx: PAD + 7, cy: y - 7, r: 6, class: 'sa-dotA sa-in sa-in3'}), T(PAD + 20, y, '오늘의 1 · 2 · 3등', 'sa-kh sa-up3h sa-in sa-in3'),
     T(W - PAD, y, '누르면 이유 ›', 'sa-d sa-up3t sa-in sa-in3', {'text-anchor': 'end'}),
-    T(PAD, y + 28, '1년 꾸준히 오른 곳이 잠깐 쉴 때를 골라요.', 'sa-mean sa-in sa-in3', {'data-mean': 'up3'})]; // 달력 쪽 첫 줄과 같은 말(같은 것은 같은 이름)
+    T(PAD, y + 28, '1년 꾸준히 오른 곳이 잠깐 쉴 때예요.', 'sa-mean sa-m17 sa-in sa-in3', {'data-mean': 'up3'})]; // 달력 쪽 첫 줄과 같은 뜻 · 첫 화면 안이라 짧게 17(가장 큰 칠함이 되지 않게)
   const rows = [1, 2, 3].map((n, i) => up3Row(R(n), n, y + 16 + UPM + i * (UPR + UPG), day, how));
   const yb = y + 16 + UPM + 3 * (UPR + UPG) - UPG; // 칸 셋 아래
   const cal = s('a', {href: '#/r/c', class: 'sa-up3c', 'aria-label': '1 · 2 · 3등 달력 보기 — 날마다 뽑힌 셋'},
@@ -371,8 +378,8 @@ function draw(d, opt) {
   /* 1 한 문장 */
   /* 큰 제목 「지금, 그리고 될 듯.」은 쪽 머리(h1 · 쪽과 함께 바로 그려짐 — 느린 휴대폰 첫 칠함 2.5초)에 · 그림은 부제부터 */
   const top = s('g', {class: 'sa-top'},
-    T(MID, 42, '한국 큰 회사(우량주) 365곳 가운데', 'sa-sub sa-in sa-in1', {'text-anchor': 'middle'}), // 쉬운 판 — 일상 말 먼저 · 사장님 말 「우량주」(2026-11-04 15:39 「한국 365개 개념은 우량주 개념이다」)를 괄호에
-    T(MID, 70, '요즘 눈에 띄는 곳을 찾았어요.', 'sa-sub sa-in sa-in1', {'text-anchor': 'middle'}));
+    ...line2(42, '한국 큰 회사(우량주)', '365곳 가운데', 'sa-sub sa-in sa-in1', 20), // 쉬운 판 — 일상 말 먼저 · 사장님 말 「우량주」(2026-11-04 15:39 「한국 365개 개념은 우량주 개념이다」)를 괄호에
+    ...line2(70, '요즘 눈에 띄는 곳을', '찾았어요.', 'sa-sub sa-in sa-in1', 20));
   svg.append(top);
   /* 2 물건 하나 — 구슬 둘 */
   const O = orbs(id, ORBY);
@@ -387,7 +394,7 @@ function draw(d, opt) {
     s('circle', {cx: 248, cy: PY + 22, r: 6.5, class: 'sa-dotB'}), s('circle', {cx: 248, cy: PY + 22, r: 2.6, class: 'sa-dotBc'}), T(262, PY + 27, '될 듯', 'sa-k'),
     T(285, PY + 96, String(STRICT ? nNx : nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
     T(285, PY + 124, '곧 그렇게 될 듯한 곳', 'sa-d', {'text-anchor': 'middle'}));
-  svg.append(pair, T(MID, PY + 168, '지난 기록이에요. 사고팔기를 권하지 않아요.', 'sa-safe sa-in sa-in3', {'text-anchor': 'middle'}),
+  svg.append(pair, ...line2(PY + 168, '지난 기록이에요.', '사고팔기를 권하지 않아요.', 'sa-safe sa-in sa-in3', 18),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
     ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? [...note2(PY + 254, '될 듯은', '그렇게 되기 바로 앞 모습이에요.', 'note5'), ...legendUp3(PY + 292, d.top3.rank, day, d.top3.how)] : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
