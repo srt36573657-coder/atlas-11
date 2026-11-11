@@ -19,6 +19,8 @@ export const kc = n => KC[n] ?? String(n);
 const ORD = ['', '첫째', '둘째', '셋째', '넷째', '다섯째', '여섯째', '일곱째', '여덟째', '아홉째', '열째'];
 const NF = new Intl.NumberFormat('ko-KR', {maximumFractionDigits: 3}); // toLocaleString 과 같은 꼴 · 한 번만 만듦(느린 휴대폰 첫 화면)
 export const num = n => (fin(n) ? NF.format(n) : null);
+/** 억 원 → 큰 돈은 조 · 억 말로(쉬운 판 · 주문 1112-0253 · 조사 089 — 「47,141억 원」보다 「4조 7,141억 원」 · 맞춤법 제44항 만 단위) */
+export const joEok = v => { const a = Math.abs(Math.round(v)), j = Math.floor(a / 10000), r = a % 10000; return (v < 0 ? '-' : '') + (j ? NF.format(j) + '조' + (r ? ' ' : '') : '') + (r || !j ? NF.format(r) + '억' : '') + ' 원'; };
 const r0 = v => (fin(v) ? Math.round(v) : null);
 const r1 = v => (fin(v) ? Math.round(v * 10) / 10 : null);
 

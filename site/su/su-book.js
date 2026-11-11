@@ -113,10 +113,10 @@ function row(r, axis, R, qty) {
 /** 판 하나 — 머리(날 · 요일 · 처음 보인 때) · 아직 하루치면 이름 한 줄 · 아니면 줄 셋 */
 function boardSec(day, rs, axis, R, qty, key = false) {
   const one = rs.every(r => r.one), sn = seenKo(rs[0]?.seen);
-  return h('section', {class: 'bk-board' + (one ? ' bk-oneday' : ''), 'data-day': day, 'aria-label': md(day) + ' 판'},
-    h('h2', {class: 'bk-bh', text: md(day) + ' (' + wd(day) + ') 판' + (one ? ' · 아직 하루치' : '')}),
+  return h('section', {class: 'bk-board' + (one ? ' bk-oneday' : ''), 'data-day': day, 'aria-label': md(day) + '에 고른 셋'}, // 쉬운 판(주문 1112-0253) — 「판」 → 「고른 셋 · 고른 날」(일상 말)
+    h('h2', {class: 'bk-bh', text: md(day) + ' (' + wd(day) + ')에 고른 셋' + (one ? ' · 아직 하루치' : '')}),
     sn ? h('p', {class: 'bk-seen', text: '처음 보인 때 ' + sn.text}) : null,
-    sn && sn.day > day ? h('p', {class: 'bk-late', text: '판 날보다 늦게 보였어요. 값은 ' + md(day) + ' 마지막 값으로 셌어요.'}) : null,
+    sn && sn.day > day ? h('p', {class: 'bk-late', text: '고른 날보다 늦게 보였어요. 값은 ' + md(day) + ' 마지막 값으로 셌어요.'}) : null,
     one ? h('p', {class: 'bk-names'}, rs.map((r, i) => [i ? h('span', {class: 'bk-dot', 'aria-hidden': 'true', text: '·'}) : null,
       h('span', {class: 'bk-nm1', 'data-code': r.code, 'data-place': String(r.place)}, h('b', {class: 'bk-pl', text: r.place + '등'}), h('span', {text: r.name}))]))
       : h('ol', {class: 'bk-rows'}, rs.map(r => h('li', {}, row(r, axis, R, qty)))),
@@ -135,12 +135,12 @@ function calendar(C, go) {
   const cells = strip(C.days[C.days.length - 1]).map(d => {
     const rs = by.get(d), top = [h('i', {class: 'bk-wd', text: wd(d)}), h('i', {class: 'bk-dn', text: String(+d.slice(8, 10))})];
     if (!rs) return h('span', {class: 'bk-d', 'aria-hidden': 'true'}, top);
-    const b = h('button', {type: 'button', class: 'bk-d bk-pick', 'data-day': d, 'aria-label': md(d) + ' 판 — ' + rs.map(r => r.place + '등 ' + r.name + ' ' + SAID[r.st]).join(' · ') + ' · 누르면 그 판으로 가요'},
+    const b = h('button', {type: 'button', class: 'bk-d bk-pick', 'data-day': d, 'aria-label': md(d) + '에 고른 셋 — ' + rs.map(r => r.place + '등 ' + r.name + ' ' + SAID[r.st]).join(' · ') + ' · 누르면 그날로 가요'},
       top, h('span', {class: 'bk-3'}, rs.map(r => shapeOf(r.st))));
     b.addEventListener('click', () => go(d));
     return b;
   });
-  return h('section', {class: 'bk-cal', 'aria-label': '달력 — 뽑힌 날을 누르면 그 판으로 가요'}, h('div', {class: 'bk-grid'}, cells));
+  return h('section', {class: 'bk-cal', 'aria-label': '달력 — 뽑힌 날을 누르면 그날로 가요'}, h('div', {class: 'bk-grid'}, cells));
 }
 
 /** 지난 달 판 — 접힌 칸(그 달 판 수 · 세 모양 수 같은 크기) · 열면 판마다 줄 셋 */
@@ -150,7 +150,7 @@ function monthFold(ym, days, C, R, secs) {
   const axis = axisOf(rs), y = ym.slice(0, 4), lastY = (C.last ?? '').slice(0, 4);
   const inner = days.map(d => { const e = boardSec(d, rs.filter(r => r.day === d).sort((a, b) => a.place - b.place), axis, R, C.qty); secs.set(d, e); return e; });
   return h('details', {class: 'bk-old', 'data-month': ym},
-    h('summary', {class: 'bk-olds'}, h('b', {text: (y !== lastY ? y + '년 ' : '') + +ym.slice(5, 7) + '월 판 ' + days.length + '일치'}),
+    h('summary', {class: 'bk-olds'}, h('b', {text: (y !== lastY ? y + '년 ' : '') + +ym.slice(5, 7) + '월 · 고른 날 ' + days.length + '일'}),
       h('span', {class: 'bk-oldn'}, ['up', 'dn', 'eq', 'one'].filter(st => st !== 'one' || k.one).map(st => h('span', {class: 'bk-oc'}, shapeOf(st), h('span', {text: k[st] + '번'}))))),
     inner);
 }
@@ -161,9 +161,9 @@ function ensureCss() { if (typeof document !== 'undefined' && !document.querySel
  *  주문 1111-1334 · 사장님 2026-11-11 13:34 「… 이것을 ㅊ 적하는 별도에 달력을 만들어라 잡스라면」) — 쪽 꼴 · 셈은 같고 자료 · 글만 다름 */
 export const BOOKS = Object.freeze({
   top3: {src: '/su/data/su21-book.json', title: '1 · 2 · 3등 달력', intro: '큐피트가 날마다 고른 1 · 2 · 3등을 가짜 돈으로 주식 10주씩 산 셈이에요.',
-    miss: '1 · 2 · 3등 장부를 받지 못했어요. 다시 열어 주세요.', buy: '그 판 날 마지막 값으로', next: {href: '#/r', label: '지난 기록 한곳'}},
+    miss: '1 · 2 · 3등 장부를 받지 못했어요. 다시 열어 주세요.', buy: '고른 날 마지막 값으로', next: {href: '#/r', label: '지난 기록 한곳'}},
   quiet: {src: '/su/data/su21-qbook.json', title: '조용한 힘 달력', intro: '조용한데 힘이 모이는 창의 1 · 2 · 3등을 가짜 돈으로 주식 10주씩 산 셈이에요.',
-    miss: '조용한 힘 장부를 받지 못했어요. 다시 열어 주세요.', buy: '조용한데 힘이 모이는 창의 몬테카를로 차례 첫 셋을 그 판 날 마지막 값으로', next: {href: '#/s', label: '조용한데 힘이 모이는 7곳'}}});
+    miss: '조용한 힘 장부를 받지 못했어요. 다시 열어 주세요.', buy: '조용한데 힘이 모이는 창의 몬테카를로 차례 첫 셋을 고른 날 마지막 값으로', next: {href: '#/s', label: '조용한데 힘이 모이는 7곳'}}});
 /** 새 잣대(주문 1111-1857 · 'up3-v1')로 고른 첫 판 날 — 없으면 null */
 export const up3From = B => (Array.isArray(B?.days) ? B.days.filter(d => d?.rule === 'up3-v1').map(d => d.board).sort()[0] ?? null : null);
 export async function vBook(X, which = 'top3') {
@@ -192,11 +192,11 @@ export async function vBook(X, which = 'top3') {
   const hero = h('div', {class: 'su-hero bk', 'data-g': 'su-book', 'data-book': which === 'quiet' ? 'quiet' : 'top3', 'data-days': String(C.days.length), 'data-n': String(C.rows.length), 'data-diff': String(Math.round(C.diff)),
     'data-up': String(C.n.up), 'data-dn': String(C.n.dn), 'data-eq': String(C.n.eq), 'data-one': String(C.n.one), 'data-y': String(R)},
     h('p', {class: 'bk-intro', text: K.intro}),
-    which === 'top3' && up3From(B) ? h('p', {class: 'bk-intro bk-new', 'data-from': up3From(B), text: md(up3From(B)) + ' 판부터는 새 기준으로 골라요. 우량주 365곳에서 1년 꾸준히 오른 곳이 잠깐 쉴 때를 봐요.'}) : null, // 주문 1111-1857
+    which === 'top3' && up3From(B) ? h('p', {class: 'bk-intro bk-new', 'data-from': up3From(B), text: md(up3From(B)) + '부터는 새 기준으로 골라요. 우량주 365곳에서 1년 꾸준히 오른 곳이 잠깐 쉴 때를 봐요.'}) : null, // 주문 1111-1857
     h('section', {class: 'bk-sum', 'aria-label': '산 셈 모두'},
       h('div', {class: 'bk-tiles'}, tiles(C.n).map(t => h('div', {class: 'bk-tile bk-t' + t.st, 'data-st': t.st}, h('span', {class: 'bk-tv'}, shapeOf(t.st, 'big'), h('b', {class: 'bk-tn', text: t.k + '번'})), h('span', {class: 'bk-tl', text: t.label})))),
       h('p', {class: 'bk-tot', text: '모두 합치면 ' + r100(C.val, C.cost) + ' · ' + moved(C.diff)}),
-      h('p', {class: 'bk-cap', text: '산 셈 ' + C.rows.length + '번 · 판 ' + C.days.length + '일치 · ' + md(C.last) + ' 값까지'}),
+      h('p', {class: 'bk-cap', text: '산 셈 ' + C.rows.length + '번 · 고른 날 ' + C.days.length + '일 · ' + md(C.last) + ' 값까지'}),
       h('details', {class: 'bk-split'}, h('summary', {class: 'bk-sps'}, h('b', {text: sw ? '합을 나눠 보면' : '산 값과 지금'}), sw ? h('span', {text: Math.abs(sw.d) > Math.abs(C.diff) ? '한 줄이 합보다 커요' : '한 줄이 합의 절반을 넘어요'}) : null),
         h('p', {class: 'bk-spl bk-tot2', text: '산 값 ' + won(C.cost) + ' → 지금 ' + won(C.val)}),
         sw ? h('p', {class: 'bk-spl', text: md(sw.r.day) + ' ' + sw.r.place + '등 ' + sw.r.name + ' 한 줄이 ' + moved(sw.d)}) : null,
@@ -206,8 +206,8 @@ export async function vBook(X, which = 'top3') {
     h('div', {class: 'bk-list'}, list, folds));
   const how = h('details', {class: 'bk-how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '이렇게 셌어요'}), h('span', {text: '진짜 돈이 아니에요'})),
     h('ul', {class: 'bk-ul'}, [K.buy + ' ' + C.qty + '주씩 산 셈이에요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.', '「100원이 ○원」은 산 값 100원어치가 지금 얼마인지예요.',
-      '모든 선은 같은 눈금이에요. 점선이 산 값이에요.', '같은 회사가 또 뽑히면 따로 한 줄로 적어요.', '판은 장이 끝난 뒤에 나와요. 그 값에 실제로 살 수는 없었어요.',
-      '판 날보다 늦게 보인 판도 판 날 값으로 셌어요.', '수수료와 세금은 빼지 않았어요.', '한 번 적은 날은 고치지 않아요.', '값은 네이버 증권 그날 마지막 값이에요.', '지난 기록이에요. 앞날을 맞히지 않아요.'].map(t => h('li', {text: t}))));
+      '모든 선은 같은 눈금이에요. 점선이 산 값이에요.', '같은 회사가 또 뽑히면 따로 한 줄로 적어요.', '셋은 장이 끝난 뒤에 골라요. 그 값에 실제로 살 수는 없었어요.',
+      '고른 날보다 늦게 보여도 고른 날 값으로 셌어요.', '수수료와 세금은 빼지 않았어요.', '한 번 적은 날은 고치지 않아요.', '값은 네이버 증권 그날 마지막 값이에요.', '지난 기록이에요. 앞날을 맞히지 않아요.'].map(t => h('li', {text: t}))));
   // 탭 4 = 달력(주문 0040 — 이 쪽을 열면 아래 「달력」 탭이 켜짐)
   return {title: T, tab: 4, step: null, kick: C.qty + '주씩 산 셈 · 가짜 돈', h1: T, proper: false, hero, body: [how],
     next: K.next, asOf: B.asOf ?? null, S: b?.S ?? null};
