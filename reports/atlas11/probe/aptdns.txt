@@ -1,19 +1,41 @@
-Wed Nov 11 16:30:41 UTC 2026
+Wed Nov 11 17:47:12 UTC 2026
 == azure.archive.ubuntu.com
-못 찾음
+52.154.174.208  cloud-mirror-lb.centralus.cloudapp.azure.com azure.archive.ubuntu.com ubuntu-archive-asm.trafficmanager.net
 == archive.ubuntu.com
-못 찾음
+2620:2d:4002:1::102 archive.ubuntu.com
+2620:2d:4002:1::101 archive.ubuntu.com
+2a06:bc80:0:1000::18 archive.ubuntu.com
+2a06:bc80:10:1000::398 archive.ubuntu.com
+2620:2d:4000:1::101 archive.ubuntu.com
+2620:2d:4000:1::103 archive.ubuntu.com
+2620:2d:4000:1::102 archive.ubuntu.com
+2620:2d:4002:1::103 archive.ubuntu.com
+2a06:bc80:0:1000::17 archive.ubuntu.com
+2a06:bc80:0:1000::16 archive.ubuntu.com
+2a06:bc80:10:1000::90 archive.ubuntu.com
+2a06:bc80:10:1000::3fd archive.ubuntu.com
 == security.ubuntu.com
-못 찾음
+2620:2d:4000:1::101 security.ubuntu.com
+2a06:bc80:0:1000::18 security.ubuntu.com
+2a06:bc80:0:1000::17 security.ubuntu.com
+2620:2d:4002:1::103 security.ubuntu.com
+2620:2d:4000:1::103 security.ubuntu.com
+2a06:bc80:0:1000::16 security.ubuntu.com
+2620:2d:4000:1::102 security.ubuntu.com
+2620:2d:4002:1::101 security.ubuntu.com
+2a06:bc80:10:1000::216 security.ubuntu.com
+2a06:bc80:10:1000::35c security.ubuntu.com
+2a06:bc80:10:1000::398 security.ubuntu.com
+2620:2d:4002:1::102 security.ubuntu.com
 == apt-mirrors
 http://azure.archive.ubuntu.com/ubuntu/	priority:1
 https://archive.ubuntu.com/ubuntu/	priority:2
 https://security.ubuntu.com/ubuntu/	priority:3
 == update
-Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [764 kB]
-Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.6 kB]
-Ign:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
-Ign:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease
-Ign:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease
-Ign:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease
+Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1729 kB]
+Get:22 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [396 kB]
+Get:23 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [45.4 kB]
+Get:24 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse Translation-en [12.4 kB]
+Fetched 13.1 MB in 1s (11.7 MB/s)
+Reading package lists...
 update exit 0
