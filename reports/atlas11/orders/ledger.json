@@ -1623,9 +1623,19 @@
    "state": "완성",
    "proof": "docs/design/past28-2026-11-11/order-2202.txt · 커밋 0cf1dcf39 · d4a8aa55e · main 받음 207cf5447 · 69ef324d2 · 탐침 https://github.com/srt36573657-coder/atlas-11/actions/runs/43027098038 · https://github.com/srt36573657-coder/atlas-11/actions/runs/43038181929(reports/atlas11/probe/past28-live.json · 가지 diag-closes-1111) · 올리기 1/11 실패 0 https://github.com/srt36573657-coder/atlas-11/actions/runs/43030281425 · 올림 https://github.com/srt36573657-coder/atlas-11/actions/runs/43030298661 · 진짜 사이트 2/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43033636643 · 3/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43035555258(취소) · 4/11 https://github.com/srt36573657-coder/atlas-11/actions/runs/43039543319 · reports/atlas11/full-runs/past28-1111.jsonl · reports/atlas11/speed/ship-past28-1111.jsonl · reports/atlas11/trust/misses-2026-11-11-f.json",
    "short": "예전 화면 28곳의 한 달 그림을 고치고, 새 잣대와 조용한 힘 창까지 진짜 사이트에 올렸어요."
+  },
+  {
+   "id": "1112-0044",
+   "at": "2026-11-12T00:44+09:00",
+   "words": "여기 1.2.3에 그래프\n그리고 다양ㅇ한 정보 직관적으로 보이개 하고 클릭 하면 그정보가 이어지게 해",
+   "then": "00:45 이해 보고(일곱 줄 · 첫 페이지 그림 1등 삼성전기 · 2등 성호전자 · 3등 현대오토에버와 함께) — 1 · 2 · 3등마다 한 달 꺾은선 · 줄마다 현재가와 한 달 오르내림 · 고른 까닭 한 줄 · 누르면 그 회사 자세한 쪽 · 전체 검사 0일 때만 올림 · 검사 기계가 아직 고장이면 올리기는 기다림 · 2시 반쯤 한 번에 보고 · 01:00 ~ 01:28 이 컴퓨터 검사 — 시험 66 통과 · check_su 저장된 판 통과 1606 · 실패 2(느린 4G 2588ms = 이 컴퓨터 탓 · 바꾸기 전도 2564ms / 장부 파일을 이 컴퓨터에서 지운 탓) · 새 칸 · 쪽 검사 ⑳ 모두 통과 · 320 폭 달력 고리 누름 43 → 49 고침 · 01:30 깃허브 실행기 우분투 받기 주소 고장 그대로(14:00Z 부터) → 이해 6 대로 올리기 기다림 · apt 없이 브라우저는 뜨나 한글 글꼴 0 이라 그 길로 검사하지 않음",
+   "did": "첫 페이지(su-apple.js · su-apple.css) — 「● 새 잣대 1 · 2 · 3등 · 누르면 까닭 ›」 아래 넓은 칸 셋(칸마다 누름 140): N등 · 이름 · 현재가 · 한 달(오르면 호박 · 내리면 회색) · 업종 · 까닭(잣대 넷 가운데 값이 가장 큰 것) · 한 달 꺾은선(104 × 54) · › → 누르면 #/c/<번호>/t · 「1 · 2 · 3등 달력 — 날마다 뽑힌 셋 ›」(#/r/c · 누름 60 = 320 폭 49) · 장 중 현재가로 칸 값 · 꺾은선 · 한 달 바꿈 · 이어지는 쪽(su-up3.js · su-up3.css) — 「삼성전기, 왜 1등?」 칩 셋(현재가 · 한 달 · 업종) · 큰 한 달 꺾은선(한 달 전 값 옅은 줄 · 처음 · 끝 날) · 고른 까닭 넷 막대(가운데 = 보통) + 쉬운 풀이 넷 · 넷을 더한 차례 · 처음 뽑힌 날 · 지난 기록 · 다른 두 곳(누르면 그 곳 쪽) · 달력 · 회사 쪽 · 「왜 사?」 고리 · 1 · 2 · 3등이 아닌 회사는 찾지 못했어요 · 자료(su21.py) — 1 · 2 · 3등 줄에 21 마지막 값(c) · 처음 날(cFrom) · 한 달(ch20 = 판 change20 × 100) · 저장된 판(11월 6일)에도 같은 판 날 값을 붙임(42칸 값 28/28 같음) · 검사 ⑳(check_su) — 칸 셋 · 달력 고리 · 쪽 셋 · 등수 밖 회사 · 시험 su-up3.test.mjs 7 · su* 66 통과",
+   "state": "미완성",
+   "proof": "docs/design/up3-graph-2026-11-12/order-0044.txt · 가지 musk-1023b · 커밋 990aa3b87 · 탐침 aptdns https://github.com/srt36573657-coder/atlas-11/actions/runs/43058870926 · pwnodeps https://github.com/srt36573657-coder/atlas-11/actions/runs/43055273372 · https://github.com/srt36573657-coder/atlas-11/actions/runs/43056683401(가지 diag-closes-1111 · reports/atlas11/probe/aptdns.txt · pwnodeps.txt)",
+   "short": "1 · 2 · 3등 꺾은선과 이어지는 쪽을 만들었어요. 올리기는 검사 기계 고장으로 기다려요."
   }
  ],
- "open": 9,
+ "open": 10,
  "sent": [
   {
    "at": "2026-10-22T02:03+09:00",
@@ -2603,6 +2613,14 @@
    "how": "node scripts/atlas11/orders/kakao_digest.mjs",
    "order": "1111-2202",
    "note": "주문 1111-2202 끝 보고 — 장부 162건(성공 123 · 완성 30 · 미완성 9) 요약 57통 · 실패 0 · 처음부터 끝까지 한 통씩 차례대로(앞 통 답을 받은 뒤 다음 통) · 늘고 준 돈(가짜 돈)은 넣지 않음 · 이 주문 · 1111-1857 · 1111-1334 는 완성(올림 · 올리기 전 전체 검사 28쪽 0 · 진짜 사이트 자료 탐침 28/28 — 진짜 사이트 쪽 검사는 깃허브 실행기 고장으로 못 함)"
+  },
+  {
+   "at": "2026-11-12T01:40+09:00",
+   "to": "카톡 나에게 보내기",
+   "messages": 57,
+   "how": "node scripts/atlas11/orders/kakao_digest.mjs",
+   "order": "1112-0044",
+   "note": "주문 1112-0044 끝 보고 — 장부 163건(성공 123 · 완성 30 · 미완성 10) 요약 57통 · 실패 0 · 처음부터 끝까지 한 통씩 차례대로(앞 통 답을 받은 뒤 다음 통) · 늘고 준 돈(가짜 돈)은 넣지 않음 · 이 주문은 미완성(1 · 2 · 3등 꺾은선과 이어지는 쪽은 만들고 이 컴퓨터에서 검사했고, 올리기는 깃허브 검사 기계 고장으로 기다림)"
   }
  ]
 }
