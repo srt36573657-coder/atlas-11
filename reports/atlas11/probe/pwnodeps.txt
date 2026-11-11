@@ -1,4 +1,4 @@
-Wed Nov 11 16:09:40 UTC 2026
+Wed Nov 11 16:17:34 UTC 2026
 npm 0
 install(apt 없이) 0
 |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 104.3 MiB
@@ -9,5 +9,28 @@ Chromium Headless Shell 141.0.7390.37 (playwright build v1194) downloaded to /ho
 /usr/bin/chromium
 /usr/bin/chromium-browser
 Google Chrome 156.0.8078.79 
+== 한글 글꼴
+한글 글꼴 수 0
+== 글꼴 모두
+DejaVu Math TeX Gyre
+DejaVu Sans
+DejaVu Sans Mono
+DejaVu Sans,DejaVu Sans Condensed
+DejaVu Sans,DejaVu Sans Light
+DejaVu Serif
+DejaVu Serif,DejaVu Serif Condensed
+Lato
+Lato,Lato Black
+Lato,Lato Hairline
+Lato,Lato Heavy
+Lato,Lato Light
+Lato,Lato Medium
+Lato,Lato Semibold
+Lato,Lato Thin
+Liberation Mono
+Liberation Sans
+Liberation Serif
+Noto Color Emoji
 받은 chromium 열림 141.0.7390.37 {"cells":49,"up3":3,"title":"28곳 · 큐피트"} 4초
-깔린 크롬 열림 156.0.8078.79 {"cells":49,"up3":3,"title":"28곳 · 큐피트"} 10초
+글 폭 {"가":105,"a":71.171875,"font":"system-ui, -apple-system, \"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\""}
+깔린 크롬 열림 156.0.8078.79 {"cells":49,"up3":3,"title":"28곳 · 큐피트"} 11초
