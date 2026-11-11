@@ -8,7 +8,8 @@
 ━━ 돌리기 전에 정한 것(결과를 보고 바꾸지 않음 · 바꾸면 새 판 이름) ━━
 d365-v1(2026-10-11 11:43) 그대로에 v2(12:41)는 둘만 더함: ① 회차마다 그날까지 값으로 다시 고름 ② 고르는 날 종가가 없는 회사(거래정지 등)는 기본 문에서 뺌
 자료      후보 표 = dump.mjs 가 모음 reports/atlas11/universe/2026-10-10/bundle.json.gz 를 푼 것(회사 목록 · 결산 · 업종 = 10월 10일 모음 그대로)
-          주가 · 거래량 = 같은 모음 네이버 일봉 + 회차마다 이어 받은 일봉(closes_fetch.mjs · 모음 마지막 날 뒤 날만 이어 붙임 · 모음 안 날 값이 0.5% 넘게 다르면 그 회사는 그 파일에서 받지 않음)
+          주가 · 거래량 = 같은 모음 네이버 일봉 + 회차마다 이어 받은 일봉(closes_fetch.mjs · 모음 마지막 날 뒤 날만 이어 붙임 · 모음 안 날 값이 0.5% 넘게 다르면
+          한 비율(쪼개기 · 합치기)일 때만 그 회사 모음 값을 그 비율로 되맞춤하고 이어 붙임 · 아니면 그 회사는 그 파일에서 받지 않음 — merge() · 2026-11-11 주문 1111-2202)
           시가총액 = 모음 날 몸값 × 고르는 날 종가 ÷ 모음 날 종가(주식 수가 그대로라고 봄) · 하루 거래대금 · 주가 기록 수 = 고르는 날까지 일봉으로 다시 셈
 고르는 날  후보 표 절반 넘게 종가가 있는 마지막 날(낮 회차면 그날 장중 값 — 아직 바뀜)
 기본 문    rules.blue(시가총액 1,000억 원 · 하루 거래대금 3억 원(60거래일 평균) · 부채비율 200% · 주가 기록 260거래일 · 흑자) + 보통주 + 고르는 날 종가 있음(v2)
@@ -23,6 +24,7 @@ CIA팀     값 강함(곧은 선 30거래일 +10% 넘음 · 곧음 0.6 이상 ·
 층        1층 = 두 팀 모두 고른 업종(「대세였던 곳」) · 2층 = 한 팀만 고른 업종 · 3층 = 나머지 순서 매긴 업종
 채우기    층 → 층 안 S2 큰 순으로 업종째 · 업종을 다 넣으면 365곳을 넘을 때 그 업종은 회사 30거래일 변화 큰 순(값 없음은 맨 뒤 · 같으면 시가총액 큰 순 · 종목 번호)으로 남은 자리만
 같은 원문이면 언제나 같은 365곳 · 따로 세기 = daese_verify.mjs(노드로 처음부터 다시 셈 · 같은 이어 받은 일봉)
+          (되맞춤 merge() 는 지금 회차의 따로 세기 site_verify · range_verify · surge_verify · surgetr_verify 가 같은 셈 — 옛 d365 · h365 따로 세기는 옛 규칙 그대로 둠 · 2026-11-11)
 한계      이미 오른 업종에서 고르므로 고른 기간의 선은 좋아 보이기 쉬움 — 앞으로도 그렇다는 뜻이 아님 · 결산 · 업종 · 회사 목록은 새 모음을 받을 때까지 10월 10일 값
 
 쓰는 법(저장소 맨 위에서):
@@ -70,23 +72,48 @@ def read_closes(dirpath):
     return out
 
 
+def rebase_k(ov, bm, tol=0.005):
+    """되맞춤 비율(주문 1111-2202 · 사장님 2026-11-11 22:02 「어 그렇게 해」 — 예전 화면 28곳 자료 고치기)
+    ov = 그 파일의 모음 안 날 줄(모음에도 있는 날 · 값 있음) · bm = 그 회사 모음 날 → 종가
+    k = 겹친 날 가운데 가장 늦은 날(같으면 파일 차례 앞 줄)의 받은 값 ÷ 모음 값 — 겹친 날마다 (받은 값 ÷ 모음 값) ÷ k 가 1 에서 tol 안이면 k · 아니면 None
+    (쪼개기 · 합치기 · 무상증자처럼 네이버가 지난 값을 한 비율로 고쳐 적은 것만 받음 — 2026-11-11 28곳 모두 한 비율(어긋남 0.08% 안) · 거래량은 1/k)"""
+    last = None
+    for x in ov:
+        if last is None or x[0] > last[0]:
+            last = x
+    k = last[1] / bm[last[0]]
+    return k if all(abs(x[1] / bm[x[0]] / k - 1) <= tol for x in ov) else None
+
+
 def merge(bundle, codes, snaps, tol=0.005):
     """모음 일봉 + 이어 받은 일봉 → 모음 꼴 {'stocks': {번호: {'fchart': {'rows': [[YYYYMMDD, 시, 고, 저, 종가, 거래량], …]}}}}, 셈
     모음의 마지막 날(후보 모두 가운데 가장 늦은 날) 뒤 날만 이어 붙임 · 같은 날은 나중 파일이 이김 ·
-    그 파일의 모음 안 날 값이 0.5% 넘게 다르면(쪼개기 · 증자로 지난 값을 고쳐 적음) 그 회사는 그 파일에서 받지 않음 → 그 회사 새 날은 없음"""
+    그 파일의 모음 안 날 값이 0.5% 넘게 다르면(쪼개기 · 합치기 · 증자로 지난 값을 고쳐 적음):
+      한 비율(rebase_k)이면 그 회사의 모음 값 · 앞 파일에서 이어 붙인 값을 그 비율로 되맞춤(종가 × k · 거래량 ÷ k · .5 는 위로 반올림 — 노드 따로 세기와 같은 셈)
+      하고 이어 붙임 → 셈 rebased 에 [파일, 번호, k] · 모음 원본은 건드리지 않음(린치 모음 날 값 등은 그대로)
+      한 비율이 아니면 그 회사는 그 파일에서 받지 않음(옛 규칙 그대로 · 셈 mismatch) → 그 회사 새 날은 없음
+    (2026-11-11 예전 화면 28곳 — 모두 쪼개기 · 합치기라 새 날이 없어 20거래일 그림이 비었던 것 · 주문 1111-2202)"""
     base = {c: [r for r in (((bundle['stocks'].get(c) or {}).get('fchart') or {}).get('rows') or []) if r[4] and r[4] > 0] for c in codes}
     blast = max((r[0] for rs in base.values() for r in rs), default='')
     bmap = {c: {r[0]: r[4] for r in rs} for c, rs in base.items()}
     add = {c: {} for c in codes}
-    st_ = {'files': 0, 'added': 0, 'mismatch': [], 'lastFile': None, 'blast': iso8(blast) if blast else None}
+    st_ = {'files': 0, 'added': 0, 'mismatch': [], 'rebased': [], 'lastFile': None, 'blast': iso8(blast) if blast else None}
     for fn, started, rows in snaps:
         st_['files'] += 1
         for c, rs in rows.items():
             if c not in bmap:
                 continue
-            if any(x[0] <= blast and x[0] in bmap[c] and x[1] and abs(x[1] / bmap[c][x[0]] - 1) > tol for x in rs):
-                st_['mismatch'].append([fn, c])
-                continue
+            ov = [x for x in rs if x[0] <= blast and x[0] in bmap[c] and x[1]]
+            if any(abs(x[1] / bmap[c][x[0]] - 1) > tol for x in ov):
+                k = rebase_k(ov, bmap[c], tol)
+                if k is None:
+                    st_['mismatch'].append([fn, c])
+                    continue
+                base[c] = [[r[0]] + [math.floor(p * k + 0.5) if p else p for p in r[1:5]] + [math.floor(r[5] / k + 0.5) if r[5] else r[5]] + list(r[6:]) for r in base[c]]  # 시 · 고 · 저 · 종가 × k · 거래량 ÷ k
+                base[c] = [r for r in base[c] if r[4] > 0]
+                bmap[c] = {r[0]: r[4] for r in base[c]}
+                add[c] = {d: (math.floor(v * k + 0.5), math.floor(vol / k + 0.5) if vol else vol) for d, (v, vol) in add[c].items()}
+                st_['rebased'].append([fn, c, k])
             for x in rs:
                 if x[0] > blast and x[1] and x[1] > 0:
                     if x[0] not in add[c]:

@@ -26,6 +26,10 @@ const bad = []; let checks = 0, skipped = 0;
 const same = (a, b, what) => { checks++; if (a !== b) bad.push({what, got: a, want: b}); };
 const near = (a, b, tol, what) => { checks++; if (!(Math.abs(a - b) <= tol)) bad.push({what, got: a, want: b, tol}); };
 
+// 되맞춤(daese.merge 와 같은 셈을 따로 짬 · 주문 1111-2202 · 사장님 2026-11-11 22:02 「어 그렇게 해」) — 이어 받은 파일의 모음 안 날 값이 0.5% 넘게 다르고 한 비율(쪼개기 · 합치기)이면
+//   그 회사 값(모음 · 앞 파일에서 이어 붙인 값)을 모두 × k(.5 는 위로) 한 뒤 받음 · 한 비율이 아니면 그 파일에서 받지 않음(옛 규칙)
+const rebaseK = (ov, bm, tol = 0.005) => { let last = null; for (const x of ov) if (!last || x[0] > last[0]) last = x; const k = last[1] / bm.get(last[0]); return ov.every(x => Math.abs(x[1] / bm.get(x[0]) / k - 1) <= tol) ? k : null; };
+const rescale = (M, k) => { for (const [d, v] of M) M.set(d, Math.floor(v * k + 0.5)); for (const [d, v] of [...M]) if (!(v > 0)) M.delete(d); };
 // ① 거래일 · 수익 · 시장 · 방향
 const rows = cos.map(c => new Map((bundle.stocks[c.code]?.fchart?.rows ?? []).filter(r => r[4] > 0).map(r => [r[0], r[4]])));
 { // 이어 받은 일봉 — 파일 이름 차례 · 모음 마지막 날 뒤만 · 같은 날은 나중 파일 · 모음 안 날 값이 0.5% 넘게 다르면 그 파일에서 그 회사는 안 받음 · 고르는 날까지
@@ -35,7 +39,8 @@ const rows = cos.map(c => new Map((bundle.stocks[c.code]?.fchart?.rows ?? []).fi
     const snap = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CL, fn))).toString('utf8'));
     if (!['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(snap.schema)) continue;
     for (const [code, rs] of Object.entries(snap.rows ?? {})) { const j = ix.get(code); if (j == null) continue;
-      if (rs.some(x => x[0] <= blast && base[j].has(x[0]) && x[1] && Math.abs(x[1] / base[j].get(x[0]) - 1) > 0.005)) continue;
+      const ov = rs.filter(x => x[0] <= blast && base[j].has(x[0]) && x[1]);
+      if (ov.some(x => Math.abs(x[1] / base[j].get(x[0]) - 1) > 0.005)) { const k = rebaseK(ov, base[j]); if (k == null) continue; rescale(base[j], k); rescale(rows[j], k); } // 되맞춤(쪼개기 · 합치기 · daese.merge 와 같은 셈)
       for (const x of rs) if (x[0] > blast && x[1] > 0) rows[j].set(x[0], x[1]); }
   }
   for (const m of rows) for (const d of [...m.keys()]) if (d > sel8) m.delete(d);
@@ -121,7 +126,8 @@ let othChecks = 0;
         const snap = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CL, fn))).toString('utf8'));
         if (!['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(snap.schema)) continue;
         for (const [code, rs] of Object.entries(snap.rows ?? {})) { const j = ix.get(code); if (j == null) continue;
-          if (rs.some(x => x[0] <= blast && base[j].has(x[0]) && x[1] && Math.abs(x[1] / base[j].get(x[0]) - 1) > 0.005)) continue;
+          const ov = rs.filter(x => x[0] <= blast && base[j].has(x[0]) && x[1]);
+          if (ov.some(x => Math.abs(x[1] / base[j].get(x[0]) - 1) > 0.005)) { const k = rebaseK(ov, base[j]); if (k == null) continue; rescale(base[j], k); rescale(orows[j], k); } // 되맞춤
           for (const x of rs) if (x[0] > blast && x[1] > 0) orows[j].set(x[0], x[1]); }
       }
       for (const m of orows) for (const d of [...m.keys()]) if (d > sel8) m.delete(d); }

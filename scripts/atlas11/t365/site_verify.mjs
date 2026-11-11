@@ -51,18 +51,24 @@ for (const c of new Set([...ALLC, ...PICKED])) {
 }
 // 이어 받은 종가(사장님 09:37 「항상」 · 환경 변수 ATLAS_T365_CLOSES = closes_fetch.mjs 폴더) — site_build.py 와 같은 규칙을 따로 짬:
 //   파일 이름 차례 · 모음 마지막 날(후보 표 줄 모두 가운데 가장 늦은 날 — daese.merge 와 같은 무리) 뒤만 이어 붙임 · 같은 날은 나중 파일 ·
-//   그 파일의 모음 안 날 값(0 보다 큰 값)이 0.5% 넘게 다른 회사는 그 파일에서 받지 않음
+//   그 파일의 모음 안 날 값(0 보다 큰 값)이 0.5% 넘게 다르면: 한 비율(쪼개기 · 합치기 — 겹친 날마다 같은 비율)이면 그 회사의 값을 모두 그 비율로 되맞춘 뒤 받고 · 아니면 그 파일에서 받지 않음
+//   (되맞춤 = daese.merge 와 같은 셈을 따로 짬 · 주문 1111-2202 · 사장님 2026-11-11 22:02 「어 그렇게 해」 — 예전 화면 28곳 20거래일 그림이 비던 것)
+const rebaseK = (ov, bm, tol = 0.005) => { let last = null; for (const x of ov) if (!last || x[0] > last[0]) last = x; const k = last[1] / bm.get(last[0]); return ov.every(x => Math.abs(x[1] / bm.get(x[0]) / k - 1) <= tol) ? k : null; };
+const rescale = (M, k) => { for (const [d, v] of M) M.set(d, Math.floor(v * k + 0.5)); for (const [d, v] of [...M]) if (!(v > 0)) M.delete(d); }; // 종가 × k(.5 는 위로)
 const BLAST = (() => { let t = ''; for (const c of ROW.keys()) for (const r of bundle.stocks[c]?.fchart?.rows ?? []) if (r[4] > 0 && r[0] > t) t = r[0]; return t ? iso(t) : undefined; })();
 const CLOSES = process.env.ATLAS_T365_CLOSES;
+let nRebased = 0;
 if (CLOSES && fs.existsSync(CLOSES)) for (const fn of fs.readdirSync(CLOSES).filter(f => f.endsWith('.json.gz')).sort()) {
   const snap = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CLOSES, fn))).toString('utf8'));
   if (!['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(snap.schema)) continue; // 1 = [날, 종가] · 2 = [날, 종가, 거래량]
   for (const [c, rs] of Object.entries(snap.rows ?? {})) {
-    const m = close.get(c); if (!m) continue; // 이어 붙이기는 모음 마지막 날 뒤만 더하므로 m 의 그날까지 값 = 모음 원본 값(따로 베껴 두지 않음)
-    if (rs.some(([d, v]) => v > 0 && iso(d) <= BLAST && m.has(iso(d)) && Math.abs(v / m.get(iso(d)) - 1) > 0.005)) continue;
+    const m = close.get(c); if (!m) continue; // 이어 붙이기는 모음 마지막 날 뒤만 더하므로 m 의 그날까지 값 = 모음 값(되맞춤했으면 되맞춘 값)
+    const ov = rs.filter(([d, v]) => v > 0 && iso(d) <= BLAST && m.has(iso(d))).map(([d, v]) => [iso(d), v]);
+    if (ov.some(([d, v]) => Math.abs(v / m.get(d) - 1) > 0.005)) { const k = rebaseK(ov, m); if (k == null) continue; rescale(m, k); nRebased++; }
     for (const [d, v] of rs) if (iso(d) > BLAST && v > 0 && iso(d) <= pro.asOf) m.set(iso(d), v); // 고르는 날까지만(창의 끝 = 고르는 날)
   }
 }
+if (core.roll && 'rebased' in core.roll) same(core.roll.rebased, nRebased, '이어 받으며 되맞춘 회사 수(쪼개기 · 합치기)');
 // 20거래일 창 — 마지막 종가 날(고른 곳 절반 넘게 종가가 있는 마지막 날)부터 거꾸로 거래소 달력 21일
 const NPICK = pro.picked.length; // 고른 곳 수(멍거 · 린치 조건 ml-v1 은 셈한 그대로 · 옛 판은 365)
 const dayCount = () => { const n = new Map(); for (const c of PICKED) for (const d of close.get(c).keys()) n.set(d, (n.get(d) ?? 0) + 1); return [...n].filter(([, k]) => k > NPICK / 2).map(([d]) => d); }; // 고른 곳만 셈
@@ -342,14 +348,20 @@ for (const c of codes) {
 const CAPD = path.join(ROOT, 'reports/atlas11/t365/capsule');
 const caps = fs.existsSync(CAPD) ? fs.readdirSync(CAPD).filter(f => /^capsule-\d+\.json$/.test(f)).sort((a, b) => +a.slice(8, -5) - +b.slice(8, -5)) : [];
 const canon = x => (Array.isArray(x) ? '[' + x.map(canon).join(',') + ']' : x && typeof x === 'object' ? '{' + Object.keys(x).sort().map(k => JSON.stringify(k) + ':' + canon(x[k])).join(',') + '}' : JSON.stringify(x));
+const RK = new Map(); // 회사마다 되맞춘 비율(차례대로) — 봉인 뒤 셈의 잠근 종가에만 씀(cl 을 부른 뒤 · 주문 1111-2202)
 const allClose = new Map(); // 후보 누구든 — 모음 + 이어 받은 종가(위 ① 과 같은 규칙)
 const snaps = CLOSES && fs.existsSync(CLOSES) ? fs.readdirSync(CLOSES).filter(f => f.endsWith('.json.gz')).sort().map(fn => JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(CLOSES, fn))).toString('utf8'))).filter(s => ['atlas-t365-closes-1', 'atlas-t365-closes-2'].includes(s.schema)) : [];
 const cl = c => {
   if (allClose.has(c)) return allClose.get(c);
   const m = new Map(); for (const r of bundle.stocks[c]?.fchart?.rows ?? []) if (r[4] > 0 && iso(r[0]) <= core.asOf) m.set(iso(r[0]), r[4]);
-  const b = new Map(m);
-  for (const s of snaps) { const rs = s.rows?.[c]; if (!rs) continue; if (rs.some(([d, v]) => v > 0 && iso(d) <= BLAST && b.has(iso(d)) && Math.abs(v / b.get(iso(d)) - 1) > 0.005)) continue; for (const [d, v] of rs) if (iso(d) > BLAST && v > 0 && iso(d) <= core.asOf) m.set(iso(d), v); }
-  allClose.set(c, m); return m;
+  const b = new Map(m), ks = [];
+  for (const s of snaps) {
+    const rs = s.rows?.[c]; if (!rs) continue;
+    const ov = rs.filter(([d, v]) => v > 0 && iso(d) <= BLAST && b.has(iso(d))).map(([d, v]) => [iso(d), v]);
+    if (ov.some(([d, v]) => Math.abs(v / b.get(d) - 1) > 0.005)) { const k = rebaseK(ov, b); if (k == null) continue; rescale(b, k); rescale(m, k); ks.push(k); } // 되맞춤(위 ① 과 같은 셈)
+    for (const [d, v] of rs) if (iso(d) > BLAST && v > 0 && iso(d) <= core.asOf) m.set(iso(d), v);
+  }
+  allClose.set(c, m); RK.set(c, ks); return m;
 };
 const hold = (cs, ds, base) => { const have = cs.filter(c => base[c]), last = new Map(); return {have, v: ds.map(d => { if (!have.length) return null; let s = 0; for (const c of have) { const x = cl(c).get(d); if (x) last.set(c, x); s += (last.get(c) ?? base[c]) / base[c]; } return Math.round(s / have.length * 100 * 100) / 100; })}; };
 const nearA = (a, b, tol, what) => { checks++; if (!Array.isArray(a) || a.length !== b.length || a.some((x, k) => (x == null || b[k] == null ? x !== b[k] : Math.abs(x - b[k]) > tol))) bad.push({what, got: JSON.stringify(a)?.slice(0, 80), want: JSON.stringify(b).slice(0, 80)}); };
@@ -382,7 +394,9 @@ for (const fn of caps) {
   // 봉인 뒤 지금까지 — 잠근 종가에서
   const TD = DAYS.filter(d => d >= cap.seal && d <= core.asOf), sp = {...Object.fromEntries(cap.pool.filter(x => x[1])), ...Object.fromEntries(cap.members.map(m => [m[0], m[2]]))};
   sameJ(got.since.dates, TD, '봉인 뒤 날짜'); same(got.since.days, TD.length - 1, '봉인 뒤 거래일 수');
-  const s1 = hold(mem, TD, sp), s3 = hold(pool, TD, sp);
+  // 잠근 종가는 그대로(위 「봉인 365곳 · 잠근 종가」) · 셈에만 — 봉인 날이 모음 안이면 되맞춘 회사의 잠근 종가도 같은 비율로(site_build.py 와 같은 셈 · 주문 1111-2202)
+  const spk = cap.seal <= BLAST ? Object.fromEntries(Object.entries(sp).map(([c, v]) => { cl(c); return [c, (RK.get(c) ?? []).reduce((x, k) => Math.floor(x * k + 0.5), v)]; })) : sp;
+  const s1 = hold(mem, TD, spk), s3 = hold(pool, TD, spk);
   nearA(got.since.v365, s1.v, 0.011, '봉인 뒤 365곳'); nearA(got.since.vpool, s3.v, 0.011, '봉인 뒤 후보 모두');
   const chgOf = v => (TD.length > 1 ? Math.round((v.at(-1) - 100) * 100) / 100 : null);
   near(got.since.chg365, chgOf(s1.v), 0.0101, '봉인 뒤 365곳 %'); near(got.since.chgPool, chgOf(s3.v), 0.0101, '봉인 뒤 후보 %');

@@ -425,7 +425,7 @@ core = {
     'asOf': asof, 'base': base, 'days': NDAY - 1, 'pickAsOf': PICK_ASOF, 'kPick': kPick, 'sincePick': DAYS.index(asof) - DAYS.index(PICK_ASOF),
     # 마지막 날 값을 그날 저녁 8시(서울) 전에 받았으면 아직 바뀔 수 있음(시간외 · 넥스트레이드) — 다음 받기에서 고쳐짐
     'provisional': bool(OVER['lastFile'] and asof > BLAST and (lambda t: t[:10] == asof and t[11:13] < '20')((datetime.fromisoformat(OVER['lastFile']['startedAt'].replace('Z', '+00:00')).astimezone(timezone(timedelta(hours=9)))).isoformat())),
-    'roll': {'files': OVER['files'], 'added': OVER['added'], 'mismatch': len(OVER['mismatch'])},
+    'roll': {'files': OVER['files'], 'added': OVER['added'], 'mismatch': len(OVER['mismatch']), 'rebased': len(OVER['rebased'])},  # rebased = 쪼개기 · 합치기로 되맞춘 회사(daese.merge · 주문 1111-2202)
     'sources': {'price': ('네이버 증권 일봉 · %s 모음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))) if not OVER['added'] else
                           ('네이버 증권 일봉 · %s 모음 + 날마다 이어 받음(%s 종가까지)' % (kd(N['collectedAt'][:10]), kd(asof))),
                 'pick': '네이버 증권 결산 · 업종(%s 모음) · 확정 결산 3해(예상치는 안 씀)' % kd(N['collectedAt'][:10])},
@@ -629,8 +629,15 @@ for fn in caps:
     TD = [d for d in DAYS if seal <= d <= asof]
     sp = {m[0]: m[2] for m in cap['members']}
     sp.update({p[0]: p[1] for p in cap['pool'] if p[1]})
-    sv365, sh365 = hold(mem, TD, sp)
-    svpool, shpool = hold(pool, TD, sp)
+    # 잠근 종가는 그대로 두고(화면 · 봉인) 셈에만 — 봉인 날이 모음 안(모음 마지막 날까지)이면 되맞춘 회사(쪼개기 · 합치기는 모음 뒤에 있었음 = 봉인 뒤)의
+    #   잠근 종가도 같은 비율로(daese.merge 되맞춤과 같은 반올림 · 주문 1111-2202) · 봉인 날이 모음 뒤면 그대로(그 사이 일인지 알 수 없음)
+    spk = dict(sp)
+    if seal <= (OVER['blast'] or ''):
+        for _fn, _c, _k in OVER['rebased']:
+            if _c in spk:
+                spk[_c] = math.floor(spk[_c] * _k + 0.5)
+    sv365, sh365 = hold(mem, TD, spk)
+    svpool, shpool = hold(pool, TD, spk)
     stale = lambda codes: sum(1 for c in codes if not mrow(c).get(TD[-1]))
     since = {'dates': TD, 'days': len(TD) - 1, 'v365': sv365, 'vpool': svpool,
              'chg365': d2(sv365[-1] - 100) if len(TD) > 1 else None,

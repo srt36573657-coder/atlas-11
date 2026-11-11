@@ -30,9 +30,9 @@ on:
         required: false
         default: false
       data:
-        description: 'local 일 때 자료 — live = 지금 사이트 자료(올린 뒤와 같음) · stored = 저장소 site/atlas/data'
+        description: 'local 일 때 자료 — live = 지금 사이트 자료(올린 뒤와 같음) · stored = 저장소 site/atlas/data · build = 이 가지 코드로 올리기처럼 일봉을 받아 자료를 새로 만듦(자료 만드는 코드를 고친 판)'
         type: choice
-        options: [live, stored]
+        options: [live, stored, build]
         required: false
         default: live
       en_shards:
@@ -86,18 +86,46 @@ jobs:
     if: ${{ inputs.local && inputs.data != 'stored' }}
     runs-on: ubuntu-24.04
     outputs:
-      data: ${{ steps.d.outputs.data }}
-      asof: ${{ steps.d.outputs.asof }}
-      built: ${{ steps.d.outputs.built }}
-      dsecs: ${{ steps.d.outputs.secs }}
-      dwhy: ${{ steps.d.outputs.why }}
+      data: ${{ steps.d.outputs.data || steps.b.outputs.data }}
+      asof: ${{ steps.d.outputs.asof || steps.b.outputs.asof }}
+      built: ${{ steps.d.outputs.built || steps.b.outputs.built }}
+      dsecs: ${{ steps.d.outputs.secs || steps.b.outputs.secs }}
+      dwhy: ${{ steps.d.outputs.why || steps.b.outputs.why }}
     steps:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # data=build(주문 1111-2202 · 사장님 2026-11-11 22:02 「어 그렇게 해」 — 예전 화면 28곳 자료 고치기): 자료 만드는 코드(scripts/atlas11/t365 등)를 고친 판은
+      #   지금 사이트 자료로는 고친 것을 검사할 수 없음(올리기는 이 가지 코드로 일봉을 새로 받아 자료를 다시 만듦) → 이 일이 올리기의 「화면 묶음 만들기」와 같은 셈으로
+      #   이 가지 코드 · 지금 일봉으로 자료를 만들어(회차가 「rolled」 일 때만) 같은 이름(live-data)으로 넘김 · 못 만들면 이 일과 쪽 검사가 실패(저장소 자료로 돌지 않음)
+      - uses: actions/checkout@v4
+        if: ${{ inputs.local && inputs.data == 'build' }}
+      - name: 파이썬 준비(build — 7단 범위 셈 numpy)
+        if: ${{ inputs.local && inputs.data == 'build' }}
+        run: python3 -m pip install --user --break-system-packages -q numpy || python3 -m pip install --user -q numpy
+      - name: 이 가지 코드로 자료 새로 만들기(build — 올리기와 같은 셈 · 일봉 새로 받음)
+        id: b
+        if: ${{ inputs.local && inputs.data == 'build' }}
+        env:
+          ATLAS_FETCH_PAR: '8'
+        run: |
+          t0=$(date +%s)
+          npm ci --no-audit --no-fund >/tmp/npm.log 2>&1 || { tail -c 2000 /tmp/npm.log; exit 1; }
+          node scripts/atlas11/build_view.mjs >/tmp/bv.log 2>&1 || { tail -c 2000 /tmp/bv.log; exit 1; }
+          node scripts/atlas11/package.mjs --no-full --out ../out >/tmp/pack.log 2>&1 || { tail -c 3000 /tmp/pack.log; exit 1; }
+          # 회차가 이 가지 코드로 새로 굴린 자료(rolled)일 때만 — 실패해 지금 사이트 자료(live) · 저장소 자료로 갈음했으면 멈춤(고친 것을 검사한 것이 아니므로)
+          node -e '
+            const r = JSON.parse(require("fs").readFileSync("reports/atlas11/t365/roll-latest.json", "utf8"));
+            console.log("회차 " + r.result + " · " + r.served + " · 고른 날 " + r.asOf + " · 기준일 " + r.base + " · 이어 받음 " + JSON.stringify(r.roll) + " · 따로 세기 " + JSON.stringify(r.verify).slice(0, 600));
+            if (r.served !== "rolled") { console.log("새로 만든 자료가 아님 — " + String(r.why ?? "").slice(0, 300)); process.exit(1); }'
+          [ -f dist/atlas/data/mkt.json ] || { echo "dist/atlas/data 없음"; exit 1; }
+          mkdir -p live-data/atlas && cp -r dist/atlas/data live-data/atlas/data
+          asof=$(node -p 'require("./dist/atlas/data/mkt.json").asOf')
+          { echo "data=build"; echo "asof=$asof"; echo "built=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; echo "secs=$(( $(date +%s) - t0 ))"; } >> "$GITHUB_OUTPUT"
+          echo "이 가지 코드로 만든 자료 · 고른 날 $asof · $(( $(date +%s) - t0 ))초 · 파일 $(find live-data -type f | wc -l)개"
       - name: 지금 사이트 자료 받기(local — 한 번만 받아 모든 검사가 같은 판을 씀)
         id: d
-        if: ${{ inputs.local && inputs.data != 'stored' }}
+        if: ${{ inputs.local && inputs.data != 'stored' && inputs.data != 'build' }}
         run: |
           # 파일 목록 · sha256 = 지금 사이트의 dist-manifest.json(올릴 때 package.mjs 가 dist 모든 파일로 씀) — 파일마다 그 판의 sha256 과 맞아야 받음
           #   → 받은 것은 모두 한 판(받는 사이 올림이 끼면 바뀐 파일이 sha256 다름으로 걸려 새 목록으로 처음부터 · 세 번까지)
@@ -144,7 +172,7 @@ jobs:
           }
           EOF
       - uses: actions/upload-artifact@v4
-        if: ${{ steps.d.outputs.data == 'live' }}
+        if: ${{ steps.d.outputs.data == 'live' || steps.b.outputs.data == 'build' }}
         with:
           name: live-data
           path: live-data/
@@ -190,8 +218,8 @@ jobs:
           tail -n 2 /tmp/pack.log | cut -c1-400
           # 자료 받기 — 함께 도는 data 일이 끝나기를 기다림(4초마다 · 4분까지 · data=stored 면 안 기다림) → 그 실행의 live-data 를 받음 · 못 받으면 저장소 자료로 돌고 exit.json 의 data 에 적음
           if [ "$WANT_DATA" != stored ]; then
-            w0=$(date +%s)
-            for i in $(seq 1 60); do
+            w0=$(date +%s); nw=60; [ "$WANT_DATA" = build ] && nw=330 # build = 이 가지 코드로 자료를 새로 만듦(일봉 받기 · 따로 세기 · 7단 범위) — 22분까지 기다림
+            for i in $(seq 1 $nw); do
               st=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs?per_page=100" --jq '.jobs[] | select(.name == "data") | .status' 2>/tmp/gh.err) || { echo "data 일을 못 봄 — $(head -c 200 /tmp/gh.err)"; break; }
               [ "$st" = completed ] && break
               sleep 4
@@ -201,9 +229,10 @@ jobs:
           fi
           # 자료 — data 일이 받은 지금 사이트 판(sha256 맞댄 것)으로 dist/atlas/data 를 통째로 바꿈 · 없으면 저장소 자료 그대로
           if [ -f live-data/atlas/data/mkt.json ]; then rm -rf dist/atlas/data && mkdir -p dist/atlas/data && cp -r live-data/atlas/data/. dist/atlas/data/ && src=live; else src=stored; fi
+          if [ "$WANT_DATA" = build ]; then [ "$src" = live ] || { echo "이 가지 코드로 만든 자료(build)를 못 받음 — 저장소 자료로 검사하지 않음"; exit 1; }; src=build; fi
           # 새 화면 작은 자료(dist/next/data 의 home-summary · median20) — 바꿔 넣은 지금 사이트 자료로 다시 셈(올리기의 package.mjs 가 굴린 자료로 buildData 하는 것과 같게 · 2026-10-18 주인)
           #   묶을 때(package.mjs)는 저장소 자료로 셈했으므로 · 못 만들면 그 파일은 그대로 두고 감(올리기와 같음 — 검사가 다름을 잡음)
-          if [ "$src" = live ]; then node scripts/atlas11/next/build_data.mjs --site dist > /tmp/bd.log 2>&1 || echo "새 화면 작은 자료 못 만듦(지금 사이트 자료로)"; tail -n 3 /tmp/bd.log | cut -c1-300; fi
+          if [ "$src" != stored ]; then node scripts/atlas11/next/build_data.mjs --site dist > /tmp/bd.log 2>&1 || echo "새 화면 작은 자료 못 만듦(지금 사이트 자료로)"; tail -n 3 /tmp/bd.log | cut -c1-300; fi
           echo "DATA=$src $(node -p 'require("./dist/atlas/data/mkt.json").asOf' 2>/dev/null || echo '?')" >> "$GITHUB_ENV"
           # 시험 서버 — 넷리파이처럼 dist/ 를 내보냄(보안 머리말 · /api/letter · /api/invite 포함) · 열쇠는 이 실행기에서만 쓰는 시험 열쇠(진짜 열쇠 아님)
           key=$(node -e 'process.stdout.write(require("crypto").randomBytes(24).toString("base64url"))')
@@ -377,7 +406,7 @@ jobs:
               const ex = fs.readdirSync(d).filter(f => f.endsWith(".exit.json")).sort().map(f => JSON.parse(fs.readFileSync(d + "/" + f, "utf8")));
               const sum = {schema: "atlas11-next-full-1", at: new Date().toISOString(), base: local ? "http://127.0.0.1:8826" : "https://aaa7377.com", mode: local ? "local" : "live",
                 ref: process.env.REF, sha: process.env.GITHUB_SHA, run: Number(process.env.GITHUB_RUN_ID), wallSeconds: t0 ? Math.round(Date.now() / 1000) - t0 : null,
-                ...(local ? {data: process.env.DATA_SRC === "live" ? {from: "live", asOf: process.env.DATA_ASOF, built: process.env.DATA_BUILT, seconds: Number(process.env.DATA_SECS) || null}
+                ...(local ? {data: ["live", "build"].includes(process.env.DATA_SRC) ? {from: process.env.DATA_SRC, asOf: process.env.DATA_ASOF, built: process.env.DATA_BUILT, seconds: Number(process.env.DATA_SECS) || null}
                   : {from: "stored", why: process.env.DATA_ASK === "stored" ? "-f data=stored" : process.env.DATA_WHY || "지금 사이트 자료를 못 받음", seconds: Number(process.env.DATA_SECS) || null}} : {}),
                 pages: ex, ok: ex.length > 0 && ex.every(x => x.code === 0)};
               fs.writeFileSync(d + "/summary.json", JSON.stringify(sum, null, 1) + "\n"); console.log(JSON.stringify(sum));'

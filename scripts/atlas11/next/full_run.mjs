@@ -4,9 +4,10 @@
 //   셈 = reports/atlas11/full-runs/<일 이름>.jsonl 의 줄 수 — 깃허브 전체 검사(atlas11-next-full.yml)를 한 번 부를 때마다 한 줄(이 방 자료로 묶어 띄우는 쪽 · 실제 사이트 쪽 · 멈춘 것 모두 셈)
 //   11번을 다 썼으면 부르지 않고 끝 코드 3 — 멈추고 사장님께 쉽게 보고한 뒤 새 말씀을 기다림(새로 만든 것이 아니면 셈을 새로 열지 않음)
 //   바로 `gh workflow run atlas11-next-full.yml` 을 치면 .claude/hooks/full-run-guard.sh 가 막음(이 파일로만 셈이 남음)
-//   쓰는 법: node scripts/atlas11/next/full_run.mjs --work <일 이름> [--ref <가지>] [--local] [--why "까닭"] [--dry]
+//   쓰는 법: node scripts/atlas11/next/full_run.mjs --work <일 이름> [--ref <가지>] [--local [--data live|stored|build]] [--why "까닭"] [--dry]
 //     --work  새로 만든 것 하나의 이름(영문 소문자 · 숫자 · - 만 · 예: dahae-2026-10-19) — 같은 일은 같은 이름
 //     --ref   부를 가지(기본 = 지금 가지) · --local = 이 방 자료로 묶어 띄우는 쪽(-f local=true) · 빼면 실제 사이트 쪽
+//     --data  local 일 때 자료(-f data=…) — 빼면 live(지금 사이트 자료) · build = 이 가지 코드로 일봉을 새로 받아 자료를 만듦(자료 만드는 코드를 고친 판 · 주문 1111-2202)
 //     --dry   부르지 않고 지금 셈만 보임
 import fs from 'node:fs';
 import path from 'node:path';
@@ -30,7 +31,8 @@ export function runsOf(work) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const work = arg('--work');
   if (!work || !/^[a-z0-9][a-z0-9-]{2,60}$/.test(work)) { console.error('--work <일 이름> 이 필요함(영문 소문자 · 숫자 · - · 예: dahae-2026-10-19)'); process.exit(2); }
-  const ref = arg('--ref') || sh('git', ['rev-parse', '--abbrev-ref', 'HEAD']), local = has('--local');
+  const ref = arg('--ref') || sh('git', ['rev-parse', '--abbrev-ref', 'HEAD']), local = has('--local'), data = arg('--data');
+  if (data && (!local || !['live', 'stored', 'build'].includes(data))) { console.error('--data 는 --local 과 함께 live · stored · build 가운데 하나'); process.exit(2); }
   const done = runsOf(work), n = done.length;
   if (has('--dry')) { console.log(`전체 검사 ${n}/${MAX} — 「${work}」`); process.exit(0); }
   if (n >= MAX) {
@@ -38,7 +40,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(3);
   }
   const t0 = new Date(Date.now() - 5000).toISOString();
-  sh('gh', ['workflow', 'run', WF, '-R', REPO, '--ref', ref, ...(local ? ['-f', 'local=true'] : [])]);
+  sh('gh', ['workflow', 'run', WF, '-R', REPO, '--ref', ref, ...(local ? ['-f', 'local=true'] : []), ...(data ? ['-f', 'data=' + data] : [])]);
   let run = null;
   for (let k = 0; k < 20 && !run; k++) { // 막 부른 것 찾기(가지 · 부른 때 뒤 · 가장 새것)
     try {
@@ -47,7 +49,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     } catch { /* 다시 */ }
     if (!run) execFileSync('sleep', ['3']);
   }
-  const line = {n: n + 1, work, ref, local, sha: run?.headSha ?? null, run: run?.databaseId ?? null, url: run?.url ?? null, at: new Date().toISOString(), why: arg('--why')};
+  const line = {n: n + 1, work, ref, local, ...(data ? {data} : {}), sha: run?.headSha ?? null, run: run?.databaseId ?? null, url: run?.url ?? null, at: new Date().toISOString(), why: arg('--why')};
   const dir = path.join(ROOT, 'reports/atlas11/full-runs'); fs.mkdirSync(dir, {recursive: true});
   fs.appendFileSync(path.join(dir, work + '.jsonl'), JSON.stringify(line) + '\n');
   console.log(`전체 검사 ${n + 1}/${MAX} — 「${work}」 ${line.url ?? '(번호 못 찾음 — gh run list 로 확인)'}`);

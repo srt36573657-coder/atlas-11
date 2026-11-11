@@ -5,7 +5,8 @@
 //          ③ 올리기(atlas11-site.yml · preview_sha = 이 판)를 함께 부름 — 올리기는 묶음을 먼저 만들고, 같은 코드의 전체 검사가 실패 0 일 때만 올림
 //          (scripts/atlas11/next/wait_preview.mjs 문 · 실패면 올리지 않고 기록도 남기지 않음 · 닫힌 쪽으로 실패)
 //   걸린 때는 reports/atlas11/speed/ship-<일>.jsonl 에 한 줄(받은 때 · 부른 때 · 검사 끝 · 올림 끝 · 분)
-//   쓰는 법: node scripts/atlas11/next/ship.mjs --work <일 이름> --branch <가지> --since <받은 때 ISO> --why "<까닭>" --reason "<올리기 까닭>" [--dry]
+//   쓰는 법: node scripts/atlas11/next/ship.mjs --work <일 이름> --branch <가지> --since <받은 때 ISO> --why "<까닭>" --reason "<올리기 까닭>" [--data build] [--dry]
+//     · --data build = 자료 만드는 코드(scripts/atlas11/t365 등)를 고친 판 — 전체 검사가 지금 사이트 자료 대신 이 판 코드로 새로 만든 자료로 돎(full_run --data · 주문 1111-2202)
 //     · 가지는 origin/main 위에 다시 쌓여 있어야 함(앞서감만 · 아니면 멈춤) · 비밀 값 · 사이트 번호는 찍지 않음
 //     · 전체 검사가 실패면: 올리기는 문에서 멈춤 · 이 스크립트가 main 을 검사 전 판으로 되돌리는 되돌림 커밋을 만듦(고친 뒤 다시 부름)
 import fs from 'node:fs';
@@ -21,7 +22,8 @@ const sleep = ms => execFileSync('sleep', [String(ms / 1000)]);
 const now = () => new Date().toISOString();
 const min = (a, b) => (a && b ? Math.round((Date.parse(b) - Date.parse(a)) / 6000) / 10 : null);
 
-const work = arg('--work'), branch = arg('--branch'), since = arg('--since'), why = arg('--why', ''), reason = arg('--reason', '');
+const work = arg('--work'), branch = arg('--branch'), since = arg('--since'), why = arg('--why', ''), reason = arg('--reason', ''), data = arg('--data');
+if (data && !['live', 'stored', 'build'].includes(data)) { console.error('--data 는 live · stored · build 가운데 하나'); process.exit(2); }
 if (!work || !branch || !since || Number.isNaN(Date.parse(since))) { console.error('--work · --branch · --since(받은 때 ISO) 이 필요함'); process.exit(2); }
 const T = {work, branch, since, start: now()};
 
@@ -38,7 +40,7 @@ sh('git', ['push', '-q', 'origin', `${branch}:main`]);
 T.pushed = now();
 
 // ③ 전체 검사(셈을 남기는 full_run 으로 — 이 판 한 번) · ④ 올리기(문 = 이 판) — 함께
-const fr = sh('node', ['scripts/atlas11/next/full_run.mjs', '--work', work, '--ref', branch, '--local', '--why', why || '수르 공장 — 올리기 직전 한 번']);
+const fr = sh('node', ['scripts/atlas11/next/full_run.mjs', '--work', work, '--ref', branch, '--local', ...(data ? ['--data', data] : []), '--why', why || '수르 공장 — 올리기 직전 한 번']);
 const fullRun = (/actions\/runs\/(\d+)/.exec(fr) ?? [])[1] ?? null;
 T.full = {run: fullRun, called: now(), line: fr.split('\n').pop()};
 const t0 = new Date(Date.now() - 5000).toISOString();

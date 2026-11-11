@@ -104,6 +104,7 @@ const base = new Map(ALLC.map(c => [c, (bundle.stocks?.[c]?.fchart?.rows ?? []).
 let blast = ''; for (const rs of base.values()) for (const r of rs) if (r[0] > blast) blast = r[0];
 const bmap = new Map(ALLC.map(c => [c, new Map(base.get(c).map(r => [r[0], r[4]]))]));
 const add = new Map(ALLC.map(c => [c, new Map()]));
+const rebaseK = (ov, bm, tol = 0.005) => { let last = null; for (const x of ov) if (!last || x[0] > last[0]) last = x; const k = last[1] / bm.get(last[0]); return ov.every(x => Math.abs(x[1] / bm.get(x[0]) / k - 1) <= tol) ? k : null; }; // daese.rebase_k 와 같은 셈
 const CLOSES = process.env.ATLAS_T365_CLOSES;
 let lastFile = null, nFiles = 0;
 if (CLOSES && fs.existsSync(CLOSES) && fs.statSync(CLOSES).isDirectory()) {
@@ -113,7 +114,13 @@ if (CLOSES && fs.existsSync(CLOSES) && fs.statSync(CLOSES).isDirectory()) {
     nFiles++;
     for (const [c, rs] of Object.entries(snap.rows ?? {})) {
       const bm = bmap.get(c); if (!bm) continue;
-      if (rs.some(x => x[0] <= blast && bm.has(x[0]) && x[1] && Math.abs(x[1] / bm.get(x[0]) - 1) > 0.005)) continue;
+      const ov = rs.filter(x => x[0] <= blast && bm.has(x[0]) && x[1]);
+      if (ov.some(x => Math.abs(x[1] / bm.get(x[0]) - 1) > 0.005)) { // 되맞춤(쪼개기 · 합치기 — daese.merge 와 같은 셈 · 주문 1111-2202): 한 비율이면 그 회사 값을 모두 맞춘 뒤 받음 · 아니면 그 파일에서 안 받음
+        const k = rebaseK(ov, bm); if (k == null) continue;
+        base.set(c, base.get(c).map(r => [r[0], ...r.slice(1, 5).map(p => (p ? Math.floor(p * k + 0.5) : p)), r[5] ? Math.floor(r[5] / k + 0.5) : r[5], ...r.slice(6)]).filter(r => r[4] > 0)); // 시 · 고 · 저 · 종가 × k · 거래량 ÷ k
+        bmap.set(c, new Map(base.get(c).map(r => [r[0], r[4]])));
+        for (const [d, [v, vol]] of add.get(c)) add.get(c).set(d, [Math.floor(v * k + 0.5), vol ? Math.floor(vol / k + 0.5) : vol]);
+      }
       for (const x of rs) if (x[0] > blast && x[1] && x[1] > 0) { add.get(c).set(x[0], [x[1], x.length > 2 ? x[2] : null]); lastFile = {file: fn, startedAt: snap.startedAt ?? null}; }
     }
   }
