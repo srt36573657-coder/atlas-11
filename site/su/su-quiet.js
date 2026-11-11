@@ -39,7 +39,7 @@ function funnel(steps) {
   const top = Math.max(1, ...steps.map(x => x.n || 0));
   return h('ol', {class: 'qt-steps', 'aria-label': '걸러 온 길'}, steps.map((x, i) => h('li', {class: 'qt-step' + (i === steps.length - 1 ? ' qt-last' : ''), 'data-n': String(x.n)},
     h('span', {class: 'qt-sn', text: x.name}), h('b', {class: 'qt-sv', text: NF.format(x.n) + '곳'}),
-    s('svg', {class: 'qt-bar', viewBox: '0 0 100 8', preserveAspectRatio: 'none', 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: Math.max(1.5, 100 * (x.n || 0) / top).toFixed(1), height: 8, rx: 4, class: 'qt-barf'})))));
+    s('svg', {class: 'qt-bar', width: '100%', height: 8, 'aria-hidden': 'true'}, s('rect', {x: 0, y: 0, width: Math.max(2.5, 100 * (x.n || 0) / top).toFixed(1) + '%', height: 8, rx: 4, class: 'qt-barf'}))))); // 막대 길이는 % · 둥근 끝은 늘어나지 않게(viewBox 없이)
 }
 function ensureCss() { if (typeof document !== 'undefined' && !document.querySelector(`link[href="${CSS}"]`)) document.head.append(Object.assign(document.createElement('link'), {rel: 'stylesheet', href: CSS})); }
 
