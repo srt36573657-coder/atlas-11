@@ -1,0 +1,259 @@
+[
+ {
+  "src": "naver_fchart",
+  "code": "005930",
+  "url": "https://fchart.stock.naver.com/sise.nhn?symbol=005930&timeframe=day&count=3&requestType=0",
+  "status": 200,
+  "bytes": 409,
+  "ms": 1870,
+  "err": null
+ },
+ {
+  "src": "naver_siseJson",
+  "code": "005930",
+  "url": "https://fchart.stock.naver.com/siseJson.nhn?symbol=005930&requestType=1&startTime=20260920&endTime=20260929&timeframe=day",
+  "status": 200,
+  "bytes": 394,
+  "ms": 179,
+  "err": null
+ },
+ {
+  "src": "naver_m_basic",
+  "code": "005930",
+  "url": "https://m.stock.naver.com/api/stock/005930/basic",
+  "status": 200,
+  "bytes": 3969,
+  "ms": 1164,
+  "err": null
+ },
+ {
+  "src": "naver_m_price",
+  "code": "005930",
+  "url": "https://m.stock.naver.com/api/stock/005930/price?pageSize=3&page=1",
+  "status": 200,
+  "bytes": 862,
+  "ms": 178,
+  "err": null
+ },
+ {
+  "src": "naver_api_chart",
+  "code": "005930",
+  "url": "https://api.stock.naver.com/chart/domestic/item/005930/day?startDateTime=202609250000&endDateTime=202609290000",
+  "status": 200,
+  "bytes": 349,
+  "ms": 1065,
+  "err": null
+ },
+ {
+  "src": "naver_sise_day",
+  "code": "005930",
+  "url": "https://finance.naver.com/item/sise_day.naver?code=005930&page=1",
+  "status": 410,
+  "bytes": 1687,
+  "ms": 1139,
+  "err": null
+ },
+ {
+  "src": "yahoo",
+  "code": "005930",
+  "url": "https://query1.finance.yahoo.com/v8/finance/chart/005930.KS?range=5d&interval=1d",
+  "status": 200,
+  "bytes": 1527,
+  "ms": 110,
+  "err": null
+ },
+ {
+  "src": "daum",
+  "code": "005930",
+  "url": "https://finance.daum.net/api/quote/A005930/days?symbolCode=A005930&page=1&perPage=3&pagination=true",
+  "status": 200,
+  "bytes": 1661,
+  "ms": 1386,
+  "err": null
+ },
+ {
+  "src": "mk",
+  "code": "005930",
+  "url": "https://stock.mk.co.kr/price/home/KR7005930003",
+  "status": 200,
+  "bytes": 149383,
+  "ms": 3388,
+  "err": null
+ },
+ {
+  "src": "naver_fchart",
+  "code": "373220",
+  "url": "https://fchart.stock.naver.com/sise.nhn?symbol=373220&timeframe=day&count=3&requestType=0",
+  "status": 200,
+  "bytes": 407,
+  "ms": 529,
+  "err": null
+ },
+ {
+  "src": "naver_siseJson",
+  "code": "373220",
+  "url": "https://fchart.stock.naver.com/siseJson.nhn?symbol=373220&requestType=1&startTime=20260920&endTime=20260929&timeframe=day",
+  "status": 200,
+  "bytes": 379,
+  "ms": 179,
+  "err": null
+ },
+ {
+  "src": "naver_m_basic",
+  "code": "373220",
+  "url": "https://m.stock.naver.com/api/stock/373220/basic",
+  "status": 200,
+  "bytes": 3973,
+  "ms": 532,
+  "err": null
+ },
+ {
+  "src": "naver_m_price",
+  "code": "373220",
+  "url": "https://m.stock.naver.com/api/stock/373220/price?pageSize=3&page=1",
+  "status": 200,
+  "bytes": 858,
+  "ms": 180,
+  "err": null
+ },
+ {
+  "src": "naver_api_chart",
+  "code": "373220",
+  "url": "https://api.stock.naver.com/chart/domestic/item/373220/day?startDateTime=202609250000&endDateTime=202609290000",
+  "status": 200,
+  "bytes": 343,
+  "ms": 535,
+  "err": null
+ },
+ {
+  "src": "naver_sise_day",
+  "code": "373220",
+  "url": "https://finance.naver.com/item/sise_day.naver?code=373220&page=1",
+  "status": 410,
+  "bytes": 1687,
+  "ms": 792,
+  "err": null
+ },
+ {
+  "src": "yahoo",
+  "code": "373220",
+  "url": "https://query1.finance.yahoo.com/v8/finance/chart/373220.KS?range=5d&interval=1d",
+  "status": 200,
+  "bytes": 1515,
+  "ms": 108,
+  "err": null
+ },
+ {
+  "src": "daum",
+  "code": "373220",
+  "url": "https://finance.daum.net/api/quote/A373220/days?symbolCode=A373220&page=1&perPage=3&pagination=true",
+  "status": 200,
+  "bytes": 1630,
+  "ms": 989,
+  "err": null
+ },
+ {
+  "src": "mk",
+  "code": "373220",
+  "url": "https://stock.mk.co.kr/price/home/KR7373220006",
+  "status": 200,
+  "bytes": 149383,
+  "ms": 1705,
+  "err": null
+ },
+ {
+  "src": "naver_fchart",
+  "code": "329180",
+  "url": "https://fchart.stock.naver.com/sise.nhn?symbol=329180&timeframe=day&count=3&requestType=0",
+  "status": 200,
+  "bytes": 406,
+  "ms": 706,
+  "err": null
+ },
+ {
+  "src": "naver_siseJson",
+  "code": "329180",
+  "url": "https://fchart.stock.naver.com/siseJson.nhn?symbol=329180&requestType=1&startTime=20260920&endTime=20260929&timeframe=day",
+  "status": 200,
+  "bytes": 383,
+  "ms": 179,
+  "err": null
+ },
+ {
+  "src": "naver_m_basic",
+  "code": "329180",
+  "url": "https://m.stock.naver.com/api/stock/329180/basic",
+  "status": 200,
+  "bytes": 4148,
+  "ms": 703,
+  "err": null
+ },
+ {
+  "src": "naver_m_price",
+  "code": "329180",
+  "url": "https://m.stock.naver.com/api/stock/329180/price?pageSize=3&page=1",
+  "status": 200,
+  "bytes": 859,
+  "ms": 178,
+  "err": null
+ },
+ {
+  "src": "naver_api_chart",
+  "code": "329180",
+  "url": "https://api.stock.naver.com/chart/domestic/item/329180/day?startDateTime=202609250000&endDateTime=202609290000",
+  "status": 200,
+  "bytes": 345,
+  "ms": 712,
+  "err": null
+ },
+ {
+  "src": "naver_sise_day",
+  "code": "329180",
+  "url": "https://finance.naver.com/item/sise_day.naver?code=329180&page=1",
+  "status": 410,
+  "bytes": 1687,
+  "ms": 715,
+  "err": null
+ },
+ {
+  "src": "yahoo",
+  "code": "329180",
+  "url": "https://query1.finance.yahoo.com/v8/finance/chart/329180.KS?range=5d&interval=1d",
+  "status": 200,
+  "bytes": 1546,
+  "ms": 79,
+  "err": null
+ },
+ {
+  "src": "daum",
+  "code": "329180",
+  "url": "https://finance.daum.net/api/quote/A329180/days?symbolCode=A329180&page=1&perPage=3&pagination=true",
+  "status": 200,
+  "bytes": 1625,
+  "ms": 1161,
+  "err": null
+ },
+ {
+  "src": "mk",
+  "code": "329180",
+  "url": "https://stock.mk.co.kr/price/home/KR7329180000",
+  "status": 200,
+  "bytes": 149383,
+  "ms": 1556,
+  "err": null
+ },
+ {
+  "src": "krx_all_stk",
+  "code": "ALL",
+  "status": 400,
+  "bytes": 6,
+  "err": null
+ },
+ {
+  "src": "krx_all_ksq",
+  "code": "ALL",
+  "status": 400,
+  "bytes": 6,
+  "err": null
+ }
+]
