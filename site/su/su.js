@@ -42,13 +42,13 @@ export async function base() {
 }
 export const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
 const PHASE = ['기', '승', '전', '결'];
-export const STEPS = [null, ['28곳', 0], ['땅 지도', 1], ['업종', 1], ['회사', 2], ['회사 자세히', 2], ['「왜 사?」', 3], ['내 매매일지', 3], ['친구에게', 3]]; // 주문 2044 — 21곳 → 땅 → 업종 → 회사 → 자세히 → 왜 사? → 일지 → 친구에게
+export const STEPS = [null, ['21곳', 0], ['땅 지도', 1], ['업종', 1], ['회사', 2], ['회사 자세히', 2], ['「왜 사?」', 3], ['내 매매일지', 3], ['친구에게', 3]]; // 주문 2044 — 21곳 → 땅 → 업종 → 회사 → 자세히 → 왜 사? → 일지 → 친구에게
 let lastCo = null, FIRST = null;
 export const cur = () => lastCo;
 export const setCur = c => { lastCo = c; };
 export const coHref = c => '#/c/' + c, indHref = n => '#/i/' + encodeURIComponent(n);
 const firstCode = (bl, mo) => bl.rows[0]?.code ?? mo[0]?.code ?? null;
-const TABS = () => [['28곳', '#/', 'M4 11l8-7 8 7v9h-5v-6h-6v6H4z'], ['지도', '#/m', 'M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14'],
+const TABS = () => [['21곳', '#/', 'M4 11l8-7 8 7v9h-5v-6h-6v6H4z'], ['지도', '#/m', 'M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14'],
   ['기록', '#/r', 'M4 20V11M10 20V5M16 20v-8M21 20H3'], ['멈춤', lastCo?.code ? '#/q/' + lastCo.code : '#/q', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM10 9v6M14 9v6'],
   ['달력', '#/r/c', 'M4 6h16v14H4zM4 10h16M8 3v5M16 3v5M8 14h2M14 14h2M8 17h2']]; // 4 달력 — 주문 0040(사장님 2026-11-11 00:40 「달력을 탭에 두도록해」) · 1 · 2 · 3등 달력
 
@@ -150,7 +150,7 @@ function dock(nx, step) {
 export const TAB_ORDER = Object.freeze([0, 1, 3, 2, 4]);
 function tabs(active) {
   const T = TABS();
-  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 중요한 차례 28곳 · 지도 · 멈춤 · 기록 · 달력'}, TAB_ORDER.map((i, k) => { const [t, href, d] = T[i];
+  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 중요한 차례 21곳 · 지도 · 멈춤 · 기록 · 달력'}, TAB_ORDER.map((i, k) => { const [t, href, d] = T[i];
     return h('a', {class: 'su-tab' + (i === active ? ' su-on' : ''), href, 'aria-current': i === active ? 'page' : null, 'aria-label': (k + 1) + '번째 · ' + t},
       s('svg', {class: 'su-ti', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d})), h('span', {text: t})); }));
 }
@@ -333,8 +333,7 @@ async function vHub() {
     figs: [cols(ms.ms.map(m => ({v: m.rec.rate, v2: m.rec.base, open: m.rec.complete !== true, key: m.month, tick: /-(01|07)$/.test(m.month) ? (+m.month.slice(5, 7)) + '월' : null})), {label: '달마다 꽃이 된 횟수', title: '달마다 · 못했던 달은 ■'}),
       split(hon?.n, hon?.hits, (B?.why?.names ?? []).map((n, k) => ({name: n, v: B?.why?.all?.why?.[k]})), {label: '꽃이 된 것과 못 된 것', title: '꽃이 된 것과 못 된 것'})],
     body: [h('section', {class: 'su-drawers', 'aria-label': '기록 서랍 — 중요한 차례'}, h('h2', {class: 'su-ft', text: '기록 서랍 — 중요한 차례'}), // 토론으로 정한 차례(주문 1023 [4] · tabs-11.md 최종): 달마다 → 한 달 뒤 → 내 매매일지 → 못 된 까닭 → 날마다 → 옛 기록 더 보기
-      drawer('#/r/c', '1 · 2 · 3등 달력', '10주씩', '뽑힌 날부터 산 셈 · 가짜 돈'),
-      drawer('#/r/s', '조용한 힘 달력', '10주씩', '조용한데 힘이 모이는 창 1 · 2 · 3등'), // 주문 1111-1334 — 넷째 창 따로 된 달력(모든 사람)
+      drawer('#/r/c', '1 · 2 · 3등 달력', '10주씩', '뽑힌 날부터 산 셈 · 가짜 돈'), // 주문 0938 · 1513(사장님 2026-11-10 15:13 「모든사람 휴대폰에 열리게 해」) — 모든 사람
       drawer('#/r/m', '달마다', ms.big.v ?? NEED, ms.big.label),
       drawer('#/j', '한 달 뒤', mine.filter(r => r.kept?.a === 'yes' || r.kept?.a === 'no').length + '번', '한 달 전 약속 — 「그날 정한 대로 했어?」에 답한 수'),
       drawer('#/j', '내 매매일지', mine.length + '번', '「왜 사?」에 답한 기록 · 이 휴대폰에만'),
@@ -420,15 +419,14 @@ async function route() {
   const fw = forwardTo(location.search, hh);
   if (fw) { location.replace(fw); return; }
   const root = document.getElementById('su');
-  const m = /^#\/(c|i|k|r|p|q|m|g)\/(.+)$/.exec(hh), t = /^#\/(b|k|r|p|q|j|m|f|g|n|s)$/.exec(hh);
+  const m = /^#\/(c|i|k|r|p|q|m|g)\/(.+)$/.exec(hh), t = /^#\/(b|k|r|p|q|j|m|f|g|n)$/.exec(hh);
   let v;
   try {
-    const on21 = (!m && !t) || (t && (t[1] === 'm' || t[1] === 'f' || t[1] === 'g' || t[1] === 'n' || t[1] === 's')) || (m && (m[1] === 'm' || m[1] === 'g')); // 21곳 쪽은 꽃 · 돈 · 왜 자료를 기다리지 않음(주문 2044 느린 휴대폰 첫 화면)
+    const on21 = (!m && !t) || (t && (t[1] === 'm' || t[1] === 'f' || t[1] === 'g' || t[1] === 'n')) || (m && (m[1] === 'm' || m[1] === 'g')); // 21곳 쪽은 꽃 · 돈 · 왜 자료를 기다리지 않음(주문 2044 느린 휴대폰 첫 화면)
     if (!FIRST && !on21) { const b0 = await base(); FIRST = firstCode(b0.bl, b0.mo); }
     if (on21) setTimeout(() => { base().catch(() => null); }, 2500); // 넷째 쪽(회사) 자료는 첫 화면 뒤에 미리 받아 둠
     if (!m && !t) v = await v21Home(X21);
     else if (t && t[1] === 'n') v = await v21Next(X21); // 될 듯 21곳(주문 1103)
-    else if (t && t[1] === 's') v = await (await import('/su/su-quiet.js')).vQuiet(X21); // 넷째 창 조용한데 힘이 모이는 7곳(주문 1111-1334)
     else if (t) v = t[1] === 'g' ? await (await roadM()).vRoads(X21) : t[1] === 'm' ? await vLand(X21) : t[1] === 'f' ? await vFriend(X21) : t[1] === 'r' ? await vHub() : t[1] === 'q' || t[1] === 'p' ? await (await whyM()).vQuiz(lastCo?.code ?? null, ctx) : t[1] === 'j' ? await (await whyM()).vJournal(ctx) : t[1] === 'k' && lastCo?.code ? await vCo(lastCo.code) : await vHome();
     else {
       const [, k, raw] = m; let a = raw; try { a = decodeURIComponent(raw); } catch { /* 그대로 */ }
@@ -438,7 +436,7 @@ async function route() {
       else if (k === 'g') v = await (await roadM()).vRoads(X21, a);
       else if (k === 'c' || k === 'k') v = await coOnPath(a);
       else if (k === 'i') v = await vInd(a);
-      else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : a === 'k' ? await (await import('/su/su-kr7.js')).vKr7(X21) : a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21) : a === 'c' ? await (await import('/su/su-book.js')).vBook(X21) : a === 's' ? await (await import('/su/su-book.js')).vBook(X21, 'quiet') : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
+      else if (k === 'r') v = a === 'm' ? await vMonths() : a === 'w' ? await vMiss() : a === 'd' ? await vDays() : a === 'y' ? await vYears() : a === 'n' ? await vNear() : a === 'k' ? await (await import('/su/su-kr7.js')).vKr7(X21) : a === 'i' ? await (await import('/su/su-kr7.js')).vAnt11(X21) : a === 'c' ? await (await import('/su/su-book.js')).vBook(X21) : CODE.test(a) ? (lastCo = lastCo?.code === a ? lastCo : {code: a, name: null, ind: null}, await vHub()) : notFound('이 기록을 찾지 못했어요.');
       else v = CODE.test(a) ? await (await whyM()).vQuiz(a, ctx) : notFound('이 회사를 찾지 못했어요.');
     }
   } catch (e) { console.error(e); v = notFound('화면을 그리다 멈췄어요. 다시 열어 주세요.'); }
