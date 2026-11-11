@@ -47,7 +47,7 @@ function barsFig(b) {
 }
 
 /* ── 일곱 칸 — 누르면 펼침(첫 칸은 펼친 채) ── */
-function card(it, i, WHY = '한국 문화와 이어진 이유') {
+function card(it, i, WHY = '한국 문화와 이어진 까닭') {
   return h('li', {class: 'k7-li', 'data-k7': String(i + 1)},
     h('details', {class: 'k7-d', open: i === 0},
       h('summary', {class: 'k7-sum'}, h('span', {class: 'k7-n', text: String(i + 1)}),

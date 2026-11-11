@@ -9,7 +9,7 @@
    같은 틀을 su-more-art 가 씀(MU.poster) · 보안: createElementNS · setAttribute 만 · 옛 아이폰 사파리를 위해 뒤돌아보기 글꼴 · .at() · ??= 없음 */
 import {s} from '/su/su-fig.js';
 import {CODE, pct, dateKo, coLine, idxLine} from '/su/su-data.js';
-import {NEED, num, joEok} from '/su/su-six.js';
+import {NEED, num} from '/su/su-six.js';
 import {KIND} from '/su/su-21.js';
 import {medallion, scroll as kScroll, vine as kVine, beads as kBeads, rays as kRays, taper as kTaper, strands as kStrands} from './su-mucha-kit.js';
 
@@ -218,7 +218,7 @@ function model(d) {
     const cvp = k === 'money' ? (fin(w.gain) ? ['20거래일', dk(asOf.mkt)] : null) : k === 'hot' ? (fin(x.ch20) ? ['20거래일', dk(x.date)] : null) : null;
     const ivL = k === 'hot' ? '업종' : '시장보다', ivN = k === 'hot' ? sgnP(w.ind20) : sgn(w.indX);
     return {k, kind: KIND[k], ind: x.ind || ind || NEED, iv: ivL + ' ' + ivN, ivL, ivN,
-      name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + joEok(w.gain) : NEED) : k === 'bloom' ? '아직 싹' : sgnP(x.ch20), ivp, cvp};
+      name: x.name || c.name, cv: k === 'money' ? (fin(w.gain) ? '+' + num(w.gain) + '억 원' : NEED) : k === 'bloom' ? '아직 싹' : sgnP(x.ch20), ivp, cvp};
   });
   const from = H && typeof H.base === 'string' ? H.base : null, to = typeof c.priceDate === 'string' ? c.priceDate : H && typeof H.asOf === 'string' ? H.asOf : null;
   return {ok: true, code, name: c.name, ind, cl, il, last: cl ? lastOf(cl) - 100 : null, ilast: il ? lastOf(il.line) - 100 : null, from, to, roads};

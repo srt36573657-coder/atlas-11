@@ -35,7 +35,7 @@ export const FEAT = Object.freeze([
   {id: 'sun', name: '뜨거운 태양', group: 'hot', helps: 'hot', open: '#/c/180640/more', how: '회사 자세히 쪽 해 그림 — 1년 낮은 값과 높은 값 사이 자리, 높은 값 가까이면 햇살(모아 보기 쪽은 지금 없어요)', owner: false},
 
   /* ── 꽃을 돕는 것 ── */
-  {id: 'bloomco', name: '꽃 될 회사', group: 'bloom', helps: 'bloom', open: '#/b', how: '이달 꽃 조건에 맞은 회사 — 없는 날은 가장 가까운 회사와 그 이유', owner: false}, // 옛 쪽 = /next/#/t/picks(같은 자료 theme-bloom.json)
+  {id: 'bloomco', name: '꽃 될 회사', group: 'bloom', helps: 'bloom', open: '#/b', how: '이달 꽃 조건에 맞은 회사 — 없는 날은 가장 가까운 회사와 그 까닭', owner: false}, // 옛 쪽 = /next/#/t/picks(같은 자료 theme-bloom.json)
   {id: 'record', name: '지난 기록', group: 'bloom', helps: 'bloom', open: '#/r', how: '조건에 맞은 회사가 지난날 100번에 몇 번 꽃이 됐나 — 기록 서랍 여섯', owner: false}, // 옛 쪽 = /next/#/t/pick
   {id: 'sprout', name: '싹', group: 'bloom', helps: 'bloom', open: '/next/#/t/sprout', how: '싹 자리에 든 업종 모두 — 맨 앞 셋은 크게', owner: false},
   {id: 'sproutcal', name: '싹 달력', group: 'bloom', helps: 'bloom', open: '/next/#/t/cal', how: '날짜마다 큐피트가 찾은 싹 1 · 2 · 3번 업종과 그 뒤 줄', owner: false},
@@ -52,7 +52,7 @@ export const FEAT = Object.freeze([
   /* ── 돈을 돕는 것 ── */
   {id: 'flow', name: '돈의 흐름', group: 'money', helps: 'money', open: '/next/#/', how: '첫 화면 맨 위 「돈 흐름」 — 한 달 동안 시장보다 더 오른 업종 셋, 덜 오른 업종 셋', owner: false},
   {id: 'supply', name: '수급', group: 'money', helps: 'money', open: '#/c/180640/more', how: '회사 자세히 쪽 — 닷새 동안 외국인 · 기관 · 개인이 사고판 차이(21곳 안 회사만)', owner: false},
-  {id: 'lights11', name: '말하는 불빛 11', group: 'money', helps: 'money', open: '/next/#/', how: '첫 화면 「돈 흐름」에서 몰린 업종 줄을 펼치면 이유 열한 가지 불빛과 말', owner: false},
+  {id: 'lights11', name: '말하는 불빛 11', group: 'money', helps: 'money', open: '/next/#/', how: '첫 화면 「돈 흐름」에서 몰린 업종 줄을 펼치면 까닭 열한 가지 불빛과 말', owner: false},
   // 「왜 그럴까」 열한 걸음 — 첫 화면 「오늘 시장」의 「왜 그런지 보기」 단추 안에도 같은 그림(why-chain.js) · 바로 열리는 쪽은 테마 회사의 「왜 그럴까?」
   {id: 'why11', name: '「왜 그럴까」 열한 걸음', group: 'money', helps: 'money', open: '/next/#/t/c/005930/why', how: '한 사실이 다음 물음을 부르는 열한 걸음 그림 — 첫 화면 「왜 그런지 보기」도 같아요', owner: false},
   {id: 'inflow', name: '몰린 곳', group: 'money', helps: 'money', open: '/next/#/', how: '첫 화면 「돈 흐름」의 돈이 몰린 업종 셋', owner: false},

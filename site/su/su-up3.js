@@ -14,8 +14,6 @@ export const CSS = '/su/su-up3.css';
 const CSSW = '/su/su-why36.css'; // 칩 · 상자 · 번호 줄은 「왜?」 쪽과 같은 틀
 const fin = v => typeof v === 'number' && Number.isFinite(v);
 export const HOW = Object.freeze(['긴 오름세 · 덜 흔들림', '1년 오른 날 몫', '업종 따라잡기', '닷새 눌림']);
-/* 쉬운 판(주문 1112-0253) — 기준 넷을 문장으로(첫 페이지 su-apple.js EASYHOW 와 같은 말 · 자료 이름은 그대로) */
-export const EASYHOW = Object.freeze({'긴 오름세 · 덜 흔들림': '1년 꾸준히 오름', '1년 오른 날 몫': '1년 오른 날이 많음', '업종 따라잡기': '업종보다 덜 오름', '닷새 눌림': '최근 5일 쉼'});
 /** 잣대마다 쉬운 풀이(su21_up3.py parts 와 같은 뜻) */
 export const SAYS = Object.freeze([
   '1년 동안 많이 오르고 덜 흔들린 회사일수록 높아요. 마지막 한 달은 빼고 봐요.',
@@ -60,7 +58,7 @@ function bigLine(name, sp, from, to, ch) {
 function bars4(name, parts, how) {
   const W = 350, RH = 70, H = 4 * RH + 40, C = W / 2, M = 3;
   const g = s('svg', {class: 'u3-bars', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet',
-    'aria-label': name + ' 이유 넷 — ' + how.map((t, j) => t + ' ' + sz(parts[j])).join(' · ')});
+    'aria-label': name + ' 잣대 넷 — ' + how.map((t, j) => t + ' ' + sz(parts[j])).join(' · ')});
   how.forEach((t, j) => {
     const v = parts[j], y = j * RH, c = fin(v) ? Math.max(-M, Math.min(M, v)) : 0, x = C + (c / M) * (C - 2);
     g.append(s('g', {class: 'u3-bar', 'data-j': String(j + 1), 'data-v': fin(v) ? String(v) : ''},
@@ -95,9 +93,9 @@ export async function vUp3(X, code) {
   const [T, book, b] = await Promise.all([load21(get).catch(() => null), get('/su/data/su21-book.json').catch(() => null), X.base().catch(() => ({}))]);
   const t3 = T?.top3, rank = t3?.v === 'up3-v1' && Array.isArray(t3.rank) ? t3.rank : [];
   const me = rank.find(r => r?.code === code);
-  if (!me) return X.notFound('이 회사는 오늘 1 · 2 · 3등이 아니에요. 첫 페이지에서 다시 골라 주세요.');
+  if (!me) return X.notFound('이 회사는 오늘 새 잣대 1 · 2 · 3등이 아니에요. 첫 페이지에서 다시 골라 주세요.');
   if (X.setCur) X.setCur({code, name: me.name, ind: me.ind});
-  const board = T?.asOf?.board ?? null, how = (Array.isArray(t3.how) && t3.how.length === 4 ? t3.how : HOW).map(t => EASYHOW[t] ?? t), parts = Array.isArray(me.parts) ? me.parts : [];
+  const board = T?.asOf?.board ?? null, how = Array.isArray(t3.how) && t3.how.length === 4 ? t3.how : HOW, parts = Array.isArray(me.parts) ? me.parts : [];
   const {px, sp, ch} = facts(me, board), name = String(me.name ?? NEED), P = t3.past ?? {};
   const head = h('section', {class: 'yw-sum u3-sum', 'aria-label': '현재가 · 한 달 · 업종'},
     chip('현재가', won(px), 'u3-px'), chip('한 달', sp ? pct(ch) : NEED, sp && ch >= 0 ? 'u3-pos' : ''), chip('업종', String(me.ind ?? NEED)));
@@ -105,8 +103,8 @@ export async function vUp3(X, code) {
     h('figcaption', {class: 'yw-s u3-cap', text: '꺾은선은 한 달 동안 날마다 마지막 값이에요. 옅은 줄은 한 달 전 값이에요.'}))
     : h('p', {class: 'yw-s u3-need', text: '한 달 꺾은선은 ' + NEED + '이에요.'});
   const fp = firstPick(book, code);
-  const why = h('section', {class: 'yw-box u3-why', 'aria-label': '고른 이유 넷'},
-    h('h2', {class: 'yw-h', text: '고른 이유 넷'}),
+  const why = h('section', {class: 'yw-box u3-why', 'aria-label': '고른 까닭 넷'},
+    h('h2', {class: 'yw-h', text: '고른 까닭 넷'}),
     h('p', {class: 'yw-s', text: '우량주 ' + (t3.n ?? NEED) + '곳 가운데 몸집이 작은 곳과 값이 모자란 곳을 빼고 ' + (t3.pool ?? NEED) + '곳끼리 날마다 견줘요. 가운데 줄이 보통이에요.'}),
     bars4(name, parts, how),
     h('ol', {class: 'yw-ol u3-ol'}, how.map((t, j) => h('li', {class: 'yw-li'}, h('span', {class: 'yw-n', 'aria-hidden': 'true', text: String(j + 1)}), ' ',
@@ -130,10 +128,10 @@ export async function vUp3(X, code) {
     head, graph, why, past,
     others.length ? h('section', {class: 'yw-box u3-others', 'aria-label': '다른 1 · 2 · 3등'}, h('h2', {class: 'yw-h', text: '다른 ' + (others.length === 2 ? '두 곳' : others.length + '곳')}), ...others) : null,
     go);
-  return {title: name + ' · 오늘의 ' + me.place + '등', tab: 0, h1: name + ', 왜 ' + me.place + '등?', proper: false, hero, body: [],
+  return {title: name + ' · 새 잣대 ' + me.place + '등', tab: 0, h1: name + ', 왜 ' + me.place + '등?', proper: false, hero, body: [],
     next: {href: '#/r/c', label: '1 · 2 · 3등 달력은?'}, asOf: board, S: b?.S ?? null};
 }
 
 /** 쓰지 않을 말 · 화면 낱말 검사용 — 이 쪽이 쓰는 고정 문장 */
-export const SAY_FIXED = Object.freeze(['고른 이유 넷', '가운데 줄이 보통이에요.', '꺾은선은 한 달 동안 날마다 마지막 값이에요. 옅은 줄은 한 달 전 값이에요.', '지난 기록', '앞날을 맞히지 않아요. 지난 값으로 센 기록이에요.',
+export const SAY_FIXED = Object.freeze(['고른 까닭 넷', '가운데 줄이 보통이에요.', '꺾은선은 한 달 동안 날마다 마지막 값이에요. 옅은 줄은 한 달 전 값이에요.', '지난 기록', '앞날을 맞히지 않아요. 지난 값으로 센 기록이에요.',
   '1 · 2 · 3등 달력 보기', '날마다 뽑힌 셋을 뽑힌 날부터 따라가요.', '이 회사 쪽 보기', '한 달 꺾은선과 업종을 봐요.', '‹ 낮아요', '보통', '높아요 ›', ...SAYS]);
