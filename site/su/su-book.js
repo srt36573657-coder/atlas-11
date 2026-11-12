@@ -7,9 +7,6 @@
    ④ 한 주 한 줄 달력(월 ~ 금 · 뽑힌 날 칸에 1 · 2 · 3등 차례 세 모양 · 누르면 그 판으로) ⑤ 판마다 「처음 보인 때」 ⑥ 막 뽑힌 판(아직 하루치)은 이름 한 줄
    ⑦ 앞 판은 줄마다 등수 · 이름 · 「100원이 ○원」 · 10주 늘고 준 돈 · 같은 눈금(산 값 = 100 · 점선) · 같은 날 축 꺾은선 ⑧ 최근 다섯 판만 펴고 그 앞은 달마다 접음
    셈(화면에서): 산 값 = 그 판 날 마지막 값 × 10주 · 지금 = 가장 늦은 값 × 10주 · 번 것과 잃은 것을 같은 크기로 · 차례는 판 날 · 등수(번 크기 차례 0) · 「%」 0
-   돈 셈 한눈에(주문 1112-1304 · 사장님 2026-11-12 13:04 「지금까지 총 매수한 금액이 얼마고 그담에 날짜별로 매수한 금액이 얼마여 가지고 순실이나 수익이 어떻게 됐는지
-   하늘이 알 수 있게끔 바보도 알 수 있게끔」 · docs/design/top3-cal-2026-11-12/order-1304.txt) — 맨 위 「지금까지」(산 돈 · 지금 · 늘었나 줄었나) → 「날짜마다」 표(고른 날 · 산 돈 ·
-   늘었나 줄었나 · 그날 세 회사 · 맨 아래 「모두」 = 맨 위와 같은 수) → 판마다 「산 돈 → 지금」 → 줄마다 「10주 ○원어치」 · 줄어든 돈도 같은 크기 · 같은 굵기 · 모양 + 글(색만으로 뜻 0)
    자료 /su/data/su21-book.json(scripts/atlas11/next/su21_book.mjs) · 글은 textContent 로만 · 꾸밈은 클래스(보안 규칙 style-src 'self') */
 import {h, s} from '/su/su-fig.js';
 
@@ -77,17 +74,6 @@ export function swing(C) {
   const d = big.val - big.cost;
   return d && Math.abs(d) * 2 >= Math.abs(C.diff) ? {r: big, d, rest: C.diff - d} : null;
 }
-/** 더함(주문 1112-1304) — 산 돈 · 지금 · 늘고 준 돈 · 모양(모두 아직 하루치면 one · 늘고 줆은 반올림한 원으로 — moved 와 같은 잣대) */
-export function sumOf(rows) {
-  const rs = Array.isArray(rows) ? rows : [], cost = rs.reduce((a, r) => a + r.cost, 0), val = rs.reduce((a, r) => a + r.val, 0), diff = val - cost, one = rs.length > 0 && rs.every(r => r.one);
-  return {cost, val, diff, one, st: one ? 'one' : Math.round(diff) > 0 ? 'up' : Math.round(diff) < 0 ? 'dn' : 'eq'};
-}
-/** 날짜마다(주문 1112-1304) — 고른 날마다 그날 셋을 더함 · 날 차례(오래된 날이 앞 — 화면은 뒤집어 새 날이 위) · 늘고 준 크기 차례 0 */
-export const dayCalc = C => (C?.days ?? []).map(d => { const rs = C.rows.filter(r => r.day === d).sort((a, b) => a.place - b.place); return {day: d, rows: rs, ...sumOf(rs)}; });
-/** 그날 세 회사 이름 조각 — 「셀트리온 ·」 「한올바이오파마 ·」 「진에어」(조각마다 줄을 바꾸지 않음 — 줄은 조각 사이에서만 바뀜 · 「CJ ENM」이 갈라지거나 점이 줄 맨 앞에 오지 않음 · 글은 보통 띄어쓰기) */
-export const nameBits = rs => rs.map((r, i) => String(r.name) + (i < rs.length - 1 ? ' ·' : ''));
-/** 늘었나 줄었나 칸 글 — 「37만 5,100원」(모양이 늘고 줆을 말함 · 표 머리 「늘었나 줄었나」) · 그대로 · 아직 하루치 */
-export const resText = x => (x.st === 'one' ? '아직 하루치' : x.st === 'eq' ? '그대로' : won(x.diff));
 /** 세 칸 — 늘었어요 · 줄었어요 · 셋째 칸(아직 하루치 · 그대로 · 둘 다) */
 export function tiles(n) {
   const third = n.one && n.eq ? {st: 'eq', label: '그대로 · 하루치', k: n.eq + n.one} : n.one ? {st: 'one', label: '아직 하루치', k: n.one} : {st: 'eq', label: '그대로', k: n.eq};
@@ -115,26 +101,22 @@ const axisOf = rows => [...new Set(rows.flatMap(r => r.ser.map(([d]) => d)))].so
 const shapeOf = (st, size = '') => s('svg', {class: 'bk-sh bk-s' + st + (size ? ' bk-sh' + size : ''), viewBox: '0 0 20 20', 'aria-hidden': 'true', 'data-shape': SHAPE[st]},
   st === 'up' ? s('path', {d: 'M10 2.5 L18.5 17.5 L1.5 17.5 Z'}) : st === 'dn' ? s('path', {d: 'M1.5 2.5 L18.5 2.5 L10 17.5 Z'}) : st === 'eq' ? s('rect', {x: 1.5, y: 8, width: 17, height: 4, rx: 2}) : s('circle', {cx: 10, cy: 10, r: 6.5}));
 
-/** 줄 하나 — 등수 · 이름 · (같은 회사 몇 번째) · 모양 + 100원이 ○원 · 10주 ○원어치(산 돈 · 주문 1112-1304) · 늘고 준 돈 · 그림 · 누르면 그 회사 쪽 */
-export const monText = (r, qty) => [qty + '주 ' + won(r.cost) + '어치', r.one ? SAID.one : moved(r.val - r.cost)];
+/** 줄 하나 — 등수 · 이름 · (같은 회사 몇 번째) · 모양 + 100원이 ○원 · 10주 늘고 준 돈 · 그림 · 누르면 그 회사 쪽 */
 function row(r, axis, R, qty) {
   return h('a', {class: 'bk-row bk-' + r.st, href: '#/c/' + r.code, 'data-code': r.code, 'data-place': String(r.place), 'data-day': r.day, 'data-st': r.st},
     h('span', {class: 'bk-top'}, h('b', {class: 'bk-pl', text: r.place + '등'}), h('span', {class: 'bk-nm', text: r.name}),
       r.nth > 1 ? h('span', {class: 'bk-tag', text: '같은 회사 ' + nth(r.nth)}) : null, h('i', {class: 'bk-chev', 'aria-hidden': 'true', text: '›'})),
     h('span', {class: 'bk-res'}, shapeOf(r.st), h('span', {class: 'bk-r100', text: r100(r.now, r.buy)})),
-    h('span', {class: 'bk-mon'}, monText(r, qty).map((t, i) => h('span', {class: 'bk-mon' + (i + 1), text: t}))),
+    h('span', {class: 'bk-mon', text: qty + '주 ' + (r.one ? '— ' + SAID.one : moved(r.val - r.cost))}),
     spark(r, axis, R));
 }
-/** 판의 돈 줄(주문 1112-1304) — 「산 돈 ○원 → 지금 ○원」 + 모양 · 늘고 준 돈 · 아직 하루치면 「산 돈 ○원」 + 「아직 하루치예요」 */
-export const boardMoney = S => [S.one ? '산 돈 ' + won(S.cost) : '산 돈 ' + won(S.cost) + ' → 지금 ' + won(S.val), S.one ? SAID.one : moved(S.diff)];
-/** 판 하나 — 머리(날 · 요일 · 처음 보인 때) · 그날 돈 줄 · 아직 하루치면 이름 한 줄 · 아니면 줄 셋 */
+/** 판 하나 — 머리(날 · 요일 · 처음 보인 때) · 아직 하루치면 이름 한 줄 · 아니면 줄 셋 */
 function boardSec(day, rs, axis, R, qty, key = false) {
-  const one = rs.every(r => r.one), sn = seenKo(rs[0]?.seen), S = sumOf(rs), [m1, m2] = boardMoney(S);
+  const one = rs.every(r => r.one), sn = seenKo(rs[0]?.seen);
   return h('section', {class: 'bk-board' + (one ? ' bk-oneday' : ''), 'data-day': day, 'aria-label': md(day) + '에 고른 셋'}, // 쉬운 판(주문 1112-0253) — 「판」 → 「고른 셋 · 고른 날」(일상 말)
     h('h2', {class: 'bk-bh', text: md(day) + ' (' + wd(day) + ')에 고른 셋' + (one ? ' · 아직 하루치' : '')}),
     sn ? h('p', {class: 'bk-seen', text: '처음 보인 때 ' + sn.text}) : null,
     sn && sn.day > day ? h('p', {class: 'bk-late', text: '고른 날보다 늦게 보였어요. 값은 ' + md(day) + ' 마지막 값으로 셌어요.'}) : null,
-    h('p', {class: 'bk-bmon', 'data-st': S.st}, h('span', {class: 'bk-bm1', text: m1}), h('span', {class: 'bk-bm2'}, shapeOf(S.st), h('span', {text: m2}))),
     one ? h('p', {class: 'bk-names'}, rs.map((r, i) => [i ? h('span', {class: 'bk-dot', 'aria-hidden': 'true', text: '·'}) : null,
       h('span', {class: 'bk-nm1', 'data-code': r.code, 'data-place': String(r.place)}, h('b', {class: 'bk-pl', text: r.place + '등'}), h('span', {text: r.name}))]))
       : h('ol', {class: 'bk-rows'}, rs.map(r => h('li', {}, row(r, axis, R, qty)))),
@@ -159,48 +141,6 @@ function calendar(C, go) {
     return b;
   });
   return h('section', {class: 'bk-cal', 'aria-label': '달력 — 뽑힌 날을 누르면 그날로 가요'}, h('div', {class: 'bk-grid'}, cells));
-}
-
-/* ── 돈 셈 한눈에(주문 1112-1304) — 맨 위 「지금까지」 → 「날짜마다」 표(맨 아래 「모두」 = 맨 위와 같은 수 · 영수증 합계처럼) ── */
-/** 지금까지 — 산 돈 · 지금 · 늘었나 줄었나(모양 + 글 · 늘어도 줄어도 같은 크기) · 모두 합치면 100원이 ○원 · ○월 ○일 값까지 */
-function moneyCard(C) {
-  const T = sumOf(C.rows);
-  return h('section', {class: 'bk-money', 'aria-label': '지금까지 산 돈과 지금', 'data-st': T.st},
-    h('p', {class: 'bk-mh'}, h('b', {text: '지금까지'}), h('span', {text: md(C.last) + ' 값까지'})),
-    h('p', {class: 'bk-ml bk-mcost'}, h('span', {text: '산 돈'}), h('b', {text: won(T.cost)})),
-    h('p', {class: 'bk-ml bk-mval'}, h('span', {text: '지금'}), h('b', {text: won(T.val)})),
-    h('p', {class: 'bk-mres'}, shapeOf(T.st, 'big'), h('span', {text: T.one ? SAID.one : moved(T.diff)})),
-    T.one ? null : h('p', {class: 'bk-m100', text: '모두 합치면 ' + r100(T.val, T.cost)}));
-}
-/** 날짜마다 — 표 한 장(왼쪽 고른 날 · 그날 세 회사 / 오른쪽 위 산 돈 · 아래 늘었나 줄었나 — 은행 앱 거래 내역처럼 돈은 오른쪽 끝에 맞춤)
- *  새 날이 위 · 다섯 날만 펴고 그 앞은 달마다 접음(판 목록과 같은 셈) · 줄을 누르면 그날 판으로 */
-function ledger(C, go) {
-  const D = dayCalc(C), desc = [...D].reverse(), recent = desc.slice(0, RECENT), older = desc.slice(RECENT), T = sumOf(C.rows);
-  const cells = (a, x) => [h('span', {class: 'bk-dday', text: a}), h('span', {class: 'bk-dcost', text: won(x.cost)}), h('span', {class: 'bk-ddiff', 'data-st': x.st}, shapeOf(x.st), h('span', {class: 'bk-dv', text: resText(x)}))];
-  const dayRow = x => {
-    const b = h('button', {type: 'button', class: 'bk-drow', 'data-day': x.day, 'data-st': x.st,
-      'aria-label': md(x.day) + '에 고른 셋 — 산 돈 ' + won(x.cost) + ' · ' + (x.one ? SAID.one : moved(x.diff)) + ' · 누르면 그날로 가요'},
-      cells(md(x.day) + ' (' + wd(x.day) + ')', x), h('span', {class: 'bk-dnm'}, nameBits(x.rows).map((t, i) => [i ? ' ' : null, h('span', {class: 'bk-dn1', text: t})])), h('i', {class: 'bk-dk', 'aria-hidden': 'true', text: '›'}));
-    b.addEventListener('click', () => go(x.day));
-    return b;
-  };
-  const byMon = new Map();
-  for (const x of older) { const ym = x.day.slice(0, 7); if (!byMon.has(ym)) byMon.set(ym, []); byMon.get(ym).push(x); }
-  const lastY = (C.last ?? '').slice(0, 4);
-  // 달 줄 이름 = 그 달 접은 날의 처음 ~ 끝(「11월 3일 ~ 4일」 — 「11월 3일」처럼 하루로 읽히지 않게 · 하루면 그 날)
-  const span = xs => { const a = xs[xs.length - 1].day, b = xs[0].day; return a === b ? md(a) : md(a) + ' ~ ' + +b.slice(8, 10) + '일'; };
-  const mons = [...byMon].map(([ym, xs]) => {
-    const S = sumOf(xs.flatMap(x => x.rows)), y = ym.slice(0, 4);
-    return h('details', {class: 'bk-dmon', 'data-month': ym},
-      h('summary', {class: 'bk-drow bk-dsum', 'data-st': S.st}, cells((y !== lastY ? y + '년 ' : '') + span(xs), S),
-        h('span', {class: 'bk-dnm', text: '고른 날 ' + xs.length + '일을 더했어요 · 누르면 날마다 펴져요'}), h('i', {class: 'bk-dk', 'aria-hidden': 'true', text: '›'})),
-      xs.map(dayRow));
-  });
-  return h('section', {class: 'bk-days', 'aria-label': '날짜마다 산 돈'},
-    h('h2', {class: 'bk-dh', text: '날짜마다'}),
-    h('div', {class: 'bk-dhead', 'aria-hidden': 'true'}, h('span', {class: 'bk-hd', text: '고른 날 · 고른 셋'}), h('span', {class: 'bk-hc', text: '산 돈'}), h('span', {class: 'bk-hr', text: '늘었나 줄었나'})),
-    h('div', {class: 'bk-drows'}, recent.map(dayRow), mons),
-    h('div', {class: 'bk-dtot', 'data-st': T.st}, cells('모두', T)));
 }
 
 /** 지난 달 판 — 접힌 칸(그 달 판 수 · 세 모양 수 같은 크기) · 열면 판마다 줄 셋 */
@@ -253,19 +193,19 @@ export async function vBook(X, which = 'top3') {
     'data-up': String(C.n.up), 'data-dn': String(C.n.dn), 'data-eq': String(C.n.eq), 'data-one': String(C.n.one), 'data-y': String(R)},
     h('p', {class: 'bk-intro', text: K.intro}),
     which === 'top3' && up3From(B) ? h('p', {class: 'bk-intro bk-new', 'data-from': up3From(B), text: md(up3From(B)) + '부터는 새 기준으로 골라요. 우량주 365곳에서 1년 꾸준히 오른 곳이 잠깐 쉴 때를 봐요.'}) : null, // 주문 1111-1857
-    moneyCard(C), // 주문 1112-1304 — 맨 위 「지금까지」 → 「날짜마다」 → 합을 흔든 한 줄 → 산 셈 하나씩(세 칸) → 달력 → 판
-    ledger(C, go),
-    sw ? h('details', {class: 'bk-split'}, h('summary', {class: 'bk-sps'}, h('b', {text: '합을 나눠 보면'}), h('span', {text: Math.abs(sw.d) > Math.abs(C.diff) ? '한 줄이 합보다 커요' : '한 줄이 합의 절반을 넘어요'})),
-      h('p', {class: 'bk-spl', text: md(sw.r.day) + ' ' + sw.r.place + '등 ' + sw.r.name + ' 한 줄이 ' + moved(sw.d)}),
-      h('p', {class: 'bk-spl', text: '그 한 줄을 빼면 ' + moved(sw.rest)}),
-      h('p', {class: 'bk-spl', text: '10주씩 사면 값이 비싼 회사가 합을 크게 흔들어요.'})) : null,
-    h('section', {class: 'bk-sum', 'aria-label': '산 셈 하나씩'},
-      h('p', {class: 'bk-cap', text: '산 셈 ' + C.rows.length + '번 · 고른 날 ' + C.days.length + '일'}),
-      h('div', {class: 'bk-tiles'}, tiles(C.n).map(t => h('div', {class: 'bk-tile bk-t' + t.st, 'data-st': t.st}, h('span', {class: 'bk-tv'}, shapeOf(t.st, 'big'), h('b', {class: 'bk-tn', text: t.k + '번'})), h('span', {class: 'bk-tl', text: t.label}))))),
+    h('section', {class: 'bk-sum', 'aria-label': '산 셈 모두'},
+      h('div', {class: 'bk-tiles'}, tiles(C.n).map(t => h('div', {class: 'bk-tile bk-t' + t.st, 'data-st': t.st}, h('span', {class: 'bk-tv'}, shapeOf(t.st, 'big'), h('b', {class: 'bk-tn', text: t.k + '번'})), h('span', {class: 'bk-tl', text: t.label})))),
+      h('p', {class: 'bk-tot', text: '모두 합치면 ' + r100(C.val, C.cost) + ' · ' + moved(C.diff)}),
+      h('p', {class: 'bk-cap', text: '산 셈 ' + C.rows.length + '번 · 고른 날 ' + C.days.length + '일 · ' + md(C.last) + ' 값까지'}),
+      h('details', {class: 'bk-split'}, h('summary', {class: 'bk-sps'}, h('b', {text: sw ? '합을 나눠 보면' : '산 값과 지금'}), sw ? h('span', {text: Math.abs(sw.d) > Math.abs(C.diff) ? '한 줄이 합보다 커요' : '한 줄이 합의 절반을 넘어요'}) : null),
+        h('p', {class: 'bk-spl bk-tot2', text: '산 값 ' + won(C.cost) + ' → 지금 ' + won(C.val)}),
+        sw ? h('p', {class: 'bk-spl', text: md(sw.r.day) + ' ' + sw.r.place + '등 ' + sw.r.name + ' 한 줄이 ' + moved(sw.d)}) : null,
+        sw ? h('p', {class: 'bk-spl', text: '그 한 줄을 빼면 ' + moved(sw.rest)}) : null,
+        h('p', {class: 'bk-spl', text: '10주씩 사면 값이 비싼 회사가 합을 크게 흔들어요.'}))),
     cal,
     h('div', {class: 'bk-list'}, list, folds));
   const how = h('details', {class: 'bk-how'}, h('summary', {class: 'bk-hs'}, h('b', {text: '이렇게 셌어요'}), h('span', {text: '진짜 돈이 아니에요'})),
-    h('ul', {class: 'bk-ul'}, [K.buy + ' ' + C.qty + '주씩 산 셈이에요.', '산 돈은 산 날 마지막 값에 ' + C.qty + '주를 곱한 돈이에요. 지금은 가장 늦은 마지막 값에 ' + C.qty + '주를 곱해요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.', '「100원이 ○원」은 산 값 100원어치가 지금 얼마인지예요.', '10주씩 사면 값이 비싼 회사가 합을 크게 흔들어요.',
+    h('ul', {class: 'bk-ul'}, [K.buy + ' ' + C.qty + '주씩 산 셈이에요.', '산 뒤에는 팔지 않고 들고 있다고 쳐요.', '「100원이 ○원」은 산 값 100원어치가 지금 얼마인지예요.',
       '모든 선은 같은 눈금이에요. 점선이 산 값이에요.', '같은 회사가 또 뽑히면 따로 한 줄로 적어요.', '셋은 장이 끝난 뒤에 골라요. 그 값에 실제로 살 수는 없었어요.',
       '고른 날보다 늦게 보여도 고른 날 값으로 셌어요.', '수수료와 세금은 빼지 않았어요.', '한 번 적은 날은 고치지 않아요.', '값은 네이버 증권 그날 마지막 값이에요.', '지난 기록이에요. 앞날을 맞히지 않아요.'].map(t => h('li', {text: t}))));
   // 탭 4 = 달력(주문 0040 — 이 쪽을 열면 아래 「달력」 탭이 켜짐)
