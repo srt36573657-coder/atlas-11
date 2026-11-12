@@ -1,12 +1,21 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-12T09:57:00.720Z",
+ "at": "2026-11-12T10:36:42.668Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1660,
-  "fail": 0
+  "pass": 1658,
+  "fail": 2
  },
- "fails": [],
+ "fails": [
+  [
+   "⑰ 42칸 회사 쪽 한 달 꺾은선 = 첫 페이지 칸 값 21개 · 같은 꼴 · 처음 날 · 끝 날 · 끝값 이름표 · 시장 줄은 날짜가 꼭 맞을 때만(주문 0806)",
+   "35곳 · 020560 아시아나항공: 판 값 없음 | 028100 동아지질: 판 값 없음 | 218410 RFHIC: 판 값 없음"
+  ],
+  [
+   "⑰ 진짜 사이트 — 42칸 회사 모두 판 날짜 21개(cd)",
+   "20/35"
+  ]
+ ],
  "m": {
   "dropped": [
    "JYP Ent."
@@ -180,7 +189,7 @@
    }
   },
   "speed": {
-   "lcp": 1244,
+   "lcp": 1192,
    "cls": 0.121,
    "pic": 1909
   },
@@ -1259,26 +1268,33 @@
   },
   "reopen": [
    {
-    "hash": "#/c/204270/y/moneyNext",
+    "hash": "#/c/267270/y/moneyNext",
     "try": 1,
     "status": 403,
     "err": null,
-    "url": "https://aaa7377.com/su/?v=1794478100893#/c/204270/y/moneyNext",
+    "url": "https://aaa7377.com/su/?v=1794480502487#/c/267270/y/moneyNext",
     "title": "aaa7377.com",
-    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M77KNMCZ6SP4HTSZHAMZWVZC"
+    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M77NYXPV4F4HCMHFSPBHBT0N"
    }
   ],
   "coLine": {
    "companies": 35,
-   "ok": 35,
-   "idx": 35,
-   "cd": 35,
-   "bad": []
+   "ok": 5,
+   "idx": 20,
+   "cd": 20,
+   "bad": [
+    "020560 아시아나항공: 판 값 없음",
+    "028100 동아지질: 판 값 없음",
+    "218410 RFHIC: 판 값 없음",
+    "009420 한올바이오파마: 판 값 없음",
+    "131290 티에스이: 판 값 없음",
+    "222800 심텍: 판 값 없음"
+   ]
   },
   "mc": {
    "hot": 29,
-   "bloom": 44,
-   "money": 37,
+   "bloom": 46,
+   "money": 38,
    "hotNext": 102,
    "moneyNext": 70,
    "bloomNext": 59
@@ -1289,13 +1305,13 @@
    "본전 버티기:16",
    "빚투 쏠림:70",
    "국민주 쏠림:36",
-   "한방 쫓기:31",
+   "한방 쫓기:32",
    "눈길 따라 사기:40"
   ],
   "top3": [
-   "1:삼성전기:4.84:",
-   "2:인바디:4.3:",
-   "3:현대해상:4.27:"
+   "1:삼성전기:4.86:",
+   "2:인바디:4.28:",
+   "3:현대해상:4.23:"
   ],
   "kr7": {
    "cards": 7,
@@ -1404,5 +1420,5 @@
    "late": 23
   }
  },
- "ok": true
+ "ok": false
 }

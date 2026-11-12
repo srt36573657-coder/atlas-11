@@ -1,24 +1,24 @@
 {
  "schema": "atlas11-next-chx-1",
- "at": "2026-11-12T10:17:53.152Z",
+ "at": "2026-11-12T11:02:08.729Z",
  "base": "https://aaa7377.com",
  "asOf": "2026-11-12",
  "pages": 87,
  "of": 87,
  "widthPages": 87,
  "full": true,
- "seconds": 191,
+ "seconds": 188,
  "time": {
-  "old": 162.3,
-  "new": 19.7,
-  "wall": 190.9,
+  "old": 159.6,
+  "new": 19.6,
+  "wall": 187.6,
   "opensOld": 698,
   "opensNew": 703,
-  "oldPct": 85,
-  "oldShare": 89.2
+  "oldPct": 85.1,
+  "oldShare": 89.1
  },
  "net": {
-  "req": 2,
+  "req": 17,
   "retry": 0,
   "waitSec": 0,
   "why": {},
@@ -40,7 +40,7 @@
   "맞댄 화면": 174,
   "oldSnap": {
    "use": false,
-   "why": "검사 · 브라우저 · 목록이 바뀜",
+   "why": "바뀐 파일 5개(/atlas/data/core.json · /atlas/data/home.json · /atlas/data/comp.json)",
    "made": null,
    "inputs": 15,
    "reads": 174,
