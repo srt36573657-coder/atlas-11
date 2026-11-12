@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-12",
- "fetchedAt": "2026-11-12T12:01:08Z",
- "file": "reports/atlas11/context/2026-11-12/2026-11-12T12-01-08Z.json",
+ "fetchedAt": "2026-11-12T14:11:37Z",
+ "file": "reports/atlas11/context/2026-11-12/2026-11-12T14-11-37Z.json",
  "summary": {
   "day": "2026-11-12",
-  "fetchedAt": "2026-11-12T12:01:08Z",
+  "fetchedAt": "2026-11-12T14:11:37Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-12",
@@ -32,11 +32,11 @@
   "news": {
    "stocks": 365,
    "raw": 7208,
-   "distinct": 7155,
-   "republished": 53,
+   "distinct": 7153,
+   "republished": 55,
    "sameArticle": 0,
-   "stocksWithTodayNews": 197,
-   "todayDistinct": 1368
+   "stocksWithTodayNews": 200,
+   "todayDistinct": 1459
   },
   "disclosures": {
    "stocks": 365,
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-12",
-     "value": 1332.9,
-     "changePct": -0.34
+     "value": 1333.2,
+     "changePct": -0.32
     },
     "rows": 10
    },
@@ -70,8 +70,8 @@
     "label": "S&P 500 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-11-10",
-     "value": 7520.93
+     "date": "2026-11-11",
+     "value": 7619.38
     },
     "rows": 60
    },
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-12",
-     "value": 1332.9,
+     "value": 1333.2,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -355,13 +355,13 @@
    "stocks": null,
    "scope": "market",
    "latestObservation": "2026-11-11",
-   "calendarLagDays": 2,
+   "calendarLagDays": 1,
    "series": [
     {
      "series": "SP500",
      "label": "S&P 500 종가",
-     "latestObservation": "2026-11-10",
-     "value": 7520.93,
+     "latestObservation": "2026-11-11",
+     "value": 7619.38,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500&cosd=2026-07-15"
     },
