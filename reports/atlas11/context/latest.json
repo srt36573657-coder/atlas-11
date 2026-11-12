@@ -1,23 +1,23 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-12",
- "fetchedAt": "2026-11-11T15:37:25Z",
- "file": "reports/atlas11/context/2026-11-12/2026-11-11T15-37-25Z.json",
+ "fetchedAt": "2026-11-12T08:00:41Z",
+ "file": "reports/atlas11/context/2026-11-12/2026-11-12T08-00-41Z.json",
  "summary": {
   "day": "2026-11-12",
-  "fetchedAt": "2026-11-11T15:37:25Z",
+  "fetchedAt": "2026-11-12T08:00:41Z",
   "index": {
    "KOSPI": {
-    "date": "2026-11-11",
-    "close": 5375.36,
-    "changePct": 2.6,
-    "status": "earlier_day"
+    "date": "2026-11-12",
+    "close": 5342.73,
+    "changePct": -0.61,
+    "status": "same_day"
    },
    "KOSDAQ": {
-    "date": "2026-11-11",
-    "close": 705.1,
-    "changePct": 5.62,
-    "status": "earlier_day"
+    "date": "2026-11-12",
+    "close": 696.53,
+    "changePct": -1.22,
+    "status": "same_day"
    }
   },
   "flows": {
@@ -35,13 +35,13 @@
    "distinct": 7154,
    "republished": 54,
    "sameArticle": 0,
-   "stocksWithTodayNews": 35,
-   "todayDistinct": 72
+   "stocksWithTodayNews": 192,
+   "todayDistinct": 1268
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 778
+   "corporateActions": 781
   },
   "macro": [
    {
@@ -59,9 +59,9 @@
     "label": "원/달러(네이버 표기 · 은행 고시 기준)",
     "factorId": "F06",
     "latest": {
-     "date": "2026-11-11",
-     "value": 1338,
-     "changePct": -0.48
+     "date": "2026-11-12",
+     "value": 1334,
+     "changePct": -0.26
     },
     "rows": 10
    },
@@ -80,8 +80,8 @@
     "label": "나스닥 종합 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-11-10",
-     "value": 25065.87
+     "date": "2026-11-11",
+     "value": 25466.19
     },
     "rows": 60
    },
@@ -90,9 +90,9 @@
     "label": "필라델피아 반도체지수 종가",
     "factorId": "F09",
     "latest": {
-     "date": "2026-11-10",
-     "value": 9998.33,
-     "changePct": -0.36
+     "date": "2026-11-11",
+     "value": 10564.11,
+     "changePct": 5.66
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 0,
+  "revisions": 237,
   "errors": 0,
   "usedInForecast": false
  },
@@ -237,80 +237,80 @@
    "factorId": "F30",
    "observed": true,
    "stocks": 365,
-   "latestObservation": "2026-11-11",
-   "corporateActions": 778,
+   "latestObservation": "2026-11-12",
+   "corporateActions": 781,
    "recentActions": [
+    {
+     "code": "023160",
+     "title": "(주)태광 중간(분기)배당락",
+     "publishedAt": "2026-11-12T16:57:48+09:00",
+     "word": "배당락"
+    },
+    {
+     "code": "336260",
+     "title": "두산퓨얼셀 주식회사 유상증자 또는 주식관련사채 등의 발행결과(자율공시)",
+     "publishedAt": "2026-11-12T16:51:58+09:00",
+     "word": "유상증자"
+    },
+    {
+     "code": "336260",
+     "title": "두산퓨얼셀 주식회사 유상증자 또는 주식관련사채 등의 발행결과(자율공시)",
+     "publishedAt": "2026-11-12T16:50:02+09:00",
+     "word": "유상증자"
+    },
+    {
+     "code": "029460",
+     "title": "(주)케이씨 자기주식취득 신탁계약 체결 결정",
+     "publishedAt": "2026-11-12T16:05:23+09:00",
+     "word": "자기주식"
+    },
+    {
+     "code": "196170",
+     "title": "(주)알테오젠 (정정)회사합병 결정(소규모합병)",
+     "publishedAt": "2026-11-12T11:33:46+09:00",
+     "word": "합병"
+    },
+    {
+     "code": "196170",
+     "title": "(주)알테오젠 (정정)회사합병 결정(종속회사의 주요경영사항)",
+     "publishedAt": "2026-11-12T10:22:42+09:00",
+     "word": "합병"
+    },
     {
      "code": "140860",
      "title": "(주)파크시스템스 자기주식 처분 결정",
-     "publishedAt": "2026-11-11T16:55:25+09:00",
+     "publishedAt": "2026-11-11T06:52:09+09:00",
      "word": "자기주식"
     },
     {
      "code": "093050",
      "title": "(주)LF 감자 결정(자율공시)(종속회사의 주요경영사항)",
-     "publishedAt": "2026-11-11T16:51:41+09:00",
+     "publishedAt": "2026-11-11T06:52:06+09:00",
      "word": "감자"
     },
     {
      "code": "281820",
      "title": "(주)케이씨텍 자기주식취득 신탁계약 체결 결정",
-     "publishedAt": "2026-11-11T16:10:44+09:00",
+     "publishedAt": "2026-11-11T06:51:48+09:00",
      "word": "자기주식"
     },
     {
      "code": "336260",
      "title": "두산퓨얼셀 주식회사 (정정)신주인수권부사채권발행결정",
-     "publishedAt": "2026-11-11T15:55:37+09:00",
+     "publishedAt": "2026-11-11T06:51:39+09:00",
      "word": "신주인수권"
     },
     {
      "code": "336260",
      "title": "두산퓨얼셀 주식회사 (정정)전환사채권발행결정",
-     "publishedAt": "2026-11-11T15:52:42+09:00",
+     "publishedAt": "2026-11-11T06:51:35+09:00",
      "word": "전환사채"
     },
     {
      "code": "241560",
      "title": "두산밥캣 주식회사 중간(분기)배당락 기준가격 안내",
-     "publishedAt": "2026-11-11T15:36:59+09:00",
+     "publishedAt": "2026-11-11T06:51:21+09:00",
      "word": "배당락"
-    },
-    {
-     "code": "207940",
-     "title": "삼성바이오로직스(주) 유상증자 또는 주식관련사채 등의 청약결과(자율공시)",
-     "publishedAt": "2026-11-11T09:58:34+09:00",
-     "word": "유상증자"
-    },
-    {
-     "code": "247540",
-     "title": "(주)에코프로비엠 유상증자결정(종속회사의 주요경영사항)",
-     "publishedAt": "2026-11-10T06:53:12+09:00",
-     "word": "유상증자"
-    },
-    {
-     "code": "124500",
-     "title": "(주)아이티센글로벌 회사합병 결정(종속회사의 주요경영사항)",
-     "publishedAt": "2026-11-10T06:52:37+09:00",
-     "word": "합병"
-    },
-    {
-     "code": "111770",
-     "title": "(주)영원무역 주식 소각 결정",
-     "publishedAt": "2026-11-10T06:52:05+09:00",
-     "word": "소각"
-    },
-    {
-     "code": "030530",
-     "title": "(주)원익홀딩스 (정정)유상증자결정(종속회사의 주요경영사항)",
-     "publishedAt": "2026-11-10T06:51:55+09:00",
-     "word": "유상증자"
-    },
-    {
-     "code": "383220",
-     "title": "주식회사 에프앤에프 주식 소각 결정",
-     "publishedAt": "2026-11-10T06:51:43+09:00",
-     "word": "소각"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -324,7 +324,7 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-11-11",
+   "latestObservation": "2026-11-12",
    "calendarLagDays": 6,
    "series": [
     {
@@ -338,8 +338,8 @@
     {
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
-     "latestObservation": "2026-11-11",
-     "value": 1338,
+     "latestObservation": "2026-11-12",
+     "value": 1334,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
@@ -354,7 +354,7 @@
    "observed": true,
    "stocks": null,
    "scope": "market",
-   "latestObservation": "2026-11-10",
+   "latestObservation": "2026-11-11",
    "calendarLagDays": 2,
    "series": [
     {
@@ -368,16 +368,16 @@
     {
      "series": "NASDAQCOM",
      "label": "나스닥 종합 종가",
-     "latestObservation": "2026-11-10",
-     "value": 25065.87,
+     "latestObservation": "2026-11-11",
+     "value": 25466.19,
      "unit": "index",
      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM&cosd=2026-07-15"
     },
     {
      "series": ".SOX",
      "label": "필라델피아 반도체지수 종가",
-     "latestObservation": "2026-11-10",
-     "value": 9998.33,
+     "latestObservation": "2026-11-11",
+     "value": 10564.11,
      "unit": "index",
      "sourceUrl": "https://api.stock.naver.com/index/.SOX/price?page=1&pageSize=10"
     }
