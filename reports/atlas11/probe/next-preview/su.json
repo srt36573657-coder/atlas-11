@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-12T06:55:37.137Z",
+ "at": "2026-11-12T09:38:15.412Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1622,
+  "pass": 1656,
   "fail": 0
  },
  "fails": [],
@@ -21,7 +21,7 @@
   },
   "home": {
    "screens": 7.48,
-   "links": 68
+   "links": 69
   },
   "t21": {
    "listed": 2557,
@@ -180,9 +180,9 @@
    }
   },
   "speed": {
-   "lcp": 2340,
+   "lcp": 2352,
    "cls": 0.143,
-   "pic": 3330
+   "pic": 3346
   },
   "white": {
    "light #/": {
@@ -1317,17 +1317,17 @@
    "both": false
   },
   "book": {
-   "days": 4,
-   "rows": 12,
+   "days": 5,
+   "rows": 15,
    "shapes": {
-    "up": 3,
-    "dn": 6,
+    "up": 7,
+    "dn": 5,
     "eq": 0,
     "one": 3
    },
    "folds": 0,
    "ledger": {
-    "rows": 4,
+    "rows": 5,
     "months": 0
    },
    "who": "모든 사람(주문 1513)"
@@ -1335,19 +1335,19 @@
   "bookFold": {
    "320": {
     "lim": 716,
-    "name": 642,
-    "line": 1972,
-    "money": 406
+    "name": 762,
+    "line": 2199,
+    "money": 526
    },
    "390": {
     "lim": 716,
-    "name": 558,
-    "line": 1594,
-    "money": 347
+    "name": 626,
+    "line": 1783,
+    "money": 440
    }
   },
   "bookLedger": {
-   "rows": 4,
+   "rows": 5,
    "months": 0,
    "bad": 0
   },
@@ -1373,7 +1373,24 @@
    ]
   },
   "qbook": {
-   "days": 2
+   "days": 3
+  },
+  "settle": {
+   "buys": 1048,
+   "kinds": [
+    15,
+    173,
+    168,
+    176,
+    7,
+    168,
+    171,
+    170
+   ],
+   "inds": 70,
+   "cos": 215,
+   "miss": 103,
+   "late": 23
   }
  },
  "ok": true
