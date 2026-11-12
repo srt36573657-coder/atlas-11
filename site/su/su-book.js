@@ -112,7 +112,7 @@ function spark(r, axis, R) {
 }
 const axisOf = rows => [...new Set(rows.flatMap(r => r.ser.map(([d]) => d)))].sort();
 /** 모양 그림(도형 — 글꼴마다 넓이가 다른 글자 대신) · 늘었어요 채운 세모(호박색) · 줄었어요 채운 거꾸로 세모(검정) · 그대로 막대 · 아직 하루치 빈 동그라미 — 크기 같음 */
-const shapeOf = (st, size = '') => s('svg', {class: 'bk-sh bk-s' + st + (size ? ' bk-sh' + size : ''), viewBox: '0 0 20 20', 'aria-hidden': 'true', 'data-shape': SHAPE[st]},
+export const shapeOf = (st, size = '') => s('svg', {class: 'bk-sh bk-s' + st + (size ? ' bk-sh' + size : ''), viewBox: '0 0 20 20', 'aria-hidden': 'true', 'data-shape': SHAPE[st]},
   st === 'up' ? s('path', {d: 'M10 2.5 L18.5 17.5 L1.5 17.5 Z'}) : st === 'dn' ? s('path', {d: 'M1.5 2.5 L18.5 2.5 L10 17.5 Z'}) : st === 'eq' ? s('rect', {x: 1.5, y: 8, width: 17, height: 4, rx: 2}) : s('circle', {cx: 10, cy: 10, r: 6.5}));
 
 /** 줄 하나 — 등수 · 이름 · (같은 회사 몇 번째) · 모양 + 100원이 ○원 · 10주 ○원어치(산 돈 · 주문 1112-1304) · 늘고 준 돈 · 그림 · 누르면 그 회사 쪽 */

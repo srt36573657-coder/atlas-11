@@ -1,0 +1,168 @@
+// 큐피트 정산(주문 1112-1728 · 사장님 2026-11-12 17:28 「정산 페이지를 하나 만들어 테이블 하나 더 만들어 그럼 탭이 여섯 개가 되겠지 그래가지고 말이야
+//   거기에 일 이 삼 등 매일 사 그담에 불 장인 것도 사고 모든 여덟 개를 종류별로 업종별로 다 사는거별로 분류 별별로」 · 17:30 「어」)
+//   장부(scripts/atlas11/next/su21_settle.mjs) · 화면 셈(site/su/su-settle.js — 그리기 도구는 빈 것으로 바꿔 셈만 봄) · 탭 · 길 · 묶기 · 검사가 함께 바뀌었는지
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {SCHEMA, BOOK_SCHEMA, QTY, KINDS, emptySettle, okSettle, listsOf, stepSettle, siteSettle} from '../../scripts/atlas11/next/su21_settle.mjs';
+import {forwardTo} from '../../site/su/su-data.js';
+import {screenHits, ruinHits} from '../../site/next/words.js';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+const C = (...cs) => cs.map(code => ({code}));
+const d21 = end => Array.from({length: 21}, (_, i) => { const d = new Date(Date.parse(end + 'T00:00:00Z') - (20 - i) * 864e5); return d.toISOString().slice(0, 10); });
+
+test('여덟 묶음 차례 · 장부 꼴', () => {
+  assert.deepEqual([...KINDS], ['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext'], '1 · 2 · 3등 · 불장 · 꽃 · 돈 · 조용한 힘 · 될 듯 셋');
+  assert.equal(QTY, 10); assert.equal(SCHEMA, 'su21-settle-1');
+  const e = emptySettle();
+  assert.equal(e.schema, BOOK_SCHEMA); assert.ok(okSettle(e));
+  assert.ok(!okSettle({...e, qty: 5}), '10주가 아니면 장부가 아님');
+  assert.ok(!okSettle({...e, px: {'000001': {'2026-11-12': -1}}}), '값은 0보다 큼');
+  assert.ok(!okSettle({...e, quiet: {'2026-11-12': ['abc']}}), '번호 꼴');
+});
+
+test('날마다 목록 — 여섯은 days.json · 그날 기록이 없으면 su21 목록 · 1 · 2 · 3등 = 달력 장부(등수 차례) · 조용한 힘 = 장부', () => {
+  const days = {days: {
+    '2026-11-05': {how: 'replay', lists: {hot: ['000001', 'BAD', '000002'], bloom: ['000003'], money: [], hotNext: ['000004'], bloomNext: ['000005'], moneyNext: ['000006']}},
+    '2026-11-06': {how: 'kept', lists: {hot: ['000002'], bloom: ['000003'], money: ['000001'], hotNext: [], bloomNext: [], moneyNext: []}}}};
+  const sbook = {days: [{board: '2026-11-06', picks: [{place: 2, code: '000002'}, {place: 1, code: '000001'}, {place: 3, code: '000003'}]}]};
+  const su = {asOf: {board: '2026-11-07'}, lists: {hot: C('000007'), bloom: C('000001'), money: C('000002'), quiet: C('000008'), hotNext: C('000099')}};
+  const suNext = {lists: {hotNext: C('000009'), bloomNext: C('000010'), moneyNext: C('000011')}};
+  const L = listsOf({days, sbook, su, suNext, quiet: {'2026-11-07': ['000008']}});
+  assert.deepEqual(Object.keys(L), ['2026-11-05', '2026-11-06', '2026-11-07'], '날 차례');
+  assert.deepEqual(L['2026-11-05'], {hot: ['000001', '000002'], bloom: ['000003'], hotNext: ['000004'], bloomNext: ['000005'], moneyNext: ['000006']}, '빈 목록 · 번호 꼴이 아닌 것은 뺌');
+  assert.deepEqual(L['2026-11-06'], {hot: ['000002'], bloom: ['000003'], money: ['000001'], top3: ['000001', '000002', '000003']}, '1 · 2 · 3등은 등수 차례');
+  assert.deepEqual(L['2026-11-07'], {hot: ['000007'], bloom: ['000001'], money: ['000002'], hotNext: ['000009'], bloomNext: ['000010'], moneyNext: ['000011'], quiet: ['000008']}, '그날 기록이 없으면 su21(될 듯은 su21-next)');
+  // 그날 기록이 있으면 su21 목록을 쓰지 않음
+  const L2 = listsOf({days: {days: {...days.days, '2026-11-07': {how: 'kept', lists: {hot: ['000012']}}}}, sbook, su, suNext, quiet: {}});
+  assert.deepEqual(L2['2026-11-07'], {hot: ['000012']});
+});
+
+test('장부 한 걸음 — 조용한 힘 그날 한 번 · 이름 · 업종 · 값(달력 장부 → 저장된 판 → 오늘 판 · 21 값은 날이 맞을 때만) · 한 번 적은 값은 그대로', () => {
+  const D0 = '2026-11-06', D1 = '2026-11-07', cd = d21(D1);
+  const days = {days: {[D0]: {how: 'replay', lists: {hot: ['000001', '000002'], bloom: ['000003']}}}};
+  const sbook = {days: [{board: D0, picks: [{place: 1, code: '000001'}, {place: 2, code: '000004'}, {place: 3, code: '000003'}]}], px: {'000001': [[D0, 1000]], '000004': [[D0, 4000]], '000003': [[D0, 3000]]}};
+  const su = {asOf: {board: D1}, lists: {hot: [{code: '000002', cd}], bloom: C('000005'), money: [], quiet: C('000006', '000007')}};
+  const stored = {[D0]: {asOf: D0, companies: [{code: '000001', name: '가나', date: D0, close: 1005, group: {industry: '반도체'}}, {code: '000002', name: '다라', date: D0, close: 2000, group: {industry: '화학'}}, {code: '000003', name: '마바', date: D0, close: 3010, group: {label: '은행'}}]}};
+  const c21 = base => cd.map((_, i) => base + i);
+  const board = {asOf: D1, companies: [
+    {code: '000002', name: '다라', date: D1, close: 2020, c: c21(1900), cFrom: cd[0], group: {industry: '화학'}},
+    {code: '000005', name: '사아', date: D1, close: 5000, group: {industry: '조선'}},
+    {code: '000006', name: '자차', date: D1, close: 6000, c: c21(5800), cFrom: cd[1], group: {industry: '철강'}},
+    {code: '000007', name: '카타', date: D1, close: 7000},
+    {code: '000099', name: '파하', date: D1, close: 9900, group: {industry: '없음'}}]};
+  const frozen = JSON.stringify({sbook, stored, board});
+  const {book, added, lists} = stepSettle(null, {su, board, stored, sbook, days});
+  assert.ok(okSettle(book)); assert.equal(added, D1);
+  assert.deepEqual(book.quiet, {[D1]: ['000006', '000007']}, '조용한 힘 일곱은 그날 판 날로');
+  assert.deepEqual(Object.keys(lists), [D0, D1]);
+  assert.deepEqual(book.co['000001'], ['가나', '반도체'], '이름 · 업종 = 저장된 판(오늘 판에 없으면)');
+  assert.deepEqual(book.co['000003'], ['마바', '은행'], '업종이 없으면 묶음 이름');
+  assert.deepEqual(book.co['000007'], ['카타', null], '업종을 모르면 비움');
+  assert.equal(book.co['000099'], undefined, '어느 묶음에도 없는 회사는 적지 않음');
+  assert.equal(book.px['000001'][D0], 1000, '달력 장부 값이 먼저(저장된 판 1005 가 아님)');
+  assert.equal(book.px['000002'][D0], 2000, '저장된 판 마지막 값');
+  assert.equal(book.px['000003'][D0], 3000, '1 · 2 · 3등은 달력과 같은 값');
+  assert.equal(book.px['000002'][D1], 2020, '오늘 판 마지막 값');
+  assert.equal(book.px['000002'][cd[5]], 1905, '21 값 — su21 cd 끝 날 = 오늘 판 날 · 회사 cFrom = cd 첫날이면 채움');
+  assert.equal(book.px['000002'][D0], 2000, '21 값이 먼저 적은 값을 덮지 않음');
+  assert.deepEqual(Object.keys(book.px['000006']), [D1], 'cFrom 이 다르면 21 값을 쓰지 않음');
+  assert.equal(book.px['000099'], undefined, '어느 묶음에도 없는 회사 값은 적지 않음');
+  assert.equal(JSON.stringify({sbook, stored, board}), frozen, '들어온 자료는 바뀌지 않음');
+  // 다음 걸음 — 같은 날 조용한 힘이 달라져도 처음 것 그대로 · 같은 날 값이 달라져도 처음 값 그대로 · 들어온 장부는 바뀌지 않음
+  const b0 = JSON.stringify(book);
+  const s2 = stepSettle(book, {su: {...su, lists: {...su.lists, quiet: C('000008')}}, board: {...board, companies: board.companies.map(c => ({...c, close: c.close + 1}))}, stored, sbook, days});
+  assert.equal(s2.added, null); assert.deepEqual(s2.book.quiet, book.quiet); assert.equal(s2.book.px['000002'][D1], 2020);
+  assert.equal(JSON.stringify(book), b0);
+  // 21 값 — su21 cd 끝 날이 오늘 판 날과 다르면 채우지 않음
+  const s3 = stepSettle(null, {su: {...su, lists: {...su.lists, hot: [{code: '000002', cd: d21('2026-11-05')}]}}, board, stored, sbook, days});
+  assert.deepEqual(Object.keys(s3.book.px['000002']), [D0, D1]);
+});
+
+test('화면 자료 — 산 셈 줄(날 · 묶음 · 번호 · 산 값) · 값 없는 산 셈은 세지 않고 수만 · 지금 = 판 날까지 가장 늦은 값 · 다시 센 날 끝', () => {
+  const B = {...emptySettle(), co: {'000001': ['가나', '반도체'], '000002': ['다라', null], '000003': ['마바', '은행']},
+    px: {'000001': {'2026-11-05': 1000, '2026-11-06': 1100, '2026-11-09': 1300}, '000002': {'2026-11-06': 2000}, '000003': {'2026-11-05': 3000}}};
+  const L = {'2026-11-05': {hot: ['000001', '000003'], bloom: ['000002']}, '2026-11-06': {top3: ['000002', '000001'], moneyNext: ['000001']}, '2026-11-09': {hot: ['000003']}};
+  const days = {days: {'2026-11-05': {how: 'replay'}, '2026-11-06': {how: 'kept'}}};
+  const S = siteSettle(B, L, '2026-11-06', days);
+  assert.equal(S.schema, SCHEMA); assert.equal(S.qty, 10); assert.equal(S.asOf, '2026-11-06'); assert.deepEqual(S.kinds, [...KINDS]);
+  assert.deepEqual(S.buys, [['2026-11-05', 1, '000001', 1000], ['2026-11-05', 1, '000003', 3000], ['2026-11-06', 0, '000002', 2000], ['2026-11-06', 0, '000001', 1100], ['2026-11-06', 7, '000001', 1100]],
+    '날 차례 · 묶음 차례 · 목록 차례 · 판 날 뒤 날은 뺌');
+  assert.deepEqual(S.miss, {top3: 0, hot: 0, bloom: 1, money: 0, quiet: 0, hotNext: 0, bloomNext: 0, moneyNext: 0}, '11월 5일 꽃 000002 는 그날 값이 없음');
+  assert.deepEqual(S.now, {'000001': [1100, '2026-11-06'], '000002': [2000, '2026-11-06'], '000003': [3000, '2026-11-05']}, '지금 = 판 날까지 가장 늦은 값(판 날 뒤 값은 안 씀)');
+  assert.deepEqual(S.from, {hot: '2026-11-05', top3: '2026-11-06', moneyNext: '2026-11-06'});
+  assert.equal(S.replayTo, '2026-11-05');
+  assert.deepEqual(S.co, {'000001': ['가나', '반도체'], '000002': ['다라', null], '000003': ['마바', '은행']});
+  assert.ok(!JSON.stringify(S).includes('%'));
+});
+
+/** 화면 셈 모듈 — 그리기 도구를 빈 것으로 바꿔 셈만 봄(달력 셈 모듈도 같은 방법) */
+async function pageMods() {
+  const bk = rd('site/su/su-book.js').replace("import {h, s} from '/su/su-fig.js';", 'const h = () => null, s = () => null;').replace("import {KIND} from '/su/su-21.js';", 'const KIND = {};');
+  assert.ok(!/^import /m.test(bk));
+  const bkUrl = 'data:text/javascript;base64,' + Buffer.from(bk).toString('base64');
+  const st = rd('site/su/su-settle.js').replace("import {h} from '/su/su-fig.js';", 'const h = () => null;').replace("from '/su/su-book.js';", "from '" + bkUrl + "';");
+  assert.ok(!/^import .* from '\/su\//m.test(st), '정산 모듈의 그리기 도구 · 달력 셈을 바꿈');
+  return {B: await import(bkUrl), M: await import('data:text/javascript;base64,' + Buffer.from(st).toString('base64'))};
+}
+
+test('화면 셈 — 산 셈 줄 · 묶음마다 여덟 줄(차례 그대로 · 빈 묶음도 한 줄) · 업종 · 회사는 산 돈 큰 차례 · 줄 글 · 「%」 0', async () => {
+  const {M} = await pageMods();
+  assert.deepEqual(Object.keys(M.KIND_NAME), [...KINDS], '묶음 이름 여덟 = 장부 묶음 차례');
+  assert.deepEqual(Object.values(M.KIND_NAME), ['1 · 2 · 3등', '불장', '꽃이 될', '돈이 몰리는', '조용한데 힘이 모이는', '불장이 될 듯', '꽃이 될 듯', '돈이 몰릴 듯']);
+  assert.equal(M.TOP, 10);
+  const D = {schema: SCHEMA, qty: 10, asOf: '2026-11-09', kinds: [...KINDS],
+    co: {'000001': ['가나', '반도체'], '000002': ['다라', null], '000003': ['마바', '반도체'], '000004': ['사아', '은행']},
+    buys: [['2026-11-05', 1, '000001', 1000], ['2026-11-05', 1, '000002', 2000], ['2026-11-06', 0, '000003', 3000], ['2026-11-06', 7, '000001', 1100], ['2026-11-09', 2, '000004', 4000]],
+    now: {'000001': [1200, '2026-11-09'], '000002': [1900, '2026-11-09'], '000003': [3000, '2026-11-09'], '000004': [4000, '2026-11-09']}, miss: {}};
+  const rows = M.settleRows(D);
+  assert.deepEqual(rows.map(r => [r.day, r.k, r.code, r.cost, r.val, r.one, r.ind]), [
+    ['2026-11-05', 'hot', '000001', 10000, 12000, false, '반도체'], ['2026-11-05', 'hot', '000002', 20000, 19000, false, '업종 모름'],
+    ['2026-11-06', 'top3', '000003', 30000, 30000, false, '반도체'], ['2026-11-06', 'moneyNext', '000001', 11000, 12000, false, '반도체'],
+    ['2026-11-09', 'bloom', '000004', 40000, 40000, true, '은행']], '10주씩 · 지금 = 가장 늦은 값 · 산 날 뒤 값이 없으면 아직 하루치');
+  const K = M.byKind(D, rows);
+  assert.deepEqual(K.map(g => [g.key, g.n, g.cost, g.val, g.st]), [['top3', 1, 30000, 30000, 'eq'], ['hot', 2, 30000, 31000, 'up'], ['bloom', 1, 40000, 40000, 'one'], ['money', 0, 0, 0, 'eq'],
+    ['quiet', 0, 0, 0, 'eq'], ['hotNext', 0, 0, 0, 'eq'], ['bloomNext', 0, 0, 0, 'eq'], ['moneyNext', 1, 11000, 12000, 'up']], '여덟 줄 · 묶음 차례 그대로(늘고 준 크기 차례 아님)');
+  const first0 = '2026-11-05';
+  assert.equal(M.kindSub(K[1], first0), '산 셈 2번 · 100원이 103.3원', '맨 첫날과 같은 묶음은 첫날을 뺌');
+  assert.equal(M.kindSub(K[0], first0), '11월 6일부터 · 산 셈 1번 · 100원이 100원');
+  assert.equal(M.kindSub(K[3], first0), '아직 산 셈이 없어요');
+  const inds = M.byCost(M.groupBy(rows, r => r.ind));
+  assert.deepEqual(inds.map(g => [g.key, g.cost, g.cos, g.n]), [['반도체', 51000, 2, 3], ['은행', 40000, 1, 1], ['업종 모름', 20000, 1, 1]], '산 돈이 큰 차례');
+  assert.equal(M.indSub(inds[0]), '회사 2곳 · 산 셈 3번');
+  const cos = M.byCost(M.groupBy(rows, r => r.code));
+  assert.deepEqual(cos.map(g => [g.key, g.cost]), [['000004', 40000], ['000003', 30000], ['000001', 21000], ['000002', 20000]]);
+  assert.equal(M.coSub(cos[2], '반도체'), '반도체 · 산 셈 2번');
+  assert.equal(M.coSub(cos[2], '반도체', '2026-11-06'), '반도체 · 산 셈 2번 · 11월 6일 값까지', '오늘 판에 없는 회사는 그 날을 줄에 적음');
+  const late = rows.map(r => ({...r, nowDay: r.code === '000002' ? '2026-11-06' : r.nowDay}));
+  assert.deepEqual(late.map(r => M.lateOf(r, D.asOf)), [null, '2026-11-06', null, null, null], '앞 날 값으로 센 회사');
+  assert.equal(M.capText(rows, 0, 0), '11월 5일부터 · 산 셈 5번 · 고른 날 3일');
+  assert.equal(M.capText(rows, 3, 1), '11월 5일부터 · 산 셈 5번 · 고른 날 3일 · 값이 없어 못 센 3번 · 앞 날 값으로 센 회사 1곳', '못 센 수 · 앞 날 값 회사 수를 숨기지 않음');
+  // 같은 산 돈이면 이름 차례(늘고 준 크기로 줄을 세우지 않음)
+  const tie = M.byCost([{key: '나', cost: 5, diff: -9}, {key: '가', cost: 5, diff: 9}, {key: '다', cost: 7, diff: 0}]);
+  assert.deepEqual(tie.map(g => g.key), ['다', '가', '나']);
+  for (const t of [...K.map(g => M.kindSub(g, first0)), ...inds.map(M.indSub)]) assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t);
+});
+
+test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t · 새 판 안 · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
+  const su = rd('site/su/su.js'), st = rd('site/su/su-settle.js'), css = rd('site/su/su-settle.css'), pk = rd('scripts/atlas11/package.mjs'), ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(su.includes("['정산', '#/r/t', ") && su.includes('export const TAB_ORDER = Object.freeze([0, 1, 3, 2, 4, 5]);'), '정산 탭은 맨 끝(여섯째)');
+  assert.ok(su.includes("a === 't' ? await (await import('/su/su-settle.js')).vSettle(X21)"), '길 #/r/t');
+  assert.equal(forwardTo('', '#/r/t'), null, '#/r/t 는 새 판 안(옛 판으로 넘기지 않음)');
+  assert.ok(st.includes("return {title: '정산', tab: 5,"), '정산 쪽을 열면 정산 탭이 켜짐');
+  assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부는 올리기 작업만 씀');
+  assert.ok(pk.indexOf('su21_days.mjs') < pk.indexOf('su21_settle.mjs'), '그날 목록을 적은 뒤에 정산');
+  assert.ok(ck.includes("'28곳 지도 멈춤 기록 달력 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 여섯 · 정산 쪽');
+  assert.ok(/#\\\/r\\\/\[mwdynkicst\]/.test(ck), '검사 고리 꼴에 #/r/t');
+  assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(st), '보안 규칙 — innerHTML · 글 속 style 없음');
+  assert.ok(css.includes('.st-replay') && css.includes('.st-rest'), '꾸밈');
+  const texts = [...st.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
+  assert.ok(texts.length > 20);
+  const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));
+  assert.deepEqual(bad, [], '화면 글에 쓰지 않을 말 0');
+  assert.deepEqual(texts.filter(s => s.includes('%') || /[A-Za-z]{2,}/.test(s.replace(/data-[a-z-]+|bk-[a-z0-9-]+|st-[a-z0-9-]+|su-[a-z0-9-]+/g, ''))), [], '화면 글에 「%」 · 영어 0');
+});
