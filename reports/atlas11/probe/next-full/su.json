@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-12T05:45:03.018Z",
+ "at": "2026-11-12T07:13:29.500Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1628,
+  "pass": 1626,
   "fail": 0
  },
  "fails": [],
@@ -180,9 +180,9 @@
    }
   },
   "speed": {
-   "lcp": 1176,
+   "lcp": 1192,
    "cls": 0.121,
-   "pic": 1962
+   "pic": 1859
   },
   "white": {
    "light #/": {
@@ -244,7 +244,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -324,7 +324,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -372,7 +372,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -389,7 +389,7 @@
     "cells": 49,
     "bad": 0,
     "note": [
-     "현재가는 11월 12일 오후 2시 54분 값이에요.",
+     "현재가는 11월 12일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
      "될 듯은 그렇게 되기 바로 앞 모습이에요.",
      "지난 기록 차례예요. 앞날은 몰라요."
@@ -399,7 +399,7 @@
     "cells": 42,
     "bad": 0,
     "note": [
-     "현재가는 11월 12일 오후 2시 54분 값이에요.",
+     "현재가는 11월 12일 마지막 값이에요.",
      "꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요.",
      "될 듯은 그렇게 되기 바로 앞 모습이에요.",
      "지난 기록 차례예요. 앞날은 몰라요."
@@ -1257,6 +1257,17 @@
    "pages": 42,
    "reasons": 1512
   },
+  "reopen": [
+   {
+    "hash": "#/c/251970/y/moneyNext",
+    "try": 1,
+    "status": 403,
+    "err": null,
+    "url": "https://aaa7377.com/su/?v=1794468289041#/c/251970/y/moneyNext",
+    "title": "aaa7377.com",
+    "body": "aaa7377.com\n\nWe are verifying your connection.\nThis will only take a few seconds.\n\nSecurity by Netlify\n\nChallenge ID: 01M77AA6GNS7TEST0YY0G34BP5"
+   }
+  ],
   "coLine": {
    "companies": 37,
    "ok": 37,
@@ -1266,7 +1277,7 @@
   },
   "mc": {
    "hot": 30,
-   "bloom": 50,
+   "bloom": 51,
    "money": 37,
    "hotNext": 85,
    "moneyNext": 70,
@@ -1308,22 +1319,13 @@
    "shape": true
   },
   "coReal": {
-   "live": "2026-11-12T14:57",
-   "cellLive": "2026-11-12T14:57",
-   "px": "8280",
-   "cellPx": "8280",
+   "live": "2026-11-12T15:45",
+   "cellLive": "2026-11-12T15:45",
+   "px": "8190",
+   "cellPx": "8190",
    "from": "2026-10-15",
    "to": "2026-11-12",
-   "both": true,
-   "minute": {
-    "t1": "2026-11-12T14:57",
-    "t2": "2026-11-12T14:58",
-    "px2": "8280"
-   },
-   "minuteCell": {
-    "t1": "2026-11-12T14:57",
-    "t2": "2026-11-12T14:58"
-   }
+   "both": true
   },
   "book": {
    "days": 4,
