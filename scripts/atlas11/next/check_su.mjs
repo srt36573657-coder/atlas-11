@@ -955,6 +955,31 @@ for (const width of [390, 360, 320]) {
     await ctx.close();
   }
 }
+/** 돈 셈 한눈에(주문 1112-1304 · 사장님 2026-11-12 13:04 「지금까지 총 매수한 금액이 얼마고 그담에 날짜별로 매수한 금액이 얼마여 가지고 순실이나 수익이 어떻게 됐는지 … 바보도 알 수 있게끔」)
+ *  장부 하나를 이 검사가 따로 셈(화면 코드 site/su/su-book.js 를 쓰지 않음): 산 셈마다 산 돈(산 값 × 주 수) · 지금(산 날부터 값 줄 맨 끝 값 × 주 수) · 날짜마다 더함 · 다섯 날 앞은 달마다 더함 · 모두
+ *  돈 글은 화면과 맞대기에만 씀 — 결과 파일에는 맞음 · 틀림 · 날 · 수만(명령문 [4] 5 「수익률은 보내지 마라」 · 결과는 저장소에 올라감) */
+const NFm = new Intl.NumberFormat('ko-KR'), DAYm = /^\d{4}-\d{2}-\d{2}$/, WDm = ['일', '월', '화', '수', '목', '금', '토'];
+const wonM = v => { const a = Math.round(Math.abs(v)), e = Math.floor(a / 1e8), m = Math.floor((a % 1e8) / 1e4), r = a % 1e4; return [e ? NFm.format(e) + '억' : '', m ? NFm.format(m) + '만' : '', r || (!e && !m) ? NFm.format(r) : ''].filter(Boolean).join(' ') + '원'; };
+const movedM = v => (Math.round(v) > 0 ? wonM(v) + ' 늘었어요' : Math.round(v) < 0 ? wonM(v) + ' 줄었어요' : '그대로예요');
+const hundM = (now, buy) => { const x = 100 * now / buy, a = Math.round(x * 10) / 10, t = a === 100 && now !== buy ? Math.round(x * 100) / 100 : a; return '100원이 ' + t.toLocaleString('ko-KR', {maximumFractionDigits: 2}) + '원'; };
+const mdM = d => +d.slice(5, 7) + '월 ' + +d.slice(8, 10) + '일', SHM = {up: '▲', dn: '▼', eq: '―', one: '○'};
+function bookMoney(BK) {
+  const qty = BK?.qty;
+  if (!BK || !Array.isArray(BK.days) || !BK.days.length || !Number.isFinite(qty)) return null;
+  const pxOf = code => [...new Map((Array.isArray(BK.px?.[code]) ? BK.px[code] : []).filter(e => Array.isArray(e) && DAYm.test(e[0] ?? '') && Number.isFinite(e[1]) && e[1] > 0))].sort(([a], [b]) => a.localeCompare(b));
+  const rows = BK.days.flatMap(d => (d.picks ?? []).map(q => { const ser = pxOf(q.code).filter(([dd]) => dd >= d.board), now = ser.length ? ser[ser.length - 1] : [d.board, q.px];
+    return {day: d.board, place: q.place, name: q.name, one: ser.length < 2, cost: q.px * qty, val: now[1] * qty, nowDay: now[0]}; }));
+  const add = rs => { const cost = rs.reduce((a, r) => a + r.cost, 0), val = rs.reduce((a, r) => a + r.val, 0), diff = val - cost, one = rs.length > 0 && rs.every(r => r.one), st = one ? 'one' : Math.round(diff) > 0 ? 'up' : Math.round(diff) < 0 ? 'dn' : 'eq';
+    return {cost, val, diff, one, st, res: st === 'one' ? '아직 하루치' : st === 'eq' ? '그대로' : wonM(diff), said: one ? '아직 하루치예요' : movedM(diff)}; };
+  const last = rows.map(r => r.nowDay).sort().pop() ?? BK.asOf ?? null, lastY = String(last ?? '').slice(0, 4);
+  const days = [...new Set(rows.map(r => r.day))].sort().map(d => { const rs = rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
+    return {day: d, label: mdM(d) + ' (' + WDm[new Date(d + 'T00:00:00Z').getUTCDay()] + ')', names: rs.map(r => r.name).join(' · '), ...add(rs)}; });
+  const desc = [...days].reverse(), mons = new Map();
+  for (const x of desc.slice(5)) { const ym = x.day.slice(0, 7); if (!mons.has(ym)) mons.set(ym, []); mons.get(ym).push(x); }
+  const spanM = xs => { const a = xs[xs.length - 1].day, b = xs[0].day; return a === b ? mdM(a) : mdM(a) + ' ~ ' + +b.slice(8, 10) + '일'; }; // 달 줄 이름 = 그 달 접은 날의 처음 ~ 끝
+  const months = [...mons].map(([ym, xs]) => ({ym, days: xs, label: (ym.slice(0, 4) !== lastY ? ym.slice(0, 4) + '년 ' : '') + spanM(xs), ...add(rows.filter(r => xs.some(x => x.day === r.day)))}));
+  return {rows, days, desc, recent: desc.slice(0, 5), months, last, T: add(rows)};
+}
 { // ㉑ 1 · 2 · 3등 달력(주문 0938 · 사장님 2026-11-10 09:38 「자 달력을 만들어 1.2.3달력을 그리고 찾아낸 그날부터해서 첫페이지처럼 표현햐서 추적해 그리고 10주씩 무조건 매수해 그리고 나서 수익율률을 추적하기 해봐   잡스라면」
   //   · 주문 1513 · 사장님 2026-11-10 15:13 「모든사람 휴대폰에 열리게 해」 — 사장님 열쇠 문을 뺌 · 모든 사람 · 진짜 사이트 검사에서도 화면을 다 봄)
   //   · 주문 1111-0938 · 사장님 2026-11-11 09:38 「종목이 복이게 하고 그때부터 지금까지 그래프 보이개 하고 매매 결과 직거ㅏㄴ적으로 보이게 하고 에이번트 11개 가동해서 가방 이상적인 시스템 토론해 잡스라면」
@@ -964,6 +989,9 @@ for (const width of [390, 360, 320]) {
   //       · 달력 한 줄(장이 서는 날 다섯 · 뽑힌 날 단추 · 1 · 2 · 3등 차례 모양 · 칸 안) · 판 차례(새 판이 위 · 다섯 판만 펴고 그 앞은 달마다 접음) · 판마다 「처음 보인 때」
   //       · 줄마다 등수 · 이름 · 회사 쪽 고리 · 「100원이 ○원」 · 10주 늘고 준 돈 · 모양 · 그림 · 아직 하루치 판은 이름 한 줄 · 390 첫 화면에 종목 이름 · 날 단추를 누르면 그 판으로
   //       · 「%」 · 영어 0(회사 이름 빼고) · 「사장님 휴대폰에서만」 글 0 · 쪽 규칙 · 기록 쪽 서랍 맨 앞 「1 · 2 · 3등 달력」
+  //   다) 주문 1112-1304(사장님 2026-11-12 13:04 「지금까지 총 매수한 금액이 얼마고 그담에 날짜별로 매수한 금액이 얼마여 가지고 순실이나 수익이 어떻게 됐는지 … 바보도 알 수 있게끔」)
+  //       — 맨 위 「지금까지」(산 돈 · 지금 · 늘었나 줄었나 · 모두 합치면 100원이 ○원 · ○월 ○일 값까지 · 첫 화면에 다 보임) · 「날짜마다」 표(새 날이 위 · 다섯 날 · 달마다 접음 · 그날 세 회사 · 맨 아래 모두 = 맨 위)
+  //       · 판마다 돈 줄 · 줄마다 「10주 ○원어치」 · 차례(지금까지 → 날짜마다 → 세 칸 → 달력 → 판) · 날짜마다 줄을 누르면 그날로 — 모두 bookMoney 가 장부에서 따로 셈
   //   결과 파일에는 늘고 준 돈을 적지 않음(명령문 [4] 5 「수익률은 보내지 마라」 — 결과는 저장소에 올라감) · 날 수 · 칸 수 · 모양 수만
   const BK = await J('/su/data/su21-book.json').catch(() => null), T21b = await J('/su/data/su21.json').catch(() => null);
   const DAYb = /^\d{4}-\d{2}-\d{2}$/, NFb = new Intl.NumberFormat('ko-KR');
@@ -999,7 +1027,8 @@ for (const width of [390, 360, 320]) {
       strip, picks: strip.filter(d => bdays.includes(d)), desc, recent: desc.slice(0, 5), months: [...new Set(desc.slice(5).map(d => d.slice(0, 7)))]};
   })();
   const REC = ['#/r/c', '#/r/s', '#/r/m', '#/j', '#/j', '#/r/w', '#/r/d', '#/r/k', '#/r/i', '#/r/y', '#/r/n'];
-  R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, shapes: wantB?.n ?? null, folds: wantB?.months.length ?? 0, who: '모든 사람(주문 1513)'};
+  const MB = bookMoney(BK); // 주문 1112-1304 — 지금까지 · 날짜마다(따로 셈)
+  R.m.book = {days: bdays.length, rows: wantB?.rows.length ?? 0, shapes: wantB?.n ?? null, folds: wantB?.months.length ?? 0, ledger: MB ? {rows: MB.recent.length, months: MB.months.length} : null, who: '모든 사람(주문 1513)'};
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
     await QUIET(ctx);
@@ -1009,24 +1038,35 @@ for (const width of [390, 360, 320]) {
     const W = '㉑ 1 · 2 · 3등 달력 · 모든 사람 [' + width + '] ';
     await open(p, '#/r/c');
     await p.waitForFunction(() => document.querySelector('#su .su-hero.bk .bk-board'), null, {timeout: 10000}).catch(() => {});
-    // 첫 화면(아무것도 열기 전) — 390 너비에서 종목 이름이 아래 고정 줄(다음 · 탭)보다 위에 보임 · 첫 그림 자리는 결과 파일에만
+    // 첫 화면(아무것도 열기 전) — 390 너비에서 종목 이름이 아래 고정 줄(다음 · 탭)보다 위에 보임(주문 1112-1304 뒤로는 「날짜마다」 첫 줄의 세 회사 이름) · 맨 위 「지금까지」가 다 보임 · 첫 그림 자리는 결과 파일에만
     const fold0 = await p.evaluate(() => { const lim = Math.min(...[...document.querySelectorAll('.su-dock, .su-tabs')].map(e => e.getBoundingClientRect().top).filter(Number.isFinite), innerHeight);
-      const nm = document.querySelector('#su .bk-board .bk-names, #su .bk-board .bk-row .bk-nm'), sp = document.querySelector('#su .bk-board .bk-sp');
-      return {lim: Math.round(lim), name: nm ? Math.round(nm.getBoundingClientRect().bottom) : null, line: sp ? Math.round(sp.getBoundingClientRect().top) : null}; });
+      const nm = document.querySelector('#su .bk-days .bk-dnm, #su .bk-board .bk-names, #su .bk-board .bk-row .bk-nm'), sp = document.querySelector('#su .bk-board .bk-sp'), mo = document.querySelector('#su .bk-money');
+      return {lim: Math.round(lim), name: nm ? Math.round(nm.getBoundingClientRect().bottom) : null, line: sp ? Math.round(sp.getBoundingClientRect().top) : null, money: mo ? Math.round(mo.getBoundingClientRect().bottom) : null}; });
     (R.m.bookFold ??= {})[width] = fold0;
     if (width === 390) check(fold0.name != null && fold0.name <= fold0.lim, W + '첫 화면에 종목 이름(주문 1111-0938 「종목이 보이게」 — 아래 고정 줄보다 위)', JSON.stringify(fold0));
-    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old')) d.open = true; });
+    check(fold0.money != null && fold0.money <= fold0.lim, W + '첫 화면에 맨 위 「지금까지」가 다 보임(주문 1112-1304 — 산 돈 · 지금 · 늘었나 줄었나)', JSON.stringify(fold0));
+    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old, #su details.bk-dmon')) d.open = true; });
     const m = await measure(p); pageRules(m, W);
     const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.bk'), txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
       return {diff: hero?.getAttribute('data-diff') ?? null, n: ['up', 'dn', 'eq', 'one'].map(k => hero?.getAttribute('data-' + k)),
-        tiles: [...document.querySelectorAll('#su .bk-tile')].map(e => [txt(e.querySelector('.bk-tl')), txt(e.querySelector('.bk-tn'))]), tot: txt(hero?.querySelector('.bk-tot')), tot2: txt(hero?.querySelector('.bk-split .bk-tot2')),
-        spl: [...document.querySelectorAll('#su .bk-split .bk-spl')].map(txt), sum: txt(hero?.querySelector('.bk-sum')),
+        tiles: [...document.querySelectorAll('#su .bk-tile')].map(e => [txt(e.querySelector('.bk-tl')), txt(e.querySelector('.bk-tn'))]), cap: txt(hero?.querySelector('.bk-sum .bk-cap')),
+        spl: [...document.querySelectorAll('#su .bk-split .bk-spl')].map(txt),
+        // 주문 1112-1304 — 맨 위 「지금까지」 · 「날짜마다」(줄 · 달 줄 · 맨 아래 모두) · 차례
+        money: (() => { const m = hero?.querySelector('.bk-money'); return m ? {h: [txt(m.querySelector('.bk-mh b')), txt(m.querySelector('.bk-mh span'))], c: txt(m.querySelector('.bk-mcost b')), v: txt(m.querySelector('.bk-mval b')), r: txt(m.querySelector('.bk-mres')),
+          sh: m.querySelector('.bk-mres [data-shape]')?.getAttribute('data-shape') ?? '', m100: txt(m.querySelector('.bk-m100'))} : null; })(),
+        ledH: [...(hero?.querySelectorAll('.bk-days .bk-dhead span') ?? [])].map(txt),
+        led: [...(hero?.querySelectorAll('.bk-days .bk-drow:not(.bk-dsum)') ?? [])].map(b => ({day: b.getAttribute('data-day'), btn: b.tagName === 'BUTTON', mon: b.closest('details.bk-dmon')?.getAttribute('data-month') ?? null,
+          d: txt(b.querySelector('.bk-dday')), c: txt(b.querySelector('.bk-dcost')), r: txt(b.querySelector('.bk-ddiff')), sh: b.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? '', n: txt(b.querySelector('.bk-dnm'))})),
+        ledM: [...(hero?.querySelectorAll('.bk-days details.bk-dmon') ?? [])].map(e => { const s = e.querySelector('summary'); return {ym: e.getAttribute('data-month'), d: txt(s?.querySelector('.bk-dday')), c: txt(s?.querySelector('.bk-dcost')), r: txt(s?.querySelector('.bk-ddiff')), sh: s?.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? ''}; }),
+        ledT: (() => { const t = hero?.querySelector('.bk-days .bk-dtot'); return t ? {d: txt(t.querySelector('.bk-dday')), c: txt(t.querySelector('.bk-dcost')), r: txt(t.querySelector('.bk-ddiff')), sh: t.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? ''} : null; })(),
+        order: (() => { const all = hero ? [...hero.querySelectorAll('*')] : []; return ['.bk-money', '.bk-days', '.bk-sum', '.bk-cal', '.bk-list'].map(q => { const e = hero?.querySelector(q); return e ? all.indexOf(e) : -1; }); })(),
         cal: [...document.querySelectorAll('#su .bk-cal .bk-d')].map(e => ({day: e.getAttribute('data-day'), btn: e.tagName === 'BUTTON', shapes: [...e.querySelectorAll('.bk-3 [data-shape]')].map(x => x.getAttribute('data-shape')).join('')})),
         spill: [...document.querySelectorAll('#su .bk-pick')].filter(b => { const r = b.getBoundingClientRect(), q = b.querySelector('.bk-3')?.getBoundingClientRect(); return !q || q.left < r.left - 0.5 || q.right > r.right + 0.5; }).map(b => b.getAttribute('data-day')),
         boards: [...document.querySelectorAll('#su .bk-board')].map(e => ({day: e.getAttribute('data-day'), fold: !!e.closest('details.bk-old'), h2: txt(e.querySelector('.bk-bh')), seen: txt(e.querySelector('.bk-seen')), late: txt(e.querySelector('.bk-late')),
+          bm1: txt(e.querySelector('.bk-bm1')), bm2: txt(e.querySelector('.bk-bm2')), bsh: e.querySelector('.bk-bm2 [data-shape]')?.getAttribute('data-shape') ?? '',
           names: [...e.querySelectorAll('.bk-names .bk-nm1')].map(x => [x.getAttribute('data-place'), x.getAttribute('data-code'), txt(x.querySelector('span'))]),
           rows: [...e.querySelectorAll('a.bk-row')].map(a => ({place: a.getAttribute('data-place'), code: a.getAttribute('data-code'), href: a.getAttribute('href'), st: a.getAttribute('data-st'), name: txt(a.querySelector('.bk-nm')), tag: txt(a.querySelector('.bk-tag')),
-            shape: a.querySelector('.bk-res [data-shape]')?.getAttribute('data-shape') ?? '', r100: txt(a.querySelector('.bk-r100')), mon: txt(a.querySelector('.bk-mon')), sp: !!a.querySelector('svg.bk-sp path.bk-line')}))})),
+            shape: a.querySelector('.bk-res [data-shape]')?.getAttribute('data-shape') ?? '', r100: txt(a.querySelector('.bk-r100')), mon1: txt(a.querySelector('.bk-mon1')), mon2: txt(a.querySelector('.bk-mon2')), sp: !!a.querySelector('svg.bk-sp path.bk-line')}))})),
         folds: [...document.querySelectorAll('#su details.bk-old')].map(e => e.getAttribute('data-month')),
         text: [...document.querySelectorAll('#su main .su-hero.bk, #su main .bk-how')].map(e => e.innerText).join('\n'), all: document.getElementById('su')?.innerText ?? ''}; });
     check(!g.all.includes('사장님 휴대폰에서만') && !g.all.includes('사장님 휴대폰'), W + '「사장님 휴대폰에서만」 글 0(모든 사람 — 주문 1513)', (g.all.match(/.{0,12}사장님 휴대폰.{0,12}/) ?? [''])[0]);
@@ -1034,10 +1074,24 @@ for (const width of [390, 360, 320]) {
     else {
       const w = wantB, rowsOf = d => w.rows.filter(r => r.day === d).sort((a, b) => a.place - b.place);
       check(+g.diff === w.diff && JSON.stringify(g.n.map(Number)) === JSON.stringify([w.n.up, w.n.dn, w.n.eq, w.n.one]), W + '셈 = 따로 센 값(10주씩 · 산 날 값 → 맨 끝 값 · 늘었어요 · 줄었어요 · 그대로 · 아직 하루치 수)', JSON.stringify({n: g.n, same: +g.diff === w.diff}));
-      check(JSON.stringify(g.tiles) === JSON.stringify(w.tiles.map(([l, k]) => [l, k + '번'])), W + '같은 크기 세 칸이 합보다 먼저 — 늘었어요 · 줄었어요 · 셋째 칸(아직 하루치 · 그대로)', JSON.stringify(g.tiles));
-      check(g.tot === '모두 합치면 ' + hundB(w.val, w.cost) + ' · ' + movedB(w.diff) && g.sum.indexOf('번') < g.sum.indexOf('모두 합치면') && g.tot2 === '산 값 ' + wonB(w.cost) + ' → 지금 ' + wonB(w.val), W + '모두 합친 줄(세 칸 밑) · 접힌 「산 값과 지금」 = 따로 센 값', JSON.stringify({tot: g.tot === '모두 합치면 ' + hundB(w.val, w.cost) + ' · ' + movedB(w.diff), order: g.sum.indexOf('번') < g.sum.indexOf('모두 합치면'), tot2: g.tot2 === '산 값 ' + wonB(w.cost) + ' → 지금 ' + wonB(w.val)}));
-      const sw = w.swing, swWant = sw ? [+sw.r.day.slice(5, 7) + '월 ' + +sw.r.day.slice(8, 10) + '일 ' + sw.r.place + '등 ' + sw.r.name + ' 한 줄이 ' + movedB(sw.d), '그 한 줄을 빼면 ' + movedB(sw.rest)] : [];
-      check(swWant.every(x => g.spl.includes(x)) && (sw ? g.spl.length === 4 : g.spl.length === 2), W + '합을 흔든 한 줄(합의 절반 넘게 움직인 줄만) — 그 줄 · 그 줄을 빼면', JSON.stringify({swing: !!sw, lines: g.spl.length, same: swWant.map(x => g.spl.includes(x))}));
+      check(JSON.stringify(g.tiles) === JSON.stringify(w.tiles.map(([l, k]) => [l, k + '번'])) && g.cap === '산 셈 ' + w.rows.length + '번 · 고른 날 ' + bdays.length + '일', W + '같은 크기 세 칸(산 셈 하나씩) — 늘었어요 · 줄었어요 · 셋째 칸(아직 하루치 · 그대로) · 산 셈 수 · 고른 날 수', JSON.stringify({tiles: g.tiles, cap: g.cap}));
+      // 주문 1112-1304 — 맨 위 「지금까지」 = 따로 센 값(산 돈 · 지금 · 늘었나 줄었나 모양 + 글 · 모두 합치면 100원이 ○원 · ○월 ○일 값까지) · 실패 글에는 맞음 · 틀림만(돈 글 0)
+      const T = MB.T, mOk = {h: JSON.stringify(g.money?.h) === JSON.stringify(['지금까지', mdM(MB.last) + ' 값까지']), c: g.money?.c === wonM(T.cost), v: g.money?.v === wonM(T.val), r: g.money?.r === T.said && g.money?.sh === SHM[T.st],
+        m100: g.money?.m100 === (T.one ? '' : '모두 합치면 ' + hundM(T.val, T.cost)), same: T.cost === w.cost && Math.round(T.diff) === w.diff};
+      check(!!g.money && Object.values(mOk).every(Boolean), W + '맨 위 「지금까지」 — 산 돈 · 지금 · 늘었나 줄었나(모양 + 글) · 모두 합치면 100원이 ○원 · ○월 ○일 값까지 = 따로 센 값', JSON.stringify(mOk));
+      check(g.order.every((x, i) => x >= 0 && (!i || x > g.order[i - 1])), W + '차례 — 맨 위 「지금까지」 → 「날짜마다」 → 세 칸 → 달력 → 고른 셋(주문 1112-1304)', JSON.stringify(g.order));
+      // 날짜마다 — 새 날이 위 · 다섯 날만 펴고 그 앞은 달마다 접음 · 줄마다 고른 날 · 산 돈 · 늘었나 줄었나(모양) · 그날 세 회사 · 단추 · 맨 아래 모두 = 맨 위
+      const ledWant = [...MB.recent.map(x => ({...x, mon: null})), ...MB.months.flatMap(m => m.days.map(x => ({...x, mon: m.ym})))], badL = [];
+      if (JSON.stringify(g.ledH) !== JSON.stringify(['고른 날 · 고른 셋', '산 돈', '늘었나 줄었나'])) badL.push('표 머리');
+      if (g.led.length !== ledWant.length) badL.push('줄 수 ' + g.led.length + ' · ' + ledWant.length);
+      g.led.forEach((x, i) => { const y = ledWant[i]; if (!y || x.day !== y.day || x.mon !== y.mon || !x.btn || x.d !== y.label || x.c !== wonM(y.cost) || x.r !== y.res || x.sh !== SHM[y.st] || x.n !== y.names) badL.push((y?.day ?? x.day) + ' 줄'); });
+      if (JSON.stringify(g.ledM.map(m => m.ym)) !== JSON.stringify(MB.months.map(m => m.ym))) badL.push('달 차례');
+      g.ledM.forEach((m, i) => { const y = MB.months[i]; if (!y || m.d !== y.label || m.c !== wonM(y.cost) || m.r !== y.res || m.sh !== SHM[y.st]) badL.push(m.ym + ' 달 줄'); });
+      if (!g.ledT || g.ledT.d !== '모두' || g.ledT.c !== wonM(T.cost) || g.ledT.r !== T.res || g.ledT.sh !== SHM[T.st]) badL.push('모두 줄');
+      R.m.bookLedger = {rows: g.led.length, months: g.ledM.length, bad: badL.length};
+      check(!badL.length, W + '날짜마다 — 새 날이 위 · 다섯 날만 펴고 그 앞은 달마다 접음 · 줄마다 고른 날 · 산 돈 · 늘었나 줄었나(모양) · 그날 세 회사 · 맨 아래 모두 = 맨 위(따로 셈)', badL.slice(0, 6).join(' / '));
+      const sw = w.swing, swWant = sw ? [+sw.r.day.slice(5, 7) + '월 ' + +sw.r.day.slice(8, 10) + '일 ' + sw.r.place + '등 ' + sw.r.name + ' 한 줄이 ' + movedB(sw.d), '그 한 줄을 빼면 ' + movedB(sw.rest), '10주씩 사면 값이 비싼 회사가 합을 크게 흔들어요.'] : [];
+      check(JSON.stringify(g.spl) === JSON.stringify(swWant), W + '합을 흔든 한 줄(합의 절반 넘게 움직인 줄만 · 없으면 접힌 칸도 없음) — 그 줄 · 그 줄을 빼면', JSON.stringify({swing: !!sw, lines: g.spl.length, same: swWant.map(x => g.spl.includes(x))}));
       check(JSON.stringify(g.cal.map(c => c.day ?? '')) === JSON.stringify(w.strip.map(d => (w.picks.includes(d) ? d : ''))) && g.cal.every(c => c.btn === !!c.day)
         && g.cal.filter(c => c.btn).every(c => c.shapes === rowsOf(c.day).map(r => SHB[r.st]).join('')), W + '달력 한 줄 — 장이 서는 날 다섯 · 뽑힌 날만 단추 · 1 · 2 · 3등 차례 모양', JSON.stringify(g.cal).slice(0, 300));
       check(!g.spill.length, W + '달력 — 세 모양이 날 칸 안에', g.spill.join(' '));
@@ -1047,13 +1101,15 @@ for (const width of [390, 360, 320]) {
       for (const b of g.boards) {
         const rs = rowsOf(b.day), sn = kstB(rs[0]?.seen), one = rs.every(r => r.one);
         if (!b.h2.includes(+b.day.slice(5, 7) + '월 ' + +b.day.slice(8, 10) + '일') || (sn && b.seen !== '처음 보인 때 ' + sn.text) || (!!(sn && sn.day > b.day) !== !!b.late)) bad.push(b.day + ' 머리');
+        const dm = MB.days.find(x => x.day === b.day); // 주문 1112-1304 — 그날 돈 줄(산 돈 → 지금 · 늘고 준 돈 · 아직 하루치면 산 돈만)
+        if (!dm || b.bm1 !== (dm.one ? '산 돈 ' + wonM(dm.cost) : '산 돈 ' + wonM(dm.cost) + ' → 지금 ' + wonM(dm.val)) || b.bm2 !== dm.said || b.bsh !== SHM[dm.st]) bad.push(b.day + ' 돈 줄');
         if (one) { if (JSON.stringify(b.names) !== JSON.stringify(rs.map(r => [String(r.place), r.code, r.name])) || b.rows.length) bad.push(b.day + ' 이름 한 줄'); continue; }
         if (b.rows.length !== 3) { bad.push(b.day + ' 줄 수'); continue; }
         b.rows.forEach((x, i) => { const r = rs[i];
           if (x.place !== String(r.place) || x.code !== r.code || x.name !== r.name || x.href !== '#/c/' + r.code || x.st !== r.st || x.shape !== SHB[r.st] || x.r100 !== hundB(r.now, r.buy)
-            || x.mon !== '10주 ' + (r.one ? '— 아직 하루치예요' : movedB((r.now - r.buy) * BK.qty)) || x.sp !== !r.one || (r.nth > 1) !== !!x.tag) bad.push(b.day + ' ' + r.place + '등'); });
+            || x.mon1 !== BK.qty + '주 ' + wonB(r.buy * BK.qty) + '어치' || x.mon2 !== (r.one ? '아직 하루치예요' : movedB((r.now - r.buy) * BK.qty)) || x.sp !== !r.one || (r.nth > 1) !== !!x.tag) bad.push(b.day + ' ' + r.place + '등'); });
       }
-      check(!bad.length, W + '판마다 처음 보인 때 · 줄마다 등수 · 이름 · 회사 쪽 고리 · 모양 · 100원이 ○원 · 10주 늘고 준 돈 · 그림 · 같은 회사 몇 번째(따로 센 값)', bad.slice(0, 6).join(' / '));
+      check(!bad.length, W + '판마다 처음 보인 때 · 그날 돈 줄(산 돈 → 지금) · 줄마다 등수 · 이름 · 회사 쪽 고리 · 모양 · 100원이 ○원 · 10주 ○원어치 · 늘고 준 돈 · 그림 · 같은 회사 몇 번째(따로 센 값)', bad.slice(0, 6).join(' / '));
       const names = [...new Set(w.rows.map(r => r.name))].sort((a, b) => b.length - a.length), plain = names.reduce((t, n) => t.split(n).join(''), g.text);
       check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '「%」 · 영어 글자 0(회사 이름 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
       const tgt = w.picks[0];
@@ -1062,6 +1118,12 @@ for (const width of [390, 360, 320]) {
         const g2 = await p.evaluate(d => { const e = document.querySelector(`#su .bk-board[data-day="${d}"]`); return {top: e ? Math.round(e.getBoundingClientRect().top) : null, on: [...document.querySelectorAll('#su .bk-pick.bk-on')].map(b => b.getAttribute('data-day'))}; }, tgt);
         check(g2.top != null && g2.top >= -2 && g2.top <= 160 && JSON.stringify(g2.on) === JSON.stringify([tgt]), W + '달력 날을 누르면 그 판으로(맨 위 가까이) · 누른 날 표시', JSON.stringify({day: tgt, ...g2}));
         pageRules(await measure(p), W + '날 누른 뒤');
+      }
+      const tgL = MB.recent[MB.recent.length - 1]?.day; // 주문 1112-1304 — 날짜마다 줄(펴 둔 날 가운데 가장 오래된 날)을 누르면 그날 고른 셋으로
+      if (tgL) {
+        await p.evaluate(() => scrollTo(0, 0)); await p.click(`#su .bk-days .bk-drow[data-day="${tgL}"]`); await p.waitForTimeout(1200);
+        const g3 = await p.evaluate(d => { const e = document.querySelector(`#su .bk-board[data-day="${d}"]`); return {top: e ? Math.round(e.getBoundingClientRect().top) : null}; }, tgL);
+        check(g3.top != null && g3.top >= -2 && g3.top <= 160, W + '날짜마다 줄을 누르면 그날 고른 셋으로(맨 위 가까이)', JSON.stringify({day: tgL, ...g3}));
       }
     }
     await open(p, '#/r');
@@ -1144,11 +1206,19 @@ for (const width of [390, 360, 320]) {
       if (QB) {
         await open(p, '#/r/s');
         await p.waitForFunction(() => document.querySelector('#su .su-hero.bk[data-book="quiet"] .bk-board'), null, {timeout: 10000}).catch(() => {});
-        await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old')) d.open = true; });
+        await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.bk-split, #su details.bk-old, #su details.bk-dmon')) d.open = true; });
         pageRules(await measure(p), W + '#/r/s');
         const g2 = await p.evaluate(() => ({book: document.querySelector('#su .su-hero.bk')?.getAttribute('data-book') ?? null, h1: document.querySelector('#su h1')?.textContent ?? '',
           boards: [...document.querySelectorAll('#su .bk-board')].map(e => e.getAttribute('data-day')), intro: document.querySelector('#su .bk-intro')?.textContent ?? ''}));
         check(g2.book === 'quiet' && g2.h1 === '조용한 힘 달력' && JSON.stringify(g2.boards) === JSON.stringify([...qdays].reverse()) && g2.intro.startsWith('조용한데 힘이 모이는 창의'), W + '#/r/s 조용한 힘 달력 — 따로 된 장부 · 판 차례(새 판이 위)', JSON.stringify(g2).slice(0, 300));
+        const QM = bookMoney(QB); // 주문 1112-1304 — 같은 꼴: 맨 위 「지금까지」 · 날짜마다 · 모두(따로 셈 · 실패 글에 돈 글 0)
+        const g4 = await p.evaluate(() => { const txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), hero = document.querySelector('#su .su-hero.bk');
+          return {c: txt(hero?.querySelector('.bk-money .bk-mcost b')), v: txt(hero?.querySelector('.bk-money .bk-mval b')), r: txt(hero?.querySelector('.bk-money .bk-mres')),
+            days: [...(hero?.querySelectorAll('.bk-days .bk-drow:not(.bk-dsum)') ?? [])].map(b => [b.getAttribute('data-day'), txt(b.querySelector('.bk-dcost')), txt(b.querySelector('.bk-ddiff')), txt(b.querySelector('.bk-dnm'))]),
+            tc: txt(hero?.querySelector('.bk-days .bk-dtot .bk-dcost')), tr: txt(hero?.querySelector('.bk-days .bk-dtot .bk-ddiff'))}; });
+        const qOk = QM ? {c: g4.c === wonM(QM.T.cost), v: g4.v === wonM(QM.T.val), r: g4.r === QM.T.said, days: JSON.stringify(g4.days) === JSON.stringify([...QM.recent, ...QM.months.flatMap(m => m.days)].map(x => [x.day, wonM(x.cost), x.res, x.names])),
+          tot: g4.tc === wonM(QM.T.cost) && g4.tr === QM.T.res} : {book: false};
+        check(Object.values(qOk).every(Boolean), W + '#/r/s 조용한 힘 달력 — 맨 위 「지금까지」 · 날짜마다 · 모두 = 따로 센 값(주문 1112-1304)', JSON.stringify(qOk));
       }
       check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
       await ctx.close();
