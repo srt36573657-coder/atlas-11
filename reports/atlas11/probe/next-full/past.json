@@ -1,5 +1,5 @@
 {
- "made": "2026-11-11T22:58:59.921Z",
+ "made": "2026-11-12T06:00:18.363Z",
  "base": "https://aaa7377.com",
  "path": "/next/?dev=1",
  "mode": "all",
@@ -37,26 +37,30 @@
   }
  },
  "counts": {
-  "맞댄 칸": 191775,
-  "숫자 낱말": 409867,
-  "맨 위 결 한 줄": 7671,
-  "선 누르기": 7671,
+  "맞댄 칸": 191750,
+  "숫자 낱말": 422034,
+  "맨 위 결 한 줄": 7670,
+  "선 누르기": 7670,
   "화면(기간)": 7671,
   "회사": 2557,
+  "기간 값 없음": 1,
   "없는 번호": 1,
   "폭 화면": 120
  },
  "fails": [],
- "warn": [],
- "sec": 814,
+ "warn": [
+  "기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일",
+  "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
+ ],
+ "sec": 643,
  "time": {
-  "old": 313.7,
-  "new": 497.6,
-  "wall": 814.1,
-  "opensOld": 25571,
-  "opensNew": 33282,
-  "oldPct": 38.5,
-  "oldShare": 38.7
+  "old": 255.2,
+  "new": 451.4,
+  "wall": 643.2,
+  "opensOld": 25569,
+  "opensNew": 33281,
+  "oldPct": 39.7,
+  "oldShare": 36.1
  },
  "net": {
   "req": 2560,
