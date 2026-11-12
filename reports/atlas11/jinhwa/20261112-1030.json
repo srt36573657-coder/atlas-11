@@ -1,0 +1,179 @@
+{
+ "schema": "kkolttori-jinhwa-round-1",
+ "id": "20261112-1030",
+ "start": "2026-11-12T10:30:33+09:00",
+ "end": "2026-11-12T11:23:29+09:00",
+ "essence": {
+  "file": "docs/큐피트_본질.md",
+  "sha256": "69a5e0f19a088d30f981d916a9b9e91bfc58722a6197f025ab343b1a6024f04f",
+  "first": "큐피트의 본질: 불장 종목, 꽃이 될 종목, 돈이 몰리는 종목을 찾아내는 탐지다. 우량주 365곳 안에서 7곳씩 찾는다. 모든 구성과 집중이 여기에 모인다. 미국은 뺀다."
+ },
+ "main": "c67b720b50f13c83a0049cf532d4138d0eea5796",
+ "cutoff": "2026-11-12T10:30:00+09:00",
+ "status": {
+  "ok": true,
+  "why": "",
+  "items": [],
+  "unknown": 0
+ },
+ "plan": {
+  "change": null,
+  "next": "make",
+  "retest": [],
+  "pending": [],
+  "ignored": [],
+  "statusOk": true,
+  "statusWhy": ""
+ },
+ "apply": null,
+ "revert": null,
+ "fixed": [],
+ "made": [
+  {
+   "n": 1,
+   "id": "20261112-1030-1",
+   "ok": false,
+   "route": "/su/#/i/IT%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%86%B5%ED%95%A9",
+   "steps": [],
+   "commit": "4821394726bd03960eeb6feb798eab6699e909c0",
+   "base": "c67b720b50f13c83a0049cf532d4138d0eea5796",
+   "why": [
+    "바뀐 쪽 검사 실패 1"
+   ],
+   "files": [
+    "site/su/su.js"
+   ],
+   "changeHash": "1c9708407a1faae1",
+   "big": [],
+   "changed": {
+    "fails": 1,
+    "tail": "실패 check_su · 767.6초 / 느린 4G 첫 화면 — 가장 큰 칠함 2404ms · 무하 큰 그림 3254ms / 실패 ㉒ 조용한 힘 장부 자료 — 꼴 · 판 날 차례 · 날마다 셋 · 산 값 = 값 줄 — {\"kind\":null,\"days\":[]} / 큐피트 두 길 검사 — 통과 1607 · 실패 1 / / 끝 · 768.1초 · 실패 1 "
+   },
+   "seed": {}
+  }
+ ],
+ "debate": null,
+ "cards": [],
+ "retested": [],
+ "finished": [],
+ "dropped": [],
+ "pending": [],
+ "scores": {},
+ "facts": {
+  "mismatch": 0,
+  "at": "2026-11-12T08:15:54+09:00"
+ },
+ "factsNote": "",
+ "tally": {
+  "2026-10-30": {
+   "stop": 4,
+   "stop_rest": 2,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-10-31": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-01": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-02": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-03": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-04": {
+   "stop": 1,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-05": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-06": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-07": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-08": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-09": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-10": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-11": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  },
+  "2026-11-12": {
+   "stop": 0,
+   "stop_rest": 0,
+   "promise": 0,
+   "promise_yes": 0
+  }
+ },
+ "data": {
+  "changed": true,
+  "ok": true,
+  "n": 1,
+  "waiting": [],
+  "errors": []
+ },
+ "owner": [
+  "이번 진화 회차는 바꾼 것이 없어요.",
+  "진화 칸에 기다리는 대안은 없어요.",
+  "확인 없이 들어간 것은 0개예요. 못 한 것은 0가지예요."
+ ],
+ "notice": "",
+ "notDone": [],
+ "confirmOnly": {
+  "appliedWithoutConfirm": 0,
+  "rule": "열쇠 없는 상태 confirmed + 회차 때 전 + 기다림에 있음 + 지문 같음 + 넣기 직전 · 밀기 직전 다시 봄"
+ },
+ "log": [
+  "2026-11-12T10:31:23+09:00 시작 · 본질 69a5e0f1 · main c67b720 · 할 일 넣기 없음 → make",
+  "2026-11-12T10:32:20+09:00 지금 사이트 자료 마지막 날 2026-11-11(깃허브 일로 새로 받음) · main 일 폴더 2584개 · 회차를 연 폴더 2584개"
+ ],
+ "notes": [
+  "20261112-1030-did.md",
+  "20261112-1030-learn11.md"
+ ]
+}
