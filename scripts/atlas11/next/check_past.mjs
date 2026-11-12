@@ -181,7 +181,8 @@ function compare(code, perName, o, n) {
   if (!o) { fail('옛 쪽 못 읽음', at); return; }
   if (!n) { fail('새 쪽 못 읽음', at); return; }
   // 옛 쪽이 제대로 열렸는지(둘 다 깨져 같게 보이는 것 막기)
-  if (o.trio.length !== 3 || o.won.length !== 2 || o.ax.length !== 2 || o.yr.length < 2 || o.chk.length < 3) fail('옛 쪽이 덜 그려짐', at + ' ' + JSON.stringify([o.trio.length, o.won.length, o.ax.length, o.yr.length, o.chk.length]));
+  // 눈금 글은 한 개도 됨 — 기준선(0%) 글은 늘 있고, 좁은 기간(예: 0010V0 한 달 8,410 ~ 9,080원)은 다른 눈금이 기준선 24px 안이라 빠짐(두 쪽 같은 셈 · 2026-11-12 주문 1112-1304 올리기 1/11 뒤)
+  if (o.trio.length !== 3 || o.won.length !== 2 || o.ax.length !== 2 || o.yr.length < 1 || o.chk.length < 3) fail('옛 쪽이 덜 그려짐', at + ' ' + JSON.stringify([o.trio.length, o.won.length, o.ax.length, o.yr.length, o.chk.length]));
   const same = (k, a, b) => { bump('맞댄 칸'); if (!eq(a, b)) fail(k, at + ' 옛 ' + JSON.stringify(a).slice(0, 180) + ' · 새 ' + JSON.stringify(b).slice(0, 180)); };
   same('제목', o.h1, n.h1); same('날 줄', o.ws, n.ws); same('7단 중 4단 · 앎의 종류', o.lv, n.lv); same('고른 기간', o.per, n.per); same('기간 단추', o.pers, n.pers);
   same('그림 이름(aria)', o.aria, n.aria); same('「?」 그림', o.q, n.q); same('눈금 글', o.yr, n.yr); same('처음 · 끝 날', o.ax, n.ax); same('가장 높을 때 · 낮을 때', o.hl, n.hl);
@@ -219,6 +220,15 @@ async function nowWant(code) {
   const a = cl[i0], z = cl[iL], top = Math.max(...cl.filter(ok)), dr = Math.round((1 - z / top) * 100), d = ds[iL];
   const tail = z >= top ? '그사이 가장 높은 값이 바로 이 값이에요.' : dr < 1 ? `그사이 가장 높던 ${wonK(top)}보다 조금 아래예요.` : `그사이 가장 높던 ${wonK(top)}보다는 ${dr}% 아래예요.`;
   return [`1년 전 ${wonK(a)} → ${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일 ${wonK(z)}. ${tail}`];
+}
+/** 기간 값 없음(2026-11-12 주문 1112-1304 올리기 1/11 — 005110 한창 한 달: 10월 13일 뒤 값 없음 · 옛 쪽 · 새 쪽 그림 모두 NaN)
+ *  자료에서 따로 셈: 그 기간(새 쪽 PERIODS 와 같은 날 수 · 상장 뒤면 상장일부터)에 종가가 하나도 없으면 true — 옛 쪽은 고치지 않는 화면(규칙 75)이라 맞대지 않고, 새 쪽 「?」 한 줄 · NaN 0 만 봄 */
+const PER_LEN = {'20거래일': 21, '1년': 253, '3년': 757};
+async function emptyWin(code, perName) {
+  if (!coJ.has(code)) coJ.set(code, await getJ('co/' + encodeURIComponent(code) + '.json').catch(() => null));
+  const c = coJ.get(code), nAll = DAYS?.dates?.length ?? 0, k0 = c?.k0 ?? 0, len = PER_LEN[perName];
+  if (!c || !Array.isArray(c.close) || !nAll || !len) return false;
+  return !c.close.slice(Math.max(k0, nAll - len) - k0).some(x => x != null);
 }
 async function nowCheck(code, perName, n) {
   if (!n) return;
@@ -267,6 +277,14 @@ const P = [['20d', '20거래일'], ['1y', '1년'], ['3y', '3년']];
       if (!ca && cb) ca = await reopenOld(po, code).then(oldClick, () => false); // 옛 쪽만 단추가 없으면 옛 쪽을 새로 열어 한 번 더(새 쪽은 그대로 잼)
       if (!ca || !cb) { fail('기간 단추', code + ' ' + name + ' ' + ca + ' ' + cb); continue; }
       await tm.new(() => frames(pn));
+      if (await emptyWin(code, name)) { // 기간 값 없음 — 새 쪽 「?」 한 줄 · 숫자 자리에 NaN · undefined 0 · 옛 쪽 맞대기는 건너뜀(알림에 남김)
+        const e = await tm.new(() => pn.evaluate(() => { const v = document.querySelector('#view > .ppast'); return {q: [...(v?.querySelectorAll('.empty') ?? [])].map(x => x.textContent.trim()), bad: /NaN|undefined|Infinity/.test(v?.innerText ?? ''), svg: !!v?.querySelector('.ppast-lc svg')}; }));
+        bump('기간 값 없음');
+        if (!e.q.includes('? 이 기간 값을 못 읽었습니다') || e.bad || e.svg) fail('기간 값 없음 — 새 쪽 「?」 한 줄 · NaN 0', code + ' ' + name + ' ' + JSON.stringify(e));
+        warn.push('기간 값 없음(옛 쪽 맞대기 건너뜀) ' + code + ' ' + name);
+        bump('화면(기간)');
+        continue;
+      }
       // 읽는 사이 옛 앱이 새로 고치면(끊김 · 빈 화면 · 기간이 처음 1년으로 돌아감) 다시 열고 같은 기간을 눌러 다시 읽음(두 번까지 · 그래도 안 되면 읽은 그대로 맞대어 실패로 남김)
       const pressedOld = () => po.evaluate(() => document.querySelector('#view .seg.seg3 button[aria-pressed="true"]')?.textContent?.trim() ?? null).catch(() => null);
       const oldRead = async (fn, arg, nullOk = false) => {

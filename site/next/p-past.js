@@ -51,9 +51,10 @@ function priceChart(box, {dates, close, avg, jumps, label, width}) {
   box.replaceChildren();
   const n = close.length, vals = [...close, ...avg].filter(x => x != null);
   const tip = h('p', {class: 'ppast-tip', role: 'status', 'aria-live': 'polite', text: '선을 누르면 그날 값이 보여요'});
-  if (!vals.length) { box.append(h('p', {class: 'empty q', text: '? 이 기간 값을 못 읽었습니다'})); return; }
+  const base = close.find(x => x != null);
+  if (!vals.length || !(base > 0) || !vals.every(Number.isFinite)) { box.append(h('p', {class: 'empty q', text: '? 이 기간 값을 못 읽었습니다'})); return; } // 기간 값 없음 · 첫 값 없음 → 그림 속 NaN 0
   let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.06 || 1; lo -= pad; hi += pad;
-  const base = close.find(x => x != null), toP = y => (y / base - 1) * 100, ticks = niceTicks(toP(lo), toP(hi)), fmt = t => `${sgn(t)}${Math.abs(t)}%`;
+  const toP = y => (y / base - 1) * 100, ticks = niceTicks(toP(lo), toP(hi)), fmt = t => `${sgn(t)}${Math.abs(t)}%`;
   const W = Math.max(120, Math.round(width)), padR = Math.max(52, Math.round(Math.max(...ticks.map(t => fmt(t).length), 2) * 11 + 10)); /* 글꼴마다 숫자 넓이가 달라 넉넉히(실제 사이트 320 폭 「−100%」 1px 겹침 — 2026-10-17) */ // 오른쪽 눈금 칸 = 가장 긴 눈금 글이 들어가는 넓이(17px 글)
   const X = i => 4 + i * (W - 4 - padR) / Math.max(1, n - 1), Y = y => PT + (hi - y) * (H - PT - P) / (hi - lo);
   const id = 'ppast' + (++lcN), T = tok(), by = Y(base);
@@ -136,6 +137,11 @@ export async function render(arg) {
   function draw() {
     const [, name, len] = PERIODS.find(p => p[0] === per), from = Math.max(k0, nAll - len);
     const dates = dd.dates.slice(from), cl = co.close.slice(from - k0), base = cl.find(x => x != null);
+    if (!(base > 0)) { // 이 기간에 값이 하나도 없음(거래가 멈춘 회사 · 상장 폐지 뒤 — 2026-11-12 005110 한 달) — 셈하지 않고 「?」 한 줄(그림 · 세 숫자 · 1주 값 줄에 NaN 이 나오지 않게)
+      trio.replaceChildren(); wonLine.textContent = ''; money.textContent = ''; key.replaceChildren(); jumpNote.replaceChildren();
+      chartBox.replaceChildren(h('p', {class: 'empty q', text: '? 이 기간 값을 못 읽었습니다'})); drawnW = (chartBox.isConnected && chartBox.clientWidth) || widthGuess();
+      return;
+    }
     const allv = dd.all.slice(from), avg = allv.map(x => x / allv[0] * base);
     const last = [...cl].reverse().find(x => x != null);
     let peak = 0, m = 0; for (const x of cl) { if (x == null) continue; peak = Math.max(peak, x); m = Math.min(m, x / peak - 1); }
