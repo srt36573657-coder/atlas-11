@@ -1,13 +1,13 @@
 {
  "schema": "atlas11-next-grow-check-1",
  "base": "http://127.0.0.1:8826",
- "asOf": "2026-11-11",
+ "asOf": "2026-11-12",
  "companies": 2557,
  "of": 2557,
  "all": true,
  "limit": null,
  "wide": 10,
- "at": "2026-11-11T21:19:53.240Z",
+ "at": "2026-11-12T05:10:35.715Z",
  "shard": "all/3",
  "units": {
   "total": 2569,
@@ -32,17 +32,17 @@
    }
   }
  },
- "seconds": 50,
- "secondsSum": 149,
+ "seconds": 72,
+ "secondsSum": 216,
  "time": {
-  "old": 5.8,
-  "new": 133.3,
-  "wall": 49.8,
-  "wallSum": 148.9,
-  "opensOld": 13,
+  "old": 177.6,
+  "new": 176.8,
+  "wall": 72.1,
+  "wallSum": 215.9,
+  "opensOld": 7684,
   "opensNew": 10286,
-  "oldPct": 3.9,
-  "oldShare": 4.2
+  "oldPct": 82.3,
+  "oldShare": 50.1
  },
  "net": {
   "req": 5280,
@@ -58,18 +58,18 @@
   }
  },
  "counts": {
-  "맞댄 글 낱낱": 43387,
-  "맞댄 숫자 낱말": 80068,
+  "맞댄 글 낱낱": 45948,
+  "맞댄 숫자 낱말": 90312,
   "이야기 있는 회사": 61,
   "손가락 이름표": 8477,
   "회사": 2557,
   "oldSnap": {
-   "use": true,
-   "why": "",
-   "made": "2026-11-11T19:30:26.759Z | 2026-11-11T19:30:26.402Z | 2026-11-11T19:30:27.507Z",
+   "use": false,
+   "why": "바뀐 파일 856개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json) | 바뀐 파일 855개(/atlas/data/core.json · /atlas/data/comp.json · /atlas/data/lines.json)",
+   "made": null,
    "inputs": 2596,
    "reads": 2557,
-   "note": "기준값 다시 씀"
+   "note": "기준값 새로 씀(파일 866개 · 값 853개) | 기준값 새로 씀(파일 865개 · 값 852개)"
   },
   "아주 크게": 9,
   "세 폭 화면": 30,
@@ -81,7 +81,7 @@
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "seconds": 50,
+   "seconds": 72,
    "mine": 857,
    "kinds": {
     "c": 853,
@@ -94,7 +94,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 50,
+   "seconds": 72,
    "mine": 856,
    "kinds": {
     "c": 852,
@@ -107,7 +107,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 49,
+   "seconds": 72,
    "mine": 856,
    "kinds": {
     "c": 852,

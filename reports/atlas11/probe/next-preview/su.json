@@ -1,6 +1,6 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-11T21:07:14.940Z",
+ "at": "2026-11-12T04:57:59.751Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
   "pass": 1622,
@@ -8,14 +8,15 @@
  },
  "fails": [],
  "m": {
-  "dropped": [],
+  "dropped": [
+   "JYP Ent."
+  ],
   "data": {
    "picks": 0,
    "near": 3,
    "money": [
     "한진칼",
-    "삼성에스디에스",
-    "삼양식품"
+    "삼성에스디에스"
    ]
   },
   "home": {
@@ -179,9 +180,9 @@
    }
   },
   "speed": {
-   "lcp": 2280,
+   "lcp": 2320,
    "cls": 0.143,
-   "pic": 3257
+   "pic": 3282
   },
   "white": {
    "light #/": {
@@ -1325,19 +1326,30 @@
     "one": 3
    },
    "folds": 0,
+   "ledger": {
+    "rows": 4,
+    "months": 0
+   },
    "who": "모든 사람(주문 1513)"
   },
   "bookFold": {
    "320": {
     "lim": 716,
-    "name": 771,
-    "line": 950
+    "name": 642,
+    "line": 1972,
+    "money": 406
    },
    "390": {
     "lim": 716,
-    "name": 649,
-    "line": 778
+    "name": 558,
+    "line": 1594,
+    "money": 347
    }
+  },
+  "bookLedger": {
+   "rows": 4,
+   "months": 0,
+   "bad": 0
   },
   "quiet": {
    "n": 7,
