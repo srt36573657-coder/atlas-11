@@ -1,7 +1,7 @@
 {
- "at": "2026-11-12T06:36:25.390Z",
+ "at": "2026-11-12T06:56:47.493Z",
  "base": "http://127.0.0.1:8826",
- "secs": 205,
+ "secs": 147,
  "scenarios": [
   "site",
   "rec-20261015T110206Z",
@@ -42,13 +42,13 @@
   "edge-badcal"
  ],
  "time": {
-  "old": 60.9,
-  "new": 119.2,
-  "wall": 204.8,
+  "old": 43.2,
+  "new": 84.9,
+  "wall": 147.5,
   "opensOld": 377,
   "opensNew": 504,
-  "oldPct": 29.8,
-  "oldShare": 33.8
+  "oldPct": 29.3,
+  "oldShare": 33.7
  },
  "net": {
   "req": 4,
