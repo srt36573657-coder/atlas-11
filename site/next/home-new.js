@@ -295,8 +295,10 @@ function plot(TH) {
   rect('S', L, Tp, qx - L, qy - Tp); rect('B', qx, Tp, L + pw - qx, qy - Tp); rect('Q', L, qy, qx - L, Tp + ph - qy); rect('W', qx, qy, L + pw - qx, Tp + ph - qy);
   s.append(sv('line', {class: 'nh-zline', x1: qx.toFixed(1), y1: Tp, x2: qx.toFixed(1), y2: Tp + ph}), sv('line', {class: 'nh-zline', x1: L, y1: qy.toFixed(1), x2: L + pw, y2: qy.toFixed(1)}));
   // 지나온 길(조건 넷을 다 채운 곳 · 한 달 동안 가장 센 곳) — 옅은 선 · 처음 자리 작은 점
-  const hiX = [...I].sort((a, b) => b.x - a.x)[0], lab = [...new Set([...I.filter(i => i.sc === 4), hiX].filter(Boolean))];
-  for (const i of lab) { const t = (Array.isArray(i.t) ? i.t : []).filter(p => Array.isArray(p) && fin(p[0]) && fin(p[1])); if (t.length < 2) continue;
+  //   그림 눈금 안에 다 들어오는 길만 그림(눈금은 지금 점들로 셈 — 한 달 동안 더 멀리 갔던 길은 그림 · 화면 밖으로 나가므로 그리지 않음 · 점과 이름은 그대로
+  //   · 2026-11-12 진짜 사이트 검사 theme 「영어 — 화면 밖 — nh-trail」 · 눈금을 넓히면 이름 글이 밀려 오른쪽 밖으로 나감(올리기 전 검사 5/11 nh-dl))
+  const hiX = [...I].sort((a, b) => b.x - a.x)[0], lab = [...new Set([...I.filter(i => i.sc === 4), hiX].filter(Boolean))], inBox = p => p[0] >= X0 && p[0] <= X1 && p[1] >= Y0 && p[1] <= Y1;
+  for (const i of lab) { const t = (Array.isArray(i.t) ? i.t : []).filter(p => Array.isArray(p) && fin(p[0]) && fin(p[1])); if (t.length < 2 || !t.every(inBox)) continue;
     s.append(sv('polyline', {class: 'nh-trail', points: t.map(p => `${sx(p[0]).toFixed(1)},${sy(p[1]).toFixed(1)}`).join(' ')}), sv('circle', {class: 'nh-trail0', cx: sx(t[0][0]).toFixed(1), cy: sy(t[0][1]).toFixed(1), r: 3})); }
   for (const i of I) s.append(sv('circle', {class: 'nh-dot nh-dot-' + i.z + (i.sc === 4 ? ' nh-dot4' : ''), cx: sx(i.x).toFixed(1), cy: sy(i.y).toFixed(1), r: i.sc === 4 ? 8 : 5.5}));
   T(s, L + 6, Tp + 20, `${ZNAME.S} ${fin(cnt.S) ? cnt.S : '?'}`, 'nh-zl nh-zl-S'); T(s, L + pw - 6, Tp + 20, `${ZNAME.B} ${fin(cnt.B) ? cnt.B : '?'}`, 'nh-zl nh-zl-B', 'end');
