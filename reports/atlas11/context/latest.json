@@ -1,11 +1,11 @@
 {
  "schema": "atlas11-context-latest-1",
  "day": "2026-11-12",
- "fetchedAt": "2026-11-12T08:00:41Z",
- "file": "reports/atlas11/context/2026-11-12/2026-11-12T08-00-41Z.json",
+ "fetchedAt": "2026-11-12T10:01:12Z",
+ "file": "reports/atlas11/context/2026-11-12/2026-11-12T10-01-12Z.json",
  "summary": {
   "day": "2026-11-12",
-  "fetchedAt": "2026-11-12T08:00:41Z",
+  "fetchedAt": "2026-11-12T10:01:12Z",
   "index": {
    "KOSPI": {
     "date": "2026-11-12",
@@ -32,16 +32,16 @@
   "news": {
    "stocks": 365,
    "raw": 7208,
-   "distinct": 7154,
-   "republished": 54,
+   "distinct": 7155,
+   "republished": 53,
    "sameArticle": 0,
-   "stocksWithTodayNews": 192,
-   "todayDistinct": 1268
+   "stocksWithTodayNews": 196,
+   "todayDistinct": 1360
   },
   "disclosures": {
    "stocks": 365,
    "items": 7300,
-   "corporateActions": 781
+   "corporateActions": 784
   },
   "macro": [
    {
@@ -60,8 +60,8 @@
     "factorId": "F06",
     "latest": {
      "date": "2026-11-12",
-     "value": 1334,
-     "changePct": -0.26
+     "value": 1331.7,
+     "changePct": -0.43
     },
     "rows": 10
    },
@@ -189,7 +189,7 @@
     "rows": 17
    }
   ],
-  "revisions": 237,
+  "revisions": 0,
   "errors": 0,
   "usedInForecast": false
  },
@@ -238,8 +238,26 @@
    "observed": true,
    "stocks": 365,
    "latestObservation": "2026-11-12",
-   "corporateActions": 781,
+   "corporateActions": 784,
    "recentActions": [
+    {
+     "code": "017800",
+     "title": "현대엘리베이터(주) 변경상장(주식소각)",
+     "publishedAt": "2026-11-12T17:04:20+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "035510",
+     "title": "(주)신세계아이앤씨 변경상장(주식소각)",
+     "publishedAt": "2026-11-12T17:03:56+09:00",
+     "word": "소각"
+    },
+    {
+     "code": "000660",
+     "title": "에스케이하이닉스(주) 변경상장(주식소각)",
+     "publishedAt": "2026-11-12T17:03:43+09:00",
+     "word": "소각"
+    },
     {
      "code": "023160",
      "title": "(주)태광 중간(분기)배당락",
@@ -293,24 +311,6 @@
      "title": "(주)케이씨텍 자기주식취득 신탁계약 체결 결정",
      "publishedAt": "2026-11-11T06:51:48+09:00",
      "word": "자기주식"
-    },
-    {
-     "code": "336260",
-     "title": "두산퓨얼셀 주식회사 (정정)신주인수권부사채권발행결정",
-     "publishedAt": "2026-11-11T06:51:39+09:00",
-     "word": "신주인수권"
-    },
-    {
-     "code": "336260",
-     "title": "두산퓨얼셀 주식회사 (정정)전환사채권발행결정",
-     "publishedAt": "2026-11-11T06:51:35+09:00",
-     "word": "전환사채"
-    },
-    {
-     "code": "241560",
-     "title": "두산밥캣 주식회사 중간(분기)배당락 기준가격 안내",
-     "publishedAt": "2026-11-11T06:51:21+09:00",
-     "word": "배당락"
     }
    ],
    "label": "기업행위 공시 제목(배당락·권리락·증자·분할·병합 등)",
@@ -339,7 +339,7 @@
      "series": "FX_USDKRW",
      "label": "원/달러(네이버 표기 · 은행 고시 기준)",
      "latestObservation": "2026-11-12",
-     "value": 1334,
+     "value": 1331.7,
      "unit": "KRW_per_USD",
      "sourceUrl": "https://api.stock.naver.com/marketindex/exchange/FX_USDKRW/prices?page=1&pageSize=10"
     }
