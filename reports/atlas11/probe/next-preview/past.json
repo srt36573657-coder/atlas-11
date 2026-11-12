@@ -15,7 +15,7 @@
   "323280",
   "000040"
  ],
- "made": "2026-11-12T05:10:35.804Z",
+ "made": "2026-11-12T05:39:54.816Z",
  "shard": "all/3",
  "units": {
   "total": 2562,
@@ -36,17 +36,17 @@
    }
   }
  },
- "sec": 166,
- "secondsSum": 494,
+ "sec": 207,
+ "secondsSum": 617,
  "time": {
-  "old": 163.6,
-  "new": 369.1,
-  "wall": 166.4,
-  "wallSum": 493.6,
-  "opensOld": 25573,
-  "opensNew": 33284,
-  "oldPct": 33.1,
-  "oldShare": 30.7
+  "old": 249.8,
+  "new": 468.8,
+  "wall": 206.9,
+  "wallSum": 616.4,
+  "opensOld": 25571,
+  "opensNew": 33283,
+  "oldPct": 40.5,
+  "oldShare": 34.8
  },
  "net": {
   "req": 2566,
@@ -62,39 +62,27 @@
   }
  },
  "counts": {
-  "맞댄 칸": 191775,
-  "숫자 낱말": 422626,
-  "맨 위 결 한 줄": 7671,
-  "선 누르기": 7671,
+  "맞댄 칸": 191750,
+  "숫자 낱말": 422582,
+  "맨 위 결 한 줄": 7670,
+  "선 누르기": 7670,
   "화면(기간)": 7671,
   "회사": 2557,
-  "fail": 3,
+  "기간 값 없음": 1,
   "폭 화면": 120,
   "없는 번호": 1
  },
- "fails": [
-  [
-   "옛 쪽이 덜 그려짐",
-   "005110 20거래일 [3,2,2,1,4]"
-  ],
-  [
-   "선을 누른 날 값",
-   "005110 20거래일 옛 {\"n\":0,\"out\":[[0,\"(숨음)\"],[-1,\"(숨음)\"]]} · 새 {\"n\":0,\"out\":[[0,\"선을 누르면 그날 값이 보여요\"],[-1,\"선을 누르면 그날 값이 보여요\"]]}"
-  ],
-  [
-   "새 쪽 화면 오류",
-   "005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribute y2: Expected length, \"NaN\". | Error: <linearGradient> attribute y1: Expected length, \"NaN\". | Err"
-  ]
- ],
+ "fails": [],
  "warn": [
+  "기간 값 없음(옛 쪽 맞대기 건너뜀) 005110 20거래일",
   "옛 쪽 화면 오류 005110 Error: <rect> attribute height: Expected length, \"NaN\". | Error: <rect> attribute y: Expected length, \"NaN\". | Error: <rect> attribute height: Expected length, \"NaN\". | Error: <linearGradient> attribu"
  ],
  "shards": [
   {
    "shard": "1/3",
-   "ok": false,
-   "fails": 3,
-   "seconds": 164,
+   "ok": true,
+   "fails": 0,
+   "seconds": 205,
    "mine": 854,
    "kinds": {
     "c": 853,
@@ -106,7 +94,7 @@
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "seconds": 164,
+   "seconds": 205,
    "mine": 854,
    "kinds": {
     "c": 852,
@@ -118,7 +106,7 @@
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "seconds": 166,
+   "seconds": 207,
    "mine": 854,
    "kinds": {
     "c": 852,
@@ -128,5 +116,5 @@
   }
  ],
  "problems": [],
- "ok": false
+ "ok": true
 }
