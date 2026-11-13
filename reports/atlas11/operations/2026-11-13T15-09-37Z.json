@@ -1,0 +1,112 @@
+{
+  "schema": "atlas11-operation-3",
+  "at": "2026-11-13T15:09:37Z",
+  "dayKST": "2026-11-14",
+  "status": "complete",
+  "exitCode": 0,
+  "steps": [
+    {
+      "step": "1_calendar",
+      "startedAt": "2026-11-13T15:09:38.191Z",
+      "status": "ok",
+      "durationMs": 41,
+      "session": false,
+      "afterClose": false,
+      "day": "2026-11-14",
+      "cutoff": "2026-11-13"
+    },
+    {
+      "step": "2_collect",
+      "startedAt": "2026-11-13T15:09:38.232Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true,
+      "reason": "거래일이 아님"
+    },
+    {
+      "step": "3_validate_store",
+      "startedAt": "2026-11-13T15:09:38.232Z",
+      "status": "ok",
+      "durationMs": 0,
+      "skipped": true
+    },
+    {
+      "step": "5_record_view",
+      "startedAt": "2026-11-13T15:09:38.313Z",
+      "view": {
+        "boardId": "board-2026-11-13-cc8c1444",
+        "asOf": "2026-11-13",
+        "companies": 365,
+        "files": 368,
+        "dir": "public/data/atlas11/view",
+        "universeNext": null,
+        "bytes": 3055700,
+        "similar": [
+          "아스플로",
+          "디케이티",
+          "SK",
+          "미원화학",
+          "케이엠더블유",
+          "에스디바이오센서",
+          "스틱인베스트먼트"
+        ],
+        "moves": "2026-11-12 → 2026-11-13",
+        "evening": null,
+        "lead6": {
+          "groups": 15,
+          "companies": 74,
+          "both": 41,
+          "index": "코스피 2026-11-13 -42.0%"
+        },
+        "market": {
+          "file": "public/data/atlas11/market/KOSPI.json",
+          "added": [],
+          "mismatch": []
+        },
+        "changelog": {
+          "wrote": false,
+          "reason": "앞 기록과 같음(종가 · 회사 · 모은 자료 · 들고 남)"
+        },
+        "issue": {
+          "wrote": false,
+          "reason": "2026-11-13 이슈가 이미 있음"
+        }
+      },
+      "status": "ok",
+      "durationMs": 1850
+    }
+  ],
+  "runtime": {
+    "host": "github-actions",
+    "runner": "Linux ubuntu26",
+    "event": "schedule",
+    "workflow": "atlas11-daily",
+    "repository": "srt36573657-coder/atlas-11",
+    "runId": "43449456074",
+    "runAttempt": "1",
+    "runUrl": "https://github.com/srt36573657-coder/atlas-11/actions/runs/43449456074",
+    "commit": "2847624014a44a1ea267288ad04c31957c2635f9",
+    "serverInstalled": true,
+    "scheduledRun": true
+  },
+  "serverInstalled": true,
+  "scheduledRunInstalled": true,
+  "prediction": "off",
+  "warnings": [],
+  "universeId": "u2-n365-v1-2026-10-05",
+  "day": "2026-11-14",
+  "session": false,
+  "afterClose": false,
+  "calendarGate": {
+    "day": "2026-11-14",
+    "status": "non_trading_day",
+    "mayCollectFinalClose": false
+  },
+  "cutoff": "2026-11-13",
+  "deadlineKST": "16:00",
+  "previousActualAsOf": "2026-10-01",
+  "skippedReason": "거래일이 아님",
+  "inputSnapshotSHA256": "51a6a8caef8eb819869fa143ac67aaf3c3e7c5b9208d1b84b9ca45bd04d748b4",
+  "expectedStocks": 365,
+  "finishedAt": "2026-11-13T15:09:40.163Z"
+}
