@@ -195,3 +195,15 @@
 .su-news > .su-hero[data-g="su-apple"] .s36-sp .sa-sp { fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .su-news > .su-hero[data-g="su-apple"] .s36-sp .sa-sp0 { fill: none; stroke: #E5E5EA; stroke-width: 1; }
 .su-news > .su-hero[data-g="su-apple"] .s36-sp .sa-spA { fill: #D97706; stroke: #FFFFFF; stroke-width: 2; }
+/* 겹친 곳(주문 1114-0802 「… 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」) — 꾀 칸 맨 위 한 묶음 · 갈래 머리 · 묶음 머리 · 칸은 꾀 칸과 같은 꼴(값도 같음)
+   · 칸마다 든 묶음 수 한 줄 더(위 이름 · 아래 왼쪽 ○묶음 · ○일째 · 오른쪽 꺾은선) */
+.su-news > .su-hero[data-g="su-apple"] .s36-ov { display: grid; gap: 16px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-oh { margin: 4px 0 0; padding-top: 12px; border-top: 2px solid #1D1D1F; font-size: 20px; line-height: 1.35; font-weight: 800; letter-spacing: -0.3px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-og { display: grid; gap: 6px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-ogh { margin: 0; font-size: 19px; line-height: 1.4; word-break: keep-all; }
+.su-news > .su-hero[data-g="su-apple"] .s36-ogh b { font-weight: 800; }
+.su-news > .su-hero[data-g="su-apple"] .s36-ogh span { font-size: 17px; font-weight: 600; color: #6E6E73; }
+.su-news > .su-hero[data-g="su-apple"] .s36-ogs { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; }
+.su-news > .su-hero[data-g="su-apple"] .s36-cn { margin-left: 6px; font-size: 17px; font-weight: 700; color: #3A3A3C; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-oc.s36-csp { grid-template-areas: "n n" "c s" "d s"; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-csp .s36-cn { grid-area: c; margin-left: 0; line-height: 1.3; }

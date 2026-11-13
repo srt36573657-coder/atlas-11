@@ -40,12 +40,26 @@ const CSW = 44, CSH = 22, CSP = 5; // 단추 안 꺾은선 넓이 · 높이 · �
 /** 꾀 칸 회사 하나의 21 마지막 값(없거나 맞지 않으면 null) */
 export const sp36 = (g, code) => { const v = g?.line?.[code]; return v && Array.isArray(v.c) && v.c.length === 21 && v.c.every(x => fin(x) && x > 0) && fin(v.close) && v.close === v.c[20] && typeof v.date === 'string' && v.date === g?.asOf?.board ? v.c : null; };
 const chipSpark = sp => s('svg', {class: 's36-sp', viewBox: `0 0 ${CSW + 2 * CSP} ${CSH + 2 * CSP}`, width: CSW + 2 * CSP, height: CSH + 2 * CSP, 'aria-hidden': 'true', focusable: 'false'}, spark(sp, CSP, CSP, CSW, CSH, 'now'));
+/* 겹친 곳(주문 1114-0802 · 사장님 2026-11-14 08:02 「36 갠가 40 개인가 42 개인가의 종류가 있잖아 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」
+   · 08:06 「맞아」 — docs/design/s36-2026-11-13/order-0802.txt)
+   첫 화면 마흔세 묶음(지금 셋 · 될 듯 셋 · 조용한 힘 · 꾀 서른여섯 — 묶음마다 앞 일곱) 가운데 세 묶음 이상에 든 회사(su21-s36.json ovl — su21.py 셈 · 많이 든 차례)
+   · 꾀 칸 맨 위 한 묶음 · 칸 = 꾀 칸 회사와 같음(이름 · ○일째 · 한 달 꺾은선) + 든 묶음 수 · 301곳 합계에는 넣지 않음(이미 든 회사를 다시 모은 것) */
+export const okOv = g => !!g?.ovl && typeof g.ovl.rule === 'string' && Number.isInteger(g.ovl.need) && g.ovl.need >= 2 && Array.isArray(g.ovl.list)
+  && g.ovl.list.every(x => x && /^[0-9A-Z]{6}$/.test(String(x.code ?? '')) && Number.isInteger(x.n) && x.n >= g.ovl.need);
+/** 꾀 칸 회사 단추 하나 — 이름 · (겹친 곳이면 든 묶음 수) · 며칠째 · 한 달 꺾은선(꾀 칸 · 겹친 곳 같은 꼴) */
+function chip36(g, c, bd, ov) {
+  const code = String(c.code ?? ''), name = String(c.name ?? NEED), dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null, sp = sp36(g, code), n = ov && Number.isInteger(c.n) ? c.n : null; // 며칠째(주문 1114-0151) · 한 달 꺾은선(주문 1114-0325) · 든 묶음 수(주문 1114-0802)
+  return h('li', {}, h('a', {class: 's36-c' + (ov ? ' s36-oc' : '') + (sp ? ' s36-csp' : ''), href: '#/c/' + encodeURIComponent(code), 'data-code': code, 'data-days': dz ? String(dz) : null, 'data-n': n ? String(n) : null,
+    'aria-label': name + (n ? ' · ' + n + '묶음' : '') + (dz ? ' · ' + dz + '일째' : '') + (sp ? ' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20]) : '')},
+    h('b', {text: name}), n ? h('span', {class: 's36-cn', text: n + '묶음'}) : null, dz ? h('span', {class: 's36-cd', text: dz + '일째'}) : null, sp ? chipSpark(sp) : null));
+}
 /** 고르지 못한 꾀 — 쉬운 말 까닭(셈 파일의 까닭은 만드는 사람 말이라 바꿈) */
 const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
 /** 서른여섯 꾀 칸(글 · 고리는 HTML — 줄바꿈 · 누름 48 을 지키려고) — 갈래 여섯 × 꾀 여섯 · 꾀마다 쉬운 이름 · 꾀 이름 · 곳 수 · 고르는 법 · 회사 일곱(누르면 그 회사 쪽) */
 export function section36(g, day) {
   const N = n36(g), dd = mday(g?.asOf?.data) ?? mday(day), bd = mday(g?.asOf?.board);
-  const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? '')))); // 꺾은선이 하나라도 있으면 읽는 법 한 마디(주문 1114-0325)
+  const OV = okOv(g) ? g.ovl.list : []; // 겹친 곳(주문 1114-0802)
+  const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? '')))) || OV.some(c => sp36(g, String(c?.code ?? ''))); // 꺾은선이 하나라도 있으면 읽는 법 한 마디(주문 1114-0325)
   const sets = [];
   g.kinds.forEach((k, i) => { const st = g.set?.[k] ?? ''; if (!sets.length || sets.at(-1).name !== st) sets.push({name: st, ks: []}); sets.at(-1).ks.push(k); });
   return h('section', {class: 's36', 'aria-label': '서른여섯 꾀 ' + N + '곳', 'data-n': String(N)},
@@ -53,16 +67,20 @@ export function section36(g, day) {
       h('p', {class: 's36-h'}, h('b', {text: '서른여섯 꾀'}), h('span', {text: ' ' + N + '곳'})),
       h('p', {class: 's36-lead', text: '손자병법과 함께 내려오는 서른여섯 가지 꾀마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
       h('p', {class: 's36-day', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')})),
+    // 겹친 곳(주문 1114-0802) — 꾀 칸 맨 위 · 한 묶음(꾀 칸 묶음과 같은 꼴 · 칸마다 든 묶음 수)
+    OV.length ? h('div', {class: 's36-ov', 'data-n': String(OV.length)},
+      h('h3', {class: 's36-oh', text: '겹친 곳'}),
+      h('div', {class: 's36-og', 'data-k': 'ovl', 'data-n': String(OV.length)},
+        h('p', {class: 's36-ogh'}, h('b', {text: '세 묶음 이상에 든 곳'}), h('span', {text: ' · ' + OV.length + '곳'})),
+        h('p', {class: 's36-ogs', text: '첫 화면 마흔세 묶음 가운데 세 묶음 이상에 같이 든 회사예요. 많이 겹친 곳이 먼저예요. 칸마다 든 묶음 수를 적었어요.' + (mday(g.ovl.daysFrom) ? ' 며칠째는 ' + mday(g.ovl.daysFrom) + ' 기록부터 셌어요.' : '')}),
+        h('ul', {class: 's36-co'}, ...OV.map(c => chip36(g, c, bd, true))))) : null,
     ...sets.map(st => h('div', {class: 's36-set', 'data-set': st.name},
       h('h3', {class: 's36-sh', text: st.name}),
       ...st.ks.map(k => { const L = (g.lists[k] ?? []).slice(0, 7);
         return h('div', {class: 's36-g', 'data-k': k, 'data-n': String(L.length)},
           h('p', {class: 's36-gh'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})),
           h('p', {class: 's36-gs', text: g.say?.[k] ?? ''}),
-          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => { const dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null, sp = sp36(g, String(c.code ?? '')); // 며칠째(주문 1114-0151) · 한 달 꺾은선(주문 1114-0325)
-            return h('li', {}, h('a', {class: 's36-c' + (sp ? ' s36-csp' : ''), href: '#/c/' + encodeURIComponent(String(c.code ?? '')), 'data-code': String(c.code ?? ''), 'data-days': dz ? String(dz) : null,
-              'aria-label': String(c.name ?? NEED) + (dz ? ' · ' + dz + '일째' : '') + (sp ? ' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20]) : '')},
-              h('b', {text: String(c.name ?? NEED)}), dz ? h('span', {class: 's36-cd', text: dz + '일째'}) : null, sp ? chipSpark(sp) : null)); }))
+          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => chip36(g, c, bd, false)))
             : h('p', {class: 's36-none', text: none36(g.why?.[k])})); }))),
     h('a', {class: 's36-go', href: '#/r/t', text: '서른여섯 꾀 정산 보기 ›'}));
 }

@@ -237,6 +237,28 @@ def lists36(codes, IX, P, t, cap, vol=None, dates=None, late=()):
     return {'lists': {k: L[k] for k in KINDS}, 'why': why, 'volDay': volDay, 'volN': volN}
 
 
+# 겹친 곳(주문 1114-0802 · 사장님 2026-11-14 08:02 「36 갠가 40 개인가 42 개인가의 종류가 있잖아 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」
+#   — docs/design/s36-2026-11-13/order-0802.txt)
+#   첫 화면 묶음 마흔셋(지금 셋 · 될 듯 셋 · 조용한 힘 · 꾀 서른여섯 — 묶음마다 앞 일곱) 가운데 세 묶음 이상에 든 회사 · 많이 든 차례 · 같으면 첫 화면에서 먼저 나온 차례
+OV_RULE = 'ovl-v1'
+OV_NEED = 3
+OV_ORDER = ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext', 'quiet'] + KINDS   # 첫 화면 차례(지금 셋 → 될 듯 셋 → 조용한 힘 → 꾀 1 ~ 36)
+
+
+def overlap(groups, need=OV_NEED, order=None, k=K):
+    """groups = {묶음: [번호…]} → [(번호, 든 묶음 수, [든 묶음…])] · 묶음마다 앞 k 곳만 · 한 묶음에 두 번 나와도 한 번"""
+    order = order or OV_ORDER
+    first, ins, pos = {}, {}, 0
+    for g in order:
+        for c in (groups.get(g) or [])[:k]:
+            first.setdefault(c, pos); pos += 1
+            v = ins.setdefault(c, [])
+            if g not in v: v.append(g)
+    out = [(c, len(v), v) for c, v in ins.items() if len(v) >= need]
+    out.sort(key=lambda x: (-x[1], first[x[0]]))
+    return out
+
+
 if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selftest · --defs(이름 · 뜻 JSON)
     import sys, json
     if '--defs' in sys.argv:
@@ -266,4 +288,9 @@ if __name__ == '__main__':   # 스스로 시험 — python3 su21_s36.py --selfte
         assert all(r3['lists'][k] == [] for k in BY) and '모자라' in r3['why']['g08'] and len(r3['lists']['g01']) == 7, '거래량을 덜 받은 날은 다섯을 사지 않음'
         r0 = lists36(codes, IX, None, 0, cap)
         assert all(r0['lists'][k] == [] for k in KINDS) and r0['why']['g01'] == '지난 값이 모자라 못 셈'
-        print('ok', sum(len(v) for v in r2['lists'].values()))
+        # 겹친 곳(주문 1114-0802) — 세 묶음 이상 · 많이 든 차례 · 같으면 첫 화면에서 먼저 · 한 묶음 두 번은 한 번 · 앞 일곱만
+        G = {'hot': ['A', 'B', 'C'], 'bloom': ['B', 'D'], 'money': ['A', 'B', 'A'], 'quiet': ['D', 'E'], 'g01': ['E', 'D', 'C'], 'g02': ['C', 'E'], 'g36': ['X'] * 8 + ['A'], 'g03': list('1234567') + ['B']}
+        ov = overlap(G)
+        assert ov == [('B', 3, ['hot', 'bloom', 'money']), ('C', 3, ['hot', 'g01', 'g02']), ('D', 3, ['bloom', 'quiet', 'g01']), ('E', 3, ['quiet', 'g01', 'g02'])], ov
+        assert [c for c, n, _ in overlap(G, need=2)] == ['B', 'C', 'D', 'E', 'A'] and overlap({}) == [] and len(OV_ORDER) == 43 == len(set(OV_ORDER))
+        print('ok', sum(len(v) for v in r2['lists'].values()), 'ovl', len(ov))

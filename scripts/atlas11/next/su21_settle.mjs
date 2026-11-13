@@ -15,6 +15,9 @@
 //     · 22:27 「정산표에는 수익율이 높은 순으로」 — docs/design/s36-2026-11-13/order-2224.txt)
 //     손자병법 서른여섯 꾀 묶음(<su>/su21-s36.json · su21_s36.py · 일곱 곳씩)을 그날 판 날 = 셈한 자료 날일 때 장부(s36)에 꾀마다 한 번 적고 10주씩 산 셈 · 묶음 이름 g01 ~ g36
 //     여덟 묶음과 따로 셈(화면은 표 둘 · 맨 위 「지금까지」는 여덟 그대로 · 서른여섯 표는 수익률 높은 차례 — 화면이 셈)
+//   주문 1114-0802(사장님 2026-11-14 08:02 「… 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」 — docs/design/s36-2026-11-13/order-0802.txt)
+//     겹친 곳(<su>/su21-s36.json ovl — 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 회사 · 날마다 수가 다름)을 꾀와 같은 때(그날 판 날 = 셈한 자료 날) 장부(ovl)에 하루 한 번 적고 10주씩 산 셈
+//     · 묶음 이름 ovl(KINDS 맨 뒤 — 앞 묶음 차례는 그대로) · 며칠째도 꾀와 같은 셈 · 화면은 정산 쪽 표 하나 더(여덟 · 서른여섯과 따로 셈)
 //   쓰는 곳: reports/atlas11/su21/settle.json(장부 — 올리기 작업 site · daily · evening 만 --keep) · <su>/su21-settle.json(화면)
 //   쓰는 법: node scripts/atlas11/next/su21_settle.mjs --su <dist/su/data> --board <board.json> --days <reports/atlas11/su21/days.json> --book <reports/atlas11/su21/settle.json>
 //            [--boards <reports/atlas11/su21/boards>] [--keep] [--out <파일>]
@@ -29,15 +32,16 @@ export const SCHEMA = 'su21-settle-1', BOOK_SCHEMA = 'su21-settle-book-1', QTY =
 export const START = '2026-11-12';
 /** 손자병법 서른여섯 꾀(주문 1113-2224 · su21_s36.py KINDS 차례 = 삼십육계 차례 1 ~ 36) */
 export const S36 = Object.freeze(Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0')));
-/** 묶음 — 여덟(앞 · 차례 그대로) 뒤에 서른여섯 꾀(g01 ~ g36)를 붙임 */
-export const KINDS = Object.freeze(['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext', ...S36]);
+/** 묶음 — 여덟(앞 · 차례 그대로) 뒤에 서른여섯 꾀(g01 ~ g36) · 맨 뒤에 겹친 곳(ovl · 주문 1114-0802)을 붙임 */
+export const OVL = 'ovl';
+export const KINDS = Object.freeze(['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext', ...S36, OVL]);
 const SIX = ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext'];
 const DAY = /^\d{4}-\d{2}-\d{2}$/, CODE = /^[0-9A-Z]{6}$/;
 const fin = v => typeof v === 'number' && Number.isFinite(v) && v > 0;
 const readJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
 const readGz = f => { try { return JSON.parse(zlib.gunzipSync(fs.readFileSync(f)).toString('utf8')); } catch { return null; } };
 
-export const emptySettle = () => ({schema: BOOK_SCHEMA, qty: QTY, note: '정산 장부 — 조용한 힘 일곱(그날 판) · 서른여섯 꾀 일곱씩(그날 판) · 회사마다 날마다 마지막 값 · 한 번 적은 날 · 값은 고치지 않음', quiet: {}, s36: {}, px: {}, co: {}});
+export const emptySettle = () => ({schema: BOOK_SCHEMA, qty: QTY, note: '정산 장부 — 조용한 힘 일곱(그날 판) · 서른여섯 꾀 일곱씩(그날 판) · 겹친 곳(그날 판) · 회사마다 날마다 마지막 값 · 한 번 적은 날 · 값은 고치지 않음', quiet: {}, s36: {}, ovl: {}, px: {}, co: {}});
 /** 장부 꼴 맞대기 */
 export function okSettle(B) {
   return !!B && B.schema === BOOK_SCHEMA && B.qty === QTY && B.quiet && typeof B.quiet === 'object' && B.px && typeof B.px === 'object' && B.co && typeof B.co === 'object'
@@ -45,12 +49,13 @@ export function okSettle(B) {
     && Object.entries(B.px).every(([c, m]) => CODE.test(c) && m && typeof m === 'object' && Object.entries(m).every(([d, v]) => DAY.test(d) && fin(v)))
     && (B.t11 == null || typeof B.t11 === 'object') // 주문 1113-2033 의 옛 기록(읽으면 지움)
     && (B.s36 == null || (typeof B.s36 === 'object' && Object.entries(B.s36).every(([d, x]) => DAY.test(d) && x && typeof x === 'object'
-      && Object.entries(x).every(([k, cs]) => S36.includes(k) && Array.isArray(cs) && cs.every(c => CODE.test(c))))));
+      && Object.entries(x).every(([k, cs]) => S36.includes(k) && Array.isArray(cs) && cs.every(c => CODE.test(c))))))
+    && (B.ovl == null || (typeof B.ovl === 'object' && Object.entries(B.ovl).every(([d, cs]) => DAY.test(d) && Array.isArray(cs) && cs.every(c => CODE.test(c))))); // 겹친 곳(주문 1114-0802)
 }
 const indOf = c => c?.group?.industry ?? c?.group?.label ?? c?.ind ?? null;
 
 /** 날마다 묶음 목록 — {날: {묶음: [번호…]}} · 여섯은 days.json(그날 판 날이 없고 su21 이 그 판이면 그날 su21 목록) · top3 = 달력 장부 · quiet = 장부 */
-export function listsOf({days, sbook, su, suNext, quiet, s36 = {}, start = START}) {
+export function listsOf({days, sbook, su, suNext, quiet, s36 = {}, ovl = {}, start = START}) {
   const out = {}, put = (d, k, cs) => { if (!DAY.test(d ?? '') || d < start || !Array.isArray(cs) || !cs.length) return; ((out[d] ??= {})[k] = cs.filter(c => CODE.test(c))); };
   for (const [d, x] of Object.entries(days?.days ?? {})) for (const k of SIX) put(d, k, x?.lists?.[k]);
   const sd = su?.asOf?.board;
@@ -58,6 +63,7 @@ export function listsOf({days, sbook, su, suNext, quiet, s36 = {}, start = START
   for (const x of sbook?.days ?? []) put(x.board, 'top3', [...(x.picks ?? [])].sort((a, b) => a.place - b.place).map(p => p.code));
   for (const [d, cs] of Object.entries(quiet ?? {})) put(d, 'quiet', cs);
   for (const [d, x] of Object.entries(s36 ?? {})) for (const k of S36) put(d, k, x?.[k]); // 서른여섯 꾀(주문 1113-2224)
+  for (const [d, cs] of Object.entries(ovl ?? {})) put(d, OVL, cs); // 겹친 곳(주문 1114-0802)
   return Object.fromEntries(Object.keys(out).sort().map(d => [d, out[d]]));
 }
 
@@ -65,13 +71,14 @@ export function listsOf({days, sbook, su, suNext, quiet, s36 = {}, start = START
  *  su = su21.json · board = 오늘 판(board.json) · stored = {날: 저장된 판} · sbook = su21-book.json · days = days.json · start = 정산 첫날 */
 export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, s36 = null, start = START}) {
   const B = JSON.parse(JSON.stringify(okSettle(book0) ? book0 : emptySettle()));
-  B.s36 ??= {};
-  let added = null, added36 = [];
+  B.s36 ??= {}; B.ovl ??= {};
+  let added = null, added36 = [], addedO = null;
   // ⓪ 첫날 전 기록은 지움(주문 1112-2042) — 조용한 힘 · 값(이름은 ② 뒤에 쓰는 회사만 남김)
   const cut = {quiet: Object.keys(B.quiet).filter(d => d < start).length, px: Object.values(B.px).reduce((a, m) => a + Object.keys(m).filter(d => d < start).length, 0)};
   if (B.t11) { cut.t11 = Object.keys(B.t11).length; delete B.t11; } // 주문 1113-2224 「11 가지로 하지 말고」 — 특징 열하나 기록은 지움
   B.quiet = Object.fromEntries(Object.entries(B.quiet).filter(([d]) => d >= start));
   B.s36 = Object.fromEntries(Object.entries(B.s36).filter(([d]) => d >= start));
+  B.ovl = Object.fromEntries(Object.entries(B.ovl).filter(([d]) => d >= start));
   for (const code of Object.keys(B.px)) { B.px[code] = Object.fromEntries(Object.entries(B.px[code]).filter(([d]) => d >= start)); if (!Object.keys(B.px[code]).length) delete B.px[code]; }
   // ① 조용한 힘 일곱 — 그날 판(su21.json asOf.board)으로 한 번 적음(먼저 적은 날은 그대로) · su21 판 날 = 오늘 판 날일 때만(묵은 su21 로 지난 날을 적지 않음 — 11-13 08:59 묵은 판이 11월 6일을 적은 일)
   const sd = su?.asOf?.board, q = (su?.lists?.quiet ?? []).map(c => c?.code).filter(c => CODE.test(c ?? ''));
@@ -84,8 +91,11 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
       if (cs.length && !B.s36[td]?.[k]) { (B.s36[td] ??= {})[k] = cs; added36.push(k); }
     }
     B.s36 = Object.fromEntries(Object.keys(B.s36).sort().map(d => [d, B.s36[d]]));
+    // 겹친 곳(주문 1114-0802) — 같은 날 조건 · 그날 처음 빈 목록이 아닐 때 한 번(먼저 적은 날은 그대로)
+    const oc = (s36.ovl?.rule && Array.isArray(s36.ovl.list) ? s36.ovl.list : []).map(x => x?.code).filter(c => CODE.test(c ?? ''));
+    if (oc.length && !B.ovl[td]) { B.ovl[td] = oc; addedO = td; B.ovl = Object.fromEntries(Object.keys(B.ovl).sort().map(d => [d, B.ovl[d]])); }
   }
-  const L = listsOf({days, sbook, su, suNext, quiet: B.quiet, s36: B.s36, start});
+  const L = listsOf({days, sbook, su, suNext, quiet: B.quiet, s36: B.s36, ovl: B.ovl, start});
   const need = new Set(Object.values(L).flatMap(x => Object.values(x).flat()));
   for (const code of Object.keys(B.co)) if (!need.has(code)) { delete B.co[code]; cut.co = (cut.co ?? 0) + 1; }
   // ② 이름 · 업종 — 오늘 판 → 저장된 판(늦은 날 먼저) → 그대로
@@ -106,7 +116,7 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
   for (const code of Object.keys(B.px)) B.px[code] = Object.fromEntries(Object.entries(B.px[code]).sort(([a], [b]) => a.localeCompare(b)));
   B.px = Object.fromEntries(Object.keys(B.px).sort().map(c => [c, B.px[c]]));
   B.co = Object.fromEntries(Object.keys(B.co).sort().map(c => [c, B.co[c]]));
-  return {book: B, added, added36, lists: L, cut};
+  return {book: B, added, added36, addedO, lists: L, cut};
 }
 
 /** 화면 자료 — 산 셈(날 · 묶음 · 번호 · 산 값) · 지금(회사마다 오늘 판 날까지 가장 늦은 값 · 그 날) · 묶음 첫날 · 다시 센 날 끝 · 못 센 수 */
@@ -138,20 +148,27 @@ export function siteSettle(B, L, asOf, days, start = START) {
 export function runsOf(B, trade, today) {
   const rec36 = {days: Object.fromEntries(Object.entries(B?.s36 ?? {}).map(([d, x]) => [d, {lists: x}]))};
   const recQ = {days: Object.fromEntries(Object.entries(B?.quiet ?? {}).map(([d, cs]) => [d, {lists: {quiet: cs}}]))};
-  const s36 = {}, quiet = {}, ok = DAY.test(today ?? '');
-  const cal36 = ok ? calendarOf(trade, rec36, today) : [], calQ = ok ? calendarOf(trade, recQ, today) : [];
+  const recO = {days: Object.fromEntries(Object.entries(B?.ovl ?? {}).map(([d, cs]) => [d, {lists: {[OVL]: cs}}]))}; // 겹친 곳(주문 1114-0802)
+  const s36 = {}, quiet = {}, ovl = {}, ok = DAY.test(today ?? '');
+  const cal36 = ok ? calendarOf(trade, rec36, today) : [], calQ = ok ? calendarOf(trade, recQ, today) : [], calO = ok ? calendarOf(trade, recO, today) : [];
   const run36 = (k, c) => (ok && CODE.test(c ?? '') ? runOf(rec36, cal36, today, k, c) : null), runQ = c => (ok && CODE.test(c ?? '') ? runOf(recQ, calQ, today, 'quiet', c) : null);
+  const runO = c => (ok && CODE.test(c ?? '') ? runOf(recO, calO, today, OVL, c) : null);
   for (const k of S36) for (const c of B?.s36?.[today]?.[k] ?? []) (s36[k] ??= {})[c] = run36(k, c);
   for (const c of B?.quiet?.[today] ?? []) quiet[c] = runQ(c);
-  return {s36, quiet, run36, runQ, from36: Object.keys(B?.s36 ?? {}).sort()[0] ?? null, fromQ: Object.keys(B?.quiet ?? {}).sort()[0] ?? null};
+  for (const c of B?.ovl?.[today] ?? []) ovl[c] = runO(c);
+  return {s36, quiet, ovl, run36, runQ, runO, from36: Object.keys(B?.s36 ?? {}).sort()[0] ?? null, fromQ: Object.keys(B?.quiet ?? {}).sort()[0] ?? null, fromO: Object.keys(B?.ovl ?? {}).sort()[0] ?? null};
 }
 /** 화면 자료에 며칠째를 붙임 — su21-s36.json 꾀마다 회사 · su21.json 조용한 힘(그 파일 판 날 = 오늘 판 날일 때만) · 붙인 수
  *  오늘 든 것 = 화면 목록(그날 다시 센 목록 — 장부 그날 목록은 처음 적은 것이라 다를 수 있음) · 지난 날 = 장부 기록 */
 export function markRuns(R, g, su, today) {
-  let n36 = 0, nq = 0;
-  if (g && g.asOf?.board === today) { for (const k of S36) for (const c of g.lists?.[k] ?? []) { const r = R.run36(k, c?.code); if (r) { Object.assign(c, r); n36++; } } g.daysFrom = R.from36; }
+  let n36 = 0, nq = 0, no = 0;
+  if (g && g.asOf?.board === today) {
+    for (const k of S36) for (const c of g.lists?.[k] ?? []) { const r = R.run36(k, c?.code); if (r) { Object.assign(c, r); n36++; } }
+    g.daysFrom = R.from36;
+    if (g.ovl && Array.isArray(g.ovl.list) && R.runO) { for (const c of g.ovl.list) { const r = R.runO(c?.code); if (r) { Object.assign(c, r); no++; } } g.ovl.daysFrom = R.fromO; } // 겹친 곳(주문 1114-0802)
+  }
   if (su && su.asOf?.board === today) { for (const c of su.lists?.quiet ?? []) { const r = R.runQ(c?.code); if (r) { Object.assign(c, r); nq++; } } su.quietDays = {from: R.fromQ}; }
-  return {n36, nq};
+  return {n36, nq, no};
 }
 
 /** 저장된 판 — {날: 판}(파일 이름 날 = 판 asOf 일 때만) */
@@ -172,19 +189,20 @@ function main() {
   const s36 = readJson(path.join(su, 'su21-s36.json')); // 서른여섯 꾀(주문 1113-2224 · su21.py 가 씀 · 없으면 그날은 적지 않음)
   if (!board || !Array.isArray(board.companies)) { console.error('판을 못 읽음'); process.exit(1); }
   const stored = storedBoards(boardsDir);
-  const {book, added, added36, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36});
+  const {book, added, added36, addedO, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36});
   const site = siteSettle(book, lists, board.asOf, days);
   if (out) fs.writeFileSync(out, JSON.stringify(site) + '\n');
   if (keep) { const tmp = bookF + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(book, null, 1) + '\n'); fs.renameSync(tmp, bookF); }
   // 며칠째(주문 1114-0151) — 서른여섯 꾀(su21-s36.json) · 조용한 힘(su21.json)에 회사마다 days · found · since
   const trade = calF ? readJson(calF)?.dates ?? [] : [], R = runsOf(book, trade, board.asOf), w = (f, o) => { const tmp = f + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(o)); fs.renameSync(tmp, f); };
   const M = markRuns(R, s36, S, board.asOf);
-  if (M.n36) w(path.join(su, 'su21-s36.json'), s36);
+  if (M.n36 || M.no) w(path.join(su, 'su21-s36.json'), s36);
   if (M.nq) w(path.join(su, 'su21.json'), S);
   const nk = Object.fromEntries(KINDS.map(k => [k, site.buys.filter(b => KINDS[b[1]] === k).length]));
   console.log(`정산 장부 — 날 ${Object.keys(lists).length} · 산 셈 ${site.buys.length}번(${KINDS.map(k => k + ' ' + nk[k]).join(' · ')}) · 값 없음 ${Object.values(site.miss).reduce((x, y) => x + y, 0)} · 저장된 판 ${Object.keys(stored).length} · 판 ${board.asOf}`
     + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '') + (cut.t11 ? ` · 특징 열하나 기록 지움(${cut.t11}날)` : '')
     + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (added36.length ? ' · 서른여섯 꾀 새로 적음 ' + board.asOf + '(' + added36.length + '꾀)' : ' · 서른여섯 꾀 새로 적은 꾀 0(판 ' + (s36?.asOf?.board ?? '없음') + ' · 자료 ' + (s36?.asOf?.data ?? '없음') + ')')
-    + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳');
+    + (addedO ? ' · 겹친 곳 새로 적음 ' + addedO + '(' + book.ovl[addedO].length + '곳)' : '')
+    + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)') + ' · 며칠째 꾀 ' + M.n36 + '곳 · 조용한 힘 ' + M.nq + '곳 · 겹친 곳 ' + M.no + '곳');
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

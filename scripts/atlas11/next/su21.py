@@ -434,6 +434,9 @@ try:
 except Exception: VOL = None
 _vday = DATES[CTX.T] if DATES and 0 <= CTX.T < len(DATES) else None
 S36R = S36.lists36(CODES, IXc, PM, CTX.T, capv, vol=(VOL or {}).get('rows'), dates=DATES, late=late) if PM is not None else S36.lists36(CODES, IXc, None, 0, capv)
+# 겹친 곳(주문 1114-0802 · 사장님 2026-11-14 08:02 「… 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」)
+#   첫 화면 묶음 마흔셋(지금 셋 · 될 듯 셋 · 조용한 힘 · 꾀 서른여섯) 가운데 세 묶음 이상에 든 회사 — 꾀 칸 자료(su21-s36.json ovl)에 · 화면은 꾀 칸 맨 위 · 정산 장부도 이 목록으로
+OV = S36.overlap({**lists, **S36R['lists']})
 out['s36n'] = {k: len(L) for k, L in S36R['lists'].items()} # 주문 1114-0004 — 처음 쪽 「모두 ○곳」 · 구슬 아래 두 줄은 이 수로(꾀 칸 자료 su21-s36.json 은 첫 칠함 뒤에 받음 — 느린 휴대폰 첫 화면 2.5초)
 lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
@@ -443,7 +446,8 @@ json.dump({'schema': 'su21-s36-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 
            'set': S36.SETOF, 'by': S36.BY, 'lists': {k: [{'code': c, 'name': nm(c)} for c in L] for k, L in S36R['lists'].items()}, 'why': S36R['why'],
            # 주문 1114-0325(사장님 2026-11-14 03:25 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 꾀 칸 회사 단추마다 한 달 꺾은선 = 42칸과 같은 값(판 21 마지막 값 c · 그날 마지막 값 close · 판 날 date)
            #   같은 회사가 여러 꾀에 들어도 한 번만(회사 번호 → 값 · 꾀 칸 자료를 가볍게 — 그림을 그린 뒤에 받음)
-           'line': {c: {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')} for c in sorted({c for L in S36R['lists'].values() for c in L}) if c in B},
+           'line': {c: {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')} for c in sorted({c for L in S36R['lists'].values() for c in L} | {c for c, _, _ in OV}) if c in B},
+           'ovl': {'rule': S36.OV_RULE, 'need': S36.OV_NEED, 'groups': len(S36.OV_ORDER), 'order': S36.OV_ORDER, 'list': [{'code': c, 'name': nm(c), 'n': n, 'in': v} for c, n, v in OV], 'src': 'docs/design/s36-2026-11-13/order-0802.txt'},
            'vol': {'day': S36R['volDay'], 'n': S36R['volN'], 'last': (VOL or {}).get('last'), 'ok': (VOL or {}).get('ok')}, 'src': 'docs/design/s36-2026-11-13/order-2224.txt'},
           open(A.out.replace('su21.json', 'su21-s36.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음

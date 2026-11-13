@@ -11,6 +11,8 @@
           · 22:27 「정산표에는 수익율이 높은 순으로 나열을 내봐」 — docs/design/s36-2026-11-13/order-2224.txt)
           — 아래에 「서른여섯 꾀」 표 하나(손자병법과 함께 내려오는 삼십육계로 고른 묶음 · 일곱 곳씩 · 10주씩) · 여덟 묶음과 따로 셈
           · 이 표만 산 돈에 견줘 많이 늘어난 차례(같으면 꾀 차례 · 산 셈이 없는 꾀는 맨 아래) — 본질 「수익 순위」와 부딪히나 사장님 말씀으로 이 표만 · 줄어든 꾀도 그대로 보임
+   주문 1114-0802(사장님 2026-11-14 08:02 「… 그중에서 36개 정도 겹치는 그 종목을 별도로 또 … 또 폴더 또 만들어 그래도 똑같이 만들어」 · 08:06 「맞아」 — docs/design/s36-2026-11-13/order-0802.txt)
+          — 여덟 표 아래에 「겹친 곳」 표 하나(그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 회사를 10주씩 · 여덟 · 서른여섯과 따로 셈) · 줄 하나
    늘어도 줄어도 같은 크기 · 같은 굵기 · 모양 + 글(색만으로 뜻 0) · 「%」 0 · 글은 textContent 로만 · 꾸밈은 클래스(보안 규칙 style-src 'self') */
 import {h} from '/su/su-fig.js';
 import {won, moved, r100, sumOf, resText, shapeOf} from '/su/su-book.js';
@@ -18,7 +20,8 @@ import {won, moved, r100, sumOf, resText, shapeOf} from '/su/su-book.js';
 export const CSS = Object.freeze(['/su/su-book.css', '/su/su-settle.css']);
 export const KIND_NAME = Object.freeze({top3: '1 · 2 · 3등', hot: '불장', bloom: '꽃이 될 곳', money: '돈이 몰리는 곳', quiet: '조용한데 힘이 모이는 곳', hotNext: '불장이 될 듯', bloomNext: '꽃이 될 듯', moneyNext: '돈이 몰릴 듯',
   // 서른여섯 꾀 쉬운 이름(주문 1113-2224 · su21_s36.py NAME 그대로 — 시험이 맞댐)
-  g01: '몰래 바다 건너기', g02: '딴 데 쳐서 구하기', g03: '남의 칼 빌리기', g04: '쉬다가 치기', g05: '불난 틈 타기', g06: '동쪽 소리 서쪽 치기', g07: '없는 데서 만들기', g08: '몰래 다른 길 가기', g09: '강 건너 불 보기', g10: '웃음 속 칼', g11: '대신 쓰러지기', g12: '손에 걸린 양 끌기', g13: '풀 쳐서 뱀 놀래기', g14: '다시 살아나기', g15: '범을 산에서 끌어내기', g16: '잡으려고 놓아주기', g17: '벽돌 던져 옥 얻기', g18: '우두머리 잡기', g19: '솥 밑 장작 빼기', g20: '흐린 물 고기 잡기', g21: '허물 벗기', g22: '문 닫고 도둑 잡기', g23: '먼 데 사귀고 가까운 데 치기', g24: '길 빌려 치기', g25: '기둥 바꾸기', g26: '빗대어 꾸짖기', g27: '어리석은 척하기', g28: '지붕 올리고 사다리 치우기', g29: '나무에 꽃 달기', g30: '손님이 주인 되기', g31: '미인 꾀', g32: '빈 성 꾀', g33: '적 첩자 쓰기', g34: '제 몸 다치기', g35: '고리 잇기', g36: '달아나기'});
+  g01: '몰래 바다 건너기', g02: '딴 데 쳐서 구하기', g03: '남의 칼 빌리기', g04: '쉬다가 치기', g05: '불난 틈 타기', g06: '동쪽 소리 서쪽 치기', g07: '없는 데서 만들기', g08: '몰래 다른 길 가기', g09: '강 건너 불 보기', g10: '웃음 속 칼', g11: '대신 쓰러지기', g12: '손에 걸린 양 끌기', g13: '풀 쳐서 뱀 놀래기', g14: '다시 살아나기', g15: '범을 산에서 끌어내기', g16: '잡으려고 놓아주기', g17: '벽돌 던져 옥 얻기', g18: '우두머리 잡기', g19: '솥 밑 장작 빼기', g20: '흐린 물 고기 잡기', g21: '허물 벗기', g22: '문 닫고 도둑 잡기', g23: '먼 데 사귀고 가까운 데 치기', g24: '길 빌려 치기', g25: '기둥 바꾸기', g26: '빗대어 꾸짖기', g27: '어리석은 척하기', g28: '지붕 올리고 사다리 치우기', g29: '나무에 꽃 달기', g30: '손님이 주인 되기', g31: '미인 꾀', g32: '빈 성 꾀', g33: '적 첩자 쓰기', g34: '제 몸 다치기', g35: '고리 잇기', g36: '달아나기',
+  ovl: '겹친 곳'}); // 주문 1114-0802 — 여러 묶음에 겹쳐 나온 회사
 /** 서른여섯 꾀 이름(사자성어) · 꾀 뜻 · 고르는 법(su21_s36.py HAN · MEAN · SAY 그대로) */
 export const S36_HAN = Object.freeze({g01: '만천과해', g02: '위위구조', g03: '차도살인', g04: '이일대로', g05: '진화타겁', g06: '성동격서', g07: '무중생유', g08: '암도진창', g09: '격안관화', g10: '소리장도', g11: '이대도강', g12: '순수견양', g13: '타초경사', g14: '차시환혼', g15: '조호리산', g16: '욕금고종', g17: '포전인옥', g18: '금적금왕', g19: '부저추신', g20: '혼수모어', g21: '금선탈각', g22: '관문착적', g23: '원교근공', g24: '가도벌괵', g25: '투량환주', g26: '지상매괴', g27: '가치부전', g28: '상옥추제', g29: '수상개화', g30: '반객위주', g31: '미인계', g32: '공성계', g33: '반간계', g34: '고육계', g35: '연환계', g36: '주위상'});
 export const S36_MEAN = Object.freeze({
@@ -101,6 +104,8 @@ export const S36_SAY = Object.freeze({
 export const SHOW = Object.freeze(['top3', 'hot', 'hotNext', 'money', 'moneyNext', 'bloom', 'bloomNext', 'quiet']);
 /** 서른여섯 꾀 꾀 차례(삼십육계 1 ~ 36) */
 export const SHOW36 = Object.freeze(Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0')));
+/** 겹친 곳(주문 1114-0802) — 표 하나 · 줄 하나 */
+export const SHOWO = Object.freeze(['ovl']);
 /** 거래량으로 고르는 다섯(그날 사고판 양을 받지 못하면 그날은 사지 않음) */
 export const BYVOL = Object.freeze(['g08', 'g13', 'g19', 'g29', 'g32']);
 /** 수익률 — 산 돈에 견줘 늘고 준 몫(백만에 하나까지 · 같으면 같은 차례) */
@@ -171,6 +176,7 @@ export async function vSettle(X) {
   const rows = P8.rows, T = P8.T, K = P8.K, miss = P8.miss; // 맨 위 「지금까지」 · 작은 줄 · 「묶음마다」 = 여덟(주문 1112-1728 그대로)
   const late = new Set(rows.filter(r => lateOf(r, D.asOf)).map(r => r.code)).size;
   const first36 = P36.rows.map(r => r.day).sort()[0] ?? null, has36 = D.kinds.includes('g01');
+  const PO = part(D, all, SHOWO), hasO = D.kinds.includes('ovl'); // 겹친 곳(주문 1114-0802 · 여덟 · 서른여섯과 따로 셈)
   const hero = h('div', {class: 'su-hero bk st', 'data-g': 'su-settle', 'data-n': String(rows.length), 'data-days': String(new Set(rows.map(r => r.day)).size), 'data-miss': String(miss)},
     h('p', {class: 'bk-intro', text: '큐피트가 날마다 고른 여덟 묶음을 가짜 돈으로 주식 10주씩 산 셈이에요.'}),
     D.start ? h('p', {class: 'bk-intro st-replay st-start', text: md(D.start) + '부터 센 정산이에요.'}) : null, // 주문 1112-2042 「정산을 오늘 부터 한다 그동안에 기록은 다 지운다」
@@ -178,6 +184,10 @@ export async function vSettle(X) {
     moneyCard(T, D.asOf),
     h('p', {class: 'bk-cap st-cap', text: capText(rows, miss, late)}),
     table('st-kinds', '묶음마다', '묶음', K.map(g => row(g, KIND_NAME[g.key] ?? g.key)), T),
+    // 주문 1114-0802 — 겹친 곳(그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 회사 · 날마다 곳 수가 다름 · 따로 셈)
+    hasO ? h('p', {class: 'bk-intro st-ovi', text: '아래는 여러 묶음에 겹쳐 나온 회사를 따로 모은 묶음이에요. 그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 곳을 10주씩 산 셈이고, 다른 묶음과 따로 셌어요.'}) : null,
+    hasO ? h('p', {class: 'bk-cap st-ovc', text: PO.rows.length ? capText(PO.rows, PO.miss, 0) : '아직 산 셈이 없어요. 장이 끝난 뒤 첫 묶음을 적어요.'}) : null,
+    hasO ? table('st-ovl', '겹친 곳', '묶음', PO.K.map(g => row(g, KIND_NAME[g.key] ?? g.key)), PO.T) : null,
     // 주문 1113-2224 — 서른여섯 꾀(여덟과 따로 셈 · 수익률 높은 차례 · 표 맨 아래 「모두」 = 이 표 서른여섯 줄을 더한 돈)
     has36 ? h('p', {class: 'bk-intro st-s36i', text: '아래는 손자병법과 함께 내려오는 서른여섯 가지 꾀로 고른 묶음이에요. 꾀마다 일곱 곳을 10주씩 산 셈이고, 위 여덟 묶음과 따로 셌어요.'}) : null,
     has36 ? h('p', {class: 'bk-cap st-s36c', text: first36 ? capText(P36.rows, P36.miss, 0) : '아직 산 셈이 없어요. 장이 끝난 뒤 첫 묶음을 적어요.'}) : null,
@@ -192,6 +202,7 @@ export async function vSettle(X) {
       D.from?.quiet ? (D.from.quiet !== D.start ? '조용한데 힘이 모이는 곳은 ' + md(D.from.quiet) + '부터 적었어요.' : null) : '조용한데 힘이 모이는 곳은 아직 적은 날이 없어요.',
       miss ? '그날 값을 찾지 못한 산 셈 ' + NF.format(miss) + '번은 세지 않았어요.' : null,
       late ? '오늘 판에 없는 회사 ' + NF.format(late) + '곳은 가장 늦게 찾은 날 값으로 셌어요.' : null,
+      hasO ? '겹친 곳은 그날 첫 화면 마흔세 묶음 가운데 세 묶음 이상에 든 회사예요. 날마다 곳 수가 달라요.' : null,
       has36 ? '서른여섯 꾀는 꾀마다 그날 그 꾀를 가장 닮은 일곱 곳이에요. 꾀마다 고르는 법은 아래 「서른여섯 꾀 풀이」에 있어요.' : null,
       has36 ? BYVOL.map(k => KIND_NAME[k]).join(', ') + '는 그날 사고판 양으로 골라요. 그 양을 받지 못한 날은 그 다섯을 사지 않아요.' : null,
       has36 ? '위 여덟 묶음은 늘 같은 차례예요. 서른여섯 꾀 표만 산 돈에 견줘 많이 늘어난 차례예요.' : '묶음은 늘 같은 차례예요. 늘고 준 크기 차례가 아니에요.', '셋은 장이 끝난 뒤에 골라요. 그 값에 실제로 살 수는 없었어요.', '수수료와 세금은 빼지 않았어요.',
