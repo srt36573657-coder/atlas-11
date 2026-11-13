@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-kakao-1",
- "at": "2026-11-13T12:36:21.372Z",
+ "at": "2026-11-13T14:20:21.252Z",
  "base": "https://aaa7377.com",
  "all": true,
  "limit": null,
@@ -22,7 +22,7 @@
    }
   }
  },
- "seconds": 155,
+ "seconds": 196,
  "counts": {
   "routes": 251,
   "rows": 9820,
@@ -2217,7 +2217,9 @@
     "fail": 0
    }
   ],
-  "again": {}
+  "again": {
+   "카톡 단추 다시 눌러 열림(실제 사이트)": 1
+  }
  },
  "fails": [],
  "warn": [],

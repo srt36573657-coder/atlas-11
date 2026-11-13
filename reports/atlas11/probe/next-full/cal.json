@@ -1,17 +1,17 @@
 {
- "ok": false,
+ "ok": true,
  "base": "https://aaa7377.com",
  "limit": "all",
  "wide": "all",
- "took_s": 163,
+ "took_s": 148,
  "time": {
-  "old": 32.6,
-  "new": 112.4,
-  "wall": 163,
+  "old": 29.5,
+  "new": 104.7,
+  "wall": 147.9,
   "opensOld": 1394,
   "opensNew": 3427,
   "oldPct": 20,
-  "oldShare": 22.5
+  "oldShare": 22
  },
  "net": {
   "req": 5,
@@ -36,13 +36,7 @@
   "없는 주소 · 밖 번호": 4,
   "바꿔치기": 8,
   "세 폭 화면": 2019,
-  "칸 고르기 줄": 3508,
-  "fail": 1
+  "칸 고르기 줄": 3508
  },
- "fails": [
-  [
-   "화면 오류",
-   "④ 누르기 Failed to load resource: the server responded with a status of 403 () /next/?dev=1#/cal"
-  ]
- ]
+ "fails": []
 }
