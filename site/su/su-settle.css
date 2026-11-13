@@ -6,3 +6,5 @@
 .st .bk-ddiff[data-st="none"] { font-weight: 700; color: #3A3A3C; }
 .st .st-row { cursor: default; } /* 묶음 줄은 누르는 곳이 아님 */
 :root.su-lg .st-replay { font-size: 19px; }
+.st-t11i { margin-top: 18px; font-size: 17px; font-weight: 600; color: #3A3A3C; } /* 주문 1113-2033 — 특징 열하나 표 앞 한 줄 */
+:root.su-lg .st-t11i { font-size: 19px; }

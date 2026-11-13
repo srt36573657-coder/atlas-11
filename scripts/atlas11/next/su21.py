@@ -16,6 +16,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--live', required=True); ap.add_argument('--repo', required=True); ap.add_argument('--out', required=True)
 ap.add_argument('--mc365', action='store_true') # 몬테카를로를 365곳 모두에(올릴 때 · 주문 0854 · 1422) — 셈 값은 같고 「365곳 모두 셌다」 수만 더함
 ap.add_argument('--top3', action='store_true') # 42칸 1등 · 2등 · 3등 — 몬테카를로 1억 번 · 소거 1억 번(올릴 때 · 주문 1422 · 지난 판 다시 세기는 빼고)
+ap.add_argument('--vol', default=None) # 주문 1113-2033 — 네이버 일봉 [날, 종가, 거래량](su21_vol.mjs · 올리기 작업만) → 특징 열하나 가운데 거래량 넷
 A = ap.parse_args()
 J = lambda p: json.load(open(p, encoding='utf-8'))
 b = J(A.repo + '/public/data/atlas11/view/board.json')
@@ -428,6 +429,18 @@ lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 
 json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 주문 1912 — 문화 일곱 · 칸마다 흔적(「왜?」 쪽만)
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+# ⑧ 주문 1113-2033(사장님 2026-11-13 20:33 「이걸 11 가지로 만든다면 … 이전 11 개를 해가지고 … 정상까지 다 연결」 · 20:35 「어 맞아」)
+#   한국 투자자 특징 열하나로 고른 열한 묶음(일곱 곳씩 · su21_t11.py) — 정산 장부(su21_settle.mjs)가 그날 판 날일 때 적고 10주씩 산 셈 · 화면은 정산 쪽 표 하나
+import su21_t11 as T11
+try:
+    VOL = json.load(open(A.vol, encoding='utf-8')) if A.vol else None
+except Exception: VOL = None
+_vday = DATES[CTX.T] if DATES and 0 <= CTX.T < len(DATES) else None
+T11R = T11.lists11(CODES, IXc, PM, CTX.T, capv, {**CVAL, 'il20': il20v[IXc]}, CON, late=late, vol=(VOL or {}).get('rows'), dates=DATES) if PM is not None and CON else T11.lists11(CODES, IXc, None, 0, capv, {}, {}, late=late)
+json.dump({'schema': 'su21-t11-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 'rule': T11.RULE_ID, 'k': T11.K, 'kinds': T11.KINDS, 'name': T11.NAME, 'say': T11.SAY, 'by': T11.BY,
+           'lists': {k: [{'code': c, 'name': nm(c)} for c in L] for k, L in T11R['lists'].items()}, 'why': T11R['why'], 'vol': {'day': T11R['volDay'], 'n': T11R['volN'], 'last': (VOL or {}).get('last'), 'ok': (VOL or {}).get('ok')},
+           'src': 'docs/design/su-culture-2026-11-09/traits11.md · docs/design/su-volume-2026-11-10/volume4.md'},
+          open(A.out.replace('su21.json', 'su21-t11.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음
 print('ok', {k: [nm(c) for c in L] for k, L in lists.items()}, 'quiet', [(n, k) for n, k in Q['steps']], 'distinct', len(inl), 'overlap', [o['name'] for o in out['overlap']], 'lands', len(lands_out),
       'top3', [(r['place'], nm(r['code']), r['score']) for r in (T3 or {}).get('rank', [])], 'pool', (T3 or {}).get('pool'))
