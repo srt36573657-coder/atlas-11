@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T07:46:50.486Z",
+ "at": "2026-11-13T12:07:50.775Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1665,
+  "pass": 1667,
   "fail": 0
  },
  "fails": [],
@@ -19,7 +19,7 @@
    ]
   },
   "home": {
-   "screens": 7.48,
+   "screens": 7.45,
    "links": 69
   },
   "t21": {
@@ -60,7 +60,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 2,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "지주 · 유통 · 운송 땅",
@@ -92,7 +92,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 10,
-    "orn": 7
+    "orn": 5
    },
    {
     "h1": "한진칼 출목표",
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 2268,
+   "lcp": 2296,
    "cls": 0.143,
-   "pic": 3201
+   "pic": 3251
   },
   "white": {
    "light #/": {
@@ -1252,7 +1252,7 @@
     ]
    },
    "daysFrom": "2026-10-02",
-   "screens": 3.32,
+   "screens": 3.29,
    "pages": 42,
    "reasons": 1512
   },
@@ -1288,12 +1288,12 @@
   "kr7": {
    "cards": 7,
    "rows": 7,
-   "screens": 17.35
+   "screens": 17.32
   },
   "ant11": {
    "cards": 11,
    "rows": 11,
-   "screens": 20.04
+   "screens": 20
   },
   "coLive": {
    "a": {
@@ -1316,18 +1316,18 @@
    "both": false
   },
   "book": {
-   "days": 5,
-   "rows": 15,
+   "days": 6,
+   "rows": 18,
    "shapes": {
-    "up": 7,
-    "dn": 5,
+    "up": 4,
+    "dn": 11,
     "eq": 0,
     "one": 3
    },
-   "folds": 0,
+   "folds": 1,
    "ledger": {
     "rows": 5,
-    "months": 0
+    "months": 1
    },
    "who": "모든 사람(주문 1513)"
   },
@@ -1335,19 +1335,19 @@
    "320": {
     "lim": 716,
     "name": 762,
-    "line": 2199,
+    "line": 2312,
     "money": 526
    },
    "390": {
     "lim": 716,
-    "name": 626,
-    "line": 1783,
+    "name": 650,
+    "line": 1842,
     "money": 440
    }
   },
   "bookLedger": {
-   "rows": 5,
-   "months": 0,
+   "rows": 6,
+   "months": 1,
    "bad": 0
   },
   "quiet": {
@@ -1372,23 +1372,37 @@
    ]
   },
   "qbook": {
-   "days": 3
+   "days": 4
   },
   "settle": {
-   "buys": 52,
+   "buys": 104,
    "kinds": [
-    3,
-    7,
-    7,
-    7,
-    7,
-    7,
-    7,
-    7
+    6,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14
    ],
-   "inds": 32,
-   "cos": 45,
+   "t11": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "inds": 40,
+   "cos": 61,
    "miss": 0,
+   "miss11": 0,
    "late": 0
   }
  },
