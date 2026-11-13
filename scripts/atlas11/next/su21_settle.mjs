@@ -138,19 +138,19 @@ export function siteSettle(B, L, asOf, days, start = START) {
 export function runsOf(B, trade, today) {
   const rec36 = {days: Object.fromEntries(Object.entries(B?.s36 ?? {}).map(([d, x]) => [d, {lists: x}]))};
   const recQ = {days: Object.fromEntries(Object.entries(B?.quiet ?? {}).map(([d, cs]) => [d, {lists: {quiet: cs}}]))};
-  const s36 = {}, quiet = {};
-  if (DAY.test(today ?? '')) {
-    const cal36 = calendarOf(trade, rec36, today), calQ = calendarOf(trade, recQ, today);
-    for (const k of S36) for (const c of B?.s36?.[today]?.[k] ?? []) (s36[k] ??= {})[c] = runOf(rec36, cal36, today, k, c);
-    for (const c of B?.quiet?.[today] ?? []) quiet[c] = runOf(recQ, calQ, today, 'quiet', c);
-  }
-  return {s36, quiet, from36: Object.keys(B?.s36 ?? {}).sort()[0] ?? null, fromQ: Object.keys(B?.quiet ?? {}).sort()[0] ?? null};
+  const s36 = {}, quiet = {}, ok = DAY.test(today ?? '');
+  const cal36 = ok ? calendarOf(trade, rec36, today) : [], calQ = ok ? calendarOf(trade, recQ, today) : [];
+  const run36 = (k, c) => (ok && CODE.test(c ?? '') ? runOf(rec36, cal36, today, k, c) : null), runQ = c => (ok && CODE.test(c ?? '') ? runOf(recQ, calQ, today, 'quiet', c) : null);
+  for (const k of S36) for (const c of B?.s36?.[today]?.[k] ?? []) (s36[k] ??= {})[c] = run36(k, c);
+  for (const c of B?.quiet?.[today] ?? []) quiet[c] = runQ(c);
+  return {s36, quiet, run36, runQ, from36: Object.keys(B?.s36 ?? {}).sort()[0] ?? null, fromQ: Object.keys(B?.quiet ?? {}).sort()[0] ?? null};
 }
-/** 화면 자료에 며칠째를 붙임 — su21-s36.json 꾀마다 회사 · su21.json 조용한 힘(그 파일 판 날 = 오늘 판 날일 때만 · 장부 오늘 목록에 있는 회사만) · 붙인 수 */
+/** 화면 자료에 며칠째를 붙임 — su21-s36.json 꾀마다 회사 · su21.json 조용한 힘(그 파일 판 날 = 오늘 판 날일 때만) · 붙인 수
+ *  오늘 든 것 = 화면 목록(그날 다시 센 목록 — 장부 그날 목록은 처음 적은 것이라 다를 수 있음) · 지난 날 = 장부 기록 */
 export function markRuns(R, g, su, today) {
   let n36 = 0, nq = 0;
-  if (g && g.asOf?.board === today) { for (const k of S36) for (const c of g.lists?.[k] ?? []) { const r = R.s36[k]?.[c?.code]; if (r) { Object.assign(c, r); n36++; } } g.daysFrom = R.from36; }
-  if (su && su.asOf?.board === today) { for (const c of su.lists?.quiet ?? []) { const r = R.quiet[c?.code]; if (r) { Object.assign(c, r); nq++; } } su.quietDays = {from: R.fromQ}; }
+  if (g && g.asOf?.board === today) { for (const k of S36) for (const c of g.lists?.[k] ?? []) { const r = R.run36(k, c?.code); if (r) { Object.assign(c, r); n36++; } } g.daysFrom = R.from36; }
+  if (su && su.asOf?.board === today) { for (const c of su.lists?.quiet ?? []) { const r = R.runQ(c?.code); if (r) { Object.assign(c, r); nq++; } } su.quietDays = {from: R.fromQ}; }
   return {n36, nq};
 }
 

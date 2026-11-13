@@ -172,8 +172,8 @@ test('며칠째(주문 1114-0151 「301 게 이게 며칠째 이렇게 됐는지
   assert.deepEqual(R.quiet, {'000005': {days: 3, found: '2026-11-12', since: true}, '000006': {days: 2, found: '2026-11-13', since: false}});
   assert.deepEqual([R.from36, R.fromQ], ['2026-11-12', '2026-11-12'], '기록 첫날');
   const g = {asOf: {board: '2026-11-16'}, lists: {g01: [{code: '000001'}, {code: '000003'}, {code: '000007'}]}}, su = {asOf: {board: '2026-11-16'}, lists: {quiet: [{code: '000005'}, {code: '000006'}]}};
-  assert.deepEqual(markRuns(R, g, su, '2026-11-16'), {n36: 2, nq: 2});
-  assert.deepEqual(g.lists.g01.map(c => c.days ?? null), [3, 2, null], '장부 오늘 목록에 없는 회사는 붙이지 않음'); assert.equal(g.daysFrom, '2026-11-12');
+  assert.deepEqual(markRuns(R, g, su, '2026-11-16'), {n36: 3, nq: 2});
+  assert.deepEqual(g.lists.g01.map(c => c.days ?? null), [3, 2, 1], '오늘 든 것은 화면 목록 · 지난 날은 장부(장부 오늘 목록에 없어도 오늘부터 셈)'); assert.equal(g.daysFrom, '2026-11-12');
   assert.deepEqual(su.lists.quiet.map(c => c.days), [3, 2]); assert.deepEqual(su.quietDays, {from: '2026-11-12'});
   const g2 = {asOf: {board: '2026-11-13'}, lists: {g01: [{code: '000001'}]}};
   assert.deepEqual(markRuns(R, g2, null, '2026-11-16'), {n36: 0, nq: 0}, '판 날이 다르면 붙이지 않음'); assert.equal(g2.lists.g01[0].days, undefined);
