@@ -1,6 +1,6 @@
 {
  "schema": "godori-verify2-1",
- "at": "2026-11-12T19:04:12Z",
+ "at": "2026-11-13T18:39:44Z",
  "version": "gdr-v2",
  "by": "G4x verify2.py (결정표만 · 만든 쪽 코드 안 엶)",
  "readings": [
@@ -30,8 +30,8 @@
  "inputs": {
   "bundle": {
    "path": "../../_temp/gdr/bundle.json.gz",
-   "sha256": "ecb131c050a5ee16da8ff57bd15c2b834d01074214faff73af39235601888214",
-   "last": "2026-11-12"
+   "sha256": "a97fed63e4ec80622e8955a484b011c65060f3357b5a11cb2f7e9357ddfb6c1b",
+   "last": "2026-11-13"
   },
   "mkt": {
    "path": "site/atlas/data/mkt.json",
@@ -54,25 +54,25 @@
    "complete": false
   },
   "calendar": {
-   "n": 861,
+   "n": 862,
    "first": "2023-04-28",
-   "last": "2026-11-12",
+   "last": "2026-11-13",
    "k250": "2024-05-09"
   },
   "gdr": {
    "path": "site/next/data/gdr.json",
    "error": null,
-   "sha256": "cfb91f4e3e5577a741adc37076c0b0e19f85e998d01a4cdcabbbf3653599c10f"
+   "sha256": "1a0d421cc9ec1652c309c6e282de39b7774063e270c687d39fb96cee7d492024"
   },
   "gates": {
    "path": "site/next/data/gates.json",
    "error": null,
-   "sha256": "4160e8628e83535754c143c2d4e356f3f1f1c0707061735eaf1ffa67afe77b18"
+   "sha256": "cd28e96e47e44a95072523d844eb684b9fa897130dabfb7c34ab9c420bcb51ca"
   },
   "private": {
    "path": "/home/runner/work/_temp/gdr/private.json",
    "error": null,
-   "sha256": "720a86fe0f31db6c24132fc732a4a4164cc302e20b391c578fdd78448fdec594"
+   "sha256": "179ed789e197d73e5c595d240d1a0a6af6c2982a469a28391f22cbc45bad3f36"
   },
   "prev": {
    "path": "/home/runner/work/_temp/gdr/prev-gdr.json",
@@ -80,34 +80,34 @@
   }
  },
  "k": {
-  "k": 860,
-  "day": "2026-11-12",
+  "k": 861,
+  "day": "2026-11-13",
   "src": "--asof"
  },
  "mine": {
   "counts": {
    "listed": 4307,
    "companies": 2557,
-   "outThin": 1762,
+   "outThin": 1758,
    "outThinQ": 30,
    "outHalt": 4,
-   "outList": 7,
-   "listQ": 784,
-   "afterOut": 784,
-   "g1": 237,
-   "g2": 573,
-   "g3": 24,
-   "g4": 641,
-   "g5": 10,
+   "outList": 6,
+   "listQ": 789,
+   "afterOut": 789,
+   "g1": 242,
+   "g2": 482,
+   "g3": 25,
+   "g4": 645,
+   "g5": 14,
    "passAll": 0,
    "cutInd": 0,
    "cutBig": 0,
    "picked": 0,
    "cash": 100.0,
-   "loss3": 774,
+   "loss3": 779,
    "why": "lists"
   },
-  "loss3Years": 774,
+  "loss3Years": 779,
   "status": {
    "lists": "partial",
    "quarters": "ok"
@@ -116,15 +116,15 @@
    "thin": [
     [
      1100000000.0,
-     1
+     0
     ],
     [
      1000000000.0,
-     1
+     0
     ],
     [
      900000000.0,
-     1
+     0
     ]
    ],
    "opGrow": [
@@ -134,11 +134,11 @@
     ],
     [
      0.0,
-     1
+     0
     ],
     [
      -5.0,
-     1
+     0
     ]
    ],
    "salesGrow": [
@@ -148,165 +148,165 @@
     ],
     [
      0.0,
-     1
+     0
     ],
     [
      -5.0,
-     1
+     0
     ]
    ],
    "quietX": [
     [
      1.8,
-     1
+     0
     ],
     [
      2.0,
-     1
+     0
     ],
     [
      2.2,
-     1
+     0
     ]
    ],
    "hot5": [
     [
      9.0,
-     1
+     0
     ],
     [
      10.0,
-     1
+     0
     ],
     [
      11.0,
-     1
+     0
     ]
    ],
    "r20": [
     [
      22.5,
-     1
+     0
     ],
     [
      25.0,
-     1
+     0
     ],
     [
      27.5,
-     1
+     0
     ]
    ],
    "r60lo": [
     [
      5.5,
-     1
+     0
     ],
     [
      5.0,
-     1
+     0
     ],
     [
      4.5,
-     1
+     0
     ]
    ],
    "r60hi": [
     [
      36.0,
-     1
+     0
     ],
     [
      40.0,
-     1
+     0
     ],
     [
      44.0,
-     1
+     0
     ]
    ],
    "jump": [
     [
      13.5,
-     1
+     0
     ],
     [
      15.0,
-     1
+     0
     ],
     [
      16.5,
-     1
+     0
     ]
    ],
    "mdd60": [
     [
      18.0,
-     1
+     0
     ],
     [
      20.0,
-     1
+     0
     ],
     [
      22.0,
-     1
+     0
     ]
    ],
    "dd0": [
     [
      13.5,
-     1
+     0
     ],
     [
      15.0,
-     1
+     0
     ],
     [
      16.5,
-     1
+     0
     ]
    ],
    "low2x": [
     [
      1.8,
-     1
+     0
     ],
     [
      2.0,
-     1
+     0
     ],
     [
      2.2,
-     1
+     0
     ]
    ],
    "indX": [
     [
      1.21,
-     1
+     0
     ],
     [
      1.1,
-     1
+     0
     ],
     [
      0.99,
-     1
+     0
     ]
    ],
    "indMed": [
     [
      1.0,
-     1
+     0
     ],
     [
      0.0,
-     1
+     0
     ],
     [
      -1.0,
-     1
+     0
     ]
    ]
   },
@@ -321,14 +321,36 @@
   "bigs": {},
   "score": {
    "src": "recomputed",
-   "from": "2026-10-15",
-   "to": "2026-11-12",
-   "n": 0,
-   "counted": 0,
-   "up": 0,
-   "lo": null,
-   "hi": null,
-   "rows": []
+   "from": "2026-10-16",
+   "to": "2026-11-13",
+   "n": 1,
+   "counted": 1,
+   "up": 1,
+   "lo": 4,
+   "hi": 7,
+   "rows": [
+    {
+     "code": "017890",
+     "name": "한국알콜",
+     "lo": 4,
+     "hi": 7,
+     "from": 14860,
+     "to": 15340,
+     "up": 1,
+     "mcCounts": [
+      1267,
+      964,
+      1236,
+      1027
+     ],
+     "mcEdges": [
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ]
   },
   "order": [],
   "edges": []
@@ -378,10 +400,10 @@
   "counts_add_up": {
    "ok": true,
    "detail": [
-    1762,
+    1758,
     4,
-    7,
-    784,
+    6,
+    789,
     2557
    ]
   },
@@ -395,35 +417,35 @@
  "counts_theirs": {
   "listed": 4307,
   "companies": 2557,
-  "outThin": 1762,
+  "outThin": 1758,
   "outThinQ": 30,
   "outHalt": 4,
-  "outList": 7,
-  "listQ": 784,
-  "afterOut": 784,
-  "g1": 237,
-  "g2": 573,
-  "g3": 24,
-  "g4": 641,
-  "g5": 10,
+  "outList": 6,
+  "listQ": 789,
+  "afterOut": 789,
+  "g1": 242,
+  "g2": 482,
+  "g3": 25,
+  "g4": 645,
+  "g5": 14,
   "passAll": 0,
   "cutInd": 0,
   "cutBig": 0,
   "picked": 0,
   "cash": 100,
-  "loss3": 774,
+  "loss3": 779,
   "why": "lists"
  },
- "compared": 2693,
+ "compared": 2700,
  "diffN": 0,
  "diffs": [],
  "invariantsBad": [],
  "ok": true,
  "exit": 0,
  "secs": {
-  "readBundle": 3.1,
-  "build": 2.2,
-  "recount": 0.9,
-  "total": 6.2
+  "readBundle": 2.5,
+  "build": 1.7,
+  "recount": 0.7,
+  "total": 5.0
  }
 }
