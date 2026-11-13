@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-13T02:12:43.824Z",
+ "at": "2026-11-13T08:38:41.425Z",
  "base": "https://aaa7377.com",
  "page": "https://aaa7377.com/next/?lang=en",
  "lang": "en",
@@ -9,33 +9,33 @@
   360,
   390
  ],
- "routes": 13685,
+ "routes": 13693,
  "companies": 2557,
  "allCompanies": true,
  "modules": true,
  "modFiles": {
-  "talk": true,
-  "rivals": true,
-  "cond": true,
-  "surge": true,
   "range": true,
   "grow": true,
   "past": true,
+  "rivals": true,
+  "cond": true,
+  "surge": true,
   "cal": true,
-  "info": true,
-  "why": true,
-  "gdr": true,
-  "theme": true,
-  "time": true,
-  "up": true,
   "today": true,
+  "talk": true,
+  "gdr": true,
+  "roman": true,
+  "time": true,
+  "info": true,
+  "x": true,
   "hold": true,
   "co": true,
-  "x": true,
+  "why": true,
+  "theme": true,
+  "up": true,
   "chx": true,
-  "share": true,
-  "roman": true,
-  "sage": true
+  "sage": true,
+  "share": true
  },
  "edge": true,
  "only": null,
@@ -43,72 +43,72 @@
  "shard": "all/3",
  "full": false,
  "units": {
-  "total": 13681,
-  "hash": "e413190bc752f0c0",
+  "total": 13689,
+  "hash": "738670043bcbfe91",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 1088,
- "secondsSum": 2999,
+ "seconds": 1201,
+ "secondsSum": 3529,
  "shards": [
   {
    "shard": "1/3",
    "ok": true,
    "fails": 0,
-   "routes": 4592,
-   "screens": 4593,
-   "mine": 4592,
-   "seconds": 951,
+   "routes": 4594,
+   "screens": 4638,
+   "mine": 4594,
+   "seconds": 1201,
    "secs": {
-    "open": 0.6,
-    "routes": 949.4
+    "open": 0.7,
+    "routes": 1199.1
    }
   },
   {
    "shard": "2/3",
    "ok": true,
    "fails": 0,
-   "routes": 4576,
-   "screens": 4640,
-   "mine": 4577,
-   "seconds": 960,
+   "routes": 4579,
+   "screens": 4601,
+   "mine": 4580,
+   "seconds": 1152,
    "secs": {
-    "open": 1.2,
-    "routes": 954.4,
-    "newwin": 3.6
+    "open": 0.8,
+    "routes": 1142.5,
+    "newwin": 5.3
    }
   },
   {
    "shard": "3/3",
    "ok": true,
    "fails": 0,
-   "routes": 4517,
-   "screens": 4681,
-   "mine": 4512,
-   "seconds": 1088,
+   "routes": 4520,
+   "screens": 4683,
+   "mine": 4515,
+   "seconds": 1176,
    "secs": {
-    "open": 0.7,
-    "routes": 1069.5,
-    "act": 6.4,
-    "edge": 7.3,
+    "open": 1.3,
+    "routes": 1158.1,
+    "act": 6.2,
+    "edge": 6.8,
     "grammar": 0
    }
   }
  ],
  "counts": {
-  "화면": 13914,
+  "화면": 13922,
   "길 · home": 1,
   "길 · chips": 7,
   "길 · sub": 1,
   "길 · find": 9,
   "길 · watch": 2560,
   "길 · chan": 89,
-  "길 · mod": 11010,
+  "길 · mod": 11018,
+  "왜 사? 끝까지": 2,
   "큐피트 칸 잠김": 2,
   "길 · me": 1,
-  "왜 사? 끝까지": 2,
   "새 창": 2,
   "쇼츠 장": 6,
   "길 · shorts": 7,
@@ -134,6 +134,8 @@
  "missingList": [],
  "all": [],
  "truncated": false,
- "problems": [],
- "ok": true
+ "problems": [
+  "몫마다 일감 목록이 다름(도는 사이 자료가 바뀜?) 738670043bcbfe91·13689 | 1902b5e60f93d7a6·13689"
+ ],
+ "ok": false
 }
