@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T14:17:10.296Z",
+ "at": "2026-11-13T16:08:10.471Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1673,
+  "pass": 1684,
   "fail": 0
  },
  "fails": [],
@@ -19,8 +19,8 @@
    ]
   },
   "home": {
-   "screens": 7.48,
-   "links": 69
+   "screens": 19.28,
+   "links": 322
   },
   "t21": {
    "listed": 2557,
@@ -36,9 +36,9 @@
     "share": 89,
     "outside": 19,
     "two": 2,
-    "labels": 318,
+    "labels": 322,
     "mucha": [],
-    "anim": 28,
+    "anim": 32,
     "need": 0,
     "means": 4,
     "hard": 0,
@@ -181,7 +181,7 @@
   "speed": {
    "lcp": 1268,
    "cls": 0.121,
-   "pic": 1917
+   "pic": 1940
   },
   "white": {
    "light #/": {
@@ -227,7 +227,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -259,7 +259,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -275,7 +275,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -1307,13 +1307,13 @@
    "shape": true
   },
   "coReal": {
-   "live": "2026-11-13T15:45",
-   "cellLive": "2026-11-13T15:45",
+   "live": null,
+   "cellLive": null,
    "px": "68800",
    "cellPx": "68800",
    "from": "2026-10-16",
    "to": "2026-11-13",
-   "both": true
+   "both": false
   },
   "book": {
    "days": 6,
@@ -1434,6 +1434,16 @@
    "miss": 0,
    "miss36": 0,
    "late": 0
+  },
+  "s36": {
+   "all": 301,
+   "now": 28,
+   "next": 21,
+   "s36": 252,
+   "sn": true,
+   "same": true,
+   "empty": [],
+   "data": "2026-11-13"
   }
  },
  "ok": true
