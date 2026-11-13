@@ -185,3 +185,13 @@
 .su-news > .su-hero[data-g="su-apple"] .s36-c b { font-weight: 700; }
 .su-news > .su-hero[data-g="su-apple"] .s36-cd { margin-left: 6px; font-size: 17px; font-weight: 600; color: #B45309; } /* 며칠째(주문 1114-0151) */
 .su-apple .sa-qd { fill: #B45309; } /* 조용한 힘 며칠째(주문 1114-0151) */
+/* 꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 42칸 꺾은선과 같은 모양(회색 2px · 한 달 전 옅은 줄 · 끝 호박색 찬 점)
+   단추 = 두 줄 칸(한 줄에 둘) — 위 이름 · 아래 왼쪽 며칠째 · 오른쪽 꺾은선(42칸처럼 이름 아래 오른쪽) · 줄마다 칸 높이가 같게 */
+.su-news > .su-hero[data-g="su-apple"] .s36-co { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-csp { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "n n" "d s"; align-items: center; justify-content: stretch; column-gap: 4px; row-gap: 2px; height: 100%; padding: 8px 6px 6px 12px; border-radius: 16px; text-align: left; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-csp b { grid-area: n; line-height: 1.3; overflow-wrap: anywhere; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c.s36-csp .s36-cd { grid-area: d; margin-left: 0; line-height: 1.3; }
+.su-news > .su-hero[data-g="su-apple"] .s36-sp { grid-area: s; display: block; justify-self: end; overflow: visible; }
+.su-news > .su-hero[data-g="su-apple"] .s36-sp .sa-sp { fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.su-news > .su-hero[data-g="su-apple"] .s36-sp .sa-sp0 { fill: none; stroke: #E5E5EA; stroke-width: 1; }
+.su-news > .su-hero[data-g="su-apple"] .s36-sp .sa-spA { fill: #D97706; stroke: #FFFFFF; stroke-width: 2; }

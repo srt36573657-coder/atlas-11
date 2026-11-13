@@ -33,27 +33,36 @@ export const ok36 = g => !!g && g.schema === 'su21-s36-1' && Array.isArray(g.kin
 export const n36 = g => (ok36(g) ? g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0) : 0);
 /** 꾀 수 — su21.json s36n(같은 셈 · 첫 화면은 이 수로) · 없으면 null(옛 판이면 꾀 칸 · 두 줄 없음) */
 export const n36d = d => { const m = d?.s36n; if (!m || typeof m !== 'object') return null; const v = Object.values(m); return v.length === 36 && v.every(x => Number.isInteger(x) && x >= 0) ? v.reduce((a, x) => a + Math.min(7, x), 0) : null; };
+/* 꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325 · 사장님 2026-11-14 03:25 「모든곳에 꺽기 그래프도 종목마다 넣어라」 — docs/design/s36-2026-11-13/order-0325.txt)
+   값 = su21-s36.json line(회사 번호 → 판 21 마지막 값 c · 그날 마지막 값 close · 판 날 date — 42칸과 같은 값) · 끝 값 = 그날 마지막 값 · 판 날 = 꾀 칸 판 날일 때만(아니면 그림 없음)
+   모양 = 42칸 꺾은선(spark)과 같음 — 회색 2px · 한 달 전 값에 옅은 가로줄 · 끝 호박색 찬 점 · 단추 안 맨 오른쪽 작은 그림(글 없음 · 소리 이름표에 한 달 전 값과 마지막 값) */
+const CSW = 44, CSH = 22, CSP = 5; // 단추 안 꺾은선 넓이 · 높이 · 둘레(끝 점 반지름 4 + 테 1)
+/** 꾀 칸 회사 하나의 21 마지막 값(없거나 맞지 않으면 null) */
+export const sp36 = (g, code) => { const v = g?.line?.[code]; return v && Array.isArray(v.c) && v.c.length === 21 && v.c.every(x => fin(x) && x > 0) && fin(v.close) && v.close === v.c[20] && typeof v.date === 'string' && v.date === g?.asOf?.board ? v.c : null; };
+const chipSpark = sp => s('svg', {class: 's36-sp', viewBox: `0 0 ${CSW + 2 * CSP} ${CSH + 2 * CSP}`, width: CSW + 2 * CSP, height: CSH + 2 * CSP, 'aria-hidden': 'true', focusable: 'false'}, spark(sp, CSP, CSP, CSW, CSH, 'now'));
 /** 고르지 못한 꾀 — 쉬운 말 까닭(셈 파일의 까닭은 만드는 사람 말이라 바꿈) */
 const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
 /** 서른여섯 꾀 칸(글 · 고리는 HTML — 줄바꿈 · 누름 48 을 지키려고) — 갈래 여섯 × 꾀 여섯 · 꾀마다 쉬운 이름 · 꾀 이름 · 곳 수 · 고르는 법 · 회사 일곱(누르면 그 회사 쪽) */
 export function section36(g, day) {
-  const N = n36(g), dd = mday(g?.asOf?.data) ?? mday(day);
+  const N = n36(g), dd = mday(g?.asOf?.data) ?? mday(day), bd = mday(g?.asOf?.board);
+  const anySp = g.kinds.some(k => (g.lists[k] ?? []).slice(0, 7).some(c => sp36(g, String(c?.code ?? '')))); // 꺾은선이 하나라도 있으면 읽는 법 한 마디(주문 1114-0325)
   const sets = [];
   g.kinds.forEach((k, i) => { const st = g.set?.[k] ?? ''; if (!sets.length || sets.at(-1).name !== st) sets.push({name: st, ks: []}); sets.at(-1).ks.push(k); });
   return h('section', {class: 's36', 'aria-label': '서른여섯 꾀 ' + N + '곳', 'data-n': String(N)},
     h('div', {class: 's36-top'},
       h('p', {class: 's36-h'}, h('b', {text: '서른여섯 꾀'}), h('span', {text: ' ' + N + '곳'})),
       h('p', {class: 's36-lead', text: '손자병법과 함께 내려오는 서른여섯 가지 꾀마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
-      h('p', {class: 's36-day', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')})),
+      h('p', {class: 's36-day', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + (anySp ? '이름 옆 꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.' + (mday(g.daysFrom) ? ' 며칠째는 ' + mday(g.daysFrom) + ' 기록부터 셌어요.' : '')})),
     ...sets.map(st => h('div', {class: 's36-set', 'data-set': st.name},
       h('h3', {class: 's36-sh', text: st.name}),
       ...st.ks.map(k => { const L = (g.lists[k] ?? []).slice(0, 7);
         return h('div', {class: 's36-g', 'data-k': k, 'data-n': String(L.length)},
           h('p', {class: 's36-gh'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})),
           h('p', {class: 's36-gs', text: g.say?.[k] ?? ''}),
-          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => { const dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null; // 며칠째(주문 1114-0151)
-            return h('li', {}, h('a', {class: 's36-c', href: '#/c/' + encodeURIComponent(String(c.code ?? '')), 'data-code': String(c.code ?? ''), 'data-days': dz ? String(dz) : null, 'aria-label': String(c.name ?? NEED) + (dz ? ' · ' + dz + '일째' : '')},
-              h('b', {text: String(c.name ?? NEED)}), dz ? h('span', {class: 's36-cd', text: dz + '일째'}) : null)); }))
+          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => { const dz = Number.isInteger(c.days) && c.days >= 1 ? c.days : null, sp = sp36(g, String(c.code ?? '')); // 며칠째(주문 1114-0151) · 한 달 꺾은선(주문 1114-0325)
+            return h('li', {}, h('a', {class: 's36-c' + (sp ? ' s36-csp' : ''), href: '#/c/' + encodeURIComponent(String(c.code ?? '')), 'data-code': String(c.code ?? ''), 'data-days': dz ? String(dz) : null,
+              'aria-label': String(c.name ?? NEED) + (dz ? ' · ' + dz + '일째' : '') + (sp ? ' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20]) : '')},
+              h('b', {text: String(c.name ?? NEED)}), dz ? h('span', {class: 's36-cd', text: dz + '일째'}) : null, sp ? chipSpark(sp) : null)); }))
             : h('p', {class: 's36-none', text: none36(g.why?.[k])})); }))),
     h('a', {class: 's36-go', href: '#/r/t', text: '서른여섯 꾀 정산 보기 ›'}));
 }

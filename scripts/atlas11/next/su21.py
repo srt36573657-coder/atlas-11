@@ -441,6 +441,9 @@ json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding=
 json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-s36-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 'rule': S36.RULE_ID, 'k': S36.K, 'kinds': S36.KINDS, 'han': S36.HAN, 'name': S36.NAME, 'mean': S36.MEAN, 'say': S36.SAY,
            'set': S36.SETOF, 'by': S36.BY, 'lists': {k: [{'code': c, 'name': nm(c)} for c in L] for k, L in S36R['lists'].items()}, 'why': S36R['why'],
+           # 주문 1114-0325(사장님 2026-11-14 03:25 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 꾀 칸 회사 단추마다 한 달 꺾은선 = 42칸과 같은 값(판 21 마지막 값 c · 그날 마지막 값 close · 판 날 date)
+           #   같은 회사가 여러 꾀에 들어도 한 번만(회사 번호 → 값 · 꾀 칸 자료를 가볍게 — 그림을 그린 뒤에 받음)
+           'line': {c: {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')} for c in sorted({c for L in S36R['lists'].values() for c in L}) if c in B},
            'vol': {'day': S36R['volDay'], 'n': S36R['volN'], 'last': (VOL or {}).get('last'), 'ok': (VOL or {}).get('ok')}, 'src': 'docs/design/s36-2026-11-13/order-2224.txt'},
           open(A.out.replace('su21.json', 'su21-s36.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-next-1', 'asOf': out['asOf'], 'lists': {k: [item(c, k) for c in lists[k]] for k in ('hotNext', 'moneyNext', 'bloomNext')}}, open(A.out.replace('su21.json', 'su21-next.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 될 듯 회사의 출목표 쪽(#/c/<번호>/more)만 받음

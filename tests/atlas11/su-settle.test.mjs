@@ -286,3 +286,26 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t
   assert.deepEqual(bad, [], '화면 글에 쓰지 않을 말 0');
   assert.deepEqual(texts.filter(s => s.includes('%') || /[A-Za-z]{2,}/.test(s.replace(/data-[a-z-]+|bk-[a-z0-9-]+|st-[a-z0-9-]+|su-[a-z0-9-]+/g, ''))), [], '화면 글에 「%」 · 영어 0');
 });
+
+test('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325 「모든곳에 꺽기 그래프도 종목마다 넣어라」) — 값 셈 · su21.py 한 달 값 · 단추 그림 · 검사 ㉔ · 선 모양 = 42칸', async () => {
+  const ap = rd('site/su/su-apple.js'), stub = ap.replace("import {s, h} from '/su/su-fig.js';", 'const s = () => null, h = () => null;');
+  assert.ok(!/^import /m.test(stub), '그리기 도구를 바꿈');
+  const A = await import('data:text/javascript;base64,' + Buffer.from(stub).toString('base64'));
+  const c21 = Array.from({length: 21}, (_, i) => 1000 + i * 10), D = '2026-11-13';
+  const g = {asOf: {board: D}, line: {'000001': {c: c21, close: 1200, date: D}, '000002': {c: c21, close: 1199, date: D}, '000003': {c: c21, close: 1200, date: '2026-11-12'},
+    '000004': {c: c21.slice(1), close: 1200, date: D}, '000005': {c: [...c21.slice(0, 20), 0], close: 0, date: D}, '000006': {c: [...c21.slice(0, 20), NaN], close: 1200, date: D}}};
+  assert.deepEqual(A.sp36(g, '000001'), c21, '21 값 · 끝 = 그날 마지막 값 · 판 날 = 꾀 칸 판 날');
+  for (const k of ['000002', '000003', '000004', '000005', '000006', '000009']) assert.equal(A.sp36(g, k), null, k + ' — 맞지 않으면 그림 없음');
+  assert.equal(A.sp36({...g, asOf: {board: '2026-11-14'}}, '000001'), null, '꾀 칸 판 날과 다르면 그림 없음');
+  assert.equal(A.sp36(null, '000001'), null);
+  assert.ok(ap.includes('sp ? chipSpark(sp) : null') && ap.includes("spark(sp, CSP, CSP, CSW, CSH, 'now')"), '단추 맨 끝 꺾은선 = 42칸과 같은 그리기(spark)');
+  assert.ok(ap.includes("' · 한 달 전 ' + won(sp[0]) + ' · ' + (bd ? bd + ' ' : '') + '마지막 값 ' + won(sp[20])"), '소리 이름표에 한 달 전 값 · 마지막 값');
+  assert.ok(ap.includes("(anySp ? '이름 옆 꺾은선은 한 달, 옅은 줄은 한 달 전 값이에요. ' : '')"), '읽는 법 한 마디(42칸 풀이와 같은 말)');
+  const py = rd('scripts/atlas11/next/su21.py');
+  assert.ok(py.includes("'line': {c: {'c': B[c].get('c'), 'close': B[c].get('close'), 'date': B[c].get('date')} for c in sorted({c for L in S36R['lists'].values() for c in L}) if c in B}"), 'su21.py 가 꾀 칸 회사마다 한 달 값을 한 번씩 씀(42칸과 같은 판 값)');
+  const ck = rd('scripts/atlas11/next/check_su.mjs');
+  assert.ok(ck.includes('꾀 칸 회사 단추마다 한 달 꺾은선(주문 1114-0325)') && ck.includes('꾀 칸 한 달 꺾은선 자료(주문 1114-0325)') && ck.includes("? 28.5 : 7.8)"), '검사 ㉔ · 처음 쪽 길이');
+  const css = rd('site/su/su-apple.css');
+  for (const [k, v] of [['.sa-sp', '{ fill: none; stroke: #86868B; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }'], ['.sa-sp0', '{ fill: none; stroke: #E5E5EA; stroke-width: 1; }'], ['.sa-spA', '{ fill: #D97706; stroke: #FFFFFF; stroke-width: 2; }']])
+    assert.ok(css.includes('.su-news > .su-hero[data-g="su-apple"] .s36-sp ' + k + ' ' + v) && css.includes('.su-apple ' + k + ' ' + v), k + ' 선 모양 = 42칸');
+});
