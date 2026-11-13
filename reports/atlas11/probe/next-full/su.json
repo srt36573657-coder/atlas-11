@@ -1,9 +1,9 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T17:52:41.387Z",
+ "at": "2026-11-13T19:33:48.307Z",
  "base": "https://aaa7377.com",
  "counts": {
-  "pass": 1687,
+  "pass": 1690,
   "fail": 0
  },
  "fails": [],
@@ -19,7 +19,7 @@
    ]
   },
   "home": {
-   "screens": 22.44,
+   "screens": 26.14,
    "links": 322
   },
   "t21": {
@@ -179,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 1124,
+   "lcp": 1164,
    "cls": 0.121,
-   "pic": 1730
+   "pic": 1775
   },
   "white": {
    "light #/": {
@@ -243,7 +243,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -275,7 +275,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": false,
+    "sky": true,
     "tc": [
      "#FFFFFF"
     ]
@@ -339,7 +339,7 @@
     "wave": "none",
     "curve": "none",
     "orn": 0,
-    "sky": true,
+    "sky": false,
     "tc": [
      "#FFFFFF"
     ]
@@ -1444,6 +1444,11 @@
    "same": true,
    "empty": [],
    "data": "2026-11-13",
+   "sp": {
+    "want": 252,
+    "chips": 252,
+    "got": 252
+   },
    "days": {
     "from": "2026-11-13",
     "max": 1,
