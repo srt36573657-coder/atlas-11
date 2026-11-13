@@ -1,12 +1,8 @@
-/* 큐피트 정산(주문 1112-1728 · su-settle.js) — 달력(su-book.css)의 「지금까지」 · 표 꼴을 그대로 씀 · 여기는 정산만의 몇 줄 · 글 17px 넘게 · 누르는 곳 48 넘게 */
+/* 큐피트 정산(주문 1112-1728 · su-settle.js) — 달력(su-book.css)의 「지금까지」 · 표 꼴을 그대로 씀 · 여기는 정산만의 몇 줄 · 글 17px 넘게 · 누르는 곳 48 넘게
+   주문 1113-1623 — 업종 · 회사 표(누르는 줄 · 나머지 접음)를 빼며 그 꾸밈도 뺌 */
 .su-news > .su-hero.bk.st { gap: 12px; }
-.st a.bk-drow { text-decoration: none; color: #1D1D1F; -webkit-tap-highlight-color: transparent; }
 .st-replay { font-size: 17px; font-weight: 600; color: #3A3A3C; }
 .st-tab { margin-top: 6px; }
-.st-rest { margin: 0; }
-.st-rest > summary { list-style: none; cursor: pointer; }
-.st-rest > summary::-webkit-details-marker { display: none; }
-.st-rest[open] > summary { border-bottom-color: #D2D2D7; }
-.st-rest > .bk-drow:not(.bk-dsum) { padding-left: 12px; }
 .st .bk-ddiff[data-st="none"] { font-weight: 700; color: #3A3A3C; }
+.st .st-row { cursor: default; } /* 묶음 줄은 누르는 곳이 아님 */
 :root.su-lg .st-replay { font-size: 19px; }

@@ -139,42 +139,32 @@ async function pageMods() {
   return {B: await import(bkUrl), M: await import('data:text/javascript;base64,' + Buffer.from(st).toString('base64'))};
 }
 
-test('화면 셈 — 산 셈 줄 · 묶음마다 여덟 줄(차례 그대로 · 빈 묶음도 한 줄) · 업종 · 회사는 산 돈 큰 차례 · 줄 글 · 「%」 0', async () => {
+test('화면 셈 — 산 셈 줄 · 묶음마다 여덟 줄(사장님 말씀 차례 · 빈 묶음도 한 줄) · 큰 값만(주문 1113-1623) · 맨 위 작은 줄 · 「%」 0', async () => {
   const {M} = await pageMods();
-  assert.deepEqual(Object.keys(M.KIND_NAME), [...KINDS], '묶음 이름 여덟 = 장부 묶음 차례');
-  assert.deepEqual(Object.values(M.KIND_NAME), ['1 · 2 · 3등', '불장', '꽃이 될', '돈이 몰리는', '조용한데 힘이 모이는', '불장이 될 듯', '꽃이 될 듯', '돈이 몰릴 듯']);
-  assert.equal(M.TOP, 10);
+  assert.deepEqual(Object.keys(M.KIND_NAME).sort(), [...KINDS].sort(), '묶음 이름 여덟 = 장부 묶음');
+  assert.deepEqual(M.SHOW.map(k => M.KIND_NAME[k]), ['1 · 2 · 3등', '불장', '불장이 될 듯', '돈이 몰리는 곳', '돈이 몰릴 듯', '꽃이 될 곳', '꽃이 될 듯', '조용한데 힘이 모이는 곳'],
+    '보이는 차례 = 사장님 말씀 차례(불장 · 불장이 될 듯 · 돈이 몰린 곳 · 돈이 몰릴 듯 · 꽃 · 꽃이 될 듯 · 조용한 힘 · 1 · 2 · 3등은 맨 위)');
+  for (const gone of ['TOP', 'byCost', 'kindSub', 'indSub', 'coSub']) assert.equal(M[gone], undefined, '업종 · 회사 표 셈은 뺌 — ' + gone);
   const D = {schema: SCHEMA, qty: 10, asOf: '2026-11-09', kinds: [...KINDS],
     co: {'000001': ['가나', '반도체'], '000002': ['다라', null], '000003': ['마바', '반도체'], '000004': ['사아', '은행']},
     buys: [['2026-11-05', 1, '000001', 1000], ['2026-11-05', 1, '000002', 2000], ['2026-11-06', 0, '000003', 3000], ['2026-11-06', 7, '000001', 1100], ['2026-11-09', 2, '000004', 4000]],
     now: {'000001': [1200, '2026-11-09'], '000002': [1900, '2026-11-09'], '000003': [3000, '2026-11-09'], '000004': [4000, '2026-11-09']}, miss: {}};
   const rows = M.settleRows(D);
-  assert.deepEqual(rows.map(r => [r.day, r.k, r.code, r.cost, r.val, r.one, r.ind]), [
-    ['2026-11-05', 'hot', '000001', 10000, 12000, false, '반도체'], ['2026-11-05', 'hot', '000002', 20000, 19000, false, '업종 모름'],
-    ['2026-11-06', 'top3', '000003', 30000, 30000, false, '반도체'], ['2026-11-06', 'moneyNext', '000001', 11000, 12000, false, '반도체'],
-    ['2026-11-09', 'bloom', '000004', 40000, 40000, true, '은행']], '10주씩 · 지금 = 가장 늦은 값 · 산 날 뒤 값이 없으면 아직 하루치');
+  assert.deepEqual(rows.map(r => [r.day, r.k, r.code, r.cost, r.val, r.one]), [
+    ['2026-11-05', 'hot', '000001', 10000, 12000, false], ['2026-11-05', 'hot', '000002', 20000, 19000, false],
+    ['2026-11-06', 'top3', '000003', 30000, 30000, false], ['2026-11-06', 'moneyNext', '000001', 11000, 12000, false],
+    ['2026-11-09', 'bloom', '000004', 40000, 40000, true]], '10주씩 · 지금 = 가장 늦은 값 · 산 날 뒤 값이 없으면 아직 하루치');
   const K = M.byKind(D, rows);
-  assert.deepEqual(K.map(g => [g.key, g.n, g.cost, g.val, g.st]), [['top3', 1, 30000, 30000, 'eq'], ['hot', 2, 30000, 31000, 'up'], ['bloom', 1, 40000, 40000, 'one'], ['money', 0, 0, 0, 'eq'],
-    ['quiet', 0, 0, 0, 'eq'], ['hotNext', 0, 0, 0, 'eq'], ['bloomNext', 0, 0, 0, 'eq'], ['moneyNext', 1, 11000, 12000, 'up']], '여덟 줄 · 묶음 차례 그대로(늘고 준 크기 차례 아님)');
-  const first0 = '2026-11-05';
-  assert.equal(M.kindSub(K[1], first0), '산 셈 2번 · 100원이 103.3원', '맨 첫날과 같은 묶음은 첫날을 뺌');
-  assert.equal(M.kindSub(K[0], first0), '11월 6일부터 · 산 셈 1번 · 100원이 100원');
-  assert.equal(M.kindSub(K[3], first0), '아직 산 셈이 없어요');
-  const inds = M.byCost(M.groupBy(rows, r => r.ind));
-  assert.deepEqual(inds.map(g => [g.key, g.cost, g.cos, g.n]), [['반도체', 51000, 2, 3], ['은행', 40000, 1, 1], ['업종 모름', 20000, 1, 1]], '산 돈이 큰 차례');
-  assert.equal(M.indSub(inds[0]), '회사 2곳 · 산 셈 3번');
-  const cos = M.byCost(M.groupBy(rows, r => r.code));
-  assert.deepEqual(cos.map(g => [g.key, g.cost]), [['000004', 40000], ['000003', 30000], ['000001', 21000], ['000002', 20000]]);
-  assert.equal(M.coSub(cos[2], '반도체'), '반도체 · 산 셈 2번');
-  assert.equal(M.coSub(cos[2], '반도체', '2026-11-06'), '반도체 · 산 셈 2번 · 11월 6일 값까지', '오늘 판에 없는 회사는 그 날을 줄에 적음');
+  assert.deepEqual(K.map(g => [g.key, g.n, g.cost, g.val, g.st]), [['top3', 1, 30000, 30000, 'eq'], ['hot', 2, 30000, 31000, 'up'], ['hotNext', 0, 0, 0, 'eq'], ['money', 0, 0, 0, 'eq'],
+    ['moneyNext', 1, 11000, 12000, 'up'], ['bloom', 1, 40000, 40000, 'one'], ['bloomNext', 0, 0, 0, 'eq'], ['quiet', 0, 0, 0, 'eq']], '여덟 줄 · 보이는 차례 그대로(늘고 준 크기 차례 아님)');
+  const T = rows.reduce((a, r) => ({cost: a.cost + r.cost, val: a.val + r.val}), {cost: 0, val: 0});
+  assert.deepEqual([K.reduce((a, g) => a + g.cost, 0), K.reduce((a, g) => a + g.val, 0)], [T.cost, T.val], '묶음 줄을 더하면 맨 위와 같음');
+  assert.deepEqual(M.byKind({...D, kinds: ['hot', 'top3']}, rows).map(g => g.key), ['top3', 'hot'], '자료에 없는 묶음은 줄을 만들지 않음 · 차례는 SHOW');
   const late = rows.map(r => ({...r, nowDay: r.code === '000002' ? '2026-11-06' : r.nowDay}));
   assert.deepEqual(late.map(r => M.lateOf(r, D.asOf)), [null, '2026-11-06', null, null, null], '앞 날 값으로 센 회사');
   assert.equal(M.capText(rows, 0, 0), '11월 5일부터 · 산 셈 5번 · 고른 날 3일');
   assert.equal(M.capText(rows, 3, 1), '11월 5일부터 · 산 셈 5번 · 고른 날 3일 · 값이 없어 못 센 3번 · 앞 날 값으로 센 회사 1곳', '못 센 수 · 앞 날 값 회사 수를 숨기지 않음');
-  // 같은 산 돈이면 이름 차례(늘고 준 크기로 줄을 세우지 않음)
-  const tie = M.byCost([{key: '나', cost: 5, diff: -9}, {key: '가', cost: 5, diff: 9}, {key: '다', cost: 7, diff: 0}]);
-  assert.deepEqual(tie.map(g => g.key), ['다', '가', '나']);
-  for (const t of [...K.map(g => M.kindSub(g, first0)), ...inds.map(M.indSub)]) assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t);
+  for (const t of [...Object.values(M.KIND_NAME), M.capText(rows, 3, 1)]) assert.ok(!t.includes('%') && !/[A-Za-z]/.test(t), t);
 });
 
 test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t · 새 판 안 · 올리기 작업만 장부를 씀 · 검사 ㉓ · 화면 글', () => {
@@ -190,7 +180,9 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t
   assert.ok(st.includes("text: md(D.start) + '부터 센 정산이에요.'"), '쪽 — 맨 위 첫날 한 줄');
   assert.ok(/#\\\/r\\\/\[mwdynkicst\]/.test(ck), '검사 고리 꼴에 #/r/t');
   assert.ok(!/\.innerHTML\b|\.outerHTML\b|insertAdjacentHTML|['"]style['"]|\.style\./.test(st), '보안 규칙 — innerHTML · 글 속 style 없음');
-  assert.ok(css.includes('.st-replay') && css.includes('.st-rest'), '꾸밈');
+  assert.ok(css.includes('.st-replay') && !css.includes('.st-rest'), '꾸밈 — 접은 줄 꾸밈은 뺌(주문 1113-1623)');
+  assert.ok(st.includes("table('st-kinds', '묶음마다', '묶음', K.map(g => row(g, KIND_NAME[g.key] ?? g.key)), T)") && !/st-inds|st-cos|restFold|'#\/c\/'/.test(st), '쪽 — 표는 묶음마다 하나(업종 · 회사 표 · 회사 고리 0)');
+  assert.ok(ck.includes("const SHOWs = ['top3', 'hot', 'hotNext', 'money', 'moneyNext', 'bloom', 'bloomNext', 'quiet'];") && ck.includes('큰 값만(주문 1113-1623)'), '검사 — 보이는 차례 · 큰 값만');
   const texts = [...st.matchAll(/'([^'\n]*[가-힣][^'\n]*)'/g)].map(m => m[1]).filter(s => !s.startsWith('/'));
   assert.ok(texts.length > 20);
   const bad = texts.flatMap(s => [...screenHits(s), ...ruinHits(s).map(x => x.word)].map(w => w + ' ← ' + s));

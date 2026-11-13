@@ -1230,11 +1230,13 @@ function bookMoney(BK) {
   //   그담에 불 장인 것도 사고 모든 여덟 개를 종류별로 업종별로 다 사는거별로 분류 별별로」 · 17:30 「어」 — docs/design/settle-2026-11-12/order-1728.txt)
   //   가) 자료 su/data/su21-settle.json — 꼴 · 여덟 묶음 차례 · 산 셈 줄(날 · 묶음 · 번호 · 산 값) · 같은 날 같은 묶음 같은 회사 한 번 · 지금 = 그 회사 판 날까지 값
   //       · 오늘 판(board.json) 날 산 값 · 지금 = 판 마지막 값 · 1 · 2 · 3등 = 달력 장부(su21-book.json) 날 · 회사 · 값 그대로
-  //   나) #/r/t(390 · 320) — 이 검사가 자료에서 따로 셈: 맨 위 「지금까지」 · 묶음마다 여덟 줄(차례 그대로) · 업종마다 · 회사마다(산 돈 큰 차례 · 열 줄 + 나머지 접음) · 표마다 모두 = 맨 위
-  //       · 회사 줄 고리 #/c/<번호> · 아래 탭 정산 켜짐 · 쪽 규칙 · 「%」 · 영어 0(회사 이름 빼고 · 낱말 풀이 빼고) · 화면 오류 0 — 결과 파일에는 맞음 · 틀림 · 수만(돈 글 0)
+  //   나) #/r/t(390 · 320) — 이 검사가 자료에서 따로 셈: 맨 위 「지금까지」 · 묶음마다 여덟 줄(보이는 차례 SHOW) · 모두 = 맨 위
+  //       · 주문 1113-1623(「세분화 할 필요 없이 큰값으로만」 · 「맞아」) — 업종 · 회사 표 0 · 묶음 줄은 이름 · 산 돈 · 늘었나 줄었나만(밑 작은 줄 0)
+  //       · 아래 탭 정산 켜짐 · 쪽 규칙 · 「%」 · 영어 0(낱말 풀이 빼고) · 화면 오류 0 — 결과 파일에는 맞음 · 틀림 · 수만(돈 글 0)
   const ST = await J('/su/data/su21-settle.json').catch(() => null), BDs = await J('/data/atlas11/view/board.json').catch(() => null), BKs = await J('/su/data/su21-book.json').catch(() => null);
   const KS = ['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext'], DAYs = /^\d{4}-\d{2}-\d{2}$/, CODEs = /^[0-9A-Z]{6}$/;
-  const KNAME = {top3: '1 · 2 · 3등', hot: '불장', bloom: '꽃이 될', money: '돈이 몰리는', quiet: '조용한데 힘이 모이는', hotNext: '불장이 될 듯', bloomNext: '꽃이 될 듯', moneyNext: '돈이 몰릴 듯'};
+  const KNAME = {top3: '1 · 2 · 3등', hot: '불장', bloom: '꽃이 될 곳', money: '돈이 몰리는 곳', quiet: '조용한데 힘이 모이는 곳', hotNext: '불장이 될 듯', bloomNext: '꽃이 될 듯', moneyNext: '돈이 몰릴 듯'};
+  const SHOWs = ['top3', 'hot', 'hotNext', 'money', 'moneyNext', 'bloom', 'bloomNext', 'quiet']; // 보이는 차례(주문 1113-1623 — 사장님 말씀 차례)
   const okD = !!ST && ST.schema === 'su21-settle-1' && ST.qty === 10 && JSON.stringify(ST.kinds) === JSON.stringify(KS) && Array.isArray(ST.buys) && ST.buys.length > 0 && DAYs.test(ST.asOf ?? '');
   // 주문 1112-2042 — 첫날 = 11월 12일 판 · 그 전 산 셈 0 · 다시 센 지난 날 0
   check(okD && ST.start === SETTLE_START && ST.buys.every(b => b[0] >= ST.start) && (ST.replayTo == null || ST.replayTo >= ST.start), '㉓ 정산 첫날 ' + SETTLE_START + '(주문 1112-2042) — 그 전 산 셈 0 · 다시 센 지난 날 0',
@@ -1265,14 +1267,11 @@ function bookMoney(BK) {
   const grp = (rs, key) => { const m = new Map(); for (const r of rs) { const k = key(r); if (!m.has(k)) m.set(k, []); m.get(k).push(r); } return [...m].map(([k, x]) => ({key: k, rows: x, ...addS(x)})); };
   const byC = gs => [...gs].sort((a, b) => b.cost - a.cost || String(a.key).localeCompare(String(b.key), 'ko'));
   const TS = addS(rowsS), first0 = TS.first, NFs = new Intl.NumberFormat('ko-KR');
-  const kindW = KS.map(k => { const g = grp(rowsS.filter(r => r.k === k), () => k)[0]; return g ? [KNAME[k], wonM(g.cost), g.res, SHM[g.st], (g.first !== first0 ? mdM(g.first) + '부터 · ' : '') + '산 셈 ' + NFs.format(g.n) + '번 · ' + hundM(g.val, g.cost)] : [KNAME[k], '0원', '아직 없음', '', '아직 산 셈이 없어요']; });
-  const indG = byC(grp(rowsS, r => r.ind)), coG = byC(grp(rowsS, r => r.code)), coN = new Map(rowsS.map(r => [r.code, r]));
-  const indW = indG.map(g => [g.key, wonM(g.cost), g.res, SHM[g.st], '회사 ' + NFs.format(g.cos) + '곳 · 산 셈 ' + NFs.format(g.n) + '번', null]);
-  const lateS = c => { const d = ST.now[c][1]; return d < ST.asOf ? d : null; }; // 오늘 판에 없어 앞 날 값으로 센 회사 — 회사 줄에 그 날 · 맨 위 작은 줄에 수
-  const coW = coG.map(g => [coN.get(g.key).name, wonM(g.cost), g.res, SHM[g.st], coN.get(g.key).ind + ' · 산 셈 ' + NFs.format(g.n) + '번' + (lateS(g.key) ? ' · ' + mdM(lateS(g.key)) + ' 값까지' : ''), '#/c/' + g.key]);
+  const kindW = SHOWs.map(k => { const g = grp(rowsS.filter(r => r.k === k), () => k)[0]; return g ? [KNAME[k], wonM(g.cost), g.res, SHM[g.st], ''] : [KNAME[k], '0원', '아직 없음', '', '']; });
+  const indG = byC(grp(rowsS, r => r.ind)), coG = byC(grp(rowsS, r => r.code));
+  const lateS = c => { const d = ST.now[c][1]; return d < ST.asOf ? d : null; }; // 오늘 판에 없어 앞 날 값으로 센 회사 — 맨 위 작은 줄에 수
   const missS = Object.values(ST?.miss ?? {}).reduce((a, x) => a + x, 0), lateN = coG.filter(g => lateS(g.key)).length;
   const capW = (first0 ? mdM(first0) + '부터 · ' : '') + '산 셈 ' + NFs.format(rowsS.length) + '번 · 고른 날 ' + NFs.format(new Set(rowsS.map(r => r.day)).size) + '일' + (missS ? ' · 값이 없어 못 센 ' + NFs.format(missS) + '번' : '') + (lateN ? ' · 앞 날 값으로 센 회사 ' + NFs.format(lateN) + '곳' : '');
-  const restW = (gs, what) => { if (gs.length <= 10) return null; const S = addS(gs.slice(10).flatMap(g => g.rows)); return ['나머지 ' + NFs.format(gs.length - 10) + what, wonM(S.cost), S.res, SHM[S.st]]; };
   R.m.settle = {buys: ST?.buys?.length ?? 0, kinds: KS.map(k => rowsS.filter(r => r.k === k).length), inds: indG.length, cos: coG.length, miss: missS, late: lateN};
   for (const width of [390, 320]) {
     const ctx = await browser.newContext({viewport: {width, height: 844}, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul'});
@@ -1285,7 +1284,7 @@ function bookMoney(BK) {
     await p.waitForFunction(() => document.querySelector('#su .su-hero.st .st-kinds'), null, {timeout: 10000}).catch(() => {});
     const fold0 = await p.evaluate(() => { const lim = Math.min(...[...document.querySelectorAll('.su-dock, .su-tabs')].map(e => e.getBoundingClientRect().top).filter(Number.isFinite), innerHeight), mo = document.querySelector('#su .st-money'); return {lim: Math.round(lim), money: mo ? Math.round(mo.getBoundingClientRect().bottom) : null}; });
     check(fold0.money != null && fold0.money <= fold0.lim, W + '첫 화면에 맨 위 「지금까지」가 다 보임', JSON.stringify(fold0));
-    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how, #su details.st-rest')) d.open = true; });
+    await more(p); await p.evaluate(() => { for (const d of document.querySelectorAll('#su details.bk-how')) d.open = true; });
     pageRules(await measure(p), W);
     const g = await p.evaluate(() => { const hero = document.querySelector('#su .su-hero.st'), txt = e => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
       const cell = r => [txt(r.querySelector('.bk-dday')), txt(r.querySelector('.bk-dcost')), txt(r.querySelector('.bk-ddiff')), r.querySelector('.bk-ddiff [data-shape]')?.getAttribute('data-shape') ?? ''];
@@ -1294,7 +1293,8 @@ function bookMoney(BK) {
           open: [...t.querySelectorAll('.bk-drows > .st-row')].length, rest: sum ? cell(sum) : null, tot: (() => { const x = t.querySelector('.bk-dtot'); return x ? cell(x) : null; })()}; };
       const m = hero?.querySelector('.st-money');
       return {money: m ? {h: [txt(m.querySelector('.bk-mh b')), txt(m.querySelector('.bk-mh span'))], c: txt(m.querySelector('.bk-mcost b')), v: txt(m.querySelector('.bk-mval b')), r: txt(m.querySelector('.bk-mres')), sh: m.querySelector('.bk-mres [data-shape]')?.getAttribute('data-shape') ?? '', m100: txt(m.querySelector('.bk-m100'))} : null,
-        cap: txt(hero?.querySelector('.st-cap')), start: txt(hero?.querySelector('.st-start')), kinds: tab('.st-kinds'), inds: tab('.st-inds'), cos: tab('.st-cos'), tab: document.querySelector('.su-tabs [aria-current="page"]')?.textContent?.trim() ?? '', h1: txt(document.querySelector('#su h1')),
+        cap: txt(hero?.querySelector('.st-cap')), start: txt(hero?.querySelector('.st-start')), kinds: tab('.st-kinds'), tabs: hero ? hero.querySelectorAll('.st-tab').length : 0,
+        fine: hero ? hero.querySelectorAll('.st-inds, .st-cos, details.st-rest, a.st-row, .st-row .bk-dnm').length : -1, tab: document.querySelector('.su-tabs [aria-current="page"]')?.textContent?.trim() ?? '', h1: txt(document.querySelector('#su h1')),
         text: [...document.querySelectorAll('#su main .su-hero.st, #su main .bk-how')].map(e => { const c = e.cloneNode(true); for (const x of c.querySelectorAll('.su-gl')) x.remove(); return c.innerText; }).join('\n')}; });
     check(g.tab === '정산' && g.h1 === '정산', W + '아래 탭 「정산」 켜짐 · 큰 제목', JSON.stringify({tab: g.tab, h1: g.h1}));
     const mOk = {h: JSON.stringify(g.money?.h) === JSON.stringify(['지금까지', mdM(ST?.asOf ?? '0000-00-00') + ' 값까지']), c: g.money?.c === wonM(TS.cost), v: g.money?.v === wonM(TS.val), r: g.money?.r === TS.said && g.money?.sh === SHM[TS.st], m100: g.money?.m100 === (TS.one ? '' : '모두 합치면 ' + hundM(TS.val, TS.cost))};
@@ -1302,17 +1302,11 @@ function bookMoney(BK) {
     check(okD && g.start === mdM(ST.start ?? '0000-00-00') + '부터 센 정산이에요.', W + '맨 위 「○월 ○일부터 센 정산이에요」(주문 1112-2042)', JSON.stringify(g.start));
     check(okD && g.cap === capW, W + '맨 위 작은 줄 — 첫날 · 산 셈 수 · 고른 날 수 · 못 센 수 · 앞 날 값으로 센 회사 수(숨기지 않음)', JSON.stringify([g.cap, capW]));
     const totW = ['모두', wonM(TS.cost), TS.res, SHM[TS.st]];
-    const kOk = !!g.kinds && JSON.stringify(g.kinds.head) === JSON.stringify(['묶음 · 산 셈', '산 돈', '늘었나 줄었나']) && g.kinds.rows.length === 8 && g.kinds.rows.every((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(kindW[i]) && r[5] === null) && JSON.stringify(g.kinds.tot) === JSON.stringify(totW);
-    check(kOk, W + '묶음마다 — 여덟 줄 차례 그대로 · 산 돈 · 늘었나 줄었나(모양) · 첫날 · 산 셈 수 · 100원이 ○원 · 모두 = 맨 위(따로 셈)', JSON.stringify((g.kinds?.rows ?? []).map((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(kindW[i]))));
-    const tabOk = (t, want, gs, what) => { if (!t) return false; const top = want.slice(0, 10), restR = restW(gs, what);
-      return t.open === top.length && t.rows.length === want.length && t.rows.every((r, i) => JSON.stringify(r.slice(0, 4)) === JSON.stringify(want[i].slice(0, 4)) && r[4] === want[i][4] && r[5] === want[i][5])
-        && JSON.stringify(t.rest) === JSON.stringify(restR) && JSON.stringify(t.tot) === JSON.stringify(totW); };
-    check(tabOk(g.inds, indW, indG, '개 업종') && JSON.stringify(g.inds.head) === JSON.stringify(['업종 · 회사 수', '산 돈', '늘었나 줄었나']), W + '업종마다 — 산 돈 큰 차례 · 열 줄 + 나머지 접음(더한 돈) · 회사 수 · 산 셈 수 · 모두 = 맨 위(따로 셈)', JSON.stringify({rows: g.inds?.rows.length ?? 0, want: indW.length, open: g.inds?.open ?? 0}));
-    check(tabOk(g.cos, coW, coG, '곳 회사') && JSON.stringify(g.cos.head) === JSON.stringify(['회사 · 업종', '산 돈', '늘었나 줄었나']), W + '회사마다 — 산 돈 큰 차례 · 열 줄 + 나머지 접음 · 업종 · 산 셈 수 · 회사 쪽 고리 · 모두 = 맨 위(따로 셈)', JSON.stringify({rows: g.cos?.rows.length ?? 0, want: coW.length, open: g.cos?.open ?? 0}));
+    const kOk = !!g.kinds && JSON.stringify(g.kinds.head) === JSON.stringify(['묶음', '산 돈', '늘었나 줄었나']) && g.kinds.rows.length === 8 && g.kinds.rows.every((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(kindW[i]) && r[5] === null) && JSON.stringify(g.kinds.tot) === JSON.stringify(totW);
+    check(kOk, W + '묶음마다 — 여덟 줄 사장님 말씀 차례(1 · 2 · 3등 · 불장 · 불장이 될 듯 · 돈 · 돈이 몰릴 듯 · 꽃 · 꽃이 될 듯 · 조용한 힘) · 산 돈 · 늘었나 줄었나(모양) · 모두 = 맨 위(따로 셈)', JSON.stringify((g.kinds?.rows ?? []).map((r, i) => JSON.stringify(r.slice(0, 5)) === JSON.stringify(kindW[i]))));
+    check(g.tabs === 1 && g.fine === 0, W + '큰 값만(주문 1113-1623) — 표는 묶음마다 하나 · 업종 · 회사 표 · 접은 줄 · 회사 고리 · 줄 밑 작은 글 0', JSON.stringify({tabs: g.tabs, fine: g.fine}));
     const names = [...new Set(rowsS.flatMap(r => [r.name, r.ind]))].sort((a, b) => b.length - a.length), plain = names.reduce((t, n) => t.split(n).join(''), g.text);
-    check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '「%」 · 영어 글자 0(회사 · 업종 이름 · 낱말 풀이 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
-    const prop = await p.evaluate(() => [...document.querySelectorAll('#su .st-inds .st-row .bk-dday, #su .st-cos .st-row .bk-dday')].filter(e => !e.closest('summary')).every(e => e.hasAttribute('data-proper') || e.textContent.trim() === '업종 모름'));
-    check(prop, W + '업종 · 회사 이름은 이름 표시(data-proper — 이름은 고치지 않는 글)', '');
+    check(!plain.includes('%') && !/[A-Za-z]/.test(plain), W + '「%」 · 영어 글자 0(낱말 풀이 빼고)', (plain.match(/.{0,12}(%|[A-Za-z]+).{0,12}/) ?? [''])[0]);
     check(!errs.length, W + '화면 오류 0', errs.slice(0, 3).join(' / '));
     await ctx.close();
   }
