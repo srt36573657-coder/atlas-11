@@ -1,0 +1,92 @@
+{
+ "startedAt": "2026-11-13T22:49:50.360Z",
+ "steps": [
+  {
+   "name": "시작",
+   "at": "2026-11-13T22:49:50.462Z",
+   "mode": "update",
+   "run": "reports/atlas11/us/runs/2026-11-13T22-49-50",
+   "newYork": {
+    "date": "2026-11-13",
+    "hm": "17:49",
+    "weekday": 5
+   }
+  },
+  {
+   "name": "길",
+   "at": "2026-11-13T22:49:51.361Z",
+   "kind": "day",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/item/NVDA.O/day"
+  },
+  {
+   "name": "일봉(지금 365곳)",
+   "at": "2026-11-13T22:50:07.056Z",
+   "asked": 365,
+   "got": 360,
+   "latest": "2026-11-13"
+  },
+  {
+   "name": "길",
+   "at": "2026-11-13T22:50:07.206Z",
+   "kind": "news",
+   "way": 0,
+   "url": "https://api.stock.naver.com/news/worldStock/AMD.O"
+  },
+  {
+   "name": "길",
+   "at": "2026-11-13T22:50:19.969Z",
+   "kind": "index",
+   "way": 0,
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day"
+  },
+  {
+   "name": "기사 · 지수",
+   "at": "2026-11-13T22:50:20.252Z",
+   "news": 365,
+   "newsItems": 5884,
+   "index": [
+    "S&P 500 2026-11-13",
+    "나스닥 종합 2026-11-13",
+    "다우존스 2026-11-13"
+   ]
+  },
+  {
+   "name": "끝",
+   "at": "2026-11-13T22:50:20.498Z",
+   "assets": 365,
+   "asOf": "2026-11-13",
+   "late": 5,
+   "sessions": 299,
+   "inputCopy": {
+    "file": "reports/atlas11/us/runs/2026-11-13T22-49-50/input.json.gz",
+    "sha256": "00735e0a6b15784562210ef5ce9069436b4f1d25c3185dd1a7fd4a1a1ae838d9",
+    "bytes": 663470
+   }
+  }
+ ],
+ "samples": {
+  "day": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/AVGO.O/day?startDateTime=202509090000&endDateTime=202611132359",
+   "status": 200,
+   "ms": 836
+  },
+  "day_way1": {
+   "url": "https://api.stock.naver.com/chart/foreign/item/WBD.O?periodType=dayCandle",
+   "status": 200,
+   "ms": 154
+  },
+  "news": {
+   "url": "https://api.stock.naver.com/news/worldStock/AMD.O?pageSize=20&page=1",
+   "status": 200,
+   "ms": 148
+  },
+  "index": {
+   "url": "https://api.stock.naver.com/chart/foreign/index/.INX/day?startDateTime=202610240000&endDateTime=202611132359",
+   "status": 200,
+   "ms": 139
+  }
+ },
+ "failures": {},
+ "endedAt": "2026-11-13T22:50:20.498Z"
+}
