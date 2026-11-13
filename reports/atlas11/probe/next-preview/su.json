@@ -1,22 +1,21 @@
 {
  "schema": "su-check-1",
- "at": "2026-11-13T01:19:38.416Z",
+ "at": "2026-11-13T07:46:50.486Z",
  "base": "http://127.0.0.1:8826",
  "counts": {
-  "pass": 1659,
+  "pass": 1665,
   "fail": 0
  },
  "fails": [],
  "m": {
-  "dropped": [
-   "JYP Ent."
-  ],
+  "dropped": [],
   "data": {
    "picks": 0,
    "near": 3,
    "money": [
     "한진칼",
-    "삼성에스디에스"
+    "삼성에스디에스",
+    "SBS"
    ]
   },
   "home": {
@@ -61,7 +60,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 2,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "지주 · 유통 · 운송 땅",
@@ -93,7 +92,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 10,
-    "orn": 5
+    "orn": 7
    },
    {
     "h1": "한진칼 출목표",
@@ -157,7 +156,7 @@
     "hard": 0,
     "hardWords": "",
     "glossed": 1,
-    "orn": 5
+    "orn": 7
    }
   ],
   "hard": 0,
@@ -180,9 +179,9 @@
    }
   },
   "speed": {
-   "lcp": 2336,
+   "lcp": 2268,
    "cls": 0.143,
-   "pic": 3347
+   "pic": 3201
   },
   "white": {
    "light #/": {

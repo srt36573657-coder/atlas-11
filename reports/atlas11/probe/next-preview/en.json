@@ -1,6 +1,6 @@
 {
  "schema": "atlas11-next-en-check-1",
- "at": "2026-11-13T01:32:38.441Z",
+ "at": "2026-11-13T07:59:22.265Z",
  "base": "http://127.0.0.1:8826",
  "page": "http://127.0.0.1:8826/next/?lang=en",
  "lang": "en",
@@ -9,7 +9,7 @@
   360,
   390
  ],
- "routes": 13685,
+ "routes": 13693,
  "companies": 2557,
  "allCompanies": true,
  "modules": true,
@@ -28,14 +28,14 @@
   "x": true,
   "co": true,
   "chx": true,
-  "today": true,
   "why": true,
   "gdr": true,
   "share": true,
-  "hold": true,
-  "theme": true,
   "sage": true,
-  "roman": true
+  "roman": true,
+  "theme": true,
+  "today": true,
+  "hold": true
  },
  "edge": true,
  "only": null,
@@ -43,66 +43,66 @@
  "shard": "all/12",
  "full": false,
  "units": {
-  "total": 13681,
-  "hash": "865bc8cdd35d3a07",
+  "total": 13689,
+  "hash": "07c21b01e1119280",
   "w": {
    "@tail": 80,
    "@newwin": 15
   }
  },
- "seconds": 235,
- "secondsSum": 2676,
+ "seconds": 245,
+ "secondsSum": 2873,
  "shards": [
   {
    "shard": "1/12",
    "ok": true,
    "fails": 0,
-   "routes": 1148,
+   "routes": 1149,
    "screens": 1149,
-   "mine": 1148,
-   "seconds": 217,
+   "mine": 1149,
+   "seconds": 234,
    "secs": {
-    "open": 0.5,
-    "routes": 212.4
+    "open": 0.7,
+    "routes": 232
    }
   },
   {
    "shard": "2/12",
    "ok": true,
    "fails": 0,
-   "routes": 1148,
+   "routes": 1149,
    "screens": 1149,
-   "mine": 1148,
-   "seconds": 213,
+   "mine": 1149,
+   "seconds": 232,
    "secs": {
-    "open": 0.5,
-    "routes": 209
+    "open": 0.7,
+    "routes": 230.5
    }
   },
   {
    "shard": "3/12",
    "ok": true,
    "fails": 0,
-   "routes": 1148,
-   "screens": 1148,
-   "mine": 1148,
-   "seconds": 213,
+   "routes": 1149,
+   "screens": 1149,
+   "mine": 1149,
+   "seconds": 233,
    "secs": {
-    "open": 0.5,
-    "routes": 208.8
+    "open": 0.7,
+    "routes": 231
    }
   },
   {
    "shard": "4/12",
    "ok": true,
    "fails": 0,
-   "routes": 1148,
-   "screens": 1148,
-   "mine": 1148,
-   "seconds": 222,
+   "routes": 1149,
+   "screens": 1149,
+   "mine": 1149,
+   "seconds": 240,
    "secs": {
     "open": 0.7,
-    "routes": 220.9
+    "routes": 238.7
    }
   },
   {
@@ -112,10 +112,10 @@
    "routes": 1148,
    "screens": 1148,
    "mine": 1148,
-   "seconds": 223,
+   "seconds": 240,
    "secs": {
-    "open": 0.6,
-    "routes": 222
+    "open": 0.8,
+    "routes": 238.1
    }
   },
   {
@@ -125,10 +125,10 @@
    "routes": 1148,
    "screens": 1148,
    "mine": 1148,
-   "seconds": 222,
+   "seconds": 239,
    "secs": {
-    "open": 0.6,
-    "routes": 220.3
+    "open": 0.8,
+    "routes": 237.5
    }
   },
   {
@@ -136,12 +136,12 @@
    "ok": true,
    "fails": 0,
    "routes": 1148,
-   "screens": 1148,
+   "screens": 1191,
    "mine": 1148,
-   "seconds": 234,
+   "seconds": 242,
    "secs": {
     "open": 0.8,
-    "routes": 230.5
+    "routes": 240
    }
   },
   {
@@ -149,85 +149,85 @@
    "ok": true,
    "fails": 0,
    "routes": 1148,
-   "screens": 1148,
+   "screens": 1191,
    "mine": 1148,
-   "seconds": 235,
+   "seconds": 244,
    "secs": {
     "open": 0.8,
-    "routes": 231.7
+    "routes": 241.6
    }
   },
   {
    "shard": "9/12",
    "ok": true,
    "fails": 0,
-   "routes": 1153,
-   "screens": 1153,
-   "mine": 1147,
-   "seconds": 234,
+   "routes": 1154,
+   "screens": 1155,
+   "mine": 1148,
+   "seconds": 239,
    "secs": {
-    "open": 0.8,
-    "routes": 229.6
+    "open": 0.7,
+    "routes": 236.1
    }
   },
   {
    "shard": "10/12",
    "ok": true,
    "fails": 0,
-   "routes": 1147,
-   "screens": 1147,
-   "mine": 1147,
-   "seconds": 218,
+   "routes": 1148,
+   "screens": 1149,
+   "mine": 1148,
+   "seconds": 242,
    "secs": {
-    "open": 0.6,
-    "routes": 216.5
+    "open": 0.8,
+    "routes": 240.1
    }
   },
   {
    "shard": "11/12",
    "ok": true,
    "fails": 0,
-   "routes": 1133,
-   "screens": 1197,
-   "mine": 1134,
-   "seconds": 225,
+   "routes": 1134,
+   "screens": 1155,
+   "mine": 1135,
+   "seconds": 245,
    "secs": {
-    "open": 0.6,
-    "routes": 220.6,
-    "newwin": 2.6
+    "open": 0.8,
+    "routes": 239.4,
+    "newwin": 3.5
    }
   },
   {
    "shard": "12/12",
    "ok": true,
    "fails": 0,
-   "routes": 1068,
-   "screens": 1231,
-   "mine": 1069,
-   "seconds": 220,
+   "routes": 1069,
+   "screens": 1189,
+   "mine": 1070,
+   "seconds": 243,
    "secs": {
-    "open": 0.6,
-    "routes": 204.1,
-    "act": 6.9,
-    "edge": 7.6,
+    "open": 0.8,
+    "routes": 222.8,
+    "act": 8.1,
+    "edge": 9.6,
     "grammar": 0
    }
   }
  ],
  "counts": {
-  "화면": 13914,
+  "화면": 13922,
   "길 · home": 1,
   "길 · find": 9,
   "길 · watch": 2560,
   "길 · chan": 89,
-  "길 · mod": 11010,
-  "큐피트 칸 잠김": 2,
+  "길 · mod": 11018,
   "길 · chips": 7,
+  "왜 사? 끝까지": 2,
   "쇼츠 장": 6,
   "길 · shorts": 7,
+  "큐피트 칸 잠김": 2,
   "길 · sub": 1,
   "길 · me": 1,
-  "왜 사? 끝까지": 2,
   "새 창": 2,
   "보내기 글상자": 3,
   "누르기": 1,
