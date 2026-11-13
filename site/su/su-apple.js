@@ -6,7 +6,7 @@
      현재가 = 그 회사 마지막 값(board.json close — 지금 셋 su21.json · 될 듯 셋 su21-next.json · 그날 = asOf.board) · 꺾은선 = 21 마지막 값(board.json c — 20거래일 앞 ~ 마지막 날) 그대로
      칸 = 이름 · 값 · 현재가(왼쪽) + 오른쪽 꺾은선(회색 2px · 한 달 전 값에 옅은 가로줄 · 마지막 값 점 — 지금 = 호박색 찬 점 · 될 듯 = 고리 점) · 누름 92
    그리기: s() 만(createElementNS · setAttribute) · 색 · 움직임은 su-apple.css(움직임 줄이기면 끝 모습) */
-import {s} from '/su/su-fig.js';
+import {s, h} from '/su/su-fig.js';
 
 export const CSS = '/su/su-apple.css';
 /** 자료 — su21.json(지금 셋은 현재가 · 21 마지막 값까지) + su21-next.json(될 듯 셋의 현재가 · 21 마지막 값 — 첫 화면 자료를 가볍게 두려고 따로 · 주문 1837)
@@ -21,8 +21,39 @@ export async function load(get) {
       const by = new Map((n?.lists?.[k] ?? []).map(c => [String(c.code), c]));
       lists[k] = (d.lists?.[k] ?? []).map(c => { const f = by.get(String(c.code)); return f ? {...c, ...Object.fromEntries(NXF.filter(x => f[x] != null).map(x => [x, f[x]]))} : c; });
     }
-    return {...d, lists};
+    return {...d, lists, get36: () => get(D36).catch(() => null)}; // 서른여섯 꾀 칸 자료는 그림을 그린 뒤에 받음(주문 1114-0004 · 느린 휴대폰 첫 화면 2.5초)
   } catch { return null; }
+}
+/* ── 서른여섯 꾀(주문 1114-0004 · 사장님 2026-11-14 00:04 「36×7 이면 그 값이 나오잖아 지금 28 곳으로 돼 있잖아 … 기존에 있는 불장 … 그것도 내비두고 또 거기다 36 까지 …
+      종류별로 다 모아가지고 그 총 개수를 정리 하란 말이야」 · 00:07 「맞아」 — docs/design/s36-2026-11-13/order-0004.txt)
+   처음 쪽 그림 아래에 꾀마다 일곱 곳(su21-s36.json · su21_s36.py — 정산과 같은 셈) · 구슬 아래 「여기에 서른여섯 꾀 ○곳을 더해 모두 ○곳이에요.」 · 같은 회사가 여러 묶음에 들면 묶음마다 따로 셈 ── */
+export const D36 = '/su/data/su21-s36.json';
+export const ok36 = g => !!g && g.schema === 'su21-s36-1' && Array.isArray(g.kinds) && g.kinds.length === 36 && !!g.lists && typeof g.lists === 'object';
+/** 꾀마다 일곱까지 더한 수 — 꾀 칸 자료(g.lists) */
+export const n36 = g => (ok36(g) ? g.kinds.reduce((a, k) => a + Math.min(7, (g.lists[k] ?? []).length), 0) : 0);
+/** 꾀 수 — su21.json s36n(같은 셈 · 첫 화면은 이 수로) · 없으면 null(옛 판이면 꾀 칸 · 두 줄 없음) */
+export const n36d = d => { const m = d?.s36n; if (!m || typeof m !== 'object') return null; const v = Object.values(m); return v.length === 36 && v.every(x => Number.isInteger(x) && x >= 0) ? v.reduce((a, x) => a + Math.min(7, x), 0) : null; };
+/** 고르지 못한 꾀 — 쉬운 말 까닭(셈 파일의 까닭은 만드는 사람 말이라 바꿈) */
+const none36 = w => (/거래량|사고판/.test(w ?? '') ? '그날 사고판 양을 받지 못해 고르지 못했어요.' : '지난 값이 모자라 고르지 못했어요.');
+/** 서른여섯 꾀 칸(글 · 고리는 HTML — 줄바꿈 · 누름 48 을 지키려고) — 갈래 여섯 × 꾀 여섯 · 꾀마다 쉬운 이름 · 꾀 이름 · 곳 수 · 고르는 법 · 회사 일곱(누르면 그 회사 쪽) */
+export function section36(g, day) {
+  const N = n36(g), dd = mday(g?.asOf?.data) ?? mday(day);
+  const sets = [];
+  g.kinds.forEach((k, i) => { const st = g.set?.[k] ?? ''; if (!sets.length || sets.at(-1).name !== st) sets.push({name: st, ks: []}); sets.at(-1).ks.push(k); });
+  return h('section', {class: 's36', 'aria-label': '서른여섯 꾀 ' + N + '곳', 'data-n': String(N)},
+    h('div', {class: 's36-top'},
+      h('p', {class: 's36-h'}, h('b', {text: '서른여섯 꾀'}), h('span', {text: ' ' + N + '곳'})),
+      h('p', {class: 's36-lead', text: '손자병법과 함께 내려오는 서른여섯 가지 꾀마다, 그날 그 꾀를 가장 닮은 일곱 곳이에요.'}),
+      h('p', {class: 's36-day', text: (dd ? dd + ' 마지막 값으로 골랐어요. ' : '') + '같은 회사가 여러 꾀에 들 수 있어요.'})),
+    ...sets.map(st => h('div', {class: 's36-set', 'data-set': st.name},
+      h('h3', {class: 's36-sh', text: st.name}),
+      ...st.ks.map(k => { const L = (g.lists[k] ?? []).slice(0, 7);
+        return h('div', {class: 's36-g', 'data-k': k, 'data-n': String(L.length)},
+          h('p', {class: 's36-gh'}, h('b', {text: g.name?.[k] ?? k}), h('span', {text: ' ' + (g.han?.[k] ?? '') + ' · ' + L.length + '곳'})),
+          h('p', {class: 's36-gs', text: g.say?.[k] ?? ''}),
+          L.length ? h('ul', {class: 's36-co'}, ...L.map(c => h('li', {}, h('a', {class: 's36-c', href: '#/c/' + encodeURIComponent(String(c.code ?? '')), 'data-code': String(c.code ?? ''), text: String(c.name ?? NEED)}))))
+            : h('p', {class: 's36-none', text: none36(g.why?.[k])})); }))),
+    h('a', {class: 's36-go', href: '#/r/t', text: '서른여섯 꾀 정산 보기 ›'}));
 }
 
 const NEED = '확인 필요';
@@ -364,6 +395,7 @@ function draw(d, opt) {
   const STRICT = !!d?.strict && d.strict.mode !== 'mark'; // 엄격 셈(주문 0854 · 사장님 2026-11-09 08:54 · 09:02 「어」 — 일곱이 안 되면 통과한 곳만 · 남는 자리는 비움) — 옛 판 자료만
   const RANK = !!d?.top3 && Array.isArray(d.top3.rank), CULT = d?.listRule === 'culture7-v1', UP3 = RANK && d.top3.v === 'up3-v1'; // 주문 1422(사장님 2026-11-09 14:22 「… 1억 번 계산하고 소거법도 1억 번 해서 1등 2등 3등을 찾아내서 표기」) — 42칸 가운데 1등 · 2등 · 3등 칸에 표
   const MARK = d?.strict?.mode === 'mark'; // 주문 1209(사장님 2026-11-09 12:09 「42개를 다 보이고 엄격한 2개를 수르 계산법으로 찾은 종목이라고 해서 별도로 표기」) — 42칸 그대로 · 엄격 셈을 모두 지난 칸에 「수르 계산법」 표
+  const N36 = opt.mode === 'next' ? null : n36d(d), G = N36 != null, TOT = G ? 60 : 0; // 서른여섯 꾀(주문 1114-0004) — 구슬 아래 두 줄 · 그 아래 모두를 그만큼 내림(sa-low)
   const LIST0 = UP3 ? PY0 + 292 + UP3H : MARK || RANK ? 662 : STRICT ? 636 : 608; // 새 잣대(주문 1111-1857 · 1112-0044) — 머리 줄 · 넓은 칸 셋(꺾은선 · 값 · 한 달 · 업종 · 까닭) · 풀이 · 달력 고리 // 지금 21 | 될 듯 21 · 안전 문장 · 현재가 날짜 두 줄(엄격 셈이면 셋째 줄 「31가지 기준을 모두 지난 곳만」 · 표시 판이면 셋째 · 넷째 줄 「수르 계산법」 풀이) 아래
   const rowsOf = k => STRICT ? 7 : Math.max(items(k, false).length, items(k, true).length, 1);
   const tagOf = c => c?.sx || c?.r3; // 칸 맨 위 표(수르 계산법 · 1등 · 2등 · 3등)
@@ -372,9 +404,10 @@ function draw(d, opt) {
   const qRows = Math.ceil(QL.length / 2), qRowH = i => ROW + (QL[2 * i]?.r3q || QL[2 * i + 1]?.r3q ? BX : 0); // 넷째 창 — 한 줄에 둘(왼 · 오른) · 등수 표가 붙은 줄만 표 높이만큼 더
   const LIST1 = LIST0 + HOWH; // 쉬운 판(주문 1112-0253) — 「칸 하나 읽는 법」 아래에서 묶음이 시작
   const H = LIST1 + KEY.reduce((a, k) => a + HEADH + MEANH + Array.from({length: rowsOf(k)}, (_, i) => rowH(k, i)).reduce((b, v) => b + v, 0) + GAP, 0) + (QL.length ? HEADH + 30 + Array.from({length: qRows}, (_, i) => qRowH(i)).reduce((b, v) => b + v, 0) + GAP : 0) + 24;
-  const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
-    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (UP3 ? ' · 오늘의 1등 · 2등 · 3등 ' + d.top3.rank.map(r => r.place + '등 ' + r.name).join(' · ') : RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
-  svg.append(s('rect', {x: 0, y: 0, width: W, height: H, class: 'sa-bg'}));
+  const svg = s('svg', {class: 'su-svg su-apple', viewBox: `0 0 ${W} ${H + TOT}`, role: 'img', preserveAspectRatio: 'xMidYMid meet', 'data-show': 'now-next', 'data-clean': 'jobs',
+    'aria-label': `흰 바탕에 빛나는 구슬 둘 · 지금 ${nNow}곳 · 될 듯 ${nNx}곳` + (G ? ` · 서른여섯 꾀 ${N36}곳 · 모두 ${nNow + nNx + N36}곳` : '') + (MARK ? ` · 큐피트 계산법으로 찾은 칸 ${nSx}` : '') + (UP3 ? ' · 오늘의 1등 · 2등 · 3등 ' + d.top3.rank.map(r => r.place + '등 ' + r.name).join(' · ') : RANK ? ' · 1억 번 셈 1등 · 2등 · 3등' : '') + (day ? ' · ' + day + ' 자료' : ''), 'data-sx': MARK ? String(nSx) : null, 'data-r3': RANK ? KEY.flatMap(k => [...items(k, false), ...items(k, true)]).filter(c => c.r3).sort((a, b) => a.r3 - b.r3).map(c => c.r3 + ':' + c.k + ':' + c.code).join(' ') : null});
+  svg.append(s('rect', {x: 0, y: 0, width: W, height: H + TOT, class: 'sa-bg'}));
+  const low = s('g', {class: 'sa-low', ...(TOT ? {transform: `translate(0 ${TOT})`} : {})}); // 구슬 아래 글부터 끝까지(서른여섯 꾀 두 줄이 있으면 TOT 만큼 아래)
   /* 1 한 문장 */
   /* 큰 제목 「지금, 그리고 될 듯.」은 쪽 머리(h1 · 쪽과 함께 바로 그려짐 — 느린 휴대폰 첫 칠함 2.5초)에 · 그림은 부제부터 */
   const top = s('g', {class: 'sa-top'},
@@ -394,12 +427,13 @@ function draw(d, opt) {
     s('circle', {cx: 248, cy: PY + 22, r: 6.5, class: 'sa-dotB'}), s('circle', {cx: 248, cy: PY + 22, r: 2.6, class: 'sa-dotBc'}), T(262, PY + 27, '될 듯', 'sa-k'),
     T(285, PY + 96, String(STRICT ? nNx : nNx || NEED), 'sa-n', {'text-anchor': 'middle'}), T(285 + est(String(nNx), 58) / 2 + 4, PY + 96, '곳', 'sa-unit'),
     T(285, PY + 124, '곧 그렇게 될 듯한 곳', 'sa-d', {'text-anchor': 'middle'}));
-  svg.append(pair, ...line2(PY + 168, '지난 기록이에요.', '사고팔기를 권하지 않아요.', 'sa-safe sa-in sa-in3', 18),
+  svg.append(pair, ...(G ? [...line2(PY + 160, '여기에 서른여섯 꾀', N36 + '곳을 더해', 'sa-tot sa-in sa-in2', 18), ...line2(PY + 188, '모두', (nNow + nNx + N36) + '곳이에요.', 'sa-tot sa-in sa-in2', 18)] : []), low); // 서른여섯 꾀(주문 1114-0004) — 모두 몇 곳
+  low.append(...line2(PY + 168, '지난 기록이에요.', '사고팔기를 권하지 않아요.', 'sa-safe sa-in sa-in3', 18),
     ...note2(PY + 202, '현재가는', (mday(day) ? mday(day) + ' ' : '') + '마지막 값이에요.', 'note1'),
     ...note2(PY + 228, '꺾은선은 한 달,', '옅은 줄은 한 달 전 값이에요.'),
     ...(STRICT ? note2(PY + 254, '31가지 기준을', '모두 지난 곳만 보여요.', 'note3') : UP3 ? [...note2(PY + 254, '될 듯은', '그렇게 되기 바로 앞 모습이에요.', 'note5'), ...legendUp3(PY + 292, d.top3.rank, day, d.top3.how)] : RANK ? legendR3(PY + 254, CULT) : MARK ? legendSx(PY + 254) : []));
   /* 4 셋 × 둘 — 한 줄에 짝 하나(왼 지금 · 오른 될 듯) */
-  svg.append(howTo(LIST0)); // 칸 하나 읽는 법(쉬운 판)
+  low.append(howTo(LIST0)); // 칸 하나 읽는 법(쉬운 판)
   let y = LIST1;
   KEY.forEach((k, ki) => {
     const now = items(k, false), nx = items(k, true), sec = s('g', {class: 'sa-sec sa-sec' + ki});
@@ -421,7 +455,7 @@ function draw(d, opt) {
       y += rh;
     }
     y += GAP;
-    svg.append(sec);
+    low.append(sec);
   });
   /* 5 넷째 창 — 조용한데 힘이 모이는 일곱(주문 1111-1334 · 사장님 2026-11-11 13:34 「조용한데 에너지가 모이는 주식창을 하나더 만들어라 그래서 총 28개로 만들고 몬태카를로 소거법으로을 찾아내라」)
      한 줄에 둘 · 칸 = 이름 · 한 달 폭 · 현재가 · 이만큼 조용하기 · 외국인과 기관 + 한 달 꺾은선 · 첫 셋에 1 · 2 · 3등 표(몬테카를로 차례) · 누르면 그 회사 · 머리 줄을 누르면 넷째 창 쪽(#/s) */
@@ -441,7 +475,7 @@ function draw(d, opt) {
       sec.append(row);
       y += rh;
     }
-    svg.append(sec);
+    low.append(sec);
   }
   return svg;
 }
@@ -480,5 +514,11 @@ export function picture(d, opt = {}) {
     svg.setAttribute('data-mode', 'next');
   } else svg.setAttribute('data-mode', 'now');
   if (opt.live !== false) live(svg, d?.asOf?.board ?? null); // 장 중 현재가(주문 2011) — 그림은 바로 돌려주고 값은 받은 뒤에 바꿈
+  if (opt.mode !== 'next' && n36d(d) != null && typeof d.get36 === 'function') { // 서른여섯 꾀 칸은 그림 바로 아래(같은 큰 그림 자리 안 — 주문 1114-0004) · 자료는 그림이 칠해진 뒤에 받음
+    const wait = h('section', {class: 's36 s36-wait', 'aria-hidden': 'true'}), f = document.createDocumentFragment(), day = d?.asOf?.board ?? null;
+    const fill = () => d.get36().then(g => { if (ok36(g) && g.asOf?.board === day && g.kinds.every(k => (g.lists[k] ?? []).length === d.s36n[k])) wait.replaceWith(section36(g, day)); else wait.remove(); }).catch(() => wait.remove());
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => setTimeout(fill, 0)); else setTimeout(fill, 0);
+    f.append(svg, wait); return f;
+  }
   return svg;
 }

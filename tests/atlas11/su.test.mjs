@@ -179,6 +179,7 @@ test('첫 페이지 종목마다 현재가 · 한 달 꺾은선(주문 1837)', (
   assert.ok(/function spark\(sp, x, y, w, h, side\)/.test(t) && /class: 'sa-sp0'/.test(t) && /class: 'sa-spA'/.test(t) && /class: 'sa-spB'/.test(t), '꺾은선 · 한 달 전 줄 · 마지막 점(찬 점 · 고리)');
   assert.ok(/pxOf\(c\) === c\.c\[20\]/.test(t) && /c\.date === day/.test(t), '끝 값 = 현재가 · 그날 값일 때만(아니면 「확인 필요」)');
   assert.ok(/note2\(PY \+ 202, '현재가는', \(mday\(day\) \? mday\(day\) \+ ' ' : ''\) \+ '마지막 값이에요\.', 'note1'\)/.test(t), '현재가 날짜 글');
+  assert.ok(t.includes("const low = s('g', {class: 'sa-low', ...(TOT ? {transform: `translate(0 ${TOT})`} : {})});") && t.includes("'sa-tot sa-in sa-in2', 18)] : []), low);"), '서른여섯 꾀 두 줄 아래 글 · 칸은 그만큼 내림(주문 1114-0004)');
   // 장 중 현재가(주문 2011 · 20:11 「어 그렇게 하고」) — 그린 뒤 /api/price 를 물어 받은 칸만 바꿈 · 오늘이 판보다 뒤면 맨 앞 하루를 빼고 오늘 값을 끝에 · 장 중이면 1분마다
   assert.ok(/fetch\('\/api\/price\?codes=' \+ codes\.join\(','\)\)/.test(t) && /j\.day > day \? \[\.\.\.c\.it\.sp\.slice\(1\), v\.p\] : \[\.\.\.c\.it\.sp\.slice\(0, 20\), v\.p\]/.test(t) && /setTimeout\(ask, 60000\)/.test(t), '장 중 현재가 — 받은 칸만 · 한 달 꺾은선 끝 · 1분마다');
   assert.ok(/if \(opt\.live !== false\) live\(svg, d\?\.asOf\?\.board \?\? null\)/.test(t), '그림은 바로 · 값은 받은 뒤');
@@ -295,10 +296,10 @@ test('새 판 화면(새로 씀) — 일곱 번 누름 여덟 화면 · 탭 넷 
   assert.deepEqual(steps.map(x => x[1]), [0, 1, 1, 2, 2, 3, 3, 3], '걸음이 기승전결 차례로 이어짐(주문 2044 — 21곳 · 땅 지도 · 업종 · 회사 · 자세히 · 왜 사? · 매매일지 · 친구에게)');
   const tl = /const TABS = \(\) => \[([\s\S]*?)\]\];/.exec(su); assert.ok(tl, 'TABS');
   const tabNames = [...tl[1].matchAll(/\['([0-9가-힣]+)', /g)].map(m => m[1]);
-  assert.deepEqual(tabNames.slice(0, 6), ['28곳', '지도', '기록', '멈춤', '달력', '정산'], '탭 여섯 = 쪽마다 tab 값 차례(0 28곳 — 주문 1111-1334 넷째 창으로 21 → 28 · 1 지도 · 2 기록 · 3 멈춤 — 주문 2044 · 4 달력 — 주문 0040 · 5 정산 — 주문 1112-1728)');
+  assert.deepEqual(tabNames.slice(0, 6), ['301곳', '지도', '기록', '멈춤', '달력', '정산'], '탭 여섯 = 쪽마다 tab 값 차례(0 301곳 — 주문 1111-1334 넷째 창으로 21 → 28 · 주문 1114-0004 서른여섯 꾀 252곳을 더해 301 · 1 지도 · 2 기록 · 3 멈춤 — 주문 2044 · 4 달력 — 주문 0040 · 5 정산 — 주문 1112-1728)');
   const to = /export const TAB_ORDER = Object\.freeze\((\[[0-9, ]+\])\);/.exec(su); assert.ok(to, 'TAB_ORDER');
-  assert.deepEqual(JSON.parse(to[1]).map(i => tabNames[i]), ['28곳', '지도', '멈춤', '기록', '달력', '정산'], '보이는 차례 = 중요한 차례 28곳 · 지도 · 멈춤 · 기록(주문 1023 [4] 토론) · 달력(주문 0040 「달력을 탭에 두도록해」) · 정산은 맨 끝(주문 1112-1728 「탭이 여섯 개가 되겠지」)');
-  assert.ok(su.includes("'탭 — 중요한 차례 28곳 · 지도 · 멈춤 · 기록 · 달력 · 정산'") && su.includes("['달력', '#/r/c', ") && su.includes("['정산', '#/r/t', "), '달력 탭 = #/r/c · 정산 탭 = #/r/t');
+  assert.deepEqual(JSON.parse(to[1]).map(i => tabNames[i]), ['301곳', '지도', '멈춤', '기록', '달력', '정산'], '보이는 차례 = 중요한 차례 301곳 · 지도 · 멈춤 · 기록(주문 1023 [4] 토론) · 달력(주문 0040 「달력을 탭에 두도록해」) · 정산은 맨 끝(주문 1112-1728 「탭이 여섯 개가 되겠지」)');
+  assert.ok(su.includes("'탭 — 중요한 차례 301곳 · 지도 · 멈춤 · 기록 · 달력 · 정산'") && su.includes("['달력', '#/r/c', ") && su.includes("['정산', '#/r/t', "), '달력 탭 = #/r/c · 정산 탭 = #/r/t');
   assert.ok(/\.su-tabs \{[^}]*grid-template-columns: repeat\(6, minmax\(0, 1fr\)\)/.test(fs.readFileSync(path.join(ROOT, 'site/su/su.css'), 'utf8')), '탭 줄 여섯 칸');
   for (const href of ['#/', '#/r', '#/r/m', '#/r/w', '#/r/d', '#/r/y', '#/r/n', '#/r/s', '#/r/c', '#/r/t', '#/s', '#/q', '#/q/127120', '#/j', '#/c/127120', '#/m', '#/m/hold', '#/f', '#/c/127120/more']) assert.equal(forwardTo('', href), null, '새 판 안 — ' + href);
   const {screenHits, ruinHits} = await import('../../site/next/words.js');

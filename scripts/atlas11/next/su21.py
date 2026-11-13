@@ -425,10 +425,6 @@ out['top3'] = None if T3 is None else {'v': T3['v'], 'n': T3['n'], 'pool': T3['p
                        'c': B[r['code']].get('c'), 'cFrom': B[r['code']].get('cFrom'), # 주문 1112-0044(사장님 2026-11-12 00:44 「여기 1.2.3에 그래프 그리고 다양한 정보 직관적으로 보이게 하고 클릭 하면 그정보가 이어지게 해」) — 한 달 꺾은선 = 판 21 마지막 값(42칸과 같은 값)
                        'ch20': r1(B[r['code']]['change20'] * 100) if B[r['code']].get('change20') is not None else None, # 한 달(20거래일) 오른 만큼 — 42칸 불장 값과 같은 셈
                        'in': [k for k, c in CELLS if c == r['code']]} for r in T3['rank']]} # in = 이 회사가 든 칸(없으면 42칸 밖)
-lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
-json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 주문 1912 — 문화 일곱 · 칸마다 흔적(「왜?」 쪽만)
-json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 # ⑧ 주문 1113-2224(사장님 2026-11-13 22:24 「11 가지로 하지 말고 36가지 유형으로 … 손자병법을 적용해서 … 정산하고 연결해봐 36 가지가 다 7가지 정산까지 다 나누게」 · 22:26 「그래」)
 #   손자병법과 함께 내려오는 서른여섯 꾀(삼십육계)로 고른 서른여섯 묶음(일곱 곳씩 · su21_s36.py) — 정산 장부(su21_settle.mjs)가 그날 판 날일 때 적고 10주씩 산 셈 · 화면은 정산 쪽 표 하나(수익률 높은 차례)
 #   주문 1113-2033 특징 열하나 묶음(그 셈 파일 · 자료 파일)은 이 주문으로 뺌
@@ -438,6 +434,11 @@ try:
 except Exception: VOL = None
 _vday = DATES[CTX.T] if DATES and 0 <= CTX.T < len(DATES) else None
 S36R = S36.lists36(CODES, IXc, PM, CTX.T, capv, vol=(VOL or {}).get('rows'), dates=DATES, late=late) if PM is not None else S36.lists36(CODES, IXc, None, 0, capv)
+out['s36n'] = {k: len(L) for k, L in S36R['lists'].items()} # 주문 1114-0004 — 처음 쪽 「모두 ○곳」 · 구슬 아래 두 줄은 이 수로(꾀 칸 자료 su21-s36.json 은 첫 칠함 뒤에 받음 — 느린 휴대폰 첫 화면 2.5초)
+lands_out = out.pop('lands') # 땅 지도는 따로(첫 화면이 가볍게 — 느린 휴대폰) · su21-map.json
+json.dump(out, open(A.out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+json.dump(CUOUT, open(A.out.replace('su21.json', 'su21-cu.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':')) # 주문 1912 — 문화 일곱 · 칸마다 흔적(「왜?」 쪽만)
+json.dump({'schema': 'su21-map-1', 'asOf': out['asOf'], 'lands': lands_out}, open(A.out.replace('su21.json', 'su21-map.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 json.dump({'schema': 'su21-s36-1', 'asOf': {'board': b['asOf'], 'data': _vday}, 'rule': S36.RULE_ID, 'k': S36.K, 'kinds': S36.KINDS, 'han': S36.HAN, 'name': S36.NAME, 'mean': S36.MEAN, 'say': S36.SAY,
            'set': S36.SETOF, 'by': S36.BY, 'lists': {k: [{'code': c, 'name': nm(c)} for c in L] for k, L in S36R['lists'].items()}, 'why': S36R['why'],
            'vol': {'day': S36R['volDay'], 'n': S36R['volN'], 'last': (VOL or {}).get('last'), 'ok': (VOL or {}).get('ok')}, 'src': 'docs/design/s36-2026-11-13/order-2224.txt'},

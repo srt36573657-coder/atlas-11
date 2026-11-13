@@ -158,3 +158,27 @@
 .su-apple a.sa-up3c:hover .sa-up3ch, .su-apple a.sa-up3c:focus .sa-up3ch { fill: #F5F5F7; }
 .su-apple a.sa-up3c:focus-visible .sa-up3ch { stroke: #B45309; stroke-width: 2; }
 .su-apple .sa-up3ct { font-size: 18px; font-weight: 700; fill: #7A3E00; }
+/* 서른여섯 꾀(주문 1114-0004 「36 까지 … 종류별로 다 모아가지고 그 총 개수를 정리」) — 구슬 아래 모두 몇 곳 한 줄 · 그림 바로 아래 꾀마다 일곱 곳(HTML · 누름 48 · 글 17 넘게) */
+.su-apple .sa-tot { font-size: 18px; font-weight: 700; fill: #1D1D1F; }
+.su-news > .su-hero[data-g="su-apple"] .s36 { display: grid; gap: 22px; padding: 8px max(16px, env(safe-area-inset-left, 0px)) 16px max(16px, env(safe-area-inset-right, 0px)); border-top: 1px solid #D2D2D7; color: #1D1D1F; }
+.su-news > .su-hero[data-g="su-apple"] .s36-top { display: grid; gap: 6px; padding-top: 12px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-h { margin: 0; font-size: 24px; line-height: 1.3; letter-spacing: -0.4px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-h b { font-weight: 800; }
+.su-news > .su-hero[data-g="su-apple"] .s36-h span { font-weight: 800; color: #B45309; }
+.su-news > .su-hero[data-g="su-apple"] .s36-lead { margin: 0; font-size: 18px; line-height: 1.55; font-weight: 600; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; }
+.su-news > .su-hero[data-g="su-apple"] .s36-day { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; color: #6E6E73; word-break: keep-all; }
+.su-news > .su-hero[data-g="su-apple"] .s36-set { display: grid; gap: 16px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-sh { margin: 4px 0 0; padding-top: 12px; border-top: 2px solid #1D1D1F; font-size: 20px; line-height: 1.35; font-weight: 800; letter-spacing: -0.3px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-g { display: grid; gap: 6px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-gh { margin: 0; font-size: 19px; line-height: 1.4; word-break: keep-all; }
+.su-news > .su-hero[data-g="su-apple"] .s36-gh b { font-weight: 800; }
+.su-news > .su-hero[data-g="su-apple"] .s36-gh span { font-size: 17px; font-weight: 600; color: #6E6E73; }
+.su-news > .su-hero[data-g="su-apple"] .s36-gs { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; color: #3A3A3C; word-break: keep-all; overflow-wrap: anywhere; }
+.su-news > .su-hero[data-g="su-apple"] .s36-co { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 0; padding: 0; list-style: none; }
+.su-news > .su-hero[data-g="su-apple"] .s36-co li { margin: 0; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; min-height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #D2D2D7; border-radius: 24px; background: #FFFFFF; color: #1D1D1F; font-size: 17px; font-weight: 700; text-decoration: none; word-break: keep-all; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c:hover, .su-news > .su-hero[data-g="su-apple"] .s36-c:focus { background: #F5F5F7; }
+.su-news > .su-hero[data-g="su-apple"] .s36-c:focus-visible { outline: 2px solid #0071E3; outline-offset: 2px; }
+.su-news > .su-hero[data-g="su-apple"] .s36-none { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 600; color: #6E6E73; }
+.su-news > .su-hero[data-g="su-apple"] .s36-go { display: flex; align-items: center; min-height: 52px; padding: 0 16px; border: 1px solid #D2D2D7; border-radius: 14px; color: #7A3E00; font-size: 18px; font-weight: 700; text-decoration: none; }
+.su-news > .su-hero[data-g="su-apple"] .s36.s36-wait { padding: 0; border: 0; min-height: 0; } /* 꾀 칸 자료를 받기 전 빈 자리(받으면 바뀜 · 못 받으면 지움) */

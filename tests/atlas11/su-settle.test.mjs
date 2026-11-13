@@ -250,7 +250,7 @@ test('탭 · 길 · 묶기 · 검사 — 아래 탭 여섯째 「정산」 #/r/t
   assert.ok(st.includes("return {title: '정산', tab: 5,"), '정산 쪽을 열면 정산 탭이 켜짐');
   assert.ok(pk.includes("'scripts/atlas11/next/su21_settle.mjs'") && pk.includes("'--book', path.join(root, 'reports/atlas11/su21/settle.json')") && /su21_settle\.mjs[^\n]*\.\.\.\(keepJob \? \['--keep'\] : \[\]\)/.test(pk), '묶을 때 화면 자료 · 장부는 올리기 작업만 씀');
   assert.ok(pk.indexOf('su21_days.mjs') < pk.indexOf('su21_settle.mjs'), '그날 목록을 적은 뒤에 정산');
-  assert.ok(ck.includes("'28곳 지도 멈춤 기록 달력 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 여섯 · 정산 쪽');
+  assert.ok(ck.includes("'301곳 지도 멈춤 기록 달력 정산'") && ck.includes('㉓ 정산 자료') && ck.includes("open(p, '#/r/t')"), '검사 — 탭 여섯 · 정산 쪽');
   assert.ok(ck.includes("import {START as SETTLE_START} from './su21_settle.mjs';") && ck.includes('㉓ 정산 첫날') && ck.includes("부터 센 정산이에요."), '검사 — 정산 첫날(주문 1112-2042)');
   assert.ok(st.includes("text: md(D.start) + '부터 센 정산이에요.'"), '쪽 — 맨 위 첫날 한 줄');
   assert.ok(/#\\\/r\\\/\[mwdynkicst\]/.test(ck), '검사 고리 꼴에 #/r/t');

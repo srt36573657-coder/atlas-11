@@ -42,13 +42,13 @@ export async function base() {
 }
 export const SAFE = '지난 기록만 보여 줘요. 앞날을 맞히지 않고 사고팔기를 권하지 않아요.';
 const PHASE = ['기', '승', '전', '결'];
-export const STEPS = [null, ['28곳', 0], ['땅 지도', 1], ['업종', 1], ['회사', 2], ['회사 자세히', 2], ['「왜 사?」', 3], ['내 매매일지', 3], ['친구에게', 3]]; // 주문 2044 — 21곳 → 땅 → 업종 → 회사 → 자세히 → 왜 사? → 일지 → 친구에게
+export const STEPS = [null, ['301곳', 0], ['땅 지도', 1], ['업종', 1], ['회사', 2], ['회사 자세히', 2], ['「왜 사?」', 3], ['내 매매일지', 3], ['친구에게', 3]]; // 주문 2044 — 21곳 → 땅 → 업종 → 회사 → 자세히 → 왜 사? → 일지 → 친구에게
 let lastCo = null, FIRST = null;
 export const cur = () => lastCo;
 export const setCur = c => { lastCo = c; };
 export const coHref = c => '#/c/' + c, indHref = n => '#/i/' + encodeURIComponent(n);
 const firstCode = (bl, mo) => bl.rows[0]?.code ?? mo[0]?.code ?? null;
-const TABS = () => [['28곳', '#/', 'M4 11l8-7 8 7v9h-5v-6h-6v6H4z'], ['지도', '#/m', 'M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14'],
+const TABS = () => [['301곳', '#/', 'M4 11l8-7 8 7v9h-5v-6h-6v6H4z'], ['지도', '#/m', 'M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14'],
   ['기록', '#/r', 'M4 20V11M10 20V5M16 20v-8M21 20H3'], ['멈춤', lastCo?.code ? '#/q/' + lastCo.code : '#/q', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM10 9v6M14 9v6'],
   ['달력', '#/r/c', 'M4 6h16v14H4zM4 10h16M8 3v5M16 3v5M8 14h2M14 14h2M8 17h2'], // 4 달력 — 주문 0040(사장님 2026-11-11 00:40 「달력을 탭에 두도록해」) · 1 · 2 · 3등 달력
   ['정산', '#/r/t', 'M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6M9 16h4']]; // 5 정산 — 주문 1112-1728(사장님 2026-11-12 17:28 「정산 페이지를 하나 만들어 … 그럼 탭이 여섯 개가 되겠지」) · 여덟 묶음 10주씩 산 셈
@@ -151,7 +151,7 @@ function dock(nx, step) {
 export const TAB_ORDER = Object.freeze([0, 1, 3, 2, 4, 5]); // 정산(주문 1112-1728)도 있던 다섯의 자리를 옮기지 않고 맨 끝에
 function tabs(active) {
   const T = TABS();
-  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 중요한 차례 28곳 · 지도 · 멈춤 · 기록 · 달력 · 정산'}, TAB_ORDER.map((i, k) => { const [t, href, d] = T[i];
+  return h('nav', {class: 'su-tabs', 'aria-label': '탭 — 중요한 차례 301곳 · 지도 · 멈춤 · 기록 · 달력 · 정산'}, TAB_ORDER.map((i, k) => { const [t, href, d] = T[i];
     return h('a', {class: 'su-tab' + (i === active ? ' su-on' : ''), href, 'aria-current': i === active ? 'page' : null, 'aria-label': (k + 1) + '번째 · ' + t},
       s('svg', {class: 'su-ti', viewBox: '0 0 24 24', 'aria-hidden': 'true'}, s('path', {d})), h('span', {text: t})); }));
 }
