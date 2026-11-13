@@ -51,15 +51,15 @@ export async function buildDist() {
   // 수르 21곳(사장님 2026-11-04 15:39(+04) 「2,570여 개 중 365개를 먼저 찾아낸 뒤 그 안에서 각각 7개씩 찾아내는 구조다」 · 주문 0054 [3] 9 「21곳은 장이 끝나면 날마다 다시 세라」)
   //   매일 · 저녁 · 손 올리기가 모두 이 묶음을 거치므로 올릴 때마다 굴린 dist 자료(atlas/data · next/data)와 오늘 판(public/data/atlas11/view/board.json)으로 다시 셈
   //   셈이 멈추면 저장된 판(site/su/data/su21.json)이 그대로 실림 — 올리기는 멈추지 않음 · scripts/atlas11/next/su21.py
-  // 주문 1113-2033(사장님 2026-11-13 20:33 「이걸 11 가지로 … 이전 11 개를 해가지고 … 정상까지 다 연결」) — 특징 열하나 가운데 거래량으로 재는 넷(당일치기 · 작은 회사 · 따라사기 · 새내기)
-  //   올리기 작업(site · daily · evening)만 우량주 365곳 네이버 일봉(거래량)을 받음(su21_vol.mjs) · 못 받으면 그 넷은 빈 목록(올리기는 멈추지 않음) · 이 컴퓨터 · 미리 보기는 받지 않음
+  // 주문 1113-2033 · 1113-2224(사장님 2026-11-13 22:24 「36가지 유형으로 … 손자병법을 적용해서 … 정산하고 연결」) — 서른여섯 꾀 가운데 거래량으로 재는 다섯(su21_s36.py)
+  //   올리기 작업(site · daily · evening)만 우량주 365곳 네이버 일봉(거래량)을 받음(su21_vol.mjs) · 못 받으면 그 다섯은 빈 목록(올리기는 멈추지 않음) · 이 컴퓨터 · 미리 보기는 받지 않음
   let volF = null;
   if (/\/atlas11-(site|daily|evening)\.yml@/.test(process.env.GITHUB_WORKFLOW_REF ?? '')) {
     try {
       const f = path.join(os.tmpdir(), 'su21-vol-' + process.pid + '.json');
       const {stdout} = await run('node', [path.join(root, 'scripts/atlas11/next/su21_vol.mjs'), '--board', path.join(root, 'public/data/atlas11/view/board.json'), '--out', f, '--count', '70', '--budget-s', '150'], {maxBuffer: 1e7, timeout: 240000});
       volF = f; console.log('거래량 받기 — ' + String(stdout).trim().slice(0, 200));
-    } catch (e) { console.warn('거래량 받기 못 함 — 특징 넷은 빈 목록: ' + String(e.stderr || e.stdout || e.message).slice(0, 200)); }
+    } catch (e) { console.warn('거래량 받기 못 함 — 서른여섯 꾀 가운데 거래량 다섯은 빈 목록: ' + String(e.stderr || e.stdout || e.message).slice(0, 200)); }
   }
   try {
     const {stdout} = await run('python3', [path.join(root, 'scripts/atlas11/next/su21.py'), '--live', dist, '--repo', root, '--out', path.join(dist, 'su/data/su21.json'), '--mc365', '--top3', ...(volF ? ['--vol', volF] : [])], {maxBuffer: 1e7}); // --mc365 = 몬테카를로를 365곳 모두에 · --top3 = 42칸 1억 번 셈 1등 · 2등 · 3등(주문 1422 · 지난 판 다시 세기는 빼고)

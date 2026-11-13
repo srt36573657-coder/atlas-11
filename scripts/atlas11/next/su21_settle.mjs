@@ -10,9 +10,11 @@
 //   주문 1112-2042(사장님 2026-11-12 20:42 「자 정산을 오늘 부터 한다 그동안에 기록은 다 지운다」 · 11-13 08:55 「뭐해」 — docs/design/settle-2026-11-12/order-2042.txt)
 //     첫날 START = 11월 12일 판 · 그 전 날 산 셈 · 값 · 조용한 힘 · 이름은 장부에서 지움(다시 센 지난 날도) · 조용한 힘은 su21 판 날 = 오늘 판 날일 때만 적음(묵은 su21 로 지난 날을 적지 않음)
 //     · 달력(1 · 2 · 3등 · 조용한 힘)은 그대로(그 장부는 이 파일이 쓰지 않음)
-//   주문 1113-2033(사장님 2026-11-13 20:33 「이걸 11 가지로 만든다면 … 이전 11 개를 해가지고 … 정상까지 다 연결」 · 20:35 「어 맞아」 — docs/design/t11-2026-11-13/order-2033.txt)
-//     한국 투자자 특징 열하나 묶음(<su>/su21-t11.json · su21_t11.py · 일곱 곳씩)도 그날 판 날 = 셈한 자료 날일 때 장부(t11)에 묶음마다 한 번 적고 10주씩 산 셈 · 묶음 이름 t_<특징>
-//     여덟 묶음과 따로 셈(화면은 표 둘 · 맨 위 「지금까지」는 여덟 그대로)
+//   주문 1113-2033(특징 열하나 · t11)은 주문 1113-2224 로 뺌 — 장부의 t11 기록은 지움(cut.t11)
+//   주문 1113-2224(사장님 2026-11-13 22:24 「11 가지로 하지 말고 36가지 유형으로 … 손자병법을 적용해서 … 정산하고 연결해봐 36 가지가 다 7가지 정산까지 다 나누게」 · 22:26 「그래」
+//     · 22:27 「정산표에는 수익율이 높은 순으로」 — docs/design/s36-2026-11-13/order-2224.txt)
+//     손자병법 서른여섯 꾀 묶음(<su>/su21-s36.json · su21_s36.py · 일곱 곳씩)을 그날 판 날 = 셈한 자료 날일 때 장부(s36)에 꾀마다 한 번 적고 10주씩 산 셈 · 묶음 이름 g01 ~ g36
+//     여덟 묶음과 따로 셈(화면은 표 둘 · 맨 위 「지금까지」는 여덟 그대로 · 서른여섯 표는 수익률 높은 차례 — 화면이 셈)
 //   쓰는 곳: reports/atlas11/su21/settle.json(장부 — 올리기 작업 site · daily · evening 만 --keep) · <su>/su21-settle.json(화면)
 //   쓰는 법: node scripts/atlas11/next/su21_settle.mjs --su <dist/su/data> --board <board.json> --days <reports/atlas11/su21/days.json> --book <reports/atlas11/su21/settle.json>
 //            [--boards <reports/atlas11/su21/boards>] [--keep] [--out <파일>]
@@ -24,63 +26,65 @@ import {fileURLToPath} from 'node:url';
 export const SCHEMA = 'su21-settle-1', BOOK_SCHEMA = 'su21-settle-book-1', QTY = 10;
 /** 정산 첫날(주문 1112-2042 「정산을 오늘 부터 한다」 — 받은 날 11월 12일 판) */
 export const START = '2026-11-12';
-/** 한국 투자자 특징 열하나(주문 1113-2033 · su21_t11.py KINDS 차례 = ant11.json 차례) */
-export const T11 = Object.freeze(['dtr', 'herd', 'lot', 'casc', 'hold', 'big', 'attn', 'small', 'follow', 'dip', 'newb']);
-/** 묶음 — 여덟(앞 · 차례 그대로) 뒤에 특징 열하나(t_<특징>)를 붙임(산 셈 줄의 묶음 번호는 그대로) */
-export const KINDS = Object.freeze(['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext', ...T11.map(k => 't_' + k)]);
+/** 손자병법 서른여섯 꾀(주문 1113-2224 · su21_s36.py KINDS 차례 = 삼십육계 차례 1 ~ 36) */
+export const S36 = Object.freeze(Array.from({length: 36}, (_, i) => 'g' + String(i + 1).padStart(2, '0')));
+/** 묶음 — 여덟(앞 · 차례 그대로) 뒤에 서른여섯 꾀(g01 ~ g36)를 붙임 */
+export const KINDS = Object.freeze(['top3', 'hot', 'bloom', 'money', 'quiet', 'hotNext', 'bloomNext', 'moneyNext', ...S36]);
 const SIX = ['hot', 'bloom', 'money', 'hotNext', 'bloomNext', 'moneyNext'];
 const DAY = /^\d{4}-\d{2}-\d{2}$/, CODE = /^[0-9A-Z]{6}$/;
 const fin = v => typeof v === 'number' && Number.isFinite(v) && v > 0;
 const readJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
 const readGz = f => { try { return JSON.parse(zlib.gunzipSync(fs.readFileSync(f)).toString('utf8')); } catch { return null; } };
 
-export const emptySettle = () => ({schema: BOOK_SCHEMA, qty: QTY, note: '정산 장부 — 조용한 힘 일곱(그날 판) · 특징 열하나 일곱씩(그날 판) · 회사마다 날마다 마지막 값 · 한 번 적은 날 · 값은 고치지 않음', quiet: {}, t11: {}, px: {}, co: {}});
+export const emptySettle = () => ({schema: BOOK_SCHEMA, qty: QTY, note: '정산 장부 — 조용한 힘 일곱(그날 판) · 서른여섯 꾀 일곱씩(그날 판) · 회사마다 날마다 마지막 값 · 한 번 적은 날 · 값은 고치지 않음', quiet: {}, s36: {}, px: {}, co: {}});
 /** 장부 꼴 맞대기 */
 export function okSettle(B) {
   return !!B && B.schema === BOOK_SCHEMA && B.qty === QTY && B.quiet && typeof B.quiet === 'object' && B.px && typeof B.px === 'object' && B.co && typeof B.co === 'object'
     && Object.entries(B.quiet).every(([d, cs]) => DAY.test(d) && Array.isArray(cs) && cs.every(c => CODE.test(c)))
     && Object.entries(B.px).every(([c, m]) => CODE.test(c) && m && typeof m === 'object' && Object.entries(m).every(([d, v]) => DAY.test(d) && fin(v)))
-    && (B.t11 == null || (typeof B.t11 === 'object' && Object.entries(B.t11).every(([d, x]) => DAY.test(d) && x && typeof x === 'object'
-      && Object.entries(x).every(([k, cs]) => T11.includes(k) && Array.isArray(cs) && cs.every(c => CODE.test(c))))));
+    && (B.t11 == null || typeof B.t11 === 'object') // 주문 1113-2033 의 옛 기록(읽으면 지움)
+    && (B.s36 == null || (typeof B.s36 === 'object' && Object.entries(B.s36).every(([d, x]) => DAY.test(d) && x && typeof x === 'object'
+      && Object.entries(x).every(([k, cs]) => S36.includes(k) && Array.isArray(cs) && cs.every(c => CODE.test(c))))));
 }
 const indOf = c => c?.group?.industry ?? c?.group?.label ?? c?.ind ?? null;
 
 /** 날마다 묶음 목록 — {날: {묶음: [번호…]}} · 여섯은 days.json(그날 판 날이 없고 su21 이 그 판이면 그날 su21 목록) · top3 = 달력 장부 · quiet = 장부 */
-export function listsOf({days, sbook, su, suNext, quiet, t11 = {}, start = START}) {
+export function listsOf({days, sbook, su, suNext, quiet, s36 = {}, start = START}) {
   const out = {}, put = (d, k, cs) => { if (!DAY.test(d ?? '') || d < start || !Array.isArray(cs) || !cs.length) return; ((out[d] ??= {})[k] = cs.filter(c => CODE.test(c))); };
   for (const [d, x] of Object.entries(days?.days ?? {})) for (const k of SIX) put(d, k, x?.lists?.[k]);
   const sd = su?.asOf?.board;
   if (DAY.test(sd ?? '') && !days?.days?.[sd]) for (const k of SIX) put(sd, k, ((k.endsWith('Next') ? suNext?.lists?.[k] ?? su?.lists?.[k] : su?.lists?.[k]) ?? []).map(c => c.code));
   for (const x of sbook?.days ?? []) put(x.board, 'top3', [...(x.picks ?? [])].sort((a, b) => a.place - b.place).map(p => p.code));
   for (const [d, cs] of Object.entries(quiet ?? {})) put(d, 'quiet', cs);
-  for (const [d, x] of Object.entries(t11 ?? {})) for (const k of T11) put(d, 't_' + k, x?.[k]); // 특징 열하나(주문 1113-2033)
+  for (const [d, x] of Object.entries(s36 ?? {})) for (const k of S36) put(d, k, x?.[k]); // 서른여섯 꾀(주문 1113-2224)
   return Object.fromEntries(Object.keys(out).sort().map(d => [d, out[d]]));
 }
 
 /** 장부 한 걸음 — 조용한 힘 그날 일곱 · 이름 · 업종 · 값 적기 · {book, added, cut}(들어온 장부는 바꾸지 않음)
  *  su = su21.json · board = 오늘 판(board.json) · stored = {날: 저장된 판} · sbook = su21-book.json · days = days.json · start = 정산 첫날 */
-export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, t11 = null, start = START}) {
+export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, s36 = null, start = START}) {
   const B = JSON.parse(JSON.stringify(okSettle(book0) ? book0 : emptySettle()));
-  B.t11 ??= {};
-  let added = null, added11 = [];
+  B.s36 ??= {};
+  let added = null, added36 = [];
   // ⓪ 첫날 전 기록은 지움(주문 1112-2042) — 조용한 힘 · 값(이름은 ② 뒤에 쓰는 회사만 남김)
   const cut = {quiet: Object.keys(B.quiet).filter(d => d < start).length, px: Object.values(B.px).reduce((a, m) => a + Object.keys(m).filter(d => d < start).length, 0)};
+  if (B.t11) { cut.t11 = Object.keys(B.t11).length; delete B.t11; } // 주문 1113-2224 「11 가지로 하지 말고」 — 특징 열하나 기록은 지움
   B.quiet = Object.fromEntries(Object.entries(B.quiet).filter(([d]) => d >= start));
-  B.t11 = Object.fromEntries(Object.entries(B.t11).filter(([d]) => d >= start));
+  B.s36 = Object.fromEntries(Object.entries(B.s36).filter(([d]) => d >= start));
   for (const code of Object.keys(B.px)) { B.px[code] = Object.fromEntries(Object.entries(B.px[code]).filter(([d]) => d >= start)); if (!Object.keys(B.px[code]).length) delete B.px[code]; }
   // ① 조용한 힘 일곱 — 그날 판(su21.json asOf.board)으로 한 번 적음(먼저 적은 날은 그대로) · su21 판 날 = 오늘 판 날일 때만(묵은 su21 로 지난 날을 적지 않음 — 11-13 08:59 묵은 판이 11월 6일을 적은 일)
   const sd = su?.asOf?.board, q = (su?.lists?.quiet ?? []).map(c => c?.code).filter(c => CODE.test(c ?? ''));
   if (DAY.test(sd ?? '') && sd >= start && sd === board?.asOf && q.length && !B.quiet[sd]) { B.quiet[sd] = q; added = sd; B.quiet = Object.fromEntries(Object.keys(B.quiet).sort().map(d => [d, B.quiet[d]])); }
-  // ①' 특징 열하나(주문 1113-2033) — su21-t11.json 판 날 = 셈한 자료 날 = 오늘 판 날일 때만 · 묶음마다 그날 처음 빈 목록이 아닐 때 한 번(거래량 넷은 받은 때만 차므로 묶음마다 따로)
-  const td = t11?.asOf?.board;
-  if (t11?.rule && DAY.test(td ?? '') && td >= start && td === board?.asOf && t11?.asOf?.data === td) {
-    for (const k of T11) {
-      const cs = (t11.lists?.[k] ?? []).map(x => x?.code).filter(c => CODE.test(c ?? ''));
-      if (cs.length && !B.t11[td]?.[k]) { (B.t11[td] ??= {})[k] = cs; added11.push(k); }
+  // ①' 서른여섯 꾀(주문 1113-2224) — su21-s36.json 판 날 = 셈한 자료 날 = 오늘 판 날일 때만 · 꾀마다 그날 처음 빈 목록이 아닐 때 한 번(거래량 다섯은 받은 때만 차므로 꾀마다 따로)
+  const td = s36?.asOf?.board;
+  if (s36?.rule && DAY.test(td ?? '') && td >= start && td === board?.asOf && s36?.asOf?.data === td) {
+    for (const k of S36) {
+      const cs = (s36.lists?.[k] ?? []).map(x => x?.code).filter(c => CODE.test(c ?? ''));
+      if (cs.length && !B.s36[td]?.[k]) { (B.s36[td] ??= {})[k] = cs; added36.push(k); }
     }
-    B.t11 = Object.fromEntries(Object.keys(B.t11).sort().map(d => [d, B.t11[d]]));
+    B.s36 = Object.fromEntries(Object.keys(B.s36).sort().map(d => [d, B.s36[d]]));
   }
-  const L = listsOf({days, sbook, su, suNext, quiet: B.quiet, t11: B.t11, start});
+  const L = listsOf({days, sbook, su, suNext, quiet: B.quiet, s36: B.s36, start});
   const need = new Set(Object.values(L).flatMap(x => Object.values(x).flat()));
   for (const code of Object.keys(B.co)) if (!need.has(code)) { delete B.co[code]; cut.co = (cut.co ?? 0) + 1; }
   // ② 이름 · 업종 — 오늘 판 → 저장된 판(늦은 날 먼저) → 그대로
@@ -101,7 +105,7 @@ export function stepSettle(book0, {su, suNext, board, stored = {}, sbook, days, 
   for (const code of Object.keys(B.px)) B.px[code] = Object.fromEntries(Object.entries(B.px[code]).sort(([a], [b]) => a.localeCompare(b)));
   B.px = Object.fromEntries(Object.keys(B.px).sort().map(c => [c, B.px[c]]));
   B.co = Object.fromEntries(Object.keys(B.co).sort().map(c => [c, B.co[c]]));
-  return {book: B, added, added11, lists: L, cut};
+  return {book: B, added, added36, lists: L, cut};
 }
 
 /** 화면 자료 — 산 셈(날 · 묶음 · 번호 · 산 값) · 지금(회사마다 오늘 판 날까지 가장 늦은 값 · 그 날) · 묶음 첫날 · 다시 센 날 끝 · 못 센 수 */
@@ -141,17 +145,17 @@ function main() {
   const boardsDir = arg('--boards') ?? path.join(ROOT, 'reports/atlas11/su21/boards'), out = arg('--out') ?? (su ? path.join(su, 'su21-settle.json') : null);
   if (!su || !boardF || !daysF || !bookF) { console.error('--su · --board · --days · --book 이 필요함'); process.exit(2); }
   const S = readJson(path.join(su, 'su21.json')), N = readJson(path.join(su, 'su21-next.json')), board = readJson(boardF), days = readJson(daysF), sbook = readJson(path.join(su, 'su21-book.json'));
-  const t11 = readJson(path.join(su, 'su21-t11.json')); // 특징 열하나(주문 1113-2033 · su21.py 가 씀 · 없으면 그날은 적지 않음)
+  const s36 = readJson(path.join(su, 'su21-s36.json')); // 서른여섯 꾀(주문 1113-2224 · su21.py 가 씀 · 없으면 그날은 적지 않음)
   if (!board || !Array.isArray(board.companies)) { console.error('판을 못 읽음'); process.exit(1); }
   const stored = storedBoards(boardsDir);
-  const {book, added, added11, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, t11});
+  const {book, added, added36, lists, cut} = stepSettle(readJson(bookF), {su: S, suNext: N, board, stored, sbook, days, s36});
   const site = siteSettle(book, lists, board.asOf, days);
   if (out) fs.writeFileSync(out, JSON.stringify(site) + '\n');
   if (keep) { const tmp = bookF + '.tmp' + process.pid; fs.writeFileSync(tmp, JSON.stringify(book, null, 1) + '\n'); fs.renameSync(tmp, bookF); }
   const nk = Object.fromEntries(KINDS.map(k => [k, site.buys.filter(b => KINDS[b[1]] === k).length]));
   console.log(`정산 장부 — 날 ${Object.keys(lists).length} · 산 셈 ${site.buys.length}번(${KINDS.map(k => k + ' ' + nk[k]).join(' · ')}) · 값 없음 ${Object.values(site.miss).reduce((x, y) => x + y, 0)} · 저장된 판 ${Object.keys(stored).length} · 판 ${board.asOf}`
-    + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '')
-    + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (added11.length ? ' · 특징 열하나 새로 적음 ' + board.asOf + '(' + added11.join(' ') + ')' : ' · 특징 열하나 새로 적은 묶음 0(판 ' + (t11?.asOf?.board ?? '없음') + ' · 자료 ' + (t11?.asOf?.data ?? '없음') + ')')
+    + ' · 첫날 ' + START + (cut.quiet || cut.px || cut.co ? ` · 첫날 전 기록 지움(조용한 힘 ${cut.quiet}날 · 값 ${cut.px}개 · 이름 ${cut.co ?? 0}곳)` : '') + (cut.t11 ? ` · 특징 열하나 기록 지움(${cut.t11}날)` : '')
+    + (added ? ' · 조용한 힘 새로 적음 ' + added : '') + (added36.length ? ' · 서른여섯 꾀 새로 적음 ' + board.asOf + '(' + added36.length + '꾀)' : ' · 서른여섯 꾀 새로 적은 꾀 0(판 ' + (s36?.asOf?.board ?? '없음') + ' · 자료 ' + (s36?.asOf?.data ?? '없음') + ')')
     + (keep ? ' · 장부 씀' : ' · 장부 안 씀(올리기 작업 아님)'));
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
